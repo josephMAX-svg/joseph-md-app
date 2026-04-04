@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -10,8 +10,20 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius } from '../theme/tokens';
+import { useSupabaseQuery } from '../hooks/useSupabaseQuery';
+import {
+  getLatestCZI,
+  getStudyProgress,
+  getWeakTopics,
+  getPalmertonErrors,
+  getTimingStats,
+  getApexQueueCount,
+} from '../lib/supabase';
+import type { PalmertonErrorDist, TimingStats, WeakTopic } from '../lib/supabase';
+import ApexSubmitModal from '../components/ApexSubmitModal';
 
 // ─── Data Structures ───
 interface Bank {
@@ -65,19 +77,82 @@ const ENCAPS_AREAS = [
 
 type CountryTab = 'EEUU' | 'ESPAÑA' | 'PERÚ';
 
-// ─── Progress Item ───
+// ═══════════════════════════════════════════════
+// Palmerton Error Colors
+// ═══════════════════════════════════════════════
+const PALMERTON_COLORS: Record<string, string> = {
+  CONTEXTO: Colors.coral,
+  CRONOLOGIA: Colors.amber,
+  CCSN: '#FACC15', // yellow
+  CONCEPTO: Colors.blue,
+  OLVIDO: Colors.purple,
+};
+
+// ─── Progress Item (with live data support) ───
 function ProgressItem({ name, detail, progress, color }: { name: string; detail: string; progress: number; color: string }) {
   return (
     <View style={styles.progressItem}>
       <View style={styles.progressItemHeader}>
         <Text style={styles.progressItemName} numberOfLines={1}>{name}</Text>
-        <Text style={styles.progressItemDetail}>{detail}</Text>
+        <Text style={styles.progressItemDetail}>{progress > 0 ? `${Math.round(progress)}%` : detail}</Text>
       </View>
       <View style={styles.progressTrack}>
-        <View style={[styles.progressValue, { width: `${progress}%`, backgroundColor: color }]} />
+        <View style={[styles.progressValue, { width: `${Math.min(progress, 100)}%`, backgroundColor: color }]} />
       </View>
     </View>
   );
+}
+
+// ─── Palmerton Bar ───
+function PalmertonBar({ label, count, percentage, color, maxCount }: { label: string; count: number; percentage: number; color: string; maxCount: number }) {
+  const barWidth = maxCount > 0 ? (count / maxCount) * 100 : 0;
+  return (
+    <View style={styles.palmertonItem}>
+      <View style={styles.palmertonLabelRow}>
+        <Text style={[styles.palmertonLabel, { color }]}>{label}</Text>
+        <Text style={styles.palmertonCount}>{count} ({percentage}%)</Text>
+      </View>
+      <View style={styles.palmertonTrack}>
+        <View style={[styles.palmertonValue, { width: `${barWidth}%`, backgroundColor: color }]} />
+      </View>
+    </View>
+  );
+}
+
+// ─── Time formatter ───
+function formatSeconds(seconds: number | null): string {
+  if (seconds === null || seconds <= 0) return '--:--';
+  const m = Math.floor(seconds / 60);
+  const s = Math.floor(seconds % 60);
+  return `${m}:${String(s).padStart(2, '0')}`;
+}
+
+// ═══════════════════════════════════════════════
+// Hook: Load live progress for a list of specialties
+// ═══════════════════════════════════════════════
+function useLiveProgress(specialties: string[], examen: string): Record<string, number> {
+  const [progress, setProgress] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      const results: Record<string, number> = {};
+      // Batch — but be gentle on Supabase
+      for (const spec of specialties) {
+        try {
+          const val = await getStudyProgress(examen, spec);
+          if (!mounted) return;
+          results[spec] = val;
+        } catch {
+          results[spec] = 0;
+        }
+      }
+      if (mounted) setProgress(results);
+    })();
+    return () => { mounted = false; };
+  }, [specialties.length, examen]);
+
+  return progress;
 }
 
 export default function EstudioScreen() {
@@ -88,6 +163,45 @@ export default function EstudioScreen() {
   const [modalInput, setModalInput] = useState('');
   const [customBanks, setCustomBanks] = useState<string[]>([]);
   const [customSpecs, setCustomSpecs] = useState<string[]>([]);
+
+  // APEX modal
+  const [apexModalVisible, setApexModalVisible] = useState(false);
+  const [apexModalTipo, setApexModalTipo] = useState<'manual' | 'dictar_error'>('manual');
+
+  // ─── Live Supabase data ───
+  const { data: cziValue } = useSupabaseQuery(getLatestCZI, null);
+  const { data: weakTopics } = useSupabaseQuery(
+    () => {
+      const examMap: Record<CountryTab, string> = { EEUU: 'USMLE', ESPAÑA: 'MIR', PERÚ: 'ENCAPS' };
+      return getWeakTopics(examMap[activeTab]);
+    },
+    [] as WeakTopic[],
+    [activeTab],
+  );
+  const { data: palmertonErrors } = useSupabaseQuery(getPalmertonErrors, [] as PalmertonErrorDist[]);
+  const { data: timingStats } = useSupabaseQuery(getTimingStats, { avgReadingSeconds: null, avgConstructionSeconds: null } as TimingStats);
+  const { data: queueCount, refetch: refetchQueue } = useSupabaseQuery(getApexQueueCount, 0);
+
+  // Live progress per tab
+  const examMap: Record<CountryTab, string> = { EEUU: 'USMLE', ESPAÑA: 'MIR', PERÚ: 'ENCAPS' };
+  const uworldProgress = useLiveProgress(UWORLD_SYSTEMS.map(s => s.name), 'USMLE');
+  const ambossProgress = useLiveProgress(AMBOSS_SUBJECTS.map(s => s.name), 'USMLE');
+  const promirProgress = useLiveProgress(PROMIR_SPECIALTIES, 'MIR');
+  const encapsProgress = useLiveProgress(ENCAPS_AREAS, 'ENCAPS');
+
+  // CZI badge color
+  const getCZIColor = (val: number | null) => {
+    if (val === null) return Colors.muted;
+    if (val >= 0.90) return Colors.green;
+    if (val >= 0.70) return Colors.amber;
+    return Colors.coral;
+  };
+
+  // Worst weak topic
+  const worstWeakTopic = weakTopics.length > 0 ? weakTopics[0] : null;
+
+  // Max count for Palmerton bars
+  const maxPalmertonCount = Math.max(...palmertonErrors.map(e => e.count), 1);
 
   const tabs: { key: CountryTab; label: string; flex: number }[] = [
     { key: 'EEUU', label: '🇺🇸 EEUU', flex: 5 },
@@ -115,25 +229,58 @@ export default function EstudioScreen() {
   return (
     <View style={{ flex: 1, backgroundColor: Colors.surface }}>
       <ScrollView style={styles.screen} contentContainerStyle={styles.scrollContent}>
-        {/* Header */}
+        {/* Header with CZI Badge */}
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>Motor APEX</Text>
-          <Text style={styles.headerSub}>MIR · USMLE · ENCAPS</Text>
-        </View>
-
-        {/* Alert Banner */}
-        <View style={styles.alertBanner}>
-          <Text style={styles.alertIcon}>⚠️</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.alertTitle}>Temas débiles detectados</Text>
-            <Text style={styles.alertText}>Cardiovascular, Nefrología, Farmacología requieren refuerzo</Text>
+            <Text style={styles.headerTitle}>Motor APEX</Text>
+            <Text style={styles.headerSub}>MIR · USMLE · ENCAPS</Text>
+          </View>
+          <View style={[styles.cziBadge, { borderColor: getCZIColor(cziValue) + '50' }]}>
+            <Text style={[styles.cziLabel, { color: getCZIColor(cziValue) }]}>CZI</Text>
+            <Text style={[styles.cziValue, { color: getCZIColor(cziValue) }]}>
+              {cziValue !== null ? cziValue.toFixed(2) : '--'}
+            </Text>
           </View>
         </View>
 
-        {/* APEX Button */}
+        {/* APEX Queue Status */}
+        {queueCount > 0 && (
+          <View style={styles.queueBanner}>
+            <Text style={styles.queueBannerText}>
+              ⏳ {queueCount} APEX pendiente{queueCount > 1 ? 's' : ''} · se procesarán al conectar PC
+            </Text>
+          </View>
+        )}
+
+        {/* Dynamic Weak Topic Alert */}
+        {worstWeakTopic ? (
+          <View style={styles.alertBanner}>
+            <Text style={styles.alertIcon}>⚠️</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.alertTitle}>Tema débil detectado</Text>
+              <Text style={styles.alertText}>
+                {worstWeakTopic.especialidad} · {worstWeakTopic.daysSinceActivity} días sin actividad
+              </Text>
+            </View>
+          </View>
+        ) : (
+          /* Fallback static alert if no Supabase data */
+          <View style={styles.alertBanner}>
+            <Text style={styles.alertIcon}>⚠️</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.alertTitle}>Temas débiles detectados</Text>
+              <Text style={styles.alertText}>Cardiovascular, Nefrología, Farmacología requieren refuerzo</Text>
+            </View>
+          </View>
+        )}
+
+        {/* APEX Button — functional */}
         <TouchableOpacity
           style={styles.apexButton}
-          onPress={() => Alert.alert('Motor APEX', 'APEX session: coming soon')}
+          onPress={() => {
+            setApexModalTipo('manual');
+            setApexModalVisible(true);
+          }}
         >
           <Text style={styles.apexButtonText}>⚡ INICIAR APEX</Text>
           <Text style={styles.apexButtonSub}>Sesión adaptativa de estudio</Text>
@@ -166,7 +313,13 @@ export default function EstudioScreen() {
               </View>
               <Text style={styles.bankCount}>18 systems · 0% complete</Text>
               {UWORLD_SYSTEMS.map((sys, i) => (
-                <ProgressItem key={i} name={sys.name} detail={sys.count} progress={sys.progress} color={Colors.teal} />
+                <ProgressItem
+                  key={i}
+                  name={sys.name}
+                  detail={sys.count}
+                  progress={uworldProgress[sys.name] ?? 0}
+                  color={Colors.teal}
+                />
               ))}
             </View>
 
@@ -179,7 +332,13 @@ export default function EstudioScreen() {
               </View>
               <Text style={styles.bankCount}>26 subjects · 0% complete</Text>
               {AMBOSS_SUBJECTS.map((sub, i) => (
-                <ProgressItem key={i} name={sub.name} detail={sub.count} progress={sub.progress} color={Colors.blue} />
+                <ProgressItem
+                  key={i}
+                  name={sub.name}
+                  detail={sub.count}
+                  progress={ambossProgress[sub.name] ?? 0}
+                  color={Colors.blue}
+                />
               ))}
             </View>
 
@@ -237,7 +396,13 @@ export default function EstudioScreen() {
               </View>
             </View>
             {PROMIR_SPECIALTIES.map((spec, i) => (
-              <ProgressItem key={i} name={spec} detail="0%" progress={0} color={Colors.amber} />
+              <ProgressItem
+                key={i}
+                name={spec}
+                detail="0%"
+                progress={promirProgress[spec] ?? 0}
+                color={Colors.amber}
+              />
             ))}
             {customSpecs.map((spec, i) => (
               <ProgressItem key={`cs-${i}`} name={spec} detail="0%" progress={0} color={Colors.purple} />
@@ -255,14 +420,57 @@ export default function EstudioScreen() {
               </View>
             </View>
             {ENCAPS_AREAS.map((area, i) => (
-              <ProgressItem key={i} name={area} detail="0%" progress={0} color={Colors.coral} />
+              <ProgressItem
+                key={i}
+                name={area}
+                detail="0%"
+                progress={encapsProgress[area] ?? 0}
+                color={Colors.coral}
+              />
             ))}
           </View>
         )}
 
+        {/* ─── Palmerton Error Chart — NEW ─── */}
+        <View style={styles.palmertonSection}>
+          <Text style={styles.palmertonTitle}>Errores Palmerton acumulados</Text>
+          {palmertonErrors.length > 0 ? (
+            palmertonErrors.map(e => (
+              <PalmertonBar
+                key={e.type}
+                label={e.type}
+                count={e.count}
+                percentage={e.percentage}
+                color={PALMERTON_COLORS[e.type] ?? Colors.muted}
+                maxCount={maxPalmertonCount}
+              />
+            ))
+          ) : (
+            <Text style={styles.palmertonEmpty}>Sin datos de errores Palmerton</Text>
+          )}
+        </View>
+
+        {/* ─── Time Per Question — NEW ─── */}
+        <View style={styles.timingSection}>
+          <Text style={styles.timingTitle}>Tiempos promedio</Text>
+          {timingStats.avgReadingSeconds !== null || timingStats.avgConstructionSeconds !== null ? (
+            <Text style={styles.timingText}>
+              Promedio: {formatSeconds(timingStats.avgReadingSeconds)} lectura · {formatSeconds(timingStats.avgConstructionSeconds)} construcción
+            </Text>
+          ) : (
+            <Text style={styles.timingEmpty}>Sin datos de tiempo</Text>
+          )}
+        </View>
+
         {/* Tools Row */}
         <View style={styles.toolsRow}>
-          <TouchableOpacity style={styles.toolChip} onPress={() => Alert.alert('Dictar Error', 'Voice dictation: coming soon')}>
+          <TouchableOpacity
+            style={styles.toolChip}
+            onPress={() => {
+              setApexModalTipo('dictar_error');
+              setApexModalVisible(true);
+            }}
+          >
             <Text style={styles.toolChipText}>🎤 Dictar error</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.toolChip} onPress={() => Alert.alert('Modo CCS', 'CCS simulation mode: coming soon')}>
@@ -310,6 +518,16 @@ export default function EstudioScreen() {
           </View>
         </KeyboardAvoidingView>
       </Modal>
+
+      {/* ─── APEX Submit Modal ─── */}
+      <ApexSubmitModal
+        visible={apexModalVisible}
+        onClose={() => {
+          setApexModalVisible(false);
+          refetchQueue();
+        }}
+        initialTipo={apexModalTipo}
+      />
     </View>
   );
 }
@@ -318,9 +536,32 @@ const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: Colors.surface },
   scrollContent: { paddingHorizontal: Spacing.lg, paddingTop: 60, paddingBottom: 120 },
 
-  header: { marginBottom: Spacing['2xl'] },
+  header: { marginBottom: Spacing['2xl'], flexDirection: 'row', alignItems: 'flex-start' },
   headerTitle: { fontSize: FontSize.headlineLg, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.5 },
   headerSub: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, marginTop: 2 },
+
+  // CZI Badge
+  cziBadge: {
+    borderRadius: BorderRadius.md,
+    borderWidth: 1.5,
+    paddingVertical: Spacing.xs,
+    paddingHorizontal: Spacing.md,
+    alignItems: 'center',
+    marginLeft: Spacing.md,
+  },
+  cziLabel: { fontSize: FontSize.labelSm, fontWeight: '700', letterSpacing: 1 },
+  cziValue: { fontSize: FontSize.titleMd, fontWeight: '800' },
+
+  // Queue banner
+  queueBanner: {
+    backgroundColor: Colors.teal + '18',
+    borderRadius: BorderRadius.md,
+    padding: Spacing.md,
+    marginBottom: Spacing.section,
+    borderLeftWidth: 3,
+    borderLeftColor: Colors.teal,
+  },
+  queueBannerText: { fontSize: FontSize.bodyMd, color: Colors.teal, fontWeight: '600' },
 
   alertBanner: { backgroundColor: Colors.coral + '15', borderRadius: BorderRadius.md, padding: Spacing.md, marginBottom: Spacing.section, flexDirection: 'row', alignItems: 'center' },
   alertIcon: { fontSize: 20, marginRight: Spacing.sm },
@@ -354,6 +595,48 @@ const styles = StyleSheet.create({
 
   collapseToggle: { paddingVertical: Spacing.sm, marginBottom: Spacing.sm },
   collapseText: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, fontWeight: '500' },
+
+  // ─── Palmerton Error Chart ───
+  palmertonSection: {
+    backgroundColor: Colors.surfaceContainerLow,
+    borderRadius: BorderRadius.lg,
+    padding: Spacing.lg,
+    marginBottom: Spacing.section,
+  },
+  palmertonTitle: {
+    fontSize: FontSize.titleMd,
+    fontWeight: '700',
+    color: Colors.onSurface,
+    marginBottom: Spacing.lg,
+  },
+  palmertonItem: { marginBottom: Spacing.md },
+  palmertonLabelRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 },
+  palmertonLabel: { fontSize: FontSize.bodyMd, fontWeight: '700', letterSpacing: 0.5 },
+  palmertonCount: { fontSize: FontSize.labelSm, color: Colors.muted },
+  palmertonTrack: {
+    height: 8,
+    backgroundColor: Colors.surfaceContainerHighest,
+    borderRadius: 4,
+    overflow: 'hidden',
+  },
+  palmertonValue: { height: 8, borderRadius: 4 },
+  palmertonEmpty: { fontSize: FontSize.bodyMd, color: Colors.muted, fontStyle: 'italic' },
+
+  // ─── Timing ───
+  timingSection: {
+    backgroundColor: Colors.surfaceContainerLow,
+    borderRadius: BorderRadius.lg,
+    padding: Spacing.lg,
+    marginBottom: Spacing.section,
+  },
+  timingTitle: {
+    fontSize: FontSize.titleMd,
+    fontWeight: '700',
+    color: Colors.onSurface,
+    marginBottom: Spacing.sm,
+  },
+  timingText: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, lineHeight: 22 },
+  timingEmpty: { fontSize: FontSize.bodyMd, color: Colors.muted, fontStyle: 'italic' },
 
   toolsRow: { flexDirection: 'row', gap: Spacing.sm, marginBottom: Spacing.section },
   toolChip: { backgroundColor: Colors.surfaceContainerHighest, borderRadius: BorderRadius.full, paddingVertical: Spacing.sm, paddingHorizontal: Spacing.md },
