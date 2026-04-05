@@ -156,9 +156,15 @@ export async function submitApexQueue(data: Omit<ApexQueueItem, 'id' | 'fecha_cr
     const { error } = await supabase
       .from('apex_queue')
       .insert({
-        ...data,
+        texto_raw: data.texto_raw,
+        tipo: data.tipo ?? 'manual',
+        pais: data.pais,
+        examen: data.examen,
+        especialidad: data.especialidad,
+        subtema: data.subtema,
+        fuente_app: data.fuente_app ?? 'joseph-md-app',
         estado: 'pendiente',
-        fuente_app: 'joseph-md-app',
+        // fecha_creado defaults to NOW() in the DB schema
       });
     if (error) throw error;
     const pendingCount = await getApexQueueCount();
@@ -209,35 +215,45 @@ export async function getTodayMetrics(): Promise<TodayMetrics> {
 }
 
 /**
- * Calculate study streak: consecutive days with at least 1 study_progress entry
+ * Calculate study streak: consecutive days with ≥1 record in study_progress OR apex_blocks.
  */
 export async function getStreak(): Promise<number> {
   try {
-    const { data, error } = await supabase
-      .from('study_progress')
-      .select('fecha')
-      .order('fecha', { ascending: false })
-      .limit(365);
-    if (error || !data || data.length === 0) return 0;
+    // Gather active-day dates from both tables in parallel.
+    const [studyRes, blocksRes] = await Promise.all([
+      supabase
+        .from('study_progress')
+        .select('fecha')
+        .order('fecha', { ascending: false })
+        .limit(365),
+      supabase
+        .from('apex_blocks')
+        .select('fecha')
+        .order('fecha', { ascending: false })
+        .limit(365),
+    ]);
 
-    // Get unique dates
-    const uniqueDates = [...new Set(data.map(d => d.fecha))].sort().reverse();
+    const dates = new Set<string>();
+    for (const row of studyRes.data ?? []) {
+      if (row.fecha) dates.add(String(row.fecha).slice(0, 10));
+    }
+    for (const row of blocksRes.data ?? []) {
+      if (row.fecha) dates.add(String(row.fecha).slice(0, 10));
+    }
+    if (dates.size === 0) return 0;
 
     let streak = 0;
     const today = getTodayLima();
-
-    for (let i = 0; i < uniqueDates.length; i++) {
-      const expected = new Date(today);
-      expected.setDate(expected.getDate() - i);
-      const expectedStr = expected.toISOString().split('T')[0];
-
-      if (uniqueDates[i] === expectedStr) {
+    for (let i = 0; i < 365; i++) {
+      const d = new Date(today);
+      d.setDate(d.getDate() - i);
+      const iso = d.toISOString().split('T')[0];
+      if (dates.has(iso)) {
         streak++;
       } else {
         break;
       }
     }
-
     return streak;
   } catch {
     return 0;

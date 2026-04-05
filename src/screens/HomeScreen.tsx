@@ -450,9 +450,9 @@ export default function HomeScreen() {
             )}
             ListEmptyComponent={
               <View style={styles.emptyReports}>
-                <Text style={styles.emptyReportsText}>Sin reportes del agente</Text>
+                <Text style={styles.emptyReportsText}>Sin reportes</Text>
                 <Text style={styles.emptyReportsHint}>
-                  Los reportes aparecerán cuando el sistema n8n procese datos
+                  Los agentes generan reportes después de cada bloque de estudio
                 </Text>
               </View>
             }
