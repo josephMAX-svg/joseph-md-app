@@ -74,7 +74,7 @@ export const Spacing = {
   '3xl': 32,
   '4xl': 40,
   '5xl': 48,
-  section: 20, // spacing-6 equivalent (1.3rem ≈ 20px)
+  section: 12, // Tight card gap — cards feel connected, not floating
 } as const;
 
 export const FontSize = {

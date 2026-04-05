@@ -181,11 +181,11 @@ export const desktopStyles = StyleSheet.create({
     letterSpacing: -0.64, // -0.02em
   },
   sectionHeader: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: '600',
     textTransform: 'uppercase',
-    letterSpacing: 1.12, // 0.08em
-    color: Colors.sectionHeader,
+    letterSpacing: 0.96, // 0.08em at 12px
+    color: '#6B7C93',
     marginBottom: Spacing.md,
   },
   cardTitle: {
@@ -216,6 +216,10 @@ export const desktopStyles = StyleSheet.create({
     borderColor: DesktopColors.glassBorder,
     padding: Spacing.lg,
     marginBottom: Spacing.section,
+    ...(Platform.OS === 'web' ? {
+      backdropFilter: 'blur(10px)',
+      WebkitBackdropFilter: 'blur(10px)',
+    } as any : {}),
     // Shadow
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
@@ -251,6 +255,10 @@ export const desktopStyles = StyleSheet.create({
     borderColor: DesktopColors.glassBorder,
     padding: Spacing.md,
     marginBottom: Spacing.md,
+    ...(Platform.OS === 'web' ? {
+      backdropFilter: 'blur(10px)',
+      WebkitBackdropFilter: 'blur(10px)',
+    } as any : {}),
     // Shadow
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -295,6 +303,10 @@ export const desktopStyles = StyleSheet.create({
     borderWidth: 1,
     borderColor: DesktopColors.glassBorder,
     padding: Spacing.md,
+    ...(Platform.OS === 'web' ? {
+      backdropFilter: 'blur(10px)',
+      WebkitBackdropFilter: 'blur(10px)',
+    } as any : {}),
     // Shadow
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -327,6 +339,10 @@ export const desktopStyles = StyleSheet.create({
     borderColor: DesktopColors.glassBorder,
     padding: Spacing.md,
     minHeight: 300,
+    ...(Platform.OS === 'web' ? {
+      backdropFilter: 'blur(10px)',
+      WebkitBackdropFilter: 'blur(10px)',
+    } as any : {}),
   },
   kanbanColumnHeader: {
     flexDirection: 'row',
@@ -424,6 +440,10 @@ export const desktopStyles = StyleSheet.create({
     borderColor: DesktopColors.glassBorder,
     padding: Spacing.lg,
     marginBottom: Spacing.md,
+    ...(Platform.OS === 'web' ? {
+      backdropFilter: 'blur(10px)',
+      WebkitBackdropFilter: 'blur(10px)',
+    } as any : {}),
   },
   chartTitle: {
     fontSize: FontSize.bodyMd,

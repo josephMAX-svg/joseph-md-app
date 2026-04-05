@@ -337,7 +337,7 @@ export default function HomeScreen() {
           <MetricCard label="Dominio MIR" value={String(metrics.dominioMIR)} unit="%" color={Colors.blue} loading={metricsLoading} />
         </View>
         <View style={styles.metricGridItem}>
-          <MetricCard label="Publicaciones" value="0/10" color={Colors.green} />
+          <MetricCard label="Publicaciones" value="0" color={Colors.green} />
         </View>
       </View>
 

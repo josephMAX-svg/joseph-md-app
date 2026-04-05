@@ -109,7 +109,7 @@ export default function InvestigacionScreen() {
 
         <TouchableOpacity style={ss.pubTracker} onPress={() => setShowPubBreakdown(!showPubBreakdown)} activeOpacity={0.7}>
           <Text style={ss.pubTitle}>Mayo Clinic Publications</Text>
-          <View style={ss.pubRow}><Text style={ss.pubValue}>0</Text><Text style={ss.pubTotal}>/10</Text></View>
+          <View style={ss.pubRow}><Text style={ss.pubValue}>0</Text><Text style={ss.pubTotal}> publicaciones</Text></View>
           <View style={ss.progressTrack}><View style={[ss.progressValue, { width: '0%' }]} /></View>
           <Text style={ss.pubSub}>Goal: 10 publications before fellowship application</Text>
           {showPubBreakdown && (
