@@ -30,11 +30,15 @@ if (Platform.OS === 'web' && typeof document !== 'undefined') {
     const style = document.createElement('style');
     style.id = styleId;
     style.textContent = `
-      .desktop-scroll::-webkit-scrollbar { width: 8px; height: 8px; }
-      .desktop-scroll::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
-      .desktop-scroll::-webkit-scrollbar-thumb { background: rgba(14,212,160,0.4); border-radius: 4px; }
-      .desktop-scroll::-webkit-scrollbar-thumb:hover { background: rgba(14,212,160,0.6); }
-      .desktop-scroll { scrollbar-width: thin; scrollbar-color: rgba(14,212,160,0.4) rgba(0,0,0,0.2); scroll-behavior: smooth; }
+      /* Global dark-theme scrollbar (all scrollable containers) */
+      ::-webkit-scrollbar { width: 6px; height: 6px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+      ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+      ::-webkit-scrollbar-corner { background: transparent; }
+      * { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.1) transparent; }
+      html, body { scroll-behavior: smooth; }
+      .desktop-scroll { scroll-behavior: smooth; }
     `;
     document.head.appendChild(style);
   }
