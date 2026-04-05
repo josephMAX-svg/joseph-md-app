@@ -1,5 +1,6 @@
 /**
  * Joseph MD — Clinical Precision Design Tokens
+ * Premium Design System v2.0
  * Extracted from Stitch MCP Design System "Clinical Precision"
  * Asset: assets/5d883d3d628b42178d535b93eb8a3a27
  */
@@ -56,6 +57,11 @@ export const Colors = {
   white: '#D8E3FC',
   muted: '#8F9097',
   transparent: 'transparent',
+
+  // Premium Design System v2
+  sectionHeader: '#8899AA',
+  bodyText: '#D8E3FC',
+  smallLabel: '#6B7C93',
 } as const;
 
 export const Spacing = {
@@ -72,15 +78,15 @@ export const Spacing = {
 } as const;
 
 export const FontSize = {
-  displaySm: 36,   // 2.25rem
-  headlineLg: 32,   // 2rem
+  displaySm: 36,   // 2.25rem — metric numbers
+  headlineLg: 32,   // 2rem — page titles
   headlineSm: 24,   // 1.5rem
   titleLg: 22,
-  titleMd: 18,
+  titleMd: 18,      // card titles
   bodyLg: 16,
-  bodyMd: 14,       // 0.875rem
-  labelLg: 14,
-  labelMd: 12,      // 0.75rem
+  bodyMd: 14,       // 0.875rem — body text
+  labelLg: 14,      // section headers
+  labelMd: 12,      // 0.75rem — small labels
   labelSm: 11,      // 0.6875rem
 } as const;
 
@@ -88,8 +94,26 @@ export const BorderRadius = {
   sm: 4,
   md: 6,    // ROUND_FOUR (0.375rem)
   lg: 10,
-  xl: 14,
+  xl: 16,   // Glassmorphism cards
+  '2xl': 20,
   full: 999,
+} as const;
+
+// Sidebar accent colors per nav item
+export const SidebarAccents: Record<string, string> = {
+  Home: Colors.teal,
+  Estudio: Colors.blue,
+  Derma: Colors.purple,
+  Empresa: Colors.amber,
+  'Investigación': Colors.teal,
+} as const;
+
+// Metric gradient colors
+export const MetricColors: Record<string, string> = {
+  tarjetas: Colors.teal,
+  deepWork: Colors.amber,
+  dominio: Colors.blue,
+  publicaciones: Colors.green,
 } as const;
 
 export type ColorKey = keyof typeof Colors;

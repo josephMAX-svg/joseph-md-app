@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Alert, Platform } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
-import { desktopStyles } from '../../theme/desktopStyles';
+import { desktopStyles, DesktopColors } from '../../theme/desktopStyles';
+import GlassCard from '../../components/GlassCard';
 
 const NICHES = [
   { name: 'Acné adolescente', icon: '🧬', potential: true, detail: 'Prevalencia Alta · Competencia Baja · S/40-60/mes' },
@@ -45,8 +46,8 @@ const CHECKLIST = [
 ];
 
 /**
- * Desktop Empresa Content — 2-column layout with Nichos + Metrics,
- * horizontal timeline, and checklist with progress bar.
+ * Desktop Empresa Content — Premium Design v2.0
+ * Glassmorphism cards, premium typography, hover effects.
  */
 export default function DesktopEmpresaContent() {
   const [checkState, setCheckState] = useState(CHECKLIST.map(() => false));
@@ -56,6 +57,10 @@ export default function DesktopEmpresaContent() {
   const completedCount = checkState.filter(Boolean).length;
   const completedPct = (completedCount / CHECKLIST.length) * 100;
 
+  const webTransition = Platform.OS === 'web'
+    ? { transition: 'all 0.2s ease', cursor: 'pointer' as any }
+    : {};
+
   return (
     <ScrollView
       style={{ flex: 1, backgroundColor: Colors.surface }}
@@ -63,95 +68,131 @@ export default function DesktopEmpresaContent() {
     >
       {/* Header */}
       <View style={{ marginBottom: Spacing['2xl'] }}>
-        <Text style={{ fontSize: FontSize.headlineLg, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.5, marginBottom: Spacing.sm }}>
-          DTC Dermatología Perú
-        </Text>
-        <View style={{ backgroundColor: Colors.amber + '20', borderRadius: 999, paddingVertical: 4, paddingHorizontal: 12, alignSelf: 'flex-start' }}>
-          <Text style={{ fontSize: FontSize.labelSm, fontWeight: '700', color: Colors.amber, letterSpacing: 0.3 }}>
+        <Text style={desktopStyles.pageTitle}>DTC Dermatología Perú</Text>
+        <View style={{ backgroundColor: Colors.amber + '20', borderRadius: 999, paddingVertical: 4, paddingHorizontal: 12, alignSelf: 'flex-start', marginTop: Spacing.sm }}>
+          <Text style={{ fontSize: 11, fontWeight: '700', color: Colors.amber, letterSpacing: 0.3 }}>
             PRE-LANZAMIENTO MVP Oct 2026
           </Text>
         </View>
       </View>
 
       {/* Benchmarks */}
-      <View style={{ backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, padding: Spacing.lg, marginBottom: Spacing.section }}>
-        <Text style={{ fontSize: FontSize.titleMd, fontWeight: '700', color: Colors.onSurface, marginBottom: 2 }}>
-          📊 Modelo: Hims & Hers
-        </Text>
-        <Text style={{ fontSize: FontSize.labelSm, color: Colors.muted, marginBottom: Spacing.md }}>
+      <GlassCard style={{ marginBottom: Spacing.section }}>
+        <Text style={desktopStyles.cardTitle}>📊 Modelo: Hims & Hers</Text>
+        <Text style={{ fontSize: 11, color: Colors.muted, marginTop: 2, marginBottom: Spacing.md }}>
           DTC telehealth + personalized Rx dermatology
         </Text>
         <View style={{ flexDirection: 'row', gap: Spacing.sm }}>
           {BENCHMARKS.map((b, i) => (
-            <View key={i} style={{ flex: 1, backgroundColor: Colors.surfaceContainer, borderRadius: BorderRadius.md, padding: Spacing.md, alignItems: 'center' }}>
-              <Text style={{ fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, fontWeight: '600', marginBottom: 4 }}>{b.name}</Text>
+            <View key={i} style={{
+              flex: 1,
+              backgroundColor: 'rgba(255,255,255,0.04)',
+              borderRadius: 12,
+              padding: Spacing.md,
+              alignItems: 'center',
+            }}>
+              <Text style={{ fontSize: 10, color: Colors.onSurfaceVariant, fontWeight: '600', marginBottom: 4 }}>{b.name}</Text>
               <Text style={{ fontSize: FontSize.titleMd, fontWeight: '800', color: Colors.amber }}>{b.revenue}</Text>
               <Text style={{ fontSize: 9, color: Colors.muted, marginTop: 2, letterSpacing: 0.5 }}>{b.metric}</Text>
             </View>
           ))}
         </View>
-      </View>
+      </GlassCard>
 
       {/* 2-Column Layout */}
       <View style={desktopStyles.enterprise2Col}>
         {/* Left: Nichos Grid */}
         <View style={desktopStyles.enterpriseColLeft}>
-          <Text style={{ fontSize: FontSize.labelMd, fontWeight: '600', color: Colors.muted, letterSpacing: 1.2, textTransform: 'uppercase', marginBottom: Spacing.md }}>
-            NICHOS DE MERCADO
-          </Text>
+          <Text style={desktopStyles.sectionHeader}>NICHOS DE MERCADO</Text>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: -4 }}>
-            {NICHES.map((n, i) => (
-              <TouchableOpacity
-                key={i}
-                style={{ width: '50%', paddingHorizontal: 4, marginBottom: 8 }}
-                onPress={() => setExpandedNiche(expandedNiche === i ? null : i)}
-              >
-                <View style={{ backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.md, padding: Spacing.md }}>
-                  <Text style={{ fontSize: 24, marginBottom: 4 }}>{n.icon}</Text>
-                  <Text style={{ fontSize: FontSize.bodyMd, fontWeight: '600', color: Colors.onSurface, marginBottom: 2 }}>{n.name}</Text>
-                  {expandedNiche === i && (
-                    <Text style={{ fontSize: 9, color: Colors.muted, marginBottom: 4, lineHeight: 13 }}>{n.detail}</Text>
-                  )}
-                  {n.potential && (
-                    <View style={{ backgroundColor: Colors.amber + '20', borderRadius: 999, paddingVertical: 1, paddingHorizontal: 6, alignSelf: 'flex-start' }}>
-                      <Text style={{ fontSize: 8, fontWeight: '800', color: Colors.amber, letterSpacing: 0.5 }}>HIGH POTENTIAL</Text>
-                    </View>
-                  )}
-                </View>
-              </TouchableOpacity>
-            ))}
+            {NICHES.map((n, i) => {
+              const [hovered, setHovered] = useState(false);
+              return (
+                <TouchableOpacity
+                  key={i}
+                  style={{ width: '50%', paddingHorizontal: 4, marginBottom: 8 }}
+                  onPress={() => setExpandedNiche(expandedNiche === i ? null : i)}
+                >
+                  <View
+                    style={[{
+                      backgroundColor: DesktopColors.glass,
+                      borderRadius: 16,
+                      borderWidth: 1,
+                      borderColor: DesktopColors.glassBorder,
+                      padding: Spacing.md,
+                      ...(Platform.OS === 'web' ? {
+                        transition: 'all 0.2s ease',
+                        cursor: 'pointer',
+                        ...(hovered ? { borderColor: 'rgba(255,255,255,0.15)', transform: [{ translateY: -2 }] } : {}),
+                      } : {}),
+                    } as any]}
+                    {...(Platform.OS === 'web' ? {
+                      onMouseEnter: () => setHovered(true),
+                      onMouseLeave: () => setHovered(false),
+                    } : {})}
+                  >
+                    <Text style={{ fontSize: 24, marginBottom: 4 }}>{n.icon}</Text>
+                    <Text style={{ fontSize: FontSize.bodyMd, fontWeight: '600', color: Colors.onSurface, marginBottom: 2 }}>{n.name}</Text>
+                    {expandedNiche === i && (
+                      <Text style={{ fontSize: 9, color: Colors.muted, marginBottom: 4, lineHeight: 13 }}>{n.detail}</Text>
+                    )}
+                    {n.potential && (
+                      <View style={{ backgroundColor: Colors.amber + '20', borderRadius: 999, paddingVertical: 1, paddingHorizontal: 6, alignSelf: 'flex-start' }}>
+                        <Text style={{ fontSize: 8, fontWeight: '800', color: Colors.amber, letterSpacing: 0.5 }}>HIGH POTENTIAL</Text>
+                      </View>
+                    )}
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
           </View>
 
           {/* Business Areas */}
-          <Text style={{ fontSize: FontSize.labelMd, fontWeight: '600', color: Colors.muted, letterSpacing: 1.2, textTransform: 'uppercase', marginBottom: Spacing.md, marginTop: Spacing.lg }}>
-            ÁREAS DE NEGOCIO
-          </Text>
+          <Text style={[desktopStyles.sectionHeader, { marginTop: Spacing.lg }]}>ÁREAS DE NEGOCIO</Text>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: -4 }}>
-            {BUSINESS_AREAS.map((area, i) => (
-              <TouchableOpacity
-                key={i}
-                style={{ width: '50%', paddingHorizontal: 4, marginBottom: 8 }}
-                onPress={() => Alert.alert(area.name, `${area.status}\n\n${area.desc}`)}
-              >
-                <View style={{ backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.md, padding: Spacing.md }}>
-                  <Text style={{ fontSize: 20, marginBottom: 4 }}>{area.icon}</Text>
-                  <Text style={{ fontSize: FontSize.bodyMd, fontWeight: '600', color: Colors.onSurface, marginBottom: 4 }}>{area.name}</Text>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: Colors.amber, marginRight: 4 }} />
-                    <Text style={{ fontSize: FontSize.labelSm, color: Colors.amber, fontWeight: '500' }}>{area.status}</Text>
+            {BUSINESS_AREAS.map((area, i) => {
+              const [hovered, setHovered] = useState(false);
+              return (
+                <TouchableOpacity
+                  key={i}
+                  style={{ width: '50%', paddingHorizontal: 4, marginBottom: 8 }}
+                  onPress={() => Alert.alert(area.name, `${area.status}\n\n${area.desc}`)}
+                >
+                  <View
+                    style={[{
+                      backgroundColor: DesktopColors.glass,
+                      borderRadius: 16,
+                      borderWidth: 1,
+                      borderColor: DesktopColors.glassBorder,
+                      padding: Spacing.md,
+                      ...(Platform.OS === 'web' ? {
+                        transition: 'all 0.2s ease',
+                        cursor: 'pointer',
+                        ...(hovered ? { borderColor: 'rgba(255,255,255,0.15)', transform: [{ translateY: -1 }] } : {}),
+                      } : {}),
+                    } as any]}
+                    {...(Platform.OS === 'web' ? {
+                      onMouseEnter: () => setHovered(true),
+                      onMouseLeave: () => setHovered(false),
+                    } : {})}
+                  >
+                    <Text style={{ fontSize: 20, marginBottom: 4 }}>{area.icon}</Text>
+                    <Text style={{ fontSize: FontSize.bodyMd, fontWeight: '600', color: Colors.onSurface, marginBottom: 4 }}>{area.name}</Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: Colors.amber, marginRight: 4 }} />
+                      <Text style={{ fontSize: FontSize.labelSm, color: Colors.amber, fontWeight: '500' }}>{area.status}</Text>
+                    </View>
                   </View>
-                </View>
-              </TouchableOpacity>
-            ))}
+                </TouchableOpacity>
+              );
+            })}
           </View>
         </View>
 
         {/* Right: Metrics + Checklist */}
         <View style={desktopStyles.enterpriseColRight}>
           {/* Financial Metrics */}
-          <Text style={{ fontSize: FontSize.labelMd, fontWeight: '600', color: Colors.muted, letterSpacing: 1.2, textTransform: 'uppercase', marginBottom: Spacing.md }}>
-            MÉTRICAS FINANCIERAS
-          </Text>
+          <Text style={desktopStyles.sectionHeader}>MÉTRICAS FINANCIERAS</Text>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: Spacing.section }}>
             {[
               { label: 'PRECIO/MES', value: 'S/199' },
@@ -159,31 +200,45 @@ export default function DesktopEmpresaContent() {
               { label: 'BREAK-EVEN', value: '33' },
               { label: 'LTV/CAC', value: '≥3:1' },
             ].map((m, i) => (
-              <View key={i} style={{ flex: 1, minWidth: '45%', backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.md, padding: Spacing.md, alignItems: 'center' }}>
+              <View key={i} style={{
+                flex: 1,
+                minWidth: '45%' as any,
+                backgroundColor: DesktopColors.glass,
+                borderRadius: 16,
+                borderWidth: 1,
+                borderColor: DesktopColors.glassBorder,
+                padding: Spacing.md,
+                alignItems: 'center',
+              }}>
                 <Text style={{ fontSize: FontSize.titleMd, fontWeight: '800', color: Colors.amber }}>{m.value}</Text>
-                <Text style={{ fontSize: 9, fontWeight: '600', color: Colors.muted, letterSpacing: 0.8, marginTop: 2 }}>{m.label}</Text>
+                <Text style={{ fontSize: 9, fontWeight: '600', color: Colors.smallLabel, letterSpacing: 0.8, marginTop: 2 }}>{m.label}</Text>
               </View>
             ))}
           </View>
 
           {/* Checklist with Progress */}
-          <Text style={{ fontSize: FontSize.labelMd, fontWeight: '600', color: Colors.muted, letterSpacing: 1.2, textTransform: 'uppercase', marginBottom: Spacing.md }}>
-            DECISIONES CLAVE ({completedCount}/{CHECKLIST.length})
-          </Text>
+          <Text style={desktopStyles.sectionHeader}>DECISIONES CLAVE ({completedCount}/{CHECKLIST.length})</Text>
           <View style={{ marginBottom: Spacing.md }}>
-            <View style={{ height: 6, backgroundColor: Colors.surfaceContainerHighest, borderRadius: 3, overflow: 'hidden' }}>
-              <View style={{ height: 6, width: `${completedPct}%`, backgroundColor: Colors.amber, borderRadius: 3 }} />
+            <View style={{ height: 6, backgroundColor: 'rgba(255,255,255,0.06)', borderRadius: 3, overflow: 'hidden' }}>
+              <View style={{
+                height: 6,
+                width: `${completedPct}%`,
+                backgroundColor: Colors.amber,
+                borderRadius: 3,
+                ...(Platform.OS === 'web' ? { transition: 'width 0.3s ease' } : {}),
+              } as any} />
             </View>
           </View>
-          <View style={{ backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, padding: Spacing.lg }}>
+          <GlassCard>
             {CHECKLIST.map((item, i) => (
               <TouchableOpacity key={i} style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: Spacing.sm }} onPress={() => toggleCheck(i)}>
                 <View style={{
-                  width: 20, height: 20, borderRadius: 4,
+                  width: 20, height: 20, borderRadius: 6,
                   borderWidth: 2, borderColor: checkState[i] ? Colors.amber : Colors.outlineVariant,
                   backgroundColor: checkState[i] ? Colors.amber : 'transparent',
                   marginRight: Spacing.md, alignItems: 'center', justifyContent: 'center',
-                }}>
+                  ...(Platform.OS === 'web' ? { transition: 'all 0.15s ease', cursor: 'pointer' } : {}),
+                } as any}>
                   {checkState[i] && <Text style={{ fontSize: 12, fontWeight: '700', color: '#0B1628' }}>✓</Text>}
                 </View>
                 <Text style={{
@@ -194,27 +249,25 @@ export default function DesktopEmpresaContent() {
                 </Text>
               </TouchableOpacity>
             ))}
-          </View>
+          </GlassCard>
 
           {/* Timeline */}
-          <Text style={{ fontSize: FontSize.labelMd, fontWeight: '600', color: Colors.muted, letterSpacing: 1.2, textTransform: 'uppercase', marginBottom: Spacing.md, marginTop: Spacing.xl }}>
-            TIMELINE
-          </Text>
+          <Text style={[desktopStyles.sectionHeader, { marginTop: Spacing.xl }]}>TIMELINE</Text>
           <View style={{ flexDirection: 'row', gap: Spacing.sm }}>
             {PHASES.map((phase, i) => (
               <View key={i} style={{
                 flex: 1,
-                backgroundColor: phase.status === 'active' ? Colors.amber + '20' : Colors.surfaceContainerLow,
-                borderRadius: BorderRadius.md,
+                backgroundColor: phase.status === 'active' ? Colors.amber + '15' : DesktopColors.glass,
+                borderRadius: 12,
+                borderWidth: 1,
+                borderColor: phase.status === 'active' ? Colors.amber + '40' : DesktopColors.glassBorder,
                 padding: Spacing.md,
                 alignItems: 'center',
-                borderWidth: phase.status === 'active' ? 1 : 0,
-                borderColor: Colors.amber,
               }}>
                 <Text style={{ fontSize: FontSize.titleMd, fontWeight: '800', color: phase.status === 'active' ? Colors.amber : Colors.onSurface }}>
                   {phase.name}
                 </Text>
-                <Text style={{ fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 2 }}>{phase.label}</Text>
+                <Text style={{ fontSize: 10, color: Colors.muted, marginTop: 2 }}>{phase.label}</Text>
                 {phase.status === 'active' && (
                   <View style={{ backgroundColor: Colors.amber, borderRadius: 999, paddingVertical: 1, paddingHorizontal: 6, marginTop: Spacing.xs }}>
                     <Text style={{ fontSize: 8, fontWeight: '800', color: '#0B1628', letterSpacing: 0.5 }}>CURRENT</Text>

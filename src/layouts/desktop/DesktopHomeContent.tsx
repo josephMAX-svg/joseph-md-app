@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
   ScrollView,
   TouchableOpacity,
-  ActivityIndicator,
+  Platform,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
-import { desktopStyles } from '../../theme/desktopStyles';
+import { Colors, Spacing, FontSize, BorderRadius, MetricColors } from '../../theme/tokens';
+import { desktopStyles, DesktopColors } from '../../theme/desktopStyles';
 import { useSupabaseQuery } from '../../hooks/useSupabaseQuery';
 import {
   getTodayMetrics,
@@ -18,6 +18,19 @@ import {
   stopDeepWork,
 } from '../../lib/supabase';
 import type { TodayMetrics } from '../../lib/supabase';
+import GlassCard from '../../components/GlassCard';
+import AnimatedCounter from '../../components/AnimatedCounter';
+import CircularProgress from '../../components/CircularProgress';
+import { PulseDash } from '../../components/SkeletonLoader';
+
+// Recharts sparkline — web only
+let AreaChart: any, Area: any, ResponsiveContainer: any;
+try {
+  const recharts = require('recharts');
+  AreaChart = recharts.AreaChart;
+  Area = recharts.Area;
+  ResponsiveContainer = recharts.ResponsiveContainer;
+} catch {}
 
 const TIMER_STORAGE_KEY = '@joseph_md_deep_work_seconds';
 const TIMER_START_KEY = '@joseph_md_deep_work_start';
@@ -34,43 +47,106 @@ function getCountdown(target: Date) {
   };
 }
 
-function ProgressBar({ value, color, height = 4 }: { value: number; color: string; height?: number }) {
+// Empty sparkline data (7 points)
+const EMPTY_SPARKLINE = [
+  { v: 0 }, { v: 0 }, { v: 0 }, { v: 0 }, { v: 0 }, { v: 0 }, { v: 0 },
+];
+
+function MiniSparkline({ color, data }: { color: string; data?: { v: number }[] }) {
+  const isEmpty = !data || data.every(d => d.v === 0);
+
+  if (!AreaChart || !ResponsiveContainer) return null;
+
   return (
-    <View style={{ height, backgroundColor: Colors.surfaceContainerHighest, borderRadius: height / 2, overflow: 'hidden' }}>
-      <View style={{ width: `${Math.min(value, 100)}%`, backgroundColor: color, height, borderRadius: height / 2 }} />
+    <View style={{ height: 24, marginTop: 6, opacity: isEmpty ? 0.3 : 1 }}>
+      <ResponsiveContainer width="100%" height={24}>
+        <AreaChart data={data || EMPTY_SPARKLINE} margin={{ top: 2, right: 2, bottom: 2, left: 2 }}>
+          <Area
+            type="monotone"
+            dataKey="v"
+            stroke={color}
+            strokeWidth={1.5}
+            fill={color}
+            fillOpacity={0.1}
+            strokeDasharray={isEmpty ? '4 4' : undefined}
+            dot={false}
+            isAnimationActive={false}
+          />
+        </AreaChart>
+      </ResponsiveContainer>
     </View>
   );
 }
 
-function MetricCard({ label, value, unit, color, loading }: { label: string; value: string; unit?: string; color: string; loading?: boolean }) {
+function MetricCard({
+  label, value, unit, color, loading, sparkData,
+}: {
+  label: string; value: number; unit?: string; color: string; loading?: boolean;
+  sparkData?: { v: number }[];
+}) {
+  const [hovered, setHovered] = useState(false);
+  const webHover = Platform.OS === 'web'
+    ? { onMouseEnter: () => setHovered(true), onMouseLeave: () => setHovered(false) }
+    : {};
+  const webStyle = Platform.OS === 'web'
+    ? {
+        transition: 'all 0.2s ease',
+        cursor: 'pointer',
+        ...(hovered ? { borderColor: 'rgba(255,255,255,0.15)', transform: [{ scale: 1.02 }] } : {}),
+      }
+    : {};
+
   return (
-    <View style={{
-      backgroundColor: Colors.surfaceContainerLow,
-      borderRadius: BorderRadius.md,
-      padding: Spacing.md,
-      borderLeftWidth: 3,
-      borderLeftColor: color,
-    }}>
-      <Text style={{ fontSize: FontSize.labelSm, fontWeight: '600', color: Colors.muted, letterSpacing: 0.5, textTransform: 'uppercase', marginBottom: Spacing.xs }}>
+    <View
+      style={[{
+        backgroundColor: DesktopColors.glass,
+        borderRadius: 16,
+        borderWidth: 1,
+        borderColor: DesktopColors.glassBorder,
+        padding: Spacing.md,
+        borderLeftWidth: 3,
+        borderLeftColor: color,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.15,
+        shadowRadius: 12,
+        elevation: 4,
+      }, webStyle as any]}
+      {...webHover}
+    >
+      <Text style={{
+        fontSize: 12, fontWeight: '500', color: Colors.smallLabel,
+        letterSpacing: 0.5, textTransform: 'uppercase', marginBottom: Spacing.xs,
+      }}>
         {label}
       </Text>
       <View style={{ flexDirection: 'row', alignItems: 'baseline' }}>
         {loading ? (
-          <ActivityIndicator size="small" color={color} />
+          <PulseDash color={color} size={24} />
         ) : (
           <>
-            <Text style={{ fontSize: FontSize.headlineSm, fontWeight: '800', color }}>{value}</Text>
-            {unit && <Text style={{ fontSize: FontSize.labelSm, fontWeight: '600', color: Colors.muted, marginLeft: 4, textTransform: 'uppercase' }}>{unit}</Text>}
+            <AnimatedCounter
+              value={value}
+              decimals={unit === 'hrs' ? 1 : 0}
+              style={{ fontSize: 28, fontWeight: '700', color }}
+            />
+            {unit && (
+              <Text style={{ fontSize: 11, fontWeight: '600', color: Colors.smallLabel, marginLeft: 4, textTransform: 'uppercase' }}>
+                {unit}
+              </Text>
+            )}
           </>
         )}
       </View>
+      <MiniSparkline color={color} data={sparkData} />
     </View>
   );
 }
 
 /**
- * Desktop Home Content — same data as HomeScreen, but with 4-column metrics grid
- * and wider layout that takes advantage of horizontal space.
+ * Desktop Home Content — Premium Design v2.0
+ * Animated counters, glassmorphism cards, circular progress timer,
+ * open counters (no artificial limits).
  */
 export default function DesktopHomeContent() {
   const [countdown, setCountdown] = useState(getCountdown(new Date('2030-01-01')));
@@ -145,18 +221,22 @@ export default function DesktopHomeContent() {
   const hour = new Date().getHours();
   const greeting = hour < 12 ? 'Buenos días' : hour < 18 ? 'Buenas tardes' : 'Buenas noches';
   const liveDeepWorkHours = dwAccumulatedHours + (timerSeconds / 3600);
-  const displayDeepWork = metricsLoading ? '...' : String(Math.round(liveDeepWorkHours * 10) / 10);
   const timerHours = Math.floor(timerSeconds / 3600);
   const timerMins = Math.floor((timerSeconds % 3600) / 60);
   const timerSecs = timerSeconds % 60;
   const timerPresetTotal = 5 * 60 * 60;
   const timerProgress = Math.min((timerSeconds / timerPresetTotal) * 100, 100);
+  const accumProgress = Math.min((liveDeepWorkHours / 5) * 100, 100);
 
   const milestones = [
     { title: 'Top 50 MIR 2030', opacity: 1.0 },
     { title: 'Fellowship Mayo 2035', opacity: 0.6 },
     { title: 'Residencia 2037–2041', opacity: 0.3 },
   ];
+
+  const webBtnTransition = Platform.OS === 'web'
+    ? { transition: 'all 0.2s ease', cursor: 'pointer' as any }
+    : {};
 
   return (
     <ScrollView
@@ -165,29 +245,19 @@ export default function DesktopHomeContent() {
     >
       {/* Header */}
       <View style={{ marginBottom: Spacing['3xl'] }}>
-        <Text style={{ fontSize: FontSize.headlineLg, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.5, marginBottom: Spacing.xs }}>
+        <Text style={desktopStyles.pageTitle}>
           {greeting}, Joseph MD
         </Text>
-        <Text style={{ fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant }}>
+        <Text style={[desktopStyles.bodyText, { color: Colors.onSurfaceVariant, marginTop: 4 }]}>
           Dermatologist · Mayo Clinic · Rochester, MN
         </Text>
       </View>
 
       {/* Career Milestones */}
-      <Text style={{ fontSize: FontSize.labelMd, fontWeight: '600', color: Colors.muted, letterSpacing: 1.2, textTransform: 'uppercase', marginBottom: Spacing.md }}>
-        CAREER MILESTONES
-      </Text>
+      <Text style={desktopStyles.sectionHeader}>CAREER MILESTONES</Text>
       <View style={{ flexDirection: 'row', gap: 12, marginBottom: Spacing.section }}>
         {milestones.map((m, i) => (
-          <View key={i} style={{
-            flex: 1,
-            backgroundColor: Colors.surfaceContainerLow,
-            borderRadius: BorderRadius.md,
-            padding: Spacing.md,
-            opacity: m.opacity,
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}>
+          <GlassCard key={i} style={{ flex: 1, opacity: m.opacity, flexDirection: 'row', alignItems: 'center' } as any}>
             <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: Colors.blue, marginRight: Spacing.md }} />
             <Text style={{ fontSize: FontSize.bodyMd, color: Colors.onSurface, fontWeight: '500', flex: 1 }}>{m.title}</Text>
             {i === 0 && (
@@ -195,13 +265,13 @@ export default function DesktopHomeContent() {
                 <Text style={{ fontSize: FontSize.labelSm, fontWeight: '700', color: Colors.blue, letterSpacing: 0.5 }}>ACTIVE</Text>
               </View>
             )}
-          </View>
+          </GlassCard>
         ))}
       </View>
 
       {/* Countdown */}
-      <View style={{ backgroundColor: Colors.surfaceContainer, borderRadius: BorderRadius.lg, padding: Spacing.xl, marginBottom: Spacing.section, alignItems: 'center' }}>
-        <Text style={{ fontSize: FontSize.labelMd, fontWeight: '600', color: Colors.muted, letterSpacing: 1.2, textTransform: 'uppercase', marginBottom: Spacing.lg }}>
+      <GlassCard style={{ alignItems: 'center', marginBottom: Spacing.section } as any}>
+        <Text style={[desktopStyles.sectionHeader, { marginBottom: Spacing.lg }]}>
           DÍAS PARA MIR 2030
         </Text>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -212,80 +282,126 @@ export default function DesktopHomeContent() {
           ].map((block, i) => (
             <React.Fragment key={i}>
               {i > 0 && <Text style={{ fontSize: FontSize.headlineSm, fontWeight: '300', color: Colors.muted, marginHorizontal: Spacing.sm }}>:</Text>}
-              <View style={{ alignItems: 'center', minWidth: 64 }}>
-                <Text style={{ fontSize: FontSize.displaySm, fontWeight: '800', color: Colors.blue, letterSpacing: -1 }}>{block.num}</Text>
-                <Text style={{ fontSize: FontSize.labelSm, fontWeight: '600', color: Colors.muted, letterSpacing: 1, marginTop: 2 }}>{block.unit}</Text>
+              <View style={{ alignItems: 'center', minWidth: 72 }}>
+                <AnimatedCounter
+                  value={block.num}
+                  style={{ fontSize: 40, fontWeight: '800', color: Colors.blue, letterSpacing: -1 }}
+                />
+                <Text style={{ fontSize: 10, fontWeight: '600', color: Colors.smallLabel, letterSpacing: 1, marginTop: 2 }}>{block.unit}</Text>
               </View>
             </React.Fragment>
           ))}
         </View>
-      </View>
+      </GlassCard>
 
-      {/* Metrics Grid 4 columns */}
-      <Text style={{ fontSize: FontSize.labelMd, fontWeight: '600', color: Colors.muted, letterSpacing: 1.2, textTransform: 'uppercase', marginBottom: Spacing.md }}>
-        MÉTRICAS EN VIVO
-      </Text>
+      {/* Metrics Grid — 4 columns, NO ARTIFICIAL LIMITS */}
+      <Text style={desktopStyles.sectionHeader}>MÉTRICAS EN VIVO</Text>
       <View style={desktopStyles.metricsGrid4}>
         <View style={desktopStyles.metricGridItem4}>
-          <MetricCard label="Tarjetas hoy" value={String(metrics.cards)} color={Colors.teal} loading={metricsLoading} />
+          <MetricCard label="Tarjetas hoy" value={metrics.cards} color={MetricColors.tarjetas} loading={metricsLoading} />
         </View>
         <View style={desktopStyles.metricGridItem4}>
-          <MetricCard label="Deep Work" value={displayDeepWork} unit="hrs" color={Colors.amber} loading={metricsLoading} />
+          <MetricCard label="Deep Work" value={Math.round(liveDeepWorkHours * 10) / 10} unit="hrs" color={MetricColors.deepWork} loading={metricsLoading} />
         </View>
         <View style={desktopStyles.metricGridItem4}>
-          <MetricCard label="Dominio MIR" value={String(metrics.dominioMIR)} unit="%" color={Colors.blue} loading={metricsLoading} />
+          <MetricCard label="Dominio MIR" value={metrics.dominioMIR} unit="%" color={MetricColors.dominio} loading={metricsLoading} />
         </View>
         <View style={desktopStyles.metricGridItem4}>
-          <MetricCard label="Publicaciones" value="0/10" color={Colors.green} />
+          {/* FIX 1: Open counter, no "/10" limit */}
+          <MetricCard label="Publicaciones" value={0} color={MetricColors.publicaciones} />
         </View>
       </View>
 
-      {/* Deep Work Timer */}
-      <View style={{ backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, padding: Spacing.xl, marginBottom: Spacing.section }}>
+      {/* Deep Work Timer — PREMIUM with Circular Progress Ring */}
+      <GlassCard style={{ marginBottom: Spacing.section }}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: Spacing.lg }}>
-          <Text style={{ fontSize: FontSize.titleMd, fontWeight: '600', color: Colors.onSurface }}>Deep Work Timer</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            {timerRunning && (
+              <View style={{
+                width: 8, height: 8, borderRadius: 4, backgroundColor: Colors.amber,
+                marginRight: 8,
+                // Pulsing via opacity animation would need Animated — using static glow for now
+              }} />
+            )}
+            <Text style={desktopStyles.cardTitle}>Deep Work Timer</Text>
+          </View>
           <Text style={{ fontSize: FontSize.labelSm, color: Colors.amber, fontWeight: '600', letterSpacing: 0.5 }}>07:45 – 12:45</Text>
         </View>
-        <View style={{ alignItems: 'center', marginBottom: Spacing.lg }}>
-          <Text style={{ fontSize: 48, fontWeight: '200', color: Colors.amber, letterSpacing: 2 }}>
-            {String(timerHours).padStart(2, '0')}:{String(timerMins).padStart(2, '0')}:{String(timerSecs).padStart(2, '0')}
-          </Text>
+
+        {/* Circular Progress Ring + Timer */}
+        <View style={{ alignItems: 'center', marginBottom: Spacing.xl }}>
+          <CircularProgress
+            progress={timerProgress}
+            size={180}
+            strokeWidth={10}
+            color={Colors.amber}
+            trackColor="rgba(255,255,255,0.06)"
+          >
+            <Text style={{
+              fontSize: 44,
+              fontWeight: '200',
+              color: timerRunning ? Colors.amber : Colors.onSurface,
+              letterSpacing: 2,
+              fontFamily: Platform.OS === 'web' ? "'JetBrains Mono', 'Fira Code', 'SF Mono', monospace" : undefined,
+              fontVariant: ['tabular-nums'],
+            } as any}>
+              {String(timerHours).padStart(2, '0')}:{String(timerMins).padStart(2, '0')}
+            </Text>
+            <Text style={{ fontSize: 18, fontWeight: '300', color: Colors.muted, letterSpacing: 2, fontVariant: ['tabular-nums'] }}>
+              {String(timerSecs).padStart(2, '0')}
+            </Text>
+          </CircularProgress>
         </View>
-        <ProgressBar value={timerProgress} color={Colors.amber} height={6} />
-        <Text style={{ fontSize: FontSize.labelSm, color: Colors.muted, textAlign: 'center', marginTop: Spacing.sm }}>
-          Acumulado hoy: {Math.round(liveDeepWorkHours * 10) / 10}h
-        </Text>
+
+        {/* Accumulated today progress bar toward 5h */}
+        <View style={{ marginBottom: Spacing.sm }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 }}>
+            <Text style={desktopStyles.smallLabel}>Acumulado hoy</Text>
+            <Text style={desktopStyles.smallLabel}>{Math.round(liveDeepWorkHours * 10) / 10}h / 5h</Text>
+          </View>
+          <View style={{ height: 6, backgroundColor: 'rgba(255,255,255,0.06)', borderRadius: 3, overflow: 'hidden' }}>
+            <View style={{
+              height: 6,
+              width: `${accumProgress}%`,
+              backgroundColor: Colors.amber,
+              borderRadius: 3,
+              ...(Platform.OS === 'web' ? { transition: 'width 0.3s ease' } : {}),
+            } as any} />
+          </View>
+        </View>
+
+        {/* START/STOP Button — Gradient teal with glow */}
         <TouchableOpacity
-          style={{
-            backgroundColor: timerRunning ? Colors.coral : Colors.amber,
-            borderRadius: BorderRadius.md,
-            paddingVertical: Spacing.md,
+          style={[{
+            backgroundColor: timerRunning ? Colors.coral : Colors.teal,
+            borderRadius: 12,
+            paddingVertical: 14,
             alignItems: 'center',
             marginTop: Spacing.md,
-          }}
+            ...(Platform.OS === 'web' && !timerRunning ? {
+              boxShadow: '0 0 20px rgba(15, 212, 160, 0.3)',
+            } : {}),
+          }, webBtnTransition as any]}
           onPress={handleTimerToggle}
         >
-          <Text style={{ color: '#0B1628', fontSize: FontSize.labelLg, fontWeight: '700', letterSpacing: 1 }}>
-            {timerRunning ? '■  STOP' : '▶  START'}
+          <Text style={{ color: '#0B1628', fontSize: FontSize.labelLg, fontWeight: '800', letterSpacing: 1.5 }}>
+            {timerRunning ? '■  STOP' : '▶  START DEEP WORK'}
           </Text>
         </TouchableOpacity>
-      </View>
+      </GlassCard>
 
       {/* Streak */}
-      <View style={{
-        backgroundColor: Colors.surfaceContainerLow,
-        borderRadius: BorderRadius.lg,
-        padding: Spacing.lg,
-        marginBottom: Spacing.section,
-        flexDirection: 'row',
-        alignItems: 'center',
-      }}>
+      <GlassCard style={{ flexDirection: 'row', alignItems: 'center' } as any}>
         <Text style={{ fontSize: 32, marginRight: Spacing.md }}>🔥</Text>
         <View>
-          <Text style={{ fontSize: FontSize.headlineSm, fontWeight: '800', color: Colors.amber }}>{streak} días</Text>
-          <Text style={{ fontSize: FontSize.labelSm, fontWeight: '600', color: Colors.muted, letterSpacing: 1 }}>RACHA ACTUAL</Text>
+          <AnimatedCounter
+            value={streak}
+            style={{ fontSize: FontSize.headlineSm, fontWeight: '800', color: Colors.amber }}
+            suffix=" días"
+          />
+          <Text style={[desktopStyles.smallLabel, { letterSpacing: 1 }]}>RACHA ACTUAL</Text>
         </View>
-      </View>
+      </GlassCard>
     </ScrollView>
   );
 }

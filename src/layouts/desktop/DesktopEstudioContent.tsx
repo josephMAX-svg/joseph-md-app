@@ -4,13 +4,10 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
-  Modal,
-  TextInput,
-  KeyboardAvoidingView,
   Platform,
 } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
-import { desktopStyles } from '../../theme/desktopStyles';
+import { desktopStyles, DesktopColors } from '../../theme/desktopStyles';
 import { useSupabaseQuery } from '../../hooks/useSupabaseQuery';
 import {
   getLatestCZI,
@@ -18,6 +15,8 @@ import {
   getWeakTopics,
 } from '../../lib/supabase';
 import type { WeakTopic } from '../../lib/supabase';
+import GlassCard from '../../components/GlassCard';
+import CircularProgress from '../../components/CircularProgress';
 
 // ─── Static Data ───
 const UWORLD_SYSTEMS = [
@@ -65,18 +64,101 @@ function useLiveProgress(specialties: string[], examen: string): Record<string, 
   return progress;
 }
 
+// FIX 6: Color-coded progress indicator
 function getProgressColor(pct: number): string {
-  if (pct < 20) return Colors.coral;
-  if (pct <= 50) return Colors.amber;
-  return Colors.green;
+  if (pct === 0) return Colors.coral;       // red
+  if (pct <= 20) return '#F97316';          // orange
+  if (pct <= 50) return '#FACC15';          // yellow
+  if (pct <= 80) return Colors.blue;        // blue
+  return Colors.green;                       // green
+}
+
+function getBottomBorderColor(pct: number): string {
+  return getProgressColor(pct);
+}
+
+// Mini circular progress ring for specialty cards
+function MiniProgressRing({ progress, color, size = 36 }: { progress: number; color: string; size?: number }) {
+  return (
+    <CircularProgress progress={progress} size={size} strokeWidth={3} color={color} trackColor="rgba(255,255,255,0.06)">
+      <Text style={{ fontSize: 9, fontWeight: '700', color }}>{Math.round(progress)}%</Text>
+    </CircularProgress>
+  );
+}
+
+function SpecialtyCard({
+  name, pct, exam, accentColor,
+}: {
+  name: string; pct: number; exam: string; accentColor: string;
+}) {
+  const [hovered, setHovered] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const progressColor = getProgressColor(pct);
+  const borderColor = getBottomBorderColor(pct);
+
+  const webHover = Platform.OS === 'web'
+    ? { onMouseEnter: () => setHovered(true), onMouseLeave: () => setHovered(false) }
+    : {};
+
+  const webStyle = Platform.OS === 'web'
+    ? {
+        transition: 'all 0.2s ease',
+        cursor: 'pointer',
+        ...(hovered ? {
+          transform: [{ translateY: -2 }],
+          boxShadow: '0 8px 24px rgba(0,0,0,0.25)',
+          borderColor: 'rgba(255,255,255,0.15)',
+        } : {}),
+      }
+    : {};
+
+  return (
+    <TouchableOpacity
+      style={desktopStyles.specialtyCell}
+      onPress={() => setExpanded(!expanded)}
+      activeOpacity={0.7}
+    >
+      <View
+        style={[
+          desktopStyles.specialtyCellInner,
+          { borderBottomWidth: 3, borderBottomColor: borderColor },
+          expanded && { borderColor: accentColor + '40' },
+          webStyle as any,
+        ]}
+        {...webHover}
+      >
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+          <View style={{ flex: 1, marginRight: 8 }}>
+            <Text style={desktopStyles.specialtyCellName} numberOfLines={1}>{name}</Text>
+            <Text style={{ fontSize: 10, color: Colors.smallLabel, marginTop: 2 }}>{exam}</Text>
+          </View>
+          <MiniProgressRing progress={pct} color={progressColor} />
+        </View>
+
+        {/* Hover tooltip: last studied info */}
+        {(hovered || expanded) && (
+          <View style={{ marginTop: Spacing.sm, paddingTop: Spacing.sm, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.06)' }}>
+            <Text style={{ fontSize: 10, color: Colors.muted }}>
+              Last studied: {pct > 0 ? 'Recently' : 'Never'}
+            </Text>
+            {expanded && (
+              <Text style={{ fontSize: 10, color: Colors.teal, marginTop: 2, fontWeight: '600' }}>
+                Tap to start APEX →
+              </Text>
+            )}
+          </View>
+        )}
+      </View>
+    </TouchableOpacity>
+  );
 }
 
 /**
- * Desktop Estudio Content — Specialty grid (3-4 columns) with expandable cells.
+ * Desktop Estudio Content — Premium Design v2.0
+ * Circular progress rings, color-coded specialty grid, iOS segmented control tabs.
  */
 export default function DesktopEstudioContent() {
   const [activeTab, setActiveTab] = useState<CountryTab>('EEUU');
-  const [expandedSpec, setExpandedSpec] = useState<string | null>(null);
 
   const { data: cziValue } = useSupabaseQuery(getLatestCZI, null);
   const { data: weakTopics } = useSupabaseQuery(
@@ -128,49 +210,45 @@ export default function DesktopEstudioContent() {
       {/* Header with CZI Badge */}
       <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginBottom: Spacing['2xl'] }}>
         <View style={{ flex: 1 }}>
-          <Text style={{ fontSize: FontSize.headlineLg, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.5 }}>
-            Motor APEX
-          </Text>
-          <Text style={{ fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, marginTop: 2 }}>
+          <Text style={desktopStyles.pageTitle}>Motor APEX</Text>
+          <Text style={[desktopStyles.bodyText, { color: Colors.onSurfaceVariant, marginTop: 2 }]}>
             MIR · USMLE · ENCAPS
           </Text>
         </View>
-        <View style={{
-          borderRadius: BorderRadius.md,
-          borderWidth: 1.5,
-          borderColor: getCZIColor(cziValue) + '50',
-          paddingVertical: Spacing.xs,
-          paddingHorizontal: Spacing.md,
-          alignItems: 'center',
-        }}>
-          <Text style={{ fontSize: FontSize.labelSm, fontWeight: '700', letterSpacing: 1, color: getCZIColor(cziValue) }}>CZI</Text>
+        <GlassCard style={{ paddingVertical: 6, paddingHorizontal: 14, alignItems: 'center', marginBottom: 0 } as any}>
+          <Text style={{ fontSize: 10, fontWeight: '700', letterSpacing: 1, color: getCZIColor(cziValue) }}>CZI</Text>
           <Text style={{ fontSize: FontSize.titleMd, fontWeight: '800', color: getCZIColor(cziValue) }}>
             {cziValue !== null ? cziValue.toFixed(2) : '--'}
           </Text>
-        </View>
+        </GlassCard>
       </View>
 
       {/* Weak Topic Alert */}
       {worstWeakTopic && (
-        <View style={{ backgroundColor: Colors.coral + '15', borderRadius: BorderRadius.md, padding: Spacing.md, marginBottom: Spacing.section, flexDirection: 'row', alignItems: 'center' }}>
+        <GlassCard style={{ backgroundColor: Colors.coral + '12', borderLeftWidth: 3, borderLeftColor: Colors.coral, marginBottom: Spacing.section, flexDirection: 'row', alignItems: 'center' } as any}>
           <Text style={{ fontSize: 20, marginRight: Spacing.sm }}>⚠️</Text>
           <View style={{ flex: 1 }}>
             <Text style={{ fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.coral, marginBottom: 2 }}>Tema débil detectado</Text>
-            <Text style={{ fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant }}>
+            <Text style={{ fontSize: 11, color: Colors.onSurfaceVariant }}>
               {worstWeakTopic.especialidad} · {worstWeakTopic.daysSinceActivity} días sin actividad
             </Text>
           </View>
-        </View>
+        </GlassCard>
       )}
 
       {/* APEX Button */}
-      <TouchableOpacity style={{
+      <TouchableOpacity style={[{
         backgroundColor: Colors.teal,
-        borderRadius: BorderRadius.lg,
+        borderRadius: 14,
         padding: Spacing.xl,
         alignItems: 'center',
         marginBottom: Spacing.section,
-      }}>
+        ...(Platform.OS === 'web' ? {
+          boxShadow: '0 0 24px rgba(15, 212, 160, 0.25)',
+          transition: 'all 0.2s ease',
+          cursor: 'pointer',
+        } : {}),
+      }]}>
         <Text style={{ fontSize: FontSize.titleMd, fontWeight: '800', color: '#0B1628', letterSpacing: 0.5 }}>
           ⚡ INICIAR APEX
         </Text>
@@ -179,67 +257,55 @@ export default function DesktopEstudioContent() {
         </Text>
       </TouchableOpacity>
 
-      {/* Country Tabs */}
-      <View style={{ flexDirection: 'row', marginBottom: Spacing.section, backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.md, padding: 3 }}>
+      {/* Country Tabs — iOS Segmented Control Style */}
+      <View style={{
+        flexDirection: 'row',
+        marginBottom: Spacing.section,
+        backgroundColor: DesktopColors.glass,
+        borderRadius: 12,
+        borderWidth: 1,
+        borderColor: DesktopColors.glassBorder,
+        padding: 3,
+      }}>
         {tabs.map(tab => (
           <TouchableOpacity
             key={tab.key}
-            style={{
+            style={[{
               flex: 1,
               paddingVertical: Spacing.sm,
               alignItems: 'center',
-              borderRadius: BorderRadius.sm,
+              borderRadius: 9,
               backgroundColor: activeTab === tab.key ? Colors.surfaceContainerHighest : 'transparent',
-            }}
+              ...(Platform.OS === 'web' ? { transition: 'all 0.2s ease', cursor: 'pointer' } : {}),
+            }]}
             onPress={() => setActiveTab(tab.key)}
           >
-            <Text style={{ fontSize: FontSize.labelMd, fontWeight: '600', color: activeTab === tab.key ? Colors.onSurface : Colors.muted }}>
+            <Text style={{
+              fontSize: FontSize.labelMd,
+              fontWeight: activeTab === tab.key ? '700' : '500',
+              color: activeTab === tab.key ? Colors.onSurface : Colors.muted,
+            }}>
               {tab.label}
             </Text>
           </TouchableOpacity>
         ))}
       </View>
 
-      {/* Specialty Grid — 3-4 columns */}
-      <Text style={{ fontSize: FontSize.labelMd, fontWeight: '600', color: Colors.muted, letterSpacing: 1.2, textTransform: 'uppercase', marginBottom: Spacing.md }}>
+      {/* Specialty Grid */}
+      <Text style={desktopStyles.sectionHeader}>
         ESPECIALIDADES ({names.length})
       </Text>
       <View style={desktopStyles.specialtyGrid}>
         {names.map((name) => {
           const pct = progress[name] ?? 0;
-          const progressColor = getProgressColor(pct);
-          const isExpanded = expandedSpec === name;
           return (
-            <TouchableOpacity
+            <SpecialtyCard
               key={name}
-              style={desktopStyles.specialtyCell}
-              onPress={() => setExpandedSpec(isExpanded ? null : name)}
-              activeOpacity={0.7}
-            >
-              <View style={[desktopStyles.specialtyCellInner, isExpanded && { borderWidth: 1, borderColor: color + '40' }]}>
-                <Text style={desktopStyles.specialtyCellName} numberOfLines={1}>{name}</Text>
-                <Text style={[desktopStyles.specialtyCellPercent, { color: progressColor }]}>
-                  {Math.round(pct)}%
-                </Text>
-                {/* Mini progress bar */}
-                <View style={{ height: 4, backgroundColor: Colors.surfaceContainerHighest, borderRadius: 2, overflow: 'hidden' }}>
-                  <View style={{ width: `${Math.min(pct, 100)}%`, height: 4, backgroundColor: progressColor, borderRadius: 2 }} />
-                </View>
-                {isExpanded && (
-                  <View style={{ marginTop: Spacing.sm, paddingTop: Spacing.sm, borderTopWidth: 1, borderTopColor: Colors.surfaceContainerHighest }}>
-                    <Text style={{ fontSize: FontSize.labelSm, color: Colors.muted }}>
-                      Exam: {exam}
-                    </Text>
-                    <Text style={{ fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, marginTop: 2 }}>
-                      Last activity: {pct > 0 ? 'Recent' : 'Never'}
-                    </Text>
-                    <Text style={{ fontSize: FontSize.labelSm, color: Colors.teal, marginTop: 2, fontWeight: '600' }}>
-                      Tap to start APEX →
-                    </Text>
-                  </View>
-                )}
-              </View>
-            </TouchableOpacity>
+              name={name}
+              pct={pct}
+              exam={exam}
+              accentColor={color}
+            />
           );
         })}
       </View>

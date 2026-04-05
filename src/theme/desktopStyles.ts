@@ -1,8 +1,9 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius } from './tokens';
 
 /**
  * Desktop-specific styles for the 3-column layout.
+ * Premium Design v2.0 — Glassmorphism + Platzi-inspired sidebar
  * Sidebar: #0F1D32 | Center: #081325 | Right Panel: #0F1D32
  */
 
@@ -12,6 +13,9 @@ export const DesktopColors = {
   sidebarHover: '#162640',
   activeBorder: Colors.teal,
   navItemActive: '#152A42',
+  glass: 'rgba(15, 29, 50, 0.7)',
+  glassBorder: 'rgba(255,255,255,0.08)',
+  glassBorderHover: 'rgba(255,255,255,0.15)',
 } as const;
 
 export const desktopStyles = StyleSheet.create({
@@ -24,9 +28,9 @@ export const desktopStyles = StyleSheet.create({
 
   // ─── Left Sidebar ───
   sidebar: {
-    width: 240,
+    width: 260,
     backgroundColor: DesktopColors.sidebar,
-    paddingTop: 32,
+    paddingTop: 28,
     paddingBottom: 20,
     paddingHorizontal: 0,
     borderRightWidth: 1,
@@ -34,13 +38,13 @@ export const desktopStyles = StyleSheet.create({
   },
   sidebarLogo: {
     paddingHorizontal: 20,
-    paddingBottom: 24,
+    paddingBottom: 20,
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255,255,255,0.04)',
-    marginBottom: 8,
+    borderBottomColor: 'rgba(255,255,255,0.06)',
+    marginBottom: 4,
   },
   sidebarLogoText: {
-    fontSize: FontSize.titleLg,
+    fontSize: 20,
     fontWeight: '800',
     color: Colors.onSurface,
     letterSpacing: -0.3,
@@ -52,29 +56,52 @@ export const desktopStyles = StyleSheet.create({
     lineHeight: 16,
   },
 
-  // Nav Items
+  // Sidebar Section Divider
+  sidebarDivider: {
+    height: 1,
+    backgroundColor: 'rgba(255,255,255,0.06)',
+    marginVertical: 8,
+    marginHorizontal: 16,
+  },
+
+  sidebarSectionLabel: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: Colors.smallLabel,
+    letterSpacing: 1.2,
+    textTransform: 'uppercase',
+    paddingHorizontal: 20,
+    paddingTop: 12,
+    paddingBottom: 6,
+  },
+
+  // Nav Items — Platzi-inspired
   navSection: {
-    flex: 1,
-    paddingTop: 8,
+    paddingTop: 4,
   },
   navItem: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
+    paddingLeft: 16,
+    marginHorizontal: 8,
     marginVertical: 1,
-    borderLeftWidth: 3,
+    borderLeftWidth: 4,
     borderLeftColor: 'transparent',
+    borderRadius: 8,
   },
   navItemActive: {
     backgroundColor: DesktopColors.navItemActive,
-    borderLeftColor: DesktopColors.activeBorder,
   },
   navItemIcon: {
-    fontSize: 16,
+    fontSize: 18,
     marginRight: 12,
-    width: 24,
+    width: 28,
     textAlign: 'center',
+  },
+  navItemTextContainer: {
+    flex: 1,
   },
   navItemLabel: {
     fontSize: FontSize.bodyMd,
@@ -83,25 +110,32 @@ export const desktopStyles = StyleSheet.create({
   },
   navItemLabelActive: {
     color: Colors.onSurface,
-    fontWeight: '600',
+    fontWeight: '700',
+  },
+  navItemSublabel: {
+    fontSize: 10,
+    color: Colors.smallLabel,
+    marginTop: 1,
+    letterSpacing: 0.2,
+  },
+  navItemSublabelActive: {
+    color: Colors.muted,
   },
 
   // Sidebar Quick Stats
   sidebarStats: {
     paddingHorizontal: 16,
-    paddingTop: 16,
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(255,255,255,0.04)',
+    paddingTop: 8,
   },
   sidebarStatRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 6,
+    paddingVertical: 7,
   },
   sidebarStatLabel: {
     fontSize: FontSize.labelSm,
-    color: Colors.muted,
+    color: Colors.smallLabel,
     fontWeight: '500',
     letterSpacing: 0.3,
   },
@@ -112,13 +146,13 @@ export const desktopStyles = StyleSheet.create({
 
   // Sidebar Action Buttons
   sidebarActions: {
-    paddingHorizontal: 16,
-    paddingTop: 12,
-    gap: 8,
+    paddingHorizontal: 12,
+    paddingTop: 8,
+    gap: 6,
   },
   sidebarActionBtn: {
-    borderRadius: BorderRadius.md,
-    paddingVertical: 10,
+    borderRadius: 10,
+    paddingVertical: 11,
     alignItems: 'center',
   },
   sidebarActionBtnText: {
@@ -134,9 +168,63 @@ export const desktopStyles = StyleSheet.create({
     backgroundColor: Colors.surface,
   },
   centerScrollContent: {
-    paddingHorizontal: 32,
+    paddingHorizontal: 36,
     paddingTop: 32,
     paddingBottom: 60,
+  },
+
+  // ─── Premium Typography Hierarchy ───
+  pageTitle: {
+    fontSize: 32,
+    fontWeight: '700',
+    color: Colors.onSurface,
+    letterSpacing: -0.64, // -0.02em
+  },
+  sectionHeader: {
+    fontSize: 14,
+    fontWeight: '600',
+    textTransform: 'uppercase',
+    letterSpacing: 1.12, // 0.08em
+    color: Colors.sectionHeader,
+    marginBottom: Spacing.md,
+  },
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#FFFFFF',
+  },
+  bodyText: {
+    fontSize: 14,
+    fontWeight: '400',
+    color: Colors.bodyText,
+  },
+  smallLabel: {
+    fontSize: 12,
+    fontWeight: '500',
+    color: Colors.smallLabel,
+  },
+  metricNumber: {
+    fontSize: 36,
+    fontWeight: '700',
+  },
+
+  // ─── Glassmorphism Cards ───
+  glassCard: {
+    backgroundColor: DesktopColors.glass,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DesktopColors.glassBorder,
+    padding: Spacing.lg,
+    marginBottom: Spacing.section,
+    // Shadow
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 24,
+    elevation: 8,
+  },
+  glassCardInteractive: {
+    // Web-only styles applied inline
   },
 
   // ─── Right Panel ───
@@ -149,18 +237,26 @@ export const desktopStyles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   rightPanelTitle: {
-    fontSize: FontSize.labelMd,
+    fontSize: 12,
     fontWeight: '600',
-    color: Colors.muted,
+    color: Colors.sectionHeader,
     letterSpacing: 1.2,
     textTransform: 'uppercase',
     marginBottom: Spacing.md,
   },
   rightPanelCard: {
-    backgroundColor: Colors.surfaceContainerLow,
-    borderRadius: BorderRadius.lg,
+    backgroundColor: DesktopColors.glass,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DesktopColors.glassBorder,
     padding: Spacing.md,
     marginBottom: Spacing.md,
+    // Shadow
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    elevation: 4,
   },
   rightPanelCardTitle: {
     fontSize: FontSize.bodyMd,
@@ -194,9 +290,17 @@ export const desktopStyles = StyleSheet.create({
     marginBottom: 12,
   },
   specialtyCellInner: {
-    backgroundColor: Colors.surfaceContainerLow,
-    borderRadius: BorderRadius.md,
+    backgroundColor: DesktopColors.glass,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DesktopColors.glassBorder,
     padding: Spacing.md,
+    // Shadow
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    elevation: 4,
   },
   specialtyCellName: {
     fontSize: FontSize.bodyMd,
@@ -217,10 +321,37 @@ export const desktopStyles = StyleSheet.create({
   },
   kanbanColumn: {
     flex: 1,
-    backgroundColor: Colors.surfaceContainerLow,
-    borderRadius: BorderRadius.lg,
+    backgroundColor: DesktopColors.glass,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DesktopColors.glassBorder,
     padding: Spacing.md,
     minHeight: 300,
+  },
+  kanbanColumnHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: Spacing.md,
+    paddingBottom: Spacing.sm,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255,255,255,0.06)',
+  },
+  kanbanColumnBadge: {
+    borderRadius: 999,
+    paddingVertical: 3,
+    paddingHorizontal: 10,
+  },
+  kanbanColumnBadgeText: {
+    fontSize: 10,
+    fontWeight: '800',
+    letterSpacing: 1,
+  },
+  kanbanColumnCount: {
+    fontSize: 10,
+    fontWeight: '600',
+    color: Colors.muted,
+    marginLeft: 6,
   },
   kanbanColumnTitle: {
     fontSize: FontSize.labelMd,
@@ -235,8 +366,10 @@ export const desktopStyles = StyleSheet.create({
     borderBottomColor: 'rgba(255,255,255,0.06)',
   },
   kanbanCard: {
-    backgroundColor: Colors.surfaceContainer,
-    borderRadius: BorderRadius.md,
+    backgroundColor: 'rgba(21, 32, 50, 0.8)',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.06)',
     padding: Spacing.md,
     marginBottom: Spacing.sm,
   },
@@ -285,8 +418,10 @@ export const desktopStyles = StyleSheet.create({
 
   // Chart containers
   chartContainer: {
-    backgroundColor: Colors.surfaceContainerLow,
-    borderRadius: BorderRadius.lg,
+    backgroundColor: DesktopColors.glass,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DesktopColors.glassBorder,
     padding: Spacing.lg,
     marginBottom: Spacing.md,
   },
@@ -337,3 +472,24 @@ export const desktopStyles = StyleSheet.create({
     marginLeft: 8,
   },
 });
+
+// Web-only styles (applied inline on Platform.OS === 'web')
+export const webStyles = {
+  glassCardHover: {
+    transition: 'all 0.2s ease',
+    cursor: 'pointer',
+  },
+  sidebarNavHover: {
+    transition: 'background-color 0.15s ease',
+    cursor: 'pointer',
+  },
+  cardHoverEffect: {
+    borderColor: DesktopColors.glassBorderHover,
+    transform: 'scale(1.01)',
+    boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
+  },
+  backdropBlur: {
+    backdropFilter: 'blur(10px)',
+    WebkitBackdropFilter: 'blur(10px)',
+  },
+};
