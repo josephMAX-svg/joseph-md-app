@@ -18,13 +18,64 @@ import type { WeakTopic } from '../../lib/supabase';
 import GlassCard from '../../components/GlassCard';
 import CircularProgress from '../../components/CircularProgress';
 
-// ─── Static Data ───
-const UWORLD_SYSTEMS = [
-  'Cardiovascular', 'Endocrine', 'Gastrointestinal', 'Hematology/Oncology',
-  'Immunology', 'Infectious Disease', 'Musculoskeletal', 'Nephrology',
-  'Neurology', 'OB/GYN', 'Ophthalmology', 'Pediatrics',
-  'Psychiatry', 'Pulmonary', 'Renal', 'Reproductive',
-  'Dermatology', 'Emergency Medicine',
+// ─── Data Structures ───
+interface BankItem { name: string; count: string; }
+
+const UWORLD_SYSTEMS: BankItem[] = [
+  { name: 'Behavioral Health', count: '96 Qs' },
+  { name: 'Biostatistics & Epidemiology', count: '75 Qs' },
+  { name: 'Blood & Lymphoreticular', count: '175 Qs' },
+  { name: 'Cardiovascular', count: '256 Qs' },
+  { name: 'Endocrine', count: '145 Qs' },
+  { name: 'Female Reproductive', count: '85 Qs' },
+  { name: 'Gastrointestinal', count: '225 Qs' },
+  { name: 'Human Development', count: '327 Qs' },
+  { name: 'Immune System', count: '123 Qs' },
+  { name: 'Male Reproductive', count: '43 Qs' },
+  { name: 'Multisystem Processes', count: '206 Qs' },
+  { name: 'Musculoskeletal', count: '132 Qs' },
+  { name: 'Nervous System', count: '318 Qs' },
+  { name: 'Pregnancy & Puerperium', count: '58 Qs' },
+  { name: 'Renal & Urinary', count: '146 Qs' },
+  { name: 'Respiratory', count: '173 Qs' },
+  { name: 'Skin & Subcutaneous', count: '108 Qs' },
+  { name: 'Social Sciences', count: '54 Qs' },
+];
+
+const AMBOSS_SUBJECTS: BankItem[] = [
+  { name: 'Allergy & Immunology', count: '6 systems' },
+  { name: 'Biochemistry', count: '5 systems' },
+  { name: 'Biostatistics & Epidemiology', count: '5 systems' },
+  { name: 'Cardiovascular', count: '11 systems' },
+  { name: 'Dermatology', count: '6 systems' },
+  { name: 'ENT', count: '1 system' },
+  { name: 'Endocrine Diabetes & Metabolism', count: '10 systems' },
+  { name: 'Female Reproductive', count: '7 systems' },
+  { name: 'GI & Nutrition', count: '10 systems' },
+  { name: 'Genetics', count: '6 systems' },
+  { name: 'Hematology & Oncology', count: '9 systems' },
+  { name: 'Infectious Diseases', count: '8 systems' },
+  { name: 'Male Reproductive', count: '2 systems' },
+  { name: 'Microbiology', count: '5 systems' },
+  { name: 'Miscellaneous', count: '1 system' },
+  { name: 'Nervous System', count: '16 systems' },
+  { name: 'Ophthalmology', count: '2 systems' },
+  { name: 'Pathology', count: '3 systems' },
+  { name: 'Pharmacology', count: '4 systems' },
+  { name: 'Poisoning & Environmental', count: '2 systems' },
+  { name: 'Pregnancy & Puerperium', count: '2 systems' },
+  { name: 'Psychiatric/Behavioral', count: '10 systems' },
+  { name: 'Pulmonary & Critical Care', count: '10 systems' },
+  { name: 'Renal Urinary & Electrolytes', count: '13 systems' },
+  { name: 'Rheumatology/Orthopedics', count: '9 systems' },
+  { name: 'Social Sciences', count: '6 systems' },
+];
+
+const SECONDARY_BANKS = [
+  'Bootcamp', 'B&B', 'Costanzo', 'Osmosis', 'Pixorize', 'NinjaNerd',
+  'USMLERx', 'COMBANK', 'SketchyPath', 'SketchyPharm', 'SketchyMicro',
+  'SketchyAnatomy', 'SketchyBiochem', 'SketchyImmunology', 'SketchyPhysiology',
+  'DirtyMedicine', 'OME', 'Low/HighYield',
 ];
 
 const PROMIR_SPECIALTIES = [
@@ -41,6 +92,15 @@ const ENCAPS_AREAS = [
 ];
 
 type CountryTab = 'EEUU' | 'ESPAÑA' | 'PERÚ';
+
+// ─── Bank Colors (user spec) ───
+const BANK_COLORS = {
+  uworld: Colors.amber,   // orange
+  amboss: Colors.green,   // green
+  nbme: Colors.blue,      // blue
+  firstaid: Colors.coral, // red
+  secondary: Colors.muted,
+};
 
 function useLiveProgress(specialties: string[], examen: string): Record<string, number> {
   const [progress, setProgress] = useState<Record<string, number>>({});
@@ -64,20 +124,14 @@ function useLiveProgress(specialties: string[], examen: string): Record<string, 
   return progress;
 }
 
-// FIX 6: Color-coded progress indicator
 function getProgressColor(pct: number): string {
-  if (pct === 0) return Colors.coral;       // red
-  if (pct <= 20) return '#F97316';          // orange
-  if (pct <= 50) return '#FACC15';          // yellow
-  if (pct <= 80) return Colors.blue;        // blue
-  return Colors.green;                       // green
+  if (pct === 0) return Colors.coral;
+  if (pct <= 20) return '#F97316';
+  if (pct <= 50) return '#FACC15';
+  if (pct <= 80) return Colors.blue;
+  return Colors.green;
 }
 
-function getBottomBorderColor(pct: number): string {
-  return getProgressColor(pct);
-}
-
-// Mini circular progress ring for specialty cards
 function MiniProgressRing({ progress, color, size = 64 }: { progress: number; color: string; size?: number }) {
   return (
     <CircularProgress progress={progress} size={size} strokeWidth={4} color={color} trackColor="rgba(255,255,255,0.06)">
@@ -86,15 +140,13 @@ function MiniProgressRing({ progress, color, size = 64 }: { progress: number; co
   );
 }
 
-function SpecialtyCard({
-  name, pct, exam, accentColor,
+function BankCard({
+  name, detail, pct, accentColor,
 }: {
-  name: string; pct: number; exam: string; accentColor: string;
+  name: string; detail: string; pct: number; accentColor: string;
 }) {
   const [hovered, setHovered] = useState(false);
-  const [expanded, setExpanded] = useState(false);
   const progressColor = getProgressColor(pct);
-  const borderColor = getBottomBorderColor(pct);
 
   const webHover = Platform.OS === 'web'
     ? { onMouseEnter: () => setHovered(true), onMouseLeave: () => setHovered(false) }
@@ -108,58 +160,78 @@ function SpecialtyCard({
           transform: [{ translateY: -2 }],
           boxShadow: '0 8px 24px rgba(0,0,0,0.25)',
           borderColor: 'rgba(255,255,255,0.15)',
-          backgroundImage: 'linear-gradient(135deg, rgba(14,212,160,0.05) 0%, transparent 100%)',
         } : {}),
       }
     : {};
 
   return (
-    <TouchableOpacity
-      style={desktopStyles.specialtyCell}
-      onPress={() => setExpanded(!expanded)}
-      activeOpacity={0.7}
-    >
+    <View style={desktopStyles.specialtyCell}>
       <View
         style={[
           desktopStyles.specialtyCellInner,
-          { borderBottomWidth: 3, borderBottomColor: borderColor },
-          expanded && { borderColor: accentColor + '40' },
+          { borderLeftColor: accentColor },
           webStyle as any,
         ]}
         {...webHover}
       >
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
           <View style={{ flex: 1, marginRight: 8 }}>
-            <Text style={desktopStyles.specialtyCellName} numberOfLines={1}>{name}</Text>
-            <Text style={{ fontSize: 10, color: Colors.smallLabel, marginTop: 2 }}>{exam}</Text>
+            <Text style={desktopStyles.specialtyCellName} numberOfLines={2}>{name}</Text>
+            <Text style={{ fontSize: 10, color: Colors.smallLabel, marginTop: 2 }}>{detail}</Text>
           </View>
           <MiniProgressRing progress={pct} color={progressColor} />
         </View>
-
-        {/* Hover tooltip: last studied info */}
-        {(hovered || expanded) && (
-          <View style={{ marginTop: Spacing.sm, paddingTop: Spacing.sm, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.06)' }}>
-            <Text style={{ fontSize: 10, color: Colors.muted }}>
-              Last studied: {pct > 0 ? 'Recently' : 'Never'}
-            </Text>
-            {expanded && (
-              <Text style={{ fontSize: 10, color: Colors.teal, marginTop: 2, fontWeight: '600' }}>
-                Tap to start APEX →
-              </Text>
-            )}
-          </View>
-        )}
       </View>
-    </TouchableOpacity>
+    </View>
+  );
+}
+
+function BankSectionHeader({
+  title, color, badge, count,
+}: {
+  title: string; color: string; badge?: string; count?: string;
+}) {
+  return (
+    <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: Spacing.md, marginTop: Spacing.lg }}>
+      <View style={{ width: 4, height: 20, backgroundColor: color, borderRadius: 2, marginRight: 10 }} />
+      <Text style={{ fontSize: 16, fontWeight: '700', color: Colors.onSurface, letterSpacing: 0.5, flex: 1 }}>
+        {title}
+      </Text>
+      {count && (
+        <Text style={{ fontSize: 11, color: Colors.smallLabel, marginRight: badge ? 8 : 0 }}>{count}</Text>
+      )}
+      {badge && (
+        <View style={{ backgroundColor: color + '20', borderRadius: 999, paddingVertical: 2, paddingHorizontal: 8 }}>
+          <Text style={{ fontSize: 10, fontWeight: '800', color, letterSpacing: 0.5 }}>{badge}</Text>
+        </View>
+      )}
+    </View>
+  );
+}
+
+function CompactBankCard({ title, subtitle, color }: { title: string; subtitle: string; color: string }) {
+  return (
+    <View
+      style={[
+        desktopStyles.specialtyCellInner,
+        { borderLeftColor: color, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+      ]}
+    >
+      <View>
+        <Text style={{ fontSize: 14, fontWeight: '700', color: Colors.onSurface }}>{title}</Text>
+        <Text style={{ fontSize: 11, color: Colors.smallLabel, marginTop: 2 }}>{subtitle}</Text>
+      </View>
+      <Text style={{ fontSize: 24, fontWeight: '700', color }}>0%</Text>
+    </View>
   );
 }
 
 /**
- * Desktop Estudio Content — Premium Design v2.0
- * Circular progress rings, color-coded specialty grid, iOS segmented control tabs.
+ * Desktop Estudio Content — bank-structured EEUU, flat lists for ESPAÑA/PERÚ.
  */
 export default function DesktopEstudioContent() {
   const [activeTab, setActiveTab] = useState<CountryTab>('EEUU');
+  const [showSecondary, setShowSecondary] = useState(false);
 
   const { data: cziValue } = useSupabaseQuery(getLatestCZI, null);
   const { data: weakTopics } = useSupabaseQuery(
@@ -171,7 +243,8 @@ export default function DesktopEstudioContent() {
     [activeTab],
   );
 
-  const uworldProgress = useLiveProgress(UWORLD_SYSTEMS, 'USMLE');
+  const uworldProgress = useLiveProgress(UWORLD_SYSTEMS.map(s => s.name), 'USMLE');
+  const ambossProgress = useLiveProgress(AMBOSS_SUBJECTS.map(s => s.name), 'USMLE');
   const promirProgress = useLiveProgress(PROMIR_SPECIALTIES, 'MIR');
   const encapsProgress = useLiveProgress(ENCAPS_AREAS, 'ENCAPS');
 
@@ -189,19 +262,6 @@ export default function DesktopEstudioContent() {
     { key: 'ESPAÑA', label: '🇪🇸 España' },
     { key: 'PERÚ', label: '🇵🇪 Perú' },
   ];
-
-  const getSpecialties = (): { names: string[]; progress: Record<string, number>; exam: string; color: string } => {
-    switch (activeTab) {
-      case 'EEUU':
-        return { names: UWORLD_SYSTEMS, progress: uworldProgress, exam: 'USMLE', color: Colors.teal };
-      case 'ESPAÑA':
-        return { names: PROMIR_SPECIALTIES, progress: promirProgress, exam: 'MIR', color: Colors.amber };
-      case 'PERÚ':
-        return { names: ENCAPS_AREAS, progress: encapsProgress, exam: 'ENCAPS', color: Colors.coral };
-    }
-  };
-
-  const { names, progress, exam, color } = getSpecialties();
 
   return (
     <ScrollView
@@ -292,24 +352,116 @@ export default function DesktopEstudioContent() {
         ))}
       </View>
 
-      {/* Specialty Grid */}
-      <Text style={desktopStyles.sectionHeader}>
-        ESPECIALIDADES ({names.length})
-      </Text>
-      <View style={desktopStyles.specialtyGrid}>
-        {names.map((name) => {
-          const pct = progress[name] ?? 0;
-          return (
-            <SpecialtyCard
-              key={name}
-              name={name}
-              pct={pct}
-              exam={exam}
-              accentColor={color}
-            />
-          );
-        })}
-      </View>
+      {/* ═══ EEUU TAB — Bank-structured ═══ */}
+      {activeTab === 'EEUU' && (
+        <View>
+          {/* UWORLD */}
+          <BankSectionHeader title="UWORLD" color={BANK_COLORS.uworld} badge="PRIMARY" count={`${UWORLD_SYSTEMS.length} systems`} />
+          <View style={desktopStyles.specialtyGrid}>
+            {UWORLD_SYSTEMS.map((s) => (
+              <BankCard
+                key={s.name}
+                name={s.name}
+                detail={s.count}
+                pct={uworldProgress[s.name] ?? 0}
+                accentColor={BANK_COLORS.uworld}
+              />
+            ))}
+          </View>
+
+          {/* AMBOSS */}
+          <BankSectionHeader title="AMBOSS" color={BANK_COLORS.amboss} badge="PRIMARY" count={`${AMBOSS_SUBJECTS.length} subjects`} />
+          <View style={desktopStyles.specialtyGrid}>
+            {AMBOSS_SUBJECTS.map((s) => (
+              <BankCard
+                key={s.name}
+                name={s.name}
+                detail={s.count}
+                pct={ambossProgress[s.name] ?? 0}
+                accentColor={BANK_COLORS.amboss}
+              />
+            ))}
+          </View>
+
+          {/* NBME — compact */}
+          <BankSectionHeader title="NBME" color={BANK_COLORS.nbme} />
+          <CompactBankCard title="NBME Practice Exams" subtitle="Practice exams" color={BANK_COLORS.nbme} />
+
+          {/* FIRST AID — compact */}
+          <View style={{ marginTop: 16 }}>
+            <BankSectionHeader title="FIRST AID" color={BANK_COLORS.firstaid} />
+            <CompactBankCard title="First Aid" subtitle="Review resource" color={BANK_COLORS.firstaid} />
+          </View>
+
+          {/* Secondary Banks (collapsible) */}
+          <TouchableOpacity
+            onPress={() => setShowSecondary(!showSecondary)}
+            style={[{
+              marginTop: Spacing.lg,
+              paddingVertical: Spacing.md,
+              paddingHorizontal: Spacing.md,
+              borderRadius: 10,
+              flexDirection: 'row',
+              alignItems: 'center',
+              backgroundColor: 'rgba(255,255,255,0.03)',
+              ...(Platform.OS === 'web' ? { cursor: 'pointer' as any } : {}),
+            }]}
+          >
+            <Text style={{ fontSize: 13, fontWeight: '600', color: Colors.muted, flex: 1 }}>
+              {showSecondary ? '▾' : '▸'} Secondary Banks ({SECONDARY_BANKS.length})
+            </Text>
+          </TouchableOpacity>
+          {showSecondary && (
+            <View style={[desktopStyles.specialtyGrid, { marginTop: Spacing.md }]}>
+              {SECONDARY_BANKS.map((b) => (
+                <BankCard
+                  key={b}
+                  name={b}
+                  detail="0%"
+                  pct={0}
+                  accentColor={BANK_COLORS.secondary}
+                />
+              ))}
+            </View>
+          )}
+        </View>
+      )}
+
+      {/* ═══ ESPAÑA TAB — ProMIR 30 specialties ═══ */}
+      {activeTab === 'ESPAÑA' && (
+        <View>
+          <BankSectionHeader title="PROMIR" color={Colors.amber} badge="30 SPECIALTIES" />
+          <View style={desktopStyles.specialtyGrid}>
+            {PROMIR_SPECIALTIES.map((name) => (
+              <BankCard
+                key={name}
+                name={name}
+                detail="MIR"
+                pct={promirProgress[name] ?? 0}
+                accentColor={Colors.amber}
+              />
+            ))}
+          </View>
+        </View>
+      )}
+
+      {/* ═══ PERÚ TAB — ENCAPS 5 areas ═══ */}
+      {activeTab === 'PERÚ' && (
+        <View>
+          <BankSectionHeader title="ENCAPS" color={Colors.coral} badge="5 AREAS" />
+          <View style={desktopStyles.specialtyGrid}>
+            {ENCAPS_AREAS.map((name) => (
+              <BankCard
+                key={name}
+                name={name}
+                detail="ENCAPS"
+                pct={encapsProgress[name] ?? 0}
+                accentColor={Colors.coral}
+              />
+            ))}
+          </View>
+        </View>
+      )}
     </ScrollView>
   );
 }

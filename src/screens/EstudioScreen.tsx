@@ -33,34 +33,61 @@ interface Bank {
 }
 
 const UWORLD_SYSTEMS: Bank[] = [
-  { name: 'Cardiovascular', count: '286 Qs', progress: 0 },
-  { name: 'Endocrine', count: '192 Qs', progress: 0 },
-  { name: 'Gastrointestinal', count: '244 Qs', progress: 0 },
-  { name: 'Hematology/Oncology', count: '212 Qs', progress: 0 },
-  { name: 'Immunology', count: '98 Qs', progress: 0 },
-  { name: 'Infectious Disease', count: '176 Qs', progress: 0 },
-  { name: 'Musculoskeletal', count: '134 Qs', progress: 0 },
-  { name: 'Nephrology', count: '168 Qs', progress: 0 },
-  { name: 'Neurology', count: '198 Qs', progress: 0 },
-  { name: 'OB/GYN', count: '156 Qs', progress: 0 },
-  { name: 'Ophthalmology', count: '64 Qs', progress: 0 },
-  { name: 'Pediatrics', count: '188 Qs', progress: 0 },
-  { name: 'Psychiatry', count: '142 Qs', progress: 0 },
-  { name: 'Pulmonary', count: '178 Qs', progress: 0 },
-  { name: 'Renal', count: '112 Qs', progress: 0 },
-  { name: 'Reproductive', count: '96 Qs', progress: 0 },
-  { name: 'Dermatology', count: '88 Qs', progress: 0 },
-  { name: 'Emergency Medicine', count: '104 Qs', progress: 0 },
+  { name: 'Behavioral Health', count: '96 Qs', progress: 0 },
+  { name: 'Biostatistics & Epidemiology', count: '75 Qs', progress: 0 },
+  { name: 'Blood & Lymphoreticular', count: '175 Qs', progress: 0 },
+  { name: 'Cardiovascular', count: '256 Qs', progress: 0 },
+  { name: 'Endocrine', count: '145 Qs', progress: 0 },
+  { name: 'Female Reproductive', count: '85 Qs', progress: 0 },
+  { name: 'Gastrointestinal', count: '225 Qs', progress: 0 },
+  { name: 'Human Development', count: '327 Qs', progress: 0 },
+  { name: 'Immune System', count: '123 Qs', progress: 0 },
+  { name: 'Male Reproductive', count: '43 Qs', progress: 0 },
+  { name: 'Multisystem Processes', count: '206 Qs', progress: 0 },
+  { name: 'Musculoskeletal', count: '132 Qs', progress: 0 },
+  { name: 'Nervous System', count: '318 Qs', progress: 0 },
+  { name: 'Pregnancy & Puerperium', count: '58 Qs', progress: 0 },
+  { name: 'Renal & Urinary', count: '146 Qs', progress: 0 },
+  { name: 'Respiratory', count: '173 Qs', progress: 0 },
+  { name: 'Skin & Subcutaneous', count: '108 Qs', progress: 0 },
+  { name: 'Social Sciences', count: '54 Qs', progress: 0 },
 ];
 
 const AMBOSS_SUBJECTS: Bank[] = [
-  'Anatomy', 'Biochemistry', 'Biostatistics', 'Cardiac', 'Dermatology',
-  'Emergency', 'Endocrine', 'ENT', 'Ethics', 'Gastro',
-  'Genetics', 'Hematology', 'Immunology', 'Infectious', 'MSK',
-  'Nephrology', 'Neurology', 'Nutrition', 'OBGYN', 'Oncology',
-  'Ophthalmology', 'Pathology', 'Pediatrics', 'Pharmacology', 'Psychiatry',
-  'Pulmonary',
-].map(name => ({ name, count: `${Math.floor(Math.random() * 8 + 3)} systems`, progress: 0 }));
+  { name: 'Allergy & Immunology', count: '6 systems', progress: 0 },
+  { name: 'Biochemistry', count: '5 systems', progress: 0 },
+  { name: 'Biostatistics & Epidemiology', count: '5 systems', progress: 0 },
+  { name: 'Cardiovascular', count: '11 systems', progress: 0 },
+  { name: 'Dermatology', count: '6 systems', progress: 0 },
+  { name: 'ENT', count: '1 system', progress: 0 },
+  { name: 'Endocrine Diabetes & Metabolism', count: '10 systems', progress: 0 },
+  { name: 'Female Reproductive', count: '7 systems', progress: 0 },
+  { name: 'GI & Nutrition', count: '10 systems', progress: 0 },
+  { name: 'Genetics', count: '6 systems', progress: 0 },
+  { name: 'Hematology & Oncology', count: '9 systems', progress: 0 },
+  { name: 'Infectious Diseases', count: '8 systems', progress: 0 },
+  { name: 'Male Reproductive', count: '2 systems', progress: 0 },
+  { name: 'Microbiology', count: '5 systems', progress: 0 },
+  { name: 'Miscellaneous', count: '1 system', progress: 0 },
+  { name: 'Nervous System', count: '16 systems', progress: 0 },
+  { name: 'Ophthalmology', count: '2 systems', progress: 0 },
+  { name: 'Pathology', count: '3 systems', progress: 0 },
+  { name: 'Pharmacology', count: '4 systems', progress: 0 },
+  { name: 'Poisoning & Environmental', count: '2 systems', progress: 0 },
+  { name: 'Pregnancy & Puerperium', count: '2 systems', progress: 0 },
+  { name: 'Psychiatric/Behavioral', count: '10 systems', progress: 0 },
+  { name: 'Pulmonary & Critical Care', count: '10 systems', progress: 0 },
+  { name: 'Renal Urinary & Electrolytes', count: '13 systems', progress: 0 },
+  { name: 'Rheumatology/Orthopedics', count: '9 systems', progress: 0 },
+  { name: 'Social Sciences', count: '6 systems', progress: 0 },
+];
+
+const SECONDARY_BANKS = [
+  'Bootcamp', 'B&B', 'Costanzo', 'Osmosis', 'Pixorize', 'NinjaNerd',
+  'USMLERx', 'COMBANK', 'SketchyPath', 'SketchyPharm', 'SketchyMicro',
+  'SketchyAnatomy', 'SketchyBiochem', 'SketchyImmunology', 'SketchyPhysiology',
+  'DirtyMedicine', 'OME', 'Low/HighYield',
+];
 
 const PROMIR_SPECIALTIES = [
   'Cardiología', 'Cirugía General', 'Dermatología', 'Endocrinología', 'Gastroenterología',
@@ -304,11 +331,11 @@ export default function EstudioScreen() {
         {/* ─── EEUU TAB ─── */}
         {activeTab === 'EEUU' && (
           <View>
-            <View style={styles.bankSection}>
+            <View style={[styles.bankSection, { borderLeftWidth: 4, borderLeftColor: Colors.amber }]}>
               <View style={styles.bankHeader}>
-                <Text style={styles.bankTitle}>UWorld</Text>
-                <View style={[styles.badge, { backgroundColor: Colors.blue + '20' }]}>
-                  <Text style={[styles.badgeText, { color: Colors.blue }]}>PRIMARY</Text>
+                <Text style={styles.bankTitle}>UWORLD</Text>
+                <View style={[styles.badge, { backgroundColor: Colors.amber + '20' }]}>
+                  <Text style={[styles.badgeText, { color: Colors.amber }]}>PRIMARY</Text>
                 </View>
               </View>
               <Text style={styles.bankCount}>18 systems · 0% complete</Text>
@@ -318,16 +345,16 @@ export default function EstudioScreen() {
                   name={sys.name}
                   detail={sys.count}
                   progress={uworldProgress[sys.name] ?? 0}
-                  color={Colors.teal}
+                  color={Colors.amber}
                 />
               ))}
             </View>
 
-            <View style={styles.bankSection}>
+            <View style={[styles.bankSection, { borderLeftWidth: 4, borderLeftColor: Colors.green }]}>
               <View style={styles.bankHeader}>
                 <Text style={styles.bankTitle}>AMBOSS</Text>
-                <View style={[styles.badge, { backgroundColor: Colors.teal + '20' }]}>
-                  <Text style={[styles.badgeText, { color: Colors.teal }]}>PRIMARY</Text>
+                <View style={[styles.badge, { backgroundColor: Colors.green + '20' }]}>
+                  <Text style={[styles.badgeText, { color: Colors.green }]}>PRIMARY</Text>
                 </View>
               </View>
               <Text style={styles.bankCount}>26 subjects · 0% complete</Text>
@@ -337,29 +364,23 @@ export default function EstudioScreen() {
                   name={sub.name}
                   detail={sub.count}
                   progress={ambossProgress[sub.name] ?? 0}
-                  color={Colors.blue}
+                  color={Colors.green}
                 />
               ))}
             </View>
 
-            <View style={styles.bankSection}>
+            <View style={[styles.bankSection, { borderLeftWidth: 4, borderLeftColor: Colors.blue }]}>
               <View style={styles.bankHeader}>
                 <Text style={styles.bankTitle}>NBME</Text>
-                <View style={[styles.badge, { backgroundColor: Colors.amber + '20' }]}>
-                  <Text style={[styles.badgeText, { color: Colors.amber }]}>PRIMARY</Text>
-                </View>
               </View>
-              <Text style={styles.bankCount}>Practice exams · 0 completed</Text>
+              <Text style={styles.bankCount}>NBME Practice Exams · 0%</Text>
             </View>
 
-            <View style={styles.bankSection}>
+            <View style={[styles.bankSection, { borderLeftWidth: 4, borderLeftColor: Colors.coral }]}>
               <View style={styles.bankHeader}>
-                <Text style={styles.bankTitle}>First Aid</Text>
-                <View style={[styles.badge, { backgroundColor: Colors.green + '20' }]}>
-                  <Text style={[styles.badgeText, { color: Colors.green }]}>PRIMARY</Text>
-                </View>
+                <Text style={styles.bankTitle}>FIRST AID</Text>
               </View>
-              <Text style={styles.bankCount}>Review resource · 0% read</Text>
+              <Text style={styles.bankCount}>First Aid · 0%</Text>
             </View>
 
             <TouchableOpacity style={styles.collapseToggle} onPress={() => setShowSecondary(!showSecondary)}>
@@ -367,7 +388,9 @@ export default function EstudioScreen() {
             </TouchableOpacity>
             {showSecondary && (
               <View style={styles.bankSection}>
-                <Text style={styles.bankCount}>Lecturio, Boards & Beyond, Sketchy, Pathoma — 0%</Text>
+                {SECONDARY_BANKS.map((b, i) => (
+                  <ProgressItem key={i} name={b} detail="0%" progress={0} color={Colors.muted} />
+                ))}
               </View>
             )}
 
