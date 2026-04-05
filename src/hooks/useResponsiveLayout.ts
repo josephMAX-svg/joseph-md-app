@@ -28,5 +28,7 @@ export function useResponsiveLayout() {
     isTablet: layout === 'tablet',
     isMobile: layout === 'mobile',
     showRightPanel: width > 1200,
+    // Inline right panel at 1400px+, else right content renders below main
+    showInlineRightPanel: width > 1400,
   };
 }

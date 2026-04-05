@@ -104,13 +104,13 @@ export default function DesktopEmpresaContent() {
         {/* Left: Nichos Grid */}
         <View style={desktopStyles.enterpriseColLeft}>
           <Text style={desktopStyles.sectionHeader}>NICHOS DE MERCADO</Text>
-          <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: -4 }}>
+          <View style={desktopStyles.autoFitGrid}>
             {NICHES.map((n, i) => {
               const [hovered, setHovered] = useState(false);
               return (
                 <TouchableOpacity
                   key={i}
-                  style={{ width: '50%', paddingHorizontal: 4, marginBottom: 8 }}
+                  style={Platform.OS === 'web' ? {} : { flex: 1, minWidth: 280 }}
                   onPress={() => setExpandedNiche(expandedNiche === i ? null : i)}
                 >
                   <View
@@ -149,13 +149,13 @@ export default function DesktopEmpresaContent() {
 
           {/* Business Areas */}
           <Text style={[desktopStyles.sectionHeader, { marginTop: Spacing.lg }]}>ÁREAS DE NEGOCIO</Text>
-          <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: -4 }}>
+          <View style={desktopStyles.autoFitGrid}>
             {BUSINESS_AREAS.map((area, i) => {
               const [hovered, setHovered] = useState(false);
               return (
                 <TouchableOpacity
                   key={i}
-                  style={{ width: '50%', paddingHorizontal: 4, marginBottom: 8 }}
+                  style={Platform.OS === 'web' ? {} : { flex: 1, minWidth: 280 }}
                   onPress={() => Alert.alert(area.name, `${area.status}\n\n${area.desc}`)}
                 >
                   <View

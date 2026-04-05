@@ -50,7 +50,6 @@ function NavItem({
       style={[
         desktopStyles.navItem,
         isActive && desktopStyles.navItemActive,
-        isActive && { borderLeftColor: accentColor },
         hoverBg,
         webTransition as any,
       ]}

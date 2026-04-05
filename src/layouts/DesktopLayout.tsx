@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
-import { desktopStyles } from '../theme/desktopStyles';
+import { View, Platform } from 'react-native';
+import { desktopStyles, DesktopColors } from '../theme/desktopStyles';
 import { useResponsiveLayout } from '../hooks/useResponsiveLayout';
 import { useSupabaseQuery } from '../hooks/useSupabaseQuery';
 import {
@@ -21,15 +21,40 @@ import type { ScreenName } from './DesktopSidebar';
 // Derma screen stays the same — just re-render it in the center
 import DermaScreen from '../screens/DermaScreen';
 
+// Inject custom scrollbar + smooth scroll styles for web once
+if (Platform.OS === 'web' && typeof document !== 'undefined') {
+  const styleId = 'desktop-scrollbar-styles';
+  if (!document.getElementById(styleId)) {
+    const style = document.createElement('style');
+    style.id = styleId;
+    style.textContent = `
+      .desktop-scroll::-webkit-scrollbar { width: 8px; height: 8px; }
+      .desktop-scroll::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+      .desktop-scroll::-webkit-scrollbar-thumb { background: rgba(14,212,160,0.4); border-radius: 4px; }
+      .desktop-scroll::-webkit-scrollbar-thumb:hover { background: rgba(14,212,160,0.6); }
+      .desktop-scroll { scrollbar-width: thin; scrollbar-color: rgba(14,212,160,0.4) rgba(0,0,0,0.2); scroll-behavior: smooth; }
+    `;
+    document.head.appendChild(style);
+  }
+}
+
+const webScrollClass: any = Platform.OS === 'web' ? { className: 'desktop-scroll' } : {};
+
 /**
- * DesktopLayout — 3-column layout for screens wider than 1024px.
- * [Left Sidebar 240px] [Center Content flex] [Right Panel 320px (>1200px)]
+ * DesktopLayout — Adaptive layout (Platzi / Shadcn Admin inspired).
+ * - [Sidebar 240px fixed] [Content area flex:1]
+ * - Right panel renders INSIDE the content area:
+ *     width > 1400px → sticky sidebar on the right (inline)
+ *     1200-1400px    → right panel still fixed to right, non-sticky
+ *     < 1200px       → no right panel
+ * - Content max-width 1200px, centered, 32px padding.
+ * - No visible borders between columns; uses background layers.
  */
 export default function DesktopLayout() {
   const [activeScreen, setActiveScreen] = useState<ScreenName>('Home');
   const [apexModalVisible, setApexModalVisible] = useState(false);
   const [apexModalTipo, setApexModalTipo] = useState<'manual' | 'dictar_error'>('manual');
-  const { showRightPanel } = useResponsiveLayout();
+  const { showRightPanel, showInlineRightPanel } = useResponsiveLayout();
 
   // Sidebar data
   const { data: queueCount, refetch: refetchQueue } = useSupabaseQuery(getApexQueueCount, 0);
@@ -74,15 +99,23 @@ export default function DesktopLayout() {
         }}
       />
 
-      {/* Center Content */}
-      <View style={desktopStyles.centerContent}>
-        {renderCenterContent()}
+      {/* Content Area: main + (optional) right panel side by side */}
+      <View style={desktopStyles.contentGridWrapper}>
+        <View style={desktopStyles.contentGridMain}>
+          {renderCenterContent()}
+        </View>
+        {showRightPanel && (
+          <View
+            style={[
+              desktopStyles.contentGridAside,
+              !showInlineRightPanel ? { position: 'relative' as any } : {},
+            ]}
+            {...webScrollClass}
+          >
+            <DesktopRightPanel activeScreen={activeScreen} />
+          </View>
+        )}
       </View>
-
-      {/* Right Panel (only on extra-wide screens >1200px) */}
-      {showRightPanel && (
-        <DesktopRightPanel activeScreen={activeScreen} />
-      )}
 
       {/* APEX Submit Modal */}
       <ApexSubmitModal

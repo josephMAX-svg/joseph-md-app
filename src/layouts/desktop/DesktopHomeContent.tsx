@@ -255,9 +255,9 @@ export default function DesktopHomeContent() {
 
       {/* Career Milestones */}
       <Text style={desktopStyles.sectionHeader}>CAREER MILESTONES</Text>
-      <View style={{ flexDirection: 'row', gap: 12, marginBottom: Spacing.section }}>
+      <View style={desktopStyles.milestonesRow}>
         {milestones.map((m, i) => (
-          <GlassCard key={i} style={{ flex: 1, opacity: m.opacity, flexDirection: 'row', alignItems: 'center', borderLeftWidth: 4, borderLeftColor: m.color } as any}>
+          <GlassCard key={i} style={{ flex: 1, opacity: m.opacity, flexDirection: 'row', alignItems: 'center', borderLeftWidth: 4, borderLeftColor: m.color, marginBottom: 0 } as any}>
             <Text style={{ fontSize: FontSize.bodyMd, color: Colors.onSurface, fontWeight: '500', flex: 1 }}>{m.title}</Text>
             {i === 0 && (
               <View style={{ backgroundColor: m.color + '20', borderRadius: 999, paddingVertical: 2, paddingHorizontal: 8 }}>
@@ -271,16 +271,16 @@ export default function DesktopHomeContent() {
       {/* Countdown */}
       <GlassCard style={{ alignItems: 'center', marginBottom: Spacing.section } as any}>
         <Text style={{
-          fontSize: 11, fontWeight: '600', color: Colors.muted,
+          fontSize: 13, fontWeight: '600', color: Colors.muted,
           letterSpacing: 1.2, textTransform: 'uppercase', marginBottom: Spacing.lg,
         }}>
           DÍAS PARA MIR 2030
         </Text>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <View style={{ alignItems: 'center', minWidth: 120 }}>
+          <View style={{ alignItems: 'center', minWidth: 140 }}>
             <AnimatedCounter
               value={countdown.days}
-              style={{ fontSize: 64, fontWeight: '700', color: Colors.teal, letterSpacing: -2 }}
+              style={{ fontSize: 72, fontWeight: '700', color: Colors.teal, letterSpacing: -2 }}
             />
             <Text style={{ fontSize: 10, fontWeight: '600', color: Colors.smallLabel, letterSpacing: 1, marginTop: 2 }}>DÍAS</Text>
           </View>
@@ -302,20 +302,20 @@ export default function DesktopHomeContent() {
         </View>
       </GlassCard>
 
-      {/* Metrics Grid — 4 columns, NO ARTIFICIAL LIMITS */}
+      {/* Metrics Row — single row, wraps on narrow widths */}
       <Text style={desktopStyles.sectionHeader}>MÉTRICAS EN VIVO</Text>
-      <View style={desktopStyles.metricsGrid4}>
-        <View style={desktopStyles.metricGridItem4}>
+      <View style={desktopStyles.metricsRow}>
+        <View style={desktopStyles.metricsRowItem}>
           <MetricCard label="Tarjetas hoy" value={metrics.cards} color={MetricColors.tarjetas} loading={metricsLoading} />
         </View>
-        <View style={desktopStyles.metricGridItem4}>
+        <View style={desktopStyles.metricsRowItem}>
           <MetricCard label="Deep Work" value={Math.round(liveDeepWorkHours * 10) / 10} unit="hrs" color={MetricColors.deepWork} loading={metricsLoading} />
         </View>
-        <View style={desktopStyles.metricGridItem4}>
+        <View style={desktopStyles.metricsRowItem}>
           <MetricCard label="Dominio MIR" value={metrics.dominioMIR} unit="%" color={MetricColors.dominio} loading={metricsLoading} />
         </View>
-        <View style={desktopStyles.metricGridItem4}>
-          {/* FIX 1: Open counter, no "/10" limit */}
+        <View style={desktopStyles.metricsRowItem}>
+          {/* Open counter, no "/10" limit */}
           <MetricCard label="Publicaciones" value={0} color={MetricColors.publicaciones} />
         </View>
       </View>

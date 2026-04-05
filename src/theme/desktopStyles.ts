@@ -8,40 +8,37 @@ import { Colors, Spacing, FontSize, BorderRadius } from './tokens';
  */
 
 export const DesktopColors = {
-  sidebar: '#0F1D32',
-  rightPanel: '#0F1D32',
+  sidebar: '#0A1628',
+  contentBase: '#0B1628',
+  rightPanel: '#0B1628',
   sidebarHover: '#162640',
   activeBorder: Colors.teal,
-  navItemActive: '#152A42',
-  glass: 'rgba(15, 29, 50, 0.7)',
+  navItemActive: 'rgba(14,212,160,0.1)',
+  glass: 'rgba(15,25,45,0.6)',
   glassBorder: 'rgba(255,255,255,0.08)',
   glassBorderHover: 'rgba(255,255,255,0.15)',
 } as const;
 
 export const desktopStyles = StyleSheet.create({
-  // ─── Root 3-Column Layout ───
+  // ─── Root 2-Column Layout (sidebar + content area) ───
   rootContainer: {
     flex: 1,
     flexDirection: 'row',
-    backgroundColor: Colors.surface,
+    backgroundColor: DesktopColors.contentBase,
   },
 
   // ─── Left Sidebar ───
   sidebar: {
-    width: 260,
+    width: 240,
     backgroundColor: DesktopColors.sidebar,
     paddingTop: 28,
     paddingBottom: 20,
     paddingHorizontal: 0,
-    borderRightWidth: 1,
-    borderRightColor: 'rgba(255,255,255,0.04)',
   },
   sidebarLogo: {
     paddingHorizontal: 20,
-    paddingBottom: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255,255,255,0.06)',
-    marginBottom: 4,
+    paddingBottom: 24,
+    marginBottom: 8,
   },
   sidebarLogoText: {
     fontSize: 20,
@@ -56,12 +53,9 @@ export const desktopStyles = StyleSheet.create({
     lineHeight: 16,
   },
 
-  // Sidebar Section Divider
+  // Sidebar Section spacer (no visible line — just margin)
   sidebarDivider: {
-    height: 1,
-    backgroundColor: 'rgba(255,255,255,0.06)',
-    marginVertical: 8,
-    marginHorizontal: 16,
+    height: 24,
   },
 
   sidebarSectionLabel: {
@@ -92,7 +86,7 @@ export const desktopStyles = StyleSheet.create({
     borderRadius: 8,
   },
   navItemActive: {
-    backgroundColor: 'rgba(46,124,246,0.15)',
+    backgroundColor: 'rgba(14,212,160,0.1)',
     borderLeftColor: '#0FD4A0',
   },
   navItemIcon: {
@@ -166,11 +160,39 @@ export const desktopStyles = StyleSheet.create({
   // ─── Center Content ───
   centerContent: {
     flex: 1,
-    backgroundColor: Colors.surface,
+    backgroundColor: DesktopColors.contentBase,
+    ...(Platform.OS === 'web' ? {
+      scrollBehavior: 'smooth',
+    } as any : {}),
   },
   centerScrollContent: {
     padding: 32,
     paddingBottom: 60,
+    ...(Platform.OS === 'web' ? {
+      maxWidth: 1200,
+      width: '100%',
+      marginLeft: 'auto',
+      marginRight: 'auto',
+    } as any : {}),
+  },
+  // Content grid wrapper (used when right panel is inline >1400px)
+  contentGridWrapper: {
+    flex: 1,
+    flexDirection: 'row',
+    backgroundColor: DesktopColors.contentBase,
+  },
+  contentGridMain: {
+    flex: 1,
+    minWidth: 0,
+  },
+  contentGridAside: {
+    width: 320,
+    ...(Platform.OS === 'web' ? {
+      position: 'sticky',
+      top: 24,
+      maxHeight: 'calc(100vh - 48px)',
+      overflowY: 'auto',
+    } as any : {}),
   },
 
   // ─── Premium Typography Hierarchy ───
@@ -235,10 +257,17 @@ export const desktopStyles = StyleSheet.create({
   rightPanel: {
     width: 320,
     backgroundColor: DesktopColors.rightPanel,
-    borderLeftWidth: 1,
-    borderLeftColor: 'rgba(255,255,255,0.04)',
     paddingTop: 32,
     paddingHorizontal: 20,
+  },
+  // Right panel rendered BELOW content (1024-1400px): horizontal card row
+  rightPanelBelow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 16,
+    padding: 32,
+    paddingTop: 0,
+    backgroundColor: DesktopColors.contentBase,
   },
   rightPanelTitle: {
     fontSize: 12,
@@ -299,28 +328,68 @@ export const desktopStyles = StyleSheet.create({
   },
 
   // ─── Desktop Grid Variants ───
+  // Auto-fit grid — cards reflow based on available space
+  autoFitGrid: {
+    ...(Platform.OS === 'web' ? {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+      gap: 16,
+    } as any : {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: 16,
+    }),
+    marginBottom: Spacing.section,
+  },
+  // Metrics row: 4 cards in single row, wraps at narrow widths
+  metricsRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 16,
+    marginBottom: Spacing.section,
+  },
+  metricsRowItem: {
+    flex: 1,
+    minWidth: 200,
+  },
+  // Milestones row
+  milestonesRow: {
+    flexDirection: 'row',
+    gap: 16,
+    marginBottom: Spacing.section,
+  },
+  milestoneItem: {
+    flex: 1,
+  },
+  // Legacy aliases
   metricsGrid4: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginHorizontal: -6,
+    gap: 16,
     marginBottom: Spacing.section,
   },
   metricGridItem4: {
-    width: '25%',
-    paddingHorizontal: 6,
-    marginBottom: 12,
+    flex: 1,
+    minWidth: 200,
   },
 
-  // Specialty Grid (3-4 columns)
+  // Specialty Grid — auto-fit
   specialtyGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginHorizontal: -6,
+    ...(Platform.OS === 'web' ? {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+      gap: 16,
+    } as any : {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: 16,
+    }),
   },
   specialtyCell: {
-    width: '33.33%',
-    paddingHorizontal: 6,
-    marginBottom: 12,
+    ...(Platform.OS === 'web' ? {} as any : {
+      flex: 1,
+      minWidth: 280,
+    }),
   },
   specialtyCellInner: {
     backgroundColor: DesktopColors.glass,
@@ -353,10 +422,16 @@ export const desktopStyles = StyleSheet.create({
     marginBottom: 6,
   },
 
-  // Kanban
+  // Kanban — auto-fit columns
   kanbanContainer: {
-    flexDirection: 'row',
-    gap: 12,
+    ...(Platform.OS === 'web' ? {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+      gap: 16,
+    } as any : {
+      flexDirection: 'row',
+      gap: 16,
+    }),
   },
   kanbanColumn: {
     flex: 1,
@@ -447,16 +522,23 @@ export const desktopStyles = StyleSheet.create({
     flex: 2,
   },
 
-  // Topic Grid (Derma)
+  // Topic Grid (Derma) — auto-fit
   topicGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginHorizontal: -6,
+    ...(Platform.OS === 'web' ? {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+      gap: 16,
+    } as any : {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: 16,
+    }),
   },
   topicGridItem: {
-    width: '50%',
-    paddingHorizontal: 6,
-    marginBottom: 12,
+    ...(Platform.OS === 'web' ? {} as any : {
+      flex: 1,
+      minWidth: 280,
+    }),
   },
 
   // Chart containers
