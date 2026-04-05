@@ -179,6 +179,11 @@ function BankCard({
           <View style={{ flex: 1, marginRight: 8 }}>
             <Text style={desktopStyles.specialtyCellName} numberOfLines={2}>{name}</Text>
             <Text style={{ fontSize: 10, color: Colors.smallLabel, marginTop: 2 }}>{detail}</Text>
+            {pct === 0 && (
+              <Text style={{ fontSize: 10, color: Colors.muted, marginTop: 4, fontStyle: 'italic' }}>
+                Sin actividad
+              </Text>
+            )}
           </View>
           <MiniProgressRing progress={pct} color={progressColor} />
         </View>
@@ -202,9 +207,15 @@ function BankSectionHeader({
         <Text style={{ fontSize: 11, color: Colors.smallLabel, marginRight: badge ? 8 : 0 }}>{count}</Text>
       )}
       {badge && (
-        <View style={{ backgroundColor: color + '20', borderRadius: 999, paddingVertical: 2, paddingHorizontal: 8 }}>
-          <Text style={{ fontSize: 10, fontWeight: '800', color, letterSpacing: 0.5 }}>{badge}</Text>
-        </View>
+        badge === 'PRIMARY' ? (
+          <View style={{ backgroundColor: color + '20', borderRadius: 999, paddingVertical: 2, paddingHorizontal: 8 }}>
+            <Text style={{ fontSize: 10, fontWeight: '800', color, letterSpacing: 0.5 }}>{badge}</Text>
+          </View>
+        ) : (
+          <Text style={{ fontSize: 11, color: Colors.muted, fontWeight: '500' }}>
+            {badge.toLowerCase()}
+          </Text>
+        )
       )}
     </View>
   );

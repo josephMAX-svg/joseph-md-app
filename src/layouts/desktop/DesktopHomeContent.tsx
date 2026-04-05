@@ -274,7 +274,7 @@ export default function DesktopHomeContent() {
             marginRight: 8,
           }} />
           <Text style={{ fontSize: 11, color: Colors.onSurfaceVariant, fontWeight: '600', letterSpacing: 0.3 }}>
-            {isLocalAvailable ? 'PC conectada' : 'Modo nube'}
+            {isLocalAvailable ? 'PC conectada' : 'Offline'}
           </Text>
           {(unreadReports?.length ?? 0) > 0 && (
             <View style={{ marginLeft: 10, backgroundColor: Colors.coral, borderRadius: 999, paddingVertical: 1, paddingHorizontal: 7 }}>

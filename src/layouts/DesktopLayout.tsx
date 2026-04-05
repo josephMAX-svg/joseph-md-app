@@ -17,6 +17,7 @@ import DesktopInvestigacionContent from './desktop/DesktopInvestigacionContent';
 import DesktopEmpresaContent from './desktop/DesktopEmpresaContent';
 import ApexSubmitModal from '../components/ApexSubmitModal';
 import AgentChatModal from '../components/AgentChatModal';
+import DictarErrorModal from '../components/DictarErrorModal';
 import type { ScreenName } from './DesktopSidebar';
 
 // Derma screen stays the same — just re-render it in the center
@@ -56,6 +57,7 @@ export default function DesktopLayout() {
   const [apexModalVisible, setApexModalVisible] = useState(false);
   const [apexModalTipo, setApexModalTipo] = useState<'manual' | 'dictar_error'>('manual');
   const [chatVisible, setChatVisible] = useState(false);
+  const [dictarVisible, setDictarVisible] = useState(false);
   const { showRightPanel, showInlineRightPanel } = useResponsiveLayout();
 
   // Sidebar data
@@ -95,10 +97,7 @@ export default function DesktopLayout() {
           setApexModalTipo('manual');
           setApexModalVisible(true);
         }}
-        onDictarPress={() => {
-          setApexModalTipo('dictar_error');
-          setApexModalVisible(true);
-        }}
+        onDictarPress={() => setDictarVisible(true)}
         onChatPress={() => setChatVisible(true)}
       />
 
@@ -135,6 +134,12 @@ export default function DesktopLayout() {
         visible={chatVisible}
         onClose={() => setChatVisible(false)}
         initialAgent="method"
+      />
+
+      {/* Dictar Error Modal */}
+      <DictarErrorModal
+        visible={dictarVisible}
+        onClose={() => { setDictarVisible(false); refetchQueue(); }}
       />
     </View>
   );

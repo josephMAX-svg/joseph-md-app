@@ -167,6 +167,7 @@ export const desktopStyles = StyleSheet.create({
   },
   centerScrollContent: {
     padding: 32,
+    paddingTop: 40,
     paddingBottom: 60,
     ...(Platform.OS === 'web' ? {
       maxWidth: 1200,
