@@ -78,10 +78,10 @@ function getBottomBorderColor(pct: number): string {
 }
 
 // Mini circular progress ring for specialty cards
-function MiniProgressRing({ progress, color, size = 36 }: { progress: number; color: string; size?: number }) {
+function MiniProgressRing({ progress, color, size = 64 }: { progress: number; color: string; size?: number }) {
   return (
-    <CircularProgress progress={progress} size={size} strokeWidth={3} color={color} trackColor="rgba(255,255,255,0.06)">
-      <Text style={{ fontSize: 9, fontWeight: '700', color }}>{Math.round(progress)}%</Text>
+    <CircularProgress progress={progress} size={size} strokeWidth={4} color={color} trackColor="rgba(255,255,255,0.06)">
+      <Text style={{ fontSize: 24, fontWeight: '700', color }}>{Math.round(progress)}</Text>
     </CircularProgress>
   );
 }
@@ -108,6 +108,7 @@ function SpecialtyCard({
           transform: [{ translateY: -2 }],
           boxShadow: '0 8px 24px rgba(0,0,0,0.25)',
           borderColor: 'rgba(255,255,255,0.15)',
+          backgroundImage: 'linear-gradient(135deg, rgba(14,212,160,0.05) 0%, transparent 100%)',
         } : {}),
       }
     : {};

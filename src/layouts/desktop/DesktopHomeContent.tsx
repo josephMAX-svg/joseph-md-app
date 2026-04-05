@@ -103,8 +103,8 @@ function MetricCard({
         borderRadius: 16,
         borderWidth: 1,
         borderColor: DesktopColors.glassBorder,
-        padding: Spacing.md,
-        borderLeftWidth: 3,
+        padding: 24,
+        borderLeftWidth: 4,
         borderLeftColor: color,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
@@ -115,7 +115,7 @@ function MetricCard({
       {...webHover}
     >
       <Text style={{
-        fontSize: 12, fontWeight: '500', color: Colors.smallLabel,
+        fontSize: 11, fontWeight: '500', color: Colors.smallLabel,
         letterSpacing: 0.5, textTransform: 'uppercase', marginBottom: Spacing.xs,
       }}>
         {label}
@@ -128,7 +128,7 @@ function MetricCard({
             <AnimatedCounter
               value={value}
               decimals={unit === 'hrs' ? 1 : 0}
-              style={{ fontSize: 28, fontWeight: '700', color }}
+              style={{ fontSize: 48, fontWeight: '700', color }}
             />
             {unit && (
               <Text style={{ fontSize: 11, fontWeight: '600', color: Colors.smallLabel, marginLeft: 4, textTransform: 'uppercase' }}>
@@ -229,9 +229,9 @@ export default function DesktopHomeContent() {
   const accumProgress = Math.min((liveDeepWorkHours / 5) * 100, 100);
 
   const milestones = [
-    { title: 'Top 50 MIR 2030', opacity: 1.0 },
-    { title: 'Fellowship Mayo 2035', opacity: 0.6 },
-    { title: 'Residencia 2037–2041', opacity: 0.3 },
+    { title: 'Top 50 MIR 2030', opacity: 1.0, color: Colors.coral },
+    { title: 'Fellowship Mayo 2035', opacity: 0.7, color: Colors.blue },
+    { title: 'Residencia 2037–2041', opacity: 0.4, color: Colors.teal },
   ];
 
   const webBtnTransition = Platform.OS === 'web'
@@ -257,12 +257,11 @@ export default function DesktopHomeContent() {
       <Text style={desktopStyles.sectionHeader}>CAREER MILESTONES</Text>
       <View style={{ flexDirection: 'row', gap: 12, marginBottom: Spacing.section }}>
         {milestones.map((m, i) => (
-          <GlassCard key={i} style={{ flex: 1, opacity: m.opacity, flexDirection: 'row', alignItems: 'center' } as any}>
-            <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: Colors.blue, marginRight: Spacing.md }} />
+          <GlassCard key={i} style={{ flex: 1, opacity: m.opacity, flexDirection: 'row', alignItems: 'center', borderLeftWidth: 4, borderLeftColor: m.color } as any}>
             <Text style={{ fontSize: FontSize.bodyMd, color: Colors.onSurface, fontWeight: '500', flex: 1 }}>{m.title}</Text>
             {i === 0 && (
-              <View style={{ backgroundColor: Colors.blue + '20', borderRadius: 999, paddingVertical: 2, paddingHorizontal: 8 }}>
-                <Text style={{ fontSize: FontSize.labelSm, fontWeight: '700', color: Colors.blue, letterSpacing: 0.5 }}>ACTIVE</Text>
+              <View style={{ backgroundColor: m.color + '20', borderRadius: 999, paddingVertical: 2, paddingHorizontal: 8 }}>
+                <Text style={{ fontSize: FontSize.labelSm, fontWeight: '700', color: m.color, letterSpacing: 0.5 }}>ACTIVE</Text>
               </View>
             )}
           </GlassCard>
@@ -271,17 +270,26 @@ export default function DesktopHomeContent() {
 
       {/* Countdown */}
       <GlassCard style={{ alignItems: 'center', marginBottom: Spacing.section } as any}>
-        <Text style={[desktopStyles.sectionHeader, { marginBottom: Spacing.lg }]}>
+        <Text style={{
+          fontSize: 11, fontWeight: '600', color: Colors.muted,
+          letterSpacing: 1.2, textTransform: 'uppercase', marginBottom: Spacing.lg,
+        }}>
           DÍAS PARA MIR 2030
         </Text>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ alignItems: 'center', minWidth: 120 }}>
+            <AnimatedCounter
+              value={countdown.days}
+              style={{ fontSize: 64, fontWeight: '700', color: Colors.teal, letterSpacing: -2 }}
+            />
+            <Text style={{ fontSize: 10, fontWeight: '600', color: Colors.smallLabel, letterSpacing: 1, marginTop: 2 }}>DÍAS</Text>
+          </View>
           {[
-            { num: countdown.days, unit: 'DÍAS' },
             { num: countdown.hours, unit: 'HRS' },
             { num: countdown.mins, unit: 'MIN' },
           ].map((block, i) => (
             <React.Fragment key={i}>
-              {i > 0 && <Text style={{ fontSize: FontSize.headlineSm, fontWeight: '300', color: Colors.muted, marginHorizontal: Spacing.sm }}>:</Text>}
+              <Text style={{ fontSize: FontSize.headlineSm, fontWeight: '300', color: Colors.muted, marginHorizontal: Spacing.sm }}>:</Text>
               <View style={{ alignItems: 'center', minWidth: 72 }}>
                 <AnimatedCounter
                   value={block.num}

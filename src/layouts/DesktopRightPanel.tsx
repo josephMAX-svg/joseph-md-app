@@ -135,7 +135,7 @@ function HomeRightPanel() {
       <WeekSummary />
 
       {/* Agent Reports */}
-      <Text style={[desktopStyles.rightPanelTitle, { marginTop: Spacing.lg }]}>AGENT REPORTS</Text>
+      <Text style={[desktopStyles.rightPanelTitle, desktopStyles.rightPanelTitleSeparated]}>AGENT REPORTS</Text>
       {loading ? (
         <SkeletonLoader lines={3} />
       ) : latest.length === 0 ? (
@@ -435,7 +435,7 @@ function EmpresaRightPanel() {
       ))}
 
       {/* Checklist Progress Ring */}
-      <Text style={[desktopStyles.rightPanelTitle, { marginTop: Spacing.lg }]}>CHECKLIST PROGRESS</Text>
+      <Text style={[desktopStyles.rightPanelTitle, desktopStyles.rightPanelTitleSeparated]}>CHECKLIST PROGRESS</Text>
       <View style={[desktopStyles.rightPanelCard, { alignItems: 'center', paddingVertical: 16 }]}>
         <CircularProgress progress={0} size={80} strokeWidth={6} color={Colors.amber} trackColor="rgba(255,255,255,0.06)">
           <Text style={{ fontSize: 16, fontWeight: '800', color: Colors.amber }}>0/6</Text>
@@ -444,7 +444,7 @@ function EmpresaRightPanel() {
       </View>
 
       {/* Phase Indicator */}
-      <Text style={[desktopStyles.rightPanelTitle, { marginTop: Spacing.lg }]}>PHASE</Text>
+      <Text style={[desktopStyles.rightPanelTitle, desktopStyles.rightPanelTitleSeparated]}>PHASE</Text>
       <View style={desktopStyles.rightPanelCard}>
         <View style={{ flexDirection: 'row', gap: 6 }}>
           {[
@@ -514,7 +514,7 @@ function ResearchRightPanel() {
       </View>
 
       {/* Next Action Card */}
-      <Text style={[desktopStyles.rightPanelTitle, { marginTop: Spacing.lg }]}>NEXT ACTION</Text>
+      <Text style={[desktopStyles.rightPanelTitle, desktopStyles.rightPanelTitleSeparated]}>NEXT ACTION</Text>
       <View style={[desktopStyles.rightPanelCard, { borderLeftWidth: 3, borderLeftColor: Colors.coral }]}>
         <Text style={{ fontSize: 13, fontWeight: '700', color: Colors.onSurface, marginBottom: 4 }}>
           🔥 {nextAction.title}
@@ -525,7 +525,7 @@ function ResearchRightPanel() {
       </View>
 
       {/* Journal Tier List */}
-      <Text style={[desktopStyles.rightPanelTitle, { marginTop: Spacing.lg }]}>TARGET JOURNALS</Text>
+      <Text style={[desktopStyles.rightPanelTitle, desktopStyles.rightPanelTitleSeparated]}>TARGET JOURNALS</Text>
       {tiers.map((t, i) => (
         <View key={i} style={desktopStyles.rightPanelCard}>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6 }}>

@@ -87,12 +87,13 @@ export const desktopStyles = StyleSheet.create({
     paddingLeft: 16,
     marginHorizontal: 8,
     marginVertical: 1,
-    borderLeftWidth: 4,
+    borderLeftWidth: 3,
     borderLeftColor: 'transparent',
     borderRadius: 8,
   },
   navItemActive: {
-    backgroundColor: DesktopColors.navItemActive,
+    backgroundColor: 'rgba(46,124,246,0.15)',
+    borderLeftColor: '#0FD4A0',
   },
   navItemIcon: {
     fontSize: 18,
@@ -168,8 +169,7 @@ export const desktopStyles = StyleSheet.create({
     backgroundColor: Colors.surface,
   },
   centerScrollContent: {
-    paddingHorizontal: 36,
-    paddingTop: 32,
+    padding: 32,
     paddingBottom: 60,
   },
 
@@ -214,7 +214,7 @@ export const desktopStyles = StyleSheet.create({
     borderRadius: 16,
     borderWidth: 1,
     borderColor: DesktopColors.glassBorder,
-    padding: Spacing.lg,
+    padding: 24,
     marginBottom: Spacing.section,
     ...(Platform.OS === 'web' ? {
       backdropFilter: 'blur(10px)',
@@ -247,13 +247,38 @@ export const desktopStyles = StyleSheet.create({
     letterSpacing: 1.2,
     textTransform: 'uppercase',
     marginBottom: Spacing.md,
+    paddingLeft: 10,
+    borderLeftWidth: 3,
+    borderLeftColor: Colors.teal,
+  },
+  rightPanelTitleSeparated: {
+    marginTop: Spacing.lg,
+    paddingTop: Spacing.md,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255,255,255,0.06)',
+  },
+  rightPanelSectionDivider: {
+    height: 1,
+    backgroundColor: 'rgba(255,255,255,0.06)',
+    marginVertical: Spacing.md,
+  },
+  rightPanelTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: Spacing.md,
+  },
+  rightPanelTitleDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    marginRight: 8,
   },
   rightPanelCard: {
     backgroundColor: DesktopColors.glass,
     borderRadius: 16,
     borderWidth: 1,
     borderColor: DesktopColors.glassBorder,
-    padding: Spacing.md,
+    padding: 24,
     marginBottom: Spacing.md,
     ...(Platform.OS === 'web' ? {
       backdropFilter: 'blur(10px)',
@@ -302,7 +327,9 @@ export const desktopStyles = StyleSheet.create({
     borderRadius: 16,
     borderWidth: 1,
     borderColor: DesktopColors.glassBorder,
-    padding: Spacing.md,
+    borderLeftWidth: 4,
+    borderLeftColor: '#0FD4A0',
+    padding: 24,
     ...(Platform.OS === 'web' ? {
       backdropFilter: 'blur(10px)',
       WebkitBackdropFilter: 'blur(10px)',
@@ -337,7 +364,7 @@ export const desktopStyles = StyleSheet.create({
     borderRadius: 16,
     borderWidth: 1,
     borderColor: DesktopColors.glassBorder,
-    padding: Spacing.md,
+    padding: 24,
     minHeight: 300,
     ...(Platform.OS === 'web' ? {
       backdropFilter: 'blur(10px)',
@@ -438,7 +465,7 @@ export const desktopStyles = StyleSheet.create({
     borderRadius: 16,
     borderWidth: 1,
     borderColor: DesktopColors.glassBorder,
-    padding: Spacing.lg,
+    padding: 24,
     marginBottom: Spacing.md,
     ...(Platform.OS === 'web' ? {
       backdropFilter: 'blur(10px)',

@@ -76,7 +76,7 @@ export default function DermaScreen() {
         <TouchableOpacity style={s.linkCard} onPress={() => Alert.alert('iPad Drawing Log', 'Camera integration: coming soon')}>
           <Text style={s.linkCardTitle}>✏️ iPad Drawing Log</Text><Text style={s.linkCardSub}>Procreate anatomy sketches · 0 drawings</Text></TouchableOpacity>
         <View style={s.totalsRow}><View style={s.totalBlock}><Text style={s.totalValue}>0</Text><Text style={s.totalLabel}>PAPERS</Text></View>
-          <View style={s.totalBlock}><Text style={s.totalValue}>0/70</Text><Text style={s.totalLabel}>SUBTOPICS</Text></View>
+          <View style={s.totalBlock}><Text style={s.totalValue}>0</Text><Text style={s.totalLabel}>SUBTOPICS</Text></View>
           <View style={s.totalBlock}><Text style={s.totalValue}>0</Text><Text style={s.totalLabel}>DRAWINGS</Text></View>
           <View style={s.totalBlock}><Text style={s.totalValue}>0</Text><Text style={s.totalLabel}>APEX CARDS</Text></View></View>
       </ScrollView>

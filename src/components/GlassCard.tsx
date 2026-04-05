@@ -73,6 +73,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden' as const,
   },
   cardPadding: {
-    padding: 16,
+    padding: 24,
   },
 });
