@@ -17,6 +17,7 @@ import {
 import type { WeakTopic } from '../../lib/supabase';
 import GlassCard from '../../components/GlassCard';
 import CircularProgress from '../../components/CircularProgress';
+import AgentChatModal from '../../components/AgentChatModal';
 
 // ─── Data Structures ───
 interface BankItem { name: string; count: string; }
@@ -232,6 +233,7 @@ function CompactBankCard({ title, subtitle, color }: { title: string; subtitle: 
 export default function DesktopEstudioContent() {
   const [activeTab, setActiveTab] = useState<CountryTab>('EEUU');
   const [showSecondary, setShowSecondary] = useState(false);
+  const [chatVisible, setChatVisible] = useState(false);
 
   const { data: cziValue } = useSupabaseQuery(getLatestCZI, null);
   const { data: weakTopics } = useSupabaseQuery(
@@ -297,26 +299,55 @@ export default function DesktopEstudioContent() {
         </GlassCard>
       )}
 
-      {/* APEX Button */}
-      <TouchableOpacity style={[{
-        backgroundColor: Colors.teal,
-        borderRadius: 14,
-        padding: Spacing.xl,
-        alignItems: 'center',
-        marginBottom: Spacing.section,
-        ...(Platform.OS === 'web' ? {
-          boxShadow: '0 0 24px rgba(15, 212, 160, 0.25)',
-          transition: 'all 0.2s ease',
-          cursor: 'pointer',
-        } : {}),
-      }]}>
-        <Text style={{ fontSize: FontSize.titleMd, fontWeight: '800', color: '#0B1628', letterSpacing: 0.5 }}>
-          ⚡ INICIAR APEX
-        </Text>
-        <Text style={{ fontSize: FontSize.labelSm, color: '#0B1628', marginTop: 2, opacity: 0.7 }}>
-          Sesión adaptativa de estudio
-        </Text>
-      </TouchableOpacity>
+      {/* APEX Button + Chat button row */}
+      <View style={{ flexDirection: 'row', gap: 12, marginBottom: Spacing.section }}>
+        <TouchableOpacity style={[{
+          flex: 2,
+          backgroundColor: Colors.teal,
+          borderRadius: 14,
+          padding: Spacing.xl,
+          alignItems: 'center',
+          ...(Platform.OS === 'web' ? {
+            boxShadow: '0 0 24px rgba(15, 212, 160, 0.25)',
+            transition: 'all 0.2s ease',
+            cursor: 'pointer',
+          } : {}),
+        }]}>
+          <Text style={{ fontSize: FontSize.titleMd, fontWeight: '800', color: '#0B1628', letterSpacing: 0.5 }}>
+            ⚡ INICIAR APEX
+          </Text>
+          <Text style={{ fontSize: FontSize.labelSm, color: '#0B1628', marginTop: 2, opacity: 0.7 }}>
+            Sesión adaptativa de estudio
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => setChatVisible(true)}
+          style={[{
+            flex: 1,
+            backgroundColor: 'rgba(46,124,246,0.15)',
+            borderRadius: 14,
+            padding: Spacing.xl,
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderWidth: 1,
+            borderColor: Colors.blue + '40',
+            ...(Platform.OS === 'web' ? { transition: 'all 0.2s ease', cursor: 'pointer' as any } : {}),
+          }]}
+        >
+          <Text style={{ fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.blue, letterSpacing: 0.3 }}>
+            💬 Chat con agente
+          </Text>
+          <Text style={{ fontSize: 10, color: Colors.muted, marginTop: 2 }}>
+            ProMIR Scout
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      <AgentChatModal
+        visible={chatVisible}
+        onClose={() => setChatVisible(false)}
+        initialAgent="promir"
+      />
 
       {/* Country Tabs — iOS Segmented Control Style */}
       <View style={{

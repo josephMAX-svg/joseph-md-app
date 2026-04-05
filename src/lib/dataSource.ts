@@ -115,6 +115,15 @@ export interface LocalStatusResponse {
   services?: Record<string, boolean | 'up' | 'down'>;
 }
 
+export interface LocalSkill {
+  id?: string;
+  skill_name: string;
+  skill_description?: string | null;
+  source_agent?: string | null;
+  target_agents?: string[] | null;
+  fecha_creado?: string;
+}
+
 /**
  * MIR 2030 fallback countdown (used when local agent isn't reachable).
  */

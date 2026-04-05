@@ -14,6 +14,7 @@ interface SidebarProps {
   deepWorkHours: number;
   onApexPress: () => void;
   onDictarPress: () => void;
+  onChatPress?: () => void;
 }
 
 const NAV_ITEMS: { key: ScreenName; label: string; sublabel: string; icon: string }[] = [
@@ -89,6 +90,7 @@ export default function DesktopSidebar({
   deepWorkHours,
   onApexPress,
   onDictarPress,
+  onChatPress,
 }: SidebarProps) {
   const [apexHovered, setApexHovered] = useState(false);
   const [dictarHovered, setDictarHovered] = useState(false);
@@ -199,6 +201,21 @@ export default function DesktopSidebar({
             🎙 DICTAR ERROR
           </Text>
         </TouchableOpacity>
+        {onChatPress && (
+          <TouchableOpacity
+            style={[
+              desktopStyles.sidebarActionBtn,
+              { backgroundColor: Colors.blue },
+              webBtnTransition as any,
+            ]}
+            onPress={onChatPress}
+            activeOpacity={0.7}
+          >
+            <Text style={[desktopStyles.sidebarActionBtnText, { color: '#FFFFFF' }]}>
+              💬 CHAT AGENTE
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );

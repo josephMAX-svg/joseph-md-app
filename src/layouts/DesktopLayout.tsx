@@ -16,6 +16,7 @@ import DesktopEstudioContent from './desktop/DesktopEstudioContent';
 import DesktopInvestigacionContent from './desktop/DesktopInvestigacionContent';
 import DesktopEmpresaContent from './desktop/DesktopEmpresaContent';
 import ApexSubmitModal from '../components/ApexSubmitModal';
+import AgentChatModal from '../components/AgentChatModal';
 import type { ScreenName } from './DesktopSidebar';
 
 // Derma screen stays the same — just re-render it in the center
@@ -54,6 +55,7 @@ export default function DesktopLayout() {
   const [activeScreen, setActiveScreen] = useState<ScreenName>('Home');
   const [apexModalVisible, setApexModalVisible] = useState(false);
   const [apexModalTipo, setApexModalTipo] = useState<'manual' | 'dictar_error'>('manual');
+  const [chatVisible, setChatVisible] = useState(false);
   const { showRightPanel, showInlineRightPanel } = useResponsiveLayout();
 
   // Sidebar data
@@ -97,6 +99,7 @@ export default function DesktopLayout() {
           setApexModalTipo('dictar_error');
           setApexModalVisible(true);
         }}
+        onChatPress={() => setChatVisible(true)}
       />
 
       {/* Content Area: main + (optional) right panel side by side */}
@@ -125,6 +128,13 @@ export default function DesktopLayout() {
           refetchQueue();
         }}
         initialTipo={apexModalTipo}
+      />
+
+      {/* Agent Chat Modal */}
+      <AgentChatModal
+        visible={chatVisible}
+        onClose={() => setChatVisible(false)}
+        initialAgent="method"
       />
     </View>
   );

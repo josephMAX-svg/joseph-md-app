@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Platform } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius } from '../theme/tokens';
 import { desktopStyles, DesktopColors } from '../theme/desktopStyles';
@@ -8,8 +8,20 @@ import {
   getPalmertonErrors,
   getTimingStats,
   markReportRead,
+  getWeekSummary,
+  getAgentSkills,
+  getWeakTopicsFromBlocks,
 } from '../lib/supabase';
-import type { AgentReport, PalmertonErrorDist, TimingStats } from '../lib/supabase';
+import type {
+  AgentReport,
+  PalmertonErrorDist,
+  TimingStats,
+  WeekSummary,
+  AgentSkill,
+  WeakTopicByBlocks,
+} from '../lib/supabase';
+import { fetchLocal, useDataSource } from '../lib/dataSource';
+import type { LocalSkill } from '../lib/dataSource';
 import type { ScreenName } from './DesktopSidebar';
 import GlassCard from '../components/GlassCard';
 import CircularProgress from '../components/CircularProgress';
@@ -66,18 +78,33 @@ function timeAgo(dateStr: string): string {
   return `${days}d ago`;
 }
 
-// ─── Mini Calendar (current week, all gray — no data) ───
-function MiniCalendar() {
+// ─── Mini Calendar: current week (Mon-Sun) with activity dots ───
+function MiniCalendar({ activeDays }: { activeDays: string[] }) {
   const today = new Date();
-  const dayOfWeek = today.getDay();
+  const jsDay = today.getDay(); // Sun=0..Sat=6
+  // Monday = 0, Sunday = 6
+  const mondayIdx = jsDay === 0 ? 6 : jsDay - 1;
   const weekDays = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
+
+  // Build 7 dates for this week (Mon → Sun, Lima time)
+  const dates: string[] = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - mondayIdx + i);
+    // Lima offset: subtract 5h to get Lima date
+    const lima = new Date(d.getTime() - 5 * 60 * 60 * 1000);
+    dates.push(lima.toISOString().split('T')[0]);
+  }
+
+  const activeSet = new Set(activeDays);
 
   return (
     <View style={{ marginBottom: Spacing.md }}>
       <Text style={desktopStyles.rightPanelTitle}>THIS WEEK</Text>
       <View style={[desktopStyles.rightPanelCard, { flexDirection: 'row', justifyContent: 'space-around', paddingVertical: 14 }]}>
         {weekDays.map((day, i) => {
-          const isToday = (i + 1) % 7 === dayOfWeek;
+          const isToday = i === mondayIdx;
+          const hasActivity = activeSet.has(dates[i]);
           return (
             <View key={i} style={{ alignItems: 'center' }}>
               <Text style={{ fontSize: 9, fontWeight: '600', color: isToday ? Colors.onSurface : Colors.smallLabel, marginBottom: 4 }}>
@@ -85,7 +112,7 @@ function MiniCalendar() {
               </Text>
               <View style={{
                 width: 10, height: 10, borderRadius: 5,
-                backgroundColor: isToday ? Colors.teal + '40' : 'rgba(255,255,255,0.06)',
+                backgroundColor: hasActivity ? Colors.teal : 'rgba(255,255,255,0.08)',
                 borderWidth: isToday ? 1 : 0,
                 borderColor: Colors.teal,
               }} />
@@ -97,17 +124,18 @@ function MiniCalendar() {
   );
 }
 
-// ─── This Week Summary ───
-function WeekSummary() {
+// ─── This Week Summary (live data) ───
+function WeekSummaryCard({ data }: { data: WeekSummary }) {
+  const items = [
+    { label: 'Hours studied', value: data.hoursStudied > 0 ? `${data.hoursStudied}h` : '0h', color: data.hoursStudied > 0 ? Colors.amber : Colors.muted },
+    { label: 'Cards created', value: String(data.cardsCreated), color: data.cardsCreated > 0 ? Colors.teal : Colors.muted },
+    { label: 'Questions', value: String(data.questions), color: data.questions > 0 ? Colors.blue : Colors.muted },
+  ];
   return (
     <View style={desktopStyles.rightPanelCard}>
       <Text style={desktopStyles.rightPanelCardTitle}>📊 This Week</Text>
       <View style={{ gap: 6 }}>
-        {[
-          { label: 'Hours studied', value: '—', color: Colors.muted },
-          { label: 'Cards created', value: '—', color: Colors.muted },
-          { label: 'Questions', value: '—', color: Colors.muted },
-        ].map((item, i) => (
+        {items.map((item, i) => (
           <View key={i} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             <Text style={{ fontSize: 11, color: Colors.smallLabel }}>{item.label}</Text>
             <Text style={{ fontSize: 13, fontWeight: '700', color: item.color }}>{item.value}</Text>
@@ -123,16 +151,19 @@ function WeekSummary() {
 // ═══════════════════════════════════════════════
 function HomeRightPanel() {
   const { data: reports, loading } = useSupabaseQuery(getAllReports, [] as AgentReport[]);
+  const { data: week } = useSupabaseQuery(getWeekSummary, {
+    hoursStudied: 0, cardsCreated: 0, questions: 0, activeDays: [],
+  } as WeekSummary);
   const latest = reports.slice(0, 5);
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   return (
     <View>
-      {/* Mini Calendar */}
-      <MiniCalendar />
+      {/* Mini Calendar with real activity dots */}
+      <MiniCalendar activeDays={week.activeDays} />
 
       {/* Week Summary */}
-      <WeekSummary />
+      <WeekSummaryCard data={week} />
 
       {/* Agent Reports */}
       <Text style={[desktopStyles.rightPanelTitle, desktopStyles.rightPanelTitleSeparated]}>AGENT REPORTS</Text>
@@ -203,12 +234,56 @@ function HomeRightPanel() {
 // ═══════════════════════════════════════════════
 // ESTUDIO: Palmerton Analytics + Charts
 // ═══════════════════════════════════════════════
+function useSharedSkills(): AgentSkill[] {
+  const { source } = useDataSource();
+  const [skills, setSkills] = useState<AgentSkill[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      if (source === 'local') {
+        const local = await fetchLocal<{ skills?: LocalSkill[] } | LocalSkill[]>('/skills');
+        if (cancelled) return;
+        const arr = Array.isArray(local) ? local : local?.skills;
+        if (arr && arr.length > 0) {
+          setSkills(arr.map((s, i) => ({
+            id: s.id ?? String(i),
+            skill_name: s.skill_name,
+            skill_description: s.skill_description ?? null,
+            source_agent: s.source_agent ?? null,
+            target_agents: s.target_agents ?? null,
+            fecha_creado: s.fecha_creado,
+          })));
+          return;
+        }
+      }
+      // Fallback to Supabase (or if local /skills endpoint returned nothing)
+      const sb = await getAgentSkills();
+      if (!cancelled) setSkills(sb);
+    })();
+    return () => { cancelled = true; };
+  }, [source]);
+
+  return skills;
+}
+
+function formatSeconds(s: number | null): string {
+  if (s === null || s === 0) return '—';
+  const mins = Math.floor(s / 60);
+  const secs = Math.round(s % 60);
+  if (mins === 0) return `${secs}s`;
+  return `${mins}m${String(secs).padStart(2, '0')}s`;
+}
+
 function EstudioRightPanel() {
   const { data: errors, loading: errorsLoading } = useSupabaseQuery(getPalmertonErrors, [] as PalmertonErrorDist[]);
   const { data: timing, loading: timingLoading } = useSupabaseQuery(getTimingStats, {
     avgReadingSeconds: null,
     avgConstructionSeconds: null,
   } as TimingStats);
+  const { data: weakTopics } = useSupabaseQuery(getWeakTopicsFromBlocks, [] as WeakTopicByBlocks[]);
+  const skills = useSharedSkills();
+  const maxError = Math.max(1, ...errors.map(e => e.count));
 
   const pieData = errors.map((e) => ({
     name: e.type,
@@ -225,118 +300,130 @@ function EstudioRightPanel() {
 
   return (
     <View>
-      {/* Palmerton Pie Chart */}
+      {/* Palmerton — horizontal bars per type */}
       <Text style={desktopStyles.rightPanelTitle}>PALMERTON ERRORS</Text>
-      <View style={desktopStyles.chartContainer}>
+      <View style={desktopStyles.rightPanelCard}>
         {errorsLoading ? (
           <SkeletonLoader lines={3} />
-        ) : hasErrors && PieChart ? (
-          <ResponsiveContainer width="100%" height={180}>
-            <PieChart>
-              <Pie
-                data={pieData}
-                dataKey="value"
-                nameKey="name"
-                cx="50%"
-                cy="50%"
-                outerRadius={70}
-                innerRadius={35}
-                paddingAngle={2}
-              >
-                {pieData.map((entry: any, index: number) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={PALMERTON_COLORS[entry.name] ?? Colors.muted}
-                  />
-                ))}
-              </Pie>
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: DesktopColors.glass,
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: 10,
-                  fontSize: 11,
-                  backdropFilter: 'blur(10px)',
-                }}
-                labelStyle={{ color: Colors.onSurface }}
-                itemStyle={{ color: Colors.onSurfaceVariant }}
-              />
-            </PieChart>
-          </ResponsiveContainer>
+        ) : !hasErrors ? (
+          <View style={{ alignItems: 'center', paddingVertical: 16 }}>
+            <Text style={{ fontSize: 24, marginBottom: 6 }}>📊</Text>
+            <Text style={{ fontSize: 11, color: Colors.muted, textAlign: 'center' }}>Sin datos de errores aún</Text>
+          </View>
         ) : (
-          <View style={{ alignItems: 'center', paddingVertical: 24 }}>
-            <Text style={{ fontSize: 28, marginBottom: 8 }}>📊</Text>
-            <Text style={{ fontSize: 12, color: Colors.muted }}>No error data yet</Text>
+          <View style={{ gap: 8 }}>
+            {(['CONTEXTO', 'CRONOLOGIA', 'CCSN', 'CONCEPTO', 'OLVIDO'] as const).map((type) => {
+              const row = errors.find(e => e.type === type);
+              const count = row?.count ?? 0;
+              const color = PALMERTON_COLORS[type] ?? Colors.muted;
+              const widthPct = Math.max(4, (count / maxError) * 100);
+              return (
+                <View key={type}>
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 3 }}>
+                    <Text style={{ fontSize: 10, fontWeight: '700', color, letterSpacing: 0.5 }}>{type}</Text>
+                    <Text style={{ fontSize: 10, fontWeight: '600', color: Colors.muted }}>{count}</Text>
+                  </View>
+                  <View style={{ height: 6, backgroundColor: 'rgba(255,255,255,0.06)', borderRadius: 3, overflow: 'hidden' }}>
+                    <View style={{ height: 6, width: `${widthPct}%`, backgroundColor: color, borderRadius: 3 }} />
+                  </View>
+                </View>
+              );
+            })}
           </View>
         )}
-        {/* Legend */}
-        {hasErrors && (
-          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 8 }}>
-            {errors.map((e) => (
-              <View key={e.type} style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <View style={{
-                  width: 8, height: 8, borderRadius: 4,
-                  backgroundColor: PALMERTON_COLORS[e.type] ?? Colors.muted,
-                  marginRight: 4,
-                }} />
-                <Text style={{ fontSize: 10, color: Colors.muted }}>
-                  {e.type} ({e.percentage}%)
+      </View>
+
+      {/* Time Per Question — text summary */}
+      <Text style={[desktopStyles.rightPanelTitle, desktopStyles.rightPanelTitleSeparated]}>TIME PER QUESTION</Text>
+      <View style={desktopStyles.rightPanelCard}>
+        {timingLoading ? (
+          <SkeletonLoader lines={2} />
+        ) : !hasTiming ? (
+          <View style={{ alignItems: 'center', paddingVertical: 8 }}>
+            <Text style={{ fontSize: 11, color: Colors.muted }}>Sin datos de tiempo aún</Text>
+          </View>
+        ) : (
+          <View style={{ gap: 10 }}>
+            <View>
+              <Text style={{ fontSize: 10, color: Colors.smallLabel, fontWeight: '600', letterSpacing: 0.5 }}>LECTURA</Text>
+              <Text style={{ fontSize: 20, fontWeight: '700', color: Colors.teal }}>
+                {formatSeconds(timing.avgReadingSeconds)}
+              </Text>
+            </View>
+            <View>
+              <Text style={{ fontSize: 10, color: Colors.smallLabel, fontWeight: '600', letterSpacing: 0.5 }}>CONSTRUCCIÓN</Text>
+              <Text style={{ fontSize: 20, fontWeight: '700', color: Colors.amber }}>
+                {formatSeconds(timing.avgConstructionSeconds)}
+              </Text>
+            </View>
+          </View>
+        )}
+      </View>
+
+      {/* Weak Topics — derived from apex_blocks gaps */}
+      <Text style={[desktopStyles.rightPanelTitle, desktopStyles.rightPanelTitleSeparated]}>WEAK TOPICS</Text>
+      <View style={desktopStyles.rightPanelCard}>
+        {weakTopics.length === 0 ? (
+          <View style={{ alignItems: 'center', paddingVertical: 16 }}>
+            <Text style={{ fontSize: 20, marginBottom: 6 }}>🎯</Text>
+            <Text style={{ fontSize: 10, color: Colors.muted, textAlign: 'center' }}>
+              Weak topics will appear based on activity gaps
+            </Text>
+          </View>
+        ) : (
+          <View style={{ gap: 8 }}>
+            {weakTopics.map((t, i) => {
+              const color = t.level === 'WEAK' ? Colors.coral : Colors.amber;
+              return (
+                <View key={i} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
+                    <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: color, marginRight: 8 }} />
+                    <Text style={{ fontSize: 12, color: Colors.onSurface, fontWeight: '500', flex: 1 }} numberOfLines={1}>
+                      {t.especialidad}
+                    </Text>
+                  </View>
+                  <Text style={{ fontSize: 10, color, fontWeight: '700' }}>{t.daysSince}d</Text>
+                </View>
+              );
+            })}
+          </View>
+        )}
+      </View>
+
+      {/* Skills Compartidos */}
+      <Text style={[desktopStyles.rightPanelTitle, desktopStyles.rightPanelTitleSeparated]}>SKILLS COMPARTIDOS</Text>
+      <View style={desktopStyles.rightPanelCard}>
+        {skills.length === 0 ? (
+          <View style={{ alignItems: 'center', paddingVertical: 12 }}>
+            <Text style={{ fontSize: 10, color: Colors.muted, textAlign: 'center', lineHeight: 15 }}>
+              Sin skills registrados · Los agentes comparten skills automáticamente durante el estudio
+            </Text>
+          </View>
+        ) : (
+          <View style={{ gap: 10 }}>
+            {skills.slice(0, 6).map((s) => (
+              <View key={s.id} style={{ paddingBottom: 8, borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.04)' }}>
+                <Text style={{ fontSize: 12, fontWeight: '700', color: Colors.onSurface, marginBottom: 2 }}>
+                  {s.skill_name}
                 </Text>
+                {s.source_agent && (
+                  <Text style={{ fontSize: 9, color: Colors.muted, marginBottom: 4 }}>
+                    de {s.source_agent}
+                  </Text>
+                )}
+                {s.target_agents && s.target_agents.length > 0 && (
+                  <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 4 }}>
+                    {s.target_agents.slice(0, 3).map((t, j) => (
+                      <View key={j} style={{ backgroundColor: Colors.teal + '20', borderRadius: 999, paddingVertical: 1, paddingHorizontal: 6 }}>
+                        <Text style={{ fontSize: 9, fontWeight: '700', color: Colors.teal }}>{t}</Text>
+                      </View>
+                    ))}
+                  </View>
+                )}
               </View>
             ))}
           </View>
         )}
-      </View>
-
-      {/* Time Per Question Bar Chart */}
-      <Text style={desktopStyles.rightPanelTitle}>TIME PER QUESTION</Text>
-      <View style={desktopStyles.chartContainer}>
-        {timingLoading ? (
-          <SkeletonLoader lines={2} />
-        ) : hasTiming && BarChart ? (
-          <ResponsiveContainer width="100%" height={150}>
-            <BarChart data={timingBarData} barCategoryGap="30%">
-              <XAxis
-                dataKey="name"
-                tick={{ fill: Colors.muted, fontSize: 10 }}
-                axisLine={false}
-                tickLine={false}
-              />
-              <YAxis
-                tick={{ fill: Colors.muted, fontSize: 10 }}
-                axisLine={false}
-                tickLine={false}
-                unit="s"
-              />
-              <Bar dataKey="seconds" radius={[6, 6, 0, 0]}>
-                <Cell fill={Colors.teal} />
-                <Cell fill={Colors.amber} />
-              </Bar>
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: DesktopColors.glass,
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: 10,
-                  fontSize: 11,
-                }}
-              />
-            </BarChart>
-          </ResponsiveContainer>
-        ) : (
-          <View style={{ alignItems: 'center', paddingVertical: 24 }}>
-            <Text style={{ fontSize: 28, marginBottom: 8 }}>⏱</Text>
-            <Text style={{ fontSize: 12, color: Colors.muted }}>No timing data yet</Text>
-          </View>
-        )}
-      </View>
-
-      {/* Weak Topics Alert */}
-      <Text style={desktopStyles.rightPanelTitle}>WEAK TOPICS</Text>
-      <View style={[desktopStyles.rightPanelCard, { alignItems: 'center', paddingVertical: 20 }]}>
-        <Text style={{ fontSize: 20, marginBottom: 6 }}>🎯</Text>
-        <Text style={{ fontSize: 11, color: Colors.muted, textAlign: 'center' }}>
-          Weak topics will appear based on activity gaps
-        </Text>
       </View>
     </View>
   );

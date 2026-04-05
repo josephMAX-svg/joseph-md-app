@@ -510,6 +510,165 @@ export async function stopDeepWork(sessionId: string): Promise<void> {
 }
 
 /**
+ * This Week summary: hours, cards, questions, and per-day activity.
+ * Returns dates as YYYY-MM-DD strings (Lima tz).
+ */
+export interface WeekSummary {
+  hoursStudied: number;
+  cardsCreated: number;
+  questions: number;
+  /** Set of YYYY-MM-DD dates (Lima tz) with any activity */
+  activeDays: string[];
+}
+
+function getWeekAgoLima(): string {
+  const d = new Date(getTodayLima());
+  d.setDate(d.getDate() - 6); // last 7 days including today
+  return d.toISOString().split('T')[0];
+}
+
+export async function getWeekSummary(): Promise<WeekSummary> {
+  try {
+    const since = getWeekAgoLima();
+    const sinceStart = `${since}T00:00:00-05:00`;
+
+    const [dwRes, blocksRes, progressRes] = await Promise.all([
+      supabase
+        .from('deep_work_sessions')
+        .select('horas_totales, fecha')
+        .gte('fecha', since),
+      supabase
+        .from('apex_blocks')
+        .select('fecha')
+        .gte('fecha', sinceStart),
+      supabase
+        .from('study_progress')
+        .select('preguntas_resueltas, fecha')
+        .gte('fecha', since),
+    ]);
+
+    const hoursStudied = (dwRes.data ?? []).reduce(
+      (sum, s) => sum + (Number(s.horas_totales) || 0),
+      0,
+    );
+    const cardsCreated = (blocksRes.data ?? []).length;
+    const questions = (progressRes.data ?? []).reduce(
+      (sum, s) => sum + (Number(s.preguntas_resueltas) || 0),
+      0,
+    );
+
+    const activeSet = new Set<string>();
+    for (const r of dwRes.data ?? []) {
+      if (r.fecha) activeSet.add(String(r.fecha).slice(0, 10));
+    }
+    for (const r of blocksRes.data ?? []) {
+      if (r.fecha) activeSet.add(String(r.fecha).slice(0, 10));
+    }
+    for (const r of progressRes.data ?? []) {
+      if (r.fecha) activeSet.add(String(r.fecha).slice(0, 10));
+    }
+
+    return {
+      hoursStudied: Math.round(hoursStudied * 10) / 10,
+      cardsCreated,
+      questions,
+      activeDays: Array.from(activeSet),
+    };
+  } catch {
+    return { hoursStudied: 0, cardsCreated: 0, questions: 0, activeDays: [] };
+  }
+}
+
+/**
+ * Get skills shared between agents.
+ * Silently falls back to [] if the agent_skills table doesn't exist yet.
+ */
+export interface AgentSkill {
+  id: string;
+  skill_name: string;
+  skill_description?: string | null;
+  source_agent?: string | null;
+  target_agents?: string[] | null;
+  fecha_creado?: string;
+  aplicado?: boolean;
+}
+
+export async function getAgentSkills(): Promise<AgentSkill[]> {
+  try {
+    const { data, error } = await supabase
+      .from('agent_skills')
+      .select('*')
+      .order('fecha_creado', { ascending: false })
+      .limit(20);
+    if (error) throw error;
+    return (data as AgentSkill[]) ?? [];
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Weak topics inferred from apex_blocks activity gaps per especialidad.
+ * WEAK if >14 days since last card, WARNING if >7 days.
+ */
+export interface WeakTopicByBlocks {
+  especialidad: string;
+  daysSince: number;
+  level: 'WEAK' | 'WARNING';
+}
+
+export async function getWeakTopicsFromBlocks(): Promise<WeakTopicByBlocks[]> {
+  try {
+    const { data, error } = await supabase
+      .from('apex_blocks')
+      .select('especialidad, fecha')
+      .not('especialidad', 'is', null)
+      .order('fecha', { ascending: false });
+    if (error || !data || data.length === 0) return [];
+
+    const latest: Record<string, string> = {};
+    for (const row of data) {
+      const esp = (row as { especialidad?: string }).especialidad;
+      const fecha = (row as { fecha?: string }).fecha;
+      if (esp && fecha && !latest[esp]) latest[esp] = fecha;
+    }
+
+    const today = new Date(getTodayLima());
+    const results: WeakTopicByBlocks[] = [];
+    for (const [esp, fecha] of Object.entries(latest)) {
+      const last = new Date(String(fecha).slice(0, 10));
+      const days = Math.floor((today.getTime() - last.getTime()) / (1000 * 60 * 60 * 24));
+      if (days > 14) results.push({ especialidad: esp, daysSince: days, level: 'WEAK' });
+      else if (days > 7) results.push({ especialidad: esp, daysSince: days, level: 'WARNING' });
+    }
+    results.sort((a, b) => b.daysSince - a.daysSince);
+    return results.slice(0, 8);
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Save a chat session's messages to Supabase chat_logs (batch insert).
+ */
+export interface ChatLogEntry {
+  agente: string;
+  mensaje_usuario: string;
+  respuesta_agente: string;
+  fase?: string;
+  sesion_id: string;
+}
+
+export async function saveChatLogs(entries: ChatLogEntry[]): Promise<void> {
+  if (entries.length === 0) return;
+  try {
+    await supabase.from('chat_logs').insert(entries);
+  } catch {
+    // Silent — offline or table missing
+  }
+}
+
+/**
  * Get today's accumulated deep work hours from Supabase
  */
 export async function getTodayDeepWorkHours(): Promise<number> {
