@@ -22,6 +22,8 @@ import GlassCard from '../../components/GlassCard';
 import AnimatedCounter from '../../components/AnimatedCounter';
 import CircularProgress from '../../components/CircularProgress';
 import { PulseDash } from '../../components/SkeletonLoader';
+import { useDataSource, useLocalTelemetry, mirCountdown } from '../../lib/dataSource';
+import { getApexQueueCount, getUnreadReports } from '../../lib/supabase';
 
 // Recharts sparkline — web only
 let AreaChart: any, Area: any, ResponsiveContainer: any;
@@ -148,8 +150,15 @@ function MetricCard({
  * Animated counters, glassmorphism cards, circular progress timer,
  * open counters (no artificial limits).
  */
+// Default service set — matches agente_estudio expected services
+const DEFAULT_SERVICES = ['supabase', 'anki', 'ocr', 'agent', 'scheduler', 'notifications'];
+
 export default function DesktopHomeContent() {
   const [countdown, setCountdown] = useState(getCountdown(new Date('2030-01-01')));
+  const { source, isLocalAvailable } = useDataSource();
+  const { phase: localPhase, status: localStatus } = useLocalTelemetry(source);
+  const { data: queueCount } = useSupabaseQuery(getApexQueueCount, 0);
+  const { data: unreadReports } = useSupabaseQuery(getUnreadReports, []);
   const [timerRunning, setTimerRunning] = useState(false);
   const [timerSeconds, setTimerSeconds] = useState(0);
   const [dwSessionId, setDwSessionId] = useState<string | null>(null);
@@ -244,14 +253,96 @@ export default function DesktopHomeContent() {
       contentContainerStyle={desktopStyles.centerScrollContent}
     >
       {/* Header */}
-      <View style={{ marginBottom: Spacing['3xl'] }}>
-        <Text style={desktopStyles.pageTitle}>
-          {greeting}, Joseph MD
-        </Text>
-        <Text style={[desktopStyles.bodyText, { color: Colors.onSurfaceVariant, marginTop: 4 }]}>
-          Dermatologist · Mayo Clinic · Rochester, MN
-        </Text>
+      <View style={{ marginBottom: Spacing.lg, flexDirection: 'row', alignItems: 'flex-start' }}>
+        <View style={{ flex: 1 }}>
+          <Text style={desktopStyles.pageTitle}>
+            {greeting}, Joseph MD
+          </Text>
+          <Text style={[desktopStyles.bodyText, { color: Colors.onSurfaceVariant, marginTop: 4 }]}>
+            Dermatologist · Mayo Clinic · Rochester, MN
+          </Text>
+        </View>
+        {/* Connection indicator */}
+        <View style={{
+          flexDirection: 'row', alignItems: 'center',
+          backgroundColor: 'rgba(255,255,255,0.04)', borderRadius: 999,
+          paddingVertical: 6, paddingHorizontal: 12, marginTop: 4,
+        }}>
+          <View style={{
+            width: 8, height: 8, borderRadius: 4,
+            backgroundColor: isLocalAvailable ? Colors.teal : Colors.muted,
+            marginRight: 8,
+          }} />
+          <Text style={{ fontSize: 11, color: Colors.onSurfaceVariant, fontWeight: '600', letterSpacing: 0.3 }}>
+            {isLocalAvailable ? 'PC conectada' : 'Modo nube'}
+          </Text>
+          {(unreadReports?.length ?? 0) > 0 && (
+            <View style={{ marginLeft: 10, backgroundColor: Colors.coral, borderRadius: 999, paddingVertical: 1, paddingHorizontal: 7 }}>
+              <Text style={{ fontSize: 10, fontWeight: '800', color: '#FFFFFF' }}>🔔 {unreadReports.length}</Text>
+            </View>
+          )}
+        </View>
       </View>
+
+      {/* Phase Badge + Service Status Dots */}
+      <View style={{ flexDirection: 'row', gap: 12, marginBottom: Spacing.section }}>
+        <GlassCard style={{ flex: 1, flexDirection: 'row', alignItems: 'center', marginBottom: 0, borderLeftWidth: 4, borderLeftColor: Colors.teal } as any}>
+          <View style={{ flex: 1 }}>
+            <Text style={{ fontSize: 10, fontWeight: '700', color: Colors.smallLabel, letterSpacing: 1.2, marginBottom: 4 }}>
+              FASE ACTUAL
+            </Text>
+            <Text style={{ fontSize: FontSize.titleMd, fontWeight: '700', color: Colors.onSurface }}>
+              {localPhase?.phase ?? 'Fase 0 · Research'}
+            </Text>
+          </View>
+          <View style={{ alignItems: 'flex-end' }}>
+            <Text style={{ fontSize: 24, fontWeight: '800', color: Colors.teal, letterSpacing: -0.5 }}>
+              {localPhase?.days_remaining ?? mirCountdown()}
+            </Text>
+            <Text style={{ fontSize: 9, fontWeight: '600', color: Colors.smallLabel, letterSpacing: 1 }}>
+              DÍAS MIR 2030
+            </Text>
+          </View>
+        </GlassCard>
+        <GlassCard style={{ flex: 1, marginBottom: 0 } as any}>
+          <Text style={{ fontSize: 10, fontWeight: '700', color: Colors.smallLabel, letterSpacing: 1.2, marginBottom: 8 }}>
+            {isLocalAvailable ? 'SERVICIOS' : 'SERVICIOS · MODO OFFLINE'}
+          </Text>
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+            {DEFAULT_SERVICES.map((svc) => {
+              const raw = localStatus?.services?.[svc];
+              const isUp = raw === true || raw === 'up';
+              const color = !isLocalAvailable ? Colors.muted : (isUp ? Colors.teal : Colors.coral);
+              return (
+                <View key={svc} style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: color, marginRight: 4 }} />
+                  <Text style={{ fontSize: 10, color: Colors.onSurfaceVariant, fontWeight: '500', textTransform: 'capitalize' }}>
+                    {svc}
+                  </Text>
+                </View>
+              );
+            })}
+          </View>
+        </GlassCard>
+      </View>
+
+      {/* APEX Queue Badge */}
+      {queueCount > 0 && (
+        <GlassCard style={{ flexDirection: 'row', alignItems: 'center', marginBottom: Spacing.section, borderLeftWidth: 4, borderLeftColor: Colors.amber } as any}>
+          <Text style={{ fontSize: 20, marginRight: Spacing.md }}>⚡</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={{ fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface }}>
+              APEX Queue
+            </Text>
+            <Text style={{ fontSize: 11, color: Colors.onSurfaceVariant, marginTop: 2 }}>
+              {queueCount} pendiente{queueCount !== 1 ? 's' : ''} por procesar
+            </Text>
+          </View>
+          <View style={{ backgroundColor: Colors.amber + '20', borderRadius: 999, paddingVertical: 4, paddingHorizontal: 12 }}>
+            <Text style={{ fontSize: 12, fontWeight: '800', color: Colors.amber }}>{queueCount}</Text>
+          </View>
+        </GlassCard>
+      )}
 
       {/* Career Milestones */}
       <Text style={desktopStyles.sectionHeader}>CAREER MILESTONES</Text>
