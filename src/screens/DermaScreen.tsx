@@ -1,24 +1,97 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Alert, Linking, Modal } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Alert, Linking, Modal, Platform } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius } from '../theme/tokens';
 
 type SubtopicStatus = 'NOT STARTED' | 'IN PROGRESS' | 'COMPLETED';
-const TOPICS = [
-  { title: 'Facial Topography & Vascularization — Cotofana' },
-  { title: 'Structural Facial Analysis & Aging — Cotofana, de Maio' },
-  { title: 'Injectables & Rheology — de Maio' },
-  { title: 'Complication Management — Carruthers' },
-  { title: 'Energy-Based Devices' },
-  { title: 'Acne & Skin Science' },
-  { title: 'Botulinum Toxin Mastery — Carruthers' },
-].map(t => ({ ...t, subtopics: Array.from({ length: 10 }, (_, i) => `Subtopic ${i + 1}`) }));
+
+interface Topic {
+  title: string;
+  author: string;
+  subtopics: string[];
+}
+
+const TOPICS: Topic[] = [
+  {
+    title: 'Facial Topography & Vascularization',
+    author: 'Cotofana',
+    subtopics: [
+      '01 The 5 Layers of the Face', '02 Facial Artery', '03 Angular Artery',
+      '04 Supratrochlear Artery', '05 Supraorbital Artery', '06 Superficial Temporal Artery',
+      '07 Infraorbital Artery', '08 Dorsal Nasal Artery', '09 Danger Zones by Region',
+      '10 Safe Injection Planes',
+    ],
+  },
+  {
+    title: 'Structural Facial Analysis & Aging',
+    author: 'Cotofana, de Maio',
+    subtopics: [
+      '01 Facial Fat Compartments', '02 Retaining Ligaments', '03 Bone Resorption with Aging',
+      '04 MD Codes de Maio Framework', '05 SMAS Anatomy & Ptosis', '06 Neoclassical Canons Revised',
+      '07 Golden Ratio BeautiPHIcation', '08 Tuesday Protocol Reverse Engineering',
+      '09 Facial Proportions & Lifting Vectors', '10 Ethnic Facial Analysis',
+    ],
+  },
+  {
+    title: 'Injectables & Rheology',
+    author: 'de Maio',
+    subtopics: [
+      '01 G-Prime', '02 G-Double Prime', '03 Cohesivity', '04 Hydrophilicity',
+      '05 Product Selection by Zone', '06 Needles vs Cannulas', '07 HA Types',
+      '08 Biostimulators', '09 Botulinum Toxin Basics', '10 Wednesday Protocol',
+    ],
+  },
+  {
+    title: 'Complication Management',
+    author: 'Carruthers',
+    subtopics: [
+      '01 Vascular Occlusion Recognition', '02 Hyaluronidase Rescue Protocol',
+      '03 Complete Emergency Protocol', '04 Tyndall Effect', '05 Biofilm',
+      '06 Delayed Inflammatory Reactions', '07 Anaphylaxis Protocol',
+      '08 Necrosis Prevention', '09 Blindness Risk', '10 Thursday Drill Protocol',
+    ],
+  },
+  {
+    title: 'Energy-Based Devices',
+    author: 'EBD',
+    subtopics: [
+      '01 Laser Physics Basics', '02 Ablative Fractional Laser', '03 Non-Ablative Fractional',
+      '04 Radiofrequency RF', '05 HIFU', '06 IPL', '07 Microneedling & PRP',
+      '08 Cryolipolysis', '09 Combination Protocols', '10 Contraindications by Device',
+    ],
+  },
+  {
+    title: 'Acne & Skin Science',
+    author: 'Dermatology',
+    subtopics: [
+      '01 Acne Pathophysiology', '02 IGA Scale', '03 Treatment Ladder',
+      '04 Isotretinoin Protocol', '05 Post-Acne Scarring', '06 Scar Treatment Protocols',
+      '07 Fitzpatrick Scale', '08 Glogau Photoaging', '09 Skin Barrier & Microbiome',
+      '10 CADI Questionnaire',
+    ],
+  },
+  {
+    title: 'Botulinum Toxin Mastery',
+    author: 'Carruthers',
+    subtopics: [
+      '01 Mechanism of Action', '02 Products & Conversion', '03 Upper Face Frontalis',
+      '04 Upper Face Glabella', '05 Upper Face Crows Feet', '06 Mid Face',
+      '07 Lower Face', '08 Neck Platysma Bands', '09 Hyperhidrosis', '10 Complications',
+    ],
+  },
+];
 
 const STATUS_CYCLE: SubtopicStatus[] = ['NOT STARTED', 'IN PROGRESS', 'COMPLETED'];
 const SC: Record<SubtopicStatus, { bg: string; text: string; dot: string }> = {
-  'NOT STARTED': { bg: Colors.surfaceContainerHighest, text: Colors.muted, dot: Colors.surfaceContainerHighest },
+  'NOT STARTED': { bg: Colors.surfaceContainerHighest, text: Colors.muted, dot: Colors.muted },
   'IN PROGRESS': { bg: Colors.amber + '20', text: Colors.amber, dot: Colors.amber },
-  'COMPLETED': { bg: Colors.teal + '20', text: Colors.teal, dot: Colors.teal },
+  'COMPLETED': { bg: Colors.green + '20', text: Colors.green, dot: Colors.green },
 };
+
+// Format subtopic name: "01 The 5 Layers..." → "01 · The 5 Layers..."
+function formatSubtopic(raw: string): string {
+  const m = raw.match(/^(\d{2})\s+(.+)$/);
+  return m ? `${m[1]} · ${m[2]}` : raw;
+}
 
 const PROTOCOL = [
   '1. STOP injection immediately', '2. Aspirate if possible',
@@ -30,28 +103,58 @@ const PROTOCOL = [
   '13. Schedule follow-up within 24h',
 ];
 
-function TopicCard({ topic }: { topic: typeof TOPICS[0] }) {
+function SubtopicRow({ name, status, onPress }: { name: string; status: SubtopicStatus; onPress: () => void }) {
+  const [hovered, setHovered] = useState(false);
+  const c = SC[status];
+  const webHover = Platform.OS === 'web'
+    ? { onMouseEnter: () => setHovered(true), onMouseLeave: () => setHovered(false) }
+    : {};
+  const hoverStyle = hovered && Platform.OS === 'web'
+    ? { backgroundColor: 'rgba(255,255,255,0.03)' }
+    : {};
+  return (
+    <TouchableOpacity
+      style={[s.subtopicRow, hoverStyle, Platform.OS === 'web' ? { cursor: 'pointer' } as any : {}]}
+      onPress={onPress}
+      {...webHover}
+    >
+      <View style={[s.subtopicDot, { backgroundColor: c.dot }]} />
+      <Text style={[s.subtopicText, status === 'COMPLETED' && { textDecorationLine: 'line-through', color: Colors.muted }]}>
+        {formatSubtopic(name)}
+      </Text>
+      <View style={[s.statusTag, { backgroundColor: c.bg }]}><Text style={[s.statusTagText, { color: c.text }]}>{status}</Text></View>
+    </TouchableOpacity>
+  );
+}
+
+function TopicCard({ topic }: { topic: Topic }) {
   const [expanded, setExpanded] = useState(false);
   const [statuses, setStatuses] = useState<SubtopicStatus[]>(topic.subtopics.map(() => 'NOT STARTED'));
   const cycle = (i: number) => setStatuses(p => { const n = [...p]; n[i] = STATUS_CYCLE[(STATUS_CYCLE.indexOf(n[i]) + 1) % 3]; return n; });
-  const done = statuses.filter(s => s === 'COMPLETED').length;
+  const done = statuses.filter(st => st === 'COMPLETED').length;
   const pct = Math.round((done / topic.subtopics.length) * 100);
   return (
     <View style={s.topicCard}>
       <TouchableOpacity style={s.topicHeader} onPress={() => setExpanded(!expanded)}>
-        <View style={{ flex: 1 }}><Text style={s.topicTitle}>{topic.title}</Text><Text style={s.topicCount}>{done}/{topic.subtopics.length} subtopics</Text></View>
+        <View style={{ flex: 1 }}>
+          <Text style={s.topicTitle}>{topic.title}</Text>
+          <Text style={s.topicCount}>
+            {expanded
+              ? `${done}/${topic.subtopics.length} subtopics`
+              : `${topic.author} · ${done}/${topic.subtopics.length} completed`}
+          </Text>
+        </View>
         <View style={s.topicProgress}><Text style={s.topicPercent}>{pct}%</Text></View>
         <Text style={s.expandIcon}>{expanded ? '▾' : '▸'}</Text>
       </TouchableOpacity>
       <View style={s.progressTrack}><View style={[s.progressValue, { width: `${pct}%` }]} /></View>
-      {expanded && (<View style={s.subtopicList}>{topic.subtopics.map((sub, i) => {
-        const st = statuses[i]; const c = SC[st];
-        return (<TouchableOpacity key={i} style={s.subtopicRow} onPress={() => cycle(i)}>
-          <View style={[s.subtopicDot, { backgroundColor: c.dot }]} />
-          <Text style={[s.subtopicText, st === 'COMPLETED' && { textDecorationLine: 'line-through', color: Colors.muted }]}>{sub}</Text>
-          <View style={[s.statusTag, { backgroundColor: c.bg }]}><Text style={[s.statusTagText, { color: c.text }]}>{st}</Text></View>
-        </TouchableOpacity>);
-      })}</View>)}
+      {expanded && (
+        <View style={s.subtopicList}>
+          {topic.subtopics.map((sub, i) => (
+            <SubtopicRow key={i} name={sub} status={statuses[i]} onPress={() => cycle(i)} />
+          ))}
+        </View>
+      )}
     </View>
   );
 }
@@ -113,7 +216,7 @@ const s = StyleSheet.create({
   progressTrack: { height: 4, backgroundColor: Colors.surfaceContainerHighest, borderRadius: 2, overflow: 'hidden', marginTop: Spacing.sm },
   progressValue: { height: 4, borderRadius: 2, backgroundColor: Colors.purple },
   subtopicList: { marginTop: Spacing.md },
-  subtopicRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: Spacing.xs },
+  subtopicRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: Spacing.xs, paddingHorizontal: Spacing.sm, borderRadius: 6 },
   subtopicDot: { width: 6, height: 6, borderRadius: 3, marginRight: Spacing.sm },
   subtopicText: { fontSize: FontSize.bodyMd, color: Colors.onSurface, flex: 1 },
   statusTag: { borderRadius: BorderRadius.full, paddingVertical: 1, paddingHorizontal: 6 },
