@@ -5,13 +5,9 @@ import { createClient } from '@supabase/supabase-js';
 /**
  * Supabase client for Joseph MD
  * Project: joseph-medicina
- *
- * TODO: Add your Supabase credentials from project "joseph-medicina"
- * SUPABASE_URL: found in Supabase Dashboard → Settings → API
- * SUPABASE_ANON_KEY: found in Supabase Dashboard → Settings → API
  */
-const SUPABASE_URL = 'https://your-project.supabase.co';
-const SUPABASE_ANON_KEY = 'your-anon-key';
+const SUPABASE_URL = 'https://qacynpqdrorpuegsmtcy.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFhY3lucHFkcm9ycHVlZ3NtdGN5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzODI3ODIsImV4cCI6MjA4OTk1ODc4Mn0.bQk5OCtaSuKqr31Gve1lZ2XBUQ46IvR50yVBeqDSsZE';
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: {

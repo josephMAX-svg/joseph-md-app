@@ -62,6 +62,28 @@ CREATE TABLE deep_work_sessions (
   fuente TEXT DEFAULT 'app'
 );
 
+-- Skills compartidas entre agentes
+CREATE TABLE IF NOT EXISTS agent_skills (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  skill_name TEXT NOT NULL,
+  skill_description TEXT,
+  source_agent TEXT,
+  target_agents TEXT[],
+  fecha_creado TIMESTAMPTZ DEFAULT NOW(),
+  aplicado BOOLEAN DEFAULT FALSE
+);
+
+-- Logs de conversación con agentes
+CREATE TABLE IF NOT EXISTS chat_logs (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  fecha TIMESTAMPTZ DEFAULT NOW(),
+  agente TEXT NOT NULL,
+  mensaje_usuario TEXT,
+  respuesta_agente TEXT,
+  fase TEXT,
+  sesion_id TEXT
+);
+
 -- Reportes del agente (para notificaciones)
 CREATE TABLE agent_reports (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
