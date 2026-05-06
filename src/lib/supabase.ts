@@ -668,6 +668,64 @@ export async function saveChatLogs(entries: ChatLogEntry[]): Promise<void> {
   }
 }
 
+// ═══════════════════════════════════════════════
+// v2.3.2 — APEX trilingüe (counts por examen)
+// ═══════════════════════════════════════════════
+
+export interface ApexCountByExam {
+  fecha: string;
+  MIR: number;
+  ENCAPS: number;
+  USMLE: number;
+  total: number;
+}
+
+/**
+ * Cuenta APEX creados hoy agrupados por examen.
+ * Fallback robusto: si la columna 'examen' no existe en apex_blocks,
+ * todos los blocks se asignan a 'MIR' (legacy).
+ */
+export async function getApexCountToday(): Promise<ApexCountByExam> {
+  const today = getTodayLima();
+  const counts: ApexCountByExam = { fecha: today, MIR: 0, ENCAPS: 0, USMLE: 0, total: 0 };
+  try {
+    const { data, error } = await supabase
+      .from('apex_blocks')
+      .select('examen,fecha')
+      .eq('fecha', today);
+    if (!error && data) {
+      for (const row of data) {
+        const ex = (row.examen as string | undefined)?.toUpperCase() || 'MIR';
+        if (ex === 'MIR' || ex === 'ENCAPS' || ex === 'USMLE') {
+          counts[ex] += 1;
+        }
+      }
+    }
+  } catch {
+    // ignore
+  }
+  // Fallback: tabla apex_reports si existe
+  try {
+    const { data } = await supabase
+      .from('apex_reports')
+      .select('examen,count')
+      .eq('fecha', today);
+    if (data) {
+      for (const row of data as Array<{ examen?: string; count?: number }>) {
+        const ex = row.examen?.toUpperCase();
+        const c = row.count ?? 1;
+        if (ex === 'MIR' || ex === 'ENCAPS' || ex === 'USMLE') {
+          counts[ex] += c;
+        }
+      }
+    }
+  } catch {
+    // tabla no existe aún → ignore
+  }
+  counts.total = counts.MIR + counts.ENCAPS + counts.USMLE;
+  return counts;
+}
+
 /**
  * Get today's accumulated deep work hours from Supabase
  */

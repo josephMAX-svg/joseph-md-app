@@ -21,8 +21,14 @@ import {
   getPalmertonErrors,
   getTimingStats,
   getApexQueueCount,
+  getApexCountToday,
 } from '../lib/supabase';
-import type { PalmertonErrorDist, TimingStats, WeakTopic } from '../lib/supabase';
+import type {
+  PalmertonErrorDist,
+  TimingStats,
+  WeakTopic,
+  ApexCountByExam,
+} from '../lib/supabase';
 import ApexSubmitModal from '../components/ApexSubmitModal';
 
 // ─── Data Structures ───
@@ -208,6 +214,10 @@ export default function EstudioScreen() {
   const { data: palmertonErrors } = useSupabaseQuery(getPalmertonErrors, [] as PalmertonErrorDist[]);
   const { data: timingStats } = useSupabaseQuery(getTimingStats, { avgReadingSeconds: null, avgConstructionSeconds: null } as TimingStats);
   const { data: queueCount, refetch: refetchQueue } = useSupabaseQuery(getApexQueueCount, 0);
+  const { data: apexToday } = useSupabaseQuery(
+    getApexCountToday,
+    { fecha: '', MIR: 0, ENCAPS: 0, USMLE: 0, total: 0 } as ApexCountByExam,
+  );
 
   // Live progress per tab
   const examMap: Record<CountryTab, string> = { EEUU: 'USMLE', ESPAÑA: 'MIR', PERÚ: 'ENCAPS' };
@@ -267,6 +277,33 @@ export default function EstudioScreen() {
             <Text style={[styles.cziValue, { color: getCZIColor(cziValue) }]}>
               {cziValue !== null ? cziValue.toFixed(2) : '--'}
             </Text>
+          </View>
+        </View>
+
+        {/* APEX Hoy — Trilingüe v2.3.2 */}
+        <View style={styles.apexTodayCard}>
+          <Text style={styles.apexTodayTitle}>📊 APEX creados hoy</Text>
+          <View style={styles.apexTodayRow}>
+            <View style={styles.apexTodayItem}>
+              <Text style={styles.apexTodayFlag}>🇪🇸</Text>
+              <Text style={styles.apexTodayLabel}>MIR</Text>
+              <Text style={[styles.apexTodayCount, { color: Colors.amber }]}>{apexToday.MIR}</Text>
+            </View>
+            <View style={styles.apexTodayItem}>
+              <Text style={styles.apexTodayFlag}>🇵🇪</Text>
+              <Text style={styles.apexTodayLabel}>ENCAPS</Text>
+              <Text style={[styles.apexTodayCount, { color: Colors.coral }]}>{apexToday.ENCAPS}</Text>
+            </View>
+            <View style={styles.apexTodayItem}>
+              <Text style={styles.apexTodayFlag}>🇺🇸</Text>
+              <Text style={styles.apexTodayLabel}>USMLE</Text>
+              <Text style={[styles.apexTodayCount, { color: Colors.green }]}>{apexToday.USMLE}</Text>
+            </View>
+            <View style={[styles.apexTodayItem, styles.apexTodayItemTotal]}>
+              <Text style={styles.apexTodayFlag}>🌐</Text>
+              <Text style={styles.apexTodayLabel}>TOTAL</Text>
+              <Text style={[styles.apexTodayCount, { color: Colors.teal }]}>{apexToday.total}</Text>
+            </View>
           </View>
         </View>
 
@@ -574,6 +611,50 @@ const styles = StyleSheet.create({
   },
   cziLabel: { fontSize: FontSize.labelSm, fontWeight: '700', letterSpacing: 1 },
   cziValue: { fontSize: FontSize.titleMd, fontWeight: '800' },
+
+  // APEX Hoy card v2.3.2
+  apexTodayCard: {
+    backgroundColor: Colors.surfaceContainerLow,
+    borderRadius: BorderRadius.lg,
+    padding: Spacing.lg,
+    marginBottom: Spacing.section,
+    borderLeftWidth: 3,
+    borderLeftColor: Colors.teal,
+  },
+  apexTodayTitle: {
+    fontSize: FontSize.titleMd,
+    fontWeight: '700',
+    color: Colors.onSurface,
+    marginBottom: Spacing.md,
+  },
+  apexTodayRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  apexTodayItem: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  apexTodayItemTotal: {
+    borderLeftWidth: 1,
+    borderLeftColor: 'rgba(143,144,151,0.2)',
+    paddingLeft: Spacing.sm,
+  },
+  apexTodayFlag: {
+    fontSize: 18,
+    marginBottom: 2,
+  },
+  apexTodayLabel: {
+    fontSize: FontSize.labelSm,
+    color: Colors.muted,
+    fontWeight: '600',
+    letterSpacing: 0.5,
+    marginBottom: 2,
+  },
+  apexTodayCount: {
+    fontSize: FontSize.headlineLg,
+    fontWeight: '800',
+  },
 
   // Queue banner
   queueBanner: {
