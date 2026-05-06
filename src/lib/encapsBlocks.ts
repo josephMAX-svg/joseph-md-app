@@ -7,6 +7,7 @@ import { fetchLocal, useDataSource } from './dataSource';
 export interface EncapsSubtema {
   id: string;
   apex: number;
+  label?: string;  // v2.4 PLUS: versión legible "02. Epidemiologia"
 }
 
 export interface EncapsBlock {
@@ -193,10 +194,10 @@ export function useEncapsBlocks(): {
   const fetchBlocks = async () => {
     setLoading(true);
     try {
-      // 1) Intentar endpoint local
+      // 1) Intentar endpoint local v2.4 PLUS (con label legible)
       if (source === 'local') {
         const data = await fetchLocal<Record<string, any>>(
-          '/reports/apex/encaps/by_block',
+          '/reports/apex/encaps/by_block_and_subtopic',
           5000,
         );
         if (data) {
@@ -205,7 +206,7 @@ export function useEncapsBlocks(): {
             if (!r) return b;
             return {
               ...b,
-              apex_count: r.apex_count ?? 0,
+              apex_count: r.apex_total ?? r.apex_count ?? 0,
               subtemas_cubiertos: r.subtemas_cubiertos ?? 0,
               ultimo_apex_fecha: r.ultimo_apex_fecha ?? null,
               subtemas_detalle: r.subtemas_detalle ?? b.subtemas_detalle,

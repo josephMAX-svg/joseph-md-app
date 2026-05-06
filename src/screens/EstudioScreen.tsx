@@ -694,7 +694,7 @@ function EncapsBlockCard({ block }: { block: EncapsBlock }) {
                 ]}
                 numberOfLines={1}
               >
-                {s.id}
+                {s.label || s.id}
               </Text>
               <Text
                 style={[
@@ -706,6 +706,21 @@ function EncapsBlockCard({ block }: { block: EncapsBlock }) {
               </Text>
             </View>
           ))}
+        </View>
+      )}
+
+      {/* Barra de progreso de cobertura */}
+      {block.subtemas_total > 0 && (
+        <View style={styles.encapsProgressTrack}>
+          <View
+            style={[
+              styles.encapsProgressFill,
+              {
+                width: `${Math.min(100, (block.subtemas_cubiertos / block.subtemas_total) * 100)}%`,
+                backgroundColor: accent,
+              },
+            ]}
+          />
         </View>
       )}
     </View>
@@ -873,6 +888,17 @@ const styles = StyleSheet.create({
     color: Colors.muted,
     minWidth: 24,
     textAlign: 'right',
+  },
+  encapsProgressTrack: {
+    height: 4,
+    backgroundColor: Colors.surfaceContainerHighest,
+    borderRadius: 2,
+    marginTop: Spacing.sm,
+    overflow: 'hidden',
+  },
+  encapsProgressFill: {
+    height: 4,
+    borderRadius: 2,
   },
 
   // APEX Hoy card v2.3.2
