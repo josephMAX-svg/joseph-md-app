@@ -30,6 +30,9 @@ import type {
   ApexCountByExam,
 } from '../lib/supabase';
 import ApexSubmitModal from '../components/ApexSubmitModal';
+import ApexManualModal from '../components/ApexManualModal';
+import { useEncapsBlocks } from '../lib/encapsBlocks';
+import type { EncapsBlock } from '../lib/encapsBlocks';
 
 // ─── Data Structures ───
 interface Bank {
@@ -104,9 +107,9 @@ const PROMIR_SPECIALTIES = [
   'Fisiología', 'Genética', 'Medicina Preventiva', 'Bioestadística', 'Ética Médica',
 ];
 
-const ENCAPS_AREAS = [
-  'Medicina', 'Cirugía', 'Gineco-Obstetricia', 'Pediatría', 'Salud Pública',
-];
+// Las áreas genéricas (Medicina/Cirugía/...) NO son bloques oficiales del ENCAPS.
+// La reorganización oficial v2.3.2 usa los 5 bloques del temario MINSA.
+// Ver: src/lib/encapsBlocks.ts → ENCAPS_BLOCKS_STATIC
 
 type CountryTab = 'EEUU' | 'ESPAÑA' | 'PERÚ';
 
@@ -200,6 +203,10 @@ export default function EstudioScreen() {
   // APEX modal
   const [apexModalVisible, setApexModalVisible] = useState(false);
   const [apexModalTipo, setApexModalTipo] = useState<'manual' | 'dictar_error'>('manual');
+  // APEX manual modal (v2.3.2 — flujo Palmerton manual)
+  const [apexManualModalVisible, setApexManualModalVisible] = useState(false);
+  // ENCAPS 5 bloques oficiales
+  const { blocks: encapsBlocks, refetch: refetchEncaps } = useEncapsBlocks();
 
   // ─── Live Supabase data ───
   const { data: cziValue } = useSupabaseQuery(getLatestCZI, null);
@@ -224,7 +231,6 @@ export default function EstudioScreen() {
   const uworldProgress = useLiveProgress(UWORLD_SYSTEMS.map(s => s.name), 'USMLE');
   const ambossProgress = useLiveProgress(AMBOSS_SUBJECTS.map(s => s.name), 'USMLE');
   const promirProgress = useLiveProgress(PROMIR_SPECIALTIES, 'MIR');
-  const encapsProgress = useLiveProgress(ENCAPS_AREAS, 'ENCAPS');
 
   // CZI badge color
   const getCZIColor = (val: number | null) => {
@@ -278,6 +284,22 @@ export default function EstudioScreen() {
               {cziValue !== null ? cziValue.toFixed(2) : '--'}
             </Text>
           </View>
+        </View>
+
+        {/* Pegar APEX manual v2.3.2 — Capa 2 flujo Palmerton-driven */}
+        <View style={styles.apexManualCard}>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.apexManualTitle}>📋 Pegar APEX manual</Text>
+            <Text style={styles.apexManualSub}>
+              Para celular o cuando no estás en PC (sin Ctrl+Shift+A)
+            </Text>
+          </View>
+          <TouchableOpacity
+            style={styles.apexManualBtn}
+            onPress={() => setApexManualModalVisible(true)}
+          >
+            <Text style={styles.apexManualBtnText}>Pegar bloque APEX</Text>
+          </TouchableOpacity>
         </View>
 
         {/* APEX Hoy — Trilingüe v2.3.2 */}
@@ -470,23 +492,17 @@ export default function EstudioScreen() {
           </View>
         )}
 
-        {/* ─── PERÚ TAB ─── */}
+        {/* ─── PERÚ TAB v2.3.2 — 5 bloques oficiales ENCAPS (94 subtemas) ─── */}
         {activeTab === 'PERÚ' && (
-          <View style={styles.bankSection}>
-            <View style={styles.bankHeader}>
-              <Text style={styles.bankTitle}>ENCAPS</Text>
-              <View style={[styles.badge, { backgroundColor: Colors.coral + '20' }]}>
-                <Text style={[styles.badgeText, { color: Colors.coral }]}>5 areas</Text>
-              </View>
+          <View>
+            <View style={styles.encapsHeader}>
+              <Text style={styles.encapsHeaderTitle}>ENCAPS — 5 bloques oficiales</Text>
+              <Text style={styles.encapsHeaderSub}>
+                94 subtemas · examen 10 ago 2026
+              </Text>
             </View>
-            {ENCAPS_AREAS.map((area, i) => (
-              <ProgressItem
-                key={i}
-                name={area}
-                detail="0%"
-                progress={encapsProgress[area] ?? 0}
-                color={Colors.coral}
-              />
+            {encapsBlocks.map((b) => (
+              <EncapsBlockCard key={b.id} block={b} />
             ))}
           </View>
         )}
@@ -588,6 +604,110 @@ export default function EstudioScreen() {
         }}
         initialTipo={apexModalTipo}
       />
+
+      {/* ─── APEX Manual Modal v2.3.2 (flujo Palmerton manual) ─── */}
+      <ApexManualModal
+        visible={apexManualModalVisible}
+        onClose={() => {
+          setApexManualModalVisible(false);
+          refetchEncaps();
+          refetchQueue();
+        }}
+      />
+    </View>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// EncapsBlockCard — card expandible por bloque oficial v2.3.2
+// ═══════════════════════════════════════════════════════════════════
+function EncapsBlockCard({ block }: { block: EncapsBlock }) {
+  const [expanded, setExpanded] = useState(false);
+  const colorMap: Record<string, string> = {
+    blue: Colors.blue,
+    green: Colors.green,
+    gray: Colors.muted,
+    orange: Colors.amber,
+  };
+  const accent = colorMap[block.color] ?? Colors.coral;
+  const noActivity = block.apex_count === 0;
+  const fechaTxt = block.ultimo_apex_fecha
+    ? `Último APEX: ${String(block.ultimo_apex_fecha).slice(0, 10)}`
+    : null;
+
+  return (
+    <View style={[styles.encapsCard, { borderLeftColor: accent }]}>
+      <TouchableOpacity
+        onPress={() => setExpanded(e => !e)}
+        style={styles.encapsCardHeader}
+        activeOpacity={0.7}
+      >
+        <View style={{ flex: 1 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={styles.encapsCardTitle}>{block.nombre}</Text>
+            {block.rentable && (
+              <Text style={styles.rentableBadge}>⭐ MÁS RENTABLE</Text>
+            )}
+          </View>
+          <Text style={styles.encapsCardId}>
+            {block.id} · {block.subtemas_total} subtemas
+          </Text>
+        </View>
+        <View style={styles.encapsCardRightCol}>
+          <Text style={[styles.encapsPeso, { color: accent }]}>{block.peso}</Text>
+          <Text style={styles.encapsPreguntas}>~{block.preguntas_target} Q</Text>
+        </View>
+      </TouchableOpacity>
+
+      <View style={styles.encapsCardBody}>
+        <View style={styles.encapsStatsRow}>
+          <Text style={styles.encapsCount}>
+            <Text style={[styles.encapsCountValue, { color: accent }]}>
+              {block.apex_count}
+            </Text>{' '}
+            APEX creados
+          </Text>
+          <Text style={styles.encapsCobertura}>
+            Cobertura: {block.subtemas_cubiertos}/{block.subtemas_total}
+          </Text>
+        </View>
+        {noActivity ? (
+          <Text style={styles.encapsNoActivity}>Sin actividad</Text>
+        ) : (
+          fechaTxt && <Text style={styles.encapsLastDate}>{fechaTxt}</Text>
+        )}
+        <TouchableOpacity onPress={() => setExpanded(e => !e)}>
+          <Text style={styles.encapsToggle}>
+            {expanded ? '▾ Ocultar subtemas' : '▸ Ver subtemas'}
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      {expanded && (
+        <View style={styles.encapsSubtemasList}>
+          {block.subtemas_detalle.map(s => (
+            <View key={s.id} style={styles.encapsSubtemaRow}>
+              <Text
+                style={[
+                  styles.encapsSubtemaName,
+                  s.apex > 0 && { color: Colors.green, fontWeight: '600' },
+                ]}
+                numberOfLines={1}
+              >
+                {s.id}
+              </Text>
+              <Text
+                style={[
+                  styles.encapsSubtemaCount,
+                  s.apex > 0 && { color: Colors.green, fontWeight: '700' },
+                ]}
+              >
+                {s.apex}
+              </Text>
+            </View>
+          ))}
+        </View>
+      )}
     </View>
   );
 }
@@ -611,6 +731,149 @@ const styles = StyleSheet.create({
   },
   cziLabel: { fontSize: FontSize.labelSm, fontWeight: '700', letterSpacing: 1 },
   cziValue: { fontSize: FontSize.titleMd, fontWeight: '800' },
+
+  // APEX manual card v2.3.2 (Capa 2 flujo Palmerton)
+  apexManualCard: {
+    backgroundColor: Colors.surfaceContainerLow,
+    borderRadius: BorderRadius.lg,
+    padding: Spacing.lg,
+    marginBottom: Spacing.section,
+    borderLeftWidth: 3,
+    borderLeftColor: Colors.amber,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  apexManualTitle: {
+    fontSize: FontSize.titleMd,
+    fontWeight: '700',
+    color: Colors.onSurface,
+  },
+  apexManualSub: {
+    fontSize: FontSize.labelSm,
+    color: Colors.muted,
+    marginTop: 2,
+  },
+  apexManualBtn: {
+    backgroundColor: Colors.amber,
+    paddingVertical: Spacing.sm,
+    paddingHorizontal: Spacing.md,
+    borderRadius: BorderRadius.md,
+    marginLeft: Spacing.md,
+  },
+  apexManualBtnText: {
+    fontSize: FontSize.labelMd,
+    fontWeight: '800',
+    color: '#0B1628',
+  },
+
+  // ENCAPS 5 bloques oficiales v2.3.2
+  encapsHeader: {
+    marginBottom: Spacing.md,
+  },
+  encapsHeaderTitle: {
+    fontSize: FontSize.titleMd,
+    fontWeight: '800',
+    color: Colors.onSurface,
+  },
+  encapsHeaderSub: {
+    fontSize: FontSize.labelSm,
+    color: Colors.muted,
+    marginTop: 2,
+  },
+  encapsCard: {
+    backgroundColor: Colors.surfaceContainerLow,
+    borderRadius: BorderRadius.lg,
+    padding: Spacing.lg,
+    marginBottom: Spacing.md,
+    borderLeftWidth: 4,
+  },
+  encapsCardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  encapsCardTitle: {
+    fontSize: FontSize.titleMd,
+    fontWeight: '700',
+    color: Colors.onSurface,
+  },
+  rentableBadge: {
+    fontSize: 9,
+    fontWeight: '800',
+    color: Colors.green,
+    backgroundColor: Colors.green + '20',
+    paddingVertical: 2,
+    paddingHorizontal: 6,
+    borderRadius: 999,
+    marginLeft: Spacing.sm,
+    letterSpacing: 0.5,
+  },
+  encapsCardId: {
+    fontSize: FontSize.labelSm,
+    color: Colors.muted,
+    marginTop: 2,
+  },
+  encapsCardRightCol: { alignItems: 'flex-end' },
+  encapsPeso: {
+    fontSize: FontSize.titleMd,
+    fontWeight: '800',
+  },
+  encapsPreguntas: {
+    fontSize: FontSize.labelSm,
+    color: Colors.muted,
+  },
+  encapsCardBody: {
+    marginTop: Spacing.md,
+  },
+  encapsStatsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  encapsCount: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant },
+  encapsCountValue: { fontSize: FontSize.titleMd, fontWeight: '800' },
+  encapsCobertura: { fontSize: FontSize.labelSm, color: Colors.muted },
+  encapsNoActivity: {
+    fontSize: FontSize.labelSm,
+    color: Colors.coral,
+    fontWeight: '600',
+    fontStyle: 'italic',
+    marginBottom: 4,
+  },
+  encapsLastDate: {
+    fontSize: FontSize.labelSm,
+    color: Colors.muted,
+    marginBottom: 4,
+  },
+  encapsToggle: {
+    fontSize: FontSize.labelSm,
+    color: Colors.onSurfaceVariant,
+    fontWeight: '600',
+    marginTop: 4,
+  },
+  encapsSubtemasList: {
+    marginTop: Spacing.sm,
+    paddingTop: Spacing.sm,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(143,144,151,0.15)',
+  },
+  encapsSubtemaRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 4,
+  },
+  encapsSubtemaName: {
+    flex: 1,
+    fontSize: FontSize.labelSm,
+    color: Colors.onSurfaceVariant,
+  },
+  encapsSubtemaCount: {
+    fontSize: FontSize.labelSm,
+    color: Colors.muted,
+    minWidth: 24,
+    textAlign: 'right',
+  },
 
   // APEX Hoy card v2.3.2
   apexTodayCard: {
