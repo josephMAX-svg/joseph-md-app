@@ -18,6 +18,8 @@ import type { WeakTopic } from '../../lib/supabase';
 import GlassCard from '../../components/GlassCard';
 import CircularProgress from '../../components/CircularProgress';
 import AgentChatModal from '../../components/AgentChatModal';
+import { useEncapsBlocks } from '../../lib/encapsBlocks';
+import type { EncapsBlock } from '../../lib/encapsBlocks';
 
 // ─── Data Structures ───
 interface BankItem { name: string; count: string; }
@@ -88,9 +90,9 @@ const PROMIR_SPECIALTIES = [
   'Fisiología', 'Genética', 'Medicina Preventiva', 'Bioestadística', 'Ética Médica',
 ];
 
-const ENCAPS_AREAS = [
-  'Medicina', 'Cirugía', 'Gineco-Obstetricia', 'Pediatría', 'Salud Pública',
-];
+// v2.4 PLUS: las áreas genéricas (Medicina/Cirugía/...) NO son bloques oficiales.
+// La pantalla PE Perú usa los 5 bloques oficiales del temario MINSA + 94 subtemas.
+// Ver lib/encapsBlocks.ts → useEncapsBlocks() hook.
 
 type CountryTab = 'EEUU' | 'ESPAÑA' | 'PERÚ';
 
@@ -259,7 +261,7 @@ export default function DesktopEstudioContent() {
   const uworldProgress = useLiveProgress(UWORLD_SYSTEMS.map(s => s.name), 'USMLE');
   const ambossProgress = useLiveProgress(AMBOSS_SUBJECTS.map(s => s.name), 'USMLE');
   const promirProgress = useLiveProgress(PROMIR_SPECIALTIES, 'MIR');
-  const encapsProgress = useLiveProgress(ENCAPS_AREAS, 'ENCAPS');
+  const { blocks: encapsBlocks } = useEncapsBlocks();
 
   const getCZIColor = (val: number | null) => {
     if (val === null) return Colors.muted;
@@ -487,23 +489,151 @@ export default function DesktopEstudioContent() {
         </View>
       )}
 
-      {/* ═══ PERÚ TAB — ENCAPS 5 areas ═══ */}
+      {/* ═══ PERÚ TAB — ENCAPS 5 bloques oficiales (v2.4 PLUS) ═══ */}
       {activeTab === 'PERÚ' && (
         <View>
-          <BankSectionHeader title="ENCAPS" color={Colors.coral} badge="5 AREAS" />
-          <View style={desktopStyles.specialtyGrid}>
-            {ENCAPS_AREAS.map((name) => (
-              <BankCard
-                key={name}
-                name={name}
-                detail="ENCAPS"
-                pct={encapsProgress[name] ?? 0}
-                accentColor={Colors.coral}
-              />
+          <BankSectionHeader
+            title="ENCAPS — 5 bloques oficiales · 94 subtemas"
+            color={Colors.coral}
+            badge="MINSA"
+          />
+          <View>
+            {encapsBlocks.map((b) => (
+              <DesktopEncapsBlockCard key={b.id} block={b} />
             ))}
           </View>
         </View>
       )}
     </ScrollView>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// DesktopEncapsBlockCard — v2.4 PLUS card por bloque oficial ENCAPS
+// ═══════════════════════════════════════════════════════════════════
+function DesktopEncapsBlockCard({ block }: { block: EncapsBlock }) {
+  const [expanded, setExpanded] = useState(false);
+  const colorMap: Record<string, string> = {
+    blue: Colors.blue,
+    green: Colors.green,
+    gray: Colors.muted,
+    orange: Colors.amber,
+  };
+  const accent = colorMap[block.color] ?? Colors.coral;
+  const noActivity = block.apex_count === 0;
+  const fechaTxt = block.ultimo_apex_fecha
+    ? `Último APEX: ${String(block.ultimo_apex_fecha).slice(0, 10)}`
+    : null;
+  const coberturaPct = block.subtemas_total > 0
+    ? Math.round((block.subtemas_cubiertos / block.subtemas_total) * 100)
+    : 0;
+
+  return (
+    <View style={{
+      backgroundColor: Colors.surfaceContainerLow,
+      borderRadius: BorderRadius.lg,
+      padding: Spacing.lg,
+      marginBottom: Spacing.md,
+      borderLeftWidth: 4,
+      borderLeftColor: accent,
+    }}>
+      <TouchableOpacity onPress={() => setExpanded(e => !e)} activeOpacity={0.7}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+          <View style={{ flex: 1 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap' }}>
+              <Text style={{ fontSize: FontSize.titleMd, fontWeight: '800', color: Colors.onSurface }}>
+                {block.nombre}
+              </Text>
+              {block.rentable && (
+                <Text style={{
+                  fontSize: 10, fontWeight: '800', color: Colors.green,
+                  backgroundColor: Colors.green + '20',
+                  paddingVertical: 2, paddingHorizontal: 8,
+                  borderRadius: 999, marginLeft: 8, letterSpacing: 0.5,
+                }}>
+                  ⭐ MÁS RENTABLE
+                </Text>
+              )}
+            </View>
+            <Text style={{ fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 2 }}>
+              {block.id} · {block.subtemas_total} subtemas · ~{block.preguntas_target} preguntas
+            </Text>
+          </View>
+          <View style={{ alignItems: 'flex-end' }}>
+            <Text style={{ fontSize: FontSize.titleLg, fontWeight: '800', color: accent }}>
+              {block.peso}
+            </Text>
+            <Text style={{ fontSize: FontSize.labelSm, color: Colors.muted }}>
+              peso ENCAPS
+            </Text>
+          </View>
+        </View>
+
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 12 }}>
+          <Text style={{ fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant }}>
+            <Text style={{ fontSize: FontSize.titleMd, fontWeight: '800', color: accent }}>
+              {block.apex_count}
+            </Text> APEX creados · cobertura {block.subtemas_cubiertos}/{block.subtemas_total} ({coberturaPct}%)
+          </Text>
+          <Text style={{ fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, fontWeight: '600' }}>
+            {expanded ? '▾ ocultar' : '▸ ver subtemas'}
+          </Text>
+        </View>
+
+        {noActivity ? (
+          <Text style={{ fontSize: FontSize.labelSm, color: Colors.coral, marginTop: 4, fontStyle: 'italic' }}>
+            Sin actividad
+          </Text>
+        ) : (
+          fechaTxt && <Text style={{ fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 4 }}>{fechaTxt}</Text>
+        )}
+
+        {/* Barra de progreso de cobertura */}
+        <View style={{
+          height: 4, backgroundColor: Colors.surfaceContainerHighest,
+          borderRadius: 2, marginTop: 8, overflow: 'hidden',
+        }}>
+          <View style={{
+            height: 4, borderRadius: 2,
+            width: `${Math.min(100, coberturaPct)}%`,
+            backgroundColor: accent,
+          }} />
+        </View>
+      </TouchableOpacity>
+
+      {expanded && (
+        <View style={{
+          marginTop: 12, paddingTop: 12,
+          borderTopWidth: 1, borderTopColor: 'rgba(143,144,151,0.15)',
+        }}>
+          {block.subtemas_detalle.map(s => (
+            <View key={s.id} style={{
+              flexDirection: 'row', justifyContent: 'space-between',
+              paddingVertical: 4,
+            }}>
+              <Text
+                style={{
+                  flex: 1,
+                  fontSize: FontSize.labelSm,
+                  color: s.apex > 0 ? Colors.green : Colors.onSurfaceVariant,
+                  fontWeight: s.apex > 0 ? '600' : '400',
+                }}
+                numberOfLines={1}
+              >
+                {s.label || s.id}
+              </Text>
+              <Text style={{
+                fontSize: FontSize.labelSm,
+                color: s.apex > 0 ? Colors.green : Colors.muted,
+                fontWeight: s.apex > 0 ? '700' : '400',
+                minWidth: 24, textAlign: 'right',
+              }}>
+                {s.apex}
+              </Text>
+            </View>
+          ))}
+        </View>
+      )}
+    </View>
   );
 }
