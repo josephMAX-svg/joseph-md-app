@@ -300,8 +300,17 @@ function MetaView({ metrics, simScores, simDays }: {
 function SimView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   const { simDays, simScores, saveSim } = plan;
   if (simDays.length === 0) return <Text style={styles.empty}>Sin simulacros en el cronograma.</Text>;
+  const conNota = Object.values(simScores).filter(s => s.nota != null).length;
   return (
     <View>
+      <View style={styles.simHeaderBox}>
+        <Text style={styles.simHeaderTitle}>{simDays.length} simulacros · {conNota} con nota · meta ≥17/20</Text>
+        <Text style={styles.simHeaderHint}>
+          1 por día de fin de semana (sáb+dom) desde D8 (13 jun). Este 1er finde es deep-prime (aún sin banco).
+          Entran todos antes del examen (10 ago) sin duplicar; si faltara tiempo, se duplica un sáb/dom al final.
+          Cargá tu nota /20 al terminar cada uno (se guarda y alimenta «Camino a 17/20» + Telegram).
+        </Text>
+      </View>
       {simDays.map(d => {
         const s = d.simulacro!;
         const simN = s.simulacro_n ?? d.dia;
@@ -576,6 +585,9 @@ const styles = StyleSheet.create({
   statLabel: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 2 },
 
   // Sim
+  simHeaderBox: { backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.md, padding: Spacing.md, marginBottom: Spacing.sm, borderLeftWidth: 3, borderLeftColor: Colors.coral },
+  simHeaderTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface },
+  simHeaderHint: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 2, lineHeight: 15 },
   simCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.md, padding: Spacing.md, marginBottom: 6, borderLeftWidth: 4 },
   simClave: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface },
   simMeta: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 1 },
