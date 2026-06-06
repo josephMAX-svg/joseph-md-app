@@ -196,9 +196,16 @@ function CheckRow({ item, checked, onToggle, todayDia }: { item: PlanItem; check
           </View>
           {/* Bloqueado en QX → dónde estudiarlo hoy */}
           {item.kind === 'video' && item.locked && !item.url && (
-            <Text style={styles.lockHint}>
-              🔒 QX lo libera {item.unlock ? item.unlock.slice(5) : 'pronto'} → hoy: Theomed equivalente / Material Drive
-            </Text>
+            <View>
+              <Text style={styles.lockHint}>
+                🔒 QX libera {item.unlock ? item.unlock.slice(5) : 'pronto'} → hoy: Theomed equivalente
+              </Text>
+              {!!item.fallbackUrl && (
+                <TouchableOpacity onPress={() => Linking.openURL(item.fallbackUrl as string)} activeOpacity={0.7}>
+                  <Text style={styles.fallbackLink}>{item.fallbackLabel || 'Drive 2026-1'} ↗</Text>
+                </TouchableOpacity>
+              )}
+            </View>
           )}
         </View>
       </TouchableOpacity>
@@ -570,6 +577,7 @@ const styles = StyleSheet.create({
   // CheckRow extras
   srcTag: { fontSize: 9, fontWeight: '800', color: Colors.teal, backgroundColor: Colors.teal + '1F', paddingVertical: 1, paddingHorizontal: 6, borderRadius: 999, overflow: 'hidden' },
   lockHint: { fontSize: FontSize.labelSm, color: Colors.amber, marginTop: 3, lineHeight: 14 },
+  fallbackLink: { fontSize: FontSize.labelSm, color: Colors.blue, fontWeight: '700', marginTop: 2 },
   linkCol: { alignItems: 'flex-end', marginLeft: Spacing.sm },
   pdfBtn: { marginTop: 4, backgroundColor: Colors.blue + '22' },
 

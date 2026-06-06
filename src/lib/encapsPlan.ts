@@ -56,7 +56,16 @@ export interface PlanItem {
   code?: string;          // código del tema al que pertenece el video (p.ej. II-4)
   focusDia?: number;      // día-foco deep-prime de ese código (anemia=D3, VIH=D10)
   dur?: number;           // duración en minutos (para el micro-horario)
+  fallbackUrl?: string;   // respaldo Drive 2026-1 si QX no liberó el video
+  fallbackLabel?: string;
 }
+
+// Respaldo Google Drive 2026-1 (ciclo anterior, QxMedic) para temas que QX 2026-II
+// libera por goteo y aún no publica. Para usar si QX se atrasa. (verificado en Drive)
+export const DRIVE_FALLBACK_2026_1: Record<string, { label: string; url: string }> = {
+  'II-4': { label: '📁 Anemia — QxMedic 2026-1', url: 'https://drive.google.com/file/d/1vFuqUuGNHKyknAvaV2SR7pK1bMXJHulK/view' },
+  'II-11': { label: '📁 VIH — QxMedic 2026-1', url: 'https://drive.google.com/file/d/1vtn1-za86do_axvPTGJ9VpaSBqv2QBRm/view' },
+};
 
 // Día-foco (deep-prime) por código de tema: busca el día donde theme.codigo == code.
 export function focusDayByCode(days: StudyScheduleDay[]): Record<string, number> {
@@ -97,6 +106,8 @@ export function itemsForDay(day: StudyScheduleDay, focusByCode: Record<string, n
       url: v.url, slides: v.slides, locked, unlock: v.unlock, estado: v.estado,
       source: live ? 'QX videoclase' : 'QX — no liberado',
       code: v.code, focusDia: v.code ? focusByCode[v.code] : undefined, dur,
+      fallbackUrl: (locked && v.code) ? DRIVE_FALLBACK_2026_1[v.code]?.url : undefined,
+      fallbackLabel: (locked && v.code) ? DRIVE_FALLBACK_2026_1[v.code]?.label : undefined,
     });
   });
   (day.theomed || []).forEach((t, i) => {
