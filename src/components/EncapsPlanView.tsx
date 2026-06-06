@@ -19,7 +19,9 @@ const GCAL_EMBED_URL =
 
 type Sub = 'hoy' | 'meta' | 'sim' | 'sem' | 'horario';
 
-interface HorarioBlock { hora: string; titulo: string; apex?: boolean }
+interface HorarioPaso { t: string; d: string }
+interface HorarioFuente { label: string; url?: string | null }
+interface HorarioBlock { hora: string; titulo: string; apex?: boolean; pasos?: HorarioPaso[]; fuente?: HorarioFuente | null }
 
 const KIND_ICON: Record<PlanItem['kind'], string> = {
   video: '🎬', theomed: '📂', pulso: '💓', eval: '📝', sim: '🔥',
@@ -384,6 +386,40 @@ function SemView({ days, dia }: { days: StudyScheduleDay[]; dia: number }) {
 }
 
 // ─── Horario (bloques del día, leídos de Google Calendar vía sync) ───
+function HorarioBlockRow({ b, tema }: { b: HorarioBlock; tema?: string }) {
+  const [open, setOpen] = useState(!!b.apex); // deep-prime arranca abierto
+  const hasDetail = (b.pasos && b.pasos.length > 0) || !!b.fuente;
+  return (
+    <View style={[styles.horarioRow, b.apex && styles.horarioRowApex]}>
+      <TouchableOpacity
+        style={{ flexDirection: 'row', flex: 1, alignItems: 'flex-start' }}
+        onPress={() => hasDetail && setOpen(o => !o)}
+        activeOpacity={hasDetail ? 0.7 : 1}
+      >
+        <Text style={[styles.horarioHora, b.apex && { color: Colors.coral }]}>{b.hora}</Text>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.horarioTitulo} numberOfLines={2}>
+            {b.titulo}{hasDetail ? (open ? '  ▾' : '  ▸') : ''}
+          </Text>
+          {b.apex && !!tema && <Text style={styles.horarioTema}>→ HOY: {tema}</Text>}
+          {!!b.fuente && <Text style={styles.horarioFuente}>📍 {b.fuente.label}</Text>}
+          {open && (b.pasos || []).map((p, i) => (
+            <View key={i} style={styles.pasoRow}>
+              <Text style={styles.pasoT}>{p.t}</Text>
+              <Text style={styles.pasoD}>{p.d}</Text>
+            </View>
+          ))}
+          {open && !!b.fuente?.url && (
+            <TouchableOpacity onPress={() => Linking.openURL(b.fuente!.url as string)} activeOpacity={0.7}>
+              <Text style={styles.fuenteLink}>Abrir {b.fuente.label} ↗</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
 function HorarioView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   const { today, metrics } = plan;
   const horarios = (metrics?.extra as Record<string, unknown> | undefined)?.horarios as
@@ -426,13 +462,7 @@ function HorarioView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
       {blocks.length === 0 ? (
         <Text style={styles.empty}>Sin bloques cargados. Corré el sync.</Text>
       ) : blocks.map((b, i) => (
-        <View key={i} style={[styles.horarioRow, b.apex && styles.horarioRowApex]}>
-          <Text style={[styles.horarioHora, b.apex && { color: Colors.coral }]}>{b.hora}</Text>
-          <View style={{ flex: 1 }}>
-            <Text style={styles.horarioTitulo} numberOfLines={2}>{b.titulo}</Text>
-            {b.apex && !!tema && <Text style={styles.horarioTema}>→ HOY: {tema}</Text>}
-          </View>
-        </View>
+        <HorarioBlockRow key={i} b={b} tema={tema} />
       ))}
       <Text style={styles.horarioFoot}>🔴/🔥 = ventana donde se crean los APEX del día.</Text>
 
@@ -556,6 +586,11 @@ const styles = StyleSheet.create({
   horarioTitulo: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurface, lineHeight: 16 },
   horarioFoot: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: Spacing.sm, fontStyle: 'italic' },
   horarioTema: { fontSize: FontSize.labelSm, color: Colors.coral, fontWeight: '700', marginTop: 2 },
+  horarioFuente: { fontSize: FontSize.labelSm, color: Colors.teal, fontWeight: '600', marginTop: 2 },
+  pasoRow: { flexDirection: 'row', alignItems: 'flex-start', marginTop: 4 },
+  pasoT: { width: 92, fontSize: FontSize.labelSm, fontWeight: '700', color: Colors.onSurfaceVariant },
+  pasoD: { flex: 1, fontSize: FontSize.labelSm, color: Colors.muted, lineHeight: 15 },
+  fuenteLink: { fontSize: FontSize.labelSm, color: Colors.blue, fontWeight: '700', marginTop: 6 },
   calTitle: { fontSize: FontSize.titleMd, fontWeight: '800', color: Colors.onSurface, marginTop: Spacing.lg, marginBottom: 2 },
   calHint: { fontSize: FontSize.labelSm, color: Colors.muted, marginBottom: Spacing.sm },
 
