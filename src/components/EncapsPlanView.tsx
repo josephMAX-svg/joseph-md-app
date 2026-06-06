@@ -64,6 +64,29 @@ export default function EncapsPlanView() {
 
   return (
     <View>
+      {/* Navegación por día — ver el plan completo de cualquier día (D1..71) */}
+      <View style={styles.dayNav}>
+        <TouchableOpacity onPress={() => plan.setDia(plan.dia - 1)} disabled={plan.dia <= 1} style={styles.dayNavBtn}>
+          <Text style={[styles.dayNavArrow, plan.dia <= 1 && { opacity: 0.25 }]}>◀</Text>
+        </TouchableOpacity>
+        <View style={{ flex: 1, alignItems: 'center' }}>
+          <Text style={styles.dayNavTitle}>
+            Día {plan.dia}/{plan.total}{plan.dia === plan.hoyDia ? ' · HOY' : ''}
+          </Text>
+          {!!plan.today?.fecha && (
+            <Text style={styles.dayNavSub}>{plan.today.weekday || ''} {String(plan.today.fecha).slice(5)}</Text>
+          )}
+        </View>
+        <TouchableOpacity onPress={() => plan.setDia(plan.dia + 1)} disabled={plan.dia >= plan.total} style={styles.dayNavBtn}>
+          <Text style={[styles.dayNavArrow, plan.dia >= plan.total && { opacity: 0.25 }]}>▶</Text>
+        </TouchableOpacity>
+        {plan.dia !== plan.hoyDia && (
+          <TouchableOpacity onPress={() => plan.setDia(plan.hoyDia)} style={styles.dayNavHoy}>
+            <Text style={styles.dayNavHoyText}>↺ Hoy</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+
       {/* Sub-tabs */}
       <View style={styles.subTabRow}>
         {subTabs.map(t => (
@@ -591,6 +614,14 @@ function Pill({ text, color }: { text: string; color: string }) {
 }
 
 const styles = StyleSheet.create({
+  dayNav: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.md, paddingVertical: Spacing.sm, paddingHorizontal: Spacing.md, marginBottom: Spacing.sm },
+  dayNavBtn: { paddingHorizontal: Spacing.md, paddingVertical: 2 },
+  dayNavArrow: { fontSize: 18, color: Colors.teal, fontWeight: '800' },
+  dayNavTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface },
+  dayNavSub: { fontSize: FontSize.labelSm, color: Colors.muted },
+  dayNavHoy: { backgroundColor: Colors.teal + '22', borderRadius: BorderRadius.full, paddingVertical: 3, paddingHorizontal: 8, marginLeft: Spacing.sm },
+  dayNavHoyText: { fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.teal },
+
   subTabRow: { flexDirection: 'row', backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.md, padding: 3, marginBottom: Spacing.section },
   subTab: { flex: 1, paddingVertical: Spacing.sm, alignItems: 'center', borderRadius: BorderRadius.sm },
   subTabActive: { backgroundColor: Colors.surfaceContainerHighest },

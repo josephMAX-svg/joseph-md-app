@@ -260,6 +260,8 @@ export interface UseEncapsPlan {
   totalToday: number;
   repasos: RepasoHoy[];
   proximos: ProximoVideo[];
+  hoyDia: number;                       // día real de hoy (para el botón "Hoy")
+  setDia: (d: number) => void;          // navegar a otro día (ver plan completo)
   toggleCheck: (itemKey: string, value: boolean) => void;
   saveSim: (simN: number, nota: number | null, fecha?: string) => void;
   refetch: () => void;
@@ -272,8 +274,10 @@ export function useEncapsPlan(examen: string = 'ENCAPS'): UseEncapsPlan {
   const [simScores, setSimScores] = useState<Record<number, StudySimScore>>({});
   const [loading, setLoading] = useState(true);
 
-  const dia = diaActual(examen);
+  const hoyDia = diaActual(examen);
   const total = STUDY_TOTAL_DAYS[examen] ?? 71;
+  const [dia, setDiaRaw] = useState(hoyDia);
+  const setDia = useCallback((d: number) => setDiaRaw(Math.max(1, Math.min(total, d))), [total]);
 
   const load = useCallback(async () => {
     const [sched, met, chk, sims] = await Promise.all([
@@ -315,6 +319,6 @@ export function useEncapsPlan(examen: string = 'ENCAPS'): UseEncapsPlan {
 
   return {
     loading, dia, total, today, days, metrics, checks, simScores, simDays,
-    todayItems, doneToday, totalToday, repasos, proximos, toggleCheck, saveSim, refetch: load,
+    todayItems, doneToday, totalToday, repasos, proximos, hoyDia, setDia, toggleCheck, saveSim, refetch: load,
   };
 }
