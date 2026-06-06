@@ -106,6 +106,28 @@ export function repasosDeHoy(days: StudyScheduleDay[], dia: number): RepasoHoy[]
 const ORDINAL = ['', '1ª', '2ª', '3ª', '4ª', '5ª', '6ª', '7ª'];
 export function vueltaLabel(n: number): string { return ORDINAL[n] || `${n}ª`; }
 
+// ── Predicción de próximos videos QX a liberar (drip semanal) ───────────────
+// QX sube por goteo; cada video tiene su fecha de liberación (unlock). Listamos
+// los que aún no salieron, deduplicados por título, ordenados por fecha.
+export interface ProximoVideo { titulo: string; unlock: string; code?: string; bloque?: string; url?: string | null }
+
+export function proximosVideos(days: StudyScheduleDay[], todayISO: string, limit = 14): ProximoVideo[] {
+  const seen = new Set<string>();
+  const out: ProximoVideo[] = [];
+  for (const d of days) {
+    for (const v of d.videos || []) {
+      const t = v.titulo;
+      const u = v.unlock || v.release;
+      if (t && u && u > todayISO && !seen.has(t)) {
+        seen.add(t);
+        out.push({ titulo: t, unlock: u, code: v.code, bloque: v.bloque, url: v.url });
+      }
+    }
+  }
+  out.sort((a, b) => (a.unlock < b.unlock ? -1 : a.unlock > b.unlock ? 1 : 0));
+  return out.slice(0, limit);
+}
+
 // ── Helpers de fecha (Lima UTC-5) ──
 function todayLimaISO(): string {
   const now = new Date();
@@ -237,6 +259,7 @@ export interface UseEncapsPlan {
   doneToday: number;
   totalToday: number;
   repasos: RepasoHoy[];
+  proximos: ProximoVideo[];
   toggleCheck: (itemKey: string, value: boolean) => void;
   saveSim: (simN: number, nota: number | null, fecha?: string) => void;
   refetch: () => void;
@@ -276,6 +299,7 @@ export function useEncapsPlan(examen: string = 'ENCAPS'): UseEncapsPlan {
   const focusByCode = useMemo(() => focusDayByCode(days), [days]);
   const todayItems = useMemo(() => (today ? itemsForDay(today, focusByCode) : []), [today, focusByCode]);
   const repasos = useMemo(() => repasosDeHoy(days, dia), [days, dia]);
+  const proximos = useMemo(() => proximosVideos(days, todayLimaISO()), [days]);
   const totalToday = todayItems.length;
   const doneToday = todayItems.reduce((n, it) => n + (checks[it.key] ? 1 : 0), 0);
 
@@ -291,6 +315,6 @@ export function useEncapsPlan(examen: string = 'ENCAPS'): UseEncapsPlan {
 
   return {
     loading, dia, total, today, days, metrics, checks, simScores, simDays,
-    todayItems, doneToday, totalToday, repasos, toggleCheck, saveSim, refetch: load,
+    todayItems, doneToday, totalToday, repasos, proximos, toggleCheck, saveSim, refetch: load,
   };
 }

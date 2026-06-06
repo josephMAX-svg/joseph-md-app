@@ -8,7 +8,8 @@ import {
 } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius } from '../theme/tokens';
 import {
-  useEncapsPlan, itemsForDay, vueltaLabel, type PlanItem, type StudyScheduleDay, type StudyMetrics,
+  useEncapsPlan, itemsForDay, vueltaLabel,
+  type PlanItem, type StudyScheduleDay, type StudyMetrics, type ProximoVideo,
 } from '../lib/encapsPlan';
 import EncapsWebView from './EncapsWebView';
 
@@ -82,7 +83,7 @@ export default function EncapsPlanView() {
       {sub === 'horario' && <HorarioView plan={plan} />}
       {sub === 'meta' && <MetaView metrics={plan.metrics} simScores={plan.simScores} simDays={plan.simDays} />}
       {sub === 'sim' && <SimView plan={plan} />}
-      {sub === 'sem' && <SemView days={plan.days} dia={plan.dia} />}
+      {sub === 'sem' && <SemView days={plan.days} dia={plan.dia} proximos={plan.proximos} metrics={plan.metrics} />}
     </View>
   );
 }
@@ -382,12 +383,44 @@ function SimRow({ dia, weekday, fecha, clave, duracion, url, nota, onSave }: {
 }
 
 // ─── 7 días ───
-function SemView({ days, dia }: { days: StudyScheduleDay[]; dia: number }) {
+interface TheomedVid { tipo: string; sesion: number; dur?: number; fecha?: string; titulo?: string; vimeo_id?: string }
+interface TheomedBloque { bloque: string; section_async?: number; section_live?: number; videos: TheomedVid[] }
+
+function TheomedBlockRow({ b, base }: { b: TheomedBloque; base: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <View style={styles.thBlock}>
+      <TouchableOpacity onPress={() => setOpen(o => !o)} activeOpacity={0.7}>
+        <Text style={styles.thBlockTitle}>{b.bloque} ({b.videos.length}) {open ? '▾' : '▸'}</Text>
+      </TouchableOpacity>
+      {open && b.videos.map((v, i) => {
+        const sec = v.tipo === 'live' ? b.section_live : b.section_async;
+        const url = `${base}${sec}`;
+        return (
+          <TouchableOpacity key={i} style={styles.thVideoRow} onPress={() => Linking.openURL(url)} activeOpacity={0.7}>
+            <Text style={styles.thVideoLabel} numberOfLines={1}>
+              🎬 {v.titulo || `${v.tipo === 'live' ? 'En vivo' : 'Async'} S${v.sesion}`}{v.dur ? ` · ${v.dur}min` : ''}{v.fecha ? ` · ${v.fecha.slice(5)}` : ''}
+            </Text>
+            <Text style={styles.thOpen}>abrir ↗</Text>
+          </TouchableOpacity>
+        );
+      })}
+    </View>
+  );
+}
+
+function SemView({ days, dia, proximos, metrics }: { days: StudyScheduleDay[]; dia: number; proximos: ProximoVideo[]; metrics: StudyMetrics | null }) {
   const next = days.filter(d => d.dia >= dia && d.dia < dia + 7);
-  if (next.length === 0) return <Text style={styles.empty}>Sin próximos días.</Text>;
+  const ex = (metrics?.extra as Record<string, unknown> | undefined) || {};
+  const thBloques = (ex.theomed_videos as TheomedBloque[] | undefined) || [];
+  const thPend = (ex.theomed_pendientes as { bloque: string; tipo: string; sesion: number; nota?: string }[] | undefined) || [];
+  const thBase = (ex.theomed_section_base as string | undefined) || 'https://campus.academiatheomed.com/course/view.php?id=73&section=';
+  const thTotal = thBloques.reduce((n, b) => n + (b.videos?.length || 0), 0);
   return (
     <View>
-      {next.map(d => {
+      {next.length === 0 ? (
+        <Text style={styles.empty}>Sin próximos días.</Text>
+      ) : next.map(d => {
         const isToday = d.dia === dia;
         const tema = `${d.codigo || ''} ${d.subtema || ''}`.trim() || (d.extra?.theme as string) || d.tipo || '—';
         return (
@@ -408,6 +441,32 @@ function SemView({ days, dia }: { days: StudyScheduleDay[]; dia: number }) {
           </View>
         );
       })}
+
+      {/* Predicción: próximos videos QX a liberar (drip semanal) */}
+      {proximos.length > 0 && (
+        <View style={styles.proxBox}>
+          <Text style={styles.proxTitle}>📅 Próximos videos QX a liberar ({proximos.length})</Text>
+          <Text style={styles.proxHint}>QX sube por goteo (semanal); se publican en su fecha. El link aparece al liberarse.</Text>
+          {proximos.map((p, i) => (
+            <View key={i} style={styles.proxRow}>
+              <Text style={styles.proxFecha}>{String(p.unlock).slice(5)}</Text>
+              <Text style={styles.proxTema} numberOfLines={1}>{p.code ? `[${p.code}] ` : ''}{p.titulo}</Text>
+            </View>
+          ))}
+        </View>
+      )}
+
+      {/* Videos Theomed (sesiones grabadas Vimeo) */}
+      {thBloques.length > 0 && (
+        <View style={styles.thBox}>
+          <Text style={styles.thTitle}>🎥 Videos Theomed ({thTotal})</Text>
+          <Text style={styles.proxHint}>Sesiones grabadas (Vimeo). Tocá un bloque para ver y abrir en Theomed.</Text>
+          {thPend.length > 0 && (
+            <Text style={styles.thPend}>⏳ Por subir: {thPend[0].bloque} · {thPend[0].tipo} S{thPend[0].sesion} (sube el día después de la clase)</Text>
+          )}
+          {thBloques.map((b, i) => <TheomedBlockRow key={i} b={b} base={thBase} />)}
+        </View>
+      )}
     </View>
   );
 }
@@ -607,6 +666,24 @@ const styles = StyleSheet.create({
   semTema: { fontSize: FontSize.bodyMd, color: Colors.onSurface, fontWeight: '500' },
   semDetail: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 1 },
   semCrit: { fontSize: 9, fontWeight: '800', color: Colors.coral, backgroundColor: Colors.coral + '22', paddingVertical: 2, paddingHorizontal: 6, borderRadius: 999, marginLeft: Spacing.sm },
+
+  // Próximos videos a liberar (predicción drip)
+  proxBox: { backgroundColor: Colors.blue + '12', borderRadius: BorderRadius.md, padding: Spacing.md, marginTop: Spacing.md, borderLeftWidth: 3, borderLeftColor: Colors.blue },
+  proxTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.blue },
+  proxHint: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 1, marginBottom: Spacing.xs },
+  proxRow: { flexDirection: 'row', alignItems: 'flex-start', paddingVertical: 3 },
+  proxFecha: { width: 52, fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.blue },
+  proxTema: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant },
+
+  // Videos Theomed
+  thBox: { backgroundColor: Colors.green + '12', borderRadius: BorderRadius.md, padding: Spacing.md, marginTop: Spacing.md, borderLeftWidth: 3, borderLeftColor: Colors.green },
+  thTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.green },
+  thPend: { fontSize: FontSize.labelSm, color: Colors.amber, marginTop: 2, marginBottom: 2, lineHeight: 15 },
+  thBlock: { marginTop: Spacing.xs, borderTopWidth: 1, borderTopColor: 'rgba(143,144,151,0.12)', paddingTop: Spacing.xs },
+  thBlockTitle: { fontSize: FontSize.labelMd, fontWeight: '700', color: Colors.onSurface },
+  thVideoRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: 3, paddingLeft: Spacing.sm },
+  thVideoLabel: { flex: 1, fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant },
+  thOpen: { fontSize: FontSize.labelSm, color: Colors.blue, fontWeight: '700', marginLeft: Spacing.sm },
 
   // Horario
   horarioHint: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, fontWeight: '600', marginBottom: Spacing.sm },
