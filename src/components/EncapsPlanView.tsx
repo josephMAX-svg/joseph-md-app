@@ -203,6 +203,7 @@ function CheckRow({ item, checked, onToggle, todayDia }: { item: PlanItem; check
             {KIND_ICON[item.kind]} {item.label}
           </Text>
           <View style={styles.checkSubRow}>
+            {item.kind === 'video' && !!item.hora && <Text style={styles.horaTag}>🕘 {item.hora}</Text>}
             {!!item.source && <Text style={styles.srcTag}>{item.source}</Text>}
             {!!item.detail && <Text style={styles.checkDetail} numberOfLines={1}>{item.detail}</Text>}
             {m && <Text style={[styles.estadoBadge, { color: m.color, backgroundColor: m.color + '22' }]}>{m.label}</Text>}
@@ -451,11 +452,12 @@ function HorarioView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   const horarios = (metrics?.extra as Record<string, unknown> | undefined)?.horarios as
     | { weekday?: HorarioBlock[]; weekend?: HorarioBlock[] }
     | undefined;
-  // día de semana del día actual (12:00 para evitar saltos de tz)
+  // Plantilla por TIPO de día (no por día de semana): simulacro real → weekend; si no → deep-prime L-V.
+  // Hoy/mañana (D1/D2) son fin de semana pero se estructuran como L-V (recuperación; 1er simulacro D8).
   const dow = today?.fecha ? new Date(`${today.fecha}T12:00:00`).getDay() : 1;
-  const isWeekend = dow === 0 || dow === 6;
-  const blocks = (isWeekend ? horarios?.weekend : horarios?.weekday) ?? [];
-  const isSimPlan = !!today?.simulacro;
+  const isWeekendDay = dow === 0 || dow === 6;
+  const useSimTemplate = !!today?.simulacro;
+  const blocks = (useSimTemplate ? horarios?.weekend : horarios?.weekday) ?? [];
 
   const tema = today ? `${today.codigo || ''} ${today.subtema || ''}`.trim() : '';
 
@@ -478,11 +480,11 @@ function HorarioView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   return (
     <View>
       <Text style={styles.horarioHint}>
-        {isWeekend ? '🔥 Fin de semana — estructura de simulacro (Google Calendar)' : '🟢 Día de semana — estructura deep-prime (Google Calendar)'}
+        {useSimTemplate ? '🔥 Día de simulacro (modo examen)' : '🟢 Estructura deep-prime (Lunes-Viernes)'}
       </Text>
-      {isWeekend && !isSimPlan && (
+      {isWeekendDay && !useSimTemplate && (
         <Text style={styles.horarioWarn}>
-          ⚠️ El Calendar marca simulacro hoy, pero el plan ENCAPS de este día es deep-prime (1er simulacro: D8).
+          ℹ️ Hoy es fin de semana pero se estructura como L-V (recuperación de temas). El 1er simulacro es D8 (sáb 13 jun); desde ahí, sábados y domingos = simulacro.
         </Text>
       )}
       {blocks.length === 0 ? (
@@ -650,6 +652,7 @@ const styles = StyleSheet.create({
 
   // CheckRow extras
   srcTag: { fontSize: 9, fontWeight: '800', color: Colors.teal, backgroundColor: Colors.teal + '1F', paddingVertical: 1, paddingHorizontal: 6, borderRadius: 999, overflow: 'hidden' },
+  horaTag: { fontSize: 9, fontWeight: '800', color: Colors.coral, backgroundColor: Colors.coral + '22', paddingVertical: 1, paddingHorizontal: 6, borderRadius: 999, overflow: 'hidden' },
   lockHint: { fontSize: FontSize.labelSm, color: Colors.amber, marginTop: 3, lineHeight: 14 },
   fallbackLink: { fontSize: FontSize.labelSm, color: Colors.blue, fontWeight: '700', marginTop: 2 },
   linkCol: { alignItems: 'flex-end', marginLeft: Spacing.sm },

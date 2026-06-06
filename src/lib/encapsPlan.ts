@@ -56,6 +56,7 @@ export interface PlanItem {
   code?: string;          // código del tema al que pertenece el video (p.ej. II-4)
   focusDia?: number;      // día-foco deep-prime de ese código (anemia=D3, VIH=D10)
   dur?: number;           // duración en minutos (para el micro-horario)
+  hora?: string;          // franja exacta dentro del NÚCLEO DEEP PRIME (09:00–09:14)
   fallbackUrl?: string;   // respaldo Drive 2026-1 si QX no liberó el video
   fallbackLabel?: string;
 }
@@ -123,18 +124,24 @@ export function diaActual(examen: string): number {
 export function itemsForDay(day: StudyScheduleDay, focusByCode: Record<string, number> = {}): PlanItem[] {
   const N = day.dia;
   const items: PlanItem[] = [];
+  const pad = (n: number) => String(n).padStart(2, '0');
+  let ph = 9, pm = 0; // NÚCLEO DEEP PRIME arranca 09:00 (los videos se reparten ahí)
   (day.videos || []).forEach((v, i) => {
     const dur = v.duracion_min ?? v.dur;
     const live = !!v.url;
     const locked = !live || v.estado === 'bloqueado' || v.available === false
       || !!(v.unlock && day.fecha && v.unlock > day.fecha);
+    const s = `${pad(ph)}:${pad(pm)}`;
+    let em = pm + (dur ?? 20), eh = ph + Math.floor(em / 60); em %= 60;
+    const hora = `${s}–${pad(eh)}:${pad(em)}`;
+    ph = eh; pm = em;
     items.push({
       key: `D${N}:video:${i}`, kind: 'video',
       label: v.titulo || `Video ${i + 1}`,
       detail: [v.code, dur ? `${dur}min` : null, v.prio].filter(Boolean).join(' · '),
       url: v.url, slides: v.slides, locked, unlock: v.unlock, estado: v.estado,
       source: live ? 'QX videoclase' : 'QX — no liberado',
-      code: v.code, focusDia: v.code ? focusByCode[v.code] : undefined, dur,
+      code: v.code, focusDia: v.code ? focusByCode[v.code] : undefined, dur, hora,
       fallbackUrl: (locked && v.code) ? DRIVE_FALLBACK_2026_1[v.code]?.url : undefined,
       fallbackLabel: (locked && v.code) ? DRIVE_FALLBACK_2026_1[v.code]?.label : undefined,
     });
