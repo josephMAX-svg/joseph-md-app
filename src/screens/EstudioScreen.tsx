@@ -33,6 +33,8 @@ import ApexSubmitModal from '../components/ApexSubmitModal';
 import ApexManualModal from '../components/ApexManualModal';
 import { useEncapsBlocks } from '../lib/encapsBlocks';
 import type { EncapsBlock } from '../lib/encapsBlocks';
+import EncapsPlanView from '../components/EncapsPlanView';
+import EncapsWebView from '../components/EncapsWebView';
 
 // ─── Data Structures ───
 interface Bank {
@@ -207,6 +209,8 @@ export default function EstudioScreen() {
   const [apexManualModalVisible, setApexManualModalVisible] = useState(false);
   // ENCAPS 5 bloques oficiales
   const { blocks: encapsBlocks, refetch: refetchEncaps } = useEncapsBlocks();
+  // PE Perú → ENCAPS: sub-vista (Plan diario nativo · Bloques APEX · Dashboard WebView)
+  const [peView, setPeView] = useState<'plan' | 'bloques' | 'dashboard'>('plan');
 
   // ─── Live Supabase data ───
   const { data: cziValue } = useSupabaseQuery(getLatestCZI, null);
@@ -492,18 +496,47 @@ export default function EstudioScreen() {
           </View>
         )}
 
-        {/* ─── PERÚ TAB v2.3.2 — 5 bloques oficiales ENCAPS (94 subtemas) ─── */}
+        {/* ─── PERÚ TAB — ENCAPS nativo: Plan diario · Bloques APEX · Dashboard ─── */}
         {activeTab === 'PERÚ' && (
           <View>
-            <View style={styles.encapsHeader}>
-              <Text style={styles.encapsHeaderTitle}>ENCAPS — 5 bloques oficiales</Text>
-              <Text style={styles.encapsHeaderSub}>
-                94 subtemas · examen 10 ago 2026
-              </Text>
+            <View style={styles.peSubTabRow}>
+              {([
+                ['plan', '📅 Plan diario'],
+                ['bloques', '📚 Bloques APEX'],
+                ['dashboard', '📊 Dashboard'],
+              ] as const).map(([k, l]) => (
+                <TouchableOpacity
+                  key={k}
+                  style={[styles.peSubTab, peView === k && styles.peSubTabActive]}
+                  onPress={() => setPeView(k)}
+                >
+                  <Text style={[styles.peSubTabText, peView === k && styles.peSubTabTextActive]} numberOfLines={1}>
+                    {l}
+                  </Text>
+                </TouchableOpacity>
+              ))}
             </View>
-            {encapsBlocks.map((b) => (
-              <EncapsBlockCard key={b.id} block={b} />
-            ))}
+
+            {/* Plan diario nativo (HOY · 17/20 · Simulacros · 7 días) — sync Supabase */}
+            {peView === 'plan' && <EncapsPlanView />}
+
+            {/* 5 bloques oficiales · 94 subtemas (cobertura APEX) */}
+            {peView === 'bloques' && (
+              <View>
+                <View style={styles.encapsHeader}>
+                  <Text style={styles.encapsHeaderTitle}>ENCAPS — 5 bloques oficiales</Text>
+                  <Text style={styles.encapsHeaderSub}>
+                    94 subtemas · examen 10 ago 2026
+                  </Text>
+                </View>
+                {encapsBlocks.map((b) => (
+                  <EncapsBlockCard key={b.id} block={b} />
+                ))}
+              </View>
+            )}
+
+            {/* Dashboard ENCAPS v9 embebido (WebView/iframe) */}
+            {peView === 'dashboard' && <EncapsWebView />}
           </View>
         )}
 
@@ -780,6 +813,24 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     color: '#0B1628',
   },
+
+  // PE Perú → sub-tabs (Plan diario · Bloques · Dashboard)
+  peSubTabRow: {
+    flexDirection: 'row',
+    backgroundColor: Colors.surfaceContainerLow,
+    borderRadius: BorderRadius.md,
+    padding: 3,
+    marginBottom: Spacing.section,
+  },
+  peSubTab: {
+    flex: 1,
+    paddingVertical: Spacing.sm,
+    alignItems: 'center',
+    borderRadius: BorderRadius.sm,
+  },
+  peSubTabActive: { backgroundColor: Colors.surfaceContainerHighest },
+  peSubTabText: { fontSize: FontSize.labelSm, fontWeight: '600', color: Colors.muted },
+  peSubTabTextActive: { color: Colors.onSurface },
 
   // ENCAPS 5 bloques oficiales v2.3.2
   encapsHeader: {

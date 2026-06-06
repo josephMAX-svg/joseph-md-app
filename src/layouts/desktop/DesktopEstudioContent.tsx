@@ -20,6 +20,8 @@ import CircularProgress from '../../components/CircularProgress';
 import AgentChatModal from '../../components/AgentChatModal';
 import { useEncapsBlocks } from '../../lib/encapsBlocks';
 import type { EncapsBlock } from '../../lib/encapsBlocks';
+import EncapsPlanView from '../../components/EncapsPlanView';
+import EncapsWebView from '../../components/EncapsWebView';
 
 // ─── Data Structures ───
 interface BankItem { name: string; count: string; }
@@ -247,6 +249,7 @@ export default function DesktopEstudioContent() {
   const [activeTab, setActiveTab] = useState<CountryTab>('EEUU');
   const [showSecondary, setShowSecondary] = useState(false);
   const [chatVisible, setChatVisible] = useState(false);
+  const [peView, setPeView] = useState<'plan' | 'bloques' | 'dashboard'>('plan');
 
   const { data: cziValue } = useSupabaseQuery(getLatestCZI, null);
   const { data: weakTopics } = useSupabaseQuery(
@@ -489,19 +492,56 @@ export default function DesktopEstudioContent() {
         </View>
       )}
 
-      {/* ═══ PERÚ TAB — ENCAPS 5 bloques oficiales (v2.4 PLUS) ═══ */}
+      {/* ═══ PERÚ TAB — ENCAPS nativo: Plan diario · Bloques APEX · Dashboard ═══ */}
       {activeTab === 'PERÚ' && (
         <View>
-          <BankSectionHeader
-            title="ENCAPS — 5 bloques oficiales · 94 subtemas"
-            color={Colors.coral}
-            badge="MINSA"
-          />
-          <View>
-            {encapsBlocks.map((b) => (
-              <DesktopEncapsBlockCard key={b.id} block={b} />
+          {/* Sub-tabs PE */}
+          <View style={{
+            flexDirection: 'row', marginBottom: Spacing.lg,
+            backgroundColor: DesktopColors.glass, borderRadius: 12,
+            borderWidth: 1, borderColor: DesktopColors.glassBorder, padding: 3,
+          }}>
+            {([
+              ['plan', '📅 Plan diario'],
+              ['bloques', '📚 Bloques APEX'],
+              ['dashboard', '📊 Dashboard'],
+            ] as const).map(([k, l]) => (
+              <TouchableOpacity
+                key={k}
+                style={[{
+                  flex: 1, paddingVertical: Spacing.sm, alignItems: 'center', borderRadius: 9,
+                  backgroundColor: peView === k ? Colors.surfaceContainerHighest : 'transparent',
+                  ...(Platform.OS === 'web' ? { cursor: 'pointer' as any } : {}),
+                }]}
+                onPress={() => setPeView(k)}
+              >
+                <Text style={{
+                  fontSize: FontSize.labelMd,
+                  fontWeight: peView === k ? '700' : '500',
+                  color: peView === k ? Colors.onSurface : Colors.muted,
+                }}>
+                  {l}
+                </Text>
+              </TouchableOpacity>
             ))}
           </View>
+
+          {peView === 'plan' && <EncapsPlanView />}
+
+          {peView === 'bloques' && (
+            <View>
+              <BankSectionHeader
+                title="ENCAPS — 5 bloques oficiales · 94 subtemas"
+                color={Colors.coral}
+                badge="MINSA"
+              />
+              {encapsBlocks.map((b) => (
+                <DesktopEncapsBlockCard key={b.id} block={b} />
+              ))}
+            </View>
+          )}
+
+          {peView === 'dashboard' && <EncapsWebView />}
         </View>
       )}
     </ScrollView>
