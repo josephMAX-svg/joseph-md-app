@@ -53,6 +53,18 @@ export interface PlanItem {
   locked?: boolean;       // video QX aún no liberado / sin url en QX
   unlock?: string | null; // fecha en que QX libera el video
   estado?: string;        // estado QX del video (pendiente|en_progreso|bloqueado|visto)
+  code?: string;          // código del tema al que pertenece el video (p.ej. II-4)
+  focusDia?: number;      // día-foco deep-prime de ese código (anemia=D3, VIH=D10)
+  dur?: number;           // duración en minutos (para el micro-horario)
+}
+
+// Día-foco (deep-prime) por código de tema: busca el día donde theme.codigo == code.
+export function focusDayByCode(days: StudyScheduleDay[]): Record<string, number> {
+  const map: Record<string, number> = {};
+  for (const d of days) {
+    if (d.codigo && map[d.codigo] === undefined) map[d.codigo] = d.dia;
+  }
+  return map;
 }
 
 // ── Helpers de fecha (Lima UTC-5) ──
@@ -70,7 +82,7 @@ export function diaActual(examen: string): number {
 }
 
 // ── Enumera los items chequeables de un día (debe coincidir con el daemon) ──
-export function itemsForDay(day: StudyScheduleDay): PlanItem[] {
+export function itemsForDay(day: StudyScheduleDay, focusByCode: Record<string, number> = {}): PlanItem[] {
   const N = day.dia;
   const items: PlanItem[] = [];
   (day.videos || []).forEach((v, i) => {
@@ -84,6 +96,7 @@ export function itemsForDay(day: StudyScheduleDay): PlanItem[] {
       detail: [v.code, dur ? `${dur}min` : null, v.prio].filter(Boolean).join(' · '),
       url: v.url, slides: v.slides, locked, unlock: v.unlock, estado: v.estado,
       source: live ? 'QX videoclase' : 'QX — no liberado',
+      code: v.code, focusDia: v.code ? focusByCode[v.code] : undefined, dur,
     });
   });
   (day.theomed || []).forEach((t, i) => {
@@ -212,7 +225,8 @@ export function useEncapsPlan(examen: string = 'ENCAPS'): UseEncapsPlan {
 
   const today = useMemo(() => days.find(d => d.dia === dia) ?? null, [days, dia]);
   const simDays = useMemo(() => days.filter(d => d.simulacro), [days]);
-  const todayItems = useMemo(() => (today ? itemsForDay(today) : []), [today]);
+  const focusByCode = useMemo(() => focusDayByCode(days), [days]);
+  const todayItems = useMemo(() => (today ? itemsForDay(today, focusByCode) : []), [today, focusByCode]);
   const totalToday = todayItems.length;
   const doneToday = todayItems.reduce((n, it) => n + (checks[it.key] ? 1 : 0), 0);
 

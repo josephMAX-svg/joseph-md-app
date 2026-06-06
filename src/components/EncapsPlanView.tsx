@@ -123,10 +123,28 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
         </View>
       </View>
 
-      {/* Checklist */}
-      {todayItems.map(it => (
-        <CheckRow key={it.key} item={it} checked={!!checks[it.key]} onToggle={v => toggleCheck(it.key, v)} />
-      ))}
+      {/* Aclaración tema vs cola */}
+      {todayItems.some(i => i.kind === 'video') && (
+        <>
+          <Text style={styles.groupHdr}>📺 Cola QX de hoy</Text>
+          <Text style={styles.groupHint}>
+            Videos que QX ya liberó, en orden de prioridad (no todos son del tema de hoy: cada video
+            pertenece a su propio tema/día-foco). El “tema de hoy” para crear APEX es <Text style={{ color: Colors.coral, fontWeight: '700' }}>{tema}</Text>.
+          </Text>
+          {todayItems.filter(i => i.kind === 'video').map(it => (
+            <CheckRow key={it.key} item={it} checked={!!checks[it.key]} onToggle={v => toggleCheck(it.key, v)} todayDia={dia} />
+          ))}
+        </>
+      )}
+
+      {todayItems.some(i => i.kind !== 'video') && (
+        <>
+          <Text style={styles.groupHdr}>📚 Material del tema + práctica</Text>
+          {todayItems.filter(i => i.kind !== 'video').map(it => (
+            <CheckRow key={it.key} item={it} checked={!!checks[it.key]} onToggle={v => toggleCheck(it.key, v)} todayDia={dia} />
+          ))}
+        </>
+      )}
 
       {/* NTS Tier-1 — qué normas y dónde estudiarlas */}
       {!!today.nts && (
@@ -152,8 +170,9 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   );
 }
 
-function CheckRow({ item, checked, onToggle }: { item: PlanItem; checked: boolean; onToggle: (v: boolean) => void }) {
+function CheckRow({ item, checked, onToggle, todayDia }: { item: PlanItem; checked: boolean; onToggle: (v: boolean) => void; todayDia?: number }) {
   const m = item.kind === 'video' ? estadoMeta(item.estado) : null;
+  const ownTheme = item.kind === 'video' && item.focusDia != null && item.focusDia === todayDia;
   return (
     <View style={styles.checkRow}>
       <TouchableOpacity onPress={() => onToggle(!checked)} style={styles.checkTouch} activeOpacity={0.7}>
@@ -168,6 +187,12 @@ function CheckRow({ item, checked, onToggle }: { item: PlanItem; checked: boolea
             {!!item.source && <Text style={styles.srcTag}>{item.source}</Text>}
             {!!item.detail && <Text style={styles.checkDetail} numberOfLines={1}>{item.detail}</Text>}
             {m && <Text style={[styles.estadoBadge, { color: m.color, backgroundColor: m.color + '22' }]}>{m.label}</Text>}
+            {item.kind === 'video' && item.code && (
+              <Text style={[styles.themeTag, ownTheme ? styles.themeTagOwn : styles.themeTagOther]}>
+                {ownTheme ? '★ tema de hoy' : `tema propio: D${item.focusDia ?? '?'}`}
+              </Text>
+            )}
+            {item.kind === 'video' && <Text style={styles.vueltaTag}>1ª vuelta</Text>}
           </View>
           {/* Bloqueado en QX → dónde estudiarlo hoy */}
           {item.kind === 'video' && item.locked && !item.url && (
@@ -365,6 +390,22 @@ function HorarioView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
 
   const tema = today ? `${today.codigo || ''} ${today.subtema || ''}`.trim() : '';
 
+  // Micro-horario: reparte los videos del día dentro del bloque deep-prime, hora exacta.
+  const apexBlock = blocks.find(b => b.apex);
+  const micro: { time: string; label: string; dur: number; locked?: boolean }[] = [];
+  if (apexBlock && plan.todayItems.length) {
+    const start = apexBlock.hora.split('-')[0].trim();
+    let h = parseInt(start.split(':')[0], 10) || 9;
+    let mn = parseInt(start.split(':')[1], 10) || 0;
+    for (const v of plan.todayItems.filter(i => i.kind === 'video')) {
+      const dur = v.dur ?? 20;
+      const s = `${String(h).padStart(2, '0')}:${String(mn).padStart(2, '0')}`;
+      let em = mn + dur; let eh = h + Math.floor(em / 60); em %= 60;
+      micro.push({ time: `${s}–${String(eh).padStart(2, '0')}:${String(em).padStart(2, '0')}`, label: v.label, dur, locked: v.locked });
+      h = eh; mn = em;
+    }
+  }
+
   return (
     <View>
       <Text style={styles.horarioHint}>
@@ -387,6 +428,21 @@ function HorarioView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
         </View>
       ))}
       <Text style={styles.horarioFoot}>🔴/🔥 = ventana donde se crean los APEX del día.</Text>
+
+      {/* Micro-horario: cada video a su hora exacta dentro del DEEP PRIME */}
+      {micro.length > 0 && (
+        <View style={styles.microWrap}>
+          <Text style={styles.microTitle}>⏱ Minuto a minuto — NÚCLEO DEEP PRIME ({apexBlock?.hora})</Text>
+          {micro.map((mm, i) => (
+            <View key={i} style={styles.microRow}>
+              <Text style={styles.microTime}>{mm.time}</Text>
+              <Text style={styles.microLabel} numberOfLines={2}>
+                🎬 {mm.label} ({mm.dur}'){mm.locked ? ' · 🔒 usar Theomed/Drive' : ''}
+              </Text>
+            </View>
+          ))}
+        </View>
+      )}
 
       {/* Google Calendar en vivo (minuto a minuto) */}
       <Text style={styles.calTitle}>📆 Tu Google Calendar (en vivo)</Text>
@@ -495,6 +551,21 @@ const styles = StyleSheet.create({
   horarioTema: { fontSize: FontSize.labelSm, color: Colors.coral, fontWeight: '700', marginTop: 2 },
   calTitle: { fontSize: FontSize.titleMd, fontWeight: '800', color: Colors.onSurface, marginTop: Spacing.lg, marginBottom: 2 },
   calHint: { fontSize: FontSize.labelSm, color: Colors.muted, marginBottom: Spacing.sm },
+
+  // Grupos HOY (tema vs cola) + tags de tema/vuelta
+  groupHdr: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface, marginTop: Spacing.md, marginBottom: 2 },
+  groupHint: { fontSize: FontSize.labelSm, color: Colors.muted, marginBottom: Spacing.sm, lineHeight: 15 },
+  themeTag: { fontSize: 9, fontWeight: '800', paddingVertical: 1, paddingHorizontal: 6, borderRadius: 999, overflow: 'hidden' },
+  themeTagOwn: { color: Colors.coral, backgroundColor: Colors.coral + '22' },
+  themeTagOther: { color: Colors.muted, backgroundColor: Colors.muted + '22' },
+  vueltaTag: { fontSize: 9, fontWeight: '800', color: Colors.purple, backgroundColor: Colors.purple + '22', paddingVertical: 1, paddingHorizontal: 6, borderRadius: 999, overflow: 'hidden' },
+
+  // Micro-horario (videos mapeados a horas exactas dentro del bloque deep-prime)
+  microWrap: { backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.md, padding: Spacing.md, marginTop: Spacing.sm, borderLeftWidth: 3, borderLeftColor: Colors.coral },
+  microTitle: { fontSize: FontSize.labelMd, fontWeight: '800', color: Colors.onSurface, marginBottom: Spacing.xs },
+  microRow: { flexDirection: 'row', alignItems: 'flex-start', paddingVertical: 3 },
+  microTime: { width: 72, fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.coral },
+  microLabel: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 16 },
 
   // CheckRow extras
   srcTag: { fontSize: 9, fontWeight: '800', color: Colors.teal, backgroundColor: Colors.teal + '1F', paddingVertical: 1, paddingHorizontal: 6, borderRadius: 999, overflow: 'hidden' },
