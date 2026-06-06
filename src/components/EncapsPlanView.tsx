@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius } from '../theme/tokens';
 import {
-  useEncapsPlan, itemsForDay, type PlanItem, type StudyScheduleDay, type StudyMetrics,
+  useEncapsPlan, itemsForDay, vueltaLabel, type PlanItem, type StudyScheduleDay, type StudyMetrics,
 } from '../lib/encapsPlan';
 import EncapsWebView from './EncapsWebView';
 
@@ -89,7 +89,7 @@ export default function EncapsPlanView() {
 
 // ─── HOY ───
 function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
-  const { today, dia, total, metrics, todayItems, doneToday, totalToday, checks, toggleCheck } = plan;
+  const { today, dia, total, metrics, todayItems, doneToday, totalToday, checks, toggleCheck, repasos } = plan;
   if (!today) {
     return <Text style={styles.empty}>Sin datos del cronograma para hoy. Corré el sync (encaps_supabase_sync.py).</Text>;
   }
@@ -124,6 +124,23 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
           <View style={[styles.fill, { width: `${pct}%`, backgroundColor: pct >= 80 ? Colors.green : Colors.coral }]} />
         </View>
       </View>
+
+      {/* Repasos espaciados de hoy (repetición espaciada por tema) */}
+      {repasos.length > 0 ? (
+        <View style={styles.repasoBox}>
+          <Text style={styles.repasoTitle}>🔁 Repasos espaciados de hoy ({repasos.length})</Text>
+          <Text style={styles.repasoHint}>Bloque 07:15 — Anki + mapa en blanco (free recall). Intervalos Cepeda: D+1/3/7/14/28/50/63.</Text>
+          {repasos.map(r => (
+            <View key={r.codigo} style={styles.repasoRow}>
+              <Text style={styles.repasoVuelta}>{vueltaLabel(r.vuelta)} vuelta</Text>
+              <Text style={styles.repasoTema} numberOfLines={1}>{r.codigo} {r.subtema}</Text>
+              <Text style={styles.repasoAgo}>hace {r.delta}d</Text>
+            </View>
+          ))}
+        </View>
+      ) : (
+        <Text style={styles.repasoEmpty}>🔁 Sin repasos espaciados hoy (D{dia}). Los temas vistos reaparecen a D+1/3/7/14/28…</Text>
+      )}
 
       {/* Aclaración tema vs cola */}
       {todayItems.some(i => i.kind === 'video') && (
@@ -595,6 +612,16 @@ const styles = StyleSheet.create({
   calHint: { fontSize: FontSize.labelSm, color: Colors.muted, marginBottom: Spacing.sm },
 
   // Grupos HOY (tema vs cola) + tags de tema/vuelta
+  // Repasos espaciados (tracker de vueltas)
+  repasoBox: { backgroundColor: Colors.purple + '14', borderRadius: BorderRadius.md, padding: Spacing.md, marginBottom: Spacing.sm, borderLeftWidth: 3, borderLeftColor: Colors.purple },
+  repasoTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.purple },
+  repasoHint: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 1, marginBottom: Spacing.xs },
+  repasoRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 3 },
+  repasoVuelta: { width: 64, fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.purple },
+  repasoTema: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurface },
+  repasoAgo: { fontSize: FontSize.labelSm, color: Colors.muted, marginLeft: Spacing.sm },
+  repasoEmpty: { fontSize: FontSize.labelSm, color: Colors.muted, fontStyle: 'italic', marginBottom: Spacing.sm },
+
   groupHdr: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface, marginTop: Spacing.md, marginBottom: 2 },
   groupHint: { fontSize: FontSize.labelSm, color: Colors.muted, marginBottom: Spacing.sm, lineHeight: 15 },
   themeTag: { fontSize: 9, fontWeight: '800', paddingVertical: 1, paddingHorizontal: 6, borderRadius: 999, overflow: 'hidden' },

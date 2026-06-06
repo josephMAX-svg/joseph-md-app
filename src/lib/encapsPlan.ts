@@ -76,6 +76,35 @@ export function focusDayByCode(days: StudyScheduleDay[]): Record<string, number>
   return map;
 }
 
+// ── Repetición espaciada por tema ──────────────────────────────────────────
+// Días desde la 1ª exposición (deep-prime) en que toca repasar → vueltas 2..8.
+// Array basado en evidencia para examen a ~65 días (Cepeda 2008/2006: gap óptimo
+// ≈10-20% del tiempo al examen → NO sobre-expandir a 30+; estancar ~12-15d al final).
+// 7 toques de repaso (6-7 vueltas), último ~2 días antes del examen.
+export const SPACED_INTERVALS = [1, 3, 7, 14, 28, 50, 63];
+
+export interface RepasoHoy {
+  codigo: string; subtema: string; focusDia: number; delta: number; vuelta: number;
+}
+
+// Temas cuyo repaso espaciado cae HOY (su día-foco + intervalo == hoy).
+export function repasosDeHoy(days: StudyScheduleDay[], dia: number): RepasoHoy[] {
+  const out: RepasoHoy[] = [];
+  for (const d of days) {
+    if (!d.codigo || d.dia >= dia) continue;
+    const delta = dia - d.dia;
+    const idx = SPACED_INTERVALS.indexOf(delta);
+    if (idx >= 0) {
+      out.push({ codigo: d.codigo, subtema: d.subtema || d.codigo, focusDia: d.dia, delta, vuelta: idx + 2 });
+    }
+  }
+  out.sort((a, b) => a.delta - b.delta);
+  return out;
+}
+
+const ORDINAL = ['', '1ª', '2ª', '3ª', '4ª', '5ª', '6ª', '7ª'];
+export function vueltaLabel(n: number): string { return ORDINAL[n] || `${n}ª`; }
+
 // ── Helpers de fecha (Lima UTC-5) ──
 function todayLimaISO(): string {
   const now = new Date();
@@ -200,6 +229,7 @@ export interface UseEncapsPlan {
   todayItems: PlanItem[];
   doneToday: number;
   totalToday: number;
+  repasos: RepasoHoy[];
   toggleCheck: (itemKey: string, value: boolean) => void;
   saveSim: (simN: number, nota: number | null, fecha?: string) => void;
   refetch: () => void;
@@ -238,6 +268,7 @@ export function useEncapsPlan(examen: string = 'ENCAPS'): UseEncapsPlan {
   const simDays = useMemo(() => days.filter(d => d.simulacro), [days]);
   const focusByCode = useMemo(() => focusDayByCode(days), [days]);
   const todayItems = useMemo(() => (today ? itemsForDay(today, focusByCode) : []), [today, focusByCode]);
+  const repasos = useMemo(() => repasosDeHoy(days, dia), [days, dia]);
   const totalToday = todayItems.length;
   const doneToday = todayItems.reduce((n, it) => n + (checks[it.key] ? 1 : 0), 0);
 
@@ -253,6 +284,6 @@ export function useEncapsPlan(examen: string = 'ENCAPS'): UseEncapsPlan {
 
   return {
     loading, dia, total, today, days, metrics, checks, simScores, simDays,
-    todayItems, doneToday, totalToday, toggleCheck, saveSim, refetch: load,
+    todayItems, doneToday, totalToday, repasos, toggleCheck, saveSim, refetch: load,
   };
 }
