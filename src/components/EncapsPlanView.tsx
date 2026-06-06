@@ -10,6 +10,12 @@ import { Colors, Spacing, FontSize, BorderRadius } from '../theme/tokens';
 import {
   useEncapsPlan, itemsForDay, type PlanItem, type StudyScheduleDay, type StudyMetrics,
 } from '../lib/encapsPlan';
+import EncapsWebView from './EncapsWebView';
+
+// Google Calendar del usuario (día) embebido — sincronización minuto a minuto.
+// Requiere sesión Google del navegador (calendario privado). ctz Lima.
+const GCAL_EMBED_URL =
+  'https://calendar.google.com/calendar/embed?src=josephsototocas%40gmail.com&ctz=America%2FLima&mode=DAY&showTitle=0&showPrint=0&showCalendars=0&showTabs=0';
 
 type Sub = 'hoy' | 'meta' | 'sim' | 'sem' | 'horario';
 
@@ -122,15 +128,32 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
         <CheckRow key={it.key} item={it} checked={!!checks[it.key]} onToggle={v => toggleCheck(it.key, v)} />
       ))}
 
-      {/* PULSO output / material extra */}
-      {!!today.pulso && (
-        <Text style={styles.note}>💓 PULSO: {today.pulso}</Text>
+      {/* NTS Tier-1 — qué normas y dónde estudiarlas */}
+      {!!today.nts && (
+        <View style={styles.refBox}>
+          <Text style={styles.refTitle}>📋 NTS Tier-1 (normas técnicas)</Text>
+          <Text style={styles.refBody}>{today.nts}</Text>
+          <Text style={styles.refWhere}>Dónde: Theomed → carpeta “NORMAS TÉCNICAS” + Material Drive ↓</Text>
+        </View>
+      )}
+
+      {/* Material complementario (Drive / otras academias) */}
+      {Array.isArray(today.material_comp) && today.material_comp.length > 0 && (
+        <View style={styles.refBox}>
+          <Text style={styles.refTitle}>📚 Material complementario (Drive)</Text>
+          {today.material_comp.map((mm, i) => (
+            <TouchableOpacity key={i} onPress={() => mm.url && Linking.openURL(mm.url)} disabled={!mm.url} activeOpacity={0.7}>
+              <Text style={styles.matLink} numberOfLines={2}>• {mm.label || mm.url} {mm.url ? '↗' : ''}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
       )}
     </View>
   );
 }
 
 function CheckRow({ item, checked, onToggle }: { item: PlanItem; checked: boolean; onToggle: (v: boolean) => void }) {
+  const m = item.kind === 'video' ? estadoMeta(item.estado) : null;
   return (
     <View style={styles.checkRow}>
       <TouchableOpacity onPress={() => onToggle(!checked)} style={styles.checkTouch} activeOpacity={0.7}>
@@ -142,19 +165,30 @@ function CheckRow({ item, checked, onToggle }: { item: PlanItem; checked: boolea
             {KIND_ICON[item.kind]} {item.label}
           </Text>
           <View style={styles.checkSubRow}>
+            {!!item.source && <Text style={styles.srcTag}>{item.source}</Text>}
             {!!item.detail && <Text style={styles.checkDetail} numberOfLines={1}>{item.detail}</Text>}
-            {item.kind === 'video' && (() => {
-              const m = estadoMeta(item.estado);
-              return m ? <Text style={[styles.estadoBadge, { color: m.color, backgroundColor: m.color + '22' }]}>{m.label}</Text> : null;
-            })()}
+            {m && <Text style={[styles.estadoBadge, { color: m.color, backgroundColor: m.color + '22' }]}>{m.label}</Text>}
           </View>
+          {/* Bloqueado en QX → dónde estudiarlo hoy */}
+          {item.kind === 'video' && item.locked && !item.url && (
+            <Text style={styles.lockHint}>
+              🔒 QX lo libera {item.unlock ? item.unlock.slice(5) : 'pronto'} → hoy: Theomed equivalente / Material Drive
+            </Text>
+          )}
         </View>
       </TouchableOpacity>
-      {!!item.url && (
-        <TouchableOpacity onPress={() => Linking.openURL(item.url as string)} style={styles.openBtn}>
-          <Text style={styles.openBtnText}>abrir ↗</Text>
-        </TouchableOpacity>
-      )}
+      <View style={styles.linkCol}>
+        {item.url ? (
+          <TouchableOpacity onPress={() => Linking.openURL(item.url as string)} style={styles.openBtn}>
+            <Text style={styles.openBtnText}>{item.kind === 'video' ? '▶ ver' : 'abrir ↗'}</Text>
+          </TouchableOpacity>
+        ) : null}
+        {!!item.slides && (
+          <TouchableOpacity onPress={() => Linking.openURL(item.slides as string)} style={[styles.openBtn, styles.pdfBtn]}>
+            <Text style={[styles.openBtnText, { color: Colors.blue }]}>PDF</Text>
+          </TouchableOpacity>
+        )}
+      </View>
     </View>
   );
 }
@@ -329,9 +363,8 @@ function HorarioView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   const blocks = (isWeekend ? horarios?.weekend : horarios?.weekday) ?? [];
   const isSimPlan = !!today?.simulacro;
 
-  if (blocks.length === 0) {
-    return <Text style={styles.empty}>Sin horario cargado. Corré el sync (incluye los bloques del Calendar).</Text>;
-  }
+  const tema = today ? `${today.codigo || ''} ${today.subtema || ''}`.trim() : '';
+
   return (
     <View>
       <Text style={styles.horarioHint}>
@@ -342,13 +375,28 @@ function HorarioView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
           ⚠️ El Calendar marca simulacro hoy, pero el plan ENCAPS de este día es deep-prime (1er simulacro: D8).
         </Text>
       )}
-      {blocks.map((b, i) => (
+      {blocks.length === 0 ? (
+        <Text style={styles.empty}>Sin bloques cargados. Corré el sync.</Text>
+      ) : blocks.map((b, i) => (
         <View key={i} style={[styles.horarioRow, b.apex && styles.horarioRowApex]}>
           <Text style={[styles.horarioHora, b.apex && { color: Colors.coral }]}>{b.hora}</Text>
-          <Text style={styles.horarioTitulo} numberOfLines={2}>{b.titulo}</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.horarioTitulo} numberOfLines={2}>{b.titulo}</Text>
+            {b.apex && !!tema && <Text style={styles.horarioTema}>→ HOY: {tema}</Text>}
+          </View>
         </View>
       ))}
       <Text style={styles.horarioFoot}>🔴/🔥 = ventana donde se crean los APEX del día.</Text>
+
+      {/* Google Calendar en vivo (minuto a minuto) */}
+      <Text style={styles.calTitle}>📆 Tu Google Calendar (en vivo)</Text>
+      <Text style={styles.calHint}>Sincronizado minuto a minuto. Si no carga, iniciá sesión en Google en este navegador.</Text>
+      <EncapsWebView
+        url={GCAL_EMBED_URL}
+        title="📆 Google Calendar"
+        subtitle="Tu agenda ENCAPS del día, minuto a minuto."
+        height={620}
+      />
     </View>
   );
 }
@@ -444,4 +492,20 @@ const styles = StyleSheet.create({
   horarioHora: { width: 92, fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.teal },
   horarioTitulo: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurface, lineHeight: 16 },
   horarioFoot: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: Spacing.sm, fontStyle: 'italic' },
+  horarioTema: { fontSize: FontSize.labelSm, color: Colors.coral, fontWeight: '700', marginTop: 2 },
+  calTitle: { fontSize: FontSize.titleMd, fontWeight: '800', color: Colors.onSurface, marginTop: Spacing.lg, marginBottom: 2 },
+  calHint: { fontSize: FontSize.labelSm, color: Colors.muted, marginBottom: Spacing.sm },
+
+  // CheckRow extras
+  srcTag: { fontSize: 9, fontWeight: '800', color: Colors.teal, backgroundColor: Colors.teal + '1F', paddingVertical: 1, paddingHorizontal: 6, borderRadius: 999, overflow: 'hidden' },
+  lockHint: { fontSize: FontSize.labelSm, color: Colors.amber, marginTop: 3, lineHeight: 14 },
+  linkCol: { alignItems: 'flex-end', marginLeft: Spacing.sm },
+  pdfBtn: { marginTop: 4, backgroundColor: Colors.blue + '22' },
+
+  // Cajas de referencia (NTS / Material)
+  refBox: { backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.md, padding: Spacing.md, marginTop: Spacing.sm, borderLeftWidth: 3, borderLeftColor: Colors.teal },
+  refTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface, marginBottom: 4 },
+  refBody: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 17 },
+  refWhere: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 4, fontStyle: 'italic' },
+  matLink: { fontSize: FontSize.labelMd, color: Colors.blue, marginTop: 4, lineHeight: 17 },
 });

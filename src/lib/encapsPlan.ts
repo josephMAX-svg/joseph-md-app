@@ -20,7 +20,8 @@ export interface StudyVideo {
   unlock?: string | null; estado?: string;       // pendiente | en_progreso | bloqueado | visto
   available?: boolean;                            // release <= fecha
 }
-export interface StudyTheomed { subtema?: string; n_files?: number; [k: string]: unknown }
+export interface StudyTheomed { subtema?: string; n_files?: number; url?: string; tipo?: string; [k: string]: unknown }
+export interface StudyMaterial { label?: string; url?: string; [k: string]: unknown }
 export interface StudySim {
   clave?: string; label?: string; fecha?: string; simulacro_n?: number; duracion?: string;
   theomed_bank?: { cmid?: string; label?: string; url?: string };
@@ -28,7 +29,7 @@ export interface StudySim {
 export interface StudyScheduleDay {
   examen: string; dia: number; fecha: string; weekday?: string; tipo?: string;
   codigo?: string; subtema?: string; prioridad?: string; modo?: string; nts?: string | null;
-  videos: StudyVideo[]; theomed: StudyTheomed[]; material_comp: unknown[];
+  videos: StudyVideo[]; theomed: StudyTheomed[]; material_comp: StudyMaterial[];
   simulacro?: StudySim | null; pulso?: string | null; video_min?: number; n_videos?: number;
   extra?: Record<string, unknown>;
 }
@@ -46,8 +47,11 @@ export interface PlanItem {
   kind: 'video' | 'theomed' | 'pulso' | 'eval' | 'sim';
   label: string;
   detail?: string;
-  url?: string | null;
+  url?: string | null;    // link principal (QX videoclase | Theomed | banco sim)
+  slides?: string | null; // PDF de diapositivas (Dropbox) para videos QX
+  source?: string;        // fuente legible: 'QX videoclase' | 'Theomed' | …
   locked?: boolean;       // video QX aún no liberado / sin url en QX
+  unlock?: string | null; // fecha en que QX libera el video
   estado?: string;        // estado QX del video (pendiente|en_progreso|bloqueado|visto)
 }
 
@@ -71,20 +75,23 @@ export function itemsForDay(day: StudyScheduleDay): PlanItem[] {
   const items: PlanItem[] = [];
   (day.videos || []).forEach((v, i) => {
     const dur = v.duracion_min ?? v.dur;
-    const locked = v.estado === 'bloqueado' || v.available === false
+    const live = !!v.url;
+    const locked = !live || v.estado === 'bloqueado' || v.available === false
       || !!(v.unlock && day.fecha && v.unlock > day.fecha);
     items.push({
       key: `D${N}:video:${i}`, kind: 'video',
       label: v.titulo || `Video ${i + 1}`,
       detail: [v.code, dur ? `${dur}min` : null, v.prio].filter(Boolean).join(' · '),
-      url: v.url, locked, estado: v.estado,
+      url: v.url, slides: v.slides, locked, unlock: v.unlock, estado: v.estado,
+      source: live ? 'QX videoclase' : 'QX — no liberado',
     });
   });
   (day.theomed || []).forEach((t, i) => {
     items.push({
       key: `D${N}:theomed:${i}`, kind: 'theomed',
       label: `Theomed: ${t.subtema || `bloque ${i + 1}`}`,
-      detail: t.n_files ? `${t.n_files} archivos` : undefined,
+      detail: t.n_files ? `${t.n_files} archivos` : (t.tipo || undefined),
+      url: t.url, source: 'Theomed',
     });
   });
   if (day.pulso) {

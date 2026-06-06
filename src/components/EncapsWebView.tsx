@@ -8,9 +8,14 @@ import { Colors, Spacing, FontSize, BorderRadius } from '../theme/tokens';
 
 export const ENCAPS_DASHBOARD_URL = 'https://encaps-v9-joseph.vercel.app';
 
-export default function EncapsWebView({ url = ENCAPS_DASHBOARD_URL }: { url?: string }) {
+export default function EncapsWebView({
+  url = ENCAPS_DASHBOARD_URL,
+  title = '📊 Dashboard ENCAPS v9',
+  subtitle = 'Vista rica (HOY · Camino a 17/20 · Simulacros · Calendario), re-deploy diario 04:00.',
+  height,
+}: { url?: string; title?: string; subtitle?: string; height?: number }) {
   if (Platform.OS === 'web') {
-    const h = Math.max(560, Math.round(Dimensions.get('window').height - 240));
+    const h = height ?? Math.max(560, Math.round(Dimensions.get('window').height - 240));
     // En web, react-native-web usa ReactDOM: createElement('iframe', …) → iframe real.
     return (
       <View
@@ -46,10 +51,10 @@ export default function EncapsWebView({ url = ENCAPS_DASHBOARD_URL }: { url?: st
       }}
     >
       <Text style={{ fontSize: FontSize.titleMd, fontWeight: '700', color: Colors.onSurface, marginBottom: 4 }}>
-        📊 Dashboard ENCAPS v9
+        {title}
       </Text>
       <Text style={{ fontSize: FontSize.labelSm, color: Colors.muted, textAlign: 'center', marginBottom: Spacing.lg }}>
-        Vista rica (HOY · Camino a 17/20 · Simulacros · Calendario), re-deploy diario 04:00.
+        {subtitle}
       </Text>
       <TouchableOpacity
         onPress={() => Linking.openURL(url)}
@@ -61,7 +66,7 @@ export default function EncapsWebView({ url = ENCAPS_DASHBOARD_URL }: { url?: st
         }}
       >
         <Text style={{ fontSize: FontSize.labelMd, fontWeight: '800', color: '#0B1628' }}>
-          Abrir dashboard ↗
+          Abrir ↗
         </Text>
       </TouchableOpacity>
     </View>
