@@ -77,26 +77,50 @@ export function focusDayByCode(days: StudyScheduleDay[]): Record<string, number>
   return map;
 }
 
-// ── Repetición espaciada por tema ──────────────────────────────────────────
-// Días desde la 1ª exposición (deep-prime) en que toca repasar → vueltas 2..8.
-// Array basado en evidencia para examen a ~65 días (Cepeda 2008/2006: gap óptimo
-// ≈10-20% del tiempo al examen → NO sobre-expandir a 30+; estancar ~12-15d al final).
-// 7 toques de repaso (6-7 vueltas), último ~2 días antes del examen.
-export const SPACED_INTERVALS = [1, 3, 7, 14, 28, 50, 63];
+// ── Repetición espaciada por tema, DIFERENCIADA POR PRIORIDAD ───────────────
+// Cada subtema recibe sus vueltas según importancia (Joseph: "algunos 5, algunos
+// 4, algunos 3"). Cada array = días desde la 1ª exposición (video). Todos incluyen
+// un toque temprano + uno tardío (~2 días pre-examen). Cepeda 2008/2006: gap óptimo
+// ≈10-20% del tiempo al examen. Más prioridad = más toques intermedios.
+export const SPACED_INTERVALS = [1, 3, 7, 14, 28, 50, 63]; // superset de referencia
+export const REPASO_POR_PRIORIDAD: Record<string, number[]> = {
+  CRITICA: [1, 3, 7, 28, 63], // 5 repasos (1ª video + 5 = 6 vueltas) · máximo refuerzo
+  ALTA: [1, 7, 28, 63],       // 4 repasos
+  MEDIA: [3, 28, 63],         // 3 repasos
+  BAJA: [7, 63],              // 2 repasos (mapa+PDF+banco, ligero)
+};
+export function normPrio(p?: string): string {
+  const s = (p || '').toUpperCase();
+  if (s.includes('CRÍT') || s.includes('CRIT')) return 'CRITICA';
+  if (s.includes('ALTA')) return 'ALTA';
+  if (s.includes('BAJA')) return 'BAJA';
+  return 'MEDIA';
+}
+export function intervalosDe(prioridad?: string): number[] {
+  return REPASO_POR_PRIORIDAD[normPrio(prioridad)] || REPASO_POR_PRIORIDAD.MEDIA;
+}
+export function totalVueltas(prioridad?: string): number {
+  return intervalosDe(prioridad).length + 1; // +1 por la 1ª exposición (video)
+}
 
 export interface RepasoHoy {
   codigo: string; subtema: string; focusDia: number; delta: number; vuelta: number;
+  prioridad: string; totalVueltas: number;
 }
 
-// Temas cuyo repaso espaciado cae HOY (su día-foco + intervalo == hoy).
+// Temas cuyo repaso espaciado cae HOY (su día-foco + intervalo-según-prioridad == hoy).
 export function repasosDeHoy(days: StudyScheduleDay[], dia: number): RepasoHoy[] {
   const out: RepasoHoy[] = [];
   for (const d of days) {
     if (!d.codigo || d.dia >= dia) continue;
     const delta = dia - d.dia;
-    const idx = SPACED_INTERVALS.indexOf(delta);
+    const intervalos = intervalosDe(d.prioridad);
+    const idx = intervalos.indexOf(delta);
     if (idx >= 0) {
-      out.push({ codigo: d.codigo, subtema: d.subtema || d.codigo, focusDia: d.dia, delta, vuelta: idx + 2 });
+      out.push({
+        codigo: d.codigo, subtema: d.subtema || d.codigo, focusDia: d.dia, delta,
+        vuelta: idx + 2, prioridad: normPrio(d.prioridad), totalVueltas: intervalos.length + 1,
+      });
     }
   }
   out.sort((a, b) => a.delta - b.delta);

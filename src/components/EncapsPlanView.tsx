@@ -153,11 +153,11 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
       {repasos.length > 0 ? (
         <View style={styles.repasoBox}>
           <Text style={styles.repasoTitle}>🔁 Repasos espaciados de hoy ({repasos.length})</Text>
-          <Text style={styles.repasoHint}>Bloque 07:15 — Anki + mapa en blanco (free recall). Intervalos Cepeda: D+1/3/7/14/28/50/63.</Text>
+          <Text style={styles.repasoHint}>Bloque 07:15 — Anki + mapa en blanco (free recall). Vueltas según prioridad: CRÍT 6 · ALTA 5 · MEDIA 4 · BAJA 3.</Text>
           {repasos.map(r => (
             <View key={r.codigo} style={styles.repasoRow}>
-              <Text style={styles.repasoVuelta}>{vueltaLabel(r.vuelta)} vuelta</Text>
-              <Text style={styles.repasoTema} numberOfLines={1}>{r.codigo} {r.subtema}</Text>
+              <Text style={styles.repasoVuelta}>{vueltaLabel(r.vuelta)}/{r.totalVueltas}</Text>
+              <Text style={styles.repasoTema} numberOfLines={1}>{r.codigo} {r.subtema} · {r.prioridad}</Text>
               <Text style={styles.repasoAgo}>hace {r.delta}d</Text>
             </View>
           ))}
