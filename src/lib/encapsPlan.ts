@@ -7,7 +7,7 @@ import { supabase } from './supabase';
 
 // ── D1 por examen (para calcular el día actual 1..71) ──
 export const STUDY_D1: Record<string, string> = {
-  ENCAPS: '2026-06-06',
+  ENCAPS: '2026-06-08',   // re-estructurado: inicio lunes 8 jun (no se estudió el finde 6-7)
   // MIR / USMLE se agregan cuando se construyan sus cronogramas.
 };
 const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 71 };
