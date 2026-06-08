@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius } from '../theme/tokens';
 import {
-  useEncapsPlan, itemsForDay, vueltaLabel,
+  useEncapsPlan, itemsForDay, vueltaLabel, repasoKey, vueltasHechasDe,
   type PlanItem, type StudyScheduleDay, type StudyMetrics, type ProximoVideo,
 } from '../lib/encapsPlan';
 import EncapsWebView from './EncapsWebView';
@@ -153,14 +153,20 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
       {repasos.length > 0 ? (
         <View style={styles.repasoBox}>
           <Text style={styles.repasoTitle}>🔁 Repasos espaciados de hoy ({repasos.length})</Text>
-          <Text style={styles.repasoHint}>Bloque 07:15 — Anki + mapa en blanco (free recall). Vueltas según prioridad: CRÍT 6 · ALTA 5 · MEDIA 4 · BAJA 3.</Text>
-          {repasos.map(r => (
-            <View key={r.codigo} style={styles.repasoRow}>
-              <Text style={styles.repasoVuelta}>{vueltaLabel(r.vuelta)}/{r.totalVueltas}</Text>
-              <Text style={styles.repasoTema} numberOfLines={1}>{r.codigo} {r.subtema} · {r.prioridad}</Text>
-              <Text style={styles.repasoAgo}>hace {r.delta}d</Text>
-            </View>
-          ))}
+          <Text style={styles.repasoHint}>Bloque 07:15 — Anki + mapa en blanco (free recall). Tocá para marcar la vuelta hecha. Vueltas por prioridad: CRÍT 6 · ALTA 5 · MEDIA 4 · BAJA 3.</Text>
+          {repasos.map(r => {
+            const key = repasoKey(r.codigo, r.vuelta);
+            const done = !!checks[key];
+            const vh = vueltasHechasDe(r.codigo, r.prioridad, r.focusDia, dia, checks);
+            return (
+              <TouchableOpacity key={r.codigo} style={styles.repasoRow} onPress={() => toggleCheck(key, !done)} activeOpacity={0.7}>
+                <Text style={[styles.repasoCheck, done && styles.repasoCheckOn]}>{done ? '☑' : '☐'}</Text>
+                <Text style={styles.repasoVuelta}>{vueltaLabel(r.vuelta)}/{r.totalVueltas}</Text>
+                <Text style={styles.repasoTema} numberOfLines={1}>{r.codigo} {r.subtema}</Text>
+                <Text style={styles.repasoAgo}>✓{vh.hechas}/{vh.total} · {r.delta}d</Text>
+              </TouchableOpacity>
+            );
+          })}
         </View>
       ) : (
         <Text style={styles.repasoEmpty}>🔁 Sin repasos espaciados hoy (D{dia}). Los temas vistos reaparecen a D+1/3/7/14/28…</Text>
@@ -739,7 +745,9 @@ const styles = StyleSheet.create({
   repasoTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.purple },
   repasoHint: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 1, marginBottom: Spacing.xs },
   repasoRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 3 },
-  repasoVuelta: { width: 64, fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.purple },
+  repasoCheck: { width: 22, fontSize: FontSize.bodyMd, color: Colors.muted },
+  repasoCheckOn: { color: '#16a34a' },
+  repasoVuelta: { width: 48, fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.purple },
   repasoTema: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurface },
   repasoAgo: { fontSize: FontSize.labelSm, color: Colors.muted, marginLeft: Spacing.sm },
   repasoEmpty: { fontSize: FontSize.labelSm, color: Colors.muted, fontStyle: 'italic', marginBottom: Spacing.sm },

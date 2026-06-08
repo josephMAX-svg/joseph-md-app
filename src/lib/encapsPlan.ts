@@ -130,6 +130,21 @@ export function repasosDeHoy(days: StudyScheduleDay[], dia: number): RepasoHoy[]
 const ORDINAL = ['', '1ª', '2ª', '3ª', '4ª', '5ª', '6ª', '7ª'];
 export function vueltaLabel(n: number): string { return ORDINAL[n] || `${n}ª`; }
 
+// item_key de una vuelta de repaso (chequeable, por subtema+nº de vuelta).
+export function repasoKey(codigo: string, vuelta: number): string { return `repaso:${codigo}:v${vuelta}`; }
+
+// Cuántas vueltas YA hicimos de un subtema: la 1ª (ver el video del día-foco, si pasó)
+// + las vueltas de repaso marcadas como hechas. Devuelve {hechas, total}.
+export function vueltasHechasDe(
+  codigo: string, prioridad: string | undefined, focusDia: number, diaActual: number,
+  checks: Record<string, boolean>,
+): { hechas: number; total: number } {
+  const total = totalVueltas(prioridad);
+  let hechas = focusDia <= diaActual ? 1 : 0; // 1ª = video del día-foco ya pasado
+  for (let v = 2; v <= total; v++) if (checks[repasoKey(codigo, v)]) hechas++;
+  return { hechas: Math.min(hechas, total), total };
+}
+
 // ── Predicción de próximos videos QX a liberar (drip semanal) ───────────────
 // QX sube por goteo; cada video tiene su fecha de liberación (unlock). Listamos
 // los que aún no salieron, deduplicados por título, ordenados por fecha.
