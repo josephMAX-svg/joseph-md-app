@@ -5,6 +5,7 @@ import { desktopStyles, DesktopColors } from '../../theme/desktopStyles';
 import { AMBER, PillTab, Chip, SectionLabel, useHover } from './primitives';
 import { GradientHero, RingStat, BrandTile } from './visuals';
 import PulsoCommandCenter from './PulsoCommandCenter';
+import StudyPulsoHub from '../study/StudyPulsoHub';
 import {
   CockpitPanel, OfertaPanel, MarketingPanel, VentasPanel,
   LogisticaPanel, WebPanel, DirectricesPanel, PirqaView,
@@ -74,7 +75,11 @@ export default function EmpresaHub({ variant = 'mobile' }: { variant?: 'mobile' 
         </View>
       )}
 
-      {!MAIN_IDS.includes(company) && (
+      {company === 'estudio' && (
+        <StudyPulsoHub onBack={() => setCompany('pulso')} />
+      )}
+
+      {!MAIN_IDS.includes(company) && company !== 'estudio' && (
         <PlaceholderBrandView id={company} onBack={() => setCompany('pulso')} />
       )}
     </ScrollView>

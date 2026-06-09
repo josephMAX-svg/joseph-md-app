@@ -133,6 +133,18 @@ export default function PulsoCommandCenter({ onOpenBrand }: { onOpenBrand: (id: 
         onPress={() => onOpenBrand('pirqa')}
       />
 
+      {/* ── Estudio del fundador (plan 96d) ── */}
+      <SectionLabel style={{ marginTop: Spacing.xl }}>Estudio del fundador</SectionLabel>
+      <TouchableOpacity activeOpacity={0.9} onPress={() => onOpenBrand('estudio')}
+        style={[st.estudioTile, Platform.OS === 'web' ? ({ backgroundImage: `linear-gradient(120deg, ${GOLD}1F 0%, rgba(11,22,40,0.2) 70%)`, cursor: 'pointer', transition: 'all .2s ease' } as any) : { backgroundColor: GOLD + '14' }]}>
+        <Text style={{ fontSize: 28, marginRight: Spacing.md }}>📚</Text>
+        <View style={{ flex: 1 }}>
+          <Text style={st.estudioTitle}>Estudio Pulso · plan 96 días</Text>
+          <Text style={st.estudioSub}>28 libros · 2 ramas (clínico 60% + marketing 40%) · la autoridad que vende Pulso</Text>
+        </View>
+        <View style={[st.estudioCta, { borderColor: GOLD + '88' }]}><Text style={[st.estudioCtaText, { color: GOLD }]}>Abrir ›</Text></View>
+      </TouchableOpacity>
+
       {/* ── Pilares ── */}
       <SectionLabel style={{ marginTop: Spacing.xl }}>Por qué un solo grupo</SectionLabel>
       <View style={gridStyle(240)}>
@@ -215,4 +227,14 @@ const st = StyleSheet.create({
     paddingVertical: 6, paddingHorizontal: 11,
   },
   quickLinkText: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, fontWeight: '600' },
+
+  estudioTile: {
+    flexDirection: 'row', alignItems: 'center',
+    backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.xl,
+    borderWidth: 1, borderColor: GOLD + '44', padding: Spacing.lg, overflow: 'hidden',
+  },
+  estudioTitle: { fontSize: FontSize.bodyLg, fontWeight: '800', color: Colors.onSurface },
+  estudioSub: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 2, lineHeight: 16 },
+  estudioCta: { borderWidth: 1, borderRadius: BorderRadius.full, paddingVertical: 5, paddingHorizontal: 12, marginLeft: Spacing.sm },
+  estudioCtaText: { fontSize: FontSize.labelMd, fontWeight: '800' },
 });
