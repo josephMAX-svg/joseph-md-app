@@ -21,7 +21,7 @@ const NAV_ITEMS: { key: ScreenName; label: string; sublabel: string; icon: strin
   { key: 'Home', label: 'Home', sublabel: 'Dashboard · 1,367 days', icon: '🏠' },
   { key: 'Estudio', label: 'Study', sublabel: 'APEX Engine · CZI --', icon: '📚' },
   { key: 'Derma', label: 'Derma', sublabel: 'Fellowship · 0 papers', icon: '💎' },
-  { key: 'Empresa', label: 'Business', sublabel: 'DTC Peru · Phase 0', icon: '💼' },
+  { key: 'Empresa', label: 'Business', sublabel: 'Pulso · Liviano · Franquicias', icon: '💼' },
   { key: 'Investigación', label: 'Research', sublabel: 'Pipeline · 0 pub', icon: '🔬' },
   { key: 'Vitals', label: 'VITALS', sublabel: 'Body · AI-measured', icon: '🫀' },
 ];

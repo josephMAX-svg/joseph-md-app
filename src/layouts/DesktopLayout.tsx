@@ -14,7 +14,7 @@ import DesktopRightPanel from './DesktopRightPanel';
 import DesktopHomeContent from './desktop/DesktopHomeContent';
 import DesktopEstudioContent from './desktop/DesktopEstudioContent';
 import DesktopInvestigacionContent from './desktop/DesktopInvestigacionContent';
-import DesktopEmpresaContent from './desktop/DesktopEmpresaContent';
+import DesktopEmpresaHubContent from './desktop/DesktopEmpresaHubContent';
 import ApexSubmitModal from '../components/ApexSubmitModal';
 import AgentChatModal from '../components/AgentChatModal';
 import DictarErrorModal from '../components/DictarErrorModal';
@@ -81,7 +81,7 @@ export default function DesktopLayout() {
       case 'Derma':
         return <DermaScreen />;
       case 'Empresa':
-        return <DesktopEmpresaContent />;
+        return <DesktopEmpresaHubContent />;
       case 'Investigación':
         return <DesktopInvestigacionContent />;
       case 'Vitals':

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Platform } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius } from '../theme/tokens';
 import { desktopStyles, DesktopColors } from '../theme/desktopStyles';
+import { LIVIANO_PENDIENTES, PULSO_MATRIZ } from '../lib/empresaData';
+import { semaforoColor } from '../components/empresa/primitives';
 import { useSupabaseQuery } from '../hooks/useSupabaseQuery';
 import {
   getAllReports,
@@ -500,67 +502,47 @@ function DermaRightPanel() {
 // ═══════════════════════════════════════════════
 function EmpresaRightPanel() {
   const metrics = [
-    { label: 'PRECIO/MES', value: 'S/199', color: Colors.amber },
-    { label: 'GM', value: '60.8%', color: Colors.amber },
-    { label: 'BREAK-EVEN', value: '33', color: Colors.amber },
-    { label: 'LTV/CAC', value: '≥3:1', color: Colors.amber },
+    { label: 'LTV (LIVIANO)', value: 'S/ 18,700+', color: Colors.green },
+    { label: 'MARGEN DESPEGUE', value: '~57%', color: Colors.green },
+    { label: 'TICKET / MES', value: 'S/ 1,290', color: Colors.amber },
+    { label: 'LTV : CAC', value: '≥ 3:1', color: Colors.amber },
   ];
 
   return (
     <View>
-      <Text style={desktopStyles.rightPanelTitle}>KEY METRICS</Text>
+      <Text style={desktopStyles.rightPanelTitle}>LIVIANO · TARGETS</Text>
 
       {metrics.map((m, i) => (
         <View key={i} style={desktopStyles.rightPanelCard}>
           <Text style={{ fontSize: 10, color: Colors.smallLabel, letterSpacing: 0.8, fontWeight: '600' }}>
             {m.label}
           </Text>
-          <Text style={{ fontSize: 28, fontWeight: '800', color: m.color, marginTop: 4 }}>
+          <Text style={{ fontSize: 26, fontWeight: '800', color: m.color, marginTop: 4 }}>
             {m.value}
           </Text>
         </View>
       ))}
 
-      {/* Checklist Progress Ring */}
-      <Text style={[desktopStyles.rightPanelTitle, desktopStyles.rightPanelTitleSeparated]}>CHECKLIST PROGRESS</Text>
-      <View style={[desktopStyles.rightPanelCard, { alignItems: 'center', paddingVertical: 16 }]}>
-        <CircularProgress progress={0} size={80} strokeWidth={6} color={Colors.amber} trackColor="rgba(255,255,255,0.06)">
-          <Text style={{ fontSize: 16, fontWeight: '800', color: Colors.amber }}>0/6</Text>
-        </CircularProgress>
-        <Text style={{ fontSize: 11, color: Colors.muted, marginTop: 8 }}>Decisiones Clave</Text>
+      {/* Pendientes críticos */}
+      <Text style={[desktopStyles.rightPanelTitle, desktopStyles.rightPanelTitleSeparated]}>PENDIENTES CRÍTICOS</Text>
+      <View style={desktopStyles.rightPanelCard}>
+        {LIVIANO_PENDIENTES.slice(0, 4).map((p, i) => (
+          <View key={i} style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 6 }}>
+            <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: semaforoColor(p.nivel), marginRight: 10 }} />
+            <Text style={{ fontSize: 12, color: Colors.onSurfaceVariant, flex: 1 }} numberOfLines={1}>{p.titulo}</Text>
+          </View>
+        ))}
       </View>
 
-      {/* Phase Indicator */}
-      <Text style={[desktopStyles.rightPanelTitle, desktopStyles.rightPanelTitleSeparated]}>PHASE</Text>
+      {/* Grupo Pulso */}
+      <Text style={[desktopStyles.rightPanelTitle, desktopStyles.rightPanelTitleSeparated]}>GRUPO PULSO</Text>
       <View style={desktopStyles.rightPanelCard}>
-        <View style={{ flexDirection: 'row', gap: 6 }}>
-          {[
-            { name: 'Fase 0', active: true },
-            { name: 'Fase 1', active: false },
-            { name: 'Fase 2', active: false },
-          ].map((phase, i) => (
-            <View
-              key={i}
-              style={{
-                flex: 1,
-                paddingVertical: 8,
-                borderRadius: 8,
-                backgroundColor: phase.active ? Colors.amber + '20' : 'rgba(255,255,255,0.04)',
-                borderWidth: phase.active ? 1 : 0,
-                borderColor: Colors.amber + '40',
-                alignItems: 'center',
-              }}
-            >
-              <Text style={{
-                fontSize: 11,
-                fontWeight: '700',
-                color: phase.active ? Colors.amber : Colors.muted,
-              }}>
-                {phase.name}
-              </Text>
-            </View>
-          ))}
-        </View>
+        {PULSO_MATRIZ.kpisConsolidados.map((k, i) => (
+          <View key={i} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 6 }}>
+            <Text style={{ fontSize: 12, color: Colors.muted }}>{k.label}</Text>
+            <Text style={{ fontSize: 12, fontWeight: '700', color: Colors.onSurface }}>{k.valor}</Text>
+          </View>
+        ))}
       </View>
     </View>
   );

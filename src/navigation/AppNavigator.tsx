@@ -7,7 +7,7 @@ import { Colors, FontSize, BorderRadius } from '../theme/tokens';
 import HomeScreen from '../screens/HomeScreen';
 import EstudioScreen from '../screens/EstudioScreen';
 import DermaScreen from '../screens/DermaScreen';
-import EmpresaScreen from '../screens/EmpresaScreen';
+import EmpresaHubScreen from '../screens/EmpresaHubScreen';
 import InvestigacionScreen from '../screens/InvestigacionScreen';
 import VitalsScreen from '../screens/VitalsScreen';
 
@@ -81,7 +81,7 @@ export default function AppNavigator() {
         />
         <Tab.Screen
           name="Empresa"
-          component={EmpresaScreen}
+          component={EmpresaHubScreen}
           options={{
             tabBarLabel: 'Business',
             tabBarIcon: ({ focused, color }) => (
