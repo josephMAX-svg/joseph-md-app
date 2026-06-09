@@ -84,7 +84,7 @@ function MiniCalendar({ activeDays }: { activeDays: string[] }) {
   const jsDay = today.getDay(); // Sun=0..Sat=6
   // Monday = 0, Sunday = 6
   const mondayIdx = jsDay === 0 ? 6 : jsDay - 1;
-  const weekDays = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
+  const weekDays = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 
   // Build 7 dates for this week (Mon → Sun, Lima time)
   const dates: string[] = [];

@@ -89,7 +89,7 @@ function ReportCard({ report, onPress }: { report: AgentReport; onPress: () => v
       <View style={styles.reportInfo}>
         <Text style={styles.reportAgent}>{report.agente ?? 'Agent'}</Text>
         <Text style={styles.reportDate}>
-          {new Date(report.fecha).toLocaleDateString('es-PE', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}
+          {new Date(report.fecha).toLocaleDateString('en-US', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}
         </Text>
         {report.resumen_json && (
           <Text style={styles.reportSummary} numberOfLines={2}>
@@ -159,7 +159,7 @@ export default function HomeScreen() {
 
   // Greeting based on time of day
   const hour = new Date().getHours();
-  const greeting = hour < 12 ? 'Buenos días' : hour < 18 ? 'Buenas tardes' : 'Buenas noches';
+  const greeting = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
 
   // Countdown timer
   useEffect(() => {
@@ -246,7 +246,7 @@ export default function HomeScreen() {
   const milestones = [
     { title: 'Top 50 MIR 2030', opacity: 1.0 },
     { title: 'Fellowship Mayo 2035', opacity: 0.6 },
-    { title: 'Residencia 2037–2041', opacity: 0.3 },
+    { title: 'Residency 2037–2041', opacity: 0.3 },
   ];
 
   // Compute live deep work value: accumulated + current session
@@ -277,7 +277,7 @@ export default function HomeScreen() {
       {queueCount > 0 && (
         <View style={styles.queueBanner}>
           <Text style={styles.queueBannerText}>
-            ⏳ {queueCount} APEX pendiente{queueCount > 1 ? 's' : ''} · se procesarán al conectar PC
+            ⏳ {queueCount} APEX pending · will process when PC connects
           </Text>
         </View>
       )}
@@ -300,11 +300,11 @@ export default function HomeScreen() {
 
       {/* ─── Countdown ─── */}
       <View style={styles.countdownCard}>
-        <Text style={styles.countdownLabel}>DÍAS PARA MIR 2030</Text>
+        <Text style={styles.countdownLabel}>DAYS TO MIR 2030</Text>
         <View style={styles.countdownRow}>
           <View style={styles.countdownBlock}>
             <Text style={styles.countdownNumber}>{countdown.days}</Text>
-            <Text style={styles.countdownUnit}>DÍAS</Text>
+            <Text style={styles.countdownUnit}>DAYS</Text>
           </View>
           <Text style={styles.countdownSep}>:</Text>
           <View style={styles.countdownBlock}>
@@ -321,23 +321,23 @@ export default function HomeScreen() {
 
       {/* ─── Metrics Grid (2×2) LIVE ─── */}
       <View style={styles.metricsHeader}>
-        <Text style={styles.sectionTitle}>MÉTRICAS EN VIVO</Text>
+        <Text style={styles.sectionTitle}>LIVE METRICS</Text>
         <TouchableOpacity onPress={handleRefreshAll} style={styles.refreshBtn}>
           <Text style={styles.refreshIcon}>🔄</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.metricsGrid}>
         <View style={styles.metricGridItem}>
-          <MetricCard label="Tarjetas hoy" value={String(metrics.cards)} color={Colors.teal} loading={metricsLoading} />
+          <MetricCard label="Cards today" value={String(metrics.cards)} color={Colors.teal} loading={metricsLoading} />
         </View>
         <View style={styles.metricGridItem}>
           <MetricCard label="Deep Work" value={displayDeepWork} unit="hrs" color={Colors.amber} loading={metricsLoading} />
         </View>
         <View style={styles.metricGridItem}>
-          <MetricCard label="Dominio MIR" value={String(metrics.dominioMIR)} unit="%" color={Colors.blue} loading={metricsLoading} />
+          <MetricCard label="MIR Mastery" value={String(metrics.dominioMIR)} unit="%" color={Colors.blue} loading={metricsLoading} />
         </View>
         <View style={styles.metricGridItem}>
-          <MetricCard label="Publicaciones" value="0" color={Colors.green} />
+          <MetricCard label="Publications" value="0" color={Colors.green} />
         </View>
       </View>
 
@@ -355,7 +355,7 @@ export default function HomeScreen() {
         <ProgressBar value={timerProgress} color={Colors.amber} height={6} />
         {/* Accumulated hours today */}
         <Text style={styles.timerAccum}>
-          Acumulado hoy: {Math.round(liveDeepWorkHours * 10) / 10}h
+          Accumulated today: {Math.round(liveDeepWorkHours * 10) / 10}h
         </Text>
         <TouchableOpacity
           style={[styles.timerButton, timerRunning && styles.timerButtonStop]}
@@ -369,8 +369,8 @@ export default function HomeScreen() {
       <View style={styles.streakCard}>
         <Text style={styles.streakEmoji}>🔥</Text>
         <View>
-          <Text style={styles.streakCount}>{streak} días</Text>
-          <Text style={styles.streakLabel}>RACHA ACTUAL</Text>
+          <Text style={styles.streakCount}>{streak} days</Text>
+          <Text style={styles.streakLabel}>CURRENT STREAK</Text>
         </View>
       </View>
 
@@ -383,7 +383,7 @@ export default function HomeScreen() {
             setApexModalVisible(true);
           }}
         >
-          <Text style={styles.actionBtnText}>APEX 1 TOQUE</Text>
+          <Text style={styles.actionBtnText}>APEX 1-TAP</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.actionBtn, { backgroundColor: Colors.purple }]}
@@ -392,7 +392,7 @@ export default function HomeScreen() {
             setApexModalVisible(true);
           }}
         >
-          <Text style={styles.actionBtnText}>DICTAR ERROR</Text>
+          <Text style={styles.actionBtnText}>DICTATE ERROR</Text>
         </TouchableOpacity>
       </View>
 
@@ -429,14 +429,14 @@ export default function HomeScreen() {
             <TouchableOpacity onPress={() => setNotifModalVisible(false)}>
               <Text style={styles.notifClose}>✕</Text>
             </TouchableOpacity>
-            <Text style={styles.notifTitle}>📋 Reportes del Agente</Text>
+            <Text style={styles.notifTitle}>📋 Agent Reports</Text>
             <View style={{ width: 22 }} />
           </View>
 
           {unreadReports.length > 0 && (
             <View style={styles.notifUnreadBanner}>
               <Text style={styles.notifUnreadText}>
-                {unreadReports.length} reporte{unreadReports.length > 1 ? 's' : ''} sin leer
+                {unreadReports.length} unread report{unreadReports.length > 1 ? 's' : ''}
               </Text>
             </View>
           )}
@@ -450,9 +450,9 @@ export default function HomeScreen() {
             )}
             ListEmptyComponent={
               <View style={styles.emptyReports}>
-                <Text style={styles.emptyReportsText}>Sin reportes</Text>
+                <Text style={styles.emptyReportsText}>No reports</Text>
                 <Text style={styles.emptyReportsHint}>
-                  Los agentes generan reportes después de cada bloque de estudio
+                  Agents generate reports after each study block
                 </Text>
               </View>
             }

@@ -228,7 +228,7 @@ export default function DesktopHomeContent() {
   };
 
   const hour = new Date().getHours();
-  const greeting = hour < 12 ? 'Buenos días' : hour < 18 ? 'Buenas tardes' : 'Buenas noches';
+  const greeting = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
   const liveDeepWorkHours = dwAccumulatedHours + (timerSeconds / 3600);
   const timerHours = Math.floor(timerSeconds / 3600);
   const timerMins = Math.floor((timerSeconds % 3600) / 60);
@@ -240,7 +240,7 @@ export default function DesktopHomeContent() {
   const milestones = [
     { title: 'Top 50 MIR 2030', opacity: 1.0, color: Colors.coral },
     { title: 'Fellowship Mayo 2035', opacity: 0.7, color: Colors.blue },
-    { title: 'Residencia 2037–2041', opacity: 0.4, color: Colors.teal },
+    { title: 'Residency 2037–2041', opacity: 0.4, color: Colors.teal },
   ];
 
   const webBtnTransition = Platform.OS === 'web'
@@ -274,7 +274,7 @@ export default function DesktopHomeContent() {
             marginRight: 8,
           }} />
           <Text style={{ fontSize: 11, color: Colors.onSurfaceVariant, fontWeight: '600', letterSpacing: 0.3 }}>
-            {isLocalAvailable ? 'PC conectada' : 'Offline'}
+            {isLocalAvailable ? 'Online' : 'Offline'}
           </Text>
           {(unreadReports?.length ?? 0) > 0 && (
             <View style={{ marginLeft: 10, backgroundColor: Colors.coral, borderRadius: 999, paddingVertical: 1, paddingHorizontal: 7 }}>
@@ -289,10 +289,10 @@ export default function DesktopHomeContent() {
         <GlassCard style={{ flex: 1, flexDirection: 'row', alignItems: 'center', marginBottom: 0, borderLeftWidth: 4, borderLeftColor: Colors.teal } as any}>
           <View style={{ flex: 1 }}>
             <Text style={{ fontSize: 10, fontWeight: '700', color: Colors.smallLabel, letterSpacing: 1.2, marginBottom: 4 }}>
-              FASE ACTUAL
+              CURRENT PHASE
             </Text>
             <Text style={{ fontSize: FontSize.titleMd, fontWeight: '700', color: Colors.onSurface }}>
-              {localPhase?.phase ?? 'Fase 0 · Research'}
+              {localPhase?.phase ?? 'Phase 0 · Research'}
             </Text>
           </View>
           <View style={{ alignItems: 'flex-end' }}>
@@ -300,13 +300,13 @@ export default function DesktopHomeContent() {
               {localPhase?.days_remaining ?? mirCountdown()}
             </Text>
             <Text style={{ fontSize: 9, fontWeight: '600', color: Colors.smallLabel, letterSpacing: 1 }}>
-              DÍAS MIR 2030
+              DAYS TO MIR 2030
             </Text>
           </View>
         </GlassCard>
         <GlassCard style={{ flex: 1, marginBottom: 0 } as any}>
           <Text style={{ fontSize: 10, fontWeight: '700', color: Colors.smallLabel, letterSpacing: 1.2, marginBottom: 8 }}>
-            {isLocalAvailable ? 'SERVICIOS' : 'SERVICIOS · MODO OFFLINE'}
+            {isLocalAvailable ? 'SERVICES' : 'SERVICES · OFFLINE MODE'}
           </Text>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
             {DEFAULT_SERVICES.map((svc) => {
@@ -335,7 +335,7 @@ export default function DesktopHomeContent() {
               APEX Queue
             </Text>
             <Text style={{ fontSize: 11, color: Colors.onSurfaceVariant, marginTop: 2 }}>
-              {queueCount} pendiente{queueCount !== 1 ? 's' : ''} por procesar
+              {queueCount} pending to process
             </Text>
           </View>
           <View style={{ backgroundColor: Colors.amber + '20', borderRadius: 999, paddingVertical: 4, paddingHorizontal: 12 }}>
@@ -365,7 +365,7 @@ export default function DesktopHomeContent() {
           fontSize: 13, fontWeight: '600', color: Colors.muted,
           letterSpacing: 1.2, textTransform: 'uppercase', marginBottom: Spacing.lg,
         }}>
-          DÍAS PARA MIR 2030
+          DAYS TO MIR 2030
         </Text>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <View style={{ alignItems: 'center', minWidth: 140 }}>
@@ -373,7 +373,7 @@ export default function DesktopHomeContent() {
               value={countdown.days}
               style={{ fontSize: 72, fontWeight: '700', color: Colors.teal, letterSpacing: -2 }}
             />
-            <Text style={{ fontSize: 10, fontWeight: '600', color: Colors.smallLabel, letterSpacing: 1, marginTop: 2 }}>DÍAS</Text>
+            <Text style={{ fontSize: 10, fontWeight: '600', color: Colors.smallLabel, letterSpacing: 1, marginTop: 2 }}>DAYS</Text>
           </View>
           {[
             { num: countdown.hours, unit: 'HRS' },
@@ -394,20 +394,20 @@ export default function DesktopHomeContent() {
       </GlassCard>
 
       {/* Metrics Row — single row, wraps on narrow widths */}
-      <Text style={desktopStyles.sectionHeader}>MÉTRICAS EN VIVO</Text>
+      <Text style={desktopStyles.sectionHeader}>LIVE METRICS</Text>
       <View style={desktopStyles.metricsRow}>
         <View style={desktopStyles.metricsRowItem}>
-          <MetricCard label="Tarjetas hoy" value={metrics.cards} color={MetricColors.tarjetas} loading={metricsLoading} />
+          <MetricCard label="Cards today" value={metrics.cards} color={MetricColors.tarjetas} loading={metricsLoading} />
         </View>
         <View style={desktopStyles.metricsRowItem}>
           <MetricCard label="Deep Work" value={Math.round(liveDeepWorkHours * 10) / 10} unit="hrs" color={MetricColors.deepWork} loading={metricsLoading} />
         </View>
         <View style={desktopStyles.metricsRowItem}>
-          <MetricCard label="Dominio MIR" value={metrics.dominioMIR} unit="%" color={MetricColors.dominio} loading={metricsLoading} />
+          <MetricCard label="MIR Mastery" value={metrics.dominioMIR} unit="%" color={MetricColors.dominio} loading={metricsLoading} />
         </View>
         <View style={desktopStyles.metricsRowItem}>
           {/* Open counter, no "/10" limit */}
-          <MetricCard label="Publicaciones" value={0} color={MetricColors.publicaciones} />
+          <MetricCard label="Publications" value={0} color={MetricColors.publicaciones} />
         </View>
       </View>
 
@@ -455,7 +455,7 @@ export default function DesktopHomeContent() {
         {/* Accumulated today progress bar toward 5h */}
         <View style={{ marginBottom: Spacing.sm }}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 }}>
-            <Text style={desktopStyles.smallLabel}>Acumulado hoy</Text>
+            <Text style={desktopStyles.smallLabel}>Accumulated today</Text>
             <Text style={desktopStyles.smallLabel}>{Math.round(liveDeepWorkHours * 10) / 10}h / 5h</Text>
           </View>
           <View style={{ height: 6, backgroundColor: 'rgba(255,255,255,0.06)', borderRadius: 3, overflow: 'hidden' }}>
@@ -496,9 +496,9 @@ export default function DesktopHomeContent() {
           <AnimatedCounter
             value={streak}
             style={{ fontSize: FontSize.headlineSm, fontWeight: '800', color: Colors.amber }}
-            suffix=" días"
+            suffix=" days"
           />
-          <Text style={[desktopStyles.smallLabel, { letterSpacing: 1 }]}>RACHA ACTUAL</Text>
+          <Text style={[desktopStyles.smallLabel, { letterSpacing: 1 }]}>CURRENT STREAK</Text>
         </View>
       </GlassCard>
     </ScrollView>
