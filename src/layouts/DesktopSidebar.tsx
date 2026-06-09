@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import { Colors, FontSize, SidebarAccents } from '../theme/tokens';
 import { desktopStyles, DesktopColors } from '../theme/desktopStyles';
 
-export type ScreenName = 'Home' | 'Estudio' | 'Derma' | 'Empresa' | 'Investigación';
+export type ScreenName = 'Home' | 'Estudio' | 'Derma' | 'Empresa' | 'Investigación' | 'Vitals';
 
 interface SidebarProps {
   activeScreen: ScreenName;
@@ -18,11 +18,12 @@ interface SidebarProps {
 }
 
 const NAV_ITEMS: { key: ScreenName; label: string; sublabel: string; icon: string }[] = [
-  { key: 'Home', label: 'Home', sublabel: 'Dashboard · 1,367 días', icon: '🏠' },
-  { key: 'Estudio', label: 'Estudio', sublabel: 'Motor APEX · CZI --', icon: '📚' },
+  { key: 'Home', label: 'Home', sublabel: 'Dashboard · 1,367 days', icon: '🏠' },
+  { key: 'Estudio', label: 'Study', sublabel: 'APEX Engine · CZI --', icon: '📚' },
   { key: 'Derma', label: 'Derma', sublabel: 'Fellowship · 0 papers', icon: '💎' },
-  { key: 'Empresa', label: 'Empresa', sublabel: 'DTC Perú · Fase 0', icon: '💼' },
+  { key: 'Empresa', label: 'Business', sublabel: 'DTC Peru · Phase 0', icon: '💼' },
   { key: 'Investigación', label: 'Research', sublabel: 'Pipeline · 0 pub', icon: '🔬' },
+  { key: 'Vitals', label: 'VITALS', sublabel: 'Body · AI-measured', icon: '🫀' },
 ];
 
 function NavItem({
@@ -181,7 +182,7 @@ export default function DesktopSidebar({
             onMouseLeave: () => setApexHovered(false),
           } : {})}
         >
-          <Text style={desktopStyles.sidebarActionBtnText}>⚡ APEX 1 TOQUE</Text>
+          <Text style={desktopStyles.sidebarActionBtnText}>⚡ APEX 1-TAP</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[
@@ -198,7 +199,7 @@ export default function DesktopSidebar({
           } : {})}
         >
           <Text style={[desktopStyles.sidebarActionBtnText, { color: '#FFFFFF' }]}>
-            🎙 DICTAR ERROR
+            🎙 DICTATE ERROR
           </Text>
         </TouchableOpacity>
         {onChatPress && (
@@ -212,7 +213,7 @@ export default function DesktopSidebar({
             activeOpacity={0.7}
           >
             <Text style={[desktopStyles.sidebarActionBtnText, { color: '#FFFFFF' }]}>
-              💬 CHAT AGENTE
+              💬 AGENT CHAT
             </Text>
           </TouchableOpacity>
         )}

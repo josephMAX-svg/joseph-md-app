@@ -9,6 +9,7 @@ import EstudioScreen from '../screens/EstudioScreen';
 import DermaScreen from '../screens/DermaScreen';
 import EmpresaScreen from '../screens/EmpresaScreen';
 import InvestigacionScreen from '../screens/InvestigacionScreen';
+import VitalsScreen from '../screens/VitalsScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -62,7 +63,7 @@ export default function AppNavigator() {
           name="Estudio"
           component={EstudioScreen}
           options={{
-            tabBarLabel: 'Estudio',
+            tabBarLabel: 'Study',
             tabBarIcon: ({ focused, color }) => (
               <TabIcon icon="📚" focused={focused} color={color} />
             ),
@@ -82,7 +83,7 @@ export default function AppNavigator() {
           name="Empresa"
           component={EmpresaScreen}
           options={{
-            tabBarLabel: 'Empresa',
+            tabBarLabel: 'Business',
             tabBarIcon: ({ focused, color }) => (
               <TabIcon icon="💼" focused={focused} color={color} />
             ),
@@ -95,6 +96,16 @@ export default function AppNavigator() {
             tabBarLabel: 'Research',
             tabBarIcon: ({ focused, color }) => (
               <TabIcon icon="🔬" focused={focused} color={color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Vitals"
+          component={VitalsScreen}
+          options={{
+            tabBarLabel: 'VITALS',
+            tabBarIcon: ({ focused, color }) => (
+              <TabIcon icon="🫀" focused={focused} color={color} />
             ),
           }}
         />

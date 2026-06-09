@@ -22,6 +22,8 @@ import type { ScreenName } from './DesktopSidebar';
 
 // Derma screen stays the same — just re-render it in the center
 import DermaScreen from '../screens/DermaScreen';
+// VITALS — fitness/nutrition app embedded as a full-bleed iframe
+import VitalsScreen from '../screens/VitalsScreen';
 
 // Inject custom scrollbar + smooth scroll styles for web once
 if (Platform.OS === 'web' && typeof document !== 'undefined') {
@@ -82,10 +84,15 @@ export default function DesktopLayout() {
         return <DesktopEmpresaContent />;
       case 'Investigación':
         return <DesktopInvestigacionContent />;
+      case 'Vitals':
+        return <VitalsScreen />;
       default:
         return <DesktopHomeContent />;
     }
   };
+
+  // VITALS is a full-app iframe — it takes the whole content area (no right panel).
+  const isVitals = activeScreen === 'Vitals';
 
   return (
     <View style={desktopStyles.rootContainer}>
@@ -110,7 +117,7 @@ export default function DesktopLayout() {
         <View style={desktopStyles.contentGridMain}>
           {renderCenterContent()}
         </View>
-        {showRightPanel && (
+        {showRightPanel && !isVitals && (
           <View
             style={[
               desktopStyles.contentGridAside,

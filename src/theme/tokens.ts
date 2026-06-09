@@ -106,6 +106,7 @@ export const SidebarAccents: Record<string, string> = {
   Derma: Colors.purple,
   Empresa: Colors.amber,
   'Investigación': Colors.teal,
+  Vitals: Colors.green,
 } as const;
 
 // Metric gradient colors
