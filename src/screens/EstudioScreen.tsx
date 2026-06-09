@@ -35,6 +35,8 @@ import { useEncapsBlocks } from '../lib/encapsBlocks';
 import type { EncapsBlock } from '../lib/encapsBlocks';
 import EncapsPlanView from '../components/EncapsPlanView';
 import EncapsWebView from '../components/EncapsWebView';
+import UsmleHub from '../components/study/UsmleHub';
+import MirHub from '../components/study/MirHub';
 
 // ─── Data Structures ───
 interface Bank {
@@ -391,8 +393,9 @@ export default function EstudioScreen() {
           ))}
         </View>
 
-        {/* ─── EEUU TAB ─── */}
-        {activeTab === 'EEUU' && (
+        {/* ─── EEUU TAB → USMLE Hub (Plan ROI + Cerebro Palmerton) ─── */}
+        {activeTab === 'EEUU' && <UsmleHub />}
+        {false && (
           <View>
             <View style={[styles.bankSection, { borderLeftWidth: 4, borderLeftColor: Colors.amber }]}>
               <View style={styles.bankHeader}>
@@ -472,8 +475,9 @@ export default function EstudioScreen() {
           </View>
         )}
 
-        {/* ─── ESPAÑA TAB ─── */}
-        {activeTab === 'ESPAÑA' && (
+        {/* ─── ESPAÑA TAB → MIR Hub (ProMIR · ROI) ─── */}
+        {activeTab === 'ESPAÑA' && <MirHub />}
+        {false && (
           <View style={styles.bankSection}>
             <View style={styles.bankHeader}>
               <Text style={styles.bankTitle}>ProMIR</Text>

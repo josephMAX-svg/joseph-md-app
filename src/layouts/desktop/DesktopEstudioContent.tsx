@@ -8,6 +8,8 @@ import {
 } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
 import { desktopStyles, DesktopColors } from '../../theme/desktopStyles';
+import UsmleHub from '../../components/study/UsmleHub';
+import MirHub from '../../components/study/MirHub';
 import { useSupabaseQuery } from '../../hooks/useSupabaseQuery';
 import {
   getLatestCZI,
@@ -399,8 +401,9 @@ export default function DesktopEstudioContent() {
         ))}
       </View>
 
-      {/* ═══ EEUU TAB — Bank-structured ═══ */}
-      {activeTab === 'EEUU' && (
+      {/* ═══ EEUU TAB → USMLE Hub (Plan ROI + Cerebro Palmerton) ═══ */}
+      {activeTab === 'EEUU' && <UsmleHub />}
+      {false && (
         <View>
           {/* UWORLD */}
           <BankSectionHeader title="UWORLD" color={BANK_COLORS.uworld} badge="PRIMARY" count={`${UWORLD_SYSTEMS.length} systems`} />
@@ -474,8 +477,9 @@ export default function DesktopEstudioContent() {
         </View>
       )}
 
-      {/* ═══ ESPAÑA TAB — ProMIR 30 specialties ═══ */}
-      {activeTab === 'ESPAÑA' && (
+      {/* ═══ ESPAÑA TAB → MIR Hub (ProMIR · ROI) ═══ */}
+      {activeTab === 'ESPAÑA' && <MirHub />}
+      {false && (
         <View>
           <BankSectionHeader title="PROMIR" color={Colors.amber} badge="30 SPECIALTIES" />
           <View style={desktopStyles.specialtyGrid}>
