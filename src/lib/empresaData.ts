@@ -481,3 +481,66 @@ export const PIRQA_DATA = {
     { label: 'CRM · Hoy', url: 'https://pulso-crm.vercel.app/hoy' },
   ],
 };
+
+// ===================== CARTERA DE MARCAS PULSO =====================
+// Pulso = conglomerado de salud DTC. Cada "línea" es un tenant del CRM.
+// Catálogo real del CRM (src/lib/lines): LIVIANO (activa) + Nítida, Densa, Curva,
+// Calma, Foco, Cerca (planeadas). PIRQA es no-clínico (gastronomía) y va aparte.
+// Las categorías de las líneas planeadas son inferidas del nombre (aún sin definir).
+
+export interface MarcaPulso {
+  id: string;
+  nombre: string;
+  categoria: string;
+  estado: EstadoEmpresa;
+  accent: string;          // color de marca (aclarado para navy)
+  emoji: string;
+  tagline: string;
+  progreso: number;        // 0-100, madurez de lanzamiento
+  metricaClave?: { label: string; valor: string };
+  ancla?: boolean;
+}
+
+export const CARTERA_PULSO: MarcaPulso[] = [
+  { id: 'liviano', nombre: 'LIVIANO', categoria: 'Peso · GLP-1', estado: 'en_desarrollo', accent: '#9DB07F', emoji: '⚡', tagline: 'Programa médico de control de peso. El ancla del grupo.', progreso: 65, ancla: true, metricaClave: { label: 'Ticket', valor: 'S/ 1,290' } },
+  { id: 'nitida',  nombre: 'Nítida',  categoria: 'Piel · dermatología', estado: 'planeada', accent: '#6EC1E4', emoji: '✨', tagline: 'Dermatología médica por suscripción.', progreso: 8 },
+  { id: 'densa',   nombre: 'Densa',   categoria: 'Salud capilar', estado: 'planeada', accent: '#B98AE0', emoji: '🧬', tagline: 'Tratamiento capilar guiado.', progreso: 5 },
+  { id: 'curva',   nombre: 'Curva',   categoria: 'Estética & figura', estado: 'planeada', accent: '#E08FB0', emoji: '🌸', tagline: 'Estética corporal médica.', progreso: 4 },
+  { id: 'calma',   nombre: 'Calma',   categoria: 'Salud mental & sueño', estado: 'planeada', accent: '#7FA3D9', emoji: '🌙', tagline: 'Bienestar mental y descanso.', progreso: 4 },
+  { id: 'foco',    nombre: 'Foco',    categoria: 'Energía & enfoque', estado: 'planeada', accent: '#E0B45A', emoji: '🎯', tagline: 'Energía, foco y longevidad.', progreso: 3 },
+  { id: 'cerca',   nombre: 'Cerca',   categoria: 'Cuidado cercano', estado: 'planeada', accent: '#67C7A0', emoji: '🤝', tagline: 'Cuidado primario de cercanía.', progreso: 3 },
+];
+
+// Métricas consolidadas del grupo (estructurales — pre-lanzamiento).
+export const PULSO_CONSOLIDADO = {
+  lineasSalud: 7,
+  lineasActivas: 1,
+  tenantsProduccion: 1,          // PIRQA
+  readinessGrupo: 18,            // % madurez promedio de la cartera (ring)
+  consolidado: [
+    { label: 'Líneas de salud', valor: 7, suffix: '', hint: '1 activa · 6 en desarrollo' },
+    { label: 'En producción', valor: 1, suffix: '', hint: 'PIRQA (no clínico)' },
+    { label: 'Plataforma', valorTxt: 'CRM único', hint: 'Multi-tenant' },
+    { label: 'Motor', valorTxt: 'IA Gemini', hint: 'OCR + agente' },
+  ],
+  ticker: [
+    'Holding de salud DTC multi-marca',
+    'LIVIANO = programa ancla GLP-1',
+    'CRM multi-tenant compartido',
+    'WhatsApp → OCR → pago → ficha',
+    'Motor de IA Gemini',
+    'Categoría de uno en Huancayo',
+    '7 líneas de salud en cartera',
+    'Base: Junín, Perú → LATAM',
+  ],
+  // Roadmap de lanzamientos (proyección estructural, no ventas).
+  roadmap: [
+    { t: '2026 T2', activas: 1, label: 'LIVIANO pre-lanzamiento' },
+    { t: '2026 T3', activas: 1, label: 'LIVIANO lanza' },
+    { t: '2026 T4', activas: 2, label: '+ Nítida' },
+    { t: '2027 T1', activas: 3, label: '+ Densa' },
+    { t: '2027 T2', activas: 4, label: '+ Curva' },
+    { t: '2027 T3', activas: 5, label: '+ Calma' },
+    { t: '2027 T4', activas: 7, label: '+ Foco, Cerca' },
+  ],
+};
