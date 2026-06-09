@@ -7,7 +7,7 @@ import { supabase } from './supabase';
 
 // ── D1 por examen (para calcular el día actual 1..71) ──
 export const STUDY_D1: Record<string, string> = {
-  ENCAPS: '2026-06-08',   // re-estructurado: inicio lunes 8 jun (no se estudió el finde 6-7)
+  ENCAPS: '2026-06-10',   // re-estructurado v3: D1=mié 10 jun (no estudió 6-9); 1er finde=estudio; fin 19 ago
   // MIR / USMLE se agregan cuando se construyan sus cronogramas.
 };
 const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 71 };
@@ -31,6 +31,10 @@ export interface StudyScheduleDay {
   codigo?: string; subtema?: string; prioridad?: string; modo?: string; nts?: string | null;
   videos: StudyVideo[]; theomed: StudyTheomed[]; material_comp: StudyMaterial[];
   simulacro?: StudySim | null; pulso?: string | null; video_min?: number; n_videos?: number;
+  temas_secundarios?: { codigo: string; subtema: string; prioridad: string }[];
+  primer_finde_estudio?: boolean;
+  sim_cap?: number; sim_libre?: boolean;
+  simulacros?: { n: number; actividad?: string; banco?: string }[];
   extra?: Record<string, unknown>;
 }
 export interface StudyMetrics {

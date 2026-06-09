@@ -134,6 +134,12 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
           {metrics?.dias_a_examen != null && <Pill text={`examen ${metrics.dias_a_examen}d`} color={Colors.muted} />}
         </View>
         {!!today.nts && <Text style={styles.ntsLine}>📋 NTS Tier-1: {today.nts}</Text>}
+        {!!today.temas_secundarios?.length && (
+          <Text style={styles.secLine}>➕ Tema liviano extra: {today.temas_secundarios.map(s => `${s.codigo} ${s.subtema}`).join(' · ')}</Text>
+        )}
+        {!!today.primer_finde_estudio && (
+          <Text style={styles.findeStudyLine}>📚 Fin de semana de ESTUDIO (aún no hay examen — tu 1er examen es el 2º finde)</Text>
+        )}
       </View>
 
       {/* Progreso de hoy */}
@@ -644,6 +650,8 @@ const styles = StyleSheet.create({
   hoyTema: { fontSize: FontSize.titleMd, fontWeight: '800', color: Colors.onSurface, marginTop: 2 },
   hoyMetaRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: Spacing.sm },
   ntsLine: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, marginTop: Spacing.sm, lineHeight: 16 },
+  secLine: { fontSize: FontSize.labelSm, color: Colors.teal, marginTop: 4, lineHeight: 16 },
+  findeStudyLine: { fontSize: FontSize.labelSm, color: Colors.amber, marginTop: 4, fontWeight: '700', lineHeight: 16 },
 
   pill: { borderRadius: BorderRadius.full, paddingVertical: 2, paddingHorizontal: 8 },
   pillText: { fontSize: FontSize.labelSm, fontWeight: '700' },
