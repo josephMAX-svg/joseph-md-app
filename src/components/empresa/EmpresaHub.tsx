@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Platform, StyleSheet } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
 import { desktopStyles, DesktopColors } from '../../theme/desktopStyles';
-import { AMBER, PillTab, Chip, SectionLabel } from './primitives';
+import { AMBER, PillTab, Chip, SectionLabel, useHover } from './primitives';
 import { GradientHero, RingStat, BrandTile } from './visuals';
 import PulsoCommandCenter from './PulsoCommandCenter';
 import {
@@ -17,12 +17,6 @@ import { EMPRESAS, BRANDS, CARTERA_PULSO } from '../../lib/empresaData';
  * marcas: LIVIANO (ancla, 7 paneles detallados), PIRQA (1%) y las 6 líneas futuras
  * (placeholders). Reutilizado por mobile y desktop vía `variant`.
  */
-
-const MAIN_TABS: { id: string; label: string }[] = [
-  { id: 'pulso',   label: 'Pulso' },
-  { id: 'liviano', label: 'LIVIANO' },
-  { id: 'pirqa',   label: 'PIRQA' },
-];
 
 const LIVIANO_PANELS: { id: string; label: string; icon: string; render: () => React.ReactNode }[] = [
   { id: 'cockpit',     label: 'Cockpit',     icon: '📊', render: () => <CockpitPanel /> },
@@ -62,24 +56,9 @@ export default function EmpresaHub({ variant = 'mobile' }: { variant?: 'mobile' 
         <Text style={st.subtitle}>Pulso Health Group — el conglomerado de salud DTC y sus líneas.</Text>
       </View>
 
-      {/* Selector principal */}
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={{ marginBottom: Spacing.xl, marginHorizontal: isDesktop ? 0 : -2 }}
-        contentContainerStyle={{ gap: Spacing.sm, paddingVertical: 2, paddingHorizontal: 2 }}
-      >
-        {MAIN_TABS.map(t => (
-          <PillTab
-            key={t.id}
-            label={t.label}
-            icon={BRANDS[t.id]?.emoji}
-            dot={BRANDS[t.id]?.bright}
-            active={company === t.id}
-            onPress={() => setCompany(t.id)}
-          />
-        ))}
-      </ScrollView>
+      {/* Selector proporcional a la importancia: Pulso domina, LIVIANO medio, PIRQA ícono */}
+      <BrandSelector active={company} onSelect={setCompany} />
+      <Text style={st.selectorHint}>El grupo lo es todo · LIVIANO y PIRQA viven dentro de Pulso</Text>
 
       {/* Contenido por empresa */}
       {company === 'pulso' && <PulsoCommandCenter onOpenBrand={openBrand} />}
@@ -99,6 +78,86 @@ export default function EmpresaHub({ variant = 'mobile' }: { variant?: 'mobile' 
         <PlaceholderBrandView id={company} onBack={() => setCompany('pulso')} />
       )}
     </ScrollView>
+  );
+}
+
+// ── Selector proporcional a la importancia ───────────────────────
+function BrandSelector({ active, onSelect }: { active: string; onSelect: (id: string) => void }) {
+  return (
+    <View style={{ flexDirection: 'row', gap: Spacing.sm, alignItems: 'stretch', marginBottom: 6 }}>
+      <PulsoTab active={active === 'pulso'} onPress={() => onSelect('pulso')} />
+      <LivianoTab active={active === 'liviano'} onPress={() => onSelect('liviano')} />
+      <PirqaTab active={active === 'pirqa'} onPress={() => onSelect('pirqa')} />
+    </View>
+  );
+}
+
+function PulsoTab({ active, onPress }: { active: boolean; onPress: () => void }) {
+  const { hovered, hoverProps } = useHover();
+  const gold = BRANDS.pulso.bright;
+  const web = Platform.OS === 'web';
+  return (
+    <TouchableOpacity
+      activeOpacity={0.92} onPress={onPress} {...hoverProps}
+      style={[
+        sel.pulso,
+        { borderColor: active ? gold + 'AA' : gold + '3A' },
+        web
+          ? ({ backgroundImage: 'linear-gradient(120deg, #2E2817 0%, #0A1424 78%)', transition: 'all .2s ease', cursor: 'pointer', ...(hovered ? { transform: [{ translateY: -2 }], borderColor: gold + 'AA' } : {}) } as any)
+          : { backgroundColor: '#23252E' },
+      ]}
+    >
+      {web ? (
+        <View pointerEvents="none" style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: '42%', backgroundImage: 'linear-gradient(100deg, transparent, rgba(255,255,255,0.08), transparent)', animationName: 'hubSweep', animationDuration: '5.5s', animationIterationCount: 'infinite', animationTimingFunction: 'ease-in-out' } as any} />
+      ) : null}
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, position: 'relative' }}>
+        <Text style={{ fontSize: 30 }}>{BRANDS.pulso.emoji}</Text>
+        <View style={{ flex: 1 }}>
+          <Text style={sel.pulsoName}>Pulso</Text>
+          <Text style={[sel.pulsoSub, { color: gold }]}>Health Group · el grupo lo es todo</Text>
+        </View>
+        {active ? <View style={[sel.liveDot, { backgroundColor: gold }]} /> : null}
+      </View>
+    </TouchableOpacity>
+  );
+}
+
+function LivianoTab({ active, onPress }: { active: boolean; onPress: () => void }) {
+  const { hovered, hoverProps } = useHover();
+  const salvia = BRANDS.liviano.bright;
+  const web = Platform.OS === 'web';
+  return (
+    <TouchableOpacity
+      activeOpacity={0.9} onPress={onPress} {...hoverProps}
+      style={[
+        sel.liviano,
+        { borderColor: active ? salvia + 'AA' : DesktopColors.glassBorder, backgroundColor: active ? salvia + '14' : 'rgba(255,255,255,0.03)' },
+        web ? ({ transition: 'all .15s ease', cursor: 'pointer', ...(hovered && !active ? { borderColor: salvia + '66' } : {}) } as any) : null,
+      ]}
+    >
+      <Text style={{ fontSize: 20 }}>{BRANDS.liviano.emoji}</Text>
+      <Text style={[sel.livName, active && { color: Colors.onSurface }]}>LIVIANO</Text>
+      <Text style={[sel.livSub, { color: salvia }]}>ancla</Text>
+    </TouchableOpacity>
+  );
+}
+
+function PirqaTab({ active, onPress }: { active: boolean; onPress: () => void }) {
+  const { hovered, hoverProps } = useHover();
+  const terra = BRANDS.pirqa.bright;
+  const web = Platform.OS === 'web';
+  return (
+    <TouchableOpacity
+      activeOpacity={0.85} onPress={onPress} {...hoverProps}
+      style={[
+        sel.pirqa,
+        { borderColor: active ? terra + 'AA' : DesktopColors.glassBorder, backgroundColor: active ? terra + '18' : 'rgba(255,255,255,0.03)' },
+        web ? ({ transition: 'all .15s ease', cursor: 'pointer', ...(hovered && !active ? { borderColor: terra + '66', transform: [{ translateY: -2 }] } : {}) } as any) : null,
+      ]}
+    >
+      <Text style={{ fontSize: 18 }}>{BRANDS.pirqa.emoji}</Text>
+      <Text style={[sel.pirqaLabel, { color: terra }]}>1%</Text>
+    </TouchableOpacity>
   );
 }
 
@@ -197,6 +256,7 @@ function PlaceholderBrandView({ id, onBack }: { id: string; onBack: () => void }
 const st = StyleSheet.create({
   title: { fontSize: FontSize.headlineLg, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.5 },
   subtitle: { fontSize: FontSize.labelLg, color: Colors.muted, marginTop: 4, lineHeight: 19 },
+  selectorHint: { fontSize: FontSize.labelSm, color: Colors.smallLabel, fontStyle: 'italic', marginBottom: Spacing.xl, marginTop: 2 },
 
   breadcrumb: { flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: Spacing.md, alignSelf: 'flex-start' },
   breadcrumbText: { fontSize: FontSize.labelLg, color: BRANDS.pulso.bright, fontWeight: '700' },
@@ -217,4 +277,17 @@ const st = StyleSheet.create({
   placeBodyText: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, lineHeight: 20 },
   progTrack: { height: 6, borderRadius: 3, backgroundColor: 'rgba(255,255,255,0.06)', marginTop: Spacing.lg, overflow: 'hidden' },
   progFill: { height: 6, borderRadius: 3 },
+});
+
+// Selector proporcional: Pulso domina, LIVIANO medio, PIRQA ícono (1%)
+const sel = StyleSheet.create({
+  pulso: { flex: 5, borderRadius: BorderRadius.xl, borderWidth: 1, paddingVertical: 16, paddingHorizontal: 20, overflow: 'hidden', justifyContent: 'center', minHeight: 68 },
+  pulsoName: { fontSize: FontSize.titleLg, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.4 },
+  pulsoSub: { fontSize: FontSize.labelMd, fontWeight: '600', marginTop: 2 },
+  liveDot: { width: 9, height: 9, borderRadius: 5 },
+  liviano: { flex: 1.05, borderRadius: BorderRadius.lg, borderWidth: 1, paddingVertical: 10, paddingHorizontal: 10, alignItems: 'center', justifyContent: 'center', minHeight: 68 },
+  livName: { fontSize: FontSize.labelLg, fontWeight: '800', color: Colors.muted, marginTop: 2, letterSpacing: 0.2 },
+  livSub: { fontSize: 9, fontWeight: '700', marginTop: 1 },
+  pirqa: { width: 52, borderRadius: BorderRadius.lg, borderWidth: 1, alignItems: 'center', justifyContent: 'center', minHeight: 68 },
+  pirqaLabel: { fontSize: 9, fontWeight: '800', marginTop: 2 },
 });
