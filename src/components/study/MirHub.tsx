@@ -5,11 +5,12 @@ import { DesktopColors } from '../../theme/desktopStyles';
 import { SectionLabel, Chip, GlassPanel, gridStyle, gridItemStyle } from '../empresa/primitives';
 import { GradientHero, MegaStat, RingStat, FadeUp } from '../empresa/visuals';
 import {
-  MIR_META, MIR_KPIS, MIR_ASIGNATURAS, MIR_TIERS, PROMIR_FASES, MIR_HORA, MIR_CALENDARIO,
+  MIR_META, MIR_KPIS, PROMIR_FASES, MIR_HORA, MIR_CALENDARIO,
   MIR_TACTICA, MIR_RECURSOS, MIR_NOTA, PRIORIDAD_COLOR, VUELTAS,
 } from '../../lib/mirData';
 import { DIGESTIVO_META, DIGESTIVO_CAPITULOS, DIGESTIVO_PLAN, capUrl } from '../../lib/mirDigestivoData';
 import { CARDIO_META, CARDIO_CAPITULOS, capUrl as cardioUrl } from '../../lib/mirCardiologiaData';
+import MirTemarioExplorer from './MirTemarioExplorer';
 
 /**
  * MirHub — MIR España (ProMIR). Asignaturas por ROI tier + fases ProMIR + protocolo +
@@ -17,7 +18,6 @@ import { CARDIO_META, CARDIO_CAPITULOS, capUrl as cardioUrl } from '../../lib/mi
  */
 const AMBER = MIR_META.accent;
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
-const tierColor = (t: string) => (MIR_TIERS.find(x => x.tier === t)?.color ?? Colors.muted);
 
 export default function MirHub() {
   return (
@@ -38,27 +38,8 @@ export default function MirHub() {
         <View style={st.ringCard}><RingStat value={MIR_KPIS.readiness} label="Readiness" sub="desde cero" accent={Colors.blue} suffix="%" /></View>
       </View>
 
-      {/* TIERS leyenda */}
-      <SectionLabel>Asignaturas por rentabilidad (ROI/hora)</SectionLabel>
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm, marginBottom: Spacing.md }}>
-        {MIR_TIERS.map((t) => (
-          <View key={t.tier} style={[st.tierChip, { borderColor: t.color + '66' }]}>
-            <Text style={[st.tierTxt, { color: t.color }]}>Tier {t.tier} · {t.label}</Text>
-          </View>
-        ))}
-      </View>
-      <GlassPanel style={{ marginBottom: Spacing.xl }}>
-        {MIR_ASIGNATURAS.map((a, i) => (
-          <View key={i} style={[st.row, i === 0 && { borderTopWidth: 0 }]}>
-            <View style={[st.tierBadge, { backgroundColor: tierColor(a.tier) + '22' }]}><Text style={[st.tierBadgeTxt, { color: tierColor(a.tier) }]}>{a.tier}</Text></View>
-            <View style={{ flex: 1 }}>
-              <Text style={st.rowName}>{a.nombre}</Text>
-              <Text style={st.rowNota}>{a.nota}</Text>
-            </View>
-            <Text style={[st.rowVueltas, { color: PRIORIDAD_COLOR[a.prioridad] }]}>{VUELTAS[a.prioridad]}v</Text>
-          </View>
-        ))}
-      </GlassPanel>
+      {/* LAS 30 ASIGNATURAS REALES de ProMIR (rentabilidad + cruce rabi_94) */}
+      <MirTemarioExplorer />
 
       {/* CARDIOLOGÍA — bloque REAL extraído de ProMIR (#1 rentabilidad) */}
       <SectionLabel>⭐ Cardiología · ProMIR — bloque REAL (#1 en rentabilidad)</SectionLabel>
