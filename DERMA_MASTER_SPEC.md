@@ -332,13 +332,87 @@ El módulo no debe ser estático: debe **seguir investigando**. Diseño:
   devuelve **403 a fetch** → se navega a mano (Edge / Claude-in-Chrome / DevTools), no por API.
 - **Qbankly — Dermatología** (`qbankly.app`): **NO existe un módulo Derma aislado** — su
   contenido de derma vive dentro de los subjects de cada banco. **Abre SOLO en Edge.**
-- **ProMIR — Dermatología:** Peso MIR y `capId` de la asignatura **aún NO extraídos**
-  `(pendiente)` — el chat de Dermatología debe scrapearlos (solo Cardio/Digestivo verificados).
+- **ProMIR — Dermatología:** ✅ EXTRAÍDA COMPLETA (10-jun-2026) — ver Apéndice B.
 
-### Encargo abierto del módulo Derma
-Construir el plan tema-átomo/día (ritmo **interdiario con Research**) con el motor de
-`UsmleTodayPlan`/`MirTodayPlan` (HOY/Horario/7d/Temario, progreso real, botón ◆ Edge para
-Qbankly), y completar §2/§5 con los referentes/recursos verificados (URLs reales).
+### Encargo del módulo Derma — estado
+✅ Plan tema-átomo/día construido (66 átomos, interdiario con Research):
+`DATA/DERMATOLOGIA/daily-plan.md` + **`src/lib/dermaDailyPlan.ts`** (links reales, botón
+◆ Edge para Qbankly, progreso real `studyProgress` clave `derma`). §2/§5 verificados →
+`DATA/DERMATOLOGIA/referentes.md` y `recursos.md`. ⏳ La **UI** (pantallas §9) la diseña
+el chat principal sobre `dermaDailyPlan.ts`, copiando `UsmleTodayPlan`/`MirTodayPlan`.
+
+---
+
+## APÉNDICE B · DATA VERIFICADA II (10-jun-2026 · extracción EN VIVO de las 3 fuentes)
+
+> Extracción real con sesiones logueadas del usuario (Chrome DevTools MCP). Raw JSON en
+> `DATA/DERMATOLOGIA/_scrape/`. Consolidado en `DATA/DERMATOLOGIA/temario.md`.
+
+### B.1 ProMIR — Dermatología (asignatura 5) ✅ COMPLETA
+- 11 capítulos navegados (`/capitulo/<capId>`, capIds en `mirTemarioData.ts`). Profesor:
+  Dr. Luis Alfonso Pérez González. 18h 35min estimadas; peso "media (5-8 preg./convocatoria)".
+- **Vídeos con duración real:** presentación **4:28** · videoclase resumen **3:18:11** ·
+  Masterclass melanoma **1:39:10** (cap 4) · Dermatosis paraneoplásicas **16:46** (cap 3) ·
+  Dermatoscopia **18:36** (cap 10, mp4 directo) · 2 clips de procedimiento (0:12, 0:17).
+  Los caps 1/2/6/7/8/9 NO tienen vídeo propio (verificado, 0 etiquetas `<video>`).
+- **Peso MIR % por tema** (ya en `mirDetalleData.ts` clave 5): Oncología 23,39 ·
+  Infecciosas 17,29 · Sistémicas 15,25 · Conceptos 12,88 · Eritematodescamativas 8,81 ·
+  Toxicodermias 8,14 · Ampollosas 6,10 · Glandular 4,75 · Genodermatosis 3,39 · Dermatoscopia 0.
+- Secciones por capítulo + conteo figuras/tablas: `_scrape/promir_derma_capitulos.json`.
+
+### B.2 AccessDermatologyDxRx ✅ ESTRUCTURA COMPLETA (CDP SÍ funciona aquí)
+- **Review Questions (1.301 Q reales):** Barnhill's Challenge **403** (la cifra "400+" del
+  Apéndice A queda confirmada en 403) · Pictorial Review 4e **381** · 3e **363** · CORE Exam
+  Q-Bank **104** · Question of the Week **50**. Deep-link `/qa.aspx?resourceid=<id>`.
+- **Cases (300):** Board Review **200 casos** (Medical 110/Dermpath 30/Peds 30/Surgical 30 —
+  espeja el 55/15/15/15 de ABD APPLIED) · DD Challenge **100 sets** · LANGE (48 Q).
+- **Vídeos contados en vivo (~176+):** Suturing (Kantor) **91** · Animations 21 · Clinical
+  Videos 13 · Vein 13 · Lectures 11 · Peds 9 · Fitzpatrick 7 · Skin of Color 5 · General 4 ·
+  Biopsies 2 · `[pendiente]` Dermatologic Surgery y 3D Modules. ⚠ La cifra "400+ vídeos" del
+  Apéndice A no se pudo confirmar en el conteo visible; lo contado son ~176.
+- **36 libros con `bookid`** + **TOC completo del Fitzpatrick Color Atlas 9e** (35 secciones +
+  3 apéndices con `sectionid` → deep-link por sección, esqueleto de lectura del plan diario).
+- **Fitzpatrick's Dermatology 9e es bookid 2570** y el Color Atlas 9e es 3309 (en
+  AccessDermatology, no en AccessMedicine como decía el dossier antiguo).
+
+### B.3 Qbankly — derma (reutilizado de la extracción API 10-jun; Step 2 `[pendiente]`)
+- uWorld Library subject **Dermatology: 43 temas** con docId (70–112) → deep-link
+  `library?e=1&doc=<n>`; extraídos a `_scrape/qbankly_derm_library.json`.
+- uWorld Step 1: **78 Q** de derma en 3 subtemas (Inflammatory/bullous 28 · Tumors 32 ·
+  Infections 18) + Allergy (urticaria doc2, hipersensibilidad doc9, DRESS doc8).
+- USMLERx: Dermatology 53 Q · PassMedicine: "MSK & skin" 386 Q (mezcladas).
+- **B&B Step 1 capítulo Dermatology = 0 vídeos** (no existe; no usarlo como material).
+- `[pendiente]` bancos Step 2 CK + flashcards (el gate de selección de Edge se cerró).
+
+### B.4 Referentes verificados (URLs/DOIs reales → `DATA/DERMATOLOGIA/referentes.md`)
+- **Cotofana:** curso <https://cotofanaanatomy.com/> · ⚠ NO tiene canal YouTube oficial
+  (disecciones en su plataforma y Patreon) · safe zones = *Plastic and Aesthetic Nursing*
+  2022 (DOI 10.1097/PSN.0000000000000480) + *JDD* 2019 (PMID 31524345) — ⚠ no ASJ como
+  decía §2.1.
+- **de Maio:** MD Codes = APS 2021, open access **PMC8012343** · MD ASA = JCD 2021
+  (PMID 33977669; atributos H1 verificados) · Myomodulation = APS 2018 (PMID 29549406) ·
+  libro Springer 10.1007/978-3-642-45125-6 · formación: mdcodes.com + AMI.
+- **Carruthers:** Botulinum Toxin 5e ISBN 9780323831161 · Soft Tissue Augmentation 5e
+  ISBN 9780323830751 (Elsevier shop, 2024).
+- **DeLorenzi:** HDPH = ASJ 2017 DOI 10.1093/asj/sjw251 (PMID 28333326) · Complications
+  I/II = PMID 23636629 / 24809362. **Consenso ceguera** (título real): Goodman, Magnusson
+  et al., *…HA Embolic Visual Loss…*, ASJ 2020 (PMC7427155) — ⚠ corregir §2.4.
+- **Anderson:** Science 1983 PMID 6836297 · Manstein 2004 PMID 15216537 · Lasers/Lights/
+  Energy Devices 5e ISBN 9780323829052.
+- **Global Alliance:** JAAD 2018 DOI 10.1016/j.jaad.2017.09.078 (PMID 29127053).
+
+### B.5 Plan diario construido (66 átomos · interdiario)
+- **Ritmo:** la franja boards 13:30–14:15 alterna Research↔Derma por día hábil
+  (`researchData.ts#diaEstudioTipo`, D0=10-jun Research) ⇒ **Derma D1 = jue 11-jun-2026**,
+  D66 = 10-dic-2026. Calendar intacto.
+- **Estructura:** A Fundamentos (7) → B Genoderma/Peds (5) → C Infecciosas (6) →
+  D Neoplasias+dermatoscopia (7) → E Dermatopatología (4) → F Cirugía (5) → G Farmacología
+  (5) → H Medical amplio (12) → Cierre (1) → **X Estética estructural (14, referentes §2)**.
+  Orden: Sima Jain reordenado × ABD APPLIED 55/15/15/15 × Peso MIR × dependencias del SPEC
+  (alfabeto→80/20→no-errar→estética sobre anatomía).
+- Cada día: lectura Access (sectionid real) + práctica Qbankly **◆ Edge** + 2º pase ProMIR +
+  extra (casos/vídeo/paper). SRS CRÍTICA [1,3,7,28,63] (compartido con Research).
+- Progreso REAL manual: `studyProgress.ts` → `PlanKey` ahora incluye `'derma'` (inicia 0%).
 
 ---
 
