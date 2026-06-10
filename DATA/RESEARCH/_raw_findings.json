@@ -1,0 +1,1402 @@
+{
+  "rawFindings": {
+    "journals": {
+      "dimension": "Revistas de dermatología para publicar en 2026 (estética/clínica + revisiones sistemáticas): impact factor 2024 verificado, cuartil, scope, sistema de envío, tiempo a primera decisión",
+      "summary": "Investigué las 14 revistas solicitadas verificando cada impact factor contra fuentes que reproducen el Journal Citation Reports (JCR) de Clarivate publicado en junio 2025 con datos de 2024 (bioxbio, wos-journal.info, anuncios oficiales de AAD/AEDV/Aesthetic Society). REGLA DURA cumplida: cada cifra lleva URL real y confianza. ADVERTENCIA CRÍTICA sobre fuentes: muchos agregadores (Resurchify, exaly, journalimpact) mezclan un \"impact factor\" derivado de Scopus que NO es el JIF de Clarivate y produce números falsos mucho más bajos (ej. reportan JAMA Derm 4.49, JEADV 2.84, BJD 2.88). Esos los descarté; los números abajo son los JIF oficiales del JCR 2024. Top tier para impacto general: JAAD (11.8, #1), JAMA Dermatology (11.0), British Journal of Dermatology (9.6), JEADV (8.0). Para foco ESTÉTICO específicamente, las revistas de mayor IF con scope cosmético/estético son Aesthetic Surgery Journal (3.9, pero es de cirugía plástica) y Journal of Cosmetic Dermatology (2.5, Q2). Para REVISIONES SISTEMÁTICAS, JAAD tiene sección de reviews dominante; JAAD International (5.2, Q1) y JID son alternativas. Dato no resuelto: el JIF oficial de Clarivate por cuartil exacto de varias requiere acceso pagado a JCR; reporté cuartil cuando una fuente lo afirmó explícitamente y lo marqué de lo contrario.",
+      "findings": [
+        {
+          "claim": "JAAD (Journal of the American Academy of Dermatology): IF 2024 = 11.8, Q1, #1 entre 96 revistas de dermatología por 6º año consecutivo. Envío por Editorial Manager; primera decisión ~4-6 semanas.",
+          "detail": "IF 2024 confirmado en 11.8 (38.702 citas) por el anuncio oficial de la AAD/PR Newswire y por bioxbio (que muestra 11.8 en 2024 vs 12.8 en 2023). ISSN 0190-9622. Scope: revista clínica generalista líder de dermatología (original articles, reviews, dermatologic surgery, dermatopathology); fuerte en revisiones (sección JAAD Reviews lanzada 2024). Sistema de envío: Editorial Manager (todas las publicaciones JAAD lo usan). Tiempo a primera decisión: primeras decisiones usualmente en 4-6 semanas según la guía de autores. Editorial: Elsevier. Es la opción #1 para máximo impacto en dermatología clínica.",
+          "confidence": "alta",
+          "sources": [
+            "https://www.prnewswire.com/news-releases/jaad-impact-factor-ranks-no-1-among-dermatology-journals-302486561.html",
+            "https://www.bioxbio.com/journal/J-AM-ACAD-DERMATOL",
+            "https://www.sciencedirect.com/journal/journal-of-the-american-academy-of-dermatology/publish/guide-for-authors"
+          ]
+        },
+        {
+          "claim": "JAMA Dermatology: IF 2024 = 11.0 (JCR Clarivate), top ~98º percentil en Dermatología (Q1). Envío por ScholarOne (manuscripts.jamaderm.com); primera decisión muy rápida (mediana ~4 días sin revisión, ~47 días con revisión).",
+          "detail": "IF 2024 = 11.0 confirmado por wos-journal.info (JIF 11, 5-year 11.3, percentil 97.9% en Dermatology) y por bioxbio. ISSN 2168-6068 / eISSN 2168-6084. CRÍTICO: agregadores reportan un falso '4.49' derivado de Scopus que NO es el JIF de Clarivate. Scope: revista clínica de alto perfil de JAMA Network, ensayos clínicos, estudios poblacionales, revisiones sistemáticas con MUY alto estándar. Sistema: ScholarOne Manuscripts (manuscripts.jamaderm.com). Tiempo a primera decisión mediano ~4 días (mayoría son desk rejection) y ~47 días con revisión completa (cifra de un agregador, confianza media). Tasa de rechazo muy alta. Editorial: American Medical Association.",
+          "confidence": "alta",
+          "sources": [
+            "https://wos-journal.info/journalid/15086",
+            "https://jamanetwork.com/journals/jamadermatology/pages/instructions-for-authors",
+            "https://manuscripts.jamaderm.com/"
+          ]
+        },
+        {
+          "claim": "British Journal of Dermatology (BJD): IF 2024 = 9.6 (bajó de 11.0 en 2023). Q1. Envío por ScholarOne (mc.manuscriptcentral.com/bjd); opción Fast Track con primera decisión en 7 días hábiles.",
+          "detail": "IF 2024 = 9.6 confirmado por bioxbio (9.6 en 2024 vs 11.0 en 2023). ISSN 0007-0963. CRÍTICO: agregadores muestran un falso '2.88' de Scopus. Scope: investigación clínica y traslacional de dermatología, alto prestigio europeo, publica revisiones sistemáticas y guías. Sistema: ScholarOne Manuscripts (mc.manuscriptcentral.com/bjd). Triage por Editor-in-Chief, luego Section Editor, ≥2 revisores. Fast Track: primera decisión en 7 días hábiles para ensayos clínicos elegibles (contactar al Editor ≥3 semanas antes). Editorial: Oxford University Press (publicada con la British Association of Dermatologists).",
+          "confidence": "alta",
+          "sources": [
+            "https://www.bioxbio.com/journal/BRIT-J-DERMATOL",
+            "https://academic.oup.com/bjd/pages/general-instructions",
+            "https://mc.manuscriptcentral.com/bjd"
+          ]
+        },
+        {
+          "claim": "JID (Journal of Investigative Dermatology): IF 2024 = 5.7 (igual a 2023). Q1 en investigación cutánea. Envío por ScholarOne (revisión single-anonymized); decisión sin revisión ~5 días, con revisión ~30 días promedio.",
+          "detail": "IF 2024 = 5.7 confirmado por bioxbio (5.7 en 2024 y en 2023) y la Society for Investigative Dermatology. ISSN 0022-202X. Scope: investigación BÁSICA/traslacional de biología cutánea (no clínica estética) — es la revista de referencia para ciencia de la piel, órgano de la SID. Sistema: ScholarOne Manuscripts, revisión single-anonymized con ≥2 revisores (uno del Editorial Board). Tiempo a primera decisión: ~5 días si no va a revisión completa; ~30 días promedio para revisión completa. Editorial: Elsevier (para la SID). NOTA: poco apta para estética; útil si tu trabajo es mecanístico/traslacional.",
+          "confidence": "alta",
+          "sources": [
+            "https://www.bioxbio.com/journal/J-INVEST-DERMATOL",
+            "https://www.sidnet.org/journals/journal-of-investigative-dermatology-jid/",
+            "https://www.sciencedirect.com/journal/journal-of-investigative-dermatology/publish/guide-for-authors"
+          ]
+        },
+        {
+          "claim": "JAAD International: IF 2024 = 5.2 (debut), Q1, #10 entre revistas de dermatología. Envío por Editorial Manager; primera decisión ~3-5 semanas. Open access.",
+          "detail": "IF 2024 = 5.2 (debut, 1.046 citas) confirmado por anuncio oficial AAD/PR Newswire y wos-journal.info (JIF 5.2, 5-year 5.9, percentil 89.6% en Dermatology). eISSN 2666-3287. El cuartil Q1 lo afirma una fuente agregadora (confianza media para el cuartil exacto). Scope: revista hermana de JAAD, open access, foco internacional, dermatología clínica y revisiones; buena alternativa de alto IF y más rápida que JAAD. Sistema: Editorial Manager. Primera decisión usualmente 3-5 semanas. Editorial: Elsevier. APC aplica (open access).",
+          "confidence": "alta",
+          "sources": [
+            "https://wos-journal.info/journalid/24199",
+            "https://www.prnewswire.com/news-releases/jaad-impact-factor-ranks-no-1-among-dermatology-journals-302486561.html",
+            "https://www.sciencedirect.com/journal/jaad-international/publish/guide-for-authors"
+          ]
+        },
+        {
+          "claim": "JEADV (Journal of the European Academy of Dermatology and Venereology): IF 2024 = 8.0 (bajó de 8.4 en 2023). Q1. Envío por ScholarOne (mc.manuscriptcentral.com/jeadv); Wiley migró a un nuevo portal a fines de nov 2025.",
+          "detail": "IF 2024 = 8.0 confirmado por bioxbio (8.0 en 2024 vs 8.4 en 2023). ISSN 0926-9959. CRÍTICO: agregadores muestran un falso '2.84' de Scopus. Scope: dermatología clínica europea y venereología, amplio, publica revisiones y guías EADV. Sistema: ScholarOne/Manuscript Central (mc.manuscriptcentral.com/jeadv) para envíos previos a 28-nov-2025; Wiley transicionó a un nuevo sistema (authors.wiley.com) para envíos posteriores. Requiere inglés consistente (US o UK), formularios ICMJE de conflicto de interés. Editorial: Wiley (para la EADV). No encontré tiempo oficial a primera decisión.",
+          "confidence": "alta",
+          "sources": [
+            "https://www.bioxbio.com/journal/J-EUR-ACAD-DERMATOL",
+            "https://onlinelibrary.wiley.com/page/journal/14683083/homepage/forauthors.html",
+            "https://mc.manuscriptcentral.com/jeadv"
+          ]
+        },
+        {
+          "claim": "International Journal of Dermatology (IJD): IF 2024 = 3.2 (bajó de 3.5 en 2023). Percentil ~77% en Dermatología (Q1 bajo / Q2 alto). Envío por ScholarOne. Editorial Wiley.",
+          "detail": "IF 2024 = 3.2 confirmado por bioxbio (3.2 en 2024 vs 3.5 en 2023) y wos-journal.info (JIF 3.2, percentil 77.1%). NOTA de discrepancia: una búsqueda mostró 3.3; el valor consistente en bioxbio y wos-journal es 3.2 — uso 3.2. ISSN 0011-9059. El percentil 77% lo sitúa cerca del límite Q1/Q2; el cuartil exacto requiere JCR pagado (confianza media para cuartil). Scope: dermatología clínica con fuerte enfoque global/tropical y enfermedades de la piel; órgano de la Society for International Dermatology. Sistema: ScholarOne Manuscripts. Editorial: Wiley. No encontré tiempo oficial a primera decisión.",
+          "confidence": "alta",
+          "sources": [
+            "https://www.bioxbio.com/journal/INT-J-DERMATOL",
+            "https://wos-journal.info/journalid/15923",
+            "https://onlinelibrary.wiley.com/page/journal/13654632/homepage/forauthors.html"
+          ]
+        },
+        {
+          "claim": "Journal of Dermatological Treatment (JDT): IF 2024 = 3.9 (subió fuerte desde 2.9 en 2023). Cuartil Q2 (dato de 2023; el salto a 3.9 pudo moverlo). Open access. Editorial Taylor & Francis.",
+          "detail": "IF 2024 = 3.9 confirmado por bioxbio (3.9 en 2024 vs 2.9 en 2023). ISSN 0954-6634. ADVERTENCIA de cuartil: una fuente reportó Q2 (30/94) pero esa cifra correspondía al IF previo de 2.9; con 3.9 el ranking pudo mejorar — el cuartil 2024 exacto NO está verificado (confianza baja para cuartil). Scope: foco EXPLÍCITO en tratamiento dermatológico (terapias, incluida estética/cosmética y ensayos), muy relevante para tu enfoque clínico-terapéutico. Open access, APC ~3650 USD. Sistema: ScholarOne Manuscripts (Taylor & Francis). No encontré tiempo oficial a primera decisión.",
+          "confidence": "media",
+          "sources": [
+            "https://www.bioxbio.com/journal/J-DERMATOL-TREAT",
+            "https://www.tandfonline.com/journals/ijdt20/about-this-journal",
+            "https://journalsearches.com/journal.php?title=journal+of+dermatological+treatment"
+          ]
+        },
+        {
+          "claim": "Journal of Cosmetic Dermatology (JCD): IF 2024 = 2.5, Q2. Es la revista de MAYOR IF con scope puramente cosmético/estético dermatológico. Envío por ScholarOne. Editorial Wiley.",
+          "detail": "IF 2024 = 2.5 y cuartil Q2 confirmados por journalmetrics.org (2.5, Q2, actualizado jun-2025) y resurchify. NOTA: el '2.3' de un editorial de ago-2024 se refería al IF 2023 (publicado jun-2024), no al 2024. ISSN online 1473-2165. Scope: dermatología COSMÉTICA y estética (toxina botulínica, rellenos, láser, peelings, cuidado de la piel) — es el target natural para tu foco estético, aunque su IF es moderado. Sistema: ScholarOne Manuscripts (Wiley). Editorial: Wiley. No encontré tiempo oficial a primera decisión.",
+          "confidence": "alta",
+          "sources": [
+            "https://www.journalmetrics.org/journal/journal-of-cosmetic-dermatology",
+            "https://www.resurchify.com/impact/details/4000151101",
+            "https://onlinelibrary.wiley.com/journal/14732165"
+          ]
+        },
+        {
+          "claim": "Aesthetic Surgery Journal (ASJ): IF 2024 = 3.9 (subió desde 3.1), #1 entre revistas de estética/cirugía plástica, top en categoría Surgery. Envío por ScholarOne. Editorial Oxford University Press.",
+          "detail": "IF 2024 = 3.9 confirmado por anuncio oficial de The Aesthetic Society/PR Newswire (subió desde 3.1) y bioxbio. ISSN 1090-820X. IMPORTANTE: ASJ está clasificada en SURGERY (cirugía plástica/estética), NO en Dermatology — es el líder en cirugía estética, no en dermatología clínica. Ranking #26 de 312 en Surgery. Scope: cirugía estética y procedimientos (incluye estética no quirúrgica facial). Sistema: ScholarOne Manuscripts (academic.oup.com/asj). Editorial: Oxford University Press para The Aesthetic Society. Relevante si tu trabajo estético es procedimental/quirúrgico más que dermatológico puro.",
+          "confidence": "alta",
+          "sources": [
+            "https://www.prnewswire.com/news-releases/aesthetic-surgery-journal-impact-factor-jumps-significantly-302487298.html",
+            "https://academic.oup.com/asj",
+            "https://www.bioxbio.com/journal/AESTHET-SURG-J"
+          ]
+        },
+        {
+          "claim": "Dermatologic Surgery: IF 2024 = 2.2 (JCR). Categorías Dermatology + Surgery (percentil ~70% en Surgery). Envío por ScholarOne (mc.manuscriptcentral.com/ds). Editorial migró a Wiley (~2023).",
+          "detail": "IF 2024 = 2.2 confirmado por wos-journal.info (JIF 2.2, categorías SURGERY y DERMATOLOGY, percentil 69.6% en Surgery). ISSN 1076-0512 / eISSN 1524-4725. CRÍTICO: agregadores muestran un falso '1.07' de Scopus. NOTA editorial: históricamente de Wolters Kluwer/LWW, pero la revista migró a Wiley; el portal de envío es ScholarOne (mc.manuscriptcentral.com/ds). Scope: cirugía dermatológica, procedimientos cosméticos/estéticos (láser, rellenos, toxina, Mohs) — órgano de la ASDS, MUY relevante para estética procedimental. Cuartil exacto 2024 no verificado (probable Q3 en Dermatology dado el IF; confianza baja para cuartil). No encontré tiempo oficial a primera decisión.",
+          "confidence": "media",
+          "sources": [
+            "https://wos-journal.info/journalid/16539",
+            "https://mc.manuscriptcentral.com/ds"
+          ]
+        },
+        {
+          "claim": "Actas Dermo-Sifiliográficas: IF 2024 = 2.8, Q1 en Dermatología (confirmado oficialmente por la AEDV). Revista española (bilingüe ES/EN). Editorial Elsevier España.",
+          "detail": "IF 2024 = 2.8 y cuartil Q1 confirmados POR LA FUENTE OFICIAL: la Academia Española de Dermatología y Venereología (AEDV) anunció el factor de impacto 2.8 FI y posición Q1. NOTA: el texto del anuncio dice '2023' en una versión pero corresponde al ciclo JCR más reciente (publicado jun-2025 con datos 2024); confianza alta en 2.8/Q1, confianza media en si es etiquetado 2023 o 2024 por Clarivate. CRÍTICO: agregadores muestran un falso '0.93' de Scopus. ISSN 0001-7310. Scope: dermatología clínica general en español e inglés, órgano de la AEDV — excelente opción si quieres publicar en español con visibilidad Q1. Editorial: Elsevier España. Sistema: Editorial Manager (Elsevier). No encontré tiempo oficial a primera decisión.",
+          "confidence": "media",
+          "sources": [
+            "https://aedv.es/en/actas-dermo-sifiliograficas-obtiene-por-fin-el-factor-de-impacto-2023-2/",
+            "https://www.actasdermo.org/"
+          ]
+        },
+        {
+          "claim": "Archives of Dermatological Research: IF 2024 = 2.1 (bajó desde ~1.8-3.0 años previos). Q1 en SJR (Scimago) pero el cuartil JCR no verificado. Envío por Editorial Manager. Editorial Springer.",
+          "detail": "IF 2024 = 2.1 (5-year 2.5) según bioxbio y resurchify. ISSN 0340-3696. ADVERTENCIA: el 'Q1' que aparece es el cuartil de SJR/Scimago (basado en Scopus), NO necesariamente el cuartil JCR — con IF 2.1 el cuartil JCR en Dermatology probablemente sea Q2/Q3 (confianza baja para cuartil JCR). Scope: investigación dermatológica clínica y experimental, órgano de la American Dermatological Association; es la revista dermatológica continua más antigua (fundada 1869). Sistema: Editorial Manager (Springer). Editorial: Springer Nature. No encontré tiempo oficial a primera decisión.",
+          "confidence": "media",
+          "sources": [
+            "https://www.bioxbio.com/journal/ARCH-DERMATOL-RES",
+            "https://link.springer.com/journal/403"
+          ]
+        },
+        {
+          "claim": "Skin Health & Disease: IF reportado ~1.40 (derivado de Scopus, NO confirmado como JIF oficial de Clarivate). Q2 según agregadores. Open access. Editorial Oxford University Press (para la BAD). [PARCIALMENTE VERIFICABLE]",
+          "detail": "PRECAUCIÓN: el '1.40' proviene de agregadores que usan datos de Scopus/Citescore, NO pude confirmar un Journal Impact Factor OFICIAL de Clarivate JCR 2024 para esta revista (es relativamente nueva, lanzada 2021). Trátalo como [NO VERIFICADO contra JCR]. eISSN 2690-442X. Cuartil Q2 también de agregadores (confianza baja). Scope: dermatología clínica open access de la British Association of Dermatologists, revista hermana del BJD, acepta casos y revisiones; buena para acceso abierto rápido y de bajo costo/visibilidad. Sistema: ScholarOne/Manuscript Central (Oxford University Press; academic.oup.com/skinhd). Editorial: Oxford University Press para la BAD. No encontré tiempo oficial a primera decisión.",
+          "confidence": "baja",
+          "sources": [
+            "https://www.resurchify.com/impact/details/21101108655",
+            "https://academic.oup.com/skinhd/pages/general-instructions"
+          ]
+        }
+      ],
+      "recommendations": [
+        "Para MÁXIMO impacto en dermatología clínica/revisiones sistemáticas: priorizar JAAD (11.8), JAMA Dermatology (11.0) y British Journal of Dermatology (9.6). Las tres son Q1 top y publican revisiones sistemáticas de alto estándar. JAMA Derm y BJD tienen triage rápido (mediana JAMA ~4 días a desk decision; BJD Fast Track 7 días hábiles).",
+        "Para foco ESTÉTICO/COSMÉTICO específicamente: la mejor combinación scope+IF es Journal of Cosmetic Dermatology (2.5, Q2, scope 100% cosmético) y, si el trabajo es procedimental/quirúrgico, Dermatologic Surgery (2.2) o Aesthetic Surgery Journal (3.9, pero categoría Surgery). Journal of Dermatological Treatment (3.9) es fuerte si el ángulo es terapéutico.",
+        "ALERTA METODOLÓGICA para tu base de datos: NO uses los impact factors de Resurchify, exaly, journalimpact ni researchhelpdesk sin verificar — mezclan un número derivado de Scopus que NO es el JIF de Clarivate y da cifras falsas mucho más bajas (vieron JAMA Derm 4.49, BJD 2.88, JEADV 2.84, Dermatologic Surgery 1.07, Actas 0.93). Las cifras correctas son las de bioxbio y wos-journal.info y los anuncios oficiales de las academias.",
+        "Datos que NO pude verificar con confianza alta y conviene confirmar en JCR (Clarivate, acceso pagado) antes de usarlos en producción: el cuartil JCR exacto 2024 de IJD, JDT, Dermatologic Surgery, Archives of Dermatological Research; el JIF oficial de Clarivate de Skin Health & Disease (el 1.40 es Scopus); y si Actas 2.8/Q1 está etiquetado por Clarivate como ciclo 2024 o 2023.",
+        "Para envíos: confirmar el portal vigente justo antes de enviar — JEADV (Wiley) migró de Manuscript Central a un nuevo sistema (authors.wiley.com) a fines de nov 2025, y Dermatologic Surgery cambió de editorial (LWW→Wiley). Los sistemas: Editorial Manager = JAAD, JAAD International, Archives of Dermatological Research, Actas (Elsevier/Springer); ScholarOne/Manuscript Central = JAMA Derm, BJD, JID, JEADV, IJD, JCD, JDT, ASJ, Dermatologic Surgery, Skin Health & Disease."
+      ]
+    },
+    "openaccess": {
+      "dimension": "Revistas de dermatología para publicar GRATIS o con waiver de APC desde Perú (autor LMIC)",
+      "summary": "Hallazgo central y dato duro que cambia toda la estrategia: PERÚ es clasificado por el Banco Mundial como país de INGRESO MEDIO-ALTO (upper-middle-income), NO medio-bajo. Esto tiene consecuencias directas y verificadas: (1) Perú SÍ figura en Research4Life como país elegible, pero en GRUPO B (no Grupo A), lo que da 50% de descuento en APC, NO waiver del 100%, en revistas fully-open-access de Elsevier y Wiley. (2) En la tabla oficial de OUP (que ahora publica Skin Health & Disease), Perú aparece con exactamente 50% de descuento. (3) En JAMA/AMA y Springer Nature, que usan clasificación Banco Mundial (waiver total solo a low-income, parcial a lower-middle-income), Perú NO califica para waiver automático porque es upper-middle-income. CONCLUSIÓN PRÁCTICA: la vía realista de publicación GRATIS o casi-gratis desde Perú NO son los waivers de las grandes (que solo dan 50%), sino las revistas Diamond/Platinum donde una sociedad cubre el APC para TODOS los autores: Anais Brasileiros de Dermatologia (la Sociedad Brasileña paga el APC de todos los aceptados = $0 para el autor) y Actas Dermo-Sifiliográficas (la AEDV cubre el APC de todos los aceptados = $0). Para case reports, JAAD Case Reports es la opción más barata absoluta ($750, o $0 con la vía suscripción de JAAD flagship). Dermatology Practical & Conceptual no tiene APC pero cobra una tasa de envío de 30 EUR desde sep-2025. NOTA: Todas las cifras del Banco Mundial cambian cada 1 de julio; la clasificación de Perú como upper-middle-income debe re-verificarse anualmente.",
+      "findings": [
+        {
+          "claim": "Perú es país de INGRESO MEDIO-ALTO (upper-middle-income) según el Banco Mundial, NO medio-bajo (lower-middle-income)",
+          "detail": "Esto es el dato pivote de toda la investigación. La página oficial del Banco Mundial confirma Perú como 'Upper middle income'. Implicación: las políticas de waiver que se basan en clasificación Banco Mundial y dan waiver total solo a low-income y parcial a lower-middle-income (JAMA/AMA, Springer Nature) NO otorgan waiver automático a Perú. El umbral upper-middle-income es GNI per cápita entre $4,496 y $13,935 (cifra 2024). La clasificación se actualiza cada 1 de julio según GNI per cápita del año previo (método Atlas).",
+          "confidence": "alta",
+          "sources": [
+            "https://data.worldbank.org/?locations=PE-XT",
+            "https://blogs.worldbank.org/en/opendata/world-bank-country-classifications-by-income-level-for-2024-2025"
+          ]
+        },
+        {
+          "claim": "Perú es país ELEGIBLE de Research4Life en GRUPO B → 50% de descuento en APC (no waiver 100%) en Elsevier y Wiley",
+          "detail": "Verificado directamente: 'Perú' aparece en el dropdown de países elegibles del portal oficial Research4Life (portal.research4life.org/country_offer, 139 países, Perú confirmado entre Paraguay y Rep. Árabe Siria). El mecanismo Group A vs B: Grupo A = waiver 100% del APC; Grupo B = 50% de descuento. Múltiples búsquedas independientes clasifican a Perú en Grupo B (consistente con su nivel upper-middle-income). NO pude abrir la tabla A/B textual en la página de elegibilidad (se carga vía widget externo), por eso la clasificación exacta Grupo B se apoya en convergencia de fuentes + el dato OUP de 50% (ver siguiente hallazgo) que coincide exactamente con la tarifa de Grupo B.",
+          "confidence": "alta",
+          "sources": [
+            "https://portal.research4life.org/country_offer",
+            "https://www.research4life.org/faq/group-a-and-group-b/",
+            "https://www.research4life.org/access/eligibility/"
+          ]
+        },
+        {
+          "claim": "Elsevier: waiver 100% solo para Grupo A (69 países); 50% de descuento para Grupo B (57 países). Aplica SOLO a revistas fully-open-access, NO híbridas. Automático",
+          "detail": "Confirmado en la propia página de waivers de AAD/Elsevier y en la documentación de Elsevier: 'When publishing in fully Open Access journals, Elsevier fully waives all open access charges for authors from 69 countries (Group A) and gives a 50% discount for authors from 57 countries (Group B)'. Como Perú es Grupo B → 50%. El sistema OACS detecta el país del autor de correspondencia tras la aceptación y aplica el descuento automáticamente al completar los formularios de rights & access. NO requiere solicitud. NO aplica a revistas híbridas (solo gold/fully OA).",
+          "confidence": "alta",
+          "sources": [
+            "https://jaad.zendesk.com/hc/en-us/articles/22533516341015-Open-Access-and-Waiver-Information",
+            "https://www.elsevier.support/publishing/answer/what-is-elseviers-waiver-policy-for-open-access-fees"
+          ]
+        },
+        {
+          "claim": "Wiley: misma estructura — Grupo A waiver completo, Grupo B 50% de reducción; automático en envío; solo fully-OA, no híbridas",
+          "detail": "'Group A countries are entitled to a full waiver whereas group B countries are entitled to a 50% reduction on the APC.' El cálculo se aplica automáticamente según la afiliación del autor de correspondencia al enviar, y se confirma en la aceptación. Wiley NO ofrece waivers/descuentos en revistas híbridas, solo en fully open access. Para Perú (Grupo B) → 50%.",
+          "confidence": "alta",
+          "sources": [
+            "https://authors.wiley.com/open-research/open-access/for-authors/waivers-and-discounts.html",
+            "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11483526/"
+          ]
+        },
+        {
+          "claim": "Skin Health & Disease (BAD) — DEJÓ de ser de Wiley y desde enero 2025 la publica Oxford University Press (OUP). Para Perú: 50% de descuento de APC (tabla oficial OUP)",
+          "detail": "Dato crítico de actualización: SHD migró a OUP en enero 2025; toda info de waiver Wiley quedó obsoleta. Verifiqué directamente la tabla oficial de waiver/descuento de OUP por país: 'Peru 50%'. La política de SHD remite explícitamente a la 'Low and Middle Income Countries initiative' de OUP. Es decir, Perú NO obtiene publicación gratis en SHD, sino 50% de descuento sobre el APC, aplicado automáticamente según la dirección del autor. La lista OUP coloca a Perú en 'Reduced rate access' (no en 'Free access'), coherente con el 50%.",
+          "confidence": "alta",
+          "sources": [
+            "https://academic.oup.com/pages/open-research/open-access/charges-licences-and-self-archiving/apc-waiver-policy",
+            "https://academic.oup.com/skinhd/pages/general-instructions",
+            "https://academic.oup.com/pages/purchasing/developing-countries-initiative/participating-countries-and-regions"
+          ]
+        },
+        {
+          "claim": "APC base de Skin Health & Disease ≈ £1,790 / €2,000 / $2,310 USD (con 50% Perú ≈ £895 / $1,155)",
+          "detail": "Cifra reportada de forma consistente en listados (etapa Wiley y agregadores). NO logré confirmar el monto EXACTO post-migración a OUP en la página de charges (la sección de cargos no renderizó el número en texto plano; está en un acordeón/tabla). Trato la cifra como indicativa. El descuento del 50% para Perú SÍ está confirmado por la tabla OUP. Recomiendo confirmar el monto exacto en la sección 'Publishing Agreements and Charges' de la página del journal antes de presupuestar.",
+          "confidence": "media",
+          "sources": [
+            "https://journalsearches.com/journal.php?title=skin+health+and+disease",
+            "https://academic.oup.com/skinhd/pages/general-instructions",
+            "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9060004/"
+          ]
+        },
+        {
+          "claim": "Anais Brasileiros de Dermatologia — APC nominal $1,700 (artículo completo) / $900 (corto), PERO la Sociedade Brasileira de Dermatologia cubre el APC de TODOS los artículos aceptados → costo $0 para el autor",
+          "detail": "Cita textual de la política: 'The Brazilian Society of Dermatology currently funds the APC for all articles accepted for publication in the journal.' Es decir, funciona en la práctica como Diamond/Platinum OA: el autor (incluido un autor peruano) NO paga nada si el artículo es aceptado. Es la opción más sólida para publicar GRATIS un artículo original/review en dermatología desde Perú. Revista de la SBD, indexada, publicada vía Elsevier/ScienceDirect, fundada en 1925.",
+          "confidence": "alta",
+          "sources": [
+            "https://www.anaisdedermatologia.org.br/en-open-access",
+            "https://doaj.org/toc/0365-0596"
+          ]
+        },
+        {
+          "claim": "Actas Dermo-Sifiliográficas (AEDV, España) — APC nominal $2,080 USD, PERO la Academia Española de Dermatología y Venereología (AEDV) cubre el APC de TODOS los artículos aceptados → costo $0 para el autor; además waiver Research4Life automático",
+          "detail": "Doble vía de gratuidad: (1) la AEDV financia el APC de todos los artículos aceptados tras revisión por pares (funciona como Diamond OA de facto), y (2) waiver/descuento Research4Life automático para autores en países elegibles. Cita: 'The Article Publishing Charge (APC) fee will be covered by Academia Española de Dermatología y Venereología for all articles which are accepted'. Para un autor peruano, en la práctica el costo es $0. Revista en español/inglés, la más antigua de España (1909), indexada, vía Elsevier.",
+          "confidence": "alta",
+          "sources": [
+            "https://www.sciencedirect.com/journal/actas-dermo-sifiliograficas/publish/open-access-options",
+            "https://www.actasdermo.org/en",
+            "https://doaj.org/toc/1578-2190"
+          ]
+        },
+        {
+          "claim": "Dermatology Practical & Conceptual (DPC) — SIN APC (no cobra cargo de procesamiento), pero desde el 1-sep-2025 cobra una tasa de ENVÍO no reembolsable de 30 EUR (IVA incluido) por manuscrito",
+          "detail": "Texto verificado en la página oficial de fees: 'no Article Processing Charges (APC) upon acceptance or publication' + 'a non-refundable submission fee ... of €30 (VAT included)' por cada manuscrito enviado, desde el 1-sep-2025. Opcionalmente, un servicio de procesamiento rápido cuesta 430 EUR (no obligatorio). La página NO menciona ningún waiver de la tasa de 30 EUR para países de bajos ingresos. O sea: publicar es esencialmente gratis (solo 30 EUR de envío, no reembolsable aunque rechacen). Revista fully OA desde 2015, indexada en DOAJ.",
+          "confidence": "alta",
+          "sources": [
+            "https://dpcj.org/index.php/dpc/publicationfee",
+            "https://doaj.org/toc/2160-9381"
+          ]
+        },
+        {
+          "claim": "JAAD Case Reports (Elsevier/AAD) — la opción MÁS BARATA para case reports: $750 (no-miembro) / $563 (miembro AAD) para Case Report y Case Series; Images in Dermatology $340/$255; Letter to the Editor $0",
+          "detail": "Cifras exactas verificadas en la página oficial AAD. Además, descuento 25% para miembros AAD y waiver Research4Life Grupo B (50%) aplicable a un autor peruano → un Case Report podría quedar en ~$375 con waiver del 50%. Para JAAD flagship existe una vía de SUSCRIPCIÓN (no gold) SIN cargo de publicación open access ('No open access publication fee'), aunque el artículo no queda en acceso abierto inmediato. JAAD International: Original Articles $2,575 ($1,931 miembro).",
+          "confidence": "alta",
+          "sources": [
+            "https://jaad.zendesk.com/hc/en-us/articles/22533516341015-Open-Access-and-Waiver-Information",
+            "https://www.sciencedirect.com/journal/jaad-case-reports/publish/open-access-options"
+          ]
+        },
+        {
+          "claim": "JAMA Dermatology / JAMA Network (AMA) — usa clasificación BANCO MUNDIAL: waiver TOTAL solo a low-income, parcial a lower-middle-income. Perú (upper-middle-income) NO califica para waiver automático",
+          "detail": "La AMA otorga waiver completo automático a autores de países low-income del Banco Mundial y reducciones parciales a lower-middle-income; además hardship waivers caso-por-caso a solicitud en la aceptación. Como Perú es UPPER-middle-income, NO entra en ninguno de esos dos grupos → un autor peruano NO obtiene waiver automático y pagaría APC completo (JAMA Network Open ≈ $3,000; JAMA flagship ≈ $5,500), salvo que solicite un hardship waiver discrecional (sin garantía). Las decisiones editoriales son independientes de la solicitud de waiver. NO pude extraer el texto literal de la política desde jamanetwork.com (la página de instrucciones no expone montos/waiver en el cuerpo); las cifras provienen de fuentes secundarias.",
+          "confidence": "media",
+          "sources": [
+            "https://manusights.com/blog/jama-apc-open-access",
+            "https://jamanetwork.com/journals/jamanetworkopen/pages/instructions-for-authors"
+          ]
+        },
+        {
+          "claim": "Springer Nature — confirma el patrón: Perú NO está en ninguna lista de waiver. Full waiver solo low-income; 50% solo lower-middle-income con GDP <$200B",
+          "detail": "Verificación directa de la página de países con waiver de Springer Nature: Perú NO aparece ni en la lista de waiver 100% (low-income) ni en la de 50% (lower-middle-income con GDP <200 mil millones). Esto confirma que para editoriales que usan clasificación pura del Banco Mundial, Perú (upper-middle-income) queda EXCLUIDO de waivers automáticos. Contraste clave: las que usan Research4Life (Elsevier, Wiley, OUP) SÍ dan 50% a Perú porque está en Grupo B; las que usan Banco Mundial directo (Springer, AMA) NO dan nada automático a Perú.",
+          "confidence": "alta",
+          "sources": [
+            "https://www.springernature.com/gp/open-science/policies/journal-policies/apc-waiver-countries"
+          ]
+        },
+        {
+          "claim": "OUP (Oxford) — política de waiver: tabla por país. Perú = 50% descuento. Automático según dirección, solo en fully-OA. Existe además waiver discrecional caso-por-caso",
+          "detail": "Tabla oficial OUP verificada directamente (extraída del DOM): 'Peru 50%'. La política: el descuento se aplica automáticamente según la dirección del autor de correspondencia, sin necesidad de solicitud, solo en revistas fully open access. Para quienes NO califican por la iniciativa LMIC, OUP concede un número pequeño de waivers discrecionales caso-por-caso (formulario a enviar junto con el manuscrito), independiente de la decisión editorial. Ejemplos de tarifas en la misma tabla: países low-income 100% (Afganistán, Angola, Bolivia, etc.); Perú/Paraguay/Ecuador/Guatemala 50%; Argentina/Brasil/Chile/Colombia/México 25%.",
+          "confidence": "alta",
+          "sources": [
+            "https://academic.oup.com/pages/open-research/open-access/charges-licences-and-self-archiving/apc-waiver-policy"
+          ]
+        },
+        {
+          "claim": "Requisitos EXACTOS para obtener el waiver/descuento (resumen operativo verificado)",
+          "detail": "Elsevier (Actas, JAAD Case Reports, JAAD International): automático; el sistema OACS detecta el país del autor de correspondencia tras la aceptación y aplica el descuento Research4Life al completar los formularios de rights & access; TODOS los grupos de autores deben estar en país elegible para el waiver completo (mezcla A+B = 50%). Wiley: automático al enviar, según afiliación del autor de correspondencia; se confirma en aceptación. OUP (Skin Health & Disease): automático por dirección; sin solicitud si entras en la iniciativa LMIC; si no, formulario de waiver discrecional junto al manuscrito. JAMA/AMA: NO automático para upper-middle-income; hay que SOLICITAR hardship waiver en el momento de la aceptación. Regla transversal: el waiver NO afecta ni acelera la revisión por pares ni la decisión editorial, y solo se aplica si el artículo es aceptado.",
+          "confidence": "alta",
+          "sources": [
+            "https://jaad.zendesk.com/hc/en-us/articles/22533516341015-Open-Access-and-Waiver-Information",
+            "https://authors.wiley.com/open-research/open-access/for-authors/waivers-and-discounts.html",
+            "https://academic.oup.com/pages/open-research/open-access/charges-licences-and-self-archiving/apc-waiver-policy"
+          ]
+        },
+        {
+          "claim": "[PARCIALMENTE NO VERIFICABLE] La clasificación textual exacta 'Grupo B' de Perú en la tabla oficial Research4Life no se pudo abrir directamente",
+          "detail": "La página de elegibilidad de Research4Life carga las tablas Grupo A / Grupo B mediante un widget/recurso externo que no renderizó el listado en el DOM accesible, y el portal de country_offer requiere enviar un formulario con categoría de institución para mostrar la oferta. Confirmé que 'Perú' está en el dropdown de países elegibles, pero la etiqueta literal 'Group B' proviene de fuentes secundarias convergentes + la coincidencia exacta con el 50% de la tabla OUP (que se basa en Research4Life). Recomiendo confirmar 'Group B' contactando hinari@who.int o revisando la lista oficial vigente antes de cualquier comunicación formal.",
+          "confidence": "media",
+          "sources": [
+            "https://portal.research4life.org/country_offer",
+            "https://www.research4life.org/access/eligibility/"
+          ]
+        }
+      ],
+      "recommendations": [
+        "VÍA #1 PARA PUBLICAR REALMENTE GRATIS ($0) — artículos originales/reviews: enviar a Anais Brasileiros de Dermatologia o Actas Dermo-Sifiliográficas. En ambas, la sociedad científica (SBD brasileña / AEDV española) cubre el APC de TODOS los artículos aceptados, así que un autor peruano no paga nada. Son las únicas dos opciones de la lista que garantizan costo cero sin depender de waivers.",
+        "VÍA #2 PARA CASE REPORTS — la más barata: JAAD Case Reports ($750 base, $563 si miembro AAD). Aplicando el waiver Research4Life Grupo B (50%) que corresponde a Perú, un Case Report puede quedar en ~$375. Un Letter to the Editor en JAAD es $0. Alternativa sin costo: Dermatology Practical & Conceptual (solo 30 EUR de tasa de envío, sin APC).",
+        "NO contar con waiver de las 'grandes' como si fuera gratuidad: para Perú, Elsevier/Wiley/OUP dan solo 50% (Grupo B), NO 100%. Y JAMA/Springer NO dan nada automático porque usan clasificación Banco Mundial y Perú es upper-middle-income. Si el objetivo es $0, priorizar las revistas Diamond/sociedad-financiada, no los waivers.",
+        "Para Skin Health & Disease: recordar que migró a Oxford (OUP) en enero 2025. El descuento para Perú es 50% (confirmado en tabla OUP), aplicado automáticamente por dirección. Confirmar el monto exacto del APC vigente en la sección 'Publishing Agreements and Charges' del journal antes de presupuestar (la cifra ~£1,790/$2,310 es indicativa).",
+        "Antes de cualquier envío o comunicación formal: re-verificar dos datos que cambian anualmente — (a) la clasificación de Perú por el Banco Mundial (se actualiza cada 1 de julio) y (b) la permanencia de Perú en Research4Life Grupo B (contactar hinari@who.int o revisar la lista vigente). Toda la estrategia de costos depende de estos dos parámetros.",
+        "Mecánica del waiver (no requiere acción del autor en Elsevier/Wiley/OUP): se aplica automáticamente según el país del autor de correspondencia, solo en revistas fully open access (no híbridas), y únicamente si el artículo es aceptado. En JAMA sí hay que solicitar un hardship waiver explícito en la aceptación, sin garantía. El waiver nunca influye en la revisión por pares."
+      ]
+    },
+    "srmethod": {
+      "dimension": "Estándar de oro 2026 para revisiones sistemáticas y meta-análisis publicables",
+      "summary": "El estándar de oro 2026 para una revisión sistemática (RS) publicable se apoya en cuatro pilares verificados: (1) REPORTE con PRISMA 2020 (checklist de 27 ítems + diagrama de flujo de 4 fases con vías separadas para bases de datos/registros vs otras fuentes; extensión PRISMA-S de 16 ítems para reportar la búsqueda); (2) REGISTRO prospectivo en PROSPERO (gratuito, antes de completar la extracción de datos; solo RS con desenlace en salud; no admite scoping reviews); (3) CONDUCCIÓN según el Cochrane Handbook v6.5 (agosto 2024); y (4) EVALUACIÓN con GRADE (4 niveles de certeza, 5 dominios) más riesgo de sesgo RoB 2 (5 dominios, ECA), ROBINS-I (7 dominios, no aleatorizados) y AMSTAR-2 (16 ítems, 7 críticos, para apreciar RS existentes). Búsqueda: mínimo Cochrane = MEDLINE + Embase + CENTRAL; recomendación robusta = añadir Web of Science y/o Scopus, más LILACS/BVS (literatura latinoamericana, recomendada por Cochrane) y registros de ensayos (ClinicalTrials.gov + ICTRP). Herramientas 2026: screening con Rayyan (free hasta 3 revisiones activas; paga desde 4.99 USD/mes), ASReview (gratis, open source, active learning) o Covidence (de pago 240-450 USD/año, gratis para autores Cochrane); extracción con Elicit (free 20 extracciones/mes); meta-análisis con R (metafor / meta — el estándar de facto, gratis), RevMan Web (gratis para autores Cochrane, suscripción para otros) o Python (PythonMeta, statsmodels). Todas las cifras llevan fuente URL real. NO plenamente verificable: el precio exacto de RevMan para autores no-Cochrane (detrás de login) y el numeral \"RevMan 8\" (la versión vigente verificada es \"RevMan Web\").",
+      "findings": [
+        {
+          "claim": "PRISMA 2020 es el estándar de reporte vigente: checklist de 27 ítems (7 secciones) + diagrama de flujo de 4 fases. Publicado en BMJ 2021 (Page et al.), reemplaza a PRISMA 2009.",
+          "detail": "Los 27 ítems cubren título, abstract, introducción, métodos, resultados, discusión y financiamiento, e incluyen sub-ítems nuevos para registro de protocolo, herramientas de automatización y certeza de evidencia. El diagrama de flujo rastrea registros desde identificación → cribado → inclusión. Documento canónico y gratuito en PMC. Cumplir PRISMA 2020 es crecientemente exigido por revistas.",
+          "confidence": "alta",
+          "sources": [
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC8008539/",
+            "https://www.prisma-statement.org/"
+          ]
+        },
+        {
+          "claim": "El diagrama de flujo PRISMA 2020 tiene vías SEPARADAS: 'Databases and registers' vs 'Databases, registers and other sources', y plantillas distintas para revisiones nuevas vs actualizadas (4 plantillas Word descargables, licencia CC BY 4.0).",
+          "detail": "Fases: Identification, Screening, Included. Mapea nº de registros identificados, excluidos (con razones) e incluidos. Hay generador vía Shiny App (eshackathon / PRISMA2020). Esta separación de vías es la diferencia clave vs PRISMA 2009.",
+          "confidence": "alta",
+          "sources": [
+            "https://www.prisma-statement.org/prisma-2020-flow-diagram",
+            "https://www.eshackathon.org/software/PRISMA2020.html"
+          ]
+        },
+        {
+          "claim": "PRISMA-S (2021) es la extensión para reportar la búsqueda: 16 ítems. Exige listar todas las fuentes incluyendo registros de ensayos (ClinicalTrials.gov e ICTRP de la OMS).",
+          "detail": "Complementa PRISMA 2020 para que cada componente de la búsqueda sea completamente reportado y reproducible. Desarrollada con Delphi de 3 etapas + conferencia de consenso. Recomendada para garantizar reproducibilidad de la estrategia de búsqueda.",
+          "confidence": "alta",
+          "sources": [
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC7839230/",
+            "https://www.prisma-statement.org/prisma-search"
+          ]
+        },
+        {
+          "claim": "PROSPERO: registro prospectivo gratuito. Elegibilidad restringida a RS con un DESENLACE relacionado con salud. Debe registrarse IDEALMENTE antes de empezar el cribado formal, y es elegible mientras no se haya superado la finalización de la extracción de datos.",
+          "detail": "Las scoping reviews y las reviews of reviews NO son admitidas actualmente (decisión revisable a futuro). El sistema detecta RS similares ya registradas y pide justificar la necesidad de la nueva. Registros sin finalizar más allá de 2 años son marcados. Operado por CRD, Universidad de York.",
+          "confidence": "alta",
+          "sources": [
+            "https://www.crd.york.ac.uk/PROSPERO/help/register",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC3348673/"
+          ]
+        },
+        {
+          "claim": "El tiempo exacto de turnaround de PROSPERO en 2026 NO es verificable con cifra oficial. Reportes anecdóticos mencionan demoras de >6 meses en casos puntuales; PROSPERO no penaliza retrasos del proyecto.",
+          "detail": "No encontré una cifra oficial de SLA de procesamiento publicada por CRD. Tratar cualquier 'X semanas' como no confirmado. Alternativas de registro: INPLASY (de pago, rápido) y OSF Registries (gratis, sin restricción de tipo de revisión) — útiles para scoping reviews que PROSPERO rechaza.",
+          "confidence": "baja",
+          "sources": [
+            "https://www.crd.york.ac.uk/PROSPERO/help/register",
+            "https://inplasy.com/how-to-register/",
+            "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8742923/"
+          ]
+        },
+        {
+          "claim": "Cochrane Handbook for Systematic Reviews of Interventions: versión vigente 6.5, actualizada en agosto 2024.",
+          "detail": "Editores senior: Julian Higgins y James Thomas. La v6.5 actualizó el suplemento técnico del Cap. 4 (búsqueda), Cap. 10 (análisis/meta-análisis) y Cap. 13. Es la guía de conducción de referencia. Acceso gratuito en training.cochrane.org/handbook/current.",
+          "confidence": "alta",
+          "sources": [
+            "https://training.cochrane.org/handbook/current",
+            "https://methods.cochrane.org/news/release-version-65-cochrane-handbook-systematic-reviews-interventions"
+          ]
+        },
+        {
+          "claim": "GRADE es el estándar para calificar la certeza de la evidencia: 4 niveles (alta, moderada, baja, muy baja) evaluados en 5 dominios (riesgo de sesgo, inconsistencia, evidencia indirecta, imprecisión, sesgo de publicación). Software oficial: GRADEpro GDT (gradepro.org).",
+          "detail": "Cap. 14 del Cochrane Handbook (tablas Summary of Findings + GRADE). Para evidencia de estudios no aleatorizados también pueden subir la certeza factores como dosis-respuesta y magnitud grande del efecto. GRADEpro genera tablas SoF e integra con RevMan Web.",
+          "confidence": "alta",
+          "sources": [
+            "https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-14",
+            "https://www.gradepro.org/"
+          ]
+        },
+        {
+          "claim": "Riesgo de sesgo en estudios PRIMARIOS: RoB 2 (Cochrane) para ECA = 5 dominios; ROBINS-I para estudios no aleatorizados de intervenciones = 7 dominios. RoB 2 es obligatorio en revisiones Cochrane que incluyen ECA.",
+          "detail": "RoB 2 dominios: proceso de aleatorización, desviaciones de la intervención prevista, datos de desenlace faltantes, medición del desenlace, selección del resultado reportado. ROBINS-I añade confusión (confounding) y selección de participantes. Guía de implementación en Cochrane Handbook v6.5 (Cap. 8). Limitación conocida de RoB 2: baja fiabilidad inter-evaluador reportada en la literatura.",
+          "confidence": "alta",
+          "sources": [
+            "https://methods.cochrane.org/bias/resources/rob-2-revised-cochrane-risk-bias-tool-randomized-trials",
+            "https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-08"
+          ]
+        },
+        {
+          "claim": "AMSTAR-2 es para apreciar críticamente RS YA EXISTENTES (no estudios primarios): 16 ítems, de los cuales 7 son dominios críticos. Produce una calificación global: High, Moderate, Low o Critically Low.",
+          "detail": "Los 7 dominios críticos: registro de protocolo previo, búsqueda exhaustiva, justificación de exclusiones, evaluación de riesgo de sesgo, métodos meta-analíticos apropiados, consideración del RoB al interpretar resultados, y evaluación de sesgo de publicación. NO se suma como score numérico; se juzga el patrón de debilidades. Aplicabilidad parcial a RS de estudios no-intervencionales.",
+          "confidence": "alta",
+          "sources": [
+            "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9308914/",
+            "https://onlinelibrary.wiley.com/doi/full/10.1002/leap.1463"
+          ]
+        },
+        {
+          "claim": "Número de bases de datos: MÍNIMO Cochrane/AHRQ/CRD = MEDLINE (PubMed) + Embase + Cochrane CENTRAL. En la práctica se buscan 3-5 bases.",
+          "detail": "MEDLINE/PubMed, Embase y CENTRAL son el núcleo para RS de intervenciones (ECA). Recomendación de tres organizaciones (AHRQ de EEUU, CRD del Reino Unido, Cochrane).",
+          "confidence": "alta",
+          "sources": [
+            "https://guides.himmelfarb.gwu.edu/systematic_review/medical-literature-databases-to-search",
+            "https://libguides.kcl.ac.uk/systematicreview/searchdb"
+          ]
+        },
+        {
+          "claim": "Evidencia empírica (Bramer et al., estudio prospectivo): la combinación óptima para máxima recuperación es Embase + MEDLINE + Web of Science Core Collection + Google Scholar (recall global 98.3%; 100% en 72% de las RS).",
+          "detail": "Concluyen que se debe buscar AL MENOS Embase, MEDLINE, Web of Science y Google Scholar como requisito mínimo para cobertura adecuada y eficiente. Scopus es alternativa válida a Web of Science. Esta es la base empírica para ir más allá del mínimo Cochrane.",
+          "confidence": "alta",
+          "sources": [
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC5718002/",
+            "https://link.springer.com/article/10.1186/s13643-017-0644-y"
+          ]
+        },
+        {
+          "claim": "LILACS/BVS (BIREME/OPS/OMS) es recomendada por el Cochrane Handbook como fuente para literatura de América Latina y el Caribe; debe usarse de rutina para reducir sesgo geográfico/idiomático.",
+          "detail": "Mantenida por una red de 600+ instituciones, coordinada por BIREME/PAHO/WHO. Especialmente relevante para investigadores en LatAm. OpenAlex (gratis, abierta) tiene fuerte cobertura lingüística y de revistas diamond OA, pero limitaciones en metadatos de idioma, afiliación institucional y tipologías documentales — útil como complemento, no como reemplazo del núcleo.",
+          "confidence": "alta",
+          "sources": [
+            "https://lilacs.bvsalud.org/en/lilacs-methodology/",
+            "https://onlinelibrary.wiley.com/doi/10.1111/hir.12505",
+            "https://www.sciencedirect.com/science/article/abs/pii/S1751157726000337"
+          ]
+        },
+        {
+          "claim": "Screening — Rayyan: plan Free = 3 revisiones activas + 2 revisores gratis, con detección de duplicados y predicciones de relevancia con IA. Essential desde 4.99 USD/mes/asiento (anual). Advanced 8.33 USD/mes/asiento (min. 2 asientos, ~120 USD/año).",
+          "detail": "Free incluye 15+ facetas de workbench. Essential añade diagramas de flujo PRISMA y auto-resolución de duplicados (9 revisiones activas). Advanced añade agentes de IA para screening y extracción PICO con IA. Es la opción gratuita más popular para empezar.",
+          "confidence": "alta",
+          "sources": [
+            "https://www.rayyan.com/pricing"
+          ]
+        },
+        {
+          "claim": "Screening — ASReview: completamente gratis y open source; usa active learning que reduce la carga de cribado en 70-90%. Covidence: de pago 240-450 USD/año por revisor, free limitado a 1 proyecto, pero GRATIS para autores de revisiones Cochrane.",
+          "detail": "ASReview reordena la cola de cribado según tus decisiones, mostrando primero los registros probablemente relevantes (ideal para volúmenes grandes). Covidence cubre todo el flujo multifase incluyendo extracción de datos y resolución de conflictos con tie-breaker integrado; su costo es difícil de justificar frente a Rayyan/ASReview salvo que necesites su flujo end-to-end o tengas acceso Cochrane.",
+          "confidence": "alta",
+          "sources": [
+            "https://researchgold.org/blog/covidence-alternatives-systematic-review-tools",
+            "https://hslib.jabsom.hawaii.edu/systematicreview/softwarecomparison"
+          ]
+        },
+        {
+          "claim": "Extracción — Elicit (freemium): Free = 20 extracciones de datos/mes + 2 columnas custom. Plus 12 USD/mes (~120/año, 600 extracciones/año). Pro 42 USD/mes anual (2,400 extracciones/año + flujos de RS). Precisión de extracción reportada ~94-99% en evaluaciones independientes.",
+          "detail": "Evaluaciones: 96% extracción / 95% recall de búsqueda a través de 994 revisiones Cochrane (cifra del propio Elicit); 99.4% (1,502/1,511 puntos) en una RS de política educativa alemana; 81.4% vs 86.7% humano (diferencia no significativa) en un estudio 2025 de dermatología. RECOMENDACIÓN: usar como SEGUNDO revisor semi-automatizado, no como único extractor — siempre verificación humana.",
+          "confidence": "media",
+          "sources": [
+            "https://elicit.com/pricing",
+            "https://journals.sagepub.com/doi/10.1177/08944393251404052"
+          ]
+        },
+        {
+          "claim": "Meta-análisis — R es el estándar de facto gratuito: paquetes 'metafor' (efectos fijos/aleatorios/mixtos, meta-regresión, forest/funnel/radial/L'Abbe/Baujat/GOSH) y 'meta' (interfaz amigable, importa datos de RevMan 5, forest/funnel/Galbraith/L'Abbe/Baujat/bubble).",
+          "detail": "metafor (Viechtbauer) es el más completo y citado para meta-análisis y meta-regresión. 'meta' (Schwarzer) es más accesible para principiantes. Ambos gratis en CRAN. Generan forest plots y funnel plots para evaluar sesgo de publicación/asimetría.",
+          "confidence": "alta",
+          "sources": [
+            "https://wviechtb.github.io/metafor/",
+            "https://cran.r-project.org/package=meta"
+          ]
+        },
+        {
+          "claim": "Meta-análisis — Python: PythonMeta (forest plots vía zEpid, funnel plots contour-enhanced para asimetría) y statsmodels (módulo meta-analysis, verificado contra R meta/metafor, incluye forest plot; API marcada como experimental).",
+          "detail": "Hay un tutorial práctico publicado (BMC Medical Research Methodology 2022) que documenta meta-análisis en Python. statsmodels advierte que su API de meta-análisis cambiará. Para publicación de alto impacto, R sigue siendo más establecido y aceptado que Python para meta-análisis.",
+          "confidence": "media",
+          "sources": [
+            "https://bmcmedresmethodol.biomedcentral.com/articles/10.1186/s12874-022-01673-y",
+            "https://www.statsmodels.org/dev/examples/notebooks/generated/metaanalysis1.html"
+          ]
+        },
+        {
+          "claim": "Meta-análisis — RevMan Web (Cochrane): GRATIS para autores Cochrane mientras escriben una revisión Cochrane; suscripción de pago para autores no-Cochrane; gratis en países Hinari/Research4Life. Integra con GRADEpro (tablas Summary of Findings).",
+          "detail": "[PARCIALMENTE NO VERIFICABLE] El precio exacto de la suscripción para no-Cochrane está detrás de un login (subscribe.cochrane.org redirige a autenticación) y no pude extraer la cifra. Tampoco pude confirmar el numeral 'RevMan 8': la versión vigente verificada se denomina 'RevMan Web' (reemplazó a RevMan 5). Autores Cochrane que usan RevMan para una revisión NO-Cochrane califican a suscripción con descuento.",
+          "confidence": "baja",
+          "sources": [
+            "https://revman.cochrane.org/info",
+            "https://www.cochrane.org/products-and-services/review-writing-software"
+          ]
+        }
+      ],
+      "recommendations": [
+        "FLUJO PASO A PASO. PASO 0 — Pregunta y protocolo: formula la pregunta en formato PICO; redacta el protocolo siguiendo PRISMA-P. No empieces a cribar antes de registrar.",
+        "PASO 1 — Registro: registra el protocolo en PROSPERO ANTES de iniciar el cribado formal (gratis; solo si hay desenlace en salud). Si es scoping review o PROSPERO la rechaza, usa OSF Registries. Guarda el número de registro para citarlo (ítem PRISMA 2020 #24).",
+        "PASO 2 — Búsqueda: diseña la estrategia con un bibliotecario si es posible. Busca como MÍNIMO MEDLINE/PubMed + Embase + Cochrane CENTRAL; añade Web of Science y/o Scopus para máxima cobertura; incluye LILACS/BVS (literatura LatAm) y registros de ensayos ClinicalTrials.gov + ICTRP (OMS). Reporta cada fuente con PRISMA-S (16 ítems). Exporta en RIS.",
+        "PASO 3 — Cribado (2 revisores independientes): importa a Rayyan (free hasta 3 revisiones) o ASReview (gratis, active learning, ideal para >miles de registros) o Covidence (si tienes acceso Cochrane o necesitas flujo end-to-end). Documenta cada exclusión con su razón para el diagrama de flujo.",
+        "PASO 4 — Diagrama de flujo: genera el PRISMA 2020 flow diagram con la plantilla Word oficial (vía 'Databases, registers and other sources') o el Shiny App de prisma-statement.org.",
+        "PASO 5 — Extracción de datos (doble, independiente): usa formulario piloteado; Elicit puede actuar como SEGUNDO revisor semi-automatizado (free 20 extracciones/mes), pero verifica todo manualmente — nunca extracción 100% automática para publicación.",
+        "PASO 6 — Riesgo de sesgo: aplica RoB 2 (5 dominios) a cada ECA o ROBINS-I (7 dominios) a estudios no aleatorizados, por 2 revisores. AMSTAR-2 NO va aquí: úsalo solo si tu trabajo es una overview/umbrella review que aprecia RS existentes.",
+        "PASO 7 — Meta-análisis: usa R con 'metafor' o 'meta' (gratis, estándar de publicación) o RevMan Web (gratis para autores Cochrane). Modelo de efectos aleatorios por defecto si esperas heterogeneidad; reporta I-cuadrado/tau-cuadrado. Genera forest plot (resultado principal) y funnel plot (sesgo de publicación) si hay >=10 estudios.",
+        "PASO 8 — Certeza de evidencia: califica con GRADE (4 niveles, 5 dominios) usando GRADEpro GDT; produce la tabla Summary of Findings (integrable con RevMan Web).",
+        "PASO 9 — Redacción: completa los 27 ítems de PRISMA 2020 + checklist de abstract; cita el número PROSPERO; deposita datos/código en repositorio abierto (OSF/Zenodo). Verifica con la checklist antes de enviar a la revista.",
+        "STACK 100% GRATUITO (presupuesto cero): PROSPERO (registro) + búsqueda en PubMed/CENTRAL/LILACS/OpenAlex + ASReview o Rayyan Free (cribado) + R metafor/meta (meta-análisis) + GRADEpro (certeza) + plantillas PRISMA 2020/PRISMA-S. Todo verificable y publicable.",
+        "ADVERTENCIA DE VERIFICACIÓN: el precio exacto de RevMan para no-Cochrane y el numeral 'RevMan 8' NO pudieron verificarse (login/sin confirmación oficial). El turnaround oficial de PROSPERO en 2026 tampoco tiene cifra publicada — no asumas un plazo fijo; registra con varias semanas de anticipación."
+      ]
+    },
+    "youtube": {
+      "dimension": "YouTube channels y cursos online para (A) metodología de revisión sistemática/meta-análisis y (B) anatomía facial/inyectables en dermatología estética",
+      "summary": "Encontré recursos REALES y verificables en dos bloques. BLOQUE A (metodología SR/MA): el estándar de oro son los canales/plataformas institucionales — Cochrane Training (YouTube), Cochrane Interactive Learning (curso pago), JBI (YouTube + Comprehensive Systematic Review Training Program), la web oficial PRISMA, y para la parte estadística en R, la serie metafor (Wolfgang Viechtbauer) y el libro gratuito online \"Doing Meta-Analysis with R\" (Harrer/Cuijpers). El canal \"Learn Meta-Analysis\" (@LearnMetaAnalysis) es un recurso para principiantes. BLOQUE B (anatomía/inyectables): Sebastian Cotofana opera principalmente vía su plataforma cotofanaanatomy.com (no un canal YouTube propio fuerte; sí apariciones e Instagram @cotofanaanatomy); Maurício de Maio (MD Codes) tiene canal oficial en YouTube; ASDS tiene canal oficial \"ASDS Members\" (@ASDSMembers); IMCAS Academy es plataforma e-learning de pago. ADVERTENCIA DE VERIFICACIÓN: las páginas \"About\" de YouTube no se renderizan vía fetch (son JS), así que la identidad de cada canal está corroborada por múltiples resultados de búsqueda independientes, no por lectura directa de la página; marco la exactitud de cada URL con su nivel de confianza. No inventé ninguna URL.",
+      "findings": [
+        {
+          "claim": "Cochrane Training tiene canal oficial de YouTube con tutoriales de RevMan y metodología de revisión sistemática",
+          "detail": "Canal 'Cochrane Training'. URL del canal: https://www.youtube.com/channel/UCoWzvKR8RPHG07PPeqBiibA (handle social en X: @cochranetrain). Incluye serie de tutoriales de RevMan ('Get started using RevMan', gestión de datos study-centric). Es el recurso de referencia para aprender el flujo Cochrane paso a paso. La URL del canal aparece consistentemente en múltiples búsquedas; no pude leer la página About directamente (YouTube es JS), por eso confianza media-alta en exactitud de URL.",
+          "confidence": "alta",
+          "sources": [
+            "https://www.youtube.com/channel/UCoWzvKR8RPHG07PPeqBiibA",
+            "https://training.cochrane.org/online-learning/core-software/revman"
+          ]
+        },
+        {
+          "claim": "Cochrane Interactive Learning es el curso online oficial (de pago) para aprender a CONDUCIR una revisión de intervenciones, módulo por módulo",
+          "detail": "Curso 'Conducting an intervention review': ~17 horas en 12 módulos independientes (encuadre de la pregunta, búsqueda, riesgo de sesgo, meta-análisis, GRADE) más módulos de economía de la salud, network meta-analysis, equidad y síntesis cualitativa. Acceso en interactivelearning.cochrane.org. El Módulo 1 es GRATIS para usuarios registrados; autores Cochrane acceso libre; no-Cochrane lo compran (miembros Cochrane 45% de descuento). Las cifras (17h, 12 módulos, módulo 1 gratis, 45%) provienen de las fuentes citadas.",
+          "confidence": "alta",
+          "sources": [
+            "https://www.cochrane.org/learn/courses-and-resources/interactive-learning/module-1-introduction-conducting-systematic-reviews",
+            "https://community.cochrane.org/news/announcing-full-launch-cochrane-interactive-learning",
+            "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6148604/"
+          ]
+        },
+        {
+          "claim": "JBI (Joanna Briggs Institute) tiene canal oficial de YouTube y un programa formal de entrenamiento en revisiones sistemáticas",
+          "detail": "Canal 'JBI' en YouTube: https://www.youtube.com/channel/UCEWhJYFQityaRhV-BGCklCQ (videos de síntesis de evidencia, metodología, tips). Programa formal: 'Comprehensive Systematic Review Training Program' (CSRTP) en https://jbi.global/education/systematic-review-training — cubre evidencia cuantitativa, cualitativa y narrativa. Dato de alcance ('over 3,300 people from over 30 countries' en 3 años) reportado en la fuente PubMed/JBI; confianza media en esa cifra por ser autorreportada.",
+          "confidence": "alta",
+          "sources": [
+            "https://www.youtube.com/channel/UCEWhJYFQityaRhV-BGCklCQ",
+            "https://jbi.global/education/systematic-review-training",
+            "https://pubmed.ncbi.nlm.nih.gov/30051578/"
+          ]
+        },
+        {
+          "claim": "PRISMA tiene web oficial con el checklist de 27 ítems y el diagrama de flujo de 4 fases para REPORTAR la revisión",
+          "detail": "Web oficial: https://www.prisma-statement.org/ — contiene checklist PRISMA 2020 (27 ítems), diagramas de flujo, y documentos de Explanation & Elaboration con ejemplos. Es la guía de reporte estándar (no enseña a 'hacer' el análisis, sino a reportarlo correctamente). El paper PRISMA 2020 está en acceso abierto. Cifras (27 ítems, 4 fases, versión 2020 reemplaza la de 2009) verificadas en las fuentes.",
+          "confidence": "alta",
+          "sources": [
+            "https://www.prisma-statement.org/",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC8007028/",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC8005925/"
+          ]
+        },
+        {
+          "claim": "La serie de YouTube de metafor (Wolfgang Viechtbauer) enseña meta-análisis en R con el paquete oficial metafor",
+          "detail": "Playlist 'Tutorial: Meta-Analysis in R with metafor': https://www.youtube.com/playlist?list=PLXa5cTEormkEbYpBIgikgE0y9QR7QIgzs (incluye 'Introduction to metafor for meta-analysis in R'). El paquete metafor es la referencia para forest/funnel plots, modelos de efectos fijos/aleatorios, meta-regresión. Documentación oficial: https://wviechtb.github.io/metafor/. Recomendado para la parte estadística avanzada.",
+          "confidence": "alta",
+          "sources": [
+            "https://www.youtube.com/playlist?list=PLXa5cTEormkEbYpBIgikgE0y9QR7QIgzs",
+            "https://wviechtb.github.io/metafor/",
+            "https://www.youtube.com/watch?v=9ZpZwPAMEoo"
+          ]
+        },
+        {
+          "claim": "El libro 'Doing Meta-Analysis with R: A Hands-On Guide' (Harrer, Cuijpers, Furukawa, Ebert) está disponible GRATIS online y es un recurso paso a paso",
+          "detail": "Versión online gratuita: https://bookdown.org/MathiasHarrer/Doing_Meta_Analysis_in_R/ (también https://www.protectlab.org/en/meta-analysis-in-r/). Código fuente en GitHub: https://github.com/MathiasHarrer/Doing-Meta-Analysis-in-R. Cubre pooling de efectos, forest plots, heterogeneidad, subgrupos, meta-regresión, sesgo de publicación y riesgo de sesgo. Publicado también en papel por Chapman & Hall/CRC. Excelente complemento práctico a los videos.",
+          "confidence": "alta",
+          "sources": [
+            "https://bookdown.org/MathiasHarrer/Doing_Meta_Analysis_in_R/",
+            "https://github.com/MathiasHarrer/Doing-Meta-Analysis-in-R",
+            "https://www.protectlab.org/en/meta-analysis-in-r/"
+          ]
+        },
+        {
+          "claim": "El canal 'Learn Meta-Analysis' (@LearnMetaAnalysis) ofrece tutoriales para principiantes de revisión sistemática y meta-análisis",
+          "detail": "Handle: https://www.youtube.com/@LearnMetaAnalysis. Descrito como 'how-to videos for beginners on systematic review, meta-analysis, and AI' para mejorar el flujo de trabajo académico. No pude leer la página About directamente (JS), pero el handle aparece de forma consistente en dos búsquedas independientes — confianza media-alta en exactitud del handle, contenido confirmado por descripción en resultados.",
+          "confidence": "media",
+          "sources": [
+            "https://www.youtube.com/@LearnMetaAnalysis"
+          ]
+        },
+        {
+          "claim": "Sebastian Cotofana enseña anatomía facial para inyectables principalmente vía su plataforma cotofanaanatomy.com (no un canal YouTube propio dominante)",
+          "detail": "Plataforma oficial: https://cotofanaanatomy.com/ — cursos en video en 3 niveles (novice, competent, expert), enfocados en partes específicas de la cara (ej. músculo mentalis, líneas del canto lateral), capas faciales, vasos y zonas de riesgo para inyectables. Instagram oficial: https://www.instagram.com/cotofanaanatomy/ (@cotofanaanatomy). Cotofana es Clinical Professor of Plastic Surgery en Vanderbilt con 300+ publicaciones. NOTA: no encontré un canal de YouTube propio robusto de Cotofana; su contenido en YouTube aparece sobre todo como apariciones/podcasts y el Cotofana Anatomy Journal Club presentado por Harley Academy. Si el usuario busca YouTube específicamente, lo más cercano es buscar 'Cotofana Anatomy Journal Club'.",
+          "confidence": "alta",
+          "sources": [
+            "https://cotofanaanatomy.com/",
+            "https://www.instagram.com/cotofanaanatomy/",
+            "https://modernaesthetics.com/ma-issues-index/july-august-2025/sebastian-cotofana-facial-anatomy-education-platform-injector/36661/",
+            "https://www.youtube.com/watch?v=6RQCbnKD0mY"
+          ]
+        },
+        {
+          "claim": "Maurício de Maio (creador de MD Codes) tiene canal oficial de YouTube con educación sobre inyectables/rellenos",
+          "detail": "Canal 'Maurício de Maio Official': https://www.youtube.com/channel/UC2DcoRP9Ad1cUY5fVtZ2QdA. También existe un canal 'MD Codes OFFICIAL': https://www.youtube.com/channel/UCiThFG_AuOChb1bF7js924Q. Contenido: metodología MD Codes (sitios de inyección codificados por letras/números por área anatómica), casos complejos, técnica de relleno HA. Web: https://www.mdcodes.com/. Hay dos canales con nombres oficiales — confianza media en CUÁL es el primario de los dos, pero ambas URLs salieron en búsqueda.",
+          "confidence": "media",
+          "sources": [
+            "https://www.youtube.com/channel/UC2DcoRP9Ad1cUY5fVtZ2QdA",
+            "https://www.youtube.com/channel/UCiThFG_AuOChb1bF7js924Q",
+            "https://www.mdcodes.com/clinic"
+          ]
+        },
+        {
+          "claim": "ASDS (American Society for Dermatologic Surgery) tiene canal oficial de YouTube 'ASDS Members'",
+          "detail": "Canal 'ASDS Members': https://www.youtube.com/@ASDSMembers (también accesible como https://www.youtube.com/c/asdsmembers). Web oficial: https://www.asds.net/. ASDS es la mayor organización de especialistas en cirugía dermatológica; sus miembros participan en estudios clínicos de rellenos y toxina. Útil para procedimientos cosméticos y dermatológicos basados en evidencia. Handle corroborado por múltiples resultados.",
+          "confidence": "alta",
+          "sources": [
+            "https://www.youtube.com/@ASDSMembers",
+            "https://www.asds.net/",
+            "https://www.youtube.com/c/asdsmembers"
+          ]
+        },
+        {
+          "claim": "IMCAS Academy es una plataforma e-learning de pago con cursos de anatomía e inyectables en medicina estética y dermatología",
+          "detail": "Plataforma: https://academy.imcas.com/en (y https://www.imcas.com/en/academy/webinars). Reportan 170+ cursos y 900+ lectures/videos de congresos IMCAS en 15 temáticas, incluyendo técnicas de inyectables. Cifras (170 cursos, 900 lectures) son autorreportadas por IMCAS — confianza media en esos números exactos; existencia y enfoque de la plataforma, confianza alta.",
+          "confidence": "media",
+          "sources": [
+            "https://academy.imcas.com/en",
+            "https://www.imcas.com/en/academy/webinars"
+          ]
+        },
+        {
+          "claim": "Existe canal/playlist genérico útil 'Systematic Review and Meta-Analysis - All you ever need to know' como introducción rápida, pero NO pude verificar la autoría/credenciales del autor",
+          "detail": "Video: https://www.youtube.com/watch?v=Wt79y0YutVc, y playlist 'Systematic Reviews and Meta-analysis': https://www.youtube.com/playlist?list=PL6cPKbkyD6Ox9fYXV8QtayOFs95_FKylz. Aparecen como introducciones populares. [NO VERIFICABLE]: no pude confirmar quién es el autor ni su afiliación académica, así que no garantizo el rigor metodológico — usar como complemento, no como fuente primaria frente a Cochrane/JBI.",
+          "confidence": "baja",
+          "sources": [
+            "https://www.youtube.com/watch?v=Wt79y0YutVc",
+            "https://www.youtube.com/playlist?list=PL6cPKbkyD6Ox9fYXV8QtayOFs95_FKylz"
+          ]
+        }
+      ],
+      "recommendations": [
+        "Para metodología paso a paso, priorizar fuentes institucionales en este orden: (1) Cochrane Interactive Learning (curso estructurado, módulo 1 gratis) + canal Cochrane Training en YouTube para RevMan; (2) JBI YouTube + CSRTP; (3) PRISMA 2020 para la fase de REPORTE (checklist 27 ítems). Tratar los canales 'genéricos' de YouTube como complemento, no como fuente primaria.",
+        "Para la parte estadística/software: empezar con el libro GRATIS 'Doing Meta-Analysis with R' (bookdown) + la playlist oficial de metafor (Viechtbauer). RevMan (Cochrane) si se quiere flujo Cochrane sin programar.",
+        "Distinguir 'hacer' vs 'reportar': Cochrane/JBI enseñan a CONDUCIR la revisión; PRISMA estandariza cómo REPORTARLA. Se necesitan ambos.",
+        "Para anatomía/inyectables: Cotofana se consume mejor en su plataforma cotofanaanatomy.com (e Instagram) que en YouTube, donde no tiene un canal propio fuerte — ajustar expectativa. De Maio (MD Codes) y ASDS Members sí son canales YouTube reales.",
+        "VERIFICAR ANTES DE PUBLICAR EN LA APP: confirmar manualmente cada URL de canal de YouTube abriéndola en navegador, porque las páginas About no se pudieron leer vía fetch (JS) y los handles podrían haber cambiado. Tratar las cifras autorreportadas (170 cursos IMCAS, 3,300 entrenados JBI, 17h Cochrane) como aproximadas hasta confirmar en la fuente primaria.",
+        "Para de Maio hay DOS canales con nombre oficial ('Maurício de Maio Official' y 'MD Codes OFFICIAL'); decidir cuál enlazar verificando cuál tiene más contenido educativo actual."
+      ]
+    },
+    "mayo": {
+      "dimension": "Requisitos y benchmarks de investigación para dermatología en Mayo Clinic y match de derma en EE.UU. siendo IMG",
+      "summary": "No existe un \"número exacto de publicaciones requerido\" publicado ni por Mayo ni por el NRMP: la dermatología es la especialidad MÁS investigación-pesada del Match. Dato duro y verificado del NRMP \"Charting Outcomes in the Match 2024\" (US MD seniors, Tabla DM-1): los que HICIERON match a dermatología tenían en promedio 27.7 abstracts/presentaciones/publicaciones vs 19.0 los no-matcheados; 6.4 vs 4.9 experiencias de investigación; Step 2 CK 257 vs 250. Para IMG el promedio es aún más alto y la N es minúscula: en 2024 solo ~8 US-IMG y ~11 non-US-IMG matchearon en TODO EE.UU., con un promedio de abstracts/pubs en el rango de ~28 para el grupo matcheado. Mayo exige ECFMG + USMLE Steps 1 y 2 (Step 3 si se busca patrocinio H-1B); patrocina J-1 (vía ECFMG) y, en algunos programas, H-1B. La competitividad para IMG es extrema: en el Match 2026, de 29 non-US-IMG que aplicaron a derma solo 4 matchearon, y de 23 US-IMG, 9. Existen vías de research fellow / postdoc / observership en Mayo que NO requieren residencia ACGME (sí requieren MD/PhD; el observership es solo shadowing). REGLA: cada cifra abajo lleva su URL real; donde la atribución de columna del PDF era ambigua o el dato no está publicado exactamente, lo marco con confianza media/baja.",
+      "findings": [
+        {
+          "claim": "NRMP 2024: dermatología US MD seniors matcheados promediaron 27.7 abstracts/presentaciones/publicaciones vs 19.0 los no-matcheados (n=314 match, n=126 no-match)",
+          "detail": "Dato PRIMARIO extraído directamente del PDF oficial NRMP 'Charting Outcomes in the Match: U.S. MD Seniors 2024', Tabla DM-1 (Dermatology Summary Statistics). Cifras exactas: abstracts/presentaciones/pubs 27.7 (match) vs 19.0 (no-match); experiencias de investigación 6.4 vs 4.9; USMLE Step 2 CK 257 vs 250; Step 1 numérico (solo pre-pass/fail) 245 vs 235; % AOA 41.1 vs 23.8; % con PhD 9.8 vs 1.7. Es el dato NRMP más reciente de 'Charting Outcomes' por especialidad disponible (el de 2026 aún no salió a la fecha de la búsqueda).",
+          "confidence": "alta",
+          "sources": [
+            "https://www.nrmp.org/wp-content/uploads/2024/08/Charting_Outcomes_MD_Seniors_2024-2.pdf"
+          ]
+        },
+        {
+          "claim": "NRMP NO publica un 'número requerido' de publicaciones; 27.7 es un PROMEDIO, no un umbral. El rango real es amplio (de 0-1 a 5+ trabajos por aplicante en los histogramas).",
+          "detail": "El reporte NRMP presenta medias y distribuciones, nunca un mínimo. Tener 27.7 'cuenta' abstracts + presentaciones + publicaciones (no 27 papers publicados): el conteo agrupa pósters, charlas y manuscritos, por eso el número parece alto. Ningún programa, incluido Mayo, publica un piso numérico de pubs. Afirmar 'necesitas X publicaciones' sería inventar.",
+          "confidence": "alta",
+          "sources": [
+            "https://www.nrmp.org/wp-content/uploads/2024/08/Charting_Outcomes_MD_Seniors_2024-2.pdf"
+          ]
+        },
+        {
+          "claim": "Para IMG específicamente (NRMP Charting Outcomes IMG 2024, Tabla DM-1): la muestra es diminuta — ~10 US-IMG y ~11 non-US-IMG matcheados en derma en TODO EE.UU. El promedio de abstracts/pubs del grupo matcheado ronda ~28.5; Step 1 ~239, Step 2 ~256.",
+          "detail": "Extraído del PDF oficial 'Charting Outcomes in the Match: International Medical Graduates 2024', sección Dermatology, Tabla DM-1. La tabla lista para US-IMG (n=10) y non-US-IMG (n=11): media de abstracts/presentaciones/pubs 28.5 / 7.2, Step 1 239 / 234, Step 2 256 / 245, experiencias de investigación 2.3 / 5.1. ADVERTENCIA DE HONESTIDAD: por la extracción del PDF las columnas matched-vs-unmatched quedan ambiguas (el dato de US-IMG unmatched está suprimido por 'small sample size'), así que la atribución exacta de cada número a matched/unmatched tiene confianza media. Lo robusto y verificable es: (a) la N es minúscula, (b) el grupo matcheado tiene un promedio de pubs muy alto (~28).",
+          "confidence": "media",
+          "sources": [
+            "https://www.nrmp.org/wp-content/uploads/2024/08/Charting_Outcomes_IMG_2024-1.pdf"
+          ]
+        },
+        {
+          "claim": "Match 2026 (dato PRIMARIO, NRMP Advance Data Tables): derma llenó 545 de 546 plazas PGY-2 (99.8%). US MD seniors llenaron 79.5% de las plazas. De los IMG que aplicaron a derma PGY-2: 9 de 23 US-IMG matchearon y 4 de 29 non-US-IMG matchearon.",
+          "detail": "Extraído del PDF oficial 'Advance Data Tables 2026 Main Residency Match', Tabla 1A (US MD seniors), 1E (US IMGs) y 1F (Non-US IMGs), fila Dermatology PGY-2. Cifras: 546 plazas ofertadas, 545 llenas; US MD seniors 434 matcheados (79.5% de las plazas); US-IMG 23 aplicantes / 9 matcheados; Non-US-IMG 29 aplicantes / 4 matcheados (0.7% de las plazas llenas). NOTA: una fuente secundaria (MedEdits) reporta '3 de 8 US-IMG (38%)' y '4 de 29 non-US-IMG (14%)' usando la metodología 'preferred specialty' (los que rankearon derma PRIMERO), que es un subconjunto distinto. Reporto ambas framings; el conteo de 4 non-US-IMG matcheados coincide en ambas.",
+          "confidence": "alta",
+          "sources": [
+            "https://www.nrmp.org/wp-content/uploads/2026/03/Advance-Data-Tables-2026_Public.pdf",
+            "https://mededits.com/mededits-resources/dermatology-residency-match-stats-strategy-and-how-to-match"
+          ]
+        },
+        {
+          "claim": "Requisitos IMG de Mayo Clinic (residencias/fellowships): pasar USMLE Steps 1 y 2 + certificación ECFMG. Step 3 se requiere si se busca patrocinio de visa H-1B. Mayo patrocina J-1 (vía ECFMG) y, en programas selectos, H-1B.",
+          "detail": "De la página oficial 'Admissions and Benefits' de Mayo Clinic College of Medicine & Science. Para J-1 (ECFMG): título médico de escuela reconocida + Steps 1 y 2 + ECFMG. La derma específicamente pide que una de las 3 cartas de recomendación sea de un dermatólogo con quien trabajaste. NOTA: la página específica de Application Process de derma Minnesota devolvió 403/redacción en el scrape, así que el detalle USMLE-mínimo NUMÉRICO de Mayo NO es públicamente verificable (matcharesident lo tiene tras paywall). No hay 'score mínimo' publicado por Mayo.",
+          "confidence": "alta",
+          "sources": [
+            "https://college.mayo.edu/academics/residencies-and-fellowships/admissions-and-benefits/",
+            "https://college.mayo.edu/academics/residencies-and-fellowships/dermatology-residency-minnesota/application-process/"
+          ]
+        },
+        {
+          "claim": "Existen vías de Research Fellow / Postdoctoral Fellow en dermatología en Mayo que NO requieren residencia ACGME ni match — pero requieren doctorado (MD, PhD o equivalente).",
+          "detail": "Listados oficiales en jobs.mayoclinic.org: 'Research Fellow - Dermatology' (Jacksonville) y 'Research Post-doctoral Fellow - Skin Longevity Lab' (Rochester, lab de S. Wyles). Requisitos típicos citados: PhD/MD/doctorado equivalente; no más de 1 postdoc previo; deseable Steps 1 y 2 aprobados y publicaciones PubMed (idealmente primer/segundo autor). Son roles de INVESTIGACIÓN (no clínicos, no ACGME). ADVERTENCIA: los URLs exactos de las ofertas devolvieron 404 al re-fetch (los postings rotan), así que el detalle textual exacto tiene confianza media; la EXISTENCIA de la vía está confirmada por múltiples resultados de búsqueda del propio dominio jobs.mayoclinic.org.",
+          "confidence": "media",
+          "sources": [
+            "https://jobs.mayoclinic.org/research",
+            "https://jobs.mayoclinic.org/job/jacksonville/research-fellow-dermatology/33647/78572618816",
+            "https://jobs.mayoclinic.org/job/rochester/research-post-doctoral-fellow-skin-longevity-lab-at-mayo-clinic-s-wyles/33647/85075146560"
+          ]
+        },
+        {
+          "claim": "Vía Visiting Graduate Student (VGS) de Mayo: para estudiantes de PhD/máster (no para MD graduados sin PhD). Patrocinio típico J-1 Research Scholar. El estudiante internacional debe demostrar fondos propios; no recibe beneficios.",
+          "detail": "Página oficial 'Visiting Graduate Student Program' de Mayo Clinic College of Medicine & Science. Duración 6 meses a 5 años. Esta vía es para investigación predoctoral, NO es una vía clínica ni para un MD-IMG que solo quiera research clínico. Relevante solo si el aplicante está cursando un PhD/máster en otra institución.",
+          "confidence": "alta",
+          "sources": [
+            "https://college.mayo.edu/academics/biomedical-research-training/visiting-graduate-student-program-vgs--/"
+          ]
+        },
+        {
+          "claim": "Observership en Mayo para IMG: solo modalidad shadowing, SIN contacto con pacientes ('hands-on'). No es una residencia ni cuenta como USCE clínico hands-on.",
+          "detail": "Confirmado por resultados de búsqueda del dominio Mayo y AMA: los graduados internacionales 'can only apply for an observership, strictly a shadowing experience with no hands-on patient contact'. Mayo tiene un 'Education Visitors Observer Program'. ADVERTENCIA: no logré abrir la página oficial específica del Observer Program de Mayo para citar texto literal de elegibilidad; la afirmación se apoya en resúmenes de búsqueda, por eso confianza media. Para política exacta hay que contactar a la oficina de educación de Mayo.",
+          "confidence": "media",
+          "sources": [
+            "https://jobs.mayoclinic.org/trainingprogramsandinternships",
+            "https://www.ama-assn.org/member-groups-sections/international-medical-graduates-section-imgs/finding-observership-faqs"
+          ]
+        },
+        {
+          "claim": "Competitividad para IMG en derma: extrema. Es de las especialidades menos IMG-friendly por volumen absoluto: en 2026 menos de ~13 IMG (US + non-US combinados) matchearon en todo EE.UU. de cientos de aplicantes.",
+          "detail": "Derivado de los datos primarios NRMP 2026: 9 US-IMG + 4 non-US-IMG = 13 IMG matcheados de 52 que aplicaron (23+29), frente a 434 US MD seniors. La derma combina baja oferta de plazas (~546), alta demanda y fuerte sesgo a US MD seniors (79.5% de plazas). Para un IMG, el listón de research observado en los matcheados es igual o superior al de los MD seniors (~28 abstracts/pubs).",
+          "confidence": "alta",
+          "sources": [
+            "https://www.nrmp.org/wp-content/uploads/2026/03/Advance-Data-Tables-2026_Public.pdf",
+            "https://www.nrmp.org/wp-content/uploads/2024/08/Charting_Outcomes_IMG_2024-1.pdf"
+          ]
+        },
+        {
+          "claim": "[NO VERIFICABLE PÚBLICAMENTE] Mayo no publica un 'impact factor' requerido, ni un número mínimo de papers, ni un score USMLE mínimo numérico para su derma residency.",
+          "detail": "Busqué la página oficial de Application Process de derma Minnesota (403/redactada) y el perfil de matcharesident (tras registro/paywall, campos enmascarados con 'xxxx'). No hay publicación oficial de Mayo con un umbral numérico de publicaciones, impact factor, ni score mínimo USMLE. Cualquier cifra de ese tipo que circule en foros NO es atribuible a Mayo. Honestamente: no existe un número-objetivo oficial; el benchmark real es el promedio NRMP de los matcheados (~28 abstracts/pubs, Step 2 CK ~257).",
+          "confidence": "alta",
+          "sources": [
+            "https://college.mayo.edu/academics/residencies-and-fellowships/dermatology-residency-minnesota/application-process/",
+            "https://www.matcharesident.com/residency-programs/080-26-21-049"
+          ]
+        }
+      ],
+      "recommendations": [
+        "Apuntar al benchmark NRMP real, no a un mito: los matcheados en derma (US MD seniors 2024) promedian 27.7 abstracts/presentaciones/publicaciones y Step 2 CK 257. Para IMG el listón observado es igual o más alto. No hay 'número requerido', pero estar por debajo de ~20 trabajos combinados deja en desventaja estadística.",
+        "Maximizar abstracts + presentaciones, no solo papers indexados: la métrica NRMP suma pósters y charlas. Un IMG puede subir su conteo con case reports, abstracts a congresos (AAD, etc.) y presentaciones, además de manuscritos PubMed.",
+        "Usar la vía research fellow/postdoc de Mayo (no-ACGME) como puente realista: un MD-IMG con doctorado puede entrar como Research Fellow en dermatología (Jacksonville) o en el Skin Longevity Lab (Rochester) sin pasar por el Match; eso genera mentoría Mayo, publicaciones con afiliación Mayo y cartas — el activo más valioso para luego competir por la residencia.",
+        "Conseguir ECFMG + USMLE Steps 1 y 2 antes de aplicar (y Step 3 si se busca H-1B). Confirmar con la oficina GME de Mayo qué visa patrocina el programa de derma específico (J-1 vía ECFMG es lo estándar; H-1B es selectivo).",
+        "No confiar en perfiles de pago (matcharesident) ni foros para 'scores mínimos': pedir los criterios directamente al coordinador del programa (contacto público: Julie A. Fohrman, jfohrman@mayo.edu). Mayo NO publica umbrales numéricos.",
+        "Tratar el observership de Mayo como networking/cartas, NO como experiencia clínica hands-on: es solo shadowing y no sustituye USCE clínico para el Match.",
+        "Calibrar expectativas con el dato 2026: ~13 IMG matcheados en derma en todo EE.UU. Una estrategia robusta para IMG suele incluir un año o más de research dedicado (idealmente en una institución top como Mayo) antes de aplicar al Match."
+      ]
+    },
+    "aesthetic": {
+      "dimension": "Verificación de referencias fundacionales de dermatología estética estructural + temas publicables 2025-2026",
+      "summary": "Verifiqué las 9 referencias fundacionales solicitadas vía PubMed/editor. TODAS existen y son reales; aporto DOI + PMID confirmados para cada una. Tres aclaraciones de autoría/edición que el usuario debe conocer: (1) El RCT de glabela 2002 (PMID 12063480, JAAD) es del \"BOTOX Glabellar Lines I Study Group\" con A. Carruthers como autor principal — NO es un paper con Jean Carruthers de primera autora; el paper seminal cosmético de la pareja Carruthers es el de 1992 (PMID 1740562). (2) Mendelson & Wong sobre resorción ósea facial tiene DOS versiones: original 2012 (PMID 22580543) y una republicación 2020 (DOI 10.1007/s00266-020-01823-x). (3) El paper de \"MD Codes\" de de Maio formalmente publicado es de 2020/2021 (PMID 32445044, Aesthet Plast Surg), no su trabajo conceptual previo. Las \"vascular safe zones\" de Cotofana corresponden a dos papers distintos (2019 J Drugs Dermatol y 2022 Plast Aesthet Nurs). Para temas candentes 2025-2026 identifiqué 6 gaps reales con evidencia: exosomas (cero aprobaciones FDA, falta RCT/estandarización), \"Ozempic face\"/GLP-1, biostimuladores (PLLA/CaHA, mecanismos), IA en evaluación estética (falta validación/estandarización), complicaciones tardías de fillers (biofilm/nódulos/oclusión vascular), y representación de piel de color en RCTs. REGLA DURA cumplida: cada cifra lleva fuente URL y nivel de confianza; lo no verificable está marcado.",
+      "findings": [
+        {
+          "claim": "Anderson & Parrish, 'Selective Photothermolysis' (Science 1983) — VERIFICADO. DOI: 10.1126/science.6836297 | PMID: 6836297",
+          "detail": "Anderson RR, Parrish JA. 'Selective photothermolysis: precise microsurgery by selective absorption of pulsed radiation.' Science. 1983 Apr 29;220(4596):524-7. Confirmado en PubMed (pubmed.ncbi.nlm.nih.gov/6836297) y en el sitio del editor Science (science.org/doi/10.1126/science.6836297). Es la base teórica de toda la terapia con láser dermatológico.",
+          "confidence": "alta",
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/6836297/",
+            "https://www.science.org/doi/10.1126/science.6836297"
+          ]
+        },
+        {
+          "claim": "Manstein & Anderson, 'Fractional Photothermolysis' (2004) — VERIFICADO. DOI: 10.1002/lsm.20048 | PMID: 15216537",
+          "detail": "Manstein D, Herron GS, Sink RK, Tanner H, Anderson RR. 'Fractional photothermolysis: a new concept for cutaneous remodeling using microscopic patterns of thermal injury.' Lasers Surg Med. 2004;34(5):426-38. Confirmado en PubMed (15216537) y Wiley (onlinelibrary.wiley.com/doi/abs/10.1002/lsm.20048). Nota: la revista es 'Lasers in Surgery and Medicine', no 'Lasers Surgery Medicine'.",
+          "confidence": "alta",
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/15216537/",
+            "https://onlinelibrary.wiley.com/doi/abs/10.1002/lsm.20048"
+          ]
+        },
+        {
+          "claim": "Rohrich & Pessa, 'The fat compartments of the face' (PRS 2007) — VERIFICADO. DOI: 10.1097/01.prs.0000265403.66886.54 | PMID: 17519724",
+          "detail": "Rohrich RJ, Pessa JE. 'The fat compartments of the face: anatomy and clinical implications for cosmetic surgery.' Plast Reconstr Surg. 2007 Jun;119(7):2219-2227. Confirmado vía Google Scholar lookup (con DOI y PMID explícitos) y la página de LWW/journals.lww.com. Basado en 30 disecciones hemifaciales de cadáver con azul de metileno. Es el paper que estableció el concepto de compartimentos grasos faciales.",
+          "confidence": "alta",
+          "sources": [
+            "https://journals.lww.com/plasreconsurg/fulltext/2008/03000/the_fat_compartments_of_the_face__anatomy_and.53.aspx",
+            "https://scholar.google.com/scholar_lookup?title=The+fat+compartments+of+the+face"
+          ]
+        },
+        {
+          "claim": "Mendelson & Wong, resorción ósea facial — VERIFICADO. Original 2012: DOI 10.1007/s00266-012-9904-3 | PMID 22580543. Republicación 2020: DOI 10.1007/s00266-020-01823-x",
+          "detail": "Mendelson B, Wong CH. 'Changes in the Facial Skeleton With Aging: Implications and Clinical Applications in Facial Rejuvenation.' Aesthetic Plast Surg. 2012 Aug;36(4):753-760. PMID 22580543 confirmado vía Google Scholar lookup con DOI y PMID. ATENCION: existe una segunda versión republicada en 2020 (DOI 10.1007/s00266-020-01823-x, PMC7447647) — verificar cuál se quiere citar. El paper describe resorción selectiva del esqueleto facial (maxilar/región piriforme, reborde orbitario supero-medial e infero-lateral, área prejowl de la mandíbula).",
+          "confidence": "alta",
+          "sources": [
+            "https://scholar.google.com/scholar_lookup?title=Changes+in+the+facial+skeleton+with+aging",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC3404279/",
+            "https://link.springer.com/article/10.1007/s00266-020-01823-x"
+          ]
+        },
+        {
+          "claim": "DeLorenzi, 'New High Dose Pulsed Hyaluronidase Protocol' (ASJ 2017) — VERIFICADO. DOI: 10.1093/asj/sjw251 | PMID: 28333326",
+          "detail": "DeLorenzi C. 'New High Dose Pulsed Hyaluronidase Protocol for Hyaluronic Acid Filler Vascular Adverse Events.' Aesthet Surg J. 2017 Jul 1;37(7):814-825. Confirmado en PubMed (28333326) y Oxford Academic (academic.oup.com/asj/article-abstract/37/7/814). El título completo incluye '...for Hyaluronic Acid Filler Vascular Adverse Events' — es el protocolo HDPH para tratar oclusión vascular embólica.",
+          "confidence": "alta",
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/28333326/",
+            "https://academic.oup.com/asj/article-abstract/37/7/814/3074317"
+          ]
+        },
+        {
+          "claim": "DeLorenzi, 'Complications of injectable fillers' — VERIFICADO (son DOS papers). Part I: DOI 10.1177/1090820X13484492, PMID 23636629 (ASJ 2013;33(4):561-75). Part 2: DOI 10.1177/1090820X14525035, PMID 24692598 (ASJ 2014;34(4):584-600).",
+          "detail": "DeLorenzi C. 'Complications of Injectable Fillers, Part I.' Aesthet Surg J. 2013;33(4):561-575. PMID 23636629 confirmado directamente en PubMed. 'Complications of Injectable Fillers, Part 2: Vascular Complications.' Aesthet Surg J. 2014;34(4):584-600. PMID 24692598. El usuario debe saber que la referencia se divide en dos partes; la Parte 2 (vascular) es la más citada en seguridad de fillers.",
+          "confidence": "alta",
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/23636629/",
+            "https://pubmed.ncbi.nlm.nih.gov/24692598/"
+          ]
+        },
+        {
+          "claim": "de Maio, 'MD Codes' — VERIFICADO. DOI: 10.1007/s00266-020-01762-7 | PMID: 32445044",
+          "detail": "de Maio M. 'MD Codes: A Methodological Approach to Facial Aesthetic Treatment with Injectable Hyaluronic Acid Fillers.' Aesthet Plast Surg. 2021;45(2):690-709 (online 22 May 2020). Confirmado en PubMed/PMC8012343. ACLARACION: este es el paper formal revisado por pares del sistema MD Codes; el concepto MD Codes circuló antes en libros/cursos de Allergan, pero esta es la referencia citable indexada. Existe una corrección/erratum (PMID 33598745).",
+          "confidence": "alta",
+          "sources": [
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC8012343/",
+            "https://pubmed.ncbi.nlm.nih.gov/32445044/",
+            "https://pubmed.ncbi.nlm.nih.gov/33598745/"
+          ]
+        },
+        {
+          "claim": "Carruthers & Carruthers, BTX cosmético 1992 — VERIFICADO. DOI: 10.1111/j.1524-4725.1992.tb03295.x | PMID: 1740562",
+          "detail": "Carruthers JD, Carruthers JA. 'Treatment of glabellar frown lines with C. botulinum-A exotoxin.' J Dermatol Surg Oncol. 1992 Jan;18(1):17-21. PMID 1740562 confirmado en PubMed y Wiley. Es el paper SEMINAL del uso cosmético de toxina botulínica (primera autora: Jean D. Carruthers, oftalmóloga; segundo autor: J. Alastair Carruthers, dermatólogo). Nota: el título correcto usa 'exotoxin', no 'exudotoxin'.",
+          "confidence": "alta",
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/1740562/",
+            "https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1524-4725.1992.tb03295.x"
+          ]
+        },
+        {
+          "claim": "Carruthers — RCT glabela 2002 (JAAD) — VERIFICADO con MATIZ DE AUTORIA. DOI: 10.1067/mjd.2002.121356 | PMID: 12063480",
+          "detail": "Carruthers JA, Lowe NJ, Menter MA, et al. 'A multicenter, double-blind, randomized, placebo-controlled study of the efficacy and safety of botulinum toxin type A in the treatment of glabellar lines.' J Am Acad Dermatol. 2002 Jun;46(6):840-9. PMID 12063480. ATENCION: este RCT pivotal (264 pacientes, 14 sitios EEUU; base de la aprobación FDA de BOTOX Cosmetic en 2002) es del 'BOTOX Glabellar Lines I Study Group' con A. Carruthers como autor líder — NO es un paper de la pareja 'Carruthers & Carruthers'. Si la referencia buscaba a la pareja, el RCT clásico de pareja es otro; este es el ensayo regulatorio de Allergan.",
+          "confidence": "alta",
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/12063480/",
+            "https://www.jaad.org/article/S0190-9622(02)00003-8/abstract"
+          ]
+        },
+        {
+          "claim": "Cotofana, vascular safe zones — VERIFICADO (DOS papers distintos). (a) 'Facial Safe Zones for Soft Tissue Filler Injections: A Practical Guide', J Drugs Dermatol 2019;18(9):896-902, PMID 31524345. (b) 'Vascular Safe Zones for Facial Soft Tissue Filler Injections', Plast Aesthet Nurs 2022;42(4):238-245, DOI 10.1097/PSN.0000000000000480, PMID 36469395.",
+          "detail": "El paper (a) lo firma Freytag DL... Cotofana S (último autor, J Drugs Dermatol). El paper (b) lo firma Cotofana S como primer autor/correspondiente (Plast Aesthet Nurs / 'Plastic and Aesthetic Nursing', no PRS ni ASJ como sugería la consulta). ACLARACION sobre la pregunta: el usuario pidió 'ASJ/PRS' pero estos dos papers de safe zones NO están en ASJ ni PRS — están en J Drugs Dermatol y Plast Aesthet Nurs. Cotofana sí tiene MUCHOS papers de anatomía vascular en ASJ/PRS/Aesthet Surg J, pero los específicamente titulados 'safe zones' son estos dos. Si se quiere uno en ASJ/PRS concreto, especificar tema.",
+          "confidence": "alta",
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/31524345/",
+            "https://pubmed.ncbi.nlm.nih.gov/36469395/"
+          ]
+        },
+        {
+          "claim": "TEMA CANDENTE 2025-2026: Exosomas en estética regenerativa — gap real de evidencia y regulatorio. CERO aprobaciones FDA.",
+          "detail": "Gap publicable fuerte: a octubre 2025 NINGUN producto de exosomas tiene aprobación FDA para uso dermatológico/estético; la FDA ha emitido warning letters. Evidencia mayormente preclínica; falta RCT y estandarización de manufactura/dosis. Existe evidencia nivel I solo en restauración capilar (RCT exosomas ADMSC + microneedling: +35 pelos/cm2 y +13.01 micrometros de grosor en 12 semanas). Revisiones sistemáticas 2025-2026 (Alzahrani et al., Flores Rodriguez et al.) confirman mejoras en elasticidad/hidratación/arrugas pero piden ensayos estandarizados. Gaps publicables: (1) RCT doble ciego con protocolos estandarizados, (2) caracterización/sourcing del producto, (3) farmacovigilancia de eventos adversos a largo plazo. [Cifras de PMC y revisiones; el dato '+35 pelos/cm2' viene de un RCT citado por IAPAM — confianza media porque no verifiqué el PMID del RCT primario].",
+          "confidence": "media",
+          "sources": [
+            "https://academic.oup.com/asj/article/46/Supplement_1/S13/8512052",
+            "https://onlinelibrary.wiley.com/doi/full/10.1002/der2.70071",
+            "https://iapam.com/regenerative-aesthetics-2026-evidence-guide",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC12937894/"
+          ]
+        },
+        {
+          "claim": "TEMA CANDENTE 2025-2026: 'Ozempic face' / atrofia facial por agonistas GLP-1 — gap clínico muy publicable.",
+          "detail": "Revisión sistemática 2025 en Plast Reconstr Surg (PMC12232544) documenta el fenómeno. Estudio de Vanderbilt 2025 reporta ~9% de pérdida de volumen del tercio medio facial por cada 10 kg de pérdida de peso total; mediana de descenso del 9% en volumen mediofacial total en usuarios de GLP-1. Mecanismo propuesto: depleción de grasa + posible modulación de diferenciación de adipocitos. Gaps publicables: (1) timing óptimo de restauración volumétrica (filler vs grasa autóloga) en pacientes que siguen perdiendo peso, (2) cambios periorbitarios/superficie ocular ligados a GLP-1, (3) protocolos de combinación bioestimulador+filler. [La cifra '9% por 10 kg' la reporta un estudio de Vanderbilt vía resumen de búsqueda — confianza media: no abrí el PMID primario para confirmar el número exacto].",
+          "confidence": "media",
+          "sources": [
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC12232544/",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC12733712/",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC12622603/"
+          ]
+        },
+        {
+          "claim": "TEMA CANDENTE 2025-2026: Bioestimuladores de colágeno (PLLA vs CaHA) — mecanismos y evidencia comparativa.",
+          "detail": "Revisión sistemática 2025 en Aesthet Plast Surg (DOI 10.1007/s00266-025-05412-8) sobre eficacia/durabilidad/seguridad de PLLA y CaHA en cara. Paper de análisis génico (J Drugs Dermatol, PMID 39761144): 'PLLA dispara regeneración mientras CaHA induce inflamación' tras inyección facial — hallazgo controvertido y muy publicable. Mecanismos descritos: PLLA via reacción inflamatoria a cuerpo extraño, polarización M2, TGF-beta/Smad, Piezo1/mecanotransducción, metabolismo de lactato; CaHA via mecanotransducción de fibroblastos. Durabilidad reportada: PLLA hasta 25 meses, CaHA 12-18 meses. Gaps publicables: estudios head-to-head, dosis-respuesta, uso off-face. [Durabilidades '25 meses'/'12-18 meses' provienen de resumen de revisión — confianza media en los números exactos].",
+          "confidence": "media",
+          "sources": [
+            "https://link.springer.com/article/10.1007/s00266-025-05412-8",
+            "https://pubmed.ncbi.nlm.nih.gov/39761144/",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC11163027/"
+          ]
+        },
+        {
+          "claim": "TEMA CANDENTE 2025-2026: IA en dermatología estética — evaluación objetiva de calidad de piel (gap de validación/estandarización).",
+          "detail": "Revisiones 2025 en J Cosmet Dermatol (DOI 10.1111/jocd.16640) y Dermatol Ther (DOI 10.1007/s13555-025-01459-2). Gap central: la evaluación de calidad de piel sigue siendo subjetiva y no reproducible; la IA promete métricas objetivas (pigmentación, textura, elasticidad, luminosidad, eritema). Paper 'Transforming Skin Quality Evaluation With AI' (PMID 40847895). Gaps publicables: (1) validación de algoritmos contra escalas validadas, (2) sesgo por subrepresentación de fototipos altos en datasets, (3) simulación facial predictiva pre-procedimiento, (4) privacidad/consentimiento de imágenes faciales.",
+          "confidence": "alta",
+          "sources": [
+            "https://onlinelibrary.wiley.com/doi/full/10.1111/jocd.16640",
+            "https://pubmed.ncbi.nlm.nih.gov/40847895/",
+            "https://link.springer.com/article/10.1007/s13555-025-01459-2"
+          ]
+        },
+        {
+          "claim": "TEMA CANDENTE 2025-2026: Complicaciones tardías de fillers (biofilm, nódulos de inicio tardío DON, oclusión vascular) — sigue siendo gap activo.",
+          "detail": "Meta-análisis abril 2025 sobre factores de riesgo de oclusión vascular post-filler (PMC12097758). Serie de casos 2025 (Oriente Medio) sobre manejo de complicaciones tardías de HA (DOI 10.1111/jocd.70166). Evidencia de biofilm como factor de riesgo de complicaciones tardías (PMC10800873). Etiología de DON es multifactorial: biofilm y/o hipersensibilidad tipo IV. Gaps publicables: (1) diagnóstico diferencial biofilm vs hipersensibilidad in vivo, (2) algoritmos de tratamiento basados en evidencia (antibiótico+hialuronidasa), (3) registros prospectivos multicéntricos de eventos vasculares.",
+          "confidence": "alta",
+          "sources": [
+            "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12097758/",
+            "https://onlinelibrary.wiley.com/doi/10.1111/jocd.70166",
+            "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10800873/"
+          ]
+        },
+        {
+          "claim": "TEMA CANDENTE 2025-2026: Representación de piel de color (SOC) en RCTs estéticos — gap de equidad altamente publicable.",
+          "detail": "Consenso internacional de expertos 2025-2026 (Int J Dermatol, DOI 10.1111/ijd.70101; PMC12712775) sobre brechas de conocimiento en SOC. Dato citado: 1970-2020, fototipos IV/V/VI incluidos en solo 34%/7%/0% de estudios de fotoprotectores; personas de color <10% en RCTs. Gaps publicables: (1) RCTs específicos de láser/peels/microneedling/inyectables en fototipos altos, (2) guías adaptadas pre/intra/post-procedimiento, (3) perfiles de riesgo (hiperpigmentación post-inflamatoria, queloides). [Cifras '34%/7%/0%' y '<10%' provienen de resumen de búsqueda citando el consenso — confianza media en los porcentajes exactos hasta abrir el paper primario].",
+          "confidence": "media",
+          "sources": [
+            "https://onlinelibrary.wiley.com/doi/10.1111/ijd.70101",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC12712775/"
+          ]
+        }
+      ],
+      "recommendations": [
+        "Las 9 referencias fundacionales existen y son citables: usa los pares DOI+PMID que confirmé. Copia exacta lista para bibliografia disponible en cada finding.",
+        "CORRIGE estos detalles al citar: (a) el RCT de glabela 2002 NO es 'Carruthers & Carruthers' sino el BOTOX Glabellar Lines I Study Group con A. Carruthers — el paper de pareja es el de 1992 (PMID 1740562); (b) el titulo de 1992 usa 'exotoxin' no 'exudotoxin'; (c) la revista de Manstein es 'Lasers in Surgery and Medicine'.",
+        "DECIDE version de Mendelson & Wong: original 2012 (PMID 22580543) vs republicacion 2020 (DOI 10.1007/s00266-020-01823-x). Para una referencia historica/fundacional cita la de 2012.",
+        "Para 'vascular safe zones' de Cotofana ten en cuenta que NO estan en ASJ/PRS: son J Drugs Dermatol 2019 (PMID 31524345) y Plast Aesthet Nurs 2022 (PMID 36469395). Si necesitas un paper de Cotofana especificamente en ASJ o PRS, dime el subtema (p.ej. arteria facial, glabela, region temporal) y lo localizo.",
+        "Para 'DeLorenzi complications' decide si citas Part I (PMID 23636629), Part 2 vascular (PMID 24692598) o ambos; la Parte 2 es la mas relevante para seguridad vascular.",
+        "DOS gaps publicables de MAXIMO valor y barrera de entrada razonable para 2025-2026: (1) RCT estandarizado de exosomas con caracterizacion de producto — el campo carece de nivel I fuera de capilar; (2) protocolo de timing de restauracion volumetrica en 'Ozempic face' durante perdida de peso activa — fenomeno con demanda clinica explosiva y poca evidencia metodologica.",
+        "VERIFICACION PENDIENTE antes de publicar cifras: los numeros de la seccion de temas candentes (9% volumen/10kg; +35 pelos/cm2; durabilidad PLLA 25 meses; 34%/7%/0% SOC) los marque confianza MEDIA porque vienen de resumenes de busqueda, no de lectura del paper primario. Abre el PMID/PMC correspondiente antes de citarlos como dato duro."
+      ]
+    },
+    "agentic": {
+      "dimension": "Sistema agéntico orchestrator-worker para redactar revisiones sistemáticas (semi-autónomo, human-in-the-loop), con verificación de citas y ensamblado .docx",
+      "summary": "El patrón orchestrator-worker que describes es exactamente el que Anthropic publicó para su sistema de Research: un \"lead agent\" planifica y delega en 3-5 subagentes paralelos con context windows aislados, y un componente DEDICADO y separado, el \"CitationAgent\", hace una pasada final de atribución de citas tras salir del loop de investigación (fuente verificada: anthropic.com/engineering/multi-agent-research-system). Esa separación de la verificación de citas en un paso aparte es, hoy, la práctica anti-alucinación de referencia. Para tu caso (paper académico real), la arquitectura accionable combina: (1) Claude Agent SDK para la orquestación de subagentes por sección (intro/métodos/resultados/discusión/referencias/QA) usando el parámetro `agents` con context isolation nativo y `tools` restringidas por rol; (2) una herramienta de grounding de citas que NO inventa — valida cada DOI/referencia contra CrossRef REST API (150M+ registros) y PubMed E-utilities antes de que entren al documento; (3) python-docx 1.2.0 para ensamblar el .docx; (4) checkpoints humanos. Si prefieres bajo-código y aprobaciones visuales, n8n encaja; si quieres control fino del estado y pausas a nivel de nodo, LangGraph 1.0 con `interrupt()` + checkpointer es lo más maduro. Regla clave validada por la evidencia: el LLM redactor NUNCA debe generar las referencias de memoria; debe citar SOLO desde un corpus recuperado y verificado mecánicamente (overlap de chunk / match de DOI), porque RAG estándar por sí solo NO evita que el modelo fabrique citas. Sistemas reales de SR (otto-SR: 96.7% sensibilidad screening, 93.1% accuracy extracción; AgentSLR) ya operan así con human-in-the-loop. Coste a tener en cuenta: los sistemas multi-agente usan ~15x más tokens que un chat (dato de Anthropic), así que reserva el patrón para el documento final de alto valor.",
+      "findings": [
+        {
+          "claim": "El patrón orchestrator-worker con lead agent + 3-5 subagentes paralelos en context windows aislados es exactamente la arquitectura de producción de Anthropic para tareas de investigación, y ya incluye una pasada de citas separada.",
+          "detail": "Anthropic documenta literalmente: 'a lead agent coordinates the process while delegating to specialized subagents that operate in parallel'. Cada subagente 'operates with its own context window, tools, and exploration trajectory' y 'doesn't know the other subagents exist'. Reglas de asignación concretas: 1 agente para fact-finding simple (3-10 tool calls), 2-4 subagentes para comparaciones directas (10-15 calls c/u), >10 subagentes para investigación compleja. Mapea directo a tu diseño: lead = orquestador; subagentes = intro/métodos/resultados/discusión. Resultado reportado: superó al single-agent Claude Opus 4 en 90.2% en su eval interna.",
+          "confidence": "alta",
+          "sources": [
+            "https://www.anthropic.com/engineering/multi-agent-research-system"
+          ]
+        },
+        {
+          "claim": "La pasada de verificación de citas DEBE ser un agente/paso separado al final, no parte de la redacción. Anthropic la implementa como 'CitationAgent'.",
+          "detail": "Cita textual verificada: 'the system exits the research loop and passes all findings to a CitationAgent, which processes the documents and research report to identify specific locations for citations'. Es decir: los subagentes redactan con marcadores/claims; un agente posterior, con acceso a los documentos fuente, ancla cada afirmación a su ubicación exacta en la fuente. Para tu paper esto se traduce en un Citation/QA agent que (a) extrae cada claim numérico, (b) lo empareja con el pasaje fuente recuperado, (c) rechaza o marca [NO VERIFICABLE] lo que no tenga respaldo. Este es el patrón anti-alucinación central.",
+          "confidence": "alta",
+          "sources": [
+            "https://www.anthropic.com/engineering/multi-agent-research-system"
+          ]
+        },
+        {
+          "claim": "RAG estándar por sí solo NO previene la fabricación de citas; hay que añadir verificación mecánica (overlap de chunk / rango de líneas / match de DOI) y prompting de citación estricta.",
+          "detail": "Investigación de dic-2025 (Citation-Grounded Code Comprehension, arXiv 2512.12117): 'Standard RAG does not prevent hallucination, as models may fabricate citations... This work extends RAG with mechanical citation verification, requiring LLMs cite specific line ranges that must overlap retrieved chunks'. En dominio médico (MDPI Applied Sciences, marzo 2026), la estrategia 'StrictCitations' con grounding obligatorio de evidencia mejora la fiabilidad sobre baseline en el benchmark MedQA-USMLE. Patrones recomendados: generación anclada con citas, loops de verificación/self-check, y umbrales de confianza que admiten incertidumbre (Self-RAG, CRAG).",
+          "confidence": "alta",
+          "sources": [
+            "https://arxiv.org/html/2512.12117v1",
+            "https://www.mdpi.com/2076-3417/16/6/3013",
+            "https://arxiv.org/html/2507.18910v1"
+          ]
+        },
+        {
+          "claim": "Para grounding REAL de referencias usa CrossRef REST API y PubMed E-utilities; CrossRef tiene metadatos de 150M+ obras y permite verificar un DOI contra el registro oficial.",
+          "detail": "CrossRef es la mayor base de metadatos DOI del mundo (>150M obras académicas de >20,000 editores) y su REST API pública recibe ~1.000M de hits/mes. Patrón accionable verificado en un tool open-source (pvsundar/bibliography-verification-tool): validación type-specific con fuzzy title matching (umbral 0.85 para artículos de revista, 0.75 para libros), author matching normalizado en Unicode, y lookup automático de DOI contra CrossRef + PubMed. Esto es tu defensa dura: ninguna referencia entra al .docx sin un DOI/PMID resuelto contra el registro real; lo que no resuelve = confidence baja o [NO VERIFICABLE].",
+          "confidence": "alta",
+          "sources": [
+            "https://www.crossref.org/documentation/retrieve-metadata/rest-api/",
+            "https://github.com/pvsundar/bibliography-verification-tool",
+            "https://citely.ai/posts/citation-verification-crossref-doi-guide"
+          ]
+        },
+        {
+          "claim": "El Claude Agent SDK soporta nativamente subagentes con aislamiento de contexto, tools restringidas por rol y override de modelo por subagente — encaja directo con tu diseño por secciones.",
+          "detail": "El parámetro `agents` define cada subagente con campos verificados en la doc: `description` (cuándo usarlo), `prompt` (system prompt del rol), `tools` (array de herramientas permitidas), `model` (override: opus/sonnet/haiku/inherit), además de `skills`, `maxTurns`, `effort`, `background`, `permissionMode`. Aislamiento: 'Each subagent runs in its own fresh conversation. Intermediate tool calls and results stay inside the subagent; only its final message returns to the parent'. El canal padre→subagente es SOLO el prompt-string del Agent tool, así que hay que pasar rutas/decisiones explícitamente. Limitación a considerar: los subagentes NO pueden lanzar sus propios subagentes (no incluyas `Agent` en su `tools`). Para coordinar decenas/cientos de agentes existe el `Workflow` tool (TS SDK v0.3.149+).",
+          "confidence": "alta",
+          "sources": [
+            "https://code.claude.com/docs/en/agent-sdk/subagents",
+            "https://claude.com/blog/building-agents-with-the-claude-agent-sdk"
+          ]
+        },
+        {
+          "claim": "Para checkpoints humanos (human-in-the-loop): LangGraph 1.0 es el más maduro con `interrupt()` + checkpointer; n8n es la opción low-code con nodos Wait/Form para aprobaciones.",
+          "detail": "LangGraph 1.0 (lanzado 22-oct-2025) ofrece interrupts a nivel de agente: `interrupt()` pausa la ejecución en un nodo, el caller recibe los datos por la clave `__interrupt__`, y se reanuda con `Command(resume=...)`. REQUISITO duro verificado: 'You must use a checkpointer for interrupt() to work' — la persistencia es obligatoria porque el grafo deja de ejecutar mientras está interrumpido (permite time-travel debugging y recuperación de fallos). n8n, en cambio, usa nodos Wait y Form para 'pause-and-resume' de aprobación, ideal para loops de aprobación simples pero 'without deep visibility into an agent's internal state'. Decisión: LangGraph si quieres estado tipado y pausas finas por sección; n8n si quieres aprobaciones visuales rápidas con poco código.",
+          "confidence": "alta",
+          "sources": [
+            "https://docs.langchain.com/oss/python/langgraph/interrupts",
+            "https://www.zenml.io/blog/langgraph-vs-n8n",
+            "https://www.truefoundry.com/blog/langgraph-vs-n8n"
+          ]
+        },
+        {
+          "claim": "python-docx 1.2.0 es la versión actual y permite ensamblar el .docx con headings, estilos y tablas; con la advertencia clave de que el estilo debe existir en el documento base.",
+          "detail": "python-docx 1.2.0 fue publicado el 16-jun-2025 (PyPI). API verificada: `document.add_heading('texto', level=n)` (niveles 0-9, 0 el más grande); `doc.add_paragraph('...', style='Title'|'Heading 1'|'List Bullet')`; tablas vía add_table. Advertencia load-bearing de la doc oficial: 'If you want to use a style in a document you create with python-docx, the document you start with must contain the style definition, otherwise it just won't work' — por eso conviene partir de una plantilla .docx con los estilos de tu revista/journal ya definidos en vez de un documento vacío. Los lookups de estilo deben usar el nombre en inglés del WordprocessingML.",
+          "confidence": "alta",
+          "sources": [
+            "https://pypi.org/project/python-docx/",
+            "https://python-docx.readthedocs.io/en/latest/user/styles-using.html",
+            "https://python-docx.readthedocs.io/en/latest/user/quickstart.html"
+          ]
+        },
+        {
+          "claim": "Sistemas reales de revisión sistemática con LLM + human-in-the-loop ya operan con métricas publicadas; sirven como benchmark y como evidencia de que el diseño funciona.",
+          "detail": "otto-SR (medRxiv, jun-2025): workflow LLM end-to-end que usa GPT-4.1 para screening y o3-mini-high para extracción; reportó 96.7% sensibilidad y 97.9% especificidad en screening (vs 81.7%/98.1% del workflow humano dual) y 93.1% accuracy en extracción (vs 79.7% humano). Reprodujeron y actualizaron 12 reviews Cochrane en 2 días (~12 años-persona de trabajo tradicional) e identificaron 54 estudios adicionales (+78%). AgentSLR (arXiv 2603.22327) es un framework multi-agente para SR en epidemiología con agentes de retrieval/screening, verificación de citas, extracción y síntesis, más herramienta de anotación humana (beta). NOTA de confianza: las cifras de otto-SR vienen de un preprint (medRxiv, no peer-reviewed aún); trátalas como indicativas, no definitivas.",
+          "confidence": "media",
+          "sources": [
+            "https://www.medrxiv.org/content/10.1101/2025.06.13.25329541v1.full",
+            "https://ottosr.com/manuscript.pdf",
+            "https://arxiv.org/pdf/2603.22327"
+          ]
+        },
+        {
+          "claim": "Coste real a presupuestar: los sistemas multi-agente consumen ~15x más tokens que un chat (y los agentes ~4x), según Anthropic.",
+          "detail": "Dato textual verificado: 'agents typically use about 4× more tokens than chat interactions, and multi-agent systems use about 15× more tokens than chats'. Implicación de diseño: reserva el fan-out completo de subagentes para el ensamblado del paper final de alto valor; para iteraciones internas usa un único agente o modelos más baratos (sonnet/haiku) en subagentes de bajo riesgo vía el campo `model`. Anthropic también advierte que el multi-agente es menos efectivo para tareas fuertemente interdependientes — afortunadamente las secciones de un paper SÍ se paralelizan bien (intro, métodos, resultados son relativamente independientes), salvo discusión que depende de resultados.",
+          "confidence": "alta",
+          "sources": [
+            "https://www.anthropic.com/engineering/multi-agent-research-system"
+          ]
+        },
+        {
+          "claim": "Existe un esfuerzo activo de estándares para SR asistida por IA (PRISMA-LLM) y un panorama de 388 herramientas — relevante para defender la calidad metodológica de tu pipeline.",
+          "detail": "Un protocolo de meta-investigación (JMIR Research Protocols, 2026, e90588) planea comparar calidad metodológica, transparencia y reproducibilidad de SR asistidas por IA vs tradicionales y desarrollar extensiones de reporte tipo 'PRISMA-LLM'. Un scoping review de 2026 identificó 388 herramientas/plataformas de IA para síntesis de evidencia; el screening es la etapa más automatizada y la síntesis de datos la menos formalizada y más lenta. Implicación: documenta cada paso de tu pipeline (prompts, fuentes, verificaciones de cita) para cumplir con la dirección que toman estos estándares emergentes.",
+          "confidence": "media",
+          "sources": [
+            "https://www.researchprotocols.org/2026/1/e90588",
+            "https://guides.lib.utexas.edu/systematicreviews/ArtificialIntelligence"
+          ]
+        }
+      ],
+      "recommendations": [
+        "ARQUITECTURA: Implementa el patrón Anthropic literalmente. Un orquestador (lead agent, modelo opus) que: planifica el outline, lanza subagentes por sección con `agents` del Claude Agent SDK (intro, métodos, resultados, discusión), recoge solo el mensaje final de cada uno (context isolation), y AL FINAL invoca un CitationAgent/QA dedicado en una pasada separada. No mezcles redacción y verificación de citas en el mismo agente.",
+        "REGLA ANTI-ALUCINACIÓN DURA (la más importante): el subagente redactor NUNCA escribe referencias de memoria. Solo puede citar IDs de un corpus pre-recuperado (búsqueda PubMed/CrossRef hecha por un retrieval agent). Cada cita lleva un id; el CitationAgent valida mecánicamente: (a) el DOI/PMID resuelve contra CrossRef REST API / PubMed E-utilities, (b) el claim tiene overlap real con el pasaje fuente. Lo que no pase ambos checks se marca [NO VERIFICABLE] y se escala al humano. Esto replica el 'mechanical citation verification' de arXiv 2512.12117.",
+        "TOOLS POR ROL (restringe con el campo `tools` del SDK): retrieval-agent = solo búsqueda PubMed/CrossRef + Read; section-writers = Read del corpus + Write a su buffer (sin acceso a red, para que no puedan inventar fuentes nuevas); citation-agent = Read del corpus + el verificador CrossRef/PubMed; assembler = solo el tool de python-docx. La restricción de tools es tu defensa: un escritor sin acceso a red no puede fabricar un DOI.",
+        "CHECKPOINTS HUMANOS: define al menos 3 gates — (1) tras el outline/protocolo (objetivos + criterios de elegibilidad, como hace otto-SR), (2) tras el borrador de cada sección antes de ensamblar, (3) tras el informe de verificación de citas (el humano revisa la lista de [NO VERIFICABLE] / confidence baja). Si usas LangGraph: un nodo con `interrupt()` + checkpointer en cada gate. Si usas n8n: un nodo Form/Wait. Si usas solo el Claude Agent SDK: usa `permissionMode` y un callback canUseTool, o pausa el loop del orquestador esperando aprobación.",
+        "ENSAMBLADO .docx: parte SIEMPRE de una plantilla .docx que ya contenga los estilos de tu journal (Heading 1-3, Title, estilo de cita, tabla PRISMA) — no de Document() vacío, porque python-docx no puede usar un estilo que no exista en el doc base. Usa python-docx 1.2.0; mapea cada sección a add_heading(level) + add_paragraph(style=...). Genera la bibliografía SOLO desde la lista verificada por el CitationAgent, nunca desde el texto del LLM. Considera generar el diagrama de flujo PRISMA y la tabla de estudios incluidos como tablas nativas.",
+        "ELECCIÓN DE FRAMEWORK: si tu prioridad es control de estado, trazabilidad y pausas finas por nodo -> LangGraph 1.0 (interrupt + checkpointer obligatorio) orquestando llamadas al Claude Agent SDK por sección. Si tu prioridad es montar rápido con aprobaciones visuales y poco código -> n8n (nodos Wait/Form) llamando al SDK vía nodos de código. El Claude Agent SDK puede ser el motor de los subagentes en AMBOS casos. Recomendación práctica: empieza con el SDK puro (subagentes nativos) y añade LangGraph solo si necesitas time-travel/recuperación de fallos de runs largos.",
+        "PRESUPUESTO Y MODELOS: como el multi-agente cuesta ~15x más tokens que un chat (dato de Anthropic), usa el campo `model` por subagente: opus solo para orquestador, discusión y CitationAgent (alto riesgo); sonnet/haiku para retrieval y secciones más mecánicas. Reserva el fan-out completo para el documento FINAL, no para cada iteración de borrador.",
+        "REPRODUCIBILIDAD / CUMPLIMIENTO: registra (log) por cada cita: query de búsqueda, fuente, DOI/PMID, resultado de verificación CrossRef, y confidence. Esto te alinea con la dirección de PRISMA-LLM (JMIR e90588) y te da una pista de auditoría defendible. NO inventes impact factors ni requisitos de journals: para cada uno, resuelve la fuente real (p.ej. JCR/Scopus para IF) o márcalo [NO VERIFICABLE] — el mismo principio anti-alucinación aplica a la metadata del paper, no solo a las referencias."
+      ]
+    },
+    "dermastudy": {
+      "dimension": "Estructura de un plan de estudio DIARIO (tema-atómico) de dermatología para boards (board-style / ABD), contenido de AccessDermatologyDxRx, y secuencia/orden de temario de board-review de dermatología",
+      "summary": "Investigación verificada en tres ejes. (1) AccessDermatologyDxRx (dermatology.mhmedical.com) es la colección \"Access\" de McGraw Hill por suscripción: 20+ libros núcleo (Fitzpatrick's Dermatology 9e, Taylor & Kelly's Dermatology for Skin of Color, Barnhill's Dermatopathology 4e, Fitzpatrick's Color Atlas & Synopsis 8e, Weinberg's Pediatric, Baumann's/Color Atlas of Cosmetic Dermatology, LANGE Clinical Dermatology, libros de Kantor de cirugía y suturas, y los review books \"Specialty Board Review Dermatology: A Pictorial Review\" 3e y 4e), más multimedia (miles/20.000+ imágenes y flashcards, 400+ videos de procedimientos, videos/casos LANGE, módulos animados, audio ReadSpeaker), y Q&A para board review (>400 vignettes ilustradas del Barnhill's Dermatopathology Challenge; cifras agregadas \"700+ Q&As\" aparecen en fuentes secundarias). NOTA: el dominio mhmedical.com devuelve 403 a fetch directo; los números se confirmaron vía LibGuides de McGraw Hill, blog de Stanford Lane Library y snippets oficiales. (2) Para boards reales, el estándar es la ABD Certification Pathway: examen BASIC (R1), 4 módulos CORE (Medical/Pediatric/Surgical/Dermatopathology) y examen APPLIED final. El APPLIED pesa 55% Medical, 15% Pediatric, 15% Surgical, 15% Dermatopathology (verificado en abderm.org). (3) El orden de temario canónico tipo USMLE-atómico sigue el best-seller \"Dermatology: Illustrated Study Guide and Comprehensive Board Review\" (Sima Jain, 2e, Springer 2017): 11 capítulos en orden Basic Science→Pediatric→General→Infectious→Tumors→Surgery→Pharmacology→Pathology→Dermoscopy→Life After Boards→High-Yield Buzz Words, cada uno subdividido en sub-secciones atómicas (ej. 1.1 Embryology, 1.2 Epidermis, 1.3 BMZ...), que es exactamente el grano \"1 tema/día\" que pide el usuario. La secuencia recomendada arranca por basic science/inmunología (alto rendimiento, base para BMZ/queratinas/bullosas) y deja medical dermatology amplio para el final por su solapamiento con el APPLIED.",
+      "findings": [
+        {
+          "claim": "AccessDermatologyDxRx es una colección 'Access' por suscripción de McGraw Hill con textos núcleo, review questions, casos, videos, módulos 3D y flashcards",
+          "detail": "Página oficial del producto: 'a go-to Access collection in dermatology featuring core texts, review questions, cases, videos, 3D modules, and more'. Cubre board review, clinical, pediatric y cosmetic dermatology. Dominio: dermatology.mhmedical.com.",
+          "confidence": "alta",
+          "sources": [
+            "https://dermatology.mhmedical.com/",
+            "https://dermatology.mhmedical.com/ss/About.aspx"
+          ]
+        },
+        {
+          "claim": "La biblioteca de AccessDermatologyDxRx incluye 20+ títulos núcleo, entre ellos Fitzpatrick's Dermatology 9e y Taylor and Kelly's Dermatology for Skin of Color",
+          "detail": "Lista verificada (LibGuides McGraw Hill + blog Stanford): Fitzpatrick's Dermatology 9e (>3000 ilustraciones, >2700 fotos a color); Fitzpatrick's Color Atlas and Synopsis of Clinical Dermatology 8e; Taylor and Kelly's Dermatology for Skin of Color 2e (>900 fotos); Barnhill's Dermatopathology 4e; Weinberg's Color Atlas of Pediatric Dermatology 5e (>1000 fotos); Color Atlas of Cosmetic Dermatology 2e (450 ilustraciones); Cosmetic Dermatology for Skin of Color; LANGE Clinical Dermatology; libros de cirugía dermatológica y Atlas of Suturing Techniques (Kantor); Sclerotherapy and Vein Treatment 2e; Lasers and Related Technologies in Dermatology; Dermatologic Therapeutics: A Pocket Guide; Barnhill's Dermatopathology Challenge: Self-Assessment & Review.",
+          "confidence": "alta",
+          "sources": [
+            "https://mheducation.libguides.com/accessdermatologydxrx",
+            "https://laneblog.stanford.edu/2021/09/01/accessdermatologydxrx/"
+          ]
+        },
+        {
+          "claim": "Para board review/self-assessment, el Q&A principal es Barnhill's Dermatopathology Challenge con '400+ illustrated clinical vignette-style questions'; existe además el review book 'Specialty Board Review Dermatology: A Pictorial Review' (3e y 4e)",
+          "detail": "LibGuides confirma '>400 illustrated clinical vignette-style questions' y capacidad de 'generate random and custom quizzes'. El catálogo de libros lista 'McGraw Hill Specialty Board Review Dermatology: A Pictorial Review' 3e (bookid=2932) y 4e (bookid=3622). La cifra agregada '700+ Q&As' aparece en snippet de búsqueda pero NO pude confirmarla en página oficial accesible.",
+          "confidence": "media",
+          "sources": [
+            "https://mheducation.libguides.com/accessdermatologydxrx",
+            "https://dermatology.mhmedical.com/book.aspx?bookid=3622",
+            "https://dermatology.mhmedical.com/book.aspx?bookid=2932"
+          ]
+        },
+        {
+          "claim": "El multimedia de AccessDermatologyDxRx incluye 20.000+ imágenes/flashcards optimizadas, 400+ videos de procedimientos, módulos animados, audio ReadSpeaker y la serie de lecturas LANGE",
+          "detail": "Snippet del free-trial oficial (mhprofessional) reproducido en búsqueda: '20,000+ optimized images and flash cards, animated modules, ReadSpeaker audio chapters, LANGE's Dermatology lecture series, and 400+ procedure videos including dermatologic surgery, suturing techniques, and general procedures'. CONFIANZA MEDIA porque la página fuente devuelve 403/redirect y solo verifiqué vía snippet; el blog de Stanford solo dice 'thousands of images' sin número exacto.",
+          "confidence": "media",
+          "sources": [
+            "https://www.mhprofessional.com/interactive-learning-solutions/access-dermatology-dxrx",
+            "https://laneblog.stanford.edu/2021/09/01/accessdermatologydxrx/"
+          ]
+        },
+        {
+          "claim": "La certificación real de dermatología en EEUU sigue la ABD Certification Pathway: examen BASIC (R1), 4 módulos CORE y examen APPLIED final",
+          "detail": "abderm.org: el CORE Exam 'consists of four modules' (Medical, Pediatric, Surgical, Dermatopathology), cada módulo '75-100 multiple-choice items' y dura 2 horas. El APPLIED requiere haber aprobado los 4 módulos CORE y terminado la residencia.",
+          "confidence": "alta",
+          "sources": [
+            "http://www.abderm.org/residents-and-fellows/abd-certification-pathway/core-exam",
+            "https://www.abderm.org/residents-and-fellows/abd-certification-pathway/applied-exam"
+          ]
+        },
+        {
+          "claim": "El examen APPLIED de la ABD se distribuye 55% Medical Dermatology, 15% Pediatric, 15% Surgical, 15% Dermatopathology; 200 preguntas en 4 secciones de 50 (94 min c/u)",
+          "detail": "abderm.org APPLIED Exam (verbatim): 'Medical Dermatology: 55%', 'Pediatric Dermatology: 15%', 'Surgical Dermatology: 15%', 'Dermatopathology: 15%'. Formato: 200 preguntas, 4 secciones de 50, 94 minutos por sección, 8 horas total en Pearson Test Centers. Estas son las ponderaciones de alto rendimiento que deben guiar la asignación de días por tema.",
+          "confidence": "alta",
+          "sources": [
+            "https://www.abderm.org/residents-and-fellows/abd-certification-pathway/applied-exam"
+          ]
+        },
+        {
+          "claim": "El documento oficial APPLIED Exam Overview de la ABD está organizado por COMPETENCIAS/skills, no por porcentaje de temas",
+          "detail": "PDF oficial ABD (Draft Updated April 3, 2019) descargado y leído verbatim: secciones 'Acquire knowledge base', 'Assess the physical findings', 'Generate a realistic differential diagnosis', 'Obtain additional information', 'Determine the most likely diagnosis', 'Form a management plan', 'Communicate with and educate the patient', 'Evaluate effectiveness of the management plan', 'Manage complications of therapy', 'Oversee environment of care'. Implicación para el plan diario: cada tema-día debería practicarse en el ciclo dx→ddx→manejo, no solo memorización.",
+          "confidence": "alta",
+          "sources": [
+            "https://dlpgnf31z4a6s.cloudfront.net/media/252839/applied-exam-overview-2021.pdf"
+          ]
+        },
+        {
+          "claim": "El examen BASIC (R1) cubre Medical/Surgical/Dermatopathology/Pediatric e incluye Science and Research ~12.5% y Visual Recognition ~20%",
+          "detail": "Next Steps in Dermatology (fuente secundaria de educadores): cuatro categorías clínicas más 'Science and Research: 12.5%' y 'Visual Recognition: 20%'. La página oficial abderm.org del BASIC content outline remite a un PDF cuyo desglose numérico exacto NO pude extraer (texto no legible vía fetch), por eso confianza media en los porcentajes.",
+          "confidence": "media",
+          "sources": [
+            "https://nextstepsinderm.com/resident-corner/abd-basic-exam-how-to-achieve-success/",
+            "https://www.abderm.org/residents-and-fellows/abd-certification-pathway/basic-exam-info/basic-exam-content-outline"
+          ]
+        },
+        {
+          "claim": "El orden de temario canónico tipo board-review (best-seller US) tiene 11 capítulos, cada uno subdividido en sub-temas atómicos ideales para un plan de 1 tema/día",
+          "detail": "Tabla de contenidos verbatim de 'Dermatology: Illustrated Study Guide and Comprehensive Board Review', Sima Jain, 2e (Springer 2017, ISBN 978-3-319-47393-2) leída del PDF del editor: Cap1 Basic Science and Immunology (1.1 Embryology, 1.2 Epidermis, 1.3 BMZ, 1.4 Melanocytes/Langerhans/Merkel, 1.5 Dermis, 1.6 Appendageal Glands and Nerves, 1.7 Hair and Nails, 1.8 Wound Healing and Cytokines, 1.9 Immunology); Cap2 Pediatric Dermatology (2.1 Neonatal...2.10 Genodermatoses); Cap3 General Dermatology (3.1 Acne...3.17 Photodermatoses, 17 subtemas); Cap4 Infectious Diseases (4.1 Viral, 4.2 Bacterial, 4.3 Protozoa/Worms, 4.4 Infestations, 4.5 Creatures of Significance); Cap5 Benign and Malignant Tumors; Cap6 Dermatologic Surgery (6.1-6.9); Cap7 Pharmacology and Drug Reactions; Cap8 Pathology; Cap9 Dermoscopy and Electron Microscopy; Cap10 Life After Boards; Cap11 High Yield Facts and Buzz Words. Las ~70 sub-secciones son el grano 'tema-atómico/día' que pide el usuario.",
+          "confidence": "alta",
+          "sources": [
+            "https://download.e-bookshelf.de/download/0009/7690/22/L-G-0009769022-0019106390.pdf",
+            "https://link.springer.com/book/9783031731396"
+          ]
+        },
+        {
+          "claim": "El otro review book de referencia, 'Review of Dermatology' (Alikhan & Hocker, Elsevier 2e), ordena el temario en bloques: Basic Science, Dermatopharmacology, General Dermatology, Pediatric Dermatology, Infectious Diseases, Neoplastic Dermatology, Dermatopathology",
+          "detail": "Snippet de búsqueda del índice (Elsevier/B&N). Confirma que ambos best-sellers arrancan por Basic Science y agrupan por estos mismos macro-bloques, validando el orden. Confianza media porque no abrí la ToC completa verbatim (solo snippet).",
+          "confidence": "media",
+          "sources": [
+            "https://shop.elsevier.com/books/review-of-dermatology/alikhan/978-0-323-65386-2",
+            "https://www.amazon.com/Dermatology-Illustrated-Study-Comprehensive-Review/dp/331947393X"
+          ]
+        },
+        {
+          "claim": "La secuencia recomendada empieza por basic science/inmunología y deja Medical Dermatology amplio para el final por su solapamiento con el APPLIED; el Dermatopathology CORE es el más difícil y se sugiere tras la rotación de dermatopatología",
+          "detail": "Snippet de búsqueda sobre estrategia: 'The Dermatopathology Core Exam is widely considered the most difficult... Ideally, this exam should be taken during or immediately following a dermatopathology rotation' y 'For the Medical Dermatology Core Exam, residents may consider taking this exam last... due to it being the broadest as well as having significant overlap with the content of the Applied Exam'. Temas de alto rendimiento citados: basic science, basement membrane biology, manifestaciones cutáneas de enfermedad interna, pelo/uñas, pediátrica, farmacología, dermatitis de contacto, reacciones a fármacos, dermatopatología y dermoscopia.",
+          "confidence": "media",
+          "sources": [
+            "https://www.mdedge.com/cutis/article/273200/mixed-topics/dermatology-boards-demystified-conquer-basic-core-and-applied-exams",
+            "https://nextstepsinderm.com/resident-corner/your-guide-to-dermatology-residency-exams/"
+          ]
+        },
+        {
+          "claim": "Para el ritmo del plan diario, el estándar de campo es ~6 meses antes del examen, ~2 h/día entre semana y 8-10 h fin de semana, con flashcards de repetición espaciada y un banco de preguntas (Derm In-Review)",
+          "detail": "Fuentes de educadores: 'create a study schedule that allows review of all pertinent topics within the six months prior to the test date... a reasonable goal of two hours a day during the week and 8-10 hours during the weekend' y uso de 'flashcards... and spaced repetition'. Derm In-Review es el banco de preguntas más popular y gratuito para residentes de dermatología en EEUU. Confianza media: cifras de horas provienen de blog de educadores, no de la ABD.",
+          "confidence": "media",
+          "sources": [
+            "https://nextstepsinderm.com/derm-in-review/resources-for-dermatology-board-studying/",
+            "https://dermatologyinreview.com/study-guide-request/"
+          ]
+        }
+      ],
+      "recommendations": [
+        "Para un plan tema-atómico/día estilo USMLE, usar como esqueleto las ~70 sub-secciones de la ToC de Sima Jain 2e (verbatim arriba): cada sub-sección (ej. 1.3 BMZ, 3.5 Vesiculobullous Diseases, 4.2 Bacterial Infections) = 1 día. Es el grano exacto que pide el usuario y proviene del best-seller de board-review US.",
+        "Ordenar los días por la secuencia canónica del libro: Basic Science/Inmunología primero (fundamento de queratinas, BMZ, junctions, bullosas), luego Pediátrica, General, Infecciosas, Tumores, Cirugía, Farmacología, Patología, Dermoscopia, y cerrar con High-Yield Buzz Words como repaso final.",
+        "Ponderar la cantidad de días por bloque según las cifras OFICIALES del APPLIED (55% Medical / 15% Pediatric / 15% Surgical / 15% Dermatopathology, abderm.org): la mayor densidad de días debe ir a Medical Dermatology (Cap3 General + Cap4 Infecciosas + Cap5 Tumores), no repartir parejo.",
+        "Mapear cada tema-día al ciclo de competencias del APPLIED Overview (dx morfológico → ddx realista → manejo → complicaciones), no solo memorización, porque el examen real evalúa application of knowledge, no recall puro.",
+        "Para datos VIVOS/visuales del plan, AccessDermatologyDxRx aporta: imágenes y flashcards de Fitzpatrick, videos de procedimientos para el bloque de Cirugía (Cap6), y los Q&A vignette de Barnhill's Dermatopathology Challenge para los días de Patología (Cap8). Complementar con un banco de preguntas (Derm In-Review, gratis para residentes US).",
+        "Calibrar el calendario al estándar de campo (~6 meses, ~2 h/día + 8-10 h fin de semana, repetición espaciada con flashcards) y dejar días-buffer; no es dato de la ABD sino consenso de educadores, marcarlo como tal en el plan.",
+        "No publicar como verificado el agregado '700+ Q&As' ni '20.000+ imágenes/400+ videos' sin una segunda fuente abierta: el dominio mhmedical.com/mhprofessional bloquea fetch (403) y solo se confirmaron vía snippet/LibGuides. Si se necesita certeza, abrir la página autenticado con el MCP de Chrome adjunto a la sesión del usuario."
+      ]
+    }
+  },
+  "verifications": {
+    "journals": {
+      "dimension": "Revistas de dermatología para publicar en 2026 (estética/clínica + revisiones sistemáticas): impact factor 2024 verificado, cuartil, scope, sistema de envío, tiempo a primera decisión",
+      "corrections": [
+        {
+          "original": "JAAD: IF 2024 = 11.8, Q1, #1 entre 96 revistas de dermatología por 6º año consecutivo (38.702 citas).",
+          "verdict": "confirmado",
+          "sources": [
+            "https://www.prnewswire.com/news-releases/jaad-impact-factor-ranks-no-1-among-dermatology-journals-302486561.html",
+            "https://www.bioxbio.com/journal/J-AM-ACAD-DERMATOL",
+            "https://ooir.org/journals.php?field=Clinical+Medicine&category=Dermatology&metric=jif"
+          ]
+        },
+        {
+          "original": "JAMA Dermatology: IF 2024 = 11.0; el '4.49' es un falso derivado de Scopus, no el JIF de Clarivate.",
+          "verdict": "confirmado",
+          "sources": [
+            "https://wos-journal.info/journalid/15086",
+            "https://www.bioxbio.com/journal/JAMA-DERMATOL",
+            "https://ooir.org/journals.php?field=Clinical+Medicine&category=Dermatology&metric=jif"
+          ]
+        },
+        {
+          "original": "JAMA Dermatology: primera decisión mediana ~4 días (mayoría desk rejection) y ~47 días con revisión completa.",
+          "verdict": "confirmado",
+          "sources": [
+            "https://jamanetwork.com/journals/jamadermatology/pages/instructions-for-authors",
+            "https://www.linkedin.com/showcase/jamadermatology/"
+          ]
+        },
+        {
+          "original": "British Journal of Dermatology (BJD): IF 2024 = 9.6 (bajó de 11.0 en 2023). El '2.88' es un falso de Scopus.",
+          "corrected": "BJD IF 2024 = 9.6 CONFIRMADO por tres mirrors independientes del JCR (bioxbio, wos-journal.info, OOIR). ADVERTENCIA: la propia pagina oficial 'About' de Oxford Academic (OUP) reporta '2024 Impact Factor: 10.6 / 5-year 9.9' — cifra que NO coincide y que parece desactualizada (ciclo previo del JCR). El valor del JIF 2024 vigente (release jun-2025) es 9.6; usar 9.6 y no la cifra 10.6 de la pagina del editor.",
+          "verdict": "confirmado",
+          "sources": [
+            "https://www.bioxbio.com/journal/BRIT-J-DERMATOL",
+            "https://wos-journal.info/journalid/15157",
+            "https://ooir.org/journals.php?field=Clinical+Medicine&category=Dermatology&metric=jif",
+            "https://academic.oup.com/bjd/pages/about"
+          ]
+        },
+        {
+          "original": "BJD Fast Track: primera decisión en 7 días hábiles para ensayos clínicos elegibles (contactar al Editor ≥3 semanas antes).",
+          "verdict": "confirmado",
+          "sources": [
+            "https://onlinelibrary.wiley.com/page/journal/13652133/homepage/forauthors.html",
+            "https://academic.oup.com/bjd/pages/reasons-to-publish"
+          ]
+        },
+        {
+          "original": "JID (Journal of Investigative Dermatology): IF 2024 = 5.7 (igual a 2023).",
+          "verdict": "confirmado",
+          "sources": [
+            "https://www.bioxbio.com/journal/J-INVEST-DERMATOL",
+            "https://ooir.org/journals.php?field=Clinical+Medicine&category=Dermatology&metric=jif"
+          ]
+        },
+        {
+          "original": "JAAD International: IF 2024 = 5.2 (debut), #10 entre revistas de dermatología (1.046 citas).",
+          "verdict": "confirmado",
+          "sources": [
+            "https://www.prnewswire.com/news-releases/jaad-impact-factor-ranks-no-1-among-dermatology-journals-302486561.html"
+          ]
+        },
+        {
+          "original": "JEADV: IF 2024 = 8.0; agregadores reportan un falso '2.84' de Scopus.",
+          "corrected": "JEADV IF 2024 = 8.0 CONFIRMADO (bioxbio: 8.0 en 2024 vs 8.4 en 2023; OOIR ~8.0). Confirmado tambien que el '2.84' es la cifra falsa de Scopus reproducida por agregadores (Resurchify) — exactamente la trampa que el informe advierte.",
+          "verdict": "confirmado",
+          "sources": [
+            "https://www.bioxbio.com/journal/J-EUR-ACAD-DERMATOL",
+            "https://ooir.org/journals.php?field=Clinical+Medicine&category=Dermatology&metric=jif"
+          ]
+        },
+        {
+          "original": "Journal of Cosmetic Dermatology: IF 2024 = 2.5, Q2 (revista de mayor foco cosmético/estético tras ASJ).",
+          "verdict": "confirmado",
+          "sources": [
+            "https://www.bioxbio.com/journal/J-COSMET-DERMATOL-US",
+            "https://www.journalmetrics.org/journal/journal-of-cosmetic-dermatology"
+          ]
+        },
+        {
+          "original": "Aesthetic Surgery Journal: IF 2024 = 3.9, pero es revista de cirugía plástica (#1 entre revistas estéticas/plásticas).",
+          "verdict": "confirmado",
+          "sources": [
+            "https://www.bioxbio.com/journal/AESTHET-SURG-J",
+            "https://www.prnewswire.com/news-releases/aesthetic-surgery-journal-impact-factor-jumps-significantly-302487298.html"
+          ]
+        },
+        {
+          "original": "Sistemas de envío: JAAD y JAAD International usan Editorial Manager; JAMA Dermatology usa ScholarOne (manuscripts.jamaderm.com); BJD y JID usan ScholarOne.",
+          "corrected": "No re-verifiqué exhaustivamente cada plataforma de envío en esta pasada (foco en las cifras de mayor riesgo). Las plataformas declaradas son coherentes con las páginas de instrucciones citadas en el informe, pero el detalle 'todas las publicaciones JAAD usan Editorial Manager' y las URLs exactas de ScholarOne no fueron confirmadas independientemente aquí.",
+          "verdict": "no-verificable",
+          "sources": [
+            "https://jamanetwork.com/journals/jamadermatology/pages/instructions-for-authors",
+            "https://mc.manuscriptcentral.com/bjd"
+          ]
+        },
+        {
+          "original": "Afirmaciones generales de cuartil exacto (Q1/Q2) por revista según JCR.",
+          "corrected": "Los percentiles del JIF confirman categoría top (p.ej. JAMA Derm ~97.9 percentil, BJD ~96.9 percentil = Q1; JCD reportado Q2 por journalmetrics). El cuartil EXACTO oficial de Clarivate por revista requiere acceso pagado a JCR y no es 100% verificable desde fuentes abiertas; tratar los cuartiles como inferidos de percentil, no como dato oficial directo.",
+          "verdict": "no-verificable",
+          "sources": [
+            "https://wos-journal.info/journalid/15086",
+            "https://wos-journal.info/journalid/15157",
+            "https://www.journalmetrics.org/journal/journal-of-cosmetic-dermatology"
+          ]
+        }
+      ]
+    },
+    "openaccess": {
+      "dimension": "Revistas de dermatología para publicar GRATIS o con waiver de APC desde Perú (autor LMIC)",
+      "corrections": [
+        {
+          "original": "Perú es país de INGRESO MEDIO-ALTO (upper-middle-income) según el Banco Mundial, NO medio-bajo. Umbral upper-middle-income: GNI per cápita entre $4,496 y $13,935 (cifra 2024). Clasificación se actualiza cada 1 de julio (método Atlas).",
+          "verdict": "confirmado",
+          "sources": [
+            "https://data.worldbank.org/?locations=PE-XT",
+            "https://blogs.worldbank.org/en/opendata/world-bank-country-classifications-by-income-level-for-2024-2025"
+          ]
+        },
+        {
+          "original": "Perú es país ELEGIBLE de Research4Life en GRUPO B (no Grupo A). Grupo A = waiver 100% del APC; Grupo B = 50% de descuento.",
+          "verdict": "confirmado",
+          "corrected": "Confirmado independientemente. La búsqueda nueva clasifica explícitamente a Perú como país de GRUPO B de Research4Life (no Grupo A). El reporte original marcaba esto con cautela porque no pudo abrir la tabla A/B textual; ahora queda confirmado por fuente independiente y converge con el dato OUP (reduced rate) y el mecanismo Group B = 50%.",
+          "sources": [
+            "https://portal.research4life.org/country_offer",
+            "https://www.research4life.org/faq/group-a-and-group-b/",
+            "https://www.research4life.org/access/eligibility/"
+          ]
+        },
+        {
+          "original": "Elsevier: waiver 100% para Grupo A (69 países); 50% de descuento para Grupo B (57 países). Aplica solo a revistas fully-open-access, NO híbridas. Automático. Como Perú es Grupo B -> 50%.",
+          "verdict": "confirmado",
+          "corrected": "Texto literal verificado: 'When publishing in fully open access journals, Elsevier fully waives all APCs for authors from 69 countries (Group A) and gives a 50% discount for authors from 57 countries (Group B).' No aplica a híbridas; aplicación automática vía Research4Life.",
+          "sources": [
+            "https://www.elsevier.support/publishing/answer/what-is-elseviers-waiver-policy-for-open-access-fees",
+            "https://www.research4life.org/faq/group-a-and-group-b/"
+          ]
+        },
+        {
+          "original": "Wiley: misma estructura — Grupo A waiver completo, Grupo B 50% de reducción; automático en envío; solo fully-OA, no híbridas.",
+          "verdict": "confirmado",
+          "corrected": "Texto literal verificado: 'Group A countries are entitled to a full waiver whereas group B countries are entitled to a 50% reduction on the APC.' Aplicación automática, sin acción del autor; solo fully-OA, no híbridas. Para Perú (Grupo B) -> 50%.",
+          "sources": [
+            "https://authorservices.wiley.com/open-research/open-access/for-authors/waivers-and-discounts.html",
+            "https://www.research4life.org/faq/group-a-and-group-b/"
+          ]
+        },
+        {
+          "original": "Skin Health & Disease (BAD) migró de Wiley a Oxford University Press (OUP) desde enero 2025. Para Perú: 50% de descuento de APC (la lista OUP coloca a Perú en 'Reduced rate access', no en 'Free access').",
+          "verdict": "confirmado",
+          "corrected": "DOBLEMENTE confirmado. (1) Migracion a OUP desde enero 2025 verificada en el anuncio oficial del BAD. (2) Verifique directamente la lista oficial OUP (snapshot archivado, 'Last updated: September 2025'): Perú aparece bajo el encabezado 'Reduced rate access countries, regions, and territories', NO bajo 'Free access'. Esto confirma reduced rate (consistente con 50%) y NO publicación gratis. Nota: la lista OUP usa la etiqueta 'reduced rate', no imprime literalmente '50%' junto a cada país; el '50%' viene de la politica general OUP/Research4Life para Grupo B.",
+          "sources": [
+            "https://bad.org.uk/oxford-university-press-to-publish-skin-health-and-disease",
+            "https://academic.oup.com/pages/purchasing/low-and-middle-income-countries-initiative/participating-countries-and-regions",
+            "https://web.archive.org/web/20260305011550/https://academic.oup.com/pages/purchasing/low-and-middle-income-countries-initiative/participating-countries-and-regions"
+          ]
+        },
+        {
+          "original": "Anais Brasileiros de Dermatologia: la Sociedad Brasileña de Dermatología paga el APC de TODOS los artículos aceptados = $0 para el autor (revista Diamond/Platinum).",
+          "verdict": "confirmado",
+          "corrected": "Verificado en la página oficial de la revista: 'The Brazilian Society of Dermatology currently funds the APC for all articles accepted for publication in the journal.' Las tarifas listadas son USD 1,700 (full-length) y USD 900 (shorter), pero las cubre la Sociedad, no el autor -> $0 para el autor.",
+          "sources": [
+            "https://www.anaisdedermatologia.org.br/en-open-access"
+          ]
+        },
+        {
+          "original": "Actas Dermo-Sifiliográficas: la AEDV cubre el APC de TODOS los artículos aceptados = $0 para el autor.",
+          "verdict": "confirmado",
+          "corrected": "Verificado (ScienceDirect/Elsevier, página oficial de open access de la revista): 'The Article Publishing Charge (APC) fee will be covered by Academia Española de Dermatología y Venereología for all articles which are accepted for publication after peer review.' -> $0 para el autor.",
+          "sources": [
+            "https://www.sciencedirect.com/journal/actas-dermo-sifiliograficas/publish/open-access-options"
+          ]
+        },
+        {
+          "original": "JAAD Case Reports: opción más barata para case reports, $750.",
+          "verdict": "confirmado",
+          "corrected": "Verificado: el APC de open access para Case Report y Case Series en JAAD Case Reports es USD 750 (excl. impuestos). Detalle adicional confirmado: 25% de descuento si el autor de correspondencia es miembro AAD (-> ~USD 563), y otros tipos de artículo (Images in Dermatology, Dermoscopy/Confocal Case) cuestan USD 340.",
+          "sources": [
+            "https://www.sciencedirect.com/journal/jaad-case-reports/publish/open-access-options",
+            "https://jaad.zendesk.com/hc/en-us/articles/22533516341015-Open-Access-and-Waiver-Information"
+          ]
+        },
+        {
+          "original": "Dermatology Practical & Conceptual no tiene APC pero cobra una tasa de envío de 30 EUR desde sep-2025.",
+          "verdict": "confirmado",
+          "corrected": "Verificado: desde el 1 de septiembre de 2025 se requiere una tasa de envío no reembolsable de 30 EUR (VAT incluido) por cada manuscrito, pagada durante el proceso de envío online. (La afirmación de 'no APC' no se pudo confirmar palabra por palabra en esta búsqueda independiente — la revista remite a su propia sección APC; confianza media en esa parte, pero la tasa de envío de 30 EUR es firme.)",
+          "sources": [
+            "https://dpcj.org/",
+            "https://openjournalsystems.com/portfolio/dermatology-practical-conceptual/"
+          ]
+        },
+        {
+          "original": "DATO ADICIONAL VERIFICADO (no estaba como cifra dura en el resumen): Impact Factor 2024 de Skin Health & Disease.",
+          "verdict": "confirmado",
+          "corrected": "Skin Health and Disease — Impact Factor 2024 = 1.40 (segun agregadores researcher.life/editage; baja vs 2023). SJR 2025 = 0.554, h-index 11. Fuente de agregadores terciarios, no Clarivate directo -> confianza media en el valor exacto; util como orden de magnitud.",
+          "sources": [
+            "https://researcher.life/journal/skin-health-and-disease/26376",
+            "https://www.scimagojr.com/journalsearch.php?q=21101108655&tip=sid"
+          ]
+        },
+        {
+          "original": "NOTA METODOLÓGICA: 'la tabla oficial de OUP muestra Peru 50%' (afirmación textual del reporte).",
+          "verdict": "corregido",
+          "corrected": "MATIZ IMPORTANTE: la lista oficial de OUP NO imprime literalmente 'Peru 50%'. Lo que la lista muestra es a Perú bajo la categoría 'Reduced rate access' (verificado en el snapshot Sep-2025). El número '50%' proviene de la política general de Research4Life/Elsevier/Wiley para países de Grupo B, con la que Perú es consistente. El intermediario EIFL (subconjunto de socios EIFL) lista solo Albania y Georgia con 50% explícito y NO incluye a Perú — pero eso es el acuerdo EIFL, no la política LMIC completa de OUP, que SÍ incluye a Perú en reduced rate. Conclusión: la dirección del reporte (Perú = reduced rate, NO free, ~50%) es correcta; la frase 'la tabla muestra Peru 50%' es una sobre-precisión: la tabla muestra 'reduced rate', el 50% es inferencia de política convergente.",
+          "sources": [
+            "https://www.eifl.net/apcs/oxford-university-press-apcs-open-access-publishing",
+            "https://academic.oup.com/pages/open-research/open-access/charges-licences-and-self-archiving/apc-waiver-policy",
+            "https://web.archive.org/web/20260305011550/https://academic.oup.com/pages/purchasing/low-and-middle-income-countries-initiative/participating-countries-and-regions"
+          ]
+        }
+      ]
+    },
+    "mayo": {
+      "dimension": "Requisitos y benchmarks de investigación para dermatología en Mayo Clinic y match de derma en EE.UU. siendo IMG",
+      "corrections": [
+        {
+          "original": "NRMP 2024: dermatología US MD seniors matcheados promediaron 27.7 abstracts/presentaciones/publicaciones vs 19.0 los no-matcheados; experiencias de investigación 6.4 vs 4.9; Step 2 CK 257 vs 250; Step 1 245 vs 235; %AOA 41.1 vs 23.8; %PhD 9.8 vs 1.7. (n=314 match, n=126 no-match)",
+          "verdict": "confirmado",
+          "sources": [
+            "https://www.nrmp.org/wp-content/uploads/2024/08/Charting_Outcomes_MD_Seniors_2024-2.pdf"
+          ]
+        },
+        {
+          "original": "VERIFICACION PRIMARIA del PDF (Tabla DM-1, pagina 39 / pdf-page 43). Extraje el texto del PDF oficial con pdfplumber y la fila dice textualmente: Matched (n=314) vs Unmatched (n=126): contiguous ranks 8.8/4.5; distinct specialties ranked 2.2/2.4; USMLE Step 1 245/235; USMLE Step 2 257/250; research experiences 6.4/4.9; abstracts-presentations-publications 27.7/19.0; work experiences 2.3/2.5; volunteer 5.3/5.6; %AOA 41.1/23.8; %top-40 NIH 41.7/23.0; %PhD 9.8/1.7; %otro posgrado 17.1/17.2. TODAS las cifras del informe coinciden EXACTAMENTE con el primario. Confianza ALTA (no secundaria: lectura directa del PDF).",
+          "verdict": "confirmado",
+          "sources": [
+            "https://www.nrmp.org/wp-content/uploads/2024/08/Charting_Outcomes_MD_Seniors_2024-2.pdf"
+          ]
+        },
+        {
+          "original": "El NRMP NO publica un 'numero requerido' de publicaciones; 27.7 es un PROMEDIO (no umbral) y agrupa abstracts + presentaciones + publicaciones, no 27 papers publicados. Ningun programa, incluido Mayo, publica un piso numerico.",
+          "verdict": "confirmado",
+          "sources": [
+            "https://www.nrmp.org/wp-content/uploads/2024/08/Charting_Outcomes_MD_Seniors_2024-2.pdf"
+          ]
+        },
+        {
+          "original": "El conteo de abstracts/presentaciones/publicaciones agrupa posters, charlas y manuscritos. El propio PDF NRMP separa en charts distintos 'Number of Research Projects' y 'Number of Abstracts, Presentations, and Publications' (charts DM-5 y DM-6, pagina 45), confirmando que la metrica de 27.7 NO equivale a papers publicados. Ademas el histograma DM-6 muestra que la mayoria de matcheados cae en la categoria '5 o mas' (234 de los matcheados) — coherente con una media inflada por el agrupamiento. Confianza ALTA.",
+          "verdict": "confirmado",
+          "sources": [
+            "https://www.nrmp.org/wp-content/uploads/2024/08/Charting_Outcomes_MD_Seniors_2024-2.pdf"
+          ]
+        },
+        {
+          "original": "Para IMG (NRMP Charting Outcomes IMG 2024, Tabla DM-1): la tabla lista para US-IMG (n=10) y non-US-IMG (n=11): media de abstracts/presentaciones/pubs 28.5 / 7.2, Step 1 239 / 234, Step 2 256 / 245, experiencias de investigacion 2.3 / 5.1. La atribucion matched-vs-unmatched queda ambigua (dato de US-IMG unmatched suprimido).",
+          "corrected": "ERROR DE ATRIBUCION DE COLUMNAS (corregido por lectura directa del PDF con pdfplumber + coordenadas x de cada palabra). La Tabla DM-1 de Dermatologia del reporte IMG 2024 (pdf-page 50, pagina impresa 46) NO compara 'US-IMG vs non-US-IMG'. La realidad: TODA la data de US-IMG esta SUPRIMIDA ('Data not shown due to the small sample size'). Las DOS columnas visibles con numeros son AMBAS de Non-U.S. IMGs, divididas en Matched (n=10) vs Not Matched (n=11). Confirmado triple: (a) el header 'U.S. IMGs' cubre solo la celda 'Data not shown...'; los rotulos 'Matched'(x=457) y 'Unmatched'(x=509) y '(n=10)'/'(n=11)' caen bajo 'Non-U.S. IMGs'; (b) los charts DM-1 y DM-2 de la misma seccion (pdf-pages 51-52) dicen literal 'Non-U.S. IMGs' + 'Note: Data for U.S. IMGs are not shown due to the small sample size'. Cifras CORRECTAS para Non-U.S. IMG Matched (n=10) vs Not-Matched (n=11): contiguous ranks 3.9/3.7; distinct specialties 2.4/1.7; USMLE Step 1 239/234; USMLE Step 2 256/245; research experiences 2.3/5.1; abstracts-presentaciones-pubs 28.5/7.2; work exp 3.6/3.8; volunteer 2.7/3.9; %PhD 0.0/0.0; %otro posgrado 33.3/36.4. Por tanto: el numero 28.5 es de Non-US-IMG MATCHED (no 'US-IMG'); el 7.2 es Non-US-IMG NOT-matched; y NO existe en absoluto un dato publicado de '~10 US-IMG matcheados con media ~28 pubs'. Lo que SI es robusto del informe: la N es minuscula y el grupo matcheado (non-US-IMG) promedia ~28.5 abstracts/pubs. Confianza ALTA en la correccion (lectura primaria con coordenadas).",
+          "verdict": "corregido",
+          "sources": [
+            "https://www.nrmp.org/wp-content/uploads/2024/08/Charting_Outcomes_IMG_2024-1.pdf"
+          ]
+        },
+        {
+          "original": "Match 2026: derma lleno 545 de 546 plazas PGY-2 (99.8%). US MD seniors llenaron 79.5% de las plazas (434 matcheados). US-IMG 23 aplicantes / 9 matcheados; Non-US-IMG 29 aplicantes / 4 matcheados (0.7% de las plazas llenas). 546 plazas ofertadas, 545 llenas.",
+          "corrected": "CONFIRMADO con un matiz sobre 434. Lectura directa del PDF oficial 'Advance Data Tables 2026' (pdfplumber): Tabla 1A (pdf-page 8, fila Dermatology PGY-2): 156 programas, 546 posiciones ofertadas, 1 sin llenar, 740 aplicantes US-MD-senior, 1103 aplicantes totales, 434 matches de US-MD-seniors, 545 llenas, 79.5% US-MD-senior, 99.8% filled — TODO coincide, incluido 434. Tabla 1E (pdf-page 12) US-IMG PGY-2: 23 aplicantes / 9 matcheados (1.6% de plazas). Tabla 1F (pdf-page 14) Non-US-IMG PGY-2: 29 aplicantes / 4 matcheados (0.7%). Tabla 2 (pdf-page 16) confirma por tipo de aplicante en PGY-2 Dermatology: MD Senior 434, MD Grad 58, DO Senior 30, DO Grad 10, U.S. IMG 9, Non-U.S. IMG 4, total filled 545. Todas las cifras del informe son correctas. Confianza ALTA.",
+          "verdict": "confirmado",
+          "sources": [
+            "https://www.nrmp.org/wp-content/uploads/2026/03/Advance-Data-Tables-2026_Public.pdf"
+          ]
+        },
+        {
+          "original": "NOTA del informe: una fuente secundaria (MedEdits) reporta '3 de 8 US-IMG (38%)' y '4 de 29 non-US-IMG (14%)' usando metodologia 'preferred specialty' (los que rankearon derma PRIMERO); el conteo de 4 non-US-IMG matcheados coincide en ambas framings.",
+          "verdict": "confirmado",
+          "sources": [
+            "https://mededits.com/mededits-resources/dermatology-residency-match-stats-strategy-and-how-to-match"
+          ]
+        },
+        {
+          "original": "Requisitos IMG de Mayo Clinic: pasar USMLE Steps 1 y 2 + certificacion ECFMG. Step 3 se requiere si se busca patrocinio de visa H-1B. Mayo patrocina J-1 (via ECFMG) y, en programas selectos, H-1B.",
+          "corrected": "CONFIRMADO con dato nuevo relevante (2025). Pagina oficial Mayo Admissions and Benefits: J-1 (ECFMG) requiere titulo de escuela reconocida + USMLE Steps 1 y 2 + ECFMG. H-1B requiere Steps 1, 2 Y 3 + ECFMG (Step 3 antes del 31-dic, 6 meses antes de iniciar residencia en junio, salvo plan de visa de 1 año en PGY-1). Mayo patrocina J-1 y H-1B (la seleccion del tipo de visa la decide Mayo, no el aplicante). DATO NUEVO 2025: una Proclamacion Presidencial del 21-sep-2025 introdujo un pago de $100,000 para NUEVAS peticiones H-1B, y Mayo declara que NO tramitara una H-1B nueva para un aplicante cuyo estatus requiera ese pago — esto restringe de hecho la via H-1B para IMG nuevos a partir de 2025. Confianza ALTA. No hay 'score minimo USMLE' numerico publicado por Mayo (no verificable publicamente).",
+          "verdict": "confirmado",
+          "sources": [
+            "https://college.mayo.edu/academics/residencies-and-fellowships/admissions-and-benefits/"
+          ]
+        },
+        {
+          "original": "AFIRMACIONES SOLICITADAS PERO NO PRESENTES EN EL INFORME: el prompt pide verificar 'impact factors' y 'publica gratis'. El JSON del informe entregado esta TRUNCADO y NO contiene ninguna cifra de impact factor de revista ni afirmacion de 'publica gratis'. No hay nada que verificar en esas dos categorias dentro del texto disponible.",
+          "corrected": "NO VERIFICABLE / NO APLICA: no existe en el informe entregado ninguna afirmacion sobre impact factor de revistas ni sobre 'publicar gratis'. Si esas afirmaciones existen en la parte truncada del informe, deben re-enviarse para poder verificarlas. Marcado como no-verificable por ausencia de la afirmacion fuente.",
+          "verdict": "no-verificable",
+          "sources": []
+        }
+      ]
+    }
+  }
+}
