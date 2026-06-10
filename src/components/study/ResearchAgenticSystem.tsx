@@ -8,6 +8,7 @@ import {
   AGENT_LAYERS, AGENT_ROLES, HITL_CHECKPOINTS, AGENTIC_RESOURCES, AGENTIC_META,
   RESEARCH_LINES, CLUSTER_COLOR, AgentRole,
   DISCOVERY_SOURCES, FULLTEXT_CASCADE, CITATION_PIPELINE, CONTROL_PANEL,
+  AGENTE_SECCION, ESTADO_AGENTE, consolaSnapshot, journalStd,
 } from '../../lib/researchProgram';
 import { researchObsUrlSR, researchObsUrlLine } from '../../lib/obsidianResearchMap';
 
@@ -99,6 +100,36 @@ export default function ResearchAgenticSystem() {
           )}
         </View>
       </GlassPanel>
+
+      {/* Consola de agentes — quién redacta qué sección (por línea) */}
+      <SectionLabel>Consola de agentes · {linea.code} (un líder dirige; cada agente, una sección)</SectionLabel>
+      <Text style={st.sectionIntro}>Estándar objetivo: <Text style={{ color: CLUSTER_COLOR[linea.cluster], fontWeight: '700' }}>{journalStd(linea)}</Text>. Estado en vivo cuando el motor esté desplegado (Supabase · ver DEPLOY.md); ahora ilustra el reparto por sección de {linea.code}.</Text>
+      {(() => {
+        const snap = consolaSnapshot(linea.estado);
+        return (
+          <View style={{ marginBottom: Spacing.xl }}>
+            {AGENTE_SECCION.map((a, i) => {
+              const e = ESTADO_AGENTE[snap[a.agentId] || 'idle'];
+              return (
+                <FadeUp key={a.agentId} delay={i * 25}>
+                  <View style={[st.consoleRow, { borderLeftColor: a.color }]}>
+                    <Text style={{ fontSize: 18, width: 26, textAlign: 'center' }}>{a.icon}</Text>
+                    <View style={{ flex: 1 }}>
+                      <Text style={st.consoleSec}>{a.seccion}</Text>
+                      <Text style={st.consoleAgent}>{a.agentId === 'lead' ? 'Orquestador (Lead · Opus)' : a.agentId === 'citation' ? 'CitationAgent / QA' : a.agentId === 'assembler' ? 'AssemblerAgent' : a.agentId.charAt(0).toUpperCase() + a.agentId.slice(1) + 'Agent (Sonnet)'}</Text>
+                    </View>
+                    <View style={[st.estadoChip, { borderColor: e.color + '66', backgroundColor: e.color + '14' }]}>
+                      <Text style={[st.estadoIcon, { color: e.color }]}>{e.icon}</Text>
+                      <Text style={[st.estadoTxt, { color: e.color }]}>{e.lbl}</Text>
+                    </View>
+                  </View>
+                </FadeUp>
+              );
+            })}
+            <Text style={st.smallNote}>○ inactivo · ◔ en cola · ◍ redactando · ● listo · ◆ requiere tu visto bueno (checkpoint humano). Los subagentes no se comunican entre sí (contexto aislado); el Lead integra y rutea a QA.</Text>
+          </View>
+        );
+      })()}
 
       {/* Arquitectura por capas (flujo) */}
       <SectionLabel>Arquitectura · orchestrator-worker + HITL</SectionLabel>
@@ -278,4 +309,11 @@ const st = StyleSheet.create({
   cpCard: { ...cardBase, padding: Spacing.md, minHeight: 120 },
   cpTitle: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, marginTop: 6 },
   cpDesc: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, marginTop: 4, lineHeight: 15 },
+
+  consoleRow: { ...cardBase, borderLeftWidth: 3, flexDirection: 'row', alignItems: 'center', gap: 10, padding: Spacing.md, marginBottom: 6 },
+  consoleSec: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface },
+  consoleAgent: { fontSize: 9, color: Colors.muted, marginTop: 1, letterSpacing: 0.2 },
+  estadoChip: { flexDirection: 'row', alignItems: 'center', gap: 5, borderRadius: BorderRadius.full, borderWidth: 1, paddingVertical: 4, paddingHorizontal: 9 },
+  estadoIcon: { fontSize: 12, fontWeight: '900' },
+  estadoTxt: { fontSize: FontSize.labelSm, fontWeight: '800' },
 });

@@ -67,6 +67,11 @@ Query PICO (booleana) → ejecutar async en las 5 APIs → consolidar
 
 ---
 
+> **✅ Ejecutable y probado en vivo (jun-2026):** [`agentic/discovery_engine.py`](agentic/discovery_engine.py)
+> corrió de verdad para SR-1 → **804 brutos → 666 únicos (dedup DOI), 117 en ≥2 fuentes**, con el ancla
+> **DeLorenzi 2014** como primer resultado. Esquema de BD: [`agentic/supabase_schema.sql`](agentic/supabase_schema.sql).
+> Cómo encenderlo 24/7 (VPS/n8n/keys) + sincronización Word/Drive: [`agentic/DEPLOY.md`](agentic/DEPLOY.md).
+
 ## 3. Esqueleto del motor (Python async · verificado)
 
 ```python

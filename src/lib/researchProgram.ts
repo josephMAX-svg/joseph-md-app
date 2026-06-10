@@ -177,6 +177,43 @@ export const CITATION_PIPELINE: { paso: string; detalle: string }[] = [
   { paso: '5 · Gate', detalle: 'Solo persiste lo que resuelve a un DOI/PMID real; lo demás → needs_review / rejected (auditoría). Cero alucinación.' },
 ];
 
+// ── Consola de agentes: qué agente redacta qué sección, por línea (Manual §8.5/§14) ──
+export type EstadoAgente = 'idle' | 'queued' | 'working' | 'done' | 'needs_human';
+export const ESTADO_AGENTE: Record<EstadoAgente, { lbl: string; color: string; icon: string }> = {
+  idle:        { lbl: 'inactivo',          color: '#8F9097', icon: '○' },
+  queued:      { lbl: 'en cola',           color: '#2E7CF6', icon: '◔' },
+  working:     { lbl: 'redactando…',       color: '#F5A623', icon: '◍' },
+  done:        { lbl: 'listo',             color: '#0FD4A0', icon: '●' },
+  needs_human: { lbl: 'requiere tu visto', color: '#F56342', icon: '◆' },
+};
+// Qué sección redacta cada agente (orden del manuscrito)
+export const AGENTE_SECCION: { agentId: string; seccion: string; icon: string; color: string }[] = [
+  { agentId: 'lead',      seccion: 'Dirige la línea / SR',        icon: '🧭', color: '#0FD4A0' },
+  { agentId: 'intro',     seccion: 'Introducción',                icon: '📝', color: '#2E7CF6' },
+  { agentId: 'methods',   seccion: 'Métodos (PRISMA 2020)',       icon: '⚗️', color: '#2E7CF6' },
+  { agentId: 'results',   seccion: 'Resultados (forest plot)',    icon: '📊', color: '#2E7CF6' },
+  { agentId: 'discuss',   seccion: 'Discusión + antecedentes',    icon: '💬', color: '#2E7CF6' },
+  { agentId: 'citation',  seccion: 'Referencias (Crossref/CSL)',  icon: '🛡️', color: '#F56342' },
+  { agentId: 'assembler', seccion: 'Ensamblado .docx',            icon: '📄', color: '#A78BFA' },
+];
+/**
+ * Snapshot ILUSTRATIVO del reparto por sección según el estado de la línea. Al desplegar el
+ * motor (ver DATA/RESEARCH/agentic/DEPLOY.md) esto se reemplaza por `research_agent_tasks` (Supabase Realtime).
+ */
+export function consolaSnapshot(estado: LineaResearch['estado']): Record<string, EstadoAgente> {
+  if (estado === 'activa') // SR-1 en redacción (R34–R39)
+    return { lead: 'working', intro: 'done', methods: 'working', results: 'queued', discuss: 'idle', citation: 'queued', assembler: 'idle' };
+  if (estado === 'completada')
+    return { lead: 'done', intro: 'done', methods: 'done', results: 'done', discuss: 'done', citation: 'done', assembler: 'done' };
+  if (estado === 'pre-protocolo')
+    return { lead: 'queued', intro: 'idle', methods: 'idle', results: 'idle', discuss: 'idle', citation: 'idle', assembler: 'idle' };
+  return { lead: 'idle', intro: 'idle', methods: 'idle', results: 'idle', discuss: 'idle', citation: 'idle', assembler: 'idle' }; // backlog
+}
+/** Estándar editorial objetivo de la línea (la 1ª revista + el método). */
+export function journalStd(l: LineaResearch): string {
+  return `${l.journals[0] || 'JEADV'} · PRISMA 2020 + GRADE + Vancouver/CSL`;
+}
+
 // ── Panel de control (lo que hace la app — Manual §14) ──
 export const CONTROL_PANEL: { icon: string; titulo: string; desc: string }[] = [
   { icon: '📊', titulo: 'Dashboard por línea', desc: 'Estado de cada SR (discovery/screening/extracción/redacción/envío) · nº papers encontrados/cribados/incluidos · próximo checkpoint.' },
