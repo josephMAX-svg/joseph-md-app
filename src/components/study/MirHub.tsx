@@ -9,6 +9,7 @@ import {
   MIR_TACTICA, MIR_RECURSOS, MIR_NOTA, PRIORIDAD_COLOR, VUELTAS,
 } from '../../lib/mirData';
 import { DIGESTIVO_META, DIGESTIVO_CAPITULOS, DIGESTIVO_PLAN, capUrl } from '../../lib/mirDigestivoData';
+import { CARDIO_META, CARDIO_CAPITULOS, capUrl as cardioUrl } from '../../lib/mirCardiologiaData';
 
 /**
  * MirHub — MIR España (ProMIR). Asignaturas por ROI tier + fases ProMIR + protocolo +
@@ -59,8 +60,36 @@ export default function MirHub() {
         ))}
       </GlassPanel>
 
+      {/* CARDIOLOGÍA — bloque REAL extraído de ProMIR (#1 rentabilidad) */}
+      <SectionLabel>⭐ Cardiología · ProMIR — bloque REAL (#1 en rentabilidad)</SectionLabel>
+      <GlassPanel accent={Colors.coral} style={{ marginBottom: Spacing.md, padding: Spacing.lg }}>
+        <Text style={st.body}>
+          <Text style={{ color: Colors.coral, fontWeight: '800' }}>{CARDIO_META.totalCaps} capítulos · {CARDIO_META.pesoGlobal}.</Text>
+          {' '}Orden de ataque por rendimiento. Capítulos verificados con videos/duraciones reales; el resto abre en ProMIR.
+        </Text>
+      </GlassPanel>
+      <View style={{ marginBottom: Spacing.xl }}>
+        {CARDIO_CAPITULOS.map((c) => (
+          <TouchableOpacity key={c.capId} activeOpacity={0.85} onPress={() => openUrl(cardioUrl(c.capId))}
+            style={[st.capCard, { borderLeftColor: PRIORIDAD_COLOR[c.prioridad] }]}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+              <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: PRIORIDAD_COLOR[c.prioridad] }} />
+              <Text style={st.capTitulo}>{c.n}. {c.titulo} ↗</Text>
+              {c.verificado ? <Chip label="✓ real" color={Colors.green} small /> : <Chip label="ProMIR" color={Colors.muted} small />}
+            </View>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 6, marginLeft: 14 }}>
+              {c.videosTxt ? <Chip label={`🎬 ${c.videosTxt}`} color={Colors.green} small /> : null}
+              {c.videoMin ? <Chip label={`~${c.videoMin} min`} color={Colors.muted} small /> : null}
+              {c.figuras ? <Chip label={`${c.figuras} figs`} color={Colors.blue} small /> : null}
+              <Chip label={`${VUELTAS[c.prioridad]}v`} color={PRIORIDAD_COLOR[c.prioridad]} small />
+            </View>
+          </TouchableOpacity>
+        ))}
+        <Text style={st.smallNote}>{CARDIO_META.nota}</Text>
+      </View>
+
       {/* DIGESTIVO — primer bloque REAL extraído de ProMIR */}
-      <SectionLabel>⭐ Digestivo · ProMIR — primer bloque REAL (extraído de tu plataforma)</SectionLabel>
+      <SectionLabel>⭐ Digestivo · ProMIR — bloque REAL (extraído de tu plataforma)</SectionLabel>
       <GlassPanel accent={Colors.green} style={{ marginBottom: Spacing.md, padding: Spacing.lg }}>
         <Text style={st.body}>
           <Text style={{ color: Colors.green, fontWeight: '800' }}>{DIGESTIVO_META.totalCaps} capítulos · {DIGESTIVO_META.totalVideos} videos · ~{DIGESTIVO_META.totalVideoMin} min · {DIGESTIVO_META.totalFiguras} figuras · {DIGESTIVO_META.totalTablas} tablas.</Text>
