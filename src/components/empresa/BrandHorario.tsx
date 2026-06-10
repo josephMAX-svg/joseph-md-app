@@ -6,6 +6,8 @@ import { SectionLabel, Chip, GlassPanel } from './primitives';
 import { FadeUp } from './visuals';
 import { TIME_SPLIT, ESTANDARES, FLUJO_DICTADO, METRICAS, BRAND_PLANS } from '../../lib/brandContentPlan';
 import { HERRAMIENTAS, REFERENTES } from '../../lib/brandContentExtras';
+import { bizDiaDe, BIZ_DIAS } from '../../lib/businessStudyPlan';
+import { ESTUDIO_LIBROS } from '../../lib/estudioPulsoData';
 
 /**
  * BrandHorario — "🗓️ Horario" de contenido orgánico de una marca: qué publicar cada
@@ -14,17 +16,27 @@ import { HERRAMIENTAS, REFERENTES } from '../../lib/brandContentExtras';
  * herramientas web y referentes verificados. El día de HOY se resalta.
  */
 const DIAS_IDX = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-const RED_COLOR: Record<string, string> = { TikTok: '#E5708A', Instagram: '#C77BE0', YouTube: '#E5484D' };
+const RED_COLOR: Record<string, string> = {
+  TikTok: '#E5708A', Instagram: '#C77BE0', YouTube: '#E5484D',
+  Facebook: '#7BB1FF', Marketplace: '#8FB6E8', WhatsApp: '#3FB984',
+};
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
 function hoyDia(): string { try { return DIAS_IDX[new Date().getDay()]; } catch { return 'Lun'; } }
+function todayISO(): string {
+  try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; }
+  catch { return '2026-06-10'; }
+}
 
-export default function BrandHorario({ brand }: { brand: 'pulso' | 'pirqa' }) {
+export default function BrandHorario({ brand }: { brand: 'pulso' | 'pirqa' | 'terrenos' | 'golden' }) {
   const plan = BRAND_PLANS[brand];
   const refs = REFERENTES[brand] || [];
   const hoy = hoyDia();
   const [openDia, setOpenDia] = useState<string>(hoy);
   if (!plan) return null;
   const A = plan.accent;
+  // El 70% de LIVIANO = lectura del plan 96 días + aplicación directa (contenido)
+  const lecturaHoy = brand === 'pulso' ? bizDiaDe(todayISO()) : undefined;
+  const libroHoy = lecturaHoy && lecturaHoy.libroN != null ? ESTUDIO_LIBROS.find((l) => l.n === lecturaHoy.libroN) : undefined;
 
   return (
     <View>
@@ -47,6 +59,23 @@ export default function BrandHorario({ brand }: { brand: 'pulso' | 'pirqa' }) {
           </View>
         ))}
       </GlassPanel>
+
+      {/* 70% LIVIANO = lectura del día (plan 96 días) + aplicación */}
+      {lecturaHoy && (
+        <>
+          <SectionLabel>📖 Lectura de HOY · plan 96 días (D{lecturaHoy.d}/{BIZ_DIAS.length})</SectionLabel>
+          <TouchableOpacity activeOpacity={lecturaHoy.yt ? 0.85 : 1} onPress={() => lecturaHoy.yt && openUrl(lecturaHoy.yt)}
+            style={[st.lecturaCard, { borderLeftColor: A }]}>
+            <View style={{ flex: 1 }}>
+              <Text style={st.lecturaTitulo}>{lecturaHoy.lectura}</Text>
+              {libroHoy ? <Text style={st.lecturaSub}>{libroHoy.libro} · {libroHoy.autor} → {libroHoy.output}</Text> : null}
+              {lecturaHoy.accion ? <Text style={[st.lecturaAccion, { color: A }]}>🛠 Aplicación: {lecturaHoy.accion}</Text> : null}
+            </View>
+            {lecturaHoy.yt ? <Text style={[st.lecturaGo, { color: A }]}>▶</Text> : null}
+          </TouchableOpacity>
+          <Text style={[st.nota, { marginTop: 0 }]}>El 70% = leer (2h del plan) + aplicar directo creando el contenido del día. Plan completo en Pulso → Estudio → Día a día.</Text>
+        </>
+      )}
 
       {/* Semana L-D */}
       <SectionLabel>Semana de contenido · {plan.marca} ({plan.tiempoDia})</SectionLabel>
@@ -187,4 +216,10 @@ const st = StyleSheet.create({
   toolNota: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 4, lineHeight: 15 },
 
   nota: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 4, lineHeight: 16, marginBottom: Spacing.lg },
+
+  lecturaCard: { ...cardBase, borderLeftWidth: 3, flexDirection: 'row', alignItems: 'center', gap: 10, padding: Spacing.md, marginBottom: 8 },
+  lecturaTitulo: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, lineHeight: 19 },
+  lecturaSub: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 3, lineHeight: 15 },
+  lecturaAccion: { fontSize: FontSize.labelMd, fontWeight: '600', marginTop: 5, lineHeight: 17 },
+  lecturaGo: { fontSize: 18, fontWeight: '800', width: 22, textAlign: 'center' },
 });

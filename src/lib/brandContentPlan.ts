@@ -10,7 +10,7 @@
  * Shorts viernes tarde. La rotación editorial por vertical es PROPUESTA (ajustable).
  */
 
-export interface RedDia { red: 'TikTok' | 'Instagram' | 'YouTube'; nota: string; fuerte?: boolean }
+export interface RedDia { red: 'TikTok' | 'Instagram' | 'YouTube' | 'Facebook' | 'Marketplace' | 'WhatsApp'; nota: string; fuerte?: boolean }
 export interface DiaContenido {
   dia: string;             // Lun..Dom
   foco: string;            // ángulo editorial del día
@@ -25,10 +25,10 @@ export interface BrandPlan {
 
 /** Reparto semanal del tiempo de business (regla del fundador) */
 export const TIME_SPLIT = [
-  { marca: 'Pulso / LIVIANO', pct: 70, color: '#D9BE8A', estado: 'activo', desc: 'Contenido orgánico diario + estudio 96 días + funnel' },
+  { marca: 'Pulso / LIVIANO', pct: 70, color: '#D9BE8A', estado: 'activo', desc: 'Lectura plan 96 días + aplicación directa: contenido orgánico diario + funnel' },
   { marca: 'PIRQA', pct: 10, color: '#F08A4B', estado: 'activo', desc: 'Post diario · lanzamiento sáb 12:00 → dom (día de venta)' },
-  { marca: 'Terrenos', pct: 10, color: '#8FB6E8', estado: 'próximamente', desc: '13 propiedades — espacio reservado (falta link/estructura)' },
-  { marca: 'Golden Retriever', pct: 10, color: '#E8C547', estado: 'próximamente', desc: 'Página de cachorros (~2 meses) — espacio reservado' },
+  { marca: 'Terrenos', pct: 10, color: '#8FB6E8', estado: 'activo', desc: '13 propiedades · web + Marketplace ya publicados — venta activa' },
+  { marca: 'Golden Retriever', pct: 10, color: '#E8C547', estado: 'pre-lanzamiento', desc: 'Camada en ~2 meses — crear página + documentar desde ya' },
 ];
 
 /** Estándares de CADA publicación (Hormozi, verificado) */
@@ -59,27 +59,32 @@ export const METRICAS = [
   'Seguidores netos por red (si una red queda en 0 tracción sostenida → evaluar eliminarla)',
 ];
 
-/** PULSO / LIVIANO — 1 post orgánico diario por red; rotación editorial por vertical */
+/**
+ * PULSO / LIVIANO — el 70%: lectura del plan 96 días + APLICACIÓN DIRECTA (1 post
+ * orgánico diario por red). Solo cosas de LIVIANO aquí (PIRQA/Terrenos/Golden tienen
+ * su propio horario con su 10%). Facebook = cross-post desde Meta Business Suite.
+ */
+const FB: RedDia = { red: 'Facebook', nota: 'cross-post Meta Business Suite' };
 export const PULSO_PLAN: BrandPlan = {
-  marca: 'Pulso / LIVIANO', accent: '#D9BE8A', tiempoDia: '~25-30 min (dictado 5 + revisión 5 + comentarios 15)',
+  marca: 'Pulso / LIVIANO', accent: '#D9BE8A', tiempoDia: '~25-30 min (dictado 5 + revisión 5 + comentarios 15) + lectura 2h del plan 96 días',
   semana: [
     { dia: 'Lun', foco: 'PESO / Liviano — mito vs realidad (GLP-1, insulina)', redes: [
-      { red: 'TikTok', nota: 'tarde' }, { red: 'Instagram', nota: 'Reel' }, { red: 'YouTube', nota: 'Short' }] },
+      { red: 'TikTok', nota: 'tarde' }, { red: 'Instagram', nota: 'Reel' }, { red: 'YouTube', nota: 'Short' }, FB] },
     { dia: 'Mar', foco: 'SUEÑO — 1 protocolo accionable (Walker/Panda)', redes: [
-      { red: 'TikTok', nota: 'tarde' }, { red: 'Instagram', nota: 'Reel' }, { red: 'YouTube', nota: 'Short' }] },
+      { red: 'TikTok', nota: 'tarde' }, { red: 'Instagram', nota: 'Reel' }, { red: 'YouTube', nota: 'Short' }, FB] },
     { dia: 'Mié', foco: 'HORMONAL / Curva — caso real anónimo + qué medir', redes: [
       { red: 'Instagram', nota: 'VENTANA FUERTE (mié-jue tarde-noche · Buffer/Sprout)', fuerte: true },
-      { red: 'TikTok', nota: 'tarde' }, { red: 'YouTube', nota: 'Short' }] },
+      { red: 'TikTok', nota: 'tarde' }, { red: 'YouTube', nota: 'Short' }, FB] },
     { dia: 'Jue', foco: 'MENTAL / FOCO — herramienta CBT o TDAH en 60s', redes: [
       { red: 'Instagram', nota: 'VENTANA FUERTE', fuerte: true },
-      { red: 'TikTok', nota: 'tarde' }, { red: 'YouTube', nota: 'Short' }] },
+      { red: 'TikTok', nota: 'tarde' }, { red: 'YouTube', nota: 'Short' }, FB] },
     { dia: 'Vie', foco: 'LO QUE APRENDÍ ESTA SEMANA (del plan 96 días → aplicado)', redes: [
       { red: 'YouTube', nota: 'VENTANA FUERTE Shorts (viernes tarde · Buffer)', fuerte: true },
-      { red: 'TikTok', nota: 'tarde' }, { red: 'Instagram', nota: 'Reel' }] },
+      { red: 'TikTok', nota: 'tarde' }, { red: 'Instagram', nota: 'Reel' }, FB] },
     { dia: 'Sáb', foco: 'PAREJA / Cerca — pregunta frecuente respondida', redes: [
-      { red: 'TikTok', nota: 'FUERTE finde (tardes)', fuerte: true }, { red: 'Instagram', nota: 'Reel' }, { red: 'YouTube', nota: 'Short' }] },
+      { red: 'TikTok', nota: 'FUERTE finde (tardes)', fuerte: true }, { red: 'Instagram', nota: 'Reel' }, { red: 'YouTube', nota: 'Short' }, FB] },
     { dia: 'Dom', foco: 'HISTORIA DEL FUNDADOR + recap semanal (StoryBrand: tú eres el guía)', redes: [
-      { red: 'TikTok', nota: 'FUERTE finde', fuerte: true }, { red: 'Instagram', nota: 'Reel' }, { red: 'YouTube', nota: 'Short' }],
+      { red: 'TikTok', nota: 'FUERTE finde', fuerte: true }, { red: 'Instagram', nota: 'Reel' }, { red: 'YouTube', nota: 'Short' }, FB],
       extra: '📊 Revisar MÉTRICAS de la semana (checklist) + decidir qué formato repetir/innovar' },
   ],
 };
@@ -107,4 +112,61 @@ export const PIRQA_PLAN: BrandPlan = {
   ],
 };
 
-export const BRAND_PLANS: Record<string, BrandPlan> = { pulso: PULSO_PLAN, pirqa: PIRQA_PLAN };
+/**
+ * TERRENOS — 10% del tiempo. Estado real: web YA publicada + publicación en Marketplace
+ * (con otra cuenta). Estrategia de venta inmobiliaria (PROPUESTA inicial — ajustable):
+ * renovar listados, video-ficha por propiedad, grupos locales, seguimiento WhatsApp,
+ * visitas el finde. 13 propiedades.
+ */
+export const TERRENOS_PLAN: BrandPlan = {
+  marca: 'Terrenos', accent: '#8FB6E8', tiempoDia: '~10-15 min (renovar/responder) · visitas el finde',
+  semana: [
+    { dia: 'Lun', foco: 'Renovar/republicar listados en Marketplace (suben en el feed) + responder TODOS los leads del finde', redes: [
+      { red: 'Marketplace', nota: 'renovar 13 propiedades', fuerte: true }, { red: 'WhatsApp', nota: 'responder leads' }] },
+    { dia: 'Mar', foco: 'VIDEO-FICHA de UNA propiedad: ubicación, medidas, precio, papeles (rotar las 13)', redes: [
+      { red: 'TikTok', nota: 'video-ficha 60s' }, { red: 'Facebook', nota: 'post + Marketplace' }] },
+    { dia: 'Mié', foco: 'Seguimiento WhatsApp a interesados (lista viva: nombre, propiedad, etapa)', redes: [
+      { red: 'WhatsApp', nota: 'pipeline de venta', fuerte: true }] },
+    { dia: 'Jue', foco: 'Publicar en grupos locales de compra-venta (Huancayo/Junín) — 1 propiedad distinta', redes: [
+      { red: 'Facebook', nota: 'grupos locales', fuerte: true }] },
+    { dia: 'Vie', foco: 'Contenido de confianza: papeles en regla / acceso / servicios de la zona', redes: [
+      { red: 'TikTok', nota: 'clip corto' }, { red: 'Facebook', nota: 'post' }] },
+    { dia: 'Sáb', foco: '📍 VISITAS presenciales programadas en la semana', redes: [
+      { red: 'WhatsApp', nota: 'confirmar visitas', fuerte: true }],
+      extra: '📍 Día de visitas — grabar material en el terreno para la semana' },
+    { dia: 'Dom', foco: 'Pipeline review: leads → visitas → señas. ¿Qué propiedad empujar la próxima semana?', redes: [
+      { red: 'WhatsApp', nota: 'cierre semanal' }],
+      extra: '📊 Métricas: leads/propiedad · visitas · ofertas' },
+  ],
+};
+
+/**
+ * GOLDEN RETRIEVER — 10% del tiempo. FASE PRE-LANZAMIENTO (camada en ~2 meses):
+ * crear página + documentar a la perrita DESDE YA (la audiencia se construye antes
+ * de la venta). Formatos de los referentes verificados (Soul Desire: temas de camada;
+ * My Golden Retriever Puppies: video-ficha por cachorro + CTA WhatsApp).
+ */
+export const GOLDEN_PLAN: BrandPlan = {
+  marca: 'Golden Retriever', accent: '#E8C547', tiempoDia: '~10 min (1 clip de la perrita + avance de página)',
+  semana: [
+    { dia: 'Lun', foco: 'Clip de la perrita: rutina/cuidados (construir audiencia ANTES de la camada)', redes: [
+      { red: 'TikTok', nota: 'clip 15-30s' }, { red: 'Instagram', nota: 'Reel' }] },
+    { dia: 'Mar', foco: '🛠 AVANCE DE PÁGINA: crear/completar perfil (FB + IG), bio, foto, WhatsApp de contacto', redes: [
+      { red: 'Facebook', nota: 'crear página', fuerte: true }, { red: 'Instagram', nota: 'perfil' }] },
+    { dia: 'Mié', foco: 'Confianza de comprador: salud, vacunas, pedigrí/padres de la perrita', redes: [
+      { red: 'TikTok', nota: 'clip' }, { red: 'Instagram', nota: 'Reel/carrusel' }] },
+    { dia: 'Jue', foco: 'Engagement barato: pregunta a la audiencia (¿nombres para la camada?)', redes: [
+      { red: 'TikTok', nota: 'pregunta', fuerte: true }, { red: 'Instagram', nota: 'stories' }] },
+    { dia: 'Vie', foco: 'Momento tierno del día (formato Tucker/A Guy and A Golden: cotidiano > producido)', redes: [
+      { red: 'TikTok', nota: 'FUERTE finde' }, { red: 'Instagram', nota: 'Reel' }] },
+    { dia: 'Sáb', foco: 'Clip del finde con la perrita + responder comentarios/DMs', redes: [
+      { red: 'TikTok', nota: 'FUERTE finde', fuerte: true }, { red: 'Instagram', nota: 'Reel' }] },
+    { dia: 'Dom', foco: 'Lista de espera WhatsApp (interesados pre-camada) + métricas de la semana', redes: [
+      { red: 'WhatsApp', nota: 'lista de espera', fuerte: true }],
+      extra: '🐾 Al nacer la camada: updates semana a semana → pick day → video-ficha por cachorro + CTA WhatsApp' },
+  ],
+};
+
+export const BRAND_PLANS: Record<string, BrandPlan> = {
+  pulso: PULSO_PLAN, pirqa: PIRQA_PLAN, terrenos: TERRENOS_PLAN, golden: GOLDEN_PLAN,
+};

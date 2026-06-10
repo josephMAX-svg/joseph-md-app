@@ -71,6 +71,8 @@ export const BRANDS: Record<string, BrandIdentity> = {
   liviano: { color: '#56624B', bright: '#9DB07F', emoji: '⚡' }, // salvia
   pirqa:   { color: '#C45C3F', bright: '#E0856B', emoji: '🍲' }, // terracota
   franquicias: { color: '#8F9097', bright: '#B7B8BD', emoji: '🏷️' },
+  terrenos: { color: '#5E7A99', bright: '#8FB6E8', emoji: '🏞️' },
+  golden: { color: '#B8923F', bright: '#E8C547', emoji: '🐕' },
 };
 
 // ===================== GRUPO MATRIZ =====================

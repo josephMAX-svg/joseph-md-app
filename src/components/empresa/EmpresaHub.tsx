@@ -68,7 +68,7 @@ export default function EmpresaHub({ variant = 'mobile' }: { variant?: 'mobile' 
 
       {/* Selector proporcional a la importancia: Pulso domina, LIVIANO medio, PIRQA ícono */}
       <BrandSelector active={company} onSelect={setCompany} />
-      <Text style={st.selectorHint}>El grupo lo es todo · LIVIANO y PIRQA viven dentro de Pulso</Text>
+      <Text style={st.selectorHint}>70% Pulso/LIVIANO · 10% PIRQA · 10% Terrenos · 10% Golden — cada línea con su propio horario</Text>
 
       {/* Contenido por empresa */}
       {company === 'pulso' && <PulsoCommandCenter onOpenBrand={openBrand} />}
@@ -88,7 +88,31 @@ export default function EmpresaHub({ variant = 'mobile' }: { variant?: 'mobile' 
         <StudyPulsoHub onBack={() => setCompany('pulso')} />
       )}
 
-      {!MAIN_IDS.includes(company) && company !== 'estudio' && (
+      {company === 'terrenos' && (
+        <View>
+          <BackToPulso onBack={() => setCompany('pulso')} />
+          <SimpleBrandView
+            id="terrenos" titulo="Terrenos" estado="Venta activa"
+            desc="13 propiedades en venta. La web ya está publicada y hay publicación en Marketplace (otra cuenta). Estrategia: renovar listados, video-ficha por propiedad, grupos locales y seguimiento WhatsApp."
+            chips={[['Web publicada ✓', Colors.green], ['Marketplace ✓ (otra cuenta)', Colors.green], ['Nombre/links: por definir', Colors.muted]]}
+          />
+          <BrandHorario brand="terrenos" />
+        </View>
+      )}
+
+      {company === 'golden' && (
+        <View>
+          <BackToPulso onBack={() => setCompany('pulso')} />
+          <SimpleBrandView
+            id="golden" titulo="Golden Retriever" estado="Pre-lanzamiento"
+            desc="Venta de la camada (~2 meses). TODO por crear: página (FB/IG), lista de espera WhatsApp. Documentar a la perrita desde YA — la audiencia se construye antes de la venta."
+            chips={[['Página: por crear', AMBER], ['Camada: ~2 meses', AMBER], ['Nombre: por definir', Colors.muted]]}
+          />
+          <BrandHorario brand="golden" />
+        </View>
+      )}
+
+      {!MAIN_IDS.includes(company) && !['estudio', 'terrenos', 'golden'].includes(company) && (
         <PlaceholderBrandView id={company} onBack={() => setCompany('pulso')} />
       )}
     </ScrollView>
@@ -98,11 +122,33 @@ export default function EmpresaHub({ variant = 'mobile' }: { variant?: 'mobile' 
 // ── Selector proporcional a la importancia ───────────────────────
 function BrandSelector({ active, onSelect }: { active: string; onSelect: (id: string) => void }) {
   return (
-    <View style={{ flexDirection: 'row', gap: Spacing.sm, alignItems: 'stretch', marginBottom: 6 }}>
+    <View style={{ flexDirection: 'row', gap: Spacing.sm, alignItems: 'stretch', marginBottom: 6, flexWrap: 'wrap' }}>
       <PulsoTab active={active === 'pulso'} onPress={() => onSelect('pulso')} />
       <LivianoTab active={active === 'liviano'} onPress={() => onSelect('liviano')} />
       <PirqaTab active={active === 'pirqa'} onPress={() => onSelect('pirqa')} />
+      <MiniBrandTab id="terrenos" label="10%" active={active === 'terrenos'} onPress={() => onSelect('terrenos')} />
+      <MiniBrandTab id="golden" label="10%" active={active === 'golden'} onPress={() => onSelect('golden')} />
     </View>
+  );
+}
+
+/** Tile pequeño para líneas paralelas (Terrenos, Golden) — mismo lenguaje que PIRQA */
+function MiniBrandTab({ id, label, active, onPress }: { id: string; label: string; active: boolean; onPress: () => void }) {
+  const { hovered, hoverProps } = useHover();
+  const c = (BRANDS as any)[id]?.bright || '#B7B8BD';
+  const web = Platform.OS === 'web';
+  return (
+    <TouchableOpacity
+      activeOpacity={0.85} onPress={onPress} {...hoverProps}
+      style={[
+        sel.pirqa,
+        { borderColor: active ? c + 'AA' : DesktopColors.glassBorder, backgroundColor: active ? c + '18' : 'rgba(255,255,255,0.03)' },
+        web ? ({ transition: 'all .15s ease', cursor: 'pointer', ...(hovered && !active ? { borderColor: c + '66', transform: [{ translateY: -2 }] } : {}) } as any) : null,
+      ]}
+    >
+      <Text style={{ fontSize: 18 }}>{(BRANDS as any)[id]?.emoji || '🏷️'}</Text>
+      <Text style={[sel.pirqaLabel, { color: c }]}>{label}</Text>
+    </TouchableOpacity>
   );
 }
 
@@ -172,6 +218,31 @@ function PirqaTab({ active, onPress }: { active: boolean; onPress: () => void })
       <Text style={{ fontSize: 18 }}>{BRANDS.pirqa.emoji}</Text>
       <Text style={[sel.pirqaLabel, { color: terra }]}>1%</Text>
     </TouchableOpacity>
+  );
+}
+
+// ── Hero simple para líneas paralelas (Terrenos, Golden) ─────────
+function SimpleBrandView({ id, titulo, estado, desc, chips }: {
+  id: string; titulo: string; estado: string; desc: string; chips: [string, string][];
+}) {
+  const c = (BRANDS as any)[id]?.bright || '#B7B8BD';
+  return (
+    <View style={{
+      backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1,
+      borderColor: DesktopColors.glassBorder, borderLeftWidth: 3, borderLeftColor: c,
+      padding: Spacing.lg, marginBottom: Spacing.lg,
+    }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 6, flexWrap: 'wrap' }}>
+        <Text style={{ fontSize: 26 }}>{(BRANDS as any)[id]?.emoji}</Text>
+        <Text style={{ fontSize: FontSize.titleLg, fontWeight: '800', color: Colors.onSurface }}>{titulo}</Text>
+        <Chip label={estado} color={c} small />
+        <Chip label="10% del tiempo" color={Colors.muted} small />
+      </View>
+      <Text style={{ fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, lineHeight: 19 }}>{desc}</Text>
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 10 }}>
+        {chips.map(([lbl, color], i) => <Chip key={i} label={lbl} color={color} small />)}
+      </View>
+    </View>
   );
 }
 
