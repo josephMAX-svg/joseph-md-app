@@ -1,0 +1,6 @@
+# Artefactos de ejecución (corpus CSV, .docx de muestra) — no versionar
+_sample_*
+*.csv
+*.docx
+corpus*.csv
+active_query.txt

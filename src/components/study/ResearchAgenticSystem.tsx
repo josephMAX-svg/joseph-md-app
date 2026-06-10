@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Linking } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
@@ -11,6 +11,7 @@ import {
   AGENTE_SECCION, ESTADO_AGENTE, consolaSnapshot, journalStd,
 } from '../../lib/researchProgram';
 import { researchObsUrlSR, researchObsUrlLine } from '../../lib/obsidianResearchMap';
+import { getResearchAgentTasks, getResearchEngineState, ResearchEngineState } from '../../lib/supabase';
 
 const OBS = '#A78BFA';
 
@@ -53,6 +54,22 @@ export default function ResearchAgenticSystem() {
   const srLines = RESEARCH_LINES.filter((l) => l.srTag);
   const [selLine, setSelLine] = useState<number>(4); // L4 / SR-1 por defecto
   const linea = RESEARCH_LINES.find((l) => l.id === selLine) || RESEARCH_LINES[4];
+
+  // Estado REAL del motor (Supabase) — si hay datos, la consola va "en vivo"; si no, fallback ilustrativo.
+  const [live, setLive] = useState<Record<string, string>>({});
+  const [engine, setEngine] = useState<ResearchEngineState | null>(null);
+  useEffect(() => {
+    let on = true;
+    getResearchAgentTasks(linea.code).then((rows) => {
+      if (!on) return;
+      const m: Record<string, string> = {};
+      for (const r of rows) m[r.agent] = r.estado;
+      setLive(m);
+    });
+    getResearchEngineState().then((s) => { if (on) setEngine(s); });
+    return () => { on = false; };
+  }, [linea.code]);
+  const isLive = Object.keys(live).length > 0;
 
   return (
     <View>
@@ -103,13 +120,22 @@ export default function ResearchAgenticSystem() {
 
       {/* Consola de agentes — quién redacta qué sección (por línea) */}
       <SectionLabel>Consola de agentes · {linea.code} (un líder dirige; cada agente, una sección)</SectionLabel>
-      <Text style={st.sectionIntro}>Estándar objetivo: <Text style={{ color: CLUSTER_COLOR[linea.cluster], fontWeight: '700' }}>{journalStd(linea)}</Text>. Estado en vivo cuando el motor esté desplegado (Supabase · ver DEPLOY.md); ahora ilustra el reparto por sección de {linea.code}.</Text>
+      <Text style={st.sectionIntro}>Estándar objetivo: <Text style={{ color: CLUSTER_COLOR[linea.cluster], fontWeight: '700' }}>{journalStd(linea)}</Text>. {isLive ? '🟢 En vivo desde Supabase (research_agent_tasks).' : 'Ilustrativo (sin datos en Supabase para esta línea aún · ver DEPLOY.md).'}</Text>
+      {isLive && engine && (engine.papers_today != null || engine.next_checkpoint) && (
+        <View style={[st.consoleRow, { borderLeftColor: TEAL }]}>
+          <Text style={{ fontSize: 16, width: 26, textAlign: 'center' }}>🛰️</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={st.consoleSec}>Motor · {engine.active_line || linea.code}</Text>
+            <Text style={st.consoleAgent}>{engine.papers_today != null ? `${engine.papers_today} papers descubiertos` : ''}{engine.next_checkpoint ? ` · próximo: ${engine.next_checkpoint}` : ''}{engine.calendar_block ? ` · ${engine.calendar_block}` : ''}</Text>
+          </View>
+        </View>
+      )}
       {(() => {
         const snap = consolaSnapshot(linea.estado);
         return (
           <View style={{ marginBottom: Spacing.xl }}>
             {AGENTE_SECCION.map((a, i) => {
-              const e = ESTADO_AGENTE[snap[a.agentId] || 'idle'];
+              const e = ESTADO_AGENTE[(live[a.agentId] as keyof typeof ESTADO_AGENTE) || snap[a.agentId] || 'idle'];
               return (
                 <FadeUp key={a.agentId} delay={i * 25}>
                   <View style={[st.consoleRow, { borderLeftColor: a.color }]}>

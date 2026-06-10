@@ -607,6 +607,46 @@ export async function getAgentSkills(): Promise<AgentSkill[]> {
   }
 }
 
+// ═══════════════════════════════════════════════
+// RESEARCH — sistema agéntico (rama de investigación)
+// Lee el estado REAL del motor (research_agent_tasks / research_engine_state).
+// RLS de solo-lectura (anon). Si las tablas no existen aún, cae a [] / null.
+// ═══════════════════════════════════════════════
+export interface ResearchAgentTask {
+  line: string; sr?: string | null; agent: string; seccion?: string | null;
+  estado: 'idle' | 'queued' | 'working' | 'done' | 'blocked' | 'needs_human';
+  journal_std?: string | null;
+}
+export async function getResearchAgentTasks(line: string): Promise<ResearchAgentTask[]> {
+  try {
+    const { data, error } = await supabase
+      .from('research_agent_tasks')
+      .select('line, sr, agent, seccion, estado, journal_std')
+      .eq('line', line);
+    if (error) throw error;
+    return (data as ResearchAgentTask[]) ?? [];
+  } catch {
+    return [];
+  }
+}
+export interface ResearchEngineState {
+  active_line?: string | null; papers_today?: number | null;
+  next_checkpoint?: string | null; calendar_block?: string | null; last_run_at?: string | null;
+}
+export async function getResearchEngineState(): Promise<ResearchEngineState | null> {
+  try {
+    const { data, error } = await supabase
+      .from('research_engine_state')
+      .select('active_line, papers_today, next_checkpoint, calendar_block, last_run_at')
+      .eq('id', 1)
+      .maybeSingle();
+    if (error) throw error;
+    return (data as ResearchEngineState) ?? null;
+  } catch {
+    return null;
+  }
+}
+
 /**
  * Weak topics inferred from apex_blocks activity gaps per especialidad.
  * WEAK if >14 days since last card, WARNING if >7 days.

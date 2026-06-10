@@ -11,14 +11,20 @@
 
 | Pieza | Estado | Qué es |
 |---|---|---|
-| Extracción 5 fuentes (`discovery_engine.py`) | ✅ **funciona** (probado en vivo) | OpenAlex troncal + PubMed + Europe PMC + S2 → dedup |
-| Cascada texto completo (Unpaywall→…) | 🟡 especificada (§4 discovery-engine.md) | falta el resolver por DOI |
-| Esquema Supabase research (`supabase_schema.sql`) | ✅ escrito | falta **ejecutarlo** en el proyecto |
-| App = panel de control (Vercel) | ✅ desplegada | dashboard/consola/checkpoints |
-| Orquestación 24/7 (n8n + cron + Calendar) | ❌ **falta desplegar** | el "corre solo" vive aquí |
-| Workers Claude (Intro/Methods/Results/…) | ❌ falta | redactan secciones (Claude API) |
-| QA citas IA (Crossref/CSL) + .docx | 🟡 especificada | falta el código del worker |
-| Telegram (aprobaciones móviles) | ❌ falta bot | checkpoints HITL |
+| Extracción 5 fuentes (`discovery_engine.py`) | ✅ **funciona** (probado en vivo: SR-1 666, SR-2 562 únicos) | OpenAlex troncal + PubMed + Europe PMC + S2 → dedup |
+| Cascada texto completo (`fulltext_cascade.py`) | ✅ **funciona** (Unpaywall resolvió el PDF de DeLorenzi 2014) | resolver OA por DOI |
+| Citas por IA (`citation_verifier.py`) | ✅ **funciona** (DOI real→verified, falso→rejected) | gate Crossref/PubMed + CSL/Vancouver |
+| Ensamblador Word (`docx_assembler.py`) | ✅ **funciona** (genera .docx OOXML válido, solo stdlib) | el "escribe en Word" |
+| Orquestador + workers (`agentic_writer.py`) | ✅ código listo (modo PLAN sin key; redacta con ANTHROPIC_API_KEY) | un líder dirige; 1 agente/sección |
+| Esquema Supabase research (`supabase_schema.sql`) | ✅ **APLICADO** en el proyecto (6 tablas + RLS + Realtime, sembrado) | papers/screening/citations/agent_tasks/state/manuscripts |
+| App = panel de control + **consola en vivo** (Vercel) | ✅ desplegada · lee `research_agent_tasks` de Supabase | dashboard/consola/checkpoints |
+| Workflow n8n (`n8n_workflow.json`) | ✅ importable (6 nodos) | falta **importarlo** en un n8n encendido |
+| Orquestación 24/7 (VPS encendido + n8n + Ollama) | ❌ **falta el servidor** | el "corre solo mientras estudias" vive aquí |
+| Telegram (aprobaciones móviles) | ❌ falta bot + chat_id | checkpoints HITL |
+
+> **En una línea:** todo el **código del motor funciona y está probado en vivo**; el esquema Supabase ya
+> está **aplicado**. Lo único que falta para el "24/7 autónomo" es un **servidor encendido** que corra
+> `n8n_workflow.json` + Ollama (los pasos 1–5 de abajo). Yo puedo correr cualquier etapa aquí cuando me digas.
 
 ## Pasos para encenderlo (una vez)
 

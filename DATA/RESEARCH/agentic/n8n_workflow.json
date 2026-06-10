@@ -1,0 +1,71 @@
+{
+  "name": "RESEARCH · Discovery 24/7 (cron → Calendar → motor → Telegram)",
+  "_doc": "Importar en n8n self-hosted. Requiere WEBHOOK_URL (con / final) + N8N_PROXY_HOPS=1 y GENERIC_TIMEZONE=America/Lima para que el Send-and-Wait de Telegram reanude. Credenciales: Google Calendar OAuth2 (readonly), Telegram bot. Ver DEPLOY.md.",
+  "nodes": [
+    {
+      "parameters": { "rule": { "interval": [ { "field": "cronExpression", "expression": "0 6 * * 1-5" } ] } },
+      "name": "Cron 06:00 L-V",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [ 240, 300 ]
+    },
+    {
+      "parameters": {
+        "operation": "getAll", "calendar": { "__rl": true, "mode": "list", "value": "primary" },
+        "options": { "timeMin": "={{ $now.toISO() }}", "timeMax": "={{ $now.plus(1,'day').toISO() }}",
+          "singleEvents": true, "orderBy": "startTime", "query": "investigación" }
+      },
+      "name": "Google Calendar · ¿bloque research hoy?",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [ 480, 300 ]
+    },
+    {
+      "parameters": { "conditions": { "number": [ { "value1": "={{ $items().length }}", "operation": "larger", "value2": 0 } ] } },
+      "name": "IF hay bloque",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [ 720, 300 ]
+    },
+    {
+      "parameters": {
+        "command": "python /opt/research/discovery_engine.py \"$(cat /opt/research/active_query.txt)\" --line SR-1 --out /opt/research/corpus.csv"
+      },
+      "name": "Motor discovery (5 fuentes → dedup → CSV)",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [ 960, 220 ]
+    },
+    {
+      "parameters": {
+        "method": "POST", "url": "http://localhost:11434/api/generate",
+        "sendBody": true, "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"phi4-mini\",\n  \"stream\": false,\n  \"keep_alive\": \"30m\",\n  \"format\": {\"type\":\"object\",\"properties\":{\"relevant\":{\"type\":\"boolean\"},\"reason\":{\"type\":\"string\"}},\"required\":[\"relevant\"]},\n  \"prompt\": \"Criterios L4 (oclusión vascular por filler + hialuronidasa). ¿Relevante?\\nTITULO: {{ $json.title }}\\nABSTRACT: {{ $json.abstract }}\"\n}"
+      },
+      "name": "Ollama pre-screening local ($0)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [ 1200, 220 ]
+    },
+    {
+      "parameters": {
+        "resource": "message", "operation": "sendAndWait",
+        "chatId": "={{ $env.TELEGRAM_CHAT_ID }}",
+        "message": "🔬 SR-1: {{ $json.papers || 'N' }} candidatos nuevos pre-cribados. ¿Pasar a screening 2-revisores?",
+        "approvalOptions": { "values": { "approvalType": "double", "buttonApproveLabel": "Aprobar", "buttonDisapproveLabel": "Descartar" } }
+      },
+      "name": "Telegram · checkpoint humano (Send & Wait)",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [ 1440, 220 ]
+    }
+  ],
+  "connections": {
+    "Cron 06:00 L-V": { "main": [ [ { "node": "Google Calendar · ¿bloque research hoy?", "type": "main", "index": 0 } ] ] },
+    "Google Calendar · ¿bloque research hoy?": { "main": [ [ { "node": "IF hay bloque", "type": "main", "index": 0 } ] ] },
+    "IF hay bloque": { "main": [ [ { "node": "Motor discovery (5 fuentes → dedup → CSV)", "type": "main", "index": 0 } ], [] ] },
+    "Motor discovery (5 fuentes → dedup → CSV)": { "main": [ [ { "node": "Ollama pre-screening local ($0)", "type": "main", "index": 0 } ] ] },
+    "Ollama pre-screening local ($0)": { "main": [ [ { "node": "Telegram · checkpoint humano (Send & Wait)", "type": "main", "index": 0 } ] ] }
+  },
+  "settings": { "timezone": "America/Lima", "executionOrder": "v1" }
+}
