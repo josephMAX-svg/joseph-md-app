@@ -21,10 +21,10 @@ export const QB = {
 };
 
 export const PLAN_META = {
-  inicio: '2026-06-10',
+  inicio: '2026-06-11', // v2: 14/21-jun libres
   bloque: '16:15 Anchored Eval (2Q+Anki) · 16:30 Mini Deep Work English (Pre-test → Active Reading → Free Recall → APEX ≤3)',
   metodo: 'Palmerton: ver vídeo High-Yield del sistema → leer (Library/First Aid) → Anki (FSRS) → preguntas en modo tutor → log de errores → APEX.',
-  nota: 'Prioridad Step 1. Hoy es el Día 1 (Cardiovascular). Cada día avanza una unidad concreta dentro del sistema.',
+  nota: 'Prioridad Step 1. Día 1 = 11-jun (Cardiovascular). Cada día avanza una unidad concreta dentro del sistema.',
 };
 
 export interface SistemaUSMLE {
@@ -174,11 +174,11 @@ export const SISTEMAS: SistemaUSMLE[] = [
 /** Unidades diarias concretas del arranque (Día 1+). Cada día ≈ el bloque de 45min. */
 export interface UnidadDia { dia: number; fecha: string; sistema: string; foco: string; bbVideo: { titulo: string; min: number }; uworld: string; sketchy?: string; palmerton?: { titulo: string; id: string }; flash: string; }
 export const UNIDADES: UnidadDia[] = [
-  { dia: 1, fecha: '2026-06-10', sistema: 'Cardiovascular', foco: 'Anatomía + Fisiología cardíaca (la base de todo cardio)', bbVideo: { titulo: 'B&B Step 1 · 01 - Cardiac Anatomy', min: 15 }, uworld: 'uWorld · Cardiovascular → Normal structure & function (pre-test 2-3Q)', sketchy: 'Sketchy Anatomy → Heart (Chambers / Coronary circulation)', palmerton: { titulo: 'Palmerton · Cómo los 260+ dominan el cardio', id: 'TYe-wrDuFqg' }, flash: 'uWorld Step 1 FlashCards → Cardiovascular (mazo del día)' },
-  { dia: 2, fecha: '2026-06-11', sistema: 'Cardiovascular', foco: 'Fisiología cardíaca II (PV loops, Wiggers, Starling)', bbVideo: { titulo: 'B&B Step 1 · 02 - Cardiac Physiology', min: 27 }, uworld: 'uWorld · Cardiovascular → Normal structure & function (10Q)', flash: 'FlashCards → Cardiovascular' },
-  { dia: 3, fecha: '2026-06-12', sistema: 'Cardiovascular', foco: 'Hemodinámica + regulación de la PA', bbVideo: { titulo: 'B&B Step 1 · 04-05 Blood Flow / BP Regulation', min: 32 }, uworld: 'uWorld · Cardiovascular → Hypertension (10Q)', flash: 'FlashCards → Cardiovascular' },
-  { dia: 4, fecha: '2026-06-13', sistema: 'Cardiovascular', foco: 'Cardiopatía isquémica (atero → SCA)', bbVideo: { titulo: 'B&B Step 1 · Cardiac Ischemia (01-06)', min: 64 }, uworld: 'uWorld · Cardiovascular → Coronary heart disease (10Q)', palmerton: { titulo: 'Palmerton · High Yield Cardiology', id: 'hOGhcie47nM' }, flash: 'FlashCards → Cardiovascular' },
-  { dia: 5, fecha: '2026-06-14', sistema: 'Cardiovascular', foco: 'Arritmias (potenciales de acción → taqui/bradi)', bbVideo: { titulo: 'B&B Step 1 · Arrhythmias (01-08)', min: 90 }, uworld: 'uWorld · Cardiovascular → Cardiac arrhythmias (10Q)', flash: 'FlashCards → Cardiovascular' },
+  { dia: 1, fecha: '2026-06-11', sistema: 'Cardiovascular', foco: 'Anatomía + Fisiología cardíaca (la base de todo cardio)', bbVideo: { titulo: 'B&B Step 1 · 01 - Cardiac Anatomy', min: 15 }, uworld: 'uWorld · Cardiovascular → Normal structure & function (pre-test 2-3Q)', sketchy: 'Sketchy Anatomy → Heart (Chambers / Coronary circulation)', palmerton: { titulo: 'Palmerton · Cómo los 260+ dominan el cardio', id: 'TYe-wrDuFqg' }, flash: 'uWorld Step 1 FlashCards → Cardiovascular (mazo del día)' },
+  { dia: 2, fecha: '2026-06-12', sistema: 'Cardiovascular', foco: 'Fisiología cardíaca II (PV loops, Wiggers, Starling)', bbVideo: { titulo: 'B&B Step 1 · 02 - Cardiac Physiology', min: 27 }, uworld: 'uWorld · Cardiovascular → Normal structure & function (10Q)', flash: 'FlashCards → Cardiovascular' },
+  { dia: 3, fecha: '2026-06-13', sistema: 'Cardiovascular', foco: 'Hemodinámica + regulación de la PA', bbVideo: { titulo: 'B&B Step 1 · 04-05 Blood Flow / BP Regulation', min: 32 }, uworld: 'uWorld · Cardiovascular → Hypertension (10Q)', flash: 'FlashCards → Cardiovascular' },
+  { dia: 4, fecha: '2026-06-15', sistema: 'Cardiovascular', foco: 'Cardiopatía isquémica (atero → SCA)', bbVideo: { titulo: 'B&B Step 1 · Cardiac Ischemia (01-06)', min: 64 }, uworld: 'uWorld · Cardiovascular → Coronary heart disease (10Q)', palmerton: { titulo: 'Palmerton · High Yield Cardiology', id: 'hOGhcie47nM' }, flash: 'FlashCards → Cardiovascular' },
+  { dia: 5, fecha: '2026-06-16', sistema: 'Cardiovascular', foco: 'Arritmias (potenciales de acción → taqui/bradi)', bbVideo: { titulo: 'B&B Step 1 · Arrhythmias (01-08)', min: 90 }, uworld: 'uWorld · Cardiovascular → Cardiac arrhythmias (10Q)', flash: 'FlashCards → Cardiovascular' },
 ];
 
 /** Devuelve la unidad del día según la fecha (YYYY-MM-DD). null si fuera de rango. */
@@ -188,5 +188,10 @@ export function unidadDe(fechaISO: string): UnidadDia | undefined {
 export function diaDesdeInicio(fechaISO: string): number {
   const a = Date.parse(PLAN_META.inicio + 'T00:00:00');
   const b = Date.parse(fechaISO + 'T00:00:00');
-  return Math.floor((b - a) / 86400000) + 1;
+  let dias = Math.floor((b - a) / 86400000) + 1;
+  // 14/21-jun-2026 son días libres (no cuentan como días de plan)
+  for (const s of ['2026-06-14', '2026-06-21']) {
+    if (s >= PLAN_META.inicio && s <= fechaISO) dias--;
+  }
+  return dias;
 }

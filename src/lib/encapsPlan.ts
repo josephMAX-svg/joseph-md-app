@@ -7,8 +7,12 @@ import { supabase } from './supabase';
 
 // ── D1 por examen (para calcular el día actual 1..71) ──
 export const STUDY_D1: Record<string, string> = {
-  ENCAPS: '2026-06-10',   // re-estructurado v3: D1=mié 10 jun (no estudió 6-9); 1er finde=estudio; fin 19 ago
+  ENCAPS: '2026-06-11',   // re-estructurado v4 (10-jun): D1=jue 11-jun · dom 14/21-jun LIBRES (Día del Padre/familia) · sáb 13/20/27-jun = estudio · sims desde dom 28-jun · EXAMEN fijo lun 10-ago
   // MIR / USMLE se agregan cuando se construyan sus cronogramas.
+};
+// Fechas SIN actividad (bloqueadas por Joseph) — no cuentan como día de plan.
+export const STUDY_SKIP_DATES: Record<string, string[]> = {
+  ENCAPS: ['2026-06-14', '2026-06-21'],
 };
 const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 71 };
 
@@ -181,7 +185,12 @@ export function diaActual(examen: string): number {
   const d1 = STUDY_D1[examen];
   const total = STUDY_TOTAL_DAYS[examen] ?? 71;
   if (!d1) return 1;
-  const diff = Math.floor((Date.parse(todayLimaISO()) - Date.parse(d1)) / 86_400_000) + 1;
+  const hoy = todayLimaISO();
+  let diff = Math.floor((Date.parse(hoy) - Date.parse(d1)) / 86_400_000) + 1;
+  // Las fechas libres (14/21-jun) no son días de plan: réstalas si ya pasaron.
+  for (const s of STUDY_SKIP_DATES[examen] ?? []) {
+    if (s >= d1 && s <= hoy) diff--;
+  }
   return Math.max(1, Math.min(total, diff));
 }
 

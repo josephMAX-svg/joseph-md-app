@@ -2,7 +2,9 @@
  * researchData.ts — Sección Research (camino a Mayo Clinic).
  * Data destilada del dossier STUDY_HUB/01_RESEARCH_MAYO_path.md + 06b pipeline.
  * Estructura estilo ENCAPS: prioridad → vueltas (repetición espaciada) → deadline → links.
- * Alternancia Research↔Derma desde 2026-06-10 (D0 = Research).
+ * Alternancia Research↔Derma — ANCLA de paridad: 2026-06-10 (no mover: define qué día
+ * hábil es Research [par] y cuál Derma [impar]). El estudio REAL arranca el 11-jun-2026:
+ * Derma D1 = jue 11-jun, Research D1 = vie 12-jun (el 10-jun no se estudió).
  */
 
 export type Prioridad = 'CRITICA' | 'ALTA' | 'MEDIA' | 'BAJA';
@@ -18,8 +20,9 @@ export const PRIORIDAD_COLOR: Record<Prioridad, string> = {
   CRITICA: '#F56342', ALTA: '#F5A623', MEDIA: '#2E7CF6', BAJA: '#8F9097',
 };
 
-// ── Alternancia Research ↔ Derma (desde mié 10-jun-2026 = D0 Research) ──
+// ── Alternancia Research ↔ Derma (ancla de paridad: mié 10-jun-2026) ──
 // Cuenta días hábiles (L–V) desde el 10-jun: par → research, impar → derma.
+// El 10-jun no se estudió (solo fija la paridad): Derma=11-jun, Research=12-jun.
 export function diaEstudioTipo(date: Date): 'research' | 'derma' | 'descanso' {
   const dow = date.getDay(); // 0 dom .. 6 sáb
   if (dow === 0 || dow === 6) return 'descanso';

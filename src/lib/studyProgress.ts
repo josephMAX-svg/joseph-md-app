@@ -46,12 +46,15 @@ export function agruparProgreso<T extends DiaBase>(
   });
 }
 
-/** Día del plan correspondiente a hoy (clamp a los extremos si fuera de rango). */
+/** Día del plan correspondiente a hoy (clamp a los extremos si fuera de rango).
+ *  Si hoy es una fecha-hueco (p. ej. dom 14/21-jun-2026, días libres), devuelve el
+ *  SIGUIENTE día del plan — nunca saltar al final. */
 export function planHoyD(dias: DiaBase[], iso: string): number {
   if (!dias.length) return 1;
   const exact = dias.find((x) => x.fecha === iso);
   if (exact) return exact.d;
-  if (iso < dias[0].fecha) return dias[0].d;
+  const next = dias.find((x) => x.fecha > iso);
+  if (next) return next.d;
   return dias[dias.length - 1].d;
 }
 

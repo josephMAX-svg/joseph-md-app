@@ -168,8 +168,11 @@ function bloqueB(wd, semana) {
     return B('Latent Space — The AI Engineer Podcast', 'Episodio reciente a elección (el podcast del rol al que apuntas)', U.latent, { real: false });
   }
   if (wd === 'Mié') {
-    const c = lexCap(semana);
-    return B('Lex #452 — Dario Amodei (CEO Anthropic)', `Outline cap. ${semana}: "${c.titulo}" (desde ${c.dur})`, U.lex452, { dur: 'desde ' + c.dur });
+    // v2 (arranque jueves): la semana 1 no tiene miércoles → los caps se corren una
+    // semana (sem 2..12 = caps 1..11); el cap 12 se recupera en el último día del plan.
+    const n = semana - 1;
+    const c = lexCap(n);
+    return B('Lex #452 — Dario Amodei (CEO Anthropic)', `Outline cap. ${n}: "${c.titulo}" (desde ${c.dur})`, U.lex452, { dur: 'desde ' + c.dur });
   }
   if (wd === 'Jue') return B('The Batch (Andrew Ng)', 'El número de esta semana (sale los jueves): la carta de Ng + 2 noticias — 10 min y fuera', U.theBatch, { real: false });
   if (wd === 'Vie') {
@@ -196,8 +199,10 @@ function bloqueC(wd, semana) {
   }
   if (wd === 'Mar') return C('Simon Willison — serie Prompt injection', 'El siguiente artículo de la serie que no hayas leído (10-20 min: empiézalo, termínalo en otro hueco)', U.willison, { real: false });
   if (wd === 'Mié') {
-    const s = pyTutSec(semana);
-    return C('The Python Tutorial (docs oficiales)', `Sección ${semana}: "${s.titulo}" — prepara el terreno para CS50P`, s.url);
+    // v2: igual que el Lex — secciones corridas una semana (sem 2..12 = §1..11; §12 va al último día)
+    const n = semana - 1;
+    const s = pyTutSec(n);
+    return C('The Python Tutorial (docs oficiales)', `Sección ${n}: "${s.titulo}" — prepara el terreno para CS50P`, s.url);
   }
   if (wd === 'Jue') {
     const cap = autoCap(semana - 1);
@@ -239,10 +244,10 @@ function bloquePC(semana) {
   return { tag: 'PC', min: 75, formato: 'pc', material, leccion, url: url ? assertUrl(url) : undefined, real: true };
 }
 
-// ─── Calendario: d1 = mié 10-jun-2026 · semana 1 corta (mié→dom) · 12 semanas ───
+// ─── Calendario v2: d1 = jue 11-jun-2026 · semana 1 corta (jue→dom) · 12 semanas ───
 const WD = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-const START = new Date('2026-06-10T12:00:00');
-const TOTAL = 82; // 5 + 11*7 → d82 = dom 30-ago-2026
+const START = new Date('2026-06-11T12:00:00'); // v2: arranque 11-jun (el 10-jun se programó, no se estudió)
+const TOTAL = 82; // 4 (jue→dom) + 11*7 + 1 → d82 = lun 31-ago-2026 (recoge la 70ª A-unit + Lex cap 12 + PyTut §12)
 
 // Domingos bloqueados por Joseph (otras actividades — confirmado en el chat el 10-jun-2026)
 const DOMINGOS_LIBRES = new Set(['2026-06-14', '2026-06-21']);
@@ -254,7 +259,7 @@ for (let d = 1; d <= TOTAL; d++) {
   const date = new Date(START.getTime() + (d - 1) * 86400000);
   const fecha = date.toISOString().slice(0, 10);
   const wd = WD[date.getDay()];
-  const semana = d <= 5 ? 1 : 2 + Math.floor((d - 6) / 7);
+  const semana = d <= 4 ? 1 : Math.min(2 + Math.floor((d - 5) / 7), 12); // v2: sem 1 = jue→dom; sem 2+ = lun→dom (d82 se etiqueta sem 12)
   const faseId = semana <= 8 ? 'f0' : 'f1';
   const fase = faseId === 'f0' ? 'F0 · La Escuela de Anthropic' : 'F1 · Código: Python + terminal + Git';
   const bloques = [];
@@ -265,13 +270,22 @@ for (let d = 1; d <= TOTAL; d++) {
       real: true,
     });
   } else if (wd === 'Dom') {
+    const esUltimoDomingo = TOTAL - d < 7; // v2: el plan termina en lunes — el cierre va en el ÚLTIMO domingo
     bloques.push({
-      tag: 'R', min: 30, formato: 'repaso', material: 'Repaso semanal',
-      leccion: d === TOTAL
+      tag: 'R', min: 30, formato: 'repaso', material: esUltimoDomingo ? 'Cierre de las 12 semanas' : 'Repaso semanal',
+      leccion: esUltimoDomingo
         ? "Cierre de las 12 semanas: repasa tus ✓, explica en voz alta lo más importante de F0/F1 y regenera el plan para las semanas 13+ (node DATA/_scripts/gen_synapse_plan.js)."
         : "30' sueltos: revisa lo marcado ✓ de la semana, termina lo que quedó a medias y explica en voz alta (Feynman) la idea más importante. Nada nuevo hoy.",
       real: true,
     });
+  } else if (d === TOTAL) {
+    // v2: último día (lunes): 70ª A-unit + lo que el calendario corrido dejó sin colocar
+    const a = aUnits[aIdx++];
+    bloques.push({ tag: 'A', min: 15, formato: 'pantalla', ...a });
+    const c12 = lexCap(12);
+    bloques.push({ tag: 'B', min: 10, formato: 'audio', material: 'Lex #452 — Dario Amodei (CEO Anthropic)', leccion: `Outline cap. 12: "${c12.titulo}" (desde ${c12.dur}) — cierre del episodio`, url: assertUrl(U.lex452), dur: 'desde ' + c12.dur, real: true });
+    const s12 = pyTutSec(12);
+    bloques.push({ tag: 'C', min: 5, formato: 'lectura', material: 'The Python Tutorial (docs oficiales)', leccion: `Sección 12: "${s12.titulo}" — prepara el terreno para CS50P`, url: assertUrl(s12.url), real: true });
   } else {
     const a = aUnits[aIdx++];
     bloques.push({ tag: 'A', min: 15, formato: 'pantalla', ...a });
@@ -295,7 +309,8 @@ const blkTs = (b) => {
 const diaTs = (x) => `{d:${x.d},fecha:"${x.fecha}",wd:"${x.wd}",semana:${x.semana},faseId:"${x.faseId}",fase:"${esc(x.fase)}",bloques:[${x.bloques.map(blkTs).join(',')}]}`;
 
 const ts = `/**
- * synapseDailyPlan.ts — Motor día-a-día SYNAPSE (12 semanas · ${TOTAL} días · 10-jun → 30-ago-2026).
+ * synapseDailyPlan.ts — Motor día-a-día SYNAPSE (12 semanas · ${TOTAL} días · ${dias[0].fecha} → ${dias[TOTAL - 1].fecha}).
+ * v2: arranque jue 11-jun-2026 · dom 14/21-jun BLOQUEADOS (sin misión) · cierre en el último domingo.
  * GENERADO por DATA/_scripts/gen_synapse_plan.js desde DATA/SYNAPSE/curricula/_extracted.json
  * (temarios REALES extraídos con WebFetch/oEmbed + verificación adversarial, 10-jun-2026).
  * NO editar a mano — regenerar: node DATA/_scripts/gen_synapse_plan.js

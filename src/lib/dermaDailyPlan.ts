@@ -40,7 +40,7 @@ export const PM_CAP = {
 } as const;
 
 export const DERMA_DAILY_META = {
-  inicio: '2026-06-11', fin: '2026-12-16', totalDias: 68,
+  inicio: '2026-06-11', fin: '2026-12-22', totalDias: 70, // v2: 68 átomos + 2 colchón (14/21-jun ya eran descanso)
   bloque: '13:30–14:15 (franja boards del Calendar, alterna con Research — interdiario)',
   nota: 'Progreso REAL marcable (studyProgress key "derma", empieza 0%). El día mostrado salta los días-Research.',
 };
@@ -220,7 +220,11 @@ export const DERMA_DIAS: DiaDerma[] = [
     access: { t: 'Baumann 3e · Cap 24 Chemical Peels', url: `${MH}/content.aspx?bookid=3200&sectionid=266616672` }, qbankly: null, promir: null, extra: { t: 'Cosmetic Procedures in Primary Care · Cap 26 Chemical Peels', url: `${MH}/content.aspx?bookid=2953&sectionid=248412820` } },
   { d: 68, fecha: '2026-12-16', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Microneedling + PRP + cosmecéuticos / skincare basado en evidencia', referente: 'Baumann',
     access: { t: 'Baumann 3e · Cap 27 Microneedling and PRP', url: `${MH}/content.aspx?bookid=3200&sectionid=266617053` }, qbankly: null, promir: null, extra: { t: 'Cosmeceuticals and Cosmetic Ingredients (83 caps)', url: book(2812) } },
-];
+
+  { d: 69, fecha: '2026-12-18', bloque: B.Z, bKey: 'Z', tier: 'MED', sub: 'COLCHÓN 1 · Repaso libre: incorrects de QBanks + flashcards de los bloques más flojos', referente: null,
+    access: { t: 'Tus notas + Guidebook (repaso)', url: book(2960) }, qbankly: { t: 'QBanks (repaso de incorrects)', url: QB_QBANKS, via: 'edge' }, promir: null, extra: null },
+  { d: 70, fecha: '2026-12-22', bloque: B.Z, bKey: 'Z', tier: 'MED', sub: 'COLCHÓN 2 · Dermki/Anki segunda pasada + tabla de conceptos que aún fallan', referente: null,
+    access: { t: 'Tus notas + Guidebook (repaso)', url: book(2960) }, qbankly: { t: 'QBanks (marcadas)', url: QB_QBANKS, via: 'edge' }, promir: null, extra: null },];
 
 export function dermaDiaDe(fechaISO: string): DiaDerma | undefined { return DERMA_DIAS.find(x => x.fecha === fechaISO); }
 export function dermaDiaPrevio(d: DiaDerma): DiaDerma | undefined { return DERMA_DIAS.find(x => x.d === d.d - 1); }
