@@ -4,8 +4,23 @@
 
 El código vive ahora COPIADO en `D:\joseph-md-app\VITALS\` (web/ + supabase/ + research/,
 sin node_modules/.next/.git). El original en CRM Pulso quedó INTACTO (git status limpio
-verificado). Build `next build` sin errores. Deploy pendiente: ver `VITALS/DEPLOY.md`
-(proyecto Vercel nuevo + 3 env vars + cambiar `VITALS_URL`). `config.ts` NO se tocó aún.
+verificado). Build `next build` sin errores.
+
+**🚀 DESPLEGADO (10-jun-2026): https://vitals-pulso.vercel.app** — proyecto Vercel
+`vitals-pulso` (root `VITALS/web`, framework Next.js vía `VITALS/web/vercel.json`; ojo:
+el `vercel.json` de la RAÍZ del repo es del dashboard Expo y NO debe heredarse — los
+overrides de Build Command/Output Directory del proyecto deben estar APAGADOS). Env vars
+cargadas (Supabase URL/anon + Gemini). `VITALS_URL` en `src/config.ts` ya apunta al
+deploy nuevo (commit 4470f54). El viejo `web-sigma-eight-92.vercel.app` queda de respaldo.
+
+**v2.1 "tareas cortas" (mismo día):** cada ejercicio tiene video EXPRESS por defecto
+(0:10–2:55, demos exactas de Renaissance Periodization/Dr. Mike Israetel, Squat
+University/Dr. Horschig y Jeff Nippard — referentes top del ámbito que Joseph no seguía)
++ "A fondo" opcional (Andrés Vázquez en español). 49 IDs verificados por oEmbed con
+duración real (catálogo en `videos-verificados.md`). Los 2 huecos de v1 (curl femoral,
+zancadas) quedaron cubiertos con el ejercicio EXACTO. UI: chips ⚡Express/A-fondo,
+tracklist del baile con pista actual (subtareas ~4 min), logger con progreso X/N +
+ejercicio "AHORA" + ~min por ejercicio.
 
 **Videos (MISIÓN 1)** — cobertura 17/17 del catálogo del motor, TODOS los IDs verificados
 por oEmbed (31/31 OK, autor confirmado):
