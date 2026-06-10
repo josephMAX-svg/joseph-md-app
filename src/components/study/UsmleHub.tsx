@@ -9,6 +9,7 @@ import {
   PALMERTON_METHOD, PALMERTON_SYSTEMS, USMLE_RAMP, USMLE_HOUR, USMLE_QBANK_RULES, USMLE_RESOURCES,
   PRIORIDAD_COLOR, VUELTAS,
 } from '../../lib/usmleData';
+import UsmlePalmertonExplorer from './UsmlePalmertonExplorer';
 
 /**
  * UsmleHub — USMLE Step 1 ("Estados Unidos"), IN ENGLISH. Two sub-views:
@@ -19,7 +20,7 @@ const GREEN = USMLE_META.accent;
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
 
 export default function UsmleHub() {
-  const [sub, setSub] = useState<'roi' | 'brain'>('roi');
+  const [sub, setSub] = useState<'hy' | 'roi' | 'brain'>('hy');
   return (
     <View>
       {/* HERO */}
@@ -30,12 +31,13 @@ export default function UsmleHub() {
       </GradientHero>
 
       {/* sub-nav */}
-      <View style={{ flexDirection: 'row', gap: Spacing.sm, marginBottom: Spacing.lg }}>
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm, marginBottom: Spacing.lg }}>
+        <PillTab label="High Yield" icon="🎬" active={sub === 'hy'} accent={GREEN} onPress={() => setSub('hy')} />
         <PillTab label="ROI Plan" icon="🎯" active={sub === 'roi'} accent={GREEN} onPress={() => setSub('roi')} />
         <PillTab label="Palmerton Brain" icon="🧠" active={sub === 'brain'} accent={GREEN} onPress={() => setSub('brain')} />
       </View>
 
-      {sub === 'roi' ? <RoiPlan /> : <PalmertonBrain />}
+      {sub === 'hy' ? <UsmlePalmertonExplorer /> : sub === 'roi' ? <RoiPlan /> : <PalmertonBrain />}
     </View>
   );
 }
