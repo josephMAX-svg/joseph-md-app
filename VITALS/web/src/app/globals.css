@@ -1,0 +1,222 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   VITALS · PULSO — tema "navy editorial" de la casa Joseph MD.
+   Navy profundo + grises acero + UN solo acento oro. Nada
+   fosforescente. Los nombres de token se conservan ("sage" pasa
+   a ser el acero gris-azul; "brass" es EL acento oro).
+   ============================================================ */
+:root {
+  --mv-bg: #0B1628;
+  --mv-bg-elevated: #101F36;
+  --mv-bg-raised: #16273F;
+  --mv-bg-subtle: #1A2B45;
+  --mv-bg-muted: #22344F;
+
+  --mv-ink: #E8EEF7;
+  --mv-ink-secondary: #B7C3D4;
+  --mv-ink-muted: #7E8FA6;
+  --mv-ink-inverse: #0B1628;
+
+  /* "sage" → acero sereno (acciones secundarias, sellos de marca) */
+  --mv-sage: #C8D6E7;
+  --mv-sage-deep: #A9BFD9;
+  --mv-sage-light: #2C405E;
+  --mv-sage-subtle: #18293F;
+
+  /* "brass" → ORO, el único acento (acción primaria, score, PR) */
+  --mv-brass: #D9A441;
+  --mv-brass-deep: #E7BE6B;
+  --mv-brass-subtle: #2B2310;
+
+  --mv-navy: #1E3A5F;
+
+  --mv-line: #233650;
+  --mv-line-subtle: #1C2C44;
+
+  --mv-success: #62A87E;
+  --mv-success-subtle: #14291E;
+  --mv-warn: #C98D3D;
+  --mv-warn-subtle: #2B2110;
+  --mv-danger: #D97B63;
+  --mv-danger-subtle: #341D17;
+
+  --mv-ring-track: #22344F;
+
+  --mv-shadow-sm: 0 1px 3px rgba(2, 8, 20, 0.35);
+  --mv-shadow-md: 0 4px 20px rgba(2, 8, 20, 0.45);
+  --mv-shadow-lg: 0 16px 40px rgba(2, 8, 20, 0.55);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    background: var(--mv-bg);
+    color: var(--mv-ink);
+    font-family: var(--font-sans), system-ui, sans-serif;
+    overscroll-behavior-y: none;
+  }
+  h1, h2, h3 { font-family: var(--font-serif), Georgia, serif; }
+  /* Números tabulares premium */
+  .tnum { font-variant-numeric: tabular-nums; }
+}
+
+@layer components {
+  .mv-card {
+    @apply rounded-2xl border border-line bg-elevated p-5 shadow-sm;
+  }
+  .mv-card-raised {
+    @apply rounded-2xl border border-line bg-raised p-5 shadow-md;
+  }
+  /* Microlabel editorial (sello de la marca) */
+  .mv-label {
+    @apply text-[11px] font-semibold uppercase tracking-[0.16em] text-ink-muted;
+  }
+  /* Botón primario (touch target ≥48px) */
+  .mv-btn {
+    @apply inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full px-5 text-sm font-medium transition active:scale-[0.98];
+  }
+  /* La acción primaria lleva EL acento oro (Hormozi: una sola siguiente acción obvia). */
+  .mv-btn-primary { @apply mv-btn bg-brass text-ink-inverse hover:bg-brass-deep; }
+  .mv-btn-brass { @apply mv-btn bg-brass text-ink-inverse hover:bg-brass-deep; }
+  .mv-btn-ghost { @apply mv-btn border border-line bg-elevated text-ink hover:bg-subtle; }
+  /* Acento gold del page header */
+  .mv-accent { @apply h-0.5 w-8 rounded-full bg-brass; }
+  /* Píldora de chip/estado */
+  .mv-chip {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-medium;
+  }
+}
+
+/* ── Animación / dinamismo ───────────────────────────────────── */
+.mv-enter { animation: enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+/* Entrada escalonada: cada hijo directo entra con un pequeño retraso incremental. */
+@keyframes riseIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+.mv-stagger > * { animation: riseIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.mv-stagger > *:nth-child(1) { animation-delay: 0.02s; }
+.mv-stagger > *:nth-child(2) { animation-delay: 0.07s; }
+.mv-stagger > *:nth-child(3) { animation-delay: 0.12s; }
+.mv-stagger > *:nth-child(4) { animation-delay: 0.17s; }
+.mv-stagger > *:nth-child(5) { animation-delay: 0.22s; }
+.mv-stagger > *:nth-child(6) { animation-delay: 0.27s; }
+.mv-stagger > *:nth-child(7) { animation-delay: 0.32s; }
+.mv-stagger > *:nth-child(8) { animation-delay: 0.37s; }
+.mv-stagger > *:nth-child(n+9) { animation-delay: 0.4s; }
+
+/* Tarjetas con micro-interacción (elevación sutil al hover en desktop). */
+.mv-card, .mv-card-raised { transition: box-shadow 0.25s ease, transform 0.25s ease; }
+@media (hover: hover) {
+  .mv-lift:hover { transform: translateY(-2px); box-shadow: var(--mv-shadow-md); }
+}
+
+/* Ring/sparkline: trazo animado. */
+@keyframes dash { from { stroke-dashoffset: var(--dash-len, 300); } to { stroke-dashoffset: 0; } }
+
+/* Shimmer para skeletons. */
+@keyframes shimmer { 100% { transform: translateX(100%); } }
+
+/* Gradientes "wow" (hero) — navy editorial; el oro solo asoma. */
+.mv-gradient-navy { background: linear-gradient(150deg, #0C1A30 0%, #14294A 55%, #1E3A5F 100%); }
+.mv-gradient-sage { background: linear-gradient(150deg, #0C1A30 0%, #14294A 55%, #1E3A5F 100%); }
+.mv-gradient-gold { background: linear-gradient(135deg, #8C6B34 0%, #D9A441 50%, #B8862F 100%); }
+
+/* Pulso suave (botón cámara). */
+@keyframes softPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(217,164,65,0.4); } 50% { box-shadow: 0 0 0 10px rgba(217,164,65,0); } }
+.mv-pulse { animation: softPulse 2.4s ease-out infinite; }
+
+/* ── MOVIMIENTO ÉLITE / CINEMATOGRÁFICO ──────────────────────── */
+
+/* Scroll-reveal: el elemento entra (fade + rise + blur->nítido) al verse. Lo dispara ScrollFX. */
+.mv-reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  filter: blur(6px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease;
+  transition-delay: var(--reveal-delay, 0s);
+  will-change: opacity, transform;
+}
+.mv-reveal.mv-in, .mv-reveal[data-in] { opacity: 1; transform: none; filter: blur(0); }
+/* Variantes de dirección */
+.mv-reveal-l { transform: translateX(-28px); }
+.mv-reveal-r { transform: translateX(28px); }
+.mv-reveal-scale { transform: scale(0.94); filter: blur(4px); }
+.mv-reveal-l.mv-in, .mv-reveal-r.mv-in, .mv-reveal-scale.mv-in,
+.mv-reveal-l[data-in], .mv-reveal-r[data-in], .mv-reveal-scale[data-in] { transform: none; }
+
+/* Transición de página (template.tsx) — cada navegación entra con un fade-up cinematográfico. */
+@keyframes pageIn { from { opacity: 0; transform: translateY(10px) scale(0.995); } to { opacity: 1; transform: none; } }
+.mv-page { animation: pageIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+/* Aurora animada (hero): malla de gradientes que respira. */
+.mv-aurora { position: relative; isolation: isolate; }
+.mv-aurora::before {
+  content: ""; position: absolute; inset: -40%; z-index: -1; border-radius: inherit;
+  background:
+    radial-gradient(40% 50% at 20% 30%, rgba(63, 98, 148, 0.45), transparent 60%),
+    radial-gradient(45% 55% at 80% 20%, rgba(217, 164, 65, 0.22), transparent 60%),
+    radial-gradient(50% 60% at 60% 80%, rgba(30, 58, 95, 0.55), transparent 60%);
+  filter: blur(24px);
+  animation: aurora 14s ease-in-out infinite alternate;
+}
+@keyframes aurora {
+  0%   { transform: translate3d(-4%, -2%, 0) rotate(0deg) scale(1.05); }
+  50%  { transform: translate3d(3%, 2%, 0) rotate(8deg) scale(1.15); }
+  100% { transform: translate3d(-2%, 3%, 0) rotate(-6deg) scale(1.08); }
+}
+
+/* Brillo que cruza una tarjeta al hover (desktop) — "sheen" premium. */
+@media (hover: hover) {
+  .mv-sheen { position: relative; overflow: hidden; }
+  .mv-sheen::after {
+    content: ""; position: absolute; top: 0; left: -75%; width: 50%; height: 100%;
+    background: linear-gradient(100deg, transparent, rgba(232, 238, 247, 0.07), transparent);
+    transform: skewX(-18deg); transition: left 0.7s ease; pointer-events: none;
+  }
+  .mv-sheen:hover::after { left: 130%; }
+}
+
+/* Shimmer para skeletons. */
+.mv-shimmer { position: relative; overflow: hidden; }
+.mv-shimmer::after {
+  content: ""; position: absolute; inset: 0; transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(232, 238, 247, 0.08), transparent);
+  animation: shimmer 1.5s infinite;
+}
+
+/* Latido del brand-mark (línea de pulso). */
+@keyframes pulseDraw { 0% { stroke-dashoffset: 48; } 55% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: -48; } }
+
+/* Trazo de línea (sparkline) que se dibuja. Usa pathLength=1. */
+.mv-draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: drawLine 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards; }
+@keyframes drawLine { to { stroke-dashoffset: 0; } }
+
+/* Flotación suave (elementos hero). */
+@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+.mv-float { animation: float 5s ease-in-out infinite; }
+
+/* Confeti (celebración de hitos — retención/dopamina). */
+@keyframes confettiFall {
+  0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(105vh) rotate(720deg); opacity: 0.9; }
+}
+.mv-confetti { position: fixed; top: 0; width: 9px; height: 14px; border-radius: 2px; z-index: 80; pointer-events: none; animation: confettiFall linear forwards; }
+
+/* Toast de celebración. */
+@keyframes toastIn { 0% { opacity: 0; transform: translate(-50%, 16px) scale(0.9); } 100% { opacity: 1; transform: translate(-50%, 0) scale(1); } }
+.mv-toast { animation: toastIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+/* Oculta scrollbars horizontales en tabs móviles */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Accesibilidad: respeta "menos movimiento". */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  .mv-reveal { opacity: 1 !important; transform: none !important; filter: none !important; }
+}

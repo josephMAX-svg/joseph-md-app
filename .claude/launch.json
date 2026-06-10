@@ -6,6 +6,13 @@
       "runtimeExecutable": "python",
       "runtimeArgs": ["-m", "http.server", "5601", "--directory", "dist"],
       "port": 5601
+    },
+    {
+      "name": "vitals-web",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "VITALS/web"],
+      "port": 3000,
+      "autoPort": true
     }
   ]
 }

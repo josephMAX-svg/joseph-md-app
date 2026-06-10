@@ -1,0 +1,230 @@
+{
+  "namespace": "movimiento",
+  "note": "Chunks de conocimiento citados para el RAG del Coach. Se siembran en knowledge_base/knowledge_chunks. Contenido referencial; el Dr. Joseph valida antes del uso clínico.",
+  "chunks": [
+    {
+      "titulo": "Cuánta proteína para ganar/preservar músculo",
+      "categoria": "nutricion",
+      "fuente": "Morton, Murphy & Phillips (Br J Sports Med 2018)",
+      "tags": ["proteina", "musculo", "macros"],
+      "contenido": "Para maximizar la masa muscular con entrenamiento de fuerza, la evidencia apunta a ~1.6 g de proteína por kg de peso al día, con beneficio posible hasta ~2.2 g/kg. Reparte en 3-4 comidas de 30-40 g (aprox. 0.4 g/kg por toma). En déficit calórico o bajo GLP-1, sube el piso a 1.8-2.2 g/kg para proteger el músculo."
+    },
+    {
+      "titulo": "La ventana anabólica no es tan estrecha",
+      "categoria": "nutricion",
+      "fuente": "Aragon & Schoenfeld (JISSN 2013)",
+      "tags": ["timing", "mitos", "proteina"],
+      "contenido": "No arruinas tus resultados por comer la proteína una o dos horas después de entrenar. Lo que más pesa es el total diario de proteína y de calorías, y sobre todo la constancia. No te castigues por el reloj: cuida el total y la adherencia."
+    },
+    {
+      "titulo": "La adherencia es lo que más predice el resultado",
+      "categoria": "adherencia",
+      "fuente": "Layne Norton; Eric Helms (pirámide de prioridades)",
+      "tags": ["adherencia", "habito", "psicologia"],
+      "contenido": "El mejor plan es el que puedes sostener. La jerarquía es: primero adherencia, luego volumen/intensidad de entrenamiento, luego frecuencia, después el timing y al final los suplementos. Si algo del plan no es sostenible para ti, se ajusta; no se abandona todo."
+    },
+    {
+      "titulo": "Principio 80/20: hacer una parte ya rinde",
+      "categoria": "adherencia",
+      "fuente": "Filosofía Pulso (anti-todo-o-nada)",
+      "tags": ["adherencia", "motivacion", "80-20"],
+      "contenido": "Hacer todo el plan da el 100% del beneficio, pero hacer una buena fracción del plan rinde cerca del 80% del beneficio. No existe el 'ya lo arruiné, mejor dejo todo'. Un día imperfecto sigue sumando. La constancia imperfecta gana al perfeccionismo que abandona."
+    },
+    {
+      "titulo": "Volumen de entrenamiento para hipertrofia",
+      "categoria": "ejercicio",
+      "fuente": "Schoenfeld, Ogborn & Krieger (J Sports Sci 2017)",
+      "tags": ["volumen", "hipertrofia", "series"],
+      "contenido": "Para crecer músculo conviene acumular al menos 10 series por grupo muscular a la semana, y muchas personas progresan con 12-20 series repartidas en 2 o más sesiones. Lleva las series cerca del esfuerzo (RIR 1-3). La hipertrofia ocurre en un amplio rango de repeticiones si hay esfuerzo."
+    },
+    {
+      "titulo": "RIR: cómo regular el esfuerzo",
+      "categoria": "ejercicio",
+      "fuente": "Eric Helms (Muscle & Strength Pyramids)",
+      "tags": ["rir", "intensidad", "tecnica"],
+      "contenido": "RIR (reps en reserva) es cuántas repeticiones más podrías hacer al terminar la serie. Para hipertrofia, trabaja con RIR 1-3 (parar 1 a 3 reps antes del fallo). Cuando un peso te deja con más reps de reserva de las planeadas, súbelo o suma repeticiones: eso es sobrecarga progresiva."
+    },
+    {
+      "titulo": "Landmarks de volumen MEV/MAV/MRV y deload",
+      "categoria": "ejercicio",
+      "fuente": "Mike Israetel (Renaissance Periodization)",
+      "tags": ["periodizacion", "volumen", "deload"],
+      "contenido": "MEV es el volumen mínimo para crecer, MAV el rango donde más adaptas y MRV el máximo que puedes recuperar. Sube el volumen semana a semana desde MEV hacia MAV; cuando el rendimiento cae o te estancas, programa una semana de descarga (deload) y vuelve a subir."
+    },
+    {
+      "titulo": "Entrenamiento minimalista: 30 minutos sirven",
+      "categoria": "ejercicio",
+      "fuente": "Dr. Pak (entrenamiento minimalista)",
+      "tags": ["tiempo", "minimalista", "30min"],
+      "contenido": "No necesitas sesiones largas para mantener o ganar músculo. Pocas series bien ejecutadas, cerca del fallo (RIR 0-2), en 30 minutos, son efectivas si eres constante. Para días cortos: prioriza ejercicios multiarticulares y deja el aislamiento si falta tiempo."
+    },
+    {
+      "titulo": "Rango de movimiento completo",
+      "categoria": "ejercicio",
+      "fuente": "Milo Wolf, PhD (ROM)",
+      "tags": ["tecnica", "rom", "estiramiento"],
+      "contenido": "Entrenar en rango completo, especialmente con el músculo estirado bajo carga, tiende a dar más crecimiento que rangos parciales cortos. Baja con control hasta el estiramiento y controla la fase excéntrica. Las parciales en posición estirada son una herramienta útil al final de la serie."
+    },
+    {
+      "titulo": "Recomposición: ganar músculo y perder grasa a la vez",
+      "categoria": "ejercicio",
+      "fuente": "Menno Henselmans",
+      "tags": ["recomposicion", "grasa", "musculo"],
+      "contenido": "La recomposición (perder grasa y ganar músculo a la vez) es realista en quienes recién empiezan, vienen de un parón, o tienen grasa que perder. La receta: proteína alta (1.6-2.2 g/kg), entrenamiento de fuerza progresivo y un déficit calórico pequeño o mantenimiento. Paciencia: la balanza se mueve poco aunque cambies por dentro."
+    },
+    {
+      "titulo": "TDEE adaptativo: el plan se ajusta a tu metabolismo real",
+      "categoria": "nutricion",
+      "fuente": "MacroFactor (algoritmo adaptativo)",
+      "tags": ["calorias", "tdee", "adaptativo"],
+      "contenido": "En vez de confiar en una fórmula fija, tu gasto energético real se estima de tus datos: cuánto comes y cómo cambia tu peso (tendencia suavizada). Si bajas más lento de lo previsto, el plan recorta un poco las calorías; si bajas muy rápido, las sube. Así el objetivo se reestructura solo, sin culpa."
+    },
+    {
+      "titulo": "Velocidad segura de pérdida de peso",
+      "categoria": "nutricion",
+      "fuente": "Helms; Aragon (práctica basada en evidencia)",
+      "tags": ["deficit", "velocidad", "seguridad"],
+      "contenido": "Una pérdida sostenible es de 0.5 a 0.75% de tu peso por semana (hasta 1% en personas con más grasa). Perder más rápido de forma sostenida aumenta el riesgo de perder músculo, fatiga y rebote. Si tu tendencia supera 1%/semana de forma constante, hay que revisar el plan con el médico."
+    },
+    {
+      "titulo": "Comer real, no demasiado, sobre todo plantas",
+      "categoria": "nutricion",
+      "fuente": "Michael Pollan (In Defense of Food)",
+      "tags": ["comida-real", "ultraprocesados", "filosofia"],
+      "contenido": "Prioriza comida de verdad: proteínas (pollo, pescado, huevo), tubérculos (papa, camote), cereales (arroz, quinua), verduras y frutas. Reduce ultraprocesados y azúcares añadidos. No se trata de prohibir, sino de que la base de tu plato sea comida real andina."
+    },
+    {
+      "titulo": "Ventana de alimentación (TRE) suave",
+      "categoria": "nutricion",
+      "fuente": "Satchin Panda (The Circadian Code)",
+      "tags": ["ayuno", "ventana", "circadiano"],
+      "contenido": "Concentrar tus comidas en una ventana de 10 a 12 horas (por ejemplo de 8am a 7pm) puede ayudar a tu metabolismo sin pasar hambre extrema. No es un ayuno agresivo: es ordenar los horarios. Evita comer muy tarde en la noche. Nada de ayunos prolongados sin indicación médica."
+    },
+    {
+      "titulo": "Longevidad: músculo, fuerza y cardio zona 2",
+      "categoria": "ejercicio",
+      "fuente": "Peter Attia (Outlive)",
+      "tags": ["longevidad", "zona2", "cardio", "fuerza"],
+      "contenido": "Para vivir mejor más años, protege tu masa muscular y tu capacidad aeróbica. Combina entrenamiento de fuerza con cardio de zona 2 (ritmo en el que aún puedes conversar) varias horas por semana, más algo de alta intensidad. La proteína y la fuerza son medicina para la vejez."
+    },
+    {
+      "titulo": "Comer bajo GLP-1 (Ozempic/semaglutida)",
+      "categoria": "nutricion",
+      "fuente": "Alexandra Sowa (The Ozempic Revolution)",
+      "tags": ["glp1", "proteina", "musculo", "seguridad"],
+      "contenido": "El GLP-1 baja el apetito, así que el riesgo no es comer de más sino comer demasiado poco y perder músculo. Asegura tu proteína (prioriza la proteína en cada comida aunque comas poco), mantén la fuerza, hidrátate y vigila náuseas. Si las náuseas o el vómito son fuertes, avisa al médico."
+    },
+    {
+      "titulo": "Suplementos: fuente neutral y prudencia",
+      "categoria": "nutricion",
+      "fuente": "Examine.com",
+      "tags": ["suplementos", "creatina", "seguridad"],
+      "contenido": "De los suplementos, los que más respaldo tienen para entrenar son la creatina monohidrato (3-5 g/día) y la proteína en polvo como complemento si no llegas con comida. La cafeína ayuda al rendimiento. Antes de empezar cualquier suplemento, consúltalo con tu médico, sobre todo si tomas medicación."
+    },
+    {
+      "titulo": "Dosis de proteína por comida",
+      "categoria": "nutricion",
+      "fuente": "Stuart Phillips (muscle full)",
+      "tags": ["proteina", "comidas", "leucina"],
+      "contenido": "Cada comida estimula la síntesis de músculo hasta cierto punto: unos 30-40 g de proteína de buena calidad por toma (rica en leucina, como huevo, carne, pescado o lácteos) cubren bien ese estímulo. Mejor repartir la proteína en el día que concentrarla toda en una comida."
+    },
+    {
+      "titulo": "Estimación por foto es aproximada: corrige sin culpa",
+      "categoria": "producto",
+      "fuente": "Cal AI / práctica de visión",
+      "tags": ["foto", "confianza", "macros"],
+      "contenido": "Calcular calorías y porciones desde una foto es aproximado (margen de 20-30%). Por eso te mostramos un nivel de confianza y puedes corregir en un toque. Las decisiones del plan se toman por la tendencia de varios días, no por la exactitud de una sola comida."
+    },
+    {
+      "titulo": "Una próxima acción a la vez",
+      "categoria": "adherencia",
+      "fuente": "Noom (psicología de adherencia)",
+      "tags": ["habito", "motivacion", "ux"],
+      "contenido": "No intentes cambiarlo todo de golpe. Cada día hay una próxima mejor acción: registrar tu peso, completar tu entreno, tomar tu agua. Cumple una y suma. Los hábitos pequeños y constantes superan a los planes perfectos que no se sostienen."
+    },
+    {
+      "titulo": "Hidratación en días de gimnasio",
+      "categoria": "habito",
+      "fuente": "Práctica clínica Pulso",
+      "tags": ["agua", "hidratacion", "gym"],
+      "contenido": "En días de entrenamiento apunta a alrededor de 3 litros de agua, repartidos en el día. La hidratación sostiene el rendimiento, el control del apetito y, bajo GLP-1, ayuda con los efectos digestivos. Lleva tu botella y registra tus vasos."
+    },
+    {
+      "titulo": "Front-loading: un resultado temprano que motiva",
+      "categoria": "adherencia",
+      "fuente": "Alex Hormozi (front-loading) + seguridad clínica",
+      "tags": ["motivacion", "deficit", "inicio"],
+      "contenido": "Las primeras 2-4 semanas el plan aprieta un poco más (más caminata y un déficit en el extremo alto seguro) para que veas un resultado temprano y te enganches. Después se afloja a un ritmo sostenible y se prioriza preservar músculo. Nunca cruzamos los pisos de seguridad de calorías o proteína."
+    },
+    {
+      "titulo": "Señal de alarma: pérdida demasiado rápida",
+      "categoria": "seguridad",
+      "fuente": "Pisos de seguridad Pulso",
+      "tags": ["seguridad", "alarma", "escalamiento"],
+      "contenido": "Bajar de peso muy rápido (más de 1% por semana de forma sostenida) no es mejor: suele significar pérdida de músculo y agua, fatiga y más riesgo de rebote. Si tus datos muestran esto, el sistema no lo celebra: lo marca y lo deriva al médico para ajustar el plan."
+    },
+    {
+      "titulo": "Relación sana con la comida",
+      "categoria": "seguridad",
+      "fuente": "Pisos de seguridad Pulso",
+      "tags": ["seguridad", "salud-mental", "escalamiento"],
+      "contenido": "Comer no es un examen que se aprueba o reprueba. Si aparece culpa intensa, restricción extrema, atracones o ejercicio como castigo, eso importa y lo conversamos con el médico. El objetivo es salud, no perfección. Nunca recomendamos ayunos extremos ni restringir grupos enteros de alimentos sin razón clínica."
+    },
+    {
+      "titulo": "Piso de calorías: nunca demasiado bajo",
+      "categoria": "seguridad",
+      "fuente": "Pisos de seguridad Pulso (Helms; práctica clínica)",
+      "tags": ["seguridad", "calorias", "piso"],
+      "contenido": "El plan nunca baja las calorías por debajo de un piso seguro (alrededor de 1500 kcal en hombres y 1200 en mujeres, y nunca por debajo del 80% de tu metabolismo basal) sin indicación médica explícita. Comer demasiado poco frena el metabolismo y quema músculo. Menos no es mejor."
+    },
+    {
+      "titulo": "Cardio y caminata (zona 2) cuentan",
+      "categoria": "ejercicio",
+      "fuente": "Attia; práctica Pulso",
+      "tags": ["cardio", "caminata", "zona2", "adherencia"],
+      "contenido": "Caminar a paso vivo, bailar o trotar suave en zona 2 (puedes hablar pero no cantar) suma a tu salud y a tu déficit sin estresar la recuperación. La caminata diaria es una de las herramientas más subestimadas para perder grasa y cuidar el corazón."
+    },
+    {
+      "titulo": "Progresión: cómo saber si estás avanzando",
+      "categoria": "ejercicio",
+      "fuente": "Jeff Nippard; sobrecarga progresiva",
+      "tags": ["progresion", "volumen", "pr"],
+      "contenido": "Avanzas si con el tiempo mueves más volumen (más peso, más reps o más series con buena técnica) en el mismo ejercicio. No tiene que ser cada sesión; mira la tendencia de semanas. Registrar tus cargas y reps es lo que te permite ver el progreso real y detectar tus récords."
+    },
+    {
+      "titulo": "Por qué este programa te va a funcionar (Ecuación de Valor)",
+      "categoria": "motivacion",
+      "fuente": "Alex Hormozi ($100M Offers)",
+      "tags": ["valor", "motivacion", "adherencia", "hormozi"],
+      "contenido": "Tu resultado depende de cuatro cosas: que la meta valga la pena, que de verdad sea alcanzable, que veas avances pronto y que te cueste poco esfuerzo del día a día. Por eso aquí registras con una foto o tu voz (poco esfuerzo), ves tu tendencia desde la primera semana (resultado temprano), tienes garantía por adherencia y respaldo médico (alta probabilidad). Está diseñado para que te funcione."
+    },
+    {
+      "titulo": "El valor que ya estás recibiendo",
+      "categoria": "motivacion",
+      "fuente": "Alex Hormozi (stack de valor) + Oferta Pulso",
+      "tags": ["valor", "retencion", "hormozi"],
+      "contenido": "Tu programa no es 'una consulta': es un sistema completo — plan de comida, rutinas con video, seguimiento de composición, coach con evidencia, garantía y acompañamiento médico. Sumado, vale mucho más de lo que pagas. Cada vez que registras y ves tu progreso, estás usando ese valor. Quédate con el proceso: es donde está el retorno."
+    },
+    {
+      "titulo": "No 'te gradúas y te vas': fase de mantenimiento (anti-rebote)",
+      "categoria": "motivacion",
+      "fuente": "Alex Hormozi (ascensión/continuidad, Gym Launch)",
+      "tags": ["retencion", "mantenimiento", "rebote", "hormozi"],
+      "contenido": "Llegar a la meta no es el final: es cuando blindamos lo logrado. La fase de mantenimiento (anti-rebote) evita recuperar lo que bajaste — es la parte que más gente se salta y por la que rebota. Cuando llegues a tu meta, hacemos una revisión y pasamos a mantenerte fuerte y estable. El objetivo no es bajar rápido, es no volver atrás."
+    },
+    {
+      "titulo": "Tu primer logro importa (valor temprano)",
+      "categoria": "motivacion",
+      "fuente": "Alex Hormozi (valor temprano reduce el abandono)",
+      "tags": ["onboarding", "habito", "motivacion", "hormozi"],
+      "contenido": "El mejor momento para enganchar un hábito es el primer día. Con tu primer registro —una foto de comida, tu peso o una serie— ya tienes una victoria. No esperes a 'estar listo': haz una cosa pequeña hoy y el sistema empieza a trabajar para ti. Las primeras semanas, un poco más de empuje (front-loading) te da un resultado visible que te motiva."
+    },
+    {
+      "titulo": "No rompas la cadena (anti-abandono)",
+      "categoria": "motivacion",
+      "fuente": "Alex Hormozi (retención) + lógica 80/20 Pulso",
+      "tags": ["racha", "adherencia", "retencion", "hormozi"],
+      "contenido": "Quedarse es lo que gana. La racha, tu anillo de adherencia y la próxima mejor acción están para que cada día tengas una razón fácil de volver. Y recuerda: un día imperfecto sigue sumando (haces la mayor parte del plan y ya rindes cerca del 80% del beneficio). No busques perfección, busca no soltar la cadena."
+    }
+  ]
+}
