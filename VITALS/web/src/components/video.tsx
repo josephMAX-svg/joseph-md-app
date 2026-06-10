@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Play, X, Youtube, GraduationCap, ListMusic, Check } from "lucide-react";
-import { Tutorial, ytSearchUrl, ytThumb } from "@/lib/tutorials";
+import { Play, X, Youtube, GraduationCap, ListMusic, Check, Zap, BookOpen } from "lucide-react";
+import { Tutorial, Clip, ytSearchUrl, ytThumb, BAILE_TRACKS } from "@/lib/tutorials";
 
 /* ─────────────────────────────────────────────────────────────────────────────
  * IFrame API de YouTube (carga única). La usamos por dos razones:
@@ -88,24 +88,43 @@ function SearchLink({ tutorial, note }: { tutorial: Tutorial; note?: string }) {
   );
 }
 
+const TRACK_TITLE: Record<string, string> = Object.fromEntries(BAILE_TRACKS.map((t) => [t.id, t.titulo]));
+
 /** Embed "lite" (facade): miniatura primero, el player carga solo al tocar.
- *  Soporta video único (start/end) y sesión continua (playlist de baile). */
+ *  Dos niveles: ⚡ Express (corto, por defecto) y A fondo. Soporta sesión continua (playlist). */
 export function VideoEmbed({ tutorial, title }: { tutorial: Tutorial; title?: string }) {
   const [playing, setPlaying] = useState(false);
   const [failed, setFailed] = useState(false);
   const [track, setTrack] = useState(0);
+  const [nivel, setNivel] = useState<"express" | "fondo">("express");
 
-  const ids = tutorial.playlist?.length ? tutorial.playlist : tutorial.yt ? [tutorial.yt] : [];
+  const esSesion = !!tutorial.playlist?.length && tutorial.playlist.length > 1;
+  const clip: Clip | undefined = nivel === "fondo" && tutorial.fondo ? tutorial.fondo : tutorial.express || (tutorial.yt ? { yt: tutorial.yt, creator: tutorial.creator, dur: "" } : undefined);
+  const ids = esSesion ? tutorial.playlist! : clip ? [clip.yt] : [];
   if (!ids.length || failed) {
     return <SearchLink tutorial={tutorial} note={failed ? "Ver en YouTube (no se puede reproducir aquí)" : undefined} />;
   }
-  const esSesion = ids.length > 1;
+  const tieneNiveles = !esSesion && !!tutorial.express && !!tutorial.fondo;
+  const credito = esSesion ? tutorial.creator : clip?.creator || tutorial.creator;
 
   return (
     <div>
+      {/* Subtarea corta por defecto: chips ⚡ Express / A fondo */}
+      {tieneNiveles && (
+        <div className="mb-2 flex gap-1.5">
+          <button onClick={() => { setNivel("express"); }}
+            className={`mv-chip transition ${nivel === "express" ? "bg-brass text-ink-inverse" : "bg-subtle text-ink-secondary"}`}>
+            <Zap className="h-3 w-3" /> Express · {tutorial.express!.dur}
+          </button>
+          <button onClick={() => { setNivel("fondo"); }}
+            className={`mv-chip transition ${nivel === "fondo" ? "bg-brass text-ink-inverse" : "bg-subtle text-ink-secondary"}`}>
+            <BookOpen className="h-3 w-3" /> A fondo · {tutorial.fondo!.dur}
+          </button>
+        </div>
+      )}
       <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-[#060d1a]">
         {playing ? (
-          <YTPlayer ids={ids} start={tutorial.start} end={tutorial.end} title={title} onFail={() => setFailed(true)} onTrack={setTrack} />
+          <YTPlayer key={esSesion ? "sesion" : `${nivel}-${ids[0]}`} ids={ids} start={tutorial.start} end={tutorial.end} title={title} onFail={() => setFailed(true)} onTrack={setTrack} />
         ) : (
           <button onClick={() => setPlaying(true)} className="group absolute inset-0 h-full w-full" aria-label={esSesion ? "Iniciar sesión de baile" : "Reproducir tutorial"}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -115,20 +134,35 @@ export function VideoEmbed({ tutorial, title }: { tutorial: Tutorial; title?: st
                 <Play className="ml-0.5 h-7 w-7" fill="currentColor" />
               </span>
             </span>
-            {esSesion && (
+            {esSesion ? (
               <span className="absolute bottom-2 left-2 flex items-center gap-1.5 rounded-full bg-[#060d1a]/75 px-2.5 py-1 text-[11px] font-medium text-ink backdrop-blur">
                 <ListMusic className="h-3.5 w-3.5 text-brass" /> Sesión continua · {ids.length} coreografías · ~45 min
               </span>
-            )}
+            ) : clip?.dur ? (
+              <span className="absolute bottom-2 left-2 flex items-center gap-1.5 rounded-full bg-[#060d1a]/75 px-2.5 py-1 text-[11px] font-medium text-ink backdrop-blur">
+                <Zap className="h-3.5 w-3.5 text-brass" /> {clip.dur}
+              </span>
+            ) : null}
           </button>
         )}
       </div>
       <div className="mt-1.5 flex items-center justify-between">
         <span className="flex items-center gap-1 text-[11px] text-ink-muted">
-          <GraduationCap className="h-3 w-3" /> {tutorial.creator}{esSesion && playing ? ` · pista ${track + 1}/${ids.length}` : ""}
+          <GraduationCap className="h-3 w-3" /> {credito}{esSesion && playing ? ` · pista ${track + 1}/${ids.length}` : ""}
         </span>
         <a href={ytSearchUrl(tutorial.q)} target="_blank" rel="noopener noreferrer" className="text-[11px] text-brass">más videos ↗</a>
       </div>
+      {/* Tracklist del baile: cada pista es una subtarea de ~4 min */}
+      {esSesion && playing && (
+        <ol className="mt-2.5 max-h-44 space-y-1 overflow-y-auto no-scrollbar">
+          {ids.map((id, i) => (
+            <li key={id} className={`flex items-center gap-2 rounded-lg px-2 py-1 text-xs ${i === track ? "bg-brass-subtle text-brass-deep" : i < track ? "text-ink-muted line-through" : "text-ink-secondary"}`}>
+              {i === track ? <Play className="h-3 w-3 shrink-0" fill="currentColor" /> : i < track ? <Check className="h-3 w-3 shrink-0" /> : <span className="w-3 text-center text-[10px] tabular-nums">{i + 1}</span>}
+              <span className="truncate">{TRACK_TITLE[id] || `Pista ${i + 1}`}</span>
+            </li>
+          ))}
+        </ol>
+      )}
     </div>
   );
 }

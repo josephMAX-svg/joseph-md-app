@@ -100,9 +100,24 @@ export function ExerciseLogger({ ejercicios, dia }: { ejercicios: PlanEx[]; dia:
     } finally { setBusy(false); }
   }
 
+  // Subtareas cortas: la sesión es una lista de bloques de ~minPorEj minutos, no un muro.
+  const total = ejercicios.length;
+  const hechos = ejercicios.filter((e) => e.hecho || e.nombre.toLowerCase() in done).length;
+  const minPorEj = total && dia?.duracion_min ? Math.max(4, Math.round(dia.duracion_min / total)) : null;
+  const ahora = ejercicios.find((e) => !(e.hecho || e.nombre.toLowerCase() in done))?.nombre;
+
   return (
     <div className="space-y-3">
       {pr && <PRBanner pr={pr} onClose={cerrarBanner} />}
+
+      {/* Progreso de la sesión: una sola siguiente acción obvia */}
+      <div className="flex items-center justify-between px-1">
+        <span className="mv-label">Sesión · {hechos}/{total} ejercicios</span>
+        {minPorEj && <span className="text-[11px] tabular-nums text-ink-muted">~{minPorEj}′ por ejercicio</span>}
+      </div>
+      <div className="h-1.5 overflow-hidden rounded-full bg-subtle">
+        <div className="h-full rounded-full bg-brass transition-all duration-700" style={{ width: `${total ? (hechos / total) * 100 : 0}%` }} />
+      </div>
 
       {/* Voz */}
       {supported && (
@@ -123,16 +138,17 @@ export function ExerciseLogger({ ejercicios, dia }: { ejercicios: PlanEx[]; dia:
         const key = ej.nombre.toLowerCase();
         const hecho = ej.hecho || key in done;
         const info = done[key];
+        const esAhora = ej.nombre === ahora;
         return (
-          <Card key={ej.nombre} className={cn(hecho && "border-sage/30 bg-sage-subtle/40")}>
+          <Card key={ej.nombre} className={cn(hecho && "border-sage/30 bg-sage-subtle/40", esAhora && "border-brass/50")}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <span className={cn("flex h-9 w-9 items-center justify-center rounded-xl", hecho ? "bg-sage text-ink-inverse" : "bg-subtle text-ink-secondary")}>
+                <span className={cn("flex h-9 w-9 items-center justify-center rounded-xl", hecho ? "bg-sage text-ink-inverse" : esAhora ? "bg-brass text-ink-inverse" : "bg-subtle text-ink-secondary")}>
                   {hecho ? <Check className="h-5 w-5" /> : <Dumbbell className="h-5 w-5" />}
                 </span>
                 <div>
-                  <p className="font-medium">{ej.nombre}</p>
-                  <p className="text-xs text-ink-muted">{ej.series} series · {ej.reps} · RIR {ej.rir ?? "—"}</p>
+                  <p className="font-medium">{ej.nombre}{esAhora && <span className="ml-2 align-middle text-[10px] font-semibold uppercase tracking-wider text-brass">ahora</span>}</p>
+                  <p className="text-xs text-ink-muted">{ej.series} series · {ej.reps} · RIR {ej.rir ?? "—"}{minPorEj ? ` · ~${minPorEj}′` : ""}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
