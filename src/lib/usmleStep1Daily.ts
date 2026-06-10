@@ -10,6 +10,7 @@
 export const QBV = 'https://qbankly.app/videos';
 export const QBQ = 'https://qbankly.app/qbanks';
 export const QBF = 'https://qbankly.app/flashcards';
+export const QBL = 'https://qbankly.app/library';
 export const yt = (id: string) => 'https://www.youtube.com/watch?v=' + id;
 
 export const DAILY_META = {

@@ -6,17 +6,22 @@ import { Chip, GlassPanel } from '../empresa/primitives';
 import { FadeUp } from '../empresa/visuals';
 import {
   DAILY_META, FRANJAS, DIAS, DiaUSMLE, diaDe, diaPrevio, ventana7d, TIER_INFO,
-  QBV, QBQ, QBF, yt,
+  QBV, QBQ, QBF, QBL, yt,
 } from '../../lib/usmleStep1Daily';
+import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso } from '../../lib/studyProgress';
 
 /**
  * UsmleTodayPlan — Plan Step 1 día-a-día, estilo Perú/ENCAPS pero mejor.
- * Botones Step 1/2/3 · navegación Día X/70 (◄►) · sub-pestañas HOY/Horario/7d ·
- * cola de materiales con links exactos (B&B, Sketchy, uWorld, Flashcards, Palmerton).
+ * Botones Step 1/2/3 · navegación Día X/70 (◄►) · sub-pestañas HOY/Horario/7d/Temario.
+ * Qbankly SOLO abre en Edge → cada link Qbankly ofrece botón "Edge" (microsoft-edge:)
+ * además del de Chrome. 7 días y temario son clicables → saltan al día. El badge de
+ * sistema lleva al Temario con el progreso real del plan por sistema.
  */
 const GREEN = '#3FB984';
 const RED = '#E5484D';
+const EDGE = '#3DA5E0';
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
+function openEdge(u: string) { Linking.openURL('microsoft-edge:' + u).catch(() => openUrl(u)); }
 function todayISO(): string {
   try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; }
   catch { return DAILY_META.inicio; }
@@ -26,66 +31,74 @@ function fmtFecha(iso: string): string {
   try { const d = new Date(iso + 'T12:00:00'); return `${dias[d.getDay()]} ${iso.slice(8, 10)}-${iso.slice(5, 7)}`; } catch { return iso; }
 }
 
-/** material → icono + dónde abrirlo */
-function matLink(d: DiaUSMLE): { lbl: string; url: string } {
-  if (/Sketchy/i.test(d.mat)) return { lbl: d.mat, url: QBV };
-  return { lbl: d.mat, url: QBV };
-}
-
-function ColaItem({ icon, lbl, val, sub, color, url }: { icon: string; lbl: string; val: string; sub: string; color: string; url: string }) {
+/** Cola de hoy: ítem con link. `edge` añade el botón Microsoft Edge (para Qbankly). */
+function ColaItem({ icon, lbl, val, sub, color, url, edge }: { icon: string; lbl: string; val: string; sub: string; color: string; url: string; edge?: boolean }) {
   return (
-    <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(url)} style={[st.cola, { borderLeftColor: color }]}>
+    <View style={[st.cola, { borderLeftColor: color }]}>
       <Text style={st.colaIcon}>{icon}</Text>
       <View style={{ flex: 1 }}>
         <Text style={st.colaLbl}>{lbl}</Text>
         <Text style={st.colaVal} numberOfLines={2}>{val}</Text>
         <Text style={st.colaSub}>{sub}</Text>
       </View>
-      <View style={[st.verBtn, { borderColor: color + '88' }]}><Text style={[st.verTxt, { color }]}>ver ↗</Text></View>
-    </TouchableOpacity>
+      <View style={{ gap: 5, minWidth: 64 }}>
+        {edge && (
+          <TouchableOpacity activeOpacity={0.85} onPress={() => openEdge(url)} style={st.edgeBtn}>
+            <Text style={st.edgeTxt}>◆ Edge</Text>
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(url)} style={[st.verBtn, { borderColor: color + '88' }]}>
+          <Text style={[st.verTxt, { color }]}>{edge ? 'Chrome ↗' : 'ver ↗'}</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 }
 
-function HoyView({ dia }: { dia: DiaUSMLE }) {
+function HoyView({ dia, onOpenTemario }: { dia: DiaUSMLE; onOpenTemario: () => void }) {
   const prev = diaPrevio(dia);
   const tier = TIER_INFO[dia.tier];
   return (
     <View>
-      {/* Tema del día */}
+      {/* Tema del día — el badge de sistema lleva al Temario */}
       <FadeUp>
         <View style={[st.temaCard, { borderColor: tier.c + '55' }]}>
           <View style={st.temaTop}>
-            <View style={[st.sysBadge, { backgroundColor: tier.c + '1F', borderColor: tier.c + '66' }]}>
-              <Text style={[st.sysBadgeTxt, { color: tier.c }]}>{dia.system}</Text>
-            </View>
+            <TouchableOpacity activeOpacity={0.8} onPress={onOpenTemario} style={[st.sysBadge, { backgroundColor: tier.c + '1F', borderColor: tier.c + '66' }]}>
+              <Text style={[st.sysBadgeTxt, { color: tier.c }]}>{dia.system} ›</Text>
+            </TouchableOpacity>
             <Chip label={tier.t} color={tier.c} small />
             <Chip label="1ª vuelta" color={GREEN} small />
             <Chip label="Modo A" color={Colors.muted} small />
           </View>
           <Text style={st.temaTitle}>{dia.sub}</Text>
-          <Text style={st.temaSub}>Subtema atómico del día · 1/día (mejor consolidación que cobertura)</Text>
+          <Text style={st.temaSub}>Subtema atómico del día · 1/día · toca el sistema para ver todo el temario y tu avance ›</Text>
         </View>
       </FadeUp>
 
       {/* Anchored eval (tema previo) */}
       {prev && (
         <FadeUp delay={40}>
-          <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(QBQ)} style={st.anchor}>
+          <View style={st.anchor}>
             <Text style={st.anchorLbl}>🎯 16:15 · Anchored Eval (tema de AYER)</Text>
             <Text style={st.anchorVal}>{prev.system} → {prev.sub}</Text>
             <Text style={st.anchorSub}>2 preguntas uWorld + Anki SRS · 2/2→nuevo · 1/2→repaso finde · 0/2→repetir</Text>
-          </TouchableOpacity>
+            <View style={{ flexDirection: 'row', gap: 6, marginTop: 8 }}>
+              <TouchableOpacity activeOpacity={0.85} onPress={() => openEdge(QBQ)} style={st.edgeBtnWide}><Text style={st.edgeTxt}>◆ Abrir en Edge</Text></TouchableOpacity>
+              <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(QBQ)} style={[st.verBtn, { borderColor: '#7BB1FF88' }]}><Text style={[st.verTxt, { color: '#AFCBFF' }]}>Chrome ↗</Text></TouchableOpacity>
+            </View>
+          </View>
         </FadeUp>
       )}
 
       {/* Cola de materiales de hoy */}
-      <Text style={st.secLbl}>📋 Cola de hoy · 16:30–17:15 (en orden)</Text>
-      <FadeUp delay={60}><ColaItem icon="🅠" lbl="PRE-TEST · uWorld (modo tutor)" val={`${dia.system} → ${dia.uw} · 3 preguntas ciegas + free recall 60s`} sub="Qbankly → QBanks → uWorld Step 1" color={GREEN} url={QBQ} /></FadeUp>
-      <FadeUp delay={90}><ColaItem icon="🎬" lbl="VÍDEO · Boards & Beyond Step 1" val={`${dia.bbCh} → ${dia.bbVid}`} sub="Qbankly → Video Library → B&B Step 1" color={RED} url={QBV} /></FadeUp>
-      <FadeUp delay={120}><ColaItem icon="📖" lbl="ACTIVE READING · material primario" val={matLink(dia).lbl} sub="25 min · marca 3-5 puntos high-yield · glosario inglés" color="#7BB1FF" url={matLink(dia).url} /></FadeUp>
-      <FadeUp delay={150}><ColaItem icon="🗂️" lbl="FLASHCARDS · uWorld Step 1" val={`Deck: ${dia.system}`} sub="Qbankly → Flashcards · Anki SRS" color="#AFCBFF" url={QBF} /></FadeUp>
+      <Text style={st.secLbl}>📋 Cola de hoy · 16:30–17:15 (en orden) · Qbankly = botón Edge</Text>
+      <FadeUp delay={60}><ColaItem icon="🅠" lbl="PRE-TEST · uWorld (modo tutor)" val={`${dia.system} → ${dia.uw} · 3 preguntas ciegas + free recall 60s`} sub="Qbankly → QBanks → uWorld Step 1" color={GREEN} url={QBQ} edge /></FadeUp>
+      <FadeUp delay={90}><ColaItem icon="🎬" lbl="VÍDEO · Boards & Beyond Step 1" val={`${dia.bbCh} → ${dia.bbVid}`} sub="Qbankly → Video Library → B&B Step 1" color={RED} url={QBV} edge /></FadeUp>
+      <FadeUp delay={120}><ColaItem icon="📖" lbl="ACTIVE READING · material primario" val={dia.mat} sub="Qbankly → Library (uWorld/AMBOSS) · 25 min · 3-5 puntos high-yield" color="#7BB1FF" url={QBL} edge /></FadeUp>
+      <FadeUp delay={150}><ColaItem icon="🗂️" lbl="FLASHCARDS · uWorld Step 1" val={`Deck: ${dia.system}`} sub="Qbankly → Flashcards · Anki SRS" color="#AFCBFF" url={QBF} edge /></FadeUp>
       {dia.palm && (
-        <FadeUp delay={180}><ColaItem icon="🧠" lbl="PALMERTON · al empezar el sistema" val={dia.palm.t} sub="YouTube · método + visión del sistema" color={GREEN} url={yt(dia.palm.id)} /></FadeUp>
+        <FadeUp delay={180}><ColaItem icon="🧠" lbl="PALMERTON · al empezar el sistema" val={dia.palm.t} sub="YouTube · método + visión del sistema (abre en Chrome)" color={GREEN} url={yt(dia.palm.id)} /></FadeUp>
       )}
       <FadeUp delay={210}>
         <View style={[st.cola, { borderLeftColor: '#F5A623' }]}>
@@ -101,40 +114,54 @@ function HoyView({ dia }: { dia: DiaUSMLE }) {
   );
 }
 
-function HorarioView() {
+function HorarioView({ dia }: { dia: DiaUSMLE }) {
+  const prev = diaPrevio(dia);
+  const detalle = (tipo: string): string => {
+    if (tipo === 'eval') return prev ? `${prev.system} → ${prev.sub}` : 'no hay día previo';
+    if (tipo === 'pretest') return `${dia.system} → ${dia.uw}`;
+    if (tipo === 'read') return `${dia.bbCh}: ${dia.bbVid} · ${dia.mat}`;
+    return '';
+  };
   return (
     <View>
-      <Text style={st.secLbl}>🕓 Bloque USMLE diario (Google Calendar · hora Lima)</Text>
-      {FRANJAS.map((f, i) => (
-        <FadeUp key={i} delay={i * 30}>
-          <View style={st.franja}>
-            <View style={st.franjaHora}><Text style={st.franjaHoraTxt}>{f.hora}</Text></View>
-            <Text style={st.franjaFase}>{f.fase}</Text>
-          </View>
-        </FadeUp>
-      ))}
+      <Text style={st.secLbl}>🕓 Bloque USMLE · Día {dia.d} ({fmtFecha(dia.fecha)}) · hora Lima</Text>
+      {FRANJAS.map((f, i) => {
+        const det = detalle(f.tipo);
+        return (
+          <FadeUp key={i} delay={i * 25}>
+            <View style={st.franja}>
+              <View style={st.franjaHora}><Text style={st.franjaHoraTxt}>{f.hora}</Text></View>
+              <View style={{ flex: 1 }}>
+                <Text style={st.franjaFase}>{f.fase}</Text>
+                {det ? <Text style={st.franjaDet}>↳ {det}</Text> : null}
+              </View>
+            </View>
+          </FadeUp>
+        );
+      })}
       <Text style={st.note}>16:15–16:30 = repaso del tema de ayer (Anchored Eval). 16:30–17:15 = subtema nuevo (Mini Deep Work). Todo en inglés.</Text>
     </View>
   );
 }
 
-function SieteView({ fromD }: { fromD: number }) {
+function SieteView({ fromD, onPick }: { fromD: number; onPick: (d: number) => void }) {
   const win = ventana7d(fromD);
   return (
     <View>
-      <Text style={st.secLbl}>📆 Próximos 7 días</Text>
+      <Text style={st.secLbl}>📆 Próximos 7 días · toca un día para abrirlo</Text>
       {win.map((x, i) => {
         const tier = TIER_INFO[x.tier];
         return (
           <FadeUp key={x.d} delay={i * 30}>
-            <View style={[st.d7, { borderLeftColor: tier.c }]}>
+            <TouchableOpacity activeOpacity={0.8} onPress={() => onPick(x.d)} style={[st.d7, { borderLeftColor: tier.c }]}>
               <Text style={[st.d7day, { color: tier.c }]}>D{x.d}</Text>
               <Text style={st.d7fecha}>{fmtFecha(x.fecha)}</Text>
               <View style={{ flex: 1 }}>
                 <Text style={st.d7sub} numberOfLines={1}>{x.sub}</Text>
                 <Text style={st.d7sys}>{x.system}</Text>
               </View>
-            </View>
+              <Text style={st.d7go}>→</Text>
+            </TouchableOpacity>
           </FadeUp>
         );
       })}
@@ -142,13 +169,82 @@ function SieteView({ fromD }: { fromD: number }) {
   );
 }
 
+/** Barra de progreso simple (track + fill por %). */
+function ProgressBar({ pct, color }: { pct: number; color: string }) {
+  return (
+    <View style={st.barTrack}>
+      <View style={[st.barFill, { width: (`${Math.max(0, Math.min(100, pct))}%` as any), backgroundColor: color }]} />
+    </View>
+  );
+}
+
+function SistemaCard({ g, hoyD, onPick }: { g: GrupoProgreso<DiaUSMLE>; hoyD: number; onPick: (d: number) => void }) {
+  const [open, setOpen] = useState(g.estado === 'en-curso');
+  const tier = TIER_INFO[g.dias[0].tier];
+  const estadoTxt = g.estado === 'completado' ? '✓ completado' : g.estado === 'en-curso' ? `en curso · ${g.pct}%` : `pendiente · empieza D${g.primerD}`;
+  const estadoColor = g.estado === 'completado' ? GREEN : g.estado === 'en-curso' ? tier.c : Colors.muted;
+  return (
+    <View style={[st.sysCard, { borderColor: tier.c + (g.estado === 'en-curso' ? '88' : '2E') }]}>
+      <TouchableOpacity activeOpacity={0.8} onPress={() => setOpen((o) => !o)}>
+        <View style={st.sysHead}>
+          <Text style={st.sysTitle} numberOfLines={1}>{open ? '▾' : '▸'} {g.clave}</Text>
+          <Text style={[st.sysCount, { color: estadoColor }]}>{g.hechos}/{g.total}</Text>
+        </View>
+        <ProgressBar pct={g.estado === 'completado' ? 100 : g.pct} color={tier.c} />
+        <Text style={[st.sysEstado, { color: estadoColor }]}>
+          {estadoTxt}{g.diaActual ? ` · hoy: ${g.diaActual.sub}` : ''}
+        </Text>
+      </TouchableOpacity>
+      <View style={{ flexDirection: 'row', gap: 6, marginTop: 8 }}>
+        <TouchableOpacity activeOpacity={0.85} onPress={() => openEdge(QBQ)} style={st.edgeBtnWide}><Text style={st.edgeTxt}>◆ Temario en Qbankly (Edge)</Text></TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(QBQ)} style={[st.verBtn, { borderColor: tier.c + '88' }]}><Text style={[st.verTxt, { color: tier.c }]}>Chrome ↗</Text></TouchableOpacity>
+      </View>
+      {open && (
+        <View style={{ marginTop: 8 }}>
+          {g.dias.map((x) => {
+            const done = x.d < hoyD, now = x.d === hoyD;
+            return (
+              <TouchableOpacity key={x.d} activeOpacity={0.8} onPress={() => onPick(x.d)} style={[st.temaRow, now && st.temaRowOn]}>
+                <Text style={[st.temaRowD, { color: done ? GREEN : now ? tier.c : Colors.muted }]}>{done ? '✓' : now ? '▶' : '·'} D{x.d}</Text>
+                <Text style={st.temaRowTxt} numberOfLines={1}>{x.sub}</Text>
+                <Text style={st.temaRowGo}>→</Text>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+      )}
+    </View>
+  );
+}
+
+function TemarioView({ hoyD, onPick }: { hoyD: number; onPick: (d: number) => void }) {
+  const grupos = agruparProgreso(DIAS, (x) => x.system, hoyD);
+  const glob = progresoGlobal(DIAS, hoyD);
+  return (
+    <View>
+      <View style={st.globCard}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+          <Text style={st.globTitle}>🗂️ Temario Step 1 · progreso del plan</Text>
+          <Text style={[st.globPct, { color: GREEN }]}>{glob.pct}%</Text>
+        </View>
+        <ProgressBar pct={glob.pct} color={GREEN} />
+        <Text style={st.globSub}>{glob.hechos}/{glob.total} subtemas · hoy = Día {hoyD} de {glob.total} · {grupos.length} sistemas</Text>
+      </View>
+      {grupos.map((g) => <SistemaCard key={g.clave} g={g} hoyD={hoyD} onPick={onPick} />)}
+      <Text style={st.note}>Progreso = subtemas del plan ya cubiertos / total del sistema (ritmo previsto, hoy = Día {hoyD}). El subtema en curso se resalta. Toca cualquier subtema para ir a ese día.</Text>
+    </View>
+  );
+}
+
 export default function UsmleTodayPlan() {
   const iso = todayISO();
-  const todayDia = diaDe(iso) || DIAS[0];
+  const hoyD = planHoyD(DIAS, iso);
+  const todayDia = diaDe(iso) || DIAS.find((x) => x.d === hoyD) || DIAS[0];
   const [sel, setSel] = useState<number>(todayDia.d);
-  const [view, setView] = useState<'hoy' | 'horario' | '7d'>('hoy');
+  const [view, setView] = useState<'hoy' | 'horario' | '7d' | 'temario'>('hoy');
   const dia = DIAS.find((x) => x.d === sel) || DIAS[0];
   const esHoy = dia.fecha === iso;
+  const pickDay = (d: number) => { setSel(d); setView('hoy'); };
 
   return (
     <View>
@@ -181,7 +277,7 @@ export default function UsmleTodayPlan() {
 
       {/* Sub-pestañas */}
       <View style={st.subTabs}>
-        {([['hoy', '📋 HOY'], ['horario', '🕓 Horario'], ['7d', '📆 7 días']] as const).map(([k, lbl]) => (
+        {([['hoy', '📋 HOY'], ['horario', '🕓 Horario'], ['7d', '📆 7 días'], ['temario', '🗂️ Temario']] as const).map(([k, lbl]) => (
           <TouchableOpacity key={k} activeOpacity={0.8} onPress={() => setView(k)} style={[st.subTab, view === k && st.subTabOn]}>
             <Text style={[st.subTabTxt, view === k && { color: GREEN }]}>{lbl}</Text>
           </TouchableOpacity>
@@ -189,7 +285,10 @@ export default function UsmleTodayPlan() {
       </View>
 
       <GlassPanel style={{ marginBottom: Spacing.xl, padding: Spacing.md }}>
-        {view === 'hoy' ? <HoyView dia={dia} /> : view === 'horario' ? <HorarioView /> : <SieteView fromD={dia.d} />}
+        {view === 'hoy' ? <HoyView dia={dia} onOpenTemario={() => setView('temario')} />
+          : view === 'horario' ? <HorarioView dia={dia} />
+          : view === '7d' ? <SieteView fromD={dia.d} onPick={pickDay} />
+          : <TemarioView hoyD={hoyD} onPick={pickDay} />}
       </GlassPanel>
     </View>
   );
@@ -235,13 +334,17 @@ const st = StyleSheet.create({
   colaLbl: { fontSize: 9, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 0.3 },
   colaVal: { fontSize: FontSize.labelMd, color: Colors.onSurface, fontWeight: '600', marginTop: 2, lineHeight: 16 },
   colaSub: { fontSize: 9, color: Colors.muted, marginTop: 2 },
-  verBtn: { borderWidth: 1, borderRadius: BorderRadius.md, paddingVertical: 5, paddingHorizontal: 10 },
+  verBtn: { borderWidth: 1, borderRadius: BorderRadius.md, paddingVertical: 5, paddingHorizontal: 10, alignItems: 'center' },
   verTxt: { fontSize: FontSize.labelSm, fontWeight: '800' },
+  edgeBtn: { backgroundColor: EDGE + '22', borderWidth: 1, borderColor: EDGE + '99', borderRadius: BorderRadius.md, paddingVertical: 5, paddingHorizontal: 10, alignItems: 'center' },
+  edgeBtnWide: { flex: 1, backgroundColor: EDGE + '22', borderWidth: 1, borderColor: EDGE + '99', borderRadius: BorderRadius.md, paddingVertical: 7, paddingHorizontal: 10, alignItems: 'center' },
+  edgeTxt: { fontSize: FontSize.labelSm, fontWeight: '800', color: EDGE },
 
-  franja: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 7, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.05)' },
+  franja: { flexDirection: 'row', alignItems: 'flex-start', gap: 10, paddingVertical: 7, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.05)' },
   franjaHora: { backgroundColor: GREEN + '14', borderRadius: BorderRadius.sm, paddingVertical: 3, paddingHorizontal: 7, minWidth: 96, alignItems: 'center' },
   franjaHoraTxt: { fontSize: FontSize.labelSm, fontWeight: '800', color: GREEN },
-  franjaFase: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 16 },
+  franjaFase: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 16 },
+  franjaDet: { fontSize: FontSize.labelSm, color: GREEN, marginTop: 2, fontWeight: '600' },
   note: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: Spacing.sm, lineHeight: 15 },
 
   d7: { ...cardBase, borderLeftWidth: 3, flexDirection: 'row', alignItems: 'center', gap: 10, padding: Spacing.sm, marginBottom: 5 },
@@ -249,4 +352,23 @@ const st = StyleSheet.create({
   d7fecha: { fontSize: FontSize.labelSm, color: Colors.muted, width: 56 },
   d7sub: { fontSize: FontSize.labelMd, color: Colors.onSurface, fontWeight: '600' },
   d7sys: { fontSize: 9, color: Colors.muted, marginTop: 1 },
+  d7go: { fontSize: 16, color: GREEN, fontWeight: '800', width: 18, textAlign: 'center' },
+
+  // Temario
+  globCard: { ...cardBase, padding: Spacing.md, marginBottom: Spacing.sm },
+  globTitle: { fontSize: FontSize.labelLg, fontWeight: '800', color: Colors.onSurface },
+  globPct: { fontSize: FontSize.bodyLg, fontWeight: '900' },
+  globSub: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 5 },
+  barTrack: { height: 7, borderRadius: 4, backgroundColor: 'rgba(255,255,255,0.08)', overflow: 'hidden' },
+  barFill: { height: 7, borderRadius: 4 },
+  sysCard: { ...cardBase, padding: Spacing.md, marginBottom: 6 },
+  sysHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 },
+  sysTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface, flex: 1 },
+  sysCount: { fontSize: FontSize.labelMd, fontWeight: '800', marginLeft: 8 },
+  sysEstado: { fontSize: FontSize.labelSm, fontWeight: '700', marginTop: 5 },
+  temaRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 6, paddingHorizontal: 6, borderRadius: BorderRadius.sm, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.05)' },
+  temaRowOn: { backgroundColor: GREEN + '12' },
+  temaRowD: { fontSize: FontSize.labelSm, fontWeight: '800', width: 40 },
+  temaRowTxt: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant },
+  temaRowGo: { fontSize: 14, color: Colors.muted, width: 16, textAlign: 'center' },
 });
