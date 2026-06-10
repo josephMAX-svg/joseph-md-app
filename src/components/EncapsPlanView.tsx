@@ -42,6 +42,13 @@ function estadoMeta(estado?: string): { label: string; color: string } | null {
 export default function EncapsPlanView() {
   const plan = useEncapsPlan('ENCAPS');
   const [sub, setSub] = useState<Sub>('hoy');
+  const [jumpOpen, setJumpOpen] = useState(false);
+  const [jumpVal, setJumpVal] = useState('');
+  const doJump = (raw: string) => {
+    const n = parseInt(String(raw).replace(/[^0-9]/g, ''), 10);
+    if (!isNaN(n)) plan.setDia(Math.max(1, Math.min(plan.total, n)));
+    setJumpOpen(false); setJumpVal('');
+  };
 
   const subTabs: { key: Sub; label: string }[] = [
     { key: 'hoy', label: '📅 HOY' },
@@ -69,14 +76,14 @@ export default function EncapsPlanView() {
         <TouchableOpacity onPress={() => plan.setDia(plan.dia - 1)} disabled={plan.dia <= 1} style={styles.dayNavBtn}>
           <Text style={[styles.dayNavArrow, plan.dia <= 1 && { opacity: 0.25 }]}>◀</Text>
         </TouchableOpacity>
-        <View style={{ flex: 1, alignItems: 'center' }}>
+        <TouchableOpacity style={{ flex: 1, alignItems: 'center' }} onPress={() => setJumpOpen(o => !o)} activeOpacity={0.7}>
           <Text style={styles.dayNavTitle}>
-            Día {plan.dia}/{plan.total}{plan.dia === plan.hoyDia ? ' · HOY' : ''}
+            Día {plan.dia}/{plan.total}{plan.dia === plan.hoyDia ? ' · HOY' : ''} {jumpOpen ? '▴' : '▾'}
           </Text>
           {!!plan.today?.fecha && (
             <Text style={styles.dayNavSub}>{plan.today.weekday || ''} {String(plan.today.fecha).slice(5)}</Text>
           )}
-        </View>
+        </TouchableOpacity>
         <TouchableOpacity onPress={() => plan.setDia(plan.dia + 1)} disabled={plan.dia >= plan.total} style={styles.dayNavBtn}>
           <Text style={[styles.dayNavArrow, plan.dia >= plan.total && { opacity: 0.25 }]}>▶</Text>
         </TouchableOpacity>
@@ -86,6 +93,24 @@ export default function EncapsPlanView() {
           </TouchableOpacity>
         )}
       </View>
+
+      {/* Selector de día directo — saltar a cualquier día (1..71) */}
+      {jumpOpen && (
+        <View style={styles.jumpRow}>
+          <Text style={styles.jumpLabel}>Ir al día:</Text>
+          <TextInput
+            style={styles.jumpInput} value={jumpVal} onChangeText={setJumpVal}
+            keyboardType="number-pad" placeholder={`1–${plan.total}`} placeholderTextColor={Colors.muted}
+            onSubmitEditing={() => doJump(jumpVal)} autoFocus maxLength={2} returnKeyType="go"
+          />
+          <TouchableOpacity style={styles.jumpGo} onPress={() => doJump(jumpVal)} activeOpacity={0.7}>
+            <Text style={styles.jumpGoText}>Ir ›</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.jumpChip} onPress={() => doJump('1')}><Text style={styles.jumpChipText}>D1</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.jumpChip} onPress={() => doJump(String(plan.hoyDia))}><Text style={styles.jumpChipText}>Hoy</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.jumpChip} onPress={() => doJump(String(plan.total))}><Text style={styles.jumpChipText}>D{plan.total}</Text></TouchableOpacity>
+        </View>
+      )}
 
       {/* Sub-tabs */}
       <View style={styles.subTabRow}>
@@ -635,6 +660,13 @@ const styles = StyleSheet.create({
   dayNavSub: { fontSize: FontSize.labelSm, color: Colors.muted },
   dayNavHoy: { backgroundColor: Colors.teal + '22', borderRadius: BorderRadius.full, paddingVertical: 3, paddingHorizontal: 8, marginLeft: Spacing.sm },
   dayNavHoyText: { fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.teal },
+  jumpRow: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: 6, backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.md, padding: Spacing.sm, marginBottom: Spacing.sm },
+  jumpLabel: { fontSize: FontSize.labelMd, fontWeight: '700', color: Colors.onSurfaceVariant },
+  jumpInput: { width: 56, backgroundColor: Colors.surfaceContainerHighest, borderRadius: BorderRadius.sm, paddingVertical: 6, paddingHorizontal: 10, color: Colors.onSurface, fontSize: FontSize.bodyMd, fontWeight: '800', textAlign: 'center' },
+  jumpGo: { backgroundColor: Colors.teal, borderRadius: BorderRadius.sm, paddingVertical: 6, paddingHorizontal: 12 },
+  jumpGoText: { fontSize: FontSize.labelMd, fontWeight: '800', color: '#04201c' },
+  jumpChip: { backgroundColor: Colors.surfaceContainerHighest, borderRadius: BorderRadius.full, paddingVertical: 5, paddingHorizontal: 11 },
+  jumpChipText: { fontSize: FontSize.labelSm, fontWeight: '700', color: Colors.onSurfaceVariant },
 
   subTabRow: { flexDirection: 'row', backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.md, padding: 3, marginBottom: Spacing.section },
   subTab: { flex: 1, paddingVertical: Spacing.sm, alignItems: 'center', borderRadius: BorderRadius.sm },

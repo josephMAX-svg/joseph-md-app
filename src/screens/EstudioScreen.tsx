@@ -11,6 +11,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ActivityIndicator,
+  Linking,
 } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius } from '../theme/tokens';
 import { useSupabaseQuery } from '../hooks/useSupabaseQuery';
@@ -198,6 +199,15 @@ function useLiveProgress(specialties: string[], examen: string): Record<string, 
 export default function EstudioScreen() {
   const [activeTab, setActiveTab] = useState<CountryTab>('EEUU');
   const [showSecondary, setShowSecondary] = useState(false);
+  // Deep Work timer (cuenta-arriba): tocar = iniciar/pausar · mantener = reset
+  const [dwSec, setDwSec] = useState(0);
+  const [dwRunning, setDwRunning] = useState(false);
+  useEffect(() => {
+    if (!dwRunning) return;
+    const id = setInterval(() => setDwSec(s => s + 1), 1000);
+    return () => clearInterval(id);
+  }, [dwRunning]);
+  const dwLabel = `${String(Math.floor(dwSec / 60)).padStart(2, '0')}:${String(dwSec % 60).padStart(2, '0')}`;
   const [modalVisible, setModalVisible] = useState(false);
   const [modalType, setModalType] = useState<'banco' | 'especialidad'>('banco');
   const [modalInput, setModalInput] = useState('');
@@ -586,11 +596,17 @@ export default function EstudioScreen() {
           >
             <Text style={styles.toolChipText}>🎤 Dictar error</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.toolChip} onPress={() => Alert.alert('Modo CCS', 'CCS simulation mode: coming soon')}>
-            <Text style={styles.toolChipText}>🩺 Modo CCS</Text>
+          <TouchableOpacity
+            style={[styles.toolChip, dwRunning && { backgroundColor: Colors.teal + '22' }]}
+            onPress={() => setDwRunning(r => !r)}
+            onLongPress={() => { setDwRunning(false); setDwSec(0); }}
+          >
+            <Text style={[styles.toolChipText, dwRunning && { color: Colors.teal }]}>
+              {dwRunning ? `⏸ DW ${dwLabel}` : dwSec > 0 ? `▶ DW ${dwLabel}` : '⏱ Timer DW'}
+            </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.toolChip} onPress={() => Alert.alert('Timer DW', 'Deep Work timer: use the Home screen timer')}>
-            <Text style={styles.toolChipText}>⏱ Timer DW</Text>
+          <TouchableOpacity style={styles.toolChip} onPress={() => Linking.openURL('https://qxmedic-aulavirtual.com/evaluaciones')}>
+            <Text style={styles.toolChipText}>📝 Banco QX</Text>
           </TouchableOpacity>
         </View>
 
