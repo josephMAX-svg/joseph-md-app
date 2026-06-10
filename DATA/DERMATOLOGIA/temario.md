@@ -102,8 +102,16 @@ Reutilizado de la extracción API real del 10-jun (`src/lib/usmleQbanklyData.ts`
   Hypersensitivity (doc 9), DRESS (doc 8).
 - **USMLERx:** Dermatology 53 Q · **PassMedicine:** "MSK & skin" 386 Q (mezcladas, 171 temas lib).
 - **B&B Step 1:** capítulo Dermatology = **0 vídeos** (verificado; no existe contenido).
-- `[pendiente]` Derma de los bancos **Step 2 CK** y flashcards por deck (el usuario cerró el
-  gate de selección de navegador Edge; re-extraer cuando lo autorice).
+- ✅ **Step 2 CK derma (extraído 10-jun vía Edge "Browser 2"):** uWorld Step 2 **119 Q**
+  (6 subtemas: inflammatory/bullous 38, tumors 30, infections 23, misc 12, appendages 9,
+  normal 7) · Amboss S2 CK **172** · Mehlman S2 **132** · USMLERx S2 **111** ⇒ **534 Q**.
+- ✅ **Step 3 derma:** uWorld **102** · Amboss **104** · Mehlman **57** ⇒ 263 Q.
+- ✅ **Flashcards (son bancos, no hay API aparte):** uWorld S1 FlashCards (deck id 16,
+  2.180 cards) → **Dermatology 75** · uWorld S2 FlashCards (id 17, 2.684) → **61**.
+  La página `/flashcards` es el player SRS de esos decks.
+- ✅ **High Yield (cat. 13):** derma dentro de Mehlman HY: IM 106 · Peds 74 · FM 63 ·
+  Surgery 59 · EM 14; Amboss 200 Concepts S1/S2: skin+MSK 15/17.
+  Raw completo: [`_scrape/qbankly_derm_step2.json`](./_scrape/qbankly_derm_step2.json).
 
 ---
 

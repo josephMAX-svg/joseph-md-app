@@ -1,0 +1,52 @@
+{
+  "fuente": "Qbankly (qbankly.app) · API interna /api/v2/qbanks · cuenta Premium del usuario",
+  "metodo": "Extensión Claude-in-Chrome en Microsoft EDGE (Browser 2, Edg/148 — verificado por navigator.userAgent; Chrome+CDP bloqueado por Cloudflare) · 10-jun-2026",
+  "nota": "Filtrado /derm|skin/i sobre s (subjects) e y (subtopics) de cada banco. Formato [id, nombre, nPreguntas]. No existe API /api/v2/flashcards (404×4): los decks de flashcards SON bancos (id 16/17) dentro de categoryId=1; la página /flashcards es su player SRS (uWorld S1 2.180 cards · S2 2.684).",
+  "categorias": [
+    { "id": 1, "name": "USMLE", "count": 12 }, { "id": 13, "name": "USMLE High Yield", "count": 18 },
+    { "id": 7, "name": "NBME - Clinical Mastery Series", "count": 37 }, { "id": 8, "name": "NBME CBS Step 1", "count": 9 },
+    { "id": 9, "name": "NBME CCS Step 2 CK", "count": 8 }, { "id": 10, "name": "NBME CCM Step 3", "count": 2 },
+    { "id": 11, "name": "NBME Subjects Exam", "count": 8 }, { "id": 6, "name": "AMC", "count": 4 },
+    { "id": 3, "name": "COMLEX", "count": 3 }, { "id": 2, "name": "DE", "count": 3 }, { "id": 4, "name": "MCAT", "count": 1 },
+    { "id": 12, "name": "MCCQE", "count": 9 }, { "id": 14, "name": "MRCP", "count": 4 }, { "id": 5, "name": "UKMLA", "count": 1 }
+  ],
+  "dermaPorBanco_categoria_USMLE": [
+    { "id": 1, "name": "uWorld - USMLE Step 1", "q": 3659, "dermaTotal": 99,
+      "dermY": [[1027, "Disorders of epidermal appendages", 11], [1028, "Inflammatory dermatoses and bullous diseases", 28], [1029, "Miscellaneous", 4], [1030, "Normal structure and function of skin", 6], [1031, "Skin and soft tissue infections", 18], [1032, "Skin tumors and tumor-like lesions", 32]],
+      "nota": "la extracción previa (78) sumaba solo 3 subtemas; el desglose completo de 6 subtemas da 99" },
+    { "id": 6, "name": "uWorld - USMLE Step 2", "q": 4085, "dermaTotal": 119,
+      "dermY": [[1020, "Disorders of epidermal appendages", 9], [1021, "Inflammatory dermatoses and bullous diseases", 38], [1022, "Miscellaneous", 12], [1023, "Normal structure and function of skin", 7], [1024, "Skin and soft tissue infections", 23], [1025, "Skin tumors and tumor-like lesions", 30]] },
+    { "id": 7, "name": "uWorld - USMLE Step 3", "q": 2136, "dermaTotal": 102, "dermY": [[1003, "Dermatology", 102]] },
+    { "id": 16, "name": "uWorld - Step 1 FlashCards", "q": 2180, "dermaTotal": 75, "dermY": [[577, "Dermatology", 75]], "tipo": "FLASHCARDS" },
+    { "id": 17, "name": "uWorld - Step 2 FlashCards", "q": 2684, "dermaTotal": 61, "dermY": [[541, "Dermatology", 61]], "tipo": "FLASHCARDS" },
+    { "id": 3, "name": "Amboss - USMLE Step 1", "q": 2745, "dermaTotal": 88, "dermS": [[12, "Dermatology", 88]], "dermY": [[17, "Skin & Subcutaneous Tissue", 108]] },
+    { "id": 4, "name": "Amboss - USMLE Step 2 CK", "q": 3338, "dermaTotal": 172, "dermS": [[12, "Dermatology", 172]], "dermY": [[17, "Skin & Subcutaneous Tissue", 173]] },
+    { "id": 5, "name": "Amboss - USMLE Step 3", "q": 2095, "dermaTotal": 104, "dermS": [[12, "Dermatology", 104]], "dermY": [[17, "Skin & Subcutaneous Tissue", 118]] },
+    { "id": 78, "name": "Mehlman - Step 1 QBank 2026", "q": 7278, "dermaTotal": 248, "nota": "repartida en 38 subtemas Dermatology(...): inmuno 43, infecciones 41+22, neoplasia 23, metabólico 20, estructura 13, drug reactions 10…" },
+    { "id": 79, "name": "Mehlman - Step 2 CK Qbank", "q": 2450, "dermaTotal": 132,
+      "dermY": [[6, "Miscellaneous", 21], [40, "Infection-related presentations", 27], [125, "Immunologic phenomena", 24], [129, "Skin and soft tissue infections", 15], [146, "Neoplasia + tumor disorders", 20], [213, "Syndromic conditions", 7], [219, "Burns and trauma", 4], [226, "Hematologic disorders", 5], [246, "Metabolic or nutritional", 4], [250, "Drug reactions", 3], [253, "Normal structure and function", 2]] },
+    { "id": 80, "name": "Mehlman - Step 3 Qbank", "q": 1560, "dermaTotal": 57,
+      "dermY": [[18, "Syndromic conditions", 5], [83, "Skin and soft tissue infections", 4], [84, "Infection-related presentations", 4], [100, "Immunologic phenomena", 14], [109, "Neoplasia + tumor disorders", 8], [155, "Normal structure", 1], [203, "Burns and trauma", 7], [221, "Miscellaneous", 5], [224, "Drug reactions", 1], [250, "Hematologic disorders", 3], [264, "Dermatology", 3], [267, "Metabolic or nutritional", 2]] },
+    { "id": 87, "name": "PassMedicine - USMLE Step 1", "q": 3846, "dermaTotal": null, "dermS": [[6, "Musculoskeletal system and skin", 386]], "nota": "MSK+skin mezclados" },
+    { "id": 117, "name": "USMLERx - USMLE Step 1", "q": 2150, "dermaTotal": 53, "dermY": [[28, "Dermatology", 53]] },
+    { "id": 118, "name": "USMLERx - USMLE Step 2", "q": 2423, "dermaTotal": 111, "dermY": [[28, "Dermatology", 111]] }
+  ],
+  "dermaPorBanco_categoria_HighYield": [
+    { "id": 91, "name": "Amboss Study Plan - 200 Concepts Step 1", "q": 200, "dermS": [[10, "Skin & musculoskeletal system", 15]] },
+    { "id": 92, "name": "Amboss Study Plan - 200 Concepts Step 2", "q": 200, "dermS": [[5, "Skin & musculoskeletal system", 17]] },
+    { "id": 93, "name": "Mehlman - HY Emergency Medicine", "q": 481, "dermaTotal": 14 },
+    { "id": 94, "name": "Mehlman - HY Family Medicine", "q": 580, "dermaTotal": 63 },
+    { "id": 95, "name": "Mehlman - HY Internal Medicine", "q": 1003, "dermaTotal": 106 },
+    { "id": 97, "name": "Mehlman - HY Pediatrics", "q": 1001, "dermaTotal": 74 },
+    { "id": 98, "name": "Mehlman - HY Psychiatry", "q": 776, "dermaTotal": 2 },
+    { "id": 99, "name": "Mehlman - HY Surgery", "q": 595, "dermaTotal": 59 }
+  ],
+  "resumen": {
+    "step1_derma": { "uWorld": 99, "Amboss": 88, "Mehlman": 248, "USMLERx": 53, "PassMedicine_MSKskin": 386 },
+    "step2CK_derma": { "uWorld": 119, "Amboss": 172, "Mehlman": 132, "USMLERx": 111, "total": 534 },
+    "step3_derma": { "uWorld": 102, "Amboss": 104, "Mehlman": 57, "total": 263 },
+    "flashcards_derma": { "uWorld_S1_deck16": 75, "uWorld_S2_deck17": 61 },
+    "highYield_derma_Mehlman": { "IM": 106, "Peds": 74, "FM": 63, "Surgery": 59, "EM": 14 }
+  },
+  "observacion": "El dashboard de Video Library muestra ahora Total Videos 1797 (antes 1546 en QBANKLY_META) — Qbankly añadió contenido; no afecta a derma (B&B Dermatology sigue en 0)."
+}

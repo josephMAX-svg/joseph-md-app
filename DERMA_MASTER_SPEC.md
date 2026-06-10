@@ -375,14 +375,20 @@ el chat principal sobre `dermaDailyPlan.ts`, copiando `UsmleTodayPlan`/`MirToday
 - **Fitzpatrick's Dermatology 9e es bookid 2570** y el Color Atlas 9e es 3309 (en
   AccessDermatology, no en AccessMedicine como decía el dossier antiguo).
 
-### B.3 Qbankly — derma (reutilizado de la extracción API 10-jun; Step 2 `[pendiente]`)
+### B.3 Qbankly — derma ✅ COMPLETA (Step 1+2+3+flashcards · 10-jun vía Edge)
 - uWorld Library subject **Dermatology: 43 temas** con docId (70–112) → deep-link
   `library?e=1&doc=<n>`; extraídos a `_scrape/qbankly_derm_library.json`.
-- uWorld Step 1: **78 Q** de derma en 3 subtemas (Inflammatory/bullous 28 · Tumors 32 ·
-  Infections 18) + Allergy (urticaria doc2, hipersensibilidad doc9, DRESS doc8).
-- USMLERx: Dermatology 53 Q · PassMedicine: "MSK & skin" 386 Q (mezcladas).
+- **Preguntas de derma por step** (raw `_scrape/qbankly_derm_step2.json`):
+  - Step 1: uWorld **99** (6 subtemas; el "78" previo sumaba solo 3) · Amboss 88 ·
+    Mehlman 248 · USMLERx 53 · PassMedicine MSK+skin 386.
+  - **Step 2 CK: 534 Q** — uWorld **119** · Amboss **172** · Mehlman 132 · USMLERx 111.
+  - Step 3: 263 Q — uWorld 102 · Amboss 104 · Mehlman 57.
+  - High Yield (cat. 13): Mehlman HY IM 106 · Peds 74 · FM 63 · Surgery 59 · EM 14.
+- **Flashcards:** no hay API aparte (404) — los decks SON bancos: uWorld S1 FlashCards
+  (id 16, 2.180 cards) → **Dermatology 75** · uWorld S2 (id 17, 2.684) → **61**.
 - **B&B Step 1 capítulo Dermatology = 0 vídeos** (no existe; no usarlo como material).
-- `[pendiente]` bancos Step 2 CK + flashcards (el gate de selección de Edge se cerró).
+- Nota operativa: el navegador Edge con la extensión es **"Browser 2"** (Edg/148 verificado
+  por userAgent); Video Library total subió a 1.797 (antes 1.546).
 
 ### B.4 Referentes verificados (URLs/DOIs reales → `DATA/DERMATOLOGIA/referentes.md`)
 - **Cotofana:** curso <https://cotofanaanatomy.com/> · ⚠ NO tiene canal YouTube oficial
