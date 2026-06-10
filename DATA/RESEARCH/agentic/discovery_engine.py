@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """
 discovery_engine.py — Motor de descubrimiento bibliográfico (Capa 0) EJECUTABLE.
-Verificado en vivo (jun-2026): la query de SR-1 devuelve >2.800 candidatos en OpenAlex,
-incluyendo el ancla DeLorenzi 2014. Este script es el corazón del sistema agéntico: corre
+Verificado en vivo (jun-2026): OpenAlex reporta miles de candidatos para SR-1; con los caps
+por fuente, el run real dejó 804 brutos → 666 únicos (incl. el ancla DeLorenzi 2014). Es el
+corazón del sistema agéntico: corre
 async sobre las fuentes, deduplica por DOI y deja un CSV/JSON listo para screening.
 
 Stdlib-only para correr sin instalar nada (urllib). Para producción async usar httpx+asyncio
@@ -65,7 +66,7 @@ def openalex(query, max_records=300):
         for w in data.get("results", []):
             out.append({
                 "source": "openalex", "doi": norm_doi(w.get("doi")),
-                "pmid": (w.get("ids") or {}).get("pmid", "").replace("https://pubmed.ncbi.nlm.nih.gov/", "") or None,
+                "pmid": ((w.get("ids") or {}).get("pmid") or "").replace("https://pubmed.ncbi.nlm.nih.gov/", "").strip("/") or None,
                 "title": w.get("title") or "",
                 "year": w.get("publication_year"),
                 "abstract": reconstruct_abstract(w.get("abstract_inverted_index")),
@@ -149,7 +150,7 @@ def dedup(records):
         if key in seen:
             seen[key]["sources"].add(r["source"])  # mismo paper en varias fuentes
             continue
-        r["sources"] = {r["source"]}
+        r["sources"] = set(r["sources"]) if r.get("sources") else {r["source"]}  # idempotente al re-correr
         seen[key] = r
         out.append(r)
     return out

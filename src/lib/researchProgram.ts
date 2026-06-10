@@ -178,13 +178,14 @@ export const CITATION_PIPELINE: { paso: string; detalle: string }[] = [
 ];
 
 // ── Consola de agentes: qué agente redacta qué sección, por línea (Manual §8.5/§14) ──
-export type EstadoAgente = 'idle' | 'queued' | 'working' | 'done' | 'needs_human';
+export type EstadoAgente = 'idle' | 'queued' | 'working' | 'done' | 'needs_human' | 'blocked';
 export const ESTADO_AGENTE: Record<EstadoAgente, { lbl: string; color: string; icon: string }> = {
   idle:        { lbl: 'inactivo',          color: '#8F9097', icon: '○' },
   queued:      { lbl: 'en cola',           color: '#2E7CF6', icon: '◔' },
   working:     { lbl: 'redactando…',       color: '#F5A623', icon: '◍' },
   done:        { lbl: 'listo',             color: '#0FD4A0', icon: '●' },
   needs_human: { lbl: 'requiere tu visto', color: '#F56342', icon: '◆' },
+  blocked:     { lbl: 'bloqueado',         color: '#F56342', icon: '⨯' },
 };
 // Qué sección redacta cada agente (orden del manuscrito)
 export const AGENTE_SECCION: { agentId: string; seccion: string; icon: string; color: string }[] = [

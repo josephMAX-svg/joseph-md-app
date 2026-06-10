@@ -84,6 +84,8 @@ def vancouver_from_csl(csl):
         names += ", et al"
     year = (csl.get("issued", {}).get("date-parts", [[None]])[0] or [None])[0]
     jt = (csl.get("container-title") or csl.get("container-title-short") or "")
+    if isinstance(jt, list):
+        jt = jt[0] if jt else ""
     title = (csl.get("title") or "")
     if isinstance(title, list):
         title = title[0] if title else ""

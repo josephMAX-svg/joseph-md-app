@@ -135,7 +135,7 @@ export default function ResearchAgenticSystem() {
         return (
           <View style={{ marginBottom: Spacing.xl }}>
             {AGENTE_SECCION.map((a, i) => {
-              const e = ESTADO_AGENTE[(live[a.agentId] as keyof typeof ESTADO_AGENTE) || snap[a.agentId] || 'idle'];
+              const e = ESTADO_AGENTE[(live[a.agentId] as keyof typeof ESTADO_AGENTE) || snap[a.agentId] || 'idle'] || ESTADO_AGENTE.idle;
               return (
                 <FadeUp key={a.agentId} delay={i * 25}>
                   <View style={[st.consoleRow, { borderLeftColor: a.color }]}>

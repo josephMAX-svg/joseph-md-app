@@ -69,8 +69,15 @@ Query PICO (booleana) → ejecutar async en las 5 APIs → consolidar
 
 > **✅ Ejecutable y probado en vivo (jun-2026):** [`agentic/discovery_engine.py`](agentic/discovery_engine.py)
 > corrió de verdad para SR-1 → **804 brutos → 666 únicos (dedup DOI), 117 en ≥2 fuentes**, con el ancla
-> **DeLorenzi 2014** como primer resultado. Esquema de BD: [`agentic/supabase_schema.sql`](agentic/supabase_schema.sql).
-> Cómo encenderlo 24/7 (VPS/n8n/keys) + sincronización Word/Drive: [`agentic/DEPLOY.md`](agentic/DEPLOY.md).
+> **DeLorenzi 2014** como primer resultado (SR-2 → 562 únicos). Esquema de BD:
+> [`agentic/supabase_schema.sql`](agentic/supabase_schema.sql). Cómo encenderlo 24/7 (VPS/n8n/keys) +
+> sincronización Word/Drive: [`agentic/DEPLOY.md`](agentic/DEPLOY.md).
+>
+> **Precisión honesta:** (1) esos **666/562 son únicos en memoria/CSV** del run; en la tabla
+> `research_papers` se sembró **el ancla + el contador `papers_today`** (no 666 filas) — el motor inserta
+> las filas al desplegar n8n. (2) El run real usó **3 de las 5 fuentes** (OpenAlex + Europe PMC + PubMed);
+> **Semantic Scholar** exige key (429 sin ella) y **LILACS** exige User-Agent de navegador/token. El
+> "≈97% con 5 fuentes" es el objetivo **con las 3 keys puestas** (OpenAlex/NCBI/S2) + LILACS configurado.
 
 ## 3. Esqueleto del motor (Python async · verificado)
 
