@@ -81,7 +81,7 @@ export const ESTUDIO_REGIMEN = [
 export const ESTUDIO_RECURSOS = [
   { label: 'Alex Hormozi (ES)', tipo: 'YouTube', url: 'https://www.youtube.com/@AlexHormoziEspanol', nota: 'PRIORIDAD MÁXIMA · mes 1' },
   { label: 'Aprendamos Marketing', tipo: 'YouTube', url: 'https://www.youtube.com/@AprendamosMarketing', nota: 'Meta Ads paso a paso · mes 2' },
-  { label: 'Romuald Fons (SEO)', tipo: 'YouTube', url: 'https://www.youtube.com/@RomualdFons', nota: 'SEO orgánico · mes 3' },
+  { label: 'Romuald Fons (SEO)', tipo: 'YouTube', url: 'https://www.youtube.com/results?search_query=Romuald+Fons+SEO', nota: 'SEO orgánico · mes 3' },
   { label: 'Vilma Núñez', tipo: 'YouTube', url: 'https://www.youtube.com/@VilmaNunez', nota: 'Embudos + email · mes 3' },
   { label: 'Peter Attia — The Drive', tipo: 'Podcast', url: 'https://peterattiamd.com/podcast/', nota: 'CRÍTICO para tu identidad médica' },
   { label: 'Huberman Lab', tipo: 'Podcast', url: 'https://www.hubermanlab.com/', nota: 'Sleep, dopamine, GLP-1, testosterone' },
