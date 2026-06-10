@@ -53,8 +53,20 @@ Cada bloque lleva `real: true|false`:
 5. `npx tsc --noEmit` + commit. El progreso ya marcado NO se pierde (los `d` son estables
    mientras no se reordene el pasado — regla: NUNCA renumerar días ya transcurridos).
 
-## Google Calendar (Misión 2)
+## Google Calendar (Misión 2) — CREADO con horario confirmado por Joseph (10-jun-2026)
 
-Regla del proyecto: el Calendar solo se modifica con confirmación explícita de Joseph.
-La propuesta de horarios (basada en la grilla real leída el 10-jun-2026) se entregó en el
-chat; pendiente de su OK. No se creó ni tocó ningún evento.
+Joseph liberó el hueco 12:30–13:00 él mismo y confirmó en el chat. Eventos recurrentes
+creados (color Blueberry, TZ America/Lima, descripción con link a la app; CERO eventos
+existentes tocados):
+
+| Evento | Recurrencia | id |
+|---|---|---|
+| 🧠 SYNAPSE — misión del día (30') | L–V 12:30–13:00, desde 11-jun-2026 | `j99thg3eaqesosmvppj4rfgvh4` |
+| 🧠 SYNAPSE — PC sábado (2h) | Sáb 15:00–17:00, desde 13-jun-2026 | `hv2lk04orquvivthtkfhilb1ps` |
+| 🧠 SYNAPSE — repaso + PC domingo (2h) | Dom 15:00–17:00, **desde 28-jun-2026** | `s7r8tiu66286t156l0odpv5nvo` |
+
+Los domingos **14 y 21-jun-2026 quedan LIBRES** (otras actividades de Joseph): la serie de
+domingos arranca el 28-jun a propósito (exclusión estructural, sin EXDATE). El plan refleja
+esos 2 días como "Domingo LIBRE" (`DOMINGOS_LIBRES` en el generador). Instancias verificadas
+con `list_events` (11-jun → 5-jul): L-V solo días de semana, sáb 13/20/27-jun + 4-jul,
+dom solo 28-jun y 5-jul.

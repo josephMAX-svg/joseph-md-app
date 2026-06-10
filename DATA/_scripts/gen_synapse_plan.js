@@ -244,6 +244,9 @@ const WD = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
 const START = new Date('2026-06-10T12:00:00');
 const TOTAL = 82; // 5 + 11*7 → d82 = dom 30-ago-2026
 
+// Domingos bloqueados por Joseph (otras actividades — confirmado en el chat el 10-jun-2026)
+const DOMINGOS_LIBRES = new Set(['2026-06-14', '2026-06-21']);
+
 const aUnits = buildAUnits();
 let aIdx = 0;
 const dias = [];
@@ -255,7 +258,13 @@ for (let d = 1; d <= TOTAL; d++) {
   const faseId = semana <= 8 ? 'f0' : 'f1';
   const fase = faseId === 'f0' ? 'F0 · La Escuela de Anthropic' : 'F1 · Código: Python + terminal + Git';
   const bloques = [];
-  if (wd === 'Dom') {
+  if (wd === 'Dom' && DOMINGOS_LIBRES.has(fecha)) {
+    bloques.push({
+      tag: 'R', min: 0, formato: 'repaso', material: 'Domingo LIBRE',
+      leccion: 'Bloqueado por Joseph (otras actividades — confirmado 10-jun-2026). Sin misión SYNAPSE hoy; si quieres conservar la racha, márcalo ✓ y listo.',
+      real: true,
+    });
+  } else if (wd === 'Dom') {
     bloques.push({
       tag: 'R', min: 30, formato: 'repaso', material: 'Repaso semanal',
       leccion: d === TOTAL

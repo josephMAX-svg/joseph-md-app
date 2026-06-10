@@ -218,12 +218,12 @@ export const SYNAPSE_KPIS = {
   metaFinal: 'Anthropic Fellows Program',
 } as const;
 
-// ─── Protocolo 30 min/día (espacios muertos — instrucción del usuario) ───
+// ─── Protocolo (horario REAL en Google Calendar — confirmado por Joseph el 10-jun-2026) ───
 export const SYNAPSE_HORARIO: { min: string; bloque: string; que: string; formato: string }[] = [
-  { min: "15'", bloque: 'Cuarto de lectura dentro del bloque Pulso', que: 'Lección ACTIVA del día: el curso/lectura de la fase actual (la misión que marque el motor)', formato: 'pantalla' },
-  { min: "10'", bloque: 'Almuerzo rápido · gaps entre bloques de estudio', que: 'Audio: podcast del día (No Priors, Dwarkesh, Lex troceado) o vídeo corto (canal Anthropic, Karpathy)', formato: 'sí-audio' },
-  { min: "5–10'", bloque: 'Viajes · colas · pre-nap estricto', que: 'Lectura móvil corta: Willison, The Batch, capítulo de Pro Git, ensayo de Anthropic', formato: 'lectura móvil' },
-  { min: "60–90'", bloque: 'Fin de semana (1 bloque, OPCIONAL)', que: 'Lo que NO cabe en huecos: código con teclado, notebooks, proyecto público de la fase', formato: 'requiere PC' },
+  { min: "30'", bloque: 'L–V 12:30–13:00 · evento "🧠 SYNAPSE — misión del día"', que: "La misión completa de la pestaña ⚡ Hoy: A lección 15' + B audio 10' + C lectura 5'", formato: 'pantalla' },
+  { min: '2 h', bloque: 'Sábado 15:00–17:00 · "🧠 SYNAPSE — PC sábado"', que: 'Bloque de teclado: notebooks, repo público synapse-journal, Problem Sets de CS50P + ponerse al día', formato: 'requiere PC' },
+  { min: '2 h', bloque: 'Domingo 15:00–17:00 · "🧠 SYNAPSE — repaso + PC" (14 y 21-jun libres)', que: 'Repaso semanal (Feynman en voz alta) + terminar lo que quedó del bloque PC', formato: 'repaso' },
+  { min: 'extra', bloque: 'Viajes · colas · gaps sueltos (opcional)', que: 'Adelantar audio (B) o lectura móvil (C) en cualquier hueco muerto del día', formato: 'sí-audio' },
 ];
 
 // ─── Quick links (right panel) ───
