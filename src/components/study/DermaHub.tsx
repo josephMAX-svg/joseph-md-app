@@ -1,19 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Linking } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
 import { desktopStyles, DesktopColors } from '../../theme/desktopStyles';
-import { SectionLabel, Chip, GlassPanel, gridStyle, gridItemStyle } from '../empresa/primitives';
+import { SectionLabel, Chip, GlassPanel, PillTab, gridStyle, gridItemStyle } from '../empresa/primitives';
 import { GradientHero, RingStat, MegaStat, FadeUp, CommandBackdrop } from '../empresa/visuals';
 import { diaEstudioTipo, VUELTAS } from '../../lib/researchData';
 import {
   DERMA_META, DERMA_BLOQUES, DERMA_RECURSOS, DERMA_FASES, DERMA_HORARIO, DERMA_NOTAS,
   PRIORIDAD_COLOR,
 } from '../../lib/dermaData';
+import DermaTodayPlan from './DermaTodayPlan';
 
 /**
- * DermaHub — sección Derma (referente clínico → Mayo) rediseñada: currículo por
- * bloques A–G con prioridad/vueltas + protocolo 12 semanas + recursos con links +
- * movimiento de Business + alternancia Research↔Derma. Reutilizado mobile y desktop.
+ * DermaHub — sección Derma (referente clínico → Mayo): pestaña HOY = plan día-a-día
+ * REAL (68 átomos, 3 fuentes con links verificados, ◆ Edge para Qbankly, progreso 0%→)
+ * + pestaña Cerebro clínico = currículo por bloques A–G, protocolo 12 semanas y recursos.
+ * Interdiario con Research. Reutilizado mobile y desktop.
  */
 
 const PURPLE = DERMA_META.accent;
@@ -22,9 +24,12 @@ function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
 const TOTAL_SUB = DERMA_BLOQUES.reduce((n, b) => n + b.subtemas.length, 0);
 const CRITICAS = DERMA_BLOQUES.reduce((n, b) => n + b.subtemas.filter(s => s.prioridad === 'CRITICA').length, 0);
 
+type Sub = 'hoy' | 'cerebro';
+
 export default function DermaHub({ variant = 'mobile' }: { variant?: 'mobile' | 'desktop' }) {
   const isDesktop = variant === 'desktop';
   const hoy = diaEstudioTipo(new Date());
+  const [sub, setSub] = useState<Sub>('hoy');
   const contentStyle = isDesktop
     ? desktopStyles.centerScrollContent
     : { paddingHorizontal: Spacing.lg, paddingTop: 56, paddingBottom: 110 };
@@ -51,6 +56,15 @@ export default function DermaHub({ variant = 'mobile' }: { variant?: 'mobile' | 
             </View>
           </View>
         </GradientHero>
+
+        {/* SUB-PESTAÑAS: plan día-a-día vs cerebro clínico */}
+        <View style={{ flexDirection: 'row', gap: Spacing.sm, marginBottom: Spacing.lg, flexWrap: 'wrap' }}>
+          <PillTab label="Hoy" icon="🗓️" active={sub === 'hoy'} accent={PURPLE} onPress={() => setSub('hoy')} />
+          <PillTab label="Cerebro clínico" icon="🧠" active={sub === 'cerebro'} accent={PURPLE} onPress={() => setSub('cerebro')} />
+        </View>
+
+        {sub === 'hoy' ? <DermaTodayPlan /> : (
+        <View>
 
         {/* MEGA STAT — lo que no puedes errar */}
         <MegaStat value={CRITICAS} label="Subtemas CRÍTICOS · lo que no puedes errar" accent={PURPLE}
@@ -166,6 +180,8 @@ export default function DermaHub({ variant = 'mobile' }: { variant?: 'mobile' | 
             </View>
           ))}
         </GlassPanel>
+        </View>
+        )}
       </View>
     </ScrollView>
   );
