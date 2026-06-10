@@ -9,6 +9,13 @@
 > **Regla de oro:** solo data verificada. Toda URL de abajo está en la leyenda §7 y corroborada. Lo no
 > confirmable se marca `(verificar)`. El tema **vive en la app**, no en el Calendar — **no se modifica el
 > Google Calendar**.
+>
+> **🛰️ Metodología del motor (actualizada jun-2026 · ver [`discovery-engine.md`](discovery-engine.md)):**
+> la búsqueda **no se limita a PubMed** ni se hace a mano — corre el **motor de 5 fuentes con OpenAlex
+> como troncal** (OpenAlex⭐ + PubMed + Europe PMC + LILACS + Semantic Scholar ≈97%). **OpenAlex exige API
+> key gratis desde 13-feb-2026.** El texto completo se resuelve con la **cascada Unpaywall→Europe PMC→PMC
+> →preprints→ALICIA→autor**. Las **citas las genera y verifica la IA** (Crossref/PubMed + CSL-JSON) — **no
+> Zotero manual**: solo persiste lo que resuelve a un DOI/PMID real.
 
 ---
 
@@ -74,7 +81,7 @@ real de principio a fin: **SR-1**. Al terminar, Joseph tiene (a) el método domi
 
 | Fase | Átomos | Objetivo de la fase | Pilar SR |
 |---|---|---|---|
-| **R0 · Cimientos & método** | R1–R5 | Infra (PubMed/Zotero), PICO, diseños, leer un paper, ver una SR de punta a punta | — |
+| **R0 · Cimientos & método** | R1–R5 | Infra (OpenAlex key/NCBI), PICO, diseños, leer un paper, ver una SR de punta a punta | — |
 | **R1 · Pregunta & protocolo** | R6–R9 | PICO de SR-1, criterios de elegibilidad, protocolo PRISMA-P | Reporte |
 | **R2 · Registro PROSPERO** | R10–R11 | Registrar SR-1 (CRD) antes de cerrar extracción | Registro |
 | **R3 · Búsqueda N bases** | R12–R16 | MeSH/booleanos, correr en 5 bases, PRISMA-S, dedup | Reporte |
@@ -96,7 +103,7 @@ real de principio a fin: **SR-1**. Al terminar, Joseph tiene (a) el método domi
 
 | code | fecha | prio | objetivo | entregable | rec | tool |
 |---|---|---|---|---|---|---|
-| R1 | 2026-06-10 | CRÍTICA | Montar la infra: cuenta NCBI, alerta en PubMed del nicho, Zotero + conector del navegador | Cuenta NCBI activa + 1 alerta guardada + Zotero instalado con 3 case reports modelo importados | `PM`,`ZOT` | PubMed, Zotero |
+| R1 | 2026-06-10 | CRÍTICA | Montar la infra: cuenta NCBI + **key OpenAlex** (gratis) + alerta PubMed; **citas por IA** (no Zotero) | Cuenta NCBI + API key OpenAlex + 1 alerta + 3 case reports modelo | `OPENALEX`,`PM` | OpenAlex, PubMed |
 | R2 | 2026-06-12 | CRÍTICA | Formular preguntas en **PICO** y distinguir tipos de pregunta (terapia/dx/pronóstico) | 3 PICO escritos (1 será el de SR-1) | `CIL1`,`GREEN` | — |
 | R3 | 2026-06-16 | CRÍTICA | **Diseños de estudio** y niveles de evidencia (qué separa case report de original) | Mapa 1-página: diseño → nivel → sesgos típicos | `STEP`,`ZED` | — |
 | R4 | 2026-06-18 | ALTA | **Cómo leer un paper** críticamente (método Greenhalgh) | 1 abstract del nicho leído con plantilla PICO + "¿qué tipo de estudio es?" | `GREEN` | — |
@@ -122,11 +129,11 @@ real de principio a fin: **SR-1**. Al terminar, Joseph tiene (a) el método domi
 
 | code | fecha | prio | objetivo | entregable | rec | tool |
 |---|---|---|---|---|---|---|
-| R12 | 2026-07-10 | CRÍTICA | **MeSH + booleanos + filtros**: construir la estrategia maestra en MEDLINE/PubMed | Sintaxis PubMed de SR-1 guardada (líneas numeradas) | `NLM1`,`NLM2`,`PM` | PubMed |
-| R13 | 2026-07-14 | ALTA | Trasladar la estrategia a **Embase (Europe PMC)** y **CENTRAL** | Sintaxis + nº de resultados por base (Europe PMC, CENTRAL) | `EPMC`,`CENT` | Europe PMC, Cochrane Library |
-| R14 | 2026-07-16 | ALTA | **LILACS/BVS** (ventaja LATAM) + registros de ensayos (ClinicalTrials/ICTRP) | Búsqueda LILACS + ClinicalTrials.gov + ICTRP, resultados anotados | `LILACS`,`CT`,`ICTRP` | LILACS, CT.gov |
-| R15 | 2026-07-20 | ALTA | **PRISMA-S** (16 ítems): documentar cada componente para reproducibilidad | Tabla PRISMA-S de SR-1 (fecha, base, interfaz, sintaxis, nº) | `PRISMAS` | — |
-| R16 | 2026-07-22 | MEDIA | **Exportar y deduplicar** todos los resultados a Zotero/Rayyan | Biblioteca dedup lista para cribado (1 archivo) | `ZOT`,`RAY` | Zotero, Rayyan |
+| R12 | 2026-07-10 | CRÍTICA | **OpenAlex (troncal, booleana) + MeSH** en MEDLINE/PubMed | Query booleana de SR-1 en OpenAlex + sintaxis PubMed (líneas numeradas) | `OPENALEX`,`NLM1`,`PM` | OpenAlex, PubMed |
+| R13 | 2026-07-14 | ALTA | Trasladar a **Europe PMC + CENTRAL + Semantic Scholar** (5 fuentes) | Sintaxis + nº de resultados por fuente | `EPMC`,`CENT`,`SEMSCH` | Europe PMC, Cochrane, S2 |
+| R14 | 2026-07-16 | ALTA | **LILACS/BVS** (DeCS · ventaja LATAM) + registros de ensayos (ClinicalTrials/ICTRP) | Búsqueda LILACS + ClinicalTrials.gov + ICTRP, resultados anotados | `LILACS`,`CT`,`ICTRP` | LILACS, CT.gov |
+| R15 | 2026-07-20 | ALTA | **PRISMA-S** (16 ítems): documentar cada componente para reproducibilidad | Tabla PRISMA-S de SR-1 (fecha, fuente, sintaxis, nº) | `PRISMAS` | — |
+| R16 | 2026-07-22 | MEDIA | **Texto completo** (cascada Unpaywall→…) + **dedup por DOI** → cribado | PDFs OA resueltos + biblioteca dedup lista para Rayyan | `UNPAY`,`RAY` | Unpaywall, Rayyan |
 
 ### R4 · Screening (cribado)
 
@@ -199,10 +206,14 @@ meta-análisis). Los pasos administrativos (PROSPERO, cover letter) van MEDIA/BA
 
 | clave | recurso | URL |
 |---|---|---|
-| `PM` | PubMed (búsqueda + alertas) | https://pubmed.ncbi.nlm.nih.gov/ |
-| `NLM1` | NLM · PubMed in EBP (curso oficial) | https://www.nlm.nih.gov/oet/ed/pubmed/pubmed_in_ebp/index.html |
+| `OPENALEX` | **OpenAlex** — API troncal del motor (key gratis obligatoria desde 13-feb-2026) | https://developers.openalex.org/api-reference/authentication |
+| `PM` | PubMed (búsqueda + alertas + E-utilities) | https://pubmed.ncbi.nlm.nih.gov/ |
+| `SEMSCH` | Semantic Scholar — Academic Graph API (5ª fuente, bulk + TLDR) | https://api.semanticscholar.org/api-docs/graph |
+| `UNPAY` | Unpaywall — texto completo OA legal por DOI (cascada) | https://unpaywall.org/products/api |
+| `CROSSREF` | Crossref — verificar DOI + CSL-JSON de citas (gate IA) | https://www.crossref.org/documentation/retrieve-metadata/content-negotiation/ |
+| `NLM1` | NLM · PubMed in EBP (MeSH/booleanos) | https://www.nlm.nih.gov/oet/ed/pubmed/pubmed_in_ebp/index.html |
 | `NLM2` | NLM · PubMed Online Training | https://learn.nlm.nih.gov/documentation/training-packets/T0042010P/ |
-| `ZOT` | Zotero (gestor de citas, gratis) | https://www.zotero.org/ |
+| `ZOT` | ~~Zotero~~ → **reemplazado por citas verificadas por IA** (Crossref/CSL-JSON, ver `CROSSREF`) | https://www.zotero.org/ |
 | `GREEN` | "How to Read a Paper" — Greenhalgh (BMJ) | https://www.bmj.com/about-bmj/resources-readers/publications/how-read-paper |
 | `STEP` | StatQuest (bioestadística, YouTube) | https://www.youtube.com/@statquest |
 | `ZED` | zedstatistics (estadística aplicada, YouTube) | https://www.youtube.com/@zedstatistics |

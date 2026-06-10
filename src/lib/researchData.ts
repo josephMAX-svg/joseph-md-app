@@ -87,10 +87,11 @@ export interface ModuloResearch {
 }
 
 export const RESEARCH_MODULOS: ModuloResearch[] = [
-  { n: 1, nombre: 'Literature Search (PubMed/MeSH)', prioridad: 'CRITICA', deadline: 'fin S2', nota: 'Sin esto, nada compone. MeSH, booleanos, filtros, alerts.',
+  { n: 1, nombre: 'Búsqueda multi-fuente (OpenAlex troncal + 5 fuentes)', prioridad: 'CRITICA', deadline: 'fin S2', nota: 'No solo PubMed. OpenAlex (key gratis, 13-feb-2026) + PubMed + Europe PMC + LILACS + Semantic Scholar ≈97% sensibilidad. MeSH/booleanos + citation-chasing.',
     links: [
-      { label: 'NLM · PubMed in EBP (curso oficial)', url: 'https://www.nlm.nih.gov/oet/ed/pubmed/pubmed_in_ebp/index.html' },
-      { label: 'NLM · PubMed Online Training', url: 'https://learn.nlm.nih.gov/documentation/training-packets/T0042010P/' },
+      { label: 'OpenAlex · API auth + pricing', url: 'https://developers.openalex.org/api-reference/authentication' },
+      { label: 'NLM · PubMed in EBP (MeSH/booleanos)', url: 'https://www.nlm.nih.gov/oet/ed/pubmed/pubmed_in_ebp/index.html' },
+      { label: 'Europe PMC · REST', url: 'https://europepmc.org/RestfulWebService' },
     ] },
   { n: 2, nombre: 'Cómo leer un paper (PICO)', prioridad: 'ALTA', deadline: 'fin S3', nota: '1 abstract/día con PICO + "¿qué tipo de estudio es?".',
     links: [
@@ -117,8 +118,11 @@ export const RESEARCH_MODULOS: ModuloResearch[] = [
       { label: 'NHANES (CDC)', url: 'https://www.cdc.gov/nchs/nhanes/' },
       { label: 'SEER (cáncer/melanoma)', url: 'https://seer.cancer.gov/' },
     ] },
-  { n: 7, nombre: 'Gestión de citas y reproducibilidad', prioridad: 'BAJA', deadline: 'al escribir', nota: 'Referencias automáticas, libreria compartida con el mentor.',
-    links: [{ label: 'Zotero (gratis)', url: 'https://www.zotero.org/' }] },
+  { n: 7, nombre: 'Citas verificadas por IA (no Zotero manual)', prioridad: 'MEDIA', deadline: 'al escribir', nota: 'La IA propone; solo persiste lo que resuelve a un DOI/PMID real. Crossref + PubMed + CSL-JSON; formateo con citation.js/anystyle. Gate anti-alucinación.',
+    links: [
+      { label: 'Crossref · content negotiation (CSL-JSON)', url: 'https://www.crossref.org/documentation/retrieve-metadata/content-negotiation/' },
+      { label: 'citation.js (formateo Vancouver/CSL)', url: 'https://citation.js.org/' },
+    ] },
 ];
 
 // Journals para la PRIMERA publicación (los más fáciles desde 0)
@@ -133,8 +137,8 @@ export const RESEARCH_JOURNALS = [
 
 // Pipeline agéntico de producción de papers (8 agentes + gates humanos)
 export const RESEARCH_PIPELINE = [
-  { id: 'A1', nombre: 'Lit-Search', desc: 'PubMed E-utilities + Europe PMC → corpus del nicho', tool: 'PubMed / Europe PMC' },
-  { id: 'A2', nombre: 'Screen & Extract', desc: 'Filtra y extrae a un schema YAML reproducible', tool: 'OpenAlex / Unpaywall' },
+  { id: 'A1', nombre: 'Discovery 5 fuentes', desc: 'OpenAlex troncal + PubMed + Europe PMC + LILACS + Semantic Scholar → corpus dedup (≈97%)', tool: 'OpenAlex (key) + 4' },
+  { id: 'A2', nombre: 'Texto completo + Screen', desc: 'Cascada Unpaywall→… + pre-screening Ollama local ($0)', tool: 'Unpaywall / Ollama' },
   { id: 'A3', nombre: 'Background', desc: 'Marco teórico desde la evidencia extraída', tool: 'Zotero' },
   { id: 'A4', nombre: 'Introduction', desc: 'Gap + objetivo + hipótesis', tool: '—' },
   { id: 'A5', nombre: 'Methods', desc: 'CARE / STROBE / PRISMA-ScR según tipo', tool: 'EQUATOR' },

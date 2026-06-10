@@ -19,10 +19,12 @@ RESEARCH/
   journals.md               ✅ revistas top verificadas (IF JCR 2024, cuartil, Diamond OA/50% LMIC, requisitos)
   benchmarks.md             ✅ cuántas pubs/SR para match derma EE.UU. + Mayo (honesto, NRMP verificado)
   systematic-reviews.md     ✅ playbook PRISMA/PROSPERO/GRADE + herramientas + walkthrough de referentes paso a paso
+  discovery-engine.md       ✅ MOTOR verificado jun-2026: OpenAlex troncal + 5 fuentes, cascada texto completo, citas por IA (no Zotero), orquestación n8n/Supabase/Ollama
   agentic-system.md         ✅ sistema agéntico (orquestador + subagentes + QA citas/Turnitin + ensamblado .docx)
-  daily-plan.md             ✅ plan día-a-día interdiario con Derma (40 átomos, mismo motor que USMLE/MIR)
+  daily-plan.md             ✅ plan día-a-día interdiario con Derma (40 átomos, mismo motor que USMLE/MIR · metodología OpenAlex/IA)
   lines/                    ✅ fichas de SR por línea (índice + L4 complicaciones=SR-1 + L5 fototipos=SR-2)
-  PROMPT_CHAT_RESEARCH.md   prompt base del chat de Research
+  MANUAL_MAESTRO_SISTEMA_INVESTIGACION_AGENTICA.md  (input del usuario · spec conceptual que discovery-engine.md verifica y aterriza)
+  PROMPT_CHAT_RESEARCH.md · PROMPT_OBSIDIAN_RESEARCH.md   prompts base
   _raw_findings.json        fuentes crudas del workflow de verificación (352 búsquedas)
 ```
 

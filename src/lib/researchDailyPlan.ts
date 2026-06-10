@@ -62,6 +62,10 @@ export const REC: Record<string, { label: string; url: string }> = {
   METAFOR:{ label: 'metafor package (R)', url: 'https://www.metafor-project.org/' },
   EQ:     { label: 'EQUATOR Network', url: 'https://www.equator-network.org/' },
   DELO:   { label: 'DeLorenzi 2014 · paper ancla SR-1 (PMID 24692598)', url: 'https://pubmed.ncbi.nlm.nih.gov/24692598/' },
+  OPENALEX:{ label: 'OpenAlex · API troncal (key gratis, 13-feb-2026)', url: 'https://developers.openalex.org/api-reference/authentication' },
+  SEMSCH: { label: 'Semantic Scholar · Academic Graph API', url: 'https://api.semanticscholar.org/api-docs/graph' },
+  UNPAY:  { label: 'Unpaywall · texto completo OA legal por DOI', url: 'https://unpaywall.org/products/api' },
+  CROSSREF:{ label: 'Crossref · verificar DOI + CSL-JSON de citas', url: 'https://www.crossref.org/documentation/retrieve-metadata/content-negotiation/' },
 };
 
 export type FaseId = 'R0' | 'R1' | 'R2' | 'R3' | 'R4' | 'R5' | 'R6' | 'R7' | 'R8';
@@ -85,7 +89,7 @@ export interface DiaResearch {
 
 export const DIAS: DiaResearch[] = [
   // R0 · Cimientos & método
-  { d: 1,  fecha: '2026-06-10', fase: 'R0', code: 'R1',  prioridad: 'CRITICA', objetivo: 'Montar la infra: cuenta NCBI, alerta PubMed del nicho, Zotero + conector', entregable: 'Cuenta NCBI + 1 alerta guardada + Zotero con 3 case reports modelo', tool: 'PubMed · Zotero', recs: ['PM', 'ZOT'], apex: { id: 'infra', t: 'Infra de research lista' } },
+  { d: 1,  fecha: '2026-06-10', fase: 'R0', code: 'R1',  prioridad: 'CRITICA', objetivo: 'Montar la infra: cuenta NCBI + key OpenAlex (gratis) + alerta PubMed; citas por IA (no Zotero)', entregable: 'Cuenta NCBI + API key OpenAlex + 1 alerta + 3 case reports modelo', tool: 'OpenAlex · PubMed', recs: ['OPENALEX', 'PM'], apex: { id: 'infra', t: 'Infra del motor lista (key OpenAlex)' } },
   { d: 2,  fecha: '2026-06-12', fase: 'R0', code: 'R2',  prioridad: 'CRITICA', objetivo: 'Formular preguntas en PICO y distinguir tipos (terapia/dx/pronóstico)', entregable: '3 PICO escritos (1 será el de SR-1)', tool: '—', recs: ['CIL1', 'GREEN'], apex: null },
   { d: 3,  fecha: '2026-06-16', fase: 'R0', code: 'R3',  prioridad: 'CRITICA', objetivo: 'Diseños de estudio y niveles de evidencia (case report vs original)', entregable: 'Mapa 1-página: diseño → nivel → sesgos típicos', tool: '—', recs: ['STEPSR', 'STAT', 'ZED'], apex: null },
   { d: 4,  fecha: '2026-06-18', fase: 'R0', code: 'R4',  prioridad: 'ALTA',    objetivo: 'Cómo leer un paper críticamente (método Greenhalgh)', entregable: '1 abstract del nicho leído con plantilla PICO + tipo de estudio', tool: '—', recs: ['GREEN'], apex: null },
@@ -99,11 +103,11 @@ export const DIAS: DiaResearch[] = [
   { d: 10, fecha: '2026-07-06', fase: 'R2', code: 'R10', prioridad: 'CRITICA', objetivo: 'Rellenar el formulario PROSPERO (campos obligatorios)', entregable: 'Registro PROSPERO de SR-1 ENVIADO', tool: 'PROSPERO', recs: ['PROS'], apex: { id: 'prospero', t: 'SR-1 registrada (CRD)' } },
   { d: 11, fecha: '2026-07-08', fase: 'R2', code: 'R11', prioridad: 'MEDIA',   objetivo: 'Plan B si no encaja (scoping → OSF) + esperar CRD', entregable: 'CRD recibido o registro en OSF; protocolo congelado', tool: 'OSF', recs: ['PROS', 'OSF'], apex: null },
   // R3 · Búsqueda N bases
-  { d: 12, fecha: '2026-07-10', fase: 'R3', code: 'R12', prioridad: 'CRITICA', objetivo: 'MeSH + booleanos + filtros: estrategia maestra en MEDLINE/PubMed', entregable: 'Sintaxis PubMed de SR-1 guardada (líneas numeradas)', tool: 'PubMed', recs: ['NLM1', 'NLM2', 'PM'], apex: { id: 'mesh', t: 'Estrategia MeSH+booleana' } },
-  { d: 13, fecha: '2026-07-14', fase: 'R3', code: 'R13', prioridad: 'ALTA',    objetivo: 'Trasladar la estrategia a Embase (Europe PMC) y CENTRAL', entregable: 'Sintaxis + nº de resultados por base', tool: 'Europe PMC · Cochrane', recs: ['EPMC', 'CENT'], apex: null },
+  { d: 12, fecha: '2026-07-10', fase: 'R3', code: 'R12', prioridad: 'CRITICA', objetivo: 'Estrategia maestra: OpenAlex (troncal, booleana) + MeSH en MEDLINE/PubMed', entregable: 'Query booleana de SR-1 en OpenAlex + sintaxis PubMed (líneas numeradas)', tool: 'OpenAlex · PubMed', recs: ['OPENALEX', 'NLM1', 'PM'], apex: { id: 'mesh', t: 'Query OpenAlex + MeSH' } },
+  { d: 13, fecha: '2026-07-14', fase: 'R3', code: 'R13', prioridad: 'ALTA',    objetivo: 'Trasladar a Europe PMC + CENTRAL + Semantic Scholar (5 fuentes)', entregable: 'Sintaxis + nº de resultados por fuente', tool: 'Europe PMC · S2', recs: ['EPMC', 'CENT', 'SEMSCH'], apex: null },
   { d: 14, fecha: '2026-07-16', fase: 'R3', code: 'R14', prioridad: 'ALTA',    objetivo: 'LILACS/BVS (ventaja LATAM) + registros de ensayos', entregable: 'Búsqueda LILACS + ClinicalTrials.gov + ICTRP anotada', tool: 'LILACS · CT.gov', recs: ['LILACS', 'CT', 'ICTRP'], apex: null },
   { d: 15, fecha: '2026-07-20', fase: 'R3', code: 'R15', prioridad: 'ALTA',    objetivo: 'PRISMA-S (16 ítems): documentar cada componente', entregable: 'Tabla PRISMA-S de SR-1 (fecha, base, interfaz, sintaxis, nº)', tool: '—', recs: ['PRISMAS'], apex: null },
-  { d: 16, fecha: '2026-07-22', fase: 'R3', code: 'R16', prioridad: 'MEDIA',   objetivo: 'Exportar y deduplicar todo a Zotero/Rayyan', entregable: 'Biblioteca dedup lista para cribado', tool: 'Zotero · Rayyan', recs: ['ZOT', 'RAY'], apex: null },
+  { d: 16, fecha: '2026-07-22', fase: 'R3', code: 'R16', prioridad: 'MEDIA',   objetivo: 'Texto completo (cascada Unpaywall→…) + dedup por DOI → cribado', entregable: 'PDFs OA resueltos + biblioteca dedup lista para Rayyan', tool: 'Unpaywall · Rayyan', recs: ['UNPAY', 'RAY'], apex: null },
   // R4 · Screening
   { d: 17, fecha: '2026-07-24', fase: 'R4', code: 'R17', prioridad: 'CRITICA', objetivo: 'Montar Rayyan y subir el corpus; etiquetas y ciego', entregable: 'Proyecto Rayyan de SR-1 con todos los registros', tool: 'Rayyan', recs: ['RAY', 'RAYHC', 'RAYYT'], apex: { id: 'rayyan', t: 'Cribado en Rayyan' } },
   { d: 18, fecha: '2026-07-28', fase: 'R4', code: 'R18', prioridad: 'CRITICA', objetivo: 'Cribado título/abstract (nivel 1), 2 revisores o 2 pases', entregable: 'Nivel 1 completado; conflictos marcados', tool: 'Rayyan', recs: ['RAY'], apex: null },
@@ -131,7 +135,7 @@ export const DIAS: DiaResearch[] = [
   { d: 36, fecha: '2026-09-16', fase: 'R8', code: 'R36', prioridad: 'ALTA',    objetivo: 'Checklist PRISMA 2020 de 27 ítems + supplementary', entregable: 'Checklist 27 ítems marcada + supplements (PRISMA-S, SoF, CRD)', tool: '—', recs: ['PRISMAC'], apex: null },
   { d: 37, fecha: '2026-09-18', fase: 'R8', code: 'R37', prioridad: 'MEDIA',   objetivo: 'Elegir journal + APC (Diamond OA vs 50% LMIC, Research4Life)', entregable: 'Journal target decidido + plan de coste', tool: '—', recs: ['EQ'], apex: null },
   { d: 38, fecha: '2026-09-22', fase: 'R8', code: 'R38', prioridad: 'MEDIA',   objetivo: 'Cover letter + formateo al journal (Editorial Manager/ScholarOne)', entregable: 'Cover letter + manuscrito formateado', tool: '—', recs: ['EQ'], apex: null },
-  { d: 39, fecha: '2026-09-24', fase: 'R8', code: 'R39', prioridad: 'CRITICA', objetivo: 'CHECKPOINT HUMANO (HITL): verificar citas reales (DOI/PMID), paráfrasis, cadena estadística', entregable: 'Word .docx revisado y aprobado por Joseph', tool: '—', recs: ['PRISMAC'], apex: { id: 'hitl', t: 'Checkpoint humano CP-4' } },
+  { d: 39, fecha: '2026-09-24', fase: 'R8', code: 'R39', prioridad: 'CRITICA', objetivo: 'CHECKPOINT HUMANO (HITL): verificar citas reales por IA (Crossref/PMID + CSL-JSON), paráfrasis, cadena estadística', entregable: 'Word .docx revisado y aprobado por Joseph', tool: 'Crossref · PubMed', recs: ['CROSSREF', 'PRISMAC'], apex: { id: 'hitl', t: 'Checkpoint humano CP-4' } },
   { d: 40, fecha: '2026-09-28', fase: 'R8', code: 'R40', prioridad: 'CRITICA', objetivo: 'SUBMIT SR-1 + abrir SR-2 (Línea 5, fototipos IV–VI): registrar nuevo PICO', entregable: 'SR-1 enviada ✅ + PICO de SR-2 borrador', tool: 'Editorial Manager', recs: ['PROS'], apex: { id: 'submit', t: 'SR-1 enviada · SR-2 abierta' } },
 ];
 

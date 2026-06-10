@@ -356,18 +356,28 @@ crea `DATA/_scripts/build_vault_research.js` (idempotente); el agente solo **añ
 
 ---
 
-## 9. Capa 0 — descubrimiento 24/7 (alimenta el corpus sin tokens premium)
+## 9. Capa 0 — motor de descubrimiento 24/7 (5 fuentes · OpenAlex troncal)
+
+> **Spec técnica completa y verificada (jun-2026):** [`discovery-engine.md`](discovery-engine.md)
+> (endpoints, auth, esqueleto Python, cascada de texto completo, citas IA, orquestación). Aquí va el
+> resumen; los detalles que cambian (APIs/precios) viven allí.
 
 Corre en segundo plano para que el "USE" del humano sea solo verificar (principio BUILD vs USE del MD §2.7):
 
 ```
-n8n (cron diario) → APIs públicas:
-  • PubMed E-utilities (esearch/efetch)   • OpenAlex API   • Europe PMC API   • LILACS/BVS
-→ dedup (DOI/título) → screening barato local (Ollama Phi-4 Mini)
-→ Supabase (tabla papers)  → Telegram @TesisAcneBot: "nuevo paper relevante para L4? [sí]/[no]"
+n8n Schedule Trigger (cron) + Google Calendar (¿hay bloque "research" hoy?) →
+  motor Python async sobre 5 FUENTES (≈97% sensibilidad):
+    • OpenAlex ⭐ TRONCAL (250M+, CC0)   • PubMed/MEDLINE (E-utilities)   • Europe PMC
+    • LILACS/BVS (DeCS · ventaja LATAM)  • Semantic Scholar (bulk + TLDR)
+→ dedup por DOI normalizado → pre-screening local Ollama (phi4-mini, structured output JSON, $0)
+→ Supabase (papers/screening/engine_state) + Realtime → Telegram "Send and Wait" [Aprobar]/[Descartar]
 ```
-- **Gratis/local:** OpenAlex, PubMed E-utils, Europe PMC y LILACS **no requieren pago**; el screening
-  repetitivo lo hace Phi-4 local (sin coste de API).
+- ⚠️ **OpenAlex exige API key gratis desde 13-feb-2026** (`?api_key=`); el polite pool/`mailto` está
+  **muerto**. Modelo freemium (~$1/día gratis); para cosechas grandes, espejar el **snapshot CC0** (AWS)
+  en Postgres → coste marginal cero. Validación SR: **98% de cobertura** (Stansfield 2025, DOI
+  10.1002/cesm.70038). **Corrección:** Europe PMC **no** indexa Embase.
+- **Texto completo (cascada legal):** Unpaywall → Europe PMC/PMC OA → preprints → ALICIA-CONCYTEC
+  (OAI-PMH) → autor. Unpaywall (de OurResearch) por DOI, gratis (email), 100k/día.
 - El humano aprueba/descarta con botones de Telegram → los aprobados entran al corpus de la SR activa.
 - ⚠️ Esto **descubre y pre-filtra**, no decide inclusión final: la inclusión formal sigue el cribado de 2
   revisores + Kappa (átomos R17–R21). La Capa 0 es un *feeder*, no el screening oficial.
@@ -381,6 +391,19 @@ El `CitationAgent` verifica DOI/PMID y solape de chunk. **Añade un segundo cont
 fragmento que reproduzca texto fuente casi literal y lo reescribe en paráfrasis original (nunca cita directa
 salvo entrecomillado explícito y atribuido). Joseph corre el Turnitin institucional como verificación final;
 el agente solo minimiza el riesgo de antemano. **Regla:** cero texto copiado; toda síntesis es reformulación.
+
+### 10.1 Citas por IA (reemplaza Zotero manual) — gate anti-alucinación
+
+**Joseph no cita a mano con Zotero.** El `CitationAgent` aplica el gate verificado de
+[`discovery-engine.md §5`](discovery-engine.md): el LLM emite las referencias como **JSON estructurado**
+(no prosa), y cada una se verifica contra **Crossref** (`api.crossref.org/works/{DOI}?mailto=…`) y/o
+**PubMed** (`esummary retmode=json`), con **match fuzzy** (rapidfuzz ≥0.90 acepta · 0.80–0.90 a revisión ·
+<0.80 rechaza) + año ±1 + 1er autor. Al aceptar, se **descartan los metadatos del LLM** y se baja el
+**CSL-JSON canónico** por content negotiation (`Accept: application/vnd.citationstyles.csl+json` en
+`doi.org/{DOI}`); el formateo Vancouver lo hace `citation.js`/`anystyle`, nunca a mano. **Solo persiste lo
+que resuelve a un DOI/PMID real.** ⚠️ Crossref cambió límites el 1-dic-2025 (público 5/s, polite/mailto
+10/s) — leer los headers `X-Rate-Limit-*`. Los gestores con IA (SciSpace/Paperpile/Elicit) importan/exportan,
+pero la verdad de tierra es Crossref/PubMed + CSL-JSON verificado, no la librería personal.
 
 ---
 

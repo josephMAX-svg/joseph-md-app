@@ -21,23 +21,32 @@
 - PROSPERO detecta RS similares ya registradas y te pide justificar la nueva. Registros sin finalizar a >2 años se marcan.
 - ⚠️ **No verificable**: no hay una cifra oficial de tiempo de procesamiento ("X semanas"); trátalo como no confirmado.
 
-## Fase 2 — Búsqueda en N bases (reproducible)
+## Fase 2 — Búsqueda en N bases (reproducible · motor multi-fuente)
 
-**Bases mínimas (estándar Cochrane):**
-1. MEDLINE
-2. Embase
-3. CENTRAL (Cochrane Central Register of Controlled Trials)
+> **Metodología real de este programa:** la búsqueda **no se limita a PubMed** ni se hace a mano — corre
+> el **motor de descubrimiento** automático (5 fuentes async, OpenAlex troncal). Spec verificada:
+> [`discovery-engine.md`](discovery-engine.md).
 
-**Recomendación robusta (añadir):**
-4. Web of Science y/o Scopus
-5. **LILACS / BVS** — literatura latinoamericana, recomendada por Cochrane
-6. **Registros de ensayos**: ClinicalTrials.gov + **ICTRP** (OMS)
+**Mínimo metodológico:** Bramer et al. 2017 (verificado) recomienda **≥4 bases** (Embase + MEDLINE +
+Web of Science Core + primeros 200 de Google Scholar) → **98.3% de recall** (95% en el 93% de las SR).
+Cochrane exige al menos MEDLINE + Embase + CENTRAL.
+
+**Las 5 fuentes del motor (cobertura abierta, ≈97% sensibilidad):**
+1. **OpenAlex** ⭐ troncal — 250M+ (CC0). Validado 98% de cobertura para SR (Stansfield 2025, DOI 10.1002/cesm.70038). ⚠️ **API key gratis obligatoria desde 13-feb-2026** (el polite pool/`mailto` está muerto).
+2. **PubMed/MEDLINE** (E-utilities, MeSH).
+3. **Europe PMC** (sin key; texto completo OA; preprints). *No indexa Embase — corrección al manual.*
+4. **LILACS / BVS** (descriptores DeCS) — **ventaja diferencial peruana/LATAM**.
+5. **Semantic Scholar** (bulk + TLDR; `externalIds` para dedup por DOI).
++ Registros de ensayos: **ClinicalTrials.gov + ICTRP**. Embase completo / Web of Science / Scopus si la
+institución da acceso (verificación complementaria).
 
 **Reglas de oro de la búsqueda:**
 - Reporta cada componente con **PRISMA-S** (16 ítems) para que la estrategia sea totalmente reproducible — incluye listar los registros de ensayos.
   URL: https://www.prisma-statement.org/prisma-search · Paper: https://pmc.ncbi.nlm.nih.gov/articles/PMC7839230/
-- Guarda **fecha de búsqueda, base, interfaz, líneas de la sintaxis y nº de resultados** por base.
+- Guarda **fecha de búsqueda, base, interfaz, líneas de la sintaxis y nº de resultados** por base; el motor lo registra automáticamente en Supabase.
+- **Citation-chasing** (referencias + citas vía OpenAlex `referenced_works`/`cited_by`) para cerrar el ~4% que la booleana no recupera.
 - Idealmente, que un bibliotecólogo/information specialist revise o ejecute la estrategia (peer review tipo PRESS).
+- **Texto completo:** cascada legal **Unpaywall → Europe PMC/PMC OA → preprints → ALICIA-CONCYTEC → autor** (ver [`discovery-engine.md §4`](discovery-engine.md)).
 
 ## Fase 3 — Screening (cribado) con herramienta
 

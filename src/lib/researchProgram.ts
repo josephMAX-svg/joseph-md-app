@@ -108,8 +108,8 @@ export const AGENT_ROLES: AgentRole[] = [
 
 export interface AgentLayer { capa: string; titulo: string; desc: string; color: string; icon: string }
 export const AGENT_LAYERS: AgentLayer[] = [
-  { capa: 'Capa 0', titulo: 'Descubrimiento 24/7', icon: '🛰️', color: '#8F9097',
-    desc: 'n8n (cron) → OpenAlex + PubMed E-utils + Europe PMC + LILACS → dedup → Phi-4 local (screening barato) → Supabase → Telegram (¿paper relevante? sí/no). Feeder, NO screening oficial.' },
+  { capa: 'Capa 0', titulo: 'Motor de descubrimiento 24/7 (5 fuentes · OpenAlex troncal)', icon: '🛰️', color: '#8F9097',
+    desc: 'n8n + Google Calendar → motor Python async sobre 5 fuentes (OpenAlex⭐ + PubMed + Europe PMC + LILACS + Semantic Scholar ≈97%) → dedup por DOI → pre-screening local Ollama (phi4-mini, $0) → Supabase + Realtime → Telegram [Aprobar]/[Descartar]. OpenAlex exige API key (13-feb-2026). Feeder, NO screening oficial.' },
   { capa: 'Capa 1', titulo: 'Orquestador (Lead · Opus)', icon: '🧭', color: '#0FD4A0',
     desc: 'Recibe "avanza Línea X, output SR". Plan → descompone en tareas → delega → integra → gatea QA. Memoria del plan en Supabase (evita context rot).' },
   { capa: 'Capa 2', titulo: 'Subagentes (Workers · Sonnet, contexto aislado)', icon: '🧩', color: '#2E7CF6',
@@ -129,15 +129,60 @@ export const HITL_CHECKPOINTS: Checkpoint[] = [
 ];
 
 export const AGENTIC_RESOURCES = [
+  { label: 'OpenAlex · API auth + pricing (key oblig. 13-feb-2026)', url: 'https://developers.openalex.org/api-reference/authentication' },
+  { label: 'OpenAlex · validación 98% para SR (Stansfield 2025)', url: 'https://onlinelibrary.wiley.com/doi/10.1002/cesm.70038' },
+  { label: 'Unpaywall · API (texto completo OA legal)', url: 'https://unpaywall.org/products/api' },
+  { label: 'Semantic Scholar · Academic Graph API', url: 'https://api.semanticscholar.org/api-docs/graph' },
+  { label: 'Europe PMC · REST Web Service', url: 'https://europepmc.org/RestfulWebService' },
+  { label: 'Crossref · content negotiation (CSL-JSON de citas)', url: 'https://www.crossref.org/documentation/retrieve-metadata/content-negotiation/' },
+  { label: 'PubMed E-utilities (verificar PMID)', url: 'https://www.ncbi.nlm.nih.gov/books/NBK25501/' },
   { label: 'Anthropic · Building a multi-agent research system', url: 'https://www.anthropic.com/engineering/multi-agent-research-system' },
   { label: 'otto-SR · automatización de SR con LLMs (medRxiv)', url: 'https://www.medrxiv.org/content/10.1101/2025.06.13.25329541v1' },
-  { label: 'Crossref REST API (verificar DOI)', url: 'https://www.crossref.org/documentation/retrieve-metadata/rest-api/' },
-  { label: 'PubMed E-utilities (verificar PMID)', url: 'https://www.ncbi.nlm.nih.gov/books/NBK25501/' },
   { label: 'python-docx (ensamblado .docx)', url: 'https://pypi.org/project/python-docx/' },
-  { label: 'LangGraph (HITL: interrupt + checkpointer)', url: 'https://pypi.org/project/langgraph/' },
 ];
 
 export const AGENTIC_META = {
   tesis: 'El LLM NUNCA genera referencias de memoria: cita solo desde un corpus recuperado y la verificación de citas es un paso separado al final. Patrón orchestrator-worker (~90% mejor que un agente único en amplitud; cuesta ~15× tokens → reservar para el documento final).',
   cuandoEntra: 'El sistema NO inicia la SR: arranca en R34–R40 (redacción → ensamblado → checkpoint), cuando el humano ya tiene corpus + tabla de extracción. R39 = checkpoint humano obligatorio.',
+  premisa: 'Una SR rigurosa exige cubrir ~30 años con sensibilidad ≥90–97% — inmanejable a mano en 1 h/día. El motor lo hace en automático antes del bloque de research; el humano solo valida.',
 };
+
+// ── Motor de descubrimiento: 5 fuentes (OpenAlex troncal) — verificado jun-2026 ──
+export interface DiscoverySource {
+  nombre: string; cobertura: string; auth: string; rol: string; troncal?: boolean; url: string;
+}
+export const DISCOVERY_SOURCES: DiscoverySource[] = [
+  { nombre: 'OpenAlex', cobertura: '250M+ (CC0)', auth: 'API key gratis OBLIGATORIA (13-feb-2026) · freemium ~$1/día', rol: 'Troncal — máxima cobertura abierta + citation-chasing. 98% validado para SR (Stansfield 2025).', troncal: true, url: 'https://developers.openalex.org/api-reference/authentication' },
+  { nombre: 'PubMed / MEDLINE', cobertura: '37M biomédicos', auth: 'E-utilities · sin key 3/s, con key 10/s', rol: 'Gold standard biomédico (MeSH).', url: 'https://www.ncbi.nlm.nih.gov/books/NBK25501/' },
+  { nombre: 'Europe PMC', cobertura: '46M+ · 880k+ preprints', auth: 'sin key · cursorMark', rol: 'Cobertura europea + preprints + texto completo OA. (No indexa Embase.)', url: 'https://europepmc.org/RestfulWebService' },
+  { nombre: 'LILACS / BVS', cobertura: '~700 revistas · ~2.8M docs', auth: 'iAHx RSS/XML · DeCS · api.bvsalud.org (token)', rol: 'Ventaja diferencial peruana/LATAM (ES/PT).', url: 'https://lilacs.bvsalud.org/en/' },
+  { nombre: 'Semantic Scholar', cobertura: '214M+ papers', auth: 'key gratis (x-api-key) · 1 req/s', rol: 'Complemento semántico + externalIds (dedup DOI) + TLDR.', url: 'https://api.semanticscholar.org/api-docs/graph' },
+];
+
+// ── Cascada de acceso a texto completo (legal primero) ──
+export const FULLTEXT_CASCADE: { n: number; fuente: string; nota: string }[] = [
+  { n: 1, fuente: 'Unpaywall', nota: 'api.unpaywall.org/v2/{DOI}?email= · de OurResearch · gratis · 100k/día · best_oa_location.url_for_pdf' },
+  { n: 2, fuente: 'Europe PMC / PMC OA', nota: 'fullTextXML + fullTextUrlList (resultType=core)' },
+  { n: 3, fuente: 'Preprints', nota: 'bioRxiv / medRxiv / arXiv por DOI/ID' },
+  { n: 4, fuente: 'ALICIA-CONCYTEC', nota: 'repositorio peruano vía OAI-PMH (Dublin Core) → handle → PDF' },
+  { n: 5, fuente: 'Solicitud al autor', nota: 'email automático "request reprint" — último recurso' },
+];
+
+// ── Pipeline de citas por IA (reemplaza Zotero) ──
+export const CITATION_PIPELINE: { paso: string; detalle: string }[] = [
+  { paso: '1 · LLM emite JSON', detalle: 'Referencias como objetos {title,authors,year,doi?,pmid?} + marcadores [CIT:id]. Nunca prosa ni bibliografía a mano.' },
+  { paso: '2 · Verificar', detalle: 'Crossref api.crossref.org/works/{DOI} (mailto) y/o PubMed esummary JSON. (Crossref cambió límites 1-dic-2025: público 5/s, polite 10/s.)' },
+  { paso: '3 · Match fuzzy', detalle: 'rapidfuzz título ≥0.90 acepta · 0.80–0.90 a revisión humana · <0.80 rechaza · + año ±1 + 1er autor.' },
+  { paso: '4 · CSL-JSON canónico', detalle: 'Descartar metadatos del LLM; bajar CSL-JSON real por content negotiation en doi.org; formatear Vancouver con citation.js/anystyle.' },
+  { paso: '5 · Gate', detalle: 'Solo persiste lo que resuelve a un DOI/PMID real; lo demás → needs_review / rejected (auditoría). Cero alucinación.' },
+];
+
+// ── Panel de control (lo que hace la app — Manual §14) ──
+export const CONTROL_PANEL: { icon: string; titulo: string; desc: string }[] = [
+  { icon: '📊', titulo: 'Dashboard por línea', desc: 'Estado de cada SR (discovery/screening/extracción/redacción/envío) · nº papers encontrados/cribados/incluidos · próximo checkpoint.' },
+  { icon: '✅', titulo: 'Cola de screening', desc: 'Papers pre-cribados por la IA local esperando validación · un clic incluir/excluir/dudoso · Kappa en vivo.' },
+  { icon: '📄', titulo: 'Gestor de PDFs', desc: 'Estado de acceso a texto completo (encontrado/pendiente/manual) · visor con chat IA.' },
+  { icon: '📝', titulo: 'Editor de manuscrito', desc: 'Secciones de los subagentes · estado QA (PRISMA/GRADE/citas verificadas) · exportar .docx.' },
+  { icon: '🛰️', titulo: 'Monitor de pipeline', desc: 'Workflows n8n · logs del motor · sincronización con Google Calendar (cuándo es research).' },
+  { icon: '💬', titulo: 'Integración Telegram', desc: 'Notificaciones de checkpoints · aprobaciones con botones desde el móvil.' },
+];

@@ -7,6 +7,7 @@ import { FadeUp } from '../empresa/visuals';
 import {
   AGENT_LAYERS, AGENT_ROLES, HITL_CHECKPOINTS, AGENTIC_RESOURCES, AGENTIC_META,
   RESEARCH_LINES, CLUSTER_COLOR, AgentRole,
+  DISCOVERY_SOURCES, FULLTEXT_CASCADE, CITATION_PIPELINE, CONTROL_PANEL,
 } from '../../lib/researchProgram';
 import { researchObsUrlSR, researchObsUrlLine } from '../../lib/obsidianResearchMap';
 
@@ -123,6 +124,52 @@ export default function ResearchAgenticSystem() {
         ))}
       </View>
 
+      {/* Motor de descubrimiento — 5 fuentes */}
+      <SectionLabel>Motor de descubrimiento · 5 fuentes (≈97% sensibilidad)</SectionLabel>
+      <Text style={st.sectionIntro}>El motor NO se limita a PubMed. Corre async sobre 5 fuentes con OpenAlex como troncal, deduplica por DOI y deja el corpus listo antes del bloque de research.</Text>
+      <View style={{ marginBottom: Spacing.xl }}>
+        {DISCOVERY_SOURCES.map((s, i) => (
+          <FadeUp key={s.nombre} delay={i * 30}>
+            <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(s.url)} style={[st.srcCard, s.troncal && { borderColor: TEAL + '88', backgroundColor: TEAL + '0E' }]}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 4 }}>
+                <Text style={st.srcName}>{s.troncal ? '⭐ ' : ''}{s.nombre} ↗</Text>
+                <Text style={st.srcCov}>{s.cobertura}</Text>
+              </View>
+              <Text style={st.srcRol}>{s.rol}</Text>
+              <Text style={st.srcAuth}>🔑 {s.auth}</Text>
+            </TouchableOpacity>
+          </FadeUp>
+        ))}
+      </View>
+
+      {/* Cascada de texto completo */}
+      <SectionLabel>Cascada de texto completo (legal primero)</SectionLabel>
+      <GlassPanel style={{ marginBottom: Spacing.xl }}>
+        {FULLTEXT_CASCADE.map((c, i) => (
+          <View key={c.n} style={[st.cascRow, i === 0 && { borderTopWidth: 0 }]}>
+            <View style={[st.cascNum, { backgroundColor: '#A78BFA1A' }]}><Text style={[st.cascNumTxt, { color: '#A78BFA' }]}>{c.n}</Text></View>
+            <View style={{ flex: 1 }}>
+              <Text style={st.cascName}>{c.fuente}</Text>
+              <Text style={st.cascNota}>{c.nota}</Text>
+            </View>
+          </View>
+        ))}
+      </GlassPanel>
+
+      {/* Citas con IA (reemplaza Zotero) */}
+      <SectionLabel>Citas con IA · reemplaza Zotero (gate anti-alucinación)</SectionLabel>
+      <Text style={st.sectionIntro}>Joseph no cita a mano: la IA propone, pero solo persiste lo que resuelve a un DOI/PMID real (Crossref/PubMed + CSL-JSON verificado).</Text>
+      <View style={{ marginBottom: Spacing.xl }}>
+        {CITATION_PIPELINE.map((p, i) => (
+          <FadeUp key={i} delay={i * 30}>
+            <View style={[st.citCard, { borderLeftColor: '#F56342' }]}>
+              <Text style={st.citPaso}>{p.paso}</Text>
+              <Text style={st.citDet}>{p.detalle}</Text>
+            </View>
+          </FadeUp>
+        ))}
+      </View>
+
       {/* Agentes (prompts base) */}
       <SectionLabel>Agentes · toca para ver su prompt base</SectionLabel>
       <View style={{ marginBottom: Spacing.xl }}>
@@ -143,6 +190,21 @@ export default function ResearchAgenticSystem() {
         ))}
         <Text style={st.smallNote}>Gate duro en CP-3: el ensamblado no corre mientras exista una sola cita [NO VERIFICABLE] sin resolver.</Text>
       </GlassPanel>
+
+      {/* Panel de control — lo que hace esta app (Manual §14) */}
+      <SectionLabel>Panel de control · lo que opera esta app</SectionLabel>
+      <Text style={st.sectionIntro}>La app es la capa de visualización y control del motor que corre 24/7 en el VPS: en 1 h de research, Joseph valida los checkpoints y deja el sistema corriendo.</Text>
+      <View style={[gridStyle(220), { marginBottom: Spacing.xl }]}>
+        {CONTROL_PANEL.map((f, i) => (
+          <View key={i} style={gridItemStyle(220)}>
+            <View style={st.cpCard}>
+              <Text style={{ fontSize: 20 }}>{f.icon}</Text>
+              <Text style={st.cpTitle}>{f.titulo}</Text>
+              <Text style={st.cpDesc}>{f.desc}</Text>
+            </View>
+          </View>
+        ))}
+      </View>
 
       {/* Recursos verificados */}
       <SectionLabel>Fuentes verificadas</SectionLabel>
@@ -194,4 +256,26 @@ const st = StyleSheet.create({
 
   resCard: { ...cardBase, padding: Spacing.md },
   resTxt: { fontSize: FontSize.labelMd, color: TEAL, fontWeight: '600', lineHeight: 16 },
+
+  sectionIntro: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 17, marginBottom: Spacing.md, marginTop: -4 },
+
+  srcCard: { ...cardBase, padding: Spacing.md, marginBottom: 6 },
+  srcName: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface, flexShrink: 1 },
+  srcCov: { fontSize: FontSize.labelSm, color: TEAL, fontWeight: '700' },
+  srcRol: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 5, lineHeight: 16 },
+  srcAuth: { fontSize: 9, color: Colors.muted, marginTop: 5, letterSpacing: 0.2 },
+
+  cascRow: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: Spacing.md, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.06)' },
+  cascNum: { borderRadius: BorderRadius.full, width: 26, height: 26, alignItems: 'center', justifyContent: 'center' },
+  cascNumTxt: { fontSize: FontSize.labelMd, fontWeight: '900' },
+  cascName: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface },
+  cascNota: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, marginTop: 2, lineHeight: 15 },
+
+  citCard: { ...cardBase, borderLeftWidth: 3, padding: Spacing.md, marginBottom: 6 },
+  citPaso: { fontSize: FontSize.labelLg, fontWeight: '800', color: Colors.onSurface },
+  citDet: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 3, lineHeight: 16 },
+
+  cpCard: { ...cardBase, padding: Spacing.md, minHeight: 120 },
+  cpTitle: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, marginTop: 6 },
+  cpDesc: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, marginTop: 4, lineHeight: 15 },
 });
