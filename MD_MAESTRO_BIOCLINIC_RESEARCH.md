@@ -528,5 +528,51 @@ solo 4 matchearon** en derma (de 23 US-IMG, 9); la derma llena el **99.8%** de p
   [`DATA/RESEARCH/agentic-system.md`](DATA/RESEARCH/agentic-system.md).
 
 ---
+---
 
-*Fin del MD maestro v1.0 — Joseph MD · Bioclinic Research System. (Apéndice §12 verificado jun-2026.)*
+## 13. APÉNDICE · MOTOR DÍA-A-DÍA + FICHAS DE SR POR LÍNEA (jun-2026) — amplía §7, §8, §9
+
+> No pisa el §12. Añade lo construido en esta ronda: el **plan día-a-día de research** (mismo motor que
+> USMLE/MIR) y las **fichas de SR** que vuelven registrable la "SR derivable" de cada línea.
+
+### 13.1 Plan día-a-día (deliverable #4) → [`DATA/RESEARCH/daily-plan.md`](DATA/RESEARCH/daily-plan.md)
+- **Mismo motor que USMLE/MIR:** bloque HOY, franjas, ventana 7d, temario por fases, **progreso REAL
+  marcable** (arranca 0%, `localStorage`, no se infiere de la fecha). Reusa `studyProgress.ts` añadiendo
+  `'research'` a `PlanKey` (1 línea).
+- **Ritmo interdiario con Derma** ya implementado en `src/lib/researchData.ts` (`diaEstudioTipo`,
+  D0=10-jun-2026 Research). **No se toca el Google Calendar**; el tema vive en la app sobre la franja
+  13:30–14:15 ya existente.
+- **40 átomos (mié 10-jun → lun 28-sep-2026)** que **ejecutan una SR real de extremo a extremo** (no enseñan
+  teoría suelta): fases R0 cimientos → R1 protocolo → R2 PROSPERO → R3 búsqueda → R4 screening → R5
+  extracción → R6 sesgo/GRADE → R7 meta-análisis en R → R8 manuscrito + SUBMIT. Cada átomo deja un
+  **artefacto real** y enlaza a un **recurso verificado** (leyenda §7 del daily-plan).
+- **Mapeo 1:1 a `usmleStep1Daily.ts`** documentado (sección §8 del daily-plan) para que el chat de la web
+  cree `researchDailyPlan.ts` como drop-in. *La página la diseña el chat principal; aquí está la data.*
+
+### 13.2 Fichas de SR por línea (deliverable #1/§5 operacional) → [`DATA/RESEARCH/lines/`](DATA/RESEARCH/lines/)
+- Convierten la **"SR derivable"** de cada línea en algo registrable: PICO + criterios + semilla de búsqueda
+  + **papers ancla con DOI/PMID real** + journal target + notas de honestidad. Índice y plantilla en
+  [`lines/README.md`](DATA/RESEARCH/lines/README.md).
+- **SR-1 = Línea 4** (complicaciones vasculares de fillers, Mayo 38/40) → [`lines/L4-complicaciones.md`](DATA/RESEARCH/lines/L4-complicaciones.md).
+  Ancla verificada: **DeLorenzi 2014, *Aesthet Surg J* 34(4):584–600 · PMID 24692598 · DOI 10.1177/1090820X14525035.**
+- **SR-2 = Línea 5** (RF/CO₂ en fototipos IV–VI) → [`lines/L5-energia-fototipos.md`](DATA/RESEARCH/lines/L5-energia-fototipos.md).
+  Gap acotado por un MA 2026 ya existente (Argobi, *JCD*, DOI 10.1111/jocd.70765, predominante I–III) → el
+  hueco real es el **subgrupo skin-of-color IV–VI**.
+
+### 13.3 Sistema agéntico, ahora ejecutable (deliverable #5) → [`DATA/RESEARCH/agentic-system.md`](DATA/RESEARCH/agentic-system.md) §7–§11
+- Caso de uso de SR-1 de extremo a extremo (JSON de entrada + plan de delegación), **ensamblador `.docx`
+  runnable** (python-docx, respeta lección TOC §2.5), **Capa 0 de descubrimiento 24/7** (OpenAlex/PubMed/
+  Europe PMC/LILACS + Phi-4 local + Telegram), **QA de paráfrasis/Turnitin** además de la de citas, y el
+  enganche al plan: el sistema **es el motor de R34–R40**, con **R39 = checkpoint humano obligatorio**.
+
+### 13.4 Siguiente acción de máxima palanca
+1. **Conseguir el dermatólogo-mentor** (cuello de botella #1, §11.5) — sin co-autor con acceso a casos las
+   líneas clínicas se ralentizan. Objetivo de mayor valor doble: Cotofana (vínculo Mayo).
+2. **Ejecutar el daily-plan desde el átomo R1 hoy** (10-jun-2026): montar infra (NCBI/PubMed/Zotero) y, en
+   ~3 semanas (R10), tener **SR-1 registrada en PROSPERO** — el hito que materializa el primer PIP en curso.
+3. **Web:** el chat principal crea `researchDailyPlan.ts` (drop-in de §8 del daily-plan) + `'research'` en
+   `PlanKey`, y renderiza HOY/Horario/7d/Temario reusando los componentes de USMLE/MIR.
+
+---
+
+*Fin del MD maestro v1.0 — Joseph MD · Bioclinic Research System. (Apéndice §12 verificado jun-2026; §13 añadido jun-2026 sin pisar §12.)*

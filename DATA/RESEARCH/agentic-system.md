@@ -255,6 +255,122 @@ saved path revision_v{n}.docx.
 
 ---
 
+## 7. Caso de uso ejecutable: SR-1 (Línea 4) de extremo a extremo
+
+> Aterriza el sistema sobre la SR real del plan día-a-día: *"Complicaciones vasculares de fillers +
+> tiempo-a-tratamiento"* ([`lines/L4-complicaciones.md`](lines/L4-complicaciones.md)). El sistema agéntico
+> **no inicia la SR**: arranca cuando el humano ya tiene el corpus incluido + la tabla de extracción
+> (átomos R17–R25 del plan). Es decir, el agéntico cubre **R34–R40** (redacción → ensamblado → checkpoint).
+
+**Entrada al orquestador (lo que el humano le pasa):**
+```json
+{
+  "task": "Draft SR-1 manuscript",
+  "line": "L4",
+  "prospero_crd": "<CRD de R10>",
+  "protocol_path": "DATA/RESEARCH/lines/L4-complicaciones.md",
+  "extraction_table": "<path a la tabla de R25: 1 fila por estudio incluido>",
+  "prisma_counts": { "identified": 0, "screened": 0, "included": 0, "excluded_reasons": {} },
+  "target_journal": "Dermatologic Surgery",
+  "stat_chain": "ROBINS-I + proportion meta-analysis (metafor) or structured narrative if I2 too high"
+}
+```
+
+**Plan de delegación que devuelve el orquestador (ejemplo):**
+```json
+[
+  { "section": "Introduction", "subagent_role": "IntroAgent", "source_ids": ["delorenzi2014","..."], "word_budget": 450 },
+  { "section": "Methods",      "subagent_role": "MethodsAgent", "source_ids": ["protocol","prisma2020"], "word_budget": 700 },
+  { "section": "Results",      "subagent_role": "ResultsAgent", "source_ids": ["extraction_table","prisma_counts"], "word_budget": 600 },
+  { "section": "Discussion",   "subagent_role": "DiscussAgent", "source_ids": ["corpus","limitations"], "word_budget": 550 }
+]
+```
+Cada subagente recibe **solo sus `source_ids`** (contexto aislado), escribe con marcadores `[CIT:id]` y
+**nunca** referencias. Al volver todas las secciones → `CitationAgent` → gate humano (CP-3) → `AssemblerAgent`.
+
+---
+
+## 8. Ensamblador `.docx` (python-docx) — esqueleto runnable
+
+> Concreta el `AssemblerAgent`. Respeta la **lección TOC de Word (UNCP)** del MD maestro §2.5: las
+> inserciones se anclan **después del campo TOC más externo**; para un manuscrito nuevo (sin plantilla de
+> tesis) no hay TOC, así que se genera limpio. Si algún día se inserta en la plantilla UNCP, usar anclas
+> *body-only*, nunca texto de encabezado.
+
+```python
+# requiere: python-docx >= 1.2.0  (PyPI, jun-2025, Python >= 3.9)
+from docx import Document
+
+def build_docx(title, sections, refs, table_rows, out_path):
+    """sections: [{'heading': str, 'paragraphs': [str con [n] ya resuelto]}]
+       refs: [str] en estilo Vancouver, ya VERIFICADO por CitationAgent (0 [NO VERIFICABLE])
+       table_rows: [{'study','design','n','intervention','comparator','outcome','effect'}]"""
+    doc = Document()
+    doc.add_heading(title, level=0)
+    for sec in sections:
+        doc.add_heading(sec['heading'], level=1)        # Introduction / Methods / Results / Discussion
+        for p in sec['paragraphs']:
+            doc.add_paragraph(p)
+    # Tabla de características de estudios (Results)
+    doc.add_heading('Characteristics of included studies', level=2)
+    cols = ['Study','Design','n','Intervention','Comparator','Outcome','Effect']
+    t = doc.add_table(rows=1, cols=len(cols)); t.style = 'Light Grid Accent 1'
+    for i, c in enumerate(cols): t.rows[0].cells[i].text = c
+    for r in table_rows:
+        cells = t.add_row().cells
+        for i, key in enumerate(['study','design','n','intervention','comparator','outcome','effect']):
+            cells[i].text = str(r.get(key, 'not reported'))
+    # Referencias numeradas (solo verificadas)
+    doc.add_heading('References', level=1)
+    for i, ref in enumerate(refs, 1):
+        doc.add_paragraph(f'{i}. {ref}')
+    doc.save(out_path)           # -> revision_v{n}.docx
+    return out_path
+```
+**Precondición dura:** el ensamblado **no corre** si queda una sola cita `[NO VERIFICABLE]`/`[UNSUPPORTED]`
+sin resolver por el humano (gate CP-3).
+
+---
+
+## 9. Capa 0 — descubrimiento 24/7 (alimenta el corpus sin tokens premium)
+
+Corre en segundo plano para que el "USE" del humano sea solo verificar (principio BUILD vs USE del MD §2.7):
+
+```
+n8n (cron diario) → APIs públicas:
+  • PubMed E-utilities (esearch/efetch)   • OpenAlex API   • Europe PMC API   • LILACS/BVS
+→ dedup (DOI/título) → screening barato local (Ollama Phi-4 Mini)
+→ Supabase (tabla papers)  → Telegram @TesisAcneBot: "nuevo paper relevante para L4? [sí]/[no]"
+```
+- **Gratis/local:** OpenAlex, PubMed E-utils, Europe PMC y LILACS **no requieren pago**; el screening
+  repetitivo lo hace Phi-4 local (sin coste de API).
+- El humano aprueba/descarta con botones de Telegram → los aprobados entran al corpus de la SR activa.
+- ⚠️ Esto **descubre y pre-filtra**, no decide inclusión final: la inclusión formal sigue el cribado de 2
+  revisores + Kappa (átomos R17–R21). La Capa 0 es un *feeder*, no el screening oficial.
+
+---
+
+## 10. QA de paráfrasis (Turnitin) — además de la verificación de citas
+
+El `CitationAgent` verifica DOI/PMID y solape de chunk. **Añade un segundo control en el mismo paso de QA:**
+**originalidad de paráfrasis** (regla del MD §2.4). Antes del checkpoint humano, el agente QA marca cualquier
+fragmento que reproduzca texto fuente casi literal y lo reescribe en paráfrasis original (nunca cita directa
+salvo entrecomillado explícito y atribuido). Joseph corre el Turnitin institucional como verificación final;
+el agente solo minimiza el riesgo de antemano. **Regla:** cero texto copiado; toda síntesis es reformulación.
+
+---
+
+## 11. Integración con el plan día-a-día y el checkpoint humano
+
+- El sistema agéntico **es el motor de R34–R40** del [`daily-plan.md`](daily-plan.md): el humano llega a la
+  fase de redacción con corpus + tabla de extracción y el sistema produce el borrador.
+- **R39 = checkpoint humano obligatorio (CP-4):** Joseph abre el `.docx`, verifica citas reales, paráfrasis
+  y cadena estadística, y aprueba/corrige. **Nada se envía (R40) sin su aprobación.**
+- **Coste:** reservar el sistema completo (~15× tokens) para el **documento final** de cada SR, no para
+  borradores exploratorios. Para SR-1 vale la pena; para notas/letters, no.
+
+---
+
 ## Fuentes verificadas
 
 - Anthropic — *Building a multi-agent research system* (lead agent, subagentes en contexto aislado, `CitationAgent`, ~15x tokens): https://www.anthropic.com/engineering/multi-agent-research-system

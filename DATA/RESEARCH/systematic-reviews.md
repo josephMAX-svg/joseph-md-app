@@ -124,3 +124,47 @@ Solo si los estudios son suficientemente homogéneos clínica y metodológicamen
 - PROSPERO: https://www.crd.york.ac.uk/PROSPERO/help/register
 
 > **Nota de verificación**: las URLs de los canales de YouTube están corroboradas por múltiples resultados de búsqueda independientes (las páginas "About" de YouTube no se renderizan vía fetch); confianza alta en la identidad de cada canal. Toda cifra de costo proviene de las fuentes citadas en los informes. No se inventó ninguna URL.
+
+---
+
+## Referentes de método: el *walkthrough* canónico paso a paso (verificado, jun-2026)
+
+> Encargo #1 del chat de Research: **revisar cómo construyen los referentes una revisión sistemática paso a
+> paso** y guardar recursos con URLs reales. Aquí está el recorrido de punta a punta que siguen los
+> referentes (Cochrane, JBI, PRISMA, autores metodológicos), **mapeado a un recurso concreto por paso** y a
+> los átomos del plan día-a-día ([`daily-plan.md`](daily-plan.md)). No es teoría suelta: es la secuencia que
+> el plan ejecuta sobre una SR real.
+
+### El recorrido que enseñan los referentes (8 pasos)
+
+| Paso | Lo que hacen los referentes | Recurso de referencia (real) | Átomo `daily-plan` |
+|---|---|---|---|
+| **1. Pregunta PICO + protocolo** | Congelar la pregunta y el método *antes* de buscar (PRISMA-P). | Cochrane Interactive Learning Módulo 1 (gratis) · *step-by-step guide* Ahn & Kang | R2, R6–R8 |
+| **2. Registro** | Registrar en PROSPERO antes de cerrar la extracción (o OSF si es scoping). | PROSPERO · OSF Registries | R9–R11 |
+| **3. Búsqueda reproducible** | Estrategia MeSH+booleana en ≥3–5 bases, documentada con **PRISMA-S**; idealmente revisada por bibliotecólogo (PRESS). | NLM PubMed training · PRISMA-S | R12–R16 |
+| **4. Screening 2 revisores** | Cribado T/A → texto completo con herramienta; medir **Kappa**; resolver conflictos. | **Rayyan** (canal oficial + help center) · ASReview | R17–R21 |
+| **5. Extracción piloteada** | Formulario piloteado, doble extracción; IA como segundo par de ojos. | Cochrane Handbook · Elicit | R22–R25 |
+| **6. Sesgo + GRADE** | RoB 2 / ROBINS-I por estudio; **GRADE** por desenlace en una Summary of Findings. | riskofbias.info · GRADEpro | R26–R28 |
+| **7. Meta-análisis (si procede)** | Effect size, modelo fijo/aleatorio, **forest plot**, I²/τ², funnel/Egger, subgrupos. | **"Doing Meta-Analysis in R"** (libro online gratis) · metafor · Cochrane Training YouTube | R29–R33 |
+| **8. Reporte PRISMA 2020** | Manuscrito con checklist de 27 ítems + diagrama de flujo de 4 fases. | PRISMA 2020 (checklist PMC + flow Shiny) · EQUATOR | R34–R40 |
+
+### Recursos verificados en esta ronda (añadidos)
+
+- **"A step-by-step guide for conducting a systematic review and meta-analysis with simulation data"**
+  (Ahn EJ & Kang H, *Tropical Medicine and Health* 2019) — paper open-access que recorre las 18 sub-etapas
+  de una SR+MA con datos de ejemplo; el mejor "mapa de una página" para ver el flujo completo.
+  https://pmc.ncbi.nlm.nih.gov/articles/PMC6670166/
+- **Rayyan — canal oficial de YouTube** (tutoriales hands-on de cribado, p. ej. *"Rayyan for Systematic
+  Reviews: A Hands-On Intro"*). https://www.youtube.com/@Rayyanapp
+- **Rayyan — Help Center: "How to Create a Systematic Review in Rayyan"** (guía escrita paso a paso).
+  https://help.rayyan.ai/hc/en-us/articles/22088155760017-How-to-Create-a-Systematic-Review-in-Rayyan
+- **"Doing Meta-Analysis in R: A Hands-On Guide"** (Harrer, Cuijpers, Furukawa & Ebert) — **libro online
+  gratuito**, el tutorial reproducible de referencia para la parte estadística (incluye `dmetar`, forest,
+  heterogeneidad, funnel, subgrupos, meta-regresión). https://bookdown.org/MathiasHarrer/Doing_Meta_Analysis_in_R/
+- **metafor project** (Wolfgang Viechtbauer) — sitio oficial del paquete de meta-análisis en R.
+  https://www.metafor-project.org/
+
+> **Nota de verificación de esta ronda:** las URLs de arriba se corroboraron por búsqueda independiente
+> (jun-2026). El libro *Doing Meta-Analysis in R* es la versión bookdown gratuita (existe también edición
+> de pago en CRC Press, misma autoría). El paper Ahn & Kang es open-access en PMC. Los canales de YouTube
+> se citan por identidad de canal, no por una URL de vídeo individual perecedera.
