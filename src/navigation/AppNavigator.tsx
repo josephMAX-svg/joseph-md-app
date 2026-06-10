@@ -10,6 +10,7 @@ import DermaScreen from '../screens/DermaScreen';
 import EmpresaHubScreen from '../screens/EmpresaHubScreen';
 import InvestigacionScreen from '../screens/InvestigacionScreen';
 import VitalsScreen from '../screens/VitalsScreen';
+import SynapseScreen from '../screens/SynapseScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -106,6 +107,16 @@ export default function AppNavigator() {
             tabBarLabel: 'VITALS',
             tabBarIcon: ({ focused, color }) => (
               <TabIcon icon="🫀" focused={focused} color={color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Synapse"
+          component={SynapseScreen}
+          options={{
+            tabBarLabel: 'SYNAPSE',
+            tabBarIcon: ({ focused, color }) => (
+              <TabIcon icon="🧠" focused={focused} color={color} />
             ),
           }}
         />

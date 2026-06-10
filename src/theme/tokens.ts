@@ -107,6 +107,7 @@ export const SidebarAccents: Record<string, string> = {
   Empresa: Colors.amber,
   'Investigación': Colors.teal,
   Vitals: Colors.green,
+  Synapse: '#818CF8', // índigo neural — formación élite en IA
 } as const;
 
 // Metric gradient colors

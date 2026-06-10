@@ -3,6 +3,7 @@ import { View, Text, ScrollView, TouchableOpacity, Platform } from 'react-native
 import { Colors, Spacing, FontSize, BorderRadius } from '../theme/tokens';
 import { desktopStyles, DesktopColors } from '../theme/desktopStyles';
 import { LIVIANO_PENDIENTES, PULSO_MATRIZ } from '../lib/empresaData';
+import { SYNAPSE_META, SYNAPSE_FASES, SYNAPSE_HORARIO, SYNAPSE_QUICKLINKS } from '../lib/synapseData';
 import { semaforoColor } from '../components/empresa/primitives';
 import { useSupabaseQuery } from '../hooks/useSupabaseQuery';
 import {
@@ -613,6 +614,59 @@ function ResearchRightPanel() {
 }
 
 // ═══════════════════════════════════════════════
+// SYNAPSE: Fase actual + protocolo 30' + quick links
+// ═══════════════════════════════════════════════
+function SynapseRightPanel() {
+  const INDIGO = SYNAPSE_META.accent;
+  const faseActiva = SYNAPSE_FASES.find((f) => f.estado === 'activa');
+  return (
+    <View>
+      <Text style={desktopStyles.rightPanelTitle}>SYNAPSE · AI TRACK</Text>
+
+      {/* Fase actual */}
+      <View style={[desktopStyles.rightPanelCard, { borderLeftWidth: 2, borderLeftColor: INDIGO }]}>
+        <Text style={{ fontSize: 10, color: Colors.smallLabel, letterSpacing: 0.8, fontWeight: '600' }}>
+          FASE ACTUAL
+        </Text>
+        <Text style={{ fontSize: 18, fontWeight: '800', color: INDIGO, marginTop: 4 }}>
+          {faseActiva ? `${faseActiva.fase} · ${faseActiva.titulo}` : '—'}
+        </Text>
+        <Text style={{ fontSize: 11, color: Colors.onSurfaceVariant, marginTop: 4 }} numberOfLines={3}>
+          {faseActiva?.desc ?? ''}
+        </Text>
+      </View>
+
+      {/* Protocolo 30 min */}
+      <View style={desktopStyles.rightPanelCard}>
+        <Text style={desktopStyles.rightPanelCardTitle}>⏱ 30 min · espacios muertos</Text>
+        {SYNAPSE_HORARIO.map((h, i) => (
+          <View key={i} style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 5 }}>
+            <Text style={{ fontSize: 11, fontWeight: '700', color: INDIGO, width: 44 }}>{h.min}</Text>
+            <Text style={{ fontSize: 11, color: Colors.onSurfaceVariant, flex: 1 }} numberOfLines={2}>
+              {h.bloque}
+            </Text>
+          </View>
+        ))}
+      </View>
+
+      {/* Quick links */}
+      <Text style={[desktopStyles.rightPanelTitle, desktopStyles.rightPanelTitleSeparated]}>EMPIEZA AQUÍ</Text>
+      {SYNAPSE_QUICKLINKS.map((q, i) => (
+        <TouchableOpacity
+          key={i}
+          style={desktopStyles.rightPanelCard}
+          activeOpacity={0.8}
+          onPress={() => { try { require('react-native').Linking.openURL(q.url); } catch {} }}
+        >
+          <Text style={{ fontSize: 12, fontWeight: '700', color: Colors.onSurface }}>{q.label} ↗</Text>
+          <Text style={{ fontSize: 10, color: Colors.smallLabel, marginTop: 2 }} numberOfLines={1}>{q.nota}</Text>
+        </TouchableOpacity>
+      ))}
+    </View>
+  );
+}
+
+// ═══════════════════════════════════════════════
 // Main Right Panel Router
 // ═══════════════════════════════════════════════
 export default function DesktopRightPanel({ activeScreen }: RightPanelProps) {
@@ -627,6 +681,7 @@ export default function DesktopRightPanel({ activeScreen }: RightPanelProps) {
       {activeScreen === 'Derma' && <DermaRightPanel />}
       {activeScreen === 'Empresa' && <EmpresaRightPanel />}
       {activeScreen === 'Investigación' && <ResearchRightPanel />}
+      {activeScreen === 'Synapse' && <SynapseRightPanel />}
     </ScrollView>
   );
 }

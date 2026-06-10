@@ -24,6 +24,8 @@ import type { ScreenName } from './DesktopSidebar';
 import DermaScreen from '../screens/DermaScreen';
 // VITALS — fitness/nutrition app embedded as a full-bleed iframe
 import VitalsScreen from '../screens/VitalsScreen';
+// SYNAPSE — formación élite en IA (ruta Anthropic-level)
+import SynapseScreen from '../screens/SynapseScreen';
 
 // Inject custom scrollbar + smooth scroll styles for web once
 if (Platform.OS === 'web' && typeof document !== 'undefined') {
@@ -86,6 +88,8 @@ export default function DesktopLayout() {
         return <DesktopInvestigacionContent />;
       case 'Vitals':
         return <VitalsScreen />;
+      case 'Synapse':
+        return <SynapseScreen variant="desktop" />;
       default:
         return <DesktopHomeContent />;
     }

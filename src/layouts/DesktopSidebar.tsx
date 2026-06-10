@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import { Colors, FontSize, SidebarAccents } from '../theme/tokens';
 import { desktopStyles, DesktopColors } from '../theme/desktopStyles';
 
-export type ScreenName = 'Home' | 'Estudio' | 'Derma' | 'Empresa' | 'Investigación' | 'Vitals';
+export type ScreenName = 'Home' | 'Estudio' | 'Derma' | 'Empresa' | 'Investigación' | 'Vitals' | 'Synapse';
 
 interface SidebarProps {
   activeScreen: ScreenName;
@@ -24,6 +24,7 @@ const NAV_ITEMS: { key: ScreenName; label: string; sublabel: string; icon: strin
   { key: 'Empresa', label: 'Business', sublabel: 'Pulso · Liviano · Franquicias', icon: '💼' },
   { key: 'Investigación', label: 'Research', sublabel: 'Pipeline · 0 pub', icon: '🔬' },
   { key: 'Vitals', label: 'VITALS', sublabel: 'Body · AI-measured', icon: '🫀' },
+  { key: 'Synapse', label: 'SYNAPSE', sublabel: 'Mind · AI-engineered', icon: '🧠' },
 ];
 
 function NavItem({
