@@ -53,7 +53,8 @@
 - *Complications of Injectable Fillers, Part I.* ASJ 2013;33(4):561-575.
   DOI `10.1177/1090820X13484492` · <https://pubmed.ncbi.nlm.nih.gov/23636629/>
 - *Part 2: Vascular Complications.* ASJ 2014;34(4):584-600. DOI `10.1177/1090820X14525035`
-  · <https://pubmed.ncbi.nlm.nih.gov/24809362/>
+  · <https://pubmed.ncbi.nlm.nih.gov/24692598/> ⚠ (PMID corregido en auditoría 10-jun:
+  el 24809362 que dio el primer agente apunta a un artículo ajeno)
 - **Consenso ceguera (verificado, título real):** Goodman GJ, Magnusson MR, Callan P, et al.
   *A Consensus on Minimizing the Risk of Hyaluronic Acid Embolic Visual Loss and Suggestions
   for Immediate Bedside Management.* **Aesthet Surg J** 2020;40(9):1009-1021.

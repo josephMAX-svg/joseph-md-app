@@ -403,7 +403,8 @@ el chat principal sobre `dermaDailyPlan.ts`, copiando `UsmleTodayPlan`/`MirToday
 - **Carruthers:** Botulinum Toxin 5e ISBN 9780323831161 · Soft Tissue Augmentation 5e
   ISBN 9780323830751 (Elsevier shop, 2024).
 - **DeLorenzi:** HDPH = ASJ 2017 DOI 10.1093/asj/sjw251 (PMID 28333326) · Complications
-  I/II = PMID 23636629 / 24809362. **Consenso ceguera** (título real): Goodman, Magnusson
+  I/II = PMID 23636629 / **24692598** (⚠ corregido en auditoría; 24809362 era un artículo
+  ajeno). **Consenso ceguera** (título real): Goodman, Magnusson
   et al., *…HA Embolic Visual Loss…*, ASJ 2020 (PMC7427155) — ⚠ corregir §2.4.
 - **Anderson:** Science 1983 PMID 6836297 · Manstein 2004 PMID 15216537 · Lasers/Lights/
   Energy Devices 5e ISBN 9780323829052.

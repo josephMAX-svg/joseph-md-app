@@ -10,6 +10,10 @@ import {
   PRIORIDAD_COLOR,
 } from '../../lib/dermaData';
 import DermaTodayPlan from './DermaTodayPlan';
+import {
+  DERMA_LIBROS_ESTETICA, DERMA_VIDEOS, DERMA_QBANKS_ACCESS, DERMA_CASES_ACCESS,
+  DERMA_QBANKLY_RESUMEN, srcBook, srcCap, srcMm, srcQa, srcCases,
+} from '../../lib/dermaSourcesData';
 
 /**
  * DermaHub — sección Derma (referente clínico → Mayo): pestaña HOY = plan día-a-día
@@ -24,7 +28,130 @@ function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
 const TOTAL_SUB = DERMA_BLOQUES.reduce((n, b) => n + b.subtemas.length, 0);
 const CRITICAS = DERMA_BLOQUES.reduce((n, b) => n + b.subtemas.filter(s => s.prioridad === 'CRITICA').length, 0);
 
-type Sub = 'hoy' | 'cerebro';
+type Sub = 'hoy' | 'fuentes' | 'cerebro';
+
+/** Pestaña FUENTES — biblioteca REAL extraída y verificada (links 200 en vivo). */
+function FuentesView() {
+  const EDGE = '#3DA5E0';
+  const openEdge = (u: string) => Linking.openURL('microsoft-edge:' + u).catch(() => openUrl(u));
+  return (
+    <View>
+      {/* Las 3 fuentes */}
+      <SectionLabel>Las 3 fuentes · data extraída y verificada en vivo (10-jun-2026)</SectionLabel>
+      <View style={[gridStyle(250), { marginBottom: Spacing.lg }]}>
+        {[
+          { icon: '🏛️', t: 'AccessDermatologyDxRx', sub: '36 libros · 1.301 preguntas · 300 casos · 180 vídeos · sesión UF', url: 'https://dermatology.mhmedical.com/index.aspx', c: PURPLE },
+          { icon: '🧪', t: 'Qbankly (⚠ SOLO Edge)', sub: 'derma: S1 488 Q · S2 CK 534 Q · S3 263 Q · 136 flashcards', url: 'https://qbankly.app/qbanks', c: EDGE, edge: true },
+          { icon: '🇪🇸', t: 'ProMIR · Dermatología', sub: '11 capítulos · resumen 3:18:11 · Masterclass melanoma 1:39:10', url: 'https://promir.medicapanamericana.com/capitulo/62836950c0f8415ab9efb5c7', c: '#F5A623' },
+        ].map((f, i) => (
+          <View key={i} style={gridItemStyle(250)}>
+            <FadeUp delay={i * 50}>
+              <TouchableOpacity activeOpacity={0.85} onPress={() => (f as any).edge ? openEdge(f.url) : openUrl(f.url)} style={[fst.srcCard, { borderLeftColor: f.c }]}>
+                <Text style={{ fontSize: 22 }}>{f.icon}</Text>
+                <Text style={fst.srcT}>{f.t}</Text>
+                <Text style={fst.srcSub}>{f.sub}</Text>
+                <Text style={[fst.srcGo, { color: f.c }]}>{(f as any).edge ? '◆ abrir en Edge' : 'abrir ↗'}</Text>
+              </TouchableOpacity>
+            </FadeUp>
+          </View>
+        ))}
+      </View>
+
+      {/* Q-banks + casos de Access */}
+      <SectionLabel>Preguntas y casos (AccessDerma · conteos reales)</SectionLabel>
+      <View style={[gridStyle(250), { marginBottom: Spacing.lg }]}>
+        {DERMA_QBANKS_ACCESS.map((q, i) => (
+          <View key={q.resourceid} style={gridItemStyle(250)}>
+            <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(srcQa(q.resourceid))} style={[fst.qRow, { borderLeftColor: PURPLE }]}>
+              <Text style={fst.qN}>{q.preguntas}Q</Text>
+              <Text style={fst.qT} numberOfLines={2}>{q.nombre} ↗</Text>
+            </TouchableOpacity>
+          </View>
+        ))}
+        {DERMA_CASES_ACCESS.map((c) => (
+          <View key={c.groupid} style={gridItemStyle(250)}>
+            <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(srcCases(c.groupid))} style={[fst.qRow, { borderLeftColor: Colors.teal }]}>
+              <Text style={[fst.qN, { color: Colors.teal }]}>🩺</Text>
+              <Text style={fst.qT} numberOfLines={2}>{c.nombre} ↗</Text>
+            </TouchableOpacity>
+          </View>
+        ))}
+      </View>
+
+      {/* Qbankly por step */}
+      <SectionLabel>Qbankly · derma por step (◆ Edge)</SectionLabel>
+      <GlassPanel style={{ marginBottom: Spacing.lg, padding: Spacing.md }}>
+        {DERMA_QBANKLY_RESUMEN.map((s, i) => (
+          <TouchableOpacity key={i} activeOpacity={0.85} onPress={() => openEdge('https://qbankly.app/qbanks')} style={[fst.stepRow, i === 0 && { borderTopWidth: 0 }]}>
+            <Text style={[fst.stepName, { color: EDGE }]}>{s.step}</Text>
+            <Text style={fst.stepDet} numberOfLines={1}>{s.detalle}</Text>
+            <Text style={fst.stepQ}>{s.q} Q ◆</Text>
+          </TouchableOpacity>
+        ))}
+      </GlassPanel>
+
+      {/* Vídeos */}
+      <SectionLabel>Vídeos AccessDerma · 180 con título verificado</SectionLabel>
+      <View style={[gridStyle(220), { marginBottom: Spacing.lg }]}>
+        {DERMA_VIDEOS.map((v, i) => (
+          <View key={v.nombre} style={gridItemStyle(220)}>
+            <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(v.hash ? srcMm(v.hash) : 'https://dermatology.mhmedical.com/multimedia.aspx')} style={fst.vidRow}>
+              <Text style={fst.vidN}>{v.n}</Text>
+              <Text style={fst.vidT} numberOfLines={2}>{v.nombre} ↗</Text>
+            </TouchableOpacity>
+          </View>
+        ))}
+      </View>
+
+      {/* Biblioteca estética: 16 libros con capítulos ⭐ */}
+      <SectionLabel>Biblioteca estética · 16 libros (740 capítulos con deep-link)</SectionLabel>
+      <View style={{ marginBottom: Spacing.xl }}>
+        {DERMA_LIBROS_ESTETICA.map((b, i) => (
+          <FadeUp key={b.id} delay={Math.min(i * 25, 200)}>
+            <View style={fst.libCard}>
+              <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(srcBook(b.id))} style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                <Text style={fst.libT} numberOfLines={1}>📕 {b.t} ↗</Text>
+                <Chip label={`${b.caps} caps`} color={PURPLE} small />
+              </TouchableOpacity>
+              {b.star.length > 0 && (
+                <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 8 }}>
+                  {b.star.map((s) => (
+                    <TouchableOpacity key={s.sid} activeOpacity={0.8} onPress={() => openUrl(srcCap(b.id, s.sid))} style={fst.starChip}>
+                      <Text style={fst.starTxt} numberOfLines={1}>⭐ {s.t} ↗</Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              )}
+            </View>
+          </FadeUp>
+        ))}
+        <Text style={fst.note}>Todos los links verificados en vivo (HTTP 200 + título correcto) con la sesión UF Remote Access · TOCs completos en DATA/DERMATOLOGIA/_scrape/.</Text>
+      </View>
+    </View>
+  );
+}
+
+const fst = StyleSheet.create({
+  srcCard: { backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: DesktopColors.glassBorder, borderLeftWidth: 3, padding: Spacing.lg, minHeight: 130 },
+  srcT: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface, marginTop: 6 },
+  srcSub: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 4, lineHeight: 15 },
+  srcGo: { fontSize: FontSize.labelSm, fontWeight: '800', marginTop: 8 },
+  qRow: { backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: DesktopColors.glassBorder, borderLeftWidth: 3, padding: Spacing.md, flexDirection: 'row', alignItems: 'center', gap: 10 },
+  qN: { fontSize: FontSize.bodyMd, fontWeight: '900', color: PURPLE, minWidth: 44 },
+  qT: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 16 },
+  stepRow: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 8, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.06)' },
+  stepName: { fontSize: FontSize.labelMd, fontWeight: '800', width: 84 },
+  stepDet: { flex: 1, fontSize: FontSize.labelSm, color: Colors.muted },
+  stepQ: { fontSize: FontSize.labelMd, fontWeight: '800', color: Colors.onSurface },
+  vidRow: { backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: DesktopColors.glassBorder, padding: Spacing.md, flexDirection: 'row', alignItems: 'center', gap: 10 },
+  vidN: { fontSize: FontSize.bodyLg, fontWeight: '900', color: '#22D3EE', minWidth: 34, textAlign: 'center' },
+  vidT: { flex: 1, fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, lineHeight: 15 },
+  libCard: { backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: DesktopColors.glassBorder, padding: Spacing.md, marginBottom: 6 },
+  libT: { flex: 1, fontSize: FontSize.labelLg, fontWeight: '700', color: Colors.onSurface },
+  starChip: { backgroundColor: 'rgba(139,92,246,0.10)', borderWidth: 1, borderColor: 'rgba(139,92,246,0.35)', borderRadius: BorderRadius.full, paddingVertical: 4, paddingHorizontal: 10, maxWidth: 320 },
+  starTxt: { fontSize: FontSize.labelSm, color: '#C4B5FD', fontWeight: '600' },
+  note: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: Spacing.sm, lineHeight: 15 },
+});
 
 export default function DermaHub({ variant = 'mobile' }: { variant?: 'mobile' | 'desktop' }) {
   const isDesktop = variant === 'desktop';
@@ -57,22 +184,23 @@ export default function DermaHub({ variant = 'mobile' }: { variant?: 'mobile' | 
           </View>
         </GradientHero>
 
-        {/* SUB-PESTAÑAS: plan día-a-día vs cerebro clínico */}
+        {/* SUB-PESTAÑAS: plan día-a-día · fuentes · cerebro clínico */}
         <View style={{ flexDirection: 'row', gap: Spacing.sm, marginBottom: Spacing.lg, flexWrap: 'wrap' }}>
           <PillTab label="Hoy" icon="🗓️" active={sub === 'hoy'} accent={PURPLE} onPress={() => setSub('hoy')} />
+          <PillTab label="Fuentes" icon="📚" active={sub === 'fuentes'} accent={PURPLE} onPress={() => setSub('fuentes')} />
           <PillTab label="Cerebro clínico" icon="🧠" active={sub === 'cerebro'} accent={PURPLE} onPress={() => setSub('cerebro')} />
         </View>
 
-        {sub === 'hoy' ? <DermaTodayPlan /> : (
+        {sub === 'hoy' ? <DermaTodayPlan /> : sub === 'fuentes' ? <FuentesView /> : (
         <View>
 
         {/* MEGA STAT — lo que no puedes errar */}
         <MegaStat value={CRITICAS} label="Subtemas CRÍTICOS · lo que no puedes errar" accent={PURPLE}
-          footnote={`de ${TOTAL_SUB} subtemas en el mapa · 7 bloques A–G`} />
+          footnote={`de ${TOTAL_SUB} subtemas · mapa mental del SPEC (A–G) — la cola día-a-día (bloques propios A–X) vive en la pestaña Hoy`} />
 
         {/* RINGS */}
         <View style={st.ringRow}>
-          <View style={st.ringCard}><RingStat value={DERMA_BLOQUES.length} max={7} label="Bloques" sub="A–G" accent={PURPLE} /></View>
+          <View style={st.ringCard}><RingStat value={DERMA_BLOQUES.length} max={7} label="Bloques" sub="mapa SPEC A–G" accent={PURPLE} /></View>
           <View style={st.ringCard}><RingStat value={CRITICAS} max={TOTAL_SUB} label="Críticos" sub="no errar" accent={Colors.coral} /></View>
           <View style={st.ringCard}><RingStat value={12} max={12} label="Semanas" sub="protocolo starter" accent={Colors.amber} /></View>
           <View style={st.ringCard}><RingStat value={8} label="Readiness" sub="currículo" accent={Colors.teal} suffix="%" /></View>
@@ -108,7 +236,7 @@ export default function DermaHub({ variant = 'mobile' }: { variant?: 'mobile' | 
         </View>
 
         {/* BLOQUES A–G (currículo) */}
-        <SectionLabel>Mapa de conocimiento · bloques A–G (por prioridad y vueltas)</SectionLabel>
+        <SectionLabel>Mapa mental del SPEC · bloques A–G (≠ bloques del plan día-a-día de Hoy)</SectionLabel>
         <View style={{ marginBottom: Spacing.xl }}>
           {DERMA_BLOQUES.map((b, i) => (
             <FadeUp key={b.id} delay={i * 40}>

@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Linking } from 'react-native'
 import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
 import { Chip, GlassPanel } from '../empresa/primitives';
-import { FadeUp } from '../empresa/visuals';
+import { FadeUp, RingStat } from '../empresa/visuals';
 import {
   DERMA_DAILY_META, DERMA_FRANJAS, DERMA_DIAS, DERMA_TIER_INFO,
   DiaDerma, DermaBloqueKey, DermaTier, dermaDiaPrevio, dermaVentana7, diaEstudioTipo,
@@ -284,11 +284,11 @@ export default function DermaTodayPlan() {
       {/* Banner interdiario Derma/Research */}
       <View style={st.interRow}>
         <View style={[st.interBtn, tipoHoy === 'derma' ? st.interOn : st.interOff]}>
-          <Text style={[st.interBig, { color: tipoHoy === 'derma' ? PURPLE : Colors.muted }]}>💎 DERMA</Text>
+          <Text numberOfLines={1} style={[st.interBig, { color: tipoHoy === 'derma' ? PURPLE : Colors.muted }]}>💎 DERMA</Text>
           <Text style={st.interSub}>{tipoHoy === 'derma' ? 'HOY te toca' : 'día alterno'}</Text>
         </View>
         <View style={[st.interBtn, tipoHoy === 'research' ? { backgroundColor: TEAL + '1A', borderColor: TEAL + '88' } : st.interOff]}>
-          <Text style={[st.interBig, { color: tipoHoy === 'research' ? TEAL : Colors.muted }]}>🔬 RESEARCH</Text>
+          <Text numberOfLines={1} style={[st.interBig, { color: tipoHoy === 'research' ? TEAL : Colors.muted }]}>🔬 RESEARCH</Text>
           <Text style={st.interSub}>{tipoHoy === 'research' ? 'HOY te toca →' : 'día alterno'}</Text>
         </View>
         <View style={[st.interBtn, tipoHoy === 'descanso' ? st.interOn : st.interOff, { flex: 0.7 }]}>
@@ -298,6 +298,22 @@ export default function DermaTodayPlan() {
       </View>
       <View style={st.artefactoBar}>
         <Text style={st.artefactoTxt}>🎓 Meta viva: board (Jain × ABD 55/15/15/15 × Peso MIR) + estética estructural (Cotofana → MD Codes → toxina → HDPH 🔴 → energía) · {DERMA_DAILY_META.bloque}</Text>
+      </View>
+
+      {/* Anillos de progreso REAL (board · estética · críticos · global) */}
+      <View style={st.ringRow}>
+        <View style={st.ringCard}>
+          <RingStat value={done.size} max={DERMA_DAILY_META.totalDias} label="Global" sub={`${done.size}/${DERMA_DAILY_META.totalDias} átomos`} accent={PURPLE} />
+        </View>
+        <View style={st.ringCard}>
+          <RingStat value={DERMA_DIAS.filter(x => x.tier === 'CRIT' && done.has(x.d)).length} max={DERMA_DIAS.filter(x => x.tier === 'CRIT').length} label="Críticos" sub="no errar" accent="#E5484D" />
+        </View>
+        <View style={st.ringCard}>
+          <RingStat value={DERMA_DIAS.filter(x => x.bKey !== 'X' && done.has(x.d)).length} max={DERMA_DIAS.filter(x => x.bKey !== 'X').length} label="Board" sub="A–H + cierre" accent="#F5A623" />
+        </View>
+        <View style={st.ringCard}>
+          <RingStat value={DERMA_DIAS.filter(x => x.bKey === 'X' && done.has(x.d)).length} max={DERMA_DIAS.filter(x => x.bKey === 'X').length} label="Estética" sub="bloque X" accent="#22D3EE" />
+        </View>
       </View>
 
       {/* Navegación de día */}
@@ -332,14 +348,16 @@ export default function DermaTodayPlan() {
 
 const cardBase = { backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: DesktopColors.glassBorder };
 const st = StyleSheet.create({
-  interRow: { flexDirection: 'row', gap: Spacing.sm, marginBottom: Spacing.sm },
-  interBtn: { flex: 1, borderRadius: BorderRadius.lg, borderWidth: 1, paddingVertical: Spacing.md, alignItems: 'center' },
+  interRow: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm, marginBottom: Spacing.sm },
+  interBtn: { flex: 1, minWidth: 96, borderRadius: BorderRadius.lg, borderWidth: 1, paddingVertical: Spacing.md, paddingHorizontal: 4, alignItems: 'center' },
   interOn: { backgroundColor: PURPLE + '1A', borderColor: PURPLE + '88' },
   interOff: { backgroundColor: 'rgba(255,255,255,0.03)', borderColor: 'rgba(255,255,255,0.1)' },
-  interBig: { fontSize: FontSize.bodyLg, fontWeight: '900', letterSpacing: 0.3 },
+  interBig: { fontSize: FontSize.labelLg, fontWeight: '900', letterSpacing: 0.3 },
   interSub: { fontSize: 9, color: Colors.muted, marginTop: 2 },
   artefactoBar: { ...cardBase, borderLeftWidth: 3, borderLeftColor: PURPLE, padding: Spacing.sm, marginBottom: Spacing.sm },
   artefactoTxt: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, lineHeight: 15 },
+  ringRow: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm, marginBottom: Spacing.sm },
+  ringCard: { flex: 1, minWidth: 130, ...cardBase, paddingVertical: Spacing.md, paddingHorizontal: Spacing.sm, alignItems: 'center' },
 
   navRow: { flexDirection: 'row', alignItems: 'center', ...cardBase, padding: Spacing.sm, marginBottom: Spacing.xs },
   navArrow: { width: 40, height: 40, borderRadius: BorderRadius.md, backgroundColor: 'rgba(255,255,255,0.05)', alignItems: 'center', justifyContent: 'center' },

@@ -211,7 +211,7 @@ export const DERMA_DIAS: DiaDerma[] = [
   { d: 63, fecha: '2026-12-02', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'Oclusión vascular + HDPH: recitar el protocolo completo (no errar)', referente: 'DeLorenzi',
     access: { t: 'HDPH Protocol (ASJ 2017)', url: 'https://pubmed.ncbi.nlm.nih.gov/28333326/' }, qbankly: null, promir: null, extra: { t: 'Complications of Injectable Fillers I (2013)', url: 'https://pubmed.ncbi.nlm.nih.gov/23636629/' } },
   { d: 64, fecha: '2026-12-04', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'Ceguera por relleno: prevención + manejo inmediato + kit de emergencia', referente: 'Goodman/Magnusson 2020',
-    access: { t: 'Consenso Embolic Visual Loss (ASJ 2020)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7427155/' }, qbankly: null, promir: null, extra: { t: 'Fillers Part 2: Vascular (ASJ 2014)', url: 'https://pubmed.ncbi.nlm.nih.gov/24809362/' } },
+    access: { t: 'Consenso Embolic Visual Loss (ASJ 2020)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7427155/' }, qbankly: null, promir: null, extra: { t: 'Fillers Part 2: Vascular (ASJ 2014)', url: 'https://pubmed.ncbi.nlm.nih.gov/24692598/' } },
   { d: 65, fecha: '2026-12-08', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Fototermólisis selectiva: cromóforo → λ → pulso → enfriamiento', referente: 'Anderson',
     access: { t: 'Lasers in Dermatology · Cap 1 Fundamentals', url: `${MH}/content.aspx?bookid=2818&sectionid=240357100` }, qbankly: null, promir: null, extra: { t: 'Selective Photothermolysis (Science 1983)', url: 'https://pubmed.ncbi.nlm.nih.gov/6836297/' } },
   { d: 66, fecha: '2026-12-10', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Fraccional, RF, HIFU, criolipólisis + seguridad en fototipos altos', referente: 'Manstein/Anderson',
