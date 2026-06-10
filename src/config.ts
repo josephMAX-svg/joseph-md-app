@@ -11,4 +11,4 @@
  * `/vitals` would break every AI feature. Loading VITALS from its own origin keeps
  * 100% of its functionality (camera capture, Gemini coach, Supabase) intact.
  */
-export const VITALS_URL = 'https://web-sigma-eight-92.vercel.app';
+export const VITALS_URL = 'https://vitals-pulso.vercel.app';
