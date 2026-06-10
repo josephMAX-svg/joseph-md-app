@@ -106,7 +106,7 @@ export default function EncapsPlanView() {
       {sub === 'horario' && <HorarioView plan={plan} />}
       {sub === 'meta' && <MetaView metrics={plan.metrics} simScores={plan.simScores} simDays={plan.simDays} />}
       {sub === 'sim' && <SimView plan={plan} />}
-      {sub === 'sem' && <SemView days={plan.days} dia={plan.dia} proximos={plan.proximos} metrics={plan.metrics} />}
+      {sub === 'sem' && <SemView days={plan.days} dia={plan.dia} proximos={plan.proximos} metrics={plan.metrics} onOpenDay={(dn) => { plan.setDia(dn); setSub('hoy'); }} />}
     </View>
   );
 }
@@ -444,7 +444,7 @@ function TheomedBlockRow({ b, base }: { b: TheomedBloque; base: string }) {
   );
 }
 
-function SemView({ days, dia, proximos, metrics }: { days: StudyScheduleDay[]; dia: number; proximos: ProximoVideo[]; metrics: StudyMetrics | null }) {
+function SemView({ days, dia, proximos, metrics, onOpenDay }: { days: StudyScheduleDay[]; dia: number; proximos: ProximoVideo[]; metrics: StudyMetrics | null; onOpenDay: (dia: number) => void }) {
   const next = days.filter(d => d.dia >= dia && d.dia < dia + 7);
   const ex = (metrics?.extra as Record<string, unknown> | undefined) || {};
   const thBloques = (ex.theomed_videos as TheomedBloque[] | undefined) || [];
@@ -459,7 +459,8 @@ function SemView({ days, dia, proximos, metrics }: { days: StudyScheduleDay[]; d
         const isToday = d.dia === dia;
         const tema = `${d.codigo || ''} ${d.subtema || ''}`.trim() || (d.extra?.theme as string) || d.tipo || '—';
         return (
-          <View key={d.dia} style={[styles.semRow, isToday && styles.semRowToday]}>
+          <TouchableOpacity key={d.dia} style={[styles.semRow, isToday && styles.semRowToday]}
+            onPress={() => onOpenDay(d.dia)} activeOpacity={0.6}>
             <View style={styles.semDayBox}>
               <Text style={[styles.semDayNum, isToday && { color: Colors.coral }]}>D{d.dia}</Text>
               <Text style={styles.semWeekday}>{(d.weekday || '').slice(0, 3)}</Text>
@@ -473,7 +474,8 @@ function SemView({ days, dia, proximos, metrics }: { days: StudyScheduleDay[]; d
               </Text>
             </View>
             {!!d.prioridad && d.prioridad.includes('CRÍT') && <Text style={styles.semCrit}>CRÍTICA</Text>}
-          </View>
+            <Text style={styles.semChevron}>ver ›</Text>
+          </TouchableOpacity>
         );
       })}
 
@@ -711,6 +713,7 @@ const styles = StyleSheet.create({
   semTema: { fontSize: FontSize.bodyMd, color: Colors.onSurface, fontWeight: '500' },
   semDetail: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 1 },
   semCrit: { fontSize: 9, fontWeight: '800', color: Colors.coral, backgroundColor: Colors.coral + '22', paddingVertical: 2, paddingHorizontal: 6, borderRadius: 999, marginLeft: Spacing.sm },
+  semChevron: { fontSize: FontSize.labelSm, fontWeight: '700', color: Colors.teal, marginLeft: Spacing.sm },
 
   // Próximos videos a liberar (predicción drip)
   proxBox: { backgroundColor: Colors.blue + '12', borderRadius: BorderRadius.md, padding: Spacing.md, marginTop: Spacing.md, borderLeftWidth: 3, borderLeftColor: Colors.blue },
