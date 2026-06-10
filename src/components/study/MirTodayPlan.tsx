@@ -7,7 +7,7 @@ import { FadeUp } from '../empresa/visuals';
 import {
   MIR_DAILY_META, MIR_FRANJAS, MIR_DIAS, DiaMIR, mirDiaDe, mirPrevio, mir7d, MIR_RENT, capUrl,
 } from '../../lib/mirDailyPlan';
-import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso } from '../../lib/studyProgress';
+import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, loadDone, saveDone } from '../../lib/studyProgress';
 
 /**
  * MirTodayPlan — Plan MIR día-a-día (ProMIR), estilo USMLE/Perú. Vueltas (1ª/2ª/3ª),
@@ -43,7 +43,7 @@ function ColaItem({ icon, lbl, val, sub, color, url }: { icon: string; lbl: stri
   );
 }
 
-function HoyView({ dia, onOpenTemario }: { dia: DiaMIR; onOpenTemario: () => void }) {
+function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaMIR; onOpenTemario: () => void; hecho: boolean; onToggle: (d: number) => void }) {
   const prev = mirPrevio(dia);
   const tier = MIR_RENT[dia.rent] || MIR_RENT.verde;
   return (
@@ -60,6 +60,9 @@ function HoyView({ dia, onOpenTemario }: { dia: DiaMIR; onOpenTemario: () => voi
           </View>
           <Text style={st.temaTitle}>{dia.tema}</Text>
           <Text style={st.temaSub}>Tema atómico del día · 1/día · toca la asignatura para ver todo el temario y tu avance ›</Text>
+          <TouchableOpacity activeOpacity={0.85} onPress={() => onToggle(dia.d)} style={[st.doneBtn, hecho ? st.doneBtnOn : st.doneBtnOff]}>
+            <Text style={[st.doneBtnTxt, { color: hecho ? '#1A1205' : AMBER }]}>{hecho ? '✓ Completado hoy' : '○ Marcar como completado'}</Text>
+          </TouchableOpacity>
         </View>
       </FadeUp>
 
@@ -154,7 +157,7 @@ function ProgressBar({ pct, color }: { pct: number; color: string }) {
   );
 }
 
-function AsignaturaCard({ g, hoyD, onPick }: { g: GrupoProgreso<DiaMIR>; hoyD: number; onPick: (d: number) => void }) {
+function AsignaturaCard({ g, hoyD, onPick, done, onToggle }: { g: GrupoProgreso<DiaMIR>; hoyD: number; onPick: (d: number) => void; done: Set<number>; onToggle: (d: number) => void }) {
   const [open, setOpen] = useState(g.estado === 'en-curso');
   const tier = MIR_RENT[g.dias[0].rent] || MIR_RENT.verde;
   const peso = g.dias[0].peso;
@@ -168,7 +171,7 @@ function AsignaturaCard({ g, hoyD, onPick }: { g: GrupoProgreso<DiaMIR>; hoyD: n
           {peso != null ? <Text style={[st.sysPeso, { color: AMBER }]}>{peso}%</Text> : null}
           <Text style={[st.sysCount, { color: estadoColor }]}>{g.hechos}/{g.total}</Text>
         </View>
-        <ProgressBar pct={g.estado === 'completado' ? 100 : g.pct} color={tier.c} />
+        <ProgressBar pct={g.pct} color={tier.c} />
         <Text style={[st.sysEstado, { color: estadoColor }]}>
           {estadoTxt}{g.diaActual ? ` · hoy: ${g.diaActual.tema}` : ''}
         </Text>
@@ -179,13 +182,18 @@ function AsignaturaCard({ g, hoyD, onPick }: { g: GrupoProgreso<DiaMIR>; hoyD: n
       {open && (
         <View style={{ marginTop: 8 }}>
           {g.dias.map((x) => {
-            const done = x.d < hoyD, now = x.d === hoyD;
+            const hecho = done.has(x.d), now = x.d === hoyD;
             return (
-              <TouchableOpacity key={x.d} activeOpacity={0.8} onPress={() => onPick(x.d)} style={[st.temaRow, now && st.temaRowOn]}>
-                <Text style={[st.temaRowD, { color: done ? GREEN : now ? tier.c : Colors.muted }]}>{done ? '✓' : now ? '▶' : '·'} D{x.d}</Text>
-                <Text style={st.temaRowTxt} numberOfLines={1}>{x.tema}</Text>
-                <Text style={st.temaRowGo}>→</Text>
-              </TouchableOpacity>
+              <View key={x.d} style={[st.temaRow, now && st.temaRowOn]}>
+                <TouchableOpacity activeOpacity={0.7} onPress={() => onToggle(x.d)} hitSlop={{ top: 8, bottom: 8, left: 8, right: 4 }}>
+                  <Text style={[st.temaChk, { color: hecho ? GREEN : 'rgba(255,255,255,0.25)' }]}>{hecho ? '☑' : '☐'}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity activeOpacity={0.8} onPress={() => onPick(x.d)} style={st.temaRowMain}>
+                  <Text style={[st.temaRowD, { color: hecho ? GREEN : now ? tier.c : Colors.muted }]}>{now ? '▶' : ''} D{x.d}</Text>
+                  <Text style={st.temaRowTxt} numberOfLines={1}>{x.tema}</Text>
+                  <Text style={st.temaRowGo}>→</Text>
+                </TouchableOpacity>
+              </View>
             );
           })}
         </View>
@@ -194,9 +202,9 @@ function AsignaturaCard({ g, hoyD, onPick }: { g: GrupoProgreso<DiaMIR>; hoyD: n
   );
 }
 
-function TemarioView({ hoyD, onPick }: { hoyD: number; onPick: (d: number) => void }) {
-  const grupos = agruparProgreso(MIR_DIAS, (x) => x.asignatura, hoyD);
-  const glob = progresoGlobal(MIR_DIAS, hoyD);
+function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (d: number) => void; done: Set<number>; onToggle: (d: number) => void }) {
+  const grupos = agruparProgreso(MIR_DIAS, (x) => x.asignatura, hoyD, done);
+  const glob = progresoGlobal(MIR_DIAS, done);
   return (
     <View>
       <View style={st.globCard}>
@@ -207,8 +215,8 @@ function TemarioView({ hoyD, onPick }: { hoyD: number; onPick: (d: number) => vo
         <ProgressBar pct={glob.pct} color={AMBER} />
         <Text style={st.globSub}>{glob.hechos}/{glob.total} temas · hoy = Día {hoyD} de {glob.total} · {grupos.length} asignaturas · 1ª vuelta</Text>
       </View>
-      {grupos.map((g) => <AsignaturaCard key={g.clave} g={g} hoyD={hoyD} onPick={onPick} />)}
-      <Text style={st.note}>Progreso = temas del plan ya cubiertos / total de la asignatura (ritmo previsto, hoy = Día {hoyD}). El tema en curso se resalta. Toca cualquier tema para ir a ese día.</Text>
+      {grupos.map((g) => <AsignaturaCard key={g.clave} g={g} hoyD={hoyD} onPick={onPick} done={done} onToggle={onToggle} />)}
+      <Text style={st.note}>Progreso REAL: empezamos en 0%. ☑ marca un tema como completado (se guarda en este dispositivo). ▶ = día de hoy. Toca el título de un tema para ir a ese día.</Text>
     </View>
   );
 }
@@ -219,9 +227,16 @@ export default function MirTodayPlan() {
   const todayDia = mirDiaDe(iso) || MIR_DIAS.find((x) => x.d === hoyD) || MIR_DIAS[0];
   const [sel, setSel] = useState<number>(todayDia.d);
   const [view, setView] = useState<'hoy' | 'horario' | '7d' | 'temario'>('hoy');
+  const [done, setDone] = useState<Set<number>>(() => new Set(loadDone('mir')));
   const dia = MIR_DIAS.find((x) => x.d === sel) || MIR_DIAS[0];
   const esHoy = dia.fecha === iso;
   const pickDay = (d: number) => { setSel(d); setView('hoy'); };
+  const toggleDone = (d: number) => setDone((prev) => {
+    const n = new Set(prev);
+    if (n.has(d)) n.delete(d); else n.add(d);
+    saveDone('mir', Array.from(n));
+    return n;
+  });
 
   return (
     <View>
@@ -254,10 +269,10 @@ export default function MirTodayPlan() {
       </View>
 
       <GlassPanel style={{ marginBottom: Spacing.xl, padding: Spacing.md }}>
-        {view === 'hoy' ? <HoyView dia={dia} onOpenTemario={() => setView('temario')} />
+        {view === 'hoy' ? <HoyView dia={dia} onOpenTemario={() => setView('temario')} hecho={done.has(dia.d)} onToggle={toggleDone} />
           : view === 'horario' ? <HorarioView dia={dia} />
           : view === '7d' ? <SieteView fromD={dia.d} onPick={pickDay} />
-          : <TemarioView hoyD={hoyD} onPick={pickDay} />}
+          : <TemarioView hoyD={hoyD} onPick={pickDay} done={done} onToggle={toggleDone} />}
       </GlassPanel>
     </View>
   );
@@ -291,6 +306,10 @@ const st = StyleSheet.create({
   sysBadgeTxt: { fontSize: FontSize.labelMd, fontWeight: '800' },
   temaTitle: { fontSize: FontSize.bodyLg, fontWeight: '800', color: Colors.onSurface, marginTop: 8 },
   temaSub: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 3 },
+  doneBtn: { marginTop: 10, paddingVertical: 9, borderRadius: BorderRadius.md, borderWidth: 1, alignItems: 'center' },
+  doneBtnOff: { backgroundColor: AMBER + '14', borderColor: AMBER + '66' },
+  doneBtnOn: { backgroundColor: AMBER, borderColor: AMBER },
+  doneBtnTxt: { fontSize: FontSize.labelMd, fontWeight: '800' },
 
   anchor: { ...cardBase, borderLeftWidth: 3, borderLeftColor: BLUE, padding: Spacing.md, marginBottom: Spacing.sm },
   anchorLbl: { fontSize: FontSize.labelMd, fontWeight: '800', color: '#AFCBFF' },
@@ -334,8 +353,10 @@ const st = StyleSheet.create({
   sysPeso: { fontSize: FontSize.labelMd, fontWeight: '800', marginLeft: 8 },
   sysCount: { fontSize: FontSize.labelMd, fontWeight: '800', marginLeft: 8 },
   sysEstado: { fontSize: FontSize.labelSm, fontWeight: '700', marginTop: 5 },
-  temaRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 6, paddingHorizontal: 6, borderRadius: BorderRadius.sm, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.05)' },
+  temaRow: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingVertical: 6, paddingHorizontal: 6, borderRadius: BorderRadius.sm, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.05)' },
   temaRowOn: { backgroundColor: AMBER + '12' },
+  temaRowMain: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 8 },
+  temaChk: { fontSize: 16, width: 22, textAlign: 'center' },
   temaRowD: { fontSize: FontSize.labelSm, fontWeight: '800', width: 40 },
   temaRowTxt: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant },
   temaRowGo: { fontSize: 14, color: Colors.muted, width: 16, textAlign: 'center' },

@@ -8,7 +8,7 @@ import {
   DAILY_META, FRANJAS, DIAS, DiaUSMLE, diaDe, diaPrevio, ventana7d, TIER_INFO,
   QBV, QBQ, QBF, QBL, yt,
 } from '../../lib/usmleStep1Daily';
-import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso } from '../../lib/studyProgress';
+import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, loadDone, saveDone } from '../../lib/studyProgress';
 
 /**
  * UsmleTodayPlan — Plan Step 1 día-a-día, estilo Perú/ENCAPS pero mejor.
@@ -55,7 +55,7 @@ function ColaItem({ icon, lbl, val, sub, color, url, edge }: { icon: string; lbl
   );
 }
 
-function HoyView({ dia, onOpenTemario }: { dia: DiaUSMLE; onOpenTemario: () => void }) {
+function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaUSMLE; onOpenTemario: () => void; hecho: boolean; onToggle: (d: number) => void }) {
   const prev = diaPrevio(dia);
   const tier = TIER_INFO[dia.tier];
   return (
@@ -73,6 +73,9 @@ function HoyView({ dia, onOpenTemario }: { dia: DiaUSMLE; onOpenTemario: () => v
           </View>
           <Text style={st.temaTitle}>{dia.sub}</Text>
           <Text style={st.temaSub}>Subtema atómico del día · 1/día · toca el sistema para ver todo el temario y tu avance ›</Text>
+          <TouchableOpacity activeOpacity={0.85} onPress={() => onToggle(dia.d)} style={[st.doneBtn, hecho ? st.doneBtnOn : st.doneBtnOff]}>
+            <Text style={[st.doneBtnTxt, { color: hecho ? '#0A1A12' : GREEN }]}>{hecho ? '✓ Completado hoy' : '○ Marcar como completado'}</Text>
+          </TouchableOpacity>
         </View>
       </FadeUp>
 
@@ -178,7 +181,7 @@ function ProgressBar({ pct, color }: { pct: number; color: string }) {
   );
 }
 
-function SistemaCard({ g, hoyD, onPick }: { g: GrupoProgreso<DiaUSMLE>; hoyD: number; onPick: (d: number) => void }) {
+function SistemaCard({ g, hoyD, onPick, done, onToggle }: { g: GrupoProgreso<DiaUSMLE>; hoyD: number; onPick: (d: number) => void; done: Set<number>; onToggle: (d: number) => void }) {
   const [open, setOpen] = useState(g.estado === 'en-curso');
   const tier = TIER_INFO[g.dias[0].tier];
   const estadoTxt = g.estado === 'completado' ? '✓ completado' : g.estado === 'en-curso' ? `en curso · ${g.pct}%` : `pendiente · empieza D${g.primerD}`;
@@ -190,7 +193,7 @@ function SistemaCard({ g, hoyD, onPick }: { g: GrupoProgreso<DiaUSMLE>; hoyD: nu
           <Text style={st.sysTitle} numberOfLines={1}>{open ? '▾' : '▸'} {g.clave}</Text>
           <Text style={[st.sysCount, { color: estadoColor }]}>{g.hechos}/{g.total}</Text>
         </View>
-        <ProgressBar pct={g.estado === 'completado' ? 100 : g.pct} color={tier.c} />
+        <ProgressBar pct={g.pct} color={tier.c} />
         <Text style={[st.sysEstado, { color: estadoColor }]}>
           {estadoTxt}{g.diaActual ? ` · hoy: ${g.diaActual.sub}` : ''}
         </Text>
@@ -202,13 +205,18 @@ function SistemaCard({ g, hoyD, onPick }: { g: GrupoProgreso<DiaUSMLE>; hoyD: nu
       {open && (
         <View style={{ marginTop: 8 }}>
           {g.dias.map((x) => {
-            const done = x.d < hoyD, now = x.d === hoyD;
+            const hecho = done.has(x.d), now = x.d === hoyD;
             return (
-              <TouchableOpacity key={x.d} activeOpacity={0.8} onPress={() => onPick(x.d)} style={[st.temaRow, now && st.temaRowOn]}>
-                <Text style={[st.temaRowD, { color: done ? GREEN : now ? tier.c : Colors.muted }]}>{done ? '✓' : now ? '▶' : '·'} D{x.d}</Text>
-                <Text style={st.temaRowTxt} numberOfLines={1}>{x.sub}</Text>
-                <Text style={st.temaRowGo}>→</Text>
-              </TouchableOpacity>
+              <View key={x.d} style={[st.temaRow, now && st.temaRowOn]}>
+                <TouchableOpacity activeOpacity={0.7} onPress={() => onToggle(x.d)} hitSlop={{ top: 8, bottom: 8, left: 8, right: 4 }}>
+                  <Text style={[st.temaChk, { color: hecho ? GREEN : 'rgba(255,255,255,0.25)' }]}>{hecho ? '☑' : '☐'}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity activeOpacity={0.8} onPress={() => onPick(x.d)} style={st.temaRowMain}>
+                  <Text style={[st.temaRowD, { color: hecho ? GREEN : now ? tier.c : Colors.muted }]}>{now ? '▶' : ''} D{x.d}</Text>
+                  <Text style={st.temaRowTxt} numberOfLines={1}>{x.sub}</Text>
+                  <Text style={st.temaRowGo}>→</Text>
+                </TouchableOpacity>
+              </View>
             );
           })}
         </View>
@@ -217,9 +225,9 @@ function SistemaCard({ g, hoyD, onPick }: { g: GrupoProgreso<DiaUSMLE>; hoyD: nu
   );
 }
 
-function TemarioView({ hoyD, onPick }: { hoyD: number; onPick: (d: number) => void }) {
-  const grupos = agruparProgreso(DIAS, (x) => x.system, hoyD);
-  const glob = progresoGlobal(DIAS, hoyD);
+function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (d: number) => void; done: Set<number>; onToggle: (d: number) => void }) {
+  const grupos = agruparProgreso(DIAS, (x) => x.system, hoyD, done);
+  const glob = progresoGlobal(DIAS, done);
   return (
     <View>
       <View style={st.globCard}>
@@ -230,8 +238,8 @@ function TemarioView({ hoyD, onPick }: { hoyD: number; onPick: (d: number) => vo
         <ProgressBar pct={glob.pct} color={GREEN} />
         <Text style={st.globSub}>{glob.hechos}/{glob.total} subtemas · hoy = Día {hoyD} de {glob.total} · {grupos.length} sistemas</Text>
       </View>
-      {grupos.map((g) => <SistemaCard key={g.clave} g={g} hoyD={hoyD} onPick={onPick} />)}
-      <Text style={st.note}>Progreso = subtemas del plan ya cubiertos / total del sistema (ritmo previsto, hoy = Día {hoyD}). El subtema en curso se resalta. Toca cualquier subtema para ir a ese día.</Text>
+      {grupos.map((g) => <SistemaCard key={g.clave} g={g} hoyD={hoyD} onPick={onPick} done={done} onToggle={onToggle} />)}
+      <Text style={st.note}>Progreso REAL: empezamos en 0%. ☑ marca un subtema como completado (se guarda en este dispositivo). ▶ = día de hoy. Toca el título de un subtema para ir a ese día.</Text>
     </View>
   );
 }
@@ -242,9 +250,16 @@ export default function UsmleTodayPlan() {
   const todayDia = diaDe(iso) || DIAS.find((x) => x.d === hoyD) || DIAS[0];
   const [sel, setSel] = useState<number>(todayDia.d);
   const [view, setView] = useState<'hoy' | 'horario' | '7d' | 'temario'>('hoy');
+  const [done, setDone] = useState<Set<number>>(() => new Set(loadDone('usmle')));
   const dia = DIAS.find((x) => x.d === sel) || DIAS[0];
   const esHoy = dia.fecha === iso;
   const pickDay = (d: number) => { setSel(d); setView('hoy'); };
+  const toggleDone = (d: number) => setDone((prev) => {
+    const n = new Set(prev);
+    if (n.has(d)) n.delete(d); else n.add(d);
+    saveDone('usmle', Array.from(n));
+    return n;
+  });
 
   return (
     <View>
@@ -285,10 +300,10 @@ export default function UsmleTodayPlan() {
       </View>
 
       <GlassPanel style={{ marginBottom: Spacing.xl, padding: Spacing.md }}>
-        {view === 'hoy' ? <HoyView dia={dia} onOpenTemario={() => setView('temario')} />
+        {view === 'hoy' ? <HoyView dia={dia} onOpenTemario={() => setView('temario')} hecho={done.has(dia.d)} onToggle={toggleDone} />
           : view === 'horario' ? <HorarioView dia={dia} />
           : view === '7d' ? <SieteView fromD={dia.d} onPick={pickDay} />
-          : <TemarioView hoyD={hoyD} onPick={pickDay} />}
+          : <TemarioView hoyD={hoyD} onPick={pickDay} done={done} onToggle={toggleDone} />}
       </GlassPanel>
     </View>
   );
@@ -322,6 +337,10 @@ const st = StyleSheet.create({
   sysBadgeTxt: { fontSize: FontSize.labelMd, fontWeight: '800' },
   temaTitle: { fontSize: FontSize.bodyLg, fontWeight: '800', color: Colors.onSurface, marginTop: 8 },
   temaSub: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 3 },
+  doneBtn: { marginTop: 10, paddingVertical: 9, borderRadius: BorderRadius.md, borderWidth: 1, alignItems: 'center' },
+  doneBtnOff: { backgroundColor: GREEN + '14', borderColor: GREEN + '66' },
+  doneBtnOn: { backgroundColor: GREEN, borderColor: GREEN },
+  doneBtnTxt: { fontSize: FontSize.labelMd, fontWeight: '800' },
 
   anchor: { ...cardBase, borderLeftWidth: 3, borderLeftColor: '#7BB1FF', padding: Spacing.md, marginBottom: Spacing.sm },
   anchorLbl: { fontSize: FontSize.labelMd, fontWeight: '800', color: '#AFCBFF' },
@@ -366,8 +385,10 @@ const st = StyleSheet.create({
   sysTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface, flex: 1 },
   sysCount: { fontSize: FontSize.labelMd, fontWeight: '800', marginLeft: 8 },
   sysEstado: { fontSize: FontSize.labelSm, fontWeight: '700', marginTop: 5 },
-  temaRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 6, paddingHorizontal: 6, borderRadius: BorderRadius.sm, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.05)' },
+  temaRow: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingVertical: 6, paddingHorizontal: 6, borderRadius: BorderRadius.sm, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.05)' },
   temaRowOn: { backgroundColor: GREEN + '12' },
+  temaRowMain: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 8 },
+  temaChk: { fontSize: 16, width: 22, textAlign: 'center' },
   temaRowD: { fontSize: FontSize.labelSm, fontWeight: '800', width: 40 },
   temaRowTxt: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant },
   temaRowGo: { fontSize: 14, color: Colors.muted, width: 16, textAlign: 'center' },
