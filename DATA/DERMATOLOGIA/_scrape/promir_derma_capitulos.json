@@ -1,0 +1,85 @@
+{
+  "fuente": "ProMIR (promir.medicapanamericana.com) · asignatura 5 Dermatología · subjectId 570779c8f4d68bf008dbc566",
+  "metodo": "Chrome DevTools MCP adjunto al Chrome logueado del usuario · 10-jun-2026 · scroll progresivo + extracción DOM (innerText '0:00/<dur>' = duración total del player; figs/tablas = links #)",
+  "nota": "El detalle del intro (Peso MIR % por tema, páginas, horas, Enfoque) ya estaba en src/lib/mirDetalleData.ts (clave 5). Los conteos de figuras/tablas son aproximados (±3) por virtualización del DOM de la SPA.",
+  "profesor": "Dr. Luis Alfonso Pérez González",
+  "capitulos": [
+    {
+      "n": 0, "titulo": "Introducción a la asignatura", "capId": "62836950c0f8415ab9efb5c7",
+      "url": "https://promir.medicapanamericana.com/capitulo/62836950c0f8415ab9efb5c7",
+      "videos": [
+        { "id": "0-1", "titulo": "Vídeo presentación de la asignatura de Dermatología", "dur": "4:28" },
+        { "id": "0-2", "titulo": "Videoclase resumen de la asignatura de Dermatología", "dur": "3:18:11" }
+      ],
+      "figs": null, "tablas": null,
+      "contenido": "Orientación MIR: Enfoque, esquema de preguntas por año, tablas de Peso MIR, estimación de tiempo de estudio (ya extraído en mirDetalleData.ts)"
+    },
+    {
+      "n": 1, "titulo": "Introducción. Conceptos generales", "capId": "570779c8f4d68bf008dbc646",
+      "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc646",
+      "videos": [], "figs": 25, "tablas": 4,
+      "secciones": ["1. Recuerdo anatómico", "1.1. Epidermis", "1.2. Dermis", "1.3. Hipodermis", "2. Lesiones cutáneas elementales", "2.1. Lesiones primarias", "2.2. Lesiones secundarias", "2.3. Exploración dermatológica", "2.4. Dermatosis fotosensibles", "3. Nociones de Anatomía Patológica. Alteraciones histológicas básicas", "4. Tratamientos dermatológicos", "4.1. Terapéutica tópica", "4.2. Terapéutica oral", "4.3. Terapéutica física"]
+    },
+    {
+      "n": 2, "titulo": "Enfermedades infecciosas", "capId": "570779c8f4d68bf008dbc6a2",
+      "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc6a2",
+      "videos": [], "figs": 25, "tablas": 3,
+      "secciones": ["1. Infecciones víricas (herpes, VPH, COVID-19, viruela del mono, molusco, exantema viral, enantemas)", "2. Infecciones fúngicas (levaduras, dermatofitosis/tiñas, onicomicosis)", "5. Infecciones bacterianas (impétigos, foliculitis/forúnculos/ántrax, profundas, otras, micobacterias)", "7. Infecciones por parásitos (leishmaniasis cutánea)", "8. Infestaciones (pediculosis, escabiosis, larva cutánea migrans, chinches de cama)"]
+    },
+    {
+      "n": 3, "titulo": "Dermatología y enfermedades sistémicas", "capId": "570779c9f4d68bf008dbc71f",
+      "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc71f",
+      "videos": [{ "id": "3-1", "titulo": "Dermatosis paraneoplásicas", "dur": "16:46" }],
+      "figs": 16, "tablas": 4,
+      "secciones": ["1. Lupus eritematoso cutáneo", "2. Paniculitis (eritema nodoso, vasculitis nodular)", "3. Manifestaciones de enfermedades digestivas (EII, hepatopatías)", "3.4. Sarcoidosis", "3.5. Morfea", "3.6. Vasculitis leucocitoclástica y eritema elevatum diutinum", "4. Dermatosis paraneoplásicas", "4.2. Amiloidosis sistémica", "4.4. Dermatosis carenciales", "5.2. Dermatomiositis", "5.5. Síndrome de Sweet", "5.8. Pioderma gangrenoso", "6. Porfirias (porfiria cutánea tarda)", "9. Endocrinopatías (DM, tiroides, xantomas)", "10. Manifestaciones cutáneas del VIH", "11. Otras manifestaciones de enfermedades sistémicas"]
+    },
+    {
+      "n": 4, "titulo": "Oncología cutánea", "capId": "570779c9f4d68bf008dbc77b",
+      "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc77b",
+      "videos": [
+        { "id": "4-1", "titulo": "Masterclass: El melanoma en el MIR — claves para el manejo clínico y perspectivas futuras", "dur": "1:39:10" },
+        { "id": "4-2", "titulo": "Procedimiento de dermatoscopia (clip)", "dur": "0:12" }
+      ],
+      "figs": 30, "tablas": 12,
+      "secciones": ["1. Tumores cutáneos benignos (queratosis seborreica, dermatofibroma, nevos melanocíticos)", "2. Tumores vasculares benignos y malformaciones vasculares (hemangiomas infantiles/congénitos)", "3. Lesiones premalignas (leucoplasia, queratosis actínica, nevos con capacidad degenerativa)", "4. Cáncer cutáneo no melanoma (carcinoma basocelular, espinocelular)", "5. Melanoma (epidemiología, fases de crecimiento, formas clínicas, clasificación genética, diagnóstico, pronóstico, TNM, manejo)", "6. Carcinoma de células de Merkel", "7. Dermatofibrosarcoma protuberans", "8. Linfomas cutáneos (micosis fungoide, Sézary, linfomas B)", "9. Mastocitosis", "10. Metástasis cutáneas"]
+    },
+    {
+      "n": 5, "titulo": "Enfermedades eritematodescamativas. Eccemas", "capId": "570779c8f4d68bf008dbc5fc",
+      "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc5fc",
+      "videos": [{ "id": "5-1", "titulo": "Procedimiento usado en queloides, alopecias autoinmunes, etc. (clip infiltración)", "dur": "0:17" }],
+      "figs": 9, "tablas": 6,
+      "secciones": ["1. Liquen plano (epidemiología, clínica, fisiopatología, diagnóstico, tratamiento)", "2. Psoriasis (etiopatogenia, formas clínicas, diagnóstico, tratamiento)", "3.7. Pitiriasis rosada de Gibert", "3.8. Pitiriasis rubra pilaris", "4. Eccemas", "5. Dermatitis atópica (clínica, tratamiento, nuevos tratamientos)", "6. Dermatitis seborreica"]
+    },
+    {
+      "n": 6, "titulo": "Enfermedades ampollosas autoinmunes", "capId": "570779c8f4d68bf008dbc648",
+      "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc648",
+      "videos": [], "figs": 12, "tablas": 2,
+      "secciones": ["1. Introducción", "2. Diagnóstico en las enfermedades ampollosas. Conceptos clave", "5. Grupo de los penfigoides (penfigoide ampolloso, gestacional, de membranas mucosas)", "9. Enfermedades ampollosas mediadas por IgA (dermatitis herpetiforme de Duhring-Brocq, IgA lineal)", "10. Grupo de los pénfigos (profundos, superficiales)"]
+    },
+    {
+      "n": 7, "titulo": "Patología glandular y de los folículos pilosos. Urticaria y angioedema", "capId": "570779c8f4d68bf008dbc6a4",
+      "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc6a4",
+      "videos": [], "figs": 8, "tablas": 1,
+      "secciones": ["1. Acné (acné vulgar, rosácea, erupciones acneiformes)", "2. Hidradenitis supurativa", "3. Alopecias e hipertricosis (cicatriciales, no cicatriciales)", "4. Urticaria y angioedema"]
+    },
+    {
+      "n": 8, "titulo": "Toxicodermias. Fotodermatosis", "capId": "570779c9f4d68bf008dbc721",
+      "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc721",
+      "videos": [], "figs": 10, "tablas": 4,
+      "secciones": ["1. Introducción", "2. Toxicodermias leves", "3. Toxicodermias graves y eritema exudativo multiforme (EEM, erupción mucocutánea infecciosa reactiva, SJS/NET, PEGA)", "4. Toxicidad cutánea por quimioterapia e inmunoterapia", "5. Fotosensibilidad (fototóxicas/fotoalérgicas, erupción polimórfica lumínica, urticaria solar)"]
+    },
+    {
+      "n": 9, "titulo": "Genodermatosis y facomatosis", "capId": "570779c9f4d68bf008dbc77d",
+      "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc77d",
+      "videos": [], "figs": 1, "tablas": 7,
+      "secciones": ["1. Introducción", "2. Enfermedad de Darier, ictiosis y epidermólisis ampollosas (Darier, Hailey-Hailey, ictiosis, EB)", "3. Síndrome de Marfan, pseudoxantoma elástico y Ehlers-Danlos", "4. Esclerosis tuberosa y neurofibromatosis tipo 1", "5. Von Hippel-Lindau y Sturge-Weber", "+ Enfermedades autoinflamatorias"]
+    },
+    {
+      "n": 10, "titulo": "Dermatoscopia", "capId": "64465ebc321262437c8d0c8f",
+      "url": "https://promir.medicapanamericana.com/capitulo/64465ebc321262437c8d0c8f",
+      "videos": [{ "id": "10-1", "titulo": "Videoclase: Dermatoscopia", "dur": "18:36", "mp4": "https://promir.medicapanamericana.com/video/646e3147b31401796f7c6bef.mp4" }],
+      "figs": 6, "tablas": 0,
+      "secciones": ["1. Introducción", "2. Melanoma maligno", "3. Carcinoma basocelular", "4. Carcinoma epidermoide", "5. Otras patologías"]
+    }
+  ]
+}

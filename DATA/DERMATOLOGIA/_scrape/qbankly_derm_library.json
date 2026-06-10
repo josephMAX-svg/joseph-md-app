@@ -1,0 +1,875 @@
+{
+  "extractedFrom": "STUDY_HUB/_scrape/qbankly_libs_full.json (API real Qbankly 10-jun-2026)",
+  "uworld": {
+    "epubId": 1,
+    "subject": "Dermatology",
+    "n": 43,
+    "deepLinkPattern": "https://qbankly.app/library?e=1&doc=<doc>",
+    "topics": [
+      {
+        "name": "Acne vulgaris",
+        "doc": 70
+      },
+      {
+        "name": "Actinic keratosis",
+        "doc": 71
+      },
+      {
+        "name": "Alopecia",
+        "doc": 72
+      },
+      {
+        "name": "Animal and human bites",
+        "doc": 73
+      },
+      {
+        "name": "Atopic dermatitis",
+        "doc": 74
+      },
+      {
+        "name": "Bedbugs",
+        "doc": 75
+      },
+      {
+        "name": "Bullous pemphigoid and pemphigus vulgaris",
+        "doc": 76
+      },
+      {
+        "name": "Burns",
+        "doc": 77
+      },
+      {
+        "name": "Cellulitis and skin abscess (skin and soft tissue infections)",
+        "doc": 78
+      },
+      {
+        "name": "Chickenpox",
+        "doc": 79
+      },
+      {
+        "name": "Cutaneous larva migrans",
+        "doc": 80
+      },
+      {
+        "name": "Cutaneous warts",
+        "doc": 81
+      },
+      {
+        "name": "Dermatophyte infections",
+        "doc": 82
+      },
+      {
+        "name": "Dermatoses of pregnancy",
+        "doc": 83
+      },
+      {
+        "name": "Diaper dermatitis",
+        "doc": 84
+      },
+      {
+        "name": "DRESS syndrome",
+        "doc": 85
+      },
+      {
+        "name": "Erythema infectiosum (fifth disease)",
+        "doc": 86
+      },
+      {
+        "name": "Erythema multiforme",
+        "doc": 87
+      },
+      {
+        "name": "Erythema nodosum",
+        "doc": 88
+      },
+      {
+        "name": "Hand-foot-and-mouth disease",
+        "doc": 89
+      },
+      {
+        "name": "Herpangina",
+        "doc": 90
+      },
+      {
+        "name": "Hidradenitis suppurativa",
+        "doc": 91
+      },
+      {
+        "name": "Impetigo",
+        "doc": 92
+      },
+      {
+        "name": "Infantile hemangiomas",
+        "doc": 93
+      },
+      {
+        "name": "Kaposi sarcoma",
+        "doc": 94
+      },
+      {
+        "name": "Lice",
+        "doc": 95
+      },
+      {
+        "name": "Measles",
+        "doc": 96
+      },
+      {
+        "name": "Melanoma",
+        "doc": 97
+      },
+      {
+        "name": "Molluscum contagiosum",
+        "doc": 98
+      },
+      {
+        "name": "Nonmelanoma skin cancer:  Squamous cell carcinoma and basal cell carcinoma",
+        "doc": 99
+      },
+      {
+        "name": "Pityriasis rosea",
+        "doc": 100
+      },
+      {
+        "name": "Psoriasis",
+        "doc": 101
+      },
+      {
+        "name": "Pyoderma gangrenosum",
+        "doc": 102
+      },
+      {
+        "name": "Rosacea",
+        "doc": 103
+      },
+      {
+        "name": "Roseola",
+        "doc": 104
+      },
+      {
+        "name": "Rubella infection",
+        "doc": 105
+      },
+      {
+        "name": "Scabies",
+        "doc": 106
+      },
+      {
+        "name": "Scarlet fever",
+        "doc": 107
+      },
+      {
+        "name": "Seborrheic keratosis",
+        "doc": 108
+      },
+      {
+        "name": "Staphylococcal scalded skin syndrome",
+        "doc": 109
+      },
+      {
+        "name": "Staphylococcal toxic shock syndrome",
+        "doc": 110
+      },
+      {
+        "name": "Stevens-Johnson syndrome/toxic epidermal necrolysis",
+        "doc": 111
+      },
+      {
+        "name": "Tinea versicolor",
+        "doc": 112
+      }
+    ]
+  },
+  "passmedicine": {
+    "epubId": 3,
+    "subject": "Musculoskeletal system and skin",
+    "n": 171,
+    "note": "MSK+skin mezclados",
+    "topics": [
+      {
+        "name": "Abdominal wall",
+        "doc": 7
+      },
+      {
+        "name": "Abductor pollicis brevis",
+        "doc": 8
+      },
+      {
+        "name": "Acanthosis nigricans",
+        "doc": 12
+      },
+      {
+        "name": "Acne vulgaris: pathophysiology",
+        "doc": 20
+      },
+      {
+        "name": "Acquired ichthyosis",
+        "doc": 21
+      },
+      {
+        "name": "Adductor canal",
+        "doc": 53
+      },
+      {
+        "name": "Adductor longus",
+        "doc": 54
+      },
+      {
+        "name": "Adhesive capsulitis",
+        "doc": 59
+      },
+      {
+        "name": "Anatomical snuffbox",
+        "doc": 92
+      },
+      {
+        "name": "ANCA associated vasculitis",
+        "doc": 93
+      },
+      {
+        "name": "Ankle joint",
+        "doc": 98
+      },
+      {
+        "name": "Ankle sprain",
+        "doc": 100
+      },
+      {
+        "name": "Ankylosing spondylitis: features",
+        "doc": 101
+      },
+      {
+        "name": "Ankylosing spondylitis: investigation and management",
+        "doc": 102
+      },
+      {
+        "name": "Antecubital fossa",
+        "doc": 105
+      },
+      {
+        "name": "Anterior triangle of the neck",
+        "doc": 109
+      },
+      {
+        "name": "Antihistamines",
+        "doc": 124
+      },
+      {
+        "name": "Axilla",
+        "doc": 169
+      },
+      {
+        "name": "Azathioprine",
+        "doc": 170
+      },
+      {
+        "name": "Behcet's syndrome",
+        "doc": 179
+      },
+      {
+        "name": "Biceps femoris",
+        "doc": 191
+      },
+      {
+        "name": "Bisphosphonates",
+        "doc": 199
+      },
+      {
+        "name": "Bone disorders: lab values",
+        "doc": 211
+      },
+      {
+        "name": "Bone tumours",
+        "doc": 213
+      },
+      {
+        "name": "Boxer fracture",
+        "doc": 216
+      },
+      {
+        "name": "Bullous pemphigoid",
+        "doc": 242
+      },
+      {
+        "name": "Burns",
+        "doc": 244
+      },
+      {
+        "name": "Carpal bones",
+        "doc": 265
+      },
+      {
+        "name": "Carpal tunnel syndrome",
+        "doc": 266
+      },
+      {
+        "name": "Chronic fatigue syndrome",
+        "doc": 306
+      },
+      {
+        "name": "Clavicle",
+        "doc": 322
+      },
+      {
+        "name": "Colles' fracture",
+        "doc": 340
+      },
+      {
+        "name": "Compartment syndrome",
+        "doc": 352
+      },
+      {
+        "name": "Contact dermatitis",
+        "doc": 368
+      },
+      {
+        "name": "Cubital tunnel syndrome",
+        "doc": 389
+      },
+      {
+        "name": "De Quervain's tenosynovitis",
+        "doc": 403
+      },
+      {
+        "name": "Denosumab",
+        "doc": 407
+      },
+      {
+        "name": "Dermatitis herpetiformis",
+        "doc": 409
+      },
+      {
+        "name": "Dermatomyositis",
+        "doc": 411
+      },
+      {
+        "name": "Dermatomyositis: investigations and management",
+        "doc": 412
+      },
+      {
+        "name": "Drug-induced lupus",
+        "doc": 455
+      },
+      {
+        "name": "Dupuytren's contracture",
+        "doc": 465
+      },
+      {
+        "name": "Ehler-Danlos syndrome",
+        "doc": 478
+      },
+      {
+        "name": "Elbow joint",
+        "doc": 480
+      },
+      {
+        "name": "Epidermis",
+        "doc": 493
+      },
+      {
+        "name": "Erysipelas",
+        "doc": 501
+      },
+      {
+        "name": "Erythema multiforme",
+        "doc": 503
+      },
+      {
+        "name": "Erythema nodosum",
+        "doc": 504
+      },
+      {
+        "name": "Fascial compartments of the leg",
+        "doc": 522
+      },
+      {
+        "name": "Femur",
+        "doc": 527
+      },
+      {
+        "name": "Foot anatomy",
+        "doc": 535
+      },
+      {
+        "name": "Foot- Cutaneous sensation",
+        "doc": 537
+      },
+      {
+        "name": "Forearm flexor muscles",
+        "doc": 540
+      },
+      {
+        "name": "Fracture healing",
+        "doc": 543
+      },
+      {
+        "name": "Gout: features",
+        "doc": 582
+      },
+      {
+        "name": "Gout: management",
+        "doc": 583
+      },
+      {
+        "name": "Gout: predisposing factors",
+        "doc": 584
+      },
+      {
+        "name": "Greater sciatic foramen",
+        "doc": 591
+      },
+      {
+        "name": "Guttate psoriasis",
+        "doc": 598
+      },
+      {
+        "name": "Hand",
+        "doc": 608
+      },
+      {
+        "name": "Hand diseases",
+        "doc": 609
+      },
+      {
+        "name": "Hereditary haemorrhagic telangiectasia",
+        "doc": 636
+      },
+      {
+        "name": "Hip dislocation",
+        "doc": 643
+      },
+      {
+        "name": "Hip fracture",
+        "doc": 644
+      },
+      {
+        "name": "Hip joint",
+        "doc": 645
+      },
+      {
+        "name": "Humerus",
+        "doc": 668
+      },
+      {
+        "name": "Hydroxychloroquine",
+        "doc": 672
+      },
+      {
+        "name": "Impetigo",
+        "doc": 708
+      },
+      {
+        "name": "Intervertebral discs",
+        "doc": 728
+      },
+      {
+        "name": "Knee injuries",
+        "doc": 748
+      },
+      {
+        "name": "Knee joint",
+        "doc": 749
+      },
+      {
+        "name": "Knee problems: children and young adults",
+        "doc": 750
+      },
+      {
+        "name": "Koebner phenomenon",
+        "doc": 751
+      },
+      {
+        "name": "Langerhans cell histiocytosis",
+        "doc": 757
+      },
+      {
+        "name": "Lateral malleolus",
+        "doc": 761
+      },
+      {
+        "name": "Leukoplakia",
+        "doc": 767
+      },
+      {
+        "name": "Lichen planus",
+        "doc": 770
+      },
+      {
+        "name": "Lichen sclerosus",
+        "doc": 771
+      },
+      {
+        "name": "Lower back pain: prolapsed disc",
+        "doc": 784
+      },
+      {
+        "name": "Lower limb anatomy",
+        "doc": 786
+      },
+      {
+        "name": "Lower limb- Muscular compartments",
+        "doc": 787
+      },
+      {
+        "name": "Marfan's syndrome",
+        "doc": 813
+      },
+      {
+        "name": "McArdle's disease",
+        "doc": 815
+      },
+      {
+        "name": "Medial malleolus",
+        "doc": 821
+      },
+      {
+        "name": "Melasma",
+        "doc": 826
+      },
+      {
+        "name": "Methotrexate",
+        "doc": 846
+      },
+      {
+        "name": "Molluscum contagiosum",
+        "doc": 862
+      },
+      {
+        "name": "Muscle contraction",
+        "doc": 879
+      },
+      {
+        "name": "Mycophenolate mofetil",
+        "doc": 882
+      },
+      {
+        "name": "Mycosis fungoides",
+        "doc": 884
+      },
+      {
+        "name": "Myopathies",
+        "doc": 889
+      },
+      {
+        "name": "Nerve signs",
+        "doc": 901
+      },
+      {
+        "name": "Non-steroidal anti-inflammatory drugs (NSAIDs)",
+        "doc": 914
+      },
+      {
+        "name": "Olecranon bursitis",
+        "doc": 934
+      },
+      {
+        "name": "Osteoarthritis and rheumatoid arthritis: comparison",
+        "doc": 945
+      },
+      {
+        "name": "Osteoarthritis of the hip",
+        "doc": 946
+      },
+      {
+        "name": "Osteogenesis imperfecta",
+        "doc": 947
+      },
+      {
+        "name": "Osteomalacia",
+        "doc": 948
+      },
+      {
+        "name": "Osteomyelitis",
+        "doc": 949
+      },
+      {
+        "name": "Osteopetrosis",
+        "doc": 950
+      },
+      {
+        "name": "Osteoporosis: causes",
+        "doc": 951
+      },
+      {
+        "name": "Paediatric fractures",
+        "doc": 966
+      },
+      {
+        "name": "Paget's disease of the bone",
+        "doc": 967
+      },
+      {
+        "name": "Pectoralis major muscle",
+        "doc": 990
+      },
+      {
+        "name": "Pellagra",
+        "doc": 991
+      },
+      {
+        "name": "Pemphigus vulgaris",
+        "doc": 994
+      },
+      {
+        "name": "Perthes' disease",
+        "doc": 1006
+      },
+      {
+        "name": "Pityriasis rosea",
+        "doc": 1022
+      },
+      {
+        "name": "Plantar fasciitis",
+        "doc": 1027
+      },
+      {
+        "name": "Polyarteritis nodosa",
+        "doc": 1035
+      },
+      {
+        "name": "Polymyalgia rheumatica",
+        "doc": 1041
+      },
+      {
+        "name": "Polymyositis",
+        "doc": 1042
+      },
+      {
+        "name": "Porphyria cutanea tarda",
+        "doc": 1046
+      },
+      {
+        "name": "Posterior tibial artery",
+        "doc": 1052
+      },
+      {
+        "name": "Pseudogout",
+        "doc": 1084
+      },
+      {
+        "name": "Psoas muscle",
+        "doc": 1086
+      },
+      {
+        "name": "Psoriasis",
+        "doc": 1087
+      },
+      {
+        "name": "Psoriatic arthropathy",
+        "doc": 1088
+      },
+      {
+        "name": "Radius",
+        "doc": 1103
+      },
+      {
+        "name": "Raynaud's phenomenon",
+        "doc": 1108
+      },
+      {
+        "name": "Reactive arthritis: features",
+        "doc": 1109
+      },
+      {
+        "name": "Retinoids",
+        "doc": 1137
+      },
+      {
+        "name": "Rheumatoid arthritis: complications",
+        "doc": 1142
+      },
+      {
+        "name": "Rheumatoid arthritis: diagnosis",
+        "doc": 1143
+      },
+      {
+        "name": "Rheumatoid arthritis: drug side-effects",
+        "doc": 1144
+      },
+      {
+        "name": "Rheumatoid arthritis: initial investigations",
+        "doc": 1145
+      },
+      {
+        "name": "Rheumatoid arthritis: management",
+        "doc": 1146
+      },
+      {
+        "name": "Rheumatoid arthritis: presentation",
+        "doc": 1147
+      },
+      {
+        "name": "Rotator cuff muscles",
+        "doc": 1156
+      },
+      {
+        "name": "Sarcomas",
+        "doc": 1163
+      },
+      {
+        "name": "Sartorius",
+        "doc": 1164
+      },
+      {
+        "name": "Scabies",
+        "doc": 1165
+      },
+      {
+        "name": "Scalene muscles",
+        "doc": 1166
+      },
+      {
+        "name": "Scaphoid bone",
+        "doc": 1167
+      },
+      {
+        "name": "Scaphoid fracture",
+        "doc": 1168
+      },
+      {
+        "name": "Septic arthritis in adults",
+        "doc": 1186
+      },
+      {
+        "name": "Sezary syndrome",
+        "doc": 1190
+      },
+      {
+        "name": "Shin lesions",
+        "doc": 1192
+      },
+      {
+        "name": "Shingles",
+        "doc": 1193
+      },
+      {
+        "name": "Shoulder joint",
+        "doc": 1196
+      },
+      {
+        "name": "Sjogren's syndrome",
+        "doc": 1206
+      },
+      {
+        "name": "Skin cancer",
+        "doc": 1209
+      },
+      {
+        "name": "Skin Diseases",
+        "doc": 1210
+      },
+      {
+        "name": "Skin disorders associated with SLE",
+        "doc": 1211
+      },
+      {
+        "name": "Squamous cell carcinoma of the skin",
+        "doc": 1227
+      },
+      {
+        "name": "Sternal angle",
+        "doc": 1232
+      },
+      {
+        "name": "Sternocleidomastoid",
+        "doc": 1233
+      },
+      {
+        "name": "Stevens-Johnson syndrome",
+        "doc": 1235
+      },
+      {
+        "name": "Strawberry naevus",
+        "doc": 1236
+      },
+      {
+        "name": "Subluxation of the radial head (pulled elbow)",
+        "doc": 1250
+      },
+      {
+        "name": "Submandibular gland",
+        "doc": 1251
+      },
+      {
+        "name": "Sulfasalazine",
+        "doc": 1255
+      },
+      {
+        "name": "Systemic lupus erythematosus: features",
+        "doc": 1273
+      },
+      {
+        "name": "Systemic lupus erythematosus: investigations",
+        "doc": 1274
+      },
+      {
+        "name": "Systemic sclerosis",
+        "doc": 1277
+      },
+      {
+        "name": "Temporal arteritis",
+        "doc": 1283
+      },
+      {
+        "name": "Thyroid gland",
+        "doc": 1312
+      },
+      {
+        "name": "Toxic epidermal necrolysis",
+        "doc": 1320
+      },
+      {
+        "name": "Trapezius",
+        "doc": 1330
+      },
+      {
+        "name": "Trendelenburg test",
+        "doc": 1333
+      },
+      {
+        "name": "Triceps",
+        "doc": 1334
+      },
+      {
+        "name": "Tumour necrosis factor",
+        "doc": 1351
+      },
+      {
+        "name": "Upper limb anatomy",
+        "doc": 1358
+      },
+      {
+        "name": "Upper limb fractures",
+        "doc": 1359
+      },
+      {
+        "name": "Urticaria",
+        "doc": 1369
+      },
+      {
+        "name": "Varicella-zoster vaccination",
+        "doc": 1381
+      },
+      {
+        "name": "Vasculitides",
+        "doc": 1384
+      },
+      {
+        "name": "Venous ulceration",
+        "doc": 1387
+      },
+      {
+        "name": "Vertebral column",
+        "doc": 1389
+      },
+      {
+        "name": "Viral warts",
+        "doc": 1397
+      },
+      {
+        "name": "Vitiligo",
+        "doc": 1413
+      }
+    ]
+  }
+}
