@@ -8,6 +8,9 @@ import {
   AGENT_LAYERS, AGENT_ROLES, HITL_CHECKPOINTS, AGENTIC_RESOURCES, AGENTIC_META,
   RESEARCH_LINES, CLUSTER_COLOR, AgentRole,
 } from '../../lib/researchProgram';
+import { researchObsUrlSR, researchObsUrlLine } from '../../lib/obsidianResearchMap';
+
+const OBS = '#A78BFA';
 
 /**
  * ResearchAgenticSystem — "el corazón": orchestrator-worker + HITL para redactar revisiones
@@ -81,6 +84,16 @@ export default function ResearchAgenticSystem() {
           {linea.fichaUrl && (
             <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(linea.fichaUrl!)} style={[st.miniBtn, { borderColor: CLUSTER_COLOR[linea.cluster] + '88' }]}>
               <Text style={[st.miniBtnTxt, { color: CLUSTER_COLOR[linea.cluster] }]}>📄 Paper ancla ↗</Text>
+            </TouchableOpacity>
+          )}
+          {linea.srTag && researchObsUrlSR(linea.srTag) && (
+            <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(researchObsUrlSR(linea.srTag!)!)} style={[st.miniBtn, { borderColor: OBS + '88' }]}>
+              <Text style={[st.miniBtnTxt, { color: OBS }]}>◆ Hoja de ruta (Obsidian)</Text>
+            </TouchableOpacity>
+          )}
+          {researchObsUrlLine(linea.id) && (
+            <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(researchObsUrlLine(linea.id)!)} style={[st.miniBtn, { borderColor: OBS + '88' }]}>
+              <Text style={[st.miniBtnTxt, { color: OBS }]}>◆ Nota de la línea</Text>
             </TouchableOpacity>
           )}
         </View>

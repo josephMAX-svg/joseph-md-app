@@ -5,13 +5,15 @@ import { DesktopColors } from '../../theme/desktopStyles';
 import { SectionLabel, Chip } from '../empresa/primitives';
 import { FadeUp } from '../empresa/visuals';
 import { RESEARCH_LINES, CLUSTER_COLOR, CLUSTER_LABEL, LineaResearch, Cluster } from '../../lib/researchProgram';
+import { researchObsUrlLine } from '../../lib/obsidianResearchMap';
 
 /**
  * ResearchLinesExplorer — las 8 líneas de investigación (L0–L8). Cada tarjeta es expandible:
  * gap, SR derivable, journals, colaboradores, cuello de botella, Mayo score. Botones que abren
- * PubMed (semilla de búsqueda real) y el paper ancla. Color por cluster.
+ * PubMed (semilla de búsqueda real), el paper ancla y la nota ◆ Obsidian de la línea. Color por cluster.
  */
 const TEAL = '#0FD4A0';
+const OBS = '#A78BFA';
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
 
 const ESTADO_COLOR: Record<LineaResearch['estado'], string> = {
@@ -57,6 +59,11 @@ function LineCard({ l }: { l: LineaResearch }) {
             {l.fichaUrl && (
               <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(l.fichaUrl!)} style={[st.btn, { borderColor: c + '88' }]}>
                 <Text style={[st.btnTxt, { color: c }]}>📄 Paper ancla ↗</Text>
+              </TouchableOpacity>
+            )}
+            {researchObsUrlLine(l.id) && (
+              <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(researchObsUrlLine(l.id)!)} style={[st.btn, { borderColor: OBS + '88' }]}>
+                <Text style={[st.btnTxt, { color: OBS }]}>◆ Nota en Obsidian</Text>
               </TouchableOpacity>
             )}
           </View>
