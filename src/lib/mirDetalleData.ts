@@ -1,0 +1,881 @@
+/**
+ * mirDetalleData.ts — DETALLE por asignatura, sintetizado del capitulo de
+ * introduccion REAL de ProMIR (Peso MIR % por tema, paginas, horas de estudio,
+ * Enfoque, subtemas top, videos presentacion/resumen) y cruzado con rabi_94.
+ *
+ * Fuente: 30 intros scrapeados (STUDY_HUB/_scrape/intros/*.json) -> parseados por
+ * el workflow mir-intro-synthesis (09-jun-2026). Datos reales, no inventados.
+ */
+export interface TemaDetalle { nombre: string; pesoPct: number; paginas?: number; horas: string; }
+export interface SubtemaTop { tema: string; subtema: string; pesoPct: number; }
+export interface AsignaturaDetalle {
+  num: number;
+  pesoGlobal: string;
+  enfoque: string;
+  presentacionVideoDur?: string;
+  resumenVideoDur?: string;
+  horasTotales?: string;
+  temas: TemaDetalle[];
+  topSubtemas?: SubtemaTop[];
+  prioridad1V: string[];
+  notaPrioridad: string;
+}
+
+export const MIR_DETALLE: Record<number, AsignaturaDetalle> = {
+  1: {
+    num: 1, pesoGlobal: 'Rentabilidad global media; asignatura pequeña (~0,36% del MIR histórico en peso total; muy pocas preguntas por año)',
+    enfoque: 'El Dr. David González de Olano orienta a rentabilizar al máximo el estudio. La asignatura es pequeña y rentable de forma concentrada: "Alergia a alimentos" es el tema dominante, asegurando más de la mitad de las preguntas (55,56% histórico y 56,52% en los últimos 5 años), por lo que es el núcleo del estudio. El subtema más preguntado es la alergia a alimentos no mediada por IgE. Conviene reforzar también el tratamiento inmunomodulador (inmunoterapia), que ha ganado peso notablemente en los últimos 5 años (28,99%), y las generalidades y diagnóstico clínico de las enfermedades alérgicas.',
+    presentacionVideoDur: '1:49',
+    horasTotales: '~3h 41min',
+    temas: [
+      { nombre: 'Alergia a alimentos', pesoPct: 55.56, paginas: 8, horas: '1h 14min' },
+      { nombre: 'Generalidades y diagnóstico clínico de las enfermedades alérgicas', pesoPct: 16.67, paginas: 6, horas: '55min' },
+      { nombre: 'Síndromes de activación mastocitaria', pesoPct: 11.11, paginas: 3, horas: '28min' },
+      { nombre: 'Tratamiento inmunomodulador de las enfermedades alérgicas', pesoPct: 11.11, paginas: 2, horas: '18min' },
+      { nombre: 'Reacciones por hipersensibilidad a fármacos', pesoPct: 5.56, paginas: 5, horas: '46min' }
+    ],
+    topSubtemas: [
+      { tema: 'Alergia a alimentos', subtema: 'Alergia a los alimentos no mediada por inmunoglobulina E', pesoPct: 33.33 }
+    ],
+    prioridad1V: ['Alergia a alimentos', 'Tratamiento inmunomodulador de las enfermedades alérgicas', 'Generalidades y diagnóstico clínico de las enfermedades alérgicas', 'Síndromes de activación mastocitaria', 'Reacciones por hipersensibilidad a fármacos'],
+    notaPrioridad: '"Alergia a alimentos" va primero porque por sí solo asegura ~55-56% de las preguntas (histórico y últimos 5 años) y contiene el subtema más preguntado (no mediada por IgE, 33,33% de la asignatura). En segundo lugar se sube el Tratamiento inmunomodulador porque, pese a un 11,11% histórico, en los últimos 5 años ha subido a 28,99% (tendencia al alza). Le siguen Generalidades/diagnóstico (16,67% histórico, 14,49% reciente). Mastocitaria y Reacciones a fármacos quedan al final por bajo peso (11,11% y 5,56% históricos) y 0% en los últimos 5 años. rabi_94 no detalla esta asignatura, por lo que el orden se basa en el Enfoque y el Peso MIR de ProMIR.',
+  },
+  2: {
+    num: 2, pesoGlobal: 'Asignatura "pequeña" del MIR; rentabilidad global media. Norma: ~2 preguntas por examen (con tendencia al alza en convocatorias recientes).',
+    enfoque: 'Visión generalista con los conceptos clave claros, sin profundizar. Casi el 50% del histórico se concentra en Valoración preanestésica (escala ASA, riesgo quirúrgico/hemorrágico, valoración de vía aérea, manejo de la medicación perioperatoria). La segunda pregunta suele caer en Complicaciones en anestesia (~25%, sobre todo hipertermia maligna), Monitorización (~10%, capnografía) o Fármacos (~14%, tema más difícil que cada alumno debe valorar si le compensa).',
+    presentacionVideoDur: '2:33',
+    horasTotales: '7h 5min',
+    temas: [
+      { nombre: 'Valoración preanestésica', pesoPct: 41.18, paginas: 11, horas: '1h 40min' },
+      { nombre: 'Complicaciones en anestesia', pesoPct: 23.53, paginas: 10, horas: '1h 30min' },
+      { nombre: 'Fármacos en anestesia', pesoPct: 14.71, paginas: 12, horas: '1h 50min' },
+      { nombre: 'Monitorización en anestesia', pesoPct: 8.82, paginas: 7, horas: '1h 5min' },
+      { nombre: 'Dolor agudo postoperatorio', pesoPct: 8.82, paginas: 3, horas: '30min' },
+      { nombre: 'Conceptos generales', pesoPct: 2.94, paginas: 3, horas: '30min' }
+    ],
+    topSubtemas: [
+      { tema: 'Valoración preanestésica', subtema: 'Tratamiento habitual del paciente en el periodo perioperatorio', pesoPct: 26.47 },
+      { tema: 'Complicaciones en anestesia', subtema: 'Hipertermia maligna', pesoPct: 17.65 }
+    ],
+    prioridad1V: ['Valoración preanestésica', 'Complicaciones en anestesia', 'Monitorización en anestesia', 'Fármacos en anestesia', 'Dolor agudo postoperatorio', 'Conceptos generales'],
+    notaPrioridad: 'Valoración preanestésica encabeza porque concentra casi el 50% del histórico (41,18% en la asignatura) y es la pregunta segura. Le sigue Complicaciones (23,53%, hipertermia maligna). Monitorización se prioriza sobre Fármacos pese a su menor peso histórico (8,82% vs 14,71%) por ser muy rentable (capnografía, poco coste/hora), mientras Fármacos es el tema más difícil y se baja en 1ª vuelta. rabi_94 no detalla esta asignatura, así que el orden sigue el Enfoque de ProMIR + el Peso MIR.',
+  },
+  3: {
+    num: 3, pesoGlobal: '8-10% (casi 400 preguntas en las últimas 20 convocatorias; 8% los primeros años, ~10% en los últimos 5)',
+    enfoque: 'Asignatura muy importante y estable, de las más preguntadas del MIR junto con Digestivo, y muy interrelacionada con otras especialidades (Endocrino, Nefro, Neuro, Infecciosas). Dominando Cardiología básica, Riesgo cardiovascular, Insuficiencia cardíaca y Cardiopatía isquémica se asegura el 75% de la asignatura. El foco se ha desplazado de la HTA clásica hacia el manejo integral del riesgo cardiovascular (colesterol y nuevos fármacos para la diabetes), mientras descienden algo cardiopatía isquémica, trastornos del ritmo y patología pericárdica.',
+    presentacionVideoDur: '5:01',
+    resumenVideoDur: '2:27:38',
+    horasTotales: '~67 h 40 min',
+    temas: [
+      { nombre: 'Cardiología básica', pesoPct: 19.13, paginas: 20, horas: '6h 40min' },
+      { nombre: 'Trastornos del ritmo', pesoPct: 11.5, paginas: 22, horas: '7h 20min' },
+      { nombre: 'Cardiopatía isquémica', pesoPct: 10.89, paginas: 16, horas: '5h 20min' },
+      { nombre: 'Insuficiencia cardíaca', pesoPct: 10.07, paginas: 34, horas: '11h 20min' },
+      { nombre: 'Valvulopatías', pesoPct: 9.05, paginas: 14, horas: '4h 40min' },
+      { nombre: 'Riesgo cardiovascular. Prevención de las ECVA a través del control de los FRCV', pesoPct: 6, paginas: 17, horas: '5h 40min' },
+      { nombre: 'Enfermedades del miocardio', pesoPct: 5.19, paginas: 8, horas: '2h 40min' },
+      { nombre: 'Enfermedades del pericardio', pesoPct: 5.19, paginas: 9, horas: '3h' },
+      { nombre: 'Hipertensión arterial. Prevención, detección, diagnóstico y tratamiento', pesoPct: 4.48, paginas: 15, horas: '5h' },
+      { nombre: 'Cardiopatías congénitas', pesoPct: 4.27, paginas: 15, horas: '5h' },
+      { nombre: 'Enfermedades de la aorta', pesoPct: 4.07, paginas: 9, horas: '3h' },
+      { nombre: 'Enfermedad arterial periférica', pesoPct: 3.87, paginas: 9, horas: '3h' },
+      { nombre: 'Síncope', pesoPct: 2.64, paginas: 5, horas: '1h 40min' },
+      { nombre: 'Enfermedades de las venas y sistema linfático', pesoPct: 2.03, paginas: 4, horas: '1h 20min' },
+      { nombre: 'Hipertensión pulmonar', pesoPct: 1.02, paginas: 6, horas: '2h' },
+      { nombre: 'Tumores cardíacos', pesoPct: 0.61, paginas: 2, horas: '40min' }
+    ],
+    topSubtemas: [
+      { tema: 'Cardiopatía isquémica', subtema: 'Síndrome coronario agudo', pesoPct: 7.83 },
+      { tema: 'Insuficiencia cardíaca', subtema: 'Tratamiento de la insuficiencia cardíaca', pesoPct: 7.22 },
+      { tema: 'Trastornos del ritmo', subtema: 'Taquiarritmias', pesoPct: 6.61 },
+      { tema: 'Cardiología básica', subtema: 'Fármacos', pesoPct: 6.41 },
+      { tema: 'Cardiología básica', subtema: 'Semiología', pesoPct: 6.21 },
+      { tema: 'Cardiología básica', subtema: 'Fisiología', pesoPct: 6.21 },
+      { tema: 'Valvulopatías', subtema: 'Estenosis aórtica', pesoPct: 4.27 },
+      { tema: 'Cardiología básica', subtema: 'Anatomía', pesoPct: 3.66 }
+    ],
+    prioridad1V: ['Cardiología básica (Semiología, Fisiología, Fármacos)', 'Cardiopatía isquémica (Síndrome coronario agudo)', 'Insuficiencia cardíaca (Tratamiento)', 'Valvulopatías (Estenosis aórtica)', 'Riesgo cardiovascular (colesterol y nuevos fármacos para la diabetes)', 'Trastornos del ritmo (Taquiarritmias)'],
+    notaPrioridad: 'El Enfoque de ProMIR asegura el 75% de la asignatura con Cardiología básica, Riesgo cardiovascular, Insuficiencia cardíaca y Cardiopatía isquémica. El orden de 1ª vuelta antepone Cardiología básica (19,13%, el tema de mayor peso, e incluye Semiología que rabi_94 marca como núcleo), Cardiopatía isquémica y Valvulopatías (núcleo rabi_94), e Insuficiencia cardíaca; coincide con rabi_94 en Valvulopatías, Semiología y Cardiopatía isquémica. Se eleva Riesgo cardiovascular por encima de su peso histórico (6%) porque es la tendencia al alza de los últimos 5 años (11,91%).',
+  },
+  4: {
+    num: 4, pesoGlobal: 'Mínima (~50 preguntas en toda la serie histórica desde los años 80; >20 en los últimos 5 años, ~1 pregunta/año). Rentabilidad global: media.',
+    enfoque: 'Asignatura pequeña: se recomienda una lectura profunda en el primer contacto para una buena base y, cuando falte tiempo, priorizar otras asignaturas. Aun así, suele caer al menos 1 pregunta por examen. Los temas más rentables son: Control de síntomas (sobre todo el tratamiento del dolor con la escala de la OMS), Escenarios al final de la vida, Urgencias oncológicas y Sedación paliativa.',
+    presentacionVideoDur: '3:28',
+    resumenVideoDur: '0:53:31',
+    horasTotales: '~6h 30min',
+    temas: [
+      { nombre: 'Control de síntomas', pesoPct: 49.65, paginas: 19, horas: '3h 10min' },
+      { nombre: 'Escenarios en torno al final de la vida', pesoPct: 16.78, paginas: 4, horas: '40min' },
+      { nombre: 'Atención en los últimos días. Agonía. Sedación paliativa', pesoPct: 13.99, paginas: 4, horas: '40min' },
+      { nombre: 'Información, comunicación y toma de decisiones', pesoPct: 8.39, paginas: 2, horas: '20min' },
+      { nombre: 'Urgencias', pesoPct: 5.59, paginas: 2, horas: '20min' },
+      { nombre: 'Principios de los Cuidados Paliativos', pesoPct: 2.8, paginas: 7, horas: '1h 10min' },
+      { nombre: 'Problemas específicos de patologías no oncológicas', pesoPct: 2.8, paginas: 1, horas: '10min' }
+    ],
+    topSubtemas: [
+      { tema: 'Control de síntomas', subtema: 'Dolor', pesoPct: 27.97 },
+      { tema: 'Control de síntomas', subtema: 'Síntomas neurológicos y psicológicos', pesoPct: 6.99 },
+      { tema: 'Escenarios en torno al final de la vida', subtema: 'Adecuación (limitación) del esfuerzo terapéutico', pesoPct: 6.99 },
+      { tema: 'Escenarios en torno al final de la vida', subtema: 'Eutanasia y suicidio médicamente asistido', pesoPct: 5.59 }
+    ],
+    prioridad1V: ['Control de síntomas', 'Escenarios en torno al final de la vida', 'Atención en los últimos días. Agonía. Sedación paliativa', 'Urgencias', 'Información, comunicación y toma de decisiones', 'Problemas específicos de patologías no oncológicas', 'Principios de los Cuidados Paliativos'],
+    notaPrioridad: 'Control de síntomas asegura por sí solo ~49,65% histórico (47,94% en los últimos 5 años), con el Dolor como subtema dominante (27,97%); junto con Escenarios al final de la vida (16,78%) suman ~66% de las preguntas. Se prioriza luego Sedación paliativa y Urgencias (esta sube a 11,24% en los últimos 5 años, por delante de su peso histórico), coincidiendo con el Enfoque de ProMIR. rabi_94 no detalla esta asignatura, por lo que el orden sigue íntegramente el Enfoque y el Peso MIR de ProMIR.',
+  },
+  5: {
+    num: 5, pesoGlobal: 'media (5-8 preguntas por convocatoria en las últimas)',
+    enfoque: 'Asignatura muy específica pero rentable: "arma de doble filo" (como ORL y Oftalmo) donde se marca diferencia si se estudia dirigido a lo de mayor relevancia y se omite lo superfluo. Estudia por orden de importancia, no por páginas. Lo más preguntado y rentable: Oncología cutánea (melanoma y tratamientos dirigidos), Dermatosis eritematoescamosas (liquen plano, psoriasis, pitiriasis rosada de Gibert), Dermatosis ampollosas autoinmunes (DD pénfigo/penfigoide) y las estrías angioides (seudoxantoma elástico/Paget). Por eficiencia: retinoides y embarazo, paniculitis/eritema nodoso (causa más frecuente: amigdalitis estreptocócica) y pitiriasis versicolor (imagen y tratamiento).',
+    presentacionVideoDur: '4:28',
+    resumenVideoDur: '3:18:11',
+    horasTotales: '18h 35min',
+    temas: [
+      { nombre: 'Oncología cutánea', pesoPct: 23.39, paginas: 19, horas: '3h 50min' },
+      { nombre: 'Enfermedades infecciosas', pesoPct: 17.29, paginas: 20, horas: '4h' },
+      { nombre: 'Dermatología y enfermedades sistémicas', pesoPct: 15.25, paginas: 13, horas: '2h 35min' },
+      { nombre: 'Introducción. Conceptos generales', pesoPct: 12.88, paginas: 10, horas: '2h' },
+      { nombre: 'Enfermedades eritematodescamativas. Eccemas', pesoPct: 8.81, paginas: 5, horas: '1h' },
+      { nombre: 'Toxicodermias. Fotodermatosis', pesoPct: 8.14, paginas: 6, horas: '1h 10min' },
+      { nombre: 'Enfermedades ampollosas autoinmunes', pesoPct: 6.1, paginas: 8, horas: '1h 35min' },
+      { nombre: 'Patología glandular y de los folículos pilosos. Urticaria y angioedema', pesoPct: 4.75, paginas: 7, horas: '1h 25min' },
+      { nombre: 'Genodermatosis y facomatosis', pesoPct: 3.39, paginas: 4, horas: '50min' },
+      { nombre: 'Dermatoscopia', pesoPct: 0, paginas: 3, horas: '35min' }
+    ],
+    topSubtemas: [
+      { tema: 'Oncología cutánea', subtema: 'Melanoma', pesoPct: 10.85 },
+      { tema: 'Enfermedades infecciosas', subtema: 'Infecciones víricas', pesoPct: 10.17 },
+      { tema: 'Introducción. Conceptos generales', subtema: 'Tratamientos dermatológicos', pesoPct: 7.46 },
+      { tema: 'Introducción. Conceptos generales', subtema: 'Lesiones cutáneas elementales', pesoPct: 6.78 },
+      { tema: 'Dermatología y enfermedades sistémicas', subtema: 'Porfirias', pesoPct: 6.1 },
+      { tema: 'Enfermedades infecciosas', subtema: 'Infecciones fúngicas', pesoPct: 5.42 }
+    ],
+    prioridad1V: ['Oncología cutánea', 'Enfermedades infecciosas', 'Dermatología y enfermedades sistémicas', 'Introducción. Conceptos generales', 'Enfermedades eritematodescamativas. Eccemas', 'Enfermedades ampollosas autoinmunes', 'Toxicodermias. Fotodermatosis', 'Patología glandular y de los folículos pilosos. Urticaria y angioedema', 'Genodermatosis y facomatosis'],
+    notaPrioridad: 'Oncología cutánea encabeza por ser el tema más pesado (23,39% histórico, 22,41% últimos 5 años) y el que más destaca el Enfoque (melanoma + tratamientos dirigidos). Infecciosas va 2º (17,29% y la 1ª en tendencia reciente, 24,48%). Estos dos solos aseguran ~40% de la asignatura. Se adelantan "Eritematodescamativas/Eccemas" y "Ampollosas autoinmunes" sobre lo que diría el % histórico puro porque el Enfoque las cita expresamente como núcleo rentable (liquen plano, psoriasis, pitiriasis rosada; DD pénfigo/penfigoide). rabi_94 no detalla esta asignatura, por lo que el orden se rige por el Enfoque de ProMIR + Peso MIR. Se omite Dermatoscopia (0%).',
+  },
+  6: {
+    num: 6, pesoGlobal: '7% del MIR ("top 10" de asignaturas más preguntadas)',
+    enfoque: 'Asignatura clave y muy rentable (rentabilidad global alta): casi el 80% de las preguntas se concentran en Diabetes mellitus, Tiroides, Hipotálamo e hipófisis, Alteraciones del metabolismo lipídico y Glándulas suprarrenales. Conviene estudiarla desde el inicio para tener bases claras, y tiene temas muy eficientes donde avanzar poco (lipoproteínas, tumores neuroendocrinos, obesidad) da 1-2 preguntas de ventaja.',
+    presentacionVideoDur: '3:09',
+    resumenVideoDur: '3:12:09',
+    horasTotales: '25h 15min',
+    temas: [
+      { nombre: 'Diabetes mellitus', pesoPct: 21.35, paginas: 17, horas: '4h 15min' },
+      { nombre: 'Glándula tiroides', pesoPct: 17.5, paginas: 17, horas: '4h 15min' },
+      { nombre: 'Hipotálamo e hipófisis', pesoPct: 11.72, paginas: 13, horas: '3h 15min' },
+      { nombre: 'Glándulas suprarrenales', pesoPct: 10.75, paginas: 14, horas: '3h 30min' },
+      { nombre: 'Nutrición y obesidad', pesoPct: 9.15, paginas: 6, horas: '1h 30min' },
+      { nombre: 'Alteraciones del metabolismo lipídico', pesoPct: 7.54, paginas: 7, horas: '1h 45min' },
+      { nombre: 'Trastornos del desarrollo sexual', pesoPct: 7.22, paginas: 7, horas: '1h 45min' },
+      { nombre: 'Parathormona y metabolismo del calcio', pesoPct: 5.14, paginas: 7, horas: '1h 45min' },
+      { nombre: 'Trastornos endocrinos múltiples', pesoPct: 4.49, paginas: 3, horas: '45min' },
+      { nombre: 'Hipoglucemias', pesoPct: 2.25, paginas: 4, horas: '1h' },
+      { nombre: 'Introducción al sistema endocrino', pesoPct: 1.93, paginas: 2, horas: '30min' },
+      { nombre: 'Tumores neuroendocrinos', pesoPct: 0.96, paginas: 4, horas: '1h' }
+    ],
+    topSubtemas: [
+      { tema: 'Diabetes mellitus', subtema: 'Tratamiento y prevención', pesoPct: 11.08 },
+      { tema: 'Glándula tiroides', subtema: 'Hipertiroidismo', pesoPct: 4.82 },
+      { tema: 'Parathormona y metabolismo del calcio', subtema: 'Hipercalcemia', pesoPct: 4.17 },
+      { tema: 'Nutrición y obesidad', subtema: 'Obesidad', pesoPct: 4.17 },
+      { tema: 'Glándula tiroides', subtema: 'Carcinoma tiroideo', pesoPct: 4.17 },
+      { tema: 'Trastornos endocrinos múltiples', subtema: 'Neoplasias endocrinas múltiples', pesoPct: 4.17 },
+      { tema: 'Glándulas suprarrenales', subtema: 'Síndrome de Cushing', pesoPct: 3.85 },
+      { tema: 'Hipotálamo e hipófisis', subtema: 'Hiperprolactinemia', pesoPct: 3.53 },
+      { tema: 'Glándula tiroides', subtema: 'Tiroiditis', pesoPct: 3.21 },
+      { tema: 'Diabetes mellitus', subtema: 'Metabolismo de los hidratos de carbono', pesoPct: 3.21 },
+      { tema: 'Trastornos del desarrollo sexual', subtema: 'Hormonas gonadales', pesoPct: 2.89 }
+    ],
+    prioridad1V: ['Diabetes mellitus', 'Glándula tiroides', 'Hipotálamo e hipófisis', 'Glándulas suprarrenales', 'Nutrición y obesidad', 'Alteraciones del metabolismo lipídico', 'Introducción al sistema endocrino', 'Parathormona y metabolismo del calcio', 'Trastornos del desarrollo sexual', 'Trastornos endocrinos múltiples', 'Hipoglucemias', 'Tumores neuroendocrinos'],
+    notaPrioridad: 'El orden sigue el Enfoque de ProMIR (casi el 80% de las preguntas en Diabetes, Tiroides, Hipotálamo-hipófisis, Lípidos y Suprarrenales) y el Peso MIR histórico (Diabetes 21,35% + Tiroides 17,50% lideran). Coincide con rabi_94, que marca como núcleo Introducción, Diabetes, Tiroides y Nutrición/obesidad/lípidos; por eso adelanto Introducción (base imprescindible) pese a su bajo peso, y subo Nutrición/obesidad y Lípidos por encima de su orden estricto de peso. Lípidos gana relevancia en los últimos 5 años (sube a 10,44%).',
+  },
+  7: {
+    num: 7, pesoGlobal: '~8% (351 preguntas en las últimas 20 convocatorias; 10-15 preguntas/año)',
+    enfoque: 'Asignatura de gran importancia y muy extensa (nexo entre especialidades: digestivo, neuro, cardiopulmonar, inmunología, preventiva). ProMIR recomienda empezar por un estudio concienzudo de Antibacterianos, que allana el resto. En los últimos 5 años el Ministerio ha desplazado el interés desde VIH/tuberculosis/tropicales hacia sepsis, infecciones nosocomiales, respiratorias (neumonía/COVID-19), SNC y endocarditis. Neumonía, COVID-19, infecciones nosocomiales y SNC suman cada uno ~8,5% y juntos cubren >30%; añadiendo endocarditis, VIH y tuberculosis se alcanza el 60% de las preguntas. Atención a temas de actualidad.',
+    presentacionVideoDur: '2:51',
+    resumenVideoDur: '1:13:00',
+    horasTotales: '~62 h 25 min',
+    temas: [
+      { nombre: 'Infecciones tropicales', pesoPct: 12.56, paginas: 19, horas: '4h 45min' },
+      { nombre: 'Infección por el virus de la inmunodeficiencia humana (VIH)', pesoPct: 10.82, paginas: 17, horas: '4h 15min' },
+      { nombre: 'Tuberculosis', pesoPct: 8.33, paginas: 26, horas: '6h 30min' },
+      { nombre: 'Infecciones del tracto respiratorio inferior. Neumonía aguda', pesoPct: 7.84, paginas: 19, horas: '4h 45min' },
+      { nombre: 'Infecciones del sistema nervioso central. Meningitis', pesoPct: 7.09, paginas: 15, horas: '2h 45min' },
+      { nombre: 'Antibacterianos', pesoPct: 7.09, paginas: 19, horas: '4h 45min' },
+      { nombre: 'Infecciones por hongos. Antifúngicos', pesoPct: 4.73, paginas: 9, horas: '2h 15min' },
+      { nombre: 'Sepsis. Infecciones nosocomiales', pesoPct: 4.48, paginas: 11, horas: '1h 45min' },
+      { nombre: 'Infecciones por rickettsias, Bartonella, Coxiella, Leptospira y otras', pesoPct: 4.48, paginas: 4, horas: '1h' },
+      { nombre: 'Infecciones por virus. Generalidades', pesoPct: 4.23, paginas: 6, horas: '1h 30min' },
+      { nombre: 'Infecciones por virus no VIH. Virus del grupo herpes', pesoPct: 4.23, paginas: 16, horas: '4h' },
+      { nombre: 'Infecciones de transmisión sexual', pesoPct: 3.98, paginas: 7, horas: '1h 45min' },
+      { nombre: 'Infecciones en el paciente inmunodeprimido no VIH', pesoPct: 3.98, paginas: 12, horas: '3h' },
+      { nombre: 'Bacterias. Generalidades', pesoPct: 3.23, paginas: 8, horas: '2h' },
+      { nombre: 'Infecciones del tracto respiratorio superior', pesoPct: 2.49, paginas: 7, horas: '1h 45min' },
+      { nombre: 'Endocarditis', pesoPct: 2.49, paginas: 19, horas: '4h 45min' },
+      { nombre: 'Infecciones tracto digestivo. Diarrea aguda', pesoPct: 2.24, paginas: 3, horas: '45min' },
+      { nombre: 'Medidas de prevención de las infecciones en el medio hospitalario', pesoPct: 2.24, paginas: 12, horas: '3h' },
+      { nombre: 'COVID-19', pesoPct: 1.99, paginas: 28, horas: '7h' },
+      { nombre: 'Brucelosis, nocardiosis y actinomicosis', pesoPct: 1, paginas: 3, horas: '45min' },
+      { nombre: 'Virus respiratorios. Virus de la influenza', pesoPct: 0.5, paginas: 6, horas: '1h 30min' }
+    ],
+    topSubtemas: [
+      { tema: 'Infecciones tropicales', subtema: 'Protozoos', pesoPct: 6.59 },
+      { tema: 'Antibacterianos', subtema: 'Clasificación. Mecanismos de acción y espectro', pesoPct: 5.85 },
+      { tema: 'Infección por el virus de la inmunodeficiencia humana (VIH)', subtema: 'Manifestaciones clínicas', pesoPct: 5.85 },
+      { tema: 'Infecciones por hongos. Antifúngicos', subtema: 'Infecciones por hongos', pesoPct: 4.48 },
+      { tema: 'Infecciones por virus. Generalidades', subtema: 'Clasificación y generalidades', pesoPct: 3.98 },
+      { tema: 'Infecciones del sistema nervioso central. Meningitis', subtema: 'Aproximación diagnóstica', pesoPct: 3.73 },
+      { tema: 'Infecciones del tracto respiratorio inferior. Neumonía aguda', subtema: 'Tipos de neumonía', pesoPct: 3.23 },
+      { tema: 'Tuberculosis', subtema: 'Tratamiento', pesoPct: 2.99 },
+      { tema: 'Infecciones por virus. Generalidades', subtema: 'Antivirales', pesoPct: 2.99 },
+      { tema: 'Antibacterianos', subtema: 'Mecanismos de resistencia más relevantes', pesoPct: 2.74 },
+      { tema: 'Infecciones de transmisión sexual', subtema: 'Infecciones de transmisión sexual con úlceras', pesoPct: 2.74 },
+      { tema: 'Infecciones por virus. Generalidades', subtema: 'Virus exantemáticos más frecuentes', pesoPct: 2.49 }
+    ],
+    prioridad1V: ['Antibacterianos', 'Bacterias. Generalidades', 'Infecciones del tracto respiratorio inferior. Neumonía aguda', 'Tuberculosis', 'Infección por el virus de la inmunodeficiencia humana (VIH)', 'Infecciones del sistema nervioso central. Meningitis', 'Sepsis. Infecciones nosocomiales', 'Medidas de prevención de las infecciones en el medio hospitalario', 'Endocarditis', 'COVID-19', 'Infecciones tropicales', 'Infecciones por hongos. Antifúngicos', 'Infecciones por virus. Generalidades', 'Infecciones en el paciente inmunodeprimido no VIH', 'Infecciones por virus no VIH. Virus del grupo herpes', 'Infecciones de transmisión sexual', 'Infecciones del tracto respiratorio superior', 'Infecciones por rickettsias, Bartonella, Coxiella, Leptospira y otras', 'Infecciones tracto digestivo. Diarrea aguda', 'Brucelosis, nocardiosis y actinomicosis', 'Virus respiratorios. Virus de la influenza'],
+    notaPrioridad: 'El orden arranca por el núcleo rabi_94 (Bacterias/generalidades, Métodos dx microbiología, Antibióticos, Neumonía, Tuberculosis, VIH), coherente con que ProMIR recomienda empezar por Antibacterianos como base del resto. Tras ese núcleo se priorizan los temas al alza de los últimos 5 años (SNC, sepsis/nosocomiales, prevención hospitalaria, endocarditis, COVID-19), que junto con neumonía cubren >30% y con VIH/TB alcanzan el 60%. El peso histórico aún coloca arriba tropicales (12,56%) y VIH (10,82%), pero su tendencia 5 años baja; se mantienen altos pero por detrás del núcleo dx/terapéutico y de los temas de moda. Rentabilidad global de la asignatura: alta.',
+  },
+  8: {
+    num: 8, pesoGlobal: '~5% del examen MIR (históricamente uno de los temas más preguntados; en las últimas convocatorias se ha reducido casi a la mitad)',
+    enfoque: 'Asignatura importante y muy rentable: aunque exige memorizar muchos "nombrejos", fórmulas y tipos de estudios, hay que sabérsela al dedillo. ProMIR recomienda profundizar sobre todo en: tipos de estudios epidemiológicos (clasificación de los estudios de investigación), evaluación de pruebas diagnósticas (sensibilidad/especificidad, VPP/VPN, curvas ROC) y estudios experimentales / ensayo clínico (definición, tipos y fases). Estos bloques concentran la mayor parte de las preguntas.',
+    presentacionVideoDur: '2:15',
+    resumenVideoDur: '36:15',
+    horasTotales: '~10 h',
+    temas: [
+      { nombre: 'Estudios experimentales: Ensayo clínico', pesoPct: 32.22, paginas: 11, horas: '2h 45min' },
+      { nombre: 'Clasificación de los estudios de investigación (Tipos de estudios epidemiológicos)', pesoPct: 24.32, paginas: 4, horas: '1h' },
+      { nombre: 'Evaluación de pruebas diagnósticas', pesoPct: 13.53, paginas: 7, horas: '1h 45min' },
+      { nombre: 'Análisis epidemiológico de la asociación', pesoPct: 10.18, paginas: 4, horas: '1h' },
+      { nombre: 'Validez y fiabilidad de los estudios epidemiológicos', pesoPct: 6.84, paginas: 7, horas: '1h 45min' },
+      { nombre: 'Medicina Basada en la Evidencia e Investigación de síntesis', pesoPct: 6.84, paginas: 5, horas: '1h 15min' },
+      { nombre: 'Medidas epidemiológicas de frecuencia de la enfermedad', pesoPct: 4.56, paginas: 2, horas: '30min' },
+      { nombre: 'Introducción a la Epidemiología. Causalidad', pesoPct: 1.52, paginas: 4, horas: '1h' }
+    ],
+    topSubtemas: [
+      { tema: 'Clasificación de los estudios de investigación', subtema: 'Estudios analíticos: estudios observacionales', pesoPct: 21.28 },
+      { tema: 'Estudios experimentales: Ensayo clínico', subtema: 'Definición de ensayo clínico', pesoPct: 12.61 },
+      { tema: 'Evaluación de pruebas diagnósticas', subtema: 'Evaluación de la exactitud diagnóstica', pesoPct: 11.7 }
+    ],
+    prioridad1V: ['Estudios experimentales: Ensayo clínico', 'Clasificación de los estudios de investigación (Tipos de estudios epidemiológicos)', 'Evaluación de pruebas diagnósticas', 'Análisis epidemiológico de la asociación', 'Validez y fiabilidad de los estudios epidemiológicos', 'Medicina Basada en la Evidencia e Investigación de síntesis', 'Medidas epidemiológicas de frecuencia de la enfermedad', 'Introducción a la Epidemiología. Causalidad'],
+    notaPrioridad: 'El orden combina el Enfoque de ProMIR (prioriza ensayo clínico, tipos de estudios y pruebas diagnósticas) con el Peso MIR: los 3 primeros temas (Ensayo clínico 32,22% + Clasificación de estudios 24,32% + Pruebas diagnósticas 13,53%) ya aseguran ~70% de las preguntas de la asignatura. rabi_94 marca "todo el manual" como núcleo de 1ª vuelta, por lo que se incluyen los 8 temas, pero ordenados por rentabilidad. Rentabilidad global: alta.',
+  },
+  9: {
+    num: 9, pesoGlobal: 'Bajo / residual — la suma del peso histórico de la asignatura ronda el ~1,5% del MIR, y en los últimos 5 años no ha habido ninguna pregunta. Rentabilidad global "media" (los conceptos se reutilizan al interpretar artículos en Epidemiología/Estadística aplicada).',
+    enfoque: 'Es una asignatura conceptual (no memorística) que obliga a entender conceptos abstractos. Históricamente se preguntó entre los 90 y 2010, pero en los últimos 5 años no ha caído ninguna pregunta. Para quien tenga poco tiempo, lo imprescindible es: (1) Inferencia estadística — diferencias entre error tipo 1 y tipo 2, y entre media/IC de una muestra vs. media de medias/error estándar de la media de una población; y (2) Pruebas de contraste estadístico — saber qué test usar según la variable dependiente sea paramétrica, no paramétrica, continua o discreta. Apoyarse en las tablas/esquemas de fin de capítulo para hacer un "mapa mental".',
+    presentacionVideoDur: '2:00',
+    resumenVideoDur: '0:16:28',
+    horasTotales: '2h 20min',
+    temas: [
+      { nombre: 'Estadística inferencial', pesoPct: 80.95, paginas: 8, horas: '1h 20min' },
+      { nombre: 'Introducción a la estadística', pesoPct: 13.61, paginas: 3, horas: '30min' },
+      { nombre: 'Estadística descriptiva', pesoPct: 5.44, paginas: 3, horas: '30min' }
+    ],
+    topSubtemas: [
+      { tema: 'Estadística inferencial', subtema: 'Contrastes de hipótesis', pesoPct: 28.57 },
+      { tema: 'Estadística inferencial', subtema: 'Pruebas estadísticas univariantes', pesoPct: 20.41 }
+    ],
+    prioridad1V: ['Estadística inferencial', 'Introducción a la estadística', 'Estadística descriptiva'],
+    notaPrioridad: 'El orden es prácticamente inequívoco: Estadística inferencial acumula el 80,95% del peso de la asignatura (con sus subtemas top "Contrastes de hipótesis" 28,57% y "Pruebas univariantes" 20,41%), coincidiendo con el Enfoque de ProMIR que la marca como lo imprescindible. rabi_94 indica "Todo el manual" como núcleo (1ª vuelta), así que se estudia entero, pero priorizando inferencial > introducción (13,61%) > descriptiva (5,44%). Matiz clave: la asignatura no ha tenido preguntas en los últimos 5 años, por lo que su rentabilidad es media y conviene no sobreinvertir tiempo.',
+  },
+  10: {
+    num: 10, pesoGlobal: '~0,6-0,8% del MIR (rentabilidad global baja; ~1-2 preguntas/año)',
+    enfoque: 'El verdadero motivo de estudio no son los fármacos de cada especialidad, sino la farmacocinética y farmacodinámica que subyace a la efectividad de los medicamentos. Es una asignatura de importancia media-alta dentro de su (escaso) volumen, con presencia incrementada en los últimos años: cabe esperar un par de preguntas. Hay que llevar bien estudiados tres bloques rentables: farmacocinética, interacciones (inductores e inhibidores del CYP) y reacciones adversas farmacológicas.',
+    presentacionVideoDur: '2:41',
+    resumenVideoDur: '0:34:14',
+    horasTotales: '~1h 50min',
+    temas: [
+      { nombre: 'Conceptos generales', pesoPct: 100, paginas: 12, horas: '1h 50min' }
+    ],
+    topSubtemas: [
+      { tema: 'Conceptos generales', subtema: 'Farmacocinética', pesoPct: 77.05 }
+    ],
+    prioridad1V: ['Farmacocinética', 'Interacciones: inductores e inhibidores del CYP', 'Reacciones adversas farmacológicas'],
+    notaPrioridad: 'La asignatura tiene un único tema ("Conceptos generales" = 100% del peso interno) y rentabilidad global baja (~0,6-0,8% del MIR). El orden de 1ª vuelta se basa íntegramente en el Enfoque y el Peso MIR de ProMIR: la farmacocinética concentra el 77,05% del peso por subtemas, por lo que es lo primero; le siguen las interacciones CYP (inductores/inhibidores) y las reacciones adversas, los otros dos bloques que ProMIR marca como rentables. rabi_94 no detalla esta asignatura, por lo que no hay contraste que aplicar.',
+  },
+  11: {
+    num: 11, pesoGlobal: '~10% histórico (la más preguntada del MIR); ~9% en los últimos 5 años',
+    enfoque: 'Incluye Cirugía General y Aparato Digestivo; rentabilidad global ALTA. Clásicamente el 60% de las preguntas se concentra en tres temas: enfermedades del colon, del intestino delgado y del estómago. El hígado y el colon son los temas estrella consolidados como de obligado estudio, seguidos muy de cerca por el intestino delgado (que ha crecido notablemente). Tendencia reciente: aumento de patología biliar y, más discreto, esofágica/pancreática; descenso de hígado y estómago.',
+    presentacionVideoDur: '3:48',
+    resumenVideoDur: '3:21:17',
+    horasTotales: '46h 40min',
+    temas: [
+      { nombre: 'Enfermedades del hígado', pesoPct: 22.13, paginas: 42, horas: '14h' },
+      { nombre: 'Enfermedades del colon', pesoPct: 19.02, paginas: 19, horas: '6h 20min' },
+      { nombre: 'Enfermedades del intestino delgado', pesoPct: 13.75, paginas: 21, horas: '7h' },
+      { nombre: 'Enfermedades del estómago', pesoPct: 11.96, paginas: 13, horas: '4h 20min' },
+      { nombre: 'Miscelánea de temas quirúrgicos', pesoPct: 10.45, paginas: 8, horas: '2h 40min' },
+      { nombre: 'Enfermedades del páncreas', pesoPct: 9.32, paginas: 13, horas: '4h 20min' },
+      { nombre: 'Enfermedades del esófago', pesoPct: 7.25, paginas: 14, horas: '4h 40min' },
+      { nombre: 'Enfermedades de la vía biliar', pesoPct: 6.12, paginas: 10, horas: '3h 20min' }
+    ],
+    topSubtemas: [
+      { tema: 'Enfermedades del colon', subtema: 'Pólipos de colon. Cáncer de colon', pesoPct: 8.38 },
+      { tema: 'Enfermedades del colon', subtema: 'Enfermedad inflamatoria intestinal', pesoPct: 7.25 },
+      { tema: 'Enfermedades del hígado', subtema: 'Cirrosis', pesoPct: 5.37 },
+      { tema: 'Enfermedades del intestino delgado', subtema: 'Diarrea y malabsorción', pesoPct: 4.99 },
+      { tema: 'Enfermedades del hígado', subtema: 'Hepatitis virales', pesoPct: 4.8 },
+      { tema: 'Enfermedades del hígado', subtema: 'Tumores hepatobiliares', pesoPct: 4.43 },
+      { tema: 'Miscelánea de temas quirúrgicos', subtema: 'Patología de la pared abdominal', pesoPct: 4.24 },
+      { tema: 'Enfermedades del páncreas', subtema: 'Tumores del páncreas exocrino', pesoPct: 4.14 },
+      { tema: 'Enfermedades del estómago', subtema: 'Hemorragia digestiva alta no varicosa', pesoPct: 3.95 }
+    ],
+    prioridad1V: ['Enfermedades del colon (Pólipos/Cáncer de colon + EII)', 'Enfermedades del hígado (Cirrosis + Child + Hepatitis virales + Tumores hepatobiliares)', 'Enfermedades del intestino delgado (Diarrea y malabsorción)', 'Enfermedades del páncreas (Tumores del páncreas exocrino + Cáncer de páncreas)', 'Enfermedades del estómago (Úlcera péptica + HDA no varicosa)', 'Enfermedades del esófago (estructura/disfagia + trastornos motores + ERGE)', 'Enfermedades de la vía biliar', 'Miscelánea de temas quirúrgicos (Patología de la pared abdominal)'],
+    notaPrioridad: 'El colon (cáncer/pólipos + EII) y el hígado (cirrosis + hepatitis + tumores) encabezan porque suman los subtemas más preguntados y ProMIR los marca como temas estrella; junto con intestino delgado aseguran ~60% de las preguntas. Coincide casi por completo con el núcleo de rabi_94 (Esófago, Úlcera péptica, EII, Cirrosis+Child, Cáncer de colon, Cáncer de páncreas). Diferencia: por peso MIR, esófago y úlcera péptica caen al medio de la lista pese a ser núcleo rabi_94, por lo que se mantienen como prioritarios pero por detrás de colon/hígado/intestino delgado.',
+  },
+  12: {
+    num: 12, pesoGlobal: 'Baja (~1,1% del MIR; ~29 preguntas en los últimos 10 años, ~2-3 preguntas/año)',
+    enfoque: 'El grueso de las preguntas (85%) está en Enfermedades genéticas: enfermedades con herencias características (autosómica dominante/recesiva, ligada al X, mitocondrial) donde hay que deducir la herencia del caso clínico, y la Genética en Oncología (síndromes de inestabilidad, oncogenes/supresores/reparadores y su asociación a tumores). Conceptos generales es imprescindible dominarlo: tipos de herencia y su probabilidad, y distinguir oncogenes, supresores y reparadores.',
+    presentacionVideoDur: '2:09',
+    resumenVideoDur: '31:33',
+    horasTotales: '2h 40min',
+    temas: [
+      { nombre: 'Enfermedades genéticas', pesoPct: 85.32, paginas: 10, horas: '1h 40min' },
+      { nombre: 'Conceptos generales', pesoPct: 14.68, paginas: 6, horas: '1h' }
+    ],
+    topSubtemas: [
+      { tema: 'Enfermedades genéticas', subtema: 'Enfermedades monogénicas', pesoPct: 46.79 }
+    ],
+    prioridad1V: ['Enfermedades genéticas', 'Conceptos generales'],
+    notaPrioridad: 'Enfermedades genéticas va primero porque asegura el 85,32% de las preguntas de la asignatura (con Enfermedades monogénicas como subtema top, ~47%) y es lo que más enfatiza el Enfoque (herencias características y oncología). Conceptos generales, aunque pesa solo 14,68%, es imprescindible como base para deducir las herencias. rabi_94 no detalla esta asignatura, por lo que el orden sigue el Enfoque y el Peso MIR de ProMIR.',
+  },
+  13: {
+    num: 13, pesoGlobal: 'Media — 4-8 preguntas/año en las últimas 5 convocatorias',
+    enfoque: 'La presencia de Geriatría en el MIR crece de forma sostenida (media de 4-8 preguntas/año en las últimas 5 convocatorias) porque las plantas de hospitalización están llenas de ancianos, lo que obliga a manejar interacciones farmacológicas y complicaciones específicas de la tercera edad. Hay que repasar a fondo el tema propio y, además, prestar atención a las complicaciones de las cirugías de otras asignaturas y a los efectos adversos de los fármacos aplicados a un paciente anciano. Los apartados más rentables son la Estructura y proceso de la valoración geriátrica (24%) y los Síndromes geriátricos (22,4%), que juntos concentran cerca del 50% de las preguntas.',
+    presentacionVideoDur: '4:26',
+    resumenVideoDur: '1:26:09',
+    horasTotales: '7h 10min',
+    temas: [
+      { nombre: 'La enfermedad en las personas mayores', pesoPct: 47.2, paginas: 13, horas: '2h 10min' },
+      { nombre: 'Valoración geriátrica integral. El equipo interdisciplinar', pesoPct: 25.6, paginas: 8, horas: '1h 20min' },
+      { nombre: 'Uso racional de los medicamentos en geriatría', pesoPct: 17.6, paginas: 17, horas: '2h 50min' },
+      { nombre: 'Conceptos generales', pesoPct: 9.6, paginas: 5, horas: '50min' }
+    ],
+    topSubtemas: [
+      { tema: 'Valoración geriátrica integral', subtema: 'Estructura y proceso de la valoración geriátrica', pesoPct: 24 },
+      { tema: 'La enfermedad en las personas mayores', subtema: 'Síndromes geriátricos', pesoPct: 22.4 }
+    ],
+    prioridad1V: ['La enfermedad en las personas mayores (Síndromes geriátricos)', 'Valoración geriátrica integral. El equipo interdisciplinar', 'Uso racional de los medicamentos en geriatría', 'Conceptos generales'],
+    notaPrioridad: 'El orden combina el Enfoque de ProMIR (Síndromes geriátricos y Estructura/proceso de la valoración geriátrica concentran ~50% de las preguntas) con el Peso MIR histórico: "La enfermedad en las personas mayores" (47,2%) y "Valoración geriátrica integral" (25,6%) suman ~73% de la asignatura, por lo que se atacan primero. rabi_94 no detalla esta asignatura, así que la priorización sigue íntegramente el Enfoque y el Peso MIR de ProMIR.',
+  },
+  14: {
+    num: 14, pesoGlobal: '~3% del MIR (10-14 preguntas/año, constante)',
+    enfoque: 'Asignatura difícil que combina imagen, cirugía, oncología y obstetricia; rentabilidad global alta. La mayoría de las preguntas se aseguran con tres pilares: patología maligna de la mama (16% de la asignatura, ~1% del MIR), oncología ginecológica (ovario+cérvix+endometrio, ~8% del MIR) y patología obstétrica específica (control de la gestación + complicaciones maternas suman 18%). Anticoncepción ha ganado interés reciente (6%). Como segundo eslabón muy rentable por acumular preguntas sin ser extensos: menopausia (~5%), reproducción asistida/esterilidad (~3%) y endometriosis (~3%).',
+    presentacionVideoDur: '4:13',
+    resumenVideoDur: '1:31:38',
+    horasTotales: '~56 h',
+    temas: [
+      { nombre: 'Patología maligna de la mama. Cáncer de mama', pesoPct: 15.71, paginas: 15, horas: '3h 20min' },
+      { nombre: 'Hemorragia en la gestación', pesoPct: 8.73, paginas: 14, horas: '3h 10min' },
+      { nombre: 'Complicaciones maternas de la gestación', pesoPct: 6.98, paginas: 15, horas: '3h 20min' },
+      { nombre: 'Infecciones y embarazo', pesoPct: 5.4, paginas: 16, horas: '3h 35min' },
+      { nombre: 'Control de la gestación', pesoPct: 5.08, paginas: 7, horas: '1h 35min' },
+      { nombre: 'Masas anexiales. Patología maligna del ovario', pesoPct: 4.76, paginas: 11, horas: '2h 25min' },
+      { nombre: 'Patología maligna endometrial. Cáncer de endometrio', pesoPct: 4.13, paginas: 8, horas: '1h 45min' },
+      { nombre: 'Síndrome de ovario poliquístico', pesoPct: 3.81, paginas: 3, horas: '40min' },
+      { nombre: 'Climaterio y menopausia', pesoPct: 3.49, paginas: 5, horas: '1h 20min' },
+      { nombre: 'Parto', pesoPct: 3.49, paginas: 7, horas: '1h 35min' },
+      { nombre: 'Patología benigna y premaligna del endometrio', pesoPct: 3.17, paginas: 5, horas: '1h 10min' },
+      { nombre: 'Infertilidad. Esterilidad. Reproducción asistida', pesoPct: 2.86, paginas: 4, horas: '55min' },
+      { nombre: 'Endometriosis', pesoPct: 2.86, paginas: 6, horas: '1h 20min' },
+      { nombre: 'Patología benigna y lesiones preinvasivas del cuello del útero. Infección por el virus del papiloma humano', pesoPct: 2.86, paginas: 7, horas: '1h 30min' },
+      { nombre: 'Alteraciones menstruales por defecto. Amenorrea', pesoPct: 2.54, paginas: 5, horas: '1h 10min' },
+      { nombre: 'Métodos anticonceptivos. Contracepción en situaciones especiales', pesoPct: 2.54, paginas: 9, horas: '2h' },
+      { nombre: 'Cáncer de cuello uterino', pesoPct: 2.54, paginas: 7, horas: '1h 30min' },
+      { nombre: 'Miscelánea', pesoPct: 2.54, paginas: 6, horas: '1h 20min' },
+      { nombre: 'Miomas uterinos', pesoPct: 1.9, paginas: 4, horas: '55min' },
+      { nombre: 'Rotura prematura de membranas', pesoPct: 1.59, paginas: 3, horas: '40min' },
+      { nombre: 'Fisiología. Ciclo genital femenino', pesoPct: 1.27, paginas: 3, horas: '40min' },
+      { nombre: 'Hemorragias uterinas funcionales', pesoPct: 1.27, paginas: 3, horas: '40min' },
+      { nombre: 'Infecciones vulvovaginales. Vulvovaginitis', pesoPct: 1.27, paginas: 7, horas: '1h 30min' },
+      { nombre: 'Enfermedades de transmisión sexual. Enfermedad inflamatoria pélvica. Tuberculosis genital', pesoPct: 1.27, paginas: 7, horas: '1h 30min' },
+      { nombre: 'Patología benigna de la mama', pesoPct: 1.27, paginas: 3, horas: '40min' },
+      { nombre: 'Fisiología de la gestación', pesoPct: 1.27, paginas: 10, horas: '2h 15min' },
+      { nombre: 'Amenaza de parto prematuro', pesoPct: 1.27, paginas: 4, horas: '55min' },
+      { nombre: 'Prolapso genital. Incontinencia urinaria', pesoPct: 0.95, paginas: 4, horas: '55min' },
+      { nombre: 'Patología de la vulva. Cáncer de vulva', pesoPct: 0.63, paginas: 6, horas: '1h 20min' },
+      { nombre: 'Gestación múltiple', pesoPct: 0.63, paginas: 4, horas: '55min' },
+      { nombre: 'Patología materna y gestación', pesoPct: 0.63, paginas: 3, horas: '40min' },
+      { nombre: 'Puerperio', pesoPct: 0.63, paginas: 3, horas: '40min' },
+      { nombre: 'Lactancia', pesoPct: 0.63, paginas: 2, horas: '25min' },
+      { nombre: 'Enfermedad hemolítica fetal. Isoinmunización Rh', pesoPct: 0, paginas: 3, horas: '40min' },
+      { nombre: 'Parto postérmino / Embarazo cronológicamente prolongado', pesoPct: 0, paginas: 3, horas: '40min' }
+    ],
+    topSubtemas: [
+      { tema: 'Hemorragia en la gestación', subtema: 'Primer trimestre', pesoPct: 6.03 },
+      { tema: 'Patología maligna de la mama. Cáncer de mama', subtema: 'Tratamiento del cáncer de mama', pesoPct: 6.03 },
+      { tema: 'Complicaciones maternas de la gestación', subtema: 'Enfermedad hipertensiva del embarazo', pesoPct: 4.76 },
+      { tema: 'Patología maligna de la mama. Cáncer de mama', subtema: 'Enfoque diagnóstico', pesoPct: 2.86 },
+      { tema: 'Patología maligna de la mama. Cáncer de mama', subtema: 'Epidemiología', pesoPct: 2.86 },
+      { tema: 'Patología benigna y premaligna del endometrio', subtema: 'Hiperplasia endometrial', pesoPct: 2.86 },
+      { tema: 'Hemorragia en la gestación', subtema: 'Tercer trimestre', pesoPct: 2.86 },
+      { tema: 'Control de la gestación', subtema: 'Primer trimestre', pesoPct: 2.86 },
+      { tema: 'Climaterio y menopausia', subtema: 'Tratamiento', pesoPct: 2.54 },
+      { tema: 'Patología maligna de la mama. Cáncer de mama', subtema: 'Factores pronósticos del cáncer de mama', pesoPct: 2.54 },
+      { tema: 'Patología maligna endometrial. Cáncer de endometrio', subtema: 'Epidemiología', pesoPct: 2.54 },
+      { tema: 'Complicaciones maternas de la gestación', subtema: 'Diabetes y embarazo', pesoPct: 2.22 },
+      { tema: 'Patología benigna y premaligna del endometrio', subtema: 'Pólipos endometriales', pesoPct: 2.22 },
+      { tema: 'Alteraciones menstruales por defecto. Amenorrea', subtema: 'Enfoque diagnóstico', pesoPct: 2.22 },
+      { tema: 'Infertilidad. Esterilidad. Reproducción asistida', subtema: 'Tratamiento. Técnicas de reproducción asistida', pesoPct: 2.22 },
+      { tema: 'Síndrome de ovario poliquístico', subtema: 'Manifestaciones clínicas', pesoPct: 2.22 }
+    ],
+    prioridad1V: ['Patología maligna de la mama. Cáncer de mama', 'Complicaciones maternas de la gestación', 'Hemorragia en la gestación', 'Control de la gestación', 'Masas anexiales. Patología maligna del ovario', 'Patología maligna endometrial. Cáncer de endometrio', 'Cáncer de cuello uterino', 'Patología benigna y lesiones preinvasivas del cuello del útero. Infección por el virus del papiloma humano', 'Síndrome de ovario poliquístico', 'Alteraciones menstruales por defecto. Amenorrea', 'Climaterio y menopausia', 'Métodos anticonceptivos. Contracepción en situaciones especiales', 'Infertilidad. Esterilidad. Reproducción asistida', 'Endometriosis', 'Patología benigna y premaligna del endometrio', 'Fisiología. Ciclo genital femenino', 'Patología de la vulva. Cáncer de vulva', 'Infecciones y embarazo', 'Parto'],
+    notaPrioridad: 'El orden combina el Enfoque de ProMIR (3 pilares: mama, oncología ginecológica y patología obstétrica), el Peso MIR % y el núcleo de rabi_94. Solo los tres primeros temas (mama + complicaciones maternas + hemorragia gestación) ya aseguran ~31% de la asignatura. Coincide con rabi_94 en priorizar cáncer de mama, endometrio, cérvix, ovario, vulva, ciclo genital y SOPQ/amenorrea; difiere en que ProMIR sube los temas obstétricos (complicaciones maternas y control de la gestación) por encima de varios cánceres ginecológicos por su mayor peso histórico y tendencia al alza en los últimos 5 años.',
+  },
+  15: {
+    num: 15, pesoGlobal: 'Media (~5%): 228 preguntas en las últimas 20 convocatorias, peso relativo estable por debajo del 5%',
+    enfoque: '3 temas concentran el 80% de lo que se pregunta: las alteraciones de la coagulación sanguínea (25%, con foco en alteraciones plaquetarias) son lo más rentable; le siguen las anemias hemolíticas (18%) junto a las carenciales (9%), que suman casi el 30% en los últimos 5 años. La serie blanca, lo más difícil y novedoso, pesa menos: linfomas (11%), leucemias agudas (9%) e insuficiencias medulares (9%). Temas breves muy rentables por su brevedad: transfusiones, gammapatías monoclonales y trasplante de progenitores (18% en conjunto).',
+    presentacionVideoDur: '3:03',
+    horasTotales: '~23h 20min',
+    temas: [
+      { nombre: 'Alteraciones de la coagulación sanguínea', pesoPct: 21.53, paginas: 16, horas: '3h 30min' },
+      { nombre: 'Linfomas', pesoPct: 13.08, paginas: 9, horas: '2h' },
+      { nombre: 'Anemias hemolíticas', pesoPct: 11.47, paginas: 7, horas: '1h 35min' },
+      { nombre: 'Anemias carenciales', pesoPct: 9.86, paginas: 6, horas: '1h 20min' },
+      { nombre: 'Neoplasias mieloproliferativas crónicas', pesoPct: 9.05, paginas: 8, horas: '1h 50min' },
+      { nombre: 'Insuficiencias medulares', pesoPct: 7.65, paginas: 6, horas: '1h 20min' },
+      { nombre: 'Síndromes linfoproliferativos crónicos', pesoPct: 5.63, paginas: 5, horas: '1h 10min' },
+      { nombre: 'Terapia celular', pesoPct: 5.63, paginas: 5, horas: '1h 10min' },
+      { nombre: 'Leucemias agudas', pesoPct: 4.43, paginas: 8, horas: '1h 50min' },
+      { nombre: 'Gammapatías monoclonales', pesoPct: 4.02, paginas: 7, horas: '1h 30min' },
+      { nombre: 'Terapia transfusional', pesoPct: 3.22, paginas: 4, horas: '55min' },
+      { nombre: 'Otras anemias', pesoPct: 2.41, paginas: 4, horas: '50min' },
+      { nombre: 'Introducción', pesoPct: 1.21, paginas: 4, horas: '55min' },
+      { nombre: 'Introducción a las neoplasias hematológicas', pesoPct: 0.4, paginas: 5, horas: '1h 10min' },
+      { nombre: 'Otros trastornos hematológicos', pesoPct: 0.4, paginas: 10, horas: '2h 15min' }
+    ],
+    topSubtemas: [
+      { tema: 'Alteraciones de la coagulación sanguínea', subtema: 'Alteraciones plaquetarias', pesoPct: 9.86 },
+      { tema: 'Linfomas', subtema: 'Linfoma no Hodgkin', pesoPct: 9.86 },
+      { tema: 'Anemias hemolíticas', subtema: 'Anemias hemolíticas adquiridas', pesoPct: 8.05 },
+      { tema: 'Alteraciones de la coagulación sanguínea', subtema: 'Alteraciones de la coagulación sanguínea', pesoPct: 7.24 },
+      { tema: 'Neoplasias mieloproliferativas crónicas', subtema: 'Leucemia mieloide crónica', pesoPct: 6.04 },
+      { tema: 'Anemias carenciales', subtema: 'Anemia ferropénica', pesoPct: 5.63 }
+    ],
+    prioridad1V: ['Alteraciones de la coagulación sanguínea', 'Anemias hemolíticas', 'Anemias carenciales', 'Linfomas', 'Neoplasias mieloproliferativas crónicas', 'Insuficiencias medulares', 'Leucemias agudas', 'Terapia celular', 'Terapia transfusional', 'Gammapatías monoclonales', 'Síndromes linfoproliferativos crónicos', 'Otras anemias'],
+    notaPrioridad: 'El orden combina el Enfoque de ProMIR (3 temas aglutinan el 80%) con el Peso MIR. Coagulación encabeza por ser el tema más preguntado (~21-29% según serie) y de subtema más rentable (alteraciones plaquetarias). Las anemias hemolíticas y carenciales suben sobre su peso histórico porque ganan peso en los últimos 5 años (15,5% y 11%) y son rentables. Linfomas lidera la serie blanca. Se cierra con temas breves pero rentables (transfusiones, gammapatías, trasplante/terapia celular). rabi_94 no detalla esta asignatura, por lo que se prioriza solo según el Enfoque y el Peso MIR de ProMIR.',
+  },
+  16: {
+    num: 16, pesoGlobal: 'Baja rentabilidad (~0,95% del MIR, ~40 preguntas en los últimos 10 años)',
+    enfoque: 'Asignatura farragosa pero rentable para quien busca puntos extra. Con poco tiempo, más del 70% de las preguntas de los últimos 10 años se cubren con: Inmunodeficiencias primarias, Componentes del sistema inmune y las reglas mnemotécnicas/conceptos clave del resto de apartados. Conviene apoyarse en los resúmenes esquemáticos (tablas/esquemas) durante la primera vuelta.',
+    presentacionVideoDur: '2:43',
+    resumenVideoDur: '1:10:05',
+    horasTotales: '~6h 10min',
+    temas: [
+      { nombre: 'Inmunología básica', pesoPct: 52.11, paginas: 18, horas: '3h 35min' },
+      { nombre: 'Inmunología clínica', pesoPct: 47.89, paginas: 13, horas: '2h 35min' }
+    ],
+    topSubtemas: [
+      { tema: 'Inmunología clínica', subtema: 'Inmunodeficiencias primarias', pesoPct: 27.89 }
+    ],
+    prioridad1V: ['Inmunología clínica (Inmunodeficiencias primarias)', 'Inmunología básica (Componentes del sistema inmune)', 'Reglas mnemotécnicas y conceptos clave del resto de apartados'],
+    notaPrioridad: 'El subtema Inmunodeficiencias primarias acumula por sí solo el 27,89% de las preguntas de la asignatura y es el primero que destaca el Enfoque de ProMIR, por eso encabeza la 1ª vuelta pese a pertenecer a Inmunología clínica (47,89%); le sigue Inmunología básica (52,11%, el tema con más peso) por sus Componentes del sistema inmune. rabi_94 no detalla esta asignatura, así que el orden se basa exclusivamente en el Enfoque + Peso MIR de ProMIR.',
+  },
+  17: {
+    num: 17, pesoGlobal: 'Baja (~1,2% de las preguntas del MIR; 11 preguntas en los últimos 5 años)',
+    enfoque: 'Asignatura corta y de peso bajo en el MIR, pero muy rentable por su escasa extensión: casi 40% de las preguntas históricas se concentran en Principios de bioética y relación médico-paciente. Si hay poco tiempo, ProMIR recomienda priorizar Principios de bioética y relación médico-paciente (33% de las preguntas), Documentos médico-legales y medicina del trabajo (17%) y Situación de últimos días (17%); el resto de temas forenses son prácticamente prescindibles.',
+    presentacionVideoDur: '2:40',
+    resumenVideoDur: '0:49:55',
+    horasTotales: '~8h 40min',
+    temas: [
+      { nombre: 'Principios de bioética y relación médico-paciente', pesoPct: 39.84, paginas: 4, horas: '40min' },
+      { nombre: 'Documentos médico-legales. Medicina del trabajo', pesoPct: 11.38, paginas: 4, horas: '40min' },
+      { nombre: 'Aspectos legales de los derechos y deberes de los pacientes. La responsabilidad profesional del médico', pesoPct: 9.76, paginas: 6, horas: '55min' },
+      { nombre: 'Violencia y maltrato. Delitos contra la libertad sexual', pesoPct: 9.76, paginas: 4, horas: '40min' },
+      { nombre: 'Competencia y capacidad. El menor maduro. Aborto. Donación y trasplante de órganos', pesoPct: 9.76, paginas: 4, horas: '40min' },
+      { nombre: 'Síndrome de la muerte súbita del lactante', pesoPct: 8.13, paginas: 3, horas: '30min' },
+      { nombre: 'Últimos días. Adecuación del esfuerzo y obstinación terapéutica. Cuidados paliativos. Sedación, eutanasia y suicidio asistido', pesoPct: 8.13, paginas: 6, horas: '55min' },
+      { nombre: 'Exitus', pesoPct: 1.63, paginas: 5, horas: '45min' },
+      { nombre: 'Psiquiatría forense', pesoPct: 1.63, paginas: 3, horas: '30min' },
+      { nombre: 'Introducción a la Medicina Legal y Forense. Concepto y organización de la Medicina Legal', pesoPct: 0, paginas: 2, horas: '20min' },
+      { nombre: 'Toxicología y biología forense. Legislación sobre toma y envío de muestras', pesoPct: 0, paginas: 3, horas: '30min' },
+      { nombre: 'Levantamiento del cadáver. Autopsia judicial. Data de muerte', pesoPct: 0, paginas: 3, horas: '30min' },
+      { nombre: 'Las lesiones en el código penal', pesoPct: 0, paginas: 5, horas: '45min' },
+      { nombre: 'Asfixias. Muerte súbita en el adulto', pesoPct: 0, paginas: 3, horas: '30min' }
+    ],
+    topSubtemas: [
+      { tema: 'Principios de bioética y relación médico-paciente', subtema: 'Relación médico-paciente. Atención al paciente en situaciones especiales', pesoPct: 26.02 },
+      { tema: 'Principios de bioética y relación médico-paciente', subtema: 'Principios de bioética', pesoPct: 11.38 },
+      { tema: 'Aspectos legales de los derechos y deberes de los pacientes. La responsabilidad profesional del médico', subtema: 'Derechos y deberes de los pacientes. Legislación actual', pesoPct: 9.76 },
+      { tema: 'Documentos médico-legales. Medicina del trabajo', subtema: 'Documentos médico-legales', pesoPct: 8.13 },
+      { tema: 'Competencia y capacidad. El menor maduro. Aborto. Donación y trasplante de órganos', subtema: 'Competencia y capacidad. Menor maduro', pesoPct: 8.13 }
+    ],
+    prioridad1V: ['Principios de bioética y relación médico-paciente', 'Documentos médico-legales. Medicina del trabajo', 'Últimos días. Adecuación del esfuerzo y obstinación terapéutica. Cuidados paliativos. Sedación, eutanasia y suicidio asistido', 'Aspectos legales de los derechos y deberes de los pacientes. La responsabilidad profesional del médico', 'Violencia y maltrato. Delitos contra la libertad sexual', 'Competencia y capacidad. El menor maduro. Aborto. Donación y trasplante de órganos', 'Síndrome de la muerte súbita del lactante'],
+    notaPrioridad: 'El orden sigue el Enfoque explícito de ProMIR (prioriza bioética/relación médico-paciente 33%, documentos médico-legales 17% y últimos días 17%) combinado con el Peso MIR histórico: solo Principios de bioética ya asegura ~40% de la asignatura, y los 4-5 primeros temas cubren la gran mayoría de las preguntas. rabi_94 no detalla esta asignatura, por lo que se prioriza íntegramente según el Enfoque y el Peso MIR de ProMIR. Los temas puramente forenses (introducción, toxicología, autopsia, lesiones del código penal, asfixias) tienen 0% histórico y se dejan para repaso final o se omiten si hay poco tiempo.',
+  },
+  18: {
+    num: 18, pesoGlobal: '~5% del MIR (importancia media; Nefrología aporta información clave para HTA, DM, microangiopatías trombóticas, trasplante e inmunosupresión)',
+    enfoque: 'Asignatura de rentabilidad media muy transversal. Lo más rentable es crear base con fisiología renal y trastornos hidroelectrolíticos/equilibrio ácido-base, que llevan a entender el fracaso renal agudo y la enfermedad renal crónica: estos 3 bloques juntos suponen casi el 50% de lo preguntado. Hay que dominar el diagnóstico de los trastornos hidroelectrolíticos y ácido-base, el algoritmo diagnóstico-etiológico del fracaso renal agudo y el manejo de las complicaciones de la ERC. Riñón y enfermedades sistémicas (riesgo cardiovascular del nefrópata, nefropatía diabética y discrasias de células plasmáticas) gana peso; las glomerulonefritis primarias pierden importancia relativa (de ~14% a 11%).',
+    presentacionVideoDur: '3:23',
+    horasTotales: '~20h 10min',
+    temas: [
+      { nombre: 'Fisiología renal: función renal, alteraciones hidroelectrolíticas y equilibrio ácido-base', pesoPct: 22.15, paginas: 22, horas: '4h 25min' },
+      { nombre: 'Fracaso renal agudo', pesoPct: 13.46, paginas: 9, horas: '1h 50min' },
+      { nombre: 'Glomerulonefritis primarias', pesoPct: 13.46, paginas: 16, horas: '3h 10min' },
+      { nombre: 'Riñón y enfermedades sistémicas', pesoPct: 11.39, paginas: 14, horas: '2h 50min' },
+      { nombre: 'Insuficiencia renal crónica', pesoPct: 10.97, paginas: 7, horas: '1h 25min' },
+      { nombre: 'Síndromes clínicos en nefrología', pesoPct: 9.11, paginas: 6, horas: '1h 15min' },
+      { nombre: 'Riesgo cardiovascular y enfermedad renal', pesoPct: 7.87, paginas: 9, horas: '1h 50min' },
+      { nombre: 'Nefropatías intersticiales', pesoPct: 7.04, paginas: 7, horas: '1h 25min' },
+      { nombre: 'Enfermedades hereditarias', pesoPct: 3.31, paginas: 4, horas: '50min' },
+      { nombre: 'Tubulopatías', pesoPct: 1.24, paginas: 6, horas: '1h 10min' }
+    ],
+    topSubtemas: [
+      { tema: 'Fracaso renal agudo', subtema: 'Etiología', pesoPct: 8.28 },
+      { tema: 'Fisiología renal: función renal, alteraciones hidroelectrolíticas y equilibrio ácido-base', subtema: 'Conceptos generales', pesoPct: 7.45 },
+      { tema: 'Fracaso renal agudo', subtema: 'Diagnóstico', pesoPct: 7.45 },
+      { tema: 'Fisiología renal: función renal, alteraciones hidroelectrolíticas y equilibrio ácido-base', subtema: 'Trastornos del potasio', pesoPct: 6.63 },
+      { tema: 'Fisiología renal: función renal, alteraciones hidroelectrolíticas y equilibrio ácido-base', subtema: 'Equilibrio ácido-base', pesoPct: 6.21 },
+      { tema: 'Fisiología renal: función renal, alteraciones hidroelectrolíticas y equilibrio ácido-base', subtema: 'Balance hidrosalino', pesoPct: 5.38 },
+      { tema: 'Insuficiencia renal crónica', subtema: 'Tratamiento', pesoPct: 5.38 }
+    ],
+    prioridad1V: ['Fisiología renal: función renal, alteraciones hidroelectrolíticas y equilibrio ácido-base', 'Fracaso renal agudo', 'Insuficiencia renal crónica', 'Glomerulonefritis primarias', 'Riñón y enfermedades sistémicas', 'Nefropatías intersticiales', 'Tubulopatías', 'Riesgo cardiovascular y enfermedad renal', 'Síndromes clínicos en nefrología', 'Enfermedades hereditarias'],
+    notaPrioridad: 'El orden combina el Enfoque de ProMIR (fisiología renal + FRA + ERC = casi el 50% de lo preguntado) con el Peso MIR histórico, encabezado por Fisiología renal (22,15%). rabi_94 marca como núcleo de 1ª vuelta: repaso anatomofisiológico (= Fisiología renal), trastornos hidroelectrolíticos (incluido en Fisiología renal), patología glomerular (Glomerulonefritis primarias), nefropatías tubulointersticiales (Nefropatías intersticiales) y tubulopatías; por eso esos temas se priorizan aunque Nefropatías intersticiales y Tubulopatías tengan menor peso porcentual. ERC se sube por su rentabilidad clínica (manejo de complicaciones) y su subtema "Tratamiento" muy preguntado.',
+  },
+  19: {
+    num: 19, pesoGlobal: '~6% del total del examen MIR (10-13 preguntas/año en los últimos 5 años)',
+    enfoque: 'Neumología es una de las asignaturas más importantes del MIR, aunque con descenso de preguntas en los últimos 5 años (10-13/año, ~6% del examen). Los cuatro temas que aseguran ~50% de las preguntas son Fisiología y fisiopatología del aparato respiratorio, EPOC, Enfermedades intersticiales y Enfermedades de la pleura, mediastino y diafragma. Les siguen Cáncer de pulmón (8%) y Asma (6%), este último con cambios recientes en algoritmos diagnóstico-terapéuticos susceptibles de ser preguntados.',
+    presentacionVideoDur: '4:42',
+    horasTotales: '~24 h 35 min',
+    temas: [
+      { nombre: 'Cáncer de pulmón', pesoPct: 13.62, paginas: 12, horas: '3h' },
+      { nombre: 'Enfermedades de la pleura, mediastino y diafragma', pesoPct: 13.07, paginas: 9, horas: '2h 15min' },
+      { nombre: 'Fisiología y fisiopatología del aparato respiratorio', pesoPct: 11.97, paginas: 6, horas: '1h 30min' },
+      { nombre: 'EPOC', pesoPct: 11.42, paginas: 10, horas: '2h 30min' },
+      { nombre: 'Enfermedades intersticiales', pesoPct: 11.14, paginas: 9, horas: '2h 15min' },
+      { nombre: 'Neumonía', pesoPct: 8.39, paginas: 10, horas: '2h 30min' },
+      { nombre: 'Tromboembolia de pulmón', pesoPct: 6.19, paginas: 4, horas: '1h' },
+      { nombre: 'Asma', pesoPct: 5.78, paginas: 7, horas: '1h 45min' },
+      { nombre: 'Semiología del aparato respiratorio', pesoPct: 4.13, paginas: 2, horas: '30min' },
+      { nombre: 'Trastornos de la ventilación. Ventilación mecánica', pesoPct: 4.13, paginas: 4, horas: '1h' },
+      { nombre: 'Neumonitis por hipersensibilidad. Eosinofilias pulmonares', pesoPct: 2.48, paginas: 5, horas: '1h 15min' },
+      { nombre: 'Anatomía del aparato respiratorio. Malformaciones broncopulmonares', pesoPct: 2.2, paginas: 3, horas: '45min' },
+      { nombre: 'Neumopatías ambientales y ocupacionales', pesoPct: 2.2, paginas: 5, horas: '1h 15min' },
+      { nombre: 'Trastornos respiratorios del sueño (Síndrome de apneas e hipopneas durante el sueño)', pesoPct: 1.93, paginas: 4, horas: '1h' },
+      { nombre: 'Bronquiectasias', pesoPct: 0.83, paginas: 4, horas: '1h' },
+      { nombre: 'Fibrosis quística', pesoPct: 0.55, paginas: 5, horas: '1h 15min' },
+      { nombre: 'Trasplante pulmonar', pesoPct: 0, paginas: 3, horas: '45min' }
+    ],
+    topSubtemas: [
+      { tema: 'Cáncer de pulmón', subtema: 'Cáncer de pulmón', pesoPct: 13.62 },
+      { tema: 'Enfermedades de la pleura, mediastino y diafragma', subtema: 'Enfermedades de la pleura', pesoPct: 10.87 },
+      { tema: 'Neumonía', subtema: 'Neumonía adquirida en la comunidad', pesoPct: 7.02 },
+      { tema: 'EPOC', subtema: 'Tratamiento', pesoPct: 5.78 },
+      { tema: 'Fisiología y fisiopatología del aparato respiratorio', subtema: 'Intercambio gaseoso', pesoPct: 5.5 },
+      { tema: 'Fisiología y fisiopatología del aparato respiratorio', subtema: 'Equilibrio ácido-básico', pesoPct: 4.95 }
+    ],
+    prioridad1V: ['Fisiología y fisiopatología del aparato respiratorio', 'EPOC', 'Cáncer de pulmón', 'Neumonía', 'Enfermedades de la pleura, mediastino y diafragma', 'Enfermedades intersticiales', 'Asma', 'Tromboembolia de pulmón'],
+    notaPrioridad: 'Los cuatro temas que ProMIR destaca (Fisiología/fisiopatología, EPOC, Enf. intersticiales y Enf. de la pleura) aseguran ~50% de las preguntas; sumando Cáncer de pulmón y Asma se cubre la mayor parte de la asignatura. Se prioriza Fisiología, EPOC, Cáncer e Infecciones (Neumonía) al frente porque rabi_94 los marca como núcleo de 1ª vuelta, lo que coincide con su alto Peso MIR (Cáncer 13,62% es el #1 histórico; EPOC sube a 16,72% en los últimos 5 años). Difiere ligeramente de rabi_94 en que añade Enf. de la pleura, Intersticiales y Asma por su peso, mientras que Tromboembolia cierra la lista por su peso medio-bajo.',
+  },
+  20: {
+    num: 20, pesoGlobal: '~8% en los últimos 5 años (75 preguntas, ~15/año; top 7 del MIR)',
+    enfoque: 'La rentabilidad es alta: Neurología ha subido a las top 7 del MIR (~8%). El bloque de Neurocirugía es el más preguntado y ha ganado aún más peso (del 17% a casi 23%/28% en los últimos 5 años), con la patología raquimedular y los tumores cerebrales como núcleo. Le siguen la enfermedad cerebrovascular (ictus, ~10%), los trastornos del movimiento (parkinsonismos, ~11%) y las demencias (~8%). La semiología/anatomía, aunque ha bajado de ~14% a ~7,8%, sigue siendo imprescindible porque sostiene los casos clínicos transversales. Atención también a epilepsia, cefaleas, neuropatías y encefalitis (preguntas transversales infecto-neuro y geriatría-neuro-psiquiatría).',
+    presentacionVideoDur: '4:57',
+    horasTotales: '23h 50min',
+    temas: [
+      { nombre: 'Neurocirugía', pesoPct: 19.43, paginas: 15, horas: '4h 20min' },
+      { nombre: 'Semiología', pesoPct: 12.01, paginas: 12, horas: '3h 25min' },
+      { nombre: 'Enfermedades cerebrovasculares', pesoPct: 11.47, paginas: 9, horas: '1h 35min' },
+      { nombre: 'Trastornos del movimiento', pesoPct: 10.39, paginas: 6, horas: '1h 45min' },
+      { nombre: 'Epilepsia', pesoPct: 8.23, paginas: 7, horas: '2h' },
+      { nombre: 'Demencias', pesoPct: 8.23, paginas: 5, horas: '1h 30min' },
+      { nombre: 'Cefaleas', pesoPct: 6.88, paginas: 5, horas: '1h 30min' },
+      { nombre: 'Esclerosis múltiple y otras enfermedades desmielinizantes', pesoPct: 6.34, paginas: 5, horas: '1h 25min' },
+      { nombre: 'Neuropatías', pesoPct: 5.13, paginas: 3, horas: '50min' },
+      { nombre: 'Enfermedades de la placa motora', pesoPct: 2.7, paginas: 3, horas: '50min' },
+      { nombre: 'Encefalitis vírica', pesoPct: 2.43, paginas: 2, horas: '35min' },
+      { nombre: 'Miopatías', pesoPct: 2.43, paginas: 3, horas: '50min' },
+      { nombre: 'Enfermedades metabólicas', pesoPct: 1.89, paginas: 3, horas: '50min' },
+      { nombre: 'Coma', pesoPct: 1.89, paginas: 3, horas: '50min' },
+      { nombre: 'Esclerosis lateral amiotrófica', pesoPct: 0.54, paginas: 2, horas: '35min' }
+    ],
+    topSubtemas: [
+      { tema: 'Neurocirugía', subtema: 'Patología raquimedular', pesoPct: 12.01 },
+      { tema: 'Neurocirugía', subtema: 'Tumores cerebrales', pesoPct: 7.96 },
+      { tema: 'Trastornos del movimiento', subtema: 'Trastornos del movimiento hipocinéticos: parkinsonismos', pesoPct: 7.69 },
+      { tema: 'Enfermedades cerebrovasculares', subtema: 'Ictus isquémico', pesoPct: 7.15 },
+      { tema: 'Semiología', subtema: 'Recuerdo anatómico del sistema nervioso', pesoPct: 6.07 },
+      { tema: 'Semiología', subtema: 'Tronco del encéfalo y pares craneales', pesoPct: 5.94 }
+    ],
+    prioridad1V: ['Neurocirugía (patología raquimedular/radicular y tumores cerebrales)', 'Enfermedades cerebrovasculares (ictus)', 'Semiología y anatomía del sistema nervioso', 'Trastornos del movimiento (parkinsonismos)', 'Demencias', 'Epilepsia', 'Cefaleas', 'Esclerosis múltiple y otras enfermedades desmielinizantes', 'Neuropatías', 'Encefalitis vírica', 'Enfermedades de la placa motora', 'Coma', 'Miopatías', 'Enfermedades metabólicas', 'Esclerosis lateral amiotrófica'],
+    notaPrioridad: 'Neurocirugía encabeza por ser el tema más preguntado (19,4% histórico, 28,3% en 5 años) y porque rabi_94 marca patología raquimedular/radicular como núcleo. Ictus y Semiología/anatomía van a continuación al ser también núcleo rabi_94 y de alto peso (11,5% y 12% histórico). Solo los tres primeros temas ya aseguran ~43% de la asignatura. Trastornos del movimiento y Demencias suben por su peso creciente y carácter transversal. El orden coincide con rabi_94 en los tres núcleos, anteponiendo Neurocirugía por su peso dominante.',
+  },
+  21: {
+    num: 21, pesoGlobal: '1-2% del total del MIR (media de 3 preguntas por convocatoria; rentabilidad global media)',
+    enfoque: 'Asignatura específica pero rentable si se estudia bien dirigida: estudiar por orden de importancia, no por temario. Retina es la reina (35-40% de la asignatura, hay que dominarla casi entera: degeneraciones, alteraciones vasculares en diabetes, desprendimiento). Glaucoma es el 2º tema (~11%), centrándose en el diagnóstico diferencial del ojo rojo doloroso (escleritis vs glaucoma agudo vs uveítis anterior); comparte importancia con Conjuntiva. En 3er lugar Neurooftalmología (campo visual, parálisis del III par, papilitis vs neuritis posterior), que enlaza con Neurología. No olvidar Uveítis anterior, uno de los subtemas más preguntados.',
+    presentacionVideoDur: '3:00',
+    resumenVideoDur: '1:24:29',
+    horasTotales: '~9h 50min',
+    temas: [
+      { nombre: 'Retina', pesoPct: 35.52, paginas: 11, horas: '1h 50min' },
+      { nombre: 'Uveítis', pesoPct: 17.49, paginas: 5, horas: '50min' },
+      { nombre: 'Neuroftalmología', pesoPct: 16.39, paginas: 10, horas: '1h 40min' },
+      { nombre: 'Glaucoma', pesoPct: 10.93, paginas: 4, horas: '40min' },
+      { nombre: 'Córnea y esclera', pesoPct: 6.56, paginas: 4, horas: '40min' },
+      { nombre: 'Conjuntiva', pesoPct: 4.37, paginas: 4, horas: '40min' },
+      { nombre: 'Órbita', pesoPct: 4.37, paginas: 4, horas: '40min' },
+      { nombre: 'Cristalino', pesoPct: 2.19, paginas: 3, horas: '30min' },
+      { nombre: 'Párpados y vía lagrimal', pesoPct: 1.09, paginas: 5, horas: '50min' },
+      { nombre: 'Refracción', pesoPct: 1.09, paginas: 3, horas: '30min' },
+      { nombre: 'Introducción', pesoPct: 0, paginas: 2, horas: '20min' },
+      { nombre: 'Estrabismo', pesoPct: 0, paginas: 2, horas: '20min' },
+      { nombre: 'Toxicidad ocular por fármacos', pesoPct: 0, paginas: 2, horas: '20min' }
+    ],
+    topSubtemas: [
+      { tema: 'Retina', subtema: 'Degeneraciones', pesoPct: 15.3 },
+      { tema: 'Retina', subtema: 'Alteraciones vasculares', pesoPct: 14.21 },
+      { tema: 'Uveítis', subtema: 'Uveítis anteriores', pesoPct: 10.93 },
+      { tema: 'Neuroftalmología', subtema: 'Patología del nervio óptico', pesoPct: 7.65 }
+    ],
+    prioridad1V: ['Retina', 'Uveítis', 'Neuroftalmología', 'Glaucoma', 'Conjuntiva', 'Córnea y esclera', 'Órbita', 'Cristalino'],
+    notaPrioridad: 'Retina sola asegura ~35-40% de la asignatura y, junto con Uveítis (sobre todo uveítis anterior) y Neuroftalmología, cubre cerca del 70% (35,52+17,49+16,39). Glaucoma es el siguiente por Enfoque (ojo rojo doloroso) y peso (~11%), seguido de Conjuntiva (que ProMIR vincula a Glaucoma y sube al 10,58% en los últimos 5 años). rabi_94 no detalla esta asignatura, por lo que el orden sigue íntegramente el Enfoque y el Peso MIR de ProMIR.',
+  },
+  22: {
+    num: 22, pesoGlobal: '~4% de las preguntas del MIR en temas puramente oncológicos (tradicionalmente ~1%, al alza en los últimos 5 años; media de 7 preguntas/año en los últimos 3 años incluyendo conceptos de otras asignaturas). Rentabilidad global: media.',
+    enfoque: 'Asignatura auxiliar: leerla pronto pero estudiarla a fondo solo tras dominar los cimientos del MIR y las neoplasias en sus especialidades (mama, colon, pulmón van a caballo con Gineco/Neumo/Digestivo). Lo más rentable y "específico" de esta asignatura está en Urgencias oncológicas (20% de las preguntas: neutropenia febril, síndrome de vena cava superior, taponamiento pericárdico, compresión medular, síndrome de lisis tumoral), seguido de Conceptos generales (15%) y Tratamiento sistémico (12%). También merecen repaso las escalas de funcionalidad (ECOG y Karnofsky), la epidemiología del cáncer (frecuencia, mortalidad) y los tratamientos sistémicos con sus efectos adversos más frecuentes.',
+    presentacionVideoDur: '2:17',
+    resumenVideoDur: '1:09:47',
+    horasTotales: '~6h 5min',
+    temas: [
+      { nombre: 'Urgencias oncológicas', pesoPct: 17.86, paginas: 6, horas: '1h 5min' },
+      { nombre: 'Cáncer de pulmón', pesoPct: 17.86, paginas: 5, horas: '55min' },
+      { nombre: 'Tratamiento sistémico', pesoPct: 14.29, paginas: 5, horas: '55min' },
+      { nombre: 'Cáncer colorrectal', pesoPct: 14.29, paginas: 3, horas: '35min' },
+      { nombre: 'Conceptos generales', pesoPct: 11.9, paginas: 4, horas: '45min' },
+      { nombre: 'Genética del cáncer', pesoPct: 9.52, paginas: 4, horas: '45min' },
+      { nombre: 'Epidemiología', pesoPct: 7.14, paginas: 2, horas: '20min' },
+      { nombre: 'Cáncer de mama', pesoPct: 7.14, paginas: 5, horas: '55min' }
+    ],
+    topSubtemas: [
+      { tema: 'Tratamiento sistémico', subtema: 'Agentes biológicos dirigidos', pesoPct: 14.29 },
+      { tema: 'Cáncer colorrectal', subtema: 'Tratamiento', pesoPct: 10.71 },
+      { tema: 'Genética del cáncer', subtema: 'Oncogenes y genes supresores de tumores', pesoPct: 8.33 },
+      { tema: 'Conceptos generales', subtema: 'Pruebas diagnósticas', pesoPct: 8.33 },
+      { tema: 'Cáncer de pulmón', subtema: 'Tratamiento', pesoPct: 7.14 }
+    ],
+    prioridad1V: ['Urgencias oncológicas', 'Tratamiento sistémico', 'Conceptos generales', 'Cáncer colorrectal', 'Cáncer de pulmón', 'Genética del cáncer', 'Epidemiología', 'Cáncer de mama'],
+    notaPrioridad: 'Urgencias oncológicas va primero: es el tema más rentable y "específico" de la asignatura (Enfoque lo marca como 20%; histórico 17,86% y dispara a 24,23% en los últimos 5 años). Le siguen Tratamiento sistémico y Conceptos generales, ambos resaltados en el Enfoque (12% y 15%) y al alza en la tendencia reciente (18,10% y 15,03% en 5 años). Cáncer colorrectal (14,29% histórico, 15,03% en 5 años) entra antes que pulmón porque, pese a que pulmón empata en histórico (17,86%), su peso cae al 6,13% en los últimos 5 años; ambos comparten que gran parte se estudia en Neumo/Digestivo. Genética, Epidemiología y Mama cierran por menor peso y por solaparse con otras asignaturas. rabi_94 no detalla esta asignatura, así que el orden sigue exclusivamente el Enfoque de ProMIR + Peso MIR (combinando histórico y tendencia de 5 años).',
+  },
+  23: {
+    num: 23, pesoGlobal: '~2,76% del MIR (histórico ~2,42%, en ascenso hasta ~4% en convocatorias recientes; 3-5 preguntas por examen)',
+    enfoque: 'Asignatura muy específica pero altamente rentable y en fuerte crecimiento (de 2,42% a ~4% del MIR): a poco que se dominen las bases se contesta gran parte de las preguntas, marcando diferencia si se estudia bien dirigida. Lo que asegura la mayor parte de las preguntas: Oído (exploración Weber/Rinne, sordera transmisión vs sensitiva, neurinoma del acústico, otoesclerosis, vértigos) y Faringe (patología tumoral, diagnóstico diferencial de amigdalitis e indicaciones de amigdalectomía, angiofibroma de cavum). Muy rentables también la Patología maxilofacial (traumatismos y fracturas faciales, en gran aumento) y la Laringe (nódulos/pólipos y cáncer glótico vs supraglótico).',
+    presentacionVideoDur: '3:19',
+    horasTotales: '11h 20min',
+    temas: [
+      { nombre: 'Oído', pesoPct: 34.42, paginas: 21, horas: '4h 15min' },
+      { nombre: 'Faringe', pesoPct: 20.65, paginas: 8, horas: '1h 35min' },
+      { nombre: 'Laringe', pesoPct: 15.22, paginas: 11, horas: '2h 15min' },
+      { nombre: 'Glándulas salivares y masas cervicales', pesoPct: 10.14, paginas: 6, horas: '1h 15min' },
+      { nombre: 'Patología maxilofacial', pesoPct: 10.14, paginas: 3, horas: '35min' },
+      { nombre: 'Nariz', pesoPct: 9.42, paginas: 7, horas: '1h 25min' }
+    ],
+    topSubtemas: [
+      { tema: 'Faringe', subtema: 'Patología tumoral', pesoPct: 13.77 },
+      { tema: 'Oído', subtema: 'Patología del oído interno', pesoPct: 12.32 },
+      { tema: 'Oído', subtema: 'Patología del oído medio', pesoPct: 10.14 },
+      { tema: 'Patología maxilofacial', subtema: 'Traumatismos y fracturas faciales', pesoPct: 9.42 }
+    ],
+    prioridad1V: ['Oído', 'Faringe', 'Patología maxilofacial', 'Laringe', 'Nariz', 'Glándulas salivares y masas cervicales'],
+    notaPrioridad: 'Oído (34,42%) y Faringe (20,65%) acumulan ~55% de la asignatura y son los dos temas que el Enfoque de ProMIR marca como seguros en el examen, por eso encabezan. Patología maxilofacial se adelanta a Laringe pese a igual peso histórico (10,14%) porque el Enfoque la destaca como tema en fuerte ascenso (de 8,68% a 18% / 12,76% en los últimos 5 años) con un subtema top (traumatismos y fracturas faciales). rabi_94 no detalla esta asignatura, así que el orden se rige por el Enfoque + Peso MIR de ProMIR. La rentabilidad global de la asignatura es baja, por lo que en 1ª vuelta conviene concentrarse en los 3-4 primeros temas.',
+  },
+  24: {
+    num: 24, pesoGlobal: '~4% del MIR (importancia media; ~8 preguntas/año en los últimos años)',
+    enfoque: 'Rentabilidad global máxima: dominando los 6 temas principales (Patología infecciosa, Neonatología, Patología respiratoria, Patología digestiva, Vacunación y Desarrollo/nutrición) se contesta el 85% de las preguntas de las últimas 5 convocatorias. Lo más rentable por relación peso/tiempo son las enfermedades exantemáticas, el calendario vacunal y crecimiento-desarrollo-nutrición. La dificultad está en la patología específica de neonatos/lactantes (sobre todo prematuros: membrana hialina, enterocolitis necrotizante, muerte súbita, bronquiolitis grave); la ventaja es que integra enfermedades clave del adulto (celíaca, asma, tos ferina, meningitis, otitis, vacunas).',
+    presentacionVideoDur: '3:42',
+    resumenVideoDur: '2:00:06',
+    horasTotales: '~19h 45min',
+    temas: [
+      { nombre: 'Patología aparato digestivo', pesoPct: 20.63, paginas: 15, horas: '3h' },
+      { nombre: 'Neonatología', pesoPct: 17.49, paginas: 32, horas: '6h 25min' },
+      { nombre: 'Desarrollo y nutrición', pesoPct: 15.4, paginas: 13, horas: '2h 35min' },
+      { nombre: 'Patología infecciosa', pesoPct: 12.27, paginas: 13, horas: '2h 15min' },
+      { nombre: 'Vacunación infantil', pesoPct: 12.27, paginas: 6, horas: '1h 15min' },
+      { nombre: 'Patología del aparato respiratorio', pesoPct: 10.97, paginas: 9, horas: '1h 50min' },
+      { nombre: 'Patología nefrourológica infantil', pesoPct: 7.83, paginas: 10, horas: '2h' },
+      { nombre: 'Oncohematología infantil', pesoPct: 3.13, paginas: 4, horas: '45min' }
+    ],
+    topSubtemas: [
+      { tema: 'Patología infecciosa', subtema: 'Enfermedades exantemáticas', pesoPct: 10.44 },
+      { tema: 'Vacunación infantil', subtema: 'Calendarios vacunales sistemáticos', pesoPct: 8.88 },
+      { tema: 'Desarrollo y nutrición', subtema: 'Crecimiento y desarrollo', pesoPct: 7.31 },
+      { tema: 'Desarrollo y nutrición', subtema: 'Nutrición', pesoPct: 7.31 },
+      { tema: 'Patología aparato digestivo', subtema: 'Diarrea. Intolerancia a la lactosa. Enfermedad celíaca', pesoPct: 5.74 },
+      { tema: 'Vacunación infantil', subtema: 'Clasificación', pesoPct: 5.22 }
+    ],
+    prioridad1V: ['Patología infecciosa', 'Neonatología', 'Vacunación infantil', 'Patología aparato digestivo', 'Patología del aparato respiratorio', 'Desarrollo y nutrición', 'Patología nefrourológica infantil', 'Oncohematología infantil'],
+    notaPrioridad: 'Orden combinando el Enfoque de ProMIR (que prioriza la tendencia de los últimos 5 años) con el Peso MIR. Patología infecciosa va primera por ser el "tema estrella por excelencia" (22,7% en 5 años, subtema exantemáticas el más preguntado) y altísima rentabilidad; Neonatología sube al 2.º (25,47% en 5 años, en ascenso). Vacunación se prioriza alto por su rentabilidad y subtemas top. Digestivo, pese a ser histórico líder (20,63%), ha mermado al 11,56% en 5 años. rabi_94 no detalla esta asignatura, así que el orden se basa íntegramente en el Enfoque + Peso MIR de ProMIR. Los 6 primeros aseguran ~85% de las preguntas.',
+  },
+  25: {
+    num: 25, pesoGlobal: '~1% de las preguntas MIR (2-3 preguntas/examen actualmente; rentabilidad global baja)',
+    enfoque: 'Asignatura de rentabilidad baja: tras su auge entre 1995-2000 (hasta 14 preguntas/examen), hoy aporta solo 2-3 preguntas (~1% del MIR). Los temas clave, que hay que saberse al dedillo por contener conceptos muy relevantes, son Introducción a la salud de la población y Economía de la salud, que juntos suman el 66% de las preguntas.',
+    presentacionVideoDur: '2:47',
+    resumenVideoDur: '0:11:08',
+    horasTotales: '2 h',
+    temas: [
+      { nombre: 'Economía de la salud', pesoPct: 48.03, paginas: 3, horas: '30min' },
+      { nombre: 'Planificación y organización sanitaria', pesoPct: 23.62, paginas: 4, horas: '40min' },
+      { nombre: 'Introducción a la salud de la población', pesoPct: 14.17, paginas: 3, horas: '30min' },
+      { nombre: 'Gestión de la calidad asistencial', pesoPct: 14.17, paginas: 2, horas: '20min' }
+    ],
+    topSubtemas: [
+      { tema: 'Economía de la salud', subtema: 'Tipos de análisis de evaluación', pesoPct: 38.58 }
+    ],
+    prioridad1V: ['Economía de la salud', 'Introducción a la salud de la población', 'Planificación y organización sanitaria', 'Gestión de la calidad asistencial'],
+    notaPrioridad: 'El Enfoque de ProMIR señala que Introducción a la salud de la población y Economía de la salud suman el 66% de las preguntas y hay que dominarlos. Combinando esto con el Peso MIR, Economía de la salud encabeza (48,03% en la asignatura y su subtema \'Tipos de análisis de evaluación\' por sí solo aporta el 38,58%), seguido de Introducción a la salud de la población (destacado en el Enfoque pese a su 14,17% de peso). Planificación y organización sanitaria, aunque pesa 23,62%, queda en tercer lugar al no destacarse en el Enfoque, y Gestión de la calidad cierra. rabi_94 no detalla esta asignatura, por lo que se prioriza según el Enfoque y el Peso MIR de ProMIR.',
+  },
+  26: {
+    num: 26, pesoGlobal: '4-5% (peso medio; ha aumentado ligeramente en los últimos 5 años por su interrelación con Neurología y Geriatría)',
+    enfoque: 'Las materias más rentables son, con diferencia, los trastornos del estado de ánimo (38%, en especial la depresión y su tratamiento), seguidos de los trastornos psicóticos (15%) y los neuróticos (12,7%): dominando estos 3 bloques se abarca casi el 65% de lo preguntado. Muy rentable también el síndrome confusional agudo (delírium) por su proximidad con Neurología y Geriatría, frecuente en el paciente hospitalizado y obliga a diagnóstico diferencial con la demencia (dominar su tratamiento y, sobre todo, su prevención).',
+    presentacionVideoDur: '3:52',
+    resumenVideoDur: '0:55:14',
+    horasTotales: '~16h 25min',
+    temas: [
+      { nombre: 'Trastornos del estado de ánimo', pesoPct: 29.95, paginas: 15, horas: '3h 20min' },
+      { nombre: 'Actualización de los trastornos neuróticos', pesoPct: 16.89, paginas: 14, horas: '3h 10min' },
+      { nombre: 'Trastornos psicóticos', pesoPct: 14.64, paginas: 9, horas: '2h' },
+      { nombre: 'Trastornos mentales orgánicos', pesoPct: 10.59, paginas: 3, horas: '40min' },
+      { nombre: 'Trastornos relacionados con sustancias y trastornos adictivos', pesoPct: 8.11, paginas: 10, horas: '2h 15min' },
+      { nombre: 'Trastornos de personalidad', pesoPct: 5.86, paginas: 3, horas: '40min' },
+      { nombre: 'Trastorno de la conducta alimentaria', pesoPct: 4.95, paginas: 4, horas: '55min' },
+      { nombre: 'Trastornos de la infancia y la adolescencia', pesoPct: 4.05, paginas: 4, horas: '55min' },
+      { nombre: 'Trastornos del sueño', pesoPct: 2.25, paginas: 4, horas: '55min' },
+      { nombre: 'Psicoterapias', pesoPct: 1.8, paginas: 3, horas: '40min' },
+      { nombre: 'Introducción', pesoPct: 0.9, paginas: 4, horas: '55min' }
+    ],
+    topSubtemas: [
+      { tema: 'Trastornos del estado de ánimo', subtema: 'Tratamiento', pesoPct: 15.54 },
+      { tema: 'Trastornos del estado de ánimo', subtema: 'Síndromes depresivos', pesoPct: 8.56 },
+      { tema: 'Trastornos mentales orgánicos', subtema: 'Síndrome confusional agudo (delírium)', pesoPct: 7.66 },
+      { tema: 'Trastornos psicóticos', subtema: 'Esquizofrenia', pesoPct: 7.66 },
+      { tema: 'Actualización de los trastornos neuróticos', subtema: 'Trastorno obsesivo-compulsivo y trastornos relacionados', pesoPct: 6.76 }
+    ],
+    prioridad1V: ['Introducción (psicofarmacología y conceptos generales)', 'Trastornos del estado de ánimo (depresión y tratamiento)', 'Actualización de los trastornos neuróticos (ansiedad, TOC)', 'Trastornos psicóticos (esquizofrenia)', 'Trastornos mentales orgánicos (síndrome confusional agudo / delírium)', 'Trastornos relacionados con sustancias y trastornos adictivos'],
+    notaPrioridad: 'El orden combina el Enfoque de ProMIR y el Peso MIR: trastornos del estado de ánimo (29,95% histórico, 34% últimos 5 años), neuróticos (16,89%) y psicóticos (14,64%) suman casi el 65% de la asignatura, por lo que son el núcleo. Coincide con rabi_94, que marca como prioritarios afectivos, ansiedad/neuróticos e Introducción/psicofarmacología; se eleva Introducción al primer puesto (aunque pese poco en preguntas) por ser base transversal para entender el tratamiento, que es el subtema más preguntado (15,54%). Se añade el delírium por su alta rentabilidad transversal con Neurología y Geriatría.',
+  },
+  27: {
+    num: 27, pesoGlobal: '~4-5% del MIR (rentabilidad global alta como asignatura auxiliar; suma de pesos absolutos ~0,69%+0,61%+... por tema, dominada por Síndromes torácicos 0,69% y Politraumatizado 0,61%)',
+    enfoque: 'Asignatura auxiliar clave para resolver casos clínicos y alguna pregunta "granuja". En Radiología, no se pregunta teoría ni imagen sin contexto: hay que dominar los patrones radiológicos más característicos y sus ejemplos en radiografía, TC y ecografía (la mayoría de imágenes se resuelven por el caso clínico). En Urgencias, auge enorme de preguntas: centrarse en los diagnósticos sindrómicos y su manejo — dolor torácico agudo, abdomen agudo, paciente politraumatizado, sepsis, cólico complicado (cólicos + fiebre) e intoxicaciones.',
+    presentacionVideoDur: '3:31',
+    resumenVideoDur: '1:26:44',
+    horasTotales: '~18 h',
+    temas: [
+      { nombre: 'Síndromes torácicos', pesoPct: 17.47, paginas: 15, horas: '3h 0min' },
+      { nombre: 'Paciente politraumatizado', pesoPct: 15.44, paginas: 9, horas: '1h 50min' },
+      { nombre: 'Radiología simple básica', pesoPct: 12.91, paginas: 17, horas: '3h 25min' },
+      { nombre: 'Tomografía computarizada', pesoPct: 11.14, paginas: 5, horas: '1h 0min' },
+      { nombre: 'Intoxicaciones agudas y patología neuropsiquiátrica en urgencias', pesoPct: 10.63, paginas: 6, horas: '1h 0min' },
+      { nombre: 'Síndromes abdominales', pesoPct: 9.11, paginas: 9, horas: '1h 50min' },
+      { nombre: 'Urgencias por patología infecciosa', pesoPct: 6.08, paginas: 3, horas: '35min' },
+      { nombre: 'Clasificación de los pacientes en urgencias extrahospitalarias y hospitalarias', pesoPct: 3.04, paginas: 3, horas: '35min' },
+      { nombre: 'Ecografía básica', pesoPct: 3.04, paginas: 5, horas: '1h 0min' },
+      { nombre: 'Resonancia magnética', pesoPct: 3.04, paginas: 4, horas: '50min' },
+      { nombre: 'Patología renal y urológica urgente', pesoPct: 2.03, paginas: 2, horas: '25min' },
+      { nombre: 'Patología endocrinológica urgente', pesoPct: 2.03, paginas: 4, horas: '50min' },
+      { nombre: 'Patología hematológica', pesoPct: 1.52, paginas: 1, horas: '15min' },
+      { nombre: 'Urgencias reumatológicas', pesoPct: 1.52, paginas: 2, horas: '25min' },
+      { nombre: 'Urgencias por agentes externos', pesoPct: 1.01, paginas: 4, horas: '50min' }
+    ],
+    topSubtemas: [
+      { tema: 'Intoxicaciones agudas y patología neuropsiquiátrica en urgencias', subtema: 'Intoxicaciones agudas en urgencias', pesoPct: 10.13 },
+      { tema: 'Síndromes torácicos', subtema: 'Disnea', pesoPct: 9.11 },
+      { tema: 'Síndromes abdominales', subtema: 'Abdomen agudo', pesoPct: 8.1 },
+      { tema: 'Radiología simple básica', subtema: 'Radiología simple de tórax', pesoPct: 7.59 },
+      { tema: 'Tomografía computarizada', subtema: 'Tomografía computarizada abdominopélvica', pesoPct: 7.59 },
+      { tema: 'Paciente politraumatizado', subtema: 'Manejo del shock hemorrágico', pesoPct: 7.09 }
+    ],
+    prioridad1V: ['Síndromes torácicos', 'Paciente politraumatizado', 'Intoxicaciones agudas y patología neuropsiquiátrica en urgencias', 'Síndromes abdominales', 'Radiología simple básica', 'Tomografía computarizada', 'Urgencias por patología infecciosa', 'Ecografía básica', 'Resonancia magnética', 'Clasificación de los pacientes en urgencias extrahospitalarias y hospitalarias'],
+    notaPrioridad: 'Orden basado en el Enfoque de ProMIR (síndromes urgentes y patrones de imagen) cruzado con el Peso MIR. Los 6 primeros temas reúnen ~76% del peso histórico de la asignatura. Se priorizan los síndromes/manejos urgentes que recoge expresamente el Enfoque (dolor torácico, politrauma/shock hemorrágico, intoxicaciones, abdomen agudo, sepsis=infecciosa) y los patrones de imagen rentables (Rx simple de tórax, TC abdominopélvica). Intoxicaciones y Politraumatizado suben respecto al peso bruto por su tendencia al alza en los últimos 5 años (Politraumatizado pasa a 14,04% y es 1.º) y por ser subtemas top. rabi_94 no detalla esta asignatura, por lo que el orden se rige íntegramente por el Enfoque y el Peso MIR de ProMIR.',
+  },
+  28: {
+    num: 28, pesoGlobal: '6% de las preguntas anuales del MIR (~12-15 preguntas/año)',
+    enfoque: 'Aunque la Reumatología no es una de las "siete asignaturas reinas", su importancia relativa es elevada (~6% del examen, 12-15 preguntas/año) y su rentabilidad es alta. Más del 50% de las preguntas se aseguran estudiando solo los cinco temas más importantes: Otras conectivopatías, Vasculitis, Espondiloartropatías, Artritis inducidas por microcristales y Lupus eritematoso sistémico.',
+    presentacionVideoDur: '4:09',
+    resumenVideoDur: '1:53:41',
+    horasTotales: '17h 35min',
+    temas: [
+      { nombre: 'Vasculitis', pesoPct: 17.35, paginas: 8, horas: '1h 50min' },
+      { nombre: 'Espondiloartropatías', pesoPct: 11.27, paginas: 8, horas: '1h 50min' },
+      { nombre: 'Otras conectivopatías', pesoPct: 10.2, paginas: 8, horas: '1h 50min' },
+      { nombre: 'Artritis reumatoide', pesoPct: 9.48, paginas: 7, horas: '1h 35min' },
+      { nombre: 'Enfermedad metabólica ósea', pesoPct: 8.77, paginas: 7, horas: '1h 35min' },
+      { nombre: 'Artropatías inducidas por cristales', pesoPct: 8.41, paginas: 6, horas: '1h 20min' },
+      { nombre: 'Lupus eritematoso sistémico. Síndrome antifosfolípido', pesoPct: 8.41, paginas: 9, horas: '2h' },
+      { nombre: 'Artritis infecciosas', pesoPct: 7.87, paginas: 5, horas: '1h 10min' },
+      { nombre: 'Introducción', pesoPct: 6.08, paginas: 7, horas: '1h 35min' },
+      { nombre: 'Amiloidosis', pesoPct: 3.94, paginas: 2, horas: '30min' },
+      { nombre: 'Artrosis', pesoPct: 3.58, paginas: 3, horas: '40min' },
+      { nombre: 'Otras artropatías', pesoPct: 3.58, paginas: 2, horas: '30min' },
+      { nombre: 'Artritis idiopática juvenil', pesoPct: 1.07, paginas: 2, horas: '30min' }
+    ],
+    topSubtemas: [
+      { tema: 'Artropatías inducidas por cristales', subtema: 'Hiperuricemia y gota', pesoPct: 6.8 },
+      { tema: 'Lupus eritematoso sistémico. Síndrome antifosfolípido', subtema: 'Lupus eritematoso sistémico', pesoPct: 6.8 },
+      { tema: 'Vasculitis', subtema: 'Vasculitis de grandes vasos', pesoPct: 6.44 },
+      { tema: 'Enfermedad metabólica ósea', subtema: 'Osteoporosis', pesoPct: 6.08 },
+      { tema: 'Espondiloartropatías', subtema: 'Espondilitis anquilosante', pesoPct: 6.08 },
+      { tema: 'Vasculitis', subtema: 'Otras vasculitis', pesoPct: 5.72 },
+      { tema: 'Vasculitis', subtema: 'Vasculitis asociadas a anticuerpos anticitoplasma de los neutrófilos', pesoPct: 5.37 },
+      { tema: 'Otras conectivopatías', subtema: 'Esclerodermia', pesoPct: 5.01 }
+    ],
+    prioridad1V: ['Vasculitis', 'Espondiloartropatías', 'Otras conectivopatías', 'Lupus eritematoso sistémico. Síndrome antifosfolípido', 'Artropatías inducidas por cristales', 'Artritis reumatoide', 'Enfermedad metabólica ósea', 'Introducción (Generalidades)', 'Artritis infecciosas', 'Amiloidosis', 'Artrosis', 'Otras artropatías', 'Artritis idiopática juvenil'],
+    notaPrioridad: 'El orden combina el Enfoque de ProMIR (los 5 temas más rentables aseguran >50% de las preguntas: Otras conectivopatías, Vasculitis, Espondiloartropatías, Microcristales y LES), el Peso MIR histórico (Vasculitis 17,35%, Espondiloartropatías 11,27%, Otras conectivopatías 10,20%) y rabi_94, que marca como núcleo de 1ª vuelta Generalidades, Microcristales, LES, Vasculitis, Artritis reumatoide y Espondiloartropatías. Coincide ampliamente con rabi_94 salvo que ProMIR prioriza más Otras conectivopatías (esclerodermia) por su alto peso, y rabi_94 añade Generalidades y Artritis reumatoide como núcleo aunque su peso aislado sea medio.',
+  },
+  29: {
+    num: 29, pesoGlobal: '~4-5% (media de casi 10 preguntas/año; de las 15 asignaturas más preguntadas)',
+    enfoque: 'Asignatura en fuerte auge (media de casi 10 preguntas/año). El grueso son extremidades: miembro inferior (26,7% de la asignatura, lo más preguntado) y miembro superior (25%). Por rentabilidad, de obligado dominio: fractura de cadera (reina de la patología quirúrgica urgente, muy preguntada como caso clínico en población envejecida), patología de rodilla (especialmente meniscos y cruzados) y hombro doloroso (tema en auge). La columna vertebral importa por su solapamiento con neurocirugía, infecciosas y reumatología. De tumores osteomusculares basta dominar qué tumor afecta a cada localización (diáfisis/metáfisis/epífisis) y la prevalencia por edad para rentabilizar casos clínicos.',
+    presentacionVideoDur: '3:58',
+    resumenVideoDur: '2:41:02',
+    horasTotales: '~31h 30min',
+    temas: [
+      { nombre: 'Patología del miembro inferior', pesoPct: 31.93, paginas: 47, horas: '9h 25min' },
+      { nombre: 'Patología del miembro superior', pesoPct: 24.01, paginas: 34, horas: '6h 50min' },
+      { nombre: 'Tumores musculoesqueléticos', pesoPct: 11.63, paginas: 21, horas: '4h 15min' },
+      { nombre: 'Patología de la columna vertebral', pesoPct: 11.14, paginas: 30, horas: '6h' },
+      { nombre: 'Fracturas. Generalidades', pesoPct: 10.89, paginas: 13, horas: '2h 35min' },
+      { nombre: 'Patología del sistema nervioso periférico', pesoPct: 10.4, paginas: 12, horas: '2h 25min' }
+    ],
+    topSubtemas: [
+      { tema: 'Patología del miembro inferior', subtema: 'Cadera y pelvis', pesoPct: 16.09 },
+      { tema: 'Patología del miembro inferior', subtema: 'Rodilla y pierna', pesoPct: 11.63 },
+      { tema: 'Patología del miembro superior', subtema: 'Patología de la cintura escapular y el hombro', pesoPct: 11.14 },
+      { tema: 'Fracturas. Generalidades', subtema: 'Fracturas. Tratamiento y complicaciones', pesoPct: 9.41 }
+    ],
+    prioridad1V: ['Patología del miembro inferior', 'Patología del miembro superior', 'Fracturas. Generalidades', 'Patología de la columna vertebral', 'Tumores musculoesqueléticos', 'Patología del sistema nervioso periférico'],
+    notaPrioridad: 'Miembro inferior (31,93%) y miembro superior (24,01%) suman ~56% de la asignatura y concentran lo más rentable según el Enfoque (fractura de cadera, rodilla/meniscos-cruzados, hombro doloroso). Fracturas. Generalidades se adelanta pese a su peso (10,89%) por ser base transversal y aportar el subtema "Tratamiento y complicaciones" (9,41%). Columna, tumores y SNP cierran la 1ª vuelta. rabi_94 no detalla esta asignatura, por lo que el orden se basa íntegramente en el Enfoque y el Peso MIR de ProMIR.',
+  },
+  30: {
+    num: 30, pesoGlobal: '2,2% del total histórico de preguntas MIR (rentabilidad media; no está en el top 15 de asignaturas)',
+    enfoque: 'Lo clave es saber qué estudiar: en los últimos 5 años el 70% de las preguntas se reparten entre tres temas: Próstata (hiperplasia benigna y cáncer de próstata), Urgencias urológicas y traumatismo genitourinario, y Urolitiasis. Les siguen de cerca Infecciones del tracto urinario y Cáncer de urotelio. Es una asignatura quirúrgica ardua (mucho tumor y estadificación) y de peso bajo, pero cada pregunta vale igual, así que conviene asegurar los temas rentables.',
+    presentacionVideoDur: '3:34',
+    resumenVideoDur: '47:16',
+    horasTotales: '9h 30min',
+    temas: [
+      { nombre: 'Próstata: hiperplasia benigna de próstata y cáncer de próstata', pesoPct: 18.51, paginas: 7, horas: '1h 25min' },
+      { nombre: 'Infecciones del tracto urinario', pesoPct: 17.21, paginas: 5, horas: '1h' },
+      { nombre: 'Urolitiasis', pesoPct: 12.34, paginas: 6, horas: '1h 15min' },
+      { nombre: 'Cáncer de riñón y otros tumores renales', pesoPct: 9.74, paginas: 5, horas: '1h' },
+      { nombre: 'Cáncer de urotelio', pesoPct: 9.74, paginas: 5, horas: '1h' },
+      { nombre: 'Urgencias urológicas y traumatismos genitourinario', pesoPct: 9.74, paginas: 4, horas: '50min' },
+      { nombre: 'Cáncer de testículo. Patología testicular benigna', pesoPct: 6.49, paginas: 3, horas: '35min' },
+      { nombre: 'Andrología. Disfunción eréctil y cáncer de pene', pesoPct: 5.19, paginas: 4, horas: '50min' },
+      { nombre: 'Urología funcional e incontinencia urinaria', pesoPct: 5.19, paginas: 3, horas: '35min' },
+      { nombre: 'Trasplante Renal', pesoPct: 4.55, paginas: 3, horas: '35min' },
+      { nombre: 'Urología Pediátrica', pesoPct: 1.3, paginas: 2, horas: '25min' }
+    ],
+    topSubtemas: [
+      { tema: 'Infecciones del tracto urinario', subtema: 'Infecciones urinarias', pesoPct: 15.91 },
+      { tema: 'Próstata: hiperplasia benigna de próstata y cáncer de próstata', subtema: 'Cáncer de próstata', pesoPct: 11.69 },
+      { tema: 'Próstata: hiperplasia benigna de próstata y cáncer de próstata', subtema: 'Hiperplasia benigna de próstata', pesoPct: 9.74 },
+      { tema: 'Cáncer de riñón y otros tumores renales', subtema: 'Cáncer de riñón', pesoPct: 9.09 }
+    ],
+    prioridad1V: ['Próstata: hiperplasia benigna de próstata y cáncer de próstata', 'Urgencias urológicas y traumatismos genitourinario', 'Urolitiasis', 'Infecciones del tracto urinario', 'Cáncer de urotelio', 'Cáncer de riñón y otros tumores renales', 'Cáncer de testículo. Patología testicular benigna', 'Urología funcional e incontinencia urinaria', 'Andrología. Disfunción eréctil y cáncer de pene', 'Trasplante Renal', 'Urología Pediátrica'],
+    notaPrioridad: 'El orden combina el Enfoque de ProMIR (en los últimos 5 años el 70% de las preguntas se concentran en Próstata, Urgencias urológicas/traumatismo GU y Urolitiasis, seguidos de ITU y Cáncer de urotelio) con el Peso MIR. Próstata encabeza por ser el más preguntado histórico (18,51%) y en los últimos 5 años (34,63%). Urgencias se prioriza alto pese a su 9,74% histórico porque dispara al 22,96% en la tendencia reciente. rabi_94 no detalla Urología, por lo que se prioriza solo según el Enfoque y el Peso MIR de ProMIR.',
+  },
+};
+
+export function detalleDe(num: number): AsignaturaDetalle | undefined {
+  return MIR_DETALLE[num];
+}
+
+export function pesoColor(pct: number): string {
+  if (pct >= 12) return '#E5484D';
+  if (pct >= 8) return '#F5A623';
+  if (pct >= 4) return '#E8C547';
+  return '#4Fae6b';
+}
