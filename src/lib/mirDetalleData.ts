@@ -14,6 +14,8 @@ export interface AsignaturaDetalle {
   enfoque: string;
   presentacionVideoDur?: string;
   resumenVideoDur?: string;
+  videoTotal?: string;
+  nVideosIntro?: number;
   horasTotales?: string;
   temas: TemaDetalle[];
   topSubtemas?: SubtemaTop[];
@@ -26,6 +28,8 @@ export const MIR_DETALLE: Record<number, AsignaturaDetalle> = {
     num: 1, pesoGlobal: 'Rentabilidad global media; asignatura pequeña (~0,36% del MIR histórico en peso total; muy pocas preguntas por año)',
     enfoque: 'El Dr. David González de Olano orienta a rentabilizar al máximo el estudio. La asignatura es pequeña y rentable de forma concentrada: "Alergia a alimentos" es el tema dominante, asegurando más de la mitad de las preguntas (55,56% histórico y 56,52% en los últimos 5 años), por lo que es el núcleo del estudio. El subtema más preguntado es la alergia a alimentos no mediada por IgE. Conviene reforzar también el tratamiento inmunomodulador (inmunoterapia), que ha ganado peso notablemente en los últimos 5 años (28,99%), y las generalidades y diagnóstico clínico de las enfermedades alérgicas.',
     presentacionVideoDur: '1:49',
+    videoTotal: '1min',
+    nVideosIntro: 1,
     horasTotales: '~3h 41min',
     temas: [
       { nombre: 'Alergia a alimentos', pesoPct: 55.56, paginas: 8, horas: '1h 14min' },
@@ -44,6 +48,8 @@ export const MIR_DETALLE: Record<number, AsignaturaDetalle> = {
     num: 2, pesoGlobal: 'Asignatura "pequeña" del MIR; rentabilidad global media. Norma: ~2 preguntas por examen (con tendencia al alza en convocatorias recientes).',
     enfoque: 'Visión generalista con los conceptos clave claros, sin profundizar. Casi el 50% del histórico se concentra en Valoración preanestésica (escala ASA, riesgo quirúrgico/hemorrágico, valoración de vía aérea, manejo de la medicación perioperatoria). La segunda pregunta suele caer en Complicaciones en anestesia (~25%, sobre todo hipertermia maligna), Monitorización (~10%, capnografía) o Fármacos (~14%, tema más difícil que cada alumno debe valorar si le compensa).',
     presentacionVideoDur: '2:33',
+    videoTotal: '2min',
+    nVideosIntro: 1,
     horasTotales: '7h 5min',
     temas: [
       { nombre: 'Valoración preanestésica', pesoPct: 41.18, paginas: 11, horas: '1h 40min' },
@@ -65,6 +71,8 @@ export const MIR_DETALLE: Record<number, AsignaturaDetalle> = {
     enfoque: 'Asignatura muy importante y estable, de las más preguntadas del MIR junto con Digestivo, y muy interrelacionada con otras especialidades (Endocrino, Nefro, Neuro, Infecciosas). Dominando Cardiología básica, Riesgo cardiovascular, Insuficiencia cardíaca y Cardiopatía isquémica se asegura el 75% de la asignatura. El foco se ha desplazado de la HTA clásica hacia el manejo integral del riesgo cardiovascular (colesterol y nuevos fármacos para la diabetes), mientras descienden algo cardiopatía isquémica, trastornos del ritmo y patología pericárdica.',
     presentacionVideoDur: '5:01',
     resumenVideoDur: '2:27:38',
+    videoTotal: '2h 32min',
+    nVideosIntro: 2,
     horasTotales: '~67 h 40 min',
     temas: [
       { nombre: 'Cardiología básica', pesoPct: 19.13, paginas: 20, horas: '6h 40min' },
@@ -101,7 +109,9 @@ export const MIR_DETALLE: Record<number, AsignaturaDetalle> = {
     num: 4, pesoGlobal: 'Mínima (~50 preguntas en toda la serie histórica desde los años 80; >20 en los últimos 5 años, ~1 pregunta/año). Rentabilidad global: media.',
     enfoque: 'Asignatura pequeña: se recomienda una lectura profunda en el primer contacto para una buena base y, cuando falte tiempo, priorizar otras asignaturas. Aun así, suele caer al menos 1 pregunta por examen. Los temas más rentables son: Control de síntomas (sobre todo el tratamiento del dolor con la escala de la OMS), Escenarios al final de la vida, Urgencias oncológicas y Sedación paliativa.',
     presentacionVideoDur: '3:28',
-    resumenVideoDur: '0:53:31',
+    resumenVideoDur: '53:31',
+    videoTotal: '56min',
+    nVideosIntro: 2,
     horasTotales: '~6h 30min',
     temas: [
       { nombre: 'Control de síntomas', pesoPct: 49.65, paginas: 19, horas: '3h 10min' },
@@ -126,6 +136,8 @@ export const MIR_DETALLE: Record<number, AsignaturaDetalle> = {
     enfoque: 'Asignatura muy específica pero rentable: "arma de doble filo" (como ORL y Oftalmo) donde se marca diferencia si se estudia dirigido a lo de mayor relevancia y se omite lo superfluo. Estudia por orden de importancia, no por páginas. Lo más preguntado y rentable: Oncología cutánea (melanoma y tratamientos dirigidos), Dermatosis eritematoescamosas (liquen plano, psoriasis, pitiriasis rosada de Gibert), Dermatosis ampollosas autoinmunes (DD pénfigo/penfigoide) y las estrías angioides (seudoxantoma elástico/Paget). Por eficiencia: retinoides y embarazo, paniculitis/eritema nodoso (causa más frecuente: amigdalitis estreptocócica) y pitiriasis versicolor (imagen y tratamiento).',
     presentacionVideoDur: '4:28',
     resumenVideoDur: '3:18:11',
+    videoTotal: '3h 22min',
+    nVideosIntro: 2,
     horasTotales: '18h 35min',
     temas: [
       { nombre: 'Oncología cutánea', pesoPct: 23.39, paginas: 19, horas: '3h 50min' },
@@ -155,6 +167,8 @@ export const MIR_DETALLE: Record<number, AsignaturaDetalle> = {
     enfoque: 'Asignatura clave y muy rentable (rentabilidad global alta): casi el 80% de las preguntas se concentran en Diabetes mellitus, Tiroides, Hipotálamo e hipófisis, Alteraciones del metabolismo lipídico y Glándulas suprarrenales. Conviene estudiarla desde el inicio para tener bases claras, y tiene temas muy eficientes donde avanzar poco (lipoproteínas, tumores neuroendocrinos, obesidad) da 1-2 preguntas de ventaja.',
     presentacionVideoDur: '3:09',
     resumenVideoDur: '3:12:09',
+    videoTotal: '3h 15min',
+    nVideosIntro: 2,
     horasTotales: '25h 15min',
     temas: [
       { nombre: 'Diabetes mellitus', pesoPct: 21.35, paginas: 17, horas: '4h 15min' },
@@ -191,6 +205,8 @@ export const MIR_DETALLE: Record<number, AsignaturaDetalle> = {
     enfoque: 'Asignatura de gran importancia y muy extensa (nexo entre especialidades: digestivo, neuro, cardiopulmonar, inmunología, preventiva). ProMIR recomienda empezar por un estudio concienzudo de Antibacterianos, que allana el resto. En los últimos 5 años el Ministerio ha desplazado el interés desde VIH/tuberculosis/tropicales hacia sepsis, infecciones nosocomiales, respiratorias (neumonía/COVID-19), SNC y endocarditis. Neumonía, COVID-19, infecciones nosocomiales y SNC suman cada uno ~8,5% y juntos cubren >30%; añadiendo endocarditis, VIH y tuberculosis se alcanza el 60% de las preguntas. Atención a temas de actualidad.',
     presentacionVideoDur: '2:51',
     resumenVideoDur: '1:13:00',
+    videoTotal: '1h 15min',
+    nVideosIntro: 2,
     horasTotales: '~62 h 25 min',
     temas: [
       { nombre: 'Infecciones tropicales', pesoPct: 12.56, paginas: 19, horas: '4h 45min' },
@@ -237,6 +253,8 @@ export const MIR_DETALLE: Record<number, AsignaturaDetalle> = {
     enfoque: 'Asignatura importante y muy rentable: aunque exige memorizar muchos "nombrejos", fórmulas y tipos de estudios, hay que sabérsela al dedillo. ProMIR recomienda profundizar sobre todo en: tipos de estudios epidemiológicos (clasificación de los estudios de investigación), evaluación de pruebas diagnósticas (sensibilidad/especificidad, VPP/VPN, curvas ROC) y estudios experimentales / ensayo clínico (definición, tipos y fases). Estos bloques concentran la mayor parte de las preguntas.',
     presentacionVideoDur: '2:15',
     resumenVideoDur: '36:15',
+    videoTotal: '38min',
+    nVideosIntro: 2,
     horasTotales: '~10 h',
     temas: [
       { nombre: 'Estudios experimentales: Ensayo clínico', pesoPct: 32.22, paginas: 11, horas: '2h 45min' },
@@ -260,7 +278,9 @@ export const MIR_DETALLE: Record<number, AsignaturaDetalle> = {
     num: 9, pesoGlobal: 'Bajo / residual — la suma del peso histórico de la asignatura ronda el ~1,5% del MIR, y en los últimos 5 años no ha habido ninguna pregunta. Rentabilidad global "media" (los conceptos se reutilizan al interpretar artículos en Epidemiología/Estadística aplicada).',
     enfoque: 'Es una asignatura conceptual (no memorística) que obliga a entender conceptos abstractos. Históricamente se preguntó entre los 90 y 2010, pero en los últimos 5 años no ha caído ninguna pregunta. Para quien tenga poco tiempo, lo imprescindible es: (1) Inferencia estadística — diferencias entre error tipo 1 y tipo 2, y entre media/IC de una muestra vs. media de medias/error estándar de la media de una población; y (2) Pruebas de contraste estadístico — saber qué test usar según la variable dependiente sea paramétrica, no paramétrica, continua o discreta. Apoyarse en las tablas/esquemas de fin de capítulo para hacer un "mapa mental".',
     presentacionVideoDur: '2:00',
-    resumenVideoDur: '0:16:28',
+    resumenVideoDur: '16:28',
+    videoTotal: '18min',
+    nVideosIntro: 2,
     horasTotales: '2h 20min',
     temas: [
       { nombre: 'Estadística inferencial', pesoPct: 80.95, paginas: 8, horas: '1h 20min' },
@@ -278,7 +298,9 @@ export const MIR_DETALLE: Record<number, AsignaturaDetalle> = {
     num: 10, pesoGlobal: '~0,6-0,8% del MIR (rentabilidad global baja; ~1-2 preguntas/año)',
     enfoque: 'El verdadero motivo de estudio no son los fármacos de cada especialidad, sino la farmacocinética y farmacodinámica que subyace a la efectividad de los medicamentos. Es una asignatura de importancia media-alta dentro de su (escaso) volumen, con presencia incrementada en los últimos años: cabe esperar un par de preguntas. Hay que llevar bien estudiados tres bloques rentables: farmacocinética, interacciones (inductores e inhibidores del CYP) y reacciones adversas farmacológicas.',
     presentacionVideoDur: '2:41',
-    resumenVideoDur: '0:34:14',
+    resumenVideoDur: '34:14',
+    videoTotal: '36min',
+    nVideosIntro: 2,
     horasTotales: '~1h 50min',
     temas: [
       { nombre: 'Conceptos generales', pesoPct: 100, paginas: 12, horas: '1h 50min' }
@@ -294,6 +316,8 @@ export const MIR_DETALLE: Record<number, AsignaturaDetalle> = {
     enfoque: 'Incluye Cirugía General y Aparato Digestivo; rentabilidad global ALTA. Clásicamente el 60% de las preguntas se concentra en tres temas: enfermedades del colon, del intestino delgado y del estómago. El hígado y el colon son los temas estrella consolidados como de obligado estudio, seguidos muy de cerca por el intestino delgado (que ha crecido notablemente). Tendencia reciente: aumento de patología biliar y, más discreto, esofágica/pancreática; descenso de hígado y estómago.',
     presentacionVideoDur: '3:48',
     resumenVideoDur: '3:21:17',
+    videoTotal: '3h 25min',
+    nVideosIntro: 2,
     horasTotales: '46h 40min',
     temas: [
       { nombre: 'Enfermedades del hígado', pesoPct: 22.13, paginas: 42, horas: '14h' },
@@ -324,6 +348,8 @@ export const MIR_DETALLE: Record<number, AsignaturaDetalle> = {
     enfoque: 'El grueso de las preguntas (85%) está en Enfermedades genéticas: enfermedades con herencias características (autosómica dominante/recesiva, ligada al X, mitocondrial) donde hay que deducir la herencia del caso clínico, y la Genética en Oncología (síndromes de inestabilidad, oncogenes/supresores/reparadores y su asociación a tumores). Conceptos generales es imprescindible dominarlo: tipos de herencia y su probabilidad, y distinguir oncogenes, supresores y reparadores.',
     presentacionVideoDur: '2:09',
     resumenVideoDur: '31:33',
+    videoTotal: '33min',
+    nVideosIntro: 2,
     horasTotales: '2h 40min',
     temas: [
       { nombre: 'Enfermedades genéticas', pesoPct: 85.32, paginas: 10, horas: '1h 40min' },
@@ -340,6 +366,8 @@ export const MIR_DETALLE: Record<number, AsignaturaDetalle> = {
     enfoque: 'La presencia de Geriatría en el MIR crece de forma sostenida (media de 4-8 preguntas/año en las últimas 5 convocatorias) porque las plantas de hospitalización están llenas de ancianos, lo que obliga a manejar interacciones farmacológicas y complicaciones específicas de la tercera edad. Hay que repasar a fondo el tema propio y, además, prestar atención a las complicaciones de las cirugías de otras asignaturas y a los efectos adversos de los fármacos aplicados a un paciente anciano. Los apartados más rentables son la Estructura y proceso de la valoración geriátrica (24%) y los Síndromes geriátricos (22,4%), que juntos concentran cerca del 50% de las preguntas.',
     presentacionVideoDur: '4:26',
     resumenVideoDur: '1:26:09',
+    videoTotal: '1h 30min',
+    nVideosIntro: 2,
     horasTotales: '7h 10min',
     temas: [
       { nombre: 'La enfermedad en las personas mayores', pesoPct: 47.2, paginas: 13, horas: '2h 10min' },
@@ -358,7 +386,9 @@ export const MIR_DETALLE: Record<number, AsignaturaDetalle> = {
     num: 14, pesoGlobal: '~3% del MIR (10-14 preguntas/año, constante)',
     enfoque: 'Asignatura difícil que combina imagen, cirugía, oncología y obstetricia; rentabilidad global alta. La mayoría de las preguntas se aseguran con tres pilares: patología maligna de la mama (16% de la asignatura, ~1% del MIR), oncología ginecológica (ovario+cérvix+endometrio, ~8% del MIR) y patología obstétrica específica (control de la gestación + complicaciones maternas suman 18%). Anticoncepción ha ganado interés reciente (6%). Como segundo eslabón muy rentable por acumular preguntas sin ser extensos: menopausia (~5%), reproducción asistida/esterilidad (~3%) y endometriosis (~3%).',
     presentacionVideoDur: '4:13',
-    resumenVideoDur: '1:31:38',
+    resumenVideoDur: '1:39:44',
+    videoTotal: '1h 43min',
+    nVideosIntro: 3,
     horasTotales: '~56 h',
     temas: [
       { nombre: 'Patología maligna de la mama. Cáncer de mama', pesoPct: 15.71, paginas: 15, horas: '3h 20min' },
@@ -422,6 +452,8 @@ export const MIR_DETALLE: Record<number, AsignaturaDetalle> = {
     num: 15, pesoGlobal: 'Media (~5%): 228 preguntas en las últimas 20 convocatorias, peso relativo estable por debajo del 5%',
     enfoque: '3 temas concentran el 80% de lo que se pregunta: las alteraciones de la coagulación sanguínea (25%, con foco en alteraciones plaquetarias) son lo más rentable; le siguen las anemias hemolíticas (18%) junto a las carenciales (9%), que suman casi el 30% en los últimos 5 años. La serie blanca, lo más difícil y novedoso, pesa menos: linfomas (11%), leucemias agudas (9%) e insuficiencias medulares (9%). Temas breves muy rentables por su brevedad: transfusiones, gammapatías monoclonales y trasplante de progenitores (18% en conjunto).',
     presentacionVideoDur: '3:03',
+    videoTotal: '3min',
+    nVideosIntro: 1,
     horasTotales: '~23h 20min',
     temas: [
       { nombre: 'Alteraciones de la coagulación sanguínea', pesoPct: 21.53, paginas: 16, horas: '3h 30min' },
@@ -456,6 +488,8 @@ export const MIR_DETALLE: Record<number, AsignaturaDetalle> = {
     enfoque: 'Asignatura farragosa pero rentable para quien busca puntos extra. Con poco tiempo, más del 70% de las preguntas de los últimos 10 años se cubren con: Inmunodeficiencias primarias, Componentes del sistema inmune y las reglas mnemotécnicas/conceptos clave del resto de apartados. Conviene apoyarse en los resúmenes esquemáticos (tablas/esquemas) durante la primera vuelta.',
     presentacionVideoDur: '2:43',
     resumenVideoDur: '1:10:05',
+    videoTotal: '1h 12min',
+    nVideosIntro: 2,
     horasTotales: '~6h 10min',
     temas: [
       { nombre: 'Inmunología básica', pesoPct: 52.11, paginas: 18, horas: '3h 35min' },
@@ -471,7 +505,9 @@ export const MIR_DETALLE: Record<number, AsignaturaDetalle> = {
     num: 17, pesoGlobal: 'Baja (~1,2% de las preguntas del MIR; 11 preguntas en los últimos 5 años)',
     enfoque: 'Asignatura corta y de peso bajo en el MIR, pero muy rentable por su escasa extensión: casi 40% de las preguntas históricas se concentran en Principios de bioética y relación médico-paciente. Si hay poco tiempo, ProMIR recomienda priorizar Principios de bioética y relación médico-paciente (33% de las preguntas), Documentos médico-legales y medicina del trabajo (17%) y Situación de últimos días (17%); el resto de temas forenses son prácticamente prescindibles.',
     presentacionVideoDur: '2:40',
-    resumenVideoDur: '0:49:55',
+    resumenVideoDur: '49:55',
+    videoTotal: '52min',
+    nVideosIntro: 2,
     horasTotales: '~8h 40min',
     temas: [
       { nombre: 'Principios de bioética y relación médico-paciente', pesoPct: 39.84, paginas: 4, horas: '40min' },
@@ -503,6 +539,8 @@ export const MIR_DETALLE: Record<number, AsignaturaDetalle> = {
     num: 18, pesoGlobal: '~5% del MIR (importancia media; Nefrología aporta información clave para HTA, DM, microangiopatías trombóticas, trasplante e inmunosupresión)',
     enfoque: 'Asignatura de rentabilidad media muy transversal. Lo más rentable es crear base con fisiología renal y trastornos hidroelectrolíticos/equilibrio ácido-base, que llevan a entender el fracaso renal agudo y la enfermedad renal crónica: estos 3 bloques juntos suponen casi el 50% de lo preguntado. Hay que dominar el diagnóstico de los trastornos hidroelectrolíticos y ácido-base, el algoritmo diagnóstico-etiológico del fracaso renal agudo y el manejo de las complicaciones de la ERC. Riñón y enfermedades sistémicas (riesgo cardiovascular del nefrópata, nefropatía diabética y discrasias de células plasmáticas) gana peso; las glomerulonefritis primarias pierden importancia relativa (de ~14% a 11%).',
     presentacionVideoDur: '3:23',
+    videoTotal: '3min',
+    nVideosIntro: 1,
     horasTotales: '~20h 10min',
     temas: [
       { nombre: 'Fisiología renal: función renal, alteraciones hidroelectrolíticas y equilibrio ácido-base', pesoPct: 22.15, paginas: 22, horas: '4h 25min' },
@@ -531,7 +569,8 @@ export const MIR_DETALLE: Record<number, AsignaturaDetalle> = {
   19: {
     num: 19, pesoGlobal: '~6% del total del examen MIR (10-13 preguntas/año en los últimos 5 años)',
     enfoque: 'Neumología es una de las asignaturas más importantes del MIR, aunque con descenso de preguntas en los últimos 5 años (10-13/año, ~6% del examen). Los cuatro temas que aseguran ~50% de las preguntas son Fisiología y fisiopatología del aparato respiratorio, EPOC, Enfermedades intersticiales y Enfermedades de la pleura, mediastino y diafragma. Les siguen Cáncer de pulmón (8%) y Asma (6%), este último con cambios recientes en algoritmos diagnóstico-terapéuticos susceptibles de ser preguntados.',
-    presentacionVideoDur: '4:42',
+    presentacionVideoDur: '0:00',
+    nVideosIntro: 2,
     horasTotales: '~24 h 35 min',
     temas: [
       { nombre: 'Cáncer de pulmón', pesoPct: 13.62, paginas: 12, horas: '3h' },
@@ -567,6 +606,8 @@ export const MIR_DETALLE: Record<number, AsignaturaDetalle> = {
     num: 20, pesoGlobal: '~8% en los últimos 5 años (75 preguntas, ~15/año; top 7 del MIR)',
     enfoque: 'La rentabilidad es alta: Neurología ha subido a las top 7 del MIR (~8%). El bloque de Neurocirugía es el más preguntado y ha ganado aún más peso (del 17% a casi 23%/28% en los últimos 5 años), con la patología raquimedular y los tumores cerebrales como núcleo. Le siguen la enfermedad cerebrovascular (ictus, ~10%), los trastornos del movimiento (parkinsonismos, ~11%) y las demencias (~8%). La semiología/anatomía, aunque ha bajado de ~14% a ~7,8%, sigue siendo imprescindible porque sostiene los casos clínicos transversales. Atención también a epilepsia, cefaleas, neuropatías y encefalitis (preguntas transversales infecto-neuro y geriatría-neuro-psiquiatría).',
     presentacionVideoDur: '4:57',
+    videoTotal: '4min',
+    nVideosIntro: 1,
     horasTotales: '23h 50min',
     temas: [
       { nombre: 'Neurocirugía', pesoPct: 19.43, paginas: 15, horas: '4h 20min' },
@@ -601,6 +642,8 @@ export const MIR_DETALLE: Record<number, AsignaturaDetalle> = {
     enfoque: 'Asignatura específica pero rentable si se estudia bien dirigida: estudiar por orden de importancia, no por temario. Retina es la reina (35-40% de la asignatura, hay que dominarla casi entera: degeneraciones, alteraciones vasculares en diabetes, desprendimiento). Glaucoma es el 2º tema (~11%), centrándose en el diagnóstico diferencial del ojo rojo doloroso (escleritis vs glaucoma agudo vs uveítis anterior); comparte importancia con Conjuntiva. En 3er lugar Neurooftalmología (campo visual, parálisis del III par, papilitis vs neuritis posterior), que enlaza con Neurología. No olvidar Uveítis anterior, uno de los subtemas más preguntados.',
     presentacionVideoDur: '3:00',
     resumenVideoDur: '1:24:29',
+    videoTotal: '1h 27min',
+    nVideosIntro: 2,
     horasTotales: '~9h 50min',
     temas: [
       { nombre: 'Retina', pesoPct: 35.52, paginas: 11, horas: '1h 50min' },
@@ -631,6 +674,8 @@ export const MIR_DETALLE: Record<number, AsignaturaDetalle> = {
     enfoque: 'Asignatura auxiliar: leerla pronto pero estudiarla a fondo solo tras dominar los cimientos del MIR y las neoplasias en sus especialidades (mama, colon, pulmón van a caballo con Gineco/Neumo/Digestivo). Lo más rentable y "específico" de esta asignatura está en Urgencias oncológicas (20% de las preguntas: neutropenia febril, síndrome de vena cava superior, taponamiento pericárdico, compresión medular, síndrome de lisis tumoral), seguido de Conceptos generales (15%) y Tratamiento sistémico (12%). También merecen repaso las escalas de funcionalidad (ECOG y Karnofsky), la epidemiología del cáncer (frecuencia, mortalidad) y los tratamientos sistémicos con sus efectos adversos más frecuentes.',
     presentacionVideoDur: '2:17',
     resumenVideoDur: '1:09:47',
+    videoTotal: '1h 12min',
+    nVideosIntro: 2,
     horasTotales: '~6h 5min',
     temas: [
       { nombre: 'Urgencias oncológicas', pesoPct: 17.86, paginas: 6, horas: '1h 5min' },
@@ -656,6 +701,8 @@ export const MIR_DETALLE: Record<number, AsignaturaDetalle> = {
     num: 23, pesoGlobal: '~2,76% del MIR (histórico ~2,42%, en ascenso hasta ~4% en convocatorias recientes; 3-5 preguntas por examen)',
     enfoque: 'Asignatura muy específica pero altamente rentable y en fuerte crecimiento (de 2,42% a ~4% del MIR): a poco que se dominen las bases se contesta gran parte de las preguntas, marcando diferencia si se estudia bien dirigida. Lo que asegura la mayor parte de las preguntas: Oído (exploración Weber/Rinne, sordera transmisión vs sensitiva, neurinoma del acústico, otoesclerosis, vértigos) y Faringe (patología tumoral, diagnóstico diferencial de amigdalitis e indicaciones de amigdalectomía, angiofibroma de cavum). Muy rentables también la Patología maxilofacial (traumatismos y fracturas faciales, en gran aumento) y la Laringe (nódulos/pólipos y cáncer glótico vs supraglótico).',
     presentacionVideoDur: '3:19',
+    videoTotal: '3min',
+    nVideosIntro: 1,
     horasTotales: '11h 20min',
     temas: [
       { nombre: 'Oído', pesoPct: 34.42, paginas: 21, horas: '4h 15min' },
@@ -679,6 +726,8 @@ export const MIR_DETALLE: Record<number, AsignaturaDetalle> = {
     enfoque: 'Rentabilidad global máxima: dominando los 6 temas principales (Patología infecciosa, Neonatología, Patología respiratoria, Patología digestiva, Vacunación y Desarrollo/nutrición) se contesta el 85% de las preguntas de las últimas 5 convocatorias. Lo más rentable por relación peso/tiempo son las enfermedades exantemáticas, el calendario vacunal y crecimiento-desarrollo-nutrición. La dificultad está en la patología específica de neonatos/lactantes (sobre todo prematuros: membrana hialina, enterocolitis necrotizante, muerte súbita, bronquiolitis grave); la ventaja es que integra enfermedades clave del adulto (celíaca, asma, tos ferina, meningitis, otitis, vacunas).',
     presentacionVideoDur: '3:42',
     resumenVideoDur: '2:00:06',
+    videoTotal: '2h 3min',
+    nVideosIntro: 2,
     horasTotales: '~19h 45min',
     temas: [
       { nombre: 'Patología aparato digestivo', pesoPct: 20.63, paginas: 15, horas: '3h' },
@@ -705,7 +754,9 @@ export const MIR_DETALLE: Record<number, AsignaturaDetalle> = {
     num: 25, pesoGlobal: '~1% de las preguntas MIR (2-3 preguntas/examen actualmente; rentabilidad global baja)',
     enfoque: 'Asignatura de rentabilidad baja: tras su auge entre 1995-2000 (hasta 14 preguntas/examen), hoy aporta solo 2-3 preguntas (~1% del MIR). Los temas clave, que hay que saberse al dedillo por contener conceptos muy relevantes, son Introducción a la salud de la población y Economía de la salud, que juntos suman el 66% de las preguntas.',
     presentacionVideoDur: '2:47',
-    resumenVideoDur: '0:11:08',
+    resumenVideoDur: '11:08',
+    videoTotal: '13min',
+    nVideosIntro: 2,
     horasTotales: '2 h',
     temas: [
       { nombre: 'Economía de la salud', pesoPct: 48.03, paginas: 3, horas: '30min' },
@@ -723,7 +774,9 @@ export const MIR_DETALLE: Record<number, AsignaturaDetalle> = {
     num: 26, pesoGlobal: '4-5% (peso medio; ha aumentado ligeramente en los últimos 5 años por su interrelación con Neurología y Geriatría)',
     enfoque: 'Las materias más rentables son, con diferencia, los trastornos del estado de ánimo (38%, en especial la depresión y su tratamiento), seguidos de los trastornos psicóticos (15%) y los neuróticos (12,7%): dominando estos 3 bloques se abarca casi el 65% de lo preguntado. Muy rentable también el síndrome confusional agudo (delírium) por su proximidad con Neurología y Geriatría, frecuente en el paciente hospitalizado y obliga a diagnóstico diferencial con la demencia (dominar su tratamiento y, sobre todo, su prevención).',
     presentacionVideoDur: '3:52',
-    resumenVideoDur: '0:55:14',
+    resumenVideoDur: '55:14',
+    videoTotal: '59min',
+    nVideosIntro: 2,
     horasTotales: '~16h 25min',
     temas: [
       { nombre: 'Trastornos del estado de ánimo', pesoPct: 29.95, paginas: 15, horas: '3h 20min' },
@@ -753,6 +806,8 @@ export const MIR_DETALLE: Record<number, AsignaturaDetalle> = {
     enfoque: 'Asignatura auxiliar clave para resolver casos clínicos y alguna pregunta "granuja". En Radiología, no se pregunta teoría ni imagen sin contexto: hay que dominar los patrones radiológicos más característicos y sus ejemplos en radiografía, TC y ecografía (la mayoría de imágenes se resuelven por el caso clínico). En Urgencias, auge enorme de preguntas: centrarse en los diagnósticos sindrómicos y su manejo — dolor torácico agudo, abdomen agudo, paciente politraumatizado, sepsis, cólico complicado (cólicos + fiebre) e intoxicaciones.',
     presentacionVideoDur: '3:31',
     resumenVideoDur: '1:26:44',
+    videoTotal: '1h 30min',
+    nVideosIntro: 2,
     horasTotales: '~18 h',
     temas: [
       { nombre: 'Síndromes torácicos', pesoPct: 17.47, paginas: 15, horas: '3h 0min' },
@@ -787,6 +842,8 @@ export const MIR_DETALLE: Record<number, AsignaturaDetalle> = {
     enfoque: 'Aunque la Reumatología no es una de las "siete asignaturas reinas", su importancia relativa es elevada (~6% del examen, 12-15 preguntas/año) y su rentabilidad es alta. Más del 50% de las preguntas se aseguran estudiando solo los cinco temas más importantes: Otras conectivopatías, Vasculitis, Espondiloartropatías, Artritis inducidas por microcristales y Lupus eritematoso sistémico.',
     presentacionVideoDur: '4:09',
     resumenVideoDur: '1:53:41',
+    videoTotal: '1h 57min',
+    nVideosIntro: 2,
     horasTotales: '17h 35min',
     temas: [
       { nombre: 'Vasculitis', pesoPct: 17.35, paginas: 8, horas: '1h 50min' },
@@ -821,6 +878,8 @@ export const MIR_DETALLE: Record<number, AsignaturaDetalle> = {
     enfoque: 'Asignatura en fuerte auge (media de casi 10 preguntas/año). El grueso son extremidades: miembro inferior (26,7% de la asignatura, lo más preguntado) y miembro superior (25%). Por rentabilidad, de obligado dominio: fractura de cadera (reina de la patología quirúrgica urgente, muy preguntada como caso clínico en población envejecida), patología de rodilla (especialmente meniscos y cruzados) y hombro doloroso (tema en auge). La columna vertebral importa por su solapamiento con neurocirugía, infecciosas y reumatología. De tumores osteomusculares basta dominar qué tumor afecta a cada localización (diáfisis/metáfisis/epífisis) y la prevalencia por edad para rentabilizar casos clínicos.',
     presentacionVideoDur: '3:58',
     resumenVideoDur: '2:41:02',
+    videoTotal: '2h 45min',
+    nVideosIntro: 2,
     horasTotales: '~31h 30min',
     temas: [
       { nombre: 'Patología del miembro inferior', pesoPct: 31.93, paginas: 47, horas: '9h 25min' },
@@ -844,6 +903,8 @@ export const MIR_DETALLE: Record<number, AsignaturaDetalle> = {
     enfoque: 'Lo clave es saber qué estudiar: en los últimos 5 años el 70% de las preguntas se reparten entre tres temas: Próstata (hiperplasia benigna y cáncer de próstata), Urgencias urológicas y traumatismo genitourinario, y Urolitiasis. Les siguen de cerca Infecciones del tracto urinario y Cáncer de urotelio. Es una asignatura quirúrgica ardua (mucho tumor y estadificación) y de peso bajo, pero cada pregunta vale igual, así que conviene asegurar los temas rentables.',
     presentacionVideoDur: '3:34',
     resumenVideoDur: '47:16',
+    videoTotal: '50min',
+    nVideosIntro: 2,
     horasTotales: '9h 30min',
     temas: [
       { nombre: 'Próstata: hiperplasia benigna de próstata y cáncer de próstata', pesoPct: 18.51, paginas: 7, horas: '1h 25min' },

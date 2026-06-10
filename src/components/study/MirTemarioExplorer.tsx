@@ -69,7 +69,7 @@ function AsignaturaCard({ a, index }: { a: MirAsignatura; index: number }) {
               <Text style={st.metaSub}>{realCaps.length} temas{det?.horasTotales ? ` · ${det.horasTotales}` : ''}</Text>
               {prio ? <View style={st.prioFlag}><Text style={st.prioFlagTxt}>★ rabi_94</Text></View> : null}
               {recursos.length ? <View style={st.driveFlag}><Text style={st.driveFlagTxt}>📄 {recursos.length} resúmenes</Text></View> : null}
-              {det?.resumenVideoDur ? <View style={st.vidFlag}><Text style={st.vidFlagTxt}>▶ {det.resumenVideoDur}</Text></View> : null}
+              {det?.videoTotal ? <View style={st.vidFlag}><Text style={st.vidFlagTxt}>▶ {det.videoTotal} vídeo</Text></View> : null}
             </View>
           </View>
           <Text style={[st.caret, open && { color: AMBER }]}>{open ? '▾' : '▸'}</Text>
@@ -95,6 +95,33 @@ function AsignaturaCard({ a, index }: { a: MirAsignatura; index: number }) {
                     ) : null}
                   </View>
                 )}
+
+                {/* RUTA DE ESTUDIO — cómo avanzar (entrelaza Drive + vídeo + temas) */}
+                <View style={st.rutaBox}>
+                  <Text style={st.rutaTitle}>🧭 Ruta de estudio · cómo avanzar</Text>
+                  <View style={st.rutaStep}>
+                    <Text style={st.rutaN}>1</Text>
+                    <Text style={st.rutaTxt}>
+                      <Text style={st.rutaB}>Esquema.</Text> Lee primero un resumen para captar la estructura{recursos.length ? ` → ${recursos.map((r) => r.fuente).filter((v, i, a) => a.indexOf(v) === i).join(' / ')}` : ''} + el <Text style={{ color: '#AFCBFF' }}>Resumen oficial de ProMIR</Text> (pestaña Recursos).
+                    </Text>
+                  </View>
+                  {det.resumenVideoDur ? (
+                    <View style={st.rutaStep}>
+                      <Text style={st.rutaN}>2</Text>
+                      <Text style={st.rutaTxt}><Text style={st.rutaB}>Vídeo.</Text> Ve la <Text style={{ color: Colors.green }}>videoclase resumen ({det.resumenVideoDur})</Text> para fijar el global de la asignatura.</Text>
+                    </View>
+                  ) : null}
+                  <View style={st.rutaStep}>
+                    <Text style={st.rutaN}>{det.resumenVideoDur ? 3 : 2}</Text>
+                    <Text style={st.rutaTxt}>
+                      <Text style={st.rutaB}>Avanza.</Text> Estudia los temas en el orden de prioridad de abajo{det.horasTotales ? ` (~${det.horasTotales} de lectura)` : ''}: empieza por <Text style={{ color: AMBER }}>{det.prioridad1V.slice(0, 3).join(' → ')}</Text>, haciendo preguntas tras cada tema.
+                    </Text>
+                  </View>
+                  <View style={st.rutaStep}>
+                    <Text style={st.rutaN}>{det.resumenVideoDur ? 4 : 3}</Text>
+                    <Text style={st.rutaTxt}><Text style={st.rutaB}>Repaso.</Text> Antes de cerrar, domina los <Text style={{ color: AMBER }}>subtemas más preguntados</Text> (abajo).</Text>
+                  </View>
+                </View>
 
                 {/* Enfoque ProMIR */}
                 <View style={[st.enfoqueBox, { borderColor: tier.color + '40' }]}>
@@ -235,6 +262,12 @@ const st = StyleSheet.create({
   vidBtn: { backgroundColor: Colors.green + '18', borderRadius: BorderRadius.md, borderWidth: 1, borderColor: Colors.green + '44', paddingVertical: 6, paddingHorizontal: 10 },
   vidBtnTxt: { fontSize: FontSize.labelMd, fontWeight: '700', color: Colors.green },
 
+  rutaBox: { borderWidth: 1, borderColor: 'rgba(123,177,255,0.3)', borderRadius: BorderRadius.md, padding: Spacing.md, backgroundColor: 'rgba(123,177,255,0.05)', marginBottom: Spacing.sm },
+  rutaTitle: { fontSize: FontSize.labelMd, fontWeight: '800', color: '#AFCBFF', marginBottom: 7 },
+  rutaStep: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, marginBottom: 6 },
+  rutaN: { fontSize: 10, fontWeight: '800', color: '#0A1424', backgroundColor: '#7BB1FF', borderRadius: 8, width: 16, height: 16, textAlign: 'center', lineHeight: 16, overflow: 'hidden' },
+  rutaTxt: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 17 },
+  rutaB: { color: Colors.onSurface, fontWeight: '700' },
   boxLbl: { fontSize: 10, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 0.4, marginBottom: 6 },
   enfoqueBox: { borderWidth: 1, borderRadius: BorderRadius.md, padding: Spacing.md, marginBottom: Spacing.sm, backgroundColor: 'rgba(255,255,255,0.02)' },
   enfoqueTxt: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 17 },
