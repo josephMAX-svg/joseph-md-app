@@ -28,6 +28,7 @@ import {
 import type { AgentReport, TodayMetrics } from '../lib/supabase';
 import ApexSubmitModal from '../components/ApexSubmitModal';
 import AgentReportViewer from '../components/AgentReportViewer';
+import TodayMission from '../components/home/TodayMission';
 
 const TIMER_STORAGE_KEY = '@joseph_md_deep_work_seconds';
 const TIMER_START_KEY = '@joseph_md_deep_work_start';
@@ -281,6 +282,9 @@ export default function HomeScreen() {
           </Text>
         </View>
       )}
+
+      {/* ─── Misión de HOY (timeline real del Calendar) ─── */}
+      <TodayMission />
 
       {/* ─── Career Milestones ─── */}
       <View style={styles.section}>

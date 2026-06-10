@@ -9,6 +9,7 @@ import {
   asignaturasPorRentabilidad, prioridadDe, capUrl, MirAsignatura,
 } from '../../lib/mirTemarioData';
 import { detalleDe, pesoColor } from '../../lib/mirDetalleData';
+import { mirObsUrl } from '../../lib/obsidianMap';
 import { recursosDe } from '../../lib/mirDriveResources';
 
 /**
@@ -194,10 +195,17 @@ function AsignaturaCard({ a, index }: { a: MirAsignatura; index: number }) {
             {/* Capítulos reales → ProMIR */}
             <Text style={[st.boxLbl, { marginTop: 12, marginBottom: 4 }]}>▸ Capítulos en ProMIR (toca → abre)</Text>
             {a.chapters.map((c) => (
-              <TouchableOpacity key={c.capId} activeOpacity={0.8} onPress={() => openUrl(capUrl(c.capId))} style={st.capRow}>
+              <View key={c.capId} style={[st.capRow, { alignItems: 'center' }]}>
                 <Text style={[st.capN, { color: tier.color }]}>{c.n === 0 ? '·' : c.n}</Text>
-                <Text style={st.capTxt} numberOfLines={2}>{c.titulo} <Text style={{ color: AMBER }}>↗</Text></Text>
-              </TouchableOpacity>
+                <TouchableOpacity activeOpacity={0.8} onPress={() => openUrl(capUrl(c.capId))} style={{ flex: 1 }}>
+                  <Text style={st.capTxt} numberOfLines={2}>{c.titulo} <Text style={{ color: AMBER }}>↗</Text></Text>
+                </TouchableOpacity>
+                {mirObsUrl(c.capId) && (
+                  <TouchableOpacity activeOpacity={0.7} onPress={() => openUrl(mirObsUrl(c.capId)!)} hitSlop={{ top: 6, bottom: 6, left: 4, right: 6 }}>
+                    <Text style={{ fontSize: 13, color: '#A78BFA', width: 20, textAlign: 'center' }}>◆</Text>
+                  </TouchableOpacity>
+                )}
+              </View>
             ))}
           </View>
         )}

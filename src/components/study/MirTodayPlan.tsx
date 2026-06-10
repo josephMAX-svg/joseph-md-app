@@ -8,6 +8,7 @@ import {
   MIR_DAILY_META, MIR_FRANJAS, MIR_DIAS, DiaMIR, mirDiaDe, mirPrevio, mir7d, MIR_RENT, capUrl,
 } from '../../lib/mirDailyPlan';
 import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, loadDone, saveDone } from '../../lib/studyProgress';
+import { mirObsUrl } from '../../lib/obsidianMap';
 
 /**
  * MirTodayPlan — Plan MIR día-a-día (ProMIR), estilo USMLE/Perú. Vueltas (1ª/2ª/3ª),
@@ -18,6 +19,7 @@ import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, loadDone, sav
 const AMBER = '#F5A623';
 const BLUE = '#7BB1FF';
 const GREEN = '#4Fae6b';
+const OBS = '#A78BFA';
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
 function todayISO(): string {
   try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; }
@@ -80,6 +82,9 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaMIR; onOpenT
       <FadeUp delay={60}><ColaItem icon="❓" lbl="PRE-TEST · 3Q ciegas (AMIR Test)" val={`${dia.asignatura} → ${dia.tema} · + free recall 60s`} sub="ProMIR → Entrenar · marca 2-3 gaps" color={GREEN} url={capUrl(dia.capId)} /></FadeUp>
       <FadeUp delay={90}><ColaItem icon="🎬" lbl="VÍDEO · ProMIR (videoclase)" val={`${dia.asignatura} → ${dia.tema}${dia.resumenVid ? ` · resumen ${dia.resumenVid}` : ''}`} sub="abre el capítulo en ProMIR ↗" color={AMBER} url={capUrl(dia.capId)} /></FadeUp>
       <FadeUp delay={120}><ColaItem icon="📖" lbl="LECTURA ACTIVA · Compendio" val="AMIR / ProMIR del subtema (25 min · 3-5 puntos clave)" sub="conexión con ENCAPS · dudas → CCSN" color={BLUE} url={capUrl(dia.capId)} /></FadeUp>
+      {mirObsUrl(dia.capId) && (
+        <FadeUp delay={135}><ColaItem icon="◆" lbl="OBSIDIAN · nota madre del tema" val={`${dia.asignatura} → ${dia.tema}`} sub="Vault_Medicina MIR_Joseph · aquí caen los APEX de hoy (motor APEX)" color={OBS} url={mirObsUrl(dia.capId)!} /></FadeUp>
+      )}
       <FadeUp delay={150}>
         <View style={[st.cola, { borderLeftColor: AMBER }]}>
           <Text style={st.colaIcon}>🃏</Text>
@@ -193,6 +198,11 @@ function AsignaturaCard({ g, hoyD, onPick, done, onToggle }: { g: GrupoProgreso<
                   <Text style={st.temaRowTxt} numberOfLines={1}>{x.tema}</Text>
                   <Text style={st.temaRowGo}>→</Text>
                 </TouchableOpacity>
+                {mirObsUrl(x.capId) && (
+                  <TouchableOpacity activeOpacity={0.7} onPress={() => openUrl(mirObsUrl(x.capId)!)} hitSlop={{ top: 8, bottom: 8, left: 4, right: 8 }}>
+                    <Text style={{ fontSize: 13, color: OBS, width: 18, textAlign: 'center' }}>◆</Text>
+                  </TouchableOpacity>
+                )}
               </View>
             );
           })}

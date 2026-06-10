@@ -5,8 +5,10 @@ import {
   ScrollView,
   TouchableOpacity,
   Platform,
+  Linking,
 } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
+import { encapsObsUrl } from '../../lib/obsidianMap';
 import { desktopStyles, DesktopColors } from '../../theme/desktopStyles';
 import UsmleHub from '../../components/study/UsmleHub';
 import MirHub from '../../components/study/MirHub';
@@ -651,10 +653,16 @@ function DesktopEncapsBlockCard({ block }: { block: EncapsBlock }) {
           borderTopWidth: 1, borderTopColor: 'rgba(143,144,151,0.15)',
         }}>
           {block.subtemas_detalle.map(s => (
-            <View key={s.id} style={{
-              flexDirection: 'row', justifyContent: 'space-between',
-              paddingVertical: 4,
-            }}>
+            <TouchableOpacity
+              key={s.id}
+              activeOpacity={0.7}
+              onPress={() => { const u = encapsObsUrl(block.id, s.id); if (u) Linking.openURL(u).catch(() => {}); }}
+              style={{
+                flexDirection: 'row', justifyContent: 'space-between',
+                paddingVertical: 4,
+              }}
+            >
+              <Text style={{ fontSize: FontSize.labelSm, color: '#A78BFA', marginRight: 6 }}>◆</Text>
               <Text
                 style={{
                   flex: 1,
@@ -674,7 +682,7 @@ function DesktopEncapsBlockCard({ block }: { block: EncapsBlock }) {
               }}>
                 {s.apex}
               </Text>
-            </View>
+            </TouchableOpacity>
           ))}
         </View>
       )}

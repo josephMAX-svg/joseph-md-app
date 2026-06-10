@@ -19,6 +19,7 @@ import {
 } from '../../lib/supabase';
 import type { TodayMetrics } from '../../lib/supabase';
 import GlassCard from '../../components/GlassCard';
+import TodayMission from '../../components/home/TodayMission';
 import AnimatedCounter from '../../components/AnimatedCounter';
 import CircularProgress from '../../components/CircularProgress';
 import { PulseDash } from '../../components/SkeletonLoader';
@@ -325,6 +326,9 @@ export default function DesktopHomeContent() {
           </View>
         </GlassCard>
       </View>
+
+      {/* Misión de HOY — timeline real de estudio (Calendar) */}
+      <TodayMission />
 
       {/* APEX Queue Badge */}
       {queueCount > 0 && (

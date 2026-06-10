@@ -14,6 +14,7 @@ import {
   Linking,
 } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius } from '../theme/tokens';
+import { encapsObsUrl } from '../lib/obsidianMap';
 import { useSupabaseQuery } from '../hooks/useSupabaseQuery';
 import {
   getLatestCZI,
@@ -739,7 +740,13 @@ function EncapsBlockCard({ block }: { block: EncapsBlock }) {
       {expanded && (
         <View style={styles.encapsSubtemasList}>
           {block.subtemas_detalle.map(s => (
-            <View key={s.id} style={styles.encapsSubtemaRow}>
+            <TouchableOpacity
+              key={s.id}
+              style={styles.encapsSubtemaRow}
+              activeOpacity={0.7}
+              onPress={() => { const u = encapsObsUrl(block.id, s.id); if (u) Linking.openURL(u).catch(() => {}); }}
+            >
+              <Text style={{ fontSize: 11, color: '#A78BFA', marginRight: 6 }}>◆</Text>
               <Text
                 style={[
                   styles.encapsSubtemaName,
@@ -757,7 +764,7 @@ function EncapsBlockCard({ block }: { block: EncapsBlock }) {
               >
                 {s.apex}
               </Text>
-            </View>
+            </TouchableOpacity>
           ))}
         </View>
       )}

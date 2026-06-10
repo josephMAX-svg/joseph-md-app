@@ -9,6 +9,7 @@ import {
   QBV, QBQ, QBF, QBL, yt,
 } from '../../lib/usmleStep1Daily';
 import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, loadDone, saveDone } from '../../lib/studyProgress';
+import { usmleObsUrl } from '../../lib/obsidianMap';
 
 /**
  * UsmleTodayPlan — Plan Step 1 día-a-día, estilo Perú/ENCAPS pero mejor.
@@ -20,6 +21,7 @@ import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, loadDone, sav
 const GREEN = '#3FB984';
 const RED = '#E5484D';
 const EDGE = '#3DA5E0';
+const OBS = '#A78BFA';
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
 function openEdge(u: string) { Linking.openURL('microsoft-edge:' + u).catch(() => openUrl(u)); }
 function todayISO(): string {
@@ -100,6 +102,9 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaUSMLE; onOpe
       <FadeUp delay={90}><ColaItem icon="🎬" lbl="VÍDEO · Boards & Beyond Step 1" val={`${dia.bbCh} → ${dia.bbVid}`} sub="Qbankly → Video Library → B&B Step 1" color={RED} url={QBV} edge /></FadeUp>
       <FadeUp delay={120}><ColaItem icon="📖" lbl="ACTIVE READING · material primario" val={dia.mat} sub="Qbankly → Library (uWorld/AMBOSS) · 25 min · 3-5 puntos high-yield" color="#7BB1FF" url={QBL} edge /></FadeUp>
       <FadeUp delay={150}><ColaItem icon="🗂️" lbl="FLASHCARDS · uWorld Step 1" val={`Deck: ${dia.system}`} sub="Qbankly → Flashcards · Anki SRS" color="#AFCBFF" url={QBF} edge /></FadeUp>
+      {usmleObsUrl(dia.d) && (
+        <FadeUp delay={165}><ColaItem icon="◆" lbl="OBSIDIAN · nota madre del subtema" val={`${dia.system} → ${dia.sub}`} sub="Vault_Medicina MIR_Joseph · aquí caen los APEX de hoy (motor APEX)" color={OBS} url={usmleObsUrl(dia.d)!} /></FadeUp>
+      )}
       {dia.palm && (
         <FadeUp delay={180}><ColaItem icon="🧠" lbl="PALMERTON · al empezar el sistema" val={dia.palm.t} sub="YouTube · método + visión del sistema (abre en Chrome)" color={GREEN} url={yt(dia.palm.id)} /></FadeUp>
       )}
@@ -216,6 +221,11 @@ function SistemaCard({ g, hoyD, onPick, done, onToggle }: { g: GrupoProgreso<Dia
                   <Text style={st.temaRowTxt} numberOfLines={1}>{x.sub}</Text>
                   <Text style={st.temaRowGo}>→</Text>
                 </TouchableOpacity>
+                {usmleObsUrl(x.d) && (
+                  <TouchableOpacity activeOpacity={0.7} onPress={() => openUrl(usmleObsUrl(x.d)!)} hitSlop={{ top: 8, bottom: 8, left: 4, right: 8 }}>
+                    <Text style={{ fontSize: 13, color: OBS, width: 18, textAlign: 'center' }}>◆</Text>
+                  </TouchableOpacity>
+                )}
               </View>
             );
           })}
