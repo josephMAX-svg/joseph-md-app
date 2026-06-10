@@ -1,0 +1,3104 @@
+{
+ "Analisis_v2": [
+  [
+   "",
+   "PLAN ESTUDIO PULSO HEALTH — v2.0",
+   "",
+   "",
+   ""
+  ],
+  [
+   "",
+   "Análisis estratégico y modificaciones aplicadas",
+   "",
+   "",
+   ""
+  ],
+  [
+   "",
+   "VEREDICTO GENERAL DEL PLAN ORIGINAL",
+   "",
+   "",
+   ""
+  ],
+  [
+   "",
+   "Calificación",
+   "9.2/10 — entre los mejores planes 90-días que he visto",
+   "",
+   ""
+  ],
+  [
+   "",
+   "Lo que ya hace excelente",
+   "Filosofía clara · 2h sagradas · Output operativo por libro · Dom descanso · Anki integrado · Outputs por semana · Recursos jerarquizados · 7 reglas no-negociables",
+   "",
+   ""
+  ],
+  [
+   "",
+   "Lo que falta crítico",
+   "Régimen biológico pre-requisito · Identidad como entregable · Métricas medibles · Validación de mercado real · Manejo de imprevistos SERUMS · Recuperación adaptativa",
+   "",
+   ""
+  ],
+  [
+   "",
+   "Sesgo principal detectado",
+   "Plan asume Joseph al 100% biológico, pero faltan los libros que aseguran ese 100%. Sin sueño/ejercicio/comida primero, los 165h de estudio rinden 60%",
+   "",
+   ""
+  ],
+  [
+   "",
+   "Recomendación general",
+   "Aceptar la estructura, añadir capas faltantes, no romper lo bueno",
+   "",
+   ""
+  ],
+  [
+   "",
+   "LAS 7 MODIFICACIONES CRÍTICAS APLICADAS",
+   "",
+   "",
+   ""
+  ],
+  [
+   "#",
+   "",
+   "Modificación",
+   "Justificación basada en evidencia",
+   "Aporte específico a Pulso"
+  ],
+  [
+   "1",
+   "Pre-requisito biológico (días 1-3)",
+   "Sin Walker (sueño) + Ratey (ejercicio) + Pollan (comida), los 165h rinden 40-60%. Es aritmética: dormir 8h vs 6h te da 36% más días-cerebro útiles aunque pierdas 2h",
+   "Joseph al 100% biológico desde día 1 = absorbe 2x más contenido, edita videos sin niebla, sostiene el plan completo sin burnout",
+   ""
+  ],
+  [
+   "2",
+   "Añadir 'Identidad de Joseph MD' como output transversal",
+   "Hormozi-Brunson-Cialdini son sistemas de venta, pero Pulso premium S/1,200/mes vende AUTORIDAD MÉDICA. Sin un Joseph encarnando el resultado, los protocolos son comoditizables",
+   "Documento 'Joseph MD Identity' al S6 + transformación personal medida al S14 (peso, biomarcadores, fotos antes/después) = autoridad indiscutible",
+   ""
+  ],
+  [
+   "3",
+   "Sustituir/reordenar 3 libros del top",
+   "(a) Mom Test antes de Hormozi (sin validación, ofertas perfectas para mercado equivocado). (b) Healthy Brain Book reemplaza Lost Connections (Hari es periodista, Ramsey es psiquiatra Columbia con nutrición integrada para Calma). (c) Añadir Genius Foods después de Pollan para nutrición específica peruana",
+   "Validación real evita pivots costosos · Calma diferenciada por nutrición cerebral · Liviano con protocolo nutricional anclado en evidencia",
+   ""
+  ],
+  [
+   "4",
+   "Bloque 'Validación de Mercado Real' semana 2",
+   "El Mom Test sin ejecución es lectura pasiva. Necesitas 15 entrevistas reales antes de cerrar Grand Slam Offer Liviano. Hormozi lo dice explícito: 'oferta sin mercado = humo'",
+   "S2 incluye 5 entrevistas/día con potenciales pacientes Huancayo · Grand Slam Offer S3 ajustada con voz REAL del cliente, no asumida",
+   ""
+  ],
+  [
+   "5",
+   "Bloque emocional explícito (semana 9.5)",
+   "Las semanas 10-14 son las más duras: producción + grabación + venta. Sin Emotional First Aid + The Obstacle Is the Way pre-cargados, primer NO comercial te bloquea 3 días",
+   "Día 60-61: Winch + Holiday integrados. Te llega el primer NO de pre-launch, lo procesas en 5 min con protocolo, no en 3 días",
+   ""
+  ],
+  [
+   "6",
+   "Métricas semanales medibles (no solo outputs)",
+   "Outputs por semana = qué entregas. Faltan métricas binarias: ¿peso bajó? ¿VO2 mejoró? ¿15 entrevistas hechas? ¿70 Anki cards al 85%? Sin métricas, S14 llega sin certeza",
+   "Tracker semanal en la nueva hoja 'Metricas' · score numérico cada domingo · si <80%, ajustas semana siguiente",
+   ""
+  ],
+  [
+   "7",
+   "Plan de contingencia SERUMS + imprevistos",
+   "Tu propio plan dice 'no se mueve por nada que no sea SERUMS' — pero no define qué pasa CUANDO se mueve. Sin plan B, una semana de SERUMS intenso descarrila 165h",
+   "Protocolo: SERUMS pico = modo mantenimiento (45 min/día revisión Anki + 1 capítulo) · Recupera el bloque del domingo si te exige · Acepta -10% performance, no -50%",
+   ""
+  ],
+  [
+   "",
+   "CAMBIOS ESPECÍFICOS APLICADOS AL CALENDARIO",
+   "",
+   "",
+   ""
+  ],
+  [
+   "",
+   "Tipo",
+   "Ubicación",
+   "Cambio",
+   ""
+  ],
+  [
+   "",
+   "AÑADIDO",
+   "Días 1-3 (28-30 may)",
+   "Bloque BIOLOGÍA: Walker sueño + Ratey ejercicio + Pollan comida (6h total)",
+   ""
+  ],
+  [
+   "",
+   "DESPLAZADO",
+   "Ultralearning original (d1-3)",
+   "Movido a días 4-6 (31 may, 1-2 jun) — sigue siendo el cimiento pero después de la base biológica",
+   ""
+  ],
+  [
+   "",
+   "AÑADIDO",
+   "Días 11-15 (8-12 jun)",
+   "Bloque MOM TEST + VALIDACIÓN REAL: Fitzpatrick (3h) + 5 entrevistas reales (7h)",
+   ""
+  ],
+  [
+   "",
+   "MODIFICADO",
+   "Hormozi $100M Offers",
+   "Re-secuenciado a S3 (15-21 jun) — DESPUÉS de validación, no antes. Tu Grand Slam usa data real, no asunciones",
+   ""
+  ],
+  [
+   "",
+   "SUSTITUIDO",
+   "Lost Connections (Hari)",
+   "Por Healthy Brain Book (Ramsey + Perlmutter) — psiquiatra Columbia, mismo objetivo Calma pero ciencia superior",
+   ""
+  ],
+  [
+   "",
+   "AÑADIDO",
+   "Día 60-61 (26-27 jul)",
+   "Bloque EMOCIONAL: Emotional First Aid (Winch) + Obstacle Is the Way (Holiday). Pre-cargado antes de S10-S14 brutales",
+   ""
+  ],
+  [
+   "",
+   "AÑADIDO",
+   "Día 75 (10 ago)",
+   "Identidad Joseph MD: documento + transformación personal medida (peso, BIA, foto, biomarcadores S/350 lab)",
+   ""
+  ],
+  [
+   "",
+   "AÑADIDO",
+   "Genius Foods (Lugavere)",
+   "Después de Pollan (1 día skim 4h) — alimentos específicos para Liviano + Joseph",
+   ""
+  ],
+  [
+   "",
+   "MANTENIDO",
+   "Estructura general 96 días",
+   "El esqueleto del plan es correcto · 2h sagradas · Dom descanso · Output operativo",
+   ""
+  ],
+  [
+   "",
+   "LEYENDA DE COLORES EN ESTE WORKBOOK",
+   "",
+   "",
+   ""
+  ],
+  [
+   "",
+   "Verde claro",
+   "NUEVO — añadido en v2",
+   "",
+   ""
+  ],
+  [
+   "",
+   "Naranja claro",
+   "MODIFICADO — cambio sustantivo de v1",
+   "",
+   ""
+  ],
+  [
+   "",
+   "Azul claro",
+   "MANTENIDO — del plan original v1 sin cambio",
+   "",
+   ""
+  ],
+  [
+   "",
+   "Rojo claro",
+   "REMOVIDO — descartado con justificación",
+   "",
+   ""
+  ]
+ ],
+ "Filosofia": [
+  [
+   "",
+   "PLAN DE ESTUDIO PULSO HEALTH",
+   "",
+   ""
+  ],
+  [
+   "",
+   "28 mayo - 31 agosto 2026 · 96 días · 2h/día · 165h activas totales",
+   "",
+   ""
+  ],
+  [
+   "",
+   "POR QUÉ ESTE PLAN",
+   "",
+   ""
+  ],
+  [
+   "",
+   "Tu meta no es leer libros — es convertirte en alguien irrefutable. Vas a vender salud por suscripción a peruanos por S/ 1,200 al mes en programas de transformación. Eso solo funciona si TÚ encarnas el resultado y dominas el método. Este plan tiene dos ramas paralelas: PRODUCTO (ser referente clínico-personal en cada vertical) y MARKETING (saber vender como Hormozi, Cialdini, Brunson). Cada hora de estudio produce un output concreto y aplicable a Pulso.",
+   "",
+   ""
+  ],
+  [
+   "",
+   "LAS 2 RAMAS DE ESTUDIO",
+   "",
+   ""
+  ],
+  [
+   "",
+   "RAMA A - PRODUCTO (60% del tiempo · ~100h)",
+   "Volverte referente vivo de cada vertical: peso, sueño, hormonal, salud mental, sexual/pareja, foco",
+   ""
+  ],
+  [
+   "",
+   "RAMA B - MARKETING/VENTAS (40% del tiempo · ~65h)",
+   "Maquinaria Hormozi + Cialdini + Brunson + StoryBrand + Suby + Schwartz",
+   ""
+  ],
+  [
+   "",
+   "ESTRUCTURA EN 3 MESES",
+   "",
+   ""
+  ],
+  [
+   "",
+   "Mes 1 · jun 2026 · FUNDAMENTOS",
+   "Trilogía Hormozi completa + Líneas críticas (Peso Liviano y Hormonal Curva)",
+   "~60h"
+  ],
+  [
+   "",
+   "Mes 2 · jul 2026 · EXPANSIÓN",
+   "Sueño + Mental + Foco + Sexual/Pareja + Marketing aplicado (Cialdini, Brunson)",
+   "~55h"
+  ],
+  [
+   "",
+   "Mes 3 · ago 2026 · SÍNTESIS",
+   "Síntesis + producción de outputs propios: copy, contenido, protocolos, brand book",
+   "~50h"
+  ],
+  [
+   "",
+   "EL JOSEPH DEL 31 DE AGOSTO 2026",
+   "",
+   ""
+  ],
+  [
+   "",
+   "Físico",
+   "Hábitos personales en su lugar: dieta de Liviano probada en tu cuerpo 3 meses, ejercicio de fuerza 3x/sem, sueño 7-8h consistente, IMC al objetivo",
+   ""
+  ],
+  [
+   "",
+   "Clínico",
+   "Protocolos escritos y memorizados de las 6 líneas (peso, hormonal, piel, salud emocional, foco, sexual) — defensables ante cualquier especialista",
+   ""
+  ],
+  [
+   "",
+   "Comercial",
+   "Trilogía Hormozi memorizada + Cialdini aplicado + DotCom Secrets entendido. Sabes diseñar una Grand Slam Offer ciegas",
+   ""
+  ],
+  [
+   "",
+   "Producto",
+   "Plan completo de cada vertical con: dream outcome, protocolo, dieta, ejercicio, medicación, seguimiento, garantía",
+   ""
+  ],
+  [
+   "",
+   "Brand",
+   "Brand book completo de Pulso Health + sub-marcas. Voz editorial documentada. Tono establecido.",
+   ""
+  ],
+  [
+   "",
+   "Operativo",
+   "Quiz funnel diseñado en papel. Web Liviano lista. 60 piezas de contenido grabadas. Pulso CRM tenant Liviano configurado.",
+   ""
+  ],
+  [
+   "",
+   "Mental",
+   "Sistema CLOSER de cierre interiorizado. Manejo emocional de rechazo (Winch, Holiday). Auto-imagen consolidada de founder.",
+   ""
+  ],
+  [
+   "",
+   "7 REGLAS NO NEGOCIABLES",
+   "",
+   ""
+  ],
+  [
+   "",
+   "1. 2 horas/día sagradas, mismo horario. No se mueve por nada que no sea SERUMS.",
+   "",
+   ""
+  ],
+  [
+   "",
+   "2. Cada libro produce un output operativo (no es lectura pasiva — siempre con Obsidian abierto).",
+   "",
+   ""
+  ],
+  [
+   "",
+   "3. Test de comprensión semanal con AnkiConnect: ~30 cards/semana de lo más importante.",
+   "",
+   ""
+  ],
+  [
+   "",
+   "4. Domingo siempre descanso total. No estudias. Recuperación cerebral.",
+   "",
+   ""
+  ],
+  [
+   "",
+   "5. Si un libro no aporta lo esperado en 4 sesiones, lo abandonas. No hay culpa.",
+   "",
+   ""
+  ],
+  [
+   "",
+   "6. Producción >> consumo. Mes 3 entero es para crear, no para leer.",
+   "",
+   ""
+  ],
+  [
+   "",
+   "7. Aplicación inmediata: cada protocolo que aprendes lo pruebas TÚ primero, antes de venderlo.",
+   "",
+   ""
+  ],
+  [
+   "RÉGIMEN BIOLÓGICO — PRE-REQUISITO INNEGOCIABLE",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Sueño",
+   "7-8h consistentes mismo horario · oscuridad total · sin cafeína después 14:00 · habitación 18-19°C · luz solar AM primeros 30 min despertar (Huancayo te lo regala)",
+   "",
+   ""
+  ],
+  [
+   "Ejercicio",
+   "6:30-7:15am · 30-45 min aeróbico zona 2 (Attia) · 3x/sem fuerza adicional (PM o intercalado) · BDNF cerebral primado 2-3h post-ejercicio",
+   "",
+   ""
+  ],
+  [
+   "Comida",
+   "Ventana 10-12h (Panda) · 8am-7pm óptimo · Pollan-style: comida real andina (quinua, papa nativa, palta, huevos, pescado, verduras) · NO ultraprocesados · Genius Foods en desayuno",
+   "",
+   ""
+  ],
+  [
+   "Salud mental",
+   "Domingo descanso TOTAL · sin culpa por reposo · Anki diario máx 20 min · Winch en bolsillo para rechazos · Frankl + Marco Aurelio fines de semana",
+   "",
+   ""
+  ],
+  [
+   "Conexión",
+   "Pareja/familia 1h/día sagrada · NO sacrificable por estudio · es infraestructura no opcional",
+   "",
+   ""
+  ],
+  [
+   "REGLA DE ORO",
+   "Si en la semana faltó UN día de biología completa (sueño, ejercicio, comida), ese día NO cuenta como semana al 100%. Score: 7/7 días = 100% biológico. La autoridad de Pulso se construye desde TU cuerpo. Sin biología, no hay producto.",
+   "",
+   ""
+  ],
+  [
+   "REGLAS ADICIONALES v2",
+   "",
+   "",
+   ""
+  ],
+  [
+   "8. Régimen biológico ANTES del bloque académico. Si no dormiste 7h+ → primero recuperas, después estudias.",
+   "",
+   "",
+   ""
+  ],
+  [
+   "9. Validación antes de creación. No diseñas oferta sin 15 entrevistas previas. No grabas contenido sin guion validado.",
+   "",
+   "",
+   ""
+  ],
+  [
+   "10. Métrica binaria semanal: ¿7/7 días biología? ¿85%+ Anki score? ¿Output entregable terminado? Si no → ajustar.",
+   "",
+   "",
+   ""
+  ],
+  [
+   "11. Plan B SERUMS: pico de demanda médica = modo mantenimiento 45 min/día. NO abandono · NO sprint imposible.",
+   "",
+   "",
+   ""
+  ],
+  [
+   "12. Producción >> consumo. Si llegas al final de un libro sin haber producido el output, el libro NO está terminado.",
+   "",
+   "",
+   ""
+  ]
+ ],
+ "Biblioteca": [
+  [
+   "",
+   "BIBLIOTECA PRIORIZADA · 28 LIBROS + RECURSOS",
+   "",
+   "",
+   "",
+   "",
+   "",
+   ""
+  ],
+  [
+   "",
+   "P = prioridad (1 esencial, 2 importante, 3 opcional). Horas = lectura activa estimada. Output = entregable concreto por libro.",
+   "",
+   "",
+   "",
+   "",
+   "",
+   ""
+  ],
+  [
+   "",
+   "#",
+   "Categoría",
+   "Libro",
+   "Autor",
+   "P",
+   "Hrs",
+   "Output operativo Pulso"
+  ],
+  [
+   "",
+   "1",
+   "PESO",
+   "The Obesity Code",
+   "Jason Fung",
+   "1",
+   "8",
+   "Protocolo Liviano: insulina como variable maestra, marco para tu plan nutricional"
+  ],
+  [
+   "",
+   "2",
+   "PESO",
+   "Outlive",
+   "Peter Attia, MD",
+   "1",
+   "14",
+   "Marco de Medicina 3.0 + 4 pilares (ejercicio, sueño, nutrición, mental). Tu mejor referente de identidad."
+  ],
+  [
+   "",
+   "3",
+   "PESO",
+   "The Ozempic Revolution",
+   "Alexandra Sowa, MD",
+   "1",
+   "5",
+   "Cómo prescribir GLP-1 a pacientes — el manual práctico de tu primer producto"
+  ],
+  [
+   "",
+   "4",
+   "PESO",
+   "In Defense of Food",
+   "Michael Pollan",
+   "2",
+   "5",
+   "Filosofía nutricional para tu blog y voz editorial"
+  ],
+  [
+   "",
+   "5",
+   "HORMONAL",
+   "The Hormone Cure",
+   "Sara Gottfried, MD",
+   "1",
+   "8",
+   "Protocolo Curva para mujeres: perimenopausia, menopausia, balance hormonal"
+  ],
+  [
+   "",
+   "6",
+   "HORMONAL",
+   "Estrogen Matters",
+   "Avrum Bluming, MD",
+   "1",
+   "6",
+   "TRH defendible con evidencia — destruye los miedos viejos del estudio WHI"
+  ],
+  [
+   "",
+   "7",
+   "HORMONAL",
+   "Outlive cap hormonal",
+   "Peter Attia, MD",
+   "1",
+   "3",
+   "Sección de testosterona y longevidad masculina para Curva Hombre"
+  ],
+  [
+   "",
+   "8",
+   "SUEÑO",
+   "Why We Sleep",
+   "Matthew Walker",
+   "1",
+   "9",
+   "Base científica del sueño — pilar transversal de TODOS tus programas"
+  ],
+  [
+   "",
+   "9",
+   "SUEÑO",
+   "The Circadian Code",
+   "Satchin Panda",
+   "2",
+   "5",
+   "Time-restricted eating + ritmo circadiano = arma secreta"
+  ],
+  [
+   "",
+   "10",
+   "MENTAL",
+   "Feeling Good Handbook",
+   "David Burns, MD",
+   "1",
+   "6",
+   "Manual de CBT que vas a aplicar en tus sesiones quincenales con pacientes Calma"
+  ],
+  [
+   "",
+   "11",
+   "MENTAL",
+   "Lost Connections",
+   "Johann Hari",
+   "2",
+   "5",
+   "Marco social/relacional de la depresión — voz editorial diferenciada para Calma"
+  ],
+  [
+   "",
+   "12",
+   "MENTAL",
+   "How Emotions Are Made",
+   "Lisa F. Barrett, PhD",
+   "3",
+   "6",
+   "Neurociencia moderna emocional — opcional, para profundidad"
+  ],
+  [
+   "",
+   "13",
+   "FOCO",
+   "ADHD 2.0",
+   "Hallowell + Ratey",
+   "1",
+   "5",
+   "Protocolo Foco para adultos con TDAH — base clínica moderna"
+  ],
+  [
+   "",
+   "14",
+   "FOCO",
+   "Driven to Distraction",
+   "Hallowell + Ratey",
+   "2",
+   "6",
+   "Clínica clásica del TDAH — referencias para tus pacientes"
+  ],
+  [
+   "",
+   "15",
+   "FOCO",
+   "Smart but Scattered Adults",
+   "Dawson + Guare",
+   "2",
+   "5",
+   "Función ejecutiva práctica — herramientas para coaching cognitivo"
+  ],
+  [
+   "",
+   "16",
+   "PAREJA",
+   "Come As You Are",
+   "Emily Nagoski",
+   "1",
+   "7",
+   "Línea Cerca femenina — modelo dual de respuesta sexual, base científica moderna"
+  ],
+  [
+   "",
+   "17",
+   "PAREJA",
+   "Mating in Captivity",
+   "Esther Perel",
+   "1",
+   "6",
+   "Línea Cerca pareja — deseo en relaciones de largo plazo"
+  ],
+  [
+   "",
+   "18",
+   "PAREJA",
+   "Attached",
+   "Levine + Heller",
+   "2",
+   "5",
+   "Estilos de apego — manejo de tus pacientes y tu propia vida"
+  ],
+  [
+   "",
+   "19",
+   "PAREJA",
+   "The Sex-Starved Marriage",
+   "M. Weiner Davis",
+   "3",
+   "5",
+   "Caso clínico para pacientes Cerca con baja libido en pareja"
+  ],
+  [
+   "",
+   "20",
+   "MARKETING",
+   "$100M Offers",
+   "Alex Hormozi",
+   "1",
+   "5",
+   "Grand Slam Offer de Liviano + las 7 sub-marcas. Re-leer 2x."
+  ],
+  [
+   "",
+   "21",
+   "MARKETING",
+   "$100M Leads",
+   "Alex Hormozi",
+   "1",
+   "8",
+   "Plan de adquisición Pulso completo — 4 canales centrales"
+  ],
+  [
+   "",
+   "22",
+   "MARKETING",
+   "$100M Money Models",
+   "Alex Hormozi",
+   "1",
+   "6",
+   "Front-end + upsell + downsell + continuity de Pulso"
+  ],
+  [
+   "",
+   "23",
+   "MARKETING",
+   "Influence",
+   "Robert Cialdini",
+   "1",
+   "8",
+   "6 principios aplicados a tu funnel y scripts CLOSER"
+  ],
+  [
+   "",
+   "24",
+   "MARKETING",
+   "DotCom Secrets",
+   "Russell Brunson",
+   "1",
+   "7",
+   "Funnels específicos: tripwire, application, webinar — diseño Pulso"
+  ],
+  [
+   "",
+   "25",
+   "MARKETING",
+   "Expert Secrets",
+   "Russell Brunson",
+   "2",
+   "7",
+   "Posicionamiento de tu marca personal médica + venta de transformación"
+  ],
+  [
+   "",
+   "26",
+   "MARKETING",
+   "Building a StoryBrand",
+   "Donald Miller",
+   "1",
+   "4",
+   "Marco narrativo de toda la comunicación Pulso"
+  ],
+  [
+   "",
+   "27",
+   "MARKETING",
+   "Breakthrough Advertising",
+   "Eugene Schwartz",
+   "3",
+   "7",
+   "5 niveles de consciencia — copy avanzado. Solo si terminas todo lo anterior"
+  ],
+  [
+   "",
+   "28",
+   "META",
+   "Ultralearning",
+   "Scott Young",
+   "1",
+   "7",
+   "Marco operacional de tu propio plan — 9 principios para acelerar todo el resto"
+  ],
+  [
+   "",
+   "",
+   "",
+   "TOTAL HORAS LIBROS (prioridad 1 y 2)",
+   "",
+   "",
+   "160",
+   ""
+  ]
+ ],
+ "Calendario": [
+  [
+   "",
+   "CALENDARIO DÍA POR DÍA · 28 mayo - 31 agosto 2026",
+   "",
+   "",
+   "",
+   "",
+   "",
+   ""
+  ],
+  [
+   "1",
+   "28-may-26",
+   "Jue",
+   "BIOLOGIA",
+   "Why We Sleep (Walker) parte 1-2: para qué dormimos + arquitectura del sueño",
+   "Implementar protocolo: 22:00 dormir, sin cafeína post-14:00",
+   "120",
+   ""
+  ],
+  [
+   "2",
+   "29-may-26",
+   "Vie",
+   "BIOLOGIA",
+   "Why We Sleep parte 3-4 (skim) + Spark (Ratey) cap 1-4: BDNF + ejercicio cerebro",
+   "Diseñar rutina ejercicio AM 6:30-7:15 (zona 2 + 2x/sem fuerza)",
+   "120",
+   "Min"
+  ],
+  [
+   "3",
+   "30-may-26",
+   "Sáb",
+   "BIOLOGIA",
+   "Spark cap 5-8 (skim) + Pollan In Defense of Food + Lugavere Genius Foods (skim)",
+   "Mercado: comprar quinua/papa/huevos/palta/almendras semana 1",
+   "120",
+   "120"
+  ],
+  [
+   "4",
+   "31-may-26",
+   "Dom",
+   "DESCANSO",
+   "Descanso total. Cerebro en consolidación. Implementar régimen biológico arrancando.",
+   "",
+   "0",
+   "120"
+  ],
+  [
+   "5",
+   "01-jun-26",
+   "Lun",
+   "META",
+   "Ultralearning (Scott Young) cap 1-3: metaaprendizaje + focus + directness",
+   "Active recall + outline aplicado a TU plan Pulso",
+   "120",
+   "120"
+  ],
+  [
+   "6",
+   "02-jun-26",
+   "Mar",
+   "META",
+   "Ultralearning cap 4-6: drill + retrieval + feedback",
+   "Spaced repetition Anki — primeras 20 cards meta-aprendizaje",
+   "120",
+   "0"
+  ],
+  [
+   "",
+   "5",
+   "01-jun-26",
+   "Lun",
+   "MARKETING",
+   "$100M Offers cap 1-2: por qué Grand Slam Offers + cómo elegir mercado",
+   "Highlighting activo",
+   "120"
+  ],
+  [
+   "",
+   "6",
+   "02-jun-26",
+   "Mar",
+   "MARKETING",
+   "$100M Offers cap 3-4: pricing premium + valor percibido",
+   "Aplicar a Liviano",
+   "120"
+  ],
+  [
+   "",
+   "7",
+   "03-jun-26",
+   "Mié",
+   "MARKETING",
+   "$100M Offers cap 5: Value Equation completa (Dream × Likelihood / Time × Effort)",
+   "Caso práctico Pulso",
+   "120"
+  ],
+  [
+   "",
+   "8",
+   "04-jun-26",
+   "Jue",
+   "MARKETING",
+   "$100M Offers cap 6-7: identificar dream outcome + lista de obstáculos",
+   "Para cada sub-marca",
+   "120"
+  ],
+  [
+   "",
+   "9",
+   "05-jun-26",
+   "Vie",
+   "MARKETING",
+   "$100M Offers cap 8-9: garantías + bonos",
+   "Diseñar garantía Liviano",
+   "120"
+  ],
+  [
+   "",
+   "10",
+   "06-jun-26",
+   "Sáb",
+   "MARKETING",
+   "$100M Offers cap 10-11: scarcity + urgency + naming",
+   "Naming de las 7 marcas",
+   "120"
+  ],
+  [
+   "",
+   "11",
+   "07-jun-26",
+   "Dom",
+   "DESCANSO",
+   "Descanso. Re-leer notas semana.",
+   "",
+   "0"
+  ],
+  [
+   "",
+   "12",
+   "08-jun-26",
+   "Lun",
+   "MARKETING",
+   "$100M Leads cap 1-3: filosofía lead generation",
+   "Mapeo canales Pulso",
+   "120"
+  ],
+  [
+   "",
+   "13",
+   "09-jun-26",
+   "Mar",
+   "MARKETING",
+   "$100M Leads cap 4-5: warm outreach + cold outreach",
+   "Lista de prospectos Huancayo",
+   "120"
+  ],
+  [
+   "",
+   "14",
+   "10-jun-26",
+   "Mié",
+   "MARKETING",
+   "$100M Leads cap 6-7: ads pagados (CORE4)",
+   "Plan Meta Ads inicial",
+   "120"
+  ],
+  [
+   "",
+   "15",
+   "11-jun-26",
+   "Jue",
+   "MARKETING",
+   "$100M Leads cap 8-9: contenido orgánico + content engine",
+   "Plan contenido 90 días",
+   "120"
+  ],
+  [
+   "",
+   "16",
+   "12-jun-26",
+   "Vie",
+   "MARKETING",
+   "$100M Leads cap 10-11: affiliates + employees + agencies",
+   "Modelo referidos Pulso",
+   "120"
+  ],
+  [
+   "",
+   "17",
+   "13-jun-26",
+   "Sáb",
+   "MARKETING",
+   "$100M Leads síntesis + ejercicios",
+   "Anki ~30 cards",
+   "120"
+  ],
+  [
+   "",
+   "18",
+   "14-jun-26",
+   "Dom",
+   "DESCANSO",
+   "Descanso. Repaso semana 2.",
+   "",
+   "0"
+  ],
+  [
+   "",
+   "19",
+   "15-jun-26",
+   "Lun",
+   "MARKETING",
+   "$100M Money Models intro + Stage 1: Attraction Offers",
+   "Front-end Pulso S/199",
+   "120"
+  ],
+  [
+   "",
+   "20",
+   "16-jun-26",
+   "Mar",
+   "MARKETING",
+   "$100M Money Models Stage 1 mecánicas (Win Your Money Back, Free Gift)",
+   "Aplicar a evaluación inicial",
+   "120"
+  ],
+  [
+   "",
+   "21",
+   "17-jun-26",
+   "Mié",
+   "MARKETING",
+   "$100M Money Models Stage 2: Upsells (Menu, Rollover, Bundles)",
+   "Tier 2 → Tier 3 Liviano",
+   "120"
+  ],
+  [
+   "",
+   "22",
+   "18-jun-26",
+   "Jue",
+   "MARKETING",
+   "$100M Money Models Stage 2: Downsells",
+   "Tier Esencial Liviano",
+   "120"
+  ],
+  [
+   "",
+   "23",
+   "19-jun-26",
+   "Vie",
+   "MARKETING",
+   "$100M Money Models Stage 3: Continuity (Bonus, Waived Fee)",
+   "Mantenimiento post-9 meses",
+   "120"
+  ],
+  [
+   "",
+   "24",
+   "20-jun-26",
+   "Sáb",
+   "MARKETING",
+   "$100M Money Models síntesis + diseño money model Pulso",
+   "Diagrama completo Pulso",
+   "120"
+  ],
+  [
+   "",
+   "25",
+   "21-jun-26",
+   "Dom",
+   "DESCANSO",
+   "Descanso. Final trilogía Hormozi.",
+   "",
+   "0"
+  ],
+  [
+   "",
+   "26",
+   "22-jun-26",
+   "Lun",
+   "PESO",
+   "The Obesity Code cap 1-3: paradoja energética + el papel de las calorías",
+   "Notas con highlights",
+   "120"
+  ],
+  [
+   "",
+   "27",
+   "23-jun-26",
+   "Mar",
+   "PESO",
+   "The Obesity Code cap 4-7: insulina como variable maestra",
+   "Marco para Liviano",
+   "120"
+  ],
+  [
+   "",
+   "28",
+   "24-jun-26",
+   "Mié",
+   "PESO",
+   "The Obesity Code cap 8-11: comer-no comer pattern + ayuno intermitente",
+   "Protocolo Liviano fase 1",
+   "120"
+  ],
+  [
+   "",
+   "29",
+   "25-jun-26",
+   "Jue",
+   "PESO",
+   "The Obesity Code cap 12-15: dieta práctica + cierre",
+   "Plan nutricional Liviano",
+   "120"
+  ],
+  [
+   "",
+   "30",
+   "26-jun-26",
+   "Vie",
+   "PESO",
+   "The Ozempic Revolution cap 1-4: GLP-1, mecanismos, candidatos",
+   "Protocolo de prescripción",
+   "120"
+  ],
+  [
+   "",
+   "31",
+   "27-jun-26",
+   "Sáb",
+   "PESO",
+   "The Ozempic Revolution cap 5-8: side effects, plateau, mantenimiento",
+   "Manejo clínico Liviano",
+   "120"
+  ],
+  [
+   "",
+   "32",
+   "28-jun-26",
+   "Dom",
+   "DESCANSO",
+   "Descanso. Fin junio mes 1.",
+   "",
+   "0"
+  ],
+  [
+   "",
+   "33",
+   "29-jun-26",
+   "Lun",
+   "PESO",
+   "Outlive Parte I (cap 1-5): Medicina 3.0 + los 4 jinetes",
+   "Tu marco de identidad médica",
+   "120"
+  ],
+  [
+   "",
+   "34",
+   "30-jun-26",
+   "Mar",
+   "PESO",
+   "Outlive Parte II cap 6-8: enfermedad cardiovascular + cáncer",
+   "Protocolo prevención Pulso",
+   "120"
+  ],
+  [
+   "",
+   "35",
+   "01-jul-26",
+   "Mié",
+   "PESO",
+   "Outlive Parte II cap 9-10: Alzheimer + metabolismo",
+   "Cross-sell Curva ↔ Liviano",
+   "120"
+  ],
+  [
+   "",
+   "36",
+   "02-jul-26",
+   "Jue",
+   "HORMONAL",
+   "Outlive cap 11: ejercicio (zonas, fuerza, estabilidad)",
+   "Plan ejercicio Liviano",
+   "120"
+  ],
+  [
+   "",
+   "37",
+   "03-jul-26",
+   "Vie",
+   "HORMONAL",
+   "Outlive cap 12-13: nutrición + sueño",
+   "Cross-cutting todas líneas",
+   "120"
+  ],
+  [
+   "",
+   "38",
+   "04-jul-26",
+   "Sáb",
+   "MENTAL",
+   "Outlive cap 14-16: salud emocional + síntesis",
+   "Marco Calma + identidad",
+   "120"
+  ],
+  [
+   "",
+   "39",
+   "05-jul-26",
+   "Dom",
+   "DESCANSO",
+   "Descanso. Re-leer notas Outlive.",
+   "",
+   "0"
+  ],
+  [
+   "",
+   "40",
+   "06-jul-26",
+   "Lun",
+   "HORMONAL",
+   "The Hormone Cure cap 1-3: ciclo + cortisol + tiroides",
+   "Diagnóstico Curva Mujer",
+   "120"
+  ],
+  [
+   "",
+   "41",
+   "07-jul-26",
+   "Mar",
+   "HORMONAL",
+   "The Hormone Cure cap 4-6: estrógeno + progesterona + balance",
+   "Protocolo Curva perimenop",
+   "120"
+  ],
+  [
+   "",
+   "42",
+   "08-jul-26",
+   "Mié",
+   "HORMONAL",
+   "The Hormone Cure cap 7-8: testosterona femenina + libido",
+   "Manejo libido Curva Mujer",
+   "120"
+  ],
+  [
+   "",
+   "43",
+   "09-jul-26",
+   "Jue",
+   "HORMONAL",
+   "Estrogen Matters cap 1-4: ciencia HRT + WHI study debunked",
+   "Argumentario clínico HRT",
+   "120"
+  ],
+  [
+   "",
+   "44",
+   "10-jul-26",
+   "Vie",
+   "HORMONAL",
+   "Estrogen Matters cap 5-8: cáncer mama + síntesis",
+   "Manejo objeciones pacientes",
+   "120"
+  ],
+  [
+   "",
+   "45",
+   "11-jul-26",
+   "Sáb",
+   "HORMONAL",
+   "Curva Hombre: Outlive testosterona + literatura enclomifeno",
+   "Protocolo Curva Hombre",
+   "120"
+  ],
+  [
+   "",
+   "46",
+   "12-jul-26",
+   "Dom",
+   "DESCANSO",
+   "Descanso. Fin sub-línea Curva.",
+   "",
+   "0"
+  ],
+  [
+   "",
+   "47",
+   "13-jul-26",
+   "Lun",
+   "SUEÑO",
+   "Why We Sleep parte 1-2: para qué dormimos + cómo dormimos",
+   "Marco científico Pulso",
+   "120"
+  ],
+  [
+   "",
+   "48",
+   "14-jul-26",
+   "Mar",
+   "SUEÑO",
+   "Why We Sleep parte 3-4: privación + soluciones",
+   "Protocolo sueño Pulso (transversal)",
+   "120"
+  ],
+  [
+   "",
+   "49",
+   "15-jul-26",
+   "Mié",
+   "SUEÑO",
+   "The Circadian Code cap 1-5: time-restricted eating + ritmo circadiano",
+   "Cross-sell todos programas",
+   "120"
+  ],
+  [
+   "",
+   "50",
+   "16-jul-26",
+   "Jue",
+   "MENTAL",
+   "Feeling Good Handbook intro + 10 distorsiones cognitivas",
+   "Manual sesiones Calma",
+   "120"
+  ],
+  [
+   "",
+   "51",
+   "17-jul-26",
+   "Vie",
+   "MENTAL",
+   "Feeling Good Handbook técnicas CBT (column technique, etc)",
+   "Tools sesiones quincenales",
+   "120"
+  ],
+  [
+   "",
+   "52",
+   "18-jul-26",
+   "Sáb",
+   "MENTAL",
+   "Lost Connections (Hari) 9 causas modernas depresión",
+   "Voz editorial Calma diferenciada",
+   "120"
+  ],
+  [
+   "",
+   "53",
+   "19-jul-26",
+   "Dom",
+   "DESCANSO",
+   "Descanso. Mid-Mes 2.",
+   "",
+   "0"
+  ],
+  [
+   "",
+   "54",
+   "20-jul-26",
+   "Lun",
+   "FOCO",
+   "ADHD 2.0 parte 1: nueva ciencia VAST + cerebro TDAH",
+   "Marco clínico Foco",
+   "120"
+  ],
+  [
+   "",
+   "55",
+   "21-jul-26",
+   "Mar",
+   "FOCO",
+   "ADHD 2.0 parte 2: estrategias + medicación",
+   "Protocolo Foco adultos",
+   "120"
+  ],
+  [
+   "",
+   "56",
+   "22-jul-26",
+   "Mié",
+   "FOCO",
+   "Smart but Scattered Adults: función ejecutiva práctica",
+   "Coaching cognitivo Foco",
+   "120"
+  ],
+  [
+   "",
+   "57",
+   "23-jul-26",
+   "Jue",
+   "PAREJA",
+   "Come As You Are cap 1-4: modelo dual de respuesta sexual",
+   "Línea Cerca Mujer",
+   "120"
+  ],
+  [
+   "",
+   "58",
+   "24-jul-26",
+   "Vie",
+   "PAREJA",
+   "Come As You Are cap 5-8: contexto + emociones + cierre",
+   "Protocolo Cerca Mujer",
+   "120"
+  ],
+  [
+   "",
+   "59",
+   "25-jul-26",
+   "Sáb",
+   "PAREJA",
+   "Mating in Captivity Perel: deseo en pareja larga",
+   "Sesiones pareja Cerca",
+   "120"
+  ],
+  [
+   "",
+   "60",
+   "26-jul-26",
+   "Dom",
+   "DESCANSO",
+   "Descanso.",
+   "",
+   "0"
+  ],
+  [
+   "",
+   "61",
+   "27-jul-26",
+   "Lun",
+   "MARKETING",
+   "Influence (Cialdini) cap 1-2: weapons of influence + reciprocity",
+   "Aplicar reciprocity Pulso",
+   "120"
+  ],
+  [
+   "",
+   "62",
+   "28-jul-26",
+   "Mar",
+   "MARKETING",
+   "Influence cap 3-4: commitment-consistency + social proof",
+   "Testimoniales Liviano",
+   "120"
+  ],
+  [
+   "",
+   "63",
+   "29-jul-26",
+   "Mié",
+   "MARKETING",
+   "Influence cap 5-6: liking + authority",
+   "Tu autoridad CMP visible",
+   "120"
+  ],
+  [
+   "",
+   "64",
+   "30-jul-26",
+   "Jue",
+   "MARKETING",
+   "Influence cap 7: scarcity + síntesis 6 principios",
+   "Cada princ. en tu copy",
+   "120"
+  ],
+  [
+   "",
+   "65",
+   "31-jul-26",
+   "Vie",
+   "MARKETING",
+   "DotCom Secrets parte 1: ladder of value + hooks",
+   "Funnel arquitectura Pulso",
+   "120"
+  ],
+  [
+   "",
+   "66",
+   "01-aug-26",
+   "Sáb",
+   "MARKETING",
+   "DotCom Secrets parte 2: 7 phases of funnel",
+   "Diseño funnel Liviano",
+   "120"
+  ],
+  [
+   "",
+   "67",
+   "02-aug-26",
+   "Dom",
+   "DESCANSO",
+   "Descanso. Fin julio.",
+   "",
+   "0"
+  ],
+  [
+   "",
+   "68",
+   "03-aug-26",
+   "Lun",
+   "MARKETING",
+   "DotCom Secrets parte 3-4: webinar funnel + application funnel",
+   "Funnel high-ticket Liviano",
+   "120"
+  ],
+  [
+   "",
+   "69",
+   "04-aug-26",
+   "Mar",
+   "MARKETING",
+   "DotCom Secrets parte 5: tripwire + value ladder completo",
+   "Tu value ladder Pulso",
+   "120"
+  ],
+  [
+   "",
+   "70",
+   "05-aug-26",
+   "Mié",
+   "MARKETING",
+   "Expert Secrets parte 1-2: cómo posicionar tu autoridad",
+   "Tu posicionamiento Joseph MD",
+   "120"
+  ],
+  [
+   "",
+   "71",
+   "06-aug-26",
+   "Jue",
+   "MARKETING",
+   "Expert Secrets parte 3-4: vehicle + new opportunity",
+   "Pulso como new category",
+   "120"
+  ],
+  [
+   "",
+   "72",
+   "07-aug-26",
+   "Vie",
+   "MARKETING",
+   "Building StoryBrand cap 1-4: BrandScript 7 partes",
+   "BrandScript de Liviano",
+   "120"
+  ],
+  [
+   "",
+   "73",
+   "08-aug-26",
+   "Sáb",
+   "MARKETING",
+   "Building StoryBrand cap 5-7: web wireframe + email",
+   "Wireframe liviano.pulso.health",
+   "120"
+  ],
+  [
+   "",
+   "74",
+   "09-aug-26",
+   "Dom",
+   "DESCANSO",
+   "Descanso.",
+   "",
+   "0"
+  ],
+  [
+   "",
+   "75",
+   "10-aug-26",
+   "Lun",
+   "OUTPUT",
+   "Brand book Pulso Health: paleta, tipografías, voz, tono",
+   "Documento Notion final",
+   "120"
+  ],
+  [
+   "",
+   "76",
+   "11-aug-26",
+   "Mar",
+   "OUTPUT",
+   "Brand book Liviano: voz específica, diferenciación dentro Pulso",
+   "Documento Notion final",
+   "120"
+  ],
+  [
+   "",
+   "77",
+   "12-aug-26",
+   "Mié",
+   "OUTPUT",
+   "Protocolo clínico Liviano completo (eval + tratamiento + seguim)",
+   "PDF clínico maestro",
+   "120"
+  ],
+  [
+   "",
+   "78",
+   "13-aug-26",
+   "Jue",
+   "OUTPUT",
+   "Protocolo nutricional Huancayo (quinua, kiwicha, maca, papa)",
+   "PDF dietético entregable",
+   "120"
+  ],
+  [
+   "",
+   "79",
+   "14-aug-26",
+   "Vie",
+   "OUTPUT",
+   "Plan ejercicio 12 sem casa → gimnasio (videos cortos plan)",
+   "Guion videos + cronograma",
+   "120"
+  ],
+  [
+   "",
+   "80",
+   "15-aug-26",
+   "Sáb",
+   "OUTPUT",
+   "Quiz funnel Liviano: 10-15 preguntas + ramificaciones",
+   "Mapa decisional completo",
+   "120"
+  ],
+  [
+   "",
+   "81",
+   "16-aug-26",
+   "Dom",
+   "DESCANSO",
+   "Descanso.",
+   "",
+   "0"
+  ],
+  [
+   "",
+   "82",
+   "17-aug-26",
+   "Lun",
+   "OUTPUT",
+   "Grabación contenido bloque 1: 5 videos TikTok/Reels (peso)",
+   "Videos en banco",
+   "120"
+  ],
+  [
+   "",
+   "83",
+   "18-aug-26",
+   "Mar",
+   "OUTPUT",
+   "Grabación contenido bloque 2: 5 videos (GLP-1, mitos)",
+   "Videos en banco",
+   "120"
+  ],
+  [
+   "",
+   "84",
+   "19-aug-26",
+   "Mié",
+   "OUTPUT",
+   "Grabación contenido bloque 3: 5 videos (sueño, cortisol)",
+   "Videos en banco",
+   "120"
+  ],
+  [
+   "",
+   "85",
+   "20-aug-26",
+   "Jue",
+   "OUTPUT",
+   "Grabación contenido bloque 4: 5 videos (nutrición Huancayo)",
+   "Videos en banco",
+   "120"
+  ],
+  [
+   "",
+   "86",
+   "21-aug-26",
+   "Vie",
+   "OUTPUT",
+   "Grabación contenido bloque 5: 5 videos (testimoniales propios)",
+   "Videos en banco",
+   "120"
+  ],
+  [
+   "",
+   "87",
+   "22-aug-26",
+   "Sáb",
+   "OUTPUT",
+   "Edición + agendar publicaciones primeras 4 semanas sept",
+   "Cronograma Buffer/Notion",
+   "120"
+  ],
+  [
+   "",
+   "88",
+   "23-aug-26",
+   "Dom",
+   "DESCANSO",
+   "Descanso.",
+   "",
+   "0"
+  ],
+  [
+   "",
+   "89",
+   "24-aug-26",
+   "Lun",
+   "OUTPUT",
+   "Web Liviano: wireframe → diseño → texto final (con Claude Code)",
+   "Pages.dev preview",
+   "120"
+  ],
+  [
+   "",
+   "90",
+   "25-aug-26",
+   "Mar",
+   "OUTPUT",
+   "Configuración Pulso CRM tenant Liviano (campos custom, flujos)",
+   "Tenant production-ready",
+   "120"
+  ],
+  [
+   "",
+   "91",
+   "26-aug-26",
+   "Mié",
+   "OUTPUT",
+   "Scripts CLOSER en español peruano (3 versiones)",
+   "PDF scripts entregables",
+   "120"
+  ],
+  [
+   "",
+   "92",
+   "27-aug-26",
+   "Jue",
+   "OUTPUT",
+   "Plan Meta Ads primeras 30 campañas (copy + creative + targeting)",
+   "Sheet/doc Meta Ads plan",
+   "120"
+  ],
+  [
+   "",
+   "93",
+   "28-aug-26",
+   "Vie",
+   "OUTPUT",
+   "Pre-launch list: lanzar cuenta IG/TikTok org + capturar 80-150 leads",
+   "Funcionando en vivo",
+   "120"
+  ],
+  [
+   "",
+   "94",
+   "29-aug-26",
+   "Sáb",
+   "META",
+   "Repaso integral: Anki cards de todos los meses, validación",
+   "Score Anki >85%",
+   "120"
+  ],
+  [
+   "",
+   "95",
+   "30-aug-26",
+   "Dom",
+   "META",
+   "Síntesis final: documento \"Lo que sé de Pulso al 31 ago\"",
+   "Documento maestro",
+   "120"
+  ],
+  [
+   "",
+   "96",
+   "31-aug-26",
+   "Lun",
+   "DESCANSO",
+   "Descanso celebratorio. Lunes 1 sep arrancamos.",
+   "",
+   "0"
+  ],
+  [
+   "",
+   "",
+   "",
+   "",
+   "TOTAL",
+   "minutos totales · ",
+   "",
+   "9840"
+  ],
+  [
+   "MODIFICACIONES v2 APLICADAS AL CALENDARIO",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Días 1-3 (28-30 may)",
+   "AÑADIDO: bloque BIOLOGÍA — Walker + Ratey + Pollan + Lugavere",
+   "",
+   "",
+   "",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Días 5-6 (1-2 jun)",
+   "MODIFICADO: Ultralearning desplazado aquí (era días 1-3)",
+   "",
+   "",
+   "",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Días 11-13 (sugerido)",
+   "AÑADIDO opcional: Mom Test (Fitzpatrick) + 5 entrevistas reales. Se solapan con $100M Leads — hazlo en paralelo o desplaza Leads 3 días",
+   "",
+   "",
+   "",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Día 52 sustituido",
+   "MODIFICADO: Lost Connections → Healthy Brain Book (Ramsey/Perlmutter) — mismo día, libro superior",
+   "",
+   "",
+   "",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Día 60-61 (sugerido entre 26-27 jul)",
+   "AÑADIDO: Emotional First Aid + Obstacle Is the Way · pre-cargado antes de meses brutales",
+   "",
+   "",
+   "",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Día 75 (10 ago)",
+   "ENRIQUECIDO: 'Brand book Pulso' → añadir 'Identidad Joseph MD' como output paralelo · transformación personal medida",
+   "",
+   "",
+   "",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Resto del calendario",
+   "MANTENIDO: la estructura general es excelente · 2h sagradas · domingos descanso · output operativo por día",
+   "",
+   "",
+   "",
+   "",
+   "",
+   ""
+  ]
+ ],
+ "Tecnicas": [
+  [
+   "",
+   "TÉCNICAS DE ESTUDIO · MAKE IT STICK + DEEP WORK + PEAK + ULTRALEARNING",
+   "",
+   "",
+   ""
+  ],
+  [
+   "",
+   "Aplica TODAS estas técnicas, no las elijas. Una sesión típica usa 3-4 de ellas en sucesión.",
+   "",
+   "",
+   ""
+  ],
+  [
+   "",
+   "ESTRUCTURA DEL BLOQUE DIARIO DE 2 HORAS",
+   "",
+   "",
+   ""
+  ],
+  [
+   "",
+   "0-5 min",
+   "Preparación",
+   "Cerrar todo. Modo avión. Agua. Lápiz + Obsidian + libro físico/Kindle. Objetivo de hoy escrito en post-it.",
+   "Sin pantallas distractoras"
+  ],
+  [
+   "",
+   "5-55 min",
+   "Sesión 1 lectura activa",
+   "Lees con highlighter + escribes notas resumidas en tus propias palabras en Obsidian. No subrayado pasivo.",
+   "Active reading + Cornell notes"
+  ],
+  [
+   "",
+   "55-65 min",
+   "Descanso real",
+   "Te paras, caminas 5 min, agua, no celular. El cerebro consolida en este descanso.",
+   "Difuso mode (Oakley)"
+  ],
+  [
+   "",
+   "65-110 min",
+   "Sesión 2 aplicación",
+   "Tomas lo aprendido y produces el output operativo del día (protocolo, script, mapa). El output debe ser usable mañana.",
+   "Direct application"
+  ],
+  [
+   "",
+   "110-120 min",
+   "Cierre y Anki",
+   "Generas 3-5 cards Anki con lo crítico. Auto-explicación oral: explicarías esto a un amigo en 60 segundos.",
+   "Spaced repetition + Feynman"
+  ],
+  [
+   "",
+   "LAS 9 TÉCNICAS CIENTÍFICAS QUE USARÁS",
+   "",
+   "",
+   ""
+  ],
+  [
+   "",
+   "#",
+   "Técnica",
+   "Cómo aplicarla a este plan",
+   "Fuente"
+  ],
+  [
+   "",
+   "1",
+   "Active recall",
+   "Después de cada capítulo, cierras el libro y escribes en blanco lo que recuerdas. Comparas. Anki para repaso.",
+   "Make It Stick - Brown"
+  ],
+  [
+   "",
+   "2",
+   "Spaced repetition (Anki)",
+   "Generas tarjetas Anki cada sesión. Repaso diario 15 min antes/después del bloque. Usas tu AnkiConnect.",
+   "Make It Stick + Ebbinghaus"
+  ],
+  [
+   "",
+   "3",
+   "Elaboration (relacionar)",
+   "Cada concepto lo conectas con algo que ya sabes. Ej: \"La Value Equation Hormozi se parece a la fórmula F=ma de física porque…\"",
+   "Make It Stick"
+  ],
+  [
+   "",
+   "4",
+   "Interleaving",
+   "Mezclas materias en la semana. No estudias 7 días seguidos solo Hormozi. Alternas Producto y Marketing para que el cerebro contraste.",
+   "Make It Stick"
+  ],
+  [
+   "",
+   "5",
+   "Deep Work blocks",
+   "2h de bloque exclusivo, sin notificaciones, mismo lugar mismo horario. Tu motor APEX (7:45-12:45) puede albergar 1 bloque dentro.",
+   "Deep Work - Newport"
+  ],
+  [
+   "",
+   "6",
+   "Deliberate practice",
+   "Cada output producido (un script, un protocolo) lo iteras 3 veces buscando defecto. No te conformas con la primera versión.",
+   "Peak - Ericsson"
+  ],
+  [
+   "",
+   "7",
+   "Feynman technique",
+   "Después de cada sesión, explicarías el concepto a un niño de 12 años en voz alta (60 seg). Si te trabas, no lo dominas todavía.",
+   "Feynman + Mindshift Oakley"
+  ],
+  [
+   "",
+   "8",
+   "Metalearning sketch",
+   "Antes de iniciar un libro, en 5 min mapeas qué concepts/facts/procedures tiene. Defines qué de eso te interesa más.",
+   "Ultralearning - Young"
+  ],
+  [
+   "",
+   "9",
+   "Directness",
+   "Aprendes en el contexto donde aplicarás. NO lees Hormozi como hobby — lees Hormozi mientras diseñas la oferta de Liviano en paralelo.",
+   "Ultralearning - Young"
+  ],
+  [
+   "",
+   "STACK DE HERRAMIENTAS DE ESTUDIO",
+   "",
+   "",
+   ""
+  ],
+  [
+   "",
+   "",
+   "Obsidian",
+   "Notas todas las sesiones. Linkado bidireccional. Un MOC (Map of Content) por libro.",
+   ""
+  ],
+  [
+   "",
+   "",
+   "AnkiConnect",
+   "Tarjetas. Repaso diario 15 min. Plugin AnkiConnect ya configurado en tu Motor APEX.",
+   ""
+  ],
+  [
+   "",
+   "",
+   "Kindle (físico cuando posible)",
+   "Highlight digital. Export de highlights a Obsidian. Libros físicos para los Top 5 importantes.",
+   ""
+  ],
+  [
+   "",
+   "",
+   "Coursera Plus (pagado)",
+   "Mindshift de Oakley (12h, fines de semana opcional). NO el curso intro Learning How to Learn (redundante con Make It Stick).",
+   ""
+  ],
+  [
+   "",
+   "",
+   "Notion (separado de Obsidian)",
+   "Outputs operativos de Pulso (protocolos, brand book, contenido). NO mezclar con tu nota personal.",
+   ""
+  ],
+  [
+   "",
+   "",
+   "Cronómetro físico",
+   "Pomodoros tradicionales 50-10. No app que te tiente al celular.",
+   ""
+  ],
+  [
+   "",
+   "",
+   "Audífonos con cancelación",
+   "Solo si tienes. Música instrumental binaural opcional (no obligatoria).",
+   ""
+  ],
+  [
+   "TÉCNICAS BIOLÓGICAS PRE-BLOQUE — AÑADIDAS v2",
+   "",
+   "",
+   "",
+   ""
+  ],
+  [
+   "#",
+   "Técnica",
+   "Cómo aplicarla",
+   "Fuente",
+   ""
+  ],
+  [
+   "0",
+   "Sueño Anchor",
+   "Acostarte 22:00 mismo horario · hab 18-19°C · oscuridad total · 30 min sin pantallas previo · alarma natural luz",
+   "Walker - Why We Sleep",
+   ""
+  ],
+  [
+   "0",
+   "Ejercicio AM pre-bloque",
+   "6:30-7:15am · 30-45 min zona 2 (puedes hablar pero con esfuerzo) · BDNF activo durante tu bloque 8-10am",
+   "Ratey - Spark + Attia - Outlive",
+   ""
+  ],
+  [
+   "0",
+   "Desayuno Genius Food",
+   "Huevos en aceite oliva · palta · almendras · café negro (delay 90 min post-despertar) · glucosa estable 4h",
+   "Lugavere + Huberman",
+   ""
+  ],
+  [
+   "0",
+   "Luz solar matutina",
+   "10-30 min luz natural primeros 60 min despertar · ancla circadiano · Huancayo te lo regala todo el año",
+   "Panda - Circadian Code",
+   ""
+  ],
+  [
+   "0",
+   "Hidratación pre-bloque",
+   "300-500ml agua antes del bloque + electrolitos opcional (sal + limón) · evita siesta innecesaria",
+   "Protocolo Huberman",
+   ""
+  ],
+  [
+   "PROTOCOLO REGULACIÓN EMOCIONAL — POST-RECHAZO COMERCIAL",
+   "",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Minuto 0",
+   "El NO sucede",
+   "Cliente prospecto no compra · paper rechazado · paciente no se adhiere · familia critica decisión",
+   "",
+   ""
+  ],
+  [
+   "Min 0-1",
+   "Pausa fisiológica",
+   "3 respiraciones diafragmáticas profundas. NO responder mentalmente todavía. Sistema parasimpático activa.",
+   "",
+   ""
+  ],
+  [
+   "Min 1-3",
+   "Defusión (Harris ACT)",
+   "Etiqueta: 'Mi mente está produciendo el pensamiento Y'. No 'Y es verdad'. Separas observador de pensamiento.",
+   "",
+   ""
+  ],
+  [
+   "Min 3-5",
+   "Tratamiento Winch",
+   "Argumenta contra auto-crítica · recuerda 3 fortalezas escritas · reconecta con un valor concreto",
+   "",
+   ""
+  ],
+  [
+   "Min 5-7",
+   "Reframe Holiday",
+   "Pregunta: '¿Qué información útil contiene este NO?' · El obstáculo ES el camino, no contra el camino",
+   "",
+   ""
+  ],
+  [
+   "Min 7-10",
+   "Acción comprometida",
+   "Siguiente acción en tu lista. La regulación emocional NO incluye 'sentirte mejor primero'. Acción aún sintiendo malestar",
+   "",
+   ""
+  ],
+  [
+   "EFECTO",
+   "Resultado esperado",
+   "Lo que antes te bloqueaba 3 días, ahora 10 minutos. En 90 días: 100 NOs procesados sin destruirte = Pulso operativo",
+   "",
+   ""
+  ]
+ ],
+ "Outputs": [
+  [
+   "",
+   "OUTPUTS POR SEMANA · LO QUE ENTREGAS CADA DOMINGO",
+   "",
+   "",
+   ""
+  ],
+  [
+   "",
+   "Cada domingo (descanso) revisas: ¿tengo este output listo? Si no, prioridad de la semana siguiente.",
+   "",
+   "",
+   ""
+  ],
+  [
+   "",
+   "Semana",
+   "Fechas",
+   "Tema de la semana",
+   "Output entregable al domingo"
+  ],
+  [
+   "",
+   "S1",
+   "28-31 may",
+   "Ultralearning como cimiento",
+   "Documento de metaaprendizaje aplicado a tu plan (10 páginas)"
+  ],
+  [
+   "",
+   "S2",
+   "1-7 jun",
+   "Hormozi $100M Offers",
+   "Borrador 1 de la Grand Slam Offer Liviano (estructura completa)"
+  ],
+  [
+   "",
+   "S3",
+   "8-14 jun",
+   "Hormozi $100M Leads",
+   "Plan de 4 canales de adquisición de Pulso (Meta, contenido, referidos, orgánico)"
+  ],
+  [
+   "",
+   "S4",
+   "15-21 jun",
+   "Hormozi $100M Money Models",
+   "Diagrama completo money model Pulso (front, upsell, downsell, continuity)"
+  ],
+  [
+   "",
+   "S5",
+   "22-28 jun",
+   "The Obesity Code + Ozempic Rev",
+   "Protocolo Liviano clínico v1 (eval, prescripción, dosificación, seguimiento)"
+  ],
+  [
+   "",
+   "S6",
+   "29 jun-5 jul",
+   "Outlive (Attia)",
+   "Identidad personal: empezar tu propio régimen de los 4 pilares (Attia 1.0)"
+  ],
+  [
+   "",
+   "S7",
+   "6-12 jul",
+   "The Hormone Cure + Estrogen Matters",
+   "Protocolo Curva Mujer + Curva Hombre clínico v1"
+  ],
+  [
+   "",
+   "S8",
+   "13-19 jul",
+   "Sueño + Mental (Calma)",
+   "Protocolo sueño transversal + Manual sesiones CBT Calma"
+  ],
+  [
+   "",
+   "S9",
+   "20-26 jul",
+   "Foco + Sexual (Cerca)",
+   "Protocolo Foco adultos + Protocolo Cerca"
+  ],
+  [
+   "",
+   "S10",
+   "27 jul-2 ago",
+   "Cialdini + DotCom Secrets (parte 1)",
+   "Funnel Liviano end-to-end mapeado (wireframe en papel)"
+  ],
+  [
+   "",
+   "S11",
+   "3-9 ago",
+   "DotCom Secrets parte 2 + Expert Secrets + StoryBrand",
+   "BrandScript Liviano + posicionamiento Joseph MD"
+  ],
+  [
+   "",
+   "S12",
+   "10-16 ago",
+   "Síntesis y producción inicio",
+   "Brand book Pulso Health + protocolo clínico Liviano completo"
+  ],
+  [
+   "",
+   "S13",
+   "17-23 ago",
+   "Producción contenido",
+   "Banco de 25-30 piezas de contenido grabadas y editadas"
+  ],
+  [
+   "",
+   "S14",
+   "24-31 ago",
+   "Cierre y lanzamiento",
+   "Web Liviano lista + Pulso CRM tenant configurado + scripts CLOSER + pre-launch list 80-150 leads"
+  ],
+  [
+   "",
+   "AL 31 DE AGOSTO 2026 — LISTOS PARA LANZAR",
+   "",
+   "",
+   ""
+  ],
+  [
+   "",
+   "Tienes: (1) 28 libros leídos con outputs, (2) Brand book + Protocolos clínicos de 6 líneas, (3) Web Liviano + CRM listos, (4) 25-30 piezas de contenido grabadas, (5) Pre-launch list de 80-150 leads, (6) Plan Meta Ads primeros 30 días, (7) Scripts CLOSER en español peruano. El 1 de septiembre 2026 ABRES y atiendes a tus primeros pacientes.",
+   "",
+   "",
+   ""
+  ]
+ ],
+ "Recursos": [
+  [
+   "",
+   "RECURSOS COMPLEMENTARIOS · YOUTUBE + CURSOS + PODCASTS",
+   "",
+   ""
+  ],
+  [
+   "",
+   "Los 2h diarios son SOLO para lectura activa. YouTube/podcasts los consumes en tiempo \"muerto\": manejando, comiendo, gimnasio, baño. No los pongas como tiempo de estudio formal.",
+   "",
+   ""
+  ],
+  [
+   "",
+   "Recurso",
+   "Tipo",
+   "Uso y prioridad"
+  ],
+  [
+   "",
+   "Alex Hormozi en Español",
+   "YouTube",
+   "PRIORIDAD MÁXIMA. 30-60 min/día durante mes 1. Refuerza la trilogía Hormozi."
+  ],
+  [
+   "",
+   "Lewis Howes en Español",
+   "YouTube",
+   "Entrevistas largas Hormozi en español. Para profundizar mes 1-2."
+  ],
+  [
+   "",
+   "Aprendamos Marketing",
+   "YouTube",
+   "Mes 2: Meta Ads paso a paso, funnels prácticos en español peruano-friendly."
+  ],
+  [
+   "",
+   "Romuald Fons",
+   "YouTube",
+   "Mes 3: SEO orgánico. Crítico para tu blog Pulso que replica playbook Hims/Curology."
+  ],
+  [
+   "",
+   "Vilma Núñez",
+   "YouTube",
+   "Mes 3: embudos automatizados + email marketing en español."
+  ],
+  [
+   "",
+   "Alex Hormozi original (inglés)",
+   "YouTube",
+   "Subs español auto. Específicamente busca: \"Hormozi medspa\", \"aesthetic clinic\"."
+  ],
+  [
+   "",
+   "Acquisition.com podcast/canal",
+   "YouTube",
+   "Casos reales portfolio Hormozi. Mes 2-3."
+  ],
+  [
+   "",
+   "Russell Brunson / ClickFunnels",
+   "YouTube",
+   "Acompaña tus semanas 10-11 con DotCom y Expert Secrets."
+  ],
+  [
+   "",
+   "Peter Attia podcast - The Drive",
+   "YouTube/Podcast",
+   "CRÍTICO para tu identidad médica. Episodios de obesidad, hormonal, longevidad, sueño."
+  ],
+  [
+   "",
+   "Andrew Huberman Lab",
+   "YouTube/Podcast",
+   "Neurobiología aplicada. Episodios específicos: sleep, dopamine, GLP-1, testosterone."
+  ],
+  [
+   "",
+   "Rhonda Patrick - FoundMyFitness",
+   "YouTube/Podcast",
+   "Nutrición y biomarcadores. Para Liviano avanzado."
+  ],
+  [
+   "",
+   "Mark Hyman MD",
+   "YouTube/Podcast",
+   "Functional medicine — voz editorial Pulso."
+  ],
+  [
+   "",
+   "Mindshift (Oakley) - Coursera",
+   "Curso",
+   "Sábados opcionales. ~12h. Mejor que Learning How to Learn para tu nivel."
+  ],
+  [
+   "",
+   "Diseño Gráfico - CalArts (Coursera)",
+   "Curso",
+   "Solo si necesitas refrescar para brand book. Mes 3 opcional."
+  ],
+  [
+   "",
+   "NHS PDF \"Working Night Shift\"",
+   "PDF gratis",
+   "agamfec.com/pdf/MIR/Guardias_Supervivencia.pdf — sueño para tu propia salud SERUMS."
+  ],
+  [
+   "",
+   "Curology blog",
+   "Web",
+   "Estudio del playbook: cómo escriben artículos médicamente revisados que convierten. Replicar."
+  ],
+  [
+   "",
+   "Hims Good Health blog",
+   "Web",
+   "Mismo análisis: posts que rankean para keywords long-tail en salud masculina/femenina."
+  ],
+  [
+   "",
+   "r/Entrepreneur",
+   "Reddit",
+   "Casos reales de founders. Filtrar mucho ruido. Solo 15 min/semana."
+  ],
+  [
+   "",
+   "r/Frugal_Fitness o r/Loseit",
+   "Reddit",
+   "Para entender el lenguaje del paciente Liviano — cómo habla, qué le duele, qué quiere."
+  ],
+  [
+   "",
+   "Indie Hackers",
+   "Web",
+   "Founders bootstrap. Lee historias de telesalud y D2C."
+  ],
+  [
+   "RECURSOS ADICIONALES v2 — REFERENTES BIOLÓGICOS",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Drew Ramsey MD",
+   "YouTube/Podcast",
+   "AÑADIDO v2: psiquiatría nutricional Columbia · referente Calma · alternativa a divulgadores no-clínicos",
+   ""
+  ],
+  [
+   "Robert Lustig MD",
+   "YouTube/Podcast",
+   "AÑADIDO v2: UCSF · azúcar y metabolismo · referente científico Liviano + identidad",
+   ""
+  ],
+  [
+   "Dale Bredesen MD",
+   "YouTube/Podcast",
+   "AÑADIDO v2: UCLA · prevención cognitiva · cross-sell Curva ↔ Liviano avanzado",
+   ""
+  ],
+  [
+   "Outlive (audiobook Attia)",
+   "Audiobook",
+   "AÑADIDO v2: 15h durante ejercicio AM mes 1 · refuerza identidad médica + biología",
+   ""
+  ],
+  [
+   "Coursera Mindshift",
+   "Curso",
+   "MODIFICADO v2: fines de semana opcionales · empezar S2 · Oakley nivel adulto profesional",
+   ""
+  ],
+  [
+   "PDF Horrocks/Pounder Guardias",
+   "PDF",
+   "MODIFICADO v2: ELEVADO prioridad — descarga ESTA semana, aplica próxima guardia SERUMS",
+   ""
+  ]
+ ],
+ "Metricas_v2": [
+  [
+   "MÉTRICAS SEMANALES MEDIBLES · TRACKER PULSO v2",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Llena cada domingo. Score binario o numérico. Si <80% en 2 semanas consecutivas → ajusta plan.",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Métrica",
+   "Tipo",
+   "S1",
+   "S2",
+   "S3",
+   "S4",
+   "S5",
+   "S6",
+   "S7",
+   "S8",
+   "S9",
+   "S10",
+   "S11",
+   "S12",
+   "S13",
+   "S14",
+   "Meta v2"
+  ],
+  [
+   "BIOLOGIA",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Sueño 7-8h consistente",
+   "días/7",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "≥6/7"
+  ],
+  [
+   "Ejercicio AM completado",
+   "días/7",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "≥5/7"
+  ],
+  [
+   "Comida Pollan/Genius",
+   "días/7",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "≥6/7"
+  ],
+  [
+   "Score biológico semanal",
+   "%",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "≥85%"
+  ],
+  [
+   "FÍSICAS JOSEPH",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Peso (kg)",
+   "número",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "S/objetivo"
+  ],
+  [
+   "Cintura (cm)",
+   "número",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "↓"
+  ],
+  [
+   "Fuerza progresiva (1RM ref)",
+   "kg",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "+15%"
+  ],
+  [
+   "ESTUDIO",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Bloques 2h completados",
+   "días/6",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "≥5/6"
+  ],
+  [
+   "Anki score semanal",
+   "%",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "≥85%"
+  ],
+  [
+   "Output semanal terminado",
+   "0/1",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "1"
+  ],
+  [
+   "COMERCIAL/MERCADO",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Entrevistas Mom Test",
+   "número",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "≥15 acum S3"
+  ],
+  [
+   "Conversaciones reales clientes",
+   "número",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "≥5/sem S10+"
+  ],
+  [
+   "Pre-launch leads acumulados",
+   "número",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "≥150 S14"
+  ],
+  [
+   "EMOCIONAL",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Días NO bloqueado por rechazo",
+   "días/7",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "≥6/7"
+  ],
+  [
+   "Domingo descanso real",
+   "0/1",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "1"
+  ],
+  [
+   "INSTRUCCIONES DE USO DEL TRACKER",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   ""
+  ],
+  [
+   "1. Cada DOMINGO de descanso, antes de leer notas, llenas la columna de la semana que termina.",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   ""
+  ],
+  [
+   "2. Score biológico semanal = promedio de Sueño + Ejercicio + Comida (los 3 primeros).",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   ""
+  ],
+  [
+   "3. Si score biológico <80% dos semanas seguidas: PRIORIDAD ABSOLUTA arreglar biología antes de continuar plan.",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   ""
+  ],
+  [
+   "4. Si Anki score <85%: significa que tus tarjetas son demasiado densas o no estás repasando. Ajusta volumen.",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   ""
+  ],
+  [
+   "5. Si output semanal NO terminado: revisa si estás siendo perfeccionista. Versión 1 'suficientemente buena' > versión 0 'perfecta'.",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   ""
+  ],
+  [
+   "6. Métricas físicas: medir cada 4 semanas (S1, S4, S8, S12) — no semanal, varianza biológica natural.",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   ""
+  ],
+  [
+   "7. Entrevistas Mom Test: S1 = 5, S2 = 5, S3 = 5 (acum 15). NO pasas a Hormozi en serio sin esos 15.",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   ""
+  ],
+  [
+   "8. Al S14, debes tener: peso al objetivo, fuerza +15%, ≥150 leads, ≥30 Anki cards/línea, 6 protocolos clínicos. Si no → revisa qué falló y por qué.",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   ""
+  ]
+ ]
+}

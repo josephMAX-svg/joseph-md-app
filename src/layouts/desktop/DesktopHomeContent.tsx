@@ -20,6 +20,7 @@ import {
 import type { TodayMetrics } from '../../lib/supabase';
 import GlassCard from '../../components/GlassCard';
 import TodayMission from '../../components/home/TodayMission';
+import BibliotecaHome from '../../components/home/BibliotecaHome';
 import AnimatedCounter from '../../components/AnimatedCounter';
 import CircularProgress from '../../components/CircularProgress';
 import { PulseDash } from '../../components/SkeletonLoader';
@@ -154,7 +155,7 @@ function MetricCard({
 // Default service set — matches agente_estudio expected services
 const DEFAULT_SERVICES = ['supabase', 'anki', 'ocr', 'agent', 'scheduler', 'notifications'];
 
-export default function DesktopHomeContent() {
+export default function DesktopHomeContent({ onNavigate }: { onNavigate?: (screen: any) => void } = {}) {
   const [countdown, setCountdown] = useState(getCountdown(new Date('2030-01-01')));
   const { source, isLocalAvailable } = useDataSource();
   const { phase: localPhase, status: localStatus } = useLocalTelemetry(source);
@@ -328,7 +329,10 @@ export default function DesktopHomeContent() {
       </View>
 
       {/* Misión de HOY — timeline real de estudio (Calendar) */}
-      <TodayMission />
+      <TodayMission onGo={onNavigate} />
+
+      {/* Biblioteca del fundador — 28 libros, % leído real */}
+      <BibliotecaHome onGo={onNavigate} />
 
       {/* APEX Queue Badge */}
       {queueCount > 0 && (

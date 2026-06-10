@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Linking } from 'react-native';
+import React, { useRef, useEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Linking, Animated } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
 import { MIR_DIAS, mirDiaDe, capUrl } from '../../lib/mirDailyPlan';
@@ -37,7 +37,25 @@ const hm = (s: string) => { const [h, m] = s.split(':').map(Number); return h * 
 interface Accion { lbl: string; color: string; url: string; fill?: boolean }
 interface Bloque { flag: string; nombre: string; ini: string; fin: string; color: string; tema: string; sub: string; acciones: Accion[] }
 
-export default function TodayMission() {
+/** chip AHORA con pulso animado (élite, sutil) */
+function AhoraChip({ color }: { color: string }) {
+  const pulse = useRef(new Animated.Value(1)).current;
+  useEffect(() => {
+    const loop = Animated.loop(Animated.sequence([
+      Animated.timing(pulse, { toValue: 0.55, duration: 800, useNativeDriver: false }),
+      Animated.timing(pulse, { toValue: 1, duration: 800, useNativeDriver: false }),
+    ]));
+    loop.start();
+    return () => loop.stop();
+  }, []);
+  return (
+    <Animated.View style={[st.ahoraChip, { backgroundColor: color, opacity: pulse }]}>
+      <Text style={st.ahoraTxt}>AHORA</Text>
+    </Animated.View>
+  );
+}
+
+export default function TodayMission({ onGo }: { onGo?: (screen: string) => void }) {
   const iso = todayISO();
   const mir = mirDiaDe(iso);
   const us = diaDe(iso);
@@ -86,11 +104,12 @@ export default function TodayMission() {
         const enCurso = ahora >= hm(b.ini) && ahora < hm(b.fin);
         const pasado = ahora >= hm(b.fin);
         return (
-          <View key={i} style={[st.bloque, { borderLeftColor: b.color }, enCurso && { backgroundColor: b.color + '14', borderColor: b.color + '66' }, pasado && { opacity: 0.55 }]}>
+          <TouchableOpacity key={i} activeOpacity={onGo ? 0.8 : 1} onPress={() => onGo?.('Estudio')}
+            style={[st.bloque, { borderLeftColor: b.color }, enCurso && { backgroundColor: b.color + '14', borderColor: b.color + '66' }, pasado && { opacity: 0.55 }]}>
             <View style={st.horaCol}>
               <Text style={[st.hora, { color: b.color }]}>{b.ini}</Text>
               <Text style={st.horaFin}>{b.fin}</Text>
-              {enCurso && <View style={[st.ahoraChip, { backgroundColor: b.color }]}><Text style={st.ahoraTxt}>AHORA</Text></View>}
+              {enCurso && <AhoraChip color={b.color} />}
               {pasado && <Text style={st.checkTxt}>✓</Text>}
             </View>
             <View style={{ flex: 1, minWidth: 0 }}>
@@ -106,10 +125,10 @@ export default function TodayMission() {
                 </TouchableOpacity>
               ))}
             </View>
-          </View>
+          </TouchableOpacity>
         );
       })}
-      <Text style={st.nota}>Horario real del Google Calendar (Lima) · ◆ Obsidian = nota madre donde el motor APEX guarda lo de hoy</Text>
+      <Text style={st.nota}>Horario real del Google Calendar (Lima) · toca un bloque → abre Estudio · ◆ Obsidian = nota madre donde caen los APEX</Text>
     </View>
   );
 }

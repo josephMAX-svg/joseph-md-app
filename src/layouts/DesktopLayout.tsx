@@ -75,7 +75,7 @@ export default function DesktopLayout() {
   const renderCenterContent = () => {
     switch (activeScreen) {
       case 'Home':
-        return <DesktopHomeContent />;
+        return <DesktopHomeContent onNavigate={setActiveScreen} />;
       case 'Estudio':
         return <DesktopEstudioContent />;
       case 'Derma':

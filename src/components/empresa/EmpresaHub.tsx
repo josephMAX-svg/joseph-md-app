@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Platform, StyleSheet } from 'react-native';
+import { consumeNavIntent } from '../../lib/navIntent';
 import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
 import { desktopStyles, DesktopColors } from '../../theme/desktopStyles';
 import { AMBER, PillTab, Chip, SectionLabel, useHover } from './primitives';
@@ -35,6 +36,12 @@ export default function EmpresaHub({ variant = 'mobile' }: { variant?: 'mobile' 
   const [company, setCompany] = useState<string>('pulso');
   const [panel, setPanel] = useState<string>('cockpit');
   const isDesktop = variant === 'desktop';
+
+  // intención de navegación desde Home (p. ej. "Plan 96 días →" → Pulso/Estudio)
+  useEffect(() => {
+    const intent = consumeNavIntent();
+    if (intent === 'estudio-pulso') setCompany('estudio');
+  }, []);
 
   const openBrand = (id: string) => {
     if (id === 'liviano') setPanel('cockpit');

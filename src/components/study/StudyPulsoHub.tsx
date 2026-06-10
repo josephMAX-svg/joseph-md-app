@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Linking } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
-import { SectionLabel, Chip, GlassPanel, gridStyle, gridItemStyle } from '../empresa/primitives';
+import { SectionLabel, Chip, GlassPanel, gridStyle, gridItemStyle, PillTab } from '../empresa/primitives';
 import { GradientHero, MegaStat, RingStat, FadeUp } from '../empresa/visuals';
 import {
   ESTUDIO_PULSO_META, ESTUDIO_RAMAS, ESTUDIO_MESES, ESTUDIO_LIBROS, ESTUDIO_REGLAS,
   ESTUDIO_REGIMEN, ESTUDIO_RECURSOS, ESTUDIO_JOSEPH_31AGO, ESTUDIO_NOTA, PrioLibro,
 } from '../../lib/estudioPulsoData';
+import PulsoTodayPlan from '../empresa/PulsoTodayPlan';
 
 /**
  * StudyPulsoHub — "Estudio Pulso": el plan de 96 días del fundador, dentro de Business.
@@ -23,6 +24,7 @@ const P1 = ESTUDIO_LIBROS.filter(l => l.prioridad === 1).length;
 const HORAS = ESTUDIO_LIBROS.reduce((n, l) => n + l.horas, 0);
 
 export default function StudyPulsoHub({ onBack }: { onBack: () => void }) {
+  const [sub, setSub] = useState<'dia' | 'vision'>('dia');
   return (
     <View>
       <TouchableOpacity onPress={onBack} activeOpacity={0.7} style={st.breadcrumb}>
@@ -37,6 +39,15 @@ export default function StudyPulsoHub({ onBack }: { onBack: () => void }) {
         <Text style={st.heroTesis}>{ESTUDIO_PULSO_META.resumen}</Text>
       </GradientHero>
 
+      {/* sub-nav: motor día a día / visión */}
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm, marginBottom: Spacing.lg }}>
+        <PillTab label="Día a día" icon="📅" active={sub === 'dia'} accent={GOLD} onPress={() => setSub('dia')} />
+        <PillTab label="Visión 96 días" icon="🧭" active={sub === 'vision'} accent={GOLD} onPress={() => setSub('vision')} />
+      </View>
+
+      {sub === 'dia' && <PulsoTodayPlan />}
+
+      {sub === 'vision' && (<>
       {/* MEGA STAT */}
       <MegaStat value={ESTUDIO_LIBROS.length} label="Libros priorizados con output operativo" accent={GOLD}
         footnote={`96 días · 2h/día · ${HORAS}h de lectura activa · ${P1} esenciales (P1)`} />
@@ -150,6 +161,7 @@ export default function StudyPulsoHub({ onBack }: { onBack: () => void }) {
       <GlassPanel accent={GOLD} style={{ marginBottom: Spacing.xl, padding: Spacing.lg }}>
         <Text style={st.body}>{ESTUDIO_NOTA}</Text>
       </GlassPanel>
+      </>)}
     </View>
   );
 }

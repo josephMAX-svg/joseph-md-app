@@ -29,6 +29,7 @@ import type { AgentReport, TodayMetrics } from '../lib/supabase';
 import ApexSubmitModal from '../components/ApexSubmitModal';
 import AgentReportViewer from '../components/AgentReportViewer';
 import TodayMission from '../components/home/TodayMission';
+import BibliotecaHome from '../components/home/BibliotecaHome';
 
 const TIMER_STORAGE_KEY = '@joseph_md_deep_work_seconds';
 const TIMER_START_KEY = '@joseph_md_deep_work_start';
@@ -105,7 +106,7 @@ function ReportCard({ report, onPress }: { report: AgentReport; onPress: () => v
   );
 }
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }: { navigation?: any }) {
   const [countdown, setCountdown] = useState(getCountdown(new Date('2030-01-01')));
   const [timerRunning, setTimerRunning] = useState(false);
   const [timerSeconds, setTimerSeconds] = useState(0);
@@ -284,7 +285,10 @@ export default function HomeScreen() {
       )}
 
       {/* ─── Misión de HOY (timeline real del Calendar) ─── */}
-      <TodayMission />
+      <TodayMission onGo={(s) => navigation?.navigate?.(s)} />
+
+      {/* ─── Biblioteca del fundador (28 libros, % leído real) ─── */}
+      <BibliotecaHome onGo={(s) => navigation?.navigate?.(s)} />
 
       {/* ─── Career Milestones ─── */}
       <View style={styles.section}>
