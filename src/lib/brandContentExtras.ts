@@ -64,7 +64,16 @@ export const HERRAMIENTAS: Herramienta[] = [
   }
 ];
 
+// (añadido a mano, verificado de las suscripciones REALES de YouTube del usuario, 10-jun-2026
+//  — preservar si se regenera con extract_content_extras.js)
+const REFS_TERRENOS: Referente[] = [
+  { nombre: "Tablero Inmobiliario con Fernando Velarde", red: "YouTube", url: "https://www.youtube.com/@FernadoVelarde", porQue: "Canal inmobiliario al que el usuario YA está suscrito — formato análisis de mercado/venta de propiedades en Perú." },
+  { nombre: "Sociedad Peruana de Bienes Raíces", red: "YouTube", url: "https://www.youtube.com/@sociedadperuanadebienesraices", porQue: "Gremio inmobiliario peruano — marcos legales, tasación y venta de terrenos (suscrito)." },
+  { nombre: "Universidad de Bienes Raíces", red: "YouTube", url: "https://www.youtube.com/@universidaddebienesraiceso2942", porQue: "Formación de venta inmobiliaria en español (suscrito)." },
+];
+
 export const REFERENTES: Record<string, Referente[]> = {
+  terrenos: REFS_TERRENOS,
   "pulso": [
     {
       "nombre": "Dr. Sebastián Arrieta (@doctorarrietam) — Perú",

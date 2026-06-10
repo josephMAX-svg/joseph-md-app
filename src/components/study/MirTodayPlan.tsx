@@ -9,6 +9,7 @@ import {
 } from '../../lib/mirDailyPlan';
 import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, loadDone, saveDone } from '../../lib/studyProgress';
 import { mirObsUrl } from '../../lib/obsidianMap';
+import { mirAnkiDeck, ANKIWEB } from '../../lib/ankiLinks';
 
 /**
  * MirTodayPlan — Plan MIR día-a-día (ProMIR), estilo USMLE/Perú. Vueltas (1ª/2ª/3ª),
@@ -91,6 +92,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaMIR; onOpenT
       {mirObsUrl(dia.capId) && (
         <FadeUp delay={135}><ColaItem icon="◆" lbl="OBSIDIAN · nota madre del tema" val={`${dia.asignatura} → ${dia.tema}`} sub="Vault_Medicina MIR_Joseph · aquí caen los APEX de hoy (motor APEX)" color={OBS} url={mirObsUrl(dia.capId)!} /></FadeUp>
       )}
+      <FadeUp delay={142}><ColaItem icon="🃏" lbl="ANKI · deck de la asignatura (SRS diario)" val={mirAnkiDeck(dia.asignatura)} sub="abre AnkiWeb ↗ · en Anki escritorio busca este deck exacto" color="#5BA8C9" url={ANKIWEB} /></FadeUp>
       <FadeUp delay={150}>
         <View style={[st.cola, { borderLeftColor: AMBER }]}>
           <Text style={st.colaIcon}>🃏</Text>

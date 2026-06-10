@@ -1,117 +1,170 @@
-// gen_mapa_visual.js — regenera 00_Dashboard/Mapa_Temarios_Trilingue.md con GRÁFICOS:
-// pie Mermaid (subtemas por examen), flowchart del motor APEX, barras <progress> con
-// la cobertura REAL de APEX (subtemas con ≥1 nota en APEX_creados / total) y los links.
-// Idempotente: sobreescribe SOLO el Mapa (archivo generado nuestro).
+// gen_mapa_visual.js v2 — regenera 00_Dashboard/Mapa_Temarios_Trilingue.md
+// Estilo editorial sobrio (paleta navy/oro de la app). Data 100% real:
+//  · vault (carpetas + cobertura APEX) · app (planes) · Anki (decks vía AnkiConnect si corre)
+// Cubre los 6 dominios: MIR · USMLE · ENCAPS · Derma · Research · Business (+Vitals nota).
 const fs = require('fs');
 const path = require('path');
 const V = 'D:/JOSEPH/Vault_Medicina MIR_Joseph';
+const APP = 'D:/joseph-md-app';
 
 const isDir = (p) => { try { return fs.statSync(p).isDirectory(); } catch { return false; } };
 const mdCount = (p) => { try { return fs.readdirSync(p).filter((f) => f.endsWith('.md')).length; } catch { return 0; } };
+const dirs = (p) => { try { return fs.readdirSync(p).filter((d) => isDir(path.join(p, d)) && !d.startsWith('_') && !d.startsWith('z_') && d !== 'APEX_creados'); } catch { return []; } };
 
-/** recorre un árbol examen: subcarpetas con APEX_creados → {total, conApex, porGrupo} */
-function scan(base, groupLevel) {
-  const out = { total: 0, conApex: 0, grupos: [] };
-  if (!isDir(base)) return out;
-  for (const g of fs.readdirSync(base)) {
-    const gp = path.join(base, g);
-    if (!isDir(gp) || g === 'APEX_creados' || g.startsWith('_') || g.startsWith('z_')) continue;
-    let gTotal = 0, gApex = 0;
-    for (const s of fs.readdirSync(gp)) {
-      const sp = path.join(gp, s);
-      if (!isDir(sp) || s === 'APEX_creados') continue;
-      const ap = path.join(sp, 'APEX_creados');
-      if (isDir(ap)) { gTotal++; if (mdCount(ap) > 0) gApex++; }
+function scan(base) {
+  const out = { total: 0, conApex: 0, apexNotas: 0, grupos: [] };
+  for (const g of dirs(base)) {
+    let gT = 0, gA = 0, gN = 0;
+    for (const s of dirs(path.join(base, g))) {
+      const ap = path.join(base, g, s, 'APEX_creados');
+      if (isDir(ap)) { gT++; const n = mdCount(ap); if (n > 0) { gA++; gN += n; } }
     }
-    if (gTotal > 0) { out.total += gTotal; out.conApex += gApex; out.grupos.push({ g, total: gTotal, apex: gApex }); }
+    if (gT > 0) { out.total += gT; out.conApex += gA; out.apexNotas += gN; out.grupos.push({ g, total: gT, apex: gA }); }
   }
   return out;
 }
 
+// ── data del vault ──
 const mir = scan(path.join(V, '03_MIR'));
 const usmle = scan(path.join(V, '01_USMLE', '02_UWORLD_SYSTEMS'));
 const encaps = scan(path.join(V, '06_ENCAPS', 'ENCAPS_2026', '02_TEMARIO'));
+const researchLineas = dirs(path.join(V, '04_INVESTIGACIÓN DERMATOLÓGICA', '01_LINEAS'));
+const researchSRs = dirs(path.join(V, '04_INVESTIGACIÓN DERMATOLÓGICA', '02_SR_EN_CURSO'));
+const dermaVault = isDir(path.join(V, '07_DERMATOLOGIA'));
 
-const pct = (x) => x.total ? Math.round((x.conApex / x.total) * 100) : 0;
-const bar = (x) => `<progress value="${x.conApex}" max="${x.total}"></progress> **${x.conApex}/${x.total}** subtemas con APEX (${pct(x)}%)`;
-const lista = (x, baseRel, icon) => x.grupos.map((g) => {
-  const subs = fs.readdirSync(path.join(V, baseRel, g.g)).filter((s) => isDir(path.join(V, baseRel, g.g, s)) && s !== 'APEX_creados');
-  const first = subs.sort()[0];
-  const nombre = g.g.replace(/^\d+_/, '').replace(/_/g, ' ');
-  const madre = `${baseRel}/${g.g}/${first}/_concepto_madre`;
-  return `> ${icon} [[${madre}|${nombre}]] · ${g.total} subtemas${g.apex ? ` · **${g.apex} con APEX**` : ''}`;
-}).join('\n');
+// ── data de la app ──
+const dermaDias = (fs.readFileSync(path.join(APP, 'src/lib/dermaDailyPlan.ts'), 'utf8').match(/\{\s*d:\s*\d+/g) || []).length;
+const bizDias = (fs.readFileSync(path.join(APP, 'src/lib/businessStudyPlan.ts'), 'utf8').match(/\{d:\d+/g) || []).length;
+const libros = (fs.readFileSync(path.join(APP, 'src/lib/estudioPulsoData.ts'), 'utf8').match(/\{ n: \d+,/g) || []).length;
 
+// ── Anki (AnkiConnect, opcional) ──
+let anki = null;
+try {
+  const r = require('child_process').execSync(
+    `curl -s -m 4 localhost:8765 -X POST -d "{\\"action\\":\\"deckNames\\",\\"version\\":6}"`, { encoding: 'utf8' });
+  const d = JSON.parse(r).result || [];
+  anki = {
+    encaps: d.filter((x) => x.startsWith('APEX::ENCAPS::') && x.split('::').length === 4).length,
+    mir: d.filter((x) => x.startsWith('APEX::MIR::') && !/TEST/i.test(x)).length,
+    usmle: d.filter((x) => x.startsWith('APEX::USMLE::')).length,
+    dermki: d.filter((x) => x.startsWith('Dermki::')).length,
+  };
+} catch { /* Anki cerrado → sin columna */ }
+
+const pct = (x) => (x.total ? Math.round((x.conApex / x.total) * 100) : 0);
+const bar = (x) => `<progress value="${x.conApex}" max="${x.total}"></progress>\n**${x.conApex} / ${x.total}** subtemas con APEX · ${x.apexNotas} notas (${pct(x)}%)`;
+const nom = (s) => s.replace(/^\d+_/, '').replace(/_/g, ' ');
+const tabla = (x, baseRel) => [
+  '| # | Asignatura / Sistema | Subtemas | Con APEX |',
+  '|---|----------------------|---------:|---------:|',
+  ...x.grupos.map((g, i) => {
+    const subs = dirs(path.join(V, baseRel, g.g)).sort();
+    const link = `${baseRel}/${g.g}/${subs[0]}/_concepto_madre`;
+    return `| ${String(i + 1).padStart(2, '0')} | [[${link}\\|${nom(g.g)}]] | ${g.total} | ${g.apex || '—'} |`;
+  }),
+].join('\n');
+
+const DERMKI = ['01 Basic Science', '02 Dermatopharmacology', '03 General Dermatology', '04 Pediatric Dermatology',
+  '05 Infectious Disease', '06 Neoplastic Dermatology', '07 Dermatopathology', '08 Dermatologic Surgery',
+  '09 Cosmetic Dermatology', '10 Cutaneous Manifestations of Internal Disease', '11 Epidemiology & Public Health'];
+
+const hoy = new Date().toISOString().slice(0, 10);
 const md = `---
 tipo: mapa_temarios
-actualizado: ${new Date().toISOString().slice(0, 10)}
-cssclasses: jmd-mapa
+actualizado: ${hoy}
 ---
 
-# 🗺️ Mapa de Temarios Trilingüe
+# Mapa Maestro · Joseph MD
 
-> [!success] Los 3 grandes sistemas, navegables y medibles
-> Cada subtema tiene su carpeta con \`_concepto_madre.md\` + \`APEX_creados/\`.
-> El motor APEX (Ctrl+Shift+A) sabe exactamente dónde cae cada nota — y este mapa
-> muestra la **cobertura real** (subtemas que ya tienen ≥1 APEX).
+> [!success] El segundo cerebro, medible
+> Seis dominios · cada subtema con su carpeta (\`_concepto_madre\` + \`APEX_creados/\`) ·
+> el motor APEX (Ctrl+Shift+A) rutea cada nota a su lugar exacto en Anki, Obsidian, Notion y Supabase.
+> Las cifras de cobertura se recalculan de los archivos reales.
+
+| Dominio | Estructura | Vault | Anki |
+|---------|-----------|-------|------|
+| 🇪🇸 **MIR** · ProMIR | ${mir.grupos.length} asignaturas · ${mir.total} capítulos | \`03_MIR\` | ${anki ? `APEX::MIR (${anki.mir} sub-decks · lazy)` : '—'} |
+| 🇺🇸 **USMLE** · uWorld | ${usmle.grupos.length} sistemas · ${usmle.total} subtopics | \`01_USMLE/02_UWORLD_SYSTEMS\` | ${anki ? `APEX::USMLE (${anki.usmle} subjects)` : '—'} |
+| 🇵🇪 **ENCAPS** · MINSA | 5 bloques · ${encaps.total} subtemas | \`06_ENCAPS/.../02_TEMARIO\` | ${anki ? `APEX::ENCAPS (${anki.encaps} sub-decks ✓)` : '—'} |
+| 🧴 **Derma** | plan ${dermaDias} átomos (app) ${dermaVault ? '· vault ✓' : '· vault pendiente (chat Derma)'} | ${dermaVault ? '`07_DERMATOLOGIA`' : '*por crear*'} | ${anki ? `Dermki (${anki.dermki} capítulos · pagado)` : '—'} |
+| 🔬 **Research** | ${researchLineas.length} líneas · ${researchSRs.length} SR en curso | \`04_INVESTIGACIÓN/01_LINEAS\` | *por definir (Palmerton)* |
+| 💼 **Business** | ${libros} libros · plan ${bizDias} días | \`02_EMPRESA FINANZAS\` | *por definir (Palmerton)* |
 
 \`\`\`mermaid
+%%{init: {'theme':'base','themeVariables':{'background':'transparent','primaryTextColor':'#E8DCC0','pieSectionTextColor':'#E8DCC0','pieTitleTextSize':'17px','pieOuterStrokeWidth':'0px','pie1':'#B8923F','pie2':'#7E9CB8','pie3':'#9DB07F'}}}%%
 pie showData title Subtemas por examen
     "MIR · ProMIR" : ${mir.total}
-    "USMLE · uWorld" : ${usmle.total}
     "ENCAPS · MINSA" : ${encaps.total}
+    "USMLE · uWorld" : ${usmle.total}
 \`\`\`
 
-## 🇪🇸 MIR — ProMIR (${mir.grupos.length} asignaturas)
+## 🇪🇸 MIR — ProMIR
 
 ${bar(mir)}
 
-> [!note]- Asignaturas (toca para desplegar)
-${lista(mir, '03_MIR', '🫀')}
+> [!note]- Las ${mir.grupos.length} asignaturas (desplegar)
+${tabla(mir, '03_MIR').split('\n').map((l) => '> ' + l).join('\n')}
 
-## 🇺🇸 USMLE — uWorld Step 1 (${usmle.grupos.length} sistemas)
+## 🇺🇸 USMLE — uWorld Step 1
 
 ${bar(usmle)}
 
-> [!tip]- Sistemas (toca para desplegar)
-${lista(usmle, '01_USMLE/02_UWORLD_SYSTEMS', '🧬')}
+> [!note]- Los ${usmle.grupos.length} sistemas (desplegar)
+${tabla(usmle, '01_USMLE/02_UWORLD_SYSTEMS').split('\n').map((l) => '> ' + l).join('\n')}
 
 ## 🇵🇪 ENCAPS — 5 bloques oficiales
 
 ${bar(encaps)}
 
-> [!info]- Bloques (toca para desplegar)
-${lista(encaps, '06_ENCAPS/ENCAPS_2026/02_TEMARIO', '🏥')}
+> [!note]- Los 5 bloques (desplegar)
+${tabla(encaps, '06_ENCAPS/ENCAPS_2026/02_TEMARIO').split('\n').map((l) => '> ' + l).join('\n')}
 
-## ⚙️ Cómo fluye un APEX (motor)
+## 🧴 Derma — Dermki + 3 fuentes
+
+> [!info] Deck **Dermki** (pagado) — ${DERMKI.length} capítulos en Anki${anki ? ' ✓ verificado' : ''}
+> ${DERMKI.join(' · ')}
+>
+> Plan en la app: **${dermaDias} átomos** (AccessDermatology + Qbankly + ProMIR).
+> ${dermaVault ? 'Rama `07_DERMATOLOGIA` creada.' : 'Rama del vault `07_DERMATOLOGIA` la construye el chat de Derma.'}
+
+## 🔬 Research — líneas e investigación
+
+| Línea | Carpeta |
+|-------|---------|
+${researchLineas.map((l) => `| ${nom(l)} | [[04_INVESTIGACIÓN DERMATOLÓGICA/01_LINEAS/${l}/_concepto_madre\\|${l}]] |`).join('\n')}
+${researchSRs.map((s) => `| **SR en curso** · ${nom(s)} | \`02_SR_EN_CURSO/${s}\` |`).join('\n')}
+
+## 💼 Business — conocimiento del fundador
+
+> [!tip] ${libros} libros (plan ${bizDias} días) · 70% Pulso/LIVIANO · 10% PIRQA · 10% Terrenos · 10% Golden
+> El conocimiento operativo vive en \`02_EMPRESA FINANZAS\`; los términos a memorizar
+> (Value Equation, CFA, give:ask…) entrarán por el método Palmerton (Anki + Obsidian).
+
+## ⚙️ El motor
 
 \`\`\`mermaid
+%%{init: {'theme':'base','themeVariables':{'background':'transparent','primaryColor':'#101A2C','primaryTextColor':'#E8DCC0','primaryBorderColor':'#C6A56B','lineColor':'#8F9097','fontSize':'13px'}}}%%
 flowchart LR
-    A[📚 Estudias el tema] --> B[💬 Chat tutor genera<br/>BLOQUE APEX]
-    B --> C[✂️ Copias + Ctrl+Shift+A]
-    C --> D{n8n parser}
-    D --> E[🗂️ Anki<br/>sub-deck exacto]
-    D --> F[💎 Obsidian<br/>carpeta del subtema]
-    D --> G[📝 Notion]
-    D --> H[🗄️ Supabase<br/>→ app Joseph MD]
-    style A fill:#1a2436,stroke:#D9BE8A,color:#E8D5A8
-    style D fill:#2A2517,stroke:#D9BE8A,color:#E8D5A8
-    style F fill:#1f2a1f,stroke:#9DB07F,color:#E8D5A8
+    A[Estudias] --> B[Chat tutor:<br/>BLOQUE APEX] --> C[Ctrl+Shift+A] --> D{n8n}
+    D --> E[Anki<br/>sub-deck exacto]
+    D --> F[Obsidian<br/>carpeta del subtema]
+    D --> G[Notion]
+    D --> H[Supabase → app]
 \`\`\`
 
-## 📊 APEX recientes (todo el vault)
+## 📊 APEX recientes
 
 \`\`\`dataview
 TABLE WITHOUT ID file.link AS "APEX", file.cday AS "Creado", file.folder AS "Carpeta"
 FROM "01_USMLE" OR "03_MIR" OR "06_ENCAPS"
 WHERE contains(file.folder, "APEX_creados")
 SORT file.cday DESC
-LIMIT 25
+LIMIT 20
 \`\`\`
 
 ---
-*Regenerar este mapa: \`node DATA/_scripts/gen_mapa_visual.js\` (joseph-md-app). Las barras se recalculan con los APEX reales del vault.*
+*Regenerar: \`node DATA/_scripts/gen_mapa_visual.js\` (joseph-md-app) · ${hoy}*
 `;
 
 fs.writeFileSync(path.join(V, '00_Dashboard', 'Mapa_Temarios_Trilingue.md'), md, 'utf8');
-console.log(`Mapa regenerado · MIR ${mir.conApex}/${mir.total} · USMLE ${usmle.conApex}/${usmle.total} · ENCAPS ${encaps.conApex}/${encaps.total}`);
+console.log(`Mapa v2 · MIR ${mir.conApex}/${mir.total} · USMLE ${usmle.conApex}/${usmle.total} · ENCAPS ${encaps.conApex}/${encaps.total} · Derma ${dermaDias} átomos · Research ${researchLineas.length}L+${researchSRs.length}SR · Anki ${anki ? 'OK' : 'cerrado'}`);

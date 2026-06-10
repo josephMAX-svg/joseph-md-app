@@ -10,6 +10,7 @@ import {
 } from '../../lib/dermaDailyPlan';
 import { VUELTAS, INTERVALOS, type Prioridad } from '../../lib/researchData';
 import { agruparProgreso, progresoGlobal, planHoyD, GrupoProgreso, loadDone, saveDone } from '../../lib/studyProgress';
+import { DERMKI_DECK, ANKIWEB } from '../../lib/ankiLinks';
 
 /**
  * DermaTodayPlan — Plan Derma día-a-día (68 átomos: 52 board + 16 estética), mismo motor
@@ -122,6 +123,11 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaDerma; onOpe
           <ColaItem icon="➕" lbl="EXTRA · casos / vídeo / paper del referente" val={dia.extra.t} sub={dia.referente ? `fuente nº1 de ${dia.referente}` : 'material complementario'} color="#7BB1FF" url={dia.extra.url} />
         </FadeUp>
       )}
+
+      {/* ANKI · Dermki (deck pagado, verificado en Anki) */}
+      <FadeUp delay={165}>
+        <ColaItem icon="🃏" lbl="ANKI · Dermki (deck pagado · SRS)" val={`${DERMKI_DECK} → capítulo del bloque de hoy`} sub="abre AnkiWeb ↗ · 11 capítulos + AAD Basic Curriculum" color="#5BA8C9" url={ANKIWEB} />
+      </FadeUp>
 
       {/* APEX */}
       <FadeUp delay={180}>

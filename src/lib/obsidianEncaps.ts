@@ -29,10 +29,10 @@ function indexSubtemas(): Sub[] {
   return INDEX;
 }
 
-/** URL Obsidian para un tema/video ENCAPS. `code` opcional tipo "II-3" acota el bloque. */
-export function encapsObsByTitle(titulo: string, code?: string): string {
+/** Matchea un título de tema/video ENCAPS a su subtema oficial (o null si no es confiable). */
+export function encapsMatch(titulo: string, code?: string): { blockId: string; id: string } | null {
   const t = toks(titulo);
-  if (!t.size) return OBS_MAPA_URL;
+  if (!t.size) return null;
   const roman = code ? (code.match(/^(I{1,3}|IV|V)\b/i) || [])[1] : undefined;
   const blockId = roman ? ROMAN_TO_BLOCK[roman.toUpperCase()] : undefined;
   let cands = indexSubtemas();
@@ -44,6 +44,12 @@ export function encapsObsByTitle(titulo: string, code?: string): string {
     const score = inter / Math.min(c.tokens.size, t.size); // contención (títulos QX ≈ subconjunto)
     if (score > bestScore) { bestScore = score; best = c; }
   }
-  if (best && bestScore >= 0.5) return encapsObsUrl(best.blockId, best.id) || OBS_MAPA_URL;
+  return best && bestScore >= 0.5 ? { blockId: best.blockId, id: best.id } : null;
+}
+
+/** URL Obsidian para un tema/video ENCAPS. `code` opcional tipo "II-3" acota el bloque. */
+export function encapsObsByTitle(titulo: string, code?: string): string {
+  const m = encapsMatch(titulo, code);
+  if (m) return encapsObsUrl(m.blockId, m.id) || OBS_MAPA_URL;
   return OBS_MAPA_URL;
 }

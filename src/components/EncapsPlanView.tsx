@@ -12,7 +12,8 @@ import {
   type PlanItem, type StudyScheduleDay, type StudyMetrics, type ProximoVideo,
 } from '../lib/encapsPlan';
 import EncapsWebView from './EncapsWebView';
-import { encapsObsByTitle } from '../lib/obsidianEncaps';
+import { encapsObsByTitle, encapsMatch } from '../lib/obsidianEncaps';
+import { ANKIWEB } from '../lib/ankiLinks';
 
 // Google Calendar del usuario (día) embebido — sincronización minuto a minuto.
 // Requiere sesión Google del navegador (calendario privado). ctz Lima.
@@ -162,6 +163,11 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
             onPress={() => Linking.openURL(encapsObsByTitle(today.subtema || tema, today.codigo || undefined)).catch(() => {})}
             style={{ borderWidth: 1, borderColor: '#A78BFA99', backgroundColor: '#A78BFA1F', borderRadius: 999, paddingVertical: 2, paddingHorizontal: 10 }}>
             <Text style={{ fontSize: 11, fontWeight: '800', color: '#A78BFA' }}>◆ Obsidian</Text>
+          </TouchableOpacity>
+          <TouchableOpacity activeOpacity={0.8}
+            onPress={() => Linking.openURL(ANKIWEB).catch(() => {})}
+            style={{ borderWidth: 1, borderColor: '#5BA8C999', backgroundColor: '#5BA8C91F', borderRadius: 999, paddingVertical: 2, paddingHorizontal: 10 }}>
+            <Text style={{ fontSize: 11, fontWeight: '800', color: '#5BA8C9' }}>🃏 {(() => { const m = encapsMatch(today.subtema || tema, today.codigo || undefined); return m ? `Anki · ${m.id.slice(0, 2)}` : 'Anki'; })()}</Text>
           </TouchableOpacity>
         </View>
         {!!today.nts && <Text style={styles.ntsLine}>📋 NTS Tier-1: {today.nts}</Text>}

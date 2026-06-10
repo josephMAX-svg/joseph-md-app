@@ -10,6 +10,7 @@ import {
 } from '../../lib/usmleStep1Daily';
 import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, loadDone, saveDone } from '../../lib/studyProgress';
 import { usmleObsUrl } from '../../lib/obsidianMap';
+import { usmleAnkiDeck, ANKIWEB } from '../../lib/ankiLinks';
 
 /**
  * UsmleTodayPlan — Plan Step 1 día-a-día, estilo Perú/ENCAPS pero mejor.
@@ -111,6 +112,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaUSMLE; onOpe
       {usmleObsUrl(dia.d) && (
         <FadeUp delay={165}><ColaItem icon="◆" lbl="OBSIDIAN · nota madre del subtema" val={`${dia.system} → ${dia.sub}`} sub="Vault_Medicina MIR_Joseph · aquí caen los APEX de hoy (motor APEX)" color={OBS} url={usmleObsUrl(dia.d)!} /></FadeUp>
       )}
+      <FadeUp delay={180}><ColaItem icon="🃏" lbl="ANKI · deck del sistema (SRS diario)" val={usmleAnkiDeck(dia.system)} sub="abre AnkiWeb ↗ · en Anki escritorio busca este deck exacto" color="#5BA8C9" url={ANKIWEB} /></FadeUp>
       {dia.palm && (
         <FadeUp delay={180}><ColaItem icon="🧠" lbl="PALMERTON · al empezar el sistema" val={dia.palm.t} sub="YouTube · método + visión del sistema (abre en Chrome)" color={GREEN} url={yt(dia.palm.id)} /></FadeUp>
       )}
