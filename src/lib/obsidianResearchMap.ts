@@ -1,0 +1,32 @@
+/**
+ * obsidianResearchMap.ts — GENERADO por DATA/_scripts/build_vault_research.js (2026-06-10).
+ * Deep-links obsidian:// hacia la rama "04_INVESTIGACIÓN DERMATOLÓGICA" del vault "Vault_Medicina MIR_Joseph".
+ * NO editar a mano: regenerar con el script. Reutiliza obsUrl() de obsidianMap.ts.
+ *
+ *  · líneas L0–L8 → nota _concepto_madre de la línea (01_LINEAS)
+ *  · SR-1/SR-2    → _hoja_de_ruta de la revisión sistemática (02_SR_EN_CURSO)
+ *  · átomos 1-40  → carpeta/fase de SR-1 (artefacto vivo del plan día-a-día)
+ */
+import { obsUrl } from './obsidianMap';
+
+/** Línea (id 0–8) → ruta de la nota _concepto_madre */
+export const RESEARCH_OBS_LINE: Record<number, string> = {"0":"04_INVESTIGACIÓN DERMATOLÓGICA/01_LINEAS/00_Acne_and_Calidad_de_Vida/_concepto_madre","1":"04_INVESTIGACIÓN DERMATOLÓGICA/01_LINEAS/01_Topografia_and_Vascularizacion_facial/_concepto_madre","2":"04_INVESTIGACIÓN DERMATOLÓGICA/01_LINEAS/02_Analisis_facial_and_Envejecimiento/_concepto_madre","3":"04_INVESTIGACIÓN DERMATOLÓGICA/01_LINEAS/03_Inyectables_and_Reologia/_concepto_madre","4":"04_INVESTIGACIÓN DERMATOLÓGICA/01_LINEAS/04_Complicaciones_and_Seguridad/_concepto_madre","5":"04_INVESTIGACIÓN DERMATOLÓGICA/01_LINEAS/05_Energia/_concepto_madre","6":"04_INVESTIGACIÓN DERMATOLÓGICA/01_LINEAS/06_Acne_and_QoL/_concepto_madre","7":"04_INVESTIGACIÓN DERMATOLÓGICA/01_LINEAS/07_Toxina_botulinica/_concepto_madre","8":"04_INVESTIGACIÓN DERMATOLÓGICA/01_LINEAS/08_Teledermatologia_and_IA/_concepto_madre"};
+export const researchObsUrlLine = (lineId: number): string | null => {
+  const p = RESEARCH_OBS_LINE[lineId]; return p ? obsUrl(p) : null;
+};
+
+/** SR tag ('SR-1'…) → hoja de ruta · y carpeta raíz de la SR */
+export const RESEARCH_OBS_SR: Record<string, string> = {"SR-1":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/_hoja_de_ruta","SR-2":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-2_fototipos/_hoja_de_ruta"};
+export const RESEARCH_OBS_SR_FOLDER: Record<string, string> = {"SR-1":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones","SR-2":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-2_fototipos"};
+export const researchObsUrlSR = (srTag: string): string | null => {
+  const p = RESEARCH_OBS_SR[srTag]; return p ? obsUrl(p) : null;
+};
+
+/** Átomo del plan día-a-día (1–40) → carpeta/fase de su SR (SR-1) */
+export const RESEARCH_OBS_DAY: Record<number, string> = {"1":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/_hoja_de_ruta","2":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/_hoja_de_ruta","3":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/_hoja_de_ruta","4":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/_hoja_de_ruta","5":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/_hoja_de_ruta","6":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/01_protocolo_PICO/_README","7":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/01_protocolo_PICO/_README","8":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/01_protocolo_PICO/_README","9":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/01_protocolo_PICO/_README","10":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/01_protocolo_PICO/_README","11":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/01_protocolo_PICO/_README","12":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/02_busqueda/_README","13":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/02_busqueda/_README","14":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/02_busqueda/_README","15":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/02_busqueda/_README","16":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/02_busqueda/_README","17":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/03_screening/_README","18":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/03_screening/_README","19":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/03_screening/_README","20":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/03_screening/_README","21":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/03_screening/_README","22":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/04_extraccion/_README","23":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/04_extraccion/_README","24":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/04_extraccion/_README","25":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/04_extraccion/_README","26":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/04_extraccion/_README","27":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/04_extraccion/_README","28":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/04_extraccion/_README","29":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/05_manuscrito/_README","30":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/05_manuscrito/_README","31":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/05_manuscrito/_README","32":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/05_manuscrito/_README","33":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/05_manuscrito/_README","34":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/05_manuscrito/_README","35":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/05_manuscrito/_README","36":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/05_manuscrito/_README","37":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/05_manuscrito/_README","38":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/05_manuscrito/_README","39":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/05_manuscrito/_README","40":"04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/05_manuscrito/_README"};
+export const researchObsUrlDay = (d: number): string | null => {
+  const p = RESEARCH_OBS_DAY[d]; return p ? obsUrl(p) : null;
+};
+
+/** Dashboard de la rama de investigación */
+export const OBS_RESEARCH_DASHBOARD_URL = obsUrl('04_INVESTIGACIÓN DERMATOLÓGICA/00_DASHBOARD_RESEARCH/Dashboard_Research');

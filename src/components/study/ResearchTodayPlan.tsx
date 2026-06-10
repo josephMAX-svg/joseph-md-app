@@ -10,6 +10,7 @@ import {
 } from '../../lib/researchDailyPlan';
 import { agruparProgreso, progresoGlobal, GrupoProgreso, loadDone, saveDone } from '../../lib/studyProgress';
 import { diaEstudioTipo, PRIORIDAD_COLOR } from '../../lib/researchData';
+import { researchObsUrlDay } from '../../lib/obsidianResearchMap';
 
 /**
  * ResearchTodayPlan — Plan de research día-a-día (revisiones sistemáticas), mismo motor
@@ -19,6 +20,7 @@ import { diaEstudioTipo, PRIORIDAD_COLOR } from '../../lib/researchData';
  */
 const TEAL = '#0FD4A0';
 const PURPLE = '#8B5CF6';
+const OBS = '#A78BFA';
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
 function todayISO(): string {
   try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; }
@@ -95,6 +97,14 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaResearch; on
         const color = i === 0 ? TEAL : i === 1 ? '#7BB1FF' : '#AFCBFF';
         return <FadeUp key={k} delay={60 + i * 30}><ColaItem icon={icon} lbl={`RECURSO ${i + 1} · ${dia.tool}`} val={r.label} sub={k} color={color} url={r.url} /></FadeUp>;
       })}
+
+      {/* Obsidian — carpeta de la SR/fase de este átomo */}
+      {researchObsUrlDay(dia.d) && (
+        <FadeUp delay={195}>
+          <ColaItem icon="◆" lbl="OBSIDIAN · carpeta de la SR" val={`SR-1 · ${fi.nombre}`}
+            sub="Vault_Medicina MIR_Joseph · aquí caen las notas/APEX de esta fase" color={OBS} url={researchObsUrlDay(dia.d)!} />
+        </FadeUp>
+      )}
 
       {/* APEX */}
       <FadeUp delay={210}>
@@ -205,6 +215,11 @@ function FaseCard({ g, hoyD, onPick, done, onToggle }: { g: GrupoProgreso<DiaRes
                   <Text style={st.temaRowTxt} numberOfLines={1}>{x.objetivo}</Text>
                   <Text style={st.temaRowGo}>→</Text>
                 </TouchableOpacity>
+                {researchObsUrlDay(x.d) && (
+                  <TouchableOpacity activeOpacity={0.7} onPress={() => openUrl(researchObsUrlDay(x.d)!)} hitSlop={{ top: 8, bottom: 8, left: 4, right: 8 }}>
+                    <Text style={{ fontSize: 13, color: OBS, width: 18, textAlign: 'center' }}>◆</Text>
+                  </TouchableOpacity>
+                )}
               </View>
             );
           })}

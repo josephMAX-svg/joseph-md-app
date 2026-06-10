@@ -237,9 +237,17 @@ STEPS:
    characteristics-of-studies table via add_table(), and a numbered References list
    using a named paragraph style.
 3. Preserve PRISMA section order. Do not alter any verified text or numbers.
+4. After saving the .docx, ADD (never overwrite) an Obsidian summary note named
+   `<docx_basename>.md` inside the SR's manuscript folder of the vault
+   "Vault_Medicina MIR_Joseph": `04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/
+   <SR_folder>/05_manuscrito/` (SR-1 → SR-1_complicaciones, SR-2 → SR-2_fototipos).
+   Frontmatter: `tipo: resumen_manuscrito · sr · version · fecha · docx_path`; body =
+   a callout with verified-citation count, remaining [NO VERIFICABLE] (must be 0), the
+   local .docx path, and a `[[_hoja_de_ruta]]` backlink. So the human checkpoint (R39) is
+   one click from [[Dashboard_Research]]. (See §8.1.)
 
-OUTPUT: a single function `build_docx(sections, refs, table_rows) -> Document` and the
-saved path revision_v{n}.docx.
+OUTPUT: a single function `build_docx(sections, refs, table_rows) -> Document`, the saved
+path revision_v{n}.docx, and the Obsidian summary note path.
 ```
 
 ---
@@ -329,6 +337,22 @@ def build_docx(title, sections, refs, table_rows, out_path):
 ```
 **Precondición dura:** el ensamblado **no corre** si queda una sola cita `[NO VERIFICABLE]`/`[UNSUPPORTED]`
 sin resolver por el humano (gate CP-3).
+
+### 8.1 Nota-resumen en Obsidian (navegabilidad del .docx)
+
+Tras guardar `revision_v{n}.docx`, el **AssemblerAgent deja una nota-resumen** del manuscrito en la
+carpeta `05_manuscrito/` de la SR correspondiente dentro del vault Obsidian, para que el documento quede
+navegable junto al resto del programa (líneas, hojas de ruta, APEX). **Paths exactos** (vault
+`Vault_Medicina MIR_Joseph`):
+
+- **SR-1:** `04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/05_manuscrito/`
+- **SR-2:** `04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-2_fototipos/05_manuscrito/`
+
+La nota (`<docx_basename>.md`) lleva frontmatter `tipo: resumen_manuscrito · sr · version · fecha · docx_path`
++ un callout con: nº de citas verificadas, `[NO VERIFICABLE]` restantes (debe ser 0 para pasar CP-3),
+ruta local del `.docx`, y enlace a la hoja de ruta `[[_hoja_de_ruta]]`. Así el checkpoint humano (R39) y
+el seguimiento posterior quedan a un clic desde el [[Dashboard_Research]]. La estructura de carpetas la
+crea `DATA/_scripts/build_vault_research.js` (idempotente); el agente solo **añade** la nota (nunca borra).
 
 ---
 
