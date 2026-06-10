@@ -1,23 +1,28 @@
-import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Platform, StyleSheet, Linking } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Linking } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
 import { desktopStyles, DesktopColors } from '../../theme/desktopStyles';
-import { SectionLabel, Chip, GlassPanel, gridStyle, gridItemStyle } from '../empresa/primitives';
+import { SectionLabel, Chip, GlassPanel, PillTab, gridStyle, gridItemStyle } from '../empresa/primitives';
 import { GradientHero, RingStat, MegaStat, FadeUp, CommandBackdrop } from '../empresa/visuals';
 import {
   RESEARCH_META, RESEARCH_KPIS, RESEARCH_TARGETS, RESEARCH_FASES, RESEARCH_MODULOS,
   RESEARCH_JOURNALS, RESEARCH_PIPELINE, PIPELINE_NOTA, RESEARCH_HORARIO, RESEARCH_TIMELINE,
   RESEARCH_ADVERTENCIAS, VUELTAS, PRIORIDAD_COLOR, diaEstudioTipo, Prioridad,
 } from '../../lib/researchData';
+import ResearchTodayPlan from './ResearchTodayPlan';
+import ResearchAgenticSystem from './ResearchAgenticSystem';
+import ResearchLinesExplorer from './ResearchLinesExplorer';
 
 /**
- * ResearchHub — sección Research (camino a Mayo Clinic) rediseñada: estructura
- * ENCAPS (prioridad/vueltas/links/deadline) + movimiento de Business (hero, anillos,
- * mega-stat) + alternancia Research↔Derma. Reutilizado por mobile y desktop.
+ * ResearchHub — sección Research (camino a Mayo Clinic). Rediseñada con el MISMO molde que
+ * USMLE/MIR: HERO + sub-nav (Hoy/Sistema/Líneas/Panel). "Hoy" = motor día-a-día de revisiones
+ * sistemáticas (HOY/Horario/7d/Temario, progreso real); "Sistema" = sistema agéntico (el corazón);
+ * "Líneas" = las 8 líneas de investigación; "Panel" = cockpit (KPIs, fases, journals, timeline).
  */
-
 const TEAL = RESEARCH_META.accent;
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
+
+type Sub = 'hoy' | 'sistema' | 'lineas' | 'panel';
 
 function VueltasDots({ prioridad }: { prioridad: Prioridad }) {
   const n = VUELTAS[prioridad];
@@ -32,9 +37,168 @@ function VueltasDots({ prioridad }: { prioridad: Prioridad }) {
   );
 }
 
+/** Panel = cockpit original (KPIs, fases, targets, currículo, journals, timeline, advertencias). */
+function PanelView() {
+  return (
+    <View>
+      {/* MEGA STAT */}
+      <MegaStat value={RESEARCH_KPIS.pipsParaCompetir} label="Publicaciones indexadas para competir" accent={TEAL}
+        footnote={`8–15 para nivel Mayo (stretch) · hoy tienes ${RESEARCH_KPIS.pipsActuales}`} />
+
+      {/* RINGS */}
+      <View style={st.ringRow}>
+        <View style={st.ringCard}><RingStat value={RESEARCH_KPIS.pipsActuales} max={3} label="PIPs hoy" sub="indexadas reales" accent={Colors.coral} /></View>
+        <View style={st.ringCard}><RingStat value={RESEARCH_KPIS.pipsParaCompetir} max={15} label="Meta competir" sub="≈3 PIPs" accent={TEAL} /></View>
+        <View style={st.ringCard}><RingStat value={RESEARCH_KPIS.primerSubmissionMes} max={6} label="1er submission" sub="mes" accent={Colors.amber} /></View>
+        <View style={st.ringCard}><RingStat value={RESEARCH_KPIS.readiness} label="Readiness" sub="perfil research" accent={Colors.blue} suffix="%" /></View>
+      </View>
+
+      {/* CUELLO DE BOTELLA */}
+      <GlassPanel accent={Colors.coral} style={{ marginBottom: Spacing.xl, padding: Spacing.lg }}>
+        <Text style={st.h3}>⚠ El cuello de botella real</Text>
+        <Text style={st.body}>{RESEARCH_META.cuelloBotella}</Text>
+      </GlassPanel>
+
+      {/* FASES */}
+      <SectionLabel>Ruta por fases · MIR → Mayo</SectionLabel>
+      <View style={[gridStyle(220), { marginBottom: Spacing.lg }]}>
+        {RESEARCH_FASES.map((f, i) => {
+          const activa = f.estado === 'activa';
+          const meta = f.estado === 'meta';
+          const acc = activa ? TEAL : meta ? Colors.green : Colors.muted;
+          return (
+            <View key={i} style={gridItemStyle(220)}>
+              <FadeUp delay={i * 70}>
+                <View style={[st.faseCard, { borderLeftColor: acc }, activa && { backgroundColor: TEAL + '0E' }]}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <Text style={[st.faseTag, { color: acc }]}>{f.fase}</Text>
+                    {activa ? <Chip label="AQUÍ" color={TEAL} small /> : meta ? <Chip label="META" color={Colors.green} small /> : null}
+                  </View>
+                  <Text style={st.faseTitle}>{f.titulo}</Text>
+                  <Text style={st.faseDesc}>{f.desc}</Text>
+                  <Text style={st.faseEntreg}>→ {f.entregable}</Text>
+                </View>
+              </FadeUp>
+            </View>
+          );
+        })}
+      </View>
+
+      {/* TARGETS DE PUBLICACIÓN */}
+      <SectionLabel>Targets de publicación (mix realista)</SectionLabel>
+      <GlassPanel style={{ marginBottom: Spacing.xl }}>
+        {RESEARCH_TARGETS.map((t, i) => (
+          <View key={i} style={[st.tRow, i === 0 && { borderTopWidth: 0 }]}>
+            <View style={{ flex: 1.6 }}>
+              <Text style={st.tName}>{t.tipo}</Text>
+              <Text style={st.tPeso}>{t.peso}</Text>
+            </View>
+            <Text style={[st.tObj, { color: TEAL }]}>{t.objetivo}</Text>
+            <View style={{ width: 86, alignItems: 'flex-end' }}>
+              <Chip label={t.prioridad} color={PRIORIDAD_COLOR[t.prioridad]} small />
+            </View>
+          </View>
+        ))}
+      </GlassPanel>
+
+      {/* MÓDULOS */}
+      <SectionLabel>Currículo de research skills · por prioridad, vueltas y deadline</SectionLabel>
+      <View style={{ marginBottom: Spacing.xl }}>
+        {RESEARCH_MODULOS.map((m, i) => (
+          <FadeUp key={m.n} delay={i * 50}>
+            <View style={[st.modCard, { borderLeftColor: PRIORIDAD_COLOR[m.prioridad] }]}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 6 }}>
+                <Text style={st.modName}>{m.n}. {m.nombre}</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                  <Chip label={m.prioridad} color={PRIORIDAD_COLOR[m.prioridad]} small />
+                  <Chip label={`deadline ${m.deadline}`} color={Colors.muted} small />
+                </View>
+              </View>
+              <View style={{ marginTop: 6, marginBottom: 8 }}><VueltasDots prioridad={m.prioridad} /></View>
+              <Text style={st.body}>{m.nota}</Text>
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 8 }}>
+                {m.links.map((l, j) => (
+                  <TouchableOpacity key={j} activeOpacity={0.8} onPress={() => openUrl(l.url)} style={st.link}>
+                    <Text style={st.linkText} numberOfLines={1}>🔗 {l.label} ↗</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </View>
+          </FadeUp>
+        ))}
+      </View>
+
+      {/* MICRO-HORARIO */}
+      <SectionLabel>Micro-horario · 1h/día (días Research)</SectionLabel>
+      <View style={[{ flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm, marginBottom: Spacing.xl }]}>
+        {RESEARCH_HORARIO.map((h, i) => (
+          <View key={i} style={st.horCard}>
+            <Text style={[st.horDia, { color: TEAL }]}>{h.dia}</Text>
+            <Text style={st.horFoco}>{h.foco}</Text>
+          </View>
+        ))}
+      </View>
+
+      {/* PIPELINE AGÉNTICO (resumen — detalle en pestaña Sistema) */}
+      <SectionLabel>Pipeline agéntico de papers (8 agentes + gates humanos)</SectionLabel>
+      <View style={[gridStyle(160), { marginBottom: Spacing.sm }]}>
+        {RESEARCH_PIPELINE.map((a) => (
+          <View key={a.id} style={gridItemStyle(160)}>
+            <View style={st.pipeCard}>
+              <Text style={[st.pipeId, { color: TEAL }]}>{a.id}</Text>
+              <Text style={st.pipeName}>{a.nombre}</Text>
+              <Text style={st.pipeDesc}>{a.desc}</Text>
+              <Text style={st.pipeTool}>{a.tool}</Text>
+            </View>
+          </View>
+        ))}
+      </View>
+      <Text style={[st.smallNote, { marginBottom: Spacing.xl }]}>{PIPELINE_NOTA}</Text>
+
+      {/* JOURNALS */}
+      <SectionLabel>Journals · empieza por el tier B</SectionLabel>
+      <View style={[gridStyle(220), { marginBottom: Spacing.xl }]}>
+        {RESEARCH_JOURNALS.map((j, i) => (
+          <View key={i} style={gridItemStyle(220)}>
+            <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(j.url)} style={st.jCard}>
+              <Text style={st.jName}>{j.nombre} ↗</Text>
+              <Chip label={j.tier} color={j.tier.startsWith('B') ? Colors.green : j.tier.startsWith('A') ? Colors.amber : Colors.coral} small />
+              <Text style={[st.body, { marginTop: 6 }]}>{j.nota}</Text>
+            </TouchableOpacity>
+          </View>
+        ))}
+      </View>
+
+      {/* TIMELINE */}
+      <SectionLabel>Timeline · 0 → primer paper</SectionLabel>
+      <GlassPanel style={{ marginBottom: Spacing.xl }}>
+        {RESEARCH_TIMELINE.map((t, i) => (
+          <View key={i} style={[st.tlRow, i === 0 && { borderTopWidth: 0 }]}>
+            <View style={[st.tlBadge, { backgroundColor: TEAL + '1A' }]}><Text style={[st.tlSem, { color: TEAL }]}>{t.sem}</Text></View>
+            <Text style={st.tlFoco}>{t.foco}</Text>
+            <Text style={st.tlOut}>{t.out}</Text>
+          </View>
+        ))}
+      </GlassPanel>
+
+      {/* ADVERTENCIAS */}
+      <SectionLabel>Honestidad (no inventado)</SectionLabel>
+      <GlassPanel accent={Colors.amber} style={{ marginBottom: Spacing.xl }}>
+        {RESEARCH_ADVERTENCIAS.map((a, i) => (
+          <View key={i} style={{ flexDirection: 'row', gap: 8, paddingVertical: 5 }}>
+            <Text style={{ color: Colors.amber }}>•</Text>
+            <Text style={[st.body, { flex: 1 }]}>{a}</Text>
+          </View>
+        ))}
+      </GlassPanel>
+    </View>
+  );
+}
+
 export default function ResearchHub({ variant = 'mobile' }: { variant?: 'mobile' | 'desktop' }) {
   const isDesktop = variant === 'desktop';
   const hoy = diaEstudioTipo(new Date());
+  const [sub, setSub] = useState<Sub>('hoy');
   const contentStyle = isDesktop
     ? desktopStyles.centerScrollContent
     : { paddingHorizontal: Spacing.lg, paddingTop: 56, paddingBottom: 110 };
@@ -62,156 +226,18 @@ export default function ResearchHub({ variant = 'mobile' }: { variant?: 'mobile'
           </View>
         </GradientHero>
 
-        {/* MEGA STAT */}
-        <MegaStat value={RESEARCH_KPIS.pipsParaCompetir} label="Publicaciones indexadas para competir" accent={TEAL}
-          footnote={`8–15 para nivel Mayo (stretch) · hoy tienes ${RESEARCH_KPIS.pipsActuales}`} />
-
-        {/* RINGS */}
-        <View style={st.ringRow}>
-          <View style={st.ringCard}><RingStat value={RESEARCH_KPIS.pipsActuales} max={3} label="PIPs hoy" sub="indexadas reales" accent={Colors.coral} /></View>
-          <View style={st.ringCard}><RingStat value={RESEARCH_KPIS.pipsParaCompetir} max={15} label="Meta competir" sub="≈3 PIPs" accent={TEAL} /></View>
-          <View style={st.ringCard}><RingStat value={RESEARCH_KPIS.primerSubmissionMes} max={6} label="1er submission" sub="mes" accent={Colors.amber} /></View>
-          <View style={st.ringCard}><RingStat value={RESEARCH_KPIS.readiness} label="Readiness" sub="perfil research" accent={Colors.blue} suffix="%" /></View>
+        {/* SUB-NAV (estilo USMLE/MIR) */}
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm, marginBottom: Spacing.lg }}>
+          <PillTab label="Hoy" icon="🗓️" active={sub === 'hoy'} accent={TEAL} onPress={() => setSub('hoy')} />
+          <PillTab label="Sistema agéntico" icon="🧬" active={sub === 'sistema'} accent={TEAL} onPress={() => setSub('sistema')} />
+          <PillTab label="Líneas" icon="🔬" active={sub === 'lineas'} accent={TEAL} onPress={() => setSub('lineas')} />
+          <PillTab label="Panel" icon="📊" active={sub === 'panel'} accent={TEAL} onPress={() => setSub('panel')} />
         </View>
 
-        {/* CUELLO DE BOTELLA */}
-        <GlassPanel accent={Colors.coral} style={{ marginBottom: Spacing.xl, padding: Spacing.lg }}>
-          <Text style={st.h3}>⚠ El cuello de botella real</Text>
-          <Text style={st.body}>{RESEARCH_META.cuelloBotella}</Text>
-        </GlassPanel>
-
-        {/* FASES */}
-        <SectionLabel>Ruta por fases · MIR → Mayo</SectionLabel>
-        <View style={[gridStyle(220), { marginBottom: Spacing.lg }]}>
-          {RESEARCH_FASES.map((f, i) => {
-            const activa = f.estado === 'activa';
-            const meta = f.estado === 'meta';
-            const acc = activa ? TEAL : meta ? Colors.green : Colors.muted;
-            return (
-              <View key={i} style={gridItemStyle(220)}>
-                <FadeUp delay={i * 70}>
-                  <View style={[st.faseCard, { borderLeftColor: acc }, activa && { backgroundColor: TEAL + '0E' }]}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <Text style={[st.faseTag, { color: acc }]}>{f.fase}</Text>
-                      {activa ? <Chip label="AQUÍ" color={TEAL} small /> : meta ? <Chip label="META" color={Colors.green} small /> : null}
-                    </View>
-                    <Text style={st.faseTitle}>{f.titulo}</Text>
-                    <Text style={st.faseDesc}>{f.desc}</Text>
-                    <Text style={st.faseEntreg}>→ {f.entregable}</Text>
-                  </View>
-                </FadeUp>
-              </View>
-            );
-          })}
-        </View>
-
-        {/* TARGETS DE PUBLICACIÓN */}
-        <SectionLabel>Targets de publicación (mix realista)</SectionLabel>
-        <GlassPanel style={{ marginBottom: Spacing.xl }}>
-          {RESEARCH_TARGETS.map((t, i) => (
-            <View key={i} style={[st.tRow, i === 0 && { borderTopWidth: 0 }]}>
-              <View style={{ flex: 1.6 }}>
-                <Text style={st.tName}>{t.tipo}</Text>
-                <Text style={st.tPeso}>{t.peso}</Text>
-              </View>
-              <Text style={[st.tObj, { color: TEAL }]}>{t.objetivo}</Text>
-              <View style={{ width: 86, alignItems: 'flex-end' }}>
-                <Chip label={t.prioridad} color={PRIORIDAD_COLOR[t.prioridad]} small />
-              </View>
-            </View>
-          ))}
-        </GlassPanel>
-
-        {/* MÓDULOS (protocolo estructurado) */}
-        <SectionLabel>Currículo de research skills · por prioridad, vueltas y deadline</SectionLabel>
-        <View style={{ marginBottom: Spacing.xl }}>
-          {RESEARCH_MODULOS.map((m, i) => (
-            <FadeUp key={m.n} delay={i * 50}>
-              <View style={[st.modCard, { borderLeftColor: PRIORIDAD_COLOR[m.prioridad] }]}>
-                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 6 }}>
-                  <Text style={st.modName}>{m.n}. {m.nombre}</Text>
-                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-                    <Chip label={m.prioridad} color={PRIORIDAD_COLOR[m.prioridad]} small />
-                    <Chip label={`deadline ${m.deadline}`} color={Colors.muted} small />
-                  </View>
-                </View>
-                <View style={{ marginTop: 6, marginBottom: 8 }}><VueltasDots prioridad={m.prioridad} /></View>
-                <Text style={st.body}>{m.nota}</Text>
-                <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 8 }}>
-                  {m.links.map((l, j) => (
-                    <TouchableOpacity key={j} activeOpacity={0.8} onPress={() => openUrl(l.url)} style={st.link}>
-                      <Text style={st.linkText} numberOfLines={1}>🔗 {l.label} ↗</Text>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              </View>
-            </FadeUp>
-          ))}
-        </View>
-
-        {/* MICRO-HORARIO */}
-        <SectionLabel>Micro-horario · 1h/día (días Research)</SectionLabel>
-        <View style={[{ flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm, marginBottom: Spacing.xl }]}>
-          {RESEARCH_HORARIO.map((h, i) => (
-            <View key={i} style={st.horCard}>
-              <Text style={[st.horDia, { color: TEAL }]}>{h.dia}</Text>
-              <Text style={st.horFoco}>{h.foco}</Text>
-            </View>
-          ))}
-        </View>
-
-        {/* PIPELINE AGÉNTICO */}
-        <SectionLabel>Pipeline agéntico de papers (8 agentes + gates humanos)</SectionLabel>
-        <View style={[gridStyle(160), { marginBottom: Spacing.sm }]}>
-          {RESEARCH_PIPELINE.map((a, i) => (
-            <View key={a.id} style={gridItemStyle(160)}>
-              <View style={st.pipeCard}>
-                <Text style={[st.pipeId, { color: TEAL }]}>{a.id}</Text>
-                <Text style={st.pipeName}>{a.nombre}</Text>
-                <Text style={st.pipeDesc}>{a.desc}</Text>
-                <Text style={st.pipeTool}>{a.tool}</Text>
-              </View>
-            </View>
-          ))}
-        </View>
-        <Text style={[st.smallNote, { marginBottom: Spacing.xl }]}>{PIPELINE_NOTA}</Text>
-
-        {/* JOURNALS */}
-        <SectionLabel>Journals · empieza por el tier B</SectionLabel>
-        <View style={[gridStyle(220), { marginBottom: Spacing.xl }]}>
-          {RESEARCH_JOURNALS.map((j, i) => (
-            <View key={i} style={gridItemStyle(220)}>
-              <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(j.url)} style={st.jCard}>
-                <Text style={st.jName}>{j.nombre} ↗</Text>
-                <Chip label={j.tier} color={j.tier.startsWith('B') ? Colors.green : j.tier.startsWith('A') ? Colors.amber : Colors.coral} small />
-                <Text style={[st.body, { marginTop: 6 }]}>{j.nota}</Text>
-              </TouchableOpacity>
-            </View>
-          ))}
-        </View>
-
-        {/* TIMELINE */}
-        <SectionLabel>Timeline · 0 → primer paper</SectionLabel>
-        <GlassPanel style={{ marginBottom: Spacing.xl }}>
-          {RESEARCH_TIMELINE.map((t, i) => (
-            <View key={i} style={[st.tlRow, i === 0 && { borderTopWidth: 0 }]}>
-              <View style={[st.tlBadge, { backgroundColor: TEAL + '1A' }]}><Text style={[st.tlSem, { color: TEAL }]}>{t.sem}</Text></View>
-              <Text style={st.tlFoco}>{t.foco}</Text>
-              <Text style={st.tlOut}>{t.out}</Text>
-            </View>
-          ))}
-        </GlassPanel>
-
-        {/* ADVERTENCIAS */}
-        <SectionLabel>Honestidad (no inventado)</SectionLabel>
-        <GlassPanel accent={Colors.amber} style={{ marginBottom: Spacing.xl }}>
-          {RESEARCH_ADVERTENCIAS.map((a, i) => (
-            <View key={i} style={{ flexDirection: 'row', gap: 8, paddingVertical: 5 }}>
-              <Text style={{ color: Colors.amber }}>•</Text>
-              <Text style={[st.body, { flex: 1 }]}>{a}</Text>
-            </View>
-          ))}
-        </GlassPanel>
+        {sub === 'hoy' ? <ResearchTodayPlan />
+          : sub === 'sistema' ? <ResearchAgenticSystem />
+          : sub === 'lineas' ? <ResearchLinesExplorer />
+          : <PanelView />}
       </View>
     </ScrollView>
   );
