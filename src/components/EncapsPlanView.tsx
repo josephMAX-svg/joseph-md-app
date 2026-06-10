@@ -12,6 +12,7 @@ import {
   type PlanItem, type StudyScheduleDay, type StudyMetrics, type ProximoVideo,
 } from '../lib/encapsPlan';
 import EncapsWebView from './EncapsWebView';
+import { encapsObsByTitle } from '../lib/obsidianEncaps';
 
 // Google Calendar del usuario (día) embebido — sincronización minuto a minuto.
 // Requiere sesión Google del navegador (calendario privado). ctz Lima.
@@ -157,6 +158,11 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
           {!!vueltas && <Pill text={`${vueltas} vueltas`} color={Colors.purple} />}
           {metrics?.qx_pct != null && <Pill text={`QX ${metrics.qx_pct}%`} color={Colors.blue} />}
           {metrics?.dias_a_examen != null && <Pill text={`examen ${metrics.dias_a_examen}d`} color={Colors.muted} />}
+          <TouchableOpacity activeOpacity={0.8}
+            onPress={() => Linking.openURL(encapsObsByTitle(today.subtema || tema, today.codigo || undefined)).catch(() => {})}
+            style={{ borderWidth: 1, borderColor: '#A78BFA99', backgroundColor: '#A78BFA1F', borderRadius: 999, paddingVertical: 2, paddingHorizontal: 10 }}>
+            <Text style={{ fontSize: 11, fontWeight: '800', color: '#A78BFA' }}>◆ Obsidian</Text>
+          </TouchableOpacity>
         </View>
         {!!today.nts && <Text style={styles.ntsLine}>📋 NTS Tier-1: {today.nts}</Text>}
         {!!today.temas_secundarios?.length && (
@@ -299,6 +305,13 @@ function CheckRow({ item, checked, onToggle, todayDia }: { item: PlanItem; check
         {!!item.slides && (
           <TouchableOpacity onPress={() => Linking.openURL(item.slides as string)} style={[styles.openBtn, styles.pdfBtn]}>
             <Text style={[styles.openBtnText, { color: Colors.blue }]}>PDF</Text>
+          </TouchableOpacity>
+        )}
+        {(item.kind === 'video' || item.kind === 'theomed') && (
+          <TouchableOpacity
+            onPress={() => Linking.openURL(encapsObsByTitle(item.label, item.code)).catch(() => {})}
+            style={[styles.openBtn, { borderColor: '#A78BFA66', backgroundColor: '#A78BFA14' }]}>
+            <Text style={[styles.openBtnText, { color: '#A78BFA' }]}>◆ Obs</Text>
           </TouchableOpacity>
         )}
       </View>

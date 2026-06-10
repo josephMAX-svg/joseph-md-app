@@ -59,6 +59,12 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaMIR; onOpenT
             <Chip label={`Rent. ${tier.t}`} color={tier.c} small />
             {dia.peso != null ? <Chip label={`Peso MIR ${dia.peso}%`} color={AMBER} small /> : null}
             <Chip label={vueltaTxt(dia.vuelta)} color={GREEN} small />
+            {mirObsUrl(dia.capId) && (
+              <TouchableOpacity activeOpacity={0.8} onPress={() => openUrl(mirObsUrl(dia.capId)!)}
+                style={[st.sysBadge, { backgroundColor: OBS + '1F', borderColor: OBS + '77' }]}>
+                <Text style={[st.sysBadgeTxt, { color: OBS }]}>◆ Obsidian</Text>
+              </TouchableOpacity>
+            )}
           </View>
           <Text style={st.temaTitle}>{dia.tema}</Text>
           <Text style={st.temaSub}>Tema atómico del día · 1/día · toca la asignatura para ver todo el temario y tu avance ›</Text>

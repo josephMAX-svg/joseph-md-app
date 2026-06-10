@@ -72,6 +72,12 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaUSMLE; onOpe
             <Chip label={tier.t} color={tier.c} small />
             <Chip label="1ª vuelta" color={GREEN} small />
             <Chip label="Modo A" color={Colors.muted} small />
+            {usmleObsUrl(dia.d) && (
+              <TouchableOpacity activeOpacity={0.8} onPress={() => openUrl(usmleObsUrl(dia.d)!)}
+                style={[st.sysBadge, { backgroundColor: OBS + '1F', borderColor: OBS + '77' }]}>
+                <Text style={[st.sysBadgeTxt, { color: OBS }]}>◆ Obsidian</Text>
+              </TouchableOpacity>
+            )}
           </View>
           <Text style={st.temaTitle}>{dia.sub}</Text>
           <Text style={st.temaSub}>Subtema atómico del día · 1/día · toca el sistema para ver todo el temario y tu avance ›</Text>
