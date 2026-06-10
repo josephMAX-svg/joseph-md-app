@@ -147,7 +147,7 @@ export const SYNAPSE_META = {
   subtitulo: 'MIND · AI-ENGINEERED — médico → especialista en IA nivel Anthropic',
   tesis: 'La sinapsis entre tu cerebro médico y las máquinas. Python, datos, deep learning, agentes, ciberseguridad y post-training — SOLO con los referentes (Anthropic, Stanford, MIT, Harvard, creadores de las herramientas), cero youtubers del momento. 30 min/día en espacios muertos, proyecto público por fase.',
   accent: '#818CF8',
-  nota: 'El plan día-a-día con misiones (estilo ENCAPS/Business: lección exacta de hoy, progreso real por lección, bloques de 30 min en Google Calendar) lo construye el chat SYNAPSE con DATA/SYNAPSE/PROMPT_CHAT_SYNAPSE.md. Esta pantalla ya es operativa: empieza HOY por F0 — la Escuela de Anthropic.',
+  nota: 'Motor ACTIVO (pestaña ⚡ Hoy): 12 semanas día a día — F0 completa (sem 1-8) + arranque F1/CS50P (sem 9-12) — con lecciones EXACTAS de los temarios reales extraídos el 10-jun-2026 (DATA/SYNAPSE/curricula/). Bloques A 15\' pantalla · B 10\' audio · C 5\' lectura + sábado PC opcional. Progreso manual real (empieza 0%). Las semanas 13+ se regeneran con DATA/_scripts/gen_synapse_plan.js al avanzar de fase.',
 } as const;
 
 // ─── Fases ───

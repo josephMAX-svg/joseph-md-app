@@ -1,0 +1,1689 @@
+[
+  {
+    "id": "ai-fluency",
+    "nombre": "AI Fluency: Framework & Foundations (Anthropic Skilljar)",
+    "url": "https://anthropic.skilljar.com/ai-fluency-framework-foundations",
+    "accesible": true,
+    "urlFinal": "https://anthropic.skilljar.com/ai-fluency-framework-foundations",
+    "lecciones": [
+      {
+        "n": 1,
+        "modulo": "Introduction to AI Fluency",
+        "titulo": "Introduction to AI Fluency",
+        "url": "https://anthropic.skilljar.com/ai-fluency-framework-foundations/291863"
+      },
+      {
+        "n": 2,
+        "modulo": "The AI Fluency Framework",
+        "titulo": "Why do we need AI Fluency?",
+        "url": "https://anthropic.skilljar.com/ai-fluency-framework-foundations/291870"
+      },
+      {
+        "n": 3,
+        "modulo": "The AI Fluency Framework",
+        "titulo": "The 4D Framework",
+        "url": "https://anthropic.skilljar.com/ai-fluency-framework-foundations/291876"
+      },
+      {
+        "n": 4,
+        "modulo": "Deep Dive 1: What is Generative AI? (Part 1)",
+        "titulo": "Generative AI fundamentals",
+        "url": "https://anthropic.skilljar.com/ai-fluency-framework-foundations/291879"
+      },
+      {
+        "n": 5,
+        "modulo": "Deep Dive 1: What is Generative AI? (Part 1)",
+        "titulo": "Capabilities & limitations",
+        "url": "https://anthropic.skilljar.com/ai-fluency-framework-foundations/291880"
+      },
+      {
+        "n": 6,
+        "modulo": "Delegation",
+        "titulo": "A closer look at Delegation",
+        "url": "https://anthropic.skilljar.com/ai-fluency-framework-foundations/291883"
+      },
+      {
+        "n": 7,
+        "modulo": "Delegation",
+        "titulo": "Project planning and Delegation",
+        "url": "https://anthropic.skilljar.com/ai-fluency-framework-foundations/291886"
+      },
+      {
+        "n": 8,
+        "modulo": "Description",
+        "titulo": "A closer look at Description",
+        "url": "https://anthropic.skilljar.com/ai-fluency-framework-foundations/291891"
+      },
+      {
+        "n": 9,
+        "modulo": "Deep Dive 2: Effective prompting techniques",
+        "titulo": "Effective prompting techniques",
+        "url": "https://anthropic.skilljar.com/ai-fluency-framework-foundations/291895"
+      },
+      {
+        "n": 10,
+        "modulo": "Discernment",
+        "titulo": "A closer look at Discernment",
+        "url": "https://anthropic.skilljar.com/ai-fluency-framework-foundations/291898"
+      },
+      {
+        "n": 11,
+        "modulo": "The Description-Discernment loop",
+        "titulo": "The Description-Discernment loop",
+        "url": "https://anthropic.skilljar.com/ai-fluency-framework-foundations/291901"
+      },
+      {
+        "n": 12,
+        "modulo": "Diligence",
+        "titulo": "A closer look at Diligence",
+        "url": "https://anthropic.skilljar.com/ai-fluency-framework-foundations/291904"
+      },
+      {
+        "n": 13,
+        "modulo": "Conclusion & certificate",
+        "titulo": "Conclusion",
+        "url": "https://anthropic.skilljar.com/ai-fluency-framework-foundations/291908"
+      },
+      {
+        "n": 14,
+        "modulo": "Conclusion & certificate",
+        "titulo": "Certificate of completion",
+        "url": "https://anthropic.skilljar.com/ai-fluency-framework-foundations/309598"
+      },
+      {
+        "n": 15,
+        "modulo": "Conclusion & certificate",
+        "titulo": "Additional activities",
+        "url": "https://anthropic.skilljar.com/ai-fluency-framework-foundations/314863"
+      },
+      {
+        "n": 16,
+        "modulo": "Conclusion & certificate",
+        "titulo": "__test__",
+        "url": "https://anthropic.skilljar.com/ai-fluency-framework-foundations/486194"
+      }
+    ],
+    "evidencia": "\"Why do we need AI Fluency?\" / \"The 4D Framework\" / \"A closer look at Delegation\" (lecciones listadas en la sección Curriculum de la página)",
+    "notas": "Verificado con 2 fetches independientes de la página Skilljar; ambos devolvieron el curriculum idéntico línea a línea. La página NO muestra duraciones/timestamps ni URLs directas por lección (por eso se omiten esos campos). Peculiaridades textuales de la propia página: \"The Description-Discernment loop\" aparece DOS veces en el módulo Discernment, y existe una entrada literal \"__test__\" al final del módulo Conclusion & certificate (aparente residuo de la plataforma, pero se reporta tal cual aparece). Descripción del curso en la página: \"Learn to collaborate with AI systems effectively, efficiently, ethically, and safe\".",
+    "verificado": false,
+    "problemas": [
+      "El temario real (HTML crudo de https://anthropic.skilljar.com/ai-fluency-framework-foundations, lista <ul class=\"dp-curriculum\">, verificada 2 veces con resultado identico) tiene 16 lecciones en 10 secciones, no 18 lecciones.",
+      "Item 9 reclamado '[Description] Deep Dive 2: Effective prompting techniques' NO es una leccion: 'Deep Dive 2: Effective prompting techniques' es un TITULO DE SECCION (li.section) que el agente conto como leccion extra dentro de 'Description'.",
+      "Item 10 reclamado tiene el modulo equivocado: la leccion 'Effective prompting techniques' (/291895) pertenece a la seccion 'Deep Dive 2: Effective prompting techniques', no a 'Description'. La seccion 'Description' solo contiene 1 leccion: 'A closer look at Description'.",
+      "Items 12 y 13 reclamados duplican 'The Description-Discernment loop' bajo el modulo 'Discernment': en realidad existe UNA sola leccion con ese titulo (/291901) y esta en su PROPIA seccion llamada 'The Description-Discernment loop' (el agente conto cabecera de seccion + leccion como dos lecciones y les asigno modulo erroneo). La seccion 'Discernment' solo contiene 'A closer look at Discernment'.",
+      "Verificado a favor del agente: '__test__' SI existe textualmente en la pagina como leccion de texto (data-url /ai-fluency-framework-foundations/486194), aparentemente una leccion de prueba interna olvidada — no es invento.",
+      "Todos los demas titulos y el orden de secciones coinciden textualmente con la pagina.",
+      "Duraciones: los spans sj-lesson-time estan vacios en el HTML estatico, por lo que no hay duraciones verificables por leccion."
+    ]
+  },
+  {
+    "id": "claude-101",
+    "nombre": "Claude 101 (Anthropic Skilljar)",
+    "url": "https://anthropic.skilljar.com/claude-101",
+    "accesible": true,
+    "urlFinal": "https://anthropic.skilljar.com/claude-101",
+    "lecciones": [
+      {
+        "n": 1,
+        "modulo": "Meet Claude",
+        "titulo": "What is Claude?"
+      },
+      {
+        "n": 2,
+        "modulo": "Meet Claude",
+        "titulo": "Your first conversation with Claude"
+      },
+      {
+        "n": 3,
+        "modulo": "Meet Claude",
+        "titulo": "Getting better results"
+      },
+      {
+        "n": 4,
+        "modulo": "Meet Claude",
+        "titulo": "Claude desktop app: Chat, Cowork, Code"
+      },
+      {
+        "n": 5,
+        "modulo": "Organizing your work and knowledge",
+        "titulo": "Introduction to projects"
+      },
+      {
+        "n": 6,
+        "modulo": "Organizing your work and knowledge",
+        "titulo": "Creating with artifacts"
+      },
+      {
+        "n": 7,
+        "modulo": "Organizing your work and knowledge",
+        "titulo": "Working with skills"
+      },
+      {
+        "n": 8,
+        "modulo": "Expanding Claude's reach",
+        "titulo": "Connecting your tools"
+      },
+      {
+        "n": 9,
+        "modulo": "Expanding Claude's reach",
+        "titulo": "Enterprise search"
+      },
+      {
+        "n": 10,
+        "modulo": "Expanding Claude's reach",
+        "titulo": "Research mode for deep dives"
+      },
+      {
+        "n": 11,
+        "modulo": "Putting it all together",
+        "titulo": "Claude in action: use-cases by role"
+      },
+      {
+        "n": 12,
+        "modulo": "Putting it all together",
+        "titulo": "Other ways to work with Claude"
+      },
+      {
+        "n": 13,
+        "modulo": "Conclusion & certificate",
+        "titulo": "What's next?"
+      },
+      {
+        "n": 14,
+        "modulo": "Conclusion & certificate",
+        "titulo": "Certificate of completion"
+      }
+    ],
+    "evidencia": "Learn how to use Claude for everyday work tasks, understand core features, and explore resources for more advanced learning on other topics.",
+    "notas": "Temario extraído por WebFetch directo de la página (dos fetches consistentes). La página muestra 5 módulos y 14 ítems, no 4 módulos/13 lecciones como decía la verificación previa: existe un 5º módulo \"Conclusion & certificate\" con 2 ítems (\"What's next?\" y \"Certificate of completion\"); si se excluye el ítem de certificado, quedan 13 lecciones de contenido. Los nombres reales de los módulos en la página son: \"Meet Claude\", \"Organizing your work and knowledge\", \"Expanding Claude's reach\", \"Putting it all together\", \"Conclusion & certificate\". La página no muestra duraciones por lección ni URLs directas de lecciones, por eso se omiten esos campos.",
+    "verificado": true,
+    "problemas": []
+  },
+  {
+    "id": "claude-code-101",
+    "nombre": "Claude Code 101 (Anthropic Skilljar)",
+    "url": "https://anthropic.skilljar.com/claude-code-101",
+    "accesible": true,
+    "urlFinal": "https://anthropic.skilljar.com/claude-code-101",
+    "lecciones": [
+      {
+        "n": 1,
+        "modulo": "What is Claude Code?",
+        "titulo": "What is Claude Code?"
+      },
+      {
+        "n": 2,
+        "modulo": "What is Claude Code?",
+        "titulo": "How Claude Code works"
+      },
+      {
+        "n": 3,
+        "modulo": "Your first prompt",
+        "titulo": "Installing Claude Code"
+      },
+      {
+        "n": 4,
+        "modulo": "Your first prompt",
+        "titulo": "Your first prompt"
+      },
+      {
+        "n": 5,
+        "modulo": "Daily workflows",
+        "titulo": "The explore → plan → code → commit workflow"
+      },
+      {
+        "n": 6,
+        "modulo": "Daily workflows",
+        "titulo": "Context management"
+      },
+      {
+        "n": 7,
+        "modulo": "Daily workflows",
+        "titulo": "Code review"
+      },
+      {
+        "n": 8,
+        "modulo": "Customizing Claude Code",
+        "titulo": "The CLAUDE.md file"
+      },
+      {
+        "n": 9,
+        "modulo": "Customizing Claude Code",
+        "titulo": "Subagents"
+      },
+      {
+        "n": 10,
+        "modulo": "Customizing Claude Code",
+        "titulo": "Skills"
+      },
+      {
+        "n": 11,
+        "modulo": "Customizing Claude Code",
+        "titulo": "MCP"
+      },
+      {
+        "n": 12,
+        "modulo": "Customizing Claude Code",
+        "titulo": "Hooks"
+      },
+      {
+        "n": 13,
+        "modulo": "Quiz",
+        "titulo": "Course quiz"
+      }
+    ],
+    "evidencia": "Curriculum | What is Claude Code? | How Claude Code works | Your first prompt | Installing Claude Code | Daily workflows | The explore → plan → code → commit workflow | Context management | Code review | Customizing Claude Code | The CLAUDE.md file | Subagents | Skills | MCP | Hooks | Quiz | Course quiz",
+    "notas": "Doble verificación: WebFetch + descarga del HTML crudo (curl) con grep/parse — los 13 títulos y 5 secciones aparecen textualmente bajo el encabezado \"Curriculum\" (la página los renderiza dos veces: desktop y móvil). La página NO muestra duraciones por lección ni URLs directas de lecciones sin matricularse (no hay hrefs /claude-code-101/<lección> en el HTML público), por eso se omiten dur y url. URL respondió 200 OK sin redirecciones, title = \"Claude Code 101\". Extra verificado en la página: prerrequisitos (editor + línea de comandos; cuenta Claude Pro/Max/Enterprise o API key) y objetivos (agentic loop, Plan Mode, /compact /clear /context, CLAUDE.md, subagents, MCP, hooks).",
+    "verificado": true,
+    "problemas": []
+  },
+  {
+    "id": "claude-platform-101",
+    "nombre": "Claude Platform 101 (Anthropic Skilljar)",
+    "url": "https://anthropic.skilljar.com/claude-platform-101",
+    "accesible": true,
+    "urlFinal": "https://anthropic.skilljar.com/claude-platform-101",
+    "lecciones": [
+      {
+        "n": 1,
+        "modulo": "What is the Claude Developer Platform?",
+        "titulo": "What is the Claude Developer Platform?"
+      },
+      {
+        "n": 2,
+        "modulo": "What is the Claude Developer Platform?",
+        "titulo": "Your first API call"
+      },
+      {
+        "n": 3,
+        "modulo": "What is the Claude Developer Platform?",
+        "titulo": "Choosing the right model"
+      },
+      {
+        "n": 4,
+        "modulo": "Teaching your Agent",
+        "titulo": "The agent loop explained"
+      },
+      {
+        "n": 5,
+        "modulo": "Teaching your Agent",
+        "titulo": "What is tool use?"
+      },
+      {
+        "n": 6,
+        "modulo": "Teaching your Agent",
+        "titulo": "What is thinking?"
+      },
+      {
+        "n": 7,
+        "modulo": "Extending your Agent",
+        "titulo": "Built-in tools"
+      },
+      {
+        "n": 8,
+        "modulo": "Extending your Agent",
+        "titulo": "Skills"
+      },
+      {
+        "n": 9,
+        "modulo": "Extending your Agent",
+        "titulo": "MCP"
+      },
+      {
+        "n": 10,
+        "modulo": "Extending your Agent",
+        "titulo": "Context management"
+      },
+      {
+        "n": 11,
+        "modulo": "Managed Agents",
+        "titulo": "What are managed agents?"
+      },
+      {
+        "n": 12,
+        "modulo": "Managed Agents",
+        "titulo": "Building your first managed agent"
+      },
+      {
+        "n": 13,
+        "modulo": "Building with Claude Code",
+        "titulo": "Building with Claude Code"
+      },
+      {
+        "n": 14,
+        "modulo": "Quiz",
+        "titulo": "Claude Platform 101 Quiz"
+      }
+    ],
+    "evidencia": "This course teaches developers to build on the Claude Developer Platform from the ground up, whether you've made a few API calls or have only used Claude through a chat window.",
+    "notas": "Temario verificado contra el HTML crudo de la página (descargado con Invoke-WebRequest, 1.06 MB). 6 secciones, 14 lecciones (13 tipo \"Text Lesson\" + 1 \"Quiz Lesson\" según los iconos del curriculum). Los spans sj-lesson-time están vacíos: la página NO muestra duraciones. Las lecciones NO tienen URL pública (no hay hrefs en el bloque #curriculum-list para visitantes no inscritos), por eso se omite el campo url. Un primer resumen vía WebFetch dividía la primera sección en 3 módulos separados; el HTML real agrupa las 3 primeras lecciones bajo la sección \"What is the Claude Developer Platform?\".",
+    "verificado": true,
+    "problemas": []
+  },
+  {
+    "id": "effective-agents",
+    "nombre": "Building Effective AI Agents (ensayo de Anthropic)",
+    "url": "https://www.anthropic.com/engineering/building-effective-agents",
+    "accesible": true,
+    "urlFinal": "https://www.anthropic.com/engineering/building-effective-agents",
+    "lecciones": [
+      {
+        "n": 1,
+        "titulo": "What are agents?"
+      },
+      {
+        "n": 2,
+        "titulo": "When (and when not) to use agents"
+      },
+      {
+        "n": 3,
+        "titulo": "When and how to use frameworks"
+      },
+      {
+        "n": 4,
+        "titulo": "Building blocks, workflows, and agents (introducción)",
+        "modulo": "Building blocks, workflows, and agents"
+      },
+      {
+        "n": 5,
+        "titulo": "Building block: The augmented LLM",
+        "modulo": "Building blocks, workflows, and agents"
+      },
+      {
+        "n": 6,
+        "titulo": "Workflow: Prompt chaining",
+        "modulo": "Building blocks, workflows, and agents"
+      },
+      {
+        "n": 7,
+        "titulo": "Workflow: Routing",
+        "modulo": "Building blocks, workflows, and agents"
+      },
+      {
+        "n": 8,
+        "titulo": "Workflow: Parallelization",
+        "modulo": "Building blocks, workflows, and agents"
+      },
+      {
+        "n": 9,
+        "titulo": "Workflow: Orchestrator-workers",
+        "modulo": "Building blocks, workflows, and agents"
+      },
+      {
+        "n": 10,
+        "titulo": "Workflow: Evaluator-optimizer",
+        "modulo": "Building blocks, workflows, and agents"
+      },
+      {
+        "n": 11,
+        "titulo": "Agents",
+        "modulo": "Building blocks, workflows, and agents"
+      },
+      {
+        "n": 12,
+        "titulo": "Combining and customizing these patterns"
+      },
+      {
+        "n": 13,
+        "titulo": "Summary"
+      },
+      {
+        "n": 14,
+        "titulo": "A. Customer support",
+        "modulo": "Appendix 1: Agents in practice"
+      },
+      {
+        "n": 15,
+        "titulo": "B. Coding agents",
+        "modulo": "Appendix 1: Agents in practice"
+      },
+      {
+        "n": 16,
+        "titulo": "Appendix 2: Prompt engineering your tools"
+      }
+    ],
+    "evidencia": "\"We've worked with dozens of teams building LLM agents across industries.\" — encabezados verificados: \"What are agents?\", \"Workflow: Prompt chaining\", \"Workflow: Evaluator-optimizer\"",
+    "notas": "Temario extraído vía WebFetch de la URL oficial el 2026-06-10. Todos los títulos son textuales de la página, en su inglés original. La página no muestra duraciones ni URLs/anclas por sección, por eso se omiten dur y url. Se excluyeron del listado de lecciones dos encabezados presentes en la página que no son contenido de estudio: \"Acknowledgements\" y \"Get the developer newsletter\" (CTA de pie de página). El heading inicial \"Building effective agents\" es el título del ensayo, no una sección.",
+    "verificado": true,
+    "problemas": []
+  },
+  {
+    "id": "cs50p",
+    "nombre": "CS50P Introduction to Programming with Python (Harvard)",
+    "url": "https://cs50.harvard.edu/python/",
+    "accesible": true,
+    "urlFinal": "https://cs50.harvard.edu/python/",
+    "lecciones": [
+      {
+        "n": 0,
+        "modulo": "CS50P",
+        "titulo": "Functions, Variables",
+        "url": "https://cs50.harvard.edu/python/weeks/0/"
+      },
+      {
+        "n": 1,
+        "modulo": "CS50P",
+        "titulo": "Conditionals",
+        "url": "https://cs50.harvard.edu/python/weeks/1/"
+      },
+      {
+        "n": 2,
+        "modulo": "CS50P",
+        "titulo": "Loops",
+        "url": "https://cs50.harvard.edu/python/weeks/2/"
+      },
+      {
+        "n": 3,
+        "modulo": "CS50P",
+        "titulo": "Exceptions",
+        "url": "https://cs50.harvard.edu/python/weeks/3/"
+      },
+      {
+        "n": 4,
+        "modulo": "CS50P",
+        "titulo": "Libraries",
+        "url": "https://cs50.harvard.edu/python/weeks/4/"
+      },
+      {
+        "n": 5,
+        "modulo": "CS50P",
+        "titulo": "Unit Tests",
+        "url": "https://cs50.harvard.edu/python/weeks/5/"
+      },
+      {
+        "n": 6,
+        "modulo": "CS50P",
+        "titulo": "File I/O",
+        "url": "https://cs50.harvard.edu/python/weeks/6/"
+      },
+      {
+        "n": 7,
+        "modulo": "CS50P",
+        "titulo": "Regular Expressions",
+        "url": "https://cs50.harvard.edu/python/weeks/7/"
+      },
+      {
+        "n": 8,
+        "modulo": "CS50P",
+        "titulo": "Object-Oriented Programming",
+        "url": "https://cs50.harvard.edu/python/weeks/8/"
+      },
+      {
+        "n": 9,
+        "modulo": "CS50P",
+        "titulo": "Et Cetera",
+        "url": "https://cs50.harvard.edu/python/weeks/9/"
+      }
+    ],
+    "evidencia": "An introduction to programming using a language called Python. Learn how to read and write code as well as how to test and debug it.",
+    "notas": "Temario extraído por WebFetch de https://cs50.harvard.edu/python/ (10 semanas, Week 0-9). URL de Week 0 verificada con fetch adicional (heading \"Week 0 Functions\"). La página no muestra duraciones/timestamps, por eso se omite dur.",
+    "verificado": true,
+    "problemas": []
+  },
+  {
+    "id": "progit",
+    "nombre": "Pro Git 2nd Edition (libro)",
+    "url": "https://git-scm.com/book/en/v2",
+    "accesible": true,
+    "urlFinal": "https://git-scm.com/book/en/v2",
+    "lecciones": [
+      {
+        "n": 1,
+        "titulo": "Getting Started",
+        "url": "https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control"
+      },
+      {
+        "n": 2,
+        "titulo": "Git Basics",
+        "url": "https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository"
+      },
+      {
+        "n": 3,
+        "titulo": "Git Branching",
+        "url": "https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell"
+      },
+      {
+        "n": 4,
+        "titulo": "Git on the Server",
+        "url": "https://git-scm.com/book/en/v2/Git-on-the-Server-The-Protocols"
+      },
+      {
+        "n": 5,
+        "titulo": "Distributed Git",
+        "url": "https://git-scm.com/book/en/v2/Distributed-Git-Distributed-Workflows"
+      },
+      {
+        "n": 6,
+        "titulo": "GitHub",
+        "url": "https://git-scm.com/book/en/v2/GitHub-Account-Setup-and-Configuration"
+      },
+      {
+        "n": 7,
+        "titulo": "Git Tools",
+        "url": "https://git-scm.com/book/en/v2/Git-Tools-Revision-Selection"
+      },
+      {
+        "n": 8,
+        "titulo": "Customizing Git",
+        "url": "https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration"
+      },
+      {
+        "n": 9,
+        "titulo": "Git and Other Systems",
+        "url": "https://git-scm.com/book/en/v2/Git-and-Other-Systems-Git-as-a-Client"
+      },
+      {
+        "n": 10,
+        "titulo": "Git Internals",
+        "url": "https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain"
+      },
+      {
+        "n": 11,
+        "titulo": "Appendix A: Git in Other Environments",
+        "url": "https://git-scm.com/book/en/v2/Appendix-A:-Git-in-Other-Environments-Graphical-Interfaces"
+      },
+      {
+        "n": 12,
+        "titulo": "Appendix B: Embedding Git in your Applications",
+        "url": "https://git-scm.com/book/en/v2/Appendix-B:-Embedding-Git-in-your-Applications-Command-line-Git"
+      },
+      {
+        "n": 13,
+        "titulo": "Appendix C: Git Commands",
+        "url": "https://git-scm.com/book/en/v2/Appendix-C:-Git-Commands-Setup-and-Config"
+      }
+    ],
+    "evidencia": "1. Getting Started — 1.1 About Version Control … 10. Git Internals — 10.1 Plumbing and Porcelain … Appendix C: Git Commands — A3.12 Plumbing Commands",
+    "notas": "Índice verificado por WebFetch directo a https://git-scm.com/book/en/v2 (10-jun-2026). La página muestra el TOC completo a nivel de sección: cap.1 (8 secciones: About Version Control … Summary), cap.2 (8), cap.3 (7), cap.4 (10), cap.5 (4), cap.6 (6), cap.7 (15: Revision Selection … Summary), cap.8 (5), cap.9 (3), cap.10 (9), Apéndice A (9: Graphical Interfaces … Summary), Apéndice B (5: Command-line Git, Libgit2, JGit, go-git, Dulwich), Apéndice C (12: Setup and Config … Plumbing Commands) = 101 secciones. Las URLs de capítulo apuntan a su primera sección, tal como enlaza la página. El libro no publica duraciones/timestamps, por eso se omite dur.",
+    "verificado": true,
+    "problemas": []
+  },
+  {
+    "id": "missing-semester",
+    "nombre": "The Missing Semester of Your CS Education (MIT)",
+    "url": "https://missing.csail.mit.edu/",
+    "accesible": true,
+    "urlFinal": "https://missing.csail.mit.edu/",
+    "lecciones": [
+      {
+        "n": 1,
+        "modulo": "2026 syllabus (homepage actual)",
+        "titulo": "Course Overview + Introduction to the Shell",
+        "url": "https://missing.csail.mit.edu/2026/course-shell/"
+      },
+      {
+        "n": 2,
+        "modulo": "2026 syllabus (homepage actual)",
+        "titulo": "Command-line Environment",
+        "url": "https://missing.csail.mit.edu/2026/command-line-environment/"
+      },
+      {
+        "n": 3,
+        "modulo": "2026 syllabus (homepage actual)",
+        "titulo": "Development Environment and Tools",
+        "url": "https://missing.csail.mit.edu/2026/development-environment/"
+      },
+      {
+        "n": 4,
+        "modulo": "2026 syllabus (homepage actual)",
+        "titulo": "Debugging and Profiling",
+        "url": "https://missing.csail.mit.edu/2026/debugging-profiling/"
+      },
+      {
+        "n": 5,
+        "modulo": "2026 syllabus (homepage actual)",
+        "titulo": "Version Control and Git",
+        "url": "https://missing.csail.mit.edu/2026/version-control/"
+      },
+      {
+        "n": 6,
+        "modulo": "2026 syllabus (homepage actual)",
+        "titulo": "Packaging and Shipping Code",
+        "url": "https://missing.csail.mit.edu/2026/shipping-code/"
+      },
+      {
+        "n": 7,
+        "modulo": "2026 syllabus (homepage actual)",
+        "titulo": "Agentic Coding",
+        "url": "https://missing.csail.mit.edu/2026/agentic-coding/"
+      },
+      {
+        "n": 8,
+        "modulo": "2026 syllabus (homepage actual)",
+        "titulo": "Beyond the Code",
+        "url": "https://missing.csail.mit.edu/2026/beyond-code/"
+      },
+      {
+        "n": 9,
+        "modulo": "2026 syllabus (homepage actual)",
+        "titulo": "Code Quality",
+        "url": "https://missing.csail.mit.edu/2026/code-quality/"
+      },
+      {
+        "n": 1,
+        "modulo": "2020 edition (clásica, con vídeos en YouTube)",
+        "titulo": "Course Overview + The Shell",
+        "url": "https://missing.csail.mit.edu/2020/course-shell/"
+      },
+      {
+        "n": 2,
+        "modulo": "2020 edition (clásica, con vídeos en YouTube)",
+        "titulo": "Shell Tools and Scripting",
+        "url": "https://missing.csail.mit.edu/2020/shell-tools/"
+      },
+      {
+        "n": 3,
+        "modulo": "2020 edition (clásica, con vídeos en YouTube)",
+        "titulo": "Editors (Vim)",
+        "url": "https://missing.csail.mit.edu/2020/editors/"
+      },
+      {
+        "n": 4,
+        "modulo": "2020 edition (clásica, con vídeos en YouTube)",
+        "titulo": "Data Wrangling",
+        "url": "https://missing.csail.mit.edu/2020/data-wrangling/"
+      },
+      {
+        "n": 5,
+        "modulo": "2020 edition (clásica, con vídeos en YouTube)",
+        "titulo": "Command-line Environment",
+        "url": "https://missing.csail.mit.edu/2020/command-line/"
+      },
+      {
+        "n": 6,
+        "modulo": "2020 edition (clásica, con vídeos en YouTube)",
+        "titulo": "Version Control (Git)",
+        "url": "https://missing.csail.mit.edu/2020/version-control/"
+      },
+      {
+        "n": 7,
+        "modulo": "2020 edition (clásica, con vídeos en YouTube)",
+        "titulo": "Debugging and Profiling",
+        "url": "https://missing.csail.mit.edu/2020/debugging-profiling/"
+      },
+      {
+        "n": 8,
+        "modulo": "2020 edition (clásica, con vídeos en YouTube)",
+        "titulo": "Metaprogramming",
+        "url": "https://missing.csail.mit.edu/2020/metaprogramming/"
+      },
+      {
+        "n": 9,
+        "modulo": "2020 edition (clásica, con vídeos en YouTube)",
+        "titulo": "Security and Cryptography",
+        "url": "https://missing.csail.mit.edu/2020/security/"
+      },
+      {
+        "n": 10,
+        "modulo": "2020 edition (clásica, con vídeos en YouTube)",
+        "titulo": "Potpourri",
+        "url": "https://missing.csail.mit.edu/2020/potpourri/"
+      },
+      {
+        "n": 11,
+        "modulo": "2020 edition (clásica, con vídeos en YouTube)",
+        "titulo": "Q&A",
+        "url": "https://missing.csail.mit.edu/2020/qa/"
+      },
+      {
+        "modulo": "Special topics from previous years (2019)",
+        "titulo": "Backups",
+        "url": "https://missing.csail.mit.edu/2019/backups/"
+      },
+      {
+        "modulo": "Special topics from previous years (2019)",
+        "titulo": "Automation",
+        "url": "https://missing.csail.mit.edu/2019/automation/"
+      },
+      {
+        "modulo": "Special topics from previous years (2019)",
+        "titulo": "Machine Introspection",
+        "url": "https://missing.csail.mit.edu/2019/machine-introspection/"
+      },
+      {
+        "modulo": "Special topics from previous years (2019)",
+        "titulo": "OS Customization",
+        "url": "https://missing.csail.mit.edu/2019/os-customization/"
+      },
+      {
+        "modulo": "Special topics from previous years (2019)",
+        "titulo": "Web and Browsers",
+        "url": "https://missing.csail.mit.edu/2019/web/"
+      },
+      {
+        "modulo": "Special topics from previous years (2019)",
+        "titulo": "Security and Privacy",
+        "url": "https://missing.csail.mit.edu/2019/security/"
+      }
+    ],
+    "evidencia": "\"there's one critical subject that's rarely covered, and is instead left to students to figure out on their own: proficiency with their tools\"",
+    "notas": "Verificado vía WebFetch (2 páginas). La homepage (https://missing.csail.mit.edu/) hoy muestra el syllabus 2026 (9 lecciones, fechas 1/12/26–1/23/26) más una sección \"Special topics from previous years\". La edición clásica que menciona la tarea (Course Overview + The Shell, Shell Tools, Editors (Vim)...) es la de 2020, verificada en https://missing.csail.mit.edu/2020/ (11 lecciones, fechas 1/13–1/30); esa página dice textualmente \"Video recordings of the lectures are available on YouTube\". Los \"Special topics\" 2020 de la homepage (Data Wrangling, Security and Cryptography, Potpourri, Q&A) ya están incluidos dentro de la edición 2020, así que solo listo aparte los de 2019. No aparecen duraciones textuales en las páginas, por eso no hay campo dur. Fechas como \"1/13\" aparecen textuales pero son fechas de clase, no duraciones.",
+    "verificado": true,
+    "problemas": []
+  },
+  {
+    "id": "python-tutorial",
+    "nombre": "The Python Tutorial (docs oficiales)",
+    "url": "https://docs.python.org/3/tutorial/",
+    "accesible": true,
+    "urlFinal": "https://docs.python.org/3/tutorial/",
+    "lecciones": [
+      {
+        "n": 1,
+        "titulo": "Whetting Your Appetite",
+        "modulo": "The Python Tutorial",
+        "url": "https://docs.python.org/3/tutorial/appetite.html"
+      },
+      {
+        "n": 2,
+        "titulo": "Using the Python Interpreter",
+        "modulo": "The Python Tutorial",
+        "url": "https://docs.python.org/3/tutorial/interpreter.html"
+      },
+      {
+        "n": 3,
+        "titulo": "An Informal Introduction to Python",
+        "modulo": "The Python Tutorial",
+        "url": "https://docs.python.org/3/tutorial/introduction.html"
+      },
+      {
+        "n": 4,
+        "titulo": "More Control Flow Tools",
+        "modulo": "The Python Tutorial",
+        "url": "https://docs.python.org/3/tutorial/controlflow.html"
+      },
+      {
+        "n": 5,
+        "titulo": "Data Structures",
+        "modulo": "The Python Tutorial",
+        "url": "https://docs.python.org/3/tutorial/datastructures.html"
+      },
+      {
+        "n": 6,
+        "titulo": "Modules",
+        "modulo": "The Python Tutorial",
+        "url": "https://docs.python.org/3/tutorial/modules.html"
+      },
+      {
+        "n": 7,
+        "titulo": "Input and Output",
+        "modulo": "The Python Tutorial",
+        "url": "https://docs.python.org/3/tutorial/inputoutput.html"
+      },
+      {
+        "n": 8,
+        "titulo": "Errors and Exceptions",
+        "modulo": "The Python Tutorial",
+        "url": "https://docs.python.org/3/tutorial/errors.html"
+      },
+      {
+        "n": 9,
+        "titulo": "Classes",
+        "modulo": "The Python Tutorial",
+        "url": "https://docs.python.org/3/tutorial/classes.html"
+      },
+      {
+        "n": 10,
+        "titulo": "Brief tour of the standard library",
+        "modulo": "The Python Tutorial",
+        "url": "https://docs.python.org/3/tutorial/stdlib.html"
+      },
+      {
+        "n": 11,
+        "titulo": "Brief tour of the standard library — part II",
+        "modulo": "The Python Tutorial",
+        "url": "https://docs.python.org/3/tutorial/stdlib2.html"
+      },
+      {
+        "n": 12,
+        "titulo": "Virtual Environments and Packages",
+        "modulo": "The Python Tutorial",
+        "url": "https://docs.python.org/3/tutorial/venv.html"
+      },
+      {
+        "n": 13,
+        "titulo": "What Now?",
+        "modulo": "The Python Tutorial",
+        "url": "https://docs.python.org/3/tutorial/whatnow.html"
+      },
+      {
+        "n": 14,
+        "titulo": "Interactive Input Editing and History Substitution",
+        "modulo": "The Python Tutorial",
+        "url": "https://docs.python.org/3/tutorial/interactive.html"
+      },
+      {
+        "n": 15,
+        "titulo": "Floating-Point Arithmetic: Issues and Limitations",
+        "modulo": "The Python Tutorial",
+        "url": "https://docs.python.org/3/tutorial/floatingpoint.html"
+      },
+      {
+        "n": 16,
+        "titulo": "Appendix",
+        "modulo": "The Python Tutorial",
+        "url": "https://docs.python.org/3/tutorial/appendix.html"
+      }
+    ],
+    "evidencia": "1. Whetting Your Appetite — \"Python is an easy to learn, powerful programming language.\"",
+    "notas": "Temario verificado por doble vía: WebFetch de https://docs.python.org/3/tutorial/ y extracción regex del HTML crudo (Invoke-WebRequest) — ambas fuentes coinciden en los 16 capítulos numerados. Los títulos 10 y 11 aparecen textualmente con minúsculas (\"Brief tour of the standard library\") en la versión actual de los docs. No hay duraciones en la página (es documentación, no video). Sin URLs inventadas: cada href fue visto en el HTML.",
+    "verificado": true,
+    "problemas": []
+  },
+  {
+    "id": "automate",
+    "nombre": "Automate the Boring Stuff with Python 3rd ed",
+    "url": "https://automatetheboringstuff.com/",
+    "accesible": true,
+    "urlFinal": "https://automatetheboringstuff.com/",
+    "lecciones": [
+      {
+        "n": 0,
+        "titulo": "Introduction",
+        "url": "https://automatetheboringstuff.com/3e/chapter0.html"
+      },
+      {
+        "n": 1,
+        "titulo": "Python Basics",
+        "url": "https://automatetheboringstuff.com/3e/chapter1.html"
+      },
+      {
+        "n": 2,
+        "titulo": "if-else and Flow Control",
+        "url": "https://automatetheboringstuff.com/3e/chapter2.html"
+      },
+      {
+        "n": 3,
+        "titulo": "Loops",
+        "url": "https://automatetheboringstuff.com/3e/chapter3.html"
+      },
+      {
+        "n": 4,
+        "titulo": "Functions",
+        "url": "https://automatetheboringstuff.com/3e/chapter4.html"
+      },
+      {
+        "n": 5,
+        "titulo": "Debugging",
+        "url": "https://automatetheboringstuff.com/3e/chapter5.html"
+      },
+      {
+        "n": 6,
+        "titulo": "Lists",
+        "url": "https://automatetheboringstuff.com/3e/chapter6.html"
+      },
+      {
+        "n": 7,
+        "titulo": "Dictionaries and Structuring Data",
+        "url": "https://automatetheboringstuff.com/3e/chapter7.html"
+      },
+      {
+        "n": 8,
+        "titulo": "Strings and Text Editing",
+        "url": "https://automatetheboringstuff.com/3e/chapter8.html"
+      },
+      {
+        "n": 9,
+        "titulo": "Text Pattern Matching with Regular Expressions",
+        "url": "https://automatetheboringstuff.com/3e/chapter9.html"
+      },
+      {
+        "n": 10,
+        "titulo": "Reading and Writing Files",
+        "url": "https://automatetheboringstuff.com/3e/chapter10.html"
+      },
+      {
+        "n": 11,
+        "titulo": "Organizing Files",
+        "url": "https://automatetheboringstuff.com/3e/chapter11.html"
+      },
+      {
+        "n": 12,
+        "titulo": "Designing and Deploying Command Line Programs",
+        "url": "https://automatetheboringstuff.com/3e/chapter12.html"
+      },
+      {
+        "n": 13,
+        "titulo": "Web Scraping",
+        "url": "https://automatetheboringstuff.com/3e/chapter13.html"
+      },
+      {
+        "n": 14,
+        "titulo": "Excel Spreadsheets",
+        "url": "https://automatetheboringstuff.com/3e/chapter14.html"
+      },
+      {
+        "n": 15,
+        "titulo": "Google Sheets",
+        "url": "https://automatetheboringstuff.com/3e/chapter15.html"
+      },
+      {
+        "n": 16,
+        "titulo": "SQLite Databases",
+        "url": "https://automatetheboringstuff.com/3e/chapter16.html"
+      },
+      {
+        "n": 17,
+        "titulo": "PDF and Word Documents",
+        "url": "https://automatetheboringstuff.com/3e/chapter17.html"
+      },
+      {
+        "n": 18,
+        "titulo": "CSV, JSON, and XML Files",
+        "url": "https://automatetheboringstuff.com/3e/chapter18.html"
+      },
+      {
+        "n": 19,
+        "titulo": "Keeping Time, Scheduling Tasks, and Launching Programs",
+        "url": "https://automatetheboringstuff.com/3e/chapter19.html"
+      },
+      {
+        "n": 20,
+        "titulo": "Sending Email, Texts, and Push Notifications",
+        "url": "https://automatetheboringstuff.com/3e/chapter20.html"
+      },
+      {
+        "n": 21,
+        "titulo": "Making Graphs and Manipulating Images",
+        "url": "https://automatetheboringstuff.com/3e/chapter21.html"
+      },
+      {
+        "n": 22,
+        "titulo": "Recognizing Text in Images",
+        "url": "https://automatetheboringstuff.com/3e/chapter22.html"
+      },
+      {
+        "n": 23,
+        "titulo": "Controlling the Keyboard and Mouse",
+        "url": "https://automatetheboringstuff.com/3e/chapter23.html"
+      },
+      {
+        "n": 24,
+        "titulo": "Text-to-Speech and Speech Recognition Engines",
+        "url": "https://automatetheboringstuff.com/3e/chapter24.html"
+      },
+      {
+        "titulo": "Appendix A - Installing Third-Party Packages",
+        "url": "https://automatetheboringstuff.com/3e/appendixa.html"
+      },
+      {
+        "titulo": "Appendix B - Answers to the Practice Questions",
+        "url": "https://automatetheboringstuff.com/3e/appendixb.html"
+      }
+    ],
+    "evidencia": "Table of Contents ... (The 1st edition and 2nd edition are still available.)",
+    "notas": "TOC de la 3a edicion extraido de https://automatetheboringstuff.com/ con dos WebFetch independientes (resultados identicos). Verificacion cruzada: el fetch de https://automatetheboringstuff.com/3e/chapter9.html muestra textualmente \"9 TEXT PATTERN MATCHING WITH REGULAR EXPRESSIONS\", coincidiendo con el TOC. La pagina no muestra duraciones (es un libro online, no curso en video), por eso se omite \"dur\". Introduction enlaza a /3e/chapter0.html segun el primer fetch.",
+    "verificado": true,
+    "problemas": []
+  },
+  {
+    "id": "3b1b-nn",
+    "nombre": "Neural networks (playlist 3Blue1Brown)",
+    "url": "https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi",
+    "accesible": true,
+    "urlFinal": "https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi",
+    "lecciones": [
+      {
+        "n": 1,
+        "modulo": "Neural networks",
+        "titulo": "But what is a neural network? | Deep learning chapter 1",
+        "url": "https://www.youtube.com/watch?v=aircAruvnKk",
+        "dur": "18:40"
+      },
+      {
+        "n": 2,
+        "modulo": "Neural networks",
+        "titulo": "Gradient descent, how neural networks learn | Deep Learning Chapter 2",
+        "url": "https://www.youtube.com/watch?v=IHZwWFHWa-w",
+        "dur": "20:33"
+      },
+      {
+        "n": 3,
+        "modulo": "Neural networks",
+        "titulo": "Backpropagation, intuitively | Deep Learning Chapter 3",
+        "url": "https://www.youtube.com/watch?v=Ilg3gGewQ5U",
+        "dur": "12:47"
+      },
+      {
+        "n": 4,
+        "modulo": "Neural networks",
+        "titulo": "Backpropagation calculus | Deep Learning Chapter 4",
+        "url": "https://www.youtube.com/watch?v=tIeHLnjs5U8",
+        "dur": "10:18"
+      },
+      {
+        "n": 5,
+        "modulo": "Neural networks",
+        "titulo": "Large Language Models explained briefly",
+        "url": "https://www.youtube.com/watch?v=LPZh9BOjkQs",
+        "dur": "7:58"
+      },
+      {
+        "n": 6,
+        "modulo": "Neural networks",
+        "titulo": "Transformers, the tech behind LLMs | Deep Learning Chapter 5",
+        "url": "https://www.youtube.com/watch?v=wjZofJX0v4M",
+        "dur": "27:14"
+      },
+      {
+        "n": 7,
+        "modulo": "Neural networks",
+        "titulo": "Attention in transformers, step-by-step | Deep Learning Chapter 6",
+        "url": "https://www.youtube.com/watch?v=eMlx5fFNoYc",
+        "dur": "26:10"
+      },
+      {
+        "n": 8,
+        "modulo": "Neural networks",
+        "titulo": "How might LLMs store facts | Deep Learning Chapter 7",
+        "url": "https://www.youtube.com/watch?v=9-Jl0dxWQs8",
+        "dur": "22:43"
+      },
+      {
+        "n": 9,
+        "modulo": "Neural networks",
+        "titulo": "But how do AI images and videos actually work? | Guest video by Welch Labs",
+        "url": "https://www.youtube.com/watch?v=iv-5mZ_9CPY",
+        "dur": "37:20"
+      }
+    ],
+    "evidencia": "ytInitialData de la página de la playlist: playlistMetadataRenderer.title = \"Neural networks\"; índice \"1\" → \"But what is a neural network? | Deep learning chapter 1\" (18:40)",
+    "notas": "WebFetch de YouTube no renderizó la playlist (JS), así que se descargó el HTML crudo de la URL de la playlist con curl + cookie de consentimiento (CONSENT/SOCS) y se parseó el JSON ytInitialData embebido: 9 playlistVideoRenderer con índices 1-9, videoId, título y duración textuales. El orden reportado (n=1..9) es el orden real de la playlist según esos índices. Los 9 vídeos fueron verificados individualmente vía oEmbed (https://www.youtube.com/oembed): título idéntico al de la página y author_name=\"3Blue1Brown\" en los 9 (incluido el n.º 9, vídeo invitado de Welch Labs publicado en el canal 3Blue1Brown). Las duraciones provienen del lengthText textual de la página de la playlist.",
+    "verificado": true,
+    "problemas": [
+      "Las duraciones (18:40, 20:33, etc.) NO pudieron verificarse: oEmbed y el feed RSS no exponen duración, y la página HTML de la playlist no renderiza la lista sin JavaScript. Todo lo demás (títulos verbatim, URLs/videoIds, orden y completitud 9/9) quedó verificado contra el feed RSS oficial de la playlist + oEmbed de cada vídeo (autor 3Blue1Brown en los 9)."
+    ]
+  },
+  {
+    "id": "karpathy-deep-dive",
+    "nombre": "Deep Dive into LLMs like ChatGPT (Karpathy, vídeo 3.5h)",
+    "url": "https://www.youtube.com/watch?v=7xTGNNLPyMI",
+    "accesible": true,
+    "urlFinal": "https://www.youtube.com/watch?v=7xTGNNLPyMI",
+    "lecciones": [
+      {
+        "n": 1,
+        "modulo": "Chapters",
+        "titulo": "introduction",
+        "dur": "00:00:00"
+      },
+      {
+        "n": 2,
+        "modulo": "Chapters",
+        "titulo": "pretraining data (internet)",
+        "dur": "00:01:00"
+      },
+      {
+        "n": 3,
+        "modulo": "Chapters",
+        "titulo": "tokenization",
+        "dur": "00:07:47"
+      },
+      {
+        "n": 4,
+        "modulo": "Chapters",
+        "titulo": "neural network I/O",
+        "dur": "00:14:27"
+      },
+      {
+        "n": 5,
+        "modulo": "Chapters",
+        "titulo": "neural network internals",
+        "dur": "00:20:11"
+      },
+      {
+        "n": 6,
+        "modulo": "Chapters",
+        "titulo": "inference",
+        "dur": "00:26:01"
+      },
+      {
+        "n": 7,
+        "modulo": "Chapters",
+        "titulo": "GPT-2: training and inference",
+        "dur": "00:31:09"
+      },
+      {
+        "n": 8,
+        "modulo": "Chapters",
+        "titulo": "Llama 3.1 base model inference",
+        "dur": "00:42:52"
+      },
+      {
+        "n": 9,
+        "modulo": "Chapters",
+        "titulo": "pretraining to post-training",
+        "dur": "00:59:23"
+      },
+      {
+        "n": 10,
+        "modulo": "Chapters",
+        "titulo": "post-training data (conversations)",
+        "dur": "01:01:06"
+      },
+      {
+        "n": 11,
+        "modulo": "Chapters",
+        "titulo": "hallucinations, tool use, knowledge/working memory",
+        "dur": "01:20:32"
+      },
+      {
+        "n": 12,
+        "modulo": "Chapters",
+        "titulo": "knowledge of self",
+        "dur": "01:41:46"
+      },
+      {
+        "n": 13,
+        "modulo": "Chapters",
+        "titulo": "models need tokens to think",
+        "dur": "01:46:56"
+      },
+      {
+        "n": 14,
+        "modulo": "Chapters",
+        "titulo": "tokenization revisited: models struggle with spelling",
+        "dur": "02:01:11"
+      },
+      {
+        "n": 15,
+        "modulo": "Chapters",
+        "titulo": "jagged intelligence",
+        "dur": "02:04:53"
+      },
+      {
+        "n": 16,
+        "modulo": "Chapters",
+        "titulo": "supervised finetuning to reinforcement learning",
+        "dur": "02:07:28"
+      },
+      {
+        "n": 17,
+        "modulo": "Chapters",
+        "titulo": "reinforcement learning",
+        "dur": "02:14:42"
+      },
+      {
+        "n": 18,
+        "modulo": "Chapters",
+        "titulo": "DeepSeek-R1",
+        "dur": "02:27:47"
+      },
+      {
+        "n": 19,
+        "modulo": "Chapters",
+        "titulo": "AlphaGo",
+        "dur": "02:42:07"
+      },
+      {
+        "n": 20,
+        "modulo": "Chapters",
+        "titulo": "reinforcement learning from human feedback (RLHF)",
+        "dur": "02:48:26"
+      },
+      {
+        "n": 21,
+        "modulo": "Chapters",
+        "titulo": "preview of things to come",
+        "dur": "03:09:39"
+      },
+      {
+        "n": 22,
+        "modulo": "Chapters",
+        "titulo": "keeping track of LLMs",
+        "dur": "03:15:15"
+      },
+      {
+        "n": 23,
+        "modulo": "Chapters",
+        "titulo": "where to find LLMs",
+        "dur": "03:18:34"
+      },
+      {
+        "n": 24,
+        "modulo": "Chapters",
+        "titulo": "grand summary",
+        "dur": "03:21:46"
+      }
+    ],
+    "evidencia": "Chapters / 00:00:00 introduction / 00:01:00 pretraining data (internet) / 00:07:47 tokenization ... 03:21:46 grand summary",
+    "notas": "Verificacion doble: (1) oEmbed oficial de YouTube confirma title=\"Deep Dive into LLMs like ChatGPT\", author_name=\"Andrej Karpathy\"; (2) los 24 capitulos se extrajeron textualmente del campo shortDescription (descripcion real del video) dentro del HTML del watch page descargado con curl — seccion literal \"Chapters\" con timestamps. Los titulos se reportan verbatim en su idioma original (ingles, minusculas tal como las escribio Karpathy). No se incluyen URLs por leccion porque la descripcion no lista URLs con timestamp (solo los timestamps de texto); se pueden construir como https://www.youtube.com/watch?v=7xTGNNLPyMI&t=XXXs si se necesita. WebFetch directo del watch page no devolvia la descripcion (render truncado), por eso se uso curl sobre la misma URL publica.",
+    "verificado": true,
+    "problemas": []
+  },
+  {
+    "id": "karpathy-intro",
+    "nombre": "[1hr Talk] Intro to Large Language Models (Karpathy)",
+    "url": "https://www.youtube.com/watch?v=zjkBMFhNj_g",
+    "accesible": true,
+    "urlFinal": "https://www.youtube.com/watch?v=zjkBMFhNj_g",
+    "lecciones": [
+      {
+        "n": 1,
+        "modulo": "Part 1: LLMs",
+        "titulo": "Intro: Large Language Model (LLM) talk",
+        "dur": "00:00:00"
+      },
+      {
+        "n": 2,
+        "modulo": "Part 1: LLMs",
+        "titulo": "LLM Inference",
+        "dur": "00:00:20"
+      },
+      {
+        "n": 3,
+        "modulo": "Part 1: LLMs",
+        "titulo": "LLM Training",
+        "dur": "00:04:17"
+      },
+      {
+        "n": 4,
+        "modulo": "Part 1: LLMs",
+        "titulo": "LLM dreams",
+        "dur": "00:08:58"
+      },
+      {
+        "n": 5,
+        "modulo": "Part 1: LLMs",
+        "titulo": "How do they work?",
+        "dur": "00:11:22"
+      },
+      {
+        "n": 6,
+        "modulo": "Part 1: LLMs",
+        "titulo": "Finetuning into an Assistant",
+        "dur": "00:14:14"
+      },
+      {
+        "n": 7,
+        "modulo": "Part 1: LLMs",
+        "titulo": "Summary so far",
+        "dur": "00:17:52"
+      },
+      {
+        "n": 8,
+        "modulo": "Part 1: LLMs",
+        "titulo": "Appendix: Comparisons, Labeling docs, RLHF, Synthetic data, Leaderboard",
+        "dur": "00:21:05"
+      },
+      {
+        "n": 9,
+        "modulo": "Part 2: Future of LLMs",
+        "titulo": "LLM Scaling Laws",
+        "dur": "00:25:43"
+      },
+      {
+        "n": 10,
+        "modulo": "Part 2: Future of LLMs",
+        "titulo": "Tool Use (Browser, Calculator, Interpreter, DALL-E)",
+        "dur": "00:27:43"
+      },
+      {
+        "n": 11,
+        "modulo": "Part 2: Future of LLMs",
+        "titulo": "Multimodality (Vision, Audio)",
+        "dur": "00:33:32"
+      },
+      {
+        "n": 12,
+        "modulo": "Part 2: Future of LLMs",
+        "titulo": "Thinking, System 1/2",
+        "dur": "00:35:00"
+      },
+      {
+        "n": 13,
+        "modulo": "Part 2: Future of LLMs",
+        "titulo": "Self-improvement, LLM AlphaGo",
+        "dur": "00:38:02"
+      },
+      {
+        "n": 14,
+        "modulo": "Part 2: Future of LLMs",
+        "titulo": "LLM Customization, GPTs store",
+        "dur": "00:40:45"
+      },
+      {
+        "n": 15,
+        "modulo": "Part 2: Future of LLMs",
+        "titulo": "LLM OS",
+        "dur": "00:42:15"
+      },
+      {
+        "n": 16,
+        "modulo": "Part 3: LLM Security",
+        "titulo": "LLM Security Intro",
+        "dur": "00:45:43"
+      },
+      {
+        "n": 17,
+        "modulo": "Part 3: LLM Security",
+        "titulo": "Jailbreaks",
+        "dur": "00:46:14"
+      },
+      {
+        "n": 18,
+        "modulo": "Part 3: LLM Security",
+        "titulo": "Prompt Injection",
+        "dur": "00:51:30"
+      },
+      {
+        "n": 19,
+        "modulo": "Part 3: LLM Security",
+        "titulo": "Data poisoning",
+        "dur": "00:56:23"
+      },
+      {
+        "n": 20,
+        "modulo": "Part 3: LLM Security",
+        "titulo": "LLM Security conclusions",
+        "dur": "00:58:37"
+      },
+      {
+        "n": 21,
+        "modulo": "End",
+        "titulo": "Outro",
+        "dur": "00:59:23"
+      }
+    ],
+    "evidencia": "Chapters: Part 1: LLMs 00:00:00 Intro: Large Language Model (LLM) talk 00:00:20 LLM Inference 00:04:17 LLM Training",
+    "notas": "Verificacion doble: (1) oEmbed de YouTube confirma title=\"[1hr Talk] Intro to Large Language Models\" y author_name=\"Andrej Karpathy\"; (2) los 21 capitulos con timestamps provienen TEXTUALMENTE del campo shortDescription del HTML real de la pagina del video (descargado con curl), seccion \"Chapters:\". La descripcion tambien incluye slides oficiales: PDF https://drive.google.com/file/d/1pxx_ZI7O-Nwl7ZLNk5hI3WzAsTLwvNU7/view y Keynote https://drive.google.com/file/d/1FPUpFMiCkMRKPFjhi9MAhby68MHVqe8u/view. No se incluyen URLs por leccion porque la descripcion no contiene links directos por capitulo (solo timestamps en texto). Contenido fechado por el autor como \"As of November 2023\".",
+    "verificado": true,
+    "problemas": []
+  },
+  {
+    "id": "lex-452",
+    "nombre": "Lex Fridman #452 — Dario Amodei (outline con timestamps)",
+    "url": "https://lexfridman.com/dario-amodei",
+    "accesible": true,
+    "urlFinal": "https://lexfridman.com/dario-amodei",
+    "lecciones": [
+      {
+        "n": 1,
+        "modulo": "Dario Amodei",
+        "titulo": "Introduction",
+        "dur": "00:00"
+      },
+      {
+        "n": 2,
+        "modulo": "Dario Amodei",
+        "titulo": "Scaling laws",
+        "dur": "10:19"
+      },
+      {
+        "n": 3,
+        "modulo": "Dario Amodei",
+        "titulo": "Limits of LLM scaling",
+        "dur": "19:25"
+      },
+      {
+        "n": 4,
+        "modulo": "Dario Amodei",
+        "titulo": "Competition with OpenAI, Google, xAI, Meta",
+        "dur": "27:51"
+      },
+      {
+        "n": 5,
+        "modulo": "Dario Amodei",
+        "titulo": "Claude",
+        "dur": "33:14"
+      },
+      {
+        "n": 6,
+        "modulo": "Dario Amodei",
+        "titulo": "Opus 3.5",
+        "dur": "36:50"
+      },
+      {
+        "n": 7,
+        "modulo": "Dario Amodei",
+        "titulo": "Sonnet 3.5",
+        "dur": "41:36"
+      },
+      {
+        "n": 8,
+        "modulo": "Dario Amodei",
+        "titulo": "Claude 4.0",
+        "dur": "44:56"
+      },
+      {
+        "n": 9,
+        "modulo": "Dario Amodei",
+        "titulo": "Criticism of Claude",
+        "dur": "49:07"
+      },
+      {
+        "n": 10,
+        "modulo": "Dario Amodei",
+        "titulo": "AI Safety Levels",
+        "dur": "1:01:54"
+      },
+      {
+        "n": 11,
+        "modulo": "Dario Amodei",
+        "titulo": "ASL-3 and ASL-4",
+        "dur": "1:12:42"
+      },
+      {
+        "n": 12,
+        "modulo": "Dario Amodei",
+        "titulo": "Computer use",
+        "dur": "1:16:46"
+      },
+      {
+        "n": 13,
+        "modulo": "Dario Amodei",
+        "titulo": "Government regulation of AI",
+        "dur": "1:26:41"
+      },
+      {
+        "n": 14,
+        "modulo": "Dario Amodei",
+        "titulo": "Hiring a great team",
+        "dur": "1:45:30"
+      },
+      {
+        "n": 15,
+        "modulo": "Dario Amodei",
+        "titulo": "Post-training",
+        "dur": "1:54:19"
+      },
+      {
+        "n": 16,
+        "modulo": "Dario Amodei",
+        "titulo": "Constitutional AI",
+        "dur": "1:59:45"
+      },
+      {
+        "n": 17,
+        "modulo": "Dario Amodei",
+        "titulo": "Machines of Loving Grace",
+        "dur": "2:05:11"
+      },
+      {
+        "n": 18,
+        "modulo": "Dario Amodei",
+        "titulo": "AGI timeline",
+        "dur": "2:24:17"
+      },
+      {
+        "n": 19,
+        "modulo": "Dario Amodei",
+        "titulo": "Programming",
+        "dur": "2:36:52"
+      },
+      {
+        "n": 20,
+        "modulo": "Dario Amodei",
+        "titulo": "Meaning of life",
+        "dur": "2:43:52"
+      },
+      {
+        "n": 21,
+        "modulo": "Amanda Askell",
+        "titulo": "Amanda Askell – Philosophy",
+        "dur": "2:49:58"
+      },
+      {
+        "n": 22,
+        "modulo": "Amanda Askell",
+        "titulo": "Programming advice for non-technical people",
+        "dur": "2:52:26"
+      },
+      {
+        "n": 23,
+        "modulo": "Amanda Askell",
+        "titulo": "Talking to Claude",
+        "dur": "2:56:15"
+      },
+      {
+        "n": 24,
+        "modulo": "Amanda Askell",
+        "titulo": "Prompt engineering",
+        "dur": "3:12:47"
+      },
+      {
+        "n": 25,
+        "modulo": "Amanda Askell",
+        "titulo": "Post-training",
+        "dur": "3:21:21"
+      },
+      {
+        "n": 26,
+        "modulo": "Amanda Askell",
+        "titulo": "Constitutional AI",
+        "dur": "3:26:00"
+      },
+      {
+        "n": 27,
+        "modulo": "Amanda Askell",
+        "titulo": "System prompts",
+        "dur": "3:30:53"
+      },
+      {
+        "n": 28,
+        "modulo": "Amanda Askell",
+        "titulo": "Is Claude getting dumber?",
+        "dur": "3:37:00"
+      },
+      {
+        "n": 29,
+        "modulo": "Amanda Askell",
+        "titulo": "Character training",
+        "dur": "3:49:02"
+      },
+      {
+        "n": 30,
+        "modulo": "Amanda Askell",
+        "titulo": "Nature of truth",
+        "dur": "3:50:01"
+      },
+      {
+        "n": 31,
+        "modulo": "Amanda Askell",
+        "titulo": "Optimal rate of failure",
+        "dur": "3:54:38"
+      },
+      {
+        "n": 32,
+        "modulo": "Amanda Askell",
+        "titulo": "AI consciousness",
+        "dur": "4:01:49"
+      },
+      {
+        "n": 33,
+        "modulo": "Amanda Askell",
+        "titulo": "AGI",
+        "dur": "4:16:20"
+      },
+      {
+        "n": 34,
+        "modulo": "Chris Olah",
+        "titulo": "Chris Olah – Mechanistic Interpretability",
+        "dur": "4:24:58"
+      },
+      {
+        "n": 35,
+        "modulo": "Chris Olah",
+        "titulo": "Features, Circuits, Universality",
+        "dur": "4:29:49"
+      },
+      {
+        "n": 36,
+        "modulo": "Chris Olah",
+        "titulo": "Superposition",
+        "dur": "4:47:23"
+      },
+      {
+        "n": 37,
+        "modulo": "Chris Olah",
+        "titulo": "Monosemanticity",
+        "dur": "4:58:22"
+      },
+      {
+        "n": 38,
+        "modulo": "Chris Olah",
+        "titulo": "Scaling Monosemanticity",
+        "dur": "5:05:14"
+      },
+      {
+        "n": 39,
+        "modulo": "Chris Olah",
+        "titulo": "Macroscopic behavior of neural networks",
+        "dur": "5:14:02"
+      },
+      {
+        "n": 40,
+        "modulo": "Chris Olah",
+        "titulo": "Beauty of neural networks",
+        "dur": "5:18:56"
+      }
+    ],
+    "evidencia": "\"#452 – Dario Amodei: Anthropic CEO on Claude, AGI & the Future of AI & Humanity\" — OUTLINE: \"(00:00) – Introduction\", \"(5:18:56) – Beauty of neural networks\"",
+    "notas": "Outline extraído de la página oficial del episodio (lexfridman.com/dario-amodei) vía WebFetch y verificado con un segundo fetch (título, primeras 5, últimas 3 y entradas de Amanda Askell/Chris Olah coinciden verbatim). 40 entradas. Las entradas del outline son texto plano (sin hyperlinks con &t=), por eso no hay url por lección. El campo \"modulo\" agrupa por invitado según los propios marcadores del outline (Dario Amodei desde 00:00; \"Amanda Askell – Philosophy\" en 2:49:58; \"Chris Olah – Mechanistic Interpretability\" en 4:24:58). Duración total ~5h19m, apta para trocear en bloques de 10-15 min usando los timestamps.",
+    "verificado": true,
+    "problemas": []
+  },
+  {
+    "id": "anthropic-yt",
+    "nombre": "Vídeos clave del canal de Anthropic en YouTube",
+    "url": "https://www.youtube.com/@anthropic-ai",
+    "accesible": true,
+    "urlFinal": "https://www.youtube.com/@anthropic-ai",
+    "lecciones": [
+      {
+        "n": 1,
+        "modulo": "Canal Anthropic (YouTube)",
+        "titulo": "AI prompt engineering: A deep dive",
+        "url": "https://www.youtube.com/watch?v=T9aRN5JkmL8"
+      },
+      {
+        "n": 2,
+        "modulo": "Canal Anthropic (YouTube)",
+        "titulo": "Building Anthropic | A conversation with our co-founders",
+        "url": "https://www.youtube.com/watch?v=om2lIWXLLN4"
+      },
+      {
+        "n": 3,
+        "modulo": "Canal Anthropic (YouTube)",
+        "titulo": "Tips for building AI agents",
+        "url": "https://www.youtube.com/watch?v=LP5OCa20Zpg"
+      },
+      {
+        "n": 4,
+        "modulo": "Canal Anthropic (YouTube)",
+        "titulo": "How difficult is AI alignment? | Anthropic Research Salon",
+        "url": "https://www.youtube.com/watch?v=IPmt8b-qLgk"
+      },
+      {
+        "n": 5,
+        "modulo": "Canal Anthropic (YouTube)",
+        "titulo": "Interpretability: Understanding how AI models think",
+        "url": "https://www.youtube.com/watch?v=fGKNUvivvnc"
+      }
+    ],
+    "evidencia": "oEmbed: {\"title\": \"AI prompt engineering: A deep dive\", \"author_name\": \"Anthropic\", \"author_url\": \"https://www.youtube.com/@anthropic-ai\"}",
+    "notas": "Los 5 títulos y URLs verificados uno a uno vía oEmbed de YouTube (https://www.youtube.com/oembed): todos devuelven author_name=\"Anthropic\" y author_url=\"https://www.youtube.com/@anthropic-ai\". Los 2 vídeos requeridos por la tarea están incluidos (n=1 y n=2) más 3 adicionales del canal oficial. No se reportan duraciones porque el oEmbed no las expone y no aparecieron textualmente en ninguna página fetcheada. La página del canal en sí no se scrapeó (YouTube renderiza el listado vía JS); la verificación se hizo vídeo a vídeo por oEmbed, que es el método autorizado por la tarea.",
+    "verificado": true,
+    "problemas": []
+  }
+]

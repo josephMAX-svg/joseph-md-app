@@ -4,6 +4,9 @@ import { Colors, Spacing, FontSize, BorderRadius } from '../theme/tokens';
 import { desktopStyles, DesktopColors } from '../theme/desktopStyles';
 import { LIVIANO_PENDIENTES, PULSO_MATRIZ } from '../lib/empresaData';
 import { SYNAPSE_META, SYNAPSE_FASES, SYNAPSE_HORARIO, SYNAPSE_QUICKLINKS } from '../lib/synapseData';
+import { SYN_PLAN_META, SYN_DIAS, synDiaDe, SYN_FORMATO_ICON, SYN_TAG_LABEL } from '../lib/synapseDailyPlan';
+import { synTodayISO } from '../components/study/SynapseTodayPlan';
+import { planHoyD, loadDone } from '../lib/studyProgress';
 import { semaforoColor } from '../components/empresa/primitives';
 import { useSupabaseQuery } from '../hooks/useSupabaseQuery';
 import {
@@ -619,12 +622,42 @@ function ResearchRightPanel() {
 function SynapseRightPanel() {
   const INDIGO = SYNAPSE_META.accent;
   const faseActiva = SYNAPSE_FASES.find((f) => f.estado === 'activa');
+  const iso = synTodayISO();
+  const hoy = synDiaDe(iso) || SYN_DIAS.find((x) => x.d === planHoyD(SYN_DIAS, iso));
+  const hechas = loadDone('synapse').length;
   return (
     <View>
       <Text style={desktopStyles.rightPanelTitle}>SYNAPSE · AI TRACK</Text>
 
-      {/* Fase actual */}
+      {/* Misión de HOY (motor día-a-día) */}
       <View style={[desktopStyles.rightPanelCard, { borderLeftWidth: 2, borderLeftColor: INDIGO }]}>
+        <Text style={{ fontSize: 10, color: Colors.smallLabel, letterSpacing: 0.8, fontWeight: '600' }}>
+          ⚡ MISIÓN DE HOY · DÍA {hoy?.d ?? '—'}/{SYN_PLAN_META.totalDias} · SEM {hoy?.semana ?? '—'}/12
+        </Text>
+        {(hoy?.bloques ?? []).map((b, i) => (
+          <TouchableOpacity
+            key={i}
+            activeOpacity={0.8}
+            disabled={!b.url}
+            onPress={() => { try { require('react-native').Linking.openURL(b.url!); } catch {} }}
+            style={{ flexDirection: 'row', alignItems: 'flex-start', gap: 6, paddingVertical: 4 }}
+          >
+            <Text style={{ fontSize: 11, width: 16 }}>{SYN_FORMATO_ICON[b.formato]}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={{ fontSize: 10, fontWeight: '800', color: INDIGO }}>{SYN_TAG_LABEL[b.tag]}</Text>
+              <Text style={{ fontSize: 11, color: Colors.onSurfaceVariant }} numberOfLines={2}>
+                {b.material}{b.url ? ' ↗' : ''}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+        <Text style={{ fontSize: 10, color: Colors.smallLabel, marginTop: 4 }}>
+          {hechas}/{SYN_PLAN_META.totalDias} misiones ✓ · marca el día en la pestaña ⚡ Hoy
+        </Text>
+      </View>
+
+      {/* Fase actual */}
+      <View style={desktopStyles.rightPanelCard}>
         <Text style={{ fontSize: 10, color: Colors.smallLabel, letterSpacing: 0.8, fontWeight: '600' }}>
           FASE ACTUAL
         </Text>

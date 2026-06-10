@@ -8,17 +8,20 @@ import {
   SYNAPSE_META, SYNAPSE_KPIS, SYNAPSE_FASES, SYNAPSE_BIBLIOTECA, SYNAPSE_HORARIO,
   SYNAPSE_NIVEL_META, SYNAPSE_ADVERTENCIAS, SynapseMaterial, SynapseNivel,
 } from '../../lib/synapseData';
+import { SYN_PLAN_META } from '../../lib/synapseDailyPlan';
+import { loadDone, saveDone } from '../../lib/studyProgress';
+import SynapseTodayPlan from './SynapseTodayPlan';
 
 /**
  * SynapseHub — formación élite en IA (Mind · AI-engineered). MISMO molde que
- * Research/USMLE/MIR: HERO + sub-nav (Ruta/Biblioteca/Protocolo). Materiales SOLO
- * de referentes verificados (URLs comprobadas). El motor día-a-día con misiones
- * lo construye el chat SYNAPSE (DATA/SYNAPSE/PROMPT_CHAT_SYNAPSE.md).
+ * Research/USMLE/MIR: HERO + sub-nav (Hoy/Ruta/Biblioteca/Protocolo). Materiales SOLO
+ * de referentes verificados (URLs comprobadas). El motor día-a-día (pestaña ⚡ Hoy)
+ * son misiones generadas desde temarios reales: src/lib/synapseDailyPlan.ts.
  */
 const INDIGO = SYNAPSE_META.accent;
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
 
-type Sub = 'ruta' | 'biblioteca' | 'protocolo';
+type Sub = 'hoy' | 'ruta' | 'biblioteca' | 'protocolo';
 
 const NIVEL_COLOR: Record<SynapseNivel, string> = {
   base: Colors.green,
@@ -147,7 +150,14 @@ function ProtocoloView() {
 
 export default function SynapseHub({ variant = 'mobile' }: { variant?: 'mobile' | 'desktop' }) {
   const isDesktop = variant === 'desktop';
-  const [sub, setSub] = useState<Sub>('ruta');
+  const [sub, setSub] = useState<Sub>('hoy');
+  const [done, setDone] = useState<Set<number>>(() => new Set(loadDone('synapse')));
+  const toggleDone = (d: number) => setDone((prev) => {
+    const n = new Set(prev);
+    if (n.has(d)) n.delete(d); else n.add(d);
+    saveDone('synapse', Array.from(n));
+    return n;
+  });
   const contentStyle = isDesktop
     ? desktopStyles.centerScrollContent
     : { paddingHorizontal: Spacing.lg, paddingTop: 56, paddingBottom: 110 };
@@ -178,7 +188,7 @@ export default function SynapseHub({ variant = 'mobile' }: { variant?: 'mobile' 
           <View style={st.ringCard}><RingStat value={SYNAPSE_KPIS.fases} max={SYNAPSE_KPIS.fases} label="Fases" sub="ruta completa" accent={INDIGO} /></View>
           <View style={st.ringCard}><RingStat value={SYNAPSE_KPIS.materialesVerificados} max={SYNAPSE_KPIS.materialesVerificados} label="Materiales" sub="URLs verificadas" accent={Colors.green} /></View>
           <View style={st.ringCard}><RingStat value={30} max={30} label="Min/día" sub="espacios muertos" accent={Colors.amber} /></View>
-          <View style={st.ringCard}><RingStat value={SYNAPSE_KPIS.fasesCompletadas} max={SYNAPSE_KPIS.fases} label="Completadas" sub="progreso real · 0%" accent={Colors.blue} /></View>
+          <View style={st.ringCard}><RingStat value={done.size} max={SYN_PLAN_META.totalDias} label="Completadas" sub={`misiones reales · ${Math.round((done.size / SYN_PLAN_META.totalDias) * 100)}%`} accent={Colors.blue} /></View>
         </View>
 
         {/* Motor día-a-día → chat SYNAPSE */}
@@ -189,11 +199,13 @@ export default function SynapseHub({ variant = 'mobile' }: { variant?: 'mobile' 
 
         {/* SUB-NAV */}
         <View style={{ flexDirection: 'row', gap: Spacing.sm, marginBottom: Spacing.xl, flexWrap: 'wrap' }}>
+          <PillTab label="⚡ Hoy" active={sub === 'hoy'} onPress={() => setSub('hoy')} accent={INDIGO} />
           <PillTab label="◈ Ruta" active={sub === 'ruta'} onPress={() => setSub('ruta')} accent={INDIGO} />
           <PillTab label="⌘ Biblioteca" active={sub === 'biblioteca'} onPress={() => setSub('biblioteca')} accent={INDIGO} />
           <PillTab label="⏱ Protocolo" active={sub === 'protocolo'} onPress={() => setSub('protocolo')} accent={INDIGO} />
         </View>
 
+        {sub === 'hoy' && <SynapseTodayPlan done={done} onToggle={toggleDone} />}
         {sub === 'ruta' && <RutaView />}
         {sub === 'biblioteca' && <BibliotecaView />}
         {sub === 'protocolo' && <ProtocoloView />}

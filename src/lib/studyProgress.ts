@@ -66,7 +66,7 @@ export function progresoGlobal(dias: DiaBase[], done: Set<number>) {
  * Persistencia del progreso real (localStorage en web; no-op seguro si no hay).
  * Estructura: { usmle: number[], mir: number[] } = días marcados como hechos.
  * -------------------------------------------------------------------------- */
-export type PlanKey = 'usmle' | 'mir' | 'research' | 'derma' | 'business';
+export type PlanKey = 'usmle' | 'mir' | 'research' | 'derma' | 'business' | 'synapse';
 const STORE_KEY = 'jmd-study-progress-v1';
 
 function leerStore(): Record<string, number[]> {
