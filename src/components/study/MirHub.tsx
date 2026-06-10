@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Linking } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
-import { SectionLabel, Chip, GlassPanel, gridStyle, gridItemStyle } from '../empresa/primitives';
+import { SectionLabel, Chip, GlassPanel, gridStyle, gridItemStyle, PillTab } from '../empresa/primitives';
+import MirTodayPlan from './MirTodayPlan';
 import { GradientHero, MegaStat, RingStat, FadeUp } from '../empresa/visuals';
 import {
   MIR_META, MIR_KPIS, PROMIR_FASES, MIR_HORA, MIR_CALENDARIO,
@@ -20,6 +21,7 @@ const AMBER = MIR_META.accent;
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
 
 export default function MirHub() {
+  const [sub, setSub] = useState<'hoy' | 'temario'>('hoy');
   return (
     <View>
       <GradientHero from="#2E2410" to="#0A1424" style={{ marginBottom: Spacing.lg, borderColor: AMBER + '33' }}>
@@ -28,6 +30,13 @@ export default function MirHub() {
         <Text style={st.heroTesis}>{MIR_META.tesis}</Text>
       </GradientHero>
 
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm, marginBottom: Spacing.lg }}>
+        <PillTab label="Hoy" icon="🗓️" active={sub === 'hoy'} accent={AMBER} onPress={() => setSub('hoy')} />
+        <PillTab label="Temario · High Yield" icon="📚" active={sub === 'temario'} accent={AMBER} onPress={() => setSub('temario')} />
+      </View>
+
+      {sub === 'hoy' && <MirTodayPlan />}
+      {sub === 'temario' && (<>
       <MegaStat value={MIR_KPIS.asignaturasTierS} label="Asignaturas Tier S · ROI máximo · empieza aquí" accent={AMBER}
         footnote="Estadística + Bioética + Cardiología · casi regalo de puntos + momentum" />
 
@@ -179,6 +188,7 @@ export default function MirHub() {
       <GlassPanel accent={AMBER} style={{ marginBottom: Spacing.xl, padding: Spacing.lg }}>
         <Text style={st.smallNote}>{MIR_NOTA}</Text>
       </GlassPanel>
+      </>)}
     </View>
   );
 }
