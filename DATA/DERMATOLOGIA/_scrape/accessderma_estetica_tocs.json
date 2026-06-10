@@ -1,0 +1,3354 @@
+{
+ "fuente": "AccessDermatologyDxRx · TOCs completos de los libros estéticos/quirúrgicos · 10-jun-2026 · Chrome CDP sesión UF",
+ "deepLink": "https://dermatology.mhmedical.com/content.aspx?bookid=<bookid>&sectionid=<sid>",
+ "libros": {
+  "2811": {
+   "bookid": 2811,
+   "bookTitle": "Dermatologic Surgery",
+   "nParts": 6,
+   "total": 81,
+   "parts": [
+    {
+     "part": "I: FUNDAMENTALS",
+     "chapters": [
+      {
+       "sid": "245216992",
+       "t": "Chapter 1: Surgical Anatomy, Surface Anatomy, and Cosmetic Subunits"
+      },
+      {
+       "sid": "245217147",
+       "t": "Chapter 2: Wound Healing and Surgical Wound Dressings"
+      },
+      {
+       "sid": "245217235",
+       "t": "Chapter 3: Preoperative Evaluation, Patient Preparation, and Informed Consent"
+      },
+      {
+       "sid": "245217290",
+       "t": "Chapter 4: The Surgical Suite"
+      },
+      {
+       "sid": "245217358",
+       "t": "Chapter 5: Surgical Instrument Selection"
+      },
+      {
+       "sid": "245217460",
+       "t": "Chapter 6: Suture Materials and Needles"
+      },
+      {
+       "sid": "245217551",
+       "t": "Chapter 7: Antibiotics: Preoperative and Postoperative Considerations"
+      },
+      {
+       "sid": "245217624",
+       "t": "Chapter 8: Photography and Digital Technology in Dermatologic Surgery"
+      },
+      {
+       "sid": "245217711",
+       "t": "Chapter 9: Ethics in Dermatologic Surgery"
+      },
+      {
+       "sid": "245217784",
+       "t": "Chapter 10: Billing and Financial Considerations in Dermatologic Surgery"
+      },
+      {
+       "sid": "245217906",
+       "t": "Chapter 11: Clinical Research in Dermatologic Surgery"
+      }
+     ]
+    },
+    {
+     "part": "II: SURGICAL PROCEDURES FOR DIAGNOSIS, THERAPY, AND RECONSTRUCTION",
+     "chapters": [
+      {
+       "sid": "245217992",
+       "t": "Chapter 12: Local Anesthesia, Regional Nerve Blocks, and Postoperative Pain Management"
+      },
+      {
+       "sid": "245218227",
+       "t": "Chapter 13: Suturing Techniques"
+      },
+      {
+       "sid": "245218380",
+       "t": "Chapter 14: Superficial Biopsy Techniques"
+      },
+      {
+       "sid": "245218460",
+       "t": "Chapter 15: Cryosurgery"
+      },
+      {
+       "sid": "245218528",
+       "t": "Chapter 16: Electrosurgery and Hemostasis"
+      },
+      {
+       "sid": "245218619",
+       "t": "Chapter 17: Incision and Drainage"
+      },
+      {
+       "sid": "245218700",
+       "t": "Chapter 18: Layered Excisions and Surgical Repairs"
+      },
+      {
+       "sid": "245218914",
+       "t": "Chapter 19: Dog-Ear Correction"
+      },
+      {
+       "sid": "245218978",
+       "t": "Chapter 20: Principles of Flap Dynamics"
+      },
+      {
+       "sid": "245220898",
+       "t": "Chapter 21: Advancement Flaps"
+      },
+      {
+       "sid": "245221003",
+       "t": "Chapter 22: Rotation Flaps"
+      },
+      {
+       "sid": "245221088",
+       "t": "Chapter 23: Transposition Flaps"
+      },
+      {
+       "sid": "245221192",
+       "t": "Chapter 24: Bilobed Flaps"
+      },
+      {
+       "sid": "245221293",
+       "t": "Chapter 25: Island Pedicle Flaps"
+      },
+      {
+       "sid": "245221370",
+       "t": "Chapter 26: Interpolation Flaps"
+      },
+      {
+       "sid": "245221510",
+       "t": "Chapter 27: Z-Plasty"
+      },
+      {
+       "sid": "245221567",
+       "t": "Chapter 28: Skin, Cartilage, and Composite Grafts"
+      },
+      {
+       "sid": "245221672",
+       "t": "Chapter 29: Mohs Micrographic Surgery"
+      },
+      {
+       "sid": "245221823",
+       "t": "Chapter 30: Advanced Techniques and Special Stains in Mohs Micrographic Surgery"
+      },
+      {
+       "sid": "245221927",
+       "t": "Chapter 31: Mohs and Staged Geometric Excision for Lentigo Maligna"
+      },
+      {
+       "sid": "245222085",
+       "t": "Chapter 32: Histopathology for Mohs Micrographic Surgery"
+      },
+      {
+       "sid": "245222192",
+       "t": "Chapter 33: Laboratory Techniques for Mohs Micrographic Surgery"
+      },
+      {
+       "sid": "245222282",
+       "t": "Chapter 34: Nail Surgery"
+      },
+      {
+       "sid": "245222406",
+       "t": "Chapter 35: Surgical Scar Revision"
+      },
+      {
+       "sid": "245222451",
+       "t": "Chapter 36: Managing Surgical Complications"
+      },
+      {
+       "sid": "245222628",
+       "t": "Chapter 37: Superficial Radiation Therapy and Electronic Brachytherapy"
+      }
+     ]
+    },
+    {
+     "part": "III: REGIONAL APPROACHES TO RECONSTRUCTION",
+     "chapters": [
+      {
+       "sid": "245222720",
+       "t": "Chapter 38: Reconstruction of the Eyelids"
+      },
+      {
+       "sid": "245222840",
+       "t": "Chapter 39: Reconstruction of the Nose"
+      },
+      {
+       "sid": "245222982",
+       "t": "Chapter 40: Reconstruction of the Lips"
+      },
+      {
+       "sid": "245225602",
+       "t": "Chapter 41: Reconstruction of the Ears"
+      },
+      {
+       "sid": "245225704",
+       "t": "Chapter 42: Reconstruction of the Cheeks"
+      },
+      {
+       "sid": "245225818",
+       "t": "Chapter 43: Reconstruction of the Forehead"
+      },
+      {
+       "sid": "245225921",
+       "t": "Chapter 44: Reconstruction of the Scalp"
+      },
+      {
+       "sid": "245226054",
+       "t": "Chapter 45: Reconstruction of the Hands and Feet"
+      }
+     ]
+    },
+    {
+     "part": "IV: SURGICAL APPROACHES BY DISEASE STATE",
+     "chapters": [
+      {
+       "sid": "245226237",
+       "t": "Chapter 46: Melanoma"
+      },
+      {
+       "sid": "245226359",
+       "t": "Chapter 47: Dysplastic Nevi"
+      },
+      {
+       "sid": "245226428",
+       "t": "Chapter 48: Nonmelanoma Skin Cancer"
+      },
+      {
+       "sid": "245226503",
+       "t": "Chapter 49: Keloids"
+      },
+      {
+       "sid": "245226591",
+       "t": "Chapter 50: Cysts"
+      },
+      {
+       "sid": "245226687",
+       "t": "Chapter 51: Acne"
+      },
+      {
+       "sid": "245226793",
+       "t": "Chapter 52: Vitiligo"
+      },
+      {
+       "sid": "245226944",
+       "t": "Chapter 53: Chronic Wounds"
+      },
+      {
+       "sid": "245227104",
+       "t": "Chapter 54: Hidradenitis Suppurativa"
+      }
+     ]
+    },
+    {
+     "part": "V: COSMETIC DERMATOLOGIC SURGERY",
+     "chapters": [
+      {
+       "sid": "245227218",
+       "t": "Chapter 55: The Cosmetic Consultation"
+      },
+      {
+       "sid": "245227276",
+       "t": "Chapter 56: Dermabrasion"
+      },
+      {
+       "sid": "245227386",
+       "t": "Chapter 57: Neuromodulators"
+      },
+      {
+       "sid": "245227491",
+       "t": "Chapter 58: Fillers and Injectable Implants"
+      },
+      {
+       "sid": "245227608",
+       "t": "Chapter 59: Ethnic and Gender Considerations in the Use of Facial Fillers"
+      },
+      {
+       "sid": "245227716",
+       "t": "Chapter 60: Liposuction"
+      },
+      {
+       "sid": "245227840",
+       "t": "Chapter 61: Fat Transfer"
+      },
+      {
+       "sid": "245228040",
+       "t": "Chapter 62: Hair Transplantation"
+      },
+      {
+       "sid": "245228167",
+       "t": "Chapter 63: Lasers for Burns and Trauma"
+      },
+      {
+       "sid": "245228360",
+       "t": "Chapter 64: Lasers for Vascular Lesions"
+      },
+      {
+       "sid": "245228414",
+       "t": "Chapter 65: Lasers for Pigmented Lesions and Tattoos"
+      },
+      {
+       "sid": "245228507",
+       "t": "Chapter 66: Laser- and Light-Based Approaches to Hair Removal"
+      },
+      {
+       "sid": "245228601",
+       "t": "Chapter 67: Laser Resurfacing"
+      },
+      {
+       "sid": "245228664",
+       "t": "Chapter 68: Body-Contouring Devices and Noninvasive Fat Removal"
+      },
+      {
+       "sid": "245228706",
+       "t": "Chapter 69: Laser- and Light-Based Approaches to Hair Loss"
+      },
+      {
+       "sid": "245228751",
+       "t": "Chapter 70: Photodynamic Therapy for Acne, Actinic Keratoses, and Nonmelanoma Skin Cancer"
+      },
+      {
+       "sid": "245228834",
+       "t": "Chapter 71: Laser- and Light-Based Treatments in Skin of Color"
+      },
+      {
+       "sid": "245228941",
+       "t": "Chapter 72: Sclerotherapy and Management of Varicose Veins"
+      },
+      {
+       "sid": "245229025",
+       "t": "Chapter 73: Blepharoplasty"
+      },
+      {
+       "sid": "245229240",
+       "t": "Chapter 74: Facelift"
+      }
+     ]
+    },
+    {
+     "part": "VI: MANAGEMENT OF COSMETIC CONDITIONS",
+     "chapters": [
+      {
+       "sid": "245229346",
+       "t": "Chapter 75: Approaches to Facial Wrinkles and Contouring"
+      },
+      {
+       "sid": "245229605",
+       "t": "Chapter 76: Approaches to Dyspigmentation"
+      },
+      {
+       "sid": "245229713",
+       "t": "Chapter 77: Approaches to Erythema and Telangiectasias"
+      },
+      {
+       "sid": "245229796",
+       "t": "Chapter 78: Approaches to Facial Rejuvenation"
+      },
+      {
+       "sid": "245229922",
+       "t": "Chapter 79: Approaches to Neck Rejuvenation"
+      },
+      {
+       "sid": "245229990",
+       "t": "Chapter 80: Approaches to Hand Rejuvenation"
+      },
+      {
+       "sid": "245230129",
+       "t": "Chapter 81: Approaches to Female Genital Rejuvenation"
+      }
+     ]
+    }
+   ]
+  },
+  "2812": {
+   "bookid": 2812,
+   "bookTitle": "Cosmeceuticals and Cosmetic Ingredients",
+   "nParts": 2,
+   "total": 83,
+   "parts": [
+    {
+     "part": "PART I: Principles of Skin Care",
+     "chapters": [
+      {
+       "sid": "244977744",
+       "t": "Chapter 1: The Importance of Skin Type: The Baumann Skin Type System"
+      },
+      {
+       "sid": "244977810",
+       "t": "Chapter 2: Basic Cosmetic Chemistry"
+      },
+      {
+       "sid": "244977859",
+       "t": "Chapter 3: Organic Ingredient Labeling"
+      },
+      {
+       "sid": "244977889",
+       "t": "Chapter 4: Cosmeceutical Marketing Claims"
+      },
+      {
+       "sid": "244977964",
+       "t": "Chapter 5: Epidermis and Dermis"
+      }
+     ]
+    },
+    {
+     "part": "PART II: The Ingredients",
+     "chapters": [
+      {
+       "sid": "244977990",
+       "t": "Chapter 6: Overview of Cleansing Agents"
+      },
+      {
+       "sid": "244978012",
+       "t": "Chapter 7: Moisturizing Agents"
+      },
+      {
+       "sid": "244978020",
+       "t": "Chapter 8: Occlusives"
+      },
+      {
+       "sid": "244978030",
+       "t": "Chapter 9: Oils"
+      },
+      {
+       "sid": "244978054",
+       "t": "Chapter 10: Argan Oil"
+      },
+      {
+       "sid": "244978088",
+       "t": "Chapter 11: Borage Seed Oil"
+      },
+      {
+       "sid": "244978125",
+       "t": "Chapter 12: Jojoba Oil"
+      },
+      {
+       "sid": "244978161",
+       "t": "Chapter 13: Mineral Oil"
+      },
+      {
+       "sid": "244978194",
+       "t": "Chapter 14: Olive Oil"
+      },
+      {
+       "sid": "244978239",
+       "t": "Chapter 15: Safflower Oil"
+      },
+      {
+       "sid": "244978276",
+       "t": "Chapter 16: Tamanu Oil"
+      },
+      {
+       "sid": "244978325",
+       "t": "Chapter 17: Petrolatum"
+      },
+      {
+       "sid": "244978358",
+       "t": "Chapter 18: Dimethicone and Silicones"
+      },
+      {
+       "sid": "244978394",
+       "t": "Chapter 19: Barrier Repair Ingredients"
+      },
+      {
+       "sid": "244978419",
+       "t": "Chapter 20: Ceramides"
+      },
+      {
+       "sid": "244978484",
+       "t": "Chapter 21: Cholesterol"
+      },
+      {
+       "sid": "244978529",
+       "t": "Chapter 22: Lanolin"
+      },
+      {
+       "sid": "244978561",
+       "t": "Chapter 23: Stearic Acid"
+      },
+      {
+       "sid": "244978596",
+       "t": "Chapter 24: Humectants"
+      },
+      {
+       "sid": "244978601",
+       "t": "Chapter 25: Glycerin"
+      },
+      {
+       "sid": "244978644",
+       "t": "Chapter 26: Hyaluronic Acid"
+      },
+      {
+       "sid": "244978690",
+       "t": "Chapter 27: Vitamin B5 (Pantothenic Acid/Dexpanthenol)"
+      },
+      {
+       "sid": "244978733",
+       "t": "Chapter 28: Urea"
+      },
+      {
+       "sid": "244978772",
+       "t": "Chapter 29: Aquaporin"
+      },
+      {
+       "sid": "244978778",
+       "t": "Chapter 30: Ajuga Turkestanica"
+      },
+      {
+       "sid": "244978813",
+       "t": "Chapter 31: Natural Moisturizing Factor"
+      },
+      {
+       "sid": "244978820",
+       "t": "Chapter 32: Overview of the Pigmentation Process"
+      },
+      {
+       "sid": "244978831",
+       "t": "Chapter 33: Overview of Melanin Production"
+      },
+      {
+       "sid": "244978839",
+       "t": "Chapter 34: Aloesin"
+      },
+      {
+       "sid": "244978872",
+       "t": "Chapter 35: Arbutin"
+      },
+      {
+       "sid": "244978914",
+       "t": "Chapter 36: Hydroquinone"
+      },
+      {
+       "sid": "244978961",
+       "t": "Chapter 37: Kojic Acid"
+      },
+      {
+       "sid": "244978999",
+       "t": "Chapter 38: Emblica Extract"
+      },
+      {
+       "sid": "244979058",
+       "t": "Chapter 39: Mulberry Extract"
+      },
+      {
+       "sid": "244979114",
+       "t": "Chapter 40: Vitamin C (Ascorbic Acid)"
+      },
+      {
+       "sid": "244979154",
+       "t": "Chapter 41: Cucumber"
+      },
+      {
+       "sid": "244979189",
+       "t": "Chapter 42: Lignin Peroxidase"
+      },
+      {
+       "sid": "244979219",
+       "t": "Chapter 43: Overview of the PAR-2 Receptor"
+      },
+      {
+       "sid": "244979226",
+       "t": "Chapter 44: Niacinamide"
+      },
+      {
+       "sid": "244979266",
+       "t": "Chapter 45: Soy"
+      },
+      {
+       "sid": "244979320",
+       "t": "Chapter 46: Antioxidants"
+      },
+      {
+       "sid": "244979331",
+       "t": "Chapter 47: Green Tea"
+      },
+      {
+       "sid": "244979424",
+       "t": "Chapter 48: Rosa Damascena"
+      },
+      {
+       "sid": "244979468",
+       "t": "Chapter 49: Pycnogenol"
+      },
+      {
+       "sid": "244979514",
+       "t": "Chapter 50: Resveratrol"
+      },
+      {
+       "sid": "244979591",
+       "t": "Chapter 51: Flaxseed Oil"
+      },
+      {
+       "sid": "244979626",
+       "t": "Chapter 52: Phloretin"
+      },
+      {
+       "sid": "244979666",
+       "t": "Chapter 53: Caffeic Acid"
+      },
+      {
+       "sid": "244979723",
+       "t": "Chapter 54: Ferulic Acid"
+      },
+      {
+       "sid": "244979775",
+       "t": "Chapter 55: Ascorbic Acid (Vitamin C)"
+      },
+      {
+       "sid": "244979824",
+       "t": "Chapter 56: Tocopherol (Vitamin E)"
+      },
+      {
+       "sid": "244979883",
+       "t": "Chapter 57: Coenzyme Q10"
+      },
+      {
+       "sid": "244979942",
+       "t": "Chapter 58: Coffeeberry"
+      },
+      {
+       "sid": "244979985",
+       "t": "Chapter 59: Ginger"
+      },
+      {
+       "sid": "244980047",
+       "t": "Chapter 60: Honey/Propolis/Royal Jelly"
+      },
+      {
+       "sid": "244980143",
+       "t": "Chapter 61: Idebenone"
+      },
+      {
+       "sid": "244980184",
+       "t": "Chapter 62: Melatonin"
+      },
+      {
+       "sid": "244980249",
+       "t": "Chapter 63: Peppermint"
+      },
+      {
+       "sid": "244980295",
+       "t": "Chapter 64: Anti-Inflammatory Agents"
+      },
+      {
+       "sid": "244980310",
+       "t": "Chapter 65: Aloe Vera"
+      },
+      {
+       "sid": "244980407",
+       "t": "Chapter 66: Feverfew"
+      },
+      {
+       "sid": "244980467",
+       "t": "Chapter 67: Licorice Extract"
+      },
+      {
+       "sid": "244980571",
+       "t": "Chapter 68: Colloidal Oatmeal"
+      },
+      {
+       "sid": "244980623",
+       "t": "Chapter 69: Turmeric"
+      },
+      {
+       "sid": "244980699",
+       "t": "Chapter 70: Chamomile"
+      },
+      {
+       "sid": "244980770",
+       "t": "Chapter 71: Calendula"
+      },
+      {
+       "sid": "244980831",
+       "t": "Chapter 72: Edelweiss"
+      },
+      {
+       "sid": "244980867",
+       "t": "Chapter 73: Lavandula"
+      },
+      {
+       "sid": "244980928",
+       "t": "Chapter 74: Horse Chestnut"
+      },
+      {
+       "sid": "244980977",
+       "t": "Chapter 75: Overview of Acne"
+      },
+      {
+       "sid": "244980995",
+       "t": "Chapter 76: Benzoyl Peroxide"
+      },
+      {
+       "sid": "244981053",
+       "t": "Chapter 77: Tea Tree Oil"
+      },
+      {
+       "sid": "244981105",
+       "t": "Chapter 78: Salicylic Acid"
+      },
+      {
+       "sid": "244981174",
+       "t": "Chapter 79: Retinol, Retinyl Esters, and Retinoic Acid"
+      },
+      {
+       "sid": "244981229",
+       "t": "Chapter 80: Silver"
+      },
+      {
+       "sid": "244981294",
+       "t": "Chapter 81: Overview of Aging"
+      },
+      {
+       "sid": "244981344",
+       "t": "Chapter 82: Hydroxy Acids"
+      },
+      {
+       "sid": "244981418",
+       "t": "Chapter 83: Retinoids (Retinol)"
+      }
+     ]
+    }
+   ]
+  },
+  "2813": {
+   "bookid": 2813,
+   "bookTitle": "Color Atlas of Cosmetic Dermatology, 2e",
+   "nParts": 12,
+   "total": 64,
+   "parts": [
+    {
+     "part": "SECTION ONE: PHOTOAGING",
+     "chapters": [
+      {
+       "sid": "242379752",
+       "t": "Chapter 1: Analysis of the Aging Face and Non-Facial Regions"
+      },
+      {
+       "sid": "242379796",
+       "t": "Chapter 2: Topical Treatment Options"
+      },
+      {
+       "sid": "242379836",
+       "t": "Chapter 3: Soft Tissue Augmentation"
+      },
+      {
+       "sid": "242379889",
+       "t": "Chapter 4: Botulinum Toxin"
+      },
+      {
+       "sid": "242379991",
+       "t": "Chapter 5: Chemical Peels"
+      },
+      {
+       "sid": "242380044",
+       "t": "Chapter 6: Nonablative Laser Resurfacing"
+      },
+      {
+       "sid": "242380081",
+       "t": "Chapter 7: Ablative Laser Resurfacing"
+      },
+      {
+       "sid": "242380128",
+       "t": "Chapter 8: Nonablative Fractional Laser Resurfacing"
+      },
+      {
+       "sid": "242380165",
+       "t": "Chapter 9: Ablative Fractional Laser Resurfacing"
+      },
+      {
+       "sid": "242380209",
+       "t": "Chapter 10: Tissue Tightening"
+      },
+      {
+       "sid": "242380228",
+       "t": "Chapter 11: Dermatochalasis"
+      },
+      {
+       "sid": "242380262",
+       "t": "Chapter 12: Poikiloderma of Civatte"
+      }
+     ]
+    },
+    {
+     "part": "SECTION TWO: DISORDERS OF SEBACEOUS GLANDS",
+     "chapters": [
+      {
+       "sid": "242380297",
+       "t": "Chapter 13: Acne Vulgaris"
+      },
+      {
+       "sid": "242380338",
+       "t": "Chapter 14: Rosacea"
+      },
+      {
+       "sid": "242380378",
+       "t": "Chapter 15: Sebaceous Hyperplasia"
+      }
+     ]
+    },
+    {
+     "part": "SECTION THREE: DISORDERS OF ECCRINE GLANDS",
+     "chapters": [
+      {
+       "sid": "242380418",
+       "t": "Chapter 16: Hyperhidrosis"
+      }
+     ]
+    },
+    {
+     "part": "SECTION FOUR: DISORDERS OF HAIR FOLLICLES",
+     "chapters": [
+      {
+       "sid": "242380470",
+       "t": "Chapter 17: Hirsutism"
+      },
+      {
+       "sid": "242380536",
+       "t": "Chapter 18: Pseudofolliculitis"
+      },
+      {
+       "sid": "242380576",
+       "t": "Chapter 19: Male Pattern Hair Loss"
+      },
+      {
+       "sid": "242380712",
+       "t": "Chapter 20: Female Pattern Hair Loss"
+      },
+      {
+       "sid": "242380788",
+       "t": "Chapter 21: Low Level Light Therapy (LLLT) and Hair Loss"
+      }
+     ]
+    },
+    {
+     "part": "SECTION FIVE: DISORDERS OF PIGMENTATION",
+     "chapters": [
+      {
+       "sid": "242380804",
+       "t": "Chapter 22: Café Au Lait Macule"
+      },
+      {
+       "sid": "242380844",
+       "t": "Chapter 23: Ephelides"
+      },
+      {
+       "sid": "242380891",
+       "t": "Chapter 24: Lentigines"
+      },
+      {
+       "sid": "242380932",
+       "t": "Chapter 25: Melasma"
+      },
+      {
+       "sid": "242380987",
+       "t": "Chapter 26: Nevus of Ota"
+      },
+      {
+       "sid": "242381030",
+       "t": "Chapter 27: Postinflammatory hyperpigmentation"
+      },
+      {
+       "sid": "242381080",
+       "t": "Chapter 28: Vitiligo"
+      }
+     ]
+    },
+    {
+     "part": "SECTION SIX: VASCULAR ALTERATIONS",
+     "chapters": [
+      {
+       "sid": "242381130",
+       "t": "Chapter 29: Angiokeratoma"
+      },
+      {
+       "sid": "242381155",
+       "t": "Chapter 30: Cherry and Spider Angiomas"
+      },
+      {
+       "sid": "242381186",
+       "t": "Chapter 31: Granuloma Faciale"
+      },
+      {
+       "sid": "242381222",
+       "t": "Chapter 32: Infantile Hemangioma"
+      },
+      {
+       "sid": "242381259",
+       "t": "Chapter 33: Keratosis Pilaris Atrophicans"
+      },
+      {
+       "sid": "242381286",
+       "t": "Chapter 34: Port-wine Stains"
+      },
+      {
+       "sid": "242381323",
+       "t": "Chapter 35: Pyogenic Granuloma"
+      },
+      {
+       "sid": "242381354",
+       "t": "Chapter 36: Facial Telangiectasias"
+      },
+      {
+       "sid": "242381385",
+       "t": "Chapter 37: Lower Extremity Telangiectasias, Reticular and Varicose Veins"
+      },
+      {
+       "sid": "242381433",
+       "t": "Chapter 38: Venous Lakes"
+      },
+      {
+       "sid": "242381463",
+       "t": "Chapter 39: Warts"
+      }
+     ]
+    },
+    {
+     "part": "SECTION SEVEN: BENIGN GROWTHS",
+     "chapters": [
+      {
+       "sid": "242381502",
+       "t": "Chapter 40: Angiofibroma"
+      },
+      {
+       "sid": "242381540",
+       "t": "Chapter 41: Becker’s Nevus"
+      },
+      {
+       "sid": "242381577",
+       "t": "Chapter 42: Epidermal Inclusion Cyst"
+      },
+      {
+       "sid": "242381613",
+       "t": "Chapter 43: Epidermal Nevus"
+      },
+      {
+       "sid": "242381660",
+       "t": "Chapter 44: Lipoma"
+      },
+      {
+       "sid": "242381693",
+       "t": "Chapter 45: Milium"
+      },
+      {
+       "sid": "242381728",
+       "t": "Chapter 46: Neurofibroma"
+      },
+      {
+       "sid": "242381764",
+       "t": "Chapter 47: Seborrheic Keratosis"
+      },
+      {
+       "sid": "242381805",
+       "t": "Chapter 48: Syringoma"
+      },
+      {
+       "sid": "242381841",
+       "t": "Chapter 49: Dermatosis Papulosa Nigra"
+      },
+      {
+       "sid": "242381875",
+       "t": "Chapter 50: Xanthelasma"
+      }
+     ]
+    },
+    {
+     "part": "SECTION EIGHT: CUTANEOUS CARCINOMAS",
+     "chapters": [
+      {
+       "sid": "242381903",
+       "t": "Chapter 51: Actinic Keratosis"
+      },
+      {
+       "sid": "242381936",
+       "t": "Chapter 52: Basal Cell Carcinoma"
+      },
+      {
+       "sid": "242381973",
+       "t": "Chapter 53: Squamous Cell Carcinoma"
+      }
+     ]
+    },
+    {
+     "part": "SECTION NINE: INFLAMMATORY DISORDERS",
+     "chapters": [
+      {
+       "sid": "242382013",
+       "t": "Chapter 54: Lichen Planus"
+      },
+      {
+       "sid": "242382047",
+       "t": "Chapter 55: Morphea"
+      },
+      {
+       "sid": "242382077",
+       "t": "Chapter 56: Psoriasis"
+      }
+     ]
+    },
+    {
+     "part": "SECTION TEN: ADIPOSE TISSUE ALTERATIONS",
+     "chapters": [
+      {
+       "sid": "242382110",
+       "t": "Chapter 57: Gynecomastia"
+      },
+      {
+       "sid": "242382146",
+       "t": "Chapter 58: Cellulite"
+      },
+      {
+       "sid": "242382194",
+       "t": "Chapter 59: HIV Lipodystrophy/Facial Lipoatrophy"
+      },
+      {
+       "sid": "242382249",
+       "t": "Chapter 60: Striae Distensae"
+      }
+     ]
+    },
+    {
+     "part": "SECTION ELEVEN: WOUND HEALING ALTERATIONS",
+     "chapters": [
+      {
+       "sid": "242382291",
+       "t": "Chapter 61: Hypertrophic Scars, Keloids, and Acne Scars"
+      }
+     ]
+    },
+    {
+     "part": "SECTION TWELVE: EXOGENOUS CUTANEOUS ALTERATIONS",
+     "chapters": [
+      {
+       "sid": "242382335",
+       "t": "Chapter 62: Ear Piercing"
+      },
+      {
+       "sid": "242382353",
+       "t": "Chapter 63: Tattoo Removal"
+      },
+      {
+       "sid": "242382395",
+       "t": "Chapter 64: Torn Earlobe"
+      }
+     ]
+    }
+   ]
+  },
+  "2818": {
+   "bookid": 2818,
+   "bookTitle": "Lasers and Related Technologies in Dermatology",
+   "nParts": 0,
+   "total": 17,
+   "parts": [
+    {
+     "part": "(plano)",
+     "chapters": [
+      {
+       "sid": "240356924",
+       "t": "Copyright"
+      },
+      {
+       "sid": "240356925",
+       "t": "Notice"
+      },
+      {
+       "sid": "240356928",
+       "t": "Editors"
+      },
+      {
+       "sid": "240356975",
+       "t": "Dedication"
+      },
+      {
+       "sid": "240356985",
+       "t": "Contributors"
+      },
+      {
+       "sid": "240357079",
+       "t": "Preface"
+      },
+      {
+       "sid": "240357100",
+       "t": "Chapter 1: Fundamentals of Lasers and Related Technology"
+      },
+      {
+       "sid": "240357136",
+       "t": "Chapter 2: Laser Treatment of Cutaneous Vascular Lesions"
+      },
+      {
+       "sid": "240357275",
+       "t": "Chapter 3: Treatment of Pigmented Lesions and Tattoos"
+      },
+      {
+       "sid": "240357344",
+       "t": "Chapter 4: Lasers and Light Devices for Hair Removal"
+      },
+      {
+       "sid": "240357478",
+       "t": "Chapter 5: Laser and Radiofrequency Treatments for Cutaneous Resurfacing"
+      },
+      {
+       "sid": "240357542",
+       "t": "Chapter 6: Devices for the Improvement of Body Contour"
+      },
+      {
+       "sid": "240357589",
+       "t": "Chapter 7: Laser and Light Therapies for the Treatment of Acne Vulgaris"
+      },
+      {
+       "sid": "240357638",
+       "t": "Chapter 8: Photodynamic Therapy"
+      },
+      {
+       "sid": "240357722",
+       "t": "Chapter 9: Laser Treatment of Cutaneous Scarring"
+      },
+      {
+       "sid": "240357787",
+       "t": "Chapter 10: Home-use and Low-energy Laser and Light Devices"
+      },
+      {
+       "sid": "240357834",
+       "t": "Chapter 11: Treatment of Leg Veins"
+      }
+     ]
+    }
+   ]
+  },
+  "2819": {
+   "bookid": 2819,
+   "bookTitle": "Procedural Dermatology",
+   "nParts": 5,
+   "total": 58,
+   "parts": [
+    {
+     "part": "Section 1: Surgical Principles",
+     "chapters": [
+      {
+       "sid": "242374389",
+       "t": "Chapter 1: Superficial Head and Neck Anatomy"
+      },
+      {
+       "sid": "242374475",
+       "t": "Chapter 2: Preoperative Evaluation"
+      },
+      {
+       "sid": "242374552",
+       "t": "Chapter 3: Informed Consent"
+      },
+      {
+       "sid": "242374644",
+       "t": "Chapter 4: Anesthesia and Analgesia"
+      },
+      {
+       "sid": "242374792",
+       "t": "Chapter 5: Aseptic Technique"
+      },
+      {
+       "sid": "242374872",
+       "t": "Chapter 6: Digital Imaging in Dermatologic Surgery"
+      },
+      {
+       "sid": "242374962",
+       "t": "Chapter 7: The Surgical Suite: Equipment and Accreditation"
+      },
+      {
+       "sid": "242375035",
+       "t": "Chapter 8: Surgical Instruments"
+      },
+      {
+       "sid": "242375098",
+       "t": "Chapter 9: Preoperative and Postoperative Antibiotics"
+      },
+      {
+       "sid": "242375165",
+       "t": "Chapter 10: Wound Healing"
+      },
+      {
+       "sid": "242375255",
+       "t": "Chapter 11: Dressings and Postoperative Care"
+      }
+     ]
+    },
+    {
+     "part": "Section 2: Surgical Skills",
+     "chapters": [
+      {
+       "sid": "242375363",
+       "t": "Chapter 12: Biopsy Techniques"
+      },
+      {
+       "sid": "242375463",
+       "t": "Chapter 13: Hemostasis"
+      },
+      {
+       "sid": "242375563",
+       "t": "Chapter 14: Electrosurgery"
+      },
+      {
+       "sid": "242375642",
+       "t": "Chapter 15: Cryosurgery"
+      },
+      {
+       "sid": "242375726",
+       "t": "Chapter 16: Suture Closure Materials and Techniques"
+      },
+      {
+       "sid": "242375855",
+       "t": "Chapter 17: The Elliptical Excision and its Variations"
+      },
+      {
+       "sid": "242375977",
+       "t": "Chapter 18: Random Pattern Flaps"
+      },
+      {
+       "sid": "242376102",
+       "t": "Chapter 19: Axial Pattern and Interpolation Flaps"
+      },
+      {
+       "sid": "242376274",
+       "t": "Chapter 20: Skin Grafting"
+      },
+      {
+       "sid": "242376391",
+       "t": "Chapter 21: Surgical Scar Revision"
+      },
+      {
+       "sid": "242376468",
+       "t": "Chapter 22: Nail Surgery"
+      },
+      {
+       "sid": "242376611",
+       "t": "Chapter 23: Ear Piercing and Ear Lobe Repairs"
+      },
+      {
+       "sid": "242376761",
+       "t": "Chapter 24: Surgical Complications and Their Management"
+      }
+     ]
+    },
+    {
+     "part": "Section 3: Skin Tumors",
+     "chapters": [
+      {
+       "sid": "242376830",
+       "t": "Chapter 25: Benign Subcutaneous Tumors"
+      },
+      {
+       "sid": "242376890",
+       "t": "Chapter 26: Mohs Micrographic Surgery: Indications and Technique"
+      },
+      {
+       "sid": "242376941",
+       "t": "Chapter 27: Practical Management of Atypical Nevi"
+      },
+      {
+       "sid": "242376988",
+       "t": "Chapter 28: Surgical Management of Melanoma"
+      },
+      {
+       "sid": "242377055",
+       "t": "Chapter 29: Management of Advanced Nonmelanoma Skin Cancer"
+      },
+      {
+       "sid": "242377141",
+       "t": "Chapter 30: Skin Cancer in the Organ Transplant Patient"
+      }
+     ]
+    },
+    {
+     "part": "Section 4: Aesthetic and Laser Procedures",
+     "chapters": [
+      {
+       "sid": "242377235",
+       "t": "Chapter 31: Cosmeceuticals and Topical Agents"
+      },
+      {
+       "sid": "242377305",
+       "t": "Chapter 32: Chemical Peels"
+      },
+      {
+       "sid": "242377398",
+       "t": "Chapter 33: Photodynamic Therapy for Nonmelanoma Skin Cancer and Precursor Lesions"
+      },
+      {
+       "sid": "242377494",
+       "t": "Chapter 34: Noninvasive Skin Tightening Technology"
+      },
+      {
+       "sid": "242377556",
+       "t": "Chapter 35: Ablative and Fractional Ablative Resurfacing"
+      },
+      {
+       "sid": "242377622",
+       "t": "Chapter 36: Nonablative Dermal Remodeling"
+      },
+      {
+       "sid": "242377676",
+       "t": "Chapter 37: Fillers"
+      },
+      {
+       "sid": "242377759",
+       "t": "Chapter 38: Injectables"
+      },
+      {
+       "sid": "242377837",
+       "t": "Chapter 39: Non-Invasive Fat Removal"
+      },
+      {
+       "sid": "242377874",
+       "t": "Chapter 40: Non-Invasive Body Contouring"
+      },
+      {
+       "sid": "242377916",
+       "t": "Chapter 41: Liposuction"
+      },
+      {
+       "sid": "242378042",
+       "t": "Chapter 42: Hair Transplantation for Men and Women"
+      },
+      {
+       "sid": "242378125",
+       "t": "Chapter 43: Special Considerations for Hair Restoration Surgery"
+      },
+      {
+       "sid": "242378258",
+       "t": "Chapter 44: Sclerotherapy"
+      },
+      {
+       "sid": "242378329",
+       "t": "Chapter 45: Minimally Invasive Treatment of Varicose Veins"
+      },
+      {
+       "sid": "242378389",
+       "t": "Chapter 46: Phototherapy and Photodynamic Therapy for the Treatment of Acne Vulgaris"
+      },
+      {
+       "sid": "242378470",
+       "t": "Chapter 47: Acne Scarring"
+      },
+      {
+       "sid": "242378546",
+       "t": "Chapter 48: Management of Dyschromias"
+      },
+      {
+       "sid": "242378677",
+       "t": "Chapter 49: Laser and Light Treatment of Pigmented Lesions"
+      }
+     ]
+    },
+    {
+     "part": "Section 5: Aesthetic Problems",
+     "chapters": [
+      {
+       "sid": "242378769",
+       "t": "Chapter 50: Tattoos"
+      },
+      {
+       "sid": "242378851",
+       "t": "Chapter 51: Noninvasive Scar Treatment"
+      },
+      {
+       "sid": "242378980",
+       "t": "Chapter 52: Laser and Light-Based Treatment of Vascular Lesions"
+      },
+      {
+       "sid": "242379065",
+       "t": "Chapter 53: Laser Hair Removal"
+      },
+      {
+       "sid": "242379142",
+       "t": "Chapter 54: Eyelid Rejuvenation"
+      },
+      {
+       "sid": "242379202",
+       "t": "Chapter 55: Facial Rejuvenation"
+      },
+      {
+       "sid": "242379333",
+       "t": "Chapter 56: Hand Rejuvenation"
+      },
+      {
+       "sid": "242379367",
+       "t": "Chapter 57: Laser Treatment of Asian Skin"
+      },
+      {
+       "sid": "242379412",
+       "t": "Chapter 58: African Skin"
+      }
+     ]
+    }
+   ]
+  },
+  "2820": {
+   "bookid": 2820,
+   "bookTitle": "Cosmetic Surgery",
+   "nParts": 0,
+   "total": 25,
+   "parts": [
+    {
+     "part": "(plano)",
+     "chapters": [
+      {
+       "sid": "244382226",
+       "t": "Copyright"
+      },
+      {
+       "sid": "244382227",
+       "t": "Notice"
+      },
+      {
+       "sid": "244382230",
+       "t": "Editors"
+      },
+      {
+       "sid": "244382246",
+       "t": "Authors"
+      },
+      {
+       "sid": "244382485",
+       "t": "Preface"
+      },
+      {
+       "sid": "244384132",
+       "t": "Introduction: Public Perceptions & the Business of Cosmetic Surgery"
+      },
+      {
+       "sid": "244382511",
+       "t": "Chapter 1: Evaluation of the Patient for Cosmetic Surgery"
+      },
+      {
+       "sid": "244382585",
+       "t": "Chapter 2: Patient Safety & Preparation"
+      },
+      {
+       "sid": "244382658",
+       "t": "Chapter 3: Nonsurgical Skin Care"
+      },
+      {
+       "sid": "244382785",
+       "t": "Chapter 4: Injectable Fillers"
+      },
+      {
+       "sid": "244382911",
+       "t": "Chapter 5: Cosmetic Uses of Botox"
+      },
+      {
+       "sid": "244382954",
+       "t": "Chapter 6: Aesthetic Laser Surgery"
+      },
+      {
+       "sid": "244383068",
+       "t": "Chapter 7: Brow Lift"
+      },
+      {
+       "sid": "244383133",
+       "t": "Chapter 8: Face & Neck Lift"
+      },
+      {
+       "sid": "244383190",
+       "t": "Chapter 9: Blepharoplasty"
+      },
+      {
+       "sid": "244383255",
+       "t": "Chapter 10: Rhinoplasty"
+      },
+      {
+       "sid": "244383355",
+       "t": "Chapter 11: Otoplasty"
+      },
+      {
+       "sid": "244383435",
+       "t": "Chapter 12: Alloplastic Facial Implants"
+      },
+      {
+       "sid": "244383540",
+       "t": "Chapter 13: Breast Augmentation"
+      },
+      {
+       "sid": "244383625",
+       "t": "Chapter 14: Breast Reduction in Women"
+      },
+      {
+       "sid": "244383697",
+       "t": "Chapter 15: Breast Lift"
+      },
+      {
+       "sid": "244383745",
+       "t": "Chapter 16: Abdominoplasty & Abdominal Contouring Procedures"
+      },
+      {
+       "sid": "244383871",
+       "t": "Chapter 17: Liposuction"
+      },
+      {
+       "sid": "244383980",
+       "t": "Chapter 18: Brachioplasty"
+      },
+      {
+       "sid": "244384040",
+       "t": "Chapter 19: Cosmetic Surgery of the Female External Genitalia"
+      }
+     ]
+    }
+   ]
+  },
+  "2822": {
+   "bookid": 2822,
+   "bookTitle": "Sclerotherapy and Vein Treatment, 2e",
+   "nParts": 0,
+   "total": 36,
+   "parts": [
+    {
+     "part": "(plano)",
+     "chapters": [
+      {
+       "sid": "245991766",
+       "t": "Copyright"
+      },
+      {
+       "sid": "245991767",
+       "t": "Notice"
+      },
+      {
+       "sid": "245991770",
+       "t": "Dedication"
+      },
+      {
+       "sid": "245991773",
+       "t": "Authors"
+      },
+      {
+       "sid": "245991814",
+       "t": "Contributors"
+      },
+      {
+       "sid": "245991830",
+       "t": "Preface"
+      },
+      {
+       "sid": "245991839",
+       "t": "Acknowledgments"
+      },
+      {
+       "sid": "245991937",
+       "t": "Chapter 1: The Spectrum of Venous Disease"
+      },
+      {
+       "sid": "245991981",
+       "t": "Chapter 2: Venous Anatomy"
+      },
+      {
+       "sid": "245992050",
+       "t": "Chapter 3: Histology"
+      },
+      {
+       "sid": "245992081",
+       "t": "Chapter 4: Venous Physiology and Pathology"
+      },
+      {
+       "sid": "245992141",
+       "t": "Chapter 5: Common Patterns of Abnormal Veins: Guide and Summary by Region"
+      },
+      {
+       "sid": "245992235",
+       "t": "Chapter 6: History and Physical Examination"
+      },
+      {
+       "sid": "245992332",
+       "t": "Chapter 7: Common Clinical Presentations"
+      },
+      {
+       "sid": "245992355",
+       "t": "Chapter 8: Continuous Wave Doppler"
+      },
+      {
+       "sid": "245992419",
+       "t": "Chapter 9: Physiologic and Other Tests for Venous Evaluation"
+      },
+      {
+       "sid": "245992470",
+       "t": "Chapter 10: Venous Imaging/Duplex Ultrasound"
+      },
+      {
+       "sid": "245992561",
+       "t": "Chapter 11: Patient Education and Informed Consent"
+      },
+      {
+       "sid": "245992607",
+       "t": "Chapter 12: Sclerotherapy of Large Varicose Veins"
+      },
+      {
+       "sid": "245992679",
+       "t": "Chapter 13: Sclerotherapy of Small Veins"
+      },
+      {
+       "sid": "245992768",
+       "t": "Chapter 14: Sclerosing Solutions"
+      },
+      {
+       "sid": "245993000",
+       "t": "Chapter 15: Compression"
+      },
+      {
+       "sid": "245993088",
+       "t": "Chapter 16: Veins at Other Sites"
+      },
+      {
+       "sid": "245993166",
+       "t": "Chapter 17: Facial Veins"
+      },
+      {
+       "sid": "245993245",
+       "t": "Chapter 18: Special Situations and Problems"
+      },
+      {
+       "sid": "245993314",
+       "t": "Chapter 19: Foam Sclerotherapy"
+      },
+      {
+       "sid": "245993346",
+       "t": "Chapter 20: Lasers and High-Intensity Pulsed Light"
+      },
+      {
+       "sid": "245993442",
+       "t": "Chapter 21: Endovenous Laser Ablation"
+      },
+      {
+       "sid": "245993496",
+       "t": "Chapter 22: Ambulatory Phlebectomy"
+      },
+      {
+       "sid": "245993590",
+       "t": "Chapter 23: RF Endovenous Occlusion (Closure™ or ClosureFast™)"
+      },
+      {
+       "sid": "245993641",
+       "t": "Chapter 24: Minimizing and Treating Complications"
+      },
+      {
+       "sid": "245993769",
+       "t": "Chapter 25: Outfitting the Phlebology Practice"
+      },
+      {
+       "sid": "245993870",
+       "t": "Appendix A: Manufacturers"
+      },
+      {
+       "sid": "245993946",
+       "t": "Appendix B: Forms for the Sclerotherapy Practice"
+      },
+      {
+       "sid": "245993965",
+       "t": "Appendix C: Terminology for Billing and Encounter Forms"
+      },
+      {
+       "sid": "245993976",
+       "t": "Supplemental Videos"
+      }
+     ]
+    }
+   ]
+  },
+  "2829": {
+   "bookid": 2829,
+   "bookTitle": "Facial Flap Surgery",
+   "nParts": 0,
+   "total": 23,
+   "parts": [
+    {
+     "part": "(plano)",
+     "chapters": [
+      {
+       "sid": "244642387",
+       "t": "Copyright"
+      },
+      {
+       "sid": "244642388",
+       "t": "Notice"
+      },
+      {
+       "sid": "244642391",
+       "t": "Editors"
+      },
+      {
+       "sid": "244642412",
+       "t": "Dedication"
+      },
+      {
+       "sid": "244642415",
+       "t": "Foreword"
+      },
+      {
+       "sid": "244642423",
+       "t": "Preface"
+      },
+      {
+       "sid": "245994103",
+       "t": "Chapter 1: Introduction"
+      },
+      {
+       "sid": "245994191",
+       "t": "Chapter 2: Advancement"
+      },
+      {
+       "sid": "245994241",
+       "t": "Chapter 3: Rotation Flaps"
+      },
+      {
+       "sid": "245994300",
+       "t": "Chapter 4: Transposition Flaps"
+      },
+      {
+       "sid": "245994387",
+       "t": "Chapter 5: Island Pedicle Flaps"
+      },
+      {
+       "sid": "245994444",
+       "t": "Chapter 6: Staged Pedicle Flaps"
+      },
+      {
+       "sid": "245994585",
+       "t": "Chapter 7: Nose"
+      },
+      {
+       "sid": "245994755",
+       "t": "Chapter 8: Ear"
+      },
+      {
+       "sid": "245994826",
+       "t": "Chapter 9: Lip"
+      },
+      {
+       "sid": "245994941",
+       "t": "Chapter 10: Eyelid and Periocular"
+      },
+      {
+       "sid": "245995010",
+       "t": "Chapter 11: Cheek"
+      },
+      {
+       "sid": "245995066",
+       "t": "Chapter 12: Forehead"
+      },
+      {
+       "sid": "245995131",
+       "t": "Chapter 13: Temple"
+      },
+      {
+       "sid": "245995168",
+       "t": "Chapter 14: Scalp"
+      },
+      {
+       "sid": "245995211",
+       "t": "Chapter 15: Chin"
+      },
+      {
+       "sid": "245995249",
+       "t": "Chapter 16: Complications and Revisions"
+      },
+      {
+       "sid": "245995323",
+       "t": "Supplemental Videos"
+      }
+     ]
+    }
+   ]
+  },
+  "2953": {
+   "bookid": 2953,
+   "bookTitle": "Dermatologic Surgery and Cosmetic Procedures in Primary Care Practice",
+   "nParts": 3,
+   "total": 35,
+   "parts": [
+    {
+     "part": "I: Fundamentals",
+     "chapters": [
+      {
+       "sid": "248410244",
+       "t": "Chapter 1: Surgical Anatomy, Surface Anatomy, and Cosmetic Subunits"
+      },
+      {
+       "sid": "248410390",
+       "t": "Chapter 2: Wound Healing and Surgical Wound Dressings"
+      },
+      {
+       "sid": "248410464",
+       "t": "Chapter 3: Preoperative Evaluation, Patient Preparation, and Informed Consent"
+      },
+      {
+       "sid": "248410517",
+       "t": "Chapter 4: Surgical Instrument Selection"
+      },
+      {
+       "sid": "248410619",
+       "t": "Chapter 5: Suture Materials and Needles"
+      },
+      {
+       "sid": "248410708",
+       "t": "Chapter 6: Antibiotics: Pre- and Postoperative Considerations"
+      },
+      {
+       "sid": "248410781",
+       "t": "Chapter 7: Ethics in Dermatologic Surgery"
+      },
+      {
+       "sid": "248410848",
+       "t": "Chapter 8: Billing and Financial Considerations in Dermatologic Surgery"
+      }
+     ]
+    },
+    {
+     "part": "II: Surgical Procedures for Diagnosis, Therapy, and Reconstruction",
+     "chapters": [
+      {
+       "sid": "248410961",
+       "t": "Chapter 9: Local Anesthesia, Regional Nerve Blocks, and Postoperative Pain Management"
+      },
+      {
+       "sid": "248411161",
+       "t": "Chapter 10: Suturing Techniques"
+      },
+      {
+       "sid": "248411314",
+       "t": "Chapter 11: Superficial Biopsy Techniques"
+      },
+      {
+       "sid": "248411393",
+       "t": "Chapter 12: Cryosurgery"
+      },
+      {
+       "sid": "248411462",
+       "t": "Chapter 13: Electrosurgery and Hemostasis"
+      },
+      {
+       "sid": "248411556",
+       "t": "Chapter 14: Incision and Drainage"
+      },
+      {
+       "sid": "248411634",
+       "t": "Chapter 15: Laceration Repair"
+      },
+      {
+       "sid": "248411684",
+       "t": "Chapter 16: Layered Excision and Surgical Repairs"
+      },
+      {
+       "sid": "248411907",
+       "t": "Chapter 17: Approach to Dysplastic Nevi"
+      },
+      {
+       "sid": "248411976",
+       "t": "Chapter 18: Approach to Cysts and Lipomas"
+      },
+      {
+       "sid": "248412072",
+       "t": "Chapter 19: Approach to Nonmelanoma Skin Cancer"
+      },
+      {
+       "sid": "248412142",
+       "t": "Chapter 20: Flaps and Advanced Techniques"
+      },
+      {
+       "sid": "248412239",
+       "t": "Chapter 21: Nail Procedures"
+      },
+      {
+       "sid": "248412341",
+       "t": "Chapter 22: Managing Surgical Complications"
+      }
+     ]
+    },
+    {
+     "part": "III: Cosmetic Procedures",
+     "chapters": [
+      {
+       "sid": "248412521",
+       "t": "Chapter 23: The Cosmetic Consultation"
+      },
+      {
+       "sid": "248412579",
+       "t": "Chapter 24: Botulinum Toxin"
+      },
+      {
+       "sid": "248412685",
+       "t": "Chapter 25: Fillers"
+      },
+      {
+       "sid": "248412820",
+       "t": "Chapter 26: Chemical Peels"
+      },
+      {
+       "sid": "248412921",
+       "t": "Chapter 27: Lasers for Pigmented Lesions and Tattoos"
+      },
+      {
+       "sid": "248413015",
+       "t": "Chapter 28: Lasers for Erythema and Telangiectasias"
+      },
+      {
+       "sid": "248413088",
+       "t": "Chapter 29: Laser Resurfacing"
+      },
+      {
+       "sid": "248413152",
+       "t": "Chapter 30: Laser- and Light-Based Approaches to Hair Removal"
+      },
+      {
+       "sid": "248413245",
+       "t": "Chapter 31: Body Contouring Devices and Noninvasive Fat Removal"
+      },
+      {
+       "sid": "248413287",
+       "t": "Chapter 32: Photodynamic Therapy for Acne, Actinic Keratoses, and Nonmelanoma Skin Cancer"
+      },
+      {
+       "sid": "248413368",
+       "t": "Chapter 33: Sclerotherapy and Management of Varicose Veins"
+      },
+      {
+       "sid": "248413449",
+       "t": "Chapter 34: Approaches to Neck Rejuvenation"
+      },
+      {
+       "sid": "248413501",
+       "t": "Chapter 35: Approaches to Hand Rejuvenation"
+      }
+     ]
+    }
+   ]
+  },
+  "2956": {
+   "bookid": 2956,
+   "bookTitle": "Cosmetic Dermatology for Skin of Color",
+   "nParts": 0,
+   "total": 30,
+   "parts": [
+    {
+     "part": "(plano)",
+     "chapters": [
+      {
+       "sid": "248484477",
+       "t": "Copyright"
+      },
+      {
+       "sid": "248484478",
+       "t": "Notice"
+      },
+      {
+       "sid": "248484481",
+       "t": "Editors"
+      },
+      {
+       "sid": "248484510",
+       "t": "Dedication"
+      },
+      {
+       "sid": "248484527",
+       "t": "Contributors"
+      },
+      {
+       "sid": "248484636",
+       "t": "Preface"
+      },
+      {
+       "sid": "248484647",
+       "t": "Acknowledgments"
+      },
+      {
+       "sid": "248484675",
+       "t": "Chapter 1: Defining Skin of Color"
+      },
+      {
+       "sid": "248484715",
+       "t": "Chapter 2: Evaluation of the Ethnic Skin Patient Presenting for Cosmetic Procedures"
+      },
+      {
+       "sid": "248484774",
+       "t": "Chapter 3: Potential Adverse Effects After Procedures in Ethnic Skin"
+      },
+      {
+       "sid": "248484879",
+       "t": "Chapter 4: The Consent Process for Procedures in Ethnic Skin"
+      },
+      {
+       "sid": "248484903",
+       "t": "Chapter 5: Epidermal and Color Improvement in Ethnic Skin: Microdermabrasion and Superficial Peels"
+      },
+      {
+       "sid": "248484961",
+       "t": "Chapter 6: Epidermal and Dermal Color Improvement in Ethnic Skin: Pigment Lasers and Lights"
+      },
+      {
+       "sid": "248485017",
+       "t": "Chapter 7: Dermal Color Improvement in Ethnic Skin: Vascular Lasers and Lights"
+      },
+      {
+       "sid": "248485068",
+       "t": "Chapter 8: Nonablative Dermal Resurfacing in Ethnic Skin: Laser and Intense Pulsed Light"
+      },
+      {
+       "sid": "248485136",
+       "t": "Chapter 9: Ablative Dermal Resurfacing in Ethnic Skin: Laser, Deep Peels, and Dermabrasion"
+      },
+      {
+       "sid": "248485250",
+       "t": "Chapter 10: Hair Removal in Ethnic Skin: Laser, Lights, and Medical and Mechanical Epilation"
+      },
+      {
+       "sid": "248485339",
+       "t": "Chapter 11: Liposuction in Ethnic Skin"
+      },
+      {
+       "sid": "248485414",
+       "t": "Chapter 12: Nonsurgical Tightening and Lifting in Ethnic Skin"
+      },
+      {
+       "sid": "248485434",
+       "t": "Chapter 13: Surgical Lifting and Tightening in Ethnic Skin"
+      },
+      {
+       "sid": "248485514",
+       "t": "Chapter 14: Cosmeceuticals in Ethnic Skin"
+      },
+      {
+       "sid": "248485619",
+       "t": "Chapter 15: Treatment of Melasma"
+      },
+      {
+       "sid": "248485686",
+       "t": "Chapter 16: Treatment of Dermatosis Papulosa Nigra"
+      },
+      {
+       "sid": "248485723",
+       "t": "Chapter 17: Postinflammatory Hyperpigmentation"
+      },
+      {
+       "sid": "248485767",
+       "t": "Chapter 18: Treatment of Acne Scarring in Ethnic Skin"
+      },
+      {
+       "sid": "248485926",
+       "t": "Chapter 19: Treatment of Keloids and Hypertrophic Scars in Ethnic Skin"
+      },
+      {
+       "sid": "248485983",
+       "t": "Chapter 20: Special Considerations in African American Skin"
+      },
+      {
+       "sid": "248486021",
+       "t": "Chapter 21: Special Considerations in Asian/Far Eastern Skin"
+      },
+      {
+       "sid": "248486039",
+       "t": "Chapter 22: Special Considerations in Indian/Near Eastern Skin"
+      },
+      {
+       "sid": "248486071",
+       "t": "Chapter 23: Special Considerations in Latino Skin"
+      }
+     ]
+    }
+   ]
+  },
+  "2967": {
+   "bookid": 2967,
+   "bookTitle": "Venous Insufficiency",
+   "nParts": 0,
+   "total": 28,
+   "parts": [
+    {
+     "part": "(plano)",
+     "chapters": [
+      {
+       "sid": "249322407",
+       "t": "Copyright"
+      },
+      {
+       "sid": "249322408",
+       "t": "Notice"
+      },
+      {
+       "sid": "249322411",
+       "t": "Author"
+      },
+      {
+       "sid": "249322421",
+       "t": "Contributors"
+      },
+      {
+       "sid": "249322430",
+       "t": "Preface"
+      },
+      {
+       "sid": "249322435",
+       "t": "About the Author"
+      },
+      {
+       "sid": "249322465",
+       "t": "Chapter 1: Defining the Problem"
+      },
+      {
+       "sid": "249322477",
+       "t": "Chapter 2: Effect of Gravity"
+      },
+      {
+       "sid": "249322492",
+       "t": "Chapter 3: Circulatory System"
+      },
+      {
+       "sid": "249322531",
+       "t": "Chapter 4: Valves"
+      },
+      {
+       "sid": "249322581",
+       "t": "Chapter 5: Injury to Valves"
+      },
+      {
+       "sid": "249322658",
+       "t": "Chapter 6: Venous Valvular Reflux"
+      },
+      {
+       "sid": "249322702",
+       "t": "Chapter 7: Symptoms"
+      },
+      {
+       "sid": "249322758",
+       "t": "Chapter 8: Classification"
+      },
+      {
+       "sid": "249322779",
+       "t": "Chapter 9: Differential Diagnosis"
+      },
+      {
+       "sid": "249322827",
+       "t": "Chapter 10: Diagnostic Tests"
+      },
+      {
+       "sid": "249322858",
+       "t": "Chapter 11: Approach to Treatment"
+      },
+      {
+       "sid": "249322898",
+       "t": "Chapter 12: Elevation"
+      },
+      {
+       "sid": "249322929",
+       "t": "Chapter 13: Calf Pump"
+      },
+      {
+       "sid": "249322955",
+       "t": "Chapter 14: Compression Wrap"
+      },
+      {
+       "sid": "249323015",
+       "t": "Chapter 15: Compression Garment"
+      },
+      {
+       "sid": "249323092",
+       "t": "Chapter 16: Intermittent Compression"
+      },
+      {
+       "sid": "249323128",
+       "t": "Chapter 17: Complications"
+      },
+      {
+       "sid": "249323179",
+       "t": "Chapter 18: Ulcer"
+      },
+      {
+       "sid": "249323540",
+       "t": "Chapter 19: Surgery"
+      },
+      {
+       "sid": "249323601",
+       "t": "Chapter 20: Special People"
+      },
+      {
+       "sid": "249323672",
+       "t": "Chapter 21: Special Patients"
+      },
+      {
+       "sid": "249323745",
+       "t": "Chapter 22: Historical Overview"
+      }
+     ]
+    }
+   ]
+  },
+  "2993": {
+   "bookid": 2993,
+   "bookTitle": "Treatment of Scars From Burns and Trauma",
+   "nParts": 0,
+   "total": 23,
+   "parts": [
+    {
+     "part": "(plano)",
+     "chapters": [
+      {
+       "sid": "251028698",
+       "t": "Copyright"
+      },
+      {
+       "sid": "251028699",
+       "t": "Notice"
+      },
+      {
+       "sid": "251028702",
+       "t": "Editors"
+      },
+      {
+       "sid": "251028761",
+       "t": "Contributors"
+      },
+      {
+       "sid": "251028962",
+       "t": "Dedication"
+      },
+      {
+       "sid": "251028968",
+       "t": "Preface"
+      },
+      {
+       "sid": "251029906",
+       "t": "Chapter 1: History of Scar Treatment"
+      },
+      {
+       "sid": "251030087",
+       "t": "Chapter 2: Basic Science of Scars"
+      },
+      {
+       "sid": "251030485",
+       "t": "Chapter 3: Self-Esteem and Psychological Issues"
+      },
+      {
+       "sid": "251030624",
+       "t": "Chapter 4: Patient Selection and Counseling"
+      },
+      {
+       "sid": "251030671",
+       "t": "Chapter 5: Burn Rehabilitation: Range of Motion and Pain After Acute Burny"
+      },
+      {
+       "sid": "251030727",
+       "t": "Chapter 6: Treatment Algorithm: What and When?"
+      },
+      {
+       "sid": "251030843",
+       "t": "Chapter 7: Surgical Correction of the Late Effects of Burns"
+      },
+      {
+       "sid": "251032746",
+       "t": "Chapter 8: Surgical Scar Revision"
+      },
+      {
+       "sid": "251033444",
+       "t": "Chapter 9: Dermabrasion"
+      },
+      {
+       "sid": "251033707",
+       "t": "Chapter 10: Fractional Resurfacing of Traumatic and Burn Scars"
+      },
+      {
+       "sid": "251033867",
+       "t": "Chapter 11: Antimetabolites and Antimitotic Drugs in the Treatment of Keloid and Hypertrophic Scars"
+      },
+      {
+       "sid": "251034000",
+       "t": "Chapter 12: Laser-Assisted Drug Delivery for Scars"
+      },
+      {
+       "sid": "251034524",
+       "t": "Chapter 13: Autologous Fat Grafting in the Reconstruction and Rejuvenation of Traumatic Scars"
+      },
+      {
+       "sid": "251035786",
+       "t": "Chapter 14: Stem Cell Transfer"
+      },
+      {
+       "sid": "251035885",
+       "t": "Chapter 15: Vascular Lasers and Lights for the Treatment of Scars"
+      },
+      {
+       "sid": "251035926",
+       "t": "Chapter 16: Practical Cases"
+      },
+      {
+       "sid": "251037406",
+       "t": "Chapter 17: The Future of Scar Management"
+      }
+     ]
+    }
+   ]
+  },
+  "3138": {
+   "bookid": 3138,
+   "bookTitle": "Atlas of Suturing Techniques: Approaches to Surgical Wound, Laceration, and Cosmetic Repai",
+   "nParts": 7,
+   "total": 101,
+   "parts": [
+    {
+     "part": "Chapter 1: Introduction",
+     "chapters": [
+      {
+       "sid": "265904991",
+       "t": "Chapter 1: Introduction"
+      }
+     ]
+    },
+    {
+     "part": "Chapter 2: The Surgical Tray",
+     "chapters": [
+      {
+       "sid": "265905008",
+       "t": "Chapter 2: The Surgical Tray"
+      }
+     ]
+    },
+    {
+     "part": "Chapter 3: Suture Materials, Knot Tying, and Postoperative Care",
+     "chapters": [
+      {
+       "sid": "265905044",
+       "t": "Chapter 3: Suture Materials, Knot Tying, and Postoperative Care"
+      }
+     ]
+    },
+    {
+     "part": "Chapter 4: Suture Techniques for Deeper Structures: The Fascia and Dermis",
+     "chapters": [
+      {
+       "sid": "265905137",
+       "t": "Chapter 4.1: The Simple Buried Dermal Suture"
+      },
+      {
+       "sid": "265905497",
+       "t": "Chapter 4.2: The Set-Back Dermal Suture"
+      },
+      {
+       "sid": "265905812",
+       "t": "Chapter 4.3: The Buried Vertical Mattress Suture"
+      },
+      {
+       "sid": "265906132",
+       "t": "Chapter 4.4: The Buried Horizontal Mattress Suture"
+      },
+      {
+       "sid": "265906272",
+       "t": "Chapter 4.5: The Butterfly Suture"
+      },
+      {
+       "sid": "265906300",
+       "t": "Chapter 4.6: The Fascial Plication Suture"
+      },
+      {
+       "sid": "265906328",
+       "t": "Chapter 4.7: The Running Subcuticular Suture"
+      },
+      {
+       "sid": "265906362",
+       "t": "Chapter 4.8: The Backing Out Running Subcuticular Suture"
+      },
+      {
+       "sid": "265906395",
+       "t": "Chapter 4.9: The Percutaneous Vertical Mattress Suture"
+      },
+      {
+       "sid": "265905162",
+       "t": "Chapter 4.10: The Percutaneous Set-Back Dermal Suture"
+      },
+      {
+       "sid": "265905198",
+       "t": "Chapter 4.11: The Percutaneous Horizontal Mattress Suture"
+      },
+      {
+       "sid": "265905228",
+       "t": "Chapter 4.12: The Running Buried Dermal Suture"
+      },
+      {
+       "sid": "265905254",
+       "t": "Chapter 4.13: The Running Set-Back Dermal Suture"
+      },
+      {
+       "sid": "265905290",
+       "t": "Chapter 4.14: The Running Buried Vertical Mattress Suture"
+      },
+      {
+       "sid": "265905321",
+       "t": "Chapter 4.15: The Running Percutaneous Set-Back Dermal Suture"
+      },
+      {
+       "sid": "265905359",
+       "t": "Chapter 4.16: The Running Percutaneous Buried Vertical Mattress Suture"
+      },
+      {
+       "sid": "265905394",
+       "t": "Chapter 4.17: The Pulley Buried Dermal Suture"
+      },
+      {
+       "sid": "265905426",
+       "t": "Chapter 4.18: The Pulley Set-Back Dermal Suture"
+      },
+      {
+       "sid": "265905462",
+       "t": "Chapter 4.19: The Pulley Buried Vertical Mattress Suture"
+      },
+      {
+       "sid": "265905530",
+       "t": "Chapter 4.20: The Half Pulley Buried Vertical Mattress Suture"
+      },
+      {
+       "sid": "265905560",
+       "t": "Chapter 4.21: The Double Butterfly Suture"
+      },
+      {
+       "sid": "265905591",
+       "t": "Chapter 4.22: The Half Pulley Buried Dermal Suture"
+      },
+      {
+       "sid": "265905617",
+       "t": "Chapter 4.23: The Modified Buried Horizontal Mattress Suture"
+      },
+      {
+       "sid": "265905649",
+       "t": "Chapter 4.24: The Suspension Suture"
+      },
+      {
+       "sid": "265905679",
+       "t": "Chapter 4.25: The Percutaneous Suspension Suture"
+      },
+      {
+       "sid": "265905706",
+       "t": "Chapter 4.26: The Pinpoint Pexing Suspension Suture"
+      },
+      {
+       "sid": "265905733",
+       "t": "Chapter 4.27: The Tie-Over Suture"
+      },
+      {
+       "sid": "265905759",
+       "t": "Chapter 4.28: The Buried Vertical Mattress Suspension Suture"
+      },
+      {
+       "sid": "265905785",
+       "t": "Chapter 4.29: The Corset Plication Suture"
+      },
+      {
+       "sid": "265905843",
+       "t": "Chapter 4.30: The Imbrication Suture"
+      },
+      {
+       "sid": "265905870",
+       "t": "Chapter 4.31: The Guitar String Suture"
+      },
+      {
+       "sid": "265905894",
+       "t": "Chapter 4.32: The Dog-Ear Tacking Suture"
+      },
+      {
+       "sid": "265905922",
+       "t": "Chapter 4.33: The Buried Purse-String Suture"
+      },
+      {
+       "sid": "265905952",
+       "t": "Chapter 4.34: The Percutaneous Purse-String Suture"
+      },
+      {
+       "sid": "265905984",
+       "t": "Chapter 4.35: The Figure 8 Double Purse-String Suture"
+      },
+      {
+       "sid": "265906013",
+       "t": "Chapter 4.36: The Stacked Double Purse-String Suture"
+      },
+      {
+       "sid": "265906042",
+       "t": "Chapter 4.37: The Bootlace Suture"
+      },
+      {
+       "sid": "265906074",
+       "t": "Chapter 4.38: The Buried Tip Stitch"
+      },
+      {
+       "sid": "265906100",
+       "t": "Chapter 4.39: The Backtracking Running Butterfly Suture"
+      },
+      {
+       "sid": "265906162",
+       "t": "Chapter 4.40: The Stacked Backing Out Subcuticular Suture Technique"
+      },
+      {
+       "sid": "265906194",
+       "t": "Chapter 4.41: The Running Locked Intradermal Suture"
+      },
+      {
+       "sid": "265906225",
+       "t": "Chapter 4.42: The Buried Dog-Ear Tip Stitch"
+      },
+      {
+       "sid": "265906252",
+       "t": "Chapter 4.43: The Buried Leveling Suture"
+      }
+     ]
+    },
+    {
+     "part": "Chapter 5: Suture Techniques for Superficial Structures: Transepidermal Approach",
+     "chapters": [
+      {
+       "sid": "265906428",
+       "t": "Chapter 5.1: The Simple Interrupted Suture"
+      },
+      {
+       "sid": "265906750",
+       "t": "Chapter 5.2: The Depth-Correcting Simple Interrupted Suture"
+      },
+      {
+       "sid": "265907062",
+       "t": "Chapter 5.3: The Leveling Suture"
+      },
+      {
+       "sid": "265907364",
+       "t": "Chapter 5.4: The Simple Running Suture"
+      },
+      {
+       "sid": "265907526",
+       "t": "Chapter 5.5: The Running Locking Suture"
+      },
+      {
+       "sid": "265907567",
+       "t": "Chapter 5.6: The Horizontal Mattress Suture"
+      },
+      {
+       "sid": "265907597",
+       "t": "Chapter 5.7: The Locking Horizontal Mattress Suture"
+      },
+      {
+       "sid": "265907627",
+       "t": "Chapter 5.8: The Inverting Horizontal Mattress Suture"
+      },
+      {
+       "sid": "265907652",
+       "t": "Chapter 5.9: The Running Horizontal Mattress Suture"
+      },
+      {
+       "sid": "265906454",
+       "t": "Chapter 5.10: The Running Horizontal Mattress Suture with Intermittent Simple Loops"
+      },
+      {
+       "sid": "265906486",
+       "t": "Chapter 5.11: The Running Alternating Simple and Horizontal Mattress Suture"
+      },
+      {
+       "sid": "265906515",
+       "t": "Chapter 5.12: The Running Locking Horizontal Mattress Suture"
+      },
+      {
+       "sid": "265906545",
+       "t": "Chapter 5.13: The Cruciate Mattress Suture"
+      },
+      {
+       "sid": "265906571",
+       "t": "Chapter 5.14: The Running Oblique Mattress Suture"
+      },
+      {
+       "sid": "265906597",
+       "t": "Chapter 5.15: The Double Locking Horizontal Mattress Suture"
+      },
+      {
+       "sid": "265906632",
+       "t": "Chapter 5.16: The Running Diagonal Mattress Suture"
+      },
+      {
+       "sid": "265906660",
+       "t": "Chapter 5.17: The Vertical Mattress Suture"
+      },
+      {
+       "sid": "265906693",
+       "t": "Chapter 5.18: The Shorthand Vertical Mattress Suture"
+      },
+      {
+       "sid": "265906721",
+       "t": "Chapter 5.19: The Locking Vertical Mattress Suture"
+      },
+      {
+       "sid": "265906776",
+       "t": "Chapter 5.20: The Running Vertical Mattress Suture"
+      },
+      {
+       "sid": "265906807",
+       "t": "Chapter 5.21: The Running Alternating Simple and Vertical Mattress Suture"
+      },
+      {
+       "sid": "265906839",
+       "t": "Chapter 5.22: The Hybrid Mattress Suture"
+      },
+      {
+       "sid": "265906866",
+       "t": "Chapter 5.23: The Tip Stitch"
+      },
+      {
+       "sid": "265906892",
+       "t": "Chapter 5.24: The Vertical Mattress Tip Stitch"
+      },
+      {
+       "sid": "265906923",
+       "t": "Chapter 5.25: The Hybrid Mattress Tip Stitch"
+      },
+      {
+       "sid": "265906950",
+       "t": "Chapter 5.26: The Percutaneous Tip Stitch"
+      },
+      {
+       "sid": "265906975",
+       "t": "Chapter 5.27: The Pulley Suture"
+      },
+      {
+       "sid": "265907003",
+       "t": "Chapter 5.28: The Purse-String Suture"
+      },
+      {
+       "sid": "265907034",
+       "t": "Chapter 5.29: The Winch Stitch"
+      },
+      {
+       "sid": "265907085",
+       "t": "Chapter 5.30: The Dynamic Winch Stitch"
+      },
+      {
+       "sid": "265907113",
+       "t": "Chapter 5.31: The Lembert Suture"
+      },
+      {
+       "sid": "265907139",
+       "t": "Chapter 5.32: The Combined Horizontal Mattress and Simple Interrupted Suture"
+      },
+      {
+       "sid": "265907169",
+       "t": "Chapter 5.33: The Lattice Stitch"
+      },
+      {
+       "sid": "265907197",
+       "t": "Chapter 5.34: The Adhesive Strip Bolster Technique"
+      },
+      {
+       "sid": "265907227",
+       "t": "Chapter 5.35: The Frost Suture"
+      },
+      {
+       "sid": "265907249",
+       "t": "Chapter 5.36: The Running Pleated Suture"
+      },
+      {
+       "sid": "265907278",
+       "t": "Chapter 5.37: The Running Bolster Suture"
+      },
+      {
+       "sid": "265907303",
+       "t": "Chapter 5.38: The Combined Vertical Mattress-Dermal Suture"
+      },
+      {
+       "sid": "265907335",
+       "t": "Chapter 5.39: The Cross Stitch"
+      },
+      {
+       "sid": "265907399",
+       "t": "Chapter 5.40: The Basting Suture"
+      },
+      {
+       "sid": "265907424",
+       "t": "Chapter 5.41: The Snug Tip Stitch"
+      },
+      {
+       "sid": "265907447",
+       "t": "Chapter 5.42: The Dog-Ear Tip Stitch"
+      },
+      {
+       "sid": "265907473",
+       "t": "Chapter 5.43: The Percutaneous Dog-Ear Tip Stitch"
+      },
+      {
+       "sid": "265907498",
+       "t": "Chapter 5.44: The Three-Dimensional Percutaneous Dog-Ear Tip Stitch"
+      }
+     ]
+    },
+    {
+     "part": "Chapter 6: Suturing Tips and Approaches by Anatomical Location",
+     "chapters": [
+      {
+       "sid": "265907682",
+       "t": "Chapter 6.1: The Chest, Back, and Shoulders"
+      },
+      {
+       "sid": "265907726",
+       "t": "Chapter 6.2: The Arms"
+      },
+      {
+       "sid": "265907747",
+       "t": "Chapter 6.3: The Legs"
+      },
+      {
+       "sid": "265907762",
+       "t": "Chapter 6.4: The Hands and Feet"
+      },
+      {
+       "sid": "265907776",
+       "t": "Chapter 6.5: The Scalp"
+      },
+      {
+       "sid": "265907790",
+       "t": "Chapter 6.6: The Forehead"
+      },
+      {
+       "sid": "265907805",
+       "t": "Chapter 6.7: The Eyelids"
+      },
+      {
+       "sid": "265907818",
+       "t": "Chapter 6.8: The Lips"
+      },
+      {
+       "sid": "265907833",
+       "t": "Chapter 6.9: The Nose"
+      },
+      {
+       "sid": "265907710",
+       "t": "Chapter 6.10: The Ears"
+      }
+     ]
+    },
+    {
+     "part": "Chapter 7: Approach to Technique Selection by Closure Type",
+     "chapters": [
+      {
+       "sid": "265905118",
+       "t": "Chapter 7: Approach to Technique Selection by Closure Type"
+      }
+     ]
+    }
+   ]
+  },
+  "3200": {
+   "bookid": 3200,
+   "bookTitle": "Baumann’s Cosmetic Dermatology, 3e",
+   "nParts": 5,
+   "total": 46,
+   "parts": [
+    {
+     "part": "SECTION 1: Basic Concepts of Skin Science",
+     "chapters": [
+      {
+       "sid": "266614213",
+       "t": "Chapter 1: Basic Science of the Epidermis"
+      },
+      {
+       "sid": "266614337",
+       "t": "Chapter 2: Basic Science of the Dermis"
+      },
+      {
+       "sid": "266614442",
+       "t": "Chapter 3: Fat and the Subcutaneous Layer"
+      },
+      {
+       "sid": "266614541",
+       "t": "Chapter 4: The Skin Microbiome"
+      },
+      {
+       "sid": "266614593",
+       "t": "Chapter 5: Intrinsic Aging"
+      },
+      {
+       "sid": "266614778",
+       "t": "Chapter 6: Extrinsic Aging"
+      },
+      {
+       "sid": "266614877",
+       "t": "Chapter 7: Facial Anatomy and Aging"
+      },
+      {
+       "sid": "266614928",
+       "t": "Chapter 8: Immunology of Skin Aging"
+      },
+      {
+       "sid": "266615020",
+       "t": "Chapter 9: Nutrition and the Skin"
+      }
+     ]
+    },
+    {
+     "part": "SECTION 2: Skin Types",
+     "chapters": [
+      {
+       "sid": "266615195",
+       "t": "Chapter 10: The Baumann Skin Typing System"
+      },
+      {
+       "sid": "266615441",
+       "t": "Chapter 11: Oily Skin"
+      },
+      {
+       "sid": "266615572",
+       "t": "Chapter 12: Dry Skin"
+      },
+      {
+       "sid": "266615693",
+       "t": "Chapter 13: Sensitive Skin"
+      },
+      {
+       "sid": "266615755",
+       "t": "Chapter 14: Uneven Skin Tone"
+      }
+     ]
+    },
+    {
+     "part": "SECTION 3: Specific Skin Problems",
+     "chapters": [
+      {
+       "sid": "266615887",
+       "t": "Chapter 15: Skin of Color"
+      },
+      {
+       "sid": "266616014",
+       "t": "Chapter 16: Acne (Type 1 Sensitive Skin)"
+      },
+      {
+       "sid": "266616098",
+       "t": "Chapter 17: Rosacea"
+      },
+      {
+       "sid": "266616146",
+       "t": "Chapter 18: Burning and Stinging Skin (Type 3 Sensitive Skin)"
+      },
+      {
+       "sid": "266616182",
+       "t": "Chapter 19: Contact Dermatitis (Type 4 Sensitive Skin)"
+      },
+      {
+       "sid": "266616274",
+       "t": "Chapter 20: Skin Pigmentation Disorders"
+      },
+      {
+       "sid": "266616354",
+       "t": "Chapter 21: Wrinkled Skin"
+      }
+     ]
+    },
+    {
+     "part": "SECTION 4: Cosmetic Procedures",
+     "chapters": [
+      {
+       "sid": "266616395",
+       "t": "Chapter 22: Non-Surgical Body Contouring"
+      },
+      {
+       "sid": "266616475",
+       "t": "Chapter 23: Botulinum Toxins"
+      },
+      {
+       "sid": "266616672",
+       "t": "Chapter 24: Chemical Peels"
+      },
+      {
+       "sid": "266616801",
+       "t": "Chapter 25: Dermal Fillers"
+      },
+      {
+       "sid": "266616951",
+       "t": "Chapter 26: Lasers and Light Devices"
+      },
+      {
+       "sid": "266617053",
+       "t": "Chapter 27: Microneedling and PRP"
+      },
+      {
+       "sid": "266617091",
+       "t": "Chapter 28: Sclerotherapy"
+      },
+      {
+       "sid": "266617145",
+       "t": "Chapter 29: Thread Lifts"
+      },
+      {
+       "sid": "266617194",
+       "t": "Chapter 30: Skin Tightening"
+      }
+     ]
+    },
+    {
+     "part": "SECTION 5: Skin Care",
+     "chapters": [
+      {
+       "sid": "266617247",
+       "t": "Chapter 31: Psychosocial Challenges in Aesthetic Dermatology"
+      },
+      {
+       "sid": "266617295",
+       "t": "Chapter 32: Cosmetic and Drug Regulations"
+      },
+      {
+       "sid": "266617418",
+       "t": "Chapter 33: Choosing Skincare Products to Retail in Your Medical Practice"
+      },
+      {
+       "sid": "266617484",
+       "t": "Chapter 34: Skincare Retail in a Medical Setting"
+      },
+      {
+       "sid": "266617656",
+       "t": "Chapter 35: Skincare Regimen Design (Product Layering)"
+      },
+      {
+       "sid": "266617692",
+       "t": "Chapter 36: Pre- and Postprocedure Skincare Guide for Surgical Patients"
+      },
+      {
+       "sid": "266617733",
+       "t": "Chapter 37: Anti-Aging Ingredients"
+      },
+      {
+       "sid": "266617941",
+       "t": "Chapter 38: Anti-Inflammatory Agents"
+      },
+      {
+       "sid": "266618076",
+       "t": "Chapter 39: Antioxidants"
+      },
+      {
+       "sid": "266618343",
+       "t": "Chapter 40: Cleansing Agents"
+      },
+      {
+       "sid": "266618430",
+       "t": "Chapter 41: Depigmenting Ingredients"
+      },
+      {
+       "sid": "266618637",
+       "t": "Chapter 42: Fragrance"
+      },
+      {
+       "sid": "266618681",
+       "t": "Chapter 43: Moisturizers"
+      },
+      {
+       "sid": "266618790",
+       "t": "Chapter 44: Preservatives"
+      },
+      {
+       "sid": "266618823",
+       "t": "Chapter 45: Retinoids"
+      },
+      {
+       "sid": "266618937",
+       "t": "Chapter 46: Sunscreens"
+      }
+     ]
+    }
+   ]
+  },
+  "3257": {
+   "bookid": 3257,
+   "bookTitle": "Skin Cancer: A Comprehensive Guide",
+   "nParts": 0,
+   "total": 71,
+   "parts": [
+    {
+     "part": "(plano)",
+     "chapters": [
+      {
+       "sid": "271451801",
+       "t": "Copyright"
+      },
+      {
+       "sid": "271451802",
+       "t": "Notice"
+      },
+      {
+       "sid": "271451805",
+       "t": "Editor"
+      },
+      {
+       "sid": "271451818",
+       "t": "Dedication"
+      },
+      {
+       "sid": "271451825",
+       "t": "Contributors"
+      },
+      {
+       "sid": "271452670",
+       "t": "Foreword"
+      },
+      {
+       "sid": "271452698",
+       "t": "Preface"
+      },
+      {
+       "sid": "271453259",
+       "t": "Chapter 1: Normal Skin"
+      },
+      {
+       "sid": "271453373",
+       "t": "Chapter 2: Aging Skin"
+      },
+      {
+       "sid": "271453447",
+       "t": "Chapter 3: The Epidemiology of Skin Cancer"
+      },
+      {
+       "sid": "271453506",
+       "t": "Chapter 4: Etiology of Skin Cancer"
+      },
+      {
+       "sid": "271453582",
+       "t": "Chapter 5: The Genetic Basis of Skin Cancer"
+      },
+      {
+       "sid": "271453669",
+       "t": "Chapter 6: Basal Cell Carcinoma"
+      },
+      {
+       "sid": "271453962",
+       "t": "Chapter 7: Cutaneous Squamous Cell Carcinoma"
+      },
+      {
+       "sid": "271454120",
+       "t": "Chapter 8: Congenital Melanocytic Nevi"
+      },
+      {
+       "sid": "271454210",
+       "t": "Chapter 9: Spitz Tumors"
+      },
+      {
+       "sid": "271454305",
+       "t": "Chapter 10: The Dysplastic/Atypical Nevus"
+      },
+      {
+       "sid": "271454355",
+       "t": "Chapter 11: Melanoma"
+      },
+      {
+       "sid": "271454491",
+       "t": "Chapter 12: Cutaneous Lymphomas & Leukemias"
+      },
+      {
+       "sid": "271454613",
+       "t": "Chapter 13: Sarcomas"
+      },
+      {
+       "sid": "271454790",
+       "t": "Chapter 14: Sweat Gland Tumors"
+      },
+      {
+       "sid": "271454923",
+       "t": "Chapter 15: Sebaceous Carcinoma"
+      },
+      {
+       "sid": "271454995",
+       "t": "Chapter 16: Hair Follicle Tumors"
+      },
+      {
+       "sid": "271455113",
+       "t": "Chapter 17: Merkel Cell Carcinoma"
+      },
+      {
+       "sid": "271455171",
+       "t": "Chapter 18: Nail Unit Tumors"
+      },
+      {
+       "sid": "271455376",
+       "t": "Chapter 19: Vascular Tumors of the Skin"
+      },
+      {
+       "sid": "271455601",
+       "t": "Chapter 20: Kaposi Sarcoma"
+      },
+      {
+       "sid": "271455653",
+       "t": "Chapter 21: Eyelid Cancers"
+      },
+      {
+       "sid": "271455791",
+       "t": "Chapter 22: Oral Cancers"
+      },
+      {
+       "sid": "271455889",
+       "t": "Chapter 23: Genital Cancers"
+      },
+      {
+       "sid": "271456002",
+       "t": "Chapter 24: Paget Disease"
+      },
+      {
+       "sid": "271456054",
+       "t": "Chapter 25: Human Papillomavirus-Associated Skin Cancers"
+      },
+      {
+       "sid": "271456108",
+       "t": "Chapter 26: Cutaneous Metastases"
+      },
+      {
+       "sid": "271456145",
+       "t": "Chapter 27: Skin Cancer in Transplant Patients"
+      },
+      {
+       "sid": "271456253",
+       "t": "Chapter 28: Skin Cancers in Patients with HIV"
+      },
+      {
+       "sid": "271456353",
+       "t": "Chapter 29: Nonmelanoma Skin Cancer in Non-White People"
+      },
+      {
+       "sid": "271456441",
+       "t": "Chapter 30: Melanoma in Skin of Color"
+      },
+      {
+       "sid": "271456532",
+       "t": "Chapter 31: Skin Cancer and Pregnancy"
+      },
+      {
+       "sid": "271456627",
+       "t": "Chapter 32: Skin Cancer in a Pediatric Population"
+      },
+      {
+       "sid": "271456909",
+       "t": "Chapter 33: Syndromes Associated with Skin Cancers"
+      },
+      {
+       "sid": "271457079",
+       "t": "Chapter 34: Dermatologic Manifestations of Internal Malignancy"
+      },
+      {
+       "sid": "271457260",
+       "t": "Chapter 35: Biopsy Techniques"
+      },
+      {
+       "sid": "271457305",
+       "t": "Chapter 36: Dermoscopy of Melanocytic Neoplasms and Mole Monitoring"
+      },
+      {
+       "sid": "271457422",
+       "t": "Chapter 37: Laser in Skin Cancer Diagnosis: Highlight of Reflectance Confocal Microscopy"
+      },
+      {
+       "sid": "271457478",
+       "t": "Chapter 38: Optical Coherence Tomography in the Diagnosis of Skin Cancer"
+      },
+      {
+       "sid": "271457623",
+       "t": "Chapter 39: Surgical Excision"
+      },
+      {
+       "sid": "271457678",
+       "t": "Chapter 40: Mohs Micrographic Surgery"
+      },
+      {
+       "sid": "271457781",
+       "t": "Chapter 41: Reconstructive Surgery of Eyelid Cancers"
+      },
+      {
+       "sid": "271457908",
+       "t": "Chapter 42: Reconstructive Surgery of Skin Cancer Defects"
+      },
+      {
+       "sid": "271458052",
+       "t": "Chapter 43: Cryosurgery"
+      },
+      {
+       "sid": "271458089",
+       "t": "Chapter 44: Curettage and Electrodesiccation"
+      },
+      {
+       "sid": "271458133",
+       "t": "Chapter 45: Photodynamic Therapy"
+      },
+      {
+       "sid": "271458217",
+       "t": "Chapter 46: Radiation Therapy"
+      },
+      {
+       "sid": "271458303",
+       "t": "Chapter 47: Immunomodulators of Skin Cancers"
+      },
+      {
+       "sid": "271458459",
+       "t": "Chapter 48: Topical 5-Fluorouracil"
+      },
+      {
+       "sid": "271458505",
+       "t": "Chapter 49: NSAIDs for the Treatment of Skin Cancer"
+      },
+      {
+       "sid": "271458581",
+       "t": "Chapter 50: Adjuvant Therapies for the Treatment of Skin Cancer"
+      },
+      {
+       "sid": "271458836",
+       "t": "Chapter 51: Skin Cancer Vaccines"
+      },
+      {
+       "sid": "271458911",
+       "t": "Chapter 52: Chemoprevention of Skin Cancers"
+      },
+      {
+       "sid": "271459000",
+       "t": "Chapter 53: Natural Ingredients and Biomolecules for the Prevention and Treatment of Skin Cancer"
+      },
+      {
+       "sid": "271459116",
+       "t": "Chapter 54: Photography of Skin Cancers"
+      },
+      {
+       "sid": "271459228",
+       "t": "Chapter 55: New Approaches in the Diagnosis of Skin Cancer"
+      },
+      {
+       "sid": "271459358",
+       "t": "Chapter 56: Teledermatology"
+      },
+      {
+       "sid": "271459413",
+       "t": "Chapter 57: Medicines and Therapies Associated with Skin Cancer"
+      },
+      {
+       "sid": "271459489",
+       "t": "Chapter 58: Indoor Tanning"
+      },
+      {
+       "sid": "271459545",
+       "t": "Chapter 59: Economics of Skin Cancer"
+      },
+      {
+       "sid": "271459602",
+       "t": "Chapter 60: Medical Legal Issues of Skin Cancers"
+      },
+      {
+       "sid": "271459714",
+       "t": "Chapter 61: Psychological Impact of Skin Cancers"
+      },
+      {
+       "sid": "271459752",
+       "t": "Chapter 62: Education and Public Awareness of Skin Cancer"
+      },
+      {
+       "sid": "271459784",
+       "t": "Chapter 63: Online Skin Cancer Resources"
+      },
+      {
+       "sid": "271459820",
+       "t": "Chapter 64: Skin Cancer and Artificial Intelligence"
+      }
+     ]
+    }
+   ]
+  },
+  "3319": {
+   "bookid": 3319,
+   "bookTitle": "Margin Control Surgery of the Skin: Concepts, Histopathology, and Applications",
+   "nParts": 4,
+   "total": 19,
+   "parts": [
+    {
+     "part": "SECTION I: Background",
+     "chapters": [
+      {
+       "sid": "276772306",
+       "t": "Chapter 1: History"
+      },
+      {
+       "sid": "276772336",
+       "t": "Chapter 2: Multidisciplinary Approach"
+      },
+      {
+       "sid": "276772372",
+       "t": "Chapter 3: Mohs Micrographic Surgery"
+      }
+     ]
+    },
+    {
+     "part": "SECTION II: Surgical Considerations, Specimen Preparation, and Processing",
+     "chapters": [
+      {
+       "sid": "276772429",
+       "t": "Chapter 4: Indications"
+      },
+      {
+       "sid": "276772482",
+       "t": "Chapter 5: Surgical Technique and Specimen Mapping"
+      },
+      {
+       "sid": "276772589",
+       "t": "Chapter 6: Specimen Preparation"
+      },
+      {
+       "sid": "276772678",
+       "t": "Chapter 7: Slide Preparation and Immunohistochemistry"
+      }
+     ]
+    },
+    {
+     "part": "SECTION III: Applications for Cutaneous Malignancy",
+     "chapters": [
+      {
+       "sid": "276772732",
+       "t": "Chapter 8: Basal Cell Carcinoma"
+      },
+      {
+       "sid": "276772818",
+       "t": "Chapter 9: Cutaneous Squamous Cell Carcinoma"
+      },
+      {
+       "sid": "276772885",
+       "t": "Chapter 10: Melanoma"
+      },
+      {
+       "sid": "276772963",
+       "t": "Chapter 11: Cutaneous Sarcomas"
+      },
+      {
+       "sid": "276773033",
+       "t": "Chapter 12: Merkel Cell Carcinoma"
+      },
+      {
+       "sid": "276773076",
+       "t": "Chapter 13: Malignant Adnexal Tumors"
+      },
+      {
+       "sid": "276773169",
+       "t": "Chapter 14: Extramammary Paget’s Disease"
+      }
+     ]
+    },
+    {
+     "part": "SECTION IV: Case Reports and Discussions",
+     "chapters": [
+      {
+       "sid": "276773202",
+       "t": "Chapter 15: Case 1. Basic Basal Cell Carcinoma"
+      },
+      {
+       "sid": "276773234",
+       "t": "Chapter 16: Case 2. Large Facial Lentigo Maligna"
+      },
+      {
+       "sid": "276773256",
+       "t": "Chapter 17: Case 3. Microcystic Adnexal Carcinoma"
+      },
+      {
+       "sid": "276773273",
+       "t": "Chapter 18: Case 4. Dermatofibrosarcoma Protuberans of the Scalp"
+      },
+      {
+       "sid": "276773302",
+       "t": "Chapter 19: Case 5. Pleomorphic Dermal Sarcoma of the Scalp"
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

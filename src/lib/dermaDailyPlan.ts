@@ -1,7 +1,8 @@
 /**
  * dermaDailyPlan.ts — Plan DÍA A DÍA Dermatología (1 tema-átomo/día-Derma).
- * 66 átomos: 52 board (orden Sima Jain reordenado × ponderación ABD APPLIED 55/15/15/15
- * × Peso MIR ProMIR) + 14 de estética estructural (DERMA_MASTER_SPEC, referentes verificados).
+ * 68 átomos: 52 board (orden Sima Jain reordenado × ponderación ABD APPLIED 55/15/15/15
+ * × Peso MIR ProMIR) + 16 de estética estructural (DERMA_MASTER_SPEC, referentes verificados
+ * + deep-links capítulo-nivel de los TOCs reales de AccessDerma — 16 libros, 740 caps).
  *
  * RITMO INTERDIARIO con Research (bloque Calendar 13:30–14:15, NO tocar el Calendar):
  * la alternancia vive en researchData.ts#diaEstudioTipo (días hábiles desde mié 10-jun-2026
@@ -39,7 +40,7 @@ export const PM_CAP = {
 } as const;
 
 export const DERMA_DAILY_META = {
-  inicio: '2026-06-11', fin: '2026-12-10', totalDias: 66,
+  inicio: '2026-06-11', fin: '2026-12-16', totalDias: 68,
   bloque: '13:30–14:15 (franja boards del Calendar, alterna con Research — interdiario)',
   nota: 'Progreso REAL marcable (studyProgress key "derma", empieza 0%). El día mostrado salta los días-Research.',
 };
@@ -138,9 +139,9 @@ export const DERMA_DIAS: DiaDerma[] = [
     access: { t: "Barnhill's Challenge: quiz 20Q", url: qa(2865) }, qbankly: null, promir: null, extra: null },
   // ── BLOQUE F · Cirugía dermatológica (15% APPLIED) ──
   { d: 30, fecha: '2026-09-01', bloque: B.F, bKey: 'F', tier: 'CRIT', sub: 'Anatomía quirúrgica facial: zonas de peligro, RSTL, unidades estéticas', referente: 'Cotofana (puente a X)',
-    access: { t: 'Dermatologic Surgery (anestesia/bloqueos)', url: `${MH}/content.aspx?bookid=2811&sectionid=245217992` }, qbankly: null, promir: null, extra: null },
+    access: { t: 'Dermatologic Surgery · Cap 1 Surgical Anatomy & Cosmetic Subunits', url: `${MH}/content.aspx?bookid=2811&sectionid=245216992` }, qbankly: null, promir: null, extra: null },
   { d: 31, fecha: '2026-09-03', bloque: B.F, bKey: 'F', tier: 'CRIT', sub: 'Biopsias: punch / shave / excisional + anestesia local (dosis máximas)', referente: null,
-    access: { t: 'Dermatologic Surgery', url: book(2811) }, qbankly: null, promir: null, extra: { t: 'Vídeos: Punch & Shave Biopsy', url: mm(1417) } },
+    access: { t: 'Dermatologic Surgery · Local Anesthesia & Nerve Blocks', url: `${MH}/content.aspx?bookid=2811&sectionid=245217992` }, qbankly: null, promir: null, extra: { t: 'Vídeos: Punch & Shave Biopsy', url: mm(1417) } },
   { d: 32, fecha: '2026-09-07', bloque: B.F, bKey: 'F', tier: 'ALTA', sub: 'Suturas: instrumental, nudos, técnicas (Kantor)', referente: null,
     access: { t: 'Atlas of Suturing Techniques 2e (Kantor)', url: book(3138) }, qbankly: null, promir: null, extra: { t: '91 vídeos Suturing Techniques', url: mm(1420) } },
   { d: 33, fecha: '2026-09-09', bloque: B.F, bKey: 'F', tier: 'MED', sub: 'Colgajos e injertos (avance, rotación, romboidal, bilobulado)', referente: null,
@@ -188,33 +189,37 @@ export const DERMA_DIAS: DiaDerma[] = [
     access: { t: 'Specialty Board Review Pictorial 4e (381 Q)', url: qa(3626) }, qbankly: { t: 'uWorld S1: 3 subtemas derma (78 Q)', url: QB_QBANKS, via: 'edge' }, promir: { t: '🎬 Videoclase resumen asignatura (3:18:11)', url: pm(PM_CAP.intro) }, extra: { t: 'DD Challenge (100 sets) + QOTW (50 Q)', url: cases(1616) } },
   // ── BLOQUE X · Estética estructural (capa del SPEC; anatomía antes que técnica) ──
   { d: 53, fecha: '2026-11-04', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'Anatomía facial 3D: 5 capas, SMAS, espacios profundos', referente: 'Cotofana',
-    access: { t: 'Cotofana Anatomy (curso por disección)', url: 'https://cotofanaanatomy.com/' }, qbankly: null, promir: null, extra: { t: "Baumann's Cosmetic Dermatology 3e", url: book(3200) } },
+    access: { t: 'Baumann 3e · Cap 7 Facial Anatomy and Aging', url: `${MH}/content.aspx?bookid=3200&sectionid=266614877` }, qbankly: null, promir: null, extra: { t: 'Cotofana Anatomy (curso por disección)', url: 'https://cotofanaanatomy.com/' } },
   { d: 54, fecha: '2026-11-06', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'Compartimentos grasos + ligamentos de retención + reabsorción ósea', referente: 'Cotofana',
-    access: { t: 'Cotofana Anatomy', url: 'https://cotofanaanatomy.com/' }, qbankly: null, promir: null, extra: { t: 'de Maio PRS 2017: Upper Face guide', url: 'https://pubmed.ncbi.nlm.nih.gov/28746271/' } },
+    access: { t: 'Baumann 3e · Cap 3 Fat and the Subcutaneous Layer', url: `${MH}/content.aspx?bookid=3200&sectionid=266614442` }, qbankly: null, promir: null, extra: { t: 'de Maio PRS 2017: Upper Face guide', url: 'https://pubmed.ncbi.nlm.nih.gov/28746271/' } },
   { d: 55, fecha: '2026-11-10', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'Arterias peligrosas + zonas seguras: nariz, glabela, temple (no errar)', referente: 'Cotofana',
     access: { t: 'Vascular Safe Zones (PAN 2022)', url: 'https://pubmed.ncbi.nlm.nih.gov/36469395/' }, qbankly: null, promir: null, extra: { t: 'Facial Safe Zones: Practical Guide (JDD 2019)', url: 'https://pubmed.ncbi.nlm.nih.gov/31524345/' } },
   { d: 56, fecha: '2026-11-12', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Análisis facial: tercios, cánones, MD ASA (H1-H5, 8 atributos)', referente: 'de Maio',
     access: { t: 'MD ASA (J Cosmet Dermatol 2021)', url: 'https://pubmed.ncbi.nlm.nih.gov/33977669/' }, qbankly: null, promir: null, extra: null },
   { d: 57, fecha: '2026-11-16', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Envejecimiento estructural: hueso → grasa → ligamento → piel', referente: 'de Maio',
-    access: { t: 'MD Codes paper (open access PMC)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8012343/' }, qbankly: null, promir: null, extra: { t: "Baumann's Cosmetic 3e", url: book(3200) } },
+    access: { t: 'MD Codes paper (open access PMC)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8012343/' }, qbankly: null, promir: null, extra: { t: 'Baumann 3e · Cap 7 Facial Anatomy and Aging', url: `${MH}/content.aspx?bookid=3200&sectionid=266614877` } },
   { d: 58, fecha: '2026-11-18', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: "Reología del HA: G', cohesividad + bioestimuladores (CaHA/PLLA)", referente: 'de Maio / Carruthers',
-    access: { t: 'Soft Tissue Augmentation 5e (Elsevier)', url: 'https://shop.elsevier.com/books/procedures-in-cosmetic-dermatology-soft-tissue-augmentation/carruthers/978-0-323-83075-1' }, qbankly: null, promir: null, extra: null },
+    access: { t: 'Soft Tissue Augmentation 5e (Elsevier)', url: 'https://shop.elsevier.com/books/procedures-in-cosmetic-dermatology-soft-tissue-augmentation/carruthers/978-0-323-83075-1' }, qbankly: null, promir: null, extra: { t: 'Cosmeceuticals · Cap 26 Hyaluronic Acid', url: `${MH}/content.aspx?bookid=2812&sectionid=244978644` } },
   { d: 59, fecha: '2026-11-20', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'MD Codes I: fundación (mejilla Ck, temple T, lagrimal Tt)', referente: 'de Maio',
     access: { t: 'MD Codes paper (PMC8012343)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8012343/' }, qbankly: null, promir: null, extra: { t: 'MD Codes Institute', url: 'https://www.mdcodes.com/' } },
   { d: 60, fecha: '2026-11-24', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'MD Codes II + myomodulation (MD DYNA)', referente: 'de Maio',
-    access: { t: 'Myomodulation (APS 2018)', url: 'https://pubmed.ncbi.nlm.nih.gov/29549406/' }, qbankly: null, promir: null, extra: null },
+    access: { t: 'Myomodulation (APS 2018)', url: 'https://pubmed.ncbi.nlm.nih.gov/29549406/' }, qbankly: null, promir: null, extra: { t: 'Procedural Dermatology · Cap 37 Fillers', url: `${MH}/content.aspx?bookid=2819&sectionid=242377676` } },
   { d: 61, fecha: '2026-11-26', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Toxina I: mecanismo, serotipos, unidades, tercio superior', referente: 'Carruthers',
-    access: { t: 'Botulinum Toxin 5e (Elsevier)', url: 'https://shop.elsevier.com/books/procedures-in-cosmetic-dermatology-botulinum-toxin/carruthers/978-0-323-83116-1' }, qbankly: null, promir: null, extra: { t: "Baumann's Cosmetic 3e", url: book(3200) } },
+    access: { t: 'Baumann 3e · Cap 23 Botulinum Toxins', url: `${MH}/content.aspx?bookid=3200&sectionid=266616475` }, qbankly: null, promir: null, extra: { t: 'Botulinum Toxin 5e (Elsevier)', url: 'https://shop.elsevier.com/books/procedures-in-cosmetic-dermatology-botulinum-toxin/carruthers/978-0-323-83116-1' } },
   { d: 62, fecha: '2026-11-30', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Toxina II: tercio inferior, Nefertiti, masetero, hiperhidrosis', referente: 'Carruthers',
-    access: { t: 'Botulinum Toxin 5e (Elsevier)', url: 'https://shop.elsevier.com/books/procedures-in-cosmetic-dermatology-botulinum-toxin/carruthers/978-0-323-83116-1' }, qbankly: null, promir: null, extra: null },
+    access: { t: 'Dermatologic Surgery · Cap 57 Neuromodulators', url: `${MH}/content.aspx?bookid=2811&sectionid=245227386` }, qbankly: null, promir: null, extra: { t: 'Botulinum Toxin 5e (Elsevier)', url: 'https://shop.elsevier.com/books/procedures-in-cosmetic-dermatology-botulinum-toxin/carruthers/978-0-323-83116-1' } },
   { d: 63, fecha: '2026-12-02', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'Oclusión vascular + HDPH: recitar el protocolo completo (no errar)', referente: 'DeLorenzi',
     access: { t: 'HDPH Protocol (ASJ 2017)', url: 'https://pubmed.ncbi.nlm.nih.gov/28333326/' }, qbankly: null, promir: null, extra: { t: 'Complications of Injectable Fillers I (2013)', url: 'https://pubmed.ncbi.nlm.nih.gov/23636629/' } },
   { d: 64, fecha: '2026-12-04', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'Ceguera por relleno: prevención + manejo inmediato + kit de emergencia', referente: 'Goodman/Magnusson 2020',
     access: { t: 'Consenso Embolic Visual Loss (ASJ 2020)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7427155/' }, qbankly: null, promir: null, extra: { t: 'Fillers Part 2: Vascular (ASJ 2014)', url: 'https://pubmed.ncbi.nlm.nih.gov/24809362/' } },
   { d: 65, fecha: '2026-12-08', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Fototermólisis selectiva: cromóforo → λ → pulso → enfriamiento', referente: 'Anderson',
-    access: { t: 'Selective Photothermolysis (Science 1983)', url: 'https://pubmed.ncbi.nlm.nih.gov/6836297/' }, qbankly: null, promir: null, extra: { t: 'Lasers & Related Technologies (Access)', url: book(2818) } },
+    access: { t: 'Lasers in Dermatology · Cap 1 Fundamentals', url: `${MH}/content.aspx?bookid=2818&sectionid=240357100` }, qbankly: null, promir: null, extra: { t: 'Selective Photothermolysis (Science 1983)', url: 'https://pubmed.ncbi.nlm.nih.gov/6836297/' } },
   { d: 66, fecha: '2026-12-10', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Fraccional, RF, HIFU, criolipólisis + seguridad en fototipos altos', referente: 'Manstein/Anderson',
-    access: { t: 'Fractional Photothermolysis (LSM 2004)', url: 'https://pubmed.ncbi.nlm.nih.gov/15216537/' }, qbankly: null, promir: null, extra: { t: "Taylor & Kelly's (PIH/fototipos altos)", url: book(3609) } },
+    access: { t: 'Dermatologic Surgery · Cap 71 Laser/Light en piel de color', url: `${MH}/content.aspx?bookid=2811&sectionid=245228834` }, qbankly: null, promir: null, extra: { t: 'Fractional Photothermolysis (LSM 2004)', url: 'https://pubmed.ncbi.nlm.nih.gov/15216537/' } },
+  { d: 67, fecha: '2026-12-14', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Peelings químicos: superficial / medio / profundo, por fototipo', referente: 'Baumann',
+    access: { t: 'Baumann 3e · Cap 24 Chemical Peels', url: `${MH}/content.aspx?bookid=3200&sectionid=266616672` }, qbankly: null, promir: null, extra: { t: 'Cosmetic Procedures in Primary Care · Cap 26 Chemical Peels', url: `${MH}/content.aspx?bookid=2953&sectionid=248412820` } },
+  { d: 68, fecha: '2026-12-16', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Microneedling + PRP + cosmecéuticos / skincare basado en evidencia', referente: 'Baumann',
+    access: { t: 'Baumann 3e · Cap 27 Microneedling and PRP', url: `${MH}/content.aspx?bookid=3200&sectionid=266617053` }, qbankly: null, promir: null, extra: { t: 'Cosmeceuticals and Cosmetic Ingredients (83 caps)', url: book(2812) } },
 ];
 
 export function dermaDiaDe(fechaISO: string): DiaDerma | undefined { return DERMA_DIAS.find(x => x.fecha === fechaISO); }

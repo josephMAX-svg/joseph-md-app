@@ -1,13 +1,13 @@
-# DERMA · Plan tema-átomo/día (66 átomos · interdiario con Research)
+# DERMA · Plan tema-átomo/día (68 átomos · interdiario con Research)
 
 > **Motor:** el mismo de USMLE/MIR (`UsmleTodayPlan`/`MirTodayPlan`): sub-pestañas
-> HOY/Horario/7d/Temario, navegación Día X/66, progreso REAL marcable (empieza 0%,
+> HOY/Horario/7d/Temario, navegación Día X/68, progreso REAL marcable (empieza 0%,
 > `studyProgress.ts` clave `derma`). Código: **`src/lib/dermaDailyPlan.ts`** (links reales).
 >
 > **Ritmo INTERDIARIO (no tocar el Calendar):** la franja *boards* **13:30–14:15** alterna
 > Research↔Derma por día hábil — lógica YA implementada en `researchData.ts#diaEstudioTipo`
 > (días hábiles desde mié 10-jun-2026 = D0 Research; par→Research, **impar→Derma**; findes
-> descanso). ⇒ **Derma D1 = jue 11-jun-2026**, D66 = jue 10-dic-2026 (~2–3 átomos/semana).
+> descanso). ⇒ **Derma D1 = jue 11-jun-2026**, D68 = mié 16-dic-2026 (~2–3 átomos/semana).
 >
 > **Regla de oro:** todo link/duración/conteo es REAL (ver [`temario.md`](./temario.md)).
 > Qbankly SIEMPRE con botón **◆ Edge** (`microsoft-edge:<url>`).
@@ -74,7 +74,7 @@ otros libros Access por `bookid`. 🔴=crítico/no-errar.
 | 29 | Depósitos, infiltrados, paniculitis + drill Challenge | qa2865 (quiz 20Q) |
 
 ### BLOQUE F — Cirugía dermatológica (D30–D34 · 1-sep→11-sep) · 15% APPLIED
-| 30 | Anatomía qx facial: zonas de peligro, RSTL, unidades 🔴 | Dermatologic Surgery `2811` (anestesia: sectionid 245217992) |
+| 30 | Anatomía qx facial: zonas de peligro, RSTL, unidades 🔴 | Derm Surgery `2811·245216992` Cap1 Surgical Anatomy & Cosmetic Subunits |
 | 31 | Biopsias punch/shave/excisional + anestesia local 🔴 | vídeos Biopsies `#1417` + Clinical Videos `#46399` · `2811` |
 | 32 | Suturas: instrumental, nudos, técnicas (Kantor) | Kantor `3138` + **91 vídeos** `#1420` |
 | 33 | Colgajos e injertos | Facial Flap Surgery `2829` + 30 casos Surgical `1546` |
@@ -104,26 +104,33 @@ otros libros Access por `bookid`. 🔴=crítico/no-errar.
 ### CIERRE board (D52 · 2-nov)
 | 52 | High-Yield Buzz Words + simulacro mixto | Pictorial 4e `qa 3626` (381Q) + QOTW `qa 3562` + DD Challenge `1616` |
 
-### BLOQUE X — Estética estructural (D53–D66 · 4-nov→10-dic) — capa del SPEC sobre la base
-| 53 | Anatomía facial 3D: 5 capas, SMAS, espacios 🔴 (Cotofana) | cotofanaanatomy.com · `2811` · Baumann `3200` |
-| 54 | Compartimentos grasos + ligamentos + reabsorción ósea (Cotofana) | cotofanaanatomy.com · PRS 2017 upper face |
+### BLOQUE X — Estética estructural (D53–D68 · 4-nov→16-dic) — capa del SPEC sobre la base
+> Deep-links capítulo-nivel de los TOCs reales (`_scrape/accessderma_estetica_tocs.json`,
+> 16 libros / **740 capítulos** con `sectionid`).
+
+| 53 | Anatomía facial 3D: 5 capas, SMAS, espacios 🔴 (Cotofana) | Baumann `3200·266614877` Cap7 Facial Anatomy & Aging · cotofanaanatomy.com |
+| 54 | Compartimentos grasos + ligamentos + reabsorción ósea (Cotofana) | Baumann `3200·266614442` Cap3 Fat & Subcutaneous · PRS 2017 upper face |
 | 55 | Arterias peligrosas + zonas seguras: nariz/glabela/temple 🔴🔴 (Cotofana) | paper PAN 2022 + JDD 2019 safe zones |
 | 56 | Análisis facial: tercios, MD ASA, 8 atributos (de Maio) | paper MD ASA `10.1111/jocd.14216` |
-| 57 | Envejecimiento estructural: hueso→grasa→ligamento→piel (de Maio) | MD Codes paper PMC8012343 · Baumann `3200` |
-| 58 | Reología HA: G', cohesividad + bioestimuladores | Soft Tissue Augmentation 5e (Carruthers) |
+| 57 | Envejecimiento estructural: hueso→grasa→ligamento→piel (de Maio) | MD Codes paper PMC8012343 · Baumann Cap7 |
+| 58 | Reología HA: G', cohesividad + bioestimuladores | Soft Tissue Augmentation 5e · Cosmeceuticals `2812·244978644` Cap26 Hyaluronic Acid |
 | 59 | MD Codes I: fundación (Ck, T, Tt) (de Maio) | PMC8012343 + mdcodes.com |
-| 60 | MD Codes II + myomodulation (de Maio) | paper 2018 `10.1007/s00266-018-1116-z` |
-| 61 | Toxina I: mecanismo, unidades, tercio superior (Carruthers) | Botulinum Toxin 5e · Baumann `3200` |
-| 62 | Toxina II: tercio inferior, Nefertiti, masetero, hiperhidrosis (Carruthers) | Botulinum Toxin 5e |
+| 60 | MD Codes II + myomodulation (de Maio) | paper 2018 + Procedural Derm `2819·242377676` Cap37 Fillers |
+| 61 | Toxina I: mecanismo, unidades, tercio superior (Carruthers) | Baumann `3200·266616475` Cap23 Botulinum Toxins · Botulinum Toxin 5e |
+| 62 | Toxina II: tercio inferior, Nefertiti, masetero, hiperhidrosis (Carruthers) | Derm Surgery `2811·245227386` Cap57 Neuromodulators · Botulinum Toxin 5e |
 | 63 | Oclusión vascular + HDPH 🔴🔴 (DeLorenzi) — recitar protocolo | ASJ 2017 `10.1093/asj/sjw251` + Parts I/II |
 | 64 | Ceguera por relleno: prevención + manejo inmediato 🔴🔴 (Goodman 2020) | ASJ 2020 PMC7427155 |
-| 65 | Fototermólisis selectiva: cromóforo→λ→pulso (Anderson) | Science 1983 + Lasers `2818` |
-| 66 | Fraccional/RF/HIFU + seguridad en fototipos altos (Manstein/Anderson) | LSM 2004 + `2818` + Taylor&Kelly |
+| 65 | Fototermólisis selectiva: cromóforo→λ→pulso (Anderson) | Lasers `2818·240357100` Cap1 Fundamentals · Science 1983 |
+| 66 | Fraccional/RF/HIFU + seguridad en fototipos altos (Manstein/Anderson) | Derm Surgery `2811·245228834` Cap71 Laser/Light en piel de color · LSM 2004 |
+| 67 | Peelings químicos: superficial/medio/profundo por fototipo (Baumann) | Baumann `3200·266616672` Cap24 Chemical Peels · Primary Care `2953·248412820` Cap26 |
+| 68 | Microneedling + PRP + cosmecéuticos/skincare con evidencia (Baumann) | Baumann `3200·266617053` Cap27 Microneedling & PRP · Cosmeceuticals `2812` (83 caps) |
 
 ## Notas
 - **Dependencias del SPEC respetadas:** alfabeto (A) → 80/20 (C/H) → no-errar (D melanoma,
   H47 SJS/TEN, X55/63/64 vascular) → estética sobre base anatómica (X53-55 antes de X59-64).
 - Cada átomo debe llenar los **7 pasos del Cerebro Clínico** + `patient_script` (SPEC §3-4)
   durante el free recall; el átomo no pasa el mastery gate sin recitarlos.
-- `[pendiente]`: Qbankly Step 2 CK derma + flashcards (gate de Edge cerrado); conteo de vídeos
-  Access "Dermatologic Surgery"/"3D"; duraciones de los 91 vídeos de Kantor (solo n verificado).
+- ✅ Resueltos (10-jun): Qbankly Step 2 CK + flashcards (`_scrape/qbankly_derm_step2.json`);
+  vídeos Access completos (`_scrape/accessderma_videos_full.json` — "Dermatologic Surgery"
+  es una categoría VACÍA y "3D Modules" del menú = Animations).
+- `[pendiente]`: duraciones individuales de los 91 vídeos de Kantor (solo n y títulos verificados).

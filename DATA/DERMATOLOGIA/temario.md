@@ -27,20 +27,23 @@ el 403 es solo para fetch externo). Raw: [`_scrape/accessderma_estructura.json`]
 - **Differential Diagnosis Challenge** (`groupid=1616`) — **100 sets** de pares de imágenes similares.
 - **LANGE Clinical Dermatology Cases** (`gboscontainerid=258`) — casos-incógnita con 48 preguntas.
 
-### Videos (`/multimedia.aspx`) — contados en vivo
+### Videos (`/multimedia.aspx`) — **180 ítems, listas COMPLETAS de títulos** en
+[`_scrape/accessderma_videos_full.json`](./_scrape/accessderma_videos_full.json)
 | Categoría | n | Nota |
 |---|---|---|
-| Suturing Techniques (Kantor) | **91** | la joya quirúrgica |
-| Animations | 21 | incl. piel de color (PIH, queloides, pseudofoliculitis) |
+| Suturing Techniques (Kantor) | **91** | la joya quirúrgica (títulos Video 2-1…11-x) |
+| Animations | 21 | incl. piel de color (PIH, queloides, pseudofoliculitis) y suturas |
 | Clinical Dermatology Videos | 13 | KOH, Tzanck, biopsias, escisión |
-| Vein Treatment | 13 | escleroterapia, flebectomía |
-| Clinical Dermatology Lectures | 11 | L01–L11 (curso completo en PPT-vídeo) |
+| Vein Treatment | 13 | escleroterapia, flebectomía, láser 1064nm |
+| Clinical Dermatology Lectures | 11 | L01–L11 (curso completo en vídeo) |
 | Pediatric Dermatology | 9 | crio, láser, infiltración |
 | Fitzpatrick's Dermatology (libro) | 7 | |
 | Essentials of Skin of Color | 5 | CCCA, tracción, vitiligo |
 | General Dermatology | 4 | acné, DA, psoriasis, CBC/CEC |
+| Case-Based Review | 4 | |
 | Biopsies | 2 | punch, shave |
-| Dermatologic Surgery / 3D Modules | `[pendiente]` | no cargaron por click programático |
+| Dermatologic Surgery | **0** | ✅ verificado: categoría VACÍA (solo heading) |
+| "Interactive 3D Modules" | — | el menú del home apunta a #1457 = **Animations** (no existe categoría 3D aparte) |
 
 ### Books (36 títulos de derma con `bookid` real) — núcleo del plan
 `/book.aspx?bookid=<id>`: Fitzpatrick Dermatology 9e (**2570**) · Fitzpatrick Color Atlas 9e
@@ -56,6 +59,28 @@ Dermatologic Diagnosis (**2960**) · LANGE Clinical Dermatology 2e (**3171**) �
 `/content.aspx?bookid=3309&sectionid=<sid>` — **35 secciones + 3 apéndices** extraídos
 (S1 Glándulas… S12 Melanoma… S25 Bacterianas… S31 Pelo… Apéndice B Dermoscopy).
 Lista completa en el raw JSON. Este TOC es el **esqueleto de lectura del plan diario**.
+
+### 🌟 TOCs ESTÉTICOS/QUIRÚRGICOS — 16 libros · **740 capítulos** con `sectionid`
+[`_scrape/accessderma_estetica_tocs.json`](./_scrape/accessderma_estetica_tocs.json) —
+deep-link por capítulo `/content.aspx?bookid=<id>&sectionid=<sid>`:
+| Libro | bookid | Caps | Capítulos estrella (estética) |
+|---|---|---|---|
+| Baumann's Cosmetic Dermatology 3e | 3200 | 46 | Cap3 Fat/Subcutaneous · Cap7 Facial Anatomy & Aging · Cap23 Botulinum · Cap24 Peels · Cap25 Dermal Fillers · Cap26 Lasers · Cap27 Microneedling/PRP · Cap28 Sclerotherapy · Cap30 Tightening |
+| Dermatologic Surgery | 2811 | 81 | Cap1 Surgical Anatomy · Cap57 Neuromodulators · Cap58 Fillers · Cap61 Fat Transfer · Cap64-71 Lasers (vascular/pigmento/resurfacing/piel de color) · Cap72 Sclerotherapy · Cap78-81 Rejuvenation (facial/cuello/mano/genital) |
+| Procedural Dermatology | 2819 | 58 | Cap1 Head & Neck Anatomy · Cap32 Peels · Cap34 Tightening · Cap37 Fillers · Cap44 Sclerotherapy · Cap53 Laser Hair Removal · Cap54-56 Rejuvenation · Cap57 Asian Skin |
+| Color Atlas of Cosmetic Dermatology 2e | 2813 | 64 | Cap3 Soft Tissue Augmentation · Cap4 Botulinum · Cap5 Peels · Cap6-9 Resurfacing (no/ablativo ± fraccional) · Cap10 Tightening |
+| Cosmeceuticals and Cosmetic Ingredients | 2812 | 83 | Cap26 Hyaluronic Acid + 82 ingredientes (skincare con evidencia) |
+| Cosmetic Dermatology for Skin of Color | 2956 | 30 | Cap6-10 lasers/lights en piel étnica · Cap12-13 lifting/tightening |
+| Cosmetic Surgery | 2820 | 25 | Cap4 Injectable Fillers · Cap6 Aesthetic Laser Surgery · Cap7 Brow Lift |
+| Lasers and Related Technologies | 2818 | 17 | Cap1 Fundamentals · Cap2 vascular · Cap4 hair removal · Cap5 RF resurfacing · Cap7 acné · Cap9 cicatrices |
+| Sclerotherapy and Vein Treatment 2e | 2822 | 36 | Cap2 Venous Anatomy · Cap12-13/19 escleroterapia · Cap21 endovenoso · Cap24 complicaciones |
+| Atlas of Suturing Techniques (Kantor) 2e | 3138 | 101 | + los 91 vídeos enlazados |
+| Skin Cancer: A Comprehensive Guide | 3257 | 71 | (board: D block) |
+| Treatment of Scars From Burns and Trauma | 2993 | 23 | Cap12 laser-assisted drug delivery · Cap13 fat grafting |
+| Facial Flap Surgery | 2829 | 23 | Cap16 Complications and Revisions |
+| Venous Insufficiency | 2967 | 28 | Cap17 Complications |
+| Margin Control Surgery (Mohs) | 3319 | 19 | (board: F block) |
+| Derm Surgery & Cosmetic Procedures in Primary Care | 2953 | 35 | Cap24 Botulinum · Cap25 Fillers · Cap26 Peels · Cap27-31 lasers/contouring · Cap33 Sclerotherapy |
 
 ---
 

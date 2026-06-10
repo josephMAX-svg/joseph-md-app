@@ -366,10 +366,12 @@ el chat principal sobre `dermaDailyPlan.ts`, copiando `UsmleTodayPlan`/`MirToday
   Q-Bank **104** · Question of the Week **50**. Deep-link `/qa.aspx?resourceid=<id>`.
 - **Cases (300):** Board Review **200 casos** (Medical 110/Dermpath 30/Peds 30/Surgical 30 —
   espeja el 55/15/15/15 de ABD APPLIED) · DD Challenge **100 sets** · LANGE (48 Q).
-- **Vídeos contados en vivo (~176+):** Suturing (Kantor) **91** · Animations 21 · Clinical
-  Videos 13 · Vein 13 · Lectures 11 · Peds 9 · Fitzpatrick 7 · Skin of Color 5 · General 4 ·
-  Biopsies 2 · `[pendiente]` Dermatologic Surgery y 3D Modules. ⚠ La cifra "400+ vídeos" del
-  Apéndice A no se pudo confirmar en el conteo visible; lo contado son ~176.
+- **Vídeos contados en vivo (definitivo, 180 ítems con TÍTULOS completos →
+  `_scrape/accessderma_videos_full.json`):** Suturing (Kantor) **91** · Animations 21 ·
+  Clinical Videos 13 · Vein 13 · Lectures 11 · Peds 9 · Fitzpatrick 7 · Skin of Color 5 ·
+  General 4 · Case-Based Review 4 · Biopsies 2 · **Dermatologic Surgery = 0 (categoría
+  vacía, verificado)** · "3D Modules" del menú = la categoría Animations (#1457). ⚠ La
+  cifra "400+ vídeos" del Apéndice A queda CORREGIDA: lo real visible son **180**.
 - **36 libros con `bookid`** + **TOC completo del Fitzpatrick Color Atlas 9e** (35 secciones +
   3 apéndices con `sectionid` → deep-link por sección, esqueleto de lectura del plan diario).
 - **Fitzpatrick's Dermatology 9e es bookid 2570** y el Color Atlas 9e es 3309 (en
@@ -407,13 +409,26 @@ el chat principal sobre `dermaDailyPlan.ts`, copiando `UsmleTodayPlan`/`MirToday
   Energy Devices 5e ISBN 9780323829052.
 - **Global Alliance:** JAAD 2018 DOI 10.1016/j.jaad.2017.09.078 (PMID 29127053).
 
-### B.5 Plan diario construido (66 átomos · interdiario)
+### B.5 Capa ESTÉTICA en AccessDerma — TOCs completos (16 libros · 740 capítulos)
+Extraídos los TOC con `sectionid` de TODOS los libros estéticos/quirúrgicos
+(`_scrape/accessderma_estetica_tocs.json`): Baumann 3e (46 caps — anatomía facial Cap7,
+toxina Cap23, fillers Cap25, peels Cap24, lasers Cap26, microneedling/PRP Cap27,
+sclero Cap28, tightening Cap30) · Dermatologic Surgery (81 — neuromodulators Cap57,
+fillers Cap58, fat transfer Cap61, lasers Cap63-71, rejuvenation Cap78-81) · Procedural
+(58) · Color Atlas Cosmetic 2e (64) · Cosmeceuticals (83) · Cosmetic Derm for Skin of
+Color (30) · Cosmetic Surgery (25) · Lasers (17) · Sclerotherapy 2e (36) · Kantor (101)
+· Skin Cancer (71) · Scars (23) · Facial Flap (23) · Venous (28) · Margin Control (19)
+· Primary Care (35). Los días X del plan ahora deep-linkean capítulo a capítulo. El plan
+creció a **68 átomos** (+ X67 Peelings · X68 Microneedling/PRP+cosmecéuticos, fin 16-dic).
+
+### B.6 Plan diario construido (68 átomos · interdiario)
 - **Ritmo:** la franja boards 13:30–14:15 alterna Research↔Derma por día hábil
   (`researchData.ts#diaEstudioTipo`, D0=10-jun Research) ⇒ **Derma D1 = jue 11-jun-2026**,
-  D66 = 10-dic-2026. Calendar intacto.
+  D68 = 16-dic-2026. Calendar intacto.
 - **Estructura:** A Fundamentos (7) → B Genoderma/Peds (5) → C Infecciosas (6) →
   D Neoplasias+dermatoscopia (7) → E Dermatopatología (4) → F Cirugía (5) → G Farmacología
-  (5) → H Medical amplio (12) → Cierre (1) → **X Estética estructural (14, referentes §2)**.
+  (5) → H Medical amplio (12) → Cierre (1) → **X Estética estructural (16, referentes §2 +
+  deep-links capítulo-nivel de B.5)**.
   Orden: Sima Jain reordenado × ABD APPLIED 55/15/15/15 × Peso MIR × dependencias del SPEC
   (alfabeto→80/20→no-errar→estética sobre anatomía).
 - Cada día: lectura Access (sectionid real) + práctica Qbankly **◆ Edge** + 2º pase ProMIR +
