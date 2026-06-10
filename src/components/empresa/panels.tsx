@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Platform, StyleSheet, Linking } from 'react-native';
+import BrandHorario from './BrandHorario';
 import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
 import {
@@ -586,6 +587,7 @@ export function DirectricesPanel() {
 export function PirqaView() {
   const p = PIRQA_DATA;
   const brand = BRANDS.pirqa;
+  const [tab, setTab] = useState<'info' | 'horario'>('info');
   return (
     <View>
       <GlassPanel accent={brand.bright} style={{ marginBottom: Spacing['2xl'] }}>
@@ -599,6 +601,21 @@ export function PirqaView() {
         <Text style={s.body}>{p.resumen}</Text>
       </GlassPanel>
 
+      {/* sub-tabs: info / horario de contenido */}
+      <View style={{ flexDirection: 'row', gap: Spacing.sm, marginBottom: Spacing.lg }}>
+        {([['info', '📊 Operación'], ['horario', '🗓️ Horario']] as const).map(([k, lbl]) => (
+          <TouchableOpacity key={k} activeOpacity={0.8} onPress={() => setTab(k)}
+            style={{ paddingVertical: 7, paddingHorizontal: 14, borderRadius: BorderRadius.full, borderWidth: 1,
+              borderColor: tab === k ? brand.bright + '88' : 'rgba(255,255,255,0.1)',
+              backgroundColor: tab === k ? brand.bright + '1A' : 'transparent' }}>
+            <Text style={{ fontSize: FontSize.labelMd, fontWeight: '700', color: tab === k ? brand.bright : Colors.muted }}>{lbl}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+
+      {tab === 'horario' && <BrandHorario brand="pirqa" />}
+
+      {tab === 'info' && (<>
       <Block title="KPIs">
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm }}>
           {p.kpis.map((k, i) => <StatCell key={i} label={k.label} value={k.valor} accent={brand.bright} />)}
@@ -622,6 +639,7 @@ export function PirqaView() {
           ))}
         </View>
       </Block>
+      </>)}
     </View>
   );
 }

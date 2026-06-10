@@ -1,0 +1,453 @@
+{
+ "tools": {
+  "items": [
+   {
+    "nombre": "CapCut Web",
+    "tipo": "Editor web de video",
+    "url": "https://www.capcut.com/tools/online-video-editor",
+    "gratis": "Gratis real para edición estándar: export 1080p SIN marca de agua en exports normales. La marca aparece solo si usas plantillas/efectos marcados 'Pro' o ciertos clips IA. Límites free 2026: 5 auto-ediciones IA/mes, 5 eliminaciones de fondo/mes, ~10 min de auto-subtítulos por video. Pro ~$9.99-19.99/mes (4K, librería completa).",
+    "porQue": "El editor de referencia para Reels/TikTok/Shorts: plantillas verticales virales, auto-captions, text-to-speech, beat sync y export directo a TikTok (es de ByteDance). Corre 100% en navegador sin instalar nada.",
+    "automatizable": "Sí, vía Chrome DevTools/Claude-in-Chrome adjuntado a la sesión real (requiere login ByteDance/Google). Ojo: el timeline es canvas-based, así que la automatización fina de edición es frágil; lo más robusto es automatizar flujos de plantilla + subida de archivos + export."
+   },
+   {
+    "nombre": "Canva (editor de video y Reels)",
+    "tipo": "Editor web de video + diseño",
+    "url": "https://www.canva.com/video-editor/",
+    "gratis": "Tier free genuino y amplio: editor de video completo, plantillas de Reels/TikTok, música libre, Beat Sync, export MP4 sin marca de agua (solo paga si usas elementos Pro). Publica directo a TikTok, Instagram, Facebook, YouTube desde la web.",
+    "porQue": "Ideal para Reels con texto/gráficos de marca y carruseles convertidos a video. Punto CLAVE para este usuario: ya tiene el MCP oficial de Canva conectado en este entorno (generate-design, export-design, upload-asset...), o sea Claude Code puede crear y exportar diseños SIN navegador.",
+    "automatizable": "Doble vía: (1) MCP de Canva ya conectado = automatización por API, la opción más fiable; (2) navegador con DevTools para lo que el MCP no cubra. La mejor relación automatización/esfuerzo de toda la lista."
+   },
+   {
+    "nombre": "Microsoft Clipchamp",
+    "tipo": "Editor web de video",
+    "url": "https://app.clipchamp.com/",
+    "gratis": "Free real con cuenta Microsoft: export 1080p SIN marca de agua (raro en editores web gratis), timeline multipista, auto-captions, grabación de pantalla/webcam, stock royalty-free. 4K y AI premium requieren Microsoft 365 (~$11.99/mes Premium).",
+    "porQue": "El free tier más honesto de los editores web: 1080p limpio sin pagar. Buen plan B a CapCut si no quieres ecosistema ByteDance. Solo funciona en Chrome/Edge (perfecto para DevTools).",
+    "automatizable": "Sí — es web app estándar en Chrome/Edge, login Microsoft. Igual que CapCut, el timeline usa canvas, así que automatiza mejor los flujos de plantilla/subida/export que la edición frame a frame."
+   },
+   {
+    "nombre": "Adobe Express",
+    "tipo": "Editor web de video + diseño",
+    "url": "https://www.adobe.com/express/",
+    "gratis": "Plan free permanente: edición de video en navegador, export MP4 SIN marca de agua, miles de plantillas, captions, resize para redes. Premium (~$9.99/mes) para Firefly IA avanzada y brand kits.",
+    "porQue": "Alternativa sólida con plantillas verticales y captions integrados; en 2026 sumó slip edits y mejoras de captions. Export limpio gratis.",
+    "automatizable": "Sí, web app estándar con login Adobe. Automatizable por DevTools, aunque el editor también es canvas-heavy."
+   },
+   {
+    "nombre": "Veo dentro de Gemini",
+    "tipo": "Generador de video IA",
+    "url": "https://gemini.google.com/",
+    "gratis": "Incluido en el plan pago de Gemini que el usuario YA tiene: en Google AI Pro son ~3 generaciones de video/día (clips de 8 s con audio nativo); el plan free no genera video. Sin costo extra para él.",
+    "porQue": "La ruta de video IA de mayor calidad disponible 'gratis' para este usuario (ya la paga). Veo genera clips verticales con audio listos como B-roll o hook de Reels. Es la respuesta directa a 'tengo plan pago de Gemini'.",
+    "automatizable": "Sí — gemini.google.com es web pura; adjuntando Claude al Chrome con sesión Google activa se puede promptear, esperar la generación y descargar el MP4 vía DevTools."
+   },
+   {
+    "nombre": "Google Flow",
+    "tipo": "Generador/estudio de video IA",
+    "url": "https://labs.google/flow",
+    "gratis": "Incluido con la suscripción Google AI Pro del usuario: ~1.000 créditos Flow/mes (fuentes secundarias citan ~100 clips Veo Lite o ~50 Fast o ~10 Quality/mes [aprox]). Existe tier free con créditos diarios pequeños.",
+    "porQue": "El estudio 'filmmaker' de Google sobre Veo: escenas encadenadas, extensión de clips, ingredientes de imagen (Imagen/Nano Banana), control de cámara. Mucho más volumen mensual que el chat de Gemini para producir B-roll de Reels.",
+    "automatizable": "Sí — web app en labs.google con la misma sesión Google. Automatizable vía Claude-in-Chrome adjunto al Chrome real del usuario (preserva login)."
+   },
+   {
+    "nombre": "Sora (OpenAI) — DESCONTINUADA",
+    "tipo": "Generador de video IA (ya no disponible)",
+    "url": "https://help.openai.com/en/articles/20001152-what-to-know-about-the-sora-discontinuation",
+    "gratis": "N/A — la app web y móvil de Sora fue apagada el 26 de abril de 2026; la API cierra el 24 de septiembre de 2026. Confirmado por el Help Center de OpenAI y Wikipedia.",
+    "porQue": "Respuesta directa a la pregunta '¿Sora tiene web?': NO, ya no. sora.com / sora.chatgpt.com está fuera de servicio desde abril 2026. No planificar nada sobre Sora; usar Veo/Flow (que el usuario ya paga) o las alternativas free de abajo.",
+    "automatizable": "No aplica."
+   },
+   {
+    "nombre": "Kling AI",
+    "tipo": "Generador de video IA",
+    "url": "https://klingai.com/",
+    "gratis": "Free tier con créditos que se renuevan a diario (fuentes 2026 citan ~66 créditos/día [aprox]); clips free ~720p/5 s con marca de agua y SIN derechos comerciales. Planes pagos desbloquean comercial y calidad.",
+    "porQue": "De lo mejor en movimiento humano realista entre los generadores con free tier diario renovable — útil para experimentar hooks de Reels sin gastar. Web pura.",
+    "automatizable": "Sí, web app con login. Automatizable vía DevTools (promptear, esperar cola, descargar). Las colas free pueden ser lentas."
+   },
+   {
+    "nombre": "Hailuo AI (MiniMax)",
+    "tipo": "Generador de video IA",
+    "url": "https://hailuoai.video/",
+    "gratis": "Bono de créditos gratis al registrarse (fuentes 2026 citan ~200 créditos iniciales [aprox]) más recargas diarias limitadas; marca de agua y sin uso comercial en free.",
+    "porQue": "Alternativa free real a Veo para clips cortos con buen dinamismo; popular para B-roll de TikTok. 100% navegador.",
+    "automatizable": "Sí, flujo web estándar automatizable con DevTools."
+   },
+   {
+    "nombre": "Pika",
+    "tipo": "Generador de video IA",
+    "url": "https://pika.art/",
+    "gratis": "Free tier con créditos mensuales limitados (fuentes 2026 citan ~80 créditos/mes [aprox]); marca de agua en free.",
+    "porQue": "Rápida y orientada a efectos virales/memes (Pikaffects) — formato nativo TikTok. Web app pura.",
+    "automatizable": "Sí, automatizable por navegador con login."
+   },
+   {
+    "nombre": "Luma Dream Machine",
+    "tipo": "Generador de video IA",
+    "url": "https://lumalabs.ai/dream-machine",
+    "gratis": "Free tier con créditos mensuales pequeños (fuentes 2026 citan ~30/mes [aprox]); marca de agua y cola lenta en free.",
+    "porQue": "Buena estética cinematográfica para clips cortos; otra alternativa web real post-Sora.",
+    "automatizable": "Sí, web app con login automatizable por DevTools."
+   },
+   {
+    "nombre": "Meta Business Suite",
+    "tipo": "Programador de publicaciones (Facebook + Instagram)",
+    "url": "https://business.facebook.com/",
+    "gratis": "100% gratis, sin tiers: crear, publicar y programar Reels, posts e historias en Facebook e Instagram, con insights incluidos. Es la herramienta oficial de Meta.",
+    "porQue": "El programador nativo y gratuito para Reels de IG/FB — sin límites de posts/mes como los schedulers de terceros. Web completa de escritorio.",
+    "automatizable": "Sí — es de las más automatizables: web app de escritorio con DOM clásico. Adjuntar Claude al Chrome con la sesión de Meta del usuario y se puede subir el MP4, escribir caption y programar fecha/hora vía DevTools."
+   },
+   {
+    "nombre": "TikTok Studio (subida web nativa)",
+    "tipo": "Subida + programador nativo de TikTok",
+    "url": "https://www.tiktok.com/tiktokstudio",
+    "gratis": "100% gratis. Subir videos desde el navegador y programarlos hasta 10 días por adelantado (requiere cuenta Creator o Business, que también es gratis). No se puede editar un post programado: hay que borrar y resubir.",
+    "porQue": "La única forma oficial y gratuita de programar TikToks; la programación SOLO existe en la web de escritorio, no en la app móvil — perfecto para automatización por navegador. El algoritmo no penaliza posts programados.",
+    "automatizable": "Sí, vía Claude-in-Chrome con la sesión real de TikTok (evita los problemas de bot-detection de una sesión limpia). Subir archivo, caption, hashtags, portada y botón Schedule: todo DOM web."
+   },
+   {
+    "nombre": "YouTube Studio",
+    "tipo": "Subida + programador de Shorts (y subtítulos gratis)",
+    "url": "https://studio.youtube.com/",
+    "gratis": "100% gratis: subir Shorts (vertical, hasta 3 min), programar fecha/hora sin límite de antelación, editar programados, y además genera subtítulos automáticos gratuitos en cada video.",
+    "porQue": "Programador nativo de Shorts más flexible de los tres (se puede editar lo programado, sin ventana de 10 días). Bonus: sus auto-captions sirven como generador de subtítulos gratis (subes como 'oculto', descargas el .srt).",
+    "automatizable": "Sí — web app robusta con la sesión Google ya activa del usuario. Flujo subir→detalles→Programar es automatizable vía DevTools; Google además ofrece la YouTube Data API si se quiere salir del navegador."
+   },
+   {
+    "nombre": "Metricool",
+    "tipo": "Programador multi-red + analítica",
+    "url": "https://metricool.com/",
+    "gratis": "Plan free real: 1 marca, ~50 publicaciones programadas/mes (la cifra varía entre 20-50 según conexión [aprox]), Instagram + TikTok + Facebook + YouTube incluidos (LinkedIn/X excluidos del free), analítica 30 días y autolistas.",
+    "porQue": "El mejor scheduler third-party gratis en español: un solo calendario para Reels + TikTok + Shorts con publicación automática real. Empresa española, UI en castellano.",
+    "automatizable": "Sí — dashboard web clásico, muy automatizable por DevTools (formularios estándar, subida de archivo, picker de fecha)."
+   },
+   {
+    "nombre": "Buffer",
+    "tipo": "Programador multi-red",
+    "url": "https://buffer.com/",
+    "gratis": "Plan free permanente: 3 canales conectados (TikTok, Instagram, YouTube, Facebook, Threads, etc.), hasta 10 posts en cola por canal (30 en total), sin límite de antelación. Sin analítica ni IA en free.",
+    "porQue": "Alternativa free sencilla a Metricool si solo se necesitan 3 canales; interfaz muy limpia que facilita la automatización.",
+    "automatizable": "Sí — web app con DOM muy simple y predecible, de las más fáciles de scriptear vía DevTools."
+   },
+   {
+    "nombre": "ElevenLabs",
+    "tipo": "Generador de voz IA (TTS)",
+    "url": "https://elevenlabs.io/",
+    "gratis": "Free tier: 10.000 créditos/mes ≈ 10 min de voz Multilingual v2 (o ~20 min en modelo Flash), 2.500 caracteres por generación. OJO: el free NO incluye licencia comercial sin atribución a ElevenLabs.",
+    "porQue": "La mejor calidad de voz en español para voiceovers de Reels; 10 min/mes alcanza para ~15-20 shorts de 30 s. Todo en navegador.",
+    "automatizable": "Sí — web app estándar (escribir texto, elegir voz, generar, descargar MP3) automatizable vía DevTools; también tiene API (aunque la API free es casi nula: 10 créditos/mes)."
+   },
+   {
+    "nombre": "TTSMaker",
+    "tipo": "Generador de voz IA (TTS) — gratis total",
+    "url": "https://ttsmaker.com/",
+    "gratis": "El más gratis de verdad de toda la lista: 20.000 caracteres/semana, varias voces marcadas 'Unlimited' sin límite, USO COMERCIAL PERMITIDO sin atribución y 100% del copyright para el usuario. Sin registro obligatorio.",
+    "porQue": "Voiceovers para TikTok/YouTube con derechos comerciales a costo cero — lo que ElevenLabs free no da. 100+ idiomas incluido español. Calidad inferior a ElevenLabs pero suficiente para shorts.",
+    "automatizable": "Sí — es la web más simple de automatizar de todas: un formulario HTML plano (textarea + select de voz + botón convertir + link de descarga), ideal para DevTools sin login."
+   },
+   {
+    "nombre": "Kapwing",
+    "tipo": "Subtítulos automáticos + editor web",
+    "url": "https://www.kapwing.com/subtitles",
+    "gratis": "Free tier restrictivo: ~10 min de auto-subtitulado/mes y marca de agua en exports free. Pro ~$16/mes la quita. Precisión ~75-85%.",
+    "porQue": "Generador de subtítulos estilo karaoke/dinámico popular para Reels, con editor de captions palabra a palabra en navegador. Úsalo si CapCut/Clipchamp no bastan.",
+    "automatizable": "Sí, web app estándar automatizable por DevTools."
+   },
+   {
+    "nombre": "VEED",
+    "tipo": "Subtítulos automáticos + editor web",
+    "url": "https://www.veed.io/",
+    "gratis": "Free: ~30 min de auto-subtítulos/mes pero export 720p CON marca de agua. Lite ~$12/mes quita marca y sube a 1080p.",
+    "porQue": "Más minutos free de subtitulado que Kapwing (30 vs 10), útil para borradores; la marca de agua lo limita para publicar directo.",
+    "automatizable": "Sí, web app estándar automatizable por DevTools."
+   }
+  ],
+  "notas": "VERIFICACIÓN (junio 2026): Todas las URLs y herramientas son reales y verificadas vía búsqueda web. Las cifras de créditos de los generadores IA chinos/startups (Kling, Hailuo, Pika, Luma) provienen de fuentes secundarias de 2026 y cambian con frecuencia: marcadas [aprox]. — HALLAZGOS CLAVE: (1) Sora de OpenAI YA NO EXISTE como producto web: app cerrada el 26/abr/2026, API cierra el 24/sep/2026 (fuente: Help Center de OpenAI y Wikipedia). No planificar nada sobre Sora. (2) Como el usuario paga Gemini, su stack de video IA óptimo y sin costo adicional es Veo en gemini.google.com (~3 gen/día en AI Pro) + Google Flow en labs.google/flow (~1.000 créditos/mes incluidos). (3) Canva tiene MCP oficial YA CONECTADO en este entorno de Claude Code (generate-design, export-design, etc.) — para Canva conviene automatizar por MCP, no por DevTools. — STACK GRATUITO RECOMENDADO PARA AUTOMATIZAR: crear (Veo/Flow o Canva-MCP) → editar/subtitular (CapCut Web o Clipchamp, ambos 1080p sin watermark en flujos estándar) → voz (TTSMaker si se necesita licencia comercial gratis; ElevenLabs free para máxima calidad sin uso comercial) → programar (Meta Business Suite para IG/FB + TikTok Studio web hasta 10 días + YouTube Studio para Shorts; o Metricool free como calendario unificado en español, ~20-50 posts/mes). — NOTAS DE AUTOMATIZACIÓN: según el CLAUDE.md del usuario, adjuntarse al Chrome real (auto-connect) preserva los logins de Meta/TikTok/Google/ByteDance, lo cual es crítico: TikTok y Meta tienen detección de bots agresiva con sesiones limpias. Los editores (CapCut/Clipchamp/Canva web) usan timelines canvas-based: automatizar flujos de plantilla+subida+export es robusto; la edición fina frame a frame por DOM no lo es. Los formularios de los programadores (Business Suite, TikTok Studio, YouTube Studio, Metricool, Buffer) son DOM clásico y muy automatizables. TTSMaker es la web más simple de toda la lista para scriptear (formulario plano, sin login). — Limitación de búsqueda: WebSearch es US-only; disponibilidad regional (p.ej. Perú/España) de los free tiers de IA puede variar."
+ },
+ "salud": {
+  "items": [
+   {
+    "nombre": "Dr. Sebastián Arrieta (@doctorarrietam) — Perú",
+    "tipo": "TikTok/Instagram — medicina de obesidad (modelo más cercano a Pulso)",
+    "porQue": "Médico peruano con máster en Obesidad y Trastornos de la Conducta Alimentaria; ~1.1M en Instagram y TikTok con videos que superan 2M de vistas. Es EL modelo para Pulso: médico-creador peruano que convirtió contenido de pérdida de peso en pacientes para su propio centro médico (Regenaria). Formato: cámara frontal con bata, 30-60s, hook de alarma/pregunta ('🚨¿QUÉ PASA SI SOLO COMES CARNE?🚨'), mayúsculas y emojis en caption, y SIEMPRE cita las fuentes científicas al final del caption (PubMed) — eso le da diferenciación de autoridad frente a charlatanes. Además usa su historia personal (pesó 121 kg) como narrativa de marca. Replicable 1:1 desde Huancayo.",
+    "url": "https://www.tiktok.com/@doctorarrietam (perfil) · https://doctorarrieta.com (web/clínica) · https://elcomercio.pe/somos/historias/tiktok-la-historia-del-doctor-tiktok-y-como-salto-de-los-consultorios-a-internet-sebastian-arrieta-consalud-instagram-isabella-devoto-aptz-noticia/",
+    "gratis": "Sí (contenido público)",
+    "automatizable": "Formato replicable: guion 60s + smartphone + caption con fuentes; calendario de mitos alimentarios"
+   },
+   {
+    "nombre": "Dr. Elmer Huerta — Perú/EEUU",
+    "tipo": "Radio/YouTube/prensa — referente de confianza médica en Perú",
+    "porQue": "Oncólogo y salubrista peruano, ex presidente de la American Cancer Society; voz médica más confiable del país vía 'Espacio Vital' y 'Consultorio' en RPP, columnas en El Comercio y CNN en Español. No es modelo de formato viral, sino de POSICIONAMIENTO: el formato 'consultorio abierto' (responder preguntas reales de oyentes/pacientes) es oro para una clínica en Huancayo — un live semanal de Q&A en TikTok/Facebook replica exactamente eso y conecta con el público adulto de provincia que ya confía en ese estilo radial.",
+    "url": "https://es.wikipedia.org/wiki/Elmer_Huerta · https://rpp.pe/vital/expertos/dr-elmer-huerta-en-vivo-noticia-981301 · https://www.youtube.com/watch?v=MJzG1yW6rnY",
+    "gratis": "Sí (contenido público)",
+    "automatizable": "Formato Q&A en vivo replicable; recortar el live en clips para TikTok/Reels"
+   },
+   {
+    "nombre": "Dr. Fabrizio Crudo (@dr.fit.pe) — Perú",
+    "tipo": "Instagram/TikTok — médico peruano estilo de vida/fitness",
+    "porQue": "Médico peruano (~280K en Instagram según ranking HypeAuditor de salud-medicina Perú) con contenido de hábitos, ejercicio y peso en tono cercano y aspiracional. Útil como benchmark local de segundo nivel: demuestra que en Perú hay espacio entre el médico institucional (Huerta) y el viral (Arrieta). Su branding 'dr.fit' enseña cómo nichar el handle al beneficio (para Pulso: peso/metabolismo).",
+    "url": "https://hypeauditor.com/es/top-instagram-health-medicine-peru/ (ranking verificable) · https://www.instagram.com/dr.fit.pe [aprox]",
+    "gratis": "Sí (contenido público)",
+    "automatizable": "Sí — contenido de hábitos serializable (series semanales)"
+   },
+   {
+    "nombre": "Doctor Vic — México",
+    "tipo": "YouTube/podcast — el médico hispano con más suscriptores de LatAm",
+    "porQue": "Traumatólogo mexicano, +2M suscriptores en YouTube (el médico con más seguidores de LatAm) y podcast 'Medicina Viral'. Formatos que le funcionan: storytime médico ('ME OFRECIERON $1 MILLÓN POR DECIR ESTO'), vlogs '24 horas con...' (especialistas invitados) y colaboraciones entre médicos. Para Pulso: el formato '24 horas en la clínica' / 'un día con el endocrinólogo' humaniza al staff y es de los pocos formatos largos que crean confianza pre-consulta.",
+    "url": "https://www.youtube.com/channel/UCh3T5sZOEL6vuOIdO69IKCQ · https://www.saludiario.com/7-medicos-mexicanos-que-ademas-son-creadores-de-contenido-en-youtube-y-debes-conocer/",
+    "gratis": "Sí (contenido público)",
+    "automatizable": "Parcial — vlogs requieren producción; clips del podcast sí son automatizables"
+   },
+   {
+    "nombre": "Mr Doctor (Jorge Arroyo) — México",
+    "tipo": "YouTube/TikTok — internista 'anti-charlatanes'",
+    "porQue": "Internista certificado (UNAM) famoso por la serie 'Mr Doctor vs Charlatanes': reacciona y desmonta a vendedores de curas milagro. El formato react/desmentido genera retención altísima y posiciona al médico como filtro de verdad — muy relevante en peso/GLP-1 donde abundan 'Ozempic natural' y tés milagrosos. Advertencia útil: su estilo confrontacional le trajo demandas y amenazas; para una clínica conviene la versión suave ('esto dice la evidencia vs. lo que viste en TikTok') sin nombrar personas.",
+    "url": "https://www.youtube.com/playlist?list=PLk2uINQhi0-7w8YNFEh5oZ4j4huRHDyPc · https://www.infobae.com/mexico/2024/12/22/quien-es-mr-doctor-el-medico-influencer-que-sufrio-amenazas-de-muerte/",
+    "gratis": "Sí (contenido público)",
+    "automatizable": "Sí — formato react: pantalla dividida sobre video viral + corrección con evidencia"
+   },
+   {
+    "nombre": "Dr. Carlos Jaramillo — Colombia",
+    "tipo": "YouTube largo — metabolismo y hábitos (3.8M+ subs)",
+    "porQue": "Cirujano colombiano, ~3.87M en YouTube, 2.2M Facebook, 1.7M Instagram. Domina el formato 'masterclass' de 20-60 min sobre metabolismo, insulina, ayuno y hábitos — demuestra que el público hispano SÍ consume video largo de salud metabólica (clave para educar pacientes GLP-1 antes de la consulta). Ojo: es medicina funcional, con afirmaciones que a veces exceden la evidencia; copiar el FORMATO (pizarra, analogías simples, títulos de beneficio directo) y no necesariamente todo el contenido.",
+    "url": "https://www.youtube.com/channel/UCykTiaMobl2EWW28zmjcznQ · https://drcarlosjaramillo.com/",
+    "gratis": "Sí (contenido público)",
+    "automatizable": "Sí — video largo educativo → 5-8 clips cortos por episodio"
+   },
+   {
+    "nombre": "Dr. La Rosa (Sebastián La Rosa) — Argentina",
+    "tipo": "YouTube/TikTok — hábitos y longevidad (6M+ subs)",
+    "porQue": "Médico argentino con +6.3M suscriptores en YouTube; videos semanales de hábitos, sueño, nutrición y longevidad. Su fórmula: títulos de listicle con beneficio concreto ('Yo tomo esto todos los días'), miniaturas con su cara + objeto, ritmo de corte rápido y duración 8-15 min. Es la prueba de mayor escala de que salud-hábitos en español es un mercado masivo. Misma advertencia que Jaramillo: combina evidencia con terapias complementarias (homeopatía/MTC) — imitar formato y empaquetado, con el rigor que Pulso quiera defender clínicamente.",
+    "url": "https://www.youtube.com/channel/UCqA4L7zgzJFS01F2km1yiDw · https://www.infobae.com/reportajes/2025/07/23/sebastian-la-rosa-el-medico-que-desafia-los-mitos-sobre-longevidad-habitos-cotidianos-ritmos-biologicos-y-la-ciencia-detras-de-una-vida-mas-larga/",
+    "gratis": "Sí (contenido público)",
+    "automatizable": "Sí — plantilla de listicle ('5 cosas que...'); banco de B-roll reutilizable"
+   },
+   {
+    "nombre": "Dr. Rawdy (Rawdy Reales) — Colombia",
+    "tipo": "TikTok — internista/fellow de endocrinología, 7.3M seguidores",
+    "porQue": "Internista colombiano haciendo fellowship de ENDOCRINOLOGÍA (el nicho hormonal exacto de Pulso) con 7.3M en TikTok (@dr.rawdy). Formato: humor + docencia en clips de 30-60s, sketches de situaciones médicas cotidianas, reacciones a influencers, y storytelling emocional de pacientes (publicó libro 'Historias que curan'). Demuestra que endocrinología/hormonas puede ser contenido masivo en español si se baja a situaciones de la vida diaria ('¿por qué engordo si como poco?').",
+    "url": "https://www.tiktok.com/@dr.rawdy · https://es.famousbirthdays.com/people/dr--rawdy-rois.html",
+    "gratis": "Sí (contenido público)",
+    "automatizable": "Sí — sketches y POV con guiones cortos; serie 'historias de consulta' (anonimizadas)"
+   },
+   {
+    "nombre": "Dr. Borja Bandera — España",
+    "tipo": "YouTube — endocrinólogo, referencia GLP-1/Ozempic en español",
+    "porQue": "Endocrinólogo y nutricionista español, de las voces más influyentes de salud metabólica en habla hispana. Es EL referente en español para contenido GLP-1: videos explicando cómo funcionan Ozempic/Mounjaro, efectos secundarios y por qué el fármaco no sustituye hábitos — exactamente el guion editorial que una clínica GLP-1 responsable necesita. Formato: explainer a cámara 10-20 min con evidencia citada + shorts derivados; tono sereno, cero sensacionalismo, lo que construye confianza de paciente (no de espectador).",
+    "url": "https://www.youtube.com/@BorjaBandera · http://borjabandera.es/",
+    "gratis": "Sí (contenido público)",
+    "automatizable": "Sí — cada pregunta frecuente de pacientes GLP-1 = un video; shorts derivados del largo"
+   },
+   {
+    "nombre": "Isabel Viña Bas — España",
+    "tipo": "TikTok/Instagram/podcast — médica de salud hormonal",
+    "porQue": "Médica española (residencia en Endocrinología y Nutrición) con ~435K Instagram, ~140K TikTok y el podcast 'Tus amigas las hormonas' (2.º más escuchado de salud/fitness en España, top 30 en español mundial). Modelo perfecto del pilar HORMONAL de Pulso: explica cortisol, tiroides, suplementación y ciclos con rigor pero en lenguaje 'amigas'. Su hook típico: afirmación contraintuitiva con horario/acción concreta ('no retrases el café de la mañana'). Demuestra que el podcast de nicho hormonal en español tiene demanda enorme.",
+    "url": "https://www.tiktok.com/@isabelvinabas · https://podcasts.apple.com/es/podcast/tus-amigas-las-hormonas/id1661998041 · https://www.youtube.com/@isabelvina",
+    "gratis": "Sí (contenido público)",
+    "automatizable": "Sí — podcast quincenal + clips; preguntas de pacientes como temario"
+   },
+   {
+    "nombre": "Dra. Miriam Al Adib Mendiri — España",
+    "tipo": "Instagram — ginecóloga (hormonas, menopausia)",
+    "porQue": "Ginecóloga-obstetra, directora de sus propias clínicas (MiriamGine), +166K en Instagram, autora de 'Cuando las hormonas se desmadran' y 'Hablemos de menopausia'. Modelo de médica-dueña-de-clínica que usa divulgación para alimentar su consulta: el mismo movimiento que Pulso quiere hacer. Estilo: videos a cámara cercanos, sin sobreproducción, derribando tabús (menopausia, suelo pélvico) + libros como ancla de autoridad. El nicho menopausia/40+ está sub-atendido en español y es paciente ideal de clínica hormonal.",
+    "url": "https://www.instagram.com/miriam_al_adib/ · https://miriamaladib.com/trayectoria/",
+    "gratis": "Sí (contenido público)",
+    "automatizable": "Sí — serie de tabús hormonales; bajo costo de producción"
+   },
+   {
+    "nombre": "Marian Rojas Estapé — España",
+    "tipo": "Instagram/YouTube/podcast — psiquiatra, 5M seguidores",
+    "porQue": "Psiquiatra del Instituto Rojas-Estapé con ~5M en Instagram, canal YouTube propio y uno de los podcasts de salud/bienestar más escuchados del mundo en español; libros traducidos a 40 países. Su fórmula: 'píldoras de salud mental' — clips de 60-90s recortados de conferencias y entrevistas donde explica cortisol, ansiedad y vínculos con UNA metáfora memorable por clip. Para el pilar de salud mental de Pulso: el formato conferencia/charla grabada → clips es el de mejor ROI por hora de grabación, y su tono cálido-científico es el techo aspiracional del nicho.",
+    "url": "https://www.instagram.com/marianrojasestape/ · https://www.youtube.com/@marianrojas-estape · https://marianrojas.com/",
+    "gratis": "Sí (contenido público)",
+    "automatizable": "Sí — 1 charla grabada = 10+ clips; muy alto apalancamiento"
+   },
+   {
+    "nombre": "María Esclapez — España",
+    "tipo": "Instagram — psicóloga sanitaria (561K)",
+    "porQue": "Psicóloga clínica y sexóloga con 561K en Instagram y 6 libros (+350K lectores). Su formato distintivo: carruseles/infografías ('red flags en relaciones', 'señales de ansiedad') + reels explicativos — demuestra que en salud mental el formato GRÁFICO guardable/compartible funciona tan bien como el video, y es mucho más barato de producir. Para Pulso: carruseles de psicoeducación (ansiedad, insomnio y ánimo) generan guardados, que el algoritmo de Instagram premia, y derivan a consulta.",
+    "url": "https://www.instagram.com/maria_esclapez/ · https://es.wikipedia.org/wiki/Mar%C3%ADa_Esclapez",
+    "gratis": "Sí (contenido público)",
+    "automatizable": "Sí — plantillas de carrusel en Canva; el formato más automatizable de la lista"
+   },
+   {
+    "nombre": "Boticaria García (Marián García) — España",
+    "tipo": "Instagram/TV/libros — divulgación con humor y props",
+    "porQue": "Doctora en Farmacia y nutricionista, ~919K en Instagram, saltó de farmacia rural a referente nacional (TV, radio, Pasapalabra). Su sello: desmontar mitos con objetos cotidianos y humor blanco (explicar saciedad con un tupper, hormonas con peluches) — formato 'profesora simpática' que funciona con audiencia 35-60 años, justo el perfil de paciente de peso/menopausia. Enseña que el crossover a medios tradicionales (radio/TV local de Huancayo) multiplica la confianza en provincia.",
+    "url": "https://www.instagram.com/boticariagarcia/ · https://boticariagarcia.com/sobre-mi/",
+    "gratis": "Sí (contenido público)",
+    "automatizable": "Sí — mitos semanales con props; replicable en consultorio"
+   },
+   {
+    "nombre": "Farmacéutico Fernández (Álvaro Fernández) — España",
+    "tipo": "TikTok — 3.8M seguidores, humor + Q&A de salud",
+    "porQue": "Farmacéutico madrileño con 3.8M en TikTok y ~1M en Instagram. Su motor de contenido: responder en 30-45s las preguntas que la gente no se atreve a hacer en persona ('el anonimato de las redes hace que pregunten lo que presencialmente no se atreven' — su propia tesis). Para Pulso: el buzón anónimo de preguntas (sueño, peso, hormonas, salud sexual) es una máquina infinita de contenido con demanda probada, y el tono humor-sin-burla baja la barrera para pedir cita.",
+    "url": "https://www.tiktok.com/@farmaceuticofernandez · https://www.elespanol.com/ciencia/salud/20241014/farmaceutico-fernandez-boticario-madrileno-conquistado-millones-personas-tiktok/892661188_0.html",
+    "gratis": "Sí (contenido público)",
+    "automatizable": "Sí — caja de preguntas IG/TikTok → 1 respuesta = 1 video"
+   },
+   {
+    "nombre": "Doctor Mike (Mikhail Varshavski) — EEUU",
+    "tipo": "YouTube — 14.9M subs, formato react (referente gringo #1)",
+    "porQue": "Médico de familia en NYC, ~14.9M suscriptores. Su formato insignia: 'Doctor reacts' a TikToks médicos, series de TV y casos de ER — mezcla entretenimiento + corrección de desinformación con producción impecable y carisma. Totalmente traducible: 'Doctora de Pulso reacciona a consejos virales de Ozempic/melatonina/dietas en TikTok Perú'. Lección clave de formato: la reacción aporta el gancho (el video viral ya probó que captura atención) y el médico aporta el valor.",
+    "url": "https://www.youtube.com/@DoctorMike · https://socialblade.com/youtube/c/doctormike",
+    "gratis": "Sí (contenido público)",
+    "automatizable": "Sí — pipeline: detectar viral de salud en Perú → guion de corrección → grabar react"
+   },
+   {
+    "nombre": "Dr. Karan Rajan — Reino Unido",
+    "tipo": "TikTok/YouTube — cirujano NHS, +10M seguidores combinados, mitos en 60s",
+    "porQue": "Cirujano del NHS con +10M de seguidores sumando TikTok/YouTube/IG/Facebook desde 2020. Fórmula quirúrgica: desmontar UN mito en menos de 60 segundos — dato rápido, evidencia, humor negro ligero, cero relleno; mucho contenido de sueño e intestino (pilares de Pulso). Es el mejor modelo de 'stitch/respuesta' a videos virales: el médico aparece sobre el video falso y lo corrige. Autor bestseller ('This Book May Save Your Life') — muestra el camino contenido→libro→autoridad.",
+    "url": "https://www.drkaranrajan.com/about · TikTok: @dr.karanr [aprox]",
+    "gratis": "Sí (contenido público)",
+    "automatizable": "Sí — formato de 1 mito/60s, el más fácil de serializar en español"
+   },
+   {
+    "nombre": "Dr. Spencer Nadolsky — EEUU",
+    "tipo": "Telemedicina + redes — médico de obesidad/GLP-1 ('el doctor que levanta pesas')",
+    "porQue": "Médico de medicina de obesidad, fundador de Vineyard (clínica de cuidado integral GLP-1) y voz constante en podcasts/YouTube explicando agonistas GLP-1, efectos secundarios y manejo (Sigma Nutrition #582, Longevity by Design). Es el modelo de NEGOCIO más relevante: médico-creador cuyo contenido GLP-1 alimenta directamente su clínica de peso — exactamente la jugada Pulso. Su ángulo diferencial: GLP-1 + ejercicio de fuerza + nutrición, no solo la receta.",
+    "url": "https://joinvineyard.com/ · https://sigmanutrition.com/episode582/ · Instagram: @drnadolsky [aprox]",
+    "gratis": "Sí (contenido público)",
+    "automatizable": "Parcial — el contenido sí; el modelo clínico requiere protocolo médico propio"
+   },
+   {
+    "nombre": "Dr. Michael Breus ('The Sleep Doctor') — EEUU",
+    "tipo": "Instagram/TikTok/web — nicho sueño puro",
+    "porQue": "Psicólogo clínico especializado en sueño (25 años de práctica), autor bestseller ('The Power of When'), cuentas @thesleepdoctor con cientos de miles de seguidores y videos de TikTok de +2M de vistas con tips concretos de higiene del sueño. Modelo del pilar SUEÑO de Pulso: tips accionables de 30s ('técnica de la alarma matutina'), cronotipos como gancho de personalización (quiz '¿qué cronotipo eres?' = lead magnet) y marca 'doctor del sueño' apropiable en español ('El Doctor del Sueño de Huancayo').",
+    "url": "https://www.instagram.com/thesleepdoctor/ · https://sleepdoctor.com/pages/dr-michael-breus",
+    "gratis": "Sí (contenido público)",
+    "automatizable": "Sí — tips de higiene del sueño serializables; quiz de cronotipo como captación"
+   },
+   {
+    "nombre": "Dra. Carmen Chacón — Chile",
+    "tipo": "YouTube/TikTok — somnóloga en español",
+    "porQue": "Especialista en medicina del sueño e hipnosis clínica con canal de YouTube propio (@dra.carmenchacon-somnologo) y presencia en TikTok/Instagram; explica higiene del sueño con consejos prácticos en español. Audiencia menor que el resto de la lista, pero vale como prueba directa de que el nicho 'somnólogo divulgador' en español está casi VACÍO — oportunidad de océano azul para Pulso: ser la referencia de sueño en español con volumen de publicación constante.",
+    "url": "https://www.youtube.com/@dra.carmenchacon-somnologo",
+    "gratis": "Sí (contenido público)",
+    "automatizable": "Sí — nicho con poca competencia; mismo formato tips + casos"
+   }
+  ],
+  "notas": "SÍNTESIS DE FORMATO (qué funciona 2025-2026, patrones observados en los canales verificados): (1) HOOKS — los 4 que se repiten: pregunta de alarma con emoji ('🚨¿Qué pasa si...?' — Arrieta), afirmación contraintuitiva accionable ('No retrases tu café de la mañana' — Viña), react/stitch sobre un video ya viral (Doctor Mike, Mr Doctor, Karan Rajan) y storytime personal/de paciente ('Pesé 121 kg' — Arrieta; 'Me ofrecieron $1 millón por decir esto' — Doctor Vic). (2) DURACIÓN — TikTok/Reels 30-60s un solo concepto; Shorts derivados de video largo; YouTube educativo 8-20 min (La Rosa, Borja Bandera); masterclass/podcast 40-60 min (Jaramillo, Rojas Estapé, Viña). El embudo ganador: corto viral → video largo → cita en clínica. (3) ESTILO — bata + consultorio real como señal de autoridad; subtítulos grandes (consumo sin audio); citar fuentes en el caption (diferenciador anti-charlatán, Arrieta lo hace sistemáticamente); humor blanco sin burlarse del paciente; cara del médico SIEMPRE (las cuentas de 'clínica' sin rostro no traccionan — la marca es el médico, la clínica monetiza). (4) GAPS APROVECHABLES PARA PULSO: sueño en español casi vacío; GLP-1 responsable en español lo cubre casi solo Borja Bandera (nadie en Perú); menopausia/40+ sub-atendido en LatAm. (5) ADVERTENCIAS: Jaramillo y La Rosa mezclan evidencia con medicina funcional/complementaria — copiar formato, no necesariamente contenido; el estilo confrontacional de Mr Doctor genera demandas, mejor versión suave. Cifras de seguidores según fuentes de prensa/rankings 2024-2026 (El Español, Infobae, Hola, HypeAuditor, Social Blade) — verificables en las URLs incluidas; los dos handles marcados [aprox] (TikTok de Karan Rajan e IG de Nadolsky) tienen web oficial verificada como URL principal. Todos los canales listados son reales y verificados vía búsqueda web; ninguno inventado."
+ },
+ "otros": {
+  "items": [
+   {
+    "nombre": "La Casita de Ricardo (@pachamancas.lcr)",
+    "tipo": "(a) Restaurante de pachamanca — TikTok + Instagram",
+    "porQue": "EL caso de referencia directo: huarique de San Miguel (Lima) con +20 años que se viralizó en TikTok gracias a su pachamanca a la tierra. Su cuenta propia publica el proceso (piedras, destape, vapor) y además decenas de foodies lo reseñan con precios y dirección en pantalla. Formato ganador: destape de la pachamanca como clímax + reseñas de terceros con 'datazo' (precio, ubicación, horario).",
+    "url": "https://www.tiktok.com/@pachamancas.lcr | https://www.instagram.com/pachamancas.lcr/",
+    "gratis": "Sí (contenido público)",
+    "automatizable": "Replicable: invitar foodies + publicar el destape semanal"
+   },
+   {
+    "nombre": "Waldir Maqque (@waldir.maqque)",
+    "tipo": "(a) Creador de cocina andina — TikTok",
+    "porQue": "Creador cusqueño que cocina pachamanca, pachacaja y huatia en el campo con su familia. Formato ganador: proceso completo paso a paso (cavar, calentar piedras, tapar, destapar) con narración cercana en primera persona ('así de sencillo, qué riquito está'). Es la referencia exacta de tono para una experiencia gastronómica andina auténtica.",
+    "url": "https://www.tiktok.com/@waldir.maqque",
+    "gratis": "Sí (contenido público)",
+    "automatizable": "Formato replicable con cada servicio de pachamanca del restaurante"
+   },
+   {
+    "nombre": "Azucena Mondalgo (@mondalgo.azucena)",
+    "tipo": "(a) Creadora de vida rural andina — TikTok",
+    "porQue": "Tiktoker peruana de vida en el campo (+766K seguidores en su cuenta original según Trome; videos de pachamanca con cuy con 230K likes y un viral de 7M de vistas). Formato ganador: autenticidad rural sin producción — cocina a leña, picante de cuy, lechón, día a día en el campo. Nota: su cuenta original @azucenamondalgo fue dada de baja; la activa es @mondalgo.azucena.",
+    "url": "https://www.tiktok.com/@mondalgo.azucena",
+    "gratis": "Sí (contenido público)"
+   },
+   {
+    "nombre": "Buenazo! (@buenazo.peru)",
+    "tipo": "(a) Marca de recetas peruanas — TikTok/YouTube",
+    "porQue": "Marca de cocina peruana (del grupo RPP) con recetas cortas paso a paso, incluida pachamanca a la olla. Referencia de formato 'receta vertical en 60-90 segundos' con texto en pantalla y cortes rápidos.",
+    "url": "https://www.tiktok.com/@buenazo.peru",
+    "gratis": "Sí (contenido público)"
+   },
+   {
+    "nombre": "Perú Foodies (@peru.foodies)",
+    "tipo": "(a) Cuenta de reseñas/datazos de restaurantes — TikTok",
+    "porQue": "Cuenta de recomendaciones de restaurantes en Lima; su video sobre La Casita de Ricardo demuestra el motor de tráfico real: el restaurante no necesita viralizarse solo, los foodies lo viralizan. Estrategia accionable: invitar 3-5 cuentas foodie a la experiencia pachamanca a cambio de contenido.",
+    "url": "https://www.tiktok.com/@peru.foodies",
+    "gratis": "Sí (la invitación/canje es el costo)"
+   },
+   {
+    "nombre": "Gastón Acurio (@gastonacurio)",
+    "tipo": "(a) Chef referente de storytelling gastronómico — Instagram",
+    "porQue": "1M de seguidores. Referencia de formato 'historia detrás del plato': habla del productor, del origen andino, de la memoria. Para un restaurante de experiencia (no solo comida), este es el tono aspiracional del copy.",
+    "url": "https://www.instagram.com/gastonacurio/",
+    "gratis": "Sí (contenido público)"
+   },
+   {
+    "nombre": "Marlon Diez (@marlon_diez)",
+    "tipo": "(a) Creador viajero de comida — TikTok",
+    "porQue": "Documentó la pachamanca a la tierra en Perú en formato 'experiencia del visitante': asombro, reacción al probar, explicación de la técnica. Es el formato exacto de 'reacción del cliente' que el restaurante puede replicar con sus propios comensales (con permiso).",
+    "url": "https://www.tiktok.com/@marlon_diez",
+    "gratis": "Sí (contenido público)"
+   },
+   {
+    "nombre": "Luciano Mazzetti (@viajerosoy)",
+    "tipo": "(a) Chef peruano viajero — Instagram/TikTok [aprox]",
+    "porQue": "Chef y conductor peruano que recorre el país mostrando cocina regional; referencia de formato viaje + cocina + territorio. Handle citado por Modash como @viajerosoy; URL exacta no verificada de primera mano, marcar como [aprox].",
+    "url": "https://www.instagram.com/viajerosoy/ [aprox]",
+    "gratis": "Sí (contenido público)"
+   },
+   {
+    "nombre": "Soul Desire Goldens (Nicole Goeckeritz)",
+    "tipo": "(b) CRIADORA de golden retriever con tracción — TikTok + Instagram + web",
+    "porQue": "El referente más directo para el negocio: criadora hobby de Utah cuyo video de una cachorra sentada en el bowl de agua hizo 27.9M de vistas en 2 meses (Daily Paws). Formato ganador: camadas con temas (pide ideas de nombres a la audiencia = engagement), updates de recién nacidos, crianza Puppy Culture visible (genera confianza de comprador). Convierte contenido en lista de espera.",
+    "url": "https://www.tiktok.com/@soul_desire_goldens | https://www.instagram.com/soul_desire_goldens/ | https://www.souldesiregoldenretrievers.com/",
+    "gratis": "Sí (contenido público)",
+    "automatizable": "Calendario por camada: nacimiento → semana a semana → pick day → entrega"
+   },
+   {
+    "nombre": "Tucker Budzyn (@tuckerbudzyn)",
+    "tipo": "(b) Cuenta de golden más grande del mundo — TikTok/IG/YouTube",
+    "porQue": "11.7M en TikTok, 4M en IG, +5M en YouTube. Formato ganador: skits cortos con 'voz interna' del perro (subtítulos como si el perro hablara), dinámica dueña-perro-cachorro (Tucker y su hijo Todd). El arco 'perro adulto conoce a su cachorro' es de los formatos más virales del nicho.",
+    "url": "https://www.tiktok.com/@tuckerbudzyn | https://www.instagram.com/tuckerbudzyn/ | https://www.youtube.com/channel/UCNSzfesc7IgWZwg4n6uXr1A",
+    "gratis": "Sí (contenido público)"
+   },
+   {
+    "nombre": "A Guy and A Golden — Teddy (@aguyandagolden)",
+    "tipo": "(b) Dúo dueño-golden — TikTok",
+    "porQue": "17M de seguidores y +10B de vistas. Formato ganador: rutinas diarias y trucos del perro con su dueño Jonathan, clips de 15-30s sin producción, repetibles. Demuestra que la consistencia en momentos cotidianos reales supera al contenido producido.",
+    "url": "https://www.tiktok.com/@aguyandagolden",
+    "gratis": "Sí (contenido público)"
+   },
+   {
+    "nombre": "Golden Retriever Life — Ellie (@elliegoldenlife)",
+    "tipo": "(b) Cuenta de golden lifestyle — TikTok",
+    "porQue": "7.9M de seguidores. Formato 'spreading smiles': momentos tiernos cotidianos, reacciones del perro, contenido familiar. Buen benchmark del techo del nicho golden en formato feel-good.",
+    "url": "https://www.tiktok.com/@elliegoldenlife",
+    "gratis": "Sí (contenido público)"
+   },
+   {
+    "nombre": "Rebas Golden Life (@rebasgoldenlife)",
+    "tipo": "(b) Cuenta de golden + camada viral — TikTok [aprox]",
+    "porQue": "Su video 'el momento exacto en que la cachorra eligió a su familia' fue viral y cubierto por Newsweek. Formato ganador para VENTA de cachorros: el día de elección ('pick day') y la despedida de la camada son los momentos de mayor carga emocional = mayor alcance. Handle citado por Newsweek; URL de perfil no verificada de primera mano.",
+    "url": "https://www.tiktok.com/@rebasgoldenlife [aprox]",
+    "gratis": "Sí (contenido público)"
+   },
+   {
+    "nombre": "My Golden Retriever Puppies",
+    "tipo": "(b) Red de criadores (Ohio) — YouTube + web de venta",
+    "porQue": "Referencia de contenido COMERCIAL puro: un video corto por cada cachorro disponible (nombre, precio, garantía genética de 1 año, vacunas), enlazado a la web de venta. Es el puente entre puppy content viral y conversión real. Modelo replicable para vender camadas en Perú vía WhatsApp.",
+    "url": "https://www.youtube.com/@mygoldenretrieverpuppies4347 | https://www.mygoldenretrieverpuppies.com",
+    "gratis": "Sí (contenido público)",
+    "automatizable": "Plantilla de video por cachorro: nombre + edad + temperamento + CTA WhatsApp"
+   },
+   {
+    "nombre": "Windy Knoll Goldens",
+    "tipo": "(b) Criador con video-marketing por camada — YouTube + web",
+    "porQue": "Criador que integra videos de cada camada directamente en su web de venta ('Videos of our adorable golden retriever puppies for sale'). Referencia de cómo el video deja de ser solo alcance y se vuelve catálogo de venta con prueba social.",
+    "url": "https://www.youtube.com/channel/UCvfgTEWX69Rzgn5S-O8-nGA | https://www.windyknollgoldens.com/videos-golden-retriever-puppies/",
+    "gratis": "Sí (contenido público)"
+   },
+   {
+    "nombre": "Cachorros Golden Retriever Perú (@petsgoldenretriever.pe)",
+    "tipo": "(b) Competidor/benchmark LOCAL peruano — Instagram",
+    "porQue": "Criadero peruano real con ~6.5K seguidores en IG: vende con padres importados de EE.UU., garantía y contacto por WhatsApp (+51). Es el benchmark local directo: el nivel de contenido actual del mercado peruano es bajo, así que aplicar los formatos de Soul Desire / pick day daría ventaja inmediata.",
+    "url": "https://www.instagram.com/petsgoldenretriever.pe/",
+    "gratis": "Sí (contenido público)"
+   }
+  ],
+  "notas": "FORMATOS QUE FUNCIONAN — (a) PACHAMANCA/RESTAURANTE: 1) El DESTAPE como clímax (quitar tierra/hojas y mostrar el vapor) es el momento más viral del nicho — cada video debe construir hacia ese segundo; 2) Proceso completo en 60-90s: cavar, calentar piedras, marinar, tapar, esperar, destapar; 3) Reacción del cliente probando (con permiso), estilo Marlon Diez; 4) El tráfico real lo traen FOODIES de terceros (peru.foodies, gianelladesouza, valeriamera_, jamaenruta — todos reseñaron La Casita de Ricardo) con datazo: precio + dirección + horario en pantalla. Estrategia: invitar 3-5 foodies limeños a la experiencia. (b) GOLDEN RETRIEVER: 1) Updates de camada semana a semana (ojos abiertos, primer baño, primera salida al pasto); 2) 'Pick day' / 'la cachorra eligió a su familia' / despedida de hermanos = máxima carga emocional y alcance; 3) Temas por camada y pedir nombres a la audiencia (engagement barato); 4) Mostrar crianza responsable (Puppy Culture, pruebas de salud, padres) = confianza que convierte a venta; 5) Video-ficha por cachorro disponible con CTA a WhatsApp (modelo My Golden Retriever Puppies). VERIFICACIÓN: todas las URLs sin [aprox] provienen de resultados de búsqueda reales (TikTok, Instagram, YouTube, Newsweek, Daily Paws, Trome). Dos handles marcados [aprox] (@viajerosoy, @rebasgoldenlife) — el nombre es real y citado por fuentes, pero no verifiqué el perfil de primera mano. Ojo: TikTok/IG bloquean fetch directo, por lo que cifras de seguidores son las reportadas por prensa/agregadores a la fecha. Fuentes clave: tiktok.com/@pachamancas.lcr, trome.com (perfil Azucena Mondalgo), dailypaws.com (viral de Soul Desire), newsweek.com (rebasgoldenlife), windyknollgoldens.com, mygoldenretrieverpuppies.com."
+ }
+}

@@ -7,6 +7,7 @@ import { AMBER, PillTab, Chip, SectionLabel, useHover } from './primitives';
 import { GradientHero, RingStat, BrandTile } from './visuals';
 import PulsoCommandCenter from './PulsoCommandCenter';
 import StudyPulsoHub from '../study/StudyPulsoHub';
+import BrandHorario from './BrandHorario';
 import {
   CockpitPanel, OfertaPanel, MarketingPanel, VentasPanel,
   LogisticaPanel, WebPanel, DirectricesPanel, PirqaView,
@@ -28,6 +29,7 @@ const LIVIANO_PANELS: { id: string; label: string; icon: string; render: () => R
   { id: 'logistica',   label: 'Logística',   icon: '📦', render: () => <LogisticaPanel /> },
   { id: 'web',         label: 'Web & Links', icon: '🌐', render: () => <WebPanel /> },
   { id: 'directrices', label: 'Directrices', icon: '🧠', render: () => <DirectricesPanel /> },
+  { id: 'horario',     label: 'Horario',     icon: '🗓️', render: () => <BrandHorario brand="pulso" /> },
 ];
 
 const MAIN_IDS = ['pulso', 'liviano', 'pirqa'];
