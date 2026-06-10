@@ -8,6 +8,7 @@ import {
   MIR_META, MIR_KPIS, MIR_ASIGNATURAS, MIR_TIERS, PROMIR_FASES, MIR_HORA, MIR_CALENDARIO,
   MIR_TACTICA, MIR_RECURSOS, MIR_NOTA, PRIORIDAD_COLOR, VUELTAS,
 } from '../../lib/mirData';
+import { DIGESTIVO_META, DIGESTIVO_CAPITULOS, DIGESTIVO_PLAN, capUrl } from '../../lib/mirDigestivoData';
 
 /**
  * MirHub — MIR España (ProMIR). Asignaturas por ROI tier + fases ProMIR + protocolo +
@@ -56,6 +57,48 @@ export default function MirHub() {
             <Text style={[st.rowVueltas, { color: PRIORIDAD_COLOR[a.prioridad] }]}>{VUELTAS[a.prioridad]}v</Text>
           </View>
         ))}
+      </GlassPanel>
+
+      {/* DIGESTIVO — primer bloque REAL extraído de ProMIR */}
+      <SectionLabel>⭐ Digestivo · ProMIR — primer bloque REAL (extraído de tu plataforma)</SectionLabel>
+      <GlassPanel accent={Colors.green} style={{ marginBottom: Spacing.md, padding: Spacing.lg }}>
+        <Text style={st.body}>
+          <Text style={{ color: Colors.green, fontWeight: '800' }}>{DIGESTIVO_META.totalCaps} capítulos · {DIGESTIVO_META.totalVideos} videos · ~{DIGESTIVO_META.totalVideoMin} min · {DIGESTIVO_META.totalFiguras} figuras · {DIGESTIVO_META.totalTablas} tablas.</Text>
+          {' '}{DIGESTIVO_META.pesoGlobalAprox}. Capítulos en orden de rentabilidad (Peso MIR real). Tocá un capítulo → abre ProMIR.
+        </Text>
+      </GlassPanel>
+      <View style={{ marginBottom: Spacing.md }}>
+        {DIGESTIVO_CAPITULOS.map((c) => (
+          <TouchableOpacity key={c.capId} activeOpacity={0.85} onPress={() => openUrl(capUrl(c.capId))}
+            style={[st.capCard, { borderLeftColor: PRIORIDAD_COLOR[c.prioridad] }]}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+              <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: PRIORIDAD_COLOR[c.prioridad] }} />
+              <Text style={st.capTitulo}>{c.n}. {c.titulo} ↗</Text>
+              {c.pesoMirPct ? <Text style={[st.capPeso, { color: AMBER }]}>{c.pesoMirPct}%</Text> : null}
+            </View>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 6, marginLeft: 14 }}>
+              <Chip label={`🎬 ${c.videos} vid · ${c.duraciones.join(' · ')}`} color={Colors.green} small />
+              <Chip label={`~${c.videoMin} min`} color={Colors.muted} small />
+              {c.figuras ? <Chip label={`${c.figuras} figs`} color={Colors.blue} small /> : null}
+              {c.tablas ? <Chip label={`${c.tablas} tablas`} color={Colors.purple} small /> : null}
+              <Chip label={`${VUELTAS[c.prioridad]}v`} color={PRIORIDAD_COLOR[c.prioridad]} small />
+            </View>
+          </TouchableOpacity>
+        ))}
+      </View>
+
+      <SectionLabel>Plan 1ª vuelta · Digestivo (1h/día, desde mañana)</SectionLabel>
+      <GlassPanel style={{ marginBottom: Spacing.xl }}>
+        {DIGESTIVO_PLAN.map((d, i) => (
+          <View key={i} style={[st.planRow, i === 0 && { borderTopWidth: 0 }]}>
+            <View style={[st.planBadge, { backgroundColor: Colors.green + '1A' }]}><Text style={[st.planDia, { color: Colors.green }]}>{d.dia}</Text></View>
+            <View style={{ flex: 1 }}>
+              <Text style={st.planCap}>{d.cap}</Text>
+              <Text style={st.planDet}>{d.detalle}</Text>
+            </View>
+          </View>
+        ))}
+        <Text style={[st.smallNote, { marginTop: Spacing.sm }]}>{DIGESTIVO_META.nota}</Text>
       </GlassPanel>
 
       {/* ProMIR fases */}
@@ -169,4 +212,13 @@ const st = StyleSheet.create({
 
   resCard: { ...cardBase },
   resLabel: { fontSize: FontSize.labelMd, color: AMBER, fontWeight: '600', lineHeight: 16 },
+
+  capCard: { ...cardBase, borderLeftWidth: 3, marginBottom: Spacing.sm, padding: Spacing.md },
+  capTitulo: { flex: 1, fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface },
+  capPeso: { fontSize: FontSize.labelLg, fontWeight: '800' },
+  planRow: { flexDirection: 'row', alignItems: 'flex-start', paddingVertical: Spacing.md, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.06)', gap: Spacing.sm },
+  planBadge: { borderRadius: BorderRadius.md, paddingVertical: 3, paddingHorizontal: 8, minWidth: 96, alignItems: 'center' },
+  planDia: { fontSize: FontSize.labelSm, fontWeight: '800' },
+  planCap: { fontSize: FontSize.labelLg, fontWeight: '700', color: Colors.onSurface },
+  planDet: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 1, lineHeight: 16 },
 });
