@@ -2,199 +2,251 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Linking } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
-import { SectionLabel, Chip, GlassPanel } from '../empresa/primitives';
-import { GradientHero, FadeUp } from '../empresa/visuals';
+import { Chip, GlassPanel } from '../empresa/primitives';
+import { FadeUp } from '../empresa/visuals';
 import {
-  PLAN_META, SISTEMAS, UNIDADES, SistemaUSMLE, unidadDe, diaDesdeInicio, yt, QB,
-} from '../../lib/usmleStep1Plan';
+  DAILY_META, FRANJAS, DIAS, DiaUSMLE, diaDe, diaPrevio, ventana7d, TIER_INFO,
+  QBV, QBQ, QBF, yt,
+} from '../../lib/usmleStep1Daily';
 
 /**
- * UsmleTodayPlan — "Hoy" + Curriculum Step 1. Marca el tema del día (Google
- * Calendar, arranque 10-jun) y lo cruza con QBank, Librería, Flashcards, Vídeos
- * (B&B1/2 + Sketchy) y Palmerton. Debajo, el curriculum completo por sistema.
+ * UsmleTodayPlan — Plan Step 1 día-a-día, estilo Perú/ENCAPS pero mejor.
+ * Botones Step 1/2/3 · navegación Día X/70 (◄►) · sub-pestañas HOY/Horario/7d ·
+ * cola de materiales con links exactos (B&B, Sketchy, uWorld, Flashcards, Palmerton).
  */
 const GREEN = '#3FB984';
-const AMBER = '#F5A623';
+const RED = '#E5484D';
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
-const TIER: Record<string, { c: string; t: string }> = {
-  CORE: { c: '#E5484D', t: 'Core' }, HIGH: { c: AMBER, t: 'Alto' }, MED: { c: GREEN, t: 'Medio' },
-};
-
 function todayISO(): string {
-  try {
-    const d = new Date();
-    const z = (n: number) => String(n).padStart(2, '0');
-    return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`;
-  } catch { return PLAN_META.inicio; }
+  try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; }
+  catch { return DAILY_META.inicio; }
+}
+function fmtFecha(iso: string): string {
+  const dias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+  try { const d = new Date(iso + 'T12:00:00'); return `${dias[d.getDay()]} ${iso.slice(8, 10)}-${iso.slice(5, 7)}`; } catch { return iso; }
 }
 
-function TodayCard() {
-  const iso = todayISO();
-  const u = unidadDe(iso) || UNIDADES[0];
-  const dia = diaDesdeInicio(u.fecha);
-  const pal = u.palmerton;
-  return (
-    <GradientHero from="#0E2A1F" to="#0A1424" style={{ marginBottom: Spacing.lg, borderColor: GREEN + '44' }}>
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-        <Text style={st.todayTag}>🗓️ HOY · {u.fecha} · Día {dia}</Text>
-        <View style={st.sysBadge}><Text style={st.sysBadgeTxt}>{u.sistema}</Text></View>
-      </View>
-      <Text style={st.todayFoco}>{u.foco}</Text>
-      <Text style={st.todayBloque}>Bloque USMLE (tu Calendar): {PLAN_META.bloque}</Text>
+/** material → icono + dónde abrirlo */
+function matLink(d: DiaUSMLE): { lbl: string; url: string } {
+  if (/Sketchy/i.test(d.mat)) return { lbl: d.mat, url: QBV };
+  return { lbl: d.mat, url: QBV };
+}
 
-      <View style={st.todayGrid}>
-        <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(QB.videos)} style={[st.todayItem, { borderColor: '#E5484D55' }]}>
-          <Text style={st.tiLbl}>🎬 VÍDEO (B&B Step 1)</Text>
-          <Text style={st.tiVal}>{u.bbVideo.titulo}</Text>
-          <Text style={st.tiSub}>~{u.bbVideo.min} min · abre Qbankly ↗</Text>
-        </TouchableOpacity>
-        <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(QB.qbanks)} style={[st.todayItem, { borderColor: GREEN + '55' }]}>
-          <Text style={st.tiLbl}>🅠 QBANK (pre-test)</Text>
-          <Text style={st.tiVal}>{u.uworld}</Text>
-          <Text style={st.tiSub}>modo tutor · abre Qbankly ↗</Text>
-        </TouchableOpacity>
-        <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(QB.flashcards)} style={[st.todayItem, { borderColor: '#7BB1FF55' }]}>
-          <Text style={st.tiLbl}>🗂️ FLASHCARDS</Text>
-          <Text style={st.tiVal}>{u.flash}</Text>
-          <Text style={st.tiSub}>Anki SRS · abre Qbankly ↗</Text>
-        </TouchableOpacity>
-        {u.sketchy ? (
-          <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(QB.videos)} style={[st.todayItem, { borderColor: '#E0A93F55' }]}>
-            <Text style={st.tiLbl}>🎨 SKETCHY</Text>
-            <Text style={st.tiVal}>{u.sketchy}</Text>
-            <Text style={st.tiSub}>mnemotecnia · abre Qbankly ↗</Text>
-          </TouchableOpacity>
-        ) : null}
-        {pal ? (
-          <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(yt(pal.id))} style={[st.todayItem, { borderColor: GREEN + '55' }]}>
-            <Text style={st.tiLbl}>🧠 PALMERTON</Text>
-            <Text style={st.tiVal}>{pal.titulo}</Text>
-            <Text style={st.tiSub}>YouTube ↗</Text>
-          </TouchableOpacity>
-        ) : null}
-        <View style={[st.todayItem, { borderColor: AMBER + '55' }]}>
-          <Text style={st.tiLbl}>🃏 APEX (Free Recall)</Text>
-          <Text style={st.tiVal}>Crea ≤3 tarjetas APEX de razonamiento</Text>
-          <Text style={st.tiSub}>tras el pre-test + lectura</Text>
-        </View>
+function ColaItem({ icon, lbl, val, sub, color, url }: { icon: string; lbl: string; val: string; sub: string; color: string; url: string }) {
+  return (
+    <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(url)} style={[st.cola, { borderLeftColor: color }]}>
+      <Text style={st.colaIcon}>{icon}</Text>
+      <View style={{ flex: 1 }}>
+        <Text style={st.colaLbl}>{lbl}</Text>
+        <Text style={st.colaVal} numberOfLines={2}>{val}</Text>
+        <Text style={st.colaSub}>{sub}</Text>
       </View>
-      <Text style={st.todayFlow}>Flujo: Anchored Eval (tema previo, 2Q+Anki) → Pre-test → ver vídeo → Active Reading → Free Recall → APEX ≤3.</Text>
-    </GradientHero>
+      <View style={[st.verBtn, { borderColor: color + '88' }]}><Text style={[st.verTxt, { color }]}>ver ↗</Text></View>
+    </TouchableOpacity>
   );
 }
 
-function SistemaRow({ s, i }: { s: SistemaUSMLE; i: number }) {
-  const [open, setOpen] = useState(false);
-  const tier = TIER[s.tier];
+function HoyView({ dia }: { dia: DiaUSMLE }) {
+  const prev = diaPrevio(dia);
+  const tier = TIER_INFO[dia.tier];
   return (
-    <FadeUp delay={Math.min(i * 24, 300)}>
-      <View style={[st.card, { borderLeftColor: tier.c }]}>
-        <TouchableOpacity activeOpacity={0.82} onPress={() => setOpen((o) => !o)} style={st.head}>
-          <View style={[st.tierBadge, { backgroundColor: tier.c + '1F', borderColor: tier.c + '55' }]}>
-            <Text style={[st.tierTxt, { color: tier.c }]}>{s.uworldQ}Q</Text>
+    <View>
+      {/* Tema del día */}
+      <FadeUp>
+        <View style={[st.temaCard, { borderColor: tier.c + '55' }]}>
+          <View style={st.temaTop}>
+            <View style={[st.sysBadge, { backgroundColor: tier.c + '1F', borderColor: tier.c + '66' }]}>
+              <Text style={[st.sysBadgeTxt, { color: tier.c }]}>{dia.system}</Text>
+            </View>
+            <Chip label={tier.t} color={tier.c} small />
+            <Chip label="1ª vuelta" color={GREEN} small />
+            <Chip label="Modo A" color={Colors.muted} small />
           </View>
+          <Text style={st.temaTitle}>{dia.sub}</Text>
+          <Text style={st.temaSub}>Subtema atómico del día · 1/día (mejor consolidación que cobertura)</Text>
+        </View>
+      </FadeUp>
+
+      {/* Anchored eval (tema previo) */}
+      {prev && (
+        <FadeUp delay={40}>
+          <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(QBQ)} style={st.anchor}>
+            <Text style={st.anchorLbl}>🎯 16:15 · Anchored Eval (tema de AYER)</Text>
+            <Text style={st.anchorVal}>{prev.system} → {prev.sub}</Text>
+            <Text style={st.anchorSub}>2 preguntas uWorld + Anki SRS · 2/2→nuevo · 1/2→repaso finde · 0/2→repetir</Text>
+          </TouchableOpacity>
+        </FadeUp>
+      )}
+
+      {/* Cola de materiales de hoy */}
+      <Text style={st.secLbl}>📋 Cola de hoy · 16:30–17:15 (en orden)</Text>
+      <FadeUp delay={60}><ColaItem icon="🅠" lbl="PRE-TEST · uWorld (modo tutor)" val={`${dia.system} → ${dia.uw} · 3 preguntas ciegas + free recall 60s`} sub="Qbankly → QBanks → uWorld Step 1" color={GREEN} url={QBQ} /></FadeUp>
+      <FadeUp delay={90}><ColaItem icon="🎬" lbl="VÍDEO · Boards & Beyond Step 1" val={`${dia.bbCh} → ${dia.bbVid}`} sub="Qbankly → Video Library → B&B Step 1" color={RED} url={QBV} /></FadeUp>
+      <FadeUp delay={120}><ColaItem icon="📖" lbl="ACTIVE READING · material primario" val={matLink(dia).lbl} sub="25 min · marca 3-5 puntos high-yield · glosario inglés" color="#7BB1FF" url={matLink(dia).url} /></FadeUp>
+      <FadeUp delay={150}><ColaItem icon="🗂️" lbl="FLASHCARDS · uWorld Step 1" val={`Deck: ${dia.system}`} sub="Qbankly → Flashcards · Anki SRS" color="#AFCBFF" url={QBF} /></FadeUp>
+      {dia.palm && (
+        <FadeUp delay={180}><ColaItem icon="🧠" lbl="PALMERTON · al empezar el sistema" val={dia.palm.t} sub="YouTube · método + visión del sistema" color={GREEN} url={yt(dia.palm.id)} /></FadeUp>
+      )}
+      <FadeUp delay={210}>
+        <View style={[st.cola, { borderLeftColor: '#F5A623' }]}>
+          <Text style={st.colaIcon}>🃏</Text>
           <View style={{ flex: 1 }}>
-            <Text style={st.name} numberOfLines={1}>{s.sistema}</Text>
-            <Text style={st.metaSub}>Día {s.diaInicio}+ · {tier.t} · {s.uworldSubtemas.length} subtemas</Text>
+            <Text style={st.colaLbl}>APEX · 17:05–17:15</Text>
+            <Text style={st.colaVal}>Crea ≤3 tarjetas APEX (formato Palmerton · ≥1 mnemónica Sketchy)</Text>
+            <Text style={st.colaSub}>Free recall a papel en blanco antes (en inglés)</Text>
           </View>
-          {s.palmerton.length ? <View style={st.pFlag}><Text style={st.pFlagTxt}>🧠 Palmerton</Text></View> : null}
-          <Text style={[st.caret, open && { color: tier.c }]}>{open ? '▾' : '▸'}</Text>
-        </TouchableOpacity>
-        {open && (
-          <View style={st.body}>
-            <View style={[st.pBox, { borderColor: GREEN + '44' }]}>
-              <Text style={st.pTitle}>🧠 Palmerton dice</Text>
-              <Text style={st.pTxt}>{s.palmertonDice}</Text>
-              <View style={st.chipWrap}>
-                {s.palmerton.map((p, k) => (
-                  <TouchableOpacity key={k} activeOpacity={0.85} onPress={() => openUrl(yt(p.id))} style={st.pVid}>
-                    <Text style={st.pVidTxt}>▶ {p.titulo}{p.min ? ` · ${p.min}min` : ''} ↗</Text>
-                  </TouchableOpacity>
-                ))}
+        </View>
+      </FadeUp>
+    </View>
+  );
+}
+
+function HorarioView() {
+  return (
+    <View>
+      <Text style={st.secLbl}>🕓 Bloque USMLE diario (Google Calendar · hora Lima)</Text>
+      {FRANJAS.map((f, i) => (
+        <FadeUp key={i} delay={i * 30}>
+          <View style={st.franja}>
+            <View style={st.franjaHora}><Text style={st.franjaHoraTxt}>{f.hora}</Text></View>
+            <Text style={st.franjaFase}>{f.fase}</Text>
+          </View>
+        </FadeUp>
+      ))}
+      <Text style={st.note}>16:15–16:30 = repaso del tema de ayer (Anchored Eval). 16:30–17:15 = subtema nuevo (Mini Deep Work). Todo en inglés.</Text>
+    </View>
+  );
+}
+
+function SieteView({ fromD }: { fromD: number }) {
+  const win = ventana7d(fromD);
+  return (
+    <View>
+      <Text style={st.secLbl}>📆 Próximos 7 días</Text>
+      {win.map((x, i) => {
+        const tier = TIER_INFO[x.tier];
+        return (
+          <FadeUp key={x.d} delay={i * 30}>
+            <View style={[st.d7, { borderLeftColor: tier.c }]}>
+              <Text style={[st.d7day, { color: tier.c }]}>D{x.d}</Text>
+              <Text style={st.d7fecha}>{fmtFecha(x.fecha)}</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={st.d7sub} numberOfLines={1}>{x.sub}</Text>
+                <Text style={st.d7sys}>{x.system}</Text>
               </View>
             </View>
-
-            <Text style={st.boxLbl}>🅠 QBank · subtemas más preguntados (uWorld)</Text>
-            <View style={st.chipWrap}>
-              {s.uworldSubtemas.filter((t) => t[1] > 0).map((t, k) => (
-                <View key={k} style={st.subChip}><Text style={st.subTxt}>{t[0]} · {t[1]}</Text></View>
-              ))}
-            </View>
-
-            <Text style={[st.boxLbl, { marginTop: 10 }]}>🎬 Vídeos del sistema</Text>
-            {s.bb1 ? <Text style={st.vRow}>• B&B Step 1 → <Text style={st.vB}>{s.bb1.ch}</Text> · {s.bb1.n} vid · {Math.round(s.bb1.min / 60)}h{s.bb1.min % 60}m</Text> : null}
-            {s.bb2 && s.bb2.n > 0 ? <Text style={st.vRow}>• B&B Step 2 → <Text style={st.vB}>{s.bb2.ch}</Text> · {s.bb2.n} vid · {Math.round(s.bb2.min / 60)}h{s.bb2.min % 60}m</Text> : null}
-            {s.sketchy ? <Text style={st.vRow}>• Sketchy → <Text style={st.vB}>{s.sketchy.ch}</Text>{s.sketchy.n ? ` · ${s.sketchy.n} vid` : ''}</Text> : null}
-
-            <View style={st.linkRow}>
-              <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(QB.qbanks)} style={st.linkBtn}><Text style={st.linkTxt}>QBank ↗</Text></TouchableOpacity>
-              <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(QB.videos)} style={st.linkBtn}><Text style={st.linkTxt}>Vídeos ↗</Text></TouchableOpacity>
-              <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(QB.flashcards)} style={st.linkBtn}><Text style={st.linkTxt}>Flashcards: {s.flashDeck} ↗</Text></TouchableOpacity>
-            </View>
-          </View>
-        )}
-      </View>
-    </FadeUp>
+          </FadeUp>
+        );
+      })}
+    </View>
   );
 }
 
 export default function UsmleTodayPlan() {
+  const iso = todayISO();
+  const todayDia = diaDe(iso) || DIAS[0];
+  const [sel, setSel] = useState<number>(todayDia.d);
+  const [view, setView] = useState<'hoy' | 'horario' | '7d'>('hoy');
+  const dia = DIAS.find((x) => x.d === sel) || DIAS[0];
+  const esHoy = dia.fecha === iso;
+
   return (
     <View>
-      <TodayCard />
-      <SectionLabel>Curriculum Step 1 · sistemas por rentabilidad (preguntas uWorld)</SectionLabel>
-      <GlassPanel style={{ marginBottom: Spacing.md, padding: Spacing.md }}>
-        <Text style={st.intro}>{PLAN_META.metodo}</Text>
-        <Text style={st.introNote}>{PLAN_META.nota}</Text>
-      </GlassPanel>
-      <View style={{ marginBottom: Spacing.xl }}>
-        {SISTEMAS.map((s, i) => <SistemaRow key={s.sistema} s={s} i={i} />)}
+      {/* Botones grandes Step 1 / 2 / 3 */}
+      <View style={st.stepRow}>
+        <View style={[st.stepBtn, st.stepActive]}>
+          <Text style={st.stepBig}>STEP 1</Text>
+          <Text style={st.stepSub}>Foundation · 80% del foco</Text>
+        </View>
+        <View style={[st.stepBtn, st.stepSoon]}>
+          <Text style={[st.stepBig, { color: Colors.muted }]}>STEP 2 CK</Text>
+          <Text style={st.stepSub}>próximamente</Text>
+        </View>
+        <View style={[st.stepBtn, st.stepSoon]}>
+          <Text style={[st.stepBig, { color: Colors.muted }]}>STEP 3</Text>
+          <Text style={st.stepSub}>próximamente</Text>
+        </View>
       </View>
+
+      {/* Navegación de día */}
+      <View style={st.navRow}>
+        <TouchableOpacity activeOpacity={0.7} onPress={() => setSel((s) => Math.max(1, s - 1))} style={st.navArrow}><Text style={st.navArrowTxt}>◄</Text></TouchableOpacity>
+        <View style={{ flex: 1, alignItems: 'center' }}>
+          <Text style={st.navDay}>Día {dia.d}/{DAILY_META.totalDias}{esHoy ? ' · HOY' : ''}</Text>
+          <Text style={st.navFecha}>{fmtFecha(dia.fecha)} · {dia.fecha}</Text>
+        </View>
+        <TouchableOpacity activeOpacity={0.7} onPress={() => setSel((s) => Math.min(DAILY_META.totalDias, s + 1))} style={st.navArrow}><Text style={st.navArrowTxt}>►</Text></TouchableOpacity>
+      </View>
+      {!esHoy && <TouchableOpacity activeOpacity={0.8} onPress={() => setSel(todayDia.d)} style={st.hoyBtn}><Text style={st.hoyBtnTxt}>↩ volver a HOY</Text></TouchableOpacity>}
+
+      {/* Sub-pestañas */}
+      <View style={st.subTabs}>
+        {([['hoy', '📋 HOY'], ['horario', '🕓 Horario'], ['7d', '📆 7 días']] as const).map(([k, lbl]) => (
+          <TouchableOpacity key={k} activeOpacity={0.8} onPress={() => setView(k)} style={[st.subTab, view === k && st.subTabOn]}>
+            <Text style={[st.subTabTxt, view === k && { color: GREEN }]}>{lbl}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+
+      <GlassPanel style={{ marginBottom: Spacing.xl, padding: Spacing.md }}>
+        {view === 'hoy' ? <HoyView dia={dia} /> : view === 'horario' ? <HorarioView /> : <SieteView fromD={dia.d} />}
+      </GlassPanel>
     </View>
   );
 }
 
 const cardBase = { backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: DesktopColors.glassBorder };
 const st = StyleSheet.create({
-  todayTag: { fontSize: FontSize.labelMd, fontWeight: '800', color: GREEN },
-  sysBadge: { backgroundColor: '#E5484D22', borderRadius: BorderRadius.full, borderWidth: 1, borderColor: '#E5484D66', paddingVertical: 2, paddingHorizontal: 10 },
-  sysBadgeTxt: { fontSize: FontSize.labelMd, fontWeight: '800', color: '#FF8A8E' },
-  todayFoco: { fontSize: FontSize.bodyLg, fontWeight: '700', color: Colors.onSurface, marginTop: 8 },
-  todayBloque: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 4, lineHeight: 15 },
-  todayGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm, marginTop: Spacing.md },
-  todayItem: { flexGrow: 1, flexBasis: 200, minWidth: 180, borderWidth: 1, borderRadius: BorderRadius.md, padding: Spacing.sm, backgroundColor: 'rgba(255,255,255,0.03)' },
-  tiLbl: { fontSize: 9, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 0.4 },
-  tiVal: { fontSize: FontSize.labelMd, color: Colors.onSurface, fontWeight: '600', marginTop: 3, lineHeight: 16 },
-  tiSub: { fontSize: 9, color: Colors.muted, marginTop: 3 },
-  todayFlow: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, marginTop: Spacing.md, lineHeight: 16, fontStyle: 'italic' },
+  stepRow: { flexDirection: 'row', gap: Spacing.sm, marginBottom: Spacing.md },
+  stepBtn: { flex: 1, borderRadius: BorderRadius.lg, borderWidth: 1, paddingVertical: Spacing.md, alignItems: 'center' },
+  stepActive: { backgroundColor: GREEN + '1A', borderColor: GREEN + '88' },
+  stepSoon: { backgroundColor: 'rgba(255,255,255,0.03)', borderColor: 'rgba(255,255,255,0.1)' },
+  stepBig: { fontSize: FontSize.titleMd, fontWeight: '900', color: GREEN, letterSpacing: 0.5 },
+  stepSub: { fontSize: 9, color: Colors.muted, marginTop: 2 },
 
-  intro: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 17 },
-  introNote: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 6, lineHeight: 15 },
+  navRow: { flexDirection: 'row', alignItems: 'center', ...cardBase, padding: Spacing.sm, marginBottom: Spacing.xs },
+  navArrow: { width: 40, height: 40, borderRadius: BorderRadius.md, backgroundColor: 'rgba(255,255,255,0.05)', alignItems: 'center', justifyContent: 'center' },
+  navArrowTxt: { fontSize: 16, color: GREEN, fontWeight: '800' },
+  navDay: { fontSize: FontSize.bodyLg, fontWeight: '800', color: Colors.onSurface },
+  navFecha: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 1 },
+  hoyBtn: { alignSelf: 'center', marginBottom: Spacing.sm },
+  hoyBtnTxt: { fontSize: FontSize.labelSm, color: GREEN, fontWeight: '700' },
 
-  card: { ...cardBase, borderLeftWidth: 3, marginBottom: Spacing.sm, overflow: 'hidden' },
-  head: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, padding: Spacing.md },
-  tierBadge: { borderRadius: BorderRadius.full, borderWidth: 1, paddingVertical: 3, paddingHorizontal: 8, minWidth: 48, alignItems: 'center' },
-  tierTxt: { fontSize: 10, fontWeight: '800' },
-  name: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface },
-  metaSub: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 2 },
-  pFlag: { backgroundColor: GREEN + '1A', borderRadius: BorderRadius.full, paddingVertical: 1, paddingHorizontal: 6 },
-  pFlagTxt: { fontSize: 9, fontWeight: '800', color: GREEN },
-  caret: { fontSize: 16, color: Colors.muted, width: 18, textAlign: 'center' },
+  subTabs: { flexDirection: 'row', gap: 6, marginBottom: Spacing.sm },
+  subTab: { flex: 1, paddingVertical: 7, borderRadius: BorderRadius.md, borderWidth: 1, borderColor: 'rgba(255,255,255,0.08)', alignItems: 'center' },
+  subTabOn: { backgroundColor: GREEN + '14', borderColor: GREEN + '55' },
+  subTabTxt: { fontSize: FontSize.labelMd, fontWeight: '700', color: Colors.muted },
 
-  body: { paddingHorizontal: Spacing.md, paddingBottom: Spacing.md, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.05)', paddingTop: Spacing.sm },
-  pBox: { borderWidth: 1, borderRadius: BorderRadius.md, padding: Spacing.md, backgroundColor: 'rgba(63,185,132,0.05)', marginBottom: Spacing.sm },
-  pTitle: { fontSize: FontSize.labelMd, fontWeight: '800', color: GREEN, marginBottom: 4 },
-  pTxt: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 17 },
-  pVid: { backgroundColor: GREEN + '18', borderRadius: BorderRadius.sm, paddingVertical: 4, paddingHorizontal: 8, borderWidth: 1, borderColor: GREEN + '44', marginTop: 6 },
-  pVidTxt: { fontSize: 10, color: GREEN, fontWeight: '700' },
+  temaCard: { ...cardBase, borderWidth: 1, padding: Spacing.md, marginBottom: Spacing.sm },
+  temaTop: { flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap' },
+  sysBadge: { borderRadius: BorderRadius.full, borderWidth: 1, paddingVertical: 2, paddingHorizontal: 10 },
+  sysBadgeTxt: { fontSize: FontSize.labelMd, fontWeight: '800' },
+  temaTitle: { fontSize: FontSize.bodyLg, fontWeight: '800', color: Colors.onSurface, marginTop: 8 },
+  temaSub: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 3 },
 
-  boxLbl: { fontSize: 10, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 0.4, marginBottom: 6 },
-  chipWrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 5, marginTop: 2 },
-  subChip: { backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: BorderRadius.sm, paddingVertical: 3, paddingHorizontal: 7 },
-  subTxt: { fontSize: 10, color: Colors.onSurfaceVariant },
-  vRow: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 18 },
-  vB: { color: Colors.onSurface, fontWeight: '700' },
-  linkRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 10 },
-  linkBtn: { backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: BorderRadius.md, borderWidth: 1, borderColor: 'rgba(255,255,255,0.12)', paddingVertical: 5, paddingHorizontal: 10 },
-  linkTxt: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, fontWeight: '600' },
+  anchor: { ...cardBase, borderLeftWidth: 3, borderLeftColor: '#7BB1FF', padding: Spacing.md, marginBottom: Spacing.sm },
+  anchorLbl: { fontSize: FontSize.labelMd, fontWeight: '800', color: '#AFCBFF' },
+  anchorVal: { fontSize: FontSize.labelLg, fontWeight: '700', color: Colors.onSurface, marginTop: 3 },
+  anchorSub: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 2, lineHeight: 15 },
+
+  secLbl: { fontSize: 10, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 0.4, marginBottom: 8, marginTop: Spacing.sm },
+  cola: { ...cardBase, borderLeftWidth: 3, flexDirection: 'row', alignItems: 'center', gap: 10, padding: Spacing.md, marginBottom: 6 },
+  colaIcon: { fontSize: 18, width: 24, textAlign: 'center' },
+  colaLbl: { fontSize: 9, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 0.3 },
+  colaVal: { fontSize: FontSize.labelMd, color: Colors.onSurface, fontWeight: '600', marginTop: 2, lineHeight: 16 },
+  colaSub: { fontSize: 9, color: Colors.muted, marginTop: 2 },
+  verBtn: { borderWidth: 1, borderRadius: BorderRadius.md, paddingVertical: 5, paddingHorizontal: 10 },
+  verTxt: { fontSize: FontSize.labelSm, fontWeight: '800' },
+
+  franja: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 7, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.05)' },
+  franjaHora: { backgroundColor: GREEN + '14', borderRadius: BorderRadius.sm, paddingVertical: 3, paddingHorizontal: 7, minWidth: 96, alignItems: 'center' },
+  franjaHoraTxt: { fontSize: FontSize.labelSm, fontWeight: '800', color: GREEN },
+  franjaFase: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 16 },
+  note: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: Spacing.sm, lineHeight: 15 },
+
+  d7: { ...cardBase, borderLeftWidth: 3, flexDirection: 'row', alignItems: 'center', gap: 10, padding: Spacing.sm, marginBottom: 5 },
+  d7day: { fontSize: FontSize.labelLg, fontWeight: '800', width: 36 },
+  d7fecha: { fontSize: FontSize.labelSm, color: Colors.muted, width: 56 },
+  d7sub: { fontSize: FontSize.labelMd, color: Colors.onSurface, fontWeight: '600' },
+  d7sys: { fontSize: 9, color: Colors.muted, marginTop: 1 },
 });
