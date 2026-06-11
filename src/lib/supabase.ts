@@ -665,6 +665,47 @@ export async function sendResearchCommand(
   }
 }
 
+/** Un paper del corpus descubierto (research_papers). */
+export interface ResearchPaper {
+  id?: string; doi: string | null; pmid?: string | null; title?: string | null; year?: number | null;
+  sources?: string[] | null; is_oa?: boolean | null; pdf_url?: string | null; relevance?: number | null;
+  screen_status?: string | null;
+}
+/** Corpus de una SR (ordenado por relevancia) — la cola de screening de la app. */
+export async function getResearchPapers(srLine: string, limit = 60): Promise<ResearchPaper[]> {
+  try {
+    const { data, error } = await supabase
+      .from('research_papers')
+      .select('id, doi, pmid, title, year, sources, is_oa, pdf_url, relevance, screen_status')
+      .eq('line', srLine)
+      .order('relevance', { ascending: false })
+      .order('year', { ascending: false })
+      .limit(limit);
+    if (error) throw error;
+    return (data as ResearchPaper[]) ?? [];
+  } catch { return []; }
+}
+/** Decisión de screening (incluir/excluir/dudoso) — la app, anon. */
+export async function setPaperScreen(id: string, decision: 'included' | 'excluded' | 'maybe'): Promise<boolean> {
+  try {
+    const { error } = await supabase.from('research_papers').update({ screen_status: decision }).eq('id', id);
+    if (error) throw error;
+    await supabase.from('research_screening').insert({
+      paper_id: id, stage: 'reviewer1',
+      decision: decision === 'included' ? 'include' : decision === 'excluded' ? 'exclude' : 'maybe', decided_by: 'app',
+    });
+    return true;
+  } catch { return false; }
+}
+/** Resuelve el PDF de acceso abierto legal de un DOI (Edge Function · Unpaywall). */
+export async function resolveFullText(doi: string): Promise<{ ok: boolean; pdf_url?: string | null }> {
+  try {
+    const { data, error } = await supabase.functions.invoke('research-fulltext', { body: { doi } });
+    if (error) throw error;
+    return (data as any) ?? { ok: false };
+  } catch { return { ok: false }; }
+}
+
 /** Corre el discovery EN LA NUBE (Edge Function) — el botón ▶ desde la web, sin PC. */
 export async function invokeResearchDiscovery(line: string): Promise<{ ok: boolean; unique?: number; inserted?: number; error?: string }> {
   try {

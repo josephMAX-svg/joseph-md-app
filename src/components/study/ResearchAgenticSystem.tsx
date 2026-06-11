@@ -12,8 +12,10 @@ import {
 } from '../../lib/researchProgram';
 import { researchObsUrlSR, researchObsUrlLine } from '../../lib/obsidianResearchMap';
 import {
+  supabase,
   getResearchAgentTasks, getResearchEngineState, ResearchEngineState, ResearchAgentTask,
   sendResearchCommand, setResearchRunState, invokeResearchDiscovery, ResearchCmd,
+  getResearchPapers, setPaperScreen, resolveFullText, ResearchPaper,
 } from '../../lib/supabase';
 
 const OBS = '#A78BFA';
@@ -90,7 +92,9 @@ export default function ResearchAgenticSystem() {
   // Documento + feedback por voz
   const [target, setTarget] = useState<string>('orquestador'); // 'orquestador' | agentId
   const [fb, setFb] = useState<string>('');
+  const [papers, setPapers] = useState<ResearchPaper[]>([]);
   const voice = useVoiceDictation();
+  const srTag = linea.srTag || '';
 
   const reload = React.useCallback(() => {
     let on = true;
@@ -101,9 +105,34 @@ export default function ResearchAgenticSystem() {
       setLive(m); setTasks(rows);
     });
     getResearchEngineState().then((s) => { if (on) { setEngine(s); if (s?.run_state) setRunState(s.run_state); } });
+    if (srTag) getResearchPapers(srTag).then((p) => { if (on) setPapers(p); });
     return () => { on = false; };
-  }, [linea.code]);
+  }, [linea.code, srTag]);
   useEffect(() => reload(), [reload]);
+
+  // Realtime: el corpus/estado aparecen solos cuando la nube termina (sin recargar).
+  useEffect(() => {
+    const ch = supabase.channel('research-' + linea.code)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'research_papers', filter: `line=eq.${srTag}` }, () => { if (srTag) getResearchPapers(srTag).then(setPapers); })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'research_engine_state' }, () => { getResearchEngineState().then((s) => { setEngine(s); if (s?.run_state) setRunState(s.run_state); }); })
+      .subscribe();
+    return () => { supabase.removeChannel(ch); };
+  }, [linea.code, srTag]);
+
+  async function screen(id: string | undefined, decision: 'included' | 'excluded' | 'maybe') {
+    if (!id) return;
+    setPapers((ps) => ps.map((p) => (p.id === id ? { ...p, screen_status: decision } : p)));
+    await setPaperScreen(id, decision);
+  }
+  async function openPdf(p: ResearchPaper) {
+    if (p.pdf_url) { openUrl(p.pdf_url); return; }
+    if (!p.doi) return;
+    flash('🔓 Buscando PDF de acceso abierto…');
+    const r = await resolveFullText(p.doi);
+    if (r.pdf_url) { setPapers((ps) => ps.map((x) => (x.id === p.id ? { ...x, pdf_url: r.pdf_url, is_oa: true } : x))); openUrl(r.pdf_url); }
+    else flash('Sin OA legal directo · pide al autor o vía HINARI/UNCP (ver DEPLOY_GRATIS).');
+  }
+  const counts = { inc: papers.filter((p) => p.screen_status === 'included').length, exc: papers.filter((p) => p.screen_status === 'excluded').length, pend: papers.filter((p) => !p.screen_status || p.screen_status === 'pending_human').length };
   const isLive = Object.keys(live).length > 0;
   const outputByAgent: Record<string, string | null | undefined> = {};
   for (const t of tasks) outputByAgent[t.agent] = t.output_md;
@@ -206,6 +235,41 @@ export default function ResearchAgenticSystem() {
           )}
         </View>
       </GlassPanel>
+
+      {/* CORPUS / COLA DE SCREENING — lo que descubrió la nube; lo cribas con 1 clic */}
+      <SectionLabel>Corpus · {srTag} ({papers.length} papers · ✓{counts.inc} ✗{counts.exc} ○{counts.pend})</SectionLabel>
+      <Text style={st.sectionIntro}>Lo que dejó el botón ▶ (ordenado por relevancia). Críbalo con un clic: ✓ incluir · ✗ excluir · ~ dudoso. 🔓 abre el PDF de acceso abierto legal (Unpaywall, sin Sci-Hub).</Text>
+      {papers.length === 0 ? (
+        <GlassPanel style={{ marginBottom: Spacing.xl }}><Text style={st.body}>— Vacío. Pulsa <Text style={{ color: '#0FD4A0', fontWeight: '800' }}>▶ Iniciar</Text> arriba: la nube descubre los papers y aparecen aquí solos.</Text></GlassPanel>
+      ) : (
+        <View style={{ marginBottom: Spacing.xl }}>
+          {papers.map((p) => {
+            const dec = p.screen_status;
+            const rel = Math.min(5, p.relevance ?? 0);
+            return (
+              <View key={p.id || p.doi} style={[st.paperCard, dec === 'included' && { borderLeftColor: '#0FD4A0' }, dec === 'excluded' && { opacity: 0.5, borderLeftColor: '#F56342' }, dec === 'maybe' && { borderLeftColor: '#F5A623' }]}>
+                <View style={{ flex: 1 }}>
+                  <Text style={st.paperTitle} numberOfLines={2}>{p.title || p.doi}</Text>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 3, flexWrap: 'wrap' }}>
+                    <Text style={st.paperMeta}>{p.year || '—'}</Text>
+                    <Text style={st.relDots}>{'●'.repeat(rel)}<Text style={{ color: 'rgba(255,255,255,0.15)' }}>{'●'.repeat(5 - rel)}</Text></Text>
+                    {(p.sources?.length ?? 0) > 1 && <Chip label={`${p.sources!.length} fuentes`} color={CLUSTER_COLOR[linea.cluster]} small />}
+                    {p.is_oa && <Chip label="OA" color="#0FD4A0" small />}
+                    {p.doi && <TouchableOpacity onPress={() => openUrl('https://doi.org/' + p.doi)}><Text style={st.paperDoi}>DOI ↗</Text></TouchableOpacity>}
+                    <TouchableOpacity onPress={() => openPdf(p)}><Text style={[st.paperDoi, { color: '#A78BFA' }]}>🔓 PDF</Text></TouchableOpacity>
+                  </View>
+                </View>
+                <View style={{ flexDirection: 'row', gap: 4 }}>
+                  <TouchableOpacity onPress={() => screen(p.id, 'included')} style={[st.scBtn, dec === 'included' && { backgroundColor: '#0FD4A0' + '22', borderColor: '#0FD4A0' }]}><Text style={[st.scTxt, { color: '#0FD4A0' }]}>✓</Text></TouchableOpacity>
+                  <TouchableOpacity onPress={() => screen(p.id, 'maybe')} style={[st.scBtn, dec === 'maybe' && { backgroundColor: '#F5A623' + '22', borderColor: '#F5A623' }]}><Text style={[st.scTxt, { color: '#F5A623' }]}>~</Text></TouchableOpacity>
+                  <TouchableOpacity onPress={() => screen(p.id, 'excluded')} style={[st.scBtn, dec === 'excluded' && { backgroundColor: '#F56342' + '22', borderColor: '#F56342' }]}><Text style={[st.scTxt, { color: '#F56342' }]}>✗</Text></TouchableOpacity>
+                </View>
+              </View>
+            );
+          })}
+          <Text style={st.smallNote}>Cribado de 2 revisores + Kappa = estándar PRISMA; aquí haces tu pase (revisor 1). Lo incluido alimenta la extracción y la redacción.</Text>
+        </View>
+      )}
 
       {/* Consola de agentes — quién redacta qué sección (por línea) */}
       <SectionLabel>Consola de agentes · {linea.code} (un líder dirige; cada agente, una sección)</SectionLabel>
@@ -508,4 +572,12 @@ const st = StyleSheet.create({
   micTxt: { fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.onSurfaceVariant },
   sendBtn: { backgroundColor: '#0FD4A0', borderRadius: BorderRadius.md, paddingVertical: 8, paddingHorizontal: 10, alignItems: 'center', minWidth: 84 },
   sendTxt: { fontSize: FontSize.labelSm, fontWeight: '900', color: '#062018' },
+
+  paperCard: { ...cardBase, borderLeftWidth: 3, borderLeftColor: 'rgba(255,255,255,0.12)', flexDirection: 'row', alignItems: 'center', gap: 8, padding: Spacing.md, marginBottom: 5 },
+  paperTitle: { fontSize: FontSize.labelMd, fontWeight: '600', color: Colors.onSurface, lineHeight: 16 },
+  paperMeta: { fontSize: 9, color: Colors.muted, fontWeight: '700' },
+  relDots: { fontSize: 9, color: '#F5A623', letterSpacing: 1 },
+  paperDoi: { fontSize: 9, color: Colors.smallLabel, fontWeight: '800' },
+  scBtn: { width: 28, height: 28, borderRadius: BorderRadius.sm, borderWidth: 1, borderColor: 'rgba(255,255,255,0.12)', alignItems: 'center', justifyContent: 'center' },
+  scTxt: { fontSize: 15, fontWeight: '900' },
 });

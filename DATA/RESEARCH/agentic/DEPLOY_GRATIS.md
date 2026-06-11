@@ -38,6 +38,12 @@ necesitas la PC encendida ni un runner. Deja el corpus cribado para tu hora de r
 guardados en Supabase**, sin PC. (La **redacción** del manuscrito sí es con **Claude Code** cuando te
 sientas — fase R34–R40 con humano presente; eso no se automatiza en la nube para no usar API de pago.)
 
+**Qué ves tras pulsar ▶ (todo en la web, en vivo por Realtime):** la sección **Corpus** se llena con los
+papers descubiertos **ordenados por relevancia**; los cribas con 1 clic (**✓ incluir · ~ dudoso · ✗
+excluir**) y **🔓 PDF** abre el texto completo de acceso abierto legal (Edge Function `research-fulltext`
+→ Unpaywall/Europe PMC, **sin Sci-Hub**). Dos funciones en la nube: `research-discovery` (busca+puntúa) y
+`research-fulltext` (PDF OA). Probadas en vivo: 200 papers puntuados; PDF de DeLorenzi resuelto.
+
 **El runner del PC es OPCIONAL** — solo si quieres que la redacción/regeneración corra hands-off en tu
 máquina. Si lo usas: pega tu **service_role** en `run_research_free.bat` (Supabase → Settings → API · solo
 en tu PC) y déjalo corriendo (o `schtasks /SC ONLOGON`). Para el "▶ desde la web" **no hace falta**.
