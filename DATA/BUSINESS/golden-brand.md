@@ -38,3 +38,22 @@
 4. Redes @qorigolden (kit completo en `D:\qori-golden\REDES_SOCIALES_KIT.md`;
    requiere SMS del dueño ~20 min; YouTube como canal de marca no necesita SMS).
 5. CRM: módulo golden en el prompt de `D:\CRM_PULSO_v3.1` (lista de espera + OCR señas).
+
+## Redes creadas EN VIVO (11-jun-2026, tarde)
+- **Facebook**: página creada (ID 61590843116336, categoría "Criador de perros"; web,
+  teléfono, correo y Huáchac-Junín configurados; vinculación de WhatsApp OMITIDA a
+  propósito para no interferir con la coexistencia CAPI de PIRQA).
+  https://www.facebook.com/profile.php?id=61590843116336
+  ⚠ PENDIENTE 30 seg del dueño: el RENAME "Mantaro Goldens" → "Qori Golden" quedó
+  precargado en Configuración → Nombre, pero FB exige la CONTRASEÑA de Flor para
+  confirmar (y tras aprobarse bloquea otro cambio por 60 días). De paso poner
+  qori-golden.vercel.app en la bio.
+- **YouTube**: canal de marca "Qori Golden" @qorigolden CREADO (sin SMS, cuenta Google
+  josephsototocas): https://www.youtube.com/channel/UCn4FpQVJshktm9FTGMTjF7g
+- **TikTok/Instagram**: requieren verificación en el teléfono (~10 min con el kit
+  `D:\qori-golden\REDES_SOCIALES_KIT.md`, handles @qorigolden).
+
+## Citas agendadas 11-jun (regla de slots: hora ocupada → siguiente turno)
+- Sáb 13-jun 4:00 p.m. → **Roy** (Manuchap 441) — ofrecido, espera confirmación
+- Sáb 13-jun 5:00 p.m. → **Rolando** — ofrecido tras su "Si porfa", espera confirmación
+- Libres: sáb 6:00 · dom 4:00, 5:00 y 6:00

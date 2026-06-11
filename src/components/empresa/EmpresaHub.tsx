@@ -135,6 +135,7 @@ export default function EmpresaHub({ variant = 'mobile' }: { variant?: 'mobile' 
             links={[
               ['🌐 qori-golden.vercel.app', 'https://qori-golden.vercel.app'],
               ['📘 Página de Facebook', 'https://www.facebook.com/profile.php?id=61590843116336'],
+              ['▶️ YouTube @qorigolden', 'https://www.youtube.com/channel/UCn4FpQVJshktm9FTGMTjF7g'],
               ['💬 WhatsApp lista de espera', 'https://wa.me/51934173914'],
             ]}
           />
