@@ -1,6 +1,8 @@
-# Artefactos de ejecución (corpus CSV, .docx de muestra) — no versionar
+# Artefactos de ejecución (corpus CSV, .docx de muestra, prompts) — no versionar
 _sample_*
 *.csv
 *.docx
 corpus*.csv
 active_query.txt
+prompts_claude_code/
+__pycache__/

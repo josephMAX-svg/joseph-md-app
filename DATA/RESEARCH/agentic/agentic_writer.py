@@ -54,17 +54,53 @@ def lead_plan(sr, journal, corpus_n):
     return {"sr": sr, "journal": journal, "corpus": corpus_n, "standard": std, "plan": plan}
 
 
-def run_worker_llm(agent_id, source_chunks, journal):
-    """Llama a Claude (modelo por tarea). Devuelve prosa con marcadores [CIT:id]."""
-    import anthropic  # solo si hay key
-    client = anthropic.Anthropic()
+def _sys_and_user(agent_id, source_chunks, journal):
     name, section, instr = WORKERS[agent_id]
     sys_prompt = f"{instr}\nTarget journal standard: {JOURNAL_STD.get(journal,'')}"
-    msg = client.messages.create(
-        model="claude-sonnet-4-6", max_tokens=1500,
-        system=sys_prompt,
-        messages=[{"role": "user", "content": "SOURCE CHUNKS:\n" + json.dumps(source_chunks)[:60000]}])
+    user = "SOURCE CHUNKS:\n" + json.dumps(source_chunks)[:60000]
+    return sys_prompt, user
+
+
+def run_worker_anthropic(agent_id, source_chunks, journal):
+    """API de Anthropic (de pago). Solo si tienes ANTHROPIC_API_KEY."""
+    import anthropic
+    client = anthropic.Anthropic()
+    sys_prompt, user = _sys_and_user(agent_id, source_chunks, journal)
+    msg = client.messages.create(model="claude-sonnet-4-6", max_tokens=1500,
+                                 system=sys_prompt, messages=[{"role": "user", "content": user}])
     return msg.content[0].text
+
+
+def run_worker_gemini(agent_id, source_chunks, journal):
+    """GRATIS — Gemini free API (Google AI Studio, key 'AIza...', 1500 req/día). Stdlib (urllib)."""
+    import urllib.request
+    key = os.environ.get("GEMINI_API_KEY")
+    model = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
+    sys_prompt, user = _sys_and_user(agent_id, source_chunks, journal)
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}"
+    body = json.dumps({
+        "system_instruction": {"parts": [{"text": sys_prompt}]},
+        "contents": [{"role": "user", "parts": [{"text": user}]}],
+        "generationConfig": {"maxOutputTokens": 2048, "temperature": 0.4},
+    }).encode()
+    req = urllib.request.Request(url, data=body, headers={"Content-Type": "application/json"}, method="POST")
+    with urllib.request.urlopen(req, timeout=90) as r:
+        data = json.load(r)
+    return data["candidates"][0]["content"]["parts"][0]["text"]
+
+
+def run_worker_claude_code(agent_id, source_chunks, journal, sr):
+    """GRATIS (tu plan Max) — emite el prompt de la sección a un fichero para que lo redacte
+    Claude Code (o cualquier chat) y devuelva la prosa. No gasta API: usa tu suscripción."""
+    sys_prompt, user = _sys_and_user(agent_id, source_chunks, journal)
+    os.makedirs("prompts_claude_code", exist_ok=True)
+    path = f"prompts_claude_code/{sr}_{agent_id}.md"
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(f"# Prompt · {WORKERS[agent_id][0]} ({WORKERS[agent_id][1]})\n\n## SYSTEM\n{sys_prompt}\n\n## USER\n{user}\n")
+    return f"[CLAUDE CODE] Pega/abre {path} en Claude Code; pega la prosa devuelta en {sr}_{agent_id}.out.md"
+
+
+WORKER_ENGINES = {"anthropic": run_worker_anthropic, "gemini": run_worker_gemini}
 
 
 def push_state(sr, line, journal):
@@ -97,32 +133,45 @@ def main():
         with open(corpus, encoding="utf-8") as f:
             n = sum(1 for _ in csv.reader(f)) - 1
 
+    # Motor de redacción: --engine, o autodetección del GRATIS disponible.
+    engine = args[args.index("--engine") + 1] if "--engine" in args else None
+    if not engine:
+        if os.environ.get("GEMINI_API_KEY"):       engine = "gemini"        # GRATIS (AI Studio)
+        elif os.environ.get("ANTHROPIC_API_KEY"):  engine = "anthropic"     # de pago
+        else:                                       engine = "claude_code"   # GRATIS (tu plan Max)
+
     plan = lead_plan(sr, journal, n)
-    print(f"🧭 LEAD ORCHESTRATOR · {sr} ({line}) → {journal}")
+    print(f"🧭 LEAD ORCHESTRATOR · {sr} ({line}) → {journal}  ·  motor: {engine}")
     print(f"   corpus: {n} papers · estándar: {plan['standard']}\n")
     for p in plan["plan"]:
         print(f"   → {p['subagent']:13} redacta {p['section']:13} (≤{p['word_budget']}w, contexto aislado)")
     push_state(sr, line, journal) and print("   ✓ estado escrito en Supabase research_agent_tasks")
 
-    if not os.environ.get("ANTHROPIC_API_KEY"):
-        print("\n[MODO PLAN] sin ANTHROPIC_API_KEY → no se llama a Claude. Pon la key para redactar de verdad.")
-        print("Pipeline al activar: workers → marcadores [CIT:id] → citation_verifier (gate) → docx_assembler (.docx).")
+    if engine == "plan":
+        print("\n[MODO PLAN] no se redacta. Motores GRATIS: 'gemini' (key AI Studio) o 'claude_code' (tu plan Max).")
         return
 
-    # ── Redacción real (con key) ──
-    from citation_verifier import verify_reference  # gate anti-alucinación
+    from citation_verifier import verify_reference  # noqa: F401  (gate al construir refs)
     from docx_assembler import build_docx
-    chunks = []  # cargar de Supabase/CSV los abstracts incluidos (omitido aquí por brevedad)
+    chunks = []  # cargar de Supabase/CSV los abstracts incluidos (R25)
     sections = []
     for p in plan["plan"]:
-        prose = run_worker_llm(p["agent_id"], chunks, journal)
+        if engine == "claude_code":
+            note = run_worker_claude_code(p["agent_id"], chunks, journal, sr)
+            print(f"   → {note}")
+            continue
+        prose = WORKER_ENGINES[engine](p["agent_id"], chunks, journal)
         sections.append({"heading": p["section"], "paragraphs": [prose]})
-        print(f"   ✓ {p['subagent']} terminó {p['section']}")
-    # CitationAgent: extraer [CIT:id], resolver a refs reales, verificar (solo 'verified' entran)
-    refs = []  # construir desde las citas verificadas
+        print(f"   ✓ {p['subagent']} terminó {p['section']} ({engine})")
+
+    if engine == "claude_code":
+        print("\n[CLAUDE CODE · GRATIS] Prompts por sección en ./prompts_claude_code/. Redáctalos en Claude Code")
+        print("(o pídeme 'redacta SR-1' aquí) y reensambla con docx_assembler. Cero API de pago.")
+        return
+    refs = []  # construir desde las citas verificadas (citation_verifier)
     build_docx({"title": f"{sr} systematic review", "journal": journal, "line": line, "sr": sr},
                sections, [], refs, out)
-    print(f"\n✅ Manuscrito ensamblado: {out} → checkpoint humano (R39).")
+    print(f"\n✅ Manuscrito ensamblado con {engine}: {out} → checkpoint humano (R39). Cero API de pago.")
 
 
 if __name__ == "__main__":

@@ -1,5 +1,9 @@
 # Cómo ENCENDER el motor 24/7 (de "diseño" a "corriendo solo mientras estudias")
 
+> 💸 **¿Quieres correrlo GRATIS (sin VPS ni API de pago)?** → usa **[`DEPLOY_GRATIS.md`](DEPLOY_GRATIS.md)**:
+> tu PC + Programador de tareas de Windows + APIs gratis + **Claude Max / Gemini-free** para redactar +
+> Supabase free + Unpaywall legal. Coste adicional **$0**. (Este documento es la vía "VPS 24/7" opcional/avanzada.)
+
 > **Estado honesto (jun-2026):** la **extracción ya funciona** — `discovery_engine.py` corrió en vivo
 > y devolvió **666 papers únicos para SR-1** (incluido el ancla DeLorenzi 2014). Pero **todavía NO corre
 > solo 24/7**: para que extraiga y redacte en automático *mientras estudias* falta **desplegar el backend**
