@@ -2,7 +2,10 @@
  * terrenosData.ts — Data REAL de Casa Soto Tocas · Patrimonios del Mantaro.
  * Fuente de verdad: D:\casa-soto-tocas\INVENTARIO.md (fichas .docx) + web viva
  * casasototocas.vercel.app + listados de Marketplace verificados el 11-jun-2026.
- * ⚠ Discrepancias precio web vs catálogo docx (mayo-2026): ver `precioCatalogo`.
+ * ✅ REGLA DEL DUEÑO (11-jun-2026): los precios de MARKETPLACE son los REALES.
+ *    Matahuacta III = S/ 120,640 (la web casasototocas muestra 114,000 DESACTUALIZADO
+ *    → corregir vía PROMPT_CRO_MEJORAS_v1.md). Panteón y pack no están en Marketplace:
+ *    el catálogo docx (192,500 / 350,000) es la referencia más probable [confirmar].
  * Los LEADS_SEED son los 21 leads reales de Marketplace gestionados el 11-jun-2026
  * (cuenta Flor Elenesi Tocas Vilchez) — semilla del tracker, progreso luego manual.
  */
@@ -39,7 +42,7 @@ export interface Predio {
 
 export const PREDIOS: Predio[] = [
   { id: 1,  nombre: 'Matahuacta I',        area: 2973, precioWeb: 178400, legal: 'Juzgado de Paz · Ley 31145', destacado: 'la chacra más grande' },
-  { id: 2,  nombre: 'Matahuacta III',      area: 2193, precioWeb: 114000, precioCatalogo: 120640, legal: 'Juzgado de Paz · apto SUNARP', destacado: 'canal cruza el predio · alfalfa activa' },
+  { id: 2,  nombre: 'Matahuacta III',      area: 2193, precioWeb: 120640, legal: 'Juzgado de Paz · apto SUNARP', destacado: 'canal cruza el predio · alfalfa activa (precio REAL Marketplace; web desactualizada en 114k)' },
   { id: 3,  nombre: 'Toco Machay',         area: 1279, precioWeb: 61400,  legal: 'Juzgado de Paz Ley 29824 (2017)', destacado: 'compuerta propia del comité' },
   { id: 4,  nombre: 'Santa Rosa II',       area: 1543, precioWeb: 86400,  legal: 'Esc. imperfecta 2011 · Ley 31145', destacado: 'cerca Observatorio IGP' },
   { id: 5,  nombre: 'Panteón',             area: 1100, precioWeb: 137500, precioCatalogo: 192500, legal: '🟢 SUNARP Partida 11061120 · PETT 2000', destacado: 'apto crédito hipotecario' },
