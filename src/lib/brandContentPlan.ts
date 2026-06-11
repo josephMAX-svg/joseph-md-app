@@ -26,9 +26,9 @@ export interface BrandPlan {
 /** Reparto semanal del tiempo de business (regla del fundador) */
 export const TIME_SPLIT = [
   { marca: 'Pulso / LIVIANO', pct: 70, color: '#D9BE8A', estado: 'activo', desc: 'Lectura plan 96 días + aplicación directa: contenido orgánico diario + funnel' },
-  { marca: 'PIRQA', pct: 10, color: '#F08A4B', estado: 'activo', desc: 'Post diario · lanzamiento sáb 12:00 → dom (día de venta)' },
-  { marca: 'Terrenos', pct: 10, color: '#8FB6E8', estado: 'activo', desc: '13 propiedades · web + Marketplace ya publicados — venta activa' },
-  { marca: 'Golden Retriever', pct: 10, color: '#E8C547', estado: 'pre-lanzamiento', desc: 'Camada en ~2 meses — crear página + documentar desde ya' },
+  { marca: 'PIRQA', pct: 10, color: '#F08A4B', estado: 'activo', desc: 'Post diario · lanzamiento sáb 12:00 → dom (día de venta) · serie "El destape del domingo"' },
+  { marca: 'Terrenos · Casa Soto Tocas', pct: 10, color: '#8FB6E8', estado: 'activo', desc: '13 predios · casasototocas.vercel.app + Marketplace (21 leads en pipeline) · visitas sáb/dom 4pm' },
+  { marca: 'Golden · Mantaro Goldens', pct: 10, color: '#E8C547', estado: 'pre-lanzamiento', desc: 'Camada nace ~ago, entrega ~oct · web + lista de espera con seña S/ 500 DESDE YA' },
 ];
 
 /** Estándares de CADA publicación (Hormozi, verificado) */
@@ -89,81 +89,96 @@ export const PULSO_PLAN: BrandPlan = {
   ],
 };
 
-/** PIRQA — post diario + ciclo de venta del finde (sistema actual del fundador) */
+/**
+ * PIRQA — post diario + ciclo de venta del finde. AUDITORÍA REAL 11-jun-2026
+ * (TikTok 13 seg/10 videos 2-879 vistas · YT 4 subs · IG 26 posts SIN un solo Reel):
+ * los 4 tops (779-879 vistas) son hooks de curiosidad/newsjacking, NO venta → duplicar
+ * ese patrón. give:ask en IG estaba ~1:11 (invertido) → corregir a 4 gives : 1 ask.
+ * Activos a explotar: el DESTAPE (clímax, como La Casita de Ricardo) y la CARA del
+ * dueño ("de lunes a viernes soy médico; los domingos hago pachamanca en mi pueblo").
+ * No duplicar el mismo mensaje el mismo día (canibaliza). Pausar videos largos 14 min.
+ */
 export const PIRQA_PLAN: BrandPlan = {
   marca: 'PIRQA · Pachamanca', accent: '#F08A4B', tiempoDia: '~10 min (dictado 3 + revisión 2 + comentarios 5)',
   semana: [
-    { dia: 'Lun', foco: 'Detrás de cámaras: la tierra, las piedras, el fuego', redes: [
+    { dia: 'Lun', foco: 'Detrás de cámaras: la tierra, las piedras, el fuego (GIVE · hook de curiosidad, no venta)', redes: [
+      { red: 'TikTok', nota: 'tarde' }, { red: 'Instagram', nota: '⚠ REEL (no flyer) — reusar el TikTok' }, { red: 'YouTube', nota: 'Short <30s' }] },
+    { dia: 'Mar', foco: 'Ingrediente andino del día (historia + sabor) + 1 de cada 3 con audio en tendencia', redes: [
       { red: 'TikTok', nota: 'tarde' }, { red: 'Instagram', nota: 'Reel' }, { red: 'YouTube', nota: 'Short' }] },
-    { dia: 'Mar', foco: 'Ingrediente andino del día (historia + sabor)', redes: [
-      { red: 'TikTok', nota: 'tarde' }, { red: 'Instagram', nota: 'Reel' }, { red: 'YouTube', nota: 'Short' }] },
-    { dia: 'Mié', foco: 'Reacciones de clientes / mesa servida (prueba social)', redes: [
+    { dia: 'Mié', foco: 'CARA DEL DUEÑO: "de lunes a viernes soy médico; los domingos hago pachamanca" (hook incopiable)', redes: [
       { red: 'Instagram', nota: 'VENTANA FUERTE', fuerte: true }, { red: 'TikTok', nota: 'tarde' }, { red: 'YouTube', nota: 'Short' }] },
-    { dia: 'Jue', foco: 'Anticipación del finde: "este sábado abrimos cupos"', redes: [
+    { dia: 'Jue', foco: 'Anticipación del finde: "este sábado abrimos cupos" (primer ASK de la semana)', redes: [
       { red: 'Instagram', nota: 'VENTANA FUERTE', fuerte: true }, { red: 'TikTok', nota: 'tarde' }, { red: 'YouTube', nota: 'Short' }] },
-    { dia: 'Vie', foco: 'Último empuje pre-lanzamiento (escasez real: 5×8 cupos)', redes: [
+    { dia: 'Vie', foco: 'Último empuje pre-lanzamiento (escasez real: 5×8 cupos) + datazo para foodies de Hyo', redes: [
       { red: 'YouTube', nota: 'FUERTE Shorts', fuerte: true }, { red: 'TikTok', nota: 'tarde' }, { red: 'Instagram', nota: 'Reel' }] },
     { dia: 'Sáb', foco: '🚀 12:00 LANZAMIENTO de cupos (app/WhatsApp) + cobertura en vivo', redes: [
       { red: 'TikTok', nota: 'FUERTE finde — en vivo del servicio', fuerte: true }, { red: 'Instagram', nota: 'Stories + Reel' }, { red: 'YouTube', nota: 'Short' }],
       extra: '🚀 Lanzamiento sáb 12:00 → dom · turnos 11:00-16:00' },
-    { dia: 'Dom', foco: '💰 DÍA DE VENTA: servicio 11-16 + contenido del servicio en vivo', redes: [
-      { red: 'TikTok', nota: 'FUERTE finde', fuerte: true }, { red: 'Instagram', nota: 'Stories' }, { red: 'YouTube', nota: 'Short' }],
-      extra: '💰 Venta + última llamada de cupos · al cierre: clip resumen del día' },
+    { dia: 'Dom', foco: '💰 DÍA DE VENTA + serie "EL DESTAPE DEL DOMINGO": live 11:00-11:30 + clip 20-30s + reacción del 1er cliente', redes: [
+      { red: 'TikTok', nota: 'FUERTE finde — EL DESTAPE', fuerte: true }, { red: 'Instagram', nota: 'Stories + Reel del destape' }, { red: 'YouTube', nota: 'Short' }],
+      extra: '💰 Venta + última llamada · al cierre: clip resumen · el destape es EL activo (3 min de humo que valen el viaje)' },
   ],
 };
 
 /**
- * TERRENOS — 10% del tiempo. Estado real: web YA publicada + publicación en Marketplace
- * (con otra cuenta). Estrategia de venta inmobiliaria (PROPUESTA inicial — ajustable):
- * renovar listados, video-ficha por propiedad, grupos locales, seguimiento WhatsApp,
- * visitas el finde. 13 propiedades.
+ * TERRENOS · Casa Soto Tocas — 10% del tiempo. VERIFICADO (11-jun-2026): web viva
+ * casasototocas.vercel.app, Marketplace con 21 leads (tracker en EmpresaHub→Terrenos,
+ * data: terrenosData.ts). Estrategia con base: Hormozi (<5 min, 3 toques, lead magnet
+ * checklist legal), Keller 8x8, Blount (bloque de oro 30-45 min/día), Podolsky (carta
+ * al vecino colindante), referentes Perú verificados (@yovanahualpa14 formato ficha;
+ * Los Portales/Menorca: vender la SEPARACIÓN S/ 500 por Yape y la cuota, no el total).
+ * El papel ES el contenido: publicar n° de partida SUNARP e invitar a verificarlo.
  */
 export const TERRENOS_PLAN: BrandPlan = {
-  marca: 'Terrenos', accent: '#8FB6E8', tiempoDia: '~10-15 min (renovar/responder) · visitas el finde',
+  marca: 'Terrenos · Casa Soto Tocas', accent: '#8FB6E8', tiempoDia: 'bloque de oro 30-45 min/día (Blount) · visitas sáb/dom 4pm',
   semana: [
-    { dia: 'Lun', foco: 'Renovar/republicar listados en Marketplace (suben en el feed) + responder TODOS los leads del finde', redes: [
-      { red: 'Marketplace', nota: 'renovar 13 propiedades', fuerte: true }, { red: 'WhatsApp', nota: 'responder leads' }] },
-    { dia: 'Mar', foco: 'VIDEO-FICHA de UNA propiedad: ubicación, medidas, precio, papeles (rotar las 13)', redes: [
-      { red: 'TikTok', nota: 'video-ficha 60s' }, { red: 'Facebook', nota: 'post + Marketplace' }] },
-    { dia: 'Mié', foco: 'Seguimiento WhatsApp a interesados (lista viva: nombre, propiedad, etapa)', redes: [
-      { red: 'WhatsApp', nota: 'pipeline de venta', fuerte: true }] },
-    { dia: 'Jue', foco: 'Publicar en grupos locales de compra-venta (Huancayo/Junín) — 1 propiedad distinta', redes: [
-      { red: 'Facebook', nota: 'grupos locales', fuerte: true }] },
-    { dia: 'Vie', foco: 'Contenido de confianza: papeles en regla / acceso / servicios de la zona', redes: [
-      { red: 'TikTok', nota: 'clip corto' }, { red: 'Facebook', nota: 'post' }] },
-    { dia: 'Sáb', foco: '📍 VISITAS presenciales programadas en la semana', redes: [
-      { red: 'WhatsApp', nota: 'confirmar visitas', fuerte: true }],
-      extra: '📍 Día de visitas — grabar material en el terreno para la semana' },
-    { dia: 'Dom', foco: 'Pipeline review: leads → visitas → señas. ¿Qué propiedad empujar la próxima semana?', redes: [
-      { red: 'WhatsApp', nota: 'cierre semanal' }],
-      extra: '📊 Métricas: leads/propiedad · visitas · ofertas' },
+    { dia: 'Lun', foco: 'Renovar listados Marketplace (cada ~5 días suben en el feed) + responder TODOS los leads del finde en <5 min', redes: [
+      { red: 'Marketplace', nota: 'renovar 13 predios', fuerte: true }, { red: 'WhatsApp', nota: 'responder + actualizar tracker' }] },
+    { dia: 'Mar', foco: 'VIDEO-FICHA de UN predio (formato @yovanahualpa14: "Registrado en RRPP" → m² → precio → agua/luz → celular)', redes: [
+      { red: 'TikTok', nota: 'video-ficha 60s con precio en pantalla' }, { red: 'Facebook', nota: 'post + Marketplace' }] },
+    { dia: 'Mié', foco: 'TOQUE 3 a tibios/calientes: "armo la lista de visitas del sábado, ¿le aparto cupo?" (presupone el sí)', redes: [
+      { red: 'WhatsApp', nota: 'pipeline — tracker en la app', fuerte: true }] },
+    { dia: 'Jue', foco: 'Confirmar citas + publicar 1 predio en grupo FB "Terrenos Huancayo-Chupaca" (formato ficha)', redes: [
+      { red: 'Facebook', nota: 'grupos locales verificados', fuerte: true }, { red: 'WhatsApp', nota: 'confirmaciones' }] },
+    { dia: 'Vie', foco: 'Contenido de CONFIANZA: partida SUNARP en cámara + "verifícalo tú mismo" (antídoto al tráfico de tierras) + pin GPS a confirmados', redes: [
+      { red: 'TikTok', nota: 'clip papeles' }, { red: 'WhatsApp', nota: 'pin GPS Plaza Huáchac' }] },
+    { dia: 'Sáb', foco: '📍 4:00 p.m. VISITAS ESCALONADAS (4:00/4:45/5:30 — que los interesados se crucen) + grabar material', redes: [
+      { red: 'WhatsApp', nota: 'reconfirmar AM', fuerte: true }],
+      extra: '📍 Open house Hormozi: ruta por sectores, 3-4 predios por visitante, dossier legal impreso' },
+    { dia: 'Dom', foco: 'Visitas + pipeline review: ¿cuántas VISITAS se hicieron? (la OMTM) · ¿qué predio empujar?', redes: [
+      { red: 'WhatsApp', nota: 'cierre semanal + pedir referidos (convierten 14-30%)' }],
+      extra: '📊 OMTM: visitas/finde · no-shows · conversación→visita ≥10% = gate para pensar en ads' },
   ],
 };
 
 /**
- * GOLDEN RETRIEVER — 10% del tiempo. FASE PRE-LANZAMIENTO (camada en ~2 meses):
- * crear página + documentar a la perrita DESDE YA (la audiencia se construye antes
- * de la venta). Formatos de los referentes verificados (Soul Desire: temas de camada;
- * My Golden Retriever Puppies: video-ficha por cachorro + CTA WhatsApp).
+ * MANTARO GOLDENS — 10% del tiempo. PRE-LANZAMIENTO: madre inseminada ~8-jun-2026 →
+ * camada nace ~ago, entrega ~oct. Estrategia verificada de criadores élite EE.UU.
+ * (Liberty/Golden Meadows/Summer Brook/Eagleridge): el pilar de confianza son los
+ * PADRES (página de la madre con carnet sanitario/vacunas/veterinario), timeline
+ * visual de 8 pasos, lista de espera con seña S/ 500 Yape (S/200 no reemb. + S/300
+ * reemb. hasta sem 6; elección por orden de seña, regla pública), pupdates semanales,
+ * video-llamada para conocer a la madre. Precio verificado Perú: S/ 2,000-2,800 →
+ * objetivo S/ 2,500-3,000 con web élite + contrato. Web: D:\mantaro-goldens.
  */
 export const GOLDEN_PLAN: BrandPlan = {
-  marca: 'Golden Retriever', accent: '#E8C547', tiempoDia: '~10 min (1 clip de la perrita + avance de página)',
+  marca: 'Mantaro Goldens', accent: '#E8C547', tiempoDia: '~10 min (1 clip de la perrita + avance de página)',
   semana: [
-    { dia: 'Lun', foco: 'Clip de la perrita: rutina/cuidados (construir audiencia ANTES de la camada)', redes: [
+    { dia: 'Lun', foco: 'Clip de la MADRE: rutina/cuidados (el pilar de confianza son los padres, no los cachorros)', redes: [
       { red: 'TikTok', nota: 'clip 15-30s' }, { red: 'Instagram', nota: 'Reel' }] },
-    { dia: 'Mar', foco: '🛠 AVANCE DE PÁGINA: crear/completar perfil (FB + IG), bio, foto, WhatsApp de contacto', redes: [
+    { dia: 'Mar', foco: '🛠 AVANCE: web mantaro-goldens + perfiles (FB/IG/TikTok @mantarogoldens), bio, WhatsApp 934 173 914', redes: [
       { red: 'Facebook', nota: 'crear página', fuerte: true }, { red: 'Instagram', nota: 'perfil' }] },
-    { dia: 'Mié', foco: 'Confianza de comprador: salud, vacunas, pedigrí/padres de la perrita', redes: [
+    { dia: 'Mié', foco: 'Confianza: carnet sanitario, vacunas, veterinario de la madre EN CÁMARA (versión Perú de health clearances)', redes: [
       { red: 'TikTok', nota: 'clip' }, { red: 'Instagram', nota: 'Reel/carrusel' }] },
-    { dia: 'Jue', foco: 'Engagement barato: pregunta a la audiencia (¿nombres para la camada?)', redes: [
-      { red: 'TikTok', nota: 'pregunta', fuerte: true }, { red: 'Instagram', nota: 'stories' }] },
+    { dia: 'Jue', foco: 'Timeline de la camada: publicar el paso actual (ecografía cuando toque = prueba pública del embarazo)', redes: [
+      { red: 'TikTok', nota: 'pregunta/update', fuerte: true }, { red: 'Instagram', nota: 'stories' }] },
     { dia: 'Vie', foco: 'Momento tierno del día (formato Tucker/A Guy and A Golden: cotidiano > producido)', redes: [
       { red: 'TikTok', nota: 'FUERTE finde' }, { red: 'Instagram', nota: 'Reel' }] },
-    { dia: 'Sáb', foco: 'Clip del finde con la perrita + responder comentarios/DMs', redes: [
+    { dia: 'Sáb', foco: 'Clip del finde + responder DMs → derivar interesados a la LISTA DE ESPERA (seña S/ 500 Yape)', redes: [
       { red: 'TikTok', nota: 'FUERTE finde', fuerte: true }, { red: 'Instagram', nota: 'Reel' }] },
-    { dia: 'Dom', foco: 'Lista de espera WhatsApp (interesados pre-camada) + métricas de la semana', redes: [
-      { red: 'WhatsApp', nota: 'lista de espera', fuerte: true }],
-      extra: '🐾 Al nacer la camada: updates semana a semana → pick day → video-ficha por cachorro + CTA WhatsApp' },
+    { dia: 'Dom', foco: 'Lista de espera WhatsApp: video-llamada con la madre para interesados serios + métricas', redes: [
+      { red: 'WhatsApp', nota: 'lista de espera + video-llamadas', fuerte: true }],
+      extra: '🐾 Timeline 8 pasos: inseminación ✓ → ecografía → nacimiento (~ago) → pupdates semanales → elección sem 6 (orden de seña) → entrega sem 8+ (~oct) con kit: vacunas, contrato, manta con olor de la madre, guía PDF' },
   ],
 };
 

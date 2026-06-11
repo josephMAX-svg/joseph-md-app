@@ -8,6 +8,7 @@ import { GradientHero, RingStat, BrandTile } from './visuals';
 import PulsoCommandCenter from './PulsoCommandCenter';
 import StudyPulsoHub from '../study/StudyPulsoHub';
 import BrandHorario from './BrandHorario';
+import TerrenosLeadTracker from './TerrenosLeadTracker';
 import {
   CockpitPanel, OfertaPanel, MarketingPanel, VentasPanel,
   LogisticaPanel, WebPanel, DirectricesPanel, PirqaView,
@@ -110,10 +111,16 @@ export default function EmpresaHub({ variant = 'mobile' }: { variant?: 'mobile' 
         <View>
           <BackToPulso onBack={() => setCompany('pulso')} />
           <SimpleBrandView
-            id="terrenos" titulo="Terrenos" estado="Venta activa"
-            desc="13 propiedades en venta. La web ya está publicada y hay publicación en Marketplace (otra cuenta). Estrategia: renovar listados, video-ficha por propiedad, grupos locales y seguimiento WhatsApp."
-            chips={[['Web publicada ✓', Colors.green], ['Marketplace ✓ (otra cuenta)', Colors.green], ['Nombre/links: por definir', Colors.muted]]}
+            id="terrenos" titulo="Casa Soto Tocas" estado="Venta activa"
+            desc="Patrimonios del Mantaro — 13 predios en Huáchac, venta directa de la familia. Web viva + Marketplace (cuenta Flor): 21 compradores en seguimiento (23 conversaciones). Visitas guiadas: sáb/dom desde 4:00 p.m. WhatsApp 934 173 914."
+            chips={[['casasototocas.vercel.app ✓', Colors.green], ['Marketplace: 21 compradores activos', Colors.green], ['Ads: NO aún (gate Lean Analytics)', AMBER]]}
+            links={[
+              ['🌐 Web', 'https://casasototocas.vercel.app'],
+              ['📥 Bandeja Marketplace', 'https://www.facebook.com/marketplace/inbox/'],
+              ['👥 Grupo FB Hyo-Chupaca', 'https://www.facebook.com/groups/3763516290632831'],
+            ]}
           />
+          <TerrenosLeadTracker />
           <BrandHorario brand="terrenos" />
         </View>
       )}
@@ -122,9 +129,13 @@ export default function EmpresaHub({ variant = 'mobile' }: { variant?: 'mobile' 
         <View>
           <BackToPulso onBack={() => setCompany('pulso')} />
           <SimpleBrandView
-            id="golden" titulo="Golden Retriever" estado="Pre-lanzamiento"
-            desc="Venta de la camada (~2 meses). TODO por crear: página (FB/IG), lista de espera WhatsApp. Documentar a la perrita desde YA — la audiencia se construye antes de la venta."
-            chips={[['Página: por crear', AMBER], ['Camada: ~2 meses', AMBER], ['Nombre: por definir', Colors.muted]]}
+            id="golden" titulo="Mantaro Goldens" estado="Pre-lanzamiento"
+            desc="Criadero familiar Golden Retriever en el Valle del Mantaro. Madre inseminada ~8-jun → camada nace ~ago, entrega ~oct-2026. Estrategia verificada (criadores élite EE.UU.): web viva con lista de espera, seña S/ 500 por Yape (elección por orden de seña), pupdates semanales, precio objetivo S/ 2,500-3,000. Carpeta nativa: D:\mantaro-goldens."
+            chips={[['Nombre: Mantaro Goldens ✓', Colors.green], ['Camada: nace ~ago · entrega ~oct', AMBER], ['Pendiente: ficha real de la madre + precio', AMBER]]}
+            links={[
+              ['🌐 mantaro-goldens.vercel.app', 'https://mantaro-goldens.vercel.app'],
+              ['💬 WhatsApp lista de espera', 'https://wa.me/51934173914'],
+            ]}
           />
           <BrandHorario brand="golden" />
         </View>
@@ -240,8 +251,9 @@ function PirqaTab({ active, onPress }: { active: boolean; onPress: () => void })
 }
 
 // ── Hero simple para líneas paralelas (Terrenos, Golden) ─────────
-function SimpleBrandView({ id, titulo, estado, desc, chips }: {
+function SimpleBrandView({ id, titulo, estado, desc, chips, links }: {
   id: string; titulo: string; estado: string; desc: string; chips: [string, string][];
+  links?: [string, string][];
 }) {
   const c = (BRANDS as any)[id]?.bright || '#B7B8BD';
   return (
@@ -260,6 +272,16 @@ function SimpleBrandView({ id, titulo, estado, desc, chips }: {
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 10 }}>
         {chips.map(([lbl, color], i) => <Chip key={i} label={lbl} color={color} small />)}
       </View>
+      {links && links.length > 0 ? (
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 12 }}>
+          {links.map(([lbl, url]) => (
+            <TouchableOpacity key={url} activeOpacity={0.8} onPress={() => Linking.openURL(url).catch(() => {})}
+              style={{ paddingVertical: 6, paddingHorizontal: 12, borderRadius: BorderRadius.full, borderWidth: 1, borderColor: c + '66', backgroundColor: c + '14' }}>
+              <Text style={{ fontSize: FontSize.labelSm, fontWeight: '700', color: c }}>{lbl}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      ) : null}
     </View>
   );
 }
