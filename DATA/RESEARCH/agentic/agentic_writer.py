@@ -133,12 +133,12 @@ def main():
         with open(corpus, encoding="utf-8") as f:
             n = sum(1 for _ in csv.reader(f)) - 1
 
-    # Motor de redacción: --engine, o autodetección del GRATIS disponible.
+    # Motor de redacción: --engine, o autodetección. GRATIS por defecto = Claude Code (tu plan Max).
+    # (gemini queda como opción explícita '--engine gemini' pero NO se usa por defecto: el usuario
+    #  reserva sus pocos tokens de Gemini para los anuncios de la empresa.)
     engine = args[args.index("--engine") + 1] if "--engine" in args else None
     if not engine:
-        if os.environ.get("GEMINI_API_KEY"):       engine = "gemini"        # GRATIS (AI Studio)
-        elif os.environ.get("ANTHROPIC_API_KEY"):  engine = "anthropic"     # de pago
-        else:                                       engine = "claude_code"   # GRATIS (tu plan Max)
+        engine = "anthropic" if os.environ.get("ANTHROPIC_API_KEY") else "claude_code"
 
     plan = lead_plan(sr, journal, n)
     print(f"🧭 LEAD ORCHESTRATOR · {sr} ({line}) → {journal}  ·  motor: {engine}")

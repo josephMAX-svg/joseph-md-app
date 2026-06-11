@@ -12,8 +12,8 @@ set PYTHONIOENCODING=utf-8
 set CONTACT_EMAIL=josephsototocas@gmail.com
 REM (opcionales, todos GRATIS) — descomenta y pega tus keys:
 REM set OPENALEX_KEY=...        (openalex.org/settings/api · 30s · $1/dia gratis)
-REM set GEMINI_API_KEY=AIza...  (aistudio.google.com · 1500 req/dia gratis · redacta)
 REM set NCBI_KEY=...            (sube PubMed 3->10 req/s)
+REM Redaccion = Claude Code (tu plan Max). NO se usa Gemini (lo reservas para los anuncios).
 
 set DIR=%~dp0
 cd /d "%DIR%"
@@ -21,9 +21,11 @@ cd /d "%DIR%"
 echo [%date% %time%] DISCOVERY SR-1 (gratis)...
 python "%DIR%discovery_engine.py" "(dermal filler OR hyaluronic acid filler) AND (vascular occlusion OR skin necrosis OR blindness) AND hyaluronidase" --line SR-1 --out "%DIR%corpus_SR-1.csv"
 
-REM Redacción GRATIS: con GEMINI_API_KEY usa Gemini; si no, deja prompts para Claude Code.
-echo [%date% %time%] REDACCION (gratis)...
-python "%DIR%agentic_writer.py" --sr SR-1 --corpus "%DIR%corpus_SR-1.csv" --out "%DIR%SR-1_revision_v1.docx"
+REM Redaccion GRATIS via Claude Code (tu Max): deja los prompts por seccion en prompts_claude_code\.
+REM El "corre solo" es el DISCOVERY/screening/texto-completo (arriba, sin LLM). La prosa la generas
+REM en Claude Code cuando te sientas (o dile "redacta SR-1") — fase R34-R40 del plan, con humano presente.
+echo [%date% %time%] Generando prompts de redaccion (Claude Code)...
+python "%DIR%agentic_writer.py" --sr SR-1 --engine claude_code --corpus "%DIR%corpus_SR-1.csv" --out "%DIR%SR-1_revision_v1.docx"
 
 echo [%date% %time%] Listo. Revisa el corpus y el .docx en %DIR%
 endlocal

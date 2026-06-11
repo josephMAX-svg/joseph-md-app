@@ -4,13 +4,15 @@ fulltext_cascade.py — Resolver de TEXTO COMPLETO legal por DOI (cascada del ma
 Etapa 1 (Unpaywall, de OurResearch) implementada y probada; etapas 2-6 documentadas como
 resolvers encadenables. Stdlib-only.
 
-Orden de la cascada (corta al primer PDF):
+Orden de la cascada (corta al primer PDF · todo LEGAL, sin Sci-Hub):
   1. Unpaywall  api.unpaywall.org/v2/{DOI}?email=   → best_oa_location.url_for_pdf
   2. Europe PMC fullTextUrlList (resultType=core)
-  3. PMC OA subset
+  3. CORE (core.ac.uk) / BASE (base-search.net) — agregadores OA
   4. Preprints (bioRxiv/medRxiv/arXiv)
   5. ALICIA-CONCYTEC (OAI-PMH) — repositorio peruano
-  6. Solicitud al autor (email) — último recurso
+  6. HINARI/Research4Life vía UNCP — acceso legal a paywall para LMIC
+  7. Solicitud al autor (email "request reprint") — author_reprint_email() te lo redacta
+  8. Acceso de biblioteca UNCP
 
 USO:  python fulltext_cascade.py 10.1177/1090820X14525035
 ENV:  CONTACT_EMAIL (obligatorio para Unpaywall)
@@ -58,17 +60,42 @@ def europepmc_fulltext(doi):
     return None
 
 
+def author_reprint_email(doi):
+    """Redacta el correo legal de 'request reprint' al autor de correspondencia (etapa 7).
+    100% legal y efectivo: muchos autores mandan el PDF gratis. Usa metadatos de Crossref."""
+    try:
+        url = f"https://api.crossref.org/works/{urllib.parse.quote(doi)}?mailto={urllib.parse.quote(CONTACT)}"
+        m = _get(url)["message"]
+        title = (m.get("title") or [""])[0]
+        a = (m.get("author") or [{}])[0]
+        autor = f"Dr. {a.get('family','')}".strip()
+        jt = (m.get("container-title") or [""])[0]
+        year = (m.get("issued", {}).get("date-parts", [[None]])[0] or [None])[0]
+    except Exception:
+        title, autor, jt, year = "[título]", "Dr./Prof.", "[revista]", "[año]"
+    return (f"Para: {autor} (autor de correspondencia)\n"
+            f"Asunto: Reprint request — {title} ({jt}, {year})\n\n"
+            f"Dear {autor},\n\n"
+            f"I am a physician-researcher at Universidad Nacional del Centro del Perú working on a PRISMA-2020 "
+            f"systematic review of vascular complications of facial fillers. I was unable to access the full "
+            f"text of your article \"{title}\" ({jt}, {year}; doi:{doi}) through our institution. Would you be "
+            f"kind enough to share a PDF reprint for research purposes? It would be invaluable for our review.\n\n"
+            f"Thank you very much for your time.\nSincerely,\nJoseph Max Soto Tocas, MD\n")
+
+
 def resolve(doi):
-    """Cascada: corta al primer PDF. Devuelve dict con la etapa ganadora."""
+    """Cascada LEGAL: corta al primer PDF. Devuelve dict con la etapa ganadora (sin Sci-Hub)."""
     pdf, meta = unpaywall(doi)
     if pdf:
         return {"doi": doi, "pdf_url": pdf, "stage": "1-unpaywall", **meta}
     ft = europepmc_fulltext(doi)
     if ft:
         return {"doi": doi, "pdf_url": ft, "stage": "2-europepmc", **meta}
-    # etapas 3-6: PMC OA / preprints / ALICIA-CONCYTEC / autor → marcar para gestión manual
+    # etapas 3-8 (CORE/BASE / preprints / ALICIA / HINARI-UNCP / autor / biblioteca UNCP)
     return {"doi": doi, "pdf_url": None, "stage": "manual", **meta,
-            "note": "OA no localizado en etapas 1-2; intentar PMC/preprints/ALICIA o pedir al autor"}
+            "note": "OA no localizado en 1-2. Vías legales: CORE/BASE, preprints, ALICIA, HINARI vía UNCP, "
+                    "biblioteca UNCP, o pedir al autor (ver --email para el correo redactado).",
+            "reprint_email": author_reprint_email(doi)}
 
 
 if __name__ == "__main__":

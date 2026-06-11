@@ -12,23 +12,20 @@
 | Búsqueda 5 fuentes | — | OpenAlex (key gratis · $1/día) + PubMed + Europe PMC + Crossref — **$0** |
 | Texto completo | — | **Unpaywall** (OA legal) — **$0** · (Sci-Hub: NO, ver abajo) |
 | Screening | — | **Ollama local** (phi4-mini, gratis) o Claude Code |
-| **Redacción (workers)** | Anthropic API de pago | **Claude Code (tu Max)** o **Gemini free API** — **$0** |
+| **Redacción (workers)** | Anthropic API de pago | **Claude Code (tu plan Max)** — **$0** *(Gemini NO: lo reservas para los anuncios)* |
 | Verificación de citas | — | Crossref + PubMed — **$0** |
 | Base de datos | — | **Supabase free tier** (ya aplicado) — **$0** |
 | Word / sync | — | python-docx (stdlib) → Obsidian / Google Drive — **$0** |
 
 **Coste adicional total: $0.** Solo usas tu suscripción Claude Max (o el tier gratis de Gemini) y tu PC.
 
-## 1. Las únicas 2 keys (ambas GRATIS, 30s cada una) — opcionales
+## 1. La única key (GRATIS, 30s) — opcional
 
-- **OpenAlex** → `https://openalex.org/settings/api` (crea cuenta gratis, copia la key `...`).
+- **OpenAlex** → `https://openalex.org/settings/api` (crea cuenta gratis, copia la key).
   *Sin key también corre* (100 créditos/día), pero con key tienes **$1/día gratis** (~1.000 búsquedas) y
-  las búsquedas por DOI son **gratis**. Para 1 SR/día sobra de largo.
-- **Gemini** (si quieres redacción hands-off sin abrir Claude Code) → `https://aistudio.google.com/apikey`
-  (key `AIza...`, **tier gratis permanente**, 1.500 peticiones/día con `gemini-2.5-flash`). Una SR ≈ 5-7
-  llamadas → gratis. *Tu "Gemini básico" del móvil no es esto; AI Studio da una key de API aparte, gratis.*
-
-Pega ambas en `run_research_free.bat` (líneas `set OPENALEX_KEY=` / `set GEMINI_API_KEY=`).
+  las búsquedas por DOI son **gratis**. Para 1 SR/día sobra de largo. Pégala en `run_research_free.bat`.
+- **Gemini: NO se usa** — reservas tus pocos tokens para los anuncios de la empresa. La redacción es
+  con **Claude Code (tu plan Max)**.
 
 ## 2. Encenderlo en tu PC (cron gratis, una vez)
 
@@ -40,29 +37,48 @@ schtasks /Create /SC WEEKLY /D MON,TUE,WED,THU,FRI ^
 ```
 Cada día hábil 06:00 (con la PC encendida) corre discovery + redacción. Quitar: `schtasks /Delete /TN "Research Discovery" /F`.
 
-## 3. Quién redacta (elige; ambos $0)
+## 3. Quién redacta → **Claude Code (tu plan Max)**
 
-- **Claude Code (tu plan Max · recomendado):** `agentic_writer.py --engine claude_code` deja un prompt por
-  sección en `prompts_claude_code/`. Los redactas en Claude Code (o me dices **"redacta SR-1"** y lo hago
-  aquí) — **no gasta API**, usa tu suscripción. Mejor calidad para el manuscrito final.
-- **Gemini free (hands-off):** con `GEMINI_API_KEY` puesta, `agentic_writer.py` redacta solo, gratis, sin
-  abrir nada. Ideal para que "corra mientras estudias".
+`agentic_writer.py` (por defecto `--engine claude_code`) deja un prompt por sección en
+`prompts_claude_code/` (Intro/Methods/Results/Discussion según el estándar de la revista). Los redactas en
+**Claude Code** — o me dices **"redacta SR-1"** y lo hago aquí — y reensamblas con `docx_assembler.py`.
+**No gasta API de pago ni tokens de Gemini:** usa tu suscripción Max.
 
-El orquestador ya elige el motor gratis disponible automáticamente (Gemini si hay key, si no Claude Code).
+**Qué corre solo vs qué necesita tu Max presente (honesto):**
+- **Autónomo en tu PC (sin LLM):** búsqueda en las fuentes + dedup + texto completo (Unpaywall) +
+  pre-screening (Ollama local). Eso es el grueso y corre con el `.bat` mientras estudias.
+- **Con tu Max (interactivo):** la **prosa** del manuscrito (fase R34–R40 del plan, que ya es una fase con
+  humano presente). Te sientas 1 vez, Claude Code redacta las secciones desde el corpus ya cribado, y sale el `.docx`.
 
-## 4. Sci-Hub / "sci-bot" — por qué NO, y qué usar en su lugar
+## 4. Sci-Hub / "sci-bot" — el argumento ético, y por qué sigo sin conectarlo (con una salida mejor)
 
-**No voy a automatizar Sci-Hub ni un "sci-bot".** Su estatus legal es **disputado/ilegal en muchas
-jurisdicciones** (incluida la mayoría de editoriales), y va contra las reglas del propio sistema
-(`agentic-system.md`: *"prioriza acceso abierto legal; Sci-Hub no se usa"*). Para una SR que quieres
-publicar en JEADV/JAAD, usar Sci-Hub es además un riesgo reputacional real.
+Tu punto es legítimo y lo respeto: **el acceso desigual a la literatura es un problema real**, sobre todo
+para investigadores de países de ingreso medio como Perú, y el "bien común" del conocimiento importa. No te
+voy a dar un sermón. Pero **no voy a conectar/automatizar Sci-Hub**, por dos razones concretas atadas a **tu
+objetivo** (publicar en JEADV/JAAD y construir el CV Mayo):
 
-**La vía legal gratuita ya cubre la mayoría** (probado: Unpaywall resolvió el PDF de DeLorenzi 2014):
-1. **Unpaywall** (OA legal por DOI) · 2. **Europe PMC / PMC OA** · 3. **Preprints** (medRxiv/bioRxiv) ·
-4. **ALICIA-CONCYTEC** (repositorio peruano) · 5. **Solicitud al autor** (email "request reprint" — muchos
-mandan el PDF gratis) · 6. **Tu acceso institucional UNCP** (login de biblioteca, legal).
-En dermatología, esto basta para el grueso de la literatura; lo que quede tras paywall se marca para
-gestión manual (pedir al autor o vía UNCP), no por una ruta ilegal.
+1. **El sustento ético no cambia el estatus legal.** Sci-Hub elude controles de acceso de forma
+   **ilegal/disputada en la mayoría de jurisdicciones**; que la motivación sea buena no lo hace legal, y yo
+   no puedo construir la automatización que salta esos controles.
+2. **Te perjudica justo donde quieres ganar.** Una SR que aspira a JEADV/JAAD y a un CV para Mayo se apoya
+   en **integridad de proceso**. Editoriales e instituciones (Mayo incluida) ven con muy malos ojos el uso
+   de Sci-Hub; el riesgo reputacional cae sobre lo único que estás construyendo: tu credibilidad.
+
+**La salida que SÍ resuelve el "bien común / acceso para LMIC" — y es legítima:** existe un canal creado
+**exactamente para tu situación**: **Research4Life / HINARI** (programa OMS + editoriales) da a
+instituciones de países elegibles **acceso legal y gratuito/bajo costo a miles de revistas de pago**. Es la
+respuesta institucional al problema que Sci-Hub dice atacar. **Acción:** verifica con la biblioteca de la
+**UNCP** si está registrada en **HINARI** (`research4life.org`); si no, su registro es gratis y es la palanca
+correcta. Eso te da, legalmente, el acceso que buscabas.
+
+**Cascada legal gratuita (ya automatizada / probada — Unpaywall dio el PDF de DeLorenzi 2014):**
+1. **Unpaywall** (OA legal por DOI) · 2. **Europe PMC / PMC OA** · 3. **CORE** (`core.ac.uk`, agregador OA,
+   300M+, API gratis) y **BASE** (`base-search.net`) · 4. **Preprints** (medRxiv/bioRxiv) ·
+5. **ALICIA-CONCYTEC** (repositorio peruano) · 6. **HINARI/Research4Life** vía UNCP (legal, cubre paywall) ·
+7. **Solicitud al autor** (email "request reprint" — el `fulltext_cascade.py` te redacta el correo; muchos
+   autores mandan el PDF gratis y encantados) · 8. **Acceso de biblioteca UNCP**.
+En dermatología esto cubre el grueso; lo que quede se pide al autor o se saca por HINARI/UNCP — **nunca por
+una ruta ilegal**. Mismo "bien común", sin el riesgo.
 
 ## 5. En una línea
 
