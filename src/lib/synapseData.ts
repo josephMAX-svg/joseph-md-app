@@ -228,6 +228,7 @@ export const SYNAPSE_HORARIO: { min: string; bloque: string; que: string; format
 
 // ─── Quick links (right panel) ───
 export const SYNAPSE_QUICKLINKS: { label: string; url: string; nota: string }[] = [
+  { label: '◆ Obsidian — Mapa SYNAPSE', url: 'obsidian://open?vault=Vault_Medicina%20MIR_Joseph&file=05_SYNAPSE_IA%2F00_Mapa_SYNAPSE', nota: 'tu segundo cerebro: 7 fases · 82 subtemas con temario real' },
   { label: '🏛 Anthropic Academy', url: 'https://www.anthropic.com/learn', nota: 'La escuela oficial — F0 empieza aquí' },
   { label: '🎓 Claude 101', url: 'https://anthropic.skilljar.com/claude-101', nota: 'Primer curso con certificado' },
   { label: '📜 Building Effective Agents', url: 'https://www.anthropic.com/engineering/building-effective-agents', nota: 'El ensayo fundacional (25 min)' },

@@ -28,9 +28,12 @@ function scan(base) {
 const mir = scan(path.join(V, '03_MIR'));
 const usmle = scan(path.join(V, '01_USMLE', '02_UWORLD_SYSTEMS'));
 const encaps = scan(path.join(V, '06_ENCAPS', 'ENCAPS_2026', '02_TEMARIO'));
+const synapse = scan(path.join(V, '05_SYNAPSE_IA'));
 const researchLineas = dirs(path.join(V, '04_INVESTIGACIÓN DERMATOLÓGICA', '01_LINEAS'));
 const researchSRs = dirs(path.join(V, '04_INVESTIGACIÓN DERMATOLÓGICA', '02_SR_EN_CURSO'));
 const dermaVault = isDir(path.join(V, '07_DERMATOLOGIA'));
+const empresaMarcas = dirs(path.join(V, '02_EMPRESA FINANZAS')).filter((d) => /^\d\d_/.test(d) && d !== '06_BIBLIOTECA');
+const vitalsVault = isDir(path.join(V, '08_VITALS'));
 
 // ── data de la app ──
 const dermaDias = (fs.readFileSync(path.join(APP, 'src/lib/dermaDailyPlan.ts'), 'utf8').match(/\{\s*d:\s*\d+/g) || []).length;
@@ -77,25 +80,28 @@ actualizado: ${hoy}
 # Mapa Maestro · Joseph MD
 
 > [!success] El segundo cerebro, medible
-> Seis dominios · cada subtema con su carpeta (\`_concepto_madre\` + \`APEX_creados/\`) ·
-> el motor APEX (Ctrl+Shift+A) rutea cada nota a su lugar exacto en Anki, Obsidian, Notion y Supabase.
-> Las cifras de cobertura se recalculan de los archivos reales.
+> Ocho dominios — el espejo exacto de la app Joseph MD · cada subtema con su carpeta
+> (\`_concepto_madre\` + \`APEX_creados/\`) · el motor APEX (Ctrl+Shift+A) rutea cada nota a su
+> lugar exacto en Anki, Obsidian, Notion y Supabase. Cifras recalculadas de los archivos reales.
 
 | Dominio | Estructura | Vault | Anki |
 |---------|-----------|-------|------|
 | 🇪🇸 **MIR** · ProMIR | ${mir.grupos.length} asignaturas · ${mir.total} capítulos | \`03_MIR\` | ${anki ? `APEX::MIR (${anki.mir} sub-decks · lazy)` : '—'} |
 | 🇺🇸 **USMLE** · uWorld | ${usmle.grupos.length} sistemas · ${usmle.total} subtopics | \`01_USMLE/02_UWORLD_SYSTEMS\` | ${anki ? `APEX::USMLE (${anki.usmle} subjects)` : '—'} |
 | 🇵🇪 **ENCAPS** · MINSA | 5 bloques · ${encaps.total} subtemas | \`06_ENCAPS/.../02_TEMARIO\` | ${anki ? `APEX::ENCAPS (${anki.encaps} sub-decks ✓)` : '—'} |
+| 🧠 **SYNAPSE** · IA | ${synapse.grupos.length - 1} fases + extras · ${synapse.total} materiales | [[05_SYNAPSE_IA/00_Mapa_SYNAPSE\\|\`05_SYNAPSE_IA\`]] | *por definir (Palmerton)* |
 | 🧴 **Derma** | plan ${dermaDias} átomos (app) ${dermaVault ? '· vault ✓' : '· vault pendiente (chat Derma)'} | ${dermaVault ? '`07_DERMATOLOGIA`' : '*por crear*'} | ${anki ? `Dermki (${anki.dermki} capítulos · pagado)` : '—'} |
 | 🔬 **Research** | ${researchLineas.length} líneas · ${researchSRs.length} SR en curso | \`04_INVESTIGACIÓN/01_LINEAS\` | *por definir (Palmerton)* |
-| 💼 **Business** | ${libros} libros · plan ${bizDias} días | \`02_EMPRESA FINANZAS\` | *por definir (Palmerton)* |
+| 💼 **Business** | ${empresaMarcas.length} marcas · ${libros} libros · plan ${bizDias} días | [[02_EMPRESA FINANZAS/00_Mapa_EMPRESA\\|\`02_EMPRESA FINANZAS\`]] | *por definir (Palmerton)* |
+| 🫀 **VITALS** | app v2.1 en producción · 3 secciones ${vitalsVault ? '✓' : '*por crear*'} | [[08_VITALS/00_Mapa_VITALS\\|\`08_VITALS\`]] | — |
 
 \`\`\`mermaid
-%%{init: {'theme':'base','themeVariables':{'background':'transparent','primaryTextColor':'#E8DCC0','pieSectionTextColor':'#E8DCC0','pieTitleTextSize':'17px','pieOuterStrokeWidth':'0px','pie1':'#B8923F','pie2':'#7E9CB8','pie3':'#9DB07F'}}}%%
-pie showData title Subtemas por examen
+%%{init: {'theme':'base','themeVariables':{'background':'transparent','primaryTextColor':'#E8DCC0','pieSectionTextColor':'#E8DCC0','pieTitleTextSize':'17px','pieOuterStrokeWidth':'0px','pie1':'#B8923F','pie2':'#7E9CB8','pie3':'#9DB07F','pie4':'#8B93C7'}}}%%
+pie showData title Subtemas por dominio
     "MIR · ProMIR" : ${mir.total}
     "ENCAPS · MINSA" : ${encaps.total}
     "USMLE · uWorld" : ${usmle.total}
+    "SYNAPSE · IA" : ${synapse.total}
 \`\`\`
 
 ## 🇪🇸 MIR — ProMIR
@@ -119,6 +125,15 @@ ${bar(encaps)}
 > [!note]- Los 5 bloques (desplegar)
 ${tabla(encaps, '06_ENCAPS/ENCAPS_2026/02_TEMARIO').split('\n').map((l) => '> ' + l).join('\n')}
 
+## 🧠 SYNAPSE — formación élite en IA
+
+${bar(synapse)}
+
+> [!note]- Las 7 fases + audio/extras (desplegar)
+${tabla(synapse, '05_SYNAPSE_IA').split('\n').map((l) => '> ' + l).join('\n')}
+
+> Ruta completa, plan de 82 días y nivel-meta Anthropic: [[05_SYNAPSE_IA/00_Mapa_SYNAPSE|Mapa SYNAPSE]].
+
 ## 🧴 Derma — Dermki + 3 fuentes
 
 > [!info] Deck **Dermki** (pagado) — ${DERMKI.length} capítulos en Anki${anki ? ' ✓ verificado' : ''}
@@ -136,9 +151,14 @@ ${researchSRs.map((s) => `| **SR en curso** · ${nom(s)} | \`02_SR_EN_CURSO/${s}
 
 ## 💼 Business — conocimiento del fundador
 
-> [!tip] ${libros} libros (plan ${bizDias} días) · 70% Pulso/LIVIANO · 10% PIRQA · 10% Terrenos · 10% Golden
-> El conocimiento operativo vive en \`02_EMPRESA FINANZAS\`; los términos a memorizar
-> (Value Equation, CFA, give:ask…) entrarán por el método Palmerton (Anki + Obsidian).
+> [!tip] ${empresaMarcas.length} marcas · ${libros} libros (plan ${bizDias} días) · 70% Pulso/LIVIANO · 10% PIRQA · 10% Terrenos · 10% Golden
+> Mapa de marcas y biblioteca: [[02_EMPRESA FINANZAS/00_Mapa_EMPRESA|Mapa Empresa]] ·
+> los términos a memorizar (Value Equation, CFA, give:ask…) entrarán por el método Palmerton.
+
+## 🫀 VITALS — Body, AI-measured
+
+> [!tip] App propia v2.1 en producción (vitals-pulso.vercel.app) — embebida en Joseph MD
+> Split semanal, pisos de seguridad y mecánicas de retención: [[08_VITALS/00_Mapa_VITALS|Mapa VITALS]].
 
 ## ⚙️ El motor
 
@@ -156,7 +176,7 @@ flowchart LR
 
 \`\`\`dataview
 TABLE WITHOUT ID file.link AS "APEX", file.cday AS "Creado", file.folder AS "Carpeta"
-FROM "01_USMLE" OR "03_MIR" OR "06_ENCAPS"
+FROM "01_USMLE" OR "03_MIR" OR "06_ENCAPS" OR "05_SYNAPSE_IA" OR "02_EMPRESA FINANZAS" OR "08_VITALS"
 WHERE contains(file.folder, "APEX_creados")
 SORT file.cday DESC
 LIMIT 20
@@ -167,4 +187,4 @@ LIMIT 20
 `;
 
 fs.writeFileSync(path.join(V, '00_Dashboard', 'Mapa_Temarios_Trilingue.md'), md, 'utf8');
-console.log(`Mapa v2 · MIR ${mir.conApex}/${mir.total} · USMLE ${usmle.conApex}/${usmle.total} · ENCAPS ${encaps.conApex}/${encaps.total} · Derma ${dermaDias} átomos · Research ${researchLineas.length}L+${researchSRs.length}SR · Anki ${anki ? 'OK' : 'cerrado'}`);
+console.log(`Mapa v3 · MIR ${mir.conApex}/${mir.total} · USMLE ${usmle.conApex}/${usmle.total} · ENCAPS ${encaps.conApex}/${encaps.total} · SYNAPSE ${synapse.conApex}/${synapse.total} · Derma ${dermaDias} átomos · Research ${researchLineas.length}L+${researchSRs.length}SR · Business ${empresaMarcas.length} marcas/${bizDias}d · VITALS ${vitalsVault ? 'OK' : '—'} · Anki ${anki ? 'OK' : 'cerrado'}`);
