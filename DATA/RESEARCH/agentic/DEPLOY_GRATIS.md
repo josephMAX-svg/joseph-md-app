@@ -27,15 +27,22 @@
 - **Gemini: NO se usa** — reservas tus pocos tokens para los anuncios de la empresa. La redacción es
   con **Claude Code (tu plan Max)**.
 
-## 2. Encenderlo en tu PC (cron gratis, una vez)
+## 2. Encenderlo: el BOTÓN de la app + el runner del PC
 
-`cmd` como administrador:
-```
-schtasks /Create /SC WEEKLY /D MON,TUE,WED,THU,FRI ^
-  /TR "D:\joseph-md-app\DATA\RESEARCH\agentic\run_research_free.bat" ^
-  /TN "Research Discovery" /ST 06:00
-```
-Cada día hábil 06:00 (con la PC encendida) corre discovery + redacción. Quitar: `schtasks /Delete /TN "Research Discovery" /F`.
+El modelo es por **botón**, no por horario fijo: en la app (Research → Sistema agéntico) pulsas
+**▶ Iniciar** por la mañana mientras estudias ENCAPS; el motor descubre/criba y para al llegar tu hora de
+research. **⏸ Pausar / ⏹ Detener** cortan el gasto al instante. Sigue al día siguiente **solo si dejas la
+PC encendida** (si la apagas, se detiene).
+
+Para que el botón ejecute algo, deja corriendo el **puente** en tu PC (una vez):
+1. Pega tu **service_role** de Supabase en `run_research_free.bat` (`set SUPABASE_SERVICE_KEY=...` ·
+   Supabase → Settings → API · es tu clave, va **solo en tu PC**, nunca en el navegador).
+2. Doble-clic a `run_research_free.bat` → arranca `research_runner.py`, que espera tus botones.
+3. (Opcional) auto-arrancar al iniciar sesión:
+   `schtasks /Create /SC ONLOGON /TR "D:\joseph-md-app\DATA\RESEARCH\agentic\run_research_free.bat" /TN "Research Runner"`
+
+**Probado en vivo:** el botón ▶ inserta el comando en Supabase y pone el motor en `running`; el runner lo
+recoge y corre el discovery. La consola de la app muestra el estado real (🟢/🟡/🔴) y lo que redacta cada agente.
 
 ## 3. Quién redacta → **Claude Code (tu plan Max)**
 

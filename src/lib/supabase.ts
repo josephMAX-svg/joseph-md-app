@@ -615,13 +615,13 @@ export async function getAgentSkills(): Promise<AgentSkill[]> {
 export interface ResearchAgentTask {
   line: string; sr?: string | null; agent: string; seccion?: string | null;
   estado: 'idle' | 'queued' | 'working' | 'done' | 'blocked' | 'needs_human';
-  journal_std?: string | null;
+  journal_std?: string | null; output_md?: string | null;
 }
 export async function getResearchAgentTasks(line: string): Promise<ResearchAgentTask[]> {
   try {
     const { data, error } = await supabase
       .from('research_agent_tasks')
-      .select('line, sr, agent, seccion, estado, journal_std')
+      .select('line, sr, agent, seccion, estado, journal_std, output_md')
       .eq('line', line);
     if (error) throw error;
     return (data as ResearchAgentTask[]) ?? [];
@@ -631,19 +631,50 @@ export async function getResearchAgentTasks(line: string): Promise<ResearchAgent
 }
 export interface ResearchEngineState {
   active_line?: string | null; papers_today?: number | null;
-  next_checkpoint?: string | null; calendar_block?: string | null; last_run_at?: string | null;
+  next_checkpoint?: string | null; calendar_block?: string | null;
+  last_run_at?: string | null; run_state?: 'idle' | 'running' | 'paused' | 'stopped' | null;
 }
 export async function getResearchEngineState(): Promise<ResearchEngineState | null> {
   try {
     const { data, error } = await supabase
       .from('research_engine_state')
-      .select('active_line, papers_today, next_checkpoint, calendar_block, last_run_at')
+      .select('active_line, papers_today, next_checkpoint, calendar_block, last_run_at, run_state')
       .eq('id', 1)
       .maybeSingle();
     if (error) throw error;
     return (data as ResearchEngineState) ?? null;
   } catch {
     return null;
+  }
+}
+
+/** Envía un comando al motor (lo ejecuta el runner del PC que poll-ea research_commands). */
+export type ResearchCmd = 'start' | 'pause' | 'stop' | 'regenerate' | 'feedback';
+export async function sendResearchCommand(
+  kind: ResearchCmd, line: string,
+  opts?: { agent?: string; target?: string; payload?: string },
+): Promise<boolean> {
+  try {
+    const { error } = await supabase.from('research_commands').insert({
+      kind, line, agent: opts?.agent ?? null, target: opts?.target ?? null, payload: opts?.payload ?? null,
+    });
+    if (error) throw error;
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/** Refleja el estado de ejecución de inmediato (el runner lo confirma/avanza). */
+export async function setResearchRunState(run_state: 'idle' | 'running' | 'paused' | 'stopped', activeLine?: string): Promise<boolean> {
+  try {
+    const patch: Record<string, unknown> = { run_state, last_run_at: new Date().toISOString() };
+    if (activeLine) patch.active_line = activeLine;
+    const { error } = await supabase.from('research_engine_state').update(patch).eq('id', 1);
+    if (error) throw error;
+    return true;
+  } catch {
+    return false;
   }
 }
 

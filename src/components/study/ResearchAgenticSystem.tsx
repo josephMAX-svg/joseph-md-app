@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Linking } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Linking, Platform, TextInput } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
 import { SectionLabel, Chip, GlassPanel, gridStyle, gridItemStyle, useHover } from '../empresa/primitives';
@@ -11,9 +11,34 @@ import {
   AGENTE_SECCION, ESTADO_AGENTE, consolaSnapshot, journalStd,
 } from '../../lib/researchProgram';
 import { researchObsUrlSR, researchObsUrlLine } from '../../lib/obsidianResearchMap';
-import { getResearchAgentTasks, getResearchEngineState, ResearchEngineState } from '../../lib/supabase';
+import {
+  getResearchAgentTasks, getResearchEngineState, ResearchEngineState, ResearchAgentTask,
+  sendResearchCommand, setResearchRunState, ResearchCmd,
+} from '../../lib/supabase';
 
 const OBS = '#A78BFA';
+
+/** Dictado por voz (Web Speech API · solo web/Chrome-Edge). En native degrada a no-soportado. */
+function useVoiceDictation(lang = 'es-PE') {
+  const [listening, setListening] = useState(false);
+  const recRef = useRef<any>(null);
+  const SR = Platform.OS === 'web' && typeof window !== 'undefined'
+    ? ((window as any).SpeechRecognition || (window as any).webkitSpeechRecognition) : null;
+  const supported = !!SR;
+  const start = (onText: (t: string) => void) => {
+    if (!SR) return;
+    try {
+      const rec = new SR();
+      rec.lang = lang; rec.interimResults = false; rec.continuous = false;
+      rec.onresult = (e: any) => { const t = e.results?.[0]?.[0]?.transcript || ''; if (t) onText(t); };
+      rec.onend = () => setListening(false);
+      rec.onerror = () => setListening(false);
+      recRef.current = rec; rec.start(); setListening(true);
+    } catch { setListening(false); }
+  };
+  const stop = () => { try { recRef.current?.stop(); } catch { /* noop */ } setListening(false); };
+  return { supported, listening, start, stop };
+}
 
 /**
  * ResearchAgenticSystem — "el corazón": orchestrator-worker + HITL para redactar revisiones
@@ -57,19 +82,52 @@ export default function ResearchAgenticSystem() {
 
   // Estado REAL del motor (Supabase) — si hay datos, la consola va "en vivo"; si no, fallback ilustrativo.
   const [live, setLive] = useState<Record<string, string>>({});
+  const [tasks, setTasks] = useState<ResearchAgentTask[]>([]);
   const [engine, setEngine] = useState<ResearchEngineState | null>(null);
-  useEffect(() => {
+  const [runState, setRunState] = useState<string>('idle');
+  const [busy, setBusy] = useState(false);
+  const [toast, setToast] = useState<string>('');
+  // Documento + feedback por voz
+  const [target, setTarget] = useState<string>('orquestador'); // 'orquestador' | agentId
+  const [fb, setFb] = useState<string>('');
+  const voice = useVoiceDictation();
+
+  const reload = React.useCallback(() => {
     let on = true;
     getResearchAgentTasks(linea.code).then((rows) => {
       if (!on) return;
       const m: Record<string, string> = {};
       for (const r of rows) m[r.agent] = r.estado;
-      setLive(m);
+      setLive(m); setTasks(rows);
     });
-    getResearchEngineState().then((s) => { if (on) setEngine(s); });
+    getResearchEngineState().then((s) => { if (on) { setEngine(s); if (s?.run_state) setRunState(s.run_state); } });
     return () => { on = false; };
   }, [linea.code]);
+  useEffect(() => reload(), [reload]);
   const isLive = Object.keys(live).length > 0;
+  const outputByAgent: Record<string, string | null | undefined> = {};
+  for (const t of tasks) outputByAgent[t.agent] = t.output_md;
+
+  const flash = (m: string) => { setToast(m); setTimeout(() => setToast(''), 2600); };
+  async function control(rs: 'running' | 'paused' | 'stopped', cmd: ResearchCmd) {
+    setBusy(true); setRunState(rs);
+    await setResearchRunState(rs, linea.code);
+    await sendResearchCommand(cmd, linea.code);
+    setBusy(false);
+    flash(cmd === 'start' ? '▶ Motor iniciado para ' + linea.code + ' (lo recoge el runner del PC).'
+      : cmd === 'pause' ? '⏸ Pausado.' : '⏹ Detenido (no consume más tokens).');
+  }
+  async function agentCmd(agent: string, cmd: ResearchCmd) {
+    await sendResearchCommand(cmd, linea.code, { agent });
+    flash((cmd === 'regenerate' ? '↻ Regenerar ' : '⏹ Parar ') + agent + ' (' + linea.code + ').');
+  }
+  async function sendFeedback() {
+    if (!fb.trim()) return;
+    const ag = target === 'orquestador' ? undefined : target;
+    await sendResearchCommand('feedback', linea.code, { target, agent: ag, payload: fb.trim() });
+    flash('🗣️ Indicación enviada ' + (target === 'orquestador' ? 'al orquestador' : 'a ' + target) + '.');
+    setFb('');
+  }
 
   return (
     <View>
@@ -79,6 +137,30 @@ export default function ResearchAgenticSystem() {
         <Text style={st.body}>{AGENTIC_META.tesis}</Text>
         <Text style={[st.smallNote, { marginTop: Spacing.sm }]}>⏱ {AGENTIC_META.cuandoEntra}</Text>
       </GlassPanel>
+
+      {/* CONTROL BAR — Iniciar / Pausar / Detener (escribe a Supabase; el runner del PC ejecuta) */}
+      <View style={st.ctrlBar}>
+        <View style={{ flex: 1 }}>
+          <Text style={st.ctrlTitle}>Motor · {linea.code}</Text>
+          <Text style={st.ctrlState}>
+            {runState === 'running' ? '🟢 corriendo' : runState === 'paused' ? '🟡 en pausa' : runState === 'stopped' ? '🔴 detenido' : '⚪ inactivo'}
+            {engine?.calendar_block ? ` · ${engine.calendar_block}` : ''}
+          </Text>
+        </View>
+        <TouchableOpacity disabled={busy} activeOpacity={0.85} onPress={() => control('running', 'start')} style={[st.ctrlBtn, { borderColor: '#0FD4A0' + '88', backgroundColor: '#0FD4A0' + '18' }]}>
+          <Text style={[st.ctrlBtnTxt, { color: '#0FD4A0' }]}>▶ Iniciar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity disabled={busy} activeOpacity={0.85} onPress={() => control('paused', 'pause')} style={[st.ctrlBtn, { borderColor: '#F5A623' + '88', backgroundColor: '#F5A623' + '14' }]}>
+          <Text style={[st.ctrlBtnTxt, { color: '#F5A623' }]}>⏸ Pausar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity disabled={busy} activeOpacity={0.85} onPress={() => control('stopped', 'stop')} style={[st.ctrlBtn, { borderColor: '#F56342' + '88', backgroundColor: '#F56342' + '14' }]}>
+          <Text style={[st.ctrlBtnTxt, { color: '#F56342' }]}>⏹ Detener</Text>
+        </TouchableOpacity>
+      </View>
+      <Text style={st.ctrlHint}>
+        Pulsa <Text style={{ color: '#0FD4A0' }}>▶ Iniciar</Text> en la mañana (mientras estudias ENCAPS): el motor descubre/criba en tu PC y para al llegar tu hora de research. Sigue al día siguiente solo si dejas la PC encendida. <Text style={{ color: '#F56342' }}>⏹ Detener</Text> = corta el gasto de tokens al instante.
+      </Text>
+      {toast ? <View style={st.toast}><Text style={st.toastTxt}>{toast}</Text></View> : null}
 
       {/* Selector de línea → SR viva */}
       <SectionLabel>Dirige una línea · el sistema escribe su SR</SectionLabel>
@@ -142,20 +224,73 @@ export default function ResearchAgenticSystem() {
                     <Text style={{ fontSize: 18, width: 26, textAlign: 'center' }}>{a.icon}</Text>
                     <View style={{ flex: 1 }}>
                       <Text style={st.consoleSec}>{a.seccion}</Text>
-                      <Text style={st.consoleAgent}>{a.agentId === 'lead' ? 'Orquestador (Lead · Opus)' : a.agentId === 'citation' ? 'CitationAgent / QA' : a.agentId === 'assembler' ? 'AssemblerAgent' : a.agentId.charAt(0).toUpperCase() + a.agentId.slice(1) + 'Agent (Sonnet)'}</Text>
+                      <Text style={st.consoleAgent}>{a.agentId === 'lead' ? 'Orquestador (Lead · Opus) — dirige a los demás' : a.agentId === 'citation' ? 'CitationAgent / QA' : a.agentId === 'assembler' ? 'AssemblerAgent' : a.agentId.charAt(0).toUpperCase() + a.agentId.slice(1) + 'Agent (Sonnet)'}</Text>
                     </View>
                     <View style={[st.estadoChip, { borderColor: e.color + '66', backgroundColor: e.color + '14' }]}>
                       <Text style={[st.estadoIcon, { color: e.color }]}>{e.icon}</Text>
                       <Text style={[st.estadoTxt, { color: e.color }]}>{e.lbl}</Text>
                     </View>
+                    <TouchableOpacity activeOpacity={0.8} onPress={() => agentCmd(a.agentId, 'regenerate')} style={st.agentBtn} hitSlop={{ top: 8, bottom: 8, left: 4, right: 4 }}>
+                      <Text style={[st.agentBtnTxt, { color: '#0FD4A0' }]}>↻</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={0.8} onPress={() => agentCmd(a.agentId, 'stop')} style={st.agentBtn} hitSlop={{ top: 8, bottom: 8, left: 4, right: 4 }}>
+                      <Text style={[st.agentBtnTxt, { color: '#F56342' }]}>⏹</Text>
+                    </TouchableOpacity>
                   </View>
                 </FadeUp>
               );
             })}
-            <Text style={st.smallNote}>○ inactivo · ◔ en cola · ◍ redactando · ● listo · ◆ requiere tu visto bueno (checkpoint humano). Los subagentes no se comunican entre sí (contexto aislado); el Lead integra y rutea a QA.</Text>
+            <Text style={st.smallNote}>○ inactivo · ◔ en cola · ◍ redactando · ● listo · ◆ requiere tu visto bueno (checkpoint humano). Botones por sección: ↻ regenerar · ⏹ parar (corta el gasto de ese agente). Los subagentes no se comunican entre sí; el Lead integra y rutea a QA.</Text>
           </View>
         );
       })()}
+
+      {/* DOCUMENTO — dónde redacta cada agente + lee y dicta cambios (voz) */}
+      <SectionLabel>Documento · lee cada sección y dicta cambios</SectionLabel>
+      <Text style={st.sectionIntro}>Cada agente redacta su sección en Supabase (`research_agent_tasks.output_md`); aquí la lees como un Word. El `.docx` final va a tu Obsidian (`…/05_manuscrito/`). Dale indicaciones por texto o 🎤 voz, al orquestador o a un agente concreto.</Text>
+      <View style={{ marginBottom: Spacing.md }}>
+        {AGENTE_SECCION.filter((a) => a.agentId !== 'lead').map((a) => {
+          const out = outputByAgent[a.agentId];
+          return (
+            <View key={a.agentId} style={[st.docCard, { borderLeftColor: a.color }]}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                <Text style={st.docSec}>{a.icon} {a.seccion}</Text>
+                <TouchableOpacity activeOpacity={0.8} onPress={() => { setTarget(a.agentId); flash('Indicaciones dirigidas a ' + a.agentId); }}>
+                  <Text style={[st.docAim, { color: target === a.agentId ? '#0FD4A0' : Colors.muted }]}>{target === a.agentId ? '● dirigido' : 'dictar a este ›'}</Text>
+                </TouchableOpacity>
+              </View>
+              <Text style={st.docBody} numberOfLines={out ? 8 : 2}>{out || '— (vacío hasta que el agente redacte; pulsa ↻ en la consola o ▶ Iniciar)'}</Text>
+            </View>
+          );
+        })}
+      </View>
+      {/* Caja de feedback + voz */}
+      <GlassPanel style={{ marginBottom: Spacing.xl }}>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginBottom: 8 }}>
+          <Text style={st.smallNote}>Dirigir a:</Text>
+          {['orquestador', ...AGENTE_SECCION.filter((a) => a.agentId !== 'lead').map((a) => a.agentId)].map((t) => (
+            <TouchableOpacity key={t} activeOpacity={0.85} onPress={() => setTarget(t)}
+              style={[st.aimChip, target === t ? { backgroundColor: '#0FD4A0' + '22', borderColor: '#0FD4A0' + '99' } : null]}>
+              <Text style={[st.aimChipTxt, target === t && { color: Colors.onSurface }]}>{t === 'orquestador' ? '🧭 orquestador' : t}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+        <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: 6 }}>
+          <TextInput value={fb} onChangeText={setFb} multiline placeholder="Ej.: 'En métodos, añade el cálculo de Kappa con IC 95%'…"
+            placeholderTextColor={Colors.muted} style={st.fbInput} />
+          <View style={{ gap: 6 }}>
+            <TouchableOpacity activeOpacity={0.85} disabled={!voice.supported}
+              onPress={() => (voice.listening ? voice.stop() : voice.start((t) => setFb((p) => (p ? p + ' ' : '') + t)))}
+              style={[st.micBtn, voice.listening && { backgroundColor: '#F56342' + '22', borderColor: '#F56342' + '99' }, !voice.supported && { opacity: 0.4 }]}>
+              <Text style={[st.micTxt, voice.listening && { color: '#F56342' }]}>{voice.listening ? '● grabando' : '🎤 voz'}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity activeOpacity={0.85} onPress={sendFeedback} style={st.sendBtn}>
+              <Text style={st.sendTxt}>Enviar ›</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        {!voice.supported && <Text style={[st.smallNote, { marginTop: 6 }]}>🎤 El dictado por voz funciona en la web (Chrome/Edge). En móvil usa el micrófono del teclado.</Text>}
+      </GlassPanel>
 
       {/* Arquitectura por capas (flujo) */}
       <SectionLabel>Arquitectura · orchestrator-worker + HITL</SectionLabel>
@@ -342,4 +477,28 @@ const st = StyleSheet.create({
   estadoChip: { flexDirection: 'row', alignItems: 'center', gap: 5, borderRadius: BorderRadius.full, borderWidth: 1, paddingVertical: 4, paddingHorizontal: 9 },
   estadoIcon: { fontSize: 12, fontWeight: '900' },
   estadoTxt: { fontSize: FontSize.labelSm, fontWeight: '800' },
+
+  ctrlBar: { ...cardBase, flexDirection: 'row', alignItems: 'center', gap: 8, padding: Spacing.md, marginBottom: 6, flexWrap: 'wrap' },
+  ctrlTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface },
+  ctrlState: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, marginTop: 2 },
+  ctrlBtn: { borderWidth: 1, borderRadius: BorderRadius.md, paddingVertical: 8, paddingHorizontal: 12 },
+  ctrlBtnTxt: { fontSize: FontSize.labelMd, fontWeight: '800' },
+  ctrlHint: { fontSize: FontSize.labelSm, color: Colors.muted, lineHeight: 16, marginBottom: Spacing.md },
+  toast: { ...cardBase, borderColor: '#0FD4A0' + '66', padding: Spacing.sm, marginBottom: Spacing.md },
+  toastTxt: { fontSize: FontSize.labelMd, color: Colors.onSurface, fontWeight: '600' },
+
+  agentBtn: { width: 26, height: 26, borderRadius: BorderRadius.sm, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.04)' },
+  agentBtnTxt: { fontSize: 14, fontWeight: '900' },
+
+  docCard: { ...cardBase, borderLeftWidth: 3, padding: Spacing.md, marginBottom: 6 },
+  docSec: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface },
+  docAim: { fontSize: FontSize.labelSm, fontWeight: '800' },
+  docBody: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 6, lineHeight: 17 },
+  aimChip: { paddingVertical: 4, paddingHorizontal: 10, borderRadius: BorderRadius.full, borderWidth: 1, borderColor: 'rgba(255,255,255,0.12)', backgroundColor: 'rgba(255,255,255,0.03)' },
+  aimChipTxt: { fontSize: FontSize.labelSm, fontWeight: '700', color: Colors.muted },
+  fbInput: { flex: 1, minHeight: 60, ...cardBase, padding: Spacing.sm, color: Colors.onSurface, fontSize: FontSize.labelMd, textAlignVertical: 'top' as any },
+  micBtn: { borderWidth: 1, borderColor: 'rgba(255,255,255,0.14)', borderRadius: BorderRadius.md, paddingVertical: 8, paddingHorizontal: 10, alignItems: 'center', minWidth: 84 },
+  micTxt: { fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.onSurfaceVariant },
+  sendBtn: { backgroundColor: '#0FD4A0', borderRadius: BorderRadius.md, paddingVertical: 8, paddingHorizontal: 10, alignItems: 'center', minWidth: 84 },
+  sendTxt: { fontSize: FontSize.labelSm, fontWeight: '900', color: '#062018' },
 });
