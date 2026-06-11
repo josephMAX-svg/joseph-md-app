@@ -8,6 +8,10 @@ import {
   SYNAPSE_META, SYNAPSE_KPIS, SYNAPSE_FASES, SYNAPSE_BIBLIOTECA, SYNAPSE_HORARIO,
   SYNAPSE_NIVEL_META, SYNAPSE_ADVERTENCIAS, SynapseMaterial, SynapseNivel,
 } from '../../lib/synapseData';
+import { obsUrl } from '../../lib/obsidianMap';
+import { OBS_SYNAPSE_MATERIALES, OBS_SYNAPSE_FASES } from '../../lib/obsidianVaultMap';
+
+const OBS = '#A78BFA'; // mismo morado ◆ que USMLE/MIR/ENCAPS
 import { SYN_PLAN_META } from '../../lib/synapseDailyPlan';
 import { loadDone, saveDone } from '../../lib/studyProgress';
 import SynapseTodayPlan from './SynapseTodayPlan';
@@ -34,9 +38,15 @@ function MaterialRow({ m }: { m: SynapseMaterial }) {
     <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(m.url)} style={st.matCard}>
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 6 }}>
         <Text style={st.matName} numberOfLines={2}>{m.nombre} ↗</Text>
-        <View style={{ flexDirection: 'row', gap: 6 }}>
+        <View style={{ flexDirection: 'row', gap: 6, alignItems: 'center' }}>
           {m.audio ? <Chip label="🎧 huecos" color={INDIGO} small /> : null}
           <Chip label={m.gratis} color={m.gratis === 'gratis' ? Colors.green : Colors.amber} small />
+          {OBS_SYNAPSE_MATERIALES[m.nombre] ? (
+            <TouchableOpacity activeOpacity={0.7} hitSlop={{ top: 8, bottom: 8, left: 4, right: 8 }}
+              onPress={() => openUrl(obsUrl(OBS_SYNAPSE_MATERIALES[m.nombre]))}>
+              <Chip label="◆ Obsidian" color={OBS} small />
+            </TouchableOpacity>
+          ) : null}
         </View>
       </View>
       <Text style={st.matRef}>{m.referente} · <Text style={{ color: Colors.muted }}>{m.credencial}</Text></Text>
@@ -64,7 +74,15 @@ function RutaView() {
             <View style={[st.faseCard, { borderLeftColor: acc }, activa && { backgroundColor: INDIGO + '0E' }]}>
               <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 6 }}>
                 <Text style={[st.faseTag, { color: acc }]}>{f.fase} · {f.duracion}</Text>
-                {activa ? <Chip label="EMPIEZA AQUÍ" color={INDIGO} small /> : meta ? <Chip label="META" color={Colors.green} small /> : null}
+                <View style={{ flexDirection: 'row', gap: 6, alignItems: 'center' }}>
+                  {activa ? <Chip label="EMPIEZA AQUÍ" color={INDIGO} small /> : meta ? <Chip label="META" color={Colors.green} small /> : null}
+                  {OBS_SYNAPSE_FASES[f.fase] ? (
+                    <TouchableOpacity activeOpacity={0.7} hitSlop={{ top: 8, bottom: 8, left: 4, right: 8 }}
+                      onPress={() => openUrl(obsUrl(OBS_SYNAPSE_FASES[f.fase]))}>
+                      <Chip label="◆ Obsidian" color={OBS} small />
+                    </TouchableOpacity>
+                  ) : null}
+                </View>
               </View>
               <Text style={st.faseTitle}>{f.titulo}</Text>
               <Text style={st.faseDesc}>{f.desc}</Text>

@@ -2,6 +2,10 @@ import React from 'react';
 import { View, Text, TouchableOpacity, Linking, Platform, StyleSheet } from 'react-native';
 import { Colors, FontSize, Spacing, BorderRadius } from '../theme/tokens';
 import { VITALS_URL } from '../config';
+import { obsUrl } from '../lib/obsidianMap';
+import { OBS_VITALS } from '../lib/obsidianVaultMap';
+
+const OBS_VIOLET = '#A78BFA';
 
 /**
  * VITALS — fitness + nutrition app, embedded as a cross-origin iframe.
@@ -35,6 +39,18 @@ export default function VitalsScreen() {
             background: Colors.surface,
           },
         })}
+        {/* ◆ nota VITALS en el vault (split, pisos de seguridad, retención) */}
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => Linking.openURL(obsUrl(OBS_VITALS.mapa)).catch(() => {})}
+          style={{
+            position: 'absolute', right: 14, bottom: 14, zIndex: 5,
+            paddingVertical: 6, paddingHorizontal: 12, borderRadius: BorderRadius.full,
+            borderWidth: 1, borderColor: OBS_VIOLET + '66', backgroundColor: '#0B1628EE',
+          } as any}
+        >
+          <Text style={{ fontSize: FontSize.labelSm, fontWeight: '700', color: OBS_VIOLET, letterSpacing: 0.4 }}>◆ Obsidian</Text>
+        </TouchableOpacity>
       </View>
     );
   }

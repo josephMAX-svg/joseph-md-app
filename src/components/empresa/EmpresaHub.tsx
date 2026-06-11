@@ -13,6 +13,23 @@ import {
   LogisticaPanel, WebPanel, DirectricesPanel, PirqaView,
 } from './panels';
 import { EMPRESAS, BRANDS, CARTERA_PULSO } from '../../lib/empresaData';
+import { Linking } from 'react-native';
+import { obsUrl } from '../../lib/obsidianMap';
+import { OBS_EMPRESA } from '../../lib/obsidianVaultMap';
+
+const OBS_VIOLET = '#A78BFA';
+/** ◆ nota de la marca activa en el vault (02_EMPRESA FINANZAS) — 'estudio' → biblioteca. */
+function ObsMarcaLink({ company }: { company: string }) {
+  const key = company === 'estudio' ? 'biblioteca' : company;
+  const file = OBS_EMPRESA[key] ?? OBS_EMPRESA.mapa;
+  const label = company === 'estudio' ? '◆ Obsidian — biblioteca (28 libros)' : `◆ Obsidian — nota de ${company}`;
+  return (
+    <TouchableOpacity activeOpacity={0.75} onPress={() => Linking.openURL(obsUrl(file)).catch(() => {})}
+      style={{ alignSelf: 'flex-start', marginBottom: Spacing.md, paddingVertical: 4, paddingHorizontal: 10, borderRadius: BorderRadius.full, borderWidth: 1, borderColor: OBS_VIOLET + '55', backgroundColor: OBS_VIOLET + '12' }}>
+      <Text style={{ fontSize: FontSize.labelSm, fontWeight: '700', color: OBS_VIOLET, letterSpacing: 0.4 }}>{label}</Text>
+    </TouchableOpacity>
+  );
+}
 
 /**
  * EmpresaHub — shell del Hub de Empresa (Business). Pulso es el padre y el 99%
@@ -69,6 +86,7 @@ export default function EmpresaHub({ variant = 'mobile' }: { variant?: 'mobile' 
       {/* Selector proporcional a la importancia: Pulso domina, LIVIANO medio, PIRQA ícono */}
       <BrandSelector active={company} onSelect={setCompany} />
       <Text style={st.selectorHint}>70% Pulso/LIVIANO · 10% PIRQA · 10% Terrenos · 10% Golden — cada línea con su propio horario</Text>
+      <ObsMarcaLink company={company} />
 
       {/* Contenido por empresa */}
       {company === 'pulso' && <PulsoCommandCenter onOpenBrand={openBrand} />}

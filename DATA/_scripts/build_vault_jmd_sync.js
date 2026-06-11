@@ -134,14 +134,17 @@ ${f.materiales.map((m, i) => `| ${String(i + 1).padStart(2, '0')} | [[05_SYNAPSE
 `;
 
 const faseDirs = [];
+const OBS = { fases: {}, materiales: {}, empresa: {}, vitals: {} }; // → src/lib/obsidianVaultMap.ts
 FASES.forEach((f) => {
   const dir = `${f.fase}_${slug(f.titulo)}`;
   faseDirs.push({ f, dir });
+  OBS.fases[f.fase] = `05_SYNAPSE_IA/${dir}/_fase`;
   const base = path.join(SYN, dir);
   mk(base);
   write(path.join(base, '_fase.md'), faseNote(f, dir));
   f.materiales.forEach((m, i) => {
     const nn = String(i + 1).padStart(2, '0');
+    OBS.materiales[m.nombre] = `05_SYNAPSE_IA/${dir}/${nn}_${slug(m.nombre)}/_concepto_madre`;
     const md = path.join(base, `${nn}_${slug(m.nombre)}`);
     mk(md);
     mk(path.join(md, 'APEX_creados'));
@@ -157,6 +160,7 @@ mk(EXTRA_DIR);
 const fakeFase = { fase: '90', titulo: 'Audio y extras (espacios muertos)' };
 extras.forEach((m, i) => {
   const nn = String(i + 1).padStart(2, '0');
+  OBS.materiales[m.nombre] = `05_SYNAPSE_IA/90_AUDIO_Y_EXTRAS/${nn}_${slug(m.nombre)}/_concepto_madre`;
   const md = path.join(EXTRA_DIR, `${nn}_${slug(m.nombre)}`);
   mk(md);
   mk(path.join(md, 'APEX_creados'));
@@ -395,6 +399,81 @@ for (const f of fs.readdirSync(V)) {
     if (!fs.existsSync(dest)) { if (!DRY) fs.renameSync(p, dest); movidos++; console.log('movido a 99_INBOX: ' + f); }
   }
 }
+
+// ── 6) emitir src/lib/obsidianVaultMap.ts (la app enlaza CADA tema a su nota exacta) ──
+MARCAS.forEach(([d]) => { OBS.empresa[d.replace(/^\d+_/, '').toLowerCase()] = `02_EMPRESA FINANZAS/${d}/_concepto_madre`; });
+OBS.empresa.biblioteca = '02_EMPRESA FINANZAS/06_BIBLIOTECA/_indice_biblioteca';
+OBS.empresa.mapa = '02_EMPRESA FINANZAS/00_Mapa_EMPRESA';
+vitSecs.forEach(([d]) => { OBS.vitals[d.replace(/^\d+_/, '').toLowerCase()] = `08_VITALS/${d}/_concepto_madre`; });
+OBS.vitals.mapa = '08_VITALS/00_Mapa_VITALS';
+const rec = (o) => '{\n' + Object.entries(o).map(([k, v]) => `  ${JSON.stringify(k)}: ${JSON.stringify(v)},`).join('\n') + '\n}';
+const mapTs = `/**
+ * obsidianVaultMap.ts — GENERADO por DATA/_scripts/build_vault_jmd_sync.js (${HOY}).
+ * Mapa app → nota EXACTA del vault para SYNAPSE (82 materiales), Empresa (5 marcas +
+ * biblioteca) y VITALS (3 secciones). NO editar a mano — regenerar con el script
+ * (los paths salen del MISMO código que crea las carpetas: cero drift).
+ */
+import { obsUrl } from './obsidianMap';
+
+export const OBS_SYNAPSE_MAPA = '05_SYNAPSE_IA/00_Mapa_SYNAPSE';
+export const OBS_SYNAPSE_FASES: Record<string, string> = ${rec(OBS.fases)};
+export const OBS_SYNAPSE_MATERIALES: Record<string, string> = ${rec(OBS.materiales)};
+export const OBS_EMPRESA: Record<string, string> = ${rec(OBS.empresa)};
+export const OBS_VITALS: Record<string, string> = ${rec(OBS.vitals)};
+
+const norm = (s: string) => s.toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g, '')
+  .replace(/[^a-z0-9 ]+/g, ' ').replace(/\\s+/g, ' ').trim();
+const NORM_INDEX: [string, string][] = Object.entries(OBS_SYNAPSE_MATERIALES).map(([n, p]) => [norm(n), p]);
+
+// Alias: variantes de nombre que usa el plan día-a-día → nombre canónico del material.
+const ALIAS: [RegExp, string][] = [
+  [/^cs50p/i, 'CS50P: Introduction to Programming with Python'],
+  [/^pro git/i, 'Pro Git (2ª ed.)'],
+  [/the batch/i, 'The Batch (newsletter semanal)'],
+  [/^simon willison$/i, 'Serie "Prompt injection" (2022-2025)'],
+  [/intro to llms/i, '[1hr Talk] Intro to Large Language Models'],
+  [/deep dive/i, 'Deep Dive into LLMs like ChatGPT'],
+  [/many-?shot/i, 'Many-shot jailbreaking (research)'],
+  [/constitutional classifiers/i, 'Constitutional Classifiers (research)'],
+  [/responsible scaling|\\basl\\b/i, 'Responsible Scaling Policy (ASL levels)'],
+  [/lethal trifecta/i, 'The lethal trifecta for AI agents'],
+  [/canal anthropic/i, 'Canal oficial de Anthropic (YouTube)'],
+  [/python tutorial/i, 'The Python Tutorial (docs oficiales)'],
+  [/automate the boring/i, 'Automate the Boring Stuff with Python (3ª ed.)'],
+];
+
+function fuzzy(q0: string): string | null {
+  const q = norm(q0);
+  if (!q) return null;
+  const hit = NORM_INDEX.find(([n]) => n === q) || NORM_INDEX.find(([n]) => n.startsWith(q) || q.startsWith(n));
+  if (hit) return hit[1];
+  const qt = new Set(q.split(' ').filter((t) => t.length > 3));
+  if (!qt.size) return null;
+  let best: [number, string] | null = null;
+  for (const [n, p] of NORM_INDEX) {
+    const inter = n.split(' ').filter((t) => qt.has(t)).length;
+    const score = inter / Math.max(qt.size, 1);
+    if (score >= 0.6 && (!best || score > best[0])) best = [score, p];
+  }
+  return best ? best[1] : null;
+}
+
+/** Nota del material SYNAPSE: exacto → alias (material+lección) → difuso (material, luego lección). */
+export function synObsPath(material: string, leccion = ''): string | null {
+  if (OBS_SYNAPSE_MATERIALES[material]) return OBS_SYNAPSE_MATERIALES[material];
+  const ctx = material + ' ' + leccion;
+  for (const [re, nombre] of ALIAS) {
+    if (re.test(ctx) && OBS_SYNAPSE_MATERIALES[nombre]) return OBS_SYNAPSE_MATERIALES[nombre];
+  }
+  return fuzzy(material) || (leccion ? fuzzy(leccion) : null);
+}
+export const synObsUrl = (material: string, leccion = ''): string | null => {
+  const p = synObsPath(material, leccion);
+  return p ? obsUrl(p) : null;
+};
+`;
+fs.writeFileSync(path.join(APP, 'src/lib/obsidianVaultMap.ts'), mapTs, 'utf8');
+console.log(`obsidianVaultMap.ts → ${Object.keys(OBS.materiales).length} materiales · ${Object.keys(OBS.fases).length} fases · empresa ${Object.keys(OBS.empresa).length} · vitals ${Object.keys(OBS.vitals).length}`);
 
 console.log(`${DRY ? '[DRY] ' : ''}OK · creados/actualizados: ${creados} · ya existían (intactos): ${saltados} · movidos a INBOX: ${movidos}`);
 console.log(`SYNAPSE: ${FASES.length} fases + ${FASES.reduce((n, f) => n + f.materiales.length, 0)} subtemas en fases + ${extras.length} extras`);

@@ -9,6 +9,9 @@ import {
   SYN_FORMATO_ICON, SYN_TAG_LABEL,
 } from '../../lib/synapseDailyPlan';
 import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso } from '../../lib/studyProgress';
+import { synObsUrl } from '../../lib/obsidianVaultMap';
+
+const OBS = '#A78BFA'; // mismo morado ◆ que el resto de planes
 
 /**
  * SynapseTodayPlan — motor día-a-día SYNAPSE (82 días · 12 semanas), mismo molde que
@@ -37,6 +40,7 @@ function rachaReal(done: Set<number>, hoyD: number): number {
 
 function BloqueRow({ b }: { b: SynBloque }) {
   const accent = b.tag === 'A' ? INDIGO : b.tag === 'PC' ? Colors.amber : b.tag === 'R' ? Colors.green : Colors.muted;
+  const obs = synObsUrl(b.material, b.leccion); // nota exacta del material en el vault (nombre + lección para desambiguar)
   const inner = (
     <>
       <Text style={st.blkIcon}>{SYN_FORMATO_ICON[b.formato]}</Text>
@@ -44,6 +48,11 @@ function BloqueRow({ b }: { b: SynBloque }) {
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
           <Text style={[st.blkTag, { color: accent }]}>{SYN_TAG_LABEL[b.tag]}</Text>
           {b.real ? <Chip label="temario real" color={Colors.green} small /> : <Chip label="continúa donde quedaste" color={Colors.muted} small />}
+          {obs ? (
+            <TouchableOpacity activeOpacity={0.7} hitSlop={{ top: 8, bottom: 8, left: 4, right: 8 }} onPress={() => openUrl(obs)}>
+              <Chip label="◆" color={OBS} small />
+            </TouchableOpacity>
+          ) : null}
         </View>
         <Text style={st.blkMat}>{b.material}</Text>
         <Text style={st.blkLec}>{b.leccion}</Text>
