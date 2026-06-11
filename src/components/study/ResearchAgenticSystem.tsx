@@ -13,7 +13,7 @@ import {
 import { researchObsUrlSR, researchObsUrlLine } from '../../lib/obsidianResearchMap';
 import {
   getResearchAgentTasks, getResearchEngineState, ResearchEngineState, ResearchAgentTask,
-  sendResearchCommand, setResearchRunState, ResearchCmd,
+  sendResearchCommand, setResearchRunState, invokeResearchDiscovery, ResearchCmd,
 } from '../../lib/supabase';
 
 const OBS = '#A78BFA';
@@ -112,10 +112,17 @@ export default function ResearchAgenticSystem() {
   async function control(rs: 'running' | 'paused' | 'stopped', cmd: ResearchCmd) {
     setBusy(true); setRunState(rs);
     await setResearchRunState(rs, linea.code);
+    if (cmd === 'start') {
+      flash('▶ Iniciando discovery en la nube…');
+      const res = await invokeResearchDiscovery(linea.code); // corre EN LA NUBE (sin PC)
+      setBusy(false);
+      if (res.ok) { flash(`▶ Listo: ${res.unique ?? ''} papers descubiertos en la nube (sin PC). Revísalos en tu hora de research.`); reload(); }
+      else { await sendResearchCommand('start', linea.code); flash('▶ Encolado para tu PC (la nube no respondió; lo recoge el runner).'); }
+      return;
+    }
     await sendResearchCommand(cmd, linea.code);
     setBusy(false);
-    flash(cmd === 'start' ? '▶ Motor iniciado para ' + linea.code + ' (lo recoge el runner del PC).'
-      : cmd === 'pause' ? '⏸ Pausado.' : '⏹ Detenido (no consume más tokens).');
+    flash(cmd === 'pause' ? '⏸ Pausado.' : '⏹ Detenido (no consume más tokens).');
   }
   async function agentCmd(agent: string, cmd: ResearchCmd) {
     await sendResearchCommand(cmd, linea.code, { agent });
@@ -158,7 +165,7 @@ export default function ResearchAgenticSystem() {
         </TouchableOpacity>
       </View>
       <Text style={st.ctrlHint}>
-        Pulsa <Text style={{ color: '#0FD4A0' }}>▶ Iniciar</Text> en la mañana (mientras estudias ENCAPS): el motor descubre/criba en tu PC y para al llegar tu hora de research. Sigue al día siguiente solo si dejas la PC encendida. <Text style={{ color: '#F56342' }}>⏹ Detener</Text> = corta el gasto de tokens al instante.
+        Pulsa <Text style={{ color: '#0FD4A0' }}>▶ Iniciar</Text> desde la web (mientras estudias ENCAPS): el discovery corre <Text style={{ color: '#0FD4A0' }}>en la nube</Text> (Supabase, sin tu PC) y deja el corpus cribado para tu hora de research. La <Text style={{ color: '#A78BFA' }}>redacción</Text> la haces con Claude Code. <Text style={{ color: '#F56342' }}>⏹ Detener</Text> = corta al instante.
       </Text>
       {toast ? <View style={st.toast}><Text style={st.toastTxt}>{toast}</Text></View> : null}
 

@@ -27,22 +27,20 @@
 - **Gemini: NO se usa** — reservas tus pocos tokens para los anuncios de la empresa. La redacción es
   con **Claude Code (tu plan Max)**.
 
-## 2. Encenderlo: el BOTÓN de la app + el runner del PC
+## 2. Encenderlo: el BOTÓN ▶ desde la web — **en la nube, SIN tu PC**
 
-El modelo es por **botón**, no por horario fijo: en la app (Research → Sistema agéntico) pulsas
-**▶ Iniciar** por la mañana mientras estudias ENCAPS; el motor descubre/criba y para al llegar tu hora de
-research. **⏸ Pausar / ⏹ Detener** cortan el gasto al instante. Sigue al día siguiente **solo si dejas la
-PC encendida** (si la apagas, se detiene).
+Lo inicias **tú desde la web/app** (Research → Sistema agéntico). Pulsas **▶ Iniciar** por la mañana
+mientras estudias ENCAPS y el **discovery corre EN LA NUBE** (una **Supabase Edge Function**, gratis): no
+necesitas la PC encendida ni un runner. Deja el corpus cribado para tu hora de research. **⏸ Pausar /
+⏹ Detener** cortan al instante. La consola muestra el estado real (🟢/🟡/🔴).
 
-Para que el botón ejecute algo, deja corriendo el **puente** en tu PC (una vez):
-1. Pega tu **service_role** de Supabase en `run_research_free.bat` (`set SUPABASE_SERVICE_KEY=...` ·
-   Supabase → Settings → API · es tu clave, va **solo en tu PC**, nunca en el navegador).
-2. Doble-clic a `run_research_free.bat` → arranca `research_runner.py`, que espera tus botones.
-3. (Opcional) auto-arrancar al iniciar sesión:
-   `schtasks /Create /SC ONLOGON /TR "D:\joseph-md-app\DATA\RESEARCH\agentic\run_research_free.bat" /TN "Research Runner"`
+**Probado en vivo:** pulsar ▶ invoca la función `research-discovery` → 348 únicos → **200 papers reales
+guardados en Supabase**, sin PC. (La **redacción** del manuscrito sí es con **Claude Code** cuando te
+sientas — fase R34–R40 con humano presente; eso no se automatiza en la nube para no usar API de pago.)
 
-**Probado en vivo:** el botón ▶ inserta el comando en Supabase y pone el motor en `running`; el runner lo
-recoge y corre el discovery. La consola de la app muestra el estado real (🟢/🟡/🔴) y lo que redacta cada agente.
+**El runner del PC es OPCIONAL** — solo si quieres que la redacción/regeneración corra hands-off en tu
+máquina. Si lo usas: pega tu **service_role** en `run_research_free.bat` (Supabase → Settings → API · solo
+en tu PC) y déjalo corriendo (o `schtasks /SC ONLOGON`). Para el "▶ desde la web" **no hace falta**.
 
 ## 3. Quién redacta → **Claude Code (tu plan Max)**
 

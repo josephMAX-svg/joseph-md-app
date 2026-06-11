@@ -665,6 +665,17 @@ export async function sendResearchCommand(
   }
 }
 
+/** Corre el discovery EN LA NUBE (Edge Function) — el botón ▶ desde la web, sin PC. */
+export async function invokeResearchDiscovery(line: string): Promise<{ ok: boolean; unique?: number; inserted?: number; error?: string }> {
+  try {
+    const { data, error } = await supabase.functions.invoke('research-discovery', { body: { line } });
+    if (error) throw error;
+    return (data as any) ?? { ok: true };
+  } catch (e: any) {
+    return { ok: false, error: String(e?.message ?? e) };
+  }
+}
+
 /** Refleja el estado de ejecución de inmediato (el runner lo confirma/avanza). */
 export async function setResearchRunState(run_state: 'idle' | 'running' | 'paused' | 'stopped', activeLine?: string): Promise<boolean> {
   try {
