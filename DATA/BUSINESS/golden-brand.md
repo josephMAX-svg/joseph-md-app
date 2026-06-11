@@ -53,6 +53,19 @@
 - **TikTok/Instagram**: requieren verificación en el teléfono (~10 min con el kit
   `D:\qori-golden\REDES_SOCIALES_KIT.md`, handles @qorigolden).
 
+## Data REAL de Boby (el padre) — extraída 11-jun desde IG boby.golden (sesión Joseph)
+- **20 fotos HD** + **2 videos CON AUDIO** (reel1_travieso_x1000.mp4 19s · reel2_corriendo_parques.mp4 6s,
+  pistas DASH descargadas y unidas con ffmpeg) en `D:\qori-golden\fotos-boby\`.
+- Perfil: Boby 💛, Golden Retriever, 💯 pedigree (IG privado, Joseph es seguidor).
+- 3 fotos reales YA publicadas en la web (sección "El padre — FOTOS 100% REALES").
+- Papeles del macho: NO se publican (decisión del dueño — se muestran en persona).
+
+## Logo (diseño propio, 11-jun) — `D:\qori-golden\marca\`
+- `qori-golden-emblema.svg` (+PNG): sol andino inti 8 rayos + huella, avatar cuadrado.
+- `qori-golden-logo-horizontal.svg` (+PNG): lockup QORI GOLDEN + tagline quechua.
+- Los SVG son los maestros; los PNG son renders de pantalla (para finales perfectos,
+  importar el SVG a Canva y exportar al tamaño exacto).
+
 ## Citas agendadas 11-jun (regla de slots: hora ocupada → siguiente turno)
 - Sáb 13-jun 4:00 p.m. → **Roy** (Manuchap 441) — ofrecido, espera confirmación
 - Sáb 13-jun 5:00 p.m. → **Rolando** — ofrecido tras su "Si porfa", espera confirmación

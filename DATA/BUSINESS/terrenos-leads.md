@@ -31,6 +31,32 @@ desde las 4:00 p.m.** con WhatsApp 934 173 914:
 más potente verificada: <5 min = 21× más calificación, MIT/InsideSales). Jueves:
 confirmar citas. Viernes: pin GPS. Sábado AM: reconfirmar.
 
+## Bitácora — 11-jun mediodía: respuestas entrantes + barrido WhatsApp completo
+
+**Marketplace (2 respondieron):** Roy ("¿a qué hora estará por allí?") → AGENDADO sáb
+4:00-5:00 p.m. · Efraín ("estoy fuera de Huancayo") → ofrecida VIDEO-LLAMADA (emigrado).
+
+**WhatsApp (scroll completo de 286 chats — ya no solo búsqueda por palabra):**
+- 3 de las capturas del dueño: Fernando +51 912 759 994 (lote 400 m², le habían dicho
+  "3pm" → corregido a 4pm + slots) · Mayra +51 946 114 677 (pidió visita al #4 Santa
+  Rosa II el 22-may y NADIE le siguió → reactivada con slots) · +51 981 603 016
+  (recibió ficha Toco Machay 25-may → reactivado).
+- 2 descubiertos por el scroll (los buscadores por palabra los perdían porque su último
+  mensaje era un .docx): +51 970 840 815 (catálogo completo 17-may) y +51 945 335 188
+  (ficha Pulpialle 15-may) → ambos reactivados con slots.
+- ROLANDO respondió "Si porfa" a los 16 min → AGENDADO sáb 5:00-6:00 p.m.
+
+**SLOTS DEL FINDE 13-14 jun:** sáb 4:00 Roy (ofrecido) · sáb 5:00 Rolando (ofrecido) ·
+sáb 6:00 ofrecido a Fernando/Mayra/981603016/970840815/945335188 (primero que confirma
+lo toma; al resto se le pasa al siguiente turno) · dom 4:00/5:00/6:00 libres.
+Regla operativa: cada turno confirmado se RETIRA de las ofertas siguientes.
+
+**Pendiente para sesión CONJUNTA con el dueño (necesita perfil de Flor + su criterio):**
+republicar/renovar listados de Marketplace y publicar predios en el grupo FB
+Huancayo-Chupaca. Recomendación: usar "compartir publicación al grupo" + renovar
+(funciones nativas, sin riesgo de cuenta) en vez de duplicar anuncios con foto alterada;
+si se duplica, hacerlo con foto distinta del MISMO predio y borrar el anuncio viejo.
+
 ## ⚠ DISCREPANCIAS DE PRECIO DETECTADAS (resolver el dueño — nadie más)
 
 | Predio | Web (casasototocas) | Catálogo docx may-2026 | Marketplace |
