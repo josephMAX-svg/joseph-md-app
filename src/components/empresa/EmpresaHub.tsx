@@ -129,11 +129,12 @@ export default function EmpresaHub({ variant = 'mobile' }: { variant?: 'mobile' 
         <View>
           <BackToPulso onBack={() => setCompany('pulso')} />
           <SimpleBrandView
-            id="golden" titulo="Mantaro Goldens" estado="Pre-lanzamiento"
-            desc="Criadero familiar Golden Retriever en el Valle del Mantaro. Madre inseminada ~8-jun → camada nace ~ago, entrega ~oct-2026. Estrategia verificada (criadores élite EE.UU.): web viva con lista de espera, seña S/ 500 por Yape (elección por orden de seña), pupdates semanales, precio objetivo S/ 2,500-3,000. Carpeta nativa: D:\mantaro-goldens."
-            chips={[['Nombre: Mantaro Goldens ✓', Colors.green], ['Camada: nace ~ago · entrega ~oct', AMBER], ['Pendiente: ficha real de la madre + precio', AMBER]]}
+            id="golden" titulo="Qori Golden" estado="Pre-lanzamiento"
+            desc="Criadero familiar Golden Retriever (qori = oro en quechua, familia de marcas con PIRQA). Madre inseminada ~8-jun → camada nace ~ago, entrega ~oct-2026. Estrategia verificada (criadores élite EE.UU. tipo Recherche $14,500+): web viva con video-hero y barra de gestación, lista de espera con seña S/ 500 Yape (elección por orden de seña), pupdates en video, precio objetivo S/ 2,500-3,000. Carpeta nativa: D:\qori-golden."
+            chips={[['Nombre: Qori Golden ✓', Colors.green], ['FB: página creada ✓', Colors.green], ['Camada: nace ~ago · entrega ~oct', AMBER], ['Pendiente: ficha real de la madre + precio', AMBER]]}
             links={[
-              ['🌐 mantaro-goldens.vercel.app', 'https://mantaro-goldens.vercel.app'],
+              ['🌐 qori-golden.vercel.app', 'https://qori-golden.vercel.app'],
+              ['📘 Página de Facebook', 'https://www.facebook.com/profile.php?id=61590843116336'],
               ['💬 WhatsApp lista de espera', 'https://wa.me/51934173914'],
             ]}
           />

@@ -28,7 +28,7 @@ export const TIME_SPLIT = [
   { marca: 'Pulso / LIVIANO', pct: 70, color: '#D9BE8A', estado: 'activo', desc: 'Lectura plan 96 días + aplicación directa: contenido orgánico diario + funnel' },
   { marca: 'PIRQA', pct: 10, color: '#F08A4B', estado: 'activo', desc: 'Post diario · lanzamiento sáb 12:00 → dom (día de venta) · serie "El destape del domingo"' },
   { marca: 'Terrenos · Casa Soto Tocas', pct: 10, color: '#8FB6E8', estado: 'activo', desc: '13 predios · casasototocas.vercel.app + Marketplace (21 leads en pipeline) · visitas sáb/dom 4pm' },
-  { marca: 'Golden · Mantaro Goldens', pct: 10, color: '#E8C547', estado: 'pre-lanzamiento', desc: 'Camada nace ~ago, entrega ~oct · web + lista de espera con seña S/ 500 DESDE YA' },
+  { marca: 'Golden · QORI GOLDEN', pct: 10, color: '#E8C547', estado: 'pre-lanzamiento', desc: 'Camada nace ~ago, entrega ~oct · web + lista de espera con seña S/ 500 DESDE YA' },
 ];
 
 /** Estándares de CADA publicación (Hormozi, verificado) */
@@ -152,21 +152,21 @@ export const TERRENOS_PLAN: BrandPlan = {
 };
 
 /**
- * MANTARO GOLDENS — 10% del tiempo. PRE-LANZAMIENTO: madre inseminada ~8-jun-2026 →
+ * QORI GOLDEN — 10% del tiempo. PRE-LANZAMIENTO: madre inseminada ~8-jun-2026 →
  * camada nace ~ago, entrega ~oct. Estrategia verificada de criadores élite EE.UU.
  * (Liberty/Golden Meadows/Summer Brook/Eagleridge): el pilar de confianza son los
  * PADRES (página de la madre con carnet sanitario/vacunas/veterinario), timeline
  * visual de 8 pasos, lista de espera con seña S/ 500 Yape (S/200 no reemb. + S/300
  * reemb. hasta sem 6; elección por orden de seña, regla pública), pupdates semanales,
  * video-llamada para conocer a la madre. Precio verificado Perú: S/ 2,000-2,800 →
- * objetivo S/ 2,500-3,000 con web élite + contrato. Web: D:\mantaro-goldens.
+ * objetivo S/ 2,500-3,000 con web élite + contrato. Web: D:\qori-golden.
  */
 export const GOLDEN_PLAN: BrandPlan = {
-  marca: 'Mantaro Goldens', accent: '#E8C547', tiempoDia: '~10 min (1 clip de la perrita + avance de página)',
+  marca: 'QORI GOLDEN', accent: '#E8C547', tiempoDia: '~10 min (1 clip de la perrita + avance de página)',
   semana: [
     { dia: 'Lun', foco: 'Clip de la MADRE: rutina/cuidados (el pilar de confianza son los padres, no los cachorros)', redes: [
       { red: 'TikTok', nota: 'clip 15-30s' }, { red: 'Instagram', nota: 'Reel' }] },
-    { dia: 'Mar', foco: '🛠 AVANCE: web mantaro-goldens + perfiles (FB/IG/TikTok @mantarogoldens), bio, WhatsApp 934 173 914', redes: [
+    { dia: 'Mar', foco: '🛠 AVANCE: web qori-golden + perfiles (FB/IG/TikTok @qorigolden), bio, WhatsApp 934 173 914', redes: [
       { red: 'Facebook', nota: 'crear página', fuerte: true }, { red: 'Instagram', nota: 'perfil' }] },
     { dia: 'Mié', foco: 'Confianza: carnet sanitario, vacunas, veterinario de la madre EN CÁMARA (versión Perú de health clearances)', redes: [
       { red: 'TikTok', nota: 'clip' }, { red: 'Instagram', nota: 'Reel/carrusel' }] },

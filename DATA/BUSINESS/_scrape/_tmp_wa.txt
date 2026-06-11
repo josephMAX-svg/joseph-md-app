@@ -1,0 +1,141 @@
+uid=55_0 RootWebArea "(15) WhatsApp Business" url="https://web.whatsapp.com/"
+  uid=55_1 generic
+    uid=55_2 generic
+      uid=55_3 banner
+        uid=55_4 button "Chats" pressed
+        uid=55_5 status atomic live="polite" relevant="additions text"
+          uid=55_6 StaticText "15"
+        uid=55_7 button "Status"
+        uid=55_8 status atomic live="polite" relevant="additions text"
+          uid=55_9 StaticText "Updates in Status"
+        uid=55_10 button "Channels"
+        uid=55_11 button "Communities"
+        uid=55_12 button "Tools"
+        uid=55_13 button "Advertise"
+        uid=55_14 button "Media"
+        uid=55_15 button "Settings"
+        uid=55_16 button "Profile"
+          uid=55_17 image url="https://media-lim1-1.cdn.whatsapp.net/v/t61.24694-24/299403479_209349641625418_28106532781999617_n.jpg?stp=dst-jpg_s96x96_tt6&ccb=11-4&oh=01_Q5Aa4wGwCHX4wWTkZm-WVSkmY5hu3qshkh6UgQyZBT5cpo6lkg&oe=6A37F41B&_nc_sid=5e03e0&_nc_cat=107"
+      uid=55_18 banner
+        uid=55_19 banner
+          uid=55_20 heading "WhatsApp" level="2"
+          uid=55_21 button "New chat"
+          uid=55_22 button "Menu" expandable haspopup="menu"
+      uid=55_23 textbox focusable focused value="visita"
+      uid=67_0 button "End icon button"
+      uid=55_24 tablist "chat-list-filters" orientation="horizontal"
+        uid=55_25 tab "All" selectable
+        uid=55_26 tab "Unread 15" selectable
+        uid=55_27 tab "Favorites" selectable
+        uid=55_28 tab "Groups 1" selectable
+        uid=55_29 generic
+          uid=55_30 tab "New list" selectable
+      uid=57_1 generic
+        uid=57_2 generic
+          uid=67_1 StaticText "Chats"
+          uid=67_2 gridcell "Telefonica Movistar Peru 5/21/2026 This business is now using a secure service from Meta to manage this chat. Click to learn more."
+            uid=67_3 generic
+              uid=67_4 image url="https://media-lim1-1.cdn.whatsapp.net/v/t61.24694-24/473405888_1251044535974512_3176790823215459464_n.jpg?stp=dst-jpg_s96x96_tt6&ccb=11-4&oh=01_Q5Aa4wGeoDGMUGlH08bInLVUrkpbWUPZH64LSaj2dHhztRXZPw&oe=6A35B9F9&_nc_sid=5e03e0&_nc_cat=103"
+              uid=67_5 StaticText "Telefonica Mo"
+              uid=67_6 StaticText "vista"
+              uid=67_7 StaticText "r Peru"
+              uid=67_8 StaticText "5/21/2026"
+              uid=67_9 StaticText "This business is now using a secure service from Meta to manage this chat. Click to learn more."
+          uid=67_10 StaticText "Messages"
+          uid=67_11 gridcell "ROLANDO TERRENO 11:31 AM Hola Rolando, le saluda la familia Soto Tocas, de los terrenos en Huáchac 🌱 Nos contactó hace un tiempo por uno de los predios. Le comparto el catálogo completo con fotos y precios: https://casasototocas.vercel.app — y le cuento que este sábado 13 y domingo 14 hacemos visitas guiadas desde las 4:00 p.m., gratis y sin compromiso, directamente con el propietario. ¿Le aparto un cupo?"
+            uid=67_12 generic
+              uid=67_13 StaticText "ROLANDO TERRENO"
+              uid=67_14 StaticText "11:31 AM"
+              uid=67_15 StaticText "Hola Rolando, le saluda la familia Soto Tocas, de los terrenos en Huáchac "
+              uid=67_16 image "🌱" url="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+              uid=67_17 StaticText " Nos contactó hace un tiempo por uno de los predios. Le comparto el catálogo completo con fotos y precios: https://casasototocas.vercel.app — y le cuento que este sábado 13 y domingo 14 hacemos "
+              uid=67_18 StaticText "visita"
+              uid=67_19 StaticText "s guiadas desde las 4:00 p.m., gratis y sin compromiso, directamente con el propietario. ¿Le aparto un cupo?"
+          uid=67_20 gridcell "Terreno 4 11:30 AM Hola, le saluda la familia Soto Tocas, de los terrenos en Huáchac 🌱 Nos contactó hace unos días por uno de los predios. Le comparto el catálogo completo con fotos y precios: https://casasototocas.vercel.app — y le cuento que este sábado 13 y domingo 14 hacemos visitas guiadas desde las 4:00 p.m., gratis y sin compromiso, directamente con el propietario. ¿Le aparto un cupo?"
+            uid=67_21 generic
+              uid=67_22 StaticText "Terreno 4"
+              uid=67_23 StaticText "11:30 AM"
+              uid=67_24 StaticText "Hola, le saluda la familia Soto Tocas, de los terrenos en Huáchac "
+              uid=67_25 image "🌱" url="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+              uid=67_26 StaticText " Nos contactó hace unos días por uno de los predios. Le comparto el catálogo completo con fotos y precios: https://casasototocas.vercel.app — y le cuento que este sábado 13 y domingo 14 hacemos "
+              uid=67_27 StaticText "visita"
+              uid=67_28 StaticText "s guiadas desde las 4:00 p.m., gratis y sin compromiso, directamente con el propietario. ¿Le aparto un cupo?"
+          uid=67_29 gridcell "Robinson Terreno 11:28 AM Hola Robinson, ¿sigue buscando terreno en Huáchac? 🌱 Este sábado 13 y domingo 14 hacemos las visitas guiadas desde las 4:00 p.m., gratis y sin compromiso. Si me dice cuál predio le interesó del catálogo, le mando el detalle completo y le aparto un cupo. ¿Sábado o domingo?"
+            uid=67_30 generic
+              uid=67_31 StaticText "Robinson Terreno"
+              uid=67_32 StaticText "11:28 AM"
+              uid=67_33 StaticText "Hola Robinson, ¿sigue buscando terreno en Huáchac? "
+              uid=67_34 image "🌱" url="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+              uid=67_35 StaticText " Este sábado 13 y domingo 14 hacemos las "
+              uid=67_36 StaticText "visita"
+              uid=67_37 StaticText "s guiadas desde las 4:00 p.m., gratis y sin compromiso. Si me dice cuál predio le interesó del catálogo, le mando el detalle completo y le aparto un cupo. ¿Sábado o domingo?"
+          uid=67_38 gridcell "Terreno 2 11:27 AM Hola, ¿sigue buscando terreno en Huáchac? 🌱 Este sábado 13 y domingo 14 tenemos visitas guiadas desde las 4:00 p.m. y aún quedan cupos. Si gusta le aparto uno, sin compromiso."
+            uid=67_39 generic
+              uid=67_40 StaticText "Terreno 2"
+              uid=67_41 StaticText "11:27 AM"
+              uid=67_42 StaticText "Hola, ¿sigue buscando terreno en Huáchac? "
+              uid=67_43 image "🌱" url="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+              uid=67_44 StaticText " Este sábado 13 y domingo 14 tenemos "
+              uid=67_45 StaticText "visita"
+              uid=67_46 StaticText "s guiadas desde las 4:00 p.m. y aún quedan cupos. Si gusta le aparto uno, sin compromiso."
+          uid=67_47 gridcell "Terreno 3 11:26 AM Hola, le saluda nuevamente la familia Soto Tocas 🌱 ¿Pudo revisar los terrenos en el link? Este sábado 13 y domingo 14 estamos haciendo las visitas guiadas en Huáchac desde las 4:00 p.m., gratis y sin compromiso: se recorre el terreno y se revisan los papeles con el propietario. ¿Le aparto un cupo para el sábado o el domingo?"
+            uid=67_48 generic
+              uid=67_49 StaticText "Terreno 3"
+              uid=67_50 StaticText "11:26 AM"
+              uid=67_51 StaticText "Hola, le saluda nuevamente la familia Soto Tocas "
+              uid=67_52 image "🌱" url="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+              uid=67_53 StaticText " ¿Pudo revisar los terrenos en el link? Este sábado 13 y domingo 14 estamos haciendo las "
+              uid=67_54 StaticText "visita"
+              uid=67_55 StaticText "s guiadas en Huáchac desde las 4:00 p.m., gratis y sin compromiso: se recorre el terreno y se revisan los papeles con el propietario. ¿Le aparto un cupo para el sábado o el domingo?"
+          uid=67_56 gridcell "+51 923 074 333 11:25 AM Hola Angela, le saluda nuevamente la familia Soto Tocas 🌱 ¿Pudo revisar los terrenos en la web? Le cuento que este sábado 13 y domingo 14 estamos haciendo las visitas guiadas en Huáchac desde las 4:00 p.m., gratis y sin compromiso: se recorre el terreno y se revisan los papeles directamente con el propietario. Si me dice cuál le interesó o qué busca (para construir, sembrar o inversión), le preparo la información exacta y le aparto un cupo. ¿Le acomoda más el sábado o el domingo?"
+            uid=67_57 generic
+              uid=67_58 StaticText "+51 923 074 333"
+              uid=67_59 StaticText "11:25 AM"
+              uid=67_60 StaticText "Hola Angela, le saluda nuevamente la familia Soto Tocas "
+              uid=67_61 image "🌱" url="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+              uid=67_62 StaticText " ¿Pudo revisar los terrenos en la web? Le cuento que este sábado 13 y domingo 14 estamos haciendo las "
+              uid=67_63 StaticText "visita"
+              uid=67_64 StaticText "s guiadas en Huáchac desde las 4:00 p.m., gratis y sin compromiso: se recorre el terreno y se revisan los papeles directamente con el propietario. Si me dice cuál le interesó o qué busca (para construir, sembrar o inversión), le preparo la información exacta y le aparto un cupo. ¿Le acomoda más el sábado o el domingo?"
+          uid=67_65 gridcell "Jhinita Yesterday Me dijo que nos iba visitar"
+            uid=67_66 generic
+              uid=67_67 StaticText "Jhinita"
+              uid=67_68 StaticText "Yesterday"
+              uid=67_69 StaticText "Me dijo que nos iba "
+              uid=67_70 StaticText "visita"
+              uid=67_71 StaticText "r"
+      uid=66_0 banner
+        uid=66_1 button "Profile details"
+          uid=66_2 image url="https://media-lim1-1.cdn.whatsapp.net/v/t61.24694-24/56106107_409744153144851_7098904654737571840_n.jpg?stp=dst-jpg_s96x96_tt6&ccb=11-4&oh=01_Q5Aa4wEdxpnJdW_j3xzgvpz4yYQ7rJJDKyiX6-FhmduTNas9Fw&oe=6A37E181&_nc_sid=5e03e0&_nc_cat=107"
+        uid=66_3 button "ROLANDO TERRENO"
+        uid=66_4 button "Add to list"
+        uid=66_5 button "Video call"
+        uid=66_6 button "Search"
+        uid=66_7 button "Menu" expandable haspopup="menu"
+      uid=66_8 generic
+        uid=66_9 generic
+          uid=66_10 generic
+            uid=66_11 StaticText "Today"
+          uid=66_12 row
+            uid=66_13 generic
+              uid=66_14 button "Messages and calls are end-to-end encrypted. Only people in this chat can read, listen to, or share them. Click to learn more"
+                uid=66_15 button "Messages and calls are end-to-end encrypted. Only people in this chat can read, listen to, or share them. Click to learn more"
+          uid=67_72 row
+            uid=67_73 generic
+              uid=67_74 generic "You:"
+              uid=67_75 StaticText "Hola Rolando, le saluda la familia Soto Tocas, de los terrenos en Huáchac "
+              uid=67_76 image "🌱" url="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+              uid=67_77 StaticText " Nos contactó hace un tiempo por uno de los predios. Le comparto el catálogo completo con fotos y precios: "
+              uid=67_78 link "https://casasototocas.vercel.app" url="https://casasototocas.vercel.app/"
+                uid=67_79 StaticText "https://casasototocas.vercel.app"
+              uid=67_80 StaticText " — y le cuento que este sábado 13 y domingo 14 hacemos visitas guiadas desde las 4:00 p.m., gratis y sin compromiso, directamente con el propietario. ¿Le aparto un cupo?"
+              uid=67_81 button "11:31 AM Delivered "
+      uid=66_16 contentinfo
+        uid=66_17 generic
+          uid=66_18 button "Attach" expandable haspopup="menu"
+          uid=66_19 button "Emojis, GIFs, Stickers"
+          uid=66_20 textbox "Type a message to ROLANDO TERRENO" autocomplete="list" multiline value="
+"
+            uid=67_82 paragraph
+          uid=67_83 button "Voice message"
+            uid=67_84 button "Voice message"
+      uid=55_755 generic

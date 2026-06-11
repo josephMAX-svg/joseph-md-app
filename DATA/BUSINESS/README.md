@@ -12,7 +12,7 @@ Fuente: `plan_estudio_pulso_v2_mejorado.xlsx` (copia aquí) + workflow de invest
 | [`hormozi-method.md`](hormozi-method.md) | **Metodología Hormozi para Pulso**: $100M Offers (Value Equation, Grand Slam, Trim & Stack, MAGIC) + Leads (Core Four, lead magnets 7 pasos, Rule of 100, give:ask ≈3.5:1) + Money Models (CFA: 30 días → 2 clientes) + **playbook de contenido orgánico con días recomendados** (IG mié/jue tarde-noche · TikTok tardes y finde · YT Shorts viernes tarde — Buffer/Sprout/Hootsuite; consistencia ≥1x/sem × 20 sem = +450% engagement) |
 | [`libros.md`](libros.md) | **los 28 libros, revisión de élite**: tesis · frameworks con capítulo · frase-ancla fiel · aplicación Pulso · recursos con URL real |
 | [`terrenos-leads.md`](terrenos-leads.md) | **Terrenos · Casa Soto Tocas**: bitácora 11-jun (21 leads Marketplace reactivados con cita sáb/dom 4pm) · discrepancias de precio web/catálogo/MP · recomendación NO ads hasta agosto (gate Lean Analytics) · sistema permanente (OMTM, cadencia, 8x8) |
-| [`golden-brand.md`](golden-brand.md) | **Mantaro Goldens**: web viva (mantaro-goldens.vercel.app) · modelo de venta verificado (criadores élite EE.UU.) · seña S/500, timeline 8 pasos, precios Perú · pendientes |
+| [`golden-brand.md`](golden-brand.md) | **Qori Golden**: web viva (qori-golden.vercel.app) · modelo de venta verificado (criadores élite EE.UU.) · seña S/500, timeline 8 pasos, precios Perú · pendientes |
 | `_scrape/*_raw.md` (6 nuevos 11-jun) | investigación verificada: hormozi_seguimiento · lean_analytics · cro_landing · libros_inmobiliaria · referentes_terrenos_peru · golden_breeders · crm_pulso_eval · pirqa_publicaciones · catalogo_predios_huachac.txt |
 
 ## En la app (src/lib + componentes)

@@ -1,13 +1,14 @@
-# Mantaro Goldens — marca, web y estrategia de la camada
+# Qori Golden — marca, web y estrategia de la camada
 
 > Creado el 11-jun-2026. Raw verificado: `_scrape/golden_breeders_raw.md` (8 webs de
-> criadores élite EE.UU. analizadas). Carpeta nativa: `D:\mantaro-goldens`
+> criadores élite EE.UU. analizadas). Carpeta nativa: `D:\qori-golden`
 > (CLAUDE.md + REDES_SOCIALES_KIT.md + index.html).
 
 ## Decisiones tomadas
-- **Nombre: Mantaro Goldens** (0 huella web al 11-jun-2026; formato internacional
-  lugar+Goldens; handles aparentemente libres [verificar en cada app al crear]).
-- **Web EN PRODUCCIÓN: https://mantaro-goldens.vercel.app** (deploy 11-jun, Vercel
+- **Nombre: Qori Golden** (decisión del dueño 11-jun: qori = oro en quechua — familia
+  de marcas quechua con PIRQA; Lima lo lee "oro", el valle lo siente suyo). Reemplaza
+  a "Mantaro Goldens" (la URL vieja mantaro-goldens.vercel.app redirige a la nueva).
+- **Web EN PRODUCCIÓN: https://qori-golden.vercel.app** (deploy 11-jun, Vercel
   cuenta josephmax-svg, 200 OK público). Una página, estática, cream/honey/brown,
   Cormorant+Inter (coherente con Casa Soto Tocas). Sticky WhatsApp 934 173 914.
 - **Imágenes:** referenciales de Wikimedia Commons, ETIQUETADAS como referenciales en
@@ -34,6 +35,6 @@
 1. Ficha real de la madre (nombre, edad, fotos, documentos, datos del padre) → web.
 2. Ecografía → publicarla (paso 02 del timeline) — el post más importante del pre-lanzamiento.
 3. Precio final.
-4. Redes @mantarogoldens (kit completo en `D:\mantaro-goldens\REDES_SOCIALES_KIT.md`;
+4. Redes @qorigolden (kit completo en `D:\qori-golden\REDES_SOCIALES_KIT.md`;
    requiere SMS del dueño ~20 min; YouTube como canal de marca no necesita SMS).
 5. CRM: módulo golden en el prompt de `D:\CRM_PULSO_v3.1` (lista de espera + OCR señas).
