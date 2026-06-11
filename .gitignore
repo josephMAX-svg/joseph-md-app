@@ -40,3 +40,5 @@ yarn-error.*
 /ios
 /android
 STUDY_HUB/_scrape/
+
+DATA/BUSINESS/_scrape/_tmp_*.txt
