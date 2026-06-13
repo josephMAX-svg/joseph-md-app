@@ -42,3 +42,4 @@ yarn-error.*
 STUDY_HUB/_scrape/
 
 DATA/BUSINESS/_scrape/_tmp_*.txt
+DATA/BUSINESS/_upload/
