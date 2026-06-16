@@ -152,7 +152,7 @@ export default function PulsoCommandCenter({ onOpenBrand }: { onOpenBrand: (id: 
         <Text style={{ fontSize: 28, marginRight: Spacing.md }}>🪙</Text>
         <View style={{ flex: 1 }}>
           <Text style={st.estudioTitle}>AURUM · Closer de ventas</Text>
-          <Text style={st.estudioSub}>Programa de 6 meses · 26 sem · 130 misiones L-V — convertir conversaciones en oro (Hormozi · Belfort · NEPQ · Cole Gordon)</Text>
+          <Text style={st.estudioSub}>Programa de 6 meses · 26 sem · 130 misiones L-V — convertir conversaciones en oro (Hormozi · Voss · Cardone · Cialdini · Rackham)</Text>
         </View>
         <View style={[st.estudioCta, { borderColor: AURUM_GOLD + '88' }]}><Text style={[st.estudioCtaText, { color: AURUM_GOLD }]}>Abrir ›</Text></View>
       </TouchableOpacity>

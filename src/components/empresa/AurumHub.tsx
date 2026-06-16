@@ -1,155 +1,223 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Linking } from 'react-native';
-import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
-import { SectionLabel, Chip, GlassPanel, PillTab, gridStyle, gridItemStyle } from './primitives';
-import { GradientHero, RingStat, FadeUp } from './visuals';
+import { View, Text, TouchableOpacity, Platform, StyleSheet, Linking } from 'react-native';
 import {
   AURUM_META, AURUM_KPIS, AURUM_FASES, AURUM_BIBLIOTECA, AURUM_PROTOCOLO,
   AURUM_NIVEL_META, AURUM_ADVERTENCIAS, AurumMaterial, AurumConfianza,
 } from '../../lib/aurumData';
 import { AURUM_PLAN_META } from '../../lib/aurumDailyPlan';
-import { loadDone, saveDone } from '../../lib/studyProgress';
-import AurumTodayPlan from './AurumTodayPlan';
+import { loadDone, saveDone, planHoyD, progresoGlobal } from '../../lib/studyProgress';
+import { AURUM_DIAS } from '../../lib/aurumDailyPlan';
+import AurumTodayPlan, { aurumTodayISO } from './AurumTodayPlan';
+import {
+  AurumColors as C, AurumRadius as R, AurumSpacing as S, AurumType as T,
+  AURUM_AUTHORITIES, withAlpha,
+} from '../../theme/aurumTheme';
+import {
+  AurumHero, AurumWordmark, AurumChip, AurumLabel, AurumPanel, AurumRing,
+  AurumRise, useAurumHover,
+} from './aurumVisuals';
 
 /**
- * AurumHub — "AURUM · Closer de ventas de élite", dentro de Business → Pulso.
- * MISMO molde que SynapseHub: HERO + KPIs + sub-nav (Hoy/Ruta/Biblioteca/Protocolo).
- * Render como View (vive dentro del ScrollView de EmpresaHub, con breadcrumb a Pulso).
- * El motor día-a-día (pestaña ⚡ Hoy) son misiones generadas: src/lib/aurumDailyPlan.ts.
- * Acento dorado AURUM. Progreso real manual (PlanKey 'aurum', empieza 0%).
+ * AurumHub — "AURUM · El arte de convertir conversaciones en oro" (Business → Pulso).
+ * Rediseño PREMIUM (estética Hormozi / acquisition.com): navy profundo + oro, alto
+ * contraste, jerarquía de autoridad. TODO el look sale de src/theme/aurumTheme.ts.
+ * NO toca data/wiring: PlanKey 'aurum', AURUM_* y la navegación quedan intactos.
  */
-const GOLD = AURUM_META.accent;
+const isWeb = Platform.OS === 'web';
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
 
 type Sub = 'hoy' | 'ruta' | 'biblioteca' | 'protocolo';
 
 const CONF_COLOR: Record<AurumConfianza, string> = {
-  verificado: Colors.green,
-  estable: Colors.amber,
-  incierto: Colors.coral,
+  verificado: C.success, estable: C.warn, incierto: C.danger,
 };
 const CONF_LABEL: Record<AurumConfianza, string> = {
   verificado: 'verificado', estable: 'estable', incierto: 'verifica el link',
 };
 
-function MaterialRow({ m }: { m: AurumMaterial }) {
+// ── Tarjeta de material (biblioteca / ruta) ─────────────────────────────────
+function MaterialCard({ m, badge }: { m: AurumMaterial; badge?: string }) {
+  const { hovered, hoverProps } = useAurumHover();
   return (
-    <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(m.url)} style={st.matCard}>
-      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 6 }}>
-        <Text style={st.matName} numberOfLines={2}>{m.nombre} ↗</Text>
-        <View style={{ flexDirection: 'row', gap: 6, alignItems: 'center' }}>
-          <Chip label={m.idioma === 'es' ? '🇪🇸 ES' : '🇬🇧 EN'} color={Colors.muted} small />
-          <Chip label={CONF_LABEL[m.confianza]} color={CONF_COLOR[m.confianza]} small />
+    <TouchableOpacity
+      activeOpacity={0.85}
+      onPress={() => openUrl(m.url)}
+      {...(hoverProps as any)}
+      style={[
+        st.matCard,
+        hovered && isWeb ? ({ borderColor: withAlpha(C.gold, 0.5), transform: [{ translateY: -2 }] } as any) : null,
+        isWeb ? ({ transition: 'all .18s ease', cursor: 'pointer' } as any) : null,
+      ]}>
+      <View style={st.matTop}>
+        <Text style={st.matName} numberOfLines={2}>{m.nombre}</Text>
+        <View style={[st.openPill, { borderColor: withAlpha(C.gold, 0.5) }]}>
+          <Text style={st.openPillTxt}>abrir ↗</Text>
         </View>
       </View>
       <Text style={st.matRef}>{m.referente}</Text>
       <Text style={st.matWhy}>{m.porQue}</Text>
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 6, flexWrap: 'wrap' }}>
-        <Chip label={m.tipo} color={Colors.muted} small />
+      <View style={st.matMeta}>
+        {badge ? <AurumChip label={badge} color={C.gold} size="sm" /> : null}
+        <AurumChip label={m.tipo} color={C.textMute} size="sm" />
+        <AurumChip label={m.idioma === 'es' ? 'ES' : 'EN'} color={C.textMute} size="sm" />
+        <AurumChip label={CONF_LABEL[m.confianza]} color={CONF_COLOR[m.confianza]} size="sm" />
       </View>
     </TouchableOpacity>
   );
 }
 
-/** RUTA — las 7 fases del programa, de mentalidad a maestría. */
-function RutaView() {
+// ── RUTA — roadmap de 7 fases como timeline vertical elegante ────────────────
+function RutaView({ done }: { done: Set<number> }) {
   return (
     <View>
-      <SectionLabel>Ruta · de vendedor a closer de élite (el orden importa)</SectionLabel>
-      {AURUM_FASES.map((f, i) => {
-        const activa = f.estado === 'activa';
-        const meta = f.estado === 'meta';
-        const acc = activa ? GOLD : meta ? Colors.green : Colors.muted;
-        return (
-          <FadeUp key={f.id} delay={i * 60}>
-            <View style={[st.faseCard, { borderLeftColor: acc }, activa && { backgroundColor: GOLD + '0E' }]}>
-              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 6 }}>
-                <Text style={[st.faseTag, { color: acc }]}>{f.fase} · {f.duracion}</Text>
-                {activa ? <Chip label="EMPIEZA AQUÍ" color={GOLD} small /> : meta ? <Chip label="META" color={Colors.green} small /> : null}
+      <AurumLabel>Ruta · de vendedor a closer de élite (el orden importa)</AurumLabel>
+      <View style={st.timeline}>
+        {AURUM_FASES.map((f, i) => {
+          const activa = f.estado === 'activa';
+          const meta = f.estado === 'meta';
+          const acc = activa ? C.gold : meta ? C.success : C.textMute;
+          // progreso real de la fase desde los ✓
+          const faseDias = AURUM_DIAS.filter((x) => x.faseId === f.id);
+          const faseHechos = faseDias.filter((x) => done.has(x.d)).length;
+          const pct = faseDias.length ? Math.round((faseHechos / faseDias.length) * 100) : 0;
+          const last = i === AURUM_FASES.length - 1;
+          return (
+            <AurumRise key={f.id} delay={i * 55}>
+              <View style={st.tlRow}>
+                {/* rail + nodo numerado */}
+                <View style={st.tlRail}>
+                  <View style={[st.tlNode, { borderColor: acc, backgroundColor: withAlpha(acc, 0.16) }]}>
+                    <Text style={[st.tlNodeTxt, { color: acc }]}>{i + 1}</Text>
+                  </View>
+                  {!last ? <View style={[st.tlLine, { backgroundColor: withAlpha(acc, 0.35) }]} /> : null}
+                </View>
+                {/* tarjeta de fase */}
+                <AurumPanel accent={acc} glow={activa} style={st.faseCard}>
+                  <View style={st.faseHead}>
+                    <Text style={[st.faseTag, { color: acc }]}>{f.fase} · {f.duracion}</Text>
+                    {activa ? <AurumChip label="EMPIEZA AQUÍ" color={C.gold} size="sm" />
+                      : meta ? <AurumChip label="META" color={C.success} size="sm" />
+                        : pct > 0 ? <AurumChip label={`${pct}%`} color={C.success} size="sm" /> : null}
+                  </View>
+                  <Text style={st.faseTitle}>{f.titulo}</Text>
+                  <Text style={st.faseDesc}>{f.objetivo}</Text>
+                  <View style={[st.libroPill, { borderColor: withAlpha(acc, 0.4) }]}>
+                    <Text style={[st.libroTxt, { color: acc }]}>📘 ancla · {f.libroAncla}</Text>
+                  </View>
+                  <Text style={[st.faseEntreg, { color: C.textDim }]}>→ {f.entregable}</Text>
+                  <View style={{ marginTop: S.md, gap: S.sm }}>
+                    {f.materiales.map((m, j) => <MaterialCard key={j} m={m} />)}
+                  </View>
+                </AurumPanel>
               </View>
-              <Text style={st.faseTitle}>{f.titulo}</Text>
-              <Text style={st.faseDesc}>{f.objetivo}</Text>
-              <Text style={[st.faseEntreg, { color: acc }]}>→ {f.entregable}</Text>
-              <View style={{ marginTop: 10, gap: 8 }}>
-                {f.materiales.map((m, j) => <MaterialRow key={j} m={m} />)}
-              </View>
-            </View>
-          </FadeUp>
-        );
-      })}
+            </AurumRise>
+          );
+        })}
+      </View>
     </View>
   );
 }
 
-/** BIBLIOTECA — los 93 recursos gratis, por tipo. */
-function BibliotecaView() {
+// ── BIBLIOTECA — tarjetas ricas por categoría ───────────────────────────────
+function BibliotecaView({ isDesktop }: { isDesktop: boolean }) {
+  const cols = isDesktop ? 2 : 1;
   return (
     <View>
-      <SectionLabel>Biblioteca · solo contenido GRATIS de los referentes #1 (cero cursos pagos)</SectionLabel>
+      <AurumLabel>Biblioteca · solo contenido GRATIS de los referentes #1 (cero cursos pagos)</AurumLabel>
       {AURUM_BIBLIOTECA.map((cat, i) => (
-        <FadeUp key={i} delay={i * 50}>
-          <View style={{ marginBottom: Spacing.xl }}>
-            <Text style={st.catTitle}>{cat.icon} {cat.categoria} · {cat.items.length}</Text>
-            <View style={gridStyle(280)}>
+        <AurumRise key={i} delay={i * 45}>
+          <View style={{ marginBottom: S['2xl'] }}>
+            <View style={st.catHead}>
+              <Text style={st.catIcon}>{cat.icon}</Text>
+              <Text style={st.catTitle}>{cat.categoria}</Text>
+              <AurumChip label={`${cat.items.length}`} color={C.gold} size="sm" />
+            </View>
+            <View style={[st.grid, isWeb ? ({ gridTemplateColumns: `repeat(${cols}, 1fr)` } as any) : null]}>
               {cat.items.map((m, j) => (
-                <View key={j} style={gridItemStyle(280)}>
-                  <MaterialRow m={m} />
+                <View key={j} style={isWeb ? null : { width: '100%' }}>
+                  <MaterialCard m={m} />
                 </View>
               ))}
             </View>
           </View>
-        </FadeUp>
+        </AurumRise>
       ))}
     </View>
   );
 }
 
-/** PROTOCOLO — el bloque diario L-V + los entregables por fase + honestidad. */
+// ── PROTOCOLO — horario + nivel meta + honestidad ───────────────────────────
 function ProtocoloView() {
   return (
     <View>
-      <SectionLabel>Protocolo · núcleo 30-60 min en {AURUM_PLAN_META.ventana} (L-V) + lectura en tus huecos · sáb/dom libres</SectionLabel>
-      <GlassPanel accent={GOLD} style={{ marginBottom: Spacing.xl }}>
-        {AURUM_PROTOCOLO.map((h, i) => (
-          <View key={i} style={[st.horRow, i === 0 && { borderTopWidth: 0 }]}>
-            <View style={[st.horBadge, { backgroundColor: GOLD + '1A' }]}>
-              <Text style={[st.horMin, { color: GOLD }]}>{h.min}</Text>
+      <AurumLabel>Protocolo · núcleo en {AURUM_PLAN_META.ventana} (L-V) + lectura en tus huecos · sáb/dom libres</AurumLabel>
+      <AurumPanel accent={C.gold} glow style={{ marginBottom: S['2xl'] }}>
+        {AURUM_PROTOCOLO.map((h, i) => {
+          const audio = h.formato.includes('audio');
+          const acc = i === 1 ? C.pracAccent : audio ? C.lecturaAccent : C.gold;
+          return (
+            <View key={i} style={[st.horRow, i === 0 && { borderTopWidth: 0 }]}>
+              <View style={[st.horBadge, { backgroundColor: withAlpha(acc, 0.14), borderColor: withAlpha(acc, 0.4) }]}>
+                <Text style={[st.horMin, { color: acc }]}>{h.min}</Text>
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={st.horBloque}>{h.bloque}</Text>
+                <Text style={st.horQue}>{h.que}</Text>
+              </View>
+              <AurumChip label={h.formato} color={acc} size="sm" />
             </View>
-            <View style={{ flex: 1 }}>
-              <Text style={st.horBloque}>{h.bloque}</Text>
-              <Text style={st.horQue}>{h.que}</Text>
-            </View>
-            <Chip label={h.formato} color={h.formato.includes('audio') ? GOLD : Colors.muted} small />
-          </View>
-        ))}
-      </GlassPanel>
+          );
+        })}
+      </AurumPanel>
 
-      <SectionLabel>El nivel meta · los entregables que demuestran que eres closer</SectionLabel>
-      <GlassPanel style={{ marginBottom: Spacing.xl }}>
+      <AurumLabel>El nivel meta · los entregables (PITCH v1→v7) que demuestran que eres closer</AurumLabel>
+      <AurumPanel style={{ marginBottom: S['2xl'] }}>
         {AURUM_NIVEL_META.map((n, i) => (
-          <View key={i} style={{ flexDirection: 'row', gap: 8, paddingVertical: 5, alignItems: 'flex-start' }}>
-            <Text style={{ color: GOLD }}>◆</Text>
+          <View key={i} style={st.metaRow}>
+            <View style={[st.metaDot, { backgroundColor: withAlpha(C.gold, 0.16), borderColor: withAlpha(C.gold, 0.5) }]}>
+              <Text style={st.metaDotTxt}>{i + 1}</Text>
+            </View>
             <Text style={[st.body, { flex: 1 }]}>
-              <Text style={{ fontWeight: '700', color: Colors.onSurface }}>{n.skill}</Text> — {n.fuente}
+              <Text style={{ fontWeight: T.weight.bold, color: C.text }}>{n.skill}</Text> — {n.fuente}
             </Text>
           </View>
         ))}
-      </GlassPanel>
+      </AurumPanel>
 
-      <SectionLabel>Honestidad (no inventado)</SectionLabel>
-      <GlassPanel accent={Colors.amber} style={{ marginBottom: Spacing.xl }}>
+      <AurumLabel>Honestidad (no inventado)</AurumLabel>
+      <AurumPanel accent={C.warn} style={{ marginBottom: S['2xl'] }}>
         {AURUM_ADVERTENCIAS.map((a, i) => (
-          <View key={i} style={{ flexDirection: 'row', gap: 8, paddingVertical: 5 }}>
-            <Text style={{ color: Colors.amber }}>•</Text>
+          <View key={i} style={st.warnRow}>
+            <Text style={{ color: C.warn, fontWeight: T.weight.extrabold }}>•</Text>
             <Text style={[st.body, { flex: 1 }]}>{a}</Text>
           </View>
         ))}
-      </GlassPanel>
+      </AurumPanel>
     </View>
   );
 }
 
-export default function AurumHub({ onBack }: { onBack?: () => void }) {
+// ── SUB-NAV pill premium ─────────────────────────────────────────────────────
+function NavPill({ label, active, onPress }: { label: string; active: boolean; onPress: () => void }) {
+  const { hovered, hoverProps } = useAurumHover();
+  return (
+    <TouchableOpacity
+      activeOpacity={0.85}
+      onPress={onPress}
+      {...(hoverProps as any)}
+      style={[
+        st.navPill,
+        active ? { backgroundColor: withAlpha(C.gold, 0.16), borderColor: withAlpha(C.gold, 0.6) } : null,
+        !active && hovered && isWeb ? ({ borderColor: withAlpha(C.gold, 0.3) } as any) : null,
+        isWeb ? ({ transition: 'all .18s ease', cursor: 'pointer' } as any) : null,
+      ]}>
+      <Text style={[st.navPillTxt, active && { color: C.text, fontWeight: T.weight.extrabold }]}>{label}</Text>
+    </TouchableOpacity>
+  );
+}
+
+export default function AurumHub({ onBack, variant = 'mobile' }: { onBack?: () => void; variant?: 'mobile' | 'desktop' }) {
+  const isDesktop = variant === 'desktop';
   const [sub, setSub] = useState<Sub>('hoy');
   const [done, setDone] = useState<Set<number>>(() => new Set(loadDone('aurum')));
   const toggleDone = (d: number) => setDone((prev) => {
@@ -158,6 +226,20 @@ export default function AurumHub({ onBack }: { onBack?: () => void }) {
     saveDone('aurum', Array.from(n));
     return n;
   });
+
+  // KPIs REALES desde el progreso + el calendario
+  const hoyD = planHoyD(AURUM_DIAS, aurumTodayISO());
+  const glob = progresoGlobal(AURUM_DIAS, done);
+  const diaHoy = AURUM_DIAS.find((x) => x.d === hoyD) || AURUM_DIAS[0];
+  const semanaActual = diaHoy.semana;
+  const faseActual = AURUM_DIAS.filter((x) => x.faseId === diaHoy.faseId);
+  const faseHechos = faseActual.filter((x) => done.has(x.d)).length;
+  const fasePct = faseActual.length ? Math.round((faseHechos / faseActual.length) * 100) : 0;
+  // racha real: días ✓ consecutivos terminando en hoy (o ayer)
+  const racha = (() => {
+    let d = done.has(hoyD) ? hoyD : hoyD - 1; let n = 0;
+    while (d >= 1 && done.has(d)) { n++; d--; } return n;
+  })();
 
   return (
     <View>
@@ -168,81 +250,146 @@ export default function AurumHub({ onBack }: { onBack?: () => void }) {
         </TouchableOpacity>
       ) : null}
 
-      {/* HERO */}
-      <GradientHero from="#2A2517" to="#0A1424" style={{ marginBottom: Spacing.lg, borderColor: GOLD + '33' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: Spacing.md }}>
-          <View style={{ flex: 1, minWidth: 240 }}>
-            <Text style={st.heroTitle}>🪙 {AURUM_META.titulo}</Text>
-            <Text style={[st.heroSub, { color: GOLD }]}>{AURUM_META.subtitulo}</Text>
-            <Text style={st.heroTesis}>{AURUM_META.tesis}</Text>
+      {/* ───── HERO ───── */}
+      <AurumHero gradient="hero" style={{ marginBottom: S.xl }}>
+        <View style={[st.heroInner, isDesktop && { flexDirection: 'row', alignItems: 'flex-start' }]}>
+          <View style={{ flex: 1, minWidth: 260 }}>
+            <AurumWordmark size={isDesktop ? T.size.mega : 42} />
+            <Text style={st.heroTagline}>El arte de convertir conversaciones en oro</Text>
+            <Text style={st.heroTesis}>
+              Método de los REALES — los que vendieron y construyeron antes de enseñar — aplicado a
+              ALLPA (terrenos) y Qori Golden. 26 semanas, ventana {AURUM_PLAN_META.ventana} L-V: ver + practicar tu pitch.
+            </Text>
+            {/* chips de autoridad — referentes reales */}
+            <View style={st.authRow}>
+              {AURUM_AUTHORITIES.map((a, i) => (
+                <View key={a} style={st.authChip}>
+                  <Text style={st.authTxt}>{a}</Text>
+                  {i < AURUM_AUTHORITIES.length - 1 ? <Text style={st.authSep}>·</Text> : null}
+                </View>
+              ))}
+            </View>
           </View>
-          <View style={[st.todayChip, { borderColor: GOLD + '66', backgroundColor: GOLD + '14' }]}>
+          {/* sello HOY */}
+          <View style={[st.todaySeal, isDesktop ? { marginLeft: S.xl } : { marginTop: S.lg }]}>
             <Text style={st.todayLabel}>HOY · {AURUM_PLAN_META.ventana}</Text>
-            <Text style={[st.todayValue, { color: GOLD }]}>30-60'</Text>
-            <Text style={st.todaySub}>L-V · ver+practicar</Text>
+            <Text style={st.todayValue}>{diaHoy.min}'</Text>
+            <Text style={st.todaySub}>núcleo · ver + practicar</Text>
           </View>
         </View>
-      </GradientHero>
+      </AurumHero>
 
-      {/* KPIs */}
-      <View style={st.ringRow}>
-        <View style={st.ringCard}><RingStat value={AURUM_KPIS.fases} max={AURUM_KPIS.fases} label="Fases" sub="ruta completa" accent={GOLD} /></View>
-        <View style={st.ringCard}><RingStat value={AURUM_PLAN_META.semanas} max={AURUM_PLAN_META.semanas} label="Semanas" sub="6 meses · L-V" accent={Colors.blue} /></View>
-        <View style={st.ringCard}><RingStat value={AURUM_KPIS.materialesVerificados} max={AURUM_KPIS.materialesVerificados} label="Recursos" sub="gratis · referentes #1" accent={Colors.green} /></View>
-        <View style={st.ringCard}><RingStat value={done.size} max={AURUM_PLAN_META.totalDias} label="Completadas" sub={`misiones reales · ${Math.round((done.size / AURUM_PLAN_META.totalDias) * 100)}%`} accent={Colors.amber} /></View>
+      {/* ───── KPIs (anillos reales) ───── */}
+      <View style={[st.kpiRow, isDesktop && { flexWrap: 'nowrap' }]}>
+        <View style={st.kpiCard}><AurumRing value={hoyD} max={AURUM_PLAN_META.totalDias} label="Día" sub={`/ ${AURUM_PLAN_META.totalDias} · L-V`} accent={C.gold} /></View>
+        <View style={st.kpiCard}><AurumRing value={semanaActual} max={AURUM_PLAN_META.semanas} label="Semana" sub={`/ ${AURUM_PLAN_META.semanas}`} accent={C.lecturaAccent} /></View>
+        <View style={st.kpiCard}><AurumRing value={fasePct} max={100} label={diaHoy.faseId.toUpperCase()} sub="fase actual" accent={C.success} suffix="%" /></View>
+        <View style={st.kpiCard}><AurumRing value={racha} max={Math.max(7, racha)} label="Racha" sub="días ✓ seguidos" accent={C.pracAccent} /></View>
       </View>
 
-      {/* Motor día-a-día */}
-      <GlassPanel accent={GOLD} style={{ marginBottom: Spacing.lg, padding: Spacing.lg }}>
-        <Text style={st.h3}>⚙ Motor día-a-día</Text>
+      {/* motor */}
+      <AurumPanel accent={C.gold} style={{ marginBottom: S.lg }}>
+        <Text style={st.motorTitle}>⚙ Motor día a día · {glob.hechos}/{glob.total} misiones ({glob.pct}%)</Text>
         <Text style={st.body}>{AURUM_META.nota}</Text>
-      </GlassPanel>
+      </AurumPanel>
 
-      {/* SUB-NAV */}
-      <View style={{ flexDirection: 'row', gap: Spacing.sm, marginBottom: Spacing.xl, flexWrap: 'wrap' }}>
-        <PillTab label="⚡ Hoy" active={sub === 'hoy'} onPress={() => setSub('hoy')} accent={GOLD} />
-        <PillTab label="◈ Ruta" active={sub === 'ruta'} onPress={() => setSub('ruta')} accent={GOLD} />
-        <PillTab label="⌘ Biblioteca" active={sub === 'biblioteca'} onPress={() => setSub('biblioteca')} accent={GOLD} />
-        <PillTab label="🧭 Protocolo" active={sub === 'protocolo'} onPress={() => setSub('protocolo')} accent={GOLD} />
+      {/* ───── SUB-NAV ───── */}
+      <View style={st.navRow}>
+        <NavPill label="⚡ Hoy" active={sub === 'hoy'} onPress={() => setSub('hoy')} />
+        <NavPill label="◈ Ruta" active={sub === 'ruta'} onPress={() => setSub('ruta')} />
+        <NavPill label="⌘ Biblioteca" active={sub === 'biblioteca'} onPress={() => setSub('biblioteca')} />
+        <NavPill label="🧭 Protocolo" active={sub === 'protocolo'} onPress={() => setSub('protocolo')} />
       </View>
 
-      {sub === 'hoy' && <AurumTodayPlan done={done} onToggle={toggleDone} />}
-      {sub === 'ruta' && <RutaView />}
-      {sub === 'biblioteca' && <BibliotecaView />}
+      {sub === 'hoy' && <AurumTodayPlan done={done} onToggle={toggleDone} isDesktop={isDesktop} />}
+      {sub === 'ruta' && <RutaView done={done} />}
+      {sub === 'biblioteca' && <BibliotecaView isDesktop={isDesktop} />}
       {sub === 'protocolo' && <ProtocoloView />}
     </View>
   );
 }
 
 const st = StyleSheet.create({
-  breadcrumb: { flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: Spacing.md, alignSelf: 'flex-start' },
-  breadcrumbText: { fontSize: FontSize.labelLg, color: GOLD, fontWeight: '700' },
-  breadcrumbSep: { fontSize: FontSize.labelLg, color: Colors.muted },
+  breadcrumb: { flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: S.md, alignSelf: 'flex-start' },
+  breadcrumbText: { fontSize: T.size.caption, color: C.gold, fontWeight: T.weight.bold },
+  breadcrumbSep: { fontSize: T.size.caption, color: C.textMute },
 
-  heroTitle: { fontSize: FontSize.headlineSm, fontWeight: '800', color: Colors.onSurface, letterSpacing: 0.4 },
-  heroSub: { fontSize: FontSize.bodyMd, fontWeight: '700', marginTop: 4, letterSpacing: 0.6 },
-  heroTesis: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, marginTop: 8, lineHeight: 20 },
-  todayChip: { borderWidth: 1, borderRadius: BorderRadius.lg, paddingVertical: 10, paddingHorizontal: 16, alignItems: 'center', minWidth: 120 },
-  todayLabel: { fontSize: 9, fontWeight: '700', color: Colors.muted, letterSpacing: 1.2 },
-  todayValue: { fontSize: FontSize.titleLg, fontWeight: '800', marginTop: 2 },
-  todaySub: { fontSize: 9, color: Colors.muted, marginTop: 2 },
-  ringRow: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.md, marginBottom: Spacing.lg },
-  ringCard: { flexGrow: 1, flexBasis: 150, backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.xl, paddingVertical: Spacing.lg, alignItems: 'center', borderWidth: 1, borderColor: 'rgba(255,255,255,0.05)' },
-  h3: { fontSize: FontSize.bodyLg, fontWeight: '700', color: Colors.onSurface, marginBottom: 6 },
-  body: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, lineHeight: 20 },
-  faseCard: { backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, borderLeftWidth: 3, padding: Spacing.lg, marginBottom: Spacing.md },
-  faseTag: { fontSize: FontSize.labelSm, fontWeight: '800', letterSpacing: 1 },
-  faseTitle: { fontSize: FontSize.titleMd, fontWeight: '800', color: Colors.onSurface, marginTop: 6 },
-  faseDesc: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, marginTop: 4, lineHeight: 19 },
-  faseEntreg: { fontSize: FontSize.labelMd, fontWeight: '700', marginTop: 8 },
-  matCard: { backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: BorderRadius.lg, padding: Spacing.md, borderWidth: 1, borderColor: 'rgba(255,255,255,0.06)' },
-  matName: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, flex: 1, minWidth: 150 },
-  matRef: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 4 },
-  matWhy: { fontSize: FontSize.labelMd, color: Colors.muted, marginTop: 4, lineHeight: 17 },
-  catTitle: { fontSize: FontSize.bodyLg, fontWeight: '800', color: Colors.onSurface, marginBottom: Spacing.md, letterSpacing: 0.3 },
-  horRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md, paddingVertical: 10, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.06)' },
-  horBadge: { borderRadius: BorderRadius.md, paddingVertical: 6, paddingHorizontal: 10, minWidth: 52, alignItems: 'center' },
-  horMin: { fontSize: FontSize.labelMd, fontWeight: '800' },
-  horBloque: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface },
-  horQue: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 2, lineHeight: 17 },
+  // hero
+  heroInner: { gap: S.lg },
+  heroTagline: { fontSize: T.size.subtitle, fontWeight: T.weight.bold, color: C.goldSoft, marginTop: 6, letterSpacing: 0.4 },
+  heroTesis: { fontSize: T.size.body, color: C.textDim, marginTop: S.md, lineHeight: 21, maxWidth: 560 },
+  authRow: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', marginTop: S.lg, rowGap: 4 },
+  authChip: { flexDirection: 'row', alignItems: 'center' },
+  authTxt: { fontSize: T.size.caption, fontWeight: T.weight.extrabold, color: C.goldSoft, letterSpacing: 0.3 },
+  authSep: { fontSize: T.size.caption, color: withAlpha(C.gold, 0.5), marginHorizontal: 7 },
+  todaySeal: {
+    borderWidth: 1, borderColor: withAlpha(C.gold, 0.5), backgroundColor: withAlpha(C.gold, 0.12),
+    borderRadius: R.lg, paddingVertical: S.md, paddingHorizontal: S.lg, alignItems: 'center', minWidth: 132,
+  },
+  todayLabel: { fontSize: T.size.nano, fontWeight: T.weight.bold, color: C.textMute, letterSpacing: 1 },
+  todayValue: { fontSize: T.size.titleXl, fontWeight: T.weight.black, color: C.goldSoft, marginTop: 2 },
+  todaySub: { fontSize: T.size.nano, color: C.textMute, marginTop: 2, textAlign: 'center' },
+
+  // KPIs
+  kpiRow: { flexDirection: 'row', flexWrap: 'wrap', gap: S.md, marginBottom: S.lg },
+  kpiCard: {
+    flexGrow: 1, flexBasis: 150, backgroundColor: C.bgElevated, borderRadius: R.lg,
+    paddingVertical: S.lg, alignItems: 'center', borderWidth: 1, borderColor: C.borderSoft,
+  },
+
+  motorTitle: { fontSize: T.size.subtitle, fontWeight: T.weight.bold, color: C.text, marginBottom: 6 },
+  body: { fontSize: T.size.body, color: C.textDim, lineHeight: 21 },
+
+  // sub-nav
+  navRow: { flexDirection: 'row', gap: S.sm, marginBottom: S.xl, flexWrap: 'wrap' },
+  navPill: {
+    flexDirection: 'row', alignItems: 'center', paddingVertical: 9, paddingHorizontal: 15,
+    borderRadius: R.md, borderWidth: 1, borderColor: 'transparent', backgroundColor: withAlpha('#FFFFFF', 0.03),
+  },
+  navPillTxt: { fontSize: T.size.body, fontWeight: T.weight.semibold, color: C.textMute },
+
+  // timeline / ruta
+  timeline: {},
+  tlRow: { flexDirection: 'row', gap: S.md, marginBottom: S.lg },
+  tlRail: { alignItems: 'center', width: 34 },
+  tlNode: { width: 34, height: 34, borderRadius: 17, borderWidth: 2, alignItems: 'center', justifyContent: 'center' },
+  tlNodeTxt: { fontSize: T.size.body, fontWeight: T.weight.black },
+  tlLine: { width: 2, flex: 1, marginTop: 4, borderRadius: 1 },
+  faseCard: { flex: 1, padding: S.lg, marginBottom: 0 },
+  faseHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 6 },
+  faseTag: { fontSize: T.size.caption, fontWeight: T.weight.extrabold, letterSpacing: 1 },
+  faseTitle: { fontSize: T.size.title, fontWeight: T.weight.extrabold, color: C.text, marginTop: 6 },
+  faseDesc: { fontSize: T.size.bodySm, color: C.textDim, marginTop: 4, lineHeight: 19 },
+  libroPill: { alignSelf: 'flex-start', borderWidth: 1, borderRadius: R.sm, paddingVertical: 3, paddingHorizontal: 9, marginTop: S.md },
+  libroTxt: { fontSize: T.size.micro, fontWeight: T.weight.bold },
+  faseEntreg: { fontSize: T.size.bodySm, fontWeight: T.weight.medium, marginTop: S.sm, lineHeight: 18 },
+
+  // material card
+  matCard: { backgroundColor: C.surfaceAlt, borderRadius: R.sm, padding: S.md, borderWidth: 1, borderColor: C.border },
+  matTop: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 },
+  matName: { fontSize: T.size.body, fontWeight: T.weight.bold, color: C.text, flex: 1, lineHeight: 19 },
+  openPill: { borderWidth: 1, borderRadius: R.pill, paddingVertical: 3, paddingHorizontal: 10 },
+  openPillTxt: { fontSize: T.size.micro, fontWeight: T.weight.extrabold, color: C.goldSoft },
+  matRef: { fontSize: T.size.caption, color: C.textDim, marginTop: 5, fontWeight: T.weight.semibold },
+  matWhy: { fontSize: T.size.caption, color: C.textMute, marginTop: 4, lineHeight: 17 },
+  matMeta: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: S.sm, flexWrap: 'wrap' },
+
+  // biblioteca grid
+  catHead: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: S.md },
+  catIcon: { fontSize: 20 },
+  catTitle: { fontSize: T.size.subtitle, fontWeight: T.weight.extrabold, color: C.text, letterSpacing: 0.3 },
+  grid: isWeb ? ({ display: 'grid', gap: 12 } as any) : { flexDirection: 'column', gap: 12 },
+
+  // protocolo
+  horRow: { flexDirection: 'row', alignItems: 'center', gap: S.md, paddingVertical: 11, borderTopWidth: 1, borderTopColor: C.borderSoft },
+  horBadge: { borderRadius: R.sm, borderWidth: 1, paddingVertical: 6, paddingHorizontal: 11, minWidth: 56, alignItems: 'center' },
+  horMin: { fontSize: T.size.caption, fontWeight: T.weight.extrabold },
+  horBloque: { fontSize: T.size.body, fontWeight: T.weight.bold, color: C.text },
+  horQue: { fontSize: T.size.caption, color: C.textDim, marginTop: 2, lineHeight: 17 },
+
+  // nivel meta
+  metaRow: { flexDirection: 'row', gap: 10, paddingVertical: 7, alignItems: 'flex-start' },
+  metaDot: { width: 22, height: 22, borderRadius: 11, borderWidth: 1, alignItems: 'center', justifyContent: 'center', marginTop: 1 },
+  metaDotTxt: { fontSize: T.size.micro, fontWeight: T.weight.black, color: C.goldSoft },
+  warnRow: { flexDirection: 'row', gap: 8, paddingVertical: 6 },
 });

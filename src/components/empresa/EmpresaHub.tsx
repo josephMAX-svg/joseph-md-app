@@ -109,7 +109,7 @@ export default function EmpresaHub({ variant = 'mobile' }: { variant?: 'mobile' 
       )}
 
       {company === 'aurum' && (
-        <AurumHub onBack={() => setCompany('pulso')} />
+        <AurumHub onBack={() => setCompany('pulso')} variant={variant} />
       )}
 
       {company === 'terrenos' && (
