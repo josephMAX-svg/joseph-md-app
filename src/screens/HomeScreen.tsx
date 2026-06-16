@@ -30,6 +30,8 @@ import ApexSubmitModal from '../components/ApexSubmitModal';
 import AgentReportViewer from '../components/AgentReportViewer';
 import TodayMission from '../components/home/TodayMission';
 import BibliotecaHome from '../components/home/BibliotecaHome';
+import { consumeNavIntent } from '../lib/navIntent';
+import { useFocusEffect } from '@react-navigation/native';
 
 const TIMER_STORAGE_KEY = '@joseph_md_deep_work_seconds';
 const TIMER_START_KEY = '@joseph_md_deep_work_start';
@@ -124,6 +126,18 @@ export default function HomeScreen({ navigation }: { navigation?: any }) {
   // Report viewer
   const [selectedReport, setSelectedReport] = useState<AgentReport | null>(null);
   const [reportViewerVisible, setReportViewerVisible] = useState(false);
+
+  // ─── Deep-link → Biblioteca (desde AURUM "ver en Biblioteca") ───
+  const scrollRef = useRef<ScrollView>(null);
+  const bibliotecaY = useRef(0);
+  useFocusEffect(
+    useCallback(() => {
+      if (consumeNavIntent() === 'biblioteca') {
+        // espera al layout y desplaza a la sección Biblioteca
+        setTimeout(() => scrollRef.current?.scrollTo({ y: Math.max(0, bibliotecaY.current - 12), animated: true }), 120);
+      }
+    }, []),
+  );
 
   // ─── Live Supabase data ───
   const { data: metrics, loading: metricsLoading, refetch: refetchMetrics } = useSupabaseQuery<TodayMetrics>(
@@ -258,7 +272,7 @@ export default function HomeScreen({ navigation }: { navigation?: any }) {
     : String(Math.round(liveDeepWorkHours * 10) / 10);
 
   return (
-    <ScrollView style={styles.screen} contentContainerStyle={styles.scrollContent}>
+    <ScrollView ref={scrollRef} style={styles.screen} contentContainerStyle={styles.scrollContent}>
       {/* ─── Header with Notification Bell ─── */}
       <View style={styles.header}>
         <View style={{ flex: 1 }}>
@@ -287,8 +301,10 @@ export default function HomeScreen({ navigation }: { navigation?: any }) {
       {/* ─── Misión de HOY (timeline real del Calendar) ─── */}
       <TodayMission onGo={(s) => navigation?.navigate?.(s)} />
 
-      {/* ─── Biblioteca del fundador (28 libros, % leído real) ─── */}
-      <BibliotecaHome onGo={(s) => navigation?.navigate?.(s)} />
+      {/* ─── Biblioteca del fundador (86 libros por niveles, % leído real) ─── */}
+      <View onLayout={(e) => { bibliotecaY.current = e.nativeEvent.layout.y; }}>
+        <BibliotecaHome onGo={(s) => navigation?.navigate?.(s)} />
+      </View>
 
       {/* ─── Career Milestones ─── */}
       <View style={styles.section}>

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Platform, StyleSheet, Linking } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { setNavIntent } from '../../lib/navIntent';
 import {
   AURUM_PLAN_META, AURUM_DIAS, DiaAurum, AurumBloque, aurumDiaDe, aurum7d,
   AURUM_FORMATO_ICON, AURUM_TAG_LABEL, aurumObsUrl,
@@ -90,7 +92,7 @@ function BloqueRow({ b, obsNota }: { b: AurumBloque; obsNota?: string }) {
 }
 
 // ── HOY — misión destacada + núcleo + lectura ───────────────────────────────
-function HoyView({ dia, hoyD, done, onToggle }: { dia: DiaAurum; hoyD: number; done: Set<number>; onToggle: (d: number) => void }) {
+function HoyView({ dia, hoyD, done, onToggle, onGoBiblioteca }: { dia: DiaAurum; hoyD: number; done: Set<number>; onToggle: (d: number) => void; onGoBiblioteca: () => void }) {
   const hecho = done.has(dia.d);
   const faseDias = AURUM_DIAS.filter((x) => x.faseId === dia.faseId);
   const fasePct = Math.round((faseDias.filter((x) => done.has(x.d)).length / faseDias.length) * 100);
@@ -155,6 +157,10 @@ function HoyView({ dia, hoyD, done, onToggle }: { dia: DiaAurum; hoyD: number; d
         <View style={st.lecturaBox}>
           <Text style={st.lecturaHead}>📚 Para tus huecos (viaje / lectura) · fuera de la hora del núcleo</Text>
           {lecturaBloques.map((b, i) => <AurumRise key={`l${i}`} delay={40 + i * 30}><BloqueRow b={b} obsNota={dia.obs} /></AurumRise>)}
+          <TouchableOpacity activeOpacity={0.85} onPress={onGoBiblioteca}
+            style={[st.bibBtn, isWeb ? ({ cursor: 'pointer', transition: 'all .16s ease' } as any) : null]}>
+            <Text style={st.bibBtnTxt}>📚 ver en Biblioteca</Text>
+          </TouchableOpacity>
         </View>
       ) : null}
     </View>
@@ -261,6 +267,7 @@ function ViewTab({ label, active, onPress }: { label: string; active: boolean; o
 }
 
 export default function AurumTodayPlan({ done, onToggle, isDesktop = false }: { done: Set<number>; onToggle: (d: number) => void; isDesktop?: boolean }) {
+  const navigation = useNavigation<any>();
   const iso = aurumTodayISO();
   const hoyD = planHoyD(AURUM_DIAS, iso);
   const todayDia = aurumDiaDe(iso) || AURUM_DIAS.find((x) => x.d === hoyD) || AURUM_DIAS[0];
@@ -269,6 +276,8 @@ export default function AurumTodayPlan({ done, onToggle, isDesktop = false }: { 
   const dia = AURUM_DIAS.find((x) => x.d === sel) || AURUM_DIAS[0];
   const esHoy = dia.fecha === iso;
   const pickDay = (d: number) => { setSel(d); setView('hoy'); };
+  // deep-link AURUM (lectura) → Home/Biblioteca: marca la intención y salta a la pestaña Home
+  const goBiblioteca = () => { setNavIntent('biblioteca'); navigation?.navigate?.('Home'); };
 
   return (
     <View>
@@ -290,7 +299,7 @@ export default function AurumTodayPlan({ done, onToggle, isDesktop = false }: { 
       </View>
 
       <AurumPanel style={[st.motorBox, isDesktop && { padding: S.xl }]}>
-        {view === 'hoy' ? <HoyView dia={dia} hoyD={hoyD} done={done} onToggle={onToggle} />
+        {view === 'hoy' ? <HoyView dia={dia} hoyD={hoyD} done={done} onToggle={onToggle} onGoBiblioteca={goBiblioteca} />
           : view === '7d' ? <SieteView fromD={dia.d} hoyD={hoyD} done={done} onPick={pickDay} />
             : <TemarioView hoyD={hoyD} onPick={pickDay} done={done} onToggle={onToggle} />}
       </AurumPanel>
@@ -349,6 +358,8 @@ const st = StyleSheet.create({
   // lectura
   lecturaBox: { backgroundColor: withAlpha(C.lecturaAccent, 0.06), borderRadius: R.md, borderWidth: 1, borderStyle: 'dashed', borderColor: withAlpha(C.lecturaAccent, 0.4), padding: S.md, marginTop: S.md },
   lecturaHead: { fontSize: T.size.nano, fontWeight: T.weight.extrabold, color: C.lecturaAccent, letterSpacing: 0.4, marginBottom: S.sm },
+  bibBtn: { alignSelf: 'flex-start', marginTop: S.sm, borderWidth: 1, borderColor: withAlpha(C.lecturaAccent, 0.6), backgroundColor: withAlpha(C.lecturaAccent, 0.12), borderRadius: R.sm, paddingVertical: 7, paddingHorizontal: 13 },
+  bibBtnTxt: { fontSize: T.size.caption, fontWeight: T.weight.extrabold, color: C.lecturaAccent, letterSpacing: 0.3 },
 
   // 7 días
   d7: { backgroundColor: C.surfaceAlt, borderRadius: R.sm, borderWidth: 1, borderColor: C.border, borderLeftWidth: 3, flexDirection: 'row', alignItems: 'center', gap: 10, padding: S.sm, marginBottom: 6 },
