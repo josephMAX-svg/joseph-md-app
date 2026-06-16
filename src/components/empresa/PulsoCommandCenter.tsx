@@ -17,6 +17,7 @@ import {
 
 const GOLD = BRANDS.pulso.bright;       // #D9BE8A
 const GOLD_DEEP = BRANDS.pulso.color;   // #C6A56B
+const AURUM_GOLD = '#C9A227';           // oro AURUM (sección Closer de ventas)
 
 function openUrl(url: string) { Linking.openURL(url).catch(() => {}); }
 
@@ -143,6 +144,17 @@ export default function PulsoCommandCenter({ onOpenBrand }: { onOpenBrand: (id: 
           <Text style={st.estudioSub}>28 libros · 2 ramas (clínico 60% + marketing 40%) · la autoridad que vende Pulso</Text>
         </View>
         <View style={[st.estudioCta, { borderColor: GOLD + '88' }]}><Text style={[st.estudioCtaText, { color: GOLD }]}>Abrir ›</Text></View>
+      </TouchableOpacity>
+
+      {/* ── AURUM · Closer de ventas de élite (programa 6 meses) ── */}
+      <TouchableOpacity activeOpacity={0.9} onPress={() => onOpenBrand('aurum')}
+        style={[st.estudioTile, { marginTop: Spacing.md }, Platform.OS === 'web' ? ({ backgroundImage: `linear-gradient(120deg, ${AURUM_GOLD}26 0%, rgba(11,22,40,0.2) 70%)`, cursor: 'pointer', transition: 'all .2s ease' } as any) : { backgroundColor: AURUM_GOLD + '18' }, { borderColor: AURUM_GOLD + '55' }]}>
+        <Text style={{ fontSize: 28, marginRight: Spacing.md }}>🪙</Text>
+        <View style={{ flex: 1 }}>
+          <Text style={st.estudioTitle}>AURUM · Closer de ventas</Text>
+          <Text style={st.estudioSub}>Programa de 6 meses · 26 sem · 130 misiones L-V — convertir conversaciones en oro (Hormozi · Belfort · NEPQ · Cole Gordon)</Text>
+        </View>
+        <View style={[st.estudioCta, { borderColor: AURUM_GOLD + '88' }]}><Text style={[st.estudioCtaText, { color: AURUM_GOLD }]}>Abrir ›</Text></View>
       </TouchableOpacity>
 
       {/* ── Pilares ── */}

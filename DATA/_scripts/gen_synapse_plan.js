@@ -244,13 +244,11 @@ function bloquePC(semana) {
   return { tag: 'PC', min: 75, formato: 'pc', material, leccion, url: url ? assertUrl(url) : undefined, real: true };
 }
 
-// ─── Calendario v2: d1 = jue 11-jun-2026 · semana 1 corta (jue→dom) · 12 semanas ───
+// ─── Calendario v3 (13-jun): d1 = jue 18-jun-2026 (+1 semana exacta vs v2 → preserva
+// la estructura semanal y las 70 A-units intactas) · semana 1 corta (jue→dom) · 12 sem ───
 const WD = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-const START = new Date('2026-06-11T12:00:00'); // v2: arranque 11-jun (el 10-jun se programó, no se estudió)
-const TOTAL = 82; // 4 (jue→dom) + 11*7 + 1 → d82 = lun 31-ago-2026 (recoge la 70ª A-unit + Lex cap 12 + PyTut §12)
-
-// Domingos bloqueados por Joseph (otras actividades — confirmado en el chat el 10-jun-2026)
-const DOMINGOS_LIBRES = new Set(['2026-06-14', '2026-06-21']);
+const START = new Date('2026-06-18T12:00:00'); // v3: arranque jue 18-jun (1er jueves estructural ≥15-jun)
+const TOTAL = 82; // 4 (jue→dom) + 11*7 + 1 → d82 recoge la 70ª A-unit + Lex cap 12 + PyTut §12
 
 const aUnits = buildAUnits();
 let aIdx = 0;
@@ -263,19 +261,11 @@ for (let d = 1; d <= TOTAL; d++) {
   const faseId = semana <= 8 ? 'f0' : 'f1';
   const fase = faseId === 'f0' ? 'F0 · La Escuela de Anthropic' : 'F1 · Código: Python + terminal + Git';
   const bloques = [];
-  if (wd === 'Dom' && DOMINGOS_LIBRES.has(fecha)) {
+  if (wd === 'Dom') {
+    // v3 (13-jun): TODOS los domingos LIBRES (pedido por Joseph) — sin misión, sin repaso.
     bloques.push({
       tag: 'R', min: 0, formato: 'repaso', material: 'Domingo LIBRE',
-      leccion: 'Bloqueado por Joseph (otras actividades — confirmado 10-jun-2026). Sin misión SYNAPSE hoy; si quieres conservar la racha, márcalo ✓ y listo.',
-      real: true,
-    });
-  } else if (wd === 'Dom') {
-    const esUltimoDomingo = TOTAL - d < 7; // v2: el plan termina en lunes — el cierre va en el ÚLTIMO domingo
-    bloques.push({
-      tag: 'R', min: 30, formato: 'repaso', material: esUltimoDomingo ? 'Cierre de las 12 semanas' : 'Repaso semanal',
-      leccion: esUltimoDomingo
-        ? "Cierre de las 12 semanas: repasa tus ✓, explica en voz alta lo más importante de F0/F1 y regenera el plan para las semanas 13+ (node DATA/_scripts/gen_synapse_plan.js)."
-        : "30' sueltos: revisa lo marcado ✓ de la semana, termina lo que quedó a medias y explica en voz alta (Feynman) la idea más importante. Nada nuevo hoy.",
+      leccion: 'Domingo LIBRE (v3: todos los domingos sin actividad). Sin misión SYNAPSE hoy; si quieres conservar la racha, márcalo ✓ y listo.',
       real: true,
     });
   } else if (d === TOTAL) {
@@ -310,7 +300,7 @@ const diaTs = (x) => `{d:${x.d},fecha:"${x.fecha}",wd:"${x.wd}",semana:${x.seman
 
 const ts = `/**
  * synapseDailyPlan.ts — Motor día-a-día SYNAPSE (12 semanas · ${TOTAL} días · ${dias[0].fecha} → ${dias[TOTAL - 1].fecha}).
- * v2: arranque jue 11-jun-2026 · dom 14/21-jun BLOQUEADOS (sin misión) · cierre en el último domingo.
+ * v3 (13-jun): arranque jue 18-jun-2026 (+1 semana vs v2) · TODOS los domingos LIBRES (sin misión).
  * GENERADO por DATA/_scripts/gen_synapse_plan.js desde DATA/SYNAPSE/curricula/_extracted.json
  * (temarios REALES extraídos con WebFetch/oEmbed + verificación adversarial, 10-jun-2026).
  * NO editar a mano — regenerar: node DATA/_scripts/gen_synapse_plan.js

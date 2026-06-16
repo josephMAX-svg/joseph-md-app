@@ -7,6 +7,7 @@ import { AMBER, PillTab, Chip, SectionLabel, useHover } from './primitives';
 import { GradientHero, RingStat, BrandTile } from './visuals';
 import PulsoCommandCenter from './PulsoCommandCenter';
 import StudyPulsoHub from '../study/StudyPulsoHub';
+import AurumHub from './AurumHub';
 import BrandHorario from './BrandHorario';
 import TerrenosLeadTracker from './TerrenosLeadTracker';
 import {
@@ -107,6 +108,10 @@ export default function EmpresaHub({ variant = 'mobile' }: { variant?: 'mobile' 
         <StudyPulsoHub onBack={() => setCompany('pulso')} />
       )}
 
+      {company === 'aurum' && (
+        <AurumHub onBack={() => setCompany('pulso')} />
+      )}
+
       {company === 'terrenos' && (
         <View>
           <BackToPulso onBack={() => setCompany('pulso')} />
@@ -143,7 +148,7 @@ export default function EmpresaHub({ variant = 'mobile' }: { variant?: 'mobile' 
         </View>
       )}
 
-      {!MAIN_IDS.includes(company) && !['estudio', 'terrenos', 'golden'].includes(company) && (
+      {!MAIN_IDS.includes(company) && !['estudio', 'aurum', 'terrenos', 'golden'].includes(company) && (
         <PlaceholderBrandView id={company} onBack={() => setCompany('pulso')} />
       )}
     </ScrollView>

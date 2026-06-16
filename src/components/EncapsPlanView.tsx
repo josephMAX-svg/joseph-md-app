@@ -27,7 +27,7 @@ interface HorarioFuente { label: string; url?: string | null }
 interface HorarioBlock { hora: string; titulo: string; apex?: boolean; pasos?: HorarioPaso[]; fuente?: HorarioFuente | null }
 
 const KIND_ICON: Record<PlanItem['kind'], string> = {
-  video: '🎬', theomed: '📂', pulso: '💓', eval: '📝', sim: '🔥',
+  video: '🎬', theomed: '📂', pulso: '💓', eval: '📝', sim: '🔥', material: '📎',
 };
 
 // Estado QX del video → etiqueta/color (igual que el dashboard)

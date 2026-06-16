@@ -7,14 +7,15 @@ import { supabase } from './supabase';
 
 // ── D1 por examen (para calcular el día actual 1..71) ──
 export const STUDY_D1: Record<string, string> = {
-  ENCAPS: '2026-06-11',   // re-estructurado v4 (10-jun): D1=jue 11-jun · dom 14/21-jun LIBRES (Día del Padre/familia) · sáb 13/20/27-jun = estudio · sims desde dom 28-jun · EXAMEN fijo lun 10-ago
+  ENCAPS: '2026-06-17',   // re-estructurado (16-jun): 15 y 16-jun no se estudiaron → D1=mié 17-jun · TODOS los domingos LIBRES · 45 temas L-V (17-jun→18-ago) · 35 SIMULACROS en 9 sábados (2-3) + 1 día-examen 19-ago (exam-only) · EXAMEN jue 20-ago (tope FIJO)
   // MIR / USMLE se agregan cuando se construyan sus cronogramas.
 };
 // Fechas SIN actividad (bloqueadas por Joseph) — no cuentan como día de plan.
+// v5: TODOS los domingos del tramo 15-jun → 20-ago quedan libres.
 export const STUDY_SKIP_DATES: Record<string, string[]> = {
-  ENCAPS: ['2026-06-14', '2026-06-21'],
+  ENCAPS: ['2026-06-21', '2026-06-28', '2026-07-05', '2026-07-12', '2026-07-19', '2026-07-26', '2026-08-02', '2026-08-09', '2026-08-16'],
 };
-const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 71 };
+const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 56 };
 
 // ── Tipos (espejo de las columnas study_*) ──
 export interface StudyVideo {
@@ -51,8 +52,8 @@ export interface StudySimScore { examen: string; sim_n: number; nota?: number | 
 
 // Item chequeable del día (mismo esquema item_key que encaps_telegram_daemon.py)
 export interface PlanItem {
-  key: string;            // 'D{dia}:video:{i}' | 'D{dia}:theomed:{i}' | 'D{dia}:pulso' | 'D{dia}:eval' | 'D{dia}:sim'
-  kind: 'video' | 'theomed' | 'pulso' | 'eval' | 'sim';
+  key: string;            // 'D{dia}:video:{i}' | 'D{dia}:theomed:{i}' | 'D{dia}:material:{i}' | 'D{dia}:pulso' | 'D{dia}:eval' | 'D{dia}:sim'
+  kind: 'video' | 'theomed' | 'material' | 'pulso' | 'eval' | 'sim';
   label: string;
   detail?: string;
   url?: string | null;    // link principal (QX videoclase | Theomed | banco sim)
@@ -88,14 +89,17 @@ export function focusDayByCode(days: StudyScheduleDay[]): Record<string, number>
 // ── Repetición espaciada por tema, DIFERENCIADA POR PRIORIDAD ───────────────
 // Cada subtema recibe sus vueltas según importancia (Joseph: "algunos 5, algunos
 // 4, algunos 3"). Cada array = días desde la 1ª exposición (video). Todos incluyen
-// un toque temprano + uno tardío (~2 días pre-examen). Cepeda 2008/2006: gap óptimo
-// ≈10-20% del tiempo al examen. Más prioridad = más toques intermedios.
-export const SPACED_INTERVALS = [1, 3, 7, 14, 28, 50, 63]; // superset de referencia
+// un toque temprano + uno tardío. Cepeda 2008/2006: gap óptimo ≈10-20% del tiempo
+// al examen. Más prioridad = más toques intermedios.
+// v5 (13-jun): plan de 58 días (examen d55=17-ago) → el intervalo máximo baja de 63 a 50
+// para que la ÚLTIMA vuelta de los temas tempranos caiga ANTES del examen (mismo nº de
+// vueltas). Los temas tardíos cierran con los simulacros MEGA-FINAL de los últimos sábados.
+export const SPACED_INTERVALS = [1, 3, 7, 14, 28, 50]; // superset de referencia
 export const REPASO_POR_PRIORIDAD: Record<string, number[]> = {
-  CRITICA: [1, 3, 7, 28, 63], // 5 repasos (1ª video + 5 = 6 vueltas) · máximo refuerzo
-  ALTA: [1, 7, 28, 63],       // 4 repasos
-  MEDIA: [3, 28, 63],         // 3 repasos
-  BAJA: [7, 63],              // 2 repasos (mapa+PDF+banco, ligero)
+  CRITICA: [1, 3, 7, 28, 50], // 5 repasos (1ª video + 5 = 6 vueltas) · máximo refuerzo
+  ALTA: [1, 7, 28, 50],       // 4 repasos (= 5 vueltas)
+  MEDIA: [3, 28, 50],         // 3 repasos (= 4 vueltas)
+  BAJA: [7, 50],              // 2 repasos (= 3 vueltas · mapa+PDF+banco, ligero)
 };
 export function normPrio(p?: string): string {
   const s = (p || '').toUpperCase();
@@ -228,13 +232,38 @@ export function itemsForDay(day: StudyScheduleDay, focusByCode: Record<string, n
       url: t.url, source: 'Theomed',
     });
   });
+  // Material complementario (norma/guía + banco) — clave para los temas normativa
+  // (Investigación/Gestión/Ética/SP baja) que QX no cubre con videoclase.
+  (day.material_comp || []).forEach((m, i) => {
+    const mm = m as { label?: string; url?: string | null; tipo?: string };
+    items.push({
+      key: `D${N}:material:${i}`, kind: 'material',
+      label: mm.label || `Material ${i + 1}`,
+      detail: mm.tipo, url: mm.url ?? null,
+      source: 'Material complementario',
+    });
+  });
   if (day.pulso) {
     items.push({ key: `D${N}:pulso`, kind: 'pulso', label: 'PULSO', detail: String(day.pulso) });
   }
   if (day.tipo === 'deep_prime') {
     items.push({ key: `D${N}:eval`, kind: 'eval', label: 'Evaluación', detail: 'QX Eval del Tema + BanqueApp' });
   }
-  if (day.simulacro) {
+  // v6 (13-jun): un día-examen puede tener 2-4 simulacros (extra.sims) → cada uno es un
+  // item chequeable propio (key D{N}:sim:{i}). Fallback al simulacro singular (legacy).
+  const simList = (day.extra && Array.isArray((day.extra as { sims?: unknown }).sims))
+    ? (day.extra as { sims: Array<{ label?: string; fuente?: string; duracion?: string; url?: string }> }).sims
+    : null;
+  if (simList && simList.length) {
+    simList.forEach((s, i) => {
+      items.push({
+        key: `D${N}:sim:${i}`, kind: 'sim',
+        label: s.label || `Simulacro ${i + 1}`,
+        detail: [s.fuente, s.duracion].filter(Boolean).join(' · ') || undefined,
+        url: s.url || null,
+      });
+    });
+  } else if (day.simulacro) {
     const s = day.simulacro;
     items.push({
       key: `D${N}:sim`, kind: 'sim',
