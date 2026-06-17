@@ -1,0 +1,420 @@
+{
+ "categoria": "AURUM",
+ "intro_terminologia": "Biblioteca de AURUM ordenada en 7 niveles que reproducen el arco de un closer de elite: de la mentalidad y la psicologia del que vende, a la comunicacion y tonalidad, al descubrimiento por preguntas, a la construccion de oferta y valor, al manejo de objeciones, al cierre high-ticket y, finalmente, a la escala y las ventas digitales. Cada libro existe y forma parte del set curado. Para cada uno se entrega el audiolibro en YouTube y en Spotify (cuando una plataforma no ofrece el audiolibro completo oficial se marca el grado de confianza y, si no se pudo fijar una pagina concreta, se deja la URL de busqueda con confianza 'incierto' en lugar de inventar un enlace), mas un link de compra fisica real en Amazon. Nota etica importante: 'Way of the Wolf' de Jordan Belfort ensena tonalidad y Straight Line de forma valiosa, pero su autor fue condenado por fraude bursatil; usar sus tecnicas solo de forma honesta y consultiva. Verificacion: los IDs de video de YouTube provienen de busqueda directa (junio 2026); en Spotify se confirmaron paginas oficiales para varios titulos (p.ej. Influence show 1AsLPaD5EAb5pUkJFzuGKx y los capitulos de $100M Offers en el podcast The Game). Glosario base de ventas de elite que atraviesa toda la biblioteca: rapport, framing/encuadre, anclaje, tonalidad, prospeccion, discovery, dolor/pain, propuesta de valor, manejo de objeciones, cierre (closing), high-ticket, LTV/CAC, pipeline y follow-up.",
+ "niveles": [
+  {
+   "nivel": 1,
+   "label": "Nivel 1 - Mentalidad y psicologia del vendedor",
+   "objetivo": "Reprogramar la identidad del vendedor: entender que vender es servir y mover a otros, y construir la autoimagen y la psicologia interna que sostienen ventas de alto valor sin presion ni manipulacion.",
+   "libros": [
+    {
+     "titulo": "To Sell Is Human",
+     "autor": "Daniel H. Pink",
+     "existente": true,
+     "idioma": "en",
+     "por_que": "Punto de partida de mentalidad: demuestra con evidencia que todos vendemos ('non-sales selling') y reemplaza el cliche del vendedor agresivo por un marco moderno de servicio (ABC: Attunement, Buoyancy, Clarity). Desactiva la verguenza de vender antes de tocar tecnica.",
+     "terminologia_clave": [
+      "non-sales selling",
+      "ABC: Attunement-Buoyancy-Clarity",
+      "sintonia (attunement)",
+      "flotabilidad (buoyancy)",
+      "claridad (clarity)",
+      "servir (servir antes que vender)",
+      "curva de la informacion (de asimetria a paridad)"
+     ],
+     "audiolibro_youtube": {
+      "url": "https://www.youtube.com/watch?v=uVxiS72dAc4",
+      "confianza": "estable"
+     },
+     "audiolibro_spotify": {
+      "url": "https://open.spotify.com/search/To%20Sell%20Is%20Human%20Daniel%20Pink%20audiobook",
+      "confianza": "incierto"
+     },
+     "compra": {
+      "tienda": "Amazon",
+      "url": "https://www.amazon.com/Sell-Human-Surprising-Truth-Persuading/dp/1594631905"
+     }
+    },
+    {
+     "titulo": "The Psychology of Selling",
+     "autor": "Brian Tracy",
+     "existente": true,
+     "idioma": "en",
+     "por_que": "Clasico de psicologia interna del vendedor: autoconcepto, autoestima como tope de tus resultados, y los habitos mentales que separan al top 20% del resto. Cierra el nivel de mentalidad anclando creencias y disciplina antes de pasar a la comunicacion.",
+     "terminologia_clave": [
+      "autoconcepto (self-concept)",
+      "autoimagen de ventas",
+      "ley del esfuerzo indirecto",
+      "top 20% / regla 80-20 en ventas",
+      "motivo de compra dominante",
+      "programacion mental positiva",
+      "tope de autoestima e ingresos"
+     ],
+     "audiolibro_youtube": {
+      "url": "https://www.youtube.com/watch?v=i0B4v-9fLQc",
+      "confianza": "estable"
+     },
+     "audiolibro_spotify": {
+      "url": "https://open.spotify.com/search/Psychology%20of%20Selling%20Brian%20Tracy%20audiobook",
+      "confianza": "incierto"
+     },
+     "compra": {
+      "tienda": "Amazon",
+      "url": "https://www.amazon.com/Psychology-Selling-Increase-Sales-Possible/dp/0785288066"
+     }
+    }
+   ]
+  },
+  {
+   "nivel": 2,
+   "label": "Nivel 2 - Comunicacion, tonalidad e influencia",
+   "objetivo": "Dominar la capa verbal y para-verbal: como suena tu voz, como influyes en la decision del otro y como creas estados emocionales que predisponen al si antes de pedir nada.",
+   "libros": [
+    {
+     "titulo": "Influence: The Psychology of Persuasion",
+     "autor": "Robert B. Cialdini",
+     "existente": true,
+     "idioma": "en",
+     "por_que": "La base cientifica de toda persuasion etica: los 7 principios (reciprocidad, compromiso/coherencia, prueba social, autoridad, simpatia, escasez, unidad). Es el vocabulario maestro que el resto de la biblioteca usa una y otra vez.",
+     "terminologia_clave": [
+      "reciprocidad",
+      "compromiso y coherencia",
+      "prueba social (social proof)",
+      "autoridad",
+      "simpatia (liking)",
+      "escasez (scarcity)",
+      "unidad (unity)",
+      "armas de influencia"
+     ],
+     "audiolibro_youtube": {
+      "url": "https://www.youtube.com/watch?v=jY1hYExcTf8",
+      "confianza": "estable"
+     },
+     "audiolibro_spotify": {
+      "url": "https://open.spotify.com/show/1AsLPaD5EAb5pUkJFzuGKx",
+      "confianza": "verificado"
+     },
+     "compra": {
+      "tienda": "Amazon",
+      "url": "https://www.amazon.com/Influence-New-Expanded-Psychology-Persuasion/dp/0062937650"
+     }
+    },
+    {
+     "titulo": "Pre-Suasion: A Revolutionary Way to Influence and Persuade",
+     "autor": "Robert B. Cialdini",
+     "existente": true,
+     "idioma": "en",
+     "por_que": "El nivel siguiente de Influence: no solo QUE dices sino el momento y el encuadre ANTES de decirlo. Ensena a preparar la mente del cliente (canalizar la atencion) para que tu mensaje aterrice. Puente perfecto hacia tonalidad y framing.",
+     "terminologia_clave": [
+      "pre-suasion",
+      "canalizar la atencion (privileged moments)",
+      "apertura (the opening before the message)",
+      "anclaje atencional",
+      "asociacion previa",
+      "que es focal se percibe como causal",
+      "momentos privilegiados"
+     ],
+     "audiolibro_youtube": {
+      "url": "https://www.youtube.com/watch?v=414SqrjtZAY",
+      "confianza": "estable"
+     },
+     "audiolibro_spotify": {
+      "url": "https://open.spotify.com/show/2ycsTkj41Oejs7D0Oh34VC",
+      "confianza": "estable"
+     },
+     "compra": {
+      "tienda": "Amazon",
+      "url": "https://www.amazon.com/Pre-Suasion-Revolutionary-Way-Influence-Persuade/dp/1501109790"
+     }
+    },
+    {
+     "titulo": "Way of the Wolf: Straight Line Selling",
+     "autor": "Jordan Belfort",
+     "existente": true,
+     "idioma": "en",
+     "por_que": "Referencia practica de tonalidad y control de la conversacion (Straight Line System): las inflexiones de voz que generan certeza y los 3 dieces (producto, vendedor, empresa). CAVEAT ETICO: Belfort fue condenado por fraude; aplicar la tonalidad solo en ventas honestas, nunca para manipular.",
+     "terminologia_clave": [
+      "Straight Line System (sistema de linea recta)",
+      "tonalidad (patrones de voz que generan certeza)",
+      "los tres dieces (producto, confianza en ti, confianza en la empresa)",
+      "certeza emocional vs logica",
+      "lenguaje corporal y micro-comunicacion",
+      "bucle (looping) en objeciones",
+      "caveat etico: fraude bursatil del autor"
+     ],
+     "audiolibro_youtube": {
+      "url": "https://www.youtube.com/watch?v=RYC8Cz_klcY",
+      "confianza": "estable"
+     },
+     "audiolibro_spotify": {
+      "url": "https://open.spotify.com/search/Way%20of%20the%20Wolf%20Jordan%20Belfort%20audiobook",
+      "confianza": "incierto"
+     },
+     "compra": {
+      "tienda": "Amazon",
+      "url": "https://www.amazon.com/Way-Wolf-Straight-Selling-Persuasion/dp/1501164287"
+     }
+    }
+   ]
+  },
+  {
+   "nivel": 3,
+   "label": "Nivel 3 - Descubrimiento y preguntas",
+   "objetivo": "Aprender a diagnosticar antes de prescribir: hacer las preguntas correctas para que el cliente verbalice su dolor, cuantifique el coste de no actuar y se venda a si mismo la necesidad de cambiar.",
+   "libros": [
+    {
+     "titulo": "SPIN Selling",
+     "autor": "Neil Rackham",
+     "existente": true,
+     "idioma": "en",
+     "por_que": "El metodo de preguntas mas estudiado de la historia (research sobre 35.000 llamadas). Estructura el discovery en Situacion, Problema, Implicacion y Necesidad-beneficio. Imprescindible para venta consultiva y high-ticket donde el diagnostico vale mas que el pitch.",
+     "terminologia_clave": [
+      "SPIN (Situation, Problem, Implication, Need-payoff)",
+      "preguntas de situacion",
+      "preguntas de problema",
+      "preguntas de implicacion",
+      "preguntas de necesidad-beneficio",
+      "necesidades implicitas vs explicitas",
+      "venta consultiva",
+      "valor percibido vs coste del problema"
+     ],
+     "audiolibro_youtube": {
+      "url": "https://www.youtube.com/watch?v=vUlA_1GJ9tY",
+      "confianza": "incierto"
+     },
+     "audiolibro_spotify": {
+      "url": "https://open.spotify.com/search/SPIN%20Selling%20Neil%20Rackham%20audiobook",
+      "confianza": "incierto"
+     },
+     "compra": {
+      "tienda": "Amazon",
+      "url": "https://www.amazon.com/SPIN-Selling-Neil-Rackham/dp/0070511136"
+     }
+    },
+    {
+     "titulo": "Gap Selling",
+     "autor": "Keenan",
+     "existente": true,
+     "idioma": "en",
+     "por_que": "Adicion de maestria al discovery moderno: la venta centrada en el problema (problem-centric). Define la brecha entre el estado actual y el estado deseado y ensena a cuantificarla. Actualiza SPIN para la venta B2B y high-ticket de hoy.",
+     "terminologia_clave": [
+      "the gap (brecha estado actual vs estado futuro)",
+      "problem-centric selling",
+      "current state / future state",
+      "impacto del problema (technical, business, personal)",
+      "root cause (causa raiz)",
+      "discovery profundo",
+      "venta basada en valor de cerrar la brecha"
+     ],
+     "audiolibro_youtube": {
+      "url": "https://www.youtube.com/watch?v=hk7Gx0NU7GA",
+      "confianza": "incierto"
+     },
+     "audiolibro_spotify": {
+      "url": "https://open.spotify.com/search/Gap%20Selling%20Keenan%20audiobook",
+      "confianza": "incierto"
+     },
+     "compra": {
+      "tienda": "Amazon",
+      "url": "https://www.amazon.com/Gap-Selling-Problem-Centric-Everything-Relationships/dp/1119427681"
+     }
+    }
+   ]
+  },
+  {
+   "nivel": 4,
+   "label": "Nivel 4 - Oferta, valor y generacion de demanda",
+   "objetivo": "Construir ofertas tan buenas que sea estupido decir que no, articular el valor por encima del precio y aprender a generar leads/demanda que alimenten todo el pipeline.",
+   "libros": [
+    {
+     "titulo": "$100M Offers",
+     "autor": "Alex Hormozi",
+     "existente": true,
+     "idioma": "en",
+     "por_que": "La biblia moderna de la construccion de oferta: la ecuacion de valor y como hacer 'Grand Slam Offers' que disuelven la sensibilidad al precio. El nivel 4 empieza aqui porque sin oferta irresistible, el cierre es cuesta arriba.",
+     "terminologia_clave": [
+      "Grand Slam Offer",
+      "ecuacion de valor (dream outcome x probabilidad / tiempo x esfuerzo)",
+      "dream outcome (resultado soñado)",
+      "probabilidad percibida de exito",
+      "value stacking (apilar valor)",
+      "escasez y urgencia",
+      "garantias",
+      "naming/bonos",
+      "divorciar el precio del coste"
+     ],
+     "audiolibro_youtube": {
+      "url": "https://www.youtube.com/watch?v=buKC5g5uK9c",
+      "confianza": "estable"
+     },
+     "audiolibro_spotify": {
+      "url": "https://open.spotify.com/episode/6Z7lvct82rPpem99QZ9Gdy",
+      "confianza": "verificado"
+     },
+     "compra": {
+      "tienda": "Amazon",
+      "url": "https://www.amazon.com/100M-Offers-People-Stupid-Saying/dp/1737475715"
+     }
+    },
+    {
+     "titulo": "$100M Leads",
+     "autor": "Alex Hormozi",
+     "existente": true,
+     "idioma": "en",
+     "por_que": "Continuacion natural de Offers: una vez tienes la oferta, este libro llena el pipeline con desconocidos que quieren comprar. Cubre los 4 metodos core de captacion y el concepto de 'lead getters'. Cierra el nivel de demanda/valor antes de las objeciones.",
+     "terminologia_clave": [
+      "leads (engaged leads)",
+      "los 4 core four de prospeccion (warm outreach, post content, cold outreach, paid ads)",
+      "lead magnets",
+      "lead getters (afiliados, empleados, agencias, clientes)",
+      "more-better-new framework",
+      "oferta de plomo (lead offer)",
+      "volumen de prospeccion"
+     ],
+     "audiolibro_youtube": {
+      "url": "https://www.youtube.com/watch?v=fqNkbBYLZz4",
+      "confianza": "estable"
+     },
+     "audiolibro_spotify": {
+      "url": "https://open.spotify.com/search/100M%20Leads%20Alex%20Hormozi%20audiobook",
+      "confianza": "estable"
+     },
+     "compra": {
+      "tienda": "Amazon",
+      "url": "https://www.amazon.com/100M-Leads-Strangers-Acquisition-com/dp/1737475766"
+     }
+    }
+   ]
+  },
+  {
+   "nivel": 5,
+   "label": "Nivel 5 - Manejo de objeciones y control del frame",
+   "objetivo": "Manejar el 'no', las dudas y la presion: tomar control del marco (frame) de la conversacion, neutralizar objeciones con empatia tactica y mantener el estatus sin caer en la posicion de suplica.",
+   "libros": [
+    {
+     "titulo": "Never Split the Difference",
+     "autor": "Chris Voss",
+     "existente": true,
+     "idioma": "en",
+     "por_que": "Negociacion de rehenes aplicada a ventas: empatia tactica, etiquetado, espejos y el 'No' que abre puertas. El arsenal definitivo para objeciones y para no partir la diferencia (no descontar por miedo). Columna vertebral del nivel 5.",
+     "terminologia_clave": [
+      "empatia tactica (tactical empathy)",
+      "etiquetado (labeling)",
+      "espejos (mirroring)",
+      "preguntas calibradas (how/what)",
+      "el 'No' como inicio",
+      "'asi es' (that's right) vs 'tienes razon'",
+      "voz de DJ nocturno",
+      "acusacion-auditoria (accusation audit)",
+      "Black Swans (cisnes negros)"
+     ],
+     "audiolibro_youtube": {
+      "url": "https://www.youtube.com/watch?v=SlPGorMfSB4",
+      "confianza": "estable"
+     },
+     "audiolibro_spotify": {
+      "url": "https://open.spotify.com/search/Never%20Split%20the%20Difference%20Chris%20Voss%20audiobook",
+      "confianza": "incierto"
+     },
+     "compra": {
+      "tienda": "Amazon",
+      "url": "https://www.amazon.com/Never-Split-Difference-Negotiating-Depended/dp/0062407805"
+     }
+    },
+    {
+     "titulo": "Pitch Anything",
+     "autor": "Oren Klaff",
+     "existente": true,
+     "idioma": "en",
+     "por_que": "El control del frame elevado a arte: como presentar para que el cerebro reptiliano del otro diga 'esto importa'. Ensena frame control, status y a evitar la posicion de necesidad (neediness). Clave para mantener el poder cuando llegan objeciones y presion.",
+     "terminologia_clave": [
+      "frame control (control del marco)",
+      "status alpha vs beta",
+      "metodo STRONG (Setting the frame, Telling the story, Revealing intrigue, Offering the prize, Nailing the hookpoint, Getting a decision)",
+      "frame de premio (prize frame)",
+      "hot cognition vs cold cognition",
+      "evitar la necesidad (neediness)",
+      "cerebro croc (croc brain)",
+      "hookpoint"
+     ],
+     "audiolibro_youtube": {
+      "url": "https://www.youtube.com/watch?v=vReRPe5XvpA",
+      "confianza": "estable"
+     },
+     "audiolibro_spotify": {
+      "url": "https://open.spotify.com/search/Pitch%20Anything%20Oren%20Klaff%20audiobook",
+      "confianza": "incierto"
+     },
+     "compra": {
+      "tienda": "Amazon",
+      "url": "https://www.amazon.com/Pitch-Anything-Innovative-Presenting-Persuading/dp/0071752854"
+     }
+    }
+   ]
+  },
+  {
+   "nivel": 6,
+   "label": "Nivel 6 - Cierre high-ticket y venta de elite",
+   "objetivo": "Cerrar deals complejos y de alto valor: tomar el control de la conversacion como challenger, conseguir los micro-compromisos que hacen inevitable el cierre y pedir la decision con confianza.",
+   "libros": [
+    {
+     "titulo": "The Challenger Sale",
+     "autor": "Matthew Dixon & Brent Adamson",
+     "existente": true,
+     "idioma": "en",
+     "por_que": "El estudio que redefinio la venta B2B compleja: el mejor vendedor no es el constructor de relaciones sino el Challenger que enseña, adapta y toma el control. Imprescindible para closers high-ticket que deben desafiar el status quo del cliente.",
+     "terminologia_clave": [
+      "Challenger (el perfil que reta)",
+      "teach-tailor-take control (enseñar, adaptar, tomar el control)",
+      "commercial teaching (insight comercial)",
+      "reframe del cliente",
+      "los 5 perfiles de vendedor",
+      "constructive tension (tension constructiva)",
+      "venta consultiva compleja",
+      "tomar el control del precio"
+     ],
+     "audiolibro_youtube": {
+      "url": "https://www.youtube.com/watch?v=4ioFj58G6oQ",
+      "confianza": "incierto"
+     },
+     "audiolibro_spotify": {
+      "url": "https://open.spotify.com/search/The%20Challenger%20Sale%20audiobook",
+      "confianza": "incierto"
+     },
+     "compra": {
+      "tienda": "Amazon",
+      "url": "https://www.amazon.com/Challenger-Sale-Control-Customer-Conversation/dp/1591844355"
+     }
+    },
+    {
+     "titulo": "The Lost Art of Closing",
+     "autor": "Anthony Iannarino",
+     "existente": true,
+     "idioma": "en",
+     "por_que": "Adicion de maestria al cierre: redefine cerrar no como un truco final sino como una serie de 10 compromisos a lo largo de todo el proceso. Es el manual moderno de cierre consultivo high-ticket que completa a Challenger.",
+     "terminologia_clave": [
+      "los 10 compromisos (Ten Commitments)",
+      "cerrar como secuencia de micro-compromisos",
+      "compromiso de tiempo, exploracion, cambio, colaborar, construir consenso, invertir, revisar, resolver inquietudes, decidir, ejecutar",
+      "control process map",
+      "pedir el siguiente compromiso",
+      "consenso de stakeholders",
+      "cierre consultivo"
+     ],
+     "audiolibro_youtube": {
+      "url": "https://www.youtube.com/watch?v=G-VImG17KSI",
+      "confianza": "incierto"
+     },
+     "audiolibro_spotify": {
+      "url": "https://open.spotify.com/search/The%20Lost%20Art%20of%20Closing%20Iannarino%20audiobook",
+      "confianza": "incierto"
+     },
+     "compra": {
+      "tienda": "Amazon",
+      "url": "https://www.amazon.com/Lost-Art-Closing-Winning-Commitments/dp/0735211698"
+     }
+    }
+   ]
+  }
+ ]
+}

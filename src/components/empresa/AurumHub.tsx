@@ -5,6 +5,7 @@ import {
   AURUM_NIVEL_META, AURUM_ADVERTENCIAS, AurumMaterial, AurumConfianza,
 } from '../../lib/aurumData';
 import { AURUM_PLAN_META } from '../../lib/aurumDailyPlan';
+import { AURUM_BIBLIOTECA_NIVELES, AurumBibLibro } from '../../lib/aurumBiblioteca';
 import { loadDone, saveDone, planHoyD, progresoGlobal } from '../../lib/studyProgress';
 import { AURUM_DIAS } from '../../lib/aurumDailyPlan';
 import AurumTodayPlan, { aurumTodayISO } from './AurumTodayPlan';
@@ -118,11 +119,108 @@ function RutaView({ done }: { done: Set<number> }) {
   );
 }
 
-// ── BIBLIOTECA — tarjetas ricas por categoría ───────────────────────────────
+// ── Botón de acción de un libro (🎧 / ▶ / 🛒) — mismo formato que la Biblioteca del Home ──
+const ytBuscar = (titulo: string, autor: string) =>
+  'https://www.youtube.com/results?search_query=' + encodeURIComponent(`${titulo} ${autor} audiolibro`);
+
+function BibActionBtn({ label, color, onPress }: { label: string; color: string; onPress: () => void }) {
+  const { hovered, hoverProps } = useAurumHover();
+  return (
+    <TouchableOpacity
+      activeOpacity={0.8}
+      onPress={onPress}
+      {...(hoverProps as any)}
+      hitSlop={{ top: 4, bottom: 4, left: 2, right: 2 }}
+      style={[
+        st.bibActBtn,
+        { borderColor: withAlpha(color, 0.5), backgroundColor: withAlpha(color, hovered ? 0.22 : 0.1) },
+        isWeb ? ({ transition: 'all .15s ease', cursor: 'pointer' } as any) : null,
+      ]}>
+      <Text style={[st.bibActTxt, { color }]} numberOfLines={1}>{label}</Text>
+    </TouchableOpacity>
+  );
+}
+
+// ── Tarjeta de libro de nivel: título·autor + por_qué + chips terminología + fila 🎧/▶/🛒 ──
+function BibLibroCard({ b }: { b: AurumBibLibro }) {
+  const { hovered, hoverProps } = useAurumHover();
+  return (
+    <View
+      {...(hoverProps as any)}
+      style={[
+        st.bibCard,
+        hovered && isWeb ? ({ borderColor: withAlpha(C.gold, 0.5), transform: [{ translateY: -2 }] } as any) : null,
+        isWeb ? ({ transition: 'all .18s ease' } as any) : null,
+      ]}>
+      <View style={st.bibTop}>
+        <Text style={st.bibName} numberOfLines={3}>
+          {b.titulo} <Text style={st.bibAutor}>· {b.autor}</Text>
+        </Text>
+        <AurumChip label={b.idioma === 'es' ? 'ES' : 'EN'} color={C.textMute} size="sm" />
+      </View>
+      {!!b.porQue ? <Text style={st.bibWhy} numberOfLines={3}>{b.porQue}</Text> : null}
+      {b.terminologia.length ? (
+        <View style={st.bibTermRow}>
+          {b.terminologia.slice(0, 4).map((t, i) => (
+            <View key={i} style={st.bibTerm}>
+              <Text style={st.bibTermTxt} numberOfLines={1}>{t}</Text>
+            </View>
+          ))}
+        </View>
+      ) : null}
+      <View style={st.bibActRow}>
+        {b.audioSpotify ? <BibActionBtn label="🎧 Spotify" color="#1DB954" onPress={() => openUrl(b.audioSpotify!)} /> : null}
+        <BibActionBtn
+          label={b.audioYoutube ? '▶ YouTube' : '▶ Buscar'}
+          color={C.danger}
+          onPress={() => openUrl(b.audioYoutube || ytBuscar(b.titulo, b.autor))}
+        />
+        {b.compraUrl ? <BibActionBtn label="🛒 Comprar" color={C.goldSoft} onPress={() => openUrl(b.compraUrl!)} /> : null}
+      </View>
+    </View>
+  );
+}
+
+// ── Biblioteca por NIVELES de AURUM (Mentalidad → Cierre high-ticket) ────────
+function BibliotecaNiveles({ isDesktop }: { isDesktop: boolean }) {
+  const cols = isDesktop ? 2 : 1;
+  const totalLibros = AURUM_BIBLIOTECA_NIVELES.reduce((s, nv) => s + nv.libros.length, 0);
+  return (
+    <View style={{ marginBottom: S['2xl'] }}>
+      <AurumLabel>Biblioteca por niveles · {totalLibros} libros · mentalidad → cierre high-ticket · 🎧 Spotify · ▶ YouTube · 🛒 Comprar</AurumLabel>
+      {AURUM_BIBLIOTECA_NIVELES.map((nv, i) => (
+        <AurumRise key={nv.nivel} delay={i * 45}>
+          <View style={st.nivelBlock}>
+            <View style={st.nivelHead}>
+              <View style={[st.nivelNum, { borderColor: withAlpha(C.gold, 0.5), backgroundColor: withAlpha(C.gold, 0.14) }]}>
+                <Text style={st.nivelNumTxt}>{nv.nivel}</Text>
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={st.nivelLabel}>{nv.label.replace(/^Nivel \d+ - /, '')}</Text>
+                {!!nv.objetivo ? <Text style={st.nivelObj} numberOfLines={3}>{nv.objetivo}</Text> : null}
+              </View>
+              <AurumChip label={`${nv.libros.length}`} color={C.gold} size="sm" />
+            </View>
+            <View style={[st.grid, isWeb ? ({ gridTemplateColumns: `repeat(${cols}, 1fr)` } as any) : null]}>
+              {nv.libros.map((b, j) => (
+                <View key={j} style={isWeb ? null : { width: '100%' }}>
+                  <BibLibroCard b={b} />
+                </View>
+              ))}
+            </View>
+          </View>
+        </AurumRise>
+      ))}
+    </View>
+  );
+}
+
+// ── BIBLIOTECA — niveles premium arriba + contenido GRATIS por categoría ─────
 function BibliotecaView({ isDesktop }: { isDesktop: boolean }) {
   const cols = isDesktop ? 2 : 1;
   return (
     <View>
+      <BibliotecaNiveles isDesktop={isDesktop} />
       <AurumLabel>Biblioteca · solo contenido GRATIS de los referentes #1 (cero cursos pagos)</AurumLabel>
       {AURUM_BIBLIOTECA.map((cat, i) => (
         <AurumRise key={i} delay={i * 45}>
@@ -379,6 +477,27 @@ const st = StyleSheet.create({
   catIcon: { fontSize: 20 },
   catTitle: { fontSize: T.size.subtitle, fontWeight: T.weight.extrabold, color: C.text, letterSpacing: 0.3 },
   grid: isWeb ? ({ display: 'grid', gap: 12 } as any) : { flexDirection: 'column', gap: 12 },
+
+  // biblioteca por niveles
+  nivelBlock: { marginBottom: S.xl },
+  nivelHead: { flexDirection: 'row', alignItems: 'flex-start', gap: S.md, marginBottom: S.md },
+  nivelNum: { width: 30, height: 30, borderRadius: 15, borderWidth: 1, alignItems: 'center', justifyContent: 'center', marginTop: 1 },
+  nivelNumTxt: { fontSize: T.size.body, fontWeight: T.weight.black, color: C.goldSoft },
+  nivelLabel: { fontSize: T.size.subtitle, fontWeight: T.weight.extrabold, color: C.text, letterSpacing: 0.2 },
+  nivelObj: { fontSize: T.size.caption, color: C.textMute, marginTop: 3, lineHeight: 17 },
+
+  // tarjeta de libro de nivel
+  bibCard: { backgroundColor: C.surfaceAlt, borderRadius: R.sm, padding: S.md, borderWidth: 1, borderColor: C.border },
+  bibTop: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 },
+  bibName: { fontSize: T.size.body, fontWeight: T.weight.bold, color: C.text, flex: 1, lineHeight: 19 },
+  bibAutor: { fontSize: T.size.caption, color: C.textMute, fontWeight: T.weight.regular },
+  bibWhy: { fontSize: T.size.caption, color: C.textMute, marginTop: 5, lineHeight: 17 },
+  bibTermRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 5, marginTop: S.sm },
+  bibTerm: { borderWidth: 1, borderColor: C.borderSoft, backgroundColor: withAlpha('#FFFFFF', 0.03), borderRadius: R.xs, paddingVertical: 2, paddingHorizontal: 7, maxWidth: '100%' },
+  bibTermTxt: { fontSize: T.size.nano, color: C.textDim, fontWeight: T.weight.medium },
+  bibActRow: { flexDirection: 'row', gap: 6, marginTop: S.md, flexWrap: 'wrap' },
+  bibActBtn: { borderWidth: 1, borderRadius: R.sm, paddingVertical: 5, paddingHorizontal: 10 },
+  bibActTxt: { fontSize: T.size.micro, fontWeight: T.weight.bold },
 
   // protocolo
   horRow: { flexDirection: 'row', alignItems: 'center', gap: S.md, paddingVertical: 11, borderTopWidth: 1, borderTopColor: C.borderSoft },
