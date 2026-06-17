@@ -68,6 +68,47 @@ export const REC: Record<string, { label: string; url: string }> = {
   CROSSREF:{ label: 'Crossref · verificar DOI + CSL-JSON de citas', url: 'https://www.crossref.org/documentation/retrieve-metadata/content-negotiation/' },
 };
 
+/**
+ * ★ TOP 2026 (verificado) — recursos de ÉLITE GRATIS por capa del ciclo de research.
+ * Investigación de calidad 2026 (DATA/CALIDAD/Research.md). Aditivo: complementa REC y
+ * RESEARCH_MODULOS sin reestructurar el plan día-a-día. Se renderiza en ResearchHub → Panel.
+ */
+export interface RecursoTopResearch {
+  label: string; url: string; autor: string; tipo: string; nivel: string;
+  confianza: 'verificado' | 'estable'; porQue: string;
+}
+export const RESEARCH_RECURSOS_TOP: { capa: string; items: RecursoTopResearch[] }[] = [
+  { capa: 'Metodología & inferencia causal', items: [
+    { label: 'Causal Inference: What If — Hernán & Robins', url: 'https://miguelhernan.org/whatifbook', autor: 'Miguel A. Hernán & James M. Robins (Harvard)', tipo: 'libro + código (R/Python/Stata)', nivel: 'avanzado', confianza: 'verificado', porQue: 'EL libro de inferencia causal, gratis en PDF (act. 21-nov-2025). DAGs, IPW, g-formula, IV y Target Trial Emulation (frontera observacional). Doble valor: método élite + puente a AI engineering (Synapse).' },
+    { label: 'Biostatistics for Biomedical Research (BBR) — Frank Harrell', url: 'https://hbiostat.org/bbr/', autor: 'Frank E. Harrell Jr. (Vanderbilt)', tipo: 'libro/portal online', nivel: 'intermedio-avanzado', confianza: 'verificado', porQue: 'Libro gratis del referente #1 mundial (act. mayo 2026): métodos modernos (no categorizar continuas, no abusar de p-values) + R Workflow reproducible con Quarto.' },
+  ] },
+  { capa: 'Guías de reporte (exigidas por revistas top)', items: [
+    { label: 'EQUATOR Network — CONSORT 2025, STROBE, PRISMA, SPIRIT', url: 'https://www.equator-network.org/reporting-guidelines/', autor: 'UK EQUATOR Centre (Oxford)', tipo: 'biblioteca de checklists', nivel: 'todos', confianza: 'verificado', porQue: '>250 guías por tipo de estudio que NEJM/Lancet/JAMA/BMJ exigen. Regla de oro: elegir la guía ANTES de escribir.' },
+    { label: 'PRISMA 2020 — statement + E&E', url: 'https://www.prisma-statement.org/', autor: 'PRISMA Group / EQUATOR', tipo: 'guía de reporte', nivel: 'intermedio', confianza: 'verificado', porQue: 'Estándar de facto para SR/meta-análisis: checklist 27 ítems + diagramas de flujo. El E&E explica cada ítem con ejemplos.' },
+    { label: 'Cochrane Handbook v6.5 (acceso abierto)', url: 'https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current', autor: 'Cochrane (Higgins, Thomas et al.)', tipo: 'guía metodológica', nivel: 'avanzado', confianza: 'verificado', porQue: 'La biblia metodológica de las revisiones sistemáticas (v6.5, ago 2024: network MA, síntesis narrativa, equidad, automatización).' },
+  ] },
+  { capa: 'Bioestadística con código (puente → Synapse)', items: [
+    { label: 'The Epidemiologist R Handbook', url: 'https://www.epirhandbook.com/en/', autor: 'Applied Epi (ONG)', tipo: 'manual online', nivel: 'intermedio', confianza: 'verificado', porQue: 'El recurso práctico más usado (+3M usos) para datos de salud en R: gestión de datos, supervivencia, brotes, reportes reproducibles.' },
+    { label: 'An Introduction to Statistical Learning (ISLP, Python)', url: 'https://www.statlearning.com/', autor: 'James, Witten, Hastie, Tibshirani, Taylor', tipo: 'libro PDF gratis + labs', nivel: 'intermedio-avanzado', confianza: 'verificado', porQue: 'Statistical/machine learning con rigor. Edición Python (paquete ISLP). Referencia clave COMPARTIDA Research↔Synapse.' },
+    { label: 'Program Evaluation & Causal Inference con R — Andrew Heiss', url: 'https://evalsp25.classes.andrewheiss.com/', autor: 'Andrew Heiss (Georgia State)', tipo: 'curso (web+vídeos+labs)', nivel: 'intermedio-avanzado', confianza: 'verificado', porQue: 'Posgrado gratis: DAGs, diff-in-diff, RDD, IV — todo con R. El puente perfecto diseño↔causalidad↔código.' },
+    { label: 'gtsummary — tablas publication-ready', url: 'https://www.danieldsjoberg.com/gtsummary/', autor: 'Daniel D. Sjoberg et al.', tipo: 'paquete R + docs', nivel: 'intermedio', confianza: 'verificado', porQue: 'Estándar para Table 1 y tablas de regresión listas para revistas clínicas de alto impacto.' },
+  ] },
+  { capa: 'Escritura & publicación', items: [
+    { label: 'Writing in the Sciences (Stanford) — Kristin Sainani', url: 'https://www.coursera.org/learn/sciwrite', autor: 'Dra. Kristin Sainani · Stanford', tipo: 'curso (audit gratis)', nivel: 'principiante-intermedio', confianza: 'verificado', porQue: 'El curso de escritura científica #1 del mundo (4.9/5, ~10k reseñas): todo el ciclo del manuscrito + peer review + ética. Punto de partida para publicar.' },
+    { label: 'Academic Phrasebank (Manchester)', url: 'https://www.phrasebank.manchester.ac.uk/', autor: 'University of Manchester', tipo: 'herramienta de referencia', nivel: 'todos', confianza: 'verificado', porQue: 'Cientos de plantillas de frases por sección del paper. Indispensable para escribir en inglés a nivel publicación siendo no-nativo.' },
+    { label: 'Ten Simple Rules for Structuring Papers', url: 'https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005619', autor: 'Brett Mensh & Konrad Kording · PLOS', tipo: 'artículo (open access)', nivel: 'intermedio', confianza: 'verificado', porQue: 'El mejor artículo corto (~30 min) sobre cómo estructurar un paper. Lectura obligatoria antes del primer manuscrito serio.' },
+  ] },
+  { capa: 'Evaluación de sesgo & meta-análisis', items: [
+    { label: 'riskofbias.info — RoB 2 + ROBINS-I v2', url: 'https://www.riskofbias.info/', autor: 'Cochrane Bias Methods Group', tipo: 'herramientas de sesgo', nivel: 'avanzado', confianza: 'verificado', porQue: 'Hub oficial: RoB 2 (ECA) y ROBINS-I v2 (no aleatorizados, act. 2025). Combinar con AMSTAR-2 y GRADEpro.' },
+    { label: 'metafor — meta-análisis en R', url: 'https://www.metafor-project.org/', autor: 'Wolfgang Viechtbauer', tipo: 'paquete R (open source)', nivel: 'avanzado', confianza: 'verificado', porQue: 'Estándar de oro libre para meta-análisis reproducible (efectos fijos/aleatorios/mixtos, forest/funnel/Baujat). 2.1M+ descargas.' },
+  ] },
+  { capa: 'Ciencia abierta (stack moderno)', items: [
+    { label: 'Zotero — gestor de referencias', url: 'https://www.zotero.org/', autor: 'Corporation for Digital Scholarship', tipo: 'gestor de referencias', nivel: 'principiante', confianza: 'verificado', porQue: 'Mejor opción gratis: ilimitado, 7.000+ estilos, integración Word/Docs, conecta con ResearchRabbit y OSF.' },
+    { label: 'OSF (Open Science Framework)', url: 'https://www.cos.io/products/osf', autor: 'Center for Open Science', tipo: 'plataforma de ciencia abierta', nivel: 'intermedio', confianza: 'verificado', porQue: 'Preregistro (evita HARKing/p-hacking), gestión de datos, DOIs y conexión a GitHub/Zotero/ORCID. Cierra el gap de reproducibilidad.' },
+    { label: 'ORCID — identidad de autor persistente', url: 'https://orcid.org/', autor: 'ORCID, Inc.', tipo: 'identificador de investigador', nivel: 'principiante', confianza: 'verificado', porQue: 'iD único que vincula tu producción científica; lo exigen cada vez más revistas y financiadores. Pilar del stack moderno.' },
+  ] },
+];
+
 export type FaseId = 'R0' | 'R1' | 'R2' | 'R3' | 'R4' | 'R5' | 'R6' | 'R7' | 'R8';
 export const FASE_INFO: Record<FaseId, { nombre: string; color: string; pilar: string }> = {
   R0: { nombre: 'Cimientos & método', color: '#0FD4A0', pilar: 'base' },

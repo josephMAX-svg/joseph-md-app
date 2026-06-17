@@ -1,0 +1,586 @@
+{
+ "sintesis": [
+  {
+   "area": "Synapse",
+   "resumen": "Estado del arte 2026 para llegar a nivel TOP de programador/AI engineer, consolidado de 5 investigaciones. JERARQUIA DE REFERENTES (casi todo gratis y verificado): Karpathy sigue siendo el #1 fundacional (Zero to Hero + nanochat); y desde may-2026 LITERALMENTE trabaja en Anthropic liderando pre-training de Claude — el material del programa ya es \"lo que hace tu empresa-meta\". Anthropic es el referente directo del objetivo: Anthropic Academy (catalogo crecio a 21 cursos: gratis, certificado, cubre API+MCP+agentes+skills+subagentes+Cowork) + repos oficiales (anthropics/courses, claude-cookbooks). Stanford CS336 \"Language Modeling from Scratch\" (ed. 2026) es el recurso CUMBRE para construir un LLM de verdad. Sebastian Raschka (LLMs-from-scratch + reasoning-from-scratch) da el codigo linea-a-linea. DeepLearning.AI/Andrew Ng + Hugging Face cubren AI engineering aplicado y agentes con certificado. Chip Huyen y Hamel Husain cubren produccion y evals (el tema mas subestimado). CAMINO OPTIMO validado (OSSU/teachyourselfcs): F0 fundamentos CS -> Python -> matematicas -> datos/SQL -> ML clasico -> deep learning -> LLMs from scratch -> agentes/produccion. La regla de oro: el 90% se queda pegando APIs sin fundamentos; el diferenciador elite es poder CONSTRUIR desde cero (CS336+Raschka+Karpathy) Y desplegar/evaluar en produccion (HF Agents+evals+MLOps). Tiempo realista: 8-12 meses programando ya, ~2 años desde cero a 20h/sem. NOVEDADES 2026 que el plan Synapse aun no incorpora (gaps clave): (1) Certificacion oficial Claude Certified Architect-Foundations CCA-F (12-mar-2026, 5 dominios, 99 USD) = la credencial verificable \"nivel Anthropic\" que falta como hito; (2) \"Context engineering\" es ahora disciplina propia (sucesora de \"prompt engineering\", dominio #5 del CCA-F) con sus 3 ensayos fundacionales de Anthropic 2025 (context engineering, long-running harnesses, agent skills) que faltan en F4; (3) memory tools/compaction de Sonnet 4.5; (4) interpretabilidad de frontera (transformer-circuits.pub: circuit tracing, attribution graphs, Breakthrough Tech 2026) para F6. Casi todo es gratis; solo libros de Raschka/Huyen y el curso de evals de Maven son pagos, todos con contraparte gratis. Material elite: casi todo en INGLES (gap si se prioriza español).",
+   "referentes_top": [
+    "Andrej Karpathy (ex-OpenAI/Tesla, Eureka Labs; desde may-2026 lidera pre-training en ANTHROPIC) — Zero to Hero + nanochat + Deep Dive into LLMs; el referente #1 fundacional para construir LLMs desde cero",
+    "Anthropic (Academy + repos oficiales) — la escuela del objetivo: API, MCP, agentes, skills, subagentes, Cowork; certificacion CCA-F; los ensayos de ingenieria (Building Effective Agents, context engineering, harnesses, agent skills)",
+    "Tatsunori Hashimoto y Percy Liang (Stanford CS336) — Language Modeling from Scratch, el curso universitario cumbre 2026 para construir un LLM completo",
+    "Sebastian Raschka — LLMs-from-scratch y reasoning-from-scratch: el codigo PyTorch linea-a-linea, estandar de oro para ENTENDER",
+    "Andrew Ng (DeepLearning.AI, Stanford CS229) — ML Specialization + short courses de agentes/RAG; la via mas rapida a AI engineering aplicado",
+    "Jeremy Howard (fast.ai) — Practical Deep Learning for Coders, la mejor rampa top-down para coders",
+    "Chip Huyen — AI Engineering (libro mas leido en O'Reilly 2025) + repo aie-book de recursos curados para produccion",
+    "Hamel Husain (+ Shreya Shankar) — los referentes de evals/LLM evaluation, el tema mas subestimado y diferenciador 2026",
+    "Hugging Face — ecosistema de cursos gratis con certificado (LLM, Agents, Deep RL, MCP, smol course de post-training)",
+    "Harvard CS50 (David Malan/Brian Yu) y MIT 6.S191 (Amini) — bases estructuradas de CS/AI y deep learning, re-grabadas cada año"
+   ],
+   "recursos_top": [
+    {
+     "titulo": "Neural Networks: Zero to Hero (micrograd → makemore → GPT desde cero)",
+     "url": "https://karpathy.ai/zero-to-hero.html",
+     "confianza": "verificado",
+     "nivel": "intermedio",
+     "tipo": "curso/video + codigo",
+     "autor_canal": "Andrej Karpathy",
+     "por_que": "EL curso fundacional canonico y gratis: construyes backprop, MLP, un GPT y un tokenizer BPE desde cero en Python (repo karpathy/nn-zero-to-hero). Base imprescindible para entender LLMs por dentro antes de cualquier AI engineering serio. Karpathy ahora lidera pre-training en Anthropic = la empresa-meta del plan."
+    },
+    {
+     "titulo": "nanochat — clon de ChatGPT full-stack en ~8.000 lineas, entrenable por ~$100",
+     "url": "https://github.com/karpathy/nanochat",
+     "confianza": "verificado",
+     "nivel": "avanzado",
+     "tipo": "repo/proyecto",
+     "autor_canal": "Andrej Karpathy",
+     "por_que": "Sucesor oficial de nanoGPT (55k+ stars, MIT, oct-2025): pipeline completo (tokenizacion, pretraining, finetuning, eval, inference, chat UI). Proyecto capstone de mayor señal para el portafolio. nanoGPT esta deprecado — usar este."
+    },
+    {
+     "titulo": "Anthropic Academy — cursos gratis de Claude (API, MCP, agentes, skills, subagentes, Cowork)",
+     "url": "https://anthropic.skilljar.com/",
+     "confianza": "verificado",
+     "nivel": "base-avanzado",
+     "tipo": "plataforma/cursos",
+     "autor_canal": "Anthropic",
+     "por_que": "EL recurso #1 para el objetivo 'nivel Anthropic': 21 cursos verificados en vivo (el plan asume 19 — faltan 'Introduction to Claude Cowork' y 'AI Capabilities and Limitations'). Gratis (solo email) con certificado oficial. Es la prep directa del examen CCA-F."
+    },
+    {
+     "titulo": "Claude Certified Architect — Foundations (CCA-F): primera certificacion tecnica oficial",
+     "url": "https://www.anthropic.com/learn",
+     "confianza": "verificado",
+     "nivel": "intermedio",
+     "tipo": "certificacion/examen",
+     "autor_canal": "Anthropic Academy",
+     "por_que": "GAP CLAVE: lanzada 12-mar-2026. Examen proctored 60 preguntas, 120 min, aprobar 720/1000, 99 USD (gratis partners). 5 dominios: Agentic Architecture 27%, Claude Code 20%, Tool Design & MCP 18%, Prompt Engineering 20%, Context Management 15%. La credencial VERIFICABLE 'nivel Anthropic' que el plan no tiene — debe ser hito de F0→F4. La Academy es la prep gratuita."
+    },
+    {
+     "titulo": "anthropics/courses — 5 cursos oficiales (API, Prompt Eng, Real World Prompting, Evaluations, Tool Use)",
+     "url": "https://github.com/anthropics/courses",
+     "confianza": "verificado",
+     "nivel": "principiante-intermedio",
+     "tipo": "curso/repo",
+     "autor_canal": "Anthropic",
+     "por_que": "5 cursos gratis MIT en Jupyter (~22k stars, mantenido). El Prompt Evaluations y Tool Use son justo lo que piden los puestos Applied AI. Complemento practico (codigo ejecutable) de la Academy."
+    },
+    {
+     "titulo": "anthropics/claude-cookbooks — patterns/agents (Building Effective Agents)",
+     "url": "https://github.com/anthropics/claude-cookbooks/tree/main/patterns/agents",
+     "confianza": "verificado",
+     "nivel": "intermedio-avanzado",
+     "tipo": "repo/notebooks",
+     "autor_canal": "Anthropic",
+     "por_que": "Implementaciones oficiales de los 5 patrones canonicos de agentes (prompt chaining, routing, parallelization, orchestrator-workers, evaluator-optimizer) + orquestacion multi-agente async. La fuente con mas autoridad para agentes de produccion (F4). Acompaña al ensayo 'Building Effective Agents'."
+    },
+    {
+     "titulo": "Effective context engineering for AI agents (ensayo Anthropic)",
+     "url": "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+     "confianza": "verificado",
+     "nivel": "intermedio",
+     "tipo": "docs/ensayo",
+     "autor_canal": "Anthropic Engineering",
+     "por_que": "GAP CLAVE de F4. Ensayo (29-sep-2025) que define context engineering como sucesor del prompt engineering: context rot, compaction, structured note-taking, just-in-time retrieval. Es el dominio #5 del CCA-F. ~25 min, apto para huecos/audio."
+    },
+    {
+     "titulo": "Stanford CS336: Language Modeling from Scratch (ed. 2025/2026)",
+     "url": "https://cs336.stanford.edu/",
+     "confianza": "verificado",
+     "nivel": "avanzado",
+     "tipo": "curso universitario",
+     "autor_canal": "Tatsunori Hashimoto y Percy Liang (Stanford)",
+     "por_que": "El recurso CUMBRE para construir un LLM de verdad: tokenizacion, Transformer, FlashAttention2/Triton, paralelismo, scaling laws, pipeline de datos, inferencia, post-training (SFT/RLHF/RL). Videos+slides+5 assignments en GitHub, gratis. Edicion 2026 disponible. Es el salto a elite real (F3→F6)."
+    },
+    {
+     "titulo": "rasbt/LLMs-from-scratch — Build a LLM (From Scratch), codigo del libro de Raschka",
+     "url": "https://github.com/rasbt/LLMs-from-scratch",
+     "confianza": "verificado",
+     "nivel": "intermedio-avanzado",
+     "tipo": "repo/codigo",
+     "autor_canal": "Sebastian Raschka",
+     "por_que": "Estandar de oro para CODIFICAR un GPT en PyTorch paso a paso sin librerias externas: base model → clasificador → chatbot, corre en laptop. Codigo 100% gratis (el libro es pago). Si nanochat es 'entrenar', esto es 'entender cada linea'. Su reasoning-from-scratch (2025) extiende a modelos de razonamiento."
+    },
+    {
+     "titulo": "fast.ai — Practical Deep Learning for Coders (Part 1 + Part 2)",
+     "url": "https://course.fast.ai/",
+     "confianza": "verificado",
+     "nivel": "intermedio",
+     "tipo": "curso/video + libro",
+     "autor_canal": "Jeremy Howard (fast.ai)",
+     "por_que": "Verificado en vivo, gratis. La mejor rampa top-down para coders: entrenas modelos utiles desde la leccion 1 con PyTorch+fastai+HF+Gradio; Part 2 incluye diffusion y transformers. Ideal para arrancar rapido con poco tiempo diario. Libro (fastbook) gratis online."
+    },
+    {
+     "titulo": "Hugging Face — AI Agents Course (smolagents, LangGraph, LlamaIndex + certificado)",
+     "url": "https://huggingface.co/learn/agents-course/en/unit0/introduction",
+     "confianza": "verificado",
+     "nivel": "principiante-intermedio",
+     "tipo": "curso practico",
+     "autor_canal": "Hugging Face",
+     "por_que": "Curso estructurado gratis con ritmo semanal (3-4h/sem, encaja con los huecos diarios de Synapse), labs en HF Spaces, leaderboards y certificado. El area de mayor demanda 2026. Parte del hub gratis huggingface.co/learn (LLM, Deep RL, smol course de post-training, MCP)."
+    },
+    {
+     "titulo": "DeepLearning.AI — Short Courses gratis (Agentes, RAG, LangGraph, LlamaIndex)",
+     "url": "https://www.deeplearning.ai/courses?types=short_course",
+     "confianza": "verificado",
+     "nivel": "intermedio",
+     "tipo": "short courses online",
+     "autor_canal": "DeepLearning.AI (Andrew Ng + partners)",
+     "por_que": "Decenas de short courses (1-4h) auditables gratis: Prompt Engineering for Developers, AI Agents in LangGraph (Harrison Chase), Building Agentic RAG with LlamaIndex, Knowledge Graphs for RAG. Co-construidos con OpenAI/Anthropic/LangChain. La via mas rapida a las fases agenticas/RAG de Synapse."
+    },
+    {
+     "titulo": "CS50's Introduction to AI with Python (Harvard, OpenCourseWare)",
+     "url": "https://cs50.harvard.edu/ai/",
+     "confianza": "verificado",
+     "nivel": "principiante-intermedio",
+     "tipo": "curso universitario",
+     "autor_canal": "Harvard / CS50 (David Malan, Brian Yu)",
+     "por_que": "Verificado en vivo, gratis, 7 semanas con proyectos en Python: busqueda en grafos, knowledge representation, incertidumbre, optimizacion, ML, redes neuronales, NLP y LLMs. Base estructurada excelente para los fundamentos de CS/AI (F0-F1)."
+    },
+    {
+     "titulo": "MIT 6.S191: Introduction to Deep Learning (edicion anual 2026)",
+     "url": "https://introtodeeplearning.com/",
+     "confianza": "verificado",
+     "nivel": "intermedio",
+     "tipo": "curso universitario",
+     "autor_canal": "Alexander y Ava Amini (MIT)",
+     "por_que": "La intro a deep learning mas actualizada: se re-graba y open-sourcea CADA año (ed. 2026 confirmada). Videos+slides+labs en GitHub. Buen complemento conciso a fundamentos, incluye leccion de Language Models and New Frontiers."
+    },
+    {
+     "titulo": "chiphuyen/aie-book — recursos del libro AI Engineering (2025)",
+     "url": "https://github.com/chiphuyen/aie-book",
+     "confianza": "verificado",
+     "nivel": "intermedio-avanzado",
+     "tipo": "repo/recursos",
+     "autor_canal": "Chip Huyen",
+     "por_que": "Repo gratis de soporte del libro AI Engineering (el mas leido en O'Reilly): blogs tecnicos, papers y recursos curados (resources.md) para construir apps con foundation models. Cubre la capa de produccion que falta entre 'construir' y 'desplegar'."
+    },
+    {
+     "titulo": "Hamel Husain — LLM Evals (guia FAQ + masterclass gratis)",
+     "url": "https://hamel.dev/blog/posts/evals-faq/",
+     "confianza": "verificado",
+     "nivel": "intermedio-avanzado",
+     "tipo": "articulo/guia",
+     "autor_canal": "Hamel Husain",
+     "por_que": "Los evals son el tema MAS subestimado y diferenciador en AI engineering 2026. El curso completo (con Shreya Shankar) es pago en Maven, pero esta guia exhaustiva + masterclass de 50 min son GRATIS y de altisimo nivel practico. Cierra la capa de evaluacion/observabilidad."
+    },
+    {
+     "titulo": "MCP — tutorial oficial 'Build an MCP Server' + servers + python-sdk",
+     "url": "https://modelcontextprotocol.io/docs/develop/build-server",
+     "confianza": "verificado",
+     "nivel": "intermedio",
+     "tipo": "doc/tutorial + repos",
+     "autor_canal": "Anthropic / Model Context Protocol",
+     "por_que": "Tutorial end-to-end (tools get_alerts/get_forecast → Claude Desktop) + repos oficiales modelcontextprotocol/servers (forkear) y /python-sdk. Construir y publicar un MCP server propio es uno de los proyectos de portafolio de mayor señal en 2026 (dominio del CCA-F)."
+    },
+    {
+     "titulo": "PortSwigger Web Security Academy — Web LLM Attacks (labs) + OWASP LLM Top 10",
+     "url": "https://portswigger.net/web-security/llm-attacks",
+     "confianza": "verificado",
+     "nivel": "intermedio",
+     "tipo": "labs interactivos",
+     "autor_canal": "PortSwigger",
+     "por_que": "4 labs interactivos GRATIS con LLM real (excessive agency, API vulns, insecure output handling, indirect prompt injection), sin registro. La mejor entrada practica a seguridad de IA (F5), anclada en el marco OWASP Top 10 for LLM Applications 2025 (genai.owasp.org). Complementa con el juego Gandalf de Lakera."
+    },
+    {
+     "titulo": "DataTalksClub/llm-zoomcamp — curso gratis 10 semanas (RAG, agents, eval, monitoring)",
+     "url": "https://github.com/DataTalksClub/llm-zoomcamp",
+     "confianza": "verificado",
+     "nivel": "intermedio",
+     "tipo": "curso/repo",
+     "autor_canal": "DataTalksClub",
+     "por_que": "Hilo conductor curricular y fuente de proyectos de portafolio: 10 semanas gratis cubriendo RAG, vector search, embeddings, agentes, function calling, evaluacion y monitoring con proyecto final. Une las pistas anteriores en un sistema desplegable y publico en GitHub."
+    }
+   ],
+   "acciones": [
+    "ACTUALIZAR F0: corregir 'Anthropic Academy 19 cursos' → 21 cursos (synapseData.ts, material 'academy' linea 44) y añadir los dos cursos nuevos verificados: 'Introduction to Claude Cowork' (https://anthropic.skilljar.com/introduction-to-claude-cowork) y 'AI Capabilities and Limitations'.",
+    "AÑADIR HITO DE CERTIFICACION (gap #1 'nivel Anthropic'): incluir el examen Claude Certified Architect–Foundations (CCA-F, 12-mar-2026, 5 dominios, 99 USD) como entregable/credencial explicito al cerrar F0→F4. La Academy completa es la prep gratuita (~15-20h). Es la prueba verificable que hoy falta en el plan.",
+    "INCORPORAR CONTEXT ENGINEERING COMO TEMA PROPIO en F4 (es el dominio #5 del CCA-F y el termino dominante 2026, no solo flags /compact /clear): añadir los 3 ensayos fundacionales de Anthropic 2025 — 'Effective context engineering for AI agents' (29-sep), 'Effective harnesses for long-running agents' (26-nov) y 'Equipping agents for the real world with Agent Skills' (18-dic) — al mismo nivel que 'Building Effective Agents', que ya esta incluido.",
+    "AÑADIR MEMORY TOOLS / COMPACTION de Sonnet 4.5 (file-based memory, context editing +29% / +memory 39%) + el claude-cookbook de tool-use/context engineering al bloque de agentes de F4 — gap concreto vs el stack de agentes 2026.",
+    "ELEVAR F3→F6 CON CONSTRUCCION REAL DE LLM: añadir Stanford CS336 'Language Modeling from Scratch' (ed. 2026, cs336.stanford.edu) como columna avanzada y rasbt/LLMs-from-scratch como codigo linea-a-linea, manteniendo nanochat como capstone. Es el diferenciador elite (construir desde cero) que separa del 90% que solo pega APIs.",
+    "REFORZAR F6 (alignment/interpretabilidad) con la frontera 2026: añadir Transformer Circuits Thread (transformer-circuits.pub — circuit tracing, attribution graphs, cross-layer transcoders, nombrado Breakthrough Tech 2026) junto al material existente de ARENA/RLHF Book.",
+    "AÑADIR CAPA DE EVALS Y PRODUCCION (hoy ausente como tema): guia de evals de Hamel Husain (hamel.dev/blog/posts/evals-faq) + repo de Chip Huyen (chiphuyen/aie-book) + LLM Zoomcamp (DataTalksClub) como columna de F4/F5 para cerrar 'construir → evaluar → desplegar/monitorear', que es la señal mas fuerte de portafolio.",
+    "ACTUALIZAR LA NARRATIVA/'POR QUE' del programa: Karpathy (base de F0/F3: Intro LLMs, Deep Dive, Zero to Hero, nanochat) se unio a Anthropic en may-2026 para liderar pre-training de Claude — convierte su material en 'lo que hoy hace tu empresa-meta'. Verificar en fuente primaria antes de afirmarlo como hecho en la app (la fuente actual es secundaria).",
+    "VERIFICAR URLs FRAGILES antes de fijarlas en la app: el ID del video Karpathy 'Deep Dive into LLMs like ChatGPT' (watch?v=7xTGNNLPyMI ya esta en synapseData.ts pero no se confirmo por fetch — verificar o apuntar a youtube.com/AndrejKarpathy), la ruta exacta de OWASP LLM Top 10 (genai.owasp.org reorganiza), y la pagina del MCP Course de HF (no aparecio en el ultimo fetch de huggingface.co/learn).",
+    "CONFIRMAR ANTES DE INVERTIR TIEMPO los repos marcados 'incierto' (no verificados por fetch): pguso/ai-agents-from-scratch y confident-ai/deepteam — validar estrellas/actividad/URL exacta antes de incluirlos como recursos del plan.",
+    "DECISION DE IDIOMA: casi todo el material elite verificado esta en INGLES (gap real). Si Synapse necesita contenido nativo en español para fases avanzadas (LLMs from scratch, agentes), lanzar una investigacion dedicada — los subtitulos auto-traducidos de Karpathy/fast.ai/HF cubren parcialmente, pero no hay equivalente elite gratis en español confirmado.",
+    "NO TOCAR (confirmado vigente): 'Building Effective Agents' sigue siendo el ensayo fundacional (complementado, no reemplazado); nanochat es el capstone correcto; la advertencia de que LLM101n aun no existe es correcta; Fellows Program, RLHF Book, ARENA, OWASP LLM Top 10, PortSwigger, CS229/CS224N y 3Blue1Brown siguen vigentes."
+   ]
+  },
+  {
+   "area": "Research",
+   "resumen": "El estado del arte de la investigacion clinica/biomedica de elite tiene un nucleo gratuito muy maduro a 2025-2026 que cubre todo el ciclo de research, y casi todo lo TOP es en ingles (gap de idioma, no bloqueante para tu perfil USMLE/MIR bilingue). Se organiza en 6 capas:\n\n1) METODOLOGIA Y DISENO. Tres autoridades mundiales gratis: Frank Harrell (hbiostat.org/BBR, actualizado mayo 2026; metodos modernos: no-parametricos, bayesianos, NO categorizar variables continuas, NO abusar de p-values), Hernan & Robins (\"Causal Inference: What If\", actualizado 21-nov-2025, con codigo R/Python/Stata) para inferencia causal, y EQUATOR Network como base definitiva de guias de reporte (CONSORT 2025, STROBE, PRISMA, SPIRIT). El metodo de FRONTERA 2024-2025 es Target Trial Emulation (TTE) para causalidad con datos observacionales, ya con guia de reporte propia (TARGET Statement 2025, JAMA).\n\n2) BIOESTADISTICA CON CODIGO. Ecosistema bookdown/Quarto gratis y vigente: \"R for Data Science 2e\" (base tidyverse), \"The Epidemiologist R Handbook\" (lo mas aplicable a datos de salud), gtsummary (estandar para Table 1 publication-ready), ISLP (statistical learning en Python). Para intuicion: StatQuest y Biostatsquid (video). Andrew Heiss para inferencia causal aplicada con R (DAGs, diff-in-diff, RDD, IV).\n\n3) REVISIONES SISTEMATICAS / META-ANALISIS. Cochrane Handbook v6.5 (ago 2024, acceso abierto), PRISMA 2020 + E&E, PROSPERO (preregistro obligatorio), herramientas de sesgo (RoB 2, ROBINS-I v2, AMSTAR-2, GRADE), Rayyan (cribado IA gratis) y metafor (meta-analisis en R, estandar de oro libre).\n\n4) ESCRITURA Y PUBLICACION. Stanford \"Writing in the Sciences\" (Sainani, auditable gratis, el #1 mundial), Academic Phrasebank (Manchester, plantillas de frases por seccion), \"Ten Simple Rules for Structuring Papers\" (lectura corta de altisimo ROI), AuthorAID (mentoria 1-a-1 para LatAm).\n\n5) HERRAMIENTAS MODERNAS / IA. OpenAlex (catalogo abierto, 250M+ obras, CC0), PubMed E-utilities, Semantic Scholar, Zotero (gestor de referencias ganador gratis), ResearchRabbit (mapas de citas), Elicit/Consensus (asistentes IA con free tier). GAP CRITICO: los LLM fabrican ~36% de citas y los sistemas RAG aun 3-13% de URLs falsas; ninguna cita generada por IA entra al plan sin verificacion manual de DOI/PMID en la fuente primaria.\n\n6) CIENCIA ABIERTA (capa mas olvidada en planes tipicos). OSF (preregistro + reproducibilidad), Zenodo (DOIs para datos/codigo desde el dia 1), ORCID, control de versiones Git/GitHub.\n\nPARA SYNAPSE (objetivo: programador/AI engineer nivel TOP): el solapamiento es alto y estrategico. Harrell (R/Quarto reproducible), ISLP (statistical/machine learning en Python), Andrew Heiss (causal inference con codigo), Scientific Python Lectures y los pipelines reproducibles (Git, renv/targets, Zenodo) son exactamente el puente entre Research y AI engineering: dominar statistical learning + inferencia causal + flujo reproducible es lo que separa a un AI engineer de elite de uno que solo llama APIs.\n\nGAPS PRINCIPALES a cerrar en el plan: (a) practica guiada con datasets clinicos reales (MIMIC, NHANES); (b) power analysis / tamano muestral (G*Power, pwr); (c) bioestadistica bayesiana (Statistical Rethinking de McElreath); (d) preregistro y estrategia de busqueda reproducible (queries booleanas + MeSH guardadas); (e) verificacion obligatoria de citas IA; (f) recursos de elite en espanol (escasos).",
+   "referentes_top": [
+    "Frank E. Harrell Jr. (Vanderbilt)",
+    "Miguel Hernan & James Robins (Harvard)",
+    "Kristin Sainani (Stanford)",
+    "EQUATOR Network (Oxford)",
+    "Cochrane (Higgins, Thomas et al.)",
+    "Josh Starmer (StatQuest)",
+    "Andrew Heiss (Georgia State)",
+    "Hadley Wickham (Posit)"
+   ],
+   "recursos_top": [
+    {
+     "titulo": "Causal Inference: What If — Hernan & Robins",
+     "url": "https://miguelhernan.org/whatifbook",
+     "confianza": "verificado",
+     "nivel": "avanzado",
+     "tipo": "libro + codigo + datos",
+     "por_que": "EL libro de inferencia causal, gratis en PDF, actualizado 21-nov-2025. Codigo en R/Python/Stata/SAS/Julia + datos. DAGs, IPW, g-formula, variables instrumentales y target trial emulation (frontera observacional 2024-2025). Doblemente estrategico: metodologia de elite Y puente directo a AI engineering para Synapse.",
+     "autor_canal": "Miguel A. Hernan & James M. Robins (Harvard T.H. Chan)"
+    },
+    {
+     "titulo": "Biostatistics for Biomedical Research (BBR) + hbiostat.org — Frank Harrell",
+     "url": "https://hbiostat.org/bbr/",
+     "confianza": "verificado",
+     "nivel": "intermedio-avanzado",
+     "tipo": "libro/portal online",
+     "por_que": "Libro gratis (GPL-3.0) del referente #1 mundial, actualizado MAYO 2026 con seccion nueva de errores de diseno y planes bayesianos. El portal aloja tambien R Workflow (flujo reproducible con R/Quarto) y plantillas de scripts. Base metodologica y de reproducibilidad nivel elite.",
+     "autor_canal": "Frank E. Harrell Jr. (Vanderbilt)"
+    },
+    {
+     "titulo": "EQUATOR Network — Reporting guidelines (CONSORT 2025, STROBE, PRISMA, SPIRIT)",
+     "url": "https://www.equator-network.org/reporting-guidelines/",
+     "confianza": "verificado",
+     "nivel": "todos los niveles",
+     "tipo": "biblioteca de guias / checklists",
+     "por_que": "Base definitiva y gratuita de >250 guias de reporte por tipo de estudio, con checklists. Las revistas top (NEJM, Lancet, JAMA, BMJ) las EXIGEN. CONSORT 2025 vigente. Regla de oro: elegir la guia segun el tipo de estudio ANTES de escribir.",
+     "autor_canal": "EQUATOR Network (UK EQUATOR Centre, Oxford)"
+    },
+    {
+     "titulo": "Cochrane Handbook for Systematic Reviews v6.5 (acceso abierto)",
+     "url": "https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current",
+     "confianza": "verificado",
+     "nivel": "avanzado",
+     "tipo": "guia metodologica",
+     "por_que": "La biblia metodologica de las revisiones sistematicas. v6.5 (ago 2024) con capitulos nuevos sobre network meta-analysis, sintesis narrativa, equidad y automatizacion. Acceso abierto online confirmado.",
+     "autor_canal": "Cochrane (Higgins, Thomas et al.)"
+    },
+    {
+     "titulo": "PRISMA 2020 — statement + explanation & elaboration",
+     "url": "https://www.prisma-statement.org/",
+     "confianza": "verificado",
+     "nivel": "intermedio",
+     "tipo": "guia de reporte",
+     "por_que": "Estandar de facto exigido por casi todas las revistas para reportar revisiones sistematicas y meta-analisis. Checklist de 27 items + diagramas de flujo descargables gratis. El E&E (PMC8005925) explica cada item con ejemplos reales.",
+     "autor_canal": "PRISMA Group / EQUATOR Network"
+    },
+    {
+     "titulo": "The Epidemiologist R Handbook",
+     "url": "https://www.epirhandbook.com/en/",
+     "confianza": "verificado",
+     "nivel": "intermedio",
+     "tipo": "manual online",
+     "por_que": "El recurso practico mas usado (+3M usos, CC BY-NC-SA) para datos de salud en R: gestion de datos, supervivencia, brotes, reportes. Directamente aplicable a investigacion clinica y a montar un pipeline reproducible.",
+     "autor_canal": "Applied Epi (ONG)"
+    },
+    {
+     "titulo": "gtsummary — tablas publication-ready para revistas medicas",
+     "url": "https://www.danieldsjoberg.com/gtsummary/",
+     "confianza": "verificado",
+     "nivel": "intermedio",
+     "tipo": "paquete R + docs",
+     "por_que": "Estandar para Table 1 y tablas de regresion listas para publicar en revistas clinicas. Documentacion/vignettes gratis, integracion ARD 2025. Imprescindible para que tus papers se vean nivel revista de alto impacto.",
+     "autor_canal": "Daniel D. Sjoberg et al."
+    },
+    {
+     "titulo": "An Introduction to Statistical Learning with Python (ISLP)",
+     "url": "https://www.statlearning.com/",
+     "confianza": "verificado",
+     "nivel": "intermedio-avanzado",
+     "tipo": "libro PDF gratis + labs",
+     "por_que": "PDF gratis (ediciones R y Python). Statistical/machine learning: regresion, clasificacion, validacion, arboles, SVM. Edicion Python con paquete ISLP. Referencia clave compartida entre Research y Synapse (AI engineer): base de ML estadistico riguroso.",
+     "autor_canal": "James, Witten, Hastie, Tibshirani, Taylor"
+    },
+    {
+     "titulo": "Program Evaluation & Causal Inference con R — Andrew Heiss",
+     "url": "https://evalsp25.classes.andrewheiss.com/",
+     "confianza": "verificado",
+     "nivel": "intermedio-avanzado",
+     "tipo": "curso online (web + videos + labs)",
+     "por_que": "Curso de posgrado completo y gratis (Georgia State): DAGs, diff-in-diff, RDD, variables instrumentales, todo con R. Une diseno de estudios, inferencia causal y codigo: el puente perfecto Research <-> AI engineering para Synapse.",
+     "autor_canal": "Andrew Heiss"
+    },
+    {
+     "titulo": "Writing in the Sciences (Stanford) — Kristin Sainani",
+     "url": "https://www.coursera.org/learn/sciwrite",
+     "confianza": "verificado",
+     "nivel": "principiante-intermedio",
+     "tipo": "curso online (audit gratis)",
+     "por_que": "El curso de escritura cientifica mas reconocido del mundo, auditable GRATIS. Cubre todo el ciclo: principios de escritura clara, estructura del manuscrito, metodos/resultados, peer review, etica y como evitar revistas depredadoras. 4.9/5 con ~10.000 resenas. Punto de partida #1 para publicar.",
+     "autor_canal": "Dra. Kristin Sainani — Stanford University"
+    },
+    {
+     "titulo": "Academic Phrasebank (University of Manchester)",
+     "url": "https://www.phrasebank.manchester.ac.uk/",
+     "confianza": "verificado",
+     "nivel": "todos los niveles",
+     "tipo": "herramienta de referencia",
+     "por_que": "Cientos de plantillas de frases academicas organizadas por seccion del paper (intro, metodos, resultados, discusion, conclusiones). Gratis online + PDF. Indispensable para escribir en ingles a nivel publicacion siendo no-nativo.",
+     "autor_canal": "University of Manchester"
+    },
+    {
+     "titulo": "Ten Simple Rules for Structuring Papers (Mensh & Kording)",
+     "url": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005619",
+     "confianza": "verificado",
+     "nivel": "intermedio",
+     "tipo": "articulo metodologico (open access)",
+     "por_que": "El mejor articulo CORTO (~30 min) sobre como estructurar un paper para que editores y reviewers entiendan tu contribucion. Open access, altisimo retorno. Lectura obligatoria antes de tu primer manuscrito serio. Parte de la coleccion 'Ten Simple Rules' de PLOS.",
+     "autor_canal": "Brett Mensh & Konrad Kording — PLOS Computational Biology"
+    },
+    {
+     "titulo": "NIH IPPCR — Introduction to the Principles and Practice of Clinical Research",
+     "url": "https://ocreco.od.nih.gov/courses/ippcr.html",
+     "confianza": "verificado",
+     "nivel": "principiante-intermedio",
+     "tipo": "curso online gratis (certificado opcional)",
+     "por_que": "Estandar de oro gratuito del NIH (registro 2025-2026 abierto). Lectures grabadas + foro. Curriculo completo de investigacion clinica: diseno de estudios, medicion y estadistica, etica/regulatorio, protocolos y comunicacion de resultados.",
+     "autor_canal": "NIH OCRECO"
+    },
+    {
+     "titulo": "Zotero — gestor de referencias gratis y open-source",
+     "url": "https://www.zotero.org/",
+     "confianza": "verificado",
+     "nivel": "principiante",
+     "tipo": "gestor de referencias",
+     "por_que": "Mejor opcion gratis: referencias ilimitadas, 7.000+ estilos, integracion Word/LibreOffice/Google Docs, captura web de un clic, conecta con ResearchRabbit y OSF. Pilar del stack moderno frente a Mendeley en declive.",
+     "autor_canal": "Corporation for Digital Scholarship"
+    },
+    {
+     "titulo": "OpenAlex — catalogo abierto de literatura cientifica + API",
+     "url": "https://openalex.org",
+     "confianza": "verificado",
+     "nivel": "intermedio",
+     "tipo": "base de datos / API",
+     "por_que": "Reemplazo abierto de Microsoft Academic/Scopus: ~250M obras, CC0, base del Leiden Ranking 2025. API programable (ideal para Synapse: pipelines de literatura). Verificar pricing/API key gratis en developers.openalex.org antes de automatizar.",
+     "autor_canal": "OurResearch / OpenAlex"
+    },
+    {
+     "titulo": "Rayyan — cribado colaborativo de revisiones sistematicas con IA",
+     "url": "https://www.rayyan.ai/",
+     "confianza": "estable",
+     "nivel": "intermedio",
+     "tipo": "herramienta de revision sistematica",
+     "por_que": "Mejor opcion gratuita para cribar titulos/resumenes en equipo: deduplicacion, predicciones de relevancia con IA, cribado ciego entre revisores, diagrama PRISMA. Cubre el gap de cribar a mano en Excel. Nota: algunas funciones IA son de pago, el cribado core sigue gratis.",
+     "autor_canal": "Rayyan Systems / QCRI"
+    },
+    {
+     "titulo": "metafor — paquete de R para meta-analisis",
+     "url": "https://www.metafor-project.org/",
+     "confianza": "verificado",
+     "nivel": "avanzado",
+     "tipo": "paquete R (open source)",
+     "por_que": "Estandar de oro libre para meta-analisis reproducible: efectos fijos/aleatorios/mixtos, meta-regresion, forest/funnel/Baujat plots. 2.1M+ descargas. Para no-programadores: JASP o jamovi (modulo MAJOR) lo usan por detras.",
+     "autor_canal": "Wolfgang Viechtbauer"
+    },
+    {
+     "titulo": "OSF (Open Science Framework) — ciclo completo de research",
+     "url": "https://www.cos.io/products/osf",
+     "confianza": "verificado",
+     "nivel": "intermedio",
+     "tipo": "plataforma de ciencia abierta",
+     "por_que": "Gratis. Preregistro de hipotesis/protocolo (evita HARKing/p-hacking), gestion de datos, colaboracion, DOIs y conexion a GitHub/Zotero/ORCID. Cubre el gap de preregistro y reproducibilidad que casi ningun plan incluye.",
+     "autor_canal": "Center for Open Science"
+    },
+    {
+     "titulo": "StatQuest with Josh Starmer (YouTube)",
+     "url": "https://www.youtube.com/c/joshstarmer",
+     "confianza": "verificado",
+     "nivel": "principiante-intermedio",
+     "tipo": "canal de video",
+     "por_que": "El mejor canal gratuito para intuicion visual de estadistica y machine learning (p-valores, regresion, PCA, redes neuronales). Ideal para entender el 'por que' antes de codificar. Doble uso Research + Synapse (AI engineer).",
+     "autor_canal": "Josh Starmer"
+    },
+    {
+     "titulo": "riskofbias.info — RoB 2, ROBINS-I v2 + AMSTAR-2 / GRADE",
+     "url": "https://www.riskofbias.info/",
+     "confianza": "verificado",
+     "nivel": "avanzado",
+     "tipo": "herramientas de evaluacion de sesgo",
+     "por_que": "Hub oficial de las herramientas de referencia para riesgo de sesgo: RoB 2 (ensayos, plantilla Excel) y ROBINS-I v2 (no aleatorizados, actualizado 2025 con algoritmos de juicio). Combinar con AMSTAR-2 (amstar.ca, calidad de RS) y GRADEpro (certeza de la evidencia).",
+     "autor_canal": "Cochrane Bias Methods Group"
+    }
+   ],
+   "acciones": [
+    "FUNDAMENTO (semanas 1-4): empezar 'Writing in the Sciences' de Stanford (audit gratis) en paralelo con 'R for Data Science 2e' + The Epidemiologist R Handbook. Meta: poder leer/escribir un paper y manipular datos de salud en R. Anclar al bloque diario de Research del Calendar.",
+    "METODOLOGIA DE ELITE (semanas 5-10): trabajar BBR de Harrell + 'Causal Inference: What If' (Hernan/Robins) con su codigo. Esto es lo que eleva el plan a TOP: metodos modernos, inferencia causal y Target Trial Emulation. Reforzar intuicion con StatQuest cuando un concepto cueste.",
+    "GUIAS DE REPORTE COMO CHECKLIST VIVO: descargar de EQUATOR la guia que aplique a cada estudio (CONSORT 2025 ensayos, STROBE observacionales, PRISMA revisiones) y aplicarla DESDE el diseno, no al final. Tener gtsummary configurado para generar la Table 1 publication-ready.",
+    "MONTAR EL STACK MODERNO YA: instalar Zotero (gestor), conectar OSF + ORCID, crear repo Git/GitHub para manuscrito y codigo de analisis. Definir flujo reproducible con R/Quarto (R Workflow de Harrell) o Python. Esto cierra la capa de ciencia abierta que casi todos olvidan.",
+    "PROTOCOLO ANTI-ALUCINACION DE CITAS (regla fija del plan): toda cita generada por Elicit/Consensus/SciSpace/cualquier LLM se verifica manualmente por DOI/PMID en la fuente primaria (PubMed/OpenAlex) antes de entrar al plan. Los LLM fabrican ~36% de citas; RAG aun 3-13%.",
+    "PREREGISTRO + BUSQUEDA REPRODUCIBLE: antes de recoger datos, registrar hipotesis y protocolo en OSF Registrations (PROSPERO si es revision sistematica). Guardar siempre las queries booleanas + terminos MeSH + fecha, no solo los resultados, para poder re-correr y auditar.",
+    "PIPELINE DE REVISION SISTEMATICA: registrar en PROSPERO, cribar en Rayyan (no en Excel), evaluar sesgo con RoB 2 / ROBINS-I v2 / AMSTAR-2, certeza con GRADE, meta-analisis con metafor (o JASP/jamovi sin codigo). Curso introductorio: Johns Hopkins en Coursera (audit gratis).",
+    "PUENTE RESEARCH -> SYNAPSE (AI engineer TOP): tratar ISLP (statistical learning en Python), el curso de Andrew Heiss (causal inference con codigo) y los pipelines reproducibles como temas COMPARTIDOS entre ambas secciones. Dominar statistical learning + inferencia causal + flujo reproducible/Git es lo que separa a un AI engineer de elite del que solo llama APIs.",
+    "PUBLICACION: tener a mano Academic Phrasebank (Manchester) al escribir y leer 'Ten Simple Rules for Structuring Papers' antes del primer manuscrito. Considerar mentoria 1-a-1 gratuita de AuthorAID (disenada para LatAm) para revision de tu primer paper.",
+    "CERRAR GAPS PENDIENTES en futuras tandas: (a) datasets clinicos abiertos para practica guiada (MIMIC, NHANES); (b) power analysis / tamano muestral (G*Power, paquetes pwr/WebPower); (c) bioestadistica bayesiana (Statistical Rethinking de McElreath, lecturas en YouTube gratis); (d) buscar el unico equivalente de elite en espanol que falta (statsthinking21 tiene version ES como base general)."
+   ]
+  },
+  {
+   "area": "Derma",
+   "resumen": "Estado del arte 2025-2026 en Dermatología (para MIR/USMLE): el ecosistema GRATIS y verificado ya es de nivel élite y se organiza en 5 capas que se refuerzan entre sí. (1) ATLAS DE IMAGEN: DermNet (23-25k imágenes, A-Z, licencia CC BY-NC-ND para uso educativo, vivo \"© 2026\") es el rey del contenido abierto; Atlas de Freire da Silva (12.889 img) y, en español, Dermapixel (Rosa Taberner, 7.000+ img, casos semanales) y Dermatoweb (6.800+ img). (2) DERMATOSCOPIA: Dermoscopedia (wiki oficial de la IDS, CC, actualizada mar-2026) es el estándar de oro — todos los algoritmos (two-step, pattern analysis, ABCD, Menzies, 7-point/3-point); complementado por Dermoscopy Atlas (AID/SCCANZ, 433 dx) y la serie de Ian McColl (vídeos ~7 min, ideales para huecos de 30 min). (3) DERMATOPATOLOGÍA: el \"Dermpath MEGA Index\" de Jerad Gardner (curso gratis nivel fellowship: todas sus video-lectures + slides digitales + board review) y el Dermatopathology Interactive Atlas de Boston Univ. (5.000+ img, 44 caps, quizzes de certificación) cubren el dominio profundo. (4) PIEL DE COLOR / SKIN OF COLOR (gap estructural de Fitzpatrick clásico): Mind the Gap (PDF gratis CC BY-SA), Full Spectrum/Inclusive Atlas (JDD, 1.000+ img side-by-side, 110+ condiciones) y Skin Deep (pediátrico). (5) TEXTO/REFERENCIA: StatPearls (NCBI, 100% libre CC) como alternativa gratis a Bolognia/Fitzpatrick. Para repaso rápido nivel USMLE, la playlist de Lecturio y el canal Doctorly (dos dermatólogos doble-board) son gratis y de alto valor. GAPS del plan clásico frente al estado del arte que el plan Derma debe cerrar: (a) IA en dermatología — interpretar/auditar outputs de CNN y LLM multimodales (SkinGPT-4, GPT-4o) y sus sesgos por subrepresentación de tonos oscuros; (b) skin of color explícito; (c) terapéutica 2025 (inhibidores JAK tópicos/sistémicos + biológicos nuevos: ruxolitinib pediátrico, delgocitinib, roflumilast espuma, expansiones dupilumab/lebrikizumab, JAK para vitíligo/alopecia areata, con sus black box warnings); (d) teledermatología (store-and-forward, guías 2025); (e) dermatopatología digital. Lo PREMIUM (ProMIR, AccessDerma, VisualDx, Derm101) es de pago/institucional — ProMIR y AccessDerma YA están integrados en la app (núcleo del plan); lo abierto fuerte se debe linkar como complemento gratuito átomo-a-átomo. Para la app: las imágenes DermNet son CC BY-NC-ND (citar y enlazar; NO entrenar IA ni quitar marca de agua) — clave si la sección monetiza.",
+   "referentes_top": [
+    "Dra. Rosa Taberner — Dermapixel (referente #1 en español para razonamiento diagnóstico, pensado para residentes/MIR; 1 caso real/semana los sábados)",
+    "Jerad M. Gardner, MD (Geisinger) — referente mundial de dermatopatología abierta; su Dermpath MEGA Index es un curso gratis nivel fellowship",
+    "International Dermoscopy Society (Ralph Braun et al.) — Dermoscopedia, estándar de oro gratuito de dermatoscopia (membresía IDS gratis, e-Learning en español)",
+    "Dr. Muneeb Shah & Dr. Luke Maxfield — canal Doctorly (los dos dermatólogos doble-board más fuertes para mezcla clínica + explainers USMLE/COMLEX)",
+    "New Zealand Dermatological Society — DermNet, el mayor recurso de imagen abierto del mundo",
+    "Malone Mukwende et al. (St George's, Londres) — Mind the Gap, referente del movimiento skin of color",
+    "Dr. Ian McColl (AID/Skin Cancer College ANZ) — 'Dermoscopy Made Simple', mejor serie de vídeo corto de dermatoscopia",
+    "Jag Bhawan, Purnima Sau, Hugh Byers (Boston University) — Dermatopathology Interactive Atlas",
+    "Dra. Leire Barrutia — Dermisphere (divulgación dermatológica rigurosa en español, YouTube)"
+   ],
+   "recursos_top": [
+    {
+     "titulo": "DermNet (NZ) — Atlas A-Z e Image Library",
+     "url": "https://dermnetnz.org/image-library",
+     "tipo": "atlas de imagen / banco clínico",
+     "nivel": "estudiante-residente",
+     "confianza": "verificado",
+     "por_que": "El mayor atlas gratuito del mundo (23-25k imágenes, 2.500+ tópicos, fichas A-Z, casos y quizzes), revisado por dermatólogos, vivo '© DermNet 2026'. Filtros por condición, localización, tipo de lesión, edad, sexo y tono de piel. Base imprescindible para spot-diagnosis tipo MIR. Imágenes con marca de agua libres para uso educativo bajo CC BY-NC-ND 4.0 (citar/enlazar; NO entrenar IA ni quitar marca — relevante si la app monetiza).",
+     "autor_canal": "New Zealand Dermatological Society"
+    },
+    {
+     "titulo": "Dermoscopedia — wiki oficial de la International Dermoscopy Society",
+     "url": "https://dermoscopedia.org/",
+     "tipo": "plataforma educativa / algoritmos de dermatoscopia",
+     "nivel": "residente-avanzado",
+     "confianza": "verificado",
+     "por_que": "Estándar de oro GRATUITO (Creative Commons) para dermatoscopia, verificado actualizado mar-2026. Cubre todos los algoritmos clave: two-step clásico/revisado, pattern analysis, ABCD, Menzies, 7-point/3-point checklist, CASH. Membresía IDS gratis con e-Learning (disponible en español). Clave para nevus/melanoma en el MIR.",
+     "autor_canal": "International Dermoscopy Society (Ralph Braun et al.)"
+    },
+    {
+     "titulo": "Dermapixel — Blog de Dermatología Cotidiana (Dra. Rosa Taberner)",
+     "url": "https://www.dermapixel.com/",
+     "tipo": "blog / casos clínicos en español",
+     "nivel": "residente-MIR",
+     "confianza": "verificado",
+     "por_que": "El recurso libre más completo en español: 7.000+ imágenes clasificadas, 60+ pares clínico-dermatoscópicos, casos clínicos reales semanales (sábados) pensados para residentes, protocolos y ~100 vídeos quirúrgicos. Verificado activo (entradas ene-2026). Ideal para entrenar razonamiento diagnóstico paso a paso en español.",
+     "autor_canal": "Dra. Rosa Taberner"
+    },
+    {
+     "titulo": "Dermatopathology MEGA Index (KiKo) — Jerad Gardner, MD",
+     "url": "https://kikoxp.com/posts/5084/public",
+     "tipo": "biblioteca de vídeo + slides digitales + board review",
+     "nivel": "residente-fellow",
+     "confianza": "estable",
+     "por_que": "El recurso #1 GRATIS para dominio profundo de dermatopatología: el autor lo concibe como un curso gratuito nivel fellowship, agrega TODAS sus video-lecciones, board review, láminas digitales, fotos y reportes modelo organizados por tema. Referenciado en revisiones JAAD/PMC. Nota: la URL devolvió HTTP 403 a fetch automático — abrir en navegador real (su canal YouTube es complemento directo).",
+     "autor_canal": "Jerad M. Gardner, MD (Geisinger)"
+    },
+    {
+     "titulo": "Dermatopathology Interactive Atlas (Boston University) — 2ª ed.",
+     "url": "https://www.dermpathatlas.com/",
+     "tipo": "atlas interactivo + quizzes de certificación",
+     "nivel": "intermedio-avanzado",
+     "confianza": "verificado",
+     "por_que": "Verificado gratuito: 5.000+ imágenes (clínicas + microfotografías), 44 capítulos, 1.000 temas y quizzes por capítulo orientados a examen de certificación. Cierra el gap de dermatopatología digital/avanzada y sirve como autoevaluación estructurada y correlación clínico-histológica.",
+     "autor_canal": "Jag Bhawan, Purnima Sau, Hugh R. Byers (BU School of Medicine)"
+    },
+    {
+     "titulo": "StatPearls — Dermatología (NCBI Bookshelf)",
+     "url": "https://www.ncbi.nlm.nih.gov/books/NBK430685/",
+     "tipo": "libro / referencia teórica",
+     "nivel": "estudiante-residente",
+     "confianza": "verificado",
+     "por_que": "Texto de referencia 100% GRATIS (Creative Commons, NLM/NIH), cobertura dermatológica amplia y actualizada. La mejor alternativa libre a Bolognia/Fitzpatrick (que son de pago) para repasar fisiopatología y manejo de cara al MIR/USMLE.",
+     "autor_canal": "StatPearls / NCBI Bookshelf"
+    },
+    {
+     "titulo": "Mind the Gap — Handbook of Clinical Signs in Black and Brown Skin (PDF)",
+     "url": "https://www.blackandbrownskin.co.uk/mindthegap",
+     "tipo": "handbook PDF gratuito",
+     "nivel": "básico-clínico",
+     "confianza": "verificado",
+     "por_que": "Manual gratis (CC BY-SA 4.0; copia archivada en sgul.figshare.com) de cómo cambian los signos clínicos y los descriptores en piel negra y morena. Cierra directamente el gap de skin of color, estructural en la formación clásica basada en Fitzpatrick (piel clara).",
+     "autor_canal": "Malone Mukwende et al. (St George's, University of London)"
+    },
+    {
+     "titulo": "Full Spectrum of Dermatology — Inclusive Atlas (DREAM/JDD)",
+     "url": "https://jddonline.com/project-atlas/",
+     "tipo": "atlas piel de color (side-by-side)",
+     "nivel": "estudiante-especialista",
+     "confianza": "verificado",
+     "por_que": "1.000+ imágenes de pacientes reales en 110+ condiciones comparadas lado a lado en TODOS los fototipos, con comentario sobre diferencias por tono. Gratis para uso educativo no comercial. El mejor atlas para cubrir fototipos IV-VI subrepresentados.",
+     "autor_canal": "DREAM Initiative / Journal of Drugs in Dermatology"
+    },
+    {
+     "titulo": "DermNet — Dermoscopy CME course (18 módulos) y Quizzes",
+     "url": "https://dermnetnz.org/cme/dermoscopy-course",
+     "tipo": "curso CME modular + autoevaluación",
+     "nivel": "básico-avanzado",
+     "confianza": "verificado",
+     "por_que": "Curso gratuito de 18 módulos: desde checklist de 3 puntos y pattern analysis hasta lesiones melanocíticas/no melanocíticas, dermatoscopia ungueal y correlación dermatoscopia-histología (clave para dominio profundo). Más cursos-quiz de 10 semanas (principiante/avanzado) para entrenar spot-diagnosis tipo MIR.",
+     "autor_canal": "DermNet (NZ) / Univ. Auckland"
+    },
+    {
+     "titulo": "Doctorly — canal YouTube (Dr. Muneeb Shah + Dr. Luke Maxfield)",
+     "url": "https://www.youtube.com/doctorly",
+     "tipo": "vídeo / canal",
+     "nivel": "estudiante-residente",
+     "confianza": "verificado",
+     "por_que": "El canal de dermatología más fuerte que mezcla contenido clínico serio con explainers nivel USMLE/COMLEX. Dos dermatólogos doble-board, gratis, alto valor. Complemento perfecto en vídeo a ProMIR/AccessDerma.",
+     "autor_canal": "Muneeb Shah & Luke Maxfield"
+    },
+    {
+     "titulo": "Lecturio — Dermatology USMLE Prep (playlist YouTube pública)",
+     "url": "https://www.youtube.com/playlist?list=PLVnjTkEwv-uNH9kXERRNJBT1V-TbMAHqV",
+     "tipo": "vídeo / playlist",
+     "nivel": "estudiante-USMLE",
+     "confianza": "verificado",
+     "por_que": "Playlist gratuita con vídeos cortos nivel USMLE (acné, rosácea, psoriasis, dermatitis...). Repaso rápido y limpio antes de profundizar; encaja en huecos de estudio.",
+     "autor_canal": "Lecturio Medical"
+    },
+    {
+     "titulo": "Dermoscopy / Dermatoscopy Made Simple — Ian McColl (YouTube + blog)",
+     "url": "https://dermatoscopymadesimple.blogspot.com/p/youtube-videos.html",
+     "tipo": "serie de vídeos (~7 min) + blog",
+     "nivel": "básico-intermedio",
+     "confianza": "verificado",
+     "por_que": "Serie gratuita muy didáctica: terminología kittleriana, estructuras, vasos y diagnósticos (melanoma, BCC). Vídeos cortos ideales para huecos de 30 min, perfectos para construir patrón-reconocimiento dermatoscópico.",
+     "autor_canal": "Dr. Ian McColl (AID / Skin Cancer College ANZ)"
+    },
+    {
+     "titulo": "Atlas Dermatológico (Samuel Freire da Silva)",
+     "url": "https://atlasdermatologico.com.br/",
+     "tipo": "atlas de imagen",
+     "nivel": "estudiante-residente",
+     "confianza": "verificado",
+     "por_que": "12.889 imágenes verificadas, gratis para uso no comercial (citando la web). Navegable por enfermedad, fuerte en casos tropicales/infecciosos. Banco visual complementario a DermNet.",
+     "autor_canal": "Dr. Samuel Freire da Silva"
+    },
+    {
+     "titulo": "Dermatology Times — 2025 Year in Review: Drug Approvals (JAK + biológicos)",
+     "url": "https://www.dermatologytimes.com/view/dermatology-times-2025-year-in-review-drug-approvals",
+     "tipo": "artículo / novedades terapéuticas",
+     "nivel": "intermedio",
+     "confianza": "verificado",
+     "por_que": "Resumen de aprobaciones/ampliaciones FDA 2025 (ruxolitinib pediátrico, delgocitinib para eccema de manos, roflumilast espuma, expansiones dupilumab/lebrikizumab, JAK para vitíligo) con sus black box warnings. Cierra el gap de terapéutica moderna que el plan clásico (corticoides/metotrexato) no cubre.",
+     "autor_canal": "Dermatology Times"
+    },
+    {
+     "titulo": "Dermatoweb.net — atlas docente en español",
+     "url": "https://www.dermatoweb.net/",
+     "tipo": "atlas / plataforma educativa",
+     "nivel": "estudiante-residente",
+     "confianza": "estable",
+     "por_que": "6.800+ imágenes por diagnóstico/localización, dermatoscópicas con correlación clínica, ~200 casos problema, protocolos terapéuticos y 100 vídeos quirúrgicos, estructurado según temario de facultad. Verificar certificado HTTPS al integrar.",
+     "autor_canal": "Hospital Arnau de Vilanova (Lleida)"
+    },
+    {
+     "titulo": "SkinGPT-4 / LLM multimodales en dermatología (Nature Communications, 2024)",
+     "url": "https://www.nature.com/articles/s41467-024-50043-3",
+     "tipo": "artículo de investigación (open access)",
+     "nivel": "avanzado",
+     "confianza": "verificado",
+     "por_que": "Paper open-access sobre un LLM multimodal dermatológico (entrenado con 52.929 imágenes). Enseña cómo funcionan, valen y fallan estos sistemas — base para el gap de IA y para evaluar críticamente outputs de IA antes de confiar clínicamente. Cruza con el objetivo Synapse (AI engineer): caso de estudio real de modelo multimodal médico.",
+     "autor_canal": "Nature Communications"
+    }
+   ],
+   "acciones": [
+    "Linkar átomo-a-átomo el plan Derma (dermaDailyPlan.ts) a DermNet image-library y a las fichas A-Z como capa GRATIS que complementa ProMIR/AccessDerma: por cada átomo, un deep-link DermNet de la condición. Antes de embeber imágenes en la app, respetar CC BY-NC-ND 4.0 (citar + enlazar a DermNet, NO entrenar IA ni quitar marca de agua) — revisar términos por recurso si la sección llega a monetizar.",
+    "Crear un sub-bloque de DERMATOSCOPIA en el plan: Dermoscopedia como referencia de algoritmos + serie de Ian McColl (vídeos ~7 min) en los huecos de 30 min + DermNet Dermoscopy CME (18 módulos) como curso estructurado. Cierra el gap dermatoscopia básica → práctica actual y refuerza melanoma/nevus, alto rendimiento MIR.",
+    "Añadir un bloque de DERMATOPATOLOGÍA para dominio profundo: Dermpath MEGA Index de Gardner (verificar acceso en navegador real, dio 403 a fetch) + Dermatopathology Interactive Atlas de BU (5.000+ img, quizzes de certificación) + PathElective como rampa de entrada. Correlacionar con la dermatoscopia (dermatoscopia↔histología se refuerzan).",
+    "Insertar una capa SKIN OF COLOR transversal (gap estructural): Mind the Gap (PDF), Full Spectrum/Inclusive Atlas y Skin Deep (pediátrico). Marcar en cada átomo cómo cambian eritema/cianosis/signos inflamatorios en fototipos IV-VI — diferenciador frente a la formación clásica basada en piel clara.",
+    "Añadir un átomo o módulo de TERAPÉUTICA 2025 (estado del arte): inhibidores JAK tópicos/sistémicos y biológicos nuevos con sus black box warnings, anclado en el Dermatology Times 2025 Year in Review. Complementar con el hub de guías AAD (vigentes ~2021; grandes actualizaciones 2026), siguiendo literatura primaria en el interín.",
+    "Reforzar el componente en ESPAÑOL del plan con Dermapixel (casos semanales, residentes), Dermatoweb (verificar HTTPS) y los e-Learning de la IDS en español; añadir StatPearls como referencia teórica gratis (alternativa a Bolognia/Fitzpatrick de pago).",
+    "Añadir un átomo de FRONTERA IA EN DERMATOLOGÍA (puente Derma↔Synapse): leer SkinGPT-4 (Nature Comms) y la revisión sistemática 2025 sobre precisión/limitaciones de IA dermatológica; enseñar a interpretar/auditar outputs de CNN y LLM multimodales y reconocer su sesgo por subrepresentación de tonos oscuros. Doble valor: cierra gap clínico y alimenta el objetivo de AI engineer de Synapse con un caso multimodal médico real.",
+    "Verificación pendiente antes de hardcodear en la app: confirmar handle exacto del canal Doctorly y Dermisphere; abrir en navegador kikoxp.com (Dermpath MEGA Index, dio 403); confirmar si AAD Basic Dermatology Curriculum es 100% gratis sin membresía; revisar certificado HTTPS de Dermatoweb. Buscar un q-bank tipo test gratis en español de Derma (gap: lo gratis en español es cualitativo, no test masivo) — mientras tanto, usar los quizzes de DermNet."
+   ]
+  }
+ ]
+}

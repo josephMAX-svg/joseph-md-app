@@ -9,6 +9,7 @@ import {
   RESEARCH_JOURNALS, RESEARCH_PIPELINE, PIPELINE_NOTA, RESEARCH_HORARIO, RESEARCH_TIMELINE,
   RESEARCH_ADVERTENCIAS, VUELTAS, PRIORIDAD_COLOR, diaEstudioTipo, Prioridad,
 } from '../../lib/researchData';
+import { RESEARCH_RECURSOS_TOP } from '../../lib/researchDailyPlan';
 import ResearchTodayPlan from './ResearchTodayPlan';
 import ResearchAgenticSystem from './ResearchAgenticSystem';
 import ResearchLinesExplorer from './ResearchLinesExplorer';
@@ -120,6 +121,34 @@ function PanelView() {
                 {m.links.map((l, j) => (
                   <TouchableOpacity key={j} activeOpacity={0.8} onPress={() => openUrl(l.url)} style={st.link}>
                     <Text style={st.linkText} numberOfLines={1}>🔗 {l.label} ↗</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </View>
+          </FadeUp>
+        ))}
+      </View>
+
+      {/* ★ TOP 2026 — recursos de élite verificados (aditivo) */}
+      <SectionLabel>★ TOP 2026 · recursos de élite GRATIS verificados (por capa del ciclo)</SectionLabel>
+      <View style={{ marginBottom: Spacing.xl }}>
+        {RESEARCH_RECURSOS_TOP.map((c, i) => (
+          <FadeUp key={i} delay={i * 50}>
+            <View style={{ marginBottom: Spacing.md }}>
+              <Text style={st.recTopCapa}>{c.capa}</Text>
+              <View style={{ gap: Spacing.sm }}>
+                {c.items.map((it, j) => (
+                  <TouchableOpacity key={j} activeOpacity={0.85} onPress={() => openUrl(it.url)} style={st.recTopCard}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 6 }}>
+                      <Text style={st.recTopName} numberOfLines={2}>{it.label} ↗</Text>
+                      <Chip label={it.confianza} color={it.confianza === 'verificado' ? Colors.green : Colors.amber} small />
+                    </View>
+                    <Text style={st.recTopMeta}>{it.autor}</Text>
+                    <Text style={st.recTopWhy}>{it.porQue}</Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 6, flexWrap: 'wrap' }}>
+                      <Chip label={it.tipo} color={Colors.muted} small />
+                      <Chip label={it.nivel} color={Colors.blue} small />
+                    </View>
                   </TouchableOpacity>
                 ))}
               </View>
@@ -299,4 +328,10 @@ const st = StyleSheet.create({
 
   link: { backgroundColor: 'rgba(255,255,255,0.04)', borderRadius: BorderRadius.md, borderWidth: 1, borderColor: DesktopColors.glassBorder, paddingVertical: 5, paddingHorizontal: 9, maxWidth: '100%' },
   linkText: { fontSize: FontSize.labelSm, color: TEAL, fontWeight: '500' },
+
+  recTopCapa: { fontSize: FontSize.labelMd, fontWeight: '800', color: TEAL, letterSpacing: 0.3, marginBottom: 8, textTransform: 'uppercase' as const },
+  recTopCard: { ...cardBase, padding: Spacing.md, borderLeftWidth: 3, borderLeftColor: TEAL },
+  recTopName: { flex: 1, minWidth: 180, fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface },
+  recTopMeta: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 3 },
+  recTopWhy: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 6, lineHeight: 16 },
 });

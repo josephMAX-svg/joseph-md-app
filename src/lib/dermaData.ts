@@ -109,10 +109,32 @@ export const DERMA_BLOQUES: BloqueDerma[] = [
 
 export interface RecursoDerma { categoria: string; items: { label: string; url: string; nota?: string; gated?: boolean }[] }
 export const DERMA_RECURSOS: RecursoDerma[] = [
+  { categoria: '★ TOP 2026 (verificado)', items: [
+    { label: 'DermNet — Image Library (23–25k img, filtra por tono de piel)', url: 'https://dermnetnz.org/image-library', nota: 'El mayor atlas gratis del mundo, vivo "© 2026". CC BY-NC-ND: citar/enlazar, NO entrenar IA ni quitar marca. Ideal spot-diagnosis MIR.' },
+    { label: 'Dermoscopedia — wiki oficial de la IDS', url: 'https://dermoscopedia.org/', nota: 'Estándar de oro GRATIS de dermatoscopia (CC, act. mar-2026): two-step, pattern analysis, ABCD, Menzies, 7-point/3-point, CASH. Clave melanoma/nevus.' },
+    { label: 'DermNet — Dermoscopy CME course (18 módulos) + quizzes', url: 'https://dermnetnz.org/cme/dermoscopy-course', nota: 'Curso modular: de 3-point a melanocíticas/no melanocíticas, ungueal y correlación dermatoscopia↔histología. Spot-diagnosis tipo MIR.' },
+    { label: 'StatPearls — Dermatología (NCBI Bookshelf)', url: 'https://www.ncbi.nlm.nih.gov/books/NBK430685/', nota: 'Texto de referencia 100% gratis (CC, NLM/NIH). La mejor alternativa libre a Bolognia/Fitzpatrick para fisiopatología y manejo.' },
+    { label: 'Dermatopathology Interactive Atlas (Boston University)', url: 'https://www.dermpathatlas.com/', nota: '5.000+ img, 44 caps, quizzes de certificación. Cierra el gap de dermatopatología digital/avanzada (correlación clínico-histológica).' },
+    { label: 'Dermatology Times — 2025 Year in Review: Drug Approvals', url: 'https://www.dermatologytimes.com/view/dermatology-times-2025-year-in-review-drug-approvals', nota: 'Terapéutica 2025: JAK tópicos/sistémicos + biológicos (ruxolitinib pediátrico, delgocitinib, roflumilast, dupilumab/lebrikizumab) con sus black box warnings.' },
+  ] },
+  { categoria: 'Piel de color / Skin of color', items: [
+    { label: 'Mind the Gap — signos en piel negra y morena (PDF)', url: 'https://www.blackandbrownskin.co.uk/mindthegap', nota: 'Manual gratis (CC BY-SA): cómo cambian signos y descriptores en fototipos oscuros. Cierra el gap estructural de Fitzpatrick clásico.' },
+    { label: 'Full Spectrum / Inclusive Atlas (DREAM·JDD)', url: 'https://jddonline.com/project-atlas/', nota: '1.000+ img reales en 110+ condiciones, side-by-side por fototipo. El mejor atlas para fototipos IV–VI subrepresentados.' },
+  ] },
   { categoria: 'Atlas e imágenes (gratis)', items: [
     { label: 'DermNet NZ — 23,000+ imágenes (tu atlas de cabecera)', url: 'https://dermnetnz.org/' },
     { label: 'DermNet · catálogo de imágenes', url: 'https://dermnetnz.org/image-catalogue' },
+    { label: 'Atlas Dermatológico — Freire da Silva (12,889 img)', url: 'https://atlasdermatologico.com.br/', nota: 'Gratis uso no comercial (citar la web). Fuerte en casos tropicales/infecciosos — banco visual complementario a DermNet.' },
     { label: 'DermWeb photo atlas', url: 'http://www.dermweb.com/photo_atlas/' },
+  ] },
+  { categoria: 'En español (gratis)', items: [
+    { label: 'Dermapixel — Dra. Rosa Taberner (casos semanales)', url: 'https://www.dermapixel.com/', nota: 'El recurso libre más completo en español para residentes/MIR: 7.000+ img, pares clínico-dermatoscópicos, 1 caso real/sábado. Activo ene-2026.' },
+    { label: 'Dermatoweb.net — atlas docente (Hospital Arnau de Vilanova)', url: 'https://www.dermatoweb.net/', nota: '6.800+ img por dx/localización, ~200 casos problema, protocolos y 100 vídeos quirúrgicos. Verificar HTTPS al integrar.' },
+  ] },
+  { categoria: 'Vídeo (gratis)', items: [
+    { label: 'Doctorly — Dr. Muneeb Shah + Dr. Luke Maxfield', url: 'https://www.youtube.com/doctorly', nota: 'Dos dermatólogos doble-board: clínica seria + explainers nivel USMLE/COMLEX. Complemento perfecto a ProMIR/AccessDerma.' },
+    { label: 'Lecturio — Dermatology USMLE Prep (playlist)', url: 'https://www.youtube.com/playlist?list=PLVnjTkEwv-uNH9kXERRNJBT1V-TbMAHqV', nota: 'Vídeos cortos nivel USMLE (acné, rosácea, psoriasis, dermatitis) — repaso rápido en huecos.' },
+    { label: 'Dermoscopy Made Simple — Ian McColl (~7 min/vídeo)', url: 'https://dermatoscopymadesimple.blogspot.com/p/youtube-videos.html', nota: 'Serie muy didáctica (terminología kittleriana, estructuras, vasos). Vídeos de ~7 min ideales para huecos de 30 min.' },
   ] },
   { categoria: 'Currículos estructurados (gratis)', items: [
     { label: 'AAD Basic Dermatology Curriculum (empieza aquí)', url: 'https://www.aad.org/education/basic-derm-curriculum' },
@@ -123,9 +145,12 @@ export const DERMA_RECURSOS: RecursoDerma[] = [
     { label: 'Krazy Kodachromes (GW · Friedman)', url: 'https://dermatologyinreview.com/krazy_kodachromes/' },
   ] },
   { categoria: 'Dermatopatología (gratis fuerte)', items: [
-    { label: 'Jerad Gardner — Dermpath MEGA Index (nivel fellowship)', url: 'https://kikoxp.com/posts/5084/public' },
+    { label: 'Jerad Gardner — Dermpath MEGA Index (nivel fellowship)', url: 'https://kikoxp.com/posts/5084/public', nota: 'Curso gratis nivel fellowship: TODAS sus video-lecciones + board review + láminas digitales + reportes modelo. Si da 403, abrir en navegador real (su canal YouTube es complemento).' },
     { label: 'PathElective — Dermatopathology', url: 'https://www.pathelective.com/derm-path-home' },
     { label: 'PathPresenter — Dermpath 100', url: 'https://www.pathpresenter.com/dermpath100/' },
+  ] },
+  { categoria: 'IA en dermatología (frontera · puente Synapse)', items: [
+    { label: 'SkinGPT-4 / LLM multimodales en derma (Nature Comms 2024)', url: 'https://www.nature.com/articles/s41467-024-50043-3', nota: 'Paper open-access (52.929 img): cómo funcionan, valen y FALLAN estos sistemas. Base para auditar outputs de CNN/LLM multimodales y su sesgo por subrepresentación de tonos oscuros. Caso real para el objetivo AI engineer de Synapse.' },
   ] },
   { categoria: 'Cirugía / Mohs / sutura', items: [
     { label: 'ACMS Webinars (anatomía, Mohs)', url: 'https://www.mohscollege.org/for-physicians/education/webinars', gated: true },
