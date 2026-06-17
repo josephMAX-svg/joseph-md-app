@@ -12,12 +12,12 @@ const dow=s=>fromISO(s).getUTCDay(); const wd=s=>WD[dow(s)]; const q=s=>"'"+Stri
 // 45 temas → 44 entradas: III-4 y III-7 fusionados (último bloque de estudio, ambos bloque III)
 const topics=['II-3','II-1','II-2','I-4','II-4','II-6','V-1','II-11','I-1','I-2','I-3','II-5','II-7','II-8','II-9','II-10','III-1','III-3','III-9','V-2','V-6','IV-1','I-5+I-6','I-7','I-8','I-9','I-11+I-12','II-12','II-13','III-2','III-5','III-6+III-10','III-8','IV-2','IV-3','IV-4','IV-5','IV-6','IV-7','V-3','V-7','V-10','I-10','III-4+III-7'];
 const sims=[];
-for(let i=1;i<=9;i++)sims.push(`QX Simulacro Virtual N°${String(i).padStart(2,'0')}`);
-['2025-I','2025-II','2026-I'].forEach(y=>sims.push(`ENCAPS oficial ${y} · banco QX`));
-['15-may','29-may','12-jun','26-jun','10-jul','24-jul','07-ago','21-ago'].forEach(d=>sims.push(`Theomed Simulacro ${d}`));
-['A-1','B-1','A-2','B-2'].forEach(t=>sims.push(`Theomed EXAMEN TIPO ${t}`));
-['2023-I','2023-II','2024-I','2024-II'].forEach(y=>sims.push(`ENCAPS oficial ${y} · autogestión`));
-for(let i=1;i<=7;i++)sims.push(`Simulacro propio / banco extra #${i}`);
+// FUENTES REALES VERIFICADAS (Chrome DevTools 17-jun: QxMedic 184 videoclases + Theomed). Sin filler.
+for(let i=1;i<=9;i++)sims.push(`QX · Simulacro Virtual N°${String(i).padStart(2,'0')}`);          // 9 simulacros completos QX (14-jun→23-ago)
+['2025-I','2025-II','2026-I'].forEach(y=>sims.push(`QX · ENCAPS oficial ${y} (banco real)`));      // 3 exámenes oficiales reales (banqueapp)
+['15-may','29-may','12-jun','26-jun','10-jul','24-jul','07-ago','21-ago'].forEach(d=>sims.push(`Theomed · Simulacro ${d}`)); // 8 simulacros Theomed (curso id 37)
+['Salud Pública','Investigación','Ética e Interculturalidad','Gestión de Servicios','Cuidado Integral','Salud Pública II','Investigación II','Gestión II','Cuidado Integral II'].forEach(a=>sims.push(`QX · EVA ${a}`)); // 9 Evaluaciones Virtuales Avanzadas QX
+['Salud Pública (5 ses.)','Ética (4)','Cuidado Integral (9)','Investigación (4)','Gestión (5)','mixto integral'].forEach(a=>sims.push(`QX · Banqueo ENCAPS ${a}`)); // 6 bloques de los 37 banqueos QX
 if(topics.length!==44||sims.length!==35)throw new Error('counts '+topics.length+'/'+sims.length);
 
 const START='2026-06-18', EXAM='2026-08-20';
