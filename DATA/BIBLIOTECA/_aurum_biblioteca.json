@@ -415,6 +415,1031 @@
      }
     }
    ]
+  },
+  {
+   "nivel": 7,
+   "label": "A&C · Fundamentos: mentalidad, relación y el referente gratis",
+   "objetivo": "Entender la base de su método (vender es conexion humana, no presion ni scripts) y empaparse de su contenido GRATIS de YouTube y del podcast. Aqui se construye la mentalidad del closer consultivo y las habilidades de relacion/persuasion etica que ellos predican.",
+   "libros": [
+    {
+     "titulo": "Canal Alfonso y Christian - A&C Sales Academy (YouTube gratis)",
+     "autor": "Alfonso Bastida y Christian Helmut",
+     "por_que": "Canal principal del referente. Aqui suben role-plays reales, llamadas evaluadas, tecnicas de conversion y la filosofia 'Learning by Doing'. Punto de partida obligado para ver su estilo y metodo de venta de alto valor en accion.",
+     "idioma": "es",
+     "existente": true,
+     "terminologia_clave": [
+      "Closer de ventas",
+      "Venta de alto valor (high-ticket)",
+      "Learning by Doing",
+      "Venta consultiva",
+      "Psicologia de compra"
+     ],
+     "audiolibro_youtube": {
+      "url": "https://www.youtube.com/user/alfonsoychristian",
+      "confianza": "estable"
+     },
+     "audiolibro_spotify": {
+      "url": "",
+      "confianza": "no_existe"
+     },
+     "compra": {
+      "tienda": "",
+      "url": ""
+     }
+    },
+    {
+     "titulo": "Podcast 'Ventas y Negociacion con Alfonso y Christian' (Spotify gratis)",
+     "autor": "Alfonso Bastida y Christian Helmut",
+     "por_que": "Su podcast oficial (4.9 estrellas). Episodios sobre tipos de compradores, llamada en frio, gestion del tiempo y prospeccion, y 'lo que hay detras de una venta de alto valor'. Ideal para consumir su metodologia en audio mientras se entrena.",
+     "idioma": "es",
+     "existente": true,
+     "terminologia_clave": [
+      "Tipos de compradores",
+      "Llamada en frio",
+      "Prospeccion",
+      "Venta de alto valor",
+      "Negociacion"
+     ],
+     "audiolibro_youtube": {
+      "url": "",
+      "confianza": "no_existe"
+     },
+     "audiolibro_spotify": {
+      "url": "https://open.spotify.com/show/1TWGwZeZZMrfWE4sgr74wu",
+      "confianza": "verificado"
+     },
+     "compra": {
+      "tienda": "",
+      "url": ""
+     }
+    },
+    {
+     "titulo": "Como ganar amigos e influir sobre las personas",
+     "autor": "Dale Carnegie",
+     "por_que": "Biblia de la relacion humana que sustenta su premisa central: la venta es conexion humana que la maquina no replica. Base de rapport, escucha y persuasion etica sobre la que montan toda su venta consultiva.",
+     "idioma": "es",
+     "existente": true,
+     "terminologia_clave": [
+      "Rapport",
+      "Despertar deseo en el otro",
+      "Aprecio honesto",
+      "Influencia",
+      "Escucha activa"
+     ],
+     "audiolibro_youtube": {
+      "url": "https://www.youtube.com/watch?v=jNh9uLtSClY",
+      "confianza": "estable"
+     },
+     "audiolibro_spotify": {
+      "url": "https://open.spotify.com/episode/6oNVEfBLKu1jaHh8gfJpXQ",
+      "confianza": "estable"
+     },
+     "compra": {
+      "tienda": "Amazon",
+      "url": "https://www.amazon.com/-/es/dp/8467033134"
+     }
+    }
+   ]
+  },
+  {
+   "nivel": 8,
+   "label": "A&C · El sistema de venta: preguntas, objeciones y cierre",
+   "objetivo": "Dominar el corazon de su metodo: dirigir la conversacion con preguntas, descubrir el dolor real del comprador, rebatir objeciones sin presion y cerrar. Combina su mejor contenido GRATIS de cierres/objeciones con los libros que enseñan esas mecanicas.",
+   "libros": [
+    {
+     "titulo": "Serie 'Cierres de Ventas / Objeciones' Partes 1-5 (YouTube gratis)",
+     "autor": "Alfonso Bastida y Christian Helmut",
+     "por_que": "Su contenido GRATIS mas valioso: una serie dedicada por completo a rebatir objeciones y cerrar sin parecer desesperado ni presionar. Es exactamente su framework de manejo de objeciones aplicado paso a paso.",
+     "idioma": "es",
+     "existente": true,
+     "terminologia_clave": [
+      "Manejo de objeciones",
+      "Cierre de ventas",
+      "Rebatir sin presion",
+      "No parecer desesperado",
+      "Conversion"
+     ],
+     "audiolibro_youtube": {
+      "url": "https://www.youtube.com/watch?v=dUN4nTPOJpI",
+      "confianza": "estable"
+     },
+     "audiolibro_spotify": {
+      "url": "",
+      "confianza": "no_existe"
+     },
+     "compra": {
+      "tienda": "",
+      "url": ""
+     }
+    },
+    {
+     "titulo": "El arte de hacer preguntas",
+     "autor": "Mario Borghino",
+     "por_que": "Encaja con el eje de su metodo: el poder no lo tiene quien mas habla sino quien dirige el dialogo con las preguntas correctas. Herramienta directa para el descubrimiento de dolor y la venta consultiva que ellos enseñan. En español nativo.",
+     "idioma": "es",
+     "existente": true,
+     "terminologia_clave": [
+      "Preguntas de alto nivel",
+      "Metodo socratico",
+      "Descubrimiento",
+      "Dirigir la conversacion",
+      "Diagnostico del cliente"
+     ],
+     "audiolibro_youtube": {
+      "url": "https://www.youtube.com/watch?v=7vPjsYdjZC8",
+      "confianza": "estable"
+     },
+     "audiolibro_spotify": {
+      "url": "https://open.spotify.com/episode/1DH1i6fDwgZGxHSlq0thep",
+      "confianza": "estable"
+     },
+     "compra": {
+      "tienda": "Amazon",
+      "url": "https://www.amazon.com/-/es/dp/6073151667"
+     }
+    },
+    {
+     "titulo": "El pequeño libro rojo de las ventas: 12,5 grandes secretos para vender mas",
+     "autor": "Jeffrey Gitomer",
+     "por_que": "Manual practico y directo de los principios del gran vendedor: vender el valor antes que el precio, hacer que el cliente quiera comprar, vender la confianza. Mismo enfoque pragmatico y sin relleno que predican Alfonso y Christian.",
+     "idioma": "es",
+     "existente": true,
+     "terminologia_clave": [
+      "Valor antes que precio",
+      "El cliente quiere comprar",
+      "Vender confianza",
+      "Actitud de venta",
+      "Persistencia"
+     ],
+     "audiolibro_youtube": {
+      "url": "https://www.youtube.com/watch?v=h07T_cowaSE",
+      "confianza": "incierto"
+     },
+     "audiolibro_spotify": {
+      "url": "",
+      "confianza": "incierto"
+     },
+     "compra": {
+      "tienda": "Amazon",
+      "url": "https://www.amazon.com/-/es/dp/841625379X"
+     }
+    }
+   ]
+  },
+  {
+   "nivel": 9,
+   "label": "A&C · Avanzado: venta de alto valor y conversion al maximo nivel",
+   "objetivo": "Llevar el cierre al terreno premium/high-ticket: webinars de venta en vivo, entrevistas largas con los fundadores y refuerzo del marco de venta intensiva. Para quien ya domina objeciones y quiere escalar conversion y ticket.",
+   "libros": [
+    {
+     "titulo": "Webinar 'Vive cerrando ventas desde tu casa' + entrevista Club 21 con David Escamilla (YouTube gratis)",
+     "autor": "Alfonso Bastida y Christian Helmut",
+     "por_que": "Contenido GRATIS de formato largo: un webinar completo donde despliegan su sistema de cierre remoto y una entrevista de fondo (Club 21) donde explican el porque detras de su academia y la venta de alto valor. Visión completa de su negocio y metodo.",
+     "idioma": "es",
+     "existente": true,
+     "terminologia_clave": [
+      "Cierre remoto",
+      "Venta desde casa",
+      "Alto valor",
+      "Sistema de cierre",
+      "Mentalidad del closer"
+     ],
+     "audiolibro_youtube": {
+      "url": "https://www.youtube.com/watch?v=f2jLjoLOOFQ",
+      "confianza": "estable"
+     },
+     "audiolibro_spotify": {
+      "url": "",
+      "confianza": "no_existe"
+     },
+     "compra": {
+      "tienda": "",
+      "url": ""
+     }
+    },
+    {
+     "titulo": "Vendes o vendes: Como salirte con la tuya en los negocios y en la vida",
+     "autor": "Grant Cardone",
+     "por_que": "Aporta el componente de intensidad y conviccion total en el cierre que complementa el lado consultivo de Alfonso y Christian: dominar el proceso, persistencia y certeza absoluta en la venta. (Cardone ya esta en el roster AURUM; se incluye aqui solo por ser pilar directo de la mentalidad de cierre intensivo que ellos refuerzan).",
+     "idioma": "es",
+     "existente": true,
+     "terminologia_clave": [
+      "Conviccion en el cierre",
+      "Dominio del proceso",
+      "Persistencia",
+      "Certeza",
+      "Venta intensiva"
+     ],
+     "audiolibro_youtube": {
+      "url": "https://www.youtube.com/watch?v=roKKJXqsOM0",
+      "confianza": "estable"
+     },
+     "audiolibro_spotify": {
+      "url": "https://open.spotify.com/episode/1wTuF3M8vUGkxgTt0mxcYu",
+      "confianza": "estable"
+     },
+     "compra": {
+      "tienda": "Amazon",
+      "url": "https://www.amazon.com/-/es/dp/6073128312"
+     }
+    }
+   ]
+  },
+  {
+   "nivel": 10,
+   "label": "Closers+ · B2B / venta consultiva de ticket alto (perfil Alfonso&Christian) — metodologia probada con corporativos reales",
+   "objetivo": "Anadir los tres metodologos de venta consultiva B2B mas citados que FALTAN en AURUM y que cubren el hueco mas critico de ALLPA: el comprador-a-distancia que dice 'lo voy a pensar'. Keenan ataca el problema antes que el producto (GAP); Dixon explica por que el cliente NO decide (indecision, no precio) y como desbloquearlo (JOLT) — esto es literalmente el playbook contra el 'lo voy a pensar' de terrenos; Weinberg da el sistema de prospeccion sin disculpas para llenar el pipeline. Los tres tienen clientes corporativos verificables (GE Healthcare, Intel, Verizon, Palo Alto Networks / multinacionales Fortune 500).",
+   "libros": [
+    {
+     "titulo": "Keenan — A Sales Guy (YouTube gratis)",
+     "autor": "Keenan (Jim Keenan)",
+     "por_que": "Canal OFICIAL de Keenan (sube video cada semana): role-plays, 'GAP SELLING EXPLAINED', llamadas reales en vivo y desgloses del metodo problem-centric — gratis. Mejor recurso para drillear un concepto de Gap por sesion (descubrimiento del gap, preguntas de impacto, eliminar el pitch prematuro). Aplicalo al guion de descubrimiento de ALLPA: que el comprador verbalice el coste de NO comprar el terreno.",
+     "idioma": "en",
+     "terminologia_clave": [
+      "GAP discovery",
+      "impact questions",
+      "no pitch hasta tener el gap"
+     ],
+     "existente": true,
+     "audiolibro_youtube": {
+      "url": "https://www.youtube.com/user/asalesguyconsulting",
+      "confianza": "estable"
+     },
+     "audiolibro_spotify": {
+      "url": "",
+      "confianza": "no_existe"
+     },
+     "compra": {
+      "tienda": "",
+      "url": ""
+     }
+    },
+    {
+     "titulo": "The JOLT Effect: How High Performers Overcome Customer Indecision — Matthew Dixon & Ted McKenna",
+     "autor": "Matthew Dixon y Ted McKenna",
+     "por_que": "REAL y basado en DATA: Dixon es coautor de The Challenger Sale (1M+ copias, ya referenciado en AURUM F6) y cofundador de DCM Insights; este libro analiza 2.5 MILLONES de conversaciones de venta grabadas. HALLAZGO CLAVE que falta en todo AURUM: en ticket alto la mayoria de deals NO se pierden contra la competencia sino contra el 'no-decido' (indecision/omission bias). FRAMEWORK JOLT: (J)udge el nivel de indecision, (O)ffer tu recomendacion, (L)imit la exploracion (no abrumes con opciones), (T)ake risk off the table (garantias, reversibilidad). Es el playbook EXACTO contra el 'lo voy a pensar' del comprador-a-distancia de terrenos — y demuestra que mas presion de cierre EMPEORA la indecision. Imprescindible para la fase de objeciones de ALLPA.",
+     "idioma": "en",
+     "terminologia_clave": [
+      "customer indecision (vs status quo)",
+      "JOLT: Judge-Offer-Limit-Take risk off",
+      "omission bias / FOMU (fear of messing up)",
+      "limitar el exceso de opciones",
+      "proactive guidance vs presion de cierre"
+     ],
+     "existente": true,
+     "audiolibro_youtube": {
+      "url": "",
+      "confianza": "no_existe"
+     },
+     "audiolibro_spotify": {
+      "url": "",
+      "confianza": "no_existe"
+     },
+     "compra": {
+      "tienda": "Amazon",
+      "url": "https://www.amazon.com/JOLT-Effect-Performers-Overcome-Indecision/dp/0593538102"
+     }
+    },
+    {
+     "titulo": "New Sales. Simplified. — Mike Weinberg",
+     "autor": "Mike Weinberg",
+     "por_que": "REAL: fue el vendedor #1 en TRES organizaciones distintas antes de consultar; Forbes/OpenView lo listan como Top Sales Influencer; 4 bestsellers #1 Amazon en su categoria. FRAMEWORK: prospeccion proactiva 'sin disculpas' y el 'sales story' (relato de ventas centrado en el dolor del cliente, no en ti) para desactivar el 'anti-salesperson reflex' generando confianza. Estilo crudo, anti-teoria, 100% practitioner. Cubre el hueco de F7 (pipeline) de AURUM con un sistema concreto de desarrollo de nuevo negocio — directo para que ALLPA/Qori Golden no dependan solo de leads entrantes.",
+     "idioma": "en",
+     "terminologia_clave": [
+      "proactive prospecting sin disculpas",
+      "the sales story (relato centrado en el dolor del cliente)",
+      "anti-salesperson reflex",
+      "target the right accounts",
+      "trabajar el telefono / pipeline propio"
+     ],
+     "existente": true,
+     "audiolibro_youtube": {
+      "url": "",
+      "confianza": "no_existe"
+     },
+     "audiolibro_spotify": {
+      "url": "https://open.spotify.com/show/1y22POKpL5CrOWn44vkBjw",
+      "confianza": "estable"
+     },
+     "compra": {
+      "tienda": "Amazon",
+      "url": "https://www.amazon.com/New-Sales-Simplified-Prospecting-Development/dp/0814431771"
+     }
+    }
+   ]
+  },
+  {
+   "nivel": 11,
+   "label": "Closers+ · Operadores / maquina de ventas (perfil Hormozi) — ejecutaron antes de ensenar",
+   "objetivo": "Anadir dos referentes que construyeron/rompieron records de venta reales antes de formar, con sistema replicable (no charla motivacional). Chet Holmes da la 'maquina de ventas' de un operador que trabajo para 60+ Fortune 500 y duplico ventas de empresas de Charlie Munger; Victor Antonio fue Presidente de Ventas Globales de una empresa de 420M USD y hoy regala uno de los mejores archivos gratis de ventas B2B/B2C en YouTube. Cubren el hueco de 'sistema + ejecucion' con un sabor distinto a Hormozi.",
+   "libros": [
+    {
+     "titulo": "The Ultimate Sales Machine — Chet Holmes",
+     "autor": "Chet Holmes",
+     "por_que": "REAL: operador, no teorico. Trabajo para 60+ companias Fortune 500 y, como ejecutivo de las empresas de Charlie Munger, DUPLICO las ventas de nueve divisiones en 12-15 meses cada una; Industry Week lo nombro top-20 change expert. FRAMEWORK: 'pigheaded discipline' sobre 12 estrategias clave + la PIRAMIDE DEL COMPRADOR (solo el 3% compra AHORA, 6-7% esta abierto, el resto NO — por eso debes educar, no solo cerrar) + Dream 100 (perseguir con foco a tus 100 clientes ideales). El Dream 100 es ORO directo para ALLPA: identifica a tus 100 compradores-a-distancia ideales y trabajalos sistematicamente. Murio en 2012; el metodo sigue vigente (actualizado por Amanda Holmes).",
+     "idioma": "en",
+     "terminologia_clave": [
+      "pigheaded discipline (PIG)",
+      "Dream 100",
+      "piramide del comprador (3% compra ahora)",
+      "time management / las 6 pasos",
+      "education-based marketing"
+     ],
+     "existente": true,
+     "audiolibro_youtube": {
+      "url": "https://www.youtube.com/watch?v=k7TbueE_GzA",
+      "confianza": "incierto"
+     },
+     "audiolibro_spotify": {
+      "url": "https://open.spotify.com/show/3iOuZyAQIUNhWOX6cqKIA6",
+      "confianza": "incierto"
+     },
+     "compra": {
+      "tienda": "Amazon",
+      "url": "https://www.amazon.com/Ultimate-Sales-Machine-Turbocharge-Relentless/dp/1591842158"
+     }
+    },
+    {
+     "titulo": "Victor Antonio — Sales Influence (YouTube gratis)",
+     "autor": "Victor Antonio (Gonzalez)",
+     "por_que": "REAL e HISPANO-americano (origen latino, contenido en ingles): 20 anos de carrera como top sales executive, llego a Presidente de Ventas y Marketing Globales de una empresa de 420M USD antes de formar. Su canal oficial 'Sales Influence' (1.600+ videos, 210k+ subs) es uno de los mejores ARCHIVOS GRATIS de ventas B2B/B2C que existen: clips cortos (<10 min) sobre persuasion, nudging, cierre, negociacion y psicologia de venta — perfecto para drillear UN concepto por sesion dentro de la ventana 14:15-15:15. Operador real, no guru de cursos.",
+     "idioma": "en",
+     "terminologia_clave": [
+      "sales influence",
+      "el arte del nudge",
+      "sales velocity",
+      "micro-comportamientos de cierre",
+      "psicologia de compra B2B"
+     ],
+     "existente": true,
+     "audiolibro_youtube": {
+      "url": "https://www.youtube.com/user/salesinfluence",
+      "confianza": "verificado"
+     },
+     "audiolibro_spotify": {
+      "url": "",
+      "confianza": "no_existe"
+     },
+     "compra": {
+      "tienda": "",
+      "url": ""
+     }
+    }
+   ]
+  },
+  {
+   "nivel": 12,
+   "label": "Closers+ · Hispano + cold-call directo — el toque en castellano y la escuela dura del telefono",
+   "objetivo": "Cerrar el roster con (a) un formador HISPANO real con clientes corporativos verificables en castellano — el idioma de ALLPA/Qori Golden — y (b) un cold-caller directo que ensena a llamar en frio sin rodeos. Ambos aportan tono y guion accionable que el resto del roster (anglosajon/metodologico) no da en espanol ni en la calle.",
+   "libros": [
+    {
+     "titulo": "Josue Gadea — Vendedor Ninja (YouTube gratis)",
+     "autor": "Josue Gadea",
+     "por_que": "REAL e HISPANO (Espana): 14+ anos en marketing y ventas, ha asesorado a 1.000+ empresarios y trabaja con empresas privadas VERIFICABLES como Orange y ADT Seguridad (software, inmobiliario, distribucion, educacion); citado dos veces como experto en la revista Emprendedores; su libro fue #1 en ventas de Amazon Espana y Mexico. Su foco es VENDER POR VALOR (no por precio bajo) con tacticas de alto impacto — exactamente el reencuadre que necesita ALLPA (terreno como inversion, no como commodity de precio). Su canal y podcast 'Vendedores Ninja' son gratis y en castellano, ideales para tus huecos.",
+     "idioma": "es",
+     "terminologia_clave": [
+      "venta por valor vs precio",
+      "tacticas ninja de alto impacto",
+      "atraer al cliente ideal",
+      "cierre en castellano",
+      "mentalidad del vendedor de exito"
+     ],
+     "existente": true,
+     "audiolibro_youtube": {
+      "url": "https://www.youtube.com/channel/UCkSBb0-quMU1-ra1-KmzF0Q",
+      "confianza": "estable"
+     },
+     "audiolibro_spotify": {
+      "url": "https://open.spotify.com/show/1PrQZHgVIlXSE8C75kmkuh",
+      "confianza": "incierto"
+     },
+     "compra": {
+      "tienda": "Amazon Espana",
+      "url": "https://www.amazon.es/Vendedor-Maestras-Probados-Clientes-Aumentar-ebook/dp/B018ZYRAUK"
+     }
+    },
+    {
+     "titulo": "Benjamin Dennehy — The UK's Most Hated Sales Trainer (YouTube gratis)",
+     "autor": "Benjamin Dennehy",
+     "por_que": "REAL: formador B2B de venta telefonica que graba COLD CALLS EN VIVO en su canal (no charla teorica) — entrena a vendedores y reclutadores en llamada en frio, control de la conversacion y manejo del gatekeeper. Estilo brutalmente honesto: abre admitiendo 'es una llamada de ventas, dame 30 segundos', baja la guardia del prospecto y toma el control. Su valor es la EJECUCION cruda del telefono que ni Hormozi ni los metodologos B2B muestran tan en bruto. Gratis en YouTube; oro para que ALLPA/Qori Golden trabajen leads en frio sin sonar a guion enlatado. (No tiene libro propio canonico — entra como recurso 100% gratis de YouTube.)",
+     "idioma": "en",
+     "terminologia_clave": [
+      "cold call honesto (upfront contract)",
+      "control de la conversacion",
+      "manejo del gatekeeper",
+      "disarmar al prospecto",
+      "no demos / no pitch prematuro"
+     ],
+     "existente": true,
+     "audiolibro_youtube": {
+      "url": "https://www.youtube.com/channel/UC50DMoaZxVftPQ14kLHpVMg",
+      "confianza": "estable"
+     },
+     "audiolibro_spotify": {
+      "url": "",
+      "confianza": "no_existe"
+     },
+     "compra": {
+      "tienda": "",
+      "url": ""
+     }
+    }
+   ]
+  },
+  {
+   "nivel": 13,
+   "label": "Leads · Base",
+   "objetivo": "Entender la maquina como un sistema unico (trafico -> lead magnet -> nurture -> cita -> cierre) y dominar el vocabulario. Salir del modo 'publico y rezo' a pensar en embudos, CAC/LTV y los Core Four de captacion. Recursos en espanol, gratis y accesibles para arrancar HOY sin presupuesto.",
+   "libros": [
+    {
+     "titulo": "Aprendamos Marketing - Ruben Gallardo (YouTube gratis)",
+     "autor": "Ruben Gallardo",
+     "por_que": "El mejor canal de marketing digital practico en espanol para PyMES (600k+ subs). Gallardo explica embudos, publicidad digital, captacion de prospectos y monetizacion de conocimiento con lenguaje llano y orientado a negocios pequenos de servicios — exactamente el perfil del medico-emprendedor que arranca su maquina de leads. Punto de entrada ideal en castellano antes de saltar a los referentes tecnicos.",
+     "idioma": "es",
+     "terminologia_clave": [
+      "embudo de ventas",
+      "publicidad digital",
+      "captacion de prospectos",
+      "marketing para PyMES",
+      "monetizar conocimiento"
+     ],
+     "audiolibro_youtube": {
+      "url": "https://www.youtube.com/c/AprendamosMarketing",
+      "confianza": "estable"
+     },
+     "audiolibro_spotify": {
+      "url": "",
+      "confianza": "no_existe"
+     },
+     "compra": {
+      "url": "",
+      "tienda": ""
+     },
+     "existente": false
+    },
+    {
+     "titulo": "Convierte Mas - Vilma Nunez (YouTube gratis)",
+     "autor": "Vilma Nunez, Ph.D.",
+     "por_que": "La referente #1 de marketing y conversion en espanol (Convierte Mas Group, Emmy de marketing). Su canal cubre el embudo completo: contenido organico, ads, lead magnets, email y la psicologia de conversion. Produce 100+ piezas de contenido gratis por semana, todo aplicable a vender servicios y programas high-ticket. Es la mejor puerta hispana para ver la maquina entera funcionando con casos reales.",
+     "idioma": "es",
+     "terminologia_clave": [
+      "embudo de conversion",
+      "lead magnet",
+      "copywriting persuasivo",
+      "email marketing",
+      "ROAS / metricas de campana"
+     ],
+     "audiolibro_youtube": {
+      "url": "https://www.youtube.com/channel/UCB8h5BJZmSi3k15t8FCPyvA",
+      "confianza": "estable"
+     },
+     "audiolibro_spotify": {
+      "url": "",
+      "confianza": "no_existe"
+     },
+     "compra": {
+      "url": "",
+      "tienda": ""
+     },
+     "existente": false
+    }
+   ]
+  },
+  {
+   "nivel": 14,
+   "label": "Leads · Intermedio",
+   "objetivo": "Pasar de 'entender' a 'construir el embudo': estructurar la escalera de valor, los anuncios de Meta/IG y el primer email de nurture. Aqui se ensambla el lead magnet -> pagina de captura -> secuencia de correos -> cita. Dominio del trafico pagado de Meta y de la arquitectura de funnels.",
+   "libros": [
+    {
+     "titulo": "DotCom Secrets: The Underground Playbook for Growing Your Company Online with Sales Funnels",
+     "autor": "Russell Brunson",
+     "por_que": "El manual fundacional de los embudos de venta y de la 'value ladder' (escalera de valor): como llevar al lead frio del lead magnet gratis al producto high-ticket paso a paso. Es la pieza de arquitectura que conecta atraccion con cierre. El audiolibro completo y oficial esta en Audible (narrado por el propio Brunson); en YouTube circulan subidas no oficiales no confirmadas como integras.",
+     "idioma": "en",
+     "terminologia_clave": [
+      "value ladder (escalera de valor)",
+      "embudo de ventas / sales funnel",
+      "tripwire / producto gancho",
+      "hook-story-offer",
+      "trafico propio/ganado/comprado",
+      "secuencia Soap Opera de emails"
+     ],
+     "audiolibro_youtube": {
+      "url": "",
+      "confianza": "incierto"
+     },
+     "audiolibro_spotify": {
+      "url": "",
+      "confianza": "incierto"
+     },
+     "compra": {
+      "url": "https://www.amazon.com/Dotcom-Secrets-Underground-Playbook-Growing/dp/B08B9ZHVVG",
+      "tienda": "Amazon (Audible)"
+     },
+     "existente": false
+    },
+    {
+     "titulo": "Building a StoryBrand: Clarify Your Message So Customers Will Listen",
+     "autor": "Donald Miller",
+     "por_que": "El framework de mensaje (StoryBrand SB7) que hace que el lead magnet, la landing y los emails CONVIERTAN: posiciona al cliente como el heroe y a tu marca como el guia. Sin un mensaje claro, ningun anuncio ni embudo rinde. Esencial para escribir copy de captacion que no confunda. Audiolibro completo oficial en Spotify/Apple (narrado por Miller) y de pago; en YouTube solo hay resumenes gratuitos, no la version integra confirmada.",
+     "idioma": "en",
+     "terminologia_clave": [
+      "framework SB7",
+      "el cliente es el heroe, la marca es el guia",
+      "claridad del mensaje",
+      "llamada a la accion (CTA)",
+      "one-liner",
+      "lead generator / wireframe de landing"
+     ],
+     "audiolibro_youtube": {
+      "url": "",
+      "confianza": "incierto"
+     },
+     "audiolibro_spotify": {
+      "url": "https://open.spotify.com/show/3PdDfA0LrewfFD23RVPaTd",
+      "confianza": "incierto"
+     },
+     "compra": {
+      "url": "https://books.apple.com/us/audiobook/building-a-storybrand/id1441448760",
+      "tienda": "Apple Books / Audible"
+     },
+     "existente": false
+    },
+    {
+     "titulo": "Roberto Gamboa - Facebook & Instagram Ads (YouTube gratis)",
+     "autor": "Roberto Gamboa",
+     "por_que": "Uno de los mayores referentes hispanos de Meta Ads (Instagram & Facebook Ads Maximizer). Ensena trafico pagado paso a paso: campanas, audiencias, creatividades y captacion de leads con presupuesto controlado. Su contenido gratis y su ebook 'Aprende Facebook Ads desde cero' son el atajo en espanol para montar el motor de trafico pagado de la maquina. (Su canal de YouTube no esta consolidado bajo un handle unico verificable; ver libro de compra.)",
+     "idioma": "es",
+     "terminologia_clave": [
+      "Meta Ads (Facebook/Instagram)",
+      "pixel de Meta",
+      "audiencias lookalike",
+      "CPM / CTR / ROAS",
+      "creatividad de anuncio",
+      "campana de captacion de leads"
+     ],
+     "audiolibro_youtube": {
+      "url": "",
+      "confianza": "incierto"
+     },
+     "audiolibro_spotify": {
+      "url": "",
+      "confianza": "no_existe"
+     },
+     "compra": {
+      "url": "https://www.amazon.com/Aprende-Facebook-Ads-desde-cero-ebook/dp/B010MNMXTK",
+      "tienda": "Amazon (ebook)"
+     },
+     "existente": false
+    }
+   ]
+  },
+  {
+   "nivel": 15,
+   "label": "Leads · Avanzado",
+   "objetivo": "Multiplicar las fuentes de trafico y hacerlas sostenibles: SEO/posicionamiento en Google, contenido organico que atrae sin pagar, y el modelo inbound que convierte tu contenido en el principal generador de citas. Pensar como estratega de canales: que canal de traccion priorizar y por que (framework Bullseye).",
+   "libros": [
+    {
+     "titulo": "Traction: How Any Startup Can Achieve Explosive Customer Growth",
+     "autor": "Gabriel Weinberg y Justin Mares",
+     "por_que": "El mapa maestro de los 19 canales de traccion (SEO, ads, contenido, email, relaciones publicas, etc.) y el framework Bullseye para elegir CUAL canal explotar primero en vez de dispersarte. Es la vision de portafolio que evita quemar presupuesto en el canal equivocado: pieza clave para decidir donde concentrar la maquina de leads. Audiolibro completo oficial en Audible (narrado por Weinberg); en YouTube solo hay resumenes, no la version integra.",
+     "idioma": "en",
+     "terminologia_clave": [
+      "19 canales de traccion",
+      "framework Bullseye",
+      "SEM vs SEO vs contenido",
+      "test barato por canal",
+      "metricas de traccion",
+      "viral loop / ingenieria de marketing"
+     ],
+     "audiolibro_youtube": {
+      "url": "",
+      "confianza": "no_existe"
+     },
+     "audiolibro_spotify": {
+      "url": "",
+      "confianza": "no_existe"
+     },
+     "compra": {
+      "url": "https://www.amazon.com/Traction-audiobook/dp/B01705KMG4",
+      "tienda": "Amazon (Audible)"
+     },
+     "existente": false
+    },
+    {
+     "titulo": "They Ask, You Answer: A Revolutionary Approach to Inbound Sales, Content Marketing",
+     "autor": "Marcus Sheridan",
+     "por_que": "El metodo inbound mas accionable para un negocio de servicios: respondes en contenido (video/blog) las preguntas reales que tu prospecto teclea en Google, y ese contenido se vuelve tu mejor vendedor 24/7 que atrae y precalifica leads antes de la cita. Perfecto para SEO + YouTube organico aplicado a high-ticket. Audiolibro completo oficial en Audible; en YouTube/Spotify solo previews, no la version integra confirmada.",
+     "idioma": "en",
+     "terminologia_clave": [
+      "inbound marketing",
+      "los Big 5 de contenido (coste, problemas, comparativas, resenas, mejores)",
+      "contenido como vendedor",
+      "asignacion de venta (assignment selling)",
+      "they ask you answer",
+      "SEO de intencion"
+     ],
+     "audiolibro_youtube": {
+      "url": "",
+      "confianza": "incierto"
+     },
+     "audiolibro_spotify": {
+      "url": "",
+      "confianza": "no_existe"
+     },
+     "compra": {
+      "url": "https://www.amazon.com/They-Ask-You-Answer-audiobook/dp/B0735WVVVW",
+      "tienda": "Amazon (Audible)"
+     },
+     "existente": false
+    },
+    {
+     "titulo": "Romuald Fons - SEO y posicionamiento en Google (YouTube gratis)",
+     "autor": "Romuald Fons",
+     "por_que": "El referente #1 de SEO en espanol (1.5M+ subs, ex-agencia BigSEO). Su canal es una mina de oro gratuita sobre posicionamiento en Google, keywords, contenido que rankea, SEO para YouTube y trafico organico. El recurso definitivo en castellano para construir la fuente de leads que NO se apaga cuando dejas de pagar ads.",
+     "idioma": "es",
+     "terminologia_clave": [
+      "SEO on-page / off-page / tecnico",
+      "keyword research / intencion de busqueda",
+      "backlinks y autoridad",
+      "CTR y retencion",
+      "trafico organico",
+      "SEO para YouTube"
+     ],
+     "audiolibro_youtube": {
+      "url": "https://www.youtube.com/@RomualdFonsTV",
+      "confianza": "estable"
+     },
+     "audiolibro_spotify": {
+      "url": "",
+      "confianza": "no_existe"
+     },
+     "compra": {
+      "url": "",
+      "tienda": ""
+     },
+     "existente": false
+    },
+    {
+     "titulo": "Backlinko - Brian Dean (YouTube gratis)",
+     "autor": "Brian Dean",
+     "por_que": "La autoridad global de SEO en ingles, con un canal de tacticas ULTRA accionables (skyscraper technique, link building, on-page) que llevaron a Backlinko a venderse por millones. Complemento de elite a Romuald Fons: estrategias probadas de posicionamiento que aplican a cualquier idioma y elevan tu motor de leads organicos a estandar internacional.",
+     "idioma": "en",
+     "terminologia_clave": [
+      "skyscraper technique",
+      "link building / backlinks",
+      "on-page SEO",
+      "content gap",
+      "search intent",
+      "E-E-A-T y autoridad"
+     ],
+     "audiolibro_youtube": {
+      "url": "https://www.youtube.com/channel/UCx7J37QuXsGL7QG6SMIpqKg",
+      "confianza": "estable"
+     },
+     "audiolibro_spotify": {
+      "url": "",
+      "confianza": "no_existe"
+     },
+     "compra": {
+      "url": "",
+      "tienda": ""
+     },
+     "existente": false
+    }
+   ]
+  },
+  {
+   "nivel": 16,
+   "label": "Leads · Elite",
+   "objetivo": "Operar la maquina como un sistema integrado y a escala: inbound de nivel HubSpot, contenido organico que construye marca y atencion masiva (modelo Vaynerchuk), y la vision 360 de un referente que combina todos los canales para vender high-ticket. Aqui Joseph deja de ejecutar tacticas sueltas y dirige una maquina de atraccion completa.",
+   "libros": [
+    {
+     "titulo": "Inbound Marketing: Attract, Engage, and Delight Customers Online (Revised & Updated)",
+     "autor": "Brian Halligan y Dharmesh Shah",
+     "por_que": "El tratado fundacional del inbound escrito por los fundadores de HubSpot, los inventores del termino y del CRM inbound moderno. Sistematiza atraer-convertir-cerrar-deleitar y el rol del CRM/automatizacion en nutrir leads a escala. Es la vision de elite de la maquina como sistema (no como tactica): atraccion + email/CRM + medicion unidos. Audiolibro completo SOLO en Audible/Storytel de pago; sin version integra libre en YouTube ni Spotify.",
+     "idioma": "en",
+     "terminologia_clave": [
+      "inbound marketing",
+      "atraer-convertir-cerrar-deleitar",
+      "CRM y lead nurturing",
+      "lead scoring",
+      "marketing de atraccion vs interrupcion",
+      "flywheel de HubSpot"
+     ],
+     "audiolibro_youtube": {
+      "url": "",
+      "confianza": "no_existe"
+     },
+     "audiolibro_spotify": {
+      "url": "",
+      "confianza": "no_existe"
+     },
+     "compra": {
+      "url": "https://www.amazon.com/Inbound-Marketing-audiobook/dp/B002Y2Q97U",
+      "tienda": "Amazon (Audible)"
+     },
+     "existente": false
+    },
+    {
+     "titulo": "Jab, Jab, Jab, Right Hook: How to Tell Your Story in a Noisy Social World",
+     "autor": "Gary Vaynerchuk",
+     "por_que": "El manifiesto del contenido organico (IG/TikTok/YouTube) que ATRAE antes de vender: da, da, da valor (jab) y solo entonces pide (right hook). Es la doctrina de elite para construir audiencia y atencion como activo, base de la maquina de leads organica moderna. El audiolibro completo oficial esta en Audible; en YouTube hay una subida 'full' no oficial no confirmada como integra (marcada incierto).",
+     "idioma": "en",
+     "terminologia_clave": [
+      "jab jab jab right hook (dar antes de pedir)",
+      "contenido nativo por plataforma",
+      "atencion como activo",
+      "storytelling de marca",
+      "engagement organico",
+      "micro-contenido"
+     ],
+     "audiolibro_youtube": {
+      "url": "",
+      "confianza": "incierto"
+     },
+     "audiolibro_spotify": {
+      "url": "",
+      "confianza": "no_existe"
+     },
+     "compra": {
+      "url": "https://www.amazon.com/Jab-Right-Hook-Story-Social/dp/B0BZS62R4L",
+      "tienda": "Amazon (Audible)"
+     },
+     "existente": false
+    },
+    {
+     "titulo": "Neil Patel - Marketing 360 (SEO + Ads + Contenido) (YouTube gratis)",
+     "autor": "Neil Patel",
+     "por_que": "Co-fundador de NP Digital y creador de Ubersuggest; su canal (2.2M+ subs) es la vista 360 de toda la maquina en un solo lugar: SEO, Google y Meta Ads, contenido, email y conversion, con datos y casos reales. Recurso de elite en abierto para ver como se integran TODOS los canales de atraccion en una estrategia coherente y medible.",
+     "idioma": "en",
+     "terminologia_clave": [
+      "estrategia omnicanal",
+      "SEO + paid ads integrados",
+      "ROI de marketing",
+      "content marketing a escala",
+      "Ubersuggest / keyword research",
+      "conversion rate optimization (CRO)"
+     ],
+     "audiolibro_youtube": {
+      "url": "https://www.youtube.com/neilpatel",
+      "confianza": "estable"
+     },
+     "audiolibro_spotify": {
+      "url": "",
+      "confianza": "no_existe"
+     },
+     "compra": {
+      "url": "",
+      "tienda": ""
+     },
+     "existente": false
+    }
+   ]
+  },
+  {
+   "nivel": 17,
+   "label": "High-ticket · Base — Encontrar el nicho y validar la demanda antes de construir nada",
+   "objetivo": "Antes de diseñar la oferta high-ticket: elegir un mercado con dolor masivo y poder adquisitivo (Starving Crowd), y validar la demanda hablando con clientes reales SIN que te mientan. Este nivel evita el error #1: enamorarse de un producto que nadie quiere pagar caro.",
+   "libros": [
+    {
+     "titulo": "The Mom Test (validacion de demanda)",
+     "autor": "Rob Fitzpatrick",
+     "por_que": "El manual definitivo para validar demanda antes de invertir en una oferta cara. Enseña a hablar con clientes potenciales sobre su vida y sus problemas (no sobre tu idea) para obtener verdad, no cumplidos. Reglas: pregunta por el pasado concreto, no por el futuro hipotetico; busca compromisos reales (tiempo, dinero, reputacion). Es el filtro que valida si hay un nicho dispuesto a pagar high-ticket ANTES de construir el Grand Slam Offer.",
+     "idioma": "en/es",
+     "terminologia_clave": [
+      "The Mom Test",
+      "good questions vs bad questions",
+      "commitment and advancement",
+      "customer segmentation",
+      "the three deadly questions"
+     ],
+     "existente": true,
+     "audiolibro_youtube": {
+      "url": "https://www.youtube.com/watch?v=75tfi1OUlDg",
+      "confianza": "estable"
+     },
+     "audiolibro_spotify": {
+      "url": "https://open.spotify.com/show/2CtSEuimVcVKfLzOin8gRZ",
+      "confianza": "verificado"
+     },
+     "compra": {
+      "tienda": "Sitio oficial del autor (momtestbook.com)",
+      "url": "https://www.momtestbook.com/"
+     }
+    },
+    {
+     "titulo": "Alex Hormozi — Acquisition.com (YouTube gratis)",
+     "autor": "Alex Hormozi",
+     "por_que": "Recurso GRATIS clave: el canal oficial donde Hormozi entrega el contenido exacto de seleccion de mercado (Starving Crowd), la Value Equation y la construccion de la Grand Slam Offer que otros gurus cobran a 5-10k USD. Para el nivel Base, los videos de 'how to find a starving market' y 'pick your niche' son el complemento audiovisual directo de $100M Offers. Sin coste, sin upsell forzado.",
+     "idioma": "en",
+     "terminologia_clave": [
+      "starving crowd",
+      "market selection",
+      "value equation",
+      "niche selection",
+      "grand slam offer"
+     ],
+     "existente": true,
+     "audiolibro_youtube": {
+      "url": "https://www.youtube.com/@AlexHormozi",
+      "confianza": "estable"
+     },
+     "audiolibro_spotify": {
+      "url": "",
+      "confianza": "no_existe"
+     },
+     "compra": {
+      "tienda": "",
+      "url": ""
+     }
+    }
+   ]
+  },
+  {
+   "nivel": 18,
+   "label": "High-ticket · Intermedio — Construir la oferta irresistible (Grand Slam Offer)",
+   "objetivo": "Con el nicho validado, construir la oferta high-ticket que saca del juego del precio: maximizar la Value Equation, apilar valor (Trim & Stack), y añadir los amplificadores que cierran la venta — garantias, escasez, urgencia, bonos y naming. El producto ganador no se 'encuentra', se DISEÑA hasta que decir que no resulta estupido.",
+   "libros": [
+    {
+     "titulo": "Obviously Awesome (posicionamiento)",
+     "autor": "April Dunford",
+     "por_que": "El eslabon que falta entre 'tengo una buena oferta' y 'el mercado correcto la percibe como obviamente superior'. Dunford da una metodologia de posicionamiento de 5 componentes (alternativas competitivas, atributos unicos, valor que habilitan, segmento que mas lo valora, categoria de mercado) que define en QUE categoria compites y por que tu oferta cara es la opcion obvia. Critico para high-ticket: una oferta mal posicionada parece cara; bien posicionada parece la unica opcion seria.",
+     "idioma": "en",
+     "terminologia_clave": [
+      "product positioning",
+      "competitive alternatives",
+      "unique attributes",
+      "market category",
+      "best-fit customers",
+      "positioning canvas"
+     ],
+     "existente": true,
+     "audiolibro_youtube": {
+      "url": "https://www.youtube.com/@positioningshow",
+      "confianza": "estable"
+     },
+     "audiolibro_spotify": {
+      "url": "",
+      "confianza": "incierto"
+     },
+     "compra": {
+      "tienda": "Audible / Amazon",
+      "url": "https://www.audible.com/pd/Obviously-Awesome-Audiobook/B085L1MKYX"
+     }
+    },
+    {
+     "titulo": "Sabri Suby — King Kong (YouTube gratis)",
+     "autor": "Sabri Suby",
+     "por_que": "Recurso GRATIS de alto valor para high-ticket: Sabri Suby (autor de Sell Like Crazy, Shark de Shark Tank AU) desglosa en su canal los funnels reales que usa para captar clientes high-ticket a diario, el script de venta telefonica de high-ticket y el sistema de oferta+lead magnet. Complementa a Hormozi con tactica concreta de funnel y guion de cierre para ticket alto, no solo teoria de oferta.",
+     "idioma": "en",
+     "terminologia_clave": [
+      "high-ticket funnel",
+      "halo strategy",
+      "godfather offer",
+      "magic lantern technique",
+      "high-ticket sales script"
+     ],
+     "existente": true,
+     "audiolibro_youtube": {
+      "url": "https://www.youtube.com/channel/UCAxUtcgLiq_gopO87VaZM5w",
+      "confianza": "estable"
+     },
+     "audiolibro_spotify": {
+      "url": "",
+      "confianza": "no_existe"
+     },
+     "compra": {
+      "tienda": "",
+      "url": ""
+     }
+    }
+   ]
+  },
+  {
+   "nivel": 19,
+   "label": "High-ticket · Avanzado — Modelos de ingresos, continuity y maximizar el LTV",
+   "objetivo": "Una oferta no basta: necesitas una SECUENCIA de ofertas (money model) que haga que el cliente nuevo financie la adquisicion de los siguientes, y un motor de ingresos recurrentes (continuity) que multiplique el LTV. Aqui se pasa de 'vender una vez caro' a 'construir un activo que genera caja predecible'.",
+   "libros": [
+    {
+     "titulo": "$100M Money Models",
+     "autor": "Alex Hormozi",
+     "por_que": "El libro-espina de retencion y maximizacion de LTV. Da el Client Financed Acquisition (el beneficio bruto de los primeros 30 dias debe superar 2x el costo de adquirir+cumplir) y las 4 familias de ofertas: Attraction (recupera el CAC), Upsell (maximiza caja en el momento de maxima motivacion), Downsell (convierte los 'no') y Continuity (ingreso recurrente). Las 3 etapas Get Cash / Get More Cash / Get The Most Cash son la arquitectura para que el crecimiento se autofinancie. Es el manual directo del punto (2): continuity, ascension y modelos de ingreso.",
+     "idioma": "en/es",
+     "terminologia_clave": [
+      "Client Financed Acquisition (CFA)",
+      "attraction offers",
+      "upsell moment",
+      "downsell offers",
+      "continuity offers",
+      "Get Cash / More Cash / Most Cash",
+      "LTV playbook"
+     ],
+     "existente": true,
+     "audiolibro_youtube": {
+      "url": "https://www.youtube.com/@AlexHormozi",
+      "confianza": "incierto"
+     },
+     "audiolibro_spotify": {
+      "url": "https://open.spotify.com/episode/3I5nkMu3yJuHrc1H1Exeg3",
+      "confianza": "verificado"
+     },
+     "compra": {
+      "tienda": "Tienda oficial Acquisition.com / Amazon",
+      "url": "https://shop.acquisition.com/"
+     }
+    },
+    {
+     "titulo": "The Automatic Customer (negocio de suscripcion)",
+     "autor": "John Warrillow",
+     "por_que": "El plano operativo del 'continuity' que Hormozi nombra pero no profundiza. Warrillow desglosa 9 modelos de suscripcion concretos (membership, consumables, surprise box, network, peace-of-mind, all-you-can-eat, etc.) y como convertir clientes en suscriptores en CUALQUIER industria. Critico para el LTV: enseña a calcular y mejorar el LTV/CAC, reducir churn y construir ingreso recurrente que vuelve el negocio mas valioso y predecible. El 'como' tactico del Stage III de Money Models.",
+     "idioma": "en",
+     "terminologia_clave": [
+      "subscription business",
+      "9 subscription models",
+      "recurring revenue",
+      "churn rate",
+      "LTV:CAC ratio",
+      "automatic customer",
+      "membership model"
+     ],
+     "existente": true,
+     "audiolibro_youtube": {
+      "url": "",
+      "confianza": "no_existe"
+     },
+     "audiolibro_spotify": {
+      "url": "",
+      "confianza": "incierto"
+     },
+     "compra": {
+      "tienda": "Audible / Amazon",
+      "url": "https://www.amazon.com/The-Automatic-Customer-audiobook/dp/B00SRZTIZ8"
+     }
+    }
+   ]
+  },
+  {
+   "nivel": 20,
+   "label": "High-ticket · Elite — Retencion profunda, anti-churn y ascension",
+   "objetivo": "El nivel donde el LTV se vuelve un foso defensivo: diseñar la experiencia del cliente para que NUNCA se vaya (los primeros 100 dias), construir una economia de membresia con superusers, y crear escaleras de ascension donde el cliente sube de tier por voluntad propia. Esto es lo que separa un negocio high-ticket de un activo que compone año tras año.",
+   "libros": [
+    {
+     "titulo": "Never Lose a Customer Again (anti-churn)",
+     "autor": "Joey Coleman",
+     "por_que": "El sistema mas accionable contra el churn temprano, que es donde se pierde la mayoria del LTV. Coleman demuestra que los primeros 100 dias post-venta deciden si el cliente se queda 5+ años o se va; mapea las 8 fases emocionales del cliente (Assess, Admit, Affirm, Activate, Acknowledge, Accept, Accomplish, Adore) y como diseñar cada toque para convertir compradores en fans. Indispensable para high-ticket: cuando el ticket es alto, perder un cliente en el dia 30 destruye el CFA; este libro lo previene por diseño.",
+     "idioma": "en",
+     "terminologia_clave": [
+      "First 100 Days",
+      "8 phases of the customer journey",
+      "customer retention",
+      "onboarding experience",
+      "buyer's remorse",
+      "raving fans",
+      "churn prevention"
+     ],
+     "existente": true,
+     "audiolibro_youtube": {
+      "url": "",
+      "confianza": "no_existe"
+     },
+     "audiolibro_spotify": {
+      "url": "",
+      "confianza": "incierto"
+     },
+     "compra": {
+      "tienda": "Audible / Amazon",
+      "url": "https://www.audible.com/pd/Never-Lose-a-Customer-Again-Audiobook/B07BDQPF8T"
+     }
+    },
+    {
+     "titulo": "The Membership Economy (ascension y recurrencia)",
+     "autor": "Robbie Kellman Baxter",
+     "por_que": "El marco maestro de la economia de membresia y la ascension. Baxter (nombrada top-10 libro de marketing de todos los tiempos por BookAuthority) enseña a encontrar tus 'superusers', dominar la 'forever transaction' y construir escaleras de membresia donde el cliente asciende de tier (free -> pago -> premium). Es la capa estrategica sobre Warrillow y Hormozi: como pensar el negocio entero como relacion recurrente y no como transacciones sueltas — el techo del LTV.",
+     "idioma": "en",
+     "terminologia_clave": [
+      "membership economy",
+      "forever transaction",
+      "superusers",
+      "ascension model",
+      "recurring revenue",
+      "membership tiers",
+      "freemium to premium"
+     ],
+     "existente": true,
+     "audiolibro_youtube": {
+      "url": "",
+      "confianza": "no_existe"
+     },
+     "audiolibro_spotify": {
+      "url": "",
+      "confianza": "incierto"
+     },
+     "compra": {
+      "tienda": "Audible / Amazon",
+      "url": "https://www.audible.com/pd/The-Membership-Economy-Audiobook/B01DKSOW3O"
+     }
+    }
+   ]
   }
  ]
 }

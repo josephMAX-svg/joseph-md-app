@@ -4,7 +4,7 @@
 
 **Terminología base:** Esta es la columna vertebral comercial del fundador medico-emprendedor: captar, convencer y vender con la sofisticacion de las marcas de elite, aplicado a Pulso/Liviano/Curva en Huancayo y Lima. El recorrido va de la BASE accionable (Alex Hormozi: oferta-leads-modelo de dinero, todo aplicable manana mismo) hasta la MAESTRIA del copy de Madison Avenue, con mas profundidad tecnica que la version anterior: analitica de producto (Lean Analytics), growth con experimentacion (Hacking Growth), eleccion de canales (Traction), posicionamiento de autor (Positioning de Ries&Trout, Obviously Awesome de Dunford), leyes de marca (The 22 Immutable Laws of Marketing), difusion (Contagious de Berger), ideas pegajosas (Made to Stick), filosofia de mercado (This Is Marketing de Godin) y los clasicos del copy de respuesta directa (Breakthrough Advertising, Cashvertising, The Boron Letters, Scientific Advertising, Ogilvy on Advertising). VOCABULARIO DE ELITE por capas: OFERTA Y MONETIZACION — Grand Slam Offer, Value Equation (Dream Outcome x Perceived Likelihood / Time Delay x Effort), Starving Crowd, upsell/downsell/continuity, Client Financed Acquisition (CFA), Value Ladder. METRICAS Y UNIT ECONOMICS — CAC, LTV/CLV, ratio LTV:CAC, payback period, MER, ROAS, contribution margin, churn, retention, cohortes, north-star metric, AARRR (pirate metrics), OMTM (One Metric That Matters), vanity vs actionable metrics. CAPTACION Y CANALES — Core Four (warm/cold outreach, free content, paid ads), Rule of 100, lead magnet, Bullseye Framework y los 19 traction channels, Dream 100, funnel, tripwire. GROWTH — growth hacking, high-tempo testing, ICE score (Impact-Confidence-Ease), product/market fit, viral coefficient (factor K), aha moment, growth loops. POSICIONAMIENTO Y MENSAJE — positioning, categoria de mercado, competitive alternatives, ICP (Ideal Customer Profile), las 22 leyes inmutables (liderazgo, categoria, mente, percepcion, foco), SB7/BrandScript, one-liner. DIFUSION E IDEAS — STEPPS (Social currency, Triggers, Emotion, Public, Practical value, Stories) de Berger, SUCCESs (Simple, Unexpected, Concrete, Credible, Emotional, Stories) de los Heath, smallest viable market y permission marketing de Godin. PERSUASION Y COPY — los 7 principios de Cialdini (reciprocidad, compromiso/coherencia, prueba social, autoridad, simpatia, escasez, unidad), Life-Force 8 (Cashvertising), los 5 niveles de consciencia y 5 etapas de sofisticacion de mercado (Schwartz), mass desire, mecanismo unico, AIDA, USP, reason-why copy. NOTA DE VERIFICACION DE AUDIOLIBROS (jun 2026, por WebSearch): los audiolibros COMPLETOS y oficiales de TODOS los titulos viven en Audible/Apple (links de compra incluidos). En plataformas gratuitas: Hormozi tiene audiolibro completo gratis y verificado en Spotify (playlists del propio Alex) y en YouTube. StoryBrand, DotCom Secrets, Influence, This Is Marketing, Contagious y Scientific Advertising tienen audiolibro completo verificado en AMBAS plataformas. Positioning, 22 Immutable Laws, Obviously Awesome, Expert Secrets, Cashvertising, Made to Stick tienen YouTube completo pero en Spotify solo resumenes (marcados incierto/no_existe). Traction, Lean Analytics y Hacking Growth solo tienen audiolibro completo de pago (Audible); en YouTube/Spotify solo resumenes (no_existe). Breakthrough Advertising y The Boron Letters NO tienen audiolibro oficial completo en ninguna plataforma (solo texto y resumenes). Ogilvy on Advertising es un libro muy ilustrado: el producto canonico es impreso/Audible; en gratuitas solo hay resumenes (incierto/no_existe). NUNCA se inventaron URLs: lo no verificado va marcado incierto y lo inexistente va con url vacia y confianza no_existe.
 
-**21 libros · 5 niveles**
+**36 libros · 13 niveles**
 
 ## Nivel 1 · Base
 
@@ -176,3 +176,127 @@
 - **Terminología:** big idea · headlines que venden (el 80% del dinero esta en el titular) · long copy / reason-why · direct response como escuela rigurosa · brand image / marca como inversion · research antes de crear
 - 🎧 **Spotify:** https://open.spotify.com/episode/4szrpvgVIZEOto5IqrOU1f
 - 🛒 **Comprar** (Amazon): https://www.amazon.com/Ogilvy-Advertising-David/dp/039472903X
+
+## Nivel 6 · Leads · Base
+
+*Entender la maquina como un sistema unico (trafico -> lead magnet -> nurture -> cita -> cierre) y dominar el vocabulario. Salir del modo 'publico y rezo' a pensar en embudos, CAC/LTV y los Core Four de captacion. Recursos en espanol, gratis y accesibles para arrancar HOY sin presupuesto.*
+
+### Aprendamos Marketing - Ruben Gallardo (YouTube gratis) — Ruben Gallardo  · NUEVO
+- **n:** 170  ·  **idioma:** es
+- **Por qué:** El mejor canal de marketing digital practico en espanol para PyMES (600k+ subs). Gallardo explica embudos, publicidad digital, captacion de prospectos y monetizacion de conocimiento con lenguaje llano y orientado a negocios pequenos de servicios — exactamente el perfil del medico-emprendedor que arranca su maquina de leads. Punto de entrada ideal en castellano antes de saltar a los referentes tecnicos.
+- **Terminología:** embudo de ventas · publicidad digital · captacion de prospectos · marketing para PyMES · monetizar conocimiento
+- ▶ **YouTube:** https://www.youtube.com/c/AprendamosMarketing
+
+### Convierte Mas - Vilma Nunez (YouTube gratis) — Vilma Nunez, Ph.D.  · NUEVO
+- **n:** 171  ·  **idioma:** es
+- **Por qué:** La referente #1 de marketing y conversion en espanol (Convierte Mas Group, Emmy de marketing). Su canal cubre el embudo completo: contenido organico, ads, lead magnets, email y la psicologia de conversion. Produce 100+ piezas de contenido gratis por semana, todo aplicable a vender servicios y programas high-ticket. Es la mejor puerta hispana para ver la maquina entera funcionando con casos reales.
+- **Terminología:** embudo de conversion · lead magnet · copywriting persuasivo · email marketing · ROAS / metricas de campana
+- ▶ **YouTube:** https://www.youtube.com/channel/UCB8h5BJZmSi3k15t8FCPyvA
+
+## Nivel 7 · Leads · Intermedio
+
+*Pasar de 'entender' a 'construir el embudo': estructurar la escalera de valor, los anuncios de Meta/IG y el primer email de nurture. Aqui se ensambla el lead magnet -> pagina de captura -> secuencia de correos -> cita. Dominio del trafico pagado de Meta y de la arquitectura de funnels.*
+
+### Roberto Gamboa - Facebook & Instagram Ads (YouTube gratis) — Roberto Gamboa  · NUEVO
+- **n:** 172  ·  **idioma:** es
+- **Por qué:** Uno de los mayores referentes hispanos de Meta Ads (Instagram & Facebook Ads Maximizer). Ensena trafico pagado paso a paso: campanas, audiencias, creatividades y captacion de leads con presupuesto controlado. Su contenido gratis y su ebook 'Aprende Facebook Ads desde cero' son el atajo en espanol para montar el motor de trafico pagado de la maquina. (Su canal de YouTube no esta consolidado bajo un handle unico verificable; ver libro de compra.)
+- **Terminología:** Meta Ads (Facebook/Instagram) · pixel de Meta · audiencias lookalike · CPM / CTR / ROAS · creatividad de anuncio · campana de captacion de leads
+- 🛒 **Comprar** (Amazon (ebook)): https://www.amazon.com/Aprende-Facebook-Ads-desde-cero-ebook/dp/B010MNMXTK
+
+## Nivel 8 · Leads · Avanzado
+
+*Multiplicar las fuentes de trafico y hacerlas sostenibles: SEO/posicionamiento en Google, contenido organico que atrae sin pagar, y el modelo inbound que convierte tu contenido en el principal generador de citas. Pensar como estratega de canales: que canal de traccion priorizar y por que (framework Bullseye).*
+
+### They Ask, You Answer: A Revolutionary Approach to Inbound Sales, Content Marketing — Marcus Sheridan  · NUEVO
+- **n:** 173  ·  **idioma:** en
+- **Por qué:** El metodo inbound mas accionable para un negocio de servicios: respondes en contenido (video/blog) las preguntas reales que tu prospecto teclea en Google, y ese contenido se vuelve tu mejor vendedor 24/7 que atrae y precalifica leads antes de la cita. Perfecto para SEO + YouTube organico aplicado a high-ticket. Audiolibro completo oficial en Audible; en YouTube/Spotify solo previews, no la version integra confirmada.
+- **Terminología:** inbound marketing · los Big 5 de contenido (coste, problemas, comparativas, resenas, mejores) · contenido como vendedor · asignacion de venta (assignment selling) · they ask you answer · SEO de intencion
+- 🛒 **Comprar** (Amazon (Audible)): https://www.amazon.com/They-Ask-You-Answer-audiobook/dp/B0735WVVVW
+
+### Romuald Fons - SEO y posicionamiento en Google (YouTube gratis) — Romuald Fons  · NUEVO
+- **n:** 174  ·  **idioma:** es
+- **Por qué:** El referente #1 de SEO en espanol (1.5M+ subs, ex-agencia BigSEO). Su canal es una mina de oro gratuita sobre posicionamiento en Google, keywords, contenido que rankea, SEO para YouTube y trafico organico. El recurso definitivo en castellano para construir la fuente de leads que NO se apaga cuando dejas de pagar ads.
+- **Terminología:** SEO on-page / off-page / tecnico · keyword research / intencion de busqueda · backlinks y autoridad · CTR y retencion · trafico organico · SEO para YouTube
+- ▶ **YouTube:** https://www.youtube.com/@RomualdFonsTV
+
+### Backlinko - Brian Dean (YouTube gratis) — Brian Dean  · NUEVO
+- **n:** 175  ·  **idioma:** en
+- **Por qué:** La autoridad global de SEO en ingles, con un canal de tacticas ULTRA accionables (skyscraper technique, link building, on-page) que llevaron a Backlinko a venderse por millones. Complemento de elite a Romuald Fons: estrategias probadas de posicionamiento que aplican a cualquier idioma y elevan tu motor de leads organicos a estandar internacional.
+- **Terminología:** skyscraper technique · link building / backlinks · on-page SEO · content gap · search intent · E-E-A-T y autoridad
+- ▶ **YouTube:** https://www.youtube.com/channel/UCx7J37QuXsGL7QG6SMIpqKg
+
+## Nivel 9 · Leads · Elite
+
+*Operar la maquina como un sistema integrado y a escala: inbound de nivel HubSpot, contenido organico que construye marca y atencion masiva (modelo Vaynerchuk), y la vision 360 de un referente que combina todos los canales para vender high-ticket. Aqui Joseph deja de ejecutar tacticas sueltas y dirige una maquina de atraccion completa.*
+
+### Inbound Marketing: Attract, Engage, and Delight Customers Online (Revised & Updated) — Brian Halligan y Dharmesh Shah  · NUEVO
+- **n:** 176  ·  **idioma:** en
+- **Por qué:** El tratado fundacional del inbound escrito por los fundadores de HubSpot, los inventores del termino y del CRM inbound moderno. Sistematiza atraer-convertir-cerrar-deleitar y el rol del CRM/automatizacion en nutrir leads a escala. Es la vision de elite de la maquina como sistema (no como tactica): atraccion + email/CRM + medicion unidos. Audiolibro completo SOLO en Audible/Storytel de pago; sin version integra libre en YouTube ni Spotify.
+- **Terminología:** inbound marketing · atraer-convertir-cerrar-deleitar · CRM y lead nurturing · lead scoring · marketing de atraccion vs interrupcion · flywheel de HubSpot
+- 🛒 **Comprar** (Amazon (Audible)): https://www.amazon.com/Inbound-Marketing-audiobook/dp/B002Y2Q97U
+
+### Jab, Jab, Jab, Right Hook: How to Tell Your Story in a Noisy Social World — Gary Vaynerchuk  · NUEVO
+- **n:** 177  ·  **idioma:** en
+- **Por qué:** El manifiesto del contenido organico (IG/TikTok/YouTube) que ATRAE antes de vender: da, da, da valor (jab) y solo entonces pide (right hook). Es la doctrina de elite para construir audiencia y atencion como activo, base de la maquina de leads organica moderna. El audiolibro completo oficial esta en Audible; en YouTube hay una subida 'full' no oficial no confirmada como integra (marcada incierto).
+- **Terminología:** jab jab jab right hook (dar antes de pedir) · contenido nativo por plataforma · atencion como activo · storytelling de marca · engagement organico · micro-contenido
+- 🛒 **Comprar** (Amazon (Audible)): https://www.amazon.com/Jab-Right-Hook-Story-Social/dp/B0BZS62R4L
+
+### Neil Patel - Marketing 360 (SEO + Ads + Contenido) (YouTube gratis) — Neil Patel  · NUEVO
+- **n:** 178  ·  **idioma:** en
+- **Por qué:** Co-fundador de NP Digital y creador de Ubersuggest; su canal (2.2M+ subs) es la vista 360 de toda la maquina en un solo lugar: SEO, Google y Meta Ads, contenido, email y conversion, con datos y casos reales. Recurso de elite en abierto para ver como se integran TODOS los canales de atraccion en una estrategia coherente y medible.
+- **Terminología:** estrategia omnicanal · SEO + paid ads integrados · ROI de marketing · content marketing a escala · Ubersuggest / keyword research · conversion rate optimization (CRO)
+- ▶ **YouTube:** https://www.youtube.com/neilpatel
+
+## Nivel 10 · High-ticket · Base — Encontrar el nicho y validar la demanda antes de construir nada
+
+*Antes de diseñar la oferta high-ticket: elegir un mercado con dolor masivo y poder adquisitivo (Starving Crowd), y validar la demanda hablando con clientes reales SIN que te mientan. Este nivel evita el error #1: enamorarse de un producto que nadie quiere pagar caro.*
+
+### The Mom Test (validacion de demanda) — Rob Fitzpatrick
+- **n:** 179  ·  **idioma:** en/es
+- **Por qué:** El manual definitivo para validar demanda antes de invertir en una oferta cara. Enseña a hablar con clientes potenciales sobre su vida y sus problemas (no sobre tu idea) para obtener verdad, no cumplidos. Reglas: pregunta por el pasado concreto, no por el futuro hipotetico; busca compromisos reales (tiempo, dinero, reputacion). Es el filtro que valida si hay un nicho dispuesto a pagar high-ticket ANTES de construir el Grand Slam Offer.
+- **Terminología:** The Mom Test · good questions vs bad questions · commitment and advancement · customer segmentation · the three deadly questions
+- 🎧 **Spotify:** https://open.spotify.com/show/2CtSEuimVcVKfLzOin8gRZ
+- ▶ **YouTube:** https://www.youtube.com/watch?v=75tfi1OUlDg
+- 🛒 **Comprar** (Sitio oficial del autor (momtestbook.com)): https://www.momtestbook.com/
+
+### Alex Hormozi — Acquisition.com (YouTube gratis) — Alex Hormozi
+- **n:** 180  ·  **idioma:** en
+- **Por qué:** Recurso GRATIS clave: el canal oficial donde Hormozi entrega el contenido exacto de seleccion de mercado (Starving Crowd), la Value Equation y la construccion de la Grand Slam Offer que otros gurus cobran a 5-10k USD. Para el nivel Base, los videos de 'how to find a starving market' y 'pick your niche' son el complemento audiovisual directo de $100M Offers. Sin coste, sin upsell forzado.
+- **Terminología:** starving crowd · market selection · value equation · niche selection · grand slam offer
+- ▶ **YouTube:** https://www.youtube.com/@AlexHormozi
+
+## Nivel 11 · High-ticket · Intermedio — Construir la oferta irresistible (Grand Slam Offer)
+
+*Con el nicho validado, construir la oferta high-ticket que saca del juego del precio: maximizar la Value Equation, apilar valor (Trim & Stack), y añadir los amplificadores que cierran la venta — garantias, escasez, urgencia, bonos y naming. El producto ganador no se 'encuentra', se DISEÑA hasta que decir que no resulta estupido.*
+
+### Sabri Suby — King Kong (YouTube gratis) — Sabri Suby
+- **n:** 181  ·  **idioma:** en
+- **Por qué:** Recurso GRATIS de alto valor para high-ticket: Sabri Suby (autor de Sell Like Crazy, Shark de Shark Tank AU) desglosa en su canal los funnels reales que usa para captar clientes high-ticket a diario, el script de venta telefonica de high-ticket y el sistema de oferta+lead magnet. Complementa a Hormozi con tactica concreta de funnel y guion de cierre para ticket alto, no solo teoria de oferta.
+- **Terminología:** high-ticket funnel · halo strategy · godfather offer · magic lantern technique · high-ticket sales script
+- ▶ **YouTube:** https://www.youtube.com/channel/UCAxUtcgLiq_gopO87VaZM5w
+
+## Nivel 12 · High-ticket · Avanzado — Modelos de ingresos, continuity y maximizar el LTV
+
+*Una oferta no basta: necesitas una SECUENCIA de ofertas (money model) que haga que el cliente nuevo financie la adquisicion de los siguientes, y un motor de ingresos recurrentes (continuity) que multiplique el LTV. Aqui se pasa de 'vender una vez caro' a 'construir un activo que genera caja predecible'.*
+
+### The Automatic Customer (negocio de suscripcion) — John Warrillow
+- **n:** 182  ·  **idioma:** en
+- **Por qué:** El plano operativo del 'continuity' que Hormozi nombra pero no profundiza. Warrillow desglosa 9 modelos de suscripcion concretos (membership, consumables, surprise box, network, peace-of-mind, all-you-can-eat, etc.) y como convertir clientes en suscriptores en CUALQUIER industria. Critico para el LTV: enseña a calcular y mejorar el LTV/CAC, reducir churn y construir ingreso recurrente que vuelve el negocio mas valioso y predecible. El 'como' tactico del Stage III de Money Models.
+- **Terminología:** subscription business · 9 subscription models · recurring revenue · churn rate · LTV:CAC ratio · automatic customer · membership model
+- 🛒 **Comprar** (Audible / Amazon): https://www.amazon.com/The-Automatic-Customer-audiobook/dp/B00SRZTIZ8
+
+## Nivel 13 · High-ticket · Elite — Retencion profunda, anti-churn y ascension
+
+*El nivel donde el LTV se vuelve un foso defensivo: diseñar la experiencia del cliente para que NUNCA se vaya (los primeros 100 dias), construir una economia de membresia con superusers, y crear escaleras de ascension donde el cliente sube de tier por voluntad propia. Esto es lo que separa un negocio high-ticket de un activo que compone año tras año.*
+
+### Never Lose a Customer Again (anti-churn) — Joey Coleman
+- **n:** 183  ·  **idioma:** en
+- **Por qué:** El sistema mas accionable contra el churn temprano, que es donde se pierde la mayoria del LTV. Coleman demuestra que los primeros 100 dias post-venta deciden si el cliente se queda 5+ años o se va; mapea las 8 fases emocionales del cliente (Assess, Admit, Affirm, Activate, Acknowledge, Accept, Accomplish, Adore) y como diseñar cada toque para convertir compradores en fans. Indispensable para high-ticket: cuando el ticket es alto, perder un cliente en el dia 30 destruye el CFA; este libro lo previene por diseño.
+- **Terminología:** First 100 Days · 8 phases of the customer journey · customer retention · onboarding experience · buyer's remorse · raving fans · churn prevention
+- 🛒 **Comprar** (Audible / Amazon): https://www.audible.com/pd/Never-Lose-a-Customer-Again-Audiobook/B07BDQPF8T
+
+### The Membership Economy (ascension y recurrencia) — Robbie Kellman Baxter
+- **n:** 184  ·  **idioma:** en
+- **Por qué:** El marco maestro de la economia de membresia y la ascension. Baxter (nombrada top-10 libro de marketing de todos los tiempos por BookAuthority) enseña a encontrar tus 'superusers', dominar la 'forever transaction' y construir escaleras de membresia donde el cliente asciende de tier (free -> pago -> premium). Es la capa estrategica sobre Warrillow y Hormozi: como pensar el negocio entero como relacion recurrente y no como transacciones sueltas — el techo del LTV.
+- **Terminología:** membership economy · forever transaction · superusers · ascension model · recurring revenue · membership tiers · freemium to premium
+- 🛒 **Comprar** (Audible / Amazon): https://www.audible.com/pd/The-Membership-Economy-Audiobook/B01DKSOW3O
