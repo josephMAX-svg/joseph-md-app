@@ -1,5036 +1,17 @@
 [
  {
-  "u": "http://localhost:3000/chat",
-  "status": 405,
-  "cls": "OTHER_405",
-  "files": [
-   "src/components/AgentChatModal.tsx"
-  ]
- },
- {
-  "u": "http://localhost:3000/apex/manual",
-  "status": 405,
-  "cls": "OTHER_405",
-  "files": [
-   "src/components/ApexManualModal.tsx"
-  ]
- },
- {
-  "u": "http://localhost:3000",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/components/ApexManualModal.tsx",
-   "src/lib/dataSource.ts"
-  ]
- },
- {
-  "u": "http://192.168.1.2:3000",
-  "status": 0,
-  "err": "ECONNREFUSED",
-  "cls": "DEAD",
-  "files": [
-   "src/components/ApexManualModal.tsx"
-  ]
- },
- {
-  "u": "https://calendar.google.com/calendar/embed?src=josephsototocas%40gmail.com&ctz=America%2FLima&mode=DAY&showTitle=0&showPrint=0&showCalendars=0&showTabs=0",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/components/EncapsPlanView.tsx"
-  ]
- },
- {
-  "u": "https://campus.academiatheomed.com/course/view.php?id=73&section=",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/components/EncapsPlanView.tsx"
-  ]
- },
- {
-  "u": "https://encaps-v9-joseph.vercel.app",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/components/EncapsWebView.tsx"
-  ]
- },
- {
-  "u": "https://www.youtube.com/results?search_query=",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/components/empresa/AurumHub.tsx",
-   "src/components/home/BibliotecaHome.tsx"
-  ]
- },
- {
-  "u": "https://casasototocas.vercel.app",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/components/empresa/EmpresaHub.tsx",
-   "src/lib/terrenosData.ts"
-  ]
- },
- {
-  "u": "https://www.facebook.com/marketplace/inbox/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/components/empresa/EmpresaHub.tsx",
-   "src/lib/terrenosData.ts"
-  ]
- },
- {
-  "u": "https://www.facebook.com/groups/3763516290632831",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/components/empresa/EmpresaHub.tsx",
-   "src/lib/terrenosData.ts"
-  ]
- },
- {
-  "u": "https://qori-golden.vercel.app",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/components/empresa/EmpresaHub.tsx"
-  ]
- },
- {
-  "u": "https://www.facebook.com/profile.php?id=61590843116336",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/components/empresa/EmpresaHub.tsx"
-  ]
- },
- {
-  "u": "https://www.youtube.com/channel/UCn4FpQVJshktm9FTGMTjF7g",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/components/empresa/EmpresaHub.tsx"
-  ]
- },
- {
-  "u": "https://wa.me/51934173914",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/components/empresa/EmpresaHub.tsx",
-   "src/lib/empresaData.ts"
-  ]
- },
- {
-  "u": "https://pulso-crm.vercel.app/hoy",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/components/empresa/PulsoCommandCenter.tsx",
-   "src/lib/empresaData.ts"
-  ]
- },
- {
-  "u": "https://pulso-crm.vercel.app/liviano",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/components/empresa/PulsoCommandCenter.tsx"
-  ]
- },
- {
-  "u": "https://pulso-crm.vercel.app/marketing",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/components/empresa/PulsoCommandCenter.tsx"
-  ]
- },
- {
-  "u": "https://www.youtube.com/results?search_query=Alex+Hormozi+en+español",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/components/empresa/PulsoTodayPlan.tsx"
-  ]
- },
- {
-  "u": "https://dermatology.mhmedical.com/index.aspx",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/components/study/DermaHub.tsx"
-  ]
- },
- {
-  "u": "https://qbankly.app/qbanks",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/components/study/DermaHub.tsx",
-   "src/lib/dermaDailyPlan.ts",
-   "src/lib/usmleQbanklyData.ts",
-   "src/lib/usmleStep1Daily.ts",
-   "src/lib/usmleStep1Plan.ts"
-  ]
- },
- {
-  "u": "https://promir.medicapanamericana.com/capitulo/62836950c0f8415ab9efb5c7",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/components/study/DermaHub.tsx"
-  ]
- },
- {
-  "u": "https://dermatology.mhmedical.com/multimedia.aspx",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/components/study/DermaHub.tsx"
-  ]
- },
- {
-  "u": "https://doi.org/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/components/study/ResearchAgenticSystem.tsx"
-  ]
- },
- {
-  "u": "https://vitals-pulso.vercel.app",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/config.ts"
-  ]
- },
- {
-  "u": "https://ankiweb.net/decks",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/ankiLinks.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=uVxiS72dAc4",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/search/To%20Sell%20Is%20Human%20Daniel%20Pink%20audiobook",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Sell-Human-Surprising-Truth-Persuading/dp/1594631905",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=i0B4v-9fLQc",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts",
-   "src/lib/aurumDailyPlan.ts",
-   "src/lib/aurumData.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/search/Psychology%20of%20Selling%20Brian%20Tracy%20audiobook",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Psychology-Selling-Increase-Sales-Possible/dp/0785288066",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=jY1hYExcTf8",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts",
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/1AsLPaD5EAb5pUkJFzuGKx",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/aurumBiblioteca.ts",
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Influence-New-Expanded-Psychology-Persuasion/dp/0062937650",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts",
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=414SqrjtZAY",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/2ycsTkj41Oejs7D0Oh34VC",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Pre-Suasion-Revolutionary-Way-Influence-Persuade/dp/1501109790",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=RYC8Cz_klcY",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/search/Way%20of%20the%20Wolf%20Jordan%20Belfort%20audiobook",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Way-Wolf-Straight-Selling-Persuasion/dp/1501164287",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=vUlA_1GJ9tY",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/search/SPIN%20Selling%20Neil%20Rackham%20audiobook",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/SPIN-Selling-Neil-Rackham/dp/0070511136",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=hk7Gx0NU7GA",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/search/Gap%20Selling%20Keenan%20audiobook",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Gap-Selling-Problem-Centric-Everything-Relationships/dp/1119427681",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=buKC5g5uK9c",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts",
-   "src/lib/aurumDailyPlan.ts",
-   "src/lib/aurumData.ts",
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/episode/6Z7lvct82rPpem99QZ9Gdy",
-  "status": 404,
-  "cls": "DEAD",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/100M-Offers-People-Stupid-Saying/dp/1737475715",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=fqNkbBYLZz4",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts",
-   "src/lib/aurumDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/search/100M%20Leads%20Alex%20Hormozi%20audiobook",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/100M-Leads-Strangers-Acquisition-com/dp/1737475766",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=SlPGorMfSB4",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts",
-   "src/lib/aurumDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/search/Never%20Split%20the%20Difference%20Chris%20Voss%20audiobook",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Never-Split-Difference-Negotiating-Depended/dp/0062407805",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=vReRPe5XvpA",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/search/Pitch%20Anything%20Oren%20Klaff%20audiobook",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Pitch-Anything-Innovative-Presenting-Persuading/dp/0071752854",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=4ioFj58G6oQ",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/search/The%20Challenger%20Sale%20audiobook",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Challenger-Sale-Control-Customer-Conversation/dp/1591844355",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=G-VImG17KSI",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/search/The%20Lost%20Art%20of%20Closing%20Iannarino%20audiobook",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Lost-Art-Closing-Winning-Commitments/dp/0735211698",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/user/alfonsoychristian",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/1TWGwZeZZMrfWE4sgr74wu",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=jNh9uLtSClY",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/episode/6oNVEfBLKu1jaHh8gfJpXQ",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/-/es/dp/8467033134",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=dUN4nTPOJpI",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=7vPjsYdjZC8",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/episode/1DH1i6fDwgZGxHSlq0thep",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/-/es/dp/6073151667",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=h07T_cowaSE",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/-/es/dp/841625379X",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=f2jLjoLOOFQ",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=roKKJXqsOM0",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/episode/1wTuF3M8vUGkxgTt0mxcYu",
-  "status": 404,
-  "cls": "DEAD",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/-/es/dp/6073128312",
-  "status": 404,
-  "cls": "DEAD",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/user/asalesguyconsulting",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/JOLT-Effect-Performers-Overcome-Indecision/dp/0593538102",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/1y22POKpL5CrOWn44vkBjw",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/New-Sales-Simplified-Prospecting-Development/dp/0814431771",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=k7TbueE_GzA",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/3iOuZyAQIUNhWOX6cqKIA6",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Ultimate-Sales-Machine-Turbocharge-Relentless/dp/1591842158",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/user/salesinfluence",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/channel/UCkSBb0-quMU1-ra1-KmzF0Q",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/1PrQZHgVIlXSE8C75kmkuh",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.es/Vendedor-Maestras-Probados-Clientes-Aumentar-ebook/dp/B018ZYRAUK",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/channel/UC50DMoaZxVftPQ14kLHpVMg",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/c/AprendamosMarketing",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts",
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/channel/UCB8h5BJZmSi3k15t8FCPyvA",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts",
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Dotcom-Secrets-Underground-Playbook-Growing/dp/B08B9ZHVVG",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/3PdDfA0LrewfFD23RVPaTd",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/aurumBiblioteca.ts",
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://books.apple.com/us/audiobook/building-a-storybrand/id1441448760",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Aprende-Facebook-Ads-desde-cero-ebook/dp/B010MNMXTK",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts",
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Traction-audiobook/dp/B01705KMG4",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/They-Ask-You-Answer-audiobook/dp/B0735WVVVW",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts",
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/@RomualdFonsTV",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts",
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/channel/UCx7J37QuXsGL7QG6SMIpqKg",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts",
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Inbound-Marketing-audiobook/dp/B002Y2Q97U",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts",
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Jab-Right-Hook-Story-Social/dp/B0BZS62R4L",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts",
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/neilpatel",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts",
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=75tfi1OUlDg",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts",
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/2CtSEuimVcVKfLzOin8gRZ",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/aurumBiblioteca.ts",
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.momtestbook.com/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts",
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/@AlexHormozi",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts",
-   "src/lib/aurumDailyPlan.ts",
-   "src/lib/aurumData.ts",
-   "src/lib/bibliotecaNiveles.ts",
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/@positioningshow",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.audible.com/pd/Obviously-Awesome-Audiobook/B085L1MKYX",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/channel/UCAxUtcgLiq_gopO87VaZM5w",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts",
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/episode/3I5nkMu3yJuHrc1H1Exeg3",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts",
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://shop.acquisition.com/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/The-Automatic-Customer-audiobook/dp/B00SRZTIZ8",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts",
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.audible.com/pd/Never-Lose-a-Customer-Again-Audiobook/B07BDQPF8T",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts",
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.audible.com/pd/The-Membership-Economy-Audiobook/B01DKSOW3O",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumBiblioteca.ts",
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/@grantcardone",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://archive.org/details/tosellishumansur0000pink_r0s8",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumDailyPlan.ts",
-   "src/lib/aurumData.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/user/grantcardone/videos",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumDailyPlan.ts",
-   "src/lib/aurumData.ts"
-  ]
- },
- {
-  "u": "https://blog.hubspot.com/sales/the-psychology-of-selling",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumDailyPlan.ts",
-   "src/lib/aurumData.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=9hdptAKBUoI",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.overdrive.com/media/5553495/the-10x-rule",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/aurumDailyPlan.ts",
-   "src/lib/aurumData.ts"
-  ]
- },
- {
-  "u": "https://cdn.bookey.app/files/pdf/book/en/how-i-raised-myself-from-failure-to-success-in-selling.pdf",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.acquisition.com/podcast",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumDailyPlan.ts",
-   "src/lib/aurumData.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/channel/UCk7jHqdlFFDBhC1QIFqi54w",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumDailyPlan.ts",
-   "src/lib/aurumData.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/playlist?list=PL_3ZK0x5nFYBNLNoUnm0FxZCUyqPmXccf",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumDailyPlan.ts",
-   "src/lib/aurumData.ts"
-  ]
- },
- {
-  "u": "https://www.blackswanltd.com/negotiation-leadership-resources",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=2gBboDdtTlc",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumDailyPlan.ts",
-   "src/lib/aurumData.ts"
-  ]
- },
- {
-  "u": "https://automotivehalloffame.org/honoree/joe-girard/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumDailyPlan.ts",
-   "src/lib/aurumData.ts"
-  ]
- },
- {
-  "u": "https://en.wikipedia.org/wiki/Joe_Girard",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=rgp6f04Bw3E",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumDailyPlan.ts",
-   "src/lib/aurumData.ts"
-  ]
- },
- {
-  "u": "https://archive.org/details/spinselling0000rack",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumDailyPlan.ts",
-   "src/lib/aurumData.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=9IXcrP46BDk",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumDailyPlan.ts",
-   "src/lib/aurumData.ts"
-  ]
- },
- {
-  "u": "https://www.huthwaiteinternational.com/spin-methodology",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumDailyPlan.ts",
-   "src/lib/aurumData.ts"
-  ]
- },
- {
-  "u": "https://archive.org/details/BobSommersRobertCialdini-Influence_thePsychologyofPersuasion",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumDailyPlan.ts",
-   "src/lib/aurumData.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=1UlDa-OJYxE",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumDailyPlan.ts",
-   "src/lib/aurumData.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=cFdCzN7RYbw",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumDailyPlan.ts",
-   "src/lib/aurumData.ts",
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://hbr.org/2001/10/harnessing-the-science-of-persuasion",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumDailyPlan.ts",
-   "src/lib/aurumData.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/playlist/41WB6RDgmRWPha2XvPA2H0",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumDailyPlan.ts",
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/@soyjosuepena",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumDailyPlan.ts",
-   "src/lib/aurumData.ts"
-  ]
- },
- {
-  "u": "https://www.acquisition.com/audiobooks",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumDailyPlan.ts",
-   "src/lib/aurumData.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/@AlexHormozi/search?query=sales%20objections",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.acquisition.com/leads-gifts",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/@AlexHormozi/search?query=guarantee",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/@AlexHormozi/search?query=scarcity%20urgency",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/influenceatwork",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumDailyPlan.ts",
-   "src/lib/aurumData.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/playlist?list=PLuvjGvhl6aW_9Pf2Q4p04e2vrwEAGMU44",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumDailyPlan.ts",
-   "src/lib/aurumData.ts"
-  ]
- },
- {
-  "u": "https://podcasts.apple.com/is/podcast/sales-gravy-jeb-blount/id219558725",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumDailyPlan.ts",
-   "src/lib/aurumData.ts"
-  ]
- },
- {
-  "u": "https://www.mindperk.com/tom-hopkins-biography/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.everand.com/audiobook/769309848/The-Challenger-Sale-Taking-Control-of-the-Customer-Conversation",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumDailyPlan.ts",
-   "src/lib/aurumData.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/@GrantCardone",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://soundcloud.com/random-house-audiobooks/never-split-the-difference-by-chris-voss-and-tahl-raz",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumDailyPlan.ts",
-   "src/lib/aurumData.ts"
-  ]
- },
- {
-  "u": "https://predictablerevenue.com/about/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumDailyPlan.ts",
-   "src/lib/aurumData.ts"
-  ]
- },
- {
-  "u": "https://fanaticalprospecting.com/origin-sales-gravy-video/",
-  "status": 404,
-  "cls": "DEAD",
-  "files": [
-   "src/lib/aurumDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/@BrianTracySpeaker",
-  "status": 404,
-  "cls": "DEAD",
-  "files": [
-   "src/lib/aurumData.ts"
-  ]
- },
- {
-  "u": "https://www.blackswanltd.com/never-split-the-difference",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumData.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=BJ9ZRwUjAkM",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumData.ts"
-  ]
- },
- {
-  "u": "https://commoncog.com/c/cases/how-mark-roberge-built-hubspots-sales-engine/",
-  "status": 404,
-  "cls": "DEAD",
-  "files": [
-   "src/lib/aurumData.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/channel/UCgorjMy3g2iXL0HYzufMOJQ",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumData.ts"
-  ]
- },
- {
-  "u": "https://fs.blog/knowledge-project-podcast/robert-cialdini/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumData.ts"
-  ]
- },
- {
-  "u": "https://www.afponline.org/ideas-inspiration/discussions/afp-conversations-podcast/Details/chris-voss-ex-fbi-hostage-negotiator-explains-why-you-should-never-split-the-difference/",
-  "status": 404,
-  "cls": "DEAD",
-  "files": [
-   "src/lib/aurumData.ts"
-  ]
- },
- {
-  "u": "https://www.texasmonthly.com/culture/selling-opportunity-book-mary-kay-empire/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumData.ts"
-  ]
- },
- {
-  "u": "https://www.thequota.co/articles/the-story-of-zig-ziglar-the-quintessential-american-salesman",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumData.ts"
-  ]
- },
- {
-  "u": "https://archive.org/details/presuasionrevolu0000cial",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumData.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/results?search_query=way+of+the+wolf+jordan+belfort+audiobook",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/aurumData.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=nHR8B8V2v9s",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/In-Defense-of-Food-Michael-Pollan-audiobook/dp/B001PQPHBU",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=RzeLu23_XjE",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/The-Obesity-Code-Dr-Jason-Fung-audiobook/dp/B01MRKEO0U",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=3T2Fej5P8L0",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Why-We-Get-Fat-Gary-Taubes-audiobook/dp/B004HFK0H2",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Ozempic-Revolution-Doctors-Success-Yourself/dp/B0DDRBR1GG",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/6ePj8X1NrpeqiAqbVcszYn",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://us.amazon.com/The-Hungry-Brain-audiobook/dp/B01MY2QWYM",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Magic-Pill-Extraordinary-Disturbing-Weight-Loss/dp/B0CNF8FBSL",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=w7aY2qwv0dc",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Burn-Research-Really-Calories-Healthy/dp/B08FL6Y69D",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/4QvC4mLb4bcP6YOGPy2qlh",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Why-We-Get-Sick-Epidemic/dp/B0899DP434",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=UbQvc8QrnJw",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/5qnrk4v8gOJRaUl5xJpluT",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Audible-Outlive-Science-Art-Longevity/dp/B0B64WL9PK",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/1kUSAX4JjFd4RQptZtacsY",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Metabolical-Processed-Nutrition-Modern-Medicine/dp/B08LP21JLQ",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=5LPtIjs8gFM",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.audible.com/pd/Good-Calories-Bad-Calories-Audiobook/0593413024",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Rethinking-Diabetes-Science-Successful-Treatments/dp/B0C4C4HFX8",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=AbwPLcC6MXg",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/4HdJG77aeKyYytCLvqcl2N",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://us.amazon.com/Hormone-Cure-Energized-Naturally-Gottfried/dp/B0G2KRFJVH",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=Fm47J3z-P7E",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/WomanCode-Perfect-Amplify-Fertility-Supercharge/dp/006213079X",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/0LpmVacMdmCxN1iYeHIh2o",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/New-Menopause-Navigating-Hormonal-Purpose/dp/0593796373",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=UzehCdbvgfk",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Hormone-Repair-Manual-Healthy-Hormones/dp/0648352064",
-  "status": 404,
-  "cls": "DEAD",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Outlive-Longevity-Peter-Attia-MD/dp/0593236599",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=jY_NS66WHIs",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Menopause-Brain-Empowers-Navigate-Transition/dp/0593541243",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Testosterone-Life-Recharge-Vitality-Overall/dp/0071596690",
-  "status": 404,
-  "cls": "DEAD",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=TvilGjFQ06I",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Hormone-Intelligence-Complete-Restoring-Well-Being/dp/0063030411",
-  "status": 404,
-  "cls": "DEAD",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=A8-0dGXNz64",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Estrogen-Matters-Hormones-Menopause-Well-Being/dp/0316481203",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=21_bErq8Aa0",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/2tFXVHR5TesDdWXAKbr669",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Menopause-Manifesto-Own-Health-Feminism/dp/0806540664",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Testosterone-Story-Hormone-Dominates-Divides/dp/1788402928",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://us.amazon.com/Definitive-Guide-Perimenopause-Menopause-Revised/dp/B0CP49PSDC",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Unbreakable-Womans-Guide-Aging-Power/dp/0593736583",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=4r5zlZxpTkY",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/4ZQz6AmfQuyX1iHCh4B4wk",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Why-We-Sleep-Unlocking-Dreams/dp/1501144316",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Sleep-Smarter-audiobook/dp/B01J4BJT7A",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=dhrQqaH_M6Q",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/The-Circadian-Code-audiobook/dp/B07F16S85B",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/The-Sleep-Solution-audiobook/dp/B01N5PCDDE",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=cvLhqA2TVE0",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/3OsuOhMfead6u6y8NMo4vg",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Sleep-Prescription-Seven-Days-Unlocking/dp/B09RTPFZSQ",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Life-Time-Science-Revolutionize-Health/dp/0300267053",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Sleep-Book-Well-Every-Night/dp/1409157636",
-  "status": 404,
-  "cls": "DEAD",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Internal-Time-Chronotypes-Social-Youre/dp/0674975391",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=D8ItgUuOv6M",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/5N3YpJV3yVLXdJzt2VHDLU",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/The-Promise-of-Sleep-audiobook/dp/B0000547E3",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=KottMJ7IMao",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://us.amazon.com/When-Brains-Dream-Exploring-Science/dp/B08RMVZDF5",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Principles-Practice-Sleep-Medicine-Set/dp/0323661890",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=5Bgufm9VwfU",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/1JjeY1auUmGStwrIQzfu1P",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Feeling-Good-Handbook-David-Burns/dp/0452281326",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=7nsoYTn8mvc",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/album/54xVhdHGVBqqcf97Rlv48z",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Happiness-Trap-Struggling-Start-Living/dp/1590305841",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Mind-Over-Mood-Second-Changing/dp/1462520421",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/6kGIumtSZxFsKOqU1wr9R5",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Dare-Anxiety-Stop-Panic-Attacks/dp/0956596258",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=hiDeEu9a_UA",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Lost-Connections-Uncovering-Depression-Unexpected/dp/163286830X",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Why-Zebras-Dont-Get-Ulcers-audiobook/dp/B00AU91D7K",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=EMg5l7ZHvug",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/episode/7IE0l9UN970bpCHXb8ccJ1",
-  "status": 404,
-  "cls": "DEAD",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Emotional-Intelligence-audiobook/dp/B0000647PF",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/How-Emotions-Are-Made-audiobook/dp/B01MZJ08US",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=s1HqcqScqeQ",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/3cQbg1W4XMNKjSOASKL7wH",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Body-Keeps-Score-Healing-Trauma/dp/0143127748",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=Wud1fm1gBJM",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/3tE7xXfqI5KxYMxZ0phIeE",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Building-Life-Worth-Living-Memoir/dp/0812994612",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Cognitive-Therapy-Emotional-Disorders-Aaron/dp/0452009286",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=Una-d-J5nqI",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/A-Liberated-Mind-Steven-C-Hayes-audiobook/dp/B07W6QYH5X",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=yRbungIWqRg",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/60gl7FWYI16pqxTloyU5lI",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Behave-Biology-Humans-Best-Worst/dp/0143110918",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=Bu4QwpQddtg",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/44HFJ4PoENLgwuw4Zeh4g7",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Mans-Search-Meaning-Viktor-Frankl/dp/0807014273",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/How-ADHD-Insiders-Working-Against/dp/0593578945",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Atomic-Habits-Proven-Build-Break/dp/0735211299",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Indistractable-Control-Your-Attention-Choose/dp/194883653X",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Hyperfocus-More-Productive-World-Distraction/dp/052552225X",
-  "status": 404,
-  "cls": "DEAD",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Smart-but-Scattered-Guide-Success/dp/1462516963",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/playlist?list=PLOy5SFKCexvHxgF7FqhsFIOAK-kIgURix",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/63QvsrI6cbJ9ahBlPUMogi",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Deep-Work-Focused-Success-Distracted/dp/1455586692",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Spark-Revolutionary-Science-Exercise-Brain/dp/0316113514",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/2J3c6VOoOg5XJohdLCDaDL",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/ADHD-2-0-Essential-Strategies-Distraction/dp/0399178740",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=Au9UtB_7mBM",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/0jEqokKldjj7yqi29I80Io",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Driven-Distraction-Revised-Recognizing-Attention/dp/0307743152",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Smart-but-Stuck-Emotions-Adults/dp/1501221604",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Distracted-Mind-MIT-Press-High-Tech/dp/0262534436",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=Hb8y9ICFeYM",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/6ASW2l9a1zEvRZJRB6qGkw",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Stolen-Focus-Attention-Think-Deeply/dp/0593138538",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/7Bp3AA93zr1wBvZpxsFiH5",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Taking-Charge-Adult-ADHD-Second/dp/1462546854",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/playlist?list=PLZUl351c7W3FtA4TeN0b2hsYfWu2_iZol",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/7xVqhuVTbD9hO773dhrXsS",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Scattered-Minds-Origins-Attention-Disorder/dp/059350438X",
-  "status": 404,
-  "cls": "DEAD",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=hd2oXclE15U",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/search/Come%20As%20You%20Are%20Emily%20Nagoski%20audiobook",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Come-You-Are-Surprising-Transform/dp/1982165316",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=3s65q2rTFRk",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/search/Attached%20Amir%20Levine%20audiobook",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Attached-Science-Adult-Attachment-Find/dp/1585429139",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=JM3yjVTmUoY",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/7mIh6IFwDFtsZRNTsZY4DE",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Mating-Captivity-Unlocking-Erotic-Intelligence/dp/0060753641",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Sex-Starved-Marriage-Boosting-Your-Libido/dp/0743227328",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=7Mxd98-XDZM",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/22BNa8cnFCpsfucRvNeCw8",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Hold-Me-Tight-Conversations-Lifetime/dp/031611300X",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/0waQIbcT9LmVWdFI5HsXHV",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Wired-Love-Understanding-Partners-Relationship/dp/1684038987",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/5SQ293SyTiEnlDMDo2xW7A",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Seven-Principles-Making-Marriage-Work/dp/0553447718",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/75MdKf6QcoapgglvfJqWas",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/What-Makes-Love-Last-Betrayal/dp/1451608489",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/search/State%20of%20Affairs%20Esther%20Perel%20audiobook",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/State-Affairs-Rethinking-Infidelity/dp/0062322583",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/search/Science%20of%20Trust%20Gottman%20audiobook",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Science-Trust-Emotional-Attunement-Couples/dp/0393705951",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/3Nw48lDzMCbJCB9DGDgHOM",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Come-Together-Science-Creating-Connections/dp/0593500091",
-  "status": 404,
-  "cls": "DEAD",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/100M-Offers-People-Stupid-Saying/dp/B09BK52JFJ",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=E-MRsA0rsN8",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/playlist/6SehW9GmgJl8CymYWc8Kzm",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/100M-Leads-Strangers-Want-Stuff/dp/1737475758",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=CN46VFFOB58",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/100M-Money-Models-Make-Acquisition-com/dp/B0FN4SPQZF",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=0uSQIk59N5I",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Building-StoryBrand-Clarify-Message-Customers/dp/0718033329",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=553DQOew3fs",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/2el2gpUAh8eHAGCJH67S5S",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/DotCom-Secrets-Underground-Playbook-Growing/dp/1401960472",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=1XDK7ciT0xQ",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://us.amazon.com/Expert-Secrets-Underground-Converting-Customers/dp/B08B9DTGFM",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=_y0aKdIgE6s",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Positioning-Battle-Your-Al-Ries/dp/0071373586",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=BpY_WYS0USA",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Obviously-Awesome-Product-Positioning-Customers/dp/1999023005",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=WQ0alUS1Zyg",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/22-Immutable-Laws-Marketing-Violate/dp/0887306667",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Traction-Startup-Achieve-Explosive-Customer/dp/1591848369",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Lean-Analytics-Better-Startup-Faster/dp/1449335675",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Hacking-Growth-Fastest-Growing-Companies-Breakout/dp/045149721X",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=LskjarZXlwQ",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/5Dk0yjde8J57Rprm6CnJMo",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Contagious-Things-Catch-Jonah-Berger/dp/1451686579",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=0qMeWgeGXpM",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Made-Stick-Ideas-Survive-Others/dp/1400064287",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=BAgBgDrqTVk",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/3KOqM16Me2DCYMnWgrK1X1",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/This-Marketing-Cant-Until-Learn/dp/0525540830",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Breakthrough-Advertising-Eugene-M-Schwartz/dp/0887232981",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=u4hV4tQG3DQ",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/CASHVERTISING-Secrets-Ad-Agency-Psychology-Anything/dp/1601630328",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Boron-Letters-Gary-C-Halbert/dp/1484825985",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=v9ItGV8OS3w",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/album/5Yid7eHQssaePPEK0ITj2d",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Scientific-Advertising-Claude-C-Hopkins/dp/1607960869",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/episode/4szrpvgVIZEOto5IqrOU1f",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Ogilvy-Advertising-David/dp/039472903X",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=QwaDvbC04mI",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/6wXrQm9xKVueuIr6GTCx00",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Atomic-Habits-James-Clear-audiobook/dp/B07RFSSYBH",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=CrFYHOx7p3E",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Power-Habit-What-Life-Business/dp/081298160X",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=tjdp38bCh-Y",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Deep-Work-Cal-Newport-audiobook/dp/B0189PVAWY",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=-Va0GUdqH_Q",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/album/3aoPW7KtSXuirGyC1n15zG",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Make-It-Stick-Successful-Learning/dp/0674729013",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Mind-Numbers-Science-Flunked-Algebra/dp/039916524X",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/0clG8dGKK79mEJl1mlt4Bk",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Ultralearning-Scott-Young-audiobook/dp/B07ST3Z1Q6",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Peak-Robert-Pool-Anders-Ericsson-audiobook/dp/B01F4A98WQ",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=FQC1g5joc60",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/The-Art-of-Learning-Josh-Waitzkin-audiobook/dp/B00JE2WEEK",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=4b-mBZE5xJo",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/album/4zoKZVU5J28eTzYa9oEJ0q",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Range-Generalists-Triumph-Specialized-World/dp/0735214484",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=5kb7Oi9sKi0",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://open.spotify.com/show/2pozvzGy2s8suSbSI8YWgW",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.amazon.com/Mastery-Robert-Greene/dp/014312417X",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/bibliotecaNiveles.ts"
-  ]
- },
- {
-  "u": "https://www.capcut.com/tools/online-video-editor",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/brandContentExtras.ts"
-  ]
- },
- {
-  "u": "https://www.canva.com/video-editor/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/brandContentExtras.ts"
-  ]
- },
- {
-  "u": "https://app.clipchamp.com/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/brandContentExtras.ts"
-  ]
- },
- {
-  "u": "https://www.adobe.com/express/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/brandContentExtras.ts"
-  ]
- },
- {
-  "u": "https://gemini.google.com/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/brandContentExtras.ts"
-  ]
- },
- {
-  "u": "https://labs.google/flow",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/brandContentExtras.ts"
-  ]
- },
- {
-  "u": "https://business.facebook.com/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/brandContentExtras.ts"
-  ]
- },
- {
-  "u": "https://www.tiktok.com/tiktokstudio",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/brandContentExtras.ts"
-  ]
- },
- {
-  "u": "https://studio.youtube.com/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/brandContentExtras.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/@FernadoVelarde",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/brandContentExtras.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/@sociedadperuanadebienesraices",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/brandContentExtras.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/@universidaddebienesraiceso2942",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/brandContentExtras.ts"
-  ]
- },
- {
-  "u": "https://www.tiktok.com/@doctorarrietam",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/brandContentExtras.ts"
-  ]
- },
- {
-  "u": "https://www.tiktok.com/@dr.rawdy",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/brandContentExtras.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/@BorjaBandera",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/brandContentExtras.ts"
-  ]
- },
- {
-  "u": "https://www.tiktok.com/@isabelvinabas",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/brandContentExtras.ts"
-  ]
- },
- {
-  "u": "https://www.instagram.com/marianrojasestape/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/brandContentExtras.ts"
-  ]
- },
- {
-  "u": "https://www.tiktok.com/@farmaceuticofernandez",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/brandContentExtras.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/@DoctorMike",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/brandContentExtras.ts"
-  ]
- },
- {
-  "u": "https://www.drkaranrajan.com/about",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/brandContentExtras.ts"
-  ]
- },
- {
-  "u": "https://joinvineyard.com/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/brandContentExtras.ts"
-  ]
- },
- {
-  "u": "https://www.instagram.com/thesleepdoctor/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/brandContentExtras.ts"
-  ]
- },
- {
-  "u": "https://www.tiktok.com/@pachamancas.lcr",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/brandContentExtras.ts"
-  ]
- },
- {
-  "u": "https://www.tiktok.com/@waldir.maqque",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/brandContentExtras.ts"
-  ]
- },
- {
-  "u": "https://www.tiktok.com/@mondalgo.azucena",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/brandContentExtras.ts"
-  ]
- },
- {
-  "u": "https://www.tiktok.com/@buenazo.peru",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/brandContentExtras.ts"
-  ]
- },
- {
-  "u": "https://www.tiktok.com/@peru.foodies",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/brandContentExtras.ts"
-  ]
- },
- {
-  "u": "https://www.instagram.com/gastonacurio/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/brandContentExtras.ts"
-  ]
- },
- {
-  "u": "https://www.tiktok.com/@soul_desire_goldens",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/brandContentExtras.ts"
-  ]
- },
- {
-  "u": "https://www.tiktok.com/@tuckerbudzyn",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/brandContentExtras.ts"
-  ]
- },
- {
-  "u": "https://www.tiktok.com/@aguyandagolden",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/brandContentExtras.ts"
-  ]
- },
- {
-  "u": "https://www.tiktok.com/@rebasgoldenlife",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/brandContentExtras.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/@mygoldenretrieverpuppies4347",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/brandContentExtras.ts"
-  ]
- },
- {
-  "u": "https://www.instagram.com/petsgoldenretriever.pe/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/brandContentExtras.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/channel/UCLd-u54NoSym30ClzDr37DA",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=ZKC3hiyLeRc",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://peterattiamd.com/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/@PeterAttiaMD",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://alexandrasowamd.com/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://getsowell.com/products/the-ozempic-revolution",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://michaelpollan.com/books/in-defense-of-food/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.saragottfriedmd.com/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=GVRDGQhoEYQ",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://estrogenmatters.com/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://peterattiamd.com/caroltavris-avrumbluming/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.ted.com/talks/matt_walker_sleep_is_your_superpower",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.sleepdiplomat.com",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.mycircadianclock.org",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.salk.edu/scientist/satchidananda-panda/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://feelinggood.com",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=H1T5uMeYv9Q",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.ted.com/talks/johann_hari_this_could_be_why_you_re_depressed_or_anxious",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://thelostconnections.com",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.ted.com/talks/lisa_feldman_barrett_you_aren_t_at_the_mercy_of_your_emotions_your_brain_creates_them",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://lisafeldmanbarrett.com/books/how-emotions-are-made/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://drhallowell.com/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/channel/UCnYKUlRjvi2TDSxzkw4eMyw",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=2_oMiwW3SMY",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://takecontroladhd.com/podcast/388",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.smartbutscatteredkids.com/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.smartbutscatteredkids.com/wp-content/uploads/ExecutiveSkillsChapter.pdf",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.ted.com/talks/emily_nagoski_the_truth_about_unwanted_arousal",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=L-q-tSHo9Ho",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.ted.com/talks/esther_perel_the_secret_to_desire_in_a_long_term_relationship",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=zw9n6GkgHI4",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.attachedthebook.com/wordpress/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=Z5_kgxF-PQA",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=Ep2MAx95m20",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.divorcebusting.com",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.acquisition.com/training/offers",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.acquisition.com/training/leads",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.acquisition.com/training/money",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.influenceatwork.com/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.dotcomsecrets.com/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/@russellbrunson",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.expertsecrets.com/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/@StoryBrand",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=QRHCoU04Pe0",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://breakthroughadvertisingbook.com/breakthrough-advertising/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.hardtofindseminars.com/Eugene_Schwartz_Speech.htm",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=piSLobJfZ3c",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/@ScottHYoungVid",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessBooksExtra.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/results?search_query=why+we+sleep+Matthew+Walker+resumen+español",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessStudyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/results?search_query=in+defense+of+food+Michael+Pollan+resumen+español",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessStudyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/results?search_query=$100m+offers+Alex+Hormozi+resumen+español",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessStudyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/results?search_query=$100m+leads+Alex+Hormozi+resumen+español",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessStudyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/results?search_query=$100m+money+models+Alex+Hormozi+resumen+español",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessStudyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/results?search_query=obesity+code+Jason+Fung+resumen+español",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessStudyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/results?search_query=ozempic+Alexandra+Sowa+resumen+español",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessStudyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/results?search_query=outlive+Peter+Attia+resumen+español",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessStudyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/results?search_query=hormone+cure+Sara+Gottfried+resumen+español",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessStudyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/results?search_query=estrogen+matters+Avrum+Bluming+resumen+español",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessStudyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/results?search_query=circadian+code+Satchin+Panda+resumen+español",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessStudyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/results?search_query=feeling+good+David+Burns+resumen+español",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessStudyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/results?search_query=lost+connections+Johann+Hari+resumen+español",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessStudyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/results?search_query=adhd+2.0+Hallowell+Ratey+resumen+español",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessStudyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/results?search_query=smart+but+scattered+Dawson+Guare+resumen+español",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessStudyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/results?search_query=come+as+you+are+Emily+Nagoski+resumen+español",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessStudyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/results?search_query=mating+in+captivity+Esther+Perel+resumen+español",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessStudyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/results?search_query=influence+Robert+Cialdini+resumen+español",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessStudyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/results?search_query=dotcom+secrets+Russell+Brunson+resumen+español",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessStudyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/results?search_query=expert+secrets+Russell+Brunson+resumen+español",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessStudyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/results?search_query=storybrand+Donald+Miller+resumen+español",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/businessStudyPlan.ts"
-  ]
- },
- {
-  "u": "https://dermatology.mhmedical.com",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/dermaDailyPlan.ts",
-   "src/lib/dermaSourcesData.ts"
-  ]
- },
- {
-  "u": "https://qbankly.app/library?e=1&doc=${doc",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://promir.medicapanamericana.com/capitulo/${capId",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://pubmed.ncbi.nlm.nih.gov/29127053/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://cotofanaanatomy.com/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://pubmed.ncbi.nlm.nih.gov/28746271/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://pubmed.ncbi.nlm.nih.gov/36469395/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://pubmed.ncbi.nlm.nih.gov/31524345/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://pubmed.ncbi.nlm.nih.gov/33977669/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8012343/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://shop.elsevier.com/books/procedures-in-cosmetic-dermatology-soft-tissue-augmentation/carruthers/978-0-323-83075-1",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.mdcodes.com/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://pubmed.ncbi.nlm.nih.gov/29549406/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://shop.elsevier.com/books/procedures-in-cosmetic-dermatology-botulinum-toxin/carruthers/978-0-323-83116-1",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://pubmed.ncbi.nlm.nih.gov/28333326/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://pubmed.ncbi.nlm.nih.gov/23636629/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7427155/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://pubmed.ncbi.nlm.nih.gov/24692598/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaDailyPlan.ts",
-   "src/lib/researchDailyPlan.ts",
-   "src/lib/researchProgram.ts"
-  ]
- },
- {
-  "u": "https://pubmed.ncbi.nlm.nih.gov/6836297/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://pubmed.ncbi.nlm.nih.gov/15216537/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://dermnetnz.org/image-library",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaData.ts"
-  ]
- },
- {
-  "u": "https://dermoscopedia.org/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaData.ts"
-  ]
- },
- {
-  "u": "https://dermnetnz.org/cme/dermoscopy-course",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaData.ts"
-  ]
- },
- {
-  "u": "https://www.ncbi.nlm.nih.gov/books/NBK430685/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaData.ts"
-  ]
- },
- {
-  "u": "https://www.dermpathatlas.com/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaData.ts"
-  ]
- },
- {
-  "u": "https://www.dermatologytimes.com/view/dermatology-times-2025-year-in-review-drug-approvals",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/dermaData.ts"
-  ]
- },
- {
-  "u": "https://www.blackandbrownskin.co.uk/mindthegap",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaData.ts"
-  ]
- },
- {
-  "u": "https://jddonline.com/project-atlas/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaData.ts"
-  ]
- },
- {
-  "u": "https://dermnetnz.org/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaData.ts"
-  ]
- },
- {
-  "u": "https://dermnetnz.org/image-catalogue",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaData.ts"
-  ]
- },
- {
-  "u": "https://atlasdermatologico.com.br/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaData.ts"
-  ]
- },
- {
-  "u": "http://www.dermweb.com/photo_atlas/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaData.ts"
-  ]
- },
- {
-  "u": "https://www.dermapixel.com/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaData.ts"
-  ]
- },
- {
-  "u": "https://www.dermatoweb.net/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaData.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/doctorly",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaData.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/playlist?list=PLVnjTkEwv-uNH9kXERRNJBT1V-TbMAHqV",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaData.ts"
-  ]
- },
- {
-  "u": "https://dermatoscopymadesimple.blogspot.com/p/youtube-videos.html",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaData.ts"
-  ]
- },
- {
-  "u": "https://www.aad.org/education/basic-derm-curriculum",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaData.ts"
-  ]
- },
- {
-  "u": "https://nextstepsinderm.com/",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/dermaData.ts"
-  ]
- },
- {
-  "u": "https://dermatologyinreview.com/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaData.ts"
-  ]
- },
- {
-  "u": "https://dermatologyinreview.com/krazy_kodachromes/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaData.ts"
-  ]
- },
- {
-  "u": "https://kikoxp.com/posts/5084/public",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaData.ts"
-  ]
- },
- {
-  "u": "https://www.pathelective.com/derm-path-home",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaData.ts"
-  ]
- },
- {
-  "u": "https://www.pathpresenter.com/dermpath100/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaData.ts"
-  ]
- },
- {
-  "u": "https://www.nature.com/articles/s41467-024-50043-3",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaData.ts"
-  ]
- },
- {
-  "u": "https://www.mohscollege.org/for-physicians/education/webinars",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaData.ts"
-  ]
- },
- {
-  "u": "https://asds.pathlms.com/courses",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/dermaData.ts"
-  ]
- },
- {
-  "u": "https://accessmedicine.mhmedical.com/",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/dermaData.ts"
-  ]
- },
- {
-  "u": "https://libraryguides.mayo.edu/derm",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/dermaData.ts"
-  ]
- },
- {
-  "u": "https://pulso-crm.vercel.app",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/empresaData.ts"
-  ]
- },
- {
-  "u": "https://pulso-crm.vercel.app/reservar",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/empresaData.ts"
-  ]
- },
- {
-  "u": "https://drive.google.com/file/d/1vFuqUuGNHKyknAvaV2SR7pK1bMXJHulK/view",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/encapsPlan.ts"
-  ]
- },
- {
-  "u": "https://drive.google.com/file/d/1vtn1-za86do_axvPTGJ9VpaSBqv2QBRm/view",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/encapsPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/@AlexHormoziEspanol",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/estudioPulsoData.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/@AprendamosMarketing",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/estudioPulsoData.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/results?search_query=Romuald+Fons+SEO",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/estudioPulsoData.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/@VilmaNunez",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/estudioPulsoData.ts"
-  ]
- },
- {
-  "u": "https://peterattiamd.com/podcast/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/estudioPulsoData.ts"
-  ]
- },
- {
-  "u": "https://www.hubermanlab.com/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/estudioPulsoData.ts"
-  ]
- },
- {
-  "u": "https://curology.com/blog/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/estudioPulsoData.ts"
-  ]
- },
- {
-  "u": "https://www.hims.com/blog",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/estudioPulsoData.ts"
-  ]
- },
- {
-  "u": "https://promir.medicapanamericana.com/capitulo/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/mirCardiologiaData.ts",
-   "src/lib/mirDailyPlan.ts",
-   "src/lib/mirDigestivoData.ts"
-  ]
- },
- {
-  "u": "https://www.examenesmir.com/examenes-mir",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/mirData.ts"
-  ]
- },
- {
-  "u": "https://www.sanidad.gob.es",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/mirData.ts"
-  ]
- },
- {
-  "u": "https://mirial.es/examen-mir/24-examen-mir",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/mirData.ts"
-  ]
- },
- {
-  "u": "https://promir.medicapanamericana.com/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/mirData.ts"
-  ]
- },
- {
-  "u": "https://drive.google.com/file/d/${id",
-  "status": 404,
-  "cls": "DEAD",
-  "files": [
-   "src/lib/mirDriveResources.ts"
-  ]
- },
- {
-  "u": "https://promir.medicapanamericana.com",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/mirTemarioData.ts"
-  ]
- },
- {
-  "u": "https://pubmed.ncbi.nlm.nih.gov/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.nlm.nih.gov/oet/ed/pubmed/pubmed_in_ebp/index.html",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts",
-   "src/lib/researchData.ts"
-  ]
- },
- {
-  "u": "https://learn.nlm.nih.gov/documentation/training-packets/T0042010P/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.zotero.org/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.bmj.com/about-bmj/resources-readers/publications/how-read-paper",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/researchDailyPlan.ts",
-   "src/lib/researchData.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/@statquest",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts",
-   "src/lib/researchData.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/@zedstatistics",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts",
-   "src/lib/researchData.ts"
-  ]
- },
- {
-  "u": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6670166/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.cochrane.org/learn/courses-and-resources/interactive-learning/module-1-introduction-conducting-systematic-reviews",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://training.cochrane.org/handbook",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/channel/UCoWzvKR8RPHG07PPeqBiibA",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.prisma-statement.org/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.prisma-statement.org/prisma-search",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.prisma-statement.org/prisma-2020-flow-diagram",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8008539/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.crd.york.ac.uk/PROSPERO/help/register",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://osf.io/registries",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://europepmc.org/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.cochranelibrary.com/central",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://lilacs.bvsalud.org/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://clinicaltrials.gov/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.who.int/clinical-trials-registry-platform",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.rayyan.com/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://help.rayyan.ai/hc/en-us/articles/22088155760017-How-to-Create-a-Systematic-Review-in-Rayyan",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/@Rayyanapp",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://elicit.com/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.riskofbias.info/welcome/rob-2-0-tool",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.riskofbias.info/welcome/home",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.gradepro.org/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://amstar.ca/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://bookdown.org/MathiasHarrer/Doing_Meta_Analysis_in_R/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.metafor-project.org/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.equator-network.org/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts",
-   "src/lib/researchData.ts"
-  ]
- },
- {
-  "u": "https://developers.openalex.org/api-reference/authentication",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts",
-   "src/lib/researchData.ts",
-   "src/lib/researchProgram.ts"
-  ]
- },
- {
-  "u": "https://api.semanticscholar.org/api-docs/graph",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts",
-   "src/lib/researchProgram.ts"
-  ]
- },
- {
-  "u": "https://unpaywall.org/products/api",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts",
-   "src/lib/researchProgram.ts"
-  ]
- },
- {
-  "u": "https://www.crossref.org/documentation/retrieve-metadata/content-negotiation/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts",
-   "src/lib/researchData.ts",
-   "src/lib/researchProgram.ts"
-  ]
- },
- {
-  "u": "https://miguelhernan.org/whatifbook",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://hbiostat.org/bbr/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.equator-network.org/reporting-guidelines/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.epirhandbook.com/en/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.statlearning.com/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://evalsp25.classes.andrewheiss.com/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.danieldsjoberg.com/gtsummary/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.coursera.org/learn/sciwrite",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.phrasebank.manchester.ac.uk/",
-  "status": 0,
-  "err": "ECONNREFUSED",
-  "cls": "DEAD",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005619",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.riskofbias.info/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.cos.io/products/osf",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://orcid.org/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://europepmc.org/RestfulWebService",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchData.ts",
-   "src/lib/researchProgram.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/playlist?list=PLIdSaYrU7oyXPZmw0m0_wjKSInF5XlMSq",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchData.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=1Q6_LRZwZrc",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchData.ts"
-  ]
- },
- {
-  "u": "https://www.care-statement.org/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchData.ts"
-  ]
- },
- {
-  "u": "https://pubmed.ncbi.nlm.nih.gov/33818976/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchData.ts"
-  ]
- },
- {
-  "u": "https://www.cdc.gov/nchs/nhanes/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchData.ts"
-  ]
- },
- {
-  "u": "https://seer.cancer.gov/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchData.ts"
-  ]
- },
- {
-  "u": "https://citation.js.org/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchData.ts"
-  ]
- },
- {
-  "u": "https://www.cureus.com/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchData.ts"
-  ]
- },
- {
-  "u": "https://www.sciencedirect.com/journal/jaad-case-reports",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/researchData.ts"
-  ]
- },
- {
-  "u": "https://casereports.bmj.com/",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/researchData.ts"
-  ]
- },
- {
-  "u": "https://academic.oup.com/ced",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/researchData.ts"
-  ]
- },
- {
-  "u": "https://www.jaadinternational.org/",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/researchData.ts"
-  ]
- },
- {
-  "u": "https://jamanetwork.com/journals/jamadermatology",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/researchData.ts"
-  ]
- },
- {
-  "u": "https://pubmed.ncbi.nlm.nih.gov/?term=",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchProgram.ts"
-  ]
- },
- {
-  "u": "https://onlinelibrary.wiley.com/doi/10.1002/cesm.70038",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/researchProgram.ts"
-  ]
- },
- {
-  "u": "https://www.ncbi.nlm.nih.gov/books/NBK25501/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchProgram.ts"
-  ]
- },
- {
-  "u": "https://www.anthropic.com/engineering/multi-agent-research-system",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchProgram.ts"
-  ]
- },
- {
-  "u": "https://www.medrxiv.org/content/10.1101/2025.06.13.25329541v1",
-  "status": 403,
-  "cls": "BLOCKED",
-  "files": [
-   "src/lib/researchProgram.ts"
-  ]
- },
- {
-  "u": "https://pypi.org/project/python-docx/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchProgram.ts"
-  ]
- },
- {
-  "u": "https://lilacs.bvsalud.org/en/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/researchProgram.ts"
-  ]
- },
- {
-  "u": "https://qacynpqdrorpuegsmtcy.supabase.co",
-  "status": 404,
-  "cls": "DEAD",
-  "files": [
-   "src/lib/supabase.ts"
-  ]
- },
- {
   "u": "https://www.anthropic.com/learn",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/synapseDailyPlan.ts",
    "src/lib/synapseData.ts"
   ]
  },
  {
-  "u": "https://www.youtube.com/watch?v=T9aRN5JkmL8",
+  "u": "https://anthropic.skilljar.com/claude-101",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts",
    "src/lib/synapseData.ts"
   ]
  },
@@ -5039,211 +20,7 @@
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/synapseDailyPlan.ts",
    "src/lib/synapseData.ts"
-  ]
- },
- {
-  "u": "https://docs.python.org/3/tutorial/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts",
-   "src/lib/synapseData.ts"
-  ]
- },
- {
-  "u": "https://podcasts.apple.com/us/podcast/no-priors-artificial-intelligence-technology-startups/id1668002688",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts",
-   "src/lib/synapseData.ts"
-  ]
- },
- {
-  "u": "https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.dwarkesh.com/p/dario-amodei",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts",
-   "src/lib/synapseData.ts"
-  ]
- },
- {
-  "u": "https://simonwillison.net/series/prompt-injection/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts",
-   "src/lib/synapseData.ts"
-  ]
- },
- {
-  "u": "https://lexfridman.com/dario-amodei",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts",
-   "src/lib/synapseData.ts"
-  ]
- },
- {
-  "u": "https://docs.python.org/3/tutorial/appetite.html",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.deeplearning.ai/the-batch/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts",
-   "src/lib/synapseData.ts"
-  ]
- },
- {
-  "u": "https://automatetheboringstuff.com/3e/chapter1.html",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.anthropic.com/research/many-shot-jailbreaking",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts",
-   "src/lib/synapseData.ts"
-  ]
- },
- {
-  "u": "https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://anthropic.skilljar.com/claude-101",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts",
-   "src/lib/synapseData.ts"
-  ]
- },
- {
-  "u": "https://docs.python.org/3/tutorial/interpreter.html",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://automatetheboringstuff.com/3e/chapter2.html",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=LP5OCa20Zpg",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.anthropic.com/research/constitutional-classifiers",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts",
-   "src/lib/synapseData.ts"
-  ]
- },
- {
-  "u": "https://anthropic.skilljar.com/claude-code-101",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.dwarkesh.com/p/demis-hassabis",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts",
-   "src/lib/synapseData.ts"
-  ]
- },
- {
-  "u": "https://docs.python.org/3/tutorial/introduction.html",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://anthropic.skilljar.com/claude-platform-101",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://automatetheboringstuff.com/3e/chapter3.html",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=om2lIWXLLN4",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.anthropic.com/news/anthropics-responsible-scaling-policy",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts",
-   "src/lib/synapseData.ts"
-  ]
- },
- {
-  "u": "https://git-scm.com/book/en/v2/GitHub-Account-Setup-and-Configuration",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
   ]
  },
  {
@@ -5251,457 +28,19 @@
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/synapseDailyPlan.ts",
    "src/lib/synapseData.ts"
-  ]
- },
- {
-  "u": "https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.dwarkesh.com/p/sholto-douglas-trenton-bricken",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts",
-   "src/lib/synapseData.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=zjkBMFhNj_g&t=0s",
-  "status": 204,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://docs.python.org/3/tutorial/controlflow.html",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=zjkBMFhNj_g&t=1543s",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://automatetheboringstuff.com/3e/chapter4.html",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=zjkBMFhNj_g&t=2743s",
-  "status": 204,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=7xTGNNLPyMI&t=0s",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=7xTGNNLPyMI",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts",
-   "src/lib/synapseData.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=7xTGNNLPyMI&t=867s",
-  "status": 204,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=7xTGNNLPyMI&t=1869s",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=7xTGNNLPyMI&t=2572s",
-  "status": 204,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://docs.python.org/3/tutorial/datastructures.html",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=7xTGNNLPyMI&t=3563s",
-  "status": 204,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://automatetheboringstuff.com/3e/chapter5.html",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=7xTGNNLPyMI&t=4832s",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=IPmt8b-qLgk",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=7xTGNNLPyMI&t=6106s",
-  "status": 204,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=7xTGNNLPyMI&t=7493s",
-  "status": 204,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=7xTGNNLPyMI&t=8867s",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=7xTGNNLPyMI&t=10106s",
-  "status": 204,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://docs.python.org/3/tutorial/modules.html",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=7xTGNNLPyMI&t=11379s",
-  "status": 204,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://automatetheboringstuff.com/3e/chapter6.html",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=aircAruvnKk",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=fGKNUvivvnc",
-  "status": 204,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=IHZwWFHWa-w",
-  "status": 204,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://github.com/anthropics/prompt-eng-interactive-tutorial",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts",
-   "src/lib/synapseData.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=Ilg3gGewQ5U",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=tIeHLnjs5U8",
-  "status": 204,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=LPZh9BOjkQs",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://docs.python.org/3/tutorial/inputoutput.html",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=wjZofJX0v4M",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://automatetheboringstuff.com/3e/chapter7.html",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/@anthropic-ai",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts",
-   "src/lib/synapseData.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=eMlx5fFNoYc",
-  "status": 204,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=iv-5mZ_9CPY",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://git-scm.com/book/en/v2/Git-Tools-Revision-Selection",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/watch?v=9-Jl0dxWQs8",
-  "status": 204,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://www.latent.space/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts",
-   "src/lib/synapseData.ts"
-  ]
- },
- {
-  "u": "https://cs50.harvard.edu/python/weeks/0/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://docs.python.org/3/tutorial/errors.html",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://automatetheboringstuff.com/3e/chapter8.html",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://cs50.harvard.edu/python/weeks/1/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://docs.python.org/3/tutorial/classes.html",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://automatetheboringstuff.com/3e/chapter9.html",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://git-scm.com/book/en/v2/Distributed-Git-Distributed-Workflows",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://cs50.harvard.edu/python/weeks/2/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://docs.python.org/3/tutorial/stdlib.html",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://automatetheboringstuff.com/3e/chapter10.html",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://cs50.harvard.edu/python/weeks/3/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://docs.python.org/3/tutorial/stdlib2.html",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://automatetheboringstuff.com/3e/chapter11.html",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://docs.python.org/3/tutorial/venv.html",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://automatetheboringstuff.com/3e/chapter0.html",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts"
   ]
  },
  {
   "u": "https://www.youtube.com/watch?v=zjkBMFhNj_g",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/watch?v=7xTGNNLPyMI",
   "status": 200,
   "cls": "OK",
   "files": [
@@ -5726,6 +65,14 @@
  },
  {
   "u": "https://automatetheboringstuff.com/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://docs.python.org/3/tutorial/",
   "status": 200,
   "cls": "OK",
   "files": [
@@ -5949,6 +296,14 @@
   ]
  },
  {
+  "u": "https://github.com/anthropics/prompt-eng-interactive-tutorial",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
   "u": "https://github.com/anthropics/courses",
   "status": 200,
   "cls": "OK",
@@ -6149,6 +504,22 @@
   ]
  },
  {
+  "u": "https://simonwillison.net/series/prompt-injection/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
   "u": "https://www.youtube.com/playlist?list=PLMF2PpA06Sb26oYT-dfNOt3Y4wwoLAho0",
   "status": 200,
   "cls": "OK",
@@ -6166,6 +537,30 @@
  },
  {
   "u": "https://academy.hackthebox.com/path/preview/ai-red-teamer",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.anthropic.com/research/many-shot-jailbreaking",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.anthropic.com/research/constitutional-classifiers",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.anthropic.com/news/anthropics-responsible-scaling-policy",
   "status": 200,
   "cls": "OK",
   "files": [
@@ -6253,7 +648,63 @@
   ]
  },
  {
+  "u": "https://lexfridman.com/dario-amodei",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.dwarkesh.com/p/dario-amodei",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
   "u": "https://lexfridman.com/andrej-karpathy",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.dwarkesh.com/p/sholto-douglas-trenton-bricken",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.dwarkesh.com/p/demis-hassabis",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.latent.space/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://podcasts.apple.com/us/podcast/no-priors-artificial-intelligence-technology-startups/id1668002688",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/@anthropic-ai",
   "status": 200,
   "cls": "OK",
   "files": [
@@ -6269,6 +720,14 @@
   ]
  },
  {
+  "u": "https://www.deeplearning.ai/the-batch/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
   "u": "https://realpython.com/",
   "status": 200,
   "cls": "OK",
@@ -6277,201 +736,979 @@
   ]
  },
  {
-  "u": "https://www.facebook.com/marketplace/item/866834109088124/",
+  "u": "https://teachyourselfcs.com/",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/terrenosData.ts"
+   "src/lib/synapseData.ts"
   ]
  },
  {
-  "u": "https://www.facebook.com/marketplace/item/974932988601028/",
+  "u": "https://www.composingprograms.com/",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/terrenosData.ts"
+   "src/lib/synapseData.ts"
   ]
  },
  {
-  "u": "https://www.facebook.com/marketplace/item/2116764279056893/",
+  "u": "https://pages.cs.wisc.edu/~remzi/OSTEP/",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/terrenosData.ts"
+   "src/lib/synapseData.ts"
   ]
  },
  {
-  "u": "https://www.facebook.com/marketplace/item/1661897158386400/",
+  "u": "https://www.nand2tetris.org/",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/terrenosData.ts"
+   "src/lib/synapseData.ts"
   ]
  },
  {
-  "u": "https://www.facebook.com/marketplace/item/839446595392590/",
+  "u": "https://csapp.cs.cmu.edu/",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/terrenosData.ts"
+   "src/lib/synapseData.ts"
   ]
  },
  {
-  "u": "https://www.usmle.org/exam-resources/step-1-materials",
+  "u": "https://gaia.cs.umass.edu/kurose_ross/index.php",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/usmleData.ts"
+   "src/lib/synapseData.ts"
   ]
  },
  {
-  "u": "https://www.pathoma.com/",
-  "status": 307,
-  "cls": "OK",
-  "files": [
-   "src/lib/usmleData.ts"
-  ]
- },
- {
-  "u": "https://www.youtube.com/@NinjaNerdOfficial",
+  "u": "https://cs144.github.io/",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/usmleData.ts"
+   "src/lib/synapseData.ts"
   ]
  },
  {
-  "u": "https://www.youtube.com/@armandohasudungan",
+  "u": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/usmleData.ts"
+   "src/lib/synapseData.ts"
   ]
  },
  {
-  "u": "https://www.youtube.com/@DirtyMedicine",
+  "u": "https://www.algorist.com/",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/usmleData.ts"
+   "src/lib/synapseData.ts"
   ]
  },
  {
-  "u": "https://mehlmanmedical.com/free-stuff/",
+  "u": "https://spinningup.openai.com/en/latest/",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/usmleData.ts"
+   "src/lib/synapseData.ts"
   ]
  },
  {
-  "u": "https://www.youtube.com/results?search_query=randy+neil+biostatistics+usmle",
+  "u": "https://arxiv.org/abs/1706.03762",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/usmleData.ts"
+   "src/lib/synapseData.ts"
   ]
  },
  {
-  "u": "https://www.youtube.com/c/DrHeidiMedicalEnglish",
+  "u": "https://github.com/harvardnlp/annotated-transformer",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/usmleData.ts"
+   "src/lib/synapseData.ts"
   ]
  },
  {
-  "u": "https://www.yousmle.com/",
+  "u": "https://lilianweng.github.io/",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/usmleData.ts"
+   "src/lib/synapseData.ts"
   ]
  },
  {
-  "u": "https://qbankly.app/",
+  "u": "https://github.com/stas00/ml-engineering",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/usmleData.ts",
-   "src/lib/usmlePalmertonData.ts"
+   "src/lib/synapseData.ts"
   ]
  },
  {
-  "u": "https://www.sketchy.com/",
+  "u": "https://www.alignmentforum.org/posts/jP9KDyMkchuv6tHwm/how-to-become-a-mechanistic-interpretability-researcher",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/usmleData.ts"
+   "src/lib/synapseData.ts"
   ]
  },
  {
-  "u": "https://www.theanking.com/",
+  "u": "https://transformer-circuits.pub/2025/attribution-graphs/biology.html",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/usmleData.ts"
+   "src/lib/synapseData.ts"
   ]
  },
  {
-  "u": "https://www.youtube.com/watch?v=${id",
-  "status": 204,
-  "cls": "OK",
-  "files": [
-   "src/lib/usmlePalmertonData.ts",
-   "src/lib/usmleStep1Plan.ts"
-  ]
- },
- {
-  "u": "https://qbankly.app/library",
+  "u": "https://bluedot.org/courses/alignment",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/usmleQbanklyData.ts",
-   "src/lib/usmleStep1Daily.ts"
+   "src/lib/synapseData.ts"
   ]
  },
  {
-  "u": "https://qbankly.app/videos",
+  "u": "https://huggingface.co/learn/deep-rl-course/unit0/introduction",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/usmleQbanklyData.ts",
-   "src/lib/usmleStep1Daily.ts",
-   "src/lib/usmleStep1Plan.ts"
+   "src/lib/synapseData.ts"
   ]
  },
  {
-  "u": "https://qbankly.app/flashcards",
+  "u": "https://roadmap.sh/backend",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/usmleStep1Daily.ts",
-   "src/lib/usmleStep1Plan.ts"
+   "src/lib/synapseData.ts"
   ]
  },
  {
-  "u": "https://www.youtube.com/watch?v=",
-  "status": 204,
-  "cls": "OK",
-  "files": [
-   "src/lib/usmleStep1Daily.ts"
-  ]
- },
- {
-  "u": "https://qbankly.app/library?e=${e",
+  "u": "https://fastapi.tiangolo.com/tutorial/",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/usmleStep1Plan.ts"
+   "src/lib/synapseData.ts"
   ]
  },
  {
-  "u": "https://qxmedic-aulavirtual.com/evaluaciones",
-  "status": 404,
-  "cls": "DEAD",
+  "u": "https://www.django-rest-framework.org/",
+  "status": 200,
+  "cls": "OK",
   "files": [
-   "src/screens/EstudioScreen.tsx"
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.postgresql.org/docs/current/tutorial.html",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://cs50.harvard.edu/sql/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://docs.pytest.org/en/stable/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://testdriven.io/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://arjancodes.com/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://web.mit.edu/6.031/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://docs.docker.com/get-started/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://12factor.net/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://github.com/donnemartin/system-design-primer",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://bytebytego.com/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://dataintensive.net/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.educative.io/courses/grokking-the-system-design-interview",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://roadmap.sh/frontend",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.theodinproject.com/paths/full-stack-javascript",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://web.dev/learn/css",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.kevinpowell.co/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.joshwcomeau.com/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://developer.mozilla.org/en-US/docs/Learn_web_development",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.freecodecamp.org/learn/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://fullstackopen.com/en/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://nextjs.org/learn",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.refactoringui.com/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://lawsofux.com/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://web.dev/learn/accessibility",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.coursera.org/professional-certificates/google-ux-design",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://vercel.com/docs/getting-started-with-vercel",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://translate.google.com/?op=websites",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/@AlexHormozi",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/user/grantcardone/videos",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.overdrive.com/media/5553495/the-10x-rule",
+  "status": 403,
+  "cls": "BLOCKED",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://archive.org/details/tosellishumansur0000pink_r0s8",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://blog.hubspot.com/sales/the-psychology-of-selling",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/channel/UCk7jHqdlFFDBhC1QIFqi54w",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://automotivehalloffame.org/honoree/joe-girard/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/watch?v=i0B4v-9fLQc",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/@BrianTracyOfficial",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/watch?v=2gBboDdtTlc",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://archive.org/details/spinselling0000rack",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.huthwaiteinternational.com/spin-methodology",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/watch?v=9IXcrP46BDk",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/watch?v=rgp6f04Bw3E",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.acquisition.com/audiobooks",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/watch?v=buKC5g5uK9c",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/watch?v=cFdCzN7RYbw",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://hbr.org/2001/10/harnessing-the-science-of-persuasion",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://soundcloud.com/random-house-audiobooks/never-split-the-difference-by-chris-voss-and-tahl-raz",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.blackswanltd.com/never-split-the-difference",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://podcasts.apple.com/is/podcast/sales-gravy-jeb-blount/id219558725",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/watch?v=BJ9ZRwUjAkM",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/@soyjosuepena",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://predictablerevenue.com/about/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.goodreads.com/book/show/22551047-the-sales-acceleration-formula",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/channel/UCgorjMy3g2iXL0HYzufMOJQ",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/influenceatwork",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/watch?v=1UlDa-OJYxE",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/playlist?list=PLuvjGvhl6aW_9Pf2Q4p04e2vrwEAGMU44",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/playlist?list=PL_3ZK0x5nFYBNLNoUnm0FxZCUyqPmXccf",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.acquisition.com/podcast",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://fs.blog/knowledge-project-podcast/robert-cialdini/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.blackswanltd.com/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.texasmonthly.com/culture/selling-opportunity-book-mary-kay-empire/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.thequota.co/articles/the-story-of-zig-ziglar-the-quintessential-american-salesman",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://archive.org/details/BobSommersRobertCialdini-Influence_thePsychologyofPersuasion",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://archive.org/details/presuasionrevolu0000cial",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.everand.com/audiobook/769309848/The-Challenger-Sale-Taking-Control-of-the-Customer-Conversation",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/results?search_query=way+of+the+wolf+jordan+belfort+audiobook",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.gsb.stanford.edu/insights/think-fast-talk-smart-podcast",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.ted.com/talks/william_ury_the_walk_from_no_to_yes",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://archive.org/details/gettingtoyesnego0000fish",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.aprildunford.com/post/an-introduction-to-positioning",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://brianbalfour.com/four-fits-growth-framework",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://brianbalfour.com/essays",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://andrewchen.com/list-of-essays/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.demandcurve.com/growth/intro",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://medium.com/growthhackers/finding-your-north-star-metric-fc1c1f71cbcb",
+  "status": 403,
+  "cls": "BLOCKED",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://leananalyticsbook.com/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.duostrategyla.com/ideas/how-to-write-high-converting-ad-copy-the-complete-5-stage-framework-with-examples",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.lennysnewsletter.com/t/growth?sort=top",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.facebook.com/business/learn/courses",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.facebook.com/business/learn/certification/exams/100-101-exam",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://skillshop.withgoogle.com/googleads/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://ads.tiktok.com/business/academy",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://ads.tiktok.com/business/creativecenter/inspiration/topads/pc/en",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.demandcurve.com/growth/run-ads",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.demandcurve.com/growth/make-ads",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/channel/UC5Dv8i_vH5M9rB3HOZDCkng",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/savannahsanchez",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/surfsideppc",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.julian.com/guide/growth/landing-pages",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.julian.com/guide/growth/intro",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://dotcomsecrets.com/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://marketingexamples.com/landing-page",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://marketingexamples.com/copywriting",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://copyhackers.com/copywriting-tutorials/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://cxl.com/blog/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://unbounce.com/landing-page-articles/landing-page-best-practices/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://university.webflow.com/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.framer.com/academy/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://carrd.co/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.nngroup.com/articles/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://growth.design/case-studies",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
   ]
  }
 ]
