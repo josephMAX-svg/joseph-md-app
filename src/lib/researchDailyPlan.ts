@@ -12,7 +12,7 @@
 import { Prioridad } from './researchData';
 
 export const DAILY_META = {
-  inicio: '2026-06-22', fin: '2026-10-14', totalDias: 42, // v4 (15-jun): D1=Mar 2026-06-16 (1er slot-research ≥16-jun) · alterna con Derma · +2 colchón
+  inicio: '2026-06-22', fin: '2026-10-14', totalDias: 42, // D1=Lun 2026-06-22 (1er slot-research ≥19-jun; 19-jun=Derma, finde libre) · alterna con Derma · +2 colchón
   bloque: '13:30–14:15 (boards · alterna con Derma) · 1 átomo-research por día-Research',
   artefacto: 'SR-1 · Complicaciones vasculares de fillers + tiempo-a-tratamiento (Línea 4 · Mayo 38/40)',
 };

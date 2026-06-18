@@ -40,7 +40,7 @@ export const PM_CAP = {
 } as const;
 
 export const DERMA_DAILY_META = {
-  inicio: '2026-06-19', fin: '2026-12-30', totalDias: 70, // v4 (15-jun): D1=Mié 2026-06-17 (1er slot-derma ≥16-jun) · alterna con Research · 68 átomos + 2 colchón
+  inicio: '2026-06-19', fin: '2026-12-30', totalDias: 70, // D1=Vie 2026-06-19 (1er slot-derma ≥19-jun) · alterna con Research (ancla 10-jun) · 68 átomos + 2 colchón → fin 30-dic
   bloque: '13:30–14:15 (franja boards del Calendar, alterna con Research — interdiario)',
   nota: 'Progreso REAL marcable (studyProgress key "derma", empieza 0%). El día mostrado salta los días-Research.',
 };
