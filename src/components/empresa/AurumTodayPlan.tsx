@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Platform, StyleSheet, Linking } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { NavigationContext } from '@react-navigation/native';
 import { setNavIntent } from '../../lib/navIntent';
 import {
   AURUM_PLAN_META, AURUM_DIAS, DiaAurum, AurumBloque, aurumDiaDe, aurum7d,
@@ -267,7 +267,10 @@ function ViewTab({ label, active, onPress }: { label: string; active: boolean; o
 }
 
 export default function AurumTodayPlan({ done, onToggle, isDesktop = false }: { done: Set<number>; onToggle: (d: number) => void; isDesktop?: boolean }) {
-  const navigation = useNavigation<any>();
+  // En desktop el árbol NO tiene NavigationContainer (DesktopLayout usa estado propio);
+  // leer el contexto con useContext NO lanza (devuelve undefined) → en desktop es no-op,
+  // en móvil/tablet sigue navegando. Antes usábamos useNavigation() que CRASHEABA en desktop.
+  const navigation = React.useContext(NavigationContext) as any;
   const iso = aurumTodayISO();
   const hoyD = planHoyD(AURUM_DIAS, iso);
   const todayDia = aurumDiaDe(iso) || AURUM_DIAS.find((x) => x.d === hoyD) || AURUM_DIAS[0];

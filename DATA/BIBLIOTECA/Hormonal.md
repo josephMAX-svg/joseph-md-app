@@ -41,7 +41,7 @@
 - **Por qué:** Puente entre lo natural y lo clinico: naturopata muy respetada que explica la perimenopausia como un reajuste neuroendocrino, con tratamiento por dieta, suplementos y TRH bioidentica. Mas profundo y mecanicista que el nivel base, sigue siendo legible. Gran complemento clinico-natural a Haver.
 - **Terminología:** perimenopausia como reajuste · progesterona bioidentica · GABA/alopregnanolona · resistencia a insulina · hormonas despues de los 40
 - ▶ **YouTube:** https://www.youtube.com/watch?v=UzehCdbvgfk
-- 🛒 **Comprar** (Amazon): https://www.amazon.com/Hormone-Repair-Manual-Healthy-Hormones/dp/0648352064
+- 🛒 **Comprar** (Amazon): https://www.amazon.com/s?k=Hormone+Repair+Manual+Lara+Briden
 
 ## Nivel 3 · Avanzado
 
@@ -66,14 +66,14 @@
 - **n:** 112  ·  **idioma:** en
 - **Por qué:** El componente masculino y clinico de testosterona. Urologo de Harvard, autoridad mundial que desmonto el mito 'testosterona = cancer de prostata'. Esencial para que la marca Curva cubra TRH masculina con base medica real, no bro-science de gimnasio.
 - **Terminología:** hipogonadismo · terapia de reemplazo de testosterona (TRT) · mito testosterona-cancer de prostata · vitalidad/libido · masa muscular y T · PSA
-- 🛒 **Comprar** (Amazon): https://www.amazon.com/Testosterone-Life-Recharge-Vitality-Overall/dp/0071596690
+- 🛒 **Comprar** (Amazon): https://www.amazon.com/s?k=Testosterone+for+Life+Morgentaler
 
 ### Hormone Intelligence: The Complete Guide to Calming Hormone Chaos and Restoring Your Body's Natural Blueprint for Well-Being — Aviva Romm, MD  · NUEVO
 - **n:** 113  ·  **idioma:** en
 - **Por qué:** NUEVO — sube el techo de la categoria. Medica formada en Yale, midwife y referente mundial de medicina integrativa femenina; NYT bestseller. Va a la RAIZ de los desequilibrios (eje intestino-higado-hormona, disruptores endocrinos, inflamacion) con un programa clinico de 6 semanas. Aporta la dimension funcional/sistemica que falta entre el nivel base y los textos de alta evidencia: el 'por que' mecanicista detras de SOP, SPM, endometriosis y perimenopausia. Maxima autoridad para argumentar el enfoque integrativo de la marca Curva sin caer en pseudociencia.
 - **Terminología:** disruptores endocrinos (EDCs) · eje intestino-higado-hormona · detoxificacion de estrogenos · inflamacion cronica y hormonas · root-cause / medicina funcional · programa de 6 semanas · SOP/SPM/endometriosis
 - ▶ **YouTube:** https://www.youtube.com/watch?v=TvilGjFQ06I
-- 🛒 **Comprar** (Amazon): https://www.amazon.com/Hormone-Intelligence-Complete-Restoring-Well-Being/dp/0063030411
+- 🛒 **Comprar** (Amazon): https://www.amazon.com/s?k=Hormone+Intelligence+Aviva+Romm
 
 ## Nivel 4 · Élite
 

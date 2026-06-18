@@ -87,7 +87,7 @@ function HoyView({ dia, hoyD, done, onToggle }: { dia: DiaSynapse; hoyD: number;
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
             <Chip label={dia.fase} color={INDIGO} small />
             <Chip label={`Semana ${dia.semana}`} color={Colors.muted} small />
-            <Chip label={`${dia.bloques.reduce((n, b) => n + (b.tag === 'PC' ? 0 : b.min), 0)} min${dia.bloques.some(b => b.tag === 'PC') ? ' + PC opcional' : ''}`} color={Colors.amber} small />
+            {dia.wd !== 'Dom' && <Chip label={`${dia.bloques.reduce((n, b) => n + (b.tag === 'PC' ? 0 : b.min), 0)} min${dia.bloques.some(b => b.tag === 'PC') ? ' + PC opcional' : ''}`} color={Colors.amber} small />}
           </View>
           <Text style={st.misionTitle}>{dia.wd === 'Dom' ? '🌿 Domingo de repaso' : `Misión del día ${dia.d}`}</Text>
           <TouchableOpacity
@@ -204,7 +204,8 @@ export default function SynapseTodayPlan({ done, onToggle }: { done: Set<number>
   const [sel, setSel] = useState<number>(todayDia.d);
   const [view, setView] = useState<'hoy' | '7d' | 'temario'>('hoy');
   const dia = SYN_DIAS.find((x) => x.d === sel) || SYN_DIAS[0];
-  const esHoy = dia.fecha === iso;
+  // por .d (no por fecha): así el día por defecto figura como HOY aunque hoy caiga antes del inicio o en un hueco
+  const esHoy = dia.d === todayDia.d;
   const pickDay = (d: number) => { setSel(d); setView('hoy'); };
 
   return (

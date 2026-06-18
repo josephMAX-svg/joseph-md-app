@@ -244,11 +244,13 @@ function bloquePC(semana) {
   return { tag: 'PC', min: 75, formato: 'pc', material, leccion, url: url ? assertUrl(url) : undefined, real: true };
 }
 
-// ─── Calendario v3 (13-jun): d1 = jue 18-jun-2026 (+1 semana exacta vs v2 → preserva
-// la estructura semanal y las 70 A-units intactas) · semana 1 corta (jue→dom) · 12 sem ───
+// ─── Calendario v4 (18-jun): d1 = vie 19-jun-2026 (todo el sistema arranca 19-jun) ·
+// semana 1 corta (vie→dom = 3 días) · semanas 2-12 alineadas Lun-Dom · 70 A-units intactas.
+// La 1ª semana ya NO tiene jueves → la 1ª lección de Automate (cap 0 "Introduction") se
+// recupera en el último día (igual que Lex cap 12 y PyTut §12). 12 sem · 82 días · 12 domingos.
 const WD = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-const START = new Date('2026-06-18T12:00:00'); // v3: arranque jue 18-jun (1er jueves estructural ≥15-jun)
-const TOTAL = 82; // 4 (jue→dom) + 11*7 + 1 → d82 recoge la 70ª A-unit + Lex cap 12 + PyTut §12
+const START = new Date('2026-06-19T12:00:00'); // v4: arranque vie 19-jun (todo inicia 19-jun)
+const TOTAL = 82; // 3 (vie→dom) + 11*7 + 2 → d82 recoge la 70ª A-unit + Lex cap 12 + PyTut §12 + Automate cap 0
 
 const aUnits = buildAUnits();
 let aIdx = 0;
@@ -257,7 +259,7 @@ for (let d = 1; d <= TOTAL; d++) {
   const date = new Date(START.getTime() + (d - 1) * 86400000);
   const fecha = date.toISOString().slice(0, 10);
   const wd = WD[date.getDay()];
-  const semana = d <= 4 ? 1 : Math.min(2 + Math.floor((d - 5) / 7), 12); // v2: sem 1 = jue→dom; sem 2+ = lun→dom (d82 se etiqueta sem 12)
+  const semana = d <= 3 ? 1 : Math.min(2 + Math.floor((d - 4) / 7), 12); // v4: sem 1 = vie→dom (3 días); sem 2+ = lun→dom (d81-82 se etiquetan sem 12)
   const faseId = semana <= 8 ? 'f0' : 'f1';
   const fase = faseId === 'f0' ? 'F0 · La Escuela de Anthropic' : 'F1 · Código: Python + terminal + Git';
   const bloques = [];
@@ -269,13 +271,16 @@ for (let d = 1; d <= TOTAL; d++) {
       real: true,
     });
   } else if (d === TOTAL) {
-    // v2: último día (lunes): 70ª A-unit + lo que el calendario corrido dejó sin colocar
+    // v4: último día: 70ª A-unit + lo que el calendario corrido dejó sin colocar.
+    // Con arranque viernes la sem 1 no tiene jueves → recuperamos también Automate cap 0.
     const a = aUnits[aIdx++];
     bloques.push({ tag: 'A', min: 15, formato: 'pantalla', ...a });
     const c12 = lexCap(12);
     bloques.push({ tag: 'B', min: 10, formato: 'audio', material: 'Lex #452 — Dario Amodei (CEO Anthropic)', leccion: `Outline cap. 12: "${c12.titulo}" (desde ${c12.dur}) — cierre del episodio`, url: assertUrl(U.lex452), dur: 'desde ' + c12.dur, real: true });
     const s12 = pyTutSec(12);
     bloques.push({ tag: 'C', min: 5, formato: 'lectura', material: 'The Python Tutorial (docs oficiales)', leccion: `Sección 12: "${s12.titulo}" — prepara el terreno para CS50P`, url: assertUrl(s12.url), real: true });
+    const a0 = autoCap(0);
+    bloques.push({ tag: 'C', min: 5, formato: 'lectura', material: 'Automate the Boring Stuff (3ª ed.)', leccion: `5' del cap. 0: "${a0.titulo}" — la introducción del libro (recuperada: la sem 1 viernes→dom no tuvo jueves)`, url: assertUrl(a0.url), real: true });
   } else {
     const a = aUnits[aIdx++];
     bloques.push({ tag: 'A', min: 15, formato: 'pantalla', ...a });
@@ -300,7 +305,7 @@ const diaTs = (x) => `{d:${x.d},fecha:"${x.fecha}",wd:"${x.wd}",semana:${x.seman
 
 const ts = `/**
  * synapseDailyPlan.ts — Motor día-a-día SYNAPSE (12 semanas · ${TOTAL} días · ${dias[0].fecha} → ${dias[TOTAL - 1].fecha}).
- * v3 (13-jun): arranque jue 18-jun-2026 (+1 semana vs v2) · TODOS los domingos LIBRES (sin misión).
+ * v4 (18-jun): arranque vie 19-jun-2026 (todo el sistema inicia 19-jun) · sem 1 corta vie→dom · TODOS los domingos LIBRES (sin misión).
  * GENERADO por DATA/_scripts/gen_synapse_plan.js desde DATA/SYNAPSE/curricula/_extracted.json
  * (temarios REALES extraídos con WebFetch/oEmbed + verificación adversarial, 10-jun-2026).
  * NO editar a mano — regenerar: node DATA/_scripts/gen_synapse_plan.js

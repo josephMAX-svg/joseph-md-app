@@ -81,7 +81,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaResearch; on
       {prev && (
         <FadeUp delay={40}>
           <View style={st.anchor}>
-            <Text style={st.anchorLbl}>🎯 13:30 · Eval anclada (átomo de AYER)</Text>
+            <Text style={st.anchorLbl}>🎯 13:30 · Eval anclada (sesión anterior)</Text>
             <Text style={st.anchorVal}>{prev.code} · {prev.objetivo}</Text>
             <Text style={st.anchorSub}>2Q de auto-test del método + ¿avanzó el entregable de ayer? · APEX-método AGAIN/GOOD</Text>
           </View>

@@ -248,7 +248,7 @@
       "confianza": "estable"
      },
      "audiolibro_spotify": {
-      "url": "https://open.spotify.com/episode/6Z7lvct82rPpem99QZ9Gdy",
+      "url": "https://open.spotify.com/search/100M%20Offers%20Alex%20Hormozi",
       "confianza": "verificado"
      },
      "compra": {
@@ -635,12 +635,12 @@
       "confianza": "estable"
      },
      "audiolibro_spotify": {
-      "url": "https://open.spotify.com/episode/1wTuF3M8vUGkxgTt0mxcYu",
+      "url": "https://open.spotify.com/search/Vendes%20o%20vendes%20Grant%20Cardone",
       "confianza": "estable"
      },
      "compra": {
       "tienda": "Amazon",
-      "url": "https://www.amazon.com/-/es/dp/6073128312"
+      "url": "https://www.amazon.com/s?k=Vendes+o+vendes+Grant+Cardone"
      }
     }
    ]

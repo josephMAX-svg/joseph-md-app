@@ -92,7 +92,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaUSMLE; onOpe
       {prev && (
         <FadeUp delay={40}>
           <View style={st.anchor}>
-            <Text style={st.anchorLbl}>🎯 16:15 · Anchored Eval (tema de AYER)</Text>
+            <Text style={st.anchorLbl}>🎯 16:15 · Anchored Eval (sesión anterior)</Text>
             <Text style={st.anchorVal}>{prev.system} → {prev.sub}</Text>
             <Text style={st.anchorSub}>2 preguntas uWorld + Anki SRS · 2/2→nuevo · 1/2→repaso finde · 0/2→repetir</Text>
             <View style={{ flexDirection: 'row', gap: 6, marginTop: 8 }}>

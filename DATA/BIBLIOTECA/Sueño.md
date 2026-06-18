@@ -63,7 +63,7 @@
 - **n:** 122  ·  **idioma:** en
 - **Por qué:** Meadows (PhD Imperial College, fundador de The Sleep School) es pionero en aplicar Terapia de Aceptacion y Compromiso al insomnio (ACT-I). Aporta lo que falta en toda la categoria: el tratamiento psicologico de primera linea cuando la higiene no basta. Su tesis contraintuitiva (dejar de luchar contra el insomnio para que el sueño vuelva) es el estandar avanzado para insomnio cronico. Imprescindible para un medico que quiera dominar el manejo no farmacologico real. AUDIO: no se localizo audiolibro completo verificado en YouTube ni Spotify (solo material del autor y resumenes); el formato fiable es el libro fisico/ebook.
 - **Terminología:** Terapia de Aceptacion y Compromiso (ACT) · ACT para insomnio (ACT-I) · hiperactivacion (arousal) · mindfulness · evitacion experiencial · TCC-I
-- 🛒 **Comprar** (Amazon): https://www.amazon.com/Sleep-Book-Well-Every-Night/dp/1409157636
+- 🛒 **Comprar** (Amazon): https://www.amazon.com/s?k=The+Sleep+Book+Guy+Meadows
 
 ## Nivel 4 · Elite
 

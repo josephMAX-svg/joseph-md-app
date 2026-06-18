@@ -263,9 +263,10 @@ export default function EstudioScreen() {
   // Max count for Palmerton bars
   const maxPalmertonCount = Math.max(...palmertonErrors.map(e => e.count), 1);
 
+  // pesos iguales: con flex 5/4/1 la pestaña 'Perú' (ENCAPS, uso diario) quedaba ~34px en móvil y se cortaba.
   const tabs: { key: CountryTab; label: string; flex: number }[] = [
-    { key: 'EEUU', label: '🇺🇸 EEUU', flex: 5 },
-    { key: 'ESPAÑA', label: '🇪🇸 España', flex: 4 },
+    { key: 'EEUU', label: '🇺🇸 EEUU', flex: 1 },
+    { key: 'ESPAÑA', label: '🇪🇸 España', flex: 1 },
     { key: 'PERÚ', label: '🇵🇪 Perú', flex: 1 },
   ];
 
@@ -397,7 +398,7 @@ export default function EstudioScreen() {
               style={[styles.tab, { flex: tab.flex }, activeTab === tab.key && styles.tabActive]}
               onPress={() => setActiveTab(tab.key)}
             >
-              <Text style={[styles.tabText, activeTab === tab.key && styles.tabTextActive]}>
+              <Text style={[styles.tabText, activeTab === tab.key && styles.tabTextActive]} numberOfLines={1}>
                 {tab.label}
               </Text>
             </TouchableOpacity>
@@ -541,7 +542,7 @@ export default function EstudioScreen() {
                 <View style={styles.encapsHeader}>
                   <Text style={styles.encapsHeaderTitle}>ENCAPS — 5 bloques oficiales</Text>
                   <Text style={styles.encapsHeaderSub}>
-                    94 subtemas · examen 10 ago 2026
+                    94 subtemas · examen 20 ago 2026
                   </Text>
                 </View>
                 {encapsBlocks.map((b) => (

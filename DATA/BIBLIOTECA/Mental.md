@@ -64,7 +64,7 @@
 - **n:** 131  ·  **idioma:** en/es
 - **Por qué:** NUEVO - sube el techo. El libro que fundo y dio nombre al campo de la inteligencia emocional (1995, >5M copias, NYT bestseller ano y medio). Goleman, psicologo formado en Harvard, traduce la neurociencia del 'secuestro amigdalino' y la autorregulacion a un marco que cualquier lider y medico necesita. Autoridad maxima del tema; complementa la regulacion emocional de la TCC/ACT con el angulo del rendimiento y el liderazgo, clave para un medico-emprendedor. Audiolibro oficial narrado por Barrett Whitener (Macmillan), con subida completa estable en YouTube.
 - **Terminología:** inteligencia emocional · secuestro amigdalino (amygdala hijack) · autoconciencia y autorregulacion · empatia y habilidades sociales · alfabetizacion emocional
-- 🎧 **Spotify:** https://open.spotify.com/episode/7IE0l9UN970bpCHXb8ccJ1
+- 🎧 **Spotify:** https://open.spotify.com/search/Emotional%20Intelligence%20Daniel%20Goleman
 - ▶ **YouTube:** https://www.youtube.com/watch?v=EMg5l7ZHvug
 - 🛒 **Comprar** (Amazon (Audible)): https://www.amazon.com/Emotional-Intelligence-audiobook/dp/B0000647PF
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Platform, StyleSheet, Linking } from 'react-native';
+import { View, Text, TouchableOpacity, Platform, StyleSheet, Linking, ScrollView } from 'react-native';
 import BrandHorario from './BrandHorario';
 import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
@@ -267,30 +267,35 @@ export function MarketingPanel() {
       {/* Tabla de creativos */}
       <Block title="Qué afiche funciona">
         <GlassPanel>
-          <View style={s.tHeadRow}>
-            <Text style={[s.tHead, { flex: 2 }]}>Creativo</Text>
-            <Text style={[s.tHead, s.tCol]}>Canal</Text>
-            <Text style={[s.tHead, s.tCol]}>Impr.</Text>
-            <Text style={[s.tHead, s.tCol]}>CTR</Text>
-            <Text style={[s.tHead, s.tCol]}>Hook</Text>
-            <Text style={[s.tHead, s.tCol]}>CPL</Text>
-            <Text style={[s.tHead, s.tCol]}>CAC</Text>
-            <Text style={[s.tHead, s.tColWide]}>Estado</Text>
-          </View>
-          {ESTUDIO_MERCADO.map((c, i) => (
-            <View key={i} style={s.tRow}>
-              <Text style={[s.tCell, { flex: 2, color: Colors.onSurface }]} numberOfLines={1}>{c.nombre}</Text>
-              <Text style={[s.tCell, s.tCol]}>{c.canal}</Text>
-              <Text style={[s.tCell, s.tCol]}>{c.impresiones}</Text>
-              <Text style={[s.tCell, s.tCol]}>{c.ctr}</Text>
-              <Text style={[s.tCell, s.tCol]}>{c.hookRate}</Text>
-              <Text style={[s.tCell, s.tCol]}>{c.cpl}</Text>
-              <Text style={[s.tCell, s.tCol]}>{c.cac}</Text>
-              <View style={s.tColWide}>
-                <Chip label={c.estado} color={estadoCreativoColor(c.estado)} small />
+          {/* 8 columnas (~384px): en móvil ~380px desbordaba → scroll horizontal */}
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            <View>
+              <View style={s.tHeadRow}>
+                <Text style={[s.tHead, { width: 130 }]}>Creativo</Text>
+                <Text style={[s.tHead, s.tCol]}>Canal</Text>
+                <Text style={[s.tHead, s.tCol]}>Impr.</Text>
+                <Text style={[s.tHead, s.tCol]}>CTR</Text>
+                <Text style={[s.tHead, s.tCol]}>Hook</Text>
+                <Text style={[s.tHead, s.tCol]}>CPL</Text>
+                <Text style={[s.tHead, s.tCol]}>CAC</Text>
+                <Text style={[s.tHead, s.tColWide]}>Estado</Text>
               </View>
+              {ESTUDIO_MERCADO.map((c, i) => (
+                <View key={i} style={s.tRow}>
+                  <Text style={[s.tCell, { width: 130, color: Colors.onSurface }]} numberOfLines={1}>{c.nombre}</Text>
+                  <Text style={[s.tCell, s.tCol]}>{c.canal}</Text>
+                  <Text style={[s.tCell, s.tCol]}>{c.impresiones}</Text>
+                  <Text style={[s.tCell, s.tCol]}>{c.ctr}</Text>
+                  <Text style={[s.tCell, s.tCol]}>{c.hookRate}</Text>
+                  <Text style={[s.tCell, s.tCol]}>{c.cpl}</Text>
+                  <Text style={[s.tCell, s.tCol]}>{c.cac}</Text>
+                  <View style={s.tColWide}>
+                    <Chip label={c.estado} color={estadoCreativoColor(c.estado)} small />
+                  </View>
+                </View>
+              ))}
             </View>
-          ))}
+          </ScrollView>
         </GlassPanel>
       </Block>
 

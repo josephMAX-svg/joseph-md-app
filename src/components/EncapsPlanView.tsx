@@ -252,7 +252,7 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
         <View style={styles.refBox}>
           <Text style={styles.refTitle}>📚 Material complementario (Drive)</Text>
           {today.material_comp.map((mm, i) => (
-            <TouchableOpacity key={i} onPress={() => mm.url && Linking.openURL(mm.url)} disabled={!mm.url} activeOpacity={0.7}>
+            <TouchableOpacity key={i} onPress={() => mm.url && Linking.openURL(mm.url).catch(() => {})} disabled={!mm.url} activeOpacity={0.7}>
               <Text style={styles.matLink} numberOfLines={2}>• {mm.label || mm.url} {mm.url ? '↗' : ''}</Text>
             </TouchableOpacity>
           ))}
@@ -294,7 +294,7 @@ function CheckRow({ item, checked, onToggle, todayDia }: { item: PlanItem; check
                 🔒 QX libera {item.unlock ? item.unlock.slice(5) : 'pronto'} → hoy: Theomed equivalente
               </Text>
               {!!item.fallbackUrl && (
-                <TouchableOpacity onPress={() => Linking.openURL(item.fallbackUrl as string)} activeOpacity={0.7}>
+                <TouchableOpacity onPress={() => Linking.openURL(item.fallbackUrl as string).catch(() => {})} activeOpacity={0.7}>
                   <Text style={styles.fallbackLink}>{item.fallbackLabel || 'Drive 2026-1'} ↗</Text>
                 </TouchableOpacity>
               )}
@@ -304,12 +304,12 @@ function CheckRow({ item, checked, onToggle, todayDia }: { item: PlanItem; check
       </TouchableOpacity>
       <View style={styles.linkCol}>
         {item.url ? (
-          <TouchableOpacity onPress={() => Linking.openURL(item.url as string)} style={styles.openBtn}>
+          <TouchableOpacity onPress={() => Linking.openURL(item.url as string).catch(() => {})} style={styles.openBtn}>
             <Text style={styles.openBtnText}>{item.kind === 'video' ? '▶ ver' : 'abrir ↗'}</Text>
           </TouchableOpacity>
         ) : null}
         {!!item.slides && (
-          <TouchableOpacity onPress={() => Linking.openURL(item.slides as string)} style={[styles.openBtn, styles.pdfBtn]}>
+          <TouchableOpacity onPress={() => Linking.openURL(item.slides as string).catch(() => {})} style={[styles.openBtn, styles.pdfBtn]}>
             <Text style={[styles.openBtnText, { color: Colors.blue }]}>PDF</Text>
           </TouchableOpacity>
         )}
@@ -372,7 +372,7 @@ function MetaView({ metrics, simScores, simDays }: {
         ))}
       </View>
 
-      <Text style={styles.sectionSub}>{simDays.length} simulacros programados · cargá las notas en la pestaña 🔥 Simulacros.</Text>
+      <Text style={styles.sectionSub}>{simDays.reduce((n, d) => n + (Array.isArray((d.extra as any)?.sims) ? (d.extra as any).sims.length : 1), 0)} simulacros programados · cargá las notas en la pestaña 🔥 Simulacros.</Text>
     </View>
   );
 }
@@ -381,34 +381,40 @@ function MetaView({ metrics, simScores, simDays }: {
 function SimView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   const { simDays, simScores, saveSim } = plan;
   if (simDays.length === 0) return <Text style={styles.empty}>Sin simulacros en el cronograma.</Text>;
-  const conNota = Object.values(simScores).filter(s => s.nota != null).length;
+  // Cada día-sim agrupa 2-9 sub-simulacros REALES en extra.sims (n global 1..35, fuente QX/Theomed).
+  // Iteramos las sub-sims (no los días) para que Joseph pueda cargar la nota de los 35, no solo de 10.
+  const rows = simDays.flatMap(d => {
+    const arr = Array.isArray((d.extra as any)?.sims) ? (d.extra as any).sims as any[] : null;
+    if (arr && arr.length) {
+      return arr.map((ss: any) => ({ d, simN: ss.n as number, clave: ss.fuente || ss.label || `Sim ${ss.n}`, duracion: ss.duracion as string | undefined, url: ss.url as string | undefined }));
+    }
+    const s = d.simulacro!;
+    const simN = s.simulacro_n ?? d.dia;
+    return [{ d, simN, clave: s.clave || s.label || `Sim ${simN}`, duracion: s.duracion, url: s.theomed_bank?.url }];
+  });
+  const conNota = rows.filter(r => simScores[r.simN]?.nota != null).length;
   return (
     <View>
       <View style={styles.simHeaderBox}>
-        <Text style={styles.simHeaderTitle}>{simDays.length} simulacros · {conNota} con nota · meta ≥17/20</Text>
+        <Text style={styles.simHeaderTitle}>{rows.length} simulacros · {conNota} con nota · meta ≥17/20</Text>
         <Text style={styles.simHeaderHint}>
-          1 por día de fin de semana (sáb+dom) desde D8 (13 jun). Este 1er finde es deep-prime (aún sin banco).
-          Entran todos antes del examen (10 ago) sin duplicar; si faltara tiempo, se duplica un sáb/dom al final.
+          Reales de QxMedic + Theomed, en los sábados (2-3 c/u) + recta final del día-examen. 1er sábado de simulacros: {simDays[0]?.fecha?.slice(5) || '—'}; examen jue 20-ago.
           Cargá tu nota /20 al terminar cada uno (se guarda y alimenta «Camino a 17/20» + Telegram).
         </Text>
       </View>
-      {simDays.map(d => {
-        const s = d.simulacro!;
-        const simN = s.simulacro_n ?? d.dia;
-        return (
-          <SimRow
-            key={d.dia}
-            dia={d.dia}
-            weekday={d.weekday}
-            fecha={d.fecha}
-            clave={s.clave || s.label || `Sim ${simN}`}
-            duracion={s.duracion}
-            url={s.theomed_bank?.url}
-            nota={simScores[simN]?.nota ?? null}
-            onSave={(nota) => saveSim(simN, nota, d.fecha)}
-          />
-        );
-      })}
+      {rows.map(r => (
+        <SimRow
+          key={`${r.d.dia}:${r.simN}`}
+          dia={r.d.dia}
+          weekday={r.d.weekday}
+          fecha={r.d.fecha}
+          clave={r.clave}
+          duracion={r.duracion}
+          url={r.url}
+          nota={simScores[r.simN]?.nota ?? null}
+          onSave={(nota) => saveSim(r.simN, nota, r.d.fecha)}
+        />
+      ))}
     </View>
   );
 }
@@ -431,8 +437,8 @@ function SimRow({ dia, weekday, fecha, clave, duracion, url, nota, onSave }: {
         <Text style={styles.simClave}>{clave}</Text>
         <Text style={styles.simMeta}>D{dia} · {weekday || ''} {String(fecha).slice(5)}{duracion ? ` · ${duracion}` : ''}</Text>
         {!!url && (
-          <TouchableOpacity onPress={() => Linking.openURL(url)}>
-            <Text style={styles.simLink}>Theomed ↗</Text>
+          <TouchableOpacity onPress={() => Linking.openURL(url).catch(() => {})}>
+            <Text style={styles.simLink}>banco ↗</Text>
           </TouchableOpacity>
         )}
       </View>

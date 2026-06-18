@@ -78,7 +78,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaMIR; onOpenT
       {prev && (
         <FadeUp delay={40}>
           <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(capUrl(prev.capId))} style={st.anchor}>
-            <Text style={st.anchorLbl}>🎯 15:15 · Evaluación Anclada (tema de AYER)</Text>
+            <Text style={st.anchorLbl}>🎯 15:15 · Evaluación Anclada (sesión anterior)</Text>
             <Text style={st.anchorVal}>{prev.asignatura} → {prev.tema}</Text>
             <Text style={st.anchorSub}>4 preguntas ProMIR/AMIR + Anki · 4/4→nuevo · 3/4→repaso finde · &lt;3/4→repetir</Text>
           </TouchableOpacity>

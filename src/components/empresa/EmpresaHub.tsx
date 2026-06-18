@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Platform, StyleSheet } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { consumeNavIntent } from '../../lib/navIntent';
 import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
 import { desktopStyles, DesktopColors } from '../../theme/desktopStyles';
@@ -58,11 +59,22 @@ export default function EmpresaHub({ variant = 'mobile' }: { variant?: 'mobile' 
   const [panel, setPanel] = useState<string>('cockpit');
   const isDesktop = variant === 'desktop';
 
-  // intención de navegación desde Home (p. ej. "Plan 96 días →" → Pulso/Estudio)
+  // intención de navegación desde Home (p. ej. "Plan 96 días →" → Pulso/Estudio).
+  // Desktop: el switch de DesktopLayout REMONTA este componente en cada cambio de pantalla,
+  // así que el useEffect([]) lo cubre. Móvil/tablet: el bottom-tab mantiene la pantalla montada,
+  // por eso hace falta reaccionar a cada FOCO (si no, el botón solo funciona la 1ª vez).
   useEffect(() => {
-    const intent = consumeNavIntent();
-    if (intent === 'estudio-pulso') setCompany('estudio');
+    if (consumeNavIntent() === 'estudio-pulso') setCompany('estudio');
   }, []);
+  if (!isDesktop) {
+    // variant es estable durante la vida del componente → este hook condicional es seguro.
+    // useFocusEffect solo existe bajo NavigationContainer (móvil/tablet vía AppNavigator); en
+    // desktop NO hay navigator, por eso se gatea con !isDesktop para no lanzar.
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useFocusEffect(useCallback(() => {
+      if (consumeNavIntent() === 'estudio-pulso') setCompany('estudio');
+    }, []));
+  }
 
   const openBrand = (id: string) => {
     if (id === 'liviano') setPanel('cockpit');

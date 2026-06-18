@@ -36,7 +36,7 @@
 - **n:** 141  ·  **idioma:** en
 - **Por qué:** Distingue dos modos atencionales -hyperfocus (foco dirigido) y scatterfocus (foco difuso para conectar ideas)- y da un protocolo para alternarlos. Cierra el nivel intermedio con un modelo mental claro de como funciona la atencion antes de entrar a la ciencia profunda. Audiolibro oficial en Audible; en YouTube hay charlas y resumenes, no consta subida completa estable.
 - **Terminología:** hyperfocus · scatterfocus · espacio atencional · los 4 tipos de distraccion · modo creativo del cerebro
-- 🛒 **Comprar** (Amazon (Audible)): https://www.amazon.com/Hyperfocus-More-Productive-World-Distraction/dp/052552225X
+- 🛒 **Comprar** (Amazon (Audible)): https://www.amazon.com/s?k=Hyperfocus+Chris+Bailey
 
 ## Nivel 3 · Avanzado
 
@@ -124,4 +124,4 @@
 - **Terminología:** origen del TDAH (desarrollo vs genetica) · autorregulacion emocional temprana · apego (attachment) · estres ambiental · sanacion vs manejo de sintomas
 - 🎧 **Spotify:** https://open.spotify.com/show/7xVqhuVTbD9hO773dhrXsS
 - ▶ **YouTube:** https://www.youtube.com/playlist?list=PLZUl351c7W3FtA4TeN0b2hsYfWu2_iZol
-- 🛒 **Comprar** (Amazon): https://www.amazon.com/Scattered-Minds-Origins-Attention-Disorder/dp/059350438X
+- 🛒 **Comprar** (Amazon): https://www.amazon.com/s?k=Scattered+Minds+Gabor+Mate

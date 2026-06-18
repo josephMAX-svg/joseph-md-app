@@ -104,4 +104,4 @@
 - **Por qué:** La obra mas reciente (2024) de Nagoski, que aplica todo el modelo de 'Come As You Are' especificamente a mantener el deseo en relaciones de largo plazo — exactamente el problema de Mating in Captivity pero con la ciencia del acelerador/freno y un marco accionable ('centering pleasure', no 'desire'). Cierra y eleva el circulo del nivel 1; es el estado del arte de la sexualidad de pareja. Narrado por la autora. Audiolibro completo en Spotify; en YouTube solo resumen (no integro).
 - **Terminología:** centering pleasure (no perseguir el deseo) · modelo del placer en pareja de largo plazo · sexual currencies · contexto emocional como driver del deseo · from 'spark' to 'lasting connection'
 - 🎧 **Spotify:** https://open.spotify.com/show/3Nw48lDzMCbJCB9DGDgHOM
-- 🛒 **Comprar** (Amazon): https://www.amazon.com/Come-Together-Science-Creating-Connections/dp/0593500091
+- 🛒 **Comprar** (Amazon): https://www.amazon.com/s?k=Come+Together+Emily+Nagoski

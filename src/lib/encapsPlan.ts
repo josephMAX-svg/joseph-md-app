@@ -7,7 +7,7 @@ import { supabase } from './supabase';
 
 // ── D1 por examen (para calcular el día actual 1..71) ──
 export const STUDY_D1: Record<string, string> = {
-  ENCAPS: '2026-06-18',   // re-estructurado (17-jun): recogió diplomas, no estudió → D1=jue 18-jun · TODOS los domingos LIBRES · 44 días-tema L-V (45 temas; III-4+III-7 fusionados, 18-jun→18-ago) · 35 SIMULACROS (9 sáb 2-3 + día-examen 19-ago) · EXAMEN jue 20-ago (tope FIJO)
+  ENCAPS: '2026-06-19',   // re-estructurado (18-jun): no se estudió el 18 → D1=vie 19-jun · TODOS los domingos LIBRES · 43 días-tema L-V (45 temas; III-4+III-7 y IV-6+IV-7 fusionados, 19-jun→18-ago) · 35 SIMULACROS reales QX+Theomed (9 sáb 2-3 + día-examen 19-ago) · EXAMEN jue 20-ago (tope FIJO)
   // MIR / USMLE se agregan cuando se construyan sus cronogramas.
 };
 // Fechas SIN actividad (bloqueadas por Joseph) — no cuentan como día de plan.
@@ -15,7 +15,7 @@ export const STUDY_D1: Record<string, string> = {
 export const STUDY_SKIP_DATES: Record<string, string[]> = {
   ENCAPS: ['2026-06-21', '2026-06-28', '2026-07-05', '2026-07-12', '2026-07-19', '2026-07-26', '2026-08-02', '2026-08-09', '2026-08-16'],
 };
-const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 55 };
+const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 54 };
 
 // ── Tipos (espejo de las columnas study_*) ──
 export interface StudyVideo {
