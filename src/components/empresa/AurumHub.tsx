@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, Platform, StyleSheet, Linking } from 'rea
 import {
   AURUM_META, AURUM_KPIS, AURUM_FASES, AURUM_BIBLIOTECA, AURUM_PROTOCOLO,
   AURUM_NIVEL_META, AURUM_ADVERTENCIAS, AurumMaterial, AurumConfianza,
+  AURUM_MINIFASE, AURUM_PRACTICA,
 } from '../../lib/aurumData';
 import { AURUM_PLAN_META } from '../../lib/aurumDailyPlan';
 import { AURUM_BIBLIOTECA_NIVELES, AurumBibLibro } from '../../lib/aurumBiblioteca';
@@ -27,7 +28,7 @@ import {
 const isWeb = Platform.OS === 'web';
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
 
-type Sub = 'hoy' | 'ruta' | 'biblioteca' | 'protocolo';
+type Sub = 'hoy' | 'agosto' | 'ruta' | 'biblioteca' | 'protocolo';
 
 const CONF_COLOR: Record<AurumConfianza, string> = {
   verificado: C.success, estable: C.warn, incierto: C.danger,
@@ -314,6 +315,63 @@ function NavPill({ label, active, onPress }: { label: string; active: boolean; o
   );
 }
 
+// ── AGOSTO — mini-fase AI-first (medible) + práctica deliberada ─────────────
+function MiniFaseView() {
+  const mf = AURUM_MINIFASE; const pr = AURUM_PRACTICA;
+  return (
+    <View>
+      <AurumLabel>🚀 Mini-Fase AGOSTO · {mf.titulo}</AurumLabel>
+      <AurumPanel accent={C.gold} glow style={{ marginBottom: S['2xl'] }}>
+        <AurumChip label={mf.etiqueta} color={C.gold} size="sm" />
+        <Text style={[st.body, { marginTop: S.md }]}>{mf.objetivo}</Text>
+        <Text style={[st.body, { marginTop: S.md, color: C.success, fontWeight: T.weight.bold }]}>🎯 Cierre de agosto: {mf.entregableFinal}</Text>
+      </AurumPanel>
+
+      <AurumLabel>KPIs medibles (práctica deliberada, no minutos)</AurumLabel>
+      <AurumPanel style={{ marginBottom: S['2xl'] }}>
+        {mf.kpis.map((k, i) => (
+          <View key={i} style={st.warnRow}>
+            <Text style={{ color: C.gold, fontWeight: T.weight.extrabold }}>◆</Text>
+            <Text style={[st.body, { flex: 1 }]}>{k}</Text>
+          </View>
+        ))}
+      </AurumPanel>
+
+      <AurumLabel>Las 10 semanas · cada una deja un entregable medible</AurumLabel>
+      {mf.semanas.map((s, i) => (
+        <AurumRise key={i} delay={i * 30}>
+          <AurumPanel style={{ marginBottom: S.md }}>
+            <AurumChip label={s.rango} color={C.gold} size="sm" />
+            <Text style={[st.body, { marginTop: 6, color: C.text, fontWeight: T.weight.bold }]}>{s.foco}</Text>
+            <Text style={[st.body, { marginTop: 6, color: C.success }]}>→ {s.entregable}</Text>
+            {s.recurso ? <Text style={[st.body, { marginTop: 4, color: C.textMute }]}>📎 {s.recurso}</Text> : null}
+          </AurumPanel>
+        </AurumRise>
+      ))}
+
+      <AurumLabel>La IA es tu coach · práctica deliberada (Peak · Ericsson)</AurumLabel>
+      <AurumPanel accent={C.gold} style={{ marginBottom: S['2xl'] }}>
+        <Text style={[st.body, { marginBottom: S.sm }]}>{pr.resumen}</Text>
+        {pr.principios.map((p, i) => (
+          <View key={i} style={st.warnRow}><Text style={{ color: C.gold }}>•</Text><Text style={[st.body, { flex: 1 }]}>{p}</Text></View>
+        ))}
+      </AurumPanel>
+
+      <AurumLabel>Cómo se MIDE que sí aprendes (sistema calificable)</AurumLabel>
+      <AurumPanel style={{ marginBottom: S['2xl'] }}>
+        {pr.sistemaMedible.map((s, i) => (
+          <View key={i} style={st.warnRow}><Text style={{ color: C.success }}>✓</Text><Text style={[st.body, { flex: 1 }]}>{s}</Text></View>
+        ))}
+      </AurumPanel>
+
+      <AurumLabel>¿Cuánto comprime la IA el camino al top?</AurumLabel>
+      <AurumPanel accent={C.warn} style={{ marginBottom: S['2xl'] }}>
+        <Text style={st.body}>{pr.compresion}</Text>
+      </AurumPanel>
+    </View>
+  );
+}
+
 export default function AurumHub({ onBack, variant = 'mobile' }: { onBack?: () => void; variant?: 'mobile' | 'desktop' }) {
   const isDesktop = variant === 'desktop';
   const [sub, setSub] = useState<Sub>('hoy');
@@ -394,12 +452,14 @@ export default function AurumHub({ onBack, variant = 'mobile' }: { onBack?: () =
       {/* ───── SUB-NAV ───── */}
       <View style={st.navRow}>
         <NavPill label="⚡ Hoy" active={sub === 'hoy'} onPress={() => setSub('hoy')} />
+        <NavPill label="🚀 Agosto" active={sub === 'agosto'} onPress={() => setSub('agosto')} />
         <NavPill label="◈ Ruta" active={sub === 'ruta'} onPress={() => setSub('ruta')} />
         <NavPill label="⌘ Biblioteca" active={sub === 'biblioteca'} onPress={() => setSub('biblioteca')} />
         <NavPill label="🧭 Protocolo" active={sub === 'protocolo'} onPress={() => setSub('protocolo')} />
       </View>
 
       {sub === 'hoy' && <AurumTodayPlan done={done} onToggle={toggleDone} isDesktop={isDesktop} />}
+      {sub === 'agosto' && <MiniFaseView />}
       {sub === 'ruta' && <RutaView done={done} />}
       {sub === 'biblioteca' && <BibliotecaView isDesktop={isDesktop} />}
       {sub === 'protocolo' && <ProtocoloView />}

@@ -7,6 +7,7 @@ import { GradientHero, RingStat, MegaStat, FadeUp, CommandBackdrop } from '../em
 import {
   SYNAPSE_META, SYNAPSE_KPIS, SYNAPSE_FASES, SYNAPSE_BIBLIOTECA, SYNAPSE_HORARIO,
   SYNAPSE_NIVEL_META, SYNAPSE_ADVERTENCIAS, SynapseMaterial, SynapseNivel,
+  SYNAPSE_MINIFASE, SYNAPSE_PRACTICA,
 } from '../../lib/synapseData';
 import { obsUrl } from '../../lib/obsidianMap';
 import { OBS_SYNAPSE_MATERIALES, OBS_SYNAPSE_FASES } from '../../lib/obsidianVaultMap';
@@ -25,7 +26,7 @@ import SynapseTodayPlan from './SynapseTodayPlan';
 const INDIGO = SYNAPSE_META.accent;
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
 
-type Sub = 'hoy' | 'ruta' | 'biblioteca' | 'protocolo';
+type Sub = 'hoy' | 'agosto' | 'ruta' | 'biblioteca' | 'protocolo';
 
 const NIVEL_COLOR: Record<SynapseNivel, string> = {
   base: Colors.green,
@@ -166,6 +167,66 @@ function ProtocoloView() {
   );
 }
 
+/** AGOSTO — la mini-fase AI-first (10 semanas, medible) + el sistema de práctica deliberada. */
+function MiniFaseView() {
+  const mf = SYNAPSE_MINIFASE; const pr = SYNAPSE_PRACTICA;
+  return (
+    <View>
+      <SectionLabel>🚀 Mini-Fase AGOSTO · {mf.titulo}</SectionLabel>
+      <GlassPanel accent={INDIGO} style={{ marginBottom: Spacing.lg }}>
+        <Chip label={mf.etiqueta} color={INDIGO} small />
+        <Text style={[st.body, { marginTop: 8 }]}>{mf.objetivo}</Text>
+        <Text style={[st.faseEntreg, { color: Colors.green, marginTop: 10 }]}>🎯 Cierre de agosto: {mf.entregableFinal}</Text>
+      </GlassPanel>
+
+      <SectionLabel>KPIs medibles (práctica deliberada, no minutos)</SectionLabel>
+      <GlassPanel style={{ marginBottom: Spacing.lg }}>
+        {mf.kpis.map((k, i) => (
+          <View key={i} style={{ flexDirection: 'row', gap: 8, paddingVertical: 5 }}>
+            <Text style={{ color: INDIGO }}>◆</Text><Text style={[st.body, { flex: 1 }]}>{k}</Text>
+          </View>
+        ))}
+      </GlassPanel>
+
+      <SectionLabel>Las 10 semanas · cada una deja un entregable medible</SectionLabel>
+      {mf.semanas.map((s, i) => (
+        <FadeUp key={i} delay={i * 35}>
+          <View style={[st.faseCard, { borderLeftColor: INDIGO }]}>
+            <Text style={[st.faseTag, { color: INDIGO }]}>{s.rango}</Text>
+            <Text style={st.faseTitle}>{s.foco}</Text>
+            <Text style={[st.faseEntreg, { color: Colors.green }]}>→ {s.entregable}</Text>
+            {s.recurso ? <Text style={[st.matDur, { marginTop: 4 }]}>📎 {s.recurso}</Text> : null}
+          </View>
+        </FadeUp>
+      ))}
+
+      <SectionLabel>La IA es tu coach · práctica deliberada (Peak · Ericsson)</SectionLabel>
+      <GlassPanel accent={INDIGO} style={{ marginBottom: Spacing.lg }}>
+        <Text style={[st.body, { marginBottom: 8 }]}>{pr.resumen}</Text>
+        {pr.principios.map((p, i) => (
+          <View key={i} style={{ flexDirection: 'row', gap: 8, paddingVertical: 4 }}>
+            <Text style={{ color: INDIGO }}>•</Text><Text style={[st.body, { flex: 1 }]}>{p}</Text>
+          </View>
+        ))}
+      </GlassPanel>
+
+      <SectionLabel>Cómo se MIDE que sí aprendes (sistema calificable)</SectionLabel>
+      <GlassPanel style={{ marginBottom: Spacing.lg }}>
+        {pr.sistemaMedible.map((s, i) => (
+          <View key={i} style={{ flexDirection: 'row', gap: 8, paddingVertical: 4 }}>
+            <Text style={{ color: Colors.green }}>✓</Text><Text style={[st.body, { flex: 1 }]}>{s}</Text>
+          </View>
+        ))}
+      </GlassPanel>
+
+      <SectionLabel>¿Cuánto comprime la IA los 3 años?</SectionLabel>
+      <GlassPanel accent={Colors.amber} style={{ marginBottom: Spacing.xl }}>
+        <Text style={st.body}>{pr.compresion}</Text>
+      </GlassPanel>
+    </View>
+  );
+}
+
 export default function SynapseHub({ variant = 'mobile' }: { variant?: 'mobile' | 'desktop' }) {
   const isDesktop = variant === 'desktop';
   const [sub, setSub] = useState<Sub>('hoy');
@@ -218,12 +279,14 @@ export default function SynapseHub({ variant = 'mobile' }: { variant?: 'mobile' 
         {/* SUB-NAV */}
         <View style={{ flexDirection: 'row', gap: Spacing.sm, marginBottom: Spacing.xl, flexWrap: 'wrap' }}>
           <PillTab label="⚡ Hoy" active={sub === 'hoy'} onPress={() => setSub('hoy')} accent={INDIGO} />
+          <PillTab label="🚀 Agosto" active={sub === 'agosto'} onPress={() => setSub('agosto')} accent={INDIGO} />
           <PillTab label="◈ Ruta" active={sub === 'ruta'} onPress={() => setSub('ruta')} accent={INDIGO} />
           <PillTab label="⌘ Biblioteca" active={sub === 'biblioteca'} onPress={() => setSub('biblioteca')} accent={INDIGO} />
           <PillTab label="⏱ Protocolo" active={sub === 'protocolo'} onPress={() => setSub('protocolo')} accent={INDIGO} />
         </View>
 
         {sub === 'hoy' && <SynapseTodayPlan done={done} onToggle={toggleDone} />}
+        {sub === 'agosto' && <MiniFaseView />}
         {sub === 'ruta' && <RutaView />}
         {sub === 'biblioteca' && <BibliotecaView />}
         {sub === 'protocolo' && <ProtocoloView />}

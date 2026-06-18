@@ -255,6 +255,21 @@ export const AURUM_BIBLIOTECA: { categoria: string; icon: string; items: AurumMa
     { nombre: 'Nielsen Norman Group — usabilidad/UX (10 heurísticas)', referente: 'Jakob Nielsen & Don Norman', tipo: 'articulo', url: 'https://www.nngroup.com/articles/', idioma: 'en', confianza: 'verificado', porQue: 'El rigor detrás del "Confusion = 0": por qué una página se entiende sola y no frustra. Autoridad mundial en usabilidad.' },
     { nombre: 'Growth.Design — case studies (teardowns visuales de funnels)', referente: 'Dan Benoni & Louis-Xavier Lavallée', tipo: 'articulo', url: 'https://growth.design/case-studies', idioma: 'en', confianza: 'verificado', porQue: 'Disecciona los funnels de Spotify/Duolingo/Amazon con la psicología detrás. Entrena el OJO para ver conversión en producto.' },
   ] },
+  // ── Marketing CON IA — AI-first 2026 (generar copy/imagen/video/landing dirigiendo a la IA) ──
+  { categoria: '🤖 Marketing con IA (AI-first · generar copy/imagen/video/landing)', icon: '🤖', items: [
+    { nombre: 'Anthropic — Prompt Engineering Overview', referente: 'Anthropic', tipo: 'articulo', url: 'https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview', idioma: 'en', confianza: 'verificado', porQue: 'El skill NÚCLEO de la era IA: cómo DIRIGIR a la IA (claro, contexto, ejemplos, rol, XML). Tu copy/imagen/landing valen lo que vale tu prompt.' },
+    { nombre: 'Anthropic — Tutorial interactivo de Prompt Engineering (GitHub)', referente: 'Anthropic', tipo: 'articulo', url: 'https://github.com/anthropics/prompt-eng-interactive-tutorial', idioma: 'en', confianza: 'verificado', porQue: '9 capítulos con ejercicios: práctica deliberada de prompting. Cada lección deja un prompt mejorado medible — drill diario.' },
+    { nombre: 'Learn Prompting — curso gratis y open-source', referente: 'Learn Prompting', tipo: 'articulo', url: 'https://learnprompting.org/docs/introduction', idioma: 'en', confianza: 'verificado', porQue: 'El curso abierto más completo de prompting (sin hype), aplicable directo a generar copy de marketing.' },
+    { nombre: 'Prompting Guide (promptingguide.ai) + prompt library', referente: 'DAIR.AI', tipo: 'articulo', url: 'https://www.promptingguide.ai/', idioma: 'en', confianza: 'verificado', porQue: 'Técnicas (zero/few-shot, CoT) + librería de prompts reutilizables: roba estructuras probadas ("genera 10 ángulos de anuncio por etapa de awareness").' },
+    { nombre: 'v0 by Vercel — generar y PUBLICAR landings con IA', referente: 'Vercel', tipo: 'articulo', url: 'https://v0.app/', idioma: 'en', confianza: 'verificado', porQue: 'El reemplazo AI-first de maquetar a mano: describes la landing y la IA genera el sitio funcional y publicable. Tu landing de ALLPA/Qori sale de aquí.' },
+    { nombre: 'Claude Artifacts — apps/páginas desde la conversación', referente: 'Anthropic', tipo: 'articulo', url: 'https://support.anthropic.com/en/articles/9487310-what-are-artifacts-and-how-do-i-use-them', idioma: 'en', confianza: 'verificado', porQue: 'Genera landings, calculadora de cuota de terreno o mini-apps de captura de leads conversando con Claude. Prototipa rápido antes de v0/Framer.' },
+    { nombre: 'Google Gemini — Image Generation (nano banana): posters con IA', referente: 'Google', tipo: 'articulo', url: 'https://gemini.google/overview/image-generation/', idioma: 'en', confianza: 'verificado', porQue: 'Genera/edita imágenes desde texto, transfiere estilo y AÑADE TEXTO en la imagen (anuncios con copy embebido). Oro para Qori Golden (visual) y terrenos ALLPA.' },
+    { nombre: 'Google AI Studio — playground gratis (texto + imagen)', referente: 'Google', tipo: 'articulo', url: 'https://aistudio.google.com/', idioma: 'en', confianza: 'verificado', porQue: 'Banco de pruebas para iterar prompts de copy e imagen sin límite. El laboratorio del loop generar→evaluar→re-prompt antes de llevar el ganador a la campaña.' },
+    { nombre: 'Arcads — UGC video ads con actores IA (Meta/TikTok)', referente: 'Arcads', tipo: 'articulo', url: 'https://www.arcads.ai/', idioma: 'en', confianza: 'verificado', porQue: '1.000+ actores IA leen tu script con presets de FB/TikTok. El "no hagas anuncios, haz TikToks" producido con IA: 5 hooks de video en una tarde.' },
+    { nombre: 'CapCut — AI Video Generator (texto → video para ads)', referente: 'CapCut', tipo: 'articulo', url: 'https://www.capcut.com/tools/ai-video-generator', idioma: 'en', confianza: 'verificado', porQue: 'Text-to-video, plantillas de ads, voiceover y avatares IA. Variaciones de Reel/TikTok de cachorros Qori o recorridos de terreno, rápido y barato.' },
+    { nombre: 'Lummi — cómo escribir mejores prompts de imagen IA', referente: 'Lummi', tipo: 'articulo', url: 'https://www.lummi.ai/blog', idioma: 'en', confianza: 'verificado', porQue: 'El prompting ESPECÍFICO de imagen (sujeto+estilo+luz+encuadre). Sube tus creatividades de "IA genérica" a "diseñado".' },
+    { nombre: 'Julian Shapiro — Writing Guide (criterio humano sobre el copy IA)', referente: 'Julian Shapiro', tipo: 'articulo', url: 'https://www.julian.com/guide/write/intro', idioma: 'en', confianza: 'verificado', porQue: 'La era IA premia el JUICIO: claridad, detectar lógica rota, reescribir. La rúbrica con la que conviertes 10 variantes de copy IA en el ángulo correcto.' },
+  ] },
 ];
 
 // ─── KPIs ───
@@ -294,4 +309,62 @@ export const AURUM_ADVERTENCIAS: string[] = [
   'Vender ≠ manipular. El hilo de todo el programa (Voss, Cialdini, Rackham, Pink) es vender sirviendo: bajar la presión, diagnosticar como un médico y dejar que el prospecto se persuada solo. Para ALLPA (terrenos) y Qori Golden (cachorros) la confianza ES el activo.',
   'La maestría es repetición bajo presión, no consumo de contenido. Sin el bloque PRAC (grabar, role-play, revisar tu "caja negra" y avanzar tu PITCH de la fase) el plan no funciona: 30-60 min/día de núcleo en 14:15-15:15 durante 26 semanas, L-V.',
   'Carriles añadidos 18-jun (+23 recursos verificados): "Publicidad pagada (Meta/Google/TikTok)" y "Funnels, landing & web de conversión" — el CÓMO se crea y se anuncia, no solo el cierre 1-a-1. Roadmap 1/2/3 años (cierre + ads + funnels + web) en DATA/AURUM/ROADMAP_VENTAS_MULTIANIO.md. Meta Blueprint y TikTok Academy ya están en español; el resto se traduce (clic derecho → Traducir / subtítulos YouTube).',
+  'FILOSOFÍA AI-FIRST (18-jun): el humano dirige (oferta, ángulo/awareness, gusto de diseño, lectura de métricas, decisión de iterar); la IA PRODUCE (copy, imágenes, video, landing). Ver pestaña 🚀 Agosto: mini-fase de 10 semanas para dejar 3 activos vivos (landing publicada + creatividades IA + 1 mini-campaña medida). Meta Blueprint/Ben Heath/Carrd/Copyhackers se degradan a referencia: enseñan a operar a mano lo que la IA ya asiste.',
 ];
+
+// ─── Mini-Fase AGOSTO (AI-first) + Práctica deliberada (Peak/Ericsson) ───
+// Bases ejecutables/medibles de marketing+ventas CON IA. Doc: DATA/AURUM/MINIFASE_AGOSTO_AIFIRST.md
+export type AurumMiniSemana = { rango: string; foco: string; entregable: string; recurso?: string };
+export interface AurumMiniFase {
+  titulo: string; etiqueta: string; objetivo: string; entregableFinal: string;
+  kpis: string[]; semanas: AurumMiniSemana[];
+}
+export const AURUM_MINIFASE: AurumMiniFase = {
+  titulo: 'Bases AI-first · marketing+ventas DIRIGIENDO a la IA',
+  etiqueta: '10 semanas · 19-jun → 31-ago · ventana 14:15-15:15',
+  objetivo: 'Dominar las bases de marketing+ventas EJECUTABLES CON IA y dejar 3 activos reales corriendo para ALLPA y Qori Golden: una LANDING publicada (generada con IA), un SET de creatividades (imagen + video corto IA) y UNA mini-campaña de ads corriendo y MEDIDA (CTR/CPL). El humano dirige; la IA produce. Cada sesión deja un entregable generado-con-IA, registrable y calificado.',
+  entregableFinal: 'Al cerrar agosto: (1) generar en una sesión 8+ ángulos de copy mapeados a awareness y elegir el correcto con criterio; (2) un set de creatividades IA (imagen con texto + video/UGC); (3) una LANDING publicada y viva que capta leads; (4) una mini-campaña corriendo y MEDIDA con ≥2-3 ciclos del loop generar→medir→re-prompt→regenerar; (5) un playbook AI-first repetible. La prueba es operativa: activos vivos + dashboard con números reales, no apuntes.',
+  kpis: [
+    'Prompts iterados/semana en tu "banco de prompts" (≥2 iteraciones doc.): meta ≥10/sem, calificados 1-5 (rol-contexto-ejemplos-XML)',
+    'Variantes de copy generadas y elegidas: generar ≥8 ángulos por awareness, quedarte con 2-3 (criterio)',
+    'Creatividades IA producidas: ≥12 imágenes (Gemini) + ≥6 videos cortos (Arcads/CapCut), score de hook 1-5',
+    'Landing: 1 publicada con URL viva + tasa de envío de formulario (leads ÷ visitas) registrada',
+    'Campaña medible: CTR, CPM, CPL, nº de leads + ≥1 iteración decidida POR los datos',
+    'Loop agéntico cerrado: ciclos generar→medir→re-prompt→regenerar (meta ≥3 en las últimas 3 semanas)',
+    'Adherencia: % de días L-V con entregable registrado (meta ≥85%) — práctica, no consumo',
+  ],
+  semanas: [
+    { rango: 'S1 · 19-27 jun', foco: 'Prompting como skill núcleo + montar el "banco de prompts" (cómo se DIRIGE a la IA)', entregable: 'Banco de prompts v1 (10 prompts propios de marketing, ≥2 iteraciones, auto-cal 1-5)', recurso: 'Anthropic Prompt Overview + Tutorial interactivo' },
+    { rango: 'S2 · 30 jun-4 jul', foco: 'Copy de anuncios con IA según awareness de Schwartz (Unaware→Most Aware)', entregable: '8 ángulos generados (ALLPA + Qori) mapeados a las 5 etapas; elegir 2-3 con tu criterio (descartes anotados)', recurso: 'Prompting Guide + Julian Shapiro Writing' },
+    { rango: 'S3 · 7-11 jul', foco: 'Creatividades de imagen con IA (poster con copy embebido). Prompting de imagen', entregable: '≥6 imágenes/posters (3 ALLPA, 3 Qori) con texto, score de hook 1-5 + qué prompt lo produjo', recurso: 'Gemini Image (nano banana) + Lummi + AI Studio' },
+    { rango: 'S4 · 14-18 jul', foco: 'Video corto / UGC con IA. Hooks de 3 segundos ("haz TikToks, no ads")', entregable: '≥4 videos IA (2 ALLPA, 2 Qori) con hook distinto; elegir los 2 mejores para la campaña', recurso: 'Arcads (actores IA) + CapCut AI' },
+    { rango: 'S5 · 21-25 jul', foco: 'Construir la landing CON IA (no a mano): hero, prueba social, oferta, CTA, formulario', entregable: 'Prototipo de landing funcional por prompt (Claude Artifacts) revisado vs Desire − (Labor + Confusion)', recurso: 'Claude Artifacts' },
+    { rango: 'S6 · 28 jul-1 ago', foco: 'Llevar la landing a producción y PUBLICARLA (dominio/URL viva)', entregable: '1 LANDING PUBLICADA (v0/Framer-AI) con formulario que captura leads. Velocidad anotada', recurso: 'v0 by Vercel + Framer (AI/Agents)' },
+    { rango: 'S7 · 4-8 ago', foco: 'Fundamentos de ads para LANZAR (campaña→adset→ad, públicos, presupuesto, píxel)', entregable: 'Plan de mini-campaña escrito (objetivo, público, presupuesto/día, 2 creatividades+2 copies, evento) + 3 hooks clonados', recurso: 'Demand Curve Running Ads + TikTok Creative Center' },
+    { rango: 'S8 · 11-15 ago', foco: 'LANZAR la mini-campaña (presupuesto mínimo) + dashboard de métricas', entregable: '1 mini-campaña CORRIENDO (≥2 ads → landing) + dashboard CTR/CPM/CPL/leads. Baseline registrado', recurso: 'Demand Curve + Ads Manager' },
+    { rango: 'S9 · 18-22 ago', foco: 'El LOOP agéntico: leer datos → re-prompt → regenerar el activo perdedor → relanzar', entregable: '≥2 ciclos generar→medir→re-prompt→regenerar + tabla antes/después de CTR y CPL', recurso: 'AI Studio + Gemini/Arcads + dashboard' },
+    { rango: 'S10 · 25-29 ago', foco: 'Consolidar el SISTEMA en un playbook AI-first repetible para ALLPA y Qori', entregable: 'Playbook v1 (funnel anuncio→landing→lead + banco de prompts + rúbrica + KPIs) + demo de 5 min de los 3 activos vivos', recurso: 'Todo + CORE4 de $100M Leads' },
+  ],
+};
+
+export interface AurumPractica { resumen: string; principios: string[]; sistemaMedible: string[]; compresion: string }
+export const AURUM_PRACTICA: AurumPractica = {
+  resumen: 'Práctica deliberada (Ericsson, "Peak") en la era IA: en el bloque PRAC (14:15-15:15) SIEMPRE produces un activo generado-con-IA (un prompt iterado, una creatividad, un trozo de landing, un anuncio) y lo CALIFICAS el mismo día contra rúbrica. Ver el recurso sin parir y medir no cuenta. El humano entrena el CRITERIO que la IA no tiene; la IA es el aprendiz que produce.',
+  principios: [
+    'Cada sesión produce un activo generado-con-IA, registrable y calificable — no consumo.',
+    'Zona de incomodidad + feedback inmediato: la IA misma evalúa ("evalúa este copy contra estos criterios") y acelera el bucle.',
+    'Representación del experto: qué etapa de awareness ataca el copy, qué hook frena el scroll, qué métrica importa (CPL > likes), cuándo iterar. Tú apruebas/rechazas.',
+    'Repetición bajo restricción real: siempre sobre ALLPA y Qori (no ejemplos genéricos) y con presupuesto/tiempo reales.',
+    'Aísla el sub-skill y sube dificultad: prompting → copy → imagen → video → landing → ads → loop; domina cada uno antes de integrar (S10).',
+    'El loop agéntico (generar→medir→re-prompt→regenerar) es la unidad de práctica: se cuenta por ciclos cerrados y por delta de CTR/CPL.',
+  ],
+  sistemaMedible: [
+    'Log diario (1 fila/sesión): fecha, sub-skill, recurso, entregable producido, link al activo, auto-cal 1-5, "pista de mejora" para mañana. Tu caja negra.',
+    'Rúbrica de prompt (1-5): ¿rol? ¿contexto/motivo? ¿1-3 ejemplos? ¿estructura XML? ¿pide auto-verificación? Un prompt <4 se reescribe.',
+    'Rúbrica de creatividad (1-5): claridad del hook en 3s, una sola idea, contraste/legibilidad del texto, ajuste a la etapa de awareness, fit con el negocio. Sólo ≥4 entra a la campaña.',
+    'Métricas de campaña como verdad última: CTR (creativo), CPM (alcance), CPL (eficiencia), leads. La iteración la dictan los números, no el gusto.',
+    'Conteo de loops cerrados y su delta de CTR/CPL: el aprendizaje se demuestra si el delta mejora a lo largo de agosto.',
+    'Revisión semanal (sábado, 15 min): leer el log, marcar mejor/peor entregable, fijar el foco de la semana siguiente.',
+  ],
+  compresion: 'Sin IA, llegar a top-10% en marketing de respuesta directa es 12-24 meses (copy + diseño + video + maquetar landings + operar ads, cada uno una disciplina). La IA NO comprime el camino al top por sí sola: comprime la PRODUCCIÓN (copy/imagen/video/landing pasan de días a minutos), pero el cuello de botella se mueve al CRITERIO — qué pedir, reconocer lo bueno, leer métricas, decidir la iteración. Por eso agosto entrena justo eso. Realista: las BASES ejecutables (lanzar y medir una campaña con activos decentes) son alcanzables en ~10 semanas a 60 min/día — lo que pre-IA pedía ~6-12 meses. Top-5% (creatividades/copy que baten el CPL consistentemente) ≈ 6-12 meses encadenando campañas reales (los 3 negocios de Joseph lo permiten). El top-1% (intuición de oferta+ángulo+canal que pocos replican) sigue siendo plurianual: la IA amplifica el juicio pero no lo sustituye. Resumen: la IA convierte "aprender a hacerlo" (años) en "aprender a dirigirlo y medirlo" (semanas para las bases); el techo lo pone el juicio humano entrenado con repeticiones reales.',
+};

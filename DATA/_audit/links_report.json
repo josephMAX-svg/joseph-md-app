@@ -300,7 +300,8 @@
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/synapseData.ts"
+   "src/lib/synapseData.ts",
+   "src/lib/aurumData.ts"
   ]
  },
  {
@@ -1112,6 +1113,103 @@
   ]
  },
  {
+  "u": "https://code.claude.com/docs/en/overview",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://code.claude.com/docs/en/best-practices",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://code.claude.com/docs/en/common-workflows",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://code.claude.com/docs/en/chrome",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://v0.app/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts",
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://docs.cursor.com/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://github.com/anthropics/anthropic-quickstarts",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.anthropic.com/engineering/writing-tools-for-agents",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://docs.github.com/en/get-started/start-your-journey/hello-world",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/How_does_the_Internet_work",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
   "u": "https://translate.google.com/?op=websites",
   "status": 200,
   "cls": "OK",
@@ -1705,6 +1803,86 @@
  },
  {
   "u": "https://growth.design/case-studies",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://learnprompting.org/docs/introduction",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.promptingguide.ai/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://support.anthropic.com/en/articles/9487310-what-are-artifacts-and-how-do-i-use-them",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://gemini.google/overview/image-generation/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://aistudio.google.com/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.arcads.ai/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.capcut.com/tools/ai-video-generator",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.lummi.ai/blog",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.julian.com/guide/write/intro",
   "status": 200,
   "cls": "OK",
   "files": [

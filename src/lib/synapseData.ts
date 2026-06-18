@@ -202,6 +202,19 @@ const M = {
   learnA11y: { nombre: 'Google — Learn Accessibility (web.dev)', referente: 'Equipo de Chrome', credencial: '20 módulos oficiales de accesibilidad', tipo: 'curso', url: 'https://web.dev/learn/accessibility', gratis: 'gratis', duracion: '20 módulos', nivel: 'intermedio', porQue: 'ARIA, foco de teclado, contraste, formularios, lectores de pantalla. La accesibilidad que distingue a un frontend pro.' },
   googleUx: { nombre: 'Google UX Design — Professional Certificate', referente: 'Google (Coursera)', credencial: 'Certificado profesional de Google', tipo: 'curso', url: 'https://www.coursera.org/professional-certificates/google-ux-design', gratis: 'parcial', duracion: 'trial 7d + $49/mes', nivel: 'base', porQue: 'Proceso UX completo con Figma (empatía→wireframe→prototipo→test). Tómalo concentrado o con ayuda financiera de Coursera.' },
   vercelDeploy: { nombre: 'Vercel — Getting started / Deploy', referente: 'Vercel', credencial: 'La plataforma de deploy que ya usas (VITALS)', tipo: 'docs', url: 'https://vercel.com/docs/getting-started-with-vercel', gratis: 'gratis', duracion: 'guía', nivel: 'base', porQue: 'De cero a producción: CLI, conectar GitHub, deploy y dominio. Formaliza el cómo-se-publica-una-web.' },
+  // ── Construir CON IA — AI-first 2026 (dirigir y verificar, no teclear de memoria) ──
+  claudeCodeDocs: { nombre: 'Claude Code — Documentación oficial (Overview)', referente: 'Anthropic', credencial: 'El agente de código que YA usas', tipo: 'docs', url: 'https://code.claude.com/docs/en/overview', gratis: 'gratis', duracion: 'referencia', nivel: 'intermedio', porQue: 'AI-first puro: CLI/IDE/web, MCP, skills, hooks, subagentes. El "cómo se ejecuta CON IA". Referencia canónica del flujo de construcción.', audio: true },
+  claudeCodeBest: { nombre: 'Claude Code — Best practices (explore→plan→code→commit)', referente: 'Anthropic', credencial: 'El criterio humano que dirige a la IA', tipo: 'docs', url: 'https://code.claude.com/docs/en/best-practices', gratis: 'gratis', duracion: 'guía', nivel: 'intermedio', porQue: 'Gestión de contexto, CLAUDE.md, plan mode, dar a la IA forma de VERIFICAR (tests/screenshots), revisión adversarial, los 5 patrones de fallo. Aplica 1 patrón/día.', audio: true },
+  claudeCodeWorkflows: { nombre: 'Claude Code — Common workflows', referente: 'Anthropic', credencial: 'Recetas oficiales de uso real', tipo: 'docs', url: 'https://code.claude.com/docs/en/common-workflows', gratis: 'gratis', duracion: 'recetas', nivel: 'base', porQue: 'Entender un codebase, arreglar bugs, mockup→CSS, trazar del front-end a la DB. Prompts concretos para ALLPA/Qori.' },
+  claudeCodeChrome: { nombre: 'Claude Code with Chrome (verificar en el navegador)', referente: 'Anthropic', credencial: 'Pedido por ti, ya lo tienes instalado', tipo: 'docs', url: 'https://code.claude.com/docs/en/chrome', gratis: 'gratis', duracion: 'guía', nivel: 'intermedio', porQue: 'Verificar en vivo (consola, formularios, comparar UI con el diseño y arreglar). El puente de agentes a seguridad del navegador.' },
+  promptOverview: { nombre: 'Anthropic — Prompt Engineering Overview', referente: 'Anthropic', credencial: 'Entrada oficial al prompting', tipo: 'docs', url: 'https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview', gratis: 'gratis', duracion: 'lectura', nivel: 'base', porQue: 'Define criterios de éxito y cómo verificar ANTES de promptear. El skill núcleo de la era IA: tu output vale lo que vale tu prompt.', audio: true },
+  claudePromptBest: { nombre: 'Anthropic — Claude prompting best practices', referente: 'Anthropic', credencial: 'Referencia maestra de prompting', tipo: 'docs', url: 'https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices', gratis: 'gratis', duracion: 'referencia', nivel: 'intermedio', porQue: 'Claro y directo, contexto, ejemplos, XML, decir qué hacer + snippet anti-AI-slop. La técnica que separa un prompt de 1 que el de 5.', audio: true },
+  v0: { nombre: 'v0 by Vercel — generar y publicar apps/landings con IA', referente: 'Vercel', credencial: 'El generador AI de UI de referencia', tipo: 'tutorial', url: 'https://v0.app/', gratis: 'parcial', duracion: 'genera en segundos', nivel: 'base', porQue: 'Describes una landing/app y la IA la genera funcional, editable y publicable, conectable a GitHub+Vercel. Construir-con-IA real para ALLPA/Qori.' },
+  cursor: { nombre: 'Cursor — Documentación oficial (el IDE con IA)', referente: 'Anysphere', credencial: 'El editor AI-first más usado', tipo: 'docs', url: 'https://docs.cursor.com/', gratis: 'parcial', duracion: 'referencia', nivel: 'intermedio', porQue: 'Editor donde la IA escribe/edita con contexto del repo. Alternativa/compañero de Claude Code para construir dirigiendo a la IA.' },
+  anthropicQuickstarts: { nombre: 'anthropic-quickstarts (Computer/Browser Use, Agent SDK)', referente: 'Anthropic', credencial: 'Apps oficiales arrancables', tipo: 'tutorial', url: 'https://github.com/anthropics/anthropic-quickstarts', gratis: 'gratis', duracion: 'repos clonables', nivel: 'avanzado', porQue: 'customer-support, computer-use, browser-use (Playwright), autonomous-coding-agent. Clonas, corres, modificas: construir CON IA desde el día 1.' },
+  writingToolsAgents: { nombre: 'Writing effective tools for AI agents (Anthropic)', referente: 'Anthropic', credencial: 'Ensayo fundacional 2025', tipo: 'docs', url: 'https://www.anthropic.com/engineering/writing-tools-for-agents', gratis: 'gratis', duracion: 'ensayo', nivel: 'avanzado', porQue: 'Diseñar tools/MCP que el agente usa bien (namespacing, tokens, evals de tools). Núcleo del dominio Tool/MCP — junto a Building Effective Agents + Context Engineering.', audio: true },
+  githubHello: { nombre: 'GitHub — Hello World', referente: 'GitHub', credencial: 'El onboarding oficial de Git/GitHub', tipo: 'tutorial', url: 'https://docs.github.com/en/get-started/start-your-journey/hello-world', gratis: 'gratis', duracion: '~15 min', nivel: 'base', porQue: 'Vocabulario sin escribir código: repo, branch, commit, PR, merge. Semana 1 de la mini-fase agosto.' },
+  mdnInternet: { nombre: 'MDN — How does the Internet work', referente: 'Mozilla', credencial: 'Referencia canónica de la web', tipo: 'docs', url: 'https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/How_does_the_Internet_work', gratis: 'gratis', duracion: 'lectura corta', nivel: 'base', porQue: 'Vocabulario de infraestructura (cliente, servidor, IP, dominio, ISP) para entender deploy, frontend, backend. Semana 1.', audio: true },
 } satisfies Record<string, SynapseMaterial>;
 
 export const SYNAPSE_MATERIALES = M;
@@ -276,6 +289,7 @@ export const SYNAPSE_BIBLIOTECA: { categoria: string; icon: string; items: Synap
   { categoria: 'Frontier-lab avanzado (RL · papers · interpretabilidad)', icon: '🔬', items: [M.attentionPaper, M.annotatedTransformer, M.spinningUp, M.hfDeepRl, M.lilLog, M.mlEngineering, M.neelNanda, M.biologyLlm, M.bluedotAlignment] },
   { categoria: 'Backend de producción (Python · APIs · datos · system design)', icon: '⚙️', items: [M.roadmapBackend, M.fastapiTut, M.djangoRest, M.postgresqlTut, M.cs50sql, M.pytest, M.testdriven, M.arjancodes, M.mit6031, M.dockerGetStarted, M.twelveFactor, M.sysDesignPrimer, M.bytebytego, M.ddia, M.grokkingSD] },
   { categoria: 'Frontend & diseño web (HTML/CSS/JS · React · UI/UX)', icon: '🎨', items: [M.roadmapFrontend, M.odinProject, M.learnCssWebdev, M.kevinPowell, M.joshComeau, M.mdnLearn, M.freecodecamp, M.fullStackOpen, M.nextjsLearn, M.cs50w, M.refactoringUi, M.lawsOfUx, M.learnA11y, M.googleUx, M.vercelDeploy] },
+  { categoria: '🤖 Construir CON IA — AI-first 2026 (dirigir, no teclear de memoria)', icon: '🤖', items: [M.claudeCodeDocs, M.claudeCodeBest, M.claudeCodeWorkflows, M.claudeCodeChrome, M.dlaiClaudeCode, M.promptOverview, M.claudePromptBest, M.promptTutorial, M.v0, M.cursor, M.anthropicQuickstarts, M.effectiveAgents, M.contextEng, M.writingToolsAgents, M.githubHello, M.mdnInternet, M.vercelDeploy] },
   { categoria: 'Audio para espacios muertos', icon: '🎧', items: [M.lexDario, M.dwarkeshDario, M.lexKarpathy, M.dwarkeshInterp, M.dwarkeshDemis, M.latentSpace, M.noPriors, M.anthropicYt, M.dlaiYt, M.theBatch] },
 ];
 
@@ -326,4 +340,63 @@ export const SYNAPSE_ADVERTENCIAS: string[] = [
   'Veredicto del auditor de completitud: lo que consigue la entrevista no es el temario sino PROYECTOS PÚBLICOS demostrables en GitHub — por eso cada fase exige un entregable público.',
   'Las 85 URLs fueron verificadas en vivo el 10-jun-2026 (WebFetch/oEmbed). Si alguna cambia, la fuente canónica es DATA/SYNAPSE/materiales-verificados.md.',
   'Ruta FULL-STACK senior añadida 18-jun (categorías "Backend de producción" y "Frontend & diseño web", +29 recursos verificados): FastAPI/Postgres/pytest/system design + HTML-CSS-JS/React-Next/UI-UX. A 30-60 min/día, senior full-stack es horizonte de 3 años — roadmap Año 1/2/3 en DATA/SYNAPSE/ROADMAP_SENIOR_MULTIANIO.md. El material en inglés se traduce (ver quicklink 🌐 Traductor).',
+  'FILOSOFÍA AI-FIRST (18-jun): no memorizar sintaxis ni teclear código que la IA ya escribe — el skill humano es DIRIGIR y VERIFICAR (vocabulario, prompting, criterio, arquitectura, gusto). Ver pestaña 🚀 Agosto: mini-fase de 10 semanas para ya poder pedirle a la IA "construye tal sistema" CON CRITERIO. CS50P/Automate/MIT 6.006/nand2tetris se degradan para esta mini-fase (vuelven en las fases profundas de sept+).',
 ];
+
+// ─── Mini-Fase AGOSTO (AI-first) + Práctica deliberada (Peak/Ericsson) ───
+// Bases ejecutables/medibles para CONSTRUIR con IA. Doc: DATA/SYNAPSE/MINIFASE_AGOSTO_AIFIRST.md
+export type MiniFaseSemana = { rango: string; foco: string; entregable: string; recurso?: string };
+export interface MiniFase {
+  titulo: string; etiqueta: string; objetivo: string; entregableFinal: string;
+  kpis: string[]; semanas: MiniFaseSemana[];
+}
+export const SYNAPSE_MINIFASE: MiniFase = {
+  titulo: 'Bases AI-first · construir software DIRIGIENDO a la IA',
+  etiqueta: '10 semanas · 19-jun → 31-ago',
+  objetivo: 'Pasar de "sé que la IA programa" a "dirijo a la IA para construir y desplegar software real CON CRITERIO". Al cerrar agosto: especificas una landing/app para ALLPA o Qori, conduces explore→plan→code→commit, verificas con Claude in Chrome, despliegas en Vercel y EXPLICAS cada pieza. No memorizas sintaxis: la lees y la diriges.',
+  entregableFinal: 'Una mini-app/landing REAL y pública en Vercel (URL viva) para ALLPA o Qori Golden, hecha dirigiendo a la IA: SPEC.md propio, generada con v0/Claude Code, verificada con Claude in Chrome, desplegada y documentada en README. La prueba: abrir el repo y EXPLICAR cada archivo + el journal (prompts.md, glosario.md).',
+  kpis: [
+    'Prompts efectivos/semana (resuelven al 1.º-2.º intento): de ~3 (S1) a ~12 (S10), nota 1-5 en prompts.md',
+    'Features VIVAS en URL pública de Vercel: acumulado ≥ 8 (cada una con commit + link)',
+    '%-de-código-que-entiendo (sobre nº de archivos): de ~30% (S2) a ≥ 80% (S10) — métrica estrella',
+    'Vocabulario activo señalado en tu proyecto: 15/15 (API, DB, frontend, backend, deploy, auth, repo, commit, branch, PR, env var…)',
+    'Ciclos explore→plan→code→commit con plan mode: ≥ 10',
+    'Bugs detectados en el navegador y resueltos con Claude in Chrome: ≥ 5',
+  ],
+  semanas: [
+    { rango: 'S1 · 19-28 jun', foco: 'Vocabulario (repo/commit/branch/PR; cliente-servidor) + instalar Claude Code y PREGUNTARLE (no codear)', entregable: 'glosario.md con 15 términos en tus palabras + captura de Claude Code respondiendo 3 preguntas (KPI 8/15)', recurso: 'GitHub Hello World · MDN Internet · Claude Code Quickstart' },
+    { rango: 'S2 · 29 jun-5 jul', foco: 'El agentic loop + flujo explore→plan→code→commit; plan mode ANTES de codear', entregable: '1 ciclo completo documentado (plan → diff → commit). KPI 3 prompts efectivos', recurso: 'Claude Code: How it works + Best practices' },
+    { rango: 'S3 · 6-12 jul', foco: 'Promptear para construir: claro y directo, contexto, ejemplos, referenciar archivos', entregable: 'prompts.md con 5 pares vago↔específico, nota 1-5 c/u. KPI 5 efectivos', recurso: 'Prompt Engineering Overview + Tutorial interactivo' },
+    { rango: 'S4 · 13-19 jul', foco: 'CLAUDE.md + dar a la IA forma de VERIFICAR (trust-then-verify)', entregable: 'CLAUDE.md propio + 1 caso "corre-el-check-y-arregla". KPI 12/15 vocab', recurso: 'Claude Code Best practices' },
+    { rango: 'S5 · 20-26 jul', foco: 'PROYECTO REAL: landing ALLPA/Qori con v0; LEER lo que generó', entregable: 'repo público "landing v1" + journal por archivo (qué hace cada uno). KPI %-entiendo 45%', recurso: 'v0 by Vercel + Common workflows' },
+    { rango: 'S6 · 27 jul-2 ago', foco: 'DESPLEGAR en Vercel: build, producción vs preview, dominio, push→redeploy', entregable: 'URL pública viva + journal de términos. KPI 2 features, 15/15 vocab', recurso: 'Vercel — Getting started / Deploy' },
+    { rango: 'S7 · 3-9 ago', foco: 'Iterar y VERIFICAR en el navegador con Claude in Chrome (consola, formulario, diseño)', entregable: '2 bugs detectados en el navegador y resueltos. KPI 3 bugs, 10 prompts efectivos', recurso: 'Claude Code with Chrome' },
+    { rango: 'S8 · 10-16 ago', foco: 'Backend simple: formulario de lead que GUARDE datos (Supabase/Neon vía Vercel)', entregable: 'formulario VIVO que captura leads + journal de endpoint/env var. KPI %-entiendo 65%, 5 features', recurso: 'Vercel — Add a database' },
+    { rango: 'S9 · 17-23 ago', foco: 'Leer el código como REVISOR; un agente fresco revisa tu diff (detectar AI slop / over-engineering)', entregable: '1 revisión + 3 mejoras aplicadas que ENTENDISTE y aprobaste. KPI %-entiendo 75%', recurso: 'Claude Code Best practices (revisión adversarial)' },
+    { rango: 'S10 · 24-31 ago', foco: 'CAPSTONE: Claude te entrevista → SPEC.md, construyes, verificas y despliegas la app FINAL', entregable: 'app FINAL pública + SPEC.md + README propio + demo de 5 min. Cierre: %-entiendo 80%, 8 features, 15/15, 12 efectivos', recurso: 'Best practices (let Claude interview you)' },
+  ],
+};
+
+export interface PracticaDeliberada { resumen: string; principios: string[]; sistemaMedible: string[]; compresion: string }
+export const SYNAPSE_PRACTICA: PracticaDeliberada = {
+  resumen: 'Práctica deliberada (Anders Ericsson, "Peak"): el coach de élite que necesitas es la IA, 24/7. Cada sesión PRODUCE un entregable y se CALIFICA — el % de avance mide DOMINIO, no minutos. Ver vídeos sin parir y medir es "naive practice" (el médico que repite años sin feedback y se estanca: ese riesgo es real).',
+  principios: [
+    'Objetivo específico y CALIFICABLE por sesión (no "estudiar X" sino "lograr Y medible en <T sin mirar docs"). Decláralo antes de empezar.',
+    'Foco total, una sola cosa a la vez: 30 min de atención real > 2 h difusas. Sin notificaciones, un sub-skill por día.',
+    'Feedback inmediato y específico: la IA evalúa el entregable al instante (corre el código, critica el PITCH, marca el error exacto). Es la pieza que hoy falta.',
+    'Salir de la zona de confort: el sistema sube dificultad cuando aciertas y la baja cuando fallas — nunca repetir lo ya dominado.',
+    'Construir representaciones mentales, no acumular datos: cada sesión cierra con auto-explicación (Feynman) que la IA puntúa.',
+    'Corregir el error, no esconderlo: diagnosticar POR QUÉ falló (prompt vago, falta contexto) y reescribir.',
+    'Maestría antes de avanzar (mastery learning): no se pasa de sub-skill sin superar el umbral (~85) dos veces.',
+  ],
+  sistemaMedible: [
+    'Rúbrica por sesión 0-100, 4 ejes (25 c/u): Objetivo cumplido · Calidad · Independencia (¿con cuántas pistas?) · Reflexión (auto-explicación). La IA devuelve los 4 sub-scores + 1 acción de mejora.',
+    'INPUT (ver/leer) NO mueve el % de maestría — solo PRÁCTICA (producir algo evaluable) lo mueve. Separarlos es el cambio clave.',
+    'Pre-test / post-test rápido por sub-skill: el delta = aprendizaje real de la sesión.',
+    'Mastery gate: sub-skill "dominado" sólo con 2 sesiones ≥ umbral; mientras no, reaparece. Reemplaza el "completé la fase" binario.',
+    'Error-log: la IA lista 1-3 fallos; el sistema los re-inyecta como drill futuro (repetición espaciada del error).',
+    'Borde de dificultad (niveles 1-5): si score ≥90 ×2 sube; si ≤60 baja. Mantenerse en zona 70-85 = sigues fuera de tu zona de confort.',
+    'Journal en repo público (prompts.md · glosario.md · progreso.md) = tu "caja negra"; revisión semanal de 15 min (sábado) para calibrar.',
+  ],
+  compresion: 'Lo que comprime el camino NO son las horas, es la CALIDAD del bucle (objetivo→feedback→corrección) — Ericsson DESMONTA el mito de las 10.000 h ("hacer más de lo mismo no te hace mejor"). La palanca: Bloom (1984) mostró que tutoría 1-a-1 + mastery learning lleva al alumno medio sobre el 98% de la clase (+2σ); el problema era escalar un tutor humano — la IA lo resuelve a coste ~0 y 24/7. RCT de Harvard (Kestin 2025): con tutor-IA se aprendió >2× por hora que en clase activa. Traducción honesta de horizontes a 30-60 min/día: TOP-10% de un dominio acotado (construir/desplegar con IA; cierre 1-a-1) — manual ~1-2 años, con coach-IA ~6-10 meses. TOP-5% — manual ~3 años, con IA ~1.5-2 años. TOP-1% — la IA NO lo comprime: exige miles de horas en el borde y el salto del 10.º al 1.er puesto cuesta desproporcionadamente más que llegar al 10.º. La IA convierte "aprender a HACERLO" (años) en "aprender a DIRIGIRLO y MEDIRLO" (semanas para las bases); el techo lo pone el juicio humano entrenado con repeticiones reales, no la herramienta.',
+};
