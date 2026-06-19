@@ -249,8 +249,8 @@ function bloquePC(semana) {
 // La 1ª semana ya NO tiene jueves → la 1ª lección de Automate (cap 0 "Introduction") se
 // recupera en el último día (igual que Lex cap 12 y PyTut §12). 12 sem · 82 días · 12 domingos.
 const WD = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-const START = new Date('2026-06-19T12:00:00'); // v4: arranque vie 19-jun (todo inicia 19-jun)
-const TOTAL = 82; // 3 (vie→dom) + 11*7 + 2 → d82 recoge la 70ª A-unit + Lex cap 12 + PyTut §12 + Automate cap 0
+const START = new Date('2026-06-20T12:00:00'); // v5: arranque sáb 20-jun (problema el 19; todo corre +1)
+const TOTAL = 82; // sem 1 corta (sáb→dom = 2 días) + 11*7 + 3 → d82 recoge la 70ª A-unit + Lex cap 12 + PyTut §12 + Automate cap 0
 
 const aUnits = buildAUnits();
 let aIdx = 0;
@@ -259,7 +259,7 @@ for (let d = 1; d <= TOTAL; d++) {
   const date = new Date(START.getTime() + (d - 1) * 86400000);
   const fecha = date.toISOString().slice(0, 10);
   const wd = WD[date.getDay()];
-  const semana = d <= 3 ? 1 : Math.min(2 + Math.floor((d - 4) / 7), 12); // v4: sem 1 = vie→dom (3 días); sem 2+ = lun→dom (d81-82 se etiquetan sem 12)
+  const semana = d <= 2 ? 1 : Math.min(2 + Math.floor((d - 3) / 7), 12); // v5: sem 1 = sáb→dom (2 días); sem 2+ = lun→dom. 11 miércoles regulares → Lex caps 1-11; cap 12 al último día
   const faseId = semana <= 8 ? 'f0' : 'f1';
   const fase = faseId === 'f0' ? 'F0 · La Escuela de Anthropic' : 'F1 · Código: Python + terminal + Git';
   const bloques = [];
