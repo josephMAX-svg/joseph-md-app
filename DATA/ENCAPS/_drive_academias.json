@@ -1,0 +1,29 @@
+{
+  "_meta": { "fuente": "Google Drive · Compartido conmigo · SERUMS 2026 II (owner innovamed005)", "verificado": "2026-06-19", "nota": "Qx MEDIC y THEOMED se repiten (ya verificados en sus plataformas). Estas 3 academias son fuentes de RESPALDO para temas sin video en QX/Theomed + simulacros y normativas MINSA extra." },
+  "academias": [
+    {
+      "nombre": "DR LOPEZ",
+      "folderId": "1na0lmY_BY9naLlcAzgqSBXR7T-kPUBKv",
+      "url": "https://drive.google.com/drive/folders/1na0lmY_BY9naLlcAzgqSBXR7T-kPUBKv",
+      "estructura": ["🎬 Videoclases", "🎯 Compendio", "📅 Cronograma", "📈 Normativas (fichas MINSA)", "📝 Simulacros", "😬 Kahoot"],
+      "archivos": ["Sesión Introductoria.mp4", "Sesión Introductoria.pdf", "Registro de Actualización.docx"],
+      "valor": "La más completa de respaldo: tiene Videoclases + Normativas MINSA + Simulacros + Compendio. Primera opción si QX/Theomed no cubre un tema."
+    },
+    {
+      "nombre": "GALENO MEDIC",
+      "folderId": "1_hSoU8ZuLBCnq8VpWkPi6b7_ryUPxoUk",
+      "url": "https://drive.google.com/drive/folders/1_hSoU8ZuLBCnq8VpWkPi6b7_ryUPxoUk",
+      "estructura": ["🏛️✨ Perlitas Galeno (high-yield)", "🏛️🎥 Videoclases", "🏛️📅 Cronograma", "🏛️🤝 Tutoría General"],
+      "archivos": ["Introducción al curso.mp4", "Registro de Actualización.docx"],
+      "valor": "Videoclases + 'Perlitas' (resúmenes de alto rendimiento). Buena para repaso rápido y 2ª opinión de un tema."
+    },
+    {
+      "nombre": "VILLAMEDIC",
+      "folderId": "1ovJbxq1Bw_Jub6vPK-K1nv6Nc_ovh79P",
+      "url": "https://drive.google.com/drive/folders/1ovJbxq1Bw_Jub6vPK-K1nv6Nc_ovh79P",
+      "estructura": ["Fase 1: Clases en vivo", "Simulacros", "Cronograma junio-julio.pdf"],
+      "archivos": ["Tutoria de Bienvenida.mp4"],
+      "valor": "Clases en vivo + Simulacros extra. Sumar sus simulacros al banco de ENCAPS."
+    }
+  ]
+}

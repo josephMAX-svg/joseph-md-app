@@ -1,210 +1,2148 @@
 [
  {
-  "u": "https://notebooklm.google",
+  "u": "https://www.anthropic.com/learn",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/aiFirstTools.ts"
+   "src/lib/synapseData.ts"
   ]
  },
  {
-  "u": "https://apps.ankiweb.net",
+  "u": "https://anthropic.skilljar.com/claude-101",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/aiFirstTools.ts"
+   "src/lib/synapseData.ts"
   ]
  },
  {
-  "u": "https://claude.ai",
+  "u": "https://anthropic.skilljar.com/ai-fluency-framework-foundations",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.anthropic.com/engineering/building-effective-agents",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/watch?v=zjkBMFhNj_g",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/watch?v=7xTGNNLPyMI",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://cs50.harvard.edu/python/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://automatetheboringstuff.com/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://docs.python.org/3/tutorial/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://git-scm.com/book/en/v2",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://missing.csail.mit.edu/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://cs50.harvard.edu/x/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.kaggle.com/learn",
+  "status": 404,
+  "cls": "DEAD",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://wesmckinney.com/book/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://jakevdp.github.io/PythonDataScienceHandbook/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://sqlbolt.com/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.edx.org/learn/relational-databases/stanford-university-databases-relational-databases-and-sql",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://probabilitybook.net",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/playlist?list=PLZHQObOWTQDMsr9K-rj53DwVRMYO3t5Yr",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://introtodeeplearning.com/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://course.fast.ai/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/playlist?list=PLAqhIrjkxbuWI23v9cThsA9GvCAUhRvKZ",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://cs50.harvard.edu/ai/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://github.com/karpathy/nanochat",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://cs336.stanford.edu/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://github.com/rasbt/LLMs-from-scratch",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://transformer-circuits.pub/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://github.com/anthropics/claude-cookbooks/tree/main/patterns/agents",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://hamel.dev/blog/posts/evals-faq/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://github.com/chiphuyen/aie-book",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://github.com/DataTalksClub/llm-zoomcamp",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://anthropic.skilljar.com/claude-with-the-anthropic-api",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://github.com/anthropics/prompt-eng-interactive-tutorial",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts",
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://github.com/anthropics/courses",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://anthropic.skilljar.com/introduction-to-model-context-protocol",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://anthropic.skilljar.com/model-context-protocol-advanced-topics",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://anthropic.skilljar.com/claude-code-in-action",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://anthropic.skilljar.com/introduction-to-agent-skills",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://code.claude.com/docs/en/agent-sdk/overview",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://platform.claude.com/docs/en/docs/test-and-evaluate/develop-tests",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://huggingface.co/learn/agents-course/unit0/introduction",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://huggingface.co/learn/llm-course/chapter1/1",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.deeplearning.ai/short-courses/mcp-build-rich-context-ai-apps-with-anthropic/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.deeplearning.ai/short-courses/building-toward-computer-use-with-anthropic/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.deeplearning.ai/short-courses/claude-code-a-highly-agentic-coding-assistant/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.deeplearning.ai/short-courses/ai-agents-in-langgraph/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://academy.langchain.com/courses/intro-to-langgraph",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://docs.n8n.io/courses/level-one/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://docs.n8n.io/advanced-ai/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://github.com/openai/openai-cookbook",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://huyenchip.com/books/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.manning.com/books/build-a-large-language-model-from-scratch",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://magazine.sebastianraschka.com/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://owasp.org/www-project-top-ten/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://genai.owasp.org/llm-top-10/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://portswigger.net/web-security",
+  "status": 404,
+  "cls": "DEAD",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://portswigger.net/web-security/llm-attacks",
+  "status": 404,
+  "cls": "DEAD",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://simonwillison.net/series/prompt-injection/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/playlist?list=PLMF2PpA06Sb26oYT-dfNOt3Y4wwoLAho0",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://tryhackme.com/paths",
+  "status": 429,
+  "cls": "BLOCKED",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://academy.hackthebox.com/path/preview/ai-red-teamer",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.anthropic.com/research/many-shot-jailbreaking",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.anthropic.com/research/constitutional-classifiers",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.anthropic.com/news/anthropics-responsible-scaling-policy",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://rlhfbook.com/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://github.com/callummcdougall/ARENA_3.0",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://fullstackdeeplearning.com/course/2022/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://cs50.harvard.edu/web/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/playlist?list=PLoROMvodv4rMiGQp3WXShtMGgzqpfVfbU",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/playlist?list=PLoROMvodv4rOSH4v6133s9LFPRHjEmbmJ",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/playlist?list=PLoROMvodv4rNiJRchCzutFw5ItR_Z27CM",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.coursera.org/specializations/machine-learning-introduction",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://alignment.anthropic.com/2025/anthropic-fellows-program-2026/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://lexfridman.com/dario-amodei",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.dwarkesh.com/p/dario-amodei",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://lexfridman.com/andrej-karpathy",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.dwarkesh.com/p/sholto-douglas-trenton-bricken",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.dwarkesh.com/p/demis-hassabis",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.latent.space/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://podcasts.apple.com/us/podcast/no-priors-artificial-intelligence-technology-startups/id1668002688",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/@anthropic-ai",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/@Deeplearningai",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.deeplearning.ai/the-batch/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://realpython.com/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://teachyourselfcs.com/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.composingprograms.com/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://pages.cs.wisc.edu/~remzi/OSTEP/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.nand2tetris.org/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://csapp.cs.cmu.edu/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://gaia.cs.umass.edu/kurose_ross/index.php",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://cs144.github.io/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.algorist.com/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://spinningup.openai.com/en/latest/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://arxiv.org/abs/1706.03762",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://github.com/harvardnlp/annotated-transformer",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://lilianweng.github.io/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://github.com/stas00/ml-engineering",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.alignmentforum.org/posts/jP9KDyMkchuv6tHwm/how-to-become-a-mechanistic-interpretability-researcher",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://transformer-circuits.pub/2025/attribution-graphs/biology.html",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://bluedot.org/courses/alignment",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://huggingface.co/learn/deep-rl-course/unit0/introduction",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://roadmap.sh/backend",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://fastapi.tiangolo.com/tutorial/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.django-rest-framework.org/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.postgresql.org/docs/current/tutorial.html",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://cs50.harvard.edu/sql/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://docs.pytest.org/en/stable/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://testdriven.io/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://arjancodes.com/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://web.mit.edu/6.031/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://docs.docker.com/get-started/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://12factor.net/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://github.com/donnemartin/system-design-primer",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://bytebytego.com/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://dataintensive.net/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.educative.io/courses/grokking-the-system-design-interview",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://roadmap.sh/frontend",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.theodinproject.com/paths/full-stack-javascript",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://web.dev/learn/css",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.kevinpowell.co/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.joshwcomeau.com/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://developer.mozilla.org/en-US/docs/Learn_web_development",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.freecodecamp.org/learn/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://fullstackopen.com/en/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://nextjs.org/learn",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.refactoringui.com/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://lawsofux.com/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://web.dev/learn/accessibility",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.coursera.org/professional-certificates/google-ux-design",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://vercel.com/docs/getting-started-with-vercel",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://code.claude.com/docs/en/overview",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://code.claude.com/docs/en/best-practices",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://code.claude.com/docs/en/common-workflows",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://code.claude.com/docs/en/chrome",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://v0.app/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts",
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://docs.cursor.com/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://github.com/anthropics/anthropic-quickstarts",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.anthropic.com/engineering/writing-tools-for-agents",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://docs.github.com/en/get-started/start-your-journey/hello-world",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/How_does_the_Internet_work",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/watch?v=LCEmiRjPEtQ",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.latent.space/p/s3",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://simonwillison.net/2025/Mar/19/vibe-coding/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://newsletter.pragmaticengineer.com/p/how-ai-will-change-software-engineering",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://github.com/github/spec-kit",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.anthropic.com/research/claude-code-expertise",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.latent.space/p/ai-engineer",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/@aiDotEngineer",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.anthropic.com/engineering/multi-agent-research-system",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://huyenchip.com/2025/01/07/agents.html",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://hamel.dev/blog/posts/field-guide/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://hamel.dev/blog/posts/llm-judge/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://applied-llms.org/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://developers.openai.com/cookbook/examples/orchestrating_agents",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://github.com/humanlayer/12-factor-agents",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://arxiv.org/abs/2509.04664",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://translate.google.com/?op=websites",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/@AlexHormozi",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/user/grantcardone/videos",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.overdrive.com/media/5553495/the-10x-rule",
   "status": 403,
   "cls": "BLOCKED",
   "files": [
-   "src/lib/aiFirstTools.ts"
+   "src/lib/aurumData.ts"
   ]
  },
  {
-  "u": "https://gemini.google.com",
+  "u": "https://archive.org/details/tosellishumansur0000pink_r0s8",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/aiFirstTools.ts"
+   "src/lib/aurumData.ts"
   ]
  },
  {
-  "u": "https://www.amboss.com/us/usmle",
+  "u": "https://blog.hubspot.com/sales/the-psychology-of-selling",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/aiFirstTools.ts"
+   "src/lib/aurumData.ts"
   ]
  },
  {
-  "u": "https://blog.promir.es/recta-final-mir-2026/",
+  "u": "https://www.youtube.com/channel/UCk7jHqdlFFDBhC1QIFqi54w",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/aiFirstTools.ts"
+   "src/lib/aurumData.ts"
   ]
  },
  {
-  "u": "https://www.openevidence.com",
+  "u": "https://automotivehalloffame.org/honoree/joe-girard/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/watch?v=i0B4v-9fLQc",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/@BrianTracyOfficial",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/watch?v=2gBboDdtTlc",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://archive.org/details/spinselling0000rack",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.huthwaiteinternational.com/spin-methodology",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/watch?v=9IXcrP46BDk",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/watch?v=rgp6f04Bw3E",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.acquisition.com/audiobooks",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/watch?v=buKC5g5uK9c",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/watch?v=cFdCzN7RYbw",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://hbr.org/2001/10/harnessing-the-science-of-persuasion",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://soundcloud.com/random-house-audiobooks/never-split-the-difference-by-chris-voss-and-tahl-raz",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.blackswanltd.com/never-split-the-difference",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://podcasts.apple.com/is/podcast/sales-gravy-jeb-blount/id219558725",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/watch?v=BJ9ZRwUjAkM",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/@soyjosuepena",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://predictablerevenue.com/about/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.goodreads.com/book/show/22551047-the-sales-acceleration-formula",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/channel/UCgorjMy3g2iXL0HYzufMOJQ",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/influenceatwork",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/watch?v=1UlDa-OJYxE",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/playlist?list=PLuvjGvhl6aW_9Pf2Q4p04e2vrwEAGMU44",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/playlist?list=PL_3ZK0x5nFYBNLNoUnm0FxZCUyqPmXccf",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.acquisition.com/podcast",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://fs.blog/knowledge-project-podcast/robert-cialdini/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.blackswanltd.com/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.texasmonthly.com/culture/selling-opportunity-book-mary-kay-empire/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.thequota.co/articles/the-story-of-zig-ziglar-the-quintessential-american-salesman",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://archive.org/details/BobSommersRobertCialdini-Influence_thePsychologyofPersuasion",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://archive.org/details/presuasionrevolu0000cial",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.everand.com/audiobook/769309848/The-Challenger-Sale-Taking-Control-of-the-Customer-Conversation",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/results?search_query=way+of+the+wolf+jordan+belfort+audiobook",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.gsb.stanford.edu/insights/think-fast-talk-smart-podcast",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.ted.com/talks/william_ury_the_walk_from_no_to_yes",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://archive.org/details/gettingtoyesnego0000fish",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.aprildunford.com/post/an-introduction-to-positioning",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://brianbalfour.com/four-fits-growth-framework",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://brianbalfour.com/essays",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://andrewchen.com/list-of-essays/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.demandcurve.com/growth/intro",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://medium.com/growthhackers/finding-your-north-star-metric-fc1c1f71cbcb",
   "status": 403,
   "cls": "BLOCKED",
   "files": [
-   "src/lib/aiFirstTools.ts"
+   "src/lib/aurumData.ts"
   ]
  },
  {
-  "u": "https://dermnetnz.org",
+  "u": "https://leananalyticsbook.com/",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/aiFirstTools.ts"
+   "src/lib/aurumData.ts"
   ]
  },
  {
-  "u": "https://dermoscopedia.org",
+  "u": "https://www.duostrategyla.com/ideas/how-to-write-high-converting-ad-copy-the-complete-5-stage-framework-with-examples",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/aiFirstTools.ts"
+   "src/lib/aurumData.ts"
   ]
  },
  {
-  "u": "https://www.isic-archive.com",
+  "u": "https://www.lennysnewsletter.com/t/growth?sort=top",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/aiFirstTools.ts"
+   "src/lib/aurumData.ts"
   ]
  },
  {
-  "u": "https://www.visualdx.com",
+  "u": "https://www.facebook.com/business/learn/courses",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/aiFirstTools.ts"
+   "src/lib/aurumData.ts"
   ]
  },
  {
-  "u": "https://elicit.com",
+  "u": "https://www.facebook.com/business/learn/certification/exams/100-101-exam",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/aiFirstTools.ts"
+   "src/lib/aurumData.ts"
   ]
  },
  {
-  "u": "https://www.rayyan.ai",
+  "u": "https://skillshop.withgoogle.com/googleads/",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/aiFirstTools.ts"
+   "src/lib/aurumData.ts"
   ]
  },
  {
-  "u": "https://www.researchrabbit.ai",
+  "u": "https://ads.tiktok.com/business/academy",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/aiFirstTools.ts"
+   "src/lib/aurumData.ts"
   ]
  },
  {
-  "u": "https://www.connectedpapers.com",
+  "u": "https://ads.tiktok.com/business/creativecenter/inspiration/topads/pc/en",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/aiFirstTools.ts"
+   "src/lib/aurumData.ts"
   ]
  },
  {
-  "u": "https://notebooklm.google.com",
+  "u": "https://www.demandcurve.com/growth/run-ads",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/aiFirstTools.ts"
+   "src/lib/aurumData.ts"
   ]
  },
  {
-  "u": "https://www.covidence.org",
+  "u": "https://www.demandcurve.com/growth/make-ads",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/aiFirstTools.ts"
+   "src/lib/aurumData.ts"
   ]
  },
  {
-  "u": "https://www.prisma-statement.org",
+  "u": "https://www.youtube.com/channel/UC5Dv8i_vH5M9rB3HOZDCkng",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/aiFirstTools.ts"
+   "src/lib/aurumData.ts"
   ]
  },
  {
-  "u": "https://www.whoop.com",
+  "u": "https://www.youtube.com/savannahsanchez",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/aiFirstTools.ts"
+   "src/lib/aurumData.ts"
   ]
  },
  {
-  "u": "https://ouraring.com/blog/oura-advisor/",
+  "u": "https://www.youtube.com/surfsideppc",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/aiFirstTools.ts"
+   "src/lib/aurumData.ts"
   ]
  },
  {
-  "u": "https://macrofactor.com/",
+  "u": "https://www.julian.com/guide/growth/landing-pages",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/aiFirstTools.ts"
+   "src/lib/aurumData.ts"
   ]
  },
  {
-  "u": "https://www.myfitnesspal.com",
+  "u": "https://www.julian.com/guide/growth/intro",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/aiFirstTools.ts"
+   "src/lib/aurumData.ts"
   ]
  },
  {
-  "u": "https://fathom.video/",
+  "u": "https://dotcomsecrets.com/",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/aiFirstTools.ts"
+   "src/lib/aurumData.ts"
   ]
  },
  {
-  "u": "https://www.hubspot.com/products/artificial-intelligence",
+  "u": "https://marketingexamples.com/landing-page",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/aiFirstTools.ts"
+   "src/lib/aurumData.ts"
   ]
  },
  {
-  "u": "https://n8n.io",
+  "u": "https://marketingexamples.com/copywriting",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/aiFirstTools.ts"
+   "src/lib/aurumData.ts"
   ]
  },
  {
-  "u": "https://www.make.com",
-  "status": 403,
-  "cls": "BLOCKED",
+  "u": "https://copyhackers.com/copywriting-tutorials/",
+  "status": 200,
+  "cls": "OK",
   "files": [
-   "src/lib/aiFirstTools.ts"
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://cxl.com/blog/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://unbounce.com/landing-page-articles/landing-page-best-practices/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://university.webflow.com/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.framer.com/academy/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://carrd.co/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.nngroup.com/articles/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://growth.design/case-studies",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://learnprompting.org/docs/introduction",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.promptingguide.ai/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://support.anthropic.com/en/articles/9487310-what-are-artifacts-and-how-do-i-use-them",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://gemini.google/overview/image-generation/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://aistudio.google.com/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.arcads.ai/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.capcut.com/tools/ai-video-generator",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.lummi.ai/blog",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.julian.com/guide/write/intro",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.startupschool.org/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.ycombinator.com/library",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/watch?v=z1iF1c8w5Lg",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://academy.hubspot.com/courses",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://academy.hubspot.com/courses/inbound-sales",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.gsb.stanford.edu/insights",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://knowledge.wharton.upenn.edu/category/marketing/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://insight.kellogg.northwestern.edu/browse/topic/marketing",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://review.firstround.com/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/channel/UCe4iDO6MnwLTGPf0th3VlfA",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://bienpensado.com/blog/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/@Bienpensado/videos",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://vilmanunez.com/blog/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/channel/UCB8h5BJZmSi3k15t8FCPyvA",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
+  ]
+ },
+ {
+  "u": "https://www.youtube.com/channel/UCctXZhXmG-kf3tlIXgVZUlw",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/aurumData.ts"
   ]
  }
 ]
