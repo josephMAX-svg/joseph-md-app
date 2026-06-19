@@ -10,6 +10,7 @@ import {
   PRIORIDAD_COLOR,
 } from '../../lib/dermaData';
 import DermaTodayPlan from './DermaTodayPlan';
+import AIFirstPanel from './AIFirstPanel';
 import {
   DERMA_LIBROS_ESTETICA, DERMA_VIDEOS, DERMA_QBANKS_ACCESS, DERMA_CASES_ACCESS,
   DERMA_QBANKLY_RESUMEN, srcBook, srcCap, srcMm, srcQa, srcCases,
@@ -183,6 +184,8 @@ export default function DermaHub({ variant = 'mobile' }: { variant?: 'mobile' | 
             </View>
           </View>
         </GradientHero>
+
+        <AIFirstPanel segmento="derma" accent={PURPLE} />
 
         {/* SUB-PESTAÑAS: plan día-a-día · fuentes · cerebro clínico */}
         <View style={{ flexDirection: 'row', gap: Spacing.sm, marginBottom: Spacing.lg, flexWrap: 'wrap' }}>

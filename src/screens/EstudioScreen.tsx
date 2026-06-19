@@ -39,6 +39,7 @@ import EncapsPlanView from '../components/EncapsPlanView';
 import EncapsWebView from '../components/EncapsWebView';
 import UsmleHub from '../components/study/UsmleHub';
 import MirHub from '../components/study/MirHub';
+import AIFirstPanel from '../components/study/AIFirstPanel';
 
 // ─── Data Structures ───
 interface Bank {
@@ -404,6 +405,8 @@ export default function EstudioScreen() {
             </TouchableOpacity>
           ))}
         </View>
+
+        <AIFirstPanel segmento="medico" />
 
         {/* ─── EEUU TAB → USMLE Hub (Plan ROI + Cerebro Palmerton) ─── */}
         {activeTab === 'EEUU' && <UsmleHub />}

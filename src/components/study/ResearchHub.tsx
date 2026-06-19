@@ -13,6 +13,7 @@ import { RESEARCH_RECURSOS_TOP } from '../../lib/researchDailyPlan';
 import ResearchTodayPlan from './ResearchTodayPlan';
 import ResearchAgenticSystem from './ResearchAgenticSystem';
 import ResearchLinesExplorer from './ResearchLinesExplorer';
+import AIFirstPanel from './AIFirstPanel';
 
 /**
  * ResearchHub — sección Research (camino a Mayo Clinic). Rediseñada con el MISMO molde que
@@ -254,6 +255,8 @@ export default function ResearchHub({ variant = 'mobile' }: { variant?: 'mobile'
             </View>
           </View>
         </GradientHero>
+
+        <AIFirstPanel segmento="research" accent={TEAL} />
 
         {/* SUB-NAV (estilo USMLE/MIR) */}
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm, marginBottom: Spacing.lg }}>

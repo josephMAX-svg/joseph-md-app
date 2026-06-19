@@ -9,6 +9,7 @@ import { GradientHero, RingStat, BrandTile } from './visuals';
 import PulsoCommandCenter from './PulsoCommandCenter';
 import StudyPulsoHub from '../study/StudyPulsoHub';
 import AurumHub from './AurumHub';
+import AIFirstPanel from '../study/AIFirstPanel';
 import BrandHorario from './BrandHorario';
 import TerrenosLeadTracker from './TerrenosLeadTracker';
 import {
@@ -103,6 +104,7 @@ export default function EmpresaHub({ variant = 'mobile' }: { variant?: 'mobile' 
       <ObsMarcaLink company={company} />
 
       {/* Contenido por empresa */}
+      {company === 'pulso' && <AIFirstPanel segmento="ops" />}
       {company === 'pulso' && <PulsoCommandCenter onOpenBrand={openBrand} />}
 
       {company === 'liviano' && (
