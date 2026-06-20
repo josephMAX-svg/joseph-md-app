@@ -14,13 +14,14 @@ import {
 import EncapsWebView from './EncapsWebView';
 import { encapsObsByTitle, encapsMatch } from '../lib/obsidianEncaps';
 import { ANKIWEB } from '../lib/ankiLinks';
+import { ENCAPS_FICHAS_MINSA, ENCAPS_ACADEMIAS_RESPALDO, ENCAPS_THEOMED_SIMULACROS, ENCAPS_QX_ACCESOS, ENCAPS_FUENTES_META } from '../lib/encapsFuentes';
 
 // Google Calendar del usuario (día) embebido — sincronización minuto a minuto.
 // Requiere sesión Google del navegador (calendario privado). ctz Lima.
 const GCAL_EMBED_URL =
   'https://calendar.google.com/calendar/embed?src=josephsototocas%40gmail.com&ctz=America%2FLima&mode=DAY&showTitle=0&showPrint=0&showCalendars=0&showTabs=0';
 
-type Sub = 'hoy' | 'meta' | 'sim' | 'sem' | 'horario';
+type Sub = 'hoy' | 'meta' | 'sim' | 'sem' | 'horario' | 'material';
 
 interface HorarioPaso { t: string; d: string }
 interface HorarioFuente { label: string; url?: string | null }
@@ -58,6 +59,7 @@ export default function EncapsPlanView() {
     { key: 'meta', label: '🎯 17/20' },
     { key: 'sim', label: '🔥 Sim' },
     { key: 'sem', label: '🗓️ 7d' },
+    { key: 'material', label: '📚 Material' },
   ];
 
   if (plan.loading) {
@@ -134,6 +136,53 @@ export default function EncapsPlanView() {
       {sub === 'meta' && <MetaView metrics={plan.metrics} simScores={plan.simScores} simDays={plan.simDays} />}
       {sub === 'sim' && <SimView plan={plan} />}
       {sub === 'sem' && <SemView days={plan.days} dia={plan.dia} proximos={plan.proximos} metrics={plan.metrics} onOpenDay={(dn) => { plan.setDia(dn); setSub('hoy'); }} />}
+      {sub === 'material' && <MaterialView />}
+    </View>
+  );
+}
+
+// ─── MATERIAL — todo el material ENCAPS con link directo (verificado en vivo 19-jun) ───
+function MaterialView() {
+  const areas = [...new Set(ENCAPS_FICHAS_MINSA.map((f) => f.area))];
+  const [openArea, setOpenArea] = useState<string | null>(null);
+  const H = (t: string) => <Text style={{ fontSize: FontSize.bodyLg, fontWeight: '800', color: Colors.onSurface, marginTop: Spacing.lg, marginBottom: Spacing.sm }}>{t}</Text>;
+  const Link = ({ n, url }: { n: string; url: string }) => (
+    <TouchableOpacity onPress={() => Linking.openURL(url).catch(() => {})} activeOpacity={0.7} style={{ paddingVertical: 7, borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.05)' }}>
+      <Text style={{ fontSize: FontSize.bodyMd, color: Colors.blue }} numberOfLines={2}>{n} ↗</Text>
+    </TouchableOpacity>
+  );
+  return (
+    <View>
+      <Text style={{ fontSize: FontSize.labelMd, color: Colors.muted, lineHeight: 17, marginBottom: Spacing.sm }}>
+        Material verificado EN VIVO (19-jun) con link directo — para no buscar. Cobertura 100% para ≥17/20: si falta un video en QxMedic, está en DR LOPEZ/GALENO; más simulacros en VILLAMEDIC/DR LOPEZ.
+      </Text>
+      {H('🔵 QxMedic — accesos')}
+      {ENCAPS_QX_ACCESOS.map((x, i) => <Link key={'q' + i} n={x.n} url={x.url} />)}
+      {H(`📄 Fichas técnicas del MINSA (${ENCAPS_FUENTES_META.fichasMinsa}) · QxMedic biblioteca`)}
+      {areas.map((area) => {
+        const fis = ENCAPS_FICHAS_MINSA.filter((f) => f.area === area);
+        const open = openArea === area;
+        return (
+          <View key={area} style={{ marginBottom: 6, borderWidth: 1, borderColor: 'rgba(255,255,255,0.07)', borderRadius: BorderRadius.md, padding: Spacing.sm }}>
+            <TouchableOpacity onPress={() => setOpenArea(open ? null : area)} activeOpacity={0.8} style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <Text style={{ fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface }}>{area} · {fis.length} fichas</Text>
+              <Text style={{ color: Colors.blue, fontWeight: '800' }}>{open ? '−' : '+'}</Text>
+            </TouchableOpacity>
+            {open && fis.map((f, i) => <Link key={i} n={f.titulo} url={f.url} />)}
+          </View>
+        );
+      })}
+      {H(`📝 Simulacros Theomed (${ENCAPS_THEOMED_SIMULACROS.length}) — URL exacta del cuestionario`)}
+      {ENCAPS_THEOMED_SIMULACROS.map((x, i) => <Link key={'t' + i} n={x.n} url={x.url} />)}
+      {H('🎒 Academias de respaldo (Drive) — si falta video/sim/ficha en QX/Theomed')}
+      {ENCAPS_ACADEMIAS_RESPALDO.map((a, i) => (
+        <View key={i} style={{ marginBottom: 6, borderWidth: 1, borderColor: 'rgba(255,255,255,0.07)', borderRadius: BorderRadius.md, padding: Spacing.sm }}>
+          <TouchableOpacity onPress={() => Linking.openURL(a.url).catch(() => {})} activeOpacity={0.8}>
+            <Text style={{ fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface }}>{a.nombre} — {a.tag} ↗</Text>
+          </TouchableOpacity>
+          {a.carpetas.map((c, j) => <Link key={j} n={c.n} url={c.url} />)}
+        </View>
+      ))}
     </View>
   );
 }
