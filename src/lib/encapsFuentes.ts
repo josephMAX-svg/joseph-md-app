@@ -749,6 +749,41 @@ export const ENCAPS_VIDEO_RESPALDO: Record<string, { url: string; label: string;
  }
 };
 
+// VIDEO alternativo por área (Google Drive · DR LOPEZ / GALENO) — 2ª opción a QX para CADA tema.
+// (Theomed no aloja videos de clase por tema: es PPT/PDF + post-tests, verificado en vivo.)
+export const ENCAPS_VIDEO_DRIVE: Record<string, { url: string; label: string; min: number; acad: string }> = {
+ "Salud Pública": {
+  "url": "https://drive.google.com/drive/folders/1tlyniouI5o_SOpw-LBa2IGfWgG5zpfF0",
+  "label": "🎬 Videoclases Salud Pública (DR LOPEZ · Google Drive)",
+  "min": 25,
+  "acad": "DR LOPEZ"
+ },
+ "Cuidado Integral": {
+  "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE",
+  "label": "🎬 Videoclases Cuidado Integral (DR LOPEZ · Google Drive)",
+  "min": 25,
+  "acad": "DR LOPEZ"
+ },
+ "Ética e Interculturalidad": {
+  "url": "https://drive.google.com/drive/folders/1srnoHI0LavKzi1Vzy8c9Mt5f5WLRqsWu",
+  "label": "🎬 Videoclases Ética e Interculturalidad (DR LOPEZ · Google Drive)",
+  "min": 25,
+  "acad": "DR LOPEZ"
+ },
+ "Investigación": {
+  "url": "https://drive.google.com/drive/folders/1RCpVqy_1yF0OBU-OUegTOzHjaZS6FAX8",
+  "label": "🎬 Videoclases Investigación (GALENO · Google Drive)",
+  "min": 25,
+  "acad": "GALENO"
+ },
+ "Gestión de Servicios": {
+  "url": "https://drive.google.com/drive/folders/1RCpVqy_1yF0OBU-OUegTOzHjaZS6FAX8",
+  "label": "🎬 Videoclases Gestión de Servicios (GALENO · Google Drive)",
+  "min": 25,
+  "acad": "GALENO"
+ }
+};
+
 export const ENCAPS_ACADEMIAS_RESPALDO: AcademiaRespaldo[] = [
  {
   "nombre": "DR LOPEZ",

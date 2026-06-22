@@ -90,6 +90,13 @@ const VIDEO_FB = { 'Salud Pública': F('1tlyniouI5o_SOpw-LBa2IGfWgG5zpfF0'), 'Cu
 const SIN_VIDEO = ['III-3', 'I-7', 'I-8', 'I-9', 'II-13', 'IV-3+IV-5', 'IV-4', 'IV-6+IV-7', 'III-4+III-7'];
 const videoRespaldo = {};
 SIN_VIDEO.forEach(cod => { const area = AREA_PREF[cod.match(/^[IVX]+/)[0]]; videoRespaldo[cod] = { url: VIDEO_FB[area], label: '🎬 Videoclase de respaldo (' + (area === 'Investigación' || area === 'Gestión de Servicios' ? 'GALENO' : 'DR LOPEZ') + ') — QxMedic no tiene video de este tema', min: 25 }; });
+// VIDEO alternativo (Google Drive · DR LOPEZ áreas I/II/III, GALENO áreas IV/V) — 2ª opción a QX para CADA tema.
+// Theomed NO tiene videos de clase por tema (verificado 22-jun: carpetas=PDF, sesiones=PPT/PDF, sin Vimeo/YouTube).
+const videoDriveArea = {};
+Object.entries(AREA_PREF).forEach(([pref, area]) => {
+  const acad = (area === 'Investigación' || area === 'Gestión de Servicios') ? 'GALENO' : 'DR LOPEZ';
+  videoDriveArea[area] = { url: VIDEO_FB[area], label: `🎬 Videoclases ${area} (${acad} · Google Drive)`, min: 25, acad };
+});
 
 const folder = (id) => 'https://drive.google.com/drive/folders/' + id;
 const file = (id) => 'https://drive.google.com/file/d/' + id + '/view';
@@ -166,6 +173,10 @@ export const ENCAPS_FICHAS_POR_TEMA: Record<string, FichaTema[]> = ${JSON.string
 
 // temas SIN video en QxMedic → videoclase de respaldo (DR LOPEZ / GALENO)
 export const ENCAPS_VIDEO_RESPALDO: Record<string, { url: string; label: string; min: number }> = ${JSON.stringify(videoRespaldo, null, 1)};
+
+// VIDEO alternativo por área (Google Drive · DR LOPEZ / GALENO) — 2ª opción a QX para CADA tema.
+// (Theomed no aloja videos de clase por tema: es PPT/PDF + post-tests, verificado en vivo.)
+export const ENCAPS_VIDEO_DRIVE: Record<string, { url: string; label: string; min: number; acad: string }> = ${JSON.stringify(videoDriveArea, null, 1)};
 
 export const ENCAPS_ACADEMIAS_RESPALDO: AcademiaRespaldo[] = ${JSON.stringify(academias, null, 1)};
 

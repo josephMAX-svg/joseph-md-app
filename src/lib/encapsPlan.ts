@@ -4,7 +4,7 @@
 // Escalable: examen = 'ENCAPS' | 'MIR' | 'USMLE'. Hoy sólo ENCAPS (regla #7).
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { supabase } from './supabase';
-import { ENCAPS_FICHAS_POR_TEMA, ENCAPS_VIDEO_RESPALDO, ENCAPS_THEOMED_AREA, ENCAPS_AREA_PREFIJO } from './encapsFuentes';
+import { ENCAPS_FICHAS_POR_TEMA, ENCAPS_VIDEO_DRIVE, ENCAPS_THEOMED_AREA, ENCAPS_AREA_PREFIJO } from './encapsFuentes';
 
 // ── D1 por examen (para calcular el día actual 1..71) ──
 export const STUDY_D1: Record<string, string> = {
@@ -233,14 +233,20 @@ export function itemsForDay(day: StudyScheduleDay, focusByCode: Record<string, n
     ph = eh; pm = em;
     return h;
   };
-  // Video de RESPALDO (Drive DR LOPEZ/GALENO) para temas SIN video en QxMedic → "Cola QX de hoy"
-  if (day.codigo && ENCAPS_VIDEO_RESPALDO[day.codigo]) {
-    const vr = ENCAPS_VIDEO_RESPALDO[day.codigo];
-    items.push({
-      key: `D${N}:vresp`, kind: 'video', label: vr.label,
-      detail: 'Respaldo · QX no tiene video de este tema', url: vr.url,
-      source: 'Video respaldo (Drive)', dur: vr.min, hora: slot(vr.min),
-    });
+  // VIDEO alternativo Google Drive (DR LOPEZ áreas I/II/III · GALENO áreas IV/V) → "Cola QX de hoy":
+  // 2ª opción a QX para CADA tema (y respaldo principal en los temas sin video QX). Theomed NO aloja
+  // videos de clase por tema (verificado: carpetas=PDF, sesiones=PPT/PDF + post-tests, sin Vimeo/YouTube).
+  if (day.codigo && day.tipo === 'deep_prime') {
+    const areaV = ENCAPS_AREA_PREFIJO[(day.codigo.match(/^[IVX]+/) || [''])[0]];
+    const vd = areaV ? ENCAPS_VIDEO_DRIVE[areaV] : undefined;
+    if (vd) {
+      const sinQX = (day.videos || []).filter(v => v.url).length === 0;
+      items.push({
+        key: `D${N}:vdrive`, kind: 'video', label: vd.label,
+        detail: sinQX ? 'QX no tiene video de este tema → usa este' : `2ª opción · alternativa a QX (${vd.acad})`,
+        url: vd.url, source: `Video Drive · ${vd.acad}`, dur: vd.min, hora: slot(vd.min),
+      });
+    }
   }
   // Fichas técnicas MINSA de QxMedic (Biblioteca Fundamentos Teóricos) — MATERIAL QX, con hora
   const _fichas = day.codigo ? (ENCAPS_FICHAS_POR_TEMA[day.codigo] || []) : [];
