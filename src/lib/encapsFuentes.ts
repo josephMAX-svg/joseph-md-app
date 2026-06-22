@@ -750,7 +750,6 @@ export const ENCAPS_VIDEO_RESPALDO: Record<string, { url: string; label: string;
 };
 
 // VIDEO alternativo por área (Google Drive · DR LOPEZ / GALENO) — 2ª opción a QX para CADA tema.
-// (Theomed no aloja videos de clase por tema: es PPT/PDF + post-tests, verificado en vivo.)
 export const ENCAPS_VIDEO_DRIVE: Record<string, { url: string; label: string; min: number; acad: string }> = {
  "Salud Pública": {
   "url": "https://drive.google.com/drive/folders/1tlyniouI5o_SOpw-LBa2IGfWgG5zpfF0",
@@ -781,6 +780,362 @@ export const ENCAPS_VIDEO_DRIVE: Record<string, { url: string; label: string; mi
   "label": "🎬 Videoclases Gestión de Servicios (GALENO · Google Drive)",
   "min": 25,
   "acad": "GALENO"
+ }
+};
+
+// Theomed VIDEOS GRABADOS (Vimeo) por área — 3ª opción de video. Cada sesión tiene su PDF. Los videos
+// están embebidos en Theomed (Vimeo dominio-restringido) → se abren vía la sección (envivoUrl/asincUrl).
+export type TheomedSesion = { tipo: string; label: string; fecha: string; pdf: string; vimeo: string };
+export const ENCAPS_THEOMED_VIDEOS: Record<string, { envivoUrl: string; asincUrl: string; nVideos: number; sesiones: TheomedSesion[] }> = {
+ "Cuidado Integral": {
+  "envivoUrl": "https://campus.academiatheomed.com/course/section.php?id=2421",
+  "asincUrl": "https://campus.academiatheomed.com/course/section.php?id=2276",
+  "sesiones": [
+   {
+    "tipo": "en vivo",
+    "label": "SESIÓN N° 1",
+    "fecha": "19/05/26",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=20323",
+    "vimeo": "1194571656"
+   },
+   {
+    "tipo": "en vivo",
+    "label": "SESIÓN N° 2",
+    "fecha": "20/05/26",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=20337",
+    "vimeo": "1194571625"
+   },
+   {
+    "tipo": "en vivo",
+    "label": "SESIÓN N° 3",
+    "fecha": "21/05/26",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=20355",
+    "vimeo": "1194779392"
+   },
+   {
+    "tipo": "en vivo",
+    "label": "SESIÓN N° 4",
+    "fecha": "01/06/26",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=20676",
+    "vimeo": "1198177324"
+   },
+   {
+    "tipo": "en vivo",
+    "label": "SESIÓN N° 5",
+    "fecha": "03/06/26",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=21125",
+    "vimeo": "1198484003"
+   },
+   {
+    "tipo": "en vivo",
+    "label": "SESIÓN N° 6",
+    "fecha": "08/06/26",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=22403",
+    "vimeo": "1199820952"
+   },
+   {
+    "tipo": "en vivo",
+    "label": "SESIÓN N° 7",
+    "fecha": "12/06/26",
+    "pdf": "",
+    "vimeo": "1201037935"
+   },
+   {
+    "tipo": "asinc",
+    "label": "SESIÓN N° 1",
+    "fecha": "",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=20200",
+    "vimeo": "1194546322"
+   },
+   {
+    "tipo": "asinc",
+    "label": "SESIÓN N° 2",
+    "fecha": "",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=20240",
+    "vimeo": "1192695911"
+   },
+   {
+    "tipo": "asinc",
+    "label": "SESIÓN N° 3",
+    "fecha": "",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=20268",
+    "vimeo": "1192763838"
+   },
+   {
+    "tipo": "asinc",
+    "label": "SESIÓN N° 4",
+    "fecha": "",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=20340",
+    "vimeo": "1194571402"
+   },
+   {
+    "tipo": "asinc",
+    "label": "SESIÓN N° 5",
+    "fecha": "",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=20339",
+    "vimeo": "1194778416"
+   },
+   {
+    "tipo": "asinc",
+    "label": "SESIÓN N° 6",
+    "fecha": "",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=20487",
+    "vimeo": "1195227088"
+   },
+   {
+    "tipo": "asinc",
+    "label": "SESIÓN N° 7",
+    "fecha": "",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=20565",
+    "vimeo": "1196227774"
+   },
+   {
+    "tipo": "asinc",
+    "label": "SESIÓN N° 8",
+    "fecha": "",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=20566",
+    "vimeo": "1196897971"
+   }
+  ],
+  "nVideos": 15
+ },
+ "Salud Pública": {
+  "envivoUrl": "https://campus.academiatheomed.com/course/section.php?id=2420",
+  "asincUrl": "https://campus.academiatheomed.com/course/section.php?id=2419",
+  "sesiones": [
+   {
+    "tipo": "asinc",
+    "label": "SESIÓN N° 1",
+    "fecha": "",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=20212",
+    "vimeo": "1194433471"
+   },
+   {
+    "tipo": "asinc",
+    "label": "SESIÓN N° 2",
+    "fecha": "",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=20262",
+    "vimeo": "1192644790"
+   },
+   {
+    "tipo": "asinc",
+    "label": "SESIÓN N° 3",
+    "fecha": "",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=20379",
+    "vimeo": "1194173568"
+   },
+   {
+    "tipo": "asinc",
+    "label": "SESIÓN N° 4",
+    "fecha": "",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=20380",
+    "vimeo": "1194859549"
+   },
+   {
+    "tipo": "asinc",
+    "label": "SESIÓN N° 5",
+    "fecha": "",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=20314",
+    "vimeo": "1196904560"
+   },
+   {
+    "tipo": "asinc",
+    "label": "SESIÓN N° 6",
+    "fecha": "",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=20558",
+    "vimeo": "1197009853"
+   },
+   {
+    "tipo": "asinc",
+    "label": "SESIÓN N° 7",
+    "fecha": "",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=20559",
+    "vimeo": "1197026034"
+   },
+   {
+    "tipo": "asinc",
+    "label": "SESIÓN N° 8",
+    "fecha": "",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=20655",
+    "vimeo": "1197526363"
+   },
+   {
+    "tipo": "en vivo",
+    "label": "SESIÓN N° 1",
+    "fecha": "26/05/26",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=20490",
+    "vimeo": "1196090424"
+   },
+   {
+    "tipo": "en vivo",
+    "label": "SESIÓN N° 2",
+    "fecha": "02/06/26",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=20683",
+    "vimeo": "1198186417"
+   },
+   {
+    "tipo": "en vivo",
+    "label": "SESIÓN N° 3",
+    "fecha": "09/06/26",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=21386",
+    "vimeo": "1200557166"
+   },
+   {
+    "tipo": "en vivo",
+    "label": "SESIÓN N° 4",
+    "fecha": "16/06/26",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=22375",
+    "vimeo": "1202225710"
+   }
+  ],
+  "nVideos": 12
+ },
+ "Ética e Interculturalidad": {
+  "envivoUrl": "https://campus.academiatheomed.com/course/section.php?id=2422",
+  "asincUrl": "https://campus.academiatheomed.com/course/section.php?id=2423",
+  "sesiones": [
+   {
+    "tipo": "asinc",
+    "label": "SESIÓN N° 1",
+    "fecha": "",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=20154",
+    "vimeo": "1191648361"
+   },
+   {
+    "tipo": "asinc",
+    "label": "SESIÓN N° 2",
+    "fecha": "",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=20167",
+    "vimeo": "1191663507"
+   },
+   {
+    "tipo": "asinc",
+    "label": "SESIÓN N° 3",
+    "fecha": "",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=20185",
+    "vimeo": "1192339535"
+   }
+  ],
+  "nVideos": 3
+ },
+ "Investigación": {
+  "envivoUrl": "https://campus.academiatheomed.com/course/section.php?id=2425",
+  "asincUrl": "https://campus.academiatheomed.com/course/section.php?id=2424",
+  "sesiones": [
+   {
+    "tipo": "asinc",
+    "label": "SESIÓN N° 1",
+    "fecha": "",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=20242",
+    "vimeo": "1193476203"
+   },
+   {
+    "tipo": "asinc",
+    "label": "SESIÓN N° 2",
+    "fecha": "",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=20274",
+    "vimeo": "1193476211"
+   },
+   {
+    "tipo": "asinc",
+    "label": "SESIÓN N° 3",
+    "fecha": "",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=20315",
+    "vimeo": "1194600605"
+   }
+  ],
+  "nVideos": 3
+ },
+ "Gestión de Servicios": {
+  "envivoUrl": "https://campus.academiatheomed.com/course/section.php?id=2428",
+  "asincUrl": "https://campus.academiatheomed.com/course/section.php?id=2426",
+  "sesiones": [
+   {
+    "tipo": "asinc",
+    "label": "SESIÓN N° 1",
+    "fecha": "",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=20498",
+    "vimeo": "1195687250"
+   },
+   {
+    "tipo": "asinc",
+    "label": "SESIÓN N° 2",
+    "fecha": "",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=20524",
+    "vimeo": "1195710863"
+   },
+   {
+    "tipo": "asinc",
+    "label": "SESIÓN N° 3",
+    "fecha": "",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=20584",
+    "vimeo": "1195741794"
+   },
+   {
+    "tipo": "asinc",
+    "label": "SESIÓN N° 4",
+    "fecha": "",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=20585",
+    "vimeo": "1196440272"
+   },
+   {
+    "tipo": "asinc",
+    "label": "SESIÓN N° 5",
+    "fecha": "",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=20677",
+    "vimeo": "1197490954"
+   },
+   {
+    "tipo": "asinc",
+    "label": "SESIÓN N° 6",
+    "fecha": "",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=20695",
+    "vimeo": "1198521468"
+   },
+   {
+    "tipo": "asinc",
+    "label": "SESIÓN N° 7",
+    "fecha": "",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=21402",
+    "vimeo": "1198549083"
+   },
+   {
+    "tipo": "en vivo",
+    "label": "SESIÓN N° 1",
+    "fecha": "04/05/26",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=21394",
+    "vimeo": "1198831039"
+   },
+   {
+    "tipo": "en vivo",
+    "label": "SESIÓN N° 2",
+    "fecha": "10/06/26",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=22318",
+    "vimeo": "1200585710"
+   },
+   {
+    "tipo": "en vivo",
+    "label": "SESIÓN N° 3",
+    "fecha": "11/06/26",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=22454",
+    "vimeo": "1200905472"
+   },
+   {
+    "tipo": "en vivo",
+    "label": "SESIÓN N° 4",
+    "fecha": "17/06/26",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=23107",
+    "vimeo": "1202645427"
+   },
+   {
+    "tipo": "en vivo",
+    "label": "SESIÓN N° 5",
+    "fecha": "",
+    "pdf": "https://campus.academiatheomed.com/mod/resource/view.php?id=23127",
+    "vimeo": "1203087100"
+   }
+  ],
+  "nVideos": 12
  }
 };
 

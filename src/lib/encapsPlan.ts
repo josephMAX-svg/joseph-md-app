@@ -4,7 +4,7 @@
 // Escalable: examen = 'ENCAPS' | 'MIR' | 'USMLE'. Hoy sólo ENCAPS (regla #7).
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { supabase } from './supabase';
-import { ENCAPS_FICHAS_POR_TEMA, ENCAPS_VIDEO_DRIVE, ENCAPS_THEOMED_AREA, ENCAPS_AREA_PREFIJO } from './encapsFuentes';
+import { ENCAPS_FICHAS_POR_TEMA, ENCAPS_VIDEO_DRIVE, ENCAPS_THEOMED_AREA, ENCAPS_THEOMED_VIDEOS, ENCAPS_AREA_PREFIJO } from './encapsFuentes';
 
 // ── D1 por examen (para calcular el día actual 1..71) ──
 export const STUDY_D1: Record<string, string> = {
@@ -245,6 +245,16 @@ export function itemsForDay(day: StudyScheduleDay, focusByCode: Record<string, n
         key: `D${N}:vdrive`, kind: 'video', label: vd.label,
         detail: sinQX ? 'QX no tiene video de este tema → usa este' : `2ª opción · alternativa a QX (${vd.acad})`,
         url: vd.url, source: `Video Drive · ${vd.acad}`, dur: vd.min, hora: slot(vd.min),
+      });
+    }
+    // 3ª opción: CLASES GRABADAS de Theomed por área (Vimeo: en vivo + asincrónicas, cada una con PDF)
+    const tv = areaV ? ENCAPS_THEOMED_VIDEOS[areaV] : undefined;
+    if (tv && tv.nVideos > 0) {
+      items.push({
+        key: `D${N}:thvideo`, kind: 'video',
+        label: `🎥 Clases grabadas Theomed ${areaV} (${tv.nVideos} videos)`,
+        detail: 'En vivo + asincrónicas (Vimeo) · cada una con su PDF · lista completa en 📚 Material',
+        url: tv.envivoUrl || tv.asincUrl, source: 'Theomed grabado', dur: 30, hora: slot(30),
       });
     }
   }

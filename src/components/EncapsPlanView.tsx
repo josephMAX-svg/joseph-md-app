@@ -14,7 +14,7 @@ import {
 import EncapsWebView from './EncapsWebView';
 import { encapsObsByTitle, encapsMatch } from '../lib/obsidianEncaps';
 import { ANKIWEB } from '../lib/ankiLinks';
-import { ENCAPS_FICHAS_MINSA, ENCAPS_ACADEMIAS_RESPALDO, ENCAPS_THEOMED_SIMULACROS, ENCAPS_QX_ACCESOS, ENCAPS_FUENTES_META, ENCAPS_THEOMED_AREA, ENCAPS_THEOMED_EXTRA } from '../lib/encapsFuentes';
+import { ENCAPS_FICHAS_MINSA, ENCAPS_ACADEMIAS_RESPALDO, ENCAPS_THEOMED_SIMULACROS, ENCAPS_QX_ACCESOS, ENCAPS_FUENTES_META, ENCAPS_THEOMED_AREA, ENCAPS_THEOMED_EXTRA, ENCAPS_THEOMED_VIDEOS } from '../lib/encapsFuentes';
 
 // Google Calendar del usuario (día) embebido — sincronización minuto a minuto.
 // Requiere sesión Google del navegador (calendario privado). ctz Lima.
@@ -178,6 +178,25 @@ function MaterialView() {
       {H('📂 Theomed por área (sesiones + PPTs + POSTESTS + repasos · incl. lo que libere por vueltas)')}
       {Object.entries(ENCAPS_THEOMED_AREA).map(([area, v], i) => <Link key={'ta' + i} n={`${area} (${v.n} recursos)`} url={v.url} />)}
       {ENCAPS_THEOMED_EXTRA.map((x, i) => <Link key={'te' + i} n={x.n} url={x.url} />)}
+
+      {H('🎥 Clases grabadas Theomed (Vimeo) — por área · cada sesión con su PDF')}
+      {Object.entries(ENCAPS_THEOMED_VIDEOS).map(([area, v]) => (
+        <View key={'tv' + area} style={{ marginBottom: 6, borderWidth: 1, borderColor: 'rgba(255,255,255,0.07)', borderRadius: BorderRadius.md, padding: Spacing.sm }}>
+          <Text style={{ fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface, marginBottom: 4 }}>{area} · {v.nVideos} videos</Text>
+          {!!v.envivoUrl && <Link n="▶ Sesiones EN VIVO (grabadas)" url={v.envivoUrl} />}
+          {!!v.asincUrl && <Link n="▶ Sesiones ASINCRÓNICAS (grabadas)" url={v.asincUrl} />}
+          {v.sesiones.filter(s => s.vimeo).map((s, j) => (
+            <View key={j} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 4 }}>
+              <Text style={{ fontSize: FontSize.labelMd, color: Colors.muted, flex: 1 }} numberOfLines={1}>🎬 {s.label} {s.fecha ? `(${s.fecha})` : ''} · {s.tipo}</Text>
+              {!!s.pdf && (
+                <TouchableOpacity onPress={() => Linking.openURL(s.pdf).catch(() => {})} activeOpacity={0.7}>
+                  <Text style={{ fontSize: FontSize.labelMd, color: Colors.blue, fontWeight: '700' }}>PDF ↗</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+          ))}
+        </View>
+      ))}
       {H('🎒 Academias de respaldo (Drive) — si falta video/sim/ficha en QX/Theomed')}
       {ENCAPS_ACADEMIAS_RESPALDO.map((a, i) => (
         <View key={i} style={{ marginBottom: 6, borderWidth: 1, borderColor: 'rgba(255,255,255,0.07)', borderRadius: BorderRadius.md, padding: Spacing.sm }}>

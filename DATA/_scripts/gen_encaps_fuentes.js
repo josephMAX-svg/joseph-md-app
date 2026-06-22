@@ -155,6 +155,36 @@ const qxAccesos = [
   { n: '🧪 Evaluaciones / App Banqueo', url: 'https://qxmedic-aulavirtual.com/evaluaciones/banqueapp' },
 ];
 
+// ── Theomed VIDEOS GRABADOS (Vimeo) por área — scrape 22-jun de las 10 sub-secciones SESIONES (curso 73).
+// Cada sesión = video Vimeo embebido en Theomed + PDF de la sesión. Las en-vivo de Inv/Ética son futuras
+// (curso cronológico) → se llenan por vueltas; el deep-link a la sección las trae automáticamente.
+const SEC_AREA = {
+  '2420': ['Salud Pública', 'en vivo'], '2419': ['Salud Pública', 'asinc'],
+  '2421': ['Cuidado Integral', 'en vivo'], '2276': ['Cuidado Integral', 'asinc'],
+  '2422': ['Ética e Interculturalidad', 'en vivo'], '2423': ['Ética e Interculturalidad', 'asinc'],
+  '2425': ['Investigación', 'en vivo'], '2424': ['Investigación', 'asinc'],
+  '2428': ['Gestión de Servicios', 'en vivo'], '2426': ['Gestión de Servicios', 'asinc'],
+};
+const thvDir = path.join(ROOT, 'DATA/ENCAPS/thv');
+const theomedVideos = {};
+if (fs.existsSync(thvDir)) {
+  for (const f of fs.readdirSync(thvDir).filter((x) => x.endsWith('.json'))) {
+    const d = JSON.parse(fs.readFileSync(path.join(thvDir, f), 'utf8'));
+    const id = d.secId || (d.url && (d.url.match(/id=(\d+)/) || [])[1]) || (f.match(/(\d+)/) || [])[1];
+    const m = SEC_AREA[id]; if (!m) continue;
+    const [area, tipo] = m;
+    if (!theomedVideos[area]) theomedVideos[area] = { envivoUrl: '', asincUrl: '', sesiones: [] };
+    theomedVideos[area][tipo === 'en vivo' ? 'envivoUrl' : 'asincUrl'] = 'https://campus.academiatheomed.com/course/section.php?id=' + id;
+    for (const s of (d.sessions || [])) {
+      if (!s.vimeo && !s.pdf) continue;
+      const fecha = (s.sesion.match(/\(([^)]+)\)/) || [])[1] || '';
+      theomedVideos[area].sesiones.push({ tipo, label: s.sesion.replace(/\s*\([^)]*\)/, '').trim(), fecha, pdf: s.pdf || '', vimeo: s.vimeo || '' });
+    }
+  }
+}
+const thvTotal = Object.values(theomedVideos).reduce((a, x) => a + x.sesiones.filter((s) => s.vimeo).length, 0);
+Object.keys(theomedVideos).forEach((a) => { const v = theomedVideos[a]; v.nVideos = v.sesiones.filter((s) => s.vimeo).length; });
+
 const ts = `/**
  * encapsFuentes.ts — MATERIAL ENCAPS verificado EN VIVO (re-scrape 22-jun-2026, Chrome DevTools).
  * Todo el material con LINK DIRECTO (para no buscar). GENERADO por DATA/_scripts/gen_encaps_fuentes.js.
@@ -175,8 +205,12 @@ export const ENCAPS_FICHAS_POR_TEMA: Record<string, FichaTema[]> = ${JSON.string
 export const ENCAPS_VIDEO_RESPALDO: Record<string, { url: string; label: string; min: number }> = ${JSON.stringify(videoRespaldo, null, 1)};
 
 // VIDEO alternativo por área (Google Drive · DR LOPEZ / GALENO) — 2ª opción a QX para CADA tema.
-// (Theomed no aloja videos de clase por tema: es PPT/PDF + post-tests, verificado en vivo.)
 export const ENCAPS_VIDEO_DRIVE: Record<string, { url: string; label: string; min: number; acad: string }> = ${JSON.stringify(videoDriveArea, null, 1)};
+
+// Theomed VIDEOS GRABADOS (Vimeo) por área — 3ª opción de video. Cada sesión tiene su PDF. Los videos
+// están embebidos en Theomed (Vimeo dominio-restringido) → se abren vía la sección (envivoUrl/asincUrl).
+export type TheomedSesion = { tipo: string; label: string; fecha: string; pdf: string; vimeo: string };
+export const ENCAPS_THEOMED_VIDEOS: Record<string, { envivoUrl: string; asincUrl: string; nVideos: number; sesiones: TheomedSesion[] }> = ${JSON.stringify(theomedVideos, null, 1)};
 
 export const ENCAPS_ACADEMIAS_RESPALDO: AcademiaRespaldo[] = ${JSON.stringify(academias, null, 1)};
 
@@ -203,3 +237,4 @@ console.log('OK encapsFuentes.ts ·', fichas.length, 'fichas ·', fichas.length 
 const byArea = {}; fichas.forEach((f) => byArea[f.area] = (byArea[f.area] || 0) + 1);
 console.log('fichas por área:', JSON.stringify(byArea));
 console.log('temas con fichas:', Object.entries(porTema).filter(([k, v]) => v.length).length, '/ 41 · video respaldo:', Object.keys(videoRespaldo).length, 'temas');
+console.log('Theomed videos grabados (Vimeo):', thvTotal, 'en', Object.keys(theomedVideos).length, 'áreas →', Object.entries(theomedVideos).map(([a, v]) => a.split(' ')[0] + ':' + v.nVideos).join(' '));
