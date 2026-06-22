@@ -14,7 +14,7 @@ import {
 import EncapsWebView from './EncapsWebView';
 import { encapsObsByTitle, encapsMatch } from '../lib/obsidianEncaps';
 import { ANKIWEB } from '../lib/ankiLinks';
-import { ENCAPS_FICHAS_MINSA, ENCAPS_ACADEMIAS_RESPALDO, ENCAPS_THEOMED_SIMULACROS, ENCAPS_QX_ACCESOS, ENCAPS_FUENTES_META } from '../lib/encapsFuentes';
+import { ENCAPS_FICHAS_MINSA, ENCAPS_ACADEMIAS_RESPALDO, ENCAPS_THEOMED_SIMULACROS, ENCAPS_QX_ACCESOS, ENCAPS_FUENTES_META, ENCAPS_FICHAS_POR_TEMA, ENCAPS_VIDEO_RESPALDO } from '../lib/encapsFuentes';
 
 // Google Calendar del usuario (día) embebido — sincronización minuto a minuto.
 // Requiere sesión Google del navegador (calendario privado). ctz Lima.
@@ -296,13 +296,38 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
         </View>
       )}
 
+      {/* QxMedic — fichas MINSA del tema (Biblioteca Fundamentos Teóricos) + video de respaldo, con TIEMPO */}
+      {(() => {
+        const cod = today.codigo;
+        if (!cod) return null;
+        const fis = ENCAPS_FICHAS_POR_TEMA[cod] || [];
+        const vr = ENCAPS_VIDEO_RESPALDO[cod];
+        if (fis.length === 0 && !vr) return null;
+        const min = fis.reduce((s, f) => s + f.min, 0) + (vr ? vr.min : 0);
+        return (
+          <View style={styles.refBox}>
+            <Text style={styles.refTitle}>📄 Material QxMedic del tema (fichas MINSA){min ? ` · ⏱ ${min} min` : ''}</Text>
+            {vr && (
+              <TouchableOpacity onPress={() => Linking.openURL(vr.url).catch(() => {})} activeOpacity={0.7}>
+                <Text style={[styles.matLink, { color: Colors.coral }]} numberOfLines={2}>• {vr.label} · ⏱ {vr.min}′ ↗</Text>
+              </TouchableOpacity>
+            )}
+            {fis.map((f, i) => (
+              <TouchableOpacity key={i} onPress={() => Linking.openURL(f.url).catch(() => {})} activeOpacity={0.7}>
+                <Text style={styles.matLink} numberOfLines={2}>• 📄 {f.titulo} · ⏱ {f.min}′ ↗</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        );
+      })()}
+
       {/* Material complementario (Drive / otras academias) */}
       {Array.isArray(today.material_comp) && today.material_comp.length > 0 && (
         <View style={styles.refBox}>
           <Text style={styles.refTitle}>📚 Material complementario (Drive)</Text>
           {today.material_comp.map((mm, i) => (
             <TouchableOpacity key={i} onPress={() => mm.url && Linking.openURL(mm.url).catch(() => {})} disabled={!mm.url} activeOpacity={0.7}>
-              <Text style={styles.matLink} numberOfLines={2}>• {mm.label || mm.url} {mm.url ? '↗' : ''}</Text>
+              <Text style={styles.matLink} numberOfLines={2}>• {mm.label || mm.url}{(mm as { min?: number }).min ? ` · ⏱ ${(mm as { min?: number }).min}′` : ''} {mm.url ? '↗' : ''}</Text>
             </TouchableOpacity>
           ))}
         </View>
