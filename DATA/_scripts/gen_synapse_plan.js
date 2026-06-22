@@ -168,9 +168,8 @@ function bloqueB(wd, semana) {
     return B('Latent Space — The AI Engineer Podcast', 'Episodio reciente a elección (el podcast del rol al que apuntas)', U.latent, { real: false });
   }
   if (wd === 'Mié') {
-    // v2 (arranque jueves): la semana 1 no tiene miércoles → los caps se corren una
-    // semana (sem 2..12 = caps 1..11); el cap 12 se recupera en el último día del plan.
-    const n = semana - 1;
+    // v6 (arranque martes 23-jun): la sem 1 SÍ tiene miércoles → cap = semana (sem 1..12 = caps 1..12).
+    const n = semana;
     const c = lexCap(n);
     return B('Lex #452 — Dario Amodei (CEO Anthropic)', `Outline cap. ${n}: "${c.titulo}" (desde ${c.dur})`, U.lex452, { dur: 'desde ' + c.dur });
   }
@@ -199,8 +198,8 @@ function bloqueC(wd, semana) {
   }
   if (wd === 'Mar') return C('Simon Willison — serie Prompt injection', 'El siguiente artículo de la serie que no hayas leído (10-20 min: empiézalo, termínalo en otro hueco)', U.willison, { real: false });
   if (wd === 'Mié') {
-    // v2: igual que el Lex — secciones corridas una semana (sem 2..12 = §1..11; §12 va al último día)
-    const n = semana - 1;
+    // v6: la sem 1 SÍ tiene miércoles → §n = semana (sem 1..12 = §1..12)
+    const n = semana;
     const s = pyTutSec(n);
     return C('The Python Tutorial (docs oficiales)', `Sección ${n}: "${s.titulo}" — prepara el terreno para CS50P`, s.url);
   }
@@ -249,17 +248,20 @@ function bloquePC(semana) {
 // La 1ª semana ya NO tiene jueves → la 1ª lección de Automate (cap 0 "Introduction") se
 // recupera en el último día (igual que Lex cap 12 y PyTut §12). 12 sem · 82 días · 12 domingos.
 const WD = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-const START = new Date('2026-06-20T12:00:00'); // v5: arranque sáb 20-jun (problema el 19; todo corre +1)
-const TOTAL = 82; // sem 1 corta (sáb→dom = 2 días) + 11*7 + 3 → d82 recoge la 70ª A-unit + Lex cap 12 + PyTut §12 + Automate cap 0
+const START = new Date('2026-06-23T12:00:00'); // v6 (22-jun): 20-22 no se estudió → arranque mar 23-jun; sem 1 = mar→dom (6 días, completa con Mié/Jue)
+const SDOW = START.getDay();                    // 2 (martes)
+const FIRST_WEEK_LEN = (7 - SDOW) % 7 + 1;      // mar→dom = 6 días (sáb→dom hubiera sido 2)
 
 const aUnits = buildAUnits();
+// v6: TOTAL = nº de días para colocar exactamente aUnits.length A-units (= días no-domingo); el último día cae en no-domingo.
+let TOTAL = 0; { let ns = 0, dd = 0; while (ns < aUnits.length) { dd++; const dt = new Date(START.getTime() + (dd - 1) * 86400000); if (dt.getDay() !== 0) ns++; } TOTAL = dd; }
 let aIdx = 0;
 const dias = [];
 for (let d = 1; d <= TOTAL; d++) {
   const date = new Date(START.getTime() + (d - 1) * 86400000);
   const fecha = date.toISOString().slice(0, 10);
   const wd = WD[date.getDay()];
-  const semana = d <= 2 ? 1 : Math.min(2 + Math.floor((d - 3) / 7), 12); // v5: sem 1 = sáb→dom (2 días); sem 2+ = lun→dom. 11 miércoles regulares → Lex caps 1-11; cap 12 al último día
+  const semana = d <= FIRST_WEEK_LEN ? 1 : Math.min(2 + Math.floor((d - FIRST_WEEK_LEN - 1) / 7), 12); // v6: sem 1 = mar→dom; sem 2+ = lun→dom. 12 miércoles → Lex caps 1-12 (sin offset)
   const faseId = semana <= 8 ? 'f0' : 'f1';
   const fase = faseId === 'f0' ? 'F0 · La Escuela de Anthropic' : 'F1 · Código: Python + terminal + Git';
   const bloques = [];
@@ -270,23 +272,14 @@ for (let d = 1; d <= TOTAL; d++) {
       leccion: 'Domingo LIBRE (v3: todos los domingos sin actividad). Sin misión SYNAPSE hoy; si quieres conservar la racha, márcalo ✓ y listo.',
       real: true,
     });
-  } else if (d === TOTAL) {
-    // v4: último día: 70ª A-unit + lo que el calendario corrido dejó sin colocar.
-    // Con arranque viernes la sem 1 no tiene jueves → recuperamos también Automate cap 0.
-    const a = aUnits[aIdx++];
-    bloques.push({ tag: 'A', min: 15, formato: 'pantalla', ...a });
-    const c12 = lexCap(12);
-    bloques.push({ tag: 'B', min: 10, formato: 'audio', material: 'Lex #452 — Dario Amodei (CEO Anthropic)', leccion: `Outline cap. 12: "${c12.titulo}" (desde ${c12.dur}) — cierre del episodio`, url: assertUrl(U.lex452), dur: 'desde ' + c12.dur, real: true });
-    const s12 = pyTutSec(12);
-    bloques.push({ tag: 'C', min: 5, formato: 'lectura', material: 'The Python Tutorial (docs oficiales)', leccion: `Sección 12: "${s12.titulo}" — prepara el terreno para CS50P`, url: assertUrl(s12.url), real: true });
-    const a0 = autoCap(0);
-    bloques.push({ tag: 'C', min: 5, formato: 'lectura', material: 'Automate the Boring Stuff (3ª ed.)', leccion: `5' del cap. 0: "${a0.titulo}" — la introducción del libro (recuperada: la sem 1 viernes→dom no tuvo jueves)`, url: assertUrl(a0.url), real: true });
   } else {
     const a = aUnits[aIdx++];
     bloques.push({ tag: 'A', min: 15, formato: 'pantalla', ...a });
     const b = bloqueB(wd, semana); if (b) bloques.push(b);
     const c = bloqueC(wd, semana); if (c) bloques.push(c);
     if (wd === 'Sáb') bloques.push(bloquePC(semana));
+    // v6: la sem 12 termina en viernes (sin sábado) → su Proyecto-PC (sem 12 = CS50P PS3) se coloca en el último día
+    if (d === TOTAL && wd !== 'Sáb') bloques.push(bloquePC(12));
   }
   dias.push({ d, fecha, wd, semana, faseId, fase, bloques });
 }
@@ -305,7 +298,7 @@ const diaTs = (x) => `{d:${x.d},fecha:"${x.fecha}",wd:"${x.wd}",semana:${x.seman
 
 const ts = `/**
  * synapseDailyPlan.ts — Motor día-a-día SYNAPSE (12 semanas · ${TOTAL} días · ${dias[0].fecha} → ${dias[TOTAL - 1].fecha}).
- * v4 (18-jun): arranque vie 19-jun-2026 (todo el sistema inicia 19-jun) · sem 1 corta vie→dom · TODOS los domingos LIBRES (sin misión).
+ * v6 (22-jun): arranque mar 23-jun-2026 (20-22 no se estudió; todo el sistema corre a 23-jun) · sem 1 = mar→dom · TODOS los domingos LIBRES (sin misión).
  * GENERADO por DATA/_scripts/gen_synapse_plan.js desde DATA/SYNAPSE/curricula/_extracted.json
  * (temarios REALES extraídos con WebFetch/oEmbed + verificación adversarial, 10-jun-2026).
  * NO editar a mano — regenerar: node DATA/_scripts/gen_synapse_plan.js
