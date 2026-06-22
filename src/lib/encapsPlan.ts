@@ -4,6 +4,7 @@
 // Escalable: examen = 'ENCAPS' | 'MIR' | 'USMLE'. Hoy sólo ENCAPS (regla #7).
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { supabase } from './supabase';
+import { ENCAPS_FICHAS_POR_TEMA, ENCAPS_VIDEO_RESPALDO, ENCAPS_THEOMED_AREA, ENCAPS_AREA_PREFIJO } from './encapsFuentes';
 
 // ── D1 por examen (para calcular el día actual 1..71) ──
 export const STUDY_D1: Record<string, string> = {
@@ -224,30 +225,69 @@ export function itemsForDay(day: StudyScheduleDay, focusByCode: Record<string, n
       fallbackLabel: (locked && v.code) ? DRIVE_FALLBACK_2026_1[v.code]?.label : undefined,
     });
   });
+  // helper: asigna franja horaria continuando el reloj donde terminaron los videos
+  const slot = (mins: number) => {
+    const s = `${pad(ph)}:${pad(pm)}`;
+    let em = pm + mins, eh = ph + Math.floor(em / 60); em %= 60;
+    const h = `${s}–${pad(eh)}:${pad(em)}`;
+    ph = eh; pm = em;
+    return h;
+  };
+  // Video de RESPALDO (Drive DR LOPEZ/GALENO) para temas SIN video en QxMedic → "Cola QX de hoy"
+  if (day.codigo && ENCAPS_VIDEO_RESPALDO[day.codigo]) {
+    const vr = ENCAPS_VIDEO_RESPALDO[day.codigo];
+    items.push({
+      key: `D${N}:vresp`, kind: 'video', label: vr.label,
+      detail: 'Respaldo · QX no tiene video de este tema', url: vr.url,
+      source: 'Video respaldo (Drive)', dur: vr.min, hora: slot(vr.min),
+    });
+  }
+  // Fichas técnicas MINSA de QxMedic (Biblioteca Fundamentos Teóricos) — MATERIAL QX, con hora
+  const _fichas = day.codigo ? (ENCAPS_FICHAS_POR_TEMA[day.codigo] || []) : [];
+  _fichas.forEach((f, i) => {
+    items.push({
+      key: `D${N}:qxficha:${i}`, kind: 'material',
+      label: `📄 MINSA: ${f.titulo}`, detail: `Ficha QxMedic · ${f.min}min`,
+      url: f.url, source: 'QX · Ficha MINSA', dur: f.min, hora: slot(f.min),
+    });
+  });
+  // Carpetas Theomed del tema (PDFs/normas) — con hora
   (day.theomed || []).forEach((t, i) => {
     items.push({
       key: `D${N}:theomed:${i}`, kind: 'theomed',
       label: `Theomed: ${t.subtema || `bloque ${i + 1}`}`,
       detail: t.n_files ? `${t.n_files} archivos` : (t.tipo || undefined),
-      url: t.url, source: 'Theomed',
+      url: t.url, source: 'Theomed', dur: 8, hora: slot(8),
     });
   });
-  // Material complementario (norma/guía + banco) — clave para los temas normativa
-  // (Investigación/Gestión/Ética/SP baja) que QX no cubre con videoclase.
+  // Acceso Theomed por ÁREA (sesiones + PPTs + POSTESTS + repasos · incl. lo que libere por vueltas)
+  const _area = day.codigo ? ENCAPS_AREA_PREFIJO[(day.codigo.match(/^[IVX]+/) || [''])[0]] : undefined;
+  const _tarea = _area ? ENCAPS_THEOMED_AREA[_area] : undefined;
+  if (_tarea) {
+    items.push({
+      key: `D${N}:tharea`, kind: 'theomed',
+      label: `📂 Theomed ${_area} — sesiones + PPTs + POSTESTS + repasos`,
+      detail: `${_tarea.n} recursos · incl. lo que libere por vueltas`,
+      url: _tarea.url, source: 'Theomed área', dur: 20, hora: slot(20),
+    });
+  }
+  // Material complementario (norma/guía + banco + Drive) — clave para temas normativa; con hora
   (day.material_comp || []).forEach((m, i) => {
-    const mm = m as { label?: string; url?: string | null; tipo?: string };
+    const mm = m as { label?: string; url?: string | null; tipo?: string; min?: number };
+    const mins = mm.min ?? 12;
     items.push({
       key: `D${N}:material:${i}`, kind: 'material',
       label: mm.label || `Material ${i + 1}`,
       detail: mm.tipo, url: mm.url ?? null,
-      source: 'Material complementario',
+      source: 'Material complementario', dur: mins,
+      hora: mm.url ? slot(mins) : undefined,
     });
   });
   if (day.pulso) {
     items.push({ key: `D${N}:pulso`, kind: 'pulso', label: 'PULSO', detail: String(day.pulso) });
   }
   if (day.tipo === 'deep_prime') {
-    items.push({ key: `D${N}:eval`, kind: 'eval', label: 'Evaluación', detail: 'QX Eval del Tema + BanqueApp' });
+    items.push({ key: `D${N}:eval`, kind: 'eval', label: 'Evaluación', detail: 'QX Eval del Tema + BanqueApp + POSTEST Theomed', dur: 30, hora: slot(30) });
   }
   // v6 (13-jun): un día-examen puede tener 2-4 simulacros (extra.sims) → cada uno es un
   // item chequeable propio (key D{N}:sim:{i}). Fallback al simulacro singular (legacy).

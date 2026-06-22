@@ -14,7 +14,7 @@ import {
 import EncapsWebView from './EncapsWebView';
 import { encapsObsByTitle, encapsMatch } from '../lib/obsidianEncaps';
 import { ANKIWEB } from '../lib/ankiLinks';
-import { ENCAPS_FICHAS_MINSA, ENCAPS_ACADEMIAS_RESPALDO, ENCAPS_THEOMED_SIMULACROS, ENCAPS_QX_ACCESOS, ENCAPS_FUENTES_META, ENCAPS_FICHAS_POR_TEMA, ENCAPS_VIDEO_RESPALDO, ENCAPS_THEOMED_AREA, ENCAPS_THEOMED_EXTRA, ENCAPS_AREA_PREFIJO } from '../lib/encapsFuentes';
+import { ENCAPS_FICHAS_MINSA, ENCAPS_ACADEMIAS_RESPALDO, ENCAPS_THEOMED_SIMULACROS, ENCAPS_QX_ACCESOS, ENCAPS_FUENTES_META, ENCAPS_THEOMED_AREA, ENCAPS_THEOMED_EXTRA } from '../lib/encapsFuentes';
 
 // Google Calendar del usuario (día) embebido — sincronización minuto a minuto.
 // Requiere sesión Google del navegador (calendario privado). ctz Lima.
@@ -300,49 +300,8 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
         </View>
       )}
 
-      {/* QxMedic — fichas MINSA del tema (Biblioteca Fundamentos Teóricos) + video de respaldo, con TIEMPO */}
-      {(() => {
-        const cod = today.codigo;
-        if (!cod) return null;
-        const fis = ENCAPS_FICHAS_POR_TEMA[cod] || [];
-        const vr = ENCAPS_VIDEO_RESPALDO[cod];
-        const area = ENCAPS_AREA_PREFIJO[(cod.match(/^[IVX]+/) || [''])[0]];
-        const th = area ? ENCAPS_THEOMED_AREA[area] : undefined;
-        if (fis.length === 0 && !vr && !th) return null;
-        const min = fis.reduce((s, f) => s + f.min, 0) + (vr ? vr.min : 0);
-        return (
-          <View style={styles.refBox}>
-            <Text style={styles.refTitle}>📄 Material QxMedic + Theomed del tema{min ? ` · ⏱ ${min} min (fichas)` : ''}</Text>
-            {vr && (
-              <TouchableOpacity onPress={() => Linking.openURL(vr.url).catch(() => {})} activeOpacity={0.7}>
-                <Text style={[styles.matLink, { color: Colors.coral }]} numberOfLines={2}>• {vr.label} · ⏱ {vr.min}′ ↗</Text>
-              </TouchableOpacity>
-            )}
-            {fis.map((f, i) => (
-              <TouchableOpacity key={i} onPress={() => Linking.openURL(f.url).catch(() => {})} activeOpacity={0.7}>
-                <Text style={styles.matLink} numberOfLines={2}>• 📄 {f.titulo} · ⏱ {f.min}′ ↗</Text>
-              </TouchableOpacity>
-            ))}
-            {th && (
-              <TouchableOpacity onPress={() => Linking.openURL(th.url).catch(() => {})} activeOpacity={0.7}>
-                <Text style={[styles.matLink, { color: '#22C55E' }]} numberOfLines={2}>• 📂 Theomed {area} — sesiones + PPTs + POSTESTS + repasos ({th.n} recursos · incl. lo que libere por vueltas) ↗</Text>
-              </TouchableOpacity>
-            )}
-          </View>
-        );
-      })()}
-
-      {/* Material complementario (Drive / otras academias) */}
-      {Array.isArray(today.material_comp) && today.material_comp.length > 0 && (
-        <View style={styles.refBox}>
-          <Text style={styles.refTitle}>📚 Material complementario (Drive)</Text>
-          {today.material_comp.map((mm, i) => (
-            <TouchableOpacity key={i} onPress={() => mm.url && Linking.openURL(mm.url).catch(() => {})} disabled={!mm.url} activeOpacity={0.7}>
-              <Text style={styles.matLink} numberOfLines={2}>• {mm.label || mm.url}{(mm as { min?: number }).min ? ` · ⏱ ${(mm as { min?: number }).min}′` : ''} {mm.url ? '↗' : ''}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-      )}
+      {/* (Las fichas QX MINSA + carpetas Theomed + acceso por área + material Drive son ahora ítems
+          chequeables con HORA y ◆ Obs dentro de "Material del tema + práctica" — ver itemsForDay) */}
     </View>
   );
 }
@@ -361,7 +320,7 @@ function CheckRow({ item, checked, onToggle, todayDia }: { item: PlanItem; check
             {KIND_ICON[item.kind]} {item.label}
           </Text>
           <View style={styles.checkSubRow}>
-            {item.kind === 'video' && !!item.hora && <Text style={styles.horaTag}>🕘 {item.hora}</Text>}
+            {!!item.hora && <Text style={styles.horaTag}>🕘 {item.hora}</Text>}
             {!!item.source && <Text style={styles.srcTag}>{item.source}</Text>}
             {!!item.detail && <Text style={styles.checkDetail} numberOfLines={1}>{item.detail}</Text>}
             {m && <Text style={[styles.estadoBadge, { color: m.color, backgroundColor: m.color + '22' }]}>{m.label}</Text>}
@@ -398,7 +357,7 @@ function CheckRow({ item, checked, onToggle, todayDia }: { item: PlanItem; check
             <Text style={[styles.openBtnText, { color: Colors.blue }]}>PDF</Text>
           </TouchableOpacity>
         )}
-        {(item.kind === 'video' || item.kind === 'theomed') && (
+        {(item.kind === 'video' || item.kind === 'theomed' || item.kind === 'material') && (
           <TouchableOpacity
             onPress={() => Linking.openURL(encapsObsByTitle(item.label, item.code)).catch(() => {})}
             style={[styles.openBtn, { borderColor: '#A78BFA66', backgroundColor: '#A78BFA14' }]}>
