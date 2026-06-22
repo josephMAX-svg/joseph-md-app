@@ -1139,6 +1139,13 @@ export const ENCAPS_THEOMED_VIDEOS: Record<string, { envivoUrl: string; asincUrl
  }
 };
 
+// COMPENDIO DR LOPEZ por área (Google Drive · resumen del área). Investigación/Gestión aún no subidos.
+export const ENCAPS_COMPENDIO: Record<string, string> = {
+ "Salud Pública": "https://drive.google.com/file/d/1iq_BDzPe3idrZeGL0Q3eR7IB9mKyDftT/view",
+ "Cuidado Integral": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
+ "Ética e Interculturalidad": "https://drive.google.com/file/d/1DCrhYE_DwZ25RoDSIhcxTq52cDRG1qSN/view"
+};
+
 export const ENCAPS_ACADEMIAS_RESPALDO: AcademiaRespaldo[] = [
  {
   "nombre": "DR LOPEZ",
@@ -1283,6 +1290,14 @@ export const ENCAPS_THEOMED_AREA: Record<string, { url: string; n: number }> = {
  }
 };
 export const ENCAPS_THEOMED_EXTRA: FuenteLink[] = [
+ {
+  "n": "🗺️ HOJA DE RUTA Theomed (qué sesión/video toca cada fecha)",
+  "url": "https://campus.academiatheomed.com/mod/resource/view.php?id=20588"
+ },
+ {
+  "n": "📅 Horario asincrónico Theomed",
+  "url": "https://campus.academiatheomed.com/mod/resource/view.php?id=20155"
+ },
  {
   "n": "📋 Normas Técnicas (transversal · 30 docs)",
   "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=1"

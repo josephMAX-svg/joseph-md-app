@@ -143,12 +143,23 @@ const THEOMED_AREA = {
   'Gestión de Servicios': { url: thSec(6), n: 25 },
 };
 const THEOMED_EXTRA = [
+  { n: '🗺️ HOJA DE RUTA Theomed (qué sesión/video toca cada fecha)', url: 'https://campus.academiatheomed.com/mod/resource/view.php?id=20588' },
+  { n: '📅 Horario asincrónico Theomed', url: 'https://campus.academiatheomed.com/mod/resource/view.php?id=20155' },
   { n: '📋 Normas Técnicas (transversal · 30 docs)', url: thSec(1) },
   { n: '📂 Material complementario', url: thSec(7) },
   { n: '🎥 Webinars', url: thSec(8) },
   { n: '🏁 Actividades finales 2026-II', url: thSec(9) },
 ];
 const AREA_PREFIJO = { I: 'Salud Pública', II: 'Cuidado Integral', III: 'Ética e Interculturalidad', IV: 'Investigación', V: 'Gestión de Servicios' };
+
+// COMPENDIO DR LOPEZ (Google Drive) — resumen por área (PDF). Investigación/Gestión aún no subidos
+// (futuros, como los videos en vivo de esas áreas). file/d/{id}.
+const driveFile = (id) => 'https://drive.google.com/file/d/' + id + '/view';
+const COMPENDIO_AREA = {
+  'Salud Pública': driveFile('1iq_BDzPe3idrZeGL0Q3eR7IB9mKyDftT'),
+  'Cuidado Integral': driveFile('1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl'),
+  'Ética e Interculturalidad': driveFile('1DCrhYE_DwZ25RoDSIhcxTq52cDRG1qSN'),
+};
 const qxAccesos = [
   { n: '📚 Biblioteca · Fundamentos Teóricos (105 fichas)', url: 'https://qxmedic-aulavirtual.com/mis-clases/biblioteca' },
   { n: '🎬 Videoclases QxMedic (184, por área)', url: 'https://qxmedic-aulavirtual.com/mis-clases/videoclases' },
@@ -211,6 +222,9 @@ export const ENCAPS_VIDEO_DRIVE: Record<string, { url: string; label: string; mi
 // están embebidos en Theomed (Vimeo dominio-restringido) → se abren vía la sección (envivoUrl/asincUrl).
 export type TheomedSesion = { tipo: string; label: string; fecha: string; pdf: string; vimeo: string };
 export const ENCAPS_THEOMED_VIDEOS: Record<string, { envivoUrl: string; asincUrl: string; nVideos: number; sesiones: TheomedSesion[] }> = ${JSON.stringify(theomedVideos, null, 1)};
+
+// COMPENDIO DR LOPEZ por área (Google Drive · resumen del área). Investigación/Gestión aún no subidos.
+export const ENCAPS_COMPENDIO: Record<string, string> = ${JSON.stringify(COMPENDIO_AREA, null, 1)};
 
 export const ENCAPS_ACADEMIAS_RESPALDO: AcademiaRespaldo[] = ${JSON.stringify(academias, null, 1)};
 

@@ -4,7 +4,7 @@
 // Escalable: examen = 'ENCAPS' | 'MIR' | 'USMLE'. Hoy sólo ENCAPS (regla #7).
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { supabase } from './supabase';
-import { ENCAPS_FICHAS_POR_TEMA, ENCAPS_VIDEO_DRIVE, ENCAPS_THEOMED_AREA, ENCAPS_THEOMED_VIDEOS, ENCAPS_AREA_PREFIJO } from './encapsFuentes';
+import { ENCAPS_FICHAS_POR_TEMA, ENCAPS_VIDEO_DRIVE, ENCAPS_THEOMED_AREA, ENCAPS_THEOMED_VIDEOS, ENCAPS_COMPENDIO, ENCAPS_AREA_PREFIJO } from './encapsFuentes';
 
 // ── D1 por examen (para calcular el día actual 1..71) ──
 export const STUDY_D1: Record<string, string> = {
@@ -285,6 +285,16 @@ export function itemsForDay(day: StudyScheduleDay, focusByCode: Record<string, n
       label: `📂 Theomed ${_area} — sesiones + PPTs + POSTESTS + repasos`,
       detail: `${_tarea.n} recursos · incl. lo que libere por vueltas`,
       url: _tarea.url, source: 'Theomed área', dur: 20, hora: slot(20),
+    });
+  }
+  // COMPENDIO DR LOPEZ del área (Google Drive · resumen completo) — material clave de repaso
+  const _comp = _area ? ENCAPS_COMPENDIO[_area] : undefined;
+  if (_comp) {
+    items.push({
+      key: `D${N}:compendio`, kind: 'material',
+      label: `🎯 Compendio ${_area} (DR LOPEZ · resumen del área)`,
+      detail: 'Google Drive · resumen completo del área para repaso', url: _comp,
+      source: 'Compendio DR LOPEZ', dur: 20, hora: slot(20),
     });
   }
   // Material complementario (norma/guía + banco + Drive) — clave para temas normativa; con hora
