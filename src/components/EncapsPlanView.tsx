@@ -14,7 +14,7 @@ import {
 import EncapsWebView from './EncapsWebView';
 import { encapsObsByTitle, encapsMatch } from '../lib/obsidianEncaps';
 import { ANKIWEB } from '../lib/ankiLinks';
-import { ENCAPS_FICHAS_MINSA, ENCAPS_ACADEMIAS_RESPALDO, ENCAPS_THEOMED_SIMULACROS, ENCAPS_QX_ACCESOS, ENCAPS_FUENTES_META, ENCAPS_FICHAS_POR_TEMA, ENCAPS_VIDEO_RESPALDO } from '../lib/encapsFuentes';
+import { ENCAPS_FICHAS_MINSA, ENCAPS_ACADEMIAS_RESPALDO, ENCAPS_THEOMED_SIMULACROS, ENCAPS_QX_ACCESOS, ENCAPS_FUENTES_META, ENCAPS_FICHAS_POR_TEMA, ENCAPS_VIDEO_RESPALDO, ENCAPS_THEOMED_AREA, ENCAPS_THEOMED_EXTRA, ENCAPS_AREA_PREFIJO } from '../lib/encapsFuentes';
 
 // Google Calendar del usuario (día) embebido — sincronización minuto a minuto.
 // Requiere sesión Google del navegador (calendario privado). ctz Lima.
@@ -174,6 +174,10 @@ function MaterialView() {
       })}
       {H(`📝 Simulacros Theomed (${ENCAPS_THEOMED_SIMULACROS.length}) — URL exacta del cuestionario`)}
       {ENCAPS_THEOMED_SIMULACROS.map((x, i) => <Link key={'t' + i} n={x.n} url={x.url} />)}
+
+      {H('📂 Theomed por área (sesiones + PPTs + POSTESTS + repasos · incl. lo que libere por vueltas)')}
+      {Object.entries(ENCAPS_THEOMED_AREA).map(([area, v], i) => <Link key={'ta' + i} n={`${area} (${v.n} recursos)`} url={v.url} />)}
+      {ENCAPS_THEOMED_EXTRA.map((x, i) => <Link key={'te' + i} n={x.n} url={x.url} />)}
       {H('🎒 Academias de respaldo (Drive) — si falta video/sim/ficha en QX/Theomed')}
       {ENCAPS_ACADEMIAS_RESPALDO.map((a, i) => (
         <View key={i} style={{ marginBottom: 6, borderWidth: 1, borderColor: 'rgba(255,255,255,0.07)', borderRadius: BorderRadius.md, padding: Spacing.sm }}>
@@ -302,11 +306,13 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
         if (!cod) return null;
         const fis = ENCAPS_FICHAS_POR_TEMA[cod] || [];
         const vr = ENCAPS_VIDEO_RESPALDO[cod];
-        if (fis.length === 0 && !vr) return null;
+        const area = ENCAPS_AREA_PREFIJO[(cod.match(/^[IVX]+/) || [''])[0]];
+        const th = area ? ENCAPS_THEOMED_AREA[area] : undefined;
+        if (fis.length === 0 && !vr && !th) return null;
         const min = fis.reduce((s, f) => s + f.min, 0) + (vr ? vr.min : 0);
         return (
           <View style={styles.refBox}>
-            <Text style={styles.refTitle}>📄 Material QxMedic del tema (fichas MINSA){min ? ` · ⏱ ${min} min` : ''}</Text>
+            <Text style={styles.refTitle}>📄 Material QxMedic + Theomed del tema{min ? ` · ⏱ ${min} min (fichas)` : ''}</Text>
             {vr && (
               <TouchableOpacity onPress={() => Linking.openURL(vr.url).catch(() => {})} activeOpacity={0.7}>
                 <Text style={[styles.matLink, { color: Colors.coral }]} numberOfLines={2}>• {vr.label} · ⏱ {vr.min}′ ↗</Text>
@@ -317,6 +323,11 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
                 <Text style={styles.matLink} numberOfLines={2}>• 📄 {f.titulo} · ⏱ {f.min}′ ↗</Text>
               </TouchableOpacity>
             ))}
+            {th && (
+              <TouchableOpacity onPress={() => Linking.openURL(th.url).catch(() => {})} activeOpacity={0.7}>
+                <Text style={[styles.matLink, { color: '#22C55E' }]} numberOfLines={2}>• 📂 Theomed {area} — sesiones + PPTs + POSTESTS + repasos ({th.n} recursos · incl. lo que libere por vueltas) ↗</Text>
+              </TouchableOpacity>
+            )}
           </View>
         );
       })()}

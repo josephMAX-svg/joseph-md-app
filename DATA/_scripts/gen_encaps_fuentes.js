@@ -124,6 +124,24 @@ const theomedSims = [
   { n: 'Examen TIPO B', url: quiz(7935) }, { n: 'Examen TIPO A (2)', url: quiz(7937) },
   { n: 'Examen TIPO B (2)', url: quiz(7938) }, { n: 'Examen 2025-II', url: quiz(7940) },
 ];
+// Theomed MEDICINA REGULAR GP1 (curso 73) — sección por área (sesiones asincrónicas + en vivo + manual +
+// repasos + banqueos + POSTESTS). El deep-link a la sección incluye SIEMPRE el material actual Y el que
+// se libere por vueltas/fases (Theomed sube por fases: video → repaso → evaluación). Verificado 22-jun.
+const thSec = (n) => 'https://campus.academiatheomed.com/course/view.php?id=73&section=' + n;
+const THEOMED_AREA = {
+  'Salud Pública': { url: thSec(2), n: 31 },
+  'Cuidado Integral': { url: thSec(3), n: 54 },
+  'Ética e Interculturalidad': { url: thSec(4), n: 11 },
+  'Investigación': { url: thSec(5), n: 7 },
+  'Gestión de Servicios': { url: thSec(6), n: 25 },
+};
+const THEOMED_EXTRA = [
+  { n: '📋 Normas Técnicas (transversal · 30 docs)', url: thSec(1) },
+  { n: '📂 Material complementario', url: thSec(7) },
+  { n: '🎥 Webinars', url: thSec(8) },
+  { n: '🏁 Actividades finales 2026-II', url: thSec(9) },
+];
+const AREA_PREFIJO = { I: 'Salud Pública', II: 'Cuidado Integral', III: 'Ética e Interculturalidad', IV: 'Investigación', V: 'Gestión de Servicios' };
 const qxAccesos = [
   { n: '📚 Biblioteca · Fundamentos Teóricos (105 fichas)', url: 'https://qxmedic-aulavirtual.com/mis-clases/biblioteca' },
   { n: '🎬 Videoclases QxMedic (184, por área)', url: 'https://qxmedic-aulavirtual.com/mis-clases/videoclases' },
@@ -152,6 +170,12 @@ export const ENCAPS_VIDEO_RESPALDO: Record<string, { url: string; label: string;
 export const ENCAPS_ACADEMIAS_RESPALDO: AcademiaRespaldo[] = ${JSON.stringify(academias, null, 1)};
 
 export const ENCAPS_THEOMED_SIMULACROS: FuenteLink[] = ${JSON.stringify(theomedSims, null, 1)};
+
+// Theomed por área (sección del curso 73): cada tema deep-linkea a su área → sesiones + PPTs + POSTESTS
+// + repasos + banqueos, incluido lo que se libere por vueltas. area = ENCAPS_AREA_PREFIJO[codigo prefijo].
+export const ENCAPS_THEOMED_AREA: Record<string, { url: string; n: number }> = ${JSON.stringify(THEOMED_AREA, null, 1)};
+export const ENCAPS_THEOMED_EXTRA: FuenteLink[] = ${JSON.stringify(THEOMED_EXTRA, null, 1)};
+export const ENCAPS_AREA_PREFIJO: Record<string, string> = ${JSON.stringify(AREA_PREFIJO, null, 1)};
 
 export const ENCAPS_QX_ACCESOS: FuenteLink[] = ${JSON.stringify(qxAccesos, null, 1)};
 

@@ -868,6 +868,56 @@ export const ENCAPS_THEOMED_SIMULACROS: FuenteLink[] = [
  }
 ];
 
+// Theomed por área (sección del curso 73): cada tema deep-linkea a su área → sesiones + PPTs + POSTESTS
+// + repasos + banqueos, incluido lo que se libere por vueltas. area = ENCAPS_AREA_PREFIJO[codigo prefijo].
+export const ENCAPS_THEOMED_AREA: Record<string, { url: string; n: number }> = {
+ "Salud Pública": {
+  "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=2",
+  "n": 31
+ },
+ "Cuidado Integral": {
+  "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
+  "n": 54
+ },
+ "Ética e Interculturalidad": {
+  "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=4",
+  "n": 11
+ },
+ "Investigación": {
+  "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=5",
+  "n": 7
+ },
+ "Gestión de Servicios": {
+  "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=6",
+  "n": 25
+ }
+};
+export const ENCAPS_THEOMED_EXTRA: FuenteLink[] = [
+ {
+  "n": "📋 Normas Técnicas (transversal · 30 docs)",
+  "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=1"
+ },
+ {
+  "n": "📂 Material complementario",
+  "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=7"
+ },
+ {
+  "n": "🎥 Webinars",
+  "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=8"
+ },
+ {
+  "n": "🏁 Actividades finales 2026-II",
+  "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=9"
+ }
+];
+export const ENCAPS_AREA_PREFIJO: Record<string, string> = {
+ "I": "Salud Pública",
+ "II": "Cuidado Integral",
+ "III": "Ética e Interculturalidad",
+ "IV": "Investigación",
+ "V": "Gestión de Servicios"
+};
+
 export const ENCAPS_QX_ACCESOS: FuenteLink[] = [
  {
   "n": "📚 Biblioteca · Fundamentos Teóricos (105 fichas)",
