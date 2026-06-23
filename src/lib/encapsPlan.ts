@@ -269,6 +269,15 @@ export function itemsForDay(day: StudyScheduleDay, focusByCode: Record<string, n
         detail: `Ubicación por índice de diapositivas (TEMARIO DE HOY del PDF de sesión)${otras} · slides: ${ts.slidesUrl}`,
         url: secUrl, source: 'Theomed grabado · ubicación exacta', dur: 25, hora: slot(25),
       });
+    } else if (areaV && (ENCAPS_THEOMED_VIDEOS[areaV]?.nVideos ?? 0) > 0) {
+      // Sub-tema no aislado en el índice del temario Theomed → está integrado en las clases del área.
+      const tv = ENCAPS_THEOMED_VIDEOS[areaV];
+      items.push({
+        key: `D${N}:thtema`, kind: 'video',
+        label: `🎯 Theomed ${areaV}: repásalo dentro de las clases grabadas del área`,
+        detail: 'Este sub-tema no aparece aislado en el índice del temario — está integrado en las sesiones del área',
+        url: tv.asincUrl || tv.envivoUrl, source: 'Theomed grabado · por área', dur: 25, hora: slot(25),
+      });
     }
   }
   // Fichas técnicas MINSA de QxMedic (Biblioteca Fundamentos Teóricos) — MATERIAL QX, con hora
