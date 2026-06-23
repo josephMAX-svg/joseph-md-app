@@ -1,0 +1,2881 @@
+{
+ "II-3": [
+  {
+   "key": "CuidadoIntegral_asinc_6_20487",
+   "area": "Cuidado Integral",
+   "n": 6,
+   "rid": "20487",
+   "vimeo": "1195227088",
+   "firstSlide": 2,
+   "nSlides": 48,
+   "pct": 2,
+   "hits": 42
+  },
+  {
+   "key": "CuidadoIntegral_asinc_8_20566",
+   "area": "Cuidado Integral",
+   "n": 8,
+   "rid": "20566",
+   "vimeo": "1196897971",
+   "firstSlide": 3,
+   "nSlides": 58,
+   "pct": 4,
+   "hits": 10
+  },
+  {
+   "key": "CuidadoIntegral_asinc_5_20339",
+   "area": "Cuidado Integral",
+   "n": 5,
+   "rid": "20339",
+   "vimeo": "1194778416",
+   "firstSlide": 21,
+   "nSlides": 32,
+   "pct": 65,
+   "hits": 9
+  },
+  {
+   "key": "CuidadoIntegral_asinc_4_20340",
+   "area": "Cuidado Integral",
+   "n": 4,
+   "rid": "20340",
+   "vimeo": "1194571402",
+   "firstSlide": 9,
+   "nSlides": 60,
+   "pct": 14,
+   "hits": 8
+  },
+  {
+   "key": "CuidadoIntegral_asinc_7_20565",
+   "area": "Cuidado Integral",
+   "n": 7,
+   "rid": "20565",
+   "vimeo": "1196227774",
+   "firstSlide": 19,
+   "nSlides": 42,
+   "pct": 44,
+   "hits": 5
+  },
+  {
+   "key": "CuidadoIntegral_asinc_1_20200",
+   "area": "Cuidado Integral",
+   "n": 1,
+   "rid": "20200",
+   "vimeo": "1194546322",
+   "firstSlide": 8,
+   "nSlides": 33,
+   "pct": 22,
+   "hits": 3
+  },
+  {
+   "key": "Gestin_asinc_6_20695",
+   "area": "Gestión",
+   "n": 6,
+   "rid": "20695",
+   "vimeo": "1198521468",
+   "firstSlide": 10,
+   "nSlides": 29,
+   "pct": 32,
+   "hits": 2
+  },
+  {
+   "key": "CuidadoIntegral_asinc_3_20268",
+   "area": "Cuidado Integral",
+   "n": 3,
+   "rid": "20268",
+   "vimeo": "1192763838",
+   "firstSlide": 6,
+   "nSlides": 33,
+   "pct": 16,
+   "hits": 1
+  },
+  {
+   "key": "SaludPblica_asinc_4_20380",
+   "area": "Salud Pública",
+   "n": 4,
+   "rid": "20380",
+   "vimeo": "1194859549",
+   "firstSlide": 6,
+   "nSlides": 21,
+   "pct": 25,
+   "hits": 1
+  },
+  {
+   "key": "SaludPblica_asinc_2_20262",
+   "area": "Salud Pública",
+   "n": 2,
+   "rid": "20262",
+   "vimeo": "1192644790",
+   "firstSlide": 9,
+   "nSlides": 18,
+   "pct": 47,
+   "hits": 1
+  },
+  {
+   "key": "SaludPblica_asinc_3_20379",
+   "area": "Salud Pública",
+   "n": 3,
+   "rid": "20379",
+   "vimeo": "1194173568",
+   "firstSlide": 9,
+   "nSlides": 20,
+   "pct": 42,
+   "hits": 1
+  },
+  {
+   "key": "CuidadoIntegral_asinc_2_20240",
+   "area": "Cuidado Integral",
+   "n": 2,
+   "rid": "20240",
+   "vimeo": "1192695911",
+   "firstSlide": 13,
+   "nSlides": 45,
+   "pct": 27,
+   "hits": 1
+  },
+  {
+   "key": "Gestin_asinc_5_20677",
+   "area": "Gestión",
+   "n": 5,
+   "rid": "20677",
+   "vimeo": "1197490954",
+   "firstSlide": 14,
+   "nSlides": 26,
+   "pct": 52,
+   "hits": 1
+  },
+  {
+   "key": "Gestin_asinc_7_21402",
+   "area": "Gestión",
+   "n": 7,
+   "rid": "21402",
+   "vimeo": "1198549083",
+   "firstSlide": 21,
+   "nSlides": 25,
+   "pct": 83,
+   "hits": 1
+  }
+ ],
+ "II-1": [
+  {
+   "key": "CuidadoIntegral_asinc_7_20565",
+   "area": "Cuidado Integral",
+   "n": 7,
+   "rid": "20565",
+   "vimeo": "1196227774",
+   "firstSlide": 2,
+   "nSlides": 42,
+   "pct": 2,
+   "hits": 48
+  },
+  {
+   "key": "CuidadoIntegral_asinc_6_20487",
+   "area": "Cuidado Integral",
+   "n": 6,
+   "rid": "20487",
+   "vimeo": "1195227088",
+   "firstSlide": 30,
+   "nSlides": 48,
+   "pct": 62,
+   "hits": 15
+  },
+  {
+   "key": "tica_asinc_3_20185",
+   "area": "Ética",
+   "n": 3,
+   "rid": "20185",
+   "vimeo": "1192339535",
+   "firstSlide": 9,
+   "nSlides": 33,
+   "pct": 25,
+   "hits": 13
+  },
+  {
+   "key": "Gestin_asinc_3_20584",
+   "area": "Gestión",
+   "n": 3,
+   "rid": "20584",
+   "vimeo": "1195741794",
+   "firstSlide": 17,
+   "nSlides": 32,
+   "pct": 52,
+   "hits": 9
+  },
+  {
+   "key": "Gestin_asinc_5_20677",
+   "area": "Gestión",
+   "n": 5,
+   "rid": "20677",
+   "vimeo": "1197490954",
+   "firstSlide": 6,
+   "nSlides": 26,
+   "pct": 20,
+   "hits": 7
+  },
+  {
+   "key": "CuidadoIntegral_asinc_3_20268",
+   "area": "Cuidado Integral",
+   "n": 3,
+   "rid": "20268",
+   "vimeo": "1192763838",
+   "firstSlide": 4,
+   "nSlides": 33,
+   "pct": 9,
+   "hits": 3
+  },
+  {
+   "key": "Gestin_asinc_4_20585",
+   "area": "Gestión",
+   "n": 4,
+   "rid": "20585",
+   "vimeo": "1196440272",
+   "firstSlide": 4,
+   "nSlides": 28,
+   "pct": 11,
+   "hits": 3
+  },
+  {
+   "key": "CuidadoIntegral_asinc_4_20340",
+   "area": "Cuidado Integral",
+   "n": 4,
+   "rid": "20340",
+   "vimeo": "1194571402",
+   "firstSlide": 10,
+   "nSlides": 60,
+   "pct": 15,
+   "hits": 3
+  },
+  {
+   "key": "CuidadoIntegral_asinc_1_20200",
+   "area": "Cuidado Integral",
+   "n": 1,
+   "rid": "20200",
+   "vimeo": "1194546322",
+   "firstSlide": 17,
+   "nSlides": 33,
+   "pct": 50,
+   "hits": 3
+  },
+  {
+   "key": "CuidadoIntegral_asinc_8_20566",
+   "area": "Cuidado Integral",
+   "n": 8,
+   "rid": "20566",
+   "vimeo": "1196897971",
+   "firstSlide": 36,
+   "nSlides": 58,
+   "pct": 61,
+   "hits": 3
+  },
+  {
+   "key": "CuidadoIntegral_asinc_5_20339",
+   "area": "Cuidado Integral",
+   "n": 5,
+   "rid": "20339",
+   "vimeo": "1194778416",
+   "firstSlide": 29,
+   "nSlides": 32,
+   "pct": 90,
+   "hits": 2
+  },
+  {
+   "key": "Gestin_asinc_7_21402",
+   "area": "Gestión",
+   "n": 7,
+   "rid": "21402",
+   "vimeo": "1198549083",
+   "firstSlide": 7,
+   "nSlides": 25,
+   "pct": 25,
+   "hits": 1
+  },
+  {
+   "key": "tica_asinc_1_20154",
+   "area": "Ética",
+   "n": 1,
+   "rid": "20154",
+   "vimeo": "1191648361",
+   "firstSlide": 24,
+   "nSlides": 36,
+   "pct": 66,
+   "hits": 1
+  }
+ ],
+ "II-2": [
+  {
+   "key": "CuidadoIntegral_asinc_2_20240",
+   "area": "Cuidado Integral",
+   "n": 2,
+   "rid": "20240",
+   "vimeo": "1192695911",
+   "firstSlide": 2,
+   "nSlides": 45,
+   "pct": 2,
+   "hits": 11
+  },
+  {
+   "key": "CuidadoIntegral_asinc_1_20200",
+   "area": "Cuidado Integral",
+   "n": 1,
+   "rid": "20200",
+   "vimeo": "1194546322",
+   "firstSlide": 9,
+   "nSlides": 33,
+   "pct": 25,
+   "hits": 4
+  },
+  {
+   "key": "Gestin_asinc_6_20695",
+   "area": "Gestión",
+   "n": 6,
+   "rid": "20695",
+   "vimeo": "1198521468",
+   "firstSlide": 9,
+   "nSlides": 29,
+   "pct": 29,
+   "hits": 3
+  },
+  {
+   "key": "Gestin_asinc_7_21402",
+   "area": "Gestión",
+   "n": 7,
+   "rid": "21402",
+   "vimeo": "1198549083",
+   "firstSlide": 4,
+   "nSlides": 25,
+   "pct": 13,
+   "hits": 2
+  },
+  {
+   "key": "Gestin_asinc_3_20584",
+   "area": "Gestión",
+   "n": 3,
+   "rid": "20584",
+   "vimeo": "1195741794",
+   "firstSlide": 12,
+   "nSlides": 32,
+   "pct": 35,
+   "hits": 2
+  },
+  {
+   "key": "SaludPblica_asinc_5_20314",
+   "area": "Salud Pública",
+   "n": 5,
+   "rid": "20314",
+   "vimeo": "1196904560",
+   "firstSlide": 13,
+   "nSlides": 22,
+   "pct": 57,
+   "hits": 1
+  },
+  {
+   "key": "Gestin_asinc_5_20677",
+   "area": "Gestión",
+   "n": 5,
+   "rid": "20677",
+   "vimeo": "1197490954",
+   "firstSlide": 14,
+   "nSlides": 26,
+   "pct": 52,
+   "hits": 1
+  },
+  {
+   "key": "CuidadoIntegral_asinc_5_20339",
+   "area": "Cuidado Integral",
+   "n": 5,
+   "rid": "20339",
+   "vimeo": "1194778416",
+   "firstSlide": 18,
+   "nSlides": 32,
+   "pct": 55,
+   "hits": 1
+  },
+  {
+   "key": "CuidadoIntegral_asinc_8_20566",
+   "area": "Cuidado Integral",
+   "n": 8,
+   "rid": "20566",
+   "vimeo": "1196897971",
+   "firstSlide": 18,
+   "nSlides": 58,
+   "pct": 30,
+   "hits": 1
+  }
+ ],
+ "I-4": [
+  {
+   "key": "CuidadoIntegral_asinc_8_20566",
+   "area": "Cuidado Integral",
+   "n": 8,
+   "rid": "20566",
+   "vimeo": "1196897971",
+   "firstSlide": 20,
+   "nSlides": 58,
+   "pct": 33,
+   "hits": 17
+  },
+  {
+   "key": "SaludPblica_asinc_4_20380",
+   "area": "Salud Pública",
+   "n": 4,
+   "rid": "20380",
+   "vimeo": "1194859549",
+   "firstSlide": 11,
+   "nSlides": 21,
+   "pct": 50,
+   "hits": 6
+  },
+  {
+   "key": "SaludPblica_asinc_7_20559",
+   "area": "Salud Pública",
+   "n": 7,
+   "rid": "20559",
+   "vimeo": "1197026034",
+   "firstSlide": 3,
+   "nSlides": 22,
+   "pct": 10,
+   "hits": 4
+  },
+  {
+   "key": "CuidadoIntegral_asinc_4_20340",
+   "area": "Cuidado Integral",
+   "n": 4,
+   "rid": "20340",
+   "vimeo": "1194571402",
+   "firstSlide": 9,
+   "nSlides": 60,
+   "pct": 14,
+   "hits": 3
+  },
+  {
+   "key": "SaludPblica_asinc_3_20379",
+   "area": "Salud Pública",
+   "n": 3,
+   "rid": "20379",
+   "vimeo": "1194173568",
+   "firstSlide": 8,
+   "nSlides": 20,
+   "pct": 37,
+   "hits": 2
+  },
+  {
+   "key": "Gestin_asinc_6_20695",
+   "area": "Gestión",
+   "n": 6,
+   "rid": "20695",
+   "vimeo": "1198521468",
+   "firstSlide": 9,
+   "nSlides": 29,
+   "pct": 29,
+   "hits": 2
+  },
+  {
+   "key": "CuidadoIntegral_asinc_7_20565",
+   "area": "Cuidado Integral",
+   "n": 7,
+   "rid": "20565",
+   "vimeo": "1196227774",
+   "firstSlide": 12,
+   "nSlides": 42,
+   "pct": 27,
+   "hits": 1
+  },
+  {
+   "key": "CuidadoIntegral_asinc_6_20487",
+   "area": "Cuidado Integral",
+   "n": 6,
+   "rid": "20487",
+   "vimeo": "1195227088",
+   "firstSlide": 17,
+   "nSlides": 48,
+   "pct": 34,
+   "hits": 1
+  },
+  {
+   "key": "CuidadoIntegral_asinc_1_20200",
+   "area": "Cuidado Integral",
+   "n": 1,
+   "rid": "20200",
+   "vimeo": "1194546322",
+   "firstSlide": 21,
+   "nSlides": 33,
+   "pct": 63,
+   "hits": 1
+  }
+ ],
+ "II-4": [
+  {
+   "key": "CuidadoIntegral_asinc_7_20565",
+   "area": "Cuidado Integral",
+   "n": 7,
+   "rid": "20565",
+   "vimeo": "1196227774",
+   "firstSlide": 2,
+   "nSlides": 42,
+   "pct": 2,
+   "hits": 15
+  },
+  {
+   "key": "CuidadoIntegral_asinc_2_20240",
+   "area": "Cuidado Integral",
+   "n": 2,
+   "rid": "20240",
+   "vimeo": "1192695911",
+   "firstSlide": 10,
+   "nSlides": 45,
+   "pct": 20,
+   "hits": 8
+  },
+  {
+   "key": "CuidadoIntegral_asinc_3_20268",
+   "area": "Cuidado Integral",
+   "n": 3,
+   "rid": "20268",
+   "vimeo": "1192763838",
+   "firstSlide": 6,
+   "nSlides": 33,
+   "pct": 16,
+   "hits": 3
+  },
+  {
+   "key": "CuidadoIntegral_asinc_1_20200",
+   "area": "Cuidado Integral",
+   "n": 1,
+   "rid": "20200",
+   "vimeo": "1194546322",
+   "firstSlide": 8,
+   "nSlides": 33,
+   "pct": 22,
+   "hits": 3
+  },
+  {
+   "key": "CuidadoIntegral_asinc_5_20339",
+   "area": "Cuidado Integral",
+   "n": 5,
+   "rid": "20339",
+   "vimeo": "1194778416",
+   "firstSlide": 8,
+   "nSlides": 32,
+   "pct": 23,
+   "hits": 3
+  },
+  {
+   "key": "Gestin_asinc_6_20695",
+   "area": "Gestión",
+   "n": 6,
+   "rid": "20695",
+   "vimeo": "1198521468",
+   "firstSlide": 9,
+   "nSlides": 29,
+   "pct": 29,
+   "hits": 3
+  },
+  {
+   "key": "CuidadoIntegral_asinc_8_20566",
+   "area": "Cuidado Integral",
+   "n": 8,
+   "rid": "20566",
+   "vimeo": "1196897971",
+   "firstSlide": 12,
+   "nSlides": 58,
+   "pct": 19,
+   "hits": 3
+  },
+  {
+   "key": "CuidadoIntegral_asinc_4_20340",
+   "area": "Cuidado Integral",
+   "n": 4,
+   "rid": "20340",
+   "vimeo": "1194571402",
+   "firstSlide": 13,
+   "nSlides": 60,
+   "pct": 20,
+   "hits": 2
+  },
+  {
+   "key": "SaludPblica_asinc_6_20558",
+   "area": "Salud Pública",
+   "n": 6,
+   "rid": "20558",
+   "vimeo": "1197009853",
+   "firstSlide": 13,
+   "nSlides": 17,
+   "pct": 75,
+   "hits": 2
+  }
+ ],
+ "II-11": [
+  {
+   "key": "CuidadoIntegral_asinc_6_20487",
+   "area": "Cuidado Integral",
+   "n": 6,
+   "rid": "20487",
+   "vimeo": "1195227088",
+   "firstSlide": 14,
+   "nSlides": 48,
+   "pct": 28,
+   "hits": 61
+  },
+  {
+   "key": "CuidadoIntegral_asinc_4_20340",
+   "area": "Cuidado Integral",
+   "n": 4,
+   "rid": "20340",
+   "vimeo": "1194571402",
+   "firstSlide": 4,
+   "nSlides": 60,
+   "pct": 5,
+   "hits": 25
+  },
+  {
+   "key": "CuidadoIntegral_asinc_3_20268",
+   "area": "Cuidado Integral",
+   "n": 3,
+   "rid": "20268",
+   "vimeo": "1192763838",
+   "firstSlide": 4,
+   "nSlides": 33,
+   "pct": 9,
+   "hits": 17
+  },
+  {
+   "key": "CuidadoIntegral_asinc_1_20200",
+   "area": "Cuidado Integral",
+   "n": 1,
+   "rid": "20200",
+   "vimeo": "1194546322",
+   "firstSlide": 3,
+   "nSlides": 33,
+   "pct": 6,
+   "hits": 13
+  },
+  {
+   "key": "tica_asinc_2_20167",
+   "area": "Ética",
+   "n": 2,
+   "rid": "20167",
+   "vimeo": "1191663507",
+   "firstSlide": 2,
+   "nSlides": 30,
+   "pct": 3,
+   "hits": 7
+  },
+  {
+   "key": "CuidadoIntegral_asinc_7_20565",
+   "area": "Cuidado Integral",
+   "n": 7,
+   "rid": "20565",
+   "vimeo": "1196227774",
+   "firstSlide": 19,
+   "nSlides": 42,
+   "pct": 44,
+   "hits": 7
+  },
+  {
+   "key": "Gestin_asinc_6_20695",
+   "area": "Gestión",
+   "n": 6,
+   "rid": "20695",
+   "vimeo": "1198521468",
+   "firstSlide": 10,
+   "nSlides": 29,
+   "pct": 32,
+   "hits": 5
+  },
+  {
+   "key": "CuidadoIntegral_asinc_5_20339",
+   "area": "Cuidado Integral",
+   "n": 5,
+   "rid": "20339",
+   "vimeo": "1194778416",
+   "firstSlide": 4,
+   "nSlides": 32,
+   "pct": 10,
+   "hits": 4
+  },
+  {
+   "key": "Gestin_asinc_5_20677",
+   "area": "Gestión",
+   "n": 5,
+   "rid": "20677",
+   "vimeo": "1197490954",
+   "firstSlide": 4,
+   "nSlides": 26,
+   "pct": 12,
+   "hits": 4
+  },
+  {
+   "key": "Gestin_asinc_4_20585",
+   "area": "Gestión",
+   "n": 4,
+   "rid": "20585",
+   "vimeo": "1196440272",
+   "firstSlide": 6,
+   "nSlides": 28,
+   "pct": 19,
+   "hits": 4
+  },
+  {
+   "key": "tica_asinc_3_20185",
+   "area": "Ética",
+   "n": 3,
+   "rid": "20185",
+   "vimeo": "1192339535",
+   "firstSlide": 7,
+   "nSlides": 33,
+   "pct": 19,
+   "hits": 4
+  },
+  {
+   "key": "SaludPblica_asinc_6_20558",
+   "area": "Salud Pública",
+   "n": 6,
+   "rid": "20558",
+   "vimeo": "1197009853",
+   "firstSlide": 5,
+   "nSlides": 17,
+   "pct": 25,
+   "hits": 3
+  },
+  {
+   "key": "CuidadoIntegral_asinc_2_20240",
+   "area": "Cuidado Integral",
+   "n": 2,
+   "rid": "20240",
+   "vimeo": "1192695911",
+   "firstSlide": 10,
+   "nSlides": 45,
+   "pct": 20,
+   "hits": 3
+  },
+  {
+   "key": "SaludPblica_asinc_7_20559",
+   "area": "Salud Pública",
+   "n": 7,
+   "rid": "20559",
+   "vimeo": "1197026034",
+   "firstSlide": 4,
+   "nSlides": 22,
+   "pct": 14,
+   "hits": 2
+  },
+  {
+   "key": "SaludPblica_asinc_2_20262",
+   "area": "Salud Pública",
+   "n": 2,
+   "rid": "20262",
+   "vimeo": "1192644790",
+   "firstSlide": 9,
+   "nSlides": 18,
+   "pct": 47,
+   "hits": 2
+  },
+  {
+   "key": "SaludPblica_asinc_4_20380",
+   "area": "Salud Pública",
+   "n": 4,
+   "rid": "20380",
+   "vimeo": "1194859549",
+   "firstSlide": 5,
+   "nSlides": 21,
+   "pct": 20,
+   "hits": 1
+  },
+  {
+   "key": "tica_asinc_1_20154",
+   "area": "Ética",
+   "n": 1,
+   "rid": "20154",
+   "vimeo": "1191648361",
+   "firstSlide": 9,
+   "nSlides": 36,
+   "pct": 23,
+   "hits": 1
+  },
+  {
+   "key": "SaludPblica_asinc_1_20212",
+   "area": "Salud Pública",
+   "n": 1,
+   "rid": "20212",
+   "vimeo": "1194433471",
+   "firstSlide": 13,
+   "nSlides": 16,
+   "pct": 80,
+   "hits": 1
+  },
+  {
+   "key": "SaludPblica_asinc_5_20314",
+   "area": "Salud Pública",
+   "n": 5,
+   "rid": "20314",
+   "vimeo": "1196904560",
+   "firstSlide": 14,
+   "nSlides": 22,
+   "pct": 62,
+   "hits": 1
+  },
+  {
+   "key": "Gestin_asinc_3_20584",
+   "area": "Gestión",
+   "n": 3,
+   "rid": "20584",
+   "vimeo": "1195741794",
+   "firstSlide": 16,
+   "nSlides": 32,
+   "pct": 48,
+   "hits": 1
+  },
+  {
+   "key": "CuidadoIntegral_asinc_8_20566",
+   "area": "Cuidado Integral",
+   "n": 8,
+   "rid": "20566",
+   "vimeo": "1196897971",
+   "firstSlide": 53,
+   "nSlides": 58,
+   "pct": 91,
+   "hits": 1
+  }
+ ],
+ "I-3": [
+  {
+   "key": "SaludPblica_asinc_4_20380",
+   "area": "Salud Pública",
+   "n": 4,
+   "rid": "20380",
+   "vimeo": "1194859549",
+   "firstSlide": 2,
+   "nSlides": 21,
+   "pct": 5,
+   "hits": 8
+  },
+  {
+   "key": "CuidadoIntegral_asinc_6_20487",
+   "area": "Cuidado Integral",
+   "n": 6,
+   "rid": "20487",
+   "vimeo": "1195227088",
+   "firstSlide": 3,
+   "nSlides": 48,
+   "pct": 4,
+   "hits": 3
+  },
+  {
+   "key": "CuidadoIntegral_asinc_4_20340",
+   "area": "Cuidado Integral",
+   "n": 4,
+   "rid": "20340",
+   "vimeo": "1194571402",
+   "firstSlide": 4,
+   "nSlides": 60,
+   "pct": 5,
+   "hits": 3
+  },
+  {
+   "key": "CuidadoIntegral_asinc_8_20566",
+   "area": "Cuidado Integral",
+   "n": 8,
+   "rid": "20566",
+   "vimeo": "1196897971",
+   "firstSlide": 29,
+   "nSlides": 58,
+   "pct": 49,
+   "hits": 3
+  },
+  {
+   "key": "SaludPblica_asinc_3_20379",
+   "area": "Salud Pública",
+   "n": 3,
+   "rid": "20379",
+   "vimeo": "1194173568",
+   "firstSlide": 3,
+   "nSlides": 20,
+   "pct": 11,
+   "hits": 2
+  },
+  {
+   "key": "SaludPblica_asinc_1_20212",
+   "area": "Salud Pública",
+   "n": 1,
+   "rid": "20212",
+   "vimeo": "1194433471",
+   "firstSlide": 3,
+   "nSlides": 16,
+   "pct": 13,
+   "hits": 1
+  },
+  {
+   "key": "CuidadoIntegral_asinc_3_20268",
+   "area": "Cuidado Integral",
+   "n": 3,
+   "rid": "20268",
+   "vimeo": "1192763838",
+   "firstSlide": 11,
+   "nSlides": 33,
+   "pct": 31,
+   "hits": 1
+  },
+  {
+   "key": "CuidadoIntegral_asinc_1_20200",
+   "area": "Cuidado Integral",
+   "n": 1,
+   "rid": "20200",
+   "vimeo": "1194546322",
+   "firstSlide": 21,
+   "nSlides": 33,
+   "pct": 63,
+   "hits": 1
+  }
+ ],
+ "II-5": [
+  {
+   "key": "CuidadoIntegral_asinc_1_20200",
+   "area": "Cuidado Integral",
+   "n": 1,
+   "rid": "20200",
+   "vimeo": "1194546322",
+   "firstSlide": 6,
+   "nSlides": 33,
+   "pct": 16,
+   "hits": 41
+  },
+  {
+   "key": "CuidadoIntegral_asinc_4_20340",
+   "area": "Cuidado Integral",
+   "n": 4,
+   "rid": "20340",
+   "vimeo": "1194571402",
+   "firstSlide": 3,
+   "nSlides": 60,
+   "pct": 3,
+   "hits": 9
+  },
+  {
+   "key": "CuidadoIntegral_asinc_3_20268",
+   "area": "Cuidado Integral",
+   "n": 3,
+   "rid": "20268",
+   "vimeo": "1192763838",
+   "firstSlide": 4,
+   "nSlides": 33,
+   "pct": 9,
+   "hits": 1
+  },
+  {
+   "key": "Gestin_asinc_4_20585",
+   "area": "Gestión",
+   "n": 4,
+   "rid": "20585",
+   "vimeo": "1196440272",
+   "firstSlide": 6,
+   "nSlides": 28,
+   "pct": 19,
+   "hits": 1
+  }
+ ],
+ "II-7": [
+  {
+   "key": "CuidadoIntegral_asinc_4_20340",
+   "area": "Cuidado Integral",
+   "n": 4,
+   "rid": "20340",
+   "vimeo": "1194571402",
+   "firstSlide": 2,
+   "nSlides": 60,
+   "pct": 2,
+   "hits": 27
+  },
+  {
+   "key": "CuidadoIntegral_asinc_1_20200",
+   "area": "Cuidado Integral",
+   "n": 1,
+   "rid": "20200",
+   "vimeo": "1194546322",
+   "firstSlide": 12,
+   "nSlides": 33,
+   "pct": 34,
+   "hits": 3
+  },
+  {
+   "key": "CuidadoIntegral_asinc_7_20565",
+   "area": "Cuidado Integral",
+   "n": 7,
+   "rid": "20565",
+   "vimeo": "1196227774",
+   "firstSlide": 2,
+   "nSlides": 42,
+   "pct": 2,
+   "hits": 1
+  }
+ ],
+ "II-8": [
+  {
+   "key": "CuidadoIntegral_asinc_4_20340",
+   "area": "Cuidado Integral",
+   "n": 4,
+   "rid": "20340",
+   "vimeo": "1194571402",
+   "firstSlide": 4,
+   "nSlides": 60,
+   "pct": 5,
+   "hits": 21
+  },
+  {
+   "key": "SaludPblica_asinc_2_20262",
+   "area": "Salud Pública",
+   "n": 2,
+   "rid": "20262",
+   "vimeo": "1192644790",
+   "firstSlide": 4,
+   "nSlides": 18,
+   "pct": 18,
+   "hits": 4
+  },
+  {
+   "key": "CuidadoIntegral_asinc_7_20565",
+   "area": "Cuidado Integral",
+   "n": 7,
+   "rid": "20565",
+   "vimeo": "1196227774",
+   "firstSlide": 24,
+   "nSlides": 42,
+   "pct": 56,
+   "hits": 3
+  },
+  {
+   "key": "CuidadoIntegral_asinc_1_20200",
+   "area": "Cuidado Integral",
+   "n": 1,
+   "rid": "20200",
+   "vimeo": "1194546322",
+   "firstSlide": 3,
+   "nSlides": 33,
+   "pct": 6,
+   "hits": 2
+  },
+  {
+   "key": "SaludPblica_asinc_4_20380",
+   "area": "Salud Pública",
+   "n": 4,
+   "rid": "20380",
+   "vimeo": "1194859549",
+   "firstSlide": 18,
+   "nSlides": 21,
+   "pct": 85,
+   "hits": 2
+  },
+  {
+   "key": "CuidadoIntegral_asinc_2_20240",
+   "area": "Cuidado Integral",
+   "n": 2,
+   "rid": "20240",
+   "vimeo": "1192695911",
+   "firstSlide": 32,
+   "nSlides": 45,
+   "pct": 70,
+   "hits": 2
+  },
+  {
+   "key": "CuidadoIntegral_asinc_5_20339",
+   "area": "Cuidado Integral",
+   "n": 5,
+   "rid": "20339",
+   "vimeo": "1194778416",
+   "firstSlide": 8,
+   "nSlides": 32,
+   "pct": 23,
+   "hits": 1
+  },
+  {
+   "key": "SaludPblica_asinc_1_20212",
+   "area": "Salud Pública",
+   "n": 1,
+   "rid": "20212",
+   "vimeo": "1194433471",
+   "firstSlide": 8,
+   "nSlides": 16,
+   "pct": 47,
+   "hits": 1
+  },
+  {
+   "key": "SaludPblica_asinc_3_20379",
+   "area": "Salud Pública",
+   "n": 3,
+   "rid": "20379",
+   "vimeo": "1194173568",
+   "firstSlide": 12,
+   "nSlides": 20,
+   "pct": 58,
+   "hits": 1
+  }
+ ],
+ "II-9": [
+  {
+   "key": "CuidadoIntegral_asinc_4_20340",
+   "area": "Cuidado Integral",
+   "n": 4,
+   "rid": "20340",
+   "vimeo": "1194571402",
+   "firstSlide": 4,
+   "nSlides": 60,
+   "pct": 5,
+   "hits": 9
+  },
+  {
+   "key": "CuidadoIntegral_asinc_3_20268",
+   "area": "Cuidado Integral",
+   "n": 3,
+   "rid": "20268",
+   "vimeo": "1192763838",
+   "firstSlide": 6,
+   "nSlides": 33,
+   "pct": 16,
+   "hits": 8
+  },
+  {
+   "key": "SaludPblica_asinc_8_20655",
+   "area": "Salud Pública",
+   "n": 8,
+   "rid": "20655",
+   "vimeo": "1197526363",
+   "firstSlide": 2,
+   "nSlides": 22,
+   "pct": 5,
+   "hits": 4
+  },
+  {
+   "key": "CuidadoIntegral_asinc_2_20240",
+   "area": "Cuidado Integral",
+   "n": 2,
+   "rid": "20240",
+   "vimeo": "1192695911",
+   "firstSlide": 7,
+   "nSlides": 45,
+   "pct": 14,
+   "hits": 2
+  },
+  {
+   "key": "CuidadoIntegral_asinc_1_20200",
+   "area": "Cuidado Integral",
+   "n": 1,
+   "rid": "20200",
+   "vimeo": "1194546322",
+   "firstSlide": 14,
+   "nSlides": 33,
+   "pct": 41,
+   "hits": 2
+  },
+  {
+   "key": "CuidadoIntegral_asinc_7_20565",
+   "area": "Cuidado Integral",
+   "n": 7,
+   "rid": "20565",
+   "vimeo": "1196227774",
+   "firstSlide": 19,
+   "nSlides": 42,
+   "pct": 44,
+   "hits": 2
+  },
+  {
+   "key": "tica_asinc_3_20185",
+   "area": "Ética",
+   "n": 3,
+   "rid": "20185",
+   "vimeo": "1192339535",
+   "firstSlide": 25,
+   "nSlides": 33,
+   "pct": 75,
+   "hits": 2
+  },
+  {
+   "key": "SaludPblica_asinc_2_20262",
+   "area": "Salud Pública",
+   "n": 2,
+   "rid": "20262",
+   "vimeo": "1192644790",
+   "firstSlide": 9,
+   "nSlides": 18,
+   "pct": 47,
+   "hits": 1
+  },
+  {
+   "key": "Gestin_asinc_6_20695",
+   "area": "Gestión",
+   "n": 6,
+   "rid": "20695",
+   "vimeo": "1198521468",
+   "firstSlide": 9,
+   "nSlides": 29,
+   "pct": 29,
+   "hits": 1
+  },
+  {
+   "key": "SaludPblica_asinc_7_20559",
+   "area": "Salud Pública",
+   "n": 7,
+   "rid": "20559",
+   "vimeo": "1197026034",
+   "firstSlide": 20,
+   "nSlides": 22,
+   "pct": 90,
+   "hits": 1
+  },
+  {
+   "key": "tica_asinc_1_20154",
+   "area": "Ética",
+   "n": 1,
+   "rid": "20154",
+   "vimeo": "1191648361",
+   "firstSlide": 20,
+   "nSlides": 36,
+   "pct": 54,
+   "hits": 1
+  },
+  {
+   "key": "Gestin_asinc_7_21402",
+   "area": "Gestión",
+   "n": 7,
+   "rid": "21402",
+   "vimeo": "1198549083",
+   "firstSlide": 23,
+   "nSlides": 25,
+   "pct": 92,
+   "hits": 1
+  }
+ ],
+ "V-6": [
+  {
+   "key": "Gestin_asinc_5_20677",
+   "area": "Gestión",
+   "n": 5,
+   "rid": "20677",
+   "vimeo": "1197490954",
+   "firstSlide": 6,
+   "nSlides": 26,
+   "pct": 20,
+   "hits": 10
+  },
+  {
+   "key": "CuidadoIntegral_asinc_4_20340",
+   "area": "Cuidado Integral",
+   "n": 4,
+   "rid": "20340",
+   "vimeo": "1194571402",
+   "firstSlide": 4,
+   "nSlides": 60,
+   "pct": 5,
+   "hits": 7
+  },
+  {
+   "key": "CuidadoIntegral_asinc_2_20240",
+   "area": "Cuidado Integral",
+   "n": 2,
+   "rid": "20240",
+   "vimeo": "1192695911",
+   "firstSlide": 21,
+   "nSlides": 45,
+   "pct": 45,
+   "hits": 6
+  },
+  {
+   "key": "CuidadoIntegral_asinc_1_20200",
+   "area": "Cuidado Integral",
+   "n": 1,
+   "rid": "20200",
+   "vimeo": "1194546322",
+   "firstSlide": 8,
+   "nSlides": 33,
+   "pct": 22,
+   "hits": 2
+  },
+  {
+   "key": "SaludPblica_asinc_6_20558",
+   "area": "Salud Pública",
+   "n": 6,
+   "rid": "20558",
+   "vimeo": "1197009853",
+   "firstSlide": 9,
+   "nSlides": 17,
+   "pct": 50,
+   "hits": 2
+  },
+  {
+   "key": "Gestin_asinc_4_20585",
+   "area": "Gestión",
+   "n": 4,
+   "rid": "20585",
+   "vimeo": "1196440272",
+   "firstSlide": 8,
+   "nSlides": 28,
+   "pct": 26,
+   "hits": 1
+  },
+  {
+   "key": "Gestin_asinc_7_21402",
+   "area": "Gestión",
+   "n": 7,
+   "rid": "21402",
+   "vimeo": "1198549083",
+   "firstSlide": 22,
+   "nSlides": 25,
+   "pct": 88,
+   "hits": 1
+  }
+ ],
+ "I-5+I-6": [
+  {
+   "key": "SaludPblica_asinc_5_20314",
+   "area": "Salud Pública",
+   "n": 5,
+   "rid": "20314",
+   "vimeo": "1196904560",
+   "firstSlide": 2,
+   "nSlides": 22,
+   "pct": 5,
+   "hits": 9
+  },
+  {
+   "key": "Gestin_asinc_6_20695",
+   "area": "Gestión",
+   "n": 6,
+   "rid": "20695",
+   "vimeo": "1198521468",
+   "firstSlide": 4,
+   "nSlides": 29,
+   "pct": 11,
+   "hits": 6
+  },
+  {
+   "key": "CuidadoIntegral_asinc_1_20200",
+   "area": "Cuidado Integral",
+   "n": 1,
+   "rid": "20200",
+   "vimeo": "1194546322",
+   "firstSlide": 7,
+   "nSlides": 33,
+   "pct": 19,
+   "hits": 3
+  },
+  {
+   "key": "SaludPblica_asinc_2_20262",
+   "area": "Salud Pública",
+   "n": 2,
+   "rid": "20262",
+   "vimeo": "1192644790",
+   "firstSlide": 2,
+   "nSlides": 18,
+   "pct": 6,
+   "hits": 2
+  },
+  {
+   "key": "CuidadoIntegral_asinc_4_20340",
+   "area": "Cuidado Integral",
+   "n": 4,
+   "rid": "20340",
+   "vimeo": "1194571402",
+   "firstSlide": 4,
+   "nSlides": 60,
+   "pct": 5,
+   "hits": 2
+  },
+  {
+   "key": "Gestin_asinc_5_20677",
+   "area": "Gestión",
+   "n": 5,
+   "rid": "20677",
+   "vimeo": "1197490954",
+   "firstSlide": 4,
+   "nSlides": 26,
+   "pct": 12,
+   "hits": 2
+  },
+  {
+   "key": "SaludPblica_asinc_1_20212",
+   "area": "Salud Pública",
+   "n": 1,
+   "rid": "20212",
+   "vimeo": "1194433471",
+   "firstSlide": 6,
+   "nSlides": 16,
+   "pct": 33,
+   "hits": 2
+  },
+  {
+   "key": "SaludPblica_asinc_8_20655",
+   "area": "Salud Pública",
+   "n": 8,
+   "rid": "20655",
+   "vimeo": "1197526363",
+   "firstSlide": 6,
+   "nSlides": 22,
+   "pct": 24,
+   "hits": 2
+  },
+  {
+   "key": "SaludPblica_asinc_4_20380",
+   "area": "Salud Pública",
+   "n": 4,
+   "rid": "20380",
+   "vimeo": "1194859549",
+   "firstSlide": 7,
+   "nSlides": 21,
+   "pct": 30,
+   "hits": 1
+  },
+  {
+   "key": "CuidadoIntegral_asinc_5_20339",
+   "area": "Cuidado Integral",
+   "n": 5,
+   "rid": "20339",
+   "vimeo": "1194778416",
+   "firstSlide": 17,
+   "nSlides": 32,
+   "pct": 52,
+   "hits": 1
+  },
+  {
+   "key": "tica_asinc_2_20167",
+   "area": "Ética",
+   "n": 2,
+   "rid": "20167",
+   "vimeo": "1191663507",
+   "firstSlide": 17,
+   "nSlides": 30,
+   "pct": 55,
+   "hits": 1
+  }
+ ],
+ "I-8": [
+  {
+   "key": "CuidadoIntegral_asinc_1_20200",
+   "area": "Cuidado Integral",
+   "n": 1,
+   "rid": "20200",
+   "vimeo": "1194546322",
+   "firstSlide": 14,
+   "nSlides": 33,
+   "pct": 41,
+   "hits": 2
+  },
+  {
+   "key": "CuidadoIntegral_asinc_4_20340",
+   "area": "Cuidado Integral",
+   "n": 4,
+   "rid": "20340",
+   "vimeo": "1194571402",
+   "firstSlide": 21,
+   "nSlides": 60,
+   "pct": 34,
+   "hits": 2
+  },
+  {
+   "key": "CuidadoIntegral_asinc_6_20487",
+   "area": "Cuidado Integral",
+   "n": 6,
+   "rid": "20487",
+   "vimeo": "1195227088",
+   "firstSlide": 3,
+   "nSlides": 48,
+   "pct": 4,
+   "hits": 1
+  },
+  {
+   "key": "SaludPblica_asinc_2_20262",
+   "area": "Salud Pública",
+   "n": 2,
+   "rid": "20262",
+   "vimeo": "1192644790",
+   "firstSlide": 11,
+   "nSlides": 18,
+   "pct": 59,
+   "hits": 1
+  },
+  {
+   "key": "Investigacin_asinc_3_20315",
+   "area": "Investigación",
+   "n": 3,
+   "rid": "20315",
+   "vimeo": "1194600605",
+   "firstSlide": 12,
+   "nSlides": 20,
+   "pct": 58,
+   "hits": 1
+  },
+  {
+   "key": "tica_asinc_2_20167",
+   "area": "Ética",
+   "n": 2,
+   "rid": "20167",
+   "vimeo": "1191663507",
+   "firstSlide": 22,
+   "nSlides": 30,
+   "pct": 72,
+   "hits": 1
+  }
+ ],
+ "I-11+I-12": [
+  {
+   "key": "Gestin_asinc_6_20695",
+   "area": "Gestión",
+   "n": 6,
+   "rid": "20695",
+   "vimeo": "1198521468",
+   "firstSlide": 4,
+   "nSlides": 29,
+   "pct": 11,
+   "hits": 2
+  },
+  {
+   "key": "CuidadoIntegral_asinc_1_20200",
+   "area": "Cuidado Integral",
+   "n": 1,
+   "rid": "20200",
+   "vimeo": "1194546322",
+   "firstSlide": 21,
+   "nSlides": 33,
+   "pct": 63,
+   "hits": 2
+  },
+  {
+   "key": "SaludPblica_asinc_7_20559",
+   "area": "Salud Pública",
+   "n": 7,
+   "rid": "20559",
+   "vimeo": "1197026034",
+   "firstSlide": 2,
+   "nSlides": 22,
+   "pct": 5,
+   "hits": 1
+  },
+  {
+   "key": "CuidadoIntegral_asinc_4_20340",
+   "area": "Cuidado Integral",
+   "n": 4,
+   "rid": "20340",
+   "vimeo": "1194571402",
+   "firstSlide": 7,
+   "nSlides": 60,
+   "pct": 10,
+   "hits": 1
+  },
+  {
+   "key": "SaludPblica_asinc_5_20314",
+   "area": "Salud Pública",
+   "n": 5,
+   "rid": "20314",
+   "vimeo": "1196904560",
+   "firstSlide": 13,
+   "nSlides": 22,
+   "pct": 57,
+   "hits": 1
+  },
+  {
+   "key": "Gestin_asinc_4_20585",
+   "area": "Gestión",
+   "n": 4,
+   "rid": "20585",
+   "vimeo": "1196440272",
+   "firstSlide": 16,
+   "nSlides": 28,
+   "pct": 56,
+   "hits": 1
+  },
+  {
+   "key": "CuidadoIntegral_asinc_5_20339",
+   "area": "Cuidado Integral",
+   "n": 5,
+   "rid": "20339",
+   "vimeo": "1194778416",
+   "firstSlide": 17,
+   "nSlides": 32,
+   "pct": 52,
+   "hits": 1
+  },
+  {
+   "key": "CuidadoIntegral_asinc_7_20565",
+   "area": "Cuidado Integral",
+   "n": 7,
+   "rid": "20565",
+   "vimeo": "1196227774",
+   "firstSlide": 27,
+   "nSlides": 42,
+   "pct": 63,
+   "hits": 1
+  }
+ ],
+ "III-5": [
+  {
+   "key": "tica_asinc_3_20185",
+   "area": "Ética",
+   "n": 3,
+   "rid": "20185",
+   "vimeo": "1192339535",
+   "firstSlide": 1,
+   "nSlides": 33,
+   "pct": 0,
+   "hits": 14
+  },
+  {
+   "key": "tica_asinc_2_20167",
+   "area": "Ética",
+   "n": 2,
+   "rid": "20167",
+   "vimeo": "1191663507",
+   "firstSlide": 1,
+   "nSlides": 30,
+   "pct": 0,
+   "hits": 12
+  },
+  {
+   "key": "CuidadoIntegral_asinc_4_20340",
+   "area": "Cuidado Integral",
+   "n": 4,
+   "rid": "20340",
+   "vimeo": "1194571402",
+   "firstSlide": 5,
+   "nSlides": 60,
+   "pct": 7,
+   "hits": 5
+  },
+  {
+   "key": "CuidadoIntegral_asinc_1_20200",
+   "area": "Cuidado Integral",
+   "n": 1,
+   "rid": "20200",
+   "vimeo": "1194546322",
+   "firstSlide": 10,
+   "nSlides": 33,
+   "pct": 28,
+   "hits": 3
+  },
+  {
+   "key": "tica_asinc_1_20154",
+   "area": "Ética",
+   "n": 1,
+   "rid": "20154",
+   "vimeo": "1191648361",
+   "firstSlide": 1,
+   "nSlides": 36,
+   "pct": 0,
+   "hits": 1
+  },
+  {
+   "key": "CuidadoIntegral_asinc_3_20268",
+   "area": "Cuidado Integral",
+   "n": 3,
+   "rid": "20268",
+   "vimeo": "1192763838",
+   "firstSlide": 4,
+   "nSlides": 33,
+   "pct": 9,
+   "hits": 1
+  },
+  {
+   "key": "Gestin_asinc_5_20677",
+   "area": "Gestión",
+   "n": 5,
+   "rid": "20677",
+   "vimeo": "1197490954",
+   "firstSlide": 11,
+   "nSlides": 26,
+   "pct": 40,
+   "hits": 1
+  },
+  {
+   "key": "CuidadoIntegral_asinc_5_20339",
+   "area": "Cuidado Integral",
+   "n": 5,
+   "rid": "20339",
+   "vimeo": "1194778416",
+   "firstSlide": 17,
+   "nSlides": 32,
+   "pct": 52,
+   "hits": 1
+  },
+  {
+   "key": "CuidadoIntegral_asinc_7_20565",
+   "area": "Cuidado Integral",
+   "n": 7,
+   "rid": "20565",
+   "vimeo": "1196227774",
+   "firstSlide": 20,
+   "nSlides": 42,
+   "pct": 46,
+   "hits": 1
+  },
+  {
+   "key": "SaludPblica_asinc_7_20559",
+   "area": "Salud Pública",
+   "n": 7,
+   "rid": "20559",
+   "vimeo": "1197026034",
+   "firstSlide": 20,
+   "nSlides": 22,
+   "pct": 90,
+   "hits": 1
+  }
+ ],
+ "IV-3+IV-5": [
+  {
+   "key": "CuidadoIntegral_asinc_4_20340",
+   "area": "Cuidado Integral",
+   "n": 4,
+   "rid": "20340",
+   "vimeo": "1194571402",
+   "firstSlide": 8,
+   "nSlides": 60,
+   "pct": 12,
+   "hits": 9
+  },
+  {
+   "key": "CuidadoIntegral_asinc_8_20566",
+   "area": "Cuidado Integral",
+   "n": 8,
+   "rid": "20566",
+   "vimeo": "1196897971",
+   "firstSlide": 3,
+   "nSlides": 58,
+   "pct": 4,
+   "hits": 8
+  },
+  {
+   "key": "CuidadoIntegral_asinc_6_20487",
+   "area": "Cuidado Integral",
+   "n": 6,
+   "rid": "20487",
+   "vimeo": "1195227088",
+   "firstSlide": 14,
+   "nSlides": 48,
+   "pct": 28,
+   "hits": 8
+  },
+  {
+   "key": "CuidadoIntegral_asinc_5_20339",
+   "area": "Cuidado Integral",
+   "n": 5,
+   "rid": "20339",
+   "vimeo": "1194778416",
+   "firstSlide": 17,
+   "nSlides": 32,
+   "pct": 52,
+   "hits": 8
+  },
+  {
+   "key": "SaludPblica_asinc_2_20262",
+   "area": "Salud Pública",
+   "n": 2,
+   "rid": "20262",
+   "vimeo": "1192644790",
+   "firstSlide": 2,
+   "nSlides": 18,
+   "pct": 6,
+   "hits": 7
+  },
+  {
+   "key": "CuidadoIntegral_asinc_2_20240",
+   "area": "Cuidado Integral",
+   "n": 2,
+   "rid": "20240",
+   "vimeo": "1192695911",
+   "firstSlide": 3,
+   "nSlides": 45,
+   "pct": 5,
+   "hits": 7
+  },
+  {
+   "key": "CuidadoIntegral_asinc_3_20268",
+   "area": "Cuidado Integral",
+   "n": 3,
+   "rid": "20268",
+   "vimeo": "1192763838",
+   "firstSlide": 28,
+   "nSlides": 33,
+   "pct": 84,
+   "hits": 3
+  },
+  {
+   "key": "CuidadoIntegral_asinc_1_20200",
+   "area": "Cuidado Integral",
+   "n": 1,
+   "rid": "20200",
+   "vimeo": "1194546322",
+   "firstSlide": 12,
+   "nSlides": 33,
+   "pct": 34,
+   "hits": 2
+  },
+  {
+   "key": "CuidadoIntegral_asinc_7_20565",
+   "area": "Cuidado Integral",
+   "n": 7,
+   "rid": "20565",
+   "vimeo": "1196227774",
+   "firstSlide": 19,
+   "nSlides": 42,
+   "pct": 44,
+   "hits": 2
+  },
+  {
+   "key": "Gestin_asinc_5_20677",
+   "area": "Gestión",
+   "n": 5,
+   "rid": "20677",
+   "vimeo": "1197490954",
+   "firstSlide": 6,
+   "nSlides": 26,
+   "pct": 20,
+   "hits": 1
+  },
+  {
+   "key": "SaludPblica_asinc_3_20379",
+   "area": "Salud Pública",
+   "n": 3,
+   "rid": "20379",
+   "vimeo": "1194173568",
+   "firstSlide": 8,
+   "nSlides": 20,
+   "pct": 37,
+   "hits": 1
+  },
+  {
+   "key": "Gestin_asinc_6_20695",
+   "area": "Gestión",
+   "n": 6,
+   "rid": "20695",
+   "vimeo": "1198521468",
+   "firstSlide": 9,
+   "nSlides": 29,
+   "pct": 29,
+   "hits": 1
+  },
+  {
+   "key": "SaludPblica_asinc_1_20212",
+   "area": "Salud Pública",
+   "n": 1,
+   "rid": "20212",
+   "vimeo": "1194433471",
+   "firstSlide": 11,
+   "nSlides": 16,
+   "pct": 67,
+   "hits": 1
+  },
+  {
+   "key": "SaludPblica_asinc_4_20380",
+   "area": "Salud Pública",
+   "n": 4,
+   "rid": "20380",
+   "vimeo": "1194859549",
+   "firstSlide": 11,
+   "nSlides": 21,
+   "pct": 50,
+   "hits": 1
+  }
+ ],
+ "V-3": [
+  {
+   "key": "CuidadoIntegral_asinc_1_20200",
+   "area": "Cuidado Integral",
+   "n": 1,
+   "rid": "20200",
+   "vimeo": "1194546322",
+   "firstSlide": 5,
+   "nSlides": 33,
+   "pct": 13,
+   "hits": 6
+  },
+  {
+   "key": "CuidadoIntegral_asinc_4_20340",
+   "area": "Cuidado Integral",
+   "n": 4,
+   "rid": "20340",
+   "vimeo": "1194571402",
+   "firstSlide": 5,
+   "nSlides": 60,
+   "pct": 7,
+   "hits": 5
+  },
+  {
+   "key": "Gestin_asinc_4_20585",
+   "area": "Gestión",
+   "n": 4,
+   "rid": "20585",
+   "vimeo": "1196440272",
+   "firstSlide": 10,
+   "nSlides": 28,
+   "pct": 33,
+   "hits": 3
+  },
+  {
+   "key": "Gestin_asinc_3_20584",
+   "area": "Gestión",
+   "n": 3,
+   "rid": "20584",
+   "vimeo": "1195741794",
+   "firstSlide": 13,
+   "nSlides": 32,
+   "pct": 39,
+   "hits": 2
+  },
+  {
+   "key": "Gestin_asinc_5_20677",
+   "area": "Gestión",
+   "n": 5,
+   "rid": "20677",
+   "vimeo": "1197490954",
+   "firstSlide": 8,
+   "nSlides": 26,
+   "pct": 28,
+   "hits": 1
+  }
+ ],
+ "V-7+V-10": [
+  {
+   "key": "Gestin_asinc_7_21402",
+   "area": "Gestión",
+   "n": 7,
+   "rid": "21402",
+   "vimeo": "1198549083",
+   "firstSlide": 20,
+   "nSlides": 25,
+   "pct": 79,
+   "hits": 6
+  },
+  {
+   "key": "CuidadoIntegral_asinc_1_20200",
+   "area": "Cuidado Integral",
+   "n": 1,
+   "rid": "20200",
+   "vimeo": "1194546322",
+   "firstSlide": 11,
+   "nSlides": 33,
+   "pct": 31,
+   "hits": 4
+  },
+  {
+   "key": "Gestin_asinc_4_20585",
+   "area": "Gestión",
+   "n": 4,
+   "rid": "20585",
+   "vimeo": "1196440272",
+   "firstSlide": 16,
+   "nSlides": 28,
+   "pct": 56,
+   "hits": 3
+  },
+  {
+   "key": "SaludPblica_asinc_6_20558",
+   "area": "Salud Pública",
+   "n": 6,
+   "rid": "20558",
+   "vimeo": "1197009853",
+   "firstSlide": 2,
+   "nSlides": 17,
+   "pct": 6,
+   "hits": 2
+  },
+  {
+   "key": "CuidadoIntegral_asinc_4_20340",
+   "area": "Cuidado Integral",
+   "n": 4,
+   "rid": "20340",
+   "vimeo": "1194571402",
+   "firstSlide": 6,
+   "nSlides": 60,
+   "pct": 8,
+   "hits": 2
+  },
+  {
+   "key": "CuidadoIntegral_asinc_3_20268",
+   "area": "Cuidado Integral",
+   "n": 3,
+   "rid": "20268",
+   "vimeo": "1192763838",
+   "firstSlide": 8,
+   "nSlides": 33,
+   "pct": 22,
+   "hits": 2
+  }
+ ],
+ "I-10": [
+  {
+   "key": "CuidadoIntegral_asinc_1_20200",
+   "area": "Cuidado Integral",
+   "n": 1,
+   "rid": "20200",
+   "vimeo": "1194546322",
+   "firstSlide": 2,
+   "nSlides": 33,
+   "pct": 3,
+   "hits": 11
+  }
+ ],
+ "III-4+III-7": [
+  {
+   "key": "CuidadoIntegral_asinc_4_20340",
+   "area": "Cuidado Integral",
+   "n": 4,
+   "rid": "20340",
+   "vimeo": "1194571402",
+   "firstSlide": 4,
+   "nSlides": 60,
+   "pct": 5,
+   "hits": 8
+  },
+  {
+   "key": "CuidadoIntegral_asinc_2_20240",
+   "area": "Cuidado Integral",
+   "n": 2,
+   "rid": "20240",
+   "vimeo": "1192695911",
+   "firstSlide": 5,
+   "nSlides": 45,
+   "pct": 9,
+   "hits": 7
+  },
+  {
+   "key": "CuidadoIntegral_asinc_7_20565",
+   "area": "Cuidado Integral",
+   "n": 7,
+   "rid": "20565",
+   "vimeo": "1196227774",
+   "firstSlide": 19,
+   "nSlides": 42,
+   "pct": 44,
+   "hits": 7
+  },
+  {
+   "key": "CuidadoIntegral_asinc_3_20268",
+   "area": "Cuidado Integral",
+   "n": 3,
+   "rid": "20268",
+   "vimeo": "1192763838",
+   "firstSlide": 11,
+   "nSlides": 33,
+   "pct": 31,
+   "hits": 4
+  },
+  {
+   "key": "CuidadoIntegral_asinc_1_20200",
+   "area": "Cuidado Integral",
+   "n": 1,
+   "rid": "20200",
+   "vimeo": "1194546322",
+   "firstSlide": 12,
+   "nSlides": 33,
+   "pct": 34,
+   "hits": 3
+  },
+  {
+   "key": "Gestin_asinc_6_20695",
+   "area": "Gestión",
+   "n": 6,
+   "rid": "20695",
+   "vimeo": "1198521468",
+   "firstSlide": 9,
+   "nSlides": 29,
+   "pct": 29,
+   "hits": 2
+  },
+  {
+   "key": "Gestin_asinc_4_20585",
+   "area": "Gestión",
+   "n": 4,
+   "rid": "20585",
+   "vimeo": "1196440272",
+   "firstSlide": 23,
+   "nSlides": 28,
+   "pct": 81,
+   "hits": 2
+  },
+  {
+   "key": "Investigacin_asinc_1_20242",
+   "area": "Investigación",
+   "n": 1,
+   "rid": "20242",
+   "vimeo": "1193476203",
+   "firstSlide": 11,
+   "nSlides": 17,
+   "pct": 63,
+   "hits": 1
+  },
+  {
+   "key": "tica_asinc_1_20154",
+   "area": "Ética",
+   "n": 1,
+   "rid": "20154",
+   "vimeo": "1191648361",
+   "firstSlide": 20,
+   "nSlides": 36,
+   "pct": 54,
+   "hits": 1
+  },
+  {
+   "key": "CuidadoIntegral_asinc_6_20487",
+   "area": "Cuidado Integral",
+   "n": 6,
+   "rid": "20487",
+   "vimeo": "1195227088",
+   "firstSlide": 37,
+   "nSlides": 48,
+   "pct": 77,
+   "hits": 1
+  }
+ ],
+ "II-10": [
+  {
+   "key": "CuidadoIntegral_asinc_2_20240",
+   "area": "Cuidado Integral",
+   "n": 2,
+   "rid": "20240",
+   "vimeo": "1192695911",
+   "firstSlide": 18,
+   "nSlides": 45,
+   "pct": 39,
+   "hits": 19
+  },
+  {
+   "key": "CuidadoIntegral_asinc_4_20340",
+   "area": "Cuidado Integral",
+   "n": 4,
+   "rid": "20340",
+   "vimeo": "1194571402",
+   "firstSlide": 4,
+   "nSlides": 60,
+   "pct": 5,
+   "hits": 10
+  },
+  {
+   "key": "CuidadoIntegral_asinc_8_20566",
+   "area": "Cuidado Integral",
+   "n": 8,
+   "rid": "20566",
+   "vimeo": "1196897971",
+   "firstSlide": 2,
+   "nSlides": 58,
+   "pct": 2,
+   "hits": 5
+  },
+  {
+   "key": "CuidadoIntegral_asinc_5_20339",
+   "area": "Cuidado Integral",
+   "n": 5,
+   "rid": "20339",
+   "vimeo": "1194778416",
+   "firstSlide": 6,
+   "nSlides": 32,
+   "pct": 16,
+   "hits": 5
+  },
+  {
+   "key": "SaludPblica_asinc_2_20262",
+   "area": "Salud Pública",
+   "n": 2,
+   "rid": "20262",
+   "vimeo": "1192644790",
+   "firstSlide": 4,
+   "nSlides": 18,
+   "pct": 18,
+   "hits": 4
+  },
+  {
+   "key": "Gestin_asinc_3_20584",
+   "area": "Gestión",
+   "n": 3,
+   "rid": "20584",
+   "vimeo": "1195741794",
+   "firstSlide": 19,
+   "nSlides": 32,
+   "pct": 58,
+   "hits": 3
+  },
+  {
+   "key": "Gestin_asinc_7_21402",
+   "area": "Gestión",
+   "n": 7,
+   "rid": "21402",
+   "vimeo": "1198549083",
+   "firstSlide": 20,
+   "nSlides": 25,
+   "pct": 79,
+   "hits": 3
+  },
+  {
+   "key": "SaludPblica_asinc_1_20212",
+   "area": "Salud Pública",
+   "n": 1,
+   "rid": "20212",
+   "vimeo": "1194433471",
+   "firstSlide": 9,
+   "nSlides": 16,
+   "pct": 53,
+   "hits": 2
+  },
+  {
+   "key": "Gestin_asinc_6_20695",
+   "area": "Gestión",
+   "n": 6,
+   "rid": "20695",
+   "vimeo": "1198521468",
+   "firstSlide": 10,
+   "nSlides": 29,
+   "pct": 32,
+   "hits": 1
+  },
+  {
+   "key": "SaludPblica_asinc_4_20380",
+   "area": "Salud Pública",
+   "n": 4,
+   "rid": "20380",
+   "vimeo": "1194859549",
+   "firstSlide": 18,
+   "nSlides": 21,
+   "pct": 85,
+   "hits": 1
+  },
+  {
+   "key": "Gestin_asinc_4_20585",
+   "area": "Gestión",
+   "n": 4,
+   "rid": "20585",
+   "vimeo": "1196440272",
+   "firstSlide": 23,
+   "nSlides": 28,
+   "pct": 81,
+   "hits": 1
+  }
+ ],
+ "II-12": [
+  {
+   "key": "CuidadoIntegral_asinc_2_20240",
+   "area": "Cuidado Integral",
+   "n": 2,
+   "rid": "20240",
+   "vimeo": "1192695911",
+   "firstSlide": 13,
+   "nSlides": 45,
+   "pct": 27,
+   "hits": 4
+  },
+  {
+   "key": "CuidadoIntegral_asinc_3_20268",
+   "area": "Cuidado Integral",
+   "n": 3,
+   "rid": "20268",
+   "vimeo": "1192763838",
+   "firstSlide": 4,
+   "nSlides": 33,
+   "pct": 9,
+   "hits": 2
+  },
+  {
+   "key": "Gestin_asinc_3_20584",
+   "area": "Gestión",
+   "n": 3,
+   "rid": "20584",
+   "vimeo": "1195741794",
+   "firstSlide": 22,
+   "nSlides": 32,
+   "pct": 68,
+   "hits": 2
+  },
+  {
+   "key": "CuidadoIntegral_asinc_4_20340",
+   "area": "Cuidado Integral",
+   "n": 4,
+   "rid": "20340",
+   "vimeo": "1194571402",
+   "firstSlide": 13,
+   "nSlides": 60,
+   "pct": 20,
+   "hits": 1
+  },
+  {
+   "key": "CuidadoIntegral_asinc_7_20565",
+   "area": "Cuidado Integral",
+   "n": 7,
+   "rid": "20565",
+   "vimeo": "1196227774",
+   "firstSlide": 19,
+   "nSlides": 42,
+   "pct": 44,
+   "hits": 1
+  }
+ ],
+ "III-6+III-10": [
+  {
+   "key": "tica_asinc_2_20167",
+   "area": "Ética",
+   "n": 2,
+   "rid": "20167",
+   "vimeo": "1191663507",
+   "firstSlide": 4,
+   "nSlides": 30,
+   "pct": 10,
+   "hits": 3
+  },
+  {
+   "key": "CuidadoIntegral_asinc_2_20240",
+   "area": "Cuidado Integral",
+   "n": 2,
+   "rid": "20240",
+   "vimeo": "1192695911",
+   "firstSlide": 15,
+   "nSlides": 45,
+   "pct": 32,
+   "hits": 2
+  },
+  {
+   "key": "Investigacin_asinc_3_20315",
+   "area": "Investigación",
+   "n": 3,
+   "rid": "20315",
+   "vimeo": "1194600605",
+   "firstSlide": 17,
+   "nSlides": 20,
+   "pct": 84,
+   "hits": 2
+  },
+  {
+   "key": "CuidadoIntegral_asinc_5_20339",
+   "area": "Cuidado Integral",
+   "n": 5,
+   "rid": "20339",
+   "vimeo": "1194778416",
+   "firstSlide": 18,
+   "nSlides": 32,
+   "pct": 55,
+   "hits": 1
+  }
+ ],
+ "II-6": [
+  {
+   "key": "CuidadoIntegral_asinc_5_20339",
+   "area": "Cuidado Integral",
+   "n": 5,
+   "rid": "20339",
+   "vimeo": "1194778416",
+   "firstSlide": 8,
+   "nSlides": 32,
+   "pct": 23,
+   "hits": 17
+  },
+  {
+   "key": "CuidadoIntegral_asinc_4_20340",
+   "area": "Cuidado Integral",
+   "n": 4,
+   "rid": "20340",
+   "vimeo": "1194571402",
+   "firstSlide": 9,
+   "nSlides": 60,
+   "pct": 14,
+   "hits": 4
+  },
+  {
+   "key": "CuidadoIntegral_asinc_3_20268",
+   "area": "Cuidado Integral",
+   "n": 3,
+   "rid": "20268",
+   "vimeo": "1192763838",
+   "firstSlide": 21,
+   "nSlides": 33,
+   "pct": 63,
+   "hits": 2
+  },
+  {
+   "key": "SaludPblica_asinc_1_20212",
+   "area": "Salud Pública",
+   "n": 1,
+   "rid": "20212",
+   "vimeo": "1194433471",
+   "firstSlide": 11,
+   "nSlides": 16,
+   "pct": 67,
+   "hits": 1
+  },
+  {
+   "key": "Gestin_asinc_5_20677",
+   "area": "Gestión",
+   "n": 5,
+   "rid": "20677",
+   "vimeo": "1197490954",
+   "firstSlide": 14,
+   "nSlides": 26,
+   "pct": 52,
+   "hits": 1
+  },
+  {
+   "key": "SaludPblica_asinc_3_20379",
+   "area": "Salud Pública",
+   "n": 3,
+   "rid": "20379",
+   "vimeo": "1194173568",
+   "firstSlide": 16,
+   "nSlides": 20,
+   "pct": 79,
+   "hits": 1
+  },
+  {
+   "key": "SaludPblica_asinc_4_20380",
+   "area": "Salud Pública",
+   "n": 4,
+   "rid": "20380",
+   "vimeo": "1194859549",
+   "firstSlide": 16,
+   "nSlides": 21,
+   "pct": 75,
+   "hits": 1
+  },
+  {
+   "key": "CuidadoIntegral_asinc_7_20565",
+   "area": "Cuidado Integral",
+   "n": 7,
+   "rid": "20565",
+   "vimeo": "1196227774",
+   "firstSlide": 36,
+   "nSlides": 42,
+   "pct": 85,
+   "hits": 1
+  }
+ ],
+ "I-1": [
+  {
+   "key": "CuidadoIntegral_asinc_4_20340",
+   "area": "Cuidado Integral",
+   "n": 4,
+   "rid": "20340",
+   "vimeo": "1194571402",
+   "firstSlide": 11,
+   "nSlides": 60,
+   "pct": 17,
+   "hits": 7
+  },
+  {
+   "key": "SaludPblica_asinc_8_20655",
+   "area": "Salud Pública",
+   "n": 8,
+   "rid": "20655",
+   "vimeo": "1197526363",
+   "firstSlide": 2,
+   "nSlides": 22,
+   "pct": 5,
+   "hits": 5
+  },
+  {
+   "key": "SaludPblica_asinc_5_20314",
+   "area": "Salud Pública",
+   "n": 5,
+   "rid": "20314",
+   "vimeo": "1196904560",
+   "firstSlide": 5,
+   "nSlides": 22,
+   "pct": 19,
+   "hits": 2
+  },
+  {
+   "key": "SaludPblica_asinc_2_20262",
+   "area": "Salud Pública",
+   "n": 2,
+   "rid": "20262",
+   "vimeo": "1192644790",
+   "firstSlide": 8,
+   "nSlides": 18,
+   "pct": 41,
+   "hits": 2
+  },
+  {
+   "key": "tica_asinc_3_20185",
+   "area": "Ética",
+   "n": 3,
+   "rid": "20185",
+   "vimeo": "1192339535",
+   "firstSlide": 25,
+   "nSlides": 33,
+   "pct": 75,
+   "hits": 2
+  },
+  {
+   "key": "CuidadoIntegral_asinc_3_20268",
+   "area": "Cuidado Integral",
+   "n": 3,
+   "rid": "20268",
+   "vimeo": "1192763838",
+   "firstSlide": 5,
+   "nSlides": 33,
+   "pct": 13,
+   "hits": 1
+  },
+  {
+   "key": "SaludPblica_asinc_1_20212",
+   "area": "Salud Pública",
+   "n": 1,
+   "rid": "20212",
+   "vimeo": "1194433471",
+   "firstSlide": 5,
+   "nSlides": 16,
+   "pct": 27,
+   "hits": 1
+  },
+  {
+   "key": "CuidadoIntegral_asinc_5_20339",
+   "area": "Cuidado Integral",
+   "n": 5,
+   "rid": "20339",
+   "vimeo": "1194778416",
+   "firstSlide": 17,
+   "nSlides": 32,
+   "pct": 52,
+   "hits": 1
+  }
+ ],
+ "II-13": [
+  {
+   "key": "CuidadoIntegral_asinc_4_20340",
+   "area": "Cuidado Integral",
+   "n": 4,
+   "rid": "20340",
+   "vimeo": "1194571402",
+   "firstSlide": 9,
+   "nSlides": 60,
+   "pct": 14,
+   "hits": 5
+  },
+  {
+   "key": "CuidadoIntegral_asinc_8_20566",
+   "area": "Cuidado Integral",
+   "n": 8,
+   "rid": "20566",
+   "vimeo": "1196897971",
+   "firstSlide": 16,
+   "nSlides": 58,
+   "pct": 26,
+   "hits": 4
+  },
+  {
+   "key": "CuidadoIntegral_asinc_3_20268",
+   "area": "Cuidado Integral",
+   "n": 3,
+   "rid": "20268",
+   "vimeo": "1192763838",
+   "firstSlide": 7,
+   "nSlides": 33,
+   "pct": 19,
+   "hits": 1
+  },
+  {
+   "key": "Gestin_asinc_3_20584",
+   "area": "Gestión",
+   "n": 3,
+   "rid": "20584",
+   "vimeo": "1195741794",
+   "firstSlide": 25,
+   "nSlides": 32,
+   "pct": 77,
+   "hits": 1
+  }
+ ],
+ "III-3": [
+  {
+   "key": "Investigacin_asinc_3_20315",
+   "area": "Investigación",
+   "n": 3,
+   "rid": "20315",
+   "vimeo": "1194600605",
+   "firstSlide": 11,
+   "nSlides": 20,
+   "pct": 53,
+   "hits": 3
+  },
+  {
+   "key": "CuidadoIntegral_asinc_4_20340",
+   "area": "Cuidado Integral",
+   "n": 4,
+   "rid": "20340",
+   "vimeo": "1194571402",
+   "firstSlide": 27,
+   "nSlides": 60,
+   "pct": 44,
+   "hits": 3
+  },
+  {
+   "key": "tica_asinc_1_20154",
+   "area": "Ética",
+   "n": 1,
+   "rid": "20154",
+   "vimeo": "1191648361",
+   "firstSlide": 19,
+   "nSlides": 36,
+   "pct": 51,
+   "hits": 2
+  },
+  {
+   "key": "Gestin_asinc_4_20585",
+   "area": "Gestión",
+   "n": 4,
+   "rid": "20585",
+   "vimeo": "1196440272",
+   "firstSlide": 25,
+   "nSlides": 28,
+   "pct": 89,
+   "hits": 1
+  }
+ ],
+ "V-2": [
+  {
+   "key": "Gestin_asinc_1_20498",
+   "area": "Gestión",
+   "n": 1,
+   "rid": "20498",
+   "vimeo": "1195687250",
+   "firstSlide": 3,
+   "nSlides": 15,
+   "pct": 14,
+   "hits": 17
+  },
+  {
+   "key": "Gestin_asinc_2_20524",
+   "area": "Gestión",
+   "n": 2,
+   "rid": "20524",
+   "vimeo": "1195710863",
+   "firstSlide": 2,
+   "nSlides": 8,
+   "pct": 14,
+   "hits": 11
+  },
+  {
+   "key": "Gestin_asinc_3_20584",
+   "area": "Gestión",
+   "n": 3,
+   "rid": "20584",
+   "vimeo": "1195741794",
+   "firstSlide": 10,
+   "nSlides": 32,
+   "pct": 29,
+   "hits": 2
+  },
+  {
+   "key": "CuidadoIntegral_asinc_4_20340",
+   "area": "Cuidado Integral",
+   "n": 4,
+   "rid": "20340",
+   "vimeo": "1194571402",
+   "firstSlide": 6,
+   "nSlides": 60,
+   "pct": 8,
+   "hits": 1
+  },
+  {
+   "key": "SaludPblica_asinc_6_20558",
+   "area": "Salud Pública",
+   "n": 6,
+   "rid": "20558",
+   "vimeo": "1197009853",
+   "firstSlide": 7,
+   "nSlides": 17,
+   "pct": 38,
+   "hits": 1
+  }
+ ],
+ "I-2": [
+  {
+   "key": "SaludPblica_asinc_1_20212",
+   "area": "Salud Pública",
+   "n": 1,
+   "rid": "20212",
+   "vimeo": "1194433471",
+   "firstSlide": 2,
+   "nSlides": 16,
+   "pct": 7,
+   "hits": 4
+  }
+ ],
+ "IV-1+IV-2": [
+  {
+   "key": "Investigacin_asinc_1_20242",
+   "area": "Investigación",
+   "n": 1,
+   "rid": "20242",
+   "vimeo": "1193476203",
+   "firstSlide": 2,
+   "nSlides": 17,
+   "pct": 6,
+   "hits": 13
+  },
+  {
+   "key": "Investigacin_asinc_2_20274",
+   "area": "Investigación",
+   "n": 2,
+   "rid": "20274",
+   "vimeo": "1193476211",
+   "firstSlide": 5,
+   "nSlides": 16,
+   "pct": 27,
+   "hits": 5
+  },
+  {
+   "key": "Investigacin_asinc_3_20315",
+   "area": "Investigación",
+   "n": 3,
+   "rid": "20315",
+   "vimeo": "1194600605",
+   "firstSlide": 9,
+   "nSlides": 20,
+   "pct": 42,
+   "hits": 2
+  },
+  {
+   "key": "SaludPblica_asinc_1_20212",
+   "area": "Salud Pública",
+   "n": 1,
+   "rid": "20212",
+   "vimeo": "1194433471",
+   "firstSlide": 11,
+   "nSlides": 16,
+   "pct": 67,
+   "hits": 2
+  },
+  {
+   "key": "tica_asinc_2_20167",
+   "area": "Ética",
+   "n": 2,
+   "rid": "20167",
+   "vimeo": "1191663507",
+   "firstSlide": 5,
+   "nSlides": 30,
+   "pct": 14,
+   "hits": 1
+  },
+  {
+   "key": "SaludPblica_asinc_4_20380",
+   "area": "Salud Pública",
+   "n": 4,
+   "rid": "20380",
+   "vimeo": "1194859549",
+   "firstSlide": 6,
+   "nSlides": 21,
+   "pct": 25,
+   "hits": 1
+  },
+  {
+   "key": "Gestin_asinc_4_20585",
+   "area": "Gestión",
+   "n": 4,
+   "rid": "20585",
+   "vimeo": "1196440272",
+   "firstSlide": 26,
+   "nSlides": 28,
+   "pct": 93,
+   "hits": 1
+  }
+ ],
+ "IV-4": [
+  {
+   "key": "Investigacin_asinc_1_20242",
+   "area": "Investigación",
+   "n": 1,
+   "rid": "20242",
+   "vimeo": "1193476203",
+   "firstSlide": 11,
+   "nSlides": 17,
+   "pct": 63,
+   "hits": 4
+  },
+  {
+   "key": "SaludPblica_asinc_1_20212",
+   "area": "Salud Pública",
+   "n": 1,
+   "rid": "20212",
+   "vimeo": "1194433471",
+   "firstSlide": 13,
+   "nSlides": 16,
+   "pct": 80,
+   "hits": 2
+  }
+ ],
+ "IV-6+IV-7": [
+  {
+   "key": "SaludPblica_asinc_4_20380",
+   "area": "Salud Pública",
+   "n": 4,
+   "rid": "20380",
+   "vimeo": "1194859549",
+   "firstSlide": 2,
+   "nSlides": 21,
+   "pct": 5,
+   "hits": 3
+  }
+ ],
+ "III-1": [
+  {
+   "key": "tica_asinc_1_20154",
+   "area": "Ética",
+   "n": 1,
+   "rid": "20154",
+   "vimeo": "1191648361",
+   "firstSlide": 3,
+   "nSlides": 36,
+   "pct": 6,
+   "hits": 4
+  }
+ ],
+ "III-2": [
+  {
+   "key": "tica_asinc_1_20154",
+   "area": "Ética",
+   "n": 1,
+   "rid": "20154",
+   "vimeo": "1191648361",
+   "firstSlide": 2,
+   "nSlides": 36,
+   "pct": 3,
+   "hits": 2
+  },
+  {
+   "key": "Gestin_asinc_7_21402",
+   "area": "Gestión",
+   "n": 7,
+   "rid": "21402",
+   "vimeo": "1198549083",
+   "firstSlide": 7,
+   "nSlides": 25,
+   "pct": 25,
+   "hits": 1
+  }
+ ],
+ "III-8": [
+  {
+   "key": "tica_asinc_1_20154",
+   "area": "Ética",
+   "n": 1,
+   "rid": "20154",
+   "vimeo": "1191648361",
+   "firstSlide": 2,
+   "nSlides": 36,
+   "pct": 3,
+   "hits": 2
+  }
+ ],
+ "V-1": [
+  {
+   "key": "Gestin_asinc_3_20584",
+   "area": "Gestión",
+   "n": 3,
+   "rid": "20584",
+   "vimeo": "1195741794",
+   "firstSlide": 11,
+   "nSlides": 32,
+   "pct": 32,
+   "hits": 7
+  },
+  {
+   "key": "Investigacin_asinc_2_20274",
+   "area": "Investigación",
+   "n": 2,
+   "rid": "20274",
+   "vimeo": "1193476211",
+   "firstSlide": 10,
+   "nSlides": 16,
+   "pct": 60,
+   "hits": 1
+  }
+ ]
+}

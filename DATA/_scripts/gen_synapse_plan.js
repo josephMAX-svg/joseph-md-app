@@ -168,7 +168,7 @@ function bloqueB(wd, semana) {
     return B('Latent Space — The AI Engineer Podcast', 'Episodio reciente a elección (el podcast del rol al que apuntas)', U.latent, { real: false });
   }
   if (wd === 'Mié') {
-    // v6 (arranque martes 23-jun): la sem 1 SÍ tiene miércoles → cap = semana (sem 1..12 = caps 1..12).
+    // v7 (arranque miércoles 24-jun): la sem 1 SÍ tiene miércoles (es el día de arranque) → cap = semana (sem 1..12 = caps 1..12).
     const n = semana;
     const c = lexCap(n);
     return B('Lex #452 — Dario Amodei (CEO Anthropic)', `Outline cap. ${n}: "${c.titulo}" (desde ${c.dur})`, U.lex452, { dur: 'desde ' + c.dur });
@@ -248,9 +248,9 @@ function bloquePC(semana) {
 // La 1ª semana ya NO tiene jueves → la 1ª lección de Automate (cap 0 "Introduction") se
 // recupera en el último día (igual que Lex cap 12 y PyTut §12). 12 sem · 82 días · 12 domingos.
 const WD = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-const START = new Date('2026-06-23T12:00:00'); // v6 (22-jun): 20-22 no se estudió → arranque mar 23-jun; sem 1 = mar→dom (6 días, completa con Mié/Jue)
-const SDOW = START.getDay();                    // 2 (martes)
-const FIRST_WEEK_LEN = (7 - SDOW) % 7 + 1;      // mar→dom = 6 días (sáb→dom hubiera sido 2)
+const START = new Date('2026-06-24T12:00:00'); // v7 (23-jun): 20-23 no se estudió → arranque mié 24-jun; sem 1 = mié→dom (5 días, completa con Mié/Jue)
+const SDOW = START.getDay();                    // 3 (miércoles)
+const FIRST_WEEK_LEN = (7 - SDOW) % 7 + 1;      // mié→dom = 5 días (genérico por weekday)
 
 const aUnits = buildAUnits();
 // v6: TOTAL = nº de días para colocar exactamente aUnits.length A-units (= días no-domingo); el último día cae en no-domingo.
@@ -298,7 +298,7 @@ const diaTs = (x) => `{d:${x.d},fecha:"${x.fecha}",wd:"${x.wd}",semana:${x.seman
 
 const ts = `/**
  * synapseDailyPlan.ts — Motor día-a-día SYNAPSE (12 semanas · ${TOTAL} días · ${dias[0].fecha} → ${dias[TOTAL - 1].fecha}).
- * v6 (22-jun): arranque mar 23-jun-2026 (20-22 no se estudió; todo el sistema corre a 23-jun) · sem 1 = mar→dom · TODOS los domingos LIBRES (sin misión).
+ * v7 (23-jun): arranque mié 24-jun-2026 (20-23 no se estudió; todo el sistema corre a 24-jun) · sem 1 = mié→dom · TODOS los domingos LIBRES (sin misión).
  * GENERADO por DATA/_scripts/gen_synapse_plan.js desde DATA/SYNAPSE/curricula/_extracted.json
  * (temarios REALES extraídos con WebFetch/oEmbed + verificación adversarial, 10-jun-2026).
  * NO editar a mano — regenerar: node DATA/_scripts/gen_synapse_plan.js

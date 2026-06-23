@@ -4,19 +4,19 @@
 // Escalable: examen = 'ENCAPS' | 'MIR' | 'USMLE'. Hoy sólo ENCAPS (regla #7).
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { supabase } from './supabase';
-import { ENCAPS_FICHAS_POR_TEMA, ENCAPS_VIDEO_DRIVE, ENCAPS_THEOMED_AREA, ENCAPS_THEOMED_VIDEOS, ENCAPS_COMPENDIO, ENCAPS_AREA_PREFIJO } from './encapsFuentes';
+import { ENCAPS_FICHAS_POR_TEMA, ENCAPS_VIDEO_DRIVE, ENCAPS_THEOMED_AREA, ENCAPS_THEOMED_VIDEOS, ENCAPS_COMPENDIO, ENCAPS_AREA_PREFIJO, ENCAPS_THEOMED_TEMA_SESION } from './encapsFuentes';
 
 // ── D1 por examen (para calcular el día actual 1..71) ──
 export const STUDY_D1: Record<string, string> = {
-  ENCAPS: '2026-06-23',   // re-estructurado (22-jun: 20-22 no se estudió): D1=mar 23-jun (día1=tema II-3, ya NO simulacro diagnóstico) · TODOS los domingos LIBRES · 41 días-tema L-V (45 temas; III-4+III-7, IV-6+IV-7, V-7+V-10 y AHORA IV-3+IV-5 fusionados, temas 23-jun→18-ago) · 35 SIMULACROS reales QX+Theomed (8 sáb 3-4 + día-examen 19-ago) · EXAMEN jue 20-ago (tope FIJO)
+  ENCAPS: '2026-06-24',   // re-estructurado (23-jun: 20-23 no se estudió): D1=mié 24-jun (día1=tema II-3, ya NO simulacro diagnóstico) · TODOS los domingos LIBRES · 40 días-tema L-V (45 temas; III-4+III-7, IV-6+IV-7, V-7+V-10, IV-3+IV-5 y AHORA IV-1+IV-2 fusionados, temas 24-jun→18-ago) · 35 SIMULACROS reales QX+Theomed (8 sáb 3-4 + día-examen 19-ago) · EXAMEN jue 20-ago (tope FIJO)
   // MIR / USMLE se agregan cuando se construyan sus cronogramas.
 };
 // Fechas SIN actividad (bloqueadas por Joseph) — no cuentan como día de plan.
-// v6 (22-jun): TODOS los domingos del tramo 23-jun → 20-ago quedan libres (8 domingos).
+// v7 (23-jun): TODOS los domingos del tramo 24-jun → 20-ago quedan libres (8 domingos).
 export const STUDY_SKIP_DATES: Record<string, string[]> = {
   ENCAPS: ['2026-06-28', '2026-07-05', '2026-07-12', '2026-07-19', '2026-07-26', '2026-08-02', '2026-08-09', '2026-08-16'],
 };
-const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 51 };
+const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 50 };
 
 // ── Tipos (espejo de las columnas study_*) ──
 export interface StudyVideo {
@@ -255,6 +255,19 @@ export function itemsForDay(day: StudyScheduleDay, focusByCode: Record<string, n
         label: `🎥 Clases grabadas Theomed ${areaV} (${tv.nVideos} videos)`,
         detail: 'En vivo + asincrónicas (Vimeo) · cada una con su PDF · lista completa en 📚 Material',
         url: tv.envivoUrl || tv.asincUrl, source: 'Theomed grabado', dur: 30, hora: slot(30),
+      });
+    }
+    // UBICACIÓN EXACTA del tema en el video grabado de Theomed: sesión + diapositiva → ~% del video.
+    // Mapeado leyendo el "TEMARIO DE HOY" de los 29 PDFs asincrónicos (HOJA DE RUTA + PDF de sesión).
+    const ts = ENCAPS_THEOMED_TEMA_SESION[day.codigo];
+    if (ts) {
+      const secUrl = ENCAPS_THEOMED_VIDEOS[ts.area]?.asincUrl || ts.slidesUrl;
+      const otras = ts.otras && ts.otras.length ? ` · también en Ses ${ts.otras.map(o => o.sesion).join(', ')}` : '';
+      items.push({
+        key: `D${N}:thtema`, kind: 'video',
+        label: `🎯 Theomed: este tema en Sesión ${ts.sesion} (${ts.area}) · ≈ diap. ${ts.slide}/${ts.nSlides} (~${ts.pct}% del video)`,
+        detail: `Ubicación por índice de diapositivas (TEMARIO DE HOY del PDF de sesión)${otras} · slides: ${ts.slidesUrl}`,
+        url: secUrl, source: 'Theomed grabado · ubicación exacta', dur: 25, hora: slot(25),
       });
     }
   }

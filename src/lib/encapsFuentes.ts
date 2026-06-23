@@ -481,10 +481,15 @@ export const ENCAPS_FICHAS_POR_TEMA: Record<string, FichaTema[]> = {
   }
  ],
  "V-6": [],
- "IV-1": [
+ "IV-1+IV-2": [
   {
    "titulo": "Conceptos básicos de investigación",
    "url": "https://www.dropbox.com/scl/fi/jxzed29sayvy6b2dddsm4/FT-INVESTIGACI-N-01.-Conceptos-y-clasificaci-n-de-las-investigaciones-01.-Conceptos-b-sicos-de-investigaci-n.pdf?rlkey=44uv1ywurazgxcxpasjbxcc7b&dl=0",
+   "min": 10
+  },
+  {
+   "titulo": "Elaboración del proyecto de investigación",
+   "url": "https://www.dropbox.com/scl/fi/kvr1dmasowu0iw59nlqv0/FT-INVESTIGACI-N-02.-Metodolog-a-de-la-investigaci-n-02.-Elaboraci-n-del-proyecto-de-investigaci-n.pdf?rlkey=v073epqcai0cywxvnc8gtgbcg&dl=0",
    "min": 10
   },
   {
@@ -503,8 +508,23 @@ export const ENCAPS_FICHAS_POR_TEMA: Record<string, FichaTema[]> = {
    "min": 10
   },
   {
+   "titulo": "Instrumentos de recolección de datos y validación",
+   "url": "https://www.dropbox.com/scl/fi/ui7ybqg38qajyy4md0k9r/FT-INVESTIGACI-N-02.-Metodolog-a-de-la-investigaci-n-04.-Instrumentos-de-recolecci-n-de-datos-y-validaci-n.pdf?rlkey=wz4njxn3rgn24yud7d1tmyuz9&dl=0",
+   "min": 10
+  },
+  {
+   "titulo": "Procesamiento y análisis de datos",
+   "url": "https://www.dropbox.com/scl/fi/7vnqi25pun2291tqwem4r/FT-INVESTIGACI-N-02.-Metodolog-a-de-la-investigaci-n-05.-Procesamiento-y-an-lisis-de-datos.pdf?rlkey=rt8t82et6nt6m2f0fr04izqa3&dl=0",
+   "min": 10
+  },
+  {
    "titulo": "Tipos de investigación y estudios descriptivos",
    "url": "https://www.dropbox.com/scl/fi/smhaf2unbtaypxaep8lb7/FT-INVESTIGACI-N-01.-Conceptos-y-clasificaci-n-de-las-investigaciones-03.-Tipos-de-investigaci-n-y-estudios-descriptivos.pdf?rlkey=ubkn7sd5l376y43mj7a48c6t4&dl=0",
+   "min": 10
+  },
+  {
+   "titulo": "Causalidad y riesgo",
+   "url": "https://www.dropbox.com/scl/fi/6dzjcwt73q514dcb1kn5h/FT-SALUD-P-BLICA-01.-M-todos-y-aplicaciones-de-salud-p-blica-22.-Causalidad-y-riesgo.pdf?rlkey=r0yc5gt2kodlt7pbjgt86ddw6&dl=0",
    "min": 10
   }
  ],
@@ -627,28 +647,6 @@ export const ENCAPS_FICHAS_POR_TEMA: Record<string, FichaTema[]> = {
   {
    "titulo": "ética y aspectos éticos de las publicaciones científicas",
    "url": "https://www.dropbox.com/scl/fi/9omryjt8ad5aqv57ba9w5/FT-INVESTIGACI-N-03.-Ejecuci-n-de-la-investigaci-n-03.-tica-y-aspectos-ticos-de-las-publicaciones-cient-ficas.pdf?rlkey=axy4e9cl0uyzp9ba79lg5j0wv&dl=0",
-   "min": 10
-  }
- ],
- "IV-2": [
-  {
-   "titulo": "Elaboración del proyecto de investigación",
-   "url": "https://www.dropbox.com/scl/fi/kvr1dmasowu0iw59nlqv0/FT-INVESTIGACI-N-02.-Metodolog-a-de-la-investigaci-n-02.-Elaboraci-n-del-proyecto-de-investigaci-n.pdf?rlkey=v073epqcai0cywxvnc8gtgbcg&dl=0",
-   "min": 10
-  },
-  {
-   "titulo": "Instrumentos de recolección de datos y validación",
-   "url": "https://www.dropbox.com/scl/fi/ui7ybqg38qajyy4md0k9r/FT-INVESTIGACI-N-02.-Metodolog-a-de-la-investigaci-n-04.-Instrumentos-de-recolecci-n-de-datos-y-validaci-n.pdf?rlkey=wz4njxn3rgn24yud7d1tmyuz9&dl=0",
-   "min": 10
-  },
-  {
-   "titulo": "Procesamiento y análisis de datos",
-   "url": "https://www.dropbox.com/scl/fi/7vnqi25pun2291tqwem4r/FT-INVESTIGACI-N-02.-Metodolog-a-de-la-investigaci-n-05.-Procesamiento-y-an-lisis-de-datos.pdf?rlkey=rt8t82et6nt6m2f0fr04izqa3&dl=0",
-   "min": 10
-  },
-  {
-   "titulo": "Causalidad y riesgo",
-   "url": "https://www.dropbox.com/scl/fi/6dzjcwt73q514dcb1kn5h/FT-SALUD-P-BLICA-01.-M-todos-y-aplicaciones-de-salud-p-blica-22.-Causalidad-y-riesgo.pdf?rlkey=r0yc5gt2kodlt7pbjgt86ddw6&dl=0",
    "min": 10
   }
  ],
@@ -1139,6 +1137,806 @@ export const ENCAPS_THEOMED_VIDEOS: Record<string, { envivoUrl: string; asincUrl
  }
 };
 
+// Tema (código ENCAPS) → Sesión Theomed grabada + ubicación por diapositiva (≈% del video).
+// Mapeado leyendo los 29 PDFs asincrónicos (pdftotext): cada "TEMARIO DE HOY" marca el inicio del
+// subtema. area = área del CONTENIDO (donde está el video). slidesUrl = PDF de la sesión. otras =
+// sesiones donde el tema también aparece (vueltas). Para el video: abrir la sección asinc del área.
+export type TemaSesion = { area: string; sesion: number; slidesUrl: string; slide: number; nSlides: number; pct: number; otras: { area: string; sesion: number; slide: number; nSlides: number; pct: number }[] };
+export const ENCAPS_THEOMED_TEMA_SESION: Record<string, TemaSesion> = {
+ "II-3": {
+  "area": "Cuidado Integral",
+  "sesion": 6,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=20487",
+  "slide": 2,
+  "nSlides": 48,
+  "pct": 2,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 8,
+    "slide": 3,
+    "nSlides": 58,
+    "pct": 4
+   },
+   {
+    "area": "Cuidado Integral",
+    "sesion": 5,
+    "slide": 21,
+    "nSlides": 32,
+    "pct": 65
+   }
+  ]
+ },
+ "II-1": {
+  "area": "Cuidado Integral",
+  "sesion": 7,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=20565",
+  "slide": 2,
+  "nSlides": 42,
+  "pct": 2,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 6,
+    "slide": 30,
+    "nSlides": 48,
+    "pct": 62
+   },
+   {
+    "area": "Ética e Interculturalidad",
+    "sesion": 3,
+    "slide": 9,
+    "nSlides": 33,
+    "pct": 25
+   }
+  ]
+ },
+ "II-2": {
+  "area": "Cuidado Integral",
+  "sesion": 2,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=20240",
+  "slide": 2,
+  "nSlides": 45,
+  "pct": 2,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 1,
+    "slide": 9,
+    "nSlides": 33,
+    "pct": 25
+   },
+   {
+    "area": "Gestión de Servicios",
+    "sesion": 6,
+    "slide": 9,
+    "nSlides": 29,
+    "pct": 29
+   }
+  ]
+ },
+ "I-4": {
+  "area": "Cuidado Integral",
+  "sesion": 8,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=20566",
+  "slide": 20,
+  "nSlides": 58,
+  "pct": 33,
+  "otras": [
+   {
+    "area": "Salud Pública",
+    "sesion": 4,
+    "slide": 11,
+    "nSlides": 21,
+    "pct": 50
+   },
+   {
+    "area": "Salud Pública",
+    "sesion": 7,
+    "slide": 3,
+    "nSlides": 22,
+    "pct": 10
+   }
+  ]
+ },
+ "II-4": {
+  "area": "Cuidado Integral",
+  "sesion": 7,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=20565",
+  "slide": 2,
+  "nSlides": 42,
+  "pct": 2,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 2,
+    "slide": 10,
+    "nSlides": 45,
+    "pct": 20
+   },
+   {
+    "area": "Cuidado Integral",
+    "sesion": 3,
+    "slide": 6,
+    "nSlides": 33,
+    "pct": 16
+   }
+  ]
+ },
+ "II-11": {
+  "area": "Cuidado Integral",
+  "sesion": 6,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=20487",
+  "slide": 14,
+  "nSlides": 48,
+  "pct": 28,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 4,
+    "slide": 4,
+    "nSlides": 60,
+    "pct": 5
+   },
+   {
+    "area": "Cuidado Integral",
+    "sesion": 3,
+    "slide": 4,
+    "nSlides": 33,
+    "pct": 9
+   }
+  ]
+ },
+ "I-3": {
+  "area": "Salud Pública",
+  "sesion": 4,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=20380",
+  "slide": 2,
+  "nSlides": 21,
+  "pct": 5,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 6,
+    "slide": 3,
+    "nSlides": 48,
+    "pct": 4
+   },
+   {
+    "area": "Cuidado Integral",
+    "sesion": 4,
+    "slide": 4,
+    "nSlides": 60,
+    "pct": 5
+   }
+  ]
+ },
+ "II-5": {
+  "area": "Cuidado Integral",
+  "sesion": 1,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=20200",
+  "slide": 6,
+  "nSlides": 33,
+  "pct": 16,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 4,
+    "slide": 3,
+    "nSlides": 60,
+    "pct": 3
+   },
+   {
+    "area": "Cuidado Integral",
+    "sesion": 3,
+    "slide": 4,
+    "nSlides": 33,
+    "pct": 9
+   }
+  ]
+ },
+ "II-7": {
+  "area": "Cuidado Integral",
+  "sesion": 4,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=20340",
+  "slide": 2,
+  "nSlides": 60,
+  "pct": 2,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 1,
+    "slide": 12,
+    "nSlides": 33,
+    "pct": 34
+   },
+   {
+    "area": "Cuidado Integral",
+    "sesion": 7,
+    "slide": 2,
+    "nSlides": 42,
+    "pct": 2
+   }
+  ]
+ },
+ "II-8": {
+  "area": "Cuidado Integral",
+  "sesion": 4,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=20340",
+  "slide": 4,
+  "nSlides": 60,
+  "pct": 5,
+  "otras": [
+   {
+    "area": "Salud Pública",
+    "sesion": 2,
+    "slide": 4,
+    "nSlides": 18,
+    "pct": 18
+   },
+   {
+    "area": "Cuidado Integral",
+    "sesion": 7,
+    "slide": 24,
+    "nSlides": 42,
+    "pct": 56
+   }
+  ]
+ },
+ "II-9": {
+  "area": "Cuidado Integral",
+  "sesion": 4,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=20340",
+  "slide": 4,
+  "nSlides": 60,
+  "pct": 5,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 3,
+    "slide": 6,
+    "nSlides": 33,
+    "pct": 16
+   },
+   {
+    "area": "Salud Pública",
+    "sesion": 8,
+    "slide": 2,
+    "nSlides": 22,
+    "pct": 5
+   }
+  ]
+ },
+ "V-6": {
+  "area": "Gestión de Servicios",
+  "sesion": 5,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=20677",
+  "slide": 6,
+  "nSlides": 26,
+  "pct": 20,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 4,
+    "slide": 4,
+    "nSlides": 60,
+    "pct": 5
+   },
+   {
+    "area": "Cuidado Integral",
+    "sesion": 2,
+    "slide": 21,
+    "nSlides": 45,
+    "pct": 45
+   }
+  ]
+ },
+ "I-5+I-6": {
+  "area": "Salud Pública",
+  "sesion": 5,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=20314",
+  "slide": 2,
+  "nSlides": 22,
+  "pct": 5,
+  "otras": [
+   {
+    "area": "Gestión de Servicios",
+    "sesion": 6,
+    "slide": 4,
+    "nSlides": 29,
+    "pct": 11
+   },
+   {
+    "area": "Cuidado Integral",
+    "sesion": 1,
+    "slide": 7,
+    "nSlides": 33,
+    "pct": 19
+   }
+  ]
+ },
+ "I-8": {
+  "area": "Cuidado Integral",
+  "sesion": 1,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=20200",
+  "slide": 14,
+  "nSlides": 33,
+  "pct": 41,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 4,
+    "slide": 21,
+    "nSlides": 60,
+    "pct": 34
+   },
+   {
+    "area": "Cuidado Integral",
+    "sesion": 6,
+    "slide": 3,
+    "nSlides": 48,
+    "pct": 4
+   }
+  ]
+ },
+ "I-11+I-12": {
+  "area": "Gestión de Servicios",
+  "sesion": 6,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=20695",
+  "slide": 4,
+  "nSlides": 29,
+  "pct": 11,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 1,
+    "slide": 21,
+    "nSlides": 33,
+    "pct": 63
+   },
+   {
+    "area": "Salud Pública",
+    "sesion": 7,
+    "slide": 2,
+    "nSlides": 22,
+    "pct": 5
+   }
+  ]
+ },
+ "III-5": {
+  "area": "Ética e Interculturalidad",
+  "sesion": 3,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=20185",
+  "slide": 1,
+  "nSlides": 33,
+  "pct": 0,
+  "otras": [
+   {
+    "area": "Ética e Interculturalidad",
+    "sesion": 2,
+    "slide": 1,
+    "nSlides": 30,
+    "pct": 0
+   },
+   {
+    "area": "Cuidado Integral",
+    "sesion": 4,
+    "slide": 5,
+    "nSlides": 60,
+    "pct": 7
+   }
+  ]
+ },
+ "IV-3+IV-5": {
+  "area": "Cuidado Integral",
+  "sesion": 4,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=20340",
+  "slide": 8,
+  "nSlides": 60,
+  "pct": 12,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 8,
+    "slide": 3,
+    "nSlides": 58,
+    "pct": 4
+   },
+   {
+    "area": "Cuidado Integral",
+    "sesion": 6,
+    "slide": 14,
+    "nSlides": 48,
+    "pct": 28
+   }
+  ]
+ },
+ "V-3": {
+  "area": "Cuidado Integral",
+  "sesion": 1,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=20200",
+  "slide": 5,
+  "nSlides": 33,
+  "pct": 13,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 4,
+    "slide": 5,
+    "nSlides": 60,
+    "pct": 7
+   },
+   {
+    "area": "Gestión de Servicios",
+    "sesion": 4,
+    "slide": 10,
+    "nSlides": 28,
+    "pct": 33
+   }
+  ]
+ },
+ "V-7+V-10": {
+  "area": "Gestión de Servicios",
+  "sesion": 7,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=21402",
+  "slide": 20,
+  "nSlides": 25,
+  "pct": 79,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 1,
+    "slide": 11,
+    "nSlides": 33,
+    "pct": 31
+   },
+   {
+    "area": "Gestión de Servicios",
+    "sesion": 4,
+    "slide": 16,
+    "nSlides": 28,
+    "pct": 56
+   }
+  ]
+ },
+ "I-10": {
+  "area": "Cuidado Integral",
+  "sesion": 1,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=20200",
+  "slide": 2,
+  "nSlides": 33,
+  "pct": 3,
+  "otras": []
+ },
+ "III-4+III-7": {
+  "area": "Cuidado Integral",
+  "sesion": 4,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=20340",
+  "slide": 4,
+  "nSlides": 60,
+  "pct": 5,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 2,
+    "slide": 5,
+    "nSlides": 45,
+    "pct": 9
+   },
+   {
+    "area": "Cuidado Integral",
+    "sesion": 7,
+    "slide": 19,
+    "nSlides": 42,
+    "pct": 44
+   }
+  ]
+ },
+ "II-10": {
+  "area": "Cuidado Integral",
+  "sesion": 2,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=20240",
+  "slide": 18,
+  "nSlides": 45,
+  "pct": 39,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 4,
+    "slide": 4,
+    "nSlides": 60,
+    "pct": 5
+   },
+   {
+    "area": "Cuidado Integral",
+    "sesion": 8,
+    "slide": 2,
+    "nSlides": 58,
+    "pct": 2
+   }
+  ]
+ },
+ "II-12": {
+  "area": "Cuidado Integral",
+  "sesion": 2,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=20240",
+  "slide": 13,
+  "nSlides": 45,
+  "pct": 27,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 3,
+    "slide": 4,
+    "nSlides": 33,
+    "pct": 9
+   },
+   {
+    "area": "Gestión de Servicios",
+    "sesion": 3,
+    "slide": 22,
+    "nSlides": 32,
+    "pct": 68
+   }
+  ]
+ },
+ "III-6+III-10": {
+  "area": "Ética e Interculturalidad",
+  "sesion": 2,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=20167",
+  "slide": 4,
+  "nSlides": 30,
+  "pct": 10,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 2,
+    "slide": 15,
+    "nSlides": 45,
+    "pct": 32
+   },
+   {
+    "area": "Investigación",
+    "sesion": 3,
+    "slide": 17,
+    "nSlides": 20,
+    "pct": 84
+   }
+  ]
+ },
+ "II-6": {
+  "area": "Cuidado Integral",
+  "sesion": 5,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=20339",
+  "slide": 8,
+  "nSlides": 32,
+  "pct": 23,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 4,
+    "slide": 9,
+    "nSlides": 60,
+    "pct": 14
+   },
+   {
+    "area": "Cuidado Integral",
+    "sesion": 3,
+    "slide": 21,
+    "nSlides": 33,
+    "pct": 63
+   }
+  ]
+ },
+ "I-1": {
+  "area": "Cuidado Integral",
+  "sesion": 4,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=20340",
+  "slide": 11,
+  "nSlides": 60,
+  "pct": 17,
+  "otras": [
+   {
+    "area": "Salud Pública",
+    "sesion": 8,
+    "slide": 2,
+    "nSlides": 22,
+    "pct": 5
+   },
+   {
+    "area": "Salud Pública",
+    "sesion": 5,
+    "slide": 5,
+    "nSlides": 22,
+    "pct": 19
+   }
+  ]
+ },
+ "II-13": {
+  "area": "Cuidado Integral",
+  "sesion": 4,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=20340",
+  "slide": 9,
+  "nSlides": 60,
+  "pct": 14,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 8,
+    "slide": 16,
+    "nSlides": 58,
+    "pct": 26
+   },
+   {
+    "area": "Cuidado Integral",
+    "sesion": 3,
+    "slide": 7,
+    "nSlides": 33,
+    "pct": 19
+   }
+  ]
+ },
+ "III-3": {
+  "area": "Investigación",
+  "sesion": 3,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=20315",
+  "slide": 11,
+  "nSlides": 20,
+  "pct": 53,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 4,
+    "slide": 27,
+    "nSlides": 60,
+    "pct": 44
+   },
+   {
+    "area": "Ética e Interculturalidad",
+    "sesion": 1,
+    "slide": 19,
+    "nSlides": 36,
+    "pct": 51
+   }
+  ]
+ },
+ "V-2": {
+  "area": "Gestión de Servicios",
+  "sesion": 1,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=20498",
+  "slide": 3,
+  "nSlides": 15,
+  "pct": 14,
+  "otras": [
+   {
+    "area": "Gestión de Servicios",
+    "sesion": 2,
+    "slide": 2,
+    "nSlides": 8,
+    "pct": 14
+   },
+   {
+    "area": "Gestión de Servicios",
+    "sesion": 3,
+    "slide": 10,
+    "nSlides": 32,
+    "pct": 29
+   }
+  ]
+ },
+ "I-2": {
+  "area": "Salud Pública",
+  "sesion": 1,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=20212",
+  "slide": 2,
+  "nSlides": 16,
+  "pct": 7,
+  "otras": []
+ },
+ "IV-1+IV-2": {
+  "area": "Investigación",
+  "sesion": 1,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=20242",
+  "slide": 2,
+  "nSlides": 17,
+  "pct": 6,
+  "otras": [
+   {
+    "area": "Investigación",
+    "sesion": 2,
+    "slide": 5,
+    "nSlides": 16,
+    "pct": 27
+   },
+   {
+    "area": "Investigación",
+    "sesion": 3,
+    "slide": 9,
+    "nSlides": 20,
+    "pct": 42
+   }
+  ]
+ },
+ "IV-4": {
+  "area": "Investigación",
+  "sesion": 1,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=20242",
+  "slide": 11,
+  "nSlides": 17,
+  "pct": 63,
+  "otras": [
+   {
+    "area": "Salud Pública",
+    "sesion": 1,
+    "slide": 13,
+    "nSlides": 16,
+    "pct": 80
+   }
+  ]
+ },
+ "IV-6+IV-7": {
+  "area": "Salud Pública",
+  "sesion": 4,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=20380",
+  "slide": 2,
+  "nSlides": 21,
+  "pct": 5,
+  "otras": []
+ },
+ "III-1": {
+  "area": "Ética e Interculturalidad",
+  "sesion": 1,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=20154",
+  "slide": 3,
+  "nSlides": 36,
+  "pct": 6,
+  "otras": []
+ },
+ "III-2": {
+  "area": "Ética e Interculturalidad",
+  "sesion": 1,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=20154",
+  "slide": 2,
+  "nSlides": 36,
+  "pct": 3,
+  "otras": [
+   {
+    "area": "Gestión de Servicios",
+    "sesion": 7,
+    "slide": 7,
+    "nSlides": 25,
+    "pct": 25
+   }
+  ]
+ },
+ "III-8": {
+  "area": "Ética e Interculturalidad",
+  "sesion": 1,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=20154",
+  "slide": 2,
+  "nSlides": 36,
+  "pct": 3,
+  "otras": []
+ },
+ "V-1": {
+  "area": "Gestión de Servicios",
+  "sesion": 3,
+  "slidesUrl": "https://campus.academiatheomed.com/mod/resource/view.php?id=20584",
+  "slide": 11,
+  "nSlides": 32,
+  "pct": 32,
+  "otras": [
+   {
+    "area": "Investigación",
+    "sesion": 2,
+    "slide": 10,
+    "nSlides": 16,
+    "pct": 60
+   }
+  ]
+ }
+};
+
 // COMPENDIO DR LOPEZ por área (Google Drive · resumen del área). Investigación/Gestión aún no subidos.
 export const ENCAPS_COMPENDIO: Record<string, string> = {
  "Salud Pública": "https://drive.google.com/file/d/1iq_BDzPe3idrZeGL0Q3eR7IB9mKyDftT/view",
@@ -1173,8 +1971,12 @@ export const ENCAPS_ACADEMIAS_RESPALDO: AcademiaRespaldo[] = [
     "url": "https://drive.google.com/drive/folders/1Svt1JyDTunsfOYUI8ochTEYW6NzynsBH"
    },
    {
-    "n": "🎯 Compendio",
+    "n": "🎯 Compendio (Salud Pública · Ética · Cuidado Integral)",
     "url": "https://drive.google.com/drive/folders/13fYG58fySgFIC1HKBVUCNw61ipa6C69V"
+   },
+   {
+    "n": "📅 Cronograma (hoja de ruta DR LOPEZ)",
+    "url": "https://drive.google.com/drive/folders/1nvKJ7gGswLQYF0Y0o7X3yqsTL1WEG4WI"
    },
    {
     "n": "😬 Kahoot",
@@ -1343,5 +2145,6 @@ export const ENCAPS_FUENTES_META = {
   fichasAsignadas: 102,
   academiasRespaldo: 3,
   theomedSimulacros: 8,
-  verificado: '2026-06-22',
+  temaSesionMapeados: 37,
+  verificado: '2026-06-23',
 } as const;

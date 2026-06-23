@@ -1,0 +1,831 @@
+{
+ "II-3": {
+  "area": "Cuidado Integral",
+  "sesion": 6,
+  "rid": "20487",
+  "vimeo": "1195227088",
+  "slide": 2,
+  "nSlides": 48,
+  "pct": 2,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 8,
+    "slide": 3,
+    "nSlides": 58,
+    "pct": 4
+   },
+   {
+    "area": "Cuidado Integral",
+    "sesion": 5,
+    "slide": 21,
+    "nSlides": 32,
+    "pct": 65
+   }
+  ]
+ },
+ "II-1": {
+  "area": "Cuidado Integral",
+  "sesion": 7,
+  "rid": "20565",
+  "vimeo": "1196227774",
+  "slide": 2,
+  "nSlides": 42,
+  "pct": 2,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 6,
+    "slide": 30,
+    "nSlides": 48,
+    "pct": 62
+   },
+   {
+    "area": "Ética e Interculturalidad",
+    "sesion": 3,
+    "slide": 9,
+    "nSlides": 33,
+    "pct": 25
+   }
+  ]
+ },
+ "II-2": {
+  "area": "Cuidado Integral",
+  "sesion": 2,
+  "rid": "20240",
+  "vimeo": "1192695911",
+  "slide": 2,
+  "nSlides": 45,
+  "pct": 2,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 1,
+    "slide": 9,
+    "nSlides": 33,
+    "pct": 25
+   },
+   {
+    "area": "Gestión de Servicios",
+    "sesion": 6,
+    "slide": 9,
+    "nSlides": 29,
+    "pct": 29
+   }
+  ]
+ },
+ "I-4": {
+  "area": "Cuidado Integral",
+  "sesion": 8,
+  "rid": "20566",
+  "vimeo": "1196897971",
+  "slide": 20,
+  "nSlides": 58,
+  "pct": 33,
+  "otras": [
+   {
+    "area": "Salud Pública",
+    "sesion": 4,
+    "slide": 11,
+    "nSlides": 21,
+    "pct": 50
+   },
+   {
+    "area": "Salud Pública",
+    "sesion": 7,
+    "slide": 3,
+    "nSlides": 22,
+    "pct": 10
+   }
+  ]
+ },
+ "II-4": {
+  "area": "Cuidado Integral",
+  "sesion": 7,
+  "rid": "20565",
+  "vimeo": "1196227774",
+  "slide": 2,
+  "nSlides": 42,
+  "pct": 2,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 2,
+    "slide": 10,
+    "nSlides": 45,
+    "pct": 20
+   },
+   {
+    "area": "Cuidado Integral",
+    "sesion": 3,
+    "slide": 6,
+    "nSlides": 33,
+    "pct": 16
+   }
+  ]
+ },
+ "II-11": {
+  "area": "Cuidado Integral",
+  "sesion": 6,
+  "rid": "20487",
+  "vimeo": "1195227088",
+  "slide": 14,
+  "nSlides": 48,
+  "pct": 28,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 4,
+    "slide": 4,
+    "nSlides": 60,
+    "pct": 5
+   },
+   {
+    "area": "Cuidado Integral",
+    "sesion": 3,
+    "slide": 4,
+    "nSlides": 33,
+    "pct": 9
+   }
+  ]
+ },
+ "I-3": {
+  "area": "Salud Pública",
+  "sesion": 4,
+  "rid": "20380",
+  "vimeo": "1194859549",
+  "slide": 2,
+  "nSlides": 21,
+  "pct": 5,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 6,
+    "slide": 3,
+    "nSlides": 48,
+    "pct": 4
+   },
+   {
+    "area": "Cuidado Integral",
+    "sesion": 4,
+    "slide": 4,
+    "nSlides": 60,
+    "pct": 5
+   }
+  ]
+ },
+ "II-5": {
+  "area": "Cuidado Integral",
+  "sesion": 1,
+  "rid": "20200",
+  "vimeo": "1194546322",
+  "slide": 6,
+  "nSlides": 33,
+  "pct": 16,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 4,
+    "slide": 3,
+    "nSlides": 60,
+    "pct": 3
+   },
+   {
+    "area": "Cuidado Integral",
+    "sesion": 3,
+    "slide": 4,
+    "nSlides": 33,
+    "pct": 9
+   }
+  ]
+ },
+ "II-7": {
+  "area": "Cuidado Integral",
+  "sesion": 4,
+  "rid": "20340",
+  "vimeo": "1194571402",
+  "slide": 2,
+  "nSlides": 60,
+  "pct": 2,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 1,
+    "slide": 12,
+    "nSlides": 33,
+    "pct": 34
+   },
+   {
+    "area": "Cuidado Integral",
+    "sesion": 7,
+    "slide": 2,
+    "nSlides": 42,
+    "pct": 2
+   }
+  ]
+ },
+ "II-8": {
+  "area": "Cuidado Integral",
+  "sesion": 4,
+  "rid": "20340",
+  "vimeo": "1194571402",
+  "slide": 4,
+  "nSlides": 60,
+  "pct": 5,
+  "otras": [
+   {
+    "area": "Salud Pública",
+    "sesion": 2,
+    "slide": 4,
+    "nSlides": 18,
+    "pct": 18
+   },
+   {
+    "area": "Cuidado Integral",
+    "sesion": 7,
+    "slide": 24,
+    "nSlides": 42,
+    "pct": 56
+   }
+  ]
+ },
+ "II-9": {
+  "area": "Cuidado Integral",
+  "sesion": 4,
+  "rid": "20340",
+  "vimeo": "1194571402",
+  "slide": 4,
+  "nSlides": 60,
+  "pct": 5,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 3,
+    "slide": 6,
+    "nSlides": 33,
+    "pct": 16
+   },
+   {
+    "area": "Salud Pública",
+    "sesion": 8,
+    "slide": 2,
+    "nSlides": 22,
+    "pct": 5
+   }
+  ]
+ },
+ "V-6": {
+  "area": "Gestión de Servicios",
+  "sesion": 5,
+  "rid": "20677",
+  "vimeo": "1197490954",
+  "slide": 6,
+  "nSlides": 26,
+  "pct": 20,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 4,
+    "slide": 4,
+    "nSlides": 60,
+    "pct": 5
+   },
+   {
+    "area": "Cuidado Integral",
+    "sesion": 2,
+    "slide": 21,
+    "nSlides": 45,
+    "pct": 45
+   }
+  ]
+ },
+ "I-5+I-6": {
+  "area": "Salud Pública",
+  "sesion": 5,
+  "rid": "20314",
+  "vimeo": "1196904560",
+  "slide": 2,
+  "nSlides": 22,
+  "pct": 5,
+  "otras": [
+   {
+    "area": "Gestión de Servicios",
+    "sesion": 6,
+    "slide": 4,
+    "nSlides": 29,
+    "pct": 11
+   },
+   {
+    "area": "Cuidado Integral",
+    "sesion": 1,
+    "slide": 7,
+    "nSlides": 33,
+    "pct": 19
+   }
+  ]
+ },
+ "I-8": {
+  "area": "Cuidado Integral",
+  "sesion": 1,
+  "rid": "20200",
+  "vimeo": "1194546322",
+  "slide": 14,
+  "nSlides": 33,
+  "pct": 41,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 4,
+    "slide": 21,
+    "nSlides": 60,
+    "pct": 34
+   },
+   {
+    "area": "Cuidado Integral",
+    "sesion": 6,
+    "slide": 3,
+    "nSlides": 48,
+    "pct": 4
+   }
+  ]
+ },
+ "I-11+I-12": {
+  "area": "Gestión de Servicios",
+  "sesion": 6,
+  "rid": "20695",
+  "vimeo": "1198521468",
+  "slide": 4,
+  "nSlides": 29,
+  "pct": 11,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 1,
+    "slide": 21,
+    "nSlides": 33,
+    "pct": 63
+   },
+   {
+    "area": "Salud Pública",
+    "sesion": 7,
+    "slide": 2,
+    "nSlides": 22,
+    "pct": 5
+   }
+  ]
+ },
+ "III-5": {
+  "area": "Ética e Interculturalidad",
+  "sesion": 3,
+  "rid": "20185",
+  "vimeo": "1192339535",
+  "slide": 1,
+  "nSlides": 33,
+  "pct": 0,
+  "otras": [
+   {
+    "area": "Ética e Interculturalidad",
+    "sesion": 2,
+    "slide": 1,
+    "nSlides": 30,
+    "pct": 0
+   },
+   {
+    "area": "Cuidado Integral",
+    "sesion": 4,
+    "slide": 5,
+    "nSlides": 60,
+    "pct": 7
+   }
+  ]
+ },
+ "IV-3+IV-5": {
+  "area": "Cuidado Integral",
+  "sesion": 4,
+  "rid": "20340",
+  "vimeo": "1194571402",
+  "slide": 8,
+  "nSlides": 60,
+  "pct": 12,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 8,
+    "slide": 3,
+    "nSlides": 58,
+    "pct": 4
+   },
+   {
+    "area": "Cuidado Integral",
+    "sesion": 6,
+    "slide": 14,
+    "nSlides": 48,
+    "pct": 28
+   }
+  ]
+ },
+ "V-3": {
+  "area": "Cuidado Integral",
+  "sesion": 1,
+  "rid": "20200",
+  "vimeo": "1194546322",
+  "slide": 5,
+  "nSlides": 33,
+  "pct": 13,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 4,
+    "slide": 5,
+    "nSlides": 60,
+    "pct": 7
+   },
+   {
+    "area": "Gestión de Servicios",
+    "sesion": 4,
+    "slide": 10,
+    "nSlides": 28,
+    "pct": 33
+   }
+  ]
+ },
+ "V-7+V-10": {
+  "area": "Gestión de Servicios",
+  "sesion": 7,
+  "rid": "21402",
+  "vimeo": "1198549083",
+  "slide": 20,
+  "nSlides": 25,
+  "pct": 79,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 1,
+    "slide": 11,
+    "nSlides": 33,
+    "pct": 31
+   },
+   {
+    "area": "Gestión de Servicios",
+    "sesion": 4,
+    "slide": 16,
+    "nSlides": 28,
+    "pct": 56
+   }
+  ]
+ },
+ "I-10": {
+  "area": "Cuidado Integral",
+  "sesion": 1,
+  "rid": "20200",
+  "vimeo": "1194546322",
+  "slide": 2,
+  "nSlides": 33,
+  "pct": 3,
+  "otras": []
+ },
+ "III-4+III-7": {
+  "area": "Cuidado Integral",
+  "sesion": 4,
+  "rid": "20340",
+  "vimeo": "1194571402",
+  "slide": 4,
+  "nSlides": 60,
+  "pct": 5,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 2,
+    "slide": 5,
+    "nSlides": 45,
+    "pct": 9
+   },
+   {
+    "area": "Cuidado Integral",
+    "sesion": 7,
+    "slide": 19,
+    "nSlides": 42,
+    "pct": 44
+   }
+  ]
+ },
+ "II-10": {
+  "area": "Cuidado Integral",
+  "sesion": 2,
+  "rid": "20240",
+  "vimeo": "1192695911",
+  "slide": 18,
+  "nSlides": 45,
+  "pct": 39,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 4,
+    "slide": 4,
+    "nSlides": 60,
+    "pct": 5
+   },
+   {
+    "area": "Cuidado Integral",
+    "sesion": 8,
+    "slide": 2,
+    "nSlides": 58,
+    "pct": 2
+   }
+  ]
+ },
+ "II-12": {
+  "area": "Cuidado Integral",
+  "sesion": 2,
+  "rid": "20240",
+  "vimeo": "1192695911",
+  "slide": 13,
+  "nSlides": 45,
+  "pct": 27,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 3,
+    "slide": 4,
+    "nSlides": 33,
+    "pct": 9
+   },
+   {
+    "area": "Gestión de Servicios",
+    "sesion": 3,
+    "slide": 22,
+    "nSlides": 32,
+    "pct": 68
+   }
+  ]
+ },
+ "III-6+III-10": {
+  "area": "Ética e Interculturalidad",
+  "sesion": 2,
+  "rid": "20167",
+  "vimeo": "1191663507",
+  "slide": 4,
+  "nSlides": 30,
+  "pct": 10,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 2,
+    "slide": 15,
+    "nSlides": 45,
+    "pct": 32
+   },
+   {
+    "area": "Investigación",
+    "sesion": 3,
+    "slide": 17,
+    "nSlides": 20,
+    "pct": 84
+   }
+  ]
+ },
+ "II-6": {
+  "area": "Cuidado Integral",
+  "sesion": 5,
+  "rid": "20339",
+  "vimeo": "1194778416",
+  "slide": 8,
+  "nSlides": 32,
+  "pct": 23,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 4,
+    "slide": 9,
+    "nSlides": 60,
+    "pct": 14
+   },
+   {
+    "area": "Cuidado Integral",
+    "sesion": 3,
+    "slide": 21,
+    "nSlides": 33,
+    "pct": 63
+   }
+  ]
+ },
+ "I-1": {
+  "area": "Cuidado Integral",
+  "sesion": 4,
+  "rid": "20340",
+  "vimeo": "1194571402",
+  "slide": 11,
+  "nSlides": 60,
+  "pct": 17,
+  "otras": [
+   {
+    "area": "Salud Pública",
+    "sesion": 8,
+    "slide": 2,
+    "nSlides": 22,
+    "pct": 5
+   },
+   {
+    "area": "Salud Pública",
+    "sesion": 5,
+    "slide": 5,
+    "nSlides": 22,
+    "pct": 19
+   }
+  ]
+ },
+ "II-13": {
+  "area": "Cuidado Integral",
+  "sesion": 4,
+  "rid": "20340",
+  "vimeo": "1194571402",
+  "slide": 9,
+  "nSlides": 60,
+  "pct": 14,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 8,
+    "slide": 16,
+    "nSlides": 58,
+    "pct": 26
+   },
+   {
+    "area": "Cuidado Integral",
+    "sesion": 3,
+    "slide": 7,
+    "nSlides": 33,
+    "pct": 19
+   }
+  ]
+ },
+ "III-3": {
+  "area": "Investigación",
+  "sesion": 3,
+  "rid": "20315",
+  "vimeo": "1194600605",
+  "slide": 11,
+  "nSlides": 20,
+  "pct": 53,
+  "otras": [
+   {
+    "area": "Cuidado Integral",
+    "sesion": 4,
+    "slide": 27,
+    "nSlides": 60,
+    "pct": 44
+   },
+   {
+    "area": "Ética e Interculturalidad",
+    "sesion": 1,
+    "slide": 19,
+    "nSlides": 36,
+    "pct": 51
+   }
+  ]
+ },
+ "V-2": {
+  "area": "Gestión de Servicios",
+  "sesion": 1,
+  "rid": "20498",
+  "vimeo": "1195687250",
+  "slide": 3,
+  "nSlides": 15,
+  "pct": 14,
+  "otras": [
+   {
+    "area": "Gestión de Servicios",
+    "sesion": 2,
+    "slide": 2,
+    "nSlides": 8,
+    "pct": 14
+   },
+   {
+    "area": "Gestión de Servicios",
+    "sesion": 3,
+    "slide": 10,
+    "nSlides": 32,
+    "pct": 29
+   }
+  ]
+ },
+ "I-2": {
+  "area": "Salud Pública",
+  "sesion": 1,
+  "rid": "20212",
+  "vimeo": "1194433471",
+  "slide": 2,
+  "nSlides": 16,
+  "pct": 7,
+  "otras": []
+ },
+ "IV-1+IV-2": {
+  "area": "Investigación",
+  "sesion": 1,
+  "rid": "20242",
+  "vimeo": "1193476203",
+  "slide": 2,
+  "nSlides": 17,
+  "pct": 6,
+  "otras": [
+   {
+    "area": "Investigación",
+    "sesion": 2,
+    "slide": 5,
+    "nSlides": 16,
+    "pct": 27
+   },
+   {
+    "area": "Investigación",
+    "sesion": 3,
+    "slide": 9,
+    "nSlides": 20,
+    "pct": 42
+   }
+  ]
+ },
+ "IV-4": {
+  "area": "Investigación",
+  "sesion": 1,
+  "rid": "20242",
+  "vimeo": "1193476203",
+  "slide": 11,
+  "nSlides": 17,
+  "pct": 63,
+  "otras": [
+   {
+    "area": "Salud Pública",
+    "sesion": 1,
+    "slide": 13,
+    "nSlides": 16,
+    "pct": 80
+   }
+  ]
+ },
+ "IV-6+IV-7": {
+  "area": "Salud Pública",
+  "sesion": 4,
+  "rid": "20380",
+  "vimeo": "1194859549",
+  "slide": 2,
+  "nSlides": 21,
+  "pct": 5,
+  "otras": []
+ },
+ "III-1": {
+  "area": "Ética e Interculturalidad",
+  "sesion": 1,
+  "rid": "20154",
+  "vimeo": "1191648361",
+  "slide": 3,
+  "nSlides": 36,
+  "pct": 6,
+  "otras": []
+ },
+ "III-2": {
+  "area": "Ética e Interculturalidad",
+  "sesion": 1,
+  "rid": "20154",
+  "vimeo": "1191648361",
+  "slide": 2,
+  "nSlides": 36,
+  "pct": 3,
+  "otras": [
+   {
+    "area": "Gestión de Servicios",
+    "sesion": 7,
+    "slide": 7,
+    "nSlides": 25,
+    "pct": 25
+   }
+  ]
+ },
+ "III-8": {
+  "area": "Ética e Interculturalidad",
+  "sesion": 1,
+  "rid": "20154",
+  "vimeo": "1191648361",
+  "slide": 2,
+  "nSlides": 36,
+  "pct": 3,
+  "otras": []
+ },
+ "V-1": {
+  "area": "Gestión de Servicios",
+  "sesion": 3,
+  "rid": "20584",
+  "vimeo": "1195741794",
+  "slide": 11,
+  "nSlides": 32,
+  "pct": 32,
+  "otras": [
+   {
+    "area": "Investigación",
+    "sesion": 2,
+    "slide": 10,
+    "nSlides": 16,
+    "pct": 60
+   }
+  ]
+ }
+}

@@ -7,7 +7,7 @@
 // día-a-día (ver + practica + lectura, suma = min_core).
 //
 // Reglas de calendario (idénticas en espíritu a gen_synapse_plan.js):
-//  · INICIO = 2026-06-20. Las 130 lecciones se asignan a días HÁBILES consecutivos
+//  · INICIO = 2026-06-24. Las 130 lecciones se asignan a días HÁBILES consecutivos
 //    Lunes→Viernes (SALTA sábados y domingos). El NÚCLEO L-V es la ventana 14:15-15:15.
 //  · 130 hábiles ≈ 26 semanas. La fecha fin se calcula y se imprime.
 //  · semana del plan = índice 1..26 (cada 5 días hábiles = 1 semana). El d=1..5 del JSON
@@ -42,15 +42,15 @@ for (const det of CUR.detalles) {
 }
 if (lecciones.length !== 130) throw new Error('Se esperaban 130 lecciones, hay ' + lecciones.length);
 
-// ─── Calendario: 130 días hábiles L-V consecutivos desde 2026-06-23 ───
+// ─── Calendario: 130 días hábiles L-V consecutivos desde 2026-06-24 ───
 const WD = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-const START = new Date('2026-06-23T12:00:00'); // martes 23-jun-2026 (20-22 no se estudió; todo corre a 23-jun)
+const START = new Date('2026-06-24T12:00:00'); // miércoles 24-jun-2026 (20-23 no se estudió; todo corre a 24-jun)
 function nextBusinessDay(date) {
   const d = new Date(date);
   do { d.setTime(d.getTime() + 86400000); } while (d.getDay() === 0 || d.getDay() === 6);
   return d;
 }
-// primer día hábil ≥ START (23-jun es martes → 1er hábil = mar 23-jun)
+// primer día hábil ≥ START (24-jun es miércoles → 1er hábil = mié 24-jun)
 let cursor = new Date(START);
 while (cursor.getDay() === 0 || cursor.getDay() === 6) cursor = nextBusinessDay(cursor);
 

@@ -1,0 +1,398 @@
+[
+ {
+  "area": "Cuidado Integral",
+  "tipo": "vivo",
+  "sec": "2421",
+  "n": 1,
+  "sesion": "SESIÓN N° 1 (19/05/26)",
+  "rid": "20323",
+  "vimeo": "1194571656"
+ },
+ {
+  "area": "Cuidado Integral",
+  "tipo": "vivo",
+  "sec": "2421",
+  "n": 2,
+  "sesion": "SESIÓN N° 2 (20/05/26)",
+  "rid": "20337",
+  "vimeo": "1194571625"
+ },
+ {
+  "area": "Cuidado Integral",
+  "tipo": "vivo",
+  "sec": "2421",
+  "n": 3,
+  "sesion": "SESIÓN N° 3 (21/05/26)",
+  "rid": "20355",
+  "vimeo": "1194779392"
+ },
+ {
+  "area": "Cuidado Integral",
+  "tipo": "vivo",
+  "sec": "2421",
+  "n": 4,
+  "sesion": "SESIÓN N° 4 (01/06/26)",
+  "rid": "20676",
+  "vimeo": "1198177324"
+ },
+ {
+  "area": "Cuidado Integral",
+  "tipo": "vivo",
+  "sec": "2421",
+  "n": 5,
+  "sesion": "SESIÓN N° 5 (03/06/26)",
+  "rid": "21125",
+  "vimeo": "1198484003"
+ },
+ {
+  "area": "Cuidado Integral",
+  "tipo": "vivo",
+  "sec": "2421",
+  "n": 6,
+  "sesion": "SESIÓN N° 6 (08/06/26)",
+  "rid": "22403",
+  "vimeo": "1199820952"
+ },
+ {
+  "area": "Cuidado Integral",
+  "tipo": "asinc",
+  "sec": "2276",
+  "n": 1,
+  "sesion": "SESIÓN N° 1",
+  "rid": "20200",
+  "vimeo": "1194546322"
+ },
+ {
+  "area": "Cuidado Integral",
+  "tipo": "asinc",
+  "sec": "2276",
+  "n": 2,
+  "sesion": "SESIÓN N° 2",
+  "rid": "20240",
+  "vimeo": "1192695911"
+ },
+ {
+  "area": "Cuidado Integral",
+  "tipo": "asinc",
+  "sec": "2276",
+  "n": 3,
+  "sesion": "SESIÓN N° 3",
+  "rid": "20268",
+  "vimeo": "1192763838"
+ },
+ {
+  "area": "Cuidado Integral",
+  "tipo": "asinc",
+  "sec": "2276",
+  "n": 4,
+  "sesion": "SESIÓN N° 4",
+  "rid": "20340",
+  "vimeo": "1194571402"
+ },
+ {
+  "area": "Cuidado Integral",
+  "tipo": "asinc",
+  "sec": "2276",
+  "n": 5,
+  "sesion": "SESIÓN N° 5",
+  "rid": "20339",
+  "vimeo": "1194778416"
+ },
+ {
+  "area": "Cuidado Integral",
+  "tipo": "asinc",
+  "sec": "2276",
+  "n": 6,
+  "sesion": "SESIÓN N° 6",
+  "rid": "20487",
+  "vimeo": "1195227088"
+ },
+ {
+  "area": "Cuidado Integral",
+  "tipo": "asinc",
+  "sec": "2276",
+  "n": 7,
+  "sesion": "SESIÓN N° 7",
+  "rid": "20565",
+  "vimeo": "1196227774"
+ },
+ {
+  "area": "Cuidado Integral",
+  "tipo": "asinc",
+  "sec": "2276",
+  "n": 8,
+  "sesion": "SESIÓN N° 8",
+  "rid": "20566",
+  "vimeo": "1196897971"
+ },
+ {
+  "area": "Salud Pública",
+  "tipo": "asinc",
+  "sec": "2419",
+  "n": 1,
+  "sesion": "SESIÓN N° 1",
+  "rid": "20212",
+  "vimeo": "1194433471"
+ },
+ {
+  "area": "Salud Pública",
+  "tipo": "asinc",
+  "sec": "2419",
+  "n": 2,
+  "sesion": "SESIÓN N° 2",
+  "rid": "20262",
+  "vimeo": "1192644790"
+ },
+ {
+  "area": "Salud Pública",
+  "tipo": "asinc",
+  "sec": "2419",
+  "n": 3,
+  "sesion": "SESIÓN N° 3",
+  "rid": "20379",
+  "vimeo": "1194173568"
+ },
+ {
+  "area": "Salud Pública",
+  "tipo": "asinc",
+  "sec": "2419",
+  "n": 4,
+  "sesion": "SESIÓN N° 4",
+  "rid": "20380",
+  "vimeo": "1194859549"
+ },
+ {
+  "area": "Salud Pública",
+  "tipo": "asinc",
+  "sec": "2419",
+  "n": 5,
+  "sesion": "SESIÓN N° 5",
+  "rid": "20314",
+  "vimeo": "1196904560"
+ },
+ {
+  "area": "Salud Pública",
+  "tipo": "asinc",
+  "sec": "2419",
+  "n": 6,
+  "sesion": "SESIÓN N° 6",
+  "rid": "20558",
+  "vimeo": "1197009853"
+ },
+ {
+  "area": "Salud Pública",
+  "tipo": "asinc",
+  "sec": "2419",
+  "n": 7,
+  "sesion": "SESIÓN N° 7",
+  "rid": "20559",
+  "vimeo": "1197026034"
+ },
+ {
+  "area": "Salud Pública",
+  "tipo": "asinc",
+  "sec": "2419",
+  "n": 8,
+  "sesion": "SESIÓN N° 8",
+  "rid": "20655",
+  "vimeo": "1197526363"
+ },
+ {
+  "area": "Salud Pública",
+  "tipo": "vivo",
+  "sec": "2420",
+  "n": 1,
+  "sesion": "SESIÓN N° 1 (26/05/26)",
+  "rid": "20490",
+  "vimeo": "1196090424"
+ },
+ {
+  "area": "Salud Pública",
+  "tipo": "vivo",
+  "sec": "2420",
+  "n": 2,
+  "sesion": "SESIÓN N° 2 (02/06/26)",
+  "rid": "20683",
+  "vimeo": "1198186417"
+ },
+ {
+  "area": "Salud Pública",
+  "tipo": "vivo",
+  "sec": "2420",
+  "n": 3,
+  "sesion": "SESIÓN N° 3 (09/06/26)",
+  "rid": "21386",
+  "vimeo": "1200557166"
+ },
+ {
+  "area": "Salud Pública",
+  "tipo": "vivo",
+  "sec": "2420",
+  "n": 4,
+  "sesion": "SESIÓN N° 4 (16/06/26)",
+  "rid": "22375",
+  "vimeo": "1202225710"
+ },
+ {
+  "area": "Ética",
+  "tipo": "asinc",
+  "sec": "2423",
+  "n": 1,
+  "sesion": "SESIÓN N° 1",
+  "rid": "20154",
+  "vimeo": "1191648361"
+ },
+ {
+  "area": "Ética",
+  "tipo": "asinc",
+  "sec": "2423",
+  "n": 2,
+  "sesion": "SESIÓN N° 2",
+  "rid": "20167",
+  "vimeo": "1191663507"
+ },
+ {
+  "area": "Ética",
+  "tipo": "asinc",
+  "sec": "2423",
+  "n": 3,
+  "sesion": "SESIÓN N° 3",
+  "rid": "20185",
+  "vimeo": "1192339535"
+ },
+ {
+  "area": "Investigación",
+  "tipo": "asinc",
+  "sec": "2424",
+  "n": 1,
+  "sesion": "SESIÓN N° 1",
+  "rid": "20242",
+  "vimeo": "1193476203"
+ },
+ {
+  "area": "Investigación",
+  "tipo": "asinc",
+  "sec": "2424",
+  "n": 2,
+  "sesion": "SESIÓN N° 2",
+  "rid": "20274",
+  "vimeo": "1193476211"
+ },
+ {
+  "area": "Investigación",
+  "tipo": "asinc",
+  "sec": "2424",
+  "n": 3,
+  "sesion": "SESIÓN N° 3",
+  "rid": "20315",
+  "vimeo": "1194600605"
+ },
+ {
+  "area": "Gestión",
+  "tipo": "asinc",
+  "sec": "2426",
+  "n": 1,
+  "sesion": "SESIÓN N° 1",
+  "rid": "20498",
+  "vimeo": "1195687250"
+ },
+ {
+  "area": "Gestión",
+  "tipo": "asinc",
+  "sec": "2426",
+  "n": 2,
+  "sesion": "SESIÓN N° 2",
+  "rid": "20524",
+  "vimeo": "1195710863"
+ },
+ {
+  "area": "Gestión",
+  "tipo": "asinc",
+  "sec": "2426",
+  "n": 3,
+  "sesion": "SESIÓN N° 3",
+  "rid": "20584",
+  "vimeo": "1195741794"
+ },
+ {
+  "area": "Gestión",
+  "tipo": "asinc",
+  "sec": "2426",
+  "n": 4,
+  "sesion": "SESIÓN N° 4",
+  "rid": "20585",
+  "vimeo": "1196440272"
+ },
+ {
+  "area": "Gestión",
+  "tipo": "asinc",
+  "sec": "2426",
+  "n": 5,
+  "sesion": "SESIÓN N° 5",
+  "rid": "20677",
+  "vimeo": "1197490954"
+ },
+ {
+  "area": "Gestión",
+  "tipo": "asinc",
+  "sec": "2426",
+  "n": 6,
+  "sesion": "SESIÓN N° 6",
+  "rid": "20695",
+  "vimeo": "1198521468"
+ },
+ {
+  "area": "Gestión",
+  "tipo": "asinc",
+  "sec": "2426",
+  "n": 7,
+  "sesion": "SESIÓN N° 7",
+  "rid": "21402",
+  "vimeo": "1198549083"
+ },
+ {
+  "area": "Gestión",
+  "tipo": "vivo",
+  "sec": "2428",
+  "n": 1,
+  "sesion": "SESIÓN N° 1 (04/05/26)",
+  "rid": "21394",
+  "vimeo": "1198831039"
+ },
+ {
+  "area": "Gestión",
+  "tipo": "vivo",
+  "sec": "2428",
+  "n": 2,
+  "sesion": "SESIÓN N° 2 (10/06/26)",
+  "rid": "22318",
+  "vimeo": "1200585710"
+ },
+ {
+  "area": "Gestión",
+  "tipo": "vivo",
+  "sec": "2428",
+  "n": 3,
+  "sesion": "SESIÓN N° 3 (11/06/26)",
+  "rid": "22454",
+  "vimeo": "1200905472"
+ },
+ {
+  "area": "Gestión",
+  "tipo": "vivo",
+  "sec": "2428",
+  "n": 4,
+  "sesion": "SESIÓN N° 4 (17/06/26)",
+  "rid": "23107",
+  "vimeo": "1202645427"
+ },
+ {
+  "area": "Gestión",
+  "tipo": "vivo",
+  "sec": "2428",
+  "n": 5,
+  "sesion": "SESIÓN N° 5",
+  "rid": "23127",
+  "vimeo": "1203087100"
+ }
+]

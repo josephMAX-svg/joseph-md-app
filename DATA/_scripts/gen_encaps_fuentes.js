@@ -54,7 +54,7 @@ const TOPICS = [
   ['III-9', ['derechos del paciente', 'derechos de los usuarios', 'derechos del usuario', 'deberes y derechos']],
   ['V-2', ['planeamiento', 'plan operativo', 'plan estrategico', 'foda', ' pei', ' poi']],
   ['V-6', ['telesalud', 'telemedicina', 'telemonitoreo', 'teleorientaci']],
-  ['IV-1', ['tipos de estudio', 'disenos de estudio', 'diseno de investigacion', 'estudios epidemiologic', 'conceptos basicos de investigacion', 'enfoques y metodos de investigacion', 'estudios analiticos', 'estudios descriptivos', 'tipos de investigacion', 'clasificacion de las investigaciones', 'conceptos y clasificacion']],
+  ['IV-1+IV-2', ['tipos de estudio', 'disenos de estudio', 'diseno de investigacion', 'estudios epidemiologic', 'conceptos basicos de investigacion', 'enfoques y metodos de investigacion', 'estudios analiticos', 'estudios descriptivos', 'tipos de investigacion', 'clasificacion de las investigaciones', 'conceptos y clasificacion', 'validez', 'sesgo', 'confusion', 'causalidad', 'instrumentos de recoleccion', 'procesamiento y analisis de datos', 'metodologia de la investigacion', 'elaboracion del proyecto de investigacion']],
   ['I-5+I-6', ['determinantes', 'bioestadistica', 'estadistica', 'demografia']],
   ['I-7', ['infancia', 'pnaia', 'plan nacional de accion por la']],
   ['I-8', ['discapacidad']],
@@ -66,7 +66,6 @@ const TOPICS = [
   ['III-5', ['intercultural', 'pertinencia cultural', 'parto vertical', 'medicina tradicional', 'identidad cultural', 'diversidad cultural', 'migrante', 'estigma', 'autopercepcion etnica', 'enfoque intercultural', 'dialogo intercultural', 'inclusion y la equidad']],
   ['III-6+III-10', ['adecuacion cultural', 'politica intercultural', 'pueblos indigenas', 'poblacion indigena']],
   ['III-8', ['etica publica', '27815', 'funcion publica', 'codigo de etica de la funcion', 'aspectos eticos de las publicaciones', 'etica y aspectos eticos']],
-  ['IV-2', ['validez', 'sesgo', 'confusion', 'causalidad', 'instrumentos de recoleccion', 'procesamiento y analisis de datos', 'metodologia de la investigacion', 'elaboracion del proyecto de investigacion']],
   ['IV-3+IV-5', ['tamizaje', 'cribado', 'prueba diagnostic', 'pruebas diagnostic', 'sensibilidad', 'especificidad']],
   ['IV-4', ['riesgo relativo', 'odds', 'medidas de asociacion', 'razon de momios']],
   ['IV-6+IV-7', ['indicador', 'sala situacional', 'analisis situacional', 'publicacion cientifica', 'caracteristicas estructurales del informe', 'requisitos metodologicos del informe', 'ejecucion de la investigacion']],
@@ -109,7 +108,8 @@ const academias = [
     { n: '🎬 Videoclases · Salud Pública', url: folder('1tlyniouI5o_SOpw-LBa2IGfWgG5zpfF0') },
     { n: '📈 Normativas (fichas MINSA)', url: folder('1YdyhemfujHYIROcBcr9G9avUYulqfpko') },
     { n: '📝 Simulacros', url: folder('1Svt1JyDTunsfOYUI8ochTEYW6NzynsBH') },
-    { n: '🎯 Compendio', url: folder('13fYG58fySgFIC1HKBVUCNw61ipa6C69V') },
+    { n: '🎯 Compendio (Salud Pública · Ética · Cuidado Integral)', url: folder('13fYG58fySgFIC1HKBVUCNw61ipa6C69V') },
+    { n: '📅 Cronograma (hoja de ruta DR LOPEZ)', url: folder('1nvKJ7gGswLQYF0Y0o7X3yqsTL1WEG4WI') },
     { n: '😬 Kahoot', url: folder('1qPY0rwPDsUZhIJfIyaL1z76W69YGUlFO') },
     { n: '🎥 Sesión Introductoria (mp4)', url: file('1gf2zPcrc4peDWScn6Lauvy2mrF7wQmc1') },
   ] },
@@ -196,6 +196,26 @@ if (fs.existsSync(thvDir)) {
 const thvTotal = Object.values(theomedVideos).reduce((a, x) => a + x.sesiones.filter((s) => s.vimeo).length, 0);
 Object.keys(theomedVideos).forEach((a) => { const v = theomedVideos[a]; v.nVideos = v.sesiones.filter((s) => s.vimeo).length; });
 
+// ── Tema → Sesión Theomed + ubicación por diapositiva (Task minuto-mapping, 23-jun) ──
+// Generado leyendo los 29 PDFs asincrónicos de Theomed (pdftotext): cada "TEMARIO DE HOY"
+// marca dónde arranca cada subtema → diapositiva X/N → ~% del video (la HOJA DE RUTA del
+// curso, + el índice del PDF de cada sesión). Fuente: DATA/ENCAPS/_theomed_tema_sesion.json.
+// rid = id del recurso (slides) en Theomed (mod/resource/view.php?id=rid). area = área del
+// CONTENIDO (donde está el video), que puede diferir del prefijo del código.
+let temaSesion = {};
+const tsPath = path.join(ROOT, 'DATA/ENCAPS/_theomed_tema_sesion.json');
+if (fs.existsSync(tsPath)) {
+  const m = JSON.parse(fs.readFileSync(tsPath, 'utf8'));
+  for (const [code, t] of Object.entries(m)) {
+    temaSesion[code] = {
+      area: t.area, sesion: t.sesion,
+      slidesUrl: 'https://campus.academiatheomed.com/mod/resource/view.php?id=' + t.rid,
+      slide: t.slide, nSlides: t.nSlides, pct: t.pct,
+      otras: (t.otras || []).map(o => ({ area: o.area, sesion: o.sesion, slide: o.slide, nSlides: o.nSlides, pct: o.pct })),
+    };
+  }
+}
+
 const ts = `/**
  * encapsFuentes.ts — MATERIAL ENCAPS verificado EN VIVO (re-scrape 22-jun-2026, Chrome DevTools).
  * Todo el material con LINK DIRECTO (para no buscar). GENERADO por DATA/_scripts/gen_encaps_fuentes.js.
@@ -223,6 +243,13 @@ export const ENCAPS_VIDEO_DRIVE: Record<string, { url: string; label: string; mi
 export type TheomedSesion = { tipo: string; label: string; fecha: string; pdf: string; vimeo: string };
 export const ENCAPS_THEOMED_VIDEOS: Record<string, { envivoUrl: string; asincUrl: string; nVideos: number; sesiones: TheomedSesion[] }> = ${JSON.stringify(theomedVideos, null, 1)};
 
+// Tema (código ENCAPS) → Sesión Theomed grabada + ubicación por diapositiva (≈% del video).
+// Mapeado leyendo los 29 PDFs asincrónicos (pdftotext): cada "TEMARIO DE HOY" marca el inicio del
+// subtema. area = área del CONTENIDO (donde está el video). slidesUrl = PDF de la sesión. otras =
+// sesiones donde el tema también aparece (vueltas). Para el video: abrir la sección asinc del área.
+export type TemaSesion = { area: string; sesion: number; slidesUrl: string; slide: number; nSlides: number; pct: number; otras: { area: string; sesion: number; slide: number; nSlides: number; pct: number }[] };
+export const ENCAPS_THEOMED_TEMA_SESION: Record<string, TemaSesion> = ${JSON.stringify(temaSesion, null, 1)};
+
 // COMPENDIO DR LOPEZ por área (Google Drive · resumen del área). Investigación/Gestión aún no subidos.
 export const ENCAPS_COMPENDIO: Record<string, string> = ${JSON.stringify(COMPENDIO_AREA, null, 1)};
 
@@ -243,12 +270,13 @@ export const ENCAPS_FUENTES_META = {
   fichasAsignadas: ${fichas.length - sinAsignar},
   academiasRespaldo: ${academias.length},
   theomedSimulacros: ${theomedSims.length},
-  verificado: '2026-06-22',
+  temaSesionMapeados: ${Object.keys(temaSesion).length},
+  verificado: '2026-06-23',
 } as const;
 `;
 fs.writeFileSync(path.join(ROOT, 'src/lib/encapsFuentes.ts'), ts, 'utf8');
 console.log('OK encapsFuentes.ts ·', fichas.length, 'fichas ·', fichas.length - sinAsignar, 'asignadas a temas ·', sinAsignar, 'sin asignar ·', academias.length, 'academias');
 const byArea = {}; fichas.forEach((f) => byArea[f.area] = (byArea[f.area] || 0) + 1);
 console.log('fichas por área:', JSON.stringify(byArea));
-console.log('temas con fichas:', Object.entries(porTema).filter(([k, v]) => v.length).length, '/ 41 · video respaldo:', Object.keys(videoRespaldo).length, 'temas');
+console.log('temas con fichas:', Object.entries(porTema).filter(([k, v]) => v.length).length, '/ 40 · video respaldo:', Object.keys(videoRespaldo).length, 'temas');
 console.log('Theomed videos grabados (Vimeo):', thvTotal, 'en', Object.keys(theomedVideos).length, 'áreas →', Object.entries(theomedVideos).map(([a, v]) => a.split(' ')[0] + ':' + v.nVideos).join(' '));
