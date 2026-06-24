@@ -18,8 +18,21 @@
 - **Theomed:** sesiones asincrónicas + post-tests mapeados por área y por tema (sesión/diapositiva/%) en `ENCAPS_THEOMED_*`. Sección Cuidado Integral verificada en vivo (8 sesiones + 8 post-tests). ✔
 - **Google Drive:** carpetas de video por área confirmadas en vivo (= `ENCAPS_VIDEO_DRIVE`) + compendios DR LOPEZ (`ENCAPS_COMPENDIO`). ✔
 
+## Re-conteo 100% en vivo de QxMedic (24-jun, sesión re-logueada) — por área
+Entré a cada una de las **5 secciones de área** y crucé cada videoclase LIBERADA contra `encapsVideosPorTema.ts`:
+| Área | Videoclases liberadas hoy | En nuestra data | Faltaban |
+|---|---|---|---|
+| Cuidado Integral | 44 | 43 | **1** → "Prevención de enfermedades transmisibles" (09-jun) |
+| Salud Pública | 33 | 33 | 0 |
+| Gestión | 3 | 3 | 0 |
+| Investigación | 13 | 13 | 0 |
+| Ética/Intercultural | 12 | 12 | 0 |
+| **TOTAL** | **105** | **104** | **1 (corregido)** |
+
+→ Cobertura **99%**. El único faltante (`dDlKN…` en CI) **se añadió** a `ENCAPS_VIDEOS_POR_TEMA["II-6"]` (Tuberculosis/infecciones). Las 5 áreas de QX coinciden exactamente con nuestras 5. Tenemos MÁS videos que los liberados hoy (160→161 vs 105) porque capturamos todo el goteo (incluye los que QX libera en julio).
+
 ## Conclusión
-**No falta temario de Fase 1.** Todos los videos, PDFs y materiales de QxMedic + Theomed + Drive están capturados en la app y asignados a los días de estudio 1-20 (cobertura Pareto). Las preguntas/mapas/post-tests son las fases posteriores (días 21+), tal como pediste.
+**No falta temario de Fase 1** (tras añadir el 1 video detectado). Todos los videos, PDFs y materiales de QxMedic + Theomed + Drive están capturados en la app y asignados a los días de estudio 1-20 (cobertura Pareto). Las preguntas/mapas/post-tests son las fases posteriores (días 21+), tal como pediste.
 
 ## Caveat honesto
 - Al navegar directo a `/mis-clases/videoclases`, **la sesión de QxMedic se cerró** (pidió login). No re-logueé (credenciales del usuario). La verificación de QX se completó con: (a) el dashboard capturado antes del logout, (b) los materiales recientes cruzados contra la data, (c) los scrapes previos (184 videoclases). Para un **re-conteo 100% en vivo de cada videoclase**, basta que vuelvas a loguear QX y lo re-corro.

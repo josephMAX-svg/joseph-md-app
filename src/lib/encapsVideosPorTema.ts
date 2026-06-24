@@ -1,6 +1,6 @@
 // AUTO-GENERADO por DATA/_scripts/gen_videos_por_tema.js — NO editar a mano.
 // Videos QX por código de tema (para renderizar varios temas/día · refactor multi-tema).
-// 32 temas · 160 videos.
+// 32 temas · 161 videos (160 generados + 1 añadido en verificación en vivo 24-jun: II-6 "Prevención de enfermedades transmisibles").
 export interface VideoPorTema { titulo: string; url: string | null; code: string; slides: string | null; dur: number | null }
 export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
  "I-1": [
@@ -709,6 +709,13 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
   {
    "titulo": "➕ INFECCIONES ASOCIADAS A LA ATENCIóN DE SALUD",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/eWZrZWU5am5IdXFON1JmQlJmeTZMQT09",
+   "code": "II-6",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "➕ PREVENCIÓN DE ENFERMEDADES TRANSMISIBLES",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/dDlKNHFRWjByZXFaYnBXS293NUoyUT09",
    "code": "II-6",
    "slides": null,
    "dur": null
