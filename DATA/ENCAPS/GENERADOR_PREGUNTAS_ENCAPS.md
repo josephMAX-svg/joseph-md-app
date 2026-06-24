@@ -19,6 +19,7 @@
 | **Fuentes por tema** | `src/lib/encapsFuentes.ts` | `ENCAPS_FICHAS_POR_TEMA` (fichas MINSA QX), `ENCAPS_THEOMED_TEMA_SESION` (sesión+diapositiva+%), `ENCAPS_COMPENDIO` (compendio DR LOPEZ por área), `ENCAPS_VIDEO_DRIVE`, `ENCAPS_AREA_PREFIJO` |
 | **Videos QX por tema** | `src/lib/encapsVideosPorTema.ts` | `ENCAPS_VIDEOS_POR_TEMA[codigo]` → títulos + URLs de las videoclases QX |
 | **NTS por tema** | tabla §3 de este archivo | norma técnica obligatoria de cada tema |
+| **⭐ Guía por tema** | `DATA/ENCAPS/GUIA_POR_TEMA_2026-2.md` | **de dónde repasar + los ángulos MÁS preguntados (citando los exámenes reales) + la trampa clásica** de cada uno de los 40 temas. LÉELA SIEMPRE: tus preguntas deben apuntar a esos ángulos y castigar con esa trampa. |
 | **Guías de área** | `D:\agente_estudio\ENCAPS\ENCAPS\RECURSOS A USAR\` | GAPs maestros por área (.docx) |
 
 ## 2) RENTABILIDAD — pondera SIEMPRE por esto (backtest de 6 exámenes reales)
