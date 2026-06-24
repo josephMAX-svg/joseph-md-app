@@ -5,6 +5,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { supabase } from './supabase';
 import { ENCAPS_FICHAS_POR_TEMA, ENCAPS_VIDEO_DRIVE, ENCAPS_THEOMED_AREA, ENCAPS_THEOMED_VIDEOS, ENCAPS_COMPENDIO, ENCAPS_AREA_PREFIJO, ENCAPS_THEOMED_TEMA_SESION } from './encapsFuentes';
+import { ENCAPS_VIDEOS_POR_TEMA } from './encapsVideosPorTema';
 
 // ── D1 por examen (para calcular el día actual 1..71) ──
 export const STUDY_D1: Record<string, string> = {
@@ -83,6 +84,10 @@ export function focusDayByCode(days: StudyScheduleDay[]): Record<string, number>
   const map: Record<string, number> = {};
   for (const d of days) {
     if (d.codigo && map[d.codigo] === undefined) map[d.codigo] = d.dia;
+    // multi-tema: los temas secundarios del día también tienen su día-foco = el día que caen
+    for (const s of d.temas_secundarios || []) {
+      if (s.codigo && map[s.codigo] === undefined) map[s.codigo] = d.dia;
+    }
   }
   return map;
 }
@@ -147,15 +152,30 @@ export interface RepasoHoy {
 export function repasosDeHoy(days: StudyScheduleDay[], dia: number): RepasoHoy[] {
   const out: RepasoHoy[] = [];
   const examenDia = days.reduce((m, d) => Math.max(m, d.dia), 0); // día del examen = tope del plan
+  // multi-tema: aplanar TODOS los temas sembrados (principal + secundarios) con su día-foco
+  const seeded: { codigo: string; subtema: string; prioridad?: string; focusDia: number }[] = [];
+  const vistos = new Set<string>();
   for (const d of days) {
-    if (!d.codigo || d.dia >= dia) continue;
-    const delta = dia - d.dia;
-    const intervalos = intervalosComprimidos(d.prioridad, d.dia, examenDia); // comprimidos → caen antes del examen
+    if (d.codigo && !vistos.has(d.codigo)) {
+      vistos.add(d.codigo);
+      seeded.push({ codigo: d.codigo, subtema: d.subtema || d.codigo, prioridad: d.prioridad, focusDia: d.dia });
+    }
+    for (const s of d.temas_secundarios || []) {
+      if (s.codigo && !vistos.has(s.codigo)) {
+        vistos.add(s.codigo);
+        seeded.push({ codigo: s.codigo, subtema: s.subtema || s.codigo, prioridad: s.prioridad, focusDia: d.dia });
+      }
+    }
+  }
+  for (const t of seeded) {
+    if (t.focusDia >= dia) continue;
+    const delta = dia - t.focusDia;
+    const intervalos = intervalosComprimidos(t.prioridad, t.focusDia, examenDia); // comprimidos → caen antes del examen
     const idx = intervalos.indexOf(delta);
     if (idx >= 0) {
       out.push({
-        codigo: d.codigo, subtema: d.subtema || d.codigo, focusDia: d.dia, delta,
-        vuelta: idx + 2, prioridad: normPrio(d.prioridad), totalVueltas: intervalos.length + 1,
+        codigo: t.codigo, subtema: t.subtema, focusDia: t.focusDia, delta,
+        vuelta: idx + 2, prioridad: normPrio(t.prioridad), totalVueltas: intervalos.length + 1,
       });
     }
   }
@@ -340,6 +360,79 @@ export function itemsForDay(day: StudyScheduleDay, focusByCode: Record<string, n
       label: `🎯 Compendio ${_area} (DR LOPEZ · resumen del área)`,
       detail: 'Google Drive · resumen completo del área para repaso', url: _comp,
       source: 'Compendio DR LOPEZ', dur: 20, hora: slot(20),
+    });
+  }
+  // ── TEMAS SECUNDARIOS del día (front-load multi-tema: TODO el temario en ≤20 días, Pareto) ──
+  // Cada tema adicional rinde su propio bloque: videos QX (ENCAPS_VIDEOS_POR_TEMA), ubicación Theomed,
+  // fichas MINSA y compendio/Drive si es un área nueva. Su día-foco = este día → arranca su cadena de vueltas.
+  const _areasHechas = new Set<string>();
+  if (_area) _areasHechas.add(_area);
+  (day.temas_secundarios || []).forEach((sec, si) => {
+    const cod = sec.codigo;
+    const areaS = ENCAPS_AREA_PREFIJO[(cod.match(/^[IVX]+/) || [''])[0]];
+    items.push({
+      key: `D${N}:sec${si}`, kind: 'material',
+      label: `▶ TEMA ${cod} · ${sec.subtema}`,
+      detail: `Tema adicional del día (${sec.prioridad}) · cobertura Fase 1 · inicia su cadena de vueltas hoy`,
+      source: 'Tema del día',
+    });
+    (ENCAPS_VIDEOS_POR_TEMA[cod] || []).forEach((v, i) => {
+      const locked = !v.url;
+      const vdur = v.dur ?? 20;
+      items.push({
+        key: `D${N}:sec${si}:video:${i}`, kind: 'video',
+        label: v.titulo, detail: [v.code, v.dur ? `${v.dur}min` : null].filter(Boolean).join(' · '),
+        url: v.url, slides: v.slides, locked,
+        source: locked ? 'QX — no liberado' : 'QX videoclase',
+        code: v.code, focusDia: focusByCode[cod], dur: vdur, hora: slot(vdur),
+      });
+    });
+    const tss = ENCAPS_THEOMED_TEMA_SESION[cod];
+    if (tss) {
+      const secUrl = ENCAPS_THEOMED_VIDEOS[tss.area]?.asincUrl || tss.slidesUrl;
+      items.push({
+        key: `D${N}:sec${si}:thtema`, kind: 'video',
+        label: `🎯 Theomed ${cod}: Sesión ${tss.sesion} · ≈ diap. ${tss.slide}/${tss.nSlides} (~${tss.pct}%)`,
+        detail: 'Ubicación exacta en la clase grabada', url: secUrl,
+        source: 'Theomed grabado · ubicación', dur: 20, hora: slot(20),
+      });
+    }
+    (ENCAPS_FICHAS_POR_TEMA[cod] || []).forEach((f, i) => {
+      items.push({
+        key: `D${N}:sec${si}:ficha:${i}`, kind: 'material',
+        label: `📄 MINSA: ${f.titulo}`, detail: `Ficha QxMedic · ${f.min}min`,
+        url: f.url, source: 'QX · Ficha MINSA', dur: f.min, hora: slot(f.min),
+      });
+    });
+    if (areaS && !_areasHechas.has(areaS)) {
+      _areasHechas.add(areaS);
+      const comp = ENCAPS_COMPENDIO[areaS];
+      if (comp) items.push({
+        key: `D${N}:sec${si}:comp`, kind: 'material',
+        label: `🎯 Compendio ${areaS} (DR LOPEZ)`, detail: 'Resumen del área para repaso',
+        url: comp, source: 'Compendio DR LOPEZ', dur: 20, hora: slot(20),
+      });
+      const vd2 = ENCAPS_VIDEO_DRIVE[areaS];
+      if (vd2) items.push({
+        key: `D${N}:sec${si}:vdrive`, kind: 'video',
+        label: vd2.label, detail: `2ª opción de video (${vd2.acad})`,
+        url: vd2.url, source: `Video Drive · ${vd2.acad}`, dur: vd2.min, hora: slot(vd2.min),
+      });
+    }
+  });
+  // ── DÍA DE REPASO (Fase 2/3: tras cubrir todo el temario, solo vueltas + preguntas + mapas) ──
+  if (day.tipo === 'repaso') {
+    items.push({
+      key: `D${N}:banco`, kind: 'eval',
+      label: '🎯 Banco de preguntas del día (retrieval activo)',
+      detail: 'QX BanqueApp + Eval del Tema + simulacros cortos · prioriza lo más rentable y tus fallos',
+      dur: 90, hora: slot(90),
+    });
+    items.push({
+      key: `D${N}:mapas`, kind: 'material',
+      label: '🧠 Mapas conceptuales + repaso espaciado',
+      detail: 'Construye/repasa los mapas de los temas que caen hoy (ver "Repasos de hoy") · 2ª fase Theomed',
+      dur: 60, hora: slot(60),
     });
   }
   // Material complementario (norma/guía + banco + Drive) — clave para temas normativa; con hora
