@@ -248,7 +248,7 @@ function bloquePC(semana) {
 // La 1ª semana ya NO tiene jueves → la 1ª lección de Automate (cap 0 "Introduction") se
 // recupera en el último día (igual que Lex cap 12 y PyTut §12). 12 sem · 82 días · 12 domingos.
 const WD = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-const START = new Date('2026-06-24T12:00:00'); // v7 (23-jun): 20-23 no se estudió → arranque mié 24-jun; sem 1 = mié→dom (5 días, completa con Mié/Jue)
+const START = new Date('2026-06-25T12:00:00'); // v8 (24-jun): 24-jun se dedicó a estructurar → arranque jue 25-jun; sem 1 = jue→dom (4 días, genérico por weekday)
 const SDOW = START.getDay();                    // 3 (miércoles)
 const FIRST_WEEK_LEN = (7 - SDOW) % 7 + 1;      // mié→dom = 5 días (genérico por weekday)
 

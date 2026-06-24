@@ -9,7 +9,7 @@ import { ENCAPS_VIDEOS_POR_TEMA } from './encapsVideosPorTema';
 
 // ── D1 por examen (para calcular el día actual 1..71) ──
 export const STUDY_D1: Record<string, string> = {
-  ENCAPS: '2026-06-24',   // re-estructurado (23-jun: 20-23 no se estudió): D1=mié 24-jun (día1=tema II-3, ya NO simulacro diagnóstico) · TODOS los domingos LIBRES · 40 días-tema L-V (45 temas; III-4+III-7, IV-6+IV-7, V-7+V-10, IV-3+IV-5 y AHORA IV-1+IV-2 fusionados, temas 24-jun→18-ago) · 35 SIMULACROS reales QX+Theomed (8 sáb 3-4 + día-examen 19-ago) · EXAMEN jue 20-ago (tope FIJO)
+  ENCAPS: '2026-06-25',   // re-shift +1 (24-jun se dedicó a estructurar, no se estudió): D1=jue 25-jun (día1=I-3 Vigilancia, multi-tema front-load Pareto) · TODOS los domingos LIBRES · 49 días (1 menos que 24-jun, examen FIJO) · temas en días 1-20 (multi-tema: principal+secundarios, todo el temario ≤día20) · días 21-47 REPASO+preguntas+mapas · 8 sáb simulacros + día-examen 19-ago · EXAMEN jue 20-ago (tope FIJO, día 49)
   // MIR / USMLE se agregan cuando se construyan sus cronogramas.
 };
 // Fechas SIN actividad (bloqueadas por Joseph) — no cuentan como día de plan.
@@ -17,7 +17,7 @@ export const STUDY_D1: Record<string, string> = {
 export const STUDY_SKIP_DATES: Record<string, string[]> = {
   ENCAPS: ['2026-06-28', '2026-07-05', '2026-07-12', '2026-07-19', '2026-07-26', '2026-08-02', '2026-08-09', '2026-08-16'],
 };
-const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 50 };
+const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 49 };
 
 // ── Tipos (espejo de las columnas study_*) ──
 export interface StudyVideo {
