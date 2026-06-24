@@ -1,0 +1,1064 @@
+PLAN OPERATIVO ENCAPS 2026-II 
+ v7 · SEMANA 1 REAL 
+ 18 al 24 de mayo 2026 · Arranque oficial 
+ LUN 18 MAY = DÍA 1 REAL · 5 CRÍTICAS top + 2 simulacros 
+ Joseph Max Soto Tocas · Huancayo, Perú 
+ OPERACIÓN PLAZA HUACHAC · DÍA 1 ARRANCA MAÑANA 
+ META: ≥17/20 · ENCAPS 10 agosto 2026 (85 días desde DÍA 1) 
+ Visión general — Días 1-7 (18 al 24 mayo) 
+ PRIMERA SEMANA REAL del Plan ENCAPS 2026-II v7. LUN 18 MAY = DÍA 1 oficial. Estrategia: las 5 CRÍTICAS más rentables primero (Vacunación → Materna → CRED → Defs caso → Anemia) seguidas de 2 simulacros para línea base. 
+ Día 
+ Fecha 
+ Subtema 
+ Modo 
+ NTS Tier 1 
+ Objetivo 
+ 1 
+ LUN 18 
+ II-3 Vacunación ⭐ 
+ A 
+ 🆕 NTS 196 + RM 137-2024 VPH ÚNICA 
+ 8-12 APEX (≥3 FUENTE_NTS) 
+ 2 
+ MAR 19 
+ II-1 Salud Materna 
+ A 
+ NTS 105 + NTS 121 + 🆕 NTS 214 GAP 
+ 8-12 APEX (≥3 FUENTE_NTS) 
+ 3 
+ MIÉ 20 
+ II-2 CRED 
+ A 
+ 🆕 NTS 238 NUEVA RM 191-2025 + NTS 157 
+ 8-12 APEX (≥3 FUENTE_NTS) 
+ 4 
+ JUE 21 
+ I-4 Defs caso 
+ A3 
+ GPC Dengue + Dir 067 + NTS 104 + RM 116 
+ 10-15 APEX (≥5 FUENTE_NTS) 
+ 5 
+ VIE 22 
+ II-4 Anemia + INTEGRADOR 
+ A 
+ 🆕 NTS 213 NUEVA RM 251-2024 
+ 8-12 APEX + integrador 5 temas 
+ 6 
+ SÁB 23 
+ 🔥 SIMULACRO #1 
+ Sim 
+ CLAVE 2024-2A línea base 
+ Establecer línea base honesta 
+ 7 
+ DOM 24 
+ 🔥 SIMULACRO #2 + Planning 
+ Sim 
+ CLAVE 2025-1B + descarga 5 NTS sem 2 
+ Comparar Sáb vs Dom · Planear sem 2 
+ Notas críticas DÍA 1 
+ 🔴 LUN 18 MAY = TU DÍA 1 REAL · sin asunciones de temas previos 
+ Anclaje Post-Sueño 04:15-04:45 ADAPTADO: revisar Plan Maestro v7 + Anki SRS general (sin D-1) 
+ Warm-up 04:45-05:45 ADAPTADO: 100% preview Vacunación (sin tema previo) 
+ Repaso Multi-Temporal 07:15-08:15 ADAPTADO: sin D-1/D-3/D-7, repaso libre Anki SRS 
+ Evaluación Diaria 18:00-18:45 ADAPTADO: 25Q del tema HOY en lugar de eval ayer 
+ A partir del DÍA 2 (mar 19) el horario funciona normal con eval de ayer 
+ DÍA 1 · LUN 18 MAY — II-3 Vacunación (Modo A · NTS 196 + RM 137-2024) 
+ Tema del día 
+ II-3 · ESQUEMA VACUNACIÓN COMPLETO + ESAVI + CADENA DE FRÍO 
+ 🔴 PRIORIDAD CRÍTICA · NTS 196 = la NTS más preguntada de CI (33 preg en 6 exámenes) 
+ 🔴 TIER 1 OBLIGATORIO: NTS 196 (RM 884-2023) + RM 137-2024 (VPH dosis única) + RM 218-2024/RM 474-2025/RM 709-2025 modificatorias. 
+ 📌 Como es el DÍA 1, no hay tema previo D-1 ni evaluación de ayer. Los bloques de Anclaje Post-Sueño y Warm-up están adaptados para revisar el Plan Maestro v7 y hacer preview del tema HOY. 
+ ARRANQUE OFICIAL del Plan ENCAPS 2026-II v7. Empezamos con la CRÍTICA más rentable: II-3 Vacunación (33 preg históricas). La RM 137-2024 introduce VPH dosis ÚNICA — debut probable 2026-II. 
+ Plan deep prime 09:00–11:00 
+ Min 
+ Sub-fase 
+ Acción específica 
+ 09:00–09:45 
+ LECTURA COMPENDIO 
+ TheoMed CI cap.4 (Vacunas + ESAVI + cadena frío) + Tío López CI · 5 puntos clave (calendario 0-18m, ESAVI, gestante, AM, personal salud) 
+ 09:45–09:50 
+ Pausa 
+ Caminar, agua, modo difuso 
+ 09:50–10:25 
+ LECTURA NTS OFICIAL 
+ NTS 196 RM 884-2023 (Esquema 0-18m + grupos riesgo + cadena frío) + RM 137-2024 (VPH dosis ÚNICA) + modificatorias 2024-2025 
+ 10:25–10:30 
+ Micro-pausa 
+ — 
+ 10:30–10:50 
+ SÍNTESIS libro cerrado 
+ Mapa mental calendario · tabla compendio vs NTS 
+ 10:50–11:00 
+ CREAR 8-12 APEX 
+ Mín 3 cards con FUENTE_NTS NTS 196 + RM 137-2024 
+ Datos clave EXCLUSIVOS de NTS 
+ Concepto / Norma 
+ Datos clave a memorizar 
+ 🆕 RM 137-2024 VPH cambio crítico 
+ VPH ahora DOSIS ÚNICA niñas 9-13a (antes 2-3 dosis). AMBOS SEXOS desde 9a. Pregunta esperada SERUMS 2026-II — debut probable. 
+ NTS 196 — Esquema 0-18m (memorizar) 
+ RN &lt;24h: BCG ID brazo der + HvB IM vasto · 2m+4m: Pentavalente + IPV + Rotavirus + Neumococo · 6m: Penta + APO + Influenza · 12m: SPR + Varicela + Neumococo refuerzo + AMA · 15m: Influenza + Hepatitis A · 18m: refuerzo DPT + APO + SPR 
+ NTS 196 — Vacunación gestante 
+ dTpa 27-36 sem cada embarazo · influenza estacional cualquier trimestre · COVID cualquier trimestre 
+ NTS 196 — Adulto mayor (≥60a) 
+ Influenza ANUAL · neumococo PPSV23 una dosis 
+ NTS 196 — Personal de salud 
+ HvB (3 dosis) · dTpa cada 10 años · influenza anual 
+ CADENA DE FRÍO 
+ +2°C a +8°C TODOS niveles. Responsable: Lic. Enfermería. Multidosis con preservante: 4 sem post-apertura. EXCEPCIÓN: BCG/SPR/AMA = 6h post-reconstitución 
+ ESAVI severo/grave (Dir 067) 
+ Notificación INMEDIATA &lt;24h · investigación &lt;48h · necropsia &lt;24h en fallecidos 
+ Vacunas vivas — CONTRAINDICACIONES 
+ NO gestante ni inmunosuprimido: BCG · SPR · varicela · fiebre amarilla · rotavirus · APO 
+ 🆕 Vacuna dengue (QDENGA) 
+ Zonas alta endemicidad · 2 dosis intervalo 3m · edad 4-60a · reposo 30min post 
+ Horario completo del lunes 18 mayo (DÍA 1) 
+ Hora 
+ Bloque 
+ Acción específica 
+ Vuelta / Output 
+ 04:00–04:15 
+ 📿 Eker 
+ Activación blueprint 
+ — 
+ 04:15–04:45 
+ 🟢 Anclaje Post-Sueño 
+ DÍA 1 · Sin tema previo · 15min revisión Plan Maestro v7 + Anki SRS general 
+ V D-1 
+ 04:45–05:45 
+ 🟡 Warm-up 20Q 
+ DÍA 1 · 100% preview Vacunación · 20Q calendario 0-18m · max 3 APEX 
+ — 
+ 05:45–07:15 
+ Correr · calistenia · ducha · desayuno 
+ 5km · ritmo libre 
+ — 
+ 07:15–08:15 
+ 🍅 Repaso Multi-Temporal 
+ DÍA 1 · Sin D-3/D-7 · Repaso libre Anki SRS (30 cards maduras) 
+ V multi-temporal 
+ 08:15–09:00 
+ Pre-test 10Q ciegas + Free recall · vacunacion 
+ Marcar gaps · papel &apos;qué sé del tema&apos; 
+ Gaps 
+ 09:00–11:00 
+ 🔴 DEEP PRIME · vacunacion 
+ Plan deep prime tabla · Output: 8-12 APEX (mín 3 con FUENTE_NTS) 
+ V1 ENCODING · APEX 
+ 11:00–12:00 
+ 🟡 30Q Consolidación · vacunacion 
+ 100% tema HOY · max 4 APEX 
+ V interleaving 
+ 12:00–12:30 
+ 🍽️ Almuerzo balanceado 
+ Proteína + complejos + verde · sin pantallas 
+ — 
+ 12:30–13:00 
+ 📚 Lectura libro (modo difuso) 
+ Filosofía/ficción · NO médico 
+ — 
+ 13:00–13:30 
+ 💤 NAP estricto 30min 
+ Mednick: alertness 54% 
+ — 
+ 13:30–14:15 
+ 🔬 Investigación derma (30min) 
+ 1 paper/día · notas Obsidian 
+ — 
+ 14:15–14:45 
+ 🎯 Ventas e influencia 
+ Rotación L-V 
+ — 
+ 14:45–15:15 
+ 💰 Finanzas y empresa derma 
+ Lectura paper gestión sanitaria 
+ — 
+ 15:15–16:15 
+ 🇪🇸 MIR Eval D-1 + Mini Deep Work 
+ Cronómetro 90s/Q · APEX max 4 
+ MIR_subtemas.md 
+ 16:15–17:15 
+ 🇺🇸 USMLE Eval + Mini Deep Work 
+ UWorld TUTOR · APEX max 3 inglés 
+ USMLE_subtopics.md 
+ 17:15–18:00 
+ 🟢 Anclaje Vespertino 
+ Mapa Notability tema HOY (vacunacion) · validar Obsidian · Anki SRS cards creadas hoy 
+ V3 anchoring 
+ 18:00–18:45 
+ 🔥 EVALUACIÓN DIARIA 
+ DÍA 1 · 25Q tema HOY (Vacunación) en lugar de eval previa 
+ Eval 
+ 18:45–19:00 
+ Alistarse · viaje 
+ — 
+ — 
+ 19:00–19:30 
+ 💪 Gym (30min) 
+ Fuerza compuesta 
+ — 
+ 19:30–20:30 
+ 💃 Baile (60min) 
+ Cardio social + modo difuso 
+ — 
+ 20:30–20:45 
+ 🚗 Viaje vuelta — reflexión 
+ Diario.md 
+ Diario.md 
+ 20:45–21:00 
+ 🟢 Preview tema mañana + higiene sueño 
+ MAR 19 = DÍA 2 · II-1 Salud Materna (Modo A) · NTS 105 + NTS 121 + 🆕 NTS 214 Neonatal GAP 
+ — 
+ 21:00–04:00 
+ 😴 DORMIR 7h exactas 
+ Walker: consolidación memoria 
+ — 
+ DÍA 2 · MAR 19 MAY — II-1 Salud Materna (Modo A · NTS 105 + NTS 121 + 🆕 NTS 214) 
+ Tema del día 
+ II-1 · SALUD MATERNA — control prenatal, emergencias, parto, neonatal 
+ 🔴 PRIORIDAD CRÍTICA · 4-6 preguntas esperadas (15-20% del bloque II) 
+ 🔴 TIER 1 OBLIGATORIO: NTS 105 (RM 827-2013) + NTS 121 (RM 518-2016) + 🆕 NTS 214 (RM 545-2024) GAP compendios. 
+ Segunda CRÍTICA. NTS 214 Neonatal NUEVA (RM 545-2024) es GAP en compendios — debut probable. NTS 121 Parto Vertical cruza con III-5. 
+ Plan deep prime 09:00–11:00 
+ Min 
+ Sub-fase 
+ Acción específica 
+ 09:00–09:45 
+ LECTURA COMPENDIO 
+ TheoMed CI cap.1 Materna + Tío López CI · 5 puntos clave (6 APN, suplementación, emergencias, MME, neonatal) 
+ 09:45–09:50 
+ Pausa 
+ Modo difuso 
+ 09:50–10:25 
+ LECTURA NTS OFICIAL 
+ NTS 105 (6 APN + esquema suplementación) + NTS 121 (parto vertical, 4 posiciones) + 🆕 NTS 214 Neonatal (RN cuidados primera hora) 
+ 10:25–10:30 
+ Micro-pausa 
+ — 
+ 10:30–10:50 
+ SÍNTESIS libro cerrado 
+ Mapa: gestante → puerperio → RN · tabla emergencias obstétricas 
+ 10:50–11:00 
+ CREAR 8-12 APEX 
+ Mín 3 cards FUENTE_NTS · al menos 1 NTS 214 (GAP) 
+ Datos clave EXCLUSIVOS de NTS 
+ Concepto / Norma 
+ Datos clave a memorizar 
+ NTS 105 — 6 APN obligatorias 
+ 1ra &lt;14sem (ideal &lt;12) · 2da 14-21 · 3ra 22-26 · 4ta 27-31 · 5ta 32-33 · 6ta 34-40 (cada 2sem si &gt;40). IMC pregest al inicio. 8 signos alarma. 
+ NTS 105 — Suplementación 
+ Ácido fólico 400-800µg hasta sem 13 · Sulfato ferroso 60mg+AF 400µg desde 2°trim · Calcio 1.5-2g desde sem 20 · MULTIMICRO desde 1°trim. Anemia Hb &lt;11 (1°/3°) &lt;10.5 (2°) 
+ NTS 105 — Emergencias 
+ Eclampsia: SULFATO Mg 4-6g IV bolo + 1-2g/h mantenimiento · Hemorragia 4Ts (Tono, Trauma, Tejido, Trombina) · Sepsis: ATB &lt;1h · MME notificación INMEDIATA 
+ NTS 121 — Parto Vertical 
+ 4 posiciones: cuclillas · sentada · de rodillas · agarrada soga. Personal: DELANTE O DETRÁS gestante. Criterios: a término, cefálico, sin cesárea anterior, sin DCP/gemelar/SF 
+ 🆕 NTS 214 Neonatal (GAP) 
+ BRAZALETE muñeca IZQ · CONTACTO PIEL-PIEL+LM 1ra hora · Vit K 1mg IM si ≥2500g (0.5mg si &lt;2500g) · Profilaxis ocular eritromicina · Tamizaje: TSH/G6PD/hipoacusia/displasia cadera 
+ NTS 105 — Kit emergencia VS 
+ Violencia sexual &lt;72h: profilaxis ITS (azitro 1g + ceftriaxona 250mg IM + metro 2g) + AOE levonorgestrel 1.5mg + PEP VIH × 28d 
+ Tamizaje VIH/sífilis gestante 
+ 1°trim (1ra APN) y 3°trim (sem 32-36). Sífilis prueba rápida treponémica. VIH prueba rápida con consejería 
+ Signos alarma gestante 
+ Sangrado vag · cefalea persistente · visión borrosa/escotomas · epigastralgia · ↓ movs fetales · contracciones &lt;37s · fiebre · vómitos persistentes 
+ Horario completo del martes 19 mayo (DÍA 2) 
+ Hora 
+ Bloque 
+ Acción específica 
+ Vuelta / Output 
+ 04:00–04:15 
+ 📿 Eker 
+ Activación blueprint 
+ — 
+ 04:15–04:45 
+ 🟢 Anclaje Post-Sueño 
+ Revisar mapa Notability tema ayer + Anki SRS (D-1) 
+ V D-1 
+ 04:45–05:45 
+ 🟡 Warm-up 20Q 
+ 70% tema ayer + 30% preview tema HOY · max 3 APEX 
+ — 
+ 05:45–07:15 
+ Correr · calistenia · ducha · desayuno 
+ 5km · ritmo libre 
+ — 
+ 07:15–08:15 
+ 🍅 Repaso Multi-Temporal 
+ D-1 + (D-3/D-7 cuando aplique) 
+ V multi-temporal 
+ 08:15–09:00 
+ Pre-test 10Q ciegas + Free recall · salud_materna 
+ Marcar gaps · papel &apos;qué sé del tema&apos; 
+ Gaps 
+ 09:00–11:00 
+ 🔴 DEEP PRIME · salud_materna 
+ Plan deep prime tabla · Output: 8-12 APEX (mín 3 con FUENTE_NTS) 
+ V1 ENCODING · APEX 
+ 11:00–12:00 
+ 🟡 30Q Consolidación · salud_materna 
+ 100% tema HOY · max 4 APEX 
+ V interleaving 
+ 12:00–12:30 
+ 🍽️ Almuerzo balanceado 
+ Proteína + complejos + verde · sin pantallas 
+ — 
+ 12:30–13:00 
+ 📚 Lectura libro (modo difuso) 
+ Filosofía/ficción · NO médico 
+ — 
+ 13:00–13:30 
+ 💤 NAP estricto 30min 
+ Mednick: alertness 54% 
+ — 
+ 13:30–14:15 
+ 🔬 Investigación derma (30min) 
+ 1 paper/día · notas Obsidian 
+ — 
+ 14:15–14:45 
+ 🎯 Ventas e influencia 
+ Rotación L-V 
+ — 
+ 14:45–15:15 
+ 💰 Finanzas y empresa derma 
+ Lectura paper gestión sanitaria 
+ — 
+ 15:15–16:15 
+ 🇪🇸 MIR Eval D-1 + Mini Deep Work 
+ Cronómetro 90s/Q · APEX max 4 
+ MIR_subtemas.md 
+ 16:15–17:15 
+ 🇺🇸 USMLE Eval + Mini Deep Work 
+ UWorld TUTOR · APEX max 3 inglés 
+ USMLE_subtopics.md 
+ 17:15–18:00 
+ 🟢 Anclaje Vespertino 
+ Mapa Notability tema HOY (salud_materna) · validar Obsidian · Anki SRS cards creadas hoy 
+ V3 anchoring 
+ 18:00–18:45 
+ 🔥 EVALUACIÓN DIARIA 
+ Eval Vacunación · 30min cronómetro · target ≥60% (línea base honesta) · 30min cronómetro 72s/Q + 15min corrección · APEX max 3 
+ Eval 
+ 18:45–19:00 
+ Alistarse · viaje 
+ — 
+ — 
+ 19:00–19:30 
+ 💪 Gym (30min) 
+ Fuerza compuesta 
+ — 
+ 19:30–20:30 
+ 💃 Baile (60min) 
+ Cardio social + modo difuso 
+ — 
+ 20:30–20:45 
+ 🚗 Viaje vuelta — reflexión 
+ Diario.md 
+ Diario.md 
+ 20:45–21:00 
+ 🟢 Preview tema mañana + higiene sueño 
+ MIÉ 20 = DÍA 3 · II-2 CRED (Modo A) · 🆕 NTS 238 NUEVA RM 191-2025 + NTS 157 
+ — 
+ 21:00–04:00 
+ 😴 DORMIR 7h exactas 
+ Walker: consolidación memoria 
+ — 
+ DÍA 3 · MIÉ 20 MAY — II-2 CRED (Modo A · 🆕 NTS 238 NUEVA) 
+ Tema del día 
+ II-2 · CRED — Crecimiento y Desarrollo del Niño + Adolescente 
+ 🔴 PRIORIDAD CRÍTICA · NTS 238 NUEVA 2025 = debut probable 
+ 🔴 TIER 1 OBLIGATORIO: 🆕 NTS 238 NUEVA (RM 191-2025) + NTS 157 Adolescente (RM 1001-2019). 
+ Tercera CRÍTICA. NTS 238 NUEVA (RM 191-2025) reemplaza NTS 137 y AMPLÍA rango de edad. Nuevos instrumentos por edad. 
+ Plan deep prime 09:00–11:00 
+ Min 
+ Sub-fase 
+ Acción específica 
+ 09:00–09:45 
+ LECTURA COMPENDIO 
+ TheoMed CI cap.2 CRED + Tío López CI · 5 puntos clave (27 controles &lt;5a, esquema, instrumentos, signos alarma) 
+ 09:45–09:50 
+ Pausa 
+ Modo difuso 
+ 09:50–10:25 
+ LECTURA NTS OFICIAL 
+ 🆕 NTS 238 NUEVA RM 191-2025 (27 controles &lt;5a · AMPLIADA 0-11a · instrumentos por edad) + NTS 157 Adolescente 
+ 10:25–10:30 
+ Micro-pausa 
+ — 
+ 10:30–10:50 
+ SÍNTESIS libro cerrado 
+ Mapa: 0-11 años · tabla instrumentos por edad · signos alarma 
+ 10:50–11:00 
+ CREAR 8-12 APEX 
+ Mín 3 cards FUENTE_NTS · 1 de NTS 238 (NUEVA) 
+ Datos clave EXCLUSIVOS de NTS 
+ Concepto / Norma 
+ Datos clave a memorizar 
+ 🆕 NTS 238 NUEVA — controles 
+ 27 controles &lt;5a: RN 0-7d / 8-15d · 1m / 2m / 3m / 4m / 5m / 6m / 7m / 8m / 9m / 10m / 11m · 12m / 14m / 16m / 18m / 20m / 22m · 2a / 2.5a · 3a / 3.5a · 4a / 4.5a · 5a 
+ 🆕 NTS 238 — AMPLIACIÓN 0-11a 
+ Antes (NTS 137): 0-5a. Ahora: 0-11a incluyendo escolares con 2 controles/año 6-11a 
+ 🆕 NTS 238 — Instrumentos por edad 
+ 0-12m: EEDP modificada · 12-30m: PPSC · 30m-5a: PPSC + M-CHAT-R/F (16-30m) · 6-11a: EDI (1×año) + Huanca Test (lectoescritura) · Adolesc: AUDIT-C, PHQ-9 
+ 🆕 NTS 238 — REGLA EDI 
+ 2 amarillos consecutivos EDI = ROJO AUTOMÁTICO → derivación inmediata a especialista 
+ NTS 157 — 4 enfoques 
+ DDHH · Género · Interculturalidad · DESARROLLO POSITIVO (Lerner 5Cs: Competencia, Confianza, Conexión, Carácter, Cuidado/Compasión) 
+ NTS 157 — Tanner 
+ Mujer: telarquia (M1-M5) + vello (P1-P5) · Hombre: testicular (G1-G5) + vello (P1-P5). Adrenarquia 6-8a · Pubertad precoz: mujer &lt;8a, hombre &lt;9a 
+ CRED — Tamizaje anemia 
+ Lactante: 6m, 12m, 18m, 24m. Preescolar 2-4a: anual. Hb cutoff niños 6-35m: &lt;11 g/dL 
+ CRED — Cards rojas (derivación) 
+ Talla baja severa (T/E &lt;-3 DE) · Sobrepeso/obesidad · EDI rojo · No camina 18m · No habla 2 palabras 18m · No interacción social 
+ Horario completo del miércoles 20 mayo (DÍA 3) 
+ Hora 
+ Bloque 
+ Acción específica 
+ Vuelta / Output 
+ 04:00–04:15 
+ 📿 Eker 
+ Activación blueprint 
+ — 
+ 04:15–04:45 
+ 🟢 Anclaje Post-Sueño 
+ Revisar mapa Notability tema ayer + Anki SRS (D-1) 
+ V D-1 
+ 04:45–05:45 
+ 🟡 Warm-up 20Q 
+ 70% tema ayer + 30% preview tema HOY · max 3 APEX 
+ — 
+ 05:45–07:15 
+ Correr · calistenia · ducha · desayuno 
+ 5km · ritmo libre 
+ — 
+ 07:15–08:15 
+ 🍅 Repaso Multi-Temporal 
+ D-1 + (D-3/D-7 cuando aplique) 
+ V multi-temporal 
+ 08:15–09:00 
+ Pre-test 10Q ciegas + Free recall · cred 
+ Marcar gaps · papel &apos;qué sé del tema&apos; 
+ Gaps 
+ 09:00–11:00 
+ 🔴 DEEP PRIME · cred 
+ Plan deep prime tabla · Output: 8-12 APEX (mín 3 con FUENTE_NTS) 
+ V1 ENCODING · APEX 
+ 11:00–12:00 
+ 🟡 30Q Consolidación · cred 
+ 100% tema HOY · max 4 APEX 
+ V interleaving 
+ 12:00–12:30 
+ 🍽️ Almuerzo balanceado 
+ Proteína + complejos + verde · sin pantallas 
+ — 
+ 12:30–13:00 
+ 📚 Lectura libro (modo difuso) 
+ Filosofía/ficción · NO médico 
+ — 
+ 13:00–13:30 
+ 💤 NAP estricto 30min 
+ Mednick: alertness 54% 
+ — 
+ 13:30–14:15 
+ 🔬 Investigación derma (30min) 
+ 1 paper/día · notas Obsidian 
+ — 
+ 14:15–14:45 
+ 🎯 Ventas e influencia 
+ Rotación L-V 
+ — 
+ 14:45–15:15 
+ 💰 Finanzas y empresa derma 
+ Lectura paper gestión sanitaria 
+ — 
+ 15:15–16:15 
+ 🇪🇸 MIR Eval D-1 + Mini Deep Work 
+ Cronómetro 90s/Q · APEX max 4 
+ MIR_subtemas.md 
+ 16:15–17:15 
+ 🇺🇸 USMLE Eval + Mini Deep Work 
+ UWorld TUTOR · APEX max 3 inglés 
+ USMLE_subtopics.md 
+ 17:15–18:00 
+ 🟢 Anclaje Vespertino 
+ Mapa Notability tema HOY (cred) · validar Obsidian · Anki SRS cards creadas hoy 
+ V3 anchoring 
+ 18:00–18:45 
+ 🔥 EVALUACIÓN DIARIA 
+ Eval Materna · 30min cronómetro · target ≥60% · 30min cronómetro 72s/Q + 15min corrección · APEX max 3 
+ Eval 
+ 18:45–19:00 
+ Alistarse · viaje 
+ — 
+ — 
+ 19:00–19:30 
+ 💪 Gym (30min) 
+ Fuerza compuesta 
+ — 
+ 19:30–20:30 
+ 💃 Baile (60min) 
+ Cardio social + modo difuso 
+ — 
+ 20:30–20:45 
+ 🚗 Viaje vuelta — reflexión 
+ Diario.md 
+ Diario.md 
+ 20:45–21:00 
+ 🟢 Preview tema mañana + higiene sueño 
+ JUE 21 = DÍA 4 · I-4 Defs caso (Modo A3) · GPC Dengue + Dir 067 + NTS 104 + RM 116 
+ — 
+ 21:00–04:00 
+ 😴 DORMIR 7h exactas 
+ Walker: consolidación memoria 
+ — 
+ DÍA 4 · JUE 21 MAY — I-4 Defs caso (Modo A3 · 4 NTS comprimidas) 
+ Tema del día 
+ I-4 · DEFINICIONES DE CASO — Dengue, TB, Malaria, Sarampión, COVID, Mpox 
+ 🔴 PRIORIDAD CRÍTICA · Modo A3 = 4 NTS simultáneas en deep prime 
+ 🔴 TIER 1 MÚLTIPLE: GPC Dengue RM 071-2017 + Dir 067 RM 506-2020 Vigilancia + NTS 104 TBC + RM 116-2017 Malaria + GPC sarampión + Mpox/COVID definiciones operativas. 
+ Cuarta CRÍTICA. Modo A3 SOLO para este día: 4 NTS oficiales comprimidas (Dengue + Vigilancia + TB + Malaria/COVID). Tema &apos;caso sospechoso vs probable vs confirmado&apos; altamente preguntado. 
+ Plan deep prime 09:00–11:00 
+ Min 
+ Sub-fase 
+ Acción específica 
+ 09:00–09:30 
+ LECTURA COMPENDIO + NTS DENGUE 
+ TheoMed SP defs caso + GPC Dengue RM 071-2017 (Grupos A/B/C + signos alarma) 
+ 09:30–09:35 
+ Pausa 
+ — 
+ 09:35–10:05 
+ LECTURA NTS VIGILANCIA + TB + MALARIA 
+ Dir 067 RM 506-2020 (listado notificación inmediata 24h) + NTS 104 (caso TB sospechoso/probable/confirmado) + RM 116-2017 Malaria 
+ 10:05–10:10 
+ Micro-pausa 
+ — 
+ 10:10–10:30 
+ TABLA INTEGRADORA defs caso 
+ Crear tabla maestra: Dengue · TB · Malaria · Sarampión · COVID · Mpox (sospechoso/probable/confirmado/descartado) 
+ 10:30–10:50 
+ SÍNTESIS libro cerrado 
+ Reproducir tabla integradora de memoria 
+ 10:50–11:00 
+ CREAR 10-15 APEX 
+ Mín 5 cards FUENTE_NTS (1 por enfermedad de la tabla) 
+ Datos clave EXCLUSIVOS de NTS 
+ Concepto / Norma 
+ Datos clave a memorizar 
+ Dengue Grupo A (sin signos alarma) 
+ Fiebre ≥38°C + ≥2 (cefalea/dolor retroocular/mialgia/artralgia/rash/petequias/leucopenia) · Manejo AMBULATORIO + paracetamol + hidratación VO + reposo 
+ Dengue Grupo B (signos alarma) 
+ Dolor abdominal intenso · vómito persistente · sangrado mucosa · letargia/irritabilidad · hepatomegalia &gt;2cm · ↑Hto + ↓plaquetas. Manejo HOSPITALARIO 
+ Dengue Grupo C (severo) 
+ Shock · sangrado grave · falla órgano. UCI obligatorio · cristaloides 10-20mL/kg/h 
+ Caso TB sospechoso 
+ Tos+expectoración ≥15 días. Caso probable: BK positivo. Caso confirmado: cultivo (+) o molecular (+) 
+ Notificación inmediata 24h (Dir 067) 
+ Sarampión · Rubéola · Polio · Cólera · Difteria · Tos ferina · Fiebre amarilla · Peste · ESAVI severo · Mpox · COVID variantes preocupación · Carbunco 
+ Caso sarampión sospechoso 
+ Fiebre + exantema + (tos o coriza o conjuntivitis). Notificación INMEDIATA. Bloqueo vacunal &lt;72h SPR a contactos susceptibles 
+ Caso Mpox sospechoso 
+ Erupción aguda atípica + ≥1 (cefalea/fiebre/adenopatías/mialgias/dolor lumbar). Notificación INMEDIATA 
+ Malaria — caso confirmado 
+ Sintomatología compatible + gota gruesa o PCR positiva. P. vivax ó P. falciparum. Manejo Cloroquina + Primaquina (vivax) o ACT (falciparum) 
+ Horario completo del jueves 21 mayo (DÍA 4 · Modo A3) 
+ Hora 
+ Bloque 
+ Acción específica 
+ Vuelta / Output 
+ 04:00–04:15 
+ 📿 Eker 
+ Activación blueprint 
+ — 
+ 04:15–04:45 
+ 🟢 Anclaje Post-Sueño 
+ Revisar mapa Notability tema ayer + Anki SRS (D-1) 
+ V D-1 
+ 04:45–05:45 
+ 🟡 Warm-up 20Q 
+ 70% tema ayer + 30% preview tema HOY · max 3 APEX 
+ — 
+ 05:45–07:15 
+ Correr · calistenia · ducha · desayuno 
+ 5km · ritmo libre 
+ — 
+ 07:15–08:15 
+ 🍅 Repaso Multi-Temporal 
+ D-1 + (D-3/D-7 cuando aplique) 
+ V multi-temporal 
+ 08:15–09:00 
+ Pre-test 10Q ciegas + Free recall · defs_caso 
+ Marcar gaps · papel &apos;qué sé del tema&apos; 
+ Gaps 
+ 09:00–11:00 
+ 🔴 DEEP PRIME · defs_caso 
+ Plan deep prime tabla · Output: 8-12 APEX (mín 3 con FUENTE_NTS) 
+ V1 ENCODING · APEX 
+ 11:00–12:00 
+ 🟡 30Q Consolidación · defs_caso 
+ 100% tema HOY · max 4 APEX 
+ V interleaving 
+ 12:00–12:30 
+ 🍽️ Almuerzo balanceado 
+ Proteína + complejos + verde · sin pantallas 
+ — 
+ 12:30–13:00 
+ 📚 Lectura libro (modo difuso) 
+ Filosofía/ficción · NO médico 
+ — 
+ 13:00–13:30 
+ 💤 NAP estricto 30min 
+ Mednick: alertness 54% 
+ — 
+ 13:30–14:15 
+ 🔬 Investigación derma (30min) 
+ 1 paper/día · notas Obsidian 
+ — 
+ 14:15–14:45 
+ 🎯 Ventas e influencia 
+ Rotación L-V 
+ — 
+ 14:45–15:15 
+ 💰 Finanzas y empresa derma 
+ Lectura paper gestión sanitaria 
+ — 
+ 15:15–16:15 
+ 🇪🇸 MIR Eval D-1 + Mini Deep Work 
+ Cronómetro 90s/Q · APEX max 4 
+ MIR_subtemas.md 
+ 16:15–17:15 
+ 🇺🇸 USMLE Eval + Mini Deep Work 
+ UWorld TUTOR · APEX max 3 inglés 
+ USMLE_subtopics.md 
+ 17:15–18:00 
+ 🟢 Anclaje Vespertino 
+ Mapa Notability tema HOY (defs_caso) · validar Obsidian · Anki SRS cards creadas hoy 
+ V3 anchoring 
+ 18:00–18:45 
+ 🔥 EVALUACIÓN DIARIA 
+ Eval CRED · 30min cronómetro · target ≥65% · 30min cronómetro 72s/Q + 15min corrección · APEX max 3 
+ Eval 
+ 18:45–19:00 
+ Alistarse · viaje 
+ — 
+ — 
+ 19:00–19:30 
+ 💪 Gym (30min) 
+ Fuerza compuesta 
+ — 
+ 19:30–20:30 
+ 💃 Baile (60min) 
+ Cardio social + modo difuso 
+ — 
+ 20:30–20:45 
+ 🚗 Viaje vuelta — reflexión 
+ Diario.md 
+ Diario.md 
+ 20:45–21:00 
+ 🟢 Preview tema mañana + higiene sueño 
+ VIE 22 = DÍA 5 · II-4 Anemia + INTEGRADOR (Modo A) · 🆕 NTS 213 NUEVA RM 251-2024 
+ — 
+ 21:00–04:00 
+ 😴 DORMIR 7h exactas 
+ Walker: consolidación memoria 
+ — 
+ DÍA 5 · VIE 22 MAY — II-4 Anemia + INTEGRADOR (Modo A · 🆕 NTS 213) 
+ Tema del día 
+ II-4 · ANEMIA Y NUTRICIÓN — diagnóstico, tratamiento, micronutrientes 
+ 🔴 PRIORIDAD CRÍTICA · 🆕 NTS 213 NUEVA RM 251-2024 = debut probable 
+ 🔴 TIER 1 OBLIGATORIO: 🆕 NTS 213 NUEVA (RM 251-2024) + esquema micronutrientes + suplementación lactancia. 
+ 🟢 VIERNES INTEGRADOR — bloque 17:15-18:00 transformado en REPASO INTEGRADOR de las 5 CRÍTICAS sem 1 (Vacunación · Materna · CRED · Defs caso · Anemia) con mapa único + 15Q en VOZ ALTA. 
+ Quinta y última CRÍTICA semana 1. NTS 213 NUEVA reemplaza esquemas previos. INTEGRADOR vespertino cierra las 5 CRÍTICAS top. 
+ Plan deep prime 09:00–11:00 
+ Min 
+ Sub-fase 
+ Acción específica 
+ 09:00–09:45 
+ LECTURA COMPENDIO 
+ TheoMed CI Anemia + Tío López CI · 5 puntos clave (cutoffs, suplementación 1-35m, gestante, AM, AF/Fe/Mvm) 
+ 09:45–09:50 
+ Pausa 
+ Modo difuso 
+ 09:50–10:25 
+ LECTURA NTS OFICIAL 
+ 🆕 NTS 213 NUEVA RM 251-2024 (esquema actualizado micronutrientes + criterios derivación) 
+ 10:25–10:30 
+ Micro-pausa 
+ — 
+ 10:30–10:50 
+ SÍNTESIS libro cerrado 
+ Tabla cutoffs anemia + esquema suplementación por edad 
+ 10:50–11:00 
+ CREAR 8-12 APEX 
+ Mín 3 cards FUENTE_NTS · 1 NTS 213 NUEVA 
+ Datos clave EXCLUSIVOS de NTS 
+ Concepto / Norma 
+ Datos clave a memorizar 
+ 🆕 NTS 213 cutoffs anemia (memorizar) 
+ 6-35m: &lt;11 g/dL · 5-11a: &lt;11.5 · 12-14a: &lt;12 · Mujer no gestante: &lt;12 · Hombre: &lt;13 · Gestante 1°/3° trim: &lt;11 · Gestante 2° trim: &lt;10.5 
+ 🆕 NTS 213 Suplementación lactante 4-5m 
+ Sulfato ferroso gotas 2mg/kg/día desde 4m si LME (lactancia materna exclusiva) hasta 5m. Si LM no exclusiva: desde 4m 
+ 🆕 NTS 213 Suplementación 6-35m (multimicronutrientes) 
+ Multimicronutrientes (Fe 12.5mg + Zn 5mg + AF 160µg + vit A 300µg + vit C 30mg) · 1 sobre/día × 12 meses. Mezclar con 2 cucharadas alimento sólido/semisólido tibio 
+ 🆕 NTS 213 Anemia confirmada 
+ &lt;11 g/dL niño 6-35m → SULFATO FERROSO GOTAS 3mg/kg/día por 6 meses + control mensual Hb 
+ 🆕 NTS 213 Anemia gestante 
+ &lt;11 g/dL (1°/3°trim) o &lt;10.5 (2°trim) → Sulfato ferroso 60mg + AF 400µg + alimentación rica en Fe heme. Si &lt;7 g/dL: derivar 2°nivel 
+ Suplementación normal gestante 
+ Ácido fólico 400-800µg hasta sem 13 · Sulfato ferroso 60mg+AF 400µg desde 14sem · Multimicronutrientes desde 1°trim 
+ Diagnóstico anemia ferropénica 
+ Hb baja + Hto bajo + VCM &lt;80fL microcitosis · HCM &lt;27pg hipocromía · ferritina &lt;15ng/mL · saturación transferrina &lt;16% 
+ Criterios derivación II nivel 
+ Anemia severa Hb &lt;7 · No respuesta tras 3m tratamiento · Sospecha anemia no ferropénica (talasemia/aplasia) 
+ 🟢 INTEGRADOR SEM 1 — Viernes 22 mayo, 17:15-18:00 
+ Mapa Notability ÚNICO de las 5 CRÍTICAS sem 1: Vacunación · Materna · CRED · Defs caso · Anemia 
+ 30min mapa libre + 15min validación con Obsidian 
+ 15Q mixtas EN VOZ ALTA — production effect MacLeod 2010 (retención 2x) 
+ Identificar &apos;gaps comunes&apos; que aparecen en &gt;2 temas = drilling obligatorio sábado 
+ Output: archivo `Repaso_integrador_sem1.md` en Obsidian 
+ Horario completo del viernes 22 mayo (DÍA 5 · INTEGRADOR sem 1) 
+ Hora 
+ Bloque 
+ Acción específica 
+ Vuelta / Output 
+ 04:00–04:15 
+ 📿 Eker 
+ Activación blueprint 
+ — 
+ 04:15–04:45 
+ 🟢 Anclaje Post-Sueño 
+ Revisar mapa Notability tema ayer + Anki SRS (D-1) 
+ V D-1 
+ 04:45–05:45 
+ 🟡 Warm-up 20Q 
+ 70% tema ayer + 30% preview tema HOY · max 3 APEX 
+ — 
+ 05:45–07:15 
+ Correr · calistenia · ducha · desayuno 
+ 5km · ritmo libre 
+ — 
+ 07:15–08:15 
+ 🍅 Repaso Multi-Temporal 
+ D-1 + (D-3/D-7 cuando aplique) 
+ V multi-temporal 
+ 08:15–09:00 
+ Pre-test 10Q ciegas + Free recall · anemia 
+ Marcar gaps · papel &apos;qué sé del tema&apos; 
+ Gaps 
+ 09:00–11:00 
+ 🔴 DEEP PRIME · anemia 
+ Plan deep prime tabla · Output: 8-12 APEX (mín 3 con FUENTE_NTS) 
+ V1 ENCODING · APEX 
+ 11:00–12:00 
+ 🟡 30Q Consolidación · anemia 
+ 100% tema HOY · max 4 APEX 
+ V interleaving 
+ 12:00–12:30 
+ 🍽️ Almuerzo balanceado 
+ Proteína + complejos + verde · sin pantallas 
+ — 
+ 12:30–13:00 
+ 📚 Lectura libro (modo difuso) 
+ Filosofía/ficción · NO médico 
+ — 
+ 13:00–13:30 
+ 💤 NAP estricto 30min 
+ Mednick: alertness 54% 
+ — 
+ 13:30–14:15 
+ 🔬 Investigación derma (30min) 
+ 1 paper/día · notas Obsidian 
+ — 
+ 14:15–14:45 
+ 🎯 Ventas e influencia 
+ Rotación L-V 
+ — 
+ 14:45–15:15 
+ 💰 Finanzas y empresa derma 
+ Lectura paper gestión sanitaria 
+ — 
+ 15:15–16:15 
+ 🇪🇸 MIR Eval D-1 + Mini Deep Work 
+ Cronómetro 90s/Q · APEX max 4 
+ MIR_subtemas.md 
+ 16:15–17:15 
+ 🇺🇸 USMLE Eval + Mini Deep Work 
+ UWorld TUTOR · APEX max 3 inglés 
+ USMLE_subtopics.md 
+ 17:15–18:00 
+ 🟢 INTEGRADOR Sem 1 
+ Mapa Notability ÚNICO 5 CRÍTICAS sem 1 (Vacunación · Materna · CRED · Defs caso · Anemia) · 30min mapa libre + 15min validación · 15Q en VOZ ALTA (production effect MacLeod 2010) 
+ Repaso_integrador_sem1.md 
+ 18:00–18:45 
+ 🔥 EVALUACIÓN DIARIA 
+ Eval Defs caso · 30min cronómetro · target ≥65% · 30min cronómetro 72s/Q + 15min corrección · APEX max 3 
+ Eval 
+ 18:45–19:00 
+ Alistarse · viaje 
+ — 
+ — 
+ 19:00–19:30 
+ 💪 Gym (30min) 
+ Fuerza compuesta 
+ — 
+ 19:30–20:30 
+ 💃 Baile (60min) 
+ Cardio social + modo difuso 
+ — 
+ 20:30–20:45 
+ 🚗 Viaje vuelta — reflexión 
+ Diario.md 
+ Diario.md 
+ 20:45–21:00 
+ 🟢 Preview tema mañana + higiene sueño 
+ SÁB 23 = DÍA 6 · SIMULACRO #1 LÍNEA BASE · CLAVE 2024-2A 
+ — 
+ 21:00–04:00 
+ 😴 DORMIR 7h exactas 
+ Walker: consolidación memoria 
+ — 
+ DÍA 6 · SÁB 23 MAY — SIMULACRO #1 LÍNEA BASE (CLAVE 2024-2A) 
+ Tema del día 
+ 🔥 LÍNEA BASE OFICIAL del Plan ENCAPS 2026-II v7. Con 5 CRÍTICAS top cubiertas, este simulacro mide tu PUNTO DE PARTIDA HONESTO. 
+ 📊 EXPECTATIVA: 9-12/20 es NORMAL · 13+ excepcional 
+ Banco oficial CLAVE 2024-2A. Resultado realista 9-12/20 con sólo 5 CRÍTICAS cubiertas. CI esperado 50-60% (Materna/CRED/Vacunación/Anemia cubiertos). SP esperado 40-50% (Defs caso cubierto). GES/INV/ETI &lt;35% normal. 
+ Banco oficial 
+ Campo 
+ Detalle 
+ Banco 
+ CLAVE OFICIAL SERUMS 2024-2A 
+ # preguntas 
+ 100 preguntas · 4 alternativas · sin penalización 
+ Tiempo 
+ 120min cronómetro estricto 
+ Pacing meta 
+ 72 segundos/Q 
+ 
+ Expectativas por bloque 
+ Bloque CI esperado 50-60% (Vacunación/Materna/CRED/Anemia cubiertos) 
+ Bloque SP esperado 40-50% (Defs caso cubierto · resto sin estudio) 
+ Bloque GES esperado &lt;30% (NTS 021 no leída todavía) 
+ Bloque INV esperado &lt;30% (RM 233-2020 no leída) 
+ Bloque ETI esperado 35-45% (conceptos parcialmente conocidos) 
+ Objetivo NO es &apos;aprobar&apos; · objetivo es IDENTIFICAR DÓNDE ESTÁS 
+ Drilling 13:30-15:00 (90min) 
+ Campo 
+ Detalle 
+ Tema 1 peor 
+ 30min · compendio + 10Q + 0-2 APEX 
+ Tema 2 peor 
+ 30min · compendio + 10Q + 0-2 APEX 
+ Tema 3 peor 
+ 30min · compendio + 10Q + 0-2 APEX 
+ 
+ Horario completo del sábado 23 mayo (DÍA 6 · SIMULACRO LÍNEA BASE) 
+ Hora 
+ Bloque 
+ Acción específica 
+ Vuelta / Output 
+ 04:00–04:15 
+ 📿 Eker 
+ Activación blueprint 
+ — 
+ 04:15–05:00 
+ 🟢 Anki review SÁBADO pre-simulacro 
+ Cards toda la semana · solo AGAIN/GOOD 
+ Métricas Anki 
+ 05:00–05:45 
+ 🍳 Desayuno fuerte + 5Q calentamiento 
+ Glucosa estable + sistema 1 
+ — 
+ 05:45–07:15 
+ Caminata 30min · ducha · desayuno 
+ Modo difuso 
+ — 
+ 07:15–07:45 
+ 🟢 Anki maduras + warm-up final 
+ 30 cards maduras (intvl&gt;21d) 
+ — 
+ 07:45–08:00 
+ Preparación física simulacro 
+ Checklist 11 ítems · box-breathing 4-4-4-4 
+ — 
+ 08:00–10:00 
+ 🔥 SIMULACRO 100Q · CLAVE 2024-2A 
+ 120min cronómetro estricto · sin pausas 
+ Hoja respuestas 
+ 10:00–10:15 
+ Descanso cognitivo 
+ NO mirar respuestas · caminar · agua 
+ — 
+ 10:15–12:00 
+ 🔥 REVISIÓN BRUTAL CLAVE 2024-2A 
+ Calificar + tabla errores Obsidian + 5-15 APEX solo errores 🅔 
+ Sim_sem1_sab.md 
+ 12:00–12:30 
+ Almuerzo balanceado 
+ — 
+ — 
+ 12:30–13:00 
+ 📚 Lectura libro modo difuso 
+ — 
+ — 
+ 13:00–13:30 
+ 💤 NAP estricto 30min 
+ — 
+ — 
+ 13:30–15:00 
+ 🎯 Drilling 3 temas peor evaluados 
+ 30min/tema · compendio + 10Q + 0-2 APEX por tema 
+ Errores_sab.md 
+ 15:00–19:00 
+ 🟢 Tarde libre 
+ Vida personal · NO ENCAPS · anti-burnout 
+ — 
+ 19:00–20:30 
+ Gym + baile + alistarse 
+ Recuperación activa 
+ — 
+ 20:45–21:00 
+ 🟢 Preview DOMINGO + higiene sueño 
+ QX/CLAVE · 3 conceptos preview 
+ — 
+ DÍA 7 · DOM 24 MAY — SIMULACRO #2 (CLAVE 2025-1B) + PLANNING SEM 2 
+ Tema del día 
+ Segundo simulacro consecutivo + planning de SEMANA 2 (las 3 CRÍTICAS restantes + 2 ALTAS). 
+ Análisis comparativo Sáb vs Dom + descarga 5 NTS Tier 1 sem 2 
+ Análisis comparativo entre simulacros consecutivos revela temas débiles REALES vs sesgo banco específico. Cierre sem 1 + planning sem 2. 
+ Banco oficial 
+ Campo 
+ Detalle 
+ Banco 
+ CLAVE OFICIAL SERUMS 2025-1B 
+ # preguntas 
+ 100 preguntas · 4 alternativas 
+ Tiempo 
+ 120min estricto 
+ 
+ Análisis comparativo Sáb vs Dom 
+ % global SÁB (CLAVE 2024-2A) vs DOM (CLAVE 2025-1B): si diferencia &gt;10pp → revisar fatiga 
+ Tema peor en sáb Y dom = AGUJERO REAL · re-deep work obligatorio sem 2 
+ Tema peor solo en sáb (no dom) = sesgo banco · ignorar 
+ Tema peor solo en dom (no sáb) = sesgo banco · ignorar 
+ 📋 PLANIFICACIÓN SEMANA 2 (25-31 mayo) — 3 CRÍTICAS + 2 ALTAS 
+ Campo 
+ Detalle 
+ LUN 25 May · DÍA 8 
+ II-6 TBC (Modo A) · NTS 104 + 🆕 NTS 221 
+ MAR 26 May · DÍA 9 
+ V-1 Categorización EESS (Modo C) · 🔴 NTS 021 (57 preg) 
+ MIÉ 27 May · DÍA 10 
+ II-11 ITS/VIH (Modo A) · NTS 097 + 🆕 NTS 230 (última CRÍTICA) 
+ JUE 28 May · DÍA 11 
+ I-1 Epidemiología (Modo B) 
+ VIE 29 May · DÍA 12 
+ I-2 FESP + INTEGRADOR (Modo A) · DS 026-2020-SA + OPS 
+ SÁB 30 May · DÍA 13 
+ Simulacro #3 (CLAVE 2025-1A) 
+ DOM 31 May · DÍA 14 
+ Simulacro #4 + Planning sem 3 (CLAVE 2024-2B) 
+ 
+ Descargar 5 NTS sem 2 (este domingo 18:30-19:30) 
+ NTS 104 RM 752-2018 + 🆕 NTS 221 RM 187-2024 TBC — para LUN 25 
+ NTS 021 RM 546-2011 Categorización EESS — para MAR 26 
+ NTS 097 RM 215-2018 VIH + 🆕 NTS 230 RM 295-2024 ITS — para MIÉ 27 
+ Doc OPS FESP Renovadas 2020 + DS 026-2020-SA — para VIE 29 
+ Directiva 067 RM 506-2020 (refuerzo) — para LUN 1 jun sem 3 
+ Métricas finales semana 1 
+ APEX creados sem 1 (target 40-60 cards Palmerton): ___ 
+ De los cuales con FUENTE_NTS (target ≥15): ___ 
+ Línea base oficial = promedio (Sim #1 SÁB + Sim #2 DOM) 
+ Sostenibilidad: ¿7h sueño 5/5 noches L-V? 
+ ¿NAP estricto 5/5 días L-V? 
+ Anti-burnout: ¿TARDE LIBRE sáb 15:00 y dom 15:00 cumplidas? 
+ Horario completo del domingo 24 mayo (DÍA 7 · SIMULACRO #2 + PLANNING SEM 2) 
+ Hora 
+ Bloque 
+ Acción específica 
+ Vuelta / Output 
+ 04:00–04:15 
+ 📿 Eker 
+ Activación blueprint 
+ — 
+ 04:15–05:00 
+ 🟢 Anki review DOMINGO ampliado 
+ Cards toda la semana · AGAIN/GOOD 
+ Métricas Anki 
+ 05:00–05:45 
+ 🍳 Desayuno fuerte + 5Q calentamiento 
+ Glucosa pre-simulacro 
+ — 
+ 05:45–07:15 
+ Caminata · ducha · desayuno 
+ — 
+ — 
+ 07:15–07:45 
+ 🟢 Anki maduras + warm-up QX 
+ 30 cards maduras 
+ — 
+ 07:45–08:00 
+ Preparación física simulacro 
+ Checklist + box-breathing 
+ — 
+ 08:00–10:00 
+ 🔥 SIMULACRO 100Q · CLAVE 2025-1B 
+ Cronómetro 120min estricto 
+ Hoja respuestas 
+ 10:00–10:15 
+ Descanso cognitivo 
+ NO mirar respuestas todavía 
+ — 
+ 10:15–12:00 
+ 🔥 REVISIÓN BRUTAL CLAVE 2025-1B + comparativa Sáb vs Dom 
+ Calificar + tabla errores + comparar 
+ Sim_sem1_dom.md 
+ 12:00–12:30 
+ Almuerzo balanceado 
+ — 
+ — 
+ 12:30–13:00 
+ 📚 Lectura libro modo difuso 
+ — 
+ — 
+ 13:00–13:30 
+ 💤 NAP estricto 30min 
+ — 
+ — 
+ 13:30–15:00 
+ 🎯 Drilling 3 peor + comparativa Theo vs QX 
+ Tema peor sáb Y dom = AGUJERO REAL 
+ Comparativa.md 
+ 15:00–18:30 
+ 🟢 Tarde libre TOTAL 
+ Doble simulacro terminado · descanso 
+ — 
+ 18:30–19:30 
+ 📋 PLANNING SEM 2 + descargar NTS sem 2 
+ 5 NTS Tier 1 sem 2: NTS 104+221 TBC · NTS 021 Categorización · NTS 097+230 VIH/ITS · DS 026 FESP · Directiva 067 
+ Plan_sem2.md 
+ 19:30–20:30 
+ Alistarse · baile · vuelta reflexión 
+ Modo difuso post-semana 
+ — 
+ 20:45–21:00 
+ 🟢 Preview LUN 25 + higiene sueño 
+ II-6 TBC (Modo A) · NTS 104 + NTS 221 · 3 conceptos 
+ — 
+ AUDIT FIN DE SEMANA 1 — Domingo 24 mayo noche 
+ Métricas semana 1 (DÍA 1-7) 
+ Total APEX creados sem 1 (target 40-60): ___ 
+ De los cuales con FUENTE_NTS (target ≥15): ___ 
+ Anki Again % nocturno (target &lt;20%): ___ 
+ Puntaje Simulacro #1 SÁB 23 (CLAVE 2024-2A — línea base): ___ / 20 
+ Puntaje Simulacro #2 DOM 24 (CLAVE 2025-1B): ___ / 20 
+ Promedio sem 1: ___ (target línea base honesta 9-12/20) 
+ % por bloque mejor (probable CI): ___% · peor (probable GES o INV): ___% 
+ Checklist DOM 24 cierre 
+ ☐ Auditar 00_NTS_TRACKER.md: marcar 5 NTS sem 1 como &apos;📖 leída&apos; 
+ ☐ Confirmar tema LUN 25 = DÍA 8 = II-6 TBC (Modo A) 
+ ☐ Descargar 5 NTS sem 2 (NTS 104+221 · NTS 021 · NTS 097+230 · DS 026 FESP · Directiva 067) 
+ ☐ Generar Word #3 Semana 2 (lun 25 - dom 31) 
+ ☐ Confirmar GCal sem 2 cargado correctamente 
+ ☐ Sostenibilidad: ¿7h sueño 5/5 noches L-V? · ¿NAP estricto 5/5 días? 
+ ☐ Anti-burnout: ¿TARDE LIBRE sáb 15:00 y dom 15:00 cumplidas? 
+ 
+ ✊ DÍA 1 arranca mañana. Sin atajos. Sin asunciones. 
+ Joseph Max Soto Tocas · Plan Operativo v7 · 17 mayo 2026

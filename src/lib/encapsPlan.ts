@@ -115,6 +115,28 @@ export function intervalosDe(prioridad?: string): number[] {
 export function totalVueltas(prioridad?: string): number {
   return intervalosDe(prioridad).length + 1; // +1 por la 1ª exposición (video)
 }
+// Comprime los intervalos para que TODAS las vueltas caigan ANTES del examen (día `examen`).
+// Mantiene los que entran con holgura y redistribuye los que se pasan en la ventana restante
+// [díaFoco .. examen-1]. Resuelve el fallo de los temas sembrados tarde (regla gap≈compresión
+// recta-final del plan data-driven 2026-2). Mismo nº de vueltas cuando hay margen.
+export function intervalosComprimidos(prioridad: string | undefined, focusDia: number, examen: number): number[] {
+  const base = intervalosDe(prioridad);
+  if (!focusDia || !examen || examen <= focusDia + 1) return base;
+  const limit = examen - focusDia - 1; // la última vuelta cae como muy tarde la víspera del examen
+  if (base[base.length - 1] <= limit) return base; // ya entran todas
+  const n = base.length;
+  const fit: number[] = [];
+  for (const i of base) { if (i <= limit - (n - 1 - fit.length)) fit.push(i); else break; }
+  const start = fit.length ? fit[fit.length - 1] : 0;
+  const rem = n - fit.length;
+  for (let k = 1; k <= rem; k++) fit.push(start + Math.round(((limit - start) * k) / rem));
+  const res: number[] = [];
+  for (const v of fit) {
+    const x = Math.min(limit, Math.max(res.length ? res[res.length - 1] + 1 : 1, v));
+    if (x <= limit && (!res.length || x > res[res.length - 1])) res.push(x);
+  }
+  return res;
+}
 
 export interface RepasoHoy {
   codigo: string; subtema: string; focusDia: number; delta: number; vuelta: number;
@@ -124,10 +146,11 @@ export interface RepasoHoy {
 // Temas cuyo repaso espaciado cae HOY (su día-foco + intervalo-según-prioridad == hoy).
 export function repasosDeHoy(days: StudyScheduleDay[], dia: number): RepasoHoy[] {
   const out: RepasoHoy[] = [];
+  const examenDia = days.reduce((m, d) => Math.max(m, d.dia), 0); // día del examen = tope del plan
   for (const d of days) {
     if (!d.codigo || d.dia >= dia) continue;
     const delta = dia - d.dia;
-    const intervalos = intervalosDe(d.prioridad);
+    const intervalos = intervalosComprimidos(d.prioridad, d.dia, examenDia); // comprimidos → caen antes del examen
     const idx = intervalos.indexOf(delta);
     if (idx >= 0) {
       out.push({

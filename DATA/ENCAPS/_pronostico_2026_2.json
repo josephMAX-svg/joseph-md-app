@@ -1,0 +1,331 @@
+{
+ "pronostico": {
+  "backtest": [
+   {
+    "prediccion": "Paso 1 — Con 2024-2 (promedio A/B) predigo 2025-1. Por AREA: I 26.5, II 24.8, III 11.9, IV 16.2, V 20.7. Top-temas predichos: V-2, I-4, IV-1, I-5/I-6, II-8.",
+    "realidad": "2025-1 real (prom A/B): I 27.5, II 21.0, III 16.5, IV 12.0, V 23.0. Top-temas reales: V-2, IV-1, I-5/I-6, V-1, I-3.",
+    "errorYAprendizaje": "MAE area = 3.19 pp. Aciertos: V dominante en gestion, V-2 e IV-1 e I-5/I-6 en el top. Fallos: sobreestime IV (+4.2: IV-2 colapso de 4.4% a 0%, era ruido de un solo examen) e infraestime III (-4.7) e I-3 (predije 2.8% vs 6.5% real, empezaba a subir). Top5 hit 60%, top10 hit 50%. APRENDIZAJE: IV es volatil y NO se sostiene; III-9 e I-3 estan en ascenso; con un solo examen previo el modelo arrastra picos espurios (IV-2)."
+   },
+   {
+    "prediccion": "Paso 2 — Con avg(2024-2, 2025-1) predigo 2025-2. Por AREA: I 27.0, II 22.9, III 14.2, IV 14.1, V 21.9. Top-temas: V-2, I-4, I-5/I-6, IV-1, V-1.",
+    "realidad": "2025-2 real: I 23.0, II 30.0, III 18.0, IV 4.0, V 25.0. Top-temas: I-3, V-2, II-1, I-1, V-1, III-8.",
+    "errorYAprendizaje": "MAE area = 5.63 pp (el peor paso). Error grande: II salto a 30% (+7.1 de infraestimacion) e IV se desplomo a 4% (sobreestime +10.1). APRENDIZAJE CLAVE: IV (Investigacion) cae estructuralmente de ~16% (2024) a ~4% (2025-2) — NO es promediable hacia arriba, hay tendencia bajista real. II (cuidado integral/clinica) es el area mas volatil al alza. Top10 hit subio a 70% (el promedio acumulado mejora la cobertura de temas aunque falle magnitudes). I-3 ya era #1 real y yo seguia subestimandolo."
+   },
+   {
+    "prediccion": "Paso 3 — Con avg(2024-2, 2025-1, 2025-2) predigo 2026-1. Por AREA: I 25.7, II 25.3, III 15.5, IV 10.7, V 22.9. Recency-weighted [1,2,3]: I 25.1, II 26.1, III 16.5, IV 8.7, V 23.6. Top-temas: I-3, I-5/I-6, IV-1, V-1, V-2.",
+    "realidad": "2026-1 real: I 33.3, II 29.3, III 14.1, IV 3.0, V 20.2. Top-temas: I-3 (14%!), V-2, II-3 (8%!), I-5/I-6, V-3, III-5, II-11.",
+    "errorYAprendizaje": "MAE area = 4.7 (avg) / 4.58 (recency) / 4.14 (solo ultimo). Acerte I-3 como #1 (top5 hit 60%, top10 50%). Fallos: infraestime I (+7.6: bioestadistica+vigilancia explotaron a 33%) e infraestime IV otra vez (segui prediciendo ~9-11% vs 3% real). No vi venir el pico de II-3 (vacunas/ESAVI: 2%->8%) ni V-3 (referencia: subiendo 0->2->3->5%). APRENDIZAJE FINAL: (a) IV se ha estabilizado en piso 3-4%, dejar de promediarlo alto; (b) I-3 (vigilancia/brotes) es la tendencia mas fuerte y consistente al alza (2.8->6.5->9->14%); (c) usar 'solo el ultimo examen' habria dado menor MAE que el promedio simple — la recencia importa; (d) con n=4 examenes los picos por-tema son semi-aleatorios: II-3 y V-3 emergen sin aviso. El forecast por-tema debe leerse como bandas, no puntos."
+   }
+  ],
+  "metodologia": "Walk-forward honesto sobre 4 examenes (n pequeno). A/B tratados como versiones del mismo examen: normalizados a % y PROMEDIADOS (no duplicados), corrigiendo que 2024-2A tenia 13 preguntas sin clasificar (se normalizo sobre las clasificadas). Codigos compuestos canonizados para alinear entre examenes (I-5/I-6, I-11/I-12, III-4/III-7, III-6/III-10, IV-6/IV-7, V-7/V-10). Backtest en 3 pasos midiendo MAE por area (pp), MAE por tema y hit-rate top5/top10. Forecast 2026-2 = media ponderada por recencia w=[1,2,3,4] sobre los 4 examenes y renormalizada a 100%, ajustada por los aprendizajes del backtest (IV anclado a su piso real ~6%, I-3 en su tendencia alcista, II como area volatil al alza). Limitaciones: n=4 examenes reales, MAE de validacion 3-5.6 pp por area; los picos por-tema (II-3, V-3) emergen sin aviso, por lo que las cifras por tema son bandas indicativas, no puntos exactos. NOTA TAXONOMICA: existe un cluster real NO codificado de 'Gestion de medicamentos/farmacia' (SISMED/PNUME/DIGEMID/cadena de frio) absorbido dentro de V-2/V-1 con peso real ~6-12% del examen; conviene crearle codigo propio.",
+  "forecast2026_2_porArea": {
+   "I": 29,
+   "II": 28,
+   "III": 16,
+   "IV": 6,
+   "V": 21
+  },
+  "forecast2026_2_temas": [
+   {
+    "codigo": "I-3",
+    "pctEstimado": 10.5,
+    "prioridad": "CRÍTICA",
+    "rank": 1
+   },
+   {
+    "codigo": "V-2",
+    "pctEstimado": 11,
+    "prioridad": "CRÍTICA",
+    "rank": 2
+   },
+   {
+    "codigo": "I-5/I-6",
+    "pctEstimado": 7,
+    "prioridad": "CRÍTICA",
+    "rank": 3
+   },
+   {
+    "codigo": "II-3",
+    "pctEstimado": 5.5,
+    "prioridad": "CRÍTICA",
+    "rank": 4
+   },
+   {
+    "codigo": "III-5",
+    "pctEstimado": 4.5,
+    "prioridad": "ALTA",
+    "rank": 5
+   },
+   {
+    "codigo": "I-4",
+    "pctEstimado": 4,
+    "prioridad": "ALTA",
+    "rank": 6
+   },
+   {
+    "codigo": "V-3",
+    "pctEstimado": 4,
+    "prioridad": "ALTA",
+    "rank": 7
+   },
+   {
+    "codigo": "II-11",
+    "pctEstimado": 3.8,
+    "prioridad": "ALTA",
+    "rank": 8
+   },
+   {
+    "codigo": "I-1",
+    "pctEstimado": 3.5,
+    "prioridad": "ALTA",
+    "rank": 9
+   },
+   {
+    "codigo": "II-1",
+    "pctEstimado": 3.5,
+    "prioridad": "ALTA",
+    "rank": 10
+   },
+   {
+    "codigo": "II-8",
+    "pctEstimado": 3,
+    "prioridad": "ALTA",
+    "rank": 11
+   },
+   {
+    "codigo": "V-1",
+    "pctEstimado": 3,
+    "prioridad": "ALTA",
+    "rank": 12
+   },
+   {
+    "codigo": "III-9",
+    "pctEstimado": 3,
+    "prioridad": "ALTA",
+    "rank": 13
+   },
+   {
+    "codigo": "IV-1",
+    "pctEstimado": 3,
+    "prioridad": "ALTA",
+    "rank": 14
+   },
+   {
+    "codigo": "I-2",
+    "pctEstimado": 2.5,
+    "prioridad": "MEDIA",
+    "rank": 15
+   },
+   {
+    "codigo": "III-2",
+    "pctEstimado": 2.5,
+    "prioridad": "MEDIA",
+    "rank": 16
+   },
+   {
+    "codigo": "III-8",
+    "pctEstimado": 2.5,
+    "prioridad": "MEDIA",
+    "rank": 17
+   },
+   {
+    "codigo": "II-6",
+    "pctEstimado": 2.3,
+    "prioridad": "MEDIA",
+    "rank": 18
+   },
+   {
+    "codigo": "II-9",
+    "pctEstimado": 2.2,
+    "prioridad": "MEDIA",
+    "rank": 19
+   },
+   {
+    "codigo": "II-7",
+    "pctEstimado": 2,
+    "prioridad": "MEDIA",
+    "rank": 20
+   },
+   {
+    "codigo": "II-5",
+    "pctEstimado": 2,
+    "prioridad": "MEDIA",
+    "rank": 21
+   },
+   {
+    "codigo": "II-10",
+    "pctEstimado": 2,
+    "prioridad": "MEDIA",
+    "rank": 22
+   },
+   {
+    "codigo": "II-4",
+    "pctEstimado": 1.8,
+    "prioridad": "MEDIA",
+    "rank": 23
+   },
+   {
+    "codigo": "III-1",
+    "pctEstimado": 1.5,
+    "prioridad": "MEDIA",
+    "rank": 24
+   },
+   {
+    "codigo": "III-4/III-7",
+    "pctEstimado": 1.5,
+    "prioridad": "MEDIA",
+    "rank": 25
+   },
+   {
+    "codigo": "I-11/I-12",
+    "pctEstimado": 1.3,
+    "prioridad": "MEDIA",
+    "rank": 26
+   },
+   {
+    "codigo": "V-6",
+    "pctEstimado": 1.3,
+    "prioridad": "MEDIA",
+    "rank": 27
+   },
+   {
+    "codigo": "III-6/III-10",
+    "pctEstimado": 1.2,
+    "prioridad": "BAJA",
+    "rank": 28
+   },
+   {
+    "codigo": "I-7",
+    "pctEstimado": 1,
+    "prioridad": "BAJA",
+    "rank": 29
+   },
+   {
+    "codigo": "II-2",
+    "pctEstimado": 1,
+    "prioridad": "BAJA",
+    "rank": 30
+   },
+   {
+    "codigo": "I-10",
+    "pctEstimado": 0.9,
+    "prioridad": "BAJA",
+    "rank": 31
+   },
+   {
+    "codigo": "III-3",
+    "pctEstimado": 0.9,
+    "prioridad": "BAJA",
+    "rank": 32
+   },
+   {
+    "codigo": "V-7/V-10",
+    "pctEstimado": 0.9,
+    "prioridad": "BAJA",
+    "rank": 33
+   },
+   {
+    "codigo": "IV-2",
+    "pctEstimado": 0.7,
+    "prioridad": "BAJA",
+    "rank": 34
+   },
+   {
+    "codigo": "IV-4",
+    "pctEstimado": 0.6,
+    "prioridad": "BAJA",
+    "rank": 35
+   },
+   {
+    "codigo": "IV-3",
+    "pctEstimado": 0.5,
+    "prioridad": "BAJA",
+    "rank": 36
+   },
+   {
+    "codigo": "II-12",
+    "pctEstimado": 0.5,
+    "prioridad": "BAJA",
+    "rank": 37
+   },
+   {
+    "codigo": "IV-5",
+    "pctEstimado": 0.4,
+    "prioridad": "BAJA",
+    "rank": 38
+   },
+   {
+    "codigo": "IV-6/IV-7",
+    "pctEstimado": 0.3,
+    "prioridad": "BAJA",
+    "rank": 39
+   }
+  ],
+  "confianza": "CONFIANZA MODERADA-BAJA. Solo n=4 examenes reales (2 son pares A/B promediados, asi que efectivamente ~3 procesos independientes: 2024-II, 2025-I, 2025-II/2026-I). La validacion walk-forward dio MAE por area de 3.2 a 5.6 pp (promedio ~4.5 pp) y hit-rate top10 de 50-70%. Esto significa: el RANKING grueso por area y los temas dominantes (I-3, V-2, I-5/I-6) son fiables (alta confianza); las cifras por-tema individuales tienen banda de +/-2-4 pp y los picos emergentes (como II-3 vacunas en 2026-1, o V-3 referencia) NO son predecibles con esta data — pueden aparecer/desaparecer sin aviso. SOBRE 'CI+SP≈70%': SE CORRIGE. Si CI=Area I (Salud Publica) y SP=Area II (Cuidado Integral/clinica), la suma I+II real fue: 51% (2024-2), 48% (2025-1), 53% (2025-2), 62.6% (2026-1). Promedio ~54%, ultimo examen 63%, tendencia al alza pero NUNCA llego a 70%. Mi forecast 2026-2 da I+II ≈ 57%. La cifra realista es 55-63%, NO 70%. El 70% solo se alcanzaria si se suman tambien partes de III (etica/interculturalidad) o se define CI/SP de forma mas amplia. Recomendacion de estudio: priorizar I (vigilancia/brotes I-3, bioestadistica I-5/I-6) + II (vacunas II-3, ITS/VIH II-11, materna II-1, cronicas II-8) + el cluster Gestion-medicamentos dentro de V; despriorizar IV (Investigacion, en piso 3-6%) salvo IV-1 (disenos).\""
+ },
+ "plan": {
+  "vueltasPorPrioridad": {
+   "CRITICA": 6,
+   "ALTA": 5,
+   "MEDIA": 4,
+   "BAJA": 3
+  },
+  "intervalosRepasoDias": [
+   1,
+   3,
+   7,
+   14,
+   28,
+   50
+  ],
+  "fases": [
+   {
+    "nombre": "FASE 1 - Cobertura front-load (1ª vuelta de TODOS)",
+    "diasAprox": "24-jun -> 12-jul (dias 1-15 habiles, ~3 sem L-V)",
+    "objetivo": "Sembrar las 51 unidades-tema una sola vez, agrupando 3-4 temas/dia para terminar la 1a pasada COMPLETA antes del 12-jul. Orden estricto por valor esperado: front-load las areas pesadas (I=29%, II=28%, V=21% = 78% del examen) en la 1a semana para que sus temas arranquen su cadena 1-3-7-14-28-50 lo antes posible y alcancen 5-6 toques antes del 20-ago. Cada tema NUEVO se cierra con mini-set de banco (retrieval, no relectura) y dispara su escalera de repaso. III (16%) entra en sem 2; IV (6%) al final de la fase. Resuelve el fallo de 'temas tardios': ningun tema entra despues del dia 15, asi el ultimo (50d) cae ~30-ago... por eso los tardios usan escalera comprimida (ver recta final)."
+   },
+   {
+    "nombre": "FASE 2 - Retrieval espaciado + interleaving (vueltas 2-N, SOLO alto rendimiento denso)",
+    "diasAprox": "13-jul -> 5-ago (~18 dias habiles, ~4 sem L-V)",
+    "objetivo": "Motor de trabajo. 65-70% del tiempo a I/II/V (alto yield). El dia es 60-70% banco de preguntas MEZCLADO (interleaving entre areas, nunca bloque mono-tema) + 30% repasos espaciados que CAEN ese dia (repasosDeHoy). CRITICA y ALTA reciben sus toques densos tempranos (3,7) y se reencuentran cada 5-7 dias; MEDIA/BAJA reciben su toque intermedio cada 12-18 dias. Regla adaptativa viva: cada fallo en banco RESETEA el subtema a intervalo 1-3 dias (sube a alto-yield personal aunque pese poco); cada acierto seguro alarga. Sabados = simulacros reales (QX+Theomed, 3-4/sabado) con revision brutal el mismo dia: cada fallo del simulacro reinyecta su subtema a +1 dia. Log de errores; deliberate practice SOLO sobre lo fallado."
+   },
+   {
+    "nombre": "FASE 3 - Recta final: simulacros + compresion + estrategia",
+    "diasAprox": "6-ago -> 19-ago (~10 dias habiles, ~2 sem L-V) + examen 20-ago",
+    "objetivo": "CERO material nuevo. Caen las vueltas tardias (28,50) de los temas tempranos = barrido total. Intervalos colapsan a 1-3 dias (regla gap = 0.15 x dias_restantes). Para los temas SEMBRADOS TARDE en Fase 1 (IV y cola de III), aqui reciben sus toques 2-3 comprimidos en 1-3-7 para no quedarse en 1 sola vuelta. Simulacros completos cronometrados tamano-examen (~100 preg) cada 2-3 dias + revision dirigida SOLO a lo que sigue fallando (calibracion por % real, alto yield primero). Estrategia de examen: ritmo por pregunta, descarte de opciones, hard-start-jump-to-easy. Dias 18-19-ago: repaso ligero de listas alto-yield + errores recurrentes, NADA nuevo, sueno completo (anti-cramming). 20-ago examen: hard-start-jump-to-easy, 1-2 min max por pregunta atascada."
+   }
+  ],
+  "temasFoco": [
+   "I-3",
+   "V-2",
+   "I-5/I-6",
+   "II-3",
+   "III-5",
+   "I-4",
+   "V-3",
+   "II-11",
+   "I-1",
+   "II-1",
+   "II-8",
+   "V-1",
+   "III-9",
+   "IV-1"
+  ],
+  "distribucionDias": "~50 dias habiles (L-V) del 24-jun al 19-ago, 8 domingos libres (consolidacion por sueno/modo difuso), sabados = simulacros. REPARTO POR FASES: Fase 1 cobertura = dias 1-15 (24-jun a 12-jul, ~15 dias L-V) agrupando 3-4 temas/dia para cerrar la 1a vuelta de las 51 unidades; Fase 2 retrieval+interleaving = dias 16-33 (13-jul a 5-ago, ~18 dias L-V); Fase 3 recta final = dias 34-43 (6-ago a 19-ago, ~10 dias L-V). REPARTO POR YIELD (regla Pareto): 65-70% del tiempo diario a las 3 areas pesadas I+II+V (=78% del examen), 30-35% a III+IV. COMO LOS RENTABLES LLEGAN A 5-6 VUELTAS ANTES DEL 20-AGO: se siembran en la 1a SEMANA (24-30 jun) -> su escalera 1-3-7-14-28-50 cae en 25-jun, 27-jun, 1-jul, 8-jul, 22-jul y ~13-ago, los 6 toques DENTRO de ventana. CRITICA=6 vueltas [1,3,7,28,50], ALTA=5 [1,7,28,50], MEDIA=4 [3,28,50], BAJA=3 [7,50]. SOLUCION AL FALLO DE TEMAS TARDIOS: regla dura = ningun tema entra despues del dia 15; los sembrados tarde (IV, cola de III) usan escalera COMPRIMIDA 1-3-7-14 en Fase 3 (gap=0.15 x dias_restantes) en vez de 28/50, garantizando minimo 2-3 vueltas; el tiempo marginal SIEMPRE va al alto yield hasta saturarlo (>75% acierto en banco).\"",
+  "recomendaciones": [
+   "Front-load total: siembra las 3 areas pesadas (I, II, V) en los primeros 5 dias habiles (24-30 jun) para que sus temas arranquen la cadena 1-3-7-14-28-50 y alcancen 6 toques antes del 20-ago. Esto resuelve directamente el fallo actual de 'temas tardios que no completan vueltas'.",
+   "Regla dura anti-cola: NINGUN tema entra por primera vez despues del dia 15 (12-jul). Agrupa 3-4 temas/dia en Fase 1 si hace falta. Lo que se siembre tarde (IV-1, cola de III) usa escalera comprimida 1-3-7-14 en agosto, no 28/50.",
+   "Cada toque es RETRIEVAL, no relectura: vive en el banco de preguntas (Theomed/QX), responde de memoria ANTES de ver la solucion. El video/diapositiva solo para tapar huecos detectados por el banco. El testing effect rinde 2-3x mas que releer.",
+   "Interleaving diario obligatorio: mezcla temas de I/II/V en cada bloque de banco, nunca estudies un area en bloque y la abandones. Entrena la discriminacion que pide el examen de 100 preguntas mixtas.",
+   "Reset adaptativo por fallo: cualquier subtema que falles en banco o simulacro RESETEA su intervalo a 1-3 dias y sube a alto-yield personal aunque pese poco (drill dirigido al error concreto, no a toda el area). El motor repasosDeHoy + REPASO_POR_PRIORIDAD ya lo soporta; operalo con disciplina.",
+   "Top-3 CRITICA absoluta = V-2 (11%), I-3 (10.5%), I-5/I-6 (7%): juntos ~28.5% del examen. Estos 3 reciben el primer bloque profundo de maxima energia cada manana y repaso casi diario en la ultima semana. Maximo retorno por pregunta.",
+   "Sabados = simulacros reales con revision brutal el MISMO dia: por que la correcta lo es y por que descartaste las otras. Cada fallo reinyecta su subtema a +1 dia. Es feedback inmediato accionable, no solo el % global.",
+   "Newport: tope ~4h de trabajo profundo real/dia en bloques de 90 min (o Pomodoros de 25), misma hora y lugar (filosofia ritmica), telefono fuera de la sala. Mas alla de 4h la atencion dirigida se degrada; el resto del dia es repaso ligero.",
+   "Calibracion por % real, no por familiaridad: usa la tasa de acierto en banco para decidir vueltas. No mas de 3 vueltas a un tema de bajo yield mientras un alto-yield siga <75% de aciertos. El tiempo marginal va SIEMPRE al alto yield hasta saturarlo.",
+   "Recta final (6-19 ago): cero material nuevo, simulacros tamano-examen cronometrados cada 2-3 dias, estrategia de examen (hard-start-jump-to-easy, descarte, ritmo). Dias 18-19-ago repaso ligero de listas alto-yield + log de errores; sueno completo innegociable la vispera (anti-cramming).",
+   "Domingos libres son parte del metodo, no tiempo perdido: el modo difuso y el sueno consolidan memoria y el espaciado necesita olvido parcial para funcionar. No los rellenes con estudio intenso."
+  ]
+ },
+ "clasificacionesOk": 6,
+ "cienciasOk": 5
+}

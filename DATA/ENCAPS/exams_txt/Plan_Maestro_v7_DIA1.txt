@@ -1,0 +1,1204 @@
+PLAN MAESTRO FINAL 
+ ENCAPS / SERUMS 2026-II 
+ v7.0 DEFINITIVO · LUN 18 MAY = DÍA 1 REAL 
+ 85 días al examen · Sin más reestructuraciones 
+ Joseph Max Soto Tocas · Médico, Huancayo 
+ 🎯 META: ≥17/20 · 🏥 Plaza Huachac, Junín 
+ 📅 EXAMEN: lunes 10 de agosto 2026 
+ Versión 7.0 FINAL · 17 mayo 2026 
+ 0. Por qué v7 · realidad operativa 
+ El v6 asumía MIÉ 13 MAY como Día 1 real, pero los 5 días del 13 al 17 no se ejecutaron. Este v7 es DEFINITIVO: LUN 18 MAY = Día 1. Sin más reestructuraciones. 85 días al examen. 51 subtemas deep prime en 50 slots disponibles → 1 fusión adicional (V-8 + V-9, ambas BAJAS afines bloque Gestión). 
+ Aritmética 85 días 
+ Componente 
+ Días 
+ Detalle 
+ Total días LUN 18 may → LUN 10 ago 
+ 85 
+ Día 1 = lun 18 may · Día examen = lun 10 ago 
+ Sem 1-10 (deep primes + simulacros) 
+ 70 
+ 5 deep prime + 2 simulacros por semana 
+ Sem 11 (repaso brutal) 
+ 7 
+ Re-lectura NTS Tier 1 por bloque 
+ Sem 12 (simulacros diarios + descanso) 
+ 7 
+ Mar 4 - Dom 9 ago · sin contenido nuevo 
+ TOTAL 
+ 84+1 examen 
+ Cobertura confirmada ✓ 
+ 1. Verificación 100% cobertura (51 → 50 con fusiones) 
+ Bloque 
+ Subtemas 
+ Días deep prime 
+ Fusiones aplicadas 
+ I — Salud Pública 
+ 12 
+ 11 
+ I-11 + I-12 = 1 día 
+ II — Cuidado Integral 
+ 13 
+ 13 
+ — 
+ III — Ética / Intercult. 
+ 10 
+ 9 
+ III-10 integrado en III-6 
+ IV — Investigación 
+ 8 
+ 8 
+ — 
+ V — Gestión 
+ 10 
+ 9 
+ 🆕 V-8 + V-9 = 1 día (BAJAS afines) 
+ TOTAL 
+ 53 
+ 50 días deep prime 
+ = 50 slots disponibles ✓ 
+ Distribución por prioridad 
+ Prioridad 
+ # subtemas 
+ Vueltas 
+ Subtemas asignados 
+ 🔴 CRÍTICA 
+ 8 
+ 12-15 vueltas 
+ II-3, II-1, II-2, I-4, II-4, II-6, V-1, II-11 
+ 🟡 ALTA 
+ 13 
+ 10-12 
+ I-1, I-2, I-3, II-5, II-7, II-8, II-9, II-10, III-1, III-3, III-9, V-2, V-6 
+ 🔵 MEDIA 
+ 22 
+ 7-9 
+ I-5, I-6, I-7, I-8, I-9, I-11+12, II-12, II-13, III-2, III-5, III-6+III-10, III-8, IV-1 a IV-7, V-3, V-7, V-10 
+ 🟢 BAJA 
+ 8 
+ 5-6 
+ I-10, III-4, III-7, IV-8, V-4, V-5, V-8+V-9 (fusión) 
+ 2. Cronograma completo · 12 semanas 
+ SEM 1 — LUN 18 a DOM 24 MAY (Días 1-7): 5 CRÍTICAS top 
+ ARRANQUE OFICIAL · 5 CRÍTICAS más rentables + 2 simulacros línea base honesta. 
+ Día 
+ Fecha 
+ Subtema 
+ Prioridad 
+ Modo 
+ NTS Tier 1 
+ 1 
+ LUN 18 may 
+ II-3 Vacunación 
+ 🔴 CRÍTICA 
+ A 
+ 🆕 NTS 196 + RM 137-2024 VPH ÚNICA 
+ 2 
+ MAR 19 may 
+ II-1 Salud Materna 
+ 🔴 CRÍTICA 
+ A 
+ NTS 105 + NTS 121 + 🆕 NTS 214 GAP 
+ 3 
+ MIÉ 20 may 
+ II-2 CRED 
+ 🔴 CRÍTICA 
+ A 
+ 🆕 NTS 238 NUEVA RM 191-2025 + NTS 157 
+ 4 
+ JUE 21 may 
+ I-4 Defs caso 
+ 🔴 CRÍTICA 
+ A3 
+ GPC Dengue + Dir 067 + NTS 104 + RM 116 
+ 5 
+ VIE 22 may 
+ II-4 Anemia + INTEGRADOR 
+ 🔴 CRÍTICA 
+ A 
+ 🆕 NTS 213 NUEVA RM 251-2024 
+ 6 
+ SÁB 23 may 
+ Sim #1 LÍNEA BASE 
+ Sim 
+ Sim 
+ CLAVE 2024-2A 
+ 7 
+ DOM 24 may 
+ Sim #2 + Planning sem 2 
+ Sim 
+ Sim 
+ CLAVE 2025-1B + descarga NTS sem 2 
+ SEM 2 — LUN 25 a DOM 31 MAY (Días 8-14): 3 CRÍTICAS + 2 ALTAS 
+ Cierre de las 8 CRÍTICAS al día 10. Después de esto, todas las CRÍTICAS quedan en ciclo de vueltas máximas. 
+ Día 
+ Fecha 
+ Subtema 
+ Prioridad 
+ Modo 
+ NTS Tier 1 
+ 8 
+ LUN 25 may 
+ II-6 Tuberculosis 
+ 🔴 CRÍTICA 
+ A 
+ NTS 104 + 🆕 NTS 221 RM 187-2024 
+ 9 
+ MAR 26 may 
+ V-1 Categorización EESS 
+ 🔴 CRÍTICA 
+ C 
+ 🔴 NTS 021 (57 preg histórica) 
+ 10 
+ MIÉ 27 may 
+ II-11 ITS/VIH (última CRÍTICA) 
+ 🔴 CRÍTICA 
+ A 
+ NTS 097 + 🆕 NTS 230 NUEVA 
+ 11 
+ JUE 28 may 
+ I-1 Epidemiología 
+ 🟡 ALTA 
+ B 
+ — (conceptual) 
+ 12 
+ VIE 29 may 
+ I-2 FESP + INTEGRADOR 
+ 🟡 ALTA 
+ A 
+ Doc OPS FESP 2020 + DS 026-2020-SA 
+ 13 
+ SÁB 30 may 
+ Sim #3 
+ Sim 
+ Sim 
+ CLAVE 2025-1A 
+ 14 
+ DOM 31 may 
+ Sim #4 + Planning sem 3 
+ Sim 
+ Sim 
+ CLAVE 2024-2B 
+ SEM 3 — LUN 1 a DOM 7 JUN (Días 15-21): 5 ALTAS 
+ Bloque II en marcha — temas de cuidado integral más rentables. 
+ Día 
+ Fecha 
+ Subtema 
+ Prioridad 
+ Modo 
+ NTS Tier 1 
+ 15 
+ LUN 1 jun 
+ I-3 Vigilancia EPI 
+ 🟡 ALTA 
+ A 
+ Directiva 067 RM 506-2020 + Listado CDC 
+ 16 
+ MAR 2 jun 
+ II-5 MCI 
+ 🟡 ALTA 
+ A 
+ RM 030-2020 + 🆕 NTS 229 CISPA 
+ 17 
+ MIÉ 3 jun 
+ II-7 VACAM 
+ 🟡 ALTA 
+ A 
+ NTS 207 RM 526-2023 
+ 18 
+ JUE 4 jun 
+ II-8 HEARTS / HTA-DM 
+ 🟡 ALTA 
+ A 
+ 🆕 NTS 229 + GPC HTA + GPC DM2 
+ 19 
+ VIE 5 jun 
+ II-9 Salud Mental + INTEGRADOR 
+ 🟡 ALTA 
+ A 
+ NTS 138 CSMC + Ley 30947 
+ 20 
+ SÁB 6 jun 
+ Sim #5 
+ Sim 
+ Sim 
+ CLAVE 2025-2 
+ 21 
+ DOM 7 jun 
+ Sim #6 + Planning sem 4 
+ Sim 
+ Sim 
+ CLAVE 2026-1 
+ SEM 4 — LUN 8 a DOM 14 JUN (Días 22-28): 5 ALTAS 
+ Cierre de ALTAS al día 26 (V-6 Telesalud). 8 CRÍTICAS + 13 ALTAS = 21/53 subtemas cubiertos. 
+ Día 
+ Fecha 
+ Subtema 
+ Prioridad 
+ Modo 
+ NTS Tier 1 
+ 22 
+ LUN 8 jun 
+ II-10 Cáncer 
+ 🟡 ALTA 
+ A 
+ Plan Cáncer + GPCs + Ley 31336 
+ 23 
+ MAR 9 jun 
+ III-1 Bioética principios 
+ 🟡 ALTA 
+ A 
+ RM 233-2020 + Belmont + Beauchamp 
+ 24 
+ MIÉ 10 jun 
+ III-3 Consentimiento 
+ 🟡 ALTA 
+ A 
+ Ley 29414 + DS 027-2015 + RM 233-2020 
+ 25 
+ JUE 11 jun 
+ III-9 Derechos paciente 
+ 🟡 ALTA 
+ A 
+ Ley 29414 + DS 027-2015 + DL 1158 
+ 26 
+ VIE 12 jun 
+ V-2 PEI/POI/FODA + INTEGRADOR 
+ 🟡 ALTA 
+ A 
+ 🆕 Directiva CEPLAN 001-2024 NUEVA 
+ 27 
+ SÁB 13 jun 
+ Sim #7 
+ Sim 
+ Sim 
+ — 
+ 28 
+ DOM 14 jun 
+ Sim #8 + Planning sem 5 
+ Sim 
+ Sim 
+ — 
+ SEM 5 — LUN 15 a DOM 21 JUN (Días 29-35): 1 ALTA + 4 MEDIAS 
+ Última ALTA + inicio de MEDIAS Bloque I. 
+ Día 
+ Fecha 
+ Subtema 
+ Prioridad 
+ Modo 
+ NTS Tier 1 
+ 29 
+ LUN 15 jun 
+ V-6 Telesalud (última ALTA) 
+ 🟡 ALTA 
+ A 
+ Ley 30421 + DS 003-2020-SA 
+ 30 
+ MAR 16 jun 
+ I-5 Determinantes sociales 
+ 🔵 MEDIA 
+ B 
+ Marco DSS Marmot + DS 026 
+ 31 
+ MIÉ 17 jun 
+ I-6 Bioestadística 
+ 🔵 MEDIA 
+ B 
+ — 
+ 32 
+ JUE 18 jun 
+ I-7 Bradford Hill 
+ 🔵 MEDIA 
+ B 
+ — 
+ 33 
+ VIE 19 jun 
+ I-8 Pruebas dx S/E/VPP + INTEGRADOR 
+ 🔵 MEDIA 
+ A 
+ GPC ITS + GPC TB aplicación 
+ 34 
+ SÁB 20 jun 
+ Sim #9 
+ Sim 
+ Sim 
+ — 
+ 35 
+ DOM 21 jun 
+ Sim #10 + Planning sem 6 
+ Sim 
+ Sim 
+ — 
+ SEM 6 — LUN 22 a DOM 28 JUN (Días 36-42): 5 MEDIAS 
+ MEDIAS Bloque I (resto) + inicio Bloque II MEDIAS. 
+ Día 
+ Fecha 
+ Subtema 
+ Prioridad 
+ Modo 
+ NTS Tier 1 
+ 36 
+ LUN 22 jun 
+ I-9 ASIS / Sala situacional 
+ 🔵 MEDIA 
+ A 
+ Lineamientos ASIS + Boletín CDC 
+ 37 
+ MAR 23 jun 
+ I-11+12 Hist natural + RAM 
+ 🔵 MEDIA 
+ A 
+ Leavell-Clark + DIGEMID Farmacovig 
+ 38 
+ MIÉ 24 jun 
+ II-12 Salud Bucal 
+ 🔵 MEDIA 
+ A 
+ NTS 229 + NTS 238 + RM 593-2017 
+ 39 
+ JUE 25 jun 
+ II-13 Bioseguridad 
+ 🔵 MEDIA 
+ C 
+ NTS 163 IAAS + NTS 116 
+ 40 
+ VIE 26 jun 
+ III-2 Doc clave éticos + INTEGRADOR 
+ 🔵 MEDIA 
+ B 
+ Nuremberg/Helsinki/Belmont/Tuskegee 
+ 41 
+ SÁB 27 jun 
+ Sim #11 
+ Sim 
+ Sim 
+ — 
+ 42 
+ DOM 28 jun 
+ Sim #12 + Planning sem 7 
+ Sim 
+ Sim 
+ — 
+ SEM 7 — LUN 29 JUN a DOM 5 JUL (Días 43-49): 5 MEDIAS 
+ MEDIAS Bloque III + inicio Bloque IV. 
+ Día 
+ Fecha 
+ Subtema 
+ Prioridad 
+ Modo 
+ NTS Tier 1 
+ 43 
+ LUN 29 jun 
+ III-5 Parto vertical 
+ 🔵 MEDIA 
+ C 
+ NTS 121 RM 518-2016 
+ 44 
+ MAR 30 jun 
+ III-6+III-10 Pol intercultural 
+ 🔵 MEDIA 
+ C 
+ DS 016 + Dir 261 + DT DIS + NTS 047 
+ 45 
+ MIÉ 1 jul 
+ III-8 Ley 27815 ética pública 
+ 🔵 MEDIA 
+ C 
+ Ley 27815 + DS 033-2005-PCM 
+ 46 
+ JUE 2 jul 
+ IV-1 Tipos de estudio 
+ 🔵 MEDIA 
+ B 
+ — 
+ 47 
+ VIE 3 jul 
+ IV-2 Diseños analíticos + INTEGRADOR 
+ 🔵 MEDIA 
+ A 
+ DS 021-2017 + DS 028-2023 
+ 48 
+ SÁB 4 jul 
+ Sim #13 
+ Sim 
+ Sim 
+ — 
+ 49 
+ DOM 5 jul 
+ Sim #14 + Planning sem 8 
+ Sim 
+ Sim 
+ — 
+ SEM 8 — LUN 6 a DOM 12 JUL (Días 50-56): 5 MEDIAS Bloque IV finales 
+ Cierre Bloque IV Investigación. 
+ Día 
+ Fecha 
+ Subtema 
+ Prioridad 
+ Modo 
+ NTS Tier 1 
+ 50 
+ LUN 6 jul 
+ IV-3 Muestreo 
+ 🔵 MEDIA 
+ B 
+ — 
+ 51 
+ MAR 7 jul 
+ IV-4 Variables 
+ 🔵 MEDIA 
+ A 
+ RM 233-2020 operacionalización 
+ 52 
+ MIÉ 8 jul 
+ IV-5 Sesgos / Validez 
+ 🔵 MEDIA 
+ B 
+ — 
+ 53 
+ JUE 9 jul 
+ IV-6 IMRD / Proyecto 
+ 🔵 MEDIA 
+ A 
+ RM 233-2020 + Prioridades 2024-2030 
+ 54 
+ VIE 10 jul 
+ IV-7 GRADE / Evidencia + INTEGRADOR 
+ 🔵 MEDIA 
+ A 
+ RM 141-2014 GPC + GRADE 
+ 55 
+ SÁB 11 jul 
+ Sim #15 
+ Sim 
+ Sim 
+ — 
+ 56 
+ DOM 12 jul 
+ Sim #16 + Planning sem 9 
+ Sim 
+ Sim 
+ — 
+ SEM 9 — LUN 13 a DOM 19 JUL (Días 57-63): 3 MEDIAS + 2 BAJAS 
+ Cierre MEDIAS bloque V + inicio BAJAS. 
+ Día 
+ Fecha 
+ Subtema 
+ Prioridad 
+ Modo 
+ NTS Tier 1 
+ 57 
+ LUN 13 jul 
+ V-3 ROF / MOP / MPP 
+ 🔵 MEDIA 
+ A 
+ Directivas SERVIR + Ley 30057 
+ 58 
+ MAR 14 jul 
+ V-7 RIS / Redes Integradas 
+ 🔵 MEDIA 
+ A 
+ Ley 30885 + DS 019-2020-SA + NTS 049 
+ 59 
+ MIÉ 15 jul 
+ V-10 Historia Clínica 
+ 🔵 MEDIA 
+ A 
+ NTS 022 + Ley 30024 RENHICE 
+ 60 
+ JUE 16 jul 
+ I-10 Salud ocupacional 
+ 🟢 BAJA 
+ C 
+ NTS 144 + NTS 116 + Ley 29783 
+ 61 
+ VIE 17 jul 
+ III-4 Etnocentrismo + INTEGRADOR 
+ 🟢 BAJA 
+ B 
+ — (antropológico) 
+ 62 
+ SÁB 18 jul 
+ Sim #17 
+ Sim 
+ Sim 
+ — 
+ 63 
+ DOM 19 jul 
+ Sim #18 + Planning sem 10 
+ Sim 
+ Sim 
+ — 
+ SEM 10 — LUN 20 a DOM 26 JUL (Días 64-70): 6 BAJAS (con fusión V-8+V-9) 
+ Cierre TOTAL del temario en 5 días deep prime. VIE 24 jul = doble V-8 + V-9 fusionados (afines). 
+ Día 
+ Fecha 
+ Subtema 
+ Prioridad 
+ Modo 
+ NTS Tier 1 
+ 64 
+ LUN 20 jul 
+ III-7 AISPED 
+ 🟢 BAJA 
+ C 
+ NTS 081 AISPED RM 478-2009 
+ 65 
+ MAR 21 jul 
+ IV-8 Pruebas estadísticas 
+ 🟢 BAJA 
+ B 
+ — 
+ 66 
+ MIÉ 22 jul 
+ V-4 Calidad / Acreditación 
+ 🟢 BAJA 
+ C 
+ NTS 050 + RM 727-2009 + NTS 029 
+ 67 
+ JUE 23 jul 
+ V-5 Medicamentos / SISMED 
+ 🟢 BAJA 
+ A 
+ PNUME + Ley 30225 + SISMED 
+ 68 
+ VIE 24 jul 
+ 🆕 V-8 Liderazgo + V-9 Quejas (DOBLE) 
+ 🟢 BAJA 
+ A+C 
+ SERVIR 313-2017 + DL 1158 SUSALUD 
+ 69 
+ SÁB 25 jul 
+ Sim #19 
+ Sim 
+ Sim 
+ — 
+ 70 
+ DOM 26 jul 
+ Sim #20 + Planning sem 11 
+ Sim 
+ Sim 
+ — 
+ SEM 11 — LUN 27 JUL a DOM 2 AGO (Días 71-77): REPASO BRUTAL 
+ Re-lectura sistemática de NTS Tier 1 por bloque + 2 simulacros integrales. 
+ Día 
+ Fecha 
+ Subtema 
+ Prioridad 
+ Modo 
+ NTS Tier 1 
+ 71 
+ LUN 27 jul 
+ REPASO BRUTAL Bloque I (Salud Pública) 
+ Repaso 
+ — 
+ 12 subtemas · Re-lectura NTS Tier 1 
+ 72 
+ MAR 28 jul 
+ REPASO BRUTAL Bloque II (Cuidado Integral) 
+ Repaso 
+ — 
+ 13 subtemas · énfasis CRÍTICAS 
+ 73 
+ MIÉ 29 jul 
+ REPASO BRUTAL Bloque III (Ética) 
+ Repaso 
+ — 
+ 10 subtemas · énfasis III-9/III-3/III-1 
+ 74 
+ JUE 30 jul 
+ REPASO BRUTAL Bloque IV (Investigación) 
+ Repaso 
+ — 
+ 8 subtemas · RM 233-2020 sistemática 
+ 75 
+ VIE 31 jul 
+ REPASO BRUTAL Bloque V (Gestión) 
+ Repaso 
+ — 
+ 10 subtemas · NTS 021 + V-2 + V-6 
+ 76 
+ SÁB 1 ago 
+ Sim #21 INTEGRAL banco mixto 
+ Sim 
+ Sim 
+ Identificar gaps restantes 
+ 77 
+ DOM 2 ago 
+ Sim #22 + Análisis fino 
+ Sim 
+ Sim 
+ Plan sem 12 final 
+ SEM 12 — LUN 3 a DOM 9 AGO (Días 78-84): SIMULACROS DIARIOS 
+ NO se introduce contenido nuevo. Simulacros diarios bajo presión + drilling errores. Descanso pre-examen. 
+ Día 
+ Fecha 
+ Subtema 
+ Prioridad 
+ Modo 
+ NTS Tier 1 
+ 78 
+ LUN 3 ago 
+ Sim #23 + fichas Top 10 + drilling 
+ Sim 
+ Full 
+ Full day ENCAPS 
+ 79 
+ MAR 4 ago 
+ Sim #24 + drilling NTS débiles 
+ Sim 
+ Full 
+ Full day 
+ 80 
+ MIÉ 5 ago 
+ Sim #25 + fichas vespertinas 
+ Sim 
+ Full 
+ Full day 
+ 81 
+ JUE 6 ago 
+ Sim #26 cronómetro estricto 120min 
+ Sim 
+ Full 
+ Full day 
+ 82 
+ VIE 7 ago 
+ Sim #27 FINAL condiciones examen 
+ Sim 
+ Full 
+ Full day 
+ 83 
+ SÁB 8 ago 
+ DÍA -2 · solo fichas + 12Q ligeras 
+ Descanso 
+ Light 
+ Bajar carga 
+ 84 
+ DOM 9 ago 
+ DÍA -1 · DESCANSO TOTAL 
+ Descanso 
+ Cero 
+ Dormir 21:00 
+ LUN 10 AGOSTO — EXAMEN ENCAPS 2026-II 
+ 🎯 EXAMEN OFICIAL · meta ≥17/20 · Plaza Huachac 
+ 3. Tabla maestra · 53 subtemas con día asignado 
+ Los 51 deep primes con día asignado, prioridad, modo, vueltas y NTS Tier 1. Fusiones marcadas: I-11+I-12 (día 37) · III-6+III-10 (día 44) · 🆕 V-8+V-9 (día 68). 
+ ID 
+ Subtema 
+ Día # 
+ Fecha 
+ Prioridad 
+ Modo 
+ Vueltas 
+ NTS Tier 1 
+ II-3 
+ Vacunación 
+ Día 1 
+ LUN 18 may 
+ CRÍTICA 
+ A 
+ 12-15 
+ 🆕 NTS 196 RM 884-2023 + RM 137-2024 VPH ÚNICA 
+ II-1 
+ Salud Materna 
+ Día 2 
+ MAR 19 may 
+ CRÍTICA 
+ A 
+ 12-15 
+ NTS 105 + NTS 121 + 🆕 NTS 214 Neonatal GAP 
+ II-2 
+ CRED 
+ Día 3 
+ MIÉ 20 may 
+ CRÍTICA 
+ A 
+ 12-15 
+ 🆕 NTS 238 NUEVA RM 191-2025 + NTS 157 
+ I-4 
+ Defs caso (Dengue/TB/Malaria) 
+ Día 4 
+ JUE 21 may 
+ CRÍTICA 
+ A3 
+ 12-15 
+ GPC Dengue RM 071-2017 + NTS 104+221 + RM 116 
+ II-4 
+ Anemia y nutrición 
+ Día 5 
+ VIE 22 may 
+ CRÍTICA 
+ A 
+ 12-15 
+ 🆕 NTS 213 NUEVA RM 251-2024 + Micronutrientes 
+ II-6 
+ Tuberculosis 
+ Día 8 
+ LUN 25 may 
+ CRÍTICA 
+ A 
+ 12-15 
+ NTS 104 + 🆕 NTS 221 RM 187-2024 
+ V-1 
+ Categorización EESS 
+ Día 9 
+ MAR 26 may 
+ CRÍTICA 
+ C 
+ 12-15 
+ 🔴 NTS 021 (57 preg histórica) 
+ II-11 
+ ITS / VIH 
+ Día 10 
+ MIÉ 27 may 
+ CRÍTICA 
+ A 
+ 12-15 
+ NTS 097 + 🆕 NTS 230 NUEVA RM 295-2024 
+ I-1 
+ Epidemiología 
+ Día 11 
+ JUE 28 may 
+ ALTA 
+ B 
+ 10-12 
+ — (conceptual) 
+ I-2 
+ FESP Renovadas 
+ Día 12 
+ VIE 29 may 
+ ALTA 
+ A 
+ 10-12 
+ Doc OPS FESP 2020 + DS 026-2020-SA 
+ I-3 
+ Vigilancia EPI 
+ Día 15 
+ LUN 1 jun 
+ ALTA 
+ A 
+ 10-12 
+ Directiva 067 RM 506-2020 + Listado CDC 
+ II-5 
+ MCI 
+ Día 16 
+ MAR 2 jun 
+ ALTA 
+ A 
+ 10-12 
+ RM 030-2020 MCI + 🆕 NTS 229 CISPA 
+ II-7 
+ VACAM (Adulto Mayor) 
+ Día 17 
+ MIÉ 3 jun 
+ ALTA 
+ A 
+ 10-12 
+ NTS 207 RM 526-2023 
+ II-8 
+ HEARTS / HTA y DM 
+ Día 18 
+ JUE 4 jun 
+ ALTA 
+ A 
+ 10-12 
+ 🆕 NTS 229 + GPC HTA + GPC DM2 
+ II-9 
+ Salud Mental 
+ Día 19 
+ VIE 5 jun 
+ ALTA 
+ A 
+ 10-12 
+ NTS 138 CSMC + Ley 30947 + DT 033 
+ II-10 
+ Cáncer 
+ Día 22 
+ LUN 8 jun 
+ ALTA 
+ A 
+ 10-12 
+ Plan Cáncer + GPCs + Ley 31336 
+ III-1 
+ Bioética principios 
+ Día 23 
+ MAR 9 jun 
+ ALTA 
+ A 
+ 10-12 
+ RM 233-2020 + Belmont + Beauchamp 
+ III-3 
+ Consentimiento 
+ Día 24 
+ MIÉ 10 jun 
+ ALTA 
+ A 
+ 10-12 
+ Ley 29414 + DS 027-2015-SA + RM 233-2020 
+ III-9 
+ Derechos paciente 
+ Día 25 
+ JUE 11 jun 
+ ALTA 
+ A 
+ 10-12 
+ Ley 29414 + DS 027-2015 + DL 1158 SUSALUD 
+ V-2 
+ PEI/POI/FODA 
+ Día 26 
+ VIE 12 jun 
+ ALTA 
+ A 
+ 10-12 
+ 🆕 Directiva CEPLAN 001-2024 NUEVA 
+ V-6 
+ Telesalud 
+ Día 29 
+ LUN 15 jun 
+ ALTA 
+ A 
+ 10-12 
+ Ley 30421 + DS 003-2020-SA 
+ I-5 
+ Determinantes sociales 
+ Día 30 
+ MAR 16 jun 
+ MEDIA 
+ B 
+ 7-9 
+ Marco DSS Marmot + DS 026-2020-SA 
+ I-6 
+ Bioestadística 
+ Día 31 
+ MIÉ 17 jun 
+ MEDIA 
+ B 
+ 7-9 
+ — 
+ I-7 
+ Bradford Hill 
+ Día 32 
+ JUE 18 jun 
+ MEDIA 
+ B 
+ 7-9 
+ — 
+ I-8 
+ Pruebas dx S/E/VPP 
+ Día 33 
+ VIE 19 jun 
+ MEDIA 
+ A 
+ 7-9 
+ GPC ITS + GPC TB casos aplicación 
+ I-9 
+ ASIS / Sala situacional 
+ Día 36 
+ LUN 22 jun 
+ MEDIA 
+ A 
+ 7-9 
+ Lineamientos ASIS + Boletín CDC 
+ I-11+12 
+ Hist natural + RAM 
+ Día 37 
+ MAR 23 jun 
+ MEDIA 
+ A 
+ 7-9 
+ Leavell-Clark + DIGEMID Farmacovig 
+ II-12 
+ Salud Bucal 
+ Día 38 
+ MIÉ 24 jun 
+ MEDIA 
+ A 
+ 7-9 
+ NTS 229 + NTS 238 + RM 593-2017 
+ II-13 
+ Bioseguridad 
+ Día 39 
+ JUE 25 jun 
+ MEDIA 
+ C 
+ 7-9 
+ NTS 163 IAAS + NTS 116 
+ III-2 
+ Doc clave éticos 
+ Día 40 
+ VIE 26 jun 
+ MEDIA 
+ B 
+ 7-9 
+ Nuremberg/Helsinki/Belmont/Tuskegee 
+ III-5 
+ Parto vertical 
+ Día 43 
+ LUN 29 jun 
+ MEDIA 
+ C 
+ 7-9 
+ NTS 121 RM 518-2016 
+ III-6+III-10 
+ Política intercult. + Adecuación 
+ Día 44 
+ MAR 30 jun 
+ MEDIA 
+ C 
+ 7-9 
+ DS 016 + Dir 261 + DT DIS + NTS 047 
+ III-8 
+ Ley 27815 ética pública 
+ Día 45 
+ MIÉ 1 jul 
+ MEDIA 
+ C 
+ 7-9 
+ Ley 27815 + DS 033-2005-PCM 
+ IV-1 
+ Tipos de estudio 
+ Día 46 
+ JUE 2 jul 
+ MEDIA 
+ B 
+ 7-9 
+ — 
+ IV-2 
+ Diseños analíticos 
+ Día 47 
+ VIE 3 jul 
+ MEDIA 
+ A 
+ 7-9 
+ DS 021-2017 + DS 028-2023 
+ IV-3 
+ Muestreo 
+ Día 50 
+ LUN 6 jul 
+ MEDIA 
+ B 
+ 7-9 
+ — 
+ IV-4 
+ Variables 
+ Día 51 
+ MAR 7 jul 
+ MEDIA 
+ A 
+ 7-9 
+ RM 233-2020 operacionalización 
+ IV-5 
+ Sesgos / Validez 
+ Día 52 
+ MIÉ 8 jul 
+ MEDIA 
+ B 
+ 7-9 
+ — 
+ IV-6 
+ IMRD / Proyecto 
+ Día 53 
+ JUE 9 jul 
+ MEDIA 
+ A 
+ 7-9 
+ RM 233-2020 + Prioridades 2024-2030 
+ IV-7 
+ GRADE / Evidencia 
+ Día 54 
+ VIE 10 jul 
+ MEDIA 
+ A 
+ 7-9 
+ RM 141-2014 GPC + GRADE 
+ V-3 
+ ROF/MOP/MPP 
+ Día 57 
+ LUN 13 jul 
+ MEDIA 
+ A 
+ 7-9 
+ Directivas SERVIR + Ley 30057 
+ V-7 
+ RIS / Redes Integradas 
+ Día 58 
+ MAR 14 jul 
+ MEDIA 
+ A 
+ 7-9 
+ Ley 30885 + DS 019-2020-SA + NTS 049 
+ V-10 
+ Historia Clínica 
+ Día 59 
+ MIÉ 15 jul 
+ MEDIA 
+ A 
+ 7-9 
+ NTS 022 + Ley 30024 RENHICE 
+ I-10 
+ Salud ocupacional 
+ Día 60 
+ JUE 16 jul 
+ BAJA 
+ C 
+ 5-6 
+ NTS 144 + NTS 116 + Ley 29783 
+ III-4 
+ Etnocentrismo / Relativismo 
+ Día 61 
+ VIE 17 jul 
+ BAJA 
+ B 
+ 5-6 
+ — (antropológico) 
+ III-7 
+ AISPED 
+ Día 64 
+ LUN 20 jul 
+ BAJA 
+ C 
+ 5-6 
+ NTS 081 AISPED RM 478-2009 
+ IV-8 
+ Pruebas estadísticas 
+ Día 65 
+ MAR 21 jul 
+ BAJA 
+ B 
+ 5-6 
+ — 
+ V-4 
+ Calidad / Acreditación 
+ Día 66 
+ MIÉ 22 jul 
+ BAJA 
+ C 
+ 5-6 
+ NTS 050 + RM 727-2009 + NTS 029 
+ V-5 
+ Medicamentos / SISMED 
+ Día 67 
+ JUE 23 jul 
+ BAJA 
+ A 
+ 5-6 
+ PNUME + Ley 30225 + SISMED 
+ V-8+V-9 
+ 🆕 Liderazgo+RRHH + Quejas (DOBLE) 
+ Día 68 
+ VIE 24 jul 
+ BAJA 
+ A+C 
+ 5-6 
+ SERVIR 313-2017 + DL 1158 SUSALUD + Libro Reclamaciones 
+ 4. Los 3 modos del núcleo deep prime 
+ Modo A — NTS-Heavy (compendio + NTS oficial) 
+ 31 subtemas con NTS oficial que añade datos críticos no presentes en compendio. Estructura: 45min compendio → 35min NTS → 20min síntesis libro cerrado → 10min APEX (mín 3 cards FUENTE_NTS). 
+ Modo B — Compendio-Heavy (conceptual sin NTS) 
+ 11 subtemas conceptuales (Epi, Bioestadística, Bradford Hill, Tipos estudio, Muestreo, Sesgos, Pruebas estadísticas, Doc éticos, Etnocentrismo). 
+ Modo C — Solo-NTS (NTS es el material principal) 
+ 11 subtemas donde el compendio es superficial pero la NTS es rey (Categorización, Acreditación, Residuos, Bioseguridad, Parto Vertical, Política Intercultural, AISPED, Ley 27815, Quejas, Salud ocupacional). 
+ Modo A3 — Defs caso múltiples (día 4: 4 NTS comprimidas) 
+ Específico para I-4: GPC Dengue + Directiva 067 + NTS 104 + RM 116. 4 NTS simultáneas en deep prime de 2h con énfasis en definiciones operacionales. 
+ 5. Sistema de vueltas multiplicador 
+ Los 7 bloques GCal diarios 
+ Bloque 
+ Horario 
+ Vuelta que aporta 
+ 🟢 Anclaje Post-Sueño 
+ 04:15-04:45 
+ V D-1 (tema ayer) 
+ 🟡 Warm-up 20Q 
+ 04:45-05:45 
+ Mix interleaved + preview tema HOY 
+ 🍅 Repaso Multi-Temporal 
+ 07:15-08:15 
+ V multi (D-1 + D-3 + D-7) 
+ 🔴 Núcleo Deep Prime 
+ 09:00-11:00 
+ V1 ENCODING inicial 
+ 🟡 30Q Consolidación 
+ 11:00-12:00 
+ V post-encoding immediate 
+ 🟢 Anclaje Vespertino 
+ 17:15-18:00 
+ V3 anchoring cierre 
+ 🍅 Evaluación Diaria 
+ 18:00-18:45 
+ V4 captura bajo presión 
+ 6. Predicciones razonadas 2026-II 
+ Top 10 ALTA probabilidad (≥70%) 
+ # 
+ Tema predicho 
+ Subtema 
+ Día 
+ 1 
+ 🆕 VPH dosis ÚNICA 9 años ambos sexos (RM 137-2024) 
+ II-3 Vacunación 
+ Día 1 
+ 2 
+ 🆕 NTS 229 CISPA Adulto NUEVA 2025 
+ II-5 + II-8 
+ Días 16, 18 
+ 3 
+ 🆕 NTS 214 Neonatal (GAP compendios) 
+ II-1 Materna 
+ Día 2 
+ 4 
+ 🆕 NTS 238 CRED NUEVA (instrumentos por edad) 
+ II-2 CRED 
+ Día 3 
+ 5 
+ 🆕 NTS 213 Anemia RM 251-2024 
+ II-4 Anemia 
+ Día 5 
+ 6 
+ 🔴 NTS 021 Categorización EESS (57 preg histórica) 
+ V-1 
+ Día 9 
+ 7 
+ Sarampión: caso sospechoso + bloqueo &lt;72h 
+ I-3 Vigilancia 
+ Día 15 
+ 8 
+ Dengue Grupo C clasificación + manejo 
+ I-4 Defs caso 
+ Día 4 
+ 9 
+ 🆕 NTS 230 ITS NUEVA RM 295-2024 
+ II-11 
+ Día 10 
+ 10 
+ 🆕 Directiva CEPLAN 001-2024 PEI/POI 
+ V-2 
+ Día 26 
+ 7. Cierre · el contador arranca mañana 
+ Mañana LUN 18 MAY 04:00 inicia el contador real del Plan ENCAPS 2026-II v7. Sin más reestructuraciones. 85 días hasta el examen. 
+ Status final 
+ Componente 
+ Status 
+ Detalle 
+ Cobertura 53/53 
+ ✅ VERIFICADA 
+ 51 deep primes en 50 slots con 3 fusiones 
+ LUN 18 = Día 1 real 
+ ✅ CONFIRMADO 
+ 13-17 may NO se ejecutaron 
+ CRÍTICAS primeros 10 días 
+ ✅ ASIGNADAS 
+ 5 sem 1 + 3 sem 2 = 12-15 vueltas 
+ Vueltas garantizadas 
+ ✅ CALCULADAS 
+ 12-15 / 10-12 / 7-9 / 5-6 
+ Fusiones aplicadas 
+ ✅ 3 fusiones 
+ I-11+12 · III-6+III-10 · 🆕 V-8+V-9 
+ NTS Tier 1 mapeadas 
+ ✅ INTEGRADAS 
+ 43 NTS Tier 1 vinculadas a 50 días 
+ Cronograma 12 semanas 
+ ✅ DEFINIDO 
+ Día 1 (lun 18 may) a Día 85 (lun 10 ago) 
+ 
+ 🏥 OPERACIÓN PLAZA HUACHAC 
+ Mañana arranca el Día 1. Sin atajos. Sin asunciones. 
+ Joseph Max Soto Tocas · Plan Maestro v7.0 · 17 mayo 2026
