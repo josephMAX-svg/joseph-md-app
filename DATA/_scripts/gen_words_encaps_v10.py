@@ -65,14 +65,14 @@ PILAR_PCT={A_SP:29,A_CI:28,A_GE:21,A_ET:16,A_IN:6}
 # (codigos por día-hábil; el día-calendario lo maneja la app/Calendar)
 FASE1=[
  ('D1 · Mié 24-jun',['I-3']),('D2 · Jue 25-jun',['V-2']),('D3 · Vie 26-jun',['I-5+I-6']),
- ('D5 · Lun 29-jun',['II-3']),('D6 · Mar 30-jun',['III-5','I-4']),('D7 · Mié 1-jul',['V-3','II-11']),
- ('D8 · Jue 2-jul',['I-1','II-1']),('D9 · Vie 3-jul',['II-8','V-1']),
- ('D11 · Lun 6-jul',['III-9','IV-1+IV-2']),('D12 · Mar 7-jul',['I-2','III-2','III-8']),
- ('D13 · Mié 8-jul',['II-6','II-9','II-7']),('D14 · Jue 9-jul',['II-5','II-10','II-4']),
- ('D15 · Vie 10-jul',['III-1','III-4+III-7']),('D17 · Lun 13-jul',['I-11+I-12','V-6']),
- ('D18 · Mar 14-jul',['III-6+III-10','I-7','II-2','I-10']),
- ('D19 · Mié 15-jul',['III-3','V-7+V-10','IV-4','IV-3+IV-5']),
- ('D20 · Jue 16-jul',['II-12','IV-6+IV-7','I-8','I-9','II-13']),
+ ('D5 · Lun 29-jun',['II-3']),('D6 · Mar 30-jun',['III-5','II-6']),('D7 · Mié 1-jul',['I-4','II-9']),
+ ('D8 · Jue 2-jul',['V-3','II-7']),('D9 · Vie 3-jul',['II-11','II-5']),
+ ('D11 · Lun 6-jul',['I-1','II-10']),('D12 · Mar 7-jul',['II-1','II-4']),
+ ('D13 · Mié 8-jul',['II-8','III-1']),('D14 · Jue 9-jul',['V-1','III-4+III-7']),
+ ('D15 · Vie 10-jul',['III-9','I-11+I-12','V-6']),('D17 · Lun 13-jul',['IV-1+IV-2','III-6+III-10','I-7']),
+ ('D18 · Mar 14-jul',['I-2','II-2','I-10','III-3']),
+ ('D19 · Mié 15-jul',['III-2','V-7+V-10','IV-4','IV-3+IV-5']),
+ ('D20 · Jue 16-jul',['III-8','II-12','IV-6+IV-7','I-8','I-9','II-13']),
 ]
 SUB={t[0]:t[1] for t in TEMAS}; AR={t[0]:t[2] for t in TEMAS}; PR={t[0]:t[3] for t in TEMAS}
 

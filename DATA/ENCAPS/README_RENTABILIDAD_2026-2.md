@@ -33,8 +33,10 @@
 ## Para CREAR exámenes/preguntas (futuro)
 Generar preguntas tipo SERUMS (caso clínico + 4 opciones) **ponderadas por el % de rentabilidad de arriba**: ~29% Salud Pública (sobre todo I-3 vigilancia, I-5/I-6 bioest), ~28% Cuidado Integral (II-3 vacunas, II-11 ITS, II-1 materna, II-8 crónicas), ~21% Gestión (V-2 PEI/POI, V-1, V-3), ~16% Ética/Intercultural, ~6% Investigación (solo IV-1 diseños). Fuente de contenido: fichas MINSA QX (105), Theomed, compendios DR LOPEZ, Drive. Hallazgo: existe un clúster real **Gestión de medicamentos (SISMED/PNUME/DIGEMID/cadena de frío) ~6-12%** sin código propio — considerar crearlo.
 
-## Plan de vueltas (3 fases · ciencia del aprendizaje)
-- **Fase 1 (24-jun→12-jul):** 1ª vuelta de TODO, front-load I/II/V; cada tema cierra con banco (retrieval).
-- **Fase 2 (13-jul→5-ago):** retrieval + interleaving, 65-70% a I/II/V, sábados=simulacros con revisión brutal.
-- **Fase 3 (6-19 ago):** simulacros tamaño-examen + compresión + estrategia. Cero material nuevo. Sueño la víspera.
-- Motor: `intervalosComprimidos()` en encapsPlan.ts comprime los repasos para que TODAS las vueltas caigan antes del 20-ago.
+## Plan de vueltas (3 fases · ciencia del aprendizaje) — REFACTOR MULTI-TEMA 24-jun
+- **Fase 1 COBERTURA (24-jun→16-jul, ≤20 días háb.):** 1ª vuelta de TODO el temario front-loaded por rentabilidad. Días 1-5 = CRÍTICA solo (deep-work puro: I-3, V-2, I-5+I-6, II-3). Días 6-20 = principal + temas_secundarios (varios temas/día, Pareto: BAJA agrupados hasta 6/día). TODO el temario visto al día 20.
+- **Fase 2 VUELTAS+PREGUNTAS (17-jul→5-ago):** tipo='repaso' — cero temario nuevo; solo repaso espaciado + banco de preguntas + mapas conceptuales + interleaving, sábados=simulacros con revisión brutal. Empalma con la 2ª fase de QX/Theomed (mapas, arranca 1-jul).
+- **Fase 3 RECTA FINAL (6-19 ago):** SOLO simulacros tamaño-examen + preguntas + estrategia. Cero material nuevo. Sueño la víspera.
+- Implementación app/Supabase: columna `temas_secundarios` (jsonb) en study_schedule; días ≥21 deep_prime → tipo='repaso'. Motor encapsPlan.ts (focusDayByCode/repasosDeHoy/itemsForDay) procesa principal+secundarios; `encapsVideosPorTema.ts` (videos QX por código). Commit 7c151da. SQL: gen_encaps_multitema_24jun.sql.js. Backup study_schedule_multitema_backup_24jun.
+- Motor: `intervalosComprimidos()` comprime los repasos para que TODAS las vueltas caigan antes del 20-ago.
+- **Words élite (ACTUAL/):** Plan_RENTABILIDAD (pilar+tema), Plan_MAESTRO (3 fases, día-a-día), Plan_Semanal — gen_words_encaps_v10.py. Antiguos en `FORMAS DE ESTUDIO/_OBSOLETOS/`.
