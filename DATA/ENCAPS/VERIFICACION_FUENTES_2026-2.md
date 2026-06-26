@@ -31,8 +31,15 @@ Entré a cada una de las **5 secciones de área** y crucé cada videoclase LIBER
 
 → Cobertura **99%**. El único faltante (`dDlKN…` en CI) **se añadió** a `ENCAPS_VIDEOS_POR_TEMA["II-6"]` (Tuberculosis/infecciones). Las 5 áreas de QX coinciden exactamente con nuestras 5. Tenemos MÁS videos que los liberados hoy (160→161 vs 105) porque capturamos todo el goteo (incluye los que QX libera en julio).
 
+## Re-verificación en vivo (29-jun · re-shift) — sin drift
+Tras re-programar todo a inicio **lun 29-jun** (ENCAPS extendido, examen → mar 25-ago), re-verifiqué en vivo:
+- **QxMedic CI = 44 videoclases** (idéntico a la verificación anterior, incluido el video añadido) → QX **no liberó videos nuevos**; las 5 áreas y los 105 videoclases liberados siguen 100% cubiertos en `encapsVideosPorTema.ts` (161 con todo el goteo).
+- **Google Drive**: carpetas de video por área (Cuidado Integral, Ética, Salud Pública…) sin temas/carpetas nuevas.
+- **Supabase ENCAPS**: 40 temas distintos (17 principales + 23 secundarios) CERO saltados · 35 evaluaciones (9 sim QX + 3 oficiales + 8 Theomed + 9 EVA + 6 banqueo) — TODAS preservadas por el re-shift (ninguna se pierde al saltar el sábado).
+- QX Evaluaciones = 3 categorías (Diagnóstica · EVA · Simulacros) que QX libera por sesión; el inventario de 35 las cubre.
+
 ## Conclusión
-**No falta temario de Fase 1** (tras añadir el 1 video detectado). Todos los videos, PDFs y materiales de QxMedic + Theomed + Drive están capturados en la app y asignados a los días de estudio 1-20 (cobertura Pareto). Las preguntas/mapas/post-tests son las fases posteriores (días 21+), tal como pediste.
+**No falta temario de Fase 1 ni evaluaciones** (verificado en vivo el 24 y re-confirmado el 29-jun, sin cambios). Todos los videos, PDFs y materiales de QxMedic + Theomed + Drive están capturados en la app y asignados a los días de estudio 1-20 (cobertura Pareto). Las preguntas/mapas/post-tests son las fases posteriores (días 21+), tal como pediste.
 
 ## Caveat honesto
 - Al navegar directo a `/mis-clases/videoclases`, **la sesión de QxMedic se cerró** (pidió login). No re-logueé (credenciales del usuario). La verificación de QX se completó con: (a) el dashboard capturado antes del logout, (b) los materiales recientes cruzados contra la data, (c) los scrapes previos (184 videoclases). Para un **re-conteo 100% en vivo de cada videoclase**, basta que vuelvas a loguear QX y lo re-corro.
