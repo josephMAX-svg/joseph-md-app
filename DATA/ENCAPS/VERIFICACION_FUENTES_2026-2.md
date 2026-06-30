@@ -38,8 +38,15 @@ Tras re-programar todo a inicio **lun 29-jun** (ENCAPS extendido, examen → mar
 - **Supabase ENCAPS**: 40 temas distintos (17 principales + 23 secundarios) CERO saltados · 35 evaluaciones (9 sim QX + 3 oficiales + 8 Theomed + 9 EVA + 6 banqueo) — TODAS preservadas por el re-shift (ninguna se pierde al saltar el sábado).
 - QX Evaluaciones = 3 categorías (Diagnóstica · EVA · Simulacros) que QX libera por sesión; el inventario de 35 las cubre.
 
+## Drive SERUMS 2026 II — estructura completa (verificada en vivo 1-jul)
+Carpeta raíz `SERUMS 2026 II` (compartida por innovamed005) → **5 carpetas-proveedor**:
+- **DR LOPEZ** (mod 23-jun) → subcarpetas 🎯Compendio · 📈Normativas · 📝Simulacros · 😬Kahoot · 🎬Videoclases · 📅Cronograma + `Registro de Actualización.docx` + `Sesión Introductoria.pdf`.
+- **GALENO MEDIC** (6-jun) · **Qx MEDIC** (31-may) · **THEOMED** (24-jun) · **VILLAMEDIC** (8-jun).
+
+→ La app usa DR LOPEZ (Compendio + Videoclases) y GALENO. **No hay temas NUEVOS** (la estructura es por tipo de recurso dentro de las MISMAS 5 áreas / 40 temas). Recursos supletorios disponibles para integrar si se desea: **Normativas, Simulacros y Kahoot de DR LOPEZ** (práctica extra, no temario nuevo).
+
 ## Conclusión
-**No falta temario de Fase 1 ni evaluaciones** (verificado en vivo el 24 y re-confirmado el 29-jun, sin cambios). Todos los videos, PDFs y materiales de QxMedic + Theomed + Drive están capturados en la app y asignados a los días de estudio 1-20 (cobertura Pareto). Las preguntas/mapas/post-tests son las fases posteriores (días 21+), tal como pediste.
+**No falta temario de Fase 1 ni evaluaciones** (verificado en vivo 24-jun, re-confirmado 29-jun y 1-jul). QX sin videos nuevos · Drive sin temas nuevos · 40 temas + 35 evaluaciones intactos en cada re-shift. Todos los videos, PDFs y materiales de QxMedic + Theomed + Drive están capturados en la app y asignados a los días de estudio 1-20 (cobertura Pareto). Las preguntas/mapas/post-tests son las fases posteriores (días 21+), tal como pediste.
 
 ## Caveat honesto
 - Al navegar directo a `/mis-clases/videoclases`, **la sesión de QxMedic se cerró** (pidió login). No re-logueé (credenciales del usuario). La verificación de QX se completó con: (a) el dashboard capturado antes del logout, (b) los materiales recientes cruzados contra la data, (c) los scrapes previos (184 videoclases). Para un **re-conteo 100% en vivo de cada videoclase**, basta que vuelvas a loguear QX y lo re-corro.

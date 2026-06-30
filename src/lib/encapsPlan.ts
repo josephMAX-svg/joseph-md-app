@@ -9,7 +9,7 @@ import { ENCAPS_VIDEOS_POR_TEMA } from './encapsVideosPorTema';
 
 // ── D1 por examen (para calcular el día actual 1..71) ──
 export const STUDY_D1: Record<string, string> = {
-  ENCAPS: '2026-06-29',   // re-shift → D1=LUN 29-jun (26-28 jun no se estudió). FILOSOFÍA: NO comprimir → EXTENDER + correr examen (no se pierde ningún día/tema/vuelta). 50 días · 40 contenido (17 temas + 23 secundarios, multi-tema front-load Pareto, todo el temario ≤día~21) · 23 repaso+preguntas+mapas · 8 sáb simulacros + dx · EXAMEN mar 25-ago (corrido, realista: plataformas sueltan 23-26 ago). 40 temas distintos verificados, cero saltos.
+  ENCAPS: '2026-07-01',   // re-shift → D1=MIÉ 1-jul (29-30 jun no se estudió). EXAMEN jue 27-ago (extendido). FILOSOFÍA: NO comprimir → EXTENDER + correr examen (no se pierde ningún día/tema/vuelta). 50 días · 40 contenido (17 temas + 23 secundarios, multi-tema front-load Pareto, todo el temario ≤día~21) · 23 repaso+preguntas+mapas · 8 sáb simulacros + dx · EXAMEN mar 25-ago (corrido, realista: plataformas sueltan 23-26 ago). 40 temas distintos verificados, cero saltos.
   // MIR / USMLE se agregan cuando se construyan sus cronogramas.
 };
 // Fechas SIN actividad (bloqueadas por Joseph) — no cuentan como día de plan.
