@@ -6,6 +6,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { supabase } from './supabase';
 import { ENCAPS_FICHAS_POR_TEMA, ENCAPS_VIDEO_DRIVE, ENCAPS_THEOMED_AREA, ENCAPS_THEOMED_VIDEOS, ENCAPS_COMPENDIO, ENCAPS_AREA_PREFIJO, ENCAPS_THEOMED_TEMA_SESION } from './encapsFuentes';
 import { ENCAPS_VIDEOS_POR_TEMA } from './encapsVideosPorTema';
+import { PRACTICA_DEEP_PRIME, PRACTICA_REPASO } from './encapsPracticaExtra';
 
 // ── D1 por examen (para calcular el día actual 1..71) ──
 export const STUDY_D1: Record<string, string> = {
@@ -434,6 +435,14 @@ export function itemsForDay(day: StudyScheduleDay, focusByCode: Record<string, n
       detail: 'Construye/repasa los mapas de los temas que caen hoy (ver "Repasos de hoy") · 2ª fase Theomed',
       dur: 60, hora: slot(60),
     });
+    // 🎯 PRÁCTICA EXTRA (días de preguntas): arsenal completo Theomed + DR LOPEZ (más preguntas/día)
+    PRACTICA_REPASO.forEach((pe, i) => {
+      items.push({
+        key: `D${N}:practica:${i}`, kind: pe.tipo === 'normativa' ? 'material' : 'eval',
+        label: `🎯 ${pe.label}`, detail: 'Práctica extra · banco de preguntas / simulacros / kahoot',
+        url: pe.url, source: 'Práctica extra', dur: pe.min, hora: slot(pe.min),
+      });
+    });
   }
   // Material complementario (norma/guía + banco + Drive) — clave para temas normativa; con hora
   (day.material_comp || []).forEach((m, i) => {
@@ -452,6 +461,14 @@ export function itemsForDay(day: StudyScheduleDay, focusByCode: Record<string, n
   }
   if (day.tipo === 'deep_prime') {
     items.push({ key: `D${N}:eval`, kind: 'eval', label: 'Evaluación', detail: 'QX Eval del Tema + BanqueApp + POSTEST Theomed', dur: 30, hora: slot(30) });
+    // 🎯 PRÁCTICA EXTRA (día de tema): banco/kahoot ligero del día (Theomed + DR LOPEZ)
+    PRACTICA_DEEP_PRIME.forEach((pe, i) => {
+      items.push({
+        key: `D${N}:practica:${i}`, kind: 'eval',
+        label: `🎯 ${pe.label}`, detail: 'Práctica extra del tema · preguntas / kahoot / simulacros',
+        url: pe.url, source: 'Práctica extra', dur: pe.min, hora: slot(pe.min),
+      });
+    });
   }
   // v6 (13-jun): un día-examen puede tener 2-4 simulacros (extra.sims) → cada uno es un
   // item chequeable propio (key D{N}:sim:{i}). Fallback al simulacro singular (legacy).
