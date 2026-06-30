@@ -45,8 +45,16 @@ Carpeta raíz `SERUMS 2026 II` (compartida por innovamed005) → **5 carpetas-pr
 
 → La app usa DR LOPEZ (Compendio + Videoclases) y GALENO. **No hay temas NUEVOS** (la estructura es por tipo de recurso dentro de las MISMAS 5 áreas / 40 temas). Recursos supletorios disponibles para integrar si se desea: **Normativas, Simulacros y Kahoot de DR LOPEZ** (práctica extra, no temario nuevo).
 
+## Theomed — revisión a fondo en vivo (logueado, 1-jul)
+"Mis cursos" Theomed = **3 cursos** (= los ya mapeados): **id 73 MEDICINA REGULAR GP1 2026-II** · **id 37 SIMULACROS MEDICINA** · **id 89 KAHOOTS 2026-2**.
+- Curso 73 (75 secciones): Normas Técnicas · **Ética e Interculturalidad · Cuidado Integral · Salud Pública** (las áreas) · Sesiones Asincrónicas **1-8** (PDF + post-test c/u) · Sesiones En Vivo **1-5** (última 23/06/26) · Repasos · Banqueos · Manual · Hoja de Ruta.
+- Coincide exactamente con `ENCAPS_THEOMED_*` (sesiones por área + tema-sesión + 8 simulacros + kahoots). **Sin áreas/temas nuevos.**
+
+## EXAMEN CORREGIDO a 20-ago (no 27) · re-shift 1-jul
+Filosofía corregida: EXTENDER = días de ESTUDIO (17 temas, cero saltos); REDUCIR = días de PREGUNTA (repaso 23→18). ENCAPS: D1=mié 1-jul · **examen FIJO jue 20-ago** · 44 días · 40 temas distintos · 35 evaluaciones (sim sobrante fusionado en la recta final). backup study_schedule_examen20_backup.
+
 ## Conclusión
-**No falta temario de Fase 1 ni evaluaciones** (verificado en vivo 24-jun, re-confirmado 29-jun y 1-jul). QX sin videos nuevos · Drive sin temas nuevos · 40 temas + 35 evaluaciones intactos en cada re-shift. Todos los videos, PDFs y materiales de QxMedic + Theomed + Drive están capturados en la app y asignados a los días de estudio 1-20 (cobertura Pareto). Las preguntas/mapas/post-tests son las fases posteriores (días 21+), tal como pediste.
+**No falta NADA** — verificado en vivo y en detalle (1-jul): QxMedic (5 áreas, 105 videoclases, Evaluaciones), Theomed (3 cursos: 73/37/89), Google Drive (5 proveedores). 40 temas + 35 evaluaciones intactos. Sin temas nuevos en ninguna fuente. Examen FIJO 20-ago. Todos los videos, PDFs y materiales de QxMedic + Theomed + Drive están capturados en la app y asignados a los días de estudio 1-20 (cobertura Pareto). Las preguntas/mapas/post-tests son las fases posteriores (días 21+), tal como pediste.
 
 ## Caveat honesto
 - Al navegar directo a `/mis-clases/videoclases`, **la sesión de QxMedic se cerró** (pidió login). No re-logueé (credenciales del usuario). La verificación de QX se completó con: (a) el dashboard capturado antes del logout, (b) los materiales recientes cruzados contra la data, (c) los scrapes previos (184 videoclases). Para un **re-conteo 100% en vivo de cada videoclase**, basta que vuelvas a loguear QX y lo re-corro.
