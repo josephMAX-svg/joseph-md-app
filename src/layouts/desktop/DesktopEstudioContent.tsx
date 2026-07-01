@@ -229,9 +229,9 @@ export default function DesktopEstudioContent() {
             borderWidth: 1, borderColor: DesktopColors.glassBorder, padding: 3,
           }}>
             {([
-              ['plan', '📅 Plan diario'],
-              ['bloques', '📚 Bloques APEX'],
-              ['dashboard', '📊 Dashboard'],
+              ['plan', 'Plan diario'],
+              ['bloques', 'Bloques APEX'],
+              ['dashboard', 'Dashboard'],
             ] as const).map(([k, l]) => (
               <TouchableOpacity
                 key={k}

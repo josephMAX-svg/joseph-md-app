@@ -3,6 +3,7 @@ import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View, Text, StyleSheet } from 'react-native';
 import { Colors, FontSize, BorderRadius } from '../theme/tokens';
+import { Icon, IconName } from '../components/icons';
 
 import HomeScreen from '../screens/HomeScreen';
 import EstudioScreen from '../screens/EstudioScreen';
@@ -14,11 +15,20 @@ import SynapseScreen from '../screens/SynapseScreen';
 
 const Tab = createBottomTabNavigator();
 
-// Tab icon component using emoji (no external icon lib needed)
+// Tab icon: SVG profesional (mapea el emoji legacy → icono del set)
+const EMOJI_TO_ICON: Record<string, IconName> = {
+  '🏠': 'home', '📚': 'study', '💎': 'gem', '💼': 'business',
+  '🔬': 'research', '🫀': 'vitals', '🧠': 'synapse',
+};
 function TabIcon({ icon, focused, color }: { icon: string; focused: boolean; color: string }) {
   return (
     <View style={[styles.iconContainer, focused && styles.iconContainerActive]}>
-      <Text style={[styles.icon, { opacity: focused ? 1 : 0.5 }]}>{icon}</Text>
+      <Icon
+        name={EMOJI_TO_ICON[icon] || 'target'}
+        size={22}
+        color={focused ? Colors.secondary : Colors.muted}
+        strokeWidth={focused ? 1.9 : 1.65}
+      />
     </View>
   );
 }

@@ -4,6 +4,7 @@ import { Colors, FontSize, Spacing, BorderRadius, Elevation, Hairline, Motion, L
 import { VITALS_URL } from '../config';
 import { obsUrl } from '../lib/obsidianMap';
 import { OBS_VITALS } from '../lib/obsidianVaultMap';
+import { HeroBackdrop } from '../components/HeroBackdrop';
 
 const OBS_VIOLET = '#A78BFA';
 
@@ -55,6 +56,7 @@ export default function VitalsScreen() {
         {/* ── Overlay de carga sutil: se desvanece cuando el iframe emite onLoad ── */}
         {!loaded && (
           <View pointerEvents="none" style={styles.loadingOverlay as any}>
+            <HeroBackdrop image="vitals" opacity={0.5} scrim="bottom" />
             <View style={styles.loadingCard}>
               <View style={styles.loadingPulse} />
               <Text style={styles.loadingTitle}>VITALS</Text>

@@ -2,6 +2,17 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import { Colors, FontSize, SidebarAccents, Elevation, Hairline, Motion } from '../theme/tokens';
 import { desktopStyles, DesktopColors } from '../theme/desktopStyles';
+import { Icon, SEGMENT_ICON, IconName } from '../components/icons';
+
+// Etiqueta de Quick Stat: icono SVG + texto (reemplaza los emoji de prefijo)
+function StatLabel({ icon, text, accent }: { icon: IconName; text: string; accent?: string }) {
+  return (
+    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 7 }}>
+      <Icon name={icon} size={14} color={accent || Colors.onSurfaceVariant} strokeWidth={1.6} />
+      <Text style={desktopStyles.sidebarStatLabel}>{text}</Text>
+    </View>
+  );
+}
 
 export type ScreenName = 'Home' | 'Estudio' | 'Derma' | 'Empresa' | 'Investigación' | 'Vitals' | 'Synapse';
 
@@ -65,18 +76,24 @@ function NavItem({
       activeOpacity={0.7}
       {...webHoverProps}
     >
-      {/* Icon con leve realce cuando el item está activo */}
-      <Text
+      {/* Icono SVG con realce (glow del acento) cuando el item está activo */}
+      <View
         style={[
           desktopStyles.navItemIcon,
+          { alignItems: 'center', justifyContent: 'center' },
           (isActive || hovered) && Platform.OS === 'web'
-            ? ({ textShadow: `0 0 12px ${accentColor}66` } as any)
+            ? ({ filter: `drop-shadow(0 0 9px ${accentColor}77)` } as any)
             : {},
-          !isActive && !hovered ? { opacity: 0.72 } : {},
+          !isActive && !hovered ? { opacity: 0.82 } : {},
         ]}
       >
-        {item.icon}
-      </Text>
+        <Icon
+          name={SEGMENT_ICON[item.key] || 'target'}
+          size={21}
+          color={isActive || hovered ? accentColor : Colors.onSurfaceVariant}
+          strokeWidth={isActive ? 1.9 : 1.65}
+        />
+      </View>
       <View style={desktopStyles.navItemTextContainer}>
         <Text
           style={[
@@ -187,25 +204,25 @@ export default function DesktopSidebar({
         ]}
       >
         <View style={desktopStyles.sidebarStatRow}>
-          <Text style={desktopStyles.sidebarStatLabel}>⏳ APEX Queue</Text>
+          <StatLabel icon="queue" text="APEX Queue" />
           <Text style={[desktopStyles.sidebarStatValue, { color: queueCount > 0 ? Colors.teal : Colors.muted, fontVariant: ['tabular-nums'] }]}>
             {queueCount}
           </Text>
         </View>
         <View style={[desktopStyles.sidebarStatRow, { borderTopWidth: 1, borderTopColor: Hairline.soft }]}>
-          <Text style={desktopStyles.sidebarStatLabel}>⏱ Deep Work</Text>
+          <StatLabel icon="timer" text="Deep Work" />
           <Text style={[desktopStyles.sidebarStatValue, { color: Colors.amber, fontVariant: ['tabular-nums'] }]}>
             {Math.round(deepWorkHours * 10) / 10}h
           </Text>
         </View>
         <View style={[desktopStyles.sidebarStatRow, { borderTopWidth: 1, borderTopColor: Hairline.soft }]}>
-          <Text style={desktopStyles.sidebarStatLabel}>📊 CZI</Text>
+          <StatLabel icon="chart" text="CZI" />
           <Text style={[desktopStyles.sidebarStatValue, { color: getCZIColor(cziValue), fontVariant: ['tabular-nums'] }]}>
             {cziValue !== null ? cziValue.toFixed(2) : '--'}
           </Text>
         </View>
         <View style={[desktopStyles.sidebarStatRow, { borderTopWidth: 1, borderTopColor: Hairline.soft }]}>
-          <Text style={desktopStyles.sidebarStatLabel}>🔥 Streak</Text>
+          <StatLabel icon="flame" text="Streak" accent={Colors.gold} />
           <Text style={[desktopStyles.sidebarStatValue, { color: Colors.amber, fontVariant: ['tabular-nums'] }]}>
             {streak}d
           </Text>
@@ -233,7 +250,10 @@ export default function DesktopSidebar({
             onMouseLeave: () => setApexHovered(false),
           } : {})}
         >
-          <Text style={desktopStyles.sidebarActionBtnText}>⚡ APEX 1-TAP</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 7 }}>
+            <Icon name="bolt" size={15} color={Colors.onSecondary} strokeWidth={1.9} />
+            <Text style={desktopStyles.sidebarActionBtnText}>APEX 1-TAP</Text>
+          </View>
         </TouchableOpacity>
         <TouchableOpacity
           style={[
@@ -250,9 +270,10 @@ export default function DesktopSidebar({
             onMouseLeave: () => setDictarHovered(false),
           } : {})}
         >
-          <Text style={[desktopStyles.sidebarActionBtnText, { color: '#FFFFFF' }]}>
-            🎙 DICTATE ERROR
-          </Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 7 }}>
+            <Icon name="mic" size={15} color="#FFFFFF" strokeWidth={1.8} />
+            <Text style={[desktopStyles.sidebarActionBtnText, { color: '#FFFFFF' }]}>DICTATE ERROR</Text>
+          </View>
         </TouchableOpacity>
         {onChatPress && (
           <TouchableOpacity
@@ -269,9 +290,10 @@ export default function DesktopSidebar({
               onMouseLeave: () => setChatHovered(false),
             } : {})}
           >
-            <Text style={[desktopStyles.sidebarActionBtnText, { color: Colors.blue }]}>
-              💬 AGENT CHAT
-            </Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 7 }}>
+              <Icon name="chat" size={15} color={Colors.blue} strokeWidth={1.8} />
+              <Text style={[desktopStyles.sidebarActionBtnText, { color: Colors.blue }]}>AGENT CHAT</Text>
+            </View>
           </TouchableOpacity>
         )}
       </View>

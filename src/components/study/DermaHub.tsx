@@ -17,6 +17,7 @@ import DermaBodyMap from '../derma/DermaBodyMap';
 import DermaMorphologyFilter, { DermaFilters } from '../derma/DermaMorphologyFilter';
 import DermaDermoscopyKey from '../derma/DermaDermoscopyKey';
 import DermaLineIcon from '../derma/DermaLineIcons';
+import { HeroBackdrop } from '../HeroBackdrop';
 import {
   DERMA_LIBROS_ESTETICA, DERMA_VIDEOS, DERMA_QBANKS_ACCESS, DERMA_CASES_ACCESS,
   DERMA_QBANKLY_RESUMEN, srcBook, srcCap, srcMm, srcQa, srcCases,
@@ -509,8 +510,9 @@ export default function DermaHub({ variant = 'mobile' }: { variant?: 'mobile' | 
       <View style={{ position: 'relative' }}>
         <CommandBackdrop />
 
-        {/* ── HEADER PROPIO DEL ATLAS (no GradientHero genérico) ── */}
-        <View style={st.atlasHeader}>
+        {/* ── HEADER PROPIO DEL ATLAS (con hero real de dermatoscopía) ── */}
+        <View style={[st.atlasHeader, { position: 'relative', overflow: 'hidden', borderRadius: BorderRadius.xl, borderWidth: 1, borderColor: Hairline.soft, paddingHorizontal: Spacing.lg, paddingTop: Spacing.lg }]}>
+          <HeroBackdrop image="derma" opacity={0.55} scrim="left" />
           <View style={st.headerTop}>
             <View style={{ flex: 1, minWidth: 220 }}>
               <View style={st.headerTitleRow}>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Platform } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline } from '../theme/tokens';
 import { desktopStyles, DesktopColors } from '../theme/desktopStyles';
+import { Icon } from '../components/icons';
 import { LIVIANO_PENDIENTES, PULSO_MATRIZ } from '../lib/empresaData';
 import { SYNAPSE_META, SYNAPSE_FASES, SYNAPSE_HORARIO, SYNAPSE_QUICKLINKS } from '../lib/synapseData';
 import { SYN_PLAN_META, SYN_DIAS, synDiaDe, SYN_FORMATO_ICON, SYN_TAG_LABEL } from '../lib/synapseDailyPlan';
@@ -142,7 +143,7 @@ function WeekSummaryCard({ data }: { data: WeekSummary }) {
   ];
   return (
     <View style={desktopStyles.rightPanelCard}>
-      <Text style={desktopStyles.rightPanelCardTitle}>📊 This Week</Text>
+      <Text style={desktopStyles.rightPanelCardTitle}>This Week</Text>
       <View style={{ gap: 6 }}>
         {items.map((item, i) => (
           <View key={i} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -332,7 +333,7 @@ function EstudioRightPanel() {
           <SkeletonLoader lines={3} />
         ) : !hasErrors ? (
           <View style={{ alignItems: 'center', paddingVertical: 16 }}>
-            <Text style={{ fontSize: 24, marginBottom: 6 }}>📊</Text>
+            <View style={{ marginBottom: 8, opacity: 0.6 }}><Icon name="chart" size={24} color={Colors.muted} strokeWidth={1.6} /></View>
             <Text style={{ fontSize: 11, color: Colors.muted, textAlign: 'center' }}>Sin datos de errores aún</Text>
           </View>
         ) : (

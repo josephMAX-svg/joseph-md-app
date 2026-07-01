@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { Colors, Spacing, BorderRadius, Hairline } from '../../theme/tokens';
+import { HeroBackdrop } from '../HeroBackdrop';
 
 /**
  * CockpitStatusBar — la "línea de estado" firma del Home (mission control).
@@ -73,6 +74,8 @@ export default function CockpitStatusBar({
 
   return (
     <View style={[st.bar, compact && st.barCompact]}>
+      {/* Constelación real (mission control) de fondo, sutil — no roba legibilidad */}
+      <HeroBackdrop image="home" opacity={0.3} scrim="bottom" />
       {/* Identidad + reloj (bloque izquierdo) */}
       <View style={st.left}>
         <View style={st.railGold} />
@@ -124,6 +127,7 @@ const st = StyleSheet.create({
     borderWidth: 1, borderColor: Hairline.soft,
     borderBottomWidth: 2, borderBottomColor: Hairline.accentSoft,   // firma ORO
     marginBottom: Spacing.section,
+    overflow: 'hidden',   // recorta la hero constelación al borde redondeado
   },
   barCompact: { paddingVertical: 10, paddingHorizontal: 12 },
 
