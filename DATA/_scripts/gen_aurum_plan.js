@@ -44,7 +44,7 @@ if (lecciones.length !== 130) throw new Error('Se esperaban 130 lecciones, hay '
 
 // ─── Calendario: 130 días hábiles L-V consecutivos desde 2026-06-24 ───
 const WD = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-const START = new Date('2026-07-01T12:00:00'); // viernes 26-jun-2026 (25-jun tampoco se estudió; todo corre a 26-jun · ÚLTIMA reprogramación)
+const START = new Date('2026-07-02T12:00:00'); // viernes 26-jun-2026 (25-jun tampoco se estudió; todo corre a 26-jun · ÚLTIMA reprogramación)
 function nextBusinessDay(date) {
   const d = new Date(date);
   do { d.setTime(d.getTime() + 86400000); } while (d.getDay() === 0 || d.getDay() === 6);

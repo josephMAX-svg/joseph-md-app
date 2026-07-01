@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # Genera 3 Words ENCAPS v10 (DATA-DRIVEN) en D:\agente_estudio\ENCAPS\...\ACTUAL\:
 #  1) RENTABILIDAD por pilar + por tema (pronóstico 2026-2)
-#  2) MAESTRO global 1-jul→20-ago (Fase1 ≤17d TODO el temario front-load Pareto · Fase2 vueltas/preguntas · Fase3 sims)
-#  3) SEMANAL detallado 1-jul→5-jul
+#  2) MAESTRO global 2-jul→20-ago (Fase1 ≤17d TODO el temario front-load Pareto · Fase2 vueltas/preguntas · Fase3 sims)
+#  3) SEMANAL detallado 2-jul→5-jul
 # python3 gen_words_encaps_v10.py
 import os
 from docx import Document
@@ -64,15 +64,15 @@ PILAR_PCT={A_SP:29,A_CI:28,A_GE:21,A_ET:16,A_IN:6}
 # ---- FASE-1 front-load: todo el temario en los primeros ~18 días hábiles, Pareto (CRÍTICA 1/día, BAJA agrupada) ----
 # (codigos por día-hábil; el día-calendario lo maneja la app/Calendar)
 FASE1=[
- ('D1 · Mié 1-jul',['I-3']),('D2 · Jue 2-jul',['V-2']),('D3 · Vie 3-jul',['I-5+I-6']),
- ('D5 · Lun 6-jul',['II-3']),('D6 · Mar 7-jul',['III-5','II-6']),('D7 · Mié 8-jul',['I-4','II-9']),
- ('D8 · Jue 9-jul',['V-3','II-7']),('D9 · Vie 10-jul',['II-11','II-5']),
- ('D11 · Lun 13-jul',['I-1','II-10']),('D12 · Mar 14-jul',['II-1','II-4']),
- ('D13 · Mié 15-jul',['II-8','III-1']),('D14 · Jue 16-jul',['V-1','III-4+III-7']),
- ('D15 · Vie 17-jul',['III-9','I-11+I-12','V-6']),('D17 · Lun 20-jul',['IV-1+IV-2','III-6+III-10','I-7']),
- ('D18 · Mar 21-jul',['I-2','II-2','I-10','III-3']),
- ('D19 · Mié 22-jul',['III-2','V-7+V-10','IV-4','IV-3+IV-5']),
- ('D20 · Jue 23-jul',['III-8','II-12','IV-6+IV-7','I-8','I-9','II-13']),
+ ('D1 · Jue 2-jul',['I-3']),('D2 · Vie 3-jul',['V-2']),('D4 · Lun 6-jul',['I-5+I-6']),
+ ('D5 · Mar 7-jul',['II-3']),('D6 · Mié 8-jul',['III-5','II-6']),('D7 · Jue 9-jul',['I-4','II-9']),
+ ('D8 · Vie 10-jul',['V-3','II-7']),('D10 · Lun 13-jul',['II-11','II-5']),
+ ('D11 · Mar 14-jul',['I-1','II-10']),('D12 · Mié 15-jul',['II-1','II-4']),
+ ('D13 · Jue 16-jul',['II-8','III-1']),('D14 · Vie 17-jul',['V-1','III-4+III-7']),
+ ('D16 · Lun 20-jul',['III-9','I-11+I-12','V-6']),('D17 · Mar 21-jul',['IV-1+IV-2','III-6+III-10','I-7']),
+ ('D18 · Mié 22-jul',['I-2','II-2','I-10','III-3']),
+ ('D19 · Jue 23-jul',['III-2','V-7+V-10','IV-4','IV-3+IV-5']),
+ ('D20 · Vie 24-jul',['III-8','II-12','IV-6+IV-7','I-8','I-9','II-13']),
 ]
 SUB={t[0]:t[1] for t in TEMAS}; AR={t[0]:t[2] for t in TEMAS}; PR={t[0]:t[3] for t in TEMAS}
 
@@ -124,7 +124,7 @@ d.save(os.path.join(OUT,'Plan_RENTABILIDAD_ENCAPS_2026-2_v10.docx'))
 
 # =================== DOC 2 · MAESTRO GLOBAL ===================
 d=newdoc()
-cover(d,'PLAN MAESTRO ENCAPS 2026-II','1-jul → 20-ago · 44 días hábiles · v10 DATA-DRIVEN (Pareto + repetición espaciada · EXTENDIDO no comprime)')
+cover(d,'PLAN MAESTRO ENCAPS 2026-II','2-jul → 20-ago · 43 días hábiles · v10 DATA-DRIVEN (Pareto + repetición espaciada · EXTENDIDO no comprime)')
 H(d,'0 · Filosofía del plan (por qué v10)',13)
 for x in ['REGLA DE ORO: TODO el temario (40 unidades-tema) se ve en los PRIMEROS ~18 días hábiles (Fase 1). Después NO se estudia temario nuevo — solo vueltas, mapas conceptuales, banco de preguntas y simulacros.',
           'Pareto 80/20: 80% del tiempo a las áreas/temas más rentables (SP+CI+Gestión = 78% del examen); los CRÍTICA tienen su propio día de deep-work; los BAJA se agrupan varios por día.',
@@ -135,7 +135,7 @@ for x in ['REGLA DE ORO: TODO el temario (40 unidades-tema) se ve en los PRIMERO
 H(d,'1 · Aritmética de los 50 días',12)
 tb=d.add_table(rows=1,cols=3); tb.style='Light Grid Accent 1'
 hc=tb.rows[0].cells; hc[0].text='Fase'; hc[1].text='Días'; hc[2].text='Objetivo'
-for f,dd,ob in [('FASE 1 · COBERTURA','1-jul → 23-jul (~17 días háb.)','1ª vuelta de TODO el temario, front-load Pareto. Cada tema cierra con banco (retrieval).'),
+for f,dd,ob in [('FASE 1 · COBERTURA','2-jul → 24-jul (~17 días háb.)','1ª vuelta de TODO el temario, front-load Pareto. Cada tema cierra con banco (retrieval).'),
                 ('FASE 2 · VUELTAS + PREGUNTAS','24-jul → 14-ago','Repaso espaciado (2ª-6ª vuelta) + interleaving + mapas + banco. Menos días de repaso (recortados para caber al 20-ago). Sábados=simulacros.'),
                 ('FASE 3 · RECTA FINAL','15-ago → 19-ago','SOLO simulacros tamaño-examen + preguntas + estrategia. Cero temario nuevo. Examen jue 20-ago.'),
                 ('EXAMEN','jue 20-ago','—')]:
@@ -151,7 +151,7 @@ for dia,cods in FASE1:
     det=' · '.join(f'{c} {SUB.get(c,"")} [{PR.get(c,"")[:4]}]' for c in cods)
     c=tb.add_row().cells; c[0].text=dia.split(' · ')[0]; c[1].text=', '.join(cods); c[2].text=det[:120]
 P(d,'')
-P(d,'Días 4,10,16,22 (sábados) = simulacros · Dom libres. Tras el día 20 (jue 23-jul) → NO más temario nuevo.',bold=True,c=RED,sz=10)
+P(d,'Días 3,9,15,21,27 (sábados) = simulacros · Dom libres. Tras el día 20 (vie 24-jul) → NO más temario nuevo.',bold=True,c=RED,sz=10)
 
 H(d,'3 · Sistema de vueltas (repetición espaciada diferenciada)',12)
 for x in ['CRÍTICA = 6 vueltas, intervalos [1,3,7,28,50] · ALTA = 5 [1,7,28,50] · MEDIA = 4 [3,28,50] · BAJA = 3 [7,50].',
@@ -184,21 +184,19 @@ for x in ['Fuentes: QX (BanqueApp + EVA del tema + 9 simulacros + 3 oficiales) y
 H(d,'7 · Top predicciones 2026-II (foco absoluto)',12)
 for cod,subt,ar,pr,rk,pct in sorted(TEMAS,key=lambda x:x[4])[:10]:
     P(d,f'#{rk} · {cod} {subt} ({ar}) — ~{pct}%',bullet=True,sz=10)
-d.save(os.path.join(OUT,'Plan_MAESTRO_ENCAPS_v10_1jul-20ago.docx'))
+d.save(os.path.join(OUT,'Plan_MAESTRO_ENCAPS_v10_2jul-20ago.docx'))
 
 # =================== DOC 3 · SEMANAL detallado ===================
 d=newdoc()
-cover(d,'PLAN SEMANAL ENCAPS · SEMANA 1','Mié 1-jul → Dom 5-jul · v10 DATA-DRIVEN (detallado)')
-P(d,'Inicio del plan (29-30 jun no se estudió). Semana 1 (mié-vie): siembra los 3 temas MÁS rentables del examen, los CRÍTICA #1-3 (6 vueltas c/u), 1 por día con deep-work completo. II-3 (Vacunación, #4) arranca el lunes 6-jul. Sáb 4-jul = simulacros · Dom 5-jul libre. EXTENDIDO: no se pierde ningún tema (examen FIJO jue 20-ago).',c=GREY)
-WK=[('Miércoles 1-jul · D1/50','I-3','Directiva 067 RM 506-2020',
+cover(d,'PLAN SEMANAL ENCAPS · SEMANA 1','Jue 2-jul → Dom 5-jul · v10 DATA-DRIVEN (detallado)')
+P(d,'INICIO DEFINITIVO jue 2-jul (no más reprogramaciones). Semana 1 corta (jue-vie): siembra los 2 temas #1-2 del examen, ambos CRÍTICA (6 vueltas), con deep-work completo. I-5+I-6 (Bioestadística, #3) arranca el lunes 6-jul. Sáb 4-jul = simulacros · Dom 5-jul libre. Examen FIJO jue 20-ago (43 días).',c=GREY)
+WK=[('Jueves 2-jul · D1/43','I-3','Directiva 067 RM 506-2020',
      ['Vigilancia en salud pública','Vigilancia epidemiológica','Endemias/epidemias/brotes','Demografía',
       'Historia natural del proceso salud-enfermedad','Sala situacional','Conceptos básicos de epidemiología',
       'Mediciones en epidemiología','Sistema de vigilancia epidemiológica','Gestión del riesgo en desastres']),
-    ('Jueves 2-jul · D2/50','V-2','Directiva CEPLAN 001-2024 (NUEVA)',
+    ('Viernes 3-jul · D2/43','V-2','Directiva CEPLAN 001-2024 (NUEVA)',
      ['Planeamiento institucional PEI','POI y evaluación del POI','Análisis estratégico (FODA)','ROF/MOF',
-      'Uso racional de medicamentos','Gestión de RRHH','Gestión logística e inventario','Buenas prácticas de almacenamiento']),
-    ('Viernes 3-jul · D3/50','I-5+I-6','DSS OMS 2008 + Bioestadística básica',
-     ['Causalidad y riesgo','Pruebas diagnósticas (sens/esp/VPP/VPN)','Determinantes sociales (ambientales/biogenéticos/comerciales)','Bioestadística básica'])]
+      'Uso racional de medicamentos','Gestión de RRHH','Gestión logística e inventario','Buenas prácticas de almacenamiento'])]
 for fecha,cod,nts,vids in WK:
     H(d,f'📅 {fecha} — {cod} {SUB[cod]}',13)
     p=d.add_paragraph()
@@ -210,14 +208,14 @@ for fecha,cod,nts,vids in WK:
     P(d,f'🎥 2ª opción: Videoclases Drive (DR LOPEZ/GALENO) del pilar {AR[cod]}. 🎯 3ª opción: clase grabada Theomed (ver minuto exacto en Joseph MD).',sz=9.5,c=GREY)
     P(d,'📄 Fichas MINSA del tema + 🎯 Compendio DR LOPEZ + 📝 POSTEST Theomed: links directos por tema en Joseph MD (pestaña ENCAPS · cada ítem con su hora).',sz=9.5,c=GREY)
     P(d,'🎯 Banco/retrieval: 20Q warm-up + 30Q consolidación + BanqueApp QX. Cada fallo → resetea a 1-3 días.',sz=9.5)
-H(d,'📅 Sábado 4-jul · D4/50 — SIMULACROS',13,RED)
+H(d,'📅 Sábado 4-jul · D3/43 — SIMULACROS',13,RED)
 P(d,'Simulacros reales cronometrados + revisión brutal el mismo día:',bold=True)
 for s in ['QX · Simulacro Virtual N°01','QX · Simulacro Virtual N°02','QX · Simulacro Virtual N°03']: P(d,s,bullet=True)
 H(d,'📅 Domingo 5-jul · LIBRE',13,GREEN)
 P(d,'Sin estudio intenso. El sueño y el modo difuso consolidan; el espaciado necesita olvido parcial. Máx 10 min re-leyendo el mapa de la semana.')
 H(d,'Resumen de la semana',12,GOLD)
-P(d,'3 temas CRÍTICA (#1-3 del examen) sembrados mié-vie con deep-work + sábado de simulacros + domingo libre. La próxima semana (lun 6-jul→) acelera con el multi-tema: II-3, III-5+II-6, I-4+II-9… hasta cubrir TODO el temario al jue 23-jul; luego repaso + preguntas + mapas + simulacros hasta el examen (jue 20-ago).')
-d.save(os.path.join(OUT,'Plan_Semanal_ENCAPS_v10_1jul-5jul_DATADRIVEN.docx'))
+P(d,'2 temas CRÍTICA (#1-2 del examen) sembrados jue-vie con deep-work + sábado de simulacros + domingo libre. La próxima semana (lun 6-jul→) acelera con el multi-tema: I-5+I-6, II-3, III-5+II-6… hasta cubrir TODO el temario al vie 24-jul; luego repaso + preguntas + mapas + simulacros hasta el examen (jue 20-ago). META: >17/20 — ver Word META_NIVEL_METODO.')
+d.save(os.path.join(OUT,'Plan_Semanal_ENCAPS_v10_2jul-5jul_DATADRIVEN.docx'))
 
 print('OK 3 Words generados en', OUT)
 for f in os.listdir(OUT): print('  -', f)
