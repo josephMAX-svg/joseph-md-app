@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Text, TextStyle, Animated } from 'react-native';
+import { Text, TextStyle, Animated, Platform } from 'react-native';
 
 interface AnimatedCounterProps {
   value: number;
@@ -65,8 +65,13 @@ export default function AnimatedCounter({
     ? displayValue.toFixed(decimals)
     : Math.round(displayValue).toString();
 
+  // tabular-nums (web): evita el "salto" horizontal de dígitos durante el count-up.
+  const numericStyle = Platform.OS === 'web'
+    ? ({ fontVariantNumeric: 'tabular-nums', fontFeatureSettings: '"tnum"' } as any)
+    : null;
+
   return (
-    <Text style={style}>
+    <Text style={[numericStyle, style]}>
       {prefix}{formatted}{suffix}
     </Text>
   );

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Animated, StyleSheet, ViewStyle } from 'react-native';
+import { BorderRadius, Hairline } from '../theme/tokens';
 
 interface SkeletonLoaderProps {
   lines?: number;
@@ -110,17 +111,19 @@ export function PulseDash({ color = '#6B7C93', size = 36 }: { color?: string; si
 
 const styles = StyleSheet.create({
   container: {
-    gap: 8,
+    gap: 10,
   },
   bar: {
-    height: 12,
-    borderRadius: 6,
-    backgroundColor: 'rgba(255,255,255,0.06)',
+    height: 11,
+    borderRadius: BorderRadius.full,
+    backgroundColor: Hairline.soft,
   },
   cardSkeleton: {
     height: 80,
-    borderRadius: 16,
-    backgroundColor: 'rgba(255,255,255,0.04)',
+    borderRadius: BorderRadius.xl,
+    backgroundColor: Hairline.soft,
+    borderWidth: 1,
+    borderColor: Hairline.soft,
     marginBottom: 12,
   },
 });

@@ -118,4 +118,51 @@ export const MetricColors: Record<string, string> = {
   publicaciones: Colors.green,
 } as const;
 
+// ─── Premium Design System v3 (2026) — ADITIVO, no rompe la API existente ───
+// Referentes: Linear · Vercel · Stripe · Arc · Family · Things. Profundidad por sombra
+// suave + hairlines de baja opacidad + micro-motion. RN-web mapea shadow* → boxShadow.
+
+// Elevation — sombras suaves en capas (depth = "élite"). Úsalo en cards/botones flotantes.
+export const Elevation = {
+  none: {},
+  sm: { shadowColor: '#00040D', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.20, shadowRadius: 3, elevation: 2 },
+  md: { shadowColor: '#00040D', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.28, shadowRadius: 12, elevation: 6 },
+  lg: { shadowColor: '#00040D', shadowOffset: { width: 0, height: 12 }, shadowOpacity: 0.34, shadowRadius: 28, elevation: 14 },
+  glow: (c: string) => ({ shadowColor: c, shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.5, shadowRadius: 18, elevation: 10 }),
+} as const;
+
+// Hairline — definición 1px de baja opacidad (premium, sutil). Complementa el no-line.
+export const Hairline = {
+  soft: 'rgba(216, 227, 252, 0.06)',
+  medium: 'rgba(216, 227, 252, 0.10)',
+  strong: 'rgba(216, 227, 252, 0.16)',
+  accentSoft: 'rgba(82, 218, 215, 0.18)',
+} as const;
+
+// Motion — tokens de transición para web (RN-web respeta `transition` en style).
+export const Motion = {
+  fast: '120ms cubic-bezier(0.4, 0, 0.2, 1)',
+  base: '200ms cubic-bezier(0.4, 0, 0.2, 1)',
+  spring: '320ms cubic-bezier(0.16, 1, 0.3, 1)',
+} as const;
+
+// Gradients — pares de acento (para LinearGradient / fondos web).
+export const Gradients = {
+  teal: ['#22E3C4', '#00B0AE'],
+  blue: ['#3B82F6', '#6366F1'],
+  amber: ['#FBBF24', '#F97316'],
+  purple: ['#A78BFA', '#6366F1'],
+  coral: ['#FB7185', '#F43F5E'],
+  green: ['#34D399', '#10B981'],
+  indigo: ['#818CF8', '#4F46E5'],
+  surface: ['#152032', '#0B1628'],
+  hero: ['#0FD4A0', '#00B0AE'],
+} as const;
+
+// Escala de line-height coherente con FontSize (ritmo tipográfico élite).
+export const LineHeight = {
+  displaySm: 40, headlineLg: 38, headlineSm: 30, titleLg: 28,
+  titleMd: 24, bodyLg: 24, bodyMd: 21, labelLg: 20, labelMd: 16, labelSm: 15,
+} as const;
+
 export type ColorKey = keyof typeof Colors;

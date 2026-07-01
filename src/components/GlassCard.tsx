@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { View, StyleSheet, Platform, ViewStyle } from 'react-native';
+import { BorderRadius, Elevation, Hairline, Motion } from '../theme/tokens';
 
 interface GlassCardProps {
   children: React.ReactNode;
@@ -12,10 +13,10 @@ interface GlassCardProps {
  * GlassCard — Glassmorphism card with subtle frosted-glass effect.
  * - background: rgba(15, 29, 50, 0.7)
  * - backdropFilter: blur(10px)
- * - border: 1px solid rgba(255,255,255,0.08)
+ * - border: 1px hairline (baja opacidad)
  * - borderRadius: 16px
- * - shadow: 0 4px 24px rgba(0,0,0,0.2)
- * - Hover: border brightens, slight scale
+ * - depth: Elevation.sm (layered soft shadow) → md on hover
+ * - Hover: border brightens, subtle lift + scale
  */
 export default function GlassCard({ children, style, interactive = false, noPadding = false }: GlassCardProps) {
   const [hovered, setHovered] = useState(false);
@@ -29,15 +30,15 @@ export default function GlassCard({ children, style, interactive = false, noPadd
 
   const webStyle = Platform.OS === 'web'
     ? {
-        backdropFilter: 'blur(10px)',
-        WebkitBackdropFilter: 'blur(10px)',
-        transition: 'all 0.2s ease',
+        backdropFilter: 'blur(14px)',
+        WebkitBackdropFilter: 'blur(14px)',
+        transition: `transform ${Motion.base}, border-color ${Motion.base}, box-shadow ${Motion.base}`,
         cursor: interactive ? 'pointer' : 'default',
         ...(hovered && interactive
           ? {
-              borderColor: 'rgba(255,255,255,0.15)',
-              transform: [{ scale: 1.01 }],
-              boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
+              borderColor: Hairline.strong,
+              transform: [{ translateY: -2 }, { scale: 1.008 }],
+              boxShadow: '0 12px 34px rgba(0,4,13,0.34)',
             }
           : {}),
       }
@@ -61,15 +62,10 @@ export default function GlassCard({ children, style, interactive = false, noPadd
 const styles = StyleSheet.create({
   card: {
     backgroundColor: 'rgba(15, 29, 50, 0.7)',
-    borderRadius: 16,
+    borderRadius: BorderRadius.xl,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.08)',
-    // Shadow for native
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 24,
-    elevation: 8,
+    borderColor: Hairline.medium,
+    ...Elevation.sm,
     overflow: 'hidden' as const,
   },
   cardPadding: {

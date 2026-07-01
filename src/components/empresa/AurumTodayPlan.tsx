@@ -10,6 +10,7 @@ import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso } from '../../
 import {
   AurumColors as C, AurumRadius as R, AurumSpacing as S, AurumType as T, withAlpha,
 } from '../../theme/aurumTheme';
+import { Elevation, Motion, Hairline } from '../../theme/tokens';
 import { AurumChip, AurumLabel, AurumPanel, AurumProgressBar, AurumButton, AurumRise, useAurumHover } from './aurumVisuals';
 
 /**
@@ -74,8 +75,8 @@ function BloqueRow({ b, obsNota }: { b: AurumBloque; obsNota?: string }) {
     st.blk,
     { borderLeftColor: accent },
     isPrac ? { backgroundColor: withAlpha(C.pracAccent, 0.07), borderColor: withAlpha(C.pracAccent, 0.3) } : null,
-    hovered && isWeb ? ({ borderColor: withAlpha(accent, 0.5), transform: [{ translateX: 2 }] } as any) : null,
-    isWeb ? ({ transition: 'all .16s ease' } as any) : null,
+    hovered && isWeb ? ({ borderColor: withAlpha(accent, 0.5), transform: [{ translateX: 2 }], ...Elevation.md } as any) : null,
+    isWeb ? ({ transition: `all ${Motion.base}` } as any) : null,
   ];
   if (isPrac) {
     return (
@@ -158,7 +159,7 @@ function HoyView({ dia, hoyD, done, onToggle, onGoBiblioteca }: { dia: DiaAurum;
           <Text style={st.lecturaHead}>📚 Para tus huecos (viaje / lectura) · fuera de la hora del núcleo</Text>
           {lecturaBloques.map((b, i) => <AurumRise key={`l${i}`} delay={40 + i * 30}><BloqueRow b={b} obsNota={dia.obs} /></AurumRise>)}
           <TouchableOpacity activeOpacity={0.85} onPress={onGoBiblioteca}
-            style={[st.bibBtn, isWeb ? ({ cursor: 'pointer', transition: 'all .16s ease' } as any) : null]}>
+            style={[st.bibBtn, isWeb ? ({ cursor: 'pointer', transition: `all ${Motion.base}` } as any) : null]}>
             <Text style={st.bibBtnTxt}>📚 ver en Biblioteca</Text>
           </TouchableOpacity>
         </View>
@@ -359,8 +360,8 @@ const st = StyleSheet.create({
   verTxt: { fontSize: T.size.micro, fontWeight: T.weight.extrabold },
 
   // lectura
-  lecturaBox: { backgroundColor: withAlpha(C.lecturaAccent, 0.06), borderRadius: R.md, borderWidth: 1, borderStyle: 'dashed', borderColor: withAlpha(C.lecturaAccent, 0.4), padding: S.md, marginTop: S.md },
-  lecturaHead: { fontSize: T.size.nano, fontWeight: T.weight.extrabold, color: C.lecturaAccent, letterSpacing: 0.4, marginBottom: S.sm },
+  lecturaBox: { backgroundColor: withAlpha(C.lecturaAccent, 0.06), borderRadius: R.md, borderWidth: 1, borderStyle: 'dashed', borderColor: withAlpha(C.lecturaAccent, 0.4), padding: S.lg, marginTop: S.md },
+  lecturaHead: { fontSize: T.size.nano, fontWeight: T.weight.extrabold, color: C.lecturaAccent, letterSpacing: 0.6, marginBottom: S.sm },
   bibBtn: { alignSelf: 'flex-start', marginTop: S.sm, borderWidth: 1, borderColor: withAlpha(C.lecturaAccent, 0.6), backgroundColor: withAlpha(C.lecturaAccent, 0.12), borderRadius: R.sm, paddingVertical: 7, paddingHorizontal: 13 },
   bibBtnTxt: { fontSize: T.size.caption, fontWeight: T.weight.extrabold, color: C.lecturaAccent, letterSpacing: 0.3 },
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Linking } from 'react-native';
-import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
+import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, Motion, LineHeight } from '../../theme/tokens';
 import { desktopStyles, DesktopColors } from '../../theme/desktopStyles';
 import { SectionLabel, Chip, GlassPanel, PillTab, gridStyle, gridItemStyle } from '../empresa/primitives';
 import { GradientHero, RingStat, MegaStat, FadeUp, CommandBackdrop } from '../empresa/visuals';
@@ -132,26 +132,28 @@ function FuentesView() {
   );
 }
 
+const WEB_LINK = { cursor: 'pointer', transition: Motion.base } as any;
+
 const fst = StyleSheet.create({
-  srcCard: { backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: DesktopColors.glassBorder, borderLeftWidth: 3, padding: Spacing.lg, minHeight: 130 },
-  srcT: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface, marginTop: 6 },
-  srcSub: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 4, lineHeight: 15 },
-  srcGo: { fontSize: FontSize.labelSm, fontWeight: '800', marginTop: 8 },
-  qRow: { backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: DesktopColors.glassBorder, borderLeftWidth: 3, padding: Spacing.md, flexDirection: 'row', alignItems: 'center', gap: 10 },
-  qN: { fontSize: FontSize.bodyMd, fontWeight: '900', color: PURPLE, minWidth: 44 },
+  srcCard: { backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.xl, borderWidth: 1, borderColor: Hairline.soft, borderLeftWidth: 3, padding: Spacing.lg, minHeight: 132, ...Elevation.sm, ...WEB_LINK },
+  srcT: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface, marginTop: 8, letterSpacing: -0.2 },
+  srcSub: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 5, lineHeight: LineHeight.labelSm },
+  srcGo: { fontSize: FontSize.labelSm, fontWeight: '800', marginTop: 10, letterSpacing: 0.2 },
+  qRow: { backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.soft, borderLeftWidth: 3, padding: Spacing.md, flexDirection: 'row', alignItems: 'center', gap: 10, ...Elevation.sm, ...WEB_LINK },
+  qN: { fontSize: FontSize.bodyMd, fontWeight: '900', color: PURPLE, minWidth: 44, letterSpacing: -0.3 },
   qT: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 16 },
-  stepRow: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 8, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.06)' },
-  stepName: { fontSize: FontSize.labelMd, fontWeight: '800', width: 84 },
+  stepRow: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 9, borderTopWidth: 1, borderTopColor: Hairline.soft, ...WEB_LINK },
+  stepName: { fontSize: FontSize.labelMd, fontWeight: '800', width: 84, letterSpacing: 0.2 },
   stepDet: { flex: 1, fontSize: FontSize.labelSm, color: Colors.muted },
   stepQ: { fontSize: FontSize.labelMd, fontWeight: '800', color: Colors.onSurface },
-  vidRow: { backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: DesktopColors.glassBorder, padding: Spacing.md, flexDirection: 'row', alignItems: 'center', gap: 10 },
-  vidN: { fontSize: FontSize.bodyLg, fontWeight: '900', color: '#22D3EE', minWidth: 34, textAlign: 'center' },
+  vidRow: { backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.soft, padding: Spacing.md, flexDirection: 'row', alignItems: 'center', gap: 10, ...Elevation.sm, ...WEB_LINK },
+  vidN: { fontSize: FontSize.bodyLg, fontWeight: '900', color: '#22D3EE', minWidth: 34, textAlign: 'center', letterSpacing: -0.3 },
   vidT: { flex: 1, fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, lineHeight: 15 },
-  libCard: { backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: DesktopColors.glassBorder, padding: Spacing.md, marginBottom: 6 },
-  libT: { flex: 1, fontSize: FontSize.labelLg, fontWeight: '700', color: Colors.onSurface },
-  starChip: { backgroundColor: 'rgba(139,92,246,0.10)', borderWidth: 1, borderColor: 'rgba(139,92,246,0.35)', borderRadius: BorderRadius.full, paddingVertical: 4, paddingHorizontal: 10, maxWidth: 320 },
+  libCard: { backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.soft, padding: Spacing.md, marginBottom: Spacing.sm, ...Elevation.sm },
+  libT: { flex: 1, fontSize: FontSize.labelLg, fontWeight: '700', color: Colors.onSurface, letterSpacing: -0.2 },
+  starChip: { backgroundColor: 'rgba(139,92,246,0.10)', borderWidth: 1, borderColor: 'rgba(139,92,246,0.35)', borderRadius: BorderRadius.full, paddingVertical: 4, paddingHorizontal: 10, maxWidth: 320, ...WEB_LINK },
   starTxt: { fontSize: FontSize.labelSm, color: '#C4B5FD', fontWeight: '600' },
-  note: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: Spacing.sm, lineHeight: 15 },
+  note: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: Spacing.sm, lineHeight: LineHeight.labelSm },
 });
 
 export default function DermaHub({ variant = 'mobile' }: { variant?: 'mobile' | 'desktop' }) {
@@ -175,7 +177,7 @@ export default function DermaHub({ variant = 'mobile' }: { variant?: 'mobile' | 
               <Text style={[st.heroSub, { color: PURPLE }]}>{DERMA_META.subtitulo}</Text>
               <Text style={st.heroTesis}>{DERMA_META.tesis}</Text>
             </View>
-            <View style={[st.todayChip, { borderColor: (hoy === 'derma' ? PURPLE : Colors.teal) + '66', backgroundColor: (hoy === 'derma' ? PURPLE : Colors.teal) + '14' }]}>
+            <View style={[st.todayChip, { borderColor: (hoy === 'derma' ? PURPLE : Colors.teal) + '66', backgroundColor: (hoy === 'derma' ? PURPLE : Colors.teal) + '14' }, hoy === 'derma' && Elevation.glow(PURPLE)]}>
               <Text style={st.todayLabel}>HOY</Text>
               <Text style={[st.todayVal, { color: hoy === 'derma' ? PURPLE : hoy === 'research' ? Colors.teal : Colors.muted }]}>
                 {hoy === 'derma' ? '💎 DERMA' : hoy === 'research' ? '🔬 RESEARCH →' : '😴 Descanso'}
@@ -320,44 +322,45 @@ export default function DermaHub({ variant = 'mobile' }: { variant?: 'mobile' | 
 
 const cardBase = {
   backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg,
-  borderWidth: 1, borderColor: DesktopColors.glassBorder, padding: Spacing.lg,
+  borderWidth: 1, borderColor: Hairline.soft, padding: Spacing.lg,
+  ...Elevation.sm,
 };
 
 const st = StyleSheet.create({
-  heroTitle: { fontSize: FontSize.headlineSm, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.5 },
-  heroSub: { fontSize: FontSize.labelLg, marginTop: 4, fontWeight: '600' },
-  heroTesis: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, marginTop: Spacing.md, lineHeight: 20, maxWidth: 640 },
-  todayChip: { borderRadius: BorderRadius.lg, borderWidth: 1, paddingVertical: 10, paddingHorizontal: 14, alignItems: 'center', minWidth: 120 },
-  todayLabel: { fontSize: 9, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 1 },
-  todayVal: { fontSize: FontSize.bodyLg, fontWeight: '800', marginTop: 3 },
-  todaySub: { fontSize: 9, color: Colors.muted, marginTop: 2 },
+  heroTitle: { fontSize: FontSize.headlineSm, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.6, lineHeight: LineHeight.headlineSm },
+  heroSub: { fontSize: FontSize.labelLg, marginTop: 5, fontWeight: '700', letterSpacing: 0.2 },
+  heroTesis: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, marginTop: Spacing.md, lineHeight: LineHeight.bodyMd, maxWidth: 640 },
+  todayChip: { borderRadius: BorderRadius.lg, borderWidth: 1, paddingVertical: 11, paddingHorizontal: 15, alignItems: 'center', minWidth: 122, ...Elevation.sm },
+  todayLabel: { fontSize: 9, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 1.4, textTransform: 'uppercase' },
+  todayVal: { fontSize: FontSize.bodyLg, fontWeight: '800', marginTop: 4, letterSpacing: -0.2 },
+  todaySub: { fontSize: 9, color: Colors.muted, marginTop: 3, letterSpacing: 0.2 },
 
-  h3: { fontSize: FontSize.bodyLg, fontWeight: '700', color: Colors.onSurface, marginBottom: 6 },
-  body: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, lineHeight: 19 },
+  h3: { fontSize: FontSize.bodyLg, fontWeight: '700', color: Colors.onSurface, marginBottom: 7, letterSpacing: -0.2 },
+  body: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, lineHeight: LineHeight.bodyMd },
 
   ringRow: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.md, marginBottom: Spacing.lg },
-  ringCard: { flex: 1, minWidth: 140, backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.xl, borderWidth: 1, borderColor: DesktopColors.glassBorder, paddingVertical: Spacing.lg, paddingHorizontal: Spacing.md, alignItems: 'center' },
+  ringCard: { flex: 1, minWidth: 140, backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.xl, borderWidth: 1, borderColor: Hairline.soft, paddingVertical: Spacing.lg, paddingHorizontal: Spacing.md, alignItems: 'center', ...Elevation.sm },
 
-  faseCard: { ...cardBase, borderLeftWidth: 3, minHeight: 150 },
-  faseTag: { fontSize: FontSize.labelMd, fontWeight: '800' },
-  faseFoco: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 6, lineHeight: 16 },
-  faseCrit: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 8, fontStyle: 'italic' },
+  faseCard: { ...cardBase, borderLeftWidth: 3, minHeight: 150, ...WEB_LINK },
+  faseTag: { fontSize: FontSize.labelMd, fontWeight: '800', letterSpacing: 0.3 },
+  faseFoco: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 7, lineHeight: 17 },
+  faseCrit: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 9, fontStyle: 'italic' },
 
   bloqueCard: { ...cardBase, marginBottom: Spacing.sm },
-  bloqueTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface },
-  bloqueNota: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 1 },
+  bloqueTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.2 },
+  bloqueNota: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 2 },
   subGrid: { gap: 2 },
-  subRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 4, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.04)' },
+  subRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 5, borderTopWidth: 1, borderTopColor: Hairline.soft },
   subCode: { fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.onSurfaceVariant, width: 38 },
   subName: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurface },
-  subVueltas: { fontSize: 9, fontWeight: '700', marginLeft: 6 },
+  subVueltas: { fontSize: 9, fontWeight: '800', marginLeft: 6, letterSpacing: 0.2 },
 
-  recCat: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface },
-  link: { backgroundColor: 'rgba(255,255,255,0.04)', borderRadius: BorderRadius.md, borderWidth: 1, borderColor: DesktopColors.glassBorder, paddingVertical: 6, paddingHorizontal: 9 },
-  linkText: { fontSize: FontSize.labelSm, color: PURPLE, fontWeight: '500', lineHeight: 15 },
+  recCat: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, letterSpacing: -0.2 },
+  link: { backgroundColor: 'rgba(255,255,255,0.04)', borderRadius: BorderRadius.md, borderWidth: 1, borderColor: Hairline.soft, paddingVertical: 7, paddingHorizontal: 10, ...WEB_LINK },
+  linkText: { fontSize: FontSize.labelSm, color: PURPLE, fontWeight: '600', lineHeight: 15 },
 
-  horRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: Spacing.md, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.06)', gap: Spacing.sm },
-  horBadge: { borderRadius: BorderRadius.md, paddingVertical: 3, paddingHorizontal: 8, minWidth: 74, alignItems: 'center' },
-  horFranja: { fontSize: FontSize.labelSm, fontWeight: '800' },
-  horAct: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 16 },
+  horRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: Spacing.md, borderTopWidth: 1, borderTopColor: Hairline.soft, gap: Spacing.sm },
+  horBadge: { borderRadius: BorderRadius.md, paddingVertical: 4, paddingHorizontal: 9, minWidth: 76, alignItems: 'center' },
+  horFranja: { fontSize: FontSize.labelSm, fontWeight: '800', letterSpacing: 0.2 },
+  horAct: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 17 },
 });

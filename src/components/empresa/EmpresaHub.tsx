@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Platform, StyleSheet } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { consumeNavIntent } from '../../lib/navIntent';
-import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
+import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, LineHeight } from '../../theme/tokens';
 import { desktopStyles, DesktopColors } from '../../theme/desktopStyles';
 import { AMBER, PillTab, Chip, SectionLabel, useHover } from './primitives';
 import { GradientHero, RingStat, BrandTile } from './visuals';
@@ -29,8 +29,8 @@ function ObsMarcaLink({ company }: { company: string }) {
   const label = company === 'estudio' ? '◆ Obsidian — biblioteca (28 libros)' : `◆ Obsidian — nota de ${company}`;
   return (
     <TouchableOpacity activeOpacity={0.75} onPress={() => Linking.openURL(obsUrl(file)).catch(() => {})}
-      style={{ alignSelf: 'flex-start', marginBottom: Spacing.md, paddingVertical: 4, paddingHorizontal: 10, borderRadius: BorderRadius.full, borderWidth: 1, borderColor: OBS_VIOLET + '55', backgroundColor: OBS_VIOLET + '12' }}>
-      <Text style={{ fontSize: FontSize.labelSm, fontWeight: '700', color: OBS_VIOLET, letterSpacing: 0.4 }}>{label}</Text>
+      style={[{ alignSelf: 'flex-start', marginBottom: Spacing.md, paddingVertical: 5, paddingHorizontal: 12, borderRadius: BorderRadius.full, borderWidth: 1, borderColor: OBS_VIOLET + '44', backgroundColor: OBS_VIOLET + '14' }, Platform.OS === 'web' ? ({ cursor: 'pointer', transition: 'all .15s ease' } as any) : null]}>
+      <Text style={{ fontSize: FontSize.labelSm, fontWeight: '700', color: OBS_VIOLET, letterSpacing: 0.3 }}>{label}</Text>
     </TouchableOpacity>
   );
 }
@@ -93,8 +93,12 @@ export default function EmpresaHub({ variant = 'mobile' }: { variant?: 'mobile' 
       showsVerticalScrollIndicator={false}
     >
       {/* Header */}
-      <View style={{ marginBottom: Spacing.lg }}>
-        <Text style={isDesktop ? desktopStyles.pageTitle : st.title}>Business · Centro de control</Text>
+      <View style={{ marginBottom: Spacing.xl }}>
+        <View style={st.eyebrowRow}>
+          <View style={st.eyebrowDot} />
+          <Text style={st.eyebrow}>BUSINESS</Text>
+        </View>
+        <Text style={isDesktop ? desktopStyles.pageTitle : st.title}>Centro de control</Text>
         <Text style={st.subtitle}>Pulso Health Group — el conglomerado de salud DTC y sus líneas.</Text>
       </View>
 
@@ -279,26 +283,26 @@ function SimpleBrandView({ id, titulo, estado, desc, chips, links }: {
   const c = (BRANDS as any)[id]?.bright || '#B7B8BD';
   return (
     <View style={{
-      backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1,
-      borderColor: DesktopColors.glassBorder, borderLeftWidth: 3, borderLeftColor: c,
-      padding: Spacing.lg, marginBottom: Spacing.lg,
+      backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.xl, borderWidth: 1,
+      borderColor: Hairline.soft, borderLeftWidth: 3, borderLeftColor: c,
+      padding: Spacing.xl, marginBottom: Spacing.lg, ...Elevation.sm,
     }}>
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 6, flexWrap: 'wrap' }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 8, flexWrap: 'wrap' }}>
         <Text style={{ fontSize: 26 }}>{(BRANDS as any)[id]?.emoji}</Text>
-        <Text style={{ fontSize: FontSize.titleLg, fontWeight: '800', color: Colors.onSurface }}>{titulo}</Text>
+        <Text style={{ fontSize: FontSize.titleLg, lineHeight: LineHeight.titleLg, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.3 }}>{titulo}</Text>
         <Chip label={estado} color={c} small />
         <Chip label="10% del tiempo" color={Colors.muted} small />
       </View>
-      <Text style={{ fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, lineHeight: 19 }}>{desc}</Text>
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 10 }}>
+      <Text style={{ fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, lineHeight: LineHeight.bodyMd }}>{desc}</Text>
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 12 }}>
         {chips.map(([lbl, color], i) => <Chip key={i} label={lbl} color={color} small />)}
       </View>
       {links && links.length > 0 ? (
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 12 }}>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 14 }}>
           {links.map(([lbl, url]) => (
             <TouchableOpacity key={url} activeOpacity={0.8} onPress={() => Linking.openURL(url).catch(() => {})}
-              style={{ paddingVertical: 6, paddingHorizontal: 12, borderRadius: BorderRadius.full, borderWidth: 1, borderColor: c + '66', backgroundColor: c + '14' }}>
-              <Text style={{ fontSize: FontSize.labelSm, fontWeight: '700', color: c }}>{lbl}</Text>
+              style={[{ paddingVertical: 7, paddingHorizontal: 13, borderRadius: BorderRadius.full, borderWidth: 1, borderColor: c + '55', backgroundColor: c + '14' }, Platform.OS === 'web' ? ({ cursor: 'pointer', transition: 'all .15s ease' } as any) : null]}>
+              <Text style={{ fontSize: FontSize.labelSm, fontWeight: '700', color: c, letterSpacing: 0.2 }}>{lbl}</Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -400,40 +404,44 @@ function PlaceholderBrandView({ id, onBack }: { id: string; onBack: () => void }
 }
 
 const st = StyleSheet.create({
-  title: { fontSize: FontSize.headlineLg, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.5 },
-  subtitle: { fontSize: FontSize.labelLg, color: Colors.muted, marginTop: 4, lineHeight: 19 },
-  selectorHint: { fontSize: FontSize.labelSm, color: Colors.smallLabel, fontStyle: 'italic', marginBottom: Spacing.xl, marginTop: 2 },
+  eyebrowRow: { flexDirection: 'row', alignItems: 'center', gap: 7, marginBottom: 8 },
+  eyebrowDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: AMBER },
+  eyebrow: { fontSize: FontSize.labelSm, fontWeight: '800', color: AMBER, letterSpacing: 1.6 },
+  title: { fontSize: FontSize.headlineLg, lineHeight: LineHeight.headlineLg, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.6 },
+  subtitle: { fontSize: FontSize.labelLg, color: Colors.muted, marginTop: 6, lineHeight: LineHeight.bodyMd },
+  selectorHint: { fontSize: FontSize.labelSm, color: Colors.smallLabel, fontStyle: 'italic', marginBottom: Spacing.xl, marginTop: 6, lineHeight: LineHeight.labelSm },
 
-  breadcrumb: { flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: Spacing.md, alignSelf: 'flex-start' },
-  breadcrumbText: { fontSize: FontSize.labelLg, color: BRANDS.pulso.bright, fontWeight: '700' },
+  breadcrumb: { flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: Spacing.md, alignSelf: 'flex-start', paddingVertical: 4, paddingRight: 8 },
+  breadcrumbText: { fontSize: FontSize.labelLg, color: BRANDS.pulso.bright, fontWeight: '700', letterSpacing: 0.2 },
   breadcrumbSep: { fontSize: FontSize.labelLg, color: Colors.muted },
 
-  livianoTitle: { fontSize: FontSize.headlineSm, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.3 },
-  livianoDesc: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, marginTop: Spacing.md, lineHeight: 20, maxWidth: 560 },
-  livianoLoc: { fontSize: FontSize.labelMd, color: Colors.muted, marginTop: 6 },
-  brandCat: { fontSize: FontSize.labelLg, fontWeight: '700', marginTop: 2 },
+  livianoTitle: { fontSize: FontSize.headlineSm, lineHeight: LineHeight.headlineSm, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.4 },
+  livianoDesc: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, marginTop: Spacing.md, lineHeight: LineHeight.bodyMd, maxWidth: 560 },
+  livianoLoc: { fontSize: FontSize.labelMd, color: Colors.muted, marginTop: 8 },
+  brandCat: { fontSize: FontSize.labelLg, fontWeight: '700', marginTop: 3, letterSpacing: 0.2 },
 
   placeBody: {
     backgroundColor: DesktopColors.glass,
     borderRadius: BorderRadius.xl,
-    borderWidth: 1, borderColor: DesktopColors.glassBorder,
+    borderWidth: 1, borderColor: Hairline.soft,
     padding: Spacing.xl,
+    ...Elevation.sm,
   },
-  placeBodyTitle: { fontSize: FontSize.bodyLg, fontWeight: '700', color: Colors.onSurface, marginBottom: Spacing.sm },
-  placeBodyText: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, lineHeight: 20 },
-  progTrack: { height: 6, borderRadius: 3, backgroundColor: 'rgba(255,255,255,0.06)', marginTop: Spacing.lg, overflow: 'hidden' },
-  progFill: { height: 6, borderRadius: 3 },
+  placeBodyTitle: { fontSize: FontSize.bodyLg, lineHeight: LineHeight.bodyLg, fontWeight: '700', color: Colors.onSurface, marginBottom: Spacing.sm },
+  placeBodyText: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, lineHeight: LineHeight.bodyMd },
+  progTrack: { height: 6, borderRadius: BorderRadius.full, backgroundColor: 'rgba(255,255,255,0.06)', marginTop: Spacing.lg, overflow: 'hidden' },
+  progFill: { height: 6, borderRadius: BorderRadius.full },
 });
 
 // Selector proporcional: Pulso domina, LIVIANO medio, PIRQA ícono (1%)
 const sel = StyleSheet.create({
-  pulso: { flex: 5, borderRadius: BorderRadius.xl, borderWidth: 1, paddingVertical: 16, paddingHorizontal: 20, overflow: 'hidden', justifyContent: 'center', minHeight: 68 },
-  pulsoName: { fontSize: FontSize.titleLg, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.4 },
-  pulsoSub: { fontSize: FontSize.labelMd, fontWeight: '600', marginTop: 2 },
+  pulso: { flex: 5, borderRadius: BorderRadius.xl, borderWidth: 1, paddingVertical: 16, paddingHorizontal: 20, overflow: 'hidden', justifyContent: 'center', minHeight: 68, ...Elevation.md },
+  pulsoName: { fontSize: FontSize.titleLg, lineHeight: LineHeight.titleLg, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.4 },
+  pulsoSub: { fontSize: FontSize.labelMd, fontWeight: '600', marginTop: 3, letterSpacing: 0.2 },
   liveDot: { width: 9, height: 9, borderRadius: 5 },
-  liviano: { flex: 1.05, borderRadius: BorderRadius.lg, borderWidth: 1, paddingVertical: 10, paddingHorizontal: 10, alignItems: 'center', justifyContent: 'center', minHeight: 68 },
-  livName: { fontSize: FontSize.labelLg, fontWeight: '800', color: Colors.muted, marginTop: 2, letterSpacing: 0.2 },
-  livSub: { fontSize: 9, fontWeight: '700', marginTop: 1 },
-  pirqa: { width: 52, borderRadius: BorderRadius.lg, borderWidth: 1, alignItems: 'center', justifyContent: 'center', minHeight: 68 },
-  pirqaLabel: { fontSize: 9, fontWeight: '800', marginTop: 2 },
+  liviano: { flex: 1.05, borderRadius: BorderRadius.lg, borderWidth: 1, paddingVertical: 10, paddingHorizontal: 10, alignItems: 'center', justifyContent: 'center', minHeight: 68, ...Elevation.sm },
+  livName: { fontSize: FontSize.labelLg, fontWeight: '800', color: Colors.muted, marginTop: 3, letterSpacing: 0.4 },
+  livSub: { fontSize: 9, fontWeight: '700', marginTop: 2, letterSpacing: 0.3, textTransform: 'uppercase' },
+  pirqa: { width: 52, borderRadius: BorderRadius.lg, borderWidth: 1, alignItems: 'center', justifyContent: 'center', minHeight: 68, ...Elevation.sm },
+  pirqaLabel: { fontSize: 9, fontWeight: '800', marginTop: 3, letterSpacing: 0.3 },
 });

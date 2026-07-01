@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Platform, StyleSheet, Linking, ScrollView } from 'react-native';
 import BrandHorario from './BrandHorario';
-import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
+import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, LineHeight } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
 import {
   AMBER, GlassPanel, SectionLabel, Chip, MetricCard, StatCell, SemaforoDot,
@@ -743,15 +743,16 @@ const cardBase = {
   backgroundColor: DesktopColors.glass,
   borderRadius: BorderRadius.lg,
   borderWidth: 1,
-  borderColor: DesktopColors.glassBorder,
+  borderColor: Hairline.soft,
   padding: Spacing.lg,
+  ...Elevation.sm,
 };
 
 const s = StyleSheet.create({
-  h2: { fontSize: FontSize.titleMd, fontWeight: '800', color: Colors.onSurface, marginBottom: 6, letterSpacing: -0.3 },
-  h3: { fontSize: FontSize.bodyLg, fontWeight: '700', color: Colors.onSurface, marginBottom: Spacing.sm },
-  body: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, lineHeight: 20 },
-  smallNote: { fontSize: FontSize.labelMd, color: Colors.muted, lineHeight: 17 },
+  h2: { fontSize: FontSize.titleMd, lineHeight: LineHeight.titleMd, fontWeight: '800', color: Colors.onSurface, marginBottom: 6, letterSpacing: -0.3 },
+  h3: { fontSize: FontSize.bodyLg, lineHeight: LineHeight.bodyLg, fontWeight: '700', color: Colors.onSurface, marginBottom: Spacing.sm, letterSpacing: -0.2 },
+  body: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, lineHeight: LineHeight.bodyMd },
+  smallNote: { fontSize: FontSize.labelMd, color: Colors.muted, lineHeight: LineHeight.labelMd + 1 },
 
   // legend
   legendRow: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.lg, marginTop: Spacing.md },
@@ -766,16 +767,16 @@ const s = StyleSheet.create({
 
   // ancla
   anclaRow: { flexDirection: 'row', gap: Spacing.md, flexWrap: 'wrap' },
-  anclaCard: { flex: 1, minWidth: 150, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: BorderRadius.lg, borderWidth: 1, padding: Spacing.lg, alignItems: 'center' },
-  anclaLabel: { fontSize: 9, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 1 },
-  anclaName: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginVertical: 4, textAlign: 'center' },
-  anclaCost: { fontSize: FontSize.titleMd, fontWeight: '800', textAlign: 'center' },
+  anclaCard: { flex: 1, minWidth: 150, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: BorderRadius.lg, borderWidth: 1, padding: Spacing.lg, alignItems: 'center', ...Elevation.sm },
+  anclaLabel: { fontSize: 9, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 1.2 },
+  anclaName: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginVertical: 5, textAlign: 'center', lineHeight: LineHeight.labelMd },
+  anclaCost: { fontSize: FontSize.titleMd, lineHeight: LineHeight.titleMd, fontWeight: '800', textAlign: 'center', letterSpacing: -0.4 },
 
   // value stack
   valueHeroRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: Spacing.lg, marginBottom: Spacing.lg, flexWrap: 'wrap' },
   valueHero: { alignItems: 'center' },
-  valueHeroLabel: { fontSize: 9, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 1, marginBottom: 4 },
-  valueHeroNum: { fontSize: FontSize.headlineSm, fontWeight: '800', letterSpacing: -0.5 },
+  valueHeroLabel: { fontSize: 9, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 1.2, marginBottom: 5 },
+  valueHeroNum: { fontSize: FontSize.headlineSm, lineHeight: LineHeight.headlineSm, fontWeight: '800', letterSpacing: -0.6 },
   valueVs: { fontSize: FontSize.bodyMd, color: Colors.muted, fontWeight: '700' },
   valueBreak: { borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.06)', paddingTop: Spacing.md, marginTop: Spacing.xs },
   cierre: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, fontStyle: 'italic', marginTop: Spacing.md, lineHeight: 18 },
@@ -805,18 +806,18 @@ const s = StyleSheet.create({
 
   // objeciones
   objRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: Spacing.md, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.06)', gap: Spacing.sm },
-  objDice: { backgroundColor: Colors.coral + '18', borderRadius: BorderRadius.md, paddingVertical: 5, paddingHorizontal: 10, minWidth: 130 },
-  objDiceText: { fontSize: FontSize.labelLg, color: Colors.tertiary, fontWeight: '600' },
+  objDice: { backgroundColor: Colors.coral + '18', borderRadius: BorderRadius.md, borderWidth: 1, borderColor: Colors.coral + '22', paddingVertical: 6, paddingHorizontal: 11, minWidth: 130 },
+  objDiceText: { fontSize: FontSize.labelLg, color: Colors.tertiary, fontWeight: '600', lineHeight: LineHeight.labelLg },
   objArrow: { color: Colors.muted, fontSize: 16, fontWeight: '700' },
-  objDesact: { flex: 1, fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, lineHeight: 18 },
+  objDesact: { flex: 1, fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, lineHeight: LineHeight.bodyMd - 2 },
 
   // marketing rules
   ruleCard: { ...cardBase, borderWidth: 1 },
   ruleTag: { fontSize: FontSize.labelMd, fontWeight: '800', letterSpacing: 0.5, marginBottom: 6 },
 
   // cascada
-  cascadaChip: { flexDirection: 'row', alignItems: 'center', gap: 8, backgroundColor: 'rgba(255,255,255,0.04)', borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: DesktopColors.glassBorder, paddingVertical: 8, paddingHorizontal: 12 },
-  cascadaNum: { fontSize: FontSize.titleMd, fontWeight: '800', color: AMBER, opacity: 0.6 },
+  cascadaChip: { flexDirection: 'row', alignItems: 'center', gap: 8, backgroundColor: 'rgba(255,255,255,0.04)', borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.soft, paddingVertical: 8, paddingHorizontal: 12, ...Elevation.sm },
+  cascadaNum: { fontSize: FontSize.titleMd, fontWeight: '800', color: AMBER, opacity: 0.55 },
   cascadaPaso: { fontSize: FontSize.labelLg, fontWeight: '700', color: Colors.onSurface },
   cascadaMeta: { fontSize: FontSize.labelSm, color: Colors.muted },
 
@@ -849,7 +850,7 @@ const s = StyleSheet.create({
   lmRol: { fontSize: FontSize.labelMd, color: Colors.muted, marginTop: 1 },
 
   // funnel
-  funnelCard: { flex: 1, minWidth: 130, backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: DesktopColors.glassBorder, padding: Spacing.md, alignItems: 'center' },
+  funnelCard: { flex: 1, minWidth: 130, backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.soft, padding: Spacing.md, alignItems: 'center', ...Elevation.sm },
   funnelStep: { fontSize: 9, fontWeight: '800', color: Colors.smallLabel },
   funnelEtapa: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, marginTop: 4, textAlign: 'center' },
   funnelDesc: { fontSize: FontSize.labelSm, color: Colors.muted, marginVertical: 6, textAlign: 'center', lineHeight: 15 },
@@ -878,10 +879,10 @@ const s = StyleSheet.create({
   pendDetail: { fontSize: FontSize.labelMd, color: Colors.muted, marginTop: 2, lineHeight: 17 },
 
   // links
-  linkChip: { backgroundColor: 'rgba(255,255,255,0.04)', borderRadius: BorderRadius.md, borderWidth: 1, borderColor: DesktopColors.glassBorder, paddingVertical: 6, paddingHorizontal: 10 },
-  linkChipText: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, fontWeight: '500' },
-  ctaBtn: { backgroundColor: AMBER, borderRadius: BorderRadius.lg, paddingVertical: 9, paddingHorizontal: 16 },
-  ctaBtnText: { fontSize: FontSize.labelLg, fontWeight: '800', color: '#0B1628' },
+  linkChip: { backgroundColor: 'rgba(255,255,255,0.04)', borderRadius: BorderRadius.md, borderWidth: 1, borderColor: Hairline.soft, paddingVertical: 7, paddingHorizontal: 11 },
+  linkChipText: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, fontWeight: '500', letterSpacing: 0.2 },
+  ctaBtn: { backgroundColor: AMBER, borderRadius: BorderRadius.lg, paddingVertical: 9, paddingHorizontal: 16, ...Elevation.glow(AMBER) },
+  ctaBtnText: { fontSize: FontSize.labelLg, fontWeight: '800', color: '#0B1628', letterSpacing: 0.2 },
 
   // directrices
   dirTip: { flexDirection: 'row', alignItems: 'flex-start', marginTop: Spacing.md, gap: Spacing.sm },

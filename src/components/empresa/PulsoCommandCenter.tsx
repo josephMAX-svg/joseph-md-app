@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Platform, StyleSheet, Linking } from 'react-native';
-import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
+import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, LineHeight } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
 import { SectionLabel, Chip, gridStyle, gridItemStyle } from './primitives';
 import { GradientHero, KpiTicker, RingStat, TrendArea, BrandTile, CommandBackdrop, MegaStat } from './visuals';
@@ -188,17 +188,17 @@ export default function PulsoCommandCenter({ onOpenBrand }: { onOpenBrand: (id: 
 }
 
 const st = StyleSheet.create({
-  heroTitle: { fontSize: FontSize.headlineSm, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.5 },
-  heroSub: { fontSize: FontSize.labelLg, color: GOLD, marginTop: 6, fontWeight: '600' },
-  heroTesis: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, marginTop: Spacing.md, lineHeight: 20, maxWidth: 620 },
-  cta: { borderRadius: BorderRadius.lg, paddingVertical: 10, paddingHorizontal: 16, alignSelf: 'flex-start' },
-  ctaText: { fontSize: FontSize.labelLg, fontWeight: '800', color: '#0B1628' },
+  heroTitle: { fontSize: FontSize.headlineSm, lineHeight: LineHeight.headlineSm, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.5 },
+  heroSub: { fontSize: FontSize.labelLg, color: GOLD, marginTop: 6, fontWeight: '600', letterSpacing: 0.2 },
+  heroTesis: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, marginTop: Spacing.md, lineHeight: LineHeight.bodyMd, maxWidth: 620 },
+  cta: { borderRadius: BorderRadius.lg, paddingVertical: 10, paddingHorizontal: 16, alignSelf: 'flex-start', ...Elevation.glow(GOLD) },
+  ctaText: { fontSize: FontSize.labelLg, fontWeight: '800', color: '#0B1628', letterSpacing: 0.2 },
 
   tickerWrap: {
     backgroundColor: 'rgba(255,255,255,0.03)',
     borderRadius: BorderRadius.full,
     borderWidth: 1,
-    borderColor: DesktopColors.glassBorder,
+    borderColor: Hairline.soft,
     paddingHorizontal: Spacing.sm,
     marginBottom: Spacing.lg,
   },
@@ -208,45 +208,49 @@ const st = StyleSheet.create({
     flex: 1, minWidth: 140,
     backgroundColor: DesktopColors.glass,
     borderRadius: BorderRadius.xl,
-    borderWidth: 1, borderColor: DesktopColors.glassBorder,
+    borderWidth: 1, borderColor: Hairline.soft,
     paddingVertical: Spacing.lg, paddingHorizontal: Spacing.md,
     alignItems: 'center',
+    ...Elevation.sm,
   },
 
   chartCard: {
     backgroundColor: DesktopColors.glass,
     borderRadius: BorderRadius.xl,
-    borderWidth: 1, borderColor: DesktopColors.glassBorder,
+    borderWidth: 1, borderColor: Hairline.soft,
     padding: Spacing.lg,
     marginBottom: Spacing.lg,
+    ...Elevation.sm,
   },
 
   pilar: {
     backgroundColor: DesktopColors.glass,
     borderRadius: BorderRadius.lg,
-    borderWidth: 1, borderColor: DesktopColors.glassBorder,
-    padding: Spacing.lg,
+    borderWidth: 1, borderColor: Hairline.soft,
+    paddingVertical: Spacing.lg, paddingRight: Spacing.lg, paddingLeft: Spacing.lg + 4,
     overflow: 'hidden',
+    ...Elevation.sm,
   },
-  pilarBar: { position: 'absolute', top: 0, left: 0, bottom: 0, width: 3 },
-  pilarTitle: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, marginBottom: 4 },
-  pilarDesc: { fontSize: FontSize.labelMd, color: Colors.muted, lineHeight: 17 },
+  pilarBar: { position: 'absolute', top: 0, left: 0, bottom: 0, width: 3, borderTopLeftRadius: BorderRadius.lg, borderBottomLeftRadius: BorderRadius.lg },
+  pilarTitle: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, marginBottom: 5, letterSpacing: -0.1 },
+  pilarDesc: { fontSize: FontSize.labelMd, color: Colors.muted, lineHeight: LineHeight.labelMd + 1 },
 
   quickLink: {
     backgroundColor: 'rgba(255,255,255,0.04)',
     borderRadius: BorderRadius.md,
-    borderWidth: 1, borderColor: DesktopColors.glassBorder,
-    paddingVertical: 6, paddingHorizontal: 11,
+    borderWidth: 1, borderColor: Hairline.soft,
+    paddingVertical: 7, paddingHorizontal: 12,
   },
-  quickLinkText: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, fontWeight: '600' },
+  quickLinkText: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, fontWeight: '600', letterSpacing: 0.2 },
 
   estudioTile: {
     flexDirection: 'row', alignItems: 'center',
     backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.xl,
-    borderWidth: 1, borderColor: GOLD + '44', padding: Spacing.lg, overflow: 'hidden',
+    borderWidth: 1, borderColor: GOLD + '3A', padding: Spacing.lg, overflow: 'hidden',
+    ...Elevation.sm,
   },
-  estudioTitle: { fontSize: FontSize.bodyLg, fontWeight: '800', color: Colors.onSurface },
-  estudioSub: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 2, lineHeight: 16 },
-  estudioCta: { borderWidth: 1, borderRadius: BorderRadius.full, paddingVertical: 5, paddingHorizontal: 12, marginLeft: Spacing.sm },
-  estudioCtaText: { fontSize: FontSize.labelMd, fontWeight: '800' },
+  estudioTitle: { fontSize: FontSize.bodyLg, lineHeight: LineHeight.bodyLg, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.2 },
+  estudioSub: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 3, lineHeight: LineHeight.labelMd + 1 },
+  estudioCta: { borderWidth: 1, borderRadius: BorderRadius.full, paddingVertical: 6, paddingHorizontal: 13, marginLeft: Spacing.sm },
+  estudioCtaText: { fontSize: FontSize.labelMd, fontWeight: '800', letterSpacing: 0.2 },
 });

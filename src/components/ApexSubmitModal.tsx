@@ -11,7 +11,7 @@ import {
   Platform,
   ActivityIndicator,
 } from 'react-native';
-import { Colors, Spacing, FontSize, BorderRadius } from '../theme/tokens';
+import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, LineHeight } from '../theme/tokens';
 import { submitApexQueue } from '../lib/supabase';
 
 // ═══════════════════════════════════════════════
@@ -390,20 +390,31 @@ const styles = StyleSheet.create({
   header: {
     paddingTop: 60,
     paddingHorizontal: Spacing.lg,
-    paddingBottom: Spacing.md,
+    paddingBottom: Spacing.lg,
     flexDirection: 'row',
     alignItems: 'center',
     gap: Spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: Hairline.soft,
   },
   closeBtn: {
-    fontSize: 22,
-    color: Colors.muted,
-    fontWeight: '300',
+    fontSize: 20,
+    color: Colors.onSurfaceVariant,
+    fontWeight: '400',
+    width: 32,
+    height: 32,
+    textAlign: 'center',
+    lineHeight: 32,
+    borderRadius: BorderRadius.full,
+    backgroundColor: Colors.surfaceContainerLow,
+    ...(Platform.OS === 'web' ? { cursor: 'pointer' as any } : {}),
   },
   headerTitle: {
     fontSize: FontSize.titleMd,
-    fontWeight: '700',
+    lineHeight: LineHeight.titleMd,
+    fontWeight: '800',
     color: Colors.onSurface,
+    letterSpacing: 0.2,
     flex: 1,
   },
   stepIndicator: {
@@ -413,24 +424,27 @@ const styles = StyleSheet.create({
   stepDot: {
     width: 8,
     height: 8,
-    borderRadius: 4,
+    borderRadius: BorderRadius.full,
     backgroundColor: Colors.surfaceContainerHighest,
+    ...(Platform.OS === 'web' ? { transition: '200ms cubic-bezier(0.4,0,0.2,1)' } as any : {}),
   },
   stepDotActive: {
     backgroundColor: Colors.teal,
     width: 20,
+    ...Elevation.glow(Colors.teal),
   },
   stepDotDone: {
     backgroundColor: Colors.teal + '60',
   },
   backBtn: {
     paddingHorizontal: Spacing.lg,
-    paddingVertical: Spacing.xs,
+    paddingVertical: Spacing.sm,
+    ...(Platform.OS === 'web' ? { cursor: 'pointer' as any } : {}),
   },
   backBtnText: {
     fontSize: FontSize.bodyMd,
-    color: Colors.muted,
-    fontWeight: '500',
+    color: Colors.onSurfaceVariant,
+    fontWeight: '600',
   },
   content: {
     flex: 1,

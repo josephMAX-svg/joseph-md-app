@@ -11,7 +11,7 @@ import {
   ActivityIndicator,
   Animated,
 } from 'react-native';
-import { Colors, Spacing, FontSize, BorderRadius } from '../theme/tokens';
+import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, LineHeight } from '../theme/tokens';
 import { submitApexQueue } from '../lib/supabase';
 
 type Country = 'EEUU' | 'ESPAÑA' | 'PERU';
@@ -281,74 +281,89 @@ function WaveBar({ delay }: { delay: number }) {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: Colors.surface },
   header: {
-    paddingTop: 60, paddingHorizontal: Spacing.lg, paddingBottom: Spacing.md,
+    paddingTop: 60, paddingHorizontal: Spacing.lg, paddingBottom: Spacing.lg,
     flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
-    borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.06)',
+    borderBottomWidth: 1, borderBottomColor: Hairline.soft,
   },
-  closeBtn: { fontSize: 22, color: Colors.muted, fontWeight: '300' },
-  headerTitle: { fontSize: FontSize.titleMd, fontWeight: '700', color: Colors.onSurface },
+  closeBtn: {
+    fontSize: 20, color: Colors.onSurfaceVariant, fontWeight: '400',
+    width: 32, height: 32, textAlign: 'center', lineHeight: 32,
+    borderRadius: BorderRadius.full, backgroundColor: Colors.surfaceContainerLow,
+    ...(Platform.OS === 'web' ? { cursor: 'pointer' as any } : {}),
+  },
+  headerTitle: { fontSize: FontSize.titleMd, lineHeight: LineHeight.titleMd, fontWeight: '800', color: Colors.onSurface, letterSpacing: 0.2 },
   content: { flex: 1 },
   contentInner: { padding: Spacing.lg, paddingBottom: 40 },
 
-  recordArea: { alignItems: 'center', paddingVertical: Spacing.xl },
+  recordArea: { alignItems: 'center', paddingVertical: Spacing['2xl'] },
   recordBtn: {
-    width: 100, height: 100, borderRadius: 50,
+    width: 104, height: 104, borderRadius: BorderRadius.full,
     backgroundColor: Colors.coral, alignItems: 'center', justifyContent: 'center',
-    shadowColor: Colors.coral, shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.6, shadowRadius: 20, elevation: 10,
-    ...(Platform.OS === 'web' ? { boxShadow: '0 0 40px rgba(245, 99, 66, 0.5)', cursor: 'pointer' as any } : {}),
+    borderWidth: 1, borderColor: 'rgba(255,255,255,0.16)',
+    ...Elevation.glow(Colors.coral),
+    ...(Platform.OS === 'web' ? { boxShadow: '0 0 44px rgba(245, 99, 66, 0.5)', cursor: 'pointer' as any } : {}),
   },
   recordBtnActive: { backgroundColor: '#DC2626' },
   recordIcon: { fontSize: 40 },
-  recordHint: { fontSize: FontSize.bodyMd, color: Colors.muted, marginTop: Spacing.md, fontWeight: '500' },
+  recordHint: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, marginTop: Spacing.lg, fontWeight: '600', letterSpacing: 0.2 },
   waveform: { flexDirection: 'row', alignItems: 'center', marginTop: Spacing.md, height: 30 },
 
   fallbackNotice: {
     alignItems: 'center', padding: Spacing.xl,
     backgroundColor: 'rgba(245,99,66,0.08)', borderRadius: BorderRadius.lg,
+    borderWidth: 1, borderColor: 'rgba(245,99,66,0.20)',
     marginBottom: Spacing.lg,
   },
-  fallbackEmoji: { fontSize: 32, marginBottom: 8 },
-  fallbackTitle: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, marginBottom: 4 },
-  fallbackText: { fontSize: 11, color: Colors.muted, textAlign: 'center' },
+  fallbackEmoji: { fontSize: 32, marginBottom: Spacing.sm },
+  fallbackTitle: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, marginBottom: Spacing.xs },
+  fallbackText: { fontSize: FontSize.labelSm, lineHeight: LineHeight.labelSm, color: Colors.smallLabel, textAlign: 'center' },
 
   label: {
-    fontSize: 11, fontWeight: '600', color: Colors.smallLabel,
-    letterSpacing: 0.96, textTransform: 'uppercase',
-    marginTop: Spacing.lg, marginBottom: Spacing.sm,
+    fontSize: FontSize.labelSm, fontWeight: '700', color: Colors.smallLabel,
+    letterSpacing: 1.2, textTransform: 'uppercase',
+    marginTop: Spacing.xl, marginBottom: Spacing.sm,
   },
   transcriptInput: {
     backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg,
     padding: Spacing.lg, fontSize: FontSize.bodyMd, color: Colors.onSurface,
-    minHeight: 120, lineHeight: 22,
+    minHeight: 120, lineHeight: LineHeight.bodyMd,
+    borderWidth: 1, borderColor: Hairline.soft,
   },
 
   countryRow: { flexDirection: 'row', gap: Spacing.sm },
   countryBtn: {
-    flex: 1, paddingVertical: Spacing.md, paddingHorizontal: Spacing.xs,
-    borderRadius: BorderRadius.md, borderWidth: 1.5,
-    borderColor: 'rgba(255,255,255,0.08)', backgroundColor: Colors.surfaceContainerLow,
+    flex: 1, paddingVertical: Spacing.lg, paddingHorizontal: Spacing.xs,
+    borderRadius: BorderRadius.lg, borderWidth: 1.5,
+    borderColor: Hairline.medium, backgroundColor: Colors.surfaceContainerLow,
     alignItems: 'center',
+    ...(Platform.OS === 'web' ? { cursor: 'pointer' as any, transition: '150ms cubic-bezier(0.4,0,0.2,1)' } as any : {}),
   },
-  countryBtnActive: { borderColor: Colors.coral, backgroundColor: Colors.coral + '15' },
-  countryFlag: { fontSize: 24, marginBottom: 4 },
+  countryBtnActive: { borderColor: Colors.coral, backgroundColor: Colors.coral + '18', ...Elevation.sm },
+  countryFlag: { fontSize: 24, marginBottom: Spacing.xs },
   countryLabel: { fontSize: FontSize.labelMd, fontWeight: '700', color: Colors.onSurface },
   countryLabelActive: { color: Colors.coral },
-  countryExam: { fontSize: 9, color: Colors.muted, marginTop: 2, fontWeight: '600', letterSpacing: 0.5 },
+  countryExam: { fontSize: 9, color: Colors.smallLabel, marginTop: 2, fontWeight: '700', letterSpacing: 0.6 },
   countryExamActive: { color: Colors.coral },
 
   submitBtn: {
     backgroundColor: Colors.coral, borderRadius: BorderRadius.lg,
     paddingVertical: Spacing.xl, alignItems: 'center',
-    marginTop: Spacing.xl,
+    marginTop: Spacing['2xl'],
+    ...Elevation.glow(Colors.coral),
+    ...(Platform.OS === 'web' ? { cursor: 'pointer' as any } : {}),
   },
-  submitBtnDisabled: { opacity: 0.4 },
+  submitBtnDisabled: { opacity: 0.4, ...Elevation.none },
   submitBtnText: { fontSize: FontSize.bodyLg, fontWeight: '800', color: '#FFFFFF', letterSpacing: 1 },
 
-  successContainer: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 32 },
+  successContainer: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: Spacing['3xl'] },
   successEmoji: { fontSize: 64, marginBottom: Spacing.xl },
-  successTitle: { fontSize: FontSize.headlineLg, fontWeight: '800', color: Colors.coral, marginBottom: Spacing.sm },
-  successSubtitle: { fontSize: FontSize.bodyLg, color: Colors.onSurfaceVariant, textAlign: 'center', marginBottom: 32 },
-  doneBtn: { backgroundColor: Colors.surfaceContainerHighest, borderRadius: BorderRadius.md, paddingVertical: Spacing.md, paddingHorizontal: 48 },
+  successTitle: { fontSize: FontSize.headlineLg, lineHeight: LineHeight.headlineLg, fontWeight: '800', color: Colors.coral, letterSpacing: -0.3, marginBottom: Spacing.sm },
+  successSubtitle: { fontSize: FontSize.bodyLg, lineHeight: LineHeight.bodyLg, color: Colors.onSurfaceVariant, textAlign: 'center', marginBottom: Spacing['3xl'] },
+  doneBtn: {
+    backgroundColor: Colors.surfaceContainerHighest, borderRadius: BorderRadius.lg,
+    paddingVertical: Spacing.md, paddingHorizontal: Spacing['5xl'],
+    borderWidth: 1, borderColor: Hairline.soft, ...Elevation.sm,
+    ...(Platform.OS === 'web' ? { cursor: 'pointer' as any } : {}),
+  },
   doneBtnText: { fontSize: FontSize.labelLg, fontWeight: '700', color: Colors.onSurface, letterSpacing: 0.5 },
 });

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, TouchableOpacity, Platform, StyleSheet } from 'react-native';
-import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
+import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
 import CircularProgress from '../CircularProgress';
 import AnimatedCounter from '../AnimatedCounter';
@@ -350,50 +350,52 @@ const card = {
   backgroundColor: DesktopColors.glass,
   borderRadius: BorderRadius.xl,
   borderWidth: 1,
-  borderColor: DesktopColors.glassBorder,
+  borderColor: Hairline.medium,
+  ...Elevation.sm,
 };
 
 const styles = StyleSheet.create({
   hero: {
     borderRadius: BorderRadius.xl,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.10)',
+    borderColor: Hairline.medium,
     padding: Spacing['2xl'],
     overflow: 'hidden',
+    ...Elevation.md,
   },
   // ticker
   tickerClip: { overflow: 'hidden', borderRadius: BorderRadius.full },
   tickerRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 7 },
   tickerItem: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 14 },
   tickerDot: { width: 5, height: 5, borderRadius: 3, marginRight: 8 },
-  tickerText: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, fontWeight: '600', letterSpacing: 0.2 },
+  tickerText: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, fontWeight: '600', letterSpacing: 0.3 },
   // ring
   ringStat: { alignItems: 'center', minWidth: 100 },
-  ringLabel: { fontSize: 10, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 0.6, marginTop: 8, textAlign: 'center' },
-  ringSub: { fontSize: 9, color: Colors.muted, marginTop: 2, textAlign: 'center' },
+  ringLabel: { fontSize: 10, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 0.9, marginTop: 10, textAlign: 'center' },
+  ringSub: { fontSize: 9, color: Colors.muted, marginTop: 3, textAlign: 'center', letterSpacing: 0.2 },
   // hero tile
   heroTile: { ...card, padding: Spacing.xl, borderRadius: BorderRadius.xl, overflow: 'hidden' },
   heroTileName: { fontSize: FontSize.titleMd, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.3 },
-  heroTileTagline: { fontSize: FontSize.labelLg, color: Colors.onSurfaceVariant, marginTop: 10, lineHeight: 18 },
-  tileCat: { fontSize: FontSize.labelSm, fontWeight: '700', letterSpacing: 0.4, marginTop: 2 },
+  heroTileTagline: { fontSize: FontSize.labelLg, color: Colors.onSurfaceVariant, marginTop: 10, lineHeight: 19 },
+  tileCat: { fontSize: FontSize.labelSm, fontWeight: '700', letterSpacing: 0.6, marginTop: 2, textTransform: 'uppercase' },
   anclaBadge: { borderRadius: BorderRadius.full, borderWidth: 1, paddingVertical: 3, paddingHorizontal: 9 },
-  anclaBadgeText: { fontSize: 9, fontWeight: '800', letterSpacing: 0.6 },
-  tileMetricLabel: { fontSize: 9, fontWeight: '700', color: Colors.smallLabel, letterSpacing: 0.6 },
-  tileMetricVal: { fontSize: FontSize.titleMd, fontWeight: '800', marginTop: 1 },
+  anclaBadgeText: { fontSize: 9, fontWeight: '800', letterSpacing: 0.8 },
+  tileMetricLabel: { fontSize: 9, fontWeight: '700', color: Colors.smallLabel, letterSpacing: 0.8 },
+  tileMetricVal: { fontSize: FontSize.titleMd, fontWeight: '800', marginTop: 1, letterSpacing: -0.3, ...(Platform.OS === 'web' ? ({ fontVariantNumeric: 'tabular-nums' } as any) : {}) },
   tileCta: { borderWidth: 1, borderRadius: BorderRadius.full, paddingVertical: 5, paddingHorizontal: 12 },
   tileCtaText: { fontSize: FontSize.labelMd, fontWeight: '800' },
   // placeholder tile
   placeTile: { ...card, padding: Spacing.lg, overflow: 'hidden', minHeight: 150 },
   placeAccentBar: { position: 'absolute', top: 0, left: 0, right: 0, height: 3 },
-  placeName: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface, marginTop: 8 },
-  placeTagline: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 6, lineHeight: 15 },
+  placeName: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface, marginTop: 8, letterSpacing: -0.2 },
+  placeTagline: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 6, lineHeight: 16 },
   dotPing: { width: 8, height: 8, borderRadius: 4 },
-  progTrack: { height: 4, borderRadius: 2, backgroundColor: 'rgba(255,255,255,0.06)', marginTop: 12, overflow: 'hidden' },
-  progFill: { height: 4, borderRadius: 2 },
+  progTrack: { height: 4, borderRadius: BorderRadius.full, backgroundColor: Hairline.soft, marginTop: 12, overflow: 'hidden' },
+  progFill: { height: 4, borderRadius: BorderRadius.full },
   proxBadge: { alignSelf: 'flex-start', borderRadius: BorderRadius.full, paddingVertical: 2, paddingHorizontal: 8, marginTop: 10 },
-  proxText: { fontSize: 8, fontWeight: '800', letterSpacing: 0.7 },
+  proxText: { fontSize: 8, fontWeight: '800', letterSpacing: 0.9 },
   // tiny (PIRQA)
   tinyTile: { ...card, flexDirection: 'row', alignItems: 'center', padding: Spacing.md, borderLeftWidth: 3, borderRadius: BorderRadius.lg },
-  tinyName: { fontSize: FontSize.labelLg, fontWeight: '700', color: Colors.onSurface },
-  tinyCat: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 1 },
+  tinyName: { fontSize: FontSize.labelLg, fontWeight: '700', color: Colors.onSurface, letterSpacing: -0.1 },
+  tinyCat: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 2 },
 });

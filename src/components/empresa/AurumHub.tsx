@@ -14,6 +14,7 @@ import {
   AurumColors as C, AurumRadius as R, AurumSpacing as S, AurumType as T,
   AURUM_AUTHORITIES, withAlpha,
 } from '../../theme/aurumTheme';
+import { Elevation, Motion, Hairline } from '../../theme/tokens';
 import {
   AurumHero, AurumWordmark, AurumChip, AurumLabel, AurumPanel, AurumRing,
   AurumRise, useAurumHover,
@@ -47,8 +48,8 @@ function MaterialCard({ m, badge }: { m: AurumMaterial; badge?: string }) {
       {...(hoverProps as any)}
       style={[
         st.matCard,
-        hovered && isWeb ? ({ borderColor: withAlpha(C.gold, 0.5), transform: [{ translateY: -2 }] } as any) : null,
-        isWeb ? ({ transition: 'all .18s ease', cursor: 'pointer' } as any) : null,
+        hovered && isWeb ? ({ borderColor: withAlpha(C.gold, 0.5), backgroundColor: withAlpha(C.gold, 0.05), transform: [{ translateY: -2 }], ...Elevation.md } as any) : null,
+        isWeb ? ({ transition: `all ${Motion.base}`, cursor: 'pointer' } as any) : null,
       ]}>
       <View style={st.matTop}>
         <Text style={st.matName} numberOfLines={2}>{m.nombre}</Text>
@@ -134,8 +135,8 @@ function BibActionBtn({ label, color, onPress }: { label: string; color: string;
       hitSlop={{ top: 4, bottom: 4, left: 2, right: 2 }}
       style={[
         st.bibActBtn,
-        { borderColor: withAlpha(color, 0.5), backgroundColor: withAlpha(color, hovered ? 0.22 : 0.1) },
-        isWeb ? ({ transition: 'all .15s ease', cursor: 'pointer' } as any) : null,
+        { borderColor: withAlpha(color, hovered ? 0.7 : 0.5), backgroundColor: withAlpha(color, hovered ? 0.22 : 0.1) },
+        isWeb ? ({ transition: `all ${Motion.fast}`, cursor: 'pointer' } as any) : null,
       ]}>
       <Text style={[st.bibActTxt, { color }]} numberOfLines={1}>{label}</Text>
     </TouchableOpacity>
@@ -150,8 +151,8 @@ function BibLibroCard({ b }: { b: AurumBibLibro }) {
       {...(hoverProps as any)}
       style={[
         st.bibCard,
-        hovered && isWeb ? ({ borderColor: withAlpha(C.gold, 0.5), transform: [{ translateY: -2 }] } as any) : null,
-        isWeb ? ({ transition: 'all .18s ease' } as any) : null,
+        hovered && isWeb ? ({ borderColor: withAlpha(C.gold, 0.5), backgroundColor: withAlpha(C.gold, 0.05), transform: [{ translateY: -2 }], ...Elevation.md } as any) : null,
+        isWeb ? ({ transition: `all ${Motion.base}` } as any) : null,
       ]}>
       <View style={st.bibTop}>
         <Text style={st.bibName} numberOfLines={3}>
@@ -306,9 +307,9 @@ function NavPill({ label, active, onPress }: { label: string; active: boolean; o
       {...(hoverProps as any)}
       style={[
         st.navPill,
-        active ? { backgroundColor: withAlpha(C.gold, 0.16), borderColor: withAlpha(C.gold, 0.6) } : null,
-        !active && hovered && isWeb ? ({ borderColor: withAlpha(C.gold, 0.3) } as any) : null,
-        isWeb ? ({ transition: 'all .18s ease', cursor: 'pointer' } as any) : null,
+        active ? { backgroundColor: withAlpha(C.gold, 0.16), borderColor: withAlpha(C.gold, 0.6), ...Elevation.glow(withAlpha(C.gold, 0.28)) } : null,
+        !active && hovered && isWeb ? ({ borderColor: withAlpha(C.gold, 0.3), backgroundColor: withAlpha('#FFFFFF', 0.05) } as any) : null,
+        isWeb ? ({ transition: `all ${Motion.base}`, cursor: 'pointer' } as any) : null,
       ]}>
       <Text style={[st.navPillTxt, active && { color: C.text, fontWeight: T.weight.extrabold }]}>{label}</Text>
     </TouchableOpacity>
@@ -474,8 +475,8 @@ const st = StyleSheet.create({
 
   // hero
   heroInner: { gap: S.lg },
-  heroTagline: { fontSize: T.size.subtitle, fontWeight: T.weight.bold, color: C.goldSoft, marginTop: 6, letterSpacing: 0.4 },
-  heroTesis: { fontSize: T.size.body, color: C.textDim, marginTop: S.md, lineHeight: 21, maxWidth: 560 },
+  heroTagline: { fontSize: T.size.subtitle, fontWeight: T.weight.bold, color: C.goldSoft, marginTop: S.sm, letterSpacing: 0.4, lineHeight: 22 },
+  heroTesis: { fontSize: T.size.body, color: C.textDim, marginTop: S.md, lineHeight: 22, maxWidth: 560 },
   authRow: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', marginTop: S.lg, rowGap: 4 },
   authChip: { flexDirection: 'row', alignItems: 'center' },
   authTxt: { fontSize: T.size.caption, fontWeight: T.weight.extrabold, color: C.goldSoft, letterSpacing: 0.3 },
@@ -483,28 +484,30 @@ const st = StyleSheet.create({
   todaySeal: {
     borderWidth: 1, borderColor: withAlpha(C.gold, 0.5), backgroundColor: withAlpha(C.gold, 0.12),
     borderRadius: R.lg, paddingVertical: S.md, paddingHorizontal: S.lg, alignItems: 'center', minWidth: 132,
+    ...Elevation.glow(withAlpha(C.gold, 0.4)),
   },
-  todayLabel: { fontSize: T.size.nano, fontWeight: T.weight.bold, color: C.textMute, letterSpacing: 1 },
-  todayValue: { fontSize: T.size.titleXl, fontWeight: T.weight.black, color: C.goldSoft, marginTop: 2 },
-  todaySub: { fontSize: T.size.nano, color: C.textMute, marginTop: 2, textAlign: 'center' },
+  todayLabel: { fontSize: T.size.nano, fontWeight: T.weight.extrabold, color: C.textMute, letterSpacing: 1.2 },
+  todayValue: { fontSize: T.size.titleXl, fontWeight: T.weight.black, color: C.goldSoft, marginTop: 3, letterSpacing: T.tracking.tight },
+  todaySub: { fontSize: T.size.nano, color: C.textMute, marginTop: 3, textAlign: 'center', letterSpacing: 0.3 },
 
   // KPIs
   kpiRow: { flexDirection: 'row', flexWrap: 'wrap', gap: S.md, marginBottom: S.lg },
   kpiCard: {
     flexGrow: 1, flexBasis: 150, backgroundColor: C.bgElevated, borderRadius: R.lg,
-    paddingVertical: S.lg, alignItems: 'center', borderWidth: 1, borderColor: C.borderSoft,
+    paddingVertical: S.xl, alignItems: 'center', borderWidth: 1, borderColor: Hairline.medium,
+    ...Elevation.sm,
   },
 
-  motorTitle: { fontSize: T.size.subtitle, fontWeight: T.weight.bold, color: C.text, marginBottom: 6 },
-  body: { fontSize: T.size.body, color: C.textDim, lineHeight: 21 },
+  motorTitle: { fontSize: T.size.subtitle, fontWeight: T.weight.extrabold, color: C.text, marginBottom: 6, letterSpacing: 0.2 },
+  body: { fontSize: T.size.body, color: C.textDim, lineHeight: 22 },
 
   // sub-nav
   navRow: { flexDirection: 'row', gap: S.sm, marginBottom: S.xl, flexWrap: 'wrap' },
   navPill: {
-    flexDirection: 'row', alignItems: 'center', paddingVertical: 9, paddingHorizontal: 15,
-    borderRadius: R.md, borderWidth: 1, borderColor: 'transparent', backgroundColor: withAlpha('#FFFFFF', 0.03),
+    flexDirection: 'row', alignItems: 'center', paddingVertical: 10, paddingHorizontal: 16,
+    borderRadius: R.md, borderWidth: 1, borderColor: Hairline.soft, backgroundColor: withAlpha('#FFFFFF', 0.03),
   },
-  navPillTxt: { fontSize: T.size.body, fontWeight: T.weight.semibold, color: C.textMute },
+  navPillTxt: { fontSize: T.size.body, fontWeight: T.weight.semibold, color: C.textMute, letterSpacing: 0.2 },
 
   // timeline / ruta
   timeline: {},
@@ -515,27 +518,27 @@ const st = StyleSheet.create({
   tlLine: { width: 2, flex: 1, marginTop: 4, borderRadius: 1 },
   faseCard: { flex: 1, padding: S.lg, marginBottom: 0 },
   faseHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 6 },
-  faseTag: { fontSize: T.size.caption, fontWeight: T.weight.extrabold, letterSpacing: 1 },
-  faseTitle: { fontSize: T.size.title, fontWeight: T.weight.extrabold, color: C.text, marginTop: 6 },
-  faseDesc: { fontSize: T.size.bodySm, color: C.textDim, marginTop: 4, lineHeight: 19 },
+  faseTag: { fontSize: T.size.caption, fontWeight: T.weight.extrabold, letterSpacing: 1.1 },
+  faseTitle: { fontSize: T.size.title, fontWeight: T.weight.extrabold, color: C.text, marginTop: 7, letterSpacing: T.tracking.tight, lineHeight: 25 },
+  faseDesc: { fontSize: T.size.bodySm, color: C.textDim, marginTop: 5, lineHeight: 19 },
   libroPill: { alignSelf: 'flex-start', borderWidth: 1, borderRadius: R.sm, paddingVertical: 3, paddingHorizontal: 9, marginTop: S.md },
   libroTxt: { fontSize: T.size.micro, fontWeight: T.weight.bold },
   faseEntreg: { fontSize: T.size.bodySm, fontWeight: T.weight.medium, marginTop: S.sm, lineHeight: 18 },
 
   // material card
-  matCard: { backgroundColor: C.surfaceAlt, borderRadius: R.sm, padding: S.md, borderWidth: 1, borderColor: C.border },
+  matCard: { backgroundColor: C.surfaceAlt, borderRadius: R.md, padding: S.md, borderWidth: 1, borderColor: C.border, ...Elevation.sm },
   matTop: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 },
   matName: { fontSize: T.size.body, fontWeight: T.weight.bold, color: C.text, flex: 1, lineHeight: 19 },
   openPill: { borderWidth: 1, borderRadius: R.pill, paddingVertical: 3, paddingHorizontal: 10 },
-  openPillTxt: { fontSize: T.size.micro, fontWeight: T.weight.extrabold, color: C.goldSoft },
-  matRef: { fontSize: T.size.caption, color: C.textDim, marginTop: 5, fontWeight: T.weight.semibold },
-  matWhy: { fontSize: T.size.caption, color: C.textMute, marginTop: 4, lineHeight: 17 },
-  matMeta: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: S.sm, flexWrap: 'wrap' },
+  openPillTxt: { fontSize: T.size.micro, fontWeight: T.weight.extrabold, color: C.goldSoft, letterSpacing: 0.3 },
+  matRef: { fontSize: T.size.caption, color: C.textDim, marginTop: 6, fontWeight: T.weight.semibold },
+  matWhy: { fontSize: T.size.caption, color: C.textMute, marginTop: 5, lineHeight: 17 },
+  matMeta: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: S.md, flexWrap: 'wrap' },
 
   // biblioteca grid
-  catHead: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: S.md },
+  catHead: { flexDirection: 'row', alignItems: 'center', gap: 9, marginBottom: S.md },
   catIcon: { fontSize: 20 },
-  catTitle: { fontSize: T.size.subtitle, fontWeight: T.weight.extrabold, color: C.text, letterSpacing: 0.3 },
+  catTitle: { fontSize: T.size.subtitle, fontWeight: T.weight.extrabold, color: C.text, letterSpacing: 0.3, flex: 1 },
   grid: isWeb ? ({ display: 'grid', gap: 12 } as any) : { flexDirection: 'column', gap: 12 },
 
   // biblioteca por niveles
@@ -543,11 +546,11 @@ const st = StyleSheet.create({
   nivelHead: { flexDirection: 'row', alignItems: 'flex-start', gap: S.md, marginBottom: S.md },
   nivelNum: { width: 30, height: 30, borderRadius: 15, borderWidth: 1, alignItems: 'center', justifyContent: 'center', marginTop: 1 },
   nivelNumTxt: { fontSize: T.size.body, fontWeight: T.weight.black, color: C.goldSoft },
-  nivelLabel: { fontSize: T.size.subtitle, fontWeight: T.weight.extrabold, color: C.text, letterSpacing: 0.2 },
-  nivelObj: { fontSize: T.size.caption, color: C.textMute, marginTop: 3, lineHeight: 17 },
+  nivelLabel: { fontSize: T.size.subtitle, fontWeight: T.weight.extrabold, color: C.text, letterSpacing: 0.2, lineHeight: 21 },
+  nivelObj: { fontSize: T.size.caption, color: C.textMute, marginTop: 4, lineHeight: 17 },
 
   // tarjeta de libro de nivel
-  bibCard: { backgroundColor: C.surfaceAlt, borderRadius: R.sm, padding: S.md, borderWidth: 1, borderColor: C.border },
+  bibCard: { backgroundColor: C.surfaceAlt, borderRadius: R.md, padding: S.md, borderWidth: 1, borderColor: C.border, ...Elevation.sm },
   bibTop: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 },
   bibName: { fontSize: T.size.body, fontWeight: T.weight.bold, color: C.text, flex: 1, lineHeight: 19 },
   bibAutor: { fontSize: T.size.caption, color: C.textMute, fontWeight: T.weight.regular },
@@ -560,11 +563,11 @@ const st = StyleSheet.create({
   bibActTxt: { fontSize: T.size.micro, fontWeight: T.weight.bold },
 
   // protocolo
-  horRow: { flexDirection: 'row', alignItems: 'center', gap: S.md, paddingVertical: 11, borderTopWidth: 1, borderTopColor: C.borderSoft },
+  horRow: { flexDirection: 'row', alignItems: 'center', gap: S.md, paddingVertical: 12, borderTopWidth: 1, borderTopColor: Hairline.soft },
   horBadge: { borderRadius: R.sm, borderWidth: 1, paddingVertical: 6, paddingHorizontal: 11, minWidth: 56, alignItems: 'center' },
   horMin: { fontSize: T.size.caption, fontWeight: T.weight.extrabold },
-  horBloque: { fontSize: T.size.body, fontWeight: T.weight.bold, color: C.text },
-  horQue: { fontSize: T.size.caption, color: C.textDim, marginTop: 2, lineHeight: 17 },
+  horBloque: { fontSize: T.size.body, fontWeight: T.weight.bold, color: C.text, letterSpacing: 0.1 },
+  horQue: { fontSize: T.size.caption, color: C.textDim, marginTop: 3, lineHeight: 17 },
 
   // nivel meta
   metaRow: { flexDirection: 'row', gap: 10, paddingVertical: 7, alignItems: 'flex-start' },

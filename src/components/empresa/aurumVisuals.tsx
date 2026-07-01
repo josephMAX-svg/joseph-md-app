@@ -6,6 +6,7 @@ import {
   AurumColors as C, AurumRadius as R, AurumSpacing as S, AurumType as T,
   AurumShadow, aurumGradCss, withAlpha,
 } from '../../theme/aurumTheme';
+import { Elevation, Motion, Hairline } from '../../theme/tokens';
 
 /**
  * aurumVisuals — capa visual PREMIUM de la sección AURUM (Hormozi / acquisition.com).
@@ -44,12 +45,19 @@ export function AurumHero({ children, gradient = 'hero', style }: {
       style,
     ]}>
       {isWeb ? (
-        <View pointerEvents="none" {...({ 'data-aurum-anim': '' } as any)} style={{
-          position: 'absolute', top: 0, bottom: 0, left: 0, width: '38%',
-          backgroundImage: 'linear-gradient(100deg, transparent, rgba(230,200,104,0.14), transparent)',
-          animationName: 'aurumSweep', animationDuration: '6.5s',
-          animationIterationCount: 'infinite', animationTimingFunction: 'ease-in-out',
-        } as any} />
+        <>
+          {/* hairline superior de luz — remate premium del borde */}
+          <View pointerEvents="none" style={{
+            position: 'absolute', top: 0, left: 0, right: 0, height: 1,
+            backgroundImage: `linear-gradient(90deg, transparent, ${withAlpha(C.goldSoft, 0.5)}, transparent)`,
+          } as any} />
+          <View pointerEvents="none" {...({ 'data-aurum-anim': '' } as any)} style={{
+            position: 'absolute', top: 0, bottom: 0, left: 0, width: '38%',
+            backgroundImage: 'linear-gradient(100deg, transparent, rgba(230,200,104,0.12), transparent)',
+            animationName: 'aurumSweep', animationDuration: '6.5s',
+            animationIterationCount: 'infinite', animationTimingFunction: 'ease-in-out',
+          } as any} />
+        </>
       ) : null}
       <View style={{ position: 'relative' }}>{children}</View>
     </View>
@@ -134,8 +142,9 @@ export function AurumButton({ label, onPress, variant = 'primary', accent = C.go
           ? { backgroundColor: accent, borderColor: accent }
           : { backgroundColor: withAlpha(accent, 0.12), borderColor: withAlpha(accent, 0.5) },
         hover && primary ? { backgroundColor: C.goldSoft } : null,
-        hover && !primary ? { borderColor: accent } : null,
-        web({ transition: 'all .18s ease', cursor: 'pointer' }),
+        hover && !primary ? { borderColor: accent, backgroundColor: withAlpha(accent, 0.18) } : null,
+        hover && isWeb ? ({ transform: [{ translateY: -1 }] } as any) : null,
+        web({ transition: `all ${Motion.base}`, cursor: 'pointer' }),
         primary ? AurumShadow.gold : null,
         style,
       ]}>
@@ -151,7 +160,7 @@ export function AurumProgressBar({ pct, color = C.gold, height = 8 }: { pct: num
     <View style={[v.barTrack, { height, borderRadius: height / 2 }]}>
       <View style={[
         { height, borderRadius: height / 2, width: `${w}%` as any, backgroundColor: color },
-        isWeb ? ({ backgroundImage: `linear-gradient(90deg, ${C.goldDeep}, ${color}, ${C.goldSoft})`, transition: 'width .5s ease' } as any) : null,
+        isWeb ? ({ backgroundImage: `linear-gradient(90deg, ${C.goldDeep}, ${color}, ${C.goldSoft})`, transition: `width ${Motion.spring}` } as any) : null,
       ]} />
     </View>
   );
@@ -196,10 +205,11 @@ const v = StyleSheet.create({
   hero: {
     borderRadius: R.xl,
     borderWidth: 1,
-    borderColor: withAlpha(C.gold, 0.22),
+    borderColor: withAlpha(C.gold, 0.24),
     padding: S['2xl'],
     overflow: 'hidden',
     ...AurumShadow.card,
+    ...Elevation.lg,
   },
   chip: {
     borderRadius: R.pill,
@@ -208,11 +218,12 @@ const v = StyleSheet.create({
     paddingHorizontal: 11,
     alignSelf: 'flex-start',
   },
-  chipTxt: { fontSize: T.size.micro, fontWeight: T.weight.extrabold, letterSpacing: 0.5 },
+  chipTxt: { fontSize: T.size.micro, fontWeight: T.weight.extrabold, letterSpacing: 0.6 },
   label: {
     fontSize: T.size.caption,
     fontWeight: T.weight.bold,
     letterSpacing: T.tracking.label,
+    lineHeight: 17,
     textTransform: 'uppercase',
     marginBottom: S.md,
   },
@@ -222,18 +233,19 @@ const v = StyleSheet.create({
     borderWidth: 1,
     borderColor: C.border,
     padding: S.xl,
+    ...Elevation.sm,
     ...web({ backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }),
   },
   btn: {
-    paddingVertical: 12,
+    paddingVertical: 13,
     paddingHorizontal: 18,
     borderRadius: R.md,
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  btnTxt: { fontSize: T.size.body, fontWeight: T.weight.extrabold, letterSpacing: 0.3 },
-  barTrack: { backgroundColor: withAlpha('#FFFFFF', 0.08), overflow: 'hidden' },
-  ringLabel: { fontSize: T.size.micro, fontWeight: T.weight.extrabold, color: C.textMute, letterSpacing: 0.6, marginTop: 8, textAlign: 'center' },
-  ringSub: { fontSize: T.size.nano, color: C.textMute, marginTop: 2, textAlign: 'center' },
+  btnTxt: { fontSize: T.size.body, fontWeight: T.weight.extrabold, letterSpacing: 0.4 },
+  barTrack: { backgroundColor: withAlpha('#FFFFFF', 0.08), overflow: 'hidden', borderWidth: 1, borderColor: Hairline.soft },
+  ringLabel: { fontSize: T.size.micro, fontWeight: T.weight.extrabold, color: C.textDim, letterSpacing: 0.8, marginTop: 9, textAlign: 'center' },
+  ringSub: { fontSize: T.size.nano, color: C.textMute, marginTop: 2, textAlign: 'center', letterSpacing: 0.2 },
 });

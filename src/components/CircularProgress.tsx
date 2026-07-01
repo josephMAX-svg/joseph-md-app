@@ -20,7 +20,7 @@ export default function CircularProgress({
   size = 120,
   strokeWidth = 8,
   color = '#0FD4A0',
-  trackColor = 'rgba(255,255,255,0.06)',
+  trackColor = 'rgba(216,227,252,0.07)',
   children,
 }: CircularProgressProps) {
   const radius = (size - strokeWidth) / 2;
@@ -29,9 +29,9 @@ export default function CircularProgress({
   const center = size / 2;
 
   if (Platform.OS === 'web') {
-    // Use direct SVG on web
+    // Use direct SVG on web. Rounded caps + a soft glow that traces the arc color.
     const svgStr = `
-      <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="transform: rotate(-90deg)">
+      <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="transform: rotate(-90deg); overflow: visible">
         <circle
           cx="${center}" cy="${center}" r="${radius}"
           fill="none"
@@ -46,7 +46,7 @@ export default function CircularProgress({
           stroke-dasharray="${circumference}"
           stroke-dashoffset="${strokeDashoffset}"
           stroke-linecap="round"
-          style="transition: stroke-dashoffset 0.5s ease"
+          style="transition: stroke-dashoffset 0.9s cubic-bezier(0.16, 1, 0.3, 1); filter: drop-shadow(0 0 5px ${color}66)"
         />
       </svg>
     `;
@@ -100,5 +100,7 @@ const styles = StyleSheet.create({
   fallbackText: {
     fontSize: 18,
     fontWeight: '700',
+    letterSpacing: -0.3,
+    ...(Platform.OS === 'web' ? ({ fontVariantNumeric: 'tabular-nums' } as any) : {}),
   },
 });

@@ -8,7 +8,7 @@ import {
   ScrollView,
   Platform,
 } from 'react-native';
-import { Colors, Spacing, FontSize, BorderRadius } from '../theme/tokens';
+import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, LineHeight } from '../theme/tokens';
 import type { AgentReport } from '../lib/supabase';
 import { markReportRead } from '../lib/supabase';
 
@@ -132,36 +132,46 @@ const styles = StyleSheet.create({
   header: {
     paddingTop: 60,
     paddingHorizontal: Spacing.lg,
-    paddingBottom: Spacing.md,
+    paddingBottom: Spacing.lg,
     flexDirection: 'row',
     alignItems: 'center',
     gap: Spacing.md,
     borderBottomWidth: 1,
   },
   closeBtn: {
-    fontSize: 22,
-    color: Colors.muted,
-    fontWeight: '300',
+    fontSize: 20,
+    color: Colors.onSurfaceVariant,
+    fontWeight: '400',
+    width: 32,
+    height: 32,
+    textAlign: 'center',
+    lineHeight: 32,
+    borderRadius: BorderRadius.full,
+    backgroundColor: Colors.surfaceContainerLow,
+    ...(Platform.OS === 'web' ? { cursor: 'pointer' as any } : {}),
   },
   headerInfo: {
     flex: 1,
+    gap: Spacing.xs,
   },
   headerTitle: {
     fontSize: FontSize.titleMd,
-    fontWeight: '700',
+    lineHeight: LineHeight.titleMd,
+    fontWeight: '800',
     color: Colors.onSurface,
-    marginBottom: 4,
+    letterSpacing: 0.2,
+    marginBottom: 2,
   },
   reportBadge: {
     alignSelf: 'flex-start',
     borderRadius: BorderRadius.full,
-    paddingVertical: 2,
-    paddingHorizontal: 8,
+    paddingVertical: 3,
+    paddingHorizontal: 10,
   },
   reportBadgeText: {
     fontSize: FontSize.labelSm,
-    fontWeight: '700',
-    letterSpacing: 0.5,
+    fontWeight: '800',
+    letterSpacing: 0.6,
   },
   body: {
     flex: 1,
@@ -176,12 +186,18 @@ const styles = StyleSheet.create({
     borderRadius: BorderRadius.lg,
     padding: Spacing.lg,
     marginBottom: Spacing.lg,
+    borderWidth: 1,
+    borderColor: Hairline.soft,
+    borderLeftWidth: 3,
+    borderLeftColor: Colors.secondary,
+    ...Elevation.sm,
   },
   summaryLabel: {
     fontSize: FontSize.labelSm,
-    fontWeight: '700',
-    color: Colors.muted,
-    letterSpacing: 1.2,
+    fontWeight: '800',
+    color: Colors.smallLabel,
+    letterSpacing: 1.4,
+    textTransform: 'uppercase',
     marginBottom: Spacing.sm,
   },
   summaryText: {
@@ -194,6 +210,9 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.surfaceContainerLow,
     borderRadius: BorderRadius.lg,
     padding: Spacing.lg,
+    borderWidth: 1,
+    borderColor: Hairline.soft,
+    ...Elevation.sm,
   },
   reportText: {
     fontSize: FontSize.bodyMd,
@@ -206,16 +225,18 @@ const styles = StyleSheet.create({
     borderRadius: BorderRadius.lg,
     padding: Spacing['3xl'],
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: Hairline.soft,
   },
   emptyText: {
     fontSize: FontSize.bodyMd,
-    color: Colors.muted,
+    color: Colors.smallLabel,
   },
   footer: {
     paddingHorizontal: Spacing.lg,
     paddingVertical: Spacing.lg,
     borderTopWidth: 1,
-    borderTopColor: Colors.surfaceContainerHighest,
+    borderTopColor: Hairline.soft,
   },
   faseRow: {
     flexDirection: 'row',
@@ -225,24 +246,28 @@ const styles = StyleSheet.create({
   },
   faseLabel: {
     fontSize: FontSize.bodyMd,
-    color: Colors.muted,
-    fontWeight: '500',
+    color: Colors.onSurfaceVariant,
+    fontWeight: '600',
   },
   faseBadge: {
     borderRadius: BorderRadius.full,
-    paddingVertical: 2,
+    paddingVertical: 3,
     paddingHorizontal: 10,
   },
   faseText: {
     fontSize: FontSize.labelMd,
-    fontWeight: '700',
+    fontWeight: '800',
     letterSpacing: 0.5,
   },
   dismissBtn: {
     backgroundColor: Colors.surfaceContainerHighest,
-    borderRadius: BorderRadius.md,
+    borderRadius: BorderRadius.lg,
     paddingVertical: Spacing.md,
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: Hairline.soft,
+    ...Elevation.sm,
+    ...(Platform.OS === 'web' ? { cursor: 'pointer' as any } : {}),
   },
   dismissBtnText: {
     fontSize: FontSize.labelLg,

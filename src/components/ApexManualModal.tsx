@@ -19,7 +19,7 @@ import {
   Platform,
   KeyboardAvoidingView,
 } from 'react-native';
-import { Colors, Spacing, FontSize, BorderRadius } from '../theme/tokens';
+import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, LineHeight } from '../theme/tokens';
 import { supabase } from '../lib/supabase';
 
 interface ApexManualModalProps {
@@ -179,6 +179,7 @@ export default function ApexManualModal({ visible, onClose, onSubmitted }: ApexM
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
         <View style={styles.modalCard}>
+          <View style={styles.grabber} />
           <View style={styles.header}>
             <Text style={styles.title}>📋 Pegar APEX manual</Text>
             <TouchableOpacity onPress={onClose} hitSlop={10}>
@@ -262,61 +263,80 @@ function Row({ label, value, multiline }: { label: string; value: string; multil
 }
 
 const styles = StyleSheet.create({
-  overlay: { flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(0,0,0,0.65)' },
+  overlay: { flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(2,6,16,0.72)' },
   modalCard: {
     backgroundColor: Colors.surfaceContainer,
-    borderTopLeftRadius: BorderRadius.xl,
-    borderTopRightRadius: BorderRadius.xl,
+    borderTopLeftRadius: BorderRadius['2xl'],
+    borderTopRightRadius: BorderRadius['2xl'],
+    borderWidth: 1, borderBottomWidth: 0, borderColor: Hairline.soft,
     maxHeight: '92%',
+    ...Elevation.lg,
+  },
+  grabber: {
+    alignSelf: 'center', width: 40, height: 4, borderRadius: BorderRadius.full,
+    backgroundColor: Hairline.strong, marginTop: Spacing.sm, marginBottom: -Spacing.xs,
   },
   header: {
     flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
-    padding: Spacing.lg, borderBottomWidth: 1, borderBottomColor: 'rgba(143,144,151,0.18)',
+    paddingHorizontal: Spacing.lg, paddingVertical: Spacing.lg,
+    borderBottomWidth: 1, borderBottomColor: Hairline.soft,
   },
-  title: { fontSize: FontSize.titleLg, fontWeight: '800', color: Colors.onSurface },
-  closeBtn: { fontSize: 22, color: Colors.muted, padding: 4 },
+  title: { fontSize: FontSize.titleLg, lineHeight: LineHeight.titleLg, fontWeight: '800', color: Colors.onSurface, letterSpacing: 0.2 },
+  closeBtn: {
+    fontSize: 20, color: Colors.onSurfaceVariant, textAlign: 'center',
+    width: 32, height: 32, lineHeight: 32, borderRadius: BorderRadius.full,
+    backgroundColor: Colors.surfaceContainerLow,
+    ...(Platform.OS === 'web' ? { cursor: 'pointer' as any } : {}),
+  },
   label: {
     fontSize: FontSize.labelSm, fontWeight: '700', color: Colors.smallLabel,
-    letterSpacing: 0.6, marginBottom: 6, marginTop: Spacing.md,
+    letterSpacing: 1, textTransform: 'uppercase', marginBottom: Spacing.sm, marginTop: Spacing.md,
   },
   textarea: {
-    minHeight: 200, backgroundColor: Colors.surfaceContainerLow,
-    borderRadius: BorderRadius.md, padding: Spacing.md,
-    color: Colors.onSurface, fontSize: 13, fontFamily: Platform.select({ ios: 'Courier', default: 'monospace' }),
+    minHeight: 200, backgroundColor: Colors.surfaceContainerLowest,
+    borderRadius: BorderRadius.lg, padding: Spacing.md,
+    borderWidth: 1, borderColor: Hairline.soft,
+    color: Colors.onSurface, fontSize: 13, lineHeight: 20,
+    fontFamily: Platform.select({ ios: 'Courier', default: 'monospace' }),
   },
   previewBox: {
     backgroundColor: Colors.surfaceContainerLow,
-    borderRadius: BorderRadius.md, padding: Spacing.md,
+    borderRadius: BorderRadius.lg, padding: Spacing.lg,
+    borderWidth: 1, borderColor: Hairline.soft,
   },
-  row: { flexDirection: 'row', alignItems: 'center', paddingVertical: 4 },
-  rowLabel: { width: 100, fontSize: FontSize.labelSm, color: Colors.muted, fontWeight: '600' },
+  row: { flexDirection: 'row', alignItems: 'center', paddingVertical: 5 },
+  rowLabel: { width: 104, fontSize: FontSize.labelSm, color: Colors.smallLabel, fontWeight: '700', letterSpacing: 0.4 },
   rowValue: { flex: 1, fontSize: FontSize.bodyMd, color: Colors.onSurface },
-  divider: { height: 1, backgroundColor: 'rgba(143,144,151,0.15)', marginVertical: 6 },
+  divider: { height: 1, backgroundColor: Hairline.medium, marginVertical: Spacing.sm },
   errorBox: {
-    backgroundColor: Colors.coral + '15', borderRadius: BorderRadius.md,
+    backgroundColor: Colors.coral + '15', borderRadius: BorderRadius.lg,
     padding: Spacing.md, marginTop: Spacing.md,
     borderLeftWidth: 3, borderLeftColor: Colors.coral,
   },
-  errorTitle: { fontSize: FontSize.labelMd, fontWeight: '700', color: Colors.coral, marginBottom: 4 },
-  errorItem: { fontSize: FontSize.labelSm, color: Colors.coral, lineHeight: 16 },
-  resultBox: { borderRadius: BorderRadius.md, padding: Spacing.md, marginTop: Spacing.md },
-  resultOk: { backgroundColor: Colors.teal + '20', borderLeftWidth: 3, borderLeftColor: Colors.teal },
-  resultQueued: { backgroundColor: Colors.amber + '20', borderLeftWidth: 3, borderLeftColor: Colors.amber },
-  resultError: { backgroundColor: Colors.coral + '20', borderLeftWidth: 3, borderLeftColor: Colors.coral },
-  resultText: { fontSize: FontSize.bodyMd, fontWeight: '600', color: Colors.onSurface },
+  errorTitle: { fontSize: FontSize.labelMd, fontWeight: '700', color: Colors.coral, marginBottom: Spacing.xs },
+  errorItem: { fontSize: FontSize.labelSm, color: Colors.coral, lineHeight: LineHeight.labelSm },
+  resultBox: { borderRadius: BorderRadius.lg, padding: Spacing.md, marginTop: Spacing.md },
+  resultOk: { backgroundColor: Colors.teal + '20', borderLeftWidth: 3, borderLeftColor: Colors.teal, ...Elevation.sm },
+  resultQueued: { backgroundColor: Colors.amber + '20', borderLeftWidth: 3, borderLeftColor: Colors.amber, ...Elevation.sm },
+  resultError: { backgroundColor: Colors.coral + '20', borderLeftWidth: 3, borderLeftColor: Colors.coral, ...Elevation.sm },
+  resultText: { fontSize: FontSize.bodyMd, lineHeight: LineHeight.bodyMd, fontWeight: '600', color: Colors.onSurface },
   footer: {
     flexDirection: 'row', gap: Spacing.sm,
-    padding: Spacing.lg, borderTopWidth: 1, borderTopColor: 'rgba(143,144,151,0.18)',
+    padding: Spacing.lg, borderTopWidth: 1, borderTopColor: Hairline.soft,
   },
   btnCancel: {
     flex: 1, paddingVertical: Spacing.md, alignItems: 'center',
-    borderRadius: BorderRadius.md, backgroundColor: Colors.surfaceContainerHighest,
+    borderRadius: BorderRadius.lg, backgroundColor: Colors.surfaceContainerHighest,
+    borderWidth: 1, borderColor: Hairline.soft,
+    ...(Platform.OS === 'web' ? { cursor: 'pointer' as any } : {}),
   },
-  btnCancelText: { fontSize: FontSize.bodyMd, color: Colors.muted, fontWeight: '600' },
+  btnCancelText: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, fontWeight: '700' },
   btnSubmit: {
     flex: 2, paddingVertical: Spacing.md, alignItems: 'center',
-    borderRadius: BorderRadius.md, backgroundColor: Colors.teal,
+    borderRadius: BorderRadius.lg, backgroundColor: Colors.teal,
+    ...Elevation.glow(Colors.teal),
+    ...(Platform.OS === 'web' ? { cursor: 'pointer' as any } : {}),
   },
-  btnDisabled: { opacity: 0.4 },
-  btnSubmitText: { fontSize: FontSize.bodyMd, color: '#0B1628', fontWeight: '800' },
+  btnDisabled: { opacity: 0.4, ...Elevation.none },
+  btnSubmitText: { fontSize: FontSize.bodyMd, color: '#0B1628', fontWeight: '800', letterSpacing: 0.3 },
 });

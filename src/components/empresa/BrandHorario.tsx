@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Linking } from 'react-native';
-import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
+import { View, Text, TouchableOpacity, StyleSheet, Linking, Platform } from 'react-native';
+import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, LineHeight, Motion } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
 import { SectionLabel, Chip, GlassPanel } from './primitives';
 import { FadeUp } from './visuals';
@@ -15,6 +15,7 @@ import { ESTUDIO_LIBROS } from '../../lib/estudioPulsoData';
  * fundador dicta → Claude Code ejecuta desde la carpeta nativa), métricas del domingo,
  * herramientas web y referentes verificados. El día de HOY se resalta.
  */
+const webHover = Platform.OS === 'web' ? ({ cursor: 'pointer', transition: `all ${Motion.base}` } as any) : null;
 const DIAS_IDX = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
 const RED_COLOR: Record<string, string> = {
   TikTok: '#E5708A', Instagram: '#C77BE0', YouTube: '#E5484D',
@@ -65,7 +66,7 @@ export default function BrandHorario({ brand }: { brand: 'pulso' | 'pirqa' | 'te
         <>
           <SectionLabel>📖 Lectura de HOY · plan 96 días (D{lecturaHoy.d}/{BIZ_DIAS.length})</SectionLabel>
           <TouchableOpacity activeOpacity={lecturaHoy.yt ? 0.85 : 1} onPress={() => lecturaHoy.yt && openUrl(lecturaHoy.yt)}
-            style={[st.lecturaCard, { borderLeftColor: A }]}>
+            style={[st.lecturaCard, { borderLeftColor: A }, lecturaHoy.yt ? webHover : null]}>
             <View style={{ flex: 1 }}>
               <Text style={st.lecturaTitulo}>{lecturaHoy.lectura}</Text>
               {libroHoy ? <Text style={st.lecturaSub}>{libroHoy.libro} · {libroHoy.autor} → {libroHoy.output}</Text> : null}
@@ -149,7 +150,7 @@ export default function BrandHorario({ brand }: { brand: 'pulso' | 'pirqa' | 'te
           <SectionLabel>Herramientas (web · gratuitas · automatizables por Claude Code)</SectionLabel>
           <View style={[st.grid, { marginBottom: Spacing.lg }]}>
             {HERRAMIENTAS.map((h, i) => (
-              <TouchableOpacity key={i} activeOpacity={0.85} onPress={() => openUrl(h.url)} style={[st.toolCard, { flexGrow: 1, flexBasis: 220 }]}>
+              <TouchableOpacity key={i} activeOpacity={0.85} onPress={() => openUrl(h.url)} style={[st.toolCard, { flexGrow: 1, flexBasis: 220 }, webHover]}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                   <Text style={st.toolName}>{h.nombre} ↗</Text>
                   <Chip label={h.tipo} color={Colors.muted} small />
@@ -167,7 +168,7 @@ export default function BrandHorario({ brand }: { brand: 'pulso' | 'pirqa' | 'te
           <SectionLabel>Referentes a estudiar (formatos que funcionan)</SectionLabel>
           <View style={[st.grid, { marginBottom: Spacing.lg }]}>
             {refs.map((r, i) => (
-              <TouchableOpacity key={i} activeOpacity={0.85} onPress={() => openUrl(r.url)} style={[st.toolCard, { flexGrow: 1, flexBasis: 240 }]}>
+              <TouchableOpacity key={i} activeOpacity={0.85} onPress={() => openUrl(r.url)} style={[st.toolCard, { flexGrow: 1, flexBasis: 240 }, webHover]}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                   <Text style={st.toolName}>{r.nombre} ↗</Text>
                   <Chip label={r.red} color={Colors.muted} small />
@@ -186,40 +187,40 @@ export default function BrandHorario({ brand }: { brand: 'pulso' | 'pirqa' | 'te
 
 const cardBase = { backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: DesktopColors.glassBorder };
 const st = StyleSheet.create({
-  splitRow: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 7, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.05)' },
-  splitPct: { fontSize: FontSize.titleMd, fontWeight: '900', width: 52, textAlign: 'right' },
+  splitRow: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 9, borderTopWidth: 1, borderTopColor: Hairline.soft },
+  splitPct: { fontSize: FontSize.titleMd, fontWeight: '900', width: 52, textAlign: 'right', letterSpacing: -0.4 },
   splitMarca: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface },
-  splitDesc: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 1 },
-  splitBar: { width: 90, height: 7, borderRadius: 4, overflow: 'hidden' },
+  splitDesc: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 2, lineHeight: LineHeight.labelSm },
+  splitBar: { width: 90, height: 7, borderRadius: 4, overflow: 'hidden', borderWidth: 1, borderColor: Hairline.soft },
   splitFill: { height: 7, borderRadius: 4 },
 
-  diaCard: { ...cardBase, borderLeftWidth: 3, padding: Spacing.md, marginBottom: 6 },
+  diaCard: { ...cardBase, borderLeftWidth: 3, padding: Spacing.md, marginBottom: 7, ...Elevation.sm },
   diaHead: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  diaName: { fontSize: FontSize.labelLg, fontWeight: '800', width: 86 },
-  diaFoco: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 17 },
-  redChip: { borderWidth: 1, borderRadius: BorderRadius.md, paddingVertical: 4, paddingHorizontal: 9 },
-  redTxt: { fontSize: FontSize.labelSm, fontWeight: '800' },
-  redNota: { fontSize: 8, color: Colors.muted, marginTop: 1 },
-  extra: { fontSize: FontSize.labelMd, fontWeight: '700', marginTop: 8 },
+  diaName: { fontSize: FontSize.labelLg, fontWeight: '800', width: 86, letterSpacing: 0.2 },
+  diaFoco: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: LineHeight.labelMd },
+  redChip: { borderWidth: 1, borderRadius: BorderRadius.md, paddingVertical: 5, paddingHorizontal: 9 },
+  redTxt: { fontSize: FontSize.labelSm, fontWeight: '800', letterSpacing: 0.2 },
+  redNota: { fontSize: 8, color: Colors.muted, marginTop: 2 },
+  extra: { fontSize: FontSize.labelMd, fontWeight: '700', marginTop: 9, lineHeight: LineHeight.labelMd },
 
-  flujoRow: { paddingVertical: 6, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.05)' },
-  flujoPaso: { fontSize: FontSize.labelMd, fontWeight: '800' },
-  flujoDet: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 2, lineHeight: 17 },
+  flujoRow: { paddingVertical: 7, borderTopWidth: 1, borderTopColor: Hairline.soft },
+  flujoPaso: { fontSize: FontSize.labelMd, fontWeight: '800', letterSpacing: 0.2 },
+  flujoDet: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 3, lineHeight: LineHeight.labelMd },
 
-  estRow: { paddingVertical: 6, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.05)' },
-  estK: { fontSize: FontSize.labelMd, fontWeight: '800' },
-  estV: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 2, lineHeight: 17 },
+  estRow: { paddingVertical: 7, borderTopWidth: 1, borderTopColor: Hairline.soft },
+  estK: { fontSize: FontSize.labelMd, fontWeight: '800', letterSpacing: 0.2 },
+  estV: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 3, lineHeight: LineHeight.labelMd },
 
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  toolCard: { ...cardBase, padding: Spacing.md },
+  toolCard: { ...cardBase, padding: Spacing.md, ...Elevation.sm },
   toolName: { fontSize: FontSize.labelMd, fontWeight: '700', color: Colors.onSurface, flex: 1 },
-  toolNota: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 4, lineHeight: 15 },
+  toolNota: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 5, lineHeight: LineHeight.labelSm },
 
-  nota: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 4, lineHeight: 16, marginBottom: Spacing.lg },
+  nota: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 5, lineHeight: LineHeight.labelSm, marginBottom: Spacing.lg },
 
-  lecturaCard: { ...cardBase, borderLeftWidth: 3, flexDirection: 'row', alignItems: 'center', gap: 10, padding: Spacing.md, marginBottom: 8 },
-  lecturaTitulo: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, lineHeight: 19 },
-  lecturaSub: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 3, lineHeight: 15 },
-  lecturaAccion: { fontSize: FontSize.labelMd, fontWeight: '600', marginTop: 5, lineHeight: 17 },
+  lecturaCard: { ...cardBase, borderLeftWidth: 3, flexDirection: 'row', alignItems: 'center', gap: 10, padding: Spacing.md, marginBottom: 8, ...Elevation.sm },
+  lecturaTitulo: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, lineHeight: LineHeight.bodyMd },
+  lecturaSub: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 4, lineHeight: LineHeight.labelSm },
+  lecturaAccion: { fontSize: FontSize.labelMd, fontWeight: '600', marginTop: 6, lineHeight: LineHeight.labelMd },
   lecturaGo: { fontSize: 18, fontWeight: '800', width: 22, textAlign: 'center' },
 });

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Platform, StyleSheet, ViewStyle, TextStyle } from 'react-native';
-import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
+import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, Motion, LineHeight } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
 import type { Semaforo } from '../../lib/empresaData';
 
@@ -59,7 +59,7 @@ export function useHover() {
 }
 
 const webTransition = Platform.OS === 'web'
-  ? ({ transition: 'all 0.2s ease' } as any)
+  ? ({ transition: `border-color ${Motion.base}, background-color ${Motion.base}, transform ${Motion.base}, box-shadow ${Motion.base}` } as any)
   : {};
 
 // ── GlassPanel: bloque glassmorphism (sin sombras decorativas) ───
@@ -124,7 +124,9 @@ export function MetricCard({
       style={[
         styles.metricCard,
         Platform.OS === 'web' ? webTransition : null,
-        hovered && Platform.OS === 'web' ? { borderColor: 'rgba(255,255,255,0.15)' } as any : null,
+        hovered && Platform.OS === 'web'
+          ? { borderColor: Hairline.strong, transform: [{ translateY: -2 }], ...Elevation.md } as any
+          : null,
       ]}
       {...hoverProps}
     >
@@ -163,8 +165,8 @@ export function PillTab({
       onPress={onPress}
       style={[
         styles.pill,
-        active ? { backgroundColor: accent + '1F', borderColor: accent + '66' } : null,
-        !active && hovered && Platform.OS === 'web' ? { borderColor: 'rgba(255,255,255,0.18)' } as any : null,
+        active ? { backgroundColor: accent + '1F', borderColor: accent + '66', ...Elevation.sm } : null,
+        !active && hovered && Platform.OS === 'web' ? { borderColor: Hairline.strong, backgroundColor: 'rgba(216,227,252,0.05)' } as any : null,
         Platform.OS === 'web' ? ({ ...webTransition, cursor: 'pointer' } as any) : null,
       ]}
       {...hoverProps}
@@ -196,15 +198,17 @@ const styles = StyleSheet.create({
     backgroundColor: DesktopColors.glass,
     borderRadius: BorderRadius.xl,
     borderWidth: 1,
-    borderColor: DesktopColors.glassBorder,
+    borderColor: Hairline.medium,
     padding: Spacing['2xl'],
-    ...(Platform.OS === 'web' ? { backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' } as any : {}),
+    ...Elevation.sm,
+    ...(Platform.OS === 'web' ? { backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)' } as any : {}),
   },
   sectionLabel: {
     fontSize: FontSize.labelMd,
     fontWeight: '700',
     color: Colors.smallLabel,
-    letterSpacing: 1.1,
+    letterSpacing: 1.3,
+    lineHeight: LineHeight.labelMd,
     textTransform: 'uppercase',
     marginBottom: Spacing.md,
   },
@@ -217,15 +221,17 @@ const styles = StyleSheet.create({
   chipText: {
     fontSize: 10,
     fontWeight: '800',
-    letterSpacing: 0.5,
+    letterSpacing: 0.6,
+    textTransform: 'uppercase',
   },
   metricCard: {
     backgroundColor: DesktopColors.glass,
     borderRadius: BorderRadius.lg,
     borderWidth: 1,
-    borderColor: DesktopColors.glassBorder,
+    borderColor: Hairline.medium,
     padding: Spacing.lg,
     minWidth: 0,
+    ...Elevation.sm,
   },
   metricTop: {
     flexDirection: 'row',
@@ -237,25 +243,27 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontWeight: '700',
     color: Colors.smallLabel,
-    letterSpacing: 0.6,
+    letterSpacing: 0.8,
     flex: 1,
     marginRight: 6,
   },
   metricValue: {
     fontSize: FontSize.titleMd,
     fontWeight: '800',
-    letterSpacing: -0.3,
+    letterSpacing: -0.4,
+    ...(Platform.OS === 'web' ? ({ fontVariantNumeric: 'tabular-nums' } as any) : {}),
   },
   metricMeta: {
     fontSize: 10,
     color: Colors.muted,
-    marginTop: 3,
+    marginTop: 4,
+    letterSpacing: 0.2,
   },
   metricHint: {
     fontSize: 10,
     color: Colors.onSurfaceVariant,
     marginTop: 5,
-    lineHeight: 14,
+    lineHeight: 15,
     opacity: 0.85,
   },
   statCell: {
@@ -264,21 +272,24 @@ const styles = StyleSheet.create({
     backgroundColor: DesktopColors.glass,
     borderRadius: BorderRadius.lg,
     borderWidth: 1,
-    borderColor: DesktopColors.glassBorder,
+    borderColor: Hairline.medium,
     paddingVertical: Spacing.md,
     paddingHorizontal: Spacing.md,
     alignItems: 'center',
+    ...Elevation.sm,
   },
   statValue: {
     fontSize: FontSize.titleMd,
     fontWeight: '800',
+    letterSpacing: -0.3,
+    ...(Platform.OS === 'web' ? ({ fontVariantNumeric: 'tabular-nums' } as any) : {}),
   },
   statLabel: {
     fontSize: 9,
     fontWeight: '700',
     color: Colors.smallLabel,
-    letterSpacing: 0.6,
-    marginTop: 3,
+    letterSpacing: 0.8,
+    marginTop: 4,
     textAlign: 'center',
   },
   pill: {
@@ -289,7 +300,7 @@ const styles = StyleSheet.create({
     borderRadius: BorderRadius.lg,
     borderWidth: 1,
     borderColor: 'transparent',
-    backgroundColor: 'rgba(255,255,255,0.03)',
+    backgroundColor: 'rgba(216,227,252,0.03)',
   },
   pillIcon: {
     fontSize: 16,
@@ -299,10 +310,12 @@ const styles = StyleSheet.create({
     fontSize: FontSize.bodyMd,
     fontWeight: '600',
     color: Colors.muted,
+    letterSpacing: 0.1,
   },
   pillSub: {
     fontSize: 10,
     color: Colors.smallLabel,
-    marginTop: 1,
+    marginTop: 2,
+    letterSpacing: 0.2,
   },
 });

@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { View, Text, TouchableOpacity, Platform, Linking } from 'react-native';
-import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
+import { View, Text, TouchableOpacity, Platform, Linking, StyleSheet } from 'react-native';
+import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, LineHeight, Motion } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
 import { AMBER, Chip } from './primitives';
 import {
@@ -33,6 +33,8 @@ function saveLeads(leads: Lead[]) {
 
 const TEMP_EMOJI: Record<LeadTemp, string> = { caliente: '🔥', tibio: '🌤️', frio: '❄️' };
 const ETAPA_IDX = (e: LeadEtapa) => ETAPAS.findIndex(x => x.id === e);
+const TERR_BLUE = '#8FB6E8'; // acento de la operación de terrenos (azul frío)
+const webPress = Platform.OS === 'web' ? ({ cursor: 'pointer', transition: `all ${Motion.fast}` } as any) : null;
 
 export default function TerrenosLeadTracker() {
   const [leads, setLeads] = useState<Lead[]>(loadLeads);
@@ -67,23 +69,20 @@ export default function TerrenosLeadTracker() {
   const visitasFinde = counts.cita_confirmada + counts.visita_hecha;
 
   return (
-    <View style={{
-      backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1,
-      borderColor: DesktopColors.glassBorder, padding: Spacing.lg, marginBottom: Spacing.lg,
-    }}>
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 4 }}>
-        <Text style={{ fontSize: FontSize.titleMd, fontWeight: '800', color: Colors.onSurface }}>📋 Seguimiento de leads</Text>
-        <Chip label={`${leads.length} leads`} color="#8FB6E8" small />
+    <View style={st.container}>
+      <View style={st.headRow}>
+        <Text style={st.title}>📋 Seguimiento de leads</Text>
+        <Chip label={`${leads.length} leads`} color={TERR_BLUE} small />
         <Chip label={`OMTM: ${visitasFinde} citas/visitas`} color={visitasFinde > 0 ? Colors.green : AMBER} small />
       </View>
-      <Text style={{ fontSize: FontSize.labelSm, color: Colors.muted, marginBottom: 10 }}>
+      <Text style={st.intro}>
         La métrica que importa (Lean Analytics): VISITAS realizadas por finde. Responder todo en &lt;5 min (21× más calificación — MIT/InsideSales). Avance manual: ‹ › mueve de etapa.
       </Text>
 
       {/* Resumen por etapa */}
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginBottom: 12 }}>
+      <View style={st.etapaSummary}>
         {ETAPAS.map(e => (
-          <Chip key={e.id} label={`${e.emoji} ${e.label}: ${counts[e.id]}`} color={counts[e.id] > 0 ? '#8FB6E8' : Colors.muted} small />
+          <Chip key={e.id} label={`${e.emoji} ${e.label}: ${counts[e.id]}`} color={counts[e.id] > 0 ? TERR_BLUE : Colors.muted} small />
         ))}
       </View>
 
@@ -92,65 +91,102 @@ export default function TerrenosLeadTracker() {
         const p = PREDIOS.find(x => x.id === l.predioId);
         const et = ETAPAS[ETAPA_IDX(l.etapa)];
         return (
-          <View key={l.id} style={{
-            flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 7,
-            borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.05)',
-          }}>
-            <Text style={{ fontSize: 13 }}>{TEMP_EMOJI[l.temp]}</Text>
+          <View key={l.id} style={st.leadRow}>
+            <Text style={st.leadTemp}>{TEMP_EMOJI[l.temp]}</Text>
             <View style={{ flex: 1, minWidth: 120 }}>
-              <Text style={{ fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface }}>
-                {l.nombre} <Text style={{ color: Colors.muted, fontWeight: '400' }}>· #{l.predioId} {p?.nombre} · {p?.area} m²</Text>
+              <Text style={st.leadName}>
+                {l.nombre} <Text style={st.leadMeta}>· #{l.predioId} {p?.nombre} · {p?.area} m²</Text>
               </Text>
-              {l.nota ? <Text style={{ fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant }} numberOfLines={2}>{l.nota}</Text> : null}
+              {l.nota ? <Text style={st.leadNota} numberOfLines={2}>{l.nota}</Text> : null}
             </View>
-            <Chip label={`${et.emoji} ${et.label}`} color={l.etapa === 'cita_confirmada' || l.etapa === 'sena' || l.etapa === 'cerrado' ? Colors.green : '#8FB6E8'} small />
-            <TouchableOpacity onPress={() => mover(l.id, -1)} hitSlop={{ top: 8, bottom: 8, left: 4, right: 4 }}>
-              <Text style={{ color: Colors.muted, fontSize: 16, paddingHorizontal: 4 }}>‹</Text>
+            <Chip label={`${et.emoji} ${et.label}`} color={l.etapa === 'cita_confirmada' || l.etapa === 'sena' || l.etapa === 'cerrado' ? Colors.green : TERR_BLUE} small />
+            <TouchableOpacity onPress={() => mover(l.id, -1)} hitSlop={{ top: 8, bottom: 8, left: 4, right: 4 }} style={webPress}>
+              <Text style={st.moverBack}>‹</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => mover(l.id, 1)} hitSlop={{ top: 8, bottom: 8, left: 4, right: 4 }}>
-              <Text style={{ color: '#8FB6E8', fontSize: 16, fontWeight: '800', paddingHorizontal: 4 }}>›</Text>
+            <TouchableOpacity onPress={() => mover(l.id, 1)} hitSlop={{ top: 8, bottom: 8, left: 4, right: 4 }} style={webPress}>
+              <Text style={st.moverFwd}>›</Text>
             </TouchableOpacity>
           </View>
         );
       })}
 
       {/* Cadencia de la semana */}
-      <Text style={{ fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface, marginTop: 14, marginBottom: 6 }}>
+      <Text style={[st.sectionH, st.cadHead]}>
         🗓️ Cadencia de seguimiento (Hormozi · Keller 8x8 · Blount)
       </Text>
       {CADENCIA_SEMANA.map(c => (
-        <View key={c.dia} style={{ flexDirection: 'row', gap: 8, marginBottom: 3 }}>
-          <Text style={{ width: 34, fontSize: FontSize.labelSm, fontWeight: '800', color: '#8FB6E8' }}>{c.dia}</Text>
-          <Text style={{ flex: 1, fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant }}>{c.accion}</Text>
+        <View key={c.dia} style={st.cadRow}>
+          <Text style={st.cadDia}>{c.dia}</Text>
+          <Text style={st.cadAccion}>{c.accion}</Text>
         </View>
       ))}
 
       {/* Scripts */}
-      <TouchableOpacity onPress={() => setOpenScripts(o => !o)} activeOpacity={0.8} style={{ marginTop: 12 }}>
-        <Text style={{ fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface }}>
+      <TouchableOpacity onPress={() => setOpenScripts(o => !o)} activeOpacity={0.8} style={[st.toggleRow, webPress]}>
+        <Text style={st.sectionH}>
           {openScripts ? '▾' : '▸'} 💬 Scripts listos (tap = copiar) {copiado ? `— ✓ copiado: ${copiado}` : ''}
         </Text>
       </TouchableOpacity>
       {openScripts && SCRIPTS.map(s => (
         <TouchableOpacity key={s.label} activeOpacity={0.75} onPress={() => copiar(s.label, s.texto)}
-          style={{ backgroundColor: 'rgba(255,255,255,0.04)', borderRadius: BorderRadius.md, padding: 10, marginTop: 6 }}>
-          <Text style={{ fontSize: FontSize.labelSm, fontWeight: '700', color: '#8FB6E8', marginBottom: 3 }}>{s.label}</Text>
-          <Text style={{ fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant }}>{s.texto}</Text>
+          style={[st.scriptCard, webPress]}>
+          <Text style={st.scriptLabel}>{s.label}</Text>
+          <Text style={st.scriptTexto}>{s.texto}</Text>
         </TouchableOpacity>
       ))}
 
       {/* Links */}
-      <TouchableOpacity onPress={() => setOpenLinks(o => !o)} activeOpacity={0.8} style={{ marginTop: 10 }}>
-        <Text style={{ fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface }}>
+      <TouchableOpacity onPress={() => setOpenLinks(o => !o)} activeOpacity={0.8} style={[st.toggleRow, webPress]}>
+        <Text style={st.sectionH}>
           {openLinks ? '▾' : '▸'} 🔗 Links de la operación
         </Text>
       </TouchableOpacity>
       {openLinks && TERRENOS_LINKS.map(l => (
         <TouchableOpacity key={l.url} activeOpacity={0.75} onPress={() => Linking.openURL(l.url).catch(() => {})}
-          style={{ paddingVertical: 5 }}>
-          <Text style={{ fontSize: FontSize.labelSm, color: '#8FB6E8' }}>{l.label}</Text>
+          style={[st.linkRow, webPress]}>
+          <Text style={st.linkTxt}>{l.label}</Text>
         </TouchableOpacity>
       ))}
     </View>
   );
 }
+
+const st = StyleSheet.create({
+  container: {
+    backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.xl, borderWidth: 1,
+    borderColor: DesktopColors.glassBorder, padding: Spacing.xl, marginBottom: Spacing.lg,
+    ...Elevation.md,
+  },
+  headRow: { flexDirection: 'row', alignItems: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 6 },
+  title: { fontSize: FontSize.titleMd, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.2 },
+  intro: { fontSize: FontSize.labelSm, color: Colors.muted, marginBottom: Spacing.md, lineHeight: LineHeight.labelSm },
+  etapaSummary: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginBottom: Spacing.md },
+
+  leadRow: {
+    flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 9,
+    borderBottomWidth: 1, borderBottomColor: Hairline.soft,
+  },
+  leadTemp: { fontSize: 13 },
+  leadName: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, lineHeight: LineHeight.bodyMd },
+  leadMeta: { color: Colors.muted, fontWeight: '400' },
+  leadNota: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, marginTop: 2, lineHeight: LineHeight.labelSm },
+  moverBack: { color: Colors.muted, fontSize: 18, fontWeight: '700', paddingHorizontal: 5 },
+  moverFwd: { color: TERR_BLUE, fontSize: 18, fontWeight: '800', paddingHorizontal: 5 },
+
+  sectionH: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.1 },
+  cadHead: { marginTop: Spacing.lg, marginBottom: 7 },
+  cadRow: { flexDirection: 'row', gap: 8, marginBottom: 4 },
+  cadDia: { width: 34, fontSize: FontSize.labelSm, fontWeight: '800', color: TERR_BLUE, letterSpacing: 0.3 },
+  cadAccion: { flex: 1, fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, lineHeight: LineHeight.labelSm },
+
+  toggleRow: { marginTop: Spacing.md },
+  scriptCard: {
+    backgroundColor: 'rgba(255,255,255,0.04)', borderRadius: BorderRadius.md,
+    borderWidth: 1, borderColor: Hairline.soft, padding: Spacing.md, marginTop: 7,
+  },
+  scriptLabel: { fontSize: FontSize.labelSm, fontWeight: '700', color: TERR_BLUE, marginBottom: 4, letterSpacing: 0.2 },
+  scriptTexto: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, lineHeight: LineHeight.labelSm },
+
+  linkRow: { paddingVertical: 6 },
+  linkTxt: { fontSize: FontSize.labelSm, color: TERR_BLUE, fontWeight: '600' },
+});
