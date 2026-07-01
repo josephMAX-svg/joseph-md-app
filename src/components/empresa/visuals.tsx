@@ -4,7 +4,8 @@ import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline } from '..
 import { DesktopColors } from '../../theme/desktopStyles';
 import CircularProgress from '../CircularProgress';
 import AnimatedCounter from '../AnimatedCounter';
-import { useHover } from './primitives';
+import { useHover, monoText, MonoNumeral, DeltaValue } from './primitives';
+import type { HoldingTicker } from '../../lib/empresaData';
 
 /**
  * Visuals del Hub de Empresa — capa de movimiento y dramatismo (estilo VITALS /
@@ -110,6 +111,157 @@ export function KpiTicker({ items, accent = Colors.amber }: { items: string[]; a
         {row}
       </View>
     </View>
+  );
+}
+
+// ── useHoldingClock: reloj mono (web setInterval 1s; native estático) ────────
+function useHoldingClock() {
+  const [now, setNow] = useState(() => new Date());
+  useEffect(() => {
+    if (!isWeb) return;
+    const id = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(id);
+  }, []);
+  return now;
+}
+function fmtClock(d: Date) {
+  const p = (n: number) => String(n).padStart(2, '0');
+  return `${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
+}
+const WK = ['DOM', 'LUN', 'MAR', 'MIÉ', 'JUE', 'VIE', 'SÁB'];
+const MO = ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC'];
+function fmtDate(d: Date) { return `${WK[d.getDay()]} ${String(d.getDate()).padStart(2, '0')} ${MO[d.getMonth()]}`; }
+
+// ── TerminalHeader: masthead denso estilo Bloomberg (wordmark + reloj + estado) ─
+export function TerminalHeader({
+  wordmark, mercado, madurez, lineas, onCmd,
+}: { wordmark: string; mercado: string; madurez: number; lineas: string; onCmd?: () => void }) {
+  const now = useHoldingClock();
+  const gold = Colors.gold;
+  return (
+    <View style={styles.mast}>
+      {/* hairline oro superior — línea de rejilla del terminal */}
+      <View pointerEvents="none" style={styles.mastHairline} />
+      <View style={styles.mastRow}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, flex: 1, minWidth: 220 }}>
+          <View style={[styles.mastDot, { backgroundColor: gold }, isWeb ? ({ animationName: 'hubShimmer', animationDuration: '2.6s', animationIterationCount: 'infinite' } as any) : null]} />
+          <Text style={styles.mastWord} numberOfLines={1}>{wordmark}</Text>
+          <View style={styles.mastMercado}><Text style={styles.mastMercadoTxt}>{mercado}</Text></View>
+        </View>
+        {/* estado del grupo + reloj mono */}
+        <View style={styles.mastMetaRow}>
+          <View style={styles.mastMetaCell}>
+            <Text style={styles.mastMetaLabel}>MADUREZ GRUPO</Text>
+            <MonoNumeral color={gold} size={FontSize.bodyMd} weight="800">{madurez}%</MonoNumeral>
+          </View>
+          <View style={styles.mastSep} />
+          <View style={styles.mastMetaCell}>
+            <Text style={styles.mastMetaLabel}>LÍNEAS</Text>
+            <MonoNumeral color={Colors.onSurface} size={FontSize.bodyMd} weight="800">{lineas}</MonoNumeral>
+          </View>
+          <View style={styles.mastSep} />
+          <View style={styles.mastMetaCell}>
+            <Text style={styles.mastMetaLabel}>{fmtDate(now)}</Text>
+            <MonoNumeral color={Colors.onSurfaceVariant} size={FontSize.bodyMd} weight="700">{fmtClock(now)}</MonoNumeral>
+          </View>
+          {onCmd ? (
+            <TouchableOpacity activeOpacity={0.8} onPress={onCmd} style={[styles.cmdHint, isWeb ? ({ cursor: 'pointer' } as any) : null]}>
+              <Text style={styles.cmdHintTxt}>⌘K</Text>
+            </TouchableOpacity>
+          ) : null}
+        </View>
+      </View>
+    </View>
+  );
+}
+
+// ── KpiTapeStrip: cinta de teletipo mono con deltas (verde/coral) ────────────
+export type TapeItem = { label: string; value: string; delta?: { dir: 'up' | 'down' | 'flat'; label: string } };
+export function KpiTapeStrip({ items }: { items: TapeItem[] }) {
+  const row = (
+    <View style={styles.tapeRow}>
+      {items.map((it, i) => (
+        <View key={i} style={styles.tapeItem}>
+          <Text style={styles.tapeLabel}>{it.label.toUpperCase()}</Text>
+          <Text style={[styles.tapeValue, monoText]}>{it.value}</Text>
+          {it.delta ? <DeltaValue dir={it.delta.dir} label={it.delta.label} size={FontSize.labelSm} /> : null}
+          <Text style={styles.tapeSep}>·</Text>
+        </View>
+      ))}
+    </View>
+  );
+  if (!isWeb) return <View style={styles.tapeClip}>{row}</View>;
+  return (
+    <View style={styles.tapeClip}>
+      <View style={{ flexDirection: 'row', animationName: 'hubMarquee', animationDuration: '34s', animationIterationCount: 'infinite', animationTimingFunction: 'linear' } as any}>
+        {row}
+        {row}
+      </View>
+    </View>
+  );
+}
+
+// ── TickerSpark: micro-sparkline de una fila de watchlist (SVG-less, barras) ──
+function TickerSpark({ data, color }: { data: number[]; color: string }) {
+  const max = Math.max(...data, 1);
+  return (
+    <View style={styles.tSpark}>
+      {data.map((v, i) => (
+        <View key={i} style={{ width: 3, height: Math.max(2, (v / max) * 20), borderRadius: 1, backgroundColor: color, opacity: 0.35 + (i / data.length) * 0.6 }} />
+      ))}
+    </View>
+  );
+}
+
+// ── BrandWatchlist: raíl de estado del holding — marcas como tickers ─────────
+export function BrandWatchlist({
+  items, active, onSelect, horizontal = false,
+}: { items: HoldingTicker[]; active: string; onSelect: (id: string) => void; horizontal?: boolean }) {
+  return (
+    <View style={horizontal ? styles.wlWrapH : styles.wlWrap}>
+      {!horizontal ? (
+        <View style={styles.wlHead}>
+          <Text style={styles.wlHeadTxt}>WATCHLIST · HOLDING</Text>
+          <Text style={styles.wlHeadSub}>madurez ▲▼</Text>
+        </View>
+      ) : null}
+      <View style={horizontal ? styles.wlRowsH : undefined}>
+        {items.map((t) => (
+          <TickerRow key={t.id} t={t} active={active === t.id} onPress={() => onSelect(t.id)} horizontal={horizontal} />
+        ))}
+      </View>
+    </View>
+  );
+}
+
+function TickerRow({ t, active, onPress, horizontal }: { t: HoldingTicker; active: boolean; onPress: () => void; horizontal: boolean }) {
+  const { hovered, hoverProps } = useHover();
+  const dir = t.trend;
+  const glyph = dir === 'up' ? '▲' : dir === 'down' ? '▼' : '●';
+  const trendColor = dir === 'up' ? Colors.green : dir === 'down' ? Colors.coral : Colors.muted;
+  return (
+    <TouchableOpacity
+      activeOpacity={0.85} onPress={onPress} {...hoverProps}
+      style={[
+        horizontal ? styles.tRowH : styles.tRow,
+        { borderLeftColor: t.color },
+        active ? { backgroundColor: t.color + '18', borderColor: t.color + '66' } : null,
+        !active && hovered && isWeb ? ({ backgroundColor: 'rgba(255,255,255,0.04)', borderColor: t.color + '44' } as any) : null,
+        isWeb ? ({ transition: 'all .15s ease', cursor: 'pointer' } as any) : null,
+      ]}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 7 }}>
+        <Text style={{ fontSize: 15 }}>{t.emoji}</Text>
+        <Text style={[styles.tSym, monoText, active && { color: t.color }]}>{t.ticker}</Text>
+      </View>
+      {!horizontal ? <Text style={styles.tName} numberOfLines={1}>{t.nombre}</Text> : null}
+      <View style={styles.tRight}>
+        {!horizontal ? <TickerSpark data={t.spark} color={t.color} /> : null}
+        <View style={{ alignItems: 'flex-end' }}>
+          <Text style={[styles.tQuote, monoText, { color: t.color }]}>{t.madurez}%</Text>
+          <Text style={[styles.tTrend, monoText, { color: trendColor }]}>{glyph} {t.estado}</Text>
+        </View>
+      </View>
+    </TouchableOpacity>
   );
 }
 
@@ -381,7 +533,7 @@ const styles = StyleSheet.create({
   anclaBadge: { borderRadius: BorderRadius.full, borderWidth: 1, paddingVertical: 3, paddingHorizontal: 9 },
   anclaBadgeText: { fontSize: 9, fontWeight: '800', letterSpacing: 0.8 },
   tileMetricLabel: { fontSize: 9, fontWeight: '700', color: Colors.smallLabel, letterSpacing: 0.8 },
-  tileMetricVal: { fontSize: FontSize.titleMd, fontWeight: '800', marginTop: 1, letterSpacing: -0.3, ...(Platform.OS === 'web' ? ({ fontVariantNumeric: 'tabular-nums' } as any) : {}) },
+  tileMetricVal: { fontSize: FontSize.titleMd, fontWeight: '800', marginTop: 1, letterSpacing: -0.2, ...monoText },
   tileCta: { borderWidth: 1, borderRadius: BorderRadius.full, paddingVertical: 5, paddingHorizontal: 12 },
   tileCtaText: { fontSize: FontSize.labelMd, fontWeight: '800' },
   // placeholder tile
@@ -398,4 +550,62 @@ const styles = StyleSheet.create({
   tinyTile: { ...card, flexDirection: 'row', alignItems: 'center', padding: Spacing.md, borderLeftWidth: 3, borderRadius: BorderRadius.lg },
   tinyName: { fontSize: FontSize.labelLg, fontWeight: '700', color: Colors.onSurface, letterSpacing: -0.1 },
   tinyCat: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 2 },
+
+  // ── TerminalHeader (masthead) ──
+  mast: {
+    backgroundColor: '#0B1424',
+    borderRadius: BorderRadius.lg,
+    borderWidth: 1,
+    borderColor: Hairline.accentSoft,
+    paddingVertical: Spacing.md,
+    paddingHorizontal: Spacing.lg,
+    overflow: 'hidden',
+    ...Elevation.md,
+  },
+  mastHairline: { position: 'absolute', top: 0, left: 0, right: 0, height: 2, backgroundColor: Colors.gold, opacity: 0.55 },
+  mastRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: Spacing.md },
+  mastDot: { width: 8, height: 8, borderRadius: 4 },
+  mastWord: { fontSize: FontSize.bodyLg, fontWeight: '800', color: Colors.onSurface, letterSpacing: 1.4 },
+  mastMercado: { borderWidth: 1, borderColor: Colors.green + '55', backgroundColor: Colors.green + '18', borderRadius: BorderRadius.sm, paddingVertical: 2, paddingHorizontal: 7 },
+  mastMercadoTxt: { fontSize: 8, fontWeight: '800', color: Colors.green, letterSpacing: 0.8, ...monoText },
+  mastMetaRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md, flexWrap: 'wrap' },
+  mastMetaCell: { alignItems: 'flex-start' },
+  mastMetaLabel: { fontSize: 8, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 1, ...monoText },
+  mastSep: { width: 1, height: 22, backgroundColor: Hairline.medium },
+  cmdHint: { borderWidth: 1, borderColor: Hairline.accentSoft, backgroundColor: Colors.gold + '12', borderRadius: BorderRadius.sm, paddingVertical: 4, paddingHorizontal: 9, marginLeft: 2 },
+  cmdHintTxt: { fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.gold, letterSpacing: 0.5, ...monoText },
+
+  // ── KpiTapeStrip ──
+  tapeClip: { overflow: 'hidden', borderRadius: BorderRadius.md, backgroundColor: 'rgba(255,255,255,0.02)', borderWidth: 1, borderColor: Hairline.soft },
+  tapeRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 7 },
+  tapeItem: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: 12 },
+  tapeLabel: { fontSize: 9, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 0.8 },
+  tapeValue: { fontSize: FontSize.labelMd, fontWeight: '800', color: Colors.onSurface, letterSpacing: 0.2 },
+  tapeSep: { fontSize: FontSize.labelMd, color: Hairline.strong, marginLeft: 4 },
+
+  // ── BrandWatchlist ──
+  wlWrap: { backgroundColor: '#0B1424', borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.medium, padding: Spacing.sm, ...Elevation.sm },
+  wlWrapH: {},
+  wlHead: { flexDirection: 'row', alignItems: 'baseline', justifyContent: 'space-between', paddingHorizontal: 6, paddingTop: 4, paddingBottom: 8 },
+  wlHeadTxt: { fontSize: 9, fontWeight: '800', color: Colors.gold, letterSpacing: 1.2, ...monoText },
+  wlHeadSub: { fontSize: 8, color: Colors.smallLabel, letterSpacing: 0.4, ...monoText },
+  wlRowsH: { flexDirection: 'row', gap: Spacing.sm },
+  tRow: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
+    paddingVertical: 8, paddingHorizontal: 9, marginBottom: 5,
+    borderRadius: BorderRadius.md, borderWidth: 1, borderColor: Hairline.soft,
+    borderLeftWidth: 3, gap: 8,
+  },
+  tRowH: {
+    flexDirection: 'row', alignItems: 'center', gap: 8,
+    paddingVertical: 8, paddingHorizontal: 11,
+    borderRadius: BorderRadius.md, borderWidth: 1, borderColor: Hairline.soft, borderLeftWidth: 3,
+    minWidth: 150,
+  },
+  tSym: { fontSize: FontSize.labelMd, fontWeight: '800', color: Colors.onSurfaceVariant, letterSpacing: 0.5 },
+  tName: { flex: 1, fontSize: FontSize.labelSm, color: Colors.muted, marginLeft: 4 } as any,
+  tRight: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  tSpark: { flexDirection: 'row', alignItems: 'flex-end', gap: 1.5, height: 20 },
+  tQuote: { fontSize: FontSize.labelLg, fontWeight: '800', letterSpacing: 0.2 },
+  tTrend: { fontSize: 8, fontWeight: '700', letterSpacing: 0.4, marginTop: 1 },
 });

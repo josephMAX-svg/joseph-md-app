@@ -5,11 +5,8 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
-  Alert,
-  Animated,
   Modal,
   FlatList,
-  ActivityIndicator,
   Platform,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -29,14 +26,20 @@ import {
 import type { AgentReport, TodayMetrics } from '../lib/supabase';
 import ApexSubmitModal from '../components/ApexSubmitModal';
 import AgentReportViewer from '../components/AgentReportViewer';
-import TodayMission from '../components/home/TodayMission';
+import TodayMission, { todayISO, faseActual, mirLabelDe } from '../components/home/TodayMission';
 import BibliotecaHome from '../components/home/BibliotecaHome';
+import CockpitStatusBar, { limaHHMM } from '../components/home/CockpitStatusBar';
+import FlightDeckGauges from '../components/home/FlightDeckGauges';
 import { consumeNavIntent } from '../lib/navIntent';
+import { componerBriefing } from '../lib/homeBriefing';
+import { mirCountdown } from '../lib/dataSource';
 import { useFocusEffect } from '@react-navigation/native';
 
 const TIMER_STORAGE_KEY = '@joseph_md_deep_work_seconds';
 const TIMER_START_KEY = '@joseph_md_deep_work_start';
 const TIMER_SESSION_KEY = '@joseph_md_deep_work_session_id';
+
+const MONO = Platform.OS === 'web' ? "'JetBrains Mono', 'SF Mono', monospace" : undefined;
 
 // ─── Countdown helper ───
 function getCountdown(target: Date): { days: number; hours: number; mins: number } {
@@ -48,34 +51,6 @@ function getCountdown(target: Date): { days: number; hours: number; mins: number
     hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
     mins: Math.floor((diff / (1000 * 60)) % 60),
   };
-}
-
-// ─── Progress Bar ───
-function ProgressBar({ value, color, height = 4 }: { value: number; color: string; height?: number }) {
-  return (
-    <View style={[styles.progressTrack, { height }]}>
-      <View style={[styles.progressValue, { width: `${Math.min(value, 100)}%`, backgroundColor: color, height }]} />
-    </View>
-  );
-}
-
-// ─── Metric Card ───
-function MetricCard({ label, value, unit, color, loading }: { label: string; value: string; unit?: string; color: string; loading?: boolean }) {
-  return (
-    <View style={[styles.metricCard, { borderLeftColor: color, borderLeftWidth: 3 }]}>
-      <Text style={styles.metricLabel}>{label}</Text>
-      <View style={styles.metricRow}>
-        {loading ? (
-          <ActivityIndicator size="small" color={color} />
-        ) : (
-          <>
-            <Text style={[styles.metricValue, { color }]}>{value}</Text>
-            {unit && <Text style={styles.metricUnit}>{unit}</Text>}
-          </>
-        )}
-      </View>
-    </View>
-  );
 }
 
 // ─── Report Card (for notification list) ───
@@ -111,6 +86,7 @@ function ReportCard({ report, onPress }: { report: AgentReport; onPress: () => v
 
 export default function HomeScreen({ navigation }: { navigation?: any }) {
   const [countdown, setCountdown] = useState(getCountdown(new Date('2030-01-01')));
+  const [clock, setClock] = useState(limaHHMM());
   const [timerRunning, setTimerRunning] = useState(false);
   const [timerSeconds, setTimerSeconds] = useState(0);
   const [dwSessionId, setDwSessionId] = useState<string | null>(null);
@@ -119,7 +95,6 @@ export default function HomeScreen({ navigation }: { navigation?: any }) {
   // APEX modals
   const [apexModalVisible, setApexModalVisible] = useState(false);
   const [apexModalTipo, setApexModalTipo] = useState<'manual' | 'dictar_error'>('manual');
-  const [dictarErrorModalVisible, setDictarErrorModalVisible] = useState(false);
 
   // Notification modal
   const [notifModalVisible, setNotifModalVisible] = useState(false);
@@ -134,7 +109,6 @@ export default function HomeScreen({ navigation }: { navigation?: any }) {
   useFocusEffect(
     useCallback(() => {
       if (consumeNavIntent() === 'biblioteca') {
-        // espera al layout y desplaza a la sección Biblioteca
         setTimeout(() => scrollRef.current?.scrollTo({ y: Math.max(0, bibliotecaY.current - 12), animated: true }), 120);
       }
     }, []),
@@ -145,7 +119,7 @@ export default function HomeScreen({ navigation }: { navigation?: any }) {
     getTodayMetrics,
     { cards: 0, deepWorkHours: 0, dominioMIR: 0 },
   );
-  const { data: streak, refetch: refetchStreak } = useSupabaseQuery(getStreak, 0);
+  const { data: streak } = useSupabaseQuery(getStreak, 0);
   const { data: queueCount, refetch: refetchQueue } = useSupabaseQuery(getApexQueueCount, 0);
   const { data: unreadReports, refetch: refetchReports } = useSupabaseQuery(getUnreadReports, []);
   const { data: allReports, refetch: refetchAllReports } = useSupabaseQuery(getAllReports, []);
@@ -158,7 +132,6 @@ export default function HomeScreen({ navigation }: { navigation?: any }) {
       const savedSeconds = await AsyncStorage.getItem(TIMER_STORAGE_KEY);
 
       if (savedStart) {
-        // Timer was running — restore it
         const startTime = parseInt(savedStart, 10);
         const elapsed = Math.floor((Date.now() - startTime) / 1000);
         setTimerSeconds(elapsed);
@@ -168,21 +141,17 @@ export default function HomeScreen({ navigation }: { navigation?: any }) {
         setTimerSeconds(parseInt(savedSeconds, 10));
       }
 
-      // Load accumulated hours
       const hours = await getTodayDeepWorkHours();
       setDwAccumulatedHours(hours);
     })();
   }, []);
 
-  // Greeting based on time of day
-  const hour = new Date().getHours();
-  const greeting = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
-
-  // Countdown timer
+  // Countdown + clock timer
   useEffect(() => {
     const interval = setInterval(() => {
       setCountdown(getCountdown(new Date('2030-01-01')));
-    }, 60000);
+      setClock(limaHHMM());
+    }, 30000);
     return () => clearInterval(interval);
   }, []);
 
@@ -200,31 +169,26 @@ export default function HomeScreen({ navigation }: { navigation?: any }) {
   // ─── Timer Toggle — syncs to Supabase ───
   const handleTimerToggle = async () => {
     if (timerRunning) {
-      // STOPPING
       setTimerRunning(false);
       AsyncStorage.setItem(TIMER_STORAGE_KEY, String(timerSeconds));
       AsyncStorage.removeItem(TIMER_START_KEY);
       AsyncStorage.removeItem(TIMER_SESSION_KEY);
 
-      // Stop Supabase session
       if (dwSessionId) {
         await stopDeepWork(dwSessionId);
         setDwSessionId(null);
       }
 
-      // Refresh accumulated hours
       const hours = await getTodayDeepWorkHours();
       setDwAccumulatedHours(hours);
       refetchMetrics();
     } else {
-      // STARTING
       const now = Date.now();
       setTimerRunning(true);
       setTimerSeconds(0);
       AsyncStorage.setItem(TIMER_START_KEY, String(now));
       AsyncStorage.removeItem(TIMER_STORAGE_KEY);
 
-      // Create Supabase session
       const sessionId = await startDeepWork();
       if (sessionId) {
         setDwSessionId(sessionId);
@@ -233,64 +197,62 @@ export default function HomeScreen({ navigation }: { navigation?: any }) {
     }
   };
 
-  // ─── Refresh all metrics ───
-  const handleRefreshAll = () => {
-    refetchMetrics();
-    refetchStreak();
-    refetchQueue();
-    refetchReports();
-    refetchAllReports();
-  };
-
   // ─── Open report ───
   const handleOpenReport = (report: AgentReport) => {
     setSelectedReport(report);
     setReportViewerVisible(true);
     setNotifModalVisible(false);
-    // Mark as read
     if (!report.leido) {
       markReportRead(report.id);
       refetchReports();
     }
   };
 
+  const iso = todayISO();
   const timerHours = Math.floor(timerSeconds / 3600);
   const timerMins = Math.floor((timerSeconds % 3600) / 60);
   const timerSecs = timerSeconds % 60;
   const timerPresetTotal = 5 * 60 * 60; // 07:45-12:45 = 5h
   const timerProgress = Math.min((timerSeconds / timerPresetTotal) * 100, 100);
+  const liveDeepWorkHours = dwAccumulatedHours + (timerSeconds / 3600);
+  const accumProgress = Math.min((liveDeepWorkHours / 5) * 100, 100);
+
+  const briefing = componerBriefing({
+    encapsTema: 'ENCAPS · tema del cronograma',
+    mirBloque: mirLabelDe(iso),
+    unread: unreadReports.length,
+    apexQueue: queueCount,
+    streak,
+    deepWorkH: liveDeepWorkHours,
+  });
 
   const milestones = [
-    { title: 'Top 50 MIR 2030', opacity: 1.0 },
-    { title: 'Fellowship Mayo 2035', opacity: 0.6 },
-    { title: 'Residency 2037–2041', opacity: 0.3 },
+    { title: 'Top 50 MIR 2030', color: Colors.gold, active: true, next: 'ENCAPS + eval MIR D-1 hoy' },
+    { title: 'Fellowship · Mayo 2035', color: Colors.blue, active: false, next: 'CV competitivo · publicaciones' },
+    { title: 'Residency · 2037–2041', color: Colors.teal, active: false, next: 'USMLE Step 1 en curso' },
   ];
-
-  // Compute live deep work value: accumulated + current session
-  const liveDeepWorkHours = dwAccumulatedHours + (timerSeconds / 3600);
-  const displayDeepWork = metricsLoading
-    ? '...'
-    : String(Math.round(liveDeepWorkHours * 10) / 10);
 
   return (
     <ScrollView ref={scrollRef} style={styles.screen} contentContainerStyle={styles.scrollContent}>
-      {/* ─── Header with Notification Bell ─── */}
-      <View style={styles.header}>
-        <View style={{ flex: 1 }}>
-          <Text style={styles.greeting}>{greeting}, Joseph MD</Text>
-          <Text style={styles.subtitle}>Dermatologist · Mayo Clinic · Rochester, MN</Text>
-        </View>
-        <TouchableOpacity style={styles.bellButton} onPress={() => setNotifModalVisible(true)}>
-          <Text style={styles.bellIcon}>🔔</Text>
-          {unreadReports.length > 0 && (
-            <View style={styles.bellBadge}>
-              <Text style={styles.bellBadgeText}>{unreadReports.length}</Text>
-            </View>
-          )}
-        </TouchableOpacity>
+      {/* ─── COCKPIT STATUS BAR (firma ORO · racha + campana integradas) ─── */}
+      <CockpitStatusBar
+        compact
+        timeLabel={clock}
+        phase={faseActual(iso)}
+        countdownDays={mirCountdown()}
+        online={false}
+        streak={streak}
+        unread={unreadReports.length}
+        onBell={() => setNotifModalVisible(true)}
+      />
+
+      {/* ─── Today at a glance — Morning Briefing ─── */}
+      <View style={styles.briefing}>
+        <Text style={styles.briefingLabel}>TODAY AT A GLANCE</Text>
+        <Text style={styles.briefingTxt}>{briefing}</Text>
       </View>
 
-      {/* ─── APEX Queue Status ─── */}
+      {/* ─── APEX Queue alert (solo alerta real) ─── */}
       {queueCount > 0 && (
         <View style={styles.queueBanner}>
           <Text style={styles.queueBannerText}>
@@ -299,36 +261,60 @@ export default function HomeScreen({ navigation }: { navigation?: any }) {
         </View>
       )}
 
-      {/* ─── Misión de HOY (timeline real del Calendar) ─── */}
+      {/* ─── FLIGHT DECK: Misión de HOY (timeline real del Calendar) ─── */}
       <TodayMission onGo={(s) => navigation?.navigate?.(s)} />
 
-      {/* ─── Biblioteca del fundador (86 libros por niveles, % leído real) ─── */}
+      {/* ─── Deep Work gauge en ORO + quick-actions (APEX / DICTATE) ─── */}
+      <View style={{ marginBottom: Spacing.section }}>
+        <FlightDeckGauges
+          timerRunning={timerRunning}
+          timerProgress={timerProgress}
+          timerHours={timerHours}
+          timerMins={timerMins}
+          timerSecs={timerSecs}
+          liveDeepWorkHours={liveDeepWorkHours}
+          accumProgress={accumProgress}
+          cards={metrics.cards}
+          dominioMIR={metrics.dominioMIR}
+          metricsLoading={metricsLoading}
+          onTimerToggle={handleTimerToggle}
+          onApex={() => { setApexModalTipo('manual'); setApexModalVisible(true); }}
+          onDictate={() => { setApexModalTipo('dictar_error'); setApexModalVisible(true); }}
+        />
+      </View>
+
+      {/* ─── MENTOR DECK — Biblioteca del fundador (cita-hero + canon) ─── */}
       <View onLayout={(e) => { bibliotecaY.current = e.nativeEvent.layout.y; }}>
         <BibliotecaHome onGo={(s) => navigation?.navigate?.(s)} />
       </View>
 
-      {/* ─── Career Milestones ─── */}
+      {/* ─── BANDA SECUNDARIA: Career Milestones (identidad→acción) ─── */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>CAREER MILESTONES</Text>
+        <View style={styles.secHead}>
+          <View style={styles.secRail} />
+          <Text style={styles.secTitle}>CAREER MILESTONES</Text>
+        </View>
         {milestones.map((m, i) => (
-          <View key={i} style={[styles.milestoneCard, { opacity: m.opacity }]}>
-            <View style={styles.milestoneDot} />
-            <Text style={styles.milestoneText}>{m.title}</Text>
-            {i === 0 && (
-              <View style={[styles.chip, { backgroundColor: Colors.blue + '20' }]}>
-                <Text style={[styles.chipText, { color: Colors.blue }]}>ACTIVE</Text>
+          <View key={i} style={[styles.milestoneCard, { borderLeftColor: m.color }, !m.active && { opacity: 0.62 }]}>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.milestoneText}>{m.title}</Text>
+              <Text style={styles.milestoneNext}>→ {m.next}</Text>
+            </View>
+            {m.active && (
+              <View style={[styles.chip, { backgroundColor: m.color + '20', borderColor: m.color + '44' }]}>
+                <Text style={[styles.chipText, { color: m.color }]}>ACTIVE</Text>
               </View>
             )}
           </View>
         ))}
       </View>
 
-      {/* ─── Countdown ─── */}
+      {/* ─── Countdown compacto en ORO ─── */}
       <View style={styles.countdownCard}>
-        <Text style={styles.countdownLabel}>DAYS TO MIR 2030</Text>
+        <Text style={styles.countdownLabel}>COUNTDOWN · MIR 2030</Text>
         <View style={styles.countdownRow}>
           <View style={styles.countdownBlock}>
-            <Text style={styles.countdownNumber}>{countdown.days}</Text>
+            <Text style={[styles.countdownNumber, styles.countdownDays]}>{countdown.days}</Text>
             <Text style={styles.countdownUnit}>DAYS</Text>
           </View>
           <Text style={styles.countdownSep}>:</Text>
@@ -342,83 +328,6 @@ export default function HomeScreen({ navigation }: { navigation?: any }) {
             <Text style={styles.countdownUnit}>MIN</Text>
           </View>
         </View>
-      </View>
-
-      {/* ─── Metrics Grid (2×2) LIVE ─── */}
-      <View style={styles.metricsHeader}>
-        <Text style={styles.sectionTitle}>LIVE METRICS</Text>
-        <TouchableOpacity onPress={handleRefreshAll} style={styles.refreshBtn}>
-          <Text style={styles.refreshIcon}>🔄</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.metricsGrid}>
-        <View style={styles.metricGridItem}>
-          <MetricCard label="Cards today" value={String(metrics.cards)} color={Colors.teal} loading={metricsLoading} />
-        </View>
-        <View style={styles.metricGridItem}>
-          <MetricCard label="Deep Work" value={displayDeepWork} unit="hrs" color={Colors.amber} loading={metricsLoading} />
-        </View>
-        <View style={styles.metricGridItem}>
-          <MetricCard label="MIR Mastery" value={String(metrics.dominioMIR)} unit="%" color={Colors.blue} loading={metricsLoading} />
-        </View>
-        <View style={styles.metricGridItem}>
-          <MetricCard label="Publications" value="0" color={Colors.green} />
-        </View>
-      </View>
-
-      {/* ─── Deep Work Timer ─── */}
-      <View style={styles.timerCard}>
-        <View style={styles.rowBetween}>
-          <Text style={styles.timerTitle}>Deep Work Timer</Text>
-          <Text style={styles.timerPreset}>07:45 – 12:45</Text>
-        </View>
-        <View style={styles.timerDisplay}>
-          <Text style={styles.timerTime}>
-            {String(timerHours).padStart(2, '0')}:{String(timerMins).padStart(2, '0')}:{String(timerSecs).padStart(2, '0')}
-          </Text>
-        </View>
-        <ProgressBar value={timerProgress} color={Colors.amber} height={6} />
-        {/* Accumulated hours today */}
-        <Text style={styles.timerAccum}>
-          Accumulated today: {Math.round(liveDeepWorkHours * 10) / 10}h
-        </Text>
-        <TouchableOpacity
-          style={[styles.timerButton, timerRunning && styles.timerButtonStop]}
-          onPress={handleTimerToggle}
-        >
-          <Text style={styles.timerButtonText}>{timerRunning ? '■  STOP' : '▶  START'}</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* ─── Streak ─── */}
-      <View style={styles.streakCard}>
-        <Text style={styles.streakEmoji}>🔥</Text>
-        <View>
-          <Text style={styles.streakCount}>{streak} days</Text>
-          <Text style={styles.streakLabel}>CURRENT STREAK</Text>
-        </View>
-      </View>
-
-      {/* ─── Action Buttons ─── */}
-      <View style={styles.actionRow}>
-        <TouchableOpacity
-          style={[styles.actionBtn, { backgroundColor: Colors.blue }]}
-          onPress={() => {
-            setApexModalTipo('manual');
-            setApexModalVisible(true);
-          }}
-        >
-          <Text style={styles.actionBtnText}>APEX 1-TAP</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.actionBtn, { backgroundColor: Colors.purple }]}
-          onPress={() => {
-            setApexModalTipo('dictar_error');
-            setApexModalVisible(true);
-          }}
-        >
-          <Text style={styles.actionBtnText}>DICTATE ERROR</Text>
-        </TouchableOpacity>
       </View>
 
       {/* ─── APEX Submit Modal ─── */}
@@ -490,106 +399,44 @@ export default function HomeScreen({ navigation }: { navigation?: any }) {
 
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: Colors.surface },
-  scrollContent: { paddingHorizontal: Spacing.lg, paddingTop: 60, paddingBottom: 120 },
+  scrollContent: { paddingHorizontal: Spacing.lg, paddingTop: 52, paddingBottom: 120 },
 
-  header: { marginBottom: Spacing['3xl'], flexDirection: 'row', alignItems: 'flex-start' },
-  greeting: { fontSize: FontSize.headlineLg, lineHeight: LineHeight.headlineLg, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.6, marginBottom: Spacing.xs },
-  subtitle: { fontSize: FontSize.bodyMd, lineHeight: LineHeight.bodyMd, color: Colors.onSurfaceVariant, letterSpacing: 0.1 },
-
-  // Notification bell
-  bellButton: {
-    padding: Spacing.sm, position: 'relative',
-    borderRadius: BorderRadius.full,
-    backgroundColor: Colors.surfaceContainerLow,
-    borderWidth: 1, borderColor: Hairline.soft,
-    ...(Platform.OS === 'web' ? { cursor: 'pointer' as any, transition: Motion.base } as any : {}),
-  },
-  bellIcon: { fontSize: 22 },
-  bellBadge: {
-    position: 'absolute', top: -2, right: -2,
-    backgroundColor: Colors.coral, borderRadius: BorderRadius.full,
-    minWidth: 18, height: 18, alignItems: 'center', justifyContent: 'center',
-    paddingHorizontal: 4,
-    borderWidth: 2, borderColor: Colors.surface,
-    ...Elevation.glow(Colors.coral),
-  },
-  bellBadgeText: { fontSize: 10, fontWeight: '800', color: '#FFFFFF', letterSpacing: 0.2 },
+  // Today at a glance
+  briefing: { paddingVertical: 8, paddingHorizontal: 2, marginBottom: Spacing.section },
+  briefingLabel: { fontSize: 9, fontWeight: '800', color: Colors.gold, letterSpacing: 1.6, fontFamily: MONO, marginBottom: 4 },
+  briefingTxt: { fontSize: FontSize.bodyMd, lineHeight: 20, color: Colors.onSurface, letterSpacing: 0.2 },
 
   // Queue banner
   queueBanner: {
-    backgroundColor: Colors.teal + '14',
+    backgroundColor: Colors.coral + '14',
     borderRadius: BorderRadius.lg,
     padding: Spacing.md,
     marginBottom: Spacing.section,
-    borderWidth: 1, borderColor: Hairline.accentSoft,
+    borderWidth: 1, borderColor: Colors.coral + '22',
     borderLeftWidth: 3,
-    borderLeftColor: Colors.teal,
+    borderLeftColor: Colors.coral,
   },
-  queueBannerText: { fontSize: FontSize.bodyMd, color: Colors.teal, fontWeight: '600', letterSpacing: 0.1 },
+  queueBannerText: { fontSize: FontSize.bodyMd, color: Colors.coral, fontWeight: '600', letterSpacing: 0.1 },
 
   section: { marginBottom: Spacing.section },
-  sectionTitle: { fontSize: FontSize.labelMd, lineHeight: LineHeight.labelMd, fontWeight: '700', color: Colors.smallLabel, letterSpacing: 1.4, textTransform: 'uppercase', marginBottom: Spacing.md },
+  secHead: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: Spacing.sm },
+  secRail: { width: 3, height: 12, borderRadius: 2, backgroundColor: Colors.gold },
+  secTitle: { fontSize: 10, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 1.2, fontFamily: MONO },
 
-  milestoneCard: { backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, padding: Spacing.md, marginBottom: Spacing.sm, flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: Hairline.soft, ...Elevation.sm },
-  milestoneDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: Colors.blue, marginRight: Spacing.md, ...Elevation.glow(Colors.blue) },
-  milestoneText: { fontSize: FontSize.bodyMd, color: Colors.onSurface, fontWeight: '500', flex: 1, letterSpacing: 0.1 },
-  chip: { borderRadius: BorderRadius.full, paddingVertical: 3, paddingHorizontal: 9, borderWidth: 1, borderColor: Colors.blue + '33' },
+  milestoneCard: { backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, padding: Spacing.md, marginBottom: Spacing.sm, flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: Hairline.soft, borderLeftWidth: 3, ...Elevation.sm },
+  milestoneText: { fontSize: FontSize.bodyMd, color: Colors.onSurface, fontWeight: '600', letterSpacing: 0.1 },
+  milestoneNext: { fontSize: 10, color: Colors.muted, marginTop: 2, letterSpacing: 0.2 },
+  chip: { borderRadius: BorderRadius.full, paddingVertical: 3, paddingHorizontal: 9, borderWidth: 1 },
   chipText: { fontSize: FontSize.labelSm, fontWeight: '800', letterSpacing: 0.6 },
 
-  countdownCard: { backgroundColor: Colors.surfaceContainer, borderRadius: BorderRadius.xl, padding: Spacing.xl, marginBottom: Spacing.section, alignItems: 'center', borderWidth: 1, borderColor: Hairline.soft, ...Elevation.md },
-  countdownLabel: { fontSize: FontSize.labelMd, fontWeight: '700', color: Colors.smallLabel, letterSpacing: 1.4, textTransform: 'uppercase', marginBottom: Spacing.lg },
+  countdownCard: { backgroundColor: Colors.surfaceContainer, borderRadius: BorderRadius.xl, padding: Spacing.xl, marginBottom: Spacing.section, alignItems: 'center', borderWidth: 1, borderColor: Hairline.soft, borderTopWidth: 2, borderTopColor: Hairline.accentSoft, ...Elevation.md },
+  countdownLabel: { fontSize: FontSize.labelMd, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 1.4, marginBottom: Spacing.lg, fontFamily: MONO },
   countdownRow: { flexDirection: 'row', alignItems: 'center' },
   countdownBlock: { alignItems: 'center', minWidth: 64 },
-  countdownNumber: { fontSize: FontSize.displaySm, lineHeight: LineHeight.displaySm, fontWeight: '800', color: Colors.blue, letterSpacing: -1, fontVariant: ['tabular-nums'] },
-  countdownUnit: { fontSize: FontSize.labelSm, fontWeight: '700', color: Colors.muted, letterSpacing: 1.2, marginTop: 2 },
+  countdownNumber: { fontSize: 34, lineHeight: 40, fontWeight: '300', color: Colors.onSurfaceVariant, letterSpacing: -0.5, fontVariant: ['tabular-nums'], fontFamily: MONO },
+  countdownDays: { fontSize: 48, fontWeight: '200', color: Colors.gold },
+  countdownUnit: { fontSize: FontSize.labelSm, fontWeight: '700', color: Colors.smallLabel, letterSpacing: 1.2, marginTop: 2, fontFamily: MONO },
   countdownSep: { fontSize: FontSize.headlineSm, fontWeight: '200', color: Colors.outlineVariant, marginHorizontal: Spacing.sm },
-
-  // Metrics header with refresh
-  metricsHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: Spacing.md },
-  refreshBtn: {
-    padding: Spacing.xs, borderRadius: BorderRadius.full,
-    ...(Platform.OS === 'web' ? { cursor: 'pointer' as any, transition: Motion.base } as any : {}),
-  },
-  refreshIcon: { fontSize: 16 },
-
-  metricsGrid: { flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: -4, marginBottom: Spacing.section },
-  metricGridItem: { width: '50%', paddingHorizontal: 4, marginBottom: 8 },
-  metricCard: { backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, padding: Spacing.md, borderLeftWidth: 3, borderWidth: 1, borderColor: Hairline.soft, ...Elevation.sm },
-  metricLabel: { fontSize: FontSize.labelSm, fontWeight: '700', color: Colors.smallLabel, letterSpacing: 0.8, textTransform: 'uppercase', marginBottom: Spacing.xs },
-  metricRow: { flexDirection: 'row', alignItems: 'baseline', minHeight: 30 },
-  metricValue: { fontSize: FontSize.headlineSm, lineHeight: LineHeight.headlineSm, fontWeight: '800', letterSpacing: -0.5, fontVariant: ['tabular-nums'] },
-  metricUnit: { fontSize: FontSize.labelSm, fontWeight: '700', color: Colors.muted, marginLeft: 4, textTransform: 'uppercase', letterSpacing: 0.4 },
-
-  timerCard: { backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.xl, padding: Spacing.xl, marginBottom: Spacing.section, borderWidth: 1, borderColor: Hairline.soft, ...Elevation.md },
-  rowBetween: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: Spacing.lg },
-  timerTitle: { fontSize: FontSize.titleMd, lineHeight: LineHeight.titleMd, fontWeight: '700', color: Colors.onSurface, letterSpacing: -0.2 },
-  timerPreset: { fontSize: FontSize.labelSm, color: Colors.amber, fontWeight: '700', letterSpacing: 0.6, fontVariant: ['tabular-nums'] },
-  timerDisplay: { alignItems: 'center', marginBottom: Spacing.lg },
-  timerTime: { fontSize: 48, fontWeight: '200', color: Colors.amber, letterSpacing: 2, fontVariant: ['tabular-nums'] },
-  timerAccum: { fontSize: FontSize.labelSm, color: Colors.muted, textAlign: 'center', marginTop: Spacing.sm, marginBottom: Spacing.sm, letterSpacing: 0.3, fontVariant: ['tabular-nums'] },
-  timerButton: {
-    backgroundColor: Colors.amber, borderRadius: BorderRadius.lg, paddingVertical: Spacing.md, alignItems: 'center', marginTop: Spacing.md,
-    ...Elevation.glow(Colors.amber),
-    ...(Platform.OS === 'web' ? { cursor: 'pointer' as any, transition: Motion.base } as any : {}),
-  },
-  timerButtonStop: { backgroundColor: Colors.coral, ...Elevation.glow(Colors.coral) },
-  timerButtonText: { color: '#0B1628', fontSize: FontSize.labelLg, fontWeight: '800', letterSpacing: 1.2 },
-
-  progressTrack: { height: 4, backgroundColor: Colors.surfaceContainerHighest, borderRadius: BorderRadius.full, overflow: 'hidden' },
-  progressValue: { height: 4, borderRadius: BorderRadius.full },
-
-  streakCard: { backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.xl, padding: Spacing.lg, marginBottom: Spacing.section, flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: Hairline.soft, ...Elevation.sm },
-  streakEmoji: { fontSize: 32, marginRight: Spacing.md },
-  streakCount: { fontSize: FontSize.headlineSm, lineHeight: LineHeight.headlineSm, fontWeight: '800', color: Colors.amber, letterSpacing: -0.3, fontVariant: ['tabular-nums'] },
-  streakLabel: { fontSize: FontSize.labelSm, fontWeight: '700', color: Colors.smallLabel, letterSpacing: 1.2 },
-
-  actionRow: { flexDirection: 'row', gap: Spacing.sm },
-  actionBtn: {
-    flex: 1, borderRadius: BorderRadius.lg, paddingVertical: Spacing.md, alignItems: 'center',
-    ...Elevation.sm,
-    ...(Platform.OS === 'web' ? { cursor: 'pointer' as any, transition: Motion.base } as any : {}),
-  },
-  actionBtnText: { color: '#FFFFFF', fontSize: FontSize.labelMd, fontWeight: '800', letterSpacing: 1 },
 
   // ─── Notifications Modal ───
   notifContainer: { flex: 1, backgroundColor: Colors.surface },

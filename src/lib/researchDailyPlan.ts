@@ -66,7 +66,57 @@ export const REC: Record<string, { label: string; url: string }> = {
   SEMSCH: { label: 'Semantic Scholar · Academic Graph API', url: 'https://api.semanticscholar.org/api-docs/graph' },
   UNPAY:  { label: 'Unpaywall · texto completo OA legal por DOI', url: 'https://unpaywall.org/products/api' },
   CROSSREF:{ label: 'Crossref · verificar DOI + CSL-JSON de citas', url: 'https://www.crossref.org/documentation/retrieve-metadata/content-negotiation/' },
+  // ── Aditivos (materiales de élite) — competencias transversales verificadas jul-2026 ──
+  TOP:    { label: 'TOP Guidelines · ciencia abierta (Center for Open Science)', url: 'https://www.cos.io/initiatives/top-guidelines' },
+  BBR:    { label: 'Harrell · Biostatistics for Biomedical Research (BBR)', url: 'https://hbiostat.org/bbr/' },
+  GTS:    { label: 'gtsummary · Table 1 + tablas de regresión publication-ready', url: 'https://www.danieldsjoberg.com/gtsummary/' },
+  EPIRSURV:{ label: 'Epidemiologist R Handbook · análisis de supervivencia', url: 'https://www.epirhandbook.com/en/new_pages/survival_analysis.html' },
+  ICMJE:  { label: 'ICMJE · Recommendations (autoría + conducta)', url: 'https://www.icmje.org/recommendations/' },
+  COPE:   { label: 'COPE · guías de integridad de publicación', url: 'https://publicationethics.org/guidance/Guidelines' },
+  CREDIT: { label: 'CRediT · taxonomía de contribución (NISO)', url: 'https://credit.niso.org/' },
+  SCIWRITE:{ label: 'Writing in the Sciences · peer review & rebuttal (Sainani)', url: 'https://www.coursera.org/learn/sciwrite' },
+  REBUTTAL:{ label: 'PLOS · How to write a persuasive rebuttal', url: 'https://plos.org/resource/how-to-write-a-persuasive-response-to-reviewers/' },
+  PHRASE: { label: 'Academic Phrasebank (Manchester) · frases por sección', url: 'https://www.phrasebank.manchester.ac.uk/' },
+  TURING: { label: 'The Turing Way · investigación reproducible', url: 'https://the-turing-way.netlify.app/' },
+  FAIR:   { label: 'FAIR data principles (GO FAIR)', url: 'https://www.go-fair.org/fair-principles/' },
 };
+
+/**
+ * ★ MAESTRÍA TRANSVERSAL (aditivo) — módulos de competencia que atraviesan TODAS las fases del plan,
+ * no un día concreto. Cierran los gaps del brief (integridad/ética, regresión clínica aplicada,
+ * ciencia abierta, peer review post-submit, redacción no-nativo, gestión de datos reproducible).
+ * Se renderiza en ResearchHub → Panel. NO altera el calendario ni los átomos de DIAS: es contenido.
+ */
+export interface MaestriaModulo {
+  id: string; titulo: string; anclaFase: string; porQue: string;
+  drill: string; recs: string[];
+}
+export const RESEARCH_MAESTRIA: MaestriaModulo[] = [
+  { id: 'openscience', titulo: 'Ciencia abierta & reproducibilidad', anclaFase: 'transversal · refuerza R1–R2',
+    porQue: 'Pre-registro (PROSPERO/OSF), registered reports y TOP guidelines cierran HARKing/p-hacking. Es competencia esperada en journals top y ya tienes OSF en el loop.',
+    drill: 'Antes de tocar datos: congela hipótesis + análisis en OSF; marca qué es confirmatorio vs exploratorio.',
+    recs: ['TOP', 'OSF', 'TURING'] },
+  { id: 'regresion', titulo: 'Regresión clínica aplicada (logística · Cox · Table 1)', anclaFase: 'transversal · habilita original-research (base pública)',
+    porQue: 'Convierte la estadística de "solo meta-análisis" en capacidad de original-research con base pública (NHANES/SEER · el target de mayor ROI). gtsummary da tablas listas para revista.',
+    drill: 'Con un dataset público: 1 modelo logístico + 1 Cox; reporta con gtsummary::tbl_regression (OR/HR + IC95%).',
+    recs: ['BBR', 'GTS', 'EPIRSURV'] },
+  { id: 'integridad', titulo: 'Integridad de publicación · gate ICMJE/COPE/CRediT', anclaFase: 'gate previo al Submit (R38–R40)',
+    porQue: 'Evita problemas de autoría/ética y profesionaliza el envío. Alto valor, bajo coste: checklist ICMJE de autoría + COPE + roles CRediT antes de mandar.',
+    drill: 'Checklist ICMJE de 4 criterios de autoría para cada autor + asignar roles CRediT + declarar conflictos.',
+    recs: ['ICMJE', 'COPE', 'CREDIT'] },
+  { id: 'postsubmit', titulo: 'Post-submit · responder a revisores (rebuttal) + hacer peer review', anclaFase: 'después de R40 (Submit)',
+    porQue: 'El plan termina en Submit, pero el 80% del trabajo de publicar es la revisión. Aprender a escribir un rebuttal punto-por-punto y a revisar cierra el ciclo.',
+    drill: 'Plantilla de rebuttal: cita cada comentario → respuesta → cambio exacto (línea/tabla) en tono cortés.',
+    recs: ['SCIWRITE', 'REBUTTAL'] },
+  { id: 'phrasebank', titulo: 'Redacción a nivel publicación (no-nativo) · micro-drill R8', anclaFase: 'micro-drill en cada átomo de R8',
+    porQue: 'Palanca directa de calidad de escritura para no-nativo. Academic Phrasebank ancla frases idiomáticas por sección; convierte la fase de manuscrito en práctica diaria.',
+    drill: '2 frases del Phrasebank por sección que redactes hoy (Introducing · Reporting results · Discussing limitations).',
+    recs: ['PHRASE', 'SCIWRITE'] },
+  { id: 'datos', titulo: 'Gestión de datos reproducible (data dictionary · README · versionado)', anclaFase: 'transversal · track de base pública',
+    porQue: 'Habilita el original-research de mayor ROI con el estándar reproducible (FAIR) que exigen revistas serias: diccionario de datos, README del dataset y versionado.',
+    drill: 'Crea data dictionary (variable · tipo · unidad · rango) + README FAIR + versiona el script de limpieza.',
+    recs: ['TURING', 'FAIR'] },
+];
 
 /**
  * ★ TOP 2026 (verificado) — recursos de ÉLITE GRATIS por capa del ciclo de research.
@@ -110,16 +160,18 @@ export const RESEARCH_RECURSOS_TOP: { capa: string; items: RecursoTopResearch[] 
 ];
 
 export type FaseId = 'R0' | 'R1' | 'R2' | 'R3' | 'R4' | 'R5' | 'R6' | 'R7' | 'R8';
+// Colores de fase en JOYA APAGADA (mapeados a tokens · quiet-luxury). Antes: #0FD4A0/#2E7CF6/#F5A623/
+// #F56342/#A78BFA neón. teal→#6BB8B0 · sapphire→#4F7DD6 · brass→#B8934E · coral→#C56A5A · amatista→#9A7BC8.
 export const FASE_INFO: Record<FaseId, { nombre: string; color: string; pilar: string }> = {
-  R0: { nombre: 'Cimientos & método', color: '#0FD4A0', pilar: 'base' },
-  R1: { nombre: 'Pregunta & protocolo', color: '#0FD4A0', pilar: 'Reporte' },
-  R2: { nombre: 'Registro PROSPERO', color: '#2E7CF6', pilar: 'Registro' },
-  R3: { nombre: 'Búsqueda N bases', color: '#2E7CF6', pilar: 'Reporte' },
-  R4: { nombre: 'Screening', color: '#F5A623', pilar: 'Conducción' },
-  R5: { nombre: 'Extracción', color: '#F5A623', pilar: 'Conducción' },
-  R6: { nombre: 'Sesgo & GRADE', color: '#F56342', pilar: 'Evaluación' },
-  R7: { nombre: 'Meta-análisis en R', color: '#A78BFA', pilar: 'Conducción' },
-  R8: { nombre: 'Manuscrito & envío', color: '#F56342', pilar: 'Reporte' },
+  R0: { nombre: 'Cimientos & método', color: '#6BB8B0', pilar: 'base' },
+  R1: { nombre: 'Pregunta & protocolo', color: '#6BB8B0', pilar: 'Reporte' },
+  R2: { nombre: 'Registro PROSPERO', color: '#4F7DD6', pilar: 'Registro' },
+  R3: { nombre: 'Búsqueda N bases', color: '#4F7DD6', pilar: 'Reporte' },
+  R4: { nombre: 'Screening', color: '#B8934E', pilar: 'Conducción' },
+  R5: { nombre: 'Extracción', color: '#B8934E', pilar: 'Conducción' },
+  R6: { nombre: 'Sesgo & GRADE', color: '#C56A5A', pilar: 'Evaluación' },
+  R7: { nombre: 'Meta-análisis en R', color: '#9A7BC8', pilar: 'Conducción' },
+  R8: { nombre: 'Manuscrito & envío', color: '#C56A5A', pilar: 'Reporte' },
 };
 
 export interface DiaResearch {

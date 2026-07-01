@@ -11,6 +11,8 @@ import {
 import { detalleDe, pesoColor } from '../../lib/mirDetalleData';
 import { mirObsUrl } from '../../lib/obsidianMap';
 import { recursosDe } from '../../lib/mirDriveResources';
+import { ANKIWEB } from '../../lib/ankiLinks';
+import { CrosslinkRail } from './ConsoleKit';
 
 /**
  * MirTemarioExplorer — las 30 asignaturas REALES de ProMIR por rentabilidad.
@@ -20,7 +22,8 @@ import { recursosDe } from '../../lib/mirDriveResources';
  *  (3) Rentabilidad (chart Distribución MIR).
  *  (4) Resúmenes de Drive (Mirnion / MIR 2022) por asignatura.
  */
-const AMBER = '#F5A623';
+const AMBER = '#F5A623';        // ámbar España (acento de la consola MIR)
+const DRIVE = Colors.blue;      // sapphire apagado para "Drive/ruta" — de #7BB1FF/#AFCBFF neón
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
 const LEGEND: RentColor[] = ['roja', 'naranja', 'amarilla', 'verde', 'verdeOsc'];
 
@@ -103,7 +106,7 @@ function AsignaturaCard({ a, index }: { a: MirAsignatura; index: number }) {
                   <View style={st.rutaStep}>
                     <Text style={st.rutaN}>1</Text>
                     <Text style={st.rutaTxt}>
-                      <Text style={st.rutaB}>Esquema.</Text> Lee primero un resumen para captar la estructura{recursos.length ? ` → ${recursos.map((r) => r.fuente).filter((v, i, a) => a.indexOf(v) === i).join(' / ')}` : ''} + el <Text style={{ color: '#AFCBFF' }}>Resumen oficial de ProMIR</Text> (pestaña Recursos).
+                      <Text style={st.rutaB}>Esquema.</Text> Lee primero un resumen para captar la estructura{recursos.length ? ` → ${recursos.map((r) => r.fuente).filter((v, i, a) => a.indexOf(v) === i).join(' / ')}` : ''} + el <Text style={{ color: DRIVE }}>Resumen oficial de ProMIR</Text> (pestaña Recursos).
                     </Text>
                   </View>
                   {det.resumenVideoDur ? (
@@ -129,6 +132,14 @@ function AsignaturaCard({ a, index }: { a: MirAsignatura; index: number }) {
                   <Text style={[st.boxLbl, { color: tier.color }]}>◆ Enfoque ProMIR</Text>
                   <Text style={st.enfoqueTxt}>{det.enfoque}</Text>
                 </View>
+
+                {/* CROSSLINK · la misma asignatura en 4 capas (grafo AMBOSS) */}
+                <CrosslinkRail fallbackUrl={capUrl(a.chapters[0].capId)} nodes={[
+                  { icon: '▶', kind: 'Vídeo', label: det.resumenVideoDur ? `Videoclase resumen · ${det.resumenVideoDur}` : 'Videoclase ProMIR', url: introCap ? capUrl(introCap.capId) : null, accent: Colors.green },
+                  { icon: '🅠', kind: 'Preguntas', label: `Banco ProMIR/AMIR · ${a.name}`, url: capUrl(a.chapters[0].capId), accent: AMBER },
+                  { icon: '🗂️', kind: 'Flashcard', label: `Anki · ${a.name}`, url: ANKIWEB, accent: Colors.teal },
+                  { icon: '◆', kind: 'Obsidian', label: 'Nota madre', note: 'Vault', url: mirObsUrl(a.chapters[0].capId), accent: Colors.purple },
+                ]} />
 
                 {/* Prioridad 1ª vuelta (cruce ProMIR + Peso + rabi_94) */}
                 {det.prioridad1V?.length > 0 && (
@@ -180,7 +191,7 @@ function AsignaturaCard({ a, index }: { a: MirAsignatura; index: number }) {
             {/* Resúmenes de Drive */}
             {recursos.length > 0 && (
               <View style={st.driveBox}>
-                <Text style={[st.boxLbl, { color: '#7BB1FF' }]}>📄 Resúmenes (tu Google Drive) — léelos para el esquema</Text>
+                <Text style={[st.boxLbl, { color: DRIVE }]}>📄 Resúmenes (tu Google Drive) — léelos para el esquema</Text>
                 <View style={st.chipWrap}>
                   {recursos.map((r, i) => (
                     <TouchableOpacity key={i} activeOpacity={0.85} onPress={() => openUrl(r.url)} style={[st.driveChip, r.tipo === 'note' && { borderStyle: 'dashed' }]}>
@@ -202,7 +213,7 @@ function AsignaturaCard({ a, index }: { a: MirAsignatura; index: number }) {
                 </TouchableOpacity>
                 {mirObsUrl(c.capId) && (
                   <TouchableOpacity activeOpacity={0.7} onPress={() => openUrl(mirObsUrl(c.capId)!)} hitSlop={{ top: 6, bottom: 6, left: 4, right: 6 }}>
-                    <Text style={{ fontSize: 13, color: '#A78BFA', width: 20, textAlign: 'center' }}>◆</Text>
+                    <Text style={{ fontSize: 13, color: Colors.purple, width: 20, textAlign: 'center' }}>◆</Text>
                   </TouchableOpacity>
                 )}
               </View>
@@ -224,7 +235,7 @@ export default function MirTemarioExplorer() {
           <Text style={{ color: AMBER, fontWeight: '800' }}>{MIR_TEMARIO_META.totalAsignaturas} asignaturas · {MIR_TEMARIO_META.totalCapitulos} capítulos.</Text>
           {' '}Cada una cruza <Text style={{ color: Colors.onSurface }}>ProMIR</Text> (Enfoque + Peso MIR % por tema + horas + vídeo resumen),{' '}
           <Text style={{ color: AMBER }}>rabi_94</Text> (núcleo 1V), la <Text style={{ color: Colors.onSurface }}>rentabilidad</Text> del chart MIR y tus{' '}
-          <Text style={{ color: '#7BB1FF' }}>resúmenes de Drive</Text> (Mirnion / MIR 2022).
+          <Text style={{ color: DRIVE }}>resúmenes de Drive</Text> (Mirnion / MIR 2022).
         </Text>
         <View style={st.legend}>
           {LEGEND.map((c) => (
@@ -260,7 +271,7 @@ const st = StyleSheet.create({
   prioFlag: { backgroundColor: AMBER + '1A', borderRadius: BorderRadius.full, paddingVertical: 1, paddingHorizontal: 6 },
   prioFlagTxt: { fontSize: 9, fontWeight: '800', color: AMBER },
   driveFlag: { backgroundColor: 'rgba(123,177,255,0.12)', borderRadius: BorderRadius.full, paddingVertical: 1, paddingHorizontal: 6 },
-  driveFlagTxt: { fontSize: 9, fontWeight: '800', color: '#7BB1FF' },
+  driveFlagTxt: { fontSize: 9, fontWeight: '800', color: DRIVE },
   vidFlag: { backgroundColor: Colors.green + '1A', borderRadius: BorderRadius.full, paddingVertical: 1, paddingHorizontal: 6 },
   vidFlagTxt: { fontSize: 9, fontWeight: '800', color: Colors.green },
   caret: { fontSize: 16, color: Colors.muted, width: 18, textAlign: 'center' },
@@ -272,9 +283,9 @@ const st = StyleSheet.create({
   vidBtnTxt: { fontSize: FontSize.labelMd, fontWeight: '700', color: Colors.green },
 
   rutaBox: { borderWidth: 1, borderColor: 'rgba(123,177,255,0.3)', borderRadius: BorderRadius.md, padding: Spacing.md, backgroundColor: 'rgba(123,177,255,0.05)', marginBottom: Spacing.sm },
-  rutaTitle: { fontSize: FontSize.labelMd, fontWeight: '800', color: '#AFCBFF', marginBottom: 8, letterSpacing: 0.2 },
+  rutaTitle: { fontSize: FontSize.labelMd, fontWeight: '800', color: DRIVE, marginBottom: 8, letterSpacing: 0.2 },
   rutaStep: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, marginBottom: 7 },
-  rutaN: { fontSize: 10, fontWeight: '800', color: '#0A1424', backgroundColor: '#7BB1FF', borderRadius: 8, width: 16, height: 16, textAlign: 'center', lineHeight: 16, overflow: 'hidden' },
+  rutaN: { fontSize: 10, fontWeight: '800', color: '#0A0F1C', backgroundColor: DRIVE, borderRadius: 8, width: 16, height: 16, textAlign: 'center', lineHeight: 16, overflow: 'hidden' },
   rutaTxt: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 17 },
   rutaB: { color: Colors.onSurface, fontWeight: '700' },
   boxLbl: { fontSize: 10, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 0.6, textTransform: 'uppercase', marginBottom: 6 },
@@ -310,7 +321,7 @@ const st = StyleSheet.create({
 
   driveBox: { borderWidth: 1, borderColor: 'rgba(123,177,255,0.25)', borderRadius: BorderRadius.md, padding: Spacing.md, backgroundColor: 'rgba(123,177,255,0.04)', marginBottom: Spacing.sm },
   driveChip: { backgroundColor: 'rgba(123,177,255,0.1)', borderRadius: BorderRadius.sm, paddingVertical: 4, paddingHorizontal: 8, borderWidth: 1, borderColor: 'rgba(123,177,255,0.3)', ...WEB_LINK },
-  driveChipTxt: { fontSize: 10, color: '#AFCBFF', fontWeight: '600' },
+  driveChipTxt: { fontSize: 10, color: DRIVE, fontWeight: '600' },
   driveNote: { fontSize: 9, color: Colors.muted, marginTop: 6 },
 
   capRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, paddingVertical: 6, borderTopWidth: 1, borderTopColor: Hairline.soft },

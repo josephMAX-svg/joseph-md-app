@@ -1998,8 +1998,16 @@ export const ENCAPS_ACADEMIAS_RESPALDO: AcademiaRespaldo[] = [
     "url": "https://drive.google.com/drive/folders/1U0aPoXeM9MmCdj7PspvKr5VP-b9RKxZN"
    },
    {
-    "n": "🎥 Videoclases",
+    "n": "🎥 Videoclases (índice)",
     "url": "https://drive.google.com/drive/folders/1RCpVqy_1yF0OBU-OUegTOzHjaZS6FAX8"
+   },
+   {
+    "n": "🎥 Videoclases · GESTIÓN (V) ★ refuerza el punto ciego de Gestión",
+    "url": "https://drive.google.com/drive/folders/1R1cuKS2PV8yCeicl2VXj8NBIhWtNUP9w"
+   },
+   {
+    "n": "🎥 Videoclases · Salud Pública (I)",
+    "url": "https://drive.google.com/drive/folders/1Um9jF2x7VCYLJthUMC2DdoOxp6YuS9dH"
    },
    {
     "n": "🤝 Tutoría General",
@@ -2027,6 +2035,40 @@ export const ENCAPS_ACADEMIAS_RESPALDO: AcademiaRespaldo[] = [
    {
     "n": "📅 Cronograma jun-jul (pdf)",
     "url": "https://drive.google.com/file/d/19kZQFC0bmT3hgmsOlGoyc7GsOnU8_6sc/view"
+   }
+  ]
+ },
+ {
+  "nombre": "THEOMED (Drive)",
+  "tag": "Manuales + material complementario",
+  "url": "https://drive.google.com/drive/folders/1fSub1zVWEcTU_uwZy070pfACYjmrrZZv",
+  "carpetas": [
+   {
+    "n": "🎯 Manuales (PDF por área)",
+    "url": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn"
+   },
+   {
+    "n": "📚 Videoclases asincrónicas",
+    "url": "https://drive.google.com/drive/folders/1c4OKeKMGrfnDs7L2ITfcCnxDVL30ZeKg"
+   },
+   {
+    "n": "🦉 Fase 1",
+    "url": "https://drive.google.com/drive/folders/1G7joPxMz8AeN6-BQ3eaaAaoGEN_VwkaL"
+   },
+   {
+    "n": "🦉 Material Complementario",
+    "url": "https://drive.google.com/drive/folders/1UGO3-hWaaERY5ycYNMMGen29Hfw9v5oe"
+   }
+  ]
+ },
+ {
+  "nombre": "Qx MEDIC (Drive)",
+  "tag": "Espejo Fase 1 (la plataforma QX es la fuente principal)",
+  "url": "https://drive.google.com/drive/folders/1VjSpgpcIUGrIp6DojBErBaECF7GZdaqw",
+  "carpetas": [
+   {
+    "n": "⚕️ Fase 1 (espejo — usar la plataforma QX para lo real)",
+    "url": "https://drive.google.com/drive/folders/1zKynNSzZzPFKZIrVA9YqJIVMYF0kPhBN"
    }
   ]
  }
@@ -2135,16 +2177,20 @@ export const ENCAPS_QX_ACCESOS: FuenteLink[] = [
   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
  },
  {
-  "n": "🧪 Evaluaciones / App Banqueo",
+  "n": "🧪 Evaluaciones / App Banqueo (preguntas)",
   "url": "https://qxmedic-aulavirtual.com/evaluaciones/banqueapp"
+ },
+ {
+  "n": "📈 Tendencias (rentabilidad real por área/tema)",
+  "url": "https://qxmedic-aulavirtual.com/metodo-qx/tendencias"
  }
 ];
 
 export const ENCAPS_FUENTES_META = {
   fichasMinsa: 105,
   fichasAsignadas: 102,
-  academiasRespaldo: 3,
+  academiasRespaldo: 5, // DR LOPEZ · GALENO · VILLAMEDIC · THEOMED · Qx (Drive)
   theomedSimulacros: 8,
   temaSesionMapeados: 37,
-  verificado: '2026-06-23',
+  verificado: '2026-07-01', // re-verificación en vivo (Drive 5 academias + QX + Theomed)
 } as const;

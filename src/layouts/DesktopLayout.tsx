@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Platform } from 'react-native';
 import { Hairline } from '../theme/tokens';
+import { VITALS_URL } from '../config';
 import { desktopStyles, DesktopColors } from '../theme/desktopStyles';
 import { useResponsiveLayout } from '../hooks/useResponsiveLayout';
 import { useSupabaseQuery } from '../hooks/useSupabaseQuery';
@@ -53,6 +54,22 @@ if (Platform.OS === 'web' && typeof document !== 'undefined') {
     `;
     document.head.appendChild(style);
   }
+
+  // Preconnect al origen de VITALS (iframe cross-origin en otro deploy Vercel):
+  // adelanta DNS + TLS + TCP para que su carga sea mucho más rápida al abrir la pestaña.
+  const preId = 'vitals-preconnect';
+  if (!document.getElementById(preId)) {
+    (['preconnect', 'dns-prefetch'] as const).forEach((rel) => {
+      const l = document.createElement('link');
+      l.rel = rel;
+      l.href = VITALS_URL;
+      (l as any).crossOrigin = 'anonymous';
+      document.head.appendChild(l);
+    });
+    const marker = document.createElement('meta');
+    marker.id = preId;
+    document.head.appendChild(marker);
+  }
 }
 
 const webScrollClass: any = Platform.OS === 'web' ? { className: 'desktop-scroll' } : {};
@@ -74,6 +91,20 @@ export default function DesktopLayout() {
   const [chatVisible, setChatVisible] = useState(false);
   const [dictarVisible, setDictarVisible] = useState(false);
   const { showRightPanel, showInlineRightPanel } = useResponsiveLayout();
+  // Precalienta VITALS (iframe pesado en otro origen) en segundo plano cuando el
+  // navegador está ocioso, y lo mantiene montado/oculto → abrir la pestaña es instantáneo.
+  const [warmVitals, setWarmVitals] = useState(false);
+  React.useEffect(() => {
+    if (Platform.OS !== 'web' || typeof window === 'undefined') return;
+    const w: any = window;
+    const id = w.requestIdleCallback
+      ? w.requestIdleCallback(() => setWarmVitals(true), { timeout: 4000 })
+      : w.setTimeout(() => setWarmVitals(true), 2500);
+    return () => {
+      if (w.requestIdleCallback && w.cancelIdleCallback) w.cancelIdleCallback(id);
+      else w.clearTimeout(id);
+    };
+  }, []);
 
   // Sidebar data
   const { data: queueCount, refetch: refetchQueue } = useSupabaseQuery(getApexQueueCount, 0);
@@ -94,7 +125,7 @@ export default function DesktopLayout() {
       case 'Investigación':
         return <DesktopInvestigacionContent />;
       case 'Vitals':
-        return <VitalsScreen />;
+        return null; // VITALS se monta de forma persistente (capa cálida) más abajo
       case 'Synapse':
         return <SynapseScreen variant="desktop" />;
       default:
@@ -102,8 +133,11 @@ export default function DesktopLayout() {
     }
   };
 
-  // VITALS is a full-app iframe — it takes the whole content area (no right panel).
-  const isVitals = activeScreen === 'Vitals';
+  // Full-bleed segments own their entire content area (no shared right panel),
+  // each with its own app-shell — VITALS (iframe) and Derma (clinical atlas).
+  const FULLBLEED_SCREENS = new Set<ScreenName>(['Vitals', 'Derma']);
+  const isFullBleed = FULLBLEED_SCREENS.has(activeScreen);
+  const isVitals = activeScreen === 'Vitals'; // capa VITALS persistente (iframe caliente)
 
   return (
     <View style={desktopStyles.rootContainer}>
@@ -127,8 +161,21 @@ export default function DesktopLayout() {
       <View style={desktopStyles.contentGridWrapper}>
         <View style={desktopStyles.contentGridMain}>
           {renderCenterContent()}
+          {/* VITALS persistente: se monta al estar ocioso y queda oculto hasta abrir la
+              pestaña (iframe caliente = apertura instantánea, sin recargar). */}
+          {(warmVitals || isVitals) && (
+            <View
+              style={[
+                { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 } as any,
+                { display: isVitals ? 'flex' : 'none' } as any,
+              ]}
+              pointerEvents={isVitals ? 'auto' : 'none'}
+            >
+              <VitalsScreen />
+            </View>
+          )}
         </View>
-        {showRightPanel && !isVitals && (
+        {showRightPanel && !isFullBleed && (
           <View
             style={[
               desktopStyles.contentGridAside,

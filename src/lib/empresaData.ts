@@ -75,6 +75,33 @@ export const BRANDS: Record<string, BrandIdentity> = {
   golden: { color: '#B8923F', bright: '#E8C547', emoji: '🐕' },
 };
 
+// ===================== WATCHLIST DEL HOLDING (terminal financiero) =====================
+// Cada marca del grupo cotiza como un "ticker" con su madurez (%) y tendencia. Es
+// metadato de presentación para el raíl de estado (BrandWatchlist), 100% derivado de
+// datos ya existentes. Preserva la jerarquía 70/10/10/10 vía el orden de la lista.
+export type TickerTrend = 'up' | 'down' | 'flat';
+export interface HoldingTicker {
+  id: string;          // id de marca / línea (coincide con el switch de EmpresaHub)
+  ticker: string;      // símbolo corto tipo bolsa
+  nombre: string;
+  emoji: string;
+  color: string;       // acento-ticker (bright)
+  madurez: number;     // 0-100 → "cotización" de madurez de la línea
+  trend: TickerTrend;  // ▲ acelera · ▼ estancada · ● estable
+  estado: string;      // etiqueta corta de estado
+  spark: number[];     // micro-sparkline de madurez (ilustrativo)
+}
+
+// Orden = jerarquía de importancia (Pulso índice primero, luego 70/10/10/10).
+export const HOLDING_WATCHLIST: HoldingTicker[] = [
+  { id: 'pulso',    ticker: 'PLS',  nombre: 'Pulso Health Group', emoji: '💓', color: '#D9BE8A', madurez: 18, trend: 'up',   estado: 'ÍNDICE',        spark: [10, 12, 13, 15, 16, 17, 18] },
+  { id: 'liviano',  ticker: 'LVN',  nombre: 'LIVIANO',            emoji: '⚡', color: '#9DB07F', madurez: 65, trend: 'up',   estado: 'PRE-LANZA',     spark: [40, 46, 52, 55, 59, 62, 65] },
+  { id: 'aurum',    ticker: 'AUR',  nombre: 'AURUM · Closer',     emoji: '🪙', color: '#E6C868', madurez: 4,  trend: 'up',   estado: 'CLOSER DESK',   spark: [0, 0, 1, 2, 2, 3, 4] },
+  { id: 'pirqa',    ticker: 'PRQ',  nombre: 'PIRQA',              emoji: '🍲', color: '#E0856B', madurez: 100,trend: 'flat', estado: 'EN PRODUCCIÓN', spark: [96, 97, 98, 99, 100, 100, 100] },
+  { id: 'terrenos', ticker: 'TERR', nombre: 'Casa Soto Tocas',   emoji: '🏞️', color: '#8FB6E8', madurez: 48, trend: 'up',   estado: 'VENTA ACTIVA',  spark: [30, 34, 38, 41, 44, 46, 48] },
+  { id: 'golden',   ticker: 'GLD',  nombre: 'Qori Golden',        emoji: '🐕', color: '#E8C547', madurez: 22, trend: 'up',   estado: 'PRE-LANZA',     spark: [8, 10, 13, 16, 18, 20, 22] },
+];
+
 // ===================== GRUPO MATRIZ =====================
 
 export const PULSO_GROUP = {

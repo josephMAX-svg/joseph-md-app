@@ -138,6 +138,10 @@ const M = {
   cs25: { nombre: 'Stanford CS25: Transformers United', referente: 'Stanford Online', credencial: 'Seminario con ponentes de los grandes labs', tipo: 'playlist', url: 'https://www.youtube.com/playlist?list=PLoROMvodv4rNiJRchCzutFw5ItR_Z27CM', gratis: 'gratis', duracion: 'charlas de ~60 min', nivel: 'avanzado', porQue: 'Estado del arte contado por quienes lo construyen — funciona como audio', audio: true },
   mlSpec: { nombre: 'Machine Learning Specialization', referente: 'Andrew Ng · DeepLearning.AI', credencial: 'El curso de ML más influyente de la historia', tipo: 'curso', url: 'https://www.coursera.org/specializations/machine-learning-introduction', gratis: '$49/mes (ayuda financiera disponible)', duracion: '3 cursos · ~95 h', nivel: 'avanzado', porQue: 'ML completo por el referente nº1 en educación de IA', audio: true },
   fellows: { nombre: 'Anthropic Fellows Program (LA BECA)', referente: 'Anthropic Alignment Science', credencial: 'Programa oficial con mentores de Anthropic', tipo: 'beca', url: 'https://alignment.anthropic.com/2025/anthropic-fellows-program-2026/', gratis: 'PAGAN: $3,850/semana + ~$15k/mes cómputo', duracion: '4 meses full-time', nivel: 'avanzado', porQue: 'NO pide PhD ni papers ni ML previo: pide Python fluido + ejecución + motivación por AI safety' },
+  // ★ 2026 — DPO: el estándar de alineación en producción (desplazó a RLHF/PPO)
+  dpoPaper: { nombre: 'Direct Preference Optimization (Rafailov et al., 2023)', referente: 'Stanford (Rafailov, Ermon, Manning, Finn)', credencial: 'El paper que reemplazó RLHF por DPO en producción', tipo: 'docs', url: 'https://arxiv.org/abs/2305.18290', gratis: 'gratis', duracion: '~20 páginas', nivel: 'avanzado', porQue: 'GAP 2026: DPO desplazó a RLHF/PPO como estándar de alineación (CS336-2026 enseña SFT+RL+DPO). Cierra el salto de "entiendo RLHF" a "lo que se usa hoy" — leer de la fuente + el capítulo DPO del RLHF Book', audio: true },
+  // ★ 2026 — Ruta JAX mínima (Anthropic entrena en JAX; RE valora JAX/PyTorch)
+  jaxQuickstart: { nombre: 'JAX — Quickstart + Flax (para LLMs)', referente: 'Google DeepMind (JAX/Flax)', credencial: 'El stack en el que Anthropic entrena Claude', tipo: 'docs', url: 'https://docs.jax.dev/en/latest/quickstart.html', gratis: 'gratis', duracion: 'quickstart + tutoriales', nivel: 'avanzado', porQue: 'GAP hard de Anthropic RE: hoy la ruta es 100% PyTorch. Un ancla JAX (jit/grad/vmap + Flax) diferencia para el objetivo Fellows/RE — Anthropic entrena en JAX' },
 
   // Audio para huecos
   lexDario: { nombre: 'Lex Fridman #452 — Dario Amodei (CEO Anthropic)', referente: 'Lex Fridman (MIT) + Dario Amodei', credencial: 'La entrevista más profunda al CEO de Anthropic (+ Olah y Askell)', tipo: 'podcast', url: 'https://lexfridman.com/dario-amodei', gratis: 'gratis', duracion: '~5 h (trocear con timestamps)', nivel: 'intermedio', porQue: 'Visión interna directa: scaling, seguridad, interpretabilidad, carácter de Claude', audio: true },
@@ -242,7 +246,7 @@ export const SYNAPSE_META = {
   titulo: 'SYNAPSE',
   subtitulo: 'MIND · AI-ENGINEERED — médico → especialista en IA nivel Anthropic',
   tesis: 'La sinapsis entre tu cerebro médico y las máquinas. Python, datos, deep learning, agentes, ciberseguridad y post-training — SOLO con los referentes (Anthropic, Stanford, MIT, Harvard, creadores de las herramientas), cero youtubers del momento. 30 min/día en espacios muertos, proyecto público por fase.',
-  accent: '#818CF8',
+  accent: '#7C83D6', // periwinkle — color canónico de la consola (alineado con SidebarAccents.Synapse)
   nota: 'Motor ACTIVO (pestaña ⚡ Hoy): 12 semanas día a día — F0 completa (sem 1-8) + arranque F1/CS50P (sem 9-12) — con lecciones EXACTAS de los temarios reales extraídos el 10-jun-2026 (DATA/SYNAPSE/curricula/). Bloques A 15\' pantalla · B 10\' audio · C 5\' lectura + sábado PC opcional. Progreso manual real (empieza 0%). Las semanas 13+ se regeneran con DATA/_scripts/gen_synapse_plan.js al avanzar de fase.',
 } as const;
 
@@ -288,7 +292,7 @@ export const SYNAPSE_FASES: SynapseFase[] = [
     id: 'f6', fase: 'F6', titulo: 'Nivel Anthropic: post-training + alignment', duracion: 'sem 61+', estado: 'meta',
     desc: 'RLHF, ARENA (la prep real del Fellows), MLOps de Berkeley, DSA del MIT y la teoría élite de Stanford. La meta: aplicar al Anthropic Fellows Program.',
     entregable: 'Aplicación al Anthropic Fellows Program + portfolio público completo',
-    materiales: [M.rlhfBook, M.arena, M.transformerCircuits, M.fsdl, M.mit6006, M.cs50w, M.cs229, M.cs224n, M.cs25, M.fellows],
+    materiales: [M.rlhfBook, M.dpoPaper, M.arena, M.transformerCircuits, M.jaxQuickstart, M.fsdl, M.mit6006, M.cs50w, M.cs229, M.cs224n, M.cs25, M.fellows],
   },
 ];
 
@@ -300,11 +304,12 @@ export const SYNAPSE_BIBLIOTECA: { categoria: string; icon: string; items: Synap
   { categoria: 'Matemática visual', icon: '🧮', items: [M.nn3b1b, M.algebra3b1b, M.calculo3b1b] },
   { categoria: 'Deep learning', icon: '🧠', items: [M.karpathyIntro, M.karpathyDeep, M.zeroToHero, M.nanochat, M.cs336, M.raschkaScratch, M.mit6s191, M.fastai, M.cs50ai] },
   { categoria: 'Agentes & LLM engineering', icon: '🤖', items: [M.hfAgents, M.hfLlm, M.dlaiMcp, M.dlaiComputerUse, M.dlaiClaudeCode, M.dlaiLanggraph, M.langchainAcademy, M.n8nLevelOne, M.n8nAdvancedAi, M.openaiCookbook, M.openaiAgentsGuide, M.aiEngineering, M.raschkaLlm, M.aheadOfAi] },
-  { categoria: 'Evals & producción (★ TOP 2026)', icon: '📈', items: [M.hamelEvals, M.aieBook, M.llmZoomcamp, M.evalsDocs] },
+  { categoria: 'EVALS · pilar transversal (★ el skill #1 2026)', icon: '📈', items: [M.hamelEvals, M.evalsDocs, M.anthropicCourses, M.aieBook, M.hamelLlmJudge, M.hamelFieldGuide, M.llmZoomcamp] },
+  { categoria: 'RAG · embeddings · vector search (core AI-engineer aplicado)', icon: '🔎', items: [M.llmZoomcamp, M.aiEngineering, M.aieBook, M.claudeApi, M.n8nAdvancedAi] },
   { categoria: 'Ciberseguridad', icon: '🛡', items: [M.owaspTop10, M.owaspLlm, M.portswigger, M.webLlmAttacks, M.willisonPi, M.lethalTrifecta, M.cs253, M.tryhackme, M.htbAiRedTeam, M.manyShotJb, M.constClassifiers, M.rsp] },
-  { categoria: 'Teoría élite Stanford/MIT/Berkeley', icon: '🎓', items: [M.cs336, M.cs229, M.cs224n, M.cs25, M.mit6006, M.fsdl, M.cs50w, M.mlSpec, M.rlhfBook, M.arena, M.transformerCircuits] },
+  { categoria: 'Teoría élite Stanford/MIT/Berkeley (CS336 = eje F3→F6)', icon: '🎓', items: [M.cs336, M.cs229, M.cs224n, M.cs25, M.mit6006, M.fsdl, M.cs50w, M.mlSpec, M.rlhfBook, M.dpoPaper, M.arena, M.transformerCircuits] },
   { categoria: 'CS-core: la base sólida (teachyourselfcs · 9 pilares)', icon: '🏗', items: [M.teachYourselfCs, M.composingPrograms, M.ostep, M.nand2tetris, M.csapp, M.kuroseRoss, M.cs144, M.mit6042, M.mit6006, M.skiena] },
-  { categoria: 'Frontier-lab avanzado (RL · papers · interpretabilidad)', icon: '🔬', items: [M.attentionPaper, M.annotatedTransformer, M.spinningUp, M.hfDeepRl, M.lilLog, M.mlEngineering, M.neelNanda, M.biologyLlm, M.bluedotAlignment] },
+  { categoria: 'Frontier-lab avanzado (RL · DPO · JAX · papers · interpretabilidad)', icon: '🔬', items: [M.attentionPaper, M.annotatedTransformer, M.spinningUp, M.dpoPaper, M.jaxQuickstart, M.hfDeepRl, M.lilLog, M.mlEngineering, M.neelNanda, M.biologyLlm, M.bluedotAlignment] },
   { categoria: 'Backend de producción (Python · APIs · datos · system design)', icon: '⚙️', items: [M.roadmapBackend, M.fastapiTut, M.djangoRest, M.postgresqlTut, M.cs50sql, M.pytest, M.testdriven, M.arjancodes, M.mit6031, M.dockerGetStarted, M.twelveFactor, M.sysDesignPrimer, M.bytebytego, M.ddia, M.grokkingSD] },
   { categoria: 'Frontend & diseño web (HTML/CSS/JS · React · UI/UX)', icon: '🎨', items: [M.roadmapFrontend, M.odinProject, M.learnCssWebdev, M.kevinPowell, M.joshComeau, M.mdnLearn, M.freecodecamp, M.fullStackOpen, M.nextjsLearn, M.cs50w, M.refactoringUi, M.lawsOfUx, M.learnA11y, M.googleUx, M.vercelDeploy] },
   { categoria: '🤖 Construir CON IA — AI-first 2026 (dirigir, no teclear de memoria)', icon: '🤖', items: [M.claudeCodeDocs, M.claudeCodeBest, M.claudeCodeWorkflows, M.claudeCodeChrome, M.dlaiClaudeCode, M.promptOverview, M.claudePromptBest, M.promptTutorial, M.v0, M.cursor, M.anthropicQuickstarts, M.effectiveAgents, M.contextEng, M.writingToolsAgents, M.githubHello, M.mdnInternet, M.vercelDeploy] },
@@ -354,12 +359,13 @@ export const SYNAPSE_ADVERTENCIAS: string[] = [
   'Fellows Program: requiere autorización de trabajo en US/UK/Canadá (sin sponsorship de visa) — verificar tu situación antes de apuntar a la beca; los skills sirven igual para Applied AI y para Pulso.',
   'A 30 min/día la ruta completa es 12–18 meses realistas. F0 y F4 son las de mayor ROI inmediato (la F4 mejora directamente el motor APEX y Pulso).',
   'Zero to Hero, ARENA, MIT 6.006 y CS50W exigen bloques largos de TECLADO — no caben en huecos de 10-15 min; van al bloque opcional de fin de semana.',
-  'LLM101n de Karpathy AÚN NO existe (repo archivado con nota oficial); nanochat es su capstone ya publicado. nanoGPT está deprecado → usar nanochat.',
+  'ACTUALIZACIÓN 2026: Andrej Karpathy se unió a ANTHROPIC (may-2026) a liderar research de pre-training de Claude — refuerza la tesis del segmento ("aprende de quienes construyen Claude"). Su LLM101n/Eureka Labs quedó APLAZADO (no cerrado); su obra publicada y vigente es Zero to Hero + nanochat (usa nanochat, no el deprecado nanoGPT).',
   'ML Specialization de Ng ya no tiene audit gratis a nivel especialización ($49/mes); intentar audit por curso individual o ayuda financiera antes de pagar.',
   'Veredicto del auditor de completitud: lo que consigue la entrevista no es el temario sino PROYECTOS PÚBLICOS demostrables en GitHub — por eso cada fase exige un entregable público.',
   'Las 85 URLs fueron verificadas en vivo el 10-jun-2026 (WebFetch/oEmbed). Si alguna cambia, la fuente canónica es DATA/SYNAPSE/materiales-verificados.md.',
   'Ruta FULL-STACK senior añadida 18-jun (categorías "Backend de producción" y "Frontend & diseño web", +29 recursos verificados): FastAPI/Postgres/pytest/system design + HTML-CSS-JS/React-Next/UI-UX. A 30-60 min/día, senior full-stack es horizonte de 3 años — roadmap Año 1/2/3 en DATA/SYNAPSE/ROADMAP_SENIOR_MULTIANIO.md. El material en inglés se traduce (ver quicklink 🌐 Traductor).',
   'FILOSOFÍA AI-FIRST (18-jun): no memorizar sintaxis ni teclear código que la IA ya escribe — el skill humano es DIRIGIR y VERIFICAR (vocabulario, prompting, criterio, arquitectura, gusto). Ver pestaña 🚀 Agosto: mini-fase de 10 semanas para ya poder pedirle a la IA "construye tal sistema" CON CRITERIO. CS50P/Automate/MIT 6.006/nand2tetris se degradan para esta mini-fase (vuelven en las fases profundas de sept+).',
+  'ÉNFASIS 2026 (re-jerarquización, sin cambiar fechas): (1) EVALS es pilar transversal medible, no un tema de F4 — es "el skill más subestimado" y aparece en casi todo puesto; se trabaja con Hamel + Chip Huyen + evals docs. (2) DPO ya es el estándar de alineación en producción (desplazó a RLHF/PPO): ancla DPO añadida en F6 (paper Rafailov + cap. DPO del RLHF Book). (3) Ruta JAX mínima añadida en F6 porque Anthropic entrena en JAX. (4) RAG/embeddings/vector-search es categoría propia de Biblioteca. (5) CS336-2026 es el eje declarado de F3→F6 para "construir un LLM de verdad".',
 ];
 
 // ─── Mini-Fase AGOSTO (AI-first) + Práctica deliberada (Peak/Ericsson) ───

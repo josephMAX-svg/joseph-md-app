@@ -95,6 +95,9 @@ export const AURUM_FASES: AurumFase[] = [
       { nombre: 'How should sellers apply SPIN Selling questions — Neil Rackham', referente: 'Neil Rackham / Huthwaite International', tipo: 'video', url: 'https://www.youtube.com/watch?v=9IXcrP46BDk', idioma: 'en', confianza: 'incierto', porQue: 'El propio Rackham explica como aplicar las preguntas. Si el ID falla, busca el titulo en el canal de Huthwaite International.' },
       { nombre: 'The Architect of SPIN — interview with Neil Rackham', referente: 'Neil Rackham / Huthwaite International', tipo: 'video', url: 'https://www.youtube.com/watch?v=rgp6f04Bw3E', idioma: 'en', confianza: 'incierto', porQue: 'Entrevista al autor sobre el origen del metodo. ID no verificado al 100%; navega el canal de Huthwaite si no carga.' },
       { nombre: 'Chris Voss & The Black Swan Group — preguntas calibradas (canal oficial)', referente: 'Chris Voss', tipo: 'canal', url: 'https://www.youtube.com/channel/UCk7jHqdlFFDBhC1QIFqi54w', idioma: 'en', confianza: 'verificado', porQue: 'Las preguntas calibradas ("¿Como?" / "¿Que?") que hacen que el prospecto resuelva tu problema por ti. Complemento perfecto de SPIN.' },
+      { nombre: 'Gap Selling — Keenan / A Sales Guy (framework de brecha cuantificada)', referente: 'Keenan (A Sales Guy)', tipo: 'canal', url: 'https://www.youtube.com/@asalesguy', idioma: 'en', confianza: 'verificado', porQue: 'MODERNIZA SPIN en el descubrimiento: vender la BRECHA cuantificada (estado actual → estado deseado). Para terreno high-ticket, cuantifica el costo de NO comprar hoy.' },
+      { nombre: 'MEDDIC / MEDDPICC — módulo de calificación (no quemes tiempo en leads muertos)', referente: 'Andy Whyte / MEDDICC', tipo: 'articulo', url: 'https://meddicc.com/', idioma: 'en', confianza: 'verificado', porQue: 'Disciplina de QUALIFICATION que hoy falta: Metrics · Economic buyer · Decision criteria/process · Pain · Champion. Antes de descubrir a fondo, califica si hay decisor y dolor real.' },
+      { nombre: "30 Minutes to President's Club — discovery moderno (podcast + YouTube)", referente: 'Nick Cegelski & Armand Farrokh', tipo: 'podcast', url: 'https://www.30mpc.com/podcast', idioma: 'en', confianza: 'verificado', porQue: 'La síntesis CONTEMPORÁNEA entre SPIN (1988) y Challenger: tácticas de discovery y multithreading que usan HOY los closers de élite. Accionable, sin relleno.' },
     ],
   },
   {
@@ -123,6 +126,7 @@ export const AURUM_FASES: AurumFase[] = [
       { nombre: 'Alex Hormozi — Canal oficial (busca "objections")', referente: 'Alex Hormozi', tipo: 'canal', url: 'https://www.youtube.com/@AlexHormozi', idioma: 'en', confianza: 'verificado', porQue: 'El audit de objeciones de Hormozi: precio, tiempo y "¿funcionara para mi?". Clips directos para drillear una objecion por sesion.' },
       { nombre: 'Sales Gravy Podcast — Jeb Blount (cientos de episodios gratis)', referente: 'Jeb Blount', tipo: 'podcast', url: 'https://podcasts.apple.com/is/podcast/sales-gravy-jeb-blount/id219558725', idioma: 'en', confianza: 'verificado', porQue: 'Prospeccion fanatica y manejo de objeciones en frio. Audio ideal para tus huecos: una tactica accionable por episodio.' },
       { nombre: 'Chris Voss & The Black Swan Group — Canal oficial de YouTube', referente: 'Chris Voss', tipo: 'canal', url: 'https://www.youtube.com/channel/UCk7jHqdlFFDBhC1QIFqi54w', idioma: 'en', confianza: 'verificado', porQue: 'Role-plays y desgloses de objeciones reales sin manipular: que el prospecto se sienta seguro de decir la verdad.' },
+      { nombre: "30 Minutes to President's Club — objeciones y negociación (podcast + YouTube)", referente: 'Nick Cegelski & Armand Farrokh', tipo: 'podcast', url: 'https://www.30mpc.com/podcast', idioma: 'en', confianza: 'verificado', porQue: 'Guiones concretos de "lo voy a pensar", "está caro" y negociación moderna — el arsenal accionable que un closer de élite dice de memoria HOY.' },
     ],
   },
   {
@@ -137,6 +141,7 @@ export const AURUM_FASES: AurumFase[] = [
       { nombre: 'Alex Hormozi — Canal oficial (busca "closing" y "CLOSER")', referente: 'Alex Hormozi', tipo: 'canal', url: 'https://www.youtube.com/@AlexHormozi', idioma: 'en', confianza: 'verificado', porQue: 'El framework CLOSER y como integrar oferta + objeciones + cierre en una sola llamada. La referencia para tu PITCH v6 nivel Hormozi.' },
       { nombre: 'The Psychology of Selling (audiolibro) — tecnicas de cierre de Tracy', referente: 'Brian Tracy', tipo: 'libro', url: 'https://www.youtube.com/watch?v=i0B4v-9fLQc', idioma: 'en', confianza: 'estable', porQue: 'Las tecnicas de cierre concretas de Tracy/Hopkins (cierre por alternativa, cierre asumido) para tener un arsenal de remates naturales.' },
       { nombre: 'Grant Cardone — YouTube (cierre y seguimiento)', referente: 'Grant Cardone', tipo: 'canal', url: 'https://www.youtube.com/user/grantcardone/videos', idioma: 'en', confianza: 'verificado', porQue: 'Secuencia de cierre y la insistencia respetuosa (sin rendirse al primer "lo pensare"). Util para energia y para guiones de remate.' },
+      { nombre: "30 Minutes to President's Club — cierre y multithreading (podcast + YouTube)", referente: 'Nick Cegelski & Armand Farrokh', tipo: 'podcast', url: 'https://www.30mpc.com/podcast', idioma: 'en', confianza: 'verificado', porQue: 'Tácticas modernas de cierre, cómo pedir el sí y llevar el deal a la línea de meta sin presión. Complementa CLOSER (Hormozi) + Ackerman (Voss) con lo que se usa HOY.' },
     ],
   },
   {
@@ -291,6 +296,15 @@ export const AURUM_BIBLIOTECA: { categoria: string; icon: string; items: AurumMa
     { nombre: 'Convierte Más (Vilma Núñez) — YouTube', referente: 'Vilma Núñez', tipo: 'canal', url: 'https://www.youtube.com/channel/UCB8h5BJZmSi3k15t8FCPyvA', idioma: 'es', confianza: 'verificado', porQue: 'Embudos, contenido y ads en español con casos reales de su agencia.' },
     { nombre: 'GaryVee — YouTube (atención + marketing)', referente: 'Gary Vaynerchuk', tipo: 'canal', url: 'https://www.youtube.com/channel/UCctXZhXmG-kf3tlIXgVZUlw', idioma: 'en', confianza: 'verificado', porQue: 'Llevó Wine Library de $4M a $60M/año y fundó VaynerMedia (800+ empleados). La economía de la atención en redes — para ALLPA/Qori orgánico.' },
   ] },
+  // ── Táctica MODERNA B2B & calificación (lo que un closer de ÉLITE tiene HOY en la punta de la lengua) ──
+  { categoria: 'Táctica moderna B2B & calificación (30MPC · Gap · MEDDICC)', icon: '🎯', items: [
+    { nombre: "30 Minutes to President's Club — podcast oficial (No-Nonsense Sales)", referente: 'Nick Cegelski & Armand Farrokh', tipo: 'podcast', url: 'https://www.30mpc.com/podcast', idioma: 'en', confianza: 'verificado', porQue: 'EL estándar #1 de táctica de venta moderna: discovery, multithreading, cold call, negociación — 100% accionable, cero relleno de mindset. Carril transversal a F3/F5/F6: "qué escuchan HOY los closers de élite".' },
+    { nombre: "30MPC — Canal de YouTube (@30MPC, role-plays y tácticas)", referente: '30 Minutes to President\'s Club', tipo: 'canal', url: 'https://www.youtube.com/@30MPC', idioma: 'en', confianza: 'verificado', porQue: 'Clips y role-plays reales de cold call, discovery y objeciones. Una táctica accionable por sesión para drillear en el bloque PRAC.' },
+    { nombre: "30MPC — Newsletter gratis (tácticas semanales)", referente: '30 Minutes to President\'s Club', tipo: 'articulo', url: 'https://www.30mpc.com/newsletter', idioma: 'en', confianza: 'verificado', porQue: 'Frameworks escritos y listos para copiar (aperturas de llamada, preguntas de discovery, líneas de negociación). El complemento por escrito del podcast.' },
+    { nombre: 'Gap Selling — Keenan / A Sales Guy (canal de YouTube gratis)', referente: 'Keenan (A Sales Guy)', tipo: 'canal', url: 'https://www.youtube.com/@asalesguy', idioma: 'en', confianza: 'verificado', porQue: 'F3 · Vender la BRECHA cuantificada entre estado actual y estado deseado. Moderniza SPIN con un modelo de diagnóstico operativo: sube el rigor del descubrimiento (para terreno high-ticket, cuantifica el costo de NO comprar).' },
+    { nombre: 'MEDDICC / MEDDPICC — recursos oficiales de calificación', referente: 'Andy Whyte / MEDDICC', tipo: 'articulo', url: 'https://meddicc.com/', idioma: 'en', confianza: 'verificado', porQue: 'F3 · El estándar de QUALIFICATION de enterprise (Metrics · Economic buyer · Decision criteria/process · Pain · Champion). Para tickets altos de terreno: deja de perseguir leads muertos y enfoca el tiempo donde SÍ hay decisor y dolor.' },
+    { nombre: 'Salesmotion — Sales Training Methodologies Compared (mapa de metodologías)', referente: 'Salesmotion', tipo: 'articulo', url: 'https://www.salesmotion.io/blog/sales-methodologies', idioma: 'en', confianza: 'estable', porQue: 'Mapa comparativo SPIN / Sandler / Challenger / MEDDICC / Gap: ubica cada metodología y cuándo usar cada una. La brújula para saber qué herramienta sacar en cada deal.' },
+  ] },
 ];
 
 // ─── KPIs ───
@@ -310,6 +324,30 @@ export const AURUM_PROTOCOLO: { min: string; bloque: string; que: string; format
   { min: 'finde', bloque: 'Sábado y domingo LIBRES', que: 'El plan es L-V. Usa el finde para los entregables grandes de fase (manifiesto, Grand Slam Offers, playbook de objeciones, PITCH grabado) si quieres adelantar.', formato: 'repaso' },
 ];
 
+// ─── Closer Scoreboard — la ficha de KPIs high-ticket del closer desk ───
+// Métricas-firma del closer (close.com/blog/sales-dashboard + "High Ticket Sales
+// KPI Tracker"). Es MATERIAL (rúbrica de qué medir) y alimenta el componente
+// AurumCloserDesk. Sin datos en vivo: valores manuales/estructurales, empieza en 0
+// hasta que Joseph los registre — coherente con "progreso real, nada inventado".
+export type CloserMetric = {
+  key: string;
+  label: string;      // nombre de la métrica
+  glyph: string;      // glifo de terminal
+  valor: string;      // valor actual (manual — empieza vacío/0)
+  meta: string;       // objetivo/benchmark high-ticket
+  unidad: string;     // qué mide
+};
+export const AURUM_CLOSER_SCOREBOARD: CloserMetric[] = [
+  { key: 'dials',   label: 'Dials',           glyph: '◇', valor: '0',  meta: '≥ 30/día',  unidad: 'contactos iniciados (llamada/DM)' },
+  { key: 'sets',    label: 'Sets',            glyph: '◆', valor: '0',  meta: '≥ 3/día',   unidad: 'citas agendadas' },
+  { key: 'show',    label: 'Show-rate',       glyph: '►', valor: '—',  meta: '≥ 70%',     unidad: 'citas que sí asisten' },
+  { key: 'close',   label: 'Close-rate',      glyph: '▲', valor: '—',  meta: '≥ 20%',     unidad: 'cierres ÷ presentaciones' },
+  { key: 'cash',    label: 'Cash collected',  glyph: '⬆', valor: 'S/ 0', meta: 'crece m/m', unidad: 'caja cobrada (no facturada)' },
+  { key: 'q2c',     label: 'Quote-to-close',  glyph: '●', valor: '—',  meta: '≥ 40%',     unidad: 'cotizaciones que cierran' },
+];
+export const AURUM_SCOREBOARD_NOTA =
+  'Scoreboard del closer (close.com · High-Ticket Sales KPI Tracker). Mide ACTIVIDAD (dials/sets, lo que controlas) → EFICIENCIA (show/close/quote-to-close) → RESULTADO (cash collected). Registro manual real: empieza en 0 y se llena con el pipeline de Terrenos/ALLPA + Qori Golden. La regla del closer: la actividad diaria es la única palanca que no depende del mercado.';
+
 // ─── El nivel meta — los entregables/PITCH por fase (lo que demuestra que eres closer) ───
 export const AURUM_NIVEL_META: { skill: string; fuente: string }[] = [
   { skill: 'Mentalidad de operador-vendedor + PITCH v1', fuente: 'F1 — manifiesto del closer AURUM + ritual de actividad medida + PITCH v1 (presentación de 60 seg con certeza)' },
@@ -319,6 +357,7 @@ export const AURUM_NIVEL_META: { skill: string; fuente: string }[] = [
   { skill: 'Objeciones sin presión + PITCH v5', fuente: 'F5 — playbook de las 12 objeciones reales (empatía táctica + reencuadre, Voss) + PITCH v5 (simulacro de 3 objeciones en vivo)' },
   { skill: 'Cierre high-ticket + PITCH v6 (nivel Hormozi)', fuente: 'F6 — guion de cierre maestro + negociación Ackerman + PITCH v6 (cierre completo de 10-12 min, apertura → sí)' },
   { skill: 'Ventas digitales, pipeline e integración + PITCH v7', fuente: 'F7 — máquina de ventas (CORE4 de Hormozi) + closing por DM + PITCH v7 FINAL (DM de 90 seg + presentación maestra de 12-15 min)' },
+  { skill: 'Closer Scoreboard vivo (la métrica del closer desk)', fuente: 'Transversal — ficha de KPIs high-ticket (dials · sets · show-rate · close-rate · cash collected · quote-to-close) alimentada del pipeline real de Terrenos/ALLPA. Fuente: close.com/blog/sales-dashboard + High-Ticket Sales KPI Tracker. Se registra a mano; empieza en 0.' },
 ];
 
 // ─── Honestidad (no inventado) ───

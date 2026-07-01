@@ -4,20 +4,24 @@ import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, Motion, L
 import { DesktopColors } from '../../theme/desktopStyles';
 import { SectionLabel, Chip, useHover } from '../empresa/primitives';
 import { FadeUp } from '../empresa/visuals';
-import { RESEARCH_LINES, CLUSTER_COLOR, CLUSTER_LABEL, LineaResearch, Cluster } from '../../lib/researchProgram';
+import { RESEARCH_LINES, CLUSTER_COLOR, CLUSTER_LABEL, LINE_LECTURAS, LineaResearch, Cluster } from '../../lib/researchProgram';
 import { researchObsUrlLine } from '../../lib/obsidianResearchMap';
+import { serifTitle, InkColors, OBSIDIAN } from './researchTheme';
 
 /**
- * ResearchLinesExplorer — las 8 líneas de investigación (L0–L8). Cada tarjeta es expandible:
- * gap, SR derivable, journals, colaboradores, cuello de botella, Mayo score. Botones que abren
- * PubMed (semilla de búsqueda real), el paper ancla y la nota ◆ Obsidian de la línea. Color por cluster.
+ * ResearchLinesExplorer — las 8 líneas de investigación (L0–L8), como fichas de cuaderno editorial.
+ * Cada tarjeta es expandible: gap, SR derivable, mini-temario ancla (3–4 lecturas fundacionales),
+ * journals, colaboradores, cuello de botella, Mayo score. Botones que abren PubMed (semilla real),
+ * el paper ancla y la nota ◆ Obsidian de la línea. Nombre de línea en serif; color por cluster.
  */
-const TEAL = '#0FD4A0';
-const OBS = '#A78BFA';
+const TEAL = InkColors.teal;     // #6BB8B0 (era #0FD4A0)
+const GOLD = InkColors.gold;     // #C8A96A — estatus (lecturas ancla)
+const OBS = OBSIDIAN;            // #9A7BC8 (era #A78BFA)
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
 
+// Estados en joya apagada (antes #F5A623/#2E7CF6 neón).
 const ESTADO_COLOR: Record<LineaResearch['estado'], string> = {
-  completada: TEAL, activa: '#F5A623', 'pre-protocolo': '#2E7CF6', backlog: Colors.muted,
+  completada: TEAL, activa: InkColors.brass, 'pre-protocolo': InkColors.sapphire, backlog: Colors.muted,
 };
 const ESTADO_LBL: Record<LineaResearch['estado'], string> = {
   completada: '✓ completada', activa: '● activa', 'pre-protocolo': 'pre-protocolo', backlog: 'backlog',
@@ -43,7 +47,7 @@ function LineCard({ l }: { l: LineaResearch }) {
             <View style={[st.codeBadge, { backgroundColor: c + '1F', borderColor: c + '66' }]}>
               <Text style={[st.codeTxt, { color: c }]}>{l.code}</Text>
             </View>
-            <Text style={st.name} numberOfLines={open ? 2 : 1}>{open ? '▾' : '▸'} {l.nombre}</Text>
+            <Text style={[st.name, serifTitle]} numberOfLines={open ? 2 : 1}>{open ? '▾' : '▸'} {l.nombre}</Text>
           </View>
           {l.mayoScore > 0 && <Text style={[st.mayo, { color: c }]}>{l.mayoScore}/40</Text>}
         </View>
@@ -56,18 +60,34 @@ function LineCard({ l }: { l: LineaResearch }) {
 
       {open && (
         <View style={{ marginTop: 10, gap: 8 }}>
-          <View><Text style={st.lbl}>⚠ GAP</Text><Text style={st.txt}>{l.gap}</Text></View>
-          <View><Text style={[st.lbl, { color: c }]}>🔬 SR DERIVABLE{l.srTag ? ` · ${l.srTag}` : ''}</Text><Text style={st.txt}>{l.srDerivable}</Text></View>
-          <View><Text style={st.lbl}>📰 JOURNALS</Text><Text style={st.txt}>{l.journals.join(' · ')}</Text></View>
-          <View><Text style={st.lbl}>🤝 COLABORADORES</Text><Text style={st.txt}>{l.colaboradores.join(' · ')}</Text></View>
-          <View><Text style={[st.lbl, { color: Colors.coral }]}>⛔ CUELLO DE BOTELLA</Text><Text style={st.txt}>{l.cuelloBotella}</Text></View>
+          <View><Text style={st.lbl}>GAP</Text><Text style={st.txt}>{l.gap}</Text></View>
+          <View><Text style={[st.lbl, { color: c }]}>SR DERIVABLE{l.srTag ? ` · ${l.srTag}` : ''}</Text><Text style={st.txt}>{l.srDerivable}</Text></View>
+
+          {/* Mini-temario ancla — 3–4 lecturas fundacionales (aditivo, empieza por líneas activas) */}
+          {LINE_LECTURAS[l.id] && (
+            <View>
+              <Text style={[st.lbl, { color: GOLD }]}>LECTURAS ANCLA · el marco antes de redactar</Text>
+              <View style={{ gap: 5, marginTop: 4 }}>
+                {LINE_LECTURAS[l.id].map((lec, k) => (
+                  <TouchableOpacity key={k} activeOpacity={0.85} onPress={() => openUrl(lec.url)} style={[st.lecCard, { borderLeftColor: GOLD }]}>
+                    <Text style={[st.lecTitle, serifTitle]} numberOfLines={2}>[{k + 1}] {lec.titulo} ↗</Text>
+                    <Text style={st.lecNota}>{lec.nota}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </View>
+          )}
+
+          <View><Text style={st.lbl}>JOURNALS</Text><Text style={st.txt}>{l.journals.join(' · ')}</Text></View>
+          <View><Text style={st.lbl}>COLABORADORES</Text><Text style={st.txt}>{l.colaboradores.join(' · ')}</Text></View>
+          <View><Text style={[st.lbl, { color: Colors.coral }]}>CUELLO DE BOTELLA</Text><Text style={st.txt}>{l.cuelloBotella}</Text></View>
           <View style={{ flexDirection: 'row', gap: 6, flexWrap: 'wrap', marginTop: 2 }}>
             <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(l.pubmedUrl)} style={[st.btn, { borderColor: c + '88' }]}>
-              <Text style={[st.btnTxt, { color: c }]}>🔎 Semilla en PubMed ↗</Text>
+              <Text style={[st.btnTxt, { color: c }]}>Semilla en PubMed ↗</Text>
             </TouchableOpacity>
             {l.fichaUrl && (
-              <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(l.fichaUrl!)} style={[st.btn, { borderColor: c + '88' }]}>
-                <Text style={[st.btnTxt, { color: c }]}>📄 Paper ancla ↗</Text>
+              <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(l.fichaUrl!)} style={[st.btn, { borderColor: GOLD + '88' }]}>
+                <Text style={[st.btnTxt, { color: GOLD }]}>Paper ancla ↗</Text>
               </TouchableOpacity>
             )}
             {researchObsUrlLine(l.id) && (
@@ -121,6 +141,9 @@ const st = StyleSheet.create({
   mayo: { fontSize: FontSize.labelLg, fontWeight: '900', marginLeft: 8, letterSpacing: -0.3, ...(Platform.OS === 'web' ? ({ fontVariantNumeric: 'tabular-nums' } as any) : {}) },
   lbl: { fontSize: 9, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 0.6, textTransform: 'uppercase', marginBottom: 3 },
   txt: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 16 },
+  lecCard: { ...cardBase, borderLeftWidth: 3, padding: Spacing.sm, paddingLeft: 10, ...WEB_LINK },
+  lecTitle: { fontSize: FontSize.labelMd, fontWeight: '700', color: Colors.onSurface, letterSpacing: -0.1, lineHeight: 16 },
+  lecNota: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 3, lineHeight: 14 },
   btn: { borderWidth: 1, borderRadius: BorderRadius.md, paddingVertical: 7, paddingHorizontal: 12, ...WEB_LINK },
   btnTxt: { fontSize: FontSize.labelSm, fontWeight: '800', letterSpacing: 0.2 },
 });

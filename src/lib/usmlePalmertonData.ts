@@ -129,10 +129,11 @@ export const USMLE_SYSTEMS: UsmleSystem[] = [
 ];
 
 const TIER_ORDER: Record<UsmleTier, number> = { CORE: 0, HIGH: 1, MED: 2 };
+// Colores en joya apagada (Midnight Sapphire & Champagne Gold) — sin neón.
 export const TIER_INFO: Record<UsmleTier, { label: string; color: string }> = {
-  CORE: { label: 'Core · máximo peso', color: '#E5484D' },
-  HIGH: { label: 'Alto rendimiento', color: '#F5A623' },
-  MED: { label: 'Step 2 CK / clínica', color: '#4Fae6b' },
+  CORE: { label: 'Core · máximo peso', color: '#C56A5A' },  // terracotta (era #E5484D)
+  HIGH: { label: 'Alto rendimiento', color: '#C8A96A' },    // champagne gold (era #F5A623)
+  MED: { label: 'Step 2 CK / clínica', color: '#5FA88C' },  // jade (era #4Fae6b)
 };
 
 export function sistemasPorRentabilidad(): UsmleSystem[] {

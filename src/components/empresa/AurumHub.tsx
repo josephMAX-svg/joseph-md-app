@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Platform, StyleSheet, Linking } from 'rea
 import {
   AURUM_META, AURUM_KPIS, AURUM_FASES, AURUM_BIBLIOTECA, AURUM_PROTOCOLO,
   AURUM_NIVEL_META, AURUM_ADVERTENCIAS, AurumMaterial, AurumConfianza,
-  AURUM_MINIFASE, AURUM_PRACTICA,
+  AURUM_MINIFASE, AURUM_PRACTICA, AURUM_CLOSER_SCOREBOARD, AURUM_SCOREBOARD_NOTA,
 } from '../../lib/aurumData';
 import { AURUM_PLAN_META } from '../../lib/aurumDailyPlan';
 import { AURUM_BIBLIOTECA_NIVELES, AurumBibLibro } from '../../lib/aurumBiblioteca';
@@ -17,7 +17,7 @@ import {
 import { Elevation, Motion, Hairline } from '../../theme/tokens';
 import {
   AurumHero, AurumWordmark, AurumChip, AurumLabel, AurumPanel, AurumRing,
-  AurumRise, useAurumHover,
+  AurumRise, useAurumHover, AurumCloserDesk,
 } from './aurumVisuals';
 
 /**
@@ -435,6 +435,13 @@ export default function AurumHub({ onBack, variant = 'mobile' }: { onBack?: () =
           </View>
         </View>
       </AurumHero>
+
+      {/* ───── CLOSER SCOREBOARD (KPIs high-ticket · el "closer desk") ───── */}
+      <AurumCloserDesk
+        metrics={AURUM_CLOSER_SCOREBOARD}
+        nota={AURUM_SCOREBOARD_NOTA}
+        hint="registro manual · empieza 0"
+      />
 
       {/* ───── KPIs (anillos reales) ───── */}
       <View style={[st.kpiRow, isDesktop && { flexWrap: 'nowrap' }]}>

@@ -17,8 +17,14 @@ import {
   sendResearchCommand, setResearchRunState, invokeResearchDiscovery, ResearchCmd,
   getResearchPapers, setPaperScreen, resolveFullText, ResearchPaper,
 } from '../../lib/supabase';
+import { serifTitle, InkColors, OBSIDIAN, ResearchFonts } from './researchTheme';
 
-const OBS = '#A78BFA';
+const OBS = OBSIDIAN; // #9A7BC8 (era #A78BFA)
+// Acentos editoriales (joya apagada · tokens). Antes #0FD4A0/#F5A623/#F56342/#2E7CF6 neón.
+const GOLD = InkColors.gold;      // #C8A96A — estatus (sellos de gate HITL, manuscrito, SUBMIT)
+const BRASS = InkColors.brass;    // #B8934E — en curso
+const CORAL = InkColors.coral;    // #C56A5A — crítica/detener
+const SAPPHIRE = InkColors.sapphire; // #4F7DD6 — en cola
 
 /** Dictado por voz (Web Speech API · solo web/Chrome-Edge). En native degrada a no-soportado. */
 function useVoiceDictation(lang = 'es-PE') {
@@ -48,8 +54,117 @@ function useVoiceDictation(lang = 'es-PE') {
  * checkpoints humanos, capa 0 de descubrimiento, y selector de línea que conecta el sistema a
  * la SR viva. Cada link abre un recurso REAL verificado.
  */
-const TEAL = '#0FD4A0';
+const TEAL = InkColors.teal; // #6BB8B0 (era #0FD4A0)
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
+
+// ── FIRMA nº1 · MANUSCRIPT PIPELINE (carriles editoriales) ──────────────────────────────────────
+// La SR activa (SR-1) como tarjeta que AVANZA por los carriles de una redacción de revista.
+// Los sellos CP-1..CP-4 (gates humanos) se anclan al carril donde ocurren.
+type LaneState = 'done' | 'active' | 'todo';
+const PIPELINE_STAGES: { key: string; label: string; sub: string; gate?: string }[] = [
+  { key: 'idea',    label: 'Idea',        sub: 'gap · pregunta' },
+  { key: 'proto',   label: 'Protocolo',   sub: 'PICO · PROSPERO', gate: 'CP-1' },
+  { key: 'search',  label: 'Búsqueda',    sub: '5 fuentes · PRISMA-S' },
+  { key: 'screen',  label: 'Screening',   sub: 'Rayyan · κ', gate: 'CP-2' },
+  { key: 'extract', label: 'Extracción',  sub: 'matriz · RoB' },
+  { key: 'synth',   label: 'Síntesis',    sub: 'meta-análisis · GRADE' },
+  { key: 'draft',   label: 'Draft',       sub: 'IMRaD · citas', gate: 'CP-3' },
+  { key: 'submit',  label: 'Submit',      sub: '.docx · journal', gate: 'CP-4' },
+];
+// Reparto de estado según el estado de la línea (ilustrativo; el motor real lo sobreescribe vía Supabase).
+function stageStates(estado: string): Record<string, LaneState> {
+  const order = PIPELINE_STAGES.map((s) => s.key);
+  const activeIdx =
+    estado === 'completada' ? order.length
+    : estado === 'activa' ? order.indexOf('draft')  // SR-1 en redacción (R34–R40)
+    : estado === 'pre-protocolo' ? order.indexOf('proto')
+    : 0;
+  const m: Record<string, LaneState> = {};
+  order.forEach((k, i) => { m[k] = i < activeIdx ? 'done' : i === activeIdx ? 'active' : 'todo'; });
+  return m;
+}
+function ManuscriptPipeline({ estado, srTag }: { estado: string; srTag: string }) {
+  const states = stageStates(estado);
+  return (
+    <View style={st.pipeWrap}>
+      <View style={st.pipeTrack}>
+        {PIPELINE_STAGES.map((s, i) => {
+          const stt = states[s.key];
+          const isActive = stt === 'active';
+          const c = stt === 'done' ? InkColors.jade : isActive ? InkColors.gold : Colors.muted;
+          return (
+            <React.Fragment key={s.key}>
+              <View style={st.laneCol}>
+                <View style={[st.laneNode, { borderColor: c + (isActive ? 'CC' : '55'), backgroundColor: c + (isActive ? '1F' : '0A') }, isActive && Elevation.glow(InkColors.gold)]}>
+                  <Text style={[st.laneNum, { color: c }]}>{String(i + 1).padStart(2, '0')}</Text>
+                  {stt === 'done' && <Text style={[st.laneCheck, { color: InkColors.jade }]}>✓</Text>}
+                </View>
+                <Text style={[st.laneLabel, serifTitle, { color: isActive ? Colors.onSurface : Colors.onSurfaceVariant }]}>{s.label}</Text>
+                <Text style={st.laneSub}>{s.sub}</Text>
+                {/* La SR activa viaja como "galera" sobre el carril en curso */}
+                {isActive && (
+                  <View style={[st.laneCard, { borderColor: InkColors.gold + '66' }]}>
+                    <Text style={[st.laneCardTxt, { color: InkColors.gold }]}>{srTag || 'SR-1'} ▸</Text>
+                  </View>
+                )}
+                {/* Sello de gate humano */}
+                {s.gate && (
+                  <View style={[st.gateSeal, { borderColor: (stt === 'done' ? InkColors.jade : InkColors.gold) + '99' }]}>
+                    <Text style={[st.gateSealTxt, { color: stt === 'done' ? InkColors.jade : InkColors.gold }]}>
+                      {stt === 'done' ? `✓ ${s.gate}` : s.gate}
+                    </Text>
+                  </View>
+                )}
+              </View>
+              {i < PIPELINE_STAGES.length - 1 && (
+                <View style={[st.laneConnector, { backgroundColor: states[PIPELINE_STAGES[i + 1].key] !== 'todo' ? InkColors.jade + '77' : Hairline.medium }]} />
+              )}
+            </React.Fragment>
+          );
+        })}
+      </View>
+    </View>
+  );
+}
+
+// ── FIRMA nº2 · PRISMA 2020 FLOW DIAGRAM (nativo, con counts reales del corpus) ──────────────────
+function PrismaBox({ title, n, color, sub }: { title: string; n: number | string; color: string; sub?: string }) {
+  return (
+    <View style={[st.prismaBox, { borderColor: color + '55' }]}>
+      <Text style={st.prismaBoxTitle}>{title}</Text>
+      <Text style={[st.prismaBoxN, { color }]}>{n}</Text>
+      {sub ? <Text style={st.prismaBoxSub}>{sub}</Text> : null}
+    </View>
+  );
+}
+function PrismaFlow({ total, inc, exc, pend }: { total: number; inc: number; exc: number; pend: number }) {
+  const screened = total;
+  const eligible = Math.max(0, total - exc);
+  return (
+    <View style={st.prismaWrap}>
+      <View style={st.prismaCol}>
+        <PrismaBox title="IDENTIFICADOS" n={total} color={InkColors.sapphire} sub="registros · 5 fuentes (dedup DOI)" />
+        <Text style={st.prismaArrow}>↓</Text>
+        <PrismaBox title="CRIBADOS" n={screened} color={InkColors.teal} sub="título / abstract" />
+        <Text style={st.prismaArrow}>↓</Text>
+        <PrismaBox title="ELEGIBILIDAD" n={eligible} color={InkColors.brass} sub="texto completo" />
+        <Text style={st.prismaArrow}>↓</Text>
+        <PrismaBox title="INCLUIDOS" n={inc} color={InkColors.gold} sub="síntesis (SR-1)" />
+      </View>
+      {/* rama lateral de exclusiones/pendientes (vía separada PRISMA 2020) */}
+      <View style={st.prismaSide}>
+        <View style={[st.prismaSideBox, { borderColor: InkColors.coral + '44' }]}>
+          <Text style={[st.prismaSideN, { color: InkColors.coral }]}>{exc}</Text>
+          <Text style={st.prismaSideTxt}>excluidos con motivo</Text>
+        </View>
+        <View style={[st.prismaSideBox, { borderColor: Colors.muted + '44' }]}>
+          <Text style={[st.prismaSideN, { color: Colors.muted }]}>{pend}</Text>
+          <Text style={st.prismaSideTxt}>pendientes de cribar</Text>
+        </View>
+      </View>
+    </View>
+  );
+}
 
 function AgentCard({ a }: { a: AgentRole }) {
   const [open, setOpen] = useState(false);
@@ -169,7 +284,7 @@ export default function ResearchAgenticSystem() {
     <View>
       {/* Tesis */}
       <GlassPanel accent={TEAL} style={{ marginBottom: Spacing.lg, padding: Spacing.lg }}>
-        <Text style={st.h3}>🧬 Sistema agéntico de revisiones sistemáticas</Text>
+        <Text style={[st.h3, serifTitle]}>Sistema agéntico de revisiones sistemáticas</Text>
         <Text style={st.body}>{AGENTIC_META.tesis}</Text>
         <Text style={[st.smallNote, { marginTop: Spacing.sm }]}>⏱ {AGENTIC_META.cuandoEntra}</Text>
       </GlassPanel>
@@ -183,18 +298,18 @@ export default function ResearchAgenticSystem() {
             {engine?.calendar_block ? ` · ${engine.calendar_block}` : ''}
           </Text>
         </View>
-        <TouchableOpacity disabled={busy} activeOpacity={0.85} onPress={() => control('running', 'start')} style={[st.ctrlBtn, { borderColor: '#0FD4A0' + '88', backgroundColor: '#0FD4A0' + '18' }]}>
-          <Text style={[st.ctrlBtnTxt, { color: '#0FD4A0' }]}>▶ Iniciar</Text>
+        <TouchableOpacity disabled={busy} activeOpacity={0.85} onPress={() => control('running', 'start')} style={[st.ctrlBtn, { borderColor: TEAL + '88', backgroundColor: TEAL + '18' }]}>
+          <Text style={[st.ctrlBtnTxt, { color: TEAL }]}>▶ Iniciar</Text>
         </TouchableOpacity>
-        <TouchableOpacity disabled={busy} activeOpacity={0.85} onPress={() => control('paused', 'pause')} style={[st.ctrlBtn, { borderColor: '#F5A623' + '88', backgroundColor: '#F5A623' + '14' }]}>
-          <Text style={[st.ctrlBtnTxt, { color: '#F5A623' }]}>⏸ Pausar</Text>
+        <TouchableOpacity disabled={busy} activeOpacity={0.85} onPress={() => control('paused', 'pause')} style={[st.ctrlBtn, { borderColor: BRASS + '88', backgroundColor: BRASS + '14' }]}>
+          <Text style={[st.ctrlBtnTxt, { color: BRASS }]}>⏸ Pausar</Text>
         </TouchableOpacity>
-        <TouchableOpacity disabled={busy} activeOpacity={0.85} onPress={() => control('stopped', 'stop')} style={[st.ctrlBtn, { borderColor: '#F56342' + '88', backgroundColor: '#F56342' + '14' }]}>
-          <Text style={[st.ctrlBtnTxt, { color: '#F56342' }]}>⏹ Detener</Text>
+        <TouchableOpacity disabled={busy} activeOpacity={0.85} onPress={() => control('stopped', 'stop')} style={[st.ctrlBtn, { borderColor: CORAL + '88', backgroundColor: CORAL + '14' }]}>
+          <Text style={[st.ctrlBtnTxt, { color: CORAL }]}>⏹ Detener</Text>
         </TouchableOpacity>
       </View>
       <Text style={st.ctrlHint}>
-        Pulsa <Text style={{ color: '#0FD4A0' }}>▶ Iniciar</Text> desde la web (mientras estudias ENCAPS): el discovery corre <Text style={{ color: '#0FD4A0' }}>en la nube</Text> (Supabase, sin tu PC) y deja el corpus cribado para tu hora de research. La <Text style={{ color: '#A78BFA' }}>redacción</Text> la haces con Claude Code. <Text style={{ color: '#F56342' }}>⏹ Detener</Text> = corta al instante.
+        Pulsa <Text style={{ color: TEAL }}>▶ Iniciar</Text> desde la web (mientras estudias ENCAPS): el discovery corre <Text style={{ color: TEAL }}>en la nube</Text> (Supabase, sin tu PC) y deja el corpus cribado para tu hora de research. La <Text style={{ color: OBS }}>redacción</Text> la haces con Claude Code. <Text style={{ color: CORAL }}>⏹ Detener</Text> = corta al instante.
       </Text>
       {toast ? <View style={st.toast}><Text style={st.toastTxt}>{toast}</Text></View> : null}
 
@@ -210,7 +325,7 @@ export default function ResearchAgenticSystem() {
       </View>
       <GlassPanel style={{ marginBottom: Spacing.xl, borderLeftWidth: 3, borderLeftColor: CLUSTER_COLOR[linea.cluster] }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 6 }}>
-          <Text style={st.lineTitle}>{linea.code} · {linea.nombre}</Text>
+          <Text style={[st.lineTitle, serifTitle]}>{linea.code} · {linea.nombre}</Text>
           <Chip label={`Mayo ${linea.mayoScore}/40`} color={CLUSTER_COLOR[linea.cluster]} small />
         </View>
         <Text style={[st.body, { marginTop: 6 }]}>📋 SR viva: {linea.srDerivable}</Text>
@@ -236,33 +351,42 @@ export default function ResearchAgenticSystem() {
         </View>
       </GlassPanel>
 
-      {/* CORPUS / COLA DE SCREENING — lo que descubrió la nube; lo cribas con 1 clic */}
-      <SectionLabel>Corpus · {srTag} ({papers.length} papers · ✓{counts.inc} ✗{counts.exc} ○{counts.pend})</SectionLabel>
-      <Text style={st.sectionIntro}>Lo que dejó el botón ▶ (ordenado por relevancia). Críbalo con un clic: ✓ incluir · ✗ excluir · ~ dudoso. 🔓 abre el PDF de acceso abierto legal (Unpaywall, sin Sci-Hub).</Text>
+      {/* FIRMA nº1 · PIPELINE DE MANUSCRITO — la SR activa avanza por los carriles de la redacción */}
+      <SectionLabel>Pipeline de manuscrito · {linea.srTag || 'SR-1'} avanza de carril (gates humanos CP-1..CP-4)</SectionLabel>
+      <ManuscriptPipeline estado={linea.estado} srTag={linea.srTag || 'SR-1'} />
+
+      {/* FIRMA nº2 · DIAGRAMA DE FLUJO PRISMA 2020 — vivo, con los counts reales del corpus */}
+      <SectionLabel>Diagrama de flujo PRISMA 2020 · números reales del corpus</SectionLabel>
+      <Text style={st.sectionIntro}>Se rellena con los conteos reales de <Text style={{ color: TEAL, fontWeight: '700' }}>{srTag || 'la SR activa'}</Text> a medida que cribas abajo (identificados → cribados → elegibilidad → incluidos), con su rama de exclusiones. Es el artefacto de reporte del dominio.</Text>
+      <PrismaFlow total={papers.length} inc={counts.inc} exc={counts.exc} pend={counts.pend} />
+
+      {/* CORPUS / MATRIZ DE EXTRACCIÓN — lo que descubrió la nube; lo cribas con 1 clic */}
+      <SectionLabel>Corpus / matriz de extracción · {srTag} ({papers.length} papers · ✓{counts.inc} ✗{counts.exc} ○{counts.pend})</SectionLabel>
+      <Text style={st.sectionIntro}>Lo que dejó el botón ▶ (ordenado por relevancia), como una hoja de extracción tipo Elicit: año · relevancia · fuentes · OA. Críbalo con un clic: ✓ incluir · ~ dudoso · ✗ excluir. PDF abre el acceso abierto legal (Unpaywall, sin Sci-Hub).</Text>
       {papers.length === 0 ? (
-        <GlassPanel style={{ marginBottom: Spacing.xl }}><Text style={st.body}>— Vacío. Pulsa <Text style={{ color: '#0FD4A0', fontWeight: '800' }}>▶ Iniciar</Text> arriba: la nube descubre los papers y aparecen aquí solos.</Text></GlassPanel>
+        <GlassPanel style={{ marginBottom: Spacing.xl }}><Text style={st.body}>— Vacío. Pulsa <Text style={{ color: TEAL, fontWeight: '800' }}>▶ Iniciar</Text> arriba: la nube descubre los papers y aparecen aquí solos.</Text></GlassPanel>
       ) : (
         <View style={{ marginBottom: Spacing.xl }}>
           {papers.map((p) => {
             const dec = p.screen_status;
             const rel = Math.min(5, p.relevance ?? 0);
             return (
-              <View key={p.id || p.doi} style={[st.paperCard, dec === 'included' && { borderLeftColor: '#0FD4A0' }, dec === 'excluded' && { opacity: 0.5, borderLeftColor: '#F56342' }, dec === 'maybe' && { borderLeftColor: '#F5A623' }]}>
+              <View key={p.id || p.doi} style={[st.paperCard, dec === 'included' && { borderLeftColor: TEAL }, dec === 'excluded' && { opacity: 0.5, borderLeftColor: CORAL }, dec === 'maybe' && { borderLeftColor: BRASS }]}>
                 <View style={{ flex: 1 }}>
-                  <Text style={st.paperTitle} numberOfLines={2}>{p.title || p.doi}</Text>
+                  <Text style={[st.paperTitle, serifTitle]} numberOfLines={2}>{p.title || p.doi}</Text>
                   <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 3, flexWrap: 'wrap' }}>
                     <Text style={st.paperMeta}>{p.year || '—'}</Text>
                     <Text style={st.relDots}>{'●'.repeat(rel)}<Text style={{ color: 'rgba(255,255,255,0.15)' }}>{'●'.repeat(5 - rel)}</Text></Text>
                     {(p.sources?.length ?? 0) > 1 && <Chip label={`${p.sources!.length} fuentes`} color={CLUSTER_COLOR[linea.cluster]} small />}
-                    {p.is_oa && <Chip label="OA" color="#0FD4A0" small />}
+                    {p.is_oa && <Chip label="OA" color={TEAL} small />}
                     {p.doi && <TouchableOpacity onPress={() => openUrl('https://doi.org/' + p.doi)}><Text style={st.paperDoi}>DOI ↗</Text></TouchableOpacity>}
-                    <TouchableOpacity onPress={() => openPdf(p)}><Text style={[st.paperDoi, { color: '#A78BFA' }]}>🔓 PDF</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={() => openPdf(p)}><Text style={[st.paperDoi, { color: OBS }]}>PDF ↗</Text></TouchableOpacity>
                   </View>
                 </View>
                 <View style={{ flexDirection: 'row', gap: 4 }}>
-                  <TouchableOpacity onPress={() => screen(p.id, 'included')} style={[st.scBtn, dec === 'included' && { backgroundColor: '#0FD4A0' + '22', borderColor: '#0FD4A0' }]}><Text style={[st.scTxt, { color: '#0FD4A0' }]}>✓</Text></TouchableOpacity>
-                  <TouchableOpacity onPress={() => screen(p.id, 'maybe')} style={[st.scBtn, dec === 'maybe' && { backgroundColor: '#F5A623' + '22', borderColor: '#F5A623' }]}><Text style={[st.scTxt, { color: '#F5A623' }]}>~</Text></TouchableOpacity>
-                  <TouchableOpacity onPress={() => screen(p.id, 'excluded')} style={[st.scBtn, dec === 'excluded' && { backgroundColor: '#F56342' + '22', borderColor: '#F56342' }]}><Text style={[st.scTxt, { color: '#F56342' }]}>✗</Text></TouchableOpacity>
+                  <TouchableOpacity onPress={() => screen(p.id, 'included')} style={[st.scBtn, dec === 'included' && { backgroundColor: TEAL + '22', borderColor: TEAL }]}><Text style={[st.scTxt, { color: TEAL }]}>✓</Text></TouchableOpacity>
+                  <TouchableOpacity onPress={() => screen(p.id, 'maybe')} style={[st.scBtn, dec === 'maybe' && { backgroundColor: BRASS + '22', borderColor: BRASS }]}><Text style={[st.scTxt, { color: BRASS }]}>~</Text></TouchableOpacity>
+                  <TouchableOpacity onPress={() => screen(p.id, 'excluded')} style={[st.scBtn, dec === 'excluded' && { backgroundColor: CORAL + '22', borderColor: CORAL }]}><Text style={[st.scTxt, { color: CORAL }]}>✗</Text></TouchableOpacity>
                 </View>
               </View>
             );
@@ -302,10 +426,10 @@ export default function ResearchAgenticSystem() {
                       <Text style={[st.estadoTxt, { color: e.color }]}>{e.lbl}</Text>
                     </View>
                     <TouchableOpacity activeOpacity={0.8} onPress={() => agentCmd(a.agentId, 'regenerate')} style={st.agentBtn} hitSlop={{ top: 8, bottom: 8, left: 4, right: 4 }}>
-                      <Text style={[st.agentBtnTxt, { color: '#0FD4A0' }]}>↻</Text>
+                      <Text style={[st.agentBtnTxt, { color: TEAL }]}>↻</Text>
                     </TouchableOpacity>
                     <TouchableOpacity activeOpacity={0.8} onPress={() => agentCmd(a.agentId, 'stop')} style={st.agentBtn} hitSlop={{ top: 8, bottom: 8, left: 4, right: 4 }}>
-                      <Text style={[st.agentBtnTxt, { color: '#F56342' }]}>⏹</Text>
+                      <Text style={[st.agentBtnTxt, { color: CORAL }]}>⏹</Text>
                     </TouchableOpacity>
                   </View>
                 </FadeUp>
@@ -327,7 +451,7 @@ export default function ResearchAgenticSystem() {
               <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                 <Text style={st.docSec}>{a.icon} {a.seccion}</Text>
                 <TouchableOpacity activeOpacity={0.8} onPress={() => { setTarget(a.agentId); flash('Indicaciones dirigidas a ' + a.agentId); }}>
-                  <Text style={[st.docAim, { color: target === a.agentId ? '#0FD4A0' : Colors.muted }]}>{target === a.agentId ? '● dirigido' : 'dictar a este ›'}</Text>
+                  <Text style={[st.docAim, { color: target === a.agentId ? TEAL : Colors.muted }]}>{target === a.agentId ? '● dirigido' : 'dictar a este ›'}</Text>
                 </TouchableOpacity>
               </View>
               <Text style={st.docBody} numberOfLines={out ? 8 : 2}>{out || '— (vacío hasta que el agente redacte; pulsa ↻ en la consola o ▶ Iniciar)'}</Text>
@@ -341,7 +465,7 @@ export default function ResearchAgenticSystem() {
           <Text style={st.smallNote}>Dirigir a:</Text>
           {['orquestador', ...AGENTE_SECCION.filter((a) => a.agentId !== 'lead').map((a) => a.agentId)].map((t) => (
             <TouchableOpacity key={t} activeOpacity={0.85} onPress={() => setTarget(t)}
-              style={[st.aimChip, target === t ? { backgroundColor: '#0FD4A0' + '22', borderColor: '#0FD4A0' + '99' } : null]}>
+              style={[st.aimChip, target === t ? { backgroundColor: TEAL + '22', borderColor: TEAL + '99' } : null]}>
               <Text style={[st.aimChipTxt, target === t && { color: Colors.onSurface }]}>{t === 'orquestador' ? '🧭 orquestador' : t}</Text>
             </TouchableOpacity>
           ))}
@@ -352,8 +476,8 @@ export default function ResearchAgenticSystem() {
           <View style={{ gap: 6 }}>
             <TouchableOpacity activeOpacity={0.85} disabled={!voice.supported}
               onPress={() => (voice.listening ? voice.stop() : voice.start((t) => setFb((p) => (p ? p + ' ' : '') + t)))}
-              style={[st.micBtn, voice.listening && { backgroundColor: '#F56342' + '22', borderColor: '#F56342' + '99' }, !voice.supported && { opacity: 0.4 }]}>
-              <Text style={[st.micTxt, voice.listening && { color: '#F56342' }]}>{voice.listening ? '● grabando' : '🎤 voz'}</Text>
+              style={[st.micBtn, voice.listening && { backgroundColor: CORAL + '22', borderColor: CORAL + '99' }, !voice.supported && { opacity: 0.4 }]}>
+              <Text style={[st.micTxt, voice.listening && { color: CORAL }]}>{voice.listening ? '● grabando' : '🎤 voz'}</Text>
             </TouchableOpacity>
             <TouchableOpacity activeOpacity={0.85} onPress={sendFeedback} style={st.sendBtn}>
               <Text style={st.sendTxt}>Enviar ›</Text>
@@ -410,7 +534,7 @@ export default function ResearchAgenticSystem() {
       <GlassPanel style={{ marginBottom: Spacing.xl }}>
         {FULLTEXT_CASCADE.map((c, i) => (
           <View key={c.n} style={[st.cascRow, i === 0 && { borderTopWidth: 0 }]}>
-            <View style={[st.cascNum, { backgroundColor: '#A78BFA1A' }]}><Text style={[st.cascNumTxt, { color: '#A78BFA' }]}>{c.n}</Text></View>
+            <View style={[st.cascNum, { backgroundColor: OBS + '1A' }]}><Text style={[st.cascNumTxt, { color: OBS }]}>{c.n}</Text></View>
             <View style={{ flex: 1 }}>
               <Text style={st.cascName}>{c.fuente}</Text>
               <Text style={st.cascNota}>{c.nota}</Text>
@@ -425,7 +549,7 @@ export default function ResearchAgenticSystem() {
       <View style={{ marginBottom: Spacing.xl }}>
         {CITATION_PIPELINE.map((p, i) => (
           <FadeUp key={i} delay={i * 30}>
-            <View style={[st.citCard, { borderLeftColor: '#F56342' }]}>
+            <View style={[st.citCard, { borderLeftColor: CORAL }]}>
               <Text style={st.citPaso}>{p.paso}</Text>
               <Text style={st.citDet}>{p.detalle}</Text>
             </View>
@@ -556,7 +680,7 @@ const st = StyleSheet.create({
   ctrlBtn: { borderWidth: 1, borderRadius: BorderRadius.md, paddingVertical: 8, paddingHorizontal: 12, ...WEB_LINK },
   ctrlBtnTxt: { fontSize: FontSize.labelMd, fontWeight: '800', letterSpacing: 0.2 },
   ctrlHint: { fontSize: FontSize.labelSm, color: Colors.muted, lineHeight: 16, marginBottom: Spacing.md },
-  toast: { ...cardBase, borderColor: '#0FD4A0' + '66', padding: Spacing.md, marginBottom: Spacing.md, ...Elevation.glow('#0FD4A0') },
+  toast: { ...cardBase, borderColor: TEAL + '66', padding: Spacing.md, marginBottom: Spacing.md, ...Elevation.glow(TEAL) },
   toastTxt: { fontSize: FontSize.labelMd, color: Colors.onSurface, fontWeight: '600' },
 
   agentBtn: { width: 26, height: 26, borderRadius: BorderRadius.sm, borderWidth: 1, borderColor: Hairline.soft, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.04)', ...WEB_LINK },
@@ -571,14 +695,42 @@ const st = StyleSheet.create({
   fbInput: { flex: 1, minHeight: 60, ...cardBase, padding: Spacing.sm, color: Colors.onSurface, fontSize: FontSize.labelMd, textAlignVertical: 'top' as any },
   micBtn: { borderWidth: 1, borderColor: Hairline.strong, borderRadius: BorderRadius.md, paddingVertical: 8, paddingHorizontal: 10, alignItems: 'center', minWidth: 84, ...WEB_LINK },
   micTxt: { fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.onSurfaceVariant, letterSpacing: 0.2 },
-  sendBtn: { backgroundColor: '#0FD4A0', borderRadius: BorderRadius.md, paddingVertical: 8, paddingHorizontal: 10, alignItems: 'center', minWidth: 84, ...Elevation.glow('#0FD4A0'), ...WEB_LINK },
-  sendTxt: { fontSize: FontSize.labelSm, fontWeight: '900', color: '#062018', letterSpacing: 0.2 },
+  sendBtn: { backgroundColor: TEAL, borderRadius: BorderRadius.md, paddingVertical: 8, paddingHorizontal: 10, alignItems: 'center', minWidth: 84, ...Elevation.glow(TEAL), ...WEB_LINK },
+  sendTxt: { fontSize: FontSize.labelSm, fontWeight: '900', color: '#05201F', letterSpacing: 0.2 },
 
   paperCard: { ...cardBase, borderLeftWidth: 3, borderLeftColor: Hairline.medium, flexDirection: 'row', alignItems: 'center', gap: 8, padding: Spacing.md, marginBottom: 5, ...(Platform.OS === 'web' ? ({ transition: Motion.base } as any) : {}) },
   paperTitle: { fontSize: FontSize.labelMd, fontWeight: '600', color: Colors.onSurface, lineHeight: 16 },
   paperMeta: { fontSize: 9, color: Colors.muted, fontWeight: '700', letterSpacing: 0.2 },
-  relDots: { fontSize: 9, color: '#F5A623', letterSpacing: 1 },
+  relDots: { fontSize: 9, color: BRASS, letterSpacing: 1 },
   paperDoi: { fontSize: 9, color: Colors.smallLabel, fontWeight: '800', letterSpacing: 0.3, ...WEB_LINK },
   scBtn: { width: 28, height: 28, borderRadius: BorderRadius.sm, borderWidth: 1, borderColor: Hairline.medium, alignItems: 'center', justifyContent: 'center', ...WEB_LINK },
   scTxt: { fontSize: 15, fontWeight: '900' },
+
+  // ── Manuscript pipeline (carriles editoriales) ──
+  pipeWrap: { ...cardBase, padding: Spacing.md, marginBottom: Spacing.xl },
+  pipeTrack: { flexDirection: 'row', alignItems: 'flex-start', flexWrap: Platform.OS === 'web' ? ('nowrap' as any) : 'wrap', gap: Platform.OS === 'web' ? 0 : 8 },
+  laneCol: { alignItems: 'center', minWidth: 78, flexGrow: 1, flexBasis: 78, paddingTop: 2 },
+  laneNode: { width: 40, height: 40, borderRadius: 20, borderWidth: 1.5, alignItems: 'center', justifyContent: 'center', position: 'relative' },
+  laneNum: { fontSize: FontSize.labelMd, fontWeight: '800', letterSpacing: 0.3, fontFamily: ResearchFonts.serif as any },
+  laneCheck: { position: 'absolute', bottom: -3, right: -3, fontSize: 11, fontWeight: '900' },
+  laneLabel: { fontSize: FontSize.labelMd, fontWeight: '700', marginTop: 7, letterSpacing: -0.1, textAlign: 'center' },
+  laneSub: { fontSize: 8, color: Colors.muted, marginTop: 2, textAlign: 'center', letterSpacing: 0.2, lineHeight: 11 },
+  laneCard: { marginTop: 6, borderWidth: 1, borderRadius: BorderRadius.sm, paddingVertical: 2, paddingHorizontal: 7, backgroundColor: InkColors.gold + '12' },
+  laneCardTxt: { fontSize: 9, fontWeight: '900', letterSpacing: 0.4 },
+  gateSeal: { marginTop: 6, borderWidth: 1, borderRadius: BorderRadius.full, paddingVertical: 1, paddingHorizontal: 7, backgroundColor: 'rgba(255,255,255,0.02)' },
+  gateSealTxt: { fontSize: 8, fontWeight: '900', letterSpacing: 0.6 },
+  laneConnector: { height: 2, flexGrow: 1, flexBasis: 8, minWidth: 8, marginTop: 20, borderRadius: 1 },
+
+  // ── PRISMA 2020 flow ──
+  prismaWrap: { ...cardBase, padding: Spacing.lg, marginBottom: Spacing.xl, flexDirection: 'row', gap: Spacing.lg, flexWrap: 'wrap' },
+  prismaCol: { flex: 1, minWidth: 200, alignItems: 'stretch' },
+  prismaBox: { borderWidth: 1, borderRadius: BorderRadius.md, paddingVertical: 10, paddingHorizontal: 12, backgroundColor: 'rgba(255,255,255,0.02)' },
+  prismaBoxTitle: { fontSize: 9, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 1, textTransform: 'uppercase' },
+  prismaBoxN: { fontSize: 24, fontWeight: '800', letterSpacing: -0.5, marginTop: 2, ...(Platform.OS === 'web' ? ({ fontVariantNumeric: 'tabular-nums' } as any) : {}) },
+  prismaBoxSub: { fontSize: 9, color: Colors.muted, marginTop: 1, letterSpacing: 0.2 },
+  prismaArrow: { textAlign: 'center', color: Colors.muted, fontSize: 15, marginVertical: 3 },
+  prismaSide: { justifyContent: 'center', gap: Spacing.sm, minWidth: 140 },
+  prismaSideBox: { borderWidth: 1, borderRadius: BorderRadius.md, paddingVertical: 9, paddingHorizontal: 12, backgroundColor: 'rgba(255,255,255,0.02)' },
+  prismaSideN: { fontSize: 18, fontWeight: '800', letterSpacing: -0.3, ...(Platform.OS === 'web' ? ({ fontVariantNumeric: 'tabular-nums' } as any) : {}) },
+  prismaSideTxt: { fontSize: 9, color: Colors.onSurfaceVariant, marginTop: 2, lineHeight: 12 },
 });

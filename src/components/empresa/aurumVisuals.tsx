@@ -186,6 +186,76 @@ export function AurumRing({ value, max = 100, label, sub, accent = C.gold, size 
   );
 }
 
+// ── AurumCloserDesk: scoreboard del closer (KPIs high-ticket, glifos de terminal) ─
+// Tablero-firma del "closer desk" negro-oro. Data curada (empieza en 0, manual):
+// alimenta de AURUM_CLOSER_SCOREBOARD. NO reemplaza los anillos Día/Semana/Fase/Racha.
+export type CloserCell = { key: string; label: string; glyph: string; valor: string; meta: string; unidad: string };
+export function AurumCloserDesk({ metrics, nota, hint }: { metrics: CloserCell[]; nota?: string; hint?: string }) {
+  const mono: any = isWeb
+    ? { fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace', fontVariantNumeric: 'tabular-nums' }
+    : { fontVariant: ['tabular-nums'] };
+  return (
+    <View style={[cd.wrap, AurumShadow.card]}>
+      {isWeb ? <View pointerEvents="none" style={cd.hairline} /> : null}
+      <View style={cd.head}>
+        <Text style={cd.title}>◆ CLOSER SCOREBOARD</Text>
+        {hint ? <Text style={cd.hint}>{hint}</Text> : null}
+      </View>
+      <View style={cd.grid}>
+        {metrics.map((m) => (
+          <View key={m.key} style={cd.cell}>
+            <View style={cd.cellTop}>
+              <Text style={[cd.glyph, mono]}>{m.glyph}</Text>
+              <Text style={cd.cellLabel} numberOfLines={1}>{m.label.toUpperCase()}</Text>
+            </View>
+            <Text style={[cd.value, mono]} numberOfLines={1}>{m.valor}</Text>
+            <Text style={[cd.meta, mono]} numberOfLines={1}>meta {m.meta}</Text>
+            <Text style={cd.unit} numberOfLines={2}>{m.unidad}</Text>
+          </View>
+        ))}
+      </View>
+      {nota ? <Text style={cd.nota}>{nota}</Text> : null}
+    </View>
+  );
+}
+
+const cd = StyleSheet.create({
+  wrap: {
+    backgroundColor: C.bg,
+    borderRadius: R.lg,
+    borderWidth: 1,
+    borderColor: withAlpha(C.gold, 0.28),
+    borderLeftWidth: 3,
+    borderLeftColor: C.gold,
+    padding: S.lg,
+    overflow: 'hidden',
+    marginBottom: S.lg,
+  },
+  hairline: { position: 'absolute', top: 0, left: 0, right: 0, height: 1, backgroundColor: C.gold, opacity: 0.5 } as any,
+  head: { flexDirection: 'row', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: S.md, flexWrap: 'wrap', gap: 6 },
+  title: { fontSize: T.size.caption, fontWeight: T.weight.extrabold, color: C.goldSoft, letterSpacing: 1.2 },
+  hint: { fontSize: T.size.nano, color: C.textMute, letterSpacing: 0.3 },
+  grid: isWeb
+    ? ({ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 10 } as any)
+    : { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
+  cell: {
+    minWidth: 130, flexGrow: 1, flexBasis: 130,
+    backgroundColor: C.surface,
+    borderRadius: R.sm,
+    borderWidth: 1,
+    borderColor: C.border,
+    paddingVertical: S.md,
+    paddingHorizontal: S.md,
+  },
+  cellTop: { flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 5 },
+  glyph: { fontSize: T.size.caption, color: C.gold, fontWeight: T.weight.black },
+  cellLabel: { fontSize: T.size.nano, fontWeight: T.weight.extrabold, color: C.textMute, letterSpacing: 0.8, flex: 1 },
+  value: { fontSize: T.size.titleXl, fontWeight: T.weight.light, color: C.goldSoft, letterSpacing: T.tracking.tight },
+  meta: { fontSize: T.size.nano, color: C.success, marginTop: 2, letterSpacing: 0.3, fontWeight: T.weight.bold },
+  unit: { fontSize: T.size.nano, color: C.textMute, marginTop: 4, lineHeight: 13 },
+  nota: { fontSize: T.size.caption, color: C.textDim, marginTop: S.md, lineHeight: 18 },
+});
+
 // ── AurumRise: entrada escalonada (cascada de boot, web) ────────────────────
 export function AurumRise({ children, delay = 0, style }: { children: React.ReactNode; delay?: number; style?: ViewStyle }) {
   const anim = isWeb

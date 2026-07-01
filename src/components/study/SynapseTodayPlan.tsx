@@ -1,26 +1,29 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Linking, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Linking } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, LineHeight } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
-import { Chip, GlassPanel } from '../empresa/primitives';
+import { Chip, GlassPanel, monoText } from '../empresa/primitives';
 import { FadeUp } from '../empresa/visuals';
 import {
   SYN_PLAN_META, SYN_DIAS, DiaSynapse, SynBloque, synDiaDe, syn7d,
-  SYN_FORMATO_ICON, SYN_TAG_LABEL,
+  SYN_FORMATO_ICON,
 } from '../../lib/synapseDailyPlan';
 import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso } from '../../lib/studyProgress';
 import { synObsUrl } from '../../lib/obsidianVaultMap';
+import { PERIWINKLE, statusGlyph, tagBar, PromptGlyph } from './synapseConsole';
 
 const OBS = '#A78BFA'; // mismo morado ◆ que el resto de planes
 
 /**
- * SynapseTodayPlan — motor día-a-día SYNAPSE (82 días · 12 semanas), mismo molde que
- * ENCAPS/Business: HOY (bloques A/B/C + PC sábado, links reales del temario extraído),
- * 7 días clicable y Temario por semana con PROGRESO REAL marcable (empieza 0%,
- * localStorage PlanKey 'synapse'). El estado `done` vive en SynapseHub para que el
- * RingStat "Completadas" se actualice en vivo.
+ * SynapseTodayPlan — motor día-a-día SYNAPSE (82 días · 12 semanas), RE-SKIN como
+ * CONSOLA NEURAL: cada día es un "run", cada bloque un "job" (RunBlock estilo Warp
+ * con barra-de-status lateral + header mono + exit-status ○/▷/✓). Mismo molde que
+ * ENCAPS/Business (HOY / 7 días / 12 semanas) con PROGRESO REAL marcable (empieza 0%,
+ * localStorage PlanKey 'synapse'). El estado `done` vive en SynapseHub para que la
+ * telemetría "loss↓/completadas" se actualice en vivo. Sólo cambia la PRESENTACIÓN:
+ * datos, props, handlers y links reales intactos.
  */
-const INDIGO = '#818CF8';
+const INDIGO = PERIWINKLE; // periwinkle — color canónico de la consola (antes #818CF8)
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
 export function synTodayISO(): string {
   try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; }
@@ -38,31 +41,42 @@ function rachaReal(done: Set<number>, hoyD: number): number {
   return n;
 }
 
+/** RunBlock — un "job" del run de hoy, estilo Warp: barra-de-status lateral por tag,
+ *  header mono [tag·min] · formato · exit-status ○/▷/✓, salida (material/lección) mono-ish. */
 function BloqueRow({ b }: { b: SynBloque }) {
-  const accent = b.tag === 'A' ? INDIGO : b.tag === 'PC' ? Colors.amber : b.tag === 'R' ? Colors.green : Colors.muted;
+  const accent = tagBar(b.tag);
+  const { glyph, color: stColor } = statusGlyph(b.tag);
   const obs = synObsUrl(b.material, b.leccion); // nota exacta del material en el vault (nombre + lección para desambiguar)
+  const minTxt = b.tag === 'R' ? "30'" : `${b.min}'`;
   const inner = (
     <>
-      <Text style={st.blkIcon}>{SYN_FORMATO_ICON[b.formato]}</Text>
+      {/* barra-de-status lateral (data-plane) */}
+      <View style={[st.blkBar, { backgroundColor: accent }]} />
       <View style={{ flex: 1 }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-          <Text style={[st.blkTag, { color: accent }]}>{SYN_TAG_LABEL[b.tag]}</Text>
-          {b.real ? <Chip label="temario real" color={Colors.green} small /> : <Chip label="continúa donde quedaste" color={Colors.muted} small />}
+        {/* header mono estilo consola: exit-status · [tag·min] · formato */}
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 7, flexWrap: 'wrap' }}>
+          <Text style={[st.blkStatus, { color: stColor }]}>{glyph}</Text>
+          <Text style={[st.blkTag, { color: accent }]}>[{b.tag}·{minTxt}]</Text>
+          <Text style={st.blkFmt}>{SYN_FORMATO_ICON[b.formato]} {b.formato}</Text>
+          {b.real ? <Chip label="temario real" color={Colors.green} small /> : <Chip label="continúa" color={Colors.muted} small />}
           {obs ? (
             <TouchableOpacity activeOpacity={0.7} hitSlop={{ top: 8, bottom: 8, left: 4, right: 8 }} onPress={() => openUrl(obs)}>
               <Chip label="◆" color={OBS} small />
             </TouchableOpacity>
           ) : null}
         </View>
-        <Text style={st.blkMat}>{b.material}</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 6, marginTop: 5 }}>
+          <PromptGlyph char="›" color={accent} />
+          <Text style={st.blkMat}>{b.material}</Text>
+        </View>
         <Text style={st.blkLec}>{b.leccion}</Text>
-        {b.dur ? <Text style={st.blkDur}>{b.dur}</Text> : null}
+        {b.dur ? <Text style={st.blkDur}>⏱ {b.dur}</Text> : null}
       </View>
       {b.url ? <View style={[st.verBtn, { borderColor: accent + '88' }]}><Text style={[st.verTxt, { color: accent }]}>abrir ↗</Text></View> : null}
     </>
   );
-  if (!b.url) return <View style={[st.blk, { borderLeftColor: accent }]}>{inner}</View>;
-  return <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(b.url!)} style={[st.blk, { borderLeftColor: accent }]}>{inner}</TouchableOpacity>;
+  if (!b.url) return <View style={[st.blk, { borderColor: accent + '2E' }]}>{inner}</View>;
+  return <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(b.url!)} style={[st.blk, { borderColor: accent + '2E' }]}>{inner}</TouchableOpacity>;
 }
 
 function HoyView({ dia, hoyD, done, onToggle }: { dia: DiaSynapse; hoyD: number; done: Set<number>; onToggle: (d: number) => void }) {
@@ -75,32 +89,33 @@ function HoyView({ dia, hoyD, done, onToggle }: { dia: DiaSynapse; hoyD: number;
   const racha = rachaReal(done, hoyD);
   return (
     <View>
-      {/* mini-stats: racha · semana · % fase (todo REAL, desde los ✓) */}
+      {/* telemetría del run: streak · semana · % checkpoint (todo REAL, desde los ✓) */}
       <View style={st.statsRow}>
-        <View style={st.statCard}><Text style={[st.statVal, { color: racha > 0 ? INDIGO : Colors.muted }]}>{racha > 0 ? `🔥 ${racha}` : '—'}</Text><Text style={st.statLbl}>racha (días ✓ seguidos)</Text></View>
-        <View style={st.statCard}><Text style={[st.statVal, { color: Colors.onSurface }]}>{semHechos}/{semDias.length}</Text><Text style={st.statLbl}>semana {dia.semana}/12</Text></View>
-        <View style={st.statCard}><Text style={[st.statVal, { color: fasePct > 0 ? Colors.green : Colors.muted }]}>{fasePct}%</Text><Text style={st.statLbl}>{dia.faseId.toUpperCase()} real</Text></View>
+        <View style={st.statCard}><Text style={[st.statVal, { color: racha > 0 ? INDIGO : Colors.muted }]}>{racha > 0 ? `🔥${racha}` : '—'}</Text><Text style={st.statLbl}>streak · días ✓</Text></View>
+        <View style={st.statCard}><Text style={[st.statVal, { color: Colors.onSurface }]}>{semHechos}/{semDias.length}</Text><Text style={st.statLbl}>week {dia.semana}/12</Text></View>
+        <View style={st.statCard}><Text style={[st.statVal, { color: fasePct > 0 ? Colors.green : Colors.muted }]}>{fasePct}%</Text><Text style={st.statLbl}>{dia.faseId.toUpperCase()} checkpoint</Text></View>
       </View>
 
       <FadeUp>
         <View style={[st.misionCard, { borderColor: INDIGO + '55' }]}>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
             <Chip label={dia.fase} color={INDIGO} small />
-            <Chip label={`Semana ${dia.semana}`} color={Colors.muted} small />
-            {dia.wd !== 'Dom' && <Chip label={`${dia.bloques.reduce((n, b) => n + (b.tag === 'PC' ? 0 : b.min), 0)} min${dia.bloques.some(b => b.tag === 'PC') ? ' + PC opcional' : ''}`} color={Colors.amber} small />}
+            <Chip label={`week ${dia.semana}`} color={Colors.muted} small />
+            {dia.wd !== 'Dom' && <Chip label={`${dia.bloques.reduce((n, b) => n + (b.tag === 'PC' ? 0 : b.min), 0)} min${dia.bloques.some(b => b.tag === 'PC') ? ' + PC opt' : ''}`} color={Colors.amber} small />}
           </View>
+          <Text style={st.misionKicker}>{dia.wd === 'Dom' ? '$ run --review' : `$ run --day ${dia.d}`}</Text>
           <Text style={st.misionTitle}>{dia.wd === 'Dom' ? '🌿 Domingo de repaso' : `Misión del día ${dia.d}`}</Text>
           <TouchableOpacity
             activeOpacity={0.85}
             onPress={() => onToggle(dia.d)}
             style={[st.doneBtn, hecho ? { backgroundColor: INDIGO, borderColor: INDIGO } : { backgroundColor: INDIGO + '14', borderColor: INDIGO + '66' }]}
           >
-            <Text style={[st.doneBtnTxt, { color: hecho ? '#10122B' : INDIGO }]}>{hecho ? '✓ Misión completada' : '○ Marcar misión como completada'}</Text>
+            <Text style={[st.doneBtnTxt, { color: hecho ? '#10122B' : INDIGO }]}>{hecho ? '✓ run passed — misión completada' : '○ marcar run como passed'}</Text>
           </TouchableOpacity>
         </View>
       </FadeUp>
 
-      <Text style={st.secLbl}>Los bloques de hoy · en espacios muertos (no tocan tus bloques médicos)</Text>
+      <Text style={st.secLbl}>◈ jobs del run · en espacios muertos (no tocan tus bloques médicos)</Text>
       {dia.bloques.map((b, i) => <FadeUp key={i} delay={40 + i * 30}><BloqueRow b={b} /></FadeUp>)}
     </View>
   );
@@ -110,7 +125,7 @@ function SieteView({ fromD, done, onPick }: { fromD: number; done: Set<number>; 
   const win = syn7d(fromD);
   return (
     <View>
-      <Text style={st.secLbl}>📆 Próximos 7 días · toca un día para abrirlo</Text>
+      <Text style={st.secLbl}>◷ próximos 7 runs · toca un día para abrirlo</Text>
       {win.map((x, i) => {
         const a = x.bloques[0];
         const hecho = done.has(x.d);
@@ -185,14 +200,14 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
     <View>
       <View style={st.globCard}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-          <Text style={st.globTitle}>🗂️ 12 semanas · progreso real</Text>
+          <Text style={st.globTitle}>◈ 12 checkpoints · training progress</Text>
           <Text style={[st.globPct, { color: INDIGO }]}>{glob.pct}%</Text>
         </View>
         <ProgressBar pct={glob.pct} color={INDIGO} />
-        <Text style={st.globSub}>{glob.hechos}/{glob.total} misiones · F0 sem 1-8 · F1 sem 9-12 · empieza en 0% (avance manual real)</Text>
+        <Text style={st.globSub}>{glob.hechos}/{glob.total} runs passed · F0 sem 1-8 · F1 sem 9-12 · empieza en 0% (avance manual real)</Text>
       </View>
       {grupos.map((g) => <SemanaCard key={g.clave} g={g} hoyD={hoyD} onPick={onPick} done={done} onToggle={onToggle} />)}
-      <Text style={st.note}>☑ marca una misión como completada (se guarda en este dispositivo). ▶ = día de hoy. Las semanas 13+ se generan al avanzar de fase (node DATA/_scripts/gen_synapse_plan.js).</Text>
+      <Text style={st.note}>☑ marca un run como passed (se guarda en este dispositivo). ▶ = run de hoy. Los checkpoints 13+ se generan al avanzar de fase (node DATA/_scripts/gen_synapse_plan.js).</Text>
     </View>
   );
 }
@@ -213,15 +228,15 @@ export default function SynapseTodayPlan({ done, onToggle }: { done: Set<number>
       <View style={st.navRow}>
         <TouchableOpacity activeOpacity={0.7} onPress={() => setSel((s) => Math.max(1, s - 1))} style={st.navArrow}><Text style={st.navArrowTxt}>◄</Text></TouchableOpacity>
         <View style={{ flex: 1, alignItems: 'center' }}>
-          <Text style={st.navDay}>Día {dia.d}/{SYN_PLAN_META.totalDias}{esHoy ? ' · HOY' : ''}</Text>
+          <Text style={st.navDay}>run D{dia.d}/{SYN_PLAN_META.totalDias}{esHoy ? ' · LIVE' : ''}</Text>
           <Text style={st.navFecha}>{fmtFecha(dia.fecha)} · {dia.fecha}</Text>
         </View>
         <TouchableOpacity activeOpacity={0.7} onPress={() => setSel((s) => Math.min(SYN_PLAN_META.totalDias, s + 1))} style={st.navArrow}><Text style={st.navArrowTxt}>►</Text></TouchableOpacity>
       </View>
-      {!esHoy && <TouchableOpacity activeOpacity={0.8} onPress={() => setSel(todayDia.d)} style={st.hoyBtn}><Text style={st.hoyBtnTxt}>↩ volver a HOY</Text></TouchableOpacity>}
+      {!esHoy && <TouchableOpacity activeOpacity={0.8} onPress={() => setSel(todayDia.d)} style={st.hoyBtn}><Text style={st.hoyBtnTxt}>↩ volver al run LIVE</Text></TouchableOpacity>}
 
       <View style={st.subTabs}>
-        {([['hoy', '⚡ HOY'], ['7d', '📆 7 días'], ['temario', '🗂️ 12 semanas']] as const).map(([k, lbl]) => (
+        {([['hoy', '⚡ run'], ['7d', '◷ 7 runs'], ['temario', '◈ checkpoints']] as const).map(([k, lbl]) => (
           <TouchableOpacity key={k} activeOpacity={0.8} onPress={() => setView(k)} style={[st.subTab, view === k && st.subTabOn]}>
             <Text style={[st.subTabTxt, view === k && { color: INDIGO }]}>{lbl}</Text>
           </TouchableOpacity>
@@ -238,63 +253,65 @@ export default function SynapseTodayPlan({ done, onToggle }: { done: Set<number>
 }
 
 const cardBase = { backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.medium, ...Elevation.sm };
-const tnum = Platform.OS === 'web' ? ({ fontVariantNumeric: 'tabular-nums' } as any) : {};
 const st = StyleSheet.create({
   navRow: { flexDirection: 'row', alignItems: 'center', ...cardBase, padding: Spacing.sm, marginBottom: Spacing.xs },
   navArrow: { width: 40, height: 40, borderRadius: BorderRadius.md, backgroundColor: 'rgba(216,227,252,0.05)', borderWidth: 1, borderColor: Hairline.soft, alignItems: 'center', justifyContent: 'center' },
   navArrowTxt: { fontSize: 16, color: INDIGO, fontWeight: '800' },
-  navDay: { fontSize: FontSize.bodyLg, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.2, ...tnum },
-  navFecha: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 1, letterSpacing: 0.2 },
+  navDay: { fontSize: FontSize.bodyLg, fontWeight: '800', color: Colors.onSurface, letterSpacing: 0.2, ...monoText },
+  navFecha: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 1, letterSpacing: 0.2, ...monoText },
   hoyBtn: { alignSelf: 'center', marginBottom: Spacing.sm },
-  hoyBtnTxt: { fontSize: FontSize.labelSm, color: INDIGO, fontWeight: '700', letterSpacing: 0.3 },
+  hoyBtnTxt: { fontSize: FontSize.labelSm, color: INDIGO, fontWeight: '700', letterSpacing: 0.3, ...monoText },
 
   subTabs: { flexDirection: 'row', gap: 6, marginBottom: Spacing.sm, flexWrap: 'wrap' },
   subTab: { flexGrow: 1, paddingVertical: 7, paddingHorizontal: 8, borderRadius: BorderRadius.md, borderWidth: 1, borderColor: Hairline.medium, alignItems: 'center' },
   subTabOn: { backgroundColor: INDIGO + '14', borderColor: INDIGO + '55', ...Elevation.sm },
-  subTabTxt: { fontSize: FontSize.labelMd, fontWeight: '700', color: Colors.muted, letterSpacing: 0.2 },
+  subTabTxt: { fontSize: FontSize.labelMd, fontWeight: '700', color: Colors.muted, letterSpacing: 0.4, ...monoText },
 
   statsRow: { flexDirection: 'row', gap: 6, marginBottom: Spacing.sm },
   statCard: { flex: 1, ...cardBase, paddingVertical: 10, paddingHorizontal: 6, alignItems: 'center' },
-  statVal: { fontSize: FontSize.bodyLg, fontWeight: '900', letterSpacing: -0.3, ...tnum },
-  statLbl: { fontSize: 9, color: Colors.smallLabel, fontWeight: '600', marginTop: 3, textAlign: 'center', letterSpacing: 0.3 },
+  statVal: { fontSize: FontSize.bodyLg, fontWeight: '900', letterSpacing: -0.2, ...monoText },
+  statLbl: { fontSize: 8, color: Colors.smallLabel, fontWeight: '700', marginTop: 3, textAlign: 'center', letterSpacing: 0.5, textTransform: 'uppercase', ...monoText },
 
   misionCard: { ...cardBase, borderWidth: 1, padding: Spacing.md, marginBottom: Spacing.sm, ...Elevation.md },
-  misionTitle: { fontSize: FontSize.bodyLg, fontWeight: '800', color: Colors.onSurface, marginTop: 8, letterSpacing: -0.2, lineHeight: LineHeight.bodyLg },
+  misionKicker: { fontSize: FontSize.labelSm, color: INDIGO, marginTop: 8, letterSpacing: 0.3, ...monoText },
+  misionTitle: { fontSize: FontSize.bodyLg, fontWeight: '800', color: Colors.onSurface, marginTop: 2, letterSpacing: -0.2, lineHeight: LineHeight.bodyLg },
   doneBtn: { marginTop: 10, paddingVertical: 9, borderRadius: BorderRadius.md, borderWidth: 1, alignItems: 'center' },
-  doneBtnTxt: { fontSize: FontSize.labelMd, fontWeight: '800', letterSpacing: 0.3 },
+  doneBtnTxt: { fontSize: FontSize.labelMd, fontWeight: '800', letterSpacing: 0.3, ...monoText },
 
-  secLbl: { fontSize: 10, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 0.9, textTransform: 'uppercase', marginBottom: 8, marginTop: Spacing.sm },
-  blk: { ...cardBase, borderLeftWidth: 3, flexDirection: 'row', alignItems: 'center', gap: 10, padding: Spacing.md, marginBottom: 6 },
-  blkIcon: { fontSize: 18, width: 24, textAlign: 'center' },
-  blkTag: { fontSize: 9, fontWeight: '800', letterSpacing: 0.5, textTransform: 'uppercase' },
-  blkMat: { fontSize: FontSize.labelMd, color: Colors.onSurface, fontWeight: '700', marginTop: 3, letterSpacing: -0.1 },
-  blkLec: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 2, lineHeight: LineHeight.labelMd },
-  blkDur: { fontSize: 9, color: Colors.muted, marginTop: 2, letterSpacing: 0.2 },
-  verBtn: { borderWidth: 1, borderRadius: BorderRadius.md, paddingVertical: 5, paddingHorizontal: 10, alignItems: 'center' },
-  verTxt: { fontSize: FontSize.labelSm, fontWeight: '800', letterSpacing: 0.3 },
+  secLbl: { fontSize: 10, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 0.9, textTransform: 'uppercase', marginBottom: 8, marginTop: Spacing.sm, ...monoText },
+  blk: { ...cardBase, borderWidth: 1, flexDirection: 'row', alignItems: 'stretch', gap: 10, paddingVertical: Spacing.md, paddingRight: Spacing.md, paddingLeft: 0, marginBottom: 6, overflow: 'hidden' },
+  blkBar: { width: 4, alignSelf: 'stretch', borderTopLeftRadius: BorderRadius.lg, borderBottomLeftRadius: BorderRadius.lg },
+  blkStatus: { fontSize: 13, fontWeight: '800', ...monoText },
+  blkTag: { fontSize: 10, fontWeight: '800', letterSpacing: 0.3, ...monoText },
+  blkFmt: { fontSize: 9, color: Colors.muted, letterSpacing: 0.3, ...monoText },
+  blkMat: { fontSize: FontSize.labelMd, color: Colors.onSurface, fontWeight: '700', letterSpacing: -0.1, flex: 1 },
+  blkLec: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 3, lineHeight: LineHeight.labelMd },
+  blkDur: { fontSize: 9, color: Colors.muted, marginTop: 3, letterSpacing: 0.3, ...monoText },
+  verBtn: { borderWidth: 1, borderRadius: BorderRadius.md, paddingVertical: 5, paddingHorizontal: 10, alignItems: 'center', alignSelf: 'center' },
+  verTxt: { fontSize: FontSize.labelSm, fontWeight: '800', letterSpacing: 0.3, ...monoText },
 
   d7: { ...cardBase, borderLeftWidth: 3, flexDirection: 'row', alignItems: 'center', gap: 10, padding: Spacing.sm, marginBottom: 5 },
-  d7day: { fontSize: FontSize.labelLg, fontWeight: '800', width: 44, ...tnum },
-  d7fecha: { fontSize: FontSize.labelSm, color: Colors.muted, width: 56, letterSpacing: 0.2 },
+  d7day: { fontSize: FontSize.labelLg, fontWeight: '800', width: 44, ...monoText },
+  d7fecha: { fontSize: FontSize.labelSm, color: Colors.muted, width: 56, letterSpacing: 0.2, ...monoText },
   d7sub: { fontSize: FontSize.labelMd, color: Colors.onSurface, fontWeight: '600' },
   d7sys: { fontSize: 9, color: Colors.muted, marginTop: 1 },
   d7go: { fontSize: 16, fontWeight: '800', width: 18, textAlign: 'center' },
 
   globCard: { ...cardBase, padding: Spacing.md, marginBottom: Spacing.sm },
-  globTitle: { fontSize: FontSize.labelLg, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.1 },
-  globPct: { fontSize: FontSize.bodyLg, fontWeight: '900', letterSpacing: -0.3, ...tnum },
+  globTitle: { fontSize: FontSize.labelLg, fontWeight: '800', color: Colors.onSurface, letterSpacing: 0.3, ...monoText },
+  globPct: { fontSize: FontSize.bodyLg, fontWeight: '900', letterSpacing: -0.3, ...monoText },
   globSub: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 5, lineHeight: LineHeight.labelSm },
   barTrack: { height: 7, borderRadius: BorderRadius.full, backgroundColor: Hairline.strong, overflow: 'hidden' },
   barFill: { height: 7, borderRadius: BorderRadius.full },
   semCard: { ...cardBase, padding: Spacing.md, marginBottom: 6 },
   semHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 },
   semTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface, flex: 1, letterSpacing: -0.1 },
-  semCount: { fontSize: FontSize.labelMd, fontWeight: '800', marginLeft: 8, ...tnum },
-  semEstado: { fontSize: FontSize.labelSm, fontWeight: '700', marginTop: 5, letterSpacing: 0.2 },
+  semCount: { fontSize: FontSize.labelMd, fontWeight: '800', marginLeft: 8, ...monoText },
+  semEstado: { fontSize: FontSize.labelSm, fontWeight: '700', marginTop: 5, letterSpacing: 0.3, ...monoText },
   diaRow: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingVertical: 6, paddingHorizontal: 6, borderRadius: BorderRadius.sm, borderTopWidth: 1, borderTopColor: Hairline.soft },
   diaRowMain: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 8 },
   diaChk: { fontSize: 16, width: 22, textAlign: 'center' },
-  diaRowD: { fontSize: FontSize.labelSm, fontWeight: '800', width: 44, ...tnum },
+  diaRowD: { fontSize: FontSize.labelSm, fontWeight: '800', width: 44, ...monoText },
   diaRowTxt: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant },
   diaRowGo: { fontSize: 14, color: Colors.muted, width: 16, textAlign: 'center' },
   note: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: Spacing.sm, lineHeight: LineHeight.labelSm },

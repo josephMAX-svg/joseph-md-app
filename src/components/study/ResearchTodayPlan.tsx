@@ -11,16 +11,20 @@ import {
 import { agruparProgreso, progresoGlobal, GrupoProgreso, loadDone, saveDone } from '../../lib/studyProgress';
 import { diaEstudioTipo, PRIORIDAD_COLOR } from '../../lib/researchData';
 import { researchObsUrlDay } from '../../lib/obsidianResearchMap';
+import { serifTitle, InkColors, OBSIDIAN } from './researchTheme';
 
 /**
- * ResearchTodayPlan — Plan de research día-a-día (revisiones sistemáticas), mismo motor
- * que UsmleTodayPlan: nav de día ◄►, sub-pestañas HOY/Horario/7d/Temario, progreso REAL
- * marcable (empieza 0%, localStorage clave 'research'), interdiario con Derma. Cada recurso
- * de la cola abre un sitio REAL verificado. El badge de fase lleva al Temario.
+ * ResearchTodayPlan — Plan de research día-a-día (revisiones sistemáticas), presentado como
+ * ENTRADA de cuaderno de laboratorio (fecha en el lomo, nº de protocolo Rxx, objetivo en serif,
+ * ENTREGABLE como artefacto sellado). Mismo motor que UsmleTodayPlan: nav de día ◄►, sub-pestañas
+ * HOY/Horario/7d/Temario, progreso REAL marcable (empieza 0%, localStorage clave 'research'),
+ * interdiario con Derma. Cada recurso de la cola abre un sitio REAL verificado.
  */
-const TEAL = '#0FD4A0';
-const PURPLE = '#8B5CF6';
-const OBS = '#A78BFA';
+const TEAL = InkColors.teal;      // #6BB8B0 (era #0FD4A0)
+const GOLD = InkColors.gold;      // #C8A96A — estatus (artefacto/entregable hecho)
+const PURPLE = InkColors.amethyst; // #9A7BC8 (era #8B5CF6)
+const OBS = OBSIDIAN;             // #9A7BC8 (era #A78BFA)
+const ANCLA = InkColors.periwinkle; // #7C83D6 — eval anclada (era #7BB1FF/#AFCBFF)
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
 function todayISO(): string {
   try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; }
@@ -66,13 +70,13 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaResearch; on
             <Chip label={dia.prioridad} color={PRIORIDAD_COLOR[dia.prioridad]} small />
             {fi.pilar !== 'base' && <Chip label={fi.pilar} color={Colors.muted} small />}
           </View>
-          <Text style={st.temaTitle}>{dia.objetivo}</Text>
-          <View style={[st.entregBox, { borderColor: fc + '40' }]}>
-            <Text style={st.entregLbl}>📦 ENTREGABLE (artefacto del día)</Text>
+          <Text style={[st.temaTitle, serifTitle]}>{dia.objetivo}</Text>
+          <View style={[st.entregBox, { borderColor: GOLD + '3A' }]}>
+            <Text style={st.entregLbl}>ENTREGABLE · artefacto sellado del día</Text>
             <Text style={st.entregTxt}>{dia.entregable}</Text>
           </View>
           <TouchableOpacity activeOpacity={0.85} onPress={() => onToggle(dia.d)} style={[st.doneBtn, hecho ? st.doneBtnOn : st.doneBtnOff]}>
-            <Text style={[st.doneBtnTxt, { color: hecho ? '#062018' : TEAL }]}>{hecho ? '✓ Entregable hecho' : '○ Marcar entregable como hecho'}</Text>
+            <Text style={[st.doneBtnTxt, { color: hecho ? '#1A1505' : GOLD }]}>{hecho ? '✓ Artefacto sellado' : '○ Sellar entregable como hecho'}</Text>
           </TouchableOpacity>
         </View>
       </FadeUp>
@@ -81,7 +85,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaResearch; on
       {prev && (
         <FadeUp delay={40}>
           <View style={st.anchor}>
-            <Text style={st.anchorLbl}>🎯 13:30 · Eval anclada (sesión anterior)</Text>
+            <Text style={st.anchorLbl}>13:30 · Eval anclada (sesión anterior)</Text>
             <Text style={st.anchorVal}>{prev.code} · {prev.objetivo}</Text>
             <Text style={st.anchorSub}>2Q de auto-test del método + ¿avanzó el entregable de ayer? · APEX-método AGAIN/GOOD</Text>
           </View>
@@ -93,8 +97,8 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaResearch; on
       {dia.recs.map((k, i) => {
         const r = REC[k];
         if (!r) return null;
-        const icon = i === 0 ? '🎬' : i === 1 ? '📖' : '🔗';
-        const color = i === 0 ? TEAL : i === 1 ? '#7BB1FF' : '#AFCBFF';
+        const icon = i === 0 ? '▶' : i === 1 ? '§' : '¶';
+        const color = i === 0 ? TEAL : i === 1 ? ANCLA : InkColors.sapphire;
         return <FadeUp key={k} delay={60 + i * 30}><ColaItem icon={icon} lbl={`RECURSO ${i + 1} · ${dia.tool}`} val={r.label} sub={k} color={color} url={r.url} /></FadeUp>;
       })}
 
@@ -108,8 +112,8 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaResearch; on
 
       {/* APEX */}
       <FadeUp delay={210}>
-        <View style={[st.cola, { borderLeftColor: '#F5A623' }]}>
-          <Text style={st.colaIcon}>🃏</Text>
+        <View style={[st.cola, { borderLeftColor: GOLD }]}>
+          <Text style={st.colaIcon}>◆</Text>
           <View style={{ flex: 1 }}>
             <Text style={st.colaLbl}>APEX-método · 14:10–14:15</Text>
             <Text style={st.colaVal}>{dia.apex ? `Crea ≤3 APEX — hito: ${dia.apex.t}` : 'Crea ≤3 APEX-método (Palmerton)'}</Text>
@@ -346,17 +350,17 @@ const st = StyleSheet.create({
   temaTop: { flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap' },
   sysBadge: { borderRadius: BorderRadius.full, borderWidth: 1, paddingVertical: 3, paddingHorizontal: 11, ...WEB_LINK },
   sysBadgeTxt: { fontSize: FontSize.labelMd, fontWeight: '800', letterSpacing: 0.2 },
-  temaTitle: { fontSize: FontSize.bodyLg, fontWeight: '800', color: Colors.onSurface, marginTop: 9, lineHeight: 22, letterSpacing: -0.3 },
-  entregBox: { borderWidth: 1, borderRadius: BorderRadius.md, padding: Spacing.md, marginTop: 11, backgroundColor: 'rgba(255,255,255,0.02)' },
-  entregLbl: { fontSize: 9, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 0.5, textTransform: 'uppercase' },
+  temaTitle: { fontSize: FontSize.titleMd, fontWeight: '700', color: Colors.onSurface, marginTop: 9, lineHeight: 25, letterSpacing: -0.3 },
+  entregBox: { borderWidth: 1, borderRadius: BorderRadius.md, padding: Spacing.md, marginTop: 11, backgroundColor: GOLD + '08' },
+  entregLbl: { fontSize: 9, fontWeight: '800', color: GOLD, letterSpacing: 0.8, textTransform: 'uppercase' },
   entregTxt: { fontSize: FontSize.labelMd, color: Colors.onSurface, marginTop: 4, lineHeight: 16 },
   doneBtn: { marginTop: 11, paddingVertical: 10, borderRadius: BorderRadius.md, borderWidth: 1, alignItems: 'center', ...WEB_LINK },
-  doneBtnOff: { backgroundColor: TEAL + '14', borderColor: TEAL + '66' },
-  doneBtnOn: { backgroundColor: TEAL, borderColor: TEAL, ...Elevation.glow(TEAL) },
+  doneBtnOff: { backgroundColor: GOLD + '12', borderColor: GOLD + '55' },
+  doneBtnOn: { backgroundColor: GOLD, borderColor: GOLD, ...Elevation.glow(GOLD) },
   doneBtnTxt: { fontSize: FontSize.labelMd, fontWeight: '800', letterSpacing: 0.2 },
 
-  anchor: { ...cardBase, borderLeftWidth: 3, borderLeftColor: '#7BB1FF', padding: Spacing.md, marginBottom: Spacing.sm },
-  anchorLbl: { fontSize: FontSize.labelMd, fontWeight: '800', color: '#AFCBFF', letterSpacing: 0.2 },
+  anchor: { ...cardBase, borderLeftWidth: 3, borderLeftColor: ANCLA, padding: Spacing.md, marginBottom: Spacing.sm },
+  anchorLbl: { fontSize: FontSize.labelMd, fontWeight: '800', color: ANCLA, letterSpacing: 0.2 },
   anchorVal: { fontSize: FontSize.labelLg, fontWeight: '700', color: Colors.onSurface, marginTop: 4, letterSpacing: -0.2 },
   anchorSub: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 3, lineHeight: LineHeight.labelSm },
 

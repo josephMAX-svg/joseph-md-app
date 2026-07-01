@@ -7,7 +7,7 @@ import { AI_FIRST_SEGMENTOS } from '../../lib/aiFirstTools';
  * AIFirstPanel — tarjeta plegable "🤖 Estudiar/operar CON IA" para cualquier segmento.
  * Datos verificados en src/lib/aiFirstTools.ts. Recordatorio fijo: la IA es APOYO, el criterio es tuyo.
  */
-const AI = '#2DD4BF'; // teal IA
+const AI = Colors.teal; // teal IA apagado (#6BB8B0) — migrado de #2DD4BF neón
 
 export default function AIFirstPanel({ segmento, accent = AI }: { segmento: string; accent?: string }) {
   const seg = AI_FIRST_SEGMENTOS[segmento];
@@ -52,7 +52,7 @@ export default function AIFirstPanel({ segmento, accent = AI }: { segmento: stri
 
 const WEB_LINK = { cursor: 'pointer', transition: Motion.base } as any;
 const st = StyleSheet.create({
-  card: { backgroundColor: 'rgba(45,212,191,0.05)', borderRadius: BorderRadius.lg, borderWidth: 1, padding: Spacing.md, marginBottom: Spacing.lg, ...Elevation.sm },
+  card: { backgroundColor: 'rgba(107,184,176,0.06)', borderRadius: BorderRadius.lg, borderWidth: 1, padding: Spacing.md, marginBottom: Spacing.lg, ...Elevation.sm },
   head: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, ...WEB_LINK },
   title: { fontSize: FontSize.bodyLg, fontWeight: '800', color: Colors.onSurface, letterSpacing: 0.2 },
   hint: { fontSize: FontSize.labelMd, color: Colors.muted, marginTop: 3, lineHeight: LineHeight.labelMd },

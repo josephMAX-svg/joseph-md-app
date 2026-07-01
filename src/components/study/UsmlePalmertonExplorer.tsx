@@ -8,6 +8,8 @@ import {
   USMLE_META, USMLE_TOT, USMLE_SYSTEMS, TIER_INFO, UsmleSystem,
   PALMERTON_METHOD, sistemasPorRentabilidad, systemMinutes, fmtMin, yt, QBANKLY,
 } from '../../lib/usmlePalmertonData';
+import { ANKIWEB } from '../../lib/ankiLinks';
+import { CrosslinkRail } from './ConsoleKit';
 
 /**
  * UsmlePalmertonExplorer — la biblioteca High-Yield REAL de Alec Palmerton (Yousmle)
@@ -15,7 +17,7 @@ import {
  * reales (deep-link a YouTube + duración real) + el foco de práctica en Qbankly.
  * Mismo patrón que el explorador de ProMIR.
  */
-const GREEN = '#3FB984';
+const GREEN = Colors.green;   // jade (US console) — migrado de #3FB984
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
 
 function SystemCard({ s, index }: { s: UsmleSystem; index: number }) {
@@ -53,6 +55,14 @@ function SystemCard({ s, index }: { s: UsmleSystem; index: number }) {
               <Text style={st.qbankLbl}>🎯 Práctica Qbankly</Text>
               <Text style={st.qbankFoco} numberOfLines={2}>{s.qbankFoco}</Text>
             </TouchableOpacity>
+
+            {/* CROSSLINK · el mismo sistema en 4 capas (grafo AMBOSS) */}
+            <CrosslinkRail fallbackUrl={QBANKLY} nodes={[
+              { icon: '▶', kind: 'Vídeo HY', label: s.videos[0]?.titulo || s.sistema, note: fmtMin(systemMinutes(s)), url: yt(s.videos[0]?.id || ''), accent: GREEN },
+              { icon: '🅠', kind: 'Qbank', label: s.qbankFoco, url: QBANKLY, accent: Colors.coral },
+              { icon: '🗂️', kind: 'Flashcard', label: `Anki · ${s.sistema}`, url: ANKIWEB, accent: Colors.teal },
+              { icon: '◆', kind: 'Obsidian', label: 'Nota madre del sistema', note: 'Vault', url: null, accent: Colors.purple },
+            ]} />
           </View>
         )}
       </View>
@@ -129,8 +139,8 @@ const st = StyleSheet.create({
   vidRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 8, borderTopWidth: 1, borderTopColor: Hairline.soft, ...WEB_LINK },
   play: { color: GREEN, fontSize: 11, width: 14, textAlign: 'center' },
   vidTxt: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 16 },
-  qbankRow: { marginTop: 8, padding: Spacing.sm, borderRadius: BorderRadius.md, backgroundColor: 'rgba(229,72,77,0.06)', borderWidth: 1, borderColor: 'rgba(229,72,77,0.25)', ...WEB_LINK },
-  qbankLbl: { fontSize: FontSize.labelMd, fontWeight: '800', color: '#E5484D', letterSpacing: 0.2 },
+  qbankRow: { marginTop: 8, padding: Spacing.sm, borderRadius: BorderRadius.md, backgroundColor: Colors.coral + '10', borderWidth: 1, borderColor: Colors.coral + '3A', ...WEB_LINK },
+  qbankLbl: { fontSize: FontSize.labelMd, fontWeight: '800', color: Colors.coral, letterSpacing: 0.2 },
   qbankFoco: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, marginTop: 3, lineHeight: 15 },
 
   methodRow: { ...cardBase, flexDirection: 'row', alignItems: 'center', gap: 8, padding: Spacing.md, marginBottom: 6, ...WEB_LINK },

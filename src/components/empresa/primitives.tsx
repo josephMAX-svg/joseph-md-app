@@ -6,35 +6,47 @@ import type { Semaforo } from '../../lib/empresaData';
 
 /**
  * Primitivas compartidas del Hub de Empresa (Business).
- * RN nativo (View/Text/StyleSheet) — coherentes con "Clinical Precision":
- * navy + ámbar #F5A623, GlassCards, sin drop shadows decorativos, estilos web
- * detrás de Platform.OS === 'web'.
+ * Paradigma: TERMINAL FINANCIERO del holding (Bloomberg / Ramp / Mercury).
+ * Paleta "Midnight Sapphire & Champagne Gold": zafiro profundo + oro firma
+ * (Colors.gold #C8A96A), semántica de datos (jade meta / coral actuar / brass
+ * vigilar). Numerales tabulares + mono para cifras/tickers/deltas. Todo el
+ * movimiento y la fuente mono web-only van detrás de Platform.OS === 'web'.
  */
 
-export const AMBER = Colors.amber; // #F5A623 — accent de la sección Business
+export const AMBER = Colors.gold;   // #C8A96A — oro-firma (acento del segmento Business)
+export const BRASS = Colors.brass;  // #B8934E — brass profundo (semántica "vigilar")
+
+// Fuente monoespaciada del terminal (web): cifras, tickers, reloj y deltas.
+// En native no hay familia mono custom cargada → se degrada a la del sistema pero
+// SIEMPRE con numerales tabulares (fontVariant) para que las columnas cuadren.
+export const MONO_FAMILY = 'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace';
+export const monoText: any = Platform.OS === 'web'
+  ? { fontFamily: MONO_FAMILY, fontVariantNumeric: 'tabular-nums' }
+  : { fontVariant: ['tabular-nums'] as any };
 
 // ── Mapas de color ──────────────────────────────────────────────
 export function semaforoColor(s: Semaforo): string {
   switch (s) {
-    case 'verde': return Colors.green;   // #10B981
-    case 'ambar': return Colors.amber;   // #F5A623
-    case 'rojo':  return Colors.coral;   // #F56342
-    default:      return Colors.muted;   // #8F9097
+    case 'verde': return Colors.green;   // #5FA88C jade — meta
+    case 'ambar': return Colors.brass;   // #B8934E brass — vigilar
+    case 'rojo':  return Colors.coral;   // #C56A5A terracota — actuar
+    default:      return Colors.muted;   // #7C8496 — sin dato
   }
 }
 
 const ACCENTS: Record<string, string> = {
-  amber: Colors.amber, blue: Colors.blue, green: Colors.green,
+  amber: Colors.gold, blue: Colors.blue, green: Colors.green,
   purple: Colors.purple, coral: Colors.coral, teal: Colors.teal,
+  brass: Colors.brass, gold: Colors.gold,
 };
 export function accentColor(name: string): string {
-  return ACCENTS[name] ?? Colors.amber;
+  return ACCENTS[name] ?? Colors.gold;
 }
 
 export function estadoEmpresaColor(estado: string): string {
   switch (estado) {
     case 'activa': return Colors.green;
-    case 'en_desarrollo': return Colors.amber;
+    case 'en_desarrollo': return Colors.brass;
     case 'piloto': return Colors.blue;
     default: return Colors.muted;
   }
@@ -43,7 +55,7 @@ export function estadoEmpresaColor(estado: string): string {
 export function estadoCreativoColor(estado: string): string {
   switch (estado) {
     case 'ganador': return Colors.green;
-    case 'prueba': return Colors.amber;
+    case 'prueba': return Colors.brass;
     case 'matar': return Colors.coral;
     default: return Colors.muted;
   }
@@ -151,6 +163,45 @@ export function StatCell({ label, value, accent = AMBER }: { label: string; valu
   );
 }
 
+// ── MonoNumeral: cifra en fuente mono + numerales tabulares (grado terminal) ─
+export function MonoNumeral({
+  children, color = Colors.onSurface, size = FontSize.titleMd, weight = '700', style,
+}: { children: React.ReactNode; color?: string; size?: number; weight?: TextStyle['fontWeight']; style?: TextStyle }) {
+  return (
+    <Text style={[{ fontSize: size, fontWeight: weight, color, letterSpacing: 0 }, monoText, style]} numberOfLines={1}>
+      {children}
+    </Text>
+  );
+}
+
+// ── DeltaValue: delta con glifo ▲/▼/● y color-semántica (verde/coral/muted) ──
+export function DeltaValue({
+  dir, label, size = FontSize.labelMd,
+}: { dir: 'up' | 'down' | 'flat'; label: string; size?: number }) {
+  const glyph = dir === 'up' ? '▲' : dir === 'down' ? '▼' : '●';
+  const color = dir === 'up' ? Colors.green : dir === 'down' ? Colors.coral : Colors.muted;
+  return (
+    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+      <Text style={[{ fontSize: size - 1, color, fontWeight: '800' }, monoText]}>{glyph}</Text>
+      <Text style={[{ fontSize: size, color, fontWeight: '700' }, monoText]} numberOfLines={1}>{label}</Text>
+    </View>
+  );
+}
+
+// ── TabularStat: celda de cifra "grado financiero" (label mono + valor tabular) ─
+export function TabularStat({
+  label, value, accent = AMBER, delta, sub,
+}: { label: string; value: string; accent?: string; delta?: { dir: 'up' | 'down' | 'flat'; label: string }; sub?: string }) {
+  return (
+    <View style={styles.tabStat}>
+      <Text style={styles.tabStatLabel} numberOfLines={1}>{label.toUpperCase()}</Text>
+      <MonoNumeral color={accent} size={FontSize.titleMd} weight="800" style={{ marginTop: 3 }}>{value}</MonoNumeral>
+      {delta ? <View style={{ marginTop: 4 }}><DeltaValue dir={delta.dir} label={delta.label} size={FontSize.labelSm} /></View> : null}
+      {sub ? <Text style={styles.tabStatSub} numberOfLines={1}>{sub}</Text> : null}
+    </View>
+  );
+}
+
 // ── PillTab: tab/segmento (usado por el selector y sub-nav) ──────
 export function PillTab({
   label, sublabel, icon, active, accent = AMBER, onPress, dot,
@@ -250,8 +301,8 @@ const styles = StyleSheet.create({
   metricValue: {
     fontSize: FontSize.titleMd,
     fontWeight: '800',
-    letterSpacing: -0.4,
-    ...(Platform.OS === 'web' ? ({ fontVariantNumeric: 'tabular-nums' } as any) : {}),
+    letterSpacing: -0.2,
+    ...monoText,
   },
   metricMeta: {
     fontSize: 10,
@@ -281,8 +332,33 @@ const styles = StyleSheet.create({
   statValue: {
     fontSize: FontSize.titleMd,
     fontWeight: '800',
-    letterSpacing: -0.3,
-    ...(Platform.OS === 'web' ? ({ fontVariantNumeric: 'tabular-nums' } as any) : {}),
+    letterSpacing: -0.2,
+    ...monoText,
+  },
+  tabStat: {
+    flex: 1,
+    minWidth: 92,
+    backgroundColor: DesktopColors.glass,
+    borderRadius: BorderRadius.lg,
+    borderWidth: 1,
+    borderColor: Hairline.medium,
+    borderLeftWidth: 2,
+    borderLeftColor: Hairline.accentSoft,
+    paddingVertical: Spacing.md,
+    paddingHorizontal: Spacing.md,
+    ...Elevation.sm,
+  },
+  tabStatLabel: {
+    fontSize: 9,
+    fontWeight: '800',
+    color: Colors.smallLabel,
+    letterSpacing: 1,
+  },
+  tabStatSub: {
+    fontSize: 9,
+    color: Colors.muted,
+    marginTop: 3,
+    letterSpacing: 0.2,
   },
   statLabel: {
     fontSize: 9,

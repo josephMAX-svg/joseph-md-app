@@ -11,11 +11,32 @@ export type { Prioridad };
 export const USMLE_META = {
   title: 'USMLE Step 1',
   subtitle: 'United States · pass with margin → springboard to Step 2 CK (Mayo)',
-  accent: '#10B981', // green (USA)
+  accent: '#5FA88C', // jade (USA console) — quiet-luxury, non-neon
+  flag: '🇺🇸',
   thesis: 'Step 1 is Pass/Fail but we train like it is 270. Pathology + Physiology are 75–95% of the exam. Medical English is not a separate subject — it is the VEHICLE: learn the content itself in English. Compounding beats cramming.',
 };
 
 export const USMLE_KPIS = { systems: 11, pathologyPct: 50, beginnerWeeks: 8, readiness: 4 };
+
+// ── READINESS · NBME / UWSA / Free 120 checkpoints (score-prediction layer) ──
+// The "bank" honesty layer: a readiness gauge is only meaningful once anchored to a
+// real self-assessment. Bands are the published predictive ranges (AMBOSS ±7-10 pts).
+export interface UsmleCheckpoint {
+  form: string; kind: 'NBME' | 'FREE120' | 'UWSA' | 'AMBOSS';
+  when: string; predictor: string; band: string; url: string; gated: boolean;
+}
+export const USMLE_CHECKPOINTS: UsmleCheckpoint[] = [
+  { form: 'NBME Forms 30–33', kind: 'NBME', when: 'every 3–4 weeks, last phase', predictor: 'Best single predictor of a Step 1 pass', band: '≥ 60% ≈ pass zone', url: 'https://www.nbme.org/examinees/self-assessments', gated: true },
+  { form: 'USMLE Free 120', kind: 'FREE120', when: '1–2 weeks pre-exam', predictor: 'Real NBME item feel, free · ≥ 65% → green', band: 'do it timed, single block', url: 'https://www.usmle.org/prepare-your-exam', gated: false },
+  { form: 'UWorld Self-Assessment 1–2', kind: 'UWSA', when: 'mid + late phase', predictor: 'Over-predicts ~5–8 pts — read it soft', band: 'trend > absolute number', url: 'https://www.uworld.com/', gated: true },
+  { form: 'AMBOSS Score Predictor', kind: 'AMBOSS', when: 'from your Qbank %', predictor: 'Predicted range ±7–10 pts from Qbank performance', band: 'confirm with an NBME', url: 'https://www.amboss.com/us/usmle/score-predictor', gated: true },
+];
+// Readiness derived from the checkpoint layer (replaces the hardcoded 4).
+export const USMLE_READINESS = {
+  pct: 4, // pre-first-NBME baseline · rises only when a checkpoint is logged
+  status: 'Baseline · no NBME logged yet',
+  next: 'NBME Form 30 (timed, single block) is your first honest readiness read.',
+};
 
 // Organ systems ordered by official exam weight (order of attack)
 export interface UsmleSystem { n: number; system: string; weight: string; prioridad: Prioridad; }
@@ -113,4 +134,36 @@ export const USMLE_RESOURCES = [
   { label: 'Qbankly (your Qbank — opens in Edge)', url: 'https://qbankly.app/', gated: true },
   { label: 'Sketchy Micro/Pharm', url: 'https://www.sketchy.com/', gated: true },
   { label: 'AnKing Step Deck', url: 'https://www.theanking.com/', gated: true },
+];
+
+// ── Step 2 CK resource layer (gold-standard 2025) — heaviest for Clínic/Mayo ──
+export const USMLE_STEP2_RESOURCES = [
+  { label: 'UWorld Step 2 CK (4.250+ Q — the reference)', url: 'https://www.uworld.com/', gated: true },
+  { label: 'AMBOSS Step 2 (3.200+ Q · crosslinked library)', url: 'https://www.amboss.com/us/usmle/step2', gated: true },
+  { label: 'Divine Intervention (HY podcasts, free audio)', url: 'https://divineinterventionpodcasts.com/', gated: false },
+  { label: 'OnlineMedEd (clinical framework, free tier)', url: 'https://onlinemeded.org/', gated: false },
+  { label: 'NBME CCSSA Forms 9–15 (Step 2 self-assessments)', url: 'https://www.nbme.org/examinees/self-assessments', gated: true },
+];
+
+// ── First Aid as a review INDEX (map the chapter skeleton, don't copy content) ──
+// Gold-standard consolidation layer: FA is the spine everything else hangs off.
+export const FIRST_AID_INDEX = {
+  title: 'First Aid for the USMLE Step 1',
+  role: 'The consolidation index — not a first-pass text. Annotate it from Qbank misses.',
+  sections: [
+    { part: 'General Principles', chapters: ['Biochemistry', 'Immunology', 'Microbiology', 'Pathology', 'Pharmacology', 'Public Health Sciences'] },
+    { part: 'Organ Systems', chapters: ['Cardiovascular', 'Endocrine', 'Gastrointestinal', 'Hematology & Oncology', 'Musculoskeletal / Skin', 'Neurology & Special Senses', 'Psychiatry', 'Renal', 'Reproductive', 'Respiratory'] },
+  ],
+  url: 'https://www.usmle-rx.com/first-aid-step-1/',
+};
+
+// ── Sketchy symbol map (memory palace) — symbol → concept, the visual mnemonic ──
+export interface SketchySymbol { symbol: string; concept: string; world: 'Micro' | 'Pharm'; }
+export const SKETCHY_SYMBOLS: SketchySymbol[] = [
+  { symbol: '🎀 Bow-tie', concept: 'Thyroid (Sketchy anchor)', world: 'Micro' },
+  { symbol: '🌵 Cactus', concept: 'Gram-positive spore-formers (dry, hardy)', world: 'Micro' },
+  { symbol: '👑 Crown / royalty', concept: 'Streptococcus (the "royal" cocci scenes)', world: 'Micro' },
+  { symbol: '🍇 Grapes', concept: 'Staphylococcus (clusters)', world: 'Micro' },
+  { symbol: '🧲 Magnet', concept: 'Beta-lactams binding PBPs', world: 'Pharm' },
+  { symbol: '🚧 Roadblock', concept: 'Protein-synthesis inhibitors (ribosome halt)', world: 'Pharm' },
 ];

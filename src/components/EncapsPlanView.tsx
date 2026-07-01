@@ -15,6 +15,12 @@ import EncapsWebView from './EncapsWebView';
 import { encapsObsByTitle, encapsMatch } from '../lib/obsidianEncaps';
 import { ANKIWEB } from '../lib/ankiLinks';
 import { ENCAPS_FICHAS_MINSA, ENCAPS_ACADEMIAS_RESPALDO, ENCAPS_THEOMED_SIMULACROS, ENCAPS_QX_ACCESOS, ENCAPS_FUENTES_META, ENCAPS_THEOMED_AREA, ENCAPS_THEOMED_EXTRA, ENCAPS_THEOMED_VIDEOS } from '../lib/encapsFuentes';
+import { CountdownCockpit, RentabilidadStrip, RetrievalRadarLegend, GoNoGoAltimeter } from './EncapsCockpit';
+import { encapsGoZone, encapsGoColor } from '../lib/encapsRentabilidad';
+
+// Fuente monoespaciada táctica para numerales (motivo Bloomberg/cockpit).
+const MONO_NUM = Platform.select({ web: "'SF Mono','JetBrains Mono','Roboto Mono',ui-monospace,monospace", default: 'monospace' }) as string;
+const NUM = Platform.OS === 'web' ? ({ fontVariant: ['tabular-nums'] as any, fontFamily: MONO_NUM } as any) : { fontFamily: MONO_NUM };
 
 // Google Calendar del usuario (día) embebido — sincronización minuto a minuto.
 // Requiere sesión Google del navegador (calendario privado). ctz Lima.
@@ -27,14 +33,15 @@ interface HorarioPaso { t: string; d: string }
 interface HorarioFuente { label: string; url?: string | null }
 interface HorarioBlock { hora: string; titulo: string; apex?: boolean; pasos?: HorarioPaso[]; fuente?: HorarioFuente | null }
 
+// Glifos sobrios monocromáticos (cockpit) en vez de emojis chillones.
 const KIND_ICON: Record<PlanItem['kind'], string> = {
-  video: '🎬', theomed: '📂', pulso: '💓', eval: '📝', sim: '🔥', material: '📎',
+  video: '▸', theomed: '◈', pulso: '◇', eval: '■', sim: '▲', material: '◆',
 };
 
-// Acento por tipo de ítem — refuerza la jerarquía visual de la cola del día.
+// Acento por tipo de ítem — joya apagada. sapphire=estructura, oro=misión/evaluación, jade/brass=semáforo.
 const KIND_ACCENT: Record<PlanItem['kind'], string> = {
-  video: Colors.coral, theomed: Colors.teal, pulso: Colors.tertiary,
-  eval: Colors.amber, sim: Colors.coral, material: Colors.blue,
+  video: Colors.blue, theomed: Colors.blue, pulso: Colors.green,
+  eval: Colors.gold, sim: Colors.gold, material: Colors.blue,
 };
 
 // Transición web coherente con el resto del sistema (Motion tokens).
@@ -55,9 +62,9 @@ function useHover() {
 function estadoMeta(estado?: string): { label: string; color: string } | null {
   switch (estado) {
     case 'visto': return { label: 'visto', color: Colors.green };
-    case 'en_progreso': return { label: 'en progreso', color: Colors.amber };
-    case 'bloqueado': return { label: '🔒 no liberado', color: Colors.muted };
-    case 'pendiente': return { label: 'pendiente', color: Colors.coral };
+    case 'en_progreso': return { label: 'en progreso', color: Colors.gold };
+    case 'bloqueado': return { label: '⊘ no liberado', color: Colors.muted };
+    case 'pendiente': return { label: 'pendiente', color: Colors.brass };
     default: return estado ? { label: estado, color: Colors.muted } : null;
   }
 }
@@ -74,18 +81,18 @@ export default function EncapsPlanView() {
   };
 
   const subTabs: { key: Sub; label: string }[] = [
-    { key: 'hoy', label: '📅 HOY' },
-    { key: 'horario', label: '⏰ Horario' },
-    { key: 'meta', label: '🎯 17/20' },
-    { key: 'sim', label: '🔥 Sim' },
-    { key: 'sem', label: '🗓️ 7d' },
-    { key: 'material', label: '📚 Material' },
+    { key: 'hoy', label: 'HOY' },
+    { key: 'horario', label: 'HORARIO' },
+    { key: 'meta', label: '17/20' },
+    { key: 'sim', label: 'SIM' },
+    { key: 'sem', label: '7D' },
+    { key: 'material', label: 'MATERIAL' },
   ];
 
   if (plan.loading) {
     return (
       <View style={{ paddingVertical: Spacing['4xl'], alignItems: 'center' }}>
-        <ActivityIndicator color={Colors.coral} />
+        <ActivityIndicator color={Colors.gold} />
         <Text style={{ color: Colors.muted, marginTop: Spacing.md, fontSize: FontSize.labelMd, fontWeight: '600', letterSpacing: 0.4, textTransform: 'uppercase' }}>
           Cargando plan ENCAPS…
         </Text>
@@ -93,8 +100,20 @@ export default function EncapsPlanView() {
     );
   }
 
+  const notasCount = Object.values(plan.simScores).filter(s => s.nota != null).length;
+
   return (
     <View>
+      {/* HUD Cockpit — cuenta regresiva 20-ago + fase + altímetro Go/No-Go (reemplaza header genérico) */}
+      <CountdownCockpit
+        diasAExamen={plan.metrics?.dias_a_examen}
+        tipo={plan.today?.tipo}
+        promSim={plan.metrics?.prom_sim}
+        coberturaPct={plan.metrics?.cobertura_pct}
+        qxPct={plan.metrics?.qx_pct}
+        notasCount={notasCount}
+      />
+
       {/* Navegación por día — ver el plan completo de cualquier día (D1..71) */}
       <View style={styles.dayNav}>
         <TouchableOpacity onPress={() => plan.setDia(plan.dia - 1)} disabled={plan.dia <= 1} style={styles.dayNavBtn}>
@@ -246,49 +265,50 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
         <Text style={styles.hoyDay}>D{dia}/{total} · {today.weekday || ''} {String(today.fecha).slice(5)}</Text>
         <Text style={styles.hoyTema}>{tema}</Text>
         <View style={styles.hoyMetaRow}>
-          {!!today.prioridad && <Pill text={today.prioridad} color={today.prioridad.includes('CRÍT') ? Colors.coral : Colors.amber} />}
-          {!!today.modo && <Pill text={`Modo ${today.modo}`} color={Colors.teal} />}
-          {!!vueltas && <Pill text={`${vueltas} vueltas`} color={Colors.purple} />}
+          {!!today.prioridad && <Pill text={today.prioridad} color={today.prioridad.includes('CRÍT') ? Colors.gold : Colors.brass} />}
+          {!!today.modo && <Pill text={`Modo ${today.modo}`} color={Colors.blue} />}
+          {!!vueltas && <Pill text={`${vueltas} vueltas`} color={Colors.green} />}
           {metrics?.qx_pct != null && <Pill text={`QX ${metrics.qx_pct}%`} color={Colors.blue} />}
           {metrics?.dias_a_examen != null && <Pill text={`examen ${metrics.dias_a_examen}d`} color={Colors.muted} />}
           <TouchableOpacity activeOpacity={0.8}
             onPress={() => Linking.openURL(encapsObsByTitle(today.subtema || tema, today.codigo || undefined)).catch(() => {})}
-            style={{ borderWidth: 1, borderColor: '#A78BFA99', backgroundColor: '#A78BFA1F', borderRadius: 999, paddingVertical: 2, paddingHorizontal: 10 }}>
-            <Text style={{ fontSize: 11, fontWeight: '800', color: '#A78BFA' }}>◆ Obsidian</Text>
+            style={{ borderWidth: 1, borderColor: Colors.purple + '99', backgroundColor: Colors.purple + '1F', borderRadius: 999, paddingVertical: 2, paddingHorizontal: 10 }}>
+            <Text style={{ fontSize: 11, fontWeight: '800', color: Colors.purple }}>◆ Obsidian</Text>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.8}
             onPress={() => Linking.openURL(ANKIWEB).catch(() => {})}
-            style={{ borderWidth: 1, borderColor: '#5BA8C999', backgroundColor: '#5BA8C91F', borderRadius: 999, paddingVertical: 2, paddingHorizontal: 10 }}>
-            <Text style={{ fontSize: 11, fontWeight: '800', color: '#5BA8C9' }}>🃏 {(() => { const m = encapsMatch(today.subtema || tema, today.codigo || undefined); return m ? `Anki · ${m.id.slice(0, 2)}` : 'Anki'; })()}</Text>
+            style={{ borderWidth: 1, borderColor: Colors.teal + '99', backgroundColor: Colors.teal + '1F', borderRadius: 999, paddingVertical: 2, paddingHorizontal: 10 }}>
+            <Text style={{ fontSize: 11, fontWeight: '800', color: Colors.teal }}>◈ {(() => { const m = encapsMatch(today.subtema || tema, today.codigo || undefined); return m ? `Anki · ${m.id.slice(0, 2)}` : 'Anki'; })()}</Text>
           </TouchableOpacity>
         </View>
-        {!!today.nts && <Text style={styles.ntsLine}>📋 NTS Tier-1: {today.nts}</Text>}
+        {!!today.nts && <Text style={styles.ntsLine}>▪ NTS Tier-1: {today.nts}</Text>}
         {!!today.temas_secundarios?.length && (
-          <Text style={styles.secLine}>➕ Tema liviano extra: {today.temas_secundarios.map(s => `${s.codigo} ${s.subtema}`).join(' · ')}</Text>
+          <Text style={styles.secLine}>+ Tema liviano extra: {today.temas_secundarios.map(s => `${s.codigo} ${s.subtema}`).join(' · ')}</Text>
         )}
         {!!today.primer_finde_estudio && (
-          <Text style={styles.findeStudyLine}>📚 Fin de semana de ESTUDIO (aún no hay examen — tu 1er examen es el 2º finde)</Text>
+          <Text style={styles.findeStudyLine}>◆ Fin de semana de ESTUDIO (aún no hay examen — tu 1er examen es el 2º finde)</Text>
         )}
       </View>
 
-      {/* Progreso de hoy */}
+      {/* Progreso de hoy — checklist de misión */}
       <View style={styles.progressCard}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: Spacing.sm }}>
-          <Text style={styles.progressLabel}>Hechos hoy</Text>
-          <Text style={[styles.progressValue, { color: pct >= 80 ? Colors.green : pct > 0 ? Colors.amber : Colors.muted }]}>
+          <Text style={styles.progressLabel}>CHECKLIST DE MISIÓN · HOY</Text>
+          <Text style={[styles.progressValue, NUM, { color: pct >= 80 ? Colors.green : pct > 0 ? Colors.gold : Colors.muted }]}>
             {doneToday}/{totalToday} · {pct}%
           </Text>
         </View>
         <View style={styles.track}>
-          <View style={[styles.fill, { width: `${pct}%`, backgroundColor: pct >= 80 ? Colors.green : Colors.coral }]} />
+          <View style={[styles.fill, { width: `${pct}%`, backgroundColor: pct >= 80 ? Colors.green : Colors.gold }]} />
         </View>
       </View>
 
-      {/* Repasos espaciados de hoy (repetición espaciada por tema) */}
+      {/* Radar de repasos espaciados (Retrieval Radar) — vueltas por prioridad */}
       {repasos.length > 0 ? (
         <View style={styles.repasoBox}>
-          <Text style={styles.repasoTitle}>🔁 Repasos espaciados de hoy ({repasos.length})</Text>
-          <Text style={styles.repasoHint}>Bloque 07:15 — Anki + mapa en blanco (free recall). Tocá para marcar la vuelta hecha. Vueltas por prioridad: CRÍT 6 · ALTA 5 · MEDIA 4 · BAJA 3.</Text>
+          <Text style={styles.repasoTitle}>◎ RADAR DE REPASOS ({repasos.length})</Text>
+          <Text style={styles.repasoHint}>Bloque 07:15 — Anki + mapa en blanco (free recall). Tocá para marcar la vuelta hecha.</Text>
+          <RetrievalRadarLegend />
           {repasos.map(r => {
             const key = repasoKey(r.codigo, r.vuelta);
             const done = !!checks[key];
@@ -296,24 +316,24 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
             return (
               <TouchableOpacity key={r.codigo} style={styles.repasoRow} onPress={() => toggleCheck(key, !done)} activeOpacity={0.7}>
                 <Text style={[styles.repasoCheck, done && styles.repasoCheckOn]}>{done ? '☑' : '☐'}</Text>
-                <Text style={styles.repasoVuelta}>{vueltaLabel(r.vuelta)}/{r.totalVueltas}</Text>
+                <Text style={[styles.repasoVuelta, NUM]}>{vueltaLabel(r.vuelta)}/{r.totalVueltas}</Text>
                 <Text style={styles.repasoTema} numberOfLines={1}>{r.codigo} {r.subtema}</Text>
-                <Text style={styles.repasoAgo}>✓{vh.hechas}/{vh.total} · {r.delta}d</Text>
+                <Text style={[styles.repasoAgo, NUM]}>✓{vh.hechas}/{vh.total} · {r.delta}d</Text>
               </TouchableOpacity>
             );
           })}
         </View>
       ) : (
-        <Text style={styles.repasoEmpty}>🔁 Sin repasos espaciados hoy (D{dia}). Los temas vistos reaparecen a D+1/3/7/14/28…</Text>
+        <Text style={styles.repasoEmpty}>◎ Sin repasos espaciados hoy (D{dia}). Los temas vistos reaparecen a D+1/3/7/14/28…</Text>
       )}
 
       {/* Aclaración tema vs cola */}
       {todayItems.some(i => i.kind === 'video') && (
         <>
-          <Text style={styles.groupHdr}>📺 Cola QX de hoy</Text>
+          <Text style={styles.groupHdr}>▸ COLA QX DE HOY</Text>
           <Text style={styles.groupHint}>
             Videos que QX ya liberó, en orden de prioridad (no todos son del tema de hoy: cada video
-            pertenece a su propio tema/día-foco). El “tema de hoy” para crear APEX es <Text style={{ color: Colors.coral, fontWeight: '700' }}>{tema}</Text>.
+            pertenece a su propio tema/día-foco). El “tema de hoy” para crear APEX es <Text style={{ color: Colors.gold, fontWeight: '700' }}>{tema}</Text>.
           </Text>
           {todayItems.filter(i => i.kind === 'video').map(it => (
             <CheckRow key={it.key} item={it} checked={!!checks[it.key]} onToggle={v => toggleCheck(it.key, v)} todayDia={dia} />
@@ -323,7 +343,7 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
 
       {todayItems.some(i => i.kind !== 'video') && (
         <>
-          <Text style={styles.groupHdr}>📚 Material del tema + práctica</Text>
+          <Text style={styles.groupHdr}>◆ MATERIAL DEL TEMA + PRÁCTICA</Text>
           {todayItems.filter(i => i.kind !== 'video').map(it => (
             <CheckRow key={it.key} item={it} checked={!!checks[it.key]} onToggle={v => toggleCheck(it.key, v)} todayDia={dia} />
           ))}
@@ -333,7 +353,7 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
       {/* NTS Tier-1 — qué normas y dónde estudiarlas */}
       {!!today.nts && (
         <View style={styles.refBox}>
-          <Text style={styles.refTitle}>📋 NTS Tier-1 (normas técnicas)</Text>
+          <Text style={styles.refTitle}>▪ NTS Tier-1 (normas técnicas)</Text>
           <Text style={styles.refBody}>{today.nts}</Text>
           <Text style={styles.refWhere}>Dónde: Theomed → carpeta “NORMAS TÉCNICAS” + Material Drive ↓</Text>
         </View>
@@ -370,7 +390,7 @@ function CheckRow({ item, checked, onToggle, todayDia }: { item: PlanItem; check
             {KIND_ICON[item.kind]} {item.label}
           </Text>
           <View style={styles.checkSubRow}>
-            {!!item.hora && <Text style={styles.horaTag}>🕘 {item.hora}</Text>}
+            {!!item.hora && <Text style={[styles.horaTag, NUM]}>◷ {item.hora}</Text>}
             {!!item.source && <Text style={styles.srcTag}>{item.source}</Text>}
             {!!item.detail && <Text style={styles.checkDetail} numberOfLines={1}>{item.detail}</Text>}
             {m && <Text style={[styles.estadoBadge, { color: m.color, backgroundColor: m.color + '22' }]}>{m.label}</Text>}
@@ -385,7 +405,7 @@ function CheckRow({ item, checked, onToggle, todayDia }: { item: PlanItem; check
           {item.kind === 'video' && item.locked && !item.url && (
             <View>
               <Text style={styles.lockHint}>
-                🔒 QX libera {item.unlock ? item.unlock.slice(5) : 'pronto'} → hoy: Theomed equivalente
+                ⊘ QX libera {item.unlock ? item.unlock.slice(5) : 'pronto'} → hoy: Theomed equivalente
               </Text>
               {!!item.fallbackUrl && (
                 <TouchableOpacity onPress={() => Linking.openURL(item.fallbackUrl as string).catch(() => {})} activeOpacity={0.7}>
@@ -410,8 +430,8 @@ function CheckRow({ item, checked, onToggle, todayDia }: { item: PlanItem; check
         {(item.kind === 'video' || item.kind === 'theomed' || item.kind === 'material') && (
           <TouchableOpacity
             onPress={() => Linking.openURL(encapsObsByTitle(item.label, item.code)).catch(() => {})}
-            style={[styles.openBtn, { borderColor: '#A78BFA66', backgroundColor: '#A78BFA14' }]}>
-            <Text style={[styles.openBtnText, { color: '#A78BFA' }]}>◆ Obs</Text>
+            style={[styles.openBtn, { borderColor: Colors.purple + '66', backgroundColor: Colors.purple + '14' }]}>
+            <Text style={[styles.openBtnText, { color: Colors.purple }]}>◆ Obs</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -426,47 +446,38 @@ function MetaView({ metrics, simScores, simDays }: {
   simDays: StudyScheduleDay[];
 }) {
   const prom = metrics?.prom_sim ?? null;
-  const metaPct = prom != null ? Math.min(100, Math.round((prom / 20) * 100)) : 0;
   const notas = Object.values(simScores).map(s => s.nota).filter((n): n is number => n != null);
 
   const stats: { label: string; value: string; color: string }[] = [
     { label: 'QX vistos', value: metrics?.qx_pct != null ? `${metrics.qx_pct}%` : 's/d', color: Colors.blue },
-    { label: 'Cobertura plan', value: metrics?.cobertura_pct != null ? `${metrics.cobertura_pct}%` : 's/d', color: Colors.teal },
-    { label: 'Ritmo', value: metrics?.ritmo_min_dia != null ? `${metrics.ritmo_min_dia}min` : 's/d', color: Colors.amber },
-    { label: 'Accionable', value: metrics?.accionable_videos != null ? `${metrics.accionable_videos} vids` : 's/d', color: Colors.coral },
-    { label: 'Examen en', value: metrics?.dias_a_examen != null ? `${metrics.dias_a_examen}d` : 's/d', color: Colors.purple },
+    { label: 'Cobertura plan', value: metrics?.cobertura_pct != null ? `${metrics.cobertura_pct}%` : 's/d', color: Colors.blue },
+    { label: 'Ritmo', value: metrics?.ritmo_min_dia != null ? `${metrics.ritmo_min_dia}min` : 's/d', color: Colors.gold },
+    { label: 'Accionable', value: metrics?.accionable_videos != null ? `${metrics.accionable_videos} vids` : 's/d', color: Colors.green },
+    { label: 'Examen en', value: metrics?.dias_a_examen != null ? `${metrics.dias_a_examen}d` : 's/d', color: Colors.gold },
     { label: 'Pendiente', value: metrics?.pendiente_h != null ? `${metrics.pendiente_h}h` : 's/d', color: Colors.muted },
   ];
 
   return (
     <View>
-      {/* Barra hacia 17/20 */}
+      {/* Altímetro Go/No-Go >17/20 (instrumento de cabina) */}
       <View style={styles.metaCard}>
-        <Text style={styles.metaTitle}>Promedio simulacros → meta ≥17/20</Text>
-        <Text style={[styles.metaBig, { color: prom != null ? (prom >= 17 ? Colors.green : Colors.amber) : Colors.muted }]}>
-          {prom != null ? `${prom}` : 'sin datos'}<Text style={styles.metaBigSub}> /20</Text>
-        </Text>
-        <View style={styles.metaTrackWrap}>
-          <View style={styles.track}>
-            <View style={[styles.fill, { width: `${metaPct}%`, backgroundColor: prom != null && prom >= 17 ? Colors.green : Colors.amber }]} />
-          </View>
-          {/* marca 17/20 = 85% */}
-          <View style={[styles.metaMarker, { left: '85%' }]} />
-        </View>
-        <Text style={styles.metaHint}>{notas.length} simulacro{notas.length === 1 ? '' : 's'} con nota · marca = 17/20 (85%)</Text>
+        <GoNoGoAltimeter promSim={prom} notasCount={notas.length} />
       </View>
 
-      {/* KPIs */}
+      {/* Telemetría de rentabilidad por área (Bloomberg strip) + tickers críticos */}
+      <RentabilidadStrip />
+
+      {/* KPIs — numerales tabulares */}
       <View style={styles.statGrid}>
         {stats.map(s => (
           <View key={s.label} style={styles.statCell}>
-            <Text style={[styles.statValue, { color: s.color }]}>{s.value}</Text>
+            <Text style={[styles.statValue, NUM, { color: s.color }]}>{s.value}</Text>
             <Text style={styles.statLabel}>{s.label}</Text>
           </View>
         ))}
       </View>
 
-      <Text style={styles.sectionSub}>{simDays.reduce((n, d) => n + (Array.isArray((d.extra as any)?.sims) ? (d.extra as any).sims.length : 1), 0)} simulacros programados · cargá las notas en la pestaña 🔥 Simulacros.</Text>
+      <Text style={styles.sectionSub}>{simDays.reduce((n, d) => n + (Array.isArray((d.extra as any)?.sims) ? (d.extra as any).sims.length : 1), 0)} simulacros programados · cargá las notas en la pestaña ▲ Sim.</Text>
     </View>
   );
 }
@@ -490,7 +501,7 @@ function SimView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   return (
     <View>
       <View style={styles.simHeaderBox}>
-        <Text style={styles.simHeaderTitle}>{rows.length} simulacros · {conNota} con nota · meta ≥17/20</Text>
+        <Text style={styles.simHeaderTitle}>▲ MODO SIMULACRO · {rows.length} sims · {conNota} con nota · meta ≥17/20</Text>
         <Text style={styles.simHeaderHint}>
           Reales de QxMedic + Theomed, en los sábados (2-3 c/u) + recta final del día-examen. 1er sábado de simulacros: {simDays[0]?.fecha?.slice(5) || '—'}; examen jue 20-ago.
           Cargá tu nota /20 al terminar cada uno (se guarda y alimenta «Camino a 17/20» + Telegram).
@@ -524,12 +535,14 @@ function SimRow({ dia, weekday, fecha, clave, duracion, url, nota, onSave }: {
     const n = Number(t.replace(',', '.'));
     if (!isNaN(n)) onSave(n);
   };
-  const passed = nota != null && nota >= 17;
+  const zone = encapsGoZone(nota);
+  const zoneColor = encapsGoColor(zone);
+  const passed = zone === 'go';
   return (
-    <View style={[styles.simCard, { borderLeftColor: nota == null ? Colors.muted : passed ? Colors.green : Colors.amber }]}>
+    <View style={[styles.simCard, { borderLeftColor: nota == null ? Colors.muted : zoneColor }]}>
       <View style={{ flex: 1 }}>
         <Text style={styles.simClave}>{clave}</Text>
-        <Text style={styles.simMeta}>D{dia} · {weekday || ''} {String(fecha).slice(5)}{duracion ? ` · ${duracion}` : ''}</Text>
+        <Text style={[styles.simMeta, NUM]}>D{dia} · {weekday || ''} {String(fecha).slice(5)}{duracion ? ` · ${duracion}` : ''}</Text>
         {!!url && (
           <TouchableOpacity onPress={() => Linking.openURL(url).catch(() => {})}>
             <Text style={styles.simLink}>banco ↗</Text>
@@ -539,7 +552,7 @@ function SimRow({ dia, weekday, fecha, clave, duracion, url, nota, onSave }: {
       <View style={{ alignItems: 'flex-end' }}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <TextInput
-            style={styles.simInput}
+            style={[styles.simInput, NUM]}
             value={txt}
             onChangeText={setTxt}
             onEndEditing={commit}
@@ -552,8 +565,8 @@ function SimRow({ dia, weekday, fecha, clave, duracion, url, nota, onSave }: {
           <Text style={styles.simSlash}>/20</Text>
         </View>
         {nota != null && (
-          <Text style={[styles.simBadge, { color: passed ? Colors.green : Colors.amber }]}>
-            {passed ? '✓ ≥17' : 'meta 17'}
+          <Text style={[styles.simBadge, { color: zoneColor }]}>
+            {passed ? '✓ GO ≥17' : zone === 'warn' ? '▲ bajo meta' : '✕ NO-GO'}
           </Text>
         )}
       </View>
@@ -578,7 +591,7 @@ function TheomedBlockRow({ b, base }: { b: TheomedBloque; base: string }) {
         return (
           <TouchableOpacity key={i} style={styles.thVideoRow} onPress={() => Linking.openURL(url)} activeOpacity={0.7}>
             <Text style={styles.thVideoLabel} numberOfLines={1}>
-              🎬 {v.titulo || `${v.tipo === 'live' ? 'En vivo' : 'Async'} S${v.sesion}`}{v.dur ? ` · ${v.dur}min` : ''}{v.fecha ? ` · ${v.fecha.slice(5)}` : ''}
+              ▸ {v.titulo || `${v.tipo === 'live' ? 'En vivo' : 'Async'} S${v.sesion}`}{v.dur ? ` · ${v.dur}min` : ''}{v.fecha ? ` · ${v.fecha.slice(5)}` : ''}
             </Text>
             <Text style={styles.thOpen}>abrir ↗</Text>
           </TouchableOpacity>
@@ -606,15 +619,15 @@ function SemView({ days, dia, proximos, metrics, onOpenDay }: { days: StudySched
           <TouchableOpacity key={d.dia} style={[styles.semRow, isToday && styles.semRowToday]}
             onPress={() => onOpenDay(d.dia)} activeOpacity={0.6}>
             <View style={styles.semDayBox}>
-              <Text style={[styles.semDayNum, isToday && { color: Colors.coral }]}>D{d.dia}</Text>
+              <Text style={[styles.semDayNum, NUM, isToday && { color: Colors.gold }]}>D{d.dia}</Text>
               <Text style={styles.semWeekday}>{(d.weekday || '').slice(0, 3)}</Text>
             </View>
             <View style={{ flex: 1 }}>
               <Text style={styles.semTema} numberOfLines={1}>{tema}</Text>
-              <Text style={styles.semDetail}>
+              <Text style={[styles.semDetail, NUM]}>
                 {String(d.fecha).slice(5)}
                 {d.n_videos ? ` · ${d.n_videos} vids` : ''}
-                {d.simulacro ? ' · 🔥 simulacro' : ''}
+                {d.simulacro ? ' · ▲ simulacro' : ''}
               </Text>
             </View>
             {!!d.prioridad && d.prioridad.includes('CRÍT') && <Text style={styles.semCrit}>CRÍTICA</Text>}
@@ -626,11 +639,11 @@ function SemView({ days, dia, proximos, metrics, onOpenDay }: { days: StudySched
       {/* Predicción: próximos videos QX a liberar (drip semanal) */}
       {proximos.length > 0 && (
         <View style={styles.proxBox}>
-          <Text style={styles.proxTitle}>📅 Próximos videos QX a liberar ({proximos.length})</Text>
+          <Text style={styles.proxTitle}>◷ Próximos videos QX a liberar ({proximos.length})</Text>
           <Text style={styles.proxHint}>QX sube por goteo (semanal); se publican en su fecha. El link aparece al liberarse.</Text>
           {proximos.map((p, i) => (
             <View key={i} style={styles.proxRow}>
-              <Text style={styles.proxFecha}>{String(p.unlock).slice(5)}</Text>
+              <Text style={[styles.proxFecha, NUM]}>{String(p.unlock).slice(5)}</Text>
               <Text style={styles.proxTema} numberOfLines={1}>{p.code ? `[${p.code}] ` : ''}{p.titulo}</Text>
             </View>
           ))}
@@ -640,10 +653,10 @@ function SemView({ days, dia, proximos, metrics, onOpenDay }: { days: StudySched
       {/* Videos Theomed (sesiones grabadas Vimeo) */}
       {thBloques.length > 0 && (
         <View style={styles.thBox}>
-          <Text style={styles.thTitle}>🎥 Videos Theomed ({thTotal})</Text>
+          <Text style={styles.thTitle}>◈ Videos Theomed ({thTotal})</Text>
           <Text style={styles.proxHint}>Sesiones grabadas (Vimeo). Tocá un bloque para ver y abrir en Theomed.</Text>
           {thPend.length > 0 && (
-            <Text style={styles.thPend}>⏳ Por subir: {thPend[0].bloque} · {thPend[0].tipo} S{thPend[0].sesion} (sube el día después de la clase)</Text>
+            <Text style={styles.thPend}>◷ Por subir: {thPend[0].bloque} · {thPend[0].tipo} S{thPend[0].sesion} (sube el día después de la clase)</Text>
           )}
           {thBloques.map((b, i) => <TheomedBlockRow key={i} b={b} base={thBase} />)}
         </View>
@@ -663,13 +676,13 @@ function HorarioBlockRow({ b, tema }: { b: HorarioBlock; tema?: string }) {
         onPress={() => hasDetail && setOpen(o => !o)}
         activeOpacity={hasDetail ? 0.7 : 1}
       >
-        <Text style={[styles.horarioHora, b.apex && { color: Colors.coral }]}>{b.hora}</Text>
+        <Text style={[styles.horarioHora, NUM, b.apex && { color: Colors.gold }]}>{b.hora}</Text>
         <View style={{ flex: 1 }}>
           <Text style={styles.horarioTitulo} numberOfLines={2}>
             {b.titulo}{hasDetail ? (open ? '  ▾' : '  ▸') : ''}
           </Text>
           {b.apex && !!tema && <Text style={styles.horarioTema}>→ HOY: {tema}</Text>}
-          {!!b.fuente && <Text style={styles.horarioFuente}>📍 {b.fuente.label}</Text>}
+          {!!b.fuente && <Text style={styles.horarioFuente}>▪ {b.fuente.label}</Text>}
           {open && (b.pasos || []).map((p, i) => (
             <View key={i} style={styles.pasoRow}>
               <Text style={styles.pasoT}>{p.t}</Text>
@@ -720,11 +733,11 @@ function HorarioView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   return (
     <View>
       <Text style={styles.horarioHint}>
-        {useSimTemplate ? '🔥 Día de simulacro (modo examen)' : '🟢 Estructura deep-prime (Lunes-Viernes)'}
+        {useSimTemplate ? '▲ Día de simulacro (modo examen)' : '● Estructura deep-prime (Lunes-Viernes)'}
       </Text>
       {isWeekendDay && !useSimTemplate && (
         <Text style={styles.horarioWarn}>
-          ℹ️ Hoy es fin de semana pero se estructura como L-V (recuperación de temas). El 1er simulacro es D8 (sáb 13 jun); desde ahí, sábados y domingos = simulacro.
+          ▪ Hoy es fin de semana pero se estructura como L-V (recuperación de temas). El 1er simulacro es D8 (sáb 13 jun); desde ahí, sábados y domingos = simulacro.
         </Text>
       )}
       {blocks.length === 0 ? (
@@ -732,17 +745,17 @@ function HorarioView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
       ) : blocks.map((b, i) => (
         <HorarioBlockRow key={i} b={b} tema={tema} />
       ))}
-      <Text style={styles.horarioFoot}>🔴/🔥 = ventana donde se crean los APEX del día.</Text>
+      <Text style={styles.horarioFoot}>● / ▲ = ventana donde se crean los APEX del día.</Text>
 
       {/* Micro-horario: cada video a su hora exacta dentro del DEEP PRIME */}
       {micro.length > 0 && (
         <View style={styles.microWrap}>
-          <Text style={styles.microTitle}>⏱ Minuto a minuto — NÚCLEO DEEP PRIME ({apexBlock?.hora})</Text>
+          <Text style={styles.microTitle}>◷ Minuto a minuto — NÚCLEO DEEP PRIME ({apexBlock?.hora})</Text>
           {micro.map((mm, i) => (
             <View key={i} style={styles.microRow}>
-              <Text style={styles.microTime}>{mm.time}</Text>
+              <Text style={[styles.microTime, NUM]}>{mm.time}</Text>
               <Text style={styles.microLabel} numberOfLines={2}>
-                🎬 {mm.label} ({mm.dur}'){mm.locked ? ' · 🔒 usar Theomed/Drive' : ''}
+                ▸ {mm.label} ({mm.dur}'){mm.locked ? ' · ⊘ usar Theomed/Drive' : ''}
               </Text>
             </View>
           ))}
@@ -750,7 +763,7 @@ function HorarioView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
       )}
 
       {/* Google Calendar en vivo (minuto a minuto) */}
-      <Text style={styles.calTitle}>📆 Tu Google Calendar (en vivo)</Text>
+      <Text style={styles.calTitle}>▦ Tu Google Calendar (en vivo)</Text>
       <Text style={styles.calHint}>Sincronizado minuto a minuto. Si no carga, iniciá sesión en Google en este navegador.</Text>
       <EncapsWebView
         url={GCAL_EMBED_URL}
@@ -774,24 +787,24 @@ function Pill({ text, color }: { text: string; color: string }) {
 const styles = StyleSheet.create({
   dayNav: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.soft, paddingVertical: Spacing.sm, paddingHorizontal: Spacing.md, marginBottom: Spacing.sm, ...Elevation.sm },
   dayNavBtn: { paddingHorizontal: Spacing.md, paddingVertical: 2 },
-  dayNavArrow: { fontSize: 18, color: Colors.teal, fontWeight: '800' },
+  dayNavArrow: { fontSize: 18, color: Colors.blue, fontWeight: '800' },
   dayNavTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface, letterSpacing: 0.2 },
   dayNavSub: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 1, letterSpacing: 0.3 },
-  dayNavHoy: { backgroundColor: Colors.teal + '22', borderWidth: 1, borderColor: Hairline.accentSoft, borderRadius: BorderRadius.full, paddingVertical: 3, paddingHorizontal: 9, marginLeft: Spacing.sm },
-  dayNavHoyText: { fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.teal },
+  dayNavHoy: { backgroundColor: Colors.gold + '1F', borderWidth: 1, borderColor: Hairline.accentSoft, borderRadius: BorderRadius.full, paddingVertical: 3, paddingHorizontal: 9, marginLeft: Spacing.sm },
+  dayNavHoyText: { fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.gold },
   jumpRow: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: 6, backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.soft, padding: Spacing.sm, marginBottom: Spacing.sm, ...Elevation.sm },
   jumpLabel: { fontSize: FontSize.labelMd, fontWeight: '700', color: Colors.onSurfaceVariant },
   jumpInput: { width: 56, backgroundColor: Colors.surfaceContainerHighest, borderRadius: BorderRadius.sm, paddingVertical: 6, paddingHorizontal: 10, color: Colors.onSurface, fontSize: FontSize.bodyMd, fontWeight: '800', textAlign: 'center' },
-  jumpGo: { backgroundColor: Colors.teal, borderRadius: BorderRadius.sm, paddingVertical: 6, paddingHorizontal: 12 },
-  jumpGoText: { fontSize: FontSize.labelMd, fontWeight: '800', color: '#04201c' },
+  jumpGo: { backgroundColor: Colors.blue, borderRadius: BorderRadius.sm, paddingVertical: 6, paddingHorizontal: 12 },
+  jumpGoText: { fontSize: FontSize.labelMd, fontWeight: '800', color: '#04122A' },
   jumpChip: { backgroundColor: Colors.surfaceContainerHighest, borderRadius: BorderRadius.full, paddingVertical: 5, paddingHorizontal: 11 },
   jumpChipText: { fontSize: FontSize.labelSm, fontWeight: '700', color: Colors.onSurfaceVariant },
 
   subTabRow: { flexDirection: 'row', backgroundColor: Colors.surfaceContainerLowest, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.soft, padding: 3, marginBottom: Spacing.section },
   subTab: { flex: 1, paddingVertical: Spacing.sm, alignItems: 'center', borderRadius: BorderRadius.md, ...webTransition },
-  subTabActive: { backgroundColor: Colors.surfaceContainerHighest, ...Elevation.sm },
-  subTabText: { fontSize: FontSize.labelSm, fontWeight: '700', color: Colors.muted, letterSpacing: 0.2 },
-  subTabTextActive: { color: Colors.onSurface },
+  subTabActive: { backgroundColor: Colors.gold + '1A', borderWidth: 1, borderColor: Hairline.accentSoft, ...Elevation.sm },
+  subTabText: { fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.muted, letterSpacing: 0.6 },
+  subTabTextActive: { color: Colors.gold },
 
   empty: { fontSize: FontSize.bodyMd, color: Colors.muted, fontStyle: 'italic', paddingVertical: Spacing.lg, textAlign: 'center' },
   note: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, marginTop: Spacing.sm, lineHeight: 16 },
@@ -803,8 +816,8 @@ const styles = StyleSheet.create({
   hoyTema: { fontSize: FontSize.titleLg, fontWeight: '800', color: Colors.onSurface, marginTop: 3, letterSpacing: -0.3, lineHeight: LineHeight.titleLg },
   hoyMetaRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: Spacing.md },
   ntsLine: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, marginTop: Spacing.sm, lineHeight: 16 },
-  secLine: { fontSize: FontSize.labelSm, color: Colors.teal, marginTop: 4, lineHeight: 16 },
-  findeStudyLine: { fontSize: FontSize.labelSm, color: Colors.amber, marginTop: 4, fontWeight: '700', lineHeight: 16 },
+  secLine: { fontSize: FontSize.labelSm, color: Colors.blue, marginTop: 4, lineHeight: 16 },
+  findeStudyLine: { fontSize: FontSize.labelSm, color: Colors.gold, marginTop: 4, fontWeight: '700', lineHeight: 16 },
 
   pill: { borderRadius: BorderRadius.full, paddingVertical: 3, paddingHorizontal: 9, borderWidth: 1 },
   pillText: { fontSize: FontSize.labelSm, fontWeight: '800', letterSpacing: 0.2 },
@@ -830,14 +843,8 @@ const styles = StyleSheet.create({
   openBtn: { paddingVertical: 5, paddingHorizontal: 10, borderRadius: BorderRadius.md, backgroundColor: Colors.surfaceContainerHighest, borderWidth: 1, borderColor: Hairline.soft, marginLeft: Spacing.sm, ...webTransition },
   openBtnText: { fontSize: FontSize.labelSm, color: Colors.blue, fontWeight: '800', letterSpacing: 0.2 },
 
-  // Meta
-  metaCard: { backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.soft, padding: Spacing.lg, marginBottom: Spacing.md, alignItems: 'center', ...Elevation.md },
-  metaTitle: { fontSize: FontSize.labelMd, color: Colors.smallLabel, fontWeight: '700', letterSpacing: 0.8, textTransform: 'uppercase' },
-  metaBig: { fontSize: FontSize.displaySm, fontWeight: '900', marginTop: 6, letterSpacing: -1 },
-  metaBigSub: { fontSize: FontSize.titleMd, color: Colors.muted, fontWeight: '700' },
-  metaTrackWrap: { width: '100%', marginTop: Spacing.md, position: 'relative', flexDirection: 'row' },
-  metaMarker: { position: 'absolute', top: -3, width: 2, height: 14, backgroundColor: Colors.green },
-  metaHint: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: Spacing.sm },
+  // Meta — contenedor del altímetro
+  metaCard: { backgroundColor: '#0B1220', borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.accentSoft, padding: Spacing.lg, marginBottom: Spacing.md, ...Elevation.md },
 
   statGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
   statCell: { width: '31%', backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.soft, paddingVertical: Spacing.md, paddingHorizontal: Spacing.sm, alignItems: 'center', flexGrow: 1, ...Elevation.sm },
@@ -845,8 +852,8 @@ const styles = StyleSheet.create({
   statLabel: { fontSize: FontSize.labelSm, color: Colors.smallLabel, marginTop: 3, fontWeight: '600', letterSpacing: 0.3, textTransform: 'uppercase' },
 
   // Sim
-  simHeaderBox: { backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, padding: Spacing.md, marginBottom: Spacing.sm, borderWidth: 1, borderColor: Colors.coral + '2E', borderLeftWidth: 3, borderLeftColor: Colors.coral, ...Elevation.sm },
-  simHeaderTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface, letterSpacing: 0.2 },
+  simHeaderBox: { backgroundColor: Colors.gold + '10', borderRadius: BorderRadius.lg, padding: Spacing.md, marginBottom: Spacing.sm, borderWidth: 1, borderColor: Hairline.accentSoft, borderLeftWidth: 3, borderLeftColor: Colors.gold, ...Elevation.sm },
+  simHeaderTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.gold, letterSpacing: 0.4 },
   simHeaderHint: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 3, lineHeight: 16 },
   simCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.soft, padding: Spacing.md, marginBottom: Spacing.sm, borderLeftWidth: 4, ...Elevation.sm },
   simClave: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface },
@@ -858,14 +865,14 @@ const styles = StyleSheet.create({
 
   // 7 días
   semRow: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.soft, padding: Spacing.md, marginBottom: Spacing.sm, ...Elevation.sm },
-  semRowToday: { borderWidth: 1, borderColor: Colors.coral + '80', borderLeftWidth: 3, borderLeftColor: Colors.coral, backgroundColor: Colors.coral + '10' },
+  semRowToday: { borderWidth: 1, borderColor: Colors.gold + '80', borderLeftWidth: 3, borderLeftColor: Colors.gold, backgroundColor: Colors.gold + '10' },
   semDayBox: { width: 44, alignItems: 'center', marginRight: Spacing.md },
   semDayNum: { fontSize: FontSize.bodyLg, fontWeight: '800', color: Colors.onSurface, letterSpacing: 0.2 },
   semWeekday: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 1, textTransform: 'uppercase', letterSpacing: 0.3 },
   semTema: { fontSize: FontSize.bodyMd, color: Colors.onSurface, fontWeight: '600' },
   semDetail: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 2 },
-  semCrit: { fontSize: 9, fontWeight: '800', color: Colors.coral, backgroundColor: Colors.coral + '22', paddingVertical: 2, paddingHorizontal: 7, borderRadius: 999, marginLeft: Spacing.sm, letterSpacing: 0.3 },
-  semChevron: { fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.teal, marginLeft: Spacing.sm },
+  semCrit: { fontSize: 9, fontWeight: '800', color: Colors.gold, backgroundColor: Colors.gold + '22', paddingVertical: 2, paddingHorizontal: 7, borderRadius: 999, marginLeft: Spacing.sm, letterSpacing: 0.3 },
+  semChevron: { fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.blue, marginLeft: Spacing.sm },
 
   // Próximos videos a liberar (predicción drip)
   proxBox: { backgroundColor: Colors.blue + '12', borderRadius: BorderRadius.lg, padding: Spacing.md, marginTop: Spacing.md, borderWidth: 1, borderColor: Colors.blue + '2E', borderLeftWidth: 3, borderLeftColor: Colors.blue, ...Elevation.sm },
@@ -878,7 +885,7 @@ const styles = StyleSheet.create({
   // Videos Theomed
   thBox: { backgroundColor: Colors.green + '12', borderRadius: BorderRadius.lg, padding: Spacing.md, marginTop: Spacing.md, borderWidth: 1, borderColor: Colors.green + '2E', borderLeftWidth: 3, borderLeftColor: Colors.green, ...Elevation.sm },
   thTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.green, letterSpacing: 0.2 },
-  thPend: { fontSize: FontSize.labelSm, color: Colors.amber, marginTop: 2, marginBottom: 2, lineHeight: 15 },
+  thPend: { fontSize: FontSize.labelSm, color: Colors.brass, marginTop: 2, marginBottom: 2, lineHeight: 15 },
   thBlock: { marginTop: Spacing.xs, borderTopWidth: 1, borderTopColor: 'rgba(143,144,151,0.12)', paddingTop: Spacing.xs },
   thBlockTitle: { fontSize: FontSize.labelMd, fontWeight: '700', color: Colors.onSurface },
   thVideoRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: 3, paddingLeft: Spacing.sm },
@@ -887,14 +894,14 @@ const styles = StyleSheet.create({
 
   // Horario
   horarioHint: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, fontWeight: '600', marginBottom: Spacing.sm },
-  horarioWarn: { fontSize: FontSize.labelSm, color: Colors.amber, marginBottom: Spacing.sm, lineHeight: 15 },
+  horarioWarn: { fontSize: FontSize.labelSm, color: Colors.brass, marginBottom: Spacing.sm, lineHeight: 15 },
   horarioRow: { flexDirection: 'row', alignItems: 'flex-start', backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.soft, paddingVertical: Spacing.md, paddingHorizontal: Spacing.md, marginBottom: Spacing.sm, ...Elevation.sm },
-  horarioRowApex: { borderLeftWidth: 3, borderLeftColor: Colors.coral, borderColor: Colors.coral + '2E', backgroundColor: Colors.coral + '0D' },
-  horarioHora: { width: 92, fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.teal, letterSpacing: 0.2 },
+  horarioRowApex: { borderLeftWidth: 3, borderLeftColor: Colors.gold, borderColor: Hairline.accentSoft, backgroundColor: Colors.gold + '0D' },
+  horarioHora: { width: 92, fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.blue, letterSpacing: 0.2 },
   horarioTitulo: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurface, lineHeight: 16 },
   horarioFoot: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: Spacing.sm, fontStyle: 'italic' },
-  horarioTema: { fontSize: FontSize.labelSm, color: Colors.coral, fontWeight: '700', marginTop: 2 },
-  horarioFuente: { fontSize: FontSize.labelSm, color: Colors.teal, fontWeight: '600', marginTop: 2 },
+  horarioTema: { fontSize: FontSize.labelSm, color: Colors.gold, fontWeight: '700', marginTop: 2 },
+  horarioFuente: { fontSize: FontSize.labelSm, color: Colors.blue, fontWeight: '600', marginTop: 2 },
   pasoRow: { flexDirection: 'row', alignItems: 'flex-start', marginTop: 4 },
   pasoT: { width: 92, fontSize: FontSize.labelSm, fontWeight: '700', color: Colors.onSurfaceVariant },
   pasoD: { flex: 1, fontSize: FontSize.labelSm, color: Colors.muted, lineHeight: 15 },
@@ -903,42 +910,42 @@ const styles = StyleSheet.create({
   calHint: { fontSize: FontSize.labelSm, color: Colors.muted, marginBottom: Spacing.sm },
 
   // Grupos HOY (tema vs cola) + tags de tema/vuelta
-  // Repasos espaciados (tracker de vueltas)
-  repasoBox: { backgroundColor: Colors.purple + '14', borderRadius: BorderRadius.lg, padding: Spacing.md, marginBottom: Spacing.sm, borderWidth: 1, borderColor: Colors.purple + '2E', borderLeftWidth: 3, borderLeftColor: Colors.purple, ...Elevation.sm },
-  repasoTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.purple, letterSpacing: 0.2 },
+  // Radar de repasos (tracker de vueltas por prioridad)
+  repasoBox: { backgroundColor: Colors.blue + '10', borderRadius: BorderRadius.lg, padding: Spacing.md, marginBottom: Spacing.sm, borderWidth: 1, borderColor: Colors.blue + '2E', borderLeftWidth: 3, borderLeftColor: Colors.blue, ...Elevation.sm },
+  repasoTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.blue, letterSpacing: 0.6 },
   repasoHint: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 1, marginBottom: Spacing.xs },
   repasoRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 3 },
   repasoCheck: { width: 22, fontSize: FontSize.bodyMd, color: Colors.muted },
-  repasoCheckOn: { color: '#16a34a' },
-  repasoVuelta: { width: 48, fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.purple },
+  repasoCheckOn: { color: Colors.green },
+  repasoVuelta: { width: 48, fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.blue },
   repasoTema: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurface },
   repasoAgo: { fontSize: FontSize.labelSm, color: Colors.muted, marginLeft: Spacing.sm },
   repasoEmpty: { fontSize: FontSize.labelSm, color: Colors.muted, fontStyle: 'italic', marginBottom: Spacing.sm },
 
-  groupHdr: { fontSize: FontSize.labelLg, fontWeight: '800', color: Colors.onSurface, marginTop: Spacing.lg, marginBottom: 3, letterSpacing: 0.2 },
+  groupHdr: { fontSize: FontSize.labelLg, fontWeight: '800', color: Colors.onSurface, marginTop: Spacing.lg, marginBottom: 3, letterSpacing: 0.8 },
   groupHint: { fontSize: FontSize.labelSm, color: Colors.muted, marginBottom: Spacing.sm, lineHeight: 16 },
   themeTag: { fontSize: 9, fontWeight: '800', paddingVertical: 2, paddingHorizontal: 7, borderRadius: 999, overflow: 'hidden', letterSpacing: 0.2 },
-  themeTagOwn: { color: Colors.coral, backgroundColor: Colors.coral + '22' },
+  themeTagOwn: { color: Colors.gold, backgroundColor: Colors.gold + '22' },
   themeTagOther: { color: Colors.muted, backgroundColor: Colors.muted + '22' },
-  vueltaTag: { fontSize: 9, fontWeight: '800', color: Colors.purple, backgroundColor: Colors.purple + '22', paddingVertical: 2, paddingHorizontal: 7, borderRadius: 999, overflow: 'hidden', letterSpacing: 0.2 },
+  vueltaTag: { fontSize: 9, fontWeight: '800', color: Colors.blue, backgroundColor: Colors.blue + '22', paddingVertical: 2, paddingHorizontal: 7, borderRadius: 999, overflow: 'hidden', letterSpacing: 0.2 },
 
   // Micro-horario (videos mapeados a horas exactas dentro del bloque deep-prime)
-  microWrap: { backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, padding: Spacing.md, marginTop: Spacing.sm, borderWidth: 1, borderColor: Colors.coral + '2E', borderLeftWidth: 3, borderLeftColor: Colors.coral, ...Elevation.sm },
-  microTitle: { fontSize: FontSize.labelMd, fontWeight: '800', color: Colors.onSurface, marginBottom: Spacing.sm, letterSpacing: 0.2 },
+  microWrap: { backgroundColor: Colors.gold + '0D', borderRadius: BorderRadius.lg, padding: Spacing.md, marginTop: Spacing.sm, borderWidth: 1, borderColor: Hairline.accentSoft, borderLeftWidth: 3, borderLeftColor: Colors.gold, ...Elevation.sm },
+  microTitle: { fontSize: FontSize.labelMd, fontWeight: '800', color: Colors.onSurface, marginBottom: Spacing.sm, letterSpacing: 0.4 },
   microRow: { flexDirection: 'row', alignItems: 'flex-start', paddingVertical: 4 },
-  microTime: { width: 72, fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.coral, letterSpacing: 0.2 },
+  microTime: { width: 78, fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.gold, letterSpacing: 0.2 },
   microLabel: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 16 },
 
   // CheckRow extras
-  srcTag: { fontSize: 9, fontWeight: '800', color: Colors.teal, backgroundColor: Colors.teal + '1F', paddingVertical: 2, paddingHorizontal: 7, borderRadius: 999, overflow: 'hidden', letterSpacing: 0.2 },
-  horaTag: { fontSize: 9, fontWeight: '800', color: Colors.coral, backgroundColor: Colors.coral + '22', paddingVertical: 2, paddingHorizontal: 7, borderRadius: 999, overflow: 'hidden', letterSpacing: 0.2 },
-  lockHint: { fontSize: FontSize.labelSm, color: Colors.amber, marginTop: 5, lineHeight: 15 },
+  srcTag: { fontSize: 9, fontWeight: '800', color: Colors.blue, backgroundColor: Colors.blue + '1F', paddingVertical: 2, paddingHorizontal: 7, borderRadius: 999, overflow: 'hidden', letterSpacing: 0.2 },
+  horaTag: { fontSize: 9, fontWeight: '800', color: Colors.gold, backgroundColor: Colors.gold + '22', paddingVertical: 2, paddingHorizontal: 7, borderRadius: 999, overflow: 'hidden', letterSpacing: 0.2 },
+  lockHint: { fontSize: FontSize.labelSm, color: Colors.brass, marginTop: 5, lineHeight: 15 },
   fallbackLink: { fontSize: FontSize.labelSm, color: Colors.blue, fontWeight: '800', marginTop: 3 },
   linkCol: { alignItems: 'flex-end', marginLeft: Spacing.sm },
   pdfBtn: { marginTop: 5, backgroundColor: Colors.blue + '1F', borderColor: Colors.blue + '33' },
 
   // Cajas de referencia (NTS / Material)
-  refBox: { backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, padding: Spacing.md, marginTop: Spacing.sm, borderWidth: 1, borderColor: Colors.teal + '2E', borderLeftWidth: 3, borderLeftColor: Colors.teal, ...Elevation.sm },
+  refBox: { backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, padding: Spacing.md, marginTop: Spacing.sm, borderWidth: 1, borderColor: Colors.blue + '2E', borderLeftWidth: 3, borderLeftColor: Colors.blue, ...Elevation.sm },
   refTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface, marginBottom: 4, letterSpacing: 0.2 },
   refBody: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 17 },
   refWhere: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 4, fontStyle: 'italic' },

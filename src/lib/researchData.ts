@@ -16,8 +16,9 @@ export const INTERVALOS: Record<Prioridad, number[]> = {
   MEDIA: [3, 28, 63],
   BAJA: [7, 63],
 };
+// Joya apagada (quiet-luxury) — antes #F56342/#F5A623/#2E7CF6/#8F9097 saturados.
 export const PRIORIDAD_COLOR: Record<Prioridad, string> = {
-  CRITICA: '#F56342', ALTA: '#F5A623', MEDIA: '#2E7CF6', BAJA: '#8F9097',
+  CRITICA: '#C56A5A', ALTA: '#B8934E', MEDIA: '#4F7DD6', BAJA: '#7C8496',
 };
 
 // ── Alternancia Research ↔ Derma (ancla de paridad: mié 10-jun-2026) ──
@@ -44,7 +45,7 @@ export function diaEstudioTipo(date: Date): 'research' | 'derma' | 'descanso' {
 export const RESEARCH_META = {
   titulo: 'Research',
   subtitulo: 'De cero a publicado — el camino a Mayo Clinic',
-  accent: '#0FD4A0', // teal
+  accent: '#6BB8B0', // teal apagado (Colors.teal · quiet-luxury) — antes #0FD4A0 neón
   tesis: 'La aguja la mueven las publicaciones indexadas reales (no el "27.7" de marketing). Meta para competir: ~3 PIPs; nivel Mayo-stretch: 8–15, con 2+ de original research first-author.',
   cuelloBotella: 'El cuello de botella NO es escribir — es conseguir un dermatólogo-mentor con quien co-publicar y acceso a casos. Tarea #1: asegurar mentor desde la semana 1.',
 };

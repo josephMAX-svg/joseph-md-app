@@ -6,8 +6,9 @@
  */
 
 export type Cluster = 'estetica' | 'acne_qol' | 'energia' | 'ia';
+// Joya apagada (mapeado a tokens · quiet-luxury). Antes: #0FD4A0/#F56342/#F5A623/#8B5CF6 neón.
 export const CLUSTER_COLOR: Record<Cluster, string> = {
-  estetica: '#0FD4A0', acne_qol: '#F56342', energia: '#F5A623', ia: '#8B5CF6',
+  estetica: '#6BB8B0', acne_qol: '#C56A5A', energia: '#B8934E', ia: '#9A7BC8',
 };
 export const CLUSTER_LABEL: Record<Cluster, string> = {
   estetica: 'Estética estructural', acne_qol: 'Acné & QoL', energia: 'Energía/fototipos', ia: 'IA en derma',
@@ -72,6 +73,36 @@ export const RESEARCH_LINES: LineaResearch[] = [
     pubmedUrl: pm('deep learning dermatology skin of color classification bias') },
 ];
 
+/**
+ * ── Mini-temario ancla por línea (aditivo · materiales) ──────────────────────────────────────────
+ * 3–4 lecturas fundacionales por línea, empezando por las ACTIVAS (L4 · SR-1, L5 · SR-2). Sin ellas
+ * el sistema agéntico redacta sobre corpus sin marco → sube la calidad del paper de dominio.
+ * Cada entrada abre un SITIO REAL: PMID directo cuando lo hay, o una semilla PubMed acotada (siempre
+ * válida). NO altera fechas, item_keys ni el calendario: es contenido de dominio para el explorador.
+ */
+export interface LecturaAncla { titulo: string; nota: string; url: string }
+const pmid = (id: string) => 'https://pubmed.ncbi.nlm.nih.gov/' + id + '/';
+export const LINE_LECTURAS: Record<number, LecturaAncla[]> = {
+  4: [
+    { titulo: 'DeLorenzi 2014 · complicaciones vasculares de HA fillers', nota: 'Paper ancla de SR-1: fisiopatología de la oclusión, ventana de hialuronidasa, manejo por zona.', url: pmid('24692598') },
+    { titulo: 'Cotofana et al. · anatomía vascular facial & danger zones', nota: 'Mapa arterial facial y planos de inyección seguros (base del riesgo por región).', url: pm('Cotofana facial vascular anatomy danger zones filler') },
+    { titulo: 'Hialuronidasa en oclusión vascular · dosis y tiempo-a-tratamiento', nota: 'Evidencia sobre protocolo de rescate: el outcome primario de la SR (tiempo→tratamiento).', url: pm('hyaluronidase vascular occlusion dermal filler dose protocol') },
+  ],
+  5: [
+    { titulo: 'RF fraccional / microneedling en piel de color', nota: 'Ancla de SR-2: eficacia y seguridad en Fitzpatrick IV–VI (miedo a PIH · subgrupo por fototipo).', url: pm('fractional radiofrequency microneedling skin of color safety review') },
+    { titulo: 'Láser CO₂ fraccional en fototipos IV–VI', nota: 'Heterogeneidad de parámetros y perfil de PIH; base para los criterios de subgrupo.', url: pm('fractional CO2 laser Fitzpatrick IV-VI post-inflammatory hyperpigmentation') },
+    { titulo: 'PIH post-procedimiento energético · prevención', nota: 'El desenlace de seguridad crítico del subgrupo; encuadra la discusión de la SR.', url: pm('post inflammatory hyperpigmentation laser energy device prevention skin of color') },
+  ],
+  1: [
+    { titulo: 'Variabilidad de la arteria facial · estudios anatómicos', nota: 'Sustento del gap L1: casi todo en caucásicos; base para la SR de zonas de peligro.', url: pm('facial artery anatomy variation cadaver ultrasound') },
+    { titulo: 'Ecografía Doppler para inyección segura de fillers', nota: 'Método emergente para mapear vasos antes de inyectar (técnica de la línea).', url: pm('ultrasound guided filler injection facial vessel mapping') },
+  ],
+  6: [
+    { titulo: 'CADI · Cardiff Acne Disability Index (validación)', nota: 'Instrumento QoL de L0/L6; base para la validación español-peruano (contacto Finlay).', url: pm('Cardiff Acne Disability Index CADI validation') },
+    { titulo: 'DLQI en acné · calidad de vida', nota: 'Comparador del CADI; encuadra la SR de instrumentos QoL en LMIC.', url: pm('DLQI acne quality of life adolescents') },
+  ],
+};
+
 // ─────────────────────────────────────────────────────────────────────────
 // SISTEMA AGÉNTICO (orchestrator-worker + HITL). El corazón.
 // ─────────────────────────────────────────────────────────────────────────
@@ -83,40 +114,40 @@ export interface AgentRole {
 }
 
 export const AGENT_ROLES: AgentRole[] = [
-  { id: 'lead', nombre: 'Orquestador (Lead)', capa: 'Capa 1', model: 'Claude Opus', icon: '🧭', color: '#0FD4A0',
+  { id: 'lead', nombre: 'Orquestador (Lead)', capa: 'Capa 1', model: 'Claude Opus', icon: '🧭', color: '#6BB8B0',
     rol: 'Planifica el outline PRISMA, delega por sección, ensambla, gatea QA. NUNCA escribe prosa.',
     prompt: 'You are the LEAD ORCHESTRATOR for a systematic review. You do NOT write prose. Inputs = registered protocol (PROSPERO) + PRISMA 2020 checklist + extraction table (only sources of truth). Produce a section outline; spawn ONE subagent per section with ONLY its retrieved chunks; require every claim to carry [CIT:id] (no reference strings); after all return, STOP and route to CitationAgent; surface checkpoints CP-1..CP-4 and wait for human approval.' },
-  { id: 'intro', nombre: 'IntroAgent', capa: 'Capa 2', model: 'Claude Sonnet', icon: '📝', color: '#2E7CF6',
+  { id: 'intro', nombre: 'IntroAgent', capa: 'Capa 2', model: 'Claude Sonnet', icon: '📝', color: '#4F7DD6',
     rol: 'Redacta la Introduction (gap + objetivo) solo desde los chunks provistos.',
     prompt: 'Write ONLY the Introduction. Use ONLY the source chunks provided. Every factual/numeric statement ends with [CIT:<source_id>]. NEVER write a reference string, author, journal, year or DOI. If a claim is unsupported, drop it or mark [UNSUPPORTED]. Output prose + the list of source_ids used.' },
-  { id: 'methods', nombre: 'MethodsAgent', capa: 'Capa 2', model: 'Claude Sonnet', icon: '⚗️', color: '#2E7CF6',
+  { id: 'methods', nombre: 'MethodsAgent', capa: 'Capa 2', model: 'Claude Sonnet', icon: '⚗️', color: '#4F7DD6',
     rol: 'Redacta Methods conforme a PRISMA 2020, espejo exacto del protocolo.',
     prompt: 'Write the METHODS section conforming to PRISMA 2020. Sources = registered protocol + PRISMA 2020 checklist ONLY. Cover eligibility, sources & dates, search strategy, selection, data items, risk-of-bias, synthesis. Mirror the protocol exactly; if it is silent on a required PRISMA item, write [PROTOCOL GAP: <item>] — do not invent a method.' },
-  { id: 'results', nombre: 'ResultsAgent', capa: 'Capa 2', model: 'Claude Sonnet', icon: '📊', color: '#2E7CF6',
+  { id: 'results', nombre: 'ResultsAgent', capa: 'Capa 2', model: 'Claude Sonnet', icon: '📊', color: '#4F7DD6',
     rol: 'Redacta Results + tabla de características, cada número trazable a la tabla de extracción.',
     prompt: 'Write the RESULTS section. SOURCE OF TRUTH = the structured extraction table + PRISMA flow counts. Report selection numbers exactly; every number traces to a cell tagged [CIT:<study_id>:<field>]. Do not interpret (that is Discussion). Missing cell → "not reported", never impute. Output prose + a draft characteristics-of-studies table.' },
-  { id: 'discuss', nombre: 'DiscussAgent', capa: 'Capa 2', model: 'Claude Sonnet', icon: '💬', color: '#2E7CF6',
+  { id: 'discuss', nombre: 'DiscussAgent', capa: 'Capa 2', model: 'Claude Sonnet', icon: '💬', color: '#4F7DD6',
     rol: 'Redacta Discussion con límites y certeza explícitos.',
     prompt: 'Write the DISCUSSION. Use ONLY the provided chunks. Every factual/numeric statement ends with [CIT:<source_id>]. Explicitly state limitations and where the evidence is uncertain. No reference strings or DOIs — citation formatting happens later.' },
-  { id: 'citation', nombre: 'CitationAgent / QA', capa: 'Capa 3', model: 'Claude', icon: '🛡️', color: '#F56342',
+  { id: 'citation', nombre: 'CitationAgent / QA', capa: 'Capa 3', model: 'Claude', icon: '🛡️', color: '#C56A5A',
     rol: 'Núcleo anti-alucinación: verifica DOI/PMID, solape de chunk, paráfrasis (Turnitin). Gate duro CP-3.',
     prompt: 'You run AFTER all drafts. For EACH [CIT:<source_id>]: (1) confirm the claim overlaps the retrieved chunk, else [NO VERIFICABLE]; (2) resolve metadata + DOI and verify against Crossref REST API; cross-check PMID via PubMed E-utilities; (3) fuzzy-match title ≥0.85 (articles)/≥0.75 (books); (4) NEVER fabricate a DOI/author/year. Also flag near-literal paraphrase (Turnitin-safe) and rewrite. Output a numbered reference list of ONLY verified entries + a coverage report. HARD GATE: assembly cannot proceed while any [NO VERIFICABLE]/[UNSUPPORTED] remains.' },
-  { id: 'assembler', nombre: 'AssemblerAgent', capa: 'Capa 3', model: 'python-docx', icon: '📄', color: '#A78BFA',
+  { id: 'assembler', nombre: 'AssemblerAgent', capa: 'Capa 3', model: 'python-docx', icon: '📄', color: '#9A7BC8',
     rol: 'Ensambla el .docx final (estilos, tablas, refs numeradas). Respeta la lección TOC de Word.',
     prompt: 'Assemble the verified manuscript into .docx (python-docx ≥1.2.0). PRECONDITION: human cleared CP-3 (zero unresolved [NO VERIFICABLE]). Replace each [CIT:id] with its numbered citation [n]; build Title/headings, characteristics table via add_table(), numbered References. Anchor inserts AFTER the outermost Word TOC field. Output revision_v{n}.docx.' },
 ];
 
 export interface AgentLayer { capa: string; titulo: string; desc: string; color: string; icon: string }
 export const AGENT_LAYERS: AgentLayer[] = [
-  { capa: 'Capa 0', titulo: 'Motor de descubrimiento 24/7 (5 fuentes · OpenAlex troncal)', icon: '🛰️', color: '#8F9097',
+  { capa: 'Capa 0', titulo: 'Motor de descubrimiento 24/7 (5 fuentes · OpenAlex troncal)', icon: '🛰️', color: '#7C8496',
     desc: 'n8n + Google Calendar → motor Python async sobre 5 fuentes (OpenAlex⭐ + PubMed + Europe PMC + LILACS + Semantic Scholar ≈97%) → dedup por DOI → pre-screening local Ollama (phi4-mini, $0) → Supabase + Realtime → Telegram [Aprobar]/[Descartar]. OpenAlex exige API key (13-feb-2026). Feeder, NO screening oficial.' },
-  { capa: 'Capa 1', titulo: 'Orquestador (Lead · Opus)', icon: '🧭', color: '#0FD4A0',
+  { capa: 'Capa 1', titulo: 'Orquestador (Lead · Opus)', icon: '🧭', color: '#6BB8B0',
     desc: 'Recibe "avanza Línea X, output SR". Plan → descompone en tareas → delega → integra → gatea QA. Memoria del plan en Supabase (evita context rot).' },
-  { capa: 'Capa 2', titulo: 'Subagentes (Workers · Sonnet, contexto aislado)', icon: '🧩', color: '#2E7CF6',
+  { capa: 'Capa 2', titulo: 'Subagentes (Workers · Sonnet, contexto aislado)', icon: '🧩', color: '#4F7DD6',
     desc: 'Intro · Methods(PRISMA) · Results(forest) · Discussion. No se comunican entre sí; cada uno recibe solo sus chunks y devuelve prosa con marcadores [CIT:id].' },
-  { capa: 'Capa 3', titulo: 'QA de citas + Ensamblado', icon: '🛡️', color: '#F56342',
+  { capa: 'Capa 3', titulo: 'QA de citas + Ensamblado', icon: '🛡️', color: '#C56A5A',
     desc: 'CitationAgent verifica DOI/PMID (Crossref/PubMed) + solape + paráfrasis (Turnitin); AssemblerAgent monta el .docx. Modelo-por-tarea (lección otto-SR).' },
-  { capa: 'Capa 4', titulo: 'Checkpoint humano (HITL)', icon: '🧑‍⚕️', color: '#F5A623',
+  { capa: 'Capa 4', titulo: 'Checkpoint humano (HITL)', icon: '🧑‍⚕️', color: '#B8934E',
     desc: 'Joseph abre el Word, verifica citas reales, paráfrasis y cadena estadística, y aprueba/corrige. Nada avanza sin su aprobación.' },
 ];
 
@@ -179,23 +210,24 @@ export const CITATION_PIPELINE: { paso: string; detalle: string }[] = [
 
 // ── Consola de agentes: qué agente redacta qué sección, por línea (Manual §8.5/§14) ──
 export type EstadoAgente = 'idle' | 'queued' | 'working' | 'done' | 'needs_human' | 'blocked';
+// Estados en joya apagada (tokens). Antes #8F9097/#2E7CF6/#F5A623/#0FD4A0/#F56342 saturados.
 export const ESTADO_AGENTE: Record<EstadoAgente, { lbl: string; color: string; icon: string }> = {
-  idle:        { lbl: 'inactivo',          color: '#8F9097', icon: '○' },
-  queued:      { lbl: 'en cola',           color: '#2E7CF6', icon: '◔' },
-  working:     { lbl: 'redactando…',       color: '#F5A623', icon: '◍' },
-  done:        { lbl: 'listo',             color: '#0FD4A0', icon: '●' },
-  needs_human: { lbl: 'requiere tu visto', color: '#F56342', icon: '◆' },
-  blocked:     { lbl: 'bloqueado',         color: '#F56342', icon: '⨯' },
+  idle:        { lbl: 'inactivo',          color: '#7C8496', icon: '○' },
+  queued:      { lbl: 'en cola',           color: '#4F7DD6', icon: '◔' },
+  working:     { lbl: 'redactando…',       color: '#B8934E', icon: '◍' },
+  done:        { lbl: 'listo',             color: '#5FA88C', icon: '●' },
+  needs_human: { lbl: 'requiere tu visto', color: '#C56A5A', icon: '◆' },
+  blocked:     { lbl: 'bloqueado',         color: '#C56A5A', icon: '⨯' },
 };
 // Qué sección redacta cada agente (orden del manuscrito)
 export const AGENTE_SECCION: { agentId: string; seccion: string; icon: string; color: string }[] = [
-  { agentId: 'lead',      seccion: 'Dirige la línea / SR',        icon: '🧭', color: '#0FD4A0' },
-  { agentId: 'intro',     seccion: 'Introducción',                icon: '📝', color: '#2E7CF6' },
-  { agentId: 'methods',   seccion: 'Métodos (PRISMA 2020)',       icon: '⚗️', color: '#2E7CF6' },
-  { agentId: 'results',   seccion: 'Resultados (forest plot)',    icon: '📊', color: '#2E7CF6' },
-  { agentId: 'discuss',   seccion: 'Discusión + antecedentes',    icon: '💬', color: '#2E7CF6' },
-  { agentId: 'citation',  seccion: 'Referencias (Crossref/CSL)',  icon: '🛡️', color: '#F56342' },
-  { agentId: 'assembler', seccion: 'Ensamblado .docx',            icon: '📄', color: '#A78BFA' },
+  { agentId: 'lead',      seccion: 'Dirige la línea / SR',        icon: '🧭', color: '#6BB8B0' },
+  { agentId: 'intro',     seccion: 'Introducción',                icon: '📝', color: '#4F7DD6' },
+  { agentId: 'methods',   seccion: 'Métodos (PRISMA 2020)',       icon: '⚗️', color: '#4F7DD6' },
+  { agentId: 'results',   seccion: 'Resultados (forest plot)',    icon: '📊', color: '#4F7DD6' },
+  { agentId: 'discuss',   seccion: 'Discusión + antecedentes',    icon: '💬', color: '#4F7DD6' },
+  { agentId: 'citation',  seccion: 'Referencias (Crossref/CSL)',  icon: '🛡️', color: '#C56A5A' },
+  { agentId: 'assembler', seccion: 'Ensamblado .docx',            icon: '📄', color: '#9A7BC8' },
 ];
 /**
  * Snapshot ILUSTRATIVO del reparto por sección según el estado de la línea. Al desplegar el

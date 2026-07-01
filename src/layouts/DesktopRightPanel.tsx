@@ -165,9 +165,21 @@ function HomeRightPanel() {
   } as WeekSummary);
   const latest = reports.slice(0, 5);
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const MONO = Platform.OS === 'web' ? "'JetBrains Mono', 'SF Mono', monospace" : undefined;
 
   return (
     <View>
+      {/* Cockpit lateral header (firma ORO — solo el Home) */}
+      <View style={{
+        flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: Spacing.md,
+        paddingBottom: Spacing.sm, borderBottomWidth: 1, borderBottomColor: Hairline.accentSoft,
+      }}>
+        <View style={{ width: 3, height: 14, borderRadius: 2, backgroundColor: Colors.gold }} />
+        <Text style={{ fontSize: 11, fontWeight: '800', color: Colors.gold, letterSpacing: 1.6, fontFamily: MONO as any }}>
+          SIDE INSTRUMENTS
+        </Text>
+      </View>
+
       {/* Mini Calendar with real activity dots */}
       <MiniCalendar activeDays={week.activeDays} />
 
@@ -175,7 +187,7 @@ function HomeRightPanel() {
       <WeekSummaryCard data={week} />
 
       {/* Agent Reports */}
-      <Text style={[desktopStyles.rightPanelTitle, desktopStyles.rightPanelTitleSeparated]}>AGENT REPORTS</Text>
+      <Text style={[desktopStyles.rightPanelTitle, desktopStyles.rightPanelTitleSeparated, { borderLeftColor: Colors.gold }]}>AGENT REPORTS</Text>
       {loading ? (
         <SkeletonLoader lines={3} />
       ) : latest.length === 0 ? (

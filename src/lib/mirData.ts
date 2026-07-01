@@ -9,11 +9,46 @@ export type { Prioridad };
 export const MIR_META = {
   titulo: 'MIR · España',
   subtitulo: 'ProMIR · Top 50 → Dermatología Hospital Clínic Barcelona',
-  accent: '#F5A623', // amber (España)
+  accent: '#F5A623', // amber (consola española)
+  flag: '🇪🇸',
   tesis: 'El nº de preguntas no es todo: divide por el tamaño del temario. Bloques pequeños que caen mucho = oro. Empieza por Estadística + Bioética (casi regalo de puntos), luego Cardiología (la reina). Aprendizaje basado en preguntas desde el día 1.',
 };
 
 export const MIR_KPIS = { asignaturasTierS: 3, vueltasCritica: 6, simulacrosMeta: 1, readiness: 5 };
+
+// ── READINESS · simulacros cronometrados (AMIR/ProMIR) como checkpoints de score ──
+// La "banca" honesta: el readiness solo tiene sentido anclado a un simulacro real
+// con plantilla idéntica + corrección comentada al 100% (lo que MIR_NOTA pide copiar).
+export interface MirSimulacro {
+  nombre: string; fuente: 'ProMIR' | 'AMIR' | 'MirAsturias' | 'Oficial';
+  cuando: string; formato: string; banda: string; url: string; gated: boolean;
+}
+export const MIR_SIMULACROS: MirSimulacro[] = [
+  { nombre: 'Simulacro ProMIR (fase Competición)', fuente: 'ProMIR', cuando: '1/finde · mes 10+', formato: '200 preguntas · plantilla idéntica + corrección 100%', banda: 'neto ≥ 120 → zona plaza', url: 'https://promir.medicapanamericana.com/', gated: true },
+  { nombre: 'AMIR · 40 simulacros programados', fuente: 'AMIR', cuando: 'calendario propio', formato: 'Cronometrado + estadística por asignatura', banda: 'percentil > mediana del aula', url: 'https://www.amireducacion.com/', gated: true },
+  { nombre: 'MirAsturias · simulacros', fuente: 'MirAsturias', cuando: 'recta final', formato: 'Cronometrado + ranking', banda: 'tendencia del neto > cifra suelta', url: 'https://www.curso-mir.com/', gated: true },
+  { nombre: 'Examen MIR oficial (años previos)', fuente: 'Oficial', cuando: 'auto-simulacro gratis', formato: 'Cuadernillo real + plantilla BOE · 200 preguntas', banda: 'aplica −1/3 y mide el neto', url: 'https://www.examenesmir.com/examenes-mir', gated: false },
+];
+// Readiness derivado de la capa de simulacros (sustituye el 5 hardcodeado).
+export const MIR_READINESS = {
+  pct: 5, // línea base pre-primer-simulacro · sube solo al registrar uno
+  estado: 'Línea base · sin simulacro cronometrado registrado',
+  siguiente: 'Un cuadernillo MIR oficial cronometrado (gratis, examenesmir) es tu primer readiness honesto.',
+};
+
+// ── Desgloses MIR por asignatura (preguntas reales de años previos) ──
+// Pilar AMIR "Libro Gordo" / CTO: navegar las preguntas reales por asignatura +
+// corrección comentada. No se copian enunciados — se enlaza a las fuentes ya presentes.
+export const MIR_DESGLOSES = {
+  titulo: 'Desgloses MIR · preguntas reales por asignatura',
+  porQue: 'AMIR "Libro Gordo" y CTO lo tratan como pilar: repetir las preguntas que YA cayeron por asignatura fija más que leer. Corrección comentada al 100%.',
+  capas: [
+    { fuente: 'examenesmir.com', que: 'Cuadernillos 2014–2026 filtrables · plantilla oficial', url: 'https://www.examenesmir.com/examenes-mir', gated: false },
+    { fuente: 'Ministerio de Sanidad (BOE)', que: 'Plantillas oficiales + impugnaciones', url: 'https://www.sanidad.gob.es', gated: false },
+    { fuente: 'AMIR Libro Gordo (2012–2022)', que: 'Desglose por asignatura + comentario', url: 'https://www.amireducacion.com/', gated: true },
+    { fuente: 'ProMIR · banco por asignatura', que: '>30.000 preguntas etiquetadas por tema', url: 'https://promir.medicapanamericana.com/', gated: true },
+  ],
+};
 
 export interface AsignaturaMIR { nombre: string; tier: 'S' | 'A' | 'B' | 'C'; nota: string; prioridad: Prioridad; }
 export const MIR_ASIGNATURAS: AsignaturaMIR[] = [
@@ -36,11 +71,12 @@ export const MIR_ASIGNATURAS: AsignaturaMIR[] = [
   { nombre: 'Resto (Oftalmo, ORL, Uro, Onco, Geriatría…)', tier: 'C', nota: 'Baja prioridad · repaso rápido al final.', prioridad: 'BAJA' },
 ];
 
+// Colores en joya apagada (sin neón) — coherentes con la consola española.
 export const MIR_TIERS = [
-  { tier: 'S', label: 'ROI máximo', desc: 'Poco temario, muchas preguntas. Empieza aquí.', color: '#10B981' },
-  { tier: 'A', label: 'Alta rentabilidad', desc: 'Temario grande pero imprescindible.', color: '#F5A623' },
-  { tier: 'B', label: 'Media', desc: 'Después del Tier A.', color: '#2E7CF6' },
-  { tier: 'C', label: 'Baja', desc: 'No abandonar, pero al final y en repaso rápido.', color: '#8F9097' },
+  { tier: 'S', label: 'ROI máximo', desc: 'Poco temario, muchas preguntas. Empieza aquí.', color: '#5FA88C' },  // jade (era #10B981)
+  { tier: 'A', label: 'Alta rentabilidad', desc: 'Temario grande pero imprescindible.', color: '#C8A96A' },      // gold (era #F5A623)
+  { tier: 'B', label: 'Media', desc: 'Después del Tier A.', color: '#4F7DD6' },                                  // sapphire (era #2E7CF6)
+  { tier: 'C', label: 'Baja', desc: 'No abandonar, pero al final y en repaso rápido.', color: '#7C8496' },        // muted (era #8F9097)
 ];
 
 // ProMIR (Médica Panamericana) — 5 fases públicas

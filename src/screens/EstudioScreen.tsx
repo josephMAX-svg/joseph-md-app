@@ -694,9 +694,9 @@ function EncapsBlockCard({ block }: { block: EncapsBlock }) {
     blue: Colors.blue,
     green: Colors.green,
     gray: Colors.muted,
-    orange: Colors.amber,
+    orange: Colors.gold,
   };
-  const accent = colorMap[block.color] ?? Colors.coral;
+  const accent = colorMap[block.color] ?? Colors.gold;
   const noActivity = block.apex_count === 0;
   const fechaTxt = block.ultimo_apex_fecha
     ? `Último APEX: ${String(block.ultimo_apex_fecha).slice(0, 10)}`
@@ -767,7 +767,7 @@ function EncapsBlockCard({ block }: { block: EncapsBlock }) {
               activeOpacity={0.7}
               onPress={() => { const u = encapsObsUrl(block.id, s.id); if (u) Linking.openURL(u).catch(() => {}); }}
             >
-              <Text style={{ fontSize: 11, color: '#A78BFA', marginRight: 6 }}>◆</Text>
+              <Text style={{ fontSize: 11, color: Colors.purple, marginRight: 6 }}>◆</Text>
               <Text
                 style={[
                   styles.encapsSubtemaName,
@@ -889,9 +889,9 @@ const styles = StyleSheet.create({
     borderRadius: BorderRadius.md,
     ...webTransition,
   },
-  peSubTabActive: { backgroundColor: Colors.surfaceContainerHighest, ...Elevation.sm },
-  peSubTabText: { fontSize: FontSize.labelSm, fontWeight: '700', color: Colors.muted, letterSpacing: 0.2 },
-  peSubTabTextActive: { color: Colors.onSurface },
+  peSubTabActive: { backgroundColor: Colors.gold + '1A', borderWidth: 1, borderColor: Hairline.accentSoft, ...Elevation.sm },
+  peSubTabText: { fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.muted, letterSpacing: 0.4 },
+  peSubTabTextActive: { color: Colors.gold },
 
   // ENCAPS 5 bloques oficiales v2.3.2
   encapsHeader: {
@@ -977,7 +977,7 @@ const styles = StyleSheet.create({
   encapsCobertura: { fontSize: FontSize.labelSm, color: Colors.muted, fontWeight: '600' },
   encapsNoActivity: {
     fontSize: FontSize.labelSm,
-    color: Colors.coral,
+    color: Colors.brass,
     fontWeight: '700',
     fontStyle: 'italic',
     marginBottom: 4,
@@ -989,7 +989,7 @@ const styles = StyleSheet.create({
   },
   encapsToggle: {
     fontSize: FontSize.labelSm,
-    color: Colors.teal,
+    color: Colors.blue,
     fontWeight: '800',
     marginTop: 6,
     letterSpacing: 0.2,

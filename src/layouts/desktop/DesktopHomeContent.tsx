@@ -3,11 +3,11 @@ import {
   View,
   Text,
   ScrollView,
-  TouchableOpacity,
   Platform,
+  useWindowDimensions,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Colors, Spacing, FontSize, BorderRadius, MetricColors } from '../../theme/tokens';
+import { Colors, Spacing, FontSize, BorderRadius, Hairline } from '../../theme/tokens';
 import { desktopStyles, DesktopColors } from '../../theme/desktopStyles';
 import { useSupabaseQuery } from '../../hooks/useSupabaseQuery';
 import {
@@ -19,26 +19,20 @@ import {
 } from '../../lib/supabase';
 import type { TodayMetrics } from '../../lib/supabase';
 import GlassCard from '../../components/GlassCard';
-import TodayMission from '../../components/home/TodayMission';
+import TodayMission, { todayISO, faseActual, mirLabelDe } from '../../components/home/TodayMission';
 import BibliotecaHome from '../../components/home/BibliotecaHome';
+import CockpitStatusBar, { limaHHMM } from '../../components/home/CockpitStatusBar';
+import FlightDeckGauges from '../../components/home/FlightDeckGauges';
 import AnimatedCounter from '../../components/AnimatedCounter';
-import CircularProgress from '../../components/CircularProgress';
-import { PulseDash } from '../../components/SkeletonLoader';
 import { useDataSource, useLocalTelemetry, mirCountdown } from '../../lib/dataSource';
 import { getApexQueueCount, getUnreadReports } from '../../lib/supabase';
-
-// Recharts sparkline — web only
-let AreaChart: any, Area: any, ResponsiveContainer: any;
-try {
-  const recharts = require('recharts');
-  AreaChart = recharts.AreaChart;
-  Area = recharts.Area;
-  ResponsiveContainer = recharts.ResponsiveContainer;
-} catch {}
+import { componerBriefing } from '../../lib/homeBriefing';
 
 const TIMER_STORAGE_KEY = '@joseph_md_deep_work_seconds';
 const TIMER_START_KEY = '@joseph_md_deep_work_start';
 const TIMER_SESSION_KEY = '@joseph_md_deep_work_session_id';
+
+const MONO = Platform.OS === 'web' ? "'JetBrains Mono', 'SF Mono', monospace" : undefined;
 
 function getCountdown(target: Date) {
   const now = new Date();
@@ -51,120 +45,24 @@ function getCountdown(target: Date) {
   };
 }
 
-// Empty sparkline data (7 points)
-const EMPTY_SPARKLINE = [
-  { v: 0 }, { v: 0 }, { v: 0 }, { v: 0 }, { v: 0 }, { v: 0 }, { v: 0 },
-];
-
-function MiniSparkline({ color, data }: { color: string; data?: { v: number }[] }) {
-  const isEmpty = !data || data.every(d => d.v === 0);
-
-  if (!AreaChart || !ResponsiveContainer) return null;
-
-  return (
-    <View style={{ height: 24, marginTop: 6, opacity: isEmpty ? 0.3 : 1 }}>
-      <ResponsiveContainer width="100%" height={24}>
-        <AreaChart data={data || EMPTY_SPARKLINE} margin={{ top: 2, right: 2, bottom: 2, left: 2 }}>
-          <Area
-            type="monotone"
-            dataKey="v"
-            stroke={color}
-            strokeWidth={1.5}
-            fill={color}
-            fillOpacity={0.1}
-            strokeDasharray={isEmpty ? '4 4' : undefined}
-            dot={false}
-            isAnimationActive={false}
-          />
-        </AreaChart>
-      </ResponsiveContainer>
-    </View>
-  );
-}
-
-function MetricCard({
-  label, value, unit, color, loading, sparkData,
-}: {
-  label: string; value: number; unit?: string; color: string; loading?: boolean;
-  sparkData?: { v: number }[];
-}) {
-  const [hovered, setHovered] = useState(false);
-  const webHover = Platform.OS === 'web'
-    ? { onMouseEnter: () => setHovered(true), onMouseLeave: () => setHovered(false) }
-    : {};
-  const webStyle = Platform.OS === 'web'
-    ? {
-        transition: 'all 0.2s ease',
-        cursor: 'pointer',
-        ...(hovered ? { borderColor: 'rgba(255,255,255,0.15)', transform: [{ scale: 1.02 }] } : {}),
-      }
-    : {};
-
-  return (
-    <View
-      style={[{
-        backgroundColor: DesktopColors.glass,
-        borderRadius: 16,
-        borderWidth: 1,
-        borderColor: DesktopColors.glassBorder,
-        padding: 24,
-        borderLeftWidth: 4,
-        borderLeftColor: color,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.15,
-        shadowRadius: 12,
-        elevation: 4,
-      }, webStyle as any]}
-      {...webHover}
-    >
-      <Text style={{
-        fontSize: 11, fontWeight: '500', color: Colors.smallLabel,
-        letterSpacing: 0.5, textTransform: 'uppercase', marginBottom: Spacing.xs,
-      }}>
-        {label}
-      </Text>
-      <View style={{ flexDirection: 'row', alignItems: 'baseline' }}>
-        {loading ? (
-          <PulseDash color={color} size={24} />
-        ) : (
-          <>
-            <AnimatedCounter
-              value={value}
-              decimals={unit === 'hrs' ? 1 : 0}
-              style={{ fontSize: 48, fontWeight: '700', color }}
-            />
-            {unit && (
-              <Text style={{ fontSize: 11, fontWeight: '600', color: Colors.smallLabel, marginLeft: 4, textTransform: 'uppercase' }}>
-                {unit}
-              </Text>
-            )}
-          </>
-        )}
-      </View>
-      <MiniSparkline color={color} data={sparkData} />
-    </View>
-  );
-}
-
 /**
- * Desktop Home Content — Premium Design v2.0
- * Animated counters, glassmorphism cards, circular progress timer,
- * open counters (no artificial limits).
+ * Desktop Home Content — COCKPIT / Mission Control v3
+ * Cockpit status bar sticky (numerales de instrumento, firma ORO champagne) ·
+ * flight-deck above-the-fold (Misión de HOY | Deep Work gauge en oro + gauges) ·
+ * Mentor Deck (Biblioteca con cita-hero editorial) · banda secundaria compacta.
  */
-// Default service set — matches agente_estudio expected services
-const DEFAULT_SERVICES = ['supabase', 'anki', 'ocr', 'agent', 'scheduler', 'notifications'];
-
 export default function DesktopHomeContent({ onNavigate }: { onNavigate?: (screen: any) => void } = {}) {
   const [countdown, setCountdown] = useState(getCountdown(new Date('2030-01-01')));
+  const { width } = useWindowDimensions();
   const { source, isLocalAvailable } = useDataSource();
-  const { phase: localPhase, status: localStatus } = useLocalTelemetry(source);
+  const { phase: localPhase } = useLocalTelemetry(source);
   const { data: queueCount } = useSupabaseQuery(getApexQueueCount, 0);
   const { data: unreadReports } = useSupabaseQuery(getUnreadReports, []);
   const [timerRunning, setTimerRunning] = useState(false);
   const [timerSeconds, setTimerSeconds] = useState(0);
   const [dwSessionId, setDwSessionId] = useState<string | null>(null);
   const [dwAccumulatedHours, setDwAccumulatedHours] = useState(0);
+  const [clock, setClock] = useState(limaHHMM());
 
   const { data: metrics, loading: metricsLoading, refetch: refetchMetrics } = useSupabaseQuery<TodayMetrics>(
     getTodayMetrics,
@@ -192,7 +90,10 @@ export default function DesktopHomeContent({ onNavigate }: { onNavigate?: (scree
   }, []);
 
   useEffect(() => {
-    const interval = setInterval(() => setCountdown(getCountdown(new Date('2030-01-01'))), 60000);
+    const interval = setInterval(() => {
+      setCountdown(getCountdown(new Date('2030-01-01')));
+      setClock(limaHHMM());
+    }, 30000);
     return () => clearInterval(interval);
   }, []);
 
@@ -229,8 +130,7 @@ export default function DesktopHomeContent({ onNavigate }: { onNavigate?: (scree
     }
   };
 
-  const hour = new Date().getHours();
-  const greeting = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
+  const iso = todayISO();
   const liveDeepWorkHours = dwAccumulatedHours + (timerSeconds / 3600);
   const timerHours = Math.floor(timerSeconds / 3600);
   const timerMins = Math.floor((timerSeconds % 3600) / 60);
@@ -238,277 +138,195 @@ export default function DesktopHomeContent({ onNavigate }: { onNavigate?: (scree
   const timerPresetTotal = 5 * 60 * 60;
   const timerProgress = Math.min((timerSeconds / timerPresetTotal) * 100, 100);
   const accumProgress = Math.min((liveDeepWorkHours / 5) * 100, 100);
+  const cdDays = localPhase?.days_remaining ?? mirCountdown();
 
+  // Briefing de 1 línea (Superhuman Morning Briefing) — compuesto de datos ya presentes.
+  const briefing = componerBriefing({
+    encapsTema: 'ENCAPS · tema del cronograma',
+    mirBloque: mirLabelDe(iso),
+    unread: unreadReports?.length ?? 0,
+    apexQueue: queueCount,
+    streak,
+    deepWorkH: liveDeepWorkHours,
+  });
+
+  // Milestones con encuadre identidad → meta → siguiente acción (Notion Life OS).
   const milestones = [
-    { title: 'Top 50 MIR 2030', opacity: 1.0, color: Colors.coral },
-    { title: 'Fellowship Mayo 2035', opacity: 0.7, color: Colors.blue },
-    { title: 'Residency 2037–2041', opacity: 0.4, color: Colors.teal },
+    { title: 'Top 50 MIR 2030', color: Colors.gold, active: true, next: 'ENCAPS + eval MIR D-1 hoy' },
+    { title: 'Fellowship · Mayo 2035', color: Colors.blue, active: false, next: 'CV competitivo · publicaciones' },
+    { title: 'Residency · 2037–2041', color: Colors.teal, active: false, next: 'USMLE Step 1 en curso' },
   ];
 
-  const webBtnTransition = Platform.OS === 'web'
-    ? { transition: 'all 0.2s ease', cursor: 'pointer' as any }
-    : {};
+  // Flight deck 2-col collapsa a 1-col en anclos estrechos.
+  const stacked = width < 1200;
 
   return (
     <ScrollView
       style={{ flex: 1, backgroundColor: Colors.surface }}
       contentContainerStyle={desktopStyles.centerScrollContent}
+      stickyHeaderIndices={[0]}
     >
-      {/* Header */}
-      <View style={{ marginBottom: Spacing.lg, flexDirection: 'row', alignItems: 'flex-start' }}>
-        <View style={{ flex: 1 }}>
-          <Text style={desktopStyles.pageTitle}>
-            {greeting}, Joseph MD
-          </Text>
-          <Text style={[desktopStyles.bodyText, { color: Colors.onSurfaceVariant, marginTop: 4 }]}>
-            Dermatologist · Mayo Clinic · Rochester, MN
-          </Text>
+      {/* ── COCKPIT STATUS BAR (sticky · firma ORO) ── */}
+      <View style={{ backgroundColor: DesktopColors.contentBase, paddingTop: 4, paddingBottom: 2 }}>
+        <CockpitStatusBar
+          timeLabel={clock}
+          phase={faseActual(iso)}
+          countdownDays={cdDays}
+          online={isLocalAvailable}
+          streak={streak}
+          unread={unreadReports?.length ?? 0}
+        />
+      </View>
+
+      {/* ── Today at a glance — Morning Briefing (1 línea) ── */}
+      <View style={cs.briefing}>
+        <Text style={cs.briefingLabel}>TODAY AT A GLANCE</Text>
+        <Text style={cs.briefingTxt} numberOfLines={2}>{briefing}</Text>
+      </View>
+
+      {/* ── FLIGHT DECK (above-the-fold): Misión de HOY | Deep Work gauge ── */}
+      <View style={[cs.flightDeck, stacked && { flexDirection: 'column' }]}>
+        <View style={[cs.deckMission, stacked && { flexBasis: 'auto', width: '100%' }]}>
+          <TodayMission onGo={onNavigate} />
         </View>
-        {/* Connection indicator */}
-        <View style={{
-          flexDirection: 'row', alignItems: 'center',
-          backgroundColor: 'rgba(255,255,255,0.04)', borderRadius: 999,
-          paddingVertical: 6, paddingHorizontal: 12, marginTop: 4,
-        }}>
-          <View style={{
-            width: 8, height: 8, borderRadius: 4,
-            backgroundColor: isLocalAvailable ? Colors.teal : Colors.muted,
-            marginRight: 8,
-          }} />
-          <Text style={{ fontSize: 11, color: Colors.onSurfaceVariant, fontWeight: '600', letterSpacing: 0.3 }}>
-            {isLocalAvailable ? 'Online' : 'Offline'}
-          </Text>
-          {(unreadReports?.length ?? 0) > 0 && (
-            <View style={{ marginLeft: 10, backgroundColor: Colors.coral, borderRadius: 999, paddingVertical: 1, paddingHorizontal: 7 }}>
-              <Text style={{ fontSize: 10, fontWeight: '800', color: '#FFFFFF' }}>🔔 {unreadReports.length}</Text>
-            </View>
-          )}
+        <View style={[cs.deckGauges, stacked && { flexBasis: 'auto', width: '100%' }]}>
+          <FlightDeckGauges
+            timerRunning={timerRunning}
+            timerProgress={timerProgress}
+            timerHours={timerHours}
+            timerMins={timerMins}
+            timerSecs={timerSecs}
+            liveDeepWorkHours={liveDeepWorkHours}
+            accumProgress={accumProgress}
+            cards={metrics.cards}
+            dominioMIR={metrics.dominioMIR}
+            metricsLoading={metricsLoading}
+            onTimerToggle={handleTimerToggle}
+          />
         </View>
       </View>
 
-      {/* Phase Badge + Service Status Dots */}
-      <View style={{ flexDirection: 'row', gap: 12, marginBottom: Spacing.section }}>
-        <GlassCard style={{ flex: 1, flexDirection: 'row', alignItems: 'center', marginBottom: 0, borderLeftWidth: 4, borderLeftColor: Colors.teal } as any}>
-          <View style={{ flex: 1 }}>
-            <Text style={{ fontSize: 10, fontWeight: '700', color: Colors.smallLabel, letterSpacing: 1.2, marginBottom: 4 }}>
-              CURRENT PHASE
-            </Text>
-            <Text style={{ fontSize: FontSize.titleMd, fontWeight: '700', color: Colors.onSurface }}>
-              {localPhase?.phase ?? 'Phase 0 · Research'}
-            </Text>
-          </View>
-          <View style={{ alignItems: 'flex-end' }}>
-            <Text style={{ fontSize: 24, fontWeight: '800', color: Colors.teal, letterSpacing: -0.5 }}>
-              {localPhase?.days_remaining ?? mirCountdown()}
-            </Text>
-            <Text style={{ fontSize: 9, fontWeight: '600', color: Colors.smallLabel, letterSpacing: 1 }}>
-              DAYS TO MIR 2030
-            </Text>
-          </View>
-        </GlassCard>
-        <GlassCard style={{ flex: 1, marginBottom: 0 } as any}>
-          <Text style={{ fontSize: 10, fontWeight: '700', color: Colors.smallLabel, letterSpacing: 1.2, marginBottom: 8 }}>
-            {isLocalAvailable ? 'SERVICES' : 'SERVICES · OFFLINE MODE'}
-          </Text>
-          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
-            {DEFAULT_SERVICES.map((svc) => {
-              const raw = localStatus?.services?.[svc];
-              const isUp = raw === true || raw === 'up';
-              const color = !isLocalAvailable ? Colors.muted : (isUp ? Colors.teal : Colors.coral);
-              return (
-                <View key={svc} style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: color, marginRight: 4 }} />
-                  <Text style={{ fontSize: 10, color: Colors.onSurfaceVariant, fontWeight: '500', textTransform: 'capitalize' }}>
-                    {svc}
-                  </Text>
-                </View>
-              );
-            })}
-          </View>
-        </GlassCard>
-      </View>
-
-      {/* Misión de HOY — timeline real de estudio (Calendar) */}
-      <TodayMission onGo={onNavigate} />
-
-      {/* Biblioteca del fundador — 28 libros, % leído real */}
+      {/* ── MENTOR DECK — Biblioteca del Fundador (cita-hero + canon) ── */}
       <BibliotecaHome onGo={onNavigate} />
 
-      {/* APEX Queue Badge */}
+      {/* ── APEX Queue alert (solo alerta real) ── */}
       {queueCount > 0 && (
-        <GlassCard style={{ flexDirection: 'row', alignItems: 'center', marginBottom: Spacing.section, borderLeftWidth: 4, borderLeftColor: Colors.amber } as any}>
-          <Text style={{ fontSize: 20, marginRight: Spacing.md }}>⚡</Text>
+        <GlassCard style={{ flexDirection: 'row', alignItems: 'center', marginBottom: Spacing.section, borderLeftWidth: 3, borderLeftColor: Colors.coral } as any}>
+          <Text style={{ fontSize: 18, marginRight: Spacing.md }}>⚡</Text>
           <View style={{ flex: 1 }}>
-            <Text style={{ fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface }}>
-              APEX Queue
-            </Text>
-            <Text style={{ fontSize: 11, color: Colors.onSurfaceVariant, marginTop: 2 }}>
-              {queueCount} pending to process
-            </Text>
+            <Text style={{ fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface }}>APEX Queue</Text>
+            <Text style={{ fontSize: 11, color: Colors.onSurfaceVariant, marginTop: 2 }}>{queueCount} pending to process</Text>
           </View>
-          <View style={{ backgroundColor: Colors.amber + '20', borderRadius: 999, paddingVertical: 4, paddingHorizontal: 12 }}>
-            <Text style={{ fontSize: 12, fontWeight: '800', color: Colors.amber }}>{queueCount}</Text>
+          <View style={{ backgroundColor: Colors.coral + '20', borderRadius: 999, paddingVertical: 4, paddingHorizontal: 12 }}>
+            <Text style={{ fontSize: 12, fontWeight: '800', color: Colors.coral, fontVariant: ['tabular-nums'] } as any}>{queueCount}</Text>
           </View>
         </GlassCard>
       )}
 
-      {/* Career Milestones */}
-      <Text style={desktopStyles.sectionHeader}>CAREER MILESTONES</Text>
-      <View style={desktopStyles.milestonesRow}>
-        {milestones.map((m, i) => (
-          <GlassCard key={i} style={{ flex: 1, opacity: m.opacity, flexDirection: 'row', alignItems: 'center', borderLeftWidth: 4, borderLeftColor: m.color, marginBottom: 0 } as any}>
-            <Text style={{ fontSize: FontSize.bodyMd, color: Colors.onSurface, fontWeight: '500', flex: 1 }}>{m.title}</Text>
-            {i === 0 && (
-              <View style={{ backgroundColor: m.color + '20', borderRadius: 999, paddingVertical: 2, paddingHorizontal: 8 }}>
-                <Text style={{ fontSize: FontSize.labelSm, fontWeight: '700', color: m.color, letterSpacing: 0.5 }}>ACTIVE</Text>
-              </View>
-            )}
-          </GlassCard>
-        ))}
-      </View>
-
-      {/* Countdown */}
-      <GlassCard style={{ alignItems: 'center', marginBottom: Spacing.section } as any}>
-        <Text style={{
-          fontSize: 13, fontWeight: '600', color: Colors.muted,
-          letterSpacing: 1.2, textTransform: 'uppercase', marginBottom: Spacing.lg,
-        }}>
-          DAYS TO MIR 2030
-        </Text>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <View style={{ alignItems: 'center', minWidth: 140 }}>
-            <AnimatedCounter
-              value={countdown.days}
-              style={{ fontSize: 72, fontWeight: '700', color: Colors.teal, letterSpacing: -2 }}
-            />
-            <Text style={{ fontSize: 10, fontWeight: '600', color: Colors.smallLabel, letterSpacing: 1, marginTop: 2 }}>DAYS</Text>
+      {/* ── BANDA SECUNDARIA: Milestones (identidad→acción) + Countdown compacto ── */}
+      <View style={cs.secBand}>
+        {/* Career Milestones */}
+        <View style={cs.secCol}>
+          <View style={cs.secHead}>
+            <View style={cs.secRail} />
+            <Text style={cs.secTitle}>CAREER MILESTONES</Text>
           </View>
-          {[
-            { num: countdown.hours, unit: 'HRS' },
-            { num: countdown.mins, unit: 'MIN' },
-          ].map((block, i) => (
-            <React.Fragment key={i}>
-              <Text style={{ fontSize: FontSize.headlineSm, fontWeight: '300', color: Colors.muted, marginHorizontal: Spacing.sm }}>:</Text>
-              <View style={{ alignItems: 'center', minWidth: 72 }}>
-                <AnimatedCounter
-                  value={block.num}
-                  style={{ fontSize: 40, fontWeight: '800', color: Colors.blue, letterSpacing: -1 }}
-                />
-                <Text style={{ fontSize: 10, fontWeight: '600', color: Colors.smallLabel, letterSpacing: 1, marginTop: 2 }}>{block.unit}</Text>
+          {milestones.map((m, i) => (
+            <View key={i} style={[cs.mCard, { borderLeftColor: m.color }, !m.active && { opacity: 0.62 }]}>
+              <View style={{ flex: 1 }}>
+                <Text style={cs.mTitle}>{m.title}</Text>
+                <Text style={cs.mNext}>→ {m.next}</Text>
               </View>
-            </React.Fragment>
+              {m.active && (
+                <View style={[cs.mChip, { backgroundColor: m.color + '20', borderColor: m.color + '44' }]}>
+                  <Text style={[cs.mChipTxt, { color: m.color }]}>ACTIVE</Text>
+                </View>
+              )}
+            </View>
           ))}
         </View>
-      </GlassCard>
 
-      {/* Metrics Row — single row, wraps on narrow widths */}
-      <Text style={desktopStyles.sectionHeader}>LIVE METRICS</Text>
-      <View style={desktopStyles.metricsRow}>
-        <View style={desktopStyles.metricsRowItem}>
-          <MetricCard label="Cards today" value={metrics.cards} color={MetricColors.tarjetas} loading={metricsLoading} />
-        </View>
-        <View style={desktopStyles.metricsRowItem}>
-          <MetricCard label="Deep Work" value={Math.round(liveDeepWorkHours * 10) / 10} unit="hrs" color={MetricColors.deepWork} loading={metricsLoading} />
-        </View>
-        <View style={desktopStyles.metricsRowItem}>
-          <MetricCard label="MIR Mastery" value={metrics.dominioMIR} unit="%" color={MetricColors.dominio} loading={metricsLoading} />
-        </View>
-        <View style={desktopStyles.metricsRowItem}>
-          {/* Open counter, no "/10" limit */}
-          <MetricCard label="Publications" value={0} color={MetricColors.publicaciones} />
+        {/* Countdown compacto */}
+        <View style={cs.secCol}>
+          <View style={cs.secHead}>
+            <View style={cs.secRail} />
+            <Text style={cs.secTitle}>COUNTDOWN · MIR 2030</Text>
+          </View>
+          <View style={cs.cdCard}>
+            <View style={{ alignItems: 'center', minWidth: 110 }}>
+              <AnimatedCounter
+                value={countdown.days}
+                style={{ fontSize: 56, fontWeight: '200', color: Colors.gold, letterSpacing: -1, fontFamily: MONO, fontVariant: ['tabular-nums'] } as any}
+              />
+              <Text style={cs.cdUnit}>DAYS</Text>
+            </View>
+            {[
+              { num: countdown.hours, unit: 'HRS' },
+              { num: countdown.mins, unit: 'MIN' },
+            ].map((block, i) => (
+              <React.Fragment key={i}>
+                <Text style={cs.cdSep}>:</Text>
+                <View style={{ alignItems: 'center', minWidth: 60 }}>
+                  <AnimatedCounter
+                    value={block.num}
+                    style={{ fontSize: 30, fontWeight: '300', color: Colors.onSurfaceVariant, letterSpacing: -0.5, fontFamily: MONO, fontVariant: ['tabular-nums'] } as any}
+                  />
+                  <Text style={cs.cdUnit}>{block.unit}</Text>
+                </View>
+              </React.Fragment>
+            ))}
+          </View>
         </View>
       </View>
-
-      {/* Deep Work Timer — PREMIUM with Circular Progress Ring */}
-      <GlassCard style={{ marginBottom: Spacing.section }}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: Spacing.lg }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            {timerRunning && (
-              <View style={{
-                width: 8, height: 8, borderRadius: 4, backgroundColor: Colors.amber,
-                marginRight: 8,
-                // Pulsing via opacity animation would need Animated — using static glow for now
-              }} />
-            )}
-            <Text style={desktopStyles.cardTitle}>Deep Work Timer</Text>
-          </View>
-          <Text style={{ fontSize: FontSize.labelSm, color: Colors.amber, fontWeight: '600', letterSpacing: 0.5 }}>07:45 – 12:45</Text>
-        </View>
-
-        {/* Circular Progress Ring + Timer */}
-        <View style={{ alignItems: 'center', marginBottom: Spacing.xl }}>
-          <CircularProgress
-            progress={timerProgress}
-            size={180}
-            strokeWidth={10}
-            color={Colors.amber}
-            trackColor="rgba(255,255,255,0.06)"
-          >
-            <Text style={{
-              fontSize: 44,
-              fontWeight: '200',
-              color: timerRunning ? Colors.amber : Colors.onSurface,
-              letterSpacing: 2,
-              fontFamily: Platform.OS === 'web' ? "'JetBrains Mono', 'Fira Code', 'SF Mono', monospace" : undefined,
-              fontVariant: ['tabular-nums'],
-            } as any}>
-              {String(timerHours).padStart(2, '0')}:{String(timerMins).padStart(2, '0')}
-            </Text>
-            <Text style={{ fontSize: 18, fontWeight: '300', color: Colors.muted, letterSpacing: 2, fontVariant: ['tabular-nums'] }}>
-              {String(timerSecs).padStart(2, '0')}
-            </Text>
-          </CircularProgress>
-        </View>
-
-        {/* Accumulated today progress bar toward 5h */}
-        <View style={{ marginBottom: Spacing.sm }}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 }}>
-            <Text style={desktopStyles.smallLabel}>Accumulated today</Text>
-            <Text style={desktopStyles.smallLabel}>{Math.round(liveDeepWorkHours * 10) / 10}h / 5h</Text>
-          </View>
-          <View style={{ height: 6, backgroundColor: 'rgba(255,255,255,0.06)', borderRadius: 3, overflow: 'hidden' }}>
-            <View style={{
-              height: 6,
-              width: `${accumProgress}%`,
-              backgroundColor: Colors.amber,
-              borderRadius: 3,
-              ...(Platform.OS === 'web' ? { transition: 'width 0.3s ease' } : {}),
-            } as any} />
-          </View>
-        </View>
-
-        {/* START/STOP Button — Gradient teal with glow */}
-        <TouchableOpacity
-          style={[{
-            backgroundColor: timerRunning ? Colors.coral : Colors.teal,
-            borderRadius: 12,
-            paddingVertical: 14,
-            alignItems: 'center',
-            marginTop: Spacing.md,
-            ...(Platform.OS === 'web' && !timerRunning ? {
-              boxShadow: '0 0 20px rgba(15, 212, 160, 0.3)',
-            } : {}),
-          }, webBtnTransition as any]}
-          onPress={handleTimerToggle}
-        >
-          <Text style={{ color: '#0B1628', fontSize: FontSize.labelLg, fontWeight: '800', letterSpacing: 1.5 }}>
-            {timerRunning ? '■  STOP' : '▶  START DEEP WORK'}
-          </Text>
-        </TouchableOpacity>
-      </GlassCard>
-
-      {/* Streak */}
-      <GlassCard style={{ flexDirection: 'row', alignItems: 'center' } as any}>
-        <Text style={{ fontSize: 32, marginRight: Spacing.md }}>🔥</Text>
-        <View>
-          <AnimatedCounter
-            value={streak}
-            style={{ fontSize: FontSize.headlineSm, fontWeight: '800', color: Colors.amber }}
-            suffix=" days"
-          />
-          <Text style={[desktopStyles.smallLabel, { letterSpacing: 1 }]}>CURRENT STREAK</Text>
-        </View>
-      </GlassCard>
     </ScrollView>
   );
 }
+
+const cs = {
+  briefing: {
+    flexDirection: 'row' as const, alignItems: 'baseline' as const, gap: 10, flexWrap: 'wrap' as const,
+    paddingVertical: 8, paddingHorizontal: 4, marginBottom: Spacing.section,
+  },
+  briefingLabel: {
+    fontSize: 9, fontWeight: '800' as const, color: Colors.gold, letterSpacing: 1.6,
+    fontFamily: MONO,
+  },
+  briefingTxt: {
+    flex: 1, minWidth: 240, fontSize: 14, fontWeight: '400' as const,
+    color: Colors.onSurface, letterSpacing: 0.2, lineHeight: 20,
+  },
+
+  flightDeck: {
+    flexDirection: 'row' as const, gap: 16, marginBottom: Spacing.section, alignItems: 'stretch' as const,
+  },
+  deckMission: { flexGrow: 1, flexShrink: 1, flexBasis: 0, minWidth: 0 },
+  deckGauges: { flexGrow: 0, flexShrink: 0, flexBasis: 360, minWidth: 320 },
+
+  secBand: {
+    flexDirection: 'row' as const, gap: 16, flexWrap: 'wrap' as const, marginBottom: Spacing.section,
+  },
+  secCol: { flexGrow: 1, flexBasis: 320, minWidth: 280 },
+  secHead: { flexDirection: 'row' as const, alignItems: 'center' as const, gap: 8, marginBottom: Spacing.sm },
+  secRail: { width: 3, height: 12, borderRadius: 2, backgroundColor: Colors.gold },
+  secTitle: { fontSize: 10, fontWeight: '800' as const, color: Colors.smallLabel, letterSpacing: 1.2, fontFamily: MONO },
+
+  mCard: {
+    flexDirection: 'row' as const, alignItems: 'center' as const,
+    backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg,
+    borderWidth: 1, borderColor: Hairline.soft, borderLeftWidth: 3,
+    paddingVertical: 11, paddingHorizontal: 13, marginBottom: 6,
+  },
+  mTitle: { fontSize: FontSize.bodyMd, color: Colors.onSurface, fontWeight: '600' as const },
+  mNext: { fontSize: 10, color: Colors.muted, marginTop: 2, letterSpacing: 0.2 },
+  mChip: { borderRadius: BorderRadius.full, borderWidth: 1, paddingVertical: 2, paddingHorizontal: 9 },
+  mChipTxt: { fontSize: FontSize.labelSm, fontWeight: '800' as const, letterSpacing: 0.6 },
+
+  cdCard: {
+    flexDirection: 'row' as const, alignItems: 'center' as const, justifyContent: 'center' as const,
+    backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.xl,
+    borderWidth: 1, borderColor: Hairline.soft, borderTopWidth: 2, borderTopColor: Hairline.accentSoft,
+    paddingVertical: Spacing.lg, paddingHorizontal: Spacing.md,
+  },
+  cdSep: { fontSize: 26, fontWeight: '200' as const, color: Colors.outlineVariant, marginHorizontal: Spacing.sm },
+  cdUnit: { fontSize: 9, fontWeight: '700' as const, color: Colors.smallLabel, letterSpacing: 1.4, marginTop: 2, fontFamily: MONO },
+};

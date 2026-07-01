@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Linking, Animated } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Linking, Animated, Platform } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
 import { MIR_DIAS, mirDiaDe, capUrl } from '../../lib/mirDailyPlan';
@@ -7,32 +7,48 @@ import { DIAS, diaDe, QBQ } from '../../lib/usmleStep1Daily';
 import { mirObsUrl, usmleObsUrl, encapsObsUrl, OBS_MAPA_URL } from '../../lib/obsidianMap';
 
 /**
- * TodayMission — "🎯 Misión de HOY" en el Home. Línea de tiempo REAL del Google
+ * TodayMission — "MISIÓN DE HOY" del cockpit (Home). Línea de tiempo REAL del Google
  * Calendar (ENCAPS 09:00 deep prime · MIR 15:15 · USMLE 16:15 · ENCAPS 17:15-18:45)
  * con el tema del día de cada plan (mirDailyPlan / usmleStep1Daily) y accesos
  * directos: ProMIR ↗ · Qbankly (◆ Edge) · ◆ Obsidian (nota madre donde caen los APEX).
  * El bloque en curso se resalta con "AHORA". Fase = detect_phase del orquestador.
+ *
+ * Colores por-segmento en JOYA APAGADA (mapeo cognitivo NASA), tokens v4:
+ * ENCAPS→teal · MIR→gold(amber) · USMLE→jade(green) · Obsidian→amethyst(purple) · Edge→sapphire(blue)
  */
-const AMBER = '#F5A623';
-const GREEN = '#3FB984';
-const TEAL = '#2EE6A8';
-const EDGE = '#3DA5E0';
-const OBS = '#A78BFA';
+const AMBER = Colors.amber;   // MIR — champagne (gold)
+const GREEN = Colors.green;   // USMLE — jade
+const TEAL = Colors.teal;     // ENCAPS — muted teal
+const EDGE = Colors.blue;     // Edge/Qbankly — sapphire
+const OBS = Colors.purple;    // Obsidian — amethyst
+
+const MONO = Platform.OS === 'web' ? "'JetBrains Mono', 'SF Mono', monospace" : undefined;
 
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
-function todayISO(): string {
+export function todayISO(): string {
   try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; }
   catch { return '2026-06-10'; }
 }
-/** Fase del orquestador (D:\agente_estudio\CLAUDE.md · detect_phase) */
-function faseActual(iso: string): string {
+/** Fase del orquestador (D:\agente_estudio\CLAUDE.md · detect_phase). Exportada para la Cockpit Status Bar. */
+export function faseActual(iso: string): string {
   if (iso < '2026-06-01') return 'FASE 4';
-  if (iso < '2026-08-10') return 'FASE 5 · ENCAPS dominante';
+  if (iso < '2026-08-10') return 'FASE 5 · ENCAPS';
   if (iso < '2026-10-01') return 'FASE 6 · post-ENCAPS';
-  return 'FASE 7 · USMLE dominante';
+  return 'FASE 7 · USMLE';
 }
 function nowMin(): number { try { const d = new Date(); return d.getHours() * 60 + d.getMinutes(); } catch { return 0; } }
 const hm = (s: string) => { const [h, m] = s.split(':').map(Number); return h * 60 + m; };
+
+/** Etiqueta corta MIR del día (para el briefing/status bar). null si fuera de rango. */
+export function mirLabelDe(iso: string): string | null {
+  const mir = mirDiaDe(iso);
+  return mir ? `MIR D${mir.d} · ${mir.asignatura}` : null;
+}
+/** Etiqueta corta USMLE del día (para el briefing/status bar). null si fuera de rango. */
+export function usmleLabelDe(iso: string): string | null {
+  const us = diaDe(iso);
+  return us ? `USMLE D${us.d} · ${us.system}` : null;
+}
 
 interface Accion { lbl: string; color: string; url: string; fill?: boolean }
 interface Bloque { flag: string; nombre: string; ini: string; fin: string; color: string; tema: string; sub: string; acciones: Accion[] }
@@ -96,7 +112,8 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
   return (
     <View style={st.wrap}>
       <View style={st.head}>
-        <Text style={st.title}>🎯 MISIÓN DE HOY</Text>
+        <View style={st.titleRail} />
+        <Text style={st.title}>MISIÓN DE HOY</Text>
         <View style={st.faseChip}><Text style={st.faseTxt}>{faseActual(iso)}</Text></View>
         <Text style={st.fecha}>{iso}</Text>
       </View>
@@ -105,7 +122,7 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
         const pasado = ahora >= hm(b.fin);
         return (
           <TouchableOpacity key={i} activeOpacity={onGo ? 0.8 : 1} onPress={() => onGo?.('Estudio')}
-            style={[st.bloque, { borderLeftColor: b.color }, enCurso && { backgroundColor: b.color + '14', borderColor: b.color + '66' }, pasado && { opacity: 0.55 }]}>
+            style={[st.bloque, { borderLeftColor: b.color }, enCurso && { backgroundColor: b.color + '14', borderColor: b.color + '66' }, pasado && { opacity: 0.5 }]}>
             <View style={st.horaCol}>
               <Text style={[st.hora, { color: b.color }]}>{b.ini}</Text>
               <Text style={st.horaFin}>{b.fin}</Text>
@@ -136,10 +153,11 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
 const st = StyleSheet.create({
   wrap: { marginBottom: Spacing.section ?? Spacing.xl },
   head: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 10, flexWrap: 'wrap' },
-  title: { fontSize: 12, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 1.2 },
+  titleRail: { width: 3, height: 13, borderRadius: 2, backgroundColor: Colors.gold },
+  title: { fontSize: 12, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 1.4, fontFamily: MONO },
   faseChip: { backgroundColor: TEAL + '1A', borderWidth: 1, borderColor: TEAL + '55', borderRadius: BorderRadius.full, paddingVertical: 2, paddingHorizontal: 10 },
-  faseTxt: { fontSize: 10, fontWeight: '800', color: TEAL, letterSpacing: 0.4 },
-  fecha: { fontSize: 11, color: Colors.muted, marginLeft: 'auto' },
+  faseTxt: { fontSize: 10, fontWeight: '800', color: TEAL, letterSpacing: 0.4, fontFamily: MONO },
+  fecha: { fontSize: 11, color: Colors.muted, marginLeft: 'auto', fontVariant: ['tabular-nums'], fontFamily: MONO },
 
   bloque: {
     flexDirection: 'row', alignItems: 'center', gap: 12,
@@ -148,8 +166,8 @@ const st = StyleSheet.create({
     paddingVertical: 10, paddingHorizontal: 12, marginBottom: 6,
   },
   horaCol: { alignItems: 'center', width: 52 },
-  hora: { fontSize: FontSize.labelMd, fontWeight: '800' },
-  horaFin: { fontSize: 9, color: Colors.muted, marginTop: 1 },
+  hora: { fontSize: FontSize.labelMd, fontWeight: '800', fontVariant: ['tabular-nums'], fontFamily: MONO },
+  horaFin: { fontSize: 9, color: Colors.muted, marginTop: 1, fontVariant: ['tabular-nums'], fontFamily: MONO },
   ahoraChip: { borderRadius: BorderRadius.sm, paddingVertical: 1, paddingHorizontal: 6, marginTop: 3 },
   ahoraTxt: { fontSize: 8, fontWeight: '900', color: '#081325', letterSpacing: 0.5 },
   checkTxt: { fontSize: 11, color: Colors.muted, marginTop: 2 },

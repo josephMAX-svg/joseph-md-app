@@ -9,12 +9,80 @@ export { PRIORIDAD_COLOR };
 export type { Prioridad };
 
 export const DERMA_META = {
-  titulo: 'Derma',
-  subtitulo: 'Referente clínico — el camino a Mayo Clinic',
-  accent: '#8B5CF6', // purple
+  titulo: 'Atlas Clínico',
+  subtitulo: 'Dermatología de élite — imagen primero, camino a Mayo',
+  accent: '#9A7BC8', // amethyst (jewel-tone segment accent, ver tokens.Colors.purple)
   tesis: 'Dominar primero el "alfabeto" (lesiones + semiología), luego el 80/20 de la consulta, luego lo que no puedes errar (oncología + dermatoscopia), y sembrar dermatopatología y cirugía. La correlación clínica–dermatoscópica–histológica del mismo tema es lo que distingue al élite.',
   estrategiaMayo: 'Dermatoscopia y derm-surgery donde Perú tiene casuística (leishmaniasis, piel de color) = tu ángulo de research diferenciado para Mayo.',
 };
+
+/**
+ * DermaAtlas — sistema de color del ATLAS (metáfora lupa/dermatoscopio).
+ * Paleta joya apagada coherente con tokens.ts (Midnight Sapphire & Champagne Gold).
+ * AMATISTA = firma del segmento; ORO = "élite / no-errar"; escala mineral para severidad.
+ * NADA de neón: todo hex viejo fosforescente re-mapeado a su joya equivalente.
+ */
+export const DermaAtlas = {
+  amethyst: '#9A7BC8',     // firma del atlas (dominio/acentos)
+  amethystDeep: '#6E5AA0', // amatista profunda (gradiente/borde fuerte)
+  gold: '#C8A96A',         // élite / no-errar (crítico, melanoma, oclusión, gates)
+  champagne: '#D8BE86',
+  // severidad clínica en escala MINERAL (no neón)
+  crit: '#C56A5A',         // granate/terracota apagado (CRÍTICO)
+  alta: '#B8934E',         // brass/ámbar tostado (ALTA)
+  media: '#5FA88C',        // jade (MEDIA)
+  // acentos funcionales del atlas
+  teal: '#6BB8B0',         // dermatoscopia (reemplaza #22D3EE)
+  periwinkle: '#7C83D6',   // histología / anclajes (reemplaza #7BB1FF)
+  jade: '#5FA88C',
+  edge: '#5B8FB0',         // botón ◆ Edge (Qbankly) en clave zafiro apagada
+  promir: '#C8A96A',       // 2º pase ES (oro tostado, antes #F5A623)
+  ink: '#0A0F1C',          // marco neutro para láminas (no falsear el diagnóstico)
+  plateFrame: '#141C2E',   // fondo de la lámina clínica
+} as const;
+
+/**
+ * Rampa Fitzpatrick I–VI (SkinToneToggle) — FUNCIONAL, no decorativa.
+ * Tonos reales de piel para elevar "skin of color" de nota a eje del atlas.
+ */
+export interface SkinTone { id: 'I' | 'II' | 'III' | 'IV' | 'V' | 'VI'; hex: string; label: string }
+export const SKIN_TONES: SkinTone[] = [
+  { id: 'I', hex: '#F3D9C7', label: 'I · muy clara' },
+  { id: 'II', hex: '#E7BE9E', label: 'II · clara' },
+  { id: 'III', hex: '#CD9F7B', label: 'III · media' },
+  { id: 'IV', hex: '#A9744E', label: 'IV · morena' },
+  { id: 'V', hex: '#7A4B32', label: 'V · oscura' },
+  { id: 'VI', hex: '#4A2C1E', label: 'VI · muy oscura' },
+];
+
+/**
+ * Taxonomía de morfología / sitio para la MorphologyFilterBar (estilo DermNet).
+ * Índice para explorar el temario como atlas, no como lista.
+ */
+export const DERMA_MORFOLOGIAS = [
+  'Mácula', 'Pápula', 'Placa', 'Nódulo', 'Vesícula', 'Ampolla',
+  'Pústula', 'Habón', 'Tumor', 'Erosión/Úlcera', 'Escama', 'Costra',
+] as const;
+export const DERMA_SITIOS = [
+  'Cuero cabelludo', 'Cara', 'Tronco', 'Pliegues', 'Manos', 'Genital', 'Uñas', 'Pies', 'Difuso',
+] as const;
+export const DERMA_CATEGORIAS = [
+  'Inflamatoria', 'Infecciosa', 'Neoplásica', 'Ampollosa', 'Genética', 'Vascular', 'Estética',
+] as const;
+
+/**
+ * Estructuras dermatoscópicas normalizadas (IDS) — DermoscopyKey.
+ * Chips clicables hacia Dermoscopedia (firma de subespecialidad).
+ */
+export interface DermoStruct { k: string; nota: string; url: string }
+export const DERMOSCOPY_STRUCTS: DermoStruct[] = [
+  { k: 'Retículo pigmentado', nota: 'red/network — melanocítica benigna vs atipia', url: 'https://dermoscopedia.org/Pigment_network' },
+  { k: 'Glóbulos / puntos', nota: 'nidos de melanocitos — periferia = crecimiento', url: 'https://dermoscopedia.org/Globules' },
+  { k: 'Líneas radiales / seudópodos', nota: 'proyección radial — melanoma / Spitz', url: 'https://dermoscopedia.org/Streaks' },
+  { k: 'Velo azul-blanco', nota: 'blue-white veil — regresión / melanoma', url: 'https://dermoscopedia.org/Blue-white_veil' },
+  { k: 'Chaos & Clues', nota: 'asimetría de patrón + pistas → biopsia', url: 'https://dermoscopedia.org/Chaos_and_clues' },
+  { k: 'Vasos (patrón)', nota: 'arboriform=CBC · glomerular=Bowen · en corona', url: 'https://dermoscopedia.org/Vascular_structures' },
+];
 
 export interface SubtemaDerma { code: string; nombre: string; prioridad: Prioridad }
 export interface BloqueDerma {
@@ -184,4 +252,49 @@ export const DERMA_NOTAS = [
   'Lo inyectable (toxina/rellenos/láser) se aprende SUPERVISADO. Gratis y confiable hoy: anatomía facial + papers de complicaciones vasculares. No inventes seguridad.',
   '🔒 De pago/login: AccessMedicine/Fitzpatrick/Bolognia/Robinson (verifica acceso institucional); IMCAS, ASDS Learn (estética/cirugía). VisualDx suele estar gratis vía biblioteca médica.',
   'Gratis y verificado fuerte: DermNet, AAD Basic Curriculum, Derm In-Review, Krazy Kodachromes, Gardner Dermpath, PathElective, PathPresenter.',
+];
+
+/**
+ * DERMA_GAP_MODULOS — módulos de ENRIQUECIMIENTO de temario de dermatólogo de élite
+ * (cierran los huecos board/Mayo detectados: contacto/patch, fototerapia, granulomatosas,
+ * embarazo/inmunodeprimido, mucosas oral/genital, ISSVA pediátrico, terapéutica 2024-25,
+ * cosmecéuticos con evidencia). SON CONTENIDO NUEVO, no re-programan el plan día-a-día:
+ * viven en la vista "Atlas → temario ampliado" sin tocar fechas, keys ni DERMA_DAILY_META.
+ * Fuentes REALES verificadas (Bolognia 5e, AAD, StatPearls, ISSVA, Dermoscopedia).
+ */
+export interface DermaGapModulo {
+  id: string; titulo: string; bloque: string; morfologia?: string; sitio?: string;
+  porQue: string; fuente: string; url: string; ddx?: string[];
+}
+export const DERMA_GAP_MODULOS: DermaGapModulo[] = [
+  { id: 'G+1', titulo: 'Dermatitis de contacto + patch testing', bloque: 'H · Medical amplio', morfologia: 'Placa', sitio: 'Manos',
+    porQue: 'Dominio board y de consulta de alto rinde; base de la derma ocupacional (alérgica vs irritativa, series estándar T.R.U.E./NACDG, lectura del parche).',
+    fuente: 'AAD Basic Curriculum + Bolognia §Eczema/Contact + American Contact Dermatitis Society', url: 'https://www.aad.org/education/basic-derm-curriculum',
+    ddx: ['DA', 'Dermatitis irritativa', 'Tiña', 'Psoriasis palmar'] },
+  { id: 'G+2', titulo: 'Fototerapia: nbUVB / PUVA / excimer', bloque: 'G · Farmacología', porQue: 'CORE de residencia (dosimetría, indicaciones psoriasis/vitíligo/MF, adversos) hoy ausente.',
+    fuente: "Bolognia cap. Phototherapy + Fitzpatrick's Therapeutics (bookid 3332)", url: 'https://www.ncbi.nlm.nih.gov/books/NBK430685/' },
+  { id: 'G+3', titulo: 'Granulomatosas y por depósito', bloque: 'H · Medical amplio', morfologia: 'Pápula', sitio: 'Difuso',
+    porQue: 'Bolognia §8 clásica de boards (sarcoidosis, granuloma anular, necrobiosis lipoídica, mucinosis, amiloidosis, xantomas).',
+    fuente: 'Bolognia Section 8 (Metabolic & Systemic) + StatPearls + Color Atlas 9e', url: 'https://www.ncbi.nlm.nih.gov/books/NBK430685/',
+    ddx: ['Granuloma anular', 'Sarcoidosis', 'Necrobiosis lipoídica', 'Xantogranuloma'] },
+  { id: 'G+4', titulo: 'Dermatosis del embarazo + inmunodeprimido / VIH / trasplante', bloque: 'H · Medical amplio',
+    porQue: 'Escenarios de examen frecuentes subrepresentados (PEP/PUPPP, penfigoide gestacional, colestasis; oportunistas en inmunodeprimido).',
+    fuente: 'Bolognia + AAD + StatPearls (NBK)', url: 'https://www.ncbi.nlm.nih.gov/books/NBK430685/' },
+  { id: 'G+5', titulo: 'Enfermedad mucosa oral y genital', bloque: 'H · Medical amplio', sitio: 'Genital',
+    porQue: 'Aparece en boards y consulta; casi ausente (aftas, liquen oral/genital, leucoplasia, EM mucoso).',
+    fuente: 'Bolognia §Oral/Genital + DermNet', url: 'https://dermnetnz.org/topics/oral-mucosal-disorders',
+    ddx: ['Liquen plano oral', 'Leucoplasia', 'Candidiasis', 'Pénfigo mucoso'] },
+  { id: 'G+6', titulo: 'Anomalías vasculares pediátricas (ISSVA) + marcas de nacimiento', bloque: 'B · Genodermatosis/Pediátrica', morfologia: 'Mácula', sitio: 'Cara',
+    porQue: 'Clasificación ISSVA y PHACE son alto-rinde pediátrico no presentes (hemangioma infantil vs malformación).',
+    fuente: 'ISSVA Classification 2018 + Weinberg\'s Pediatric Dermatology (bookid 1913)', url: 'https://www.issva.org/classification',
+    ddx: ['Hemangioma infantil', 'Malformación capilar', 'Malformación venosa', 'PHACE'] },
+  { id: 'G+7', titulo: 'Dermatoscopia élite: algoritmos como unidad entrenable', bloque: 'D · Neoplasias + dermatoscopia',
+    porQue: 'El mayor diferenciador élite/Mayo, hoy disperso: pattern analysis, two-step, Chaos&Clues, TADA, 7-point, tricoscopia, onicoscopia con estructuras normalizadas.',
+    fuente: 'Dermoscopedia (IDS) + DermNet Dermoscopy CME (18 módulos) + TADA (PMC5424662)', url: 'https://dermoscopedia.org/' },
+  { id: 'G+8', titulo: 'Terapéutica 2024-2025 sistematizada (JAK · IL-13/17/23 · black-box)', bloque: 'G · Farmacología',
+    porQue: 'El arsenal actual (ruxolitinib, upadacitinib, deucravacitinib, lebrikizumab/tralokinumab, nemolizumab) hoy es un link suelto.',
+    fuente: 'Dermatology Times Year-in-Review + JAAD Clinical Guidelines AAD 2024-2025', url: 'https://www.dermatologytimes.com/view/dermatology-times-2025-year-in-review-drug-approvals' },
+  { id: 'G+9', titulo: 'Cosmecéuticos basados en evidencia (retinoides · vit C · niacinamida)', bloque: 'X · Estética estructural', sitio: 'Cara',
+    porQue: 'Cierra el átomo 68 con rigor de evidencia, no marketing (exosomas, barrera, fotoprotección).',
+    fuente: 'Cosmeceuticals and Cosmetic Ingredients (AccessDerma bookid 2812) + revisiones JAAD/JDD', url: 'https://dermatology.mhmedical.com/book.aspx?bookid=2812' },
 ];

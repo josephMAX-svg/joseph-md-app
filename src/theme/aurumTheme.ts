@@ -48,15 +48,15 @@ export const AurumColors = {
   border: 'rgba(255,255,255,0.10)',
   borderSoft: 'rgba(255,255,255,0.05)',
 
-  // Estado
-  success: '#10B981',       // verde — hecho / verificado
-  warn: '#F5A623',          // ámbar — atención / verifica
-  danger: '#F56342',        // coral — riesgo / incierto
+  // Estado (paleta Midnight Sapphire — joya apagada, nada fosforescente)
+  success: '#5FA88C',       // jade — hecho / verificado
+  warn: '#B8934E',          // brass — atención / verifica
+  danger: '#C56A5A',        // terracota — riesgo / incierto
 
   // Acentos por tipo de bloque del día
   coreAccent: '#C9A227',    // núcleo (A · ver) → oro
-  pracAccent: '#F56342',    // práctica (PRAC · drill) → coral (la "caja negra")
-  lecturaAccent: '#4A90E2', // lectura/audio (L) → azul (huecos de viaje)
+  pracAccent: '#C56A5A',    // práctica (PRAC · drill) → terracota (la "caja negra")
+  lecturaAccent: '#4F7DD6', // lectura/audio (L) → zafiro (huecos de viaje)
 
   // Morado Obsidian (compartido con el resto de planes — ◆)
   obsidian: '#A78BFA',

@@ -237,15 +237,16 @@ export default function DesktopEstudioContent() {
                 key={k}
                 style={[{
                   flex: 1, paddingVertical: Spacing.sm, alignItems: 'center', borderRadius: 9,
-                  backgroundColor: peView === k ? Colors.surfaceContainerHighest : 'transparent',
+                  backgroundColor: peView === k ? Colors.gold + '1A' : 'transparent',
+                  borderWidth: 1, borderColor: peView === k ? Colors.gold + '33' : 'transparent',
                   ...(Platform.OS === 'web' ? { cursor: 'pointer' as any } : {}),
                 }]}
                 onPress={() => setPeView(k)}
               >
                 <Text style={{
                   fontSize: FontSize.labelMd,
-                  fontWeight: peView === k ? '700' : '500',
-                  color: peView === k ? Colors.onSurface : Colors.muted,
+                  fontWeight: peView === k ? '800' : '500',
+                  color: peView === k ? Colors.gold : Colors.muted,
                 }}>
                   {l}
                 </Text>
@@ -259,7 +260,7 @@ export default function DesktopEstudioContent() {
             <View>
               <BankSectionHeader
                 title="ENCAPS — 5 bloques oficiales · 94 subtemas"
-                color={Colors.coral}
+                color={Colors.gold}
                 badge="MINSA"
               />
               {encapsBlocks.map((b) => (
@@ -284,9 +285,9 @@ function DesktopEncapsBlockCard({ block }: { block: EncapsBlock }) {
     blue: Colors.blue,
     green: Colors.green,
     gray: Colors.muted,
-    orange: Colors.amber,
+    orange: Colors.gold,
   };
-  const accent = colorMap[block.color] ?? Colors.coral;
+  const accent = colorMap[block.color] ?? Colors.gold;
   const noActivity = block.apex_count === 0;
   const fechaTxt = block.ultimo_apex_fecha
     ? `Último APEX: ${String(block.ultimo_apex_fecha).slice(0, 10)}`
@@ -348,7 +349,7 @@ function DesktopEncapsBlockCard({ block }: { block: EncapsBlock }) {
         </View>
 
         {noActivity ? (
-          <Text style={{ fontSize: FontSize.labelSm, color: Colors.coral, marginTop: 4, fontStyle: 'italic' }}>
+          <Text style={{ fontSize: FontSize.labelSm, color: Colors.brass, marginTop: 4, fontStyle: 'italic' }}>
             Sin actividad
           </Text>
         ) : (
@@ -383,7 +384,7 @@ function DesktopEncapsBlockCard({ block }: { block: EncapsBlock }) {
                 paddingVertical: 4,
               }}
             >
-              <Text style={{ fontSize: FontSize.labelSm, color: '#A78BFA', marginRight: 6 }}>◆</Text>
+              <Text style={{ fontSize: FontSize.labelSm, color: Colors.purple, marginRight: 6 }}>◆</Text>
               <Text
                 style={{
                   flex: 1,

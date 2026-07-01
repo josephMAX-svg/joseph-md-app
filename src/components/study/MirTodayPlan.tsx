@@ -17,10 +17,10 @@ import { mirAnkiDeck, ANKIWEB } from '../../lib/ankiLinks';
  * clicables → saltan al día. El badge de asignatura lleva al Temario con el progreso
  * real del plan por asignatura. Cada asignatura abre su temario completo en ProMIR.
  */
-const AMBER = '#F5A623';
-const BLUE = '#7BB1FF';
-const GREEN = '#4Fae6b';
-const OBS = '#A78BFA';
+const AMBER = '#F5A623';       // ámbar España (acento oficial de la consola MIR)
+const BLUE = Colors.blue;      // sapphire — migrado de #7BB1FF fosforescente
+const GREEN = Colors.green;    // jade — migrado de #4Fae6b
+const OBS = Colors.purple;     // amethyst — migrado de #A78BFA
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
 function todayISO(): string {
   try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; }
@@ -92,7 +92,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaMIR; onOpenT
       {mirObsUrl(dia.capId) && (
         <FadeUp delay={135}><ColaItem icon="◆" lbl="OBSIDIAN · nota madre del tema" val={`${dia.asignatura} → ${dia.tema}`} sub="Vault_Medicina MIR_Joseph · aquí caen los APEX de hoy (motor APEX)" color={OBS} url={mirObsUrl(dia.capId)!} /></FadeUp>
       )}
-      <FadeUp delay={142}><ColaItem icon="🃏" lbl="ANKI · deck de la asignatura (SRS diario)" val={mirAnkiDeck(dia.asignatura)} sub="abre AnkiWeb ↗ · en Anki escritorio busca este deck exacto" color="#5BA8C9" url={ANKIWEB} /></FadeUp>
+      <FadeUp delay={142}><ColaItem icon="🃏" lbl="ANKI · deck de la asignatura (SRS diario)" val={mirAnkiDeck(dia.asignatura)} sub="abre AnkiWeb ↗ · en Anki escritorio busca este deck exacto" color={Colors.teal} url={ANKIWEB} /></FadeUp>
       <FadeUp delay={150}>
         <View style={[st.cola, { borderLeftColor: AMBER }]}>
           <Text style={st.colaIcon}>🃏</Text>
@@ -331,7 +331,7 @@ const st = StyleSheet.create({
   doneBtnTxt: { fontSize: FontSize.labelMd, fontWeight: '800', letterSpacing: 0.2 },
 
   anchor: { ...cardBase, borderLeftWidth: 3, borderLeftColor: BLUE, padding: Spacing.md, marginBottom: Spacing.sm, ...WEB_LINK },
-  anchorLbl: { fontSize: FontSize.labelMd, fontWeight: '800', color: '#AFCBFF', letterSpacing: 0.2 },
+  anchorLbl: { fontSize: FontSize.labelMd, fontWeight: '800', color: BLUE, letterSpacing: 0.2 },
   anchorVal: { fontSize: FontSize.labelLg, fontWeight: '700', color: Colors.onSurface, marginTop: 4, letterSpacing: -0.2 },
   anchorSub: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 3, lineHeight: LineHeight.labelSm },
 

@@ -14,8 +14,10 @@ import {
  * QBanks por subject/subtema con conteo de preguntas, y Video Library (B&B + Sketchy).
  * Deep-links abren Qbankly. Complementa la biblioteca High-Yield de Palmerton.
  */
-const GREEN = '#3FB984';
-const BLUE = '#7BB1FF';
+const GREEN = Colors.green;   // jade (US console) — migrado de #3FB984
+const BLUE = Colors.blue;     // sapphire — migrado de #7BB1FF
+const SKETCH = Colors.gold;   // Sketchy = oro cálido (antes #E0A93F)
+const VIDEO = Colors.coral;   // vídeo (antes #E5484D neón)
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
 
 function LibraryCard({ lib, i }: { lib: QbLibrary; i: number }) {
@@ -100,14 +102,14 @@ function VideoCourseCard({ course, i }: { course: QbVideoCourse; i: number }) {
   const hasMin = course.chapters.some((c) => c.min);
   return (
     <FadeUp delay={i * 30}>
-      <View style={[st.card, { borderLeftWidth: 3, borderLeftColor: course.id === 3 ? '#E0A93F' : '#E5484D' }]}>
+      <View style={[st.card, { borderLeftWidth: 3, borderLeftColor: course.id === 3 ? SKETCH : VIDEO }]}>
         <TouchableOpacity activeOpacity={0.82} onPress={() => setOpen((o) => !o)} style={st.head}>
           <Text style={st.libBadge}>{course.id === 3 ? '🎨' : '🎬'}</Text>
           <View style={{ flex: 1 }}>
             <Text style={st.name} numberOfLines={1}>{course.name}</Text>
             <Text style={st.metaSub}>{total} vídeos{hasMin ? ` · ${hrs}h` : ''}</Text>
           </View>
-          <Text style={[st.caret, open && { color: '#E5484D' }]}>{open ? '▾' : '▸'}</Text>
+          <Text style={[st.caret, open && { color: VIDEO }]}>{open ? '▾' : '▸'}</Text>
         </TouchableOpacity>
         {open && (
           <View style={st.body}>
@@ -180,7 +182,7 @@ const st = StyleSheet.create({
   barN: { width: 38, fontSize: 10, fontWeight: '800', color: GREEN, textAlign: 'right' },
   chipWrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 5, marginTop: 4 },
   subChip: { backgroundColor: GREEN + '14', borderRadius: BorderRadius.sm, paddingVertical: 3, paddingHorizontal: 7, borderWidth: 1, borderColor: GREEN + '2A' },
-  subTxt: { fontSize: 10, color: '#AEE6CC' },
+  subTxt: { fontSize: 10, color: Colors.secondary },
   openBtn: { marginTop: 10, alignSelf: 'flex-start', backgroundColor: GREEN + '18', borderRadius: BorderRadius.md, borderWidth: 1, borderColor: GREEN + '44', paddingVertical: 7, paddingHorizontal: 13, ...WEB_LINK },
   openBtnTxt: { fontSize: FontSize.labelMd, fontWeight: '700', color: GREEN, letterSpacing: 0.2 },
 });

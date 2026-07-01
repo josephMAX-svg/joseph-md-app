@@ -65,6 +65,14 @@ export interface DiaDerma {
   qbankly: MatLink | null;    // práctica — SIEMPRE botón ◆ Edge
   promir: MatLink | null;     // 2º pase en español
   extra: MatLink | null;      // casos / vídeo / paper del día
+  // ── Capa ATLAS (todos OPCIONALES — no rompen ningún átomo existente) ──
+  morfologia?: string;        // lesión elemental dominante (chip de la lámina)
+  sitio?: string;             // sitio corporal → BodyMap
+  fototipo?: string;          // nota de piel de color / Fitzpatrick
+  ddx?: string[];             // diferencial (DifferentialTray, método Palmerton)
+  atlasUrl?: string;          // lámina clínica: deep-link legal (DermNet/AccessDerma), NO re-host
+  dermatoscopiaUrl?: string;  // panel dermatoscopia (Dermoscopedia)
+  histoUrl?: string;          // panel histología (dermpathatlas / Barnhill)
 }
 
 const B = {
@@ -76,13 +84,17 @@ const B = {
 export const DERMA_DIAS: DiaDerma[] = [
   // ── BLOQUE A · Fundamentos (🔴 el alfabeto primero) ──
   { d: 1, fecha: '2026-07-03', bloque: B.A, bKey: 'A', tier: 'CRIT', sub: 'Lesiones elementales 1ª/2ª + descripción semiológica (el alfabeto)', referente: null,
-    access: { t: 'Guidebook to Dermatologic Diagnosis', url: book(2960) }, qbankly: { t: 'QBanks (derma en uWorld S1)', url: QB_QBANKS, via: 'edge' }, promir: { t: 'Cap 1 §2 Lesiones elementales (subtema 6,78%)', url: pm(PM_CAP.c1) }, extra: null },
+    access: { t: 'Guidebook to Dermatologic Diagnosis', url: book(2960) }, qbankly: { t: 'QBanks (derma en uWorld S1)', url: QB_QBANKS, via: 'edge' }, promir: { t: 'Cap 1 §2 Lesiones elementales (subtema 6,78%)', url: pm(PM_CAP.c1) }, extra: null,
+    morfologia: 'Mácula → Tumor', sitio: 'Difuso', ddx: ['Mácula vs pápula', 'Placa vs nódulo', 'Vesícula vs pústula', 'Erosión vs úlcera'],
+    atlasUrl: 'https://dermnetnz.org/topics/describing-skin-lesions' },
   { d: 2, fecha: '2026-07-07', bloque: B.A, bKey: 'A', tier: 'CRIT', sub: 'Estructura de la piel: epidermis, queratinocitos, barrera', referente: null,
     access: { t: "Fitzpatrick's Dermatology 9e", url: book(2570) }, qbankly: null, promir: { t: 'Cap 1 §1.1 Epidermis', url: pm(PM_CAP.c1) }, extra: null },
   { d: 3, fecha: '2026-07-09', bloque: B.A, bKey: 'A', tier: 'CRIT', sub: 'BMZ + dermis + anejos (ancla de las bullosas)', referente: null,
     access: { t: "Fitzpatrick's Dermatology 9e", url: book(2570) }, qbankly: null, promir: { t: 'Cap 1 §1.2-1.3 Dermis/Hipodermis', url: pm(PM_CAP.c1) }, extra: null },
   { d: 4, fecha: '2026-07-13', bloque: B.A, bKey: 'A', tier: 'CRIT', sub: 'Melanocito, pigmentación, fototipos Fitzpatrick + piel de color', referente: null,
-    access: { t: "Taylor & Kelly's Skin of Color 3e", url: book(3609) }, qbankly: null, promir: { t: 'Cap 1 Conceptos generales', url: pm(PM_CAP.c1) }, extra: { t: 'Vídeos Essentials of Skin of Color (5)', url: mm(1661) } },
+    access: { t: "Taylor & Kelly's Skin of Color 3e", url: book(3609) }, qbankly: null, promir: { t: 'Cap 1 Conceptos generales', url: pm(PM_CAP.c1) }, extra: { t: 'Vídeos Essentials of Skin of Color (5)', url: mm(1661) },
+    morfologia: 'Mácula', sitio: 'Difuso', fototipo: 'Eje del atlas: I–VI · signos y descriptores cambian en fototipos IV–VI',
+    atlasUrl: 'https://dermnetnz.org/topics/skin-phototype' },
   { d: 5, fecha: '2026-07-15', bloque: B.A, bKey: 'A', tier: 'ALTA', sub: 'Inmunología cutánea: Th1/Th2/Th17 + hipersensibilidades', referente: null,
     access: { t: "Fitzpatrick's Dermatology 9e", url: book(2570) }, qbankly: { t: 'uWorld: Hypersensitivity reactions', url: qb(9), via: 'edge' }, promir: null, extra: null },
   { d: 6, fecha: '2026-07-17', bloque: B.A, bKey: 'A', tier: 'ALTA', sub: 'Genética básica: queratinas, colágenos, mosaicismo', referente: null,
@@ -102,7 +114,9 @@ export const DERMA_DIAS: DiaDerma[] = [
     access: { t: "Weinberg's Pediatric Dermatology 5e", url: book(1913) }, qbankly: { t: 'uWorld: Erythema infectiosum (+HFMD, roseola)', url: qb(86), via: 'edge' }, promir: { t: 'Cap 2 §1.6-1.7 Exantemas', url: pm(PM_CAP.c2) }, extra: { t: '30 casos Pediatric Dermatology', url: cases(1546) } },
   // ── BLOQUE C · Infecciosas (PM 17,29%) ──
   { d: 13, fecha: '2026-08-06', bloque: B.C, bKey: 'C', tier: 'CRIT', sub: 'Bacterianas: impétigo, celulitis/erisipela, SSSS, TSS', referente: null,
-    access: { t: 'Color Atlas 9e · S25 Bacterial Infections', url: ca(275944706) }, qbankly: { t: 'uWorld: Cellulitis/abscess (+impétigo 92, SSSS 109)', url: qb(78), via: 'edge' }, promir: { t: 'Cap 2 §5 Bacterianas', url: pm(PM_CAP.c2) }, extra: null },
+    access: { t: 'Color Atlas 9e · S25 Bacterial Infections', url: ca(275944706) }, qbankly: { t: 'uWorld: Cellulitis/abscess (+impétigo 92, SSSS 109)', url: qb(78), via: 'edge' }, promir: { t: 'Cap 2 §5 Bacterianas', url: pm(PM_CAP.c2) }, extra: null,
+    morfologia: 'Placa', sitio: 'Cara', ddx: ['Erisipela', 'Celulitis', 'Impétigo', 'SSSS', 'Dermatitis de contacto aguda'],
+    atlasUrl: 'https://dermnetnz.org/topics/cellulitis' },
   { d: 14, fecha: '2026-08-10', bloque: B.C, bKey: 'C', tier: 'MED', sub: 'Micobacterias: TB cutánea, lepra', referente: null,
     access: { t: 'Color Atlas 9e · S25 Bacterial Infections', url: ca(275944706) }, qbankly: null, promir: { t: 'Cap 2 §5.7 Micobacterias', url: pm(PM_CAP.c2) }, extra: null },
   { d: 15, fecha: '2026-08-12', bloque: B.C, bKey: 'C', tier: 'ALTA', sub: 'Sífilis (estadios) + ITS cutáneas', referente: null,
@@ -112,7 +126,10 @@ export const DERMA_DIAS: DiaDerma[] = [
   { d: 17, fecha: '2026-08-18', bloque: B.C, bKey: 'C', tier: 'ALTA', sub: 'Micosis superficiales/profundas + KOH (PM 5,42%)', referente: null,
     access: { t: 'Color Atlas 9e · S26 Fungal Infections', url: ca(275945320) }, qbankly: { t: 'uWorld: Dermatophyte (+versicolor 112)', url: qb(82), via: 'edge' }, promir: { t: 'Cap 2 §2 Fúngicas', url: pm(PM_CAP.c2) }, extra: { t: 'Vídeo KOH/Tzanck (Clinical Videos)', url: mm(46399) } },
   { d: 18, fecha: '2026-08-20', bloque: B.C, bKey: 'C', tier: 'CRIT', sub: 'Parasitosis: escabiosis, leishmaniasis (Perú), pediculosis, larva migrans', referente: null,
-    access: { t: 'Color Atlas 9e · S28 Infestations', url: ca(275946425) }, qbankly: { t: 'uWorld: Scabies (+lice 95, larva 80)', url: qb(106), via: 'edge' }, promir: { t: 'Cap 2 §7-8 Parásitos/Infestaciones', url: pm(PM_CAP.c2) }, extra: null },
+    access: { t: 'Color Atlas 9e · S28 Infestations', url: ca(275946425) }, qbankly: { t: 'uWorld: Scabies (+lice 95, larva 80)', url: qb(106), via: 'edge' }, promir: { t: 'Cap 2 §7-8 Parásitos/Infestaciones', url: pm(PM_CAP.c2) }, extra: null,
+    morfologia: 'Nódulo', sitio: 'Cara', fototipo: 'Alto ROI Perú · úlcera de leishmaniasis en piel de color',
+    ddx: ['Leishmaniasis', 'Esporotricosis', 'TB cutánea', 'Carcinoma basocelular', 'Úlcera piógena'],
+    atlasUrl: 'https://dermnetnz.org/topics/cutaneous-leishmaniasis' },
   // ── BLOQUE D · Neoplasias + dermatoscopia (PM 23,39% — tema nº1) ──
   { d: 19, fecha: '2026-08-24', bloque: B.D, bKey: 'D', tier: 'ALTA', sub: 'Tumores benignos + nevus melanocíticos', referente: null,
     access: { t: 'Color Atlas 9e · S9 Benign Neoplasms', url: ca(275942363) }, qbankly: { t: 'uWorld: Seborrheic keratosis', url: qb(108), via: 'edge' }, promir: { t: 'Cap 4 §1 Tumores benignos', url: pm(PM_CAP.c4) }, extra: null },
@@ -121,9 +138,14 @@ export const DERMA_DIAS: DiaDerma[] = [
   { d: 21, fecha: '2026-08-28', bloque: B.D, bKey: 'D', tier: 'CRIT', sub: 'Carcinoma basocelular + espinocelular', referente: null,
     access: { t: 'Color Atlas 9e · S11 Cutaneous Carcinomas', url: ca(275942807) }, qbankly: { t: 'uWorld: NMSC (SCC + BCC)', url: qb(99), via: 'edge' }, promir: { t: 'Cap 4 §4 No melanoma', url: pm(PM_CAP.c4) }, extra: null },
   { d: 22, fecha: '2026-09-01', bloque: B.D, bKey: 'D', tier: 'CRIT', sub: 'Melanoma: ABCDE, Breslow, TNM, manejo (PM 10,85% — subtema nº1)', referente: null,
-    access: { t: 'Color Atlas 9e · S12 Melanoma', url: ca(275942978) }, qbankly: { t: 'uWorld: Melanoma', url: qb(97), via: 'edge' }, promir: { t: 'Cap 4 §5 Melanoma', url: pm(PM_CAP.c4) }, extra: { t: '🎬 Masterclass melanoma MIR (1:39:10)', url: pm(PM_CAP.c4) } },
+    access: { t: 'Color Atlas 9e · S12 Melanoma', url: ca(275942978) }, qbankly: { t: 'uWorld: Melanoma', url: qb(97), via: 'edge' }, promir: { t: 'Cap 4 §5 Melanoma', url: pm(PM_CAP.c4) }, extra: { t: '🎬 Masterclass melanoma MIR (1:39:10)', url: pm(PM_CAP.c4) },
+    morfologia: 'Mácula', sitio: 'Tronco', fototipo: 'Acral/lentiginoso más frecuente en fototipos altos (Perú)',
+    ddx: ['Melanoma', 'Nevus displásico', 'Queratosis seborreica', 'CBC pigmentado', 'Lentigo'],
+    atlasUrl: 'https://dermnetnz.org/topics/melanoma', dermatoscopiaUrl: 'https://dermoscopedia.org/Melanoma', histoUrl: 'https://www.dermpathatlas.com/' },
   { d: 23, fecha: '2026-09-03', bloque: B.D, bKey: 'D', tier: 'CRIT', sub: 'Dermatoscopia I: lesiones melanocíticas', referente: null,
-    access: { t: 'Dermoscopy Criteria Review', url: book(2804) }, qbankly: null, promir: { t: 'Cap 10 Dermatoscopia', url: pm(PM_CAP.c10) }, extra: { t: '🎬 Videoclase Dermatoscopia (18:36) + CA Apéndice B', url: ca(275944419) } },
+    access: { t: 'Dermoscopy Criteria Review', url: book(2804) }, qbankly: null, promir: { t: 'Cap 10 Dermatoscopia', url: pm(PM_CAP.c10) }, extra: { t: '🎬 Videoclase Dermatoscopia (18:36) + CA Apéndice B', url: ca(275944419) },
+    morfologia: 'Mácula', sitio: 'Difuso', ddx: ['Patrón reticular', 'Globular', 'Homogéneo', 'Multicomponente (alarma)'],
+    atlasUrl: 'https://dermnetnz.org/cme/dermoscopy-course', dermatoscopiaUrl: 'https://dermoscopedia.org/Melanocytic_lesions', histoUrl: 'https://www.dermpathatlas.com/' },
   { d: 24, fecha: '2026-09-07', bloque: B.D, bKey: 'D', tier: 'ALTA', sub: 'Dermatoscopia II: no-melanocíticas + 2-step/chaos&clues', referente: null,
     access: { t: 'Dermoscopy: Illustrated Self-Assessment 2e', url: book(2929) }, qbankly: null, promir: { t: 'Cap 10 §3-5 CBC/epidermoide/otras', url: pm(PM_CAP.c10) }, extra: null },
   { d: 25, fecha: '2026-09-09', bloque: B.D, bKey: 'D', tier: 'ALTA', sub: 'Linfomas cutáneos (MF/Sézary), Merkel, Kaposi, DFSP, mastocitosis', referente: null,
@@ -163,9 +185,14 @@ export const DERMA_DIAS: DiaDerma[] = [
   { d: 40, fecha: '2026-10-21', bloque: B.H, bKey: 'H', tier: 'CRIT', sub: 'Acné + rosácea + hidradenitis (mecanismo→adherencia; tesis CADI/IGA)', referente: 'Global Alliance (JAAD 2018)',
     access: { t: 'Color Atlas 9e · S1 Sebaceous/Eccrine/Apocrine', url: ca(275941112) }, qbankly: { t: 'uWorld: Acne (+rosácea 103, HS 91)', url: qb(70), via: 'edge' }, promir: { t: 'Cap 7 §1-2', url: pm(PM_CAP.c7) }, extra: { t: 'Consenso Global Alliance (JAAD 2018)', url: 'https://pubmed.ncbi.nlm.nih.gov/29127053/' } },
   { d: 41, fecha: '2026-10-23', bloque: B.H, bKey: 'H', tier: 'CRIT', sub: 'Eccemas: dermatitis atópica, de contacto, seborreica', referente: null,
-    access: { t: 'Color Atlas 9e · S2 Eczema/Dermatitis', url: ca(275941291) }, qbankly: { t: 'uWorld: Atopic dermatitis', url: qb(74), via: 'edge' }, promir: { t: 'Cap 5 §4-6 Eccemas/DA/seborreica', url: pm(PM_CAP.c5) }, extra: null },
+    access: { t: 'Color Atlas 9e · S2 Eczema/Dermatitis', url: ca(275941291) }, qbankly: { t: 'uWorld: Atopic dermatitis', url: qb(74), via: 'edge' }, promir: { t: 'Cap 5 §4-6 Eccemas/DA/seborreica', url: pm(PM_CAP.c5) }, extra: null,
+    morfologia: 'Placa', sitio: 'Pliegues', fototipo: 'DA en piel de color: eritema violáceo/gris, papulosa folicular',
+    ddx: ['DA', 'Dermatitis de contacto', 'Seborreica', 'Psoriasis', 'Tiña corporis'],
+    atlasUrl: 'https://dermnetnz.org/topics/atopic-dermatitis' },
   { d: 42, fecha: '2026-10-27', bloque: B.H, bKey: 'H', tier: 'CRIT', sub: 'Psoriasis + papuloescamosas (liquen plano, pitiriasis rosada/rubra)', referente: null,
-    access: { t: 'Color Atlas 9e · S3 Psoriasiform Dermatoses', url: ca(275941727) }, qbankly: { t: 'uWorld: Psoriasis (+pitiriasis rosea 100)', url: qb(101), via: 'edge' }, promir: { t: 'Cap 5 §1-3 (núcleo del Enfoque MIR)', url: pm(PM_CAP.c5) }, extra: null },
+    access: { t: 'Color Atlas 9e · S3 Psoriasiform Dermatoses', url: ca(275941727) }, qbankly: { t: 'uWorld: Psoriasis (+pitiriasis rosea 100)', url: qb(101), via: 'edge' }, promir: { t: 'Cap 5 §1-3 (núcleo del Enfoque MIR)', url: pm(PM_CAP.c5) }, extra: null,
+    morfologia: 'Placa', sitio: 'Tronco', ddx: ['Psoriasis vulgar', 'Liquen plano', 'Pitiriasis rosada', 'Tiña corporis', 'Micosis fungoide'],
+    atlasUrl: 'https://dermnetnz.org/topics/psoriasis', dermatoscopiaUrl: 'https://dermoscopedia.org/Inflammatory_skin_diseases_(inflammoscopy_or_ID)' },
   { d: 43, fecha: '2026-10-29', bloque: B.H, bKey: 'H', tier: 'CRIT', sub: 'Ampollosas autoinmunes: pénfigo vs penfigoide, DH (DD = perla MIR)', referente: null,
     access: { t: 'Color Atlas 9e · S6 Bullous Diseases', url: ca(275942016) }, qbankly: { t: 'uWorld: Bullous pemphigoid & pemphigus', url: qb(76), via: 'edge' }, promir: { t: 'Cap 6 Ampollosas', url: pm(PM_CAP.c6) }, extra: null },
   { d: 44, fecha: '2026-11-02', bloque: B.H, bKey: 'H', tier: 'ALTA', sub: 'Urticaria y angioedema + prurito sine materia', referente: null,
@@ -175,7 +202,9 @@ export const DERMA_DIAS: DiaDerma[] = [
   { d: 46, fecha: '2026-11-06', bloque: B.H, bKey: 'H', tier: 'ALTA', sub: 'Vasculitis, paniculitis (eritema nodoso), neutrofílicas (Sweet, PG)', referente: null,
     access: { t: 'Color Atlas 9e · S7 Neutrophil-Mediated', url: ca(275942174) }, qbankly: { t: 'uWorld: Erythema nodosum (+PG 102)', url: qb(88), via: 'edge' }, promir: { t: 'Cap 3 §2 Paniculitis', url: pm(PM_CAP.c3) }, extra: null },
   { d: 47, fecha: '2026-11-10', bloque: B.H, bKey: 'H', tier: 'CRIT', sub: 'Farmacodermias graves: SJS/TEN, DRESS, AGEP (no errar)', referente: null,
-    access: { t: 'Color Atlas 9e · S23 Adverse Drug Reactions', url: ca(275944593) }, qbankly: { t: 'uWorld: SJS/TEN (+DRESS 85, EM 87)', url: qb(111), via: 'edge' }, promir: { t: 'Cap 8 Toxicodermias', url: pm(PM_CAP.c8) }, extra: { t: 'CA S8: The Acutely Ill Patient', url: ca(275942269) } },
+    access: { t: 'Color Atlas 9e · S23 Adverse Drug Reactions', url: ca(275944593) }, qbankly: { t: 'uWorld: SJS/TEN (+DRESS 85, EM 87)', url: qb(111), via: 'edge' }, promir: { t: 'Cap 8 Toxicodermias', url: pm(PM_CAP.c8) }, extra: { t: 'CA S8: The Acutely Ill Patient', url: ca(275942269) },
+    morfologia: 'Ampolla', sitio: 'Difuso', ddx: ['SJS/TEN', 'DRESS', 'AGEP', 'EM mayor', 'SSSS', 'Pénfigo paraneoplásico'],
+    atlasUrl: 'https://dermnetnz.org/topics/stevens-johnson-syndrome-toxic-epidermal-necrolysis' },
   { d: 48, fecha: '2026-11-12', bloque: B.H, bKey: 'H', tier: 'ALTA', sub: 'Piel y enfermedad sistémica: porfirias (PM 6,1%), paraneoplásicas, endocrino', referente: null,
     access: { t: 'Color Atlas 9e · S15 Endocrine/Metabolic', url: ca(275943857) }, qbankly: null, promir: { t: 'Cap 3 Sistémicas', url: pm(PM_CAP.c3) }, extra: { t: '🎬 Dermatosis paraneoplásicas (16:46) + CA S19', url: ca(275944194) } },
   { d: 49, fecha: '2026-11-16', bloque: B.H, bKey: 'H', tier: 'MED', sub: 'Fotodermatosis + fotoprotección', referente: null,
@@ -230,7 +259,8 @@ export function dermaDiaDe(fechaISO: string): DiaDerma | undefined { return DERM
 export function dermaDiaPrevio(d: DiaDerma): DiaDerma | undefined { return DERMA_DIAS.find(x => x.d === d.d - 1); }
 export function dermaVentana7(fromD: number): DiaDerma[] { return DERMA_DIAS.filter(x => x.d >= fromD && x.d < fromD + 7); }
 export const DERMA_TIER_INFO: Record<DermaTier, { c: string; t: string }> = {
-  CRIT: { c: '#E5484D', t: 'Crítico' }, ALTA: { c: '#F5A623', t: 'Alto' }, MED: { c: '#3FB984', t: 'Medio' },
+  // escala MINERAL (no neón): granate apagado · brass tostado · jade
+  CRIT: { c: '#C56A5A', t: 'Crítico' }, ALTA: { c: '#B8934E', t: 'Alto' }, MED: { c: '#5FA88C', t: 'Medio' },
 };
 /** URL ◆ Edge para links Qbankly (mismo patrón que UsmleTodayPlan). */
 export const edgeUrl = (url: string) => `microsoft-edge:${url}`;

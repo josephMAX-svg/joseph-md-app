@@ -11,6 +11,11 @@ import {
 import { VUELTAS, INTERVALOS, type Prioridad } from '../../lib/researchData';
 import { agruparProgreso, progresoGlobal, planHoyD, GrupoProgreso, loadDone, saveDone } from '../../lib/studyProgress';
 import { DERMKI_DECK, ANKIWEB } from '../../lib/ankiLinks';
+import { DermaAtlas, SKIN_TONES, SkinTone } from '../../lib/dermaData';
+import DermaClinicalPlate from '../derma/DermaClinicalPlate';
+import DermaTriptych from '../derma/DermaTriptych';
+import DermaDifferentialTray from '../derma/DermaDifferentialTray';
+import DermaLineIcon from '../derma/DermaLineIcons';
 
 /**
  * DermaTodayPlan — Plan Derma día-a-día (68 átomos: 52 board + 16 estética), mismo motor
@@ -20,9 +25,10 @@ import { DERMKI_DECK, ANKIWEB } from '../../lib/ankiLinks';
  * práctica Qbankly (⚠ SOLO Edge → botón ◆ Edge + Chrome) y 2º pase ProMIR, + extra
  * (casos/vídeo/paper del referente). Bloque Calendar 13:30–14:15 (alterna con Research).
  */
-const PURPLE = '#8B5CF6';
-const TEAL = '#0FD4A0';
-const EDGE = '#3DA5E0';
+const PURPLE = DermaAtlas.amethyst; // #9A7BC8 amatista (antes #8B5CF6 fosforescente)
+const TEAL = DermaAtlas.jade;        // #5FA88C jade (antes #0FD4A0 neón)
+const EDGE = DermaAtlas.edge;        // #5B8FB0 zafiro apagado (antes #3DA5E0)
+const GOLD = DermaAtlas.gold;        // #C8A96A élite / no-errar
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
 function openEdge(u: string) { Linking.openURL('microsoft-edge:' + u).catch(() => openUrl(u)); }
 function todayISO(): string {
@@ -34,20 +40,32 @@ function fmtFecha(iso: string): string {
   try { const d = new Date(iso + 'T12:00:00'); return `${dias[d.getDay()]} ${iso.slice(8, 10)}-${iso.slice(5, 7)}`; } catch { return iso; }
 }
 
-/** Color por bloque (A–H board · Z cierre · X estética). */
+/** Color por bloque (A–H board · Z cierre · X estética) — paleta JOYA apagada, sin neón. */
 const BLOQUE_COLOR: Record<DermaBloqueKey, string> = {
-  A: '#E5484D', B: '#F472B6', C: '#F59E0B', D: '#EF4444', E: '#60A5FA',
-  F: '#22D3EE', G: '#34D399', H: '#A78BFA', Z: '#FBBF24', X: PURPLE,
+  A: '#C56A5A', // fundamentos — terracota
+  B: '#B08AC0', // genoderma/pediátrica — malva
+  C: '#B8934E', // infecciosas — brass
+  D: '#C56A5A', // neoplasias — terracota (crítico)
+  E: '#7C83D6', // dermatopatología — periwinkle
+  F: '#6BB8B0', // cirugía — teal
+  G: '#5FA88C', // farmacología — jade
+  H: '#9A7BC8', // medical amplio — amatista
+  Z: '#C8A96A', // cierre board — oro
+  X: '#9A7BC8', // estética — amatista
 };
 /** Tier del plan → prioridad del motor de vueltas compartido (ENCAPS/Research). */
 const TIER_PRIO: Record<DermaTier, Prioridad> = { CRIT: 'CRITICA', ALTA: 'ALTA', MED: 'MEDIA' };
 const bc = (d: DiaDerma) => BLOQUE_COLOR[d.bKey];
 
+type ColaIconName = 'read' | 'flask' | 'atlas' | 'body' | 'differential';
+const COLA_ICON: Record<ColaIconName, React.ComponentProps<typeof DermaLineIcon>['name']> = {
+  read: 'atlas', flask: 'flask', atlas: 'atlas', body: 'body', differential: 'differential',
+};
 /** Ítem de la cola: link real; `edge` añade el botón Microsoft Edge (Qbankly). */
-function ColaItem({ icon, lbl, val, sub, color, url, edge }: { icon: string; lbl: string; val: string; sub: string; color: string; url: string; edge?: boolean }) {
+function ColaItem({ icon, lbl, val, sub, color, url, edge }: { icon: ColaIconName; lbl: string; val: string; sub: string; color: string; url: string; edge?: boolean }) {
   return (
     <View style={[st.cola, { borderLeftColor: color }]}>
-      <Text style={st.colaIcon}>{icon}</Text>
+      <View style={st.colaIconBox}><DermaLineIcon name={COLA_ICON[icon]} size={18} color={color} /></View>
       <View style={{ flex: 1 }}>
         <Text style={st.colaLbl}>{lbl}</Text>
         <Text style={st.colaVal} numberOfLines={2}>{val}</Text>
@@ -67,36 +85,51 @@ function ColaItem({ icon, lbl, val, sub, color, url, edge }: { icon: string; lbl
   );
 }
 
-function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaDerma; onOpenTemario: () => void; hecho: boolean; onToggle: (d: number) => void }) {
+function HoyView({ dia, onOpenTemario, hecho, onToggle, tone }: { dia: DiaDerma; onOpenTemario: () => void; hecho: boolean; onToggle: (d: number) => void; tone: SkinTone }) {
   const prev = dermaDiaPrevio(dia);
   const fc = bc(dia);
   const prio = TIER_PRIO[dia.tier];
   return (
     <View>
-      {/* Átomo del día — el badge de bloque lleva al Temario */}
+      {/* CASO DEL DÍA — lámina clínica (imagen primero) que envuelve el átomo */}
       <FadeUp>
-        <View style={[st.temaCard, { borderColor: fc + '55' }]}>
+        <DermaClinicalPlate dia={dia} accent={fc} tone={tone}>
+          {/* Meta-fila: bloque (→ Temario) · tier · vueltas · referente */}
           <View style={st.temaTop}>
             <TouchableOpacity activeOpacity={0.8} onPress={onOpenTemario} style={[st.sysBadge, { backgroundColor: fc + '1F', borderColor: fc + '66' }]}>
               <Text style={[st.sysBadgeTxt, { color: fc }]}>{dia.bKey} · {dia.bloque} ›</Text>
             </TouchableOpacity>
             <Chip label={DERMA_TIER_INFO[dia.tier].t} color={DERMA_TIER_INFO[dia.tier].c} small />
             <Chip label={`${VUELTAS[prio]} vueltas · D+${INTERVALOS[prio].join('/')}`} color={Colors.muted} small />
-            {dia.referente && <Chip label={`según ${dia.referente}`} color={PURPLE} small />}
+            {dia.referente && <Chip label={`según ${dia.referente}`} color={GOLD} small />}
           </View>
-          <Text style={st.temaTitle}>{dia.sub}</Text>
-          <Text style={st.temaGate}>🧠 Mastery gate: recita los 7 pasos del Cerebro Clínico (causa → mecanismo → capa → decisión → no-errar → comunicación → hábito) + guion de paciente.</Text>
+          <View style={st.gateRow}>
+            <DermaLineIcon name="skinLayers" size={15} color={fc} />
+            <Text style={st.temaGate}>Mastery gate: recita los 7 pasos del Cerebro Clínico (causa → mecanismo → capa → decisión → no-errar → comunicación → hábito) + guion de paciente.</Text>
+          </View>
           <TouchableOpacity activeOpacity={0.85} onPress={() => onToggle(dia.d)} style={[st.doneBtn, hecho ? st.doneBtnOn : st.doneBtnOff]}>
             <Text style={[st.doneBtnTxt, { color: hecho ? '#1A1031' : PURPLE }]}>{hecho ? '✓ Átomo dominado (cuenta en el %)' : '○ Marcar átomo como hecho'}</Text>
           </TouchableOpacity>
-        </View>
+        </DermaClinicalPlate>
       </FadeUp>
+
+      {/* Correlación clínica ↔ dermatoscopia ↔ histología (solo si el caso lo tiene) */}
+      <FadeUp delay={30}><DermaTriptych dia={dia} accent={fc} /></FadeUp>
+
+      {/* Construye tu diferencial (Palmerton, ciego → revelar) */}
+      {dia.ddx && dia.ddx.length > 0 && (
+        <FadeUp delay={50}>
+          <View style={{ marginTop: Spacing.sm }}>
+            <DermaDifferentialTray ddx={dia.ddx} diaKey={dia.d} />
+          </View>
+        </FadeUp>
+      )}
 
       {/* Eval anclada (átomo previo) */}
       {prev && (
-        <FadeUp delay={40}>
+        <FadeUp delay={70}>
           <View style={st.anchor}>
-            <Text style={st.anchorLbl}>🎯 13:30 · Eval anclada (átomo de la sesión ANTERIOR)</Text>
+            <Text style={st.anchorLbl}>13:30 · Eval anclada (átomo de la sesión ANTERIOR)</Text>
             <Text style={st.anchorVal}>D{prev.d} · {prev.sub}</Text>
             <Text style={st.anchorSub}>2Q ({prev.qbankly ? 'Qbankly ◆Edge' : 'Q-bank Access'}) + log de error (gap básico/razonamiento/vocabulario) · 2/2→nuevo · 1/2→finde · 0/2→repetir</Text>
           </View>
@@ -104,35 +137,35 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaDerma; onOpe
       )}
 
       {/* Cola de materiales reales de hoy (3 fuentes + extra) */}
-      <Text style={st.secLbl}>📋 Materiales del átomo · 13:35–14:15 · links REALES (en orden)</Text>
-      <FadeUp delay={60}>
-        <ColaItem icon="📖" lbl="LECTURA · AccessDermatology (UF)" val={dia.access.t} sub={dia.sub} color={fc} url={dia.access.url} />
+      <Text style={st.secLbl}>Materiales del átomo · 13:35–14:15 · links REALES (en orden)</Text>
+      <FadeUp delay={80}>
+        <ColaItem icon="read" lbl="LECTURA · AccessDermatology (UF)" val={dia.access.t} sub={dia.sub} color={fc} url={dia.access.url} />
       </FadeUp>
       {dia.qbankly && (
-        <FadeUp delay={90}>
-          <ColaItem icon="🧪" lbl="PRÁCTICA · Qbankly (pre-test 3Q + eval)" val={dia.qbankly.t} sub="⚠ Qbankly SOLO abre bien en Edge" color={EDGE} url={dia.qbankly.url} edge />
+        <FadeUp delay={100}>
+          <ColaItem icon="flask" lbl="PRÁCTICA · Qbankly (pre-test 3Q + eval)" val={dia.qbankly.t} sub="⚠ Qbankly SOLO abre bien en Edge" color={EDGE} url={dia.qbankly.url} edge />
         </FadeUp>
       )}
       {dia.promir && (
         <FadeUp delay={120}>
-          <ColaItem icon="🇪🇸" lbl="2º PASE ES · ProMIR (Enfoque + figuras)" val={dia.promir.t} sub="anclaje España · asignatura 5 Dermatología" color="#F5A623" url={dia.promir.url} />
+          <ColaItem icon="atlas" lbl="2º PASE ES · ProMIR (Enfoque + figuras)" val={dia.promir.t} sub="anclaje España · asignatura 5 Dermatología" color={DermaAtlas.promir} url={dia.promir.url} />
         </FadeUp>
       )}
       {dia.extra && (
         <FadeUp delay={150}>
-          <ColaItem icon="➕" lbl="EXTRA · casos / vídeo / paper del referente" val={dia.extra.t} sub={dia.referente ? `fuente nº1 de ${dia.referente}` : 'material complementario'} color="#7BB1FF" url={dia.extra.url} />
+          <ColaItem icon="body" lbl="EXTRA · casos / vídeo / paper del referente" val={dia.extra.t} sub={dia.referente ? `fuente nº1 de ${dia.referente}` : 'material complementario'} color={DermaAtlas.periwinkle} url={dia.extra.url} />
         </FadeUp>
       )}
 
       {/* ANKI · Dermki (deck pagado, verificado en Anki) */}
       <FadeUp delay={165}>
-        <ColaItem icon="🃏" lbl="ANKI · Dermki (deck pagado · SRS)" val={`${DERMKI_DECK} → capítulo del bloque de hoy`} sub="abre AnkiWeb ↗ · 11 capítulos + AAD Basic Curriculum" color="#5BA8C9" url={ANKIWEB} />
+        <ColaItem icon="differential" lbl="ANKI · Dermki (deck pagado · SRS)" val={`${DERMKI_DECK} → capítulo del bloque de hoy`} sub="abre AnkiWeb ↗ · 11 capítulos + AAD Basic Curriculum" color={DermaAtlas.teal} url={ANKIWEB} />
       </FadeUp>
 
       {/* APEX */}
       <FadeUp delay={180}>
-        <View style={[st.cola, { borderLeftColor: '#F5A623' }]}>
-          <Text style={st.colaIcon}>🃏</Text>
+        <View style={[st.cola, { borderLeftColor: GOLD }]}>
+          <View style={st.colaIconBox}><DermaLineIcon name="histoDrop" size={18} color={GOLD} /></View>
           <View style={{ flex: 1 }}>
             <Text style={st.colaLbl}>APEX · 14:10–14:15</Text>
             <Text style={st.colaVal}>Crea ≤3 APEX (formato Palmerton) del átomo de hoy</Text>
@@ -157,7 +190,7 @@ function HorarioView({ dia }: { dia: DiaDerma }) {
   };
   return (
     <View>
-      <Text style={st.secLbl}>🕓 Bloque Derma · Día {dia.d} ({fmtFecha(dia.fecha)}) · hora Lima</Text>
+      <Text style={st.secLbl}>Bloque Derma · Día {dia.d} ({fmtFecha(dia.fecha)}) · hora Lima</Text>
       {DERMA_FRANJAS.map((f, i) => {
         const det = detalle(f.tipo);
         return (
@@ -181,7 +214,7 @@ function SieteView({ fromD, onPick }: { fromD: number; onPick: (d: number) => vo
   const win = dermaVentana7(fromD);
   return (
     <View>
-      <Text style={st.secLbl}>📆 Próximos 7 átomos-Derma · toca uno para abrirlo</Text>
+      <Text style={st.secLbl}>Próximos 7 átomos-Derma · toca uno para abrirlo</Text>
       {win.map((x, i) => {
         const fc = bc(x);
         return (
@@ -256,7 +289,7 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
     <View>
       <View style={st.globCard}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-          <Text style={st.globTitle}>🗂️ Temario Derma · progreso REAL del plan</Text>
+          <Text style={st.globTitle}>Temario Derma · progreso REAL del plan</Text>
           <Text style={[st.globPct, { color: PURPLE }]}>{glob.pct}%</Text>
         </View>
         <ProgressBar pct={glob.pct} color={PURPLE} />
@@ -268,13 +301,14 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
   );
 }
 
-export default function DermaTodayPlan() {
+export default function DermaTodayPlan({ tone }: { tone?: SkinTone }) {
   const iso = todayISO();
   const tipoHoy = diaEstudioTipo(new Date());
   const hoyD = planHoyD(DERMA_DIAS, iso);
   const [sel, setSel] = useState<number>(hoyD);
   const [view, setView] = useState<'hoy' | 'horario' | '7d' | 'temario'>('hoy');
   const [done, setDone] = useState<Set<number>>(() => new Set(loadDone('derma')));
+  const activeTone = tone ?? SKIN_TONES[2];
   const dia = DERMA_DIAS.find((x) => x.d === sel) || DERMA_DIAS[0];
   const esHoy = dia.fecha === iso;
   const pickDay = (d: number) => { setSel(d); setView('hoy'); };
@@ -290,20 +324,20 @@ export default function DermaTodayPlan() {
       {/* Banner interdiario Derma/Research */}
       <View style={st.interRow}>
         <View style={[st.interBtn, tipoHoy === 'derma' ? st.interOn : st.interOff]}>
-          <Text numberOfLines={1} style={[st.interBig, { color: tipoHoy === 'derma' ? PURPLE : Colors.muted }]}>💎 DERMA</Text>
+          <View style={st.interHead}><DermaLineIcon name="loupe" size={14} color={tipoHoy === 'derma' ? PURPLE : Colors.muted} /><Text numberOfLines={1} style={[st.interBig, { color: tipoHoy === 'derma' ? PURPLE : Colors.muted }]}>DERMA</Text></View>
           <Text style={st.interSub}>{tipoHoy === 'derma' ? 'HOY te toca' : 'día alterno'}</Text>
         </View>
         <View style={[st.interBtn, tipoHoy === 'research' ? { backgroundColor: TEAL + '1A', borderColor: TEAL + '88' } : st.interOff]}>
-          <Text numberOfLines={1} style={[st.interBig, { color: tipoHoy === 'research' ? TEAL : Colors.muted }]}>🔬 RESEARCH</Text>
+          <View style={st.interHead}><DermaLineIcon name="flask" size={14} color={tipoHoy === 'research' ? TEAL : Colors.muted} /><Text numberOfLines={1} style={[st.interBig, { color: tipoHoy === 'research' ? TEAL : Colors.muted }]}>RESEARCH →</Text></View>
           <Text style={st.interSub}>{tipoHoy === 'research' ? 'HOY te toca →' : 'día alterno'}</Text>
         </View>
         <View style={[st.interBtn, tipoHoy === 'descanso' ? st.interOn : st.interOff, { flex: 0.7 }]}>
-          <Text style={[st.interBig, { color: tipoHoy === 'descanso' ? Colors.amber : Colors.muted }]}>😴</Text>
-          <Text style={st.interSub}>finde</Text>
+          <Text style={[st.interBig, { color: tipoHoy === 'descanso' ? GOLD : Colors.muted, letterSpacing: 0 }]}>finde</Text>
+          <Text style={st.interSub}>descanso</Text>
         </View>
       </View>
       <View style={st.artefactoBar}>
-        <Text style={st.artefactoTxt}>🎓 Meta viva: board (Jain × ABD 55/15/15/15 × Peso MIR) + estética estructural (Cotofana → MD Codes → toxina → HDPH 🔴 → energía) · {DERMA_DAILY_META.bloque}</Text>
+        <Text style={st.artefactoTxt}>Meta viva: board (Jain × ABD 55/15/15/15 × Peso MIR) + estética estructural (Cotofana → MD Codes → toxina → HDPH → energía) · {DERMA_DAILY_META.bloque}</Text>
       </View>
 
       {/* Anillos de progreso REAL (board · estética · críticos · global) */}
@@ -312,13 +346,13 @@ export default function DermaTodayPlan() {
           <RingStat value={done.size} max={DERMA_DAILY_META.totalDias} label="Global" sub={`${done.size}/${DERMA_DAILY_META.totalDias} átomos`} accent={PURPLE} />
         </View>
         <View style={st.ringCard}>
-          <RingStat value={DERMA_DIAS.filter(x => x.tier === 'CRIT' && done.has(x.d)).length} max={DERMA_DIAS.filter(x => x.tier === 'CRIT').length} label="Críticos" sub="no errar" accent="#E5484D" />
+          <RingStat value={DERMA_DIAS.filter(x => x.tier === 'CRIT' && done.has(x.d)).length} max={DERMA_DIAS.filter(x => x.tier === 'CRIT').length} label="Críticos" sub="no errar" accent={DermaAtlas.crit} />
         </View>
         <View style={st.ringCard}>
-          <RingStat value={DERMA_DIAS.filter(x => x.bKey !== 'X' && done.has(x.d)).length} max={DERMA_DIAS.filter(x => x.bKey !== 'X').length} label="Board" sub="A–H + cierre" accent="#F5A623" />
+          <RingStat value={DERMA_DIAS.filter(x => x.bKey !== 'X' && done.has(x.d)).length} max={DERMA_DIAS.filter(x => x.bKey !== 'X').length} label="Board" sub="A–H + cierre" accent={GOLD} />
         </View>
         <View style={st.ringCard}>
-          <RingStat value={DERMA_DIAS.filter(x => x.bKey === 'X' && done.has(x.d)).length} max={DERMA_DIAS.filter(x => x.bKey === 'X').length} label="Estética" sub="bloque X" accent="#22D3EE" />
+          <RingStat value={DERMA_DIAS.filter(x => x.bKey === 'X' && done.has(x.d)).length} max={DERMA_DIAS.filter(x => x.bKey === 'X').length} label="Estética" sub="bloque X" accent={DermaAtlas.teal} />
         </View>
       </View>
 
@@ -335,7 +369,7 @@ export default function DermaTodayPlan() {
 
       {/* Sub-pestañas */}
       <View style={st.subTabs}>
-        {([['hoy', '📋 HOY'], ['horario', '🕓 Horario'], ['7d', '📆 7 días'], ['temario', '🗂️ Temario']] as const).map(([k, lbl]) => (
+        {([['hoy', 'Caso de hoy'], ['horario', 'Horario'], ['7d', '7 días'], ['temario', 'Temario']] as const).map(([k, lbl]) => (
           <TouchableOpacity key={k} activeOpacity={0.8} onPress={() => setView(k)} style={[st.subTab, view === k && st.subTabOn]}>
             <Text style={[st.subTabTxt, view === k && { color: PURPLE }]}>{lbl}</Text>
           </TouchableOpacity>
@@ -343,7 +377,7 @@ export default function DermaTodayPlan() {
       </View>
 
       <GlassPanel style={{ marginBottom: Spacing.xl, padding: Spacing.md }}>
-        {view === 'hoy' ? <HoyView dia={dia} onOpenTemario={() => setView('temario')} hecho={done.has(dia.d)} onToggle={toggleDone} />
+        {view === 'hoy' ? <HoyView dia={dia} onOpenTemario={() => setView('temario')} hecho={done.has(dia.d)} onToggle={toggleDone} tone={activeTone} />
           : view === 'horario' ? <HorarioView dia={dia} />
           : view === '7d' ? <SieteView fromD={dia.d} onPick={pickDay} />
           : <TemarioView hoyD={hoyD} onPick={pickDay} done={done} onToggle={toggleDone} />}
@@ -359,6 +393,7 @@ const st = StyleSheet.create({
   interBtn: { flex: 1, minWidth: 96, borderRadius: BorderRadius.lg, borderWidth: 1, paddingVertical: Spacing.md, paddingHorizontal: 4, alignItems: 'center', ...WEB_LINK },
   interOn: { backgroundColor: PURPLE + '1A', borderColor: PURPLE + '88', ...Elevation.glow(PURPLE) },
   interOff: { backgroundColor: 'rgba(255,255,255,0.03)', borderColor: Hairline.medium },
+  interHead: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   interBig: { fontSize: FontSize.labelLg, fontWeight: '900', letterSpacing: 0.4 },
   interSub: { fontSize: 9, color: Colors.muted, marginTop: 3, letterSpacing: 0.2 },
   artefactoBar: { ...cardBase, borderLeftWidth: 3, borderLeftColor: PURPLE, padding: Spacing.md, marginBottom: Spacing.sm },
@@ -379,25 +414,24 @@ const st = StyleSheet.create({
   subTabOn: { backgroundColor: PURPLE + '14', borderColor: PURPLE + '55' },
   subTabTxt: { fontSize: FontSize.labelMd, fontWeight: '700', color: Colors.muted, letterSpacing: 0.2 },
 
-  temaCard: { ...cardBase, borderWidth: 1, padding: Spacing.md, marginBottom: Spacing.sm, ...Elevation.md },
-  temaTop: { flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap' },
+  temaTop: { flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap', marginTop: Spacing.md },
   sysBadge: { borderRadius: BorderRadius.full, borderWidth: 1, paddingVertical: 3, paddingHorizontal: 11, ...WEB_LINK },
   sysBadgeTxt: { fontSize: FontSize.labelMd, fontWeight: '800', letterSpacing: 0.2 },
-  temaTitle: { fontSize: FontSize.bodyLg, fontWeight: '800', color: Colors.onSurface, marginTop: 9, lineHeight: 22, letterSpacing: -0.3 },
-  temaGate: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 8, lineHeight: LineHeight.labelSm },
+  temaGate: { flex: 1, fontSize: FontSize.labelSm, color: Colors.muted, lineHeight: LineHeight.labelSm },
   doneBtn: { marginTop: 11, paddingVertical: 10, borderRadius: BorderRadius.md, borderWidth: 1, alignItems: 'center', ...WEB_LINK },
   doneBtnOff: { backgroundColor: PURPLE + '14', borderColor: PURPLE + '66' },
   doneBtnOn: { backgroundColor: PURPLE, borderColor: PURPLE, ...Elevation.glow(PURPLE) },
   doneBtnTxt: { fontSize: FontSize.labelMd, fontWeight: '800', letterSpacing: 0.2 },
 
-  anchor: { ...cardBase, borderLeftWidth: 3, borderLeftColor: '#7BB1FF', padding: Spacing.md, marginBottom: Spacing.sm },
-  anchorLbl: { fontSize: FontSize.labelMd, fontWeight: '800', color: '#AFCBFF', letterSpacing: 0.2 },
+  anchor: { ...cardBase, borderLeftWidth: 3, borderLeftColor: DermaAtlas.periwinkle, padding: Spacing.md, marginBottom: Spacing.sm },
+  anchorLbl: { fontSize: FontSize.labelMd, fontWeight: '800', color: DermaAtlas.periwinkle, letterSpacing: 0.2 },
   anchorVal: { fontSize: FontSize.labelLg, fontWeight: '700', color: Colors.onSurface, marginTop: 4, letterSpacing: -0.2 },
   anchorSub: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 3, lineHeight: LineHeight.labelSm },
 
   secLbl: { fontSize: 10, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 0.6, textTransform: 'uppercase', marginBottom: 9, marginTop: Spacing.sm },
   cola: { ...cardBase, borderLeftWidth: 3, flexDirection: 'row', alignItems: 'center', gap: 10, padding: Spacing.md, marginBottom: 6 },
-  colaIcon: { fontSize: 18, width: 24, textAlign: 'center' },
+  colaIconBox: { width: 24, alignItems: 'center', justifyContent: 'center' },
+  gateRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, marginTop: 10 },
   colaLbl: { fontSize: 9, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 0.4, textTransform: 'uppercase' },
   colaVal: { fontSize: FontSize.labelMd, color: Colors.onSurface, fontWeight: '600', marginTop: 3, lineHeight: 16 },
   colaSub: { fontSize: 9, color: Colors.muted, marginTop: 3, lineHeight: 13 },

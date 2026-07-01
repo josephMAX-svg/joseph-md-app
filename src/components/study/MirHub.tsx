@@ -1,50 +1,186 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Linking } from 'react-native';
-import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, Motion, LineHeight } from '../../theme/tokens';
+import { View, Text, TouchableOpacity, StyleSheet, Linking, Platform } from 'react-native';
+import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, Motion } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
-import { SectionLabel, Chip, GlassPanel, gridStyle, gridItemStyle, PillTab } from '../empresa/primitives';
+import { SectionLabel, Chip, GlassPanel, gridStyle, gridItemStyle } from '../empresa/primitives';
 import MirTodayPlan from './MirTodayPlan';
-import { GradientHero, MegaStat, RingStat, FadeUp } from '../empresa/visuals';
+import { RingStat, FadeUp } from '../empresa/visuals';
 import {
   MIR_META, MIR_KPIS, PROMIR_FASES, MIR_HORA, MIR_CALENDARIO,
-  MIR_TACTICA, MIR_RECURSOS, MIR_NOTA, PRIORIDAD_COLOR, VUELTAS,
+  MIR_TACTICA, MIR_RECURSOS, MIR_NOTA, MIR_SIMULACROS, MIR_READINESS, MIR_DESGLOSES,
+  PRIORIDAD_COLOR, VUELTAS,
 } from '../../lib/mirData';
 import { DIGESTIVO_META, DIGESTIVO_CAPITULOS, DIGESTIVO_PLAN, capUrl } from '../../lib/mirDigestivoData';
 import { CARDIO_META, CARDIO_CAPITULOS, capUrl as cardioUrl } from '../../lib/mirCardiologiaData';
+import { MIR_DIAS } from '../../lib/mirDailyPlan';
+import { planHoyD, progresoGlobal, loadDone } from '../../lib/studyProgress';
+import ReadinessBar from './ReadinessBar';
+import { ConsoleTabs, CheckpointCard } from './ConsoleKit';
 import MirTemarioExplorer from './MirTemarioExplorer';
 
 /**
- * MirHub — MIR España (ProMIR). Asignaturas por ROI tier + fases ProMIR + protocolo +
- * táctica de examen. Render como View dentro del ScrollView de EstudioScreen.
+ * MirHub — "consola española de banca de conocimiento" (ámbar/champagne). Command bar
+ * de readiness arriba (Día X/N · % temario · gauge de simulacro), sub-nav de consola,
+ * cuerpo = cola del día + explorador-banco + capa de simulacros/desgloses.
+ * Render como View dentro del ScrollView de EstudioScreen.
  */
-const AMBER = MIR_META.accent;
+const AMBER = MIR_META.accent;   // #F5A623 — ámbar (consola española)
+const CHAMP = Colors.champagne;  // #D8BE86 — se armoniza para no chocar con el oro-firma
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
+function todayISO(): string {
+  try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; }
+  catch { return MIR_DIAS[0].fecha; }
+}
+
+const TABS = [
+  { key: 'hoy', label: 'Cola de hoy', icon: '📋' },
+  { key: 'temario', label: 'Temario · High Yield', icon: '📚' },
+  { key: 'readiness', label: 'Simulacros', icon: '◈' },
+  { key: 'tactica', label: 'Táctica · ProMIR', icon: '🎯' },
+];
 
 export default function MirHub() {
-  const [sub, setSub] = useState<'hoy' | 'temario'>('hoy');
+  const [sub, setSub] = useState('hoy');
+  const done = loadDone('mir');
+  const hoyD = planHoyD(MIR_DIAS, todayISO());
+  const glob = progresoGlobal(MIR_DIAS, new Set(done));
+
   return (
     <View>
-      <GradientHero from="#2E2410" to="#0A1424" style={{ marginBottom: Spacing.lg, borderColor: AMBER + '33' }}>
-        <Text style={st.heroTitle}>🇪🇸 {MIR_META.titulo}</Text>
-        <Text style={[st.heroSub, { color: AMBER }]}>{MIR_META.subtitulo}</Text>
-        <Text style={st.heroTesis}>{MIR_META.tesis}</Text>
-      </GradientHero>
+      <ReadinessBar
+        flag={MIR_META.flag} title={MIR_META.titulo}
+        subtitle="Consola española · rentabilidad = preguntas ÷ temario"
+        accent={AMBER}
+        dia={hoyD} total={glob.total} temarioPct={glob.pct}
+        racha={`${done.length} temas`}
+        readinessPct={MIR_READINESS.pct} readinessLabel={MIR_READINESS.estado}
+        extraStat={{ label: 'TIER S', value: `${MIR_KPIS.asignaturasTierS}`, hint: 'ROI máx', accent: Colors.coral }}
+      />
 
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm, marginBottom: Spacing.lg }}>
-        <PillTab label="Hoy" icon="🗓️" active={sub === 'hoy'} accent={AMBER} onPress={() => setSub('hoy')} />
-        <PillTab label="Temario · High Yield" icon="📚" active={sub === 'temario'} accent={AMBER} onPress={() => setSub('temario')} />
-      </View>
+      <ConsoleTabs tabs={TABS} active={sub} accent={AMBER} onSelect={setSub} />
 
       {sub === 'hoy' && <MirTodayPlan />}
-      {sub === 'temario' && (<>
-      <MegaStat value={MIR_KPIS.asignaturasTierS} label="Asignaturas Tier S · ROI máximo · empieza aquí" accent={AMBER}
-        footnote="Estadística + Bioética + Cardiología · casi regalo de puntos + momentum" />
+      {sub === 'temario' && <TemarioView />}
+      {sub === 'readiness' && <SimulacrosView />}
+      {sub === 'tactica' && <TacticaView />}
+    </View>
+  );
+}
 
+// ── SIMULACROS · readiness cronometrado + desgloses por asignatura ──
+function SimulacrosView() {
+  return (
+    <View>
+      <CheckpointCard
+        title="Simulacros cronometrados · readiness real"
+        subtitle={MIR_READINESS.siguiente}
+        rows={MIR_SIMULACROS.map((s) => ({
+          form: s.nombre, kind: s.fuente, when: s.cuando, predictor: s.formato, band: s.banda, url: s.url, gated: s.gated,
+        }))}
+        accent={AMBER}
+        ctaOpen="note"
+      />
+
+      {/* Desgloses por asignatura */}
+      <SectionLabel>{MIR_DESGLOSES.titulo}</SectionLabel>
+      <GlassPanel accent={CHAMP} style={{ marginBottom: Spacing.md, padding: Spacing.lg }}>
+        <Text style={st.body}>{MIR_DESGLOSES.porQue}</Text>
+      </GlassPanel>
+      <View style={[gridStyle(240), { marginBottom: Spacing.xl }]}>
+        {MIR_DESGLOSES.capas.map((c, i) => (
+          <View key={i} style={gridItemStyle(240)}>
+            <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(c.url)} style={[st.desgCard, { borderLeftColor: c.gated ? Colors.muted : AMBER }]}>
+              <Text style={st.desgFuente}>{c.gated ? '🔒 ' : '🔗 '}{c.fuente} ↗</Text>
+              <Text style={st.desgQue} numberOfLines={2}>{c.que}</Text>
+            </TouchableOpacity>
+          </View>
+        ))}
+      </View>
+
+      <GlassPanel accent={AMBER} style={{ marginBottom: Spacing.xl, padding: Spacing.lg }}>
+        <Text style={st.smallNote}>{MIR_NOTA}</Text>
+      </GlassPanel>
+    </View>
+  );
+}
+
+// ── TÁCTICA · fases ProMIR + hora + calendario + regla −1/3 + recursos ──
+function TacticaView() {
+  return (
+    <View>
+      <SectionLabel>ProMIR · las 5 fases</SectionLabel>
+      <View style={[gridStyle(180), { marginBottom: Spacing.xl }]}>
+        {PROMIR_FASES.map((f, i) => (
+          <View key={i} style={gridItemStyle(180)}>
+            <FadeUp delay={i * 50}>
+              <View style={[st.faseCard, { borderLeftColor: AMBER }]}>
+                <Text style={[st.faseTag, { color: AMBER }]}>{i + 1}. {f.fase}</Text>
+                <Text style={st.body}>{f.desc}</Text>
+              </View>
+            </FadeUp>
+          </View>
+        ))}
+      </View>
+
+      <SectionLabel>La hora diaria (aprendizaje basado en preguntas)</SectionLabel>
+      <GlassPanel style={{ marginBottom: Spacing.xl }}>
+        {MIR_HORA.map((h, i) => (
+          <View key={i} style={[st.hourRow, i === 0 && { borderTopWidth: 0 }]}>
+            <View style={[st.hourBadge, { backgroundColor: AMBER + '1A' }]}><Text style={[st.hourMin, { color: AMBER }]}>{h.min}</Text></View>
+            <View style={{ flex: 1 }}>
+              <Text style={st.hourBloque}>{h.bloque}</Text>
+              <Text style={st.hourAct}>{h.act}</Text>
+            </View>
+          </View>
+        ))}
+      </GlassPanel>
+
+      <SectionLabel>Calendario macro (1h/día)</SectionLabel>
+      <GlassPanel style={{ marginBottom: Spacing.xl }}>
+        {MIR_CALENDARIO.map((c, i) => (
+          <View key={i} style={[st.calRow, i === 0 && { borderTopWidth: 0 }]}>
+            <Text style={[st.calFase, { color: AMBER }]}>{c.fase}</Text>
+            <Text style={st.calFoco}>{c.foco}</Text>
+          </View>
+        ))}
+      </GlassPanel>
+
+      <SectionLabel>Táctica de examen · regla numérica (−1/3)</SectionLabel>
+      <View style={[gridStyle(200), { marginBottom: Spacing.xl }]}>
+        {MIR_TACTICA.map((t, i) => (
+          <View key={i} style={gridItemStyle(200)}>
+            <View style={st.tactCard}>
+              <Text style={st.tactCaso}>{t.caso}</Text>
+              <Text style={[st.tactEv, { color: AMBER }]}>{t.ev}</Text>
+              <Chip label={t.accion} color={t.accion.startsWith('Responde') ? Colors.green : Colors.muted} small />
+            </View>
+          </View>
+        ))}
+      </View>
+
+      <SectionLabel>Recursos · cuadernillos oficiales gratis</SectionLabel>
+      <View style={[gridStyle(240), { marginBottom: Spacing.lg }]}>
+        {MIR_RECURSOS.map((r, i) => (
+          <View key={i} style={gridItemStyle(240)}>
+            <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(r.url)} style={st.resCard}>
+              <Text style={[st.resLabel, r.gated && { color: Colors.muted }]} numberOfLines={2}>{r.gated ? '🔒 ' : '🔗 '}{r.label} ↗</Text>
+            </TouchableOpacity>
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+}
+
+// ── TEMARIO · explorador-banco + bloques reales Cardio/Digestivo ──
+function TemarioView() {
+  return (
+    <View>
       <View style={st.ringRow}>
         <View style={st.ringCard}><RingStat value={3} max={4} label="Tier S" sub="ROI máximo" accent={Colors.green} /></View>
         <View style={st.ringCard}><RingStat value={6} max={6} label="Vueltas CRÍT" sub="Cardio/Estad/Ética" accent={Colors.coral} /></View>
         <View style={st.ringCard}><RingStat value={1} max={1} label="Simulacro" sub="/finde (mes 6+)" accent={AMBER} /></View>
-        <View style={st.ringCard}><RingStat value={MIR_KPIS.readiness} label="Readiness" sub="desde cero" accent={Colors.blue} suffix="%" /></View>
+        <View style={st.ringCard}><RingStat value={MIR_READINESS.pct} label="Readiness" sub="por simulacro" accent={Colors.gold} suffix="%" /></View>
       </View>
 
       {/* LAS 30 ASIGNATURAS REALES de ProMIR (rentabilidad + cruce rabi_94) */}
@@ -119,107 +255,31 @@ export default function MirHub() {
         ))}
         <Text style={[st.smallNote, { marginTop: Spacing.sm }]}>{DIGESTIVO_META.nota}</Text>
       </GlassPanel>
-
-      {/* ProMIR fases */}
-      <SectionLabel>ProMIR · las 5 fases</SectionLabel>
-      <View style={[gridStyle(180), { marginBottom: Spacing.xl }]}>
-        {PROMIR_FASES.map((f, i) => (
-          <View key={i} style={gridItemStyle(180)}>
-            <FadeUp delay={i * 50}>
-              <View style={[st.faseCard, { borderLeftColor: AMBER }]}>
-                <Text style={[st.faseTag, { color: AMBER }]}>{i + 1}. {f.fase}</Text>
-                <Text style={st.body}>{f.desc}</Text>
-              </View>
-            </FadeUp>
-          </View>
-        ))}
-      </View>
-
-      {/* Hora diaria */}
-      <SectionLabel>La hora diaria (aprendizaje basado en preguntas)</SectionLabel>
-      <GlassPanel style={{ marginBottom: Spacing.xl }}>
-        {MIR_HORA.map((h, i) => (
-          <View key={i} style={[st.hourRow, i === 0 && { borderTopWidth: 0 }]}>
-            <View style={[st.hourBadge, { backgroundColor: AMBER + '1A' }]}><Text style={[st.hourMin, { color: AMBER }]}>{h.min}</Text></View>
-            <View style={{ flex: 1 }}>
-              <Text style={st.hourBloque}>{h.bloque}</Text>
-              <Text style={st.hourAct}>{h.act}</Text>
-            </View>
-          </View>
-        ))}
-      </GlassPanel>
-
-      {/* Calendario macro */}
-      <SectionLabel>Calendario macro (1h/día)</SectionLabel>
-      <GlassPanel style={{ marginBottom: Spacing.xl }}>
-        {MIR_CALENDARIO.map((c, i) => (
-          <View key={i} style={[st.calRow, i === 0 && { borderTopWidth: 0 }]}>
-            <Text style={[st.calFase, { color: AMBER }]}>{c.fase}</Text>
-            <Text style={st.calFoco}>{c.foco}</Text>
-          </View>
-        ))}
-      </GlassPanel>
-
-      {/* Táctica de examen */}
-      <SectionLabel>Táctica de examen · regla numérica (−1/3)</SectionLabel>
-      <View style={[gridStyle(200), { marginBottom: Spacing.xl }]}>
-        {MIR_TACTICA.map((t, i) => (
-          <View key={i} style={gridItemStyle(200)}>
-            <View style={st.tactCard}>
-              <Text style={st.tactCaso}>{t.caso}</Text>
-              <Text style={[st.tactEv, { color: AMBER }]}>{t.ev}</Text>
-              <Chip label={t.accion} color={t.accion.startsWith('Responde') ? Colors.green : Colors.muted} small />
-            </View>
-          </View>
-        ))}
-      </View>
-
-      {/* Recursos */}
-      <SectionLabel>Recursos · cuadernillos oficiales gratis</SectionLabel>
-      <View style={[gridStyle(240), { marginBottom: Spacing.lg }]}>
-        {MIR_RECURSOS.map((r, i) => (
-          <View key={i} style={gridItemStyle(240)}>
-            <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(r.url)} style={st.resCard}>
-              <Text style={[st.resLabel, r.gated && { color: Colors.muted }]} numberOfLines={2}>{r.gated ? '🔒 ' : '🔗 '}{r.label} ↗</Text>
-            </TouchableOpacity>
-          </View>
-        ))}
-      </View>
-      <GlassPanel accent={AMBER} style={{ marginBottom: Spacing.xl, padding: Spacing.lg }}>
-        <Text style={st.smallNote}>{MIR_NOTA}</Text>
-      </GlassPanel>
-      </>)}
     </View>
   );
 }
 
 const cardBase = { backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.soft, padding: Spacing.lg, ...Elevation.sm };
 const WEB_LINK = { cursor: 'pointer', transition: Motion.base } as any;
+const tabular = Platform.OS === 'web' ? ({ fontVariantNumeric: 'tabular-nums' } as any) : {};
 const st = StyleSheet.create({
-  heroTitle: { fontSize: FontSize.headlineSm, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.5, lineHeight: LineHeight.headlineSm },
-  heroSub: { fontSize: FontSize.labelLg, marginTop: 5, fontWeight: '600', letterSpacing: 0.2 },
-  heroTesis: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, marginTop: Spacing.md, lineHeight: 20, maxWidth: 640 },
   body: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, lineHeight: 19 },
   smallNote: { fontSize: FontSize.labelMd, color: Colors.muted, lineHeight: 17 },
 
   ringRow: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.md, marginBottom: Spacing.lg },
   ringCard: { flex: 1, minWidth: 140, backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.xl, borderWidth: 1, borderColor: Hairline.soft, paddingVertical: Spacing.lg, paddingHorizontal: Spacing.md, alignItems: 'center', ...Elevation.sm },
 
-  tierChip: { borderRadius: BorderRadius.full, borderWidth: 1, paddingVertical: 3, paddingHorizontal: 10 },
-  tierTxt: { fontSize: 10, fontWeight: '800' },
-  row: { flexDirection: 'row', alignItems: 'center', paddingVertical: 8, borderTopWidth: 1, borderTopColor: Hairline.soft, gap: 8 },
-  tierBadge: { width: 24, height: 24, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
-  tierBadgeTxt: { fontSize: 11, fontWeight: '800' },
-  rowName: { fontSize: FontSize.bodyMd, color: Colors.onSurface, fontWeight: '600' },
-  rowNota: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 1, lineHeight: 15 },
-  rowVueltas: { fontSize: 10, fontWeight: '700', width: 26, textAlign: 'right' },
+  // simulacros · desgloses
+  desgCard: { ...cardBase, borderLeftWidth: 3, ...WEB_LINK },
+  desgFuente: { fontSize: FontSize.labelLg, fontWeight: '700', color: Colors.onSurface, letterSpacing: -0.2 },
+  desgQue: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 5, lineHeight: 16 },
 
   faseCard: { ...cardBase, borderLeftWidth: 3, minHeight: 110 },
   faseTag: { fontSize: FontSize.labelMd, fontWeight: '800', marginBottom: 5, letterSpacing: 0.2 },
 
   hourRow: { flexDirection: 'row', alignItems: 'flex-start', paddingVertical: Spacing.md, borderTopWidth: 1, borderTopColor: Hairline.soft, gap: Spacing.sm },
   hourBadge: { borderRadius: BorderRadius.md, paddingVertical: 3, paddingHorizontal: 8, minWidth: 56, alignItems: 'center' },
-  hourMin: { fontSize: FontSize.labelSm, fontWeight: '800' },
+  hourMin: { fontSize: FontSize.labelSm, fontWeight: '800', ...tabular },
   hourBloque: { fontSize: FontSize.labelLg, fontWeight: '700', color: Colors.onSurface },
   hourAct: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 2, lineHeight: 16 },
 
@@ -229,14 +289,14 @@ const st = StyleSheet.create({
 
   tactCard: { ...cardBase, alignItems: 'center' },
   tactCaso: { fontSize: FontSize.labelMd, color: Colors.onSurface, fontWeight: '600', textAlign: 'center' },
-  tactEv: { fontSize: FontSize.titleMd, fontWeight: '800', marginVertical: 5, letterSpacing: -0.3 },
+  tactEv: { fontSize: FontSize.titleMd, fontWeight: '800', marginVertical: 5, letterSpacing: -0.3, ...tabular },
 
   resCard: { ...cardBase, ...WEB_LINK },
   resLabel: { fontSize: FontSize.labelMd, color: AMBER, fontWeight: '600', lineHeight: 16 },
 
   capCard: { ...cardBase, borderLeftWidth: 3, marginBottom: Spacing.sm, padding: Spacing.md, ...WEB_LINK },
   capTitulo: { flex: 1, fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, letterSpacing: -0.2 },
-  capPeso: { fontSize: FontSize.labelLg, fontWeight: '800' },
+  capPeso: { fontSize: FontSize.labelLg, fontWeight: '800', ...tabular },
   planRow: { flexDirection: 'row', alignItems: 'flex-start', paddingVertical: Spacing.md, borderTopWidth: 1, borderTopColor: Hairline.soft, gap: Spacing.sm },
   planBadge: { borderRadius: BorderRadius.md, paddingVertical: 3, paddingHorizontal: 8, minWidth: 96, alignItems: 'center' },
   planDia: { fontSize: FontSize.labelSm, fontWeight: '800' },

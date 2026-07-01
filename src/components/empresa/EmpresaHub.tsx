@@ -4,8 +4,9 @@ import { useFocusEffect } from '@react-navigation/native';
 import { consumeNavIntent } from '../../lib/navIntent';
 import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, LineHeight } from '../../theme/tokens';
 import { desktopStyles, DesktopColors } from '../../theme/desktopStyles';
-import { AMBER, PillTab, Chip, SectionLabel, useHover } from './primitives';
-import { GradientHero, RingStat, BrandTile } from './visuals';
+import { AMBER, BRASS, PillTab, Chip } from './primitives';
+import { GradientHero, RingStat, TerminalHeader, KpiTapeStrip, BrandWatchlist, CommandBackdrop } from './visuals';
+import type { TapeItem } from './visuals';
 import PulsoCommandCenter from './PulsoCommandCenter';
 import StudyPulsoHub from '../study/StudyPulsoHub';
 import AurumHub from './AurumHub';
@@ -14,9 +15,9 @@ import BrandHorario from './BrandHorario';
 import TerrenosLeadTracker from './TerrenosLeadTracker';
 import {
   CockpitPanel, OfertaPanel, MarketingPanel, VentasPanel,
-  LogisticaPanel, WebPanel, DirectricesPanel, PirqaView,
+  LogisticaPanel, WebPanel, DirectricesPanel, PirqaView, PanelChrome,
 } from './panels';
-import { EMPRESAS, BRANDS, CARTERA_PULSO } from '../../lib/empresaData';
+import { EMPRESAS, BRANDS, CARTERA_PULSO, HOLDING_WATCHLIST, PULSO_CONSOLIDADO } from '../../lib/empresaData';
 import { Linking } from 'react-native';
 import { obsUrl } from '../../lib/obsidianMap';
 import { OBS_EMPRESA } from '../../lib/obsidianVaultMap';
@@ -42,15 +43,15 @@ function ObsMarcaLink({ company }: { company: string }) {
  * (placeholders). Reutilizado por mobile y desktop vía `variant`.
  */
 
-const LIVIANO_PANELS: { id: string; label: string; icon: string; render: () => React.ReactNode }[] = [
-  { id: 'cockpit',     label: 'Cockpit',     icon: '📊', render: () => <CockpitPanel /> },
-  { id: 'oferta',      label: 'Oferta',      icon: '🎯', render: () => <OfertaPanel /> },
-  { id: 'marketing',   label: 'Marketing',   icon: '📣', render: () => <MarketingPanel /> },
-  { id: 'ventas',      label: 'Ventas',      icon: '💰', render: () => <VentasPanel /> },
-  { id: 'logistica',   label: 'Logística',   icon: '📦', render: () => <LogisticaPanel /> },
-  { id: 'web',         label: 'Web & Links', icon: '🌐', render: () => <WebPanel /> },
-  { id: 'directrices', label: 'Directrices', icon: '🧠', render: () => <DirectricesPanel /> },
-  { id: 'horario',     label: 'Horario',     icon: '🗓️', render: () => <BrandHorario brand="pulso" /> },
+const LIVIANO_PANELS: { id: string; label: string; icon: string; fkey: string; render: () => React.ReactNode }[] = [
+  { id: 'cockpit',     label: 'Cockpit',     icon: '📊', fkey: 'F1', render: () => <CockpitPanel /> },
+  { id: 'oferta',      label: 'Oferta',      icon: '🎯', fkey: 'F2', render: () => <OfertaPanel /> },
+  { id: 'marketing',   label: 'Marketing',   icon: '📣', fkey: 'F3', render: () => <MarketingPanel /> },
+  { id: 'ventas',      label: 'Ventas',      icon: '💰', fkey: 'F4', render: () => <VentasPanel /> },
+  { id: 'logistica',   label: 'Logística',   icon: '📦', fkey: 'F5', render: () => <LogisticaPanel /> },
+  { id: 'web',         label: 'Web & Links', icon: '🌐', fkey: 'F6', render: () => <WebPanel /> },
+  { id: 'directrices', label: 'Directrices', icon: '🧠', fkey: 'F7', render: () => <DirectricesPanel /> },
+  { id: 'horario',     label: 'Horario',     icon: '🗓️', fkey: 'F8', render: () => <BrandHorario brand="pulso" /> },
 ];
 
 const MAIN_IDS = ['pulso', 'liviano', 'pirqa'];
@@ -86,27 +87,21 @@ export default function EmpresaHub({ variant = 'mobile' }: { variant?: 'mobile' 
     ? desktopStyles.centerScrollContent
     : { paddingHorizontal: Spacing.lg, paddingTop: 56, paddingBottom: 110 };
 
-  return (
-    <ScrollView
-      style={{ flex: 1, backgroundColor: Colors.surface }}
-      contentContainerStyle={contentStyle as any}
-      showsVerticalScrollIndicator={false}
-    >
-      {/* Header */}
-      <View style={{ marginBottom: Spacing.xl }}>
-        <View style={st.eyebrowRow}>
-          <View style={st.eyebrowDot} />
-          <Text style={st.eyebrow}>BUSINESS</Text>
-        </View>
-        <Text style={isDesktop ? desktopStyles.pageTitle : st.title}>Centro de control</Text>
-        <Text style={st.subtitle}>Pulso Health Group — el conglomerado de salud DTC y sus líneas.</Text>
-      </View>
+  // Cinta de teletipo del holding (mono + deltas) — derivada de PULSO_CONSOLIDADO.
+  const c = PULSO_CONSOLIDADO;
+  const tape: TapeItem[] = [
+    { label: 'Madurez grupo', value: `${c.readinessGrupo}%`, delta: { dir: 'up', label: '+' } },
+    { label: 'Líneas', value: `${c.lineasActivas}/${c.lineasSalud}`, delta: { dir: 'up', label: 'activas' } },
+    { label: 'MRR LVN', value: 'S/ 0', delta: { dir: 'flat', label: 'pre-lanza' } },
+    { label: 'Altas/mes', value: '0', delta: { dir: 'flat', label: 'meta 4' } },
+    { label: 'Leads TERR', value: '21', delta: { dir: 'up', label: 'seguimiento' } },
+    { label: 'En producción', value: `${c.tenantsProduccion}`, delta: { dir: 'up', label: 'PIRQA' } },
+    { label: 'Terminal', value: 'CURADO', delta: { dir: 'flat', label: 'no live CRM' } },
+  ];
 
-      {/* Selector proporcional a la importancia: Pulso domina, LIVIANO medio, PIRQA ícono */}
-      <BrandSelector active={company} onSelect={setCompany} />
-      <Text style={st.selectorHint}>70% Pulso/LIVIANO · 10% PIRQA · 10% Terrenos · 10% Golden — cada línea con su propio horario</Text>
-      <ObsMarcaLink company={company} />
-
+  // Workspace: contenido central por marca activa.
+  const workspace = (
+    <>
       {/* Contenido por empresa */}
       {company === 'pulso' && <AIFirstPanel segmento="ops" />}
       {company === 'pulso' && <PulsoCommandCenter onOpenBrand={openBrand} />}
@@ -136,7 +131,7 @@ export default function EmpresaHub({ variant = 'mobile' }: { variant?: 'mobile' 
           <SimpleBrandView
             id="terrenos" titulo="Casa Soto Tocas" estado="Venta activa"
             desc="Patrimonios del Mantaro — 13 predios en Huáchac, venta directa de la familia. Web viva + Marketplace (cuenta Flor): 21 compradores en seguimiento (23 conversaciones). Visitas guiadas: sáb/dom desde 4:00 p.m. WhatsApp 934 173 914."
-            chips={[['casasototocas.vercel.app ✓', Colors.green], ['Marketplace: 21 compradores activos', Colors.green], ['Ads: NO aún (gate Lean Analytics)', AMBER]]}
+            chips={[['casasototocas.vercel.app ✓', Colors.green], ['Marketplace: 21 compradores activos', Colors.green], ['Ads: NO aún (gate Lean Analytics)', BRASS]]}
             links={[
               ['🌐 Web', 'https://casasototocas.vercel.app'],
               ['📥 Bandeja Marketplace', 'https://www.facebook.com/marketplace/inbox/'],
@@ -154,7 +149,7 @@ export default function EmpresaHub({ variant = 'mobile' }: { variant?: 'mobile' 
           <SimpleBrandView
             id="golden" titulo="Qori Golden" estado="Pre-lanzamiento"
             desc="Criadero familiar Golden Retriever (qori = oro en quechua, familia de marcas con PIRQA). Madre inseminada ~8-jun → camada nace ~ago, entrega ~oct-2026. Estrategia verificada (criadores élite EE.UU. tipo Recherche $14,500+): web viva con video-hero y barra de gestación, lista de espera con seña S/ 500 Yape (elección por orden de seña), pupdates en video, precio objetivo S/ 2,500-3,000. Carpeta nativa: D:\qori-golden."
-            chips={[['Nombre: Qori Golden ✓', Colors.green], ['FB: página creada ✓', Colors.green], ['Camada: nace ~ago · entrega ~oct', AMBER], ['Pendiente: ficha real de la madre + precio', AMBER]]}
+            chips={[['Nombre: Qori Golden ✓', Colors.green], ['FB: página creada ✓', Colors.green], ['Camada: nace ~ago · entrega ~oct', BRASS], ['Pendiente: ficha real de la madre + precio', BRASS]]}
             links={[
               ['🌐 qori-golden.vercel.app', 'https://qori-golden.vercel.app'],
               ['📘 Página de Facebook', 'https://www.facebook.com/profile.php?id=61590843116336'],
@@ -169,109 +164,57 @@ export default function EmpresaHub({ variant = 'mobile' }: { variant?: 'mobile' 
       {!MAIN_IDS.includes(company) && !['estudio', 'aurum', 'terrenos', 'golden'].includes(company) && (
         <PlaceholderBrandView id={company} onBack={() => setCompany('pulso')} />
       )}
-    </ScrollView>
+    </>
   );
-}
 
-// ── Selector proporcional a la importancia ───────────────────────
-function BrandSelector({ active, onSelect }: { active: string; onSelect: (id: string) => void }) {
   return (
-    <View style={{ flexDirection: 'row', gap: Spacing.sm, alignItems: 'stretch', marginBottom: 6, flexWrap: 'wrap' }}>
-      <PulsoTab active={active === 'pulso'} onPress={() => onSelect('pulso')} />
-      <LivianoTab active={active === 'liviano'} onPress={() => onSelect('liviano')} />
-      <PirqaTab active={active === 'pirqa'} onPress={() => onSelect('pirqa')} />
-      <MiniBrandTab id="terrenos" label="10%" active={active === 'terrenos'} onPress={() => onSelect('terrenos')} />
-      <MiniBrandTab id="golden" label="10%" active={active === 'golden'} onPress={() => onSelect('golden')} />
-    </View>
-  );
-}
-
-/** Tile pequeño para líneas paralelas (Terrenos, Golden) — mismo lenguaje que PIRQA */
-function MiniBrandTab({ id, label, active, onPress }: { id: string; label: string; active: boolean; onPress: () => void }) {
-  const { hovered, hoverProps } = useHover();
-  const c = (BRANDS as any)[id]?.bright || '#B7B8BD';
-  const web = Platform.OS === 'web';
-  return (
-    <TouchableOpacity
-      activeOpacity={0.85} onPress={onPress} {...hoverProps}
-      style={[
-        sel.pirqa,
-        { borderColor: active ? c + 'AA' : DesktopColors.glassBorder, backgroundColor: active ? c + '18' : 'rgba(255,255,255,0.03)' },
-        web ? ({ transition: 'all .15s ease', cursor: 'pointer', ...(hovered && !active ? { borderColor: c + '66', transform: [{ translateY: -2 }] } : {}) } as any) : null,
-      ]}
+    <ScrollView
+      style={{ flex: 1, backgroundColor: Colors.surface }}
+      contentContainerStyle={contentStyle as any}
+      showsVerticalScrollIndicator={false}
     >
-      <Text style={{ fontSize: 18 }}>{(BRANDS as any)[id]?.emoji || '🏷️'}</Text>
-      <Text style={[sel.pirqaLabel, { color: c }]}>{label}</Text>
-    </TouchableOpacity>
-  );
-}
+      <View style={{ position: 'relative' }}>
+        <CommandBackdrop />
 
-function PulsoTab({ active, onPress }: { active: boolean; onPress: () => void }) {
-  const { hovered, hoverProps } = useHover();
-  const gold = BRANDS.pulso.bright;
-  const web = Platform.OS === 'web';
-  return (
-    <TouchableOpacity
-      activeOpacity={0.92} onPress={onPress} {...hoverProps}
-      style={[
-        sel.pulso,
-        { borderColor: active ? gold + 'AA' : gold + '3A' },
-        web
-          ? ({ backgroundImage: 'linear-gradient(120deg, #2E2817 0%, #0A1424 78%)', transition: 'all .2s ease', cursor: 'pointer', ...(hovered ? { transform: [{ translateY: -2 }], borderColor: gold + 'AA' } : {}) } as any)
-          : { backgroundColor: '#23252E' },
-      ]}
-    >
-      {web ? (
-        <View pointerEvents="none" style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: '42%', backgroundImage: 'linear-gradient(100deg, transparent, rgba(255,255,255,0.08), transparent)', animationName: 'hubSweep', animationDuration: '5.5s', animationIterationCount: 'infinite', animationTimingFunction: 'ease-in-out' } as any} />
-      ) : null}
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, position: 'relative' }}>
-        <Text style={{ fontSize: 30 }}>{BRANDS.pulso.emoji}</Text>
-        <View style={{ flex: 1 }}>
-          <Text style={sel.pulsoName}>Pulso</Text>
-          <Text style={[sel.pulsoSub, { color: gold }]}>Health Group · el grupo lo es todo</Text>
+        {/* ── TERMINAL MASTHEAD ── */}
+        <TerminalHeader
+          wordmark="PULSO HEALTH GROUP"
+          mercado="● MERCADO ABIERTO"
+          madurez={c.readinessGrupo}
+          lineas={`${c.lineasActivas}/${c.lineasSalud}`}
+        />
+
+        {/* ── CINTA DE TELETIPO ── */}
+        <View style={st.tapeWrap}>
+          <KpiTapeStrip items={tape} />
         </View>
-        {active ? <View style={[sel.liveDot, { backgroundColor: gold }]} /> : null}
+
+        <ObsMarcaLink company={company} />
+
+        {/* ── WATCHLIST móvil: fila horizontal scrollable de tickers ── */}
+        {!isDesktop ? (
+          <View style={{ marginBottom: Spacing.lg }}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingVertical: 2, paddingHorizontal: 2 }}>
+              <BrandWatchlist items={HOLDING_WATCHLIST} active={company} onSelect={setCompany} horizontal />
+            </ScrollView>
+            <Text style={st.selectorHint}>70% Pulso/LIVIANO · 10% PIRQA · 10% Terrenos · 10% Golden — click en el ticker abre la línea</Text>
+          </View>
+        ) : null}
+
+        {/* ── LAYOUT: workspace + raíl de watchlist (desktop) / apilado (móvil) ── */}
+        {isDesktop ? (
+          <View style={st.deskGrid}>
+            <View style={st.deskWorkspace}>{workspace}</View>
+            <View style={st.deskAside}>
+              <BrandWatchlist items={HOLDING_WATCHLIST} active={company} onSelect={setCompany} />
+              <Text style={st.asideHint}>Pulso = índice · 70/10/10/10. Data curada (no feed CRM en vivo).</Text>
+            </View>
+          </View>
+        ) : (
+          workspace
+        )}
       </View>
-    </TouchableOpacity>
-  );
-}
-
-function LivianoTab({ active, onPress }: { active: boolean; onPress: () => void }) {
-  const { hovered, hoverProps } = useHover();
-  const salvia = BRANDS.liviano.bright;
-  const web = Platform.OS === 'web';
-  return (
-    <TouchableOpacity
-      activeOpacity={0.9} onPress={onPress} {...hoverProps}
-      style={[
-        sel.liviano,
-        { borderColor: active ? salvia + 'AA' : DesktopColors.glassBorder, backgroundColor: active ? salvia + '14' : 'rgba(255,255,255,0.03)' },
-        web ? ({ transition: 'all .15s ease', cursor: 'pointer', ...(hovered && !active ? { borderColor: salvia + '66' } : {}) } as any) : null,
-      ]}
-    >
-      <Text style={{ fontSize: 20 }}>{BRANDS.liviano.emoji}</Text>
-      <Text style={[sel.livName, active && { color: Colors.onSurface }]}>LIVIANO</Text>
-      <Text style={[sel.livSub, { color: salvia }]}>ancla</Text>
-    </TouchableOpacity>
-  );
-}
-
-function PirqaTab({ active, onPress }: { active: boolean; onPress: () => void }) {
-  const { hovered, hoverProps } = useHover();
-  const terra = BRANDS.pirqa.bright;
-  const web = Platform.OS === 'web';
-  return (
-    <TouchableOpacity
-      activeOpacity={0.85} onPress={onPress} {...hoverProps}
-      style={[
-        sel.pirqa,
-        { borderColor: active ? terra + 'AA' : DesktopColors.glassBorder, backgroundColor: active ? terra + '18' : 'rgba(255,255,255,0.03)' },
-        web ? ({ transition: 'all .15s ease', cursor: 'pointer', ...(hovered && !active ? { borderColor: terra + '66', transform: [{ translateY: -2 }] } : {}) } as any) : null,
-      ]}
-    >
-      <Text style={{ fontSize: 18 }}>{BRANDS.pirqa.emoji}</Text>
-      <Text style={[sel.pirqaLabel, { color: terra }]}>1%</Text>
-    </TouchableOpacity>
+    </ScrollView>
   );
 }
 
@@ -341,7 +284,7 @@ function LivianoView({
               <Text style={{ fontSize: 28 }}>{liviano.icon}</Text>
               <Text style={st.livianoTitle}>LIVIANO</Text>
               <Chip label="Ancla de Pulso" color={salvia} small />
-              <Chip label="En desarrollo" color={AMBER} small />
+              <Chip label="En desarrollo" color={BRASS} small />
             </View>
             <Text style={st.livianoDesc}>{liviano.descCorta}</Text>
             <Text style={st.livianoLoc}>📍 {liviano.ubicacion}</Text>
@@ -353,19 +296,22 @@ function LivianoView({
         </View>
       </GradientHero>
 
-      {/* Sub-nav de paneles */}
+      {/* Sub-nav de paneles (function keys del terminal) */}
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        style={{ marginBottom: Spacing.xl, marginHorizontal: isDesktop ? 0 : -2 }}
+        style={{ marginBottom: Spacing.lg, marginHorizontal: isDesktop ? 0 : -2 }}
         contentContainerStyle={{ gap: Spacing.sm, paddingVertical: 2, paddingHorizontal: 2 }}
       >
         {LIVIANO_PANELS.map(p => (
-          <PillTab key={p.id} label={p.label} icon={p.icon} active={panel === p.id} onPress={() => setPanel(p.id)} />
+          <PillTab key={p.id} label={`${p.fkey} · ${p.label}`} icon={p.icon} active={panel === p.id} accent={salvia} onPress={() => setPanel(p.id)} />
         ))}
       </ScrollView>
 
-      {active.render()}
+      {/* Ventana de terminal del panel activo */}
+      <PanelChrome fkey={active.fkey} title={active.label} accent={salvia}>
+        {active.render()}
+      </PanelChrome>
     </View>
   );
 }
@@ -411,6 +357,15 @@ const st = StyleSheet.create({
   subtitle: { fontSize: FontSize.labelLg, color: Colors.muted, marginTop: 6, lineHeight: LineHeight.bodyMd },
   selectorHint: { fontSize: FontSize.labelSm, color: Colors.smallLabel, fontStyle: 'italic', marginBottom: Spacing.xl, marginTop: 6, lineHeight: LineHeight.labelSm },
 
+  // terminal shell
+  tapeWrap: { marginTop: Spacing.md, marginBottom: Spacing.md },
+  deskGrid: { flexDirection: 'row', alignItems: 'flex-start', gap: Spacing.xl },
+  deskWorkspace: { flex: 1, minWidth: 0 } as any,
+  deskAside: Platform.OS === 'web'
+    ? ({ width: 268, flexShrink: 0, position: 'sticky', top: 12, alignSelf: 'flex-start' } as any)
+    : { width: 268, flexShrink: 0 } as any,
+  asideHint: { fontSize: 9, color: Colors.smallLabel, marginTop: Spacing.sm, lineHeight: 14, letterSpacing: 0.2, paddingHorizontal: 4 },
+
   breadcrumb: { flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: Spacing.md, alignSelf: 'flex-start', paddingVertical: 4, paddingRight: 8 },
   breadcrumbText: { fontSize: FontSize.labelLg, color: BRANDS.pulso.bright, fontWeight: '700', letterSpacing: 0.2 },
   breadcrumbSep: { fontSize: FontSize.labelLg, color: Colors.muted },
@@ -431,17 +386,4 @@ const st = StyleSheet.create({
   placeBodyText: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, lineHeight: LineHeight.bodyMd },
   progTrack: { height: 6, borderRadius: BorderRadius.full, backgroundColor: 'rgba(255,255,255,0.06)', marginTop: Spacing.lg, overflow: 'hidden' },
   progFill: { height: 6, borderRadius: BorderRadius.full },
-});
-
-// Selector proporcional: Pulso domina, LIVIANO medio, PIRQA ícono (1%)
-const sel = StyleSheet.create({
-  pulso: { flex: 5, borderRadius: BorderRadius.xl, borderWidth: 1, paddingVertical: 16, paddingHorizontal: 20, overflow: 'hidden', justifyContent: 'center', minHeight: 68, ...Elevation.md },
-  pulsoName: { fontSize: FontSize.titleLg, lineHeight: LineHeight.titleLg, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.4 },
-  pulsoSub: { fontSize: FontSize.labelMd, fontWeight: '600', marginTop: 3, letterSpacing: 0.2 },
-  liveDot: { width: 9, height: 9, borderRadius: 5 },
-  liviano: { flex: 1.05, borderRadius: BorderRadius.lg, borderWidth: 1, paddingVertical: 10, paddingHorizontal: 10, alignItems: 'center', justifyContent: 'center', minHeight: 68, ...Elevation.sm },
-  livName: { fontSize: FontSize.labelLg, fontWeight: '800', color: Colors.muted, marginTop: 3, letterSpacing: 0.4 },
-  livSub: { fontSize: 9, fontWeight: '700', marginTop: 2, letterSpacing: 0.3, textTransform: 'uppercase' },
-  pirqa: { width: 52, borderRadius: BorderRadius.lg, borderWidth: 1, alignItems: 'center', justifyContent: 'center', minHeight: 68, ...Elevation.sm },
-  pirqaLabel: { fontSize: 9, fontWeight: '800', marginTop: 3, letterSpacing: 0.3 },
 });

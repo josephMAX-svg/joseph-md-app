@@ -19,10 +19,12 @@ import { usmleAnkiDeck, ANKIWEB } from '../../lib/ankiLinks';
  * además del de Chrome. 7 días y temario son clicables → saltan al día. El badge de
  * sistema lleva al Temario con el progreso real del plan por sistema.
  */
-const GREEN = '#3FB984';
-const RED = '#E5484D';
-const EDGE = '#3DA5E0';
-const OBS = '#A78BFA';
+const GREEN = Colors.green;   // jade (US console) — migrado de #3FB984 fosforescente
+const RED = Colors.coral;     // terracotta — migrado de #E5484D
+const EDGE = '#5B86B8';       // sapphire apagado (marca MS Edge, sin neón) — de #3DA5E0
+const OBS = Colors.purple;    // amethyst — migrado de #A78BFA
+const READ = Colors.blue;     // sapphire (active reading) — migrado de #7BB1FF
+const APEX = Colors.gold;     // oro-firma para el APEX transversal — migrado de #F5A623
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
 function openEdge(u: string) { Linking.openURL('microsoft-edge:' + u).catch(() => openUrl(u)); }
 function todayISO(): string {
@@ -97,7 +99,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaUSMLE; onOpe
             <Text style={st.anchorSub}>2 preguntas uWorld + Anki SRS · 2/2→nuevo · 1/2→repaso finde · 0/2→repetir</Text>
             <View style={{ flexDirection: 'row', gap: 6, marginTop: 8 }}>
               <TouchableOpacity activeOpacity={0.85} onPress={() => openEdge(QBQ)} style={st.edgeBtnWide}><Text style={st.edgeTxt}>◆ Abrir en Edge</Text></TouchableOpacity>
-              <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(QBQ)} style={[st.verBtn, { borderColor: '#7BB1FF88' }]}><Text style={[st.verTxt, { color: '#AFCBFF' }]}>Chrome ↗</Text></TouchableOpacity>
+              <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(QBQ)} style={[st.verBtn, { borderColor: READ + '88' }]}><Text style={[st.verTxt, { color: READ }]}>Chrome ↗</Text></TouchableOpacity>
             </View>
           </View>
         </FadeUp>
@@ -107,17 +109,17 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaUSMLE; onOpe
       <Text style={st.secLbl}>📋 Cola de hoy · 16:30–17:15 (en orden) · Qbankly = botón Edge</Text>
       <FadeUp delay={60}><ColaItem icon="🅠" lbl="PRE-TEST · uWorld (modo tutor)" val={`${dia.system} → ${dia.uw} · 3 preguntas ciegas + free recall 60s`} sub="Qbankly → QBanks → uWorld Step 1" color={GREEN} url={QBQ} edge /></FadeUp>
       <FadeUp delay={90}><ColaItem icon="🎬" lbl="VÍDEO · Boards & Beyond Step 1" val={`${dia.bbCh} → ${dia.bbVid}`} sub="Qbankly → Video Library → B&B Step 1" color={RED} url={QBV} edge /></FadeUp>
-      <FadeUp delay={120}><ColaItem icon="📖" lbl="ACTIVE READING · material primario" val={dia.mat} sub="Qbankly → Library (uWorld/AMBOSS) · 25 min · 3-5 puntos high-yield" color="#7BB1FF" url={QBL} edge /></FadeUp>
-      <FadeUp delay={150}><ColaItem icon="🗂️" lbl="FLASHCARDS · uWorld Step 1" val={`Deck: ${dia.system}`} sub="Qbankly → Flashcards · Anki SRS" color="#AFCBFF" url={QBF} edge /></FadeUp>
+      <FadeUp delay={120}><ColaItem icon="📖" lbl="ACTIVE READING · material primario" val={dia.mat} sub="Qbankly → Library (uWorld/AMBOSS) · 25 min · 3-5 puntos high-yield" color={READ} url={QBL} edge /></FadeUp>
+      <FadeUp delay={150}><ColaItem icon="🗂️" lbl="FLASHCARDS · uWorld Step 1" val={`Deck: ${dia.system}`} sub="Qbankly → Flashcards · Anki SRS" color={Colors.teal} url={QBF} edge /></FadeUp>
       {usmleObsUrl(dia.d) && (
         <FadeUp delay={165}><ColaItem icon="◆" lbl="OBSIDIAN · nota madre del subtema" val={`${dia.system} → ${dia.sub}`} sub="Vault_Medicina MIR_Joseph · aquí caen los APEX de hoy (motor APEX)" color={OBS} url={usmleObsUrl(dia.d)!} /></FadeUp>
       )}
-      <FadeUp delay={180}><ColaItem icon="🃏" lbl="ANKI · deck del sistema (SRS diario)" val={usmleAnkiDeck(dia.system)} sub="abre AnkiWeb ↗ · en Anki escritorio busca este deck exacto" color="#5BA8C9" url={ANKIWEB} /></FadeUp>
+      <FadeUp delay={180}><ColaItem icon="🃏" lbl="ANKI · deck del sistema (SRS diario)" val={usmleAnkiDeck(dia.system)} sub="abre AnkiWeb ↗ · en Anki escritorio busca este deck exacto" color={Colors.teal} url={ANKIWEB} /></FadeUp>
       {dia.palm && (
         <FadeUp delay={180}><ColaItem icon="🧠" lbl="PALMERTON · al empezar el sistema" val={dia.palm.t} sub="YouTube · método + visión del sistema (abre en Chrome)" color={GREEN} url={yt(dia.palm.id)} /></FadeUp>
       )}
       <FadeUp delay={210}>
-        <View style={[st.cola, { borderLeftColor: '#F5A623' }]}>
+        <View style={[st.cola, { borderLeftColor: APEX }]}>
           <Text style={st.colaIcon}>🃏</Text>
           <View style={{ flex: 1 }}>
             <Text style={st.colaLbl}>APEX · 17:05–17:15</Text>
@@ -287,9 +289,9 @@ export default function UsmleTodayPlan() {
           <Text style={st.stepBig}>STEP 1</Text>
           <Text style={st.stepSub}>Foundation · 80% del foco</Text>
         </View>
-        <View style={[st.stepBtn, st.stepSoon]}>
-          <Text style={[st.stepBig, { color: Colors.muted }]}>STEP 2 CK</Text>
-          <Text style={st.stepSub}>próximamente</Text>
+        <View style={[st.stepBtn, st.stepStep2]}>
+          <Text style={[st.stepBig, { color: Colors.champagne }]}>STEP 2 CK</Text>
+          <Text style={st.stepSub}>bancos + HY en pestaña ◈ Readiness</Text>
         </View>
         <View style={[st.stepBtn, st.stepSoon]}>
           <Text style={[st.stepBig, { color: Colors.muted }]}>STEP 3</Text>
@@ -334,6 +336,7 @@ const st = StyleSheet.create({
   stepBtn: { flex: 1, borderRadius: BorderRadius.lg, borderWidth: 1, paddingVertical: Spacing.md, alignItems: 'center' },
   stepActive: { backgroundColor: GREEN + '1A', borderColor: GREEN + '88', ...Elevation.glow(GREEN) },
   stepSoon: { backgroundColor: 'rgba(255,255,255,0.03)', borderColor: Hairline.medium },
+  stepStep2: { backgroundColor: Colors.gold + '12', borderColor: Colors.gold + '3A' },
   stepBig: { fontSize: FontSize.titleMd, fontWeight: '900', color: GREEN, letterSpacing: 0.4 },
   stepSub: { fontSize: 9, color: Colors.muted, marginTop: 3, letterSpacing: 0.2 },
 
@@ -361,8 +364,8 @@ const st = StyleSheet.create({
   doneBtnOn: { backgroundColor: GREEN, borderColor: GREEN, ...Elevation.glow(GREEN) },
   doneBtnTxt: { fontSize: FontSize.labelMd, fontWeight: '800', letterSpacing: 0.2 },
 
-  anchor: { ...cardBase, borderLeftWidth: 3, borderLeftColor: '#7BB1FF', padding: Spacing.md, marginBottom: Spacing.sm },
-  anchorLbl: { fontSize: FontSize.labelMd, fontWeight: '800', color: '#AFCBFF', letterSpacing: 0.2 },
+  anchor: { ...cardBase, borderLeftWidth: 3, borderLeftColor: READ, padding: Spacing.md, marginBottom: Spacing.sm },
+  anchorLbl: { fontSize: FontSize.labelMd, fontWeight: '800', color: READ, letterSpacing: 0.2 },
   anchorVal: { fontSize: FontSize.labelLg, fontWeight: '700', color: Colors.onSurface, marginTop: 4, letterSpacing: -0.2 },
   anchorSub: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 3, lineHeight: LineHeight.labelSm },
 

@@ -22,12 +22,13 @@ export const capUrl = (capId: string) => `${BASE}/capitulo/${capId}`;
 /** Tier de rentabilidad leído del chart "Distribución de preguntas MIR" de ProMIR. */
 export type RentColor = 'roja' | 'naranja' | 'amarilla' | 'verde' | 'verdeOsc' | 'oculta';
 
+// Tiers en joya apagada (Midnight Sapphire & Champagne Gold) — sin neón.
 export const RENT_TIER: Record<RentColor, { label: string; rango: string; color: string; orden: number }> = {
-  roja:     { label: 'Máxima',     rango: '> 15 %',      color: '#E5484D', orden: 0 },
-  naranja:  { label: 'Muy alta',   rango: '7,5 – 10 %',  color: '#F5A623', orden: 1 },
-  amarilla: { label: 'Alta',       rango: '5 – 7,5 %',   color: '#E8C547', orden: 2 },
-  verde:    { label: 'Media',      rango: '2,5 – 5 %',   color: '#4Fae6b', orden: 3 },
-  verdeOsc: { label: 'Baja',       rango: '< 2,5 %',     color: '#2E7D46', orden: 4 },
+  roja:     { label: 'Máxima',     rango: '> 15 %',      color: '#C56A5A', orden: 0 },  // terracotta (era #E5484D)
+  naranja:  { label: 'Muy alta',   rango: '7,5 – 10 %',  color: '#C8A96A', orden: 1 },  // champagne gold (era #F5A623)
+  amarilla: { label: 'Alta',       rango: '5 – 7,5 %',   color: '#D8BE86', orden: 2 },  // champagne claro (era #E8C547)
+  verde:    { label: 'Media',      rango: '2,5 – 5 %',   color: '#5FA88C', orden: 3 },  // jade (era #4Fae6b)
+  verdeOsc: { label: 'Baja',       rango: '< 2,5 %',     color: '#3E7A63', orden: 4 },  // jade oscuro (era #2E7D46)
   oculta:   { label: 'Ver ProMIR', rango: 's/d en captura', color: '#5B6472', orden: 3 },
 };
 

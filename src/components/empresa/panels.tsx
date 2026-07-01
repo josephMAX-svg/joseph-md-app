@@ -4,9 +4,9 @@ import BrandHorario from './BrandHorario';
 import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, LineHeight } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
 import {
-  AMBER, GlassPanel, SectionLabel, Chip, MetricCard, StatCell, SemaforoDot,
+  AMBER, BRASS, GlassPanel, SectionLabel, Chip, MetricCard, StatCell, SemaforoDot,
   useHover, semaforoColor, accentColor, estadoCreativoColor, estadoEmpresaColor,
-  gridStyle, gridItemStyle,
+  gridStyle, gridItemStyle, monoText,
 } from './primitives';
 import {
   LIVIANO_KPIS, KPI_GRUPOS, LIVIANO_OFERTA, ESTUDIO_MERCADO, MARKETING_REGLAS,
@@ -23,6 +23,32 @@ import {
 
 function openUrl(url: string) {
   Linking.openURL(url).catch(() => {});
+}
+
+// ── PanelChrome: ventana de terminal (barra de título + código F# + hairline oro) ─
+// Re-encuadra cada panel de LIVIANO como una "ventana" del trading desk.
+export function PanelChrome({
+  fkey, title, accent = BRASS, children,
+}: { fkey: string; title: string; accent?: string; children: React.ReactNode }) {
+  return (
+    <View style={[s.chromeWrap, { borderLeftColor: accent }]}>
+      <View pointerEvents="none" style={s.chromeHairline} />
+      <View style={s.chromeBar}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, flex: 1 }}>
+          <View style={[s.chromeFkey, { borderColor: accent + '66', backgroundColor: accent + '14' }]}>
+            <Text style={[s.chromeFkeyTxt, { color: accent }]}>{fkey}</Text>
+          </View>
+          <Text style={s.chromeTitle} numberOfLines={1}>{title.toUpperCase()}</Text>
+        </View>
+        <View style={s.chromeDots}>
+          <View style={[s.chromeDot, { backgroundColor: Colors.green }]} />
+          <View style={[s.chromeDot, { backgroundColor: BRASS }]} />
+          <View style={[s.chromeDot, { backgroundColor: Colors.coral }]} />
+        </View>
+      </View>
+      <View style={s.chromeBody}>{children}</View>
+    </View>
+  );
 }
 
 // ── helpers de layout ────────────────────────────────────────────
@@ -749,6 +775,31 @@ const cardBase = {
 };
 
 const s = StyleSheet.create({
+  // panel chrome (terminal window)
+  chromeWrap: {
+    backgroundColor: '#0B1424',
+    borderRadius: BorderRadius.lg,
+    borderWidth: 1,
+    borderColor: Hairline.medium,
+    borderLeftWidth: 3,
+    overflow: 'hidden',
+    marginBottom: Spacing['2xl'],
+    ...Elevation.md,
+  },
+  chromeHairline: { position: 'absolute', top: 0, left: 0, right: 0, height: 1, backgroundColor: Colors.gold, opacity: 0.35 },
+  chromeBar: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
+    paddingVertical: 9, paddingHorizontal: Spacing.md,
+    borderBottomWidth: 1, borderBottomColor: Hairline.soft,
+    backgroundColor: 'rgba(255,255,255,0.02)',
+  },
+  chromeFkey: { borderWidth: 1, borderRadius: BorderRadius.sm, paddingVertical: 1, paddingHorizontal: 6 },
+  chromeFkeyTxt: { fontSize: 9, fontWeight: '800', letterSpacing: 0.5, ...monoText },
+  chromeTitle: { fontSize: FontSize.labelMd, fontWeight: '800', color: Colors.onSurface, letterSpacing: 1 },
+  chromeDots: { flexDirection: 'row', gap: 5, alignItems: 'center' },
+  chromeDot: { width: 7, height: 7, borderRadius: 4, opacity: 0.7 },
+  chromeBody: { padding: Spacing.lg },
+
   h2: { fontSize: FontSize.titleMd, lineHeight: LineHeight.titleMd, fontWeight: '800', color: Colors.onSurface, marginBottom: 6, letterSpacing: -0.3 },
   h3: { fontSize: FontSize.bodyLg, lineHeight: LineHeight.bodyLg, fontWeight: '700', color: Colors.onSurface, marginBottom: Spacing.sm, letterSpacing: -0.2 },
   body: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, lineHeight: LineHeight.bodyMd },
