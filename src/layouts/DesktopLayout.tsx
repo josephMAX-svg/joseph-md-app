@@ -39,15 +39,15 @@ if (Platform.OS === 'web' && typeof document !== 'undefined') {
       ::-webkit-scrollbar { width: 8px; height: 8px; }
       ::-webkit-scrollbar-track { background: transparent; }
       ::-webkit-scrollbar-thumb {
-        background: rgba(216,227,252,0.10);
+        background: rgba(231,234,242,0.10);
         border-radius: 999px;
         border: 2px solid transparent;
         background-clip: padding-box;
         transition: background-color 200ms ease;
       }
-      ::-webkit-scrollbar-thumb:hover { background: rgba(82,218,215,0.35); background-clip: padding-box; }
+      ::-webkit-scrollbar-thumb:hover { background: rgba(200,169,106,0.42); background-clip: padding-box; }
       ::-webkit-scrollbar-corner { background: transparent; }
-      * { scrollbar-width: thin; scrollbar-color: rgba(216,227,252,0.10) transparent; }
+      * { scrollbar-width: thin; scrollbar-color: rgba(231,234,242,0.10) transparent; }
       html, body { scroll-behavior: smooth; }
       .desktop-scroll { scroll-behavior: smooth; }
     `;

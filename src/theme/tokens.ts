@@ -1,67 +1,73 @@
 /**
- * Joseph MD — Clinical Precision Design Tokens
- * Premium Design System v2.0
- * Extracted from Stitch MCP Design System "Clinical Precision"
- * Asset: assets/5d883d3d628b42178d535b93eb8a3a27
+ * Joseph MD — Design Tokens
+ * Design System v4 (2026) — "Midnight Sapphire & Champagne Gold"
+ * Quiet-luxury palette: deep desaturated sapphire bedrock, warm platinum text,
+ * champagne-gold signature accent, muted jewel-tone segment accents. NO neon.
+ * Referentes: private-bank / editorial / Rolex / Aesop restraint.
  */
 
 export const Colors = {
-  // Surface Hierarchy (Dark Navy Bedrock)
-  surface: '#081325',
-  surfaceDim: '#081325',
-  surfaceContainerLowest: '#040E20',
-  surfaceContainerLow: '#111C2E',
-  surfaceContainer: '#152032',
-  surfaceContainerHigh: '#202A3D',
-  surfaceContainerHighest: '#2B3548',
-  surfaceBright: '#2F394D',
+  // ── Surface Hierarchy — Midnight Sapphire bedrock (deep, desaturated, warm-black)
+  surface: '#0A0F1C',
+  surfaceDim: '#070B15',
+  surfaceContainerLowest: '#060A14',
+  surfaceContainerLow: '#0F1626',
+  surfaceContainer: '#141C2E',
+  surfaceContainerHigh: '#1C2438',
+  surfaceContainerHighest: '#262F45',
+  surfaceBright: '#2E3850',
 
-  // Primary & Text
-  primary: '#BCC7DF',
-  primaryContainer: '#0B1628',
-  onSurface: '#D8E3FC',
-  onSurfaceVariant: '#C5C6CD',
-  onPrimary: '#263144',
-  outline: '#8F9097',
-  outlineVariant: '#45474C',
+  // ── Primary & Text — warm platinum (less blue, more status)
+  primary: '#C6CDDB',
+  primaryContainer: '#0B1220',
+  onSurface: '#E7EAF2',
+  onSurfaceVariant: '#A9B0C0',
+  onPrimary: '#1A2233',
+  outline: '#7C8496',
+  outlineVariant: '#3A4256',
 
-  // Secondary (Teal System)
-  secondary: '#52DAD7',
-  secondaryContainer: '#00B0AE',
-  onSecondary: '#003736',
+  // ── Secondary (muted teal — the brand's calm, not neon)
+  secondary: '#6BB8B0',
+  secondaryContainer: '#2E6E6B',
+  onSecondary: '#05201F',
 
-  // Tertiary (Coral System)
-  tertiary: '#FFB3B0',
-  tertiaryContainer: '#360004',
-  onTertiary: '#68000F',
+  // ── Tertiary (muted terracotta)
+  tertiary: '#D9A79C',
+  tertiaryContainer: '#3A1E18',
+  onTertiary: '#3A140C',
 
-  // Error
-  error: '#FFB4AB',
-  errorContainer: '#93000A',
-  onError: '#690005',
+  // ── Error (muted, still legible)
+  error: '#E0908A',
+  errorContainer: '#5E211C',
+  onError: '#2A0A08',
 
-  // Inverse
-  inverseSurface: '#D8E3FC',
-  inverseOnSurface: '#263144',
-  inversePrimary: '#545F74',
+  // ── Inverse
+  inverseSurface: '#E7EAF2',
+  inverseOnSurface: '#1A2233',
+  inversePrimary: '#4A536B',
 
-  // App-Specific Accents
-  blue: '#2E7CF6',
-  teal: '#0FD4A0',
-  amber: '#F5A623',
-  coral: '#F56342',
-  purple: '#8B5CF6',
-  green: '#10B981',
+  // ── App-Specific Accents — muted jewel tones (sophisticated, non-fluorescent)
+  blue: '#4F7DD6',    // sapphire (Study/ENCAPS)
+  teal: '#6BB8B0',    // muted teal (Home / Research base)
+  amber: '#C8A96A',   // champagne gold (Business signature)
+  coral: '#C56A5A',   // terracotta
+  purple: '#9A7BC8',  // amethyst (Derma)
+  green: '#5FA88C',   // jade (Vitals)
 
-  // Utility
-  white: '#D8E3FC',
-  muted: '#8F9097',
+  // ── Signature metals (the "status" layer)
+  gold: '#C8A96A',        // champagne gold — signature accent
+  champagne: '#D8BE86',   // lighter gold (highlights, gradients)
+  brass: '#B8934E',       // deeper brass (Business, depth)
+
+  // ── Utility
+  white: '#E7EAF2',
+  muted: '#7C8496',
   transparent: 'transparent',
 
-  // Premium Design System v2
-  sectionHeader: '#8899AA',
-  bodyText: '#D8E3FC',
-  smallLabel: '#6B7C93',
+  // ── v2 aliases (kept for API compatibility)
+  sectionHeader: '#8A93A6',
+  bodyText: '#E7EAF2',
+  smallLabel: '#6A7488',
 } as const;
 
 export const Spacing = {
@@ -99,44 +105,44 @@ export const BorderRadius = {
   full: 999,
 } as const;
 
-// Sidebar accent colors per nav item
+// Sidebar accent colors per nav item — distinct muted jewel per segment.
 export const SidebarAccents: Record<string, string> = {
-  Home: Colors.teal,
-  Estudio: Colors.blue,
-  Derma: Colors.purple,
-  Empresa: Colors.amber,
-  'Investigación': Colors.teal,
-  Vitals: Colors.green,
-  Synapse: '#818CF8', // índigo neural — formación élite en IA
+  Home: Colors.gold,            // command center → champagne gold (signature)
+  Estudio: Colors.blue,         // sapphire
+  Derma: Colors.purple,         // amethyst
+  Empresa: Colors.brass,        // deep brass (money)
+  'Investigación': Colors.teal, // muted teal
+  Vitals: Colors.green,         // jade
+  Synapse: '#7C83D6',           // periwinkle — formación élite en IA
 } as const;
 
 // Metric gradient colors
 export const MetricColors: Record<string, string> = {
   tarjetas: Colors.teal,
-  deepWork: Colors.amber,
+  deepWork: Colors.gold,
   dominio: Colors.blue,
   publicaciones: Colors.green,
 } as const;
 
-// ─── Premium Design System v3 (2026) — ADITIVO, no rompe la API existente ───
-// Referentes: Linear · Vercel · Stripe · Arc · Family · Things. Profundidad por sombra
-// suave + hairlines de baja opacidad + micro-motion. RN-web mapea shadow* → boxShadow.
+// ─── Premium Design System v3 (depth) — ADITIVO, no rompe la API existente ───
+// Profundidad por sombra suave + hairlines de baja opacidad + micro-motion.
+// RN-web mapea shadow* → boxShadow.
 
 // Elevation — sombras suaves en capas (depth = "élite"). Úsalo en cards/botones flotantes.
 export const Elevation = {
   none: {},
-  sm: { shadowColor: '#00040D', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.20, shadowRadius: 3, elevation: 2 },
-  md: { shadowColor: '#00040D', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.28, shadowRadius: 12, elevation: 6 },
-  lg: { shadowColor: '#00040D', shadowOffset: { width: 0, height: 12 }, shadowOpacity: 0.34, shadowRadius: 28, elevation: 14 },
-  glow: (c: string) => ({ shadowColor: c, shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.5, shadowRadius: 18, elevation: 10 }),
+  sm: { shadowColor: '#00030A', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.22, shadowRadius: 3, elevation: 2 },
+  md: { shadowColor: '#00030A', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.32, shadowRadius: 14, elevation: 6 },
+  lg: { shadowColor: '#00030A', shadowOffset: { width: 0, height: 14 }, shadowOpacity: 0.40, shadowRadius: 32, elevation: 16 },
+  glow: (c: string) => ({ shadowColor: c, shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.45, shadowRadius: 18, elevation: 10 }),
 } as const;
 
-// Hairline — definición 1px de baja opacidad (premium, sutil). Complementa el no-line.
+// Hairline — definición 1px de baja opacidad (premium, sutil). Warm platinum base.
 export const Hairline = {
-  soft: 'rgba(216, 227, 252, 0.06)',
-  medium: 'rgba(216, 227, 252, 0.10)',
-  strong: 'rgba(216, 227, 252, 0.16)',
-  accentSoft: 'rgba(82, 218, 215, 0.18)',
+  soft: 'rgba(231, 234, 242, 0.06)',
+  medium: 'rgba(231, 234, 242, 0.10)',
+  strong: 'rgba(231, 234, 242, 0.16)',
+  accentSoft: 'rgba(200, 169, 106, 0.20)', // champagne-gold hairline
 } as const;
 
 // Motion — tokens de transición para web (RN-web respeta `transition` en style).
@@ -146,17 +152,18 @@ export const Motion = {
   spring: '320ms cubic-bezier(0.16, 1, 0.3, 1)',
 } as const;
 
-// Gradients — pares de acento (para LinearGradient / fondos web).
+// Gradients — pares de acento MUTED (para LinearGradient / fondos web).
 export const Gradients = {
-  teal: ['#22E3C4', '#00B0AE'],
-  blue: ['#3B82F6', '#6366F1'],
-  amber: ['#FBBF24', '#F97316'],
-  purple: ['#A78BFA', '#6366F1'],
-  coral: ['#FB7185', '#F43F5E'],
-  green: ['#34D399', '#10B981'],
-  indigo: ['#818CF8', '#4F46E5'],
-  surface: ['#152032', '#0B1628'],
-  hero: ['#0FD4A0', '#00B0AE'],
+  teal: ['#7FC6BE', '#4A8F8C'],
+  blue: ['#6B93E0', '#3E63B8'],
+  amber: ['#D8BE86', '#B8934E'],   // champagne → brass (gold)
+  purple: ['#B49AD6', '#6E5AA0'],
+  coral: ['#D98B7E', '#B45444'],
+  green: ['#7FBFA6', '#4A8F76'],
+  indigo: ['#8E96DE', '#5A63B0'],
+  surface: ['#141C2E', '#0A0F1C'],
+  hero: ['#D8BE86', '#C8A96A'],    // gold hero
+  gold: ['#D8BE86', '#B8934E'],    // signature gold gradient
 } as const;
 
 // Escala de line-height coherente con FontSize (ritmo tipográfico élite).
