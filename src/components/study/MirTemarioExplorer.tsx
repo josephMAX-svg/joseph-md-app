@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Linking } from 'react-native';
-import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
+import { View, Text, TouchableOpacity, StyleSheet, Linking, Platform } from 'react-native';
+import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, Motion, LineHeight } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
 import { SectionLabel, Chip, GlassPanel } from '../empresa/primitives';
 import { FadeUp } from '../empresa/visuals';
@@ -241,7 +241,8 @@ export default function MirTemarioExplorer() {
   );
 }
 
-const cardBase = { backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: DesktopColors.glassBorder };
+const cardBase = { backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.soft, ...Elevation.sm };
+const WEB_LINK = { cursor: 'pointer', transition: Motion.base } as any;
 const st = StyleSheet.create({
   intro: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, lineHeight: 19 },
   legend: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.md, marginTop: Spacing.md },
@@ -250,11 +251,11 @@ const st = StyleSheet.create({
   legendNote: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: Spacing.sm, lineHeight: 15 },
 
   card: { ...cardBase, borderLeftWidth: 3, marginBottom: Spacing.sm, overflow: 'hidden' },
-  head: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, padding: Spacing.md },
+  head: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, padding: Spacing.md, ...WEB_LINK },
   rentBadge: { flexDirection: 'row', alignItems: 'center', gap: 5, borderRadius: BorderRadius.full, borderWidth: 1, paddingVertical: 3, paddingHorizontal: 8, minWidth: 78, justifyContent: 'center' },
-  rentTxt: { fontSize: 9, fontWeight: '800' },
-  name: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface },
-  metaRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 2, flexWrap: 'wrap' },
+  rentTxt: { fontSize: 9, fontWeight: '800', letterSpacing: 0.2 },
+  name: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, letterSpacing: -0.2 },
+  metaRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 3, flexWrap: 'wrap' },
   metaSub: { fontSize: FontSize.labelSm, color: Colors.muted },
   prioFlag: { backgroundColor: AMBER + '1A', borderRadius: BorderRadius.full, paddingVertical: 1, paddingHorizontal: 6 },
   prioFlagTxt: { fontSize: 9, fontWeight: '800', color: AMBER },
@@ -264,24 +265,24 @@ const st = StyleSheet.create({
   vidFlagTxt: { fontSize: 9, fontWeight: '800', color: Colors.green },
   caret: { fontSize: 16, color: Colors.muted, width: 18, textAlign: 'center' },
 
-  body: { paddingHorizontal: Spacing.md, paddingBottom: Spacing.md, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.05)', paddingTop: Spacing.sm },
+  body: { paddingHorizontal: Spacing.md, paddingBottom: Spacing.md, borderTopWidth: 1, borderTopColor: Hairline.soft, paddingTop: Spacing.sm },
   pesoGlobal: { fontSize: FontSize.labelMd, color: Colors.onSurface, fontWeight: '600', lineHeight: 17, marginBottom: 8 },
   vidRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginBottom: 10 },
-  vidBtn: { backgroundColor: Colors.green + '18', borderRadius: BorderRadius.md, borderWidth: 1, borderColor: Colors.green + '44', paddingVertical: 6, paddingHorizontal: 10 },
+  vidBtn: { backgroundColor: Colors.green + '18', borderRadius: BorderRadius.md, borderWidth: 1, borderColor: Colors.green + '44', paddingVertical: 6, paddingHorizontal: 10, ...WEB_LINK },
   vidBtnTxt: { fontSize: FontSize.labelMd, fontWeight: '700', color: Colors.green },
 
   rutaBox: { borderWidth: 1, borderColor: 'rgba(123,177,255,0.3)', borderRadius: BorderRadius.md, padding: Spacing.md, backgroundColor: 'rgba(123,177,255,0.05)', marginBottom: Spacing.sm },
-  rutaTitle: { fontSize: FontSize.labelMd, fontWeight: '800', color: '#AFCBFF', marginBottom: 7 },
-  rutaStep: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, marginBottom: 6 },
+  rutaTitle: { fontSize: FontSize.labelMd, fontWeight: '800', color: '#AFCBFF', marginBottom: 8, letterSpacing: 0.2 },
+  rutaStep: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, marginBottom: 7 },
   rutaN: { fontSize: 10, fontWeight: '800', color: '#0A1424', backgroundColor: '#7BB1FF', borderRadius: 8, width: 16, height: 16, textAlign: 'center', lineHeight: 16, overflow: 'hidden' },
   rutaTxt: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 17 },
   rutaB: { color: Colors.onSurface, fontWeight: '700' },
-  boxLbl: { fontSize: 10, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 0.4, marginBottom: 6 },
+  boxLbl: { fontSize: 10, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 0.6, textTransform: 'uppercase', marginBottom: 6 },
   enfoqueBox: { borderWidth: 1, borderRadius: BorderRadius.md, padding: Spacing.md, marginBottom: Spacing.sm, backgroundColor: 'rgba(255,255,255,0.02)' },
   enfoqueTxt: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 17 },
 
   prioBox: { borderWidth: 1, borderRadius: BorderRadius.md, padding: Spacing.md, backgroundColor: 'rgba(245,166,35,0.05)', marginBottom: Spacing.sm },
-  prioTitle: { fontSize: FontSize.labelMd, fontWeight: '800', color: AMBER, marginBottom: 6 },
+  prioTitle: { fontSize: FontSize.labelMd, fontWeight: '800', color: AMBER, marginBottom: 7, letterSpacing: 0.2 },
   chipWrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 5, marginTop: 2 },
   ordChip: { flexDirection: 'row', alignItems: 'center', gap: 5, backgroundColor: AMBER + '18', borderRadius: BorderRadius.sm, paddingVertical: 3, paddingHorizontal: 7, borderWidth: 1, borderColor: AMBER + '3A' },
   ordN: { fontSize: 9, fontWeight: '800', color: '#0A1424', backgroundColor: AMBER, borderRadius: 7, width: 14, height: 14, textAlign: 'center', lineHeight: 14, overflow: 'hidden' },
@@ -289,7 +290,7 @@ const st = StyleSheet.create({
   notaPrio: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 7, lineHeight: 15 },
 
   rabiBox: { borderWidth: 1, borderColor: AMBER + '2A', borderRadius: BorderRadius.md, padding: Spacing.md, marginBottom: Spacing.sm },
-  rabiTitle: { fontSize: FontSize.labelSm, fontWeight: '800', color: AMBER, marginBottom: 5 },
+  rabiTitle: { fontSize: FontSize.labelSm, fontWeight: '800', color: AMBER, marginBottom: 6, letterSpacing: 0.2 },
   nucleoChip: { backgroundColor: AMBER + '14', borderRadius: BorderRadius.sm, paddingVertical: 3, paddingHorizontal: 7, borderWidth: 1, borderColor: AMBER + '33' },
   nucleoTxt: { fontSize: 10, color: '#F8D89A', fontWeight: '700' },
   matiz: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 5, lineHeight: 15 },
@@ -298,7 +299,7 @@ const st = StyleSheet.create({
   barRow: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingVertical: 3 },
   barName: { width: 120, fontSize: 10, color: Colors.onSurfaceVariant },
   barTrack: { flex: 1, height: 9, borderRadius: 5, backgroundColor: 'rgba(255,255,255,0.05)', overflow: 'hidden' },
-  barFill: { height: 9, borderRadius: 5 },
+  barFill: { height: 9, borderRadius: 5, ...(Platform.OS === 'web' ? { transition: Motion.spring } as any : {}) },
   barPct: { width: 42, fontSize: 10, fontWeight: '800', textAlign: 'right' },
   barHoras: { width: 56, fontSize: 9, color: Colors.muted, textAlign: 'right' },
 
@@ -308,11 +309,11 @@ const st = StyleSheet.create({
   subTxt: { flex: 1, fontSize: FontSize.labelSm, color: Colors.muted },
 
   driveBox: { borderWidth: 1, borderColor: 'rgba(123,177,255,0.25)', borderRadius: BorderRadius.md, padding: Spacing.md, backgroundColor: 'rgba(123,177,255,0.04)', marginBottom: Spacing.sm },
-  driveChip: { backgroundColor: 'rgba(123,177,255,0.1)', borderRadius: BorderRadius.sm, paddingVertical: 4, paddingHorizontal: 8, borderWidth: 1, borderColor: 'rgba(123,177,255,0.3)' },
+  driveChip: { backgroundColor: 'rgba(123,177,255,0.1)', borderRadius: BorderRadius.sm, paddingVertical: 4, paddingHorizontal: 8, borderWidth: 1, borderColor: 'rgba(123,177,255,0.3)', ...WEB_LINK },
   driveChipTxt: { fontSize: 10, color: '#AFCBFF', fontWeight: '600' },
   driveNote: { fontSize: 9, color: Colors.muted, marginTop: 6 },
 
-  capRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, paddingVertical: 5, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.04)' },
+  capRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, paddingVertical: 6, borderTopWidth: 1, borderTopColor: Hairline.soft },
   capN: { fontSize: FontSize.labelMd, fontWeight: '800', width: 18, textAlign: 'center' },
   capTxt: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 16 },
 });

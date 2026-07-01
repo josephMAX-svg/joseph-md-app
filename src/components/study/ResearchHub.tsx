@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Linking } from 'react-native';
-import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, LineHeight } from '../../theme/tokens';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Linking, Platform } from 'react-native';
+import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, Motion, LineHeight } from '../../theme/tokens';
 import { desktopStyles, DesktopColors } from '../../theme/desktopStyles';
 import { SectionLabel, Chip, GlassPanel, PillTab, gridStyle, gridItemStyle } from '../empresa/primitives';
 import { GradientHero, RingStat, MegaStat, FadeUp, CommandBackdrop } from '../empresa/visuals';
@@ -277,64 +277,65 @@ export default function ResearchHub({ variant = 'mobile' }: { variant?: 'mobile'
 
 const cardBase = {
   backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg,
-  borderWidth: 1, borderColor: DesktopColors.glassBorder, padding: Spacing.lg,
+  borderWidth: 1, borderColor: Hairline.soft, padding: Spacing.lg, ...Elevation.sm,
 };
+const WEB_LINK = Platform.OS === 'web' ? ({ cursor: 'pointer', transition: Motion.base } as any) : {};
 
 const st = StyleSheet.create({
-  heroTitle: { fontSize: FontSize.headlineSm, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.5 },
-  heroSub: { fontSize: FontSize.labelLg, marginTop: 4, fontWeight: '600' },
+  heroTitle: { fontSize: FontSize.headlineSm, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.5, lineHeight: LineHeight.headlineSm },
+  heroSub: { fontSize: FontSize.labelLg, marginTop: 5, fontWeight: '700', letterSpacing: 0.2 },
   heroTesis: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, marginTop: Spacing.md, lineHeight: 20, maxWidth: 620 },
-  todayChip: { borderRadius: BorderRadius.lg, borderWidth: 1, paddingVertical: 10, paddingHorizontal: 14, alignItems: 'center', minWidth: 120 },
-  todayLabel: { fontSize: 9, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 1 },
-  todayVal: { fontSize: FontSize.bodyLg, fontWeight: '800', marginTop: 3 },
-  todaySub: { fontSize: 9, color: Colors.muted, marginTop: 2 },
+  todayChip: { borderRadius: BorderRadius.lg, borderWidth: 1, paddingVertical: 11, paddingHorizontal: 14, alignItems: 'center', minWidth: 120, ...Elevation.sm },
+  todayLabel: { fontSize: 9, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 1.2, textTransform: 'uppercase' },
+  todayVal: { fontSize: FontSize.bodyLg, fontWeight: '800', marginTop: 4, letterSpacing: -0.2 },
+  todaySub: { fontSize: 9, color: Colors.muted, marginTop: 3, letterSpacing: 0.2 },
 
-  h3: { fontSize: FontSize.bodyLg, fontWeight: '700', color: Colors.onSurface, marginBottom: 6 },
-  body: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, lineHeight: 19 },
+  h3: { fontSize: FontSize.bodyLg, fontWeight: '700', color: Colors.onSurface, marginBottom: 6, letterSpacing: -0.2 },
+  body: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, lineHeight: LineHeight.bodyMd },
   smallNote: { fontSize: FontSize.labelMd, color: Colors.muted, lineHeight: 17 },
 
   ringRow: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.md, marginBottom: Spacing.lg },
-  ringCard: { flex: 1, minWidth: 140, backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.xl, borderWidth: 1, borderColor: DesktopColors.glassBorder, paddingVertical: Spacing.lg, paddingHorizontal: Spacing.md, alignItems: 'center' },
+  ringCard: { flex: 1, minWidth: 140, backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.xl, borderWidth: 1, borderColor: Hairline.soft, paddingVertical: Spacing.lg, paddingHorizontal: Spacing.md, alignItems: 'center', ...Elevation.sm },
 
   faseCard: { ...cardBase, borderLeftWidth: 3, minHeight: 150 },
-  faseTag: { fontSize: FontSize.labelMd, fontWeight: '800', letterSpacing: 0.3 },
-  faseTitle: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, marginTop: 4 },
+  faseTag: { fontSize: FontSize.labelMd, fontWeight: '800', letterSpacing: 0.4, textTransform: 'uppercase' },
+  faseTitle: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, marginTop: 5, letterSpacing: -0.2 },
   faseDesc: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 4, lineHeight: 16 },
   faseEntreg: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 8, fontStyle: 'italic', lineHeight: 15 },
 
-  tRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: Spacing.md, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.06)', gap: Spacing.sm },
+  tRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: Spacing.md, borderTopWidth: 1, borderTopColor: Hairline.soft, gap: Spacing.sm },
   tName: { fontSize: FontSize.bodyMd, color: Colors.onSurface, fontWeight: '600' },
-  tPeso: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 1 },
-  tObj: { width: 60, fontSize: FontSize.bodyLg, fontWeight: '800', textAlign: 'center' },
+  tPeso: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 2 },
+  tObj: { width: 60, fontSize: FontSize.bodyLg, fontWeight: '800', textAlign: 'center', letterSpacing: -0.3, ...(Platform.OS === 'web' ? ({ fontVariantNumeric: 'tabular-nums' } as any) : {}) },
 
   modCard: { ...cardBase, borderLeftWidth: 3, marginBottom: Spacing.sm },
-  modName: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, flexShrink: 1 },
+  modName: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, flexShrink: 1, letterSpacing: -0.2 },
 
   horCard: { flex: 1, minWidth: 120, ...cardBase, padding: Spacing.md },
-  horDia: { fontSize: FontSize.labelLg, fontWeight: '800' },
-  horFoco: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, marginTop: 4, lineHeight: 15 },
+  horDia: { fontSize: FontSize.labelLg, fontWeight: '800', letterSpacing: 0.2 },
+  horFoco: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, marginTop: 5, lineHeight: 15 },
 
   pipeCard: { ...cardBase, padding: Spacing.md, minHeight: 110 },
-  pipeId: { fontSize: FontSize.titleMd, fontWeight: '800', opacity: 0.7 },
-  pipeName: { fontSize: FontSize.labelLg, fontWeight: '700', color: Colors.onSurface, marginTop: 2 },
+  pipeId: { fontSize: FontSize.titleMd, fontWeight: '800', opacity: 0.7, letterSpacing: -0.3 },
+  pipeName: { fontSize: FontSize.labelLg, fontWeight: '700', color: Colors.onSurface, marginTop: 3, letterSpacing: -0.2 },
   pipeDesc: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, marginTop: 4, lineHeight: 14 },
-  pipeTool: { fontSize: 9, color: TEAL, marginTop: 6, fontWeight: '600' },
+  pipeTool: { fontSize: 9, color: TEAL, marginTop: 7, fontWeight: '700', letterSpacing: 0.2 },
 
-  jCard: { ...cardBase },
-  jName: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, marginBottom: 6 },
+  jCard: { ...cardBase, ...WEB_LINK },
+  jName: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, marginBottom: 7, letterSpacing: -0.2 },
 
-  tlRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: Spacing.md, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.06)', gap: Spacing.sm },
-  tlBadge: { borderRadius: BorderRadius.md, paddingVertical: 3, paddingHorizontal: 8, minWidth: 64, alignItems: 'center' },
-  tlSem: { fontSize: FontSize.labelSm, fontWeight: '800' },
+  tlRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: Spacing.md, borderTopWidth: 1, borderTopColor: Hairline.soft, gap: Spacing.sm },
+  tlBadge: { borderRadius: BorderRadius.md, paddingVertical: 4, paddingHorizontal: 9, minWidth: 64, alignItems: 'center' },
+  tlSem: { fontSize: FontSize.labelSm, fontWeight: '800', letterSpacing: 0.2 },
   tlFoco: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 16 },
   tlOut: { fontSize: FontSize.labelSm, color: Colors.onSurface, fontWeight: '600', width: 96, textAlign: 'right' },
 
-  link: { backgroundColor: 'rgba(255,255,255,0.04)', borderRadius: BorderRadius.md, borderWidth: 1, borderColor: DesktopColors.glassBorder, paddingVertical: 5, paddingHorizontal: 9, maxWidth: '100%' },
-  linkText: { fontSize: FontSize.labelSm, color: TEAL, fontWeight: '500' },
+  link: { backgroundColor: 'rgba(255,255,255,0.04)', borderRadius: BorderRadius.md, borderWidth: 1, borderColor: Hairline.medium, paddingVertical: 6, paddingHorizontal: 10, maxWidth: '100%', ...WEB_LINK },
+  linkText: { fontSize: FontSize.labelSm, color: TEAL, fontWeight: '600', letterSpacing: 0.2 },
 
-  recTopCapa: { fontSize: FontSize.labelMd, fontWeight: '800', color: TEAL, letterSpacing: 0.3, marginBottom: 8, textTransform: 'uppercase' as const },
-  recTopCard: { ...cardBase, padding: Spacing.md, borderLeftWidth: 3, borderLeftColor: TEAL },
-  recTopName: { flex: 1, minWidth: 180, fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface },
-  recTopMeta: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 3 },
-  recTopWhy: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 6, lineHeight: 16 },
+  recTopCapa: { fontSize: FontSize.labelMd, fontWeight: '800', color: TEAL, letterSpacing: 0.5, marginBottom: 9, textTransform: 'uppercase' as const },
+  recTopCard: { ...cardBase, padding: Spacing.md, borderLeftWidth: 3, borderLeftColor: TEAL, ...WEB_LINK },
+  recTopName: { flex: 1, minWidth: 180, fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, letterSpacing: -0.2 },
+  recTopMeta: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 4 },
+  recTopWhy: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 7, lineHeight: 16 },
 });

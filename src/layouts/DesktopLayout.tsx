@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Platform } from 'react-native';
+import { Hairline } from '../theme/tokens';
 import { desktopStyles, DesktopColors } from '../theme/desktopStyles';
 import { useResponsiveLayout } from '../hooks/useResponsiveLayout';
 import { useSupabaseQuery } from '../hooks/useSupabaseQuery';
@@ -35,12 +36,18 @@ if (Platform.OS === 'web' && typeof document !== 'undefined') {
     style.id = styleId;
     style.textContent = `
       /* Global dark-theme scrollbar (all scrollable containers) */
-      ::-webkit-scrollbar { width: 6px; height: 6px; }
+      ::-webkit-scrollbar { width: 8px; height: 8px; }
       ::-webkit-scrollbar-track { background: transparent; }
-      ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
-      ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(216,227,252,0.10);
+        border-radius: 999px;
+        border: 2px solid transparent;
+        background-clip: padding-box;
+        transition: background-color 200ms ease;
+      }
+      ::-webkit-scrollbar-thumb:hover { background: rgba(82,218,215,0.35); background-clip: padding-box; }
       ::-webkit-scrollbar-corner { background: transparent; }
-      * { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.1) transparent; }
+      * { scrollbar-width: thin; scrollbar-color: rgba(216,227,252,0.10) transparent; }
       html, body { scroll-behavior: smooth; }
       .desktop-scroll { scroll-behavior: smooth; }
     `;
@@ -125,6 +132,8 @@ export default function DesktopLayout() {
           <View
             style={[
               desktopStyles.contentGridAside,
+              // Hairline sutil que define la columna del panel derecho (no borde duro)
+              Platform.OS === 'web' ? ({ borderLeftWidth: 1, borderLeftColor: Hairline.soft } as any) : {},
               !showInlineRightPanel ? { position: 'relative' as any } : {},
             ]}
             {...webScrollClass}

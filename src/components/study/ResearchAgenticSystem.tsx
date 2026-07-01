@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Linking, Platform, TextInput } from 'react-native';
-import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
+import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, Motion, LineHeight } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
 import { SectionLabel, Chip, GlassPanel, gridStyle, gridItemStyle, useHover } from '../empresa/primitives';
 import { FadeUp } from '../empresa/visuals';
@@ -55,7 +55,7 @@ function AgentCard({ a }: { a: AgentRole }) {
   const [open, setOpen] = useState(false);
   const { hovered, hoverProps } = useHover();
   return (
-    <View style={[st.agentCard, { borderColor: a.color + (open ? '88' : '33') }, hovered ? { borderColor: a.color + '99' } : null]}>
+    <View style={[st.agentCard, { borderColor: a.color + (open ? '88' : '33') }, open && Elevation.md, hovered && Platform.OS === 'web' ? ({ borderColor: a.color + '99', transform: [{ translateY: -1 }], ...Elevation.md } as any) : null]}>
       <TouchableOpacity activeOpacity={0.8} onPress={() => setOpen((o) => !o)} {...hoverProps}>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
           <Text style={{ fontSize: 18 }}>{a.icon}</Text>
@@ -484,100 +484,101 @@ export default function ResearchAgenticSystem() {
   );
 }
 
-const cardBase = { backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: DesktopColors.glassBorder };
+const cardBase = { backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.soft, ...Elevation.sm };
+const WEB_LINK = Platform.OS === 'web' ? ({ cursor: 'pointer', transition: Motion.base } as any) : {};
 const st = StyleSheet.create({
-  h3: { fontSize: FontSize.bodyLg, fontWeight: '700', color: Colors.onSurface, marginBottom: 6 },
-  body: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, lineHeight: 19 },
+  h3: { fontSize: FontSize.bodyLg, fontWeight: '700', color: Colors.onSurface, marginBottom: 6, letterSpacing: -0.2 },
+  body: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, lineHeight: LineHeight.bodyMd },
   smallNote: { fontSize: FontSize.labelMd, color: Colors.muted, lineHeight: 17 },
 
-  lineChip: { paddingVertical: 6, paddingHorizontal: 12, borderRadius: BorderRadius.full, borderWidth: 1, borderColor: 'rgba(255,255,255,0.12)', backgroundColor: 'rgba(255,255,255,0.03)' },
-  lineChipTxt: { fontSize: FontSize.labelMd, fontWeight: '700', color: Colors.muted },
-  lineTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface, flexShrink: 1 },
-  miniBtn: { borderWidth: 1, borderRadius: BorderRadius.md, paddingVertical: 6, paddingHorizontal: 11 },
-  miniBtnTxt: { fontSize: FontSize.labelSm, fontWeight: '800' },
+  lineChip: { paddingVertical: 6, paddingHorizontal: 12, borderRadius: BorderRadius.full, borderWidth: 1, borderColor: Hairline.medium, backgroundColor: 'rgba(255,255,255,0.03)', ...WEB_LINK },
+  lineChipTxt: { fontSize: FontSize.labelMd, fontWeight: '700', color: Colors.muted, letterSpacing: 0.2 },
+  lineTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface, flexShrink: 1, letterSpacing: -0.2 },
+  miniBtn: { borderWidth: 1, borderRadius: BorderRadius.md, paddingVertical: 7, paddingHorizontal: 12, ...WEB_LINK },
+  miniBtnTxt: { fontSize: FontSize.labelSm, fontWeight: '800', letterSpacing: 0.2 },
 
   layerCard: { ...cardBase, borderLeftWidth: 3, padding: Spacing.md },
-  layerCapa: { fontSize: FontSize.labelMd, fontWeight: '900', letterSpacing: 0.3 },
-  layerTitle: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, flexShrink: 1 },
+  layerCapa: { fontSize: FontSize.labelMd, fontWeight: '900', letterSpacing: 0.4, textTransform: 'uppercase' },
+  layerTitle: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, flexShrink: 1, letterSpacing: -0.2 },
   layerDesc: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 4, lineHeight: 17 },
   arrow: { textAlign: 'center', color: Colors.muted, fontSize: 16, marginVertical: 2 },
 
-  agentCard: { ...cardBase, borderWidth: 1, padding: Spacing.md, marginBottom: 6 },
-  agentName: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface },
-  agentMeta: { fontSize: 9, color: Colors.muted, marginTop: 1, letterSpacing: 0.3 },
-  agentToggle: { fontSize: FontSize.labelSm, fontWeight: '800' },
-  agentRol: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 6, lineHeight: 16 },
-  promptBox: { borderWidth: 1, borderRadius: BorderRadius.md, padding: Spacing.sm, marginTop: 8, backgroundColor: 'rgba(255,255,255,0.02)' },
-  promptLbl: { fontSize: 9, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 0.6, marginBottom: 4 },
+  agentCard: { ...cardBase, borderWidth: 1, padding: Spacing.md, marginBottom: 6, ...WEB_LINK },
+  agentName: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.2 },
+  agentMeta: { fontSize: 9, color: Colors.muted, marginTop: 2, letterSpacing: 0.3 },
+  agentToggle: { fontSize: FontSize.labelSm, fontWeight: '800', letterSpacing: 0.2 },
+  agentRol: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 7, lineHeight: 16 },
+  promptBox: { borderWidth: 1, borderRadius: BorderRadius.md, padding: Spacing.md, marginTop: 9, backgroundColor: 'rgba(255,255,255,0.02)' },
+  promptLbl: { fontSize: 9, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 0.7, textTransform: 'uppercase', marginBottom: 5 },
   promptTxt: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, lineHeight: 16, fontStyle: 'italic' },
 
-  cpRow: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: Spacing.md, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.06)' },
+  cpRow: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: Spacing.md, borderTopWidth: 1, borderTopColor: Hairline.soft },
   cpBadge: { borderRadius: BorderRadius.md, paddingVertical: 4, paddingHorizontal: 9, minWidth: 50, alignItems: 'center' },
-  cpId: { fontSize: FontSize.labelMd, fontWeight: '900' },
+  cpId: { fontSize: FontSize.labelMd, fontWeight: '900', letterSpacing: 0.2 },
   cpDespues: { fontSize: FontSize.labelMd, color: Colors.onSurface, fontWeight: '700' },
-  cpVerifica: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, marginTop: 2, lineHeight: 15 },
+  cpVerifica: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, marginTop: 3, lineHeight: 15 },
 
-  resCard: { ...cardBase, padding: Spacing.md },
+  resCard: { ...cardBase, padding: Spacing.md, ...WEB_LINK },
   resTxt: { fontSize: FontSize.labelMd, color: TEAL, fontWeight: '600', lineHeight: 16 },
 
-  sectionIntro: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 17, marginBottom: Spacing.md, marginTop: -4 },
+  sectionIntro: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: LineHeight.labelMd, marginBottom: Spacing.md, marginTop: -4 },
 
-  srcCard: { ...cardBase, padding: Spacing.md, marginBottom: 6 },
-  srcName: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface, flexShrink: 1 },
-  srcCov: { fontSize: FontSize.labelSm, color: TEAL, fontWeight: '700' },
-  srcRol: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 5, lineHeight: 16 },
-  srcAuth: { fontSize: 9, color: Colors.muted, marginTop: 5, letterSpacing: 0.2 },
+  srcCard: { ...cardBase, padding: Spacing.md, marginBottom: 6, ...WEB_LINK },
+  srcName: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface, flexShrink: 1, letterSpacing: -0.2 },
+  srcCov: { fontSize: FontSize.labelSm, color: TEAL, fontWeight: '700', letterSpacing: 0.2 },
+  srcRol: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 6, lineHeight: 16 },
+  srcAuth: { fontSize: 9, color: Colors.muted, marginTop: 6, letterSpacing: 0.3 },
 
-  cascRow: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: Spacing.md, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.06)' },
+  cascRow: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: Spacing.md, borderTopWidth: 1, borderTopColor: Hairline.soft },
   cascNum: { borderRadius: BorderRadius.full, width: 26, height: 26, alignItems: 'center', justifyContent: 'center' },
   cascNumTxt: { fontSize: FontSize.labelMd, fontWeight: '900' },
-  cascName: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface },
-  cascNota: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, marginTop: 2, lineHeight: 15 },
+  cascName: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, letterSpacing: -0.2 },
+  cascNota: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, marginTop: 3, lineHeight: 15 },
 
   citCard: { ...cardBase, borderLeftWidth: 3, padding: Spacing.md, marginBottom: 6 },
-  citPaso: { fontSize: FontSize.labelLg, fontWeight: '800', color: Colors.onSurface },
-  citDet: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 3, lineHeight: 16 },
+  citPaso: { fontSize: FontSize.labelLg, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.2 },
+  citDet: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 4, lineHeight: 16 },
 
   cpCard: { ...cardBase, padding: Spacing.md, minHeight: 120 },
-  cpTitle: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, marginTop: 6 },
+  cpTitle: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, marginTop: 7, letterSpacing: -0.2 },
   cpDesc: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, marginTop: 4, lineHeight: 15 },
 
   consoleRow: { ...cardBase, borderLeftWidth: 3, flexDirection: 'row', alignItems: 'center', gap: 10, padding: Spacing.md, marginBottom: 6 },
-  consoleSec: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface },
-  consoleAgent: { fontSize: 9, color: Colors.muted, marginTop: 1, letterSpacing: 0.2 },
+  consoleSec: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, letterSpacing: -0.2 },
+  consoleAgent: { fontSize: 9, color: Colors.muted, marginTop: 2, letterSpacing: 0.3 },
   estadoChip: { flexDirection: 'row', alignItems: 'center', gap: 5, borderRadius: BorderRadius.full, borderWidth: 1, paddingVertical: 4, paddingHorizontal: 9 },
   estadoIcon: { fontSize: 12, fontWeight: '900' },
-  estadoTxt: { fontSize: FontSize.labelSm, fontWeight: '800' },
+  estadoTxt: { fontSize: FontSize.labelSm, fontWeight: '800', letterSpacing: 0.2 },
 
-  ctrlBar: { ...cardBase, flexDirection: 'row', alignItems: 'center', gap: 8, padding: Spacing.md, marginBottom: 6, flexWrap: 'wrap' },
-  ctrlTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface },
-  ctrlState: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, marginTop: 2 },
-  ctrlBtn: { borderWidth: 1, borderRadius: BorderRadius.md, paddingVertical: 8, paddingHorizontal: 12 },
-  ctrlBtnTxt: { fontSize: FontSize.labelMd, fontWeight: '800' },
+  ctrlBar: { ...cardBase, flexDirection: 'row', alignItems: 'center', gap: 8, padding: Spacing.md, marginBottom: 6, flexWrap: 'wrap', ...Elevation.md },
+  ctrlTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.2 },
+  ctrlState: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, marginTop: 3 },
+  ctrlBtn: { borderWidth: 1, borderRadius: BorderRadius.md, paddingVertical: 8, paddingHorizontal: 12, ...WEB_LINK },
+  ctrlBtnTxt: { fontSize: FontSize.labelMd, fontWeight: '800', letterSpacing: 0.2 },
   ctrlHint: { fontSize: FontSize.labelSm, color: Colors.muted, lineHeight: 16, marginBottom: Spacing.md },
-  toast: { ...cardBase, borderColor: '#0FD4A0' + '66', padding: Spacing.sm, marginBottom: Spacing.md },
+  toast: { ...cardBase, borderColor: '#0FD4A0' + '66', padding: Spacing.md, marginBottom: Spacing.md, ...Elevation.glow('#0FD4A0') },
   toastTxt: { fontSize: FontSize.labelMd, color: Colors.onSurface, fontWeight: '600' },
 
-  agentBtn: { width: 26, height: 26, borderRadius: BorderRadius.sm, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.04)' },
+  agentBtn: { width: 26, height: 26, borderRadius: BorderRadius.sm, borderWidth: 1, borderColor: Hairline.soft, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.04)', ...WEB_LINK },
   agentBtnTxt: { fontSize: 14, fontWeight: '900' },
 
   docCard: { ...cardBase, borderLeftWidth: 3, padding: Spacing.md, marginBottom: 6 },
-  docSec: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface },
-  docAim: { fontSize: FontSize.labelSm, fontWeight: '800' },
-  docBody: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 6, lineHeight: 17 },
-  aimChip: { paddingVertical: 4, paddingHorizontal: 10, borderRadius: BorderRadius.full, borderWidth: 1, borderColor: 'rgba(255,255,255,0.12)', backgroundColor: 'rgba(255,255,255,0.03)' },
-  aimChipTxt: { fontSize: FontSize.labelSm, fontWeight: '700', color: Colors.muted },
+  docSec: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, letterSpacing: -0.2 },
+  docAim: { fontSize: FontSize.labelSm, fontWeight: '800', letterSpacing: 0.2, ...WEB_LINK },
+  docBody: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 7, lineHeight: 17 },
+  aimChip: { paddingVertical: 4, paddingHorizontal: 10, borderRadius: BorderRadius.full, borderWidth: 1, borderColor: Hairline.medium, backgroundColor: 'rgba(255,255,255,0.03)', ...WEB_LINK },
+  aimChipTxt: { fontSize: FontSize.labelSm, fontWeight: '700', color: Colors.muted, letterSpacing: 0.2 },
   fbInput: { flex: 1, minHeight: 60, ...cardBase, padding: Spacing.sm, color: Colors.onSurface, fontSize: FontSize.labelMd, textAlignVertical: 'top' as any },
-  micBtn: { borderWidth: 1, borderColor: 'rgba(255,255,255,0.14)', borderRadius: BorderRadius.md, paddingVertical: 8, paddingHorizontal: 10, alignItems: 'center', minWidth: 84 },
-  micTxt: { fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.onSurfaceVariant },
-  sendBtn: { backgroundColor: '#0FD4A0', borderRadius: BorderRadius.md, paddingVertical: 8, paddingHorizontal: 10, alignItems: 'center', minWidth: 84 },
-  sendTxt: { fontSize: FontSize.labelSm, fontWeight: '900', color: '#062018' },
+  micBtn: { borderWidth: 1, borderColor: Hairline.strong, borderRadius: BorderRadius.md, paddingVertical: 8, paddingHorizontal: 10, alignItems: 'center', minWidth: 84, ...WEB_LINK },
+  micTxt: { fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.onSurfaceVariant, letterSpacing: 0.2 },
+  sendBtn: { backgroundColor: '#0FD4A0', borderRadius: BorderRadius.md, paddingVertical: 8, paddingHorizontal: 10, alignItems: 'center', minWidth: 84, ...Elevation.glow('#0FD4A0'), ...WEB_LINK },
+  sendTxt: { fontSize: FontSize.labelSm, fontWeight: '900', color: '#062018', letterSpacing: 0.2 },
 
-  paperCard: { ...cardBase, borderLeftWidth: 3, borderLeftColor: 'rgba(255,255,255,0.12)', flexDirection: 'row', alignItems: 'center', gap: 8, padding: Spacing.md, marginBottom: 5 },
+  paperCard: { ...cardBase, borderLeftWidth: 3, borderLeftColor: Hairline.medium, flexDirection: 'row', alignItems: 'center', gap: 8, padding: Spacing.md, marginBottom: 5, ...(Platform.OS === 'web' ? ({ transition: Motion.base } as any) : {}) },
   paperTitle: { fontSize: FontSize.labelMd, fontWeight: '600', color: Colors.onSurface, lineHeight: 16 },
-  paperMeta: { fontSize: 9, color: Colors.muted, fontWeight: '700' },
+  paperMeta: { fontSize: 9, color: Colors.muted, fontWeight: '700', letterSpacing: 0.2 },
   relDots: { fontSize: 9, color: '#F5A623', letterSpacing: 1 },
-  paperDoi: { fontSize: 9, color: Colors.smallLabel, fontWeight: '800' },
-  scBtn: { width: 28, height: 28, borderRadius: BorderRadius.sm, borderWidth: 1, borderColor: 'rgba(255,255,255,0.12)', alignItems: 'center', justifyContent: 'center' },
+  paperDoi: { fontSize: 9, color: Colors.smallLabel, fontWeight: '800', letterSpacing: 0.3, ...WEB_LINK },
+  scBtn: { width: 28, height: 28, borderRadius: BorderRadius.sm, borderWidth: 1, borderColor: Hairline.medium, alignItems: 'center', justifyContent: 'center', ...WEB_LINK },
   scTxt: { fontSize: 15, fontWeight: '900' },
 });

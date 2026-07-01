@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Linking, ScrollView } from 'react-native';
-import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
+import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, Motion, LineHeight } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
 import { SectionLabel, Chip, GlassPanel, gridStyle, gridItemStyle, PillTab, useHover } from '../empresa/primitives';
 import { GradientHero, MegaStat, RingStat, FadeUp } from '../empresa/visuals';
@@ -205,44 +205,45 @@ function ResourcesBlock() {
   );
 }
 
-const cardBase = { backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: DesktopColors.glassBorder, padding: Spacing.lg };
+const cardBase = { backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.soft, padding: Spacing.lg, ...Elevation.sm };
+const WEB_LINK = { cursor: 'pointer', transition: Motion.base } as any;
 const st = StyleSheet.create({
-  heroTitle: { fontSize: FontSize.headlineSm, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.5 },
-  heroSub: { fontSize: FontSize.labelLg, marginTop: 4, fontWeight: '600' },
+  heroTitle: { fontSize: FontSize.headlineSm, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.5, lineHeight: LineHeight.headlineSm },
+  heroSub: { fontSize: FontSize.labelLg, marginTop: 5, fontWeight: '600', letterSpacing: 0.2 },
   heroTesis: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, marginTop: Spacing.md, lineHeight: 20, maxWidth: 640 },
-  h3: { fontSize: FontSize.bodyLg, fontWeight: '700', color: Colors.onSurface, marginBottom: 6 },
+  h3: { fontSize: FontSize.bodyLg, fontWeight: '700', color: Colors.onSurface, marginBottom: 6, letterSpacing: -0.2 },
   body: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, lineHeight: 19 },
   smallNote: { fontSize: FontSize.labelMd, color: Colors.muted, lineHeight: 17 },
 
   ringRow: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.md, marginBottom: Spacing.lg },
-  ringCard: { flex: 1, minWidth: 140, backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.xl, borderWidth: 1, borderColor: DesktopColors.glassBorder, paddingVertical: Spacing.lg, paddingHorizontal: Spacing.md, alignItems: 'center' },
+  ringCard: { flex: 1, minWidth: 140, backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.xl, borderWidth: 1, borderColor: Hairline.soft, paddingVertical: Spacing.lg, paddingHorizontal: Spacing.md, alignItems: 'center', ...Elevation.sm },
 
-  row: { flexDirection: 'row', alignItems: 'center', paddingVertical: 8, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.05)' },
+  row: { flexDirection: 'row', alignItems: 'center', paddingVertical: 8, borderTopWidth: 1, borderTopColor: Hairline.soft },
   rowName: { flex: 1, fontSize: FontSize.bodyMd, color: Colors.onSurface },
   rowVal: { fontSize: FontSize.labelLg, fontWeight: '800', width: 70, textAlign: 'right' },
   rowVueltas: { fontSize: 10, fontWeight: '700', width: 30, textAlign: 'right' },
 
   discCard: { ...cardBase },
-  discName: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, flex: 1 },
+  discName: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, flex: 1, letterSpacing: -0.2 },
   discWeight: { fontSize: FontSize.labelLg, fontWeight: '800' },
-  discAnchor: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 6 },
+  discAnchor: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 7, lineHeight: 17 },
 
   phaseCard: { ...cardBase, borderLeftWidth: 3, minHeight: 120 },
-  phaseTag: { fontSize: FontSize.labelMd, fontWeight: '800' },
+  phaseTag: { fontSize: FontSize.labelMd, fontWeight: '800', letterSpacing: 0.2 },
 
-  hourRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: Spacing.md, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.06)', gap: Spacing.sm },
+  hourRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: Spacing.md, borderTopWidth: 1, borderTopColor: Hairline.soft, gap: Spacing.sm },
   hourBadge: { borderRadius: BorderRadius.md, paddingVertical: 3, paddingHorizontal: 8, minWidth: 92, alignItems: 'center' },
-  hourSlot: { fontSize: FontSize.labelSm, fontWeight: '800' },
+  hourSlot: { fontSize: FontSize.labelSm, fontWeight: '800', letterSpacing: 0.2 },
   hourAct: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 16 },
 
   methodCard: { ...cardBase, marginBottom: Spacing.sm },
-  methodName: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, flex: 1 },
+  methodName: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, flex: 1, letterSpacing: -0.2 },
 
-  accCard: { ...cardBase, marginBottom: Spacing.sm, padding: Spacing.md },
-  accTitle: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface },
-  accHint: { fontSize: FontSize.labelSm, fontWeight: '700' },
-  accLbl: { fontSize: 9, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 0.6, marginBottom: 2 },
+  accCard: { ...cardBase, marginBottom: Spacing.sm, padding: Spacing.md, ...WEB_LINK },
+  accTitle: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, letterSpacing: -0.2 },
+  accHint: { fontSize: FontSize.labelSm, fontWeight: '700', letterSpacing: 0.2 },
+  accLbl: { fontSize: 9, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 0.6, textTransform: 'uppercase', marginBottom: 3 },
 
-  resCard: { ...cardBase },
+  resCard: { ...cardBase, ...WEB_LINK },
   resLabel: { fontSize: FontSize.labelMd, color: GREEN, fontWeight: '600', lineHeight: 16 },
 });

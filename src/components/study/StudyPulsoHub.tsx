@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Linking } from 'react-native';
-import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
+import { View, Text, TouchableOpacity, StyleSheet, Linking, Platform } from 'react-native';
+import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, LineHeight } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
 import { SectionLabel, Chip, GlassPanel, gridStyle, gridItemStyle, PillTab } from '../empresa/primitives';
 import { GradientHero, MegaStat, RingStat, FadeUp } from '../empresa/visuals';
@@ -168,46 +168,48 @@ export default function StudyPulsoHub({ onBack }: { onBack: () => void }) {
 
 const cardBase = {
   backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg,
-  borderWidth: 1, borderColor: DesktopColors.glassBorder, padding: Spacing.lg,
+  borderWidth: 1, borderColor: Hairline.medium, padding: Spacing.lg,
+  ...Elevation.sm,
 };
+const tnum = Platform.OS === 'web' ? ({ fontVariantNumeric: 'tabular-nums' } as any) : {};
 
 const st = StyleSheet.create({
   breadcrumb: { flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: Spacing.md, alignSelf: 'flex-start' },
-  breadcrumbText: { fontSize: FontSize.labelLg, color: GOLD, fontWeight: '700' },
-  breadcrumbSep: { fontSize: FontSize.labelLg, color: Colors.muted },
+  breadcrumbText: { fontSize: FontSize.labelLg, color: GOLD, fontWeight: '700', letterSpacing: 0.2 },
+  breadcrumbSep: { fontSize: FontSize.labelLg, color: Colors.muted, letterSpacing: 0.2 },
 
-  heroTitle: { fontSize: FontSize.headlineSm, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.5 },
-  heroSub: { fontSize: FontSize.labelLg, marginTop: 4, fontWeight: '600' },
-  heroTesis: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, marginTop: Spacing.md, lineHeight: 20, maxWidth: 640 },
+  heroTitle: { fontSize: FontSize.headlineSm, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.5, lineHeight: LineHeight.headlineSm },
+  heroSub: { fontSize: FontSize.labelLg, marginTop: 4, fontWeight: '700', letterSpacing: 0.3 },
+  heroTesis: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, marginTop: Spacing.md, lineHeight: LineHeight.bodyMd, maxWidth: 640 },
 
-  body: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, lineHeight: 19 },
+  body: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, lineHeight: LineHeight.bodyMd },
 
   ringRow: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.md, marginBottom: Spacing.lg },
-  ringCard: { flex: 1, minWidth: 140, backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.xl, borderWidth: 1, borderColor: DesktopColors.glassBorder, paddingVertical: Spacing.lg, paddingHorizontal: Spacing.md, alignItems: 'center' },
+  ringCard: { flex: 1, minWidth: 140, backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.xl, borderWidth: 1, borderColor: Hairline.medium, paddingVertical: Spacing.lg, paddingHorizontal: Spacing.md, alignItems: 'center', ...Elevation.sm },
 
   mesCard: { ...cardBase, borderLeftWidth: 3, minHeight: 130 },
-  mesTag: { fontSize: FontSize.labelMd, fontWeight: '800' },
-  mesFase: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, marginTop: 2, marginBottom: 4 },
+  mesTag: { fontSize: FontSize.labelMd, fontWeight: '800', letterSpacing: 0.3 },
+  mesFase: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, marginTop: 2, marginBottom: 4, letterSpacing: -0.1 },
 
   reglaRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 10, paddingVertical: 6 },
-  reglaN: { fontSize: FontSize.bodyMd, fontWeight: '800', width: 18 },
+  reglaN: { fontSize: FontSize.bodyMd, fontWeight: '800', width: 18, ...tnum },
 
   regCard: { ...cardBase },
-  regPilar: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, marginBottom: 4 },
+  regPilar: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, marginBottom: 4, letterSpacing: -0.1 },
 
   catCard: { ...cardBase, marginBottom: Spacing.sm },
-  catTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface, textTransform: 'uppercase', letterSpacing: 0.5 },
-  libroRow: { flexDirection: 'row', alignItems: 'flex-start', paddingVertical: 6, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.05)' },
+  catTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface, textTransform: 'uppercase', letterSpacing: 0.8 },
+  libroRow: { flexDirection: 'row', alignItems: 'flex-start', paddingVertical: 6, borderTopWidth: 1, borderTopColor: Hairline.soft },
   libroName: { fontSize: FontSize.bodyMd, color: Colors.onSurface, fontWeight: '600' },
   libroAutor: { fontSize: FontSize.labelMd, color: Colors.muted, fontWeight: '400' },
-  libroOut: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, marginTop: 1, lineHeight: 15 },
-  libroPrio: { fontSize: FontSize.labelMd, fontWeight: '800' },
-  libroHoras: { fontSize: FontSize.labelSm, color: Colors.muted },
+  libroOut: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, marginTop: 1, lineHeight: LineHeight.labelSm },
+  libroPrio: { fontSize: FontSize.labelMd, fontWeight: '800', ...tnum },
+  libroHoras: { fontSize: FontSize.labelSm, color: Colors.muted, ...tnum },
 
   recCard: { ...cardBase },
-  recLabel: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, flex: 1 },
-  recNota: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 6 },
+  recLabel: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, flex: 1, letterSpacing: -0.1 },
+  recNota: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 6, lineHeight: LineHeight.labelSm },
 
   jCard: { ...cardBase, borderLeftWidth: 3 },
-  jDim: { fontSize: FontSize.labelLg, fontWeight: '800', marginBottom: 4 },
+  jDim: { fontSize: FontSize.labelLg, fontWeight: '800', marginBottom: 4, letterSpacing: 0.2 },
 });

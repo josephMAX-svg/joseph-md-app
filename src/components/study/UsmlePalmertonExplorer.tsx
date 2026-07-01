@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Linking } from 'react-native';
-import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
+import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, Motion } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
 import { SectionLabel, Chip, GlassPanel } from '../empresa/primitives';
 import { FadeUp } from '../empresa/visuals';
@@ -104,7 +104,8 @@ export default function UsmlePalmertonExplorer() {
   );
 }
 
-const cardBase = { backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: DesktopColors.glassBorder };
+const cardBase = { backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.soft, ...Elevation.sm };
+const WEB_LINK = { cursor: 'pointer', transition: Motion.base } as any;
 const st = StyleSheet.create({
   intro: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, lineHeight: 19 },
   body: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, lineHeight: 19 },
@@ -114,23 +115,23 @@ const st = StyleSheet.create({
   note: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: Spacing.sm, lineHeight: 15 },
 
   card: { ...cardBase, borderLeftWidth: 3, marginBottom: Spacing.sm, overflow: 'hidden' },
-  head: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, padding: Spacing.md },
+  head: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, padding: Spacing.md, ...WEB_LINK },
   tierBadge: { flexDirection: 'row', alignItems: 'center', gap: 5, borderRadius: BorderRadius.full, borderWidth: 1, paddingVertical: 3, paddingHorizontal: 9, minWidth: 64, justifyContent: 'center' },
-  tierTxt: { fontSize: 9, fontWeight: '800' },
-  name: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface },
-  metaRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 2, flexWrap: 'wrap' },
+  tierTxt: { fontSize: 9, fontWeight: '800', letterSpacing: 0.2 },
+  name: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, letterSpacing: -0.2 },
+  metaRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 3, flexWrap: 'wrap' },
   metaSub: { fontSize: FontSize.labelSm, color: Colors.muted },
   stepFlag: { backgroundColor: GREEN + '1A', borderRadius: BorderRadius.full, paddingVertical: 1, paddingHorizontal: 6 },
   stepFlagTxt: { fontSize: 9, fontWeight: '800', color: GREEN },
   caret: { fontSize: 16, color: Colors.muted, width: 18, textAlign: 'center' },
 
-  expand: { paddingHorizontal: Spacing.md, paddingBottom: Spacing.md, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.05)', paddingTop: Spacing.sm },
-  vidRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 7, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.04)' },
+  expand: { paddingHorizontal: Spacing.md, paddingBottom: Spacing.md, borderTopWidth: 1, borderTopColor: Hairline.soft, paddingTop: Spacing.sm },
+  vidRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 8, borderTopWidth: 1, borderTopColor: Hairline.soft, ...WEB_LINK },
   play: { color: GREEN, fontSize: 11, width: 14, textAlign: 'center' },
   vidTxt: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 16 },
-  qbankRow: { marginTop: 8, padding: Spacing.sm, borderRadius: BorderRadius.md, backgroundColor: 'rgba(229,72,77,0.06)', borderWidth: 1, borderColor: 'rgba(229,72,77,0.25)' },
-  qbankLbl: { fontSize: FontSize.labelMd, fontWeight: '800', color: '#E5484D' },
-  qbankFoco: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, marginTop: 2, lineHeight: 15 },
+  qbankRow: { marginTop: 8, padding: Spacing.sm, borderRadius: BorderRadius.md, backgroundColor: 'rgba(229,72,77,0.06)', borderWidth: 1, borderColor: 'rgba(229,72,77,0.25)', ...WEB_LINK },
+  qbankLbl: { fontSize: FontSize.labelMd, fontWeight: '800', color: '#E5484D', letterSpacing: 0.2 },
+  qbankFoco: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, marginTop: 3, lineHeight: 15 },
 
-  methodRow: { ...cardBase, flexDirection: 'row', alignItems: 'center', gap: 8, padding: Spacing.md, marginBottom: 6 },
+  methodRow: { ...cardBase, flexDirection: 'row', alignItems: 'center', gap: 8, padding: Spacing.md, marginBottom: 6, ...WEB_LINK },
 });

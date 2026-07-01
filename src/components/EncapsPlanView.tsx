@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import {
   View, Text, TouchableOpacity, StyleSheet, Linking, TextInput, Platform, ActivityIndicator,
 } from 'react-native';
-import { Colors, Spacing, FontSize, BorderRadius } from '../theme/tokens';
+import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, Motion, LineHeight } from '../theme/tokens';
 import {
   useEncapsPlan, itemsForDay, vueltaLabel, repasoKey, vueltasHechasDe,
   type PlanItem, type StudyScheduleDay, type StudyMetrics, type ProximoVideo,
@@ -30,6 +30,26 @@ interface HorarioBlock { hora: string; titulo: string; apex?: boolean; pasos?: H
 const KIND_ICON: Record<PlanItem['kind'], string> = {
   video: '🎬', theomed: '📂', pulso: '💓', eval: '📝', sim: '🔥', material: '📎',
 };
+
+// Acento por tipo de ítem — refuerza la jerarquía visual de la cola del día.
+const KIND_ACCENT: Record<PlanItem['kind'], string> = {
+  video: Colors.coral, theomed: Colors.teal, pulso: Colors.tertiary,
+  eval: Colors.amber, sim: Colors.coral, material: Colors.blue,
+};
+
+// Transición web coherente con el resto del sistema (Motion tokens).
+const webTransition = Platform.OS === 'web'
+  ? ({ transition: `background-color ${Motion.base}, border-color ${Motion.base}, transform ${Motion.base}, box-shadow ${Motion.base}` } as any)
+  : {};
+
+// Hover local (self-contained) — mismo patrón que empresa/primitives, sin editarlos.
+function useHover() {
+  const [hovered, setHovered] = useState(false);
+  const hoverProps = Platform.OS === 'web'
+    ? { onMouseEnter: () => setHovered(true), onMouseLeave: () => setHovered(false) }
+    : {};
+  return { hovered, hoverProps };
+}
 
 // Estado QX del video → etiqueta/color (igual que el dashboard)
 function estadoMeta(estado?: string): { label: string; color: string } | null {
@@ -64,9 +84,9 @@ export default function EncapsPlanView() {
 
   if (plan.loading) {
     return (
-      <View style={{ paddingVertical: Spacing['3xl'], alignItems: 'center' }}>
+      <View style={{ paddingVertical: Spacing['4xl'], alignItems: 'center' }}>
         <ActivityIndicator color={Colors.coral} />
-        <Text style={{ color: Colors.muted, marginTop: Spacing.sm, fontSize: FontSize.labelSm }}>
+        <Text style={{ color: Colors.muted, marginTop: Spacing.md, fontSize: FontSize.labelMd, fontWeight: '600', letterSpacing: 0.4, textTransform: 'uppercase' }}>
           Cargando plan ENCAPS…
         </Text>
       </View>
@@ -328,10 +348,21 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
 function CheckRow({ item, checked, onToggle, todayDia }: { item: PlanItem; checked: boolean; onToggle: (v: boolean) => void; todayDia?: number }) {
   const m = item.kind === 'video' ? estadoMeta(item.estado) : null;
   const ownTheme = item.kind === 'video' && item.focusDia != null && item.focusDia === todayDia;
+  const accent = KIND_ACCENT[item.kind] ?? Colors.blue;
+  const { hovered, hoverProps } = useHover();
   return (
-    <View style={styles.checkRow}>
+    <View
+      style={[
+        styles.checkRow,
+        { borderLeftColor: checked ? Colors.green : accent },
+        checked && styles.checkRowDone,
+        webTransition,
+        hovered && Platform.OS === 'web' ? ({ backgroundColor: Colors.surfaceContainer, borderColor: Hairline.medium, transform: [{ translateX: 2 }] } as any) : null,
+      ]}
+      {...hoverProps}
+    >
       <TouchableOpacity onPress={() => onToggle(!checked)} style={styles.checkTouch} activeOpacity={0.7}>
-        <View style={[styles.checkbox, checked && styles.checkboxOn]}>
+        <View style={[styles.checkbox, webTransition, checked && styles.checkboxOn]}>
           {checked && <Text style={styles.checkMark}>✓</Text>}
         </View>
         <View style={{ flex: 1 }}>
@@ -734,21 +765,21 @@ function HorarioView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
 // ─── átomos ───
 function Pill({ text, color }: { text: string; color: string }) {
   return (
-    <View style={[styles.pill, { backgroundColor: color + '22' }]}>
+    <View style={[styles.pill, { backgroundColor: color + '1F', borderColor: color + '3D' }]}>
       <Text style={[styles.pillText, { color }]}>{text}</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  dayNav: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.md, paddingVertical: Spacing.sm, paddingHorizontal: Spacing.md, marginBottom: Spacing.sm },
+  dayNav: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.soft, paddingVertical: Spacing.sm, paddingHorizontal: Spacing.md, marginBottom: Spacing.sm, ...Elevation.sm },
   dayNavBtn: { paddingHorizontal: Spacing.md, paddingVertical: 2 },
   dayNavArrow: { fontSize: 18, color: Colors.teal, fontWeight: '800' },
-  dayNavTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface },
-  dayNavSub: { fontSize: FontSize.labelSm, color: Colors.muted },
-  dayNavHoy: { backgroundColor: Colors.teal + '22', borderRadius: BorderRadius.full, paddingVertical: 3, paddingHorizontal: 8, marginLeft: Spacing.sm },
+  dayNavTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface, letterSpacing: 0.2 },
+  dayNavSub: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 1, letterSpacing: 0.3 },
+  dayNavHoy: { backgroundColor: Colors.teal + '22', borderWidth: 1, borderColor: Hairline.accentSoft, borderRadius: BorderRadius.full, paddingVertical: 3, paddingHorizontal: 9, marginLeft: Spacing.sm },
   dayNavHoyText: { fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.teal },
-  jumpRow: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: 6, backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.md, padding: Spacing.sm, marginBottom: Spacing.sm },
+  jumpRow: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: 6, backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.soft, padding: Spacing.sm, marginBottom: Spacing.sm, ...Elevation.sm },
   jumpLabel: { fontSize: FontSize.labelMd, fontWeight: '700', color: Colors.onSurfaceVariant },
   jumpInput: { width: 56, backgroundColor: Colors.surfaceContainerHighest, borderRadius: BorderRadius.sm, paddingVertical: 6, paddingHorizontal: 10, color: Colors.onSurface, fontSize: FontSize.bodyMd, fontWeight: '800', textAlign: 'center' },
   jumpGo: { backgroundColor: Colors.teal, borderRadius: BorderRadius.sm, paddingVertical: 6, paddingHorizontal: 12 },
@@ -756,10 +787,10 @@ const styles = StyleSheet.create({
   jumpChip: { backgroundColor: Colors.surfaceContainerHighest, borderRadius: BorderRadius.full, paddingVertical: 5, paddingHorizontal: 11 },
   jumpChipText: { fontSize: FontSize.labelSm, fontWeight: '700', color: Colors.onSurfaceVariant },
 
-  subTabRow: { flexDirection: 'row', backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.md, padding: 3, marginBottom: Spacing.section },
-  subTab: { flex: 1, paddingVertical: Spacing.sm, alignItems: 'center', borderRadius: BorderRadius.sm },
-  subTabActive: { backgroundColor: Colors.surfaceContainerHighest },
-  subTabText: { fontSize: FontSize.labelSm, fontWeight: '600', color: Colors.muted },
+  subTabRow: { flexDirection: 'row', backgroundColor: Colors.surfaceContainerLowest, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.soft, padding: 3, marginBottom: Spacing.section },
+  subTab: { flex: 1, paddingVertical: Spacing.sm, alignItems: 'center', borderRadius: BorderRadius.md, ...webTransition },
+  subTabActive: { backgroundColor: Colors.surfaceContainerHighest, ...Elevation.sm },
+  subTabText: { fontSize: FontSize.labelSm, fontWeight: '700', color: Colors.muted, letterSpacing: 0.2 },
   subTabTextActive: { color: Colors.onSurface },
 
   empty: { fontSize: FontSize.bodyMd, color: Colors.muted, fontStyle: 'italic', paddingVertical: Spacing.lg, textAlign: 'center' },
@@ -768,84 +799,85 @@ const styles = StyleSheet.create({
 
   // HOY header
   hoyHeader: { marginBottom: Spacing.md },
-  hoyDay: { fontSize: FontSize.labelSm, color: Colors.muted, fontWeight: '600', letterSpacing: 0.5 },
-  hoyTema: { fontSize: FontSize.titleMd, fontWeight: '800', color: Colors.onSurface, marginTop: 2 },
-  hoyMetaRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: Spacing.sm },
+  hoyDay: { fontSize: FontSize.labelSm, color: Colors.muted, fontWeight: '700', letterSpacing: 0.8, textTransform: 'uppercase' },
+  hoyTema: { fontSize: FontSize.titleLg, fontWeight: '800', color: Colors.onSurface, marginTop: 3, letterSpacing: -0.3, lineHeight: LineHeight.titleLg },
+  hoyMetaRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: Spacing.md },
   ntsLine: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, marginTop: Spacing.sm, lineHeight: 16 },
   secLine: { fontSize: FontSize.labelSm, color: Colors.teal, marginTop: 4, lineHeight: 16 },
   findeStudyLine: { fontSize: FontSize.labelSm, color: Colors.amber, marginTop: 4, fontWeight: '700', lineHeight: 16 },
 
-  pill: { borderRadius: BorderRadius.full, paddingVertical: 2, paddingHorizontal: 8 },
-  pillText: { fontSize: FontSize.labelSm, fontWeight: '700' },
+  pill: { borderRadius: BorderRadius.full, paddingVertical: 3, paddingHorizontal: 9, borderWidth: 1 },
+  pillText: { fontSize: FontSize.labelSm, fontWeight: '800', letterSpacing: 0.2 },
 
-  progressCard: { backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, padding: Spacing.lg, marginBottom: Spacing.md },
-  progressLabel: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, fontWeight: '600' },
-  progressValue: { fontSize: FontSize.titleMd, fontWeight: '800' },
+  progressCard: { backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.soft, padding: Spacing.lg, marginBottom: Spacing.md, ...Elevation.sm },
+  progressLabel: { fontSize: FontSize.labelMd, color: Colors.smallLabel, fontWeight: '700', letterSpacing: 0.8, textTransform: 'uppercase' },
+  progressValue: { fontSize: FontSize.titleMd, fontWeight: '800', letterSpacing: 0.2 },
 
   track: { height: 8, backgroundColor: Colors.surfaceContainerHighest, borderRadius: 4, overflow: 'hidden', flex: 1 },
   fill: { height: 8, borderRadius: 4 },
 
-  checkRow: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.md, paddingVertical: Spacing.sm, paddingHorizontal: Spacing.md, marginBottom: 6 },
+  checkRow: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.soft, borderLeftWidth: 3, paddingVertical: Spacing.md, paddingHorizontal: Spacing.md, marginBottom: Spacing.sm },
+  checkRowDone: { backgroundColor: Colors.surfaceContainerLowest, borderColor: 'transparent', opacity: 0.85 },
   checkTouch: { flexDirection: 'row', alignItems: 'center', flex: 1 },
-  checkbox: { width: 22, height: 22, borderRadius: 6, borderWidth: 2, borderColor: Colors.muted, alignItems: 'center', justifyContent: 'center', marginRight: Spacing.md },
-  checkboxOn: { backgroundColor: Colors.green, borderColor: Colors.green },
-  checkMark: { color: '#0B1628', fontSize: 14, fontWeight: '900' },
-  checkLabel: { fontSize: FontSize.bodyMd, color: Colors.onSurface, fontWeight: '500' },
+  checkbox: { width: 23, height: 23, borderRadius: 7, borderWidth: 2, borderColor: Colors.outline, alignItems: 'center', justifyContent: 'center', marginRight: Spacing.md, backgroundColor: Colors.surfaceContainerHighest + '55' },
+  checkboxOn: { backgroundColor: Colors.green, borderColor: Colors.green, ...(Platform.OS === 'web' ? { boxShadow: `0 0 0 3px ${Colors.green}22` } as any : {}) },
+  checkMark: { color: '#04140C', fontSize: 14, fontWeight: '900' },
+  checkLabel: { fontSize: FontSize.bodyMd, color: Colors.onSurface, fontWeight: '600', lineHeight: LineHeight.bodyMd },
   checkLabelDone: { color: Colors.muted, textDecorationLine: 'line-through' },
-  checkSubRow: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: 6, marginTop: 1 },
+  checkSubRow: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: 5, marginTop: 4 },
   checkDetail: { fontSize: FontSize.labelSm, color: Colors.muted },
-  estadoBadge: { fontSize: 9, fontWeight: '800', paddingVertical: 1, paddingHorizontal: 6, borderRadius: 999, overflow: 'hidden' },
-  openBtn: { paddingVertical: 4, paddingHorizontal: 8, borderRadius: BorderRadius.sm, backgroundColor: Colors.surfaceContainerHighest, marginLeft: Spacing.sm },
-  openBtnText: { fontSize: FontSize.labelSm, color: Colors.blue, fontWeight: '700' },
+  estadoBadge: { fontSize: 9, fontWeight: '800', paddingVertical: 2, paddingHorizontal: 7, borderRadius: 999, overflow: 'hidden', letterSpacing: 0.2 },
+  openBtn: { paddingVertical: 5, paddingHorizontal: 10, borderRadius: BorderRadius.md, backgroundColor: Colors.surfaceContainerHighest, borderWidth: 1, borderColor: Hairline.soft, marginLeft: Spacing.sm, ...webTransition },
+  openBtnText: { fontSize: FontSize.labelSm, color: Colors.blue, fontWeight: '800', letterSpacing: 0.2 },
 
   // Meta
-  metaCard: { backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, padding: Spacing.lg, marginBottom: Spacing.md, alignItems: 'center' },
-  metaTitle: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, fontWeight: '600' },
-  metaBig: { fontSize: FontSize.displaySm, fontWeight: '900', marginTop: 4 },
+  metaCard: { backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.soft, padding: Spacing.lg, marginBottom: Spacing.md, alignItems: 'center', ...Elevation.md },
+  metaTitle: { fontSize: FontSize.labelMd, color: Colors.smallLabel, fontWeight: '700', letterSpacing: 0.8, textTransform: 'uppercase' },
+  metaBig: { fontSize: FontSize.displaySm, fontWeight: '900', marginTop: 6, letterSpacing: -1 },
   metaBigSub: { fontSize: FontSize.titleMd, color: Colors.muted, fontWeight: '700' },
   metaTrackWrap: { width: '100%', marginTop: Spacing.md, position: 'relative', flexDirection: 'row' },
   metaMarker: { position: 'absolute', top: -3, width: 2, height: 14, backgroundColor: Colors.green },
   metaHint: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: Spacing.sm },
 
   statGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
-  statCell: { width: '31%', backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.md, paddingVertical: Spacing.md, paddingHorizontal: Spacing.sm, alignItems: 'center', flexGrow: 1 },
-  statValue: { fontSize: FontSize.titleMd, fontWeight: '800' },
-  statLabel: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 2 },
+  statCell: { width: '31%', backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.soft, paddingVertical: Spacing.md, paddingHorizontal: Spacing.sm, alignItems: 'center', flexGrow: 1, ...Elevation.sm },
+  statValue: { fontSize: FontSize.titleMd, fontWeight: '800', letterSpacing: 0.2 },
+  statLabel: { fontSize: FontSize.labelSm, color: Colors.smallLabel, marginTop: 3, fontWeight: '600', letterSpacing: 0.3, textTransform: 'uppercase' },
 
   // Sim
-  simHeaderBox: { backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.md, padding: Spacing.md, marginBottom: Spacing.sm, borderLeftWidth: 3, borderLeftColor: Colors.coral },
-  simHeaderTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface },
-  simHeaderHint: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 2, lineHeight: 15 },
-  simCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.md, padding: Spacing.md, marginBottom: 6, borderLeftWidth: 4 },
+  simHeaderBox: { backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, padding: Spacing.md, marginBottom: Spacing.sm, borderWidth: 1, borderColor: Colors.coral + '2E', borderLeftWidth: 3, borderLeftColor: Colors.coral, ...Elevation.sm },
+  simHeaderTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface, letterSpacing: 0.2 },
+  simHeaderHint: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 3, lineHeight: 16 },
+  simCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.soft, padding: Spacing.md, marginBottom: Spacing.sm, borderLeftWidth: 4, ...Elevation.sm },
   simClave: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface },
-  simMeta: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 1 },
-  simLink: { fontSize: FontSize.labelSm, color: Colors.blue, fontWeight: '700', marginTop: 2 },
-  simInput: { width: 46, height: 34, backgroundColor: Colors.surfaceContainerHighest, borderRadius: BorderRadius.sm, color: Colors.onSurface, textAlign: 'center', fontSize: FontSize.bodyMd, fontWeight: '700', paddingVertical: 0, ...(Platform.OS === 'web' ? { outlineStyle: 'none' as any } : {}) },
-  simSlash: { fontSize: FontSize.labelSm, color: Colors.muted, marginLeft: 2 },
-  simBadge: { fontSize: FontSize.labelSm, fontWeight: '800', marginTop: 2 },
+  simMeta: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 2 },
+  simLink: { fontSize: FontSize.labelSm, color: Colors.blue, fontWeight: '800', marginTop: 3 },
+  simInput: { width: 48, height: 36, backgroundColor: Colors.surfaceContainerHighest, borderRadius: BorderRadius.md, borderWidth: 1, borderColor: Hairline.medium, color: Colors.onSurface, textAlign: 'center', fontSize: FontSize.bodyMd, fontWeight: '800', paddingVertical: 0, ...(Platform.OS === 'web' ? { outlineStyle: 'none' as any } : {}) },
+  simSlash: { fontSize: FontSize.labelSm, color: Colors.muted, marginLeft: 3 },
+  simBadge: { fontSize: FontSize.labelSm, fontWeight: '800', marginTop: 3, letterSpacing: 0.2 },
 
   // 7 días
-  semRow: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.md, padding: Spacing.md, marginBottom: 6 },
-  semRowToday: { borderWidth: 1, borderColor: Colors.coral + '80' },
+  semRow: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.soft, padding: Spacing.md, marginBottom: Spacing.sm, ...Elevation.sm },
+  semRowToday: { borderWidth: 1, borderColor: Colors.coral + '80', borderLeftWidth: 3, borderLeftColor: Colors.coral, backgroundColor: Colors.coral + '10' },
   semDayBox: { width: 44, alignItems: 'center', marginRight: Spacing.md },
-  semDayNum: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface },
-  semWeekday: { fontSize: FontSize.labelSm, color: Colors.muted },
-  semTema: { fontSize: FontSize.bodyMd, color: Colors.onSurface, fontWeight: '500' },
-  semDetail: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 1 },
-  semCrit: { fontSize: 9, fontWeight: '800', color: Colors.coral, backgroundColor: Colors.coral + '22', paddingVertical: 2, paddingHorizontal: 6, borderRadius: 999, marginLeft: Spacing.sm },
-  semChevron: { fontSize: FontSize.labelSm, fontWeight: '700', color: Colors.teal, marginLeft: Spacing.sm },
+  semDayNum: { fontSize: FontSize.bodyLg, fontWeight: '800', color: Colors.onSurface, letterSpacing: 0.2 },
+  semWeekday: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 1, textTransform: 'uppercase', letterSpacing: 0.3 },
+  semTema: { fontSize: FontSize.bodyMd, color: Colors.onSurface, fontWeight: '600' },
+  semDetail: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 2 },
+  semCrit: { fontSize: 9, fontWeight: '800', color: Colors.coral, backgroundColor: Colors.coral + '22', paddingVertical: 2, paddingHorizontal: 7, borderRadius: 999, marginLeft: Spacing.sm, letterSpacing: 0.3 },
+  semChevron: { fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.teal, marginLeft: Spacing.sm },
 
   // Próximos videos a liberar (predicción drip)
-  proxBox: { backgroundColor: Colors.blue + '12', borderRadius: BorderRadius.md, padding: Spacing.md, marginTop: Spacing.md, borderLeftWidth: 3, borderLeftColor: Colors.blue },
-  proxTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.blue },
+  proxBox: { backgroundColor: Colors.blue + '12', borderRadius: BorderRadius.lg, padding: Spacing.md, marginTop: Spacing.md, borderWidth: 1, borderColor: Colors.blue + '2E', borderLeftWidth: 3, borderLeftColor: Colors.blue, ...Elevation.sm },
+  proxTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.blue, letterSpacing: 0.2 },
   proxHint: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 1, marginBottom: Spacing.xs },
   proxRow: { flexDirection: 'row', alignItems: 'flex-start', paddingVertical: 3 },
   proxFecha: { width: 52, fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.blue },
   proxTema: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant },
 
   // Videos Theomed
-  thBox: { backgroundColor: Colors.green + '12', borderRadius: BorderRadius.md, padding: Spacing.md, marginTop: Spacing.md, borderLeftWidth: 3, borderLeftColor: Colors.green },
-  thTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.green },
+  thBox: { backgroundColor: Colors.green + '12', borderRadius: BorderRadius.lg, padding: Spacing.md, marginTop: Spacing.md, borderWidth: 1, borderColor: Colors.green + '2E', borderLeftWidth: 3, borderLeftColor: Colors.green, ...Elevation.sm },
+  thTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.green, letterSpacing: 0.2 },
   thPend: { fontSize: FontSize.labelSm, color: Colors.amber, marginTop: 2, marginBottom: 2, lineHeight: 15 },
   thBlock: { marginTop: Spacing.xs, borderTopWidth: 1, borderTopColor: 'rgba(143,144,151,0.12)', paddingTop: Spacing.xs },
   thBlockTitle: { fontSize: FontSize.labelMd, fontWeight: '700', color: Colors.onSurface },
@@ -856,9 +888,9 @@ const styles = StyleSheet.create({
   // Horario
   horarioHint: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, fontWeight: '600', marginBottom: Spacing.sm },
   horarioWarn: { fontSize: FontSize.labelSm, color: Colors.amber, marginBottom: Spacing.sm, lineHeight: 15 },
-  horarioRow: { flexDirection: 'row', alignItems: 'flex-start', backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.md, paddingVertical: Spacing.sm, paddingHorizontal: Spacing.md, marginBottom: 6 },
-  horarioRowApex: { borderLeftWidth: 3, borderLeftColor: Colors.coral },
-  horarioHora: { width: 92, fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.teal },
+  horarioRow: { flexDirection: 'row', alignItems: 'flex-start', backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.soft, paddingVertical: Spacing.md, paddingHorizontal: Spacing.md, marginBottom: Spacing.sm, ...Elevation.sm },
+  horarioRowApex: { borderLeftWidth: 3, borderLeftColor: Colors.coral, borderColor: Colors.coral + '2E', backgroundColor: Colors.coral + '0D' },
+  horarioHora: { width: 92, fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.teal, letterSpacing: 0.2 },
   horarioTitulo: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurface, lineHeight: 16 },
   horarioFoot: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: Spacing.sm, fontStyle: 'italic' },
   horarioTema: { fontSize: FontSize.labelSm, color: Colors.coral, fontWeight: '700', marginTop: 2 },
@@ -872,8 +904,8 @@ const styles = StyleSheet.create({
 
   // Grupos HOY (tema vs cola) + tags de tema/vuelta
   // Repasos espaciados (tracker de vueltas)
-  repasoBox: { backgroundColor: Colors.purple + '14', borderRadius: BorderRadius.md, padding: Spacing.md, marginBottom: Spacing.sm, borderLeftWidth: 3, borderLeftColor: Colors.purple },
-  repasoTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.purple },
+  repasoBox: { backgroundColor: Colors.purple + '14', borderRadius: BorderRadius.lg, padding: Spacing.md, marginBottom: Spacing.sm, borderWidth: 1, borderColor: Colors.purple + '2E', borderLeftWidth: 3, borderLeftColor: Colors.purple, ...Elevation.sm },
+  repasoTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.purple, letterSpacing: 0.2 },
   repasoHint: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 1, marginBottom: Spacing.xs },
   repasoRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 3 },
   repasoCheck: { width: 22, fontSize: FontSize.bodyMd, color: Colors.muted },
@@ -883,31 +915,31 @@ const styles = StyleSheet.create({
   repasoAgo: { fontSize: FontSize.labelSm, color: Colors.muted, marginLeft: Spacing.sm },
   repasoEmpty: { fontSize: FontSize.labelSm, color: Colors.muted, fontStyle: 'italic', marginBottom: Spacing.sm },
 
-  groupHdr: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface, marginTop: Spacing.md, marginBottom: 2 },
-  groupHint: { fontSize: FontSize.labelSm, color: Colors.muted, marginBottom: Spacing.sm, lineHeight: 15 },
-  themeTag: { fontSize: 9, fontWeight: '800', paddingVertical: 1, paddingHorizontal: 6, borderRadius: 999, overflow: 'hidden' },
+  groupHdr: { fontSize: FontSize.labelLg, fontWeight: '800', color: Colors.onSurface, marginTop: Spacing.lg, marginBottom: 3, letterSpacing: 0.2 },
+  groupHint: { fontSize: FontSize.labelSm, color: Colors.muted, marginBottom: Spacing.sm, lineHeight: 16 },
+  themeTag: { fontSize: 9, fontWeight: '800', paddingVertical: 2, paddingHorizontal: 7, borderRadius: 999, overflow: 'hidden', letterSpacing: 0.2 },
   themeTagOwn: { color: Colors.coral, backgroundColor: Colors.coral + '22' },
   themeTagOther: { color: Colors.muted, backgroundColor: Colors.muted + '22' },
-  vueltaTag: { fontSize: 9, fontWeight: '800', color: Colors.purple, backgroundColor: Colors.purple + '22', paddingVertical: 1, paddingHorizontal: 6, borderRadius: 999, overflow: 'hidden' },
+  vueltaTag: { fontSize: 9, fontWeight: '800', color: Colors.purple, backgroundColor: Colors.purple + '22', paddingVertical: 2, paddingHorizontal: 7, borderRadius: 999, overflow: 'hidden', letterSpacing: 0.2 },
 
   // Micro-horario (videos mapeados a horas exactas dentro del bloque deep-prime)
-  microWrap: { backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.md, padding: Spacing.md, marginTop: Spacing.sm, borderLeftWidth: 3, borderLeftColor: Colors.coral },
-  microTitle: { fontSize: FontSize.labelMd, fontWeight: '800', color: Colors.onSurface, marginBottom: Spacing.xs },
-  microRow: { flexDirection: 'row', alignItems: 'flex-start', paddingVertical: 3 },
-  microTime: { width: 72, fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.coral },
+  microWrap: { backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, padding: Spacing.md, marginTop: Spacing.sm, borderWidth: 1, borderColor: Colors.coral + '2E', borderLeftWidth: 3, borderLeftColor: Colors.coral, ...Elevation.sm },
+  microTitle: { fontSize: FontSize.labelMd, fontWeight: '800', color: Colors.onSurface, marginBottom: Spacing.sm, letterSpacing: 0.2 },
+  microRow: { flexDirection: 'row', alignItems: 'flex-start', paddingVertical: 4 },
+  microTime: { width: 72, fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.coral, letterSpacing: 0.2 },
   microLabel: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 16 },
 
   // CheckRow extras
-  srcTag: { fontSize: 9, fontWeight: '800', color: Colors.teal, backgroundColor: Colors.teal + '1F', paddingVertical: 1, paddingHorizontal: 6, borderRadius: 999, overflow: 'hidden' },
-  horaTag: { fontSize: 9, fontWeight: '800', color: Colors.coral, backgroundColor: Colors.coral + '22', paddingVertical: 1, paddingHorizontal: 6, borderRadius: 999, overflow: 'hidden' },
-  lockHint: { fontSize: FontSize.labelSm, color: Colors.amber, marginTop: 3, lineHeight: 14 },
-  fallbackLink: { fontSize: FontSize.labelSm, color: Colors.blue, fontWeight: '700', marginTop: 2 },
+  srcTag: { fontSize: 9, fontWeight: '800', color: Colors.teal, backgroundColor: Colors.teal + '1F', paddingVertical: 2, paddingHorizontal: 7, borderRadius: 999, overflow: 'hidden', letterSpacing: 0.2 },
+  horaTag: { fontSize: 9, fontWeight: '800', color: Colors.coral, backgroundColor: Colors.coral + '22', paddingVertical: 2, paddingHorizontal: 7, borderRadius: 999, overflow: 'hidden', letterSpacing: 0.2 },
+  lockHint: { fontSize: FontSize.labelSm, color: Colors.amber, marginTop: 5, lineHeight: 15 },
+  fallbackLink: { fontSize: FontSize.labelSm, color: Colors.blue, fontWeight: '800', marginTop: 3 },
   linkCol: { alignItems: 'flex-end', marginLeft: Spacing.sm },
-  pdfBtn: { marginTop: 4, backgroundColor: Colors.blue + '22' },
+  pdfBtn: { marginTop: 5, backgroundColor: Colors.blue + '1F', borderColor: Colors.blue + '33' },
 
   // Cajas de referencia (NTS / Material)
-  refBox: { backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.md, padding: Spacing.md, marginTop: Spacing.sm, borderLeftWidth: 3, borderLeftColor: Colors.teal },
-  refTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface, marginBottom: 4 },
+  refBox: { backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, padding: Spacing.md, marginTop: Spacing.sm, borderWidth: 1, borderColor: Colors.teal + '2E', borderLeftWidth: 3, borderLeftColor: Colors.teal, ...Elevation.sm },
+  refTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface, marginBottom: 4, letterSpacing: 0.2 },
   refBody: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 17 },
   refWhere: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 4, fontStyle: 'italic' },
   matLink: { fontSize: FontSize.labelMd, color: Colors.blue, marginTop: 4, lineHeight: 17 },

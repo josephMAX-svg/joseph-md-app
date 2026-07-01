@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Linking } from 'react-native';
-import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
+import { View, Text, TouchableOpacity, StyleSheet, Linking, Platform } from 'react-native';
+import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, LineHeight } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
 import { Chip, GlassPanel } from '../empresa/primitives';
 import { FadeUp } from '../empresa/visuals';
@@ -237,64 +237,65 @@ export default function SynapseTodayPlan({ done, onToggle }: { done: Set<number>
   );
 }
 
-const cardBase = { backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: DesktopColors.glassBorder };
+const cardBase = { backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.medium, ...Elevation.sm };
+const tnum = Platform.OS === 'web' ? ({ fontVariantNumeric: 'tabular-nums' } as any) : {};
 const st = StyleSheet.create({
   navRow: { flexDirection: 'row', alignItems: 'center', ...cardBase, padding: Spacing.sm, marginBottom: Spacing.xs },
-  navArrow: { width: 40, height: 40, borderRadius: BorderRadius.md, backgroundColor: 'rgba(255,255,255,0.05)', alignItems: 'center', justifyContent: 'center' },
+  navArrow: { width: 40, height: 40, borderRadius: BorderRadius.md, backgroundColor: 'rgba(216,227,252,0.05)', borderWidth: 1, borderColor: Hairline.soft, alignItems: 'center', justifyContent: 'center' },
   navArrowTxt: { fontSize: 16, color: INDIGO, fontWeight: '800' },
-  navDay: { fontSize: FontSize.bodyLg, fontWeight: '800', color: Colors.onSurface },
-  navFecha: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 1 },
+  navDay: { fontSize: FontSize.bodyLg, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.2, ...tnum },
+  navFecha: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 1, letterSpacing: 0.2 },
   hoyBtn: { alignSelf: 'center', marginBottom: Spacing.sm },
-  hoyBtnTxt: { fontSize: FontSize.labelSm, color: INDIGO, fontWeight: '700' },
+  hoyBtnTxt: { fontSize: FontSize.labelSm, color: INDIGO, fontWeight: '700', letterSpacing: 0.3 },
 
   subTabs: { flexDirection: 'row', gap: 6, marginBottom: Spacing.sm, flexWrap: 'wrap' },
-  subTab: { flexGrow: 1, paddingVertical: 7, paddingHorizontal: 8, borderRadius: BorderRadius.md, borderWidth: 1, borderColor: 'rgba(255,255,255,0.08)', alignItems: 'center' },
-  subTabOn: { backgroundColor: INDIGO + '14', borderColor: INDIGO + '55' },
-  subTabTxt: { fontSize: FontSize.labelMd, fontWeight: '700', color: Colors.muted },
+  subTab: { flexGrow: 1, paddingVertical: 7, paddingHorizontal: 8, borderRadius: BorderRadius.md, borderWidth: 1, borderColor: Hairline.medium, alignItems: 'center' },
+  subTabOn: { backgroundColor: INDIGO + '14', borderColor: INDIGO + '55', ...Elevation.sm },
+  subTabTxt: { fontSize: FontSize.labelMd, fontWeight: '700', color: Colors.muted, letterSpacing: 0.2 },
 
   statsRow: { flexDirection: 'row', gap: 6, marginBottom: Spacing.sm },
-  statCard: { flex: 1, ...cardBase, paddingVertical: 8, paddingHorizontal: 6, alignItems: 'center' },
-  statVal: { fontSize: FontSize.bodyLg, fontWeight: '900' },
-  statLbl: { fontSize: 9, color: Colors.muted, marginTop: 2, textAlign: 'center' },
+  statCard: { flex: 1, ...cardBase, paddingVertical: 10, paddingHorizontal: 6, alignItems: 'center' },
+  statVal: { fontSize: FontSize.bodyLg, fontWeight: '900', letterSpacing: -0.3, ...tnum },
+  statLbl: { fontSize: 9, color: Colors.smallLabel, fontWeight: '600', marginTop: 3, textAlign: 'center', letterSpacing: 0.3 },
 
-  misionCard: { ...cardBase, borderWidth: 1, padding: Spacing.md, marginBottom: Spacing.sm },
-  misionTitle: { fontSize: FontSize.bodyLg, fontWeight: '800', color: Colors.onSurface, marginTop: 8 },
+  misionCard: { ...cardBase, borderWidth: 1, padding: Spacing.md, marginBottom: Spacing.sm, ...Elevation.md },
+  misionTitle: { fontSize: FontSize.bodyLg, fontWeight: '800', color: Colors.onSurface, marginTop: 8, letterSpacing: -0.2, lineHeight: LineHeight.bodyLg },
   doneBtn: { marginTop: 10, paddingVertical: 9, borderRadius: BorderRadius.md, borderWidth: 1, alignItems: 'center' },
-  doneBtnTxt: { fontSize: FontSize.labelMd, fontWeight: '800' },
+  doneBtnTxt: { fontSize: FontSize.labelMd, fontWeight: '800', letterSpacing: 0.3 },
 
-  secLbl: { fontSize: 10, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 0.4, marginBottom: 8, marginTop: Spacing.sm },
+  secLbl: { fontSize: 10, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 0.9, textTransform: 'uppercase', marginBottom: 8, marginTop: Spacing.sm },
   blk: { ...cardBase, borderLeftWidth: 3, flexDirection: 'row', alignItems: 'center', gap: 10, padding: Spacing.md, marginBottom: 6 },
   blkIcon: { fontSize: 18, width: 24, textAlign: 'center' },
-  blkTag: { fontSize: 9, fontWeight: '800', letterSpacing: 0.3 },
-  blkMat: { fontSize: FontSize.labelMd, color: Colors.onSurface, fontWeight: '700', marginTop: 3 },
-  blkLec: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 2, lineHeight: 16 },
-  blkDur: { fontSize: 9, color: Colors.muted, marginTop: 2 },
+  blkTag: { fontSize: 9, fontWeight: '800', letterSpacing: 0.5, textTransform: 'uppercase' },
+  blkMat: { fontSize: FontSize.labelMd, color: Colors.onSurface, fontWeight: '700', marginTop: 3, letterSpacing: -0.1 },
+  blkLec: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 2, lineHeight: LineHeight.labelMd },
+  blkDur: { fontSize: 9, color: Colors.muted, marginTop: 2, letterSpacing: 0.2 },
   verBtn: { borderWidth: 1, borderRadius: BorderRadius.md, paddingVertical: 5, paddingHorizontal: 10, alignItems: 'center' },
-  verTxt: { fontSize: FontSize.labelSm, fontWeight: '800' },
+  verTxt: { fontSize: FontSize.labelSm, fontWeight: '800', letterSpacing: 0.3 },
 
   d7: { ...cardBase, borderLeftWidth: 3, flexDirection: 'row', alignItems: 'center', gap: 10, padding: Spacing.sm, marginBottom: 5 },
-  d7day: { fontSize: FontSize.labelLg, fontWeight: '800', width: 44 },
-  d7fecha: { fontSize: FontSize.labelSm, color: Colors.muted, width: 56 },
+  d7day: { fontSize: FontSize.labelLg, fontWeight: '800', width: 44, ...tnum },
+  d7fecha: { fontSize: FontSize.labelSm, color: Colors.muted, width: 56, letterSpacing: 0.2 },
   d7sub: { fontSize: FontSize.labelMd, color: Colors.onSurface, fontWeight: '600' },
   d7sys: { fontSize: 9, color: Colors.muted, marginTop: 1 },
   d7go: { fontSize: 16, fontWeight: '800', width: 18, textAlign: 'center' },
 
   globCard: { ...cardBase, padding: Spacing.md, marginBottom: Spacing.sm },
-  globTitle: { fontSize: FontSize.labelLg, fontWeight: '800', color: Colors.onSurface },
-  globPct: { fontSize: FontSize.bodyLg, fontWeight: '900' },
-  globSub: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 5 },
-  barTrack: { height: 7, borderRadius: 4, backgroundColor: 'rgba(255,255,255,0.08)', overflow: 'hidden' },
-  barFill: { height: 7, borderRadius: 4 },
+  globTitle: { fontSize: FontSize.labelLg, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.1 },
+  globPct: { fontSize: FontSize.bodyLg, fontWeight: '900', letterSpacing: -0.3, ...tnum },
+  globSub: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 5, lineHeight: LineHeight.labelSm },
+  barTrack: { height: 7, borderRadius: BorderRadius.full, backgroundColor: Hairline.strong, overflow: 'hidden' },
+  barFill: { height: 7, borderRadius: BorderRadius.full },
   semCard: { ...cardBase, padding: Spacing.md, marginBottom: 6 },
   semHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 },
-  semTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface, flex: 1 },
-  semCount: { fontSize: FontSize.labelMd, fontWeight: '800', marginLeft: 8 },
-  semEstado: { fontSize: FontSize.labelSm, fontWeight: '700', marginTop: 5 },
-  diaRow: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingVertical: 6, paddingHorizontal: 6, borderRadius: BorderRadius.sm, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.05)' },
+  semTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface, flex: 1, letterSpacing: -0.1 },
+  semCount: { fontSize: FontSize.labelMd, fontWeight: '800', marginLeft: 8, ...tnum },
+  semEstado: { fontSize: FontSize.labelSm, fontWeight: '700', marginTop: 5, letterSpacing: 0.2 },
+  diaRow: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingVertical: 6, paddingHorizontal: 6, borderRadius: BorderRadius.sm, borderTopWidth: 1, borderTopColor: Hairline.soft },
   diaRowMain: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 8 },
   diaChk: { fontSize: 16, width: 22, textAlign: 'center' },
-  diaRowD: { fontSize: FontSize.labelSm, fontWeight: '800', width: 44 },
+  diaRowD: { fontSize: FontSize.labelSm, fontWeight: '800', width: 44, ...tnum },
   diaRowTxt: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant },
   diaRowGo: { fontSize: 14, color: Colors.muted, width: 16, textAlign: 'center' },
-  note: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: Spacing.sm, lineHeight: 15 },
+  note: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: Spacing.sm, lineHeight: LineHeight.labelSm },
 });

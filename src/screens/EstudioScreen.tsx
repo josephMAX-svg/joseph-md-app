@@ -13,7 +13,7 @@ import {
   ActivityIndicator,
   Linking,
 } from 'react-native';
-import { Colors, Spacing, FontSize, BorderRadius } from '../theme/tokens';
+import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, Motion, LineHeight } from '../theme/tokens';
 import { encapsObsUrl } from '../lib/obsidianMap';
 import { useSupabaseQuery } from '../hooks/useSupabaseQuery';
 import {
@@ -130,6 +130,11 @@ const PALMERTON_COLORS: Record<string, string> = {
   CONCEPTO: Colors.blue,
   OLVIDO: Colors.purple,
 };
+
+// Transición web coherente con el sistema (Motion tokens).
+const webTransition = Platform.OS === 'web'
+  ? ({ transition: `background-color ${Motion.base}, border-color ${Motion.base}, transform ${Motion.base}, box-shadow ${Motion.base}` } as any)
+  : {};
 
 // ─── Progress Item (with live data support) ───
 function ProgressItem({ name, detail, progress, color }: { name: string; detail: string; progress: number; color: string }) {
@@ -681,6 +686,10 @@ export default function EstudioScreen() {
 // ═══════════════════════════════════════════════════════════════════
 function EncapsBlockCard({ block }: { block: EncapsBlock }) {
   const [expanded, setExpanded] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const hoverProps = Platform.OS === 'web'
+    ? { onMouseEnter: () => setHovered(true), onMouseLeave: () => setHovered(false) }
+    : {};
   const colorMap: Record<string, string> = {
     blue: Colors.blue,
     green: Colors.green,
@@ -694,7 +703,15 @@ function EncapsBlockCard({ block }: { block: EncapsBlock }) {
     : null;
 
   return (
-    <View style={[styles.encapsCard, { borderLeftColor: accent }]}>
+    <View
+      style={[
+        styles.encapsCard,
+        { borderLeftColor: accent },
+        webTransition,
+        hovered && Platform.OS === 'web' ? styles.encapsCardHover : null,
+      ]}
+      {...hoverProps}
+    >
       <TouchableOpacity
         onPress={() => setExpanded(e => !e)}
         style={styles.encapsCardHeader}
@@ -796,20 +813,22 @@ const styles = StyleSheet.create({
   scrollContent: { paddingHorizontal: Spacing.lg, paddingTop: 60, paddingBottom: 120 },
 
   header: { marginBottom: Spacing['2xl'], flexDirection: 'row', alignItems: 'flex-start' },
-  headerTitle: { fontSize: FontSize.headlineLg, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.5 },
-  headerSub: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, marginTop: 2 },
+  headerTitle: { fontSize: FontSize.headlineLg, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.5, lineHeight: LineHeight.headlineLg },
+  headerSub: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, marginTop: 3, fontWeight: '600', letterSpacing: 0.3 },
 
   // CZI Badge
   cziBadge: {
-    borderRadius: BorderRadius.md,
+    borderRadius: BorderRadius.lg,
     borderWidth: 1.5,
-    paddingVertical: Spacing.xs,
+    paddingVertical: Spacing.sm,
     paddingHorizontal: Spacing.md,
     alignItems: 'center',
     marginLeft: Spacing.md,
+    backgroundColor: Colors.surfaceContainerLow,
+    ...Elevation.sm,
   },
-  cziLabel: { fontSize: FontSize.labelSm, fontWeight: '700', letterSpacing: 1 },
-  cziValue: { fontSize: FontSize.titleMd, fontWeight: '800' },
+  cziLabel: { fontSize: FontSize.labelSm, fontWeight: '800', letterSpacing: 1.5 },
+  cziValue: { fontSize: FontSize.titleMd, fontWeight: '800', letterSpacing: 0.2, marginTop: 1 },
 
   // APEX manual card v2.3.2 (Capa 2 flujo Palmerton)
   apexManualCard: {
@@ -817,39 +836,49 @@ const styles = StyleSheet.create({
     borderRadius: BorderRadius.lg,
     padding: Spacing.lg,
     marginBottom: Spacing.section,
+    borderWidth: 1,
+    borderColor: Colors.amber + '2E',
     borderLeftWidth: 3,
     borderLeftColor: Colors.amber,
     flexDirection: 'row',
     alignItems: 'center',
+    ...Elevation.sm,
   },
   apexManualTitle: {
     fontSize: FontSize.titleMd,
     fontWeight: '700',
     color: Colors.onSurface,
+    letterSpacing: 0.2,
   },
   apexManualSub: {
     fontSize: FontSize.labelSm,
     color: Colors.muted,
-    marginTop: 2,
+    marginTop: 3,
+    lineHeight: 15,
   },
   apexManualBtn: {
     backgroundColor: Colors.amber,
     paddingVertical: Spacing.sm,
-    paddingHorizontal: Spacing.md,
+    paddingHorizontal: Spacing.lg,
     borderRadius: BorderRadius.md,
     marginLeft: Spacing.md,
+    ...Elevation.glow(Colors.amber),
+    ...webTransition,
   },
   apexManualBtnText: {
     fontSize: FontSize.labelMd,
     fontWeight: '800',
-    color: '#0B1628',
+    color: '#1A1204',
+    letterSpacing: 0.3,
   },
 
   // PE Perú → sub-tabs (Plan diario · Bloques · Dashboard)
   peSubTabRow: {
     flexDirection: 'row',
-    backgroundColor: Colors.surfaceContainerLow,
-    borderRadius: BorderRadius.md,
+    backgroundColor: Colors.surfaceContainerLowest,
+    borderRadius: BorderRadius.lg,
+    borderWidth: 1,
+    borderColor: Hairline.soft,
     padding: 3,
     marginBottom: Spacing.section,
   },
@@ -857,10 +886,11 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: Spacing.sm,
     alignItems: 'center',
-    borderRadius: BorderRadius.sm,
+    borderRadius: BorderRadius.md,
+    ...webTransition,
   },
-  peSubTabActive: { backgroundColor: Colors.surfaceContainerHighest },
-  peSubTabText: { fontSize: FontSize.labelSm, fontWeight: '600', color: Colors.muted },
+  peSubTabActive: { backgroundColor: Colors.surfaceContainerHighest, ...Elevation.sm },
+  peSubTabText: { fontSize: FontSize.labelSm, fontWeight: '700', color: Colors.muted, letterSpacing: 0.2 },
   peSubTabTextActive: { color: Colors.onSurface },
 
   // ENCAPS 5 bloques oficiales v2.3.2
@@ -871,18 +901,28 @@ const styles = StyleSheet.create({
     fontSize: FontSize.titleMd,
     fontWeight: '800',
     color: Colors.onSurface,
+    letterSpacing: 0.2,
   },
   encapsHeaderSub: {
     fontSize: FontSize.labelSm,
     color: Colors.muted,
-    marginTop: 2,
+    marginTop: 3,
+    letterSpacing: 0.3,
   },
   encapsCard: {
     backgroundColor: Colors.surfaceContainerLow,
     borderRadius: BorderRadius.lg,
     padding: Spacing.lg,
     marginBottom: Spacing.md,
+    borderWidth: 1,
+    borderColor: Hairline.soft,
     borderLeftWidth: 4,
+    ...Elevation.sm,
+  },
+  encapsCardHover: {
+    borderColor: Hairline.medium,
+    backgroundColor: Colors.surfaceContainer,
+    ...Elevation.md,
   },
   encapsCardHeader: {
     flexDirection: 'row',
@@ -892,6 +932,7 @@ const styles = StyleSheet.create({
     fontSize: FontSize.titleMd,
     fontWeight: '700',
     color: Colors.onSurface,
+    letterSpacing: 0.2,
   },
   rentableBadge: {
     fontSize: 9,
@@ -899,24 +940,28 @@ const styles = StyleSheet.create({
     color: Colors.green,
     backgroundColor: Colors.green + '20',
     paddingVertical: 2,
-    paddingHorizontal: 6,
+    paddingHorizontal: 7,
     borderRadius: 999,
     marginLeft: Spacing.sm,
     letterSpacing: 0.5,
+    overflow: 'hidden',
   },
   encapsCardId: {
     fontSize: FontSize.labelSm,
     color: Colors.muted,
-    marginTop: 2,
+    marginTop: 3,
+    letterSpacing: 0.3,
   },
   encapsCardRightCol: { alignItems: 'flex-end' },
   encapsPeso: {
-    fontSize: FontSize.titleMd,
+    fontSize: FontSize.titleLg,
     fontWeight: '800',
+    letterSpacing: -0.3,
   },
   encapsPreguntas: {
     fontSize: FontSize.labelSm,
     color: Colors.muted,
+    marginTop: 1,
   },
   encapsCardBody: {
     marginTop: Spacing.md,
@@ -927,13 +972,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 4,
   },
-  encapsCount: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant },
-  encapsCountValue: { fontSize: FontSize.titleMd, fontWeight: '800' },
-  encapsCobertura: { fontSize: FontSize.labelSm, color: Colors.muted },
+  encapsCount: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, fontWeight: '600' },
+  encapsCountValue: { fontSize: FontSize.titleMd, fontWeight: '800', letterSpacing: 0.2 },
+  encapsCobertura: { fontSize: FontSize.labelSm, color: Colors.muted, fontWeight: '600' },
   encapsNoActivity: {
     fontSize: FontSize.labelSm,
     color: Colors.coral,
-    fontWeight: '600',
+    fontWeight: '700',
     fontStyle: 'italic',
     marginBottom: 4,
   },
@@ -944,15 +989,16 @@ const styles = StyleSheet.create({
   },
   encapsToggle: {
     fontSize: FontSize.labelSm,
-    color: Colors.onSurfaceVariant,
-    fontWeight: '600',
-    marginTop: 4,
+    color: Colors.teal,
+    fontWeight: '800',
+    marginTop: 6,
+    letterSpacing: 0.2,
   },
   encapsSubtemasList: {
     marginTop: Spacing.sm,
     paddingTop: Spacing.sm,
     borderTopWidth: 1,
-    borderTopColor: 'rgba(143,144,151,0.15)',
+    borderTopColor: Hairline.soft,
   },
   encapsSubtemaRow: {
     flexDirection: 'row',
@@ -989,14 +1035,19 @@ const styles = StyleSheet.create({
     borderRadius: BorderRadius.lg,
     padding: Spacing.lg,
     marginBottom: Spacing.section,
+    borderWidth: 1,
+    borderColor: Colors.teal + '2E',
     borderLeftWidth: 3,
     borderLeftColor: Colors.teal,
+    ...Elevation.sm,
   },
   apexTodayTitle: {
-    fontSize: FontSize.titleMd,
-    fontWeight: '700',
-    color: Colors.onSurface,
+    fontSize: FontSize.labelMd,
+    fontWeight: '800',
+    color: Colors.smallLabel,
     marginBottom: Spacing.md,
+    letterSpacing: 0.8,
+    textTransform: 'uppercase',
   },
   apexTodayRow: {
     flexDirection: 'row',
@@ -1008,86 +1059,93 @@ const styles = StyleSheet.create({
   },
   apexTodayItemTotal: {
     borderLeftWidth: 1,
-    borderLeftColor: 'rgba(143,144,151,0.2)',
+    borderLeftColor: Hairline.medium,
     paddingLeft: Spacing.sm,
   },
   apexTodayFlag: {
     fontSize: 18,
-    marginBottom: 2,
+    marginBottom: 3,
   },
   apexTodayLabel: {
     fontSize: FontSize.labelSm,
     color: Colors.muted,
-    fontWeight: '600',
-    letterSpacing: 0.5,
-    marginBottom: 2,
+    fontWeight: '700',
+    letterSpacing: 0.6,
+    marginBottom: 3,
   },
   apexTodayCount: {
     fontSize: FontSize.headlineLg,
     fontWeight: '800',
+    letterSpacing: -0.5,
   },
 
   // Queue banner
   queueBanner: {
     backgroundColor: Colors.teal + '18',
-    borderRadius: BorderRadius.md,
+    borderRadius: BorderRadius.lg,
     padding: Spacing.md,
     marginBottom: Spacing.section,
+    borderWidth: 1,
+    borderColor: Colors.teal + '2E',
     borderLeftWidth: 3,
     borderLeftColor: Colors.teal,
   },
-  queueBannerText: { fontSize: FontSize.bodyMd, color: Colors.teal, fontWeight: '600' },
+  queueBannerText: { fontSize: FontSize.bodyMd, color: Colors.teal, fontWeight: '700', letterSpacing: 0.2 },
 
-  alertBanner: { backgroundColor: Colors.coral + '15', borderRadius: BorderRadius.md, padding: Spacing.md, marginBottom: Spacing.section, flexDirection: 'row', alignItems: 'center' },
-  alertIcon: { fontSize: 20, marginRight: Spacing.sm },
-  alertTitle: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.coral, marginBottom: 2 },
-  alertText: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant },
+  alertBanner: { backgroundColor: Colors.coral + '15', borderRadius: BorderRadius.lg, padding: Spacing.md, marginBottom: Spacing.section, flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: Colors.coral + '2E', borderLeftWidth: 3, borderLeftColor: Colors.coral },
+  alertIcon: { fontSize: 20, marginRight: Spacing.md },
+  alertTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.coral, marginBottom: 2, letterSpacing: 0.2 },
+  alertText: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, lineHeight: 15 },
 
-  apexButton: { backgroundColor: Colors.teal, borderRadius: BorderRadius.lg, padding: Spacing.xl, alignItems: 'center', marginBottom: Spacing.section },
-  apexButtonText: { fontSize: FontSize.titleMd, fontWeight: '800', color: '#0B1628', letterSpacing: 0.5 },
-  apexButtonSub: { fontSize: FontSize.labelSm, color: '#0B1628', marginTop: 2, opacity: 0.7 },
+  apexButton: { backgroundColor: Colors.teal, borderRadius: BorderRadius.lg, padding: Spacing.xl, alignItems: 'center', marginBottom: Spacing.section, ...Elevation.glow(Colors.teal), ...webTransition },
+  apexButtonText: { fontSize: FontSize.titleMd, fontWeight: '800', color: '#04201C', letterSpacing: 0.5 },
+  apexButtonSub: { fontSize: FontSize.labelSm, color: '#04201C', marginTop: 3, opacity: 0.75, fontWeight: '600', letterSpacing: 0.2 },
 
-  tabRow: { flexDirection: 'row', marginBottom: Spacing.section, backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.md, padding: 3 },
-  tab: { paddingVertical: Spacing.sm, alignItems: 'center', borderRadius: BorderRadius.sm },
-  tabActive: { backgroundColor: Colors.surfaceContainerHighest },
-  tabText: { fontSize: FontSize.labelMd, fontWeight: '600', color: Colors.muted, letterSpacing: 0.5 },
+  tabRow: { flexDirection: 'row', marginBottom: Spacing.section, backgroundColor: Colors.surfaceContainerLowest, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.soft, padding: 3 },
+  tab: { paddingVertical: Spacing.sm, alignItems: 'center', borderRadius: BorderRadius.md, ...webTransition },
+  tabActive: { backgroundColor: Colors.surfaceContainerHighest, ...Elevation.sm },
+  tabText: { fontSize: FontSize.labelMd, fontWeight: '700', color: Colors.muted, letterSpacing: 0.5 },
   tabTextActive: { color: Colors.onSurface },
 
-  bankSection: { backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, padding: Spacing.lg, marginBottom: Spacing.section },
+  bankSection: { backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.soft, padding: Spacing.lg, marginBottom: Spacing.section, ...Elevation.sm },
   bankHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: Spacing.sm },
-  bankTitle: { fontSize: FontSize.titleMd, fontWeight: '700', color: Colors.onSurface },
+  bankTitle: { fontSize: FontSize.titleMd, fontWeight: '800', color: Colors.onSurface, letterSpacing: 0.3 },
   bankCount: { fontSize: FontSize.labelSm, color: Colors.muted, marginBottom: Spacing.md, letterSpacing: 0.3 },
 
-  badge: { borderRadius: BorderRadius.full, paddingVertical: 2, paddingHorizontal: 8 },
-  badgeText: { fontSize: FontSize.labelSm, fontWeight: '700', letterSpacing: 0.3 },
+  badge: { borderRadius: BorderRadius.full, paddingVertical: 3, paddingHorizontal: 9 },
+  badgeText: { fontSize: FontSize.labelSm, fontWeight: '800', letterSpacing: 0.4 },
 
   progressItem: { marginBottom: Spacing.md },
-  progressItemHeader: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 },
-  progressItemName: { fontSize: FontSize.bodyMd, color: Colors.onSurface, fontWeight: '500', flex: 1 },
-  progressItemDetail: { fontSize: FontSize.labelSm, color: Colors.muted, marginLeft: 8 },
-  progressTrack: { height: 4, backgroundColor: Colors.surfaceContainerHighest, borderRadius: 2, overflow: 'hidden' },
-  progressValue: { height: 4, borderRadius: 2 },
+  progressItemHeader: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 },
+  progressItemName: { fontSize: FontSize.bodyMd, color: Colors.onSurface, fontWeight: '600', flex: 1 },
+  progressItemDetail: { fontSize: FontSize.labelSm, color: Colors.muted, marginLeft: 8, fontWeight: '600' },
+  progressTrack: { height: 5, backgroundColor: Colors.surfaceContainerHighest, borderRadius: 3, overflow: 'hidden' },
+  progressValue: { height: 5, borderRadius: 3 },
 
   collapseToggle: { paddingVertical: Spacing.sm, marginBottom: Spacing.sm },
-  collapseText: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, fontWeight: '500' },
+  collapseText: { fontSize: FontSize.bodyMd, color: Colors.teal, fontWeight: '700', letterSpacing: 0.2 },
 
   // ─── Palmerton Error Chart ───
   palmertonSection: {
     backgroundColor: Colors.surfaceContainerLow,
     borderRadius: BorderRadius.lg,
+    borderWidth: 1,
+    borderColor: Hairline.soft,
     padding: Spacing.lg,
     marginBottom: Spacing.section,
+    ...Elevation.sm,
   },
   palmertonTitle: {
     fontSize: FontSize.titleMd,
-    fontWeight: '700',
+    fontWeight: '800',
     color: Colors.onSurface,
     marginBottom: Spacing.lg,
+    letterSpacing: 0.2,
   },
   palmertonItem: { marginBottom: Spacing.md },
-  palmertonLabelRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 },
-  palmertonLabel: { fontSize: FontSize.bodyMd, fontWeight: '700', letterSpacing: 0.5 },
-  palmertonCount: { fontSize: FontSize.labelSm, color: Colors.muted },
+  palmertonLabelRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 },
+  palmertonLabel: { fontSize: FontSize.bodyMd, fontWeight: '800', letterSpacing: 0.5 },
+  palmertonCount: { fontSize: FontSize.labelSm, color: Colors.muted, fontWeight: '600' },
   palmertonTrack: {
     height: 8,
     backgroundColor: Colors.surfaceContainerHighest,
@@ -1101,34 +1159,38 @@ const styles = StyleSheet.create({
   timingSection: {
     backgroundColor: Colors.surfaceContainerLow,
     borderRadius: BorderRadius.lg,
+    borderWidth: 1,
+    borderColor: Hairline.soft,
     padding: Spacing.lg,
     marginBottom: Spacing.section,
+    ...Elevation.sm,
   },
   timingTitle: {
     fontSize: FontSize.titleMd,
-    fontWeight: '700',
+    fontWeight: '800',
     color: Colors.onSurface,
     marginBottom: Spacing.sm,
+    letterSpacing: 0.2,
   },
   timingText: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, lineHeight: 22 },
   timingEmpty: { fontSize: FontSize.bodyMd, color: Colors.muted, fontStyle: 'italic' },
 
   toolsRow: { flexDirection: 'row', gap: Spacing.sm, marginBottom: Spacing.section },
-  toolChip: { backgroundColor: Colors.surfaceContainerHighest, borderRadius: BorderRadius.full, paddingVertical: Spacing.sm, paddingHorizontal: Spacing.md },
-  toolChipText: { fontSize: FontSize.labelSm, color: Colors.onSurface, fontWeight: '500' },
+  toolChip: { backgroundColor: Colors.surfaceContainerHighest, borderRadius: BorderRadius.full, borderWidth: 1, borderColor: Hairline.soft, paddingVertical: Spacing.sm, paddingHorizontal: Spacing.md, ...webTransition },
+  toolChipText: { fontSize: FontSize.labelSm, color: Colors.onSurface, fontWeight: '700', letterSpacing: 0.2 },
 
   addRow: { flexDirection: 'row', gap: Spacing.sm },
-  addButton: { flex: 1, borderRadius: BorderRadius.md, paddingVertical: Spacing.md, alignItems: 'center', borderWidth: 1, borderColor: 'rgba(143, 144, 151, 0.3)', borderStyle: 'dashed' },
-  addButtonText: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, fontWeight: '500' },
+  addButton: { flex: 1, borderRadius: BorderRadius.md, paddingVertical: Spacing.md, alignItems: 'center', borderWidth: 1, borderColor: Hairline.strong, borderStyle: 'dashed', ...webTransition },
+  addButtonText: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, fontWeight: '600', letterSpacing: 0.2 },
 
   // Modal
-  modalOverlay: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.6)' },
-  modalContent: { backgroundColor: Colors.surfaceContainer, borderRadius: BorderRadius.lg, padding: Spacing.xl, width: '85%', maxWidth: 400 },
-  modalTitle: { fontSize: FontSize.titleMd, fontWeight: '700', color: Colors.onSurface, marginBottom: Spacing.lg },
-  modalInput: { backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.md, padding: Spacing.md, fontSize: FontSize.bodyMd, color: Colors.onSurface, marginBottom: Spacing.lg },
+  modalOverlay: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,4,13,0.72)' },
+  modalContent: { backgroundColor: Colors.surfaceContainer, borderRadius: BorderRadius.xl, borderWidth: 1, borderColor: Hairline.medium, padding: Spacing.xl, width: '85%', maxWidth: 400, ...Elevation.lg },
+  modalTitle: { fontSize: FontSize.titleMd, fontWeight: '800', color: Colors.onSurface, marginBottom: Spacing.lg, letterSpacing: 0.2 },
+  modalInput: { backgroundColor: Colors.surfaceContainerLowest, borderRadius: BorderRadius.md, borderWidth: 1, borderColor: Hairline.medium, padding: Spacing.md, fontSize: FontSize.bodyMd, color: Colors.onSurface, marginBottom: Spacing.lg, ...(Platform.OS === 'web' ? { outlineStyle: 'none' as any } : {}) },
   modalButtons: { flexDirection: 'row', gap: Spacing.sm },
-  modalCancel: { flex: 1, paddingVertical: Spacing.sm, alignItems: 'center', borderRadius: BorderRadius.md, backgroundColor: Colors.surfaceContainerHighest },
-  modalCancelText: { fontSize: FontSize.labelMd, color: Colors.muted, fontWeight: '600' },
-  modalSubmit: { flex: 1, paddingVertical: Spacing.sm, alignItems: 'center', borderRadius: BorderRadius.md, backgroundColor: Colors.teal },
-  modalSubmitText: { fontSize: FontSize.labelMd, color: '#0B1628', fontWeight: '700' },
+  modalCancel: { flex: 1, paddingVertical: Spacing.md, alignItems: 'center', borderRadius: BorderRadius.md, backgroundColor: Colors.surfaceContainerHighest, ...webTransition },
+  modalCancelText: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, fontWeight: '700' },
+  modalSubmit: { flex: 1, paddingVertical: Spacing.md, alignItems: 'center', borderRadius: BorderRadius.md, backgroundColor: Colors.teal, ...webTransition },
+  modalSubmitText: { fontSize: FontSize.labelMd, color: '#04201C', fontWeight: '800', letterSpacing: 0.3 },
 });

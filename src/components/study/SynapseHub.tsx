@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Linking } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Linking, Platform } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, LineHeight } from '../../theme/tokens';
-import { desktopStyles } from '../../theme/desktopStyles';
+import { desktopStyles, DesktopColors } from '../../theme/desktopStyles';
 import { SectionLabel, Chip, GlassPanel, PillTab, gridStyle, gridItemStyle } from '../empresa/primitives';
 import { GradientHero, RingStat, MegaStat, FadeUp, CommandBackdrop } from '../empresa/visuals';
 import {
@@ -37,7 +37,7 @@ const NIVEL_COLOR: Record<SynapseNivel, string> = {
 function MaterialRow({ m }: { m: SynapseMaterial }) {
   return (
     <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(m.url)} style={st.matCard}>
-      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 6 }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: Spacing.xs + 2 }}>
         <Text style={st.matName} numberOfLines={2}>{m.nombre} ↗</Text>
         <View style={{ flexDirection: 'row', gap: 6, alignItems: 'center' }}>
           {m.audio ? <Chip label="🎧 huecos" color={INDIGO} small /> : null}
@@ -272,7 +272,10 @@ export default function SynapseHub({ variant = 'mobile' }: { variant?: 'mobile' 
 
         {/* Motor día-a-día → chat SYNAPSE */}
         <GlassPanel accent={INDIGO} style={{ marginBottom: Spacing.lg, padding: Spacing.lg }}>
-          <Text style={st.h3}>⚙ Motor día-a-día</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+            <Text style={st.h3}>⚙ Motor día-a-día</Text>
+            <Chip label="temario real" color={INDIGO} small />
+          </View>
           <Text style={st.body}>{SYNAPSE_META.nota}</Text>
         </GlassPanel>
 
@@ -296,31 +299,31 @@ export default function SynapseHub({ variant = 'mobile' }: { variant?: 'mobile' 
 }
 
 const st = StyleSheet.create({
-  heroTitle: { fontSize: FontSize.headlineSm, fontWeight: '800', color: Colors.onSurface, letterSpacing: 0.4 },
-  heroSub: { fontSize: FontSize.bodyMd, fontWeight: '700', marginTop: 4, letterSpacing: 0.6 },
-  heroTesis: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, marginTop: 8, lineHeight: 20 },
-  todayChip: { borderWidth: 1, borderRadius: BorderRadius.lg, paddingVertical: 10, paddingHorizontal: 16, alignItems: 'center', minWidth: 120 },
-  todayLabel: { fontSize: 9, fontWeight: '700', color: Colors.muted, letterSpacing: 1.2 },
-  todayValue: { fontSize: FontSize.titleLg, fontWeight: '800', marginTop: 2 },
-  todaySub: { fontSize: 9, color: Colors.muted, marginTop: 2 },
+  heroTitle: { fontSize: FontSize.headlineSm, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.4, lineHeight: LineHeight.headlineSm },
+  heroSub: { fontSize: FontSize.bodyMd, fontWeight: '700', marginTop: 4, letterSpacing: 0.6, textTransform: 'uppercase' },
+  heroTesis: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, marginTop: 8, lineHeight: LineHeight.bodyMd, maxWidth: 620 },
+  todayChip: { borderWidth: 1, borderRadius: BorderRadius.lg, paddingVertical: 10, paddingHorizontal: 16, alignItems: 'center', minWidth: 120, ...Elevation.sm },
+  todayLabel: { fontSize: 9, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 1.4 },
+  todayValue: { fontSize: FontSize.titleLg, fontWeight: '800', marginTop: 2, letterSpacing: -0.4, ...(Platform.OS === 'web' ? ({ fontVariantNumeric: 'tabular-nums' } as any) : {}) },
+  todaySub: { fontSize: 9, color: Colors.muted, marginTop: 2, letterSpacing: 0.2 },
   ringRow: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.md, marginBottom: Spacing.lg },
-  ringCard: { flexGrow: 1, flexBasis: 150, backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.xl, paddingVertical: Spacing.lg, alignItems: 'center', borderWidth: 1, borderColor: 'rgba(255,255,255,0.05)' },
-  h3: { fontSize: FontSize.bodyLg, fontWeight: '700', color: Colors.onSurface, marginBottom: 6 },
-  body: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, lineHeight: 20 },
-  faseCard: { backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, borderLeftWidth: 3, padding: Spacing.lg, marginBottom: Spacing.md },
+  ringCard: { flexGrow: 1, flexBasis: 150, backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.xl, paddingVertical: Spacing.lg, alignItems: 'center', borderWidth: 1, borderColor: Hairline.medium, ...Elevation.sm },
+  h3: { fontSize: FontSize.bodyLg, fontWeight: '700', color: Colors.onSurface, letterSpacing: -0.2 },
+  body: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, lineHeight: LineHeight.bodyMd },
+  faseCard: { backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderLeftWidth: 3, borderWidth: 1, borderColor: Hairline.soft, padding: Spacing.lg, marginBottom: Spacing.md, ...Elevation.sm },
   faseTag: { fontSize: FontSize.labelSm, fontWeight: '800', letterSpacing: 1 },
-  faseTitle: { fontSize: FontSize.titleMd, fontWeight: '800', color: Colors.onSurface, marginTop: 6 },
-  faseDesc: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, marginTop: 4, lineHeight: 19 },
-  faseEntreg: { fontSize: FontSize.labelMd, fontWeight: '700', marginTop: 8 },
-  matCard: { backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: BorderRadius.lg, padding: Spacing.md, borderWidth: 1, borderColor: 'rgba(255,255,255,0.06)' },
-  matName: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, flex: 1, minWidth: 150 },
+  faseTitle: { fontSize: FontSize.titleMd, fontWeight: '800', color: Colors.onSurface, marginTop: 6, letterSpacing: -0.3, lineHeight: LineHeight.titleMd },
+  faseDesc: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, marginTop: 4, lineHeight: LineHeight.bodyMd },
+  faseEntreg: { fontSize: FontSize.labelMd, fontWeight: '700', marginTop: 8, letterSpacing: 0.2 },
+  matCard: { backgroundColor: 'rgba(216,227,252,0.03)', borderRadius: BorderRadius.lg, padding: Spacing.md, borderWidth: 1, borderColor: Hairline.soft },
+  matName: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, flex: 1, minWidth: 150, letterSpacing: -0.1 },
   matRef: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 4 },
-  matWhy: { fontSize: FontSize.labelMd, color: Colors.muted, marginTop: 4, lineHeight: 17 },
-  matDur: { fontSize: 10, color: Colors.muted },
+  matWhy: { fontSize: FontSize.labelMd, color: Colors.muted, marginTop: 4, lineHeight: LineHeight.labelMd },
+  matDur: { fontSize: 10, color: Colors.muted, letterSpacing: 0.2 },
   catTitle: { fontSize: FontSize.bodyLg, fontWeight: '800', color: Colors.onSurface, marginBottom: Spacing.md, letterSpacing: 0.3 },
-  horRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md, paddingVertical: 10, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.06)' },
+  horRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md, paddingVertical: 10, borderTopWidth: 1, borderTopColor: Hairline.soft },
   horBadge: { borderRadius: BorderRadius.md, paddingVertical: 6, paddingHorizontal: 10, minWidth: 52, alignItems: 'center' },
-  horMin: { fontSize: FontSize.labelMd, fontWeight: '800' },
-  horBloque: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface },
-  horQue: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 2, lineHeight: 17 },
+  horMin: { fontSize: FontSize.labelMd, fontWeight: '800', letterSpacing: 0.2 },
+  horBloque: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, letterSpacing: -0.1 },
+  horQue: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 2, lineHeight: LineHeight.labelMd },
 });

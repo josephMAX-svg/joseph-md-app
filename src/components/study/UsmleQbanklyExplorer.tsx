@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Linking } from 'react-native';
-import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
+import { View, Text, TouchableOpacity, StyleSheet, Linking, Platform } from 'react-native';
+import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, Motion } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
 import { SectionLabel, Chip, GlassPanel } from '../empresa/primitives';
 import { FadeUp } from '../empresa/visuals';
@@ -157,29 +157,30 @@ export default function UsmleQbanklyExplorer() {
   );
 }
 
-const cardBase = { backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: DesktopColors.glassBorder };
+const cardBase = { backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.soft, ...Elevation.sm };
+const WEB_LINK = { cursor: 'pointer', transition: Motion.base } as any;
 const st = StyleSheet.create({
   intro: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, lineHeight: 19 },
   card: { ...cardBase, marginBottom: Spacing.sm, overflow: 'hidden' },
-  head: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, padding: Spacing.md },
+  head: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, padding: Spacing.md, ...WEB_LINK },
   libBadge: { fontSize: 18, width: 26, textAlign: 'center' },
   qBadge: { borderRadius: BorderRadius.full, borderWidth: 1, paddingVertical: 3, paddingHorizontal: 8, minWidth: 52, alignItems: 'center' },
   qBadgeTxt: { fontSize: 11, fontWeight: '800' },
-  name: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface },
-  metaSub: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 2 },
+  name: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, letterSpacing: -0.2 },
+  metaSub: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 3 },
   caret: { fontSize: 16, color: Colors.muted, width: 18, textAlign: 'center' },
-  body: { paddingHorizontal: Spacing.md, paddingBottom: Spacing.md, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.05)', paddingTop: Spacing.sm },
-  row: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 5, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.04)' },
+  body: { paddingHorizontal: Spacing.md, paddingBottom: Spacing.md, borderTopWidth: 1, borderTopColor: Hairline.soft, paddingTop: Spacing.sm },
+  row: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 6, borderTopWidth: 1, borderTopColor: Hairline.soft, ...WEB_LINK },
   rowName: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant },
-  boxLbl: { fontSize: 10, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 0.4, marginBottom: 6 },
+  boxLbl: { fontSize: 10, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 0.6, textTransform: 'uppercase', marginBottom: 6 },
   barRow: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingVertical: 3 },
   barName: { width: 150, fontSize: 10, color: Colors.onSurfaceVariant },
   barTrack: { flex: 1, height: 9, borderRadius: 5, backgroundColor: 'rgba(255,255,255,0.05)', overflow: 'hidden' },
-  barFill: { height: 9, borderRadius: 5 },
+  barFill: { height: 9, borderRadius: 5, ...(Platform.OS === 'web' ? { transition: Motion.spring } as any : {}) },
   barN: { width: 38, fontSize: 10, fontWeight: '800', color: GREEN, textAlign: 'right' },
   chipWrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 5, marginTop: 4 },
   subChip: { backgroundColor: GREEN + '14', borderRadius: BorderRadius.sm, paddingVertical: 3, paddingHorizontal: 7, borderWidth: 1, borderColor: GREEN + '2A' },
   subTxt: { fontSize: 10, color: '#AEE6CC' },
-  openBtn: { marginTop: 10, alignSelf: 'flex-start', backgroundColor: GREEN + '18', borderRadius: BorderRadius.md, borderWidth: 1, borderColor: GREEN + '44', paddingVertical: 6, paddingHorizontal: 12 },
-  openBtnTxt: { fontSize: FontSize.labelMd, fontWeight: '700', color: GREEN },
+  openBtn: { marginTop: 10, alignSelf: 'flex-start', backgroundColor: GREEN + '18', borderRadius: BorderRadius.md, borderWidth: 1, borderColor: GREEN + '44', paddingVertical: 7, paddingHorizontal: 13, ...WEB_LINK },
+  openBtnTxt: { fontSize: FontSize.labelMd, fontWeight: '700', color: GREEN, letterSpacing: 0.2 },
 });

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Platform } from 'react-native';
-import { Colors, Spacing, FontSize, BorderRadius } from '../theme/tokens';
+import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline } from '../theme/tokens';
 import { desktopStyles, DesktopColors } from '../theme/desktopStyles';
 import { LIVIANO_PENDIENTES, PULSO_MATRIZ } from '../lib/empresaData';
 import { SYNAPSE_META, SYNAPSE_FASES, SYNAPSE_HORARIO, SYNAPSE_QUICKLINKS } from '../lib/synapseData';
@@ -113,15 +113,18 @@ function MiniCalendar({ activeDays }: { activeDays: string[] }) {
           const hasActivity = activeSet.has(dates[i]);
           return (
             <View key={i} style={{ alignItems: 'center' }}>
-              <Text style={{ fontSize: 9, fontWeight: '600', color: isToday ? Colors.onSurface : Colors.smallLabel, marginBottom: 4 }}>
+              <Text style={{ fontSize: 9, fontWeight: isToday ? '800' : '600', letterSpacing: 0.4, color: isToday ? Colors.onSurface : Colors.smallLabel, marginBottom: 5 }}>
                 {day}
               </Text>
-              <View style={{
-                width: 10, height: 10, borderRadius: 5,
-                backgroundColor: hasActivity ? Colors.teal : 'rgba(255,255,255,0.08)',
-                borderWidth: isToday ? 1 : 0,
-                borderColor: Colors.teal,
-              }} />
+              <View style={[
+                {
+                  width: 10, height: 10, borderRadius: 5,
+                  backgroundColor: hasActivity ? Colors.teal : Hairline.medium,
+                  borderWidth: isToday ? 1.5 : 0,
+                  borderColor: Colors.teal,
+                },
+                hasActivity ? Elevation.glow(Colors.teal) : {},
+              ]} />
             </View>
           );
         })}
@@ -143,8 +146,8 @@ function WeekSummaryCard({ data }: { data: WeekSummary }) {
       <View style={{ gap: 6 }}>
         {items.map((item, i) => (
           <View key={i} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Text style={{ fontSize: 11, color: Colors.smallLabel }}>{item.label}</Text>
-            <Text style={{ fontSize: 13, fontWeight: '700', color: item.color }}>{item.value}</Text>
+            <Text style={{ fontSize: 11, color: Colors.smallLabel, letterSpacing: 0.2 }}>{item.label}</Text>
+            <Text style={{ fontSize: 13, fontWeight: '800', color: item.color, fontVariant: ['tabular-nums'] }}>{item.value}</Text>
           </View>
         ))}
       </View>
@@ -192,7 +195,11 @@ function HomeRightPanel() {
           return (
             <TouchableOpacity
               key={report.id}
-              style={desktopStyles.rightPanelCard}
+              style={[
+                desktopStyles.rightPanelCard,
+                isExpanded ? { borderColor: color + '44' } : {},
+                Platform.OS === 'web' ? ({ cursor: 'pointer', transition: 'border-color 200ms ease' } as any) : {},
+              ]}
               onPress={() => {
                 setExpandedId(isExpanded ? null : report.id);
                 if (!report.leido) markReportRead(report.id);
@@ -200,7 +207,7 @@ function HomeRightPanel() {
               activeOpacity={0.7}
             >
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <View style={[desktopStyles.reportFeedDot, { backgroundColor: color }]} />
+                <View style={[desktopStyles.reportFeedDot, { backgroundColor: color }, Elevation.glow(color)]} />
                 <View style={desktopStyles.reportFeedInfo}>
                   <Text style={desktopStyles.reportFeedAgent}>
                     {report.agente ?? 'Agent'}
@@ -588,7 +595,7 @@ function ResearchRightPanel() {
 
       {/* Next Action Card */}
       <Text style={[desktopStyles.rightPanelTitle, desktopStyles.rightPanelTitleSeparated]}>NEXT ACTION</Text>
-      <View style={[desktopStyles.rightPanelCard, { borderLeftWidth: 3, borderLeftColor: Colors.coral }]}>
+      <View style={[desktopStyles.rightPanelCard, { borderLeftWidth: 3, borderLeftColor: Colors.coral }, Elevation.md]}>
         <Text style={{ fontSize: 13, fontWeight: '700', color: Colors.onSurface, marginBottom: 4 }}>
           🔥 {nextAction.title}
         </Text>
@@ -630,7 +637,7 @@ function SynapseRightPanel() {
       <Text style={desktopStyles.rightPanelTitle}>SYNAPSE · AI TRACK</Text>
 
       {/* Misión de HOY (motor día-a-día) */}
-      <View style={[desktopStyles.rightPanelCard, { borderLeftWidth: 2, borderLeftColor: INDIGO }]}>
+      <View style={[desktopStyles.rightPanelCard, { borderLeftWidth: 3, borderLeftColor: INDIGO }, Elevation.md]}>
         <Text style={{ fontSize: 10, color: Colors.smallLabel, letterSpacing: 0.8, fontWeight: '600' }}>
           ⚡ MISIÓN DE HOY · DÍA {hoy?.d ?? '—'}/{SYN_PLAN_META.totalDias} · SEM {hoy?.semana ?? '—'}/12
         </Text>
@@ -687,7 +694,10 @@ function SynapseRightPanel() {
       {SYNAPSE_QUICKLINKS.map((q, i) => (
         <TouchableOpacity
           key={i}
-          style={desktopStyles.rightPanelCard}
+          style={[
+            desktopStyles.rightPanelCard,
+            Platform.OS === 'web' ? ({ cursor: 'pointer', transition: 'border-color 200ms ease' } as any) : {},
+          ]}
           activeOpacity={0.8}
           onPress={() => { try { require('react-native').Linking.openURL(q.url); } catch {} }}
         >

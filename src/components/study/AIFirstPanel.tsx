@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Linking } from 'react-native';
-import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
+import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, Motion, LineHeight } from '../../theme/tokens';
 import { AI_FIRST_SEGMENTOS } from '../../lib/aiFirstTools';
 
 /**
@@ -50,19 +50,20 @@ export default function AIFirstPanel({ segmento, accent = AI }: { segmento: stri
   );
 }
 
+const WEB_LINK = { cursor: 'pointer', transition: Motion.base } as any;
 const st = StyleSheet.create({
-  card: { backgroundColor: 'rgba(45,212,191,0.05)', borderRadius: BorderRadius.lg, borderWidth: 1, padding: Spacing.md, marginBottom: Spacing.lg },
-  head: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
+  card: { backgroundColor: 'rgba(45,212,191,0.05)', borderRadius: BorderRadius.lg, borderWidth: 1, padding: Spacing.md, marginBottom: Spacing.lg, ...Elevation.sm },
+  head: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, ...WEB_LINK },
   title: { fontSize: FontSize.bodyLg, fontWeight: '800', color: Colors.onSurface, letterSpacing: 0.2 },
-  hint: { fontSize: FontSize.labelMd, color: Colors.muted, marginTop: 2 },
+  hint: { fontSize: FontSize.labelMd, color: Colors.muted, marginTop: 3, lineHeight: LineHeight.labelMd },
   toggle: { fontSize: 24, fontWeight: '800', paddingHorizontal: 6 },
   principio: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, lineHeight: 20, marginBottom: Spacing.sm },
   subh: { fontSize: FontSize.labelSm, fontWeight: '800', letterSpacing: 1, textTransform: 'uppercase', marginTop: Spacing.md, marginBottom: Spacing.xs },
-  tool: { backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: BorderRadius.md, borderLeftWidth: 3, padding: Spacing.sm, marginBottom: Spacing.sm },
-  toolName: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface },
+  tool: { backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: BorderRadius.md, borderWidth: 1, borderColor: Hairline.soft, borderLeftWidth: 3, padding: Spacing.sm, marginBottom: Spacing.sm, ...WEB_LINK },
+  toolName: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, letterSpacing: -0.2 },
   idi: { fontSize: 10, color: Colors.muted, fontWeight: '500' },
-  toolWhy: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 3, lineHeight: 17 },
-  toolUse: { fontSize: FontSize.labelMd, marginTop: 4, lineHeight: 17, fontWeight: '600' },
+  toolWhy: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 4, lineHeight: 17 },
+  toolUse: { fontSize: FontSize.labelMd, marginTop: 5, lineHeight: 17, fontWeight: '600' },
   liRow: { flexDirection: 'row', gap: 8, paddingVertical: 3 },
   li: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 18 },
   liWarn: { flex: 1, fontSize: FontSize.labelMd, color: Colors.muted, lineHeight: 18 },

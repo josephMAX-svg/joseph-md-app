@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Linking } from 'react-native';
-import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
+import { View, Text, TouchableOpacity, StyleSheet, Linking, Platform } from 'react-native';
+import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, Motion, LineHeight } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
-import { SectionLabel, Chip } from '../empresa/primitives';
+import { SectionLabel, Chip, useHover } from '../empresa/primitives';
 import { FadeUp } from '../empresa/visuals';
 import { RESEARCH_LINES, CLUSTER_COLOR, CLUSTER_LABEL, LineaResearch, Cluster } from '../../lib/researchProgram';
 import { researchObsUrlLine } from '../../lib/obsidianResearchMap';
@@ -25,9 +25,18 @@ const ESTADO_LBL: Record<LineaResearch['estado'], string> = {
 
 function LineCard({ l }: { l: LineaResearch }) {
   const [open, setOpen] = useState(l.estado === 'activa');
+  const { hovered, hoverProps } = useHover();
   const c = CLUSTER_COLOR[l.cluster];
   return (
-    <View style={[st.card, { borderColor: c + (open ? '77' : '2E') }]}>
+    <View
+      style={[
+        st.card,
+        { borderColor: c + (open ? '77' : '2E') },
+        open && Elevation.md,
+        hovered && Platform.OS === 'web' ? ({ borderColor: c + '99', transform: [{ translateY: -2 }], ...Elevation.md } as any) : null,
+      ]}
+      {...hoverProps}
+    >
       <TouchableOpacity activeOpacity={0.8} onPress={() => setOpen((o) => !o)}>
         <View style={st.head}>
           <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', gap: 8 }}>
@@ -99,18 +108,19 @@ export default function ResearchLinesExplorer() {
   );
 }
 
-const cardBase = { backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: DesktopColors.glassBorder };
+const cardBase = { backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.soft, ...Elevation.sm };
+const WEB_LINK = Platform.OS === 'web' ? ({ cursor: 'pointer', transition: Motion.base } as any) : {};
 const st = StyleSheet.create({
-  intro: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 17, marginBottom: Spacing.md },
-  legend: { fontSize: 10, color: Colors.muted, fontWeight: '600' },
-  card: { ...cardBase, borderWidth: 1, padding: Spacing.md, marginBottom: 8 },
+  intro: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: LineHeight.labelMd, marginBottom: Spacing.md },
+  legend: { fontSize: 10, color: Colors.muted, fontWeight: '600', letterSpacing: 0.2 },
+  card: { ...cardBase, borderWidth: 1, padding: Spacing.md, marginBottom: 8, ...WEB_LINK },
   head: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  codeBadge: { borderRadius: BorderRadius.full, borderWidth: 1, paddingVertical: 2, paddingHorizontal: 9 },
-  codeTxt: { fontSize: FontSize.labelMd, fontWeight: '900' },
-  name: { flex: 1, fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface },
-  mayo: { fontSize: FontSize.labelLg, fontWeight: '900', marginLeft: 8 },
-  lbl: { fontSize: 9, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 0.5, marginBottom: 2 },
+  codeBadge: { borderRadius: BorderRadius.full, borderWidth: 1, paddingVertical: 3, paddingHorizontal: 10 },
+  codeTxt: { fontSize: FontSize.labelMd, fontWeight: '900', letterSpacing: 0.3 },
+  name: { flex: 1, fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, letterSpacing: -0.2 },
+  mayo: { fontSize: FontSize.labelLg, fontWeight: '900', marginLeft: 8, letterSpacing: -0.3, ...(Platform.OS === 'web' ? ({ fontVariantNumeric: 'tabular-nums' } as any) : {}) },
+  lbl: { fontSize: 9, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 0.6, textTransform: 'uppercase', marginBottom: 3 },
   txt: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 16 },
-  btn: { borderWidth: 1, borderRadius: BorderRadius.md, paddingVertical: 6, paddingHorizontal: 11 },
-  btnTxt: { fontSize: FontSize.labelSm, fontWeight: '800' },
+  btn: { borderWidth: 1, borderRadius: BorderRadius.md, paddingVertical: 7, paddingHorizontal: 12, ...WEB_LINK },
+  btnTxt: { fontSize: FontSize.labelSm, fontWeight: '800', letterSpacing: 0.2 },
 });
