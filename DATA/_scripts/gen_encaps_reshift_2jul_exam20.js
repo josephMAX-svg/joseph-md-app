@@ -1,11 +1,12 @@
-// gen_encaps_reshift_2jul_exam20.js — D1=2-jul · EXAMEN FIJO 20-ago (corrección: NO 27-ago).
-// Filosofía corregida (Joseph): EXTENDER = días de ESTUDIO (conservar los 17 temas, cero saltos);
-// REDUCIR = días de PREGUNTA (repaso) para que todo quepa en 1-jul→20-ago. No importa cuánto material/día.
-// - Restaura los 40 días de contenido del backup, re-camina 1-jul→20-ago (examen+dx FIJOS).
+// gen_encaps_reshift_2jul_exam20.js — re-shift ENCAPS con EXAMEN FIJO 20-ago. START parametrizado:
+//   node DATA/_scripts/gen_encaps_reshift_2jul_exam20.js 2026-07-03
+// Filosofía (Joseph): EXTENDER = días de ESTUDIO (conservar los 17 temas, cero saltos);
+// REDUCIR = días de PREGUNTA (repaso) para que todo quepa en START→20-ago. No importa cuánto material/día.
+// - Restaura los 40 días de contenido del backup canónico, re-camina START→20-ago (examen+dx FIJOS).
 // - Weekdays → temas (17, primero) + repaso (rellena lo que quepa); el repaso SOBRANTE se descarta.
-// - Sábados (7 en el rango) → 7 bundles de simulacro; el bundle SOBRANTE se FUSIONA en el día-examen
+// - Sábados del rango → bundles de simulacro; los bundles SOBRANTES se FUSIONAN en el día-examen
 //   (dx, recta final) para no perder ninguna evaluación.
-// Sanity: NUNCA descarta un tema (deep_prime). node DATA/_scripts/gen_encaps_reshift_2jul_exam20.js
+// Sanity: NUNCA descarta un tema (deep_prime).
 const { createClient } = require('@supabase/supabase-js');
 const fs = require('fs'); const path = require('path');
 const URL = 'https://qacynpqdrorpuegsmtcy.supabase.co';
@@ -14,7 +15,10 @@ const WD = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'
 const fromISO = s => new Date(s + 'T12:00:00Z'); const iso = d => d.toISOString().slice(0, 10);
 const addDays = (s, n) => { const d = fromISO(s); d.setUTCDate(d.getUTCDate() + n); return iso(d); };
 const dow = s => fromISO(s).getUTCDay(); const wd = s => WD[dow(s)];
-const START = '2026-07-02', EXAM = '2026-08-20', DX = '2026-08-19';
+const START = process.argv[2] || '2026-07-02', EXAM = '2026-08-20', DX = '2026-08-19';
+if (!/^20\d\d-\d\d-\d\d$/.test(START)) throw new Error('START inválido (YYYY-MM-DD): ' + START);
+if (START >= DX) throw new Error('START debe ser anterior al dx 19-ago: ' + START);
+const BK = 'study_schedule_bk_' + START.replace(/-/g, '').slice(4); // p.ej. bk_0703
 
 (async () => {
   const sb = createClient(URL, KEY);
@@ -40,9 +44,9 @@ const START = '2026-07-02', EXAM = '2026-08-20', DX = '2026-08-19';
   const topicsLeft = leftoverWk.filter(r => r.tipo === 'deep_prime');
   if (topicsLeft.length) throw new Error('PELIGRO: temas sin fecha: ' + topicsLeft.map(r => r.codigo).join(','));
 
-  const L = ['-- ENCAPS D1=2-jul · EXAMEN FIJO 20-ago · extiende estudio / reduce repaso. backup study_schedule_examen20b_backup', 'BEGIN;'];
-  L.push("DROP TABLE IF EXISTS study_schedule_examen20b_backup;");
-  L.push("CREATE TABLE study_schedule_examen20b_backup AS SELECT * FROM study_schedule WHERE examen='ENCAPS';");
+  const L = [`-- ENCAPS D1=${START} · EXAMEN FIJO 20-ago · extiende estudio / reduce repaso. backup ${BK}`, 'BEGIN;'];
+  L.push(`DROP TABLE IF EXISTS ${BK};`);
+  L.push(`CREATE TABLE ${BK} AS SELECT * FROM study_schedule WHERE examen='ENCAPS';`);
   L.push("DELETE FROM study_schedule WHERE examen='ENCAPS';");
   L.push("INSERT INTO study_schedule SELECT * FROM study_schedule_reshift25_backup;");
   L.push("UPDATE study_schedule SET dia = dia + 1000 WHERE examen='ENCAPS';");
@@ -55,7 +59,7 @@ const START = '2026-07-02', EXAM = '2026-08-20', DX = '2026-08-19';
   }
   L.push("DELETE FROM study_schedule WHERE examen='ENCAPS' AND dia >= 1000;"); // borra repaso sobrante + sim fusionado
   L.push('COMMIT;');
-  fs.writeFileSync(path.join(__dirname, '_encaps_reshift_2jul_exam20.sql'), L.join('\n'), 'utf8');
+  fs.writeFileSync(path.join(__dirname, '_encaps_reshift_exam20.sql'), L.join('\n'), 'utf8');
 
   const topics = weekday.filter(r => r.tipo === 'deep_prime').length;
   const ex = assign[assign.length - 1];
