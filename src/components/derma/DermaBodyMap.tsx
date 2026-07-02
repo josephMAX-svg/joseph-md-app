@@ -1,53 +1,68 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import Svg, { Path, Ellipse, Circle, G } from 'react-native-svg';
 import { Colors, FontSize, BorderRadius, Motion } from '../../theme/tokens';
-import { DermaAtlas, DERMA_SITIOS } from '../../lib/dermaData';
+import { DermaAtlas } from '../../lib/dermaData';
 
 /**
- * DermaBodyMap — silueta anterior SVG interactiva (firma VisualDx/DermNet traída al shell).
- * Resalta la región del CASO del día y permite filtrar temas por sitio corporal.
- * Web = SVG con zonas clicables; native = lista de chips de región (degrada, no rompe).
+ * DermaBodyMap — silueta anterior interactiva (firma VisualDx/DermNet traída al shell).
+ * Render REAL con react-native-svg (antes usaba dangerouslySetInnerHTML sobre un <View>, que
+ * RN-web ignora → salía en blanco). Resalta la región activa y filtra el atlas por sitio.
  */
 const WEB = { cursor: 'pointer', transition: Motion.base } as any;
+const OUTLINE = '#5A6478';
+const SKIN = 'rgba(154,123,200,0.07)';
 
-// Regiones del cuerpo → coordenadas aproximadas en el viewBox 0 0 120 300.
+// Regiones → coordenadas en el viewBox 0 0 120 300.
 const REGIONS: { sitio: string; cx: number; cy: number; r: number }[] = [
-  { sitio: 'Cuero cabelludo', cx: 60, cy: 22, r: 15 },
-  { sitio: 'Cara', cx: 60, cy: 40, r: 11 },
-  { sitio: 'Tronco', cx: 60, cy: 110, r: 26 },
-  { sitio: 'Pliegues', cx: 40, cy: 92, r: 9 },
-  { sitio: 'Manos', cx: 22, cy: 170, r: 10 },
-  { sitio: 'Genital', cx: 60, cy: 158, r: 9 },
-  { sitio: 'Pies', cx: 48, cy: 285, r: 10 },
+  { sitio: 'Cuero cabelludo', cx: 60, cy: 20, r: 13 },
+  { sitio: 'Cara', cx: 60, cy: 40, r: 10 },
+  { sitio: 'Tronco', cx: 60, cy: 108, r: 24 },
+  { sitio: 'Pliegues', cx: 40, cy: 90, r: 8 },
+  { sitio: 'Manos', cx: 20, cy: 168, r: 9 },
+  { sitio: 'Genital', cx: 60, cy: 156, r: 8 },
+  { sitio: 'Pies', cx: 52, cy: 288, r: 9 },
 ];
 
-function bodySvg(active: string | null): string {
-  const outline = '#5A6478';
-  const skin = 'rgba(154,123,200,0.05)';
-  const dots = REGIONS.map((r) => {
-    const on = r.sitio === active;
-    const fill = on ? DermaAtlas.gold : DermaAtlas.amethyst;
-    const op = on ? '0.9' : '0.28';
-    const ring = on ? `<circle cx="${r.cx}" cy="${r.cy}" r="${r.r + 3}" fill="none" stroke="${DermaAtlas.gold}" stroke-width="1.2" stroke-opacity="0.7"/>` : '';
-    return `${ring}<circle cx="${r.cx}" cy="${r.cy}" r="${r.r}" fill="${fill}" fill-opacity="${op}"/>`;
-  }).join('');
-  return `
-    <svg width="100%" height="100%" viewBox="0 0 120 300" fill="none" stroke="${outline}" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round">
-      <ellipse cx="60" cy="30" rx="15" ry="18" fill="${skin}"/>
-      <path d="M52 46 Q60 52 68 46 L74 60 Q82 64 82 90 L78 140 Q76 150 72 150 L70 96 L70 150 Q66 240 60 296 Q54 240 50 150 L50 96 L48 150 Q44 150 42 140 L38 90 Q38 64 46 60 Z" fill="${skin}"/>
-      <path d="M46 62 Q28 90 20 168" /><path d="M74 62 Q92 90 100 168" />
-      ${dots}
-    </svg>`;
-}
+const BODY_D =
+  'M52 46 Q60 52 68 46 L74 60 Q82 64 82 90 L78 140 Q76 150 72 150 L70 96 L70 150 Q66 240 60 296 Q54 240 50 150 L50 96 L48 150 Q44 150 42 140 L38 90 Q38 64 46 60 Z';
 
 export default function DermaBodyMap({
   active, onPick,
 }: { active: string | null; onPick: (sitio: string | null) => void }) {
-  if (Platform.OS === 'web') {
-    // SVG estático + capa de zonas clicables absolutas encima (RN-web-friendly).
-    return (
-      <View style={st.wrap}>
-        <View style={st.svgBox} {...({ dangerouslySetInnerHTML: { __html: bodySvg(active) } } as any)} />
+  return (
+    <View style={st.wrap}>
+      <View style={st.svgBox}>
+        <Svg width="100%" height="100%" viewBox="0 0 120 300">
+          {/* Silueta */}
+          <Ellipse cx={60} cy={30} rx={14} ry={17} fill={SKIN} stroke={OUTLINE} strokeWidth={1.3} />
+          <Path d={BODY_D} fill={SKIN} stroke={OUTLINE} strokeWidth={1.3} strokeLinejoin="round" strokeLinecap="round" />
+          <Path d="M46 62 Q28 90 20 166" stroke={OUTLINE} strokeWidth={1.3} fill="none" strokeLinecap="round" />
+          <Path d="M74 62 Q92 90 100 166" stroke={OUTLINE} strokeWidth={1.3} fill="none" strokeLinecap="round" />
+          {/* Marcadores de región */}
+          {REGIONS.map((r) => {
+            const on = r.sitio === active;
+            return (
+              <G key={r.sitio}>
+                {on && (
+                  <Circle cx={r.cx} cy={r.cy} r={r.r + 3} fill="none" stroke={DermaAtlas.gold} strokeWidth={1.2} strokeOpacity={0.75} />
+                )}
+                <Circle
+                  cx={r.cx}
+                  cy={r.cy}
+                  r={r.r}
+                  fill={on ? DermaAtlas.gold : DermaAtlas.amethyst}
+                  fillOpacity={on ? 0.85 : 0.24}
+                  stroke={on ? DermaAtlas.gold : DermaAtlas.amethyst}
+                  strokeWidth={0.8}
+                  strokeOpacity={0.5}
+                />
+              </G>
+            );
+          })}
+        </Svg>
+
+        {/* Capa de zonas tocables (RN-web-friendly, encima del SVG) */}
         <View style={StyleSheet.absoluteFill as any} pointerEvents="box-none">
           {REGIONS.map((r) => {
             const left = `${(r.cx / 120) * 100}%`;
@@ -56,37 +71,44 @@ export default function DermaBodyMap({
             return (
               <TouchableOpacity
                 key={r.sitio}
-                activeOpacity={0.7}
+                activeOpacity={0.6}
                 onPress={() => onPick(r.sitio === active ? null : r.sitio)}
-                style={[st.hit, { left, top, width: `${sz}%`, aspectRatio: 1, transform: [{ translateX: '-50%' as any }, { translateY: '-50%' as any }] } as any, WEB]}
+                style={[
+                  st.hit,
+                  { left, top, width: `${sz}%`, aspectRatio: 1, transform: [{ translateX: '-50%' as any }, { translateY: '-50%' as any }] } as any,
+                  WEB,
+                ]}
               />
             );
           })}
         </View>
       </View>
-    );
-  }
-  // native fallback: chips de región
-  return (
-    <View style={st.chips}>
-      {DERMA_SITIOS.map((s) => {
-        const on = s === active;
-        return (
-          <TouchableOpacity key={s} activeOpacity={0.8} onPress={() => onPick(on ? null : s)} style={[st.chip, on && st.chipOn]}>
-            <Text style={[st.chipTxt, on && { color: DermaAtlas.gold }]}>{s}</Text>
-          </TouchableOpacity>
-        );
-      })}
+
+      {/* Caption: región activa o hint */}
+      <View style={st.caption}>
+        {active ? (
+          <>
+            <View style={st.capDot} />
+            <Text style={st.capActive}>{active}</Text>
+            <TouchableOpacity onPress={() => onPick(null)} style={WEB}>
+              <Text style={st.capClear}>· limpiar</Text>
+            </TouchableOpacity>
+          </>
+        ) : (
+          <Text style={st.capHint}>Toca una región para filtrar el atlas</Text>
+        )}
+      </View>
     </View>
   );
 }
 
 const st = StyleSheet.create({
-  wrap: { alignItems: 'center', width: '100%' },
-  svgBox: { width: '100%', maxWidth: 180, aspectRatio: 120 / 300, alignSelf: 'center' },
+  wrap: { alignItems: 'center', width: '100%', gap: 10 },
+  svgBox: { width: '100%', maxWidth: 150, height: 340, alignSelf: 'center', position: 'relative' },
   hit: { position: 'absolute', borderRadius: 999 },
-  chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
-  chip: { paddingVertical: 5, paddingHorizontal: 10, borderRadius: BorderRadius.full, borderWidth: 1, borderColor: 'rgba(255,255,255,0.10)' },
-  chipOn: { borderColor: DermaAtlas.gold, backgroundColor: 'rgba(200,169,106,0.12)' },
-  chipTxt: { fontSize: FontSize.labelSm, color: Colors.muted, fontWeight: '700' },
+  caption: { flexDirection: 'row', alignItems: 'center', gap: 6, minHeight: 16 },
+  capDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: DermaAtlas.gold },
+  capActive: { fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.onSurface, letterSpacing: 0.3 },
+  capClear: { fontSize: FontSize.labelSm, fontWeight: '600', color: Colors.muted },
+  capHint: { fontSize: FontSize.labelSm, color: Colors.muted, fontStyle: 'italic', textAlign: 'center' },
 });
