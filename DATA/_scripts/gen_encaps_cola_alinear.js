@@ -18,13 +18,13 @@ const outMap = JSON.parse(fs.readFileSync(SB + '/tasks/wu38gbri1.output', 'utf8'
 const mapa = (outMap.result && outMap.result.mapa) || outMap.mapa; const byI = {}; for (const m of mapa) byI[m.i] = m;
 const codeStrict = {}; const seenU = new Set();
 for (const v of vids) { const m = byI[v.i]; if (!m || m.dup || !v.url || seenU.has(v.url)) continue; seenU.add(v.url); (codeStrict[m.code] = codeStrict[m.code] || []).push({ titulo: v.sub, url: v.url }); }
-const videosFor = (code) => {
-  // Set CURADO por la cobertura (videosExtra = lo que el compendio del tema pide); si vacío, los estrictos.
-  const ex = (cob[code] && cob[code].videosExtra) || [];
-  const base = ex.length ? ex : (codeStrict[code] || []);
-  const seen = new Set(); const out = [];
-  for (const v of base) { if (!v.url || seen.has(v.url)) continue; seen.add(v.url); out.push({ titulo: v.titulo, url: v.url }); }
-  return out;
+const dedup = (arr) => { const s = new Set(); const o = []; for (const v of arr) { if (!v.url || s.has(v.url)) continue; s.add(v.url); o.push({ titulo: v.titulo, url: v.url }); } return o; };
+const videosFor = (code, isPrimary) => {
+  const ex = (cob[code] && cob[code].videosExtra) || []; const st = codeStrict[code] || [];
+  // PRIMARIO del día = unión curado ∪ estricto (no pierde NINGÚN video del tema principal).
+  if (isPrimary) return dedup([...ex, ...st]);
+  // SECUNDARIO = curado (lo que el compendio pide); si vacío, estrictos capados a 4 (no re-inflar).
+  return ex.length ? dedup(ex) : dedup(st).slice(0, 4);
 };
 
 (async () => {
@@ -36,7 +36,7 @@ const videosFor = (code) => {
   for (const r of data) {
     const codes = [r.codigo, ...((r.temas_secundarios || []).map(s => s.codigo))].filter(Boolean);
     const seen = new Set(); const vlist = [];
-    for (const c of codes) for (const vv of videosFor(c)) { if (seen.has(vv.url)) continue; seen.add(vv.url); vlist.push({ titulo: vv.titulo, url: vv.url, code: c, slides: null, dur: null }); }
+    codes.forEach((c, idx) => { for (const vv of videosFor(c, idx === 0)) { if (seen.has(vv.url)) continue; seen.add(vv.url); vlist.push({ titulo: vv.titulo, url: vv.url, code: c, slides: null, dur: null }); } });
     total += vlist.length; resumen.push(`${r.codigo}=${vlist.length}`);
     if (apply) {
       const { error: e } = await sb.from('study_schedule').update({ videos: vlist, updated_at: new Date().toISOString() }).eq('examen', 'ENCAPS').eq('dia', r.dia);
