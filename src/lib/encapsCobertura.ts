@@ -8,7 +8,9 @@ export interface CoberturaTema {
   tier: 'CRÍTICA' | 'ALTA' | 'MEDIA' | 'BAJA'; vueltas: number; min: number;
   qxN: number; theomedN: number; extenso: boolean; freq: string; guidance: string;
   gaps: string[]; temario: string[];
-  compendioUrl: string; theomedUrl: string; videoFallback: FuenteLink; videosExtra: VideoExtra[]; gapSources: FuenteLink[];
+  compendioUrl: string; theomedBookUrl: string; theomedUrl: string; videoFallback: FuenteLink; videosExtra: VideoExtra[]; gapSources: FuenteLink[];
+  bookCoverage: { lopez: string; theomed: string; theomedManual: string };
+  soloTheomed: string[]; soloLopez: string[]; gapAmbos: string[]; driveVideos: FuenteLink[];
 }
 export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
  "I-3": {
@@ -42,6 +44,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Indicadores en SP (estructura/proceso/resultado)"
   ],
   "compendioUrl": "https://drive.google.com/file/d/1iq_BDzPe3idrZeGL0Q3eR7IB9mKyDftT/view",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=2",
   "videoFallback": {
    "label": "Videoclases DR LOPEZ · SP",
@@ -90,6 +93,43 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "label": "Normativas DR LOPEZ (RENACE 341-2023)",
     "url": "https://drive.google.com/drive/folders/1YdyhemfujHYIROcBcr9G9avUYulqfpko"
    }
+  ],
+  "bookCoverage": {
+   "lopez": "parcial",
+   "theomed": "parcial",
+   "theomedManual": "SP §1.2 Epidemiología, §1.3 Causalidad y Riesgo, §1.5 Historia Natural, §1.8 Brotes/epidemias/endemias, §1.9 Vigilancia en SP, §1.10 Prevención y control de infecciones, §1.12 ASIS/Sala situacional, §1.13 SVE Perú"
+  },
+  "soloTheomed": [
+   "SVE Perú desarrollado en sección propia (§1.13) con más detalle de flujo",
+   "Prevención y control de infecciones/cadena epidemiológica como capítulo (§1.10)"
+  ],
+  "soloLopez": [
+   "Farmacovigilancia/tecnovigilancia dentro de I-3",
+   "Indicadores en SP (estructura/proceso/resultado) explícitos"
+  ],
+  "gapAmbos": [
+   "Canal endémico (4 zonas) — ambos lo nombran pero NO lo desarrollan → QX 'Endemias' + OPS MOPECE 5",
+   "Curva epidémica fuente común vs propagada — no desarrollada en ninguno",
+   "Tasa de ataque secundaria — solo mención suelta",
+   "Directiva RENACE 341-2023 niveles de notificación — no en ninguno de los dos"
+  ],
+  "driveVideos": [
+   {
+    "label": "DR LOPEZ (Google Drive) · 🎬 Videoclases · Salud Púb",
+    "url": "https://drive.google.com/drive/folders/1tlyniouI5o_SOpw-LBa2IGfWgG5zpfF0"
+   },
+   {
+    "label": "GALENO MEDIC (Google Drive) · 🎥 Videoclases · Salud Púb",
+    "url": "https://drive.google.com/drive/folders/1Um9jF2x7VCYLJthUMC2DdoOxp6YuS9dH"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §2) · Videoclases por área · Sal",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=2"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
   ]
  },
  "I-5+I-6": {
@@ -112,6 +152,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Bioestadística básica (razón/proporción/tasa ya en I-3)"
   ],
   "compendioUrl": "https://drive.google.com/file/d/1iq_BDzPe3idrZeGL0Q3eR7IB9mKyDftT/view",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=2",
   "videoFallback": {
    "label": "Videoclases DR LOPEZ · SP",
@@ -135,7 +176,41 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/Nkl4dERCQVduM0RQSmdVQi91VitvQT09"
    }
   ],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "parcial",
+   "theomed": "parcial",
+   "theomedManual": "SP §1.4 Demografía en Salud, §1.7 Pruebas diagnósticas (S/E/VPP), §2.1 Determinantes Sociales, §2.2 Determinantes Ambientales"
+  },
+  "soloTheomed": [
+   "Pruebas diagnósticas S/E/VPP/VPN con sección dedicada (§1.7) — López solo da definiciones",
+   "Determinantes ambientales como capítulo propio (§2.2)"
+  ],
+  "soloLopez": [
+   "Transición demográfica de Omran y bono demográfico más explícitos",
+   "Modelo Lalonde 4 campos nombrado"
+  ],
+  "gapAmbos": [
+   "Cálculo fino de bioestadística (I-6) — muerto en examen, ninguno ejercita a fondo (bajo riesgo)"
+  ],
+  "driveVideos": [
+   {
+    "label": "DR LOPEZ (Google Drive) · 🎬 Videoclases · Salud Púb",
+    "url": "https://drive.google.com/drive/folders/1tlyniouI5o_SOpw-LBa2IGfWgG5zpfF0"
+   },
+   {
+    "label": "GALENO MEDIC (Google Drive) · 🎥 Videoclases · Salud Púb",
+    "url": "https://drive.google.com/drive/folders/1Um9jF2x7VCYLJthUMC2DdoOxp6YuS9dH"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §2) · Videoclases por área · Sal",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=2"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  },
  "I-4": {
   "tier": "ALTA",
@@ -156,6 +231,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Control de vectores y plagas (Aedes/Anopheles/Triatoma/Lutzomyia; dengue-Zika-chikungunya-malaria-Chagas-leishmaniasis-fiebre amarilla-filariasis; larvicida/adulticida/nebulización/ovitrampa/cerco entomológico/punto crítico)"
   ],
   "compendioUrl": "https://drive.google.com/file/d/1iq_BDzPe3idrZeGL0Q3eR7IB9mKyDftT/view",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=2",
   "videoFallback": {
    "label": "Videoclases DR LOPEZ · SP",
@@ -175,7 +251,38 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/bzBSbTBXYXJzRHFSMFNvK0t0Kyt4Zz09"
    }
   ],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "parcial",
+   "theomed": "sí",
+   "theomedManual": "CI §2.22 Prevención y control de enfermedades metaxénicas y zoonóticas (dengue A/B/C, malaria, Chagas, leishmaniasis) + SP §2.10 Control de Vectores y Plagas"
+  },
+  "soloTheomed": [
+   "Signos de alarma del dengue A/B/C y conducta clínica por grupo (en CI §2.22) — López los deja en gap, solo daba vector/epidemiología",
+   "Manejo clínico de metaxénicas dentro de CI"
+  ],
+  "soloLopez": [],
+  "gapAmbos": [
+   "Definiciones de caso específicas para vigilancia de malaria/TB fino → normativa"
+  ],
+  "driveVideos": [
+   {
+    "label": "DR LOPEZ (Google Drive) · 🎬 Videoclases · Salud Púb",
+    "url": "https://drive.google.com/drive/folders/1tlyniouI5o_SOpw-LBa2IGfWgG5zpfF0"
+   },
+   {
+    "label": "GALENO MEDIC (Google Drive) · 🎥 Videoclases · Salud Púb",
+    "url": "https://drive.google.com/drive/folders/1Um9jF2x7VCYLJthUMC2DdoOxp6YuS9dH"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §2) · Videoclases por área · Sal",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=2"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  },
  "I-1": {
   "tier": "ALTA",
@@ -197,6 +304,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Información, educación y comunicación para la salud (IEC)"
   ],
   "compendioUrl": "https://drive.google.com/file/d/1iq_BDzPe3idrZeGL0Q3eR7IB9mKyDftT/view",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=2",
   "videoFallback": {
    "label": "Videoclases DR LOPEZ · SP",
@@ -216,7 +324,37 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/NDl3b1hOZEpMbE9lNjNTQlh5UllHQT09"
    }
   ],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "sí",
+   "theomed": "sí",
+   "theomedManual": "SP §3.1 Promoción de la Salud (Ottawa, ejes, programas), §3.2 IEC para la Salud"
+  },
+  "soloTheomed": [
+   "IEC desarrollado como sección propia (§3.2)"
+  ],
+  "soloLopez": [
+   "Los 7 ejes temáticos listados de forma más completa"
+  ],
+  "gapAmbos": [],
+  "driveVideos": [
+   {
+    "label": "DR LOPEZ (Google Drive) · 🎬 Videoclases · Salud Púb",
+    "url": "https://drive.google.com/drive/folders/1tlyniouI5o_SOpw-LBa2IGfWgG5zpfF0"
+   },
+   {
+    "label": "GALENO MEDIC (Google Drive) · 🎥 Videoclases · Salud Púb",
+    "url": "https://drive.google.com/drive/folders/1Um9jF2x7VCYLJthUMC2DdoOxp6YuS9dH"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §2) · Videoclases por área · Sal",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=2"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  },
  "I-11+I-12": {
   "tier": "MEDIA",
@@ -247,6 +385,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Gestión del riesgo en emergencias/desastres (fórmula riesgo=amenaza×vulnerabilidad/capacidad; ciclo prevención-mitigación-preparación-respuesta-recuperación)"
   ],
   "compendioUrl": "https://drive.google.com/file/d/1iq_BDzPe3idrZeGL0Q3eR7IB9mKyDftT/view",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=2",
   "videoFallback": {
    "label": "Videoclases DR LOPEZ · SP",
@@ -278,7 +417,42 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/dkYwYTR1ZGptOGZCVEp1NUxQWE03dz09"
    }
   ],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "parcial",
+   "theomed": "parcial",
+   "theomedManual": "SP §2.3 Participación Social, §2.4 Sectorización/Ficha Familiar, §2.5 Intervenciones Comunitarias, §2.6 Trabajo Intersectorial, §2.7 Plan de Salud Local, §2.8 TICs/HIS, §2.9 Alimentación/inocuidad, §2.11 Residuos Sólidos, §2.12 Salud Ocupacional, §2.13 Salud Mental Comunitaria; §3.3 Bioseguridad, §3.4 Gestión del Riesgo en Desastres"
+  },
+  "soloTheomed": [
+   "Gestión del Riesgo en Emergencias y Desastres como capítulo propio (§3.4) — más completa que López",
+   "Bioseguridad sección dedicada (§3.3)",
+   "Salud ocupacional desarrollada (§2.12)"
+  ],
+  "soloLopez": [
+   "Familiograma/APGAR/ecomapa/ciclo vital familiar (salud familiar) más detallado en López"
+  ],
+  "gapAmbos": [
+   "APGAR familiar — instrumento muy preguntable, ninguno lo desarrolla bien → normativa salud familiar",
+   "EDAN en desastres — ninguno llega a la respuesta/evaluación de daños → INDECI/OPS"
+  ],
+  "driveVideos": [
+   {
+    "label": "DR LOPEZ (Google Drive) · 🎬 Videoclases · Salud Púb",
+    "url": "https://drive.google.com/drive/folders/1tlyniouI5o_SOpw-LBa2IGfWgG5zpfF0"
+   },
+   {
+    "label": "GALENO MEDIC (Google Drive) · 🎥 Videoclases · Salud Púb",
+    "url": "https://drive.google.com/drive/folders/1Um9jF2x7VCYLJthUMC2DdoOxp6YuS9dH"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §2) · Videoclases por área · Sal",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=2"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  },
  "I-2": {
   "tier": "ALTA",
@@ -298,6 +472,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "FESP Renovadas (11 funciones en 4 etapas cíclicas: Evaluación→Políticas→Recursos→Acceso)"
   ],
   "compendioUrl": "https://drive.google.com/file/d/1iq_BDzPe3idrZeGL0Q3eR7IB9mKyDftT/view",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=2",
   "videoFallback": {
    "label": "Videoclases DR LOPEZ · SP",
@@ -317,7 +492,37 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/QVNhVkVkZXlvM2NmL3EybDRyQjlQdz09"
    }
   ],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "sí",
+   "theomed": "sí",
+   "theomedManual": "SP §1.1 Conceptos Básicos de SP (definiciones, campos, FESP renovadas + finalidad)"
+  },
+  "soloTheomed": [
+   "Campos de acción de la SP (promoción/protección/restauración/vigilancia) desglosados"
+  ],
+  "soloLopez": [
+   "Política Nacional Multisectorial 2030 y ODS más explícitos; FESP agrupadas en 4 etapas cíclicas"
+  ],
+  "gapAmbos": [],
+  "driveVideos": [
+   {
+    "label": "DR LOPEZ (Google Drive) · 🎬 Videoclases · Salud Púb",
+    "url": "https://drive.google.com/drive/folders/1tlyniouI5o_SOpw-LBa2IGfWgG5zpfF0"
+   },
+   {
+    "label": "GALENO MEDIC (Google Drive) · 🎥 Videoclases · Salud Púb",
+    "url": "https://drive.google.com/drive/folders/1Um9jF2x7VCYLJthUMC2DdoOxp6YuS9dH"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §2) · Videoclases por área · Sal",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=2"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  },
  "I-10": {
   "tier": "ALTA",
@@ -337,6 +542,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Accesibilidad a los servicios (barreras geográficas/económicas/culturales/sociales y estrategias: RIS, brigadas móviles, casas de espera materna, telesalud, SIS)"
   ],
   "compendioUrl": "https://drive.google.com/file/d/1iq_BDzPe3idrZeGL0Q3eR7IB9mKyDftT/view",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=2",
   "videoFallback": {
    "label": "Videoclases DR LOPEZ · SP",
@@ -360,7 +566,37 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/MDZKTlFqYUt0VzZkL0xrc0U5SitvZz09"
    }
   ],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "sí",
+   "theomed": "sí",
+   "theomedManual": "SP §1.6 Etapas y Niveles de Prevención, §2.14 Accesibilidad a los Servicios de Salud + CI §2.1 APS Conceptos y Principios"
+  },
+  "soloTheomed": [
+   "APS como capítulo (Alma-Ata/atributos) en CI §2.1 — López lo tocaba marginal"
+  ],
+  "soloLopez": [
+   "Prevención cuaternaria y primordial nombradas explícitamente"
+  ],
+  "gapAmbos": [],
+  "driveVideos": [
+   {
+    "label": "DR LOPEZ (Google Drive) · 🎬 Videoclases · Salud Púb",
+    "url": "https://drive.google.com/drive/folders/1tlyniouI5o_SOpw-LBa2IGfWgG5zpfF0"
+   },
+   {
+    "label": "GALENO MEDIC (Google Drive) · 🎥 Videoclases · Salud Púb",
+    "url": "https://drive.google.com/drive/folders/1Um9jF2x7VCYLJthUMC2DdoOxp6YuS9dH"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §2) · Videoclases por área · Sal",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=2"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  },
  "I-7": {
   "tier": "BAJA",
@@ -378,13 +614,42 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "No tratado explícitamente como capítulo en el bloque SP del compendio López (el compendio cubre salud familiar/etapas de vida en I-11/I-12 e I-1, pero PNAIA como plan nacional no figura desarrollado)"
   ],
   "compendioUrl": "https://drive.google.com/file/d/1iq_BDzPe3idrZeGL0Q3eR7IB9mKyDftT/view",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=2",
   "videoFallback": {
    "label": "Videoclases DR LOPEZ · SP",
    "url": "https://drive.google.com/drive/folders/1tlyniouI5o_SOpw-LBa2IGfWgG5zpfF0"
   },
   "videosExtra": [],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "no",
+   "theomed": "no",
+   "theomedManual": "No tiene sección propia de PNAIA en SP (solo cruces marginales en curso de vida del niño en CI)"
+  },
+  "soloTheomed": [],
+  "soloLopez": [],
+  "gapAmbos": [
+   "PNAIA como plan nacional — NINGÚN libro lo desarrolla → leer normativa PNAIA/MINSA (baja prioridad, baja frecuencia)"
+  ],
+  "driveVideos": [
+   {
+    "label": "DR LOPEZ (Google Drive) · 🎬 Videoclases · Salud Púb",
+    "url": "https://drive.google.com/drive/folders/1tlyniouI5o_SOpw-LBa2IGfWgG5zpfF0"
+   },
+   {
+    "label": "GALENO MEDIC (Google Drive) · 🎥 Videoclases · Salud Púb",
+    "url": "https://drive.google.com/drive/folders/1Um9jF2x7VCYLJthUMC2DdoOxp6YuS9dH"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §2) · Videoclases por área · Sal",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=2"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  },
  "I-8": {
   "tier": "BAJA",
@@ -402,13 +667,44 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "No desarrollado como capítulo en el bloque SP del compendio López (discapacidad se menciona marginalmente en historia natural/prevención terciaria y salud familiar)"
   ],
   "compendioUrl": "https://drive.google.com/file/d/1iq_BDzPe3idrZeGL0Q3eR7IB9mKyDftT/view",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=2",
   "videoFallback": {
    "label": "Videoclases DR LOPEZ · SP",
    "url": "https://drive.google.com/drive/folders/1tlyniouI5o_SOpw-LBa2IGfWgG5zpfF0"
   },
   "videosExtra": [],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "no",
+   "theomed": "no",
+   "theomedManual": "Discapacidad solo mención marginal en SP (historia natural, prevención terciaria) y RBC en CI; sin capítulo PNDH"
+  },
+  "soloTheomed": [
+   "Rehabilitación Basada en la Comunidad (RBC) y certificación de discapacidad mencionadas en CI (componentes MCI)"
+  ],
+  "soloLopez": [],
+  "gapAmbos": [
+   "PNDH y atención a personas con discapacidad (Ley 29973/CONADIS) — sin capítulo en ninguno → normativa (baja prioridad)"
+  ],
+  "driveVideos": [
+   {
+    "label": "DR LOPEZ (Google Drive) · 🎬 Videoclases · Salud Púb",
+    "url": "https://drive.google.com/drive/folders/1tlyniouI5o_SOpw-LBa2IGfWgG5zpfF0"
+   },
+   {
+    "label": "GALENO MEDIC (Google Drive) · 🎥 Videoclases · Salud Púb",
+    "url": "https://drive.google.com/drive/folders/1Um9jF2x7VCYLJthUMC2DdoOxp6YuS9dH"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §2) · Videoclases por área · Sal",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=2"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  },
  "I-9": {
   "tier": "BAJA",
@@ -431,6 +727,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "(Todo esto el compendio lo desarrolla en las páginas de salud familiar — mismas que alimentan I-11+I-12)"
   ],
   "compendioUrl": "https://drive.google.com/file/d/1iq_BDzPe3idrZeGL0Q3eR7IB9mKyDftT/view",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=2",
   "videoFallback": {
    "label": "Videoclases DR LOPEZ · SP",
@@ -442,7 +739,37 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/dkYwYTR1ZGptOGZCVEp1NUxQWE03dz09"
    }
   ],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "parcial",
+   "theomed": "parcial",
+   "theomedManual": "SP §2.4 Sectorización/Ficha Familiar + curso de vida familiar; salud familiar embebida"
+  },
+  "soloTheomed": [],
+  "soloLopez": [
+   "Tipología familiar, ciclo vital familiar y familiograma/ecomapa desarrollados de forma más completa (mismas páginas que I-11)"
+  ],
+  "gapAmbos": [
+   "APGAR familiar (igual que I-11) → normativa ENSF/salud familiar"
+  ],
+  "driveVideos": [
+   {
+    "label": "DR LOPEZ (Google Drive) · 🎬 Videoclases · Salud Púb",
+    "url": "https://drive.google.com/drive/folders/1tlyniouI5o_SOpw-LBa2IGfWgG5zpfF0"
+   },
+   {
+    "label": "GALENO MEDIC (Google Drive) · 🎥 Videoclases · Salud Púb",
+    "url": "https://drive.google.com/drive/folders/1Um9jF2x7VCYLJthUMC2DdoOxp6YuS9dH"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §2) · Videoclases por área · Sal",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=2"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  },
  "II-1": {
   "tier": "CRÍTICA",
@@ -475,6 +802,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Sepsis en obstetricia; emergencias neonatales; climaterio y menopausia (Dx clínico 45-55a+amenorrea≥12m, SVM, SGM, TRH/ISRS)"
   ],
   "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
   "videoFallback": {
    "label": "Videoclases DR LOPEZ · CI",
@@ -522,7 +850,37 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/a0t4S2xpNnY5L3Y5bVdmbGRWeWhGZz09"
    }
   ],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "sí",
+   "theomed": "sí",
+   "theomedManual": "CI §1.3-1.7 (urgencias, emergencias obstétricas/neonatales CLAVE AZUL, riesgo obstétrico) + §2.23 Climaterio + §2.24 Embarazo/parto/puerperio normal"
+  },
+  "soloTheomed": [
+   "Flujogramas de emergencias obstétricas DESARROLLADOS en texto (Clave Azul, hemorragias 1ª/2ª mitad, HPP, shock, sepsis, endometritis, aborto séptico, RPM, corioamnionitis) — en López eran solo imágenes no extraíbles",
+   "Manejo de preeclampsia severa/eclampsia con sulfato de magnesio y crisis hipertensiva ≥160/110 — gap de López",
+   "Emergencias neonatales (hipoglucemia, sepsis neonatal) desarrolladas",
+   "Aspectos legales/forenses: dolo vs culpa, 4 tipos de mala praxis"
+  ],
+  "soloLopez": [
+   "Micronutrientes con dosis exactas (ácido fólico/calcio/hierro por semana) más tabulados",
+   "Maniobras de Leopold y detalle de partograma OMS"
+  ],
+  "gapAmbos": [],
+  "driveVideos": [
+   {
+    "label": "DR LOPEZ (Google Drive) · 🎬 Videoclases · Cuidado I",
+    "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §3) · Videoclases por área · Cui",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=3"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  },
  "II-3": {
   "tier": "CRÍTICA",
@@ -551,6 +909,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Emergencia en cadena de frío y plan de contingencia"
   ],
   "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
   "videoFallback": {
    "label": "Videoclases DR LOPEZ · CI",
@@ -566,7 +925,36 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/NFBVUkhndCtBZGhDNWl2QkJyT25xZz09"
    }
   ],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "parcial",
+   "theomed": "sí",
+   "theomedManual": "CI §7 Esquema Nacional de Vacunación <11 años + §2.10 ESAVI (Directiva 054) + §2.11 Cadena de Frío en Inmunizaciones (NTS 242-MINSA/DGIESP-2026)"
+  },
+  "soloTheomed": [
+   "Cadena de frío con NTS 242-2026 ACTUALIZADA (rango 2-8°C, ruptura, procedimiento) — capítulo propio",
+   "ESAVI severo con definición operativa, clasificación, error programático y notificación 24h desarrollados en texto",
+   "Esquema de vacunación en tabla legible por edad — en López eran imágenes"
+  ],
+  "soloLopez": [
+   "Almacenes (CENARES/DIRESA con meses) y componentes (data logger/FEFO) listados en texto",
+   "Fotosensibilidad de vacunas específicas"
+  ],
+  "gapAmbos": [],
+  "driveVideos": [
+   {
+    "label": "DR LOPEZ (Google Drive) · 🎬 Videoclases · Cuidado I",
+    "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §3) · Videoclases por área · Cui",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=3"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  },
  "II-11": {
   "tier": "CRÍTICA",
@@ -594,6 +982,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "PTMI VIH/sífilis/VHB: tamizaje gestante por trimestre, consentimiento, resultado mismo día (30 min), referencia inmediata TARGA, lactancia (prohibida en VIH sin fórmula segura), RN (zidovudina <6h; HvB vacuna+HBIG <12h)"
   ],
   "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
   "videoFallback": {
    "label": "Videoclases DR LOPEZ · CI",
@@ -617,7 +1006,38 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/cmdzcDduUk0wZHdMMmxZaHVsQlJydz09"
    }
   ],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "sí",
+   "theomed": "sí",
+   "theomedManual": "CI §2.16 Prevención de transmisión materno-infantil VIH/sífilis/VHB (PTMI triple) + batería APN (prueba dual/triple) + tamizaje ITS/VIH en curso de vida"
+  },
+  "soloTheomed": [
+   "PTMI triple (VIH/sífilis/VHB) desarrollada con conducta en gestante reactiva, resultado mismo día, PEP RN",
+   "PEP VIH esquema peruano (TDF/FTC + Lopinavir/Ritonavir, DS 083) con ventanas de tiempo"
+  ],
+  "soloLopez": [
+   "Abordaje sindrómico completo (6 síndromes ITS) con tratamiento por síndrome",
+   "TARV 1ª línea (TDF+3TC+DTG), PrEP diaria/a demanda, hepatitis A/B/C tratamiento (Sofosbuvir/Velpatasvir)",
+   "Regla de las 4C, treponémicas vs no treponémicas y su uso"
+  ],
+  "gapAmbos": [
+   "Dosis exactas de tratamiento por síndrome (descarga uretral/EPI) — tablas imagen en López, parcial en Theomed → guía MINSA ITS"
+  ],
+  "driveVideos": [
+   {
+    "label": "DR LOPEZ (Google Drive) · 🎬 Videoclases · Cuidado I",
+    "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §3) · Videoclases por área · Cui",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=3"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  },
  "II-8": {
   "tier": "ALTA",
@@ -643,6 +1063,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Metas terapéuticas (tabla imagen); tamizaje RCV con perímetro abdominal/PA/IMC (dentro de paquete adulto)"
   ],
   "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
   "videoFallback": {
    "label": "Videoclases DR LOPEZ · CI",
@@ -654,7 +1075,36 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/SHpYRlV1TEtNcFFDRk96RWowdXhrUT09"
    }
   ],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "parcial",
+   "theomed": "sí",
+   "theomedManual": "CI §2.17 Prevención y control de ECNT — Diabetes (NTS 210-2024, HEARTS-D) + Hipertensión Arterial (Iniciativa HEARTS-HTA con metas <140/90 y tratamiento farmacológico escalonado)"
+  },
+  "soloTheomed": [
+   "HTA/HEARTS COMPLETO (clasificación, meta <140/90, algoritmo farmacológico) — este era el GAP mayor de López, que dejaba HTA floja",
+   "Estrategia HEARTS como paquete integrado (HEARTS-D + HEARTS-HTA) nombrada y desarrollada",
+   "Definición de caso de diabetes para vigilancia (NTS 210-2024) nuevo/prevalente"
+  ],
+  "soloLopez": [
+   "Criterios diagnósticos DM tabulados (HbA1c/ayunas/TTOG) y algoritmo metformina→glibenclamida con contraindicación TFG<30",
+   "Complicaciones agudas/crónicas listadas"
+  ],
+  "gapAmbos": [],
+  "driveVideos": [
+   {
+    "label": "DR LOPEZ (Google Drive) · 🎬 Videoclases · Cuidado I",
+    "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §3) · Videoclases por área · Cui",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=3"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  },
  "II-7": {
   "tier": "ALTA",
@@ -678,6 +1128,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Frecuencia VACAM mínimo 1 vez al año; ABVD vs AIVD"
   ],
   "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
   "videoFallback": {
    "label": "Videoclases DR LOPEZ · CI",
@@ -693,7 +1144,35 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/bjFsZHNIdlF4L3pLOWxuR0FDQ0NhQT09"
    }
   ],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "sí",
+   "theomed": "sí",
+   "theomedManual": "CI Sub-Área 6 (CISPA/adulto) + curso de vida Adulto Mayor: VACAM con escalas Katz/Lawton/Pfeiffer/Yesavage/Gijón + inmunización AM (neumococo+influenza)"
+  },
+  "soloTheomed": [
+   "VACAM con TODAS las escalas mapeadas por dominio en tabla — cierra el cruce de escalas que López tenía disperso",
+   "Vacunas del adulto mayor explícitas (neumococo + influenza anual)"
+  ],
+  "soloLopez": [
+   "Modalidades VACAM por nivel (breve/corta/completa/VGI) y clasificación funcional (independiente/parcial/total) más detalladas",
+   "MNA-SF, FRAIL, SPPB, síndromes geriátricos"
+  ],
+  "gapAmbos": [],
+  "driveVideos": [
+   {
+    "label": "DR LOPEZ (Google Drive) · 🎬 Videoclases · Cuidado I",
+    "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §3) · Videoclases por área · Cui",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=3"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  },
  "II-6": {
   "tier": "ALTA",
@@ -719,6 +1198,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Vigilancia epidemiológica TB (Directiva 079-2017/CDC); notificación inmediata (TB personal salud, XDR <24h) vs semanal (resto)"
   ],
   "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
   "videoFallback": {
    "label": "Videoclases DR LOPEZ · CI",
@@ -730,7 +1210,35 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/SWNIUVM3cHVTVE1hTnNKTXBDbzdlZz09"
    }
   ],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "sí",
+   "theomed": "sí",
+   "theomedManual": "CI §2.9 Prevención y Control de Tuberculosis (NTS): definiciones operativas, esquema HREZ/HR, TPT, PPD, notificación"
+  },
+  "soloTheomed": [
+   "TB con NTS actualizada y control de infecciones (recambios/N95) en texto"
+  ],
+  "soloLopez": [
+   "Definiciones operativas más granulares (SR, condición de ingreso, resultados de tratamiento, RAM por fármaco H/R/Z/E/S), baciloscopía criterios +/++/+++, RM 613-2022"
+  ],
+  "gapAmbos": [
+   "Manejo de TB-DR/casos especiales (PVV/PPL) — ninguno profundiza (es referencia)"
+  ],
+  "driveVideos": [
+   {
+    "label": "DR LOPEZ (Google Drive) · 🎬 Videoclases · Cuidado I",
+    "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §3) · Videoclases por área · Cui",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=3"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  },
  "II-4": {
   "tier": "ALTA",
@@ -753,6 +1261,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Vitamina A (esquema preventivo 6-59m); desnutrición/malnutrición pediátrica"
   ],
   "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
   "videoFallback": {
    "label": "Videoclases DR LOPEZ · CI",
@@ -768,7 +1277,34 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/TmFsWnNaT1p4QkJ2WGJzQ1Naa242UT09"
    }
   ],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "sí",
+   "theomed": "sí",
+   "theomedManual": "CI §2.x Prevención y Control de Anemia + suplementación de hierro por etapa (dentro de CRED y curso de vida) + corrección por altitud"
+  },
+  "soloTheomed": [
+   "Sal/dosis integradas al paquete CRED con vitamina A"
+  ],
+  "soloLopez": [
+   "Suplementación PREVENTIVA por grupo etario con dosis/producto/frecuencia/duración exactas + tratamiento 3mg/kg/día + criterios de alta muy detallados",
+   "Corrección de Hb por altitud tabulada, exámenes de apoyo (ferritina/reticulocitos)"
+  ],
+  "gapAmbos": [],
+  "driveVideos": [
+   {
+    "label": "DR LOPEZ (Google Drive) · 🎬 Videoclases · Cuidado I",
+    "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §3) · Videoclases por área · Cui",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=3"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  },
  "II-10": {
   "tier": "ALTA",
@@ -789,6 +1325,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Cáncer infantil (0-17a): signos de alarma, referencia inmediata ≤72h a centro oncológico 3er nivel"
   ],
   "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
   "videoFallback": {
    "label": "Videoclases DR LOPEZ · CI",
@@ -812,7 +1349,34 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/NElXL1ppOVMwNFg1REFrT1NnUmNmdz09"
    }
   ],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "sí",
+   "theomed": "sí",
+   "theomedManual": "CI §2.8 Prevención y control del Cáncer (factores de riesgo, tamizaje) + §Sub-área 8B Detección temprana de cáncer infantil"
+  },
+  "soloTheomed": [
+   "Cáncer infantil con sección propia (8B) y referencia a pediatría",
+   "Tamizaje integrado a paquetes por curso de vida"
+  ],
+  "soloLopez": [
+   "Tamizaje por edad muy tabulado (DM-VPH 30-49a, IVAA, PAP 25-29/50-64; mama ECM/mamografía; próstata PSA 50-75a; colon FIT 50-70a) + regla ABCDE piel + referencia ≤72h infantil"
+  ],
+  "gapAmbos": [],
+  "driveVideos": [
+   {
+    "label": "DR LOPEZ (Google Drive) · 🎬 Videoclases · Cuidado I",
+    "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §3) · Videoclases por área · Cui",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=3"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  },
  "II-2": {
   "tier": "ALTA",
@@ -839,6 +1403,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Suplementación de hierro y Vitamina A dentro de CRED; descarte parasitosis anual"
   ],
   "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
   "videoFallback": {
    "label": "Videoclases DR LOPEZ · CI",
@@ -858,7 +1423,36 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/SE54ckQyaUQrZTQ4RVROUkpjL3djQT09"
    }
   ],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "sí",
+   "theomed": "sí",
+   "theomedManual": "CI Sub-Área 3 Paquete de Cuidado Integral del Niño: Control CRED (definición, frecuencia por edad, total controles NTS), tamizaje, valoración nutricional, consejería 5 momentos, esquema vacunación <11a"
+  },
+  "soloTheomed": [
+   "Frecuencia de controles CRED por grupo de edad en tabla con TOTAL de controles del esquema — cierra el gap de calendario que en López era imagen",
+   "Consejería en 5 momentos y situación del EESS→acción del profesional"
+  ],
+  "soloLopez": [
+   "Instrumentos de tamizaje del desarrollo más listados (Test Huanca 0-36m, EDI verde/amarillo/rojo, M-CHAT 24m, PPSC/PSC17), puntos de corte antropométricos P/T T/E en DS"
+  ],
+  "gapAmbos": [
+   "Tablas antropométricas con puntos de corte exactos — imágenes en ambos → memorizar del PDF"
+  ],
+  "driveVideos": [
+   {
+    "label": "DR LOPEZ (Google Drive) · 🎬 Videoclases · Cuidado I",
+    "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §3) · Videoclases por área · Cui",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=3"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  },
  "II-5": {
   "tier": "ALTA",
@@ -880,6 +1474,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Enfermedades raras/huérfanas (7 del tamizaje neonatal); exposición a metales pesados (As/Cd/Hg/Pb); intoxicaciones (organofosforados SLUDGE, cáusticos); IAAS; zoonosis/metaxénicas (cruza con I-4)"
   ],
   "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
   "videoFallback": {
    "label": "Videoclases DR LOPEZ · CI",
@@ -907,7 +1502,37 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/bEJJZFE1Q3BmdlRkWklka0JaOG13QT09"
    }
   ],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "sí",
+   "theomed": "sí",
+   "theomedManual": "CI §2.1 APS + §2.2 MCI (RM 030-2020), Sub-Áreas 3-6 paquetes por curso de vida (niño/adolescente/joven/adulto/CISPA) + §2.18 Tamizaje Neonatal enfermedades raras (MINSA 2025) + §2.19 Metales pesados + §2.20 IAAS"
+  },
+  "soloTheomed": [
+   "Tamizaje Neonatal enfermedades raras/huérfanas con norma MINSA 2025 (sección propia §2.18)",
+   "IAAS con NTS propia (§2.20)",
+   "Vigilancia de metales pesados NTS (§2.19)",
+   "Etapas del curso de vida con la denominación oficial 'Adulto Joven' y trampas de examen señaladas"
+  ],
+  "soloLopez": [
+   "Evolución del modelo MAIS 2003→MAIS-BFC 2011→MCI 2020 y atributos APS (Montevideo 2005) más explícitos",
+   "Intoxicaciones (organofosforados SLUDGE, cáusticos) detalladas"
+  ],
+  "gapAmbos": [],
+  "driveVideos": [
+   {
+    "label": "DR LOPEZ (Google Drive) · 🎬 Videoclases · Cuidado I",
+    "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §3) · Videoclases por área · Cui",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=3"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  },
  "II-9": {
   "tier": "MEDIA",
@@ -930,6 +1555,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Detección de violencia (cruza con instrumentos de Directiva 155-2024)"
   ],
   "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
   "videoFallback": {
    "label": "Videoclases DR LOPEZ · CI",
@@ -941,7 +1567,37 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/UmN3RDFMeDVObjFUdGN6TmJvTVBGZz09"
    }
   ],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "parcial",
+   "theomed": "sí",
+   "theomedManual": "CI §2.7 Cuidado de Salud Mental en el Primer Nivel de Atención (tamizaje, criterios, referencia)"
+  },
+  "soloTheomed": [
+   "Manejo/referencia en primer nivel desarrollado — López era escueto en tratamiento",
+   "Detección de violencia integrada al tamizaje de salud mental"
+  ],
+  "soloLopez": [
+   "Criterios diagnósticos formales de depresión mayor/distimia/bipolar I-II/hipomanía más explícitos",
+   "Instrumentos PHQ-9/AUDIT-C/SRQ mapeados por etapa de vida"
+  ],
+  "gapAmbos": [
+   "Modelo de salud mental comunitaria (CSMC) — en SP §2.13 de Theomed pero disperso; verificar"
+  ],
+  "driveVideos": [
+   {
+    "label": "DR LOPEZ (Google Drive) · 🎬 Videoclases · Cuidado I",
+    "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §3) · Videoclases por área · Cui",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=3"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  },
  "II-12": {
   "tier": "MEDIA",
@@ -962,6 +1618,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Relación con otras enfermedades (diabetes, CV, neumonía, parto prematuro), importancia dientes temporales"
   ],
   "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
   "videoFallback": {
    "label": "Videoclases DR LOPEZ · CI",
@@ -973,7 +1630,33 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/Ly85ek05a21XdXlwNmVpNkNhMzFsUT09"
    }
   ],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "sí",
+   "theomed": "sí",
+   "theomedManual": "CI §2.21 Medidas Preventivas de Salud Bucal + §1.2/1.5 atención estomatológica a personas con discapacidad"
+  },
+  "soloTheomed": [
+   "Atención estomatológica a personas con discapacidad (sección extra)"
+  ],
+  "soloLopez": [
+   "Flúor por edad (ppm), técnica de cepillado por edad (90°/45°), hilo dental desde 4a, flúor barniz cada 6m tabulados"
+  ],
+  "gapAmbos": [],
+  "driveVideos": [
+   {
+    "label": "DR LOPEZ (Google Drive) · 🎬 Videoclases · Cuidado I",
+    "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §3) · Videoclases por área · Cui",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=3"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  },
  "II-13": {
   "tier": "BAJA",
@@ -996,13 +1679,43 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Evaluación agudeza auditiva en adolescente (voz baja, tarjetas)"
   ],
   "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
   "videoFallback": {
    "label": "Videoclases DR LOPEZ · CI",
    "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
   },
   "videosExtra": [],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "parcial",
+   "theomed": "sí",
+   "theomedManual": "CI: tamizaje de agudeza visual (Snellen, monocular 6m) en paquetes de niño/adolescente/adulto + salud ocular con oclusor estenopeico en adulto mayor"
+  },
+  "soloTheomed": [
+   "Agudeza visual Snellen integrada a los paquetes por curso de vida con umbrales — López lo tenía solo en media página (pág 55)",
+   "Tamizaje AM con oclusor estenopeico"
+  ],
+  "soloLopez": [
+   "Umbrales de referencia por edad (≤20/50 niños, ≤20/40 adultos, ≤20/70 catarata) y tamizaje neonatal auditivo (otoemisiones 24-48h) más explícitos en un solo lugar"
+  ],
+  "gapAmbos": [
+   "Detalle fino de tamizaje auditivo neonatal — cruce ligero, ninguno lo profundiza"
+  ],
+  "driveVideos": [
+   {
+    "label": "DR LOPEZ (Google Drive) · 🎬 Videoclases · Cuidado I",
+    "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §3) · Videoclases por área · Cui",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=3"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  },
  "III-5": {
   "tier": "CRÍTICA",
@@ -1028,6 +1741,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Medicina tradicional vs complementaria vs alternativa"
   ],
   "compendioUrl": "https://drive.google.com/file/d/1DCrhYE_DwZ25RoDSIhcxTq52cDRG1qSN/view",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=4",
   "videoFallback": {
    "label": "Videoclases DR LOPEZ · Ética",
@@ -1055,7 +1769,36 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/eXVyRm0xd0piZkVFb3RpTFFzZG9zUT09"
    }
   ],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "sí",
+   "theomed": "sí",
+   "theomedManual": "ÉTICA Sub-Área 2 Interculturalidad: §III Atención con enfoque intercultural y pertinencia cultural (Directiva 261-2019), §IV Medicina tradicional/complementaria/alternativa, Promoción del Parto Vertical, Acceso a población migrante, Comunicación y diálogo intercultural, Identidad cultural"
+  },
+  "soloTheomed": [
+   "Comunicación y diálogo intercultural con los 3 momentos desarrollados",
+   "Casas de Espera Materna, Directiva 261-MINSA-2019 citada",
+   "Acceso a población migrante con impacto en salud mental (TEPT/xenofobia)"
+  ],
+  "soloLopez": [
+   "4 dimensiones de pertinencia cultural y prioridades A/B/C con plazos (3/5 años) y criterio ≥80% más tabulados",
+   "Etnocentrismo vs relativismo vs aculturación listados"
+  ],
+  "gapAmbos": [],
+  "driveVideos": [
+   {
+    "label": "DR LOPEZ (Google Drive) · 🎬 Videoclases · Ética e I",
+    "url": "https://drive.google.com/drive/folders/1srnoHI0LavKzi1Vzy8c9Mt5f5WLRqsWu"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §4) · Videoclases por área · Éti",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=4"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  },
  "III-2": {
   "tier": "ALTA",
@@ -1074,6 +1817,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Relación médico-paciente: 4 modelos (paternalista, informativo, interpretativo, deliberativo)"
   ],
   "compendioUrl": "https://drive.google.com/file/d/1DCrhYE_DwZ25RoDSIhcxTq52cDRG1qSN/view",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=4",
   "videoFallback": {
    "label": "Videoclases DR LOPEZ · Ética",
@@ -1085,7 +1829,34 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/QWhZb0RQemJoWWlpSW92bnNMK0xnZz09"
    }
   ],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "sí",
+   "theomed": "parcial",
+   "theomedManual": "ÉTICA §I Código de Ética y Deontología Profesional (confidencialidad, consentimiento, relación terapéutica, responsabilidad profesional)"
+  },
+  "soloTheomed": [
+   "Confidencialidad y relación terapéutica desarrolladas dentro del código deontológico"
+  ],
+  "soloLopez": [
+   "Los 4 MODELOS de relación médico-paciente (paternalista/informativo/interpretativo/deliberativo) — clave de viñeta; en Theomed el código deontológico CMP no los desglosa como López",
+   "Fines del Código CMP explícitos"
+  ],
+  "gapAmbos": [],
+  "driveVideos": [
+   {
+    "label": "DR LOPEZ (Google Drive) · 🎬 Videoclases · Ética e I",
+    "url": "https://drive.google.com/drive/folders/1srnoHI0LavKzi1Vzy8c9Mt5f5WLRqsWu"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §4) · Videoclases por área · Éti",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=4"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  },
  "III-8": {
   "tier": "ALTA",
@@ -1105,6 +1876,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "5 Prohibiciones (conflicto de intereses, ventajas indebidas, proselitismo político, mal uso de información privilegiada, presión/amenazas/acoso)"
   ],
   "compendioUrl": "https://drive.google.com/file/d/1DCrhYE_DwZ25RoDSIhcxTq52cDRG1qSN/view",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=4",
   "videoFallback": {
    "label": "Videoclases DR LOPEZ · Ética",
@@ -1120,7 +1892,34 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/MTY3bmovRmxYQlpRM1k2d0VBeXRGUT09"
    }
   ],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "sí",
+   "theomed": "sí",
+   "theomedManual": "ÉTICA §I.b Ética en la función pública (aspectos clave, confidencialidad art.25 LGS, casos de excepción del secreto médico)"
+  },
+  "soloTheomed": [
+   "Casos de excepción del secreto profesional listados (consentimiento escrito, autoridad judicial, fines académicos, familiares, declaración obligatoria) — muy preguntable",
+   "Carácter reservado de la información (art.25 Ley 26842)"
+  ],
+  "soloLopez": [
+   "Triplete Principios(8)/Deberes(6)/Prohibiciones(5) de la Ley 27815 tabulado para encasillar"
+  ],
+  "gapAmbos": [],
+  "driveVideos": [
+   {
+    "label": "DR LOPEZ (Google Drive) · 🎬 Videoclases · Ética e I",
+    "url": "https://drive.google.com/drive/folders/1srnoHI0LavKzi1Vzy8c9Mt5f5WLRqsWu"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §4) · Videoclases por área · Éti",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=4"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  },
  "III-1": {
   "tier": "ALTA",
@@ -1139,6 +1938,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "4 Principios de Beauchamp & Childress: Autonomía, Justicia, Beneficencia, No maleficencia (con ejemplos)"
   ],
   "compendioUrl": "https://drive.google.com/file/d/1DCrhYE_DwZ25RoDSIhcxTq52cDRG1qSN/view",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=4",
   "videoFallback": {
    "label": "Videoclases DR LOPEZ · Ética",
@@ -1154,7 +1954,35 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/L3dYaldma2svaXEvOXAreGJZakMwQT09"
    }
   ],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "sí",
+   "theomed": "parcial",
+   "theomedManual": "ÉTICA §I Principios y fundamentos de la ética y bioética (autonomía, beneficencia, no maleficencia, justicia; UNESCO 2005, Helsinki art.28 LGS)"
+  },
+  "soloTheomed": [
+   "Fundamento en Declaración UNESCO 2005 y su reconocimiento por INS/MINSA",
+   "Interdisciplinariedad de la bioética"
+  ],
+  "soloLopez": [
+   "Hitos históricos completos (Código Núremberg 1947, Helsinki 1964, Tuskegee 1932-72, Belmont 1978, Comisión Nacional 1974) — Theomed los toca escuetos",
+   "Beauchamp & Childress explícito y ejemplos de aplicación por principio"
+  ],
+  "gapAmbos": [],
+  "driveVideos": [
+   {
+    "label": "DR LOPEZ (Google Drive) · 🎬 Videoclases · Ética e I",
+    "url": "https://drive.google.com/drive/folders/1srnoHI0LavKzi1Vzy8c9Mt5f5WLRqsWu"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §4) · Videoclases por área · Éti",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=4"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  },
  "III-9": {
   "tier": "ALTA",
@@ -1176,6 +2004,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "10 Deberes del usuario (respeto al personal, cumplir indicaciones, info veraz, respetar turnos, autocuidado, uso adecuado de instalaciones, seguir flujograma, cumplir citas, usar canales de reclamo)"
   ],
   "compendioUrl": "https://drive.google.com/file/d/1DCrhYE_DwZ25RoDSIhcxTq52cDRG1qSN/view",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=4",
   "videoFallback": {
    "label": "Videoclases DR LOPEZ · Ética",
@@ -1187,7 +2016,35 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/YmtBcmFvdzlpeUpkVjNhUkh2aGovQT09"
    }
   ],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "sí",
+   "theomed": "sí",
+   "theomedManual": "ÉTICA §II Derechos y Deberes de los Usuarios de Servicios de Salud (Ley 26842 art.15, Ley 29414): atención, información, confidencialidad, participación, tratamiento, rehabilitación, no discriminación, 2ª opinión"
+  },
+  "soloTheomed": [
+   "Derechos desglosados uno por uno (a-h) con base legal Ley 29414 — buena cobertura del ángulo HC/SUSALUD que era el mayor miss histórico"
+  ],
+  "soloLopez": [
+   "10 Deberes del usuario y acceso a HC/epicrisis con carácter reservado; 5 casos de CI por escrito enlazados"
+  ],
+  "gapAmbos": [
+   "Quejas/SUSALUD como proceso — ligero en ambos → normativa"
+  ],
+  "driveVideos": [
+   {
+    "label": "DR LOPEZ (Google Drive) · 🎬 Videoclases · Ética e I",
+    "url": "https://drive.google.com/drive/folders/1srnoHI0LavKzi1Vzy8c9Mt5f5WLRqsWu"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §4) · Videoclases por área · Éti",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=4"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  },
  "III-6+III-10": {
   "tier": "MEDIA",
@@ -1209,6 +2066,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Establecimiento con pertinencia cultural (criterios ≥80%)"
   ],
   "compendioUrl": "https://drive.google.com/file/d/1DCrhYE_DwZ25RoDSIhcxTq52cDRG1qSN/view",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=4",
   "videoFallback": {
    "label": "Videoclases DR LOPEZ · Ética",
@@ -1228,7 +2086,34 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/VHFTK0lNK296OUptdGJlVHc0eVpSZz09"
    }
   ],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "parcial",
+   "theomed": "sí",
+   "theomedManual": "ÉTICA §II Diversidad cultural, promoción de la inclusión y la equidad + Acceso a población migrante + estigma/discriminación"
+  },
+  "soloTheomed": [
+   "Diversidad cultural en Perú y promoción de la inclusión desarrolladas",
+   "Impacto en salud mental del migrante (estrés/depresión/TEPT/xenofobia)"
+  ],
+  "soloLopez": [
+   "Poblaciones VULNERABLES vs CLAVE listadas (PVV/HSH/PPL/trans/TS) y criterio EESS ≥80%"
+  ],
+  "gapAmbos": [],
+  "driveVideos": [
+   {
+    "label": "DR LOPEZ (Google Drive) · 🎬 Videoclases · Ética e I",
+    "url": "https://drive.google.com/drive/folders/1srnoHI0LavKzi1Vzy8c9Mt5f5WLRqsWu"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §4) · Videoclases por área · Éti",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=4"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  },
  "III-3": {
   "tier": "MEDIA",
@@ -1248,6 +2133,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Vínculo con principio de autonomía (III-1) y derechos del usuario (III-9)"
   ],
   "compendioUrl": "https://drive.google.com/file/d/1DCrhYE_DwZ25RoDSIhcxTq52cDRG1qSN/view",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=4",
   "videoFallback": {
    "label": "Videoclases DR LOPEZ · Ética",
@@ -1259,7 +2145,34 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/ZmV0WVpNSXFSS3NYUVZsQVlyVk40UT09"
    }
   ],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "parcial",
+   "theomed": "sí",
+   "theomedManual": "ÉTICA §I.b Consentimiento informado (Ley 29414, libre y voluntario) + casos que exigen CI por escrito + excepción de emergencia"
+  },
+  "soloTheomed": [
+   "Consentimiento informado con base legal Ley 29414 desarrollado como sección — López lo tenía embebido en derechos del usuario",
+   "Excepción en emergencia explícita"
+  ],
+  "soloLopez": [
+   "Lista completa de los casos que EXIGEN CI por escrito (cirugía/AQ, docencia con imágenes, investigación, negativa a tratamiento, cuidados paliativos)"
+  ],
+  "gapAmbos": [],
+  "driveVideos": [
+   {
+    "label": "DR LOPEZ (Google Drive) · 🎬 Videoclases · Ética e I",
+    "url": "https://drive.google.com/drive/folders/1srnoHI0LavKzi1Vzy8c9Mt5f5WLRqsWu"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §4) · Videoclases por área · Éti",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=4"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  },
  "III-4+III-7": {
   "tier": "MEDIA",
@@ -1278,13 +2191,43 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "NO CUBIERTO en el compendio Dr López (el temario de López para el bloque III NO incluye violencia de género ni aborto/dilemas — es el hueco estructural del área)"
   ],
   "compendioUrl": "https://drive.google.com/file/d/1DCrhYE_DwZ25RoDSIhcxTq52cDRG1qSN/view",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=4",
   "videoFallback": {
    "label": "Videoclases DR LOPEZ · Ética",
    "url": "https://drive.google.com/drive/folders/1srnoHI0LavKzi1Vzy8c9Mt5f5WLRqsWu"
   },
   "videosExtra": [],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "no",
+   "theomed": "sí",
+   "theomedManual": "CI §6 Protocolo de Atención en Violencia Sexual (Ley 30364 + NTS MINSA) + Kit de Emergencia (Directiva Sanitaria 083-MINSA/2019: AOE + azitromicina + penicilina G benzatínica + vacuna DT + preservativos + PEP VIH) + ventanas de tiempo"
+  },
+  "soloTheomed": [
+   "TODO el bloque de violencia sexual/CÓDIGO VIOLETA está en el manual de CI de Theomed — este era el GAP DURO de López (que NO lo cubre en absoluto)",
+   "Kit de emergencia con contenido oficial y plazos (AOE <72h, PEP VIH <72h en I-4/hospitales, 28 días)",
+   "Ley 30364, protocolo de atención inmediata, hombre víctima mismo protocolo"
+  ],
+  "soloLopez": [],
+  "gapAmbos": [
+   "Aborto terapéutico y dilemas éticos (causales, Guía Nacional 2014) — ni López ni el manual de ética/CI lo desarrollan → normativa MINSA",
+   "Ficha de valoración de riesgo (Ley 30364) — parcial → normativa"
+  ],
+  "driveVideos": [
+   {
+    "label": "DR LOPEZ (Google Drive) · 🎬 Videoclases · Ética e I",
+    "url": "https://drive.google.com/drive/folders/1srnoHI0LavKzi1Vzy8c9Mt5f5WLRqsWu"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §4) · Videoclases por área · Éti",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=4"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  },
  "IV-1+IV-2": {
   "tier": "MEDIA",
@@ -1310,6 +2253,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Hipótesis H0/H1 (cuándo aplica: cuantitativo que contrasta, no en descriptivo/cualitativo)"
   ],
   "compendioUrl": "https://drive.google.com/drive/folders/13fYG58fySgFIC1HKBVUCNw61ipa6C69V",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=5",
   "videoFallback": {
    "label": "Videoclases GALENO",
@@ -1337,7 +2281,34 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/ZmV0WVpNSXFSS3NYUVZsQVlyVk40UT09"
    }
   ],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "sí",
+   "theomed": "sí",
+   "theomedManual": "INV Sub-Área 1 Conceptos y Clasificación: §2.1 Enfoques, §2.2 Tipos, §3.1 Clasificación general, §4 Descriptivos, §5 Analíticos observacionales (cohorte/casos-controles), §6 Experimentales (ECA, fases, tipos de ciego)"
+  },
+  "soloTheomed": [
+   "Fases de los ensayos clínicos (I-IV) y tipos de ciego desarrollados",
+   "Ventajas/desventajas y análisis de datos por tipo de estudio (secciones propias)"
+  ],
+  "soloLopez": [
+   "Pirámide de la evidencia, matriz de consistencia e hipótesis H0/H1 más explícitos; clasificación por fuente/intervención/temporalidad tabulada"
+  ],
+  "gapAmbos": [],
+  "driveVideos": [
+   {
+    "label": "GALENO MEDIC (Google Drive) · 🎥 Videoclases (índice) — ",
+    "url": "https://drive.google.com/drive/folders/1RCpVqy_1yF0OBU-OUegTOzHjaZS6FAX8"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §5) · Videoclases por área · Inv",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=5"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  },
  "IV-3+IV-5": {
   "tier": "BAJA",
@@ -1357,6 +2328,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Características de un buen instrumento (validez, confiabilidad, objetividad, precisión, claridad, factibilidad, estandarización, adecuación al contexto)"
   ],
   "compendioUrl": "https://drive.google.com/drive/folders/13fYG58fySgFIC1HKBVUCNw61ipa6C69V",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=5",
   "videoFallback": {
    "label": "Videoclases GALENO",
@@ -1372,7 +2344,35 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/QVNhVkVkZXlvM2NmL3EybDRyQjlQdz09"
    }
   ],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "no",
+   "theomed": "no",
+   "theomedManual": "INV toca validación de instrumentos (Alfa de Cronbach/validez/confiabilidad) pero NO pruebas diagnósticas 2x2 como métrica"
+  },
+  "soloTheomed": [
+   "Validación de instrumentos (validez de contenido/criterio/constructo, confiabilidad) desarrollada"
+  ],
+  "soloLopez": [
+   "Características de un buen instrumento listadas; muestreo (que sí rinde) — ver IV-4"
+  ],
+  "gapAmbos": [
+   "Sensibilidad/Especificidad/VPP/VPN/LR/curva ROC como cálculo diagnóstico — NINGUNO de los manuales de investigación lo desarrolla → estudiar por SP (Theomed §1.7 Pruebas Diagnósticas o QX I-6). Tamizaje Wilson-Jungner → cruzar con II-10"
+  ],
+  "driveVideos": [
+   {
+    "label": "GALENO MEDIC (Google Drive) · 🎥 Videoclases (índice) — ",
+    "url": "https://drive.google.com/drive/folders/1RCpVqy_1yF0OBU-OUegTOzHjaZS6FAX8"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §5) · Videoclases por área · Inv",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=5"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  },
  "IV-4": {
   "tier": "BAJA",
@@ -1392,6 +2392,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Muestreo (SÍ está, extenso): probabilístico (aleatorio simple, sistemático, estratificado, conglomerados) vs no probabilístico (conveniencia, juicio, cuotas, bola de nieve); población/muestra/unidad de análisis/marco muestral/parámetro vs estadístico"
   ],
   "compendioUrl": "https://drive.google.com/drive/folders/13fYG58fySgFIC1HKBVUCNw61ipa6C69V",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=5",
   "videoFallback": {
    "label": "Videoclases GALENO",
@@ -1411,6 +2412,34 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    {
     "label": "QX ENAM · Epi resumen",
     "url": "https://drive.google.com/file/d/14dSCm-Ftxf9ys7_O6IwRzqOFb1n2O8Nu/view"
+   }
+  ],
+  "bookCoverage": {
+   "lopez": "parcial",
+   "theomed": "parcial",
+   "theomedManual": "INV §5 Estudios Analíticos: OR/RR conceptual (cohorte→RR, casos-controles→OR/Razón de Momios) desarrollado en texto"
+  },
+  "soloTheomed": [
+   "OR/RR como medida de asociación por tipo de estudio DESARROLLADO (cohorte→RR, casos-controles→OR) — cierra parcialmente el gap de López, que no desarrollaba OR/RR"
+  ],
+  "soloLopez": [
+   "Muestreo COMPLETO (probabilístico: aleatorio simple/sistemático/estratificado/conglomerados vs no probabilístico; población/muestra/marco muestral) — Theomed NO desarrolla muestreo como capítulo"
+  ],
+  "gapAmbos": [
+   "Cálculo/interpretación fina de OR/RR con IC95% y fórmula 2x2 — conceptual en ambos, no ejercitado → QX 'Causalidad y Riesgo'"
+  ],
+  "driveVideos": [
+   {
+    "label": "GALENO MEDIC (Google Drive) · 🎥 Videoclases (índice) — ",
+    "url": "https://drive.google.com/drive/folders/1RCpVqy_1yF0OBU-OUegTOzHjaZS6FAX8"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §5) · Videoclases por área · Inv",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=5"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
    }
   ]
  },
@@ -1437,6 +2466,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "CIEI (Comité Institucional de Ética en Investigación): mínimo 5 miembros, autónomo, registro en INS, funciones; responsabilidades del investigador"
   ],
   "compendioUrl": "https://drive.google.com/drive/folders/13fYG58fySgFIC1HKBVUCNw61ipa6C69V",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=5",
   "videoFallback": {
    "label": "Videoclases GALENO",
@@ -1460,7 +2490,36 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/ZkJQeXVoYVFKRnRpSDdwME9MMmVFdz09"
    }
   ],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "sí",
+   "theomed": "parcial",
+   "theomedManual": "INV Sub-Área 3 Ejecución: §2 Informe de investigación (estructura), §5 Normas de presentación, §6 Aspectos éticos de las publicaciones + Sub-Área 2 §4 Declaración de Helsinki + consentimiento informado en investigación"
+  },
+  "soloTheomed": [
+   "Declaración de Helsinki desarrollada como sección (§4.1) + consentimiento informado en investigación detallado",
+   "Aspectos éticos de las publicaciones científicas (§6)"
+  ],
+  "soloLopez": [
+   "CIEI (mínimo 5 miembros, registro INS) explícito, 4 hitos completos (Núremberg/Belmont/Helsinki/CIOMS/UNESCO), marco legal peruano (DS 021-2017-SA, rol INS), instrumentos de recolección cuali/cuanti — Theomed NO nombra CIEI ni el detalle normativo peruano"
+  ],
+  "gapAmbos": [
+   "Indicadores de salud/vigilancia (nombre del código en la app) — realmente caen en I-3, no aquí, en ninguno de los dos"
+  ],
+  "driveVideos": [
+   {
+    "label": "GALENO MEDIC (Google Drive) · 🎥 Videoclases (índice) — ",
+    "url": "https://drive.google.com/drive/folders/1RCpVqy_1yF0OBU-OUegTOzHjaZS6FAX8"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §5) · Videoclases por área · Inv",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=5"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  },
  "V-2": {
   "tier": "CRÍTICA",
@@ -1487,6 +2546,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Reemplazos por Ley del Servicio Civil 30057: MOF → MPP (Manual de Perfiles de Puestos); CAP+PAP → CPE (Cuadro de Puestos de la Entidad)"
   ],
   "compendioUrl": "https://drive.google.com/drive/folders/13fYG58fySgFIC1HKBVUCNw61ipa6C69V",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=6",
   "videoFallback": {
    "label": "Videoclases GALENO · Gestión",
@@ -1506,7 +2566,37 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/VGJsd0xWbFd1WVV2bElEZnVWcGNaUT09"
    }
   ],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "sí",
+   "theomed": "sí",
+   "theomedManual": "GESTIÓN Sub-Área 1 Planificación: §1 Planeamiento estratégico (4 fases, ciclo PDCA, marco legal CEPLAN), §1.2 Análisis Estratégico Institucional (misión/visión/valores/FODA), §1.3 Planeamiento Institucional (PEI 5a/POI anual, diferencias) + §2.1 Documentos técnicos normativos (ROF/MOP)"
+  },
+  "soloTheomed": [
+   "Ciclo de planeamiento con ejemplo CEPLAN completo y modelo de plan estratégico en salud mental",
+   "FODA con los 4 cuadrantes desarrollados"
+  ],
+  "soloLopez": [
+   "Instrumentos SINAPLAN en cascada (PEDN Perú 2050→PESEM→PDRC→PDLC) y reemplazos SERVIR (MOF→MPP, CAP+PAP→CPE) más explícitos"
+  ],
+  "gapAmbos": [
+   "Residuos/bioseguridad en escenario de DESASTRE (el forecast lo mete en V-2) — está en SP §2.11/§3.4 no en Gestión → cruzar",
+   "Marco legal PIA/PIM y ciclo presupuestal fino → normativa MEF"
+  ],
+  "driveVideos": [
+   {
+    "label": "GALENO MEDIC (Google Drive) · 🎥 Videoclases · GESTIÓN (",
+    "url": "https://drive.google.com/drive/folders/1R1cuKS2PV8yCeicl2VXj8NBIhWtNUP9w"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §6) · Videoclases por área · Ges",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=6"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  },
  "V-1": {
   "tier": "ALTA",
@@ -1531,6 +2621,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "UPS (cualquier área que da un servicio) vs UPSS (específica de salud): atención directa (consulta/hospitalización/emergencia/cirugía) vs apoyo/soporte (laboratorio/farmacia/imágenes)"
   ],
   "compendioUrl": "https://drive.google.com/drive/folders/13fYG58fySgFIC1HKBVUCNw61ipa6C69V",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=6",
   "videoFallback": {
    "label": "Videoclases GALENO · Gestión",
@@ -1546,7 +2637,36 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/OUtTUFJaZHhncjFreTQ5MXFOdjBQQT09"
    }
   ],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "sí",
+   "theomed": "sí",
+   "theomedManual": "GESTIÓN §2.2 Categorización de los Establecimientos de Salud (niveles, categorías 1-1 a III-E, UPSS 40 menciones, cartera de servicios) + Acreditación de los servicios de salud"
+  },
+  "soloTheomed": [
+   "Categorización con UPSS ampliamente desarrollada (40 menciones) y personal/equipamiento por categoría",
+   "Acreditación diferenciada de categorización en el mismo bloque"
+  ],
+  "soloLopez": [
+   "Distinción categorización (obligatoria) vs acreditación (voluntaria ≥85%) y que la DIRESA asigna con Acto Resolutivo a 3 años, tabulado"
+  ],
+  "gapAmbos": [
+   "Tabla detallada de personal/horas por categoría — imagen/formato en ambos → NTS 021 completa"
+  ],
+  "driveVideos": [
+   {
+    "label": "GALENO MEDIC (Google Drive) · 🎥 Videoclases · GESTIÓN (",
+    "url": "https://drive.google.com/drive/folders/1R1cuKS2PV8yCeicl2VXj8NBIhWtNUP9w"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §6) · Videoclases por área · Ges",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=6"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  },
  "V-3": {
   "tier": "ALTA",
@@ -1573,6 +2693,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Zona rural (<2000 hab INEI) vs urbana; cogestión CLAS (Ley 29124); privados NO forman parte de la RIS por defecto"
   ],
   "compendioUrl": "https://drive.google.com/drive/folders/13fYG58fySgFIC1HKBVUCNw61ipa6C69V",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=6",
   "videoFallback": {
    "label": "Videoclases GALENO · Gestión",
@@ -1592,7 +2713,35 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/UnVwdWl2QmIwYVFSWHpiTEQrZXd6Zz09"
    }
   ],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "sí",
+   "theomed": "sí",
+   "theomedManual": "GESTIÓN §2.4 Sistema de Referencia y Contrarreferencia + §2.6 Redes Integradas de Salud (RIS)"
+  },
+  "soloTheomed": [
+   "Referencia y RIS como capítulos propios con proceso de admisión integral"
+  ],
+  "soloLopez": [
+   "Plazos exactos (hoja referencia 60 días, contrarreferencia oportuna 7 días), EMS=4 profesionales, gestores 1 director+5 jefes, rural <2000 hab, CLAS Ley 29124 — muy tabulado para viñeta"
+  ],
+  "gapAmbos": [
+   "NTS 020 detalle fino de formatos → normativa"
+  ],
+  "driveVideos": [
+   {
+    "label": "GALENO MEDIC (Google Drive) · 🎥 Videoclases · GESTIÓN (",
+    "url": "https://drive.google.com/drive/folders/1R1cuKS2PV8yCeicl2VXj8NBIhWtNUP9w"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §6) · Videoclases por área · Ges",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=6"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  },
  "V-7+V-10": {
   "tier": "ALTA",
@@ -1625,6 +2774,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "AUS (Aseguramiento Universal en Salud) y SIS; intercambio prestacional"
   ],
   "compendioUrl": "https://drive.google.com/drive/folders/13fYG58fySgFIC1HKBVUCNw61ipa6C69V",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=6",
   "videoFallback": {
    "label": "Videoclases GALENO · Gestión",
@@ -1649,6 +2799,38 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "label": "QX ENAM · Epi resumen",
     "url": "https://drive.google.com/file/d/14dSCm-Ftxf9ys7_O6IwRzqOFb1n2O8Nu/view"
    }
+  ],
+  "bookCoverage": {
+   "lopez": "sí",
+   "theomed": "sí",
+   "theomedManual": "GESTIÓN §3.1 Gestión RRHH (SERVIR/SAGRH, 130 menciones), §3.2 Control de Inventario y Stock (substock/normostock/sobrestock/Kardex/PEPS), §3.3 Coordinación intersectorial, §3.4 Liderazgo, §3.5 Trabajo colaborativo, §2.5 Gestión de HC, §4.1 Garantía y mejora de la calidad + Acreditación, §4.2 Clima y cultura organizacional; AUS/SIS (235 menciones)"
+  },
+  "soloTheomed": [
+   "Control de inventario/stock (V-MED) desarrollado con niveles y método PEPS/Kardex",
+   "Gestión de HC como capítulo (§2.5) — cruza con III-9",
+   "AUS/SIS ampliamente cubierto (235 menciones)",
+   "Telesalud (§5, teleconsulta/teleconferencia)"
+  ],
+  "soloLopez": [
+   "7 subsistemas y 23 procesos de SERVIR, evento centinela vs adverso vs incidente, 22 macroprocesos de acreditación, archivo HC (activo 5a/pasivo/especial 40a/conservación 20a), auditoría (tipos/etapas/principios) más tabulados"
+  ],
+  "gapAmbos": [
+   "Farmacovigilancia/RAM y URM/resistencia antimicrobiana detallada — ligero en ambos (Theomed 4 menciones) → normativa DIGEMID",
+   "Contrataciones/adquisiciones del Estado — 0 en Theomed, tampoco en López → normativa (baja prioridad)"
+  ],
+  "driveVideos": [
+   {
+    "label": "GALENO MEDIC (Google Drive) · 🎥 Videoclases · GESTIÓN (",
+    "url": "https://drive.google.com/drive/folders/1R1cuKS2PV8yCeicl2VXj8NBIhWtNUP9w"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §6) · Videoclases por área · Ges",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=6"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
   ]
  },
  "V-6": {
@@ -1668,12 +2850,39 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Ejes operativos: telegestión, telecapacitación, teleIEC"
   ],
   "compendioUrl": "https://drive.google.com/drive/folders/13fYG58fySgFIC1HKBVUCNw61ipa6C69V",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=6",
   "videoFallback": {
    "label": "Videoclases GALENO · Gestión",
    "url": "https://drive.google.com/drive/folders/1R1cuKS2PV8yCeicl2VXj8NBIhWtNUP9w"
   },
   "videosExtra": [],
-  "gapSources": []
+  "gapSources": [],
+  "bookCoverage": {
+   "lopez": "sí",
+   "theomed": "sí",
+   "theomedManual": "GESTIÓN §5 Telesalud: §5.1 Teleconsulta ... §5.7 Teleconferencia en Salud"
+  },
+  "soloTheomed": [
+   "Telesalud desglosada por servicio (teleconsulta/teleconferencia) con secciones propias"
+  ],
+  "soloLopez": [
+   "4 ejes de telesalud, actores (teleconsultante/teleconsultor), DIGTEL y RNT definidos para reconocimiento directo"
+  ],
+  "gapAmbos": [],
+  "driveVideos": [
+   {
+    "label": "GALENO MEDIC (Google Drive) · 🎥 Videoclases · GESTIÓN (",
+    "url": "https://drive.google.com/drive/folders/1R1cuKS2PV8yCeicl2VXj8NBIhWtNUP9w"
+   },
+   {
+    "label": "THEOMED (plataforma campus, curso 73 §6) · Videoclases por área · Ges",
+    "url": "https://campus.academiatheomed.com/course/view.php?id=73&section=6"
+   },
+   {
+    "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
+   }
+  ]
  }
 };

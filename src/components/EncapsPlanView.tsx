@@ -20,6 +20,7 @@ import { encapsGoZone, encapsGoColor } from '../lib/encapsRentabilidad';
 import { ENCAPS_COBERTURA, CoberturaTema } from '../lib/encapsCobertura';
 
 const TIER_COLOR: Record<string, string> = { 'CRÍTICA': Colors.coral, 'ALTA': Colors.gold, 'MEDIA': Colors.blue, 'BAJA': Colors.muted };
+const cvColor = (v: string) => (v === 'sí' ? Colors.green : v === 'parcial' ? Colors.gold : v === 'no' ? Colors.coral : Colors.muted);
 
 // Pill clicable que abre un URL (compendio, Theomed, fuente de gap).
 function LinkChip({ label, url, color }: { label: string; url: string; color: string }) {
@@ -56,9 +57,17 @@ function CoberturaCard({ codigo }: { codigo: string }) {
       {/* Recursos clicables del tema: video dedicado (si no hay QX) + compendio + Theomed del área */}
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 8 }}>
         {!!c.videoFallback.url && <LinkChip label={`🎬 ${c.videoFallback.label}`} url={c.videoFallback.url} color={c.qxN === 0 ? Colors.coral : Colors.purple} />}
-        {!!c.compendioUrl && <LinkChip label="📕 Compendio" url={c.compendioUrl} color={Colors.gold} />}
+        {!!c.compendioUrl && <LinkChip label="📕 Compendio López" url={c.compendioUrl} color={Colors.gold} />}
+        {!!c.theomedBookUrl && <LinkChip label="📗 Manual Theomed" url={c.theomedBookUrl} color={Colors.green} />}
         {!!c.theomedUrl && <LinkChip label={`🎥 Theomed área (${c.theomedN})`} url={c.theomedUrl} color={Colors.secondary} />}
       </View>
+      {/* Cobertura por libro base (López vs Theomed) */}
+      {(c.bookCoverage.lopez !== '?' || c.bookCoverage.theomed !== '?') && (
+        <Text style={{ fontSize: 11.5, color: Colors.onSurfaceVariant, marginTop: 6 }}>
+          📚 Libros: <Text style={{ color: cvColor(c.bookCoverage.lopez), fontWeight: '700' }}>López {c.bookCoverage.lopez}</Text>
+          {'  ·  '}<Text style={{ color: cvColor(c.bookCoverage.theomed), fontWeight: '700' }}>Theomed {c.bookCoverage.theomed}</Text>
+        </Text>
+      )}
       {!!c.gaps.length && (
         <View style={{ marginTop: 8 }}>
           <Text style={{ fontSize: 11.5, color: Colors.coral, fontWeight: '700' }}>
@@ -87,8 +96,21 @@ function CoberturaCard({ codigo }: { codigo: string }) {
             </View>
           )}
           <Text style={{ fontSize: 11.5, color: Colors.onSurfaceVariant, lineHeight: 17 }}>{c.guidance}</Text>
+          {/* Rutas de video en el Drive por academia */}
+          {!!c.driveVideos.length && (
+            <View style={{ gap: 4 }}>
+              <Text style={{ fontSize: 10.5, fontWeight: '800', letterSpacing: 0.8, color: Colors.smallLabel }}>VIDEOS EN DRIVE (academias) — toca para abrir</Text>
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6 }}>
+                {c.driveVideos.map((v, i) => <LinkChip key={`dv-${i}`} label={`🎬 ${v.label}`} url={v.url} color={Colors.purple} />)}
+              </View>
+            </View>
+          )}
+          {!!c.bookCoverage.theomedManual && <Text style={{ fontSize: 11, color: Colors.green, lineHeight: 16 }}>📗 En Theomed: {c.bookCoverage.theomedManual}</Text>}
+          {!!c.soloTheomed.length && <Text style={{ fontSize: 11, color: Colors.green, lineHeight: 16 }}>➕ Solo Theomed lo trae: {c.soloTheomed.join(' · ')}</Text>}
+          {!!c.soloLopez.length && <Text style={{ fontSize: 11, color: Colors.gold, lineHeight: 16 }}>➕ Solo López lo trae: {c.soloLopez.join(' · ')}</Text>}
+          {!!c.gapAmbos.length && <Text style={{ fontSize: 11, color: Colors.coral, lineHeight: 16 }}>⛔ Ningún libro lo desarrolla (→ normativa/video): {c.gapAmbos.join(' · ')}</Text>}
           {!!c.freq && <Text style={{ fontSize: 11, color: Colors.smallLabel, lineHeight: 16 }}>📊 {c.freq}</Text>}
-          {!!c.temario.length && <Text style={{ fontSize: 11, color: Colors.smallLabel, lineHeight: 16 }}>📚 Temario compendio ({c.temario.length}): {c.temario.join(' · ')}</Text>}
+          {!!c.temario.length && <Text style={{ fontSize: 11, color: Colors.smallLabel, lineHeight: 16 }}>📚 Temario López ({c.temario.length}): {c.temario.join(' · ')}</Text>}
         </View>
       )}
     </View>

@@ -7,6 +7,10 @@ const fs = require('fs'); const path = require('path');
 const SB = 'C:/Users/JOSEPH~1/AppData/Local/Temp/claude/D--joseph-md-app/2b1d4275-ceb5-4f8d-9ab0-d4dbbd76c52a/scratchpad/cobertura_final.json';
 const rows = JSON.parse(fs.readFileSync(SB, 'utf8'));
 const VIDS = JSON.parse(fs.readFileSync(SB.replace('cobertura_final.json', 'qx_videos_165.json'), 'utf8'));
+// Cotejo de libros (López vs Theomed) + inventario de videos Drive por área (workflow wgt0efphj).
+let COTEJO = { overall: {}, codes: {}, areas: {} };
+try { COTEJO = JSON.parse(fs.readFileSync(SB.replace('cobertura_final.json', 'cotejo_libros_drive.json'), 'utf8')); } catch {}
+const THEOMED_MANUALES = 'https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn'; // Manuales Theomed por área
 
 // Normalizador para matchear títulos de la guía contra los 165 videos reales.
 const norm = s => (s || '').toUpperCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^A-Z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
@@ -70,10 +74,17 @@ for (const r of rows) {
     freq: r.examFreqNote || '', guidance: r.videosGuidance || '',
     gaps: r.gaps || [], temario: r.compendioSubtemas || [],
     compendioUrl: AREA_COMP[area] || '',
+    theomedBookUrl: THEOMED_MANUALES,
     theomedUrl: AREA_THEOMED[area] || '',
     videoFallback: AREA_VIDEO_FALLBACK[area] || { label: '', url: '' }, // video dedicado Drive si no hay QX
     videosExtra: resolveVideos(r.videosGuidance || ''),
     gapSources: gapSourcesFor(r.gaps),
+    // Cotejo de libros: quién cubre + qué trae solo uno + qué no trae ninguno
+    bookCoverage: { lopez: (COTEJO.codes[r.codigo] || {}).lopezCubre || '?', theomed: (COTEJO.codes[r.codigo] || {}).theomedCubre || '?', theomedManual: (COTEJO.codes[r.codigo] || {}).theomedManual || '' },
+    soloTheomed: (COTEJO.codes[r.codigo] || {}).soloTheomed || [],
+    soloLopez: (COTEJO.codes[r.codigo] || {}).soloLopez || [],
+    gapAmbos: (COTEJO.codes[r.codigo] || {}).gapAmbos || [],
+    driveVideos: (COTEJO.areas[area] || []).map(v => ({ label: `${v.academia} · ${(v.label || '').slice(0, 26)}`, url: v.url })).filter(v => v.url),
   };
 }
 const header = `// AUTO-GENERADO por DATA/_scripts/gen_encaps_cobertura.js — NO editar a mano.\n` +
@@ -86,7 +97,9 @@ const body = `export interface FuenteLink { label: string; url: string }\n` +
   `  tier: 'CRÍTICA' | 'ALTA' | 'MEDIA' | 'BAJA'; vueltas: number; min: number;\n` +
   `  qxN: number; theomedN: number; extenso: boolean; freq: string; guidance: string;\n` +
   `  gaps: string[]; temario: string[];\n` +
-  `  compendioUrl: string; theomedUrl: string; videoFallback: FuenteLink; videosExtra: VideoExtra[]; gapSources: FuenteLink[];\n}\n` +
+  `  compendioUrl: string; theomedBookUrl: string; theomedUrl: string; videoFallback: FuenteLink; videosExtra: VideoExtra[]; gapSources: FuenteLink[];\n` +
+  `  bookCoverage: { lopez: string; theomed: string; theomedManual: string };\n` +
+  `  soloTheomed: string[]; soloLopez: string[]; gapAmbos: string[]; driveVideos: FuenteLink[];\n}\n` +
   `export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = ${JSON.stringify(map, null, 1)};\n`;
 fs.writeFileSync(path.join(__dirname, '..', '..', 'src', 'lib', 'encapsCobertura.ts'), header + body, 'utf8');
 
@@ -94,7 +107,10 @@ fs.writeFileSync(path.join(__dirname, '..', '..', 'src', 'lib', 'encapsCobertura
 const tierRank = { 'CRÍTICA': 0, 'ALTA': 1, 'MEDIA': 2, 'BAJA': 3 };
 const sorted = [...rows].sort((a, b) => (tierRank[a.rentabilidadTier] - tierRank[b.rentabilidadTier]) || (b.recommendedMinutes - a.recommendedMinutes));
 let md = `# 🗺️ Mapa de Cobertura ENCAPS 2026-II (barrido por compendio · 03-jul)\n\n`;
-md += `Fuente autoritativa = **compendios DR LOPEZ** (temario completo) cotejado con **Tendencias QX /400** + **forecast walk-forward v2** + videos **QX (165)** y **Theomed (por área)**. Objetivo: 0 temas al descubierto; vueltas/tiempo ∝ rentabilidad. Examen 20-ago FIJO.\n\n`;
+md += `Fuente autoritativa = **compendios DR LOPEZ + manuales THEOMED** (temario completo) cotejado con **Tendencias QX /400** + **forecast walk-forward v2** + videos **QX (165)** y **Theomed/Drive (por área)**. Objetivo: 0 temas al descubierto; vueltas/tiempo ∝ rentabilidad. Examen 20-ago FIJO.\n\n`;
+if (COTEJO.overall && COTEJO.overall.combinedPct) {
+  md += `## 📊 Cobertura de los libros base (vs exámenes + forecast)\n- **DR LOPEZ solo: ${COTEJO.overall.lopezPct}%** · **THEOMED solo: ${COTEJO.overall.theomedPct}%** · **combinados: ${COTEJO.overall.combinedPct}%**.\n- ${COTEJO.overall.note}\n\n`;
+}
 md += `## Tabla maestra (ordenada por prioridad)\n\n| Código | Tema | Tier | Vueltas | Min/día | QX | Theomed | Extenso | Gaps |\n|---|---|---|---|---|---|---|---|---|\n`;
 for (const r of sorted) {
   md += `| **${r.codigo}** | ${r.subtema.slice(0, 34)} | ${r.rentabilidadTier} | ${r.recommendedVueltas} | ${r.recommendedMinutes} | ${r.qxVideos} | ${r.theomedVideos} | ${r.extenso ? '✔' : '·'} | ${(r.gaps || []).length} |\n`;
