@@ -1,6 +1,6 @@
 // AUTO-GENERADO por DATA/_scripts/gen_videos_por_tema.js — NO editar a mano.
 // Videos QX por código de tema (para renderizar varios temas/día · refactor multi-tema).
-// 17 temas · 148 videos.
+// 17 temas · 106 videos.
 export interface VideoPorTema { titulo: string; url: string | null; code: string; slides: string | null; dur: number | null }
 export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
  "I-1": [
@@ -52,20 +52,6 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "code": "II-10",
    "slides": null,
    "dur": null
-  },
-  {
-   "titulo": "PREVENCIóN Y CONTROL DEL CáNCER DE MAMA",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/cG8xMkNhUTJXY20zYnVGQWUzc2krdz09",
-   "code": "II-10",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "PREVENCIóN Y CONTROL DEL CáNCER DE PRóSTATA",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/TG05WVM5bkEvbWRHeThhQ1BRVlVjUT09",
-   "code": "II-10",
-   "slides": null,
-   "dur": null
   }
  ],
  "I-2": [
@@ -105,6 +91,13 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "dur": null
   },
   {
+   "titulo": "CUIDADO INTEGRAL DE SALUD",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/SE54ckQyaUQrZTQ4RVROUkpjL3djQT09",
+   "code": "II-2",
+   "slides": null,
+   "dur": null
+  },
+  {
    "titulo": "ETAPAS Y NIVELES DE PREVENCIóN",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/amNoQnNZU3BhUGFUM2xsNUNBblhrUT09",
    "code": "I-10",
@@ -124,6 +117,20 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "code": "I-10",
    "slides": null,
    "dur": null
+  },
+  {
+   "titulo": "ATENCIóN PRIMARIA DE SALUD (APS)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/MDZKTlFqYUt0VzZkL0xrc0U5SitvZz09",
+   "code": "I-10",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "INVESTIGACIÓN",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/ZmV0WVpNSXFSS3NYUVZsQVlyVk40UT09",
+   "code": "III-3",
+   "slides": null,
+   "dur": null
   }
  ],
  "I-3": [
@@ -137,6 +144,41 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
   {
    "titulo": "VIGILANCIA EPIDEMIOLóGICA",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/Q01qNGJacGxmbTZLLzVTYjNNQ09pdz09",
+   "code": "I-3",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "ENDEMIAS, EPIDEMIAS Y BROTES",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/N1FYaExLT3YxT2tOWVFJR3NsM0FnUT09",
+   "code": "I-3",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "CONCEPTOS BáSICOS DE EPIDEMIOLOGíA",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/UDBhUmRHZFQ2RkZJRmRiQVAxUHFuZz09",
+   "code": "I-3",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "CAUSALIDAD Y RIESGO",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/aTVXSElNc3pCK1Q2TVRoTGdpTkpIdz09",
+   "code": "I-3",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "MEDICIONES EN EPIDEMIOLOGíA",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/alFYRWNhNHhDVE50aWhqa2ZQTysvUT09",
+   "code": "I-3",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "SALUD PÚBLICA",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/QVNhVkVkZXlvM2NmL3EybDRyQjlQdz09",
    "code": "I-3",
    "slides": null,
    "dur": null
@@ -158,6 +200,13 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "dur": null
   },
   {
+   "titulo": "PREVENCIÓN Y CONTROL DE DENGUE",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/bzBSbTBXYXJzRHFSMFNvK0t0Kyt4Zz09",
+   "code": "I-4",
+   "slides": null,
+   "dur": null
+  },
+  {
    "titulo": "CUIDADOS DE LA SALUD MENTAL",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/UmN3RDFMeDVObjFUdGN6TmJvTVBGZz09",
    "code": "II-9",
@@ -169,34 +218,6 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
   {
    "titulo": "DEMOGRAFíA",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/NlZHbHF2blpaL3J2V1FVbmc1d1JrZz09",
-   "code": "I-5+I-6",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "HISTORIA NATURAL DEL PROCESO SALUD ENFERMEDAD",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/NVZmd3BLR25VSkVFYkYxTGUzeWtxZz09",
-   "code": "I-5+I-6",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "ANáLISIS SITUACIONAL DE SALUD - SALA SITUACIONAL DE SALUD",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/ZFJobndHMnBZVm04YjVuL252NnI4dz09",
-   "code": "I-5+I-6",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "CONCEPTOS BáSICOS DE EPIDEMIOLOGíA",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/UDBhUmRHZFQ2RkZJRmRiQVAxUHFuZz09",
-   "code": "I-5+I-6",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "CAUSALIDAD Y RIESGO",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/aTVXSElNc3pCK1Q2TVRoTGdpTkpIdz09",
    "code": "I-5+I-6",
    "slides": null,
    "dur": null
@@ -218,13 +239,6 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
   {
    "titulo": "BIOESTADíSTICA BáSICA",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/Nkl4dERCQVduM0RQSmdVQi91VitvQT09",
-   "code": "I-5+I-6",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "MEDICIONES EN EPIDEMIOLOGíA",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/alFYRWNhNHhDVE50aWhqa2ZQTysvUT09",
    "code": "I-5+I-6",
    "slides": null,
    "dur": null
@@ -267,13 +281,6 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "dur": null
   },
   {
-   "titulo": "EXPULSIVO",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/RTBBRkh5OTRwMG9tQ2o1bWFZS0Jydz09",
-   "code": "II-1",
-   "slides": null,
-   "dur": null
-  },
-  {
    "titulo": "ALUMBRAMIENTO",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/cGQ5YkJFRW8wdmpoeGxROXlISVhRUT09",
    "code": "II-1",
@@ -295,22 +302,8 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "dur": null
   },
   {
-   "titulo": "PAQUETE BáSICO DE CUIDADO DEL BINOMIO MADRE NIñO",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/UXRoYTVNY2FCVUZ6MndxSzlQdjhEQT09",
-   "code": "II-1",
-   "slides": null,
-   "dur": null
-  },
-  {
    "titulo": "MANEJO INICIAL DE EMERGENCIAS NEONATALES",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/VFJNZnhpeTdmVUx5eWdQbFY3VE1mZz09",
-   "code": "II-1",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "EMBARAZO",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/RHRubXJrV082TGlMTkYvTWFwTFEzUT09",
    "code": "II-1",
    "slides": null,
    "dur": null
@@ -332,20 +325,6 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
   {
    "titulo": "SUPLEMENTACIóN CON VITAMINA A",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/TmFsWnNaT1p4QkJ2WGJzQ1Naa242UT09",
-   "code": "II-4",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "PREVENCIóN Y CONTROL DE DESNUTRICIóN EN PEDIATRíA",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/endIWFJCZHNObE8vZ1hBWk84RDlYdz09",
-   "code": "II-4",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "PREVENCIóN Y CONTROL DE PROBLEMAS DE MALNUTRICIóN",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/ZjIwSTVUWmNCSk1kQTk0c2Vza3Vidz09",
    "code": "II-4",
    "slides": null,
    "dur": null
@@ -381,64 +360,8 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "dur": null
   },
   {
-   "titulo": "PREVENCIÓN DE LA TRANSMISIÓN MATERNO INFANTIL DE HEPATITIS B",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/VGZ1U1hqUTBaczJIUVJBSDN6TW12Zz09",
-   "code": "II-11",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "PREVENCIÓN DE LA TRANSMISIÓN MATERNO INFANTIL DE SÍFILIS",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/M0lLT1h2blBGYVZHcDYyTWNPditVZz09",
-   "code": "II-11",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "VIGILANCIA Y MANEJO DE ZOONOSIS",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/dFlmTEZBM0tTcm5WQTNOZkVnZ1hCQT09",
-   "code": "II-5",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "PREVENCIóN Y CONTROL DE ENFERMEDADES RARAS Y HUéRFANAS",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/Qi82dFNoa21aL0pDYWtjOWNWaHBFQT09",
-   "code": "II-5",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "PAQUETE BáSICO DE CUIDADO PARA EL ADOLESCENTE",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/K1g3cU8zNFlPMnh5Tks1TzNhYndodz09",
-   "code": "II-5",
-   "slides": null,
-   "dur": null
-  },
-  {
    "titulo": "INTOXICACIONES",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/Ty9xejUvQnlvcWU2a0ZhZnZGK2JHdz09",
-   "code": "II-5",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "PREVENCIóN DE ENFERMEDADES TRANSMISIBLES",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/dDlKNHFRWjByZXFaYnBXS293NUoyUT09",
-   "code": "II-5",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "PREVENCIÓN Y CONTROL DE DENGUE",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/bzBSbTBXYXJzRHFSMFNvK0t0Kyt4Zz09",
-   "code": "II-5",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "MCI - POLíTICA NACIONAL MULTISECTORIAL DE SALUD AL 2030",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/N05xTG1xL1A0K3hsajZld25DVitlZz09",
    "code": "II-5",
    "slides": null,
    "dur": null
@@ -458,27 +381,6 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "dur": null
   },
   {
-   "titulo": "EXPOSICIóN A METALES PESADOS Y OTRAS SUSTANCIAS",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/TTV5ZTUrTVc5aGkvd29aNU5HdDlyQT09",
-   "code": "II-5",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "ATENCIóN MéDICA EN SITUACIONES DE EMERGENCIA, URGENCIA Y REFERENCIA",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/RHRZLzBWQ29QU2xvb245Q0dubmtkQT09",
-   "code": "II-5",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "EXáMENES AUXILIARES Y DE APOYO AL DIAGNóSTICO Y TRATAMIENTO DE PROBLEMAS DE SALUD",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/eWpoTzNNTXVFRDYrdlR3N3lrb1lkQT09",
-   "code": "II-5",
-   "slides": null,
-   "dur": null
-  },
-  {
    "titulo": "ATENCIóN PRIMARIA DE SALUD (APS)",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/MDZKTlFqYUt0VzZkL0xrc0U5SitvZz09",
    "code": "II-5",
@@ -491,54 +393,12 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "code": "II-5",
    "slides": null,
    "dur": null
-  },
-  {
-   "titulo": "ASPECTOS LEGALES Y FORENSES EN MEDICINA",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/MVQ3Q3B2WEhweFdKNTE1VmN6K3ZuQT09",
-   "code": "II-5",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "INFECCIONES ASOCIADAS A LA ATENCIóN DE SALUD",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/eWZrZWU5am5IdXFON1JmQlJmeTZMQT09",
-   "code": "II-5",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "ATENCIóN INTEGRAL DE SALUD A LA PERSONA POR CURSO DE VIDA",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/WWYwL3NSV0VsZGw0K2ZCb0VMMjJYdz09",
-   "code": "II-5",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "VIGILANCIA ENTOMOLóGICA DE DENGUE",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/d2Z5b2ZjMktNUnVDRTAxdGFmamVsQT09",
-   "code": "II-5",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "CUIDADO INTEGRAL DE SALUD",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/SE54ckQyaUQrZTQ4RVROUkpjL3djQT09",
-   "code": "II-5",
-   "slides": null,
-   "dur": null
   }
  ],
  "II-3": [
   {
-   "titulo": "ESQUEMA NACIONAL DE VACUNACIóN EN PERú",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/TW14OFpydEY5RitybDNCUXpTOG9OUT09",
-   "code": "II-3",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "ATENCIóN DE LA PERSONA CON EL ESQUEMA REGULAR DE VACUNACIóN",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/UUgzalZEQ0JtemtJOVRIVmdoOE9WQT09",
+   "titulo": "ESQUEMA NACIONAL DE VACUNACIóN EN EL PERú",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/TExXRzZHc0tWSytWaURnQWR5RmdjUT09",
    "code": "II-3",
    "slides": null,
    "dur": null
@@ -590,57 +450,8 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "dur": null
   },
   {
-   "titulo": "ASEGURAMIENTO UNIVERSAL EN SALUD (AUS)",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/S0NrYnNsZmUwa0VTMk5DTkpSNUExQT09",
-   "code": "V-7+V-10",
-   "slides": null,
-   "dur": null
-  },
-  {
    "titulo": "GESTIóN DE RRHH",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/dzRQYTRyTUEvUmVCL0k2YzdOK0lJZz09",
-   "code": "V-7+V-10",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "GESTIóN LOGíSTICA, CONTROL DE INVENTARIO Y STOCK DE MEDICAMENTOS",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/MGptMUkvVWR3TkJHVzRZZzhqSStlZz09",
-   "code": "V-7+V-10",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "COORDINACIóN INTERSECTORIAL Y ALIANZAS ESTRATéGICAS",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/aWR1eXhXbGVuaGhjMS9FUytiNzRkQT09",
-   "code": "V-7+V-10",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "TRABAJO COLABORATIVO Y EFICAZ EN LOS SERVICIOS DE SALUD",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/dGZpeXNyMW5XUG1TakxUWWxKVnJ4QT09",
-   "code": "V-7+V-10",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "PLAN DE CALIDAD Y ACREDITACIóN DE SERVICIOS DE SALUD",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/NkV4QXZ3MktiUEE2Vnk5dk1abSsvUT09",
-   "code": "V-7+V-10",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "CLIMA ORGANIZACIONAL Y CULTURA ORGANIZACIONAL",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/Um1VbnNhQmRoZGhjRFVMSjBOeUZqdz09",
-   "code": "V-7+V-10",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "CALIDAD",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/VE1zdjVveFNYdHVBQVZqMGlPYzVyUT09",
    "code": "V-7+V-10",
    "slides": null,
    "dur": null
@@ -653,8 +464,22 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "dur": null
   },
   {
-   "titulo": "INSTRUMENTOS DE RECOLECCIóN DE DATOS Y VALIDACIóN",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/aUgrNzNRMU9DcUR6T1RUT1h3aVNpQT09",
+   "titulo": "CAUSALIDAD Y RIESGO",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/aTVXSElNc3pCK1Q2TVRoTGdpTkpIdz09",
+   "code": "IV-4",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "SALUD PÚBLICA",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/QVNhVkVkZXlvM2NmL3EybDRyQjlQdz09",
+   "code": "IV-4",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "PRUEBAS DIAGNóSTICAS",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/bTlHWnRJN283NUUrTkFQZWxhbUc0QT09",
    "code": "IV-3+IV-5",
    "slides": null,
    "dur": null
@@ -727,13 +552,6 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "dur": null
   },
   {
-   "titulo": "CARACTERíSTICAS ESTRUCTURALES DEL INFORME",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/VUwwZ21YZHZwOVpqdTJqc3NZSURBdz09",
-   "code": "IV-6+IV-7",
-   "slides": null,
-   "dur": null
-  },
-  {
    "titulo": "REQUISITOS METODOLóGICOS DEL INFORME",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/bDJOYjBDbDRnT2czTC9HdXBLL1J0dz09",
    "code": "IV-6+IV-7",
@@ -755,16 +573,16 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "dur": null
   },
   {
-   "titulo": "PRINCIPALES INSTRUMENTOS DE MEDICIóN EN PRIMER NIVEL DE ATENCIóN",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/R1dyTDU1UUVXT00xeUxoUk5hSEFXZz09",
+   "titulo": "PROCESAMIENTO Y ANáLISIS DE DATOS",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/ZkJQeXVoYVFKRnRpSDdwME9MMmVFdz09",
    "code": "IV-6+IV-7",
    "slides": null,
    "dur": null
   },
   {
-   "titulo": "PROCESAMIENTO Y ANáLISIS DE DATOS",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/ZkJQeXVoYVFKRnRpSDdwME9MMmVFdz09",
-   "code": "IV-6+IV-7",
+   "titulo": "SECTORIZACIóN Y FICHA FAMILIAR",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/dkYwYTR1ZGptOGZCVEp1NUxQWE03dz09",
+   "code": "I-9",
    "slides": null,
    "dur": null
   }
@@ -774,34 +592,6 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "titulo": "DERECHOS DEBERES DE LAS PERSONAS USUARIAS DE LOS SERVICIOS DE SALUD",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/YmtBcmFvdzlpeUpkVjNhUkh2aGovQT09",
    "code": "III-9",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "USO RACIONAL DE MEDICAMENTOS",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/T25MSjhwNFpDUkNnSkJWSnVQWG04dz09",
-   "code": "I-11+I-12",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "SISTEMAS DE INFORMACIóN Y TIC EN SALUD",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/WUd0Z2hjQVhuMVR4SUg0a01NOXhrUT09",
-   "code": "I-11+I-12",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "ALIMENTACIóN Y NUTRICIóN",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/bHl6Z05tdGFvOWNoU3RLY09Ud0xLQT09",
-   "code": "I-11+I-12",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "CONTROL DE VECTORES Y PLAGAS",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/d0V5UE9iNkRFTzJCd2hpemprbFlEQT09",
-   "code": "I-11+I-12",
    "slides": null,
    "dur": null
   },
@@ -820,22 +610,8 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "dur": null
   },
   {
-   "titulo": "INOCUIDAD ALIMENTARIA",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/b1dEQUJmcGhuQ0wxSmhlU051c1NiZz09",
-   "code": "I-11+I-12",
-   "slides": null,
-   "dur": null
-  },
-  {
    "titulo": "PARTICIPACIóN SOCIAL Y COMUNITARIA",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/RGJ1OXpSUDM5MVB6bG92NlJxejJEUT09",
-   "code": "I-11+I-12",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "INFORMACIóN, EDUCACIóN Y COMUNICACIóN PARA LA SALUD",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/OWQzb24vemJZWW9jQkZGZ2xKSGhidz09",
    "code": "I-11+I-12",
    "slides": null,
    "dur": null
@@ -862,34 +638,6 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "dur": null
   },
   {
-   "titulo": "INTERVENCIONES COMUNITARIAS EN SALUD",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/aUNlTlNMQjIwUDBPSno2dERqa3F5UT09",
-   "code": "I-11+I-12",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "PLAN DE SALUD LOCAL",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/VTRQSVBqRHRLbGpWSjRBeVNBVkU3QT09",
-   "code": "I-11+I-12",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "MODELO DE SALUD MENTAL COMUNITARIA",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/V0RSL2dYS1M3cng5SncvOUphYjBFdz09",
-   "code": "I-11+I-12",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "TRABAJO INTERSECTORIAL EN SALUD",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/NC95Y3RVNk1JcnlEVzkvWDB3V1FtZz09",
-   "code": "I-11+I-12",
-   "slides": null,
-   "dur": null
-  },
-  {
    "titulo": "TELESALUD",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/eFhyc2p4SWVRaFIxUUtxUHQ3YmtmZz09",
    "code": "V-6",
@@ -898,20 +646,6 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
   }
  ],
  "IV-1+IV-2": [
-  {
-   "titulo": "CONCEPTOS BáSICOS DE INVESTIGACIóN",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/YlpqaXRxTGh5N0Y4czhDa1dlUElodz09",
-   "code": "IV-1+IV-2",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "ENFOQUES Y MéTODOS DE INVESTIGACIóN",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/eVNuMTRxM3lISDFuMEhldDNFUFdJZz09",
-   "code": "IV-1+IV-2",
-   "slides": null,
-   "dur": null
-  },
   {
    "titulo": "TIPOS DE INVESTIGACIóN Y ESTUDIOS DESCRIPTIVOS",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/cmgwVEgzZis2dy9ZeVJXaW1LRWlwdz09",
@@ -934,15 +668,8 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "dur": null
   },
   {
-   "titulo": "ELABORACIóN DEL PROYECTO DE INVESTIGACIóN",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/VU9wZTN0R1BKekhQNUNOdFI4bktQZz09",
-   "code": "IV-1+IV-2",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "VARIABLES",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/SGdDK0JncGtycmExNjJGS1BSV3V5UT09",
+   "titulo": "TIPOS DE INVESTIGACIóN",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/SmxDb2Y1QXdmRUozN2h4YzR1MTlQQT09",
    "code": "IV-1+IV-2",
    "slides": null,
    "dur": null
@@ -985,13 +712,6 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "dur": null
   },
   {
-   "titulo": "UPSS Y CARTERA DE SERVICIOS DE SALUD",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/VTIrZXZFU3I2ajVLODVGUHpEUTdiQT09",
-   "code": "V-1",
-   "slides": null,
-   "dur": null
-  },
-  {
    "titulo": "REQUISITOS PARA OPERACIóN Y FUNCIONAMIENTO DE EESS",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/OUtTUFJaZHhncjFreTQ5MXFOdjBQQT09",
    "code": "V-1",
@@ -1008,29 +728,8 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "dur": null
   },
   {
-   "titulo": "PLANEAMIENTO A NIVEL INSTITUCIONAL - POI, EVALUACIóN DEL POI",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/M09IR3ZDWHM3ZW83ckdtRmFTUFFsdz09",
-   "code": "V-2",
-   "slides": null,
-   "dur": null
-  },
-  {
    "titulo": "ANáLISIS ESTRATéGICO INSTITUCIONAL (FODA)",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/ajljaDVha2prZjdrUDJnNzh6ZDBnUT09",
-   "code": "V-2",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "DOCUMENTOS TéCNICOS NORMATIVOS DE GESTIóN INSTITUCIONAL",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/b2d6T2FmaldJOXJzN29ySklQOUVsZz09",
-   "code": "V-2",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "DOCUMENTOS TéCNICOS DE GESTIóN - ROF, MOP",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/UWpVZ2FQdlE5TExJRHFmaVpuUnJyUT09",
    "code": "V-2",
    "slides": null,
    "dur": null
@@ -1062,6 +761,13 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "titulo": "SISTEMA DE REFERENCIA Y CONTRARREFERENCIA",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/UnVwdWl2QmIwYVFSWHpiTEQrZXd6Zz09",
    "code": "V-3",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "PAQUETE BáSICO DEL CUIDADO INTEGRAL DEL ADULTO",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/S2VxZFlXUm0vV1pmS2wvMmxSTkRSQT09",
+   "code": "II-7",
    "slides": null,
    "dur": null
   },
