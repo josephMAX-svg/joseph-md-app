@@ -14,7 +14,7 @@ import {
 import EncapsWebView from './EncapsWebView';
 import { encapsObsByTitle, encapsMatch } from '../lib/obsidianEncaps';
 import { ANKIWEB } from '../lib/ankiLinks';
-import { ENCAPS_FICHAS_MINSA, ENCAPS_ACADEMIAS_RESPALDO, ENCAPS_THEOMED_SIMULACROS, ENCAPS_QX_ACCESOS, ENCAPS_FUENTES_META, ENCAPS_THEOMED_AREA, ENCAPS_THEOMED_EXTRA, ENCAPS_THEOMED_VIDEOS } from '../lib/encapsFuentes';
+import { ENCAPS_FICHAS_MINSA, ENCAPS_FICHAS_POR_TEMA, ENCAPS_ACADEMIAS_RESPALDO, ENCAPS_THEOMED_SIMULACROS, ENCAPS_QX_ACCESOS, ENCAPS_FUENTES_META, ENCAPS_THEOMED_AREA, ENCAPS_THEOMED_EXTRA, ENCAPS_THEOMED_VIDEOS } from '../lib/encapsFuentes';
 import { CountdownCockpit, RentabilidadStrip, RetrievalRadarLegend, GoNoGoAltimeter } from './EncapsCockpit';
 import { encapsGoZone, encapsGoColor } from '../lib/encapsRentabilidad';
 import { ENCAPS_COBERTURA, CoberturaTema } from '../lib/encapsCobertura';
@@ -39,6 +39,10 @@ function CoberturaCard({ codigo }: { codigo: string }) {
   const c: CoberturaTema | undefined = ENCAPS_COBERTURA[codigo];
   if (!c) return null;
   const tc = TIER_COLOR[c.tier] || Colors.muted;
+  // Total REAL de videos QX a mirar (los extras del mismo clúster cuentan) + normativas MINSA del tema.
+  const vTotalQx = Math.max(c.qxN, c.videosExtra.length);
+  const normN = (ENCAPS_FICHAS_POR_TEMA[codigo] || []).length;
+  const bibliotecaUrl = ENCAPS_QX_ACCESOS[0]?.url || 'https://qxmedic-aulavirtual.com/mis-clases/biblioteca';
   return (
     <View style={{ backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.soft, borderLeftWidth: 3, borderLeftColor: tc, padding: Spacing.md, marginBottom: Spacing.section, ...Elevation.sm }}>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: 6 }}>
@@ -49,10 +53,11 @@ function CoberturaCard({ codigo }: { codigo: string }) {
         {c.extenso && <Pill text="EXTENSO" color={Colors.purple} />}
       </View>
       <Text style={{ fontSize: 12.5, color: Colors.onSurface, marginTop: 8, fontWeight: '700' }}>
-        🎬 Mirar: {c.qxN > 0
-          ? <Text style={{ color: Colors.blue }}>{c.qxN} video{c.qxN !== 1 ? 's' : ''} QX</Text>
-          : <Text style={{ color: Colors.coral }}>sin video en QX → usa Videoclases Drive / Theomed ↓</Text>}
-        {c.theomedN > 0 && <Text style={{ color: Colors.onSurfaceVariant }}>  +  {'≈'}{Math.min(c.theomedN, c.tier === 'CRÍTICA' ? 6 : c.tier === 'ALTA' ? 4 : 2)} Theomed (de {c.theomedN} del área)</Text>}
+        🎬 Mirar: {vTotalQx > 0
+          ? <Text style={{ color: Colors.blue }}>{vTotalQx} video{vTotalQx !== 1 ? 's' : ''} QX</Text>
+          : <Text style={{ color: Colors.coral }}>0 en QX → Videoclases Drive / Theomed ↓</Text>}
+        {c.theomedN > 0 && <Text style={{ color: Colors.onSurfaceVariant }}>  +  {'≈'}{Math.min(c.theomedN, c.tier === 'CRÍTICA' ? 6 : c.tier === 'ALTA' ? 4 : 2)} Theomed</Text>}
+        {normN > 0 && <Text style={{ color: Colors.brass }}>  ·  📋 {normN} normativa{normN !== 1 ? 's' : ''} MINSA</Text>}
       </Text>
       {/* Recursos clicables del tema: video dedicado (si no hay QX) + compendio + Theomed del área */}
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 8 }}>
@@ -60,6 +65,7 @@ function CoberturaCard({ codigo }: { codigo: string }) {
         {!!c.compendioUrl && <LinkChip label="📕 Compendio López" url={c.compendioUrl} color={Colors.gold} />}
         {!!c.theomedBookUrl && <LinkChip label="📗 Manual Theomed" url={c.theomedBookUrl} color={Colors.green} />}
         {!!c.theomedUrl && <LinkChip label={`🎥 Theomed área (${c.theomedN})`} url={c.theomedUrl} color={Colors.secondary} />}
+        {normN > 0 && <LinkChip label={`📋 ${normN} normativas MINSA`} url={bibliotecaUrl} color={Colors.brass} />}
       </View>
       {/* Cobertura por libro base (López vs Theomed) */}
       {(c.bookCoverage.lopez !== '?' || c.bookCoverage.theomed !== '?') && (

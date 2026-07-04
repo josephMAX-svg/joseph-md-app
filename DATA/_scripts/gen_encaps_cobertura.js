@@ -120,8 +120,17 @@ for (const r of sorted) {
   md += `\n### ${r.codigo} · ${r.subtema} — **${r.rentabilidadTier}** (${r.recommendedVueltas} vueltas · ${r.recommendedMinutes} min)\n`;
   md += `- **Frecuencia/rentabilidad:** ${r.examFreqNote || '—'}\n`;
   md += `- **Videos a mirar:** ${r.videosGuidance || '—'}\n`;
+  const cc = (COTEJO.codes && COTEJO.codes[r.codigo]) || {};
+  const dv = (COTEJO.areas && COTEJO.areas[(r.codigo.match(/^[IVX]+/) || [''])[0]]) || [];
+  md += `- **📕 DÓNDE LEER — López:** ${map[r.codigo].compendioUrl}  ·  cobertura ${cc.lopezCubre || '?'}\n`;
+  md += `- **📗 DÓNDE LEER — Theomed:** ${cc.theomedManual || '(manual del área)'}  ·  cobertura ${cc.theomedCubre || '?'}  ·  ${THEOMED_MANUALES}\n`;
+  md += `- **🎬 DÓNDE VER VIDEOS (orden QX→Theomed→Drive):** QX(${map[r.codigo].videosExtra.length}) · Theomed área ${map[r.codigo].theomedUrl} · ${dv.map(v => `${v.academia} ${v.url}`).join(' · ')}\n`;
+  if ((cc.soloTheomed || []).length) md += `- **➕ Solo Theomed:** ${cc.soloTheomed.join(' · ')}\n`;
+  if ((cc.soloLopez || []).length) md += `- **➕ Solo López:** ${cc.soloLopez.join(' · ')}\n`;
+  if ((cc.gapAmbos || []).length) md += `- **⛔ Ningún libro (→normativa/video):** ${cc.gapAmbos.join(' · ')}\n`;
   if ((r.gaps || []).length) md += `- **⚠ Gaps (leer fuera de QX):** ${r.gaps.join(' · ')}\n`;
-  md += `- **Temario del compendio (${(r.compendioSubtemas || []).length}):** ${(r.compendioSubtemas || []).join(' · ')}\n`;
+  if ((map[r.codigo].gapSources || []).length) md += `- **📖 Fuentes normativa:** ${map[r.codigo].gapSources.map(s => `${s.label} ${s.url}`).join(' · ')}\n`;
+  md += `- **📚 Temario López (${(r.compendioSubtemas || []).length}):** ${(r.compendioSubtemas || []).join(' · ')}\n`;
 }
 fs.writeFileSync(path.join(__dirname, '..', '..', 'DATA', 'ENCAPS', 'MAPA_COBERTURA_2026-2.md'), md, 'utf8');
 
