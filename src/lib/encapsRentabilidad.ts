@@ -24,23 +24,23 @@ export interface AreaForecast {
 // Acento por área para escaneo tipo terminal (cada área = su joya apagada).
 export const ENCAPS_AREA_FORECAST: AreaForecast[] = [
   { code: 'II', label: 'Cuidado Integral', short: 'CI',   pct: 34, bandLo: 30, bandHi: 38, accent: Colors.blue,   note: 'ÁREA REY · ~90% viñeta clínica' },
-  { code: 'I',  label: 'Ética / Salud Pública', short: 'SP', pct: 27, bandLo: 24, bandHi: 30, accent: Colors.purple, note: 'estructural · I-3 crítico' },
+  { code: 'I',  label: 'Salud Pública', short: 'SP', pct: 27, bandLo: 24, bandHi: 30, accent: Colors.purple, note: 'estructural · I-3 crítico' },
   { code: 'V',  label: 'Gestión', short: 'GES', pct: 23, bandLo: 18, bandHi: 27, accent: Colors.gold,   note: 'V-2 volátil (banda 8-18)' },
   { code: 'III', label: 'Ética / Interculturalidad', short: 'ÉTI', pct: 13, bandLo: 11, bandHi: 15, accent: '#7C83D6', note: 'III-5 crítico · III-9 miss histórico' },
-  { code: 'IV', label: 'Investigación', short: 'INV', pct: 3,  bandLo: 3,  bandHi: 5,  accent: Colors.brass,  note: 'CONTINGENCIA MÍNIMA · no sobre-invertir' },
+  { code: 'IV', label: 'Investigación', short: 'INV', pct: 3,  bandLo: 2,  bandHi: 5,  accent: Colors.brass,  note: 'CONTINGENCIA MÍNIMA · no sobre-invertir (banda 2-5)' },
 ];
 
 // Temas CRÍTICOS (fuera de rango si no se dominan). Estado de dominio derivable en runtime;
 // aquí solo el ranking data-driven + su área. Los "tickers" del strip Bloomberg.
 export interface CriticalTopic { code: string; label: string; area: string; accent: string }
 export const ENCAPS_CRITICAL_TOPICS: CriticalTopic[] = [
-  { code: 'I-3',   label: 'Determinantes / promoción', area: 'I',  accent: Colors.purple },
-  { code: 'II-1',  label: 'Atención integral por etapas', area: 'II', accent: Colors.blue },
-  { code: 'II-3',  label: 'Inmunizaciones / cadena de frío', area: 'II', accent: Colors.blue },
-  { code: 'V-2',   label: 'Planeamiento (POI/PEI/CEPLAN)', area: 'V', accent: Colors.gold },
-  { code: 'II-11', label: 'ITS · VIH-sífilis dual', area: 'II', accent: Colors.blue },
-  { code: 'III-5', label: 'Interculturalidad en salud', area: 'III', accent: '#7C83D6' },
-  { code: 'II-8',  label: 'Salud del adulto mayor', area: 'II', accent: Colors.blue },
+  { code: 'I-3',   label: 'Vigilancia epidemiológica / brotes (Dir. 046)', area: 'I',  accent: Colors.purple },
+  { code: 'II-1',  label: 'Salud materna: prenatal / parto / emergencias', area: 'II', accent: Colors.blue },
+  { code: 'II-3',  label: 'Vacunación / ESAVI · cadena de frío', area: 'II', accent: Colors.blue },
+  { code: 'V-2',   label: 'Planeamiento (PEI/POI/FODA · CEPLAN)', area: 'V', accent: Colors.gold },
+  { code: 'II-11', label: 'ITS · VIH-sífilis dual (PRD/PTMI)', area: 'II', accent: Colors.blue },
+  { code: 'III-5', label: 'Interculturalidad / pertinencia cultural', area: 'III', accent: '#7C83D6' },
+  { code: 'II-8',  label: 'HEARTS: HTA/DM · ECNT', area: 'II', accent: Colors.blue },
 ];
 
 // Vueltas por prioridad (el motor ya lo aplica; aquí para el radar de repasos).
@@ -71,7 +71,7 @@ export function encapsGoColor(zone: 'go' | 'warn' | 'nogo' | 'none'): string {
 }
 
 export const ENCAPS_TELEMETRY_META = {
-  disclaimer: 'estimación walk-forward · banda ±2-4pp · el MINSA no publica pesos por área',
+  disclaimer: 'estimación walk-forward · banda ±2-4pp nominal (MAE backtest real ~6pp en el último fold) · el MINSA no publica pesos por área',
   formato: '~90% viñeta clínica',
   confianza: 'MEDIA',
   fuente: 'PRONOSTICO_WALKFORWARD_2026-2_v2 · QX Tendencias',
