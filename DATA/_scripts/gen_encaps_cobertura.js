@@ -38,6 +38,14 @@ const AREA_THEOMED = {
   IV: 'https://campus.academiatheomed.com/course/view.php?id=73&section=5',
   V: 'https://campus.academiatheomed.com/course/view.php?id=73&section=6',
 };
+// VIDEO DEDICADO de respaldo en Drive por área (para temas SIN video QX → López/GALENO Videoclases).
+const AREA_VIDEO_FALLBACK = {
+  I: { label: 'Videoclases DR LOPEZ · SP', url: 'https://drive.google.com/drive/folders/1tlyniouI5o_SOpw-LBa2IGfWgG5zpfF0' },
+  II: { label: 'Videoclases DR LOPEZ · CI', url: 'https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE' },
+  III: { label: 'Videoclases DR LOPEZ · Ética', url: 'https://drive.google.com/drive/folders/1srnoHI0LavKzi1Vzy8c9Mt5f5WLRqsWu' },
+  IV: { label: 'Videoclases GALENO', url: 'https://drive.google.com/drive/folders/1RCpVqy_1yF0OBU-OUegTOzHjaZS6FAX8' },
+  V: { label: 'Videoclases GALENO · Gestión', url: 'https://drive.google.com/drive/folders/1R1cuKS2PV8yCeicl2VXj8NBIhWtNUP9w' },
+};
 // Fuentes externas para tapar gaps (Drive), atadas por palabra clave del gap.
 const SRC = {
   mopece: { label: 'OPS MOPECE 5 · brotes', url: 'https://drive.google.com/file/d/1i-4ETiOgjjtsPxee1aDqx9oVnm0UALtR/view' },
@@ -63,6 +71,7 @@ for (const r of rows) {
     gaps: r.gaps || [], temario: r.compendioSubtemas || [],
     compendioUrl: AREA_COMP[area] || '',
     theomedUrl: AREA_THEOMED[area] || '',
+    videoFallback: AREA_VIDEO_FALLBACK[area] || { label: '', url: '' }, // video dedicado Drive si no hay QX
     videosExtra: resolveVideos(r.videosGuidance || ''),
     gapSources: gapSourcesFor(r.gaps),
   };
@@ -77,7 +86,7 @@ const body = `export interface FuenteLink { label: string; url: string }\n` +
   `  tier: 'CRÍTICA' | 'ALTA' | 'MEDIA' | 'BAJA'; vueltas: number; min: number;\n` +
   `  qxN: number; theomedN: number; extenso: boolean; freq: string; guidance: string;\n` +
   `  gaps: string[]; temario: string[];\n` +
-  `  compendioUrl: string; theomedUrl: string; videosExtra: VideoExtra[]; gapSources: FuenteLink[];\n}\n` +
+  `  compendioUrl: string; theomedUrl: string; videoFallback: FuenteLink; videosExtra: VideoExtra[]; gapSources: FuenteLink[];\n}\n` +
   `export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = ${JSON.stringify(map, null, 1)};\n`;
 fs.writeFileSync(path.join(__dirname, '..', '..', 'src', 'lib', 'encapsCobertura.ts'), header + body, 'utf8');
 

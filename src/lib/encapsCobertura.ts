@@ -8,7 +8,7 @@ export interface CoberturaTema {
   tier: 'CRÍTICA' | 'ALTA' | 'MEDIA' | 'BAJA'; vueltas: number; min: number;
   qxN: number; theomedN: number; extenso: boolean; freq: string; guidance: string;
   gaps: string[]; temario: string[];
-  compendioUrl: string; theomedUrl: string; videosExtra: VideoExtra[]; gapSources: FuenteLink[];
+  compendioUrl: string; theomedUrl: string; videoFallback: FuenteLink; videosExtra: VideoExtra[]; gapSources: FuenteLink[];
 }
 export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
  "I-3": {
@@ -43,6 +43,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/file/d/1iq_BDzPe3idrZeGL0Q3eR7IB9mKyDftT/view",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=2",
+  "videoFallback": {
+   "label": "Videoclases DR LOPEZ · SP",
+   "url": "https://drive.google.com/drive/folders/1tlyniouI5o_SOpw-LBa2IGfWgG5zpfF0"
+  },
   "videosExtra": [
    {
     "titulo": "VIGILANCIA EN SALUD PúBLICA",
@@ -109,6 +113,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/file/d/1iq_BDzPe3idrZeGL0Q3eR7IB9mKyDftT/view",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=2",
+  "videoFallback": {
+   "label": "Videoclases DR LOPEZ · SP",
+   "url": "https://drive.google.com/drive/folders/1tlyniouI5o_SOpw-LBa2IGfWgG5zpfF0"
+  },
   "videosExtra": [
    {
     "titulo": "DEMOGRAFíA",
@@ -149,6 +157,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/file/d/1iq_BDzPe3idrZeGL0Q3eR7IB9mKyDftT/view",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=2",
+  "videoFallback": {
+   "label": "Videoclases DR LOPEZ · SP",
+   "url": "https://drive.google.com/drive/folders/1tlyniouI5o_SOpw-LBa2IGfWgG5zpfF0"
+  },
   "videosExtra": [
    {
     "titulo": "ENDEMIAS, EPIDEMIAS Y BROTES",
@@ -186,6 +198,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/file/d/1iq_BDzPe3idrZeGL0Q3eR7IB9mKyDftT/view",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=2",
+  "videoFallback": {
+   "label": "Videoclases DR LOPEZ · SP",
+   "url": "https://drive.google.com/drive/folders/1tlyniouI5o_SOpw-LBa2IGfWgG5zpfF0"
+  },
   "videosExtra": [
    {
     "titulo": "PROMOCIóN DE LA SALUD Y PARTICIPACIóN COMUNITARIA",
@@ -232,6 +248,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/file/d/1iq_BDzPe3idrZeGL0Q3eR7IB9mKyDftT/view",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=2",
+  "videoFallback": {
+   "label": "Videoclases DR LOPEZ · SP",
+   "url": "https://drive.google.com/drive/folders/1tlyniouI5o_SOpw-LBa2IGfWgG5zpfF0"
+  },
   "videosExtra": [
    {
     "titulo": "GESTIóN Y MANEJO DE LOS RESIDUOS SóLIDOS",
@@ -279,6 +299,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/file/d/1iq_BDzPe3idrZeGL0Q3eR7IB9mKyDftT/view",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=2",
+  "videoFallback": {
+   "label": "Videoclases DR LOPEZ · SP",
+   "url": "https://drive.google.com/drive/folders/1tlyniouI5o_SOpw-LBa2IGfWgG5zpfF0"
+  },
   "videosExtra": [
    {
     "titulo": "CONCEPTOS BáSICOS DE SALUD PúBLICA",
@@ -314,6 +338,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/file/d/1iq_BDzPe3idrZeGL0Q3eR7IB9mKyDftT/view",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=2",
+  "videoFallback": {
+   "label": "Videoclases DR LOPEZ · SP",
+   "url": "https://drive.google.com/drive/folders/1tlyniouI5o_SOpw-LBa2IGfWgG5zpfF0"
+  },
   "videosExtra": [
    {
     "titulo": "ETAPAS Y NIVELES DE PREVENCIóN",
@@ -351,6 +379,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/file/d/1iq_BDzPe3idrZeGL0Q3eR7IB9mKyDftT/view",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=2",
+  "videoFallback": {
+   "label": "Videoclases DR LOPEZ · SP",
+   "url": "https://drive.google.com/drive/folders/1tlyniouI5o_SOpw-LBa2IGfWgG5zpfF0"
+  },
   "videosExtra": [],
   "gapSources": []
  },
@@ -371,6 +403,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/file/d/1iq_BDzPe3idrZeGL0Q3eR7IB9mKyDftT/view",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=2",
+  "videoFallback": {
+   "label": "Videoclases DR LOPEZ · SP",
+   "url": "https://drive.google.com/drive/folders/1tlyniouI5o_SOpw-LBa2IGfWgG5zpfF0"
+  },
   "videosExtra": [],
   "gapSources": []
  },
@@ -396,6 +432,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/file/d/1iq_BDzPe3idrZeGL0Q3eR7IB9mKyDftT/view",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=2",
+  "videoFallback": {
+   "label": "Videoclases DR LOPEZ · SP",
+   "url": "https://drive.google.com/drive/folders/1tlyniouI5o_SOpw-LBa2IGfWgG5zpfF0"
+  },
   "videosExtra": [
    {
     "titulo": "SECTORIZACIóN Y FICHA FAMILIAR",
@@ -436,6 +476,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
+  "videoFallback": {
+   "label": "Videoclases DR LOPEZ · CI",
+   "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
+  },
   "videosExtra": [
    {
     "titulo": "CLIMATERIO Y MENOPAUSIA",
@@ -508,6 +552,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
+  "videoFallback": {
+   "label": "Videoclases DR LOPEZ · CI",
+   "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
+  },
   "videosExtra": [
    {
     "titulo": "ESQUEMA NACIONAL DE VACUNACIóN EN EL PERú",
@@ -547,6 +595,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
+  "videoFallback": {
+   "label": "Videoclases DR LOPEZ · CI",
+   "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
+  },
   "videosExtra": [
    {
     "titulo": "PREVENCIóN COMBINADA DEL VIH",
@@ -592,6 +644,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
+  "videoFallback": {
+   "label": "Videoclases DR LOPEZ · CI",
+   "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
+  },
   "videosExtra": [
    {
     "titulo": "PREVENCIóN Y CONTROL DE ECNT",
@@ -623,6 +679,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
+  "videoFallback": {
+   "label": "Videoclases DR LOPEZ · CI",
+   "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
+  },
   "videosExtra": [
    {
     "titulo": "PAQUETE BáSICO DEL CUIDADO INTEGRAL DEL ADULTO",
@@ -660,6 +720,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
+  "videoFallback": {
+   "label": "Videoclases DR LOPEZ · CI",
+   "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
+  },
   "videosExtra": [
    {
     "titulo": "PREVENCIóN Y CONTROL DE LA TUBERCULOSIS",
@@ -690,6 +754,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
+  "videoFallback": {
+   "label": "Videoclases DR LOPEZ · CI",
+   "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
+  },
   "videosExtra": [
    {
     "titulo": "PREVENCIóN Y CONTROL DE ANEMIA",
@@ -722,6 +790,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
+  "videoFallback": {
+   "label": "Videoclases DR LOPEZ · CI",
+   "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
+  },
   "videosExtra": [
    {
     "titulo": "DETECCIóN TEMPRANA DE CáNCER INFANTIL",
@@ -768,6 +840,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
+  "videoFallback": {
+   "label": "Videoclases DR LOPEZ · CI",
+   "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
+  },
   "videosExtra": [
    {
     "titulo": "PAQUETE DEL CUIDADO INTEGRAL DE SALUD DEL NIñO - CRED",
@@ -805,6 +881,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
+  "videoFallback": {
+   "label": "Videoclases DR LOPEZ · CI",
+   "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
+  },
   "videosExtra": [
    {
     "titulo": "INTOXICACIONES",
@@ -851,6 +931,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
+  "videoFallback": {
+   "label": "Videoclases DR LOPEZ · CI",
+   "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
+  },
   "videosExtra": [
    {
     "titulo": "CUIDADOS DE LA SALUD MENTAL",
@@ -879,6 +963,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
+  "videoFallback": {
+   "label": "Videoclases DR LOPEZ · CI",
+   "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
+  },
   "videosExtra": [
    {
     "titulo": "MEDIDAS PREVENTIVAS EN SALUD BUCAL",
@@ -909,6 +997,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
+  "videoFallback": {
+   "label": "Videoclases DR LOPEZ · CI",
+   "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
+  },
   "videosExtra": [],
   "gapSources": []
  },
@@ -937,6 +1029,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/file/d/1DCrhYE_DwZ25RoDSIhcxTq52cDRG1qSN/view",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=4",
+  "videoFallback": {
+   "label": "Videoclases DR LOPEZ · Ética",
+   "url": "https://drive.google.com/drive/folders/1srnoHI0LavKzi1Vzy8c9Mt5f5WLRqsWu"
+  },
   "videosExtra": [
    {
     "titulo": "MEDICINA TRADICIONAL, COMPLEMENTARIA Y ALTERNATIVA",
@@ -979,6 +1075,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/file/d/1DCrhYE_DwZ25RoDSIhcxTq52cDRG1qSN/view",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=4",
+  "videoFallback": {
+   "label": "Videoclases DR LOPEZ · Ética",
+   "url": "https://drive.google.com/drive/folders/1srnoHI0LavKzi1Vzy8c9Mt5f5WLRqsWu"
+  },
   "videosExtra": [
    {
     "titulo": "CóDIGO DE éTICA Y DEóNTOLOGIA PROFESIONAL",
@@ -1006,6 +1106,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/file/d/1DCrhYE_DwZ25RoDSIhcxTq52cDRG1qSN/view",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=4",
+  "videoFallback": {
+   "label": "Videoclases DR LOPEZ · Ética",
+   "url": "https://drive.google.com/drive/folders/1srnoHI0LavKzi1Vzy8c9Mt5f5WLRqsWu"
+  },
   "videosExtra": [
    {
     "titulo": "ÉTICA E INTEGRIDAD Y éTICA EN LA FUNCIóN PúBLICA",
@@ -1036,6 +1140,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/file/d/1DCrhYE_DwZ25RoDSIhcxTq52cDRG1qSN/view",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=4",
+  "videoFallback": {
+   "label": "Videoclases DR LOPEZ · Ética",
+   "url": "https://drive.google.com/drive/folders/1srnoHI0LavKzi1Vzy8c9Mt5f5WLRqsWu"
+  },
   "videosExtra": [
    {
     "titulo": "PRINCIPIOS Y FUNDAMENTOS DE LA éTICA",
@@ -1069,6 +1177,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/file/d/1DCrhYE_DwZ25RoDSIhcxTq52cDRG1qSN/view",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=4",
+  "videoFallback": {
+   "label": "Videoclases DR LOPEZ · Ética",
+   "url": "https://drive.google.com/drive/folders/1srnoHI0LavKzi1Vzy8c9Mt5f5WLRqsWu"
+  },
   "videosExtra": [
    {
     "titulo": "DERECHOS DEBERES DE LAS PERSONAS USUARIAS DE LOS SERVICIOS DE SALUD",
@@ -1098,6 +1210,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/file/d/1DCrhYE_DwZ25RoDSIhcxTq52cDRG1qSN/view",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=4",
+  "videoFallback": {
+   "label": "Videoclases DR LOPEZ · Ética",
+   "url": "https://drive.google.com/drive/folders/1srnoHI0LavKzi1Vzy8c9Mt5f5WLRqsWu"
+  },
   "videosExtra": [
    {
     "titulo": "DIVERSIDAD CULTURAL, PROMOCIóN DE LA INCLUSIóN Y LA EQUIDAD",
@@ -1133,6 +1249,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/file/d/1DCrhYE_DwZ25RoDSIhcxTq52cDRG1qSN/view",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=4",
+  "videoFallback": {
+   "label": "Videoclases DR LOPEZ · Ética",
+   "url": "https://drive.google.com/drive/folders/1srnoHI0LavKzi1Vzy8c9Mt5f5WLRqsWu"
+  },
   "videosExtra": [
    {
     "titulo": "INVESTIGACIÓN",
@@ -1159,6 +1279,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/file/d/1DCrhYE_DwZ25RoDSIhcxTq52cDRG1qSN/view",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=4",
+  "videoFallback": {
+   "label": "Videoclases DR LOPEZ · Ética",
+   "url": "https://drive.google.com/drive/folders/1srnoHI0LavKzi1Vzy8c9Mt5f5WLRqsWu"
+  },
   "videosExtra": [],
   "gapSources": []
  },
@@ -1187,6 +1311,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/drive/folders/13fYG58fySgFIC1HKBVUCNw61ipa6C69V",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=5",
+  "videoFallback": {
+   "label": "Videoclases GALENO",
+   "url": "https://drive.google.com/drive/folders/1RCpVqy_1yF0OBU-OUegTOzHjaZS6FAX8"
+  },
   "videosExtra": [
    {
     "titulo": "TIPOS DE INVESTIGACIóN Y ESTUDIOS DESCRIPTIVOS",
@@ -1230,6 +1358,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/drive/folders/13fYG58fySgFIC1HKBVUCNw61ipa6C69V",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=5",
+  "videoFallback": {
+   "label": "Videoclases GALENO",
+   "url": "https://drive.google.com/drive/folders/1RCpVqy_1yF0OBU-OUegTOzHjaZS6FAX8"
+  },
   "videosExtra": [
    {
     "titulo": "PRUEBAS DIAGNóSTICAS",
@@ -1261,6 +1393,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/drive/folders/13fYG58fySgFIC1HKBVUCNw61ipa6C69V",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=5",
+  "videoFallback": {
+   "label": "Videoclases GALENO",
+   "url": "https://drive.google.com/drive/folders/1RCpVqy_1yF0OBU-OUegTOzHjaZS6FAX8"
+  },
   "videosExtra": [
    {
     "titulo": "CAUSALIDAD Y RIESGO",
@@ -1302,6 +1438,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/drive/folders/13fYG58fySgFIC1HKBVUCNw61ipa6C69V",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=5",
+  "videoFallback": {
+   "label": "Videoclases GALENO",
+   "url": "https://drive.google.com/drive/folders/1RCpVqy_1yF0OBU-OUegTOzHjaZS6FAX8"
+  },
   "videosExtra": [
    {
     "titulo": "REQUISITOS METODOLóGICOS DEL INFORME",
@@ -1348,6 +1488,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/drive/folders/13fYG58fySgFIC1HKBVUCNw61ipa6C69V",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=6",
+  "videoFallback": {
+   "label": "Videoclases GALENO · Gestión",
+   "url": "https://drive.google.com/drive/folders/1R1cuKS2PV8yCeicl2VXj8NBIhWtNUP9w"
+  },
   "videosExtra": [
    {
     "titulo": "PLANEAMIENTO A NIVEL INSTITUCIONAL - PEI",
@@ -1388,6 +1532,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/drive/folders/13fYG58fySgFIC1HKBVUCNw61ipa6C69V",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=6",
+  "videoFallback": {
+   "label": "Videoclases GALENO · Gestión",
+   "url": "https://drive.google.com/drive/folders/1R1cuKS2PV8yCeicl2VXj8NBIhWtNUP9w"
+  },
   "videosExtra": [
    {
     "titulo": "CATEGORIZACIóN DE SERVICIOS DE SALUD",
@@ -1426,6 +1574,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/drive/folders/13fYG58fySgFIC1HKBVUCNw61ipa6C69V",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=6",
+  "videoFallback": {
+   "label": "Videoclases GALENO · Gestión",
+   "url": "https://drive.google.com/drive/folders/1R1cuKS2PV8yCeicl2VXj8NBIhWtNUP9w"
+  },
   "videosExtra": [
    {
     "titulo": "SISTEMA DE REFERENCIA Y CONTRARREFERENCIA Y PROCESO DE ADMISIóN INTEGRAL",
@@ -1474,6 +1626,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/drive/folders/13fYG58fySgFIC1HKBVUCNw61ipa6C69V",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=6",
+  "videoFallback": {
+   "label": "Videoclases GALENO · Gestión",
+   "url": "https://drive.google.com/drive/folders/1R1cuKS2PV8yCeicl2VXj8NBIhWtNUP9w"
+  },
   "videosExtra": [
    {
     "titulo": "GESTIóN DE LA HISTORIA CLíNICA",
@@ -1513,6 +1669,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "compendioUrl": "https://drive.google.com/drive/folders/13fYG58fySgFIC1HKBVUCNw61ipa6C69V",
   "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=6",
+  "videoFallback": {
+   "label": "Videoclases GALENO · Gestión",
+   "url": "https://drive.google.com/drive/folders/1R1cuKS2PV8yCeicl2VXj8NBIhWtNUP9w"
+  },
   "videosExtra": [],
   "gapSources": []
  }

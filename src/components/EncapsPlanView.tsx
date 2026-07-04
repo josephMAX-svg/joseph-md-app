@@ -48,11 +48,14 @@ function CoberturaCard({ codigo }: { codigo: string }) {
         {c.extenso && <Pill text="EXTENSO" color={Colors.purple} />}
       </View>
       <Text style={{ fontSize: 12.5, color: Colors.onSurface, marginTop: 8, fontWeight: '700' }}>
-        🎬 Mirar: <Text style={{ color: Colors.blue }}>{c.qxN} video{c.qxN !== 1 ? 's' : ''} QX</Text>
+        🎬 Mirar: {c.qxN > 0
+          ? <Text style={{ color: Colors.blue }}>{c.qxN} video{c.qxN !== 1 ? 's' : ''} QX</Text>
+          : <Text style={{ color: Colors.coral }}>sin video en QX → usa Videoclases Drive / Theomed ↓</Text>}
         {c.theomedN > 0 && <Text style={{ color: Colors.onSurfaceVariant }}>  +  {'≈'}{Math.min(c.theomedN, c.tier === 'CRÍTICA' ? 6 : c.tier === 'ALTA' ? 4 : 2)} Theomed (de {c.theomedN} del área)</Text>}
       </Text>
-      {/* Recursos clicables del tema: compendio + Theomed del área */}
+      {/* Recursos clicables del tema: video dedicado (si no hay QX) + compendio + Theomed del área */}
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 8 }}>
+        {!!c.videoFallback.url && <LinkChip label={`🎬 ${c.videoFallback.label}`} url={c.videoFallback.url} color={c.qxN === 0 ? Colors.coral : Colors.purple} />}
         {!!c.compendioUrl && <LinkChip label="📕 Compendio" url={c.compendioUrl} color={Colors.gold} />}
         {!!c.theomedUrl && <LinkChip label={`🎥 Theomed área (${c.theomedN})`} url={c.theomedUrl} color={Colors.secondary} />}
       </View>
