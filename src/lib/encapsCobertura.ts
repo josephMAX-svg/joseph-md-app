@@ -2,10 +2,13 @@
 // Mapa de cobertura por tema (barrido compendio DR LOPEZ × Tendencias/forecast × QX/Theomed, 03-jul).
 // tier=rentabilidad · vueltas=repeticiones espaciadas · min=minutos núcleo/día · qxN/theomedN=nº videos a mirar
 // extenso=merece bloque largo · guidance=cuántos/cuáles videos · gaps=sub-temas a leer en compendio/Drive · temario=índice compendio.
+export interface FuenteLink { label: string; url: string }
+export interface VideoExtra { titulo: string; url: string }
 export interface CoberturaTema {
   tier: 'CRÍTICA' | 'ALTA' | 'MEDIA' | 'BAJA'; vueltas: number; min: number;
   qxN: number; theomedN: number; extenso: boolean; freq: string; guidance: string;
   gaps: string[]; temario: string[];
+  compendioUrl: string; theomedUrl: string; videosExtra: VideoExtra[]; gapSources: FuenteLink[];
 }
 export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
  "I-3": {
@@ -37,6 +40,52 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Prevención y control de infecciones (cadena epidemiológica de 6 eslabones + interrupción)",
    "Farmacovigilancia/tecnovigilancia",
    "Indicadores en SP (estructura/proceso/resultado)"
+  ],
+  "compendioUrl": "https://drive.google.com/file/d/1iq_BDzPe3idrZeGL0Q3eR7IB9mKyDftT/view",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=2",
+  "videosExtra": [
+   {
+    "titulo": "VIGILANCIA EN SALUD PúBLICA",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/Vk1EdFFLRStsdXVyQmNvelZVZ3BBZz09"
+   },
+   {
+    "titulo": "VIGILANCIA EPIDEMIOLóGICA",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/Q01qNGJacGxmbTZLLzVTYjNNQ09pdz09"
+   },
+   {
+    "titulo": "ENDEMIAS, EPIDEMIAS Y BROTES",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/N1FYaExLT3YxT2tOWVFJR3NsM0FnUT09"
+   },
+   {
+    "titulo": "CONCEPTOS BáSICOS DE EPIDEMIOLOGíA",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/UDBhUmRHZFQ2RkZJRmRiQVAxUHFuZz09"
+   },
+   {
+    "titulo": "CAUSALIDAD Y RIESGO",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/aTVXSElNc3pCK1Q2TVRoTGdpTkpIdz09"
+   },
+   {
+    "titulo": "MEDICIONES EN EPIDEMIOLOGíA",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/alFYRWNhNHhDVE50aWhqa2ZQTysvUT09"
+   },
+   {
+    "titulo": "SALUD PÚBLICA",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/QVNhVkVkZXlvM2NmL3EybDRyQjlQdz09"
+   }
+  ],
+  "gapSources": [
+   {
+    "label": "OPS MOPECE 5 · brotes",
+    "url": "https://drive.google.com/file/d/1i-4ETiOgjjtsPxee1aDqx9oVnm0UALtR/view"
+   },
+   {
+    "label": "QX ENAM · Epi resumen",
+    "url": "https://drive.google.com/file/d/14dSCm-Ftxf9ys7_O6IwRzqOFb1n2O8Nu/view"
+   },
+   {
+    "label": "Normativas DR LOPEZ (RENACE 341-2023)",
+    "url": "https://drive.google.com/drive/folders/1YdyhemfujHYIROcBcr9G9avUYulqfpko"
+   }
   ]
  },
  "I-5+I-6": {
@@ -57,7 +106,28 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Demografía (estática/pirámides expansiva-estacionaria-regresiva; dinámica; transición demográfica y epidemiológica de Omran; bono demográfico; indicadores de estructura)",
    "Pruebas diagnósticas (sensibilidad/especificidad/VPP/VPN; criterios OMS de tamizaje; confirmatoria vs tamizaje)",
    "Bioestadística básica (razón/proporción/tasa ya en I-3)"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/file/d/1iq_BDzPe3idrZeGL0Q3eR7IB9mKyDftT/view",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=2",
+  "videosExtra": [
+   {
+    "titulo": "DEMOGRAFíA",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/NlZHbHF2blpaL3J2V1FVbmc1d1JrZz09"
+   },
+   {
+    "titulo": "PRUEBAS DIAGNóSTICAS",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/bTlHWnRJN283NUUrTkFQZWxhbUc0QT09"
+   },
+   {
+    "titulo": "DETERMINANTES SOCIALES - AMBIENTALES, BIOGENéTICOS Y COMERCIALES",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/MlZxVHFBNUV6WHFJNVBMRXluNVk1dz09"
+   },
+   {
+    "titulo": "BIOESTADíSTICA BáSICA",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/Nkl4dERCQVduM0RQSmdVQi91VitvQT09"
+   }
+  ],
+  "gapSources": []
  },
  "I-4": {
   "tier": "ALTA",
@@ -76,7 +146,24 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Brotes/endemias en enfermedades transmisibles (compartido con I-3)",
    "Prevención y control de infecciones / cadena epidemiológica",
    "Control de vectores y plagas (Aedes/Anopheles/Triatoma/Lutzomyia; dengue-Zika-chikungunya-malaria-Chagas-leishmaniasis-fiebre amarilla-filariasis; larvicida/adulticida/nebulización/ovitrampa/cerco entomológico/punto crítico)"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/file/d/1iq_BDzPe3idrZeGL0Q3eR7IB9mKyDftT/view",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=2",
+  "videosExtra": [
+   {
+    "titulo": "ENDEMIAS, EPIDEMIAS Y BROTES",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/N1FYaExLT3YxT2tOWVFJR3NsM0FnUT09"
+   },
+   {
+    "titulo": "PREVENCIóN Y CONTROL DE INFECCIONES",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/MCtyekxhOVlQS0kzbkFPMWx6bTRwQT09"
+   },
+   {
+    "titulo": "PREVENCIÓN Y CONTROL DE DENGUE",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/bzBSbTBXYXJzRHFSMFNvK0t0Kyt4Zz09"
+   }
+  ],
+  "gapSources": []
  },
  "I-1": {
   "tier": "ALTA",
@@ -96,7 +183,24 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Ejes temáticos (7: alimentación, higiene, actividad física, SSR, habilidades para la vida, seguridad vial, salud mental)",
    "Programas (Familias/Viviendas, IE, Municipios/Comunidades, Centros Laborales Saludables)",
    "Información, educación y comunicación para la salud (IEC)"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/file/d/1iq_BDzPe3idrZeGL0Q3eR7IB9mKyDftT/view",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=2",
+  "videosExtra": [
+   {
+    "titulo": "PROMOCIóN DE LA SALUD Y PARTICIPACIóN COMUNITARIA",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/UWNoOVdHYUtQdUNZVmprUEJqaXZodz09"
+   },
+   {
+    "titulo": "PROMOCIóN DE LA SALUD - LINEAMIENTOS",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/Zi9SeS9TakFJZlUwayt5MVQxdDYxZz09"
+   },
+   {
+    "titulo": "INSTITUCIONES Y MUNICIPIO SALUDABLE",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/NDl3b1hOZEpMbE9lNjNTQlh5UllHQT09"
+   }
+  ],
+  "gapSources": []
  },
  "I-11+I-12": {
   "tier": "MEDIA",
@@ -125,7 +229,36 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Bioseguridad (universalidad/barreras/eliminación; hipoclorito 0.5% vs 0.1%)",
    "Modelo de salud mental comunitaria (CSMC I-3/I-4)",
    "Gestión del riesgo en emergencias/desastres (fórmula riesgo=amenaza×vulnerabilidad/capacidad; ciclo prevención-mitigación-preparación-respuesta-recuperación)"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/file/d/1iq_BDzPe3idrZeGL0Q3eR7IB9mKyDftT/view",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=2",
+  "videosExtra": [
+   {
+    "titulo": "GESTIóN Y MANEJO DE LOS RESIDUOS SóLIDOS",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/b3hSZzNJZzdqRnBrVS8xQWtjV3dmQT09"
+   },
+   {
+    "titulo": "SALUD OCUPACIONAL",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/TW5uQmMvTy9hNHNNZ2NxYm5qZ0RDQT09"
+   },
+   {
+    "titulo": "PARTICIPACIóN SOCIAL Y COMUNITARIA",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/RGJ1OXpSUDM5MVB6bG92NlJxejJEUT09"
+   },
+   {
+    "titulo": "BIOSEGURIDAD",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/WFo3TGh4Rm9GZWpTMkhodHZOWnlPUT09"
+   },
+   {
+    "titulo": "GESTIóN DEL RIESGO EN SITUACIONES DE EMERGENCIAS Y DESASTRES",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/c3daRGN2WXhwa3NxaU1jeDlYUlNZUT09"
+   },
+   {
+    "titulo": "SECTORIZACIóN Y FICHA FAMILIAR",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/dkYwYTR1ZGptOGZCVEp1NUxQWE03dz09"
+   }
+  ],
+  "gapSources": []
  },
  "I-2": {
   "tier": "ALTA",
@@ -143,7 +276,24 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Gobernanza en salud; ODS (17) y salud",
    "Política Nacional Multisectorial de Salud al 2030 'Perú País Saludable' (2020, horizonte 2030, multisectorial)",
    "FESP Renovadas (11 funciones en 4 etapas cíclicas: Evaluación→Políticas→Recursos→Acceso)"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/file/d/1iq_BDzPe3idrZeGL0Q3eR7IB9mKyDftT/view",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=2",
+  "videosExtra": [
+   {
+    "titulo": "CONCEPTOS BáSICOS DE SALUD PúBLICA",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/aXd0OHlNNXRxTkRMSE9CVHFXRE1Cdz09"
+   },
+   {
+    "titulo": "FUNCIONES ESENCIALES DE LA SALUD PúBLICA",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/eGo2cTU5OWtzWVo5UytIMUdiS2lydz09"
+   },
+   {
+    "titulo": "SALUD PÚBLICA",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/QVNhVkVkZXlvM2NmL3EybDRyQjlQdz09"
+   }
+  ],
+  "gapSources": []
  },
  "I-10": {
   "tier": "ALTA",
@@ -161,7 +311,28 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Etapas y niveles de prevención (primordial, primaria [promoción + protección específica], secundaria [tamizaje/dx precoz/tto oportuno], terciaria, cuaternaria)",
    "APS (enfoque de cuidado integral por curso de vida)",
    "Accesibilidad a los servicios (barreras geográficas/económicas/culturales/sociales y estrategias: RIS, brigadas móviles, casas de espera materna, telesalud, SIS)"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/file/d/1iq_BDzPe3idrZeGL0Q3eR7IB9mKyDftT/view",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=2",
+  "videosExtra": [
+   {
+    "titulo": "ETAPAS Y NIVELES DE PREVENCIóN",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/amNoQnNZU3BhUGFUM2xsNUNBblhrUT09"
+   },
+   {
+    "titulo": "ACCESO A LOS SERVICIOS DE SALUD",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/a0lJeWJ3Qmg4SklOa0VSaXpmUmszQT09"
+   },
+   {
+    "titulo": "PROTECCIóN ESPECíFICA DE LA SALUD",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/VXg5UjZUeWYrcUp1ekNGODh5VS94Zz09"
+   },
+   {
+    "titulo": "ATENCIóN PRIMARIA DE SALUD (APS)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/MDZKTlFqYUt0VzZkL0xrc0U5SitvZz09"
+   }
+  ],
+  "gapSources": []
  },
  "I-7": {
   "tier": "BAJA",
@@ -177,7 +348,11 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "temario": [
    "No tratado explícitamente como capítulo en el bloque SP del compendio López (el compendio cubre salud familiar/etapas de vida en I-11/I-12 e I-1, pero PNAIA como plan nacional no figura desarrollado)"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/file/d/1iq_BDzPe3idrZeGL0Q3eR7IB9mKyDftT/view",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=2",
+  "videosExtra": [],
+  "gapSources": []
  },
  "I-8": {
   "tier": "BAJA",
@@ -193,7 +368,11 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "temario": [
    "No desarrollado como capítulo en el bloque SP del compendio López (discapacidad se menciona marginalmente en historia natural/prevención terciaria y salud familiar)"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/file/d/1iq_BDzPe3idrZeGL0Q3eR7IB9mKyDftT/view",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=2",
+  "videosExtra": [],
+  "gapSources": []
  },
  "I-9": {
   "tier": "BAJA",
@@ -214,7 +393,16 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Ciclo vital familiar (formación/expansión/dispersión/contracción)",
    "PAIFAM y visitas de salud familiar",
    "(Todo esto el compendio lo desarrolla en las páginas de salud familiar — mismas que alimentan I-11+I-12)"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/file/d/1iq_BDzPe3idrZeGL0Q3eR7IB9mKyDftT/view",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=2",
+  "videosExtra": [
+   {
+    "titulo": "SECTORIZACIóN Y FICHA FAMILIAR",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/dkYwYTR1ZGptOGZCVEp1NUxQWE03dz09"
+   }
+  ],
+  "gapSources": []
  },
  "II-1": {
   "tier": "CRÍTICA",
@@ -245,7 +433,52 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Emergencias obstétricas: hemorragias 1ª mitad, hemorragia intra/postparto, shock hipovolémico obstétrico",
    "Trastornos hipertensivos: HTA crónica, gestacional, preeclampsia leve/severa (criterios ≥160/110 o daño órgano blanco), eclampsia, HELLP (LDH≥600, plaq<100k)",
    "Sepsis en obstetricia; emergencias neonatales; climaterio y menopausia (Dx clínico 45-55a+amenorrea≥12m, SVM, SGM, TRH/ISRS)"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
+  "videosExtra": [
+   {
+    "titulo": "CLIMATERIO Y MENOPAUSIA",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/UEpsVnZVc21MSWl3MmRoNWg5c001QT09"
+   },
+   {
+    "titulo": "DIAGNóSTICO DEL EMBARAZO",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/OUptaG90UWJZWkNZS09sT3lWbWtYdz09"
+   },
+   {
+    "titulo": "NUTRICIóN EN EL EMBARAZO",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/NjBhUk9sNXdNbGxkbjB2SGpLeFJDZz09"
+   },
+   {
+    "titulo": "ATENCIóN PRENATAL",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/N1FsYk8vU0lJREpQT0FlK2VvUWFqQT09"
+   },
+   {
+    "titulo": "DILATACIóN",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/dkxhS2hKdm55TkUrb05kTlg2QXlMZz09"
+   },
+   {
+    "titulo": "ALUMBRAMIENTO",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/cGQ5YkJFRW8wdmpoeGxROXlISVhRUT09"
+   },
+   {
+    "titulo": "MANEJO INICIAL DE EMERGENCIAS OBSTéTRICAS",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/cWhUc3FOUUd6UWZtb1J1MGNXYTRhUT09"
+   },
+   {
+    "titulo": "RIESGO OBSTéTRICO",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/bEdsU055OG1YaWNTV3RHREJVWUtNUT09"
+   },
+   {
+    "titulo": "MANEJO INICIAL DE EMERGENCIAS NEONATALES",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/VFJNZnhpeTdmVUx5eWdQbFY3VE1mZz09"
+   },
+   {
+    "titulo": "PUERPERIO NORMAL",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/a0t4S2xpNnY5L3Y5bVdmbGRWeWhGZz09"
+   }
+  ],
+  "gapSources": []
  },
  "II-3": {
   "tier": "CRÍTICA",
@@ -272,7 +505,20 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Fotosensibilidad (+ fotosensibles: SPR, antivaricela, BCG; no: Tdap, HvB)",
    "Ruptura cadena de frío (RCF): daño acumulativo e irreversible, procedimiento (restablecer, suspender uso, notificar <24h)",
    "Emergencia en cadena de frío y plan de contingencia"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
+  "videosExtra": [
+   {
+    "titulo": "ESQUEMA NACIONAL DE VACUNACIóN EN EL PERú",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/TExXRzZHc0tWSytWaURnQWR5RmdjUT09"
+   },
+   {
+    "titulo": "ESQUEMA NACIONAL DE VACUNACIóN EN EL PERú- ACTUALIZACIóN",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/NFBVUkhndCtBZGhDNWl2QkJyT25xZz09"
+   }
+  ],
+  "gapSources": []
  },
  "II-11": {
   "tier": "CRÍTICA",
@@ -298,7 +544,28 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "PrEP diaria y a demanda (TDF/FTC); prevención combinada del VIH; poblaciones clave (HSH, TS, MT, PPL, PVV)",
    "Hepatitis A/B/C: transmisión, cronificación, tamizaje/confirmación, tratamiento (HvB Tenofovir/Entecavir; HvC Sofosbuvir+Velpatasvir)",
    "PTMI VIH/sífilis/VHB: tamizaje gestante por trimestre, consentimiento, resultado mismo día (30 min), referencia inmediata TARGA, lactancia (prohibida en VIH sin fórmula segura), RN (zidovudina <6h; HvB vacuna+HBIG <12h)"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
+  "videosExtra": [
+   {
+    "titulo": "PREVENCIóN COMBINADA DEL VIH",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/ZmVONDlDWnI2R0laS2dHMGlWSGtsQT09"
+   },
+   {
+    "titulo": "ATENCIóN INTEGRAL DE LAS ITS",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/cWp4WWs0Vkh4Z0xwNjgwS3JBcWo0QT09"
+   },
+   {
+    "titulo": "PREVENCIÓN DE LA TRANSMISIÓN MATERNO INFANTIL DE VIH, SÍFILIS Y VHB",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/K2NnZDdPT2w5NzFBck15OTU2cjJmZz09"
+   },
+   {
+    "titulo": "PREVENCIÓN DE LA TRANSMISIÓN MATERNO INFANTIL DE VIH",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/cmdzcDduUk0wZHdMMmxZaHVsQlJydz09"
+   }
+  ],
+  "gapSources": []
  },
  "II-8": {
   "tier": "ALTA",
@@ -322,7 +589,16 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Tratamiento farmacológico: Metformina 1ª línea (contraindicada TFG<30), Glibenclamida alternativa, Gliclazida (menor hipoglucemia)",
    "Algoritmo de manejo; control mensual, controlado si 2/3 controles con glucosa <130",
    "Metas terapéuticas (tabla imagen); tamizaje RCV con perímetro abdominal/PA/IMC (dentro de paquete adulto)"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
+  "videosExtra": [
+   {
+    "titulo": "PREVENCIóN Y CONTROL DE ECNT",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/SHpYRlV1TEtNcFFDRk96RWowdXhrUT09"
+   }
+  ],
+  "gapSources": []
  },
  "II-7": {
   "tier": "ALTA",
@@ -344,7 +620,20 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Síndromes geriátricos (caídas, fragilidad, dismovilidad, deterioro cognitivo, privación neurosensorial)",
    "Paquete de cuidado: consejería/educación, cuidado preventivo (vacunación AM, detección fragilidad/caídas), atención domiciliaria (ADOGE), recuperación/rehabilitación, participación social (CAM), cuidados familiares/comunitarios",
    "Frecuencia VACAM mínimo 1 vez al año; ABVD vs AIVD"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
+  "videosExtra": [
+   {
+    "titulo": "PAQUETE BáSICO DEL CUIDADO INTEGRAL DEL ADULTO",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/S2VxZFlXUm0vV1pmS2wvMmxSTkRSQT09"
+   },
+   {
+    "titulo": "PAQUETE BáSICO DEL CUIDADO INTEGRAL DEL ADULTO MAYOR",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/bjFsZHNIdlF4L3pLOWxuR0FDQ0NhQT09"
+   }
+  ],
+  "gapSources": []
  },
  "II-6": {
   "tier": "ALTA",
@@ -368,7 +657,16 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Diagnóstico bacteriológico: baciloscopía (Ziehl-Neelsen, criterios de informe +/++/+++), cultivo (Löwenstein-Jensen/MGIT), PDRm; recolección 2 muestras, transporte 2-8°C, NETLAB/RM 613-2022",
    "Tratamiento TB sensible: 1ª fase 2m HREZ (50 dosis) + 2ª fase 4m HR (100 dosis), DFC L-S; RAM de fármacos (H hepato/neuropatía, R coloración/hepato, Z hiperuricemia, E neuritis retrobulbar, S ototoxicidad)",
    "Vigilancia epidemiológica TB (Directiva 079-2017/CDC); notificación inmediata (TB personal salud, XDR <24h) vs semanal (resto)"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
+  "videosExtra": [
+   {
+    "titulo": "PREVENCIóN Y CONTROL DE LA TUBERCULOSIS",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/SWNIUVM3cHVTVE1hTnNKTXBDbzdlZz09"
+   }
+  ],
+  "gapSources": []
  },
  "II-4": {
   "tier": "ALTA",
@@ -389,7 +687,20 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Tratamiento de anemia ferropénica: inicio (Hb bajo lo normal), dosis 3mg/kg/día por grupo, gestante/puérpera (120mg+800µg AF), control mensual (incremento ≥1g/dL a los 30d), CPM férrico si mala adherencia",
    "Efectos adversos y recomendaciones; suspensión (<3m continúa, >3m reinicia); criterios de alta (6m + Hb normal); referencia; exámenes de apoyo (hemograma, ferritina, reticulocitos, PCR)",
    "Vitamina A (esquema preventivo 6-59m); desnutrición/malnutrición pediátrica"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
+  "videosExtra": [
+   {
+    "titulo": "PREVENCIóN Y CONTROL DE ANEMIA",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/bTd2QWdtT0RDNnRuQWFJMjZzQW5sZz09"
+   },
+   {
+    "titulo": "SUPLEMENTACIóN CON VITAMINA A",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/TmFsWnNaT1p4QkJ2WGJzQ1Naa242UT09"
+   }
+  ],
+  "gapSources": []
  },
  "II-10": {
   "tier": "ALTA",
@@ -408,7 +719,28 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Cáncer colorrectal: FR, sangre oculta/FIT 50-70a, colonoscopía por riesgo (Lynch/PAF, EII)",
    "Cáncer de piel: FR (UV, fototipos claros), fotoprotección, regla ABCDE, derivación a dermatología",
    "Cáncer infantil (0-17a): signos de alarma, referencia inmediata ≤72h a centro oncológico 3er nivel"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
+  "videosExtra": [
+   {
+    "titulo": "DETECCIóN TEMPRANA DE CáNCER INFANTIL",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/U1BDWnFZOGs0YUNLVXAvMS8vRExFQT09"
+   },
+   {
+    "titulo": "PREVENCIóN Y CONTROL DE CÁNCER",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/WkFIMkpIQkthcDFGSEJVVjlvZmpDdz09"
+   },
+   {
+    "titulo": "PREVENCIóN Y CONTROL DEL CáNCER",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/MHhoaXpOWWFkUkdqZlVOUjR2Mi9ZUT09"
+   },
+   {
+    "titulo": "PREVENCIóN Y CONTROL DEL CáNCER DE CéRVIX",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/NElXL1ppOVMwNFg1REFrT1NnUmNmdz09"
+   }
+  ],
+  "gapSources": []
  },
  "II-2": {
   "tier": "ALTA",
@@ -433,7 +765,24 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Intervención: consejería en 5 momentos, temas prioritarios por edad (LME, alimentación complementaria, Kit Buen Crecimiento, suplementación, salud bucal)",
    "Atención Temprana del Desarrollo (ATD), seguimiento (modalidad fija/móvil), periodicidad CRED por edad (0-28d:3, 29d-11m:7, 12m-4a según edad, 5-11a:1/año)",
    "Suplementación de hierro y Vitamina A dentro de CRED; descarte parasitosis anual"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
+  "videosExtra": [
+   {
+    "titulo": "PAQUETE DEL CUIDADO INTEGRAL DE SALUD DEL NIñO - CRED",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/cUNBWXFqeVNSM21CT2VLdXVyOVRLZz09"
+   },
+   {
+    "titulo": "CRED- ACTUALIZACIóN",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/c2lNRUJYT0hHSHV1eFdmbXBGdXRiZz09"
+   },
+   {
+    "titulo": "CUIDADO INTEGRAL DE SALUD",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/SE54ckQyaUQrZTQ4RVROUkpjL3djQT09"
+   }
+  ],
+  "gapSources": []
  },
  "II-5": {
   "tier": "ALTA",
@@ -453,7 +802,32 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Paquete del JOVEN (18-29a): plan de atención integral, 3 dimensiones (física/psicosocial/sexual-reproductiva), mínimo 7 sesiones/año, instrumentos (CISPA/ESP/SRQ/AUDIT/VBG)",
    "Paquete del ADULTO (30-59a): captación/admisión/triaje, paquete priorizado (FR, tamizaje cánceres, salud mental) y completo",
    "Enfermedades raras/huérfanas (7 del tamizaje neonatal); exposición a metales pesados (As/Cd/Hg/Pb); intoxicaciones (organofosforados SLUDGE, cáusticos); IAAS; zoonosis/metaxénicas (cruza con I-4)"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
+  "videosExtra": [
+   {
+    "titulo": "INTOXICACIONES",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/Ty9xejUvQnlvcWU2a0ZhZnZGK2JHdz09"
+   },
+   {
+    "titulo": "MCI - DEFINICIóN DEL MODELO",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/T3gwQk1ZR1d2T1lTSFdCbEsyY1N6Zz09"
+   },
+   {
+    "titulo": "MCI - PRESTACIóN",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/dGJqUkZvMTUyY1Z5R2w2Vld0aWZVQT09"
+   },
+   {
+    "titulo": "ATENCIóN PRIMARIA DE SALUD (APS)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/MDZKTlFqYUt0VzZkL0xrc0U5SitvZz09"
+   },
+   {
+    "titulo": "ATENCIóN CENTRADA EN LA PERSONA",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/bEJJZFE1Q3BmdlRkWklka0JaOG13QT09"
+   }
+  ],
+  "gapSources": []
  },
  "II-9": {
   "tier": "MEDIA",
@@ -474,7 +848,16 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Trastorno bipolar I (≥1 episodio maníaco ≥1 sem, criterios), bipolar II (hipomanía+depresión), hipomanía (≥4 días)",
    "Instrumentos de tamizaje transversales (PHQ-9 depresión, AUDIT-C/AUDIT alcohol, SRQ, ESP) aplicados en CRED/adolescente/joven/adulto",
    "Detección de violencia (cruza con instrumentos de Directiva 155-2024)"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
+  "videosExtra": [
+   {
+    "titulo": "CUIDADOS DE LA SALUD MENTAL",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/UmN3RDFMeDVObjFUdGN6TmJvTVBGZz09"
+   }
+  ],
+  "gapSources": []
  },
  "II-12": {
   "tier": "MEDIA",
@@ -493,7 +876,16 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Técnica de cepillado por edad (<8a 90° circular; ≥8a 45° diente-encía), limpieza de lengua, hilo dental (desde 4a)",
    "Visita al odontólogo (desde 1er año, 1×/año), flúor barniz cada 6m, sellantes (muelas permanentes), sal fluorada",
    "Relación con otras enfermedades (diabetes, CV, neumonía, parto prematuro), importancia dientes temporales"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
+  "videosExtra": [
+   {
+    "titulo": "MEDIDAS PREVENTIVAS EN SALUD BUCAL",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/Ly85ek05a21XdXlwNmVpNkNhMzFsUT09"
+   }
+  ],
+  "gapSources": []
  },
  "II-13": {
   "tier": "BAJA",
@@ -514,7 +906,11 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Jóvenes/adultos hasta 49a: normal 20/20-20/30, referir si AV ≤20/40",
    "Tamizaje neonatal (dentro de enfermedades raras/tamizaje): visual (reflejo rojo antes del alta), auditivo (otoemisiones acústicas 24-48h, máx 30d), catarata e hipoacusia congénitas",
    "Evaluación agudeza auditiva en adolescente (voz baja, tarjetas)"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
+  "videosExtra": [],
+  "gapSources": []
  },
  "III-5": {
   "tier": "CRÍTICA",
@@ -538,7 +934,32 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "EESS con pertinencia cultural = ≥80% de criterios",
    "Parto vertical (posiciones: parada/sentada/rodillas/cuclillas; masoterapia; musicoterapia)",
    "Medicina tradicional vs complementaria vs alternativa"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/file/d/1DCrhYE_DwZ25RoDSIhcxTq52cDRG1qSN/view",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=4",
+  "videosExtra": [
+   {
+    "titulo": "MEDICINA TRADICIONAL, COMPLEMENTARIA Y ALTERNATIVA",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/MTdveWRFRDVyYndtRlZxN1ZuWjRuUT09"
+   },
+   {
+    "titulo": "PROMOCIóN DEL PARTO VERTICAL",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/eWpWbTNwdTlDc2ZCRDlOdzdVSXAzZz09"
+   },
+   {
+    "titulo": "COMUNICACIóN Y DIáLOGO INTERCULTURAL EN SALUD",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/QXdDcEpqYXFsenkrbUw3V2RPRnhSUT09"
+   },
+   {
+    "titulo": "IDENTIDAD CULTURAL Y AUTOPERCEPCIóN éTNICA",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/Nm02bTZmbXRhSjVYZHRaK0NlaTB1UT09"
+   },
+   {
+    "titulo": "ATENCIóN EN SALUD CON ENFOQUE INTERCULTURAL Y PERTINENCIA CULTURAL",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/eXVyRm0xd0piZkVFb3RpTFFzZG9zUT09"
+   }
+  ],
+  "gapSources": []
  },
  "III-2": {
   "tier": "ALTA",
@@ -555,7 +976,16 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Fines: orientar/normar/regular el ejercicio médico",
    "Ejercicio con respeto a la dignidad humana, integridad moral, responsabilidad profesional, compromiso con la colectividad",
    "Relación médico-paciente: 4 modelos (paternalista, informativo, interpretativo, deliberativo)"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/file/d/1DCrhYE_DwZ25RoDSIhcxTq52cDRG1qSN/view",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=4",
+  "videosExtra": [
+   {
+    "titulo": "CóDIGO DE éTICA Y DEóNTOLOGIA PROFESIONAL",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/QWhZb0RQemJoWWlpSW92bnNMK0xnZz09"
+   }
+  ],
+  "gapSources": []
  },
  "III-8": {
   "tier": "ALTA",
@@ -573,7 +1003,20 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "8 Principios (respeto, probidad, eficiencia, idoneidad, veracidad, lealtad/obediencia, justicia/equidad, lealtad al Estado de Derecho)",
    "6 Deberes (neutralidad, transparencia, discreción, ejercicio adecuado del cargo, uso adecuado de bienes del Estado, responsabilidad)",
    "5 Prohibiciones (conflicto de intereses, ventajas indebidas, proselitismo político, mal uso de información privilegiada, presión/amenazas/acoso)"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/file/d/1DCrhYE_DwZ25RoDSIhcxTq52cDRG1qSN/view",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=4",
+  "videosExtra": [
+   {
+    "titulo": "ÉTICA E INTEGRIDAD Y éTICA EN LA FUNCIóN PúBLICA",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/VGxmUjROVFlDNGlHZ09vVkwzNVV5Zz09"
+   },
+   {
+    "titulo": "ÉTICA E INTEGRIDAD EN SALUD",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/MTY3bmovRmxYQlpRM1k2d0VBeXRGUT09"
+   }
+  ],
+  "gapSources": []
  },
  "III-1": {
   "tier": "ALTA",
@@ -590,7 +1033,20 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Hitos históricos: Código Núremberg 1947 (consentimiento voluntario), Declaración de Helsinki 1964 (revisión ética, beneficio>riesgo, protección de vulnerables), Estudio Tuskegee 1932-72, Comisión Nacional 1974",
    "Definiciones: Ética vs Moral vs Bioética vs Deontología",
    "4 Principios de Beauchamp & Childress: Autonomía, Justicia, Beneficencia, No maleficencia (con ejemplos)"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/file/d/1DCrhYE_DwZ25RoDSIhcxTq52cDRG1qSN/view",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=4",
+  "videosExtra": [
+   {
+    "titulo": "PRINCIPIOS Y FUNDAMENTOS DE LA éTICA",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/M2laanF2bHc5d1Z4cW1wQjhieDJNQT09"
+   },
+   {
+    "titulo": "ÉTICA E INTERCULTURALIDAD",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/L3dYaldma2svaXEvOXAreGJZakMwQT09"
+   }
+  ],
+  "gapSources": []
  },
  "III-9": {
   "tier": "ALTA",
@@ -610,7 +1066,16 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Protección de derechos (denuncia/reclamo, reparación)",
    "Acceso a HC y epicrisis + carácter reservado de la HC",
    "10 Deberes del usuario (respeto al personal, cumplir indicaciones, info veraz, respetar turnos, autocuidado, uso adecuado de instalaciones, seguir flujograma, cumplir citas, usar canales de reclamo)"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/file/d/1DCrhYE_DwZ25RoDSIhcxTq52cDRG1qSN/view",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=4",
+  "videosExtra": [
+   {
+    "titulo": "DERECHOS DEBERES DE LAS PERSONAS USUARIAS DE LOS SERVICIOS DE SALUD",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/YmtBcmFvdzlpeUpkVjNhUkh2aGovQT09"
+   }
+  ],
+  "gapSources": []
  },
  "III-6+III-10": {
   "tier": "MEDIA",
@@ -630,7 +1095,24 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Poblaciones étnico-culturales / en vulnerabilidad / clave (PVV, HSH, PPL, trans, TS)",
    "Acceso a la salud de población migrante",
    "Establecimiento con pertinencia cultural (criterios ≥80%)"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/file/d/1DCrhYE_DwZ25RoDSIhcxTq52cDRG1qSN/view",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=4",
+  "videosExtra": [
+   {
+    "titulo": "DIVERSIDAD CULTURAL, PROMOCIóN DE LA INCLUSIóN Y LA EQUIDAD",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/blZEVlhLK2l2enQ3U2p4bjhWTGlyZz09"
+   },
+   {
+    "titulo": "ACCESO A LA ATENCIóN EN SALUD DE LA POBLACIóN MIGRANTE",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/WnZCNkJFUnVoSlA1N2VCb1Q1SjF2QT09"
+   },
+   {
+    "titulo": "PREVENCIóN DE LA ESTIGMA Y DISCRIMINACIóN éTNICA, CULTURAL, Y EN OTRAS POBLACIONES CLAVE Y VULNERABLES",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/VHFTK0lNK296OUptdGJlVHc0eVpSZz09"
+   }
+  ],
+  "gapSources": []
  },
  "III-3": {
   "tier": "MEDIA",
@@ -648,7 +1130,16 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "CI por escrito obligatorio en: pruebas riesgosas / cirugía / anticoncepción quirúrgica; exploración-tratamiento-imágenes con fines docentes; antes de estudio de investigación; productos/procedimientos en investigación; negativa a recibir/continuar tratamiento (salvo riesgo vital o salud pública); cuidados paliativos",
    "Excepción en emergencia",
    "Vínculo con principio de autonomía (III-1) y derechos del usuario (III-9)"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/file/d/1DCrhYE_DwZ25RoDSIhcxTq52cDRG1qSN/view",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=4",
+  "videosExtra": [
+   {
+    "titulo": "INVESTIGACIÓN",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/ZmV0WVpNSXFSS3NYUVZsQVlyVk40UT09"
+   }
+  ],
+  "gapSources": []
  },
  "III-4+III-7": {
   "tier": "MEDIA",
@@ -665,7 +1156,11 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ],
   "temario": [
    "NO CUBIERTO en el compendio Dr López (el temario de López para el bloque III NO incluye violencia de género ni aborto/dilemas — es el hueco estructural del área)"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/file/d/1DCrhYE_DwZ25RoDSIhcxTq52cDRG1qSN/view",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=4",
+  "videosExtra": [],
+  "gapSources": []
  },
  "IV-1+IV-2": {
   "tier": "MEDIA",
@@ -689,7 +1184,32 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Pirámide de la evidencia científica (base: opinión experto/animal/serie de casos → tope: ECA, RS, meta-análisis)",
    "Matriz de consistencia (coherencia problema-objetivos-hipótesis-variables-metodología)",
    "Hipótesis H0/H1 (cuándo aplica: cuantitativo que contrasta, no en descriptivo/cualitativo)"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/drive/folders/13fYG58fySgFIC1HKBVUCNw61ipa6C69V",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=5",
+  "videosExtra": [
+   {
+    "titulo": "TIPOS DE INVESTIGACIóN Y ESTUDIOS DESCRIPTIVOS",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/cmgwVEgzZis2dy9ZeVJXaW1LRWlwdz09"
+   },
+   {
+    "titulo": "ESTUDIOS ANALíTICOS OBSERVACIONALES",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/b1dxM3ZVQ3dUMWxDaTZmODFGdURMUT09"
+   },
+   {
+    "titulo": "ESTUDIOS ANALíTICOS EXPERIMENTALES",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/Y3dnejFhODZGY285M3BXNC84aVY1dz09"
+   },
+   {
+    "titulo": "TIPOS DE INVESTIGACIóN",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/SmxDb2Y1QXdmRUozN2h4YzR1MTlQQT09"
+   },
+   {
+    "titulo": "INVESTIGACIÓN",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/ZmV0WVpNSXFSS3NYUVZsQVlyVk40UT09"
+   }
+  ],
+  "gapSources": []
  },
  "IV-3+IV-5": {
   "tier": "BAJA",
@@ -707,7 +1227,20 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "temario": [
    "El compendio López de Investigación NO desarrolla pruebas diagnósticas (S/E/VPP/VPN/LR/ROC) — solo toca 'validación de instrumentos' (validez de contenido/criterio/constructo; confiabilidad test-retest/Alfa de Cronbach ≥0.7/interevaluador)",
    "Características de un buen instrumento (validez, confiabilidad, objetividad, precisión, claridad, factibilidad, estandarización, adecuación al contexto)"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/drive/folders/13fYG58fySgFIC1HKBVUCNw61ipa6C69V",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=5",
+  "videosExtra": [
+   {
+    "titulo": "PRUEBAS DIAGNóSTICAS",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/bTlHWnRJN283NUUrTkFQZWxhbUc0QT09"
+   },
+   {
+    "titulo": "SALUD PÚBLICA",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/QVNhVkVkZXlvM2NmL3EybDRyQjlQdz09"
+   }
+  ],
+  "gapSources": []
  },
  "IV-4": {
   "tier": "BAJA",
@@ -725,6 +1258,24 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "temario": [
    "El compendio López-Investigación NO desarrolla OR/RR/HR ni su cálculo/interpretación — el concepto de riesgo/asociación se toca de refilón en 'estudios analíticos' (cohorte compara incidencia; casos-controles analiza exposición retrospectiva)",
    "Muestreo (SÍ está, extenso): probabilístico (aleatorio simple, sistemático, estratificado, conglomerados) vs no probabilístico (conveniencia, juicio, cuotas, bola de nieve); población/muestra/unidad de análisis/marco muestral/parámetro vs estadístico"
+  ],
+  "compendioUrl": "https://drive.google.com/drive/folders/13fYG58fySgFIC1HKBVUCNw61ipa6C69V",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=5",
+  "videosExtra": [
+   {
+    "titulo": "CAUSALIDAD Y RIESGO",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/aTVXSElNc3pCK1Q2TVRoTGdpTkpIdz09"
+   },
+   {
+    "titulo": "SALUD PÚBLICA",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/QVNhVkVkZXlvM2NmL3EybDRyQjlQdz09"
+   }
+  ],
+  "gapSources": [
+   {
+    "label": "QX ENAM · Epi resumen",
+    "url": "https://drive.google.com/file/d/14dSCm-Ftxf9ys7_O6IwRzqOFb1n2O8Nu/view"
+   }
   ]
  },
  "IV-6+IV-7": {
@@ -748,7 +1299,28 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Hitos internacionales: Núremberg 1947, Helsinki 1964/2024, Belmont 1978, UNESCO 2005, CIOMS-OMS 2016",
    "Marco legal peruano: Constitución (art 1,2,7,14), Ley General de Salud 26842, D.S. 021-2017-SA (ensayos clínicos), rol del INS (Registro Peruano de Ensayos Clínicos)",
    "CIEI (Comité Institucional de Ética en Investigación): mínimo 5 miembros, autónomo, registro en INS, funciones; responsabilidades del investigador"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/drive/folders/13fYG58fySgFIC1HKBVUCNw61ipa6C69V",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=5",
+  "videosExtra": [
+   {
+    "titulo": "REQUISITOS METODOLóGICOS DEL INFORME",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/bDJOYjBDbDRnT2czTC9HdXBLL1J0dz09"
+   },
+   {
+    "titulo": "ÉTICA Y ASPECTOS éTICOS DE LAS PUBLICACIONES CIENTíFICAS",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/VHV2alVzanZLVDFsdmJVclBmTW9Fdz09"
+   },
+   {
+    "titulo": "PUBLICACIóN CIENTíFICA",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/dHZHT3JLbkRtSHkzc3RvMlREdldPUT09"
+   },
+   {
+    "titulo": "PROCESAMIENTO Y ANáLISIS DE DATOS",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/ZkJQeXVoYVFKRnRpSDdwME9MMmVFdz09"
+   }
+  ],
+  "gapSources": []
  },
  "V-2": {
   "tier": "CRÍTICA",
@@ -773,7 +1345,24 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "POI = plan de CORTO plazo, anual (1 año) o multianual (3 años); debe alinearse al PIA (Presupuesto Institucional de Apertura)",
    "Documentos técnicos normativos de gestión: ROF (vigente, estructura orgánica/funciones generales), MOP (vigente en programas/proyectos)",
    "Reemplazos por Ley del Servicio Civil 30057: MOF → MPP (Manual de Perfiles de Puestos); CAP+PAP → CPE (Cuadro de Puestos de la Entidad)"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/drive/folders/13fYG58fySgFIC1HKBVUCNw61ipa6C69V",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=6",
+  "videosExtra": [
+   {
+    "titulo": "PLANEAMIENTO A NIVEL INSTITUCIONAL - PEI",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/K1pCaEdia2czZStHRGxhMkw3RUFhQT09"
+   },
+   {
+    "titulo": "ANáLISIS ESTRATéGICO INSTITUCIONAL (FODA)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/ajljaDVha2prZjdrUDJnNzh6ZDBnUT09"
+   },
+   {
+    "titulo": "GESTIÓN DE LOS SERVICIOS DE SALUD",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/VGJsd0xWbFd1WVV2bElEZnVWcGNaUT09"
+   }
+  ],
+  "gapSources": []
  },
  "V-1": {
   "tier": "ALTA",
@@ -796,7 +1385,20 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Proceso de categorización: responsabilidad de las Direcciones Regionales de Salud (DIRESA); Comité Técnico; Acto Resolutivo con vigencia 3 AÑOS",
    "Cartera de servicios: capacidad resolutiva vs capacidad de oferta",
    "UPS (cualquier área que da un servicio) vs UPSS (específica de salud): atención directa (consulta/hospitalización/emergencia/cirugía) vs apoyo/soporte (laboratorio/farmacia/imágenes)"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/drive/folders/13fYG58fySgFIC1HKBVUCNw61ipa6C69V",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=6",
+  "videosExtra": [
+   {
+    "titulo": "CATEGORIZACIóN DE SERVICIOS DE SALUD",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/YVZyUHhCSkczaGNOcFJPQ3FBRzJHZz09"
+   },
+   {
+    "titulo": "REQUISITOS PARA OPERACIóN Y FUNCIONAMIENTO DE EESS",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/OUtTUFJaZHhncjFreTQ5MXFOdjBQQT09"
+   }
+  ],
+  "gapSources": []
  },
  "V-3": {
   "tier": "ALTA",
@@ -821,7 +1423,24 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "RIS (Ley 30885): concepto, población asignada/georreferenciada, EMS (médico/enfermera/obstetra/técnico; AISPED en zonas dispersas)",
    "Gestores RIS (1 director + 5 jefes de equipo); VCIS (Vías de Cuidado Integral en Salud); Comités Distritales de Salud (determinantes sociales)",
    "Zona rural (<2000 hab INEI) vs urbana; cogestión CLAS (Ley 29124); privados NO forman parte de la RIS por defecto"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/drive/folders/13fYG58fySgFIC1HKBVUCNw61ipa6C69V",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=6",
+  "videosExtra": [
+   {
+    "titulo": "SISTEMA DE REFERENCIA Y CONTRARREFERENCIA Y PROCESO DE ADMISIóN INTEGRAL",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/RWJlWDVOUGEzdEhYclBNY2xGeEo3UT09"
+   },
+   {
+    "titulo": "REDES INTEGRADAS DE SALUD (RIS)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/OEVZZHNlVlBwNVk0d20zYlJMYThGdz09"
+   },
+   {
+    "titulo": "SISTEMA DE REFERENCIA Y CONTRARREFERENCIA",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/UnVwdWl2QmIwYVFSWHpiTEQrZXd6Zz09"
+   }
+  ],
+  "gapSources": []
  },
  "V-7+V-10": {
   "tier": "ALTA",
@@ -852,6 +1471,28 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Coordinación intersectorial y alianzas estratégicas (Plan Multisectorial Anemia MINSA/MIDIS/MINEDU; Qali Warma)",
    "Gestión de la HC (cruza con III-8/III-9): archivo activo (5 años) / pasivo / especial (40 años); conservación mínima 20 años; copia autenticada en ≤5 días",
    "AUS (Aseguramiento Universal en Salud) y SIS; intercambio prestacional"
+  ],
+  "compendioUrl": "https://drive.google.com/drive/folders/13fYG58fySgFIC1HKBVUCNw61ipa6C69V",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=6",
+  "videosExtra": [
+   {
+    "titulo": "GESTIóN DE LA HISTORIA CLíNICA",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/NHRkNk5NcWk3MTRDMmlxVFJMWkRPUT09"
+   },
+   {
+    "titulo": "GESTIóN DE RRHH",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/dzRQYTRyTUEvUmVCL0k2YzdOK0lJZz09"
+   },
+   {
+    "titulo": "BUENAS PRÁCTICAS DE ALMACENAMIENTO",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/TkQ2T1JuWHFzSkpIbWtCeU5DOTNCQT09"
+   }
+  ],
+  "gapSources": [
+   {
+    "label": "QX ENAM · Epi resumen",
+    "url": "https://drive.google.com/file/d/14dSCm-Ftxf9ys7_O6IwRzqOFb1n2O8Nu/view"
+   }
   ]
  },
  "V-6": {
@@ -869,6 +1510,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "Actores: teleconsultante (IPRESS que solicita) vs teleconsultor (especialista que brinda); DIGTEL (Dirección General de Telesalud, Referencia y Urgencias); RNT (Red Nacional de Telesalud, conducida por MINSA)",
    "Servicios de telemedicina: teleconsulta, teleinterconsulta, teleorientación, telemonitoreo, teleapoyo al diagnóstico",
    "Ejes operativos: telegestión, telecapacitación, teleIEC"
-  ]
+  ],
+  "compendioUrl": "https://drive.google.com/drive/folders/13fYG58fySgFIC1HKBVUCNw61ipa6C69V",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=6",
+  "videosExtra": [],
+  "gapSources": []
  }
 };

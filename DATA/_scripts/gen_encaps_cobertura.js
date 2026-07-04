@@ -6,25 +6,78 @@
 const fs = require('fs'); const path = require('path');
 const SB = 'C:/Users/JOSEPH~1/AppData/Local/Temp/claude/D--joseph-md-app/2b1d4275-ceb5-4f8d-9ab0-d4dbbd76c52a/scratchpad/cobertura_final.json';
 const rows = JSON.parse(fs.readFileSync(SB, 'utf8'));
+const VIDS = JSON.parse(fs.readFileSync(SB.replace('cobertura_final.json', 'qx_videos_165.json'), 'utf8'));
+
+// Normalizador para matchear títulos de la guía contra los 165 videos reales.
+const norm = s => (s || '').toUpperCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^A-Z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
+const VIDX = VIDS.map(v => ({ titulo: v.sub, url: v.url, n: norm(v.sub) })).filter(v => v.url);
+
+// videosExtra: los videos QX que la guía menciona por título → {titulo,url} clicable (dedup por url).
+function resolveVideos(guidance) {
+  const g = norm(guidance); const out = []; const seen = new Set();
+  for (const v of VIDX) {
+    if (v.n.length < 10) continue;
+    if (g.includes(v.n) && !seen.has(v.url)) { seen.add(v.url); out.push({ titulo: v.titulo, url: v.url }); }
+  }
+  return out;
+}
+
+// Compendio DR LOPEZ por área (PDF directo SP/CI/Ética; carpeta para Inv/Gestión).
+const AREA_COMP = {
+  I: 'https://drive.google.com/file/d/1iq_BDzPe3idrZeGL0Q3eR7IB9mKyDftT/view',
+  II: 'https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view',
+  III: 'https://drive.google.com/file/d/1DCrhYE_DwZ25RoDSIhcxTq52cDRG1qSN/view',
+  IV: 'https://drive.google.com/drive/folders/13fYG58fySgFIC1HKBVUCNw61ipa6C69V',
+  V: 'https://drive.google.com/drive/folders/13fYG58fySgFIC1HKBVUCNw61ipa6C69V',
+};
+// Sección Theomed del área (curso 73) — para "mira N videos Theomed" clicable.
+const AREA_THEOMED = {
+  I: 'https://campus.academiatheomed.com/course/view.php?id=73&section=2',
+  II: 'https://campus.academiatheomed.com/course/view.php?id=73&section=3',
+  III: 'https://campus.academiatheomed.com/course/view.php?id=73&section=4',
+  IV: 'https://campus.academiatheomed.com/course/view.php?id=73&section=5',
+  V: 'https://campus.academiatheomed.com/course/view.php?id=73&section=6',
+};
+// Fuentes externas para tapar gaps (Drive), atadas por palabra clave del gap.
+const SRC = {
+  mopece: { label: 'OPS MOPECE 5 · brotes', url: 'https://drive.google.com/file/d/1i-4ETiOgjjtsPxee1aDqx9oVnm0UALtR/view' },
+  enam: { label: 'QX ENAM · Epi resumen', url: 'https://drive.google.com/file/d/14dSCm-Ftxf9ys7_O6IwRzqOFb1n2O8Nu/view' },
+  renace: { label: 'Normativas DR LOPEZ (RENACE 341-2023)', url: 'https://drive.google.com/drive/folders/1YdyhemfujHYIROcBcr9G9avUYulqfpko' },
+};
+function gapSourcesFor(gaps) {
+  const g = (gaps || []).join(' ').toLowerCase(); const s = [];
+  if (/mopece|tasa de ataque|curva epid|brote|investigaci[oó]n de/.test(g)) s.push(SRC.mopece);
+  if (/canal end[eé]mic|curva epid|enam|caso [ií]ndice|primario/.test(g)) s.push(SRC.enam);
+  if (/renace|directiva|notificaci|341|evisap/.test(g)) s.push(SRC.renace);
+  return s;
+}
 
 // 1) lib TS
 const map = {};
 for (const r of rows) {
+  const area = (r.codigo.match(/^[IVX]+/) || [''])[0];
   map[r.codigo] = {
     tier: r.rentabilidadTier, vueltas: r.recommendedVueltas, min: r.recommendedMinutes,
     qxN: r.qxVideos, theomedN: r.theomedVideos, extenso: !!r.extenso,
     freq: r.examFreqNote || '', guidance: r.videosGuidance || '',
     gaps: r.gaps || [], temario: r.compendioSubtemas || [],
+    compendioUrl: AREA_COMP[area] || '',
+    theomedUrl: AREA_THEOMED[area] || '',
+    videosExtra: resolveVideos(r.videosGuidance || ''),
+    gapSources: gapSourcesFor(r.gaps),
   };
 }
 const header = `// AUTO-GENERADO por DATA/_scripts/gen_encaps_cobertura.js — NO editar a mano.\n` +
   `// Mapa de cobertura por tema (barrido compendio DR LOPEZ × Tendencias/forecast × QX/Theomed, 03-jul).\n` +
   `// tier=rentabilidad · vueltas=repeticiones espaciadas · min=minutos núcleo/día · qxN/theomedN=nº videos a mirar\n` +
   `// extenso=merece bloque largo · guidance=cuántos/cuáles videos · gaps=sub-temas a leer en compendio/Drive · temario=índice compendio.\n`;
-const body = `export interface CoberturaTema {\n` +
+const body = `export interface FuenteLink { label: string; url: string }\n` +
+  `export interface VideoExtra { titulo: string; url: string }\n` +
+  `export interface CoberturaTema {\n` +
   `  tier: 'CRÍTICA' | 'ALTA' | 'MEDIA' | 'BAJA'; vueltas: number; min: number;\n` +
   `  qxN: number; theomedN: number; extenso: boolean; freq: string; guidance: string;\n` +
-  `  gaps: string[]; temario: string[];\n}\n` +
+  `  gaps: string[]; temario: string[];\n` +
+  `  compendioUrl: string; theomedUrl: string; videosExtra: VideoExtra[]; gapSources: FuenteLink[];\n}\n` +
   `export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = ${JSON.stringify(map, null, 1)};\n`;
 fs.writeFileSync(path.join(__dirname, '..', '..', 'src', 'lib', 'encapsCobertura.ts'), header + body, 'utf8');
 

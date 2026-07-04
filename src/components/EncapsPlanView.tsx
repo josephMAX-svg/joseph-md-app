@@ -21,6 +21,16 @@ import { ENCAPS_COBERTURA, CoberturaTema } from '../lib/encapsCobertura';
 
 const TIER_COLOR: Record<string, string> = { 'CRÍTICA': Colors.coral, 'ALTA': Colors.gold, 'MEDIA': Colors.blue, 'BAJA': Colors.muted };
 
+// Pill clicable que abre un URL (compendio, Theomed, fuente de gap).
+function LinkChip({ label, url, color }: { label: string; url: string; color: string }) {
+  return (
+    <TouchableOpacity activeOpacity={0.8} onPress={() => Linking.openURL(url).catch(() => {})}
+      style={[{ borderWidth: 1, borderColor: color + '99', backgroundColor: color + '1A', borderRadius: 999, paddingVertical: 3, paddingHorizontal: 10 }, Platform.OS === 'web' ? ({ cursor: 'pointer' } as any) : {}]}>
+      <Text style={{ fontSize: 11, fontWeight: '800', color }}>{label}</Text>
+    </TouchableOpacity>
+  );
+}
+
 // Tarjeta de COBERTURA del tema: cuántos videos mirar (QX+Theomed), vueltas, minutos objetivo,
 // y gaps (sub-temas del compendio sin video → leer). Basado en el barrido de compendios (03-jul).
 function CoberturaCard({ codigo }: { codigo: string }) {
@@ -41,19 +51,41 @@ function CoberturaCard({ codigo }: { codigo: string }) {
         🎬 Mirar: <Text style={{ color: Colors.blue }}>{c.qxN} video{c.qxN !== 1 ? 's' : ''} QX</Text>
         {c.theomedN > 0 && <Text style={{ color: Colors.onSurfaceVariant }}>  +  {'≈'}{Math.min(c.theomedN, c.tier === 'CRÍTICA' ? 6 : c.tier === 'ALTA' ? 4 : 2)} Theomed (de {c.theomedN} del área)</Text>}
       </Text>
+      {/* Recursos clicables del tema: compendio + Theomed del área */}
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 8 }}>
+        {!!c.compendioUrl && <LinkChip label="📕 Compendio" url={c.compendioUrl} color={Colors.gold} />}
+        {!!c.theomedUrl && <LinkChip label={`🎥 Theomed área (${c.theomedN})`} url={c.theomedUrl} color={Colors.secondary} />}
+      </View>
       {!!c.gaps.length && (
-        <Text style={{ fontSize: 11.5, color: Colors.coral, marginTop: 6 }}>
-          {'⚠'} Sin video ({c.gaps.length}) → LEER en compendio/Drive: {open ? c.gaps.join(' · ') : c.gaps.slice(0, 1).join('')}{!open && c.gaps.length > 1 ? '…' : ''}
-        </Text>
+        <View style={{ marginTop: 8 }}>
+          <Text style={{ fontSize: 11.5, color: Colors.coral, fontWeight: '700' }}>
+            {'⚠'} Sin video ({c.gaps.length}) → LEER: {open ? c.gaps.join(' · ') : c.gaps.slice(0, 1).join('') + (c.gaps.length > 1 ? '…' : '')}
+          </Text>
+          {!!c.gapSources.length && (
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 5 }}>
+              {c.gapSources.map((s, i) => <LinkChip key={`gs-${i}`} label={`📖 ${s.label}`} url={s.url} color={Colors.coral} />)}
+            </View>
+          )}
+        </View>
       )}
       <TouchableOpacity activeOpacity={0.8} onPress={() => setOpen(o => !o)} style={Platform.OS === 'web' ? ({ cursor: 'pointer' } as any) : undefined}>
-        <Text style={{ fontSize: 11, color: Colors.secondary, marginTop: 8, fontWeight: '700' }}>{open ? '▾ ocultar guía' : '▸ cómo mirarlos + temario del compendio'}</Text>
+        <Text style={{ fontSize: 11, color: Colors.secondary, marginTop: 8, fontWeight: '700' }}>{open ? '▾ ocultar guía' : `▸ ver los ${c.videosExtra.length} videos exactos + temario del compendio`}</Text>
       </TouchableOpacity>
       {open && (
-        <View style={{ marginTop: 6, gap: 5 }}>
+        <View style={{ marginTop: 6, gap: 6 }}>
+          {!!c.videosExtra.length && (
+            <View style={{ gap: 4 }}>
+              <Text style={{ fontSize: 10.5, fontWeight: '800', letterSpacing: 0.8, color: Colors.smallLabel }}>VIDEOS QX EXACTOS ({c.videosExtra.length}) — toca para abrir</Text>
+              {c.videosExtra.map((v, i) => (
+                <TouchableOpacity key={`ve-${i}`} activeOpacity={0.8} onPress={() => Linking.openURL(v.url).catch(() => {})} style={Platform.OS === 'web' ? ({ cursor: 'pointer' } as any) : undefined}>
+                  <Text style={{ fontSize: 11.5, color: Colors.blue, lineHeight: 17 }}>▸ {v.titulo}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
           <Text style={{ fontSize: 11.5, color: Colors.onSurfaceVariant, lineHeight: 17 }}>{c.guidance}</Text>
           {!!c.freq && <Text style={{ fontSize: 11, color: Colors.smallLabel, lineHeight: 16 }}>📊 {c.freq}</Text>}
-          {!!c.temario.length && <Text style={{ fontSize: 11, color: Colors.smallLabel, lineHeight: 16 }}>📚 Temario compendio: {c.temario.join(' · ')}</Text>}
+          {!!c.temario.length && <Text style={{ fontSize: 11, color: Colors.smallLabel, lineHeight: 16 }}>📚 Temario compendio ({c.temario.length}): {c.temario.join(' · ')}</Text>}
         </View>
       )}
     </View>
