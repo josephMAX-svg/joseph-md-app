@@ -17,6 +17,48 @@ import { ANKIWEB } from '../lib/ankiLinks';
 import { ENCAPS_FICHAS_MINSA, ENCAPS_ACADEMIAS_RESPALDO, ENCAPS_THEOMED_SIMULACROS, ENCAPS_QX_ACCESOS, ENCAPS_FUENTES_META, ENCAPS_THEOMED_AREA, ENCAPS_THEOMED_EXTRA, ENCAPS_THEOMED_VIDEOS } from '../lib/encapsFuentes';
 import { CountdownCockpit, RentabilidadStrip, RetrievalRadarLegend, GoNoGoAltimeter } from './EncapsCockpit';
 import { encapsGoZone, encapsGoColor } from '../lib/encapsRentabilidad';
+import { ENCAPS_COBERTURA, CoberturaTema } from '../lib/encapsCobertura';
+
+const TIER_COLOR: Record<string, string> = { 'CRÍTICA': Colors.coral, 'ALTA': Colors.gold, 'MEDIA': Colors.blue, 'BAJA': Colors.muted };
+
+// Tarjeta de COBERTURA del tema: cuántos videos mirar (QX+Theomed), vueltas, minutos objetivo,
+// y gaps (sub-temas del compendio sin video → leer). Basado en el barrido de compendios (03-jul).
+function CoberturaCard({ codigo }: { codigo: string }) {
+  const [open, setOpen] = useState(false);
+  const c: CoberturaTema | undefined = ENCAPS_COBERTURA[codigo];
+  if (!c) return null;
+  const tc = TIER_COLOR[c.tier] || Colors.muted;
+  return (
+    <View style={{ backgroundColor: Colors.surfaceContainerLow, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.soft, borderLeftWidth: 3, borderLeftColor: tc, padding: Spacing.md, marginBottom: Spacing.section, ...Elevation.sm }}>
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: 6 }}>
+        <Text style={{ fontSize: 10, fontWeight: '800', letterSpacing: 1.2, color: Colors.smallLabel }}>COBERTURA · {codigo}</Text>
+        <Pill text={c.tier} color={tc} />
+        <Pill text={`${c.vueltas} vueltas`} color={Colors.green} />
+        <Pill text={`${c.min} min`} color={Colors.brass} />
+        {c.extenso && <Pill text="EXTENSO" color={Colors.purple} />}
+      </View>
+      <Text style={{ fontSize: 12.5, color: Colors.onSurface, marginTop: 8, fontWeight: '700' }}>
+        🎬 Mirar: <Text style={{ color: Colors.blue }}>{c.qxN} video{c.qxN !== 1 ? 's' : ''} QX</Text>
+        {c.theomedN > 0 && <Text style={{ color: Colors.onSurfaceVariant }}>  +  {'≈'}{Math.min(c.theomedN, c.tier === 'CRÍTICA' ? 6 : c.tier === 'ALTA' ? 4 : 2)} Theomed (de {c.theomedN} del área)</Text>}
+      </Text>
+      {!!c.gaps.length && (
+        <Text style={{ fontSize: 11.5, color: Colors.coral, marginTop: 6 }}>
+          {'⚠'} Sin video ({c.gaps.length}) → LEER en compendio/Drive: {open ? c.gaps.join(' · ') : c.gaps.slice(0, 1).join('')}{!open && c.gaps.length > 1 ? '…' : ''}
+        </Text>
+      )}
+      <TouchableOpacity activeOpacity={0.8} onPress={() => setOpen(o => !o)} style={Platform.OS === 'web' ? ({ cursor: 'pointer' } as any) : undefined}>
+        <Text style={{ fontSize: 11, color: Colors.secondary, marginTop: 8, fontWeight: '700' }}>{open ? '▾ ocultar guía' : '▸ cómo mirarlos + temario del compendio'}</Text>
+      </TouchableOpacity>
+      {open && (
+        <View style={{ marginTop: 6, gap: 5 }}>
+          <Text style={{ fontSize: 11.5, color: Colors.onSurfaceVariant, lineHeight: 17 }}>{c.guidance}</Text>
+          {!!c.freq && <Text style={{ fontSize: 11, color: Colors.smallLabel, lineHeight: 16 }}>📊 {c.freq}</Text>}
+          {!!c.temario.length && <Text style={{ fontSize: 11, color: Colors.smallLabel, lineHeight: 16 }}>📚 Temario compendio: {c.temario.join(' · ')}</Text>}
+        </View>
+      )}
+    </View>
+  );
+}
 
 // Fuente monoespaciada táctica para numerales (motivo Bloomberg/cockpit).
 const MONO_NUM = Platform.select({ web: "'SF Mono','JetBrains Mono','Roboto Mono',ui-monospace,monospace", default: 'monospace' }) as string;
@@ -289,6 +331,10 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
           <Text style={styles.findeStudyLine}>◆ Fin de semana de ESTUDIO (aún no hay examen — tu 1er examen es el 2º finde)</Text>
         )}
       </View>
+
+      {/* Cobertura del tema: cuántos videos mirar + vueltas + gaps (barrido de compendios) */}
+      {!!today.codigo && <CoberturaCard codigo={today.codigo} />}
+      {today.temas_secundarios?.map((s) => (s.codigo ? <CoberturaCard key={`cob-${s.codigo}`} codigo={s.codigo} /> : null))}
 
       {/* Progreso de hoy — checklist de misión */}
       <View style={styles.progressCard}>
