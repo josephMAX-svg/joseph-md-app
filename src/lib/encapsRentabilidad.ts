@@ -51,13 +51,13 @@ export const ENCAPS_VUELTAS_POR_PRIORIDAD: { key: string; label: string; vueltas
   { key: 'BAJA',    label: 'BAJA', vueltas: 3, accent: Colors.muted },
 ];
 
-// Marca Go/No-Go: 17/20 = 85%. Zonas del altímetro (sobre 20).
-export const ENCAPS_META_NOTA = 17;         // /20
-export const ENCAPS_META_PCT = 85;          // %
-// nota → zona: verde ≥17 · ámbar 14-16.99 · rojo <14
+// Marca Go/No-Go: meta real de Joseph = >18/20 (90%). Zonas del altímetro (sobre 20).
+export const ENCAPS_META_NOTA = 18;         // /20 — meta declarada >18
+export const ENCAPS_META_PCT = 90;          // %
+// nota → zona: verde ≥18 (meta) · ámbar 14-17.99 (bajo meta) · rojo <14
 export function encapsGoZone(nota: number | null | undefined): 'go' | 'warn' | 'nogo' | 'none' {
   if (nota == null) return 'none';
-  if (nota >= 17) return 'go';
+  if (nota >= 18) return 'go';
   if (nota >= 14) return 'warn';
   return 'nogo';
 }

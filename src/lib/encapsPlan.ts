@@ -10,15 +10,15 @@ import { PRACTICA_DEEP_PRIME, PRACTICA_REPASO } from './encapsPracticaExtra';
 
 // ── D1 por examen (para calcular el día actual 1..71) ──
 export const STUDY_D1: Record<string, string> = {
-  ENCAPS: '2026-07-03',   // D1=VIE 3-jul (re-shift 2-jul: día de reestructuración del método, no se estudió) · EXAMEN FIJO jue 20-ago (42 días). Filosofía: EXTENDER días de estudio (17 temas primarios + 23 secundarios = 40 temas, cero saltos) + REDUCIR días de pregunta (repaso 17→16) para caber al 20-ago. Evaluaciones intactas: el bundle de sims del día perdido se FUSIONÓ en el dx 19-ago (13 sims, recta final). Generador: gen_encaps_reshift_2jul_exam20.js 2026-07-03 (parametrizado; backup Supabase study_schedule_bk_0703). 42 días = 33 weekday (17 temas + 16 repaso multi-tema front-load Pareto, todo el temario ≤día~21) + 7 sáb simulacros + dx mié 19-ago + EXAMEN jue 20-ago. 40 temas distintos verificados, cero saltos.
+  ENCAPS: '2026-07-06',   // D1=LUN 6-jul (re-shift 6-jul: pendientes urgentes, aún no venció nada) · EXAMEN FIJO jue 20-ago (40 días). Filosofía: EXTENDER días de estudio (17 temas primarios + 23 secundarios = 40 temas, cero saltos) + REDUCIR días de pregunta (repaso 17→16) para caber al 20-ago. Evaluaciones intactas: el bundle de sims del día perdido se FUSIONÓ en el dx 19-ago (13 sims, recta final). Generador: gen_encaps_reshift_2jul_exam20.js 2026-07-06 (parametrizado; backup Supabase study_schedule_bk_0706). 40 días = 32 weekday (17 temas + 15 repaso multi-tema front-load Pareto, todo el temario ≤día~19) + 6 sáb simulacros + dx mié 19-ago + EXAMEN jue 20-ago. 40 temas distintos verificados, cero saltos. Tras el reshift: re-aplicar gen_encaps_cola_alinear.js + gen_encaps_cobertura.js --apply (videos/vueltas por código).
   // MIR / USMLE se agregan cuando se construyan sus cronogramas.
 };
 // Fechas SIN actividad (bloqueadas por Joseph) — no cuentan como día de plan.
 // v7 (23-jun): TODOS los domingos del tramo 24-jun → 20-ago quedan libres (8 domingos).
 export const STUDY_SKIP_DATES: Record<string, string[]> = {
-  ENCAPS: ['2026-07-05', '2026-07-12', '2026-07-19', '2026-07-26', '2026-08-02', '2026-08-09', '2026-08-16'],
+  ENCAPS: ['2026-07-12', '2026-07-19', '2026-07-26', '2026-08-02', '2026-08-09', '2026-08-16'],
 };
-const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 42 };
+const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 40 };
 
 // ── Tipos (espejo de las columnas study_*) ──
 export interface StudyVideo {
