@@ -17,7 +17,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "CRÍTICA",
   "vueltas": 6,
   "min": 120,
-  "qxN": 2,
+  "qxN": 7,
   "theomedN": 31,
   "extenso": true,
   "freq": "Tema #1 de toda el área I y rey temático del examen (I-3 fue #1 en 2025-I y 2026-I). QX Tendencias suma ~40/400 en el clúster I-3 (Vigilancia 14 + Brotes/epidemias/endemias 9 + Mediciones 7 + ASIS 4 + Causalidad 3 + Hist natural 3) ≈ 10/examen. Forecast v2 lo pone en 13% (banda 11-16), con sesgo a la baja hacia ~12 tras auditoría. Tendencia: ALZA sostenida; el eje viró de 'brote/notificación' hacia vigilancia activa/pasiva/centinela, IAAS y cadena epidemiológica.",
@@ -76,8 +76,8 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/alFYRWNhNHhDVE50aWhqa2ZQTysvUT09"
    },
    {
-    "titulo": "SALUD PÚBLICA",
-    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/QVNhVkVkZXlvM2NmL3EybDRyQjlQdz09"
+    "titulo": "Conceptos básicos de epidemiología (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/a2ZaeDZBT25ZMmhXdmw2bTRzcWdYQT09"
    }
   ],
   "gapSources": [
@@ -136,7 +136,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "MEDIA",
   "vueltas": 3,
   "min": 55,
-  "qxN": 9,
+  "qxN": 6,
   "theomedN": 31,
   "extenso": true,
   "freq": "SEPARAR los dos: I-5 (determinantes/demografía) es ALZA emergente — forecast 4% (banda 2-6), QX suma ~10 (Determinantes 7 + Demografía 3); fue sorpresa ciega en varios folds. I-6 (bioestadística/cálculo) está PRÁCTICAMENTE MUERTO: forecast lo retiró, QX Bioestadística=2 y Pruebas diagnósticas=4 (~0.5-1/examen); el formato 90% viñeta lo mató. Peso real de la fusión lo aporta I-5, no I-6.",
@@ -174,6 +174,14 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    {
     "titulo": "BIOESTADíSTICA BáSICA",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/Nkl4dERCQVduM0RQSmdVQi91VitvQT09"
+   },
+   {
+    "titulo": "HISTORIA NATURAL DEL PROCESO SALUD ENFERMEDAD",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/NVZmd3BLR25VSkVFYkYxTGUzeWtxZz09"
+   },
+   {
+    "titulo": "ANáLISIS SITUACIONAL DE SALUD - SALA SITUACIONAL DE SALUD",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/ZFJobndHMnBZVm04YjVuL252NnI4dz09"
    }
   ],
   "gapSources": [],
@@ -216,7 +224,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "ALTA",
   "vueltas": 5,
   "min": 70,
-  "qxN": 2,
+  "qxN": 6,
   "theomedN": 31,
   "extenso": false,
   "freq": "Rentable y estable-alta. OJO taxonomía: QX clasifica metaxénicas/zoonosis dentro de CUIDADO INTEGRAL (II) con 14/400 (~3.5/examen) + control de vectores 2 → es la mayor reclasificación entre QX y nuestra taxonomía. Forecast 3% (banda 2-5), estable. En viñeta: dengue con signos de alarma (A/B/C), reconocer y clasificar, NO ml/kg.",
@@ -239,16 +247,28 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   },
   "videosExtra": [
    {
-    "titulo": "ENDEMIAS, EPIDEMIAS Y BROTES",
-    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/N1FYaExLT3YxT2tOWVFJR3NsM0FnUT09"
-   },
-   {
     "titulo": "PREVENCIóN Y CONTROL DE INFECCIONES",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/MCtyekxhOVlQS0kzbkFPMWx6bTRwQT09"
    },
    {
     "titulo": "PREVENCIÓN Y CONTROL DE DENGUE",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/bzBSbTBXYXJzRHFSMFNvK0t0Kyt4Zz09"
+   },
+   {
+    "titulo": "Vigilancia y manejo de zoonosis",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/dFlmTEZBM0tTcm5WQTNOZkVnZ1hCQT09"
+   },
+   {
+    "titulo": "Prevención de enfermedades transmisibles",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/dDlKNHFRWjByZXFaYnBXS293NUoyUT09"
+   },
+   {
+    "titulo": "Exposición a metales pesados y otras sustancias",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/TTV5ZTUrTVc5aGkvd29aNU5HdDlyQT09"
+   },
+   {
+    "titulo": "Control de vectores y plagas",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/d0V5UE9iNkRFTzJCd2hpemprbFlEQT09"
    }
   ],
   "gapSources": [],
@@ -288,7 +308,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "ALTA",
   "vueltas": 5,
   "min": 65,
-  "qxN": 3,
+  "qxN": 4,
   "theomedN": 31,
   "extenso": true,
   "freq": "Emergente que se subestima: fue sorpresa ciega en 2025-I, 2025-II. QX Promoción=9 (+IEC 1) ≈ 2.25/examen. Forecast lo mete en la watch-list de emergentes (intersectorialidad/participación). Tendencia estable-alta. Diferenciarlo de prevención primaria (I-10).",
@@ -320,8 +340,12 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/Zi9SeS9TakFJZlUwayt5MVQxdDYxZz09"
    },
    {
-    "titulo": "INSTITUCIONES Y MUNICIPIO SALUDABLE",
-    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/NDl3b1hOZEpMbE9lNjNTQlh5UllHQT09"
+    "titulo": "Infecciones asociadas a la atención de salud",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/eWZrZWU5am5IdXFON1JmQlJmeTZMQT09"
+   },
+   {
+    "titulo": "Información, educación y comunicación para la salud",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/OWQzb24vemJZWW9jQkZGZ2xKSGhidz09"
    }
   ],
   "gapSources": [],
@@ -358,9 +382,9 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
  },
  "I-11+I-12": {
   "tier": "MEDIA",
-  "vueltas": 3,
-  "min": 75,
-  "qxN": 16,
+  "vueltas": 4,
+  "min": 90,
+  "qxN": 13,
   "theomedN": 31,
   "extenso": true,
   "freq": "Clúster grande y disperso; individualmente cada subtema rinde poco pero SUMADO es apreciable y son sorpresas ciegas recurrentes (I-11/I-12, participación/control social están en watch-list del forecast). QX reparte: participación social 1 + plan salud local 2 + sectorización/ficha 2 + residuos 3 + salud ocupacional 2 + TICs 3 + gestión del riesgo/desastres 2. Ninguno individual es crítico, pero cubre 'presupuesto de sorpresa'.",
@@ -415,6 +439,34 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    {
     "titulo": "SECTORIZACIóN Y FICHA FAMILIAR",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/dkYwYTR1ZGptOGZCVEp1NUxQWE03dz09"
+   },
+   {
+    "titulo": "Uso racional de medicamentos",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/T25MSjhwNFpDUkNnSkJWSnVQWG04dz09"
+   },
+   {
+    "titulo": "Sistemas de información y tic en salud",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/WUd0Z2hjQVhuMVR4SUg0a01NOXhrUT09"
+   },
+   {
+    "titulo": "Alimentación y nutrición",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/bHl6Z05tdGFvOWNoU3RLY09Ud0xLQT09"
+   },
+   {
+    "titulo": "Inocuidad alimentaria",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/b1dEQUJmcGhuQ0wxSmhlU051c1NiZz09"
+   },
+   {
+    "titulo": "Plan de salud local",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/VTRQSVBqRHRLbGpWSjRBeVNBVkU3QT09"
+   },
+   {
+    "titulo": "Intervenciones comunitarias en salud",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/aUNlTlNMQjIwUDBPSno2dERqa3F5UT09"
+   },
+   {
+    "titulo": "Modelo de salud mental comunitaria",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/V0RSL2dYS1M3cng5SncvOUphYjBFdz09"
    }
   ],
   "gapSources": [],
@@ -458,7 +510,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "ALTA",
   "vueltas": 5,
   "min": 55,
-  "qxN": 3,
+  "qxN": 2,
   "theomedN": 31,
   "extenso": false,
   "freq": "Rentable y estable. QX: Conceptos básicos SP 9 + FESP 5 = 14/400 (~3.5/examen). Fue sorpresa ciega en 2026-I (I-2). Forecast lo lista en watch de emergentes (FESP). Preguntable como definición/clasificación directa, cruza con viñeta de gobernanza.",
@@ -486,10 +538,6 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    {
     "titulo": "FUNCIONES ESENCIALES DE LA SALUD PúBLICA",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/eGo2cTU5OWtzWVo5UytIMUdiS2lydz09"
-   },
-   {
-    "titulo": "SALUD PÚBLICA",
-    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/QVNhVkVkZXlvM2NmL3EybDRyQjlQdz09"
    }
   ],
   "gapSources": [],
@@ -528,7 +576,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "ALTA",
   "vueltas": 5,
   "min": 55,
-  "qxN": 3,
+  "qxN": 4,
   "theomedN": 31,
   "extenso": false,
   "freq": "Rentable y transversal (los niveles de prevención se cruzan con casi todo). QX: Etapas y niveles de prevención 4 + Accesibilidad 3 = 7/400 (~1.75/examen). Forecast estable. Alto valor porque el eje 'primaria/secundaria/terciaria/cuaternaria' y 'promoción vs protección específica' es trampa recurrente en viñetas.",
@@ -562,8 +610,8 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/VXg5UjZUeWYrcUp1ekNGODh5VS94Zz09"
    },
    {
-    "titulo": "ATENCIóN PRIMARIA DE SALUD (APS)",
-    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/MDZKTlFqYUt0VzZkL0xrc0U5SitvZz09"
+    "titulo": "Principales instrumentos de medición en primer nivel de atención",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/R1dyTDU1UUVXT00xeUxoUk5hSEFXZz09"
    }
   ],
   "gapSources": [],
@@ -733,12 +781,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "label": "Videoclases DR LOPEZ · SP",
    "url": "https://drive.google.com/drive/folders/1tlyniouI5o_SOpw-LBa2IGfWgG5zpfF0"
   },
-  "videosExtra": [
-   {
-    "titulo": "SECTORIZACIóN Y FICHA FAMILIAR",
-    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/dkYwYTR1ZGptOGZCVEp1NUxQWE03dz09"
-   }
-  ],
+  "videosExtra": [],
   "gapSources": [],
   "bookCoverage": {
    "lopez": "parcial",
@@ -775,7 +818,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "CRÍTICA",
   "vueltas": 6,
   "min": 110,
-  "qxN": 13,
+  "qxN": 11,
   "theomedN": 54,
   "extenso": true,
   "freq": "QX Tendencias: emergencias obstétricas 9 + embarazo/parto/puerperio 3 + climaterio 1 + emerg.obst(específicos) 1 = 14/400 (~3.5%/examen). Forecast v2: II-1 ~5% (banda 4-8), tendencia ALZA, CRÍTICO confirmado. Núcleo caliente: PARTO VERTICAL (criterios/posición), referencia de gestante por nivel, preeclampsia/eclampsia. Viñeta clínica ~90%.",
@@ -846,8 +889,12 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/VFJNZnhpeTdmVUx5eWdQbFY3VE1mZz09"
    },
    {
-    "titulo": "PUERPERIO NORMAL",
-    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/a0t4S2xpNnY5L3Y5bVdmbGRWeWhGZz09"
+    "titulo": "EXPULSIVO",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/RTBBRkh5OTRwMG9tQ2o1bWFZS0Jydz09"
+   },
+   {
+    "titulo": "PAQUETE BáSICO DE CUIDADO DEL BINOMIO MADRE NIñO",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/UXRoYTVNY2FCVUZ6MndxSzlQdjhEQT09"
    }
   ],
   "gapSources": [],
@@ -886,7 +933,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "CRÍTICA",
   "vueltas": 6,
   "min": 90,
-  "qxN": 3,
+  "qxN": 2,
   "theomedN": 54,
   "extenso": true,
   "freq": "QX Tendencias: esquema nacional 8 + persona con esquema regular 5 = 13/400 (~3.25%/examen). Forecast v2: II-3 ~5% (banda 3-8), ALZA, CRÍTICO. Emergente confirmado por FICHA MINSA nueva (esquema desdoblado) + live QX 'NT Inmunizaciones'. Núcleo: cadena de frío 2-8°C y ruptura, esquema por edad (VPH 9a dosis única, SPR, influenza+neumococo en AM), ESAVI severo notificación 24h.",
@@ -917,12 +964,12 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   },
   "videosExtra": [
    {
-    "titulo": "ESQUEMA NACIONAL DE VACUNACIóN EN EL PERú",
-    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/TExXRzZHc0tWSytWaURnQWR5RmdjUT09"
+    "titulo": "ESQUEMA NACIONAL DE VACUNACIóN EN PERú",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/TW14OFpydEY5RitybDNCUXpTOG9OUT09"
    },
    {
-    "titulo": "ESQUEMA NACIONAL DE VACUNACIóN EN EL PERú- ACTUALIZACIóN",
-    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/NFBVUkhndCtBZGhDNWl2QkJyT25xZz09"
+    "titulo": "ATENCIóN DE LA PERSONA CON EL ESQUEMA REGULAR DE VACUNACIóN",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/UUgzalZEQ0JtemtJOVRIVmdoOE9WQT09"
    }
   ],
   "gapSources": [],
@@ -960,7 +1007,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "CRÍTICA",
   "vueltas": 6,
   "min": 100,
-  "qxN": 6,
+  "qxN": 3,
   "theomedN": 54,
   "extenso": true,
   "freq": "QX Tendencias: ITS 9/400 (~2.25%/examen) — nota: PTMI VIH/sífilis/VHB cuenta aparte. Forecast v2: II-11 ~5% (banda 3-7), ALZA, CRÍTICO. Confirmado por TRIPLE FICHA MINSA nueva (VIH/sífilis/VHB) + live QX 'NT ITS' + rebote en 2026-I. Núcleo: prueba dual/triple VIH-sífilis en gestante/adolescente, penicilina benzatínica, PTMI.",
@@ -1000,10 +1047,6 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    {
     "titulo": "PREVENCIÓN DE LA TRANSMISIÓN MATERNO INFANTIL DE VIH, SÍFILIS Y VHB",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/K2NnZDdPT2w5NzFBck15OTU2cjJmZz09"
-   },
-   {
-    "titulo": "PREVENCIÓN DE LA TRANSMISIÓN MATERNO INFANTIL DE VIH",
-    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/cmdzcDduUk0wZHdMMmxZaHVsQlJydz09"
    }
   ],
   "gapSources": [],
@@ -1040,9 +1083,9 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ]
  },
  "II-8": {
-  "tier": "ALTA",
-  "vueltas": 5,
-  "min": 75,
+  "tier": "CRÍTICA",
+  "vueltas": 6,
+  "min": 90,
   "qxN": 1,
   "theomedN": 54,
   "extenso": true,
@@ -1110,7 +1153,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "ALTA",
   "vueltas": 5,
   "min": 65,
-  "qxN": 1,
+  "qxN": 2,
   "theomedN": 54,
   "extenso": true,
   "freq": "QX Tendencias: 9/400 (~2.25%/examen). Forecast v2: II-7 ~3% (banda 2-5), estable, EMERGENTE/watch-list (pico ciego recurrente en backtest). Joseph indica que casi siempre cae 1 pregunta de VACAM. Núcleo: VACAM breve/corta/completa por nivel, escalas (Pfeiffer, caídas, Barthel), clasificación funcional, inmunización AM.",
@@ -1244,7 +1287,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "ALTA",
   "vueltas": 5,
   "min": 70,
-  "qxN": 4,
+  "qxN": 2,
   "theomedN": 54,
   "extenso": true,
   "freq": "QX Tendencias: 8/400 (~2%/examen). Forecast v2: II-4 ~3% (banda 2-5), estable. Núcleo: suplementación de hierro por etapa (lactante 4m/prematuro 30d, gestante desde captación), corrección de Hb por altitud, dosis de tratamiento vs preventiva.",
@@ -1310,7 +1353,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "ALTA",
   "vueltas": 4,
   "min": 65,
-  "qxN": 6,
+  "qxN": 3,
   "theomedN": 54,
   "extenso": true,
   "freq": "QX Tendencias: prevención y control del cáncer 6/400 (~1.5%/examen). Forecast v2: añadido a watch-list (tamizaje mama/CACU). Joseph indica que suele caer 1 pregunta. Núcleo: tamizaje CACU (DM-VPH/IVAA/PAP por edad), mama (ECM/mamografía), próstata (PSA), regla ABCDE piel, cáncer infantil referencia ≤72h.",
@@ -1341,12 +1384,8 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/WkFIMkpIQkthcDFGSEJVVjlvZmpDdz09"
    },
    {
-    "titulo": "PREVENCIóN Y CONTROL DEL CáNCER",
-    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/MHhoaXpOWWFkUkdqZlVOUjR2Mi9ZUT09"
-   },
-   {
-    "titulo": "PREVENCIóN Y CONTROL DEL CáNCER DE CéRVIX",
-    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/NElXL1ppOVMwNFg1REFrT1NnUmNmdz09"
+    "titulo": "Prevención y control de enfermedades raras y huérfanas",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/Qi82dFNoa21aL0pDYWtjOWNWaHBFQT09"
    }
   ],
   "gapSources": [],
@@ -1382,7 +1421,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "ALTA",
   "vueltas": 4,
   "min": 70,
-  "qxN": 2,
+  "qxN": 1,
   "theomedN": 54,
   "extenso": true,
   "freq": "QX Tendencias: paquete cuidado integral del niño (CRED) 5/400 (~1.25%/examen). Forecast v2: watch-list de emergentes. Compendio le dedica MUCHO espacio (el más extenso de los paquetes por curso de vida). Núcleo: periodicidad de controles CRED por edad, instrumentos de tamizaje (EDI, M-CHAT, PPSC/PSC17), valoración nutricional antropométrica.",
@@ -1413,14 +1452,6 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    {
     "titulo": "PAQUETE DEL CUIDADO INTEGRAL DE SALUD DEL NIñO - CRED",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/cUNBWXFqeVNSM21CT2VLdXVyOVRLZz09"
-   },
-   {
-    "titulo": "CRED- ACTUALIZACIóN",
-    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/c2lNRUJYT0hHSHV1eFdmbXBGdXRiZz09"
-   },
-   {
-    "titulo": "CUIDADO INTEGRAL DE SALUD",
-    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/SE54ckQyaUQrZTQ4RVROUkpjL3djQT09"
    }
   ],
   "gapSources": [],
@@ -1458,7 +1489,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "ALTA",
   "vueltas": 4,
   "min": 70,
-  "qxN": 19,
+  "qxN": 9,
   "theomedN": 54,
   "extenso": true,
   "freq": "QX Tendencias: MCI definición 3 + atención por curso de vida 5 + adolescente 4 + joven 1 = ~13/400 (~3.25%/examen). Forecast v2: no listado como crítico pero volumen apreciable. Núcleo: APS (Alma-Ata/atributos), evolución MAIS→MAIS-BFC→MCI 2020, paquetes por etapa de vida, niveles de atención/RIS.",
@@ -1500,6 +1531,22 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    {
     "titulo": "ATENCIóN CENTRADA EN LA PERSONA",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/bEJJZFE1Q3BmdlRkWklka0JaOG13QT09"
+   },
+   {
+    "titulo": "Paquete básico de cuidado para el adolescente",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/K1g3cU8zNFlPMnh5Tks1TzNhYndodz09"
+   },
+   {
+    "titulo": "Paquete básico del cuidado integral del joven",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/Zkd3MXZEdkxTbnVPOWlucDBOaHBrZz09"
+   },
+   {
+    "titulo": "MCI - política nacional multisectorial de salud al 2030",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/N05xTG1xL1A0K3hsajZld25DVitlZz09"
+   },
+   {
+    "titulo": "Exámenes auxiliares y de apoyo al diagnóstico",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/eWpoTzNNTXVFRDYrdlR3N3lrb1lkQT09"
    }
   ],
   "gapSources": [],
@@ -1719,7 +1766,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
  },
  "III-5": {
   "tier": "CRÍTICA",
-  "vueltas": 5,
+  "vueltas": 6,
   "min": 90,
   "qxN": 5,
   "theomedN": 11,
@@ -1804,7 +1851,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "ALTA",
   "vueltas": 4,
   "min": 50,
-  "qxN": 1,
+  "qxN": 2,
   "theomedN": 11,
   "extenso": false,
   "freq": "QX Tendencias: 'Código de ética y deontología profesional' = 9 conteos (el sub-tema #1 del cluster ética-bioética del área) ≈ 2.25%/examen. Estable. Cruza con III-8.",
@@ -1827,6 +1874,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    {
     "titulo": "CóDIGO DE éTICA Y DEóNTOLOGIA PROFESIONAL",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/QWhZb0RQemJoWWlpSW92bnNMK0xnZz09"
+   },
+   {
+    "titulo": "Aspectos legales y forenses en medicina",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/MVQ3Q3B2WEhweFdKNTE1VmN6K3ZuQT09"
    }
   ],
   "gapSources": [],
@@ -1862,7 +1913,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "ALTA",
   "vueltas": 5,
   "min": 70,
-  "qxN": 2,
+  "qxN": 1,
   "theomedN": 11,
   "extenso": true,
   "freq": "QX Tendencias: 'Ética e integridad y ética en la función pública' = 7 conteos ≈ 1.75%/examen. Forecast v2 lo da como EMERGENTE al alza (confidencialidad VIH/secreto profesional; HC archivo/acceso) con banda 2-6%.",
@@ -1886,10 +1937,6 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    {
     "titulo": "ÉTICA E INTEGRIDAD Y éTICA EN LA FUNCIóN PúBLICA",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/VGxmUjROVFlDNGlHZ09vVkwzNVV5Zz09"
-   },
-   {
-    "titulo": "ÉTICA E INTEGRIDAD EN SALUD",
-    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/MTY3bmovRmxYQlpRM1k2d0VBeXRGUT09"
    }
   ],
   "gapSources": [],
@@ -1925,7 +1972,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "ALTA",
   "vueltas": 4,
   "min": 55,
-  "qxN": 2,
+  "qxN": 1,
   "theomedN": 11,
   "extenso": true,
   "freq": "QX Tendencias: 'Principios y fundamentos de la ética' = 3 conteos ≈ 0.75%/examen (baja frecuencia pura, pero los 4 principios de Beauchamp son base transversal de muchas viñetas éticas). Forecast: no crítico.",
@@ -1948,10 +1995,6 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    {
     "titulo": "PRINCIPIOS Y FUNDAMENTOS DE LA éTICA",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/M2laanF2bHc5d1Z4cW1wQjhieDJNQT09"
-   },
-   {
-    "titulo": "ÉTICA E INTERCULTURALIDAD",
-    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/L3dYaldma2svaXEvOXAreGJZakMwQT09"
    }
   ],
   "gapSources": [],
@@ -2139,12 +2182,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "label": "Videoclases DR LOPEZ · Ética",
    "url": "https://drive.google.com/drive/folders/1srnoHI0LavKzi1Vzy8c9Mt5f5WLRqsWu"
   },
-  "videosExtra": [
-   {
-    "titulo": "INVESTIGACIÓN",
-    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/ZmV0WVpNSXFSS3NYUVZsQVlyVk40UT09"
-   }
-  ],
+  "videosExtra": [],
   "gapSources": [],
   "bookCoverage": {
    "lopez": "parcial",
@@ -2231,9 +2269,9 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
  },
  "IV-1+IV-2": {
   "tier": "MEDIA",
-  "vueltas": 4,
-  "min": 75,
-  "qxN": 8,
+  "vueltas": 3,
+  "min": 60,
+  "qxN": 7,
   "theomedN": 7,
   "extenso": true,
   "freq": "Tendencias QX Investigación: 'Tipos de investigación y estudios descriptivos' 7 + 'Enfoques y métodos' 4 = 11/400 (≈2.75%/examen), es el sub-bloque más gordo de toda el área IV. Forecast v2: IV total piso 3-4% recency (colapso confirmado, IV=14 en 2024-II → 2-4 ahora). Es el ÚNICO código IV que rinde y el único compatible con viñeta ('describo un estudio → clasifícalo'). Escenario contingencia: si revierte a teoría, sube.",
@@ -2273,12 +2311,20 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/Y3dnejFhODZGY285M3BXNC84aVY1dz09"
    },
    {
-    "titulo": "TIPOS DE INVESTIGACIóN",
-    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/SmxDb2Y1QXdmRUozN2h4YzR1MTlQQT09"
+    "titulo": "CONCEPTOS BáSICOS DE INVESTIGACIóN",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/YlpqaXRxTGh5N0Y4czhDa1dlUElodz09"
    },
    {
-    "titulo": "INVESTIGACIÓN",
-    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/ZmV0WVpNSXFSS3NYUVZsQVlyVk40UT09"
+    "titulo": "ENFOQUES Y MéTODOS DE INVESTIGACIóN",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/eVNuMTRxM3lISDFuMEhldDNFUFdJZz09"
+   },
+   {
+    "titulo": "ELABORACIóN DEL PROYECTO DE INVESTIGACIóN",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/VU9wZTN0R1BKekhQNUNOdFI4bktQZz09"
+   },
+   {
+    "titulo": "Instrumentos de recolección de datos y validación",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/aUgrNzNRMU9DcUR6T1RUT1h3aVNpQT09"
    }
   ],
   "gapSources": [],
@@ -2334,16 +2380,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "label": "Videoclases GALENO",
    "url": "https://drive.google.com/drive/folders/1RCpVqy_1yF0OBU-OUegTOzHjaZS6FAX8"
   },
-  "videosExtra": [
-   {
-    "titulo": "PRUEBAS DIAGNóSTICAS",
-    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/bTlHWnRJN283NUUrTkFQZWxhbUc0QT09"
-   },
-   {
-    "titulo": "SALUD PÚBLICA",
-    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/QVNhVkVkZXlvM2NmL3EybDRyQjlQdz09"
-   }
-  ],
+  "videosExtra": [],
   "gapSources": [],
   "bookCoverage": {
    "lopez": "no",
@@ -2398,16 +2435,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "label": "Videoclases GALENO",
    "url": "https://drive.google.com/drive/folders/1RCpVqy_1yF0OBU-OUegTOzHjaZS6FAX8"
   },
-  "videosExtra": [
-   {
-    "titulo": "CAUSALIDAD Y RIESGO",
-    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/aTVXSElNc3pCK1Q2TVRoTGdpTkpIdz09"
-   },
-   {
-    "titulo": "SALUD PÚBLICA",
-    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/QVNhVkVkZXlvM2NmL3EybDRyQjlQdz09"
-   }
-  ],
+  "videosExtra": [],
   "gapSources": [
    {
     "label": "QX ENAM · Epi resumen",
@@ -2447,7 +2475,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "BAJA",
   "vueltas": 3,
   "min": 40,
-  "qxN": 6,
+  "qxN": 5,
   "theomedN": 7,
   "extenso": true,
   "freq": "Tendencias QX Investigación: 'Instrumentos de recolección y validación' 6+2=8 (el más frecuente de Metodología), 'Procesamiento y análisis de datos' 2, 'Ética de investigación' 1, 'Informe' 1. Suma modesta y forecast v2 mantiene IV en piso. Ética de la investigación (CIEI/INS/Helsinki/Núremberg/Belmont) solapa con área III y ahí gana valor. BAJA como IV pura.",
@@ -2488,6 +2516,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    {
     "titulo": "PROCESAMIENTO Y ANáLISIS DE DATOS",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/ZkJQeXVoYVFKRnRpSDdwME9MMmVFdz09"
+   },
+   {
+    "titulo": "Características estructurales del informe",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/VUwwZ21YZHZwOVpqdTJqc3NZSURBdz09"
    }
   ],
   "gapSources": [],
@@ -2525,7 +2557,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "CRÍTICA",
   "vueltas": 6,
   "min": 110,
-  "qxN": 6,
+  "qxN": 4,
   "theomedN": 25,
   "extenso": true,
   "freq": "El tema #1 histórico del área V y de varios exámenes: fue tema n°1 en 2024-II (V-2 15.5%) y 2025-II (V-2 21%). QX Tendencias: 'Planeamiento Institucional PEI/POI'=12 + 'FODA'=8 = 20/400 (~5%/examen) SOLO planeamiento; sumando clima organizacional (5) + plan de calidad/acreditación (5) + residuos en desastre (3) + documentos normativos ROF/MOP (2+2) el bloque V-2 real ronda ~9-12%. Forecast v2: 10% banda 8-18, tendencia VOLÁTIL anti-persistente (15.5→9→21→8.9); tras el fold bajo 2026-I hay riesgo alto de REBOTE al alza. Crítico #4 del examen.",
@@ -2562,8 +2594,12 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/ajljaDVha2prZjdrUDJnNzh6ZDBnUT09"
    },
    {
-    "titulo": "GESTIÓN DE LOS SERVICIOS DE SALUD",
-    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/VGJsd0xWbFd1WVV2bElEZnVWcGNaUT09"
+    "titulo": "PLANEAMIENTO A NIVEL INSTITUCIONAL - POI, EVALUACIóN DEL POI",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/M09IR3ZDWHM3ZW83ckdtRmFTUFFsdz09"
+   },
+   {
+    "titulo": "DOCUMENTOS TéCNICOS NORMATIVOS DE GESTIóN INSTITUCIONAL",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/b2d6T2FmaldJOXJzN29ySklQOUVsZz09"
    }
   ],
   "gapSources": [],
@@ -2635,6 +2671,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    {
     "titulo": "REQUISITOS PARA OPERACIóN Y FUNCIONAMIENTO DE EESS",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/OUtTUFJaZHhncjFreTQ5MXFOdjBQQT09"
+   },
+   {
+    "titulo": "UPSS Y CARTERA DE SERVICIOS DE SALUD",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/VTIrZXZFU3I2ajVLODVGUHpEUTdiQT09"
    }
   ],
   "gapSources": [],
@@ -2709,8 +2749,8 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/OEVZZHNlVlBwNVk0d20zYlJMYThGdz09"
    },
    {
-    "titulo": "SISTEMA DE REFERENCIA Y CONTRARREFERENCIA",
-    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/UnVwdWl2QmIwYVFSWHpiTEQrZXd6Zz09"
+    "titulo": "Atención médica en situaciones de emergencia",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/RHRZLzBWQ29QU2xvb245Q0dubmtkQT09"
    }
   ],
   "gapSources": [],
@@ -2747,7 +2787,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "ALTA",
   "vueltas": 5,
   "min": 110,
-  "qxN": 10,
+  "qxN": 8,
   "theomedN": 25,
   "extenso": true,
   "freq": "Código-paraguas que absorbe VARIOS sub-temas rentables. QX Tendencias suma: Gestión HC=7, Clima organizacional=5, Plan de calidad/acreditación=5+1, Control de inventario/stock medicamentos=6+3, Gestión RRHH=4, Liderazgo=1, AUS y contrataciones del Estado=2, Sistema logística/mantenimiento=1+1 → ~40/400 combinados (~10%/examen agregado a lo largo de todo el bloque). Forecast v2 destaca V-MED 4% (banda 2-6, farmacovigilancia/URM/DIGEMID/SISMED/vencidos) y añade III-9 HC/SUSALUD (mayor miss histórico) que aquí cruza con Gestión de HC.",
@@ -2790,8 +2830,28 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/dzRQYTRyTUEvUmVCL0k2YzdOK0lJZz09"
    },
    {
-    "titulo": "BUENAS PRÁCTICAS DE ALMACENAMIENTO",
-    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/TkQ2T1JuWHFzSkpIbWtCeU5DOTNCQT09"
+    "titulo": "Aseguramiento universal en salud (AUS)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/S0NrYnNsZmUwa0VTMk5DTkpSNUExQT09"
+   },
+   {
+    "titulo": "Gestión logística, control de inventarios",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/MGptMUkvVWR3TkJHVzRZZzhqSStlZz09"
+   },
+   {
+    "titulo": "Coordinación intersectorial y alianzas estratégicas",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/aWR1eXhXbGVuaGhjMS9FUytiNzRkQT09"
+   },
+   {
+    "titulo": "Trabajo colaborativo y eficaz en los servicios de salud",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/dGZpeXNyMW5XUG1TakxUWWxKVnJ4QT09"
+   },
+   {
+    "titulo": "Plan de calidad y acreditación de servicios de salud",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/NkV4QXZ3MktiUEE2Vnk5dk1abSsvUT09"
+   },
+   {
+    "titulo": "Clima organizacional y cultura organizacional",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/Um1VbnNhQmRoZGhjRFVMSjBOeUZqdz09"
    }
   ],
   "gapSources": [
@@ -2856,7 +2916,12 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "label": "Videoclases GALENO · Gestión",
    "url": "https://drive.google.com/drive/folders/1R1cuKS2PV8yCeicl2VXj8NBIhWtNUP9w"
   },
-  "videosExtra": [],
+  "videosExtra": [
+   {
+    "titulo": "TELESALUD",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/eFhyc2p4SWVRaFIxUUtxUHQ3YmtmZz09"
+   }
+  ],
   "gapSources": [],
   "bookCoverage": {
    "lopez": "sí",

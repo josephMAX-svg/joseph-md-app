@@ -7,6 +7,17 @@ const fs = require('fs'); const path = require('path');
 const SB = 'C:/Users/JOSEPH~1/AppData/Local/Temp/claude/D--joseph-md-app/2b1d4275-ceb5-4f8d-9ab0-d4dbbd76c52a/scratchpad/cobertura_final.json';
 const rows = JSON.parse(fs.readFileSync(SB, 'utf8'));
 const VIDS = JSON.parse(fs.readFileSync(SB.replace('cobertura_final.json', 'qx_videos_165.json'), 'utf8'));
+// INVENTARIO VIVO QX (re-scrape 06-jul: 123 videos reales por código, URLs canónicas). Fuente autoritativa
+// de videosExtra + qxN (reemplaza el matching por título contra los 165, que tenía 22 stale + 30 huérfanos).
+let LIVE = {};
+try { LIVE = JSON.parse(fs.readFileSync(SB.replace('cobertura_final.json', 'qx_live_by_code.json'), 'utf8')); } catch {}
+// Re-tier del workflow de síntesis (06-jul, vs pronóstico v2 + cobertura viva).
+const RETIER = {
+  'II-8':      { tier: 'CRÍTICA', vueltas: 6, min: 90 }, // el tema + frecuente del área rey (II); 1 de los 7 críticos oficiales
+  'III-5':     { tier: 'CRÍTICA', vueltas: 6, min: 90 }, // ya CRÍTICA pero a 5v → alinear a 6v (imán #1 del área III)
+  'I-11+I-12': { tier: 'MEDIA',   vueltas: 4, min: 90 }, // absorbió ~8 videos recuperados → 3v→4v +15min
+  'IV-1+IV-2': { tier: 'MEDIA',   vueltas: 3, min: 60 }, // IV en piso 3% → trim 4v→3v, devolver horas al área II
+};
 // Cotejo de libros (López vs Theomed) + inventario de videos Drive por área (workflow wgt0efphj).
 let COTEJO = { overall: {}, codes: {}, areas: {} };
 try { COTEJO = JSON.parse(fs.readFileSync(SB.replace('cobertura_final.json', 'cotejo_libros_drive.json'), 'utf8')); } catch {}
@@ -68,16 +79,18 @@ function gapSourcesFor(gaps) {
 const map = {};
 for (const r of rows) {
   const area = (r.codigo.match(/^[IVX]+/) || [''])[0];
+  const live = LIVE[r.codigo] || [];       // videos QX vivos de ESTE código (re-scrape 06-jul)
+  const rt = RETIER[r.codigo] || {};        // override de tier/vueltas/min del workflow de síntesis
   map[r.codigo] = {
-    tier: r.rentabilidadTier, vueltas: r.recommendedVueltas, min: r.recommendedMinutes,
-    qxN: r.qxVideos, theomedN: r.theomedVideos, extenso: !!r.extenso,
+    tier: rt.tier || r.rentabilidadTier, vueltas: rt.vueltas || r.recommendedVueltas, min: rt.min || r.recommendedMinutes,
+    qxN: live.length || r.qxVideos || 0, theomedN: r.theomedVideos, extenso: !!r.extenso,
     freq: r.examFreqNote || '', guidance: r.videosGuidance || '',
     gaps: r.gaps || [], temario: r.compendioSubtemas || [],
     compendioUrl: AREA_COMP[area] || '',
     theomedBookUrl: THEOMED_MANUALES,
     theomedUrl: AREA_THEOMED[area] || '',
     videoFallback: AREA_VIDEO_FALLBACK[area] || { label: '', url: '' }, // video dedicado Drive si no hay QX
-    videosExtra: resolveVideos(r.videosGuidance || ''),
+    videosExtra: live.map(v => ({ titulo: v.titulo, url: v.url })), // SOLO inventario vivo (0 URLs stale; códigos sin QX → [] y usan videoFallback/Theomed)
     gapSources: gapSourcesFor(r.gaps),
     // Cotejo de libros: quién cubre + qué trae solo uno + qué no trae ninguno
     bookCoverage: { lopez: (COTEJO.codes[r.codigo] || {}).lopezCubre || '?', theomed: (COTEJO.codes[r.codigo] || {}).theomedCubre || '?', theomedManual: (COTEJO.codes[r.codigo] || {}).theomedManual || '' },
@@ -135,7 +148,7 @@ for (const r of sorted) {
 fs.writeFileSync(path.join(__dirname, '..', '..', 'DATA', 'ENCAPS', 'MAPA_COBERTURA_2026-2.md'), md, 'utf8');
 
 console.log('OK · src/lib/encapsCobertura.ts (' + Object.keys(map).length + ' temas) · DATA/ENCAPS/MAPA_COBERTURA_2026-2.md');
-const crit = rows.filter(r => r.rentabilidadTier === 'CRÍTICA').map(r => r.codigo);
+const crit = rows.filter(r => map[r.codigo].tier === 'CRÍTICA').map(r => r.codigo); // usa tier final (incl. RETIER)
 const gapsTot = rows.reduce((n, r) => n + (r.gaps || []).length, 0);
 console.log('CRÍTICOS:', crit.join(', '), '| gaps totales:', gapsTot);
 
