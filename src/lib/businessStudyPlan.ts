@@ -14,7 +14,7 @@ export interface DiaBiz {
 }
 
 export const BIZ_META = {
-  inicio: '2026-07-03', fin: '2026-10-08', totalDias: 98, // reconstruido START=2026-07-03 · TODOS los domingos LIBRES · 84 trabajo + descansos dominicales
+  inicio: '2026-07-06', fin: '2026-10-10', totalDias: 97, // reconstruido START=2026-07-06 · TODOS los domingos LIBRES · 84 trabajo + descansos dominicales
   bloque: '2h/día · prep → lectura activa → descanso → aplicación → Anki/Feynman',
 };
 
