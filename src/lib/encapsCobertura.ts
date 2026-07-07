@@ -136,7 +136,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "MEDIA",
   "vueltas": 3,
   "min": 55,
-  "qxN": 6,
+  "qxN": 7,
   "theomedN": 31,
   "extenso": true,
   "freq": "SEPARAR los dos: I-5 (determinantes/demografía) es ALZA emergente — forecast 4% (banda 2-6), QX suma ~10 (Determinantes 7 + Demografía 3); fue sorpresa ciega en varios folds. I-6 (bioestadística/cálculo) está PRÁCTICAMENTE MUERTO: forecast lo retiró, QX Bioestadística=2 y Pruebas diagnósticas=4 (~0.5-1/examen); el formato 90% viñeta lo mató. Peso real de la fusión lo aporta I-5, no I-6.",
@@ -182,6 +182,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    {
     "titulo": "ANáLISIS SITUACIONAL DE SALUD - SALA SITUACIONAL DE SALUD",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/ZFJobndHMnBZVm04YjVuL252NnI4dz09"
+   },
+   {
+    "titulo": "Demografía en salud (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/TTMyQzdqM0lPeWRaRGMzWFBxdHBCZz09"
    }
   ],
   "gapSources": [],
@@ -510,7 +514,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "ALTA",
   "vueltas": 5,
   "min": 55,
-  "qxN": 2,
+  "qxN": 3,
   "theomedN": 31,
   "extenso": false,
   "freq": "Rentable y estable. QX: Conceptos básicos SP 9 + FESP 5 = 14/400 (~3.5/examen). Fue sorpresa ciega en 2026-I (I-2). Forecast lo lista en watch de emergentes (FESP). Preguntable como definición/clasificación directa, cruza con viñeta de gobernanza.",
@@ -538,6 +542,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    {
     "titulo": "FUNCIONES ESENCIALES DE LA SALUD PúBLICA",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/eGo2cTU5OWtzWVo5UytIMUdiS2lydz09"
+   },
+   {
+    "titulo": "Conceptos básicos de salud pública (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/WFZrMHlSVXFlN1NFMWNqTlJwZlJaQT09"
    }
   ],
   "gapSources": [],
