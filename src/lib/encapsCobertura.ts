@@ -17,7 +17,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "CRÍTICA",
   "vueltas": 6,
   "min": 120,
-  "qxN": 7,
+  "qxN": 8,
   "theomedN": 31,
   "extenso": true,
   "freq": "Tema #1 de toda el área I y rey temático del examen (I-3 fue #1 en 2025-I y 2026-I). QX Tendencias suma ~40/400 en el clúster I-3 (Vigilancia 14 + Brotes/epidemias/endemias 9 + Mediciones 7 + ASIS 4 + Causalidad 3 + Hist natural 3) ≈ 10/examen. Forecast v2 lo pone en 13% (banda 11-16), con sesgo a la baja hacia ~12 tras auditoría. Tendencia: ALZA sostenida; el eje viró de 'brote/notificación' hacia vigilancia activa/pasiva/centinela, IAAS y cadena epidemiológica.",
@@ -78,6 +78,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    {
     "titulo": "Conceptos básicos de epidemiología (mapa conceptual)",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/a2ZaeDZBT25ZMmhXdmw2bTRzcWdYQT09"
+   },
+   {
+    "titulo": "Brotes, epidemias, pandemias y endemias (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/RnA5RWsxK2Q3WGptdDhCK0ZCbmg2QT09"
    }
   ],
   "gapSources": [
@@ -136,7 +140,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "MEDIA",
   "vueltas": 3,
   "min": 55,
-  "qxN": 7,
+  "qxN": 8,
   "theomedN": 31,
   "extenso": true,
   "freq": "SEPARAR los dos: I-5 (determinantes/demografía) es ALZA emergente — forecast 4% (banda 2-6), QX suma ~10 (Determinantes 7 + Demografía 3); fue sorpresa ciega en varios folds. I-6 (bioestadística/cálculo) está PRÁCTICAMENTE MUERTO: forecast lo retiró, QX Bioestadística=2 y Pruebas diagnósticas=4 (~0.5-1/examen); el formato 90% viñeta lo mató. Peso real de la fusión lo aporta I-5, no I-6.",
@@ -186,6 +190,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    {
     "titulo": "Demografía en salud (mapa conceptual)",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/TTMyQzdqM0lPeWRaRGMzWFBxdHBCZz09"
+   },
+   {
+    "titulo": "Historia natural del proceso salud-enfermedad (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/TFJtK1d2cStYakk3VHBDdVNQbHowZz09"
    }
   ],
   "gapSources": [],
