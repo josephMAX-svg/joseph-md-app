@@ -1,6 +1,6 @@
 // AUTO-GENERADO por DATA/_scripts/gen_videos_por_tema.js — NO editar a mano.
 // Videos QX por código de tema (para renderizar varios temas/día · refactor multi-tema).
-// 17 temas · 127 videos.
+// 17 temas · 129 videos.
 export interface VideoPorTema { titulo: string; url: string | null; code: string; slides: string | null; dur: number | null }
 export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
  "I-1": [
@@ -56,6 +56,13 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
  ],
  "I-2": [
   {
+   "titulo": "Conceptos básicos de salud pública (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/WFZrMHlSVXFlN1NFMWNqTlJwZlJaQT09",
+   "code": "I-2",
+   "slides": null,
+   "dur": null
+  },
+  {
    "titulo": "CONCEPTOS BáSICOS DE SALUD PúBLICA",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/aXd0OHlNNXRxTkRMSE9CVHFXRE1Cdz09",
    "code": "I-2",
@@ -65,13 +72,6 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
   {
    "titulo": "FUNCIONES ESENCIALES DE LA SALUD PúBLICA",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/eGo2cTU5OWtzWVo5UytIMUdiS2lydz09",
-   "code": "I-2",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "Conceptos básicos de salud pública (mapa conceptual)",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/WFZrMHlSVXFlN1NFMWNqTlJwZlJaQT09",
    "code": "I-2",
    "slides": null,
    "dur": null
@@ -114,6 +114,27 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
  ],
  "I-3": [
   {
+   "titulo": "Conceptos básicos de epidemiología (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/a2ZaeDZBT25ZMmhXdmw2bTRzcWdYQT09",
+   "code": "I-3",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "Brotes, epidemias, pandemias y endemias (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/RnA5RWsxK2Q3WGptdDhCK0ZCbmg2QT09",
+   "code": "I-3",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "Sistema de vigilancia epidemiológica (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/RU1CNWFDUTdvajJEYkhmS3pINlpZdz09",
+   "code": "I-3",
+   "slides": null,
+   "dur": null
+  },
+  {
    "titulo": "VIGILANCIA EN SALUD PúBLICA",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/Vk1EdFFLRStsdXVyQmNvelZVZ3BBZz09",
    "code": "I-3",
@@ -151,20 +172,6 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
   {
    "titulo": "MEDICIONES EN EPIDEMIOLOGíA",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/alFYRWNhNHhDVE50aWhqa2ZQTysvUT09",
-   "code": "I-3",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "Conceptos básicos de epidemiología (mapa conceptual)",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/a2ZaeDZBT25ZMmhXdmw2bTRzcWdYQT09",
-   "code": "I-3",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "Brotes, epidemias, pandemias y endemias (mapa conceptual)",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/RnA5RWsxK2Q3WGptdDhCK0ZCbmg2QT09",
    "code": "I-3",
    "slides": null,
    "dur": null
@@ -223,6 +230,20 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
  ],
  "I-5+I-6": [
   {
+   "titulo": "Demografía en salud (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/TTMyQzdqM0lPeWRaRGMzWFBxdHBCZz09",
+   "code": "I-5+I-6",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "Historia natural del proceso salud-enfermedad (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/TFJtK1d2cStYakk3VHBDdVNQbHowZz09",
+   "code": "I-5+I-6",
+   "slides": null,
+   "dur": null
+  },
+  {
    "titulo": "DEMOGRAFíA",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/NlZHbHF2blpaL3J2V1FVbmc1d1JrZz09",
    "code": "I-5+I-6",
@@ -260,20 +281,6 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
   {
    "titulo": "ANáLISIS SITUACIONAL DE SALUD - SALA SITUACIONAL DE SALUD",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/ZFJobndHMnBZVm04YjVuL252NnI4dz09",
-   "code": "I-5+I-6",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "Demografía en salud (mapa conceptual)",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/TTMyQzdqM0lPeWRaRGMzWFBxdHBCZz09",
-   "code": "I-5+I-6",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "Historia natural del proceso salud-enfermedad (mapa conceptual)",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/TFJtK1d2cStYakk3VHBDdVNQbHowZz09",
    "code": "I-5+I-6",
    "slides": null,
    "dur": null
@@ -662,6 +669,13 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "titulo": "DERECHOS DEBERES DE LAS PERSONAS USUARIAS DE LOS SERVICIOS DE SALUD",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/YmtBcmFvdzlpeUpkVjNhUkh2aGovQT09",
    "code": "III-9",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "Gestión y manejo de residuos sólidos (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/TUtwNmI0KzkwVXBXTDVnU1E4TC9rQT09",
+   "code": "I-11+I-12",
    "slides": null,
    "dur": null
   },

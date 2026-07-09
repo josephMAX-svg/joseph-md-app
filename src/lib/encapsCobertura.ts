@@ -17,7 +17,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "CRÍTICA",
   "vueltas": 6,
   "min": 120,
-  "qxN": 8,
+  "qxN": 9,
   "theomedN": 31,
   "extenso": true,
   "freq": "Tema #1 de toda el área I y rey temático del examen (I-3 fue #1 en 2025-I y 2026-I). QX Tendencias suma ~40/400 en el clúster I-3 (Vigilancia 14 + Brotes/epidemias/endemias 9 + Mediciones 7 + ASIS 4 + Causalidad 3 + Hist natural 3) ≈ 10/examen. Forecast v2 lo pone en 13% (banda 11-16), con sesgo a la baja hacia ~12 tras auditoría. Tendencia: ALZA sostenida; el eje viró de 'brote/notificación' hacia vigilancia activa/pasiva/centinela, IAAS y cadena epidemiológica.",
@@ -52,6 +52,18 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   },
   "videosExtra": [
    {
+    "titulo": "Conceptos básicos de epidemiología (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/a2ZaeDZBT25ZMmhXdmw2bTRzcWdYQT09"
+   },
+   {
+    "titulo": "Brotes, epidemias, pandemias y endemias (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/RnA5RWsxK2Q3WGptdDhCK0ZCbmg2QT09"
+   },
+   {
+    "titulo": "Sistema de vigilancia epidemiológica (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/RU1CNWFDUTdvajJEYkhmS3pINlpZdz09"
+   },
+   {
     "titulo": "VIGILANCIA EN SALUD PúBLICA",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/Vk1EdFFLRStsdXVyQmNvelZVZ3BBZz09"
    },
@@ -74,14 +86,6 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    {
     "titulo": "MEDICIONES EN EPIDEMIOLOGíA",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/alFYRWNhNHhDVE50aWhqa2ZQTysvUT09"
-   },
-   {
-    "titulo": "Conceptos básicos de epidemiología (mapa conceptual)",
-    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/a2ZaeDZBT25ZMmhXdmw2bTRzcWdYQT09"
-   },
-   {
-    "titulo": "Brotes, epidemias, pandemias y endemias (mapa conceptual)",
-    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/RnA5RWsxK2Q3WGptdDhCK0ZCbmg2QT09"
    }
   ],
   "gapSources": [
@@ -164,6 +168,14 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   },
   "videosExtra": [
    {
+    "titulo": "Demografía en salud (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/TTMyQzdqM0lPeWRaRGMzWFBxdHBCZz09"
+   },
+   {
+    "titulo": "Historia natural del proceso salud-enfermedad (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/TFJtK1d2cStYakk3VHBDdVNQbHowZz09"
+   },
+   {
     "titulo": "DEMOGRAFíA",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/NlZHbHF2blpaL3J2V1FVbmc1d1JrZz09"
    },
@@ -186,14 +198,6 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    {
     "titulo": "ANáLISIS SITUACIONAL DE SALUD - SALA SITUACIONAL DE SALUD",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/ZFJobndHMnBZVm04YjVuL252NnI4dz09"
-   },
-   {
-    "titulo": "Demografía en salud (mapa conceptual)",
-    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/TTMyQzdqM0lPeWRaRGMzWFBxdHBCZz09"
-   },
-   {
-    "titulo": "Historia natural del proceso salud-enfermedad (mapa conceptual)",
-    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/TFJtK1d2cStYakk3VHBDdVNQbHowZz09"
    }
   ],
   "gapSources": [],
@@ -396,7 +400,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "MEDIA",
   "vueltas": 4,
   "min": 90,
-  "qxN": 13,
+  "qxN": 14,
   "theomedN": 31,
   "extenso": true,
   "freq": "Clúster grande y disperso; individualmente cada subtema rinde poco pero SUMADO es apreciable y son sorpresas ciegas recurrentes (I-11/I-12, participación/control social están en watch-list del forecast). QX reparte: participación social 1 + plan salud local 2 + sectorización/ficha 2 + residuos 3 + salud ocupacional 2 + TICs 3 + gestión del riesgo/desastres 2. Ninguno individual es crítico, pero cubre 'presupuesto de sorpresa'.",
@@ -428,6 +432,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "url": "https://drive.google.com/drive/folders/1tlyniouI5o_SOpw-LBa2IGfWgG5zpfF0"
   },
   "videosExtra": [
+   {
+    "titulo": "Gestión y manejo de residuos sólidos (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/TUtwNmI0KzkwVXBXTDVnU1E4TC9rQT09"
+   },
    {
     "titulo": "GESTIóN Y MANEJO DE LOS RESIDUOS SóLIDOS",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/b3hSZzNJZzdqRnBrVS8xQWtjV3dmQT09"
@@ -544,16 +552,16 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   },
   "videosExtra": [
    {
+    "titulo": "Conceptos básicos de salud pública (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/WFZrMHlSVXFlN1NFMWNqTlJwZlJaQT09"
+   },
+   {
     "titulo": "CONCEPTOS BáSICOS DE SALUD PúBLICA",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/aXd0OHlNNXRxTkRMSE9CVHFXRE1Cdz09"
    },
    {
     "titulo": "FUNCIONES ESENCIALES DE LA SALUD PúBLICA",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/eGo2cTU5OWtzWVo5UytIMUdiS2lydz09"
-   },
-   {
-    "titulo": "Conceptos básicos de salud pública (mapa conceptual)",
-    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/WFZrMHlSVXFlN1NFMWNqTlJwZlJaQT09"
    }
   ],
   "gapSources": [],

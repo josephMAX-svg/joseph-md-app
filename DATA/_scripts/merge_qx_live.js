@@ -25,6 +25,14 @@ for (const o of orphans) {
   (byCode[o.code] = byCode[o.code] || []).push({ titulo: o.title, url: u, vid: o.vid });
   added++;
 }
+// PRIORIZAR MAPAS CONCEPTUALES: dentro de cada código, los "mapa conceptual" van PRIMERO (ahorran
+// tiempo vs el video largo del mismo tema; Joseph los ve primero y solo baja al video si necesita más).
+const esMapa = t => /mapa concep/i.test(t || '');
+for (const c of Object.keys(byCode)) {
+  byCode[c] = byCode[c].map((v, i) => ({ v, i }))
+    .sort((a, b) => (esMapa(b.v.titulo) - esMapa(a.v.titulo)) || (a.i - b.i))  // mapas primero, resto en orden estable
+    .map(x => x.v);
+}
 fs.writeFileSync(SB + '/scratchpad/qx_live_by_code.json', JSON.stringify(byCode, null, 1));
 const total = Object.values(byCode).reduce((n, a) => n + a.length, 0);
 console.log('qx_live_by_code.json:', Object.keys(byCode).length, 'códigos ·', total, 'videos · huérfanos añadidos:', added);

@@ -10,7 +10,7 @@ import { PRACTICA_DEEP_PRIME, PRACTICA_REPASO } from './encapsPracticaExtra';
 
 // ── D1 por examen (para calcular el día actual 1..71) ──
 export const STUDY_D1: Record<string, string> = {
-  ENCAPS: '2026-07-09',   // D1=JUE 9-jul (re-shift FINAL 9-jul, última reestructuración) · EXAMEN FIJO jue 20-ago (37 días). Filosofía: EXTENDER días de estudio (17 temas, cero saltos) + REDUCIR días de pregunta (repaso) para caber al 20-ago; los simulacros SOBRANTES se AGRUPAN en el dx 19-ago (etapa final de exámenes concentrada, ninguno perdido: 6 sáb + 2 bundles fusionados en dx). Generador: gen_encaps_reshift_2jul_exam20.js 2026-07-09 (parametrizado; backup Supabase study_schedule_bk_0709). 37 días = 29 weekday (17 temas + 12 repaso multi-tema front-load Pareto) + 6 sáb simulacros + dx mié 19-ago + EXAMEN jue 20-ago. 17 temas verificados, cero saltos. Tras el reshift: re-aplicar gen_encaps_cola_live.js --apply + gen_encaps_cobertura.js --apply + gen_videos_por_tema.js (127 videos QX vivos — +4 mapas conceptuales SP re-scrape 08/09-jul: conceptos SP·demografía·historia natural·brotes; NO usar el viejo gen_encaps_cola_alinear).
+  ENCAPS: '2026-07-10',   // D1=VIE 10-jul (re-shift FINAL 10-jul, última reestructuración) · EXAMEN FIJO jue 20-ago (36 días). Filosofía: EXTENDER días de estudio (17 temas, cero saltos) + REDUCIR días de pregunta (repaso) para caber al 20-ago; simulacros SOBRANTES AGRUPADOS en el dx 19-ago (etapa final concentrada, ninguno perdido: 6 sáb + 2 bundles fusionados en dx). Generador: gen_encaps_reshift_2jul_exam20.js 2026-07-10 (parametrizado; backup Supabase study_schedule_bk_0710). 36 días = 28 weekday (17 temas + 11 repaso multi-tema front-load Pareto) + 6 sáb simulacros + dx mié 19-ago + EXAMEN jue 20-ago. 17 temas verificados, cero saltos. Tras el reshift: re-aplicar gen_encaps_cola_live.js --apply + gen_encaps_cobertura.js --apply + gen_videos_por_tema.js (129 videos QX vivos — 6 mapas conceptuales SP re-scrape 08-10jul, PRIORIZADOS primero en la cola vía merge_qx_live.js; NO usar el viejo gen_encaps_cola_alinear).
   // MIR / USMLE se agregan cuando se construyan sus cronogramas.
 };
 // Fechas SIN actividad (bloqueadas por Joseph) — no cuentan como día de plan.
@@ -18,7 +18,7 @@ export const STUDY_D1: Record<string, string> = {
 export const STUDY_SKIP_DATES: Record<string, string[]> = {
   ENCAPS: ['2026-07-12', '2026-07-19', '2026-07-26', '2026-08-02', '2026-08-09', '2026-08-16'],
 };
-const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 37 };
+const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 36 };
 
 // ── Tipos (espejo de las columnas study_*) ──
 export interface StudyVideo {
