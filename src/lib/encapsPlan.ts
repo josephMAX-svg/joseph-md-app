@@ -6,6 +6,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { supabase } from './supabase';
 import { ENCAPS_FICHAS_POR_TEMA, ENCAPS_VIDEO_DRIVE, ENCAPS_THEOMED_AREA, ENCAPS_THEOMED_VIDEOS, ENCAPS_COMPENDIO, ENCAPS_AREA_PREFIJO, ENCAPS_THEOMED_TEMA_SESION } from './encapsFuentes';
 import { ENCAPS_VIDEOS_POR_TEMA } from './encapsVideosPorTema';
+import { ENCAPS_THEOMED_RESUMENES } from './encapsResumenes';
 import { PRACTICA_DEEP_PRIME, PRACTICA_REPASO } from './encapsPracticaExtra';
 
 // ── D1 por examen (para calcular el día actual 1..71) ──
@@ -281,6 +282,20 @@ export function itemsForDay(day: StudyScheduleDay, focusByCode: Record<string, n
   // 2ª opción a QX para CADA tema (y respaldo principal en los temas sin video QX). Theomed NO aloja
   // videos de clase por tema (verificado: carpetas=PDF, sesiones=PPT/PDF + post-tests, sin Vimeo/YouTube).
   if (day.codigo && day.tipo === 'deep_prime') {
+    // ── FASE 2 · RESÚMENES/THEOPEPAS Theomed — PRIORIDAD sobre las sesiones en vivo (Joseph 10-jul) ──
+    // Material ya digerido → agiliza incorporar conocimiento. Van ANTES del video largo/sesión en vivo;
+    // el video grande queda de respaldo si sobra tiempo ese día. (La cola QX ya prioriza mapas conceptuales.)
+    const _codesHoy = [day.codigo, ...((day.temas_secundarios || []).map(s => s.codigo))].filter(Boolean);
+    _codesHoy.forEach(cod => {
+      (ENCAPS_THEOMED_RESUMENES[cod] || []).forEach((r, i) => {
+        items.push({
+          key: `D${N}:resumen:${cod}:${i}`, kind: 'material',
+          label: `⭐ RESUMEN Fase 2: ${r.label}`,
+          detail: `${r.fuente} · ya digerido → VELO PRIMERO; la sesión en vivo es respaldo si te alcanza el tiempo`,
+          url: r.url, source: r.fuente, dur: 10, hora: slot(10),
+        });
+      });
+    });
     const areaV = ENCAPS_AREA_PREFIJO[(day.codigo.match(/^[IVX]+/) || [''])[0]];
     const vd = areaV ? ENCAPS_VIDEO_DRIVE[areaV] : undefined;
     if (vd) {
