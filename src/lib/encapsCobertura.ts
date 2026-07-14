@@ -400,7 +400,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "MEDIA",
   "vueltas": 4,
   "min": 90,
-  "qxN": 14,
+  "qxN": 18,
   "theomedN": 31,
   "extenso": true,
   "freq": "Clúster grande y disperso; individualmente cada subtema rinde poco pero SUMADO es apreciable y son sorpresas ciegas recurrentes (I-11/I-12, participación/control social están en watch-list del forecast). QX reparte: participación social 1 + plan salud local 2 + sectorización/ficha 2 + residuos 3 + salud ocupacional 2 + TICs 3 + gestión del riesgo/desastres 2. Ninguno individual es crítico, pero cubre 'presupuesto de sorpresa'.",
@@ -435,6 +435,22 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    {
     "titulo": "Gestión y manejo de residuos sólidos (mapa conceptual)",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/TUtwNmI0KzkwVXBXTDVnU1E4TC9rQT09"
+   },
+   {
+    "titulo": "Intervención comunitaria en salud (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/NDl3b1hOZEpMbE9lNjNTQlh5UllHQT09"
+   },
+   {
+    "titulo": "Sectorización y ficha familiar (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/bG5TY3B0LzlWZENCYWlrYW5MRnU1QT09"
+   },
+   {
+    "titulo": "Plan de salud local (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/SUNOZ0c2R3lEcndxaVJuQUYwZ0Jmdz09"
+   },
+   {
+    "titulo": "Modelo de salud mental comunitaria (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/cExCbWtVMDRibGJKbDJ4N0JIa0VxQT09"
    },
    {
     "titulo": "GESTIóN Y MANEJO DE LOS RESIDUOS SóLIDOS",
@@ -842,7 +858,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "CRÍTICA",
   "vueltas": 6,
   "min": 110,
-  "qxN": 11,
+  "qxN": 12,
   "theomedN": 54,
   "extenso": true,
   "freq": "QX Tendencias: emergencias obstétricas 9 + embarazo/parto/puerperio 3 + climaterio 1 + emerg.obst(específicos) 1 = 14/400 (~3.5%/examen). Forecast v2: II-1 ~5% (banda 4-8), tendencia ALZA, CRÍTICO confirmado. Núcleo caliente: PARTO VERTICAL (criterios/posición), referencia de gestante por nivel, preeclampsia/eclampsia. Viñeta clínica ~90%.",
@@ -919,6 +935,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    {
     "titulo": "PAQUETE BáSICO DE CUIDADO DEL BINOMIO MADRE NIñO",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/UXRoYTVNY2FCVUZ6MndxSzlQdjhEQT09"
+   },
+   {
+    "titulo": "Anticonceptivos / planificación familiar",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/b2ZqZ3pUZXNwUEorUzNGVkl4TWdNUT09"
    }
   ],
   "gapSources": [],
@@ -1513,7 +1533,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "ALTA",
   "vueltas": 4,
   "min": 70,
-  "qxN": 9,
+  "qxN": 10,
   "theomedN": 54,
   "extenso": true,
   "freq": "QX Tendencias: MCI definición 3 + atención por curso de vida 5 + adolescente 4 + joven 1 = ~13/400 (~3.25%/examen). Forecast v2: no listado como crítico pero volumen apreciable. Núcleo: APS (Alma-Ata/atributos), evolución MAIS→MAIS-BFC→MCI 2020, paquetes por etapa de vida, niveles de atención/RIS.",
@@ -1536,6 +1556,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
   },
   "videosExtra": [
+   {
+    "titulo": "Atención centrada en la persona (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/NC95Y3RVNk1JcnlEVzkvWDB3V1FtZz09"
+   },
    {
     "titulo": "INTOXICACIONES",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/Ty9xejUvQnlvcWU2a0ZhZnZGK2JHdz09"
@@ -1792,7 +1816,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "CRÍTICA",
   "vueltas": 6,
   "min": 90,
-  "qxN": 5,
+  "qxN": 6,
   "theomedN": 11,
   "extenso": true,
   "freq": "QX Tendencias: 26/48 de todo el área III (pertinencia cultural 7 + comunicación/diálogo 5 + parto vertical 5 + estigma 3 + migrantes 2 + med. tradicional 2 + diversidad 1 + etnocentrismo 1) ≈ 5%/examen. Forecast v2 lo lista como CRÍTICO (tendencia estable). Es el imán #1 del área, formato viñeta pura.",
@@ -1819,6 +1843,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "url": "https://drive.google.com/drive/folders/1srnoHI0LavKzi1Vzy8c9Mt5f5WLRqsWu"
   },
   "videosExtra": [
+   {
+    "titulo": "Promoción del parto vertical (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/Q2dwTHZQaERqZTlrS3FvWVR0ZWw2Zz09"
+   },
    {
     "titulo": "MEDICINA TRADICIONAL, COMPLEMENTARIA Y ALTERNATIVA",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/MTdveWRFRDVyYndtRlZxN1ZuWjRuUT09"
@@ -1937,7 +1965,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "ALTA",
   "vueltas": 5,
   "min": 70,
-  "qxN": 1,
+  "qxN": 2,
   "theomedN": 11,
   "extenso": true,
   "freq": "QX Tendencias: 'Ética e integridad y ética en la función pública' = 7 conteos ≈ 1.75%/examen. Forecast v2 lo da como EMERGENTE al alza (confidencialidad VIH/secreto profesional; HC archivo/acceso) con banda 2-6%.",
@@ -1958,6 +1986,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "url": "https://drive.google.com/drive/folders/1srnoHI0LavKzi1Vzy8c9Mt5f5WLRqsWu"
   },
   "videosExtra": [
+   {
+    "titulo": "Ética e integridad en salud (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/MTY3bmovRmxYQlpRM1k2d0VBeXRGUT09"
+   },
    {
     "titulo": "ÉTICA E INTEGRIDAD Y éTICA EN LA FUNCIóN PúBLICA",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/VGxmUjROVFlDNGlHZ09vVkwzNVV5Zz09"
@@ -1996,7 +2028,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "ALTA",
   "vueltas": 4,
   "min": 55,
-  "qxN": 1,
+  "qxN": 2,
   "theomedN": 11,
   "extenso": true,
   "freq": "QX Tendencias: 'Principios y fundamentos de la ética' = 3 conteos ≈ 0.75%/examen (baja frecuencia pura, pero los 4 principios de Beauchamp son base transversal de muchas viñetas éticas). Forecast: no crítico.",
@@ -2016,6 +2048,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "url": "https://drive.google.com/drive/folders/1srnoHI0LavKzi1Vzy8c9Mt5f5WLRqsWu"
   },
   "videosExtra": [
+   {
+    "titulo": "Principios y fundamentos de la ética y bioética (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/RDhxSldWZzVyU2cxZnVzTW0rUkJWQT09"
+   },
    {
     "titulo": "PRINCIPIOS Y FUNDAMENTOS DE LA éTICA",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/M2laanF2bHc5d1Z4cW1wQjhieDJNQT09"

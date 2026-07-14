@@ -1,6 +1,6 @@
 // AUTO-GENERADO por DATA/_scripts/gen_videos_por_tema.js — NO editar a mano.
 // Videos QX por código de tema (para renderizar varios temas/día · refactor multi-tema).
-// 17 temas · 129 videos.
+// 17 temas · 138 videos.
 export interface VideoPorTema { titulo: string; url: string | null; code: string; slides: string | null; dur: number | null }
 export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
  "I-1": [
@@ -365,6 +365,13 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "dur": null
   },
   {
+   "titulo": "Anticonceptivos / planificación familiar",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/b2ZqZ3pUZXNwUEorUzNGVkl4TWdNUT09",
+   "code": "II-1",
+   "slides": null,
+   "dur": null
+  },
+  {
    "titulo": "PREVENCIóN Y CONTROL DE ANEMIA",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/bTd2QWdtT0RDNnRuQWFJMjZzQW5sZz09",
    "code": "II-4",
@@ -398,6 +405,13 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "titulo": "PREVENCIÓN DE LA TRANSMISIÓN MATERNO INFANTIL DE VIH, SÍFILIS Y VHB",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/K2NnZDdPT2w5NzFBck15OTU2cjJmZz09",
    "code": "II-11",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "Atención centrada en la persona (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/NC95Y3RVNk1JcnlEVzkvWDB3V1FtZz09",
+   "code": "II-5",
    "slides": null,
    "dur": null
   },
@@ -490,6 +504,13 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "dur": null
   },
   {
+   "titulo": "Principios y fundamentos de la ética y bioética (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/RDhxSldWZzVyU2cxZnVzTW0rUkJWQT09",
+   "code": "III-1",
+   "slides": null,
+   "dur": null
+  },
+  {
    "titulo": "PRINCIPIOS Y FUNDAMENTOS DE LA éTICA",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/M2laanF2bHc5d1Z4cW1wQjhieDJNQT09",
    "code": "III-1",
@@ -571,6 +592,13 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
  ],
  "III-5": [
   {
+   "titulo": "Promoción del parto vertical (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/Q2dwTHZQaERqZTlrS3FvWVR0ZWw2Zz09",
+   "code": "III-5",
+   "slides": null,
+   "dur": null
+  },
+  {
    "titulo": "MEDICINA TRADICIONAL, COMPLEMENTARIA Y ALTERNATIVA",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/MTdveWRFRDVyYndtRlZxN1ZuWjRuUT09",
    "code": "III-5",
@@ -614,6 +642,13 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
   }
  ],
  "III-8": [
+  {
+   "titulo": "Ética e integridad en salud (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/MTY3bmovRmxYQlpRM1k2d0VBeXRGUT09",
+   "code": "III-8",
+   "slides": null,
+   "dur": null
+  },
   {
    "titulo": "ÉTICA E INTEGRIDAD Y éTICA EN LA FUNCIóN PúBLICA",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/VGxmUjROVFlDNGlHZ09vVkwzNVV5Zz09",
@@ -675,6 +710,34 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
   {
    "titulo": "Gestión y manejo de residuos sólidos (mapa conceptual)",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/TUtwNmI0KzkwVXBXTDVnU1E4TC9rQT09",
+   "code": "I-11+I-12",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "Intervención comunitaria en salud (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/NDl3b1hOZEpMbE9lNjNTQlh5UllHQT09",
+   "code": "I-11+I-12",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "Sectorización y ficha familiar (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/bG5TY3B0LzlWZENCYWlrYW5MRnU1QT09",
+   "code": "I-11+I-12",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "Plan de salud local (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/SUNOZ0c2R3lEcndxaVJuQUYwZ0Jmdz09",
+   "code": "I-11+I-12",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "Modelo de salud mental comunitaria (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/cExCbWtVMDRibGJKbDJ4N0JIa0VxQT09",
    "code": "I-11+I-12",
    "slides": null,
    "dur": null
