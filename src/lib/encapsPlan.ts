@@ -11,7 +11,7 @@ import { PRACTICA_DEEP_PRIME, PRACTICA_REPASO } from './encapsPracticaExtra';
 
 // ── D1 por examen (para calcular el día actual 1..71) ──
 export const STUDY_D1: Record<string, string> = {
-  ENCAPS: '2026-07-15',   // D1=MIÉ 15-jul · ENCAPS COMPRIMIDO → TERMINA el 5-ago (Joseph 14-jul: el plan debe caber 15-jul→5-ago). 19 días = 17 temas (TODOS, en días corridos INCL. sábados) + dx mar 4-ago (los 8 simulacros AGRUPADOS ahí) + EXAMEN mié 5-ago. Sin repaso standalone (el repaso se interleava en los bloques diarios); NADA perdido (40 códigos + 8 sims + examen). Generador NUEVO: gen_encaps_reshift_compress.js 2026-07-15 2026-08-05 (backup Supabase study_schedule_bk_0715). Tras el reshift: re-aplicar gen_encaps_cola_live.js --apply + gen_encaps_cobertura.js --apply + gen_videos_por_tema.js (138 videos QX vivos — mapas conceptuales SP+Ética PRIORIZADOS primero vía merge_qx_live.js; NO usar gen_encaps_cola_alinear). NOTA: si el examen real es 20-ago, del 6→20-ago queda buffer de repaso/simulacros puro.
+  ENCAPS: '2026-07-16',   // D1=JUE 16-jul · ENCAPS COMPRIMIDO → TERMINA el 5-ago (Joseph 15-jul). 18 días = 17 temas (TODOS, en días corridos INCL. sábados, 16-jul→4-ago) + el día 17 (mar 4-ago = III-8) lleva ADEMÁS los 8 simulacros AGRUPADOS (dx FUSIONADO en el último día-tema; no cabe día-dx aparte) + EXAMEN mié 5-ago. Sin repaso standalone. NADA perdido (40 códigos + 8 sims + examen). Generador: gen_encaps_reshift_compress.js 2026-07-16 2026-08-05 (auto-detecta dx-fusionado si la ventana es justa; backup Supabase study_schedule_bk_0716). Tras el reshift: re-aplicar gen_encaps_cola_live.js --apply + gen_encaps_cobertura.js --apply + gen_videos_por_tema.js (138 videos QX vivos — mapas conceptuales SP+Ética PRIORIZADOS primero vía merge_qx_live.js). NOTA: si el examen real es 20-ago, del 6→20-ago queda buffer de repaso/simulacros puro.
   // MIR / USMLE se agregan cuando se construyan sus cronogramas.
 };
 // Fechas SIN actividad (bloqueadas por Joseph) — no cuentan como día de plan.
@@ -19,7 +19,7 @@ export const STUDY_D1: Record<string, string> = {
 export const STUDY_SKIP_DATES: Record<string, string[]> = {
   ENCAPS: ['2026-07-19', '2026-07-26', '2026-08-02'],  // domingos del tramo comprimido 15-jul→5-ago
 };
-const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 19 };
+const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 18 };
 
 // ── Tipos (espejo de las columnas study_*) ──
 export interface StudyVideo {

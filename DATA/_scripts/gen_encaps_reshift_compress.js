@@ -28,21 +28,28 @@ const BK = 'study_schedule_bk_' + START.replace(/-/g, '').slice(4);
   const dxRow = data.find(r => r.tipo === 'simulacro' && r.extra && r.extra.examDay === true);
   const examRow = data.find(r => r.tipo === 'examen');
 
-  // Días no-domingo disponibles para TEMAS = todos entre START y (DX exclusivo)
-  const topicDays = []; for (let c = START; c < DX; c = addDays(c, 1)) if (dow(c) !== 0) topicDays.push(c);
-  if (topicDays.length < temas.length)
-    throw new Error(`PELIGRO: ${topicDays.length} días < ${temas.length} temas — ventana muy corta, no cabe sin fusionar temas`);
+  // Cuerpo del plan = días no-domingo entre START y EXAM (exclusivo del examen).
+  const bodyDays = []; for (let c = START; c < EXAM; c = addDays(c, 1)) if (dow(c) !== 0) bodyDays.push(c);
+  if (bodyDays.length < temas.length)
+    throw new Error(`PELIGRO: ${bodyDays.length} días de cuerpo < ${temas.length} temas — no cabe ni fusionando el dx`);
 
   const assign = []; let dia = 0;
-  temas.forEach((t, i) => { dia++; assign.push({ old: t.dia, dia, fecha: topicDays[i], wd: wd(topicDays[i]) }); });
-  // repaso de relleno si sobran días-tema (no debería con ventana ajustada)
+  temas.forEach((t, i) => { dia++; assign.push({ old: t.dia, dia, fecha: bodyDays[i], wd: wd(bodyDays[i]) }); });
+  const rest = bodyDays.slice(temas.length);   // días sobrantes tras los 17 temas
   const repaso = data.filter(r => r.tipo === 'repaso'); let ri = 0;
-  for (let j = temas.length; j < topicDays.length; j++) { const r = repaso[ri++]; if (!r) break; dia++; assign.push({ old: r.dia, dia, fecha: topicDays[j], wd: wd(topicDays[j]) }); }
-  // dx + examen
-  dia++; assign.push({ old: dxRow.dia, dia, fecha: DX, wd: wd(DX) }); const dxNew = dia;
-  dia++; assign.push({ old: examRow.dia, dia, fecha: EXAM, wd: wd(EXAM) });
+  let dxNew, fused;
+  if (rest.length >= 1) {
+    // MODO dx-STANDALONE: repaso rellena los sobrantes menos 1; dx en el último día sobrante
+    for (let j = 0; j < rest.length - 1; j++) { const r = repaso[ri++]; if (!r) break; dia++; assign.push({ old: r.dia, dia, fecha: rest[j], wd: wd(rest[j]) }); }
+    dia++; assign.push({ old: dxRow.dia, dia, fecha: rest[rest.length - 1], wd: wd(rest[rest.length - 1]) }); dxNew = dia; fused = false;
+  } else {
+    // MODO dx-FUSIONADO: sin día extra → el ÚLTIMO día-tema ES el dx (tema + TODOS los sims agrupados)
+    dxNew = assign[assign.length - 1].dia; fused = true;
+  }
+  const dxFecha = fused ? assign[assign.length - 1].fecha : rest[rest.length - 1];
+  dia++; assign.push({ old: examRow.dia, dia, fecha: EXAM, wd: wd(EXAM) });   // examen el último día
 
-  const L = [`-- ENCAPS COMPRIMIDO D1=${START} · EXAMEN ${EXAM} · 17 temas + sims agrupados en dx ${DX}. backup ${BK}`, 'BEGIN;'];
+  const L = [`-- ENCAPS COMPRIMIDO D1=${START} · EXAMEN ${EXAM} · 17 temas + sims agrupados en dx ${dxFecha}${fused ? ' (FUSIONADO en último día-tema)' : ''}. backup ${BK}`, 'BEGIN;'];
   L.push(`DROP TABLE IF EXISTS ${BK};`);
   L.push(`CREATE TABLE ${BK} AS SELECT * FROM study_schedule WHERE examen='ENCAPS';`);
   L.push("DELETE FROM study_schedule WHERE examen='ENCAPS';");
@@ -50,14 +57,15 @@ const BK = 'study_schedule_bk_' + START.replace(/-/g, '').slice(4);
   L.push("UPDATE study_schedule SET dia = dia + 1000 WHERE examen='ENCAPS';");
   for (const a of assign)
     L.push(`UPDATE study_schedule SET dia=${a.dia}, fecha='${a.fecha}', weekday='${a.wd}', updated_at=now() WHERE examen='ENCAPS' AND dia=${a.old + 1000};`);
-  // AGRUPAR los 8 bundles de simulacro en el dx (examen-espejo, recta final)
-  for (const s of sims) {
+  // AGRUPAR simulacros en el dx (los 8 bundles; si el dx está fusionado, también los del dxRow).
+  const simsToMerge = fused ? [...sims, dxRow] : sims;
+  for (const s of simsToMerge) {
     L.push(`UPDATE study_schedule t SET extra = jsonb_set(COALESCE(t.extra,'{}'::jsonb), '{sims}', COALESCE(t.extra->'sims','[]'::jsonb) || COALESCE(s.extra->'sims','[]'::jsonb), true), subtema = t.subtema || ' + sims extra (recta final)', updated_at=now() FROM (SELECT extra FROM study_schedule WHERE examen='ENCAPS' AND dia=${s.dia + 1000}) s WHERE t.examen='ENCAPS' AND t.dia=${dxNew};`);
   }
   L.push("DELETE FROM study_schedule WHERE examen='ENCAPS' AND dia >= 1000;"); // borra repaso sobrante + sims agrupados
   L.push('COMMIT;');
   fs.writeFileSync(path.join(__dirname, '_encaps_reshift_compress.sql'), L.join('\n'), 'utf8');
 
-  console.log(`OK total_dias=${dia} | temas=${temas.length} (TODOS) en días 1-${temas.length} | repaso relleno=${ri} | sims agrupados en dx=${sims.length} | dx=${DX}(${wd(DX)}) | EXAMEN=${EXAM}(${wd(EXAM)})`);
+  console.log(`OK total_dias=${dia} | temas=${temas.length} (TODOS) en días 1-${temas.length} | repaso relleno=${ri} | sims agrupados=${simsToMerge.length} en dx=${dxFecha}(${wd(dxFecha)})${fused ? ' [FUSIONADO en último día-tema]' : ' [standalone]'} | EXAMEN=${EXAM}(${wd(EXAM)})`);
   console.log(`día1=${assign[0].fecha}(${assign[0].wd}) | STUDY_TOTAL_DAYS ENCAPS = ${dia}`);
 })();
