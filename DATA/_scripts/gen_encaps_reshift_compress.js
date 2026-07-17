@@ -21,7 +21,7 @@ const BK = 'study_schedule_bk_' + START.replace(/-/g, '').slice(4);
 
 (async () => {
   const sb = createClient(URL, KEY);
-  const { data, error } = await sb.from('study_schedule_reshift25_backup').select('dia,tipo,codigo,extra').order('dia', { ascending: true });
+  const { data, error } = await sb.from('study_schedule_reshift25_backup').select('dia,tipo,codigo,subtema,temas_secundarios,extra').order('dia', { ascending: true });
   if (error) { console.error(error); process.exit(1); }
   const temas = data.filter(r => r.tipo === 'deep_prime');                       // 17
   const sims = data.filter(r => r.tipo === 'simulacro' && !(r.extra && r.extra.examDay === true)); // 8 bundles
@@ -30,12 +30,13 @@ const BK = 'study_schedule_bk_' + START.replace(/-/g, '').slice(4);
 
   // Cuerpo del plan = días no-domingo entre START y EXAM (exclusivo del examen).
   const bodyDays = []; for (let c = START; c < EXAM; c = addDays(c, 1)) if (dow(c) !== 0) bodyDays.push(c);
-  if (bodyDays.length < temas.length)
-    throw new Error(`PELIGRO: ${bodyDays.length} días de cuerpo < ${temas.length} temas — no cabe ni fusionando el dx`);
+  const nAssign = Math.min(temas.length, bodyDays.length);
+  const mergedTemas = temas.slice(nAssign);   // temas que NO caben como día propio → se fusionan como secundario
+  if (mergedTemas.length > 3) throw new Error(`PELIGRO: ${bodyDays.length} días de cuerpo, ${mergedTemas.length} temas a fusionar (>3) — ventana demasiado corta`);
 
   const assign = []; let dia = 0;
-  temas.forEach((t, i) => { dia++; assign.push({ old: t.dia, dia, fecha: bodyDays[i], wd: wd(bodyDays[i]) }); });
-  const rest = bodyDays.slice(temas.length);   // días sobrantes tras los 17 temas
+  for (let i = 0; i < nAssign; i++) { dia++; assign.push({ old: temas[i].dia, dia, fecha: bodyDays[i], wd: wd(bodyDays[i]) }); }
+  const rest = bodyDays.slice(nAssign);   // días sobrantes tras asignar los temas que caben
   const repaso = data.filter(r => r.tipo === 'repaso'); let ri = 0;
   let dxNew, fused;
   if (rest.length >= 1) {
@@ -47,6 +48,7 @@ const BK = 'study_schedule_bk_' + START.replace(/-/g, '').slice(4);
     dxNew = assign[assign.length - 1].dia; fused = true;
   }
   const dxFecha = fused ? assign[assign.length - 1].fecha : rest[rest.length - 1];
+  const lastTemaDia = assign[nAssign - 1].dia;   // día donde se fusionan los temas excedentes (como secundario)
   dia++; assign.push({ old: examRow.dia, dia, fecha: EXAM, wd: wd(EXAM) });   // examen el último día
 
   const L = [`-- ENCAPS COMPRIMIDO D1=${START} · EXAMEN ${EXAM} · 17 temas + sims agrupados en dx ${dxFecha}${fused ? ' (FUSIONADO en último día-tema)' : ''}. backup ${BK}`, 'BEGIN;'];
@@ -57,6 +59,15 @@ const BK = 'study_schedule_bk_' + START.replace(/-/g, '').slice(4);
   L.push("UPDATE study_schedule SET dia = dia + 1000 WHERE examen='ENCAPS';");
   for (const a of assign)
     L.push(`UPDATE study_schedule SET dia=${a.dia}, fecha='${a.fecha}', weekday='${a.wd}', updated_at=now() WHERE examen='ENCAPS' AND dia=${a.old + 1000};`);
+  // FUSIONAR los temas excedentes como SECUNDARIO del último día-tema (sin perder ninguno; sus videos
+  // los re-aplica gen_encaps_cola_live porque quedan como código secundario del día). El row original
+  // queda en 1000+ y lo borra el cleanup final.
+  for (const m of mergedTemas) {
+    // Lleva el tema fusionado + TODOS sus propios secundarios (si no, se perderían sus sub-temas).
+    const secs = [{ codigo: m.codigo, subtema: m.subtema || '', prioridad: 'compl (junta ventana corta)' }, ...((m.temas_secundarios) || [])];
+    const sec = JSON.stringify(secs).replace(/'/g, "''");
+    L.push(`UPDATE study_schedule SET temas_secundarios = COALESCE(temas_secundarios,'[]'::jsonb) || '${sec}'::jsonb, updated_at=now() WHERE examen='ENCAPS' AND dia=${lastTemaDia};`);
+  }
   // AGRUPAR simulacros en el dx (los 8 bundles; si el dx está fusionado, también los del dxRow).
   const simsToMerge = fused ? [...sims, dxRow] : sims;
   for (const s of simsToMerge) {
@@ -66,6 +77,6 @@ const BK = 'study_schedule_bk_' + START.replace(/-/g, '').slice(4);
   L.push('COMMIT;');
   fs.writeFileSync(path.join(__dirname, '_encaps_reshift_compress.sql'), L.join('\n'), 'utf8');
 
-  console.log(`OK total_dias=${dia} | temas=${temas.length} (TODOS) en días 1-${temas.length} | repaso relleno=${ri} | sims agrupados=${simsToMerge.length} en dx=${dxFecha}(${wd(dxFecha)})${fused ? ' [FUSIONADO en último día-tema]' : ' [standalone]'} | EXAMEN=${EXAM}(${wd(EXAM)})`);
+  console.log(`OK total_dias=${dia} | temas=${temas.length} (TODOS: ${nAssign} con día propio + ${mergedTemas.length} fusionado como secundario en día ${lastTemaDia} = ${mergedTemas.map(m=>m.codigo).join(',')||'—'}) | sims agrupados=${simsToMerge.length} en dx=${dxFecha}(${wd(dxFecha)})${fused ? ' [FUSIONADO]' : ''} | EXAMEN=${EXAM}(${wd(EXAM)})`);
   console.log(`día1=${assign[0].fecha}(${assign[0].wd}) | STUDY_TOTAL_DAYS ENCAPS = ${dia}`);
 })();

@@ -11,7 +11,7 @@ import { PRACTICA_DEEP_PRIME, PRACTICA_REPASO } from './encapsPracticaExtra';
 
 // ── D1 por examen (para calcular el día actual 1..71) ──
 export const STUDY_D1: Record<string, string> = {
-  ENCAPS: '2026-07-16',   // D1=JUE 16-jul · ENCAPS COMPRIMIDO → TERMINA el 5-ago (Joseph 15-jul). 18 días = 17 temas (TODOS, en días corridos INCL. sábados, 16-jul→4-ago) + el día 17 (mar 4-ago = III-8) lleva ADEMÁS los 8 simulacros AGRUPADOS (dx FUSIONADO en el último día-tema; no cabe día-dx aparte) + EXAMEN mié 5-ago. Sin repaso standalone. NADA perdido (40 códigos + 8 sims + examen). Generador: gen_encaps_reshift_compress.js 2026-07-16 2026-08-05 (auto-detecta dx-fusionado si la ventana es justa; backup Supabase study_schedule_bk_0716). Tras el reshift: re-aplicar gen_encaps_cola_live.js --apply + gen_encaps_cobertura.js --apply + gen_videos_por_tema.js (138 videos QX vivos — mapas conceptuales SP+Ética PRIORIZADOS primero vía merge_qx_live.js). NOTA: si el examen real es 20-ago, del 6→20-ago queda buffer de repaso/simulacros puro.
+  ENCAPS: '2026-07-17',   // D1=VIE 17-jul · ENCAPS ULTRA-COMPRIMIDO → TERMINA el 5-ago (Joseph 16-jul: la más exigente). 17 días = 16 temas con día propio (17-jul→4-ago, INCL. sábados) + III-8 FUSIONADO como secundario del día 16 (4-ago, junta ventana corta) + el día 16 lleva ADEMÁS los 8 simulacros AGRUPADOS + EXAMEN mié 5-ago. Sin repaso standalone. NADA perdido (40 códigos + 8 sims + examen). Generador: gen_encaps_reshift_compress.js 2026-07-17 2026-08-05 (auto-detecta: fusiona temas excedentes como secundario si el cuerpo < 17 días + dx fusionado; backup study_schedule_bk_0717). ⚡ ENFOQUE PREGUNTAS-PRIMERO (itemsForDay: banner método + banco de preguntas Theomed postests/Kahoots al tope; mapas conceptuales primero; videos LARGOS = opcional). Tras el reshift: re-aplicar gen_encaps_cola_live.js --apply + gen_encaps_cobertura.js --apply + gen_videos_por_tema.js (138 videos QX vivos). NOTA: si el examen real es 20-ago, del 6→20-ago queda buffer de simulacros puro.
   // MIR / USMLE se agregan cuando se construyan sus cronogramas.
 };
 // Fechas SIN actividad (bloqueadas por Joseph) — no cuentan como día de plan.
@@ -19,7 +19,7 @@ export const STUDY_D1: Record<string, string> = {
 export const STUDY_SKIP_DATES: Record<string, string[]> = {
   ENCAPS: ['2026-07-19', '2026-07-26', '2026-08-02'],  // domingos del tramo comprimido 15-jul→5-ago
 };
-const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 18 };
+const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 17 };
 
 // ── Tipos (espejo de las columnas study_*) ──
 export interface StudyVideo {
@@ -282,6 +282,23 @@ export function itemsForDay(day: StudyScheduleDay, focusByCode: Record<string, n
   // 2ª opción a QX para CADA tema (y respaldo principal en los temas sin video QX). Theomed NO aloja
   // videos de clase por tema (verificado: carpetas=PDF, sesiones=PPT/PDF + post-tests, sin Vimeo/YouTube).
   if (day.codigo && day.tipo === 'deep_prime') {
+    // ── ⚡ ENFOQUE PREGUNTAS-PRIMERO (Joseph 16-jul · recta final 17-jul→5-ago) ──
+    // El método vira a RESOLVER PREGUNTAS + mapas conceptuales. Los videos LARGOS pasan a OPCIONAL
+    // (solo si sobra tiempo tras las preguntas). Se mide por % ciego, no por videos vistos.
+    items.push({
+      key: `D${N}:metodo`, kind: 'material',
+      label: '⚡ MÉTODO DE HOY: PREGUNTAS PRIMERO — banquear + mapas conceptuales',
+      detail: 'Recta final: resuelve PREGUNTAS (motor diario + postests/Kahoots Theomed + banco QX) y repasa MAPAS CONCEPTUALES. Los videos LARGOS son opcionales (solo si te sobra tiempo). Mídete por % ciego, no por videos vistos.',
+      source: 'Método · preguntas-primero',
+    });
+    const _areaBanco = ENCAPS_AREA_PREFIJO[(day.codigo.match(/^[IVX]+/) || [''])[0]];
+    const _thBanco = _areaBanco ? ENCAPS_THEOMED_AREA[_areaBanco] : undefined;
+    if (_thBanco) items.push({
+      key: `D${N}:banco`, kind: 'theomed',
+      label: `🎯 BANCO DE PREGUNTAS — postests + Kahoots Theomed ${_areaBanco}`,
+      detail: 'Resuelve las preguntas del área (PRIORIDAD sobre el video largo) · postests por sesión + Kahoots',
+      url: _thBanco.url, source: 'Theomed postests/Kahoots', dur: 30, hora: slot(30),
+    });
     // ── FASE 2 · RESÚMENES/THEOPEPAS Theomed — PRIORIDAD sobre las sesiones en vivo (Joseph 10-jul) ──
     // Material ya digerido → agiliza incorporar conocimiento. Van ANTES del video largo/sesión en vivo;
     // el video grande queda de respaldo si sobra tiempo ese día. (La cola QX ya prioriza mapas conceptuales.)

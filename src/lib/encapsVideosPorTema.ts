@@ -1,6 +1,6 @@
 // AUTO-GENERADO por DATA/_scripts/gen_videos_por_tema.js — NO editar a mano.
 // Videos QX por código de tema (para renderizar varios temas/día · refactor multi-tema).
-// 17 temas · 138 videos.
+// 16 temas · 138 videos.
 export interface VideoPorTema { titulo: string; url: string | null; code: string; slides: string | null; dur: number | null }
 export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
  "I-1": [
@@ -588,60 +588,7 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "code": "V-7+V-10",
    "slides": null,
    "dur": null
-  }
- ],
- "III-5": [
-  {
-   "titulo": "Promoción del parto vertical (mapa conceptual)",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/Q2dwTHZQaERqZTlrS3FvWVR0ZWw2Zz09",
-   "code": "III-5",
-   "slides": null,
-   "dur": null
   },
-  {
-   "titulo": "MEDICINA TRADICIONAL, COMPLEMENTARIA Y ALTERNATIVA",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/MTdveWRFRDVyYndtRlZxN1ZuWjRuUT09",
-   "code": "III-5",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "PROMOCIóN DEL PARTO VERTICAL",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/eWpWbTNwdTlDc2ZCRDlOdzdVSXAzZz09",
-   "code": "III-5",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "COMUNICACIóN Y DIáLOGO INTERCULTURAL EN SALUD",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/QXdDcEpqYXFsenkrbUw3V2RPRnhSUT09",
-   "code": "III-5",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "IDENTIDAD CULTURAL Y AUTOPERCEPCIóN éTNICA",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/Nm02bTZmbXRhSjVYZHRaK0NlaTB1UT09",
-   "code": "III-5",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "ATENCIóN EN SALUD CON ENFOQUE INTERCULTURAL Y PERTINENCIA CULTURAL",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/eXVyRm0xd0piZkVFb3RpTFFzZG9zUT09",
-   "code": "III-5",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "PREVENCIóN Y CONTROL DE LA TUBERCULOSIS",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/SWNIUVM3cHVTVE1hTnNKTXBDbzdlZz09",
-   "code": "II-6",
-   "slides": null,
-   "dur": null
-  }
- ],
- "III-8": [
   {
    "titulo": "Ética e integridad en salud (mapa conceptual)",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/MTY3bmovRmxYQlpRM1k2d0VBeXRGUT09",
@@ -695,6 +642,57 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "titulo": "Características estructurales del informe",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/VUwwZ21YZHZwOVpqdTJqc3NZSURBdz09",
    "code": "IV-6+IV-7",
+   "slides": null,
+   "dur": null
+  }
+ ],
+ "III-5": [
+  {
+   "titulo": "Promoción del parto vertical (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/Q2dwTHZQaERqZTlrS3FvWVR0ZWw2Zz09",
+   "code": "III-5",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "MEDICINA TRADICIONAL, COMPLEMENTARIA Y ALTERNATIVA",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/MTdveWRFRDVyYndtRlZxN1ZuWjRuUT09",
+   "code": "III-5",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "PROMOCIóN DEL PARTO VERTICAL",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/eWpWbTNwdTlDc2ZCRDlOdzdVSXAzZz09",
+   "code": "III-5",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "COMUNICACIóN Y DIáLOGO INTERCULTURAL EN SALUD",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/QXdDcEpqYXFsenkrbUw3V2RPRnhSUT09",
+   "code": "III-5",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "IDENTIDAD CULTURAL Y AUTOPERCEPCIóN éTNICA",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/Nm02bTZmbXRhSjVYZHRaK0NlaTB1UT09",
+   "code": "III-5",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "ATENCIóN EN SALUD CON ENFOQUE INTERCULTURAL Y PERTINENCIA CULTURAL",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/eXVyRm0xd0piZkVFb3RpTFFzZG9zUT09",
+   "code": "III-5",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "PREVENCIóN Y CONTROL DE LA TUBERCULOSIS",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/SWNIUVM3cHVTVE1hTnNKTXBDbzdlZz09",
+   "code": "II-6",
    "slides": null,
    "dur": null
   }
