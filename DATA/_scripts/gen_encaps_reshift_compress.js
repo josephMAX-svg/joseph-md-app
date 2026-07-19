@@ -59,15 +59,17 @@ const BK = 'study_schedule_bk_' + START.replace(/-/g, '').slice(4);
   L.push("UPDATE study_schedule SET dia = dia + 1000 WHERE examen='ENCAPS';");
   for (const a of assign)
     L.push(`UPDATE study_schedule SET dia=${a.dia}, fecha='${a.fecha}', weekday='${a.wd}', updated_at=now() WHERE examen='ENCAPS' AND dia=${a.old + 1000};`);
-  // FUSIONAR los temas excedentes como SECUNDARIO del último día-tema (sin perder ninguno; sus videos
-  // los re-aplica gen_encaps_cola_live porque quedan como código secundario del día). El row original
-  // queda en 1000+ y lo borra el cleanup final.
-  for (const m of mergedTemas) {
+  // FUSIONAR los temas excedentes como SECUNDARIO, DISTRIBUIDOS en los últimos días-tema (uno c/u, no
+  // todos apilados en un solo día). Sin perder nada; sus videos los re-aplica gen_encaps_cola_live porque
+  // quedan como código secundario. El row original queda en 1000+ y lo borra el cleanup final.
+  mergedTemas.forEach((m, mi) => {
+    // reparte hacia atrás desde el último día-tema: merge0→último, merge1→penúltimo, …
+    const tgt = assign[Math.max(0, nAssign - 1 - mi)].dia;
     // Lleva el tema fusionado + TODOS sus propios secundarios (si no, se perderían sus sub-temas).
     const secs = [{ codigo: m.codigo, subtema: m.subtema || '', prioridad: 'compl (junta ventana corta)' }, ...((m.temas_secundarios) || [])];
     const sec = JSON.stringify(secs).replace(/'/g, "''");
-    L.push(`UPDATE study_schedule SET temas_secundarios = COALESCE(temas_secundarios,'[]'::jsonb) || '${sec}'::jsonb, updated_at=now() WHERE examen='ENCAPS' AND dia=${lastTemaDia};`);
-  }
+    L.push(`UPDATE study_schedule SET temas_secundarios = COALESCE(temas_secundarios,'[]'::jsonb) || '${sec}'::jsonb, updated_at=now() WHERE examen='ENCAPS' AND dia=${tgt};`);
+  });
   // AGRUPAR simulacros en el dx (los 8 bundles; si el dx está fusionado, también los del dxRow).
   const simsToMerge = fused ? [...sims, dxRow] : sims;
   for (const s of simsToMerge) {

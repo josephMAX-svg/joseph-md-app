@@ -11,7 +11,7 @@ import { PRACTICA_DEEP_PRIME, PRACTICA_REPASO } from './encapsPracticaExtra';
 
 // ── D1 por examen (para calcular el día actual 1..71) ──
 export const STUDY_D1: Record<string, string> = {
-  ENCAPS: '2026-07-17',   // D1=VIE 17-jul · ENCAPS ULTRA-COMPRIMIDO → TERMINA el 5-ago (Joseph 16-jul: la más exigente). 17 días = 16 temas con día propio (17-jul→4-ago, INCL. sábados) + III-8 FUSIONADO como secundario del día 16 (4-ago, junta ventana corta) + el día 16 lleva ADEMÁS los 8 simulacros AGRUPADOS + EXAMEN mié 5-ago. Sin repaso standalone. NADA perdido (40 códigos + 8 sims + examen). Generador: gen_encaps_reshift_compress.js 2026-07-17 2026-08-05 (auto-detecta: fusiona temas excedentes como secundario si el cuerpo < 17 días + dx fusionado; backup study_schedule_bk_0717). ⚡ ENFOQUE PREGUNTAS-PRIMERO (itemsForDay: banner método + banco de preguntas Theomed postests/Kahoots al tope; mapas conceptuales primero; videos LARGOS = opcional). Tras el reshift: re-aplicar gen_encaps_cola_live.js --apply + gen_encaps_cobertura.js --apply + gen_videos_por_tema.js (138 videos QX vivos). NOTA: si el examen real es 20-ago, del 6→20-ago queda buffer de simulacros puro.
+  ENCAPS: '2026-07-20',   // D1=LUN 20-jul (Joseph 18-jul: arranca 19-jul pero es DOMINGO libre → efectivo lun 20-jul) · ENCAPS ULTRA-COMPRIMIDO → TERMINA el 5-ago. 15 días = 14 temas con día propio (20-jul→4-ago, INCL. sábados) + 3 temas (I-2/III-2/III-8) FUSIONADOS como secundarios DISTRIBUIDOS en días 12/13/14 CON sus sub-temas + el día 14 (4-ago) lleva ADEMÁS los 8 simulacros AGRUPADOS + EXAMEN mié 5-ago. NADA perdido (40 códigos + 8 sims + examen). Generador: gen_encaps_reshift_compress.js 2026-07-20 2026-08-05 (fusiona hasta 3 temas excedentes+secundarios DISTRIBUIDOS + dx fusionado; backup study_schedule_bk_0720). ⚡ MÉTODO BANQUEO+MAPAS (Joseph 18-jul): la COLA diaria = SOLO mapas conceptuales (gen_encaps_cola_live.js --apply --maps-only); los videos generales largos SALEN del plan diario (quedan de referencia en la CoberturaCard vía encapsCobertura=catálogo completo). itemsForDay: banner 'PREGUNTAS PRIMERO' + banco de preguntas Theomed al tope. Tras el reshift: re-aplicar gen_encaps_cola_live.js --apply --maps-only + gen_encaps_cobertura.js --apply + gen_videos_por_tema.js. Examen real 20-ago → 6→20-ago = buffer simulacros.
   // MIR / USMLE se agregan cuando se construyan sus cronogramas.
 };
 // Fechas SIN actividad (bloqueadas por Joseph) — no cuentan como día de plan.
@@ -19,7 +19,7 @@ export const STUDY_D1: Record<string, string> = {
 export const STUDY_SKIP_DATES: Record<string, string[]> = {
   ENCAPS: ['2026-07-19', '2026-07-26', '2026-08-02'],  // domingos del tramo comprimido 15-jul→5-ago
 };
-const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 17 };
+const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 15 };
 
 // ── Tipos (espejo de las columnas study_*) ──
 export interface StudyVideo {
@@ -287,9 +287,9 @@ export function itemsForDay(day: StudyScheduleDay, focusByCode: Record<string, n
     // (solo si sobra tiempo tras las preguntas). Se mide por % ciego, no por videos vistos.
     items.push({
       key: `D${N}:metodo`, kind: 'material',
-      label: '⚡ MÉTODO DE HOY: PREGUNTAS PRIMERO — banquear + mapas conceptuales',
-      detail: 'Recta final: resuelve PREGUNTAS (motor diario + postests/Kahoots Theomed + banco QX) y repasa MAPAS CONCEPTUALES. Los videos LARGOS son opcionales (solo si te sobra tiempo). Mídete por % ciego, no por videos vistos.',
-      source: 'Método · preguntas-primero',
+      label: '⚡ MÉTODO: BANQUEO + MAPAS CONCEPTUALES (los videos generales quedan FUERA del plan diario)',
+      detail: 'Recta final (Palmerton): resuelve PREGUNTAS ciegas primero (motor diario + postests/Kahoots Theomed + banco QX), luego revisa el MAPA CONCEPTUAL + resumen del tema. NO ver videos largos de inicio — están de referencia en la tarjeta de cobertura por si un tema no te cierra. Mídete por % ciego, no por videos vistos.',
+      source: 'Método · banqueo + mapas',
     });
     const _areaBanco = ENCAPS_AREA_PREFIJO[(day.codigo.match(/^[IVX]+/) || [''])[0]];
     const _thBanco = _areaBanco ? ENCAPS_THEOMED_AREA[_areaBanco] : undefined;

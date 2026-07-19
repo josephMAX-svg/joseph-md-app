@@ -5,7 +5,11 @@
 //
 // Fuente: scratchpad/qx_live_by_code.json  ({ code: [{titulo,url,vid}] }, 123 videos, 0 dup por url)
 // Salida: study_schedule.videos por día = unión(primario + secundarios) de qx_live_by_code, tag code.
-// Uso: node DATA/_scripts/gen_encaps_cola_live.js [--apply]
+// Uso: node DATA/_scripts/gen_encaps_cola_live.js [--apply] [--maps-only]
+//   --maps-only: la COLA diaria = SOLO mapas conceptuales (Joseph 18-jul: método banqueo + mapas; los
+//   videos generales largos salen del plan diario y quedan de referencia en la CoberturaCard, que usa
+//   el catálogo completo vía encapsCobertura). Los códigos sin mapa quedan sin video en la cola (su
+//   material = banco de preguntas + resúmenes + fichas).
 const fs = require('fs');
 const { createClient } = require('@supabase/supabase-js');
 const URL = 'https://qacynpqdrorpuegsmtcy.supabase.co';
@@ -20,12 +24,16 @@ const byCode = JSON.parse(fs.readFileSync(SB + '/scratchpad/qx_live_by_code.json
     .select('dia,codigo,temas_secundarios').eq('examen', 'ENCAPS').eq('tipo', 'deep_prime').order('dia');
   if (error) throw error;
   const apply = process.argv.includes('--apply');
+  const mapsOnly = process.argv.includes('--maps-only');
+  const esMapa = t => /mapa concep/i.test(t || '');
   let total = 0; const resumen = [];
   for (const r of data) {
     const codes = [r.codigo, ...((r.temas_secundarios || []).map(s => s.codigo))].filter(Boolean);
     const seen = new Set(); const vlist = [];
     for (const c of codes) for (const v of (byCode[c] || [])) {
-      if (!v.url || seen.has(v.url)) continue; seen.add(v.url);
+      if (!v.url || seen.has(v.url)) continue;
+      if (mapsOnly && !esMapa(v.titulo)) continue;   // método banqueo: solo mapas conceptuales en la cola
+      seen.add(v.url);
       vlist.push({ titulo: v.titulo, url: v.url, code: c, slides: null, dur: null });
     }
     total += vlist.length; resumen.push(`${r.codigo}=${vlist.length}`);
