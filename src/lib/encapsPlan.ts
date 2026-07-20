@@ -6,7 +6,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { supabase } from './supabase';
 import { ENCAPS_FICHAS_POR_TEMA, ENCAPS_VIDEO_DRIVE, ENCAPS_THEOMED_AREA, ENCAPS_THEOMED_VIDEOS, ENCAPS_COMPENDIO, ENCAPS_AREA_PREFIJO, ENCAPS_THEOMED_TEMA_SESION } from './encapsFuentes';
 import { ENCAPS_VIDEOS_POR_TEMA } from './encapsVideosPorTema';
-import { ENCAPS_THEOMED_RESUMENES, ENCAPS_BANCOS, ENCAPS_MAPAS_PDF } from './encapsResumenes';
+import { ENCAPS_THEOMED_RESUMENES, ENCAPS_BANCOS, ENCAPS_MAPAS_PDF, ENCAPS_POSTESTS, ENCAPS_BIBLIOTECA_QX, ENCAPS_MANUALES_THEOMED } from './encapsResumenes';
 import { PRACTICA_DEEP_PRIME, PRACTICA_REPASO } from './encapsPracticaExtra';
 
 // ── D1 por examen (para calcular el día actual 1..71) ──
@@ -301,21 +301,44 @@ export function itemsForDay(day: StudyScheduleDay, focusByCode: Record<string, n
         url: b.url, source: b.fuente, dur: i === 0 ? 45 : 15, hora: slot(i === 0 ? 45 : 15),
       });
     });
-    // postests del área en Theomed (por sesión)
+    // POSTESTS del área con LINK DIRECTO (50 quizzes verificados 19-jul) = banco por tema
+    (_areaBanco ? (ENCAPS_POSTESTS[_areaBanco] || []) : []).forEach((q, i) => {
+      items.push({
+        key: `D${N}:postest:${i}`, kind: 'theomed',
+        label: `🎯 ${q.label}`,
+        detail: 'Postest Theomed con link directo · banquea a ciegas y recalibra',
+        url: q.url, source: q.fuente, dur: 12, hora: slot(12),
+      });
+    });
+    // índice del área en Theomed (por si quiere navegar a la sesión completa)
     const _thBanco = _areaBanco ? ENCAPS_THEOMED_AREA[_areaBanco] : undefined;
     if (_thBanco) items.push({
       key: `D${N}:banco:area`, kind: 'theomed',
-      label: `🎯 BANQUEO: postests Theomed ${_areaBanco} (por sesión)`,
-      detail: `${_thBanco.n} recursos del área · postests para banquear el tema`,
-      url: _thBanco.url, source: 'Theomed postests', dur: 20, hora: slot(20),
+      label: `📂 Theomed ${_areaBanco} — índice del área (${_thBanco.n} recursos)`,
+      detail: 'Sesiones, PPTs, postests y normas técnicas del área',
+      url: _thBanco.url, source: 'Theomed área', dur: 10, hora: slot(10),
     });
-    // 🗺️ PDF de mapas conceptuales del área (repaso de un vistazo)
+    // 🗺️ PDF de mapas conceptuales del área + biblioteca QX de mapas (repaso de un vistazo)
     const _pdfMapas = _areaBanco ? ENCAPS_MAPAS_PDF[_areaBanco] : undefined;
     if (_pdfMapas) items.push({
       key: `D${N}:mapaspdf`, kind: 'material',
       label: `🗺️ ${_pdfMapas.label}`,
       detail: 'Compilado QX de mapas conceptuales del área — repasa el área entera de un vistazo tras banquear',
       url: _pdfMapas.url, source: _pdfMapas.fuente, dur: 15, hora: slot(15),
+    });
+    items.push({
+      key: `D${N}:bibliotecaqx`, kind: 'material',
+      label: `🗺️ ${ENCAPS_BIBLIOTECA_QX.label}`,
+      detail: 'Biblioteca QX: sección de Mapas Conceptuales + fichas MINSA de Fundamentos Teóricos',
+      url: ENCAPS_BIBLIOTECA_QX.url, source: ENCAPS_BIBLIOTECA_QX.fuente, dur: 10, hora: slot(10),
+    });
+    // Manual del área (consulta puntual, NO lectura lineal)
+    const _man = _areaBanco ? ENCAPS_MANUALES_THEOMED[_areaBanco] : undefined;
+    if (_man) items.push({
+      key: `D${N}:manual`, kind: 'material',
+      label: `📕 ${_man.label} (consulta puntual)`,
+      detail: 'Solo para resolver una duda concreta tras banquear — NO leer lineal',
+      url: _man.url, source: _man.fuente, dur: 5, hora: slot(5),
     });
     // ── FASE 2 · RESÚMENES/THEOPEPAS Theomed — PRIORIDAD sobre las sesiones en vivo (Joseph 10-jul) ──
     // Material ya digerido → agiliza incorporar conocimiento. Van ANTES del video largo/sesión en vivo;
