@@ -240,7 +240,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "ALTA",
   "vueltas": 5,
   "min": 70,
-  "qxN": 6,
+  "qxN": 7,
   "theomedN": 31,
   "extenso": false,
   "freq": "Rentable y estable-alta. OJO taxonomía: QX clasifica metaxénicas/zoonosis dentro de CUIDADO INTEGRAL (II) con 14/400 (~3.5/examen) + control de vectores 2 → es la mayor reclasificación entre QX y nuestra taxonomía. Forecast 3% (banda 2-5), estable. En viñeta: dengue con signos de alarma (A/B/C), reconocer y clasificar, NO ml/kg.",
@@ -262,6 +262,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "url": "https://drive.google.com/drive/folders/1tlyniouI5o_SOpw-LBa2IGfWgG5zpfF0"
   },
   "videosExtra": [
+   {
+    "titulo": "Vigilancia entomológica de dengue (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/d2Z5b2ZjMktNUnVDRTAxdGFmamVsQT09"
+   },
    {
     "titulo": "PREVENCIóN Y CONTROL DE INFECCIONES",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/MCtyekxhOVlQS0kzbkFPMWx6bTRwQT09"
@@ -858,7 +862,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "CRÍTICA",
   "vueltas": 6,
   "min": 110,
-  "qxN": 12,
+  "qxN": 16,
   "theomedN": 54,
   "extenso": true,
   "freq": "QX Tendencias: emergencias obstétricas 9 + embarazo/parto/puerperio 3 + climaterio 1 + emerg.obst(específicos) 1 = 14/400 (~3.5%/examen). Forecast v2: II-1 ~5% (banda 4-8), tendencia ALZA, CRÍTICO confirmado. Núcleo caliente: PARTO VERTICAL (criterios/posición), referencia de gestante por nivel, preeclampsia/eclampsia. Viñeta clínica ~90%.",
@@ -892,6 +896,22 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
   },
   "videosExtra": [
+   {
+    "titulo": "Embarazo (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/RHRubXJrV082TGlMTkYvTWFwTFEzUT09"
+   },
+   {
+    "titulo": "Nutrición gestacional (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/UnlpRXYweDB2SWxkSmhPeWliWUtVdz09"
+   },
+   {
+    "titulo": "Puerperio normal (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/a0t4S2xpNnY5L3Y5bVdmbGRWeWhGZz09"
+   },
+   {
+    "titulo": "Climaterio y menopausia (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/eUNCcitKOCtoYTEvSXFPY1hIK3FQZz09"
+   },
    {
     "titulo": "CLIMATERIO Y MENOPAUSIA",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/UEpsVnZVc21MSWl3MmRoNWg5c001QT09"
@@ -977,7 +997,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "CRÍTICA",
   "vueltas": 6,
   "min": 90,
-  "qxN": 2,
+  "qxN": 4,
   "theomedN": 54,
   "extenso": true,
   "freq": "QX Tendencias: esquema nacional 8 + persona con esquema regular 5 = 13/400 (~3.25%/examen). Forecast v2: II-3 ~5% (banda 3-8), ALZA, CRÍTICO. Emergente confirmado por FICHA MINSA nueva (esquema desdoblado) + live QX 'NT Inmunizaciones'. Núcleo: cadena de frío 2-8°C y ruptura, esquema por edad (VPH 9a dosis única, SPR, influenza+neumococo en AM), ESAVI severo notificación 24h.",
@@ -1007,6 +1027,14 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
   },
   "videosExtra": [
+   {
+    "titulo": "Esquema nacional de vacunación (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/TExXRzZHc0tWSytWaURnQWR5RmdjUT09"
+   },
+   {
+    "titulo": "Esquema de vacunación ACTUALIZACIÓN (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/NFBVUkhndCtBZGhDNWl2QkJyT25xZz09"
+   },
    {
     "titulo": "ESQUEMA NACIONAL DE VACUNACIóN EN PERú",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/TW14OFpydEY5RitybDNCUXpTOG9OUT09"
@@ -1051,7 +1079,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "CRÍTICA",
   "vueltas": 6,
   "min": 100,
-  "qxN": 3,
+  "qxN": 7,
   "theomedN": 54,
   "extenso": true,
   "freq": "QX Tendencias: ITS 9/400 (~2.25%/examen) — nota: PTMI VIH/sífilis/VHB cuenta aparte. Forecast v2: II-11 ~5% (banda 3-7), ALZA, CRÍTICO. Confirmado por TRIPLE FICHA MINSA nueva (VIH/sífilis/VHB) + live QX 'NT ITS' + rebote en 2026-I. Núcleo: prueba dual/triple VIH-sífilis en gestante/adolescente, penicilina benzatínica, PTMI.",
@@ -1080,6 +1108,22 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
   },
   "videosExtra": [
+   {
+    "titulo": "PTMI hepatitis B (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/VGZ1U1hqUTBaczJIUVJBSDN6TW12Zz09"
+   },
+   {
+    "titulo": "PTMI sífilis (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/M0lLT1h2blBGYVZHcDYyTWNPditVZz09"
+   },
+   {
+    "titulo": "PTMI VIH (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/cmdzcDduUk0wZHdMMmxZaHVsQlJydz09"
+   },
+   {
+    "titulo": "Atención integral de las ITS (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/TEdLRFNQTDNiaHR6djRDMXl1b0FYdz09"
+   },
    {
     "titulo": "PREVENCIóN COMBINADA DEL VIH",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/ZmVONDlDWnI2R0laS2dHMGlWSGtsQT09"
@@ -1265,7 +1309,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "ALTA",
   "vueltas": 5,
   "min": 70,
-  "qxN": 1,
+  "qxN": 2,
   "theomedN": 54,
   "extenso": true,
   "freq": "QX Tendencias: 8/400 (~2%/examen). Forecast v2: añadido a lista MEDIA-ALTA (post-verificación QX). Núcleo: definiciones operativas (SR, caso presuntivo, búsqueda activa/pasiva), esquema TB sensible HREZ/HR, TPT, PPD, notificación (inmediata vs semanal).",
@@ -1292,6 +1336,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
   },
   "videosExtra": [
+   {
+    "titulo": "Tuberculosis (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/OFZqWExSS3cwL1hYeFRtRUV0QWtGUT09"
+   },
    {
     "titulo": "PREVENCIóN Y CONTROL DE LA TUBERCULOSIS",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/SWNIUVM3cHVTVE1hTnNKTXBDbzdlZz09"
@@ -1331,7 +1379,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "ALTA",
   "vueltas": 5,
   "min": 70,
-  "qxN": 2,
+  "qxN": 6,
   "theomedN": 54,
   "extenso": true,
   "freq": "QX Tendencias: 8/400 (~2%/examen). Forecast v2: II-4 ~3% (banda 2-5), estable. Núcleo: suplementación de hierro por etapa (lactante 4m/prematuro 30d, gestante desde captación), corrección de Hb por altitud, dosis de tratamiento vs preventiva.",
@@ -1355,6 +1403,22 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
   },
   "videosExtra": [
+   {
+    "titulo": "Desnutrición en pediatría (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/endIWFJCZHNObE8vZ1hBWk84RDlYdz09"
+   },
+   {
+    "titulo": "Problemas de malnutrición (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/ZjIwSTVUWmNCSk1kQTk0c2Vza3Vidz09"
+   },
+   {
+    "titulo": "Anemia (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/Q3piYjc3dFpCSmhBU1VCZ2hqaGsrUT09"
+   },
+   {
+    "titulo": "Suplementación con vitamina A (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/VHhLWWYxU3pUeTJ1OCtpR2NlTi9tZz09"
+   },
    {
     "titulo": "PREVENCIóN Y CONTROL DE ANEMIA",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/bTd2QWdtT0RDNnRuQWFJMjZzQW5sZz09"
@@ -1397,7 +1461,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "ALTA",
   "vueltas": 4,
   "min": 65,
-  "qxN": 3,
+  "qxN": 7,
   "theomedN": 54,
   "extenso": true,
   "freq": "QX Tendencias: prevención y control del cáncer 6/400 (~1.5%/examen). Forecast v2: añadido a watch-list (tamizaje mama/CACU). Joseph indica que suele caer 1 pregunta. Núcleo: tamizaje CACU (DM-VPH/IVAA/PAP por edad), mama (ECM/mamografía), próstata (PSA), regla ABCDE piel, cáncer infantil referencia ≤72h.",
@@ -1419,6 +1483,22 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
   },
   "videosExtra": [
+   {
+    "titulo": "Prevención y control del cáncer (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/MHhoaXpOWWFkUkdqZlVOUjR2Mi9ZUT09"
+   },
+   {
+    "titulo": "Cáncer de cérvix (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/NElXL1ppOVMwNFg1REFrT1NnUmNmdz09"
+   },
+   {
+    "titulo": "Cáncer de mama (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/cG8xMkNhUTJXY20zYnVGQWUzc2krdz09"
+   },
+   {
+    "titulo": "Cáncer de próstata (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/TG05WVM5bkEvbWRHeThhQ1BRVlVjUT09"
+   },
    {
     "titulo": "DETECCIóN TEMPRANA DE CáNCER INFANTIL",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/U1BDWnFZOGs0YUNLVXAvMS8vRExFQT09"
@@ -1465,7 +1545,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "ALTA",
   "vueltas": 4,
   "min": 70,
-  "qxN": 1,
+  "qxN": 3,
   "theomedN": 54,
   "extenso": true,
   "freq": "QX Tendencias: paquete cuidado integral del niño (CRED) 5/400 (~1.25%/examen). Forecast v2: watch-list de emergentes. Compendio le dedica MUCHO espacio (el más extenso de los paquetes por curso de vida). Núcleo: periodicidad de controles CRED por edad, instrumentos de tamizaje (EDI, M-CHAT, PPSC/PSC17), valoración nutricional antropométrica.",
@@ -1493,6 +1573,14 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
   },
   "videosExtra": [
+   {
+    "titulo": "CRED (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/cmcwRGJrZUZ0anIzY2ljUkVuRFZ6Zz09"
+   },
+   {
+    "titulo": "CRED ACTUALIZACIÓN (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/c2lNRUJYT0hHSHV1eFdmbXBGdXRiZz09"
+   },
    {
     "titulo": "PAQUETE DEL CUIDADO INTEGRAL DE SALUD DEL NIñO - CRED",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/cUNBWXFqeVNSM21CT2VLdXVyOVRLZz09"
@@ -1533,7 +1621,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "ALTA",
   "vueltas": 4,
   "min": 70,
-  "qxN": 10,
+  "qxN": 12,
   "theomedN": 54,
   "extenso": true,
   "freq": "QX Tendencias: MCI definición 3 + atención por curso de vida 5 + adolescente 4 + joven 1 = ~13/400 (~3.25%/examen). Forecast v2: no listado como crítico pero volumen apreciable. Núcleo: APS (Alma-Ata/atributos), evolución MAIS→MAIS-BFC→MCI 2020, paquetes por etapa de vida, niveles de atención/RIS.",
@@ -1559,6 +1647,14 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    {
     "titulo": "Atención centrada en la persona (mapa conceptual)",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/NC95Y3RVNk1JcnlEVzkvWDB3V1FtZz09"
+   },
+   {
+    "titulo": "Atención integral por curso de vida (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/WWYwL3NSV0VsZGw0K2ZCb0VMMjJYdz09"
+   },
+   {
+    "titulo": "MCI (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/NGIzTkl1ZzNzcmNLOGxOMzFXWjQ2dz09"
    },
    {
     "titulo": "INTOXICACIONES",
@@ -1633,7 +1729,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "MEDIA",
   "vueltas": 4,
   "min": 55,
-  "qxN": 1,
+  "qxN": 2,
   "theomedN": 54,
   "extenso": false,
   "freq": "QX Tendencias: cuidados salud mental 3/400 (~0.75%/examen). Forecast v2: II-9 ~3-4% (banda 2-6), ALZA, EMERGENTE — DOBLE FICHA MINSA nueva es señal de material adelantada. Núcleo: tamizaje salud mental (AUDIT-C/PHQ-9/SRQ) y referencia, criterios de episodio depresivo, trastornos del ánimo.",
@@ -1657,6 +1753,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
   },
   "videosExtra": [
+   {
+    "titulo": "Cuidados de la salud mental (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/aWIvSC9GZ0hVdS9RbmNXN0FLNHhDdz09"
+   },
    {
     "titulo": "CUIDADOS DE LA SALUD MENTAL",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/UmN3RDFMeDVObjFUdGN6TmJvTVBGZz09"

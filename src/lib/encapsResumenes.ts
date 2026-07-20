@@ -23,8 +23,26 @@ export const ENCAPS_THEOMED_RESUMENES: Record<string, Resumen[]> = {
   ],
 };
 
+// ── 🎯 BANCOS DE PREGUNTAS (el CENTRO del método banqueo, Joseph 19-jul) ──────────────────────────
+// Verificado logueado 19-jul-2026 en QX Medic + Theomed. Estos van PRIMERO en el día: se banquea, y
+// recién después se revisa el mapa conceptual del tema. Palmerton: ciegas → clave → recalibrar.
+export const ENCAPS_BANCOS: Resumen[] = [
+  { label: '⭐ App BANQUEO QX (banco principal de preguntas)', url: 'https://qxmedic-aulavirtual.com/evaluaciones/banqueapp', fuente: 'QX · App Banqueo' },
+  { label: 'Evaluaciones QX (simulacros y exámenes por bloque)', url: 'https://qxmedic-aulavirtual.com/evaluaciones', fuente: 'QX · Evaluaciones' },
+  { label: 'SIMULACROS MEDICINA (Theomed, curso completo)', url: 'https://campus.academiatheomed.com/course/view.php?id=37', fuente: 'Theomed · Simulacros' },
+  { label: 'KAHOOTS 2026-2 (Theomed, preguntas rápidas por sesión)', url: 'https://campus.academiatheomed.com/course/view.php?id=89', fuente: 'Theomed · Kahoots' },
+];
+
+// ── 🗺️ PDFs de MAPAS CONCEPTUALES por área (QX, compilados) ──────────────────────────────────────
+// Complementan los mapas en video: el PDF permite repasar el área entera de un vistazo.
+export const ENCAPS_MAPAS_PDF: Record<string, Resumen> = {
+  'Salud Pública': { label: 'PDF Mapas Conceptuales · Salud Pública', url: 'https://www.dropbox.com/scl/fi/q01p4yyacsbu4mzrprhsg/SERUMS-2026-I-MAPAS-CONCEPTUALES-SALUD-P-BLICA.pdf?rlkey=tgqi3hq49orkc5rsxyxapib6x&st=elawp8hm&dl=0', fuente: 'QX · PDF mapas' },
+  'Cuidado Integral': { label: 'PDF Mapas Conceptuales · Cuidado Integral', url: 'https://www.dropbox.com/scl/fi/sct5jgdylbcptufy5g9y4/MAPAS-CONCEPTUALES-CUIDADO-INTEGRAL.pdf?rlkey=romw7o4en2llzn4262srwkz5t&st=h3rpy4zv&dl=0', fuente: 'QX · PDF mapas' },
+  'Ética e Interculturalidad': { label: 'PDF Mapas Conceptuales · Ética e Interculturalidad', url: 'https://www.dropbox.com/scl/fi/6fu4m71ufdcobpcrb10fx/MAPAS-CONCEPTUALES-TICA-E-INTERCULTURALIDAD.pdf?rlkey=ggsk0wi57kqrnpvkr4d6nwi48&dl=0', fuente: 'QX · PDF mapas' },
+};
+
 export const ENCAPS_RESUMENES_META = {
-  fuente: 'Theomed campus curso 73 (Medicina Regular GP1 2026-II)',
-  scrape: '2026-07-10',
-  nota: 'Fase 2 = resúmenes/THEOPEPAS ya digeridos → prioridad sobre sesión en vivo (Fase 1). QX SP también publica MAPAS CONCEPTUALES (priorizados en la cola vía merge_qx_live.js). López: compendio de área = su resumen Fase 2, ya enlazado (ENCAPS_COMPENDIO). Re-escrapear Theomed a medida que publiquen más resúmenes por sesión.',
+  fuente: 'QX Medic (aula virtual) + Theomed campus (cursos 73/37/89)',
+  scrape: '2026-07-19',
+  nota: 'MÉTODO BANQUEO: (1) BANCOS = App Banqueo QX + Evaluaciones QX + Simulacros/Kahoots Theomed → se banquea PRIMERO; (2) MAPAS CONCEPTUALES QX (42 en catálogo de 163 videos; CI soltó 25 el 19-jul → los críticos II-1/II-3/II-11/II-10/II-4/II-2 YA tienen mapa) en la cola vía --maps-only; (3) resúmenes/THEOPEPAS Theomed + PDFs de mapas por área. Los videos generales largos quedan FUERA del plan diario (referencia en CoberturaCard). Re-escrapear QX/Theomed a medida que publiquen (GE/INV aún sin mapas).',
 };

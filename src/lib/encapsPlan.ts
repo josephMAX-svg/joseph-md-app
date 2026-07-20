@@ -6,7 +6,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { supabase } from './supabase';
 import { ENCAPS_FICHAS_POR_TEMA, ENCAPS_VIDEO_DRIVE, ENCAPS_THEOMED_AREA, ENCAPS_THEOMED_VIDEOS, ENCAPS_COMPENDIO, ENCAPS_AREA_PREFIJO, ENCAPS_THEOMED_TEMA_SESION } from './encapsFuentes';
 import { ENCAPS_VIDEOS_POR_TEMA } from './encapsVideosPorTema';
-import { ENCAPS_THEOMED_RESUMENES } from './encapsResumenes';
+import { ENCAPS_THEOMED_RESUMENES, ENCAPS_BANCOS, ENCAPS_MAPAS_PDF } from './encapsResumenes';
 import { PRACTICA_DEEP_PRIME, PRACTICA_REPASO } from './encapsPracticaExtra';
 
 // ── D1 por examen (para calcular el día actual 1..71) ──
@@ -292,12 +292,30 @@ export function itemsForDay(day: StudyScheduleDay, focusByCode: Record<string, n
       source: 'Método · banqueo + mapas',
     });
     const _areaBanco = ENCAPS_AREA_PREFIJO[(day.codigo.match(/^[IVX]+/) || [''])[0]];
+    // 🎯 BANCOS DE PREGUNTAS — el centro del método: se banquea PRIMERO, el mapa se revisa después.
+    ENCAPS_BANCOS.forEach((b, i) => {
+      items.push({
+        key: `D${N}:banco:${i}`, kind: 'theomed',
+        label: `🎯 BANQUEO: ${b.label}`,
+        detail: 'Resuelve preguntas CIEGAS del tema de hoy · luego revisa el mapa conceptual y recalibra (Palmerton)',
+        url: b.url, source: b.fuente, dur: i === 0 ? 45 : 15, hora: slot(i === 0 ? 45 : 15),
+      });
+    });
+    // postests del área en Theomed (por sesión)
     const _thBanco = _areaBanco ? ENCAPS_THEOMED_AREA[_areaBanco] : undefined;
     if (_thBanco) items.push({
-      key: `D${N}:banco`, kind: 'theomed',
-      label: `🎯 BANCO DE PREGUNTAS — postests + Kahoots Theomed ${_areaBanco}`,
-      detail: 'Resuelve las preguntas del área (PRIORIDAD sobre el video largo) · postests por sesión + Kahoots',
-      url: _thBanco.url, source: 'Theomed postests/Kahoots', dur: 30, hora: slot(30),
+      key: `D${N}:banco:area`, kind: 'theomed',
+      label: `🎯 BANQUEO: postests Theomed ${_areaBanco} (por sesión)`,
+      detail: `${_thBanco.n} recursos del área · postests para banquear el tema`,
+      url: _thBanco.url, source: 'Theomed postests', dur: 20, hora: slot(20),
+    });
+    // 🗺️ PDF de mapas conceptuales del área (repaso de un vistazo)
+    const _pdfMapas = _areaBanco ? ENCAPS_MAPAS_PDF[_areaBanco] : undefined;
+    if (_pdfMapas) items.push({
+      key: `D${N}:mapaspdf`, kind: 'material',
+      label: `🗺️ ${_pdfMapas.label}`,
+      detail: 'Compilado QX de mapas conceptuales del área — repasa el área entera de un vistazo tras banquear',
+      url: _pdfMapas.url, source: _pdfMapas.fuente, dur: 15, hora: slot(15),
     });
     // ── FASE 2 · RESÚMENES/THEOPEPAS Theomed — PRIORIDAD sobre las sesiones en vivo (Joseph 10-jul) ──
     // Material ya digerido → agiliza incorporar conocimiento. Van ANTES del video largo/sesión en vivo;
