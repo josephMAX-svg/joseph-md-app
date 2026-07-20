@@ -11,15 +11,15 @@ import { PRACTICA_DEEP_PRIME, PRACTICA_REPASO } from './encapsPracticaExtra';
 
 // ── D1 por examen (para calcular el día actual 1..71) ──
 export const STUDY_D1: Record<string, string> = {
-  ENCAPS: '2026-07-21',   // D1=MAR 21-jul (Joseph 20-jul: última modificación, TODO arranca 21-jul) · ENCAPS ULTRA-COMPRIMIDO → TERMINA el 5-ago. 14 días = 13 temas con día propio (21-jul→4-ago, INCL. sábados) + 4 temas (IV-1+IV-2 / I-2 / III-2 / III-8 = los MENOS rentables del pronóstico v2) FUSIONADOS como secundarios DISTRIBUIDOS en días 13/12/11/10 CON sus sub-temas + el día 13 (4-ago = III-9) lleva ADEMÁS los 9 bundles de simulacro AGRUPADOS (35 sims) + EXAMEN mié 5-ago. NADA perdido (40 códigos + sims + examen). Generador: gen_encaps_reshift_compress.js 2026-07-21 2026-08-05 (fusiona hasta 4 temas excedentes+secundarios DISTRIBUIDOS + dx fusionado; backup study_schedule_bk_0721). ⚡ MÉTODO BANQUEO+MAPAS: la COLA diaria = SOLO mapas conceptuales (gen_encaps_cola_live.js --apply --maps-only); los videos generales largos SALEN del plan diario (quedan de referencia en la CoberturaCard vía encapsCobertura=catálogo completo). itemsForDay: banner 'BANQUEO+MAPAS' + bancos de preguntas + postests del área al tope. Tras el reshift: re-aplicar gen_encaps_cola_live.js --apply --maps-only + gen_encaps_cobertura.js --apply + gen_videos_por_tema.js. Examen real 20-ago → 6→20-ago = buffer simulacros.
+  ENCAPS: '2026-07-21',   // D1=MAR 21-jul (Joseph 20-jul: TODO arranca 21-jul) · 18 días. CONTENIDO (13 temas con día propio) 21-jul→4-ago INCL. sábados + 4 temas MENOS rentables del pronóstico v2 (IV-1+IV-2/I-2/III-2/III-8) FUSIONADOS como secundarios BAJA DISTRIBUIDOS en días 13/12/11/10 CON sus sub-temas → LÍMITE DE CONTENIDO = mié 5-ago (día 14, repaso integral). El EXAMEN REAL es dom 9-ago (día 18); 6→8-ago = BUFFER de margen: los 35 simulacros DISTRIBUIDOS en 5/6/7-ago (12/12/11) = práctica en condición de examen espaciada, y 8-ago = TAPER (víspera ligera, defiende 7h sueño). NADA perdido (40 códigos + 35 sims + examen). Generadores: gen_encaps_reshift_compress.js 2026-07-21 2026-08-05 (contenido) + gen_encaps_buffer_9ago.js (buffer 6→9-ago). Backup study_schedule_bk_0721. ⚡ MÉTODO BANQUEO+MAPAS: la COLA diaria = SOLO mapas conceptuales (gen_encaps_cola_live.js --apply --maps-only); videos largos SALEN del plan diario (referencia en CoberturaCard). itemsForDay: banner 'BANQUEO+MAPAS' + bancos + postests del área al tope.
   // MIR / USMLE se agregan cuando se construyan sus cronogramas.
 };
 // Fechas SIN actividad (bloqueadas por Joseph) — no cuentan como día de plan.
 // v7 (23-jun): TODOS los domingos del tramo 24-jun → 20-ago quedan libres (8 domingos).
 export const STUDY_SKIP_DATES: Record<string, string[]> = {
-  ENCAPS: ['2026-07-26', '2026-08-02'],  // domingos del tramo comprimido 21-jul→5-ago
+  ENCAPS: ['2026-07-26', '2026-08-02'],  // domingos del tramo 21-jul→9-ago (el examen 9-ago SÍ es domingo, pero no se salta)
 };
-const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 14 };
+const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 18 };
 
 // ── Tipos (espejo de las columnas study_*) ──
 export interface StudyVideo {
