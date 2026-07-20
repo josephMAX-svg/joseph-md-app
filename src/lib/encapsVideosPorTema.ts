@@ -1,6 +1,6 @@
 // AUTO-GENERADO por DATA/_scripts/gen_videos_por_tema.js — NO editar a mano.
 // Videos QX por código de tema (para renderizar varios temas/día · refactor multi-tema).
-// 12 temas · 40 videos.
+// 11 temas · 40 videos.
 export interface VideoPorTema { titulo: string; url: string | null; code: string; slides: string | null; dur: number | null }
 export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
  "I-1": [
@@ -144,6 +144,13 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "code": "II-4",
    "slides": null,
    "dur": null
+  },
+  {
+   "titulo": "Ética e integridad en salud (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/MTY3bmovRmxYQlpRM1k2d0VBeXRGUT09",
+   "code": "III-8",
+   "slides": null,
+   "dur": null
   }
  ],
  "II-11": [
@@ -275,7 +282,7 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "dur": null
   }
  ],
- "IV-1+IV-2": [
+ "V-1": [
   {
    "titulo": "Conceptos básicos de salud pública (mapa conceptual)",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/WFZrMHlSVXFlN1NFMWNqTlJwZlJaQT09",
@@ -294,15 +301,6 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "titulo": "CRED ACTUALIZACIÓN (mapa conceptual)",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/c2lNRUJYT0hHSHV1eFdmbXBGdXRiZz09",
    "code": "II-2",
-   "slides": null,
-   "dur": null
-  }
- ],
- "V-1": [
-  {
-   "titulo": "Ética e integridad en salud (mapa conceptual)",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/MTY3bmovRmxYQlpRM1k2d0VBeXRGUT09",
-   "code": "III-8",
    "slides": null,
    "dur": null
   }

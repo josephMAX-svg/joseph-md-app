@@ -1,6 +1,9 @@
 // encapsRentabilidad.ts — TELEMETRÍA de rentabilidad ENCAPS (READ-ONLY, estático).
 // Fuente: DATA/ENCAPS/PRONOSTICO_WALKFORWARD_2026-2_v2.md (walk-forward v2, 39 agentes,
 // sin lookahead + auditoría adversarial) verificado contra QX "Tendencias".
+//
+// Vector unificado 2026-07-20: II33·I28·V22·III13·IV4 (fuente: PRONOSTICO_WALKFORWARD_2026-2_v2 §7,
+// verificación en vivo QX). Supersede los vectores previos II34·I27·V23·III13·IV3 y II33·I27·V23·III13·IV4.
 // Es una ESTIMACIÓN data-driven (6 exámenes oficiales reales), NO un peso oficial del MINSA
 // (el blueprint MINSA no publica pesos por área). Banda de confianza ±2-4pp.
 //
@@ -20,18 +23,23 @@ export interface AreaForecast {
   note?: string;         // matiz táctico (rey / contingencia mínima…)
 }
 
-// Área: II 34 · I 27 · V 23 · III 13 · IV 3 (post-auditoría v2). Banda ±2-4pp.
-// Acento por área para escaneo tipo terminal (cada área = su joya apagada).
+// Área CANÓNICO: II 33 · I 28 · V 22 · III 13 · IV 4 (v2 §7, blend recency + QX Tendencias en vivo).
+// Banda ±2-4pp. Acento por área para escaneo tipo terminal (cada área = su joya apagada).
 export const ENCAPS_AREA_FORECAST: AreaForecast[] = [
-  { code: 'II', label: 'Cuidado Integral', short: 'CI',   pct: 34, bandLo: 30, bandHi: 38, accent: Colors.blue,   note: 'ÁREA REY · ~90% viñeta clínica' },
-  { code: 'I',  label: 'Salud Pública', short: 'SP', pct: 27, bandLo: 24, bandHi: 30, accent: Colors.purple, note: 'estructural · I-3 crítico' },
-  { code: 'V',  label: 'Gestión', short: 'GES', pct: 23, bandLo: 18, bandHi: 27, accent: Colors.gold,   note: 'V-2 volátil (banda 8-18)' },
+  { code: 'II', label: 'Cuidado Integral', short: 'CI',   pct: 33, bandLo: 30, bandHi: 38, accent: Colors.blue,   note: 'ÁREA REY · ~90% viñeta clínica' },
+  { code: 'I',  label: 'Salud Pública', short: 'SP', pct: 28, bandLo: 24, bandHi: 30, accent: Colors.purple, note: 'estructural · I-3 crítico' },
+  { code: 'V',  label: 'Gestión', short: 'GES', pct: 22, bandLo: 18, bandHi: 27, accent: Colors.gold,   note: 'V-2 volátil (banda 8-18)' },
   { code: 'III', label: 'Ética / Interculturalidad', short: 'ÉTI', pct: 13, bandLo: 11, bandHi: 15, accent: '#7C83D6', note: 'III-5 crítico · III-9 miss histórico' },
-  { code: 'IV', label: 'Investigación', short: 'INV', pct: 3,  bandLo: 2,  bandHi: 5,  accent: Colors.brass,  note: 'CONTINGENCIA MÍNIMA · no sobre-invertir (banda 2-5)' },
+  { code: 'IV', label: 'Investigación', short: 'INV', pct: 4,  bandLo: 2,  bandHi: 6,  accent: Colors.brass,  note: 'CONTINGENCIA MÍNIMA · no sobre-invertir (banda 2-6)' },
 ];
 
 // Temas CRÍTICOS (fuera de rango si no se dominan). Estado de dominio derivable en runtime;
 // aquí solo el ranking data-driven + su área. Los "tickers" del strip Bloomberg.
+// CANÓNICO = SIETE: I-3 · II-1 · II-3 · V-2 · II-11 · III-5 · II-8 (II-8 es CRÍTICO, no ALTA).
+// Recalibración v2 §7 (puntos por tema): I-3 ~12 · V-2 ~9 · II-1 5 · V-1 3 · II-9 3.
+// I-6 (bioestadística) prácticamente EXTINTO (~0.5% · QX 2/400) → ya NO es crítico, solo repaso conceptual.
+// V-MED = pseudo-código agregado (gestión de medicamentos: farmacovigilancia/URM/DIGEMID/SISMED);
+// NO es un código del temario oficial ni figura en GUIA_POR_TEMA — se conserva como cluster de ~4%.
 export interface CriticalTopic { code: string; label: string; area: string; accent: string }
 export const ENCAPS_CRITICAL_TOPICS: CriticalTopic[] = [
   { code: 'I-3',   label: 'Vigilancia epidemiológica / brotes (Dir. 046)', area: 'I',  accent: Colors.purple },
@@ -74,5 +82,5 @@ export const ENCAPS_TELEMETRY_META = {
   disclaimer: 'estimación walk-forward · banda ±2-4pp nominal (MAE backtest real ~6pp en el último fold) · el MINSA no publica pesos por área',
   formato: '~90% viñeta clínica',
   confianza: 'MEDIA',
-  fuente: 'PRONOSTICO_WALKFORWARD_2026-2_v2 · QX Tendencias',
+  fuente: 'PRONOSTICO_WALKFORWARD_2026-2_v2 §7 (verificación en vivo QX Tendencias) · vector unificado 2026-07-20',
 } as const;

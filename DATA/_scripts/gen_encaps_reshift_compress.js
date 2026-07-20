@@ -32,7 +32,10 @@ const BK = 'study_schedule_bk_' + START.replace(/-/g, '').slice(4);
   const bodyDays = []; for (let c = START; c < EXAM; c = addDays(c, 1)) if (dow(c) !== 0) bodyDays.push(c);
   const nAssign = Math.min(temas.length, bodyDays.length);
   const mergedTemas = temas.slice(nAssign);   // temas que NO caben como día propio → se fusionan como secundario
-  if (mergedTemas.length > 3) throw new Error(`PELIGRO: ${bodyDays.length} días de cuerpo, ${mergedTemas.length} temas a fusionar (>3) — ventana demasiado corta`);
+  // Tope de seguridad: hasta 4 temas excedentes se reparten UNO por día en los últimos días-tema
+  // (con 21-jul→5-ago quedan 13 días de cuerpo y sobran 4 = IV-1+IV-2/I-2/III-2/III-8, los MENOS
+  // rentables del pronóstico v2 → se fusionan como secundario BAJA). 5+ empezaría a apilar → aborta.
+  if (mergedTemas.length > 4) throw new Error(`PELIGRO: ${bodyDays.length} días de cuerpo, ${mergedTemas.length} temas a fusionar (>4) — ventana demasiado corta`);
 
   const assign = []; let dia = 0;
   for (let i = 0; i < nAssign; i++) { dia++; assign.push({ old: temas[i].dia, dia, fecha: bodyDays[i], wd: wd(bodyDays[i]) }); }
