@@ -11,15 +11,15 @@ import { PRACTICA_DEEP_PRIME, PRACTICA_REPASO } from './encapsPracticaExtra';
 
 // ── D1 por examen (para calcular el día actual 1..71) ──
 export const STUDY_D1: Record<string, string> = {
-  ENCAPS: '2026-07-21',   // D1=MAR 21-jul (Joseph 20-jul: TODO arranca 21-jul) · 18 días. CONTENIDO (13 temas con día propio) 21-jul→4-ago INCL. sábados + 4 temas MENOS rentables del pronóstico v2 (IV-1+IV-2/I-2/III-2/III-8) FUSIONADOS como secundarios BAJA DISTRIBUIDOS en días 13/12/11/10 CON sus sub-temas → LÍMITE DE CONTENIDO = mié 5-ago (día 14, repaso integral). El EXAMEN REAL es dom 9-ago (día 18); 6→8-ago = BUFFER de margen: los 35 simulacros DISTRIBUIDOS en 5/6/7-ago (12/12/11) = práctica en condición de examen espaciada, y 8-ago = TAPER (víspera ligera, defiende 7h sueño). NADA perdido (40 códigos + 35 sims + examen). Generadores: gen_encaps_reshift_compress.js 2026-07-21 2026-08-05 (contenido) + gen_encaps_buffer_9ago.js (buffer 6→9-ago). Backup study_schedule_bk_0721. ⚡ MÉTODO BANQUEO+MAPAS: la COLA diaria = SOLO mapas conceptuales (gen_encaps_cola_live.js --apply --maps-only); videos largos SALEN del plan diario (referencia en CoberturaCard). itemsForDay: banner 'BANQUEO+MAPAS' + bancos + postests del área al tope.
+  ENCAPS: '2026-07-22',   // D1=MIÉ 22-jul (Joseph 20-jul: último cambio, TODO arranca 22-jul, nada libre) · 17 días. CONTENIDO (13 temas con día propio) 22-jul→5-ago INCL. sábados + 4 temas MENOS rentables del pronóstico v2 (IV-1+IV-2/I-2/III-2/III-8) FUSIONADOS como secundarios BAJA DISTRIBUIDOS en días 13/12/11/10 CON sus sub-temas → LÍMITE DE CONTENIDO = mié 5-ago (día 13 = III-9, último tema). El EXAMEN REAL es dom 9-ago (día 17); 6→8-ago = BUFFER de margen (nada libre): los 35 simulacros DISTRIBUIDOS 12/12/11 en 6/7/8-ago = práctica en condición de examen espaciada; 8-ago = recta final ligera + descanso (defiende 7h sueño). NADA perdido (40 códigos + 35 sims + examen). Generadores: gen_encaps_reshift_compress.js 2026-07-22 2026-08-06 (contenido) + gen_encaps_buffer_9ago.js (buffer). Backup study_schedule_bk_0722. Barrido QX 20-jul: 163 videos / 42 mapas (I-3 Mediciones + I-5+I-6 Bioestadística re-etiquetados). ⚡ MÉTODO BANQUEO+MAPAS: la COLA diaria = SOLO mapas conceptuales (gen_encaps_cola_live.js --apply --maps-only); videos largos SALEN del plan diario (referencia en CoberturaCard). itemsForDay: banner 'BANQUEO+MAPAS' + bancos + postests del área al tope.
   // MIR / USMLE se agregan cuando se construyan sus cronogramas.
 };
 // Fechas SIN actividad (bloqueadas por Joseph) — no cuentan como día de plan.
 // v7 (23-jun): TODOS los domingos del tramo 24-jun → 20-ago quedan libres (8 domingos).
 export const STUDY_SKIP_DATES: Record<string, string[]> = {
-  ENCAPS: ['2026-07-26', '2026-08-02'],  // domingos del tramo 21-jul→9-ago (el examen 9-ago SÍ es domingo, pero no se salta)
+  ENCAPS: ['2026-07-26', '2026-08-02'],  // domingos del tramo 22-jul→9-ago (el examen 9-ago SÍ es domingo, pero no se salta)
 };
-const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 18 };
+const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 17 };
 
 // ── Tipos (espejo de las columnas study_*) ──
 export interface StudyVideo {

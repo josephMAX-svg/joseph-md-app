@@ -26,18 +26,16 @@ const j = o => JSON.stringify(o).replace(/'/g, "''");
     `VALUES ('ENCAPS',${dia},'${fecha}','${wd}','${tipo}',NULL,'${subt.replace(/'/g, "''")}','ALTA','A','[]'::jsonb,'[]'::jsonb,'[]'::jsonb,'${ex}'::jsonb,'[]'::jsonb,now());`;
 
   const L = [
-    `-- ENCAPS buffer 6->9-ago · examen REAL 9-ago (Dom) · contenido LÍMITE 5-ago · sims 35 distribuidos ${b1.length}/${b2.length}/${b3.length}`,
+    `-- ENCAPS buffer 6->9-ago · D1=22-jul · contenido LÍMITE 5-ago (d13) · examen REAL 9-ago (Dom, d17) · sims 35 distribuidos ${b1.length}/${b2.length}/${b3.length} en 6/7/8-ago`,
     'BEGIN;',
-    // 1) d13 (4-ago III-9): quitar los 35 sims amontonados y restaurar el subtema limpio
+    // 1) d13 (5-ago III-9): quitar los 35 sims amontonados y restaurar el subtema limpio
     "UPDATE study_schedule SET extra = extra - 'sims', subtema='Derechos paciente', updated_at=now() WHERE examen='ENCAPS' AND dia=13;",
-    // 2) mover el EXAMEN de 5-ago(d14) a 9-ago(d18) — la fecha real
-    "UPDATE study_schedule SET dia=18, fecha='2026-08-09', weekday='Domingo', subtema='EXAMEN ENCAPS 2026-II · FECHA REAL 9-ago (el contenido cerró el 5-ago)', updated_at=now() WHERE examen='ENCAPS' AND tipo='examen';",
-    // 3) buffer 5->8-ago
-    ins(14, '2026-08-05', 'Miércoles', 'repaso', '🏁 LÍMITE DE CONTENIDO (5-ago) · Repaso integral de los 7 críticos + banco de preguntas + 1er simulacro completo modo examen', exBuffer('Límite de contenido + simulacro', 150, b1)),
-    ins(15, '2026-08-06', 'Jueves', 'simulacro', 'BUFFER (margen al examen real 9-ago) · Repaso espaciado I-3/V-2/II-3/II-1/II-8/III-5/II-11 + simulacro completo modo examen', exBuffer('Buffer + simulacro', 150, b2)),
-    ins(16, '2026-08-07', 'Viernes', 'simulacro', 'BUFFER · Repaso ligero + último simulacro completo + repaso de errores acumulados', exBuffer('Buffer + simulacro', 150, b3)),
-    ins(17, '2026-08-08', 'Sábado', 'repaso', 'TAPER (víspera −1) · SOLO repaso ligero de los 7 críticos + mapas conceptuales + descanso; NO trasnochar (7h sueño intocables)',
-      j({ actividad: 'Taper víspera', accion: 'Repaso ligero de críticos + mapas; parar temprano, dormir 7h (Walker)', vueltas: 0, minObjetivo: 90, sims: [], tierCobertura: 'TAPER' })),
+    // 2) mover el EXAMEN de 6-ago(d14, placeholder del generador) a 9-ago(d17) — la fecha real
+    "UPDATE study_schedule SET dia=17, fecha='2026-08-09', weekday='Domingo', subtema='EXAMEN ENCAPS 2026-II · FECHA REAL 9-ago (el contenido cerró el 5-ago)', updated_at=now() WHERE examen='ENCAPS' AND tipo='examen';",
+    // 3) buffer 6->8-ago (nada queda libre: los 3 días llevan simulacros; el 8-ago es recta final ligera + descanso)
+    ins(14, '2026-08-06', 'Jueves', 'simulacro', 'BUFFER (margen al examen real 9-ago) · Repaso espaciado I-3/V-2/II-3/II-1/II-8/III-5/II-11 + simulacro completo modo examen', exBuffer('Buffer + simulacro', 150, b1)),
+    ins(15, '2026-08-07', 'Viernes', 'simulacro', 'BUFFER · Repaso ligero + simulacro completo modo examen + cosecha de errores acumulados', exBuffer('Buffer + simulacro', 150, b2)),
+    ins(16, '2026-08-08', 'Sábado', 'repaso', 'RECTA FINAL LIGERA (víspera −1) · Últimos simulacros a demanda + repaso de críticos + mapas; parar temprano, NO trasnochar (7h sueño intocables)', exBuffer('Recta final ligera + descanso', 120, b3)),
     'COMMIT;',
   ];
   fs.writeFileSync(path.join(__dirname, '_encaps_buffer_9ago.sql'), L.join('\n'), 'utf8');

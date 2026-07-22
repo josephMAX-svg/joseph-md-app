@@ -84,7 +84,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/aTVXSElNc3pCK1Q2TVRoTGdpTkpIdz09"
    },
    {
-    "titulo": "MEDICIONES EN EPIDEMIOLOGíA",
+    "titulo": "Mediciones en epidemiología (mapa conceptual)",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/alFYRWNhNHhDVE50aWhqa2ZQTysvUT09"
    }
   ],
@@ -188,7 +188,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/MlZxVHFBNUV6WHFJNVBMRXluNVk1dz09"
    },
    {
-    "titulo": "BIOESTADíSTICA BáSICA",
+    "titulo": "Bioestadística básica (mapa conceptual)",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/Nkl4dERCQVduM0RQSmdVQi91VitvQT09"
    },
    {

@@ -1,6 +1,6 @@
 // AUTO-GENERADO por DATA/_scripts/gen_videos_por_tema.js — NO editar a mano.
 // Videos QX por código de tema (para renderizar varios temas/día · refactor multi-tema).
-// 11 temas · 40 videos.
+// 11 temas · 42 videos.
 export interface VideoPorTema { titulo: string; url: string | null; code: string; slides: string | null; dur: number | null }
 export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
  "I-1": [
@@ -54,6 +54,13 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "code": "I-3",
    "slides": null,
    "dur": null
+  },
+  {
+   "titulo": "Mediciones en epidemiología (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/alFYRWNhNHhDVE50aWhqa2ZQTysvUT09",
+   "code": "I-3",
+   "slides": null,
+   "dur": null
   }
  ],
  "I-4": [
@@ -83,6 +90,13 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
   {
    "titulo": "Historia natural del proceso salud-enfermedad (mapa conceptual)",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/TFJtK1d2cStYakk3VHBDdVNQbHowZz09",
+   "code": "I-5+I-6",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "Bioestadística básica (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/Nkl4dERCQVduM0RQSmdVQi91VitvQT09",
    "code": "I-5+I-6",
    "slides": null,
    "dur": null
