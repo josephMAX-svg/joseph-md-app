@@ -11,15 +11,15 @@ import { PRACTICA_DEEP_PRIME, PRACTICA_REPASO } from './encapsPracticaExtra';
 
 // ── D1 por examen (para calcular el día actual 1..71) ──
 export const STUDY_D1: Record<string, string> = {
-  ENCAPS: '2026-07-23',   // D1=JUE 23-jul (Joseph 20-jul: TODO arranca 23-jul) · 16 días. CONTENIDO = 12 temas con día propio (23-jul→5-ago INCL. sábados) + 5 temas MENOS rentables del orden front-loaded (III-9/IV-1+IV-2/I-2/III-2/III-8) FUSIONADOS como secundarios DISTRIBUIDOS en días 12/11/10/9/8 CON sus sub-temas → LÍMITE DE CONTENIDO = mié 5-ago (día 12 = V-1). El EXAMEN REAL es dom 9-ago (día 16); 6→8-ago = BUFFER: 35 simulacros DISTRIBUIDOS 15/15/5 en 6/7/8-ago; **8-ago (día 15) = 🌓 MEDIO DÍA** (solo hasta mediodía, TARDE LIBRE = descanso anti-burnout, defiende 7h sueño). NADA perdido (40 códigos + 35 sims + examen). Generadores: gen_encaps_reshift_compress.js 2026-07-23 2026-08-06 (contenido, tope fusión 5) + gen_encaps_buffer_9ago.js (buffer, 8-ago medio día). Backup study_schedule_bk_0723. Barrido 20-jul: QX 163/42 sin cambios, Theomed sin cambios, Drive sin materiales nuevos. ⚡ MÉTODO BANQUEO+MAPAS: COLA diaria = SOLO mapas conceptuales; videos largos en CoberturaCard. itemsForDay: banner + bancos + postests del área al tope.
+  ENCAPS: '2026-07-24',   // D1=VIE 24-jul (Joseph 20-jul: TODO arranca 24-jul) · 15 días. CONTENIDO = 12 temas con día propio (24-jul→6-ago INCL. sábados) + 5 temas MENOS rentables del orden front-loaded (III-9/IV-1+IV-2/I-2/III-2/III-8) FUSIONADOS como secundarios DISTRIBUIDOS en días 12/11/10/9/8 CON sus sub-temas → LÍMITE DE CONTENIDO = jue 6-ago (día 12 = V-1). El EXAMEN REAL es dom 9-ago (día 15); tail: **d13 = 7-ago = 🎯 DRESS REHEARSAL** (1 simulacro completo continuo, ensaya estamina/paceo) · **d14 = 8-ago = 🌓 MEDIO DÍA** (mañana: review del mock + re-test III-5/V-2/III-9 + banqueo de confianza; TARDE LIBRE = descanso anti-burnout, 7h sueño). 35 sims 30/5. NADA perdido (40 códigos + 35 sims + examen). Generadores: gen_encaps_reshift_compress.js 2026-07-24 2026-08-07 (contenido, tope fusión 5) + gen_encaps_buffer_9ago.js (LAST=12/EXAM_DIA=15, dress-rehearsal + medio día). Backup study_schedule_bk_0724. Barrido 20-jul: QX 163/42, Theomed y Drive sin cambios. ⚡ MÉTODO BANQUEO+MAPAS: COLA diaria = SOLO mapas conceptuales; videos largos en CoberturaCard. itemsForDay: banner + bancos + postests del área al tope.
   // MIR / USMLE se agregan cuando se construyan sus cronogramas.
 };
 // Fechas SIN actividad (bloqueadas por Joseph) — no cuentan como día de plan.
 // v7 (23-jun): TODOS los domingos del tramo 24-jun → 20-ago quedan libres (8 domingos).
 export const STUDY_SKIP_DATES: Record<string, string[]> = {
-  ENCAPS: ['2026-07-26', '2026-08-02'],  // domingos del tramo 23-jul→9-ago (el examen 9-ago SÍ es domingo, pero no se salta)
+  ENCAPS: ['2026-07-26', '2026-08-02'],  // domingos del tramo 24-jul→9-ago (el examen 9-ago SÍ es domingo, pero no se salta)
 };
-const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 16 };
+const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 15 };
 
 // ── Tipos (espejo de las columnas study_*) ──
 export interface StudyVideo {
