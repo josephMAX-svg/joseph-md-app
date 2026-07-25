@@ -68,6 +68,12 @@ export const ENCAPS_THEOMED_RESUMENES: Record<string, Resumen[]> = {
     { label: 'REPASO CUIDADO INTEGRAL (con notas)', url: TH('23616'), fuente: 'Theomed · repaso' },
     { label: 'REPASO CUIDADO INTEGRAL', url: TH('23619'), fuente: 'Theomed · repaso' },
   ],
+  // FASE 3 arrancó (verificado 20-jul vía course index): las secciones REPASOS por área empezaron a
+  // poblarse — SP "REPASOS" 2 sesiones (09/07, 16/07), CI "REPASOS EN VIVO" 2 (08/07, 14/07),
+  // Ética "REPASOS - FASE 2" (recurso 23869). Las secciones BANQUEOS por área siguen vacías.
+  'III-5': [
+    { label: '⭐ REPASO ÉTICA E INTERCULTURALIDAD (Fase 3, nuevo)', url: TH('23869'), fuente: 'Theomed · repaso Fase 3' },
+  ],
 };
 
 // ── 🗺️ MAPAS CONCEPTUALES: PDFs compilados por área (QX) + biblioteca QX ─────────────────────────
@@ -93,7 +99,8 @@ export const ENCAPS_MANUALES_THEOMED: Record<string, Resumen> = {
 };
 
 export const ENCAPS_RESUMENES_META = {
-  fuente: 'QX Medic (aula virtual) + Theomed campus (curso 73: 47 secciones · cursos 37 y 89)',
-  scrape: '2026-07-19 (apartado por apartado, logueado)',
+  fuente: 'QX Medic (aula virtual) + Theomed campus (curso 73: 49 secciones / 571 actividades · cursos 37 y 89)',
+  scrape: '2026-07-20 (BARRIDO EXTREMO parte por parte, logueado; curso 73 leído por el course index de Moodle 4, que sí lista todo sin lazy-load)',
+  barrido2007: 'QX: videoclases 163/42 mapas · Banqueo ENCAPS 18 sets = 2.052 preguntas REALES (SP 688 · Ética 255 · Cuidado Integral 1.109, publicándose a diario; Investigación y Gestión pendientes) · Simulacros Virtuales 3 reales (semanal) · Eval Avanzada 12. Theomed: curso 73 = 49 secciones/571 actividades (NORMAS TÉCNICAS 59, SP 65, CI 53, Gestión 45, Ética 24, Investigación 23, MATERIAL COMPL 17, ACTIVIDADES FINALES 5, WEBINARS 4) · curso 37 SIMULACROS = 11 quizzes reales · curso 89 KAHOOTS = 19. ⚡ FASE 3 ARRANCÓ: REPASOS por área ya no están vacíos (SP 2 sesiones 09/07+16/07 · CI REPASOS EN VIVO 2 · Ética recurso 23869); las secciones BANQUEOS por área siguen vacías → re-escanear.',
   nota: 'MÉTODO BANQUEO. (1) BANCOS: App Banqueo QX + QX Banqueo/Simulacros/Eval avanzada + Theomed BANCO DE PREGUNTAS + BANCO MEDICINA 2026 + FLASHCARDS + cursos 37/89. (2) POSTESTS: 50 quizzes con link directo por área (SP 17, CI 13, Gestión 12, Ética 5, Inv 3) = banco por tema. (3) MAPAS: 42 en video (catálogo QX 163) + PDFs compilados por área + Biblioteca QX (18 mapas). (4) RESÚMENES/THEOPEPAS + REPASO CI. Theomed tiene además NORMAS TÉCNICAS (30 carpetas NTS por tema, sección 2267) y manuales por área. Secciones REPASOS/BANQUEOS por área aún vacías (Fase 3 pendiente de publicar) → re-escanear.',
 };
