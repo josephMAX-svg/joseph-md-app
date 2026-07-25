@@ -17,9 +17,13 @@ export const STUDY_D1: Record<string, string> = {
 // Fechas SIN actividad (bloqueadas por Joseph) — no cuentan como día de plan.
 // v7 (23-jun): TODOS los domingos del tramo 24-jun → 20-ago quedan libres (8 domingos).
 export const STUDY_SKIP_DATES: Record<string, string[]> = {
-  ENCAPS: ['2026-07-26', '2026-08-02'],  // domingos del tramo 25-jul→9-ago (el examen 9-ago SÍ es domingo, pero no se salta)
+  // ⚡ 24-jul: los domingos YA NO se saltan. Joseph liberó 18:00-22:00 los domingos (vuelve del
+  // negocio ~16-17h) = 4h reales × 2 domingos = 8h nuevas, usadas como REPASO dirigido (no contenido
+  // nuevo pesado: son horas con fatiga). Corte 22:00 → 7h de sueño intactas. Con 0 skips el mapeo
+  // fecha→día de diaActual() es 1:1 y no hay huecos: 25-jul=d1 … 9-ago=d16.
+  ENCAPS: [],
 };
-const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 14 };
+const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 16 };
 
 // ── Tipos (espejo de las columnas study_*) ──
 export interface StudyVideo {
