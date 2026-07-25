@@ -1,6 +1,6 @@
 // AUTO-GENERADO por DATA/_scripts/gen_videos_por_tema.js — NO editar a mano.
 // Videos QX por código de tema (para renderizar varios temas/día · refactor multi-tema).
-// 10 temas · 42 videos.
+// 9 temas · 42 videos.
 export interface VideoPorTema { titulo: string; url: string | null; code: string; slides: string | null; dur: number | null }
 export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
  "I-1": [
@@ -75,6 +75,13 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "titulo": "Cuidados de la salud mental (mapa conceptual)",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/aWIvSC9GZ0hVdS9RbmNXN0FLNHhDdz09",
    "code": "II-9",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "Ética e integridad en salud (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/MTY3bmovRmxYQlpRM1k2d0VBeXRGUT09",
+   "code": "III-8",
    "slides": null,
    "dur": null
   }
@@ -160,23 +167,37 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "dur": null
   },
   {
-   "titulo": "Conceptos básicos de salud pública (mapa conceptual)",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/WFZrMHlSVXFlN1NFMWNqTlJwZlJaQT09",
-   "code": "I-2",
+   "titulo": "Gestión y manejo de residuos sólidos (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/TUtwNmI0KzkwVXBXTDVnU1E4TC9rQT09",
+   "code": "I-11+I-12",
    "slides": null,
    "dur": null
   },
   {
-   "titulo": "CRED (mapa conceptual)",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/cmcwRGJrZUZ0anIzY2ljUkVuRFZ6Zz09",
-   "code": "II-2",
+   "titulo": "Intervención comunitaria en salud (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/NDl3b1hOZEpMbE9lNjNTQlh5UllHQT09",
+   "code": "I-11+I-12",
    "slides": null,
    "dur": null
   },
   {
-   "titulo": "CRED ACTUALIZACIÓN (mapa conceptual)",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/c2lNRUJYT0hHSHV1eFdmbXBGdXRiZz09",
-   "code": "II-2",
+   "titulo": "Sectorización y ficha familiar (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/bG5TY3B0LzlWZENCYWlrYW5MRnU1QT09",
+   "code": "I-11+I-12",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "Plan de salud local (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/SUNOZ0c2R3lEcndxaVJuQUYwZ0Jmdz09",
+   "code": "I-11+I-12",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "Modelo de salud mental comunitaria (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/cExCbWtVMDRibGJKbDJ4N0JIa0VxQT09",
+   "code": "I-11+I-12",
    "slides": null,
    "dur": null
   }
@@ -232,9 +253,23 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "dur": null
   },
   {
-   "titulo": "Ética e integridad en salud (mapa conceptual)",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/MTY3bmovRmxYQlpRM1k2d0VBeXRGUT09",
-   "code": "III-8",
+   "titulo": "Conceptos básicos de salud pública (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/WFZrMHlSVXFlN1NFMWNqTlJwZlJaQT09",
+   "code": "I-2",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "CRED (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/cmcwRGJrZUZ0anIzY2ljUkVuRFZ6Zz09",
+   "code": "II-2",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "CRED ACTUALIZACIÓN (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/c2lNRUJYT0hHSHV1eFdmbXBGdXRiZz09",
+   "code": "II-2",
    "slides": null,
    "dur": null
   }
@@ -276,43 +311,6 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "titulo": "Tuberculosis (mapa conceptual)",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SGkvT3dXUm9tUXdoaVd6bzJESE9WR0ExVisxT2N1amhkQUhLQnZkbU04ND0=/OFZqWExSS3cwL1hYeFRtRUV0QWtGUT09",
    "code": "II-6",
-   "slides": null,
-   "dur": null
-  }
- ],
- "V-1": [
-  {
-   "titulo": "Gestión y manejo de residuos sólidos (mapa conceptual)",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/TUtwNmI0KzkwVXBXTDVnU1E4TC9rQT09",
-   "code": "I-11+I-12",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "Intervención comunitaria en salud (mapa conceptual)",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/NDl3b1hOZEpMbE9lNjNTQlh5UllHQT09",
-   "code": "I-11+I-12",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "Sectorización y ficha familiar (mapa conceptual)",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/bG5TY3B0LzlWZENCYWlrYW5MRnU1QT09",
-   "code": "I-11+I-12",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "Plan de salud local (mapa conceptual)",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/SUNOZ0c2R3lEcndxaVJuQUYwZ0Jmdz09",
-   "code": "I-11+I-12",
-   "slides": null,
-   "dur": null
-  },
-  {
-   "titulo": "Modelo de salud mental comunitaria (mapa conceptual)",
-   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/cExCbWtVMDRibGJKbDJ4N0JIa0VxQT09",
-   "code": "I-11+I-12",
    "slides": null,
    "dur": null
   }

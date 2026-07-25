@@ -35,7 +35,9 @@ const BK = 'study_schedule_bk_' + START.replace(/-/g, '').slice(4);
   // Tope de seguridad: hasta 4 temas excedentes se reparten UNO por día en los últimos días-tema
   // (con 21-jul→5-ago quedan 13 días de cuerpo y sobran 4 = IV-1+IV-2/I-2/III-2/III-8, los MENOS
   // rentables del pronóstico v2 → se fusionan como secundario BAJA). 5+ empezaría a apilar → aborta.
-  if (mergedTemas.length > 5) throw new Error(`PELIGRO: ${bodyDays.length} días de cuerpo, ${mergedTemas.length} temas a fusionar (>5) — ventana demasiado corta`);
+  // Tope 6: con D1=25-jul quedan 11 días de cuerpo y sobran 6 (V-1/III-9/IV-1+IV-2/I-2/III-2/III-8).
+  // El 11º día-tema es II-8, así que los 7 CRÍTICOS conservan día propio. 7+ empezaría a comerse un crítico → aborta.
+  if (mergedTemas.length > 6) throw new Error(`PELIGRO: ${bodyDays.length} días de cuerpo, ${mergedTemas.length} temas a fusionar (>6) — se comería un CRÍTICO`);
 
   const assign = []; let dia = 0;
   for (let i = 0; i < nAssign; i++) { dia++; assign.push({ old: temas[i].dia, dia, fecha: bodyDays[i], wd: wd(bodyDays[i]) }); }

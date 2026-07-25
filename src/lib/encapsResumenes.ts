@@ -12,7 +12,10 @@ const QX = (p: string) => `https://qxmedic-aulavirtual.com${p}`;
 // ── 🎯 BANCOS DE PREGUNTAS GLOBALES (el centro del método; van al TOPE del día) ───────────────────
 export const ENCAPS_BANCOS: Resumen[] = [
   { label: '⭐ App BANQUEO QX (banco principal)', url: QX('/evaluaciones/banqueapp'), fuente: 'QX · App Banqueo' },
-  { label: 'QX · Banqueo (por bloques)', url: QX('/evaluaciones/tipo/UzBiYlBybXhBcU9hbVA4Z3hBN2ZEQT09'), fuente: 'QX · Banqueo' },
+  // Verificado en vivo 20-jul: 18 sets ENCAPS = 2.052 preguntas REALES, publicándose por área a diario
+  // (Salud Pública 1-5 = 688Q · Ética 1-4 = 255Q · Cuidado Integral 1-9 = 1.109Q). Investigación y
+  // Gestión aún no publicados → re-escanear cada arranque.
+  { label: '⭐ QX · Banqueo ENCAPS por ÁREA (18 sets · 2.052 preguntas)', url: QX('/evaluaciones/tipo/UzBiYlBybXhBcU9hbVA4Z3hBN2ZEQT09'), fuente: 'QX · Banqueo' },
   { label: 'QX · Simulacros Virtuales', url: QX('/evaluaciones/tipo/NjlOQWdwRlptU2U0eUZtcU9uMW53Zz09'), fuente: 'QX · Simulacros' },
   { label: 'QX · Evaluación Virtual Avanzada', url: QX('/evaluaciones/tipo/Znd3WnF4VSs3ZzR0YmtsUDNoR1BUVkpYZnoreU9JT2RIbUpFUXNhbDdCTT0='), fuente: 'QX · Eval avanzada' },
   { label: 'Theomed · BANCO DE PREGUNTAS', url: TH('20134'), fuente: 'Theomed · banco' },
