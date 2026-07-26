@@ -11,19 +11,19 @@ import { PRACTICA_DEEP_PRIME, PRACTICA_REPASO } from './encapsPracticaExtra';
 
 // ── D1 por examen (para calcular el día actual 1..71) ──
 export const STUDY_D1: Record<string, string> = {
-  ENCAPS: '2026-07-25',   // D1=SÁB 25-jul (Joseph 20-jul: TODO arranca 25-jul) · 14 días. CONTENIDO = 11 temas con día propio (25-jul→6-ago INCL. sábados; los 7 CRÍTICOS conservan día propio, II-8 es el 11º) + 6 temas MENOS rentables del orden front-loaded (V-1/III-9/IV-1+IV-2/I-2/III-2/III-8) FUSIONADOS como secundarios DISTRIBUIDOS en días 11/10/9/8/7/6 CON sus sub-temas → LÍMITE DE CONTENIDO = jue 6-ago (día 11 = II-8). El EXAMEN REAL es dom 9-ago (día 14). TAIL con DOS mocks (cierra el hallazgo ALTA "1 mock = punto único de falla"): **d12 = 7-ago = 🎯 DRESS REHEARSAL 1** (mock completo continuo a la HORA REAL del examen) · **d13 = 8-ago = 🌓 MEDIO DÍA** (MAÑANA: dress rehearsal 2 + review + re-test críticos tempranos I-3/V-2/II-3/III-5/III-9; TARDE LIBRE = descanso anti-burnout, 7h sueño). NADA perdido (40 códigos + examen). Generadores: gen_encaps_reshift_compress.js 2026-07-25 2026-08-07 (contenido, tope fusión 6) + gen_encaps_tail_25jul.js (tail con POOL REAL). ⚡ BARRIDO EXTREMO 20-jul (logueado, parte por parte): QX videoclases 163/42 sin cambios · **QX Banqueo ENCAPS = 18 sets / 2.052 preguntas REALES** (SP 1-5 688Q · Ética 1-4 255Q · Cuidado Integral 1-9 1.109Q, publicándose a diario; faltan Investigación y Gestión → RE-ESCANEAR) · **QX Simulacros Virtuales = 3 reales** (N°01/02/03, cadencia semanal → N°04 ~26-jul) · Eval Virtual Avanzada 12 · **Theomed curso 37 = 11 quizzes reales** (6 simulacros semanales viernes + EXAMEN TIPO A/B x2 + EXAMEN 2025-II) · Theomed KAHOOTS 19 · curso 73 sin cambios (Fase 3 REPASOS/BANQUEOS aún vacía). Backup study_schedule_bk_0725. ⚡ MÉTODO BANQUEO+MAPAS: COLA diaria = SOLO mapas conceptuales; videos largos en CoberturaCard.
+  ENCAPS: '2026-07-26',   // D1=DOM 26-jul (percance el 25 → TODO arranca 26-jul) · 15 días. ⚡ Los DOMINGOS ya cuentan (18:00-22:00 = 4h reales): d1 26-jul lleva el tema MÁS LIVIANO (I-5+I-6, 3 vueltas/55min) para no arriesgar un crítico en franja corta y con fatiga; d8 2-ago = repaso de los 2 GAPS (ÁREA V/Gestión = 22% del examen sin mapas conceptuales, reforzado por los REPASOS DE GESTIÓN que Theomed publicó 22/07 y 24/07 + rescate de III-9, el mayor miss histórico). Los 7 CRÍTICOS con día COMPLETO entre semana: I-3 d2 27-jul · V-2 d3 · II-1 d4 (área rey, 13 mapas) · II-3 d5 · III-5 d6 · II-8 d7 · II-11 d9. Contenido cierra 6-ago (d12=I-4) · 7-ago DRESS REHEARSAL 1 · 8-ago MEDIO DÍA (mock 2 mañana + TARDE LIBRE) · EXAMEN dom 9-ago (d15). 40/40 códigos. Generador gen_encaps_26jul.js (re-mapea el estado VIVO, NO restaura del backup canónico → conserva los fixes de la auditoría: prioridad CRÍTICA en los 7, secundarios normalizados). Backup study_schedule_bk_0726. Barrido 26-jul: QX 163/42 + banqueo 18 sets/2.052 preguntas + 3 simulacros reales; Theomed 49 secciones/575 actividades, Fase 3 avanzando (REPASOS de Gestión NUEVOS).
   // MIR / USMLE se agregan cuando se construyan sus cronogramas.
 };
 // Fechas SIN actividad (bloqueadas por Joseph) — no cuentan como día de plan.
 // v7 (23-jun): TODOS los domingos del tramo 24-jun → 20-ago quedan libres (8 domingos).
 export const STUDY_SKIP_DATES: Record<string, string[]> = {
-  // ⚡ 24-jul: los domingos YA NO se saltan. Joseph liberó 18:00-22:00 los domingos (vuelve del
-  // negocio ~16-17h) = 4h reales × 2 domingos = 8h nuevas, usadas como REPASO dirigido (no contenido
-  // nuevo pesado: son horas con fatiga). Corte 22:00 → 7h de sueño intactas. Con 0 skips el mapeo
-  // fecha→día de diaActual() es 1:1 y no hay huecos: 25-jul=d1 … 9-ago=d16.
+  // ⚡ Los domingos YA NO se saltan: Joseph liberó 18:00-22:00 (vuelve del negocio ~16-17h) = 4h
+  // reales. El domingo NO lleva contenido nuevo pesado (son horas con fatiga): 26-jul = el tema más
+  // liviano del plan, 2-ago = repaso dirigido de los gaps. Corte 22:00 → 7h de sueño intactas.
+  // Con 0 skips el mapeo fecha→día de diaActual() es 1:1 y sin huecos: 26-jul=d1 … 9-ago=d15.
   ENCAPS: [],
 };
-const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 16 };
+const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 15 };
 
 // ── Tipos (espejo de las columnas study_*) ──
 export interface StudyVideo {
