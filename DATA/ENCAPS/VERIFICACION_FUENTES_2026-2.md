@@ -31,8 +31,8 @@ Entré a cada una de las **5 secciones de área** y crucé cada videoclase LIBER
 
 → Cobertura **99%**. El único faltante (`dDlKN…` en CI) **se añadió** a `ENCAPS_VIDEOS_POR_TEMA["II-6"]` (Tuberculosis/infecciones). Las 5 áreas de QX coinciden exactamente con nuestras 5. Tenemos MÁS videos que los liberados hoy (160→161 vs 105) porque capturamos todo el goteo (incluye los que QX libera en julio).
 
-## Re-verificación en vivo (29-jun · re-shift) — sin drift
-Tras re-programar todo a inicio **lun 29-jun** (ENCAPS extendido, examen → mar 25-ago), re-verifiqué en vivo:
+## Re-verificación en vivo (re-shift) — sin drift
+> ⚠️ Nota: hubo un re-shift intermedio (29-jun / examen 25-ago) que quedó SUPERSEDIDO. El arranque final es **D1 = jue 02-jul · examen FIJO jue 20-ago · 43 días** (ver §"EXAMEN CORREGIDO" y `MASTER_MOTOR_PREGUNTAS.md`). La verificación de cobertura de abajo sigue vigente:
 - **QxMedic CI = 44 videoclases** (idéntico a la verificación anterior, incluido el video añadido) → QX **no liberó videos nuevos**; las 5 áreas y los 105 videoclases liberados siguen 100% cubiertos en `encapsVideosPorTema.ts` (161 con todo el goteo).
 - **Google Drive**: carpetas de video por área (Cuidado Integral, Ética, Salud Pública…) sin temas/carpetas nuevas.
 - **Supabase ENCAPS**: 40 temas distintos (17 principales + 23 secundarios) CERO saltados · 35 evaluaciones (9 sim QX + 3 oficiales + 8 Theomed + 9 EVA + 6 banqueo) — TODAS preservadas por el re-shift (ninguna se pierde al saltar el sábado).
@@ -51,7 +51,7 @@ Carpeta raíz `SERUMS 2026 II` (compartida por innovamed005) → **5 carpetas-pr
 - Coincide exactamente con `ENCAPS_THEOMED_*` (sesiones por área + tema-sesión + 8 simulacros + kahoots). **Sin áreas/temas nuevos.**
 
 ## EXAMEN CORREGIDO a 20-ago (no 27) · re-shift 1-jul
-Filosofía corregida: EXTENDER = días de ESTUDIO (17 temas, cero saltos); REDUCIR = días de PREGUNTA (repaso 23→18). ENCAPS: D1=mié 1-jul · **examen FIJO jue 20-ago** · 44 días · 40 temas distintos · 35 evaluaciones (sim sobrante fusionado en la recta final). backup study_schedule_examen20_backup.
+Filosofía corregida: EXTENDER = días de ESTUDIO (17 temas, cero saltos); REDUCIR = días de PREGUNTA (repaso 23→18). ENCAPS: **D1 = jue 02-jul · examen FIJO jue 20-ago · 43 días** · 40 temas distintos · 35 evaluaciones (sim sobrante fusionado en la recta final). backup study_schedule_examen20_backup.
 
 ## Conclusión
 **No falta NADA** — verificado en vivo y en detalle (1-jul): QxMedic (5 áreas, 105 videoclases, Evaluaciones), Theomed (3 cursos: 73/37/89), Google Drive (5 proveedores). 40 temas + 35 evaluaciones intactos. Sin temas nuevos en ninguna fuente. Examen FIJO 20-ago. Todos los videos, PDFs y materiales de QxMedic + Theomed + Drive están capturados en la app y asignados a los días de estudio 1-20 (cobertura Pareto). Las preguntas/mapas/post-tests son las fases posteriores (días 21+), tal como pediste.

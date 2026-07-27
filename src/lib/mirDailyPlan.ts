@@ -11,7 +11,7 @@
 export const capUrl = (id: string) => 'https://promir.medicapanamericana.com/capitulo/' + id;
 
 export const MIR_DAILY_META = {
-  inicio: '2026-07-26', fin: '2026-10-24', totalDias: 78, // v4 (15-jun): D1=mar 16-jun (no se estudió el 15) · TODOS los domingos libres · 76 temas + 2 colchón
+  inicio: '2026-07-27', fin: '2026-10-24', totalDias: 78, // v4 (15-jun): D1=mar 16-jun (no se estudió el 15) · TODOS los domingos libres · 76 temas + 2 colchón
   bloque: '15:15–15:30 Evaluación Anclada D-1 · 15:30–16:15 Deep Work Mini',
 };
 

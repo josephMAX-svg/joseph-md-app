@@ -10,13 +10,13 @@
 
 | Pilar | % examen | Nivel objetivo (% ciego) |
 |---|---|---|
-| I Salud Pública | 29% | ≥90% |
-| II Cuidado Integral | 28% | ≥88% |
-| V Gestión | 21% | ≥85% |
-| III Ética/Intercultural | 16% | ≥80% |
-| IV Investigación | 6% | ≥70% |
+| II Cuidado Integral (REY) | 33% | ≥88% |
+| I Salud Pública | 27% | ≥90% |
+| V Gestión | 23% | ≥85% |
+| III Ética/Intercultural | 13% | ≥80% |
+| IV Investigación | 4% | ≥70% |
 
-Suma ponderada = 85.6% → >17/20.
+Suma ponderada ≈ 86% → >17/20. (Formato: viñeta clínica ~90% — entrenar por casos, no teoría.)
 
 ## Escalera de hitos (% ciego mínimo por fase)
 
@@ -35,10 +35,10 @@ Suma ponderada = 85.6% → >17/20.
 
 - Anki es el motor de retención (bloques Anclaje 04:15 y 17:15 + Repaso 07:15).
 - 1 idea por tarjeta (Palmerton/Yousmle): nada de tarjetas con párrafos. Pregunta atómica → respuesta atómica.
-- FSRS activado (programación óptima). Los temas CRÍTICA (I-3, V-2, I-5+I-6, II-3) reciben MÁS tarjetas.
+- FSRS activado (programación óptima). Los temas CRÍTICA (I-3, V-2, II-3, II-1, II-11, III-5) reciben MÁS tarjetas. (I-5+I-6 ya NO son críticos: bioestadística casi extinta bajo formato viñeta.)
 - Cada fallo en banco/simulacro → crea/refuerza su tarjeta Anki ese mismo día.
 - Meta diaria Anki: 0 tarjetas atrasadas al dormir (el "Again/Good" es Anki estándar, no método propio).
 
 ## Fuentes verificadas en vivo
 
-QX 5 áreas/105 videoclases · Theomed 3 cursos (73/37/89) · Drive 5 proveedores. 40 temas · 161 videos · 105 fichas · 35 evaluaciones + práctica extra. Nada fuera.
+QX 5 áreas/105 videoclases · Theomed 3 cursos (73/37/89) · Drive 5 proveedores. 43 días · 40 temas distintos · 161 videos · 105 fichas · 35 evaluaciones + práctica extra. Nada fuera.

@@ -21,7 +21,7 @@ export const QB = {
 };
 
 export const PLAN_META = {
-  inicio: '2026-07-26', // v4 (15-jun): D1=mar 16-jun (no se estudió el 15) · todos los domingos libres
+  inicio: '2026-07-27', // v4 (15-jun): D1=mar 16-jun (no se estudió el 15) · todos los domingos libres
   bloque: '16:15 Anchored Eval (2Q+Anki) · 16:30 Mini Deep Work English (Pre-test → Active Reading → Free Recall → APEX ≤3)',
   metodo: 'Palmerton: ver vídeo High-Yield del sistema → leer (Library/First Aid) → Anki (FSRS) → preguntas en modo tutor → log de errores → APEX.',
   nota: 'Prioridad Step 1. Día 1 = 11-jun (Cardiovascular). Cada día avanza una unidad concreta dentro del sistema.',

@@ -11,19 +11,19 @@ import { PRACTICA_DEEP_PRIME, PRACTICA_REPASO } from './encapsPracticaExtra';
 
 // ── D1 por examen (para calcular el día actual 1..71) ──
 export const STUDY_D1: Record<string, string> = {
-  ENCAPS: '2026-07-26',   // D1=DOM 26-jul (percance el 25 → TODO arranca 26-jul) · 15 días. ⚡ Los DOMINGOS ya cuentan (18:00-22:00 = 4h reales): d1 26-jul lleva el tema MÁS LIVIANO (I-5+I-6, 3 vueltas/55min) para no arriesgar un crítico en franja corta y con fatiga; d8 2-ago = repaso de los 2 GAPS (ÁREA V/Gestión = 22% del examen sin mapas conceptuales, reforzado por los REPASOS DE GESTIÓN que Theomed publicó 22/07 y 24/07 + rescate de III-9, el mayor miss histórico). Los 7 CRÍTICOS con día COMPLETO entre semana: I-3 d2 27-jul · V-2 d3 · II-1 d4 (área rey, 13 mapas) · II-3 d5 · III-5 d6 · II-8 d7 · II-11 d9. Contenido cierra 6-ago (d12=I-4) · 7-ago DRESS REHEARSAL 1 · 8-ago MEDIO DÍA (mock 2 mañana + TARDE LIBRE) · EXAMEN dom 9-ago (d15). 40/40 códigos. Generador gen_encaps_26jul.js (re-mapea el estado VIVO, NO restaura del backup canónico → conserva los fixes de la auditoría: prioridad CRÍTICA en los 7, secundarios normalizados). Backup study_schedule_bk_0726. Barrido 26-jul: QX 163/42 + banqueo 18 sets/2.052 preguntas + 3 simulacros reales; Theomed 49 secciones/575 actividades, Fase 3 avanzando (REPASOS de Gestión NUEVOS).
+  ENCAPS: '2026-07-27',   // D1=LUN 27-jul · 13 días · EXAMEN dom 9-ago. ⚡ LOS DOMINGOS NO SE ESTUDIA (Joseph): 2-ago va en STUDY_SKIP_DATES; el 9-ago es domingo pero es el examen. **d1 27-jul = 🔭 REVISIÓN GLOBAL** (panorámica de las 5 áreas + diagnóstico ciego con banqueo para calibrar el punto de partida real; sin contenido nuevo). Quedan 9 días de contenido para 17 temas → los 7 CRÍTICOS conservan día propio (I-3 d2 · V-2 d3 · II-1 d4 área rey · II-3 d5 · III-5 d6 · II-8 d7 · II-11 d8) + I-1 (d9, área I 28%) y V-3 (d10, área V 22%); los otros 8 van FUSIONADOS como secundarios con sus sub-temas (I-4, V-1, III-9, III-8, III-2, I-2, I-5+I-6, IV-1+IV-2). Contenido cierra 6-ago · d11 7-ago DRESS REHEARSAL 1 · d12 8-ago MEDIO DÍA (mock 2 mañana + TARDE LIBRE) · d13 9-ago EXAMEN. 40/40 códigos, 42 mapas en cola. Backup study_schedule_bk_0727. ⚠ Es el límite de la compresión: si se atrasa otro día, cae un CRÍTICO.
   // MIR / USMLE se agregan cuando se construyan sus cronogramas.
 };
 // Fechas SIN actividad (bloqueadas por Joseph) — no cuentan como día de plan.
 // v7 (23-jun): TODOS los domingos del tramo 24-jun → 20-ago quedan libres (8 domingos).
 export const STUDY_SKIP_DATES: Record<string, string[]> = {
-  // ⚡ Los domingos YA NO se saltan: Joseph liberó 18:00-22:00 (vuelve del negocio ~16-17h) = 4h
-  // reales. El domingo NO lleva contenido nuevo pesado (son horas con fatiga): 26-jul = el tema más
-  // liviano del plan, 2-ago = repaso dirigido de los gaps. Corte 22:00 → 7h de sueño intactas.
-  // Con 0 skips el mapeo fecha→día de diaActual() es 1:1 y sin huecos: 26-jul=d1 … 9-ago=d15.
-  ENCAPS: [],
+  // ⚡ LOS DOMINGOS NO SE ESTUDIA (Joseph, decisión final — revierte el experimento de la franja
+  // 18:00-22:00). El único domingo del tramo es 2-ago → va aquí. El 9-ago también es domingo pero
+  // es el DÍA DEL EXAMEN, así que NO se salta. Mapeo: 27-jul=d1 … 1-ago=d6 · [2-ago libre] ·
+  // 3-ago=d7 … 8-ago=d12 · 9-ago=d13.
+  ENCAPS: ['2026-08-02'],  // DOMINGO libre (el 9-ago también es domingo pero es el examen, no se salta)
 };
-const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 15 };
+const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 13 };
 
 // ── Tipos (espejo de las columnas study_*) ──
 export interface StudyVideo {

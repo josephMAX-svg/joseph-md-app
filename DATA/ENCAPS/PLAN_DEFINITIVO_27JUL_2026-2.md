@@ -1,6 +1,6 @@
-# PLAN DEFINITIVO ENCAPS 2026-II — D1 = DOMINGO 26-JUL-2026
+# PLAN DEFINITIVO ENCAPS 2026-II — D1 = LUNES 27-JUL-2026
 
-> **Compilado el 26-jul-2026.** Fuente de verdad operativa: tabla `study_schedule` (examen='ENCAPS')
+> **Compilado el 26-jul-2026 · actualizado a D1=27-jul (los domingos NO se estudia).** Fuente de verdad operativa: tabla `study_schedule` (examen='ENCAPS')
 > en Supabase. Este documento es el resumen humano de lo que está desplegado.
 > Meta: **> 17 / 20**. Examen real: **domingo 9-ago-2026**.
 
@@ -10,49 +10,45 @@
 
 | | |
 |---|---|
-| **D1** | domingo **26-jul** |
-| **Contenido cierra** | jueves **6-ago** (d12) |
-| **Dress rehearsal 1** | viernes **7-ago** (d13) — mock completo continuo |
-| **Medio día** | sábado **8-ago** (d14) — mock 2 por la mañana + **TARDE LIBRE** |
-| **EXAMEN** | domingo **9-ago** (d15) |
-| **Total** | 15 días · 11 temas con día propio + 6 fusionados + 1 domingo de repaso |
+| **D1** | lunes **27-jul** — 🔭 **REVISIÓN GLOBAL** |
+| **Contenido** | 28-jul → **6-ago** (9 días) |
+| **Dress rehearsal 1** | viernes **7-ago** (d11) — mock completo continuo |
+| **Medio día** | sábado **8-ago** (d12) — mock 2 por la mañana + **TARDE LIBRE** |
+| **EXAMEN** | domingo **9-ago** (d13) |
+| **Total** | 13 días |
 
-**Los domingos ahora cuentan**: 18:00-22:00 = 4 h reales (Joseph vuelve del negocio ~16-17 h).
-Corte a las 22:00 → las 7 h de sueño quedan intactas. Como son horas con fatiga, el domingo
-**nunca lleva contenido nuevo pesado**.
+⚡ **LOS DOMINGOS NO SE ESTUDIA** (decisión final). El único domingo del tramo, **2-ago, queda libre**;
+el 9-ago también es domingo pero es el día del examen.
 
----
+⚠ **Esto es el límite de la compresión.** Con 9 días de contenido para 17 temas, sólo los **7 críticos
++ 2** conservan día propio; los otros **8 van fusionados** como secundarios (con todos sus sub-temas:
+nada se pierde). Si el arranque se atrasa otro día, **lo siguiente que cae es un CRÍTICO**.
 
 ## 2 · El plan día a día
 
-| Día | Fecha | Tema | Prio | Mapas | Fusionado en ese día |
-|----|-------|------|------|-------|----------------------|
-| 1 | dom 26-jul *(4 h noche)* | I-5+I-6 Determinantes + Bioestadística | MEDIA | 3 | II-10, II-9, III-4+III-7 |
-| 2 | lun 27-jul | **I-3 Vigilancia epidemiológica** | **CRÍTICA** | 4 | III-6+III-10, II-12 |
-| 3 | mar 28-jul | **V-2 PEI / POI / FODA** | **CRÍTICA** | 0 | I-7, IV-6+IV-7 |
-| 4 | mié 29-jul | **II-1 Salud Materna** *(área REY)* | **CRÍTICA** | 13 | II-7, I-8 |
-| 5 | jue 30-jul | **II-3 Vacunación** | **CRÍTICA** | 2 | V-7+V-10, I-9 |
-| 6 | vie 31-jul | **III-5 Salud Intercultural** | **CRÍTICA** | 2 | **III-9**, IV-4, II-13 |
-| 7 | sáb 1-ago | **II-8 HEARTS / HTA-DM** | **CRÍTICA** | 1 | **V-1**, IV-3+IV-5, II-4 |
-| 8 | dom 2-ago *(4 h noche)* | 🌙 **REPASO DE LOS 2 GAPS** | ALTA | — | — |
-| 9 | lun 3-ago | **II-11 ITS / VIH** | **CRÍTICA** | 10 | IV-1+IV-2, II-5, I-11+I-12 |
-| 10 | mar 4-ago | I-1 Promoción de la salud | ALTA | 4 | I-2, II-2, V-6 |
-| 11 | mié 5-ago | V-3 Niveles de atención | ALTA | 0 | III-2, I-10, II-6 |
-| 12 | jue 6-ago | I-4 Definiciones de caso | ALTA | 3 | III-8, III-3, III-1 |
-| 13 | vie 7-ago | 🎯 **DRESS REHEARSAL 1** | — | — | mock completo a hora real |
-| 14 | sáb 8-ago | 🌓 **MEDIO DÍA** (mock 2 + tarde libre) | — | — | — |
-| 15 | **dom 9-ago** | 🏁 **EXAMEN** | — | — | — |
+| Día | Fecha | Tema | Prio | Mapas | Fusionado ese día |
+|----|-------|------|------|-------|-------------------|
+| 1 | **lun 27-jul** | 🔭 **REVISIÓN GLOBAL** (panorámica 5 áreas + diagnóstico ciego) | — | — | — |
+| 2 | mar 28-jul | **I-3 Vigilancia epidemiológica** | **CRÍTICA** | 10 | **I-4**, II-10, II-9 |
+| 3 | mié 29-jul | **V-2 PEI / POI / FODA** | **CRÍTICA** | 0 | **V-1**, V-7+V-10, V-6 |
+| 4 | jue 30-jul | **II-1 Salud Materna** *(área REY)* | **CRÍTICA** | 10 | II-4, II-7, II-2 |
+| 5 | vie 31-jul | **II-3 Vacunación** | **CRÍTICA** | 3 | II-6, II-12, II-13 |
+| 6 | sáb 1-ago | **III-5 Salud Intercultural** | **CRÍTICA** | 2 | **III-9**, III-1, III-4+III-7, III-6+III-10 |
+| — | **dom 2-ago** | 🚫 **LIBRE** (no se estudia) | — | — | — |
+| 7 | lun 3-ago | **II-8 HEARTS / HTA-DM** | **CRÍTICA** | 1 | **III-8**, III-3 |
+| 8 | mar 4-ago | **II-11 ITS / VIH** | **CRÍTICA** | 7 | **III-2**, II-5 |
+| 9 | mié 5-ago | I-1 Promoción de la salud | ALTA | 6 | **I-2**, I-11+I-12, I-10, I-7, I-8, I-9 |
+| 10 | jue 6-ago | V-3 Niveles de atención | ALTA | 3 | **I-5+I-6**, **IV-1+IV-2**, IV-3+IV-5, IV-4, IV-6+IV-7 |
+| 11 | vie 7-ago | 🎯 **DRESS REHEARSAL 1** (mock completo a hora real) | — | — | — |
+| 12 | sáb 8-ago | 🌓 **MEDIO DÍA** (mock 2 mañana + tarde libre) | — | — | — |
+| 13 | **dom 9-ago** | 🏁 **EXAMEN** | — | — | — |
 
-**Los 7 críticos reciben día COMPLETO entre semana.** El domingo 26 lleva el tema más liviano
-(I-5+I-6: 3 vueltas / 55 min) para no arriesgar un crítico en una franja corta.
+**Los 7 críticos conservan día propio.** Los 2 slots restantes van a **I-1** (área I = 28 %) y **V-3**
+(área V = 22 %). Los 8 fusionados en **negrita** dentro de la columna de fusión.
 
-### El domingo 2-ago ataca los 2 gaps reales
-1. **ÁREA V / GESTIÓN** — 22 % del examen y **cero mapas conceptuales** en QX. Se ataca por banqueo
-   dirigido (V-2 PEI/POI/FODA es el tema #1 banqueado del área) + los **REPASOS DE GESTIÓN que
-   Theomed acaba de publicar** (sesiones 22/07 y 24/07).
-2. **III-9 derechos del paciente / HC / SUSALUD (Ley 29414)** — el mayor *miss* histórico del backtest.
-
----
+**El día 1 (revisión global)** es panorámica + calibración: recorrer el mapa de cobertura de las 5
+áreas, hacer un **diagnóstico ciego con banqueo QX** por área para saber dónde estás parado de verdad
+(no por sensación), y fijar el orden de ataque. Sin contenido nuevo.
 
 ## 3 · Cruce con rentabilidad y pronóstico
 

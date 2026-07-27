@@ -42,7 +42,7 @@
 
 **⚠️ Trampa clásica:** El distractor estrella es 'Desarrollo de políticas' o 'Transición epidemiológica' colocado junto a 'Función esencial': el examen castiga a quien no recuerda que capacitación de RRHH, vigilancia, promoción y garantía de acceso SON FESP. También confunde FESP (marco de actuación del Estado) con 'campos/determinantes de la salud' (modelo de Lalonde) — no son lo mismo.
 
-### I-3 · Vigilancia epidemiológica, brotes/epidemia/endemia, escenarios e investigación de brote (Directiva 067 / RM 506-2020)
+### I-3 · Vigilancia epidemiológica, brotes/epidemia/endemia, escenarios e investigación de brote (Directiva Sanitaria 046-MINSA/DGE-V.01 / RM 506-2012)
 **📚 De dónde repasar:**
 - Videoclase QX 'ENDEMIAS, EPIDEMIAS Y BROTES' + 'BROTES, EPIDEMIAS, PANDEMIAS Y ENDEMIAS' (ENCAPS_VIDEOS_POR_TEMA I-3) — definición de BROTE (≥2 casos relacionados entre sí) vs epidemia vs endemia vs pandemia; cae casi todos los exámenes.
 - Videoclase QX 'VIGILANCIA EPIDEMIOLÓGICA' + 'SISTEMA DE VIGILANCIA EPIDEMIOLÓGICA' + 'VIGILANCIA EN SALUD PÚBLICA' (I-3) — tipos de vigilancia (pasiva/activa/centinela), notificación inmediata vs semanal, indicadores de estructura/proceso/resultado.
@@ -50,7 +50,7 @@
 - Videoclase QX 'GESTIÓN DEL RIESGO EN SITUACIONES DE EMERGENCIAS Y DESASTRES' (I-3 ➕) — escenarios.
 - Fichas MINSA 'Endemias, epidemias y brotes', 'Vigilancia epidemiológica', 'Vigilancia en salud pública', 'Conceptos básicos de epidemiología' (ENCAPS_FICHAS_POR_TEMA I-3, Dropbox).
 - Theomed: tema I-3 → Salud Pública sesión 4 (slide 2/21, id=20380) + fallback Cuidado Integral sesión 6 y 4.
-- NTS: Directiva Sanitaria 067-MINSA (vigilancia epidemiológica) / RM 506-2020; Directiva de vigilancia de zoonosis, accidentes por animales ponzoñosos y epizootias (periodicidad de notificación).
+- NTS: Directiva Sanitaria 046-MINSA/DGE-V.01 "Notificación de Enfermedades y Eventos Sujetos a Vigilancia Epidemiológica" / RM 506-2012 (⚠ NO "067 / RM 506-2020", cita errónea que circula en material viejo); Directiva de vigilancia de zoonosis, accidentes por animales ponzoñosos y epizootias (periodicidad de notificación).
 
 **🎯 Ángulos más preguntados (exámenes reales):**
 - Definición de BROTE: '2 o más casos de la misma enfermedad relacionados entre sí' — 2026-1 Q99 (respuesta Brote, distractores endemia/epidemia/pandemia) y 2026-1 (caso cuyes/ratas Q... 'brote infeccioso'/'endemia animal').
@@ -61,14 +61,14 @@
 
 **⚠️ Trampa clásica:** Doble trampa clásica: (1) en la investigación de brote ponen 'intervención del brote' o 'hacer vigilancia' como primera etapa, cuando lo primero es CONFIRMAR/investigación preliminar y verificar el diagnóstico; (2) confunden TASA DE ATAQUE (casos/expuestos) con TASA DE LETALIDAD (muertes/casos) — si el dato son muertes entre confirmados es LETALIDAD aunque el enunciado diga 'brote'. Además mezclan 'brote' (≥2 casos relacionados) con 'epidemia' (exceso sobre lo esperado) y 'endemia'.
 
-### I-4 · Definiciones de caso y vigilancia de Dengue / TB / Malaria / Zoonosis (GPC Dengue + Directiva 067 + NTS 104)
+### I-4 · Definiciones de caso y vigilancia de Dengue / TB / Malaria / Zoonosis (GPC/NTS 211-2024 Dengue + Directiva 046 + NTS 104)
 **📚 De dónde repasar:**
 - Videoclase QX 'PREVENCIÓN Y CONTROL DE DENGUE' + 'VIGILANCIA ENTOMOLÓGICA DE DENGUE' + 'CONTROL DE VECTORES Y PLAGAS' (ENCAPS_VIDEOS_POR_TEMA I-4) — caso probable/confirmado de dengue, signos de alarma, vigilancia entomológica (ovitrampas, índice aédico, muestreo).
 - Videoclase QX 'VIGILANCIA Y MANEJO DE ZOONOSIS' (I-4 ➕) — definiciones de caso y notificación de zoonosis/epizootias.
 - Fichas MINSA 'Prevención y control de dengue', 'Vigilancia y manejo de zoonosis', 'Prevención de enfermedades transmisibles', 'Intoxicaciones', 'Exposición a metales pesados' (ENCAPS_FICHAS_POR_TEMA I-4, Dropbox); para TB usar ficha 'Prevención y control de la tuberculosis' (mapeada en II-6).
 - Theomed: tema I-4 → Cuidado Integral sesión 8 (slide 20/58, id=20566) + Salud Pública sesión 4 (slide 11/21, 50%) y sesión 7.
 - Compendio DR LOPEZ 'Salud Pública' / 'Cuidado Integral' (ENCAPS_COMPENDIO).
-- NTS: GPC de Dengue MINSA (signos de alarma, clasificación), NTS 104-MINSA-DGSP (TB: definición de caso, sintomático respiratorio, baciloscopía), Directiva 067 para definiciones de caso de enfermedades sujetas a vigilancia.
+- NTS: GPC de Dengue MINSA (signos de alarma, clasificación), NTS 104-MINSA-DGSP (TB: definición de caso, sintomático respiratorio, baciloscopía), Directiva Sanitaria 046-MINSA/DGE (RM 506-2012) para definiciones de caso de enfermedades sujetas a vigilancia.
 
 **🎯 Ángulos más preguntados (exámenes reales):**
 - Vigilancia entomológica del dengue según escenario (sin vector ni casos pero con condiciones): muestreo/ovitrampas correcto — 2025-2 Q23 (ovitrampas/inspección de viviendas).
@@ -639,7 +639,7 @@
 
 ### V-2 · Planeamiento institucional PEI / POI / FODA (CEPLAN Directiva 001-2024) y documentos de gestión (ROF/MOF/CAP/MAPRO)
 **📚 De dónde repasar:**
-- Videoclase QX 'PLANEAMIENTO A NIVEL INSTITUCIONAL - PEI' (V-2) — PEI = 3 años, declara misión/visión/OEI/AEI; cae casi todos los exámenes (2025-2 q52, 2026-1 q88/q1020, 2024-2A/B q10)
+- Videoclase QX 'PLANEAMIENTO A NIVEL INSTITUCIONAL - PEI' (V-2) — PEI = **5 años** (Guía CEPLAN actualizada 2024; el material/exámenes viejos decían 3 años), declara misión/visión/OEI/AEI; cae casi todos los exámenes (2025-2 q52, 2026-1 q88/q1020, 2024-2A/B q10)
 - Videoclase QX 'PLANEAMIENTO A NIVEL INSTITUCIONAL - POI, EVALUACIÓN DEL POI' (V-2) — POI = anual/multianual 3 años, programa actividades operativas y metas físicas/financieras alineadas al PEI; literal en 2025-2 q20, 2024-2A/B q4 (vigencia POI multianual), 2026-1 q64/q81/q940
 - Videoclase QX 'ANÁLISIS ESTRATÉGICO INSTITUCIONAL (FODA)' y 'PROCESO ADMINISTRATIVO - FODA' (V-2) — F/O internas-positivas, D/A; herramienta de diagnóstico situacional; cae en 2025-1A q49/q62, 2025-1B q26/q58, 2024-2A/B q29 y 2026-1 q82
 - Videoclase QX 'DOCUMENTOS TÉCNICOS DE GESTIÓN - ROF, MOP' y 'DOCUMENTOS TÉCNICOS NORMATIVOS DE GESTIÓN INSTITUCIONAL' (V-2) — ROF/MOF/CAP/MAPRO: cuál se usa para perfil de cargo (MOF) y para brecha de RRHH (CAP) — 2024-2B q32/q59, 2025-2 q53
@@ -649,13 +649,13 @@
 - Normativa: CEPLAN Directiva 001-2024 (ciclo de planeamiento estratégico: fases del PEDN; 'análisis de la situación actual' = fase 1) — base de 2025-1A/B q15 y 2025-2 q29/q95
 
 **🎯 Ángulos más preguntados (exámenes reales):**
-- PEI vs POI por su definición textual: 'documento de política institucional, misión, OEI/AEI, indicadores, metas, 3 años' = PEI; 'programa actividades operativas e inversiones, metas físicas/financieras del año fiscal alineadas al PEI' = POI — 2025-2 q20 y q52; 2024-2A/B q10; vigencia del POI multianual = 3 años (2024-2A/B q4); 'qué elaborar para implementar el POI' = Plan estratégico/herramienta de gestión (2026-1 q64)
+- PEI vs POI por su definición textual: 'documento de política institucional, misión, OEI/AEI, indicadores, metas; horizonte 5 años (Guía CEPLAN 2024 — antes 3 años)' = PEI; 'programa actividades operativas e inversiones, metas físicas/financieras del año fiscal alineadas al PEI' = POI — 2025-2 q20 y q52; 2024-2A/B q10; vigencia del POI multianual = 3 años (2024-2A/B q4); 'qué elaborar para implementar el POI' = Plan estratégico/herramienta de gestión (2026-1 q64)
 - FODA clasificación: Fortalezas = positivas internas (2025-1A q49); Amenazas = factores externos negativos difíciles de cambiar como hábitos de la población (2025-1A q62); FODA como herramienta de diagnóstico situacional / línea de base (2024-2A/B q29, 2026-1 q82 '¿qué se está haciendo bien?' = fortaleza)
 - Misión vs Visión: Misión = rol/razón de ser actual que orienta objetivos estratégicos (2025-1A q72, 2026-1 q88); Visión = concepto compartido de futuro deseado (2025-1A q73, 2025-1B q54-58); aparecen como par-trampa repetidamente
 - Documentos de gestión específicos: perfil del cargo/contratación → MOF (2024-2B q32, 2025-2 q53 plaza en CAP); brecha de RRHH → CAP-POI (2024-2B q59); programar recurso/personal no logrado → POI/Plan operativo (2026-1 q81)
 - Ciclo CEPLAN: 'análisis de la situación actual' = fase 1 del planeamiento estratégico (2025-1A/B q15); definición de planeamiento estratégico como proceso que implementa el PEDN (2025-2 q95)
 
-**⚠️ Trampa clásica:** El par PEI↔POI: el examen describe el POI con palabras que suenan 'estratégicas' (alineado al PEI, rol rector) para empujarte a marcar PEI; la clave es que POI = OPERATIVO/ANUAL con metas FÍSICAS y FINANCIERAS, mientras PEI = ESTRATÉGICO/3 años con OEI-AEI. Igual con instrumento de gestión vs articulación (POI Multianual = 'instrumento de gestión', 2025-1A q42). Y el par Misión/Visión: Misión = presente/qué hacemos hoy; Visión = futuro/a dónde queremos llegar — los invierten a propósito (2025-1A q72-73).
+**⚠️ Trampa clásica:** El par PEI↔POI: el examen describe el POI con palabras que suenan 'estratégicas' (alineado al PEI, rol rector) para empujarte a marcar PEI; la clave es que POI = OPERATIVO/ANUAL con metas FÍSICAS y FINANCIERAS, mientras PEI = ESTRATÉGICO/5 años (CEPLAN 2024, antes 3) con OEI-AEI. Igual con instrumento de gestión vs articulación (POI Multianual = 'instrumento de gestión', 2025-1A q42). Y el par Misión/Visión: Misión = presente/qué hacemos hoy; Visión = futuro/a dónde queremos llegar — los invierten a propósito (2025-1A q72-73).
 
 ### V-3 · Niveles de atención, capacidad resolutiva, referencia/contrarreferencia y Redes Integradas de Salud (NTS 020 / RIS Ley 30885)
 **📚 De dónde repasar:**

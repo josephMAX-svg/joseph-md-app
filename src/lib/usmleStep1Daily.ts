@@ -14,7 +14,7 @@ export const QBL = 'https://qbankly.app/library';
 export const yt = (id: string) => 'https://www.youtube.com/watch?v=' + id;
 
 export const DAILY_META = {
-  step: 1, inicio: '2026-07-26', fin: '2026-10-17', totalDias: 72, // v4 (15-jun): D1=mar 16-jun (no se estudió el 15) · TODOS los domingos libres · 70 temas + 2 colchón
+  step: 1, inicio: '2026-07-27', fin: '2026-10-17', totalDias: 72, // v4 (15-jun): D1=mar 16-jun (no se estudió el 15) · TODOS los domingos libres · 70 temas + 2 colchón
   bloque: '16:15–16:30 Anchored Eval (tema previo) · 16:30–17:15 Mini Deep Work English',
 };
 

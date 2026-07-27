@@ -3,24 +3,27 @@
 > Esto es cómo se EJECUTA el día a día: pre-flight → fuente del día → 4 bloques de preguntas (Palmerton ciego) → feedback/monitoreo → recalibración.
 > Verificado contra: app Joseph MD `/estudio`, Google Calendar, vault Obsidian `D:\JOSEPH\Vault_Medicina MIR_Joseph\06_ENCAPS\ENCAPS_2026`. · Generado 24-jun-2026.
 
+<!-- Vector unificado 2026-07-20: II33·I28·V22·III13·IV4 (fuente: PRONOSTICO_WALKFORWARD_2026-2_v2 §7, verificación en vivo QX). Supersede los vectores previos II34·I27·V23·III13·IV3 y II33·I27·V23·III13·IV4. -->
+> ⚠️ **Ponderación canónica: CI(II) 33 · SP(I) 28 · Gestión(V) 22 · Ética(III) 13 · Inv(IV) 4.** CRÍTICOS = SIETE: I-3 · II-1 · II-3 · V-2 · II-11 · III-5 · **II-8**.
+
 ---
 
 ## 0) PRE-FLIGHT — OBLIGATORIO antes de mandar cualquier lote
 Joseph NO recibe preguntas hasta que yo verifique y reporte día + hora + bloque vigente.
 1. **Fecha/hora reales** → `date` (Bash). Reportar: `"Hoy es <día> <DD-mmm-YYYY>, son las HH:MM (hora Perú, GMT-5)"`.
-2. **Joseph MD** (chrome-devtools → page `/estudio`): leer `Día N/49`, tema del día, modo, vueltas, **NTS Tier-1**, y `Hechos hoy N/25`.
+2. **Joseph MD** (chrome-devtools → page `/estudio`): leer `Día N/43`, tema del día, modo, vueltas, **NTS Tier-1**, y `Hechos hoy N/25`.
 3. **Google Calendar**: confirmar qué bloque toca AHORA por la hora (04:45 / 08:15 / 11:00 / 18:00 / 17:15).
 4. Anunciar: `"Día N · <tema> · toca el bloque <X> (HH:MM)"` → recién entonces mandar las preguntas.
-> Regla: **nunca mandar preguntas fuera del día/bloque** que marca el Calendar. El plan arranca **D1 = jue 25-jun-2026** (hoy 24-jun fue organización). Examen FIJO **jue 20-ago** (día 49).
+> Regla: **nunca mandar preguntas fuera del día/bloque** que marca el Calendar. El plan arranca **D1 = jue 02-jul-2026** (hoy 01-jul es organización). Examen FIJO **jue 20-ago** (día 43).
 
 ---
 
 ## 1) FUENTE DEL DÍA (de dónde salen las preguntas, en orden)
 - **App `/estudio` → "Cola QX de hoy"** = los sub-ángulos examinables del tema del día (títulos de videoclase QX).
   - **D1 (I-3 Vigilancia EPI)** sub-ángulos: Vigilancia en salud pública · Vigilancia epidemiológica · Endemias/epidemias/brotes · Demografía · Historia natural del proceso S-E · ASIS / Sala situacional · Conceptos básicos de epidemiología · Mediciones en epidemiología · Demografía en salud · Brotes/epidemias/pandemias/endemias · Sistema de vigilancia epidemiológica · Gestión del riesgo en emergencias y desastres.
-- **NTS Tier-1 del día** (app) = norma obligatoria; toda clave debe poder responderse con ella. **D1 = Directiva 067 RM 506-2020** (notificación de brotes/EVISAP).
+- **NTS Tier-1 del día** (app) = norma obligatoria; toda clave debe poder responderse con ella. **D1 = Directiva 046-MINSA/DGE (RM 506-2012)** (notificación de brotes/EVISAP).
 - **Orden de bancos** (mayor→menor confianza): 1) **Claves SERUMS** (6 exámenes en `exams_txt/`) → copio estilo/ángulo real · 2) **Theomed** (banco oficial + Manual de Salud Pública, Drive) · 3) **QxMedic** (banco + videoclases + fichas MINSA) · 4) **IA con compendio Dr López/Theomed verificado** — siempre trazable, nunca inventado.
-- **Ponderación**: dentro del día rotar sub-ángulos por su frecuencia real en los 6 exámenes; a nivel global priorizar **SP (Área I, 29%) + CI (Área II, 28%)** = lo más rentable y estable.
+- **Ponderación**: dentro del día rotar sub-ángulos por su frecuencia real en los 6 exámenes; a nivel global priorizar **CI (Área II, 33%, REY) + SP (Área I, 28%)** = lo más rentable (≈61% del examen). Todo en **formato viñeta clínica** (~90% del examen).
 
 ---
 
@@ -64,7 +67,7 @@ Todas en **Palmerton ciego** (ver §3). Las cards solo de los 🔴 con error de 
 - **Again Anki > 15%** → cards débiles, marcar para próximo deep prime.
 - **"GAP TOTAL" 2 días** seguidos mismo tema → re-deep work.
 - Si **domina** (🟢 rápido) → subir dificultad / reducir preguntas de ese ángulo.
-- Cada ~5 días → **mini-simulacro** ponderado (SP 29 · CI 28 · Gestión 21 · Ética 16 · Inv 6).
+- Cada ~5 días → **mini-simulacro** ponderado (CI 33 · SP 28 · Gestión 22 · Ética 13 · Inv 4), formato viñeta.
 - No repetir: llevo registro de preguntas ya usadas por tema.
 
 ---
@@ -74,8 +77,8 @@ Todas en **Palmerton ciego** (ver §3). Las cards solo de los 🔴 con error de 
 - En cada bloque hago el **PRE-FLIGHT (§0)** antes de soltar preguntas: verifico hora+día+bloque vigente y lo anuncio.
 - **Complemento en vivo:** Joseph también busca el tema en el banco de **QxMedic/Theomed**; lo que yo doy + esos bancos se suman. Si pide, entro en vivo a QX/Theomed (logueados) a jalar el banco real del tema para nutrir Warm-up 20Q y Consolidación 30Q.
 
-## 7) ESTADO INICIAL (24-jun-2026)
-- **D1 = jue 25-jun · I-3 Vigilancia EPI · CRÍTICA · NTS Directiva 067 RM 506-2020.**
+## 7) ESTADO INICIAL (actualizado 01-jul-2026)
+- **D1 = jue 02-jul · I-3 Vigilancia EPI · CRÍTICA · NTS Directiva 046-MINSA/DGE (RM 506-2012).**
 - **Pre-test 10Q ciegas de I-3 YA preparado** (claves guardadas, modo Palmerton).
 - Chrome de Joseph conectado y logueado (QX, Theomed, Drive, Calendar, app). Vault Obsidian verificado.
 - Paneles de monitoreo aún en cero (`Sin datos de errores aún`) — se llenan desde D1.
