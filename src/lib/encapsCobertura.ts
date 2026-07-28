@@ -2191,7 +2191,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "ALTA",
   "vueltas": 5,
   "min": 60,
-  "qxN": 1,
+  "qxN": 2,
   "theomedN": 11,
   "extenso": true,
   "freq": "QX Tendencias: 'Derechos deberes de personas usuarias' = 3 conteos ≈ 0.75%/examen en el agregado, PERO el forecast v2 lo marca como el MAYOR MISS histórico del backtest (subestimado, se añadió al top/watch por HC/SUSALUD). Sesgo al alza.",
@@ -2214,6 +2214,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "url": "https://drive.google.com/drive/folders/1srnoHI0LavKzi1Vzy8c9Mt5f5WLRqsWu"
   },
   "videosExtra": [
+   {
+    "titulo": "Gestión de la historia clínica (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/OTc5U2xKdWJaVTNjM1FUNXhyWks1UT09"
+   },
    {
     "titulo": "DERECHOS DEBERES DE LAS PERSONAS USUARIAS DE LOS SERVICIOS DE SALUD",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/YmtBcmFvdzlpeUpkVjNhUkh2aGovQT09"
@@ -2431,7 +2435,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "MEDIA",
   "vueltas": 3,
   "min": 60,
-  "qxN": 7,
+  "qxN": 11,
   "theomedN": 7,
   "extenso": true,
   "freq": "Tendencias QX Investigación: 'Tipos de investigación y estudios descriptivos' 7 + 'Enfoques y métodos' 4 = 11/400 (≈2.75%/examen), es el sub-bloque más gordo de toda el área IV. Forecast v2: IV total piso 3-4% recency (colapso confirmado, IV=14 en 2024-II → 2-4 ahora). Es el ÚNICO código IV que rinde y el único compatible con viñeta ('describo un estudio → clasifícalo'). Escenario contingencia: si revierte a teoría, sube.",
@@ -2458,6 +2462,22 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "url": "https://drive.google.com/drive/folders/1RCpVqy_1yF0OBU-OUegTOzHjaZS6FAX8"
   },
   "videosExtra": [
+   {
+    "titulo": "Elaboración del proyecto de investigación (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/L3NUNmY0UFFobXBwcm9uamthSThhdz09"
+   },
+   {
+    "titulo": "Variables (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/SGdDK0JncGtycmExNjJGS1BSV3V5UT09"
+   },
+   {
+    "titulo": "Tipos de investigación (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/SmxDb2Y1QXdmRUozN2h4YzR1MTlQQT09"
+   },
+   {
+    "titulo": "Conceptos básicos de investigación (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/NGsyU1JyU3BTa0lqWEFYQi9tdG1rUT09"
+   },
    {
     "titulo": "TIPOS DE INVESTIGACIóN Y ESTUDIOS DESCRIPTIVOS",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/cmgwVEgzZis2dy9ZeVJXaW1LRWlwdz09"
@@ -2520,7 +2540,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "BAJA",
   "vueltas": 2,
   "min": 30,
-  "qxN": 1,
+  "qxN": 2,
   "theomedN": 7,
   "extenso": false,
   "freq": "Casi nula dentro de IV en Tendencias QX (no figura como sub-tema de Investigación; las 'pruebas diagnósticas' caen 4/400 pero QX las clasifica en Salud Pública I-6, no en IV). Forecast v2: cálculo/pruebas diagnósticas 'prácticamente extinto' bajo formato viñeta. BAJA salvo escenario de contingencia.",
@@ -2540,7 +2560,16 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "label": "Videoclases GALENO",
    "url": "https://drive.google.com/drive/folders/1RCpVqy_1yF0OBU-OUegTOzHjaZS6FAX8"
   },
-  "videosExtra": [],
+  "videosExtra": [
+   {
+    "titulo": "Instrumentos de recolección de datos y validación (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/L0tocUdBU2lZc2hvUHNPZkVCNnhZQT09"
+   },
+   {
+    "titulo": "Instrumentos de validez (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/YzJDWC9MNm8yM1Y0Tk55NG9jRHVudz09"
+   }
+  ],
   "gapSources": [],
   "bookCoverage": {
    "lopez": "no",
@@ -2717,7 +2746,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "CRÍTICA",
   "vueltas": 6,
   "min": 110,
-  "qxN": 4,
+  "qxN": 6,
   "theomedN": 25,
   "extenso": true,
   "freq": "El tema #1 histórico del área V y de varios exámenes: fue tema n°1 en 2024-II (V-2 15.5%) y 2025-II (V-2 21%). QX Tendencias: 'Planeamiento Institucional PEI/POI'=12 + 'FODA'=8 = 20/400 (~5%/examen) SOLO planeamiento; sumando clima organizacional (5) + plan de calidad/acreditación (5) + residuos en desastre (3) + documentos normativos ROF/MOP (2+2) el bloque V-2 real ronda ~9-12%. Forecast v2: 10% banda 8-18, tendencia VOLÁTIL anti-persistente (15.5→9→21→8.9); tras el fold bajo 2026-I hay riesgo alto de REBOTE al alza. Crítico #4 del examen.",
@@ -2745,6 +2774,14 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "url": "https://drive.google.com/drive/folders/1R1cuKS2PV8yCeicl2VXj8NBIhWtNUP9w"
   },
   "videosExtra": [
+   {
+    "titulo": "Documentos técnicos de gestión - ROF, MOP (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/UWpVZ2FQdlE5TExJRHFmaVpuUnJyUT09"
+   },
+   {
+    "titulo": "Proceso administrativo - FODA (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/MUx6alZRaU1VcVhOYVYzNTZIZ05xdz09"
+   },
    {
     "titulo": "PLANEAMIENTO A NIVEL INSTITUCIONAL - PEI",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/K1pCaEdia2czZStHRGxhMkw3RUFhQT09"
@@ -2798,7 +2835,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "ALTA",
   "vueltas": 5,
   "min": 75,
-  "qxN": 3,
+  "qxN": 7,
   "theomedN": 25,
   "extenso": true,
   "freq": "QX Tendencias 'Categorización de servicios de salud'=10/400 (~2.5%/examen) — el sub-tema n°1 de 'Organización de servicios'; sumando 'Requisitos operación/funcionamiento EESS'=1 y 'Redes integradas'=2. Sorpresa ciega en el backtest (V-1 apareció fuera del top en fold 2024-II→2025-I). Forecast v2: 4% banda 2-6, tendencia alza; ajuste fino post-verificación lo centra en ~3. Núcleo: quién asigna categoría, UPSS, referencia por nivel.",
@@ -2824,6 +2861,22 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "url": "https://drive.google.com/drive/folders/1R1cuKS2PV8yCeicl2VXj8NBIhWtNUP9w"
   },
   "videosExtra": [
+   {
+    "titulo": "Calidad y acreditación (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/VE1zdjVveFNYdHVBQVZqMGlPYzVyUT09"
+   },
+   {
+    "titulo": "UPSS y cartera de servicios de salud (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/UWdPUnBlWWlpRGE3UEJuZVBWUG9Ydz09"
+   },
+   {
+    "titulo": "RIS - Redes Integradas de Salud (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/QWpJVEdHTVpnazlWNEczNWU4Uzl3dz09"
+   },
+   {
+    "titulo": "Categorización de los establecimientos de salud (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/bXJIQ1NhQ29IaWxmZ3Mrdk5XZ3YrUT09"
+   },
    {
     "titulo": "CATEGORIZACIóN DE SERVICIOS DE SALUD",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/YVZyUHhCSkczaGNOcFJPQ3FBRzJHZz09"
@@ -2872,7 +2925,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "ALTA",
   "vueltas": 5,
   "min": 80,
-  "qxN": 3,
+  "qxN": 4,
   "theomedN": 25,
   "extenso": true,
   "freq": "QX Tendencias 'Sistema de referencia y contrareferencia'=5/400 (~1.25%/examen) + 'Redes integradas de salud'=2/400. No en top explícito del forecast v2 pero es contenido operativo transversal que cruza con V-1 (referencia por nivel) y con II-1 (referencia de gestante). MEDIA-ALTA por combinación de dos temas voluminosos y muy 'viñeteables' (¿a qué nivel se refiere?, ¿contrarreferencia oportuna?).",
@@ -2900,6 +2953,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "url": "https://drive.google.com/drive/folders/1R1cuKS2PV8yCeicl2VXj8NBIhWtNUP9w"
   },
   "videosExtra": [
+   {
+    "titulo": "Sistema de referencia y contrarreferencia (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/UnVwdWl2QmIwYVFSWHpiTEQrZXd6Zz09"
+   },
    {
     "titulo": "SISTEMA DE REFERENCIA Y CONTRARREFERENCIA Y PROCESO DE ADMISIóN INTEGRAL",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/RWJlWDVOUGEzdEhYclBNY2xGeEo3UT09"
@@ -2947,7 +3004,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "ALTA",
   "vueltas": 5,
   "min": 110,
-  "qxN": 8,
+  "qxN": 10,
   "theomedN": 25,
   "extenso": true,
   "freq": "Código-paraguas que absorbe VARIOS sub-temas rentables. QX Tendencias suma: Gestión HC=7, Clima organizacional=5, Plan de calidad/acreditación=5+1, Control de inventario/stock medicamentos=6+3, Gestión RRHH=4, Liderazgo=1, AUS y contrataciones del Estado=2, Sistema logística/mantenimiento=1+1 → ~40/400 combinados (~10%/examen agregado a lo largo de todo el bloque). Forecast v2 destaca V-MED 4% (banda 2-6, farmacovigilancia/URM/DIGEMID/SISMED/vencidos) y añade III-9 HC/SUSALUD (mayor miss histórico) que aquí cruza con Gestión de HC.",
@@ -2981,6 +3038,14 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "url": "https://drive.google.com/drive/folders/1R1cuKS2PV8yCeicl2VXj8NBIhWtNUP9w"
   },
   "videosExtra": [
+   {
+    "titulo": "Buenas prácticas de almacenamiento (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/TkQ2T1JuWHFzSkpIbWtCeU5DOTNCQT09"
+   },
+   {
+    "titulo": "Aseguramiento universal en salud AUS (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/Z294dzFpTUE0cXJueUltQWc1VXNLdz09"
+   },
    {
     "titulo": "GESTIóN DE LA HISTORIA CLíNICA",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/NHRkNk5NcWk3MTRDMmlxVFJMWkRPUT09"
@@ -3057,7 +3122,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   "tier": "MEDIA",
   "vueltas": 3,
   "min": 35,
-  "qxN": 1,
+  "qxN": 2,
   "theomedN": 25,
   "extenso": false,
   "freq": "QX Tendencias 'Telesalud'=2/400 (~0.5%/examen). Material recién publicado por QX esta semana (señal de que puede aparecer) pero histórico bajo. Forecast v2 no lo lista en top ni watch. Tema de bajo volumen pero fácil de clavar (definiciones puras) → poca inversión, alta eficiencia por pregunta.",
@@ -3077,6 +3142,10 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
    "url": "https://drive.google.com/drive/folders/1R1cuKS2PV8yCeicl2VXj8NBIhWtNUP9w"
   },
   "videosExtra": [
+   {
+    "titulo": "Telesalud (mapa conceptual)",
+    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/MnRhbU55UTVWR3dJTW5zN1ZpaXFJZz09"
+   },
    {
     "titulo": "TELESALUD",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/eFhyc2p4SWVRaFIxUUtxUHQ3YmtmZz09"

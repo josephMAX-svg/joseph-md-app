@@ -11,7 +11,7 @@ import { PRACTICA_DEEP_PRIME, PRACTICA_REPASO } from './encapsPracticaExtra';
 
 // ── D1 por examen (para calcular el día actual 1..71) ──
 export const STUDY_D1: Record<string, string> = {
-  ENCAPS: '2026-07-27',   // D1=LUN 27-jul · 13 días · EXAMEN dom 9-ago. ⚡ LOS DOMINGOS NO SE ESTUDIA (Joseph): 2-ago va en STUDY_SKIP_DATES; el 9-ago es domingo pero es el examen. **d1 27-jul = 🔭 REVISIÓN GLOBAL** (panorámica de las 5 áreas + diagnóstico ciego con banqueo para calibrar el punto de partida real; sin contenido nuevo). Quedan 9 días de contenido para 17 temas → los 7 CRÍTICOS conservan día propio (I-3 d2 · V-2 d3 · II-1 d4 área rey · II-3 d5 · III-5 d6 · II-8 d7 · II-11 d8) + I-1 (d9, área I 28%) y V-3 (d10, área V 22%); los otros 8 van FUSIONADOS como secundarios con sus sub-temas (I-4, V-1, III-9, III-8, III-2, I-2, I-5+I-6, IV-1+IV-2). Contenido cierra 6-ago · d11 7-ago DRESS REHEARSAL 1 · d12 8-ago MEDIO DÍA (mock 2 mañana + TARDE LIBRE) · d13 9-ago EXAMEN. 40/40 códigos, 42 mapas en cola. Backup study_schedule_bk_0727. ⚠ Es el límite de la compresión: si se atrasa otro día, cae un CRÍTICO.
+  ENCAPS: '2026-07-28',   // D1=MAR 28-jul (hoy) · 12 días · EXAMEN dom 9-ago. 🚫 Domingos NO se estudia (2-ago libre; el 9-ago es domingo pero es el examen). 9 días de contenido (28-jul→6-ago) para 17 temas → los 7 CRÍTICOS conservan día propio (I-3 d1 · V-2 d2 · II-1 d3 área rey · II-3 d4 · III-5 d5 · II-8 d6 · II-11 d7) + I-1 (d8) y V-3 (d9); los otros 8 van FUSIONADOS como secundarios CON sus sub-temas → 40/40 códigos, nada perdido. El d1 arranca con 20 min de panorámica + diagnóstico ciego antes de entrar a I-3. d10 7-ago DRESS REHEARSAL 1 · d11 8-ago MEDIO DÍA (mock 2 mañana + TARDE LIBRE) · d12 9-ago EXAMEN. ⚡⚡ BARRIDO 28-jul: QX publicó el 27-jul un batch de **17 MAPAS NUEVOS** → catálogo 180 videos / **59 MAPAS**: GESTIÓN pasó de 0 a 11 mapas (FODA, ROF/MOP, categorización, RIS, referencia, HC, AUS, UPSS, telesalud, BPA, calidad) e INVESTIGACIÓN de 0 a 6 → **cierra el gap del área V (22% del examen que estaba sin un solo mapa)**: V-2 ahora 9 mapas, V-3 10, V-1 4. Backup study_schedule_bk_0728. ⚠ LÍMITE DE COMPRESIÓN: otro atraso se come un CRÍTICO.
   // MIR / USMLE se agregan cuando se construyan sus cronogramas.
 };
 // Fechas SIN actividad (bloqueadas por Joseph) — no cuentan como día de plan.
@@ -19,11 +19,11 @@ export const STUDY_D1: Record<string, string> = {
 export const STUDY_SKIP_DATES: Record<string, string[]> = {
   // ⚡ LOS DOMINGOS NO SE ESTUDIA (Joseph, decisión final — revierte el experimento de la franja
   // 18:00-22:00). El único domingo del tramo es 2-ago → va aquí. El 9-ago también es domingo pero
-  // es el DÍA DEL EXAMEN, así que NO se salta. Mapeo: 27-jul=d1 … 1-ago=d6 · [2-ago libre] ·
-  // 3-ago=d7 … 8-ago=d12 · 9-ago=d13.
+  // es el DÍA DEL EXAMEN, así que NO se salta. Mapeo: 28-jul=d1 … 1-ago=d5 · [2-ago libre] ·
+  // 3-ago=d6 … 8-ago=d11 · 9-ago=d12.
   ENCAPS: ['2026-08-02'],  // DOMINGO libre (el 9-ago también es domingo pero es el examen, no se salta)
 };
-const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 13 };
+const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 12 };
 
 // ── Tipos (espejo de las columnas study_*) ──
 export interface StudyVideo {

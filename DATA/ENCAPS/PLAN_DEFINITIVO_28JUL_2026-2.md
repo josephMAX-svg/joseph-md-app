@@ -1,4 +1,4 @@
-# PLAN DEFINITIVO ENCAPS 2026-II — D1 = LUNES 27-JUL-2026
+# PLAN DEFINITIVO ENCAPS 2026-II — D1 = MARTES 28-JUL-2026
 
 > **Compilado el 26-jul-2026 · actualizado a D1=27-jul (los domingos NO se estudia).** Fuente de verdad operativa: tabla `study_schedule` (examen='ENCAPS')
 > en Supabase. Este documento es el resumen humano de lo que está desplegado.
@@ -10,45 +10,37 @@
 
 | | |
 |---|---|
-| **D1** | lunes **27-jul** — 🔭 **REVISIÓN GLOBAL** |
-| **Contenido** | 28-jul → **6-ago** (9 días) |
-| **Dress rehearsal 1** | viernes **7-ago** (d11) — mock completo continuo |
-| **Medio día** | sábado **8-ago** (d12) — mock 2 por la mañana + **TARDE LIBRE** |
-| **EXAMEN** | domingo **9-ago** (d13) |
-| **Total** | 13 días |
+| **D1** | martes **28-jul** (hoy) |
+| **Contenido** | 28-jul → **6-ago** (9 días · domingo 2-ago libre) |
+| **Dress rehearsal 1** | viernes **7-ago** (d10) |
+| **Medio día** | sábado **8-ago** (d11) — mock 2 mañana + **TARDE LIBRE** |
+| **EXAMEN** | domingo **9-ago** (d12) |
+| **Total** | 12 días |
 
-⚡ **LOS DOMINGOS NO SE ESTUDIA** (decisión final). El único domingo del tramo, **2-ago, queda libre**;
-el 9-ago también es domingo pero es el día del examen.
+🚫 **Los domingos no se estudia** — 2-ago libre. El 9-ago es domingo pero es el examen.
 
-⚠ **Esto es el límite de la compresión.** Con 9 días de contenido para 17 temas, sólo los **7 críticos
-+ 2** conservan día propio; los otros **8 van fusionados** como secundarios (con todos sus sub-temas:
-nada se pierde). Si el arranque se atrasa otro día, **lo siguiente que cae es un CRÍTICO**.
+⚠ **Límite de compresión**: 9 días de contenido para 17 temas. Solo los **7 críticos + 2**
+conservan día propio; los otros **8 van fusionados** con todos sus sub-temas (nada se pierde).
 
 ## 2 · El plan día a día
 
 | Día | Fecha | Tema | Prio | Mapas | Fusionado ese día |
 |----|-------|------|------|-------|-------------------|
-| 1 | **lun 27-jul** | 🔭 **REVISIÓN GLOBAL** (panorámica 5 áreas + diagnóstico ciego) | — | — | — |
-| 2 | mar 28-jul | **I-3 Vigilancia epidemiológica** | **CRÍTICA** | 10 | **I-4**, II-10, II-9 |
-| 3 | mié 29-jul | **V-2 PEI / POI / FODA** | **CRÍTICA** | 0 | **V-1**, V-7+V-10, V-6 |
-| 4 | jue 30-jul | **II-1 Salud Materna** *(área REY)* | **CRÍTICA** | 10 | II-4, II-7, II-2 |
-| 5 | vie 31-jul | **II-3 Vacunación** | **CRÍTICA** | 3 | II-6, II-12, II-13 |
-| 6 | sáb 1-ago | **III-5 Salud Intercultural** | **CRÍTICA** | 2 | **III-9**, III-1, III-4+III-7, III-6+III-10 |
-| — | **dom 2-ago** | 🚫 **LIBRE** (no se estudia) | — | — | — |
-| 7 | lun 3-ago | **II-8 HEARTS / HTA-DM** | **CRÍTICA** | 1 | **III-8**, III-3 |
-| 8 | mar 4-ago | **II-11 ITS / VIH** | **CRÍTICA** | 7 | **III-2**, II-5 |
-| 9 | mié 5-ago | I-1 Promoción de la salud | ALTA | 6 | **I-2**, I-11+I-12, I-10, I-7, I-8, I-9 |
-| 10 | jue 6-ago | V-3 Niveles de atención | ALTA | 3 | **I-5+I-6**, **IV-1+IV-2**, IV-3+IV-5, IV-4, IV-6+IV-7 |
-| 11 | vie 7-ago | 🎯 **DRESS REHEARSAL 1** (mock completo a hora real) | — | — | — |
-| 12 | sáb 8-ago | 🌓 **MEDIO DÍA** (mock 2 mañana + tarde libre) | — | — | — |
-| 13 | **dom 9-ago** | 🏁 **EXAMEN** | — | — | — |
+| 1 | **mar 28-jul** | **I-3 Vigilancia EPI** *(+20 min de panorámica y diagnóstico ciego al arrancar)* | **CRÍTICA** | 10 | I-4, II-10, II-9 |
+| 2 | mié 29-jul | **V-2 PEI / POI / FODA** | **CRÍTICA** | **9** ⬆ | V-1, V-7+V-10, V-6 |
+| 3 | jue 30-jul | **II-1 Salud Materna** *(área REY)* | **CRÍTICA** | 10 | II-4, II-7, II-2 |
+| 4 | vie 31-jul | **II-3 Vacunación** | **CRÍTICA** | 3 | II-6, II-12, II-13 |
+| 5 | sáb 1-ago | **III-5 Salud Intercultural** | **CRÍTICA** | 3 | III-9, III-1, III-4+III-7, III-6+III-10 |
+| — | **dom 2-ago** | 🚫 **LIBRE** | — | — | — |
+| 6 | lun 3-ago | **II-8 HEARTS / HTA-DM** | **CRÍTICA** | 1 | III-8, III-3 |
+| 7 | mar 4-ago | **II-11 ITS / VIH** | **CRÍTICA** | 7 | III-2, II-5 |
+| 8 | mié 5-ago | I-1 Promoción de la salud | ALTA | 6 | I-2, I-11+I-12, I-10, I-7, I-8, I-9 |
+| 9 | jue 6-ago | V-3 Niveles de atención | ALTA | **10** ⬆ | I-5+I-6, IV-1+IV-2, IV-3+IV-5, IV-4, IV-6+IV-7 |
+| 10 | vie 7-ago | 🎯 **DRESS REHEARSAL 1** (mock completo a hora real) | — | — | — |
+| 11 | sáb 8-ago | 🌓 **MEDIO DÍA** (mock 2 mañana + tarde libre) | — | — | — |
+| 12 | **dom 9-ago** | 🏁 **EXAMEN** | — | — | — |
 
-**Los 7 críticos conservan día propio.** Los 2 slots restantes van a **I-1** (área I = 28 %) y **V-3**
-(área V = 22 %). Los 8 fusionados en **negrita** dentro de la columna de fusión.
-
-**El día 1 (revisión global)** es panorámica + calibración: recorrer el mapa de cobertura de las 5
-áreas, hacer un **diagnóstico ciego con banqueo QX** por área para saber dónde estás parado de verdad
-(no por sensación), y fijar el orden de ataque. Sin contenido nuevo.
+⬆ = mapas nuevos del batch del 27-jul.
 
 ## 3 · Cruce con rentabilidad y pronóstico
 
@@ -72,15 +64,19 @@ bioestadística (casi extinta, ~0.5 %) está en el mínimo.
 ## 4 · Inventario vivo (barrido 26-jul, logueado)
 
 ### QX Medic
-- **Videoclases**: 163 videos · **42 mapas conceptuales** (SP 14 · CI 25 · Ética 3 · Inv 0 · Gestión 0).
-- 🔥 **Banqueo ENCAPS por área = 18 sets · 2.052 preguntas REALES**
-  - Cuidado Integral 1-9 → **1.109 Q** (área rey)
-  - Salud Pública 1-5 → **688 Q**
-  - Ética 1-4 → **255 Q**
-  - ⏳ Investigación y Gestión **aún no publicados** → re-escanear
-- **Simulacros Virtuales**: **3 reales** (N°01 14-jun · N°02 12-jul · N°03 19-jul), 100 Q · 3 h 40,
-  cadencia semanal → N°04 ~26-jul.
-- Evaluación Virtual Avanzada: 12 sets · Biblioteca: 18 mapas + 121 fichas.
+- **Videoclases**: **180 videos · 59 mapas conceptuales** (SP 14 · CI 25 · Ética 3 · **Investigación 6** · **Gestión 11**).
+- ⚡⚡ **Batch del 27-jul: 17 MAPAS NUEVOS** — cierra el gap más grande que teníamos:
+  - **GESTIÓN (área V, 22 % del examen) pasó de 0 a 11 mapas**: proceso administrativo/FODA · documentos
+    técnicos ROF-MOP · categorización de EESS · RIS · sistema de referencia y contrarreferencia ·
+    gestión de la historia clínica · AUS · UPSS y cartera de servicios · telesalud · buenas prácticas
+    de almacenamiento · calidad.
+  - **INVESTIGACIÓN (área IV) pasó de 0 a 6 mapas**: conceptos básicos · tipos de investigación ·
+    variables · instrumentos de validez · elaboración del proyecto · instrumentos de recolección.
+  - Efecto en el plan: **V-2 (crítico) pasó de 0 a 9 mapas** y **V-3 de 0 a 10**. Ya no hay ningún
+    crítico sin material visual.
+- 🔥 **Banqueo ENCAPS por área = 18 sets · 2.052 preguntas reales** (CI 1.109 · SP 688 · Ética 255).
+  ⏳ Investigación y Gestión aún sin publicar → re-escanear.
+- **Simulacros Virtuales**: 3 reales (N°01/02/03), cadencia semanal. Eval Virtual Avanzada: 12 sets.
 
 ### Theomed
 - **Curso 73** — 49 secciones · **575 actividades**. NORMAS TÉCNICAS 59 · SP 65 · CI 53 · Gestión 45 ·

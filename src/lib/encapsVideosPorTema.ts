@@ -1,6 +1,6 @@
 // AUTO-GENERADO por DATA/_scripts/gen_videos_por_tema.js — NO editar a mano.
 // Videos QX por código de tema (para renderizar varios temas/día · refactor multi-tema).
-// 8 temas · 42 videos.
+// 9 temas · 59 videos.
 export interface VideoPorTema { titulo: string; url: string | null; code: string; slides: string | null; dur: number | null }
 export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
  "I-1": [
@@ -283,6 +283,13 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "dur": null
   },
   {
+   "titulo": "Gestión de la historia clínica (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/OTc5U2xKdWJaVTNjM1FUNXhyWks1UT09",
+   "code": "III-9",
+   "slides": null,
+   "dur": null
+  },
+  {
    "titulo": "Principios y fundamentos de la ética y bioética (mapa conceptual)",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/NFU1UW01dnJ4djVaS2IrVDEvTGoyOGpBMXYvNWlYUnl0MGVHYW13dDNCST0=/RDhxSldWZzVyU2cxZnVzTW0rUkJWQT09",
    "code": "III-1",
@@ -290,7 +297,79 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "dur": null
   }
  ],
+ "V-2": [
+  {
+   "titulo": "Documentos técnicos de gestión - ROF, MOP (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/UWpVZ2FQdlE5TExJRHFmaVpuUnJyUT09",
+   "code": "V-2",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "Proceso administrativo - FODA (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/MUx6alZRaU1VcVhOYVYzNTZIZ05xdz09",
+   "code": "V-2",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "Calidad y acreditación (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/VE1zdjVveFNYdHVBQVZqMGlPYzVyUT09",
+   "code": "V-1",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "UPSS y cartera de servicios de salud (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/UWdPUnBlWWlpRGE3UEJuZVBWUG9Ydz09",
+   "code": "V-1",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "RIS - Redes Integradas de Salud (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/QWpJVEdHTVpnazlWNEczNWU4Uzl3dz09",
+   "code": "V-1",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "Categorización de los establecimientos de salud (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/bXJIQ1NhQ29IaWxmZ3Mrdk5XZ3YrUT09",
+   "code": "V-1",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "Buenas prácticas de almacenamiento (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/TkQ2T1JuWHFzSkpIbWtCeU5DOTNCQT09",
+   "code": "V-7+V-10",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "Aseguramiento universal en salud AUS (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/Z294dzFpTUE0cXJueUltQWc1VXNLdz09",
+   "code": "V-7+V-10",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "Telesalud (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/MnRhbU55UTVWR3dJTW5zN1ZpaXFJZz09",
+   "code": "V-6",
+   "slides": null,
+   "dur": null
+  }
+ ],
  "V-3": [
+  {
+   "titulo": "Sistema de referencia y contrarreferencia (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/MUdodjYwYlI0bTUvNmpFSVY5UDFoSklLZzU1RlF3eGJBUW1XdjRWZTZGUi83RXdXcDIwZzZ1dzBvSGp4TC9tTA==/UnVwdWl2QmIwYVFSWHpiTEQrZXd6Zz09",
+   "code": "V-3",
+   "slides": null,
+   "dur": null
+  },
   {
    "titulo": "Demografía en salud (mapa conceptual)",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/TTMyQzdqM0lPeWRaRGMzWFBxdHBCZz09",
@@ -309,6 +388,48 @@ export const ENCAPS_VIDEOS_POR_TEMA: Record<string, VideoPorTema[]> = {
    "titulo": "Bioestadística básica (mapa conceptual)",
    "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/aE9hL1hsSzZmMFZaN1lkKzBneFNTUT09/Nkl4dERCQVduM0RQSmdVQi91VitvQT09",
    "code": "I-5+I-6",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "Elaboración del proyecto de investigación (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/L3NUNmY0UFFobXBwcm9uamthSThhdz09",
+   "code": "IV-1+IV-2",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "Variables (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/SGdDK0JncGtycmExNjJGS1BSV3V5UT09",
+   "code": "IV-1+IV-2",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "Tipos de investigación (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/SmxDb2Y1QXdmRUozN2h4YzR1MTlQQT09",
+   "code": "IV-1+IV-2",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "Conceptos básicos de investigación (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/NGsyU1JyU3BTa0lqWEFYQi9tdG1rUT09",
+   "code": "IV-1+IV-2",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "Instrumentos de recolección de datos y validación (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/L0tocUdBU2lZc2hvUHNPZkVCNnhZQT09",
+   "code": "IV-3+IV-5",
+   "slides": null,
+   "dur": null
+  },
+  {
+   "titulo": "Instrumentos de validez (mapa conceptual)",
+   "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases/SkxpQUdlZHFSMExoRWJHUlRIRjMvZz09/YzJDWC9MNm8yM1Y0Tk55NG9jRHVudz09",
+   "code": "IV-3+IV-5",
    "slides": null,
    "dur": null
   }
