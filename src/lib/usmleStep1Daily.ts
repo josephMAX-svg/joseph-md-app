@@ -22,13 +22,14 @@ export const yt = (id: string) => 'https://www.youtube.com/watch?v=' + id;
 
 export const DAILY_META = {
   step: 1, inicio: '2026-08-31', fin: '2027-01-22', totalDias: 102, // v5 (27-ago): Step 1 = bloque principal · examen semana 25-29 ene 2027
-  bloque: '07:15 Anki FSRS multi-temporal · 08:15 PRE-TEST 10Q · 09:00 DEEP PRIME 2h · 11:00 30Q consolidación · 18:00 eval modo examen',
+  bloque: '05:00 ANKI AM · 07:15 repaso anclado · 08:15 PRE-TEST 10Q · 09:00 DEEP PRIME 2h · 11:00 30Q consolidación · 18:00 eval modo examen (6h15/día)',
   examenVentana: '2027-01-25 → 2027-01-29',
 };
 
-/** Franjas horarias fijas del bloque USMLE (Google Calendar v5 · L-V). */
+/** Franjas horarias fijas del bloque USMLE (Google Calendar v5.2 · L-V). */
 export const FRANJAS = [
-  { hora: '07:15–08:15', fase: 'ANKI FSRS + repaso multi-temporal D-1/D-3/D-7 (deck USMLE, en inglés)', tipo: 'anki' },
+  { hora: '05:00–05:45', fase: 'ANKI AM (madrugada fresca · pasada principal FSRS) · Fases B-C: + STRESS SET 10Q/12min', tipo: 'anki' },
+  { hora: '07:15–08:15', fase: 'Repaso anclado multi-temporal D-1/D-3/D-7 + free recall (Anki restante del día)', tipo: 'anki' },
   { hora: '08:15–09:00', fase: 'PRE-TEST: 10Q uWorld ciegas del tema NUEVO (tutor) + free recall 90s', tipo: 'pretest' },
   { hora: '09:00–11:00', fase: 'DEEP PRIME: vídeo B&B/Pathoma/Sketchy + First Aid active reading + tarjetas Anki de MECANISMO (≤10)', tipo: 'read' },
   { hora: '11:00–12:00', fase: '30Q uWorld CONSOLIDACIÓN (temas vistos · tutor) + log de errores (gap: conocimiento/lectura/razonamiento)', tipo: 'eval' },

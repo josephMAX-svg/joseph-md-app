@@ -80,9 +80,15 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
 
   const bloques: Bloque[] = [
     {
-      flag: '🧠', nombre: 'CURSO DE IA · SYNAPSE deep block (VIE = Claude Code aplicado)', ini: '04:15', fin: '05:45', color: OBS,
-      tema: 'Lección técnica 45\' + práctica en teclado 45\' — la misión de las 12:30 es el repaso',
-      sub: 'reactivado 31-ago · CURVA y DENSA arrancan en febrero post-Step 1',
+      flag: '🧠', nombre: 'IA · VIBECODING con Claude Code (1 proyecto real/semana)', ini: '04:15', fin: '05:00', color: OBS,
+      tema: '5\' objetivo → 35\' construir → 5\' commit (synapse-journal) — NO programar desde cero',
+      sub: 'reactivado 31-ago · teoría estructurada sigue en la misión SYNAPSE 12:30',
+      acciones: [],
+    },
+    {
+      flag: '🇺🇸', nombre: 'USMLE · ANKI AM (madrugada fresca · Palmerton 2x)', ini: '05:00', fin: '05:45', color: GREEN,
+      tema: 'Pasada principal FSRS del deck USMLE · Fases B-C: + stress set 10Q/12min',
+      sub: 'Step 1 sube a 6h15/día (~640h) · el 07:15 queda para repaso anclado D-1/D-3/D-7',
       acciones: [],
     },
     {
