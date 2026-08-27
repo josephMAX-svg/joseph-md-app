@@ -12,6 +12,7 @@ import StudyPulsoHub from '../study/StudyPulsoHub';
 import AurumHub from './AurumHub';
 import AIFirstPanel from '../study/AIFirstPanel';
 import BrandHorario from './BrandHorario';
+import LivianoTodayPlan from './LivianoTodayPlan';
 import TerrenosLeadTracker from './TerrenosLeadTracker';
 import {
   CockpitPanel, OfertaPanel, MarketingPanel, VentasPanel,
@@ -39,7 +40,7 @@ function ObsMarcaLink({ company }: { company: string }) {
 /**
  * EmpresaHub — shell del Hub de Empresa (Business). Pulso es el padre y el 99%
  * del foco: abre por defecto en el Pulso Command Center. Desde ahí se entra a las
- * marcas: LIVIANO (ancla, 7 paneles detallados), PIRQA (1%) y las 6 líneas futuras
+ * marcas: LIVIANO (ancla, 9 paneles detallados), PIRQA (1%) y las 6 líneas futuras
  * (placeholders). Reutilizado por mobile y desktop vía `variant`.
  */
 
@@ -52,6 +53,7 @@ const LIVIANO_PANELS: { id: string; label: string; icon: string; fkey: string; r
   { id: 'web',         label: 'Web & Links', icon: '🌐', fkey: 'F6', render: () => <WebPanel /> },
   { id: 'directrices', label: 'Directrices', icon: '🧠', fkey: 'F7', render: () => <DirectricesPanel /> },
   { id: 'horario',     label: 'Horario',     icon: '🗓️', fkey: 'F8', render: () => <BrandHorario brand="pulso" /> },
+  { id: 'academia',    label: 'Academia',    icon: '📚', fkey: 'F9', render: () => <LivianoTodayPlan /> },
 ];
 
 const MAIN_IDS = ['pulso', 'liviano', 'pirqa'];
@@ -264,7 +266,7 @@ function BackToPulso({ onBack }: { onBack: () => void }) {
   );
 }
 
-// ── Vista LIVIANO (ancla, 7 paneles) con hero visual ─────────────
+// ── Vista LIVIANO (ancla, 9 paneles) con hero visual ─────────────
 function LivianoView({
   panel, setPanel, isDesktop, onBack,
 }: { panel: string; setPanel: (p: string) => void; isDesktop: boolean; onBack: () => void }) {

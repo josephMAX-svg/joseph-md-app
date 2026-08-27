@@ -612,7 +612,7 @@ function SimView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
       <View style={styles.simHeaderBox}>
         <Text style={styles.simHeaderTitle}>▲ MODO SIMULACRO · {rows.length} sims · {conNota} con nota · meta ≥17/20</Text>
         <Text style={styles.simHeaderHint}>
-          Reales de QxMedic + Theomed, en los sábados (2-3 c/u) + recta final del día-examen. 1er sábado de simulacros: {simDays[0]?.fecha?.slice(5) || '—'}; examen jue 20-ago.
+          Régimen mantenimiento 2027-I: mini-simulacro de 25Q mixtas CADA VIERNES 16:15 (72s/Q, vector v3). Primer viernes: {simDays[0]?.fecha?.slice(5) || '—'}; examen ENCAPS 2027-I fines de marzo 2027 (fase intensiva feb-mar).
           Cargá tu nota /20 al terminar cada uno (se guarda y alimenta «Camino a 17/20» + Telegram).
         </Text>
       </View>

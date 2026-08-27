@@ -9,21 +9,18 @@ import { ENCAPS_VIDEOS_POR_TEMA } from './encapsVideosPorTema';
 import { ENCAPS_THEOMED_RESUMENES, ENCAPS_BANCOS, ENCAPS_MAPAS_PDF, ENCAPS_POSTESTS, ENCAPS_BIBLIOTECA_QX, ENCAPS_MANUALES_THEOMED } from './encapsResumenes';
 import { PRACTICA_DEEP_PRIME, PRACTICA_REPASO } from './encapsPracticaExtra';
 
-// ── D1 por examen (para calcular el día actual 1..71) ──
+// ── D1 por examen (para calcular el día actual) ──
 export const STUDY_D1: Record<string, string> = {
-  ENCAPS: '2026-07-28',   // D1=MAR 28-jul (hoy) · 12 días · EXAMEN dom 9-ago. 🚫 Domingos NO se estudia (2-ago libre; el 9-ago es domingo pero es el examen). 9 días de contenido (28-jul→6-ago) para 17 temas → los 7 CRÍTICOS conservan día propio (I-3 d1 · V-2 d2 · II-1 d3 área rey · II-3 d4 · III-5 d5 · II-8 d6 · II-11 d7) + I-1 (d8) y V-3 (d9); los otros 8 van FUSIONADOS como secundarios CON sus sub-temas → 40/40 códigos, nada perdido. El d1 arranca con 20 min de panorámica + diagnóstico ciego antes de entrar a I-3. d10 7-ago DRESS REHEARSAL 1 · d11 8-ago MEDIO DÍA (mock 2 mañana + TARDE LIBRE) · d12 9-ago EXAMEN. ⚡⚡ BARRIDO 28-jul: QX publicó el 27-jul un batch de **17 MAPAS NUEVOS** → catálogo 180 videos / **59 MAPAS**: GESTIÓN pasó de 0 a 11 mapas (FODA, ROF/MOP, categorización, RIS, referencia, HC, AUS, UPSS, telesalud, BPA, calidad) e INVESTIGACIÓN de 0 a 6 → **cierra el gap del área V (22% del examen que estaba sin un solo mapa)**: V-2 ahora 9 mapas, V-3 10, V-1 4. Backup study_schedule_bk_0728. ⚠ LÍMITE DE COMPRESIÓN: otro atraso se come un CRÍTICO.
+  ENCAPS: '2026-08-31',   // v6 MANTENIMIENTO 2027-I (27-ago): examen 2026-II rendido el 9-ago (Joseph NO lo dio; el análisis real está en DATA/ENCAPS/ANALISIS_EXAMEN_2026-2_REAL.md). Nueva meta: ENCAPS 2027-I fines de MARZO 2027. Desde el 31-ago ENCAPS pasa a 1h/día (16:15-17:15 L-V): banqueo puro guiado por el PRONÓSTICO v3 (II 30 · I 27 · V 21 · III 13 · IV 9 · 8 críticos: I-3 V-2 II-3 III-5 I-4 II-5 II-4 IV-1/2). Feb-mar 2027: vuelve a bloque principal (fase intensiva, se re-siembra entonces). Ciclo sembrado por gen_encaps_mantenimiento_2027.js · backup study_schedule_bk_0827.
   // MIR / USMLE se agregan cuando se construyan sus cronogramas.
 };
 // Fechas SIN actividad (bloqueadas por Joseph) — no cuentan como día de plan.
-// v7 (23-jun): TODOS los domingos del tramo 24-jun → 20-ago quedan libres (8 domingos).
 export const STUDY_SKIP_DATES: Record<string, string[]> = {
-  // ⚡ LOS DOMINGOS NO SE ESTUDIA (Joseph, decisión final — revierte el experimento de la franja
-  // 18:00-22:00). El único domingo del tramo es 2-ago → va aquí. El 9-ago también es domingo pero
-  // es el DÍA DEL EXAMEN, así que NO se salta. Mapeo: 28-jul=d1 … 1-ago=d5 · [2-ago libre] ·
-  // 3-ago=d6 … 8-ago=d11 · 9-ago=d12.
-  ENCAPS: ['2026-08-02'],  // DOMINGO libre (el 9-ago también es domingo pero es el examen, no se salta)
+  ENCAPS: ['2026-12-25', '2026-12-31', '2027-01-01'],  // feriados; los fines de semana se saltan por STUDY_SKIP_WEEKENDS
 };
-const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 12 };
+// v6 (27-ago): SÁBADOS Y DOMINGOS LIBRES en el régimen de mantenimiento — no cuentan como día de plan.
+export const STUDY_SKIP_WEEKENDS: Record<string, boolean> = { ENCAPS: true };
+const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 107 };
 
 // ── Tipos (espejo de las columnas study_*) ──
 export interface StudyVideo {
@@ -241,9 +238,16 @@ export function diaActual(examen: string): number {
   if (!d1) return 1;
   const hoy = todayLimaISO();
   let diff = Math.floor((Date.parse(hoy) - Date.parse(d1)) / 86_400_000) + 1;
-  // Las fechas libres (14/21-jun) no son días de plan: réstalas si ya pasaron.
+  // Las fechas libres no son días de plan: réstalas si ya pasaron.
   for (const s of STUDY_SKIP_DATES[examen] ?? []) {
     if (s >= d1 && s <= hoy) diff--;
+  }
+  // v6: si el examen salta fines de semana, los sáb/dom entre d1 y hoy no cuentan.
+  if (STUDY_SKIP_WEEKENDS[examen]) {
+    for (let t = Date.parse(d1); t <= Date.parse(hoy); t += 86_400_000) {
+      const dow = new Date(t).getUTCDay();
+      if (dow === 0 || dow === 6) diff--;
+    }
   }
   return Math.max(1, Math.min(total, diff));
 }
@@ -253,6 +257,56 @@ export function itemsForDay(day: StudyScheduleDay, focusByCode: Record<string, n
   const N = day.dia;
   const items: PlanItem[] = [];
   const pad = (n: number) => String(n).padStart(2, '0');
+
+  // ── v6 · RÉGIMEN MANTENIMIENTO 2027-I (31-ago-2026 → fines de enero): 1h/día 16:15-17:15 ──
+  // Cola COMPACTA de banqueo puro; nada de videos/theomed/fichas largas. El deep work de la
+  // mañana ahora es del USMLE Step 1. Feb-mar 2027: fase intensiva (se re-siembra el ciclo).
+  if (day.modo === 'MANTENIMIENTO') {
+    const area = ENCAPS_AREA_PREFIJO[((day.codigo || '').match(/^[IVX]+/) || [''])[0]];
+    if (day.tipo === 'mini_sim') {
+      items.push({
+        key: `D${N}:msim`, kind: 'sim',
+        label: '🔥 MINI-SIMULACRO SEMANAL: 25Q mixtas cronometradas (72s/Q)',
+        detail: 'Mezcla de las 5 áreas ponderada por el pronóstico v3 · modo examen estricto, sin pausa',
+        url: ENCAPS_BANCOS[0]?.url, source: ENCAPS_BANCOS[0]?.fuente || 'Banco', dur: 30, hora: '16:15–16:45',
+      });
+      items.push({
+        key: `D${N}:msim_corr`, kind: 'eval',
+        label: '📊 Corrección + registro del patrón de fallos (TRACKING_ERRORES)',
+        detail: 'Cada fallo: ¿área? ¿tipo (dato fino / viñeta / norma)? → alimenta la tutoría y la rotación de la semana siguiente',
+        dur: 30, hora: '16:45–17:15',
+      });
+      return items;
+    }
+    items.push({
+      key: `D${N}:m_eval`, kind: 'eval',
+      label: '🎯 EVAL ANCLADA: 5Q del tema de AYER (recall + corrección)',
+      detail: 'Testing effect: si fallas ≥2 → el tema de ayer vuelve caliente a la rotación',
+      dur: 15, hora: '16:15–16:30',
+    });
+    items.push({
+      key: `D${N}:m_banco`, kind: 'theomed',
+      label: `🎯 BANCO DEL DÍA: ${day.codigo} — ${day.subtema || ''} (20-25Q ciegas)`,
+      detail: `Prioridad ${day.prioridad || 'MEDIA'} · pregunta-por-pregunta con corrección inmediata · pronóstico v3`,
+      url: ENCAPS_BANCOS[0]?.url, source: ENCAPS_BANCOS[0]?.fuente || 'Banco', code: day.codigo, dur: 40, hora: '16:30–17:10',
+    });
+    (area ? (ENCAPS_POSTESTS[area] || []).slice(0, 1) : []).forEach((q, i) => {
+      items.push({
+        key: `D${N}:m_postest:${i}`, kind: 'theomed',
+        label: `🎯 Postest alternativo: ${q.label}`,
+        detail: 'Si el banco principal se agota para este tema',
+        url: q.url, source: q.fuente, code: day.codigo,
+      });
+    });
+    items.push({
+      key: `D${N}:m_log`, kind: 'material',
+      label: '📝 Registro de fallos (TRACKING_ERRORES) + 1-3 APEX de errores de conocimiento',
+      detail: 'Append en _registro_resoluciones.json · los APEX caen en Obsidian ENCAPS',
+      dur: 5, hora: '17:10–17:15',
+    });
+    return items;
+  }
+
   let ph = 9, pm = 0; // NÚCLEO DEEP PRIME arranca 09:00 (los videos se reparten ahí)
   (day.videos || []).forEach((v, i) => {
     const dur = v.duracion_min ?? v.dur;

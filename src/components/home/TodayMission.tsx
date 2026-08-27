@@ -8,7 +8,7 @@ import { mirObsUrl, usmleObsUrl, encapsObsUrl, OBS_MAPA_URL } from '../../lib/ob
 
 /**
  * TodayMission — "MISIÓN DE HOY" del cockpit (Home). Línea de tiempo REAL del Google
- * Calendar (ENCAPS 09:00 deep prime · MIR 15:15 · USMLE 16:15 · ENCAPS 17:15-18:45)
+ * Calendar v5 (USMLE 07:15-12:00 principal · MIR 15:15 · ENCAPS 16:15 1h · LIVIANO 17:15 · USMLE eval 18:00)
  * con el tema del día de cada plan (mirDailyPlan / usmleStep1Daily) y accesos
  * directos: ProMIR ↗ · Qbankly (◆ Edge) · ◆ Obsidian (nota madre donde caen los APEX).
  * El bloque en curso se resalta con "AHORA". Fase = detect_phase del orquestador.
@@ -33,8 +33,9 @@ export function todayISO(): string {
 export function faseActual(iso: string): string {
   if (iso < '2026-06-01') return 'FASE 4';
   if (iso < '2026-08-10') return 'FASE 5 · ENCAPS';
-  if (iso < '2026-10-01') return 'FASE 6 · post-ENCAPS';
-  return 'FASE 7 · USMLE';
+  if (iso < '2026-08-31') return 'FASE 6 · transición';
+  if (iso < '2027-02-01') return 'FASE 7 · STEP 1 PRINCIPAL';
+  return 'FASE 8 · ENCAPS FINAL';
 }
 function nowMin(): number { try { const d = new Date(); return d.getHours() * 60 + d.getMinutes(); } catch { return 0; } }
 const hm = (s: string) => { const [h, m] = s.split(':').map(Number); return h * 60 + m; };
@@ -79,9 +80,13 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
 
   const bloques: Bloque[] = [
     {
-      flag: '🇵🇪', nombre: 'ENCAPS · Deep Prime', ini: '09:00', fin: '11:00', color: TEAL,
-      tema: 'Encoding — tema nuevo del cronograma ENCAPS', sub: 'deep work mañana · ver pestaña Estudio → Perú',
-      acciones: [{ lbl: '◆ Obsidian', color: OBS, url: encapsObsUrl('salud_publica') || OBS_MAPA_URL }],
+      flag: '🇺🇸', nombre: 'USMLE · BLOQUE PRINCIPAL (Anki → Pre-test → Deep Prime → 30Q)', ini: '07:15', fin: '12:00', color: GREEN,
+      tema: us ? `D${us.d}/${DIAS.length} · ${us.system} — ${us.sub}` : 'fuera del rango del plan',
+      sub: us ? `${us.bbCh}: ${us.bbVid} · ${us.mat} · todo en inglés` : 'Step 1 · v5 desde 31-ago',
+      acciones: us ? [
+        { lbl: '◆ Edge', color: EDGE, url: 'microsoft-edge:' + QBQ, fill: true },
+        ...(usmleObsUrl(us.d) ? [{ lbl: '◆ Obsidian', color: OBS, url: usmleObsUrl(us.d)! }] : []),
+      ] : [],
     },
     {
       flag: '🇪🇸', nombre: 'MIR · Eval D-1 + Deep Work', ini: '15:15', fin: '16:15', color: AMBER,
@@ -93,18 +98,21 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
       ] : [],
     },
     {
-      flag: '🇺🇸', nombre: 'USMLE · Anchored Eval + Deep Work', ini: '16:15', fin: '17:15', color: GREEN,
-      tema: us ? `D${us.d}/${DIAS.length} · ${us.system} — ${us.sub}` : 'fuera del rango del plan',
-      sub: us ? `${us.bbCh}: ${us.bbVid} · ${us.mat}` : 'Step 1 · 1ª vuelta',
-      acciones: us ? [
-        { lbl: '◆ Edge', color: EDGE, url: 'microsoft-edge:' + QBQ, fill: true },
-        ...(usmleObsUrl(us.d) ? [{ lbl: '◆ Obsidian', color: OBS, url: usmleObsUrl(us.d)! }] : []),
-      ] : [],
+      flag: '🇵🇪', nombre: 'ENCAPS · 1h banqueo (mantenimiento 2027-I)', ini: '16:15', fin: '17:15', color: TEAL,
+      tema: 'Banco del día según pronóstico v3 (rotación II·I·V·III·IV) · viernes = mini-simulacro 25Q',
+      sub: 'registro de errores en TRACKING_ERRORES · feb-mar 2027 vuelve a principal',
+      acciones: [{ lbl: '◆ Obsidian', color: OBS, url: encapsObsUrl('salud_publica') || OBS_MAPA_URL }],
     },
     {
-      flag: '🇵🇪', nombre: 'ENCAPS · Anclaje + Evaluación', ini: '17:15', fin: '18:45', color: TEAL,
-      tema: 'Mapa Notability → validación Obsidian → Anki · 18:00 modo examen',
-      sub: 'anchoring pre-sueño · loop 24h del Calendar',
+      flag: '⚖️', nombre: 'LIVIANO · Academia (obesidad/GLP-1/nutrición)', ini: '17:15', fin: '18:00', color: AMBER,
+      tema: 'Módulo del día — ver Business → LIVIANO → Academia',
+      sub: '25 min estudio + 20 min aplicación (explicárselo a un paciente)',
+      acciones: [],
+    },
+    {
+      flag: '🇺🇸', nombre: 'USMLE · Evaluación acumulativa (modo examen)', ini: '18:00', fin: '18:45', color: GREEN,
+      tema: 'Bloque timed mixto de temas vistos + corrección + APEX',
+      sub: 'termómetro diario del Step 1 · anchoring pre-sueño',
       acciones: [{ lbl: '◆ Obsidian', color: OBS, url: OBS_MAPA_URL }],
     },
   ];

@@ -94,9 +94,9 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaUSMLE; onOpe
       {prev && (
         <FadeUp delay={40}>
           <View style={st.anchor}>
-            <Text style={st.anchorLbl}>🎯 16:15 · Anchored Eval (sesión anterior)</Text>
+            <Text style={st.anchorLbl}>🎯 07:15 · Repaso anclado (tema de AYER + D-3/D-7)</Text>
             <Text style={st.anchorVal}>{prev.system} → {prev.sub}</Text>
-            <Text style={st.anchorSub}>2 preguntas uWorld + Anki SRS · 2/2→nuevo · 1/2→repaso finde · 0/2→repetir</Text>
+            <Text style={st.anchorSub}>Anki FSRS deck USMLE + 2Q uWorld del tema previo · si free recall &lt;60% → re-encolar</Text>
             <View style={{ flexDirection: 'row', gap: 6, marginTop: 8 }}>
               <TouchableOpacity activeOpacity={0.85} onPress={() => openEdge(QBQ)} style={st.edgeBtnWide}><Text style={st.edgeTxt}>◆ Abrir en Edge</Text></TouchableOpacity>
               <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(QBQ)} style={[st.verBtn, { borderColor: READ + '88' }]}><Text style={[st.verTxt, { color: READ }]}>Chrome ↗</Text></TouchableOpacity>
@@ -106,8 +106,8 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaUSMLE; onOpe
       )}
 
       {/* Cola de materiales de hoy */}
-      <Text style={st.secLbl}>📋 Cola de hoy · 16:30–17:15 (en orden) · Qbankly = botón Edge</Text>
-      <FadeUp delay={60}><ColaItem icon="🅠" lbl="PRE-TEST · uWorld (modo tutor)" val={`${dia.system} → ${dia.uw} · 3 preguntas ciegas + free recall 60s`} sub="Qbankly → QBanks → uWorld Step 1" color={GREEN} url={QBQ} edge /></FadeUp>
+      <Text style={st.secLbl}>📋 Cola de hoy · 07:15–12:00 + 18:00–18:45 (en orden) · Qbankly = botón Edge</Text>
+      <FadeUp delay={60}><ColaItem icon="🅠" lbl="PRE-TEST 08:15 · uWorld (modo tutor)" val={`${dia.system} → ${dia.uw} · 10 preguntas ciegas + free recall 90s`} sub="Qbankly → QBanks → uWorld Step 1" color={GREEN} url={QBQ} edge /></FadeUp>
       <FadeUp delay={90}><ColaItem icon="🎬" lbl="VÍDEO · Boards & Beyond Step 1" val={`${dia.bbCh} → ${dia.bbVid}`} sub="Qbankly → Video Library → B&B Step 1" color={RED} url={QBV} edge /></FadeUp>
       <FadeUp delay={120}><ColaItem icon="📖" lbl="ACTIVE READING · material primario" val={dia.mat} sub="Qbankly → Library (uWorld/AMBOSS) · 25 min · 3-5 puntos high-yield" color={READ} url={QBL} edge /></FadeUp>
       <FadeUp delay={150}><ColaItem icon="🗂️" lbl="FLASHCARDS · uWorld Step 1" val={`Deck: ${dia.system}`} sub="Qbankly → Flashcards · Anki SRS" color={Colors.teal} url={QBF} edge /></FadeUp>
@@ -122,9 +122,9 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaUSMLE; onOpe
         <View style={[st.cola, { borderLeftColor: APEX }]}>
           <Text style={st.colaIcon}>🃏</Text>
           <View style={{ flex: 1 }}>
-            <Text style={st.colaLbl}>APEX · 17:05–17:15</Text>
-            <Text style={st.colaVal}>Crea ≤3 tarjetas APEX (formato Palmerton · ≥1 mnemónica Sketchy)</Text>
-            <Text style={st.colaSub}>Free recall a papel en blanco antes (en inglés)</Text>
+            <Text style={st.colaLbl}>APEX · 10:45–11:00 (cierre del DEEP PRIME) + 30Q consolidación 11:00</Text>
+            <Text style={st.colaVal}>Crea ≤10 tarjetas de MECANISMO (formato Palmerton: patogenia→presentación) · luego 30Q uWorld de temas vistos</Text>
+            <Text style={st.colaSub}>Free recall a papel en blanco antes (en inglés) · 18:00 evaluación acumulativa modo examen</Text>
           </View>
         </View>
       </FadeUp>
@@ -157,7 +157,7 @@ function HorarioView({ dia }: { dia: DiaUSMLE }) {
           </FadeUp>
         );
       })}
-      <Text style={st.note}>16:15–16:30 = repaso del tema de ayer (Anchored Eval). 16:30–17:15 = subtema nuevo (Mini Deep Work). Todo en inglés.</Text>
+      <Text style={st.note}>07:15 Anki + repaso anclado · 08:15 pre-test 10Q · 09:00 DEEP PRIME 2h · 11:00 30Q consolidación · 18:00 eval modo examen. Todo en inglés. Sáb/dom libres.</Text>
     </View>
   );
 }
@@ -287,7 +287,7 @@ export default function UsmleTodayPlan() {
       <View style={st.stepRow}>
         <View style={[st.stepBtn, st.stepActive]}>
           <Text style={st.stepBig}>STEP 1</Text>
-          <Text style={st.stepSub}>Foundation · 80% del foco</Text>
+          <Text style={st.stepSub}>BLOQUE PRINCIPAL · 5h30/día · examen fin de enero</Text>
         </View>
         <View style={[st.stepBtn, st.stepStep2]}>
           <Text style={[st.stepBig, { color: Colors.champagne }]}>STEP 2 CK</Text>

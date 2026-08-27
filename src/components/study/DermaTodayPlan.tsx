@@ -18,12 +18,13 @@ import DermaDifferentialTray from '../derma/DermaDifferentialTray';
 import DermaLineIcon from '../derma/DermaLineIcons';
 
 /**
- * DermaTodayPlan — Plan Derma día-a-día (68 átomos: 52 board + 16 estética), mismo motor
- * que Usmle/Mir/ResearchTodayPlan: nav ◄► Día X/68, sub-pestañas HOY/Horario/7d/Temario,
- * progreso REAL marcable (empieza 0%, localStorage clave 'derma'), interdiario con Research.
- * Cada átomo trae sus 3 fuentes REALES: lectura AccessDermatology (deep-link sectionid),
- * práctica Qbankly (⚠ SOLO Edge → botón ◆ Edge + Chrome) y 2º pase ProMIR, + extra
- * (casos/vídeo/paper del referente). Bloque Calendar 13:30–14:15 (alterna con Research).
+ * DermaTodayPlan — Plan Derma día-a-día PLAN ÉLITE v2 (70 sesiones: 46 board + 22 estética
+ * + 2 checkpoint), mismo motor que Usmle/Mir/ResearchTodayPlan: nav ◄► Día X/70,
+ * sub-pestañas HOY/Horario/7d/Temario, progreso REAL marcable (localStorage 'derma'),
+ * interdiario con Research. Cada sesión (ciclo único de 45′) = 1-2 casos CIEGOS de
+ * "Dermatology Cases for Board Review" (campo access) + ~10Q review del banco rotante
+ * Pictorial/CORE/Barnhill/QOTW (campo qbankly) + 10′ lectura dirigida del módulo (campo
+ * extra). Bloque Calendar 13:30–14:15 (alterna con Research).
  */
 const PURPLE = DermaAtlas.amethyst; // #9A7BC8 amatista (antes #8B5CF6 fosforescente)
 const TEAL = DermaAtlas.jade;        // #5FA88C jade (antes #0FD4A0 neón)
@@ -105,7 +106,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, tone }: { dia: DiaDerma;
           </View>
           <View style={st.gateRow}>
             <DermaLineIcon name="skinLayers" size={15} color={fc} />
-            <Text style={st.temaGate}>Mastery gate: recita los 7 pasos del Cerebro Clínico (causa → mecanismo → capa → decisión → no-errar → comunicación → hábito) + guion de paciente.</Text>
+            <Text style={st.temaGate}>Mastery gate (caso ciego): describe la lámina en terminología estándar (lesión 1ª/2ª, color, distribución, configuración) + diferencial de 3 ANTES de leer la viñeta.</Text>
           </View>
           <TouchableOpacity activeOpacity={0.85} onPress={() => onToggle(dia.d)} style={[st.doneBtn, hecho ? st.doneBtnOn : st.doneBtnOff]}>
             <Text style={[st.doneBtnTxt, { color: hecho ? '#1A1031' : PURPLE }]}>{hecho ? '✓ Átomo dominado (cuenta en el %)' : '○ Marcar átomo como hecho'}</Text>
@@ -129,21 +130,21 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, tone }: { dia: DiaDerma;
       {prev && (
         <FadeUp delay={70}>
           <View style={st.anchor}>
-            <Text style={st.anchorLbl}>13:30 · Eval anclada (átomo de la sesión ANTERIOR)</Text>
+            <Text style={st.anchorLbl}>13:30 · Repaso FSRS (sesión ANTERIOR)</Text>
             <Text style={st.anchorVal}>D{prev.d} · {prev.sub}</Text>
-            <Text style={st.anchorSub}>2Q ({prev.qbankly ? 'Qbankly ◆Edge' : 'Q-bank Access'}) + log de error (gap básico/razonamiento/vocabulario) · 2/2→nuevo · 1/2→finde · 0/2→repetir</Text>
+            <Text style={st.anchorSub}>Tarjetas de MECANISMO + oclusiones del caso previo · fallo repetido → segunda pasada FSRS · etiqueta cada fallo con su módulo CORE (med/ped/surg/path)</Text>
           </View>
         </FadeUp>
       )}
 
-      {/* Cola de materiales reales de hoy (3 fuentes + extra) */}
-      <Text style={st.secLbl}>Materiales del átomo · 13:35–14:15 · links REALES (en orden)</Text>
+      {/* Cola de materiales reales de hoy (caso ciego → review → lectura) */}
+      <Text style={st.secLbl}>Materiales de la sesión · 13:33–14:13 · links REALES (en orden)</Text>
       <FadeUp delay={80}>
-        <ColaItem icon="read" lbl="LECTURA · AccessDermatology (UF)" val={dia.access.t} sub={dia.sub} color={fc} url={dia.access.url} />
+        <ColaItem icon="read" lbl="CASO CIEGO · Cases for Board Review (4 pasos)" val={dia.access.t} sub={dia.sub} color={fc} url={dia.access.url} />
       </FadeUp>
       {dia.qbankly && (
         <FadeUp delay={100}>
-          <ColaItem icon="flask" lbl="PRÁCTICA · Qbankly (pre-test 3Q + eval)" val={dia.qbankly.t} sub="⚠ Qbankly SOLO abre bien en Edge" color={EDGE} url={dia.qbankly.url} edge />
+          <ColaItem icon="flask" lbl="REVIEW · ~10Q del banco rotante" val={dia.qbankly.t} sub="variable de ajuste · etiqueta cada fallo con su módulo CORE (med/ped/surg/path)" color={EDGE} url={dia.qbankly.url} edge={dia.qbankly.via === 'edge'} />
         </FadeUp>
       )}
       {dia.promir && (
@@ -153,7 +154,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, tone }: { dia: DiaDerma;
       )}
       {dia.extra && (
         <FadeUp delay={150}>
-          <ColaItem icon="body" lbl="EXTRA · casos / vídeo / paper del referente" val={dia.extra.t} sub={dia.referente ? `fuente nº1 de ${dia.referente}` : 'material complementario'} color={DermaAtlas.periwinkle} url={dia.extra.url} />
+          <ColaItem icon="body" lbl="LECTURA 10′ · dirigida del módulo" val={dia.extra.t} sub={dia.referente ? `fuente nº1 de ${dia.referente} · nunca lectura lineal` : 'lectura del módulo · nunca lineal'} color={DermaAtlas.periwinkle} url={dia.extra.url} />
         </FadeUp>
       )}
 
@@ -167,9 +168,9 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, tone }: { dia: DiaDerma;
         <View style={[st.cola, { borderLeftColor: GOLD }]}>
           <View style={st.colaIconBox}><DermaLineIcon name="histoDrop" size={18} color={GOLD} /></View>
           <View style={{ flex: 1 }}>
-            <Text style={st.colaLbl}>APEX · 14:10–14:15</Text>
-            <Text style={st.colaVal}>Crea ≤3 APEX (formato Palmerton) del átomo de hoy</Text>
-            <Text style={st.colaSub}>Free recall a papel antes · los 7 pasos del Cerebro Clínico en voz alta = mastery gate</Text>
+            <Text style={st.colaLbl}>CIERRE · 14:13–14:15</Text>
+            <Text style={st.colaVal}>1-2 tarjetas de MECANISMO + 1 oclusión de imagen del caso (formato Palmerton)</Text>
+            <Text style={st.colaSub}>Free recall del caso en voz alta · mismo mazo FSRS que Step 1 · etiqueta fallos por módulo CORE</Text>
           </View>
         </View>
       </FadeUp>
@@ -180,12 +181,14 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, tone }: { dia: DiaDerma;
 function HorarioView({ dia }: { dia: DiaDerma }) {
   const prev = dermaDiaPrevio(dia);
   const detalle = (tipo: string): string => {
-    if (tipo === 'eval') return prev ? `D${prev.d} · ${prev.sub}` : 'no hay átomo previo';
+    if (tipo === 'eval') return prev ? `D${prev.d} · ${prev.sub}` : 'no hay sesión previa';
     if (tipo === 'pretest') return dia.sub;
     if (tipo === 'read') return dia.access.t;
+    if (tipo === 'review') return dia.qbankly ? dia.qbankly.t : '— (hoy sin bloque de review)';
+    if (tipo === 'lectura') return dia.extra ? dia.extra.t : '— (hoy sin lectura dirigida)';
     if (tipo === 'promir') return dia.promir ? dia.promir.t : '— (átomo sin capítulo ProMIR)';
-    if (tipo === 'recall') return 'los 7 pasos + guion de paciente del átomo';
-    if (tipo === 'apex') return '≤3 APEX + marcar progreso';
+    if (tipo === 'recall') return 'free recall del caso: morfología → ddx → dx → mecanismo';
+    if (tipo === 'apex') return 'tarjetas de mecanismo + etiquetar fallos + marcar progreso';
     return '';
   };
   return (
@@ -337,7 +340,7 @@ export default function DermaTodayPlan({ tone }: { tone?: SkinTone }) {
         </View>
       </View>
       <View style={st.artefactoBar}>
-        <Text style={st.artefactoTxt}>Meta viva: board (Jain × ABD 55/15/15/15 × Peso MIR) + estética estructural (Cotofana → MD Codes → toxina → HDPH → energía) · {DERMA_DAILY_META.bloque}</Text>
+        <Text style={st.artefactoTxt}>PLAN ÉLITE v2: 200 casos ciegos (Board Review) × review 1.301Q × módulos semanales → DERMATOLOGÍA ESTÉTICA (anatomía/danger zones → toxina → fillers → peelings → láser → cosmecéutica) · {DERMA_DAILY_META.bloque}</Text>
       </View>
 
       {/* Anillos de progreso REAL (board · estética · críticos · global) */}

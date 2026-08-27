@@ -49,9 +49,9 @@ export function CountdownCockpit({
       {/* líneas de escaneo tenues (grid de telemetría) */}
       <View style={styles.scanline} pointerEvents="none" />
       <View style={styles.hudTop}>
-        <Text style={styles.hudEyebrow}>ENCAPS · APROXIMACIÓN FINAL</Text>
+        <Text style={styles.hudEyebrow}>ENCAPS · MANTENIMIENTO 2027-I</Text>
         <View style={styles.hudObjChip}>
-          <Text style={styles.hudObjChipText}>OBJETIVO 20-AGO</Text>
+          <Text style={styles.hudObjChipText}>EXAMEN FIN-MAR 2027</Text>
         </View>
       </View>
 
