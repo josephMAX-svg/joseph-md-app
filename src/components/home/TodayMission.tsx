@@ -80,6 +80,12 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
 
   const bloques: Bloque[] = [
     {
+      flag: '🧠', nombre: 'CURSO DE IA · SYNAPSE deep block (VIE = Claude Code aplicado)', ini: '04:15', fin: '05:45', color: OBS,
+      tema: 'Lección técnica 45\' + práctica en teclado 45\' — la misión de las 12:30 es el repaso',
+      sub: 'reactivado 31-ago · CURVA y DENSA arrancan en febrero post-Step 1',
+      acciones: [],
+    },
+    {
       flag: '🇺🇸', nombre: 'USMLE · BLOQUE PRINCIPAL (Anki → Pre-test → Deep Prime → 30Q)', ini: '07:15', fin: '12:00', color: GREEN,
       tema: us ? `D${us.d}/${DIAS.length} · ${us.system} — ${us.sub}` : 'fuera del rango del plan',
       sub: us ? `${us.bbCh}: ${us.bbVid} · ${us.mat} · todo en inglés` : 'Step 1 · v5 desde 31-ago',
