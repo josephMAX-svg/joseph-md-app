@@ -1,4 +1,11 @@
-# REESTRUCTURACIÓN MASIVA · D1 = LUNES 31-AGO-2026
+# REESTRUCTURACIÓN MASIVA · D1 = MARTES 1-SEP-2026 (v5.3)
+
+> **Corrimiento del 31-ago:** el lun 31-ago no se estudió → TODO corrió +1 día hábil (regla
+> determinista). USMLE = 101 días (D1 mar 1-sep) · ENCAPS = 106 días (Supabase re-sembrado,
+> backup `study_schedule_bk_0831`) · MIR/Research/Derma/Business/LIVIANO re-fechados. Los HITOS
+> UWSA/NBME se quedaron en sus VIERNES originales (no se movieron). El mismo día se amplió el
+> cuaderno NotebookLM "STEP 1 · Palmerton Engine" de 25 a ~140 fuentes (catálogo completo del canal)
+> y la guía PALMERTON_POR_MATERIA pasó a v2.
 
 > Ejecutada el 27-ago-2026. **Supersede** a PLAN_DEFINITIVO_28JUL_2026-2 y al sprint ENCAPS 2026-II
 > (examen 2026-II rendido el 9-ago; Joseph no lo dio — el análisis del examen real está en

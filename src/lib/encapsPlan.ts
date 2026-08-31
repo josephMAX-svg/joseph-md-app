@@ -11,7 +11,7 @@ import { PRACTICA_DEEP_PRIME, PRACTICA_REPASO } from './encapsPracticaExtra';
 
 // ── D1 por examen (para calcular el día actual) ──
 export const STUDY_D1: Record<string, string> = {
-  ENCAPS: '2026-08-31',   // v6 MANTENIMIENTO 2027-I (27-ago): examen 2026-II rendido el 9-ago (Joseph NO lo dio; el análisis real está en DATA/ENCAPS/ANALISIS_EXAMEN_2026-2_REAL.md). Nueva meta: ENCAPS 2027-I fines de MARZO 2027. Desde el 31-ago ENCAPS pasa a 1h/día (16:15-17:15 L-V): banqueo puro guiado por el PRONÓSTICO v3 (II 30 · I 27 · V 21 · III 13 · IV 9 · 8 críticos: I-3 V-2 II-3 III-5 I-4 II-5 II-4 IV-1/2). Feb-mar 2027: vuelve a bloque principal (fase intensiva, se re-siembra entonces). Ciclo sembrado por gen_encaps_mantenimiento_2027.js · backup study_schedule_bk_0827.
+  ENCAPS: '2026-09-01',   // v6.1 MANTENIMIENTO 2027-I (D1=mar 1-sep; el lun 31-ago no se estudió): examen 2026-II rendido el 9-ago (Joseph NO lo dio; análisis real en DATA/ENCAPS/ANALISIS_EXAMEN_2026-2_REAL.md). Meta: ENCAPS 2027-I fines de MARZO 2027. 1h/día (16:15-17:15 L-V): banqueo puro guiado por el PRONÓSTICO v3 (II 30 · I 27 · V 21 · III 13 · IV 9 · 8 críticos: I-3 V-2 II-3 III-5 I-4 II-5 II-4 IV-1/2). Feb-mar 2027: vuelve a bloque principal (fase intensiva, se re-siembra entonces). Ciclo sembrado por gen_encaps_mantenimiento_2027.js · backup study_schedule_bk_0831.
   // MIR / USMLE se agregan cuando se construyan sus cronogramas.
 };
 // Fechas SIN actividad (bloqueadas por Joseph) — no cuentan como día de plan.
@@ -20,7 +20,7 @@ export const STUDY_SKIP_DATES: Record<string, string[]> = {
 };
 // v6 (27-ago): SÁBADOS Y DOMINGOS LIBRES en el régimen de mantenimiento — no cuentan como día de plan.
 export const STUDY_SKIP_WEEKENDS: Record<string, boolean> = { ENCAPS: true };
-const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 107 };
+const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 106 };
 
 // ── Tipos (espejo de las columnas study_*) ──
 export interface StudyVideo {
