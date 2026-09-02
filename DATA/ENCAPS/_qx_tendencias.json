@@ -1,0 +1,181 @@
+{
+  "_meta": {
+    "fuente": "QX Medic — sección 'Tendencias' (metodo-qx/tendencias)",
+    "extraido": "2026-07-01 en vivo (Chrome logueado, SERUMS 2026-II)",
+    "endpoints": {
+      "areas": "POST metodo-qx/tendencias/areas {area}",
+      "capitulos": "POST metodo-qx/tendencias/capitulos {area, capitulo}"
+    },
+    "totalPreguntas": 400,
+    "nota": "Total 400 = ~4 procesos de examen (100 c/u). Es la clasificación PROPIA de QX de exámenes reales, taxonomía distinta a la nuestra (ver _codeMapping y diferencias abajo). Para % por examen dividir Total entre 4.",
+    "reextraer": "En la pestaña Tendencias: fetch POST a los endpoints con credentials:'include'; valores de área/capítulo salen de los <select> (cboAreas idx2, cboCapitulos idx3)."
+  },
+  "generalesPorArea": [
+    { "area": "Cuidado integral de salud", "total": 123, "pctPorExamen": 30.75 },
+    { "area": "Salud pública", "total": 118, "pctPorExamen": 29.5 },
+    { "area": "Gestión de los servicios de salud", "total": 81, "pctPorExamen": 20.25 },
+    { "area": "Ética e interculturalidad", "total": 48, "pctPorExamen": 12.0 },
+    { "area": "Investigación", "total": 30, "pctPorExamen": 7.5 }
+  ],
+  "porGrupo": {
+    "Cuidado integral de salud": [
+      { "nombre": "Temas transversales", "total": 113 },
+      { "nombre": "Temas específicos", "total": 10 }
+    ],
+    "Salud pública": [
+      { "nombre": "Métodos y aplicaciones de salud pública", "total": 74 },
+      { "nombre": "Salud comunitaria", "total": 29 },
+      { "nombre": "Promoción de la salud y prevención del riesgo", "total": 15 }
+    ],
+    "Gestión de los servicios de salud": [
+      { "nombre": "Organización de los servicios de salud", "total": 32 },
+      { "nombre": "Planificación y presupuesto en salud", "total": 20 },
+      { "nombre": "Administración de los servicios de salud", "total": 11 },
+      { "nombre": "Sistema de gestión de calidad", "total": 11 },
+      { "nombre": "Gestión logística y mantenimiento", "total": 7 }
+    ],
+    "Ética e interculturalidad": [
+      { "nombre": "Atención intercultural en salud", "total": 26 },
+      { "nombre": "Ética y bioética", "total": 22 }
+    ],
+    "Investigación": [
+      { "nombre": "Metodología de la investigación", "total": 15 },
+      { "nombre": "Conceptos y clasificación de las investigaciones", "total": 11 },
+      { "nombre": "Ejecución de la investigación", "total": 4 }
+    ]
+  },
+  "porSubtema": {
+    "CUIDADO INTEGRAL DE SALUD - Temas transversales": [
+      { "nombre": "Prevención y control de ECNT", "total": 16, "codigo": "II-8" },
+      { "nombre": "Prevención y control de enfermedades metaxénicas y zoonóticas", "total": 14, "codigo": "I-4" },
+      { "nombre": "Atención integral de infecciones de transmisión sexual", "total": 9, "codigo": "II-11" },
+      { "nombre": "Paquete básico del cuidado integral del adulto mayor", "total": 9, "codigo": "II-7" },
+      { "nombre": "Manejo inicial de emergencias obstétricas", "total": 9, "codigo": "II-1" },
+      { "nombre": "Esquema nacional de vacunación en Perú", "total": 8, "codigo": "II-3" },
+      { "nombre": "Prevención y control de anemia", "total": 8, "codigo": "II-4" },
+      { "nombre": "Prevención y control de tuberculosis", "total": 8, "codigo": "II-6" },
+      { "nombre": "Prevención y control del cáncer", "total": 6, "codigo": "II-10" },
+      { "nombre": "Paquete del cuidado integral del niño", "total": 5, "codigo": "II-2" },
+      { "nombre": "Atención de la persona con el esquema regular de vacunación", "total": 5, "codigo": "II-3" },
+      { "nombre": "Paquete de cuidado integral de salud del adolescente", "total": 4, "codigo": "II-5" },
+      { "nombre": "Embarazo, parto y puerperio normal", "total": 3, "codigo": "II-1" },
+      { "nombre": "Cuidados de la salud mental", "total": 3, "codigo": "II-9" },
+      { "nombre": "Medidas preventivas en salud bucal", "total": 2, "codigo": "II-misc" },
+      { "nombre": "Exposición a metales pesados y otras sustancias químicas", "total": 1, "codigo": "I-4" },
+      { "nombre": "Paquete básico del cuidado integral del joven", "total": 1, "codigo": "II-5" },
+      { "nombre": "Climaterio y menopausia", "total": 1, "codigo": "II-1" },
+      { "nombre": "Prevención y control de enfermedades raras y huérfanas", "total": 1, "codigo": "II-misc" }
+    ],
+    "CUIDADO INTEGRAL DE SALUD - Temas específicos": [
+      { "nombre": "Atención integral de salud a la persona por curso de vida", "total": 5, "codigo": "II-5" },
+      { "nombre": "MCI - Definición del modelo", "total": 3, "codigo": "II-5" },
+      { "nombre": "Atención médica en situaciones de urgencias, emergencias y referencia", "total": 1, "codigo": "II-misc" },
+      { "nombre": "Manejo inicial de emergencias obstétricas", "total": 1, "codigo": "II-1" }
+    ],
+    "SALUD PÚBLICA - Métodos y aplicaciones de salud pública": [
+      { "nombre": "Vigilancia epidemiológica", "total": 14, "codigo": "I-3" },
+      { "nombre": "Brotes, epidemias, pandemias y endemias", "total": 9, "codigo": "I-3" },
+      { "nombre": "Conceptos básicos de salud pública", "total": 9, "codigo": "I-2" },
+      { "nombre": "Mediciones epidemiológicas", "total": 7, "codigo": "I-3" },
+      { "nombre": "Uso racional de medicamentos", "total": 6, "codigo": "V-MED" },
+      { "nombre": "Funciones esenciales de la salud pública", "total": 5, "codigo": "I-2" },
+      { "nombre": "Análisis situacional de salud - Sala situacional de salud", "total": 4, "codigo": "I-3" },
+      { "nombre": "Etapas y niveles de prevención", "total": 4, "codigo": "I-1" },
+      { "nombre": "Pruebas diagnósticas", "total": 4, "codigo": "I-6" },
+      { "nombre": "Causalidad y Riesgo", "total": 3, "codigo": "I-3" },
+      { "nombre": "Demografía", "total": 3, "codigo": "I-5" },
+      { "nombre": "Historia natural del proceso salud enfermedad", "total": 3, "codigo": "I-3" },
+      { "nombre": "Bioestadística básica", "total": 2, "codigo": "I-6" },
+      { "nombre": "Prevención y Control de infecciones", "total": 1, "codigo": "II-6" }
+    ],
+    "SALUD PÚBLICA - Salud comunitaria": [
+      { "nombre": "Determinantes sociales - ambientales, biogenéticos y comerciales", "total": 7, "codigo": "I-5" },
+      { "nombre": "Accesibilidad a los servicios de salud", "total": 3, "codigo": "I-10" },
+      { "nombre": "Alimentación y nutrición", "total": 3, "codigo": "II-4" },
+      { "nombre": "Gestión y manejo de los residuos sólidos", "total": 3, "codigo": "V-2" },
+      { "nombre": "Sistemas de información y las TIC en salud pública", "total": 3, "codigo": "V-misc" },
+      { "nombre": "Control de vectores y plagas", "total": 2, "codigo": "I-4" },
+      { "nombre": "Plan de salud local", "total": 2, "codigo": "I-11/12" },
+      { "nombre": "Salud ocupacional", "total": 2, "codigo": "I-misc" },
+      { "nombre": "Sectorización y ficha familiar", "total": 2, "codigo": "I-11/12" },
+      { "nombre": "Modelo de salud mental comunitaria", "total": 1, "codigo": "II-9" },
+      { "nombre": "Participación social y comunitaria", "total": 1, "codigo": "I-11/12" }
+    ],
+    "SALUD PÚBLICA - Promoción de la salud y prevención del riesgo": [
+      { "nombre": "Promoción de la salud", "total": 9, "codigo": "I-1" },
+      { "nombre": "Bioseguridad", "total": 3, "codigo": "V-MED" },
+      { "nombre": "Gestión del riesgo en situaciones de emergencias y desastres", "total": 2, "codigo": "I-3" },
+      { "nombre": "Información, educación y comunicación para la salud", "total": 1, "codigo": "I-1" }
+    ],
+    "GESTIÓN DE LOS SERVICIOS DE SALUD - Organización de los servicios de salud": [
+      { "nombre": "Categorización de servicios de salud", "total": 10, "codigo": "V-1" },
+      { "nombre": "Gestión de la historia clínica", "total": 7, "codigo": "III-8 (ours) / V (QX)" },
+      { "nombre": "Sistema de referencia y contrareferencia", "total": 5, "codigo": "V-3" },
+      { "nombre": "Documentos técnicos normativos de gestión Institucional", "total": 2, "codigo": "V-2" },
+      { "nombre": "Instrumentos de Gestión: ROF, CAP, MOF, MAPRO", "total": 2, "codigo": "V-2" },
+      { "nombre": "Redes integradas de salud", "total": 2, "codigo": "V-1" },
+      { "nombre": "Telesalud", "total": 2, "codigo": "V-6" },
+      { "nombre": "Plan de calidad y acreditación de servicios de salud", "total": 1, "codigo": "V-2" },
+      { "nombre": "Requisitos y condiciones para operación y funcionamiento de los establecimientos de salud", "total": 1, "codigo": "V-1" }
+    ],
+    "GESTIÓN DE LOS SERVICIOS DE SALUD - Planificación y presupuesto en salud": [
+      { "nombre": "Planeamiento Institucional: PEI, POI", "total": 12, "codigo": "V-2" },
+      { "nombre": "Análisis estratégico institucional (FODA)", "total": 8, "codigo": "V-2" }
+    ],
+    "GESTIÓN DE LOS SERVICIOS DE SALUD - Administración de los servicios de salud": [
+      { "nombre": "Control de inventario y stock de medicamentos", "total": 6, "codigo": "V-MED" },
+      { "nombre": "Gestión de recursos humanos", "total": 4, "codigo": "V-RRHH" },
+      { "nombre": "Coordinación intersectorial y alianzas estratégicas", "total": 1, "codigo": "I-11/12" }
+    ],
+    "GESTIÓN DE LOS SERVICIOS DE SALUD - Sistema de gestión de calidad": [
+      { "nombre": "Clima organizacional y cultura organizacional", "total": 5, "codigo": "V-2" },
+      { "nombre": "Plan de calidad y acreditación de servicios de salud", "total": 5, "codigo": "V-2" },
+      { "nombre": "Liderazgo de los servicios de salud", "total": 1, "codigo": "V-2" }
+    ],
+    "GESTIÓN DE LOS SERVICIOS DE SALUD - Gestión logística y mantenimiento": [
+      { "nombre": "Control de inventario y stock de medicamentos", "total": 3, "codigo": "V-MED" },
+      { "nombre": "Instrumentos de Gestión en las Contrataciones y Adquisiciones del Estado", "total": 2, "codigo": "V-MED" },
+      { "nombre": "Sistema de Logística", "total": 1, "codigo": "V-MED" },
+      { "nombre": "Sistema de Mantenimiento", "total": 1, "codigo": "V-MED" }
+    ],
+    "ÉTICA E INTERCULTURALIDAD - Atención intercultural en salud": [
+      { "nombre": "Atención en salud con enfoque intercultural y pertinencia cultural", "total": 7, "codigo": "III-5" },
+      { "nombre": "Comunicación y diálogo intercultural en salud", "total": 5, "codigo": "III-5" },
+      { "nombre": "Promoción del parto vertical", "total": 5, "codigo": "III-5 / II-1 (overlap)" },
+      { "nombre": "Prevención de la estigma y discriminación étnica", "total": 3, "codigo": "III-5" },
+      { "nombre": "Acceso a la atención en salud de la población migrante", "total": 2, "codigo": "III-5" },
+      { "nombre": "Medicina tradicional, complementaria y alternativa", "total": 2, "codigo": "III-5" },
+      { "nombre": "Diversidad cultural, promoción de la inclusión y la equidad", "total": 1, "codigo": "III-5" },
+      { "nombre": "Etnocentrismo y relativismo cultural", "total": 1, "codigo": "III-5" }
+    ],
+    "ÉTICA E INTERCULTURALIDAD - Ética y bioética": [
+      { "nombre": "Código de ética y deóntologia profesional", "total": 9, "codigo": "III-1" },
+      { "nombre": "Ética e integridad y ética en la función pública", "total": 7, "codigo": "III-8" },
+      { "nombre": "Derechos deberes de las personas usuarias de los servicios de salud", "total": 3, "codigo": "III-9" },
+      { "nombre": "Principios y fundamentos de la ética", "total": 3, "codigo": "III-1" }
+    ],
+    "INVESTIGACIÓN - Metodología de la investigación": [
+      { "nombre": "Instrumentos de recolección de datos y su validación", "total": 6, "codigo": "IV-6" },
+      { "nombre": "Muestreo", "total": 4, "codigo": "IV-4" },
+      { "nombre": "Método científico", "total": 2, "codigo": "IV-2" },
+      { "nombre": "Procesamiento y análisis de datos", "total": 2, "codigo": "IV-6" },
+      { "nombre": "Matriz de consistencia", "total": 1, "codigo": "IV-2" }
+    ],
+    "INVESTIGACIÓN - Conceptos y clasificación de las investigaciones": [
+      { "nombre": "Tipos de investigación y estudios descriptivos", "total": 7, "codigo": "IV-1" },
+      { "nombre": "Enfoques y métodos de investigación", "total": 4, "codigo": "IV-2" }
+    ],
+    "INVESTIGACIÓN - Ejecución de la investigación": [
+      { "nombre": "Instrumentos de recolección de datos y su validación", "total": 2, "codigo": "IV-6" },
+      { "nombre": "Ética de la investigación en salud", "total": 1, "codigo": "IV-misc" },
+      { "nombre": "Informe de investigación", "total": 1, "codigo": "IV-misc" }
+    ]
+  },
+  "diferenciasTaxonomia": [
+    "Metaxénicas/zoonosis (dengue, malaria, Carrión) = 14: QX lo pone en CUIDADO INTEGRAL(II); nosotros en I-4 (Salud Pública, área I). Es la mayor reclasificación → explica parte de por qué QX-II(31) > nuestro-II(27).",
+    "Gestión de la historia clínica = 7: QX en GESTIÓN(V); nosotros en III-8 (Ética/legal, confidencialidad/archivo).",
+    "Uso racional de medicamentos = 6: QX en SALUD PÚBLICA(I); nosotros en V-MED (Gestión). El resto de gestión de medicamentos (inventario/stock) sí coincide en Gestión.",
+    "Bioseguridad = 3: QX en SP-Promoción; nosotros lo vemos como operativo V. Menor.",
+    "Parto vertical = 5: QX en Intercultural(III); nosotros lo repartimos entre II-1 (obstetricia) y III-5 (interculturalidad) según el enfoque de la pregunta."
+  ]
+}

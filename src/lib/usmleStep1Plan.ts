@@ -5,10 +5,10 @@
  * subtema), Librerías, Flashcards, Video Library (B&B Step 1/2 + Sketchy) y la
  * biblioteca High-Yield de Palmerton + lo que Palmerton dice de cada sistema.
  *
- * v5 (27-ago-2026): D1 = lun 31-ago-2026 · Step 1 = BLOQUE PRINCIPAL (5h30/día L-V):
- *  07:15 Anki FSRS · 08:15 PRE-TEST 10Q · 09:00-11:00 DEEP PRIME · 11:00 30Q · 18:00 eval examen.
- *  Sáb y dom LIBRES. Examen: semana 25-29 ene 2027. Los diaInicio apuntan al plan de 102 días
- *  de usmleStep1Daily.ts (fuente de verdad).
+ * v5.4 (2-sep-2026): D1 = JUE 3-sep-2026 → D99 = vie 22-ene-2027 · Step 1 = BLOQUE PRINCIPAL (6h15/día L-V):
+ *  05:00 ANKI AM · 07:15 repaso anclado · 08:15 PRE-TEST 10Q · 09:00-11:00 DEEP PRIME · 11:00 30Q · 18:00 eval examen.
+ *  Sáb y dom LIBRES (skip 25-dic, 31-dic, 1-ene). Examen: semana 25-29 ene 2027. Los diaInicio apuntan
+ *  al plan de 99 días de usmleStep1Daily.ts (fuente de verdad): Fase A D1-84 · B D85-94 · C D95-99.
  *
  * Prioridad: Step 1. Sistemas ordenados por peso real (preguntas uWorld) +
  * la serie High-Yield de Palmerton.
@@ -23,7 +23,7 @@ export const QB = {
 
 export const PLAN_META = {
   inicio: '2026-09-03', // v5.4 (2-sep): D1=jue 3-sep · Step 1 = bloque PRINCIPAL (6h15/día L-V) · sáb y dom libres · examen semana 25-29 ene 2027
-  bloque: '07:15 Anki FSRS · 08:15 PRE-TEST 10Q · 09:00 DEEP PRIME 2h · 11:00 30Q consolidación · 18:00 eval modo examen',
+  bloque: '05:00 ANKI AM · 07:15 repaso anclado · 08:15 PRE-TEST 10Q · 09:00 DEEP PRIME 2h · 11:00 30Q consolidación · 18:00 eval modo examen (6h15/día)',
   metodo: 'Palmerton: ver vídeo High-Yield del sistema → leer (Library/First Aid) → Anki (FSRS) → preguntas en modo tutor → log de errores → APEX.',
   nota: 'Prioridad Step 1. D1 = jue 3-sep (Fundamentos/Pathoma) · D5 Cardiovascular (mié 9-sep). Fase A contenido D1-84 · Fase B banco D85-94 · Fase C sprint D95-99.',
 };
@@ -33,7 +33,7 @@ export interface SistemaUSMLE {
   /** preguntas uWorld del sistema (peso real) */
   uworldQ: number;
   tier: 'CORE' | 'HIGH' | 'MED';
-  diaInicio: number; // día del plan en que empieza (Día 1 = 10-jun)
+  diaInicio: number; // día del plan en que empieza (Día 1 = jue 3-sep-2026 · v5.4)
   /** subtemas uWorld top del sistema (nombre · nº preguntas) */
   uworldSubtemas: [string, number][];
   /** capítulo B&B Step 1 (nombre · nº vídeos · minutos) */
@@ -172,7 +172,8 @@ export const SISTEMAS: SistemaUSMLE[] = [
   },
 ];
 
-/** Unidades diarias concretas del arranque (Día 1+). Cada día ≈ el bloque de 45min. */
+/** LEGADO (sin uso en la UI): unidades del arranque de un plan anterior (empezaba por Cardio). El día a día
+ *  real es DIAS de usmleStep1Daily.ts (D1-2 Fundamentos/Pathoma, D3-4 Inmuno, D5+ Cardio). Se conserva por compat. */
 export interface UnidadDia { dia: number; fecha: string; sistema: string; foco: string; bbVideo: { titulo: string; min: number }; uworld: string; sketchy?: string; palmerton?: { titulo: string; id: string }; flash: string; }
 export const UNIDADES: UnidadDia[] = [
   { dia: 1, fecha: '2026-09-03', sistema: 'Cardiovascular', foco: 'Anatomía + Fisiología cardíaca (la base de todo cardio)', bbVideo: { titulo: 'B&B Step 1 · 01 - Cardiac Anatomy', min: 15 }, uworld: 'uWorld · Cardiovascular → Normal structure & function (pre-test 2-3Q)', sketchy: 'Sketchy Anatomy → Heart (Chambers / Coronary circulation)', palmerton: { titulo: 'Palmerton · Cómo los 260+ dominan el cardio', id: 'TYe-wrDuFqg' }, flash: 'uWorld Step 1 FlashCards → Cardiovascular (mazo del día)' },

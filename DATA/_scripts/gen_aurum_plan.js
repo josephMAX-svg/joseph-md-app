@@ -7,8 +7,9 @@
 // día-a-día (ver + practica + lectura, suma = min_core).
 //
 // Reglas de calendario (idénticas en espíritu a gen_synapse_plan.js):
-//  · INICIO = 2026-06-24. Las 130 lecciones se asignan a días HÁBILES consecutivos
-//    Lunes→Viernes (SALTA sábados y domingos). El NÚCLEO L-V es la ventana 14:15-15:15.
+//  · INICIO = argv[2] (YYYY-MM-DD; v5.4 = jue 2026-09-03). Las 130 lecciones se asignan a días
+//    HÁBILES consecutivos Lunes→Viernes (SALTA sábados y domingos; NO salta feriados).
+//    El NÚCLEO L-V es la ventana 14:15-15:15.
 //  · 130 hábiles ≈ 26 semanas. La fecha fin se calcula y se imprime.
 //  · semana del plan = índice 1..26 (cada 5 días hábiles = 1 semana). El d=1..5 del JSON
 //    es Lun..Vie dentro de su semana, así que cae siempre en el día hábil correcto.
@@ -23,7 +24,7 @@
 //  · + link a Obsidian (vault, carpeta 07_VENTAS_AURUM).
 // real:true = URL verificada/estable · real:false = URL marcada "(verificar)" en el currículo.
 //
-// Determinista: sin Date.now()/Math.random aleatorio. Regenerar: node DATA/_scripts/gen_aurum_plan.js
+// Determinista: sin Date.now()/Math.random aleatorio. Regenerar: node DATA/_scripts/gen_aurum_plan.js YYYY-MM-DD
 const fs = require('fs');
 const path = require('path');
 
@@ -42,16 +43,18 @@ for (const det of CUR.detalles) {
 }
 if (lecciones.length !== 130) throw new Error('Se esperaban 130 lecciones, hay ' + lecciones.length);
 
-// ─── Calendario: 130 días hábiles L-V consecutivos desde 2026-06-24 ───
+// ─── Calendario: 130 días hábiles L-V consecutivos desde START (argv[2]) ───
 const WD = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-const START_ISO = process.argv[2] || '2026-07-03'; if(!/^20\d\d-\d\d-\d\d$/.test(START_ISO)) throw new Error('START inválido: '+START_ISO);
+const START_ISO = process.argv[2] || '2026-09-03'; if(!/^20\d\d-\d\d-\d\d$/.test(START_ISO)) throw new Error('START inválido: '+START_ISO);
 const START = new Date(START_ISO + 'T12:00:00'); // START parametrizado: node <script> YYYY-MM-DD
+const SKIP_FIJOS = new Set(['2026-12-25', '2026-12-31', '2027-01-01']); // v5.4: feriados libres en todos los planes
+const isoOf = (d) => new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
 function nextBusinessDay(date) {
   const d = new Date(date);
-  do { d.setTime(d.getTime() + 86400000); } while (d.getDay() === 0 || d.getDay() === 6);
+  do { d.setTime(d.getTime() + 86400000); } while (d.getDay() === 0 || d.getDay() === 6 || SKIP_FIJOS.has(isoOf(d)));
   return d;
 }
-// primer día hábil ≥ START (24-jun es miércoles → 1er hábil = mié 24-jun)
+// primer día hábil ≥ START (si START cae en finde, se corre al lunes siguiente)
 let cursor = new Date(START);
 while (cursor.getDay() === 0 || cursor.getDay() === 6) cursor = nextBusinessDay(cursor);
 

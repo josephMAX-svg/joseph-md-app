@@ -1,0 +1,291 @@
+{
+ "set": "I-3_SET2_2026-07-28",
+ "fecha": "2026-07-28",
+ "bloque": "warmup_d1",
+ "area": "I",
+ "subtema": "I-3",
+ "opciones": 4,
+ "nota": "Set NUEVO: el set 1 quedó quemado (Joseph vio todas las claves en el solucionario)",
+ "preguntas": [
+  {
+   "n": 1,
+   "subangulo": "Tipo de vigilancia",
+   "enunciado": "En una comunidad dispersa de Loreto, los Agentes Comunitarios de Salud (ACS) capacitados reportan al EESS los casos de fiebre y diarrea que detectan entre sus vecinos, antes de que acudan al establecimiento. ¿Qué tipo de vigilancia es?",
+   "opts": {
+    "A": "Centinela",
+    "B": "Comunitaria",
+    "C": "Pasiva",
+    "D": "Sindrómica"
+   },
+   "correcta": "B",
+   "explicacion": "COMUNITARIA: la detección la hace la propia comunidad organizada (ACS, promotores, parteras), no el personal de salud. Clave en zonas dispersas donde la demanda espontánea subregistra. TRAMPA: no es 'activa' porque no sale el equipo de salud; no es 'pasiva' porque no espera la consulta.",
+   "fuente": "MOPECE/OPS; Compendio SP 2026-II - tipos de vigilancia"
+  },
+  {
+   "n": 2,
+   "subangulo": "Tipo de vigilancia",
+   "enunciado": "La DIRESA designa 5 hospitales con laboratorio para monitorear la tendencia estacional de influenza, sin pretender captar todos los casos de la región. ¿Qué tipo de vigilancia aplica?",
+   "opts": {
+    "A": "Activa",
+    "B": "Universal",
+    "C": "Centinela",
+    "D": "Comunitaria"
+   },
+   "correcta": "C",
+   "explicacion": "CENTINELA: pocos EESS seleccionados, con capacidad diagnóstica, para estimar TENDENCIAS - no la magnitud total. Su límite: no da incidencia poblacional real. Su ventaja: barata y sostenible.",
+   "fuente": "MOPECE/OPS; Compendio SP 2026-II"
+  },
+  {
+   "n": 3,
+   "subangulo": "Tipo de vigilancia",
+   "enunciado": "Ante un aumento de casos febriles sin diagnóstico confirmado, el EESS notifica el 'síndrome febril ictérico' para gatillar la respuesta sin esperar el laboratorio. Esta modalidad de alerta-respuesta se rige por:",
+   "opts": {
+    "A": "Directiva 065-MINSA/OGE-V.01 (RM 581-2005), Vigilancia Sindrómica",
+    "B": "Directiva 046-MINSA/DGE (RM 506-2012)",
+    "C": "Directiva 341-MINSA/CDC-2023 (RENACE)",
+    "D": "NTS 078-2009 Vigilancia Perinatal"
+   },
+   "correcta": "A",
+   "explicacion": "La vigilancia sindrómica (alerta-respuesta) la norma la Dir. 065-MINSA/OGE-V.01, RM 581-2005. Vigila SÍNDROMES (no diagnósticos) para ganar tiempo. OJO: la 065 NO es 'los 12 pasos de investigación de brote' - ese es un error frecuente de apuntes.",
+   "fuente": "Directiva 065-MINSA/OGE-V.01 (RM 581-2005)"
+  },
+  {
+   "n": 4,
+   "subangulo": "Tipo de vigilancia",
+   "enunciado": "Tras notificarse un caso de sarampión, el equipo del EESS realiza barrido casa por casa en 5 manzanas buscando febriles con exantema no notificados. ¿Qué está ejecutando?",
+   "opts": {
+    "A": "Vigilancia pasiva reforzada",
+    "B": "Búsqueda activa comunitaria",
+    "C": "Vigilancia centinela",
+    "D": "Notificación negativa"
+   },
+   "correcta": "B",
+   "explicacion": "BÚSQUEDA ACTIVA (vigilancia activa): el equipo SALE a buscar casos no captados. Obligatoria ante enfermedades en eliminación. Regla única del sub-tema: ¿el sistema va a buscar? -> ACTIVA, sea en domicilios, archivos o laboratorio.",
+   "fuente": "MOPECE/OPS; Dir. 046 (medidas ante caso probable)"
+  },
+  {
+   "n": 5,
+   "subangulo": "Tipo de vigilancia",
+   "enunciado": "El personal de salud ambiental inspecciona viviendas y calcula el índice aédico, sin registrar casos humanos. Esta vigilancia es de tipo:",
+   "opts": {
+    "A": "Comunitaria",
+    "B": "Sindrómica",
+    "C": "Entomológica (del vector)",
+    "D": "Centinela"
+   },
+   "correcta": "C",
+   "explicacion": "ENTOMOLÓGICA: vigila al VECTOR, no a la persona. Gatillo: si el enunciado habla de índice aédico/larvario, ovitrampas o inspección de viviendas y NO hay caso humano -> entomológica. Base para decidir el control vectorial antes del brote.",
+   "fuente": "Mapa QX 'Vigilancia entomológica de dengue'; Dir. 037-MINSA/DGE (RM 658-2010)"
+  },
+  {
+   "n": 6,
+   "subangulo": "Indicadores",
+   "enunciado": "En un comedor comunal de Ucayali, de 80 personas que consumieron el guiso, 24 enfermaron en 10 horas. ¿Cuál es la tasa de ataque?",
+   "opts": {
+    "A": "30%",
+    "B": "24%",
+    "C": "3.3%",
+    "D": "80%"
+   },
+   "correcta": "A",
+   "explicacion": "TASA DE ATAQUE = enfermos / EXPUESTOS x100 = 24/80 = 30%. El denominador NUNCA es la población del distrito: son solo los expuestos. Sirve para hallar el vehículo: el alimento con la tasa de ataque más alta es el sospechoso.",
+   "fuente": "Compendio SP 2026-II (López) pág. 3 - indicadores; MOPECE"
+  },
+  {
+   "n": 7,
+   "subangulo": "Indicadores",
+   "enunciado": "En un distrito de 20 000 habitantes ocurren 10 muertes por neumonía en el año. ¿Qué indicador expresa el impacto de esas muertes en TODA la comunidad, y cuánto vale?",
+   "opts": {
+    "A": "Letalidad, 10%",
+    "B": "Tasa de mortalidad, 50 por 100 000",
+    "C": "Tasa de ataque, 0.05%",
+    "D": "Prevalencia, 10 casos"
+   },
+   "correcta": "B",
+   "explicacion": "MORTALIDAD = muertes / POBLACIÓN TOTAL = 10/20 000 x100 000 = 50 por 100 000. Mide el impacto en la comunidad entera. Contraste: letalidad = muertes / ENFERMOS (qué tan mortal es en quien ya la tiene). EL DENOMINADOR DEFINE EL NOMBRE.",
+   "fuente": "Compendio SP 2026-II pág. 3; Theomed Manual SP"
+  },
+  {
+   "n": 8,
+   "subangulo": "Indicadores",
+   "enunciado": "En una comunidad de 5 000 personas hay actualmente 250 personas con hipertensión diagnosticada. ¿Qué indicador es y cuánto vale?",
+   "opts": {
+    "A": "Incidencia, 5%",
+    "B": "Prevalencia, 5%",
+    "C": "Tasa de ataque, 5%",
+    "D": "Letalidad, 5%"
+   },
+   "correcta": "B",
+   "explicacion": "PREVALENCIA = casos EXISTENTES (nuevos + antiguos) / población = 250/5000 = 5%. Gatillo: 'actualmente', 'en total', 'viven con' -> prevalencia. 'Nuevos', 'aparecieron este año' -> incidencia. En crónicas como HTA la prevalencia es alta porque los casos no se curan.",
+   "fuente": "Compendio SP 2026-II pág. 3 - medidas de frecuencia"
+  },
+  {
+   "n": 9,
+   "subangulo": "Indicadores (R0)",
+   "enunciado": "En un brote, el número reproductivo efectivo (Rt) cae a 0.7 tras la intervención. ¿Qué significa?",
+   "opts": {
+    "A": "La epidemia sigue creciendo",
+    "B": "La epidemia se mantiene estable",
+    "C": "La epidemia está en descenso y tenderá a extinguirse",
+    "D": "No puede interpretarse sin conocer la letalidad"
+   },
+   "correcta": "C",
+   "explicacion": "Rt < 1 -> cada caso genera menos de un caso nuevo -> la transmisión DECRECE y el brote se extingue. Rt = 1 se mantiene; Rt > 1 crece. Diferencia con R0: el R0 asume población TOTALMENTE susceptible; el Rt es el real, ya con vacunación e intervenciones.",
+   "fuente": "Theomed Manual de Salud Pública - indicadores de riesgo en brotes"
+  },
+  {
+   "n": 10,
+   "subangulo": "Notificación",
+   "enunciado": "Fallece una gestante de 30 años por eclampsia en un EESS I-4. Además de la notificación, ¿qué norma específica rige la vigilancia de este evento?",
+   "opts": {
+    "A": "Directiva 036-MINSA/DGE-V.01 (RM 634-2010), vigilancia de muerte materna",
+    "B": "Directiva 047-MINSA/DGE (RM 545-2012), brotes",
+    "C": "NTS 078-2009, vigilancia perinatal y neonatal",
+    "D": "Reglamento Sanitario Internacional 2005"
+   },
+   "correcta": "A",
+   "explicacion": "La muerte materna tiene directiva propia: Dir. 036-MINSA/DGE-V.01 (RM 634-2010), que establece notificación E INVESTIGACIÓN. Figura en la base legal de la 046. Regla mayor: cuando un evento tiene norma específica, esa manda sobre la genérica (igual que dengue -> Dir. 037).",
+   "fuente": "Dir. 046 (RM 506-2012), Base Legal pág. 14 - cita expresa de la RM 634-2010"
+  },
+  {
+   "n": 11,
+   "subangulo": "Notificación: modalidad",
+   "enunciado": "De los siguientes eventos, ¿cuál se notifica de forma CONSOLIDADA y no individual?",
+   "opts": {
+    "A": "Tuberculosis pulmonar",
+    "B": "Sarampión",
+    "C": "Enfermedad diarreica aguda (EDA)",
+    "D": "Muerte materna"
+   },
+   "correcta": "C",
+   "explicacion": "Las CONSOLIDADAS son un grupo corto: EDAS, IRAS/neumonías/SOB-asma e IIH - eventos de alta frecuencia que se reportan por conteo agregado. TODO LO DEMÁS ES INDIVIDUAL. TRAMPA: TB es individual y semanal; sarampión individual e inmediata.",
+   "fuente": "Dir. 046 (RM 506-2012), Anexo 01 - columna 'tipo de notificación'"
+  },
+  {
+   "n": 12,
+   "subangulo": "Notificación",
+   "enunciado": "Una unidad notificante deja de enviar reportes durante 4 semanas seguidas, sin que se sepa si hubo o no casos. ¿Cómo se denomina esta situación?",
+   "opts": {
+    "A": "Notificación negativa",
+    "B": "Silencio epidemiológico",
+    "C": "Subregistro pasivo",
+    "D": "Cierre de base de datos"
+   },
+   "correcta": "B",
+   "explicacion": "SILENCIO EPIDEMIOLÓGICO = la unidad deja de reportar y el sistema no distingue 'no hubo casos' de 'no notificaron'. Indicador de mala calidad del sistema. Se previene con la notificación NEGATIVA (reportar el cero). Son conceptos OPUESTOS: la negativa es la solución, el silencio el problema.",
+   "fuente": "Dir. Adm. 341-MINSA/CDC-2023, 5.1.h (notificación negativa)"
+  },
+  {
+   "n": 13,
+   "subangulo": "Definición de caso",
+   "enunciado": "Un paciente convivió con un enfermo de tos ferina confirmado por laboratorio y presenta tos paroxística. No se le tomó muestra. Según la Directiva 046, ¿cómo se clasifica?",
+   "opts": {
+    "A": "Caso sospechoso",
+    "B": "Caso probable",
+    "C": "Caso confirmado por nexo epidemiológico",
+    "D": "Caso descartado"
+   },
+   "correcta": "C",
+   "explicacion": "DATO DE ALTA TRAMPA: el nexo epidemiológico es criterio de CONFIRMACIÓN, no de 'probable'. La 046 lo define textual: persona que tuvo contacto con enfermos o forma parte de una cadena de transmisión 'donde se ha confirmado al menos un caso por laboratorio'. Aquí SÍ hay un confirmado en la cadena -> confirmado por nexo, sin muestra propia.",
+   "fuente": "Dir. 046 (RM 506-2012), 5.1 Definiciones operativas pág. 15 - texto literal"
+  },
+  {
+   "n": 14,
+   "subangulo": "Definición de caso",
+   "enunciado": "Un caso notificado como sospechoso de dengue resulta con IgM negativa y se documenta otro diagnóstico. ¿Cómo queda clasificado?",
+   "opts": {
+    "A": "Caso probable",
+    "B": "Caso descartado",
+    "C": "Caso confirmado",
+    "D": "Se mantiene sospechoso hasta el cierre anual"
+   },
+   "correcta": "B",
+   "explicacion": "CASO DESCARTADO: la 046 lo define como 'todo caso sospechoso o probable con evidencia clínica, de laboratorio o antecedente epidemiológico que permite descartar' la enfermedad. El caso NO desaparece del sistema: se reclasifica. Esa reclasificación es parte del cierre de base de datos, que es ANUAL.",
+   "fuente": "Dir. 046 (RM 506-2012), 5.1 Definiciones operativas pág. 15"
+  },
+  {
+   "n": 15,
+   "subangulo": "Definición de caso",
+   "enunciado": "En Lima se registra un caso de malaria en un paciente que estuvo dos semanas en Loreto y no salió de Lima antes ni después. Según la Directiva 046, el caso es:",
+   "opts": {
+    "A": "Autóctono",
+    "B": "Importado",
+    "C": "Confirmado por nexo epidemiológico",
+    "D": "Sospechoso"
+   },
+   "correcta": "B",
+   "explicacion": "IMPORTADO: la 046 define que es todo caso cuyo LUGAR PROBABLE DE INFECCIÓN es DIFERENTE a la jurisdicción que lo registra. Aquí se infectó en Loreto y se registra en Lima. Contraste: AUTÓCTONO = lugar probable de infección en la MISMA jurisdicción. Distinguirlos define si HAY TRANSMISIÓN LOCAL - y de eso depende la respuesta.",
+   "fuente": "Dir. 046 (RM 506-2012), 5.1 Definiciones operativas pág. 15"
+  },
+  {
+   "n": 16,
+   "subangulo": "Escala epidemiológica",
+   "enunciado": "En un colegio se detectan 3 casos de parotiditis en la misma aula en 10 días, agrupados en tiempo y espacio, aún en investigación. ¿Cómo se denomina esta agrupación?",
+   "opts": {
+    "A": "Pandemia",
+    "B": "Conglomerado (cluster)",
+    "C": "Endemia",
+    "D": "Caso índice"
+   },
+   "correcta": "B",
+   "explicacion": "CONGLOMERADO = agrupación de casos en tiempo y espacio cuyo número puede o no superar lo esperado - está EN INVESTIGACIÓN. Si se confirma que excede lo esperado, se declara BROTE. Secuencia: conglomerado (sospecha) -> confirmas contra lo esperado -> brote.",
+   "fuente": "MOPECE/OPS; Compendio SP 2026-II pág. 10"
+  },
+  {
+   "n": 17,
+   "subangulo": "Escala epidemiológica",
+   "enunciado": "Una enfermedad transmisible se propaga simultáneamente en varios continentes con transmisión comunitaria sostenida. ¿Qué escala corresponde?",
+   "opts": {
+    "A": "Epidemia",
+    "B": "Pandemia",
+    "C": "Endemia elevada",
+    "D": "Brote multinacional"
+   },
+   "correcta": "B",
+   "explicacion": "PANDEMIA: epidemia que cruza fronteras y afecta varios continentes, con transmisión sostenida. La diferencia con epidemia NO es la gravedad ni el número de muertos: es la EXTENSIÓN GEOGRÁFICA. Escalera: caso -> conglomerado -> brote -> epidemia -> pandemia.",
+   "fuente": "MOPECE/OPS; Compendio SP 2026-II pág. 10"
+  },
+  {
+   "n": 18,
+   "subangulo": "Estructura RENACE",
+   "enunciado": "Según la Directiva Administrativa 341-MINSA/CDC-2023, el nivel LOCAL de la Red Nacional de Epidemiología (RENACE) está constituido por:",
+   "opts": {
+    "A": "El Centro Nacional de Epidemiología (CDC)",
+    "B": "Las DIRESA / GERESA / DIRIS",
+    "C": "Las unidades notificantes (establecimientos de salud)",
+    "D": "Las Redes Integradas de Salud (RIS)"
+   },
+   "correcta": "C",
+   "explicacion": "El nivel LOCAL = la unidad notificante, es decir el ESTABLECIMIENTO DE SALUD: ahí nace el dato. Arquitectura de 4 niveles: Local (unidad notificante) -> Intermedio (Red/DISA) -> Regional (DIRESA/GERESA/DIRIS) -> Nacional (CDC). Flujo ASCENDENTE: si el dato no nace en el EESS, el sistema no existe.",
+   "fuente": "Dir. Adm. 341-MINSA/CDC-2023 - organización y funcionamiento del RENACE"
+  },
+  {
+   "n": 19,
+   "subangulo": "Cadena epidemiológica",
+   "enunciado": "En un brote de tuberculosis en un penal, el mecanismo por el cual el bacilo abandona al enfermo al toser corresponde a:",
+   "opts": {
+    "A": "Puerta de entrada",
+    "B": "Puerta de salida",
+    "C": "Reservorio",
+    "D": "Vía de transmisión"
+   },
+   "correcta": "B",
+   "explicacion": "PUERTA DE SALIDA = por dónde el agente ABANDONA al reservorio (aquí, la vía respiratoria al toser). Cadena de 6 eslabones: agente -> reservorio -> puerta de SALIDA -> vía de transmisión -> puerta de ENTRADA -> huésped susceptible. En TB salida y entrada son respiratorias: por eso se corta con mascarilla y ventilación.",
+   "fuente": "Compendio SP 2026-II pág. 13 - cadena epidemiológica (6 eslabones); Theomed"
+  },
+  {
+   "n": 20,
+   "subangulo": "Proceso de vigilancia",
+   "enunciado": "El boletín epidemiológico semanal que la DIRESA envía a los EESS con el análisis de la semana corresponde a qué etapa del proceso de vigilancia?",
+   "opts": {
+    "A": "Recolección",
+    "B": "Análisis",
+    "C": "Difusión",
+    "D": "Intervención"
+   },
+   "correcta": "C",
+   "explicacion": "DIFUSIÓN: la 046 la define como el 'proceso final de la vigilancia epidemiológica y/o publicación de la información elaborada'. Es el eslabón que se olvida: sin difusión el dato no llega a quien decide. Ciclo: recolección -> análisis e interpretación -> DIFUSIÓN -> intervención.",
+   "fuente": "Dir. 046 (RM 506-2012), 5.1 Definiciones operativas pág. 15 - 'Difusión'"
+  }
+ ]
+}

@@ -19,8 +19,8 @@
 > interpretación (~50% de los fallos) y dominando mecanismo. Complemento por materia:
 > artículos y cheat sheets de **yousmle.com** (URLs verificadas conservadas de la v1).
 >
-> Plan de referencia (v5.3, NO tocar): D1 = MAR 1-sep-2026 → D101 = VIE 22-ene-2027 ·
-> Fases A contenido D1-86 · B banco D87-96 · C sprint D97-101 · fuente de verdad
+> Plan de referencia (v5.4, NO tocar): D1 = JUE 3-sep-2026 → D99 = VIE 22-ene-2027 ·
+> Fases A contenido D1-84 · B banco D85-94 · C sprint D95-99 · fuente de verdad
 > `src/lib/usmleStep1Daily.ts`.
 
 ---
@@ -43,7 +43,7 @@
 - **Vídeos fuente**: *How 260+ Scorers Master Cardio on the USMLE* ·
   [High Yield Cardiology](https://www.youtube.com/watch?v=hOGhcie47nM) ·
   [High Yield Cardiology Part 2](https://www.youtube.com/watch?v=nFfdaHLtxag)
-- **→ En tu plan**: D5-D8 · D10-D15 (7-sep → 21-sep; D9 = UWSA1 11-sep en medio).
+- **→ En tu plan**: D5-D6 · D8-D15 (9-sep → 23-sep; D7 = UWSA1 11-sep en medio).
 
 **High-yield (v1)**: curvas presión-volumen y función cardiaca vs retorno venoso · potenciales
 de acción ↔ EKG (PR, QRS, QT) · soplos con maniobras · síndromes coronarios (histología del
@@ -75,7 +75,7 @@ reflejo barorreceptor y BP = CO × RPT. MONA está obsoleto según Palmerton.
   (sibilancias/estridor espiratorio).
 - **Vídeos fuente**: [High Yield Respiratory](https://www.youtube.com/watch?v=HU3V0kftcqY) ·
   *High Yield Pediatrics Review Part 2* (traqueomalacia).
-- **→ En tu plan**: D16-D21 (22-sep → 29-sep).
+- **→ En tu plan**: D16-D21 (24-sep → 1-oct; D22 = NBME 25 el 2-oct cierra la semana).
 
 **High-yield (v1)**: curva O2-Hb (Bohr, 2,3-BPG, CO, metahemoglobina) · hipoxemia y gradiente
 A-a (5 mecanismos) · V/Q y zonas de West · PFTs (obstructivo vs restrictivo, DLCO, curvas
@@ -104,7 +104,7 @@ cáncer de pulmón · neumonías/TB · neumotórax a tensión, criterios de Ligh
   hiponatremias severas (destruyen el gradiente medular) — las tiazidas SÍ.
 - **Vídeos fuente**: [High Yield Renal](https://www.youtube.com/watch?v=zeM8dMiRsJQ) ·
   [High Yield Renal Part 2](https://www.youtube.com/watch?v=CIIMMIvrRso)
-- **→ En tu plan**: D22-D23 · D25-D28 (30-sep → 8-oct; D24 = NBME 25 el 2-oct).
+- **→ En tu plan**: D23-D28 (5-oct → 12-oct; arranca el lunes siguiente a NBME 25).
 
 **High-yield (v1)**: nefrona por segmentos + clearance/GFR · RAAS completo · ácido-base con
 compensaciones, anion gap, RTA 1/2/4 · hipo/hipernatremia (SIADH, DI), K · AKI con índices
@@ -133,7 +133,7 @@ congénitas (Potter, PKD) · carcinoma renal y vejiga.
   **TP y albúmina** (el TP cae primero: vida media corta del factor VII).
 - **Vídeos fuente**: [High Yield GI](https://www.youtube.com/watch?v=8gfhX1aR9-A) ·
   [High Yield GI Part 2](https://www.youtube.com/watch?v=E2sE4E6s9B8)
-- **→ En tu plan**: D29-D35 (9-oct → 19-oct).
+- **→ En tu plan**: D29-D35 (13-oct → 21-oct).
 
 **High-yield (v1)**: bilirrubina y síndromes hereditarios (Gilbert, Crigler-Najjar,
 Dubin-Johnson vs Rotor) · fisiología secretora (Zollinger-Ellison, H+/K+ ATPasa) · hígado
@@ -163,7 +163,7 @@ farmacología GI · esófago · úlcera gástrica vs duodenal (H. pylori antral 
   tiroideo es intracelular porque la tirosina yodada es no polar.
 - **Vídeos fuente**: [High Yield Endocrinology](https://www.youtube.com/watch?v=oQ8PSvInTgM) ·
   *Pediatrics Shelf Review* (endocrino pediátrico).
-- **→ En tu plan**: D36-D38 · D40-D42 (20-oct → 28-oct; D39 = NBME 26 el 23-oct).
+- **→ En tu plan**: D36 · D38-D42 (22-oct → 30-oct; D37 = NBME 26 el 23-oct en medio).
 
 **High-yield (v1)**: DM1 vs DM2, DKA vs hiperosmolar · tiroides completo · 1º vs 2º vs 3º en
 TODOS los ejes · suprarrenal (Cushing y su algoritmo, Addison, hiperaldosteronismo,
@@ -193,7 +193,7 @@ SIADH) · MEN 1/2A/2B · farmacología endocrina.
   coma (el coma requiere daño difuso o tronco/herniación).
 - **Vídeos fuente**: [High Yield Neuro](https://www.youtube.com/watch?v=YIwfdc7E8TU) ·
   [High Yield Neuro Part 2](https://www.youtube.com/watch?v=52xHDZJy2sw)
-- **→ En tu plan**: D43-D50 (29-oct → 9-nov).
+- **→ En tu plan**: D43-D50 (2-nov → 11-nov).
 
 **High-yield (v1)**: ictus por territorio · regla de los 4 y síndromes cruzados · médula
 (Brown-Séquard, siringomielia, B12, tabes, ELA, arteria espinal anterior) · NMS vs NMI · vía
@@ -219,7 +219,7 @@ adulto vs niño · antiepilépticos · plexo braquial · defectos del tubo neura
 - **Errores típicos**: tratar los labs como listas desconectadas de memoria · olvidar que el
   sangrado GI CRÓNICO da microcítica ferropénica mientras el sangrado AGUDO da normocítica.
 - **Vídeo fuente**: [High Yield Hematology](https://www.youtube.com/watch?v=zFGfP4d_aOc)
-- **→ En tu plan**: D51-D53 · D55-D57 (10-nov → 18-nov; D54 = NBME 27 el 13-nov).
+- **→ En tu plan**: D51 · D53-D57 (12-nov → 20-nov; D52 = NBME 27 el 13-nov en medio).
 
 **High-yield (v1)**: panel de hierro (3 patrones vía hepcidina→ferroportina) · anemias por MCV
 y frotis · hemolíticas y hemoglobinopatías (electroforesis por cargas: HbS Glu→Val, HbC
@@ -249,8 +249,8 @@ leucemias/linfomas con translocaciones · quimioterápicos (toxicidad firma) · 
   ineficaces en niños pequeños.
 - **Vídeos fuente**: [High Yield Immunology](https://www.youtube.com/watch?v=Nfp3hs490wM) ·
   *High Yield Family Medicine Review* (inmuno aplicada).
-- **→ En tu plan**: D3-D4 (3-sep → 4-sep) + reaparece en D72 (autoinmunes/vasculitis, 9-dic) y
-  transversal en Micro D58-D64 (19-nov → 27-nov).
+- **→ En tu plan**: D3-D4 (7-sep → 8-sep) + reaparece en D72 (autoinmunes/vasculitis, 11-dic) y
+  transversal en Micro D58-D64 (23-nov → 1-dic).
 
 **High-yield (v1)**: algoritmo de identificación bacteriana · exotoxinas · genomas virales
 (+RNA infeccioso / −RNA no — su demo insignia) · serologías VHB y VIH · TB · antimicrobianos ·
@@ -283,8 +283,8 @@ System Works* (Sompayrac) ANTES de First Aid.
   nicotínicos → salida masiva de K+ → arritmias hiperpotasémicas mortales).
 - **Vídeos fuente**: [High Yield Pharmacology](https://www.youtube.com/watch?v=J2KWVQ67H2U) ·
   [High Yield Pharmacology Part 2](https://www.youtube.com/watch?v=PvKp25ku0po)
-- **→ En tu plan**: D84 (28-dic, día dedicado PK/PD + toxicología) + transversal en los días
-  pharm de cada sistema (D11, D18, D23, D41, D46, D48, D78).
+- **→ En tu plan**: D82 (28-dic, día dedicado PK/PD + toxicología) + transversal en los días
+  pharm de cada sistema (D11, D18, D24, D41, D46, D48, D76).
 
 **High-yield (v1)**: PK (Vd, clearance, vida media, orden cero vs primero) · fases I/II,
 CYP450 · PD (potencia vs eficacia, antagonismos, agonistas parciales) · autonomics completo y
@@ -312,7 +312,7 @@ CYP450 · PD (potencia vs eficacia, antagonismos, agonistas parciales) · autono
   cetogénicos (útiles en deficiencia de piruvato deshidrogenasa: energía vía Acetil-CoA sin
   acumular lactato) · creer que la Acetil-CoA puede sintetizar glucosa.
 - **Vídeo fuente**: [High Yield Biochemistry](https://www.youtube.com/watch?v=FcXG3ux0a1I)
-- **→ En tu plan**: D81-D83 (22-dic → 24-dic).
+- **→ En tu plan**: D79-D81 (22-dic → 24-dic).
 
 **High-yield (v1)**: vitaminas con contextos de malabsorción (B12 vs folato: solo B12 da
 neuro + ácido metilmalónico) · glucogenosis (Von Gierke vs Cori: solo Von Gierke da acidosis
@@ -340,7 +340,7 @@ herencia, Hardy-Weinberg · imprinting · colágeno/elastina. Hábito verbal: **
   enfermedad, probabilidad de haberme expuesto"; RR prospectivo: "si me expongo, riesgo de
   enfermar") · decir "se acepta la hipótesis nula" con p>0.05 (solo "no se puede rechazar").
 - **Vídeo fuente**: *Biostatistics SUMMARY STEP 1 + 2 — The Basics USMLE*.
-- **→ En tu plan**: D80 (21-dic, día dedicado + AMBOSS HY Biostats 155Q).
+- **→ En tu plan**: D78 (21-dic, día dedicado + AMBOSS HY Biostats 155Q).
 
 **High-yield (v1)**: tabla 2x2 (sens/esp, VPP/VPN y prevalencia) · RR/OR/ARR/RRR/NNT · tipos
 de estudio y jerarquía · sesgos · IC, poder · ROC, media/mediana en sesgadas · el mejor quick
@@ -368,7 +368,7 @@ win del examen (~4-10%, dominable en 1-2 semanas) · complemento comunitario: Ra
   adenomiosis/fibromas en adolescentes (patología PALM de mujeres mayores/multíparas).
 - **Vídeos fuente**: [High Yield OB/GYN](https://www.youtube.com/watch?v=4D7MO0TR2fY) ·
   [High Yield OB/GYN Part 2](https://www.youtube.com/watch?v=nYtSNyXh_Ww)
-- **→ En tu plan**: D65-D68 · D70 (30-nov → 7-dic; D69 = NBME 28 el 4-dic).
+- **→ En tu plan**: D65-D66 · D68-D70 (2-dic → 9-dic; D67 = NBME 28 el 4-dic en medio).
 
 **High-yield (v1)**: ciclo menstrual y anovulación (eje HPG, SOP, amenorrea) ·
 esteroidogénesis, hCG y fisiología del embarazo · desarrollo sexual (insensibilidad
@@ -389,7 +389,7 @@ androgénica, Turner, Klinefelter) · anticonceptivos, SERMs, leuprolide · mama
 - **Pediatría** — ancla: integrar bioquímica metabólica con desarrollo. Más preguntado:
   estenosis traqueal/traqueomalacia post-intubación (isquemia de presión >2 semanas → necrosis
   del cartílago → colapso espiratorio) · convulsiones + hipoglucemia neonatal (von Gierke,
-  MCAD → cae en tus D81-D82). Error: confundir estridor espiratorio post-intubación con asma.
+  MCAD → cae en tus D79-D80). Error: confundir estridor espiratorio post-intubación con asma.
   Fuente: *Pediatrics Shelf Review* (Parts 1-2).
 - **Cirugía** — ancla: **la gravedad clínica determina la invasividad del tratamiento**
   (inestable/perforación → cirugía inmediata; estable → conservador: IV, ATB, NPO — ejemplo
@@ -402,12 +402,12 @@ androgénica, Turner, Klinefelter) · anticonceptivos, SERMs, leuprolide · mama
   inicial; no requieren días extra del plan.
 
 **Materias v1 sin lecture propia en el catálogo** (se mantiene el método puro + yousmle):
-MSK/derma/reuma → D71-D74 (8-dic → 11-dic) — reuma = inmunología aplicada
+MSK/derma/reuma → D71-D73 (10-dic → 14-dic) — reuma = inmunología aplicada
 ([UWorld Note-Taking](https://www.yousmle.com/uworld-notes/) ·
 [High-Yield MSK — The Match Guy](https://thematchguy.com/usmle-step-1-high-yield-musculoskeletal-concepts/)) ·
-Psiquiatría/conductual → D75-D78 (14-dic → 17-dic) — diagnósticos por línea de tiempo,
+Psiquiatría/conductual → D74-D76 (15-dic → 17-dic) — diagnósticos por línea de tiempo,
 psicofármacos por mecanismo→efecto→escenario · Fundamentos/Patología general → D1-D2
-(1-sep → 2-sep) — Pathoma 1-3 primero y re-verlo la última semana; Goljan Rapid Review de
+(3-sep → 4-sep) — Pathoma 1-3 primero y re-verlo la última semana; Goljan Rapid Review de
 respaldo ([Question Interpretation](https://www.yousmle.com/question-interpretation/) ·
 [UWorld + First Aid: 4 Keys](https://www.yousmle.com/nail-fundamentals-usmle-step-1-nbme-practice-exams/) ·
 [Resources](https://www.yousmle.com/resources/)).
@@ -428,16 +428,16 @@ aprendizaje. Sistema progresivo:
 | **4** | Bloques de 20-30Q · CON tiempo · sistemas mixtos | 2 sistemas dominados + 1 nuevo: saltar entre especialidades sin perder la técnica | 50-70Q/día | confianza integrando múltiples sistemas |
 | **5** | Bloques de 40Q · CON tiempo · random completo | Simulación exacta del examen, sosteniendo 80% | — | — |
 
-**Mapeo a tu plan v5.3**:
+**Mapeo a tu plan v5.4**:
 
-- **Fase A (D1-D86)** = Niveles 1→3. El PRE-TEST 10Q (08:15, tutor, subtema nuevo) es Nivel 1;
+- **Fase A (D1-D84)** = Niveles 1→3. El PRE-TEST 10Q (08:15, tutor, subtema nuevo) es Nivel 1;
   la CONSOLIDACIÓN 30Q (11:00, tutor, temas vistos del sistema) es Nivel 2-3. La EVALUACIÓN
   ACUMULATIVA de las 18:00 (timed, mixta) introduce el Nivel 4 en dosis diaria.
   **Regla de validación en ciclos de 24-48h**: si estudiaste un subtema hoy, mañana debes poder
   sacar ≥80% en un bloque de ese subtema; si no, el método del día falló — ajustar YA, no en
   un mes.
-- **Fase B (D87-D96)** = Nivel 5 (random timed 2×40Q) + revisión profunda de incorrects.
-- **Fase C (D97-D101)** = Nivel 5 en formato simulacro completo (NBME 32/33, Free 120).
+- **Fase B (D85-D94)** = Nivel 5 (random timed 2×40Q) + revisión profunda de incorrects.
+- **Fase C (D95-D99)** = Nivel 5 en formato simulacro completo (NBME 32/33, Free 120).
 
 **Cómo REVISAR preguntas (vale 20-30 puntos)** — *How to Review USMLE Questions for 20-30+
 Points* + *The ONLY Video You Need to Pass Step 1 in 2026*:
@@ -582,14 +582,14 @@ hipercoagulabilidad → TVP → TEP → ↑poscarga VD → ↓precarga VI → �
    auto-EMDR de 1-1.5h (ver Divergencias — no está en el diseño del plan; opcional si aparece
    bloqueo de test-day real).
 
-## E. Últimas 1-2 semanas (= tu Fase C, D97-D101)
+## E. Últimas 1-2 semanas (= tu Fase C, D95-D99)
 
 - **Regla de retención 10x**: consolidar lo estudiado es 10 veces más eficiente que meter
   contenido nuevo en un cerebro cansado → cero temas nuevos; solo Anki + bloques mixtos.
 - **Overtraining**: al menos un simulacro-maratón de 8-9h seguidas (UWSA + NBME el mismo día)
   para aclimatar resistencia. En tu plan: usar un viernes de Fase B/C si el GO está sólido.
 - **Familiarity breeds calm**: rendir el **Free 120 en el MISMO Prometric del examen**
-  (ruta, seguridad, sillas) — disuelve la ansiedad logística. Tu D101 (22-ene) es Free 120:
+  (ruta, seguridad, sillas) — disuelve la ansiedad logística. Tu D99 (22-ene) es Free 120:
   evaluarlo presencial en Prometric Lima si la logística lo permite.
 
 ## F. Test Day (semana 25-29 ene)
@@ -672,7 +672,7 @@ fecha (feb-mar, mismo eligibility period) SIN tocar el proceso de maestría.
 
 ## B. Estructura de día que él recomienda vs la tuya
 
-| Elemento | Palmerton | Plan v5.3 | Veredicto |
+| Elemento | Palmerton | Plan v5.4 | Veredicto |
 |----------|-----------|-----------|-----------|
 | Anki a primera hora, mente fresca | Sí — "duplica la velocidad" | 05:00-05:45 ANKI AM + 07:15 repaso | ✅ coincide (aún más temprano) |
 | Contenido: subtema de FA con el "por qué" + tarjetas propias | por la tarde | DEEP PRIME 09:00-11:00 | ✅ mismo contenido; hora distinta (ver Divergencias) |
@@ -742,7 +742,7 @@ Vídeos v1: [8 Signs Studying Wrong](https://www.youtube.com/watch?v=KsIWwvCzgso
 
 ---
 
-# DIVERGENCIAS DETECTADAS (catálogo completo vs plan v5.3 — el plan NO se cambia)
+# DIVERGENCIAS DETECTADAS (catálogo completo vs plan v5.4 — el plan NO se cambia)
 
 1. **Nivel 1 UWorld = 20-30Q/día; el plan hace 40Q/día desde D1** (10 pre-test + 30
    consolidación). Mitigación implícita: el pre-test es tutor sin tiempo (Nivel 1 puro) y la
@@ -762,7 +762,7 @@ Vídeos v1: [8 Signs Studying Wrong](https://www.youtube.com/watch?v=KsIWwvCzgso
    el plan (las noches protegen las 7h de sueño). Se adopta solo el tier ligero (worst-case
    planning + affect labeling). Si en Fase B aparece pánico real en simulacros, evaluar EMDR
    con profesional los sábados (día libre) — nunca sacrificando sueño.
-5. **Umbral de seguridad**: Palmerton dice 65% (95% prob.) / ideal 70% (99%); el GO/NO-GO v5.3
+5. **Umbral de seguridad**: Palmerton dice 65% (95% prob.) / ideal 70% (99%); el GO/NO-GO v5.4
    pide 2×≥68% + UWSA2 low risk. Sin conflicto — 68 está entre 65 y 70 y el requisito de DOS
    consecutivos lo hace más robusto que un 65% aislado. Se mantiene 68%.
 6. **"Múltiples pasadas de UWorld" vs Fase B**: su prohibición aplica a REPETIR el banco
@@ -772,7 +772,7 @@ Vídeos v1: [8 Signs Studying Wrong](https://www.youtube.com/watch?v=KsIWwvCzgso
 7. **Heredadas de la v1 (siguen vigentes)**: (a) él sugiere bioquímica/micro/inmuno temprano —
    el plan las pone tarde por rentabilidad de sistemas CORE (compensado: aparecen transversal
    en uWorld desde S1); (b) él sugiere PK/PD + autonomics en las primeras 2-3 semanas — el
-   plan los cubre dentro de Cardio (S2-S3) y SNA en D46, con el día dedicado al final (D84);
+   plan los cubre dentro de Cardio (S2-S4) y SNA en D46, con el día dedicado al final (D82);
    (c) él rechaza calendarios hora-por-hora — el plan usa franjas fijas por adherencia
    demostrada, adoptando su red de seguridad: mínimo innegociable del día caótico = Anki al
    día + 10Q pre-test.

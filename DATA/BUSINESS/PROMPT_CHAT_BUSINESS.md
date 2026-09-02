@@ -23,14 +23,14 @@ PASO 0 — LEE PRIMERO (todo el conocimiento YA está guardado; no re-investigue
 - DATA\BUSINESS\_scrape\research_raw.json y content_tools_referents_raw.json ← hallazgos con fuentes
 
 CÓDIGO (fuente canónica en src/):
-- src\lib\businessStudyPlan.ts    ← 96 días GENERADO (regenerar: py DATA\_scripts\gen_business_plan.py)
+- src\lib\businessStudyPlan.ts    ← 118 filas (84 trabajo + 34 DESCANSO sáb/dom, v5.4: 3-sep→29-dic) GENERADO (py DATA\_scripts\gen_business_plan.py) + re-fechado (node DATA\_scripts\remap_inicio.js YYYY-MM-DD)
 - src\lib\estudioPulsoData.ts     ← los 28 libros (ESTUDIO_LIBROS) + recursos
 - src\lib\businessBooksExtra.ts   ← frases-ancla + recursos por libro (GENERADO: extract_pulso_research.js)
 - src\lib\brandContentPlan.ts     ← TIME_SPLIT 70/10/10/10 + semanas de contenido por marca
   (PULSO_PLAN solo LIVIANO · PIRQA_PLAN sáb 12:00 lanzamiento→dom venta · TERRENOS_PLAN · GOLDEN_PLAN)
 - src\lib\brandContentExtras.ts   ← herramientas + referentes verificados (GENERADO: extract_content_extras.js)
 - src\components\empresa\         ← EmpresaHub (selector de marcas: Pulso/LIVIANO/PIRQA/🏞️Terrenos/🐕Golden),
-  BrandHorario.tsx (horario semanal por marca), PulsoTodayPlan.tsx (motor 96 días), panels.tsx (PirqaView)
+  BrandHorario.tsx (horario semanal por marca), PulsoTodayPlan.tsx (motor 118 días · 84 de trabajo), panels.tsx (PirqaView)
 - src\components\study\StudyPulsoHub.tsx ← Estudio Pulso (Visión + Día a día)
 - src\components\home\BibliotecaHome.tsx ← biblioteca con % leído en el Home
 - Verificador de links: node DATA\_scripts\check_links.js

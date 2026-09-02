@@ -243,20 +243,23 @@ function bloquePC(semana) {
   return { tag: 'PC', min: 75, formato: 'pc', material, leccion, url: url ? assertUrl(url) : undefined, real: true };
 }
 
-// ─── Calendario v4 (18-jun): d1 = vie 19-jun-2026 (todo el sistema arranca 19-jun) ·
-// semana 1 corta (vie→dom = 3 días) · semanas 2-12 alineadas Lun-Dom · 70 A-units intactas.
-// La 1ª semana ya NO tiene jueves → la 1ª lección de Automate (cap 0 "Introduction") se
-// recupera en el último día (igual que Lex cap 12 y PyTut §12). 12 sem · 82 días · 12 domingos.
+// ─── Calendario: d1 = START (parámetro argv[2], YYYY-MM-DD; v5.4 = jue 2026-09-03) ·
+// semana 1 corta (START→dom) · semanas 2-12 alineadas Lun-Dom · 70 A-units intactas (Lun-Sáb) ·
+// TODOS los domingos LIBRES. TOTAL = nº de días hasta colocar las 70 A-units (el último día
+// puede caer en Lun de una "semana 13" que se etiqueta como sem 12).
+// ⚠ Si START cae después del miércoles, la sem 1 no tiene Mié → Lex cap 1 y PyTut §1 no se
+//   programan (los caps 2-12 van en las sem 2-12). Aceptado (son introducciones).
 const WD = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-const START_ISO = process.argv[2] || '2026-07-03'; if(!/^20\d\d-\d\d-\d\d$/.test(START_ISO)) throw new Error('START inválido: '+START_ISO);
+const START_ISO = process.argv[2] || '2026-09-03'; if(!/^20\d\d-\d\d-\d\d$/.test(START_ISO)) throw new Error('START inválido: '+START_ISO);
 const START = new Date(START_ISO + 'T12:00:00'); // START parametrizado: node <script> YYYY-MM-DD
-const SDOW = START.getDay();                    // 3 (miércoles)
-const FIRST_WEEK_LEN = (7 - SDOW) % 7 + 1;      // mié→dom = 5 días (genérico por weekday)
+const SDOW = START.getDay();                    // día de la semana del START (0=Dom … 6=Sáb)
+const FIRST_WEEK_LEN = (7 - SDOW) % 7 + 1;      // START→dom (genérico por weekday)
 
 const aUnits = buildAUnits();
 // v6: TOTAL = nº de días para colocar exactamente aUnits.length A-units (= días no-domingo); el último día cae en no-domingo.
 let TOTAL = 0; { let ns = 0, dd = 0; while (ns < aUnits.length) { dd++; const dt = new Date(START.getTime() + (dd - 1) * 86400000); if (dt.getDay() !== 0) ns++; } TOTAL = dd; }
 let aIdx = 0;
+let pc12Emitido = false; // evita duplicar el PC de la sem 12 cuando esa semana SÍ tiene sábado
 const dias = [];
 for (let d = 1; d <= TOTAL; d++) {
   const date = new Date(START.getTime() + (d - 1) * 86400000);
@@ -278,9 +281,9 @@ for (let d = 1; d <= TOTAL; d++) {
     bloques.push({ tag: 'A', min: 15, formato: 'pantalla', ...a });
     const b = bloqueB(wd, semana); if (b) bloques.push(b);
     const c = bloqueC(wd, semana); if (c) bloques.push(c);
-    if (wd === 'Sáb') bloques.push(bloquePC(semana));
-    // v6: la sem 12 termina en viernes (sin sábado) → su Proyecto-PC (sem 12 = CS50P PS3) se coloca en el último día
-    if (d === TOTAL && wd !== 'Sáb') bloques.push(bloquePC(12));
+    if (wd === 'Sáb') { bloques.push(bloquePC(semana)); if (semana === 12) pc12Emitido = true; }
+    // si la sem 12 no llega a tener sábado, su Proyecto-PC (CS50P PS3) se coloca en el último día (sin duplicarlo)
+    if (d === TOTAL && wd !== 'Sáb' && !pc12Emitido) { bloques.push(bloquePC(12)); pc12Emitido = true; }
   }
   dias.push({ d, fecha, wd, semana, faseId, fase, bloques });
 }
@@ -299,17 +302,18 @@ const diaTs = (x) => `{d:${x.d},fecha:"${x.fecha}",wd:"${x.wd}",semana:${x.seman
 
 const ts = `/**
  * synapseDailyPlan.ts — Motor día-a-día SYNAPSE (12 semanas · ${TOTAL} días · ${dias[0].fecha} → ${dias[TOTAL - 1].fecha}).
- * v7 (23-jun): arranque mié 24-jun-2026 (20-23 no se estudió; todo el sistema corre a 24-jun) · sem 1 = mié→dom · TODOS los domingos LIBRES (sin misión).
+ * Arranque ${dias[0].wd} ${dias[0].fecha} (START parametrizado) · sem 1 = ${dias[0].wd}→dom · TODOS los domingos LIBRES (sin misión) ·
+ * sáb = A/B/C + PC (bloque personal, sí va en finde).
  * GENERADO por DATA/_scripts/gen_synapse_plan.js desde DATA/SYNAPSE/curricula/_extracted.json
  * (temarios REALES extraídos con WebFetch/oEmbed + verificación adversarial, 10-jun-2026).
- * NO editar a mano — regenerar: node DATA/_scripts/gen_synapse_plan.js
+ * NO editar a mano — regenerar: node DATA/_scripts/gen_synapse_plan.js YYYY-MM-DD
  *
  * Estructura del día (30 min en espacios muertos, instrucción verbatim de Joseph):
  *  A (15', pantalla)  lección EXACTA de la fase actual con link directo
  *  B (10', audio)     rotación: No Priors → Dwarkesh → Lex #452 (outline real) → The Batch (jue) → canal Anthropic (vie)
  *  C (5', lectura)    píldora móvil: Pro Git / Willison / Python Tutorial / Automate / research de Anthropic
  *  PC (sáb, 60-90', OPCIONAL) teclado: setup, repo público, problem sets CS50P
- *  Dom = repaso (nada nuevo). Progreso REAL manual (PlanKey 'synapse', empieza 0%).
+ *  Dom = LIBRE (sin misión). Progreso REAL manual (PlanKey 'synapse', empieza 0%).
  * real:true = lección/temario verificado; real:false = "siguiente episodio/tramo" (honesto, sin inventar).
  * Cobertura: F0 completa (sem 1-8) + arranque F1 (sem 9-12, CS50P Weeks 0-3). Las semanas 13+
  * se generan al avanzar de fase añadiendo A-units en el script y re-ejecutándolo.

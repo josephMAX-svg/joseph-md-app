@@ -1,7 +1,7 @@
 /**
  * researchDailyPlan.ts — Plan DÍA A DÍA de Research (revisiones sistemáticas).
  * Mismo motor que usmleStep1Daily.ts pero para el programa de SR hacia Mayo/Bioclinic.
- * 40 átomos + 2 colchón (vie 12-jun-2026 → 2026-10-06), 1 átomo por DÍA-RESEARCH.
+ * 40 átomos + 2 colchón (v5.4: D1 vie 4-sep-2026 → D42 lun 4-ene-2027; salta 25-dic/31-dic/1-ene), 1 átomo por DÍA-RESEARCH.
  * Ritmo INTERDIARIO con Derma (ver researchData.ts → diaEstudioTipo): un día hábil sí,
  * uno no. El bloque del Calendar 13:30–14:15 alterna Research↔Derma — NO se toca el Calendar.
  *
@@ -12,7 +12,7 @@
 import { Prioridad } from './researchData';
 
 export const DAILY_META = {
-  inicio: '2026-09-04', fin: '2026-12-29', totalDias: 42, // D1=Lun 2026-06-22 (1er slot-research ≥19-jun; 19-jun=Derma, finde libre) · alterna con Derma · +2 colchón
+  inicio: '2026-09-04', fin: '2027-01-04', totalDias: 42, // v5.4 (1-sep): D1=vie 4-sep-2026 (jue 3-sep = Derma por paridad) · alterna con Derma · sáb+dom libres · salta 25-dic/31-dic/1-ene · +2 colchón
   bloque: '13:30–14:15 (boards · alterna con Derma) · 1 átomo-research por día-Research',
   artefacto: 'SR-1 · Complicaciones vasculares de fillers + tiempo-a-tratamiento (Línea 4 · Mayo 38/40)',
 };
@@ -231,8 +231,8 @@ export const DIAS: DiaResearch[] = [
   { d: 39, fecha: '2026-12-21', fase: 'R8', code: 'R39', prioridad: 'CRITICA', objetivo: 'CHECKPOINT HUMANO (HITL): verificar citas reales por IA (Crossref/PMID + CSL-JSON), paráfrasis, cadena estadística', entregable: 'Word .docx revisado y aprobado por Joseph', tool: 'Crossref · PubMed', recs: ['CROSSREF', 'PRISMAC'], apex: { id: 'hitl', t: 'Checkpoint humano CP-4' } },
   { d: 40, fecha: '2026-12-23', fase: 'R8', code: 'R40', prioridad: 'CRITICA', objetivo: 'SUBMIT SR-1 + abrir SR-2 (Línea 5, fototipos IV–VI): registrar nuevo PICO', entregable: 'SR-1 enviada ✅ + PICO de SR-2 borrador', tool: 'Editorial Manager', recs: ['PROS'], apex: { id: 'submit', t: 'SR-1 enviada · SR-2 abierta' } },
 
-  { d: 41, fecha: '2026-12-25', fase: 'R8', code: 'RC1', prioridad: 'BAJA', objetivo: 'COLCHÓN 1 · Cerrar flecos: terminar cualquier átomo a medias + re-correr el checklist PRISMA de SR-1', entregable: 'SR-1 sin pendientes abiertos', tool: 'Rayyan · Zotero', recs: ['PM'], apex: null },
-  { d: 42, fecha: '2026-12-29', fase: 'R8', code: 'RC2', prioridad: 'BAJA', objetivo: 'COLCHÓN 2 · Retro del método: qué automatizar para SR-2 (notas para el sistema agéntico)', entregable: 'Lista de mejoras + arranque de plan SR-2', tool: 'Obsidian', recs: ['PM'], apex: null },];
+  { d: 41, fecha: '2026-12-29', fase: 'R8', code: 'RC1', prioridad: 'BAJA', objetivo: 'COLCHÓN 1 · Cerrar flecos: terminar cualquier átomo a medias + re-correr el checklist PRISMA de SR-1', entregable: 'SR-1 sin pendientes abiertos', tool: 'Rayyan · Zotero', recs: ['PM'], apex: null },
+  { d: 42, fecha: '2027-01-04', fase: 'R8', code: 'RC2', prioridad: 'BAJA', objetivo: 'COLCHÓN 2 · Retro del método: qué automatizar para SR-2 (notas para el sistema agéntico)', entregable: 'Lista de mejoras + arranque de plan SR-2', tool: 'Obsidian', recs: ['PM'], apex: null },];
 
 export function diaDe(fechaISO: string): DiaResearch | undefined { return DIAS.find((x) => x.fecha === fechaISO); }
 export function diaPrevio(d: DiaResearch): DiaResearch | undefined { return DIAS.find((x) => x.d === d.d - 1); }

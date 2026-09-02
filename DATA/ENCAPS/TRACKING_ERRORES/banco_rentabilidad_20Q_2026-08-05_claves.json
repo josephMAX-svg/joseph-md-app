@@ -1,0 +1,44 @@
+{
+  "set": "BANCO_RENTABILIDAD_20Q_2026-08-05",
+  "fecha": "2026-08-05",
+  "bloque": "banco_rentabilidad_cross_tema",
+  "modo": "ciego_pregunta_a_pregunta (Palmerton)",
+  "dias_al_examen": 4,
+  "opciones": 4,
+  "criterio_de_armado": {
+    "factor_1_segmento": "21:48 — fuera de segmento del Calendar; se genera como BANCO de rentabilidad (pregunta -> solucion inmediata), no modo examen",
+    "factor_2_errores": "I-3 es el unico tema con data (SET1 20%, SET2 80%). Sub-angulos fallados en SET2: tipo de vigilancia (eje de clasificacion), escala epidemiologica, cadena epidemiologica -> se re-testean con escenario NUEVO. Los otros 6 criticos estan SIN DATA -> primera medicion ciega",
+    "factor_3_pronostico": "vector canonico II33 I28 V22 III13 IV4 (PRONOSTICO_WALKFORWARD_2026-2_v2 §7). Puntos: I-3 12 · V-2 9 · II-1 5 · II-3 5 · II-11 5 · III-5 5 · II-8 4 · III-8 4 · I-5 4 · V-1 3 · I-4 3",
+    "factor_4_antialucinacion": "cada clave anclada a un angulo DOCUMENTADO en examen real (GUIA_POR_TEMA_2026-2.md, con numero de pregunta) o a normativa citada con numero y anio. V-MED (farmacovigilancia/DIGEMID) se EXCLUYO a proposito: MAPA_COBERTURA lo marca como gap sin respaldo en compendios y no habia normativa verificable en disco -> no se afirma"
+  },
+  "distribucion": {
+    "I": {"n": 5, "pct": 25, "forecast": 28, "detalle": "I-3 x3, I-5 x1, I-1 x1"},
+    "II": {"n": 7, "pct": 35, "forecast": 33, "detalle": "II-1 x2, II-3 x2, II-11 x2, II-8 x1"},
+    "V": {"n": 5, "pct": 25, "forecast": 22, "detalle": "V-2 x3, V-1 x1, V-3 x1"},
+    "III": {"n": 3, "pct": 15, "forecast": 13, "detalle": "III-5 x2, III-8 x1"},
+    "IV": {"n": 0, "pct": 0, "forecast": 4, "detalle": "0 con n=20 (0.8 redondea a 0). Coherente con el plan: IV = minimo esfuerzo"}
+  },
+  "preguntas": [
+    {"n":1,"cod":"I-3","sub":"Investigacion de brote","key":"B","molde":"2025-2 Q22 (brote de ictericia en Huamanguilla)","fuente":"MOPECE 5 (OPS) - pasos de investigacion de brote; Dir. Adm. 341-MINSA/CDC-2023 5.1.a (definicion de brote)"},
+    {"n":2,"cod":"I-3","sub":"Cadena epidemiologica","key":"B","molde":"re-test de su fallo SET2 Q19 (puerta de salida vs via de transmision)","fuente":"Compendio SP 2026-II pag. 13 - cadena de 6 eslabones; Theomed Manual SP"},
+    {"n":3,"cod":"I-3","sub":"Escala epidemiologica","key":"B","molde":"re-test de su fallo SET2 Q16 (endemia) + 2026-1 Q99","fuente":"MOPECE/OPS; Compendio SP 2026-II pag. 10"},
+    {"n":4,"cod":"I-5","sub":"Determinantes sociales","key":"B","molde":"2026-1 Q70 / Q19; 2025-2 Q88","fuente":"Comision OMS sobre Determinantes Sociales de la Salud 2008 (modelo Solar & Irwin)"},
+    {"n":5,"cod":"I-1","sub":"Estrategia de promocion","key":"B","molde":"2025-2 Q93 (alcalde, comisario, parroco = intersectorialidad)","fuente":"Carta de Ottawa 1986; Lineamientos de Politica de Promocion de la Salud (MINSA)"},
+    {"n":6,"cod":"II-1","sub":"Conducta parto / nivel","key":"B","molde":"2026-1 Q45 (expulsivo en EESS con medico+obstetra = atender)","fuente":"NTS 105 / NTS 121 (atencion del parto); NTS 020 referencia"},
+    {"n":7,"cod":"II-1","sub":"Preeclampsia severa","key":"A","molde":"2025-1A Q63 (PA 170/110 + cefalea/vision borrosa = MgSO4 EV)","fuente":"NTS 105-MINSA; GPC emergencias obstetricas MINSA"},
+    {"n":8,"cod":"II-3","sub":"ESAVI vs evento coincidente","key":"B","molde":"2024-2A Q98 / 2024-2B Q90 (otra etiologia identificada = coincidente)","fuente":"NTS 196-MINSA/2022 - clasificacion de ESAVI"},
+    {"n":9,"cod":"II-3","sub":"Esquema del recien nacido","key":"A","molde":"2026-1 Q84 (RN parto domiciliario = BCG + HvB <24h)","fuente":"NTS 196-MINSA/2022 - esquema nacional de vacunacion"},
+    {"n":10,"cod":"II-11","sub":"Sifilis latente tardia","key":"B","molde":"2026-1 Q67 (latente de duracion desconocida = 3 dosis semanales)","fuente":"NTS 097-MINSA; NTS 230-MINSA (PTMI VIH/sifilis/VHB)"},
+    {"n":11,"cod":"II-11","sub":"Tamizaje dual en gestante","key":"A","molde":"2026-1 Q12 (gestante no controlada = prueba rapida dual)","fuente":"NTS 230-MINSA - prevencion de la transmision materno-infantil"},
+    {"n":12,"cod":"II-8","sub":"Confirmar antes de tratar","key":"B","molde":"2025-2 Q89 (glicemia 120 -> repetir); 2024-2A Q64 (prediabetes 100-125)","fuente":"NTS 229-MINSA/2024 (HEARTS - HTA y DM)"},
+    {"n":13,"cod":"V-2","sub":"PEI vs POI","key":"B","molde":"2025-2 Q20 y Q52; 2024-2A/B Q10","fuente":"Directiva 001-2024-CEPLAN/PCD"},
+    {"n":14,"cod":"V-2","sub":"Horizonte del PEI","key":"C","molde":"angulo recurrente 2025-2 Q52 / 2026-1 Q88","fuente":"Guia CEPLAN 2024 (Directiva 001-2024). ATENCION: material y examenes antiguos decian 3 anios","alerta":"discrepancia_documentada"},
+    {"n":15,"cod":"V-2","sub":"FODA - amenaza","key":"B","molde":"2025-1A Q62 (habitos de la poblacion = amenaza)","fuente":"Directiva 001-2024-CEPLAN/PCD - analisis estrategico institucional"},
+    {"n":16,"cod":"V-1","sub":"UPSS -> categoria","key":"B","molde":"2025-2 Q42 y Q82 (solo consulta externa por medico = I-2)","fuente":"NTS 021-MINSA/DGSP-V.03 (RM 546-2011)"},
+    {"n":17,"cod":"V-3","sub":"Condicion de contrarreferencia","key":"B","molde":"2025-1A Q16 / 2025-1B Q82 (resuelto parcialmente = MEJORADO)","fuente":"NTS 020-MINSA/DGSP (RM 751-2004)"},
+    {"n":18,"cod":"III-5","sub":"Conflicto intercultural","key":"B","molde":"2024-2A Q44 / 2024-2B Q68","fuente":"DS 016-2016-SA (Politica Sectorial de Salud Intercultural); NTS 047-MINSA/DGIESP"},
+    {"n":19,"cod":"III-5","sub":"4 dimensiones de pertinencia cultural","key":"C","molde":"2025-1A Q76 y 2025-1B Q13 (identica, opciones barajadas). Clave oficial MINSA verificada en el PDF de claves: 'participacion ciudadana' en AMBAS versiones","fuente":"Directiva Administrativa N 261-MINSA/2019/DGIESP, aprobada por RM 228-2019/MINSA (adecuacion de los servicios de salud con pertinencia cultural en el primer nivel de atencion). Texto literal de las 4 dimensiones en Compendio Etica e Interculturalidad 2026-II (Dr Lopez), seccion 'Atencion en salud con enfoque intercultural y pertinencia cultural'","correccion":"2026-08-05: la clave estaba MAL (decia 'atencion intercultural'). El error venia de GUIA_POR_TEMA_2026-2.md linea 481, ya corregida. MAPA_COBERTURA linea 123 SI la tenia bien. Ademas las opciones se reemplazaron por las del examen real."},
+    {"n":20,"cod":"III-8","sub":"Principios del servidor publico","key":"B","molde":"2025-1A Q48 / 2025-1B Q12 (cayo textual dos veces)","fuente":"Ley 27815 - Codigo de Etica de la Funcion Publica; DS 033-2005-PCM"}
+  ],
+  "pendiente": "APENDAR las respuestas de Joseph a _registro_resoluciones.json al terminar la ronda (tu/correcta/ok/confianza/error/causa/ruta)"
+}

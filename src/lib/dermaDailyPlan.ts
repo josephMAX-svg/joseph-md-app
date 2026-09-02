@@ -22,8 +22,9 @@
  *   X ESTÉTICA (d47-68: toxina → fillers/oclusión vascular → peelings → láser → cosmecéutica) ·
  *   Z Cierre (d69-70). Regla de SEGURIDAD primero: complicaciones antes que técnica.
  *
- * ⚠ FECHAS re-fechadas 2026-09-01 → 2027-03-12 (interdiario con Research, ancla en
- * researchData.ts#diaEstudioTipo) — NO TOCAR las fechas. URLs 100% reales: q-banks y
+ * ⚠ FECHAS re-fechadas v5.4: D1 jue 2026-09-03 → D70 jue 2027-03-18 (interdiario con Research, ancla en
+ * researchData.ts#diaEstudioTipo; sáb+dom libres; salta 25-dic/31-dic/1-ene) — NO TOCAR las fechas a mano
+ * (usar DATA/_scripts/remap_inicio.js). URLs 100% reales: q-banks y
  * cases verificados en dermaSourcesData.ts; deep-links de libros con sectionid verificado;
  * papers = DOIs/PMC del PLAN_ELITE y de referentes.md.
  */
@@ -53,7 +54,7 @@ export const PM_CAP = {
 } as const;
 
 export const DERMA_DAILY_META = {
-  inicio: '2026-09-03', fin: '2027-03-16', totalDias: 70, // fechas YA re-fechadas (v2 27-ago) · interdiario con Research · NO tocar
+  inicio: '2026-09-03', fin: '2027-03-18', totalDias: 70, // v5.4 (1-sep): D1=jue 3-sep-2026 · interdiario con Research (paridad researchData.ts) · sáb+dom libres · salta 25-dic/31-dic/1-ene · NO tocar a mano
   bloque: '13:30–14:15 (45 min · franja boards del Calendar, alterna con Research — interdiario)',
   nota: 'PLAN ÉLITE v2: cada sesión = 1-2 casos CIEGOS (Board Review, 200) + ~10Q review (rotación 1.301Q, fallos etiquetados med/ped/surg/path) + 10′ lectura del módulo. Progreso REAL marcable (studyProgress key "derma"). El día mostrado salta los días-Research.',
 };
@@ -228,62 +229,62 @@ export const DERMA_DIAS: DiaDerma[] = [
     access: CASO, qbankly: rBARN, promir: null, extra: { t: 'Facial Flap Surgery', url: book(2829) } },
   { d: 43, fecha: '2026-12-30', bloque: B.G, bKey: 'G', tier: 'ALTA', sub: 'Mohs + control de márgenes: indicaciones (área H) y lógica', referente: null,
     access: CASO, qbankly: rBARN, promir: null, extra: { t: 'Margin Control Surgery of the Skin', url: book(3319) } },
-  { d: 44, fecha: '2027-01-01', bloque: B.G, bKey: 'G', tier: 'CRIT', sub: 'Cicatrización + complicaciones quirúrgicas y su manejo (ciencia CORE surgical)', referente: null,
+  { d: 44, fecha: '2027-01-05', bloque: B.G, bKey: 'G', tier: 'CRIT', sub: 'Cicatrización + complicaciones quirúrgicas y su manejo (ciencia CORE surgical)', referente: null,
     access: CASO, qbankly: rCORE, promir: null, extra: { t: 'Dermatologic Surgery · Managing Surgical Complications', url: `${MH}/content.aspx?bookid=2811&sectionid=245222451` } },
   // ── MÓDULO H · Checkpoint CORE (mapa de debilidades antes de la fase estética) ──
-  { d: 45, fecha: '2027-01-05', bloque: B.H, bKey: 'H', tier: 'ALTA', sub: 'Checkpoint 1: mapa de fallos por módulo CORE (med/ped/surg/path) → qué re-drillear en FSRS', referente: null,
+  { d: 45, fecha: '2027-01-07', bloque: B.H, bKey: 'H', tier: 'ALTA', sub: 'Checkpoint 1: mapa de fallos por módulo CORE (med/ped/surg/path) → qué re-drillear en FSRS', referente: null,
     access: CASO_DD, qbankly: rQOTW, promir: null, extra: { t: 'ABD CORE Study Guide (PDF oficial)', url: ABD_GUIDE } },
-  { d: 46, fecha: '2027-01-07', bloque: B.H, bKey: 'H', tier: 'ALTA', sub: 'Checkpoint 2: re-drill de fallos etiquetados + pares del DD Challenge de tus áreas flojas', referente: null,
+  { d: 46, fecha: '2027-01-11', bloque: B.H, bKey: 'H', tier: 'ALTA', sub: 'Checkpoint 2: re-drill de fallos etiquetados + pares del DD Challenge de tus áreas flojas', referente: null,
     access: CASO_DD, qbankly: rCORE, promir: null, extra: { t: 'Guidebook to Dermatologic Diagnosis (repaso)', url: book(2960) } },
   // ── MÓDULO X · ESTÉTICA (la meta: 22 átomos · seguridad ANTES que técnica) ──
-  { d: 47, fecha: '2027-01-11', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'Anatomía facial 3D: 5 capas, SMAS, compartimentos grasos, ligamentos de retención', referente: 'Cotofana',
+  { d: 47, fecha: '2027-01-13', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'Anatomía facial 3D: 5 capas, SMAS, compartimentos grasos, ligamentos de retención', referente: 'Cotofana',
     access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Baumann 3e · Facial Anatomy and Aging', url: `${MH}/content.aspx?bookid=3200&sectionid=266614877` } },
-  { d: 48, fecha: '2027-01-13', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'Arterias peligrosas + zonas seguras: glabela, nariz, temple, surco nasogeniano (no errar)', referente: 'Cotofana',
+  { d: 48, fecha: '2027-01-15', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'Arterias peligrosas + zonas seguras: glabela, nariz, temple, surco nasogeniano (no errar)', referente: 'Cotofana',
     access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Vascular Safe Zones (PAN 2022)', url: 'https://pubmed.ncbi.nlm.nih.gov/36469395/' } },
-  { d: 49, fecha: '2027-01-15', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Envejecimiento estructural (hueso → grasa → ligamento → piel) + análisis facial: tercios, MD ASA', referente: 'de Maio',
+  { d: 49, fecha: '2027-01-19', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Envejecimiento estructural (hueso → grasa → ligamento → piel) + análisis facial: tercios, MD ASA', referente: 'de Maio',
     access: CASO, qbankly: rBARN, promir: null, extra: { t: 'Baumann 3e · Intrinsic Aging', url: `${MH}/content.aspx?bookid=3200&sectionid=266614593` } },
-  { d: 50, fecha: '2027-01-19', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'Toxina I: mecanismo (clivaje de SNAP-25), serotipos, unidades NO intercambiables entre marcas', referente: 'Carruthers',
+  { d: 50, fecha: '2027-01-21', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'Toxina I: mecanismo (clivaje de SNAP-25), serotipos, unidades NO intercambiables entre marcas', referente: 'Carruthers',
     access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Baumann 3e · Botulinum Toxins', url: `${MH}/content.aspx?bookid=3200&sectionid=266616475` } },
-  { d: 51, fecha: '2027-01-21', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Toxina II: tercio superior (frontal, glabela, patas de gallo) — músculos, dosis, cómo evitar la ptosis', referente: 'Carruthers',
+  { d: 51, fecha: '2027-01-25', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Toxina II: tercio superior (frontal, glabela, patas de gallo) — músculos, dosis, cómo evitar la ptosis', referente: 'Carruthers',
     access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Dermatologic Surgery · Neuromodulators', url: `${MH}/content.aspx?bookid=2811&sectionid=245227386` } },
-  { d: 52, fecha: '2027-01-25', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Toxina III: tercio inferior, Nefertiti, masetero, hiperhidrosis', referente: 'Carruthers',
+  { d: 52, fecha: '2027-01-27', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Toxina III: tercio inferior, Nefertiti, masetero, hiperhidrosis', referente: 'Carruthers',
     access: CASO, qbankly: rBARN, promir: null, extra: { t: 'Cosmetic Procedures in Primary Care · Botulinum Toxin', url: `${MH}/content.aspx?bookid=2953&sectionid=248412579` } },
-  { d: 53, fecha: '2027-01-27', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'Toxina IV: complicaciones y manejo — ptosis (apraclonidina), asimetrías, difusión (seguridad primero)', referente: 'Carruthers',
+  { d: 53, fecha: '2027-01-29', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'Toxina IV: complicaciones y manejo — ptosis (apraclonidina), asimetrías, difusión (seguridad primero)', referente: 'Carruthers',
     access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Complicaciones de toxina (Cureus 2026, OA)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC12865869/' } },
-  { d: 54, fecha: '2027-01-29', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: "Rellenos I: reología del HA (G', cohesividad) + bioestimuladores (CaHA/PLLA)", referente: 'de Maio',
+  { d: 54, fecha: '2027-02-02', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: "Rellenos I: reología del HA (G', cohesividad) + bioestimuladores (CaHA/PLLA)", referente: 'de Maio',
     access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Cosmeceuticals · Hyaluronic Acid', url: `${MH}/content.aspx?bookid=2812&sectionid=244978644` } },
-  { d: 55, fecha: '2027-02-02', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Rellenos II: planos de inyección, aguja vs cánula, técnicas por región', referente: 'de Maio',
+  { d: 55, fecha: '2027-02-04', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Rellenos II: planos de inyección, aguja vs cánula, técnicas por región', referente: 'de Maio',
     access: CASO, qbankly: rBARN, promir: null, extra: { t: 'Dermatologic Surgery · Fillers and Injectable Implants', url: `${MH}/content.aspx?bookid=2811&sectionid=245227491` } },
-  { d: 56, fecha: '2027-02-04', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Rellenos III: MD Codes fundación (Ck, T, Tt) + myomodulation', referente: 'de Maio',
+  { d: 56, fecha: '2027-02-08', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Rellenos III: MD Codes fundación (Ck, T, Tt) + myomodulation', referente: 'de Maio',
     access: CASO, qbankly: rPIC, promir: null, extra: { t: 'MD Codes paper (open access PMC)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8012343/' } },
-  { d: 57, fecha: '2027-02-08', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'OCLUSIÓN VASCULAR: reconocimiento inmediato + protocolo HDPH de hialuronidasa DE MEMORIA (no errar)', referente: 'DeLorenzi',
+  { d: 57, fecha: '2027-02-10', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'OCLUSIÓN VASCULAR: reconocimiento inmediato + protocolo HDPH de hialuronidasa DE MEMORIA (no errar)', referente: 'DeLorenzi',
     access: CASO, qbankly: rQOTW, promir: null, extra: { t: 'HDPH Protocol (ASJ 2017)', url: 'https://pubmed.ncbi.nlm.nih.gov/28333326/' } },
-  { d: 58, fecha: '2027-02-10', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'Ceguera por relleno: prevención, manejo inmediato, kit de emergencia (no errar)', referente: 'Goodman/Magnusson',
+  { d: 58, fecha: '2027-02-12', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'Ceguera por relleno: prevención, manejo inmediato, kit de emergencia (no errar)', referente: 'Goodman/Magnusson',
     access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Consenso Embolic Visual Loss (ASJ 2020, OA)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7427155/' } },
-  { d: 59, fecha: '2027-02-12', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Rellenos IV: consideraciones étnicas y de género + fat transfer', referente: 'de Maio',
+  { d: 59, fecha: '2027-02-16', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Rellenos IV: consideraciones étnicas y de género + fat transfer', referente: 'de Maio',
     access: CASO, qbankly: rBARN, promir: null, extra: { t: 'Dermatologic Surgery · Ethnic & Gender Considerations (Fillers)', url: `${MH}/content.aspx?bookid=2811&sectionid=245227608` } },
-  { d: 60, fecha: '2027-02-16', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Peelings I: profundidad (superficial/medio/profundo), agentes (glicólico, salicílico, TCA, fenol), frosting', referente: 'Baumann',
+  { d: 60, fecha: '2027-02-18', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Peelings I: profundidad (superficial/medio/profundo), agentes (glicólico, salicílico, TCA, fenol), frosting', referente: 'Baumann',
     access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Baumann 3e · Chemical Peels', url: `${MH}/content.aspx?bookid=3200&sectionid=266616672` } },
-  { d: 61, fecha: '2027-02-18', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Peelings II: por fototipo (IV–VI), prevención de PIH, complicaciones (conecta con L4/L5 research)', referente: 'Baumann',
+  { d: 61, fecha: '2027-02-22', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Peelings II: por fototipo (IV–VI), prevención de PIH, complicaciones (conecta con L4/L5 research)', referente: 'Baumann',
     access: CASO, qbankly: rBARN, promir: null, extra: { t: 'Cosmetic Derm for Skin of Color · Ablative/Deep Peels', url: `${MH}/content.aspx?bookid=2956&sectionid=248485136` } },
-  { d: 62, fecha: '2027-02-22', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'Láser I: fototermólisis selectiva (Anderson-Parrish) — cromóforo → λ → duración de pulso → enfriamiento (la MISMA física del CORE surgical)', referente: 'Anderson',
+  { d: 62, fecha: '2027-02-24', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'Láser I: fototermólisis selectiva (Anderson-Parrish) — cromóforo → λ → duración de pulso → enfriamiento (la MISMA física del CORE surgical)', referente: 'Anderson',
     access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Lasers in Dermatology · Fundamentals', url: `${MH}/content.aspx?bookid=2818&sectionid=240357100` } },
-  { d: 63, fecha: '2027-02-24', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Láser II: lesiones vasculares (PDL) + pigmento y tatuajes (Q-switched/pico)', referente: 'Anderson',
+  { d: 63, fecha: '2027-02-26', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Láser II: lesiones vasculares (PDL) + pigmento y tatuajes (Q-switched/pico)', referente: 'Anderson',
     access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Lasers in Dermatology · Cutaneous Vascular Lesions', url: `${MH}/content.aspx?bookid=2818&sectionid=240357136` } },
-  { d: 64, fecha: '2027-02-26', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Láser III: resurfacing fraccional (ablativo/no-ablativo) + radiofrecuencia + tightening', referente: 'Manstein/Anderson',
+  { d: 64, fecha: '2027-03-02', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Láser III: resurfacing fraccional (ablativo/no-ablativo) + radiofrecuencia + tightening', referente: 'Manstein/Anderson',
     access: CASO, qbankly: rBARN, promir: null, extra: { t: 'Lasers in Dermatology · Laser & RF Resurfacing', url: `${MH}/content.aspx?bookid=2818&sectionid=240357478` } },
-  { d: 65, fecha: '2027-03-02', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'Láser IV: seguridad en fototipos IV–VI — parámetros, PIH, depilación en piel étnica (no errar)', referente: 'Anderson',
+  { d: 65, fecha: '2027-03-04', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'Láser IV: seguridad en fototipos IV–VI — parámetros, PIH, depilación en piel étnica (no errar)', referente: 'Anderson',
     access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Dermatologic Surgery · Laser/Light en piel de color', url: `${MH}/content.aspx?bookid=2811&sectionid=245228834` } },
-  { d: 66, fecha: '2027-03-04', bloque: B.X, bKey: 'X', tier: 'MED', sub: 'Contorno corporal (criolipólisis, HIFU) + escleroterapia básica (ambos en el temario CORE surgical)', referente: null,
+  { d: 66, fecha: '2027-03-08', bloque: B.X, bKey: 'X', tier: 'MED', sub: 'Contorno corporal (criolipólisis, HIFU) + escleroterapia básica (ambos en el temario CORE surgical)', referente: null,
     access: CASO, qbankly: rBARN, promir: null, extra: { t: 'Lasers in Dermatology · Devices for Body Contour', url: `${MH}/content.aspx?bookid=2818&sectionid=240357542` } },
-  { d: 67, fecha: '2027-03-08', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Microneedling + PRP + skinboosters: evidencia y técnica', referente: 'Baumann',
+  { d: 67, fecha: '2027-03-10', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Microneedling + PRP + skinboosters: evidencia y técnica', referente: 'Baumann',
     access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Baumann 3e · Microneedling and PRP', url: `${MH}/content.aspx?bookid=3200&sectionid=266617053` } },
-  { d: 68, fecha: '2027-03-10', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Ciencia cosmecéutica: Baumann Skin Typing, retinoides tópicos, antioxidantes, fotoprotección', referente: 'Baumann',
+  { d: 68, fecha: '2027-03-12', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Ciencia cosmecéutica: Baumann Skin Typing, retinoides tópicos, antioxidantes, fotoprotección', referente: 'Baumann',
     access: CASO, qbankly: rCORE, promir: null, extra: { t: 'Cosmeceuticals and Cosmetic Ingredients (83 caps)', url: book(2812) } },
   // ── MÓDULO Z · Cierre (integración + repaso de fallos) ──
-  { d: 69, fecha: '2027-03-12', bloque: B.Z, bKey: 'Z', tier: 'MED', sub: 'REPASO 1: segunda pasada FSRS — SOLO casos y preguntas fallados, por módulo CORE más flojo', referente: null,
+  { d: 69, fecha: '2027-03-16', bloque: B.Z, bKey: 'Z', tier: 'MED', sub: 'REPASO 1: segunda pasada FSRS — SOLO casos y preguntas fallados, por módulo CORE más flojo', referente: null,
     access: CASO_FALLOS, qbankly: rPIC, promir: null, extra: { t: 'Guidebook to Dermatologic Diagnosis (repaso)', url: book(2960) } },
-  { d: 70, fecha: '2027-03-16', bloque: B.Z, bKey: 'Z', tier: 'MED', sub: 'REPASO 2: mapa final de debilidades + plan del ciclo siguiente (post-Step 1: subir a 5 casos/sesión)', referente: null,
+  { d: 70, fecha: '2027-03-18', bloque: B.Z, bKey: 'Z', tier: 'MED', sub: 'REPASO 2: mapa final de debilidades + plan del ciclo siguiente (post-Step 1: subir a 5 casos/sesión)', referente: null,
     access: CASO_DD, qbankly: rQOTW, promir: null, extra: { t: 'ABD CORE Study Guide (PDF oficial)', url: ABD_GUIDE } },];
 
 export function dermaDiaDe(fechaISO: string): DiaDerma | undefined { return DERMA_DIAS.find(x => x.fecha === fechaISO); }

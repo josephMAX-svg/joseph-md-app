@@ -1,0 +1,329 @@
+{
+ "set": "I-3_D1b_2026-07-06",
+ "fecha": "2026-07-06",
+ "bloque": "pretest_dia",
+ "area": "I",
+ "subtema": "I-3",
+ "preguntas": [
+  {
+   "n": 1,
+   "subangulo": "Notificacion: periodicidad y flujo",
+   "dif": "dificil",
+   "enunciado": "En un EESS I-3 de Nauta (Loreto), el serumista atiende en una misma mañana a: (1) un recién nacido de 12 días con trismus, rigidez y espasmos por onfalitis tras parto domiciliario; (2) un varón de 34 años con herida punzante de pie que no recuerda su última dosis antitetánica, aún asintomático; (3) un adulto con dengue con signos de alarma (dolor abdominal intenso, hematocrito elevado) sin choque. Según la periodicidad de notificación de la Directiva 046-MINSA/DGE, ¿cuál de estos casos DEBE notificarse de forma INMEDIATA (< 24 horas)?",
+   "opts": {
+    "A": "Solo el recién nacido con tétanos neonatal",
+    "B": "El recién nacido con tétanos neonatal y el dengue con signos de alarma",
+    "C": "Solo el dengue con signos de alarma",
+    "D": "Los tres casos, por tratarse de enfermedades transmisibles",
+    "E": "El adulto con herida tetanígena y el recién nacido, por riesgo de tétanos"
+   },
+   "correcta": "A",
+   "fuente": "Directiva 046-MINSA/DGE (RM 506-2012), Anexo de enfermedades de notificacion inmediata/semanal",
+   "explicacion": "La correcta es A. El TETANOS NEONATAL es de notificacion INMEDIATA (< 24 h) por RENACE (Red Nacional de Epidemiologia), porque es evento en eliminacion y trazador de coberturas de vacunacion materna. TRAMPAS: (1) el tetanos del ADULTO (herida del varon de 34 a) es de notificacion SEMANAL, no inmediata: la periodicidad depende de si es neonatal (inmediata) o adulto (semanal) — misma enfermedad, distinto grupo, distinta periodicidad; distractor E cae aqui. (2) El dengue CON signos de alarma es SEMANAL; solo el DENGUE GRAVE es inmediato — distractores B y C confunden 'con alarma' con 'grave'. (3) D es falso: no toda transmisible es inmediata; la periodicidad esta tabulada por evento en el Anexo, no por la categoria generica. Concepto: la periodicidad se lee por evento y subgrupo en el Anexo de la Dir 046, no se deduce por gravedad aparente."
+  },
+  {
+   "n": 2,
+   "subangulo": "Notificacion: periodicidad y flujo",
+   "dif": "dificil",
+   "enunciado": "Una serumista en un EESS I-2 de una comunidad andina de Apurimac quiere reportar un caso confirmado de tuberculosis pulmonar y, en paralelo, sospecha un caso de sarampion en un niño de 3 años con exantema, fiebre y conjuntivitis. Duda sobre a quién y en qué orden enviar la notificacion dentro del sistema de vigilancia. ¿Cuál es la conducta CORRECTA respecto al flujo y la periodicidad?",
+   "opts": {
+    "A": "TB: notificacion semanal siguiendo el flujo ascendente EESS -> Microrred -> Red -> DIRESA -> DGE/CDC; sarampion: notificacion inmediata (< 24 h) por el mismo flujo ascendente",
+    "B": "Ambos casos se notifican directamente a la DGE/CDC porque el EESS I-2 no tiene competencia para procesar notificaciones",
+    "C": "TB: notificacion inmediata por ser transmisible respiratoria; sarampion: notificacion semanal por ser exantematica",
+    "D": "El sarampion lo notifica primero la DIRESA hacia el EESS para que este confirme el caso antes de reportar hacia arriba",
+    "E": "Ambos son de notificacion mensual y se consolidan al cierre del periodo para enviarlos juntos a la Red"
+   },
+   "correcta": "A",
+   "fuente": "Directiva 046-MINSA/DGE (RM 506-2012): periodicidad por evento y flujo ascendente del RENACE",
+   "explicacion": "La correcta es A. TODA tuberculosis es de notificacion SEMANAL (sin importar forma clinica), y el sarampion es de notificacion INMEDIATA (< 24 h) por ser evento en eliminacion. El FLUJO es ascendente y parte del EESS como unidad minima notificante: EESS -> Microrred -> Red -> DISA/DIRESA/GERESA -> DGE/CDC. TRAMPAS: B invierte el rol del EESS, que SI es la unidad minima notificante (no se saltea el nivel local). C invierte periodicidades (TB no es inmediata; el sarampion no es semanal). D invierte el sentido del flujo: el nivel local (EESS, piso) notifica hacia arriba; la DIRESA (techo) NO le devuelve el caso para que lo confirme antes de reportar. E inventa periodicidad mensual (mensual solo son 5: VIH, SIDA, accidentes de transito, IIH y cancer). Concepto clave que sobre-pesar: EESS = piso que notifica; DIRESA = techo que consolida y responde — el sentido es de abajo hacia arriba."
+  },
+  {
+   "n": 3,
+   "subangulo": "Notificacion: periodicidad y flujo",
+   "dif": "dificil",
+   "enunciado": "En un EESS I-4 de San Martin fallece una gestante de 28 años en el puerperio inmediato por hemorragia posparto. El serumista de turno se pregunta cómo proceder con la vigilancia de este evento. ¿Cuál es la conducta CORRECTA segun la vigilancia de la muerte materna?",
+   "opts": {
+    "A": "Notificacion inmediata (< 24 h) por RENACE ascendente, ademas de investigar la muerte incluyendo causas directas e indirectas",
+    "B": "Notificacion semanal consolidada junto con las demas defunciones del establecimiento, sin investigacion adicional",
+    "C": "Notificacion mensual al cierre del periodo, pues las muertes maternas se agrupan como estadistica vital",
+    "D": "Notificacion inmediata solo si la causa fue directa (obstetrica); si fuera indirecta, se reporta semanalmente",
+    "E": "No requiere notificacion al RENACE porque la mortalidad materna la vigila exclusivamente el area de estadistica del hospital"
+   },
+   "correcta": "A",
+   "fuente": "Directiva 046-MINSA/DGE (RM 506-2012) y Directiva de vigilancia de la muerte materna (MINSA/DGE)",
+   "explicacion": "La correcta es A. La MUERTE MATERNA es evento de notificacion INMEDIATA (< 24 h) por el flujo ascendente del RENACE y, ademas, debe INVESTIGARSE (autopsia verbal/estudio del caso) contemplando tanto las causas DIRECTAS (obstetricas, p. ej. hemorragia posparto) como las INDIRECTAS (patologia agravada por el embarazo). TRAMPAS: B y C degradan la periodicidad a semanal/mensual — la muerte materna es prioridad y va inmediata, no consolidada. D introduce una falsa distincion: la periodicidad NO cambia segun si la causa es directa o indirecta; ambas se notifican inmediatas y ambas entran en la investigacion (justamente porque contar solo las directas subestima el problema). E niega la vigilancia epidemiologica del evento, que es un trazador prioritario del pais. Concepto a sobre-pesar: muerte materna = inmediata + investigacion que incluye causas directas E indirectas."
+  },
+  {
+   "n": 4,
+   "subangulo": "Notificacion: periodicidad y flujo",
+   "dif": "media",
+   "enunciado": "En una semana epidemiologica sin ningun caso de las enfermedades bajo vigilancia en su jurisdiccion, el responsable de epidemiologia de un EESS de Ucayali no envia ningun reporte, asumiendo que 'si no hubo casos, no hay nada que notificar'. La DIRESA detecta el vacio en el sistema. ¿Cómo se denomina la accion que el EESS OMITIO y cuál es su naturaleza correcta?",
+   "opts": {
+    "A": "Notificacion negativa: reportar formalmente CERO casos; es obligatoria aunque no haya casos",
+    "B": "Silencio epidemiologico: la ausencia de reporte es una modalidad valida de notificacion cuando no hay casos",
+    "C": "Notificacion consolidada: agrupar los casos del periodo, que al ser cero exime del reporte",
+    "D": "Notificacion nominal: solo se exige cuando hay al menos un caso identificable por nombre",
+    "E": "Notificacion pasiva: el sistema asume automaticamente cero casos si no llega informacion"
+   },
+   "correcta": "A",
+   "fuente": "Directiva 046-MINSA/DGE (RM 506-2012): notificacion negativa obligatoria vs silencio epidemiologico",
+   "explicacion": "La correcta es A. La NOTIFICACION NEGATIVA es el reporte formal y OBLIGATORIO de CERO casos: comunica activamente que se vigilo y no hubo eventos, garantizando que el sistema sepa que el EESS esta operativo y notificante. Lo que ocurrio (no enviar nada) es un SILENCIO EPIDEMIOLOGICO, que NO es una modalidad valida sino una FALLA: no permite distinguir 'no hubo casos' de 'nadie notifico'. TRAMPAS: B es el error central del enunciado — el silencio no es una forma de notificar. C confunde con la notificacion consolidada/agrupada (que suma casos de un periodo, distinta de la negativa). D describe la notificacion individual/nominal (un caso identificado con datos del paciente). E confunde con la vigilancia pasiva (el sistema NO asume cero automaticamente). Concepto: cero casos tambien se notifica (negativa); el vacio de datos (silencio) es un defecto a corregir."
+  },
+  {
+   "n": 5,
+   "subangulo": "Tipos de vigilancia",
+   "dif": "media",
+   "enunciado": "Usted es serumista en un EESS I-1 de un caserío disperso de Loreto. Le preocupa que muchos casos de malaria en anexos ribereños río arriba nunca lleguen a consultar porque el viaje en peque-peque toma 6 horas y las familias tratan la fiebre con hierbas. Para NO depender de que el paciente acuda espontáneamente al establecimiento, decide organizar visitas domiciliarias, revisar historias de febriles previos y coordinar toma de gota gruesa en las viviendas. ¿Qué tipo de vigilancia epidemiológica está implementando y cuál es su principal ventaja frente a lo que hacía antes?",
+   "opts": {
+    "A": "Vigilancia pasiva; su ventaja es que consume menos recursos del equipo de salud",
+    "B": "Vigilancia activa; su ventaja es mayor sensibilidad para detectar casos que el sistema no capta por demanda espontánea",
+    "C": "Vigilancia centinela; su ventaja es identificar tendencias con pocos establecimientos de referencia",
+    "D": "Vigilancia sindrómica; su ventaja es la alerta precoz antes del diagnóstico confirmado",
+    "E": "Vigilancia pasiva reforzada; su ventaja es la notificación negativa semanal obligatoria"
+   },
+   "correcta": "B",
+   "fuente": "CDC - Principios de Vigilancia en Salud Publica (activa vs pasiva); MINSA/DGE marco de vigilancia epidemiologica.",
+   "explicacion": "Correcta B: la clave está en que el EQUIPO SALE a buscar el caso (visita domiciliaria, revisión de historias, toma de muestra en terreno) en lugar de esperar que el paciente acuda; eso define vigilancia ACTIVA, cuya ventaja cardinal es la ALTA SENSIBILIDAD (capta casos que la demanda espontánea pierde), útil en zonas dispersas y enfermedades bajo control/eliminación. Trampa A (vigilancia pasiva): es justo lo contrario de lo que describe la viñeta -en la pasiva el sistema ESPERA la consulta y tiene BAJA sensibilidad; es la inversión activa↔pasiva que hay que evitar. C (centinela): usa POCOS EESS de referencia CON laboratorio para TENDENCIAS (ej. influenza/IRAG), no búsqueda casa por casa. D (sindrómica): vigila SÍNDROMES antes del dx confirmado para alerta precoz, pero aquí ya hay dx (malaria por gota gruesa). E mezcla un rasgo real (notificación negativa) con etiqueta errónea. EESS = Establecimiento de Salud; IRAG = Infección Respiratoria Aguda Grave."
+  },
+  {
+   "n": 6,
+   "subangulo": "Tipos de vigilancia",
+   "dif": "dificil",
+   "enunciado": "La DIRESA de una región andina quiere monitorear la TENDENCIA estacional de influenza y otros virus respiratorios sin saturar de laboratorio a todos sus EESS. Selecciona 4 hospitales de referencia que cuentan con laboratorio para captar y confirmar sistemáticamente los casos de IRAG que ingresan por emergencia, generando la curva epidemiológica regional. Un funcionario objeta: 'así no vamos a detectar todos los casos de la región'. ¿Cuál es la respuesta epidemiológicamente correcta sobre el tipo de vigilancia elegido?",
+   "opts": {
+    "A": "Tiene razón: se debió usar vigilancia activa casa por casa, porque solo esa capta el 100% de los casos regionales",
+    "B": "El objetivo de la vigilancia centinela no es contar todos los casos sino estimar TENDENCIAS con pocos establecimientos seleccionados con laboratorio",
+    "C": "Se debió usar vigilancia pasiva en todos los EESS, porque garantiza mayor sensibilidad que la centinela",
+    "D": "Se debió usar vigilancia comunitaria con Agentes Comunitarios de Salud para cubrir toda la región andina",
+    "E": "Se debió usar vigilancia sindrómica, porque la influenza requiere confirmación antes de notificar"
+   },
+   "correcta": "B",
+   "fuente": "CDC - Vigilancia en Salud Publica (sistema centinela para tendencias); MINSA/DGE vigilancia centinela de influenza/IRAG.",
+   "explicacion": "Correcta B: la vigilancia CENTINELA usa un número LIMITADO de EESS de referencia CON laboratorio precisamente para vigilar TENDENCIAS y patrones (estacionalidad de influenza/IRAG), no para captar el total de casos; la objeción del funcionario confunde el propósito -centinela sacrifica exhaustividad a cambio de datos de calidad y sostenibles. Trampa A: la activa es más sensible para búsqueda de casos, pero NO es el diseño idóneo ni costo-efectivo para monitorear tendencia estacional a escala regional; 'captar el 100%' es meta irreal. C: la pasiva NO es más sensible que un sistema activo/centinela bien montado; invierte el concepto sensibilidad. D (comunitaria): los ACS operan en zonas dispersas amazónicas para acercar la captación, no para construir curvas de tendencia con laboratorio. E (sindrómica): vigila síndromes ANTES del dx para alerta precoz; aquí justamente se busca confirmación de laboratorio, lo opuesto. IRAG = Infección Respiratoria Aguda Grave; DIRESA = Dirección Regional de Salud; ACS = Agente Comunitario de Salud."
+  },
+  {
+   "n": 7,
+   "subangulo": "Tipos de vigilancia",
+   "dif": "dificil",
+   "enunciado": "Antes de tener resultados de laboratorio, un EESS de Ucayali empieza a recibir en 48 horas a 9 personas de la misma comunidad shipiba con fiebre, dolor retroocular y mialgias intensas. El médico serumista, aplicando el enfoque de Alerta-Respuesta, notifica de inmediato el conglomerado como 'síndrome febril' para gatillar la investigación, sin esperar la confirmación de dengue. Paralelamente, los Agentes Comunitarios de Salud de los anexos dispersos aguas abajo reportan más febriles a la posta. Identifique correctamente los DOS tipos de vigilancia que se están usando, en ese orden.",
+   "opts": {
+    "A": "Vigilancia sindrómica (notificar el síndrome febril para alerta precoz) y vigilancia comunitaria (reporte por Agentes Comunitarios de Salud en zona dispersa)",
+    "B": "Vigilancia activa (notificar el síndrome) y vigilancia pasiva (los Agentes Comunitarios esperan la consulta)",
+    "C": "Vigilancia centinela (EESS de referencia) y vigilancia sindrómica (Agentes Comunitarios de Salud)",
+    "D": "Vigilancia pasiva (notificación por demanda) y vigilancia activa (los Agentes Comunitarios salen a buscar)",
+    "E": "Vigilancia sindrómica en ambos casos, porque todos los reportes son de síndrome febril"
+   },
+   "correcta": "A",
+   "fuente": "MINSA/DGE - vigilancia basada en sindromes / enfoque Alerta-Respuesta; CDC - Vigilancia comunitaria con Agentes Comunitarios de Salud.",
+   "explicacion": "Correcta A: notificar el conglomerado como 'síndrome febril' ANTES de la confirmación de dengue, para gatillar respuesta temprana, es el núcleo de la vigilancia SINDRÓMICA (vigila síndromes antes del diagnóstico confirmado; enfoque Alerta-Respuesta); y que los Agentes Comunitarios de Salud reporten febriles desde anexos dispersos amazónicos es vigilancia COMUNITARIA (ACS acercan la captación donde el sistema formal no llega). Trampa B: rotula lo primero como 'activa' (es cierto que el equipo actúa, pero el rasgo definitorio aquí es vigilar el SÍNDROME pre-diagnóstico = sindrómica) y llama 'pasiva' a los ACS confundiendo su rol -los ACS son captación comunitaria, no espera pasiva. C: la centinela usa POCOS EESS de referencia CON laboratorio para tendencias, no aplica a un brote agudo notificado por síndrome. D: invierte los conceptos y no reconoce ni lo sindrómico ni lo comunitario. E: ignora que el segundo componente es específicamente comunitario (por ACS), no meramente 'sindrómico'. EESS = Establecimiento de Salud; ACS = Agente Comunitario de Salud."
+  },
+  {
+   "n": 8,
+   "subangulo": "Definiciones: caso y escala",
+   "dif": "media",
+   "enunciado": "Serumista en un EESS I-3 de San Juan Bautista (Loreto). Acude una gestante de 24 semanas con fiebre de 3 dias, cefalea retroocular y mialgias. En su cuadra hay 4 vecinos con cuadro febril similar en la ultima semana y la zona tiene transmision activa de dengue todo el año. Aun no tienes resultado de laboratorio. Segun las definiciones de caso vigentes, ¿como debes clasificar y actuar con esta paciente HOY?",
+   "opts": {
+    "A": "Caso sospechoso; esperar el resultado de IgM/NS1 antes de cualquier notificacion",
+    "B": "Caso probable; se notifica ya (clinica + nexo epidemiologico), sin esperar laboratorio",
+    "C": "Caso confirmado; el nexo epidemiologico con los vecinos equivale a confirmacion",
+    "D": "Caso descartado; sin laboratorio positivo no corresponde clasificarlo",
+    "E": "No es caso hasta que el laboratorio (PCR) confirme el serotipo"
+   },
+   "correcta": "B",
+   "fuente": "MINSA/DGE - Definiciones de caso de dengue (guia de vigilancia); notificacion Dir 046-MINSA/DGE (RM 506-2012)",
+   "explicacion": "Correcta B: la escalera de caso es sospechoso (solo clinica) -> probable (clinica + nexo epidemiologico, ya se notifica, sin laboratorio) -> confirmado (+laboratorio positivo: IgM/PCR/NS1). Aqui hay clinica compatible MAS nexo epidemiologico (zona endemica con casos vecinos), por lo que es PROBABLE y se notifica de inmediato; el laboratorio confirma despues pero no frena la notificacion. Trampa A/E: la fiebre sola seria solo sospechoso, pero el nexo la sube a probable; ademas esperar el laboratorio para notificar rompe la oportunidad de la vigilancia (VPP no es lo que se mide aqui, sino actuar a tiempo). Trampa C: el nexo epidemiologico NO confirma; la confirmacion exige laboratorio positivo. Trampa D: 'descartado' requiere criterio (clinica no compatible o laboratorio negativo con nexo descartable), no la mera ausencia de resultado. Concepto: probable = clinica + nexo, ya notificable. IgM = inmunoglobulina M; NS1 = antigeno no estructural 1; PCR = reaccion en cadena de la polimerasa."
+  },
+  {
+   "n": 9,
+   "subangulo": "Definiciones: caso y escala",
+   "dif": "dificil",
+   "enunciado": "En un distrito andino de Cusco, el sarampion esta eliminado (sin casos autoctonos desde hace años). El serumista de un EESS I-3 evalua a un lactante de 11 meses, no vacunado, con exantema maculopapular, fiebre alta, tos, coriza y conjuntivitis, recien llegado de un viaje al extranjero. Un solo caso. ¿Cual es la clasificacion de ESCALA epidemiologica correcta y por que?",
+   "opts": {
+    "A": "Endemia, porque el sarampion existe de forma habitual en el pais",
+    "B": "Conglomerado, porque es una agrupacion inusual que recien se investiga",
+    "C": "Brote, porque en una enfermedad eliminada UN solo caso ya constituye brote",
+    "D": "Epidemia, porque hay exceso claro sobre lo esperado en un area mayor",
+    "E": "Pandemia, porque el antecedente de viaje implica circulacion en varios paises"
+   },
+   "correcta": "C",
+   "fuente": "MINSA/DGE - definiciones de caso y escala epidemiologica (regla del caso unico en enfermedad eliminada/erradicada)",
+   "explicacion": "Correcta C: la regla general de BROTE es >=2 casos con nexo en tiempo-lugar-fuente, PERO en una enfermedad eliminada o erradicada UN solo caso ya basta para constituir brote (dispara la alerta y la investigacion). Aqui el sarampion esta eliminado, hay clinica compatible (exantema + fiebre + tos/coriza/conjuntivitis = las tres 'C') y antecedente de viaje: 1 caso = brote. Trampa A (endemia): endemia es la presencia HABITUAL/esperada a nivel basal; en zona eliminada NO hay nivel basal de sarampion, por eso 1 caso rompe lo esperado. Trampa D (epidemia): epidemia es exceso claro sobre lo esperado en area MAYOR; un caso importado en un distrito no es todavia epidemia. Trampa E (pandemia): pandemia exige afectacion de varios paises de forma sostenida, no se infiere del solo antecedente de viaje. Trampa B (conglomerado): conglomerado es agrupacion inusual por investigar, requiere agregacion de casos; con un caso unico en enfermedad eliminada la definicion especifica que aplica es brote. Concepto clave a no invertir: endemia (basal esperado) != epidemia/brote (exceso sobre lo esperado); y la excepcion del caso unico."
+  },
+  {
+   "n": 10,
+   "subangulo": "Definiciones: caso y escala",
+   "dif": "dificil",
+   "enunciado": "La DIRESA Loreto revisa el canal endemico de dengue. En la SE (semana epidemiologica) 30, el numero de casos notificados por los EESS supera de forma marcada el numero esperado para esa semana y el fenomeno se extiende a varios distritos de la region, mientras en el resto del pais el dengue se mantiene en su nivel habitual esperado. ¿Que par de conceptos describe correctamente lo que ocurre en Loreto y en el resto del pais, respectivamente?",
+   "opts": {
+    "A": "En Loreto epidemia; en el resto del pais endemia",
+    "B": "En Loreto endemia; en el resto del pais epidemia",
+    "C": "En Loreto pandemia; en el resto del pais brote",
+    "D": "En Loreto brote; en el resto del pais conglomerado",
+    "E": "En Loreto conglomerado; en el resto del pais endemia"
+   },
+   "correcta": "A",
+   "fuente": "MINSA/DGE - canal endemico y escala epidemiologica; MOPECE (OPS) modulo de canal endemico",
+   "explicacion": "Correcta A: en Loreto hay un EXCESO claro de casos sobre lo esperado que abarca un area mayor (varios distritos de la region) = EPIDEMIA. En el resto del pais el dengue se mantiene en su nivel HABITUAL/esperado (nivel basal) = ENDEMIA. Trampa B: es la inversion clasica endemia<->epidemia; endemia NO es 'lo que pasa lejos' sino la presencia esperada/basal, y epidemia es el exceso, sin importar donde. Trampa C (pandemia): pandemia requiere varios paises; aqui todo ocurre dentro del Peru. Trampa D (brote): brote seria una agregacion mas acotada (>=2 casos con nexo tiempo-lugar-fuente) en un foco; aqui el exceso es sobre lo esperado y en area mayor, lo que corresponde a epidemia, no a brote; ademas 'conglomerado' para el resto del pais es incorrecto porque no hay agrupacion inusual, hay nivel basal. Trampa E: conglomerado es agrupacion inusual por investigar, no encaja con un exceso regional ya caracterizado por el canal endemico. Concepto: el canal endemico define la banda esperada (nivel basal = zona de exito/seguridad); superarla marcadamente en area amplia = epidemia; mantenerse dentro = endemia. SE = semana epidemiologica; MOPECE = Modulos de Principios de Epidemiologia para el Control de Enfermedades (OPS)."
+  },
+  {
+   "n": 11,
+   "subangulo": "Indicadores en brote",
+   "dif": "dificil",
+   "enunciado": "Usted es serumista en un EESS de la selva de Loreto. Durante una fiesta patronal, 250 personas consumieron un mismo plato de cerdo. En las siguientes 24 horas, 60 comensales presentaron diarrea, nauseas y vomitos compatibles con toxiinfeccion alimentaria; de ellos, 3 fallecieron. El distrito tiene una poblacion total de 8000 habitantes. La DIRESA le pide el indicador que le permita medir la fuerza de propagacion del agente en ese evento y orientar la busqueda de la fuente comun. Que indicador debe calcular y cual es su valor?",
+   "opts": {
+    "A": "Tasa de ataque = 60/250 x100 = 24%",
+    "B": "Letalidad = 3/60 x100 = 5%",
+    "C": "Tasa de ataque = 60/8000 x100 = 0.75%",
+    "D": "Mortalidad = 3/8000 x100 000 = 37.5 por 100 000",
+    "E": "Incidencia = 60/8000 x100 = 0.75%"
+   },
+   "correcta": "A",
+   "fuente": "MOPECE (OPS, Modulo 3-4: investigacion de brotes); compendio Lopez",
+   "explicacion": "La CAUSA: en un brote de fuente comun con poblacion CERRADA (los 250 EXPUESTOS al plato), la tasa de ataque = casos / EXPUESTOS x100 = 60/250 = 24%; mide la fuerza de propagacion y es la base para comparar grupos expuestos/no expuestos y hallar la fuente. TRAMPA de los distractores: (C) usa la poblacion total (8000) como denominador -> ese es el error de meter poblacion general en un brote de poblacion cerrada; el denominador correcto son los EXPUESTOS, no todo el distrito. (E) es lo mismo pero etiquetado como incidencia. (B) letalidad (muertes/CASOS) mide GRAVEDAD, no propagacion, y aunque el calculo 3/60=5% es correcto no responde a lo pedido. (D) mortalidad (muertes/POBLACION) mide impacto comunitario, no la fuerza del brote. CONCEPTO: en brote el indicador de propagacion es la tasa de ataque y su denominador SIEMPRE son los expuestos. EESS = establecimiento de salud; DIRESA = Direccion Regional de Salud."
+  },
+  {
+   "n": 12,
+   "subangulo": "Indicadores en brote",
+   "dif": "dificil",
+   "enunciado": "En una comunidad andina de Cusco se investiga un brote de meningitis bacteriana. Se identifican 40 casos confirmados. De esos 40 enfermos, 8 fallecen a causa de la meningitis. La comunidad tiene 5000 habitantes. El jefe de la Micro Red le solicita el indicador que exprese la GRAVEDAD de la enfermedad, es decir, la proporcion de enfermos que mueren por la propia enfermedad. Cual selecciona?",
+   "opts": {
+    "A": "Letalidad = 8/40 x100 = 20%",
+    "B": "Mortalidad = 8/5000 x100 000 = 160 por 100 000",
+    "C": "Tasa de ataque = 40/5000 x100 = 0.8%",
+    "D": "Letalidad = 8/5000 x100 = 0.16%",
+    "E": "Prevalencia = 40/5000 x100 = 0.8%"
+   },
+   "correcta": "A",
+   "fuente": "MOPECE (OPS, Modulo 3: medicion de la mortalidad y letalidad); compendio Lopez",
+   "explicacion": "La CAUSA: la letalidad mide GRAVEDAD = muertes por la enfermedad / CASOS de esa enfermedad x100 = 8/40 = 20%; responde a 'de los que enferman, cuantos mueren'. TRAMPA central (la inversion clasica): (B) mortalidad usa la POBLACION (5000) como denominador y mide el impacto de la enfermedad en la COMUNIDAD, no la gravedad clinica; es el error de dividir muertes entre poblacion cuando se pide letalidad. (D) mantiene la etiqueta 'letalidad' pero mete el denominador de mortalidad (5000) -> distractor disenado exactamente para la confusion denominador. (C) tasa de ataque mide propagacion (casos/poblacion o expuestos), no gravedad. (E) prevalencia (casos existentes/poblacion) no mide muertes. CONCEPTO clave para no invertir: LETALIDAD divide entre CASOS (numero pequeno, da % alto); MORTALIDAD divide entre POBLACION (numero grande, da tasa por 100 000). Micro Red = unidad de gestion de EESS del primer nivel."
+  },
+  {
+   "n": 13,
+   "subangulo": "Indicadores en brote",
+   "dif": "media",
+   "enunciado": "Usted revisa la sala situacional de su EESS en Ucayali. En el ultimo mes aparecieron 15 casos NUEVOS de dengue en una poblacion en riesgo de 3000 personas; ademas, sumando los casos previos aun activos, existen en total 45 personas actualmente enfermas de dengue en la comunidad. La DIRESA pregunta cual es la INCIDENCIA del ultimo mes para evaluar si hay una tendencia epidemica en curso. Que indicador y valor reporta?",
+   "opts": {
+    "A": "Incidencia = 15/3000 x1000 = 5 por 1000 (casos NUEVOS)",
+    "B": "Prevalencia = 45/3000 x1000 = 15 por 1000 (casos existentes)",
+    "C": "Incidencia = 45/3000 x1000 = 15 por 1000",
+    "D": "Tasa de ataque = 15/45 x100 = 33%",
+    "E": "Letalidad = 15/3000 x100 = 0.5%"
+   },
+   "correcta": "A",
+   "fuente": "MOPECE (OPS, Modulo 3: medicion de incidencia y prevalencia); compendio Lopez",
+   "explicacion": "La CAUSA: la incidencia mide casos NUEVOS aparecidos en un periodo / poblacion en riesgo = 15/3000 = 5 por 1000; es el indicador que capta la aparicion reciente y por eso sirve para detectar tendencia epidemica. TRAMPA del numerador: (C) usa el total de enfermos (45 = nuevos + antiguos activos) pero lo llama incidencia -> ese es el error de meter casos EXISTENTES en la incidencia. (B) calcula correctamente la prevalencia (45 existentes / poblacion) pero la pregunta pide incidencia, no prevalencia. (D) tasa de ataque no aplica: no hay evento de fuente comun con expuestos definidos, y ademas dividir nuevos entre existentes no tiene sentido epidemiologico. (E) letalidad no mide aparicion de casos sino muertes/casos. CONCEPTO: INCIDENCIA = casos NUEVOS (dinamica, flujo); PREVALENCIA = casos EXISTENTES (foto, stock). Distinguir el numerador correcto es tan critico como el denominador."
+  },
+  {
+   "n": 14,
+   "subangulo": "Investigación de brote",
+   "dif": "dificil",
+   "enunciado": "Un serumista a cargo de un EESS I-1 en un caserío de Loreto recibe el aviso de que en las últimas 12 horas han acudido 9 personas con diarrea acuosa y vómitos, todas asistentes al mismo velorio comunal donde se sirvió juane y chicha. El promedio histórico para ese periodo en la zona es de 1-2 casos de EDA. El serumista, alarmado, quiere actuar de inmediato. Según la secuencia MOPECE de investigación de brote, ¿cuál es el PRIMER paso que debe realizar formalmente antes que cualquier otro?",
+   "opts": {
+    "A": "Implementar de inmediato las medidas de control definitivas retirando el alimento sospechoso",
+    "B": "Confirmar la existencia del brote comparando el número de casos observado frente al esperado",
+    "C": "Formular la hipótesis de que el juane fue el vehículo de transmisión",
+    "D": "Realizar el estudio analítico de casos y controles calculando la tasa de ataque por alimento",
+    "E": "Elaborar y remitir el informe final del brote a la DIRESA"
+   },
+   "correcta": "B",
+   "fuente": "MOPECE (OPS) - pasos de investigacion de brote (paso 1: confirmar la existencia del brote); compendio Lopez Dia 5",
+   "explicacion": "La correcta es B: el paso 1 de MOPECE es CONFIRMAR la existencia del brote contrastando lo OBSERVADO (9 casos) contra lo ESPERADO (1-2), porque un brote se define como un exceso de casos sobre lo esperado; sin confirmar el exceso no se justifica movilizar el resto de la investigación. Trampa de cronología (debilidad de Joseph): A y E son pasos FINALES (control definitivo e informe van al cierre) y el examen tienta con el impulso de 'actuar ya'; C (formular hipotesis) y D (estudio analitico) son pasos INTERMEDIOS que requieren primero haber confirmado, verificado el diagnóstico, definido caso y descrito tiempo-lugar-persona. Concepto: la investigación es secuencial; el paso INICIAL es confirmar la existencia del brote y verificar el diagnostico, no controlar ni informar. EDA=enfermedad diarreica aguda; EESS=establecimiento de salud."
+  },
+  {
+   "n": 15,
+   "subangulo": "Investigación de brote",
+   "dif": "dificil",
+   "enunciado": "Durante la investigación de un brote de tos ferina en un asentamiento humano de Iquitos, el serumista reconstruye la cronología: el 3 de junio acudió al EESS un lactante de 4 meses con tos paroxística (el primero que el equipo de salud detectó y notificó). Al indagar el entorno, se descubre que la madre venía tosiendo desde el 20 de mayo —dos semanas antes— y que fue quien contagió al lactante y a otros dos niños del hogar. ¿Cómo se clasifican correctamente los casos de la madre y del lactante?",
+   "opts": {
+    "A": "La madre es el caso índice y el lactante el caso primario",
+    "B": "El lactante es el caso índice y la madre el caso primario",
+    "C": "La madre es el caso secundario y el lactante el caso primario",
+    "D": "El lactante es el caso primario y la madre el caso secundario",
+    "E": "Ambos son casos índice porque pertenecen al mismo hogar"
+   },
+   "correcta": "B",
+   "fuente": "MOPECE (OPS) - definiciones de caso indice, primario y secundario; compendio Lopez Dia 5",
+   "explicacion": "La correcta es B: el caso ÍNDICE es el PRIMERO que el sistema de salud DETECTA/notifica (el lactante del 3 de junio, que puso en alerta al equipo), mientras que el caso PRIMARIO es el PRIMERO del brote en el tiempo, quien introduce la infección al grupo (la madre, sintomática desde el 20 de mayo). La madre además es la fuente que genera casos SECUNDARIOS (el lactante y los otros dos niños contagiados por ella). Trampas de conceptos vecinos: A invierte índice↔primario (error frecuente); C y D confunden a la madre —que ORIGINA los contagios— con un caso secundario; E ignora que índice es UNO solo (el primero detectado), no todo el hogar. Concepto clave: índice = primero visto por el sistema (temporal según detección); primario = primero real del brote (temporal según inicio de síntomas); secundario = contagiado por el primario. Los tres pueden ser personas distintas."
+  },
+  {
+   "n": 16,
+   "subangulo": "Investigación de brote",
+   "dif": "dificil",
+   "enunciado": "En una comunidad andina de Cusco, la curva epidémica de un brote de gastroenteritis muestra un solo pico agudo y estrecho: todos los casos aparecen concentrados en un intervalo de 24-36 horas y luego la curva desciende, sin picos posteriores. La investigación revela que todos los afectados consumieron un mismo lote de queso fresco en una feria patronal. ¿Qué tipo de brote, según su patrón de propagación, describe mejor este escenario?",
+   "opts": {
+    "A": "Brote propagado o de persona a persona",
+    "B": "Brote de fuente común puntual (exposición única)",
+    "C": "Pandemia de origen alimentario",
+    "D": "Situación endémica con canal endémico elevado",
+    "E": "Brote mixto con transmisión secundaria sostenida"
+   },
+   "correcta": "B",
+   "fuente": "MOPECE (OPS) - curva epidemica y clasificacion de brotes por fuente; compendio Lopez Dia 5",
+   "explicacion": "La correcta es B: un ÚNICO pico agudo y estrecho, con todos los casos dentro de un rango corto compatible con un periodo de incubación único, es el patrón clásico del brote de FUENTE COMÚN PUNTUAL —una sola exposición compartida (el lote de queso, una ETA típica). Trampas de conceptos vecinos: A (propagado) daría MÚLTIPLES picos sucesivos por transmisión persona a persona, no un pico único; C confunde brote local con PANDEMIA (diseminación mundial en varios continentes: brote↔pandemia es debilidad de Joseph); D confunde el brote con ENDEMIA/canal endémico (presencia habitual esperada, no exceso agudo: endemia↔epidemia); E añade transmisión secundaria sostenida que no corresponde a un pico único que desciende sin réplicas. Concepto: la FORMA de la curva epidémica distingue fuente común puntual (un pico) de propagada (varios picos). ETA=enfermedad transmitida por alimentos."
+  },
+  {
+   "n": 17,
+   "subangulo": "Canal endemico y atributos",
+   "dif": "media",
+   "enunciado": "Un serumista del EESS I-1 de un distrito rural de Loreto construye el canal endemico de dengue con los datos de las semanas epidemiologicas de los ultimos 6 anos (2020-2025). Al revisar la serie nota que 2023 fue un ano de brote masivo, con numeros de casos muy por encima de lo habitual. Para trazar la LINEA CENTRAL (curva esperada) del canal por cada semana, que medida de tendencia central debe usar?",
+   "opts": {
+    "A": "La MEDIA aritmetica de cada semana, porque promedia toda la informacion de los 6 anos",
+    "B": "La MEDIANA de cada semana, porque no se distorsiona por el ano epidemico atipico de 2023",
+    "C": "La MODA de cada semana, porque refleja el valor que mas se repite en la serie",
+    "D": "El VALOR MAXIMO observado de cada semana, para asegurar el umbral mas protector",
+    "E": "El promedio ponderado dando mas peso a 2023 por ser el ano mas informativo sobre el potencial epidemico"
+   },
+   "correcta": "B",
+   "fuente": "MOPECE 4 (OPS) / compendio Lopez: el corredor o canal endemico usa la MEDIANA de una serie de 5-7 anos por su resistencia a valores extremos.",
+   "explicacion": "Correcta B: la linea central se traza con la MEDIANA de cada semana sobre una serie de 5-7 anos, justamente porque es robusta y no se deja arrastrar por un ano epidemico atipico; el esperado historico no debe inflarse por un brote pasado. Trampa A (MEDIA, distractor vecino mas fuerte): SI se distorsiona con el ano de brote, subiria el esperado y ocultaria futuras alarmas; se descarta por el enunciado que resalta el ano atipico. C (MODA): en conteos semanales bajos es inestable, no es la medida canonica. D (maximo): confunde linea central con limite superior; daria una banda absurdamente alta. E: ponderar hacia 2023 hace lo contrario de lo buscado. Concepto: canal/corredor endemico = MEDIANA + cuartiles de una serie multianual."
+  },
+  {
+   "n": 18,
+   "subangulo": "Canal endemico y atributos",
+   "dif": "dificil",
+   "enunciado": "En la SE 12 de 2026, el EESS de un distrito de Junin reporta 18 casos de EDA (enfermedad diarreica aguda). El serumista compara con el canal endemico local construido con la serie 2019-2025. El observado de 18 cae POR ENCIMA del limite superior de la zona de alarma (por encima del tercer cuartil), en plena zona epidemica. Cual es la interpretacion y la conducta CORRECTAS?",
+   "opts": {
+    "A": "El observado esta en zona de exito; se mantiene la vigilancia rutinaria sin acciones adicionales",
+    "B": "El observado esta en zona de seguridad; solo se refuerza la comunicacion a la poblacion",
+    "C": "El observado supera lo esperado historico (zona epidemica); se activa la investigacion/respuesta por posible brote",
+    "D": "El canal endemico ha diagnosticado un brote de rotavirus; se inicia tratamiento etiologico dirigido",
+    "E": "Como el canal solo predice el futuro, el dato de 18 casos no permite tomar ninguna decision esta semana"
+   },
+   "correcta": "C",
+   "fuente": "MOPECE 4 (OPS) / compendio Lopez: comparacion observado vs esperado; zonas exito-seguridad-alarma-epidemica; superar el limite superior obliga a investigar.",
+   "explicacion": "Correcta C: la funcion del canal es comparar lo OBSERVADO (semana actual) contra lo ESPERADO (historico) para deteccion OPORTUNA; caer sobre la zona epidemica es senal de alerta que dispara investigacion/respuesta ante posible brote. Trampa A y B: invierten las zonas (exito = por debajo, seguridad = intermedia baja); 18 casos por encima del tercer cuartil nunca es exito ni seguridad. Trampa D (la mas fina): el canal NO diagnostica al paciente ni identifica etiologia; es una herramienta poblacional, no clinica; hablar de rotavirus y tratamiento es un salto ilegitimo. Trampa E: confunde el canal con un modelo predictivo; el canal NO predice, describe/compara para actuar hoy. Concepto: canal endemico = comparar observado vs esperado; 4 zonas; no predice, no diagnostica paciente."
+  },
+  {
+   "n": 19,
+   "subangulo": "Canal endemico y atributos",
+   "dif": "dificil",
+   "enunciado": "La DIRESA evalua su sistema de vigilancia de sarampion. Encuentra que de cada 100 casos NOTIFICADOS como sospechosos, solo 20 se CONFIRMAN por laboratorio; los otros 80 resultan ser otras enfermedades exantematicas. Sin embargo, practicamente ningun caso verdadero de sarampion queda sin ser captado por el sistema. Que atributo del sistema esta BAJO y cual esta conservado?",
+   "opts": {
+    "A": "Sensibilidad baja; oportunidad conservada",
+    "B": "Valor predictivo positivo (VPP) bajo; sensibilidad conservada",
+    "C": "Representatividad baja; valor predictivo positivo conservado",
+    "D": "Oportunidad baja; representatividad conservada",
+    "E": "Valor predictivo positivo bajo; oportunidad conservada"
+   },
+   "correcta": "B",
+   "fuente": "compendio Lopez / MOPECE: atributos del sistema de vigilancia (sensibilidad, VPP, oportunidad, representatividad).",
+   "explicacion": "Correcta B: que de 100 notificados solo 20 confirmen (muchos falsos positivos) describe un VALOR PREDICTIVO POSITIVO (VPP) BAJO = de lo notificado, poco confirma. Que casi ningun caso verdadero se escape indica SENSIBILIDAD conservada (el sistema detecta a los verdaderos, no los pierde). Trampa A y E (debilidad de Joseph: VPP vs oportunidad): la oportunidad se refiere a la RAPIDEZ/tiempo del sistema, y el enunciado no habla de tiempos, sino de proporcion de confirmados; no es oportunidad lo afectado. Trampa D: oportunidad baja seria demora, dato ausente. Trampa C: representatividad = cobertura de toda la poblacion, tampoco es lo descrito. Concepto: VPP = confirmados/notificados (bajo = muchos falsos positivos); sensibilidad = captar a los verdaderos sin perderlos; oportunidad = tiempo; representatividad = cobertura poblacional. No confundir VPP con oportunidad."
+  },
+  {
+   "n": 20,
+   "subangulo": "Canal endemico y atributos",
+   "dif": "dificil",
+   "enunciado": "En una comunidad shipibo dispersa de la Amazonia, el jefe del EESS observa que la vigilancia de malaria capta principalmente los casos que acuden al establecimiento urbano de referencia, mientras que las comunidades ribereñas alejadas, sin acceso, apenas figuran en los reportes. Ademas, cuando ocurre un caso, este se notifica el mismo dia por RENACE. Que atributo esta COMPROMETIDO y cual esta conservado?",
+   "opts": {
+    "A": "Oportunidad comprometida; representatividad conservada",
+    "B": "Representatividad comprometida; oportunidad conservada",
+    "C": "Valor predictivo positivo comprometido; sensibilidad conservada",
+    "D": "Sensibilidad comprometida; valor predictivo positivo conservado",
+    "E": "Representatividad comprometida; sensibilidad conservada por captar el 100% de los urbanos"
+   },
+   "correcta": "B",
+   "fuente": "compendio Lopez / MOPECE: atributos de vigilancia; RENACE = Red Nacional de Epidemiologia; representatividad = cobertura de toda la poblacion.",
+   "explicacion": "Correcta B: que las comunidades ribereñas alejadas apenas figuren mientras solo se captan los urbanos describe una REPRESENTATIVIDAD comprometida = el sistema NO cubre a toda la poblacion (queda un sesgo geografico). Que el caso se notifique el mismo dia indica OPORTUNIDAD conservada (rapidez adecuada). Trampa A: invierte los dos atributos; la notificacion el mismo dia justamente prueba que la oportunidad esta bien. Trampa E (la mas tramposa): tienta a decir sensibilidad conservada porque se capta el 100% de los urbanos, pero la sensibilidad se juzga sobre TODOS los casos verdaderos de la poblacion diana, no solo los urbanos; con las comunidades alejadas fuera, la sensibilidad global tambien cae, y el atributo que el enunciado retrata de fondo es la cobertura poblacional (representatividad). Trampa C y D: el enunciado no habla de falsos positivos ni de perder casos por definicion, sino de cobertura geografica. Concepto: representatividad = cubrir a toda la poblacion; oportunidad = rapidez de notificacion (RENACE mismo dia = buena)."
+  }
+ ]
+}

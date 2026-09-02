@@ -814,11 +814,11 @@ function HorarioView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   const horarios = (metrics?.extra as Record<string, unknown> | undefined)?.horarios as
     | { weekday?: HorarioBlock[]; weekend?: HorarioBlock[] }
     | undefined;
-  // Plantilla por TIPO de día (no por día de semana): simulacro real → weekend; si no → deep-prime L-V.
-  // Hoy/mañana (D1/D2) son fin de semana pero se estructuran como L-V (recuperación; 1er simulacro D8).
+  // Plantilla por TIPO de día (no por día de semana): simulacro real o mini-sim de viernes (v6.2
+  // MANTENIMIENTO, tipo='mini_sim') → weekend/sim; si no → plantilla lun-jue (eval anclada + banco).
   const dow = today?.fecha ? new Date(`${today.fecha}T12:00:00`).getDay() : 1;
   const isWeekendDay = dow === 0 || dow === 6;
-  const useSimTemplate = !!today?.simulacro;
+  const useSimTemplate = !!today?.simulacro || today?.tipo === 'mini_sim';
   const blocks = (useSimTemplate ? horarios?.weekend : horarios?.weekday) ?? [];
 
   const tema = today ? `${today.codigo || ''} ${today.subtema || ''}`.trim() : '';
@@ -842,11 +842,11 @@ function HorarioView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   return (
     <View>
       <Text style={styles.horarioHint}>
-        {useSimTemplate ? '▲ Día de simulacro (modo examen)' : '● Estructura deep-prime (Lunes-Viernes)'}
+        {useSimTemplate ? '▲ Viernes: mini-simulacro 25Q mixtas (72s/Q) + corrección' : '● Mantenimiento 2027-I (lun-jue): eval anclada 5Q → banco 20-25Q → registro'}
       </Text>
       {isWeekendDay && !useSimTemplate && (
         <Text style={styles.horarioWarn}>
-          ▪ Hoy es fin de semana pero se estructura como L-V (recuperación de temas). El 1er simulacro es D8 (sáb 13 jun); desde ahí, sábados y domingos = simulacro.
+          ▪ Fin de semana LIBRE (régimen v5.4). La cola muestra el próximo día hábil del ciclo.
         </Text>
       )}
       {blocks.length === 0 ? (

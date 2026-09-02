@@ -1,0 +1,2878 @@
+{
+ "clasificaciones": [
+  {
+   "examId": "2024-2A",
+   "totalClasificadas": 100,
+   "areaPct": {
+    "I": 24,
+    "II": 22,
+    "III": 9,
+    "IV": 15,
+    "V": 30
+   },
+   "formato": {
+    "corto": 60,
+    "vinneta": 40
+   },
+   "codigos": [
+    {
+     "codigo": "I-1",
+     "n": 3,
+     "angulos": [
+      "autocuidado/autoexamen de mama",
+      "prevención específica (inmunización/condón)",
+      "niveles de prevención primaria"
+     ]
+    },
+    {
+     "codigo": "I-2",
+     "n": 1,
+     "angulos": [
+      "gobernanza en salud pública"
+     ]
+    },
+    {
+     "codigo": "I-3",
+     "n": 6,
+     "angulos": [
+      "caso incidente vs prevalente",
+      "indicador de estructura en vigilancia",
+      "gradiente biológico/causalidad",
+      "periodo de historia natural de la enfermedad",
+      "epidemiología como ciencia",
+      "caso índice (tos ferina)"
+     ]
+    },
+    {
+     "codigo": "I-4",
+     "n": 7,
+     "angulos": [
+      "escenario epidemiológico dengue (endémico/brote)",
+      "dengue con signos de alarma",
+      "definición de EDA persistente (14 días)",
+      "clasificación grupo tratamiento dengue en gestante",
+      "dengue grave/shock",
+      "dosis SSN 0.9% dengue B2",
+      "enfermedad de Carrión/Bartonella"
+     ]
+    },
+    {
+     "codigo": "I-6",
+     "n": 4,
+     "angulos": [
+      "desviación estándar asociada a la media",
+      "población (conjunto a medir)",
+      "muestra representativa del universo",
+      "datos discretos/números enteros"
+     ]
+    },
+    {
+     "codigo": "I-10",
+     "n": 2,
+     "angulos": [
+      "modelo Bismarck (protección laboral)",
+      "modelo comunitario"
+     ]
+    },
+    {
+     "codigo": "I-11",
+     "n": 1,
+     "angulos": [
+      "genograma / enfoque sistémico familiar"
+     ]
+    },
+    {
+     "codigo": "II-1",
+     "n": 4,
+     "angulos": [
+      "IMC pregestacional (primer indicador)",
+      "calostro/lactancia",
+      "fármacos que atraviesan barrera placentaria",
+      "ruptura uterina en expulsivo"
+     ]
+    },
+    {
+     "codigo": "II-3",
+     "n": 2,
+     "angulos": [
+      "ESAVI grave (internamiento)",
+      "ESAVI evento coincidente"
+     ]
+    },
+    {
+     "codigo": "II-4",
+     "n": 2,
+     "angulos": [
+      "objetivo PAN (desnutrición crónica <5a)",
+      "dosis de suplementación de hierro por anemia"
+     ]
+    },
+    {
+     "codigo": "II-5",
+     "n": 3,
+     "angulos": [
+      "comunicación asertiva/saber escuchar",
+      "intoxicación por plaguicidas (atropina)",
+      "foco ampliado del modelo integral de atención"
+     ]
+    },
+    {
+     "codigo": "II-6",
+     "n": 1,
+     "angulos": [
+      "ración PCA-PANTBC (% requerimientos)"
+     ]
+    },
+    {
+     "codigo": "II-7",
+     "n": 2,
+     "angulos": [
+      "cuidados adulto mayor entorno comunitario (caídas)",
+      "tipo de VACAM (breve)"
+     ]
+    },
+    {
+     "codigo": "II-8",
+     "n": 5,
+     "angulos": [
+      "perímetro abdominal/RCV adolescente",
+      "FR HTA no modificables",
+      "glimepirida/sulfonilureas en DM2",
+      "valores de prediabetes (100-125)",
+      "recomendación de sodio OMS/FAO"
+     ]
+    },
+    {
+     "codigo": "II-11",
+     "n": 3,
+     "angulos": [
+      "sífilis congénita neonatal (conducta)",
+      "vaginosis bacteriana (KOH/aminas)",
+      "sífilis secundaria en HSH"
+     ]
+    },
+    {
+     "codigo": "III-1",
+     "n": 2,
+     "angulos": [
+      "autonomía/respeto de decisión (anticoncepción)",
+      "principio de autonomía en relación clínica"
+     ]
+    },
+    {
+     "codigo": "III-2",
+     "n": 1,
+     "angulos": [
+      "acto de salud vs acto médico"
+     ]
+    },
+    {
+     "codigo": "III-3",
+     "n": 2,
+     "angulos": [
+      "formato de consentimiento informado",
+      "vulneración por falta de consentimiento (antropometría)"
+     ]
+    },
+    {
+     "codigo": "III-5",
+     "n": 3,
+     "angulos": [
+      "adecuación cultural a migrantes venezolanas",
+      "conflicto/problema intercultural (creencias)",
+      "interculturalidad en patrones alimentarios"
+     ]
+    },
+    {
+     "codigo": "III-8",
+     "n": 1,
+     "angulos": [
+      "sanción/ética de la función pública (CAS)"
+     ]
+    },
+    {
+     "codigo": "IV-1",
+     "n": 5,
+     "angulos": [
+      "analítico experimental (macrólidos)",
+      "experimentales prospectivos de mayor evidencia",
+      "método científico/sistemático",
+      "estudio con datos secundarios (revisión)",
+      "descriptivo transversal (magnitud)"
+     ]
+    },
+    {
+     "codigo": "IV-2",
+     "n": 5,
+     "angulos": [
+      "muestra representativa/generalización",
+      "confiabilidad (resultados consistentes)",
+      "muestreo para controlar sesgo de selección",
+      "tres requisitos del instrumento",
+      "instrumento de medición para registrar variables"
+     ]
+    },
+    {
+     "codigo": "IV-3",
+     "n": 2,
+     "angulos": [
+      "factores para prevención secundaria/tamizaje",
+      "aceptabilidad/operatividad de la prueba"
+     ]
+    },
+    {
+     "codigo": "IV-4",
+     "n": 1,
+     "angulos": [
+      "riesgo absoluto para incidencia"
+     ]
+    },
+    {
+     "codigo": "IV-6",
+     "n": 2,
+     "angulos": [
+      "eficacia vs efectividad de programa",
+      "indicador FED / error de registro anemia (HIS/CVN)"
+     ]
+    },
+    {
+     "codigo": "V-1",
+     "n": 3,
+     "angulos": [
+      "fases de acreditación (autoevaluación/externa)",
+      "macroprocesos de acreditación I-4",
+      "personal según categoría EESS I-2"
+     ]
+    },
+    {
+     "codigo": "V-2",
+     "n": 13,
+     "angulos": [
+      "causal de exclusión de proveedores",
+      "MOF/perfil de cargo",
+      "frecuencia buzón de sugerencias",
+      "vigencia POI multianual",
+      "propósito del puesto",
+      "brecha RRHH (CAP-POI)",
+      "POI como herramienta de metas",
+      "FODA diagnóstico situacional",
+      "dimensiones clima organizacional",
+      "FODA análisis interno",
+      "análisis situacional para POI",
+      "comité de auditoría en salud",
+      "inducción de personal"
+     ]
+    },
+    {
+     "codigo": "V-3",
+     "n": 1,
+     "angulos": [
+      "vías de cuidados integrales en RIS"
+     ]
+    },
+    {
+     "codigo": "V-7",
+     "n": 1,
+     "angulos": [
+      "referencia-contrarreferencia/SIS en emergencia"
+     ]
+    },
+    {
+     "codigo": "V-MED",
+     "n": 12,
+     "angulos": [
+      "almacén de productos vencidos para baja",
+      "farmacovigilancia/tecnovigilancia (DIGEMID)",
+      "custodia de oxígeno medicinal (QF)",
+      "RAM tipo por retiro de benzodiacepinas",
+      "cotizaciones en estudio de mercado",
+      "residuos de medicamentos vencidos",
+      "SISMED (consumo integrado)",
+      "RAM isoniazida en dispensación TB",
+      "disponibilidad óptima de farmacia",
+      "interacción/hiperkalemia (losartán-espironolactona)",
+      "meses de stock/abastecimiento",
+      "uso racional de medicamentos"
+     ]
+    }
+   ]
+  },
+  {
+   "examId": "2024-2B",
+   "totalClasificadas": 100,
+   "areaPct": {
+    "I": 23,
+    "II": 24,
+    "III": 9,
+    "IV": 15,
+    "V": 29
+   },
+   "formato": {
+    "corto": 49,
+    "vinneta": 51
+   },
+   "codigos": [
+    {
+     "codigo": "I-1",
+     "n": 1,
+     "angulos": [
+      "prevención específica (inmunización)"
+     ]
+    },
+    {
+     "codigo": "I-2",
+     "n": 1,
+     "angulos": [
+      "gobernanza en salud pública (FESP)"
+     ]
+    },
+    {
+     "codigo": "I-3",
+     "n": 6,
+     "angulos": [
+      "caso incidente vs prevalente",
+      "gradiente biológico (criterio de causalidad)",
+      "caso índice (cadena epidemiológica)",
+      "epidemiología como ciencia metodológica",
+      "etapa prodrómica (historia natural)",
+      "niveles de prevención (primaria)"
+     ]
+    },
+    {
+     "codigo": "I-4",
+     "n": 8,
+     "angulos": [
+      "grupo de tratamiento dengue",
+      "escenario epidemiológico endémico dengue autóctono",
+      "dengue con signos de alarma",
+      "dengue grupo B2 (ml/kg SSN)",
+      "enfermedad de Carrión/Bartonella",
+      "intoxicación por plaguicidas (atropina)",
+      "dengue con signos de alarma (plaquetopenia)",
+      "definición de caso EDA persistente (14 días)"
+     ]
+    },
+    {
+     "codigo": "I-6",
+     "n": 4,
+     "angulos": [
+      "medida de dispersión de la media (desviación estándar)",
+      "muestra representativa del universo",
+      "datos discretos (números enteros)",
+      "población (distribución de variables)"
+     ]
+    },
+    {
+     "codigo": "I-10",
+     "n": 2,
+     "angulos": [
+      "modelo comunitario de salud",
+      "modelo Bismarck (protección laboral)"
+     ]
+    },
+    {
+     "codigo": "I-11",
+     "n": 1,
+     "angulos": [
+      "genograma (enfoque sistémico familiar)"
+     ]
+    },
+    {
+     "codigo": "II-1",
+     "n": 3,
+     "angulos": [
+      "valoración nutricional gestante (IMC pregestacional)",
+      "ruptura uterina en expulsivo",
+      "fármaco que atraviesa barrera placentaria (diazepam)"
+     ]
+    },
+    {
+     "codigo": "II-3",
+     "n": 2,
+     "angulos": [
+      "ESAVI grave (internamiento)",
+      "ESAVI evento coincidente"
+     ]
+    },
+    {
+     "codigo": "II-4",
+     "n": 5,
+     "angulos": [
+      "calostro/lactancia materna",
+      "consumo de sodio OMS-FAO (<5 g/día)",
+      "indicador FED anemia recuperada (registro HIS)",
+      "objetivo PAN (desnutrición crónica <5 años)",
+      "dosis de suplementación de hierro"
+     ]
+    },
+    {
+     "codigo": "II-5",
+     "n": 3,
+     "angulos": [
+      "vías/modelo de cuidado integral en RIS",
+      "foco ampliado MAIS (consulta ambulatoria)",
+      "comunicación asertiva (saber escuchar)"
+     ]
+    },
+    {
+     "codigo": "II-6",
+     "n": 1,
+     "angulos": [
+      "ración PCA-PANTBC (% requerimiento calórico-proteico)"
+     ]
+    },
+    {
+     "codigo": "II-7",
+     "n": 2,
+     "angulos": [
+      "cuidado adulto mayor comunitario (prevención de caídas)",
+      "tipo de VACAM (breve, I-1)"
+     ]
+    },
+    {
+     "codigo": "II-8",
+     "n": 4,
+     "angulos": [
+      "factores de riesgo HTA no modificables",
+      "prediabetes glicemia en ayunas (100-125)",
+      "perímetro abdominal RCV adolescentes",
+      "sulfonilureas (glimepirida en DM2)"
+     ]
+    },
+    {
+     "codigo": "II-10",
+     "n": 1,
+     "angulos": [
+      "autocuidado/autoexamen de mama"
+     ]
+    },
+    {
+     "codigo": "II-11",
+     "n": 3,
+     "angulos": [
+      "sífilis secundaria (HSH)",
+      "vaginosis bacteriana (KOH aminas)",
+      "sífilis congénita en neonato"
+     ]
+    },
+    {
+     "codigo": "III-1",
+     "n": 3,
+     "angulos": [
+      "principio de autonomía en relación médico-paciente",
+      "respetar decisión de la paciente (autonomía)",
+      "principio vulnerado sin consentimiento (autonomía)"
+     ]
+    },
+    {
+     "codigo": "III-2",
+     "n": 1,
+     "angulos": [
+      "acto de salud (deontología)"
+     ]
+    },
+    {
+     "codigo": "III-3",
+     "n": 1,
+     "angulos": [
+      "consentimiento informado (tratamientos especiales/docencia)"
+     ]
+    },
+    {
+     "codigo": "III-5",
+     "n": 3,
+     "angulos": [
+      "etnocentrismo y relativismo cultural (migrantes)",
+      "aculturación (conflicto intercultural)",
+      "etnocentrismo (patrones culturales de anemia)"
+     ]
+    },
+    {
+     "codigo": "III-8",
+     "n": 1,
+     "angulos": [
+      "sanción por ejercicio indebido (ética función pública)"
+     ]
+    },
+    {
+     "codigo": "IV-1",
+     "n": 7,
+     "angulos": [
+      "descriptivo transversal (magnitud/Centor)",
+      "estudios experimentales prospectivos",
+      "analítico experimental (macrólidos)",
+      "instrumento de medición",
+      "revisión sistemática (datos secundarios)",
+      "método científico",
+      "muestra adecuada y representativa"
+     ]
+    },
+    {
+     "codigo": "IV-2",
+     "n": 3,
+     "angulos": [
+      "requisitos del instrumento (válido/objetivo)",
+      "confiabilidad (resultados consistentes)",
+      "muestreo para controlar sesgo de selección"
+     ]
+    },
+    {
+     "codigo": "IV-3",
+     "n": 2,
+     "angulos": [
+      "factores para prevención secundaria/tamizaje",
+      "aceptabilidad de la prueba (operatividad)"
+     ]
+    },
+    {
+     "codigo": "IV-4",
+     "n": 1,
+     "angulos": [
+      "medida de efecto para incidencia (riesgo)"
+     ]
+    },
+    {
+     "codigo": "IV-6",
+     "n": 2,
+     "angulos": [
+      "indicador de estructura en vigilancia",
+      "eficacia (evaluación de programa)"
+     ]
+    },
+    {
+     "codigo": "V-1",
+     "n": 1,
+     "angulos": [
+      "dotación de personal por categoría EESS I-2"
+     ]
+    },
+    {
+     "codigo": "V-2",
+     "n": 16,
+     "angulos": [
+      "vigencia POI multianual",
+      "perfil del puesto (¿qué hace? ¿dónde?)",
+      "POI como herramienta de metas anuales",
+      "cotizaciones mínimas en estudio de mercado",
+      "análisis situacional para POI",
+      "FODA para diagnóstico situacional",
+      "MOF (perfil del cargo)",
+      "frecuencia apertura buzón de sugerencias",
+      "macroprocesos de acreditación I-4",
+      "inducción de personal",
+      "brecha RRHH (CAP-POI)",
+      "fases de acreditación (autoevaluación/evaluación externa)",
+      "FODA análisis interno (fortaleza)",
+      "exclusión de proveedores adjudicatarios",
+      "comité de auditoría médica",
+      "dimensión clima organizacional (conflicto y cooperación)"
+     ]
+    },
+    {
+     "codigo": "V-7",
+     "n": 1,
+     "angulos": [
+      "atención en emergencia con/sin referencia (SIS)"
+     ]
+    },
+    {
+     "codigo": "V-MED",
+     "n": 11,
+     "angulos": [
+      "meses de stock para adecuado abastecimiento",
+      "almacenamiento de vencidos para baja/destrucción",
+      "farmacovigilancia y tecnovigilancia (DIGEMID)",
+      "medicamentos vencidos como residuo especial",
+      "custodia de oxígeno medicinal",
+      "RAM tipo A (benzodiacepinas)",
+      "disponibilidad óptima de medicamentos esenciales",
+      "uso racional de medicamentos",
+      "RAM neuritis por isoniazida (dispensación TB)",
+      "SISMED (consumo integrado)",
+      "RAM hiperkalemia (losartán-espironolactona)"
+     ]
+    }
+   ]
+  },
+  {
+   "examId": "2025-1A",
+   "totalClasificadas": 100,
+   "areaPct": {
+    "I": 27,
+    "II": 21,
+    "III": 17,
+    "IV": 12,
+    "V": 23
+   },
+   "formato": {
+    "corto": 53,
+    "vinneta": 47
+   },
+   "codigos": [
+    {
+     "codigo": "I-1",
+     "n": 2,
+     "angulos": [
+      "definición de estilo de vida",
+      "definición de promoción de la salud"
+     ]
+    },
+    {
+     "codigo": "I-2",
+     "n": 2,
+     "angulos": [
+      "FESP etapa desarrollo de políticas",
+      "FESP acceso equitativo a servicios de calidad"
+     ]
+    },
+    {
+     "codigo": "I-3",
+     "n": 11,
+     "angulos": [
+      "transición epidemiológica",
+      "tasa de ataque en brote",
+      "notificación inmediata de brote ETA",
+      "incidencia mide velocidad / prevalencia magnitud",
+      "sala situacional",
+      "historia natural fase subclínica y prevención terciaria",
+      "medidas ante brote de tos ferina",
+      "R0 en brote de fiebre amarilla",
+      "causa necesaria pero no suficiente (TB)",
+      "medidas iniciales ante brote de peste"
+     ]
+    },
+    {
+     "codigo": "I-4",
+     "n": 3,
+     "angulos": [
+      "clasificación de dengue (con signos de alarma)",
+      "definición de caso viruela del mono",
+      "vector Aedes aegypti horario de picadura"
+     ]
+    },
+    {
+     "codigo": "I-5",
+     "n": 4,
+     "angulos": [
+      "consecuencias de sobrepoblación/pobreza",
+      "definición de equidad en salud",
+      "coordinaciones intersectoriales",
+      "tipo de determinante social intermedio"
+     ]
+    },
+    {
+     "codigo": "I-6",
+     "n": 2,
+     "angulos": [
+      "análisis estadístico inferencial",
+      "media como medida de tendencia central"
+     ]
+    },
+    {
+     "codigo": "I-11",
+     "n": 2,
+     "angulos": [
+      "familia como unidad de intervención",
+      "ciclo vital familiar"
+     ]
+    },
+    {
+     "codigo": "I-12",
+     "n": 1,
+     "angulos": [
+      "ejes de participación comunitaria en planeación"
+     ]
+    },
+    {
+     "codigo": "II-1",
+     "n": 2,
+     "angulos": [
+      "manejo de menopausia/sequedad vaginal (estrógeno local)",
+      "preeclampsia severa conducta (sulfato de magnesio)"
+     ]
+    },
+    {
+     "codigo": "II-3",
+     "n": 1,
+     "angulos": [
+      "vacunación Hepatitis B personal de salud sin acreditar"
+     ]
+    },
+    {
+     "codigo": "II-4",
+     "n": 3,
+     "angulos": [
+      "mediciones de Hb en adolescente",
+      "dosis de hierro y ácido fólico en gestante con anemia",
+      "riesgo nutricional curva P/T plana"
+     ]
+    },
+    {
+     "codigo": "II-5",
+     "n": 1,
+     "angulos": [
+      "definición de curso de vida"
+     ]
+    },
+    {
+     "codigo": "II-6",
+     "n": 1,
+     "angulos": [
+      "indicación de terapia preventiva para TB"
+     ]
+    },
+    {
+     "codigo": "II-7",
+     "n": 3,
+     "angulos": [
+      "abordaje del adulto mayor (equipo multidisciplinario)",
+      "test de deterioro cognitivo (Pfeiffer)",
+      "prevención de caídas adulto mayor frágil"
+     ]
+    },
+    {
+     "codigo": "II-8",
+     "n": 3,
+     "angulos": [
+      "meta de HbA1c en DM2",
+      "HTA primera elección diuréticos tiazídicos",
+      "confirmación diagnóstica HTA (MAPA/nueva toma)"
+     ]
+    },
+    {
+     "codigo": "II-9",
+     "n": 1,
+     "angulos": [
+      "diagnóstico de depresión mayor"
+     ]
+    },
+    {
+     "codigo": "II-10",
+     "n": 2,
+     "angulos": [
+      "sospecha de leucemia infantil",
+      "flujograma cáncer cuello uterino (colposcopía)"
+     ]
+    },
+    {
+     "codigo": "II-11",
+     "n": 2,
+     "angulos": [
+      "profilaxis post-exposición VIH accidente ocupacional",
+      "sífilis primaria VDRL/FTA-ABS"
+     ]
+    },
+    {
+     "codigo": "II-12",
+     "n": 2,
+     "angulos": [
+      "consejería en salud bucal (autocuidado)",
+      "inicio de higiene oral"
+     ]
+    },
+    {
+     "codigo": "III-2",
+     "n": 2,
+     "angulos": [
+      "definición de deontología",
+      "título profesional y colegiatura para el ejercicio"
+     ]
+    },
+    {
+     "codigo": "III-3",
+     "n": 2,
+     "angulos": [
+      "consentimiento informado en salud escolar",
+      "consentimiento informado en investigación"
+     ]
+    },
+    {
+     "codigo": "III-5",
+     "n": 3,
+     "angulos": [
+      "respeto al parto vertical",
+      "acuerdo respetando creencia del susto",
+      "interculturalidad en salud (mal de ojo)"
+     ]
+    },
+    {
+     "codigo": "III-8",
+     "n": 4,
+     "angulos": [
+      "veracidad en informe (ética función pública)",
+      "principios éticos función pública",
+      "principios éticos de atención",
+      "confidencialidad vulnerada"
+     ]
+    },
+    {
+     "codigo": "III-9",
+     "n": 5,
+     "angulos": [
+      "plazo entrega copia de HC",
+      "responsable de pérdida de HC",
+      "años archivo pasivo de HC",
+      "queja/reclamo SUSALUD",
+      "derecho de acceso a servicios de salud"
+     ]
+    },
+    {
+     "codigo": "III-10",
+     "n": 1,
+     "angulos": [
+      "dimensiones de pertinencia/adecuación cultural"
+     ]
+    },
+    {
+     "codigo": "IV-1",
+     "n": 10,
+     "angulos": [
+      "reporte de caso",
+      "pregunta de investigación (primer paso)",
+      "estudio observacional",
+      "limitante de estudio descriptivo (no extrapolable)",
+      "matriz de consistencia",
+      "propósito de la investigación científica",
+      "sección metodología del informe",
+      "diseño analítico rápido",
+      "enfoque cuantitativo",
+      "muestreo no probabilístico"
+     ]
+    },
+    {
+     "codigo": "IV-5",
+     "n": 1,
+     "angulos": [
+      "falso negativo por baja sensibilidad"
+     ]
+    },
+    {
+     "codigo": "IV-7",
+     "n": 1,
+     "angulos": [
+      "sistema de vigilancia tradicional (declaración de enfermedades transmisibles)"
+     ]
+    },
+    {
+     "codigo": "V-1",
+     "n": 2,
+     "angulos": [
+      "ambiente/infraestructura EESS I-3 según normativa",
+      "categoría de nivel de atención según cartera (I-1)"
+     ]
+    },
+    {
+     "codigo": "V-2",
+     "n": 10,
+     "angulos": [
+      "clima organizacional",
+      "estrategias institucionales (alineación de objetivos)",
+      "fase del planeamiento estratégico",
+      "POI Multianual instrumento de gestión",
+      "FODA fortalezas",
+      "cultura organizacional",
+      "FODA amenazas/debilidades",
+      "auditoría de caso",
+      "misión",
+      "visión"
+     ]
+    },
+    {
+     "codigo": "V-6",
+     "n": 1,
+     "angulos": [
+      "definición de teleorientación"
+     ]
+    },
+    {
+     "codigo": "V-7",
+     "n": 2,
+     "angulos": [
+      "condición de contrarreferencia (mejorado)",
+      "cartera de servicios para referencia"
+     ]
+    },
+    {
+     "codigo": "V-MED",
+     "n": 8,
+     "angulos": [
+      "uso irracional de medicamentos y resistencia",
+      "farmacovigilancia/tecnovigilancia (RAM)",
+      "notificación de evento adverso por medicamento",
+      "medicamentos esenciales",
+      "DIGEMID rectoría de medicamentos",
+      "cadena de frío/sensores calibrados",
+      "PNUME manejo especializado",
+      "condiciones de almacenamiento (fabricante)"
+     ]
+    }
+   ]
+  },
+  {
+   "examId": "2025-1B",
+   "totalClasificadas": 100,
+   "areaPct": {
+    "I": 26,
+    "II": 21,
+    "III": 17,
+    "IV": 12,
+    "V": 24
+   },
+   "formato": {
+    "corto": 47,
+    "vinneta": 53
+   },
+   "codigos": [
+    {
+     "codigo": "I-1",
+     "n": 3,
+     "angulos": [
+      "definición de promoción de la salud",
+      "familia saludable como unidad de intervención",
+      "definición de estilo de vida"
+     ]
+    },
+    {
+     "codigo": "I-2",
+     "n": 2,
+     "angulos": [
+      "FESP acceso equitativo a servicios integrales/calidad",
+      "FESP renovada etapa desarrollo de políticas (sectorización MCI)"
+     ]
+    },
+    {
+     "codigo": "I-3",
+     "n": 11,
+     "angulos": [
+      "notificación inmediata de brote ETA",
+      "transición epidemiológica infecciosas→crónicas",
+      "causa necesaria pero no suficiente (TB)",
+      "sala situacional/ASIS quién analiza",
+      "tasa de ataque en brote de varicela",
+      "medida inicial ante brote de peste",
+      "tos ferina bloqueo vacunal/contactos",
+      "prevención terciaria",
+      "R0 en brote de fiebre amarilla",
+      "historia natural fase subclínica/prevención secundaria",
+      "incidencia (velocidad) vs prevalencia (magnitud)"
+     ]
+    },
+    {
+     "codigo": "I-4",
+     "n": 3,
+     "angulos": [
+      "hábitos de picadura del Aedes aegypti",
+      "viruela del mono caso sospechoso",
+      "dengue probable con signos de alarma"
+     ]
+    },
+    {
+     "codigo": "I-5",
+     "n": 3,
+     "angulos": [
+      "determinante social intermedio (violencia)",
+      "determinantes sobrepoblación/pobreza→incidencia",
+      "concepto de equidad en salud"
+     ]
+    },
+    {
+     "codigo": "I-6",
+     "n": 2,
+     "angulos": [
+      "media como medida de tendencia central",
+      "análisis estadístico inferencial"
+     ]
+    },
+    {
+     "codigo": "I-11",
+     "n": 1,
+     "angulos": [
+      "idea principal del ciclo vital familiar"
+     ]
+    },
+    {
+     "codigo": "I-12",
+     "n": 1,
+     "angulos": [
+      "ejes estratégicos de participación comunitaria en planeación"
+     ]
+    },
+    {
+     "codigo": "II-1",
+     "n": 2,
+     "angulos": [
+      "preeclampsia severa manejo (sulfato de magnesio)",
+      "menopausia sequedad vaginal (estrógeno local)"
+     ]
+    },
+    {
+     "codigo": "II-3",
+     "n": 1,
+     "angulos": [
+      "vacunación hepatitis B en personal de salud"
+     ]
+    },
+    {
+     "codigo": "II-4",
+     "n": 3,
+     "angulos": [
+      "mediciones anuales de hemoglobina en adolescente",
+      "dosis hierro/ácido fólico gestante con anemia",
+      "curva peso/talla plana como riesgo nutricional"
+     ]
+    },
+    {
+     "codigo": "II-5",
+     "n": 1,
+     "angulos": [
+      "definición de curso de vida"
+     ]
+    },
+    {
+     "codigo": "II-6",
+     "n": 1,
+     "angulos": [
+      "indicación de terapia preventiva de TB (contactos/VIH)"
+     ]
+    },
+    {
+     "codigo": "II-7",
+     "n": 3,
+     "angulos": [
+      "prevención de caídas en adulto mayor frágil",
+      "fortalecer equipo multidisciplinario para AM",
+      "test de deterioro cognitivo primer nivel (Pfeiffer)"
+     ]
+    },
+    {
+     "codigo": "II-8",
+     "n": 3,
+     "angulos": [
+      "meta de HbA1c <7% en DM2",
+      "confirmar HTA con MAPA",
+      "tiazídicos como primera elección en HTA"
+     ]
+    },
+    {
+     "codigo": "II-9",
+     "n": 1,
+     "angulos": [
+      "diagnóstico de depresión mayor"
+     ]
+    },
+    {
+     "codigo": "II-10",
+     "n": 2,
+     "angulos": [
+      "leucemia como cáncer infantil",
+      "flujograma CaCu paso siguiente (colposcopía)"
+     ]
+    },
+    {
+     "codigo": "II-11",
+     "n": 2,
+     "angulos": [
+      "sífilis primaria (VDRL/FTA-ABS)",
+      "profilaxis post-exposición ocupacional VIH"
+     ]
+    },
+    {
+     "codigo": "II-12",
+     "n": 2,
+     "angulos": [
+      "consejería cepillado/autocuidado bucal",
+      "inicio de higiene oral (primeros seis meses)"
+     ]
+    },
+    {
+     "codigo": "III-2",
+     "n": 2,
+     "angulos": [
+      "definición de deontología",
+      "requisito título profesional y colegiatura"
+     ]
+    },
+    {
+     "codigo": "III-3",
+     "n": 2,
+     "angulos": [
+      "consentimiento informado en estudio de menores",
+      "consentimiento informado en salud escolar"
+     ]
+    },
+    {
+     "codigo": "III-5",
+     "n": 4,
+     "angulos": [
+      "cuatro dimensiones de pertinencia cultural",
+      "interculturalidad en salud (AM y curandero)",
+      "acuerdo respetando creencias (madre quechua/susto)",
+      "respetar pedido de parto vertical"
+     ]
+    },
+    {
+     "codigo": "III-8",
+     "n": 4,
+     "angulos": [
+      "principios éticos profesionales (orden/moral/deber/derecho)",
+      "ética función pública confidencialidad (respeto/probidad/eficiencia)",
+      "faltar a la verdad en informe = contra la ética",
+      "confidencialidad vulnerada por servidor público"
+     ]
+    },
+    {
+     "codigo": "III-9",
+     "n": 5,
+     "angulos": [
+      "responsable de pérdida de historia clínica",
+      "queja por maltrato (SUSALUD)",
+      "plazo entrega copia de historia clínica",
+      "años de archivo pasivo de HC",
+      "derecho de acceso a servicios de salud (AM indigente)"
+     ]
+    },
+    {
+     "codigo": "IV-1",
+     "n": 10,
+     "angulos": [
+      "muestreo no probabilístico",
+      "enfoque observacional",
+      "método observacional",
+      "propósito de la investigación científica",
+      "primer paso: pregunta de investigación",
+      "reporte de caso como tipo de informe",
+      "sección metodología (validez/confiabilidad)",
+      "diseño analítico (menor tiempo)",
+      "matriz de consistencia",
+      "limitante de estudio descriptivo (no asociación)"
+     ]
+    },
+    {
+     "codigo": "IV-5",
+     "n": 1,
+     "angulos": [
+      "falso negativo por baja sensibilidad"
+     ]
+    },
+    {
+     "codigo": "IV-7",
+     "n": 1,
+     "angulos": [
+      "vigilancia tradicional (declaración de enfermedades transmisibles)"
+     ]
+    },
+    {
+     "codigo": "V-1",
+     "n": 2,
+     "angulos": [
+      "nivel de atención según cartera (I-3)",
+      "ambiente normativo de EESS I-3 (residuos)"
+     ]
+    },
+    {
+     "codigo": "V-2",
+     "n": 11,
+     "angulos": [
+      "fase de análisis situacional en planeamiento",
+      "alineación políticas/planes (estrategias institucionales)",
+      "fortalezas en FODA",
+      "clima organizacional",
+      "cultura organizacional",
+      "amenazas/debilidades en FODA",
+      "auditoría de caso (muerte materna)",
+      "componente estratégico misión",
+      "componente estratégico visión",
+      "POI Multianual instrumento de gestión",
+      "fortalecer alianzas estratégicas intersectoriales"
+     ]
+    },
+    {
+     "codigo": "V-6",
+     "n": 1,
+     "angulos": [
+      "definición de teleorientación"
+     ]
+    },
+    {
+     "codigo": "V-7",
+     "n": 2,
+     "angulos": [
+      "referencia según cartera de servicios",
+      "condición de contrarreferencia (mejorado)"
+     ]
+    },
+    {
+     "codigo": "V-MED",
+     "n": 8,
+     "angulos": [
+      "DIGEMID rectoría de medicamentos",
+      "petitorio nacional único / medicamentos de manejo especializado",
+      "uso irracional de medicamentos y resistencia",
+      "farmacovigilancia y tecnovigilancia (RAM metamizol)",
+      "notificación de evento adverso por medicación",
+      "condiciones de almacenamiento (fabricante/operativo)",
+      "medicamentos esenciales",
+      "sensores calibrados de refrigeración"
+     ]
+    }
+   ]
+  },
+  {
+   "examId": "2025-2",
+   "totalClasificadas": 100,
+   "areaPct": {
+    "I": 23,
+    "II": 28,
+    "III": 16,
+    "IV": 2,
+    "V": 31
+   },
+   "formato": {
+    "corto": 17,
+    "vinneta": 83
+   },
+   "codigos": [
+    {
+     "codigo": "I-1",
+     "n": 4,
+     "angulos": [
+      "intersectorialidad ante brote dengue",
+      "equidad de género en conductas sexuales",
+      "comedores saludables",
+      "intersectorialidad en violencia familiar"
+     ]
+    },
+    {
+     "codigo": "I-3",
+     "n": 8,
+     "angulos": [
+      "envejecimiento poblacional/transición demográfica (esperanza de vida)",
+      "sala de situación de salud",
+      "primera etapa investigación de brote",
+      "ASIS/diagnóstico situación de salud",
+      "periodicidad notificación zoonosis (loxoscelismo)",
+      "alta incidencia y baja prevalencia (resfrío)",
+      "uso de la información epidemiológica",
+      "dx enfermedad transmisible (hepatitis A)"
+     ]
+    },
+    {
+     "codigo": "I-4",
+     "n": 4,
+     "angulos": [
+      "vigilancia entomológica/ovitrampas",
+      "malaria vivax: características vector/agente",
+      "P. falciparum frecuencia en Loreto",
+      "control vectorial de leishmaniasis"
+     ]
+    },
+    {
+     "codigo": "I-5",
+     "n": 2,
+     "angulos": [
+      "determinante estilos de vida",
+      "JUNTOS: determinantes estructurales"
+     ]
+    },
+    {
+     "codigo": "I-10",
+     "n": 1,
+     "angulos": [
+      "principio de integralidad de la APS"
+     ]
+    },
+    {
+     "codigo": "I-11",
+     "n": 1,
+     "angulos": [
+      "familiograma en visita de salud familiar"
+     ]
+    },
+    {
+     "codigo": "I-12",
+     "n": 3,
+     "angulos": [
+      "participación como movilización",
+      "fortalecimiento de promotores/ACS",
+      "control social/vigilancia comunitaria de la gestión"
+     ]
+    },
+    {
+     "codigo": "II-1",
+     "n": 6,
+     "angulos": [
+      "parto vertical en gestante de alto riesgo/referir",
+      "episiotomía medio-lateral",
+      "placenta previa (sangrado indoloro rutilante)",
+      "corioamnionitis (RPM/LA purulento)",
+      "amenaza de aborto (eco normal)",
+      "eclampsia (PA 170/110 + convulsión)"
+     ]
+    },
+    {
+     "codigo": "II-2",
+     "n": 1,
+     "angulos": [
+      "niño con fiebre/palidez/petéquias: referir"
+     ]
+    },
+    {
+     "codigo": "II-3",
+     "n": 2,
+     "angulos": [
+      "vacunas antitos ferina (DPT/pentavalente)",
+      "esquema lactante 6 meses (influenza)"
+     ]
+    },
+    {
+     "codigo": "II-4",
+     "n": 2,
+     "angulos": [
+      "anemia ferropénica en gestante/RN",
+      "anemia infantil + parasitosis: conducta"
+     ]
+    },
+    {
+     "codigo": "II-5",
+     "n": 2,
+     "angulos": [
+      "tamizaje neonatal fenilcetonuria/prevención (MCI)",
+      "atención integral del adolescente"
+     ]
+    },
+    {
+     "codigo": "II-6",
+     "n": 2,
+     "angulos": [
+      "TB-DR: prueba de sensibilidad rápida",
+      "terapia preventiva TB: descartar enfermedad activa"
+     ]
+    },
+    {
+     "codigo": "II-7",
+     "n": 3,
+     "angulos": [
+      "inmunizaciones influenza/neumococo AM",
+      "atención domiciliaria AM con demencia",
+      "VACAM ante fragilidad"
+     ]
+    },
+    {
+     "codigo": "II-8",
+     "n": 4,
+     "angulos": [
+      "perímetro de cintura mujer diabética",
+      "prevención RCV/HTA factores modificables",
+      "perímetro de cintura varón diabético",
+      "glicemia 120: repetir examen (DM)"
+     ]
+    },
+    {
+     "codigo": "II-9",
+     "n": 3,
+     "angulos": [
+      "episodio depresivo",
+      "AUDIT 30: dependencia alcohólica",
+      "modelo de salud mental comunitario"
+     ]
+    },
+    {
+     "codigo": "II-10",
+     "n": 2,
+     "angulos": [
+      "tamizaje cáncer colorrectal (antecedente familiar)",
+      "mamografía: tamizaje según evidencia/riesgo"
+     ]
+    },
+    {
+     "codigo": "II-11",
+     "n": 1,
+     "angulos": [
+      "inicio TARV + terapia preventiva TB en VIH"
+     ]
+    },
+    {
+     "codigo": "III-1",
+     "n": 1,
+     "angulos": [
+      "autonomía: rechazo informado de tratamiento"
+     ]
+    },
+    {
+     "codigo": "III-2",
+     "n": 3,
+     "angulos": [
+      "empatía en el acto médico",
+      "trato humano/respeto al paciente",
+      "secreto profesional"
+     ]
+    },
+    {
+     "codigo": "III-5",
+     "n": 7,
+     "angulos": [
+      "plantas medicinales en AM",
+      "traductor/equidad intercultural",
+      "planta medicinal de la zona",
+      "música durante el parto",
+      "ejemplo de pertinencia cultural (parto vertical)",
+      "charla en quechua sobre diversidad étnica",
+      "parto vertical intercultural"
+     ]
+    },
+    {
+     "codigo": "III-6",
+     "n": 1,
+     "angulos": [
+      "líneas de acción para servicios con pertinencia cultural"
+     ]
+    },
+    {
+     "codigo": "III-8",
+     "n": 3,
+     "angulos": [
+      "cuidar/usar bienes del Estado",
+      "deber de discreción/reserva",
+      "principio de justicia y equidad del servidor"
+     ]
+    },
+    {
+     "codigo": "III-9",
+     "n": 1,
+     "angulos": [
+      "plazo de entrega de HC al ministerio público"
+     ]
+    },
+    {
+     "codigo": "IV-1",
+     "n": 1,
+     "angulos": [
+      "enfoque de investigación cualitativo"
+     ]
+    },
+    {
+     "codigo": "IV-2",
+     "n": 1,
+     "angulos": [
+      "validez del instrumento por juicio de expertos"
+     ]
+    },
+    {
+     "codigo": "V-1",
+     "n": 4,
+     "angulos": [
+      "quién asigna la categorización",
+      "definición de categorización",
+      "categoría I-3 (consulta externa + patología clínica)",
+      "categoría I-1 (consulta externa intra/extramural)"
+     ]
+    },
+    {
+     "codigo": "V-2",
+     "n": 21,
+     "angulos": [
+      "POI: definición",
+      "fase del ciclo de planeamiento estratégico",
+      "bioseguridad: tipo de guantes",
+      "prioridad de intervención en desastre",
+      "definición de desastre",
+      "auditoría de calidad: etapa de planeamiento",
+      "PEI: documento a 3 años",
+      "requerimiento CAS: POI/CAP",
+      "programa de mejora continua",
+      "ROF: funciones rectoras MINSA",
+      "cultura vs clima organizacional",
+      "EPP ante brote respiratorio",
+      "finalidad de la sala de situación en desastres",
+      "definición de bioseguridad",
+      "principios del auditor",
+      "clasificación de residuos sólidos",
+      "clima organizacional (desplazamiento de personal)",
+      "liderazgo de equipos y calidad",
+      "definición de planeamiento estratégico",
+      "plan de salud local (CLAS)",
+      "accidente punzocortante"
+     ]
+    },
+    {
+     "codigo": "V-3",
+     "n": 1,
+     "angulos": [
+      "atributo RIS: primer nivel como puerta de entrada"
+     ]
+    },
+    {
+     "codigo": "V-6",
+     "n": 1,
+     "angulos": [
+      "telemonitoreo (seguimiento telefónico)"
+     ]
+    },
+    {
+     "codigo": "V-7",
+     "n": 2,
+     "angulos": [
+      "referir neumonía/IRA severa",
+      "referir ACV (deterioro de conciencia)"
+     ]
+    },
+    {
+     "codigo": "V-MED",
+     "n": 2,
+     "angulos": [
+      "productos vencidos: devolver con informe",
+      "ERH: opinión de CCI por producto farmacéutico >1 año"
+     ]
+    }
+   ]
+  },
+  {
+   "examId": "2026-1",
+   "totalClasificadas": 100,
+   "areaPct": {
+    "I": 29,
+    "II": 34,
+    "III": 10,
+    "IV": 4,
+    "V": 23
+   },
+   "formato": {
+    "corto": 26,
+    "vinneta": 74
+   },
+   "codigos": [
+    {
+     "codigo": "I-1",
+     "n": 2,
+     "angulos": [
+      "espacios libres de humo como función de salud pública",
+      "actividad física como estrategia de prevención (obesidad)"
+     ]
+    },
+    {
+     "codigo": "I-2",
+     "n": 3,
+     "angulos": [
+      "FESP desarrollo/capacitación de RRHH",
+      "FESP vigilancia y valoración del estado de salud",
+      "FESP participación social"
+     ]
+    },
+    {
+     "codigo": "I-3",
+     "n": 15,
+     "angulos": [
+      "vigilancia activa (recojo en escenario, incluye no consultantes)",
+      "vigilancia IAAS activa",
+      "notificación inmediata (fiebre amarilla)",
+      "cadena epidemiológica",
+      "historia natural fase clínica (chancro)",
+      "definición de epidemiología",
+      "niveles de prevención (primaria en CPN)",
+      "brote (intoxicación alimentaria)",
+      "casos incidentes vs prevalentes (melanoma)",
+      "tasa de letalidad (malaria)",
+      "vigilancia activa/retrospectiva en HC",
+      "definición de vigilancia epidemiológica",
+      "epizootia",
+      "ASIS",
+      "brote/epidemia definición"
+     ]
+    },
+    {
+     "codigo": "I-4",
+     "n": 2,
+     "angulos": [
+      "control vectorial Aedes / estratificación entomológica IPO",
+      "clasificación de dengue por grupos A/B/C"
+     ]
+    },
+    {
+     "codigo": "I-5",
+     "n": 4,
+     "angulos": [
+      "determinante social (condiciones de vida)",
+      "determinante estilo de vida (drogas)",
+      "determinantes estructurales (trabajo infantil/deserción)",
+      "determinantes y políticas públicas (migrantes)"
+     ]
+    },
+    {
+     "codigo": "I-10",
+     "n": 1,
+     "angulos": [
+      "atributos de la APS (integralidad de servicios)"
+     ]
+    },
+    {
+     "codigo": "I-11",
+     "n": 1,
+     "angulos": [
+      "ciclo vital familiar (formación)"
+     ]
+    },
+    {
+     "codigo": "I-12",
+     "n": 1,
+     "angulos": [
+      "participación comunitaria (parto institucional vs domiciliario)"
+     ]
+    },
+    {
+     "codigo": "II-1",
+     "n": 2,
+     "angulos": [
+      "criterios para parto vertical (presentación cefálica)",
+      "posición en parto vertical y protección del periné"
+     ]
+    },
+    {
+     "codigo": "II-2",
+     "n": 2,
+     "angulos": [
+      "definición de CRED",
+      "test de vigilancia del neurodesarrollo por edad"
+     ]
+    },
+    {
+     "codigo": "II-3",
+     "n": 8,
+     "angulos": [
+      "rango de temperatura cadena de frío 2-8°C",
+      "vacunas del adulto mayor (influenza/neumococo)",
+      "vacuna multidosis 15m-59a (antiamarílica)",
+      "esquema VPH (edad y dosis)",
+      "actividades complementarias de vacunación ante brote (pertussis)",
+      "tiempo de reposo post vacuna dengue",
+      "vacunas del RN (BCG/HvB) tiempo ideal",
+      "calendario de vacunación 4 meses (pentavalente)"
+     ]
+    },
+    {
+     "codigo": "II-4",
+     "n": 2,
+     "angulos": [
+      "anemia ajustada por altitud (clasificación/conducta)",
+      "suplementación preventiva de hierro en lactante"
+     ]
+    },
+    {
+     "codigo": "II-5",
+     "n": 4,
+     "angulos": [
+      "radiografía en neumotórax (espiración) - clínica",
+      "enfoque de desarrollo positivo del adolescente",
+      "componentes del MCI (gestión)",
+      "test de Graham / oxiuriasis - clínica"
+     ]
+    },
+    {
+     "codigo": "II-6",
+     "n": 2,
+     "angulos": [
+      "estudio de contactos TB (plazo ≤7 días)",
+      "definición de sintomático respiratorio"
+     ]
+    },
+    {
+     "codigo": "II-7",
+     "n": 1,
+     "angulos": [
+      "VACAM valoración clínica completa del adulto mayor"
+     ]
+    },
+    {
+     "codigo": "II-8",
+     "n": 2,
+     "angulos": [
+      "metas del manejo integral de DM (HbA1c/glicemia)",
+      "estimación de riesgo cardiovascular (PA/IMC)"
+     ]
+    },
+    {
+     "codigo": "II-9",
+     "n": 4,
+     "angulos": [
+      "conducta ante riesgo psicosocial (referir a salud mental)",
+      "interpretación del SRQ",
+      "AUDIT C (consumo de alcohol)",
+      "derivación por tamizaje de salud mental positivo"
+     ]
+    },
+    {
+     "codigo": "II-10",
+     "n": 2,
+     "angulos": [
+      "signos de alarma de cáncer infantil",
+      "tamizaje de cáncer cervical (IVAA 30-49a)"
+     ]
+    },
+    {
+     "codigo": "II-11",
+     "n": 5,
+     "angulos": [
+      "prueba rápida dual VIH/sífilis",
+      "conducta ante VIH positivo (confirmar)",
+      "esquema de tratamiento de sífilis (penicilina benzatínica)",
+      "VIH en gestante (derivación/confirmación)",
+      "tamizaje de ITS en adolescente"
+     ]
+    },
+    {
+     "codigo": "III-1",
+     "n": 1,
+     "angulos": [
+      "modelo de relación médico-paciente (deliberativo)"
+     ]
+    },
+    {
+     "codigo": "III-4",
+     "n": 2,
+     "angulos": [
+      "violencia sexual: kit de emergencia con consentimiento",
+      "embarazo en menor por abuso: código violeta/referencia"
+     ]
+    },
+    {
+     "codigo": "III-5",
+     "n": 2,
+     "angulos": [
+      "respeto de creencias (anemia/sangrecita)",
+      "discriminación e interacción cultural (migrantes)"
+     ]
+    },
+    {
+     "codigo": "III-6",
+     "n": 1,
+     "angulos": [
+      "enfoque/política intercultural y población objetivo (indígena/afroperuana)"
+     ]
+    },
+    {
+     "codigo": "III-9",
+     "n": 3,
+     "angulos": [
+      "derecho al acceso/apertura de HC (SIS otra jurisdicción)",
+      "trato digno y humanizado (VIH)",
+      "confidencialidad (VIH)"
+     ]
+    },
+    {
+     "codigo": "III-10",
+     "n": 1,
+     "angulos": [
+      "adecuación cultural de servicios (gestante quechua)"
+     ]
+    },
+    {
+     "codigo": "IV-1",
+     "n": 2,
+     "angulos": [
+      "técnica de recolección: entrevista (exposiciones)",
+      "instrumentos PRO: entrevistas y cuestionarios (calidad de vida)"
+     ]
+    },
+    {
+     "codigo": "IV-4",
+     "n": 1,
+     "angulos": [
+      "RR como medida de asociación"
+     ]
+    },
+    {
+     "codigo": "IV-7",
+     "n": 1,
+     "angulos": [
+      "etapa del proceso de vigilancia (recolección de datos)"
+     ]
+    },
+    {
+     "codigo": "V-1",
+     "n": 3,
+     "angulos": [
+      "capacidad resolutiva por categoría (I-1 urgencias)",
+      "capacidad resolutiva: atender parto vs referir",
+      "ejemplo de UPSS en I-4 (pediatría)"
+     ]
+    },
+    {
+     "codigo": "V-2",
+     "n": 11,
+     "angulos": [
+      "objetivos de planeamiento estratégico",
+      "gestión de RRHH por competencias",
+      "archivo activo de historias clínicas (años)",
+      "manejo de residuos sólidos biocontaminados",
+      "indicador de gestión (productividad)",
+      "instrumentos de gestión POI/abastecimiento",
+      "identificación de HC por DNI",
+      "POI: programación de recursos",
+      "FODA: identificar fortalezas",
+      "misión institucional",
+      "plan operativo (Salud Familiar)"
+     ]
+    },
+    {
+     "codigo": "V-3",
+     "n": 1,
+     "angulos": [
+      "RIS: característica del proceso de implementación (planificado)"
+     ]
+    },
+    {
+     "codigo": "V-6",
+     "n": 2,
+     "angulos": [
+      "definición de telesalud (TICs)",
+      "telemonitoreo (adulto mayor DM)"
+     ]
+    },
+    {
+     "codigo": "V-7",
+     "n": 3,
+     "angulos": [
+      "nivel de referencia de gestante en trabajo de parto",
+      "referencia de gestante de bajo riesgo desde CS",
+      "definición de referencia (menor a mayor capacidad)"
+     ]
+    },
+    {
+     "codigo": "V-MED",
+     "n": 3,
+     "angulos": [
+      "uso racional de antimicrobianos / resistencia",
+      "sospecha de reacción adversa (notificación)",
+      "definición de farmacovigilancia"
+     ]
+    }
+   ]
+  }
+ ],
+ "pronosticos": [
+  {
+   "metodo": "simple-average",
+   "pasos": [
+    {
+     "predice": "2025-I usando 2024-II",
+     "areaPred": {
+      "I": 23.5,
+      "II": 23,
+      "III": 9,
+      "IV": 15,
+      "V": 29.5
+     },
+     "topTemas": [
+      "V-2",
+      "V-MED",
+      "I-4",
+      "I-3",
+      "IV-1"
+     ],
+     "maeAreaVsReal": 4.4,
+     "aprendizaje": "Con un solo proceso base la predicción de III y V falla feo: III saltó de 9 a 17 (aparecen III-8/III-9 con fuerza) y IV estaba sobreestimado (15 pred vs 12 real). Señal temprana: III sube, IV empieza a ceder. V-2 y V-MED son anclas estables."
+    },
+    {
+     "predice": "2025-II usando 2024-II + 2025-I",
+     "areaPred": {
+      "I": 25,
+      "II": 22,
+      "III": 13,
+      "IV": 13.5,
+      "V": 26.5
+     },
+     "topTemas": [
+      "V-2",
+      "I-3",
+      "V-MED",
+      "III-5",
+      "II-8"
+     ],
+     "maeAreaVsReal": 5.4,
+     "aprendizaje": "El colapso de IV es el gran miss: predije 13.5 y el real fue 2 (error 11.5). El examen se volumió en viñetas (83% vinneta) y clínico: II sube a 28 y V a 31 (pico de V-2=21). II-1 obstétrico y III-5 intercultural explotan. Lección: IV no es ruido, es una caída estructural que el promedio suaviza demasiado."
+    },
+    {
+     "predice": "2026-I usando los 3 previos",
+     "areaPred": {
+      "I": 24.33,
+      "II": 24,
+      "III": 14,
+      "IV": 9.67,
+      "V": 28
+     },
+     "topTemas": [
+      "V-2",
+      "I-3",
+      "V-MED",
+      "II-11",
+      "III-5"
+     ],
+     "maeAreaVsReal": 5.87,
+     "aprendizaje": "Miss principal en II (pred 24 vs real 34): II sigue creciendo sin freno, ahora liderada por II-3 (vacunas, pico=8) y II-11 (ITS, pico=5) — picos emergentes nuevos. I-3 se dispara a 15 (mega-tema de epidemiología/vigilancia). IV se confirma bajo (4) — el promedio aún lo sobreestima. III baja a 10. Tendencia clara: I+II concentran ~63% del examen."
+    }
+   ],
+   "forecast2026_2": {
+    "areaPct": {
+     "I": 27,
+     "II": 29,
+     "III": 12,
+     "IV": 5,
+     "V": 27
+    },
+    "topTemas": [
+     {
+      "codigo": "I-3",
+      "pct": 13,
+      "prioridad": "CRÍTICA"
+     },
+     {
+      "codigo": "V-2",
+      "pct": 13,
+      "prioridad": "CRÍTICA"
+     },
+     {
+      "codigo": "II-3",
+      "pct": 6,
+      "prioridad": "ALTA"
+     },
+     {
+      "codigo": "V-MED",
+      "pct": 6,
+      "prioridad": "ALTA"
+     },
+     {
+      "codigo": "II-11",
+      "pct": 5,
+      "prioridad": "ALTA"
+     },
+     {
+      "codigo": "II-8",
+      "pct": 4,
+      "prioridad": "ALTA"
+     },
+     {
+      "codigo": "II-1",
+      "pct": 4,
+      "prioridad": "MEDIA"
+     },
+     {
+      "codigo": "III-5",
+      "pct": 4,
+      "prioridad": "MEDIA"
+     },
+     {
+      "codigo": "I-4",
+      "pct": 3,
+      "prioridad": "MEDIA"
+     },
+     {
+      "codigo": "II-9",
+      "pct": 3,
+      "prioridad": "MEDIA"
+     },
+     {
+      "codigo": "II-4",
+      "pct": 3,
+      "prioridad": "MEDIA"
+     },
+     {
+      "codigo": "V-7",
+      "pct": 3,
+      "prioridad": "MEDIA"
+     },
+     {
+      "codigo": "III-9",
+      "pct": 3,
+      "prioridad": "MEDIA"
+     },
+     {
+      "codigo": "II-7",
+      "pct": 2,
+      "prioridad": "BAJA"
+     },
+     {
+      "codigo": "IV-1",
+      "pct": 2,
+      "prioridad": "BAJA"
+     }
+    ],
+    "notas": "Promedio simple de los 4 procesos da I=25.5 II=26.5 III=13 IV=8.25 V=26.75; lo ajusto por tendencia observada en el walk-forward: (1) IV en caída estructural sostenida (15→12→2→4) — el promedio siempre lo sobreestima, lo comprimo a 5 y priorizo abajo; (2) I y II en alza monótona (I: 23.5→26.5→23→29; II: 23→21→28→34) — subo ambas por encima del promedio; II es hoy el área más pesada y volátil, dominada por picos migratorios (II-3 vacunas, II-11 ITS en 2026-I). (3) V estable-alto anclado por V-2 (planeamiento/FODA/POI, el tema individual más denso: 13-21 preguntas por examen) + V-MED (farmacia). (4) I-3 (epidemiología/vigilancia/historia natural) es el tema más consistente al alza, llegó a 15 en 2026-I: es CRÍTICA junto con V-2. (5) III se estabiliza en ~12 con III-5 (interculturalidad) y III-9 (derechos/HC) como sostén. Picos emergentes a vigilar: II-3 y II-11 pueden repetir; V-3 y IV son residuales. MAE histórico ~4.4-5.9 pp/área, así que asumir +-6 pp de incertidumbre por área."
+   },
+   "confianza": "Media. El método simple-average tiene MAE de 4.4-5.9 pp por área (creciente), y su debilidad probada es no capturar tendencias monótonas: subestima el alza sostenida de I/II y sobreestima IV en caída. Mis áreas van ajustadas a mano contra esas tendencias, lo que reduce el sesgo pero no la varianza. Las anclas (I-3, V-2, V-MED) son altamente fiables (aparecen en los 4 procesos con peso alto); los picos emergentes (II-3, II-11) son los de mayor incertidumbre porque solo tienen 1 proceso de historia fuerte. Banda razonable: +-6 pp por área."
+  },
+  {
+   "metodo": "recency-weighted",
+   "pasos": [
+    {
+     "predice": "2025-I usando solo 2024-II (1 proceso previo, w=[1])",
+     "areaPred": {
+      "I": 23.5,
+      "II": 23,
+      "III": 9,
+      "IV": 15,
+      "V": 29.5
+     },
+     "topTemas": [
+      "V-2 (~14)",
+      "V-MED (~11)",
+      "I-4 (8)",
+      "IV-1 (6)",
+      "I-3 (6)"
+     ],
+     "maeAreaVsReal": 4.4,
+     "aprendizaje": "Con un solo examen base el modelo es plano y falla en lo que ya se estaba moviendo: III subió fuerte (9→17, aparecen III-8/III-9) y IV cayó (15→12). Ancló demasiado en el perfil V-MED/IV-1 alto de 2024-II que en realidad ya venía de bajada. Lección: I-3 e III son estructuralmente ascendentes; IV es descendente desde el arranque."
+    },
+    {
+     "predice": "2025-II usando 2024-II+2025-I (w=[1,2])",
+     "areaPred": {
+      "I": 25.5,
+      "II": 21.7,
+      "III": 14.3,
+      "IV": 13,
+      "V": 25.5
+     },
+     "topTemas": [
+      "V-2 (~12)",
+      "I-3 (~9)",
+      "IV-1 (~9)",
+      "V-MED (~9)",
+      "III-5 (~3)"
+     ],
+     "maeAreaVsReal": 5.4,
+     "aprendizaje": "Mayor MAE porque 2025-II fue disruptivo: IV se DESPLOMÓ a 2% (predije 13) y el formato viró a 83% viñeta clínica, matando el bloque metodológico IV-1/IV-2. En paralelo V saltó a 31% (V-2=21, pico histórico) y II subió a 28%. Lección dura: IV está en caída libre, no solo lento declive; V-2 es el tema-ancla que puede explotar; el modelo lineal subestima picos clínicos."
+    },
+    {
+     "predice": "2026-I usando 2024-II+2025-I+2025-II (w=[1,2,3])",
+     "areaPred": {
+      "I": 24.2,
+      "II": 24.8,
+      "III": 15.2,
+      "IV": 7.5,
+      "V": 28.2
+     },
+     "topTemas": [
+      "V-2 (~15)",
+      "I-3 (~9)",
+      "V-MED (~6)",
+      "III-5 (~4)",
+      "II-1 (~4)"
+     ],
+     "maeAreaVsReal": 5.57,
+     "aprendizaje": "El modelo acertó la caída de IV (predije 7.5, real 4) y que I-3 sube, pero falló en dos giros: II se disparó a 34% (predije 25) por picos emergentes II-3 (inmunizaciones 2→8), II-11 (ITS 0→5) y II-9 (salud mental 3→4), mientras III se hundió a 10% (predije 15) porque III-8/III-2 casi desaparecieron. I-3 tocó techo (15, casi todo por vigilancia epidemiológica). Lección: II es el área volátil al alza con picos clínicos emergentes; III es frágil salvo III-5/III-9; V-MED sigue erosionándose (11.5→8→2→3)."
+    }
+   ],
+   "forecast2026_2": {
+    "areaPct": {
+     "I": 26,
+     "II": 30,
+     "III": 12,
+     "IV": 5,
+     "V": 27
+    },
+    "topTemas": [
+     {
+      "codigo": "V-2",
+      "pct": 13,
+      "prioridad": "CRÍTICA"
+     },
+     {
+      "codigo": "I-3",
+      "pct": 11,
+      "prioridad": "CRÍTICA"
+     },
+     {
+      "codigo": "II-3",
+      "pct": 5,
+      "prioridad": "ALTA"
+     },
+     {
+      "codigo": "II-11",
+      "pct": 4,
+      "prioridad": "ALTA"
+     },
+     {
+      "codigo": "V-MED",
+      "pct": 4,
+      "prioridad": "ALTA"
+     },
+     {
+      "codigo": "II-9",
+      "pct": 4,
+      "prioridad": "ALTA"
+     },
+     {
+      "codigo": "III-5",
+      "pct": 4,
+      "prioridad": "ALTA"
+     },
+     {
+      "codigo": "I-5",
+      "pct": 3,
+      "prioridad": "MEDIA"
+     },
+     {
+      "codigo": "II-1",
+      "pct": 3,
+      "prioridad": "MEDIA"
+     },
+     {
+      "codigo": "V-1",
+      "pct": 3,
+      "prioridad": "MEDIA"
+     },
+     {
+      "codigo": "II-8",
+      "pct": 3,
+      "prioridad": "MEDIA"
+     },
+     {
+      "codigo": "II-5",
+      "pct": 3,
+      "prioridad": "MEDIA"
+     },
+     {
+      "codigo": "III-9",
+      "pct": 3,
+      "prioridad": "MEDIA"
+     },
+     {
+      "codigo": "V-7",
+      "pct": 3,
+      "prioridad": "MEDIA"
+     },
+     {
+      "codigo": "I-1",
+      "pct": 2,
+      "prioridad": "MEDIA"
+     },
+     {
+      "codigo": "II-4",
+      "pct": 2,
+      "prioridad": "MEDIA"
+     },
+     {
+      "codigo": "II-10",
+      "pct": 2,
+      "prioridad": "MEDIA"
+     },
+     {
+      "codigo": "I-4",
+      "pct": 2,
+      "prioridad": "BAJA"
+     },
+     {
+      "codigo": "IV-1",
+      "pct": 2,
+      "prioridad": "BAJA"
+     },
+     {
+      "codigo": "V-6",
+      "pct": 2,
+      "prioridad": "BAJA"
+     }
+    ],
+    "notas": "Áreas por media ponderada por recencia (raw I26.1/II28.5/III13.1/IV6.1/V26.1), ajustada a mano: subo II a 30 y bajo III a 12 porque el vector reciente (2025-II→2026-I) muestra II en ascenso claro (28→34) con picos clínicos emergentes, y III frágil (16→10); mantengo IV en 5 (colapsó a 2-4% con el viraje a viñeta clínica, sin señal de recuperación). TENDENCIAS POR TEMA: (1) V-2 sigue siendo el tema-ancla n°1 pese a su volatilidad (14.5→10.5→21→11); domínalo sí o sí. (2) I-3 en ascenso estructural y ya es el motor casi único del área I —vigilancia epidemiológica, cadena, historia natural, tipos de vigilancia activa/pasiva. (3) II-3 (inmunizaciones/cadena de frío) es el PICO EMERGENTE más fuerte (2→0→2→8): calendario, temperatura 2-8°C, esquemas por edad —altísima probabilidad de repetir. (4) II-11 (ITS: VIH/sífilis, prueba dual) y II-9 (salud mental: SRQ/AUDIT/depresión) son emergentes clínicos en alza. (5) IV EN CAÍDA (metodología IV-1/IV-2 casi extinta bajo formato viñeta): estudio de bajo rendimiento, no invertir tiempo salvo repaso ligero de RR/tipos de estudio. (6) III-5 (interculturalidad) volátil pero recurrente; III-9 (derechos/HC) estable. (7) V-MED erosionándose pero nunca desaparece (farmacovigilancia/URM/almacenamiento) —mantener repaso mínimo. RIESGO: si el formato vuelve a rebalancear hacia respuesta corta, IV y I-6 podrían resucitar; el modelo asume continuidad del formato viñeta 74-83% observado en los 2 últimos procesos."
+   },
+   "confianza": "MEDIA. El MAE por área del walk-forward crece con el horizonte (4.4→5.4→5.6 pp), lo que fija una banda de error esperable de ±5-6 pp por área en el forecast 2026-II —suficiente para priorizar bloques, no para clavar porcentajes exactos. La confianza es mayor en las señales estructurales robustas (V-2 y I-3 como anclas CRÍTICAS; IV en colapso; V-MED en erosión) y menor en los picos emergentes de II (II-3/II-11/II-9), que por naturaleza son volátiles y podrían revertir. El supuesto más frágil es la continuidad del formato viñeta clínica (74-83%): si el examen vuelve a respuesta corta, IV e I-6 se subestiman. n=4 procesos independientes es una muestra corta para inferencia fina por tema.\""
+  },
+  {
+   "metodo": "trend-extrapolation",
+   "pasos": [
+    {
+     "predice": "2025-I usando 2024-II (persistencia, 1 punto)",
+     "areaPred": {
+      "I": 23.5,
+      "II": 23,
+      "III": 9,
+      "IV": 15,
+      "V": 29.5
+     },
+     "topTemas": [
+      "V-2",
+      "I-4",
+      "V-MED",
+      "I-3",
+      "IV-1"
+     ],
+     "maeAreaVsReal": 4.4,
+     "aprendizaje": "Con un solo punto solo se puede persistir. Falla en cambios de regimen: III saltó 9→17 (emergen ética III-8 y derechos/HC III-9), IV empezó a caer 15→12 y V bajó 29.5→23.5. La persistencia no anticipa saltos estructurales de III."
+    },
+    {
+     "predice": "2025-II usando 2024-II+2025-I (tendencia lineal 2 puntos, con clamps)",
+     "areaPred": {
+      "I": 26,
+      "II": 20,
+      "III": 20,
+      "IV": 9,
+      "V": 22
+     },
+     "topTemas": [
+      "V-2",
+      "I-3",
+      "V-MED",
+      "IV-1",
+      "III-9"
+     ],
+     "maeAreaVsReal": 6.2,
+     "aprendizaje": "Extrapolar linealmente II y V hacia abajo fue el gran error: II rebotó 21→28 (es volátil y mean-reverting, núcleo clínico) y V saltó a 31 (tiene piso estructural alto ~23+). III no siguió subiendo +8 (se plateó en 16). IV sí cayó (a 2) por el giro a viñeta 83% que reduce metodología pura. Lección: II/V son estructurales, no tendencias lineales."
+    },
+    {
+     "predice": "2026-I usando 2024-II+2025-I+2025-II (3 puntos, II/V como estructurales, III plateau, IV piso)",
+     "areaPred": {
+      "I": 25,
+      "II": 27,
+      "III": 15,
+      "IV": 4,
+      "V": 26
+     },
+     "topTemas": [
+      "V-2",
+      "II-1",
+      "I-3",
+      "II-8",
+      "V-MED"
+     ],
+     "maeAreaVsReal": 3.8,
+     "aprendizaje": "El mejor MAE al tratar II/V como estructurales y IV como piso. Aciertos: IV clavado (colapso confirmado, piso 2-4). Errores/aprendizajes: II siguió subiendo a 34 (viñetas clínicas dominan; II es el nuevo rey, tendencia firme 21→28→34), I subió a 29 por explosión de I-3 (n=15, epidemiología/vigilancia el mayor pico emergente), III cayó a 10 (la ética 2025 fue spike, no tendencia; revirtió). Picos emergentes: I-3, II-3 (vacunas 2→8), II-11 (ITS), II-9 (salud mental)."
+    }
+   ],
+   "forecast2026_2": {
+    "areaPct": {
+     "I": 27,
+     "II": 32,
+     "III": 11,
+     "IV": 4,
+     "V": 24
+    },
+    "topTemas": [
+     {
+      "codigo": "II (área clínico-asistencial)",
+      "pct": 32,
+      "prioridad": "CRÍTICA"
+     },
+     {
+      "codigo": "I-3",
+      "pct": 13,
+      "prioridad": "CRÍTICA"
+     },
+     {
+      "codigo": "V-2",
+      "pct": 13,
+      "prioridad": "CRÍTICA"
+     },
+     {
+      "codigo": "II-3",
+      "pct": 6,
+      "prioridad": "ALTA"
+     },
+     {
+      "codigo": "II-11",
+      "pct": 5,
+      "prioridad": "ALTA"
+     },
+     {
+      "codigo": "II-9",
+      "pct": 4,
+      "prioridad": "ALTA"
+     },
+     {
+      "codigo": "II-1",
+      "pct": 4,
+      "prioridad": "ALTA"
+     },
+     {
+      "codigo": "II-8",
+      "pct": 4,
+      "prioridad": "ALTA"
+     },
+     {
+      "codigo": "V-MED",
+      "pct": 4,
+      "prioridad": "MEDIA"
+     },
+     {
+      "codigo": "I-4",
+      "pct": 3,
+      "prioridad": "MEDIA"
+     },
+     {
+      "codigo": "III-5",
+      "pct": 3,
+      "prioridad": "MEDIA"
+     },
+     {
+      "codigo": "IV-1",
+      "pct": 3,
+      "prioridad": "BAJA"
+     }
+    ],
+    "notas": "Régimen actual = viñeta clínica dominante (corto→viñeta pasó de 60/40 a 26/74). Esto empuja II a máximo (28→34, techo; proyecto plateau/leve pull-back ~32) y sostiene I (I-3 aplicada) y V (V-2 gestión). IV está en piso muerto (15→12→2→4): mínimo esfuerzo, solo IV-1/IV-4/IV-7 básicos. III bajó (spike ético 2025 revertido a 10): mantener básico. Dentro de II priorizar: vacunas/cadena de frío (II-3, spike 2→8), ITS-VIH/sífilis (II-11, en alza), salud mental (II-9, emergente sostenido), obstetricia/parto vertical (II-1, volátil pero recurrente), DM/HTA/RCV (II-8, core). I-3 (vigilancia/brotes/historia natural/prevención) es el pico individual más fuerte del régimen (n=15 en 2026-I). V-2 (POI/FODA/planeamiento/acreditación/residuos-bioseguridad) siempre estructural. Aritmética: sumas de área no siempre dan 100 por otras áreas/subtemas no listados y por clamps; los pct de tema son sobre total de preguntas clasificadas."
+   },
+   "confianza": "Media-alta a nivel de ÁREA (MAE del último paso backtesteado = 3.8 pp; el modelo mejoró monótonamente 4.4→6.2→3.8 al incorporar la lección estructural II/V). La dirección es sólida: II crítica y dominante, I alta con I-3 como pico, IV en piso, III bajo, V estructural. Menor confianza en el % exacto de II (riesgo de techo: podría plateau en 30-34) y en cuál sub-tema de II picará (II-3/II-9/II-11 rotan). Riesgo principal: un giro de formato de vuelta a preguntas cortas reactivaría IV y metodología; con solo 4 procesos independientes el n es corto para tendencias por sub-código.\""
+  }
+ ],
+ "sintesis": {
+  "areaFinal": {
+   "I": 27,
+   "II": 31,
+   "III": 12,
+   "IV": 4,
+   "V": 26
+  },
+  "metodologia": "Reconciliación de los 3 métodos más re-cálculo directo sobre los 6 exámenes reales (blend 55% últimos-2 + 30% recency-weighted + 15% media histórica); área ajustada al régimen viñeta actual. Detalle en el resto de campos.",
+  "temasForecast": [
+   {
+    "codigo": "V-2",
+    "pctPunto": 15,
+    "pctMin": 10,
+    "pctMax": 21,
+    "prioridad": "CRITICA",
+    "tendencia": "volátil-alta",
+    "subangulos": [
+     "POI multianual / POI como herramienta de metas anuales",
+     "FODA (fortalezas, amenazas/debilidades, análisis interno, diagnóstico situacional)",
+     "fase del ciclo de planeamiento estratégico / análisis situacional",
+     "misión y visión institucional",
+     "clima vs cultura organizacional",
+     "MOF/ROF y perfil del cargo (¿qué hace? ¿dónde?)",
+     "fases y macroprocesos de acreditación (autoevaluación/evaluación externa)",
+     "bioseguridad y clasificación de residuos sólidos biocontaminados",
+     "auditoría de caso/comité de auditoría médica",
+     "brecha RRHH (CAP-POI) e inducción de personal",
+     "exclusión de proveedores / cotizaciones en estudio de mercado",
+     "EPP y accidente punzocortante",
+     "priorización y definición de desastre / sala de situación en desastres"
+    ]
+   },
+   {
+    "codigo": "I-3",
+    "pctPunto": 11,
+    "pctMin": 8,
+    "pctMax": 15,
+    "prioridad": "CRITICA",
+    "tendencia": "alza",
+    "subangulos": [
+     "vigilancia activa vs pasiva / retrospectiva (recojo en escenario, IAAS)",
+     "notificación inmediata de brote (fiebre amarilla, ETA, zoonosis)",
+     "cadena epidemiológica y caso índice",
+     "historia natural de la enfermedad (fase subclínica/clínica/prodrómica) y niveles de prevención",
+     "incidencia (velocidad) vs prevalencia (magnitud); casos incidentes vs prevalentes",
+     "tasa de ataque / tasa de letalidad / R0 en brotes",
+     "definición de epidemiología y de vigilancia epidemiológica",
+     "ASIS / sala situacional / sala de situación",
+     "transición epidemiológica y demográfica",
+     "criterios de causalidad (gradiente biológico, causa necesaria no suficiente)",
+     "definición de brote/epidemia, epizootia"
+    ]
+   },
+   {
+    "codigo": "V-MED",
+    "pctPunto": 4,
+    "pctMin": 2,
+    "pctMax": 8,
+    "prioridad": "ALTA",
+    "tendencia": "baja",
+    "subangulos": [
+     "farmacovigilancia y tecnovigilancia (DIGEMID, notificación de RAM)",
+     "uso racional de medicamentos y resistencia antimicrobiana",
+     "almacenamiento y baja/destrucción de productos vencidos",
+     "tipos de RAM (isoniazida, benzodiacepinas, hiperkalemia losartán-espironolactona)",
+     "SISMED / meses de stock / disponibilidad óptima",
+     "cadena de frío y sensores calibrados de refrigeración",
+     "petitorio nacional único / medicamentos de manejo especializado"
+    ]
+   },
+   {
+    "codigo": "II-3",
+    "pctPunto": 4,
+    "pctMin": 2,
+    "pctMax": 8,
+    "prioridad": "ALTA",
+    "tendencia": "alza",
+    "subangulos": [
+     "cadena de frío rango 2-8°C",
+     "calendario de vacunación por edad (pentavalente 4 meses, RN BCG/HvB)",
+     "esquema VPH (edad y dosis)",
+     "vacunas del adulto mayor (influenza/neumococo)",
+     "actividades complementarias de vacunación ante brote (pertussis)",
+     "vacuna antiamarílica multidosis 15m-59a / reposo post vacuna dengue",
+     "hepatitis B en personal de salud",
+     "ESAVI grave vs coincidente"
+    ]
+   },
+   {
+    "codigo": "III-5",
+    "pctPunto": 4,
+    "pctMin": 2,
+    "pctMax": 7,
+    "prioridad": "ALTA",
+    "tendencia": "volátil",
+    "subangulos": [
+     "pertinencia/adecuación cultural (parto vertical, gestante quechua)",
+     "interculturalidad en salud (mal de ojo, susto, curandero)",
+     "etnocentrismo/relativismo cultural y aculturación en migrantes",
+     "plantas medicinales y traductor/equidad intercultural",
+     "respeto de creencias en anemia/sangrecita y patrones alimentarios",
+     "cuatro dimensiones de pertinencia cultural"
+    ]
+   },
+   {
+    "codigo": "II-1",
+    "pctPunto": 4,
+    "pctMin": 2,
+    "pctMax": 6,
+    "prioridad": "ALTA",
+    "tendencia": "volátil",
+    "subangulos": [
+     "criterios y posición de parto vertical (presentación cefálica, protección del periné)",
+     "preeclampsia severa/eclampsia (sulfato de magnesio)",
+     "placenta previa (sangrado indoloro rutilante) y corioamnionitis (RPM)",
+     "IMC pregestacional como primer indicador nutricional",
+     "ruptura uterina en expulsivo / episiotomía medio-lateral",
+     "fármacos que atraviesan barrera placentaria; amenaza de aborto"
+    ]
+   },
+   {
+    "codigo": "I-4",
+    "pctPunto": 3,
+    "pctMin": 2,
+    "pctMax": 6,
+    "prioridad": "MEDIA",
+    "tendencia": "baja",
+    "subangulos": [
+     "clasificación de dengue por grupos A/B/C y signos de alarma",
+     "dosis SSN 0.9% en dengue grupo B2",
+     "control vectorial Aedes / estratificación entomológica IPO / ovitrampas",
+     "malaria (P. vivax vector, P. falciparum en Loreto)",
+     "viruela del mono caso sospechoso",
+     "enfermedad de Carrión/Bartonella; leishmaniasis"
+    ]
+   },
+   {
+    "codigo": "II-8",
+    "pctPunto": 3,
+    "pctMin": 2,
+    "pctMax": 5,
+    "prioridad": "MEDIA",
+    "tendencia": "estable",
+    "subangulos": [
+     "meta de HbA1c <7% en DM2 y metas de manejo integral",
+     "HTA primera elección tiazídicos / confirmación con MAPA",
+     "perímetro abdominal y riesgo cardiovascular",
+     "valores de prediabetes (glicemia ayunas 100-125)",
+     "factores de riesgo HTA modificables/no modificables",
+     "sulfonilureas (glimepirida) en DM2"
+    ]
+   },
+   {
+    "codigo": "V-1",
+    "pctPunto": 3,
+    "pctMin": 1,
+    "pctMax": 5,
+    "prioridad": "MEDIA",
+    "tendencia": "estable",
+    "subangulos": [
+     "categorización de EESS (quién asigna, definición)",
+     "capacidad resolutiva por categoría (I-1 urgencias, atender parto vs referir)",
+     "cartera de servicios y ambiente/infraestructura normativa (I-3 residuos)",
+     "dotación de personal y UPSS por categoría (pediatría en I-4)"
+    ]
+   },
+   {
+    "codigo": "II-11",
+    "pctPunto": 3,
+    "pctMin": 1,
+    "pctMax": 5,
+    "prioridad": "MEDIA",
+    "tendencia": "alza",
+    "subangulos": [
+     "prueba rápida dual VIH/sífilis",
+     "tratamiento de sífilis (penicilina benzatínica) y estadios (primaria VDRL/FTA-ABS)",
+     "VIH en gestante (derivación/confirmación) e inicio TARV + TPT",
+     "profilaxis post-exposición ocupacional VIH",
+     "vaginosis bacteriana (KOH/aminas); tamizaje ITS adolescente"
+    ]
+   },
+   {
+    "codigo": "II-9",
+    "pctPunto": 3,
+    "pctMin": 1,
+    "pctMax": 5,
+    "prioridad": "MEDIA",
+    "tendencia": "alza",
+    "subangulos": [
+     "episodio/depresión mayor (diagnóstico)",
+     "AUDIT / AUDIT-C (consumo y dependencia de alcohol)",
+     "interpretación del SRQ y derivación por tamizaje positivo",
+     "modelo de salud mental comunitario",
+     "conducta ante riesgo psicosocial (referir a salud mental)"
+    ]
+   },
+   {
+    "codigo": "I-5",
+    "pctPunto": 3,
+    "pctMin": 1,
+    "pctMax": 5,
+    "prioridad": "MEDIA",
+    "tendencia": "alza",
+    "subangulos": [
+     "determinantes sociales estructurales (trabajo infantil, deserción, migrantes)",
+     "determinante intermedio (violencia, condiciones de vida)",
+     "determinante estilo de vida (drogas)",
+     "concepto de equidad en salud; JUNTOS y políticas públicas"
+    ]
+   },
+   {
+    "codigo": "I-1",
+    "pctPunto": 3,
+    "pctMin": 1,
+    "pctMax": 4,
+    "prioridad": "MEDIA",
+    "tendencia": "estable",
+    "subangulos": [
+     "definición de promoción de la salud y de estilo de vida",
+     "intersectorialidad (brote dengue, violencia familiar)",
+     "prevención específica (inmunización, espacios libres de humo)",
+     "niveles de prevención primaria; familia saludable como unidad"
+    ]
+   },
+   {
+    "codigo": "II-5",
+    "pctPunto": 3,
+    "pctMin": 1,
+    "pctMax": 4,
+    "prioridad": "MEDIA",
+    "tendencia": "estable",
+    "subangulos": [
+     "componentes y foco ampliado del Modelo de Cuidado Integral (MCI/MAIS)",
+     "enfoque de desarrollo positivo del adolescente / curso de vida",
+     "comunicación asertiva (saber escuchar)",
+     "clínica intercalada: neumotórax en espiración, test de Graham/oxiuriasis"
+    ]
+   },
+   {
+    "codigo": "II-4",
+    "pctPunto": 2,
+    "pctMin": 1,
+    "pctMax": 4,
+    "prioridad": "MEDIA",
+    "tendencia": "estable",
+    "subangulos": [
+     "anemia ajustada por altitud (clasificación/conducta)",
+     "dosis de hierro y ácido fólico en gestante con anemia",
+     "suplementación preventiva de hierro en lactante",
+     "curva P/T plana como riesgo nutricional; objetivo PAN (DCI <5a)"
+    ]
+   },
+   {
+    "codigo": "III-9",
+    "pctPunto": 2,
+    "pctMin": 1,
+    "pctMax": 5,
+    "prioridad": "MEDIA",
+    "tendencia": "volátil",
+    "subangulos": [
+     "plazo de entrega de copia de historia clínica",
+     "años de archivo activo/pasivo de HC y responsable de pérdida",
+     "derecho de acceso a servicios de salud (SIS otra jurisdicción)",
+     "queja/reclamo ante SUSALUD; trato digno y confidencialidad (VIH)"
+    ]
+   },
+   {
+    "codigo": "V-7",
+    "pctPunto": 2,
+    "pctMin": 1,
+    "pctMax": 4,
+    "prioridad": "MEDIA",
+    "tendencia": "estable",
+    "subangulos": [
+     "definición de referencia (menor a mayor capacidad resolutiva)",
+     "referencia de gestante en trabajo de parto según nivel",
+     "condición de contrarreferencia (mejorado)",
+     "referir emergencias: ACV, neumonía/IRA severa"
+    ]
+   },
+   {
+    "codigo": "II-7",
+    "pctPunto": 2,
+    "pctMin": 1,
+    "pctMax": 3,
+    "prioridad": "MEDIA",
+    "tendencia": "estable",
+    "subangulos": [
+     "VACAM (valoración clínica completa del adulto mayor)",
+     "prevención de caídas en adulto mayor frágil",
+     "test de deterioro cognitivo (Pfeiffer) en primer nivel",
+     "inmunizaciones influenza/neumococo; atención domiciliaria en demencia"
+    ]
+   },
+   {
+    "codigo": "II-10",
+    "pctPunto": 2,
+    "pctMin": 1,
+    "pctMax": 3,
+    "prioridad": "BAJA",
+    "tendencia": "estable",
+    "subangulos": [
+     "tamizaje de cáncer cervical (IVAA 30-49a / flujograma colposcopía)",
+     "signos de alarma de cáncer infantil (leucemia)",
+     "tamizaje cáncer colorrectal y mamografía según riesgo"
+    ]
+   },
+   {
+    "codigo": "III-8",
+    "pctPunto": 2,
+    "pctMin": 1,
+    "pctMax": 4,
+    "prioridad": "BAJA",
+    "tendencia": "baja",
+    "subangulos": [
+     "principios éticos de la función pública (probidad, discreción/reserva)",
+     "confidencialidad vulnerada por servidor público",
+     "veracidad en informe; cuidar bienes del Estado",
+     "justicia y equidad del servidor"
+    ]
+   },
+   {
+    "codigo": "II-6",
+    "pctPunto": 2,
+    "pctMin": 1,
+    "pctMax": 3,
+    "prioridad": "BAJA",
+    "tendencia": "estable",
+    "subangulos": [
+     "terapia preventiva de TB (contactos/VIH, descartar enfermedad activa)",
+     "definición de sintomático respiratorio",
+     "estudio de contactos TB (plazo ≤7 días); prueba de sensibilidad rápida"
+    ]
+   },
+   {
+    "codigo": "I-2",
+    "pctPunto": 2,
+    "pctMin": 1,
+    "pctMax": 3,
+    "prioridad": "BAJA",
+    "tendencia": "estable",
+    "subangulos": [
+     "FESP (desarrollo de RRHH, vigilancia, participación social, políticas)",
+     "acceso equitativo a servicios de calidad",
+     "gobernanza en salud pública"
+    ]
+   },
+   {
+    "codigo": "I-12",
+    "pctPunto": 2,
+    "pctMin": 1,
+    "pctMax": 3,
+    "prioridad": "BAJA",
+    "tendencia": "alza",
+    "subangulos": [
+     "participación comunitaria como movilización",
+     "fortalecimiento de promotores/ACS",
+     "control social/vigilancia comunitaria de la gestión",
+     "ejes estratégicos de participación en la planeación"
+    ]
+   },
+   {
+    "codigo": "III-2",
+    "pctPunto": 1,
+    "pctMin": 0,
+    "pctMax": 3,
+    "prioridad": "BAJA",
+    "tendencia": "baja",
+    "subangulos": [
+     "definición de deontología",
+     "título profesional y colegiatura para el ejercicio",
+     "empatía/trato humano y secreto profesional en el acto médico"
+    ]
+   },
+   {
+    "codigo": "V-6",
+    "pctPunto": 1,
+    "pctMin": 0,
+    "pctMax": 3,
+    "prioridad": "BAJA",
+    "tendencia": "alza",
+    "subangulos": [
+     "definición de telesalud (TICs) y teleorientación",
+     "telemonitoreo/seguimiento telefónico (adulto mayor DM)"
+    ]
+   },
+   {
+    "codigo": "I-11",
+    "pctPunto": 1,
+    "pctMin": 0,
+    "pctMax": 2,
+    "prioridad": "BAJA",
+    "tendencia": "estable",
+    "subangulos": [
+     "genograma/familiograma en visita de salud familiar",
+     "ciclo vital familiar (etapa de formación)",
+     "familia como unidad de intervención"
+    ]
+   },
+   {
+    "codigo": "II-2",
+    "pctPunto": 1,
+    "pctMin": 0,
+    "pctMax": 3,
+    "prioridad": "BAJA",
+    "tendencia": "alza",
+    "subangulos": [
+     "definición de CRED",
+     "test de vigilancia del neurodesarrollo por edad",
+     "niño con fiebre/palidez/petequias: referir"
+    ]
+   },
+   {
+    "codigo": "III-1",
+    "pctPunto": 1,
+    "pctMin": 0,
+    "pctMax": 3,
+    "prioridad": "BAJA",
+    "tendencia": "baja",
+    "subangulos": [
+     "principio de autonomía en la relación médico-paciente",
+     "rechazo/consentimiento informado de tratamiento",
+     "modelo de relación (deliberativo)"
+    ]
+   },
+   {
+    "codigo": "IV-1",
+    "pctPunto": 3,
+    "pctMin": 1,
+    "pctMax": 10,
+    "prioridad": "MEDIA",
+    "tendencia": "baja",
+    "subangulos": [
+     "tipos de estudio (observacional, descriptivo transversal, experimental, reporte de caso)",
+     "primer paso: pregunta de investigación / matriz de consistencia",
+     "enfoque cuantitativo vs cualitativo",
+     "muestreo probabilístico vs no probabilístico",
+     "técnica de recolección: entrevista/cuestionario (PRO)"
+    ]
+   },
+   {
+    "codigo": "I-10",
+    "pctPunto": 1,
+    "pctMin": 0,
+    "pctMax": 2,
+    "prioridad": "BAJA",
+    "tendencia": "estable",
+    "subangulos": [
+     "atributos/principios de la APS (integralidad)",
+     "modelo Bismarck (protección laboral) vs comunitario"
+    ]
+   },
+   {
+    "codigo": "V-3",
+    "pctPunto": 1,
+    "pctMin": 0,
+    "pctMax": 2,
+    "prioridad": "BAJA",
+    "tendencia": "alza",
+    "subangulos": [
+     "atributo de RIS: primer nivel como puerta de entrada",
+     "característica del proceso de implementación de RIS (planificado)",
+     "vías de cuidados integrales en RIS"
+    ]
+   },
+   {
+    "codigo": "III-4",
+    "pctPunto": 1,
+    "pctMin": 0,
+    "pctMax": 2,
+    "prioridad": "BAJA",
+    "tendencia": "alza",
+    "subangulos": [
+     "violencia sexual: kit de emergencia con consentimiento",
+     "embarazo en menor por abuso: código violeta/referencia"
+    ]
+   },
+   {
+    "codigo": "III-6",
+    "pctPunto": 1,
+    "pctMin": 0,
+    "pctMax": 2,
+    "prioridad": "BAJA",
+    "tendencia": "alza",
+    "subangulos": [
+     "líneas de acción/política intercultural y población objetivo (indígena/afroperuana)"
+    ]
+   },
+   {
+    "codigo": "IV-4",
+    "pctPunto": 1,
+    "pctMin": 0,
+    "pctMax": 2,
+    "prioridad": "BAJA",
+    "tendencia": "estable",
+    "subangulos": [
+     "RR como medida de asociación",
+     "riesgo absoluto para incidencia"
+    ]
+   },
+   {
+    "codigo": "IV-7",
+    "pctPunto": 1,
+    "pctMin": 0,
+    "pctMax": 2,
+    "prioridad": "BAJA",
+    "tendencia": "estable",
+    "subangulos": [
+     "etapa del proceso de vigilancia (recolección de datos)",
+     "sistema de vigilancia tradicional (declaración de enfermedades transmisibles)"
+    ]
+   },
+   {
+    "codigo": "III-10",
+    "pctPunto": 1,
+    "pctMin": 0,
+    "pctMax": 2,
+    "prioridad": "BAJA",
+    "tendencia": "estable",
+    "subangulos": [
+     "dimensiones de pertinencia/adecuación cultural de servicios (gestante quechua)"
+    ]
+   },
+   {
+    "codigo": "I-6",
+    "pctPunto": 1,
+    "pctMin": 0,
+    "pctMax": 4,
+    "prioridad": "BAJA",
+    "tendencia": "baja",
+    "subangulos": [
+     "desviación estándar como dispersión de la media",
+     "media como medida de tendencia central; análisis inferencial",
+     "población vs muestra representativa; datos discretos"
+    ]
+   }
+  ],
+  "subtemasEmergentes": [
+   "II-3 vacunas/cadena de frío: el pico emergente más fuerte (n 2→8 en 2026-1), altísima probabilidad de repetir con calendario, rango 2-8°C y esquemas por edad",
+   "II-9 salud mental: emergente sostenido al alza (SRQ, AUDIT-C, depresión mayor), aparece con fuerza solo desde 2025-2",
+   "II-11 ITS: rebrote en 2026-1 (n=5) con la prueba rápida dual VIH/sífilis como formato nuevo",
+   "III-4 violencia sexual/código violeta: aparece de cero (n=2) en 2026-1, kit de emergencia con consentimiento",
+   "V-3 RIS y V-6 telesalud/telemonitoreo: emergentes de baja frecuencia pero recurrentes en los 2 últimos exámenes",
+   "I-12 participación comunitaria: emergente al alza desde 2025-2 (movilización, ACS, control social)",
+   "II-2 CRED/neurodesarrollo: aparece por primera vez en 2025-2 y crece en 2026-1"
+  ],
+  "criticos": [
+   "V-2",
+   "I-3",
+   "II-3",
+   "V-MED",
+   "III-5",
+   "II-1"
+  ],
+  "recomendacionEstudio": "Atacar por rentabilidad decreciente. BLOQUE 1 (anclas, ~26% del examen entre las dos): V-2 (planeamiento/FODA/POI/acreditación/bioseguridad-residuos) e I-3 (vigilancia/cadena epidemiológica/historia natural/incidencia-prevalencia) — dominarlos al 100% antes que nada. BLOQUE 2 (picos ALTA emergentes, cada uno 4%): II-3 vacunas/cadena de frío, III-5 interculturalidad, II-1 obstetricia (parto vertical/preeclampsia), y mantener V-MED (farmacovigilancia/URM). BLOQUE 3 (core clínico MEDIA, 3% c/u): II-8 DM/HTA, II-11 ITS-VIH/sífilis dual, II-9 salud mental, I-4 dengue/malaria, I-5 determinantes, V-1 categorización, I-1 promoción. BLOQUE 4 (repaso ligero MEDIA-BAJA): II-4 anemia, II-5 MCI, III-9 derechos/HC, V-7 referencia, II-7 adulto mayor, II-6 TB, II-10 tamizaje cáncer. BLOQUE 5 (mínimo esfuerzo, área IV colapsada): solo repaso conceptual de IV-1 (tipos de estudio) e IV-4 (RR) e I-6 — NO invertir tiempo profundo salvo que el formato revierta a respuesta corta. Priorizar viñeta clínica (74-83% del examen) en el modo de práctica.",
+  "cambiosVsPrevio": "CONFIRMA: I-3 y V-2 siguen siendo los dos CRÍTICOS anclas (aparecen en los 6 exámenes con peso alto); II-3 vacunas confirmado como pico crítico emergente. CAMBIA en tres ejes granulares: (1) ÁREA — el previo tenía I 29·II 28·V 21·III 16·IV 6; la reconciliación baja I a 27, SUBE II a 31 (II es hoy el área rey, régimen viñeta clínica), baja V a 26 pero corrige el 21 previo que estaba muy bajo (V tiene piso estructural ~24-27 por V-2), baja III de 16 a 12 (el spike ético 2025 revirtió, III-8/III-2/III-3 casi extinguidos) y mantiene IV en el piso muerto (4-5, no 6). (2) CRÍTICOS — el previo listaba I-5 e I-6 como críticos; este análisis los DEGRADA fuerte: I-6 (estadística) desapareció en los 2 últimos exámenes (n=0,0) por el viraje a viñeta y baja a BAJA; I-5 (determinantes) es real pero solo MEDIA (~3%). En su lugar ascienden a la cúpula V-MED, III-5 y II-1 junto a II-3. (3) GRANULARIDAD NUEVA — se explicitan picos que el previo no capturaba: II-9 salud mental y II-11 ITS (dual VIH/sífilis) al alza, III-4 violencia sexual/código violeta emergiendo de cero, y la caída estructural de IV-1/IV-2 metodología (de 10 a 1-2 preguntas) que obliga a desinvertir en el bloque IV.",
+  "confianza": "MEDIA. n=6 exámenes reales y n=4 procesos walk-forward independientes es una muestra corta para inferencia fina por sub-código. A nivel de ÁREA la banda razonable es ±5-6pp (MAE histórico 3.8-5.9pp, con trend-extrapolation dando el mejor MAE=3.8 al tratar II/V como estructurales); la dirección es sólida (II dominante, I alta con I-3, IV en piso, III bajo, V estructural). Las anclas V-2 e I-3 son de alta confianza (peso alto en los 6 exámenes). Los picos emergentes (II-3, II-9, II-11, III-4) son los de MAYOR incertidumbre: pocos puntos de historia y comportamiento volátil, podrían revertir. El supuesto más frágil es la continuidad del formato viñeta clínica (74-83% en los 2 últimos): si el examen vuelve a respuesta corta, IV, I-6 y IV-1/IV-2 resucitarían y II se moderaría, invalidando parte del ranking. Las bandas [min,max] por código absorben esa varianza pero no la eliminan."
+ },
+ "_meta": {
+  "generado": "2026-07-01",
+  "modelo": "claude-fable-5",
+  "metodo": "walk-forward 4 procesos (2024-II,2025-I,2025-II,2026-I) · 3 metodos reconciliados · clasificacion pregunta-por-pregunta de 6 examenes reales",
+  "fuente": "DATA/ENCAPS/exams_txt/*.txt"
+ }
+}

@@ -14,7 +14,7 @@ import { usmleAnkiDeck, ANKIWEB } from '../../lib/ankiLinks';
 
 /**
  * UsmleTodayPlan — Plan Step 1 día-a-día, estilo Perú/ENCAPS pero mejor.
- * Botones Step 1/2/3 · navegación Día X/70 (◄►) · sub-pestañas HOY/Horario/7d/Temario.
+ * Botones Step 1/2/3 · navegación Día X/99 (◄►, v5.4) · sub-pestañas HOY/Horario/7d/Temario.
  * Qbankly SOLO abre en Edge → cada link Qbankly ofrece botón "Edge" (microsoft-edge:)
  * además del de Chrome. 7 días y temario son clicables → saltan al día. El badge de
  * sistema lleva al Temario con el progreso real del plan por sistema.
@@ -106,7 +106,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaUSMLE; onOpe
       )}
 
       {/* Cola de materiales de hoy */}
-      <Text style={st.secLbl}>📋 Cola de hoy · 07:15–12:00 + 18:00–18:45 (en orden) · Qbankly = botón Edge</Text>
+      <Text style={st.secLbl}>📋 Cola de hoy · 05:00 Anki AM · 07:15–12:00 + 18:00–18:45 (en orden) · Qbankly = botón Edge</Text>
       <FadeUp delay={60}><ColaItem icon="🅠" lbl="PRE-TEST 08:15 · uWorld (modo tutor)" val={`${dia.system} → ${dia.uw} · 10 preguntas ciegas + free recall 90s`} sub="Qbankly → QBanks → uWorld Step 1" color={GREEN} url={QBQ} edge /></FadeUp>
       <FadeUp delay={90}><ColaItem icon="🎬" lbl="VÍDEO · Boards & Beyond Step 1" val={`${dia.bbCh} → ${dia.bbVid}`} sub="Qbankly → Video Library → B&B Step 1" color={RED} url={QBV} edge /></FadeUp>
       <FadeUp delay={120}><ColaItem icon="📖" lbl="ACTIVE READING · material primario" val={dia.mat} sub="Qbankly → Library (uWorld/AMBOSS) · 25 min · 3-5 puntos high-yield" color={READ} url={QBL} edge /></FadeUp>
@@ -157,7 +157,7 @@ function HorarioView({ dia }: { dia: DiaUSMLE }) {
           </FadeUp>
         );
       })}
-      <Text style={st.note}>07:15 Anki + repaso anclado · 08:15 pre-test 10Q · 09:00 DEEP PRIME 2h · 11:00 30Q consolidación · 18:00 eval modo examen. Todo en inglés. Sáb/dom libres.</Text>
+      <Text style={st.note}>05:00 Anki AM · 07:15 repaso anclado · 08:15 pre-test 10Q · 09:00 DEEP PRIME 2h · 11:00 30Q consolidación · 18:00 eval modo examen (6h15/día). Todo en inglés. Sáb/dom libres.</Text>
     </View>
   );
 }
@@ -287,7 +287,7 @@ export default function UsmleTodayPlan() {
       <View style={st.stepRow}>
         <View style={[st.stepBtn, st.stepActive]}>
           <Text style={st.stepBig}>STEP 1</Text>
-          <Text style={st.stepSub}>BLOQUE PRINCIPAL · 5h30/día · examen fin de enero</Text>
+          <Text style={st.stepSub}>BLOQUE PRINCIPAL · 6h15/día · examen fin de enero</Text>
         </View>
         <View style={[st.stepBtn, st.stepStep2]}>
           <Text style={[st.stepBig, { color: Colors.champagne }]}>STEP 2 CK</Text>

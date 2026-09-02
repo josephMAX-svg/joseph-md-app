@@ -4,7 +4,9 @@ Toda la data REAL del plan MIR. Fuente canónica (código): `src/lib/*.ts`. Plat
 **ProMIR** (`promir.medicapanamericana.com`) — SPA por WebSocket; deep-link `/capitulo/<id>`.
 Abre bien en Chrome (no necesita Edge). Cruzado con **rabi_94** (Google Drive, 1ª vuelta).
 
-## 1. Plan día-a-día (76 días · 10-jun-2026 → 24-ago-2026)
+## 1. Plan día-a-día (78 días = 76 temas + 2 colchón · D1 jue 3-sep-2026 → D78 lun 21-dic-2026)
+> Re-fechado a D1=3-sep-2026 (v5.4); L-V, sáb+dom libres, sin skips (termina antes del 25-dic). Fuente de verdad = el `.ts`.
+
 Fuente: [`src/lib/mirDailyPlan.ts`](../../src/lib/mirDailyPlan.ts) · 1 tema atómico/día · 1ª vuelta.
 Bloque Calendar **15:15–16:15**: Evaluación Anclada D-1 (15:15–15:30) + Deep Work Mini
 (15:30–16:15). Orden de ataque = alto rendimiento clínico + rabi_94.
@@ -40,7 +42,7 @@ Deep Work Mini** (pre-test 3Q AMIR Test → lectura activa Compendio AMIR/ProMIR
 recall → ≤4 APEX formato ENCAPS). Meta: Top 50 MIR 2030.
 
 ## 4. Ficheros canónicos
-- `src/lib/mirDailyPlan.ts` — plan 76 días (MIR_DIAS, MIR_FRANJAS, helpers).
+- `src/lib/mirDailyPlan.ts` — plan 78 días (76 temas + 2 colchón; MIR_DIAS, MIR_FRANJAS, helpers).
 - `src/lib/mirTemarioData.ts` / `mirDetalleData.ts` / `mirPrioridades1V.ts` / `mirDriveResources.ts`.
 - UI: `src/components/study/MirHub.tsx` + `MirTodayPlan.tsx` (HOY/Horario/7d/Temario, Peso MIR %, progreso real) + `MirTemarioExplorer.tsx`.
 - Raw: `STUDY_HUB/_scrape/promir_full_temario.json`, `mir_detalle_clean.json`, `intros/`.

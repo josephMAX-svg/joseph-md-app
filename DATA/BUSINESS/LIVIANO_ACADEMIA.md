@@ -1,6 +1,6 @@
 # LIVIANO ACADEMIA — Currículo de medicina de la obesidad
 
-> **Franja: 17:15-18:00 L-V desde el 31-ago-2026** (bloque NUEVO del Calendar v5).
+> **Franja: 17:15-18:00 L-V · D1 = jue 3-sep-2026 (v5.4)** — 90 días L-V → 11-ene-2027 (salta 25-dic, 31-dic y 1-ene); bloque NUEVO del Calendar v5 (serie desde 31-ago).
 > Formato de 45 min: **25' estudio del módulo + 20' preguntas/aplicación** (casos de consulta
 > LIVIANO, tarjetas de mecanismo, ensayo de metáforas de paciente).
 > El plan día-a-día vive en la app: `src/lib/livianoStudyPlan.ts` (se genera aparte desde este
@@ -82,7 +82,8 @@ Lo que no se negocia es la proteína: es el ladrillo que protege tu músculo mie
 ## Módulo 4 · Ejercicio
 
 **Temas**: el ejercicio solo baja poco peso (~2-3 kg) pero es **el mejor predictor de
-mantenimiento** (National Weight Control Registry: 200-300 min/sem) · **fuerza 2x/semana**
+mantenimiento** (National Weight Control Registry: ~1 h/día ≈ 2.800 kcal/sem; el umbral 200-300 min/sem
+es de las guías clínicas/ACSM, no del NWCR) · **fuerza 2x/semana**
 preserva masa magra durante farmacoterapia · beneficio cardiometabólico independiente del peso
 ("fitness vs fatness") · medir **composición corporal, no solo balanza**.
 

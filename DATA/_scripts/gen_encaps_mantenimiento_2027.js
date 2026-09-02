@@ -5,7 +5,8 @@
  * (el bloque principal de la mañana ahora es USMLE Step 1). Feb-mar 2027: fase intensiva.
  * EXAMEN ENCAPS 2027-I: fines de marzo 2027.
  *
- * Ciclo: 107 días L-V (2026-08-31 → 2027-01-29, skip 25-dic/31-dic/1-ene).
+ * Ciclo: 104 días L-V (v5.4: D1 = jue 2026-09-03 → 2027-01-29, skip 25-dic/31-dic/1-ene).
+ *   (histórico: v6 27-ago sembró 107 días desde 31-ago; v6.1 106 desde 1-sep; v6.2/v5.4 = 104 desde 3-sep)
  *   · lun-jue = banco del día (20-25Q) con rotación de 4 semanas ponderada por el
  *     PRONÓSTICO WALK-FORWARD v3 (DATA/ENCAPS/PRONOSTICO_WALKFORWARD_2027-1_v3.md):
  *     vector II 30 · I 27 · V 21 · III 13 · IV 9 · 8 críticos (I-3 V-2 II-3 III-5 I-4 II-5 II-4 IV-1/2)
@@ -35,7 +36,12 @@ function* fechas(desde, hasta) {
 // ── labels/tier desde encapsCobertura.ts ──
 const cobSrc = fs.readFileSync(path.join(ROOT, 'src/lib/encapsCobertura.ts'), 'utf8');
 function temaInfo(code) {
-  const i = cobSrc.indexOf(`"${code}": {`);
+  // clave exacta ("IV-1": {) o clave combinada ("IV-1+IV-2": { / "V-7+V-10": {) — encapsCobertura
+  // agrupa IV-1/IV-2, IV-6/IV-7 y V-7/V-10 bajo códigos-paraguas; sin este fallback el subtema
+  // quedaba como el literal del código (bug detectado en la siembra del 02-sep).
+  let i = cobSrc.indexOf(`"${code}": {`);
+  if (i < 0) i = cobSrc.indexOf(`"${code}+`);
+  if (i < 0) { const m = cobSrc.match(new RegExp(`"[IV]+-\\d+\\+${code.replace(/[-+]/g, '\\$&')}": \\{`)); if (m) i = m.index; }
   if (i < 0) return { label: code, tier: 'MEDIA' };
   const seg = cobSrc.slice(i, i + 4000);
   const tier = (seg.match(/"tier":\s*"([^"]+)"/) || [])[1] || 'MEDIA';
@@ -60,9 +66,9 @@ const CICLO = [
 
 const esc = (s) => String(s).replace(/'/g, "''");
 const rows = [];
-let dia = 0, slot = 0;
+let dia = 0, slot = 0, f0 = '', f1 = '';
 for (const { fecha, dow } of fechas(process.argv[2]||'2026-09-03', '2027-01-29')) {
-  dia++;
+  dia++; if (!f0) f0 = fecha; f1 = fecha;
   if (dow === 5) {
     rows.push(`('ENCAPS',${dia},'${fecha}','Vie','mini_sim',NULL,'Mini-simulacro semanal 25Q mixto (vector v3)','CRITICA','MANTENIMIENTO','[]'::jsonb,'[]'::jsonb,'[]'::jsonb,NULL,'{}'::jsonb)`);
   } else {
@@ -77,7 +83,7 @@ for (const { fecha, dow } of fechas(process.argv[2]||'2026-09-03', '2027-01-29')
 }
 
 const sql = `-- ENCAPS MANTENIMIENTO 2027-I · generado por gen_encaps_mantenimiento_2027.js (${new Date().toISOString().slice(0, 10)})
--- ${rows.length} días L-V · 2026-08-31 → 2027-01-29 · rotación v3 4 semanas · vie = mini-sim
+-- ${rows.length} días L-V · ${f0} → ${f1} · rotación v3 4 semanas · vie = mini-sim
 BEGIN;
 DROP TABLE IF EXISTS study_schedule_bk_0902;
 CREATE TABLE study_schedule_bk_0902 AS SELECT * FROM study_schedule;

@@ -1,6 +1,7 @@
 /**
  * mirDailyPlan.ts — Plan DÍA A DÍA MIR (ProMIR), 1 tema atómico/día, 1ª vuelta.
- * Del 2026-06-11 (Día 1) al 2026-08-29 (76 temas + 2 colchón). Dom 14/21-jun: LIBRES. Estructura tipo Perú/USMLE.
+ * v5.4: D1 = jue 2026-09-03 → D78 = lun 2026-12-21 (76 temas + 2 colchón), L-V, sáb+dom libres, sin skips
+ * (termina antes del 25-dic). Estructura tipo Perú/USMLE.
  *
  * Bloque diario (Google Calendar): 15:15–15:30 Evaluación Anclada D-1 (4Q
  * ProMIR/AMIR + Anki SRS + log) · 15:30–16:15 Deep Work Mini (Pre-test 3Q AMIR
@@ -11,7 +12,7 @@
 export const capUrl = (id: string) => 'https://promir.medicapanamericana.com/capitulo/' + id;
 
 export const MIR_DAILY_META = {
-  inicio: '2026-09-03', fin: '2026-12-21', totalDias: 78, // v4 (15-jun): D1=mar 16-jun (no se estudió el 15) · TODOS los domingos libres · 76 temas + 2 colchón
+  inicio: '2026-09-03', fin: '2026-12-21', totalDias: 78, // v5.4 (1-sep): D1=jue 3-sep-2026 · L-V (sáb+dom libres) · 76 temas + 2 colchón · verificado 78 días consecutivos
   bloque: '15:15–15:30 Evaluación Anclada D-1 · 15:30–16:15 Deep Work Mini',
 };
 

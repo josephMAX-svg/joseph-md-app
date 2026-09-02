@@ -8,7 +8,7 @@ import { mirObsUrl, usmleObsUrl, encapsObsUrl, OBS_MAPA_URL } from '../../lib/ob
 
 /**
  * TodayMission — "MISIÓN DE HOY" del cockpit (Home). Línea de tiempo REAL del Google
- * Calendar v5 (USMLE 07:15-12:00 principal · MIR 15:15 · ENCAPS 16:15 1h · LIVIANO 17:15 · USMLE eval 18:00)
+ * Calendar v5.4 (IA 04:15 · USMLE Anki AM 05:00 · USMLE 07:15-12:00 principal · MIR 15:15 · ENCAPS 16:15 1h · LIVIANO 17:15 · USMLE eval 18:00)
  * con el tema del día de cada plan (mirDailyPlan / usmleStep1Daily) y accesos
  * directos: ProMIR ↗ · Qbankly (◆ Edge) · ◆ Obsidian (nota madre donde caen los APEX).
  * El bloque en curso se resalta con "AHORA". Fase = detect_phase del orquestador.
@@ -33,7 +33,7 @@ export function todayISO(): string {
 export function faseActual(iso: string): string {
   if (iso < '2026-06-01') return 'FASE 4';
   if (iso < '2026-08-10') return 'FASE 5 · ENCAPS';
-  if (iso < '2026-08-31') return 'FASE 6 · transición';
+  if (iso < '2026-09-03') return 'FASE 6 · transición';
   if (iso < '2027-02-01') return 'FASE 7 · STEP 1 PRINCIPAL';
   return 'FASE 8 · ENCAPS FINAL';
 }
@@ -88,7 +88,7 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
     {
       flag: '🇺🇸', nombre: 'USMLE · ANKI AM (madrugada fresca · Palmerton 2x)', ini: '05:00', fin: '05:45', color: GREEN,
       tema: 'Pasada principal FSRS del deck USMLE · Fases B-C: + stress set 10Q/12min',
-      sub: 'Step 1 sube a 6h15/día (~640h) · el 07:15 queda para repaso anclado D-1/D-3/D-7',
+      sub: 'Step 1 = 6h15/día × 99 días (~620h) · el 07:15 queda para repaso anclado D-1/D-3/D-7',
       acciones: [],
     },
     {

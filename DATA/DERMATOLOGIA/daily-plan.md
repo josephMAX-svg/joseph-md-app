@@ -1,5 +1,10 @@
 # DERMA · Plan tema-átomo/día (68 átomos · interdiario con Research)
 
+> ⚠ **DESACTUALIZADO — re-fechado a D1=3-sep-2026 (v5.4); fuente de verdad = el `.ts`**
+> (`src/lib/dermaDailyPlan.ts`: PLAN ÉLITE v2, 70 átomos, D1 jue 3-sep-2026, interdiario con Research,
+> sáb+dom libres, salta 25-dic/31-dic/1-ene). Este documento conserva la cola v1 (68 átomos, fechas
+> jun→dic-2026) solo como histórico; el temario vigente está en `PLAN_ELITE_2026-27.md`.
+
 > **Motor:** el mismo de USMLE/MIR (`UsmleTodayPlan`/`MirTodayPlan`): sub-pestañas
 > HOY/Horario/7d/Temario, navegación Día X/68, progreso REAL marcable (empieza 0%,
 > `studyProgress.ts` clave `derma`). Código: **`src/lib/dermaDailyPlan.ts`** (links reales).

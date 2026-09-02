@@ -1,0 +1,331 @@
+{
+ "set": "I-3_D1_2026-07-24_CALIBRADO",
+ "fecha": "2026-07-24",
+ "bloque": "pretest_dia",
+ "area": "I",
+ "subtema": "I-3",
+ "opciones": 4,
+ "calibracion": "ponderado por conteo real de 26 preguntas I-3 en 6 examenes (workflow wy6uauib0)",
+ "preguntas": [
+  {
+   "n": 1,
+   "subangulo": "Tipo de vigilancia",
+   "tipo": "corta",
+   "dif": "alta",
+   "enunciado": "En un EESS I-4 de Lamas (San Martín), tras el rumor de casos de tos ferina, el personal acude a la comunidad y recoge los datos en el escenario donde se presentó la enfermedad, incluyendo a las personas que NO acudieron al servicio. ¿A qué tipo de vigilancia corresponde?",
+   "opts": {
+    "A": "Pasiva",
+    "B": "Centinela",
+    "C": "Activa",
+    "D": "Retrospectiva"
+   },
+   "correcta": "C",
+   "fuente": "MOPECE/OPS; CDC Vigilancia SP",
+   "explicacion": "C. Criterio único: ¿el sistema VA A BUSCAR el caso? Sí → ACTIVA, sin importar lugar ni momento. TRAMPA: 'Retrospectiva' no es una categoría del tipo de vigilancia; 'Centinela' te tienta por el establecimiento, pero centinela es pocos EESS seleccionados para TENDENCIAS."
+  },
+  {
+   "n": 2,
+   "subangulo": "Tipo de vigilancia",
+   "tipo": "corta",
+   "dif": "alta",
+   "enunciado": "Ante la sospecha de un brote de hepatitis A en un distrito de Pasco, el epidemiólogo de la Red revisa intencionadamente historias clínicas y archivos de los EESS de la jurisdicción para identificar casos que no fueron notificados. ¿Qué tipo de vigilancia realiza?",
+   "opts": {
+    "A": "Activa",
+    "B": "Pasiva",
+    "C": "Retrospectiva",
+    "D": "Centinela"
+   },
+   "correcta": "A",
+   "fuente": "MOPECE/OPS",
+   "explicacion": "A. Sigue siendo ACTIVA: el equipo sale a buscar (aunque la fuente sea documental). TRAMPA #1 del examen: poner 'Retrospectiva' para que confundas el MOMENTO del dato con el TIPO de vigilancia."
+  },
+  {
+   "n": 3,
+   "subangulo": "Notificación: tipo y periodicidad",
+   "tipo": "corta",
+   "dif": "alta",
+   "enunciado": "En un hospital II-2, el comité de infecciones reporta los casos de infecciones intrahospitalarias (IIH) del periodo. Según el Anexo 01 de la Directiva Sanitaria 046-MINSA/DGE-V.01, ¿qué modalidad y periodicidad de notificación les corresponde?",
+   "opts": {
+    "A": "Individual e inmediata",
+    "B": "Individual y semanal",
+    "C": "Consolidada y mensual",
+    "D": "Consolidada y semanal"
+   },
+   "correcta": "C",
+   "fuente": "Dir. Sanitaria 046-MINSA/DGE-V.01 (RM 506-2012), Anexo 01 N.47: 'Infecciones Intrahospitalarias · Consolidada · MENSUAL'",
+   "explicacion": "C. Verificado en el Anexo 01 N.47 de la 046: IIH = CONSOLIDADA y MENSUAL. Dos ejes que el examen combina: (1) MODALIDAD — casi todo es INDIVIDUAL; solo son consolidadas EDAS, IRAS/neumonías/SOB-asma e IIH. (2) PERIODICIDAD — mensual. TRAMPA: creer que 'intrahospitalario = urgente = inmediata'."
+  },
+  {
+   "n": 4,
+   "subangulo": "Tipo de vigilancia",
+   "tipo": "directa",
+   "dif": "media",
+   "enunciado": "El sistema que capta únicamente los casos que acuden espontáneamente al establecimiento y son notificados de rutina por el personal asistencial corresponde a una vigilancia epidemiológica de tipo ......",
+   "opts": {
+    "A": "Activa",
+    "B": "Centinela",
+    "C": "Especializada",
+    "D": "Pasiva"
+   },
+   "correcta": "D",
+   "fuente": "MOPECE/OPS",
+   "explicacion": "D. PASIVA = el sistema ESPERA la demanda espontánea. Es la de rutina, la más barata y la de MENOR sensibilidad (subregistra a quien no consulta)."
+  },
+  {
+   "n": 5,
+   "subangulo": "Definiciones RENACE (EVISAP)",
+   "tipo": "corta",
+   "dif": "alta",
+   "enunciado": "En el marco de la Red Nacional de Epidemiología (RENACE), un establecimiento debe reportar un EVISAP. ¿A qué corresponde esta sigla?",
+   "opts": {
+    "A": "Evento Severo Supuestamente Atribuido a la Vacunación e Inmunización",
+    "B": "Evento de Importancia para la Salud Pública",
+    "C": "Evaluación de Vigilancia Sanitaria Preventiva",
+    "D": "Establecimiento de Vigilancia Sanitaria Activa"
+   },
+   "correcta": "B",
+   "fuente": "Dir. Sanitaria 047-MINSA/DGE-V.01 (RM 545-2012), 5.1.6; Dir. Adm. 341-MINSA/CDC-2023, 5.1.f",
+   "explicacion": "B. EVISAP = Evento de Importancia para la Salud Pública (brotes, epidemias, eventos inusuales). TRAMPA MAESTRA: la opción A es ESAVI, sigla parecidísima pero distinta = Evento Severo Supuestamente Atribuido a la Vacunación e Inmunización (Dir. 046, Anexo 01 N.39, T88.1, notificación INMEDIATA). EVISAP ≠ ESAVI: uno es de brotes, el otro de vacunas."
+  },
+  {
+   "n": 6,
+   "subangulo": "Indicadores de frecuencia",
+   "tipo": "larga",
+   "dif": "alta",
+   "enunciado": "En un colegio de Huamanguilla (Ayacucho) se sirve un refrigerio compartido. De los 100 alumnos que consumieron el alimento, 50 presentan diarrea y vómitos en las siguientes 12 horas. No hay casos entre quienes no consumieron. La DIRESA pide la medida de frecuencia propia de este brote cerrado con población expuesta definida. ¿Cuál es?",
+   "opts": {
+    "A": "Tasa de incidencia, 50%",
+    "B": "Tasa de ataque, 50%",
+    "C": "Prevalencia, 50%",
+    "D": "Tasa de ataque, 100%"
+   },
+   "correcta": "B",
+   "fuente": "COMPENDIO SALUD PÚBLICA 2026-II (López) pág. 3, INDICADORES: 'forma especial de incidencia usada en brotes; proporción de personas que enferman entre las expuestas'",
+   "explicacion": "B. TASA DE ATAQUE = casos / EXPUESTOS = 50/100 = 50%. TRAMPA MAESTRA: la opción A da el MISMO número (50%) y es numéricamente correcta, pero el examen califica el NOMBRE del indicador. En brote cerrado con expuestos definidos, el nombre es tasa de ataque."
+  },
+  {
+   "n": 7,
+   "subangulo": "Indicadores de frecuencia",
+   "tipo": "larga",
+   "dif": "alta",
+   "enunciado": "En una comunidad amazónica se registra un brote de leptospirosis; de un total de 50 pacientes confirmados por laboratorio, 2 fallecen a causa de la enfermedad. La comunidad tiene 2000 habitantes. ¿Cuál es la medida epidemiológica que expresa la GRAVEDAD entre quienes enfermaron, y cuánto vale?",
+   "opts": {
+    "A": "Mortalidad, 0.1%",
+    "B": "Letalidad, 4%",
+    "C": "Letalidad, 0.1%",
+    "D": "Tasa de ataque, 2.5%"
+   },
+   "correcta": "B",
+   "fuente": "THEOMED Manual de Salud Pública, indicador 9: 'Tasa de letalidad = muertes por una enfermedad / casos de esa enfermedad'",
+   "explicacion": "B. LETALIDAD = muertes / CASOS = 2/50 = 4% (gravedad). TRAMPA: la opción C usa el nombre correcto con el denominador de mortalidad (2/2000); la A usa el denominador poblacional. La palabra clave del enunciado es 'entre quienes enfermaron' → denominador = enfermos, no población."
+  },
+  {
+   "n": 8,
+   "subangulo": "Indicadores de frecuencia",
+   "tipo": "larga",
+   "dif": "media",
+   "enunciado": "En la sala situacional de una Micro Red de Pasco se registran, en un mismo mes, 20 casos NUEVOS de tuberculosis y un total de 80 personas actualmente enfermas de tuberculosis, en una población de 10 000 habitantes. ¿Qué afirmación diferencia correctamente ambos indicadores?",
+   "opts": {
+    "A": "La incidencia mide los 80 casos existentes y la prevalencia los 20 nuevos",
+    "B": "Ambas miden lo mismo: 80 casos",
+    "C": "La incidencia mide los 20 casos NUEVOS y la prevalencia los 80 EXISTENTES",
+    "D": "La incidencia es 80/10 000 y la prevalencia 20/10 000"
+   },
+   "correcta": "C",
+   "fuente": "MOPECE; bioestadística básica",
+   "explicacion": "C. INCIDENCIA = casos NUEVOS (velocidad de aparición, mide RIESGO). PREVALENCIA = casos EXISTENTES (carga acumulada, mide CANTIDAD de enfermos). Regla: incidencia = lo que ENTRA; prevalencia = lo que HAY."
+  },
+  {
+   "n": 9,
+   "subangulo": "Indicadores de frecuencia (R0)",
+   "tipo": "directa",
+   "dif": "media",
+   "enunciado": "El número reproductivo básico (R0) se define como:",
+   "opts": {
+    "A": "El número de casos nuevos por cada 1000 habitantes en un año",
+    "B": "La proporción de enfermos que fallecen por la enfermedad",
+    "C": "El promedio de casos secundarios que genera UN caso en una población totalmente susceptible",
+    "D": "El número de contactos censados por cada caso índice"
+   },
+   "correcta": "C",
+   "fuente": "MOPECE; epidemiología de enfermedades transmisibles",
+   "explicacion": "C. R0 = capacidad de propagación. Si R0 > 1 la epidemia crece; = 1 se mantiene; < 1 se extingue. Ojo: exige población TOTALMENTE susceptible (sin vacunas ni inmunidad previa); con inmunidad se habla de Rt (efectivo)."
+  },
+  {
+   "n": 10,
+   "subangulo": "Notificación: periodicidad",
+   "tipo": "corta",
+   "dif": "alta",
+   "enunciado": "En un EESS I-3 de Huamanguilla, el médico serumista atiende a un niño de 3 años con fiebre alta, exantema maculopapular, tos, coriza y conjuntivitis, sin antecedente de vacunación. Sospecha sarampión. ¿Cuándo debe notificar el caso?",
+   "opts": {
+    "A": "De manera inmediata (< 24 horas)",
+    "B": "Al cierre de la semana epidemiológica",
+    "C": "Al alta del paciente",
+    "D": "Hasta las 48 horas"
+   },
+   "correcta": "A",
+   "fuente": "Dir. 046-MINSA/DGE-V.01 (RM 506-2012), Anexo 01 N.9: 'Sarampión · B05 · Individual · INMEDIATA'; Dir. 341-2023 5.1.a (1 caso en eliminación = brote)",
+   "explicacion": "A. El sarampión está en fase de ELIMINACIÓN → notificación INMEDIATA (< 24 h) ante la SOSPECHA, sin esperar laboratorio. TRAMPA: las 4 opciones suenan razonables; la clave la fija la norma del evento concreto, no tu intuición."
+  },
+  {
+   "n": 11,
+   "subangulo": "Notificación: periodicidad",
+   "tipo": "corta",
+   "dif": "media",
+   "enunciado": "En el mismo EESS se confirma por baciloscopía un caso de tuberculosis pulmonar en un adulto, sin criterios de brote. Según la periodicidad establecida, la notificación de este caso corresponde a:",
+   "opts": {
+    "A": "Inmediata (< 24 horas)",
+    "B": "Semanal y de forma INDIVIDUAL",
+    "C": "Mensual y de forma consolidada",
+    "D": "No es evento de notificación obligatoria"
+   },
+   "correcta": "B",
+   "fuente": "Dir. 046-MINSA/DGE-V.01 (RM 506-2012), Anexo 01 N.51: 'TB pulmonar con confirmación bacteriológica · A15 · INDIVIDUAL · Semanal'",
+   "explicacion": "B. Anexo 01 N.51: TB = SEMANAL e INDIVIDUAL (no consolidada). Dos ejes a la vez: periodicidad (semanal) y modalidad (individual). Contraste con la Q10: mismo EESS, distinta periodicidad, porque depende del EVENTO. La inmediata se reserva a eliminación/erradicación, brotes y eventos de alto impacto. Ojo: el registro se hace en NOTISP."
+  },
+  {
+   "n": 12,
+   "subangulo": "Notificación: negativa",
+   "tipo": "corta",
+   "dif": "media",
+   "enunciado": "En la semana epidemiológica 30, un EESS I-2 de una comunidad ashaninka no registró ningún evento sujeto a vigilancia. El responsable no envía ningún reporte, asumiendo que 'sin casos no hay nada que notificar'. ¿Qué omitió?",
+   "opts": {
+    "A": "La notificación consolidada mensual",
+    "B": "La notificación nominal",
+    "C": "La notificación NEGATIVA (reportar cero casos)",
+    "D": "Nada; sin casos no corresponde reportar"
+   },
+   "correcta": "C",
+   "fuente": "Dir. Adm. 341-MINSA/CDC-2023, 5.1.h — ⚠ NO figura en la Dir. 046 (verificado en el texto íntegro)",
+   "explicacion": "C. La define la Directiva RENACE 341-2023, 5.1.h: 'acción por la cual una unidad notificante reporta que NO hay casos que notificar en la semana que se cierra'. Callar = SILENCIO EPIDEMIOLÓGICO: el sistema no puede distinguir 'no hubo casos' de 'no notificaron'. ⚠ Si te preguntan QUÉ norma la establece, es la 341-2023, no la 046."
+  },
+  {
+   "n": 13,
+   "subangulo": "Escala: endemia",
+   "tipo": "directa",
+   "dif": "media",
+   "enunciado": "La presencia habitual y esperada de una enfermedad, en un número relativamente constante, en una zona geográfica determinada, se denomina:",
+   "opts": {
+    "A": "Epidemia",
+    "B": "Brote",
+    "C": "Pandemia",
+    "D": "Endemia"
+   },
+   "correcta": "D",
+   "fuente": "MOPECE; compendio Definiciones de Caso",
+   "explicacion": "D. ENDEMIA = nivel BASAL esperado, aunque los casos sean muchos. EPIDEMIA = EXCESO sobre lo esperado. La clave no es la cantidad, es la comparación contra lo esperado."
+  },
+  {
+   "n": 14,
+   "subangulo": "Escala: epizootia",
+   "tipo": "corta",
+   "dif": "alta",
+   "enunciado": "En un caserío de Pasco, los pobladores reportan la muerte inusual de un gran número de roedores y animales domésticos en las últimas semanas, aún sin casos humanos registrados. ¿Cómo se denomina este acontecimiento epidemiológico?",
+   "opts": {
+    "A": "Epidemia",
+    "B": "Brote",
+    "C": "Epizootia",
+    "D": "Endemia"
+   },
+   "correcta": "C",
+   "fuente": "MOPECE; vigilancia de zoonosis",
+   "explicacion": "C. EPIZOOTIA = exceso inusual de enfermedad/muerte en ANIMALES. Es señal de alerta precoz de zoonosis (peste, rabia, leptospirosis): suele PRECEDER a los casos humanos. Epidemia/brote son términos para población humana."
+  },
+  {
+   "n": 15,
+   "subangulo": "Investigación de brote",
+   "tipo": "corta",
+   "dif": "alta",
+   "enunciado": "Un serumista de un EESS I-1 de Pasco recibe el aviso de 5 casos de pertussis en un caserío, cuando el promedio histórico para ese periodo es de 1 caso. Según la secuencia de estudio de brote del compendio, ¿cuál es el PRIMER paso formal antes que cualquier otro?",
+   "opts": {
+    "A": "Aplicar de inmediato las medidas de control definitivas",
+    "B": "Confirmar la EXISTENCIA del brote comparando lo observado con lo esperado",
+    "C": "Formular la hipótesis sobre el mecanismo de transmisión",
+    "D": "Remitir el informe final a la DIRESA"
+   },
+   "correcta": "B",
+   "fuente": "QXMEDIC PPT 'Fundamentos teóricos - Vigilancia epidemiológica', bloque Estudio de Brote (paso 1 de 9)",
+   "explicacion": "B. Primero se CONFIRMA que hay brote (observado 5 vs esperado 1). TRAMPA de alto valor: la urgencia clínica te empuja a 'actuar ya' (opción A), pero si no confirmas el exceso puedes movilizar recursos por una falsa alarma o por mejora del registro."
+  },
+  {
+   "n": 16,
+   "subangulo": "Etapas del proceso",
+   "tipo": "directa",
+   "dif": "media",
+   "enunciado": "La secuencia correcta del proceso de vigilancia epidemiológica es:",
+   "opts": {
+    "A": "Análisis → recolección → difusión → intervención",
+    "B": "Difusión → recolección → análisis → intervención",
+    "C": "Intervención → recolección → análisis → difusión",
+    "D": "Recolección → análisis e interpretación → difusión → intervención"
+   },
+   "correcta": "D",
+   "fuente": "MOPECE; CDC",
+   "explicacion": "D. El dato no sirve si se queda guardado: se RECOLECTA, se ANALIZA, se DIFUNDE a quien decide y se INTERVIENE. La vigilancia sin acción es solo estadística — ese es el concepto que el examen premia."
+  },
+  {
+   "n": 17,
+   "subangulo": "Definición de caso",
+   "tipo": "corta",
+   "dif": "media",
+   "enunciado": "En un EESS I-3 de Loreto acude una gestante con fiebre, cefalea retroocular y mialgias; cuatro vecinos de su cuadra presentaron un cuadro similar en la última semana y la zona tiene transmisión activa de dengue. Aún no hay resultado de laboratorio. ¿Cómo se clasifica el caso HOY?",
+   "opts": {
+    "A": "Sospechoso",
+    "B": "Confirmado",
+    "C": "Descartado",
+    "D": "Probable"
+   },
+   "correcta": "D",
+   "fuente": "Compendio Definiciones de Caso; GPC Dengue",
+   "explicacion": "D. PROBABLE = clínica compatible + NEXO EPIDEMIOLÓGICO, y YA se notifica sin esperar laboratorio. El laboratorio lo convierte en CONFIRMADO. Esperar el resultado para notificar es el error operativo que el examen castiga."
+  },
+  {
+   "n": 18,
+   "subangulo": "Cadena epidemiológica",
+   "tipo": "corta",
+   "dif": "media",
+   "enunciado": "En un brote de fiebre tifoidea se identifica que el agua de un pozo contaminado con Salmonella typhi fue el medio por el cual el agente llegó a la población. Dentro de la cadena epidemiológica, el agua contaminada corresponde a:",
+   "opts": {
+    "A": "El agente causal",
+    "B": "El reservorio",
+    "C": "El huésped susceptible",
+    "D": "La vía o mecanismo de transmisión"
+   },
+   "correcta": "D",
+   "fuente": "MOPECE; cadena epidemiológica",
+   "explicacion": "D. Cadena: AGENTE (S. typhi) → RESERVORIO (el humano portador) → puerta de salida → VÍA DE TRANSMISIÓN (el agua = vehículo) → puerta de entrada → HUÉSPED susceptible. TRAMPA: confundir vehículo con reservorio; el agua no multiplica ni mantiene al agente, solo lo transporta."
+  },
+  {
+   "n": 19,
+   "subangulo": "Sala situacional / ASIS",
+   "tipo": "corta",
+   "dif": "media",
+   "enunciado": "La DIRESA requiere un ámbito donde se integren, analicen y presenten de forma continua los datos epidemiológicos, demográficos y de servicios, para orientar la toma de decisiones y la respuesta oportuna. ¿A qué corresponde?",
+   "opts": {
+    "A": "Sala situacional",
+    "B": "Canal endémico",
+    "C": "Ficha de notificación individual",
+    "D": "Censo de contactos"
+   },
+   "correcta": "A",
+   "fuente": "MOPECE; ASIS MINSA",
+   "explicacion": "A. SALA SITUACIONAL = el espacio de INTEGRACIÓN y análisis de la información para DECIDIR. El canal endémico es solo una herramienta gráfica que vive dentro de ella; la ficha y el censo son instrumentos de recolección."
+  },
+  {
+   "n": 20,
+   "subangulo": "Medidas de control",
+   "tipo": "larga",
+   "dif": "alta",
+   "enunciado": "En un EESS I-3 de Huamanguilla se identifica un caso PROBABLE de sarampión en un niño no vacunado. El equipo debe actuar de inmediato. ¿Cuál conjunto de medidas es el CORRECTO?",
+   "opts": {
+    "A": "Notificación inmediata + cerco epidemiológico con vacunación de contactos + búsqueda activa",
+    "B": "Notificación semanal + esperar la confirmación de laboratorio + aislamiento domiciliario",
+    "C": "Vacunación de contactos + cuarentena de toda la comunidad + notificación al alta",
+    "D": "Solo aislamiento del caso hasta obtener el resultado serológico"
+   },
+   "correcta": "A",
+   "fuente": "Dir. 046 (RM 506-2012), Anexo 01 N.9 (Sarampión, inmediata) y N.39 (ESAVI, inmediata); NTS 196-MINSA/2022",
+   "explicacion": "A. Ante caso PROBABLE de enfermedad en eliminación se actúa SIN esperar laboratorio: notificar (<24h) + bloqueo vacunal en el entorno + búsqueda activa/censo de contactos. Técnica de descarte por elemento incorrecto: B cae por 'semanal' y 'esperar'; C por 'cuarentena de toda la comunidad' (desproporcionada) y 'notificación al alta'; D por pasiva."
+  }
+ ]
+}

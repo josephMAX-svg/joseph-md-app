@@ -8,7 +8,7 @@
 
 | Pieza | Archivo | Qué hace |
 |---|---|---|
-| Datos del plan | `src/lib/synapseDailyPlan.ts` | **GENERADO** — 82 días (12 semanas, 10-jun → 30-ago-2026), bloques A/B/C/PC/R por día |
+| Datos del plan | `src/lib/synapseDailyPlan.ts` | **GENERADO** — 82 días (12 semanas, jue 3-sep → lun 23-nov-2026 · v5.4; regenerar con `node DATA/_scripts/gen_synapse_plan.js YYYY-MM-DD`), bloques A/B/C/PC/R por día |
 | Generador | `DATA/_scripts/gen_synapse_plan.js` | Lee `curricula/_extracted.json`, valida cada URL contra los sets verificados (cero inventos) y emite el TS + los MDs de curricula |
 | Temarios reales | `DATA/SYNAPSE/curricula/*.md` + `_extracted.json` | 15 fuentes extraídas con WebFetch/oEmbed + verificación adversarial (workflow de 30 agentes, 10-jun-2026) |
 | UI | `src/components/study/SynapseTodayPlan.tsx` | Pestaña **⚡ Hoy** (primera) de `SynapseHub`: HOY / 7 días / 12 semanas, checkbox real |

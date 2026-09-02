@@ -1,5 +1,5 @@
 /**
- * businessStudyPlan.ts — Plan DÍA A DÍA "Estudio Pulso" (98 días, todos los domingos libres). Fechas VIGENTES en BIZ_META (se re-corren con remap_inicio.js).
+ * businessStudyPlan.ts — Plan DÍA A DÍA "Estudio Pulso" (118 días = 84 de trabajo + 34 DESCANSO en sáb/dom; sin skips fijos). Fechas VIGENTES en BIZ_META (se re-corren con remap_inicio.js).
  * GENERADO por DATA/_scripts/gen_business_plan.py desde plan_estudio_pulso_v2_mejorado.xlsx
  * (calendario v2: días 1-4 originales + 5-96 modificados). NO editar a mano.
  *
@@ -14,7 +14,7 @@ export interface DiaBiz {
 }
 
 export const BIZ_META = {
-  inicio: '2026-09-03', fin: '2026-12-29', totalDias: 118, // reconstruido START=2026-09-03 · TODOS los domingos LIBRES · 84 trabajo + descansos dominicales
+  inicio: '2026-09-03', fin: '2026-12-29', totalDias: 118, // reconstruido START=2026-09-03 · SÁB y DOM LIBRES · 84 trabajo + 34 descansos de finde
   bloque: '2h/día · prep → lectura activa → descanso → aplicación → Anki/Feynman',
 };
 

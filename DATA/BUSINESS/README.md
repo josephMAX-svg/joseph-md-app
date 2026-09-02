@@ -17,8 +17,9 @@ Fuente: `plan_estudio_pulso_v2_mejorado.xlsx` (copia aquí) + workflow de invest
 | `_scrape/*_raw.md` (6 nuevos 11-jun) | investigación verificada: hormozi_seguimiento · lean_analytics · cro_landing · libros_inmobiliaria · referentes_terrenos_peru · golden_breeders · crm_pulso_eval · pirqa_publicaciones · catalogo_predios_huachac.txt |
 
 ## En la app (src/lib + componentes)
-- `src/lib/businessStudyPlan.ts` — GENERADO (`DATA/_scripts/gen_business_plan.py`): los 96 días
-  (BIZ_DIAS con lectura/acción/min/libro/links), bloque 2h minuto-a-minuto (BIZ_FRANJAS).
+- `src/lib/businessStudyPlan.ts` — GENERADO (`DATA/_scripts/gen_business_plan.py`) y re-fechado con
+  `DATA/_scripts/remap_inicio.js`: 118 filas = 84 días de trabajo + 34 DESCANSO sáb/dom (v5.4: 3-sep→29-dic-2026;
+  BIZ_DIAS con lectura/acción/min/libro/links), bloque 2h minuto-a-minuto (BIZ_FRANJAS).
 - `src/lib/businessBooksExtra.ts` — GENERADO (`DATA/_scripts/extract_pulso_research.js`):
   frase-ancla + recursos reales por libro; `fraseDelDia()` para el Home.
 - `src/components/empresa/PulsoTodayPlan.tsx` — motor día-a-día (HOY / Minuto a minuto / 7d /

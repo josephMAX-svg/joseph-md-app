@@ -1,5 +1,10 @@
 # Plan DÍA-A-DÍA de Research — motor de revisiones sistemáticas (mismo molde que USMLE/MIR)
 
+> ⚠ **Fechas de este doc DESACTUALIZADAS — re-fechado a D1=3-sep-2026 (v5.4); fuente de verdad = el `.ts`**
+> (`src/lib/researchDailyPlan.ts`: 42 átomos = 40 + 2 colchón, Research D1 = vie 4-sep-2026 [el jue 3-sep
+> es Derma por paridad], interdiario con Derma, sáb+dom libres, salta 25-dic/31-dic/1-ene). Las columnas
+> `fecha` de §5 y el `DAILY_META` de §8 (jun→sep-2026) son históricas; el contenido de los átomos sigue vigente.
+
 > **Qué es esto.** La *cola ordenada de átomos-research* (1 átomo por día-Research), con el **mismo
 > motor** que `src/lib/usmleStep1Daily.ts` + `src/components/study/UsmleTodayPlan.tsx`: bloque **HOY**,
 > **Horario** (franjas), ventana **7 días**, **Temario** por fases, y **progreso REAL marcable** (arranca

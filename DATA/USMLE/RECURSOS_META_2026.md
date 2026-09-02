@@ -15,7 +15,7 @@ como HERRAMIENTA DE APRENDIZAJE (no termómetro); el árbitro de readiness son l
 
 ### AMBOSS (2.745Q + plan 81 bloques + 200 Concepts + HY Biostats 155Q + suscripción propia)
 - **Rol**: BIBLIOTECA de referencia (artículos linkados) + add-on oficial de Anki (lookup instantáneo dentro de las tarjetas) + su lista **200 Concepts** como barrido final. Su qbank es más difícil y detallista que el real ("almost a little excessive") → riesgo de overthinking.
-- **Fase**: library todo el plan; qbank SOLO en Fase B para bloques de 1-3 martillos en áreas débiles detectadas por NBME; 200 Concepts en Fase B (D88-D97); HY Biostats 155Q junto a Psych/Biostats (S15-S16).
+- **Fase**: library todo el plan; qbank SOLO en Fase B para bloques de 1-3 martillos en áreas débiles detectadas por NBME; 200 Concepts en Fase B (D92-D93, 13-14 ene); HY Biostats 155Q junto a Psych/Biostats (S16-S17, D74-D78).
 - **Horas**: ≤2h/sem como qbank; library a demanda.
 - **NO**: correrlo como qbank paralelo a uWorld en Fase A (duplica esfuerzo sin señal nueva).
 

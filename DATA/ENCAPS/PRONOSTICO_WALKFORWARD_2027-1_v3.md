@@ -118,7 +118,7 @@ Ponderación por recencia (pesos 1..5 por proceso) da: I 26.6 · II 29.5 · III 
 ## 6) 🗓️ Implicaciones de plan para 2027-I (examen fines de marzo 2027)
 
 ### Fase A — 1h/día de preguntas (sep-2026 → ene-2027, ~20 semanas)
-Presupuesto semanal ≈ 60-70 preguntas (10-12/día × 6 días; domingo libre). Mezcla semanal fija proporcional al v3:
+Presupuesto semanal ≈ 105-125 preguntas (régimen v5.4: lun-jue 20-25Q del tema de la rotación + 5Q eval anclada, viernes mini-simulacro 25Q; sábado y domingo LIBRES — ver PROTOCOLO_HORA_MANTENIMIENTO.md). Mezcla del ciclo de 4 semanas proporcional al v3:
 
 | Bloque | Q/sem | Contenido |
 |---|---|---|
@@ -135,12 +135,12 @@ Presupuesto semanal ≈ 60-70 preguntas (10-12/día × 6 días; domingo libre). 
 
 Reglas de la fase A:
 1. **Doble formato desde el día 1**: por cada tema, ~50% viñetas y ~50% recall directo de cifras/definiciones (tabla de números críticos aparte: dosis, plazos, semanas, porcentajes, categorías).
-2. Todas las claves verificadas contra fuente real (protocolo `PROTOCOLO_GENERACION_PREGUNTAS.md`); el examen 2026-II clasificado es ahora banco espejo de 100 preguntas reales con clave verificada — usarlo como **pre-test diagnóstico en septiembre** y re-test ciego en enero.
+2. Todas las claves verificadas contra fuente real (protocolo `PROTOCOLO_GENERACION_PREGUNTAS.md`); el examen 2026-II clasificado es ahora banco espejo de 100 preguntas reales con clave verificada — queda **RESERVADO como pre-test diagnóstico del arranque de la fase intensiva (1ª semana de febrero)**; no quemarlo antes (regla del `PROTOCOLO_HORA_MANTENIMIENTO.md`).
 3. Fin de enero: **checkpoint** — % ciego por área contra el vector v3; redistribuir la mezcla hacia las áreas con brecha.
 
 ### Fase B — intensiva (feb → mar-2027, ~7 semanas)
 1. **Re-scan de señales** (semana 1 de feb): QX Tendencias actualizado, materiales/lives nuevos, boletín DGE (coyuntura), RM/NTS publicadas desde sep-2026 → ajustar pesos y el condicional de IV.
-2. **Simulacros completos 100Q/72s** cada sábado (formato mixto 50/50 viñeta-directa), con análisis de errores por código.
+2. **Simulacros completos 100Q/72s** cada VIERNES por la mañana (sábados y domingos libres; formato mixto 50/50 viñeta-directa), con análisis de errores por código. El primero = el examen 2026-II real (reservado).
 3. Semanas 2-5: barrido de los 8 críticos al 100% + drills de números críticos diarios (10 min).
 4. Semanas 6-7: watch-list + rebotes (II-1/II-11/II-8) + repaso multi-temporal de todo el registro de errores; última semana solo repaso, sin material nuevo.
 5. Dress rehearsal D-2, medio día D-1 (doctrina del sprint 2026-II que ya funcionó).

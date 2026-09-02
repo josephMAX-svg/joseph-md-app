@@ -2432,13 +2432,13 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ]
  },
  "IV-1+IV-2": {
-  "tier": "MEDIA",
+  "tier": "CRÍTICA",
   "vueltas": 3,
   "min": 60,
   "qxN": 11,
   "theomedN": 7,
   "extenso": true,
-  "freq": "Tendencias QX Investigación: 'Tipos de investigación y estudios descriptivos' 7 + 'Enfoques y métodos' 4 = 11/400 (≈2.75%/examen), es el sub-bloque más gordo de toda el área IV. Forecast v2: IV total piso 3-4% recency (colapso confirmado, IV=14 en 2024-II → 2-4 ahora). Es el ÚNICO código IV que rinde y el único compatible con viñeta ('describo un estudio → clasifícalo'). Escenario contingencia: si revierte a teoría, sube.",
+  "freq": "⚡ v3 (7 exámenes, 27-ago-2026): IV saltó 4→12 en 2026-II → IV-1/2 pasa a CRÍTICO condicional #3 (5%, banda 2-8). Texto v2 abajo conservado como histórico. Tendencias QX Investigación: 'Tipos de investigación y estudios descriptivos' 7 + 'Enfoques y métodos' 4 = 11/400 (≈2.75%/examen), es el sub-bloque más gordo de toda el área IV. Forecast v2: IV total piso 3-4% recency (colapso confirmado, IV=14 en 2024-II → 2-4 ahora). Es el ÚNICO código IV que rinde y el único compatible con viñeta ('describo un estudio → clasifícalo'). Escenario contingencia: si revierte a teoría, sube.",
   "guidance": "QX (8 videos del bloque Investigación): PRIORIZAR los 3 de diseño — 'TIPOS DE INVESTIGACIÓN Y ESTUDIOS DESCRIPTIVOS', 'ESTUDIOS ANALÍTICOS OBSERVACIONALES', 'ESTUDIOS ANALÍTICOS EXPERIMENTALES' (son el 100% de lo que cae en viñeta). Ver también 'ENFOQUES Y MÉTODOS' y 'CONCEPTOS BÁSICOS'. Saltar/acelerar 'ELABORACIÓN DEL PROYECTO' y 'VARIABLES' (bajo rendimiento en examen viñeta). Theomed: de los 7 de la sección IV, mirar 1-2 de clasificación de estudios a 1.5x como refuerzo, no los 7. Foco: entrenar reconocimiento 'me describen un estudio → nombro el diseño', no memorizar definiciones.",
   "gaps": [
    "Ninguno crítico: el compendio desarrolla TODA la clasificación de estudios en extenso (pág 12-15). Cubierto por QX (8 videos: conceptos, enfoques, tipos/descriptivos, analíticos observacionales, analíticos experimentales, proyecto, variables) + Theomed IV."
@@ -2661,13 +2661,13 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ]
  },
  "IV-6+IV-7": {
-  "tier": "BAJA",
+  "tier": "MEDIA",
   "vueltas": 3,
   "min": 40,
   "qxN": 5,
   "theomedN": 7,
   "extenso": true,
-  "freq": "Tendencias QX Investigación: 'Instrumentos de recolección y validación' 6+2=8 (el más frecuente de Metodología), 'Procesamiento y análisis de datos' 2, 'Ética de investigación' 1, 'Informe' 1. Suma modesta y forecast v2 mantiene IV en piso. Ética de la investigación (CIEI/INS/Helsinki/Núremberg/Belmont) solapa con área III y ahí gana valor. BAJA como IV pura.",
+  "freq": "⚡ v3 (27-ago-2026): IV-6/7 sube a MEDIA (#9, 4%). Texto v2 abajo conservado como histórico. Tendencias QX Investigación: 'Instrumentos de recolección y validación' 6+2=8 (el más frecuente de Metodología), 'Procesamiento y análisis de datos' 2, 'Ética de investigación' 1, 'Informe' 1. Suma modesta y forecast v2 mantiene IV en piso. Ética de la investigación (CIEI/INS/Helsinki/Núremberg/Belmont) solapa con área III y ahí gana valor. BAJA como IV pura.",
   "guidance": "QX (6 videos del código): PRIORIZAR 'ÉTICA Y ASPECTOS ÉTICOS DE LAS PUBLICACIONES CIENTÍFICAS' y 'PUBLICACIÓN CIENTÍFICA' (CIEI/INS/Helsinki es lo más 'preguntable' y solapa con III). Ver 'PROCESAMIENTO Y ANÁLISIS DE DATOS' y 'PRINCIPALES INSTRUMENTOS DE MEDICIÓN EN PRIMER NIVEL' a 1.5x. Saltar 'CARACTERÍSTICAS ESTRUCTURALES/REQUISITOS METODOLÓGICOS DEL INFORME' (relleno, baja frecuencia). Theomed IV: 1 video de ética/publicación. Memorizar de golpe: 4 hitos (Núremberg=consentimiento, Belmont=3 principios, Helsinki=humanos, CIOMS=biomédica) + CIEI≥5 miembros + INS autoriza ensayos. Nivel: reconocimiento normativo, no memorizar las 12 secciones del informe.",
   "gaps": [
    "GAP nominal: la app llama a este código 'Indicadores de salud + Sistema de vigilancia', pero el compendio López-Investigación lo desarrolla como PUBLICACIÓN CIENTÍFICA + ÉTICA DE LA INVESTIGACIÓN (los indicadores/vigilancia epidemiológica reales caen en I-3, no en IV). Estudiar los indicadores por I-3; en IV quedarse con instrumentos+publicación+ética de investigación.",
