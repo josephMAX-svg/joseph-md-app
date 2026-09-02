@@ -34,9 +34,9 @@ function countFechas(file,marker){const s=fs.readFileSync(path.join(ROOT,file),'
 /** Actualiza inicio/fin (regex) dentro del bloque META que sigue al marcador. Año-agnóstico (Derma cruza a 2027). */
 function setMeta(file,metaMarker,inicio,fin){const p=path.join(ROOT,file);let s=fs.readFileSync(p,'utf8');const i=s.indexOf(metaMarker);if(i<0)throw new Error(file+': meta '+metaMarker);const end=s.indexOf('};',i);let reg=s.slice(i,end);reg=reg.replace(/inicio:\s*'20\d\d-\d\d-\d\d'/, `inicio: '${inicio}'`);if(fin)reg=reg.replace(/fin:\s*'20\d\d-\d\d-\d\d'/, `fin: '${fin}'`);s=s.slice(0,i)+reg+s.slice(end);fs.writeFileSync(p,s,'utf8');}
 
-// 1) USMLE daily (101 · v5.3) — ⚠ los simulacros de hito están anclados a VIERNES con D1=1-sep;
+// 1) USMLE daily (99 · v5.4) — ⚠ los simulacros de hito están anclados a VIERNES con D1=3-sep;
 //    si remapeas a otro START, los hitos caen en otro día de la semana (aceptado: corrimiento determinista).
-{const f='src/lib/usmleStep1Daily.ts';if(countFechas(f,'export const DIAS').length!==101)throw new Error('USMLE!=101');const nd=calNoWeekend(START,101);replaceFechas(f,'export const DIAS',nd);setMeta(f,'export const DAILY_META',START,nd[100]);console.log('USMLE ✓ '+nd[0]+'→'+nd[100]);}
+{const f='src/lib/usmleStep1Daily.ts';if(countFechas(f,'export const DIAS').length!==99)throw new Error('USMLE!=99');const nd=calNoWeekend(START,99);replaceFechas(f,'export const DIAS',nd);setMeta(f,'export const DAILY_META',START,nd[98]);console.log('USMLE ✓ '+nd[0]+'→'+nd[98]);}
 // 2) MIR (78)
 {const f='src/lib/mirDailyPlan.ts';if(countFechas(f,'export const MIR_DIAS').length!==78)throw new Error('MIR!=78');const nd=calNoWeekend(START,78);replaceFechas(f,'export const MIR_DIAS',nd);setMeta(f,'export const MIR_DAILY_META',START,nd[77]);console.log('MIR ✓ '+nd[0]+'→'+nd[77]);}
 // 3) USMLE plan UNIDADES (5)
