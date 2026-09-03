@@ -5,8 +5,8 @@
  * (el bloque principal de la mañana ahora es USMLE Step 1). Feb-mar 2027: fase intensiva.
  * EXAMEN ENCAPS 2027-I: fines de marzo 2027.
  *
- * Ciclo: 104 días L-V (v5.4: D1 = jue 2026-09-03 → 2027-01-29, skip 25-dic/31-dic/1-ene).
- *   (histórico: v6 27-ago sembró 107 días desde 31-ago; v6.1 106 desde 1-sep; v6.2/v5.4 = 104 desde 3-sep)
+ * Ciclo: 103 días L-V (v5.5: D1 = vie 2026-09-04 → 2027-01-29, skip 25-dic/31-dic/1-ene).
+ *   (histórico: v6 27-ago sembró 107 días desde 31-ago; v6.1 106 desde 1-sep; v6.2 104 desde 3-sep; v6.3/v5.5 = 103 desde 4-sep)
  *   · lun-jue = banco del día (20-25Q) con rotación de 4 semanas ponderada por el
  *     PRONÓSTICO WALK-FORWARD v3 (DATA/ENCAPS/PRONOSTICO_WALKFORWARD_2027-1_v3.md):
  *     vector II 30 · I 27 · V 21 · III 13 · IV 9 · 8 críticos (I-3 V-2 II-3 III-5 I-4 II-5 II-4 IV-1/2)
@@ -15,7 +15,7 @@
  *
  * Subtemas y tiers se leen de src/lib/encapsCobertura.ts (NO se inventan).
  * Emite DATA/_scripts/_encaps_mantenimiento_2027.sql (backup → delete → insert).
- * Aplicar por MCP execute_sql. Backup: study_schedule_bk_0902.
+ * Aplicar por MCP execute_sql. Backup: study_schedule_bk_0903.
  */
 const fs = require('fs');
 const path = require('path');
@@ -67,7 +67,7 @@ const CICLO = [
 const esc = (s) => String(s).replace(/'/g, "''");
 const rows = [];
 let dia = 0, slot = 0, f0 = '', f1 = '';
-for (const { fecha, dow } of fechas(process.argv[2]||'2026-09-03', '2027-01-29')) {
+for (const { fecha, dow } of fechas(process.argv[2]||'2026-09-04', '2027-01-29')) {
   dia++; if (!f0) f0 = fecha; f1 = fecha;
   if (dow === 5) {
     rows.push(`('ENCAPS',${dia},'${fecha}','Vie','mini_sim',NULL,'Mini-simulacro semanal 25Q mixto (vector v3)','CRITICA','MANTENIMIENTO','[]'::jsonb,'[]'::jsonb,'[]'::jsonb,NULL,'{}'::jsonb)`);
@@ -85,8 +85,8 @@ for (const { fecha, dow } of fechas(process.argv[2]||'2026-09-03', '2027-01-29')
 const sql = `-- ENCAPS MANTENIMIENTO 2027-I · generado por gen_encaps_mantenimiento_2027.js (${new Date().toISOString().slice(0, 10)})
 -- ${rows.length} días L-V · ${f0} → ${f1} · rotación v3 4 semanas · vie = mini-sim
 BEGIN;
-DROP TABLE IF EXISTS study_schedule_bk_0902;
-CREATE TABLE study_schedule_bk_0902 AS SELECT * FROM study_schedule;
+DROP TABLE IF EXISTS study_schedule_bk_0903;
+CREATE TABLE study_schedule_bk_0903 AS SELECT * FROM study_schedule;
 DELETE FROM study_schedule WHERE examen = 'ENCAPS';
 INSERT INTO study_schedule (examen, dia, fecha, weekday, tipo, codigo, subtema, prioridad, modo, videos, theomed, material_comp, temas_secundarios, extra) VALUES
 ${rows.join(',\n')};
