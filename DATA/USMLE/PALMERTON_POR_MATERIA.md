@@ -43,7 +43,7 @@
 - **Vídeos fuente**: *How 260+ Scorers Master Cardio on the USMLE* ·
   [High Yield Cardiology](https://www.youtube.com/watch?v=hOGhcie47nM) ·
   [High Yield Cardiology Part 2](https://www.youtube.com/watch?v=nFfdaHLtxag)
-- **→ En tu plan**: D5-D6 · D8-D15 (9-sep → 23-sep; D7 = UWSA1 11-sep en medio).
+- **→ En tu plan**: D5 · D7-D15 (10-sep → 24-sep; D6 = UWSA1 11-sep en medio).
 
 **High-yield (v1)**: curvas presión-volumen y función cardiaca vs retorno venoso · potenciales
 de acción ↔ EKG (PR, QRS, QT) · soplos con maniobras · síndromes coronarios (histología del
@@ -75,7 +75,7 @@ reflejo barorreceptor y BP = CO × RPT. MONA está obsoleto según Palmerton.
   (sibilancias/estridor espiratorio).
 - **Vídeos fuente**: [High Yield Respiratory](https://www.youtube.com/watch?v=HU3V0kftcqY) ·
   *High Yield Pediatrics Review Part 2* (traqueomalacia).
-- **→ En tu plan**: D16-D21 (24-sep → 1-oct; D22 = NBME 25 el 2-oct cierra la semana).
+- **→ En tu plan**: D16-D20 · D22 (25-sep → 5-oct; D21 = NBME 25 el 2-oct en medio).
 
 **High-yield (v1)**: curva O2-Hb (Bohr, 2,3-BPG, CO, metahemoglobina) · hipoxemia y gradiente
 A-a (5 mecanismos) · V/Q y zonas de West · PFTs (obstructivo vs restrictivo, DLCO, curvas
@@ -104,7 +104,7 @@ cáncer de pulmón · neumonías/TB · neumotórax a tensión, criterios de Ligh
   hiponatremias severas (destruyen el gradiente medular) — las tiazidas SÍ.
 - **Vídeos fuente**: [High Yield Renal](https://www.youtube.com/watch?v=zeM8dMiRsJQ) ·
   [High Yield Renal Part 2](https://www.youtube.com/watch?v=CIIMMIvrRso)
-- **→ En tu plan**: D23-D28 (5-oct → 12-oct; arranca el lunes siguiente a NBME 25).
+- **→ En tu plan**: D23-D28 (6-oct → 13-oct; arranca el día siguiente al cierre de Respiratory).
 
 **High-yield (v1)**: nefrona por segmentos + clearance/GFR · RAAS completo · ácido-base con
 compensaciones, anion gap, RTA 1/2/4 · hipo/hipernatremia (SIADH, DI), K · AKI con índices
@@ -133,7 +133,7 @@ congénitas (Potter, PKD) · carcinoma renal y vejiga.
   **TP y albúmina** (el TP cae primero: vida media corta del factor VII).
 - **Vídeos fuente**: [High Yield GI](https://www.youtube.com/watch?v=8gfhX1aR9-A) ·
   [High Yield GI Part 2](https://www.youtube.com/watch?v=E2sE4E6s9B8)
-- **→ En tu plan**: D29-D35 (13-oct → 21-oct).
+- **→ En tu plan**: D29-D35 (14-oct → 22-oct).
 
 **High-yield (v1)**: bilirrubina y síndromes hereditarios (Gilbert, Crigler-Najjar,
 Dubin-Johnson vs Rotor) · fisiología secretora (Zollinger-Ellison, H+/K+ ATPasa) · hígado
@@ -163,7 +163,7 @@ farmacología GI · esófago · úlcera gástrica vs duodenal (H. pylori antral 
   tiroideo es intracelular porque la tirosina yodada es no polar.
 - **Vídeos fuente**: [High Yield Endocrinology](https://www.youtube.com/watch?v=oQ8PSvInTgM) ·
   *Pediatrics Shelf Review* (endocrino pediátrico).
-- **→ En tu plan**: D36 · D38-D42 (22-oct → 30-oct; D37 = NBME 26 el 23-oct en medio).
+- **→ En tu plan**: D37-D42 (26-oct → 2-nov; arranca el lunes siguiente a NBME 26 el 23-oct).
 
 **High-yield (v1)**: DM1 vs DM2, DKA vs hiperosmolar · tiroides completo · 1º vs 2º vs 3º en
 TODOS los ejes · suprarrenal (Cushing y su algoritmo, Addison, hiperaldosteronismo,
@@ -193,7 +193,7 @@ SIADH) · MEN 1/2A/2B · farmacología endocrina.
   coma (el coma requiere daño difuso o tronco/herniación).
 - **Vídeos fuente**: [High Yield Neuro](https://www.youtube.com/watch?v=YIwfdc7E8TU) ·
   [High Yield Neuro Part 2](https://www.youtube.com/watch?v=52xHDZJy2sw)
-- **→ En tu plan**: D43-D50 (2-nov → 11-nov).
+- **→ En tu plan**: D43-D50 (3-nov → 12-nov).
 
 **High-yield (v1)**: ictus por territorio · regla de los 4 y síndromes cruzados · médula
 (Brown-Séquard, siringomielia, B12, tabes, ELA, arteria espinal anterior) · NMS vs NMI · vía
@@ -219,7 +219,7 @@ adulto vs niño · antiepilépticos · plexo braquial · defectos del tubo neura
 - **Errores típicos**: tratar los labs como listas desconectadas de memoria · olvidar que el
   sangrado GI CRÓNICO da microcítica ferropénica mientras el sangrado AGUDO da normocítica.
 - **Vídeo fuente**: [High Yield Hematology](https://www.youtube.com/watch?v=zFGfP4d_aOc)
-- **→ En tu plan**: D51 · D53-D57 (12-nov → 20-nov; D52 = NBME 27 el 13-nov en medio).
+- **→ En tu plan**: D52-D57 (16-nov → 23-nov; arranca el lunes siguiente a NBME 27 el 13-nov).
 
 **High-yield (v1)**: panel de hierro (3 patrones vía hepcidina→ferroportina) · anemias por MCV
 y frotis · hemolíticas y hemoglobinopatías (electroforesis por cargas: HbS Glu→Val, HbC
@@ -249,8 +249,8 @@ leucemias/linfomas con translocaciones · quimioterápicos (toxicidad firma) · 
   ineficaces en niños pequeños.
 - **Vídeos fuente**: [High Yield Immunology](https://www.youtube.com/watch?v=Nfp3hs490wM) ·
   *High Yield Family Medicine Review* (inmuno aplicada).
-- **→ En tu plan**: D3-D4 (7-sep → 8-sep) + reaparece en D72 (autoinmunes/vasculitis, 11-dic) y
-  transversal en Micro D58-D64 (23-nov → 1-dic).
+- **→ En tu plan**: D3-D4 (8-sep → 9-sep) + reaparece en D72 (autoinmunes/vasculitis, 14-dic) y
+  transversal en Micro D58-D64 (24-nov → 2-dic).
 
 **High-yield (v1)**: algoritmo de identificación bacteriana · exotoxinas · genomas virales
 (+RNA infeccioso / −RNA no — su demo insignia) · serologías VHB y VIH · TB · antimicrobianos ·
@@ -283,8 +283,8 @@ System Works* (Sompayrac) ANTES de First Aid.
   nicotínicos → salida masiva de K+ → arritmias hiperpotasémicas mortales).
 - **Vídeos fuente**: [High Yield Pharmacology](https://www.youtube.com/watch?v=J2KWVQ67H2U) ·
   [High Yield Pharmacology Part 2](https://www.youtube.com/watch?v=PvKp25ku0po)
-- **→ En tu plan**: D82 (28-dic, día dedicado PK/PD + toxicología) + transversal en los días
-  pharm de cada sistema (D11, D18, D24, D41, D46, D48, D76).
+- **→ En tu plan**: D82 (29-dic, día dedicado PK/PD + toxicología) + transversal en los días
+  pharm de cada sistema (D11, D18, D24, D41, D46, D48, D77).
 
 **High-yield (v1)**: PK (Vd, clearance, vida media, orden cero vs primero) · fases I/II,
 CYP450 · PD (potencia vs eficacia, antagonismos, agonistas parciales) · autonomics completo y
@@ -312,7 +312,7 @@ CYP450 · PD (potencia vs eficacia, antagonismos, agonistas parciales) · autono
   cetogénicos (útiles en deficiencia de piruvato deshidrogenasa: energía vía Acetil-CoA sin
   acumular lactato) · creer que la Acetil-CoA puede sintetizar glucosa.
 - **Vídeo fuente**: [High Yield Biochemistry](https://www.youtube.com/watch?v=FcXG3ux0a1I)
-- **→ En tu plan**: D79-D81 (22-dic → 24-dic).
+- **→ En tu plan**: D79-D81 (23-dic → 28-dic).
 
 **High-yield (v1)**: vitaminas con contextos de malabsorción (B12 vs folato: solo B12 da
 neuro + ácido metilmalónico) · glucogenosis (Von Gierke vs Cori: solo Von Gierke da acidosis
@@ -340,7 +340,7 @@ herencia, Hardy-Weinberg · imprinting · colágeno/elastina. Hábito verbal: **
   enfermedad, probabilidad de haberme expuesto"; RR prospectivo: "si me expongo, riesgo de
   enfermar") · decir "se acepta la hipótesis nula" con p>0.05 (solo "no se puede rechazar").
 - **Vídeo fuente**: *Biostatistics SUMMARY STEP 1 + 2 — The Basics USMLE*.
-- **→ En tu plan**: D78 (21-dic, día dedicado + AMBOSS HY Biostats 155Q).
+- **→ En tu plan**: D78 (22-dic, día dedicado + AMBOSS HY Biostats 155Q).
 
 **High-yield (v1)**: tabla 2x2 (sens/esp, VPP/VPN y prevalencia) · RR/OR/ARR/RRR/NNT · tipos
 de estudio y jerarquía · sesgos · IC, poder · ROC, media/mediana en sesgadas · el mejor quick
@@ -368,7 +368,7 @@ win del examen (~4-10%, dominable en 1-2 semanas) · complemento comunitario: Ra
   adenomiosis/fibromas en adolescentes (patología PALM de mujeres mayores/multíparas).
 - **Vídeos fuente**: [High Yield OB/GYN](https://www.youtube.com/watch?v=4D7MO0TR2fY) ·
   [High Yield OB/GYN Part 2](https://www.youtube.com/watch?v=nYtSNyXh_Ww)
-- **→ En tu plan**: D65-D66 · D68-D70 (2-dic → 9-dic; D67 = NBME 28 el 4-dic en medio).
+- **→ En tu plan**: D65 · D67-D70 (3-dic → 10-dic; D66 = NBME 28 el 4-dic en medio).
 
 **High-yield (v1)**: ciclo menstrual y anovulación (eje HPG, SOP, amenorrea) ·
 esteroidogénesis, hCG y fisiología del embarazo · desarrollo sexual (insensibilidad
