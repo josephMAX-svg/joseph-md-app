@@ -35,7 +35,7 @@ export const USMLE_CHECKPOINTS: UsmleCheckpoint[] = [
 export const USMLE_READINESS = {
   pct: 4, // pre-first-NBME baseline · rises only when a checkpoint is logged
   status: 'Baseline · no NBME logged yet',
-  next: 'UWSA1 vie 11-sep (D6, baseline) → luego NBME 25/26/27/28/29 cada ~3 semanas (plan v5.5).',
+  next: 'UWSA1 vie 11-sep (D5, baseline) → luego NBME 25/26/27/28/29 cada ~3 semanas (plan v5.6).',
 };
 
 // Organ systems ordered by official exam weight (order of attack)

@@ -33,7 +33,7 @@ export function todayISO(): string {
 export function faseActual(iso: string): string {
   if (iso < '2026-06-01') return 'FASE 4';
   if (iso < '2026-08-10') return 'FASE 5 · ENCAPS';
-  if (iso < '2026-09-04') return 'FASE 6 · transición';
+  if (iso < '2026-09-07') return 'FASE 6 · transición';
   if (iso < '2027-02-01') return 'FASE 7 · STEP 1 PRINCIPAL';
   return 'FASE 8 · ENCAPS FINAL';
 }
@@ -94,7 +94,7 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
     {
       flag: '🇺🇸', nombre: 'USMLE · BLOQUE PRINCIPAL (Anki → Pre-test → Deep Prime → 30Q)', ini: '07:15', fin: '12:00', color: GREEN,
       tema: us ? `D${us.d}/${DIAS.length} · ${us.system} — ${us.sub}` : 'fuera del rango del plan',
-      sub: us ? `${us.bbCh}: ${us.bbVid} · ${us.mat} · todo en inglés` : 'Step 1 · v5.5 desde vie 4-sep',
+      sub: us ? `${us.bbCh}: ${us.bbVid} · ${us.mat} · todo en inglés` : 'Step 1 · v5.6 desde lun 7-sep',
       acciones: us ? [
         { lbl: '◆ Edge', color: EDGE, url: 'microsoft-edge:' + QBQ, fill: true },
         ...(usmleObsUrl(us.d) ? [{ lbl: '◆ Obsidian', color: OBS, url: usmleObsUrl(us.d)! }] : []),

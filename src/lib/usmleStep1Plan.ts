@@ -5,10 +5,10 @@
  * subtema), Librerías, Flashcards, Video Library (B&B Step 1/2 + Sketchy) y la
  * biblioteca High-Yield de Palmerton + lo que Palmerton dice de cada sistema.
  *
- * v5.5 (3-sep-2026): D1 = VIE 4-sep-2026 → D98 = vie 22-ene-2027 · Step 1 = BLOQUE PRINCIPAL (6h15/día L-V):
+ * v5.6 (6-sep-2026): D1 = LUN 7-sep-2026 → D97 = vie 22-ene-2027 · Step 1 = BLOQUE PRINCIPAL (6h15/día L-V):
  *  05:00 ANKI AM · 07:15 repaso anclado · 08:15 PRE-TEST 10Q · 09:00-11:00 DEEP PRIME · 11:00 30Q · 18:00 eval examen.
  *  Sáb y dom LIBRES (skip 25-dic, 31-dic, 1-ene). Examen: semana 25-29 ene 2027. Los diaInicio apuntan
- *  al plan de 98 días de usmleStep1Daily.ts (fuente de verdad): Fase A D1-83 · B D84-93 · C D94-98.
+ *  al plan de 97 días de usmleStep1Daily.ts (fuente de verdad): Fase A D1-82 · B D83-92 · C D93-97.
  *
  * Prioridad: Step 1. Sistemas ordenados por peso real (preguntas uWorld) +
  * la serie High-Yield de Palmerton.
@@ -22,10 +22,10 @@ export const QB = {
 };
 
 export const PLAN_META = {
-  inicio: '2026-09-04', // v5.5 (3-sep): D1=vie 4-sep · Step 1 = bloque PRINCIPAL (6h15/día L-V) · sáb y dom libres · examen semana 25-29 ene 2027
+  inicio: '2026-09-07', // v5.6 (6-sep): D1=lun 7-sep · Step 1 = bloque PRINCIPAL (6h15/día L-V) · sáb y dom libres · examen semana 25-29 ene 2027
   bloque: '05:00 ANKI AM · 07:15 repaso anclado · 08:15 PRE-TEST 10Q · 09:00 DEEP PRIME 2h · 11:00 30Q consolidación · 18:00 eval modo examen (6h15/día)',
   metodo: 'Palmerton: ver vídeo High-Yield del sistema → leer (Library/First Aid) → Anki (FSRS) → preguntas en modo tutor → log de errores → APEX.',
-  nota: 'Prioridad Step 1. D1 = vie 4-sep (Fundamentos/Pathoma) · D5 Cardiovascular (jue 10-sep). Fase A contenido D1-83 · Fase B banco D84-93 · Fase C sprint D94-98.',
+  nota: 'Prioridad Step 1. D1 = lun 7-sep (Fundamentos/Pathoma) · D6 Cardiovascular (lun 14-sep). Fase A contenido D1-82 · Fase B banco D83-92 · Fase C sprint D93-97.',
 };
 
 export interface SistemaUSMLE {
@@ -33,7 +33,7 @@ export interface SistemaUSMLE {
   /** preguntas uWorld del sistema (peso real) */
   uworldQ: number;
   tier: 'CORE' | 'HIGH' | 'MED';
-  diaInicio: number; // día del plan en que empieza (Día 1 = vie 4-sep-2026 · v5.5)
+  diaInicio: number; // día del plan en que empieza (Día 1 = lun 7-sep-2026 · v5.6)
   /** subtemas uWorld top del sistema (nombre · nº preguntas) */
   uworldSubtemas: [string, number][];
   /** capítulo B&B Step 1 (nombre · nº vídeos · minutos) */
@@ -54,7 +54,7 @@ export interface SistemaUSMLE {
 /** Orden Step 1 por rentabilidad (preguntas uWorld) + serie Palmerton. */
 export const SISTEMAS: SistemaUSMLE[] = [
   {
-    sistema: 'Cardiovascular', uworldQ: 413, tier: 'CORE', diaInicio: 5,
+    sistema: 'Cardiovascular', uworldQ: 413, tier: 'CORE', diaInicio: 6,
     uworldSubtemas: [['Normal structure & function', 55], ['Myopericardial diseases', 52], ['Cardiac arrhythmias', 50], ['Coronary heart disease', 47], ['Valvular heart diseases', 46], ['Heart failure and shock', 44], ['Aortic & peripheral artery dz', 37], ['Congenital heart disease', 32], ['Hypertension', 24]],
     bb1: { ch: 'Cardiology', n: 40, min: 818 }, bb2: { ch: 'Cardiology', n: 19, min: 405 },
     sketchy: { ch: 'Pharmacology (CV drugs) + Pathophysiology', n: 0 },
@@ -95,7 +95,7 @@ export const SISTEMAS: SistemaUSMLE[] = [
     lib: { subject: 'Endocrinology', doc: 0 }, flashDeck: 'Endocrine',
   },
   {
-    sistema: 'Nervous System', uworldQ: 397, tier: 'CORE', diaInicio: 43,
+    sistema: 'Nervous System', uworldQ: 397, tier: 'CORE', diaInicio: 42,
     uworldSubtemas: [['Disorders of peripheral nerves/muscles', 69], ['Cerebrovascular disease', 62], ['Normal structure & function', 48], ['Neurodegenerative & dementias', 34], ['Congenital/developmental', 34], ['CNS infections', 30]],
     bb1: { ch: 'Neurology', n: 50, min: 869 }, bb2: { ch: 'Neurology', n: 0, min: 0 },
     palmerton: [{ titulo: 'High Yield Neuro', id: 'YIwfdc7E8TU', min: 74 }, { titulo: 'High Yield Neuro Part 2', id: '52xHDZJy2sw', min: 99 }],
@@ -103,7 +103,7 @@ export const SISTEMAS: SistemaUSMLE[] = [
     lib: { subject: 'Neurology', doc: 0 }, flashDeck: 'Nervous System',
   },
   {
-    sistema: 'Hematology & Oncology', uworldQ: 277, tier: 'HIGH', diaInicio: 52,
+    sistema: 'Hematology & Oncology', uworldQ: 277, tier: 'HIGH', diaInicio: 51,
     uworldSubtemas: [['Red blood cell disorders', 85], ['White blood cell disorders', 48], ['Hemostasis & thrombosis', 36], ['Principles of oncology', 22], ['Platelet disorders', 15]],
     bb1: { ch: 'Hematology', n: 29, min: 498 }, bb2: { ch: 'Hematology and Oncology', n: 20, min: 390 },
     palmerton: [{ titulo: 'High Yield Hematology', id: 'zFGfP4d_aOc', min: 40 }],
@@ -111,7 +111,7 @@ export const SISTEMAS: SistemaUSMLE[] = [
     lib: { subject: 'Hematology & Oncology', doc: 0 }, flashDeck: 'Hematology & Oncology',
   },
   {
-    sistema: 'Reproductive', uworldQ: 169, tier: 'HIGH', diaInicio: 65,
+    sistema: 'Reproductive', uworldQ: 169, tier: 'HIGH', diaInicio: 64,
     uworldSubtemas: [['Male reproductive disorders', 48], ['Female genital tract tumors', 26], ['Pregnancy & childbirth disorders', 44], ['Reproductive endocrinology', 21], ['GU infections', 13]],
     bb1: { ch: 'Reproductive', n: 37, min: 440 }, bb2: { ch: 'Obstetrics and Gynecology', n: 34, min: 569 },
     palmerton: [{ titulo: 'High Yield OB/GYN Review', id: '4D7MO0TR2fY', min: 104 }, { titulo: 'High Yield OB/GYN Review Part 2', id: 'nYtSNyXh_Ww', min: 91 }],
@@ -119,7 +119,7 @@ export const SISTEMAS: SistemaUSMLE[] = [
     lib: { subject: 'Gynecology', doc: 0 }, flashDeck: 'Reproductive',
   },
   {
-    sistema: 'Musculoskeletal / Rheum', uworldQ: 163, tier: 'HIGH', diaInicio: 71,
+    sistema: 'Musculoskeletal / Rheum', uworldQ: 163, tier: 'HIGH', diaInicio: 70,
     uworldSubtemas: [['Arthritis & spondyloarthropathies', 38], ['Bone/joint injuries & infections', 34], ['Normal structure & function', 31], ['Autoimmune & vasculitides', 25], ['Metabolic bone disorders', 14]],
     bb1: { ch: 'Musculoskeletal', n: 20, min: 369 }, bb2: { ch: 'Musculoskeletal', n: 9, min: 165 },
     palmerton: [],
@@ -127,7 +127,7 @@ export const SISTEMAS: SistemaUSMLE[] = [
     lib: { subject: 'Rheumatology/Orthopedics', doc: 0 }, flashDeck: 'Rheumatology/Orthopedics',
   },
   {
-    sistema: 'Psychiatry & Behavioral', uworldQ: 179, tier: 'HIGH', diaInicio: 74,
+    sistema: 'Psychiatry & Behavioral', uworldQ: 179, tier: 'HIGH', diaInicio: 73,
     uworldSubtemas: [['Mood disorders', 33], ['Psychotic disorders', 26], ['Substance use disorders', 25], ['Anxiety/trauma-related', 25], ['Personality/Somatoform', 9]],
     bb1: { ch: 'Psychiatry', n: 21, min: 271 }, bb2: { ch: 'Psychiatry', n: 14, min: 198 },
     palmerton: [],
@@ -144,7 +144,7 @@ export const SISTEMAS: SistemaUSMLE[] = [
     flashDeck: 'Immunology',
   },
   {
-    sistema: 'Infectious Disease / Micro', uworldQ: 271, tier: 'HIGH', diaInicio: 58,
+    sistema: 'Infectious Disease / Micro', uworldQ: 271, tier: 'HIGH', diaInicio: 57,
     uworldSubtemas: [['Bacterial infections', 112], ['Viral infections', 43], ['HIV & STIs', 42], ['Parasitic & helminthic', 26], ['Antimicrobial drugs', 23], ['Fungal infections', 12]],
     bb1: { ch: 'Infectious Disease', n: 36, min: 699 }, bb2: { ch: 'Infectious Disease', n: 16, min: 306 },
     sketchy: { ch: 'Microbiology', n: 44 },
@@ -153,7 +153,7 @@ export const SISTEMAS: SistemaUSMLE[] = [
     lib: { subject: 'Infectious Diseases', doc: 0 }, flashDeck: 'Microbiology',
   },
   {
-    sistema: 'Biochemistry', uworldQ: 159, tier: 'MED', diaInicio: 79,
+    sistema: 'Biochemistry', uworldQ: 159, tier: 'MED', diaInicio: 78,
     uworldSubtemas: [['Bioenergetics & carbohydrate metabolism', 21], ['Amino acids/proteins/enzymes', 20], ['Cell & molecular biology', 17], ['Lipid metabolism', 3]],
     bb1: { ch: 'Biochemistry', n: 28, min: 549 },
     sketchy: { ch: 'Biochemistry', n: 86 },
@@ -162,7 +162,7 @@ export const SISTEMAS: SistemaUSMLE[] = [
     flashDeck: 'Biochemistry',
   },
   {
-    sistema: 'Pharmacology (transversal)', uworldQ: 550, tier: 'HIGH', diaInicio: 82,
+    sistema: 'Pharmacology (transversal)', uworldQ: 550, tier: 'HIGH', diaInicio: 81,
     uworldSubtemas: [['Pharmacodynamics & receptors', 5], ['Pharmacokinetics', 14], ['Drug metabolism & toxicity', 18], ['(se estudia integrada en cada sistema)', 0]],
     bb1: { ch: 'Basic Pharmacology', n: 5, min: 86 },
     sketchy: { ch: 'Pharmacology', n: 130 },
@@ -176,11 +176,11 @@ export const SISTEMAS: SistemaUSMLE[] = [
  *  real es DIAS de usmleStep1Daily.ts (D1-2 Fundamentos/Pathoma, D3-4 Inmuno, D5+ Cardio). Se conserva por compat. */
 export interface UnidadDia { dia: number; fecha: string; sistema: string; foco: string; bbVideo: { titulo: string; min: number }; uworld: string; sketchy?: string; palmerton?: { titulo: string; id: string }; flash: string; }
 export const UNIDADES: UnidadDia[] = [
-  { dia: 1, fecha: '2026-09-04', sistema: 'Cardiovascular', foco: 'Anatomía + Fisiología cardíaca (la base de todo cardio)', bbVideo: { titulo: 'B&B Step 1 · 01 - Cardiac Anatomy', min: 15 }, uworld: 'uWorld · Cardiovascular → Normal structure & function (pre-test 2-3Q)', sketchy: 'Sketchy Anatomy → Heart (Chambers / Coronary circulation)', palmerton: { titulo: 'Palmerton · Cómo los 260+ dominan el cardio', id: 'TYe-wrDuFqg' }, flash: 'uWorld Step 1 FlashCards → Cardiovascular (mazo del día)' },
-  { dia: 2, fecha: '2026-09-07', sistema: 'Cardiovascular', foco: 'Fisiología cardíaca II (PV loops, Wiggers, Starling)', bbVideo: { titulo: 'B&B Step 1 · 02 - Cardiac Physiology', min: 27 }, uworld: 'uWorld · Cardiovascular → Normal structure & function (10Q)', flash: 'FlashCards → Cardiovascular' },
-  { dia: 3, fecha: '2026-09-08', sistema: 'Cardiovascular', foco: 'Hemodinámica + regulación de la PA', bbVideo: { titulo: 'B&B Step 1 · 04-05 Blood Flow / BP Regulation', min: 32 }, uworld: 'uWorld · Cardiovascular → Hypertension (10Q)', flash: 'FlashCards → Cardiovascular' },
-  { dia: 4, fecha: '2026-09-09', sistema: 'Cardiovascular', foco: 'Cardiopatía isquémica (atero → SCA)', bbVideo: { titulo: 'B&B Step 1 · Cardiac Ischemia (01-06)', min: 64 }, uworld: 'uWorld · Cardiovascular → Coronary heart disease (10Q)', palmerton: { titulo: 'Palmerton · High Yield Cardiology', id: 'hOGhcie47nM' }, flash: 'FlashCards → Cardiovascular' },
-  { dia: 5, fecha: '2026-09-10', sistema: 'Cardiovascular', foco: 'Arritmias (potenciales de acción → taqui/bradi)', bbVideo: { titulo: 'B&B Step 1 · Arrhythmias (01-08)', min: 90 }, uworld: 'uWorld · Cardiovascular → Cardiac arrhythmias (10Q)', flash: 'FlashCards → Cardiovascular' },
+  { dia: 1, fecha: '2026-09-07', sistema: 'Cardiovascular', foco: 'Anatomía + Fisiología cardíaca (la base de todo cardio)', bbVideo: { titulo: 'B&B Step 1 · 01 - Cardiac Anatomy', min: 15 }, uworld: 'uWorld · Cardiovascular → Normal structure & function (pre-test 2-3Q)', sketchy: 'Sketchy Anatomy → Heart (Chambers / Coronary circulation)', palmerton: { titulo: 'Palmerton · Cómo los 260+ dominan el cardio', id: 'TYe-wrDuFqg' }, flash: 'uWorld Step 1 FlashCards → Cardiovascular (mazo del día)' },
+  { dia: 2, fecha: '2026-09-08', sistema: 'Cardiovascular', foco: 'Fisiología cardíaca II (PV loops, Wiggers, Starling)', bbVideo: { titulo: 'B&B Step 1 · 02 - Cardiac Physiology', min: 27 }, uworld: 'uWorld · Cardiovascular → Normal structure & function (10Q)', flash: 'FlashCards → Cardiovascular' },
+  { dia: 3, fecha: '2026-09-09', sistema: 'Cardiovascular', foco: 'Hemodinámica + regulación de la PA', bbVideo: { titulo: 'B&B Step 1 · 04-05 Blood Flow / BP Regulation', min: 32 }, uworld: 'uWorld · Cardiovascular → Hypertension (10Q)', flash: 'FlashCards → Cardiovascular' },
+  { dia: 4, fecha: '2026-09-10', sistema: 'Cardiovascular', foco: 'Cardiopatía isquémica (atero → SCA)', bbVideo: { titulo: 'B&B Step 1 · Cardiac Ischemia (01-06)', min: 64 }, uworld: 'uWorld · Cardiovascular → Coronary heart disease (10Q)', palmerton: { titulo: 'Palmerton · High Yield Cardiology', id: 'hOGhcie47nM' }, flash: 'FlashCards → Cardiovascular' },
+  { dia: 5, fecha: '2026-09-11', sistema: 'Cardiovascular', foco: 'Arritmias (potenciales de acción → taqui/bradi)', bbVideo: { titulo: 'B&B Step 1 · Arrhythmias (01-08)', min: 90 }, uworld: 'uWorld · Cardiovascular → Cardiac arrhythmias (10Q)', flash: 'FlashCards → Cardiovascular' },
 ];
 
 /** Devuelve la unidad del día según la fecha (YYYY-MM-DD). null si fuera de rango. */

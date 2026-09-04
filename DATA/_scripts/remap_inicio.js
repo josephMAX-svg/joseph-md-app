@@ -36,7 +36,7 @@ function setMeta(file,metaMarker,inicio,fin){const p=path.join(ROOT,file);let s=
 
 // 1) USMLE daily (98 · v5.5) — ⚠ los simulacros de hito están anclados a VIERNES con D1=4-sep;
 //    si remapeas a otro START, los hitos caen en otro día de la semana (aceptado: corrimiento determinista).
-{const f='src/lib/usmleStep1Daily.ts';if(countFechas(f,'export const DIAS').length!==98)throw new Error('USMLE!=98');const nd=calNoWeekend(START,98);replaceFechas(f,'export const DIAS',nd);setMeta(f,'export const DAILY_META',START,nd[97]);console.log('USMLE ✓ '+nd[0]+'→'+nd[97]);}
+{const f='src/lib/usmleStep1Daily.ts';if(countFechas(f,'export const DIAS').length!==97)throw new Error('USMLE!=97');const nd=calNoWeekend(START,97);replaceFechas(f,'export const DIAS',nd);setMeta(f,'export const DAILY_META',START,nd[96]);console.log('USMLE ✓ '+nd[0]+'→'+nd[96]);}
 // 2) MIR (78)
 {const f='src/lib/mirDailyPlan.ts';if(countFechas(f,'export const MIR_DIAS').length!==78)throw new Error('MIR!=78');const nd=calNoWeekend(START,78);replaceFechas(f,'export const MIR_DIAS',nd);setMeta(f,'export const MIR_DAILY_META',START,nd[77]);console.log('MIR ✓ '+nd[0]+'→'+nd[77]);}
 // 3) USMLE plan UNIDADES (5)

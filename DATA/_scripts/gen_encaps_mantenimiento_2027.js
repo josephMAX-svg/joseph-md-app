@@ -15,7 +15,7 @@
  *
  * Subtemas y tiers se leen de src/lib/encapsCobertura.ts (NO se inventan).
  * Emite DATA/_scripts/_encaps_mantenimiento_2027.sql (backup → delete → insert).
- * Aplicar por MCP execute_sql. Backup: study_schedule_bk_0903.
+ * Aplicar por MCP execute_sql. Backup: study_schedule_bk_0906.
  */
 const fs = require('fs');
 const path = require('path');
@@ -67,7 +67,7 @@ const CICLO = [
 const esc = (s) => String(s).replace(/'/g, "''");
 const rows = [];
 let dia = 0, slot = 0, f0 = '', f1 = '';
-for (const { fecha, dow } of fechas(process.argv[2]||'2026-09-04', '2027-01-29')) {
+for (const { fecha, dow } of fechas(process.argv[2]||'2026-09-07', '2027-01-29')) {
   dia++; if (!f0) f0 = fecha; f1 = fecha;
   if (dow === 5) {
     rows.push(`('ENCAPS',${dia},'${fecha}','Vie','mini_sim',NULL,'Mini-simulacro semanal 25Q mixto (vector v3)','CRITICA','MANTENIMIENTO','[]'::jsonb,'[]'::jsonb,'[]'::jsonb,NULL,'{}'::jsonb)`);
@@ -85,8 +85,8 @@ for (const { fecha, dow } of fechas(process.argv[2]||'2026-09-04', '2027-01-29')
 const sql = `-- ENCAPS MANTENIMIENTO 2027-I · generado por gen_encaps_mantenimiento_2027.js (${new Date().toISOString().slice(0, 10)})
 -- ${rows.length} días L-V · ${f0} → ${f1} · rotación v3 4 semanas · vie = mini-sim
 BEGIN;
-DROP TABLE IF EXISTS study_schedule_bk_0903;
-CREATE TABLE study_schedule_bk_0903 AS SELECT * FROM study_schedule;
+DROP TABLE IF EXISTS study_schedule_bk_0906;
+CREATE TABLE study_schedule_bk_0906 AS SELECT * FROM study_schedule;
 DELETE FROM study_schedule WHERE examen = 'ENCAPS';
 INSERT INTO study_schedule (examen, dia, fecha, weekday, tipo, codigo, subtema, prioridad, modo, videos, theomed, material_comp, temas_secundarios, extra) VALUES
 ${rows.join(',\n')};
