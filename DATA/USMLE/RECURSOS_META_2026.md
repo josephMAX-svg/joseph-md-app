@@ -15,7 +15,7 @@ como HERRAMIENTA DE APRENDIZAJE (no termómetro); el árbitro de readiness son l
 
 ### AMBOSS (2.745Q + plan 81 bloques + 200 Concepts + HY Biostats 155Q + suscripción propia)
 - **Rol**: BIBLIOTECA de referencia (artículos linkados) + add-on oficial de Anki (lookup instantáneo dentro de las tarjetas) + su lista **200 Concepts** como barrido final. Su qbank es más difícil y detallista que el real ("almost a little excessive") → riesgo de overthinking.
-- **Fase**: library todo el plan; qbank SOLO en Fase B para bloques de 1-3 martillos en áreas débiles detectadas por NBME; 200 Concepts en Fase B (D91-D92, 13-14 ene); HY Biostats 155Q junto a Psych/Biostats (S16-S17, D74-D78).
+- **Fase**: library todo el plan; qbank SOLO en Fase B para bloques de 1-3 martillos en áreas débiles detectadas por NBME; 200 Concepts en Fase B (D90-D91, 13-14 ene); HY Biostats 155Q junto a Psych/Biostats (S15-S16, D73-D77).
 - **Horas**: ≤2h/sem como qbank; library a demanda.
 - **NO**: correrlo como qbank paralelo a uWorld en Fase A (duplica esfuerzo sin señal nueva).
 
@@ -27,7 +27,7 @@ como HERRAMIENTA DE APRENDIZAJE (no termómetro); el árbitro de readiness son l
 
 ### Pathoma (Sattar)
 - **Rol**: columna conceptual de patología. **Caps. 1-3 = lo más rentable del examen entero** ("disgustingly high yield"); bloques GI/hepático, heme y renal son los capítulos estrella.
-- **Fase**: caps. 1-3 completos en D1-D2 (S1); resto por sistema en Fase A; **re-ver 1-3 la última semana** (S21).
+- **Fase**: caps. 1-3 completos en D1-D2 (S1); resto por sistema en Fase A; **re-ver 1-3 la última semana** (S20).
 - **Horas**: ~5h/cap al inicio, luego integrado en DEEP PRIME.
 - **NO**: usarlo para anatomía MSK, inmuno conceptual ni bioestadística (ahí aporta poco).
 

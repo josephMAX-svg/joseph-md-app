@@ -4,8 +4,8 @@ Toda la data REAL del plan MIR. Fuente canónica (código): `src/lib/*.ts`. Plat
 **ProMIR** (`promir.medicapanamericana.com`) — SPA por WebSocket; deep-link `/capitulo/<id>`.
 Abre bien en Chrome (no necesita Edge). Cruzado con **rabi_94** (Google Drive, 1ª vuelta).
 
-## 1. Plan día-a-día (78 días = 76 temas + 2 colchón · D1 vie 4-sep-2026 → D78 mar 22-dic-2026)
-> Re-fechado a D1=4-sep-2026 (v5.5); L-V, sáb+dom libres, sin skips (termina antes del 25-dic). Fuente de verdad = el `.ts`.
+## 1. Plan día-a-día (78 días = 76 temas + 2 colchón · D1 lun 7-sep-2026 → D78 mié 23-dic-2026)
+> Re-fechado a D1=7-sep-2026 (v5.6); L-V, sáb+dom libres, sin skips (termina antes del 25-dic). Fuente de verdad = el `.ts`.
 
 Fuente: [`src/lib/mirDailyPlan.ts`](../../src/lib/mirDailyPlan.ts) · 1 tema atómico/día · 1ª vuelta.
 Bloque Calendar **15:15–16:15**: Evaluación Anclada D-1 (15:15–15:30) + Deep Work Mini

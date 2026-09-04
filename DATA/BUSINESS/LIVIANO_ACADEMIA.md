@@ -1,6 +1,6 @@
 # LIVIANO ACADEMIA — Currículo de medicina de la obesidad
 
-> **Franja: 17:15-18:00 L-V · D1 = vie 4-sep-2026 (v5.5)** — 90 días L-V → 12-ene-2027 (salta 25-dic, 31-dic y 1-ene); bloque NUEVO del Calendar v5 (serie desde 31-ago).
+> **Franja: 17:15-18:00 L-V · D1 = lun 7-sep-2026 (v5.6)** — 90 días L-V → 13-ene-2027 (salta 25-dic, 31-dic y 1-ene); bloque NUEVO del Calendar v5 (serie desde 31-ago).
 > Formato de 45 min: **25' estudio del módulo + 20' preguntas/aplicación** (casos de consulta
 > LIVIANO, tarjetas de mecanismo, ensayo de metáforas de paciente).
 > El plan día-a-día vive en la app: `src/lib/livianoStudyPlan.ts` (se genera aparte desde este

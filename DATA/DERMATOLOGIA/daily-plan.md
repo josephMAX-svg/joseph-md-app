@@ -1,6 +1,6 @@
 # DERMA · Plan tema-átomo/día (68 átomos · interdiario con Research)
 
-> ⚠ **DESACTUALIZADO — re-fechado a D1=4-sep-2026 (v5.5); fuente de verdad = el `.ts`**
+> ⚠ **DESACTUALIZADO — re-fechado a D1=7-sep-2026 (v5.6); fuente de verdad = el `.ts`**
 > (`src/lib/dermaDailyPlan.ts`: PLAN ÉLITE v2, 70 átomos, D1 lun 7-sep-2026, interdiario con Research,
 > sáb+dom libres, salta 25-dic/31-dic/1-ene). Este documento conserva la cola v1 (68 átomos, fechas
 > jun→dic-2026) solo como histórico; el temario vigente está en `PLAN_ELITE_2026-27.md`.

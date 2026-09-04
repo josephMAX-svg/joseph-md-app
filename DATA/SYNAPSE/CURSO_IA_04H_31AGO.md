@@ -1,4 +1,4 @@
-# 🧠 FRANJA 04:15–05:45 (v5.2 · serie desde lun 31-ago-2026 · D1 efectivo vie 4-sep-2026, v5.5) — IA VIBECODING + ANKI AM
+# 🧠 FRANJA 04:15–05:45 (v5.2 · serie desde lun 31-ago-2026 · D1 efectivo lun 7-sep-2026, v5.6) — IA VIBECODING + ANKI AM
 
 > v5.2 (27-ago, decisión Joseph): la franja se PARTE en dos. NO es un curso de programación desde
 > cero — es **VIBECODING**: construir cosas reales con Claude Code como herramienta. Y la segunda

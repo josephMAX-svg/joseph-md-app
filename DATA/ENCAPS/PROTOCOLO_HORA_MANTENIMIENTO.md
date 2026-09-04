@@ -1,9 +1,9 @@
-# 🇵🇪 PROTOCOLO DE LA HORA ENCAPS — MANTENIMIENTO 2027-I (16:15–17:15 L-V · D1 vie 4-sep → 29-ene · 103 días)
+# 🇵🇪 PROTOCOLO DE LA HORA ENCAPS — MANTENIMIENTO 2027-I (16:15–17:15 L-V · D1 lun 7-sep → 29-ene · 102 días)
 
 > La hora tiene UNA sola misión: llegar a febrero con base sólida para que la fase intensiva
 > (feb–mar, ENCAPS vuelve a bloque principal) arranque desde ~70% y no desde cero.
 > Meta final: **≥17/20 en ENCAPS 2027-I (fines de marzo) · percentil 1% (~2.000 plazas)**.
-> La cola vive en la app (Estudio → Perú, Supabase modo MANTENIMIENTO, 103 días · backup `study_schedule_bk_0903`).
+> La cola vive en la app (Estudio → Perú, Supabase modo MANTENIMIENTO, 102 días · backup `study_schedule_bk_0906`).
 
 ## Estructura del día (lun–jue)
 
@@ -25,7 +25,7 @@
 | **Sem C** | II-1 Gestante | **I-3** (2ª del ciclo) | **V-2** (2ª del ciclo) | III-8 Ética función pública | SIM 25Q |
 | **Sem D** | II-11 ITS/VIH | IV-6+IV-7 | V-7+V-10 (V-MED) | II-8 ENT/diabetes | SIM 25Q |
 
-I-3 y V-2 caen **2× por ciclo** (11 sesiones cada uno en los 103 días; 83 sesiones de banco + 20 mini-sims) — son el top-2 del pronóstico v3.
+I-3 y V-2 caen **2× por ciclo** (11 sesiones cada uno en los 102 días; 83 sesiones de banco + 19 mini-sims) — son el top-2 del pronóstico v3.
 8 críticos v3: I-3 · V-2 · II-3 · III-5 · I-4 · II-5 · II-4 · IV-1/2. ALTA con flag de rebote: II-1 · II-11 · II-8.
 ⚠ Lección 2026-II: **Investigación saltó 4→12** — por eso IV tiene 2 slots fijos por ciclo (nunca más a piso).
 
