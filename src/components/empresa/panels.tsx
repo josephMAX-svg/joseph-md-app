@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Platform, StyleSheet, Linking, ScrollView } from 'react-native';
+import React, { useState, useEffect, useMemo } from 'react';
+import { View, Text, TouchableOpacity, Platform, StyleSheet, Linking, ScrollView, TextInput } from 'react-native';
 import BrandHorario from './BrandHorario';
 import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, LineHeight } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
@@ -13,7 +13,10 @@ import {
   COMPETIDORES, LIVIANO_VENTAS, LIVIANO_LOGISTICA, LIVIANO_PENDIENTES,
   LIVIANO_DIRECTRICES, PULSO_LINKS, PULSO_LINK_GRUPOS, PIRQA_DATA, PULSO_MATRIZ,
   BRANDS, EMPRESAS,
+  LIVIANO_ACCESO_PERU, LIVIANO_ACCESO_PERU_REGLAS, LIVIANO_REVISION_TRIMESTRAL, LIVIANO_PROTOCOLO,
+  LIVIANO_KPI_SEMANAL, LIVIANO_KPI_REGLA, kpiSemanalSemaforo, kpiSemanalAlertas,
 } from '../../lib/empresaData';
+import type { KpiSemanalKey } from '../../lib/empresaData';
 
 /**
  * Paneles del Hub de Empresa. Presentacionales y data-driven (todo viene de
@@ -74,6 +77,224 @@ function TipLine({ label, value, accent }: { label: string; value: string; accen
 // ════════════════════════════════════════════════════════════════
 // 1 · COCKPIT / KPIs
 // ════════════════════════════════════════════════════════════════
+
+// ── KPI LOG SEMANAL (entrada manual por semana ISO) ──────────────
+// Puente honesto: los 18 KPIs del Cockpit son constantes; este log guarda números REALES por
+// semana ISO (leads · consultas · altas · MRR · churn · COGS), calcula el semáforo contra la meta
+// de LIVIANO_KPI_SEMANAL y aplica la regla "< 80 % dos semanas seguidas → ajustar".
+// Persistencia: localStorage 'jmd-liviano-kpi' (este dispositivo). Export JSON descargable para
+// archivarlo en DATA/BUSINESS/_kpi/ (hasta que el CRM exponga un endpoint read-only).
+const KPI_LOG_KEY = 'jmd-liviano-kpi';
+const isWebEnv = Platform.OS === 'web' && typeof window !== 'undefined';
+interface KpiSemana { key: string; lunes: string; valores: Partial<Record<KpiSemanalKey, number>>; nota?: string; guardado: string }
+interface KpiStore { v: 1; semanas: KpiSemana[] }
+const KPI_EMPTY: KpiStore = { v: 1, semanas: [] };
+
+function loadKpiStore(): KpiStore {
+  if (!isWebEnv) return KPI_EMPTY;
+  try {
+    const raw = window.localStorage.getItem(KPI_LOG_KEY);
+    if (!raw) return KPI_EMPTY;
+    const p = JSON.parse(raw);
+    const semanas: KpiSemana[] = Array.isArray(p?.semanas) ? p.semanas.filter((x: any) => x && typeof x.key === 'string') : [];
+    semanas.sort((a, b) => (a.key < b.key ? -1 : a.key > b.key ? 1 : 0));
+    return { v: 1, semanas };
+  } catch { return KPI_EMPTY; }
+}
+function saveKpiStore(st: KpiStore) {
+  if (!isWebEnv) return;
+  try { window.localStorage.setItem(KPI_LOG_KEY, JSON.stringify(st)); } catch {}
+}
+const isoDate = (d: Date) => { const z = (n: number) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; };
+/** Lunes de la semana (local) de una fecha. */
+function lunesDe(d: Date): Date {
+  const m = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  m.setDate(m.getDate() - ((m.getDay() + 6) % 7));
+  return m;
+}
+/** Clave de semana ISO 8601 ('2026-W37'): el jueves de la semana decide el año. */
+function isoWeekKey(d: Date): string {
+  const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  const day = t.getUTCDay() || 7;
+  t.setUTCDate(t.getUTCDate() + 4 - day);
+  const y = t.getUTCFullYear();
+  const yStart = Date.UTC(y, 0, 1);
+  const w = Math.ceil((((t.getTime() - yStart) / 86400000) + 1) / 7);
+  return `${y}-W${String(w).padStart(2, '0')}`;
+}
+const parseNum = (s: string): number | undefined => {
+  const t = (s || '').replace(/\s/g, '').replace(',', '.');
+  if (!t) return undefined;
+  const n = Number(t);
+  return Number.isFinite(n) ? n : undefined;
+};
+const fmtVal = (def: { unidad: string }, v: number | undefined) => (v === undefined ? '—' : def.unidad === 'S/' ? `S/ ${v.toLocaleString('es-PE')}` : def.unidad === '%' ? `${v} %` : String(v));
+
+export function LivianoKpiLog() {
+  const [store, setStore] = useState<KpiStore>(loadKpiStore);
+  const [offset, setOffset] = useState(0); // 0 = semana actual · −1 = anterior …
+  const [draft, setDraft] = useState<Record<string, string>>({});
+  const [nota, setNota] = useState('');
+  const [msg, setMsg] = useState('');
+
+  const semanaDate = useMemo(() => { const d = new Date(); d.setDate(d.getDate() + offset * 7); return d; }, [offset]);
+  const key = isoWeekKey(semanaDate);
+  const lunes = isoDate(lunesDe(semanaDate));
+  const existente = store.semanas.find(x => x.key === key);
+
+  useEffect(() => {
+    const d: Record<string, string> = {};
+    for (const def of LIVIANO_KPI_SEMANAL) { const v = existente?.valores[def.key]; d[def.key] = v === undefined ? '' : String(v); }
+    setDraft(d); setNota(existente?.nota || ''); setMsg('');
+  }, [key]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const persist = (next: KpiStore) => { setStore(next); saveKpiStore(next); };
+  const guardar = () => {
+    const valores: Partial<Record<KpiSemanalKey, number>> = {};
+    for (const def of LIVIANO_KPI_SEMANAL) { const n = parseNum(draft[def.key]); if (n !== undefined) valores[def.key] = n; }
+    if (!Object.keys(valores).length) { setMsg('Escribe al menos un número.'); return; }
+    const fila: KpiSemana = { key, lunes, valores, nota: nota.trim() || undefined, guardado: isoDate(new Date()) };
+    const semanas = store.semanas.filter(x => x.key !== key).concat(fila).sort((a, b) => (a.key < b.key ? -1 : 1));
+    persist({ v: 1, semanas });
+    setMsg(`Semana ${key} guardada (${Object.keys(valores).length}/${LIVIANO_KPI_SEMANAL.length} KPIs).`);
+  };
+  const borrar = () => { persist({ v: 1, semanas: store.semanas.filter(x => x.key !== key) }); setMsg(`Semana ${key} borrada.`); };
+  const exportar = () => {
+    const payload = {
+      exportado: isoDate(new Date()), origen: KPI_LOG_KEY, destino: 'DATA/BUSINESS/_kpi/',
+      metas: LIVIANO_KPI_SEMANAL.map(d => ({ key: d.key, label: d.label, unidad: d.unidad, meta: d.meta, direccion: d.direccion })),
+      regla: LIVIANO_KPI_REGLA.texto, semanas: store.semanas,
+    };
+    const json = JSON.stringify(payload, null, 2);
+    if (isWebEnv && typeof document !== 'undefined') {
+      try {
+        const blob = new Blob([json], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = `liviano_kpi_${isoWeekKey(new Date())}.json`;
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        setMsg(`JSON descargado (liviano_kpi_${isoWeekKey(new Date())}.json) → guárdalo en DATA/BUSINESS/_kpi/.`);
+        return;
+      } catch {}
+      try { (navigator as any)?.clipboard?.writeText(json); setMsg('JSON copiado al portapapeles → pégalo en DATA/BUSINESS/_kpi/.'); return; } catch {}
+    }
+    setMsg('Export solo disponible en web.');
+  };
+
+  const alertas = kpiSemanalAlertas(store.semanas);
+  const historial = store.semanas.slice(-8).reverse();
+  const web = Platform.OS === 'web';
+
+  return (
+    <Block title="KPI log semanal · entrada manual (semana ISO)">
+      <GlassPanel accent={AMBER} style={{ padding: Spacing.lg }}>
+        <Text style={s.h3}>Números reales de la semana</Text>
+        <Text style={s.smallNote}>
+          Los 18 KPIs de arriba son constantes hasta que el CRM exponga un endpoint read-only. Aquí van los números REALES
+          por semana ISO; el semáforo se calcula contra la meta. {LIVIANO_KPI_REGLA.texto}
+        </Text>
+
+        {/* navegación de semana */}
+        <View style={s.kpiWeekRow}>
+          <TouchableOpacity activeOpacity={0.8} onPress={() => setOffset(o => o - 1)} style={s.kpiNavBtn}><Text style={s.kpiNavTxt}>◀ anterior</Text></TouchableOpacity>
+          <View style={{ alignItems: 'center', flex: 1 }}>
+            <Text style={[s.kpiWeekKey, monoText]}>{key}</Text>
+            <Text style={s.kpiWeekSub}>lunes {lunes}{offset === 0 ? ' · semana actual' : ''}{existente ? ` · guardada ${existente.guardado}` : ' · sin datos'}</Text>
+          </View>
+          <TouchableOpacity activeOpacity={0.8} disabled={offset >= 0} onPress={() => setOffset(o => Math.min(0, o + 1))} style={[s.kpiNavBtn, offset >= 0 && { opacity: 0.35 }]}><Text style={s.kpiNavTxt}>siguiente ▶</Text></TouchableOpacity>
+        </View>
+
+        {/* inputs */}
+        <View style={gridStyle(150)}>
+          {LIVIANO_KPI_SEMANAL.map(def => {
+            const n = parseNum(draft[def.key] || '');
+            const sem = kpiSemanalSemaforo(def, n);
+            return (
+              <View key={def.key} style={[gridItemStyle(150), s.kpiCell, { borderColor: semaforoColor(sem) + '55' }]}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Text style={s.kpiLabel} numberOfLines={1}>{def.label.toUpperCase()}</Text>
+                  <SemaforoDot s={sem} />
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                  <Text style={s.kpiUnidad}>{def.unidad}</Text>
+                  <TextInput
+                    value={draft[def.key] || ''}
+                    onChangeText={t => setDraft(d => ({ ...d, [def.key]: t }))}
+                    keyboardType="numeric" placeholder="—" placeholderTextColor={Colors.muted}
+                    style={[s.kpiInput, { color: semaforoColor(sem) }, web ? ({ outlineStyle: 'none' } as any) : null]}
+                  />
+                </View>
+                <Text style={s.kpiMeta} numberOfLines={1}>meta {def.direccion === 'menor' ? '≤' : '≥'} {fmtVal(def, def.meta)}</Text>
+                <Text style={s.kpiHint} numberOfLines={2}>{def.hint}</Text>
+              </View>
+            );
+          })}
+        </View>
+        <TextInput
+          value={nota} onChangeText={setNota} placeholder="Nota de la semana (qué pasó, qué ajusto) — opcional" placeholderTextColor={Colors.muted}
+          style={[s.kpiNota, web ? ({ outlineStyle: 'none' } as any) : null]}
+        />
+        <View style={s.kpiBtnRow}>
+          <TouchableOpacity activeOpacity={0.85} onPress={guardar} style={s.ctaBtn}><Text style={s.ctaBtnText}>Guardar semana {key}</Text></TouchableOpacity>
+          <TouchableOpacity activeOpacity={0.85} onPress={exportar} style={s.kpiGhostBtn}><Text style={s.kpiGhostTxt}>⤓ Exportar JSON</Text></TouchableOpacity>
+          {existente ? <TouchableOpacity activeOpacity={0.85} onPress={borrar} style={[s.kpiGhostBtn, { borderColor: Colors.coral + '66' }]}><Text style={[s.kpiGhostTxt, { color: Colors.coral }]}>borrar semana</Text></TouchableOpacity> : null}
+        </View>
+        {msg ? <Text style={[s.smallNote, { marginTop: Spacing.sm, color: AMBER }]}>{msg}</Text> : null}
+
+        {/* alerta de la regla */}
+        {alertas.length ? (
+          <View style={s.kpiAlert}>
+            <Text style={s.kpiAlertTitle}>⚠ Regla &lt; {LIVIANO_KPI_REGLA.umbralPct} % · {LIVIANO_KPI_REGLA.semanas} semanas seguidas</Text>
+            <Text style={s.kpiAlertTxt}>
+              {alertas.map(k => LIVIANO_KPI_SEMANAL.find(d => d.key === k)?.label || k).join(' · ')} → ajustar oferta, canal o proceso esta semana; no esperar.
+            </Text>
+          </View>
+        ) : store.semanas.length >= LIVIANO_KPI_REGLA.semanas ? (
+          <Text style={[s.smallNote, { marginTop: Spacing.sm, color: Colors.green }]}>Sin KPI en rojo dos semanas seguidas.</Text>
+        ) : null}
+
+        {/* historial */}
+        {historial.length ? (
+          <View style={{ marginTop: Spacing.lg }}>
+            <Text style={s.kpiHistTitle}>ÚLTIMAS {historial.length} SEMANAS</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              <View>
+                <View style={s.tHeadRow}>
+                  <Text style={[s.tHead, s.kpiHistKey]}>semana</Text>
+                  {LIVIANO_KPI_SEMANAL.map(d => <Text key={d.key} style={[s.tHead, s.kpiHistCol]}>{d.label}</Text>)}
+                </View>
+                {historial.map(w => (
+                  <View key={w.key} style={s.tRow}>
+                    <View style={s.kpiHistKey}>
+                      <Text style={[s.tCell, monoText, { color: Colors.onSurface, fontWeight: '700' }]}>{w.key}</Text>
+                      <Text style={s.kpiHistSub}>{w.lunes}</Text>
+                    </View>
+                    {LIVIANO_KPI_SEMANAL.map(d => {
+                      const v = w.valores[d.key];
+                      const sem = kpiSemanalSemaforo(d, v);
+                      return (
+                        <View key={d.key} style={[s.kpiHistCol, { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 5 }]}>
+                          <SemaforoDot s={sem} size={7} />
+                          <Text style={[s.tCell, monoText, { color: semaforoColor(sem) }]}>{fmtVal(d, v)}</Text>
+                        </View>
+                      );
+                    })}
+                  </View>
+                ))}
+              </View>
+            </ScrollView>
+          </View>
+        ) : null}
+        <Text style={[s.smallNote, { marginTop: Spacing.md }]}>
+          Persistido en este dispositivo ('{KPI_LOG_KEY}'). Exporta el JSON al cierre de cada mes a DATA/BUSINESS/_kpi/ (carpeta a crear al guardar el primer fichero).
+          Metas provisionales: ver origen en cada KPI de LIVIANO_KPI_SEMANAL.
+        </Text>
+      </GlassPanel>
+    </Block>
+  );
+}
+
 export function CockpitPanel() {
   return (
     <View>
@@ -93,6 +314,8 @@ export function CockpitPanel() {
           ))}
         </View>
       </GlassPanel>
+
+      <LivianoKpiLog />
 
       {KPI_GRUPOS.map(g => {
         const items = LIVIANO_KPIS.filter(k => k.grupo === g.id);
@@ -485,26 +708,161 @@ export function LogisticaPanel() {
         </GlassPanel>
       </Block>
 
-      {/* Pendientes críticos */}
-      <Block title="Pendientes críticos (riesgos)">
+      {/* Pendientes críticos → tareas con dueño, día del plan y salida verificable */}
+      <Block title="Pendientes críticos (riesgos) → tareas con dueño y fecha">
         <GlassPanel>
           {LIVIANO_PENDIENTES.map((p, i) => (
             <View key={i} style={[s.pendRow, i === 0 && { borderTopWidth: 0 }]}>
               <SemaforoDot s={p.nivel} size={10} />
               <View style={{ flex: 1, marginLeft: Spacing.md }}>
-                <Text style={s.pendTitle}>{p.titulo}</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+                  <Text style={s.pendTitle}>{p.titulo}</Text>
+                  {p.planDia ? <Chip label={`Academia D${p.planDia}`} color={Colors.blue} small /> : null}
+                  {p.dueno ? <Chip label={`dueño: ${p.dueno}`} color={AMBER} small /> : null}
+                </View>
                 <Text style={s.pendDetail}>{p.detalle}</Text>
+                {p.fecha ? <Text style={[s.pendDetail, { color: Colors.onSurfaceVariant }]}>📅 {p.fecha}</Text> : null}
+                {p.salida ? <Text style={[s.pendDetail, { color: Colors.teal }]}>✔ cierra con: {p.salida}</Text> : null}
               </View>
             </View>
           ))}
         </GlassPanel>
       </Block>
 
+      <LivianoProtocoloSection />
+
       {/* Filosofía del margen */}
       <GlassPanel accent={AMBER} style={{ padding: Spacing.lg }}>
         <Text style={s.h3}>💡 El verdadero uso del margen</Text>
         <Text style={s.body}>{l.filosofia}</Text>
       </GlassPanel>
+    </View>
+  );
+}
+
+// ── ACCESO EN PERÚ · REVISIÓN TRIMESTRAL · PROTOCOLO CLÍNICO (capstone de la Academia) ──
+// Sección "Protocolo": lo que la Academia PRODUCE (no solo lo que estudia). Todo dato regulatorio o
+// de precio nace como "PENDIENTE DE VERIFICACIÓN" y solo cambia con fuente primaria fechada.
+const estadoColor = (e: string): string => (e === 'VERIFICADO' ? Colors.green : e === 'SIN REGISTRO HALLADO' ? Colors.coral : BRASS);
+const ACC_COLS: { k: 'registro' | 'condicion' | 'precioFarmacia' | 'costoLiviano' | 'fechaVerificacion'; l: string }[] = [
+  { k: 'registro', l: 'Registro DIGEMID' }, { k: 'condicion', l: 'Condición de venta' },
+  { k: 'precioFarmacia', l: 'Precio farmacia' }, { k: 'costoLiviano', l: 'Costo LIVIANO' }, { k: 'fechaVerificacion', l: 'Verificado' },
+];
+
+export function LivianoProtocoloSection() {
+  const [abierta, setAbierta] = useState<string | null>(null);
+  const reglas = LIVIANO_ACCESO_PERU_REGLAS;
+  const rev = LIVIANO_REVISION_TRIMESTRAL;
+  const pr = LIVIANO_PROTOCOLO;
+  const verificadas = LIVIANO_ACCESO_PERU.filter(f => f.estado === 'VERIFICADO').length;
+  const secBorrador = pr.secciones.filter(x => x.estado === 'borrador').length;
+  return (
+    <View>
+      {/* Acceso en Perú */}
+      <Block title="Acceso en Perú · Módulo 7 de la Academia (tabla de verificación)">
+        <GlassPanel accent={Colors.coral} style={{ padding: Spacing.lg }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+            <Text style={[s.h3, { marginBottom: 0, flexShrink: 1 }]}>{reglas.titulo}</Text>
+            <Chip label={`${verificadas}/${LIVIANO_ACCESO_PERU.length} verificadas`} color={verificadas ? Colors.green : Colors.coral} small />
+          </View>
+          <Text style={[s.smallNote, { marginTop: 6 }]}>{reglas.ventana} · dueño: {reglas.dueno}</Text>
+          <Text style={[s.smallNote, { marginTop: 4, color: Colors.tertiary }]}>{reglas.regla}</Text>
+
+          {LIVIANO_ACCESO_PERU.map((f, i) => (
+            <View key={i} style={[s.accCard, { borderLeftColor: semaforoColor(f.semaforo) }]}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+                <SemaforoDot s={f.semaforo} size={9} />
+                <Text style={s.accMol}>{f.molecula}</Text>
+                <Chip label={f.estado} color={estadoColor(f.estado)} small />
+              </View>
+              <Text style={s.accPres}>{f.presentacion}</Text>
+              {ACC_COLS.map(c => (
+                <View key={c.k} style={s.accLine}>
+                  <Text style={s.accKey}>{c.l}</Text>
+                  <Text style={[s.accVal, f[c.k].startsWith('PENDIENTE') ? { color: BRASS } : null]}>{f[c.k]}</Text>
+                </View>
+              ))}
+              <Text style={s.accFuente}>fuente: {f.fuente}</Text>
+              {f.nota ? <Text style={[s.accFuente, { color: Colors.onSurfaceVariant }]}>{f.nota}</Text> : null}
+            </View>
+          ))}
+
+          <Text style={[s.kpiHistTitle, { marginTop: Spacing.lg }]}>PASOS (un día de la Academia cada uno)</Text>
+          {reglas.pasos.map((p, i) => (
+            <View key={i} style={s.bulletRow}>
+              <Text style={[s.bulletIcon, { color: AMBER, fontWeight: '800' }]}>{i + 1}.</Text>
+              <Text style={[s.body, { flex: 1 }]}>{p}</Text>
+            </View>
+          ))}
+        </GlassPanel>
+      </Block>
+
+      {/* Revisión trimestral */}
+      <Block title="Revisión trimestral de farmacoterapia (regla 3 del programa)">
+        <GlassPanel accent={Colors.blue} style={{ padding: Spacing.lg }}>
+          <Text style={s.body}>{rev.regla}</Text>
+          <View style={{ flexDirection: 'row', gap: Spacing.sm, flexWrap: 'wrap', marginTop: Spacing.md }}>
+            {rev.filas.map(f => (
+              <View key={f.n} style={s.revCard}>
+                <Text style={[s.revDia, monoText]}>D{f.planDia} · {f.fechaPlan}</Text>
+                <Text style={s.revTitulo}>{f.titulo}</Text>
+              </View>
+            ))}
+          </View>
+          <Text style={[s.kpiHistTitle, { marginTop: Spacing.md }]}>CHECKLIST · dueño: {rev.dueno}</Text>
+          {rev.checklist.map((c, i) => (
+            <View key={i} style={s.bulletRow}>
+              <Text style={s.bulletIcon}>☐</Text>
+              <Text style={[s.body, { flex: 1 }]}>{c}</Text>
+            </View>
+          ))}
+        </GlassPanel>
+      </Block>
+
+      {/* Protocolo clínico */}
+      <Block title="Protocolo clínico LIVIANO · capstone de la Academia">
+        <GlassPanel accent={Colors.green} style={{ padding: Spacing.lg }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+            <Text style={[s.h3, { marginBottom: 0, flexShrink: 1 }]}>{pr.version}</Text>
+            <Chip label={`${secBorrador}/${pr.secciones.length} secciones en borrador`} color={BRASS} small />
+          </View>
+          <Text style={[s.smallNote, { marginTop: 6 }]}>Doc: {pr.doc}</Text>
+          <Text style={[s.smallNote, { marginTop: 4, color: Colors.teal }]}>Criterio de éxito: {pr.criterioExito}</Text>
+
+          {pr.secciones.map(sec => {
+            const open = abierta === sec.id;
+            const col = sec.estado === 'borrador' ? BRASS : Colors.coral;
+            return (
+              <View key={sec.id} style={[s.protoCard, { borderLeftColor: col }]}>
+                <TouchableOpacity activeOpacity={0.8} onPress={() => setAbierta(open ? null : sec.id)} style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                  <View style={{ flex: 1 }}>
+                    <Text style={s.protoTitulo}>{sec.titulo}</Text>
+                    <Text style={s.protoSub}>{sec.produceEn} · {sec.planDias.map(d => 'D' + d).join(' · ')}</Text>
+                  </View>
+                  <Chip label={sec.estado} color={col} small />
+                  <Text style={{ color: Colors.muted, fontSize: 12 }}>{open ? '▲' : '▼'}</Text>
+                </TouchableOpacity>
+                {open ? (
+                  <View style={{ marginTop: Spacing.sm }}>
+                    <Text style={s.kpiHistTitle}>YA AFIRMABLE (con fuente del currículo)</Text>
+                    {sec.contenido.map((c, i) => (
+                      <View key={i} style={s.bulletRow}><Text style={[s.bulletIcon, { color: Colors.green }]}>•</Text><Text style={[s.body, { flex: 1 }]}>{c}</Text></View>
+                    ))}
+                    {sec.pendientes.length ? (
+                      <>
+                        <Text style={[s.kpiHistTitle, { marginTop: Spacing.sm, color: Colors.coral }]}>A VERIFICAR</Text>
+                        {sec.pendientes.map((c, i) => (
+                          <View key={i} style={s.bulletRow}><Text style={[s.bulletIcon, { color: Colors.coral }]}>⚠</Text><Text style={[s.body, { flex: 1, color: Colors.tertiary }]}>{c}</Text></View>
+                        ))}
+                      </>
+                    ) : null}
+                  </View>
+                ) : null}
+              </View>
+            );
+          })}
+        </GlassPanel>
+      </Block>
     </View>
   );
 }
@@ -928,6 +1286,49 @@ const s = StyleSheet.create({
   pendRow: { flexDirection: 'row', alignItems: 'flex-start', paddingVertical: Spacing.md, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.06)' },
   pendTitle: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface },
   pendDetail: { fontSize: FontSize.labelMd, color: Colors.muted, marginTop: 2, lineHeight: 17 },
+
+  // KPI log semanal
+  kpiWeekRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, marginTop: Spacing.md, marginBottom: Spacing.md },
+  kpiNavBtn: { borderWidth: 1, borderColor: Hairline.medium, borderRadius: BorderRadius.md, paddingVertical: 6, paddingHorizontal: 10, backgroundColor: 'rgba(255,255,255,0.03)' },
+  kpiNavTxt: { fontSize: FontSize.labelSm, fontWeight: '700', color: Colors.onSurfaceVariant, letterSpacing: 0.3 },
+  kpiWeekKey: { fontSize: FontSize.titleMd, lineHeight: LineHeight.titleMd, fontWeight: '800', color: AMBER, letterSpacing: 0.5 },
+  kpiWeekSub: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 2 },
+  kpiCell: { backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: BorderRadius.lg, borderWidth: 1, padding: Spacing.md, ...Elevation.sm },
+  kpiLabel: { fontSize: 9, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 1, flexShrink: 1 },
+  kpiUnidad: { fontSize: FontSize.labelMd, color: Colors.muted, fontWeight: '700' },
+  kpiInput: { flex: 1, fontSize: FontSize.titleMd, fontWeight: '800', paddingVertical: 4, paddingHorizontal: 0, borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.12)', ...monoText },
+  kpiMeta: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 4 },
+  kpiHint: { fontSize: 9, color: Colors.smallLabel, marginTop: 2, lineHeight: 12 },
+  kpiNota: { marginTop: Spacing.md, fontSize: FontSize.labelMd, color: Colors.onSurface, paddingVertical: 8, paddingHorizontal: 10, borderWidth: 1, borderColor: Hairline.soft, borderRadius: BorderRadius.md, backgroundColor: 'rgba(255,255,255,0.03)' },
+  kpiBtnRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, flexWrap: 'wrap', marginTop: Spacing.md },
+  kpiGhostBtn: { borderWidth: 1, borderColor: AMBER + '66', borderRadius: BorderRadius.lg, paddingVertical: 8, paddingHorizontal: 14 },
+  kpiGhostTxt: { fontSize: FontSize.labelMd, fontWeight: '700', color: AMBER, letterSpacing: 0.2 },
+  kpiAlert: { marginTop: Spacing.md, padding: Spacing.md, borderRadius: BorderRadius.md, borderWidth: 1, borderColor: Colors.coral + '66', backgroundColor: Colors.coral + '14' },
+  kpiAlertTitle: { fontSize: FontSize.labelMd, fontWeight: '800', color: Colors.coral, letterSpacing: 0.3 },
+  kpiAlertTxt: { fontSize: FontSize.labelMd, color: Colors.tertiary, marginTop: 3, lineHeight: 17 },
+  kpiHistTitle: { fontSize: 9, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 1, marginBottom: 6 },
+  kpiHistKey: { width: 92 },
+  kpiHistCol: { width: 96, textAlign: 'center' },
+  kpiHistSub: { fontSize: 9, color: Colors.muted, marginTop: 1 },
+
+  // acceso en Perú
+  accCard: { marginTop: Spacing.md, padding: Spacing.md, borderRadius: BorderRadius.md, borderWidth: 1, borderColor: Hairline.soft, borderLeftWidth: 3, backgroundColor: 'rgba(255,255,255,0.03)' },
+  accMol: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface, flexShrink: 1 },
+  accPres: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 2, marginBottom: 4 },
+  accLine: { flexDirection: 'row', gap: Spacing.sm, paddingVertical: 3, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.04)' },
+  accKey: { width: 118, fontSize: 9, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 0.5, textTransform: 'uppercase', marginTop: 2 },
+  accVal: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 16 },
+  accFuente: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 4, lineHeight: 15 },
+
+  // revisión trimestral
+  revCard: { flex: 1, minWidth: 200, padding: Spacing.md, borderRadius: BorderRadius.md, borderWidth: 1, borderColor: Colors.blue + '55', backgroundColor: Colors.blue + '12' },
+  revDia: { fontSize: FontSize.labelMd, fontWeight: '800', color: Colors.blue, letterSpacing: 0.5 },
+  revTitulo: { fontSize: FontSize.labelMd, color: Colors.onSurface, marginTop: 3, lineHeight: 17 },
+
+  // protocolo clínico
+  protoCard: { marginTop: Spacing.md, padding: Spacing.md, borderRadius: BorderRadius.md, borderWidth: 1, borderColor: Hairline.soft, borderLeftWidth: 3, backgroundColor: 'rgba(255,255,255,0.03)' },
+  protoTitulo: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface },
+  protoSub: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 2 },
 
   // links
   linkChip: { backgroundColor: 'rgba(255,255,255,0.04)', borderRadius: BorderRadius.md, borderWidth: 1, borderColor: Hairline.soft, paddingVertical: 7, paddingHorizontal: 11 },

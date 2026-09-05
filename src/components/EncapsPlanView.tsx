@@ -8,15 +8,15 @@ import {
 } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, Motion, LineHeight } from '../theme/tokens';
 import {
-  useEncapsPlan, itemsForDay, vueltaLabel, repasoKey, vueltasHechasDe,
-  type PlanItem, type StudyScheduleDay, type StudyMetrics, type ProximoVideo,
+  useEncapsPlan, itemsForDay, vueltaLabel, repasoKey, vueltasHechasDe, subEjeDe, miniSimRecetaDe, miniSimRecetaTexto,
+  type PlanItem, type StudyScheduleDay, type StudyMetrics, type ProximoVideo, type MiniSimPunto, type CiegoSemana,
 } from '../lib/encapsPlan';
 import EncapsWebView from './EncapsWebView';
 import { encapsObsByTitle, encapsMatch } from '../lib/obsidianEncaps';
 import { ANKIWEB } from '../lib/ankiLinks';
 import { ENCAPS_FICHAS_MINSA, ENCAPS_FICHAS_POR_TEMA, ENCAPS_ACADEMIAS_RESPALDO, ENCAPS_THEOMED_SIMULACROS, ENCAPS_QX_ACCESOS, ENCAPS_FUENTES_META, ENCAPS_THEOMED_AREA, ENCAPS_THEOMED_EXTRA, ENCAPS_THEOMED_VIDEOS } from '../lib/encapsFuentes';
-import { CountdownCockpit, RentabilidadStrip, RetrievalRadarLegend, GoNoGoAltimeter } from './EncapsCockpit';
-import { encapsGoZone, encapsGoColor } from '../lib/encapsRentabilidad';
+import { CountdownCockpit, RentabilidadStrip, RetrievalRadarLegend, GoNoGoAltimeter, MiniSimTrend, CiegoSemanalStrip } from './EncapsCockpit';
+import { encapsGoZone, encapsGoColor, encapsMiniSimZone, ENCAPS_MINISIM_META } from '../lib/encapsRentabilidad';
 import { ENCAPS_COBERTURA, CoberturaTema } from '../lib/encapsCobertura';
 
 const TIER_COLOR: Record<string, string> = { 'CRÍTICA': Colors.coral, 'ALTA': Colors.gold, 'MEDIA': Colors.blue, 'BAJA': Colors.muted };
@@ -277,7 +277,7 @@ export default function EncapsPlanView() {
 
       {sub === 'hoy' && <HoyView plan={plan} />}
       {sub === 'horario' && <HorarioView plan={plan} />}
-      {sub === 'meta' && <MetaView metrics={plan.metrics} simScores={plan.simScores} simDays={plan.simDays} />}
+      {sub === 'meta' && <MetaView metrics={plan.metrics} simScores={plan.simScores} simDays={plan.simDays} miniSims={plan.miniSims} ciego={plan.ciego} />}
       {sub === 'sim' && <SimView plan={plan} />}
       {sub === 'sem' && <SemView days={plan.days} dia={plan.dia} proximos={plan.proximos} metrics={plan.metrics} onOpenDay={(dn) => { plan.setDia(dn); setSub('hoy'); }} />}
       {sub === 'material' && <MaterialView />}
@@ -363,6 +363,10 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   const pct = totalToday > 0 ? Math.round((doneToday / totalToday) * 100) : 0;
   const tema = `${today.codigo || ''} ${today.subtema || ''}`.trim() || (today.extra?.theme as string) || '—';
   const vueltas = (today.extra as Record<string, unknown> | undefined)?.vueltas as string | undefined;
+  // v6.5 MANTENIMIENTO: sub-eje de la sesión (rotación por instancia) + receta del mini-sim del viernes
+  const subEje = subEjeDe(today);
+  const receta = miniSimRecetaDe(today);
+  const esMant = today.modo === 'MANTENIMIENTO';
 
   return (
     <View>
@@ -373,6 +377,8 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
           {!!today.prioridad && <Pill text={today.prioridad} color={today.prioridad.includes('CRÍT') ? Colors.gold : Colors.brass} />}
           {!!today.modo && <Pill text={`Modo ${today.modo}`} color={Colors.blue} />}
           {!!vueltas && <Pill text={`${vueltas} vueltas`} color={Colors.green} />}
+          {!!subEje && <Pill text={`sub-eje ${subEje.n}/${subEje.total} · sesión ${subEje.instancia}/${subEje.de}`} color={Colors.teal} />}
+          {!!receta && <Pill text={`mini-sim #${receta.simN} · /25`} color={Colors.gold} />}
           {metrics?.qx_pct != null && <Pill text={`QX ${metrics.qx_pct}%`} color={Colors.blue} />}
           {metrics?.dias_a_examen != null && <Pill text={`examen ${metrics.dias_a_examen}d`} color={Colors.muted} />}
           <TouchableOpacity activeOpacity={0.8}
@@ -387,8 +393,45 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
           </TouchableOpacity>
         </View>
         {!!today.nts && <Text style={styles.ntsLine}>▪ NTS Tier-1: {today.nts}</Text>}
-        {!!today.temas_secundarios?.length && (
-          <Text style={styles.secLine}>+ Tema liviano extra: {today.temas_secundarios.map(s => `${s.codigo} ${s.subtema}`).join(' · ')}</Text>
+        {!!today.temas_secundarios?.length && !receta && (
+          <Text style={styles.secLine}>
+            {esMant ? '▶ Secundario de cola larga (4-5Q dentro de la hora): ' : '+ Tema liviano extra: '}
+            {today.temas_secundarios.map(s => `${s.codigo} ${s.subtema}${(s as { q?: string }).q && (s as { q?: string }).q !== 'incluido' ? ` (${(s as { q?: string }).q})` : ''}`).join(' · ')}
+          </Text>
+        )}
+        {/* Viernes de MANTENIMIENTO: receta fija del mini-sim (vector v3) + 2 códigos de cola larga */}
+        {!!receta && (
+          <View style={styles.recetaBox}>
+            <Text style={styles.recetaTitle}>▲ RECETA DEL MINI-SIM · 25Q · {receta.segPorQ}s/Q · ≥{receta.umbral}/25</Text>
+            <View style={styles.recetaRow}>
+              {['II', 'I', 'V', 'III', 'IV'].map(a => (
+                <View key={a} style={styles.recetaCell}>
+                  <Text style={[styles.recetaN, NUM]}>{receta.receta[a] ?? '–'}</Text>
+                  <Text style={styles.recetaA}>{a}</Text>
+                </View>
+              ))}
+              <View style={[styles.recetaCell, { flex: 1.6 }]}>
+                <Text style={[styles.recetaN, NUM, { color: Colors.teal }]}>{receta.vinetaPct}%</Text>
+                <Text style={styles.recetaA}>viñeta</Text>
+              </View>
+              <View style={[styles.recetaCell, { flex: 1.6 }]}>
+                <Text style={[styles.recetaN, NUM, { color: Colors.coral }]}>≥{receta.criticosMin}</Text>
+                <Text style={styles.recetaA}>críticos</Text>
+              </View>
+              <View style={[styles.recetaCell, { flex: 1.6 }]}>
+                <Text style={[styles.recetaN, NUM, { color: Colors.brass }]}>≥{receta.fallosPreviosMin}</Text>
+                <Text style={styles.recetaA}>fallos prev.</Text>
+              </View>
+            </View>
+            <Text style={styles.recetaLine}>
+              Cola larga del viernes ({receta.colaLargaQ}Q): {(today.temas_secundarios || []).map(s => `${s.codigo} ${s.subtema}`).join(' · ') || receta.colaLarga.join(' + ')}
+            </Text>
+            <Text style={styles.recetaHint}>Al terminar: nota /25 en ▲ SIM (se guarda en study_sim_scores) + cierre de 1 línea. Alerta: &lt;{receta.alerta}/25 dos viernes seguidos → re-ponderar la semana siguiente.</Text>
+          </View>
+        )}
+        {/* Lun-jue de MANTENIMIENTO: el sub-eje concreto de esta sesión (para no repetir POI/PEI/FODA 11 veces) */}
+        {!!subEje && (
+          <Text style={styles.subEjeLine}>◈ Sub-eje de hoy ({subEje.n}/{subEje.total}): {subEje.label}</Text>
         )}
         {!!today.primer_finde_estudio && (
           <Text style={styles.findeStudyLine}>◆ Fin de semana de ESTUDIO (aún no hay examen — tu 1er examen es el 2º finde)</Text>
@@ -549,10 +592,12 @@ function CheckRow({ item, checked, onToggle, todayDia }: { item: PlanItem; check
 }
 
 // ─── Camino a 17/20 ───
-function MetaView({ metrics, simScores, simDays }: {
+function MetaView({ metrics, simScores, simDays, miniSims, ciego }: {
   metrics: StudyMetrics | null;
   simScores: Record<number, { nota?: number | null }>;
   simDays: StudyScheduleDay[];
+  miniSims: MiniSimPunto[];
+  ciego: CiegoSemana[];
 }) {
   const prom = metrics?.prom_sim ?? null;
   const notas = Object.values(simScores).map(s => s.nota).filter((n): n is number => n != null);
@@ -572,6 +617,10 @@ function MetaView({ metrics, simScores, simDays }: {
       <View style={styles.metaCard}>
         <GoNoGoAltimeter promSim={prom} notasCount={notas.length} />
       </View>
+
+      {/* Serie de mini-sims de viernes (/25 vs 18/25) + % ciego semanal (study_progress vs 85%) */}
+      {miniSims.length > 0 && <MiniSimTrend serie={miniSims} />}
+      <CiegoSemanalStrip semanas={ciego} />
 
       {/* Telemetría de rentabilidad por área (Bloomberg strip) + tickers críticos */}
       <RentabilidadStrip />
@@ -597,23 +646,36 @@ function SimView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   if (simDays.length === 0) return <Text style={styles.empty}>Sin simulacros en el cronograma.</Text>;
   // Cada día-sim agrupa 2-9 sub-simulacros REALES en extra.sims (n global 1..35, fuente QX/Theomed).
   // Iteramos las sub-sims (no los días) para que Joseph pueda cargar la nota de los 35, no solo de 10.
+  // v6.5 (05-sep): los viernes de MANTENIMIENTO (tipo='mini_sim') entran como sims con escala /25 y sim_n = dia,
+  // así la nota se guarda en study_sim_scores y el Cockpit la grafica contra 18/25.
   const rows = simDays.flatMap(d => {
     const arr = Array.isArray((d.extra as any)?.sims) ? (d.extra as any).sims as any[] : null;
     if (arr && arr.length) {
-      return arr.map((ss: any) => ({ d, simN: ss.n as number, clave: ss.fuente || ss.label || `Sim ${ss.n}`, duracion: ss.duracion as string | undefined, url: ss.url as string | undefined }));
+      return arr.map((ss: any) => ({ d, simN: ss.n as number, clave: ss.fuente || ss.label || `Sim ${ss.n}`, duracion: ss.duracion as string | undefined, url: ss.url as string | undefined, escala: 20 as 20 | 25 }));
+    }
+    if (d.tipo === 'mini_sim') {
+      const rec = miniSimRecetaDe(d);
+      const semana = simDays.filter(x => x.tipo === 'mini_sim' && x.dia <= d.dia).length;
+      return [{
+        d, simN: rec?.simN ?? d.dia,
+        clave: `Mini-sim #${semana} · 25Q · cola larga ${rec ? rec.colaLarga.join(' + ') : ''}`,
+        duracion: rec ? `${rec.segPorQ}s/Q · II ${rec.receta.II} I ${rec.receta.I} V ${rec.receta.V} III ${rec.receta.III} IV ${rec.receta.IV}` : '72s/Q',
+        url: undefined as string | undefined, escala: 25 as 20 | 25,
+      }];
     }
     const s = d.simulacro!;
     const simN = s.simulacro_n ?? d.dia;
-    return [{ d, simN, clave: s.clave || s.label || `Sim ${simN}`, duracion: s.duracion, url: s.theomed_bank?.url }];
+    return [{ d, simN, clave: s.clave || s.label || `Sim ${simN}`, duracion: s.duracion, url: s.theomed_bank?.url, escala: 20 as 20 | 25 }];
   });
   const conNota = rows.filter(r => simScores[r.simN]?.nota != null).length;
+  const nMini = rows.filter(r => r.escala === 25).length;
   return (
     <View>
       <View style={styles.simHeaderBox}>
-        <Text style={styles.simHeaderTitle}>▲ MODO SIMULACRO · {rows.length} sims · {conNota} con nota · meta ≥17/20</Text>
+        <Text style={styles.simHeaderTitle}>▲ MODO SIMULACRO · {rows.length} sims{nMini ? ` (${nMini} mini-sims /25)` : ''} · {conNota} con nota · meta ≥17/20</Text>
         <Text style={styles.simHeaderHint}>
-          Régimen mantenimiento 2027-I: mini-simulacro de 25Q mixtas CADA VIERNES 16:15 (72s/Q, vector v3). Primer viernes: {simDays[0]?.fecha?.slice(5) || '—'}; examen ENCAPS 2027-I fines de marzo 2027 (fase intensiva feb-mar).
-          Cargá tu nota /20 al terminar cada uno (se guarda y alimenta «Camino a 17/20» + Telegram).
+          Régimen mantenimiento 2027-I: mini-simulacro de 25Q mixtas CADA VIERNES 16:15 ({ENCAPS_MINISIM_META.segPorQ}s/Q, receta v3 II {ENCAPS_MINISIM_META.receta.II} · I {ENCAPS_MINISIM_META.receta.I} · V {ENCAPS_MINISIM_META.receta.V} · III {ENCAPS_MINISIM_META.receta.III} · IV {ENCAPS_MINISIM_META.receta.IV}). Primer viernes: {simDays[0]?.fecha?.slice(5) || '—'}; examen ENCAPS 2027-I fines de marzo 2027 (fase intensiva feb-mar).
+          Cargá la nota /25 al terminar cada uno (se guarda en study_sim_scores con sim_n = día y alimenta el gráfico de «17/20»). Umbral ≥{ENCAPS_MINISIM_META.umbral}/25 · alerta &lt;{ENCAPS_MINISIM_META.alerta}/25 dos viernes.
         </Text>
       </View>
       {rows.map(r => (
@@ -625,6 +687,7 @@ function SimView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
           clave={r.clave}
           duracion={r.duracion}
           url={r.url}
+          escala={r.escala}
           nota={simScores[r.simN]?.nota ?? null}
           onSave={(nota) => saveSim(r.simN, nota, r.d.fecha)}
         />
@@ -633,20 +696,22 @@ function SimView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   );
 }
 
-function SimRow({ dia, weekday, fecha, clave, duracion, url, nota, onSave }: {
+function SimRow({ dia, weekday, fecha, clave, duracion, url, nota, onSave, escala = 20 }: {
   dia: number; weekday?: string; fecha: string; clave: string; duracion?: string;
-  url?: string; nota: number | null; onSave: (nota: number | null) => void;
+  url?: string; nota: number | null; onSave: (nota: number | null) => void; escala?: 20 | 25;
 }) {
   const [txt, setTxt] = useState(nota != null ? String(nota) : '');
   const commit = () => {
     const t = txt.trim();
     if (t === '') { onSave(null); return; }
     const n = Number(t.replace(',', '.'));
-    if (!isNaN(n)) onSave(n);
+    if (!isNaN(n)) onSave(Math.max(0, Math.min(escala, n)));
   };
-  const zone = encapsGoZone(nota);
+  const zone = escala === 25 ? encapsMiniSimZone(nota) : encapsGoZone(nota);
   const zoneColor = encapsGoColor(zone);
   const passed = zone === 'go';
+  const goLabel = escala === 25 ? `✓ ≥${ENCAPS_MINISIM_META.umbral}/25` : '✓ GO ≥17';
+  const nogoLabel = escala === 25 ? `✕ <${ENCAPS_MINISIM_META.alerta} alerta` : '✕ NO-GO';
   return (
     <View style={[styles.simCard, { borderLeftColor: nota == null ? Colors.muted : zoneColor }]}>
       <View style={{ flex: 1 }}>
@@ -671,11 +736,11 @@ function SimRow({ dia, weekday, fecha, clave, duracion, url, nota, onSave }: {
             placeholderTextColor={Colors.muted}
             returnKeyType="done"
           />
-          <Text style={styles.simSlash}>/20</Text>
+          <Text style={styles.simSlash}>/{escala}</Text>
         </View>
         {nota != null && (
           <Text style={[styles.simBadge, { color: zoneColor }]}>
-            {passed ? '✓ GO ≥17' : zone === 'warn' ? '▲ bajo meta' : '✕ NO-GO'}
+            {passed ? goLabel : zone === 'warn' ? '▲ bajo meta' : nogoLabel}
           </Text>
         )}
       </View>
@@ -736,7 +801,9 @@ function SemView({ days, dia, proximos, metrics, onOpenDay }: { days: StudySched
               <Text style={[styles.semDetail, NUM]}>
                 {String(d.fecha).slice(5)}
                 {d.n_videos ? ` · ${d.n_videos} vids` : ''}
-                {d.simulacro ? ' · ▲ simulacro' : ''}
+                {d.simulacro ? ' · ▲ simulacro' : d.tipo === 'mini_sim' ? ' · ▲ mini-sim 25Q' : ''}
+                {(d.extra as Record<string, unknown> | undefined)?.sub_eje_n ? ` · sub-eje ${(d.extra as Record<string, unknown>).sub_eje_n}/${(d.extra as Record<string, unknown>).sub_ejes_total}` : ''}
+                {(d.extra as Record<string, unknown> | undefined)?.secundario ? ` · +${(d.extra as Record<string, unknown>).secundario}` : ''}
               </Text>
             </View>
             {!!d.prioridad && d.prioridad.includes('CRÍT') && <Text style={styles.semCrit}>CRÍTICA</Text>}
@@ -927,6 +994,17 @@ const styles = StyleSheet.create({
   ntsLine: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, marginTop: Spacing.sm, lineHeight: 16 },
   secLine: { fontSize: FontSize.labelSm, color: Colors.blue, marginTop: 4, lineHeight: 16 },
   findeStudyLine: { fontSize: FontSize.labelSm, color: Colors.gold, marginTop: 4, fontWeight: '700', lineHeight: 16 },
+  subEjeLine: { fontSize: FontSize.labelSm, color: Colors.teal, marginTop: 4, fontWeight: '700', lineHeight: 16 },
+
+  // Receta del mini-sim de viernes (MANTENIMIENTO)
+  recetaBox: { backgroundColor: Colors.gold + '10', borderRadius: BorderRadius.lg, padding: Spacing.md, marginTop: Spacing.sm, borderWidth: 1, borderColor: Hairline.accentSoft, borderLeftWidth: 3, borderLeftColor: Colors.gold, ...Elevation.sm },
+  recetaTitle: { fontSize: FontSize.labelMd, fontWeight: '800', color: Colors.gold, letterSpacing: 0.6 },
+  recetaRow: { flexDirection: 'row', marginTop: Spacing.sm, gap: 4 },
+  recetaCell: { flex: 1, alignItems: 'center', backgroundColor: Colors.surfaceContainerLowest, borderRadius: BorderRadius.sm, paddingVertical: 5, borderWidth: 1, borderColor: Hairline.soft },
+  recetaN: { fontSize: FontSize.bodyLg, fontWeight: '900', color: Colors.onSurface },
+  recetaA: { fontSize: 8, color: Colors.muted, fontWeight: '700', letterSpacing: 0.5, marginTop: 1, textTransform: 'uppercase' },
+  recetaLine: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, marginTop: Spacing.sm, lineHeight: 16 },
+  recetaHint: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 4, lineHeight: 15, fontStyle: 'italic' },
 
   pill: { borderRadius: BorderRadius.full, paddingVertical: 3, paddingHorizontal: 9, borderWidth: 1 },
   pillText: { fontSize: FontSize.labelSm, fontWeight: '800', letterSpacing: 0.2 },

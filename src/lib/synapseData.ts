@@ -247,7 +247,7 @@ export const SYNAPSE_META = {
   subtitulo: 'MIND · AI-ENGINEERED — médico → especialista en IA nivel Anthropic',
   tesis: 'La sinapsis entre tu cerebro médico y las máquinas. Python, datos, deep learning, agentes, ciberseguridad y post-training — SOLO con los referentes (Anthropic, Stanford, MIT, Harvard, creadores de las herramientas), cero youtubers del momento. 30 min/día en espacios muertos, proyecto público por fase.',
   accent: '#7C83D6', // periwinkle — color canónico de la consola (alineado con SidebarAccents.Synapse)
-  nota: 'Motor ACTIVO (pestaña ⚡ Hoy): 12 semanas día a día — F0 completa (sem 1-8) + arranque F1/CS50P (sem 9-12) — con lecciones EXACTAS de los temarios reales extraídos el 10-jun-2026 (DATA/SYNAPSE/curricula/). Bloques A 15\' pantalla · B 10\' audio · C 5\' lectura + sábado PC opcional. Progreso manual real (empieza 0%). Las semanas 13+ se regeneran con DATA/_scripts/gen_synapse_plan.js al avanzar de fase.',
+  nota: 'Motor ACTIVO (pestaña ⚡ run): 12 semanas día a día — F0 (sem 1-8, auditar ✓ lo ya cursado en jun-ago) + F1 = STACK DEL VIBECODING (sem 9-12: Claude Code docs · Academy skills/subagentes/MCP/Claude Code in Action · Supabase RLS/select/triggers/Edge Functions · n8n) — con lecciones EXACTAS de temarios reales (DATA/SYNAPSE/curricula/, extraídos 10-jun y 5-sep-2026). Bloques A 15\' pantalla · B 10\' audio · C 5\' lectura · sábado PC 2h = SHIP del proyecto de la semana del vibecoding 04:15 (12 proyectos S1-S12, DATA/SYNAPSE/VIBECODING_12_PROYECTOS.md) · domingo Feynman 10\' opcional. Progreso manual real (empieza 0%). Regenerar: node DATA/_scripts/gen_synapse_plan.js YYYY-MM-DD.',
 } as const;
 
 // ─── Fases ───
@@ -259,10 +259,10 @@ export const SYNAPSE_FASES: SynapseFase[] = [
     materiales: [M.academy, M.claude101, M.aiFluency, M.effectiveAgents, M.karpathyIntro, M.karpathyDeep, M.nn3b1b],
   },
   {
-    id: 'f1', fase: 'F1', titulo: 'Código: Python + terminal + Git', duracion: 'sem 5–12', estado: 'pendiente',
-    desc: 'La base que un médico no tiene y Anthropic da por sentada. Python es el ÚNICO requisito universal en todos sus puestos (verificado en sus vacantes reales).',
-    entregable: 'Primer repo público en GitHub con scripts Python propios para Pulso',
-    materiales: [M.cs50p, M.automate, M.pyTutorial, M.proGit, M.missingSemester, M.cs50x],
+    id: 'f1', fase: 'F1', titulo: 'Stack del vibecoding: Claude Code · Supabase · n8n (Python/Git por USO)', duracion: 'sem 9–12', estado: 'pendiente',
+    desc: 'v5.7 (5-sep): la teoría de las 12:30 alimenta los 12 proyectos reales de las 04:15 (skills, hooks, MCP, subagentes, Agent SDK, headless; RLS/select/triggers/Edge Functions; webhooks y AI Agent de n8n). Python y Git se aprenden leyendo/dirigiendo el código que la IA escribe, no memorizando sintaxis (CS50P/Automate quedan como biblioteca de consulta).',
+    entregable: '12 proyectos SHIPPED (commit/URL/test verde) + certificados Academy (agent skills · subagents · MCP · Claude Code in Action) → decisión CCA-F en S12',
+    materiales: [M.claudeCodeDocs, M.claudeCodeBest, M.agentSkills, M.mcpIntro, M.claudeCodeAction, M.agentSdk, M.n8nLevelOne, M.proGit, M.pyTutorial, M.cs50p, M.automate, M.missingSemester],
   },
   {
     id: 'f2', fase: 'F2', titulo: 'Datos: pandas + SQL + probabilidad', duracion: 'sem 13–20', estado: 'pendiente',
@@ -328,9 +328,10 @@ export const SYNAPSE_KPIS = {
 
 // ─── Protocolo (horario REAL en Google Calendar — confirmado por Joseph el 10-jun-2026) ───
 export const SYNAPSE_HORARIO: { min: string; bloque: string; que: string; formato: string }[] = [
-  { min: "30'", bloque: 'L–V 12:30–13:00 · evento "🧠 SYNAPSE — misión del día"', que: "La misión completa de la pestaña ⚡ Hoy: A lección 15' + B audio 10' + C lectura 5'", formato: 'pantalla' },
-  { min: '2 h', bloque: 'Sábado 15:00–17:00 · "🧠 SYNAPSE — PC sábado"', que: 'Bloque de teclado: notebooks, repo público synapse-journal, Problem Sets de CS50P + ponerse al día', formato: 'requiere PC' },
-  { min: '2 h', bloque: 'Domingo 15:00–17:00 · "🧠 SYNAPSE — repaso + PC" (14 y 21-jun libres)', que: 'Repaso semanal (Feynman en voz alta) + terminar lo que quedó del bloque PC', formato: 'repaso' },
+  { min: "45'", bloque: 'L–V 04:15–05:00 · "🧠 IA — VIBECODING con Claude Code"', que: "1 proyecto REAL por semana (S1-S12, src/lib/vibecodingPlan.ts): 5' objetivo → 35' construir → 5' commit + nota synapse-journal. Se mide por entregable (commit/URL/test), no por tiempo", formato: 'requiere PC' },
+  { min: "30'", bloque: 'L–V 12:30–13:00 · evento "🧠 SYNAPSE — misión del día"', que: "La misión completa de la pestaña ⚡ run: A lección 15' + B audio 10' + C lectura 5' (F1 = el stack que el vibecoding necesita)", formato: 'pantalla' },
+  { min: '2 h', bloque: 'Sábado 15:00–17:00 · "🧠 SYNAPSE — PC sábado"', que: 'SHIP del proyecto de la semana: cerrar el criterio de aceptación (commit / URL viva / test verde) y publicarlo. Nada se arrastra a la semana siguiente', formato: 'requiere PC' },
+  { min: "10'", bloque: 'Domingo · "🧠 SYNAPSE — repaso + PC" (opcional)', que: 'Feynman del proyecto: explicar en voz alta qué construiste y cómo funciona + línea "qué falta" en synapse-journal. El domingo sigue libre (v5 sáb/dom libres)', formato: 'repaso' },
   { min: 'extra', bloque: 'Viajes · colas · gaps sueltos (opcional)', que: 'Adelantar audio (B) o lectura móvil (C) en cualquier hueco muerto del día', formato: 'sí-audio' },
 ];
 

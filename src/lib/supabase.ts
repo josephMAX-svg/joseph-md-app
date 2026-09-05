@@ -865,3 +865,140 @@ export async function getTodayDeepWorkHours(): Promise<number> {
     return 0;
   }
 }
+
+// ═══════════════════════════════════════════════
+// RESEARCH — export del corpus descubierto (research_papers) a CSV + RIS para Rayyan.
+// Añadido 5-sep-2026 (Palmerton v3 · vacío 8: el corpus SR-1 de 200 papers estaba huérfano).
+// research_papers NO guarda autores ni abstract (research-discovery v2 solo inserta title/year/doi/pmid),
+// así que se enriquecen desde OpenAlex por lotes de 50 DOIs (polite pool con mailto, sin API key).
+// Si OpenAlex falla, el export sale igual con autores/abstract vacíos (Rayyan acepta filas sin abstract).
+// Uso (átomo R17 del plan): const x = await exportResearchCorpus('SR-1'); → x.csv / x.ris → guardar
+// como corpus_SR-1.csv / .ris y subir a Rayyan (Import → CSV o RIS). Solo lectura: no escribe nada.
+// ═══════════════════════════════════════════════
+export interface ResearchCorpusRow {
+  title: string; authors: string; year: number | null; doi: string; abstract: string;
+  pmid?: string | null; screen_status?: string | null;
+}
+export interface ResearchCorpusExport {
+  line: string; n: number; enriched: number; csv: string; ris: string; rows: ResearchCorpusRow[];
+}
+
+const RESEARCH_OPENALEX_MAILTO = 'josephsototocas@gmail.com';
+const RESEARCH_SR_OF_LINE: Record<string, string> = { L4: 'SR-1', L5: 'SR-2' };
+
+function researchCsvCell(v: unknown): string {
+  const s = v == null ? '' : String(v);
+  return /[",\r\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+}
+
+/** OpenAlex devuelve el abstract como índice invertido {palabra: [posiciones]} → texto plano. */
+function researchAbstractFromInverted(idx?: Record<string, number[]> | null): string {
+  if (!idx) return '';
+  const words: string[] = [];
+  for (const [w, positions] of Object.entries(idx)) for (const p of positions) words[p] = w;
+  return words.filter(Boolean).join(' ').trim();
+}
+
+type ResearchOpenAlexMeta = { title: string; year: number | null; authors: string[]; abstract: string };
+
+async function researchEnrichFromOpenAlex(dois: string[]): Promise<Map<string, ResearchOpenAlexMeta>> {
+  const out = new Map<string, ResearchOpenAlexMeta>();
+  for (let i = 0; i < dois.length; i += 50) {
+    const batch = dois.slice(i, i + 50);
+    const url = 'https://api.openalex.org/works?filter=doi:' + batch.map((d) => encodeURIComponent(d)).join('|')
+      + '&per_page=50&select=doi,title,publication_year,authorships,abstract_inverted_index&mailto=' + RESEARCH_OPENALEX_MAILTO;
+    try {
+      const r = await fetch(url);
+      if (!r.ok) continue;
+      const d = await r.json();
+      for (const w of ((d?.results ?? []) as any[])) {
+        const doi = String(w?.doi ?? '').replace(/^https?:\/\/(dx\.)?doi\.org\//i, '').toLowerCase();
+        if (!doi) continue;
+        out.set(doi, {
+          title: w?.title ?? '',
+          year: typeof w?.publication_year === 'number' ? w.publication_year : null,
+          authors: ((w?.authorships ?? []) as any[]).map((a) => a?.author?.display_name).filter(Boolean) as string[],
+          abstract: researchAbstractFromInverted(w?.abstract_inverted_index),
+        });
+      }
+    } catch {
+      // lote sin enriquecer → sigue con el siguiente
+    }
+  }
+  return out;
+}
+
+/**
+ * Exporta el corpus de una SR (research_papers.line = 'SR-1' | 'SR-2'; acepta también 'L4'/'L5')
+ * a CSV y RIS con las columnas que Rayyan importa: title, authors, year, doi, abstract (+ pubmed_id, notes).
+ * Ordenado por relevance desc (el mismo orden de la cola de screening de la app).
+ * opts.onlyPending → solo screen_status='pending_human' · opts.enrich=false → sin llamada a OpenAlex.
+ */
+export async function exportResearchCorpus(
+  line: string,
+  opts?: { enrich?: boolean; onlyPending?: boolean; limit?: number },
+): Promise<ResearchCorpusExport> {
+  const srLine = RESEARCH_SR_OF_LINE[line] ?? line;
+  const empty: ResearchCorpusExport = { line: srLine, n: 0, enriched: 0, csv: '', ris: '', rows: [] };
+  try {
+    const base = supabase
+      .from('research_papers')
+      .select('doi, pmid, title, abstract, year, screen_status, relevance')
+      .eq('line', srLine)
+      .order('relevance', { ascending: false })
+      .order('year', { ascending: false })
+      .limit(opts?.limit ?? 1000);
+    const { data, error } = opts?.onlyPending ? await base.eq('screen_status', 'pending_human') : await base;
+    if (error) throw error;
+    const papers = (data ?? []) as Array<{
+      doi: string | null; pmid?: string | null; title?: string | null; abstract?: string | null;
+      year?: number | null; screen_status?: string | null;
+    }>;
+    if (!papers.length) return empty;
+
+    const dois = papers.map((p) => (p.doi ?? '').toLowerCase()).filter(Boolean);
+    const meta = opts?.enrich === false ? new Map<string, ResearchOpenAlexMeta>() : await researchEnrichFromOpenAlex(dois);
+
+    const rows: ResearchCorpusRow[] = papers.map((p) => {
+      const doi = (p.doi ?? '').toLowerCase();
+      const m = meta.get(doi);
+      return {
+        title: (p.title || m?.title || '').trim(),
+        authors: (m?.authors ?? []).join('; '),
+        year: p.year ?? m?.year ?? null,
+        doi,
+        abstract: (p.abstract || m?.abstract || '').trim(),
+        pmid: p.pmid ?? null,
+        screen_status: p.screen_status ?? null,
+      };
+    });
+
+    // CSV (cabecera compatible con la importación CSV de Rayyan)
+    const header = ['key', 'title', 'authors', 'year', 'doi', 'abstract', 'pubmed_id', 'notes'];
+    const csvLines = [header.join(',')];
+    rows.forEach((r, i) => {
+      csvLines.push([
+        `${srLine}-${String(i + 1).padStart(3, '0')}`, r.title, r.authors, r.year ?? '', r.doi, r.abstract,
+        r.pmid ?? '', `screen_status=${r.screen_status ?? ''}`,
+      ].map(researchCsvCell).join(','));
+    });
+
+    // RIS (TY/TI/AU/PY/DO/AB/ID/ER — el formato que Rayyan, Zotero y EndNote leen sin configurar)
+    const risBlocks = rows.map((r) => {
+      const au = r.authors ? r.authors.split('; ').map((a) => `AU  - ${a}`) : [];
+      return [
+        'TY  - JOUR', `TI  - ${r.title}`, ...au,
+        r.year != null ? `PY  - ${r.year}` : '', r.doi ? `DO  - ${r.doi}` : '',
+        r.abstract ? `AB  - ${r.abstract}` : '', r.pmid ? `ID  - ${r.pmid}` : '', 'ER  - ',
+      ].filter(Boolean).join('\r\n');
+    });
+
+    return {
+      line: srLine, n: rows.length, enriched: meta.size, rows,
+      csv: csvLines.join('\r\n') + '\r\n',
+      ris: risBlocks.join('\r\n\r\n') + '\r\n',
+    };
+  } catch {
+    return empty;
+  }
+}

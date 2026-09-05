@@ -1,6 +1,9 @@
 # SYNAPSE — Motor día-a-día (diseño y operación)
 
 > Construido el 10-jun-2026 por el chat SYNAPSE (PROMPT_CHAT_SYNAPSE.md).
+> **v5.7 (5-sep-2026)**: F1 (sem 9-12) = stack del vibecoding (Claude Code docs · Academy skills/subagentes/MCP/
+> Claude Code in Action · Supabase · n8n) en vez de CS50P; F0 se AUDITA (✓ si ya hecho, no se reinicia);
+> sáb PC = SHIP del proyecto de la semana (`src/lib/vibecodingPlan.ts`); dom = Feynman 10' opcional.
 > Misiones diarias estilo ENCAPS/Business: lección EXACTA de hoy, progreso real
 > manual (empieza 0%), 30 min/día en espacios muertos.
 
@@ -20,8 +23,8 @@
 - **A (15', pantalla)** — lección EXACTA de la fase actual con link directo. Secuencial.
 - **B (10', audio)** — rotación fija por día de semana: Lun No Priors · Mar Dwarkesh (Dario→Demis→Sholto&Trenton→Latent Space) · Mié Lex #452 (capítulo real del outline, 40 entradas con timestamps) · Jue The Batch · Vie canal Anthropic (5 vídeos verificados por oEmbed) · Sáb comodín (retoma lo pendiente).
 - **C (5', lectura móvil)** — Lun Pro Git (capítulo real con URL) · Mar serie Prompt injection de Willison · Mié The Python Tutorial (sección real) · Jue Automate the Boring Stuff 3ª ed. (capítulo real) · Vie research de Anthropic (lethal trifecta, many-shot, constitutional classifiers, RSP) · Sáb comodín.
-- **PC (sábado, 60-90', OPCIONAL)** — teclado: setup → certificados → repo público `synapse-journal` → Deep Dive largo → Prompt Eng Tutorial → Problem Sets de CS50P.
-- **Domingo = repaso** (nada nuevo; Feynman en voz alta). El domingo también es misión marcable.
+- **PC (sábado 15:00-17:00)** — v5.7: **SHIP del proyecto de la semana** del vibecoding 04:15 (criterio de aceptación en `DATA/SYNAPSE/vibecoding_proyectos.json`; el generador toma el proyecto S = semana). Nada se arrastra a la semana siguiente.
+- **Domingo = Feynman del proyecto (10', opcional)** — explicar en voz alta qué construiste y cómo funciona; el domingo sigue libre (v5 sáb/dom libres) y es marcable para conservar la racha.
 
 ## Cobertura (12 semanas honestas a 30'/día)
 
@@ -30,8 +33,8 @@
   ensayo Building Effective Agents (16 secciones reales) + Karpathy Intro (3 tramos
   por chapters reales) + Deep Dive (11 tramos por los 24 capítulos reales, con `&t=`)
   + 3Blue1Brown (8 vídeos verificados; el 9º —invitado— va al PC de la sem 8).
-- **F1 · arranque = semanas 9-12**: CS50P Weeks 0-3 (títulos reales) a 6 misiones/semana
-  + Problem Set en el PC del sábado.
+- **F1 · stack del vibecoding = semanas 9-12** (24 misiones A, v5.7): sem 9 Claude Code core (memoria · skills · hooks · subagentes; docs + Academy) · sem 10 MCP · headless · Agent SDK · plugins/workflows · sem 11 Supabase (RLS · select · triggers · webhooks · Edge Functions) · sem 12 n8n + Claude Code in Action + best practices. Temarios extraídos con WebFetch el 5-sep-2026 (`curricula/claude-code-docs.md`, `academy-*.md`, `supabase-docs.md`, `n8n-docs.md`; 106/106 URLs OK en check_links). CS50P/Automate quedan como biblioteca de consulta (Python se lee, no se memoriza).
+- **F0 no se reinicia**: sus 46 A-units llevan `audit:true` (chip "auditar: ✓ si ya hecho") porque F0 y la minifase corrieron jun-ago con progreso solo en localStorage. Día 1 = auditoría de 5' en "My courses" de la Academy.
 - Nota: `synapseData.ts` decía "F0 sem 1-4"; a 30 min/día reales F0 ocupa 8 semanas.
   El motor manda sobre la estimación optimista — honestidad antes que calendario bonito.
 
@@ -48,7 +51,7 @@ Cada bloque lleva `real: true|false`:
    (WebFetch/oEmbed, cero inventos) y añadirlo a `curricula/_extracted.json`.
 2. Añadir las A-units de la fase siguiente en `buildAUnits()` de `gen_synapse_plan.js`
    (y ajustar `TOTAL`, rangos de fase y los mapas B/C/PC si cambia la rotación).
-3. `node DATA/_scripts/gen_synapse_plan.js`
+3. `node DATA/_scripts/gen_synapse_plan.js YYYY-MM-DD` (misma fecha que `remap_inicio.js`; también `node DATA/_scripts/gen_vibecoding_plan.js YYYY-MM-DD`)
 4. `node DATA/_scripts/check_links.js src/lib/synapseDailyPlan.ts` (debe dar 100%).
 5. `npx tsc --noEmit` + commit. El progreso ya marcado NO se pierde (los `d` son estables
    mientras no se reordene el pasado — regla: NUNCA renumerar días ya transcurridos).

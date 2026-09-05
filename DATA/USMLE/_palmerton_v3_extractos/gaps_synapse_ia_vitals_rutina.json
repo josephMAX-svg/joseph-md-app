@@ -1,0 +1,158 @@
+{
+ "seccion": "synapse-ia-vitals-rutina",
+ "puntos_ciegos": [
+  {
+   "gap": "Vibecoding 04:15 sin currículo, entregables ni datos: el bloque existe solo como evento de Calendar, un párrafo en CURSO_IA_04H_31AGO.md y una etiqueta en TodayMission. No está en synapseDailyPlan.ts, no tiene PlanKey/checkbox de progreso, no hay lista de 12 proyectos con criterio de aceptación ni 'definition of done'; el bloque PC del sáb 3-oct (d27) dice 'crea tu repo synapse-journal' como si se empezara de cero. Se mide por tiempo sentado, no por output — lo contrario del principio Palmerton (medir por resultado ciego, no por material consumido).",
+   "impacto": "alto",
+   "propuesta": "Crear DATA/SYNAPSE/VIBECODING_12_PROYECTOS.md + src/lib/vibecodingPlan.ts (generado) con 12 proyectos semanales S1-S12 (7-sep→27-nov, mismo rango que SYN_PLAN 81d): objetivo · entregable verificable (commit/URL viva/test verde) · criterio de aceptación · a quién sirve (rotación ya decidida: YoCPMD / pipeline preguntas / bots Pulso-LIVIANO / contenido). Sembrar desde el backlog REAL del repo: S1 fix parser APEX P0-2/P0-3 · S2 telemetría AnkiConnect · S3 captura scores USMLE→Supabase · S4 gen_revision_semanal.js · S5 hook remap+verificación · S6 RLS datos_tesis · S7 puente VITALS sueño/agua · S8 motor preguntas ENCAPS semiautomático · S9 migrador overlays de hitos · S10 bot WhatsApp→OCR LIVIANO · S11 pipeline contenido marcas · S12 capstone+README. Añadir PlanKey 'vibecoding' en studyProgress, tarjeta con ✓ en SynapseTodayPlan y TodayMission; sábado PC = SHIP del proyecto de la semana.",
+   "esfuerzo": "M",
+   "toca_app": true,
+   "ficheros": [
+    "DATA/SYNAPSE/CURSO_IA_04H_31AGO.md",
+    "src/lib/synapseDailyPlan.ts",
+    "src/lib/studyProgress.ts",
+    "src/components/study/SynapseTodayPlan.tsx",
+    "src/components/home/TodayMission.tsx",
+    "DATA/SYNAPSE/VIBECODING_12_PROYECTOS.md (nuevo)",
+    "src/lib/vibecodingPlan.ts (nuevo)"
+   ]
+  },
+  {
+   "gap": "Contradicción teoría (12:30) ↔ práctica (04:15): CURSO_IA dice 'cero teoría de sintaxis; la teoría estructurada vive en la misión SYNAPSE 12:30', pero synapseDailyPlan v5.6 sem 9-12 = CS50P Weeks 0-3 (sintaxis Python, que la MINIFASE_AGOSTO ya había degradado: 'memorizar sintaxis es justo lo que la IA hace'); los bloques PC sáb/dom generados = Problem Sets CS50P / crear synapse-journal (diseño de junio) y SYNAPSE_HORARIO en synapseData.ts sigue describiendo el PC como CS50P. Además F0 reinicia en d1 (7-sep) con 'crea tu cuenta en la Academy' aunque F0 y la minifase corrieron jun-ago (progreso solo en localStorage, no verificable).",
+   "impacto": "medio",
+   "propuesta": "En gen_synapse_plan.js sustituir las A-units de F1 (sem 9-12) por el stack que el vibecoding necesita (Claude Code docs: skills/hooks/MCP/subagentes/Agent SDK · Supabase · n8n — CALIDAD/Synapse.md ya identifica Academy 21 cursos + certificación CCA-F como hito), extrayendo temarios reales a _extracted.json y pasando check_links; PC sábado = 'SHIP proyecto N' y domingo = Feynman del proyecto; actualizar SYNAPSE_HORARIO. Auditar en 5' con Joseph qué de F0 ya hizo y marcar ✓ (o arrancar F0 en la primera lección realmente pendiente). Formato 30' y horas intactos.",
+   "esfuerzo": "M",
+   "toca_app": true,
+   "ficheros": [
+    "DATA/_scripts/gen_synapse_plan.js",
+    "DATA/SYNAPSE/curricula/_extracted.json",
+    "src/lib/synapseData.ts",
+    "src/lib/synapseDailyPlan.ts",
+    "DATA/SYNAPSE/motor-dia-a-dia.md",
+    "DATA/CALIDAD/Synapse.md"
+   ]
+  },
+  {
+   "gap": "No existe ritual ni plantilla de revisión semanal del sistema completo (9 frentes). Lo único semanal: 'reporte de lunes' de VITALS (solo fitness), IDEA DE LA SEMANA en homeBriefing (contenido, no revisión), la 'revisión 15' sábado' de la minifase de agosto (vencida) y el 'REPORTE SEMANAL MEGA domingos' del agente_estudio (spec n8n de la era ENCAPS/MIR, con P0 abiertos, sin evidencia de que corra). El checklist G de Palmerton se revisa 'en cada hito NBME' (~3 semanas): demasiado grueso para un plan donde 1 día perdido = +1 hábil (ya van 5 corrimientos: 31-ago→4-sep).",
+   "impacto": "alto",
+   "propuesta": "DATA/REVISION_SEMANAL.md (plantilla de 10 métricas: % pre-test/30Q/eval medias · uWorld % acumulado vs mínimo on-track de Parte V · Anki due/backlog/retención · % ciego ENCAPS del viernes · MIR eval D-1 · SYNAPSE misiones ✓ + proyecto shipped sí/no · VITALS adherencia + sueño medio + agua · días perdidos · alarma checklist G activa) + 20' fijos el sábado 07:15-07:35 (hueco libre tras el desayuno; no toca franjas L-V) + DATA/_scripts/gen_revision_semanal.js que pre-rellena desde Supabase/localStorage/AnkiConnect y APPENDEA a DATA/USMLE/REVISIONES/_semanas.json (mismo patrón append-only que _registro_resoluciones.json). Opcional: tarjeta 'Semana N/20 · nivel' en Home. La plantilla sola es S/docs.",
+   "esfuerzo": "M",
+   "toca_app": true,
+   "ficheros": [
+    "DATA/REVISION_SEMANAL.md (nuevo)",
+    "DATA/_scripts/gen_revision_semanal.js (nuevo)",
+    "src/lib/homeBriefing.ts",
+    "src/components/home/CockpitStatusBar.tsx",
+    "DATA/USMLE/PALMERTON_POR_MATERIA.md (§G checklist)"
+   ]
+  },
+  {
+   "gap": "TRACKING_ERRORES es solo ENCAPS (última ronda 2026-08-05) y el USMLE no captura sus métricas diarias: FRANJAS dice 'log de errores (conocimiento/lectura/razonamiento)' pero UsmleTodayPlan solo tiene el toggle ✓ en localStorage; study_sim_scores/study_metrics de Supabase están keyed a examen ENCAPS. Sin esa data no se puede aplicar el gate 80% de Palmerton, ni detectar el '~50% de errores de interpretación', ni comparar contra los mínimos on-track por hito, ni alimentar la revisión semanal.",
+   "impacto": "alto",
+   "propuesta": "Extender el esquema de _registro_resoluciones.json con examen:'USMLE' y la taxonomía Palmerton (knowledge/transfer/proceso + confianza + CCSN), reutilizando README_SISTEMA_TRACKING; en UsmleTodayPlan añadir 3 campos numéricos por día (pre-test /10 · 30Q % · eval 18:00 %) + tipo de error dominante → Supabase (study_sim_scores con examen='USMLE' o tabla usmle_daily_scores) con fallback localStorage; ReadinessBar pasa a mostrar media móvil 7d y distancia al mínimo on-track del próximo hito en vez de solo % temario.",
+   "esfuerzo": "M",
+   "toca_app": true,
+   "ficheros": [
+    "DATA/ENCAPS/TRACKING_ERRORES/README_SISTEMA_TRACKING.md",
+    "DATA/ENCAPS/TRACKING_ERRORES/_registro_resoluciones.json",
+    "src/components/study/UsmleTodayPlan.tsx",
+    "src/components/study/ReadinessBar.tsx",
+    "src/lib/supabase.ts",
+    "src/lib/supabase-schema.sql",
+    "src/lib/usmleStep1Daily.ts (FRANJAS)"
+   ]
+  },
+  {
+   "gap": "Anki sin telemetría y bloques de fin de semana infradimensionados: nada lee AnkiConnect (due, backlog, retención FSRS, % Again) aunque está disponible (localhost:8765, SYNC_ANKI_OBSIDIAN_APP.md); la alarma G 'capar/omitir revisiones vencidas → avalancha' no tiene detector. En el Calendar vivo el Anki del sábado es 30' (19:00) y el del domingo 15' (17:00): con ≤10 tarjetas nuevas/día + gaps, para noviembre (2.000+ tarjetas según CURSO_IA) las due diarias rondarán 150-250 → 15' el domingo garantiza backlog el lunes y rompe la 'regla del 100%' (revisar a diario, cero backlog) que Palmerton pone como condición del método.",
+   "impacto": "alto",
+   "propuesta": "DATA/_scripts/anki_telemetria.js (AnkiConnect: findCards 'deck:APEX::USMLE* is:due', getNumCardsReviewedToday, cardStats/retención FSRS, % Again) → DATA/USMLE/_anki_telemetria.json (append diario, lanzado por hook al cierre o en la revisión semanal) + KPI 'Due hoy / backlog / retención' en Home. Regla operativa: la duración del Anki de sáb/dom = due × ~20 s (dato, no reloj) — el bloque ya existe, solo se ajusta su duración. Verificar en D1-D2 (setup) que el deck USMLE tenga FSRS con desired retention 0.9 y límite 10 nuevas/día.",
+   "esfuerzo": "M",
+   "toca_app": true,
+   "ficheros": [
+    "DATA/_scripts/anki_telemetria.js (nuevo)",
+    "DATA/SYNC_ANKI_OBSIDIAN_APP.md",
+    "src/lib/ankiLinks.ts",
+    "src/components/home/CockpitStatusBar.tsx",
+    "DATA/USMLE/PALMERTON_POR_MATERIA.md (Anki fino)"
+   ]
+  },
+  {
+   "gap": "VITALS desconectado del rendimiento: VITALS ya registra wellness_logs tipo 'agua'|'sueno' (más score diario, PR, racha, reporte de lunes) en su propio Supabase, pero joseph-md-app solo lo embebe por iframe; la doctrina ('si fallas <70% acumulado 3 días seguidos → bajar carga + dormir más'; LEY CERO 7h) no tiene datos con los que dispararse, y aiFirstTools.ts prescribe 'cruzar noches <6h vs rendimiento' sin que nada lo implemente. VITALS es app de salud sin plan de estudio: correcto, pero su data de sueño/agua es la única señal fisiológica del sistema y hoy se pierde.",
+   "impacto": "medio",
+   "propuesta": "(a) Hábito de 20 s sin código: quick-log de sueño (h reales) y agua en VITALS a las 07:00 (la UI quick-log.tsx ya existe). (b) gen_revision_semanal.js lee wellness_logs + exercise_logs de VITALS (service role en local, nunca embebido) y los cruza por fecha con los scores USMLE del punto anterior → tabla 'sueño vs % eval' y 'días con <7h' en la revisión semanal; disparador ÁMBAR del protocolo de modo mínimo. (c) Opcional: 'Sueño anoche: X h' en CockpitStatusBar leyendo con anon key + RLS por usuario.",
+   "esfuerzo": "M",
+   "toca_app": true,
+   "ficheros": [
+    "VITALS/web/src/components/quick-log.tsx",
+    "VITALS/supabase/migrations/0001_movimiento_schema.sql",
+    "VITALS/web/src/lib/engine/domain.ts",
+    "src/lib/aiFirstTools.ts",
+    "src/components/home/CockpitStatusBar.tsx",
+    "DATA/VITALS/vitals-app-map.md"
+   ]
+  },
+  {
+   "gap": "Sin válvulas de burnout ni semanas de descarga: día 04:00-21:00 con 11 bloques de estudio + 2 de entrenamiento; Fase A = 17 semanas seguidas sin deload; el fin de semana no es libre (SYNAPSE PC 2h sáb y dom, video empresa 2h sáb, Anki, baile; despertar 04:00 también sáb/dom por EKER). El único 'mínimo innegociable' definido es el del USMLE (Anki + 10Q); ningún otro frente tiene mínimo ni orden de degradación escrito. Evidencia de fragilidad: 5 días perdidos seguidos (31-ago→4-sep) y el patrón del 25-jun (prometió 11:00-16:45, hizo 0). Palmerton: 'estudiar exhausto de noche' y 'procrastinación productiva' son alarmas de fallo; regla del 5%/mes no admite semanas en blanco.",
+   "impacto": "alto",
+   "propuesta": "Sin tocar horario ni metas: DATA/PROTOCOLO_MODO_MINIMO.md con 3 niveles y disparadores medibles — VERDE (todo) · ÁMBAR (sueño <6h, o eval <60% 2 días, o 1 día perdido → frentes secundarios a su mínimo: MIR solo eval D-1 15', Research/Derma/AURUM/LIVIANO = 1 ítem de 5', SYNAPSE solo audio B; USMLE intacto) · ROJO (≥2 días perdidos o enfermedad → solo Anki + 10Q + dormir; corrimiento automático con remap_inicio.js). Definir campo 'minimo' por frente en los TS de cada plan y flag 'deload' en las semanas posteriores a NBME 26 (26-30 oct) y NBME 28 (7-11 dic) solo para frentes secundarios (50% de carga, fechas intactas); Home muestra el nivel del día. La doctrina sola es S/docs.",
+   "esfuerzo": "M",
+   "toca_app": true,
+   "ficheros": [
+    "DATA/PROTOCOLO_MODO_MINIMO.md (nuevo)",
+    "DATA/ENCAPS/RUTINA_EXTREMA_MILITARIZADA.md",
+    "src/lib/mirDailyPlan.ts",
+    "src/lib/researchDailyPlan.ts",
+    "src/lib/dermaDailyPlan.ts",
+    "src/lib/aurumDailyPlan.ts",
+    "src/lib/livianoStudyPlan.ts",
+    "src/components/home/TodayMission.tsx",
+    "DATA/_scripts/remap_inicio.js"
+   ]
+  },
+  {
+   "gap": "Comida, hidratación y cena no existen en la rutina: en el Calendar vivo L-V solo hay desayuno 07:00-07:15 (tras 3h de cognición + 45' de carrera/calistenia en ayunas) y almuerzo 12:00-12:30; NO hay bloque de cena (18:00 eval → viaje → GYM+BAILE 90' → viaje → 21:00 dormir), ni ventanas de agua/snack dentro de las 6h15 de Step 1; dos sesiones de entrenamiento al día. VITALS tiene pisos (kcal, proteína 1,6 g/kg, agua 3.000 ml) que el Calendar no deja cumplir. El NAP 13:15-13:30 de julio ya no está (hueco). Los 9 viernes de hito (UWSA/NBME 09:00-13:00) pisan el almuerzo 12:00 y SYNAPSE 12:30 y no aplican el protocolo de test-day de Palmerton (Ziploc por break, sit-in breaks, sin carbohidratos simples) → se desperdicia el ensayo ×9 contra la alarma 'simulacros en condiciones de confort'.",
+   "impacto": "medio",
+   "propuesta": "Solo descripciones de eventos existentes, cero franjas nuevas: desayuno = ≥30 g proteína + 500 ml; 500 ml + snack al abrir deep prime 09:00 y al abrir MIR 15:15; almuerzo = comida principal (VITALS la dimensiona); 'cena ligera' fija en el cambio ENCAPS→LIVIANO 17:15 (batido/fruta, 5') y post-baile solo agua/electrolitos (Walker: sin comida pesada <2h antes de las 21:00); reponer el NAP 13:15-13:30 si Joseph lo usa. Para los 9 viernes de hito: descripción del overlay = cronograma de descansos + bolsas Ziploc 'Break 1/2/3' + almuerzo dentro del sim + SYNAPSE de ese día a la tarde; registrar agua/sueño en VITALS esos días como ensayo de test-day.",
+   "esfuerzo": "S",
+   "toca_app": false,
+   "ficheros": [
+    "DATA/ENCAPS/CALENDAR_SEGMENTOS_LUNES_VIERNES.md",
+    "DATA/USMLE/PALMERTON_POR_MATERIA.md (§F Test Day)",
+    "DATA/USMLE/CALENDARIO_5_MESES.md",
+    "DATA/VITALS/vitals-app-map.md",
+    "Google Calendar (descripciones de DESAYUNO/ALMUERZO/overlays de hito)"
+   ]
+  },
+  {
+   "gap": "Memoria de Claude y docs de doctrina desactualizados frente al régimen v5.6: coach-stance-encaps.md sigue diciendo 'objetivo único y supremo ENCAPS >17; MIR/USMLE secundarios' y 'reactivación por bloque ENCAPS'; la tabla horaria de RUTINA_EXTREMA_MILITARIZADA.md es el loop ENCAPS de julio (04:15 anclaje ENCAPS, 04:45 warm-up 20Q, 17:15 anclaje vespertino); CALENDAR_SEGMENTOS_LUNES_VIERNES.md (24-jul) se declara 'autoridad de CUÁNDO y CÓMO' pero describe el calendario viejo (USMLE 16:15, NAP, ENCAPS mañana); faseActual() en TodayMission (FASE 7 desde 7-sep) ≠ detect_phase del agente_estudio (FASE_7 desde 1-oct). Riesgo real: cualquier chat/agente nuevo (motor de preguntas, coach) aplica la prioridad equivocada durante las 20 semanas del Step 1.",
+   "impacto": "medio",
+   "propuesta": "(a) Reescribir coach-stance → 'primario Step 1 hasta GO/NO-GO 15-ene y examen 27-ene; ENCAPS ≥17 vuelve a primario en feb'; (b) re-extraer del Calendar vivo un CALENDAR_SEGMENTOS_V5_6.md (L-V + sáb/dom, con GYM/BAILE/EKER/correr) y marcar el de julio como histórico; (c) actualizar la tabla horaria de RUTINA_EXTREMA y alinear detect_phase; (d) una sola línea 'ESTADO VIGENTE (fecha)' al inicio de MEMORY.md que gane sobre memorias antiguas.",
+   "esfuerzo": "S",
+   "toca_app": false,
+   "ficheros": [
+    "C:/Users/Joseph Max/.claude/projects/D--joseph-md-app/memory/coach-stance-encaps.md",
+    "C:/Users/Joseph Max/.claude/projects/D--joseph-md-app/memory/MEMORY.md",
+    "DATA/ENCAPS/RUTINA_EXTREMA_MILITARIZADA.md",
+    "DATA/ENCAPS/CALENDAR_SEGMENTOS_LUNES_VIERNES.md",
+    "D:/agente_estudio/CLAUDE.md",
+    "src/components/home/TodayMission.tsx (faseActual)"
+   ]
+  },
+  {
+   "gap": "Pipeline APEX → Anki/Obsidian sigue roto desde la auditoría del 2-jul (verificado hoy): node_parsear_tarjeta_v2_3.js:27 y n8n_parser_v2_3.js:56 conservan '(.+?)(?=\\n[A-Z_]+:|\\n═|$)' con flag m (P0-2: REVERSO/CASO_CLINICO/FISIO_EXPANDIDA se truncan a la primera línea), node_crear_nota_v2_3.js no renderiza caso_clinico/fisio_expandida (P0-3) y los 3 ficheros datan del 7-may; T1/T2/T3 Palmerton nunca se transportan (P1-6). El plan USMLE apoya 97 días en '≤10 tarjetas de MECANISMO/día + APEX' — exactamente el contenido multilínea ('¿por qué?' patogenia→presentación) que el parser pierde en silencio. Además el ruteo USMLE escribe a nivel categoría: las 63 carpetas subtema del vault y 36/44 decks siguen sin usarse.",
+   "impacto": "alto",
+   "propuesta": "Fix P0-2 (lookahead '(?=\\n[A-Z_]+:|\\n═|(?![\\s\\S]))' sin '$') en ambos parsers + P0-3 (renderizar caso_clinico/fisio_expandida en la nota) + test multilínea real + redeploy n8n; activar ruteo USMLE por subtema (slug = carpeta del vault, deck 'APEX::USMLE::<Tag>::<NN_subtopic>' lazy); antes del D1 (7-sep) enviar 1 APEX de prueba y comprobar que la tarjeta llega íntegra a Anki y la nota a 01_USMLE. Es el candidato natural a proyecto S1 del vibecoding.",
+   "esfuerzo": "M",
+   "toca_app": true,
+   "ficheros": [
+    "D:/agente_estudio/scripts/node_parsear_tarjeta_v2_3.js",
+    "D:/agente_estudio/scripts/n8n_parser_v2_3.js",
+    "D:/agente_estudio/scripts/node_crear_nota_v2_3.js",
+    "DATA/ENCAPS/AUDITORIA_AGENTE_ESTUDIO_2026-07-02.md",
+    "DATA/SYNC_ANKI_OBSIDIAN_APP.md",
+    "src/lib/ankiLinks.ts"
+   ]
+  }
+ ],
+ "notas": "Método: lectura de DATA/SYNAPSE (CURSO_IA_04H_31AGO, motor-dia-a-dia, MINIFASE_AGOSTO, ROADMAP, CALIDAD/Synapse), DATA/VITALS (+ esquema Supabase de VITALS: wellness_logs tipo agua|sueno ya existe), REESTRUCTURACION_31AGO_2026, RUTINA_EXTREMA_MILITARIZADA, CALENDAR_SEGMENTOS (24-jul), TRACKING_ERRORES (README, PERFIL, registro: última ronda 2026-08-05, solo ENCAPS), SYNC_ANKI_OBSIDIAN_APP, PALMERTON_POR_MATERIA §D-G y Parte V, memoria de Claude (usmle-step1-v5, coach-stance, elite-prep, encaps-mantenimiento), código (synapseDailyPlan/synapseData/gen_synapse_plan, UsmleTodayPlan, studyProgress, homeBriefing, TodayMission, aiFirstTools, supabase.ts) y el Calendar VIVO de la semana 7-13 sep (166 eventos, list_events). Verificación directa del estado del parser APEX en D:/agente_estudio/scripts (P0-2/P0-3 vigentes, mtime 2026-05-07). Evidencia intermedia en scratchpad/palmerton_v3/gaps_synapse_vitals_rutina.md. Observaciones menores no listadas como vacío: (1) las DECLARACIONES EKER 04:00 son 100% identidad de negocio ('mi primer paciente llega porque construyo') — durante 20 semanas la misión primaria es Step 1; añadir 1 frase de identidad de examen es trivial y personal; (2) martes ALISTARSE 18:30-18:45 pisa 15' de la eval USMLE (ya conocido); (3) el overlay UWSA1 del vie 11-sep (09:00-13:00) se solapa con deep prime, 30Q, almuerzo y SYNAPSE — el problema de colisión de hitos es de la sección USMLE, aquí solo se recoge el ángulo comida/ensayo; (4) 'sáb y dom libres' no es literal: SYNAPSE PC 2h ambos días + video empresa 2h + Anki 30'/15' + baile, y despertar 04:00 los 7 días; (5) P0 de seguridad pre-existente (datos_tesis con RLS OFF + anon key en repo) sigue abierto — fuera de esta sección pero conviene que entre como proyecto de vibecoding; (6) no se propone cambiar franjas ni metas: todas las propuestas son datos/docs/descripciones de eventos existentes o scripts; la única variación temporal sugerida (Anki de finde dimensionado por due; 20' de revisión el sábado 07:15) ocupa tiempo hoy libre."
+}

@@ -21,16 +21,18 @@ export interface LineaResearch {
   journals: string[]; colaboradores: string[]; cuelloBotella: string;
   pubmedUrl: string;            // seed de búsqueda real
   fichaUrl?: string;            // ficha en el repo (DATA/RESEARCH/lines)
+  entregableId?: string;        // ítem de la Mesa editorial (researchData.ts → RESEARCH_ENTREGABLES) que la línea alimenta
 }
 
 const pm = (q: string) => 'https://pubmed.ncbi.nlm.nih.gov/?term=' + encodeURIComponent(q);
 
 export const RESEARCH_LINES: LineaResearch[] = [
   { id: 0, code: 'L0', nombre: 'Acné & Calidad de Vida (tesis · fundación)', cluster: 'acne_qol', mayoScore: 0, estado: 'completada',
-    gap: 'Tesis defendida (20-abr-2026): IGA × CADI en adolescentes, Huancayo. rs=0.637, κ=0.81, prevalencia 39.8%.',
+    gap: 'Tesis defendida (20-abr-2026): IGA × CADI en adolescentes, Huancayo. rs=0.637, κ=0.81, prevalencia 39.8%. ENTREGABLE #0 de la Mesa editorial: el único dataset original propio y el ítem de mayor peso del CV (first-author original) — no requiere paciente nuevo.',
     srDerivable: 'Instrumentos de QoL en acné (CADI/DLQI) en LMIC — alimenta L6.', srTag: 'SR-4',
-    journals: ['JAAD International'], colaboradores: ['Dr. Ciro Rodríguez'], cuelloBotella: 'En pipeline de titulación; publicar en JAAD International (waiver LMIC).',
-    pubmedUrl: pm('acne quality of life CADI DLQI adolescents') },
+    journals: ['JAAD International', 'International Journal of Dermatology', 'Actas Dermo-Sifiliográficas', 'Anais Brasileiros de Dermatologia'], colaboradores: ['Dr. Ciro Rodríguez (senior author · propuesta M1)'],
+    cuelloBotella: 'Reescribir como RESEARCH LETTER (600-1.000 palabras, 1 tabla, 1 figura; STROBE) en los átomos T-1→T-8 (oct-nov 2026) y someter en cascada JAAD Intl → IJD → Actas → Anais. Bloqueo real: nº/fecha de aprobación del CEI + consentimiento parental documentados (T-1 · DATA/RESEARCH/TESIS_L0/etica.md) y aceptación del Dr. Ciro como coautor (M1).',
+    pubmedUrl: pm('acne quality of life CADI DLQI adolescents'), entregableId: 'tesis-L0' },
   { id: 1, code: 'L1', nombre: 'Topografía & Vascularización facial', cluster: 'estetica', mayoScore: 33, estado: 'pre-protocolo',
     gap: 'Anatomía vascular facial casi 100% en caucásicos; CERO estudios indexados de arteria facial en peruanos.',
     srDerivable: 'Variabilidad de la arteria facial y zonas de peligro para fillers — SR.', srTag: 'SR-3',
@@ -49,8 +51,8 @@ export const RESEARCH_LINES: LineaResearch[] = [
   { id: 4, code: 'L4', nombre: 'Complicaciones & Seguridad · PERÚ-SAFE', cluster: 'estetica', mayoScore: 38, estado: 'activa',
     gap: 'Sin registro de complicaciones por inyectables en Perú/LATAM; tiempo-a-tratamiento en oclusión vascular nunca documentado regionalmente.',
     srDerivable: 'Complicaciones vasculares de fillers + tiempo-a-tratamiento con hialuronidasa — SR (± meta-análisis).', srTag: 'SR-1',
-    journals: ['JAAD', 'Dermatologic Surgery', 'BJD'], colaboradores: ['DeLorenzi (lit. ancla)', 'red PERÚ-SAFE'], cuelloBotella: 'La Fase 2 (survey) arranca sin datos clínicos primarios — accionable inmediato.',
-    pubmedUrl: pm('dermal filler vascular occlusion hyaluronidase management'), fichaUrl: 'https://pubmed.ncbi.nlm.nih.gov/24692598/' },
+    journals: ['JAAD', 'Dermatologic Surgery', 'BJD'], colaboradores: ['DeLorenzi (lit. ancla)', 'red PERÚ-SAFE', 'revisor #2 (X-1 · L4 §9)'], cuelloBotella: 'SR-1 = ciclo 2 del plan (PROSPERO feb-2027 → submit jul-2027). Antes de registrar: revisor humano #2 con cuenta Rayyan (X-1 nov-2026, X-9 feb-2027) — sin cribado dual no hay PROSPERO.',
+    pubmedUrl: pm('dermal filler vascular occlusion hyaluronidase management'), fichaUrl: 'https://pubmed.ncbi.nlm.nih.gov/24692598/', entregableId: 'SR-1' },
   { id: 5, code: 'L5', nombre: 'Energía (RF/CO₂) en fototipos IV–VI', cluster: 'energia', mayoScore: 30, estado: 'backlog',
     gap: 'RF/CO₂ fraccional poco estudiados en piel de color; alta heterogeneidad y miedo a PIH. Gap real = subgrupo IV–VI.',
     srDerivable: 'RF fraccional/CO₂ en Fitzpatrick IV–VI: eficacia y seguridad, subgrupo por fototipo — SR+MA.', srTag: 'SR-2',
@@ -156,7 +158,7 @@ export const HITL_CHECKPOINTS: Checkpoint[] = [
   { id: 'CP-1', despues: 'Outline del orquestador', verifica: 'Estructura PRISMA, preguntas, criterios de inclusión' },
   { id: 'CP-2', despues: 'Borradores de sección', verifica: 'Exactitud factual, tono, que cada claim tenga [CIT:id]' },
   { id: 'CP-3', despues: 'Salida del CitationAgent', verifica: 'Resolver [NO VERIFICABLE]; cero citas fabricadas (gate duro)' },
-  { id: 'CP-4', despues: '.docx ensamblado', verifica: 'Formato, tablas, lista de referencias, numeración (R39 del plan)' },
+  { id: 'CP-4', despues: '.docx ensamblado', verifica: 'Formato, tablas, lista de referencias, numeración (R41 del plan · ciclo 2; lo firma también el revisor #2)' },
 ];
 
 export const AGENTIC_RESOURCES = [
@@ -174,7 +176,7 @@ export const AGENTIC_RESOURCES = [
 
 export const AGENTIC_META = {
   tesis: 'El LLM NUNCA genera referencias de memoria: cita solo desde un corpus recuperado y la verificación de citas es un paso separado al final. Patrón orchestrator-worker (~90% mejor que un agente único en amplitud; cuesta ~15× tokens → reservar para el documento final).',
-  cuandoEntra: 'El sistema NO inicia la SR: arranca en R34–R40 (redacción → ensamblado → checkpoint), cuando el humano ya tiene corpus + tabla de extracción. R39 = checkpoint humano obligatorio.',
+  cuandoEntra: 'El sistema NO inicia la SR: arranca en R34–R43 del ciclo 2 (redacción → ensamblado → checkpoint → submit, may-jul 2027), cuando los DOS revisores humanos ya tienen corpus cribado + tabla de extracción. R41 = checkpoint humano obligatorio. La carta (C-3/C-4), la tesis (T-3→T-7) y el case report (CR-5/CR-7) NO pasan por los agentes de redacción: solo usan citation_verifier.py como gate.',
   premisa: 'Una SR rigurosa exige cubrir ~30 años con sensibilidad ≥90–97% — inmanejable a mano en 1 h/día. El motor lo hace en automático antes del bloque de research; el humano solo valida.',
 };
 
@@ -234,7 +236,7 @@ export const AGENTE_SECCION: { agentId: string; seccion: string; icon: string; c
  * motor (ver DATA/RESEARCH/agentic/DEPLOY.md) esto se reemplaza por `research_agent_tasks` (Supabase Realtime).
  */
 export function consolaSnapshot(estado: LineaResearch['estado']): Record<string, EstadoAgente> {
-  if (estado === 'activa') // SR-1 en redacción (R34–R39)
+  if (estado === 'activa') // SR-1 en redacción (R34–R41 · ciclo 2)
     return { lead: 'working', intro: 'done', methods: 'working', results: 'queued', discuss: 'idle', citation: 'queued', assembler: 'idle' };
   if (estado === 'completada')
     return { lead: 'done', intro: 'done', methods: 'done', results: 'done', discuss: 'done', citation: 'done', assembler: 'done' };

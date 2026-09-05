@@ -3,6 +3,7 @@
  * + 10_MIR_promir_detalle.md. Estructura ENCAPS (prioridad/vueltas) + táctica de examen.
  */
 import { Prioridad, PRIORIDAD_COLOR, VUELTAS } from './researchData';
+import { mirReadinessDerivado, MirReadiness } from './mirEvalLog';
 export { PRIORIDAD_COLOR, VUELTAS };
 export type { Prioridad };
 
@@ -11,10 +12,10 @@ export const MIR_META = {
   subtitulo: 'ProMIR · Top 50 → Dermatología Hospital Clínic Barcelona',
   accent: '#F5A623', // amber (consola española)
   flag: '🇪🇸',
-  tesis: 'El nº de preguntas no es todo: divide por el tamaño del temario. Bloques pequeños que caen mucho = oro. Empieza por Estadística + Bioética (casi regalo de puntos), luego Cardiología (la reina). Aprendizaje basado en preguntas desde el día 1.',
+  tesis: 'El nº de preguntas no es todo: divide por el tamaño del temario. Bloques pequeños que caen mucho = oro. Empieza por Epidemiología + Bioética (D1-D4: 3 capítulos de Epi = 70 % de sus ~10 Q/año), luego Cardiología (la reina). Aprendizaje basado en preguntas desde el día 1, medido por % ciego (neto = A − F/3).',
 };
 
-export const MIR_KPIS = { asignaturasTierS: 3, vueltasCritica: 6, simulacrosMeta: 1, readiness: 5 };
+export const MIR_KPIS = { asignaturasTierS: 3, vueltasCritica: 6, simulacrosMeta: 1 };
 
 // ── READINESS · simulacros cronometrados (AMIR/ProMIR) como checkpoints de score ──
 // La "banca" honesta: el readiness solo tiene sentido anclado a un simulacro real
@@ -25,16 +26,21 @@ export interface MirSimulacro {
 }
 export const MIR_SIMULACROS: MirSimulacro[] = [
   { nombre: 'Simulacro ProMIR (fase Competición)', fuente: 'ProMIR', cuando: '1/finde · mes 10+', formato: '200 preguntas · plantilla idéntica + corrección 100%', banda: 'neto ≥ 120 → zona plaza', url: 'https://promir.medicapanamericana.com/', gated: true },
-  { nombre: 'AMIR · 40 simulacros programados', fuente: 'AMIR', cuando: 'calendario propio', formato: 'Cronometrado + estadística por asignatura', banda: 'percentil > mediana del aula', url: 'https://www.amireducacion.com/', gated: true },
+  { nombre: 'AMIR · 40 simulacros programados (acceso A VERIFICAR — no hay matrícula confirmada)', fuente: 'AMIR', cuando: 'calendario propio', formato: 'Cronometrado + estadística por asignatura', banda: 'percentil > mediana del aula', url: 'https://www.amireducacion.com/', gated: true },
   { nombre: 'MirAsturias · simulacros', fuente: 'MirAsturias', cuando: 'recta final', formato: 'Cronometrado + ranking', banda: 'tendencia del neto > cifra suelta', url: 'https://www.curso-mir.com/', gated: true },
   { nombre: 'Examen MIR oficial (años previos)', fuente: 'Oficial', cuando: 'auto-simulacro gratis', formato: 'Cuadernillo real + plantilla BOE · 200 preguntas', banda: 'aplica −1/3 y mide el neto', url: 'https://www.examenesmir.com/examenes-mir', gated: false },
 ];
-// Readiness derivado de la capa de simulacros (sustituye el 5 hardcodeado).
-export const MIR_READINESS = {
-  pct: 5, // línea base pre-primer-simulacro · sube solo al registrar uno
-  estado: 'Línea base · sin simulacro cronometrado registrado',
-  siguiente: 'Un cuadernillo MIR oficial cronometrado (gratis, examenesmir) es tu primer readiness honesto.',
+// Readiness DERIVADO del registro de evaluaciones (mirEvalLog · localStorage 'jmd-mir-eval-log'):
+// mini-MIR D77 > tests de cierre 10Q por asignatura > evals ancladas > sin dato (0 %).
+// Sustituye al pct=5 hardcodeado: ya no hay número sin medición ciega detrás.
+export const MIR_READINESS_BASE: MirReadiness = {
+  pct: 0, fuente: 'ninguna', n: 0,
+  estado: 'Sin registro · línea base = primer test de cierre (10Q, 77 s/Q)',
+  siguiente: 'Registra la eval anclada de hoy (15:27) y el test de cierre al cambiar de asignatura.',
 };
+export function mirReadiness(): MirReadiness {
+  try { return mirReadinessDerivado(); } catch { return MIR_READINESS_BASE; }
+}
 
 // ── Desgloses MIR por asignatura (preguntas reales de años previos) ──
 // Pilar AMIR "Libro Gordo" / CTO: navegar las preguntas reales por asignatura +
@@ -52,8 +58,8 @@ export const MIR_DESGLOSES = {
 
 export interface AsignaturaMIR { nombre: string; tier: 'S' | 'A' | 'B' | 'C'; nota: string; prioridad: Prioridad; }
 export const MIR_ASIGNATURAS: AsignaturaMIR[] = [
-  { nombre: 'Estadística / Epidemiología / Preventiva', tier: 'S', nota: '6–10 preguntas · temario pequeño y memorizable · casi regalo. EMPIEZA AQUÍ.', prioridad: 'CRITICA' },
-  { nombre: 'Bioética / Medicina Legal', tier: 'S', nota: '6–8 preguntas · temario corto · pura rentabilidad/hora.', prioridad: 'CRITICA' },
+  { nombre: 'Epidemiología (+ Preventiva)', tier: 'S', nota: 'Epidemiología ~10 Q/año (~5 % del MIR); 3 capítulos = 70 %: Ensayo clínico 32 % · Clasificación de estudios 24 % · Pruebas diagnósticas 14 %. Estadística inferencial: 0 Q en 5 años (ProMIR) → no invertir. EMPIEZA AQUÍ (D1-D3).', prioridad: 'CRITICA' },
+  { nombre: 'Bioética / Medicina Legal', tier: 'S', nota: '~1,2 % del MIR (11 Q en 5 años) pero Principios de bioética = 40 % del bloque → 1 día (D4) y pura rentabilidad/hora. El resto forense: 0 % histórico.', prioridad: 'CRITICA' },
   { nombre: 'Cardiología', tier: 'S', nota: '16–19 preguntas siempre · la reina · columna fisiopatológica de Nefro/Neumo/UCI.', prioridad: 'CRITICA' },
   { nombre: 'Digestivo + Cirugía General', tier: 'A', nota: 'Estúdialos juntos: ~25 preguntas combinadas. Muy alta rentabilidad.', prioridad: 'ALTA' },
   { nombre: 'Infecciosas', tier: 'A', nota: 'Transversal: refuerza Neumo, Digestivo, Derma, Pediatría.', prioridad: 'ALTA' },
@@ -88,16 +94,16 @@ export const PROMIR_FASES = [
   { fase: 'Calibración', desc: 'Opcional (repetidores): personaliza calendario por fortalezas/debilidades.' },
 ];
 
-// Estructura de la hora diaria (aprendizaje basado en preguntas)
+// Estructura de la hora diaria (aprendizaje basado en preguntas · 17-19 Q/día · = MIR_FRANJAS de mirDailyPlan.ts)
 export const MIR_HORA = [
-  { bloque: 'A · Repaso espaciado', min: '0–15', act: 'Tarjetas/preguntas de asignaturas que "vencen hoy". Lo PRIMERO, no negociable.' },
-  { bloque: 'B · Tema nuevo', min: '15–45', act: 'Videoclase corta (10–12 min) + 15–18 preguntas comentadas → marca 1ª exposición.' },
-  { bloque: 'C · Test mixto', min: '45–55', act: '10 preguntas aleatorias acumuladas (interleaved).' },
-  { bloque: 'D · Bitácora', min: '55–60', act: 'Anota fallos; sube un escalón de prioridad los temas fallados.' },
+  { bloque: 'A · Eval anclada + Anki + log', min: '0–15', act: '4Q multi-temporales (2Q D-1 + 1Q D-3 + 1Q D-7, test del capítulo ProMIR, 77 s/Q) → Anki APEX::MIR → log (knowledge/transfer/proceso + 🇪🇸 delta). Lo PRIMERO, no negociable. 1er día de bloque: test de cierre 10Q de la asignatura anterior.' },
+  { bloque: 'B · Pre-test + lectura dirigida', min: '15–38', act: '5Q ciegas del capítulo nuevo → lectura SOLO de los gaps (Whole Page Rule sobre el capítulo ProMIR; vídeo solo si el clip ≤12 min está verificado).' },
+  { bloque: 'C · 8-10Q comentadas', min: '38–50', act: 'Test del capítulo ProMIR con Rule-In → Rule-Out y cover-the-options; cada fallo → Shopping List.' },
+  { bloque: 'D · APEX', min: '50–60', act: '≤4 tarjetas APEX (SAQ + por qué + 🇪🇸 delta + tag sistema USMLE; 1 de cada 4 con imagen).' },
 ];
 
 export const MIR_CALENDARIO = [
-  { fase: 'Fase 0 · sem 1–4', foco: 'Tier S: Estadística + Bioética + arranque Cardiología. Puntos baratos + momentum.' },
+  { fase: 'Fase 0 · sem 1–4', foco: 'Tier S: Epidemiología + Bioética (D1-D4) + arranque Cardiología (D5). Puntos baratos + momentum.' },
   { fase: 'Fase 1 · mes 2–6', foco: 'Tier A: Cardio → Digestivo+CirGral → Infecciosas → Neuro → Endo → Reuma → Nefro + Derma.' },
   { fase: 'Fase 2 · mes 7–9', foco: 'Tier B: Gineco, Pediatría, Neumo, Hemato, Psiquiatría, Trauma.' },
   { fase: 'Fase 3 · mes 10–11', foco: 'Tier C en repaso rápido (videoclase + 10 preguntas/tema).' },

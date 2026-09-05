@@ -11,7 +11,7 @@ import { PRACTICA_DEEP_PRIME, PRACTICA_REPASO } from './encapsPracticaExtra';
 
 // ── D1 por examen (para calcular el día actual) ──
 export const STUDY_D1: Record<string, string> = {
-  ENCAPS: '2026-09-07',   // v6.4 MANTENIMIENTO 2027-I (D1=lun 7-sep; 31-ago→4-sep no estudiados): examen 2026-II rendido el 9-ago (Joseph NO lo dio; análisis real en DATA/ENCAPS/ANALISIS_EXAMEN_2026-2_REAL.md). Meta: ENCAPS 2027-I fines de MARZO 2027. 1h/día (16:15-17:15 L-V): banqueo puro guiado por el PRONÓSTICO v3 (II 30 · I 27 · V 21 · III 13 · IV 9 · 8 críticos: I-3 V-2 II-3 III-5 I-4 II-5 II-4 IV-1/2). Feb-mar 2027: vuelve a bloque principal (fase intensiva, se re-siembra entonces). Ciclo sembrado por gen_encaps_mantenimiento_2027.js · backup study_schedule_bk_0831.
+  ENCAPS: '2026-09-07',   // v6.4 MANTENIMIENTO 2027-I (D1=lun 7-sep; 31-ago→4-sep no estudiados): examen 2026-II rendido el 9-ago (Joseph NO lo dio; análisis real en DATA/ENCAPS/ANALISIS_EXAMEN_2026-2_REAL.md). Meta: ENCAPS 2027-I fines de MARZO 2027. 1h/día (16:15-17:15 L-V): banqueo puro guiado por el PRONÓSTICO v3 (II 30 · I 27 · V 21 · III 13 · IV 9 · 8 críticos: I-3 V-2 II-3 III-5 I-4 II-5 II-4 IV-1/2). Feb-mar 2027: vuelve a bloque principal (fase intensiva, se re-siembra entonces). Ciclo sembrado por gen_encaps_mantenimiento_2027.js (05-sep: sub-ejes por instancia + cola larga como secundario + receta del mini-sim en extra) · backup study_schedule_bk_0906b.
   // MIR / USMLE se agregan cuando se construyan sus cronogramas.
 };
 // Fechas SIN actividad (bloqueadas por Joseph) — no cuentan como día de plan.
@@ -54,6 +54,78 @@ export interface StudyMetrics {
   extra?: Record<string, unknown>;
 }
 export interface StudySimScore { examen: string; sim_n: number; nota?: number | null; fecha?: string }
+// study_progress (cierre de sesión): porcentaje = % CIEGO REAL (correctas seguras / total), especialidad = código del tema.
+export interface StudyProgressRow {
+  fecha?: string | null; especialidad: string; examen?: string | null; porcentaje?: number | null; fuente?: string | null;
+  preguntas_resueltas?: number | null; errores_por_tipo?: Record<string, unknown> | null; tiempo_promedio_pregunta?: string | null;
+}
+
+// ── MANTENIMIENTO 2027-I: sub-eje del día, secundario de cola larga y receta del mini-sim (leídos de study_schedule.extra) ──
+export interface SubEjeHoy { key: string; label: string; n: number; total: number; instancia: number; de: number }
+export function subEjeDe(day: StudyScheduleDay | null | undefined): SubEjeHoy | null {
+  const ex = (day?.extra || {}) as Record<string, unknown>;
+  if (!ex.sub_eje) return null;
+  return {
+    key: String(ex.sub_eje), label: String(ex.sub_eje_label || ''),
+    n: Number(ex.sub_eje_n || 0), total: Number(ex.sub_ejes_total || 0),
+    instancia: Number(ex.instancia || 0), de: Number(ex.de || 0),
+  };
+}
+export interface MiniSimReceta {
+  receta: Record<string, number>; vinetaPct: number; criticosMin: number; fallosPreviosMin: number;
+  colaLarga: string[]; colaLargaQ: string; segPorQ: number; umbral: number; alerta: number; simN: number;
+}
+export function miniSimRecetaDe(day: StudyScheduleDay | null | undefined): MiniSimReceta | null {
+  if (!day || day.tipo !== 'mini_sim') return null;
+  const ex = (day.extra || {}) as Record<string, unknown>;
+  const rec = (ex.receta && typeof ex.receta === 'object') ? ex.receta as Record<string, number> : { II: 8, I: 7, V: 5, III: 3, IV: 2 };
+  const cl = Array.isArray(ex.cola_larga) ? (ex.cola_larga as string[]) : (day.temas_secundarios || []).map(s => s.codigo);
+  return {
+    receta: rec, vinetaPct: Number(ex.vineta_pct ?? 50), criticosMin: Number(ex.criticos_min ?? 10), fallosPreviosMin: Number(ex.fallos_previos_min ?? 5),
+    colaLarga: cl, colaLargaQ: String(ex.cola_larga_q ?? '5-6'), segPorQ: Number(ex.seg_por_q ?? 72),
+    umbral: Number(ex.umbral_25 ?? 18), alerta: Number(ex.alerta_25 ?? 15), simN: Number(ex.sim_n ?? day.dia),
+  };
+}
+export function miniSimRecetaTexto(r: MiniSimReceta): string {
+  const areas = ['II', 'I', 'V', 'III', 'IV'].filter(a => r.receta[a] != null).map(a => `${a} ${r.receta[a]}`).join(' · ');
+  return `${areas} · ${r.vinetaPct}% viñeta · ≥${r.criticosMin}Q críticos · ≥${r.fallosPreviosMin}Q fallos previos · cola larga ${r.colaLarga.join(' + ')} (${r.colaLargaQ}Q) · ${r.segPorQ}s/Q · umbral ${r.umbral}/25 · alerta <${r.alerta}/25 ×2`;
+}
+// Serie de mini-sims (viernes) con su nota /25 si existe en study_sim_scores (sim_n = dia).
+export interface MiniSimPunto { dia: number; fecha: string; simN: number; nota: number | null; semana: number }
+export function miniSimSerie(days: StudyScheduleDay[], simScores: Record<number, StudySimScore>): MiniSimPunto[] {
+  return days.filter(d => d.tipo === 'mini_sim').map((d, i) => {
+    const simN = miniSimRecetaDe(d)?.simN ?? d.dia;
+    const nota = simScores[simN]?.nota;
+    return { dia: d.dia, fecha: d.fecha, simN, nota: nota == null ? null : Number(nota), semana: i + 1 };
+  });
+}
+// % ciego SEMANAL (lunes ISO) ponderado por preguntas, a partir de study_progress examen='ENCAPS'.
+export interface CiegoSemana { lunes: string; pct: number; n: number; rondas: number; porArea: Record<string, { pct: number; n: number }> }
+function lunesISO(iso: string): string {
+  const d = new Date(`${iso.slice(0, 10)}T12:00:00Z`);
+  const dow = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() - (dow - 1));
+  return d.toISOString().slice(0, 10);
+}
+export function ciegoSemanal(rows: StudyProgressRow[]): CiegoSemana[] {
+  const acc: Record<string, { sum: number; n: number; rondas: number; area: Record<string, { sum: number; n: number }> }> = {};
+  for (const r of rows) {
+    if (!r.fecha || r.porcentaje == null) continue;
+    const n = Number(r.preguntas_resueltas || 0) || 1;
+    const k = lunesISO(String(r.fecha));
+    const a = (acc[k] ||= { sum: 0, n: 0, rondas: 0, area: {} });
+    a.sum += Number(r.porcentaje) * n; a.n += n; a.rondas++;
+    const area = ((r.especialidad || '').match(/^[IVX]+/) || [''])[0] || '?';
+    const aa = (a.area[area] ||= { sum: 0, n: 0 });
+    aa.sum += Number(r.porcentaje) * n; aa.n += n;
+  }
+  return Object.keys(acc).sort().map(k => {
+    const a = acc[k];
+    const porArea: Record<string, { pct: number; n: number }> = {};
+    for (const ar of Object.keys(a.area)) porArea[ar] = { pct: Math.round(a.area[ar].sum / a.area[ar].n), n: a.area[ar].n };
+    return { lunes: k, pct: Math.round(a.sum / a.n), n: a.n, rondas: a.rondas, porArea };
+  });
+}
 
 // Item chequeable del día (mismo esquema item_key que encaps_telegram_daemon.py)
 export interface PlanItem {
@@ -264,32 +336,43 @@ export function itemsForDay(day: StudyScheduleDay, focusByCode: Record<string, n
   if (day.modo === 'MANTENIMIENTO') {
     const area = ENCAPS_AREA_PREFIJO[((day.codigo || '').match(/^[IVX]+/) || [''])[0]];
     if (day.tipo === 'mini_sim') {
+      const rec = miniSimRecetaDe(day);
       items.push({
         key: `D${N}:msim`, kind: 'sim',
-        label: '🔥 MINI-SIMULACRO SEMANAL: 25Q mixtas cronometradas (72s/Q)',
-        detail: 'Mezcla de las 5 áreas ponderada por el pronóstico v3 · modo examen estricto, sin pausa',
+        label: `🔥 MINI-SIMULACRO SEMANAL: 25Q mixtas cronometradas (${rec?.segPorQ ?? 72}s/Q)`,
+        detail: rec ? `Receta v3: ${miniSimRecetaTexto(rec)} · modo examen estricto, sin pausa` : 'Mezcla de las 5 áreas ponderada por el pronóstico v3 · modo examen estricto, sin pausa',
         url: ENCAPS_BANCOS[0]?.url, source: ENCAPS_BANCOS[0]?.fuente || 'Banco', dur: 30, hora: '16:15–16:45',
       });
       items.push({
         key: `D${N}:msim_corr`, kind: 'eval',
-        label: '📊 Corrección + registro del patrón de fallos (TRACKING_ERRORES)',
-        detail: 'Cada fallo: ¿área? ¿tipo (dato fino / viñeta / norma)? → alimenta la tutoría y la rotación de la semana siguiente',
+        label: '📊 Corrección + nota /25 en ▲ SIM + cierre de 1 línea (TRACKING_ERRORES)',
+        detail: `Cada fallo: ¿área? ¿tipo knowledge/transfer/proceso (CONCEPTO·OLVIDO·CRONOLOGIA / CCSN·CONTEXTO / CAMBIO·TIEMPO)? → gen_encaps_semana.js --cerrar → override de la semana siguiente${rec ? ` · umbral ${rec.umbral}/25 · alerta <${rec.alerta}/25 dos viernes` : ''}`,
         dur: 30, hora: '16:45–17:15',
       });
       return items;
     }
+    const se = subEjeDe(day);
+    const secCL = (day.temas_secundarios || []).find(s => (s as { rol?: string }).rol === 'cola_larga') || (day.temas_secundarios || [])[0];
     items.push({
       key: `D${N}:m_eval`, kind: 'eval',
-      label: '🎯 EVAL ANCLADA: 5Q del tema de AYER (recall + corrección)',
-      detail: 'Testing effect: si fallas ≥2 → el tema de ayer vuelve caliente a la rotación',
+      label: '🎯 EVAL ANCLADA: 5Q del tema de AYER (3 cifras + 2 viñetas, recall + corrección)',
+      detail: 'Testing effect: si fallas ≥2 → el tema de ayer vuelve caliente a la rotación (override semanal)',
       dur: 15, hora: '16:15–16:30',
     });
     items.push({
       key: `D${N}:m_banco`, kind: 'theomed',
-      label: `🎯 BANCO DEL DÍA: ${day.codigo} — ${day.subtema || ''} (20-25Q ciegas)`,
-      detail: `Prioridad ${day.prioridad || 'MEDIA'} · pregunta-por-pregunta con corrección inmediata · pronóstico v3`,
-      url: ENCAPS_BANCOS[0]?.url, source: ENCAPS_BANCOS[0]?.fuente || 'Banco', code: day.codigo, dur: 40, hora: '16:30–17:10',
+      label: `🎯 BANCO DEL DÍA: ${day.codigo} — ${day.subtema || ''} (${secCL ? '16-20Q' : '20-25Q'} ciegas)`,
+      detail: `Prioridad ${day.prioridad || 'MEDIA'}${se ? ` · sub-eje ${se.n}/${se.total} (sesión ${se.instancia}/${se.de} del código)` : ''} · ~50% viñeta / 50% recall de cifras · pregunta-por-pregunta con corrección inmediata · pronóstico v3`,
+      url: ENCAPS_BANCOS[0]?.url, source: ENCAPS_BANCOS[0]?.fuente || 'Banco', code: day.codigo, dur: secCL ? 32 : 40, hora: secCL ? '16:30–17:02' : '16:30–17:10',
     });
+    if (secCL) {
+      items.push({
+        key: `D${N}:m_sec`, kind: 'theomed',
+        label: `▶ SECUNDARIO (cola larga): ${secCL.codigo} — ${secCL.subtema} (${(secCL as { q?: string }).q || '4-5Q'})`,
+        detail: 'Código fuera de la rotación principal (≈30 pp del vector v3 repartidos en 17 códigos) · 4-5Q ciegas dentro de la misma hora',
+        url: ENCAPS_BANCOS[0]?.url, source: ENCAPS_BANCOS[0]?.fuente || 'Banco', code: secCL.codigo, dur: 8, hora: '17:02–17:10',
+      });
+    }
     (area ? (ENCAPS_POSTESTS[area] || []).slice(0, 1) : []).forEach((q, i) => {
       items.push({
         key: `D${N}:m_postest:${i}`, kind: 'theomed',
@@ -300,8 +383,8 @@ export function itemsForDay(day: StudyScheduleDay, focusByCode: Record<string, n
     });
     items.push({
       key: `D${N}:m_log`, kind: 'material',
-      label: '📝 Registro de fallos (TRACKING_ERRORES) + 1-3 APEX de errores de conocimiento',
-      detail: 'Append en _registro_resoluciones.json · los APEX caen en Obsidian ENCAPS',
+      label: '📝 Cierre de 1 línea (TRACKING_ERRORES) + 1-3 APEX de errores de conocimiento',
+      detail: `ENCAPS|banco_dia|${day.fecha}|${day.codigo}|n=..|seg=..|dud=..|CONCEPTO:..,OLVIDO:..,CCSN:..|t=.. → gen_encaps_semana.js --cerrar · los APEX caen en Obsidian ENCAPS`,
       dur: 5, hora: '17:10–17:15',
     });
     return items;
@@ -655,6 +738,19 @@ async function fetchSimScores(examen: string): Promise<StudySimScore[]> {
   if (error || !data) return [];
   return data as StudySimScore[];
 }
+// study_progress del examen (cierres de sesión: % ciego real por código y fecha). Vacío si aún no hay cierres.
+async function fetchProgress(examen: string): Promise<StudyProgressRow[]> {
+  try {
+    const { data, error } = await supabase
+      .from('study_progress')
+      .select('fecha, especialidad, examen, porcentaje, fuente, preguntas_resueltas, errores_por_tipo, tiempo_promedio_pregunta')
+      .eq('examen', examen).order('fecha', { ascending: true }).limit(500);
+    if (error || !data) return [];
+    return data as StudyProgressRow[];
+  } catch {
+    return [];
+  }
+}
 
 export async function setStudyCheck(examen: string, itemKey: string, checked: boolean): Promise<boolean> {
   try {
@@ -688,6 +784,9 @@ export interface UseEncapsPlan {
   checks: Record<string, boolean>;
   simScores: Record<number, StudySimScore>;
   simDays: StudyScheduleDay[];
+  miniSims: MiniSimPunto[];             // serie de viernes (nota /25, sim_n = dia) para el Cockpit
+  progress: StudyProgressRow[];         // cierres de sesión (study_progress examen='ENCAPS')
+  ciego: CiegoSemana[];                 // % ciego semanal derivado de progress
   todayItems: PlanItem[];
   doneToday: number;
   totalToday: number;
@@ -705,6 +804,7 @@ export function useEncapsPlan(examen: string = 'ENCAPS'): UseEncapsPlan {
   const [metrics, setMetrics] = useState<StudyMetrics | null>(null);
   const [checks, setChecks] = useState<Record<string, boolean>>({});
   const [simScores, setSimScores] = useState<Record<number, StudySimScore>>({});
+  const [progress, setProgress] = useState<StudyProgressRow[]>([]);
   const [loading, setLoading] = useState(true);
 
   const hoyDia = diaActual(examen);
@@ -713,12 +813,13 @@ export function useEncapsPlan(examen: string = 'ENCAPS'): UseEncapsPlan {
   const setDia = useCallback((d: number) => setDiaRaw(Math.max(1, Math.min(total, d))), [total]);
 
   const load = useCallback(async () => {
-    const [sched, met, chk, sims] = await Promise.all([
-      fetchSchedule(examen), fetchMetrics(examen), fetchChecks(examen), fetchSimScores(examen),
+    const [sched, met, chk, sims, prog] = await Promise.all([
+      fetchSchedule(examen), fetchMetrics(examen), fetchChecks(examen), fetchSimScores(examen), fetchProgress(examen),
     ]);
     setDays(sched);
     setMetrics(met);
     setChecks(chk);
+    setProgress(prog);
     const sm: Record<number, StudySimScore> = {};
     for (const s of sims) sm[s.sim_n] = s;
     setSimScores(sm);
@@ -732,7 +833,11 @@ export function useEncapsPlan(examen: string = 'ENCAPS'): UseEncapsPlan {
   }, [load]);
 
   const today = useMemo(() => days.find(d => d.dia === dia) ?? null, [days, dia]);
-  const simDays = useMemo(() => days.filter(d => d.simulacro), [days]);
+  // v6.5 (05-sep): los viernes de MANTENIMIENTO (tipo='mini_sim', simulacro NULL) también son días-sim:
+  // su nota /25 se guarda en study_sim_scores con sim_n = dia (SimView) y el Cockpit grafica la serie contra 18/25.
+  const simDays = useMemo(() => days.filter(d => d.simulacro || d.tipo === 'mini_sim'), [days]);
+  const miniSims = useMemo(() => miniSimSerie(days, simScores), [days, simScores]);
+  const ciego = useMemo(() => ciegoSemanal(progress), [progress]);
   const focusByCode = useMemo(() => focusDayByCode(days), [days]);
   const todayItems = useMemo(() => (today ? itemsForDay(today, focusByCode) : []), [today, focusByCode]);
   const repasos = useMemo(() => repasosDeHoy(days, dia), [days, dia]);
@@ -751,7 +856,7 @@ export function useEncapsPlan(examen: string = 'ENCAPS'): UseEncapsPlan {
   }, [examen]);
 
   return {
-    loading, dia, total, today, days, metrics, checks, simScores, simDays,
+    loading, dia, total, today, days, metrics, checks, simScores, simDays, miniSims, progress, ciego,
     todayItems, doneToday, totalToday, repasos, proximos, hoyDia, setDia, toggleCheck, saveSim, refetch: load,
   };
 }

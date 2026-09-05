@@ -428,3 +428,94 @@ export const AURUM_PRACTICA: AurumPractica = {
   ],
   compresion: 'Sin IA, llegar a top-10% en marketing de respuesta directa es 12-24 meses (copy + diseño + video + maquetar landings + operar ads, cada uno una disciplina). La IA NO comprime el camino al top por sí sola: comprime la PRODUCCIÓN (copy/imagen/video/landing pasan de días a minutos), pero el cuello de botella se mueve al CRITERIO — qué pedir, reconocer lo bueno, leer métricas, decidir la iteración. Por eso agosto entrena justo eso. Realista: las BASES ejecutables (lanzar y medir una campaña con activos decentes) son alcanzables en ~10 semanas a 60 min/día — lo que pre-IA pedía ~6-12 meses. Top-5% (creatividades/copy que baten el CPL consistentemente) ≈ 6-12 meses encadenando campañas reales (los 3 negocios de Joseph lo permiten). El top-1% (intuición de oferta+ángulo+canal que pocos replican) sigue siendo plurianual: la IA amplifica el juicio pero no lo sustituye. Resumen: la IA convierte "aprender a hacerlo" (años) en "aprender a dirigirlo y medirlo" (semanas para las bases); el techo lo pone el juicio humano entrenado con repeticiones reales.',
 };
+
+// ─── v3 (5-sep-2026) · Rúbrica del PITCH (6 ítems 0-2) — Palmerton: medir por score, no por "grabé" ───
+// Se aplica en los 7 viernes de cierre de fase (AURUM_PITCH_DIAS en aurumDailyPlan.ts: D15, D35, D55,
+// D75, D95, D115, D130) y a cada versión LIVIANO de v3-v6. Fuente de los ítems: entregable de F6 del
+// currículo v2 ("hablaste <40%, empatía táctica, SPIN, oferta, objeciones, cierre, compromiso").
+export type AurumRubricaItem = { key: string; label: string; n0: string; n1: string; n2: string };
+export const AURUM_RUBRICA_PITCH: AurumRubricaItem[] = [
+  { key: 'habla',     label: 'Hablaste < 40% del tiempo', n0: '> 60% (monólogo/pitch)', n1: '40-60%', n2: '< 40%: el prospecto habla, tú preguntas' },
+  { key: 'empatia',   label: 'Empatía táctica (Voss)',      n0: 'sin label ni mirror', n1: '1 label o mirror', n2: 'label + mirror + un "así es / that\'s right"' },
+  { key: 'spin',      label: 'SPIN en orden',               n0: 'saltaste a presentar', n1: 'S y P, sin Implicación', n2: 'S → P → I → N, la Implicación aparece' },
+  { key: 'oferta',    label: 'Oferta (stack + garantía + ancla)', n0: 'precio suelto', n1: 'stack sin garantía o sin ancla', n2: 'stack + garantía + ancla, sin promesas' },
+  { key: 'objeciones', label: 'Objeciones sin discutir',    n0: 'defendiste/discutiste', n1: 'label sin prueba o sin pregunta calibrada', n2: 'label + prueba + pregunta calibrada' },
+  { key: 'cierre',    label: 'Cierre / compromiso',         n0: 'sin siguiente paso', n1: 'siguiente paso vago', n2: 'compromiso concreto con fecha y el prospecto lo repite' },
+];
+export const AURUM_RUBRICA_MAX = AURUM_RUBRICA_PITCH.length * 2; // 12
+/** Semáforo del score de rúbrica: verde ≥ 10/12 · ámbar 7-9 · rojo < 7. */
+export function aurumRubricaSemaforo(score: number): 'verde' | 'ambar' | 'rojo' {
+  return score >= 10 ? 'verde' : score >= 7 ? 'ambar' : 'rojo';
+}
+
+/** Score persistido por grabación. Clave = `v${pitch}` (ALLPA/Qori) o `v${pitch}L` (versión LIVIANO). */
+export type AurumRubricaScore = { pitch: number; variante: 'base' | 'liviano'; puntos: number[]; total: number; fecha: string; nota?: string };
+export type AurumRubricaStore = Record<string, AurumRubricaScore>;
+const RUBRICA_KEY = 'jmd-aurum-rubrica';
+export function aurumRubricaKey(pitch: number, variante: 'base' | 'liviano' = 'base'): string { return `v${pitch}${variante === 'liviano' ? 'L' : ''}`; }
+export function loadAurumRubrica(): AurumRubricaStore {
+  try {
+    const ls = (globalThis as any).localStorage;
+    if (ls) { const raw = ls.getItem(RUBRICA_KEY); if (raw) { const o = JSON.parse(raw); if (o && typeof o === 'object') return o; } }
+  } catch { /* sin storage */ }
+  return {};
+}
+export function saveAurumRubrica(store: AurumRubricaStore): void {
+  try { const ls = (globalThis as any).localStorage; if (ls) ls.setItem(RUBRICA_KEY, JSON.stringify(store)); } catch { /* ignore */ }
+}
+
+// ─── v3 · Closer Scoreboard EDITABLE por semana ISO (dials/sets/show/close/cash/q2c) ───
+// Antes era una constante que AurumHub renderizaba sin input. Ahora: registro manual semanal en
+// localStorage 'jmd-aurum-scoreboard-v1' + semáforo contra la meta (close.com / High-Ticket KPI Tracker).
+export type AurumScoreKey = 'dials' | 'sets' | 'show' | 'close' | 'cash' | 'q2c';
+export type AurumScoreSemana = Partial<Record<AurumScoreKey, number>>;
+export type AurumScoreboardStore = Record<string, AurumScoreSemana>; // 'YYYY-Www' → valores
+const SCOREBOARD_KEY = 'jmd-aurum-scoreboard-v1';
+/** Metas SEMANALES (la meta diaria × 5 días hábiles; los % son ratios). `cash` = crece semana a semana. */
+export const AURUM_SCOREBOARD_METAS: Record<AurumScoreKey, { min: number; tipo: 'conteo' | 'pct' | 'soles'; label: string }> = {
+  dials: { min: 150, tipo: 'conteo', label: '≥ 150/sem (30/día × 5)' },
+  sets:  { min: 15,  tipo: 'conteo', label: '≥ 15/sem (3/día × 5)' },
+  show:  { min: 70,  tipo: 'pct',    label: '≥ 70%' },
+  close: { min: 20,  tipo: 'pct',    label: '≥ 20%' },
+  cash:  { min: 0,   tipo: 'soles',  label: 'crece vs semana previa' },
+  q2c:   { min: 40,  tipo: 'pct',    label: '≥ 40%' },
+};
+export function loadAurumScoreboard(): AurumScoreboardStore {
+  try {
+    const ls = (globalThis as any).localStorage;
+    if (ls) { const raw = ls.getItem(SCOREBOARD_KEY); if (raw) { const o = JSON.parse(raw); if (o && typeof o === 'object') return o; } }
+  } catch { /* sin storage */ }
+  return {};
+}
+export function saveAurumScoreboard(store: AurumScoreboardStore): void {
+  try { const ls = (globalThis as any).localStorage; if (ls) ls.setItem(SCOREBOARD_KEY, JSON.stringify(store)); } catch { /* ignore */ }
+}
+/** Semana ISO 'YYYY-Www' de una fecha (lunes = inicio). */
+export function aurumSemanaISO(date: Date = new Date()): string {
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const day = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - day);
+  const y0 = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  const w = Math.ceil(((d.getTime() - y0.getTime()) / 86400000 + 1) / 7);
+  return `${d.getUTCFullYear()}-W${String(w).padStart(2, '0')}`;
+}
+/** Semana ISO anterior a una dada ('YYYY-Www'). */
+export function aurumSemanaPrev(iso: string): string {
+  const m = /^(\d{4})-W(\d{2})$/.exec(iso); if (!m) return iso;
+  // jueves de esa semana ISO → restar 7 días → semana ISO
+  const y = +m[1], w = +m[2];
+  const jan4 = new Date(Date.UTC(y, 0, 4)); const day = jan4.getUTCDay() || 7;
+  const mon1 = new Date(jan4); mon1.setUTCDate(jan4.getUTCDate() - day + 1);
+  const thu = new Date(mon1); thu.setUTCDate(mon1.getUTCDate() + (w - 1) * 7 + 3 - 7);
+  return aurumSemanaISO(new Date(thu.getUTCFullYear(), thu.getUTCMonth(), thu.getUTCDate()));
+}
+/** Semáforo de una métrica: verde = meta cumplida · ámbar ≥ 70% de la meta · rojo. `gris` = sin dato. */
+export function aurumScoreSemaforo(key: AurumScoreKey, valor: number | undefined, prev?: number): 'verde' | 'ambar' | 'rojo' | 'gris' {
+  if (valor == null || Number.isNaN(valor)) return 'gris';
+  const meta = AURUM_SCOREBOARD_METAS[key];
+  if (meta.tipo === 'soles') {
+    if (prev == null) return valor > 0 ? 'ambar' : 'rojo';
+    return valor >= prev && valor > 0 ? 'verde' : valor > 0 ? 'ambar' : 'rojo';
+  }
+  return valor >= meta.min ? 'verde' : valor >= meta.min * 0.7 ? 'ambar' : 'rojo';
+}

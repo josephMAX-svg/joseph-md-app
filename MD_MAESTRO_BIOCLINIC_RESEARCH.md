@@ -179,8 +179,15 @@ Joseph prefiere **archivos Word/PowerPoint listos para usar** al final de cada c
 - **Variables:** IGA (ordinal 0–4) × CADI (ordinal 0–15).
 - **Diseño:** censal con criterio de inclusión (acné IGA ≥1); mujeres adolescentes.
 - **Resultados clave:** n censal = 865; n analítico = **316** casos confirmados; **Spearman rs = 0.637** (p<.001; IC95% bootstrap [0.563, 0.699]); **κ ponderado = 0.8125**; prevalencia **39.8%**; **70.6%** impacto moderado-severo en QoL.
-- **Salida:** publicar en **JAAD International** (primer autor; envío Jun–Jul 2026; waiver LMIC).
-- **Estado:** defendida; pipeline de titulación.
+- **Salida (actualizado 5-sep-2026):** reescribir como **research letter** (600-1.000 palabras, 1 tabla, 1 figura) y
+  someter en **feb-2027** con cascada **JAAD International (APC US$2.575 → ≈ $1.288 Grupo B) → IJD ($0) → Actas
+  (A VERIFICAR $0) → Anais ($0)**; primer autor Joseph, último autor Dr. Ciro. El envío "Jun–Jul 2026" no ocurrió.
+  Carpeta operativa: [`DATA/RESEARCH/TESIS_L0/`](DATA/RESEARCH/TESIS_L0/) (`etica.md` · `strobe_checklist.md` ·
+  `research_letter_outline.md`); presupuesto y mesa editorial en `DATA/RESEARCH/RUTA_PUBLICACION_2027.md` §3.1 y §9.
+- **Estado:** defendida (20-abr-2026); **manuscrito en borrador (outline)**; **bloqueo previo al envío**: nº/fecha de
+  aprobación del CEI y consentimiento parental + asentimiento documentados (estudio en menores) — sin eso JAAD Intl e
+  IJD rechazan de entrada; vía retrospectiva/expedita en `TESIS_L0/etica.md` §2. Permiso CADI: mensaje a Finlay en
+  `DATA/RESEARCH/MENTORES.md`.
 - **SR derivable:** "Instrumentos de QoL en acné (CADI/DLQI) en LMIC" → alimenta Línea 6.
 
 ### LÍNEA 1 — Topografía & Vascularización facial *(ESTÉTICA ESTRUCTURAL · núcleo de seguridad)*
@@ -452,6 +459,13 @@ milestones (id, phase, year, label, metric_target, metric_value, done boolean)
 **FMH UNCP:** Decano Dr. Milton Antonio Tello Cruz · Dir. Investigación Dra. Ana Cecilia Ho Palma · Secretaría `medicinahumana@uncp.edu.pe`.
 **Internacionales clave:** Finlay (Cardiff), Cotofana, de Maio, Braz, Rohrich, Hexsel, Meves (Mayo), Kimball (Harvard), Tan (Western), Daneshjou (Stanford), Rotemberg (MSK), Frank (LMU).
 **Stack:** Python (scipy/pandas/seaborn/matplotlib/statsmodels/lifelines/semopy) en Cursor; scripts `D:\motor_apex\`; Supabase; n8n; OpenClaw; Ollama Phi-4 Mini; Claude Max/API; Telegram @TesisAcneBot; python-docx/pptxgenjs. Hardware objetivo: Mac Mini M4 16GB. Infra: VPS Hetzner CX32 (~$8/mes).
+**Identificadores académicos (rellenar cuando existan; checklist "research-infra" de la app — añadido 5-sep-2026):**
+ORCID Joseph: `________-____-____-____` · ORCID Dr. Ciro: `________` · CTI Vitae / RENACYT (CONCYTEC): `________` ·
+Google Scholar: `________` · Editorial Manager (Elsevier: JAAD/JAAD Intl/JAAD CR): `usuario ________` · ScholarOne
+(Wiley: IJD/JCD; BJD): `________` · eScholarship/DOJ: `________` · PROSPERO: `________` · Rayyan: `________` ·
+Zotero: `________` · OpenAlex key / NCBI key: `________`. Ninguno existe a 5-sep-2026 (A VERIFICAR por Joseph).
+**CRM de mentores y senior authors:** [`DATA/RESEARCH/MENTORES.md`](DATA/RESEARCH/MENTORES.md) (Dr. Ciro · Rising
+Scholars/AuthorAID · Finlay · Cotofana · DIGA; mensajes de septiembre redactados, no enviados).
 
 ---
 

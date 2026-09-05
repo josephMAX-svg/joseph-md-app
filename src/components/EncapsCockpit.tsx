@@ -1,6 +1,7 @@
 // EncapsCockpit — componentes-firma del segmento ENCAPS: "sala de guerra / cockpit de examen".
-// HUD superior con cuenta regresiva al 20-ago, altímetro Go/No-Go >17/20, strip de telemetría
-// de rentabilidad por área (Bloomberg) y radar de repasos por prioridad.
+// HUD superior con cuenta regresiva al examen 2027-I, altímetro Go/No-Go, strip de telemetría v3
+// de rentabilidad por área (Bloomberg), radar de repasos por prioridad, serie de MINI-SIMS de viernes
+// contra la línea 18/25 y % CIEGO semanal (study_progress) contra la meta 85%.
 //
 // REGLAS: presentacional puro. NO recalcula fechas (recibe días de metrics), NO toca el motor
 // ni Supabase ni item_key. Numerales monoespaciados/tabulares (motivo Bloomberg/cockpit).
@@ -8,8 +9,9 @@ import React from 'react';
 import { View, Text, StyleSheet, Platform } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline } from '../theme/tokens';
 import {
-  ENCAPS_AREA_FORECAST, ENCAPS_CRITICAL_TOPICS, ENCAPS_VUELTAS_POR_PRIORIDAD,
+  ENCAPS_AREA_FORECAST, ENCAPS_CRITICAL_TOPICS, ENCAPS_REBOTE_TOPICS, ENCAPS_VUELTAS_POR_PRIORIDAD,
   ENCAPS_META_NOTA, ENCAPS_META_PCT, encapsGoZone, encapsGoColor, ENCAPS_TELEMETRY_META,
+  ENCAPS_MINISIM_META, encapsMiniSimZone, ENCAPS_CIEGO_META_PCT, ENCAPS_CIEGO_CRUCERO_PCT, encapsCiegoZone,
 } from '../lib/encapsRentabilidad';
 
 // Fuente monoespaciada táctica (numerales tabulares) — motivo terminal/cockpit.
@@ -159,15 +161,151 @@ export function RentabilidadStrip({ compact }: { compact?: boolean }) {
 
       {!compact && (
         <>
-          <Text style={styles.telSubhead}>▲ TICKERS CRÍTICOS · dominar o cae fuera de rango</Text>
+          <Text style={styles.telSubhead}>▲ 8 TICKERS CRÍTICOS v3 (~49% del examen) · dominar o cae fuera de rango</Text>
           <View style={styles.telTickers}>
             {ENCAPS_CRITICAL_TOPICS.map(t => (
               <View key={t.code} style={[styles.ticker, { borderColor: t.accent + '55' }]}>
                 <Text style={[styles.tickerCode, tabular, { color: t.accent }]}>{t.code}</Text>
+                {t.pct != null && <Text style={[styles.tickerPct, tabular]}>{t.pct}%</Text>}
                 <Text style={styles.tickerLabel} numberOfLines={1}>{t.label}</Text>
               </View>
             ))}
           </View>
+          <Text style={styles.telSubhead}>↩ ALTA CON FLAG DE REBOTE · aplastados en 2026-II, no enterrar</Text>
+          <View style={styles.telTickers}>
+            {ENCAPS_REBOTE_TOPICS.map(t => (
+              <View key={t.code} style={[styles.ticker, { borderColor: Colors.brass + '55', borderStyle: 'dashed' }]}>
+                <Text style={[styles.tickerCode, tabular, { color: Colors.brass }]}>{t.code}</Text>
+                {t.pct != null && <Text style={[styles.tickerPct, tabular]}>{t.pct}%</Text>}
+                <Text style={styles.tickerLabel} numberOfLines={1}>{t.label}</Text>
+              </View>
+            ))}
+          </View>
+        </>
+      )}
+    </View>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Serie de MINI-SIMS de viernes (25Q · 72 s/Q) contra la línea 18/25 (umbral) y 15/25 (alerta).
+// Recibe la serie ya derivada (encapsPlan.miniSimSerie): {semana, fecha, nota|null}.
+// ─────────────────────────────────────────────────────────────────────────────
+export interface MiniSimPuntoView { semana: number; fecha: string; nota: number | null; dia?: number }
+export function MiniSimTrend({ serie, compact }: { serie: MiniSimPuntoView[]; compact?: boolean }) {
+  const H = 72;
+  const total = ENCAPS_MINISIM_META.totalQ;
+  const conNota = serie.filter(s => s.nota != null);
+  const notas = conNota.map(s => s.nota as number);
+  const prom = notas.length ? notas.reduce((a, b) => a + b, 0) / notas.length : null;
+  const ult = notas.length ? notas[notas.length - 1] : null;
+  const prev3 = notas.slice(-6, -3), last3 = notas.slice(-3);
+  const avg = (a: number[]) => (a.length ? a.reduce((x, y) => x + y, 0) / a.length : null);
+  const tA = avg(prev3), tB = avg(last3);
+  const tendencia = tA != null && tB != null ? (tB - tA >= 1 ? '▲' : tB - tA <= -1 ? '▼' : '►') : '–';
+  const alerta = notas.length >= 2 && notas[notas.length - 1] < ENCAPS_MINISIM_META.alerta && notas[notas.length - 2] < ENCAPS_MINISIM_META.alerta;
+  const zone = encapsMiniSimZone(ult);
+  const zoneColor = encapsGoColor(zone);
+  const yPct = (v: number): `${number}%` => `${Math.round((v / total) * 100)}%`;
+  return (
+    <View style={styles.telBox}>
+      <View style={styles.telHeader}>
+        <Text style={styles.telTitle}>■ MINI-SIMS DE VIERNES · /{total}</Text>
+        <Text style={[styles.telEst, { color: zoneColor, borderColor: zoneColor + '55' }]}>
+          {ult != null ? `ÚLT ${ult}/${total}` : 'SIN NOTA'}
+        </Text>
+      </View>
+      <Text style={styles.telDisclaimer}>
+        umbral ≥{ENCAPS_MINISIM_META.umbral}/{total} hacia diciembre (línea oro) · alerta &lt;{ENCAPS_MINISIM_META.alerta}/{total} dos viernes seguidos (línea coral) → re-ponderar la semana siguiente
+      </Text>
+      <View style={[styles.msChart, { height: H }]}>
+        <View style={[styles.msLine, { bottom: yPct(ENCAPS_MINISIM_META.umbral), backgroundColor: Colors.gold }]} pointerEvents="none" />
+        <View style={[styles.msLine, { bottom: yPct(ENCAPS_MINISIM_META.alerta), backgroundColor: Colors.coral + '99' }]} pointerEvents="none" />
+        {serie.map(s => {
+          const z = encapsMiniSimZone(s.nota);
+          const h = s.nota == null ? 3 : Math.max(3, Math.round((s.nota / total) * H));
+          return (
+            <View key={s.semana} style={styles.msBarCol}>
+              <View style={[styles.msBar, { height: h, backgroundColor: s.nota == null ? Colors.muted + '66' : encapsGoColor(z) }]} />
+            </View>
+          );
+        })}
+      </View>
+      <View style={styles.msAxis}>
+        {serie.map(s => (
+          <Text key={s.semana} style={[styles.msAxisLabel, tabular]} numberOfLines={1}>
+            {compact ? '' : (s.semana % 2 === 1 ? String(s.fecha).slice(5).replace('-', '/') : '')}
+          </Text>
+        ))}
+      </View>
+      <View style={styles.altFooter}>
+        <Text style={styles.altFootHint}>
+          {conNota.length}/{serie.length} con nota · prom <Text style={[tabular, { color: Colors.champagne, fontWeight: '800' }]}>{prom != null ? prom.toFixed(1) : '––'}</Text> · tendencia {tendencia}
+        </Text>
+        <Text style={[styles.altFootHint, { color: alerta ? Colors.coral : Colors.muted, fontWeight: alerta ? '800' : '400' }]}>
+          {alerta ? '⚠ 2 viernes <15 → re-ponderar' : `nota en ▲ SIM (sim_n = día)`}
+        </Text>
+      </View>
+    </View>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// % CIEGO SEMANAL (correctas seguras / total) desde study_progress, contra la meta 85% (≥17/20)
+// y el crucero 75%. La última semana se desglosa por área contra el vector v3.
+// ─────────────────────────────────────────────────────────────────────────────
+export interface CiegoSemanaView { lunes: string; pct: number; n: number; rondas: number; porArea: Record<string, { pct: number; n: number }> }
+export function CiegoSemanalStrip({ semanas }: { semanas: CiegoSemanaView[] }) {
+  const H = 64;
+  const last = semanas.length ? semanas[semanas.length - 1] : null;
+  const zone = encapsCiegoZone(last?.pct);
+  const zoneColor = encapsGoColor(zone);
+  const vis = semanas.slice(-12);
+  return (
+    <View style={styles.telBox}>
+      <View style={styles.telHeader}>
+        <Text style={styles.telTitle}>■ % CIEGO SEMANAL · seguras / total</Text>
+        <Text style={[styles.telEst, { color: zoneColor, borderColor: zoneColor + '55' }]}>
+          {last ? `${last.pct}%` : 'SIN DATOS'}
+        </Text>
+      </View>
+      <Text style={styles.telDisclaimer}>
+        meta {ENCAPS_CIEGO_META_PCT}% (≥17/20, línea oro) · crucero {ENCAPS_CIEGO_CRUCERO_PCT}% en bancos del día · fuente: study_progress (cierre de 1 línea → gen_encaps_semana.js --sql)
+      </Text>
+      {vis.length === 0 ? (
+        <Text style={styles.msEmpty}>Sin cierres registrados todavía. Cada sesión termina con la línea de cierre (17:10) y el viernes se corre gen_encaps_semana.js: ahí nace esta serie.</Text>
+      ) : (
+        <>
+          <View style={[styles.msChart, { height: H }]}>
+            <View style={[styles.msLine, { bottom: `${ENCAPS_CIEGO_META_PCT}%`, backgroundColor: Colors.gold }]} pointerEvents="none" />
+            <View style={[styles.msLine, { bottom: `${ENCAPS_CIEGO_CRUCERO_PCT}%`, backgroundColor: Colors.brass + '88' }]} pointerEvents="none" />
+            {vis.map(s => (
+              <View key={s.lunes} style={styles.msBarCol}>
+                <View style={[styles.msBar, { height: Math.max(3, Math.round((s.pct / 100) * H)), backgroundColor: encapsGoColor(encapsCiegoZone(s.pct)) }]} />
+              </View>
+            ))}
+          </View>
+          <View style={styles.msAxis}>
+            {vis.map(s => (
+              <Text key={s.lunes} style={[styles.msAxisLabel, tabular]} numberOfLines={1}>{s.lunes.slice(5).replace('-', '/')}</Text>
+            ))}
+          </View>
+          {last && (
+            <View style={styles.ciegoAreas}>
+              {ENCAPS_AREA_FORECAST.map(a => {
+                const v = last.porArea[a.code];
+                const c = v ? encapsGoColor(encapsCiegoZone(v.pct)) : Colors.muted;
+                return (
+                  <View key={a.code} style={styles.ciegoArea}>
+                    <Text style={[styles.ciegoAreaCode, tabular, { color: a.accent }]}>{a.code}</Text>
+                    <Text style={[styles.ciegoAreaPct, tabular, { color: c }]}>{v ? `${v.pct}%` : '––'}</Text>
+                    <Text style={styles.ciegoAreaSub}>{v ? `${v.n}Q` : 'sin Q'} · v3 {a.pct}%</Text>
+                  </View>
+                );
+              })}
+            </View>
+          )}
+          <Text style={styles.altFootHint}>semana del {last?.lunes.slice(5)} · {last?.rondas} rondas · {last?.n}Q · brecha a 85%: {last ? `${Math.max(0, ENCAPS_CIEGO_META_PCT - last.pct)} pp` : '––'}</Text>
         </>
       )}
     </View>
@@ -264,7 +402,22 @@ const styles = StyleSheet.create({
   telTickers: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
   ticker: { flexDirection: 'row', alignItems: 'center', gap: 5, borderWidth: 1, borderRadius: BorderRadius.sm, paddingVertical: 3, paddingHorizontal: 7, backgroundColor: '#060A14' },
   tickerCode: { fontSize: FontSize.labelSm, fontWeight: '900', letterSpacing: 0.3 },
+  tickerPct: { fontSize: 9, fontWeight: '800', color: Colors.champagne },
   tickerLabel: { fontSize: 9, color: Colors.onSurfaceVariant, maxWidth: 130 },
+
+  // ── Mini-sims / % ciego (barras verticales sobre líneas de umbral)
+  msChart: { flexDirection: 'row', alignItems: 'flex-end', backgroundColor: '#060A14', borderRadius: BorderRadius.sm, borderWidth: 1, borderColor: Hairline.soft, paddingHorizontal: 4, paddingTop: 4, position: 'relative', overflow: 'hidden' },
+  msLine: { position: 'absolute', left: 0, right: 0, height: 1 },
+  msBarCol: { flex: 1, alignItems: 'center', justifyContent: 'flex-end', paddingHorizontal: 1 },
+  msBar: { width: '70%', borderTopLeftRadius: 2, borderTopRightRadius: 2 },
+  msAxis: { flexDirection: 'row', marginTop: 3 },
+  msAxisLabel: { flex: 1, fontSize: 8, color: Colors.muted, textAlign: 'center' },
+  msEmpty: { fontSize: FontSize.labelSm, color: Colors.muted, fontStyle: 'italic', lineHeight: 16, paddingVertical: Spacing.sm },
+  ciegoAreas: { flexDirection: 'row', marginTop: Spacing.sm, borderTopWidth: 1, borderTopColor: Hairline.soft, paddingTop: Spacing.sm },
+  ciegoArea: { flex: 1, alignItems: 'center' },
+  ciegoAreaCode: { fontSize: 9, fontWeight: '900', letterSpacing: 0.5 },
+  ciegoAreaPct: { fontSize: FontSize.bodyMd, fontWeight: '900', marginTop: 1 },
+  ciegoAreaSub: { fontSize: 8, color: Colors.muted, marginTop: 1 },
 
   // ── Radar leyenda
   radarLegend: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: Spacing.sm },

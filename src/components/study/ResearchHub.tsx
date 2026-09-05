@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Linking, Platform } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Linking, Platform, TextInput } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, Motion, LineHeight } from '../../theme/tokens';
 import { desktopStyles, DesktopColors } from '../../theme/desktopStyles';
 import { SectionLabel, Chip, GlassPanel, gridStyle, gridItemStyle } from '../empresa/primitives';
 import { RingStat, MegaStat, FadeUp, CommandBackdrop } from '../empresa/visuals';
 import {
-  RESEARCH_META, RESEARCH_KPIS, RESEARCH_TARGETS, RESEARCH_FASES, RESEARCH_MODULOS,
-  RESEARCH_JOURNALS, RESEARCH_PIPELINE, PIPELINE_NOTA, RESEARCH_HORARIO, RESEARCH_TIMELINE,
+  RESEARCH_META, RESEARCH_TARGETS, RESEARCH_FASES, RESEARCH_MODULOS,
+  RESEARCH_JOURNALS, RESEARCH_PIPELINE, PIPELINE_NOTA,
   RESEARCH_ADVERTENCIAS, VUELTAS, PRIORIDAD_COLOR, diaEstudioTipo, Prioridad,
+  RESEARCH_ENTREGABLES, ESTADOS_ENTREGABLE, ESTADO_ENTREGABLE_INFO, PASOS_ENTREGABLE, ENVIADO_O_MAS,
+  INFRA_ACADEMICA, loadEntregables, saveEntregables, estadoDe, calcResearchKpis,
+  Entregable, EstadoEntregable, EntregablesRegistro, EntregableRegistro, ResearchKpis,
 } from '../../lib/researchData';
-import { RESEARCH_RECURSOS_TOP, RESEARCH_MAESTRIA, REC } from '../../lib/researchDailyPlan';
+import { RESEARCH_RECURSOS_TOP, RESEARCH_MAESTRIA, REC, RESEARCH_HITOS, PISTA_INFO, DAILY_META } from '../../lib/researchDailyPlan';
+import { loadDone, saveDone } from '../../lib/studyProgress';
+import { researchObsUrlEntregable } from '../../lib/obsidianResearchMap';
 import { getResearchEngineState } from '../../lib/supabase';
 import { ResearchFonts, ensureResearchFonts, serifTitle, InkColors } from './researchTheme';
 import ResearchTodayPlan from './ResearchTodayPlan';
@@ -22,12 +27,25 @@ import AIFirstPanel from './AIFirstPanel';
  * CUADERNO DE LABORATORIO EDITORIAL / research desk de revista científica (Elicit/Nature/NEJM).
  * En vez del hero degradado + PillTabs compartidos con USMLE/MIR, tiene un MASTHEAD editorial
  * (serif, con el status del motor y el PIP counter en oro) y pestañas tipo revista (subrayado oro).
- * "Hoy" = motor día-a-día de revisiones sistemáticas; "Sistema" = sistema agéntico (el corazón);
- * "Líneas" = las 8 líneas; "Panel" = el desk (KPIs, fases, journals, maestría transversal, timeline).
+ * "Hoy" = motor día-a-día (3 pistas: carta · tesis · case report + SR-1); "Sistema" = sistema agéntico;
+ * "Líneas" = las 8 líneas; "Panel" = el desk: MESA EDITORIAL (estado real de los 5 entregables de la
+ * RUTA 2027, persistido en localStorage 'jmd-research-entregables'), checklist INFRA ACADÉMICA (10 cuentas,
+ * PlanKey 'research-infra'), KPIs derivados de ambos, fases, journals, maestría transversal.
+ * (05-sep-2026) Sustituye a "Timeline 0→primer paper" y "Micro-horario": eran calendarios contradictorios.
  */
 const TEAL = RESEARCH_META.accent;   // #6BB8B0 (token)
 const GOLD = InkColors.gold;         // #C8A96A — capa de estatus (manuscrito/PIP/sellos)
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
+function todayISO(): string {
+  try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; }
+  catch { return DAILY_META.inicio; }
+}
+function fmtFecha(iso: string): string {
+  const dias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+  try { const d = new Date(iso + 'T12:00:00'); return `${dias[d.getDay()]} ${iso.slice(8, 10)}-${iso.slice(5, 7)}-${iso.slice(0, 4)}`; } catch { return iso; }
+}
+const MESES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+function fmtMes(ym: string): string { const m = Number(ym.slice(5, 7)); return m >= 1 && m <= 12 ? `${MESES[m - 1]}-${ym.slice(0, 4)}` : ym; }
 
 type Sub = 'hoy' | 'sistema' | 'lineas' | 'panel';
 
@@ -53,7 +71,7 @@ function VueltasDots({ prioridad }: { prioridad: Prioridad }) {
 }
 
 /** MASTHEAD editorial — masthead de revista: título serif + status del motor + PIP counter en oro. */
-function EditorialMasthead({ hoy }: { hoy: 'research' | 'derma' | 'descanso' }) {
+function EditorialMasthead({ hoy, kpis }: { hoy: 'research' | 'derma' | 'descanso'; kpis: ResearchKpis }) {
   const [run, setRun] = useState<string>('idle');
   const [papersToday, setPapersToday] = useState<number | null>(null);
   useEffect(() => {
@@ -99,15 +117,20 @@ function EditorialMasthead({ hoy }: { hoy: 'research' | 'derma' | 'descanso' }) 
             </View>
           </View>
 
-          {/* PIP counter — el objeto de máximo valor: en ORO */}
+          {/* PIP counter — el objeto de máximo valor: en ORO (derivado de la Mesa editorial) */}
           <View style={mh.pipRow}>
             <View style={mh.pipCell}>
-              <Text style={[mh.pipVal, { color: GOLD }]}>{RESEARCH_KPIS.pipsActuales}</Text>
+              <Text style={[mh.pipVal, { color: GOLD }]}>{kpis.pipsActuales}</Text>
               <Text style={mh.pipLbl}>PIP INDEXADOS</Text>
             </View>
             <View style={mh.pipDivider} />
             <View style={mh.pipCell}>
-              <Text style={[mh.pipVal, { color: InkColors.ink }]}>{RESEARCH_KPIS.pipsParaCompetir}</Text>
+              <Text style={[mh.pipVal, { color: InkColors.brass }]}>{kpis.enviados}</Text>
+              <Text style={mh.pipLbl}>ENVIADOS</Text>
+            </View>
+            <View style={mh.pipDivider} />
+            <View style={mh.pipCell}>
+              <Text style={[mh.pipVal, { color: InkColors.ink }]}>{kpis.pipsParaCompetir}</Text>
               <Text style={mh.pipLbl}>META · COMPETIR</Text>
             </View>
           </View>
@@ -151,20 +174,172 @@ function JournalTabs({ sub, setSub }: { sub: Sub; setSub: (s: Sub) => void }) {
   );
 }
 
-/** Panel = el "desk" editorial (KPIs, fases, targets, currículo, maestría, journals, timeline, advertencias). */
-function PanelView() {
+function ProgressBar({ pct, color }: { pct: number; color: string }) {
+  return (
+    <View style={st.barTrack}>
+      <View style={[st.barFill, { width: (`${Math.max(0, Math.min(100, pct))}%` as any), backgroundColor: color }]} />
+    </View>
+  );
+}
+
+/** Selector de estado editorial (8 pasos, persistido). */
+function EstadoSelector({ value, onChange }: { value: EstadoEntregable; onChange: (s: EstadoEntregable) => void }) {
+  return (
+    <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6 }}>
+      {ESTADOS_ENTREGABLE.map((s) => {
+        const info = ESTADO_ENTREGABLE_INFO[s];
+        const on = s === value;
+        return (
+          <TouchableOpacity key={s} activeOpacity={0.8} onPress={() => onChange(s)}
+            style={[st.estBtn, { borderColor: info.color + (on ? 'CC' : '3A') }, on && { backgroundColor: info.color + '22' }]}>
+            <Text style={[st.estTxt, { color: on ? info.color : Colors.muted }]}>{on ? '● ' : '○ '}{info.lbl}</Text>
+          </TouchableOpacity>
+        );
+      })}
+    </View>
+  );
+}
+
+/** Tarjeta de un entregable de la Mesa editorial: estado real + hito del plan + cascada + senior author. */
+function EntregableCard({ e, reg, onChange }: { e: Entregable; reg: EntregablesRegistro; onChange: (id: string, patch: Partial<EntregableRegistro>) => void }) {
+  const estado = estadoDe(e, reg);
+  const info = ESTADO_ENTREGABLE_INFO[estado];
+  const hito = RESEARCH_HITOS[e.id];
+  const pista = PISTA_INFO[e.pista];
+  const r = reg[e.id];
+  const pct = Math.round((info.paso / PASOS_ENTREGABLE) * 100);
+  const obs = researchObsUrlEntregable(e.id);
+  const hoy = todayISO();
+  const atrasado = !!hito && hoy > hito.fecha && !ENVIADO_O_MAS.has(estado);
+  const [ref, setRef] = useState<string>(r?.ref ?? '');
+  const cambiarEstado = (s: EstadoEntregable) => {
+    const patch: Partial<EntregableRegistro> = { estado: s };
+    if (ENVIADO_O_MAS.has(s) && !r?.fechaEnvio) patch.fechaEnvio = hoy;
+    if (!ENVIADO_O_MAS.has(s)) patch.fechaEnvio = null;
+    onChange(e.id, patch);
+  };
+  return (
+    <View style={[st.entCard, { borderLeftColor: pista.color }, atrasado && { borderColor: Colors.coral + '66' }]}>
+      <Text style={st.protoMark}>{`Nº ${String(e.n).padStart(2, '0')}`}</Text>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap', paddingRight: 44 }}>
+        <Chip label={`pista ${e.pista} · ${pista.label}`} color={pista.color} small />
+        <Chip label={info.lbl} color={info.color} small solid />
+        {e.esPIP ? <Chip label="PIP" color={GOLD} small /> : <Chip label="registro" color={Colors.muted} small />}
+        {atrasado && <Chip label="ATRASADO vs plan" color={Colors.coral} small />}
+      </View>
+      <Text style={[st.entTitle, serifTitle]}>{e.titulo}</Text>
+      <Text style={st.entTipo}>{e.tipo} · guía: {e.guia}</Text>
+      <View style={{ marginTop: 8 }}><ProgressBar pct={pct} color={info.color} /></View>
+
+      <View style={st.entGrid}>
+        <View style={st.entCell}>
+          <Text style={st.entLbl}>HITO DEL PLAN</Text>
+          <Text style={[st.entVal, atrasado && { color: Colors.coral }]}>{hito ? `${hito.code} · ${fmtFecha(hito.fecha)} (ciclo ${hito.ciclo})` : '—'}</Text>
+          <Text style={st.entSub}>mes RUTA: {fmtMes(e.fechaObjetivo)} · átomos {e.atomos}</Text>
+        </View>
+        <View style={st.entCell}>
+          <Text style={st.entLbl}>SENIOR AUTHOR / EQUIPO</Text>
+          <Text style={st.entVal}>{e.seniorAuthor}</Text>
+        </View>
+        <View style={st.entCell}>
+          <Text style={st.entLbl}>COSTE</Text>
+          <Text style={st.entVal}>{e.coste}</Text>
+        </View>
+        <View style={st.entCell}>
+          <Text style={st.entLbl}>ENVÍO REAL</Text>
+          <Text style={st.entVal}>{r?.fechaEnvio ? fmtFecha(r.fechaEnvio) : 'aún no enviado'}{r?.ref ? ` · ${r.ref}` : ''}</Text>
+          {e.doi ? <Text style={st.entSub}>DOI {e.doi}</Text> : null}
+        </View>
+      </View>
+
+      <Text style={st.entLbl}>CASCADA DE REVISTAS (una a la vez)</Text>
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 4, marginBottom: 8 }}>
+        {e.journalCascade.map((j, i) => (
+          <View key={i} style={[st.cascade, i === 0 && { borderColor: GOLD + '66', backgroundColor: GOLD + '0C' }]}>
+            <Text style={[st.cascadeTxt, i === 0 && { color: GOLD }]}>{i + 1}. {j}</Text>
+          </View>
+        ))}
+      </View>
+
+      <Text style={st.entNota}>{e.nota}</Text>
+
+      <Text style={[st.entLbl, { marginTop: 10 }]}>ESTADO (se guarda en este dispositivo)</Text>
+      <View style={{ marginTop: 6 }}><EstadoSelector value={estado} onChange={cambiarEstado} /></View>
+
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 10, flexWrap: 'wrap' }}>
+        <TextInput value={ref} onChangeText={setRef} onBlur={() => onChange(e.id, { ref: ref.trim() || null })}
+          placeholder="nº de manuscrito / DOI" placeholderTextColor={Colors.muted} style={st.input} />
+        {obs && (
+          <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(obs)} style={[st.link, { borderColor: Colors.purple + '66' }]}>
+            <Text style={[st.linkText, { color: Colors.purple }]}>◆ carpeta en Obsidian ↗</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+    </View>
+  );
+}
+
+/** Checklist "Infra académica" (10 cuentas · átomo R0) persistida con PlanKey 'research-infra'. */
+function InfraChecklist({ done, onToggle }: { done: Set<number>; onToggle: (n: number) => void }) {
+  const total = INFRA_ACADEMICA.length;
+  const pct = Math.round((done.size / total) * 100);
+  return (
+    <GlassPanel style={{ marginBottom: Spacing.xl, padding: Spacing.md }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+        <Text style={[st.h3, serifTitle, { marginBottom: 0 }]}>Infra académica · {done.size}/{total} cuentas</Text>
+        <Text style={[st.pctTxt, { color: pct === 100 ? InkColors.jade : TEAL }]}>{pct}%</Text>
+      </View>
+      <ProgressBar pct={pct} color={pct === 100 ? InkColors.jade : TEAL} />
+      <Text style={[st.smallNote, { marginTop: 6, marginBottom: 6 }]}>
+        Átomo R0 (D1 del plan). Cada cuenta son 10-15 min; se descubren faltantes el día del submit si no están.
+        Guarda los IDs (ORCID iD, CTI Vitae) en DATA/RESEARCH/MENTORES.md §Identificadores.
+      </Text>
+      {INFRA_ACADEMICA.map((it) => {
+        const ok = done.has(it.n);
+        return (
+          <View key={it.id} style={[st.infraRow, ok && { backgroundColor: InkColors.jade + '0E' }]}>
+            <TouchableOpacity activeOpacity={0.7} onPress={() => onToggle(it.n)} hitSlop={{ top: 8, bottom: 8, left: 8, right: 4 }}>
+              <Text style={[st.infraChk, { color: ok ? InkColors.jade : 'rgba(255,255,255,0.25)' }]}>{ok ? '☑' : '☐'}</Text>
+            </TouchableOpacity>
+            <View style={{ flex: 1 }}>
+              <Text style={[st.infraName, ok && { color: InkColors.jade }]}>{it.n}. {it.nombre}</Text>
+              <Text style={st.infraPara}>{it.para}</Text>
+              <Text style={st.infraNota}>{it.nota}</Text>
+            </View>
+            {it.url ? (
+              <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(it.url!)} style={[st.verBtn, { borderColor: TEAL + '88' }]}>
+                <Text style={[st.verTxt, { color: TEAL }]}>abrir ↗</Text>
+              </TouchableOpacity>
+            ) : (
+              <Chip label="A VERIFICAR" color={Colors.brass} small />
+            )}
+          </View>
+        );
+      })}
+    </GlassPanel>
+  );
+}
+
+/** Panel = el "desk" editorial (KPIs derivados, MESA EDITORIAL, infra, fases, targets, currículo, maestría, journals, advertencias). */
+function PanelView({ reg, onChange, infra, onToggleInfra, kpis }: {
+  reg: EntregablesRegistro; onChange: (id: string, patch: Partial<EntregableRegistro>) => void;
+  infra: Set<number>; onToggleInfra: (n: number) => void; kpis: ResearchKpis;
+}) {
+  const proximo = [...RESEARCH_ENTREGABLES]
+    .filter((e) => !ENVIADO_O_MAS.has(estadoDe(e, reg)) && RESEARCH_HITOS[e.id])
+    .sort((a, b) => RESEARCH_HITOS[a.id].fecha.localeCompare(RESEARCH_HITOS[b.id].fecha))[0];
   return (
     <View>
       {/* MEGA STAT */}
-      <MegaStat value={RESEARCH_KPIS.pipsParaCompetir} label="Publicaciones indexadas para competir" accent={GOLD}
-        footnote={`8–15 para nivel Mayo (stretch) · hoy tienes ${RESEARCH_KPIS.pipsActuales}`} />
+      <MegaStat value={kpis.pipsParaCompetir} label="Publicaciones indexadas para competir" accent={GOLD}
+        footnote={`8–15 para nivel Mayo (stretch) · hoy tienes ${kpis.pipsActuales} · ${kpis.enviados}/${RESEARCH_ENTREGABLES.length} entregables enviados`} />
 
-      {/* RINGS */}
+      {/* RINGS (derivados de la Mesa editorial + infra) */}
       <View style={st.ringRow}>
-        <View style={st.ringCard}><RingStat value={RESEARCH_KPIS.pipsActuales} max={3} label="PIPs hoy" sub="indexadas reales" accent={Colors.coral} /></View>
-        <View style={st.ringCard}><RingStat value={RESEARCH_KPIS.pipsParaCompetir} max={15} label="Meta competir" sub="≈3 PIPs" accent={GOLD} /></View>
-        <View style={st.ringCard}><RingStat value={RESEARCH_KPIS.primerSubmissionMes} max={6} label="1er submission" sub="mes" accent={Colors.brass} /></View>
-        <View style={st.ringCard}><RingStat value={RESEARCH_KPIS.readiness} label="Readiness" sub="perfil research" accent={Colors.blue} suffix="%" /></View>
+        <View style={st.ringCard}><RingStat value={kpis.pipsActuales} max={3} label="PIPs hoy" sub="aceptadas/publicadas" accent={Colors.coral} /></View>
+        <View style={st.ringCard}><RingStat value={kpis.enviados} max={RESEARCH_ENTREGABLES.length} label="Enviados" sub={`de ${RESEARCH_ENTREGABLES.length} entregables`} accent={GOLD} /></View>
+        <View style={st.ringCard}><RingStat value={kpis.primerSubmissionMes} max={6} label="1er submission" sub="mes de la RUTA (sep=1)" accent={Colors.brass} /></View>
+        <View style={st.ringCard}><RingStat value={kpis.readiness} label="Readiness" sub="30 % infra + 70 % mesa" accent={Colors.blue} suffix="%" /></View>
       </View>
 
       {/* CUELLO DE BOTELLA */}
@@ -172,6 +347,23 @@ function PanelView() {
         <Text style={[st.h3, serifTitle]}>El cuello de botella real</Text>
         <Text style={st.body}>{RESEARCH_META.cuelloBotella}</Text>
       </GlassPanel>
+
+      {/* ★ MESA EDITORIAL — sustituye a Timeline + Micro-horario */}
+      <SectionLabel>★ Mesa editorial · los 5 entregables de la RUTA 2027 (estado real)</SectionLabel>
+      <Text style={st.desk}>
+        Un solo calendario: el hito de cada tarjeta es la fecha del átomo que lo cierra en el plan día-a-día
+        (se re-fecha con el pipeline). El estado lo marcas tú; "enviado" registra la fecha automáticamente.
+        {proximo ? ` Próximo hito pendiente: ${proximo.titulo} → ${RESEARCH_HITOS[proximo.id].code} ${fmtFecha(RESEARCH_HITOS[proximo.id].fecha)}.` : ' Todos los entregables están enviados.'}
+      </Text>
+      <View style={{ marginBottom: Spacing.xl }}>
+        {[...RESEARCH_ENTREGABLES].sort((a, b) => a.n - b.n).map((e, i) => (
+          <FadeUp key={e.id} delay={i * 50}><EntregableCard e={e} reg={reg} onChange={onChange} /></FadeUp>
+        ))}
+      </View>
+
+      {/* ★ INFRA ACADÉMICA — checklist persistida (PlanKey 'research-infra') */}
+      <SectionLabel>★ Infra académica · 10 cuentas del circuito editorial (átomo R0)</SectionLabel>
+      <InfraChecklist done={infra} onToggle={onToggleInfra} />
 
       {/* FASES — protocolo numerado */}
       <SectionLabel>Ruta por fases · MIR → Mayo</SectionLabel>
@@ -304,17 +496,6 @@ function PanelView() {
         ))}
       </View>
 
-      {/* MICRO-HORARIO */}
-      <SectionLabel>Micro-horario · 1h/día (días Research)</SectionLabel>
-      <View style={[{ flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm, marginBottom: Spacing.xl }]}>
-        {RESEARCH_HORARIO.map((h, i) => (
-          <View key={i} style={st.horCard}>
-            <Text style={[st.horDia, { color: TEAL }]}>{h.dia}</Text>
-            <Text style={st.horFoco}>{h.foco}</Text>
-          </View>
-        ))}
-      </View>
-
       {/* PIPELINE AGÉNTICO (resumen — detalle en pestaña Sistema) */}
       <SectionLabel>Pipeline agéntico de papers (8 agentes + gates humanos)</SectionLabel>
       <View style={[gridStyle(160), { marginBottom: Spacing.sm }]}>
@@ -345,18 +526,6 @@ function PanelView() {
         ))}
       </View>
 
-      {/* TIMELINE */}
-      <SectionLabel>Timeline · 0 → primer paper</SectionLabel>
-      <GlassPanel style={{ marginBottom: Spacing.xl }}>
-        {RESEARCH_TIMELINE.map((t, i) => (
-          <View key={i} style={[st.tlRow, i === 0 && { borderTopWidth: 0 }]}>
-            <View style={[st.tlBadge, { backgroundColor: TEAL + '1A' }]}><Text style={[st.tlSem, { color: TEAL }]}>{t.sem}</Text></View>
-            <Text style={st.tlFoco}>{t.foco}</Text>
-            <Text style={st.tlOut}>{t.out}</Text>
-          </View>
-        ))}
-      </GlassPanel>
-
       {/* ADVERTENCIAS */}
       <SectionLabel>Honestidad (no inventado)</SectionLabel>
       <GlassPanel accent={Colors.brass} style={{ marginBottom: Spacing.xl }}>
@@ -375,6 +544,23 @@ export default function ResearchHub({ variant = 'mobile' }: { variant?: 'mobile'
   const isDesktop = variant === 'desktop';
   const hoy = diaEstudioTipo(new Date());
   const [sub, setSub] = useState<Sub>('hoy');
+  // Estado real de la Mesa editorial (localStorage 'jmd-research-entregables') + checklist infra (PlanKey 'research-infra').
+  const [reg, setReg] = useState<EntregablesRegistro>(() => loadEntregables());
+  const [infra, setInfra] = useState<Set<number>>(() => new Set(loadDone('research-infra')));
+  const kpis = calcResearchKpis(reg, infra.size);
+  const onChange = (id: string, patch: Partial<EntregableRegistro>) => setReg((prev) => {
+    const base = RESEARCH_ENTREGABLES.find((e) => e.id === id);
+    const cur: EntregableRegistro = prev[id] ?? { estado: base ? base.estado : 'idea' };
+    const next: EntregablesRegistro = { ...prev, [id]: { ...cur, ...patch, actualizado: todayISO() } };
+    saveEntregables(next);
+    return next;
+  });
+  const onToggleInfra = (n: number) => setInfra((prev) => {
+    const s = new Set(prev);
+    if (s.has(n)) s.delete(n); else s.add(n);
+    saveDone('research-infra', Array.from(s));
+    return s;
+  });
   useEffect(() => { ensureResearchFonts(); }, []);
   const contentStyle = isDesktop
     ? desktopStyles.centerScrollContent
@@ -387,7 +573,7 @@ export default function ResearchHub({ variant = 'mobile' }: { variant?: 'mobile'
         <CommandBackdrop />
 
         {/* MASTHEAD EDITORIAL (reemplaza el GradientHero compartido) */}
-        <EditorialMasthead hoy={hoy} />
+        <EditorialMasthead hoy={hoy} kpis={kpis} />
 
         <AIFirstPanel segmento="research" accent={TEAL} />
 
@@ -403,7 +589,7 @@ export default function ResearchHub({ variant = 'mobile' }: { variant?: 'mobile'
         {sub === 'hoy' ? <ResearchTodayPlan />
           : sub === 'sistema' ? <ResearchAgenticSystem />
           : sub === 'lineas' ? <ResearchLinesExplorer />
-          : <PanelView />}
+          : <PanelView reg={reg} onChange={onChange} infra={infra} onToggleInfra={onToggleInfra} kpis={kpis} />}
       </View>
     </ScrollView>
   );
@@ -440,7 +626,7 @@ const mh = StyleSheet.create({
   sub: { fontSize: FontSize.bodyMd, color: InkColors.teal, marginTop: 2, fontWeight: '600', letterSpacing: 0.2 },
   tesis: { fontSize: FontSize.labelLg, color: Colors.onSurfaceVariant, marginTop: Spacing.md, lineHeight: 21, maxWidth: 640 },
 
-  statusCol: { alignItems: 'stretch', gap: Spacing.sm, minWidth: 210 },
+  statusCol: { alignItems: 'stretch', gap: Spacing.sm, minWidth: 230 },
   engineChip: {
     flexDirection: 'row', alignItems: 'center', gap: 9,
     borderWidth: 1, borderRadius: BorderRadius.md, paddingVertical: 8, paddingHorizontal: 11,
@@ -490,9 +676,38 @@ const st = StyleSheet.create({
   body: { fontSize: FontSize.bodyMd, color: Colors.onSurfaceVariant, lineHeight: LineHeight.bodyMd },
   desk: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: LineHeight.labelMd, marginBottom: Spacing.md, marginTop: -4 },
   smallNote: { fontSize: FontSize.labelMd, color: Colors.muted, lineHeight: 17 },
+  pctTxt: { fontSize: FontSize.bodyLg, fontWeight: '900', letterSpacing: -0.3 },
 
   ringRow: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.md, marginBottom: Spacing.lg },
   ringCard: { flex: 1, minWidth: 140, backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.xl, borderWidth: 1, borderColor: Hairline.soft, paddingVertical: Spacing.lg, paddingHorizontal: Spacing.md, alignItems: 'center', ...Elevation.sm },
+
+  barTrack: { height: 6, borderRadius: 3, backgroundColor: 'rgba(255,255,255,0.08)', overflow: 'hidden' },
+  barFill: { height: 6, borderRadius: 3, ...(Platform.OS === 'web' ? { transition: Motion.spring } as any : {}) },
+
+  // Mesa editorial
+  entCard: { ...cardBase, borderLeftWidth: 3, marginBottom: Spacing.md, position: 'relative' },
+  entTitle: { fontSize: FontSize.titleMd, fontWeight: '700', color: Colors.onSurface, marginTop: 8, letterSpacing: -0.3, lineHeight: 24 },
+  entTipo: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 3, lineHeight: 16 },
+  entGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.md, marginTop: 10, marginBottom: 10 },
+  entCell: { flex: 1, minWidth: 180 },
+  entLbl: { fontSize: 9, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 0.8, textTransform: 'uppercase' },
+  entVal: { fontSize: FontSize.labelMd, color: Colors.onSurface, marginTop: 3, lineHeight: 16, fontWeight: '600' },
+  entSub: { fontSize: 9, color: Colors.muted, marginTop: 2, lineHeight: 13 },
+  entNota: { fontSize: FontSize.labelSm, color: Colors.muted, fontStyle: 'italic', lineHeight: 15 },
+  cascade: { borderWidth: 1, borderColor: Hairline.medium, borderRadius: BorderRadius.md, paddingVertical: 4, paddingHorizontal: 8, backgroundColor: 'rgba(255,255,255,0.03)' },
+  cascadeTxt: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, fontWeight: '600' },
+  estBtn: { borderWidth: 1, borderRadius: BorderRadius.full, paddingVertical: 4, paddingHorizontal: 9, ...WEB_LINK },
+  estTxt: { fontSize: FontSize.labelSm, fontWeight: '700', letterSpacing: 0.2 },
+  input: { borderWidth: 1, borderColor: Hairline.medium, borderRadius: BorderRadius.md, paddingVertical: 5, paddingHorizontal: 9, color: Colors.onSurface, fontSize: FontSize.labelSm, minWidth: 180, backgroundColor: 'rgba(255,255,255,0.03)' },
+
+  // Infra académica
+  infraRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 8, paddingHorizontal: 6, borderTopWidth: 1, borderTopColor: Hairline.soft, borderRadius: BorderRadius.sm },
+  infraChk: { fontSize: 17, width: 22, textAlign: 'center' },
+  infraName: { fontSize: FontSize.labelMd, fontWeight: '700', color: Colors.onSurface },
+  infraPara: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, marginTop: 2, lineHeight: 14 },
+  infraNota: { fontSize: 9, color: Colors.muted, marginTop: 2, lineHeight: 12 },
+  verBtn: { borderWidth: 1, borderRadius: BorderRadius.md, paddingVertical: 6, paddingHorizontal: 10, alignItems: 'center', ...WEB_LINK },
+  verTxt: { fontSize: FontSize.labelSm, fontWeight: '800', letterSpacing: 0.2 },
 
   faseCard: { ...cardBase, borderLeftWidth: 3, minHeight: 150 },
   protoMark: { position: 'absolute', top: 8, right: 12, fontSize: FontSize.labelSm, color: Colors.smallLabel, fontWeight: '800', letterSpacing: 1, opacity: 0.6, fontFamily: ResearchFonts.serif as any },
@@ -516,10 +731,6 @@ const st = StyleSheet.create({
   drillLbl: { fontSize: 9, fontWeight: '800', color: InkColors.gold, letterSpacing: 1, textTransform: 'uppercase' },
   drillTxt: { fontSize: FontSize.labelMd, color: Colors.onSurface, marginTop: 4, lineHeight: 16 },
 
-  horCard: { flex: 1, minWidth: 120, ...cardBase, padding: Spacing.md },
-  horDia: { fontSize: FontSize.labelLg, fontWeight: '800', letterSpacing: 0.2 },
-  horFoco: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, marginTop: 5, lineHeight: 15 },
-
   pipeCard: { ...cardBase, padding: Spacing.md, minHeight: 110 },
   pipeId: { fontSize: FontSize.titleMd, fontWeight: '800', opacity: 0.7, letterSpacing: -0.3, fontFamily: ResearchFonts.serif as any },
   pipeName: { fontSize: FontSize.labelLg, fontWeight: '700', color: Colors.onSurface, marginTop: 3, letterSpacing: -0.2 },
@@ -528,12 +739,6 @@ const st = StyleSheet.create({
 
   jCard: { ...cardBase, ...WEB_LINK },
   jName: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, marginBottom: 7, letterSpacing: -0.2 },
-
-  tlRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: Spacing.md, borderTopWidth: 1, borderTopColor: Hairline.soft, gap: Spacing.sm },
-  tlBadge: { borderRadius: BorderRadius.md, paddingVertical: 4, paddingHorizontal: 9, minWidth: 64, alignItems: 'center' },
-  tlSem: { fontSize: FontSize.labelSm, fontWeight: '800', letterSpacing: 0.2 },
-  tlFoco: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 16 },
-  tlOut: { fontSize: FontSize.labelSm, color: Colors.onSurface, fontWeight: '600', width: 96, textAlign: 'right' },
 
   link: { backgroundColor: 'rgba(255,255,255,0.04)', borderRadius: BorderRadius.md, borderWidth: 1, borderColor: Hairline.medium, paddingVertical: 6, paddingHorizontal: 10, maxWidth: '100%', ...WEB_LINK },
   linkText: { fontSize: FontSize.labelSm, color: TEAL, fontWeight: '600', letterSpacing: 0.2 },

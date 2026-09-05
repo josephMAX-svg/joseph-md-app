@@ -9,7 +9,17 @@
 
 - **Filosofía**: builder, no estudiante. Cada semana termina **1 proyecto real** que sirva a los
   sistemas propios. Cero teoría de sintaxis; la teoría estructurada vive en la misión SYNAPSE de
-  las 12:30 (30') y los bloques PC de sáb/dom 15:00 son para terminar/pulir (SHIP).
+  las 12:30 (30' · desde v5.7 su F1 = el stack que el vibecoding necesita: Claude Code docs, Academy,
+  Supabase, n8n) · **sábado PC 15:00-17:00 = SHIP** del proyecto de la semana · domingo = Feynman 10' opcional.
+- **Currículo (v5.7, 5-sep)**: `DATA/SYNAPSE/VIBECODING_12_PROYECTOS.md` — 12 proyectos S1-S12 (lun 7-sep →
+  vie 27-nov) sembrados del backlog REAL (S1 parser APEX · S2 telemetría Anki · S3 scores USMLE · S4 revisión
+  semanal · S5 remap verificado · S6 RLS datos_tesis · S7 puente VITALS · S8 motor ENCAPS (deload) · S9 overlays
+  hitos · S10 bot WhatsApp→OCR · S11 contenido marcas · S12 capstone). Fuente única `vibecoding_proyectos.json`
+  → `node DATA/_scripts/gen_vibecoding_plan.js <fecha>` → `src/lib/vibecodingPlan.ts` (5 pasos L-V por proyecto).
+- **En la app**: bloque 04:15 de MISIÓN DE HOY = paso del día + docs ↗; el ✓ diario vive en SYNAPSE → ⚡ run
+  (PlanKey `vibecoding`, `studyProgress.ts`); KPI "ship 04:15 N/12" en el hub. Se mide por entregable
+  (commit / URL viva / test verde), nunca por tiempo sentado. Ritual de cierre: sáb 07:15 revisión semanal
+  (`DATA/REVISION_SEMANAL.md`, métrica 7 = proyecto shipped sí/no).
 - **Ciclo diario (45')**: 5' definir el objetivo → 35' construir con Claude Code → 5' commit +
   nota de lo aprendido en `synapse-journal`.
 - **Rotación semanal de proyectos** (repite subiendo nivel):

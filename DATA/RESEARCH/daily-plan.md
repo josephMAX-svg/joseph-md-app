@@ -1,293 +1,263 @@
-# Plan DÍA-A-DÍA de Research — motor de revisiones sistemáticas (mismo molde que USMLE/MIR)
+# Plan DÍA-A-DÍA de Research — 3 pistas alineadas con la RUTA de publicación 2027
 
-> ⚠ **Fechas de este doc DESACTUALIZADAS — re-fechado a D1=7-sep-2026 (v5.6); fuente de verdad = el `.ts`**
-> (`src/lib/researchDailyPlan.ts`: 42 átomos = 40 + 2 colchón, Research D1 = mar 8-sep-2026 [el lun 7-sep
-> es Derma por paridad], interdiario con Derma, sáb+dom libres, salta 25-dic/31-dic/1-ene). Las columnas
-> `fecha` de §5 y el `DAILY_META` de §8 (jun→sep-2026) son históricas; el contenido de los átomos sigue vigente.
+> **GENERADO por DATA/_scripts/gen_research_plan.js (2026-09-05) — NO editar a mano: `node DATA/_scripts/gen_research_plan.js [YYYY-MM-DD]`.** Fuente de verdad = los `.ts` que emite el mismo script
+> (`src/lib/researchDailyPlan.ts` ciclo 1 · `src/lib/researchDailyPlan2027.ts` ciclo 2 · `src/lib/obsidianResearchMap.ts`).
+> Este doc es la MISMA data en tablas. Se re-fecha con el pipeline de corrimiento (`gen_research_plan.js <fecha>`).
 
-> **Qué es esto.** La *cola ordenada de átomos-research* (1 átomo por día-Research), con el **mismo
-> motor** que `src/lib/usmleStep1Daily.ts` + `src/components/study/UsmleTodayPlan.tsx`: bloque **HOY**,
-> **Horario** (franjas), ventana **7 días**, **Temario** por fases, y **progreso REAL marcable** (arranca
-> 0%, se persiste; nunca se infiere de la fecha). Cada átomo enlaza a un **recurso real verificado** y deja
-> un **entregable concreto** que hace avanzar una revisión sistemática viva (SR-1).
->
-> **Regla de oro:** solo data verificada. Toda URL de abajo está en la leyenda §7 y corroborada. Lo no
-> confirmable se marca `(verificar)`. El tema **vive en la app**, no en el Calendar — **no se modifica el
-> Google Calendar**.
->
-> **🛰️ Metodología del motor (actualizada jun-2026 · ver [`discovery-engine.md`](discovery-engine.md)):**
-> la búsqueda **no se limita a PubMed** ni se hace a mano — corre el **motor de 5 fuentes con OpenAlex
-> como troncal** (OpenAlex⭐ + PubMed + Europe PMC + LILACS + Semantic Scholar ≈97%). **OpenAlex exige API
-> key gratis desde 13-feb-2026.** El texto completo se resuelve con la **cascada Unpaywall→Europe PMC→PMC
-> →preprints→ALICIA→autor**. Las **citas las genera y verifica la IA** (Crossref/PubMed + CSL-JSON) — **no
-> Zotero manual**: solo persiste lo que resuelve a un DOI/PMID real.
+> **Qué cambió el 05-sep-2026 (Palmerton v3 · vacíos de Research).** El plan anterior (42 átomos, 100 % SR-1 con PROSPERO el
+> 2-oct y SUBMIT el 29-dic) contradecía [`RUTA_PUBLICACION_2027.md`](RUTA_PUBLICACION_2027.md) (carta oct-nov · case report
+> feb-mar · PROSPERO mar-abr · SR sometida jul-sep) y no contenía ni un átomo de los dos primeros entregables ni de la tesis.
+> Ahora: **ciclo 1 (sep-2026 → los 2 primeros días-Research de feb-2027; 42 átomos)** = infra académica + cimientos + mentores +
+> carta al editor + tesis L0 (research letter) + case report #1 (paquete listo en dic; SUBMIT = d41, primer día tras la pausa) +
+> preparación de SR-1 con **revisor humano #2** nombrado antes de PROSPERO;
+> **ciclo 2 (feb→ago 2027)** = SR-1 completa (PROSPERO → submit) con cribado y extracción DUALES, campaña de colaboradores,
+> case report #2, bibliométrico y apertura de SR-2. **Enero 2027 = 0 átomos (Step 1).**
 
 ---
 
 ## 1. Ritmo e integración con el Calendar (no se toca)
 
-- **Ritmo INTERDIARIO con Dermatología.** Lógica ya implementada en `src/lib/researchData.ts`
-  (`diaEstudioTipo`): días hábiles desde **mié 10-jun-2026 = D0 Research**; par → Research, impar → Derma;
-  fines de semana = descanso. ⇒ Research cae **un día hábil sí, uno no** (≈ 2–3 días Research/semana).
-- **Bloque del Calendar:** la franja de *boards* **13:30–14:15** alterna Research↔Derma por día hábil
-  (idéntico criterio que el plan Derma). En un **día-Research** ese bloque ejecuta **1 átomo-research**.
-- **No se crea ni edita ningún evento de Google Calendar.** El plan vive en la app; el Calendar solo aporta
-  la franja horaria ya existente.
-- **Avanzas un átomo por día-Research, no por día natural.** A ~2.5 días Research/semana, los **40 átomos**
-  de abajo corren de **mié 10-jun-2026 → lun 28-sep-2026** (fechas calculadas, columna `fecha`).
+- **Interdiario con Derma:** `researchData.ts → diaEstudioTipo` (paridad de días hábiles desde el ancla mié 10-jun-2026;
+  par → Research, impar → Derma). Sáb y dom libres. Salta 25-dic / 31-dic / 1-ene. **Pausa 2027-01-04 → 2027-01-29 (0 átomos).**
+- **Bloque del Calendar:** 13:30–14:15 (45 min). En un día-Research se ejecuta **1 átomo**. No se crea ni edita ningún evento.
+- **Ciclo 1:** 42 átomos · Mar 2026-09-08 → Mié 2027-02-03 (2026-09: 9 · 2026-10: 11 · 2026-11: 10 · 2026-12: 10 · 2027-02: 2).
+- **Ciclo 2:** 67 átomos · d43-d109 · Vie 2027-02-05 → Mar 2027-08-10 (2027-02: 8 · 2027-03: 12 · 2027-04: 11 · 2027-05: 10 · 2027-06: 11 · 2027-07: 11 · 2027-08: 4).
+- **Corrimiento:** cada día sin estudiar = +1. `node DATA/_scripts/gen_research_plan.js <D1>` re-fecha el ciclo 1 (toma el
+  primer día-Research ≥ D1; los átomos que ya no caben antes de la pausa —`recortable`, prep de SR-1— pasan a después
+  del 2027-01-29, detrás de CR-9/X-8) y el ciclo 2 arranca el día-Research siguiente; `--ciclo 2 <fecha>` re-fecha
+  solo el ciclo 2. **El ciclo 1 tiene SIEMPRE 42 átomos** (invariante de `remap_inicio.js` bloque 4). Como remap no conoce
+  la pausa de enero, el orden del pipeline es: `remap_inicio.js <D1>` → `gen_research_plan.js <D1>` (este script
+  sobreescribe las fechas de Research con las correctas). Pendiente (fichero fuera de este lote): que remap llame a este script.
 
----
-
-## 2. El bloque HOY de un día-Research (franjas — réplica de `FRANJAS` de USMLE)
-
-45 min (13:30–14:15). Mezcla **evaluación anclada** (consolidar) + **deep work** (producir/aprender):
+## 2. El bloque HOY de un día-Research (franjas · `FRANJAS` del .ts)
 
 | Franja | Fase | Tipo |
 |---|---|---|
-| 13:30–13:35 | **Eval anclada** del átomo PREVIO: 2 preguntas de auto-test del método + ¿avanzó el entregable de ayer? (sí/no + por qué) | `eval` |
-| 13:35–13:40 | **Pre-test / free-recall** 60 s del objetivo de HOY (¿qué sé ya de este paso?) | `pretest` |
-| 13:40–14:05 | **Deep work (25 min):** ver el recurso real del átomo (vídeo/curso/guía) **mientras** ejecutas el entregable hands-on sobre la SR viva | `work` |
-| 14:05–14:10 | **Free recall** a papel + log (gap método / razonamiento / herramienta) | `recall` |
-| 14:10–14:15 | **Crear ≤3 APEX-método** (formato Palmerton) + guardar el artefacto del día (PROSPERO / Rayyan / Zotero / .docx) | `apex` |
+| 13:30–13:35 | Eval anclada del átomo PREVIO: 2 preguntas de auto-test del método + ¿avanzó el entregable? | `eval` |
+| 13:35–13:40 | Pre-test / free-recall 60 s del objetivo de HOY | `pretest` |
+| 13:40–14:05 | DEEP WORK (25 min): recurso real del átomo MIENTRAS ejecutas el ARTEFACTO | `work` |
+| 14:05–14:10 | Free recall a papel + log (gap método / razonamiento / herramienta) | `recall` |
+| 14:10–14:15 | ≤3 APEX-método (Palmerton) + guardar el artefacto (PROSPERO / Rayyan / .docx / Mesa editorial) | `apex` |
 
-> **Diferencia clave con USMLE:** el USMLE es 100% *aprender contenido*; Research es **aprender el método
-> haciéndolo**. Cada átomo deja un **artefacto real** (una query guardada, un protocolo, un cribado, una
-> tabla, una figura, una sección). Por eso la columna `entregable` no es opcional: es lo que "cuenta".
+## 3. Pistas y entregables (Mesa editorial · `researchData.ts → RESEARCH_ENTREGABLES`)
 
----
-
-## 3. Progreso REAL marcable (idéntico a `studyProgress.ts`)
-
-- Reutiliza `agruparProgreso` / `loadDone` / `saveDone` de `src/lib/studyProgress.ts`.
-- **Añadir `'research'` a `PlanKey`** (`export type PlanKey = 'usmle' | 'mir' | 'research';`) para persistir en
-  `localStorage` bajo la misma clave `jmd-study-progress-v1`.
-- **Arranca en 0%.** El avance NO se infiere de la fecha: se marca átomo por átomo. `hoyD` solo resalta el
-  día de hoy (no cuenta como hecho).
-- **Agrupación del temario:** `claveDe = (x) => x.fase` ⇒ los anillos/% por fase (R0…R8) salen solos, igual
-  que los "sistemas" del USMLE.
-- **Ventana 7 días:** `ventana7d(fromD)` filtra los próximos 7 átomos desde el día de hoy (mismo helper).
-
----
-
-## 4. Temario por fases (la SR como hilo conductor)
-
-El plan **enseña el método 2020 (PRISMA/PROSPERO/GRADE/Cochrane)** *ejecutando* una revisión sistemática
-real de principio a fin: **SR-1**. Al terminar, Joseph tiene (a) el método dominado y (b) **1 SR enviada**.
-
-- **SR-1 (artefacto vivo, Línea 4 · Mayo score 38/40):** *"Vascular complications of facial fillers and
-  time-to-treatment with hyaluronidase — systematic review (± meta-analysis)."* Es la de mayor impacto
-  ("paciente-seguridad" = ángulo más "Mayo"), **$0, sin comité de ética**, gap latino real. Paper semilla
-  verificado: **DeLorenzi C, 2014, *Aesthet Surg J* 34(4):584–600 · PMID 24692598 · DOI 10.1177/1090820X14525035**.
-  Ficha completa → [`lines/L4-complicaciones.md`](lines/L4-complicaciones.md).
-- **SR-2 (arranca al final, Línea 5):** *"Fractional RF microneedling / CO₂ in Fitzpatrick IV–VI — efficacy
-  & safety, subgroup by phototype."* Ojo: ya existe un MA 2026 de FCL-vs-MNRF en cicatrices de acné
-  (Argobi, *JCD*, DOI 10.1111/jocd.70765) **predominante en fototipos I–III** → el gap real es el **subgrupo
-  IV–VI (skin of color)**. Ficha → [`lines/L5-energia-fototipos.md`](lines/L5-energia-fototipos.md).
-
-| Fase | Átomos | Objetivo de la fase | Pilar SR |
+| Pista | Entregable | Átomos | Hito (fecha del átomo que lo cierra) |
 |---|---|---|---|
-| **R0 · Cimientos & método** | R1–R5 | Infra (OpenAlex key/NCBI), PICO, diseños, leer un paper, ver una SR de punta a punta | — |
-| **R1 · Pregunta & protocolo** | R6–R9 | PICO de SR-1, criterios de elegibilidad, protocolo PRISMA-P | Reporte |
-| **R2 · Registro PROSPERO** | R10–R11 | Registrar SR-1 (CRD) antes de cerrar extracción | Registro |
-| **R3 · Búsqueda N bases** | R12–R16 | MeSH/booleanos, correr en 5 bases, PRISMA-S, dedup | Reporte |
-| **R4 · Screening** | R17–R21 | Rayyan, T/A → texto completo, 2 revisores, Kappa, conteos PRISMA | Conducción |
-| **R5 · Extracción** | R22–R25 | Formulario piloteado, doble extracción, Elicit | Conducción |
-| **R6 · Sesgo & GRADE** | R26–R28 | ROBINS-I/RoB 2, GRADE (SoF), AMSTAR-2 | Evaluación |
-| **R7 · Meta-análisis en R** | R29–R33 | metafor/meta, tamaño de efecto, forest, heterogeneidad, funnel/Egger, subgrupos | Conducción |
-| **R8 · Manuscrito & envío** | R34–R40 | PRISMA 2020 (27 ítems), figuras, journal + waiver APC, cover letter, SUBMIT + arrancar SR-2 | Reporte |
+| **R0 / R** | Infra académica (10 cuentas) + cimientos + SR-1 (PICO · criterios · revisor #2 · protocolo v0) | R0-R3, R6-R9, X-1, X-3 | revisor #2: X-1 2026-11-23 |
+| **M** | Mentores: Dr. Ciro (3 coautorías) · Rising Scholars (ex-AuthorAID) · Prof. Finlay (CADI) | M1-M3 | M1 2026-09-14 |
+| **C** | Carta al editor #1 (400-600 palabras, artículo 2026 dentro de ventana) | C-1 → C-6 (+ X-2 post-submit) | SUBMIT C-6 2026-10-12 |
+| **T** | Tesis L0 (IGA×CADI, n=316) → research letter 600-1000 palabras · JAAD Intl → IJD → Actas → Anais | T-1 → T-8 | SUBMIT T-8 2026-11-17 |
+| **CR** | Case report #1 (CARE 13 ítems) → Dermatology Online Journal | CR-1 → CR-8 (paquete) · CR-9 submit | SUBMIT CR-9 2027-02-01 |
+| **R2** | Registro PROSPERO de SR-1 (con equipo de revisión de L4 §9) | X-9, R10-R11 | R10 2027-02-17 |
+| **R3-R8** | SR-1 sometida (cribado y extracción duales, κ real, MA en R, PRISMA 27) | R12 → R43 | SUBMIT R43 2027-06-29 |
+| K · B · CR2 | Campaña 20-30 cold emails · bibliométrico · case report #2 · SR-2 abierta | K1-K2 · B1-B5 · CR2-1..4 · R44-R46 | balance 2027-08-04 |
 
----
+**Chips de dependencia:** `requiere Derma d19-20 (oclusión vascular)` en R6, R6b, R22 y R33 (el mecanismo de la oclusión y el protocolo de
+hialuronidasa se aprenden en el plan Derma antes de fijar desenlaces, extraer y hacer subgrupos).
 
-## 5. La cola de átomos (1 átomo = 1 día-Research)
+## 4. Ciclo 1 — sep-2026 → feb-2027 (42 átomos: 40 antes de la pausa + 2 justo después)
 
-> `code` · `fecha` (día-Research real) · `prioridad` (vueltas) · **objetivo** · **entregable** (artefacto) ·
-> `rec` = recurso verificado (clave → §7) · `tool`. Prioridad sigue `VUELTAS`/`INTERVALOS` de `researchData.ts`
-> (CRÍTICA 6 · ALTA 5 · MEDIA 4 · BAJA 3).
+> `code` · `fecha` (día-Research real) · `prio` (vueltas: CRÍTICA 6 · ALTA 5 · MEDIA 4 · BAJA 3) · `pista` · **objetivo** ·
+> **entregable** · `artefacto` (fichero / nota / estado que queda) · `rec` (clave → §6) · `tool`.
 
-### R0 · Cimientos & método
+| d | code | fecha | fase | pista | prio | objetivo | entregable | artefacto | rec | tool |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | R0 | Mar 2026-09-08 | R0 · Cimientos & infra | R | CRITICA | Infra académica: abrir las 10 cuentas que exige el circuito editorial (checklist marcable en Desk → Infra académica) | 10/10 cuentas: ORCID · Google Scholar · CTI Vitae/RENACYT · Editorial Manager · ScholarOne · eScholarship/DOJ · PROSPERO · Rayyan · Zotero · OpenAlex + NCBI keys | `Checklist "Infra académica" (app · clave research-infra) + IDs (ORCID iD, CTI Vitae) guardados en DATA/RESEARCH/MENTORES.md §Identificadores` | `ORCID`, `SCHOLAR`, `CTI`, `NCBIACC`, `OPENALEX`, `PROS`, `RAY`, `ZOT` | ORCID · CTI Vitae · Rayyan |
+| 2 | R1 | Jue 2026-09-10 | R0 · Cimientos & infra | R | CRITICA | PICO: formular 3 preguntas (terapia / diagnóstico / pronóstico) y leer 1 abstract del nicho con el método Greenhalgh | 3 PICO escritos + 1 abstract (fillers · fototipos IV-VI) clasificado por diseño de estudio | `Nota 01_PICO.md (3 PICO + plantilla Greenhalgh) en el vault → SR-1/_hoja_de_ruta` | `CIL1`, `GREEN` | — |
+| 3 | M1 | Lun 2026-09-14 | M · Mentores & red | M | CRITICA | Dr. Ciro Rodríguez (Hospital Regional Daniel Alcides Carrión, Huancayo): propuesta CONCRETA de 3 coautorías — tesis→research letter (él senior), carta al editor (coautor) y case report de SU consulta (él senior author) **[hito mentor]** | Mensaje o reunión con las 3 coautorías propuestas + respuesta registrada (sí / no / cuándo) | `DATA/RESEARCH/MENTORES.md: fila Dr. Ciro (qué pido · fecha · estado · siguiente paso)` | `ICMJE`, `CREDIT` | WhatsApp / presencial |
+| 4 | C-1 | Mié 2026-09-16 | C · Carta al editor | C | CRITICA | Discovery de 5 artículos 2026 (últimos 30-60 días) en JAAD / JAAD Intl / IJD / JCD / Dermatol Surg sobre derma estética · fototipos IV-VI · complicaciones de fillers, con la ventana de letters y los límites de cada journal ⚑ _ventana de letters típica 4-12 semanas · A VERIFICAR por journal (JAAD/IJD dieron 403 el 05-sep)_ | Tabla de 5 candidatos: journal · fecha de publicación · ventana de correspondencia (URL de Author Guidelines) · límite palabras/refs · coste · ángulo de la carta (dato peruano/latino que el paper no considera) | `DATA/RESEARCH/CARTA_1/candidatos.md (tabla de 5) + correo a IJD Editorial Office pidiendo su política de correspondencia (pendiente desde 27-ago)` | `PM`, `OPENALEX`, `JAADINT`, `IJD` | research-discovery · PubMed |
+| 5 | M2 | Vie 2026-09-18 | M · Mentores & red | M | ALTA | Rising Scholars (ex-AuthorAID, INASP): solicitar mentor 1-a-1 gratuito para la revisión en inglés del primer manuscrito — tarda semanas, pedirlo YA | Perfil creado + solicitud de mentor enviada (área: dermatología / escritura científica) | `MENTORES.md: fila Rising Scholars (fecha de solicitud · estado)` | `RISING`, `SCIWRITE`, `PHRASE` | risingscholars.net |
+| 6 | C-2 | Mar 2026-09-22 | C · Carta al editor | C | CRITICA | Elegir 1 artículo diana con FECHA LÍMITE de submit calculada (ventana del journal) + leer 5 letters modelo del mismo journal (cita → aporte u objeción con 1 dato verificable → implicación) **[hito carta-diana]** | Artículo diana fijado + deadline en la Mesa editorial + esqueleto de la carta (3 párrafos) calcado de los 5 modelos | `CARTA_1/diana.md (DOI del artículo, deadline, límites, esqueleto) + Mesa editorial: carta-1 → borrador` | `PM`, `PHRASE`, `ICMJE` | PubMed · Mesa editorial |
+| 7 | M3 | Jue 2026-09-24 | M · Mentores & red | M | ALTA | Email a Prof. Andrew Finlay (Cardiff, creador CADI/DLQI): 6 líneas — permiso / versión española del CADI + ofrecer los datos de la tesis (n=316, rs=0.637) como validación peruana; desbloquea L6 | Email enviado (6 líneas, asunto claro, 1 pregunta concreta) + copia archivada | `MENTORES.md: fila Finlay (fecha · estado) + copia del email en §Plantillas` | `PHRASE`, `ICMJE` | Email institucional |
+| 8 | R2 | Lun 2026-09-28 | R0 · Cimientos & infra | R | ALTA | Diseños de estudio y niveles de evidencia + regla EQUATOR: elegir la guía de reporte ANTES de escribir (carta = sin guía · tesis = STROBE transversal · case report = CARE · SR = PRISMA 2020) | Mapa de 1 página: diseño → nivel → sesgos típicos → guía de reporte que exige el journal | `Nota 02_disenos_guias.md en el vault + checklists STROBE y CARE descargadas a DATA/RESEARCH/` | `EQ`, `STROBE`, `CARE`, `STAT` | — |
+| 9 | R6 | Mié 2026-09-30 | R1 · Pregunta & protocolo | R | CRITICA | Fijar el PICO de SR-1 (complicaciones vasculares de fillers + tiempo-a-hialuronidasa) + 1 desenlace primario, validado contra la ficha L4 · PICO v1 PROVISIONAL: se revalida en R6b (ciclo 2) cuando Derma d19-20 haya cubierto el mecanismo de la oclusión ⚑ _requiere Derma d19-20 (oclusión vascular)_ | PICO de SR-1 escrito (P/I/C/O + desenlace primario único) y contrastado con L4 §2 | `lines/L4-complicaciones.md §2 actualizado + nota 01_protocolo_PICO en el vault` | `DELO`, `CIL1`, `COCHB` | — |
+| 10 | C-3 | Vie 2026-10-02 | C · Carta al editor | C | ALTA | Borrador de la carta: 400-600 palabras, ≤5 referencias, 3 párrafos (qué dice el artículo → qué falta u objeción con 1 dato verificable de Perú/LATAM/fototipos IV-VI → implicación clínica); frases del Academic Phrasebank | Borrador v1 completo (400-600 palabras) con marcadores [CIT:id] en lugar de referencias escritas | `CARTA_1/borrador_v1.md` | `PHRASE`, `SCIWRITE` | Obsidian · Phrasebank |
+| 11 | C-4 | Mar 2026-10-06 | C · Carta al editor | C | CRITICA | Citas verificadas: cada [CIT:id] resuelto a DOI/PMID real con citation_verifier.py (Crossref/PubMed + CSL-JSON → Vancouver); cero referencias de memoria | ≤5 referencias con status verified + lista Vancouver generada; ninguna needs_review / rejected | `CARTA_1/refs_verified.json (salida de citation_verifier.py) + borrador v2 con [n]` | `CROSSREF`, `PM` | python DATA/RESEARCH/agentic/citation_verifier.py |
+| 12 | C-5 | Jue 2026-10-08 | C · Carta al editor | C | MEDIA | Formateo al journal del artículo diana (Author Guidelines: título, autores + ORCID, conflictos, límite exacto) + cover letter de 5 líneas + cuenta activa en el portal del journal (Editorial Manager / ScholarOne) | Manuscrito formateado (.docx) + cover letter + cuenta del portal activa | `CARTA_1/carta_final.docx + cover_letter.md` | `EM`, `ICMJE`, `COPE` | Editorial Manager / ScholarOne |
+| 13 | C-6 | Lun 2026-10-12 | C · Carta al editor | C | CRITICA | SUBMIT carta al editor #1 (antes del deadline calculado en C-2) + registrar la fecha de envío y el nº de manuscrito en la Mesa editorial **[hito carta-1]** | Carta ENVIADA ✅ · estado carta-1 → enviado | `Mesa editorial: carta-1 = enviado (fecha) + MENTORES.md actualizado si hay coautor` | `ICMJE` | Editorial Manager / ScholarOne |
+| 14 | T-1 | Mié 2026-10-14 | T · Tesis · research letter | T | CRITICA | Ética de la tesis (adolescentes, colegio): verificar y ARCHIVAR nº y fecha de aprobación del CEI (UNCP u hospital) + asentimiento / consentimiento parental; si no hubo CEI formal → consultar con el asesor la vía (aprobación retrospectiva o expedita, o journal que acepte declaración) ⚑ _sin nº de CEI muchos journals (JAAD Intl, IJD) rechazan de entrada_ **[hito tesis-etica]** | Documento de ética localizado (o decisión escrita de la vía alternativa) + párrafo de ética/consentimiento listo para Methods | `DATA/RESEARCH/TESIS_L0/etica.md (nº CEI, fecha, consentimientos, párrafo para Methods)` | `ICMJE`, `COPE` | Archivo de la tesis · asesor |
+| 15 | T-2 | Vie 2026-10-16 | T · Tesis · research letter | T | ALTA | STROBE (transversal, 22 ítems) sobre la tesis: marcar qué ítem ya está, qué falta y qué se recorta para el formato research letter | Checklist STROBE rellenada (22 ítems con página / estado) — base del Methods | `TESIS_L0/STROBE_checklist.md` | `STROBE`, `EQ` | STROBE |
+| 16 | R7 | Mar 2026-10-20 | R1 · Pregunta & protocolo | R | ALTA | Criterios de elegibilidad de SR-1 (inclusión / exclusión, diseños admitidos, idiomas, años) en tabla PICOS | Tabla PICOS de SR-1 congelable para el protocolo | `lines/L4-complicaciones.md §3 actualizado + nota 01_protocolo_PICO` | `COCHB`, `PRISMA` | — |
+| 17 | T-3 | Jue 2026-10-22 | T · Tesis · research letter | T | ALTA | Research letter (600-1000 palabras): Introduction (gap: QoL en acné adolescente andino, CADI en LMIC) + Methods (transversal, n=316, IGA como gold standard del Dr. Ciro, CADI, rs de Spearman, κ) | Intro + Methods redactados (≤400 palabras) con [CIT:id] | `TESIS_L0/research_letter_v1.md (Intro + Methods)` | `PHRASE`, `STROBE`, `SCIWRITE` | Obsidian · Phrasebank |
+| 18 | T-4 | Lun 2026-10-26 | T · Tesis · research letter | T | ALTA | Results: 1 tabla (características + IGA×CADI) y 1 figura (correlación rs=0.637 o distribución por severidad) con gtsummary / R base; prevalencia 39.8 %, κ=0.81 | Tabla 1 + Figura 1 (300 dpi) + párrafo de Results | `TESIS_L0/tabla1.docx + figura1.tiff + research_letter_v1.md (Results)` | `GTS`, `BBR` | R · gtsummary |
+| 19 | CR-1 | Mié 2026-10-28 | CR · Case report (CARE) | CR | CRITICA | CASE REPORT #1 — decidir la FUENTE del caso antes del 31-oct: (a) Dr. Ciro: 1-2 casos de su consulta (ideal complicación de inyectable = L4, o caso raro con buenas fotos) con él como senior author; (b) plan B: dermatólogo de la Sociedad Peruana de Dermatología ⚑ _sin caso antes del 31-oct el entregable de feb-2027 no ocurre_ **[hito cr-caso]** | Tabla de casos candidatos (diagnóstico · por qué es publicable · fotos disponibles · senior author · estado) + 1 caso ELEGIDO | `DATA/RESEARCH/CASE_REPORT_1/caso_candidatos.md + Mesa editorial: senior author del case report` | `CARE`, `DOJ`, `JAADCR` | Dr. Ciro · SPD |
+| 20 | T-5 | Vie 2026-10-30 | T · Tesis · research letter | T | ALTA | Discussion (≤250 palabras: hallazgo, comparación con la literatura CADI, limitaciones, implicación) + decidir la CASCADA y el coste: JAAD International (OA, 50 % Grupo B) → IJD → Actas Dermo-Sifiliográficas ($0) → Anais Brasileiros ($0) | Discussion redactada + cascada con APC verificado en la web de cada journal (con fecha) o "A VERIFICAR" | `TESIS_L0/research_letter_v1.md (completo) + TESIS_L0/cascada_journals.md` | `JAADINT`, `IJD`, `ACTAS`, `ANAIS`, `PHRASE` | Obsidian |
+| 21 | CR-2 | Mar 2026-11-03 | CR · Case report (CARE) | CR | CRITICA | Consentimiento de PUBLICACIÓN (distinto del asistencial): plantilla bilingüe ES/EN según lo que exigen DOJ y CARE, con fotos y datos clínicos; firmado por el paciente (o tutor) | Consentimiento firmado y escaneado (sin él no hay case report) | `CASE_REPORT_1/consentimiento_publicacion_ES_EN.md (plantilla) + consentimiento_firmado.pdf (fuera del repo)` | `CARE`, `COPE`, `ICMJE` | Plantilla + consulta |
+| 22 | T-6 | Jue 2026-11-05 | T · Tesis · research letter | T | ALTA | Revisión del research letter por el Dr. Ciro (coautor / senior): comentarios incorporados + criterios ICMJE de autoría + roles CRediT + conflictos + ORCID de ambos | v2 revisada por el senior author + página de autoría (ICMJE / CRediT / conflictos) | `TESIS_L0/research_letter_v2.md + autoria.md` | `ICMJE`, `CREDIT`, `COPE` | Dr. Ciro |
+| 23 | CR-3 | Lun 2026-11-09 | CR · Case report (CARE) | CR | ALTA | Fotos clínicas estandarizadas: fondo neutro, misma distancia e iluminación, sin datos identificables (recortar u ocultar ojos y tatuajes), pre/post si hay; nombrar por fecha; protocolo escrito | Set de fotos (≥2, 300 dpi, anonimizadas) + protocolo fotográfico | `CASE_REPORT_1/protocolo_fotos.md + carpeta fotos/ (fuera del repo)` | `CARE`, `DOJ` | Cámara / móvil · editor de imagen |
+| 24 | T-7 | Mié 2026-11-11 | T · Tesis · research letter | T | CRITICA | Formateo a JAAD International (Author Guidelines · Editorial Manager): research letter 600-1000 palabras, 1 tabla, 1 figura, ≤10 refs verificadas con citation_verifier.py, declaración de ética (T-1), cover letter | Manuscrito formateado + refs verified + cover letter + declaración de ética | `TESIS_L0/research_letter_final.docx + refs_verified.json + cover_letter.md` | `JAADINT`, `CROSSREF`, `EM` | citation_verifier.py · Editorial Manager |
+| 25 | CR-4 | Vie 2026-11-13 | CR · Case report (CARE) | CR | ALTA | CARE (13 ítems): rellenar la checklist + tabla TIMELINE del paciente + párrafo de perspectiva del paciente + declaración de consentimiento | CARE checklist 13/13 con página + timeline en tabla | `CASE_REPORT_1/CARE_checklist_13.md + timeline.md` | `CARE`, `EQ` | CARE |
+| 26 | T-8 | Mar 2026-11-17 | T · Tesis · research letter | T | CRITICA | SUBMIT research letter de la tesis a JAAD International (o al siguiente de la cascada si el primero no aplica) + registrar en la Mesa editorial y en CTI Vitae **[hito tesis-L0]** | Tesis ENVIADA ✅ (nº de manuscrito) · estado tesis-L0 → enviado | `Mesa editorial: tesis-L0 = enviado (fecha) + CTI Vitae actualizado` | `JAADINT`, `ICMJE` | Editorial Manager |
+| 27 | CR-5 | Jue 2026-11-19 | CR · Case report (CARE) | CR | ALTA | Borrador del case report (límite de palabras de DOJ: A VERIFICAR en sus guías): presentación → hallazgos → diagnóstico → tratamiento → evolución → discusión con 3-5 refs [CIT:id] + "por qué este caso enseña algo" | Borrador v1 completo siguiendo el orden CARE | `CASE_REPORT_1/borrador_v1.md` | `CARE`, `PHRASE`, `DOJ` | Obsidian · Phrasebank |
+| 28 | X-1 | Lun 2026-11-23 | X · Transversal · cierre | R | ALTA | SR-1 · EQUIPO DE REVISIÓN: nombrar al revisor humano #2 ANTES de PROSPERO (opciones: Dr. Ciro · egresado UNCP con interés en investigación · colaborador IMG de la campaña); ofrecer coautoría por 2º cribado + extracción; cuenta Rayyan (gratis ≤3 revisiones) ⚑ _PRISMA 2020 ítem 8 y Cochrane exigen ≥2 revisores independientes; 2 pases de la misma persona NO son cribado dual_ **[hito revisor2]** | Revisor #2 propuesto (nombre, afiliación, ORCID, conflicto) + invitación enviada | `lines/L4-complicaciones.md §9 "Equipo de revisión" rellenado + MENTORES.md` | `RAY`, `PROS`, `COCHB` | Rayyan |
+| 29 | CR-6 | Mié 2026-11-25 | CR · Case report (CARE) | CR | ALTA | Revisión del case report por el senior author (mentor local) + mentor de Rising Scholars (inglés): incorporar cambios y verificar cada afirmación clínica contra fuente primaria | v2 con comentarios del senior + inglés revisado · estado case-report-1 → revision-mentor | `CASE_REPORT_1/borrador_v2.md` | `RISING`, `CARE` | Senior author · Rising Scholars |
+| 30 | X-2 | Vie 2026-11-27 | X · Transversal · cierre | C | MEDIA | Post-submit de la carta: plantilla de rebuttal punto por punto (comentario → respuesta → cambio exacto) + actualizar el estado real (en-revisión / decisión) en la Mesa editorial; si llegó decisión, responder en ≤7 días | Plantilla de rebuttal lista + estado real de carta-1 | `CARTA_1/rebuttal_plantilla.md + Mesa editorial` | `REBUTTAL`, `SCIWRITE` | Mesa editorial |
+| 31 | CR-7 | Mar 2026-12-01 | CR · Case report (CARE) | CR | ALTA | Formateo a Dermatology Online Journal (eScholarship): guías de autor (A VERIFICAR: límite de palabras / fotos / coste ≤US$300), refs verificadas con citation_verifier.py, figuras con leyenda, consentimiento adjunto | Manuscrito formateado + refs verified + figuras + consentimiento + cover letter | `CASE_REPORT_1/case_report_final.docx + refs_verified.json + cover_letter.md` | `DOJ`, `CROSSREF`, `CARE` | citation_verifier.py · eScholarship |
+| 32 | CR-8 | Jue 2026-12-03 | CR · Case report (CARE) | CR | CRITICA | Paquete de envío CONGELADO (manuscrito + fotos + consentimiento + CARE + cover) — el SUBMIT se ejecuta el 1-feb-2027 (ciclo 2 · CR-9), después del Step 1 **[hito cr-paquete]** | Paquete completo y revisado; nada pendiente para febrero · estado → revision-mentor | `CASE_REPORT_1/_PAQUETE_ENVIO/ (todo lo que se sube) + Mesa editorial: fecha objetivo 1-feb` | `CARE`, `DOJ` | — |
+| 33 | R3 | Lun 2026-12-07 | R0 · Cimientos & infra | R | ALTA | Ver una SR de punta a punta (8 fases) + des-riesgar el meta-análisis: instalar R + metafor y reproducir 1 forest plot del libro "Doing Meta-Analysis in R" (para que R29-R33 del ciclo 2 no sean la primera vez) | Esquema de las 8 fases con su herramienta + script R que reproduce un forest plot de ejemplo | `Vault SR-1/_hoja_de_ruta (8 fases) + 05_manuscrito/ejemplo_metafor.R` | `STEPSR`, `DMAR`, `METAFOR` | R · metafor |
+| 34 | R8 | Mié 2026-12-09 | R1 · Pregunta & protocolo | R | ALTA | Protocolo PRISMA-P de SR-1: borrador de secciones (pregunta, elegibilidad, fuentes, estrategia, selección con 2 revisores, extracción doble, sesgo, síntesis) — se congela en el ciclo 2 | Borrador de protocolo (secciones PRISMA-P) con huecos marcados [PROTOCOL GAP] | `Vault SR-1/01_protocolo_PICO/protocolo_PRISMA-P_v0.md` | `PRISMA`, `COCHB` | — |
+| 35 | R9 | Vie 2026-12-11 | R1 · Pregunta & protocolo | R | ALTA | ¿Existe ya una SR publicada o registrada del mismo PICO? Búsqueda en PROSPERO + PubMed ("systematic review" filler vascular occlusion hyaluronidase) → decisión seguir / afinar el ángulo (tiempo-a-tratamiento + LATAM) | Lista de SR y registros vecinos + decisión escrita (seguir / afinar) en L4 §6 | `lines/L4-complicaciones.md §6 actualizado` | `PROS`, `PM`, `AMSTAR` | PROSPERO · PubMed |
+| 36 | X-3 | Mar 2026-12-15 | X · Transversal · cierre | R | MEDIA | Corpus SR-1 YA descubierto: inventariar los 200 registros de research_papers (pending_human desde 11-jun-2026; 151 OA sin PDF resuelto) — contar, exportar CSV (título, autores, año, DOI, abstract) y NO re-correr discovery hasta tener la query PRISMA-S final (ciclo 2 · R12) | CSV del corpus + nota de estado (n, OA, duplicados por DOI) | `Vault SR-1/02_busqueda/corpus_2026-06_inventario.csv + nota` | `RAY`, `UNPAY` | Supabase (consola) · Sheets |
+| 37 | X-4 | Jue 2026-12-17 | X · Transversal · cierre | B | MEDIA | Congresos con abstract alcanzable (AAD · CILAD · RADLA): verificar en la web oficial la fecha límite de abstracts 2027 y el formato; elegir 1 al que llegue la tesis o la SR-1 preliminar | 1 congreso elegido con deadline VERIFICADO (URL + fecha) o marcado "A VERIFICAR" | `DATA/RESEARCH/MENTORES.md §Congresos con la fecha verificada` | `SCIWRITE`, `PHRASE` | Web oficial de cada congreso |
+| 38 | X-5 | Lun 2026-12-21 | X · Transversal · cierre | K | MEDIA | Campaña de cold emails (feb-mar 2027): lista de 20-30 autores de papers recientes del corpus SR-1 y de L5 (fototipos IV-VI) con el trabajo concreto que ofrezco a cada uno (cribado PRISMA, extracción, draft) — nunca "quiero experiencia" | Lista de 20-30 nombres (paper · email institucional · oferta concreta) + plantilla de email de 8 líneas | `MENTORES.md §Campaña feb-2027 (tabla) + plantilla` | `OPENALEX`, `PHRASE`, `ICMJE` | Corpus SR-1 · OpenAlex (autores) |
+| 39 | X-6 | Mié 2026-12-23 | X · Transversal · cierre | X | ALTA | Retro del ciclo 1 + Mesa editorial: estado REAL de carta-1 / tesis-L0 / case-report-1 (enviado · en-revisión · decisión), MENTORES.md al día, presupuesto 2026-27 (carta $0 · tesis $0-APC · case report ≤$300 · SR-1 $0) | Mesa editorial con los 3 estados reales + presupuesto escrito + 3 lecciones del ciclo | `Mesa editorial (app) + RUTA_PUBLICACION_2027.md §3 presupuesto` | `COPE`, `ICMJE` | Mesa editorial |
+| 40 | X-7 | Mar 2026-12-29 | X · Transversal · cierre | X | CRITICA | CIERRE ANTES DE LA PAUSA (4→29-ene = 0 átomos · Step 1): nada que venza en enero — rebuttals respondidos o programados, PROSPERO aún NO registrado, revisor #2 confirmado, paquete del case report congelado; el ciclo 2 arranca el 1-feb con el SUBMIT del case report | Checklist de pausa 100 % + primer átomo del ciclo 2 leído | `Mesa editorial: cada entregable con estado y próxima fecha · Vault Dashboard_Research` | `ICMJE` | Mesa editorial |
+| 41 | CR-9 | Lun 2027-02-01 | CR · Case report (CARE) | CR | CRITICA | SUBMIT case report #1 a Dermatology Online Journal (paquete congelado en CR-8) + registrar el nº de manuscrito — primer día-Research tras el Step 1 **[hito case-report-1]** | Case report ENVIADO ✅ · estado case-report-1 → enviado | `Mesa editorial: case-report-1 = enviado (fecha)` | `DOJ`, `CARE` | eScholarship |
+| 42 | X-8 | Mié 2027-02-03 | X · Transversal · cierre | X | ALTA | Re-arranque post-Step 1: repasar las 8 fases de una SR + estado de carta / tesis / case report en la Mesa editorial (decisiones recibidas, rebuttals pendientes) + revisar que las 10 cuentas de la infra siguen activas | Mesa editorial al día + lista de pendientes editoriales | `Mesa editorial + Dashboard_Research` | `STEPSR`, `REBUTTAL` | Mesa editorial |
 
-| code | fecha | prio | objetivo | entregable | rec | tool |
-|---|---|---|---|---|---|---|
-| R1 | 2026-06-10 | CRÍTICA | Montar la infra: cuenta NCBI + **key OpenAlex** (gratis) + alerta PubMed; **citas por IA** (no Zotero) | Cuenta NCBI + API key OpenAlex + 1 alerta + 3 case reports modelo | `OPENALEX`,`PM` | OpenAlex, PubMed |
-| R2 | 2026-06-12 | CRÍTICA | Formular preguntas en **PICO** y distinguir tipos de pregunta (terapia/dx/pronóstico) | 3 PICO escritos (1 será el de SR-1) | `CIL1`,`GREEN` | — |
-| R3 | 2026-06-16 | CRÍTICA | **Diseños de estudio** y niveles de evidencia (qué separa case report de original) | Mapa 1-página: diseño → nivel → sesgos típicos | `STEP`,`ZED` | — |
-| R4 | 2026-06-18 | ALTA | **Cómo leer un paper** críticamente (método Greenhalgh) | 1 abstract del nicho leído con plantilla PICO + "¿qué tipo de estudio es?" | `GREEN` | — |
-| R5 | 2026-06-22 | CRÍTICA | **Ver una SR de punta a punta** (visión global antes de ejecutar) | Esquema de las 8 fases con la herramienta de cada una | `STEPSR`,`CIL1` | — |
+## 5. Ciclo 2 — feb→ago 2027 (67 átomos · SR-1 con revisor humano #2)
 
-### R1 · Pregunta & protocolo
+> R18 / R20 / R24 reescritos: cribado y extracción por **dos revisores humanos independientes** (κ real); un LLM (Ollama /
+> Elicit) solo pre-ordena o asiste, nunca cuenta como revisor. El **equipo de revisión** (L4 §9) se copia a PROSPERO en R10.
 
-| code | fecha | prio | objetivo | entregable | rec | tool |
-|---|---|---|---|---|---|---|
-| R6 | 2026-06-24 | CRÍTICA | Fijar el **PICO de SR-1** (complicaciones vasculares de fillers) + 1 desenlace primario | PICO de SR-1 escrito y validado contra la ficha L4 | `L4`,`CIL1` | — |
-| R7 | 2026-06-26 | CRÍTICA | **Criterios de elegibilidad** (inclusión/exclusión) y diseños admitidos | Tabla de criterios PICOS de SR-1 | `COCHB` | — |
-| R8 | 2026-06-30 | ALTA | **Protocolo PRISMA-P** (estructura, qué congela) | Borrador de protocolo SR-1 (secciones PRISMA-P) | `PRISMA`,`COCHB` | — |
-| R9 | 2026-07-02 | ALTA | Revisar duplicidad: ¿hay SR ya publicada/registrada del mismo PICO? | Búsqueda en PROSPERO + PubMed "systematic review" → decisión seguir/afinar | `PROS`,`PM` | PROSPERO |
+| d | code | fecha | fase | pista | prio | objetivo | entregable | artefacto | rec | tool |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 43 | R6b | Vie 2027-02-05 | R1 · Pregunta & protocolo | R | CRITICA | PICO de SR-1 REVALIDADO tras Derma d19-20 (oclusión vascular / HDPH): ajustar desenlaces (recuperación cutánea o visual, tiempo-a-hialuronidasa, dosis) y criterios PICOS v2 ⚑ _requiere Derma d19-20 (oclusión vascular)_ | PICO + PICOS v2 congelables | `L4 §2-3 v2 + vault 01_protocolo_PICO` | `DELO`, `COCHB` | — |
+| 44 | R8b | Mar 2027-02-09 | R1 · Pregunta & protocolo | R | CRITICA | Protocolo PRISMA-P COMPLETO (17 ítems): rellenar los [PROTOCOL GAP] del v0; selección con 2 revisores independientes, extracción doble, ROBINS-I / JBI, síntesis (proporciones o narrativa) | Protocolo v1 completo | `vault 01_protocolo_PICO/protocolo_PRISMA-P_v1.md` | `PRISMA`, `COCHB`, `TOP` | — |
+| 45 | X-9 | Jue 2027-02-11 | R2 · Registro PROSPERO | R | CRITICA | EQUIPO DE REVISIÓN confirmado para PROSPERO: revisor #2 con cuenta Rayyan, ORCID de todos, afiliaciones, roles (garante, contacto, cribadores, extractores, estadístico), conflictos de interés, fechas previstas **[hito equipo]** | L4 §9 completo — se copia tal cual a PROSPERO | `lines/L4-complicaciones.md §9 + MENTORES.md` | `PROS`, `RAY`, `ORCID`, `CREDIT` | Rayyan · ORCID |
+| 46 | R9b | Lun 2027-02-15 | R1 · Pregunta & protocolo | R | ALTA | Duplicidad final: re-buscar en PROSPERO + PubMed registros y SR nuevos desde dic-2026; confirmar el ángulo diferencial (tiempo-a-tratamiento + LATAM) | Decisión final escrita en L4 §6 | `lines/L4-complicaciones.md §6` | `PROS`, `PM` | PROSPERO · PubMed |
+| 47 | R10 | Mié 2027-02-17 | R2 · Registro PROSPERO | R | CRITICA | PROSPERO: rellenar el formulario completo (campos obligatorios, equipo de revisión de L4 §9, fechas previstas, conflictos, fuentes) y ENVIAR **[hito PROSPERO-SR1]** | Registro PROSPERO de SR-1 ENVIADO · estado PROSPERO-SR1 → enviado | `PDF del registro + Mesa editorial` | `PROS` | PROSPERO |
+| 48 | K1 | Vie 2027-02-19 | K · Campaña de colaboradores | K | ALTA | Campaña de cold emails 1/2: enviar 10 correos hiperpersonalizados de la lista de diciembre (oferta concreta: cribado PRISMA / extracción / draft) + registrar en MENTORES.md | 10 emails enviados + tabla de seguimiento | `MENTORES.md §Campaña` | `PHRASE`, `ICMJE` | Email |
+| 49 | R11 | Mar 2027-02-23 | R2 · Registro PROSPERO | R | MEDIA | Plan B si PROSPERO no encaja (scoping → OSF Registries) + esperar el CRD; protocolo congelado (v1 con fecha) en OSF | CRD recibido o registro OSF; protocolo congelado | `OSF + vault 01_protocolo_PICO` | `PROS`, `OSF`, `TOP` | OSF |
+| 50 | K2 | Jue 2027-02-25 | K · Campaña de colaboradores | K | MEDIA | Campaña de cold emails 2/2: 10-20 correos restantes + seguimiento a los sin respuesta (1 recordatorio a los 10 días) + DIGA (comité IMG) y Skin of Color Society | Campaña completa (20-30) + respuestas registradas + ≥1 colaborador para SR-1 | `MENTORES.md §Campaña` | `PHRASE` | Email |
+| 51 | R12 | Lun 2027-03-01 | R3 · Búsqueda N bases | R | CRITICA | Estrategia maestra: OpenAlex (troncal, booleana) + MeSH en MEDLINE/PubMed (líneas numeradas) — la query PRISMA-S final | Query OpenAlex + sintaxis PubMed numerada | `vault 02_busqueda/query_v1.md` | `OPENALEX`, `NLM1`, `PM` | OpenAlex · PubMed |
+| 52 | R13 | Mié 2027-03-03 | R3 · Búsqueda N bases | R | ALTA | Trasladar la query a Europe PMC + CENTRAL + Semantic Scholar (5 fuentes) | Sintaxis + nº de resultados por fuente | `vault 02_busqueda/fuentes.md` | `EPMC`, `CENT`, `SEMSCH` | Europe PMC · S2 |
+| 53 | R14 | Vie 2027-03-05 | R3 · Búsqueda N bases | R | ALTA | LILACS/BVS (DeCS · ventaja LATAM) + ClinicalTrials.gov + ICTRP | Búsquedas anotadas con nº de resultados | `vault 02_busqueda/fuentes.md` | `LILACS`, `CT`, `ICTRP` | LILACS · CT.gov |
+| 54 | R15 | Mar 2027-03-09 | R3 · Búsqueda N bases | R | ALTA | PRISMA-S (16 ítems): documentar cada componente (fecha, base, interfaz, sintaxis, límites, nº) | Tabla PRISMA-S de SR-1 | `vault 02_busqueda/PRISMA-S.md` | `PRISMAS` | — |
+| 55 | R16 | Jue 2027-03-11 | R3 · Búsqueda N bases | R | ALTA | Corpus: re-correr discovery con la query final + unir con los 200 registros de jun-2026 + dedup por DOI + resolver texto completo en lote (Unpaywall) + exportar CSV/RIS para Rayyan | Biblioteca dedup (n registros) + PDFs OA + CSV/RIS | `vault 02_busqueda/corpus_final.csv` | `UNPAY`, `OPENALEX`, `RAY` | research-discovery · Unpaywall |
+| 56 | R17 | Lun 2027-03-15 | R4 · Screening dual | R | CRITICA | Rayyan: crear la SR-1, subir el corpus, INVITAR al revisor #2 (cuenta creada en X-9), etiquetas de exclusión y modo CIEGO activado | Proyecto Rayyan con 2 revisores en ciego | `Rayyan (SR-1) + vault 03_screening/_README` | `RAY`, `RAYHC`, `RAYYT` | Rayyan |
+| 57 | R18 (1/3) | Mié 2027-03-17 | R4 · Screening dual | R | CRITICA | Cribado título/abstract (nivel 1) por DOS revisores humanos independientes en ciego (Joseph + revisor #2); ningún LLM cuenta como revisor — primer tercio | Primer tercio cribado por ambos revisores | `Rayyan: decisiones de ambos` | `RAY`, `COCHB` | Rayyan |
+| 58 | R18 (2/3) | Vie 2027-03-19 | R4 · Screening dual | R | CRITICA | Cribado título/abstract (nivel 1) por DOS revisores humanos independientes en ciego (Joseph + revisor #2); ningún LLM cuenta como revisor — segundo tercio | Dos tercios cribados por ambos | `Rayyan: decisiones de ambos` | `RAY`, `COCHB` | Rayyan |
+| 59 | R18 (3/3) | Mar 2027-03-23 | R4 · Screening dual | R | CRITICA | Cribado título/abstract (nivel 1) por DOS revisores humanos independientes en ciego (Joseph + revisor #2); ningún LLM cuenta como revisor — cierre | Nivel 1 completo por ambos; conflictos marcados | `Rayyan: decisiones de ambos + lista de conflictos` | `RAY`, `COCHB` | Rayyan |
+| 60 | R20 | Jue 2027-03-25 | R4 · Screening dual | R | ALTA | κ de Cohen del nivel 1 con las decisiones de los 2 humanos (Python/R) + reunión de resolución de conflictos (regla escrita: consenso o 3er revisor) ⚑ _κ con un solo humano no tiene sentido: exige 2 revisores_ | κ + IC95 % reportado + conflictos resueltos | `vault 03_screening/kappa_n1.md` | `STEPSR`, `COCHB` | Python/R |
+| 61 | R19 (1/2) | Lun 2027-03-29 | R4 · Screening dual | R | ALTA | Texto completo (nivel 2) por DOS revisores humanos independientes en ciego (Joseph + revisor #2); ningún LLM cuenta como revisor con razones de exclusión estandarizadas — primera mitad | Mitad de los textos completos revisada por ambos | `Rayyan + vault 03_screening/excluidos.md` | `RAY` | Rayyan |
+| 62 | R19 (2/2) | Mié 2027-03-31 | R4 · Screening dual | R | ALTA | Texto completo (nivel 2) por DOS revisores humanos independientes en ciego (Joseph + revisor #2); ningún LLM cuenta como revisor — segunda mitad | Nivel 2 completo; excluidos con motivo | `Rayyan + vault 03_screening/excluidos.md` | `RAY` | Rayyan |
+| 63 | R21 | Vie 2027-04-02 | R4 · Screening dual | R | ALTA | κ del nivel 2 + diagrama de flujo PRISMA 2020 con números reales (identificados, cribados, excluidos por motivo, incluidos) | κ nivel 2 + PRISMA flow | `vault 03_screening/PRISMA_flow.png` | `PRISMAF`, `STEPSR` | eshackathon Shiny |
+| 64 | R22 | Mar 2027-04-06 | R5 · Extracción doble | R | ALTA | Formulario de extracción piloteado (diseño, n, producto, zona, tiempo-a-hialuronidasa, dosis, desenlace, secuelas, dominios de sesgo) — mecanismo de la oclusión aprendido en Derma ⚑ _requiere Derma d19-20 (oclusión vascular)_ | Plantilla de extracción v1 | `vault 04_extraccion/formulario_v1.xlsx` | `COCHB`, `DELO` | Sheets |
+| 65 | R23 | Jue 2027-04-08 | R5 · Extracción doble | R | ALTA | Piloto de extracción en 2-3 estudios por AMBOS revisores + ajustar el formulario (v2) | Formulario v2 + 3 filas piloto ×2 | `vault 04_extraccion/formulario_v2.xlsx` | `COCHB` | Sheets |
+| 66 | R24 (1/3) | Lun 2027-04-12 | R5 · Extracción doble | R | ALTA | Extracción DOBLE independiente (Joseph + revisor #2); Elicit solo como asistencia para localizar datos, nunca como segundo extractor — primer tercio | Primer tercio extraído ×2 | `vault 04_extraccion/extraccion_A.xlsx + extraccion_B.xlsx` | `COCHB`, `ELI` | Sheets · Elicit |
+| 67 | R24 (2/3) | Mié 2027-04-14 | R5 · Extracción doble | R | ALTA | Extracción DOBLE independiente — segundo tercio | Dos tercios extraídos ×2 | `vault 04_extraccion/extraccion_A.xlsx + extraccion_B.xlsx` | `COCHB`, `ELI` | Sheets · Elicit |
+| 68 | R24 (3/3) | Vie 2027-04-16 | R5 · Extracción doble | R | ALTA | Extracción DOBLE independiente — cierre + reconciliación de discrepancias registrada ⚑ _la reconciliación se reporta en Methods (PRISMA 2020 ítem 9)_ | Extracción completa + discrepancias reconciliadas y registradas | `vault 04_extraccion/discrepancias.md` | `COCHB` | Sheets |
+| 69 | R25 | Mar 2027-04-20 | R5 · Extracción doble | R | MEDIA | Cerrar la tabla de características de estudios (1 fila por estudio) | Tabla completa lista para Results | `vault 04_extraccion/tabla_caracteristicas.xlsx` | `COCHB` | — |
+| 70 | R26 (1/2) | Jue 2027-04-22 | R6 · Sesgo & GRADE | R | ALTA | Riesgo de sesgo por ambos revisores: ROBINS-I (no-aleatorizados) / JBI-Murad para series y reportes de caso — primera mitad | Mitad evaluada ×2 | `vault 04_extraccion/RoB.xlsx` | `ROBINS`, `ROB2` | riskofbias.info |
+| 71 | R26 (2/2) | Lun 2027-04-26 | R6 · Sesgo & GRADE | R | ALTA | Riesgo de sesgo — segunda mitad + consenso | RoB completo ×2 + consenso | `vault 04_extraccion/RoB.xlsx` | `ROBINS`, `ROB2` | riskofbias.info |
+| 72 | R27 | Mié 2027-04-28 | R6 · Sesgo & GRADE | R | ALTA | GRADE (5 dominios) + Summary of Findings por desenlace | SoF table de SR-1 | `GRADEpro + vault 04_extraccion/SoF.md` | `GRADE` | GRADEpro |
+| 73 | R28 | Vie 2027-04-30 | R6 · Sesgo & GRADE | R | MEDIA | AMSTAR-2 sobre 2-3 SR vecinas para posicionar la nuestra en la Discussion | Nota AMSTAR-2 | `vault 05_manuscrito/AMSTAR2_vecinas.md` | `AMSTAR` | — |
+| 74 | R29 (1/2) | Mar 2027-05-04 | R7 · Meta-análisis en R | R | ALTA | R + metafor: cargar la tabla de extracción real y preparar el dataset (1 fila por estudio y desenlace) | Script que lee la tabla | `vault 05_manuscrito/ma_01_setup.R` | `DMAR`, `METAFOR` | R |
+| 75 | R29 (2/2) | Jue 2027-05-06 | R7 · Meta-análisis en R | R | ALTA | Calcular 1 tamaño de efecto sobre datos reales (proporción de recuperación / tiempo-a-tratamiento) | 1 effect size reproducido | `vault 05_manuscrito/ma_01_setup.R` | `DMAR`, `METAFOR` | R |
+| 76 | R30 (1/2) | Lun 2027-05-10 | R7 · Meta-análisis en R | R | ALTA | Tamaño de efecto correcto (proporciones transformadas / medias de tiempo) + modelo de efectos aleatorios vs fijo (justificar por escrito) | Elección justificada | `vault 05_manuscrito/ma_02_pooled.R` | `DMAR`, `COCHYT` | R |
+| 77 | R30 (2/2) | Mié 2027-05-12 | R7 · Meta-análisis en R | R | ALTA | Pooled estimate con IC95 % | Pooled estimate + IC95 % | `vault 05_manuscrito/ma_02_pooled.R` | `DMAR` | R |
+| 78 | R31 (1/2) | Vie 2027-05-14 | R7 · Meta-análisis en R | R | ALTA | Forest plot v1 + heterogeneidad (I², τ², intervalo de predicción) | Forest plot v1 + I²/τ² | `vault 05_manuscrito/fig_forest.tiff` | `DMAR`, `METAFOR` | R |
+| 79 | R31 (2/2) | Mar 2027-05-18 | R7 · Meta-análisis en R | R | ALTA | Forest plot final TIFF 300 dpi + párrafo de heterogeneidad | Forest TIFF 300 dpi + I²/τ² reportados | `vault 05_manuscrito/fig_forest.tiff` | `DMAR`, `METAFOR` | R |
+| 80 | R32 | Jue 2027-05-20 | R7 · Meta-análisis en R | R | MEDIA | Sesgo de publicación: funnel plot + test de Egger (si ≥10 estudios; si no, declararlo) | Funnel + Egger o justificación | `vault 05_manuscrito/fig_funnel.tiff` | `DMAR` | R |
+| 81 | R33 (1/2) | Lun 2027-05-24 | R7 · Meta-análisis en R | R | MEDIA | Subgrupos definidos a priori en el protocolo: tiempo-a-hialuronidasa (<24 h vs ≥24 h), zona (nasal / glabelar / labial), producto, formación del inyector, LATAM vs resto ⚑ _requiere Derma d19-20 (oclusión vascular)_ | Subgrupos calculados | `vault 05_manuscrito/ma_03_subgrupos.R` | `DMAR` | R |
+| 82 | R33 (2/2) | Mié 2027-05-26 | R7 · Meta-análisis en R | R | MEDIA | Análisis de sensibilidad + tabla de subgrupos ⚑ _requiere Derma d19-20 (oclusión vascular)_ | Sensibilidad + tabla de subgrupos | `vault 05_manuscrito/ma_03_subgrupos.R` | `DMAR` | R |
+| 83 | B1 | Vie 2027-05-28 | B · Bibliométrico & abstracts | B | MEDIA | Abstract (≈250 palabras) para el congreso elegido en X-4 (CILAD / RADLA / AAD) con los resultados preliminares de SR-1 o la tesis — respetar su deadline verificado | Abstract enviado o programado | `vault 05_manuscrito/abstract_congreso.md + Mesa editorial` | `PHRASE`, `SCIWRITE` | Web del congreso |
+| 84 | R34 | Mar 2027-06-01 | R8 · Manuscrito & envío | R | ALTA | Methods con PRISMA 2020 (registro, elegibilidad, fuentes, búsqueda, selección con 2 revisores, extracción doble, sesgo, síntesis) — MethodsAgent + CP-1/CP-2 | Methods redactado y revisado | `vault 05_manuscrito/methods.md` | `PRISMA`, `PRISMAC` | Sistema agéntico |
+| 85 | R35 | Jue 2027-06-03 | R8 · Manuscrito & envío | R | ALTA | Results: flujo PRISMA + tabla de características + forest + SoF; cada número trazable a la tabla de extracción (ResultsAgent + CP-2) | Results + tablas y figuras | `vault 05_manuscrito/results.md` | `PRISMAC`, `GRADE` | Sistema agéntico |
+| 86 | R36 | Lun 2027-06-07 | R8 · Manuscrito & envío | R | ALTA | Introduction (gap + objetivo) con [CIT:id] desde el corpus (IntroAgent) + micro-drill Phrasebank | Intro redactada | `vault 05_manuscrito/intro.md` | `PHRASE`, `EQ` | Sistema agéntico |
+| 87 | R37 | Mié 2027-06-09 | R8 · Manuscrito & envío | R | ALTA | Discussion: hallazgo principal, comparación con SR vecinas (AMSTAR-2), certeza GRADE, limitaciones explícitas (sesgo de publicación, series de casos), implicación LATAM / PERÚ-SAFE | Discussion redactada | `vault 05_manuscrito/discussion.md` | `PHRASE`, `PRISMAC` | Sistema agéntico |
+| 88 | R38 | Vie 2027-06-11 | R8 · Manuscrito & envío | R | ALTA | Checklist PRISMA 2020 de 27 ítems + supplements (PRISMA-S, SoF, CRD, formulario de extracción, código R) | Checklist 27/27 + supplements | `vault 05_manuscrito/PRISMA_checklist.md + supplements/` | `PRISMAC`, `TURING` | — |
+| 89 | R39 | Mar 2027-06-15 | R8 · Manuscrito & envío | R | MEDIA | Journal target + coste: Dermatologic Surgery / JAAD (suscripción $0) / JCD (OA 50 % Grupo B) / Anais-Actas (Diamond $0); verificar APC en la web y Research4Life | Journal decidido + plan de coste | `Mesa editorial: cascada SR-1 + coste` | `EQ`, `JAADINT`, `ANAIS` | — |
+| 90 | CR2-1 | Jue 2027-06-17 | CR · Case report (CARE) | CR | ALTA | Case report #2: identificar caso + senior author (misma tabla de candidatos; priorizar complicación estética = L4) — reservar JAAD Case Reports solo si es el MEJOR caso | Caso #2 elegido + senior author | `DATA/RESEARCH/CASE_REPORT_2/caso_candidatos.md` | `CARE`, `JAADCR` | Senior author |
+| 91 | R40 | Lun 2027-06-21 | R8 · Manuscrito & envío | R | MEDIA | Cover letter + formateo al journal (Editorial Manager / ScholarOne) + página de autoría (ICMJE / CRediT / ORCID / conflictos de TODOS los autores) | Manuscrito formateado + cover + autoría | `vault 05_manuscrito/SR-1_formateado.docx + cover_letter.md` | `EM`, `ICMJE`, `CREDIT` | Editorial Manager |
+| 92 | R41 | Mié 2027-06-23 | R8 · Manuscrito & envío | R | CRITICA | CHECKPOINT HUMANO (CP-3/CP-4): citation_verifier.py sobre TODAS las refs (Crossref/PMID + CSL-JSON), paráfrasis, cadena estadística; el revisor #2 firma la lectura completa | .docx aprobado por Joseph y por el revisor #2; 0 [NO VERIFICABLE] | `vault 05_manuscrito/refs_verified.json + SR-1_revision_v1.docx` | `CROSSREF`, `PRISMAC` | citation_verifier.py |
+| 93 | R42 | Vie 2027-06-25 | R8 · Manuscrito & envío | R | ALTA | Gate de integridad final: ICMJE 4 criterios por autor, roles CRediT, COPE (sin salami, sin doble envío), preprint sí/no, datos y código depositados (OSF / Zenodo) | Gate ICMJE / COPE / CRediT superado + DOI de datos | `vault 05_manuscrito/integridad.md + OSF` | `ICMJE`, `COPE`, `CREDIT`, `FAIR` | OSF |
+| 94 | R43 | Mar 2027-06-29 | R8 · Manuscrito & envío | R | CRITICA | SUBMIT SR-1 ✅ + registrar en la Mesa editorial y CTI Vitae + actualizar el estado en PROSPERO **[hito SR-1]** | SR-1 ENVIADA · estado SR-1 → enviado | `Mesa editorial + PROSPERO actualizado` | `PROS`, `ICMJE` | Editorial Manager |
+| 95 | X-10 | Jue 2027-07-01 | X · Transversal · cierre | X | MEDIA | Re-verificar el Grupo Research4Life de Perú (clasificación Banco Mundial · 1-jul) + presupuesto actualizado con los APC reales de los 4 entregables | Presupuesto research 2026-27 actualizado con fechas de verificación | `RUTA_PUBLICACION_2027.md §3 presupuesto` | `JAADINT` | Web Research4Life |
+| 96 | B2 | Lun 2027-07-05 | B · Bibliométrico & abstracts | B | MEDIA | Estudio bibliométrico / base pública (sin IRB): fijar pregunta + fuente (NRMP Charting Outcomes, Texas STAR, GBD, Google Trends) alineada con derma IMG / fototipos | Pregunta + fuente + variables | `DATA/RESEARCH/BIBLIOMETRICO_1/protocolo.md` | `NRMP`, `BBR` | — |
+| 97 | CR2-2 | Mié 2027-07-07 | CR · Case report (CARE) | CR | ALTA | Case report #2: consentimiento de publicación firmado + fotos estandarizadas (plantillas del case report #1) | Consentimiento + fotos | `CASE_REPORT_2/` | `CARE` | Plantillas CR-1 |
+| 98 | B3 | Vie 2027-07-09 | B · Bibliométrico & abstracts | B | MEDIA | Bibliométrico: extraer los datos + Table 1 con gtsummary + data dictionary y README (FAIR) | Dataset limpio + Table 1 + README | `BIBLIOMETRICO_1/data/ + tabla1.docx` | `GTS`, `FAIR`, `TURING` | R · gtsummary |
+| 99 | CR2-3 | Mar 2027-07-13 | CR · Case report (CARE) | CR | ALTA | Case report #2: CARE 13 ítems + borrador v1 | CARE 13/13 + borrador | `CASE_REPORT_2/borrador_v1.md` | `CARE`, `PHRASE` | CARE |
+| 100 | B4 | Jue 2027-07-15 | B · Bibliométrico & abstracts | B | MEDIA | Bibliométrico: figuras + borrador (≤1500 palabras) con [CIT:id] | Borrador v1 + 2 figuras | `BIBLIOMETRICO_1/borrador_v1.md` | `PHRASE`, `SCIWRITE` | R |
+| 101 | CR2-4 | Lun 2027-07-19 | CR · Case report (CARE) | CR | CRITICA | Case report #2: revisión del senior author + formateo (DOJ, o JAAD Case Reports si es el mejor caso) + citas verificadas + SUBMIT | Case report #2 ENVIADO | `Mesa editorial (nuevo ítem case-report-2)` | `DOJ`, `JAADCR`, `CROSSREF` | citation_verifier.py |
+| 102 | X-11 | Mié 2027-07-21 | X · Transversal · cierre | X | MEDIA | Post-submit SR-1: plantilla de rebuttal preparada + hacer 1 peer review (curso Sainani) para entender al revisor | Rebuttal plantilla + 1 review practicada | `vault 05_manuscrito/rebuttal_plantilla.md` | `REBUTTAL`, `SCIWRITE` | — |
+| 103 | B5 | Vie 2027-07-23 | B · Bibliométrico & abstracts | B | MEDIA | Bibliométrico: citas verificadas + formateo + SUBMIT (journal por decidir; Cureus solo táctico, máximo 1-2 ítems del CV) | Bibliométrico ENVIADO | `Mesa editorial (nuevo ítem bibliometrico-1)` | `CROSSREF`, `DOJ` | citation_verifier.py |
+| 104 | R44 | Mar 2027-07-27 | R1 · Pregunta & protocolo | R | ALTA | SR-2 (Línea 5 · RF/CO₂ en fototipos IV-VI): PICO + duplicidad (el MA 2026 de Argobi en JCD acota el gap al subgrupo IV-VI) → abrir el ciclo 3 | PICO de SR-2 + decisión | `lines/L5-energia-fototipos.md §2 + vault SR-2/_hoja_de_ruta` | `PROS`, `PM` | PROSPERO · PubMed |
+| 105 | R45 | Jue 2027-07-29 | R1 · Pregunta & protocolo | R | ALTA | SR-2: protocolo PRISMA-P + equipo de revisión (revisor #2 desde el inicio, coautores de la campaña) | Protocolo SR-2 + equipo | `lines/L5-energia-fototipos.md §Equipo de revisión` | `PRISMA`, `COCHB` | — |
+| 106 | R46 | Lun 2027-08-02 | R2 · Registro PROSPERO | R | ALTA | SR-2: registro PROSPERO ENVIADO | PROSPERO SR-2 enviado | `Mesa editorial (nuevo ítem PROSPERO-SR2)` | `PROS` | PROSPERO |
+| 107 | X-12 | Mié 2027-08-04 | X · Transversal · cierre | X | ALTA | BALANCE 12 meses (RUTA §6): publicaciones enviadas / aceptadas, abstracts, mentores (Ciro · Rising Scholars · Finlay · campaña), decisión informada sobre research fellowship presencial 2028 | Balance escrito + decisión fellowship 2028 (sí / no / cuándo) | `RUTA_PUBLICACION_2027.md §Balance + Mesa editorial` | `ICMJE` | Mesa editorial |
+| 108 | X-13 | Vie 2027-08-06 | X · Transversal · cierre | X | BAJA | COLCHÓN 1: cerrar cualquier átomo a medias (rebuttals, revisiones mayores, case report #2) | Sin pendientes abiertos | `Mesa editorial` | `REBUTTAL` | — |
+| 109 | X-14 | Mar 2027-08-10 | X · Transversal · cierre | X | BAJA | COLCHÓN 2: retro del método — qué automatizar para SR-2 en el sistema agéntico + arranque del plan del ciclo 3 | Lista de mejoras + ciclo 3 esbozado | `Vault Dashboard_Research` | `TURING` | Obsidian |
 
-### R2 · Registro PROSPERO
+## 6. Leyenda de recursos (clave → recurso · URL · verificación)
 
-| code | fecha | prio | objetivo | entregable | rec | tool |
-|---|---|---|---|---|---|---|
-| R10 | 2026-07-06 | CRÍTICA | Rellenar el formulario PROSPERO (campos obligatorios) | Registro PROSPERO de SR-1 **enviado** | `PROS` | PROSPERO |
-| R11 | 2026-07-08 | MEDIA | Plan B si no encaja (scoping/review of reviews → OSF) + esperar CRD | Nota: CRD recibido o registro en OSF; protocolo "congelado" | `PROS`,`OSF` | OSF |
+| clave | recurso | URL | verificación |
+|---|---|---|---|
+| `PM` | PubMed (búsqueda + alertas) | https://pubmed.ncbi.nlm.nih.gov/ | repo (verificada jun-jul 2026) |
+| `NLM1` | NLM · PubMed in EBP (curso) | https://www.nlm.nih.gov/oet/ed/pubmed/pubmed_in_ebp/index.html | repo (verificada jun-jul 2026) |
+| `NLM2` | NLM · PubMed Online Training | https://learn.nlm.nih.gov/documentation/training-packets/T0042010P/ | repo (verificada jun-jul 2026) |
+| `ZOT` | Zotero (gestor de citas) | https://www.zotero.org/ | repo (verificada jun-jul 2026) |
+| `GREEN` | How to Read a Paper — Greenhalgh (BMJ) | https://www.bmj.com/about-bmj/resources-readers/publications/how-read-paper | repo (verificada jun-jul 2026) |
+| `STAT` | StatQuest (bioestadística) | https://www.youtube.com/@statquest | repo (verificada jun-jul 2026) |
+| `ZED` | zedstatistics | https://www.youtube.com/@zedstatistics | repo (verificada jun-jul 2026) |
+| `STEPSR` | Step-by-step SR+MA (Ahn & Kang 2019) | https://pmc.ncbi.nlm.nih.gov/articles/PMC6670166/ | repo (verificada jun-jul 2026) |
+| `CIL1` | Cochrane Interactive · Módulo 1 (gratis) | https://www.cochrane.org/learn/courses-and-resources/interactive-learning/module-1-introduction-conducting-systematic-reviews | repo (verificada jun-jul 2026) |
+| `COCHB` | Cochrane Handbook v6.5 | https://training.cochrane.org/handbook | repo (verificada jun-jul 2026) |
+| `COCHYT` | Cochrane Training (YouTube) | https://www.youtube.com/channel/UCoWzvKR8RPHG07PPeqBiibA | repo (verificada jun-jul 2026) |
+| `PRISMA` | PRISMA statement | https://www.prisma-statement.org/ | repo (verificada jun-jul 2026) |
+| `PRISMAS` | PRISMA-S (búsqueda, 16 ítems) | https://www.prisma-statement.org/prisma-search | repo (verificada jun-jul 2026) |
+| `PRISMAF` | PRISMA 2020 flow (plantilla + Shiny) | https://www.prisma-statement.org/prisma-2020-flow-diagram | repo (verificada jun-jul 2026) |
+| `PRISMAC` | PRISMA 2020 checklist 27 ítems (PMC) | https://pmc.ncbi.nlm.nih.gov/articles/PMC8008539/ | repo (verificada jun-jul 2026) |
+| `PROS` | PROSPERO (registro, gratis) | https://www.crd.york.ac.uk/PROSPERO/help/register | repo (verificada jun-jul 2026) |
+| `OSF` | OSF Registries (scoping) | https://osf.io/registries | repo (verificada jun-jul 2026) |
+| `EPMC` | Europe PMC (Embase parcial) | https://europepmc.org/ | repo (verificada jun-jul 2026) |
+| `CENT` | Cochrane CENTRAL | https://www.cochranelibrary.com/central | repo (verificada jun-jul 2026) |
+| `LILACS` | LILACS / BVS (LATAM) | https://lilacs.bvsalud.org/ | repo (verificada jun-jul 2026) |
+| `CT` | ClinicalTrials.gov | https://clinicaltrials.gov/ | repo (verificada jun-jul 2026) |
+| `ICTRP` | WHO ICTRP | https://www.who.int/clinical-trials-registry-platform | repo (verificada jun-jul 2026) |
+| `RAY` | Rayyan (cribado, free ≤3) | https://www.rayyan.com/ | repo (verificada jun-jul 2026) |
+| `RAYHC` | Rayyan · crear una SR (guía) | https://help.rayyan.ai/hc/en-us/articles/22088155760017-How-to-Create-a-Systematic-Review-in-Rayyan | repo (verificada jun-jul 2026) |
+| `RAYYT` | Rayyan · canal oficial (hands-on) | https://www.youtube.com/@Rayyanapp | repo (verificada jun-jul 2026) |
+| `ELI` | Elicit (extracción asistida) | https://elicit.com/ | repo (verificada jun-jul 2026) |
+| `ROB2` | RoB 2 (sesgo en ECA) | https://www.riskofbias.info/welcome/rob-2-0-tool | repo (verificada jun-jul 2026) |
+| `ROBINS` | ROBINS-I (no-aleatorizados) | https://www.riskofbias.info/welcome/home | repo (verificada jun-jul 2026) |
+| `GRADE` | GRADEpro (certeza) | https://www.gradepro.org/ | repo (verificada jun-jul 2026) |
+| `AMSTAR` | AMSTAR-2 (apreciar SR) | https://amstar.ca/ | repo (verificada jun-jul 2026) |
+| `DMAR` | Doing Meta-Analysis in R (libro gratis) | https://bookdown.org/MathiasHarrer/Doing_Meta_Analysis_in_R/ | repo (verificada jun-jul 2026) |
+| `METAFOR` | metafor package (R) | https://www.metafor-project.org/ | repo (verificada jun-jul 2026) |
+| `EQ` | EQUATOR Network | https://www.equator-network.org/ | repo (verificada jun-jul 2026) |
+| `DELO` | DeLorenzi 2014 · paper ancla SR-1 (PMID 24692598) | https://pubmed.ncbi.nlm.nih.gov/24692598/ | repo (verificada jun-jul 2026) |
+| `OPENALEX` | OpenAlex · API troncal (key gratis, 13-feb-2026) | https://developers.openalex.org/api-reference/authentication | repo (verificada jun-jul 2026) |
+| `SEMSCH` | Semantic Scholar · Academic Graph API | https://api.semanticscholar.org/api-docs/graph | repo (verificada jun-jul 2026) |
+| `UNPAY` | Unpaywall · texto completo OA legal por DOI | https://unpaywall.org/products/api | repo (verificada jun-jul 2026) |
+| `CROSSREF` | Crossref · verificar DOI + CSL-JSON de citas | https://www.crossref.org/documentation/retrieve-metadata/content-negotiation/ | repo (verificada jun-jul 2026) |
+| `TOP` | TOP Guidelines · ciencia abierta (Center for Open Science) | https://www.cos.io/initiatives/top-guidelines | repo (verificada jun-jul 2026) |
+| `BBR` | Harrell · Biostatistics for Biomedical Research (BBR) | https://hbiostat.org/bbr/ | repo (verificada jun-jul 2026) |
+| `GTS` | gtsummary · Table 1 + tablas de regresión publication-ready | https://www.danieldsjoberg.com/gtsummary/ | repo (verificada jun-jul 2026) |
+| `EPIRSURV` | Epidemiologist R Handbook · análisis de supervivencia | https://www.epirhandbook.com/en/new_pages/survival_analysis.html | repo (verificada jun-jul 2026) |
+| `ICMJE` | ICMJE · Recommendations (autoría + conducta) | https://www.icmje.org/recommendations/ | repo (verificada jun-jul 2026) |
+| `COPE` | COPE · guías de integridad de publicación | https://publicationethics.org/guidance/Guidelines | repo (verificada jun-jul 2026) |
+| `CREDIT` | CRediT · taxonomía de contribución (NISO) | https://credit.niso.org/ | repo (verificada jun-jul 2026) |
+| `SCIWRITE` | Writing in the Sciences · peer review & rebuttal (Sainani) | https://www.coursera.org/learn/sciwrite | repo (verificada jun-jul 2026) |
+| `REBUTTAL` | PLOS · How to write a persuasive rebuttal | https://plos.org/resource/how-to-write-a-persuasive-response-to-reviewers/ | repo (verificada jun-jul 2026) |
+| `PHRASE` | Academic Phrasebank (Manchester) · frases por sección | https://www.phrasebank.manchester.ac.uk/ | repo (verificada jun-jul 2026) |
+| `TURING` | The Turing Way · investigación reproducible | https://the-turing-way.netlify.app/ | repo (verificada jun-jul 2026) |
+| `FAIR` | FAIR data principles (GO FAIR) | https://www.go-fair.org/fair-principles/ | repo (verificada jun-jul 2026) |
+| `ORCID` | ORCID · iD de autor (registro gratis) | https://orcid.org/ | repo (RESEARCH_RECURSOS_TOP) |
+| `SCHOLAR` | Google Scholar · crear perfil público | https://scholar.google.com/intl/en/scholar/citations.html | WebFetch 05-sep |
+| `CTI` | CTI Vitae · CONCYTEC (CV + RENACYT) | https://ctivitae.concytec.gob.pe/ | WebFetch 05-sep (carga CONCYTEC) |
+| `NCBIACC` | Cuenta NCBI (login · API key E-utilities) | https://account.ncbi.nlm.nih.gov/ | WebFetch 05-sep |
+| `RISING` | Rising Scholars (ex-AuthorAID, INASP) · mentoría gratuita | https://risingscholars.net/ | WebFetch 05-sep (authoraid.info → 301) |
+| `CARE` | CARE checklist · 13 ítems (case reports) | https://www.care-statement.org/checklist | WebFetch 05-sep |
+| `STROBE` | STROBE checklists (transversal · 22 ítems) | https://www.strobe-statement.org/checklists/ | WebFetch 05-sep |
+| `JAADINT` | JAAD International (OA · Grupo B 50%) | https://www.jaadinternational.org/ | repo (researchData.ts) |
+| `JAADCR` | JAAD Case Reports · ficha DOAJ (APC US$850) | https://doaj.org/toc/2352-5126 | repo (RUTA §3) |
+| `DOJ` | Dermatology Online Journal · ficha DOAJ (≤US$300, MEDLINE) | https://doaj.org/toc/1087-2108 | repo (RUTA §3) · portal eScholarship A VERIFICAR |
+| `IJD` | International Journal of Dermatology · en PubMed (políticas: 403 → confirmar por correo) | https://pubmed.ncbi.nlm.nih.gov/?term=%22Int+J+Dermatol%22%5BJournal%5D | patrón PubMed [Journal] |
+| `ACTAS` | Actas Dermo-Sifiliográficas · en PubMed (Diamond OA $0) | https://pubmed.ncbi.nlm.nih.gov/?term=%22Actas+Dermosifiliogr%22%5BJournal%5D | patrón PubMed [Journal] |
+| `ANAIS` | Anais Brasileiros de Dermatologia · en PubMed (Diamond OA $0) | https://pubmed.ncbi.nlm.nih.gov/?term=%22An+Bras+Dermatol%22%5BJournal%5D | patrón PubMed [Journal] |
+| `EM` | Editorial Manager (Aries) · cuenta por revista | https://www.ariessys.com/ | WebFetch 05-sep (editorialmanager.com → 302) |
+| `NRMP` | NRMP · Residency Data Reports (base pública) | https://www.nrmp.org/match-data-analytics/residency-data-reports/ | repo (RUTA fuentes) |
 
-### R3 · Búsqueda en N bases
+## 7. Notas de verificación (05-sep-2026)
 
-| code | fecha | prio | objetivo | entregable | rec | tool |
-|---|---|---|---|---|---|---|
-| R12 | 2026-07-10 | CRÍTICA | **OpenAlex (troncal, booleana) + MeSH** en MEDLINE/PubMed | Query booleana de SR-1 en OpenAlex + sintaxis PubMed (líneas numeradas) | `OPENALEX`,`NLM1`,`PM` | OpenAlex, PubMed |
-| R13 | 2026-07-14 | ALTA | Trasladar a **Europe PMC + CENTRAL + Semantic Scholar** (5 fuentes) | Sintaxis + nº de resultados por fuente | `EPMC`,`CENT`,`SEMSCH` | Europe PMC, Cochrane, S2 |
-| R14 | 2026-07-16 | ALTA | **LILACS/BVS** (DeCS · ventaja LATAM) + registros de ensayos (ClinicalTrials/ICTRP) | Búsqueda LILACS + ClinicalTrials.gov + ICTRP, resultados anotados | `LILACS`,`CT`,`ICTRP` | LILACS, CT.gov |
-| R15 | 2026-07-20 | ALTA | **PRISMA-S** (16 ítems): documentar cada componente para reproducibilidad | Tabla PRISMA-S de SR-1 (fecha, fuente, sintaxis, nº) | `PRISMAS` | — |
-| R16 | 2026-07-22 | MEDIA | **Texto completo** (cascada Unpaywall→…) + **dedup por DOI** → cribado | PDFs OA resueltos + biblioteca dedup lista para Rayyan | `UNPAY`,`RAY` | Unpaywall, Rayyan |
-
-### R4 · Screening (cribado)
-
-| code | fecha | prio | objetivo | entregable | rec | tool |
-|---|---|---|---|---|---|---|
-| R17 | 2026-07-24 | CRÍTICA | **Montar Rayyan** y subir el corpus; configurar etiquetas y ciego | Proyecto Rayyan de SR-1 con todos los registros importados | `RAY`,`RAYHC` | Rayyan |
-| R18 | 2026-07-28 | CRÍTICA | **Cribado título/abstract** (nivel 1), 2 revisores (o 2 pases) | Nivel 1 completado; conflictos marcados | `RAY` | Rayyan |
-| R19 | 2026-07-30 | ALTA | **Texto completo** (nivel 2) con razones de exclusión | Excluidos con motivo (alimenta el flujo PRISMA) | `RAY` | Rayyan |
-| R20 | 2026-08-03 | ALTA | **Kappa interobservador** (acuerdo de inclusión) en Python/R | κ calculado + IC; conflictos a checkpoint humano | `STEPSR` | Python/R |
-| R21 | 2026-08-05 | ALTA | **Diagrama de flujo PRISMA 2020** (4 fases, vías separadas) con conteos | PRISMA flow de SR-1 (plantilla/Shiny) con números reales | `PRISMAF` | eshackathon Shiny |
-
-### R5 · Extracción de datos
-
-| code | fecha | prio | objetivo | entregable | rec | tool |
-|---|---|---|---|---|---|---|
-| R22 | 2026-08-07 | ALTA | **Formulario de extracción** piloteado (qué variables) | Plantilla de extracción de SR-1 (diseño, n, intervención, outcomes, dominios sesgo) | `COCHB` | Hoja/Sheets |
-| R23 | 2026-08-11 | ALTA | Piloto de extracción en 2–3 estudios + ajustar el formulario | Formulario v2 + 3 filas piloto | `COCHB` | — |
-| R24 | 2026-08-13 | MEDIA | **Extracción asistida** (Elicit) como segundo par de ojos | Filas extraídas de los incluidos (doble chequeo) | `ELI` | Elicit |
-| R25 | 2026-08-17 | MEDIA | Cerrar la **tabla de características de estudios** (1 fila por estudio) | Tabla completa de SR-1 (lista para Results) | `COCHB` | — |
-
-### R6 · Riesgo de sesgo & certeza
-
-| code | fecha | prio | objetivo | entregable | rec | tool |
-|---|---|---|---|---|---|---|
-| R26 | 2026-08-19 | ALTA | **Riesgo de sesgo:** RoB 2 (ECA) / **ROBINS-I** (no-aleatorizados, lo más probable aquí) | Evaluación RoB por estudio incluido | `ROB2`,`ROBINS` | riskofbias.info |
-| R27 | 2026-08-21 | ALTA | **GRADE** (4 niveles, 5 dominios) + **Summary of Findings** | SoF table de SR-1 por desenlace | `GRADE` | GRADEpro |
-| R28 | 2026-08-25 | MEDIA | **AMSTAR-2** para apreciar SR vecinas y posicionar la nuestra | Nota AMSTAR-2 sobre 2–3 SR previas del tema | `AMSTAR` | — |
-
-### R7 · Meta-análisis en R (si hay homogeneidad)
-
-| code | fecha | prio | objetivo | entregable | rec | tool |
-|---|---|---|---|---|---|---|
-| R29 | 2026-08-27 | ALTA | Montar **R + metafor/meta** y cargar los datos extraídos | Script R que lee la tabla y calcula 1 effect size | `DMAR`,`METAFOR` | R |
-| R30 | 2026-08-31 | ALTA | **Tamaño de efecto** correcto (proporción/tiempo-a-tratamiento) + modelo fijo vs aleatorio | Pooled estimate con IC95% | `DMAR` | R |
-| R31 | 2026-09-02 | ALTA | **Forest plot** + **heterogeneidad** (I², τ²) | Forest plot TIFF 300 dpi + I²/τ² reportados | `DMAR`,`METAFOR` | R |
-| R32 | 2026-09-04 | MEDIA | **Sesgo de publicación**: funnel plot + test de Egger | Funnel + Egger de SR-1 | `DMAR` | R |
-| R33 | 2026-09-08 | MEDIA | **Subgrupos/sensibilidad** (p. ej. tiempo-a-hialuronidasa, zona, nivel de entrenamiento) | Análisis de subgrupos + sensibilidad | `DMAR` | R |
-
-### R8 · Manuscrito & envío
-
-| code | fecha | prio | objetivo | entregable | rec | tool |
-|---|---|---|---|---|---|---|
-| R34 | 2026-09-10 | ALTA | **Methods + Results** con PRISMA 2020 (registro, búsqueda, flujo, síntesis) | Methods+Results de SR-1 redactados | `PRISMA`,`PRISMAC` | — |
-| R35 | 2026-09-14 | ALTA | **Introduction** (gap + objetivo) y **Discussion** (límites + certeza) | Intro+Discussion de SR-1 redactados | `EQ`,`PRISMAC` | — |
-| R36 | 2026-09-16 | ALTA | **Checklist PRISMA 2020 de 27 ítems** + supplementary (PRISMA-S, SoF, CRD) | Checklist 27 ítems marcada + supplements adjuntos | `PRISMAC` | — |
-| R37 | 2026-09-18 | MEDIA | **Elegir journal + APC**: tier, Diamond OA vs 50% LMIC; verificar Research4Life | Journal target decidido (de `journals.md`) + plan de coste | `JNL` | — |
-| R38 | 2026-09-22 | MEDIA | **Cover letter** + formateo al journal (Editorial Manager/ScholarOne) | Cover letter + manuscrito formateado | `EQ` | — |
-| R39 | 2026-09-24 | CRÍTICA | **Checkpoint humano final** (HITL): verificar citas reales (DOI/PMID), paráfrasis, cadena estadística | Word `.docx` revisado y aprobado por Joseph | `AGENT` | — |
-| R40 | 2026-09-28 | CRÍTICA | **SUBMIT SR-1** + abrir **SR-2** (Línea 5, fototipos IV–VI): registrar nuevo PICO | SR-1 enviada ✅ + PICO de SR-2 borrador | `L5`,`PROS` | Editorial Manager |
-
-> **Después de R40** el ciclo se reinicia con SR-2 (Línea 5) reutilizando el mismo molde R1→R8; cada SR
-> nueva es ~1 ciclo. Es el *compounding* de PIPs: 2–4 SR como objetivo estratégico (no requisito) hacia el
-> portfolio Mayo (ver `benchmarks.md`).
-
----
-
-## 6. Vueltas (repetición espaciada del **método**, no del contenido)
-
-Las APEX-método (p. ej. "criterios para ROBINS-I", "cómo se calcula κ", "diferencia PRISMA-S vs PRISMA-2020")
-siguen los mismos intervalos que `INTERVALOS` de `researchData.ts`:
-
-- **CRÍTICA** `[1,3,7,28,63]` · **ALTA** `[1,7,28,63]` · **MEDIA** `[3,28,63]` · **BAJA** `[7,63]`.
-
-Asigna CRÍTICA/ALTA a los pasos que más se reusarán en cada SR futura (PICO, búsqueda, screening, GRADE,
-meta-análisis). Los pasos administrativos (PROSPERO, cover letter) van MEDIA/BAJA.
-
----
-
-## 7. Leyenda de recursos (todas las URLs verificadas)
-
-| clave | recurso | URL |
-|---|---|---|
-| `OPENALEX` | **OpenAlex** — API troncal del motor (key gratis obligatoria desde 13-feb-2026) | https://developers.openalex.org/api-reference/authentication |
-| `PM` | PubMed (búsqueda + alertas + E-utilities) | https://pubmed.ncbi.nlm.nih.gov/ |
-| `SEMSCH` | Semantic Scholar — Academic Graph API (5ª fuente, bulk + TLDR) | https://api.semanticscholar.org/api-docs/graph |
-| `UNPAY` | Unpaywall — texto completo OA legal por DOI (cascada) | https://unpaywall.org/products/api |
-| `CROSSREF` | Crossref — verificar DOI + CSL-JSON de citas (gate IA) | https://www.crossref.org/documentation/retrieve-metadata/content-negotiation/ |
-| `NLM1` | NLM · PubMed in EBP (MeSH/booleanos) | https://www.nlm.nih.gov/oet/ed/pubmed/pubmed_in_ebp/index.html |
-| `NLM2` | NLM · PubMed Online Training | https://learn.nlm.nih.gov/documentation/training-packets/T0042010P/ |
-| `ZOT` | ~~Zotero~~ → **reemplazado por citas verificadas por IA** (Crossref/CSL-JSON, ver `CROSSREF`) | https://www.zotero.org/ |
-| `GREEN` | "How to Read a Paper" — Greenhalgh (BMJ) | https://www.bmj.com/about-bmj/resources-readers/publications/how-read-paper |
-| `STEP` | StatQuest (bioestadística, YouTube) | https://www.youtube.com/@statquest |
-| `ZED` | zedstatistics (estadística aplicada, YouTube) | https://www.youtube.com/@zedstatistics |
-| `STEPSR` | "A step-by-step guide for conducting a SR and meta-analysis" (Ahn & Kang, *Trop Med Health* 2019) | https://pmc.ncbi.nlm.nih.gov/articles/PMC6670166/ |
-| `CIL1` | Cochrane Interactive Learning · Módulo 1 (gratis) | https://www.cochrane.org/learn/courses-and-resources/interactive-learning/module-1-introduction-conducting-systematic-reviews |
-| `COCHB` | Cochrane Handbook v6.5 (conducción) | https://training.cochrane.org/handbook |
-| `PRISMA` | PRISMA statement (web oficial) | https://www.prisma-statement.org/ |
-| `PRISMAS` | PRISMA-S (búsqueda, 16 ítems) | https://www.prisma-statement.org/prisma-search |
-| `PRISMAF` | PRISMA 2020 flow diagram (plantilla + generador Shiny) | https://www.prisma-statement.org/prisma-2020-flow-diagram |
-| `PRISMAC` | PRISMA 2020 checklist 27 ítems (paper canónico, gratis) | https://pmc.ncbi.nlm.nih.gov/articles/PMC8008539/ |
-| `PROS` | PROSPERO (registro, gratis) | https://www.crd.york.ac.uk/PROSPERO/help/register |
-| `OSF` | OSF Registries (scoping/sin restricción de tipo) | https://osf.io/registries |
-| `EPMC` | Europe PMC (Embase parcial vía Europe PMC) | https://europepmc.org/ |
-| `CENT` | Cochrane CENTRAL (Cochrane Library) | https://www.cochranelibrary.com/central |
-| `LILACS` | LILACS / BVS (literatura LATAM) | https://lilacs.bvsalud.org/ |
-| `CT` | ClinicalTrials.gov | https://clinicaltrials.gov/ |
-| `ICTRP` | WHO ICTRP (registro de ensayos) | https://www.who.int/clinical-trials-registry-platform |
-| `RAY` | Rayyan (cribado, free ≤3 reviews) | https://www.rayyan.com/ |
-| `RAYHC` | Rayyan · cómo crear una SR (help center) | https://help.rayyan.ai/hc/en-us/articles/22088155760017-How-to-Create-a-Systematic-Review-in-Rayyan |
-| `RAYYT` | Rayyan · canal oficial (vídeo hands-on) | https://www.youtube.com/@Rayyanapp |
-| `ELI` | Elicit (extracción asistida, free ≤20/mes) | https://elicit.com/ |
-| `ROB2` | RoB 2 (sesgo en ECA) | https://www.riskofbias.info/welcome/rob-2-0-tool |
-| `ROBINS` | ROBINS-I (sesgo en no-aleatorizados) | https://www.riskofbias.info/welcome/home |
-| `GRADE` | GRADEpro (certeza de evidencia, gratis online) | https://www.gradepro.org/ |
-| `AMSTAR` | AMSTAR-2 (apreciar SR existentes) | https://amstar.ca/ |
-| `DMAR` | "Doing Meta-Analysis in R" (Harrer, Cuijpers et al., libro online gratis) | https://bookdown.org/MathiasHarrer/Doing_Meta_Analysis_in_R/ |
-| `METAFOR` | metafor package (Viechtbauer) | https://www.metafor-project.org/ |
-| `COCHYT` | Cochrane Training (canal oficial YouTube) | https://www.youtube.com/channel/UCoWzvKR8RPHG07PPeqBiibA |
-| `EQ` | EQUATOR Network (guidelines de reporte) | https://www.equator-network.org/ |
-| `JNL` | Tabla de revistas + waiver APC | [`journals.md`](journals.md) |
-| `L4` | Ficha de SR-1 (Línea 4 · complicaciones) | [`lines/L4-complicaciones.md`](lines/L4-complicaciones.md) |
-| `L5` | Ficha de SR-2 (Línea 5 · energía/fototipos) | [`lines/L5-energia-fototipos.md`](lines/L5-energia-fototipos.md) |
-| `AGENT` | Sistema agéntico (QA de citas + ensamblado .docx) | [`agentic-system.md`](agentic-system.md) |
-
----
-
-## 8. Cómo lo consume el motor de la app (nota para el chat que diseña la página)
-
-Mapeo 1:1 con `usmleStep1Daily.ts` para que sea **drop-in**:
-
-```ts
-// researchDailyPlan.ts (a crear por el chat de la web)
-export const DAILY_META = { inicio: '2026-06-10', fin: '2026-09-28', totalDias: 40,
-  bloque: '13:30–14:15 (boards, alterna con Derma) · 1 átomo-research por día-Research' };
-export const FRANJAS = [/* §2 de este doc */];
-export interface DiaResearch {
-  d: number; fecha: string; fase: 'R0'|'R1'|'R2'|'R3'|'R4'|'R5'|'R6'|'R7'|'R8';
-  code: string; prioridad: Prioridad; objetivo: string; entregable: string;
-  recs: { label: string; url: string }[]; tool: string; apex?: { id: string; t: string } | null;
-}
-export const DIAS: DiaResearch[] = [/* §5 de este doc, 1:1 */];
-// helpers idénticos: diaDe, diaPrevio, ventana7d, y agruparProgreso(claveDe = x=>x.fase)
-```
-
-- **Progreso:** añadir `'research'` a `PlanKey` en `studyProgress.ts` (1 línea) → reusa `loadDone/saveDone`.
-- **HOY:** si `diaEstudioTipo(hoy)==='research'`, resaltar el átomo cuyo `fecha===hoyISO`; si es 'derma',
-  mostrar "hoy toca Derma →" (ya implementado en `ResearchHub`).
-- **No tocar** USMLE/MIR/Derma ni el Calendar. La alternancia ya existe en `researchData.ts`.
-
----
-
-## 9. Notas de verificación
-
-- **Verificado:** todas las URLs de §7 (corroboradas por búsqueda independiente; las "About" de YouTube no
-  renderizan vía fetch pero la identidad de los canales está confirmada); fechas de los días-Research
-  calculadas con la lógica `diaEstudioTipo` ya existente; paper semilla SR-1 (DeLorenzi 2014, PMID 24692598,
-  DOI 10.1177/1090820X14525035); existencia del MA 2026 que acota el gap de SR-2 (Argobi, *JCD*, DOI
-  10.1111/jocd.70765).
-- **(verificar):** tiempo de procesamiento de PROSPERO (no hay cifra oficial); que Europe PMC cubra el 100%
-  de Embase (cobertura parcial); disponibilidad de cuenta institucional para CENTRAL/RevMan. Estos no
-  bloquean el plan; se resuelven en su átomo.
-- **No se modificó el Google Calendar.** El plan vive en la app sobre la franja 13:30–14:15 ya existente.
+- **Verificado por WebFetch:** CARE checklist (13 ítems), STROBE checklists, Google Scholar (perfil), CTI Vitae (carga CONCYTEC),
+  cuenta NCBI, Rising Scholars (= AuthorAID rebautizado; authoraid.info → 301), Editorial Manager (→ ariessys.com), PROSPERO (carga).
+- **403 al verificar (no se citan cifras):** Author Guidelines de JAAD, JAAD International, IJD y ScholarOne. Ventana de letters,
+  límites de palabras/refs y APC de JAAD Intl quedan **A VERIFICAR** en su átomo (C-1, T-5, C-5). Portal eScholarship de DOJ: A VERIFICAR.
+- **Datos del repo:** tesis L0 (rs=0.637, κ=0.81, prevalencia 39,8 %, defendida 20-abr-2026), Dr. Ciro Rodríguez (HRDAC Huancayo),
+  corpus SR-1 = 200 registros pending_human desde 11-jun-2026 (151 OA sin PDF), APC JAAD CR US$850 / DOJ ≤US$300 (RUTA §3).
+- **Pendientes de Joseph (no derivables del repo):** nº de CEI y consentimiento parental de la tesis (T-1) · aceptación del
+  Dr. Ciro como senior author (M1) · política de correspondencia de IJD (correo) · revisor #2 de SR-1 (X-1 / L4 §9).
+- **No se modificó el Google Calendar.**

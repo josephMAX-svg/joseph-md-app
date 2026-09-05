@@ -4,8 +4,11 @@ import {
   AURUM_META, AURUM_KPIS, AURUM_FASES, AURUM_BIBLIOTECA, AURUM_PROTOCOLO,
   AURUM_NIVEL_META, AURUM_ADVERTENCIAS, AurumMaterial, AurumConfianza,
   AURUM_MINIFASE, AURUM_PRACTICA, AURUM_CLOSER_SCOREBOARD, AURUM_SCOREBOARD_NOTA,
+  AurumRubricaStore, AurumRubricaScore, aurumRubricaKey, loadAurumRubrica, saveAurumRubrica,
+  AurumScoreboardStore, AurumScoreKey, loadAurumScoreboard, saveAurumScoreboard,
+  aurumSemanaISO, aurumSemanaPrev, aurumScoreSemaforo, AURUM_SCOREBOARD_METAS, AURUM_RUBRICA_PITCH,
 } from '../../lib/aurumData';
-import { AURUM_PLAN_META } from '../../lib/aurumDailyPlan';
+import { AURUM_PLAN_META, AURUM_PITCH_DIAS, AURUM_LIVIANO_DIAS } from '../../lib/aurumDailyPlan';
 import { AURUM_BIBLIOTECA_NIVELES, AurumBibLibro } from '../../lib/aurumBiblioteca';
 import { loadDone, saveDone, planHoyD, progresoGlobal } from '../../lib/studyProgress';
 import { AURUM_DIAS } from '../../lib/aurumDailyPlan';
@@ -17,7 +20,7 @@ import {
 import { Elevation, Motion, Hairline } from '../../theme/tokens';
 import {
   AurumHero, AurumWordmark, AurumChip, AurumLabel, AurumPanel, AurumRing,
-  AurumRise, useAurumHover, AurumCloserDesk,
+  AurumRise, useAurumHover, AurumCloserDesk, AurumScoreboardEditor, AurumPitchChart, CloserCell,
 } from './aurumVisuals';
 
 /**
@@ -271,6 +274,17 @@ function ProtocoloView() {
       </AurumPanel>
 
       <AurumLabel>El nivel meta · los entregables (PITCH v1→v7) que demuestran que eres closer</AurumLabel>
+      <AurumPanel accent={C.gold} style={{ marginBottom: S.lg }}>
+        <Text style={[st.body, { color: C.text, fontWeight: T.weight.bold, marginBottom: 4 }]}>Rúbrica del PITCH · 6 ítems 0-2 (score /12) en los 7 viernes de cierre de fase</Text>
+        <Text style={st.body}>{AURUM_PITCH_DIAS.map((p) => `v${p.pitch}=D${p.d} (${p.fecha.slice(8, 10)}-${p.fecha.slice(5, 7)}${p.liviano ? ' +LIVIANO' : ''})`).join(' · ')}</Text>
+        {AURUM_RUBRICA_PITCH.map((it, i) => (
+          <View key={it.key} style={st.warnRow}>
+            <Text style={{ color: C.gold, fontWeight: T.weight.extrabold }}>{i + 1}</Text>
+            <Text style={[st.body, { flex: 1 }]}><Text style={{ color: C.text, fontWeight: T.weight.bold }}>{it.label}</Text> — 0: {it.n0} · 1: {it.n1} · 2: {it.n2}</Text>
+          </View>
+        ))}
+        <Text style={[st.body, { marginTop: 6, color: C.textMute }]}>Variante LIVIANO (venta ética de un programa médico, mismo paciente que la Academia): 1 de cada 5 drills en F3-F6 → D{AURUM_LIVIANO_DIAS.join(', D')}. Verde ≥ 10/12 · ámbar 7-9 · rojo {'<'} 7.</Text>
+      </AurumPanel>
       <AurumPanel style={{ marginBottom: S['2xl'] }}>
         {AURUM_NIVEL_META.map((n, i) => (
           <View key={i} style={st.metaRow}>
@@ -384,6 +398,38 @@ export default function AurumHub({ onBack, variant = 'mobile' }: { onBack?: () =
     return n;
   });
 
+  // v3 · rúbrica del PITCH (score por grabación, 'jmd-aurum-rubrica') — compartida con el motor HOY y la gráfica v1→v7
+  const [rubrica, setRubrica] = useState<AurumRubricaStore>(() => loadAurumRubrica());
+  const saveRubrica = (s: AurumRubricaScore) => setRubrica((prev) => {
+    const n = { ...prev, [aurumRubricaKey(s.pitch, s.variante)]: s }; saveAurumRubrica(n); return n;
+  });
+  const rubricaConDatos = Object.keys(rubrica).length > 0;
+
+  // v3 · Closer Scoreboard EDITABLE por semana ISO ('jmd-aurum-scoreboard-v1') + semáforo contra la meta
+  const [scoreboard, setScoreboard] = useState<AurumScoreboardStore>(() => loadAurumScoreboard());
+  const semanaHoy = aurumSemanaISO();
+  const [semanaSel, setSemanaSel] = useState<string>(semanaHoy);
+  const [editScore, setEditScore] = useState(false);
+  const semValores = scoreboard[semanaSel] || {};
+  const semPrev = scoreboard[aurumSemanaPrev(semanaSel)];
+  const setScore = (key: AurumScoreKey, valor: number | undefined) => setScoreboard((prev) => {
+    const fila = { ...(prev[semanaSel] || {}) };
+    if (valor == null) delete fila[key]; else fila[key] = valor;
+    const n = { ...prev, [semanaSel]: fila };
+    if (!Object.keys(fila).length) delete n[semanaSel];
+    saveAurumScoreboard(n); return n;
+  });
+  const fmtScore = (key: AurumScoreKey, v: number | undefined): string => {
+    if (v == null) return AURUM_SCOREBOARD_METAS[key].tipo === 'pct' ? '—' : AURUM_SCOREBOARD_METAS[key].tipo === 'soles' ? 'S/ 0' : '0';
+    return AURUM_SCOREBOARD_METAS[key].tipo === 'pct' ? `${v}%` : AURUM_SCOREBOARD_METAS[key].tipo === 'soles' ? `S/ ${v.toLocaleString('es-PE')}` : String(v);
+  };
+  const closerMetrics: CloserCell[] = AURUM_CLOSER_SCOREBOARD.map((m) => {
+    const key = m.key as AurumScoreKey;
+    const v = semValores[key];
+    return { ...m, valor: fmtScore(key, v), meta: AURUM_SCOREBOARD_METAS[key]?.label || m.meta, estado: aurumScoreSemaforo(key, v, semPrev ? semPrev[key] : undefined) };
+  });
+  const semanasRegistradas = Object.keys(scoreboard).length;
+
   // KPIs REALES desde el progreso + el calendario
   const hoyD = planHoyD(AURUM_DIAS, aurumTodayISO());
   const glob = progresoGlobal(AURUM_DIAS, done);
@@ -436,12 +482,33 @@ export default function AurumHub({ onBack, variant = 'mobile' }: { onBack?: () =
         </View>
       </AurumHero>
 
-      {/* ───── CLOSER SCOREBOARD (KPIs high-ticket · el "closer desk") ───── */}
+      {/* ───── CLOSER SCOREBOARD (KPIs high-ticket · el "closer desk") — EDITABLE por semana ───── */}
       <AurumCloserDesk
-        metrics={AURUM_CLOSER_SCOREBOARD}
+        metrics={closerMetrics}
         nota={AURUM_SCOREBOARD_NOTA}
-        hint="registro manual · empieza 0"
+        hint={`semana ${semanaSel}${semanaSel === semanaHoy ? ' (actual)' : ''} · ${semanasRegistradas ? `${semanasRegistradas} sem. registradas` : 'registro manual · empieza 0'}`}
+        onEdit={() => setEditScore((v) => !v)}
       />
+      {editScore ? (
+        <AurumScoreboardEditor
+          semana={semanaSel}
+          values={semValores}
+          prev={semPrev}
+          esActual={semanaSel === semanaHoy}
+          onChange={setScore}
+          onPrevSemana={() => setSemanaSel((s) => aurumSemanaPrev(s))}
+          onNextSemana={() => setSemanaSel((s) => {
+            // avanzar una semana ISO: jueves de la semana s + 7 días
+            const m = /^(\d{4})-W(\d{2})$/.exec(s); if (!m) return s;
+            const jan4 = new Date(Date.UTC(+m[1], 0, 4)); const day = jan4.getUTCDay() || 7;
+            const mon = new Date(jan4); mon.setUTCDate(jan4.getUTCDate() - day + 1 + (+m[2] - 1) * 7 + 7);
+            return aurumSemanaISO(new Date(mon.getUTCFullYear(), mon.getUTCMonth(), mon.getUTCDate()));
+          })}
+        />
+      ) : null}
+
+      {/* ───── PITCH v1→v7 · score de rúbrica por grabación ───── */}
+      {rubricaConDatos || sub === 'protocolo' ? <AurumPitchChart store={rubrica} /> : null}
 
       {/* ───── KPIs (anillos reales) ───── */}
       <View style={[st.kpiRow, isDesktop && { flexWrap: 'nowrap' }]}>
@@ -466,7 +533,7 @@ export default function AurumHub({ onBack, variant = 'mobile' }: { onBack?: () =
         <NavPill label="🧭 Protocolo" active={sub === 'protocolo'} onPress={() => setSub('protocolo')} />
       </View>
 
-      {sub === 'hoy' && <AurumTodayPlan done={done} onToggle={toggleDone} isDesktop={isDesktop} />}
+      {sub === 'hoy' && <AurumTodayPlan done={done} onToggle={toggleDone} isDesktop={isDesktop} rubrica={rubrica} onSaveRubrica={saveRubrica} />}
       {sub === 'agosto' && <MiniFaseView />}
       {sub === 'ruta' && <RutaView done={done} />}
       {sub === 'biblioteca' && <BibliotecaView isDesktop={isDesktop} />}

@@ -1,44 +1,34 @@
 /**
- * liviano_reslot_viernes.js — garantiza la invariante del plan LIVIANO Academia:
- * las filas "VIERNES CASO" caen en VIERNES reales. Reordena LIV_DIAS conservando el orden
- * relativo del contenido y de los casos; renumera d y recalcula wd. Las FECHAS no cambian
- * (ya vienen re-fechadas L-V por remap_inicio.js). Si hay más viernes que casos, se saltan
- * los primeros viernes (semana parcial de arranque) para que los casos cierren semanas completas.
+ * liviano_reslot_viernes.js — invariante del plan LIVIANO Academia: los CASOS caen en VIERNES reales.
  *
- *   node DATA/_scripts/liviano_reslot_viernes.js
+ * v2 (Palmerton v3, sep-2026): este script ya NO reordena filas a mano. Delegación documentada:
+ *   1. Lee `inicio` de LIV_META en src/lib/livianoStudyPlan.ts (remap_inicio.js bloque 7 acaba de
+ *      re-fechar las 90 filas y actualizar LIV_META.inicio/fin al nuevo START).
+ *   2. Ejecuta  node DATA/_scripts/gen_liviano_plan.js <inicio>  → regenera livianoStudyPlan.ts,
+ *      livianoCasos.ts y el CSV Anki desde DATA/BUSINESS/liviano_curriculum.json con el MISMO
+ *      calendario L-V (feriados fijos fuera): casos en viernes, pre-tests en lunes, drills, casoId.
+ *
+ * Por qué: el generador es la única fuente de verdad (regla del sistema: todo plan tiene su gen_*.js);
+ * reordenar filas sueltas rompería casoId/pretest/drill. remap_inicio.js (bloque 7b) sigue llamando
+ * a este fichero sin cambios, así que el pipeline de corrimiento no se toca.
+ *
+ *   node DATA/_scripts/liviano_reslot_viernes.js            (usa LIV_META.inicio del .ts)
+ *   node DATA/_scripts/liviano_reslot_viernes.js 2026-09-07 (fuerza una fecha)
  */
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
+
 const P = path.join(__dirname, '..', '..', 'src', 'lib', 'livianoStudyPlan.ts');
-const WD = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-const dow = (iso) => new Date(iso + 'T12:00:00Z').getUTCDay();
+const GEN = path.join(__dirname, 'gen_liviano_plan.js');
 
-let s = fs.readFileSync(P, 'utf8');
-const marker = 'LIV_DIAS: DiaLiviano[] = ';
-const i = s.indexOf(marker);
-if (i < 0) throw new Error('marker LIV_DIAS no encontrado');
-const start = i + marker.length;
-const end = s.indexOf('];', start) + 1;
-const rows = JSON.parse(s.slice(start, end));
-
-const fechas = rows.map((r) => r.fecha); // orden cronológico, ya L-V
-const isCase = (r) => /^VIERNES CASO/i.test(r.tema || '') || /^VIERNES CASO/i.test(r.estudio || '');
-const casos = rows.filter(isCase);
-const contenido = rows.filter((r) => !isCase(r));
-const viernes = fechas.filter((f) => dow(f) === 5);
-const skipFirst = Math.max(0, viernes.length - casos.length);
-const viernesConCaso = new Set(viernes.slice(skipFirst));
-if (viernesConCaso.size !== casos.length) throw new Error(`casos ${casos.length} vs viernes disponibles ${viernesConCaso.size}`);
-
-let ci = 0, ki = 0;
-const out = fechas.map((fecha, idx) => {
-  const src = viernesConCaso.has(fecha) ? casos[ki++] : contenido[ci++];
-  if (!src) throw new Error('sin fila para ' + fecha);
-  return { ...src, d: idx + 1, fecha, wd: WD[dow(fecha)] };
-});
-if (ci !== contenido.length || ki !== casos.length) throw new Error(`sobran filas: contenido ${contenido.length - ci}, casos ${casos.length - ki}`);
-
-const bad = out.filter((r) => isCase(r) && r.wd !== 'Vie').length;
-s = s.slice(0, start) + JSON.stringify(out) + s.slice(end);
-fs.writeFileSync(P, s, 'utf8');
-console.log(`LIVIANO reslot ✓ ${out.length} filas · casos en viernes: ${casos.length - bad}/${casos.length} · viernes sin caso: ${skipFirst} (${viernes.slice(0, skipFirst).join(', ') || '—'})`);
+let start = process.argv[2];
+if (!start) {
+  const s = fs.readFileSync(P, 'utf8');
+  const m = s.match(/inicio:\s*'(20\d\d-\d\d-\d\d)'/);
+  if (!m) throw new Error('LIVIANO reslot: no encontré LIV_META.inicio en ' + P);
+  start = m[1];
+}
+if (!/^20\d\d-\d\d-\d\d$/.test(start)) throw new Error('LIVIANO reslot: fecha inválida ' + start);
+console.log('LIVIANO reslot → delega en gen_liviano_plan.js ' + start);
+execSync('node ' + JSON.stringify(GEN) + ' ' + start, { stdio: 'inherit' });

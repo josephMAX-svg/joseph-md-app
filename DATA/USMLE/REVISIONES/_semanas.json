@@ -1,0 +1,14 @@
+{
+ "_meta": {
+  "descripcion": "Historial append-only de la REVISIÓN SEMANAL (DATA/REVISION_SEMANAL.md, sábado 07:15-07:35). Una entrada por semana del Step 1 (S1 = lun 7-sep-2026 → S20). La escribe DATA/_scripts/gen_revision_semanal.js: si se vuelve a correr la misma semana, actualiza los campos automáticos (metricas, fuentes, generado) y CONSERVA los manuales (decisiones). Mismo patrón que DATA/ENCAPS/TRACKING_ERRORES/_registro_resoluciones.json.",
+  "esquema": {
+   "semana": "1..20 (0 = pre-D1)", "label": "S<N>/20", "lunes": "YYYY-MM-DD", "viernes": "YYYY-MM-DD", "sabado": "YYYY-MM-DD",
+   "hito": "UWSA/NBME de la semana o null", "hitoMinimo": "mínimo on-track (Parte V) o null", "deload": "bool",
+   "generado": "ISO", "fuentes": { "supabase": "ok|error", "localStorage": "fecha del export|sin export", "anki": "live|json|cerrado", "registro": "n rondas", "vitals": "ok|sin acceso" },
+   "metricas": "objeto 1..10 (ver DATA/REVISION_SEMANAL.md); null = sin dato",
+   "decisiones": { "nivel": "VERDE|AMBAR|DELOAD|null", "correccion": "texto|null", "dejar": "texto|null", "ankiSab": "min|null", "ankiDom": "min|null" }
+  },
+  "creado": "2026-09-05"
+ },
+ "semanas": []
+}

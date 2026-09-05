@@ -24,6 +24,14 @@
 //  · + link a Obsidian (vault, carpeta 07_VENTAS_AURUM).
 // real:true = URL verificada/estable · real:false = URL marcada "(verificar)" en el currículo.
 //
+// v3 (5-sep-2026, Palmerton cero puntos ciegos):
+//  · `liviano` (opcional) — variante LIVIANO del drill (1 de cada 5: los viernes de F3-F6) y, en los
+//    cierres de fase 3-6, la versión LIVIANO del PITCH. Sale de `dia.liviano` del currículo; el
+//    paciente y las cifras de la oferta viven en `CUR.liviano` → AURUM_LIVIANO_CASO.
+//  · `pitch` (opcional) — nº de PITCH (1..7) en el último día de cada fase (D15, D35, D55, D75, D95,
+//    D115, D130): ahí se aplica AURUM_RUBRICA_PITCH (src/lib/aurumData.ts). → AURUM_PITCH_DIAS.
+//  · SKIP_FIJOS (25-dic, 31-dic, 1-ene) se saltan igual que en el resto de planes v5.6.
+//
 // Determinista: sin Date.now()/Math.random aleatorio. Regenerar: node DATA/_scripts/gen_aurum_plan.js YYYY-MM-DD
 const fs = require('fs');
 const path = require('path');
@@ -45,7 +53,7 @@ if (lecciones.length !== 130) throw new Error('Se esperaban 130 lecciones, hay '
 
 // ─── Calendario: 130 días hábiles L-V consecutivos desde START (argv[2]) ───
 const WD = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-const START_ISO = process.argv[2] || '2026-09-03'; if(!/^20\d\d-\d\d-\d\d$/.test(START_ISO)) throw new Error('START inválido: '+START_ISO);
+const START_ISO = process.argv[2] || '2026-09-07'; if(!/^20\d\d-\d\d-\d\d$/.test(START_ISO)) throw new Error('START inválido: '+START_ISO); // v5.6: D1 = lun 7-sep-2026
 const START = new Date(START_ISO + 'T12:00:00'); // START parametrizado: node <script> YYYY-MM-DD
 const SKIP_FIJOS = new Set(['2026-12-25', '2026-12-31', '2027-01-01']); // v5.4: feriados libres en todos los planes
 const isoOf = (d) => new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
@@ -113,6 +121,9 @@ for (let i = 0; i < lecciones.length; i++) {
     });
   }
 
+  // v3 — variante LIVIANO del drill (viernes de F3-F6) y nº de PITCH en el cierre de fase
+  const lv = L.liviano || null;
+  const ultimoDeFase = i === lecciones.length - 1 || lecciones[i + 1].fase !== L.fase;
   dias.push({
     d, fecha: fechaISO, wd, semana,
     faseId, fase: faseLabel,
@@ -120,6 +131,9 @@ for (let i = 0; i < lecciones.length; i++) {
     obs: L.obsidian_nota || undefined,
     min: L.min_core,                     // núcleo (ver + practica) = min_core (30-60)
     bloques,
+    liviano: lv ? { texto: lv.texto, min: lv.min || 0, pitch: lv.pitch || undefined } : undefined,
+    pitch: ultimoDeFase ? L.fase : undefined,
+    dj: L.dJson, // 1..5 dentro de su semana del plan (no se emite)
   });
 
   date = nextBusinessDay(date);
@@ -153,9 +167,29 @@ const blkTs = (b) => {
 const diaTs = (x) => {
   let o = `{d:${x.d},fecha:"${x.fecha}",wd:"${x.wd}",semana:${x.semana},faseId:"${x.faseId}",fase:"${esc(x.fase)}",titulo:"${esc(x.titulo)}"`;
   if (x.obs) o += `,obs:"${esc(x.obs)}"`;
-  o += `,min:${x.min},bloques:[${x.bloques.map(blkTs).join(',')}]}`;
+  o += `,min:${x.min},bloques:[${x.bloques.map(blkTs).join(',')}]`;
+  if (x.liviano) {
+    o += `,liviano:{texto:"${esc(x.liviano.texto)}",min:${x.liviano.min}`;
+    if (x.liviano.pitch) o += `,pitch:"${esc(x.liviano.pitch)}"`;
+    o += '}';
+  }
+  if (x.pitch) o += `,pitch:${x.pitch}`;
+  o += '}';
   return o;
 };
+const pitchDias = dias.filter((x) => x.pitch).map((x) => `{pitch:${x.pitch},d:${x.d},fecha:"${x.fecha}",faseId:"${x.faseId}",liviano:${x.liviano && x.liviano.pitch ? 'true' : 'false'}}`);
+const LIV = CUR.liviano || {};
+const livCasoTs = `{
+  paciente: "${esc((LIV.paciente || {}).resumen || '')}",
+  fuente: "${esc((LIV.paciente || {}).fuente || '')}",
+  kpi: "${esc((LIV.paciente || {}).kpi || '')}",
+  regla: "${esc(LIV.regla || '')}",
+  valueStack: "${esc((LIV.cifras_oferta || {}).value_stack || '')}",
+  ancla: "${esc((LIV.cifras_oferta || {}).ancla || '')}",
+  objeciones: [${(((LIV.cifras_oferta || {}).objeciones) || []).map((s) => `"${esc(s)}"`).join(', ')}],
+  limiteEtico: "${esc((LIV.limite_etico || {}).regla_closer || '')}",
+  art73: "${esc((LIV.limite_etico || {}).art_73 || '')}",
+}`;
 
 const faseIdUnion = CUR.fases.map((f) => `'f${f.n}'`).join(' | ');
 const fasesMetaTs = Object.entries(fasesMeta).map(([k, v]) => `${k}: '${v.replace(/'/g, "\\'")}'`).join(', ');
@@ -176,6 +210,11 @@ const ts = `/**
  *  + link a Obsidian (vault, carpeta 07_VENTAS_AURUM).
  * real:true = URL verificada/estable · real:false = URL marcada "(verificar)" en el currículo.
  * Progreso REAL manual (PlanKey 'aurum', empieza 0%).
+ *
+ * v3 (5-sep-2026): \`liviano\` = variante LIVIANO del drill (viernes de F3-F6: SPIN de la Evaluación
+ * Integral · value stack S/ 6,360 vs S/ 3,870 + ancla bariátrica · 7 objeciones · cierre ético sin
+ * promesa clínica, CMP Art. 73) con el MISMO paciente del caso integral de la Academia; \`pitch\` = nº
+ * de PITCH en el cierre de fase (rúbrica AURUM_RUBRICA_PITCH en aurumData.ts).
  */
 export type AurumFormato = 'pantalla' | 'practica' | 'audio' | 'lectura';
 export interface AurumBloque {
@@ -189,11 +228,15 @@ export interface AurumBloque {
   dur?: string;
   real: boolean;
 }
+/** Variante LIVIANO del drill (venta ética de un programa médico; mismo paciente que el caso integral). */
+export interface AurumLiviano { texto: string; min: number; pitch?: string }
 export interface DiaAurum {
   d: number; fecha: string; wd: string; semana: number;
   faseId: ${faseIdUnion}; fase: string; titulo: string; obs?: string;
   min: number; // núcleo (ver + practica) = min_core
   bloques: AurumBloque[];
+  liviano?: AurumLiviano; // viernes de F3-F6 (1 de cada 5 drills)
+  pitch?: number;         // 1..7 = día de cierre de fase → grabar PITCH vN y puntuar con AURUM_RUBRICA_PITCH
 }
 
 export const AURUM_PLAN_META = {
@@ -206,6 +249,15 @@ export const AURUM_PLAN_META = {
 export const AURUM_DIAS: DiaAurum[] = [
 ${dias.map(diaTs).join(',\n')}
 ];
+
+/** Los 7 viernes de cierre de fase (PITCH v1→v7). \`liviano\` = ese PITCH tiene versión LIVIANO. */
+export const AURUM_PITCH_DIAS: { pitch: number; d: number; fecha: string; faseId: DiaAurum['faseId']; liviano: boolean }[] = [
+  ${pitchDias.join(',\n  ')}
+];
+
+/** Caso LIVIANO de AURUM (= caso integral de la Academia) + cifras de la oferta (empresaData.ts LIVIANO_OFERTA). */
+export const AURUM_LIVIANO_CASO = ${livCasoTs} as const;
+export const AURUM_LIVIANO_DIAS: number[] = [${dias.filter((x) => x.liviano).map((x) => x.d).join(', ')}];
 
 export function aurumDiaDe(fechaISO: string): DiaAurum | undefined { return AURUM_DIAS.find(x => x.fecha === fechaISO); }
 export function aurum7d(fromD: number): DiaAurum[] { return AURUM_DIAS.filter(x => x.d >= fromD && x.d < fromD + 7); }
@@ -242,7 +294,22 @@ console.log('  ventana:', '14:15–15:15');
 console.log('  días en fin de semana:', finSemana.length, '(debe ser 0)');
 console.log('  semanas cubiertas:', semanasCubiertas.size, '(debe ser', SEMANAS + ')');
 console.log('  días con min∉[30,60]:', minFuera.length, '(debe ser 0)');
+const enFeriado = dias.filter((x) => SKIP_FIJOS.has(x.fecha));
+const livDias = dias.filter((x) => x.liviano);
+const pitchD = dias.filter((x) => x.pitch).map((x) => `v${x.pitch}=D${x.d} (${x.wd} ${x.fecha})`);
+console.log('  días en feriado fijo:', enFeriado.length, '(debe ser 0)');
+console.log('  drills con variante LIVIANO:', livDias.length, '(debe ser 16: 5º día de cada semana de F3-F6 = 1 de cada 5) →', livDias.map((x) => 'D' + x.d + '/' + x.wd.slice(0, 2)).join(' '));
+console.log('  cierres de fase / PITCH:', pitchD.join(' · '));
+// Nota: las semanas del plan son 5 días hábiles consecutivos; tras un feriado fijo (25-dic) el 5º día deja de
+// caer en viernes (deriva de calendario ya presente desde v5.4 con SKIP_FIJOS). El invariante que se exige
+// es "1 de cada 5 drills" (d=5 del JSON), no el día de la semana.
+const livNoViernes = livDias.filter((x) => x.wd !== 'Vie').length;
+if (livNoViernes) console.log('  ⚠ variantes LIVIANO fuera de viernes por la deriva post-feriado:', livNoViernes, '(esperado tras 25-dic)');
 if (TOTAL !== 130) throw new Error('Se esperaban 130 días, hay ' + TOTAL);
 if (finSemana.length) throw new Error('Hay días en sábado/domingo');
+if (enFeriado.length) throw new Error('Hay días en feriado fijo');
 if (semanasCubiertas.size !== SEMANAS || SEMANAS !== 26) throw new Error('Faltan semanas por cubrir (esperado 26, hay ' + SEMANAS + ')');
 if (minFuera.length) throw new Error('Hay días con min_core fuera de [30,60]');
+if (livDias.length !== 16) throw new Error('Se esperaban 16 drills con variante LIVIANO, hay ' + livDias.length);
+if (livDias.some((x) => x.dj !== 5)) throw new Error('Hay variantes LIVIANO fuera del 5º día de su semana: ' + livDias.filter((x) => x.dj !== 5).map((x) => 'D' + x.d).join(', '));
+if (pitchD.length !== 7) throw new Error('Se esperaban 7 cierres de fase, hay ' + pitchD.length);

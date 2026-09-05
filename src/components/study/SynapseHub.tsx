@@ -14,6 +14,7 @@ import { OBS_SYNAPSE_MATERIALES, OBS_SYNAPSE_FASES } from '../../lib/obsidianVau
 
 const OBS = '#A78BFA'; // mismo morado ◆ que USMLE/MIR/ENCAPS
 import { SYN_PLAN_META, SYN_DIAS, synDiaDe } from '../../lib/synapseDailyPlan';
+import { vibeShipped } from '../../lib/vibecodingPlan';
 import { loadDone, saveDone, planHoyD } from '../../lib/studyProgress';
 import { synTodayISO } from './SynapseTodayPlan';
 import SynapseTodayPlan from './SynapseTodayPlan';
@@ -271,6 +272,14 @@ export default function SynapseHub({ variant = 'mobile' }: { variant?: 'mobile' 
     saveDone('synapse', Array.from(n));
     return n;
   });
+  // v5.7: ✓ diario del VIBECODING 04:15 (PlanKey 'vibecoding') — vive aquí para que la telemetría "ship" sea en vivo
+  const [vibeDone, setVibeDone] = useState<Set<number>>(() => new Set(loadDone('vibecoding')));
+  const toggleVibe = (d: number) => setVibeDone((prev) => {
+    const n = new Set(prev);
+    if (n.has(d)) n.delete(d); else n.add(d);
+    saveDone('vibecoding', Array.from(n));
+    return n;
+  });
   const contentStyle = isDesktop
     ? desktopStyles.centerScrollContent
     : { paddingHorizontal: Spacing.lg, paddingTop: 56, paddingBottom: 110 };
@@ -283,6 +292,7 @@ export default function SynapseHub({ variant = 'mobile' }: { variant?: 'mobile' 
     { label: 'loss ↓ dominio', value: `${t.pct}%`, color: t.pct > 0 ? CONSOLE.passed : Colors.muted },
     { label: `checkpoint ${activa?.fase ?? 'F0'}`, value: `${t.fasePct}%`, accent: true as const },
     { label: 'uptime', value: `${done.size}d`, color: Colors.onSurface },
+    { label: 'ship 04:15', value: `${vibeShipped(vibeDone)}/12`, color: vibeShipped(vibeDone) > 0 ? CONSOLE.passed : Colors.muted },
     { label: 'registry', value: `${SYNAPSE_KPIS.materialesVerificados}`, color: CONSOLE.milestone },
   ];
 
@@ -352,7 +362,7 @@ export default function SynapseHub({ variant = 'mobile' }: { variant?: 'mobile' 
           ))}
         </View>
 
-        {sub === 'hoy' && <SynapseTodayPlan done={done} onToggle={toggleDone} />}
+        {sub === 'hoy' && <SynapseTodayPlan done={done} onToggle={toggleDone} vibeDone={vibeDone} onToggleVibe={toggleVibe} />}
         {sub === 'agosto' && <MiniFaseView />}
         {sub === 'ruta' && <RutaView isDesktop={isDesktop} />}
         {sub === 'biblioteca' && <BibliotecaView />}

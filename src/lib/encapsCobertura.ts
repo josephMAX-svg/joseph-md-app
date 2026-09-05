@@ -1,7 +1,9 @@
 // AUTO-GENERADO por DATA/_scripts/gen_encaps_cobertura.js — NO editar a mano.
-// Mapa de cobertura por tema (barrido compendio DR LOPEZ × Tendencias/forecast × QX/Theomed, 03-jul).
+// Mapa de cobertura por tema (barrido compendio DR LOPEZ × Tendencias/forecast × QX/Theomed, 03-jul) + RE-TIER v3 (05-sep-2026):
+// 8 críticos v3 (I-3 V-2 II-3 III-5 I-4 II-5 II-4 IV-1+IV-2) · ALTA con flag rebote (II-1 II-11 II-8) · nuevos II-EMG / I-OCC (MEDIA).
 // tier=rentabilidad · vueltas=repeticiones espaciadas · min=minutos núcleo/día · qxN/theomedN=nº videos a mirar
 // extenso=merece bloque largo · guidance=cuántos/cuáles videos · gaps=sub-temas a leer en compendio/Drive · temario=índice compendio.
+// rebote=ALTA anti-persistente (no enterrar) · freqV3=lectura del pronóstico v3 · nuevoV3=código creado en el re-tier v3.
 export interface FuenteLink { label: string; url: string }
 export interface VideoExtra { titulo: string; url: string }
 export interface CoberturaTema {
@@ -11,6 +13,7 @@ export interface CoberturaTema {
   compendioUrl: string; theomedBookUrl: string; theomedUrl: string; videoFallback: FuenteLink; videosExtra: VideoExtra[]; gapSources: FuenteLink[];
   bookCoverage: { lopez: string; theomed: string; theomedManual: string };
   soloTheomed: string[]; soloLopez: string[]; gapAmbos: string[]; driveVideos: FuenteLink[];
+  rebote?: boolean; freqV3?: string; nuevoV3?: boolean;
 }
 export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
  "I-3": {
@@ -138,7 +141,8 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
    }
-  ]
+  ],
+  "freqV3": "#1 v3 · 11% (banda 9-14) · rey estable 11-15 en 4 folds"
  },
  "I-5+I-6": {
   "tier": "MEDIA",
@@ -237,9 +241,9 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ]
  },
  "I-4": {
-  "tier": "ALTA",
-  "vueltas": 5,
-  "min": 70,
+  "tier": "CRÍTICA",
+  "vueltas": 6,
+  "min": 90,
   "qxN": 7,
   "theomedN": 31,
   "extenso": false,
@@ -322,7 +326,8 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
    }
-  ]
+  ],
+  "freqV3": "#4 v3 · 5% (3-8) · alza 3→6 (dengue 8Q + sarampión 5Q en 2026-II)"
  },
  "I-1": {
   "tier": "ALTA",
@@ -859,9 +864,9 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ]
  },
  "II-1": {
-  "tier": "CRÍTICA",
-  "vueltas": 6,
-  "min": 110,
+  "tier": "ALTA",
+  "vueltas": 5,
+  "min": 60,
   "qxN": 16,
   "theomedN": 54,
   "extenso": true,
@@ -991,7 +996,9 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
    }
-  ]
+  ],
+  "rebote": true,
+  "freqV3": "#14 v3 · 2% (1-5) · ↩ rebote probable (5-6 histórico → 1 en 2026-II)"
  },
  "II-3": {
   "tier": "CRÍTICA",
@@ -1073,12 +1080,13 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
    }
-  ]
+  ],
+  "freqV3": "#5 v3 · 5% (3-7) · 3 folds seguidos ≥5; novedades VRS/Tdap gestante, ESAVI + kit"
  },
  "II-11": {
-  "tier": "CRÍTICA",
-  "vueltas": 6,
-  "min": 100,
+  "tier": "ALTA",
+  "vueltas": 5,
+  "min": 60,
   "qxN": 7,
   "theomedN": 54,
   "extenso": true,
@@ -1168,12 +1176,14 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
    }
-  ]
+  ],
+  "rebote": true,
+  "freqV3": "#13 v3 · 2% (1-5) · ↩ rebote probable (aplastada en 2026-II)"
  },
  "II-8": {
-  "tier": "CRÍTICA",
-  "vueltas": 6,
-  "min": 90,
+  "tier": "ALTA",
+  "vueltas": 5,
+  "min": 60,
   "qxN": 1,
   "theomedN": 54,
   "extenso": true,
@@ -1235,7 +1245,9 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
    }
-  ]
+  ],
+  "rebote": true,
+  "freqV3": "#15 v3 · 2% (1-4) · ↩ rebote posible"
  },
  "II-7": {
   "tier": "ALTA",
@@ -1376,9 +1388,9 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ]
  },
  "II-4": {
-  "tier": "ALTA",
-  "vueltas": 5,
-  "min": 70,
+  "tier": "CRÍTICA",
+  "vueltas": 6,
+  "min": 90,
   "qxN": 6,
   "theomedN": 54,
   "extenso": true,
@@ -1455,7 +1467,8 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
    }
-  ]
+  ],
+  "freqV3": "#8 v3 · 4% (2-5) · estable-alza 3→4, cifras de suplementación preguntables"
  },
  "II-10": {
   "tier": "ALTA",
@@ -1618,9 +1631,9 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
   ]
  },
  "II-5": {
-  "tier": "ALTA",
-  "vueltas": 4,
-  "min": 70,
+  "tier": "CRÍTICA",
+  "vueltas": 6,
+  "min": 90,
   "qxN": 12,
   "theomedN": 54,
   "extenso": true,
@@ -1723,7 +1736,8 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
    }
-  ]
+  ],
+  "freqV3": "#7 v3 · 4% (2-6) · emergente fuerte 0→5 (NTS adolescente + MCI)"
  },
  "II-9": {
   "tier": "MEDIA",
@@ -1997,7 +2011,8 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
    }
-  ]
+  ],
+  "freqV3": "#6 v3 · 5% (4-6) · 0 pp de error en el último fold"
  },
  "III-2": {
   "tier": "ALTA",
@@ -2433,8 +2448,8 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
  },
  "IV-1+IV-2": {
   "tier": "CRÍTICA",
-  "vueltas": 3,
-  "min": 60,
+  "vueltas": 6,
+  "min": 90,
   "qxN": 11,
   "theomedN": 7,
   "extenso": true,
@@ -2534,7 +2549,8 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
    }
-  ]
+  ],
+  "freqV3": "#3 v3 · 5% (2-8) · rebotó a 7 en 2026-II; crítico CONDICIONAL al comité (si vuelve viñeta plena → ALTA)"
  },
  "IV-3+IV-5": {
   "tier": "BAJA",
@@ -2745,7 +2761,7 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
  "V-2": {
   "tier": "CRÍTICA",
   "vueltas": 6,
-  "min": 110,
+  "min": 120,
   "qxN": 6,
   "theomedN": 25,
   "extenso": true,
@@ -2829,7 +2845,8 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "label": "QX MEDIC (plataforma aula virtual) · 🎬 Videoclases QxMedic (po",
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
    }
-  ]
+  ],
+  "freqV3": "#2 v3 · 10% (8-14) · volátil alto; 3 sub-ejes: planeamiento ~5 · clima+calidad ~4 (en alza dura) · residuos ~2"
  },
  "V-1": {
   "tier": "ALTA",
@@ -3178,5 +3195,95 @@ export const ENCAPS_COBERTURA: Record<string, CoberturaTema> = {
     "url": "https://qxmedic-aulavirtual.com/mis-clases/videoclases"
    }
   ]
+ },
+ "II-EMG": {
+  "tier": "MEDIA",
+  "vueltas": 4,
+  "min": 45,
+  "qxN": 0,
+  "theomedN": 0,
+  "extenso": false,
+  "freq": "Emergente 2026-II (2Q) · 1.5% (0-3) en el v3 §3 fila 21. Las normas publicadas 0-6 meses antes del examen entran directo (RM jul-2026 → cayó en ago-2026).",
+  "guidance": "Sin video QX propio. Estudiar desde la ficha QX \"Atención médica en situaciones de emergencia, urgencia y referencia\" + texto de la RM de prioridades de atención (jul-2026, nº de RM A VERIFICAR 05-sep). Enfoque: definiciones textuales de cada prioridad + tiempo máximo de espera + ejemplo clínico de triaje.",
+  "gaps": [
+   "Texto íntegro de la RM jul-2026 de prioridades de atención en emergencia (nº de RM y tabla oficial de tiempos — A VERIFICAR 05-sep contra El Peruano)",
+   "Ejemplos clínicos por prioridad de triaje según la norma (A VERIFICAR)"
+  ],
+  "temario": [
+   "Prioridades de atención en emergencia (RM jul-2026): P-I atención inmediata · P-II ≤10 min · P-III ≤30 min (A VERIFICAR 05-sep el detalle de P-IV y los tiempos exactos en el texto de la RM)",
+   "Triaje: clasificación y ejemplos por prioridad (A VERIFICAR)",
+   "Emergencia vs urgencia: definiciones y flujo de referencia/contrarreferencia"
+  ],
+  "compendioUrl": "https://drive.google.com/file/d/1RWSnHTSilcCPKr6W9k0Gv6HYo5efkrBl/view",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=3",
+  "videoFallback": {
+   "label": "Videoclases DR LOPEZ · CI",
+   "url": "https://drive.google.com/drive/folders/1-UH5Vo9lBT-R41VVjaHsnIA2zNvGWXoE"
+  },
+  "videosExtra": [],
+  "gapSources": [
+   {
+    "label": "Ficha QX MINSA: Atención médica en situaciones de emergencia, urgencia y referencia",
+    "url": "https://www.dropbox.com/scl/fi/0i887g0wbk4x4kze3mg4o/FT-CUIDADO-INTEGRAL-DE-SALUD-02.-Temas-espec-ficos-Atenci-n-m-dica-en-situaciones-de-emergencia-urgencia-y-referencia.pdf?rlkey=4utszfdi070xh9nddynml3thg&dl=0"
+   }
+  ],
+  "bookCoverage": {
+   "lopez": "?",
+   "theomed": "?",
+   "theomedManual": ""
+  },
+  "soloTheomed": [],
+  "soloLopez": [],
+  "gapAmbos": [],
+  "driveVideos": [],
+  "nuevoV3": true
+ },
+ "I-OCC": {
+  "tier": "MEDIA",
+  "vueltas": 4,
+  "min": 45,
+  "qxN": 0,
+  "theomedN": 0,
+  "extenso": false,
+  "freq": "Emergente 2026-II (2Q) · 1.5% (0-3) en el v3 §3 fila 22. Salud ocupacional: riesgo profesional y factores de riesgo (el psicosocial fue el preguntado).",
+  "guidance": "Sin video QX propio. Estudiar desde la ficha QX \"Salud ocupacional\" (Salud comunitaria) + compendio López SP. Enfoque: definición de riesgo profesional ligado al vínculo laboral y la clasificación de factores de riesgo (físico / químico / biológico / ergonómico / psicosocial) con un ejemplo de cada uno.",
+  "gaps": [
+   "Base legal (Ley de Seguridad y Salud en el Trabajo y su reglamento; protocolos de exámenes médico-ocupacionales) — números de norma A VERIFICAR 05-sep antes de banquear cifras/plazos",
+   "Accidente de trabajo vs enfermedad profesional: definiciones textuales (A VERIFICAR)"
+  ],
+  "temario": [
+   "Riesgo profesional: definición y su vínculo con la relación laboral",
+   "Factores de riesgo ocupacional: físico · químico · biológico · ergonómico · psicosocial (ejemplos)",
+   "Accidente de trabajo vs enfermedad profesional (A VERIFICAR definiciones normativas)",
+   "Vigilancia de la salud de los trabajadores y exámenes médico-ocupacionales (A VERIFICAR norma vigente)"
+  ],
+  "compendioUrl": "https://drive.google.com/file/d/1iq_BDzPe3idrZeGL0Q3eR7IB9mKyDftT/view",
+  "theomedBookUrl": "https://drive.google.com/drive/folders/1R_G1Ee4kBqSPr5vlv2mZ3Iqy1EqQL1Sn",
+  "theomedUrl": "https://campus.academiatheomed.com/course/view.php?id=73&section=2",
+  "videoFallback": {
+   "label": "Videoclases DR LOPEZ · SP",
+   "url": "https://drive.google.com/drive/folders/1tlyniouI5o_SOpw-LBa2IGfWgG5zpfF0"
+  },
+  "videosExtra": [],
+  "gapSources": [
+   {
+    "label": "Ficha QX MINSA: Salud ocupacional salud comunitaria",
+    "url": "https://www.dropbox.com/scl/fi/s7o4srpmb787hra43fwqd/FT-SALUD-P-BLICA-01.-Salud-comunitaria-06.-Salud-ocupacional.pdf?rlkey=i90m9dquu6u02w37qqu327d8t&dl=0"
+   }
+  ],
+  "bookCoverage": {
+   "lopez": "?",
+   "theomed": "?",
+   "theomedManual": ""
+  },
+  "soloTheomed": [],
+  "soloLopez": [],
+  "gapAmbos": [],
+  "driveVideos": [],
+  "nuevoV3": true
  }
 };
+// Tickers derivados del re-tier v3 (misma fuente que ENCAPS_COBERTURA; el HUD usa encapsRentabilidad.ts).
+export const ENCAPS_CRITICOS_V3: string[] = ["I-3","I-4","II-3","II-4","II-5","III-5","IV-1+IV-2","V-2"];
+export const ENCAPS_REBOTE_V3: string[] = ["II-1","II-11","II-8"];

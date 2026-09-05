@@ -1,0 +1,148 @@
+{
+ "seccion": "RESEARCH",
+ "puntos_ciegos": [
+  {
+   "gap": "El plan que Joseph ejecuta cada día-Research (src/lib/researchDailyPlan.ts, 42 átomos D1=8-sep→6-ene) es 100% SR-1 y contradice la RUTA_PUBLICACION_2027 que la app y el ROADMAP citan como calendario editorial: (a) NO existe ni un átomo para la carta al editor (oct-nov 2026) ni para el case report (feb-mar 2027); (b) el plan manda 'Registro PROSPERO ENVIADO' el 2-oct-2026 (R10) y 'SUBMIT SR-1' el 29-dic-2026 (R40), mientras la RUTA/ROADMAP fijan PROSPERO en mar-abr 2027 y SR-1 sometida jul-sep 2027; (c) R29-R33 (meta-análisis en R: metafor, forest, funnel, subgrupos) caen 25-nov→7-dic en ventanas de 25 min de deep-work para alguien que nunca ha corrido metafor, y RC1/RC2 caen el 4 y 6-ene cuando la RUTA declara 'M5 ene-2027 = PAUSA TOTAL'. Hay además una tercera línea temporal viva en la app (RESEARCH_TIMELINE S1-S13 'submit case report mes 3', RESEARCH_HORARIO Lun-Vie, KPIS.primerSubmissionMes=3 en researchData.ts, renderizados en ResearchHub) y una cuarta en MANUAL_MAESTRO §10 (SR-1 = Línea 6 CADI→JEADV). Cuatro calendarios, ninguno con las tareas del entregable que toca primero.",
+   "impacto": "alto",
+   "propuesta": "Re-cortar los 42 átomos en 3 pistas alineadas con la RUTA: (1) sep-oct 'C' = 6 átomos carta al editor (elegir artículo diana 2026 → leer 5 letters modelo del journal → borrador 500-800 palabras → citas verificadas con citation_verifier.py → formateo → SUBMIT), (2) nov-dic 'CR' = 8 átomos case report (identificar caso + senior author → consentimiento firmado → fotos estandarizadas → CARE 13 ítems → borrador → revisión mentor → formateo DOJ → submit en feb tras el Step 1), (3) mantener R0-R1 (cimientos + PICO) en sep y mover R9→R40 (PROSPERO→submit SR-1) a un 2º ciclo de 40 átomos feb→sep 2027 generado con un script gen_research_plan.js parametrizado por fecha (como gen_synapse_plan.js), con 0 átomos del 4 al 29-ene. Borrar RESEARCH_TIMELINE/RESEARCH_HORARIO/primerSubmissionMes de researchData.ts o derivarlos de la nueva cola; actualizar DATA/RESEARCH/daily-plan.md y obsidianResearchMap.ts (RESEARCH_OBS_DAY mapea 1-40 a carpetas SR-1; los átomos C/CR necesitan carpeta propia en el vault).",
+   "esfuerzo": "L",
+   "ficheros": [
+    "src/lib/researchDailyPlan.ts",
+    "src/lib/researchData.ts",
+    "DATA/RESEARCH/daily-plan.md",
+    "DATA/RESEARCH/RUTA_PUBLICACION_2027.md",
+    "src/lib/obsidianResearchMap.ts",
+    "DATA/_scripts/build_vault_research.js"
+   ],
+   "toca_app": true
+  },
+  {
+   "gap": "El case report #1 (→ Dermatology Online Journal, feb-mar 2027) no tiene caso. No hay en ningún fichero, nota del vault ni átomo un paciente candidato, fotos, consentimiento de publicación firmado ni senior author asignado. Joseph no tiene plaza SERUMS ni flujo clínico propio ahora (el examen 2026-II no se rindió; SERUMS aparece en el ROADMAP recién en la fase MIR), así que el 'caso propio (hospital/SERUMS)' que asume la RUTA §2 no existe. Tampoco hay plantilla de consentimiento para publicación (la mayoría de journals exigen consentimiento escrito específico para publicación con fotos, distinto del consentimiento asistencial), ni protocolo fotográfico (fondo, iluminación, sin datos identificables), ni CARE checklist rellenable.",
+   "impacto": "alto",
+   "propuesta": "Decidir en septiembre la FUENTE del caso: (a) Dr. Ciro Rodríguez (Hospital Regional Daniel Alcides Carrión, Huancayo; ya 'co-autor ancla nacional' en researchProgram.ts L0) — pedirle 1-2 casos de su consulta (idealmente complicación de inyectable = L4 o caso raro con buenas fotos) con él como senior author; (b) plan B: caso de un colega dermatólogo de la Sociedad Peruana de Dermatología con Joseph como primer autor que redacta. Crear DATA/RESEARCH/CASE_REPORT_1/ con: caso_candidatos.md (tabla: diagnóstico, por qué es publicable, fotos disponibles, senior author, estado), consentimiento_publicacion_ES_EN.md (plantilla bilingüe basada en el formulario de consentimiento de DOJ/CARE), protocolo_fotos.md (estándar de fotografía clínica, anonimización) y CARE_checklist_13.md (rellenable). Enlazar la carpeta desde el átomo CR-1 del plan. Sin caso identificado antes del 31-oct, el entregable de feb-mar 2027 no ocurre.",
+   "esfuerzo": "M",
+   "ficheros": [
+    "DATA/RESEARCH/RUTA_PUBLICACION_2027.md",
+    "src/lib/researchProgram.ts",
+    "DATA/RESEARCH/CASE_REPORT_1/ (nuevo)"
+   ],
+   "toca_app": false
+  },
+  {
+   "gap": "La tesis (L0: IGA×CADI, n=316, rs=0.637, κ=0.81, primer autor, datos ya recogidos y analizados) es el único dataset original que Joseph posee y el tipo de ítem que su propia tabla RESEARCH_TARGETS pondera como 'EL MÁS ALTO' (first-author original) — y ha desaparecido de la ruta 2026-27. MD_MAESTRO §L0 y MANUAL_MAESTRO §10.1 decían 'envío a JAAD International jun-jul 2026'; no hay evidencia de envío (estado sigue 'pipeline de titulación'), la RUTA del 27-ago no la menciona y el ROADMAP tampoco. Riesgo añadido: el estudio es en adolescentes (menores) en un colegio; para publicar hace falta el número de aprobación de un comité de ética (CEI) y la declaración de asentimiento/consentimiento parental. No está documentado en el repo si la tesis tuvo aprobación formal de CEI (UNCP u hospital) o solo permiso de la I.E.; sin CEI muchos journals (JAAD Intl, IJD) la rechazan de entrada.",
+   "impacto": "alto",
+   "propuesta": "Reinsertar la tesis como Entregable #0 de la ruta con su propio mini-ciclo (~8 átomos entre oct y dic, en paralelo a la carta): (1) verificar y archivar en DATA/RESEARCH/TESIS_L0/etica.md el nº/fecha de aprobación del CEI y los consentimientos (si no hubo CEI: consultar con el asesor la vía de aprobación retrospectiva/expedita o el journal que lo acepte con declaración); (2) checklist STROBE transversal; (3) reescritura como 'Research Letter' (600-1000 palabras, 1 tabla, 1 figura) — formato que cabe en 45' interdiarios y que JAAD International/IJD aceptan; (4) cascada explícita: JAAD International (50% Grupo B) → International Journal of Dermatology → Actas Dermo-Sifiliográficas (Diamond $0) → Anais Brasileiros ($0); (5) coautoría Dr. Ciro. Actualizar RESEARCH_LINES[0].cuelloBotella y RESEARCH_KPIS para que reflejen 'tesis en redacción → enviada'. Es el ítem de mayor peso/esfuerzo del CV disponible hoy y no requiere paciente nuevo.",
+   "esfuerzo": "M",
+   "ficheros": [
+    "MD_MAESTRO_BIOCLINIC_RESEARCH.md",
+    "DATA/RESEARCH/RUTA_PUBLICACION_2027.md",
+    "src/lib/researchProgram.ts",
+    "src/lib/researchData.ts",
+    "DATA/RESEARCH/TESIS_L0/ (nuevo)"
+   ],
+   "toca_app": true
+  },
+  {
+   "gap": "Todos los documentos coinciden en que el cuello de botella #1 es el mentor/senior author (researchData.RESEARCH_META.cuelloBotella, MD_MAESTRO §13.4 punto 1, RUTA §5) y ninguno lo convierte en acción con fecha: no hay átomo de contacto, no hay borrador de email, no hay registro de contactos. El email a Finlay (que desbloquea L6 y el uso formal del CADI) figura como 'no enviado' desde junio. Candidatos ya identificados en el repo: Dr. Ciro Rodríguez (local, asesor de tesis), Prof. Finlay (Cardiff), Cotofana (vínculo Mayo), comité IMG de DIGA, AuthorAID (mentoría 1-a-1 gratuita para LatAm, listada en DATA/CALIDAD/Research.md y nunca activada).",
+   "impacto": "alto",
+   "propuesta": "Crear DATA/RESEARCH/MENTORES.md como mini-CRM (nombre · rol · qué le pido exactamente · fecha de contacto · estado · siguiente paso) y fijar 3 contactos en septiembre con átomo propio: (1) Dr. Ciro en persona/WhatsApp: propuesta concreta de 3 coautorías (tesis→research letter, carta al editor, case report de su consulta) — es el único con acceso a casos hoy; (2) AuthorAID: solicitud de mentor para revisión en inglés del primer manuscrito (gratis, tarda semanas → pedirlo ya); (3) Finlay: email de 6 líneas pidiendo permiso/versión española del CADI y ofreciendo los datos de la tesis como validación peruana. Cotofana/DIGA se difieren a feb-mar 2027 (campaña de 20-30 cold emails ya prevista). Añadir 2-3 átomos 'contacto' (M1) al plan y un campo mentor/senior_author en cada entregable de la mesa editorial.",
+   "esfuerzo": "S",
+   "ficheros": [
+    "DATA/RESEARCH/MENTORES.md (nuevo)",
+    "src/lib/researchDailyPlan.ts",
+    "src/lib/researchData.ts"
+   ],
+   "toca_app": true
+  },
+  {
+   "gap": "Infraestructura de identidad académica inexistente y sin checklist: no hay ORCID (la RUTA §4 dice 'ORCID desde el día 1'; DATA/CALIDAD/Research.md lo tiene como acción sin marcar; Editorial Manager de Elsevier exige ORCID del autor de correspondencia al enviar), ni perfil Google Scholar, ni CTI Vitae/RENACYT (CONCYTEC — la tesis publicada da Nivel VII solo si está registrado), ni cuentas en Editorial Manager (JAAD/JAAD Intl/DOJ vía eScholarship) y ScholarOne (IJD/JCD/BJD), ni cuenta PROSPERO, ni Rayyan, ni Zotero; el átomo R1 solo cubre cuenta NCBI + key OpenAlex + alerta PubMed. Cada cuenta son 10-15 min pero se descubren faltantes el día del submit.",
+   "impacto": "medio",
+   "propuesta": "Ampliar el entregable de R1 (o crear un átomo R0 'Infra académica') con una checklist persistida de 10 ítems: ORCID · Google Scholar · CTI Vitae/RENACYT · Editorial Manager (Elsevier) · ScholarOne · eScholarship/DOJ · PROSPERO · Rayyan · Zotero · OpenAlex key + NCBI key. Guardar los IDs resultantes (ORCID iD, CTI Vitae) en MD_MAESTRO §10 'Identificadores'. En la app: checklist marcable en la pestaña 'Desk' de ResearchHub reutilizando loadDone/saveDone con clave 'research-infra'.",
+   "esfuerzo": "S",
+   "ficheros": [
+    "src/lib/researchDailyPlan.ts",
+    "src/components/study/ResearchHub.tsx",
+    "MD_MAESTRO_BIOCLINIC_RESEARCH.md",
+    "DATA/CALIDAD/Research.md"
+   ],
+   "toca_app": true
+  },
+  {
+   "gap": "La carta al editor (oct-nov 2026) no tiene artículo diana ni journal: la RUTA solo dice 'respuesta a artículo 2026 de JAAD/IJD'. No está documentada la restricción crítica del formato: la mayoría de journals solo aceptan letters sobre un artículo dentro de una ventana desde su publicación (típicamente 4-12 semanas; JAMA Derm 4 semanas), con límite de 400-600 palabras y ≤5-10 referencias, y en algunos casos solo como 'Notes & Comments'/'Correspondence' con reglas propias. IJD tiene la verificación de políticas pendiente ('403 — confirmar por correo', RUTA §8) y nadie la ha hecho. Elegir el artículo en octubre y descubrir que la ventana cerró es el modo de fallo más probable de este entregable.",
+   "impacto": "medio",
+   "propuesta": "Átomo C-1 (2ª semana de sep): con el motor de discovery ya desplegado (research-discovery) correr una query 'derma estética · fototipos IV-VI · complicaciones de fillers · 2026' y listar 5 artículos publicados en los últimos 30-60 días en JAAD/JAAD Intl/IJD/JCD/Derm Surg; para cada uno anotar en DATA/RESEARCH/CARTA_1/candidatos.md: journal, fecha de publicación, ventana de letters (leer Author Guidelines y guardar la URL), límite de palabras/refs, coste ($0 en JAAD Notes & Comments vía suscripción), ángulo de la carta (dato latino/peruano que el paper no considera). Elegir 1 en C-2 con fecha límite de submit calculada. Enviar el correo a IJD Editorial Office pidiendo su política de correspondencia (pendiente desde el 27-ago).",
+   "esfuerzo": "S",
+   "ficheros": [
+    "DATA/RESEARCH/RUTA_PUBLICACION_2027.md",
+    "DATA/RESEARCH/CARTA_1/ (nuevo)",
+    "src/lib/researchDailyPlan.ts"
+   ],
+   "toca_app": true
+  },
+  {
+   "gap": "SR-1 está diseñada como trabajo de una sola persona: el átomo R18 dice 'cribado nivel 1, 2 revisores o 2 pases', R20 calcula 'Kappa interobservador' y R24 usa Elicit como 'segundo par de ojos'. Dos pases de la misma persona no son cribado dual (Cochrane Handbook y PRISMA 2020 ítem 8 exigen reportar cuántos revisores independientes; un κ con un solo humano no tiene sentido) y un LLM no cuenta como revisor. Los reviewers de Dermatologic Surgery/JAAD lo señalan como limitación mayor. PROSPERO además pide el equipo de revisión, fechas previstas y conflictos. La RUTA dice 'reclutar 2-3 coautores IMG' en feb-mar 2027 pero sin mecanismo, y el registro PROSPERO es lo primero del ciclo.",
+   "impacto": "medio",
+   "propuesta": "Nombrar al segundo revisor ANTES de registrar en PROSPERO (mar 2027): opciones ya en el repo — Dr. Ciro (clínico, valida relevancia), un egresado UNCP interesado en investigación, o un colaborador IMG de la campaña de cold emails/DIGA (ofrecer coautoría por 2º cribado + extracción). Reescribir R18/R20/R24 para exigir revisor humano #2 con cuenta en Rayyan (gratis ≤3 revisiones) y κ real; añadir a la ficha L4-complicaciones.md la sección 'Equipo de revisión' (roles, afiliaciones, ORCID, conflictos) que PROSPERO copia tal cual.",
+   "esfuerzo": "S",
+   "ficheros": [
+    "src/lib/researchDailyPlan.ts",
+    "DATA/RESEARCH/lines/L4-complicaciones.md",
+    "DATA/RESEARCH/daily-plan.md"
+   ],
+   "toca_app": true
+  },
+  {
+   "gap": "El pipeline agéntico está desplegado pero no conectado al plan ni versionado: (a) research_papers tiene 200 papers de SR-1 en 'pending_human' desde el 11-jun-2026, 0 decisiones de screening, 0 PDFs resueltos (pdf_url nulo en los 200, aunque 151 son OA) y research_agent_tasks tiene estados sembrados ('working', 'queued') del 10-jun que la consola pinta como si el motor estuviera redactando; (b) el código fuente de las Edge Functions research-discovery y research-fulltext NO está en el repo (no existe supabase/functions/; solo viven desplegadas) y la BD tiene columnas/tablas (relevance, run_state, research_commands) que no están en agentic/supabase_schema.sql — un bug o un cambio de query no se puede corregir desde el repo; (c) los átomos R12-R17 mandan 'correr la búsqueda' y 'subir el corpus a Rayyan' desde cero, ignorando el corpus existente, y no hay export CSV/RIS de research_papers hacia Rayyan.",
+   "impacto": "medio",
+   "propuesta": "(1) Descargar el código de ambas Edge Functions (get_edge_function) a supabase/functions/research-discovery y research-fulltext y añadir a supabase_schema.sql el DDL faltante (relevance, run_state, research_commands) — 1 commit. (2) UPDATE research_agent_tasks SET estado='idle' para que la consola diga la verdad hasta que arranque R34. (3) Añadir en supabase.ts exportResearchCorpus(line) → CSV/RIS (title, authors, year, doi, abstract) que Rayyan importa, y enlazarlo desde el átomo R17 ('exportar corpus ya descubierto + re-correr discovery con la query PRISMA-S final de R12'). (4) Un job 'resolve fulltext' en lote para los 151 OA (la función existe, solo se llama de uno en uno desde el botón).",
+   "esfuerzo": "M",
+   "ficheros": [
+    "src/lib/supabase.ts",
+    "DATA/RESEARCH/agentic/supabase_schema.sql",
+    "supabase/functions/ (nuevo)",
+    "src/components/study/ResearchAgenticSystem.tsx",
+    "src/lib/researchDailyPlan.ts"
+   ],
+   "toca_app": true
+  },
+  {
+   "gap": "No existe en la app ni en los docs una 'mesa editorial' con los entregables reales y su estado. Los KPIs del ResearchHub son constantes (pipsActuales 0, primerSubmissionMes 3, readiness 6%), la tabla research_manuscripts existe en Supabase pero está vacía y la app no la lee, y no hay ningún sitio donde registrar 'carta enviada 15-nov → en revisión → decisión 20-dic' ni el calendario de submissions con fechas objetivo/reales. Sin eso, ni Joseph ni Claude pueden ver qué entregable está atrasado, y el remap de fechas (remap_inicio.js) mueve átomos pero no hitos editoriales.",
+   "impacto": "medio",
+   "propuesta": "Crear RESEARCH_ENTREGABLES en researchData.ts (o tabla research_manuscripts ampliada): [{id:'tesis-L0', tipo:'research letter', journal cascade, senior_author, fecha_objetivo, fecha_envio, estado: idea|borrador|revisión-mentor|enviado|en-revisión|revisión-mayor|aceptado|publicado, coste, doi}] con los 5 ítems de la RUTA (tesis, carta, case report, PROSPERO SR-1, SR-1). Reemplazar en ResearchHub las secciones 'Timeline 0→primer paper' y 'Micro-horario' por una tarjeta por entregable con selector de estado persistido (localStorage clave 'research-entregables' o UPDATE en research_manuscripts vía anon con policy de update) y derivar pipsActuales/primerSubmission del array. Añadir los 5 hitos como overlays en el Calendar solo cuando tengan fecha de submit fijada (naranja, como los hitos NBME).",
+   "esfuerzo": "M",
+   "ficheros": [
+    "src/lib/researchData.ts",
+    "src/components/study/ResearchHub.tsx",
+    "src/lib/supabase.ts",
+    "DATA/RESEARCH/agentic/supabase_schema.sql"
+   ],
+   "toca_app": true
+  },
+  {
+   "gap": "El sistema agéntico solo sabe redactar revisiones sistemáticas: agentic_writer.py genera prompts Intro/Methods/Results/Discussion bajo PRISMA 2020 y docx_assembler.py monta esa estructura; RESEARCH_PIPELINE en la app anuncia 'A5 Methods: CARE / STROBE / PRISMA-ScR según tipo' pero nada de eso existe. Los tres primeros entregables reales (carta, case report CARE, tesis STROBE) no pueden usar el pipeline salvo citation_verifier.py, y CARE tiene reglas propias (13 ítems, timeline del paciente, consentimiento declarado, perspectiva del paciente).",
+   "impacto": "bajo",
+   "propuesta": "Añadir a DATA/RESEARCH/agentic/prompts_claude_code/ tres plantillas: letter_to_editor.md (estructura: cita del artículo diana → aporte/objeción con 1 dato verificable → implicación; ≤500 palabras; ≤5 refs con [CIT:id]), case_report_CARE.md (13 ítems CARE como secciones obligatorias + tabla timeline + párrafo de consentimiento) y research_letter_STROBE.md (para la tesis). Extender docx_assembler.py con --template {sr|letter|care|strobe} y reutilizar citation_verifier.py como gate en los tres. Sin cambios en la UI.",
+   "esfuerzo": "S",
+   "ficheros": [
+    "DATA/RESEARCH/agentic/agentic_writer.py",
+    "DATA/RESEARCH/agentic/docx_assembler.py",
+    "DATA/RESEARCH/agentic/prompts_claude_code/ (nuevo)",
+    "src/lib/researchData.ts"
+   ],
+   "toca_app": true
+  },
+  {
+   "gap": "No hay presupuesto de publicación ni cifras coherentes: JAAD Case Reports aparece como US$850 (RUTA, researchData) y como $750 (journals.md); el APC de JAAD International (target de la tesis) no está cuantificado en ningún doc (solo '50% Grupo B'); la edición profesional en inglés de la tesis ($200-400, MANUAL §10.1) y DOJ (≤$300) no están en ninguna línea de gasto; y la re-verificación anual de la clasificación Banco Mundial/Research4Life (1-jul) no tiene recordatorio. Joseph descubre el coste real en el paso 'rights & access' tras la aceptación.",
+   "impacto": "bajo",
+   "propuesta": "Tabla 'Presupuesto research 2026-27' en RUTA_PUBLICACION_2027.md §3: entregable · journal primario · APC verificado en la página del journal (fecha) · descuento aplicable · plan B a $0 (Actas/Anais Diamond) · edición inglés · total estimado, con las cifras de JAAD CR y JAAD Intl reconciliadas contra la web de Elsevier y anotadas con fecha; recordatorio en Calendar el 1-jul-2027 'Re-verificar Grupo Research4Life Perú'. Coste total esperado del año: carta $0 · tesis $0-750 · case report ≤$300 · SR-1 $0 (suscripción) — ponerlo por escrito para que no bloquee un submit.",
+   "esfuerzo": "S",
+   "ficheros": [
+    "DATA/RESEARCH/RUTA_PUBLICACION_2027.md",
+    "DATA/RESEARCH/journals.md",
+    "src/lib/researchData.ts"
+   ],
+   "toca_app": false
+  }
+ ],
+ "notas": "Método: lectura de RUTA_PUBLICACION_2027.md, researchDailyPlan.ts (42 átomos), researchProgram.ts (L0-L8 + sistema agéntico), researchData.ts, daily-plan.md, journals.md, benchmarks.md, systematic-reviews.md, lines/L4 y L5, agentic/ (DEPLOY, DEPLOY_GRATIS, schema, writer/runner), MANUAL_MAESTRO (§1-3, §10), MD_MAESTRO (§9, §10, §13, L0), ROADMAP_MAESTRO, REESTRUCTURACION_31AGO, DATA/CALIDAD/Research.md, ResearchHub/ResearchTodayPlan/supabase.ts; consulta en vivo a Supabase (research_papers: 200 SR-1 pending_human desde 11-jun, 0 pdf, agent_tasks con estados sembrados de junio; Edge Functions research-discovery v2 y research-fulltext v1 ACTIVAS pero sin fuente en el repo), al vault Obsidian (04_INVESTIGACIÓN: solo scaffolds del 10-jun, sin artefactos de SR-1 ni nota de caso clínico) y al Google Calendar (el evento RESEARCH↔DERMA recurrente no tiene fin; no existen eventos de carta/case report/PROSPERO). Hallazgo transversal: en 3 meses (jun→sep) no se ejecutó ningún átomo (el plan se re-fechó a R1=8-sep) y el corpus quedó huérfano; el riesgo principal no es metodológico sino de ejecución — la ruta que la app muestra a diario no contiene las tareas de los dos primeros entregables ni de la tesis. Verificaciones que quedan para Joseph (no derivables del repo): si la tesis tuvo aprobación formal de CEI y consentimiento parental documentado; si Dr. Ciro acepta ser senior author; políticas de correspondencia de IJD (correo pendiente desde 27-ago). No se propone tocar la franja 13:30-14:15 ni el bloque Step 1."
+}

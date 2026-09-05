@@ -1,0 +1,20 @@
+{
+ "_meta": {
+  "descripcion": "Telemetría diaria del Anki del USMLE (AnkiConnect) — append idempotente por fecha. Generado por DATA/_scripts/anki_telemetria.js. Lo consumen CockpitStatusBar (KPI Anki, vía localStorage jmd-anki-telemetria) y gen_revision_semanal.js (métrica 3).",
+  "query_default": "deck:APEX::USMLE*",
+  "alarma_G": "backlog > 100 o retencion30 < 0.85 → no añadir nuevas hasta backlog < 20; NUNCA capar revisiones",
+  "regla_finde": "minFinde = due × segPorTarjeta ÷ 60 (dato, no reloj)",
+  "esquema_entrada": {
+   "fecha": "YYYY-MM-DD", "hora": "HH:MM", "estado": "ok | anki_cerrado", "query": "búsqueda Anki", "decks": ["nombres reales"],
+   "total": "tarjetas del patrón", "maduras": "ivl ≥ 21 d", "due": "vencen hoy (incl. vencidas)", "backlog": "vencidas de días anteriores (is:due prop:due<0)",
+   "nuevas": "nuevas disponibles", "suspendidas": "is:suspended", "revisadasHoy": "rated:1 del patrón", "revisadasHoyTotal": "getNumCardsReviewedToday (toda la colección)",
+   "againHoy": "rated:1:1", "againHoyPct": "% Again hoy", "retencion30": "1 − Again/revisiones tipo review en 30 d (FSRS)", "retencionMetodo": "review-level o aprox card-level",
+   "segPorTarjeta": 20, "minFinde": "due × seg ÷ 60", "alarma": "true si backlog > 100 o retencion30 < 0.85",
+   "config": { "preset": "nombre del preset", "nuevasPorDia": "esperado 10", "desiredRetention": "esperado 0.90", "fsrsParams": "nº de parámetros FSRS (null si no expuesto)" },
+   "avisos": ["texto"]
+  },
+  "creado": "2026-09-05",
+  "nota": "Sin entradas todavía: Anki estaba cerrado al crear el fichero (5-sep-2026). Primera corrida real prevista en D1-D2 (7/8-sep) con Anki abierto."
+ },
+ "entradas": []
+}

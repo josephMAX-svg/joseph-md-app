@@ -23,6 +23,13 @@ RESEARCH/
   agentic-system.md         ✅ sistema agéntico (orquestador + subagentes + QA citas/Turnitin + ensamblado .docx)
   daily-plan.md             ✅ plan día-a-día interdiario con Derma (40 átomos, mismo motor que USMLE/MIR · metodología OpenAlex/IA)
   lines/                    ✅ fichas de SR por línea (índice + L4 complicaciones=SR-1 + L5 fototipos=SR-2)
+  RUTA_PUBLICACION_2027.md  ✅ calendario editorial 12 meses + §3.1 PRESUPUESTO 2026-27 (APC verificados 5-sep-2026) + §9 MESA EDITORIAL (5 entregables, estado vivo)
+  MENTORES.md               ✅ mini-CRM de mentores/senior authors (Dr. Ciro · Rising Scholars/AuthorAID · Finlay · Cotofana · DIGA) + 3 mensajes de sep redactados (NO enviados)
+  CARTA_1/candidatos.md     ✅ carta al editor #1: 5 artículos diana jul-sep 2026 con DOI verificado, ventana, límites, coste y ángulo latino + correo a IJD (no enviado)
+  CASE_REPORT_1/            ✅ case report #1: caso_candidatos (tabla vacía + fuentes A/B) · consentimiento_publicacion_ES_EN · protocolo_fotos · CARE_checklist_13
+  TESIS_L0/                 ✅ tesis IGA×CADI → research letter: etica.md (CEI/consentimientos) · strobe_checklist.md · research_letter_outline.md (cascada JAAD Intl → IJD → Actas → Anais)
+  agentic/prompts_claude_code/  ✅ plantillas fijas letter_to_editor.md · case_report_CARE.md · research_letter_STROBE.md → docx_assembler.py --template {sr|letter|care|strobe} (gate citation_verifier)
+  ../../supabase/functions/ ✅ copia versionada de las Edge Functions research-discovery v2 / research-fulltext v1 (5-sep-2026) + README
   MANUAL_MAESTRO_SISTEMA_INVESTIGACION_AGENTICA.md  (input del usuario · spec conceptual que discovery-engine.md verifica y aterriza)
   PROMPT_CHAT_RESEARCH.md · PROMPT_OBSIDIAN_RESEARCH.md   prompts base
   _raw_findings.json        fuentes crudas del workflow de verificación (352 búsquedas)

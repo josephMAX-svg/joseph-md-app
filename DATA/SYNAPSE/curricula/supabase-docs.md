@@ -1,0 +1,16 @@
+# Supabase — guías oficiales (RLS · JS select · Triggers · Webhooks · REST · Edge Functions · Expo)
+
+> URL: https://supabase.com/docs/guides/getting-started
+> Extraído con WebFetch el 5-sep-2026 (stack del vibecoding, v5.7) · URL verificada 200 con check_links.js.
+> Verificación: CONFIRMADA.
+
+1. **[Row Level Security]** Understand Row Level Security (What a policy does · Grants and policies · Authenticated and unauthenticated roles · Views and RLS) · Secure a table with RLS (Enable RLS and set the grants · Write a policy for each operation: SELECT/INSERT/UPDATE/DELETE · Policy tests · Specify roles · Add indexes · Call functions with select · Expose a view safely) · RLS reference (Helper functions auth.uid() · auth.jwt() · MFA · Use security definer functions · Avoid recursive policies · Bypassing Row Level Security) — https://supabase.com/docs/guides/database/postgres/row-level-security
+2. **[JavaScript: select]** Getting your data · Handling errors · Selecting specific columns · Query referenced tables · Query referenced tables through a join table · Filtering through referenced tables · Querying referenced table with count · Querying with count option · Querying JSON data · Querying referenced table with inner join · Switching schemas per query — https://supabase.com/docs/reference/javascript/select
+3. **[Postgres Triggers]** Creating a trigger · Trigger functions (Example trigger function · Trigger variables) · Types of triggers (before / after changes) · Execution frequency · Dropping a trigger — https://supabase.com/docs/guides/database/postgres/triggers
+4. **[Database Webhooks]** Webhooks vs triggers · Creating a webhook · Payload · Monitoring · Local development — https://supabase.com/docs/guides/database/webhooks
+5. **[Data REST API]** Features (rest-api-overview): API REST generada automáticamente desde el esquema — https://supabase.com/docs/guides/api
+6. **[Edge Functions]** How it works · Quick technical notes · When to use Edge Functions · Get started · Examples (Supabase integration · Webhooks & payments · AI & media · Bots & email · Operations & security) — https://supabase.com/docs/guides/functions
+7. **[Getting Started with Edge Functions]** Prerequisites · Step 1: Create or configure your project · Step 2: Create your first function · Step 3: Test your function locally · Step 4: Send a test request · Step 5: Connect to your Supabase project · Step 6: Deploy to production · Step 7: Test your live function · Usage — https://supabase.com/docs/guides/functions/quickstart
+8. **[Build a User Management App with Expo React Native]** Project setup (Create a project · Set up the database schema · Get API details) · Building the app (Initialize a React Native app · App styling · Set up a sign-in component · Account page · Launch!) · Bonus: Profile photos — https://supabase.com/docs/guides/getting-started/tutorials/with-expo-react-native
+
+**Notas de extracción:** Extraído con WebFetch el 5-sep-2026 (títulos H2/H3 literales de la página; sin duraciones). URL verificada 200 con DATA/_scripts/check_links.js el mismo día.

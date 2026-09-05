@@ -5,26 +5,32 @@ import { DesktopColors } from '../../theme/desktopStyles';
 import { Chip, GlassPanel } from '../empresa/primitives';
 import { FadeUp } from '../empresa/visuals';
 import {
-  DAILY_META, FRANJAS, DIAS, REC, FASE_INFO, DiaResearch, FaseId,
-  diaDe, diaPrevio, ventana7d, proximoD,
+  DAILY_META, FRANJAS, DIAS, REC, FASE_INFO, PISTA_INFO, DiaResearch, FaseId,
+  diaPrevio, ventana7d, proximoD,
 } from '../../lib/researchDailyPlan';
+import { DIAS_2027, DAILY_META_2027 } from '../../lib/researchDailyPlan2027';
 import { agruparProgreso, progresoGlobal, GrupoProgreso, loadDone, saveDone } from '../../lib/studyProgress';
 import { diaEstudioTipo, PRIORIDAD_COLOR } from '../../lib/researchData';
 import { researchObsUrlDay } from '../../lib/obsidianResearchMap';
 import { serifTitle, InkColors, OBSIDIAN } from './researchTheme';
 
 /**
- * ResearchTodayPlan — Plan de research día-a-día (revisiones sistemáticas), presentado como
- * ENTRADA de cuaderno de laboratorio (fecha en el lomo, nº de protocolo Rxx, objetivo en serif,
- * ENTREGABLE como artefacto sellado). Mismo motor que UsmleTodayPlan: nav de día ◄►, sub-pestañas
+ * ResearchTodayPlan — Plan de research día-a-día (3 pistas: carta al editor · tesis · case report + SR-1),
+ * presentado como ENTRADA de cuaderno de laboratorio (fecha en el lomo, código del átomo, objetivo en serif,
+ * ENTREGABLE + ARTEFACTO como sello del día). Mismo motor que UsmleTodayPlan: nav de día ◄►, sub-pestañas
  * HOY/Horario/7d/Temario, progreso REAL marcable (empieza 0%, localStorage clave 'research'),
- * interdiario con Derma. Cada recurso de la cola abre un sitio REAL verificado.
+ * interdiario con Derma. Navega los DOS ciclos (ciclo 1 sep-26→feb-27 · ciclo 2 feb→ago-27, SR-1) con una
+ * numeración continua de d. Cada recurso de la cola abre un sitio REAL verificado.
+ * (05-sep-2026) Muestra PISTA (C/T/CR/R/M/K/B/X), ARTEFACTO y chips de dependencia (p. ej. "requiere Derma d19-20").
  */
-const TEAL = InkColors.teal;      // #6BB8B0 (era #0FD4A0)
+const TEAL = InkColors.teal;      // #6BB8B0
 const GOLD = InkColors.gold;      // #C8A96A — estatus (artefacto/entregable hecho)
-const PURPLE = InkColors.amethyst; // #9A7BC8 (era #8B5CF6)
-const OBS = OBSIDIAN;             // #9A7BC8 (era #A78BFA)
-const ANCLA = InkColors.periwinkle; // #7C83D6 — eval anclada (era #7BB1FF/#AFCBFF)
+const PURPLE = InkColors.amethyst; // #9A7BC8
+const OBS = OBSIDIAN;             // #9A7BC8
+const ANCLA = InkColors.periwinkle; // #7C83D6 — eval anclada
+/** Ambos ciclos, d continuo (1-42 ciclo 1 · 43+ ciclo 2). */
+const TODOS: DiaResearch[] = [...DIAS, ...DIAS_2027];
+const PAUSA = (() => { const m = /^(20\d\d-\d\d-\d\d) → (20\d\d-\d\d-\d\d)/.exec(DAILY_META.pausa); return m ? { desde: m[1], hasta: m[2] } : null; })();
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
 function todayISO(): string {
   try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; }
@@ -35,6 +41,9 @@ function fmtFecha(iso: string): string {
   try { const d = new Date(iso + 'T12:00:00'); return `${dias[d.getDay()]} ${iso.slice(8, 10)}-${iso.slice(5, 7)}`; } catch { return iso; }
 }
 function faseColor(f: FaseId): string { return FASE_INFO[f].color; }
+function diaLabel(d: DiaResearch): string {
+  return d.ciclo === 1 ? `Día ${d.d}/${DAILY_META.totalDias} · ciclo 1` : `Día ${d.d - DAILY_META_2027.dOffset}/${DAILY_META_2027.totalDias} · ciclo 2 (d${d.d})`;
+}
 
 /** Ítem de la cola de hoy: recurso real con botón "ver ↗". */
 function ColaItem({ icon, lbl, val, sub, color, url }: { icon: string; lbl: string; val: string; sub: string; color: string; url: string }) {
@@ -54,9 +63,11 @@ function ColaItem({ icon, lbl, val, sub, color, url }: { icon: string; lbl: stri
 }
 
 function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaResearch; onOpenTemario: () => void; hecho: boolean; onToggle: (d: number) => void }) {
-  const prev = diaPrevio(dia);
+  const prev = diaPrevio(dia, TODOS);
   const fc = faseColor(dia.fase);
   const fi = FASE_INFO[dia.fase];
+  const pista = PISTA_INFO[dia.pista];
+  const obsUrl = researchObsUrlDay(dia.d);
   return (
     <View>
       {/* Tema del día — el badge de fase lleva al Temario */}
@@ -67,16 +78,32 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaResearch; on
               <Text style={[st.sysBadgeTxt, { color: fc }]}>{dia.fase} · {fi.nombre} ›</Text>
             </TouchableOpacity>
             <Chip label={dia.code} color={fc} small />
+            <Chip label={`pista ${dia.pista} · ${pista.label}`} color={pista.color} small solid />
             <Chip label={dia.prioridad} color={PRIORIDAD_COLOR[dia.prioridad]} small />
             {fi.pilar !== 'base' && <Chip label={fi.pilar} color={Colors.muted} small />}
+            <Chip label={`ciclo ${dia.ciclo}`} color={Colors.muted} small />
           </View>
           <Text style={[st.temaTitle, serifTitle]}>{dia.objetivo}</Text>
+          {dia.chips && dia.chips.length > 0 && (
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 8 }}>
+              {dia.chips.map((c, i) => (
+                <View key={i} style={[st.depChip, { borderColor: (c.startsWith('requiere') ? PURPLE : Colors.coral) + '77' }]}>
+                  <Text style={[st.depChipTxt, { color: c.startsWith('requiere') ? PURPLE : Colors.coral }]}>⚑ {c}</Text>
+                </View>
+              ))}
+            </View>
+          )}
           <View style={[st.entregBox, { borderColor: GOLD + '3A' }]}>
-            <Text style={st.entregLbl}>ENTREGABLE · artefacto sellado del día</Text>
+            <Text style={st.entregLbl}>ENTREGABLE · lo que queda hecho hoy</Text>
             <Text style={st.entregTxt}>{dia.entregable}</Text>
           </View>
+          <View style={[st.artefBox, { borderColor: pista.color + '44' }]}>
+            <Text style={[st.entregLbl, { color: pista.color }]}>ARTEFACTO · dónde queda (fichero · nota · estado)</Text>
+            <Text style={st.entregTxt}>{dia.artefacto}</Text>
+            {pista.entregableId && <Text style={st.artefSub}>→ avanza el entregable «{pista.entregableId}» de la Mesa editorial (Desk)</Text>}
+          </View>
           <TouchableOpacity activeOpacity={0.85} onPress={() => onToggle(dia.d)} style={[st.doneBtn, hecho ? st.doneBtnOn : st.doneBtnOff]}>
-            <Text style={[st.doneBtnTxt, { color: hecho ? '#1A1505' : GOLD }]}>{hecho ? '✓ Artefacto sellado' : '○ Sellar entregable como hecho'}</Text>
+            <Text style={[st.doneBtnTxt, { color: hecho ? '#1A1505' : GOLD }]}>{hecho ? '✓ Artefacto sellado' : '○ Sellar artefacto como hecho'}</Text>
           </TouchableOpacity>
         </View>
       </FadeUp>
@@ -87,7 +114,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaResearch; on
           <View style={st.anchor}>
             <Text style={st.anchorLbl}>13:30 · Eval anclada (sesión anterior)</Text>
             <Text style={st.anchorVal}>{prev.code} · {prev.objetivo}</Text>
-            <Text style={st.anchorSub}>2Q de auto-test del método + ¿avanzó el entregable de ayer? · APEX-método AGAIN/GOOD</Text>
+            <Text style={st.anchorSub}>2Q de auto-test del método + ¿existe el artefacto de la sesión anterior? ({prev.artefacto}) · APEX-método AGAIN/GOOD</Text>
           </View>
         </FadeUp>
       )}
@@ -102,11 +129,11 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaResearch; on
         return <FadeUp key={k} delay={60 + i * 30}><ColaItem icon={icon} lbl={`RECURSO ${i + 1} · ${dia.tool}`} val={r.label} sub={k} color={color} url={r.url} /></FadeUp>;
       })}
 
-      {/* Obsidian — carpeta de la SR/fase de este átomo */}
-      {researchObsUrlDay(dia.d) && (
+      {/* Obsidian — carpeta del entregable / fase de este átomo */}
+      {obsUrl && (
         <FadeUp delay={195}>
-          <ColaItem icon="◆" lbl="OBSIDIAN · carpeta de la SR" val={`SR-1 · ${fi.nombre}`}
-            sub="Vault_Medicina MIR_Joseph · aquí caen las notas/APEX de esta fase" color={OBS} url={researchObsUrlDay(dia.d)!} />
+          <ColaItem icon="◆" lbl="OBSIDIAN · carpeta del entregable / fase" val={`${pista.label} · ${fi.nombre}`}
+            sub="Vault_Medicina MIR_Joseph · aquí caen las notas/APEX de este átomo" color={OBS} url={obsUrl} />
         </FadeUp>
       )}
 
@@ -117,7 +144,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaResearch; on
           <View style={{ flex: 1 }}>
             <Text style={st.colaLbl}>APEX-método · 14:10–14:15</Text>
             <Text style={st.colaVal}>{dia.apex ? `Crea ≤3 APEX — hito: ${dia.apex.t}` : 'Crea ≤3 APEX-método (Palmerton)'}</Text>
-            <Text style={st.colaSub}>Free recall a papel antes · guarda el artefacto (PROSPERO/Rayyan/Zotero/.docx)</Text>
+            <Text style={st.colaSub}>Free recall a papel antes · guarda el artefacto (Mesa editorial / PROSPERO / Rayyan / .docx)</Text>
           </View>
         </View>
       </FadeUp>
@@ -126,17 +153,18 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaResearch; on
 }
 
 function HorarioView({ dia }: { dia: DiaResearch }) {
-  const prev = diaPrevio(dia);
+  const prev = diaPrevio(dia, TODOS);
   const detalle = (tipo: string): string => {
-    if (tipo === 'eval') return prev ? `${prev.code} → ${prev.entregable}` : 'no hay átomo previo';
+    if (tipo === 'eval') return prev ? `${prev.code} → ${prev.artefacto}` : 'no hay átomo previo';
     if (tipo === 'pretest') return dia.objetivo;
     if (tipo === 'work') return `${REC[dia.recs[0]]?.label ?? ''} · ${dia.entregable}`;
+    if (tipo === 'recall') return dia.artefacto;
     if (tipo === 'apex') return dia.apex ? dia.apex.t : '';
     return '';
   };
   return (
     <View>
-      <Text style={st.secLbl}>🕓 Bloque Research · Día {dia.d} ({fmtFecha(dia.fecha)}) · hora Lima</Text>
+      <Text style={st.secLbl}>🕓 Bloque Research · {diaLabel(dia)} ({fmtFecha(dia.fecha)}) · hora Lima</Text>
       {FRANJAS.map((f, i) => {
         const det = detalle(f.tipo);
         return (
@@ -151,18 +179,19 @@ function HorarioView({ dia }: { dia: DiaResearch }) {
           </FadeUp>
         );
       })}
-      <Text style={st.note}>Interdiario con Derma: el bloque 13:30–14:15 del Calendar alterna Research↔Derma. Avanzas 1 átomo por día-Research. No se modifica el Calendar.</Text>
+      <Text style={st.note}>Interdiario con Derma: el bloque 13:30–14:15 del Calendar alterna Research↔Derma. Avanzas 1 átomo por día-Research. No se modifica el Calendar. {PAUSA ? `Pausa Step 1: ${PAUSA.desde} → ${PAUSA.hasta} (0 átomos).` : ''}</Text>
     </View>
   );
 }
 
 function SieteView({ fromD, onPick }: { fromD: number; onPick: (d: number) => void }) {
-  const win = ventana7d(fromD);
+  const win = ventana7d(fromD, TODOS);
   return (
     <View>
       <Text style={st.secLbl}>📆 Próximos 7 átomos · toca uno para abrirlo</Text>
       {win.map((x, i) => {
         const fc = faseColor(x.fase);
+        const p = PISTA_INFO[x.pista];
         return (
           <FadeUp key={x.d} delay={i * 30}>
             <TouchableOpacity activeOpacity={0.8} onPress={() => onPick(x.d)} style={[st.d7, { borderLeftColor: fc }]}>
@@ -170,7 +199,7 @@ function SieteView({ fromD, onPick }: { fromD: number; onPick: (d: number) => vo
               <Text style={st.d7fecha}>{fmtFecha(x.fecha)}</Text>
               <View style={{ flex: 1 }}>
                 <Text style={st.d7sub} numberOfLines={1}>{x.objetivo}</Text>
-                <Text style={st.d7sys}>{x.fase} · {FASE_INFO[x.fase].nombre}</Text>
+                <Text style={st.d7sys}><Text style={{ color: p.color, fontWeight: '800' }}>{x.pista}</Text> · {x.fase} · {FASE_INFO[x.fase].nombre} · {x.artefacto}</Text>
               </View>
               <Text style={st.d7go}>→</Text>
             </TouchableOpacity>
@@ -193,7 +222,7 @@ function FaseCard({ g, hoyD, onPick, done, onToggle }: { g: GrupoProgreso<DiaRes
   const [open, setOpen] = useState(g.estado === 'en-curso');
   const fase = g.dias[0].fase;
   const fc = faseColor(fase);
-  const estadoTxt = g.estado === 'completado' ? '✓ completado' : g.estado === 'en-curso' ? `en curso · ${g.pct}%` : `pendiente · empieza ${g.dias[0].code}`;
+  const estadoTxt = g.estado === 'completado' ? '✓ completado' : g.estado === 'en-curso' ? `en curso · ${g.pct}%` : `pendiente · empieza ${g.dias[0].code} (${fmtFecha(g.dias[0].fecha)})`;
   const estadoColor = g.estado === 'completado' ? TEAL : g.estado === 'en-curso' ? fc : Colors.muted;
   return (
     <View style={[st.sysCard, { borderColor: fc + (g.estado === 'en-curso' ? '88' : '2E') }]}>
@@ -209,6 +238,7 @@ function FaseCard({ g, hoyD, onPick, done, onToggle }: { g: GrupoProgreso<DiaRes
         <View style={{ marginTop: 8 }}>
           {g.dias.map((x) => {
             const hecho = done.has(x.d), now = x.d === hoyD;
+            const obs = researchObsUrlDay(x.d);
             return (
               <View key={x.d} style={[st.temaRow, now && st.temaRowOn]}>
                 <TouchableOpacity activeOpacity={0.7} onPress={() => onToggle(x.d)} hitSlop={{ top: 8, bottom: 8, left: 8, right: 4 }}>
@@ -216,11 +246,14 @@ function FaseCard({ g, hoyD, onPick, done, onToggle }: { g: GrupoProgreso<DiaRes
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={0.8} onPress={() => onPick(x.d)} style={st.temaRowMain}>
                   <Text style={[st.temaRowD, { color: hecho ? TEAL : now ? fc : Colors.muted }]}>{now ? '▶' : ''} {x.code}</Text>
-                  <Text style={st.temaRowTxt} numberOfLines={1}>{x.objetivo}</Text>
+                  <View style={{ flex: 1 }}>
+                    <Text style={st.temaRowTxt} numberOfLines={1}>{x.objetivo}</Text>
+                    <Text style={st.temaRowSub} numberOfLines={1}>{fmtFecha(x.fecha)} · {x.artefacto}</Text>
+                  </View>
                   <Text style={st.temaRowGo}>→</Text>
                 </TouchableOpacity>
-                {researchObsUrlDay(x.d) && (
-                  <TouchableOpacity activeOpacity={0.7} onPress={() => openUrl(researchObsUrlDay(x.d)!)} hitSlop={{ top: 8, bottom: 8, left: 4, right: 8 }}>
+                {obs && (
+                  <TouchableOpacity activeOpacity={0.7} onPress={() => openUrl(obs)} hitSlop={{ top: 8, bottom: 8, left: 4, right: 8 }}>
                     <Text style={{ fontSize: 13, color: OBS, width: 18, textAlign: 'center' }}>◆</Text>
                   </TouchableOpacity>
                 )}
@@ -234,20 +267,33 @@ function FaseCard({ g, hoyD, onPick, done, onToggle }: { g: GrupoProgreso<DiaRes
 }
 
 function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (d: number) => void; done: Set<number>; onToggle: (d: number) => void }) {
-  const grupos = agruparProgreso(DIAS, (x) => `${x.fase} · ${FASE_INFO[x.fase].nombre}`, hoyD, done);
-  const glob = progresoGlobal(DIAS, done);
+  const [modo, setModo] = useState<'pista' | 'fase'>('pista');
+  const clave = modo === 'pista'
+    ? (x: DiaResearch) => `C${x.ciclo} · pista ${x.pista} · ${PISTA_INFO[x.pista].label}`
+    : (x: DiaResearch) => `C${x.ciclo} · ${x.fase} · ${FASE_INFO[x.fase].nombre}`;
+  const grupos = agruparProgreso(TODOS, clave, hoyD, done);
+  const glob = progresoGlobal(TODOS, done);
+  const g1 = progresoGlobal(DIAS, done);
+  const g2 = progresoGlobal(DIAS_2027, done);
   return (
     <View>
       <View style={st.globCard}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-          <Text style={st.globTitle}>🗂️ Temario SR · progreso del plan</Text>
+          <Text style={st.globTitle}>🗂️ Temario · 3 pistas + SR-1 · progreso real</Text>
           <Text style={[st.globPct, { color: TEAL }]}>{glob.pct}%</Text>
         </View>
         <ProgressBar pct={glob.pct} color={TEAL} />
-        <Text style={st.globSub}>{glob.hechos}/{glob.total} átomos · hoy = Día {hoyD} de {glob.total} · {grupos.length} fases · ejecuta SR-1</Text>
+        <Text style={st.globSub}>{glob.hechos}/{glob.total} átomos · hoy = d{hoyD} · ciclo 1: {g1.hechos}/{g1.total} ({DAILY_META.inicio} → {DAILY_META.fin}) · ciclo 2: {g2.hechos}/{g2.total} ({DAILY_META_2027.inicio} → {DAILY_META_2027.fin})</Text>
+        <View style={{ flexDirection: 'row', gap: 6, marginTop: 8 }}>
+          {([['pista', 'por pista (C · T · CR · R · M …)'], ['fase', 'por fase del método']] as const).map(([k, lbl]) => (
+            <TouchableOpacity key={k} activeOpacity={0.8} onPress={() => setModo(k)} style={[st.modoBtn, modo === k && st.modoBtnOn]}>
+              <Text style={[st.modoTxt, modo === k && { color: TEAL }]}>{lbl}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
       </View>
       {grupos.map((g) => <FaseCard key={g.clave} g={g} hoyD={hoyD} onPick={onPick} done={done} onToggle={onToggle} />)}
-      <Text style={st.note}>Progreso REAL: empezamos en 0%. ☑ marca un átomo como hecho (se guarda en este dispositivo). ▶ = átomo de hoy. Toca el objetivo para ir a ese día.</Text>
+      <Text style={st.note}>Progreso REAL: empezamos en 0%. ☑ marca un átomo como hecho (se guarda en este dispositivo). ▶ = átomo de hoy. Toca el objetivo para ir a ese día. El ciclo 2 (SR-1 con revisor humano #2) arranca tras el Step 1.</Text>
     </View>
   );
 }
@@ -255,13 +301,14 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
 export default function ResearchTodayPlan() {
   const iso = todayISO();
   const tipoHoy = diaEstudioTipo(new Date());
-  const hoyD = proximoD(iso);
-  const todayDia = diaDe(iso) || DIAS.find((x) => x.d === hoyD) || DIAS[0];
+  const hoyD = proximoD(iso, TODOS);
+  const todayDia = TODOS.find((x) => x.fecha === iso) || TODOS.find((x) => x.d === hoyD) || TODOS[0];
   const [sel, setSel] = useState<number>(todayDia.d);
   const [view, setView] = useState<'hoy' | 'horario' | '7d' | 'temario'>('hoy');
   const [done, setDone] = useState<Set<number>>(() => new Set(loadDone('research')));
-  const dia = DIAS.find((x) => x.d === sel) || DIAS[0];
+  const dia = TODOS.find((x) => x.d === sel) || TODOS[0];
   const esHoy = dia.fecha === iso;
+  const enPausa = !!PAUSA && iso >= PAUSA.desde && iso <= PAUSA.hasta;
   const pickDay = (d: number) => { setSel(d); setView('hoy'); };
   const toggleDone = (d: number) => setDone((prev) => {
     const n = new Set(prev);
@@ -269,14 +316,15 @@ export default function ResearchTodayPlan() {
     saveDone('research', Array.from(n));
     return n;
   });
+  const artefactoVivo = dia.ciclo === 1 ? DAILY_META.artefacto : DAILY_META_2027.artefacto;
 
   return (
     <View>
       {/* Banner interdiario Research/Derma + artefacto vivo */}
       <View style={st.interRow}>
-        <View style={[st.interBtn, tipoHoy === 'research' ? st.interOn : st.interOff]}>
-          <Text style={[st.interBig, { color: tipoHoy === 'research' ? TEAL : Colors.muted }]}>🔬 RESEARCH</Text>
-          <Text style={st.interSub}>{tipoHoy === 'research' ? 'HOY te toca' : 'no es hoy'}</Text>
+        <View style={[st.interBtn, tipoHoy === 'research' && !enPausa ? st.interOn : st.interOff]}>
+          <Text style={[st.interBig, { color: tipoHoy === 'research' && !enPausa ? TEAL : Colors.muted }]}>🔬 RESEARCH</Text>
+          <Text style={st.interSub}>{enPausa ? 'pausa Step 1' : tipoHoy === 'research' ? 'HOY te toca' : 'no es hoy'}</Text>
         </View>
         <View style={[st.interBtn, tipoHoy === 'derma' ? { backgroundColor: PURPLE + '1A', borderColor: PURPLE + '88' } : st.interOff]}>
           <Text style={[st.interBig, { color: tipoHoy === 'derma' ? PURPLE : Colors.muted }]}>💎 DERMA</Text>
@@ -287,18 +335,23 @@ export default function ResearchTodayPlan() {
           <Text style={st.interSub}>finde</Text>
         </View>
       </View>
+      {enPausa && PAUSA && (
+        <View style={[st.artefactoBar, { borderLeftColor: Colors.coral }]}>
+          <Text style={[st.artefactoTxt, { color: Colors.coral }]}>⏸ PAUSA TOTAL {PAUSA.desde} → {PAUSA.hasta}: 0 átomos de research (examen Step 1). El siguiente átomo es {TODOS.find((x) => x.fecha > PAUSA.hasta)?.code ?? '—'} el {TODOS.find((x) => x.fecha > PAUSA.hasta)?.fecha ?? '—'}.</Text>
+        </View>
+      )}
       <View style={st.artefactoBar}>
-        <Text style={st.artefactoTxt}>🎯 Artefacto vivo: {DAILY_META.artefacto}</Text>
+        <Text style={st.artefactoTxt}>🎯 Artefacto vivo (ciclo {dia.ciclo}): {artefactoVivo}</Text>
       </View>
 
       {/* Navegación de día */}
       <View style={st.navRow}>
         <TouchableOpacity activeOpacity={0.7} onPress={() => setSel((s) => Math.max(1, s - 1))} style={st.navArrow}><Text style={st.navArrowTxt}>◄</Text></TouchableOpacity>
         <View style={{ flex: 1, alignItems: 'center' }}>
-          <Text style={st.navDay}>{dia.code} · Día {dia.d}/{DAILY_META.totalDias}{esHoy ? ' · HOY' : ''}</Text>
-          <Text style={st.navFecha}>{fmtFecha(dia.fecha)} · {dia.fecha}</Text>
+          <Text style={st.navDay}>{dia.code} · {diaLabel(dia)}{esHoy ? ' · HOY' : ''}</Text>
+          <Text style={st.navFecha}>{fmtFecha(dia.fecha)} · {dia.fecha} · pista {dia.pista}</Text>
         </View>
-        <TouchableOpacity activeOpacity={0.7} onPress={() => setSel((s) => Math.min(DAILY_META.totalDias, s + 1))} style={st.navArrow}><Text style={st.navArrowTxt}>►</Text></TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.7} onPress={() => setSel((s) => Math.min(TODOS.length, s + 1))} style={st.navArrow}><Text style={st.navArrowTxt}>►</Text></TouchableOpacity>
       </View>
       {!esHoy && <TouchableOpacity activeOpacity={0.8} onPress={() => setSel(todayDia.d)} style={st.hoyBtn}><Text style={st.hoyBtnTxt}>↩ volver a HOY</Text></TouchableOpacity>}
 
@@ -336,7 +389,7 @@ const st = StyleSheet.create({
   navRow: { flexDirection: 'row', alignItems: 'center', ...cardBase, padding: Spacing.sm, marginBottom: Spacing.xs },
   navArrow: { width: 40, height: 40, borderRadius: BorderRadius.md, backgroundColor: 'rgba(255,255,255,0.05)', borderWidth: 1, borderColor: Hairline.soft, alignItems: 'center', justifyContent: 'center', ...WEB_LINK },
   navArrowTxt: { fontSize: 16, color: TEAL, fontWeight: '800' },
-  navDay: { fontSize: FontSize.bodyLg, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.3 },
+  navDay: { fontSize: FontSize.bodyLg, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.3, textAlign: 'center' },
   navFecha: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 2, letterSpacing: 0.2 },
   hoyBtn: { alignSelf: 'center', marginBottom: Spacing.sm, ...WEB_LINK },
   hoyBtnTxt: { fontSize: FontSize.labelSm, color: TEAL, fontWeight: '700', letterSpacing: 0.2 },
@@ -351,9 +404,13 @@ const st = StyleSheet.create({
   sysBadge: { borderRadius: BorderRadius.full, borderWidth: 1, paddingVertical: 3, paddingHorizontal: 11, ...WEB_LINK },
   sysBadgeTxt: { fontSize: FontSize.labelMd, fontWeight: '800', letterSpacing: 0.2 },
   temaTitle: { fontSize: FontSize.titleMd, fontWeight: '700', color: Colors.onSurface, marginTop: 9, lineHeight: 25, letterSpacing: -0.3 },
+  depChip: { borderWidth: 1, borderRadius: BorderRadius.md, paddingVertical: 4, paddingHorizontal: 8, backgroundColor: 'rgba(255,255,255,0.03)' },
+  depChipTxt: { fontSize: FontSize.labelSm, fontWeight: '700', lineHeight: 14 },
   entregBox: { borderWidth: 1, borderRadius: BorderRadius.md, padding: Spacing.md, marginTop: 11, backgroundColor: GOLD + '08' },
+  artefBox: { borderWidth: 1, borderRadius: BorderRadius.md, padding: Spacing.md, marginTop: 8, backgroundColor: 'rgba(255,255,255,0.02)' },
   entregLbl: { fontSize: 9, fontWeight: '800', color: GOLD, letterSpacing: 0.8, textTransform: 'uppercase' },
   entregTxt: { fontSize: FontSize.labelMd, color: Colors.onSurface, marginTop: 4, lineHeight: 16 },
+  artefSub: { fontSize: 9, color: Colors.muted, marginTop: 4, lineHeight: 13 },
   doneBtn: { marginTop: 11, paddingVertical: 10, borderRadius: BorderRadius.md, borderWidth: 1, alignItems: 'center', ...WEB_LINK },
   doneBtnOff: { backgroundColor: GOLD + '12', borderColor: GOLD + '55' },
   doneBtnOn: { backgroundColor: GOLD, borderColor: GOLD, ...Elevation.glow(GOLD) },
@@ -381,7 +438,7 @@ const st = StyleSheet.create({
   note: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: Spacing.sm, lineHeight: LineHeight.labelSm },
 
   d7: { ...cardBase, borderLeftWidth: 3, flexDirection: 'row', alignItems: 'center', gap: 10, padding: Spacing.sm, marginBottom: 5, ...WEB_LINK },
-  d7day: { fontSize: FontSize.labelLg, fontWeight: '800', width: 40, letterSpacing: -0.2 },
+  d7day: { fontSize: FontSize.labelLg, fontWeight: '800', width: 60, letterSpacing: -0.2 },
   d7fecha: { fontSize: FontSize.labelSm, color: Colors.muted, width: 56 },
   d7sub: { fontSize: FontSize.labelMd, color: Colors.onSurface, fontWeight: '600' },
   d7sys: { fontSize: 9, color: Colors.muted, marginTop: 2 },
@@ -391,6 +448,9 @@ const st = StyleSheet.create({
   globTitle: { fontSize: FontSize.labelLg, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.2 },
   globPct: { fontSize: FontSize.bodyLg, fontWeight: '900', letterSpacing: -0.3 },
   globSub: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 6, lineHeight: LineHeight.labelSm },
+  modoBtn: { flex: 1, paddingVertical: 6, borderRadius: BorderRadius.md, borderWidth: 1, borderColor: Hairline.medium, alignItems: 'center', ...WEB_LINK },
+  modoBtnOn: { backgroundColor: TEAL + '14', borderColor: TEAL + '55' },
+  modoTxt: { fontSize: FontSize.labelSm, fontWeight: '700', color: Colors.muted, letterSpacing: 0.2 },
   barTrack: { height: 7, borderRadius: 4, backgroundColor: 'rgba(255,255,255,0.08)', overflow: 'hidden' },
   barFill: { height: 7, borderRadius: 4, ...(Platform.OS === 'web' ? { transition: Motion.spring } as any : {}) },
   sysCard: { ...cardBase, padding: Spacing.md, marginBottom: 6 },
@@ -402,7 +462,8 @@ const st = StyleSheet.create({
   temaRowOn: { backgroundColor: TEAL + '12' },
   temaRowMain: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 8 },
   temaChk: { fontSize: 16, width: 22, textAlign: 'center' },
-  temaRowD: { fontSize: FontSize.labelSm, fontWeight: '800', width: 40 },
-  temaRowTxt: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant },
+  temaRowD: { fontSize: FontSize.labelSm, fontWeight: '800', width: 62 },
+  temaRowTxt: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant },
+  temaRowSub: { fontSize: 9, color: Colors.muted, marginTop: 1 },
   temaRowGo: { fontSize: 14, color: Colors.muted, width: 16, textAlign: 'center' },
 });

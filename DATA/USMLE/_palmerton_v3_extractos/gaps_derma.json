@@ -1,0 +1,151 @@
+{
+ "seccion": "derma",
+ "puntos_ciegos": [
+  {
+   "gap": "El 'orden aleatorio de los 200 casos' no existe como dato: el átomo enlaza a cases.aspx?groupid=1546 (portada del banco) y el progreso se guarda solo por día (saveDone('derma', dias[])). No hay ledger por caso (cuál se hizo, cuál falló, en qué módulo CORE), así que la 'segunda pasada FSRS solo de fallos' (d69) y el 'atlas propio' no tienen de dónde salir. La capa ATLAS del átomo (morfologia/sitio/ddx/atlasUrl) está poblada en solo 10-12 de 70 días y en 0 de los 22 átomos X.",
+   "impacto": "alto",
+   "propuesta": "Añadir a dermaDailyPlan.ts un array DERMA_CASOS (ids 1-200 con área Med/Path/Peds/Surg según el 110/30/30/30 real) y una permutación seeded fija (2 casos/día → 140 en primera pasada, resto post-Step 1); campo casoIds:[a,b] por átomo. Ledger localStorage 'derma_casos' {id, fecha, acierto, moduloCORE, tipoError} desde DermaClinicalPlate (botón acierto/fallo por caso). Completar morfologia/sitio/ddx/atlasUrl en los 58 átomos restantes (incluidos los 22 X con DermNet/Dermoscopedia) para que el Atlas filtrable sea el atlas propio.",
+   "esfuerzo": "M",
+   "ficheros": [
+    "src/lib/dermaDailyPlan.ts",
+    "src/components/study/DermaTodayPlan.tsx",
+    "src/components/derma/DermaClinicalPlate.tsx",
+    "src/lib/studyProgress.ts"
+   ],
+   "toca_app": true
+  },
+  {
+   "gap": "'Etiquetar cada fallo con su módulo CORE (med/ped/surg/path)' aparece 4 veces como texto en la UI pero no se persiste en ningún sitio; el Checkpoint d45 ('mapa de fallos por módulo CORE → qué re-drillear') no tiene fuente de datos. ENCAPS sí tiene _registro_resoluciones.json con matriz Palmerton confianza×acierto y tipo de error; Derma no tiene equivalente.",
+   "impacto": "alto",
+   "propuesta": "Registro append-only DATA/DERMATOLOGIA/TRACKING/_registro_derma.json con el mismo esquema que ENCAPS (fecha, fuente: caso/pictorial/core/barnhill/qotw, id, moduloCORE, eval_acierto conocimiento|suerte|confusion|no-sabia, error_tipo CCSN|CONCEPTO|MORFOLOGIA|DDX) + widget en DermaHub 'Debilidades por módulo CORE' (% fallo por med/ped/surg/path y por bloque A-X). d45/d46/d69/d70 leen de ahí. Mientras no haya backend, formulario mínimo en el cierre 14:13 que escriba a localStorage y exporte JSON.",
+   "esfuerzo": "M",
+   "ficheros": [
+    "src/components/study/DermaTodayPlan.tsx",
+    "src/components/study/DermaHub.tsx",
+    "DATA/DERMATOLOGIA/TRACKING/_registro_derma.json"
+   ],
+   "toca_app": true
+  },
+  {
+   "gap": "El corazón Palmerton del ciclo ('1-2 tarjetas de MECANISMO + 1 oclusión de imagen por caso, mismo mazo FSRS que Step 1') no tiene estructura Anki definida: ankiLinks.ts solo tiene DERMKI_DECK='Dermki' (deck pagado de texto) con link genérico a AnkiWeb. No hay sub-decks APEX::DERMA::<bloque> (ENCAPS tiene 94 pre-creados), ni nota de Image Occlusion, ni criterio de qué imagen capturar (caso AccessDerma vs DermNet CC BY-NC-ND) ni cola ANKI_COLA para derma.",
+   "impacto": "alto",
+   "propuesta": "En ankiLinks.ts: dermaAnkiDeck(bKey) → 'APEX::DERMA::<A..X>' (10 sub-decks pre-creados) + nota tipo 'Palmerton-Mecanismo' (FRENTE mecanismo → REVERSO por qué + CCSN) + Image Occlusion nativo de Anki 23.10+ para la lámina del caso (captura personal de AccessDerma, uso privado; NO re-host en la app). Cola DATA/DERMATOLOGIA/ANKI_COLA/ con plantilla .txt importable por sesión. En DermaTodayPlan el ítem ANKI pasa de 'Dermki genérico' a deck del bloque + Dermki::capítulo mapeado por bKey.",
+   "esfuerzo": "S",
+   "ficheros": [
+    "src/lib/ankiLinks.ts",
+    "src/components/study/DermaTodayPlan.tsx",
+    "DATA/DERMATOLOGIA/ANKI_COLA/"
+   ],
+   "toca_app": true
+  },
+  {
+   "gap": "La habilidad núcleo del método (paso ①: describir la morfología en terminología estándar ANTES de diagnosticar) se entrena solo con una frase de 'mastery gate' en la lámina; no hay rúbrica, ni campo para dictar la descripción, ni comparación con la discusión del caso, ni criterio de graduación del módulo A. DermaDifferentialTray cubre el paso ② (ddx ciego→revelar) pero el paso ① queda en el aire.",
+   "impacto": "alto",
+   "propuesta": "Componente DermaMorphologyDictation: rúbrica de 8 ejes (lesión 1ª · 2ª · color · forma/borde · superficie/palpación · configuración · distribución · tamaño/número) con chips + textarea; se guarda por caso en el ledger y se autoevalúa 0-8 tras leer la discusión. Gate del módulo A (d1-d6): 10 descripciones ≥6/8 antes de pasar a B. Fuente de vocabulario: DermNet 'describing-skin-lesions' (ya enlazado en d1-d2) + Guidebook to Dermatologic Diagnosis (book 2960).",
+   "esfuerzo": "M",
+   "ficheros": [
+    "src/components/derma/DermaMorphologyDictation.tsx",
+    "src/components/study/DermaTodayPlan.tsx",
+    "src/lib/dermaData.ts"
+   ],
+   "toca_app": true
+  },
+  {
+   "gap": "Dermatoscopia no es sistemática: 3 átomos explícitos en 70 (d6, d25, d26) más una pestaña de links a algoritmos, pese a que el propio PLAN_ELITE dice que 3 de 4 módulos CORE la preguntan transversalmente y que es 'el mayor diferenciador'. El DermNet Dermoscopy CME (18 módulos con quizzes) está enlazado pero no calendarizado; el libro 'Dermoscopy: Illustrated Self-Assessment 2e' (book 2929) tiene autoevaluación y solo aparece en d26. No hay ninguna imagen dermatoscópica por sesión ni dermatoscopio físico previsto.",
+   "impacto": "alto",
+   "propuesta": "Micro-track sin tocar horario: campo dermatoscopiaModulo?: {n, t, url} en DiaDerma que ocupa el slot de lectura 10′ en sesiones alternas de d6→d44 (18 módulos DermNet CME ≈ 19 sesiones pares; la lectura del módulo queda en las impares) + 1 imagen dermatoscópica ciega por sesión (paso ①b) rotando Self-Assessment 2e (book 2929) y Dermoscopedia por patrón. Añadir al plan la compra de un dermatoscopio de bolsillo (DermLite/Heine) para la fase práctica 2027. Poblar dermatoscopiaUrl en todos los átomos D (hoy 4/70).",
+   "esfuerzo": "S",
+   "ficheros": [
+    "src/lib/dermaDailyPlan.ts",
+    "src/components/study/DermaTodayPlan.tsx",
+    "DATA/DERMATOLOGIA/PLAN_ELITE_2026-27.md"
+   ],
+   "toca_app": true
+  },
+  {
+   "gap": "Desalineación Derma↔Research en el punto donde más importa (L4/fillers): la SR-1 (complicaciones vasculares de fillers + tiempo-a-hialuronidasa) hace PICO el 22-sep, extracción 5-13-nov (R22-R25) y subgrupos por tiempo-a-hialuronidasa el 7-dic (R33), pero Derma enseña oclusión vascular/HDPH (d57) y ceguera (d58) el 12 y 16-feb-2027, y reología/fillers (d54-56) en feb. Joseph extraerá datos de outcomes de HDPH cuatro meses antes de estudiar el protocolo.",
+   "impacto": "alto",
+   "propuesta": "Swap de CONTENIDO (no de fechas): d19 (27-oct, MED 'paciente agudo con fiebre y rash') y d20 (29-oct, MED 'pelo y uñas infecciosos') intercambian sub/extra/referente con d57 (oclusión vascular + HDPH) y d58 (ceguera + kit de emergencia) → seguridad de fillers queda antes de R22 y cumple la propia regla 'seguridad ANTES que técnica'. Añadir campo puenteResearch?: {linea:'L4'|'L5', sr:'SR-1'|'SR-2', nota} en DiaDerma y mostrar chip 'alimenta SR-1' en HOY; en R6/R22/R33 de researchDailyPlan chip inverso 'requiere Derma d19-20'. L5/SR-2 (fototipos IV-VI, arranca 29-dic) ya cae razonablemente cerca de d61/d65 (feb-mar): sin cambio.",
+   "esfuerzo": "S",
+   "ficheros": [
+    "src/lib/dermaDailyPlan.ts",
+    "src/lib/researchDailyPlan.ts",
+    "src/components/study/DermaTodayPlan.tsx"
+   ],
+   "toca_app": true
+  },
+  {
+   "gap": "El DERMA_MASTER_SPEC define lo que separa élite de aficionado y nada de eso está implementado: §3 cerebro clínico de 7 pasos por subtema (causa→mecanismo→capa→decisión→lo-que-no-puedo-errar→comunicación→hábito), §6.3 mastery gate real (recitar 7 pasos + catástrofe + rescate + guion), §9.5 simulador cronometrado de oclusión vascular que exige recitar HDPH de memoria. La pestaña 'Cerebro' del Hub muestra el temario y los gap-modules, no la plantilla. Para la meta estética (toxina/fillers/láser) el 'no errar precableado' es el diferencial de seguridad.",
+   "impacto": "alto",
+   "propuesta": "Nuevo src/lib/dermaCerebro.ts con los 7 pasos rellenos para los 22 átomos X + los 13 CRIT (35 fichas; el acné del SPEC §3.2 como plantilla) y componente DermaCerebroCard en HOY (plegable, modo 'recitar' que oculta pasos hasta pulsar). Simulador 'Oclusión vascular · 90 s' (DermaEmergencyDrill): cronómetro + checklist HDPH (signos, dosis/pulsos, intervalos, ceguera → oftalmología) que se ejecuta en d57/58 (o en d19/20 si se hace el swap) y en cada checkpoint H/Z; resultado al ledger de fallos. Fuentes ya verificadas: DeLorenzi 2017 (PMID 28333326), Goodman 2020 (PMC7427155).",
+   "esfuerzo": "L",
+   "ficheros": [
+    "src/lib/dermaCerebro.ts",
+    "src/components/derma/DermaCerebroCard.tsx",
+    "src/components/derma/DermaEmergencyDrill.tsx",
+    "src/components/study/DermaTodayPlan.tsx"
+   ],
+   "toca_app": true
+  },
+  {
+   "gap": "No hay plan de lectura por capítulos: la 'lectura dirigida 10′' de 20/70 átomos apunta a la PORTADA del libro (book(2802) Barnhill ×5, book(1913) Weinberg ×3, book(3200), book(2812), book(3138), book(2829), book(3319), book(2960)...), porque el TOC con sectionid solo se extrajo para Color Atlas 9e y los 16 libros estéticos, no para Fitzpatrick's Dermatology 9e (2570), Barnhill 4e (2802) ni Weinberg 5e (1913). Tampoco existe el mapa átomo→capítulo Fitzpatrick para la 'consulta post-fallo de 10-15 min' que prescribe el PLAN_ELITE.",
+   "impacto": "medio",
+   "propuesta": "Repetir el método CDP ya documentado (book.aspx → a.topLevelPart → li.top-part a[href*=content.aspx]) sobre 2570/2802/1913 → _scrape/accessderma_clinica_tocs.json → regenerar dermaSourcesData.ts; sustituir los 20 book() por ca()/srcCap() de capítulo; añadir campo fitzCap?: {sid, t} a cada átomo (mapa 70 átomos → capítulo Fitzpatrick 9e) mostrado como 'si fallas el caso, lee aquí 10′'. Bolognia queda fuera (decisión ya tomada en PLAN_ELITE §5: Fitzpatrick porque está en AccessDerma); StatPearls como gratuito de respaldo ya enlazado.",
+   "esfuerzo": "M",
+   "ficheros": [
+    "DATA/DERMATOLOGIA/_scrape/accessderma_clinica_tocs.json",
+    "src/lib/dermaSourcesData.ts",
+    "src/lib/dermaDailyPlan.ts"
+   ],
+   "toca_app": true
+  },
+  {
+   "gap": "No existe cuaderno NotebookLM de Dermatología (0 de 33 cuadernos; el único 'derma' es 'The Blue Man…' con 1 fuente). El método de Step 1 se apoya en 'Palmerton Engine' (295 fuentes) para generar tarjetas de mecanismo y verificar contra fuente; Derma genera 1-2 tarjetas de mecanismo por caso sin motor de verificación ni fuente consultable.",
+   "impacto": "medio",
+   "propuesta": "Crear 'DERMA · Élite Engine' con ~40 fuentes OA ya verificadas en referentes.md/PLAN_ELITE: ABD CORE Study Guide PDF, Cotofana safe zones (PAN 2022 + JDD 2019), DeLorenzi 2013/2014/2017, Goodman 2020, MD Codes (PMC8012343), MD ASA, myomodulation (PMC7447619), Anderson-Parrish 1983, Manstein 2004, Global Alliance acné 2018, toxina Toxins 2025/Cureus 2026, ISSVA, DermNet describing-lesions + los 18 módulos Dermoscopy CME, páginas Dermoscopedia de cada algoritmo, StatPearls derma, Mind the Gap. Uso: en el cierre 14:13 pedir 'tarjeta de mecanismo verificada' y en d45/d69 'qué no sé del módulo X'. Enlazar el cuaderno en la pestaña Fuentes del Hub.",
+   "esfuerzo": "M",
+   "ficheros": [
+    "DATA/DERMATOLOGIA/recursos.md",
+    "src/lib/dermaData.ts"
+   ],
+   "toca_app": false
+  },
+  {
+   "gap": "La integración Obsidian de Derma nunca se ejecutó: PROMPT_OBSIDIAN_DERMA.md pide la rama 07_DERMATOLOGIA, pero el vault real tiene 07_VENTAS_AURUM y ninguna rama derma; no existe src/lib/obsidianDermaMap.ts ni botón ◆ Obsidian en DermaTodayPlan (MIR/USMLE/ENCAPS/Research sí lo tienen). Las notas de mecanismo y las descripciones morfológicas no tienen dónde caer.",
+   "impacto": "medio",
+   "propuesta": "Ejecutar el builder con el patrón de build_vault_trilingue.js: rama 10_DERMATOLOGIA (numeración libre; 07 ya está tomado) con bloques A-X del plan v2 (no del temario v1 de 54 subtemas) y _concepto_madre con los 7 pasos como secciones; emitir obsidianDermaMap.ts + botón ◆ Obsidian (#A78BFA) en HOY y Temario. Caveat vigente: el pipeline APEX n8n→Obsidian sigue con P0-2/P0-3 abiertos, así que la rama nace para notas manuales, no para el ruteo automático.",
+   "esfuerzo": "M",
+   "ficheros": [
+    "DATA/_scripts/build_vault_derma.js",
+    "src/lib/obsidianDermaMap.ts",
+    "src/components/study/DermaTodayPlan.tsx",
+    "DATA/DERMATOLOGIA/PROMPT_OBSIDIAN_DERMA.md"
+   ],
+   "toca_app": true
+  },
+  {
+   "gap": "La ruta formal al fellowship estético no está documentada: STUDY_HUB/01_RESEARCH_MAYO_path.md cubre el camino IMG→residencia derma (ECFMG, research fellowship, ERAS/NRMP) y PLAN_ELITE §2 cubre CORE/APPLIED del ABD, pero nada describe la etapa post-residencia que define la meta 'dermatólogo estético Mayo ~2034': fellowship ASDS de cirugía dermatológica cosmética vs ACGME Micrographic Surgery & Dermatologic Oncology, fellowship procedural de Mayo, requisitos, ventana de aplicación, ni el cronograma inverso 2034→2027 ni el plan B (IMCAS/AMWC + práctica Perú/España) si el match derma IMG no ocurre.",
+   "impacto": "medio",
+   "propuesta": "Documento DATA/DERMATOLOGIA/RUTA_FELLOWSHIP_ESTETICO.md con fuentes verificadas en vivo (asds.net fellowship program, ACGME MSDO, Mayo College derm fellowships, ABD): tabla de rutas A (US residencia→fellowship 1 año) / B (MIR Clínic→cursos IMCAS/Cotofana/MD Codes + observership Mayo) con requisitos, fechas límite y cronograma inverso desde 2034; qué produce cada fase del plan actual (Step 1 2027, SR-1/SR-2, ENCAPS/MIR) para esa ruta. Enlazar como 'Norte' en la pestaña Cerebro del Hub. No re-derivar las cifras de match ya documentadas en 01_RESEARCH_MAYO_path.md.",
+   "esfuerzo": "M",
+   "ficheros": [
+    "DATA/DERMATOLOGIA/RUTA_FELLOWSHIP_ESTETICO.md",
+    "STUDY_HUB/01_RESEARCH_MAYO_path.md"
+   ],
+   "toca_app": false
+  },
+  {
+   "gap": "'NÍTIDA fusionada con Derma' (27-ago) no dejó rastro: Nítida es la línea Pulso 'Dermatología médica por suscripción' (empresaData.ts, planeada 2026 T4) y su materia prima son exactamente los átomos del módulo B (acné, DA, psoriasis, rosácea, pigmentación) + la capa de comunicación/adherencia del SPEC §4 (estructura de consulta MD ASA, guiones, foto estandarizada, seguimiento). El plan Derma no tiene ni campo ni doc que convierta lo estudiado en protocolo de producto.",
+   "impacto": "medio",
+   "propuesta": "Sin tocar horario: campo nitida?: {protocolo: string, guion: string, seguimiento: string} en los 7 átomos B + d68 (cosmecéutica) rellenado desde SPEC §3.2/§4.3 (acné como plantilla) y un doc DATA/DERMATOLOGIA/NITIDA_PROTOCOLOS.md que acumule 'consulta tipo' por diagnóstico (tele-derma: foto estandarizada, rutina ≤3 pasos, revisión 6-8 sem, métrica IGA). Chip 'Nítida' en HOY que abre el protocolo; el banco de guiones editable del SPEC §4.3 vive ahí.",
+   "esfuerzo": "M",
+   "ficheros": [
+    "DATA/DERMATOLOGIA/NITIDA_PROTOCOLOS.md",
+    "src/lib/dermaDailyPlan.ts",
+    "src/components/study/DermaTodayPlan.tsx"
+   ],
+   "toca_app": true
+  }
+ ],
+ "notas": "Lo que YA está bien resuelto y no debe re-proponerse: método del caso ciego en 4 pasos (morfología → ddx de 3 → viñeta → discusión → tarjetas de mecanismo + oclusión), interleaving del banco, ciclo único de 45′ con el caso como invariante y los 10Q como variable de ajuste, regla 'seguridad antes que técnica', 22 átomos X ordenados (anatomía 3D → toxina → fillers/oclusión → peelings → láser → cosmecéutica), 62 deep-links AccessDerma verificados con la sesión UF, referentes con DOIs auditados (corrección PMID DeLorenzi 24692598), componentes de atlas (ClinicalPlate, BodyMap, MorphologyFilter, DifferentialTray, Triptych, SkinToneToggle), 9 gap-modules de enriquecimiento, y la decisión Fitzpatrick-sí/Bolognia-no. Cifras medidas en dermaDailyPlan.ts (70 átomos): capa atlas poblada en 10-12 átomos, 0/22 en X; dermatoscopiaUrl 4, histoUrl 3; 20 lecturas apuntan a portada de libro; dermatoscopia explícita en d6/d25/d26. Persistencia: solo saveDone por día; sin ledger de casos ni de fallos. NotebookLM: 0/33 cuadernos derma. Vault: sin rama derma; sin obsidianDermaMap.ts. Anki: solo DERMKI_DECK genérico. Cruce Research: SR-1 extracción R22-R25 (5-13 nov) y subgrupos tiempo-a-hialuronidasa R33 (7-dic) vs Derma oclusión/ceguera d57-58 (12/16 feb 2027); SR-2 (L5) arranca 29-dic y cae cerca de d61/d65 (feb-mar), aceptable. Limitación reconocida por el propio plan (nota de divergencia): 1-2 casos/sesión → primera pasada de 200 no termina en enero; no lo listo como vacío porque es una decisión de régimen. Todas las propuestas respetan la franja 13:30-14:15 interdiaria y las fechas generadas (los swaps son de contenido, no de fechas). Fichero intermedio con las medidas: C:\\Users\\JOSEPH~1\\AppData\\Local\\Temp\\claude\\D--joseph-md-app\\3b73ef89-6aa7-49fe-a236-e6aed6aef118\\scratchpad\\palmerton_v3\\vacios_derma.json"
+}

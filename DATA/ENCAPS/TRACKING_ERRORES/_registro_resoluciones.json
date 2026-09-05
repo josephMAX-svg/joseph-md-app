@@ -1,27 +1,130 @@
 {
  "_meta": {
-  "descripcion": "Registro estructurado append-only de TODAS las preguntas que Joseph resuelve. Fuente de verdad para generar simulacros balanceados y detectar puntos débiles/fuertes SIN re-buscar. Cada bloque nuevo se AGREGA a rondas[].",
-  "actualizado": "2026-07-02",
-  "eval_acierto": "conocimiento | suerte | confusion | no-sabia (matriz Palmerton confianza x acierto)",
-  "error_tipo": "CCSN | CONCEPTO | CRONOLOGIA | CONTEXTO | OLVIDO | ACIERTO",
-  "pesos_area_pronostico_v2": {
-   "II": 34,
+  "version": 3,
+  "descripcion": "Registro estructurado append-only de TODAS las rondas que Joseph resuelve (ENCAPS · USMLE · MIR · DERMA). Fuente de verdad para el % CIEGO REAL, los temas calientes y el override semanal del CICLO (gen_encaps_semana.js). Cada bloque nuevo se AGREGA a rondas[] (no se reescribe nada anterior).",
+  "actualizado": "2026-09-05",
+  "examenes": [
+   "ENCAPS",
+   "USMLE",
+   "MIR",
+   "DERMA"
+  ],
+  "pronostico": "PRONOSTICO_WALKFORWARD_2027-1_v3 (27-ago-2026, 7 exámenes reales)",
+  "vector_v3": {
+   "II": 30,
    "I": 27,
-   "V": 23,
+   "V": 21,
    "III": 13,
-   "IV": 3
+   "IV": 9
   },
-  "subtemas_criticos": [
+  "bandas_v3": {
+   "II": "27-34",
+   "I": "24-29",
+   "V": "18-25",
+   "III": "11-15",
+   "IV": "5-14 (bimodal por comité, nunca <6)"
+  },
+  "criticos_v3": [
    "I-3",
-   "II-1",
-   "II-3",
    "V-2",
-   "II-11",
+   "II-3",
    "III-5",
-   "II-8",
-   "I-5",
-   "III-8"
-  ]
+   "I-4",
+   "II-5",
+   "II-4",
+   "IV-1+IV-2"
+  ],
+  "rebote_v3": [
+   "II-1",
+   "II-11",
+   "II-8"
+  ],
+  "cola_larga_v3": [
+   "II-2",
+   "I-10",
+   "V-6",
+   "II-6",
+   "II-10",
+   "I-5+I-6",
+   "II-EMG",
+   "I-OCC",
+   "III-3",
+   "I-11+I-12",
+   "V-1",
+   "V-3",
+   "III-1",
+   "III-9",
+   "II-9",
+   "II-7",
+   "I-1"
+  ],
+  "formato_esperado": "viñeta 45-70% · entrenar viñeta + recall de cifras/definiciones",
+  "metrica_que_manda": "pct_ciego = correctas_seguras / n (las dudosas y las adivinadas NO cuentan)",
+  "metas": {
+   "pct_ciego_meta": 85,
+   "pct_ciego_crucero": 75,
+   "minisim_umbral_25": 18,
+   "minisim_alerta_25": 15
+  },
+  "esquema_ronda_v3": {
+   "examen": "ENCAPS | USMLE | MIR | DERMA",
+   "tipoRonda": "banco_dia | eval_anclada | mini_sim | pretest | simulacro | repaso | warmup",
+   "fecha": "YYYY-MM-DD",
+   "codigo": "código del tema (ENCAPS: I-3, V-2, II-EMG… · USMLE/MIR/DERMA: sistema o materia)",
+   "tema": "texto libre (sub-eje del día u opcional)",
+   "n": "nº de preguntas",
+   "correctas_seguras": "aciertos con confianza segura",
+   "correctas_dudosas": "aciertos con confianza dudosa/adivinada (NO cuentan para el % ciego)",
+   "fallos_por_tipo": {
+    "knowledge": {
+     "CONCEPTO": 0,
+     "OLVIDO": 0,
+     "CRONOLOGIA": 0
+    },
+    "transfer": {
+     "CCSN": 0,
+     "CONTEXTO": 0
+    },
+    "proceso": {
+     "CAMBIO": 0,
+     "TIEMPO": 0,
+     "LECTURA": 0
+    }
+   },
+   "delta_es": "opcional · variación del % ciego vs la ronda anterior del mismo código (puntos)",
+   "tiempo_medio_seg": "segundos por pregunta (opcional)",
+   "pct_ciego": "derivado = correctas_seguras/n*100",
+   "preguntas": "opcional · detalle por ítem con el esquema por pregunta (README_SISTEMA_TRACKING.md)"
+  },
+  "taxonomia_error_v3": {
+   "knowledge": "CONCEPTO (no entiende la idea) · OLVIDO (cifra/plazo que supo) · CRONOLOGIA (secuencia/plazo mal aprendido)",
+   "transfer": "CCSN (Confusión entre Conceptos Similares/Near: sabe ambos, no discrimina en el escenario) · CONTEXTO (no leyó la palabra clave)",
+   "proceso": "CAMBIO (cambió una correcta por incorrecta) · TIEMPO (>72 s) · LECTURA (leyó mal enunciado/opciones)"
+  },
+  "formato_cierre_1_linea": "EXAMEN|tipoRonda|fecha|codigo|n=NN|seg=NN|dud=NN|CONCEPTO:a,OLVIDO:b,CRONOLOGIA:c,CCSN:d,CONTEXTO:e,CAMBIO:f,TIEMPO:g,LECTURA:h|t=SS[|sub=…][|delta=±x]  → node DATA/_scripts/gen_encaps_semana.js --cerrar \"<línea>\"",
+  "compatibilidad": "las rondas v1/v2 (jul-2026: campos subtema/puntaje/preguntas[].eval|confianza) siguen siendo válidas; gen_encaps_semana.js las normaliza (examen ausente = ENCAPS, seguras = ok && confianza segura / eval conocimiento)",
+  "historico_v2": {
+   "pesos_area_pronostico_v2": {
+    "II": 34,
+    "I": 27,
+    "V": 23,
+    "III": 13,
+    "IV": 3
+   },
+   "subtemas_criticos_v2": [
+    "I-3",
+    "II-1",
+    "II-3",
+    "V-2",
+    "II-11",
+    "III-5",
+    "II-8",
+    "I-5",
+    "III-8"
+   ],
+   "eval_acierto": "conocimiento | suerte | confusion | no-sabia (matriz Palmerton confianza x acierto)",
+   "error_tipo": "CCSN | CONCEPTO | CRONOLOGIA | CONTEXTO | OLVIDO | ACIERTO"
+  }
  },
  "resumen_por_subtema": {
   "I-3": {
@@ -258,9 +361,9 @@
    "codigo": "I-3",
    "total": 20,
    "correctas": 16,
-   "pct_bruto": 80.0,
+   "pct_bruto": 80,
    "adivinadas": 0,
-   "pct_ciego_real": 80.0,
+   "pct_ciego_real": 80,
    "falladas": [
     1,
     2,

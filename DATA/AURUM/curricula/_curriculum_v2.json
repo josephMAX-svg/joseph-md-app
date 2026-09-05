@@ -2482,7 +2482,11 @@
         "url": "https://archive.org/details/tosellishumansur0000pink_r0s8",
         "min": 25
        },
-       "obsidian_nota": "VENTAS/Fase3/S08 - Sintesis: banco S+P + medicion ratio 70/30"
+       "obsidian_nota": "VENTAS/Fase3/S08 - Sintesis: banco S+P + medicion ratio 70/30",
+       "liviano": {
+        "texto": "VARIANTE LIVIANO (Evaluación Integral, paciente Rosa (nombre ficticio), 41 años, IMC 41, DM2 mal controlada, ya probó semaglutida sin resultado sostenido (dosis, escalada y adherencia a revisar en la consulta)): reescribe 4 preguntas de Situación + 5 de Problema para la consulta: Situación = desde cuándo, qué ha probado, quién cocina en casa, qué le dijo su endocrino, qué medicación de la diabetes toma; Problema = qué la frena hoy, qué pasó exactamente con la semaglutida (¿hasta qué dosis? ¿escalada? ¿náuseas? ¿costo?), qué le preocupa de su glucosa. Reglas: CERO pitch de LIVIANO en esta fase, ratio 30/70, lenguaje people-first ('persona con obesidad', nunca 'obesa'). Guarda el guion como plantilla de la Evaluación Integral.",
+        "min": 20
+       }
       }
      ]
     },
@@ -2603,7 +2607,11 @@
         "url": "https://archive.org/details/BobSommersRobertCialdini-Influence_thePsychologyofPersuasion",
         "min": 25
        },
-       "obsidian_nota": "VENTAS/Fase3/S09 - Sintesis: guion S+P con labeling (2 leads)"
+       "obsidian_nota": "VENTAS/Fase3/S09 - Sintesis: guion S+P con labeling (2 leads)",
+       "liviano": {
+        "texto": "VARIANTE LIVIANO: labeling + preguntas calibradas en consulta con Rosa. Escribe 4 pares etiqueta + pregunta de Problema ('parece que sientes que ya lo intentaste todo y que la que falló fuiste tú, no el tratamiento…' → '¿qué pasó exactamente con la semaglutida: hasta qué dosis llegaste y por qué se cortó?'). Graba 5 min de solo descubrimiento clínico (sin oferta), mide tu ratio hablar/escuchar y anota la frase exacta en la que Rosa pasa de necesidad implícita ('estoy cansada de esto') a explícita ('necesito que alguien me supervise').",
+        "min": 20
+       }
       }
      ]
     },
@@ -2724,7 +2732,11 @@
         "url": "https://open.spotify.com/playlist/41WB6RDgmRWPha2XvPA2H0",
         "min": 25
        },
-       "obsidian_nota": "VENTAS/Fase3/S10 - Sintesis: guion S-P-I-N completo + role-play"
+       "obsidian_nota": "VENTAS/Fase3/S10 - Sintesis: guion S-P-I-N completo + role-play",
+       "liviano": {
+        "texto": "VARIANTE LIVIANO: S-P-I-N completo de la Evaluación Integral con Rosa. Implicación = costo de NO actuar en control glucémico, complicaciones y calidad de vida — SIN cifras inventadas (usa las de la Academia M2/M6 o escribe 'A VERIFICAR'); Necesidad-beneficio = 'si tuvieras el hambre bajo control y alguien supervisando la dosis, ¿qué cambiaría en 3 meses?'. Role-play grabado de 8-10 min: la meta es que Rosa PIDA el plan antes de que lo ofrezcas. Marca en qué minuto ocurre.",
+        "min": 25
+       }
       }
      ]
     },
@@ -2845,7 +2857,12 @@
         "url": "https://archive.org/details/spinselling0000rack",
         "min": 25
        },
-       "obsidian_nota": "VENTAS/Fase3/S11 - Cierre Fase 3: banco maestro + pitch-diagnostico (PITCH v3)"
+       "obsidian_nota": "VENTAS/Fase3/S11 - Cierre Fase 3: banco maestro + pitch-diagnostico (PITCH v3)",
+       "liviano": {
+        "texto": "VARIANTE LIVIANO (cierre F3): banco SPIN LIVIANO de 20 preguntas (5 por letra) para la Evaluación Integral + versión WhatsApp pre-consulta (enlaza con el quiz '¿Eres candidato para GLP-1?' de LIVIANO_VENTAS). Incluye 3 preguntas de cribado que son LÍMITE CLÍNICO, no venta: antecedente personal/familiar de MEN2 o carcinoma medular de tiroides, pancreatitis previa, embarazo/lactancia o planes de embarazo. PITCH v3 LIVIANO: descubrimiento de 5 min con Rosa hablando <40%. Rúbrica.",
+        "min": 25,
+        "pitch": "PITCH v3 LIVIANO — descubrimiento SPIN de 5 min en la Evaluación Integral (Rosa habla >60%; tú <40%), sin oferta, con cribado clínico integrado."
+       }
       }
      ]
     }
@@ -2971,7 +2988,11 @@
         "url": "https://www.acquisition.com/audiobooks",
         "min": 25
        },
-       "obsidian_nota": "VENTAS/Fase4/S12 - La Ecuacion de Valor de Hormozi"
+       "obsidian_nota": "VENTAS/Fase4/S12 - La Ecuacion de Valor de Hormozi",
+       "liviano": {
+        "texto": "VARIANTE LIVIANO: puntúa 1-10 la oferta LIVIANO Despegue (S/ 1,290/mes, 4 sesiones/mes, meses 1-3) en las 4 variables de la Ecuación de Valor PARA ROSA: Sueño = control de la glucosa, energía, dejar de pelear con el hambre (nunca 'kg'); Probabilidad = supervisión médica + titulación inteligente + labs; Tiempo = 'Primeras 48h sin hambre' como quick win; Esfuerzo = Lista de compras automática + Movimiento 15. Una acción concreta por variable. Regla CMP Art. 73: el 'sueño' se describe como proceso clínico supervisado, jamás como cifra garantizada.",
+        "min": 20
+       }
       }
      ]
     },
@@ -3092,7 +3113,11 @@
         "url": "https://www.acquisition.com/audiobooks",
         "min": 25
        },
-       "obsidian_nota": "VENTAS/Fase4/S13 - Value stacking y bonos"
+       "obsidian_nota": "VENTAS/Fase4/S13 - Value stacking y bonos",
+       "liviano": {
+        "texto": "VARIANTE LIVIANO: arma el value stack EXACTO de empresaData (bonos recurrentes 3m S/ 1,890 + bonos de inicio S/ 870 = S/ 2,760; fármaco 3 meses ~S/ 3,600; valor total percibido S/ 6,360 vs precio S/ 3,870) y elige para Rosa los 5 bonos que matan SUS objeciones: Escudo Anti-Náuseas ('falló a semaglutida'), Preserva tu Músculo, Labs de control trimestrales, Sesión para la pareja/familia, Titulación inteligente supervisada. Graba 3-4 min presentando el stack sin leer.",
+        "min": 25
+       }
       }
      ]
     },
@@ -3213,7 +3238,11 @@
         "url": "https://archive.org/details/BobSommersRobertCialdini-Influence_thePsychologyofPersuasion",
         "min": 28
        },
-       "obsidian_nota": "VENTAS/Fase4/S14 - Garantias, escasez y urgencia + Cialdini"
+       "obsidian_nota": "VENTAS/Fase4/S14 - Garantias, escasez y urgencia + Cialdini",
+       "liviano": {
+        "texto": "VARIANTE LIVIANO: garantía + escasez + prueba social ÉTICAS con Rosa. Di en tus palabras las 4 garantías de LIVIANO_OFERTA (Experiencia incondicional sobre el honorario · Acompañamiento condicional · Anti-Susto · Límite honesto: no devolvemos el medicamento). Escasez SOLO si es real (cupos de agenda). Prueba social SIN testimonios de pacientes (CMP Art. 75): tu 'prueba' es la evidencia (STEP-1 −14,9%, SURMOUNT-1 −20,9%, Academia M2) y el protocolo, no el antes/después. Ancla: cirugía bariátrica S/ 15,000 – 45,000 vs S/ 3,870 los 3 meses — y con Rosa (IMC 41) la cirugía es una opción REAL que debes nombrar, no un espantapájaros.",
+        "min": 25
+       }
       }
      ]
     },
@@ -3334,7 +3363,12 @@
         "url": "https://www.acquisition.com/audiobooks",
         "min": 25
        },
-       "obsidian_nota": "VENTAS/Fase4/S15 - Los 7 principios de Cialdini aplicados (cierre de Fase 4)"
+       "obsidian_nota": "VENTAS/Fase4/S15 - Los 7 principios de Cialdini aplicados (cierre de Fase 4)",
+       "liviano": {
+        "texto": "VARIANTE LIVIANO (cierre F4) — PITCH v4 LIVIANO: presentación de la oferta LIVIANO a Rosa en consulta, 6-8 min: dream outcome clínico (glucosa, energía, hambre bajo control), stack S/ 6,360 vs S/ 3,870, ancla bariátrica honesta y 3 principios de Cialdini: autoridad (médico + ruta de credencial OMA/ABOM de la Academia), reciprocidad (Evaluación Integral con garantía de Experiencia), compromiso/coherencia (plan pactado y medible). Autoevalúa con AURUM_RUBRICA_PITCH y registra el score (v4 LIVIANO).",
+        "min": 30,
+        "pitch": "PITCH v4 LIVIANO — Grand Slam Offer LIVIANO presentada a Rosa (6-8 min): stack S/ 6,360 vs S/ 3,870 + ancla bariátrica honesta + 3 principios de Cialdini, sin promesa de kg (CMP Art. 73)."
+       }
       }
      ]
     }
@@ -3460,7 +3494,11 @@
         "url": "https://www.youtube.com/watch?v=SlPGorMfSB4",
         "min": 25
        },
-       "obsidian_nota": "VENTAS/Fase5/S16 - Sintesis: la objecion abre la conversacion"
+       "obsidian_nota": "VENTAS/Fase5/S16 - Sintesis: la objecion abre la conversacion",
+       "liviano": {
+        "texto": "VARIANTE LIVIANO: las 6 objeciones de LIVIANO_OFERTA dichas por Rosa — 'está caro' · 'no tengo tiempo' · 'ya intenté de todo' · '¿y los efectos?' · 'lo consulto con mi pareja' · 'lo pienso'. Para cada una escribe la etiqueta (Voss) + qué INFORMACIÓN esconde (miedo a fallar otra vez, miedo a las náuseas, no decide sola, no ve el valor). Conviértelas en preguntas que invitan al 'no' seguro. Aplica 2 a un lead real del quiz GLP-1 si lo hay.",
+        "min": 20
+       }
       }
      ]
     },
@@ -3581,7 +3619,11 @@
         "url": "https://www.youtube.com/watch?v=SlPGorMfSB4",
         "min": 25
        },
-       "obsidian_nota": "VENTAS/Fase5/S17 - Sintesis: precio aplicado a ALLPA y Qori Golden"
+       "obsidian_nota": "VENTAS/Fase5/S17 - Sintesis: precio aplicado a ALLPA y Qori Golden",
+       "liviano": {
+        "texto": "VARIANTE LIVIANO: 'está caro' en LIVIANO. Secuencia completa para Rosa: label ('parece que S/ 1,290 al mes se siente mucho para algo que ya intentaste y no funcionó') → ancla (el fármaco solo en farmacia ~S/ 3,600 los 3 meses; cirugía S/ 15,000 – 45,000) → reencuadre a valor (supervisión + titulación + bonos S/ 2,760) → costo de no actuar (control glucémico; sin cifras inventadas). El tier Fundador S/ 1,190 SOLO si es cierto y SOLO conversado en consulta: la oferta no se anuncia por precio (CMP Art. 76).",
+        "min": 22
+       }
       }
      ]
     },
@@ -3702,7 +3744,11 @@
         "url": "https://www.youtube.com/watch?v=SlPGorMfSB4",
         "min": 25
        },
-       "obsidian_nota": "VENTAS/Fase5/S18 - Sintesis: confianza + timing aplicado"
+       "obsidian_nota": "VENTAS/Fase5/S18 - Sintesis: confianza + timing aplicado",
+       "liviano": {
+        "texto": "VARIANTE LIVIANO: trío confianza + timing con Rosa. 'Ya intenté de todo (falló Ozempic)' → prueba = revisar POR QUÉ falló (dosis, escalada, adherencia, costo) + Titulación inteligente + Escudo Anti-Náuseas; '¿y los efectos?' → Garantía Anti-Susto + manejo GI de la Academia M2 (escalada lenta); 'lo pienso' → aislar (¿precio, miedo o pareja?). Añade la 7ª objeción y dila sin titubear: '¿y si no me funciona, me devuelven?' → 'No devolvemos el medicamento: es un fármaco real dispensado. Lo que garantizamos es el servicio y el compromiso' (Límite honesto).",
+        "min": 22
+       }
       }
      ]
     },
@@ -3823,7 +3869,12 @@
         "url": "https://www.youtube.com/watch?v=SlPGorMfSB4",
         "min": 25
        },
-       "obsidian_nota": "VENTAS/Fase5/S19 - Cierre Fase 5: PITCH v5 + Playbook 12 objeciones"
+       "obsidian_nota": "VENTAS/Fase5/S19 - Cierre Fase 5: PITCH v5 + Playbook 12 objeciones",
+       "liviano": {
+        "texto": "VARIANTE LIVIANO (cierre F5) — PITCH v5 LIVIANO: consulta grabada de 8-10 min en la que Rosa lanza 3 objeciones encadenadas ('está caro' → 'ya intenté de todo' → 'lo consulto con mi pareja'); respondes con label + ancla/prueba + pregunta calibrada + 'That's right' + cierre sin ceder, y remata con la 7ª ('¿me devuelven?') usando el Límite honesto. Deja en Obsidian el Playbook LIVIANO de 7 objeciones. Rúbrica y score (v5 LIVIANO).",
+        "min": 30,
+        "pitch": "PITCH v5 LIVIANO — 3 objeciones encadenadas de Rosa + la 7ª ('no devolvemos el medicamento'), sin discutir ni ceder (8-10 min)."
+       }
       }
      ]
     }
@@ -3949,7 +4000,11 @@
         "url": "https://www.everand.com/audiobook/769309848/The-Challenger-Sale-Taking-Control-of-the-Customer-Conversation",
         "min": 22
        },
-       "obsidian_nota": "VENTAS/Fase6/S20 - Sintesis: pitch Challenger ALLPA"
+       "obsidian_nota": "VENTAS/Fase6/S20 - Sintesis: pitch Challenger ALLPA",
+       "liviano": {
+        "texto": "VARIANTE LIVIANO: insight de enseñanza (Challenger) para Rosa: 'el problema no fue tu voluntad ni el fármaco: fue una titulación sin acompañamiento' (Academia M1-M2: termostato del peso, adaptación metabólica, escalada GI). Teach → Tailor (DM2 mal controlada: el objetivo es glucosa y músculo, no la balanza) → Take control hacia el siguiente paso (labs basales + decisión de ruta). Graba 4-5 min y márcalo en la rúbrica.",
+        "min": 25
+       }
       }
      ]
     },
@@ -4070,7 +4125,11 @@
         "url": "https://www.everand.com/audiobook/769309848/The-Challenger-Sale-Taking-Control-of-the-Customer-Conversation",
         "min": 22
        },
-       "obsidian_nota": "VENTAS/Fase6/S21 - Sintesis: cierre con frame y status"
+       "obsidian_nota": "VENTAS/Fase6/S21 - Sintesis: cierre con frame y status",
+       "liviano": {
+        "texto": "VARIANTE LIVIANO: frame y status ÉTICOS en consulta. Prize frame real = agenda limitada + criterios de elegibilidad (no todos entran: cribado MEN2, pancreatitis, embarazo). 3 cierres adaptados: alternativo ('¿Estándar o Tirzepatida?'), por resumen ('me dijiste que querías dejar de pelear con el hambre y alguien que supervise la dosis: lo tienes') y de invitación. Prohibido prometer resultado clínico (CMP Art. 73): cierras un compromiso, no un número.",
+        "min": 25
+       }
       }
      ]
     },
@@ -4191,7 +4250,11 @@
         "url": "https://soundcloud.com/random-house-audiobooks/never-split-the-difference-by-chris-voss-and-tahl-raz",
         "min": 20
        },
-       "obsidian_nota": "VENTAS/Fase6/S22 - Sintesis: role-play de negociacion Ackerman"
+       "obsidian_nota": "VENTAS/Fase6/S22 - Sintesis: role-play de negociacion Ackerman",
+       "liviano": {
+        "texto": "VARIANTE LIVIANO: precio sin malvender ni regatear con un paciente — NO Ackerman agresivo en consulta médica. Defiendes el precio regalando VALOR (plan de pago mensual, prepago anual con bono, Sesión para la pareja) y NUNCA recortando fármaco, labs ni seguimiento. Practica 5 preguntas calibradas ('¿cómo prefieres organizar el pago: mensual o anual?', '¿qué tendría que pasar para que empieces este mes?'). Graba 5 min.",
+        "min": 22
+       }
       }
      ]
     },
@@ -4312,7 +4375,12 @@
         "url": "https://www.everand.com/audiobook/769309848/The-Challenger-Sale-Taking-Control-of-the-Customer-Conversation",
         "min": 20
        },
-       "obsidian_nota": "VENTAS/Fase6/S23 - Cierre de Fase 6: PITCH v6 + entregable"
+       "obsidian_nota": "VENTAS/Fase6/S23 - Cierre de Fase 6: PITCH v6 + entregable",
+       "liviano": {
+        "texto": "VARIANTE LIVIANO (cierre F6) — PITCH v6 LIVIANO en DOS tomas con los pacientes de la Academia (livianoCasos.ts LIV_CASOS). TOMA A · Rosa (caso 15, D75 de la Academia): cumple criterios ASMBS/IFSO 2022 (IMC 41 ≥ 35 + DM2 refractaria) y dice 'no quiero que me corten' (madre operada de vesícula con complicaciones). El cierre correcto NO es vender Despegue a ciegas: (1) explicas ambas rutas (evaluación bariátrica vs farmacoterapia de 2ª línea/tirzepatida) en palabras simples; (2) reflejas el miedo sin rebatirlo y documentas la derivación (cirugía bariátrica + endocrinología); (3) ofreces LIVIANO como PLAN PUENTE pre/post (tier Tirzepatida S/ 1,690/mes o Estándar S/ 1,290) con proteína 1,2-1,6 g/kg + fuerza 2x/sem + check-in, y las 4 garantías de servicio; (4) cierras con un compromiso medible (labs, InBody, fecha de control en 4 semanas) y SIN prometer kg (CMP Art. 73). TOMA B · el caso integral (caso 16, D87): varón 48 a, IMC 37 → 31 tras 6 meses en LIVIANO, pregunta '¿ya puedo dejar todo?' con la esposa presente preguntando por el costo a largo plazo → decisión compartida sobre el fármaco (~67 % de recuperación al año si se suspende sin más), escalera Progreso → Consolidación → Mantenimiento (S/ 790) → Alumni (S/ 99) explicada como servicio y compromiso (no como garantía de kilos) y respuesta honesta a la esposa con números reales. Rúbrica: 'cierre/compromiso' = 2 SOLO si el paciente repite el plan con sus palabras. Registra el score (v6 LIVIANO) con la toma más difícil.",
+        "min": 35,
+        "pitch": "PITCH v6 LIVIANO — 2 tomas de 10-12 min: (A) Rosa (LIV_CASOS 15): ambas rutas + derivación documentada + LIVIANO como plan puente + compromiso medible; (B) caso integral (LIV_CASOS 16): decisión compartida + escalera de la oferta con ética + la esposa. Sin promesa clínica (CMP Art. 73)."
+       }
       }
      ]
     }
@@ -4686,5 +4754,45 @@
     }
    ]
   }
- ]
+ ],
+ "liviano": {
+  "version": "v3.1 · 5-sep-2026 (Palmerton cero puntos ciegos, vacío 7: AURUM entrenaba 0 drills sobre LIVIANO; v3.1 sincroniza el paciente con LIV_CASOS 15/16 de livianoCasos.ts)",
+  "regla": "1 de cada 5 drills = el viernes (d=5) de cada semana de F3-F6 lleva `liviano` (variante del drill sobre la venta ética de un programa médico). PITCH v4, v5 y v6 tienen versión LIVIANO (`liviano.pitch`). El resto de la semana sigue en ALLPA/Qori.",
+  "paciente": {
+   "resumen": "Rosa (nombre ficticio) = LIV_CASOS id 15: mujer, 41 años, IMC 41 (105 kg · 1,60 m), DM2 con HbA1c 9,1 % (informe), 6 meses de semaglutida con −4 % de peso y buena adherencia, metformina + insulina basal (según refiere — A VERIFICAR), apnea del sueño sospechada no estudiada, madre operada de vesícula 'con complicaciones' → miedo quirúrgico: 'no quiero que me corten'. Segundo paciente (solo PITCH v6, toma B) = LIV_CASOS id 16 (caso integral): varón 48 a, IMC 37 → 31 tras 6 meses en LIVIANO, HTA controlada, cintura −14 cm, HbA1c 6,3 → 5,5 %, pregunta '¿ya puedo dejar todo?' con la esposa presente.",
+   "fuente": "src/lib/livianoCasos.ts LIV_CASOS (GENERADO por gen_liviano_plan.js desde DATA/BUSINESS/liviano_curriculum.json): id 15 = semana 15 'límite de competencia y derivación' (D75, vie 18-dic-2026) y id 16 = semana 16 'CASO INTEGRAL con cierre de programa' (D87, vie 8-ene-2027). Rosa entra en AURUM desde F3 (D40) — antes de que la Academia llegue a su caso: AURUM entrena el descubrimiento/oferta/objeciones con ella y la Academia resuelve la clínica; en F6 (PITCH v6, feb-2027) ambos casos ya están hechos. Si liviano_curriculum.json cambia los casos 15/16, sincronizar este bloque y regenerar (gen_aurum_plan.js).",
+   "por_que": "Mismo paciente → mismo cierre: la Academia enseña a explicar el plan y a derivar (ASMBS/IFSO 2022: IMC ≥35 sin exigir comorbilidad; rúbrica LIV_RUBRICA 4 ítems); AURUM enseña a cerrar ese MISMO caso sin prometer kg y sin vender lo que no corresponde (rúbrica AURUM_RUBRICA_PITCH 6 ítems). Las dos rúbricas se aplican a la misma grabación cuando el caso coincide.",
+   "kpi": "Conversión consulta→programa >40% (empresaData.ts LIVIANO_VENTAS.motor)"
+  },
+  "cifras_oferta": {
+   "fuente": "src/lib/empresaData.ts LIVIANO_OFERTA (no inventar otras)",
+   "value_stack": "valor total percibido S/ 6,360 (fármaco 3 meses ~S/ 3,600 + bonos S/ 2,760) vs precio 3 meses S/ 3,870",
+   "bonos": "recurrentes 3m S/ 1,890 + inicio S/ 870 = S/ 2,760",
+   "ancla": "cirugía bariátrica (Perú) S/ 15,000 – 45,000 vs LIVIANO ~S/ 3,870 los 3 meses",
+   "tiers": "Fundador S/ 1,190/mes (primeros 4) · Estándar S/ 1,290/mes · Concierge S/ 1,590/mes · Tirzepatida S/ 1,690/mes · prepago anual",
+   "garantias": [
+    "Experiencia (incondicional, sobre el honorario)",
+    "Acompañamiento (condicional + desempeño)",
+    "Anti-Susto (de servicio)",
+    "Límite honesto (anti-garantía): no devolvemos el medicamento; garantizamos servicio y compromiso"
+   ],
+   "objeciones": [
+    "Está caro",
+    "No tengo tiempo",
+    "Ya intenté de todo",
+    "¿Y los efectos?",
+    "Lo consulto con mi pareja",
+    "Lo pienso",
+    "7ª (Límite honesto): ¿y si no me funciona, me devuelven? → no devolvemos el medicamento"
+   ]
+  },
+  "limite_etico": {
+   "norma": "Código de Ética y Deontología del CMP, 3ª edición 2025 — Capítulo 8 'De la publicidad' (texto verificado 5-sep-2026 en cmp.org.pe/wp-content/uploads/2025/02/CODIGO-DE-ETICA-_TERCERA-EDICION-2025.pdf)",
+   "art_73": "Prohibido participar en publicidad que promocione servicios o productos no validados científicamente o información sin sustento que genere expectativas engañosas → en LIVIANO: nunca prometer cifras de pérdida de peso; describir un proceso clínico supervisado.",
+   "art_75": "Prohibido usar testimonios de pacientes en anuncios y redes sociales → 'antes/después de cohorte' y 'a cambio de testimonios' (tier Fundador) requieren revisión legal antes de usarse en publicidad; en consulta 1-a-1 la prueba es la evidencia (STEP-1, SURMOUNT) y el protocolo, no el testimonio.",
+   "art_76": "Prohibido promocionar servicios en base a precios o promociones económicas → la escalera de precios y la tarifa Fundador se CONVERSAN en consulta, no se anuncian.",
+   "regla_closer": "El closer LIVIANO cierra un compromiso medible (labs, InBody, fecha, plan pactado), no un resultado clínico. Si el paciente cumple criterios quirúrgicos, el cierre correcto incluye la derivación."
+  },
+  "rubrica": "AURUM_RUBRICA_PITCH (src/lib/aurumData.ts): 6 ítems 0-2 — hablaste <40% · empatía táctica · SPIN · oferta · objeciones · cierre/compromiso. Se aplica en los 7 viernes de cierre de fase (D15, D35, D55, D75, D95, D115, D130) y a cada versión LIVIANO."
+ }
 }

@@ -3,5 +3,5 @@
   "compilerOptions": {
     "strict": true
   },
-  "exclude": ["node_modules", "dist", "VITALS", "BUSINESS_HUB_LIVIANO"]
+  "exclude": ["node_modules", "dist", "VITALS", "BUSINESS_HUB_LIVIANO", "supabase"]
 }

@@ -4,5 +4,8 @@ _sample_*
 *.docx
 corpus*.csv
 active_query.txt
-prompts_claude_code/
+# prompts GENERADOS por agentic_writer (SR-1_intro.md, *.out.md) — las 3 plantillas fijas
+# (letter_to_editor / case_report_CARE / research_letter_STROBE) SÍ se versionan (5-sep-2026)
+prompts_claude_code/SR-*.md
+prompts_claude_code/*.out.md
 __pycache__/

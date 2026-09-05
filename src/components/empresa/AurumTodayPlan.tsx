@@ -4,14 +4,17 @@ import { NavigationContext } from '@react-navigation/native';
 import { setNavIntent } from '../../lib/navIntent';
 import {
   AURUM_PLAN_META, AURUM_DIAS, DiaAurum, AurumBloque, aurumDiaDe, aurum7d,
-  AURUM_FORMATO_ICON, AURUM_TAG_LABEL, aurumObsUrl,
+  AURUM_FORMATO_ICON, AURUM_TAG_LABEL, aurumObsUrl, AURUM_LIVIANO_CASO,
 } from '../../lib/aurumDailyPlan';
+import {
+  AurumRubricaStore, AurumRubricaScore, aurumRubricaKey, loadAurumRubrica, saveAurumRubrica,
+} from '../../lib/aurumData';
 import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso } from '../../lib/studyProgress';
 import {
   AurumColors as C, AurumRadius as R, AurumSpacing as S, AurumType as T, withAlpha,
 } from '../../theme/aurumTheme';
 import { Elevation, Motion, Hairline } from '../../theme/tokens';
-import { AurumChip, AurumLabel, AurumPanel, AurumProgressBar, AurumButton, AurumRise, useAurumHover } from './aurumVisuals';
+import { AurumChip, AurumLabel, AurumPanel, AurumProgressBar, AurumButton, AurumRise, useAurumHover, AurumRubricaPitch } from './aurumVisuals';
 
 /**
  * AurumTodayPlan — motor día a día (130 días · 26 semanas, L-V), rediseño PREMIUM.
@@ -92,8 +95,44 @@ function BloqueRow({ b, obsNota }: { b: AurumBloque; obsNota?: string }) {
   return <TouchableOpacity activeOpacity={0.85} {...(hoverProps as any)} onPress={() => openUrl(b.url!)} style={[cardStyle, isWeb ? ({ cursor: 'pointer' } as any) : null]}>{inner}</TouchableOpacity>;
 }
 
+// ── LIVIANO — variante del drill (1 de cada 5, F3-F6): venta ÉTICA de un programa médico ──
+// Mismo paciente que el caso de la Academia (livianoCasos.ts LIV_CASOS 15/16); cifras de LIVIANO_OFERTA.
+function LivianoCard({ dia }: { dia: DiaAurum }) {
+  const [verPaciente, setVerPaciente] = useState(false);
+  const lv = dia.liviano!;
+  const acc = C.lecturaAccent;
+  return (
+    <View style={[st.livBox, { borderColor: withAlpha(acc, 0.5) }]}>
+      <View style={st.livHead}>
+        <Text style={[st.livKicker, { color: acc }]}>◆ VARIANTE LIVIANO · 1 de cada 5 drills · venta ética de un programa médico</Text>
+        <AurumChip label={`${lv.min}'`} color={acc} size="sm" />
+      </View>
+      <Text style={st.livTxt}>{lv.texto}</Text>
+      {lv.pitch ? (
+        <View style={[st.livPitch, { borderColor: withAlpha(C.gold, 0.45), backgroundColor: withAlpha(C.gold, 0.08) }]}>
+          <Text style={st.livPitchTxt}>🎙 {lv.pitch}</Text>
+        </View>
+      ) : null}
+      <TouchableOpacity activeOpacity={0.8} onPress={() => setVerPaciente((v) => !v)} style={isWeb ? ({ cursor: 'pointer' } as any) : null}>
+        <Text style={[st.livMeta, { color: acc }]}>{verPaciente ? '▾' : '▸'} paciente · KPI · límite ético</Text>
+      </TouchableOpacity>
+      {verPaciente ? (
+        <View style={{ marginTop: 6, gap: 5 }}>
+          <Text style={st.livMeta}><Text style={{ color: C.text, fontWeight: T.weight.bold }}>Paciente: </Text>{AURUM_LIVIANO_CASO.paciente}</Text>
+          <Text style={st.livMeta}><Text style={{ color: C.text, fontWeight: T.weight.bold }}>KPI: </Text>{AURUM_LIVIANO_CASO.kpi}</Text>
+          <Text style={st.livMeta}><Text style={{ color: C.text, fontWeight: T.weight.bold }}>Cifras: </Text>{AURUM_LIVIANO_CASO.valueStack} · {AURUM_LIVIANO_CASO.ancla}</Text>
+          <Text style={st.livMeta}><Text style={{ color: C.warn, fontWeight: T.weight.bold }}>Límite ético: </Text>{AURUM_LIVIANO_CASO.limiteEtico}</Text>
+        </View>
+      ) : null}
+    </View>
+  );
+}
+
 // ── HOY — misión destacada + núcleo + lectura ───────────────────────────────
-function HoyView({ dia, hoyD, done, onToggle, onGoBiblioteca }: { dia: DiaAurum; hoyD: number; done: Set<number>; onToggle: (d: number) => void; onGoBiblioteca: () => void }) {
+function HoyView({ dia, hoyD, done, onToggle, onGoBiblioteca, rubrica, onSaveRubrica }: {
+  dia: DiaAurum; hoyD: number; done: Set<number>; onToggle: (d: number) => void; onGoBiblioteca: () => void;
+  rubrica: AurumRubricaStore; onSaveRubrica: (s: AurumRubricaScore) => void;
+}) {
   const hecho = done.has(dia.d);
   const faseDias = AURUM_DIAS.filter((x) => x.faseId === dia.faseId);
   const fasePct = Math.round((faseDias.filter((x) => done.has(x.d)).length / faseDias.length) * 100);
@@ -152,6 +191,32 @@ function HoyView({ dia, hoyD, done, onToggle, onGoBiblioteca }: { dia: DiaAurum;
       {/* NÚCLEO */}
       <AurumLabel style={{ marginTop: S.lg }}>Núcleo de hoy · {dia.min} min en {AURUM_PLAN_META.ventana} (ver + practicar tu pitch)</AurumLabel>
       {coreBloques.map((b, i) => <AurumRise key={`c${i}`} delay={40 + i * 30}><BloqueRow b={b} obsNota={dia.obs} /></AurumRise>)}
+
+      {/* VARIANTE LIVIANO (viernes de F3-F6 · 1 de cada 5 drills) */}
+      {dia.liviano ? <AurumRise delay={90}><LivianoCard dia={dia} /></AurumRise> : null}
+
+      {/* CIERRE DE FASE → PITCH vN: rúbrica de 6 ítems (score /12 persistido en 'jmd-aurum-rubrica') */}
+      {dia.pitch ? (
+        <AurumRise delay={110}>
+          <View>
+            <AurumLabel style={{ marginTop: S.lg }}>🎙 Cierre de fase · graba tu PITCH v{dia.pitch} y puntúalo con la rúbrica (no vale "grabé": vale el score)</AurumLabel>
+            <AurumRubricaPitch
+              pitch={dia.pitch} variante="base"
+              titulo={`PITCH v${dia.pitch} · ${dia.titulo}`}
+              initial={rubrica[aurumRubricaKey(dia.pitch, 'base')]}
+              onSave={onSaveRubrica}
+            />
+            {dia.liviano?.pitch ? (
+              <AurumRubricaPitch
+                pitch={dia.pitch} variante="liviano"
+                titulo={dia.liviano.pitch}
+                initial={rubrica[aurumRubricaKey(dia.pitch, 'liviano')]}
+                onSave={onSaveRubrica}
+              />
+            ) : null}
+          </View>
+        </AurumRise>
+      ) : null}
 
       {/* LECTURA — visualmente distinto */}
       {lecturaBloques.length ? (
@@ -267,11 +332,21 @@ function ViewTab({ label, active, onPress }: { label: string; active: boolean; o
   );
 }
 
-export default function AurumTodayPlan({ done, onToggle, isDesktop = false }: { done: Set<number>; onToggle: (d: number) => void; isDesktop?: boolean }) {
+export default function AurumTodayPlan({ done, onToggle, isDesktop = false, rubrica, onSaveRubrica }: {
+  done: Set<number>; onToggle: (d: number) => void; isDesktop?: boolean;
+  /** store de rúbrica compartido con AurumHub (gráfica v1→v7); si no llega, se gestiona aquí desde localStorage */
+  rubrica?: AurumRubricaStore; onSaveRubrica?: (s: AurumRubricaScore) => void;
+}) {
   // En desktop el árbol NO tiene NavigationContainer (DesktopLayout usa estado propio);
   // leer el contexto con useContext NO lanza (devuelve undefined) → en desktop es no-op,
   // en móvil/tablet sigue navegando. Antes usábamos useNavigation() que CRASHEABA en desktop.
   const navigation = React.useContext(NavigationContext) as any;
+  // rúbrica: usa el store del padre si existe; si no, uno local persistido ('jmd-aurum-rubrica')
+  const [rubLocal, setRubLocal] = useState<AurumRubricaStore>(() => loadAurumRubrica());
+  const rubStore = rubrica ?? rubLocal;
+  const saveRub = onSaveRubrica ?? ((s: AurumRubricaScore) => setRubLocal((prev) => {
+    const n = { ...prev, [aurumRubricaKey(s.pitch, s.variante)]: s }; saveAurumRubrica(n); return n;
+  }));
   const iso = aurumTodayISO();
   const hoyD = planHoyD(AURUM_DIAS, iso);
   const todayDia = aurumDiaDe(iso) || AURUM_DIAS.find((x) => x.d === hoyD) || AURUM_DIAS[0];
@@ -303,7 +378,7 @@ export default function AurumTodayPlan({ done, onToggle, isDesktop = false }: { 
       </View>
 
       <AurumPanel style={[st.motorBox, isDesktop && { padding: S.xl }]}>
-        {view === 'hoy' ? <HoyView dia={dia} hoyD={hoyD} done={done} onToggle={onToggle} onGoBiblioteca={goBiblioteca} />
+        {view === 'hoy' ? <HoyView dia={dia} hoyD={hoyD} done={done} onToggle={onToggle} onGoBiblioteca={goBiblioteca} rubrica={rubStore} onSaveRubrica={saveRub} />
           : view === '7d' ? <SieteView fromD={dia.d} hoyD={hoyD} done={done} onPick={pickDay} />
             : <TemarioView hoyD={hoyD} onPick={pickDay} done={done} onToggle={onToggle} />}
       </AurumPanel>
@@ -358,6 +433,15 @@ const st = StyleSheet.create({
   blkDur: { fontSize: T.size.nano, color: C.textMute, marginTop: 3 },
   verBtn: { borderWidth: 1, borderRadius: R.sm, paddingVertical: 6, paddingHorizontal: 11, alignItems: 'center' },
   verTxt: { fontSize: T.size.micro, fontWeight: T.weight.extrabold },
+
+  // variante LIVIANO
+  livBox: { backgroundColor: withAlpha(C.lecturaAccent, 0.08), borderRadius: R.md, borderWidth: 1, padding: S.md, marginTop: S.sm, marginBottom: 7 },
+  livHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 8, flexWrap: 'wrap', marginBottom: 6 },
+  livKicker: { fontSize: T.size.nano, fontWeight: T.weight.black, letterSpacing: 0.5, flex: 1 },
+  livTxt: { fontSize: T.size.caption, color: C.textDim, lineHeight: 18 },
+  livPitch: { borderWidth: 1, borderRadius: R.sm, paddingVertical: 6, paddingHorizontal: 10, marginTop: S.sm },
+  livPitchTxt: { fontSize: T.size.caption, color: C.goldSoft, fontWeight: T.weight.bold, lineHeight: 17 },
+  livMeta: { fontSize: T.size.nano, color: C.textMute, marginTop: 6, lineHeight: 14 },
 
   // lectura
   lecturaBox: { backgroundColor: withAlpha(C.lecturaAccent, 0.06), borderRadius: R.md, borderWidth: 1, borderStyle: 'dashed', borderColor: withAlpha(C.lecturaAccent, 0.4), padding: S.lg, marginTop: S.md },

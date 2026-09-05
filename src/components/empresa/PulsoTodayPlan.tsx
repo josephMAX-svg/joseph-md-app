@@ -4,19 +4,21 @@ import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, LineHeigh
 import { DesktopColors } from '../../theme/desktopStyles';
 import { Chip, GlassPanel } from './primitives';
 import { FadeUp } from './visuals';
-import { BIZ_META, BIZ_FRANJAS, BIZ_DIAS, DiaBiz, bizDiaDe, bizPrevio, biz7d, bizColor } from '../../lib/businessStudyPlan';
+import { BIZ_META, BIZ_FRANJAS, BIZ_TRACKER, BIZ_DIAS, DiaBiz, bizDiaDe, biz7d, bizColor, bizModo } from '../../lib/businessStudyPlan';
 import { ESTUDIO_LIBROS } from '../../lib/estudioPulsoData';
 import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, loadDone, saveDone } from '../../lib/studyProgress';
 
 /**
- * PulsoTodayPlan — "Estudio Pulso" día a día (96 días · xlsx v2), mismo motor que
- * ENCAPS/USMLE/MIR: Día X/96, HOY (lectura + output operativo + links reales),
- * Horario minuto-a-minuto (bloque 2h de Make It Stick), 7d clicable y Temario por
- * materia con PROGRESO REAL marcable (empieza 0%, localStorage 'business').
+ * PulsoTodayPlan — "Estudio Pulso" día a día en FORMATO L (v3, 5-sep-2026): SIN franja en el
+ * horario v5.6. 20-25 min de audiolibro/lectura en los huecos (L-J) + 1 OUTPUT pequeño el viernes
+ * (25-40 min) + tracker semanal (Metricas_v2). Mismo motor que ENCAPS/USMLE/MIR: Día X/N, HOY
+ * (lectura + acción + link real), Formato L, 7d clicable y Temario por materia con PROGRESO REAL
+ * marcable (empieza 0%, localStorage 'business'). Ya NO sugiere el bloque de 2h (no existe en el
+ * calendario): marketing/ventas viven en AURUM y la medicina de la obesidad en LIVIANO Academia.
  */
 const GOLD = '#D9BE8A';
-const HORMOZI_YT = 'https://www.youtube.com/results?search_query=Alex+Hormozi+en+español';
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
+const MODO_LABEL: Record<string, string> = { L: 'lectura en huecos', CRITICA: 'lectura crítica', OUTPUT: 'output del viernes', DESCANSO: 'descanso' };
 function todayISO(): string {
   try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; }
   catch { return BIZ_META.inicio; }
@@ -46,6 +48,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaBiz; onOpenT
   const c = bizColor(dia.materia);
   const libro = dia.libroN != null ? ESTUDIO_LIBROS.find((l) => l.n === dia.libroN) : undefined;
   const descanso = dia.materia === 'DESCANSO';
+  const modo = bizModo(dia);
   return (
     <View>
       <FadeUp>
@@ -54,7 +57,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaBiz; onOpenT
             <TouchableOpacity activeOpacity={0.8} onPress={onOpenTemario} style={[st.sysBadge, { backgroundColor: c + '1F', borderColor: c + '66' }]}>
               <Text style={[st.sysBadgeTxt, { color: c }]}>{dia.materia} ›</Text>
             </TouchableOpacity>
-            <Chip label={`${dia.min} min`} color={c} small />
+            {!descanso ? <Chip label={`${dia.min} min · ${MODO_LABEL[modo]}`} color={c} small /> : null}
             {libro ? <Chip label={`P${libro.prioridad} · ${libro.horas}h`} color={GOLD} small /> : null}
           </View>
           <Text style={st.temaTitle}>{dia.lectura}</Text>
@@ -74,18 +77,30 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaBiz; onOpenT
             <Text style={st.colaIcon}>😴</Text>
             <View style={{ flex: 1 }}>
               <Text style={st.colaLbl}>DESCANSO PROGRAMADO</Text>
-              <Text style={st.colaVal}>Sin bloque de estudio. Repasa notas de la semana solo si apetece.</Text>
+              <Text style={st.colaVal}>Sin lectura ni output. Repasa notas de la semana solo si apetece.</Text>
               <Text style={st.colaSub}>Make It Stick: la consolidación ocurre fuera del escritorio</Text>
             </View>
           </View>
         </FadeUp>
+      ) : modo === 'OUTPUT' ? (
+        <>
+          <Text style={st.secLbl}>🛠️ Viernes · 1 output pequeño y TERMINADO · {BIZ_META.minOutput} min máx</Text>
+          <FadeUp delay={40}><ColaItem icon="🛠️" lbl="OUTPUT DE LA SEMANA · 25–40 min" val={dia.lectura} sub="1 página / guion / tabla / tarjetas — terminado, no perfecto" color={GOLD} /></FadeUp>
+          {dia.accion ? <FadeUp delay={70}><ColaItem icon="📌" lbl="DÓNDE QUEDA" val={dia.accion} sub="Obsidian o empresaData: si no está escrito, no existe" color={c} /></FadeUp> : null}
+          <FadeUp delay={100}><ColaItem icon="📊" lbl="TRACKER SEMANAL (Metricas_v2) · 3 min" val={BIZ_TRACKER.slice(0, 6).map((t) => `${t.metrica}: ${t.meta}`).join(' · ')} sub={BIZ_TRACKER[BIZ_TRACKER.length - 1].meta} color="#A78BFA" /></FadeUp>
+        </>
+      ) : modo === 'CRITICA' ? (
+        <>
+          <Text style={st.secLbl}>🔎 Lectura crítica · 25 min en un hueco (no es un bloque del calendario)</Text>
+          <FadeUp delay={40}><ColaItem icon="📖" lbl="LEER / ESCUCHAR · 20 min" val={dia.lectura} sub="el libro afirma; la Academia / la sociedad científica responde" color={c} url={dia.yt || undefined} /></FadeUp>
+          <FadeUp delay={70}><ColaItem icon="📋" lbl="TABLA · 5 min" val={dia.accion || 'Fila: afirmación del libro · evidencia de la Academia · qué digo yo'} sub="contrastar con LIVIANO_ACADEMIA / CURVA_ACADEMIA — nada pasa a contenido sin fuente primaria" color={GOLD} /></FadeUp>
+        </>
       ) : (
         <>
-          <Text style={st.secLbl}>📋 Bloque de hoy · 2h (en orden)</Text>
-          <FadeUp delay={40}><ColaItem icon="📖" lbl="LECTURA ACTIVA · 5–55 min" val={dia.lectura} sub="highlighter + notas Cornell en tus palabras" color={c} url={dia.yt || undefined} /></FadeUp>
-          <FadeUp delay={70}><ColaItem icon="🛠️" lbl="APLICACIÓN · 65–110 min (output operativo)" val={dia.accion || 'Producir el output del día'} sub="lo aprendido → protocolo/copy/script REAL de Pulso" color={GOLD} /></FadeUp>
-          <FadeUp delay={100}><ColaItem icon="🃏" lbl="CIERRE · 110–120 min" val="3-5 cards Anki + auto-explicación oral (Feynman)" sub="spaced repetition — lo crítico de hoy" color="#A78BFA" /></FadeUp>
-          <FadeUp delay={130}><ColaItem icon="▶" lbl={'TIEMPO "MUERTO" · 30-60 min'} val="Alex Hormozi en Español (YouTube) — refuerza la trilogía" sub="manejando, gym, comiendo · PRIORIDAD MÁXIMA mes 1" color="#E5484D" url={HORMOZI_YT} /></FadeUp>
+          <Text style={st.secLbl}>🎧 Formato L · {BIZ_META.minLectura} min en un hueco (coche, cola, gimnasio, comida)</Text>
+          <FadeUp delay={40}><ColaItem icon="🎧" lbl="ESCUCHAR / LEER · 20 min" val={dia.lectura} sub="un solo tramo del libro; audiolibro verificado o búsqueda real" color={c} url={dia.yt || undefined} /></FadeUp>
+          <FadeUp delay={70}><ColaItem icon="✍️" lbl="CERRAR · 5 min" val={dia.accion || 'Nota de 3 líneas en Obsidian o 1 tarjeta de mecanismo (¿por qué?)'} sub="mecanismo, no datos sueltos (Palmerton)" color={GOLD} /></FadeUp>
+          <FadeUp delay={100}><ColaItem icon="📅" lbl="EL VIERNES" val="1 output pequeño y terminado + fila del tracker semanal" sub="marketing/ventas → AURUM (14:15) · obesidad/GLP-1 → LIVIANO Academia (17:15)" color="#A78BFA" /></FadeUp>
         </>
       )}
     </View>
@@ -94,22 +109,31 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaBiz; onOpenT
 
 function HorarioView({ dia }: { dia: DiaBiz }) {
   const c = bizColor(dia.materia);
+  const modo = bizModo(dia);
   return (
     <View>
-      <Text style={st.secLbl}>🕓 Bloque de 2h · minuto a minuto (Make It Stick + Deep Work)</Text>
+      <Text style={st.secLbl}>🕓 Formato L · {BIZ_META.bloque}</Text>
       {BIZ_FRANJAS.map((f, i) => (
         <FadeUp key={i} delay={i * 25}>
           <View style={st.franja}>
             <View style={[st.franjaHora, { backgroundColor: c + '14' }]}><Text style={[st.franjaHoraTxt, { color: c }]}>{f.hora}</Text></View>
             <View style={{ flex: 1 }}>
               <Text style={st.franjaFase}>{f.fase}</Text>
-              {f.tipo === 'read' ? <Text style={[st.franjaDet, { color: c }]}>↳ {dia.lectura}</Text> : null}
-              {f.tipo === 'apply' && dia.accion ? <Text style={[st.franjaDet, { color: GOLD }]}>↳ {dia.accion}</Text> : null}
+              {f.tipo === 'read' && modo !== 'OUTPUT' && modo !== 'DESCANSO' ? <Text style={[st.franjaDet, { color: c }]}>↳ {dia.lectura}</Text> : null}
+              {f.tipo === 'apply' && modo === 'OUTPUT' ? <Text style={[st.franjaDet, { color: GOLD }]}>↳ {dia.lectura}</Text> : null}
+              {f.tipo === 'anki' && dia.accion && modo !== 'OUTPUT' ? <Text style={[st.franjaDet, { color: GOLD }]}>↳ {dia.accion}</Text> : null}
             </View>
           </View>
         </FadeUp>
       ))}
-      <Text style={st.note}>Las 9 técnicas (active recall, spaced repetition, elaboration, interleaving, deep work, deliberate practice…) viven en la hoja Técnicas del plan. 2h sagradas: mismo lugar, mismo horario.</Text>
+      <Text style={st.secLbl}>📊 Tracker semanal (Metricas_v2) · se llena el viernes con el output</Text>
+      {BIZ_TRACKER.map((t, i) => (
+        <View key={i} style={st.franja}>
+          <View style={[st.franjaHora, { backgroundColor: GOLD + '14' }]}><Text style={[st.franjaHoraTxt, { color: GOLD }]}>{t.meta}</Text></View>
+          <View style={{ flex: 1 }}><Text style={st.franjaFase}>{t.metrica}</Text></View>
+        </View>
+      ))}
+      <Text style={st.note}>No hay bloque de 2h ni franja en el Calendar v5.6: el formato L vive en tus huecos. Lo que sí tiene hora es AURUM (14:15-15:15, ventas) y LIVIANO Academia (17:15-18:00, obesidad). Fuente: DATA/BUSINESS/plan_pulso_v3_L.json → gen_business_plan.py.</Text>
     </View>
   );
 }
@@ -128,7 +152,7 @@ function SieteView({ fromD, onPick }: { fromD: number; onPick: (d: number) => vo
               <Text style={st.d7fecha}>{fmtFecha(x.fecha)}</Text>
               <View style={{ flex: 1 }}>
                 <Text style={st.d7sub} numberOfLines={1}>{x.lectura}</Text>
-                <Text style={st.d7sys}>{x.materia}{x.min ? ` · ${x.min} min` : ''}</Text>
+                <Text style={st.d7sys}>{x.materia}{x.min ? ` · ${x.min} min · ${MODO_LABEL[bizModo(x)]}` : ''}</Text>
               </View>
               <Text style={[st.d7go, { color: c }]}>→</Text>
             </TouchableOpacity>
@@ -237,7 +261,7 @@ export default function PulsoTodayPlan() {
       {!esHoy && <TouchableOpacity activeOpacity={0.8} onPress={() => setSel(todayDia.d)} style={st.hoyBtn}><Text style={st.hoyBtnTxt}>↩ volver a HOY</Text></TouchableOpacity>}
 
       <View style={st.subTabs}>
-        {([['hoy', '📋 HOY'], ['horario', '🕓 Minuto a minuto'], ['7d', '📆 7 días'], ['temario', '🗂️ Temario']] as const).map(([k, lbl]) => (
+        {([['hoy', '📋 HOY'], ['horario', '🕓 Formato L'], ['7d', '📆 7 días'], ['temario', '🗂️ Temario']] as const).map(([k, lbl]) => (
           <TouchableOpacity key={k} activeOpacity={0.8} onPress={() => setView(k)} style={[st.subTab, view === k && st.subTabOn]}>
             <Text style={[st.subTabTxt, view === k && { color: GOLD }]}>{lbl}</Text>
           </TouchableOpacity>

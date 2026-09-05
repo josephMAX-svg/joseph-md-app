@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Platform, StyleSheet, ViewStyle, TextStyle, StyleProp } from 'react-native';
+import { View, Text, TouchableOpacity, Platform, StyleSheet, ViewStyle, TextStyle, StyleProp, TextInput } from 'react-native';
 import CircularProgress from '../CircularProgress';
 import AnimatedCounter from '../AnimatedCounter';
 import {
@@ -7,6 +7,10 @@ import {
   AurumShadow, aurumGradCss, withAlpha,
 } from '../../theme/aurumTheme';
 import { Elevation, Motion, Hairline } from '../../theme/tokens';
+import {
+  AURUM_RUBRICA_PITCH, AURUM_RUBRICA_MAX, aurumRubricaSemaforo, AurumRubricaScore, AurumRubricaStore, aurumRubricaKey,
+  AurumScoreKey, AurumScoreSemana, AURUM_SCOREBOARD_METAS, aurumScoreSemaforo,
+} from '../../lib/aurumData';
 
 /**
  * aurumVisuals — capa visual PREMIUM de la sección AURUM (Hormozi / acquisition.com).
@@ -189,8 +193,12 @@ export function AurumRing({ value, max = 100, label, sub, accent = C.gold, size 
 // ── AurumCloserDesk: scoreboard del closer (KPIs high-ticket, glifos de terminal) ─
 // Tablero-firma del "closer desk" negro-oro. Data curada (empieza en 0, manual):
 // alimenta de AURUM_CLOSER_SCOREBOARD. NO reemplaza los anillos Día/Semana/Fase/Racha.
-export type CloserCell = { key: string; label: string; glyph: string; valor: string; meta: string; unidad: string };
-export function AurumCloserDesk({ metrics, nota, hint }: { metrics: CloserCell[]; nota?: string; hint?: string }) {
+export type AurumSemaforo = 'verde' | 'ambar' | 'rojo' | 'gris';
+export function aurumSemaforoColor(s: AurumSemaforo): string {
+  return s === 'verde' ? C.success : s === 'ambar' ? C.warn : s === 'rojo' ? C.danger : C.textMute;
+}
+export type CloserCell = { key: string; label: string; glyph: string; valor: string; meta: string; unidad: string; estado?: AurumSemaforo };
+export function AurumCloserDesk({ metrics, nota, hint, onEdit }: { metrics: CloserCell[]; nota?: string; hint?: string; onEdit?: () => void }) {
   const mono: any = isWeb
     ? { fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace', fontVariantNumeric: 'tabular-nums' }
     : { fontVariant: ['tabular-nums'] };
@@ -199,25 +207,264 @@ export function AurumCloserDesk({ metrics, nota, hint }: { metrics: CloserCell[]
       {isWeb ? <View pointerEvents="none" style={cd.hairline} /> : null}
       <View style={cd.head}>
         <Text style={cd.title}>◆ CLOSER SCOREBOARD</Text>
-        {hint ? <Text style={cd.hint}>{hint}</Text> : null}
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+          {hint ? <Text style={cd.hint}>{hint}</Text> : null}
+          {onEdit ? (
+            <TouchableOpacity activeOpacity={0.8} onPress={onEdit} hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}>
+              <AurumChip label="✎ registrar semana" color={C.gold} size="sm" />
+            </TouchableOpacity>
+          ) : null}
+        </View>
       </View>
       <View style={cd.grid}>
-        {metrics.map((m) => (
-          <View key={m.key} style={cd.cell}>
-            <View style={cd.cellTop}>
-              <Text style={[cd.glyph, mono]}>{m.glyph}</Text>
-              <Text style={cd.cellLabel} numberOfLines={1}>{m.label.toUpperCase()}</Text>
+        {metrics.map((m) => {
+          const acc = m.estado ? aurumSemaforoColor(m.estado) : C.goldSoft;
+          return (
+            <View key={m.key} style={[cd.cell, m.estado && m.estado !== 'gris' ? { borderColor: withAlpha(acc, 0.45) } : null]}>
+              <View style={cd.cellTop}>
+                <Text style={[cd.glyph, mono]}>{m.glyph}</Text>
+                <Text style={cd.cellLabel} numberOfLines={1}>{m.label.toUpperCase()}</Text>
+                {m.estado ? <View style={[cd.dot, { backgroundColor: acc }]} /> : null}
+              </View>
+              <Text style={[cd.value, mono, m.estado && m.estado !== 'gris' ? { color: acc } : null]} numberOfLines={1}>{m.valor}</Text>
+              <Text style={[cd.meta, mono]} numberOfLines={1}>meta {m.meta}</Text>
+              <Text style={cd.unit} numberOfLines={2}>{m.unidad}</Text>
             </View>
-            <Text style={[cd.value, mono]} numberOfLines={1}>{m.valor}</Text>
-            <Text style={[cd.meta, mono]} numberOfLines={1}>meta {m.meta}</Text>
-            <Text style={cd.unit} numberOfLines={2}>{m.unidad}</Text>
-          </View>
-        ))}
+          );
+        })}
       </View>
       {nota ? <Text style={cd.nota}>{nota}</Text> : null}
     </View>
   );
 }
+
+// ── AurumScoreboardEditor: registro SEMANAL editable (dials/sets/show/close/cash/q2c) ──
+// Persistencia la hace el padre (localStorage 'jmd-aurum-scoreboard-v1'); aquí solo inputs + semáforo.
+const SCORE_FIELDS: { key: AurumScoreKey; label: string; glyph: string; hint: string }[] = [
+  { key: 'dials', label: 'Dials', glyph: '◇', hint: 'contactos iniciados (llamada/DM) en la semana' },
+  { key: 'sets',  label: 'Sets', glyph: '◆', hint: 'citas agendadas en la semana' },
+  { key: 'show',  label: 'Show-rate %', glyph: '►', hint: 'citas que sí asistieron ÷ agendadas' },
+  { key: 'close', label: 'Close-rate %', glyph: '▲', hint: 'cierres ÷ presentaciones' },
+  { key: 'cash',  label: 'Cash collected S/', glyph: '⬆', hint: 'caja cobrada (no facturada)' },
+  { key: 'q2c',   label: 'Quote-to-close %', glyph: '●', hint: 'cotizaciones que cerraron ÷ cotizaciones' },
+];
+export function AurumScoreboardEditor({ semana, values, prev, onChange, onPrevSemana, onNextSemana, esActual }: {
+  semana: string; values: AurumScoreSemana; prev?: AurumScoreSemana;
+  onChange: (key: AurumScoreKey, valor: number | undefined) => void;
+  onPrevSemana: () => void; onNextSemana: () => void; esActual: boolean;
+}) {
+  const mono: any = isWeb ? { fontVariantNumeric: 'tabular-nums' } : { fontVariant: ['tabular-nums'] };
+  return (
+    <View style={[se.wrap, AurumShadow.card]}>
+      <View style={se.head}>
+        <TouchableOpacity activeOpacity={0.7} onPress={onPrevSemana} style={se.navBtn}><Text style={se.navTxt}>◄</Text></TouchableOpacity>
+        <View style={{ flex: 1, alignItems: 'center' }}>
+          <Text style={se.title}>SEMANA {semana}{esActual ? ' · ACTUAL' : ''}</Text>
+          <Text style={se.sub}>registro manual real · se guarda en este dispositivo</Text>
+        </View>
+        <TouchableOpacity activeOpacity={0.7} onPress={onNextSemana} style={se.navBtn}><Text style={se.navTxt}>►</Text></TouchableOpacity>
+      </View>
+      <View style={se.grid}>
+        {SCORE_FIELDS.map((f) => {
+          const v = values[f.key];
+          const estado = aurumScoreSemaforo(f.key, v, prev ? prev[f.key] : undefined);
+          const acc = aurumSemaforoColor(estado);
+          const meta = AURUM_SCOREBOARD_METAS[f.key];
+          return (
+            <View key={f.key} style={[se.cell, { borderColor: withAlpha(acc, estado === 'gris' ? 0.25 : 0.55) }]}>
+              <View style={se.cellTop}>
+                <Text style={se.glyph}>{f.glyph}</Text>
+                <Text style={se.cellLabel} numberOfLines={1}>{f.label.toUpperCase()}</Text>
+                <View style={[se.dot, { backgroundColor: acc }]} />
+              </View>
+              <TextInput
+                value={v == null ? '' : String(v)}
+                onChangeText={(t) => { const n = parseFloat(t.replace(',', '.')); onChange(f.key, t.trim() === '' || Number.isNaN(n) ? undefined : n); }}
+                keyboardType="numeric"
+                placeholder="—"
+                placeholderTextColor={C.textMute}
+                style={[se.input, mono, { color: estado === 'gris' ? C.text : acc }, isWeb ? ({ outlineStyle: 'none' } as any) : null]}
+              />
+              <Text style={se.meta} numberOfLines={1}>meta {meta.label}</Text>
+              <Text style={se.hint} numberOfLines={2}>{f.hint}</Text>
+            </View>
+          );
+        })}
+      </View>
+      <Text style={se.legend}>● verde = meta cumplida · ● ámbar ≥ 70% de la meta · ● rojo · ● gris = sin dato. Cash: verde si crece vs la semana previa.</Text>
+    </View>
+  );
+}
+
+// ── AurumRubricaPitch: 6 ítems 0-2 (AURUM_RUBRICA_PITCH) → score /12 persistido por grabación ──
+export function AurumRubricaPitch({ pitch, variante, titulo, initial, onSave }: {
+  pitch: number; variante: 'base' | 'liviano'; titulo?: string; initial?: AurumRubricaScore;
+  onSave: (score: AurumRubricaScore) => void;
+}) {
+  const [puntos, setPuntos] = useState<number[]>(() => initial?.puntos && initial.puntos.length === AURUM_RUBRICA_PITCH.length ? [...initial.puntos] : AURUM_RUBRICA_PITCH.map(() => -1));
+  const [nota, setNota] = useState(initial?.nota || '');
+  const [saved, setSaved] = useState<string | null>(initial?.fecha || null);
+  useEffect(() => {
+    if (initial?.puntos && initial.puntos.length === AURUM_RUBRICA_PITCH.length) { setPuntos([...initial.puntos]); setNota(initial.nota || ''); setSaved(initial.fecha); }
+  }, [initial?.fecha, initial?.total]); // eslint-disable-line react-hooks/exhaustive-deps
+  const completo = puntos.every((p) => p >= 0);
+  const total = puntos.reduce((s, p) => s + Math.max(0, p), 0);
+  const sem = aurumRubricaSemaforo(total);
+  const acc = completo ? aurumSemaforoColor(sem) : C.textMute;
+  const liv = variante === 'liviano';
+  const guardar = () => {
+    if (!completo) return;
+    const fecha = new Date().toISOString().slice(0, 10);
+    onSave({ pitch, variante, puntos: [...puntos], total, fecha, nota: nota.trim() || undefined });
+    setSaved(fecha);
+  };
+  return (
+    <View style={[rb.wrap, { borderColor: withAlpha(liv ? C.lecturaAccent : C.gold, 0.4) }]}>
+      <View style={rb.head}>
+        <View style={{ flex: 1 }}>
+          <Text style={rb.kicker}>{liv ? '◆ RÚBRICA · PITCH v' + pitch + ' LIVIANO' : '◆ RÚBRICA · PITCH v' + pitch}</Text>
+          {titulo ? <Text style={rb.titulo} numberOfLines={3}>{titulo}</Text> : null}
+        </View>
+        <View style={[rb.scoreBox, { borderColor: withAlpha(acc, 0.6), backgroundColor: withAlpha(acc, 0.12) }]}>
+          <Text style={[rb.scoreVal, { color: acc }]}>{completo ? total : '—'}<Text style={rb.scoreMax}>/{AURUM_RUBRICA_MAX}</Text></Text>
+          <Text style={rb.scoreLbl}>{completo ? (sem === 'verde' ? 'nivel closer' : sem === 'ambar' ? 'en camino' : 'repetir toma') : 'puntúa los 6'}</Text>
+        </View>
+      </View>
+      {AURUM_RUBRICA_PITCH.map((it, i) => {
+        const v = puntos[i];
+        const desc = v === 0 ? it.n0 : v === 1 ? it.n1 : v === 2 ? it.n2 : `0 = ${it.n0} · 1 = ${it.n1} · 2 = ${it.n2}`;
+        return (
+          <View key={it.key} style={rb.row}>
+            <View style={{ flex: 1 }}>
+              <Text style={rb.itemLabel}>{i + 1}. {it.label}</Text>
+              <Text style={[rb.itemDesc, v >= 0 ? { color: v === 2 ? C.success : v === 1 ? C.warn : C.danger } : null]} numberOfLines={3}>{desc}</Text>
+            </View>
+            <View style={rb.btns}>
+              {[0, 1, 2].map((n) => {
+                const on = v === n;
+                const col = n === 2 ? C.success : n === 1 ? C.warn : C.danger;
+                return (
+                  <TouchableOpacity key={n} activeOpacity={0.8} onPress={() => setPuntos((p) => p.map((x, j) => (j === i ? n : x)))}
+                    style={[rb.btn, on ? { backgroundColor: withAlpha(col, 0.22), borderColor: col } : null, isWeb ? ({ cursor: 'pointer' } as any) : null]}>
+                    <Text style={[rb.btnTxt, on && { color: col }]}>{n}</Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          </View>
+        );
+      })}
+      <TextInput
+        value={nota}
+        onChangeText={setNota}
+        placeholder="Nota de la grabación (qué corregir en la próxima toma)…"
+        placeholderTextColor={C.textMute}
+        multiline
+        style={[rb.nota, isWeb ? ({ outlineStyle: 'none' } as any) : null]}
+      />
+      <View style={rb.foot}>
+        <AurumButton label={saved ? '✓ Guardar de nuevo' : 'Guardar score'} onPress={guardar} accent={completo ? (liv ? C.lecturaAccent : C.gold) : C.textMute} />
+        {saved ? <Text style={rb.savedTxt}>guardado {saved} · clave {aurumRubricaKey(pitch, variante)}</Text> : <Text style={rb.savedTxt}>se guarda en 'jmd-aurum-rubrica' (este dispositivo)</Text>}
+      </View>
+    </View>
+  );
+}
+
+// ── AurumPitchChart: gráfica v1→v7 (barras) desde el store de rúbrica; LIVIANO en zafiro ──
+export function AurumPitchChart({ store, pitches = [1, 2, 3, 4, 5, 6, 7] }: { store: AurumRubricaStore; pitches?: number[] }) {
+  const H = 96;
+  const vals = pitches.map((p) => ({ p, base: store[aurumRubricaKey(p, 'base')], liv: store[aurumRubricaKey(p, 'liviano')] }));
+  const conDato = vals.filter((v) => v.base || v.liv).length;
+  const primero = vals.find((v) => v.base)?.base?.total; const ultimo = [...vals].reverse().find((v) => v.base)?.base?.total;
+  return (
+    <View style={[pc.wrap, AurumShadow.card]}>
+      <View style={pc.head}>
+        <Text style={pc.title}>◆ PITCH v1 → v7 · score de rúbrica /{AURUM_RUBRICA_MAX}</Text>
+        <Text style={pc.sub}>{conDato ? `${conDato}/${pitches.length} grabaciones puntuadas${primero != null && ultimo != null && primero !== ultimo ? ` · v${vals.find((v) => v.base)!.p} ${primero} → último ${ultimo}` : ''}` : 'sin grabaciones puntuadas aún · empieza en el cierre de F1 (PITCH v1)'}</Text>
+      </View>
+      <View style={[pc.plot, { height: H + 34 }]}>
+        {vals.map((v) => {
+          const hb = v.base ? Math.max(4, Math.round((v.base.total / AURUM_RUBRICA_MAX) * H)) : 0;
+          const hl = v.liv ? Math.max(4, Math.round((v.liv.total / AURUM_RUBRICA_MAX) * H)) : 0;
+          const cb = v.base ? aurumSemaforoColor(aurumRubricaSemaforo(v.base.total)) : C.textMute;
+          return (
+            <View key={v.p} style={pc.col}>
+              <View style={[pc.bars, { height: H }]}>
+                <View style={[pc.bar, v.base ? { height: hb, backgroundColor: cb } : { height: H, borderWidth: 1, borderStyle: 'dashed', borderColor: withAlpha('#FFFFFF', 0.12), backgroundColor: 'transparent' }]}>
+                  {v.base ? <Text style={pc.barVal}>{v.base.total}</Text> : null}
+                </View>
+                {v.liv ? <View style={[pc.bar, pc.barLiv, { height: hl }]}><Text style={pc.barVal}>{v.liv.total}</Text></View> : null}
+              </View>
+              <Text style={pc.x}>v{v.p}</Text>
+            </View>
+          );
+        })}
+      </View>
+      <View style={pc.legend}>
+        <View style={[pc.dot, { backgroundColor: C.gold }]} /><Text style={pc.legendTxt}>ALLPA / Qori (color = semáforo)</Text>
+        <View style={[pc.dot, { backgroundColor: C.lecturaAccent, marginLeft: 10 }]} /><Text style={pc.legendTxt}>versión LIVIANO (v3-v6)</Text>
+      </View>
+    </View>
+  );
+}
+
+const se = StyleSheet.create({
+  wrap: { backgroundColor: C.bg, borderRadius: R.lg, borderWidth: 1, borderColor: withAlpha(C.gold, 0.28), padding: S.lg, marginBottom: S.lg },
+  head: { flexDirection: 'row', alignItems: 'center', gap: S.sm, marginBottom: S.md },
+  navBtn: { width: 36, height: 36, borderRadius: R.sm, backgroundColor: withAlpha('#FFFFFF', 0.05), borderWidth: 1, borderColor: C.border, alignItems: 'center', justifyContent: 'center' },
+  navTxt: { fontSize: 14, color: C.gold, fontWeight: T.weight.extrabold },
+  title: { fontSize: T.size.caption, fontWeight: T.weight.extrabold, color: C.goldSoft, letterSpacing: 1.1 },
+  sub: { fontSize: T.size.nano, color: C.textMute, marginTop: 2 },
+  grid: isWeb
+    ? ({ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: 10 } as any)
+    : { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
+  cell: { minWidth: 140, flexGrow: 1, flexBasis: 140, backgroundColor: C.surface, borderRadius: R.sm, borderWidth: 1, paddingVertical: S.md, paddingHorizontal: S.md },
+  cellTop: { flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 5 },
+  glyph: { fontSize: T.size.caption, color: C.gold, fontWeight: T.weight.black },
+  cellLabel: { fontSize: T.size.nano, fontWeight: T.weight.extrabold, color: C.textMute, letterSpacing: 0.8, flex: 1 },
+  dot: { width: 8, height: 8, borderRadius: 4 },
+  input: { fontSize: T.size.title, fontWeight: T.weight.bold, paddingVertical: 4, paddingHorizontal: 0, borderBottomWidth: 1, borderBottomColor: withAlpha('#FFFFFF', 0.12) },
+  meta: { fontSize: T.size.nano, color: C.success, marginTop: 4, letterSpacing: 0.3, fontWeight: T.weight.bold },
+  hint: { fontSize: T.size.nano, color: C.textMute, marginTop: 3, lineHeight: 13 },
+  legend: { fontSize: T.size.nano, color: C.textMute, marginTop: S.md, lineHeight: 15 },
+});
+
+const rb = StyleSheet.create({
+  wrap: { backgroundColor: C.surface, borderRadius: R.md, borderWidth: 1, padding: S.lg, marginTop: S.md },
+  head: { flexDirection: 'row', alignItems: 'flex-start', gap: S.md, marginBottom: S.sm },
+  kicker: { fontSize: T.size.micro, fontWeight: T.weight.black, color: C.goldSoft, letterSpacing: 0.9 },
+  titulo: { fontSize: T.size.caption, color: C.textDim, marginTop: 4, lineHeight: 17 },
+  scoreBox: { borderWidth: 1, borderRadius: R.sm, paddingVertical: 6, paddingHorizontal: 12, alignItems: 'center', minWidth: 84 },
+  scoreVal: { fontSize: T.size.title, fontWeight: T.weight.black },
+  scoreMax: { fontSize: T.size.caption, color: C.textMute, fontWeight: T.weight.regular },
+  scoreLbl: { fontSize: T.size.nano, color: C.textMute, marginTop: 1 },
+  row: { flexDirection: 'row', alignItems: 'center', gap: S.md, paddingVertical: 8, borderTopWidth: 1, borderTopColor: Hairline.soft },
+  itemLabel: { fontSize: T.size.bodySm, fontWeight: T.weight.bold, color: C.text },
+  itemDesc: { fontSize: T.size.nano, color: C.textMute, marginTop: 2, lineHeight: 14 },
+  btns: { flexDirection: 'row', gap: 5 },
+  btn: { width: 32, height: 32, borderRadius: R.xs, borderWidth: 1, borderColor: C.border, backgroundColor: withAlpha('#FFFFFF', 0.03), alignItems: 'center', justifyContent: 'center' },
+  btnTxt: { fontSize: T.size.body, fontWeight: T.weight.extrabold, color: C.textMute },
+  nota: { marginTop: S.sm, minHeight: 44, borderWidth: 1, borderColor: C.border, borderRadius: R.sm, padding: S.sm, color: C.text, fontSize: T.size.caption, backgroundColor: withAlpha('#FFFFFF', 0.03), textAlignVertical: 'top' },
+  foot: { flexDirection: 'row', alignItems: 'center', gap: S.md, marginTop: S.sm, flexWrap: 'wrap' },
+  savedTxt: { fontSize: T.size.nano, color: C.textMute, flex: 1 },
+});
+
+const pc = StyleSheet.create({
+  wrap: { backgroundColor: C.bg, borderRadius: R.lg, borderWidth: 1, borderColor: withAlpha(C.gold, 0.28), padding: S.lg, marginBottom: S.lg },
+  head: { marginBottom: S.md },
+  title: { fontSize: T.size.caption, fontWeight: T.weight.extrabold, color: C.goldSoft, letterSpacing: 1.1 },
+  sub: { fontSize: T.size.nano, color: C.textMute, marginTop: 3 },
+  plot: { flexDirection: 'row', alignItems: 'flex-end', gap: 6 },
+  col: { flex: 1, alignItems: 'center' },
+  bars: { flexDirection: 'row', alignItems: 'flex-end', gap: 3, width: '100%', justifyContent: 'center' },
+  bar: { flex: 1, maxWidth: 34, borderRadius: 4, backgroundColor: C.gold, alignItems: 'center', justifyContent: 'flex-start', paddingTop: 2 },
+  barLiv: { backgroundColor: C.lecturaAccent },
+  barVal: { fontSize: T.size.nano, fontWeight: T.weight.black, color: C.onGold },
+  x: { fontSize: T.size.micro, color: C.textMute, marginTop: 6, fontWeight: T.weight.bold },
+  legend: { flexDirection: 'row', alignItems: 'center', gap: 5, marginTop: S.md, flexWrap: 'wrap' },
+  dot: { width: 9, height: 9, borderRadius: 5 },
+  legendTxt: { fontSize: T.size.nano, color: C.textMute },
+});
 
 const cd = StyleSheet.create({
   wrap: {
@@ -250,6 +497,7 @@ const cd = StyleSheet.create({
   cellTop: { flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 5 },
   glyph: { fontSize: T.size.caption, color: C.gold, fontWeight: T.weight.black },
   cellLabel: { fontSize: T.size.nano, fontWeight: T.weight.extrabold, color: C.textMute, letterSpacing: 0.8, flex: 1 },
+  dot: { width: 8, height: 8, borderRadius: 4 },
   value: { fontSize: T.size.titleXl, fontWeight: T.weight.light, color: C.goldSoft, letterSpacing: T.tracking.tight },
   meta: { fontSize: T.size.nano, color: C.success, marginTop: 2, letterSpacing: 0.3, fontWeight: T.weight.bold },
   unit: { fontSize: T.size.nano, color: C.textMute, marginTop: 4, lineHeight: 13 },

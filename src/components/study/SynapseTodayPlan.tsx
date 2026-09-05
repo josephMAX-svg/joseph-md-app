@@ -8,9 +8,12 @@ import {
   SYN_PLAN_META, SYN_DIAS, DiaSynapse, SynBloque, synDiaDe, syn7d,
   SYN_FORMATO_ICON,
 } from '../../lib/synapseDailyPlan';
-import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso } from '../../lib/studyProgress';
+import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, loadDone, saveDone } from '../../lib/studyProgress';
 import { synObsUrl } from '../../lib/obsidianVaultMap';
 import { PERIWINKLE, statusGlyph, tagBar, PromptGlyph } from './synapseConsole';
+import {
+  VIBE_META, VIBE_DIAS, vibeDiaDe, vibeProyectoEnFecha, vibeShipped, VIBE_TIPO_LABEL, VIBE_ROTACION_ICON,
+} from '../../lib/vibecodingPlan';
 
 const OBS = '#A78BFA'; // mismo morado ◆ que el resto de planes
 
@@ -59,6 +62,7 @@ function BloqueRow({ b }: { b: SynBloque }) {
           <Text style={[st.blkTag, { color: accent }]}>[{b.tag}·{minTxt}]</Text>
           <Text style={st.blkFmt}>{SYN_FORMATO_ICON[b.formato]} {b.formato}</Text>
           {b.real ? <Chip label="temario real" color={Colors.green} small /> : <Chip label="continúa" color={Colors.muted} small />}
+          {b.audit ? <Chip label="auditar: ✓ si ya hecho" color={Colors.amber} small /> : null}
           {obs ? (
             <TouchableOpacity activeOpacity={0.7} hitSlop={{ top: 8, bottom: 8, left: 4, right: 8 }} onPress={() => openUrl(obs)}>
               <Chip label="◆" color={OBS} small />
@@ -79,7 +83,53 @@ function BloqueRow({ b }: { b: SynBloque }) {
   return <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(b.url!)} style={[st.blk, { borderColor: accent + '2E' }]}>{inner}</TouchableOpacity>;
 }
 
-function HoyView({ dia, hoyD, done, onToggle }: { dia: DiaSynapse; hoyD: number; done: Set<number>; onToggle: (d: number) => void }) {
+/** VibeCard — proyecto de la semana del VIBECODING 04:15 (src/lib/vibecodingPlan.ts) para la fecha del run
+ *  seleccionado: paso del día (L-V) con ✓ propio (PlanKey 'vibecoding'), o SHIP (sáb) / Feynman (dom). */
+function VibeCard({ fecha, vibeDone, onToggleVibe }: { fecha: string; vibeDone: Set<number>; onToggleVibe: (d: number) => void }) {
+  const p = vibeProyectoEnFecha(fecha);
+  const vd = vibeDiaDe(fecha);
+  if (!p) return null;
+  const hecho = vd ? vibeDone.has(vd.d) : false;
+  const semDias = VIBE_DIAS.filter((x) => x.semana === p.s);
+  const semHechos = semDias.filter((x) => vibeDone.has(x.d)).length;
+  const shipped = vibeShipped(vibeDone);
+  const wd = (() => { try { return new Date(fecha + 'T12:00:00').getDay(); } catch { return 1; } })();
+  const accent = OBS;
+  return (
+    <View style={[st.vibeCard, { borderColor: accent + '55' }]}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+        <Chip label={`04:15 VIBECODING · S${p.s}/12`} color={accent} small />
+        <Chip label={`${VIBE_ROTACION_ICON[p.rotacion]} ${p.rotacion}`} color={Colors.muted} small />
+        {p.deload ? <Chip label="DELOAD 50%" color={Colors.amber} small /> : null}
+        <Text style={[st.vibeStat, { marginLeft: 'auto' }]}>{semHechos}/{semDias.length} días · {shipped}/12 shipped</Text>
+      </View>
+      <Text style={st.vibeTitle}>{p.nombre}</Text>
+      {vd ? (
+        <Text style={st.vibeStep}>› {vd.wd} · {VIBE_TIPO_LABEL[vd.tipo]}{vd.min !== 45 ? ` (${vd.min}')` : ''}: {vd.paso}</Text>
+      ) : wd === 6 ? (
+        <Text style={st.vibeStep}>› SÁBADO PC 15:00-17:00 = SHIP: {p.shipTxt}</Text>
+      ) : (
+        <Text style={st.vibeStep}>› DOMINGO (opcional): Feynman del proyecto — explica en voz alta qué construiste y cómo funciona.</Text>
+      )}
+      <Text style={st.vibeSub} numberOfLines={2}>entregable: {p.entregable}</Text>
+      <View style={{ flexDirection: 'row', gap: 6, marginTop: 8, flexWrap: 'wrap' }}>
+        {vd ? (
+          <TouchableOpacity activeOpacity={0.85} onPress={() => onToggleVibe(vd.d)}
+            style={[st.doneBtn, { flex: 1, marginTop: 0 }, hecho ? { backgroundColor: accent, borderColor: accent } : { backgroundColor: accent + '14', borderColor: accent + '66' }]}>
+            <Text style={[st.doneBtnTxt, { color: hecho ? '#10122B' : accent }]}>{hecho ? '✓ paso del día hecho' : '○ marcar paso del día'}</Text>
+          </TouchableOpacity>
+        ) : null}
+        {p.docs.slice(0, 2).map((d, i) => (
+          <TouchableOpacity key={i} activeOpacity={0.8} onPress={() => openUrl(d.url)} style={[st.verBtn, { borderColor: accent + '88' }]}>
+            <Text style={[st.verTxt, { color: accent }]} numberOfLines={1}>docs {i + 1} ↗</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+    </View>
+  );
+}
+
+function HoyView({ dia, hoyD, done, onToggle, vibeDone, onToggleVibe }: { dia: DiaSynapse; hoyD: number; done: Set<number>; onToggle: (d: number) => void; vibeDone: Set<number>; onToggleVibe: (d: number) => void }) {
   const hecho = done.has(dia.d);
   const faseDias = SYN_DIAS.filter((x) => x.faseId === dia.faseId);
   const faseHechos = faseDias.filter((x) => done.has(x.d)).length;
@@ -114,6 +164,8 @@ function HoyView({ dia, hoyD, done, onToggle }: { dia: DiaSynapse; hoyD: number;
           </TouchableOpacity>
         </View>
       </FadeUp>
+
+      <FadeUp delay={30}><VibeCard fecha={dia.fecha} vibeDone={vibeDone} onToggleVibe={onToggleVibe} /></FadeUp>
 
       <Text style={st.secLbl}>◈ jobs del run · en espacios muertos (no tocan tus bloques médicos)</Text>
       {dia.bloques.map((b, i) => <FadeUp key={i} delay={40 + i * 30}><BloqueRow b={b} /></FadeUp>)}
@@ -204,7 +256,7 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
           <Text style={[st.globPct, { color: INDIGO }]}>{glob.pct}%</Text>
         </View>
         <ProgressBar pct={glob.pct} color={INDIGO} />
-        <Text style={st.globSub}>{glob.hechos}/{glob.total} runs passed · F0 sem 1-8 · F1 sem 9-12 · empieza en 0% (avance manual real)</Text>
+        <Text style={st.globSub}>{glob.hechos}/{glob.total} runs passed · F0 sem 1-8 (auditar ✓ lo ya cursado) · F1 sem 9-12 = stack del vibecoding · sáb PC = SHIP · empieza en 0% (avance manual real)</Text>
       </View>
       {grupos.map((g) => <SemanaCard key={g.clave} g={g} hoyD={hoyD} onPick={onPick} done={done} onToggle={onToggle} />)}
       <Text style={st.note}>☑ marca un run como passed (se guarda en este dispositivo). ▶ = run de hoy. Los checkpoints 13+ se generan al avanzar de fase (node DATA/_scripts/gen_synapse_plan.js).</Text>
@@ -212,12 +264,20 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
   );
 }
 
-export default function SynapseTodayPlan({ done, onToggle }: { done: Set<number>; onToggle: (d: number) => void }) {
+export default function SynapseTodayPlan({ done, onToggle, vibeDone: vibeDoneProp, onToggleVibe: onToggleVibeProp }: {
+  done: Set<number>; onToggle: (d: number) => void;
+  vibeDone?: Set<number>; onToggleVibe?: (d: number) => void; // v5.7: ✓ del vibecoding (PlanKey 'vibecoding'); si el hub no los pasa, estado local
+}) {
   const iso = synTodayISO();
   const hoyD = planHoyD(SYN_DIAS, iso);
   const todayDia = synDiaDe(iso) || SYN_DIAS.find((x) => x.d === hoyD) || SYN_DIAS[0];
   const [sel, setSel] = useState<number>(todayDia.d);
   const [view, setView] = useState<'hoy' | '7d' | 'temario'>('hoy');
+  const [vibeLocal, setVibeLocal] = useState<Set<number>>(() => new Set(loadDone('vibecoding')));
+  const vibeDone = vibeDoneProp ?? vibeLocal;
+  const onToggleVibe = onToggleVibeProp ?? ((d: number) => setVibeLocal((prev) => {
+    const n = new Set(prev); if (n.has(d)) n.delete(d); else n.add(d); saveDone('vibecoding', Array.from(n)); return n;
+  }));
   const dia = SYN_DIAS.find((x) => x.d === sel) || SYN_DIAS[0];
   // por .d (no por fecha): así el día por defecto figura como HOY aunque hoy caiga antes del inicio o en un hueco
   const esHoy = dia.d === todayDia.d;
@@ -244,7 +304,7 @@ export default function SynapseTodayPlan({ done, onToggle }: { done: Set<number>
       </View>
 
       <GlassPanel style={{ marginBottom: Spacing.xl, padding: Spacing.md }}>
-        {view === 'hoy' ? <HoyView dia={dia} hoyD={hoyD} done={done} onToggle={onToggle} />
+        {view === 'hoy' ? <HoyView dia={dia} hoyD={hoyD} done={done} onToggle={onToggle} vibeDone={vibeDone} onToggleVibe={onToggleVibe} />
           : view === '7d' ? <SieteView fromD={dia.d} done={done} onPick={pickDay} />
           : <TemarioView hoyD={hoyD} onPick={pickDay} done={done} onToggle={onToggle} />}
       </GlassPanel>
@@ -273,6 +333,11 @@ const st = StyleSheet.create({
   statLbl: { fontSize: 8, color: Colors.smallLabel, fontWeight: '700', marginTop: 3, textAlign: 'center', letterSpacing: 0.5, textTransform: 'uppercase', ...monoText },
 
   misionCard: { ...cardBase, borderWidth: 1, padding: Spacing.md, marginBottom: Spacing.sm, ...Elevation.md },
+  vibeCard: { ...cardBase, borderWidth: 1, padding: Spacing.md, marginBottom: Spacing.sm },
+  vibeStat: { fontSize: 9, color: Colors.muted, letterSpacing: 0.3, ...monoText },
+  vibeTitle: { fontSize: FontSize.bodyMd, fontWeight: '800', color: Colors.onSurface, marginTop: 6, letterSpacing: -0.1 },
+  vibeStep: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 4, lineHeight: LineHeight.labelMd },
+  vibeSub: { fontSize: 9, color: Colors.muted, marginTop: 4, lineHeight: 13 },
   misionKicker: { fontSize: FontSize.labelSm, color: INDIGO, marginTop: 8, letterSpacing: 0.3, ...monoText },
   misionTitle: { fontSize: FontSize.bodyLg, fontWeight: '800', color: Colors.onSurface, marginTop: 2, letterSpacing: -0.2, lineHeight: LineHeight.bodyLg },
   doneBtn: { marginTop: 10, paddingVertical: 9, borderRadius: BorderRadius.md, borderWidth: 1, alignItems: 'center' },

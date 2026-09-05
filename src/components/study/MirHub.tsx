@@ -7,7 +7,7 @@ import MirTodayPlan from './MirTodayPlan';
 import { RingStat, FadeUp } from '../empresa/visuals';
 import {
   MIR_META, MIR_KPIS, PROMIR_FASES, MIR_HORA, MIR_CALENDARIO,
-  MIR_TACTICA, MIR_RECURSOS, MIR_NOTA, MIR_SIMULACROS, MIR_READINESS, MIR_DESGLOSES,
+  MIR_TACTICA, MIR_RECURSOS, MIR_NOTA, MIR_SIMULACROS, mirReadiness, MIR_DESGLOSES,
   PRIORIDAD_COLOR, VUELTAS,
 } from '../../lib/mirData';
 import { DIGESTIVO_META, DIGESTIVO_CAPITULOS, DIGESTIVO_PLAN, capUrl } from '../../lib/mirDigestivoData';
@@ -44,16 +44,17 @@ export default function MirHub() {
   const done = loadDone('mir');
   const hoyD = planHoyD(MIR_DIAS, todayISO());
   const glob = progresoGlobal(MIR_DIAS, new Set(done));
+  const readiness = mirReadiness(); // derivado del log de evals (mini-MIR > cierres > ancladas), no hardcodeado
 
   return (
     <View>
       <ReadinessBar
         flag={MIR_META.flag} title={MIR_META.titulo}
-        subtitle="Consola española · rentabilidad = preguntas ÷ temario"
+        subtitle="Consola española · rentabilidad = preguntas ÷ temario · medido por % ciego"
         accent={AMBER}
         dia={hoyD} total={glob.total} temarioPct={glob.pct}
         racha={`${done.length} temas`}
-        readinessPct={MIR_READINESS.pct} readinessLabel={MIR_READINESS.estado}
+        readinessPct={readiness.pct} readinessLabel={readiness.estado}
         extraStat={{ label: 'TIER S', value: `${MIR_KPIS.asignaturasTierS}`, hint: 'ROI máx', accent: Colors.coral }}
       />
 
@@ -69,11 +70,12 @@ export default function MirHub() {
 
 // ── SIMULACROS · readiness cronometrado + desgloses por asignatura ──
 function SimulacrosView() {
+  const readiness = mirReadiness();
   return (
     <View>
       <CheckpointCard
         title="Simulacros cronometrados · readiness real"
-        subtitle={MIR_READINESS.siguiente}
+        subtitle={`${readiness.estado} · siguiente: ${readiness.siguiente}`}
         rows={MIR_SIMULACROS.map((s) => ({
           form: s.nombre, kind: s.fuente, when: s.cuando, predictor: s.formato, band: s.banda, url: s.url, gated: s.gated,
         }))}
@@ -178,9 +180,9 @@ function TemarioView() {
     <View>
       <View style={st.ringRow}>
         <View style={st.ringCard}><RingStat value={3} max={4} label="Tier S" sub="ROI máximo" accent={Colors.green} /></View>
-        <View style={st.ringCard}><RingStat value={6} max={6} label="Vueltas CRÍT" sub="Cardio/Estad/Ética" accent={Colors.coral} /></View>
+        <View style={st.ringCard}><RingStat value={6} max={6} label="Vueltas CRÍT" sub="Cardio/Epi/Ética" accent={Colors.coral} /></View>
         <View style={st.ringCard}><RingStat value={1} max={1} label="Simulacro" sub="/finde (mes 6+)" accent={AMBER} /></View>
-        <View style={st.ringCard}><RingStat value={MIR_READINESS.pct} label="Readiness" sub="por simulacro" accent={Colors.gold} suffix="%" /></View>
+        <View style={st.ringCard}><RingStat value={mirReadiness().pct} label="Readiness" sub="neto ciego (log)" accent={Colors.gold} suffix="%" /></View>
       </View>
 
       {/* LAS 30 ASIGNATURAS REALES de ProMIR (rentabilidad + cruce rabi_94) */}

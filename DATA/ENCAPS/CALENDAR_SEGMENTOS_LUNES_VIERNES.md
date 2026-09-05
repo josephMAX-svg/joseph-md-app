@@ -1,5 +1,11 @@
+> ## ⚠️ HISTÓRICO — SUPERSEDIDO el 05-sep-2026
+> Este fichero describe el calendario del **loop ENCAPS de julio 2026** (ENCAPS por la mañana, USMLE 16:15, NAP 13:15, anclajes 04:15/17:15) y **ya no es la autoridad**.
+> Desde el régimen **v5.6 (D1 = lun 7-sep-2026)** el bloque principal es el **USMLE Step 1** (05:00 Anki AM · 07:15-12:00 · 18:00 eval) y ENCAPS queda en 1h de banqueo (16:15-17:15).
+> **Autoridad vigente de CUÁNDO y CÓMO:** [`CALENDAR_SEGMENTOS_V5_6.md`](./CALENDAR_SEGMENTOS_V5_6.md) (L-V + sáb/dom, IDs de series, overlays de hito con D#).
+> Se conserva íntegro, sin editar, como referencia de las descripciones largas de los bloques ENCAPS (útiles cuando ENCAPS vuelva a ser principal en feb-mar 2027).
+
 # 📅 SEGMENTOS DEL CALENDAR — DÍA LUNES-VIERNES (extraído en vivo 24-jul-2026)
-> Descripción literal de cada bloque tal como está en Google Calendar. Autoridad de CUÁNDO y CÓMO se ejecuta cada segmento. El QUÉ (tema) lo manda YoCPMD/Supabase.
+> Descripción literal de cada bloque tal como está en Google Calendar. ~~Autoridad de CUÁNDO y CÓMO se ejecuta cada segmento.~~ (HISTÓRICO desde 05-sep-2026 — ver banner.) El QUÉ (tema) lo manda YoCPMD/Supabase.
 
 ### 04:00-04:15 · DECLARACIONES EKER - REPROGRAMA TU BLUEPRINT
 Di estas frases EN VOZ ALTA antes de arrancar el dia:

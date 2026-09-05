@@ -1,0 +1,59 @@
+{
+ "_meta": {
+  "version": 1,
+  "plan": "DERMA",
+  "descripcion": "Registro APPEND-ONLY de lo que Joseph resuelve en el bloque Derma (PLAN ÉLITE v2.1, 13:30-14:15 interdiario): casos ciegos del banco 'Dermatology Cases for Board Review' (200), preguntas de los bancos de review (Pictorial 4e / CORE / Barnhill / QOTW), imagen dermatoscópica ciega y drill HDPH. Mismo espíritu que DATA/ENCAPS/TRACKING_ERRORES/_registro_resoluciones.json: fuente de verdad del % CIEGO REAL y del mapa de fallos por módulo CORE (Checkpoint d45/d46) y por bloque A-X; la 2ª pasada FSRS del d69 sale SOLO de aquí. Cada ronda nueva se AGREGA a rondas[] (no se reescribe nada anterior).",
+  "creado": "2026-09-05",
+  "actualizado": "2026-09-05",
+  "origen_datos": "src/lib/dermaLedger.ts → localStorage 'jmd-derma-casos' (todas las entradas) y 'jmd-derma-fallos' (solo fallos + aciertos por suerte, mismo esquema) → dermaLedgerExportJSON() en el cierre 14:13 o en d70 → pegar aquí en rondas[] (append). Mientras no haya backend, el ledger vive en el navegador y este fichero es el respaldo versionado.",
+  "esquema_ronda": {
+   "fecha": "YYYY-MM-DD (sesión Derma)",
+   "d": "sesión del plan 1-70 (dermaDailyPlan.ts)",
+   "bKey": "bloque del plan A|B|C|D|E|F|G|H|Z|X",
+   "fuente": "caso | pictorial | core | barnhill | qotw | dermatoscopia | drill",
+   "n": "nº de ítems de la ronda",
+   "correctas_seguras": "aciertos con eval_acierto = conocimiento (los únicos que cuentan para el % ciego)",
+   "correctas_dudosas": "aciertos con eval_acierto = suerte (NO cuentan para el % ciego)",
+   "fallos_por_tipo": { "CCSN": 0, "CONCEPTO": 0, "MORFOLOGIA": 0, "DDX": 0 },
+   "pct_ciego": "derivado = correctas_seguras / n × 100",
+   "items": "detalle por ítem con el esquema_item (opcional pero recomendado para los casos)"
+  },
+  "esquema_item": {
+   "id": "id del caso (1-200, DERMA_CASOS) · nº de pregunta del banco · 0 para el drill HDPH",
+   "fecha": "YYYY-MM-DD",
+   "d": "sesión del plan",
+   "fuente": "caso | pictorial | core | barnhill | qotw | dermatoscopia | drill",
+   "moduloCORE": "Med | Path | Peds | Surg (los casos lo traen por id: Med 1-110 · Path 111-140 · Peds 141-170 · Surg 171-200 — A VERIFICAR el orden real del listado, ver dermaDailyPlan.ts)",
+   "acierto": "true | false (diagnóstico correcto en el paso ③, ANTES de leer la discusión)",
+   "eval_acierto": "conocimiento | suerte | confusion | no-sabia  (matriz Palmerton confianza × acierto: conocimiento = acierto seguro · suerte = acierto adivinado · confusion = fallo por discriminación/CCSN · no-sabia = fallo por vacío)",
+   "error_tipo": "CCSN | CONCEPTO | MORFOLOGIA | DDX | null",
+   "descripcion8ejes": "0-8 · autoevaluación de la descripción morfológica del paso ① tras leer la discusión (gate del módulo A: 10 descripciones ≥6/8)",
+   "nota": "opcional · qué falló en 1 línea (p. ej. 'confundí QS con melanoma: no vi los quistes de milium')"
+  },
+  "taxonomia_error": {
+   "CCSN": "Confusión entre Conceptos Similares/Near: sabe ambas entidades pero no discrimina en la imagen/viñeta (pénfigo↔penfigoide, QS↔melanoma, erisipela↔celulitis). Cura: tabla comparativa + oclusión del rasgo discriminador.",
+   "CONCEPTO": "No entiende el mecanismo (modelo mental invertido o ausente). Cura: tarjeta de MECANISMO + 10' de Fitzpatrick del capítulo + ficha del cerebro clínico (dermaCerebro.ts).",
+   "MORFOLOGIA": "Describió mal la lesión en el paso ① (lesión 1ª/2ª, color, configuración, distribución) y el error arrastró el diagnóstico. Cura: re-describir con la rúbrica de 8 ejes + DermNet terminology.",
+   "DDX": "Describió bien pero el diferencial de 3 no incluía la respuesta (paso ②). Cura: pares del Differential Diagnosis Challenge de ese bloque + tarjeta '¿qué 3 entidades dan esta morfología en este sitio?'."
+  },
+  "matriz_palmerton": {
+   "conocimiento": "acierto + confianza segura → cuenta para el % ciego",
+   "suerte": "acierto + adivinado → NO cuenta; entra en 'jmd-derma-fallos' y en la 2ª pasada",
+   "confusion": "fallo sabiendo ambas entidades → error_tipo CCSN o DDX",
+   "no-sabia": "fallo por vacío → error_tipo CONCEPTO o MORFOLOGIA"
+  },
+  "modulo_por_bloque": { "A": "Med", "B": "Med", "C": "Med", "D": "Med", "E": "Path", "F": "Peds", "G": "Surg", "H": "Med", "Z": "Med", "X": "Surg" },
+  "bancos": { "caso": "Cases for Board Review 200 (groupid 1546)", "pictorial": "Pictorial Review 4e 381Q (resourceid 3626)", "core": "CORE Exam Bank 104Q (3479)", "barnhill": "Barnhill's Challenge 403Q (2865)", "qotw": "Question of the Week 50Q (3562)", "dermatoscopia": "imagen dermatoscópica ciega de la sesión (Self-Assessment 2e / Dermoscopedia)", "drill": "simulador oclusión vascular 90 s (checklist HDPH de dermaCerebro.ts)" },
+  "metas": {
+   "pct_ciego_meta": 85,
+   "pct_ciego_crucero": 75,
+   "gate_moduloA": "10 descripciones con descripcion8ejes ≥ 6 antes de dar por superado el módulo A (d6)",
+   "checkpoint_d45": "mapa de % fallo por módulo CORE (Med/Path/Peds/Surg) y por bloque A-X → las 2 áreas peores mandan el re-drill de d46",
+   "segunda_pasada_d69": "solo ids con acierto=false o eval_acierto=suerte (dermaCasosParaSegundaPasada), ordenados por el módulo con mayor % fallo",
+   "drill_hdph": "d19-20, d46 (H), d70 (Z): recitar sin mirar signos → dosis/pulsos → intervalos → ceguera → oftalmología; resultado como item fuente=drill (acierto = checklist completo en ≤90 s)"
+  },
+  "formato_cierre_1_linea": "DERMA|<fuente>|<fecha>|d<NN>|n=NN|seg=NN|dud=NN|CCSN:a,CONCEPTO:b,MORFOLOGIA:c,DDX:d  → se pega en rondas[] con el esquema_ronda (sin script todavía; gen_encaps_semana.js normaliza examen=DERMA en _registro_resoluciones.json si se quiere consolidar)",
+  "primera_pasada": { "casos_por_sesion": 2, "sesiones": 70, "casos": 140, "post_step1": "60 restantes (dermaCasosPostStep1) a 5/sesión desde feb-2027" }
+ },
+ "rondas": []
+}

@@ -1,0 +1,8 @@
+# Material privado del case report (consentimientos firmados, fotos originales, fichas de sesión) — NUNCA al repo
+# (el repo tiene remoto en GitHub). Ver CASE_REPORT_1/protocolo_fotos.md §3.
+CASE_REPORT_1/_privado/
+CARTA_1/_privado/
+TESIS_L0/_privado/
+# base anonimizada / exports de datos de la tesis: fuera del repo salvo decisión explícita (Zenodo/OSF con DOI)
+TESIS_L0/*.csv
+TESIS_L0/*.xlsx

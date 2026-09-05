@@ -20,6 +20,7 @@ Leer `TRACKING_ERRORES/_registro_resoluciones.json` + `PERFIL_CONOCIMIENTO.md`: 
 Base para peso y tipo de pregunta:
 - **Pronóstico walk-forward v2** (`PRONOSTICO_WALKFORWARD_2026-2_v2.md` **§7 = canónico**): áreas **II33·I28·V22·III13·IV4** (vector unificado 20-jul-2026; supersede II34·I27·V23·III13·IV3); **7 críticos** I-3/II-1/II-3/V-2/II-11/III-5/II-8; temas recalibrados **I-3 12 · V-2 9 · II-1 5 · V-1 3 · II-9 3**; **I-6 EXTINTA** (~0.5%, ya NO crítica), **V-MED = pseudo-código** (no está en el temario). Formato: viñeta ~90% global, pero **en I-3 el modal es viñeta CORTA de campo** (ver §5).
 - **6 exámenes reales** (`exams_txt/`) + **claves SERUMS** 2024-2A/2B, 2025-1A/1B, 2025-2 → nivel, estilo, trampas reales. **Nivel de mis preguntas SIEMPRE ≥ examen real.**
+- ⚠ `exams_txt/2026-2.txt` existe desde el 05-sep-2026 pero es **LISTA NEGRA** hasta el pre-test del 5-feb-2027 (ver §3-bis-LN). Vector y críticos vigentes = **v3** (`PRONOSTICO_WALKFORWARD_2027-1_v3.md`: II 30 · I 27 · V 21 · III 13 · IV 9 · 8 críticos I-3 V-2 II-3 III-5 I-4 II-5 II-4 IV-1/2); las cifras v2 que quedan en este doc son históricas.
 
 ### 3-bis. ⛔ GATE DE CLAVE OFICIAL — OBLIGATORIO ANTES DE ENTREGAR (regla de Joseph, 05-ago-2026)
 
@@ -52,6 +53,16 @@ Base para peso y tipo de pregunta:
 **Patrón detectado que vale como regla de contenido:** ante un valor en zona gris el examen premia la **prueba confirmatoria definitiva**, no repetir la misma medición — glicemia 100-125 → **TTOG** (no repetir glicemia); PA 140/90 → **MAPA** (no nueva toma de PA, 2025-1A Q88 / 2025-1B Q52).
 
 Extracción de texto de compendios locales para verificar (node, en el scratchpad): `new (require('pdf-parse').PDFParse)({data: fs.readFileSync(ruta)}).getText()`. Sirve con los compendios (tienen capa de texto); **no** con los PDF de normas escaneados (solo imagen → hay que leerlos con Read o buscar la norma en la web).
+
+### 3-bis-LN. ⛔ LISTA NEGRA 2026-II · moldes/espejos SOLO de 2024-2A → 2026-1 (regla 05-sep-2026, vigente hasta el pre-test)
+
+**El examen 2026-II (100Q, clave oficial verificada 100/100) está RESERVADO como pre-test diagnóstico de la fase intensiva (viernes 5-feb-2027, `PRETEST_2026-II.md`).** Hasta que Joseph lo rinda:
+
+- ⛔ **Prohibido** usar `exams_txt/2026-2.txt`, `_examen_2026-2_items.json` o `_examen_2026-2_clasificado.json` como molde, espejo, cantera de viñetas, fuente de distractores o "pregunta parecida" en bancos diarios, mini-sims, evals ancladas ni sets de repaso. Esto **corrige** la frase "cantera de viñetas espejo" del `PROTOCOLO_HORA_MANTENIMIENTO.md`: el 2026-II NO es cantera hasta febrero.
+- ✅ **Moldes/espejos permitidos: SOLO 2024-2A · 2024-2B · 2025-1A · 2025-1B · 2025-2 · 2026-1** (`exams_txt/` + claves oficiales). Desde el 05-sep-2026 las claves oficiales de 2024-2A→2025-2 están **extraídas programáticamente de los resaltados amarillos** (rectángulos del content stream del PDF, 100/100 por examen, A/B idénticos 100/100, hechos del gate de arriba re-verificados: 2025-2 Q89/Q97/Q52, 2025-1A Q76/Q41/Q98/Q38/Q88) en `BANCO_PROPIO/_examenes_reales_2024-2A_2026-1.json` → cada ítem del banco propio cita `verificado_contra: "CLAVE OFICIAL <proceso> Q<n>"`. 2026-1 sigue **sin PDF de claves** → sus moldes se marcan "molde no verificable contra clave oficial".
+- ✅ **Único uso permitido del 2026-II antes del pre-test:** recall de **cifras/plazos/definiciones textuales** (dosis, semanas, minutos, años, colores, número de manzanas) en `CIFRAS_CRITICAS_2027-I.md` + deck `ENCAPS::Cifras`. Son datos normativos que Joseph debe saber de todas formas; no revelan la viñeta ni el distractor. La tarjeta cita la norma (NTS/RM) y el número de pregunta solo como trazabilidad.
+- El día del pre-test la lista negra se **levanta**: desde el 8-feb-2027 el 2026-II pasa a ser el banco espejo más valioso (comité más reciente) para las semanas 2-5 de la intensiva (`FASE_INTENSIVA_2027-I.md`).
+- Los generadores lo aplican por código: `gen_encaps_minisim.js` **excluye** todo ítem cuyo `verificado_contra` o `molde` mencione `2026-2`/`2026-II` mientras no exista la ronda `PRETEST_2026-II` en `_registro_resoluciones.json`.
 
 ### 4. ANTI-ALUCINACIÓN — verificación exhaustiva contra fuentes reales ⚠ (el más crítico)
 **NINGUNA pregunta/clave/dato se inventa.** Todo (dosis, criterios, plazos, NTS, definiciones) se **verifica contra fuente real** antes de presentar. Análisis exhaustivo por estas vías:

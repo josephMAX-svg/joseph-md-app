@@ -66,3 +66,47 @@ laboratorio, alto impacto y directamente conectable al **registro PERÚ-SAFE** (
   **proporciones** o se quede en **síntesis narrativa estructurada** (decidir en R29–R33 según homogeneidad).
 - Sesgo de publicación fuerte (los rescates exitosos se publican más) → reportarlo explícitamente (funnel/Egger).
 - El valor para Mayo no depende del IF sino del **ángulo de seguridad del paciente** + ser **primer autor**.
+
+## 9. Equipo de revisión (se copia tal cual a PROSPERO · átomos X-1 → X-9 → R10)
+
+> **Por qué existe esta sección (05-sep-2026).** PRISMA 2020 (ítem 8) y el Cochrane Handbook (§4.6) exigen que la
+> selección de estudios y la extracción las hagan **≥2 revisores independientes** y que el manuscrito lo reporte; un κ
+> calculado sobre "dos pases de la misma persona" no tiene sentido y un LLM (Ollama / Elicit) **no cuenta como revisor**
+> (solo pre-ordena o asiste). PROSPERO además pide el equipo (nombres, afiliaciones, ORCID), las fechas previstas y los
+> conflictos de interés. Regla del plan: **el revisor #2 se nombra en X-1 (nov-2026), se confirma en X-9 (feb-2027) y
+> sólo entonces se registra R10.** Sin revisor #2 no hay PROSPERO.
+
+### 9.1 Roles (rellenar con nombre · afiliación · ORCID · conflicto)
+
+| Rol PROSPERO | Persona | Afiliación | ORCID | Conflictos de interés | Estado |
+|---|---|---|---|---|---|
+| Garante (guarantor) / contacto | Joseph Max Soto Tocas | Facultad de Medicina Humana, Universidad Nacional del Centro del Perú (Huancayo) | A VERIFICAR (05-sep) — se obtiene en R0 (checklist Infra académica) | Ninguno | primer autor · cribador 1 · extractor 1 · redacción |
+| Revisor #2 (cribado + extracción independientes, en ciego) | A DEFINIR en X-1 — opciones: (a) Dr. Ciro Jesús Rodríguez Aliaga, (b) egresado FMH-UNCP con interés en investigación, (c) colaborador IMG de la campaña K1-K2 / DIGA | según (a)/(b)/(c) | A VERIFICAR (05-sep) | declarar | se le ofrece coautoría por 2º cribado + extracción |
+| Senior author / clínico que valida relevancia | Dr. Ciro Jesús Rodríguez Aliaga (propuesta M1) | Servicio de Dermatología, Hospital Regional Docente Clínico Quirúrgico Daniel Alcides Carrión, Huancayo | A VERIFICAR (05-sep) | declarar | aceptación pendiente (M1, 14-sep-2026) |
+| Tercer revisor (desempate de conflictos) | = senior author, o revisor externo de la campaña | — | — | — | regla escrita en 9.3 |
+| Apoyo metodológico / estadístico (meta-análisis en R) | Joseph (R29-R33) + revisión externa opcional (Rising Scholars) | — | — | — | opcional |
+
+### 9.2 Cuentas que el equipo necesita antes de R17 (Rayyan)
+- Cada revisor: cuenta **Rayyan** (gratis hasta 3 revisiones) + **ORCID** (PROSPERO lo pide para todos los autores).
+- Joseph (garante): además PROSPERO, Zotero y la cuenta del journal (Editorial Manager / ScholarOne) — checklist "Infra
+  académica" de la app (clave `research-infra`).
+
+### 9.3 Reglas de trabajo (se escriben en el protocolo y en Methods · PRISMA 2020 ítems 8-9)
+1. **Cribado nivel 1 y 2:** los dos revisores deciden en **ciego** dentro de Rayyan; los conflictos se resuelven por
+   consenso y, si persisten, por el tercer revisor. Se reporta el **κ de Cohen con IC95 %** de cada nivel (R20, R21).
+2. **Extracción:** formulario piloteado por ambos (R23); extracción **doble e independiente** (R24); discrepancias
+   reconciliadas y registradas (`04_extraccion/discrepancias.md`).
+3. **Riesgo de sesgo:** ROBINS-I / JBI-Murad por ambos revisores con consenso (R26).
+4. **Asistencia por IA:** Ollama (pre-screening del motor de descubrimiento) y Elicit solo **ordenan o localizan**
+   datos; ninguna decisión de inclusión/exclusión ni celda de extracción se acepta sin un humano; se declara en Methods.
+5. **Autoría:** los 4 criterios ICMJE + roles CRediT por persona; el revisor #2 es coautor si cumple los 4 criterios.
+
+### 9.4 Fechas previstas (campo obligatorio de PROSPERO — se copian del plan `researchDailyPlan2027.ts`)
+- Registro PROSPERO: **R10** (ciclo 2, feb-2027; fecha exacta = `RESEARCH_HITOS['PROSPERO-SR1']`).
+- Inicio de búsquedas: R12 · fin de cribado: R21 · fin de extracción: R25 · síntesis: R29-R33 · envío: **R43**
+  (`RESEARCH_HITOS['SR-1']`, jun-jul 2027). Estado en PROSPERO al registrar: *"Preliminary searches"* (el corpus de
+  jun-2026 existe, pero la búsqueda PRISMA-S final se corre en R12-R16).
+
+### 9.5 Conflictos de interés y financiación
+- Sin financiación externa (autofinanciado); ningún autor con vínculo con fabricantes de rellenos o hialuronidasa
+  — **A VERIFICAR (05-sep)** para cada persona en el momento de X-9.

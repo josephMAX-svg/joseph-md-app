@@ -6,13 +6,23 @@
 // Regla: CERO URLs inventadas — toda URL emitida debe estar en _extracted.json o en
 // la allowlist EXTRA_VERIFIED (URLs ya verificadas en src/lib/synapseData.ts el 10-jun).
 //
-// Regenerar/extender: node DATA/_scripts/gen_synapse_plan.js
+// Regenerar/extender: node DATA/_scripts/gen_synapse_plan.js YYYY-MM-DD
 // (al avanzar de fase: añadir A-units de la fase siguiente en buildAUnits y re-ejecutar).
+//
+// v5.7 (5-sep-2026, vacíos Palmerton v3): F1 (sem 9-12) deja de ser CS50P Weeks 0-3 (sintaxis que la IA
+// escribe) y pasa a ser el STACK DEL VIBECODING (Claude Code docs: memoria/skills/hooks/MCP/subagentes/
+// Agent SDK/headless/plugins/workflows · Academy: skills/subagentes/MCP/Claude Code in Action/Claude API ·
+// Supabase: RLS/select/triggers/webhooks/Edge Functions · n8n: first workflow/Webhook/AI Agent), extraído a
+// curricula/_extracted.json el 5-sep-2026. PC sábado = "SHIP proyecto N" (DATA/SYNAPSE/vibecoding_proyectos.json)
+// y domingo = Feynman del proyecto (10', opcional). F0 NO se reinicia: sus A-units llevan audit:true
+// ("auditar con Joseph: ✓ si ya hecho") porque F0 y la minifase corrieron jun-ago (progreso solo en localStorage).
 const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..', '..');
 const EX = JSON.parse(fs.readFileSync(path.join(ROOT, 'DATA/SYNAPSE/curricula/_extracted.json'), 'utf8'));
+const VIBE = JSON.parse(fs.readFileSync(path.join(ROOT, 'DATA/SYNAPSE/vibecoding_proyectos.json'), 'utf8')).proyectos;
+if (VIBE.length !== 12) throw new Error('vibecoding_proyectos.json debe tener 12 proyectos');
 const cur = (id) => {
   const t = EX.find((x) => x.id === id);
   if (!t || !t.accesible) throw new Error('curriculum no accesible: ' + id);
@@ -64,6 +74,8 @@ for (const t of EX) {
   if (t.urlFinal) ALLOWED.add(t.urlFinal);
   for (const l of t.lecciones || []) if (l.url) ALLOWED.add(l.url);
 }
+// docs de los 12 proyectos del vibecoding (verificadas 200 el 5-sep-2026, ver _meta del JSON)
+for (const p of VIBE) for (const dd of p.docs || []) ALLOWED.add(dd.url);
 const assertUrl = (u) => {
   if (!u) return u;
   const base = u.split('&t=')[0].split('#')[0];
@@ -82,13 +94,19 @@ const autoCap = (n) => cur('automate').lecciones.find((x) => x.n === n);
 const sec = (ts) => ts.split(':').reduce((a, x) => a * 60 + Number(x), 0);
 const tUrl = (base, ts) => base + '&t=' + sec(ts) + 's';
 
-// ─── Bloque A (15', pantalla): 46 unidades F0 + 24 unidades F1 (secuencial) ───
+// ─── Bloque A (15', pantalla): 46 unidades F0 (audit) + 24 unidades F1 stack vibecoding (secuencial) ───
+const ccDoc = (n) => lec('claude-code-docs', n);   // páginas reales de code.claude.com/docs (5-sep-2026)
+const sbDoc = (n) => lec('supabase-docs', n);
+const n8nDoc = (n) => lec('n8n-docs', n);
+const acad = (id, n) => lec(id, n);
 function buildAUnits() {
   const A = [];
-  const push = (material, leccion, url, opts = {}) => A.push({ material, leccion, url: url ? assertUrl(url) : undefined, dur: opts.dur, real: opts.real !== false });
+  const push = (material, leccion, url, opts = {}) => A.push({ material, leccion, url: url ? assertUrl(url) : undefined, dur: opts.dur, real: opts.real !== false, audit: opts.audit === true });
 
-  // F0 · La Escuela de Anthropic (semanas 1-8 · 46 días Lun-Sáb)
-  push('Anthropic Academy', 'Crea tu cuenta en la Academy y regístrate en "AI Fluency: Framework & Foundations" (Register · FREE). Hoy solo eso: deja la cuenta lista.', U.academy);
+  // F0 · La Escuela de Anthropic (semanas 1-8 · 46 días Lun-Sáb) — NO se reinicia desde cero: F0 y la
+  // minifase AI-first corrieron jun-ago (progreso solo en localStorage). Cada unidad lleva audit:true →
+  // "auditar con Joseph: ✓ si ya hecho" (marcar ✓ y pasar a la primera lección realmente pendiente).
+  push('Anthropic Academy', 'AUDITORÍA F0 (5\'): abre "My courses" en la Academy y anota qué certificados ya tienes (AI Fluency · Claude 101 · Code 101 · Platform 101). Marca ✓ hoy y en cada A-unit de F0 ya cursada; la primera pendiente es tu lección real de mañana.', U.academy);
   push('AI Fluency: Framework & Foundations', 'Lecciones "Introduction to AI Fluency" + "Why do we need AI Fluency?"', U.aif);
   push('AI Fluency: Framework & Foundations', 'Lección "The 4D Framework": Delegation · Description · Discernment · Diligence — el vocabulario interno de Anthropic', U.aif);
   push('AI Fluency: Framework & Foundations', 'Deep Dive 1: "Generative AI fundamentals" + "Capabilities & limitations"', U.aif);
@@ -141,18 +159,38 @@ function buildAUnits() {
   push('3Blue1Brown — Neural networks', `${v8.titulo} → CIERRE F0: ya puedes explicar un LLM por dentro`, v8.url, { dur: v8.dur });
 
   if (A.length !== 46) throw new Error('F0 debe tener 46 A-units, hay ' + A.length);
+  for (const a of A) a.audit = true; // F0 completa = auditar con Joseph (✓ si ya hecho)
 
-  // F1 · arranque (semanas 9-12 · 24 días Lun-Sáb): CS50P Weeks 0-3
-  for (let w = 0; w <= 3; w++) {
-    const week = cs50w(w);
-    const name = `CS50P — Week ${w}: ${week.titulo}`;
-    for (let t = 1; t <= 5; t++) {
-      push(name, t === 1
-        ? `Lecture — tramo 1/5 (15'): empieza desde el minuto 0`
-        : `Lecture — tramo ${t}/5 (15'): retoma EXACTAMENTE donde quedaste`, week.url);
-    }
-    push(name, `Shorts de la Week ${w} + cierra apuntes. El Problem Set va al bloque PC del sábado.`, week.url);
-  }
+  // F1 · STACK DEL VIBECODING (semanas 9-12 · 24 días Lun-Sáb) — la teoría de las 12:30 alimenta
+  // los proyectos de las 04:15 (S9-S12) y consolida S1-S8. Temarios reales: curricula/_extracted.json.
+  // Sem 9 · Claude Code core (memoria · skills · hooks · subagentes)
+  push('Claude Code docs — ' + ccDoc(1).modulo, 'CLAUDE.md vs auto memory · Set up a project CLAUDE.md · Write effective instructions · Organize rules with .claude/rules/. Aplícalo: revisa el CLAUDE.md de joseph-md-app con esos criterios.', ccDoc(1).url);
+  push('Academy — ' + cur('academy-agent-skills').nombre, `"${acad('academy-agent-skills', 1).titulo}" + "${acad('academy-agent-skills', 2).titulo}" (2 lecciones cortas)`, cur('academy-agent-skills').url);
+  push('Claude Code docs — ' + ccDoc(2).modulo, 'Getting started: Create your first skill · Where skills live · Frontmatter reference · Pass arguments to skills · Inject dynamic context. Cierra con la skill /remap (S5) o /pregunta-encaps (S8) en mente.', ccDoc(2).url);
+  push('Claude Code docs — ' + ccDoc(3).modulo, 'Set up your first hook · What you can automate (Auto-format · Block edits to protected files · Auto-approve specific permission prompts) · How hooks work (matchers, input/output). Eventos: PreToolUse · PostToolUse · Stop · SessionStart · SessionEnd.', ccDoc(3).url);
+  push('Academy — ' + cur('academy-subagents').nombre, `"${acad('academy-subagents', 1).titulo}" + "${acad('academy-subagents', 2).titulo}" + "${acad('academy-subagents', 3).titulo}"`, cur('academy-subagents').url);
+  push('Claude Code docs — ' + ccDoc(7).modulo, 'Quickstart: create your first subagent · Write subagent files (frontmatter, tools, model) · Common patterns: Isolate high-volume operations · Run parallel research · Chain subagents.', ccDoc(7).url);
+  // Sem 10 · MCP · headless · Agent SDK · plugins/workflows
+  push('Academy — ' + cur('academy-mcp').nombre, `Módulo Introduction: "${acad('academy-mcp', 1).titulo}" · "${acad('academy-mcp', 2).titulo}" · "${acad('academy-mcp', 3).titulo}"`, cur('academy-mcp').url);
+  push('Claude Code docs — ' + ccDoc(5).modulo, 'Add and verify a server (claude mcp add · claude mcp list) · Where servers are saved (local/project/user) · Edit .mcp.json directly · Troubleshooting. Aplícalo a los MCP que ya usas (Supabase, Google Calendar).', ccDoc(5).url);
+  push('Academy — ' + cur('academy-mcp').nombre, `Módulo Hands-on: "${acad('academy-mcp', 4).titulo}" · "${acad('academy-mcp', 5).titulo}" · "${acad('academy-mcp', 6).titulo}"`, cur('academy-mcp').url);
+  push('Claude Code docs — ' + ccDoc(8).modulo, 'Basic usage (claude -p · --bare) · Get structured output (--output-format json · --json-schema) · Auto-approve tools (--allowedTools) · Continue conversations. Base del generador de contenido (S11) y de los scripts nocturnos.', ccDoc(8).url);
+  push('Claude Code docs — ' + ccDoc(9).modulo + ' + quickstart', 'Overview: Compare the Agent SDK to other Claude tools · Capabilities (hooks, subagents, MCP, permissions, sessions). Quickstart: Setup · Build an agent that finds and fixes bugs · Key concepts (tools · permission modes).', ccDoc(10).url);
+  push('Claude Code docs — ' + ccDoc(11).modulo + ' + ' + ccDoc(12).modulo, 'Plugins: When to use plugins vs standalone · Quickstart (manifest · skill · --plugin-dir). Workflows: When to use a workflow · Have Claude write a workflow · Save the workflow for reuse. Decide qué de YoCPMD merece ser plugin.', ccDoc(11).url);
+  // Sem 11 · Supabase (RLS · select · triggers · webhooks · Edge Functions)
+  push('Supabase docs — ' + sbDoc(1).modulo, 'Understand Row Level Security: What a policy does · Grants and policies · Authenticated and unauthenticated roles. Lo que S6 (datos_tesis) necesita entender antes de tocar producción.', sbDoc(1).url);
+  push('Supabase docs — ' + sbDoc(1).modulo + ' (II)', 'Secure a table with RLS: Enable RLS and set the grants · Write a policy for each operation (SELECT/INSERT/UPDATE/DELETE) · Policy tests · RLS reference: auth.uid() · Use security definer functions · Bypassing RLS.', sbDoc(1).url);
+  push('Supabase docs — ' + sbDoc(2).modulo, 'Getting your data · Handling errors · Selecting specific columns · Query referenced tables · Querying with count option · Querying JSON data. Es lo que usa gen_revision_semanal.js.', sbDoc(2).url);
+  push('Supabase docs — ' + sbDoc(3).modulo, 'Creating a trigger · Trigger functions (variables) · Types of triggers (before/after) · Execution frequency · Dropping a trigger. Idea: trigger que marque study_progress al insertar scores.', sbDoc(3).url);
+  push('Supabase docs — ' + sbDoc(4).modulo + ' + ' + sbDoc(5).modulo, 'Webhooks vs triggers · Creating a webhook · Payload · Monitoring · Local development + Data REST API (la API generada del esquema). Base del puente Supabase → n8n (S10).', sbDoc(4).url);
+  push('Supabase docs — ' + sbDoc(6).modulo + ' + ' + sbDoc(7).modulo, 'Edge Functions: How it works · When to use Edge Functions · Quickstart Steps 1-7 (create · test locally · deploy to production · test your live function).', sbDoc(7).url);
+  // Sem 12 · n8n + Claude Code in Action + cierre F1
+  push('n8n docs — ' + n8nDoc(1).modulo, 'Step one: Create a new workflow → Step six: Test the workflow (trigger · nodo con credenciales · If · salida). Hazlo en tu instancia, no solo leerlo.', n8nDoc(1).url);
+  push('n8n docs — ' + n8nDoc(2).modulo, 'Node parameters: Webhook URLs · HTTP Method · Path · Supported authentication methods · Respond · Response Code · Response Data · Common issues. Es la puerta del bot WhatsApp (S10).', n8nDoc(2).url);
+  push('n8n docs — ' + n8nDoc(3).modulo, 'AI Agent node: parámetros del nodo en la página + Templates and examples + Common issues. Compara con los 5 patrones de "Building Effective Agents" (F0).', n8nDoc(3).url);
+  push('Academy — ' + cur('academy-cc-in-action').nombre, `"${acad('academy-cc-in-action', 1).titulo}" · "${acad('academy-cc-in-action', 2).titulo}" · "${acad('academy-cc-in-action', 3).titulo}" · "${acad('academy-cc-in-action', 4).titulo}"`, cur('academy-cc-in-action').url);
+  push('Academy — ' + cur('academy-cc-in-action').nombre, `"${acad('academy-cc-in-action', 7).titulo}" · "${acad('academy-cc-in-action', 8).titulo}" · "${acad('academy-cc-in-action', 9).titulo}" · "${acad('academy-cc-in-action', 12).titulo}" → quiz final (certificado)`, cur('academy-cc-in-action').url);
+  push('Claude Code docs — ' + ccDoc(13).modulo, 'Give Claude a way to verify its work · Explore first, then plan, then code · Add an adversarial review step · Avoid common failure patterns → CIERRE F1: relee tu synapse-journal de 12 semanas y anota los 3 hábitos que faltan.', ccDoc(13).url);
   if (A.length !== 70) throw new Error('Total A-units debe ser 70, hay ' + A.length);
   return A;
 }
@@ -201,7 +239,7 @@ function bloqueC(wd, semana) {
     // v6: la sem 1 SÍ tiene miércoles → §n = semana (sem 1..12 = §1..12)
     const n = semana;
     const s = pyTutSec(n);
-    return C('The Python Tutorial (docs oficiales)', `Sección ${n}: "${s.titulo}" — prepara el terreno para CS50P`, s.url);
+    return C('The Python Tutorial (docs oficiales)', `Sección ${n}: "${s.titulo}" — para LEER el Python que la IA escribe (no memorizar sintaxis)`, s.url);
   }
   if (wd === 'Jue') {
     const cap = autoCap(semana - 1);
@@ -222,25 +260,25 @@ function bloqueC(wd, semana) {
   return null;
 }
 
-// ─── Bloque PC (sábado, 60-90', OPCIONAL) ───
+// ─── Bloque PC (sábado 15:00-17:00) = SHIP del proyecto de la semana (vibecoding S1-S12) ───
+// v5.7: el PC ya no es "setup / Problem Set CS50P" — es cerrar y publicar el proyecto de 04:15 de esa semana
+// (commit / URL viva / test verde según su criterio de aceptación en vibecoding_proyectos.json).
 function bloquePC(semana) {
-  const v9 = yt3b1b(9);
-  const MAP = {
-    1: ['Setup del entorno', 'Instala Python 3 + VS Code + Git. Deja la máquina lista para F1 — hoy solo instalar y verificar que corre.', U.pyTutorial],
-    2: ['AI Fluency', 'Ponte al día con las lecciones pendientes y deja el certificado descargado.', U.aif],
-    3: ['Claude Code en vivo', 'Instala Claude Code y lanza tu primer prompt en una carpeta real (lo de Code 101, practicado).', U.cc101],
-    4: ['Proyecto público #1', 'Crea tu repo público "synapse-journal" en GitHub y sube tus notas Feynman de F0 (Pro Git cap. 6 te guía). El auditor fue claro: los proyectos públicos consiguen la entrevista.', progitCap(6).url],
-    5: ['Karpathy — Deep Dive', 'Sesión larga: adelanta 2-3 tramos del Deep Dive con notas en el repo.', U.kDeep],
-    6: ['Git real', 'Pasa tus notas de 3B1B al repo synapse-journal: add → commit → push de verdad (Pro Git cap. 2).', progitCap(2).url],
-    7: ['Prompt Engineering Interactive Tutorial', 'Lee los caps. 1-3 del tutorial oficial en GitHub (36k★). Solo lectura: ejecutar notebooks vendrá en F4.', U.promptTut],
-    8: ['CIERRE F0', `Certificados al repo + README "los 5 patrones de agentes en mis palabras". Bonus: "${v9.titulo}" (${v9.dur}).`, v9.url],
-    9: ['CS50P — Problem Set 0', 'Resuelve el Problem Set de la Week 0 en el editor web de CS50.', cs50w(0).url],
-    10: ['CS50P — Problem Set 1', 'Problem Set de la Week 1 (Conditionals) completo.', cs50w(1).url],
-    11: ['CS50P — Problem Set 2', 'Problem Set de la Week 2 (Loops) completo.', cs50w(2).url],
-    12: ['CS50P — Problem Set 3', 'Problem Set de la Week 3 (Exceptions) completo.', cs50w(3).url],
+  const p = VIBE.find((x) => x.s === semana);
+  if (!p) throw new Error('sin proyecto vibecoding para la semana ' + semana);
+  const material = `SHIP proyecto S${p.s} · ${p.nombre}${p.deload ? ' (semana DELOAD: alcance mínimo)' : ''}`;
+  const leccion = `${p.ship} Criterio de aceptación: ${p.aceptacion.join(' · ')}. Entregable: ${p.entregable}`;
+  return { tag: 'PC', min: 120, formato: 'pc', material, leccion, url: assertUrl(p.docs[0].url), real: true };
+}
+// ─── Domingo = Feynman del proyecto (10', opcional; no rompe la racha si se salta) ───
+function bloqueDom(semana) {
+  const p = VIBE.find((x) => x.s === Math.min(semana, 12));
+  return {
+    tag: 'R', min: 10, formato: 'repaso',
+    material: `Feynman · proyecto S${p.s}: ${p.nombre}`,
+    leccion: `Explica en voz alta, 5', qué construiste esta semana y CÓMO funciona (sin mirar el código); 5' más: la línea "qué falta" en synapse-journal. Opcional: si descansas, márcalo ✓ igual — el domingo es libre (v5 sáb/dom libres).`,
+    url: assertUrl(p.docs[0].url), real: true,
   };
-  const [material, leccion, url] = MAP[semana];
-  return { tag: 'PC', min: 75, formato: 'pc', material, leccion, url: url ? assertUrl(url) : undefined, real: true };
 }
 
 // ─── Calendario: d1 = START (parámetro argv[2], YYYY-MM-DD; v5.4 = jue 2026-09-03) ·
@@ -267,15 +305,11 @@ for (let d = 1; d <= TOTAL; d++) {
   const wd = WD[date.getDay()];
   const semana = d <= FIRST_WEEK_LEN ? 1 : Math.min(2 + Math.floor((d - FIRST_WEEK_LEN - 1) / 7), 12); // v6: sem 1 = mar→dom; sem 2+ = lun→dom. 12 miércoles → Lex caps 1-12 (sin offset)
   const faseId = semana <= 8 ? 'f0' : 'f1';
-  const fase = faseId === 'f0' ? 'F0 · La Escuela de Anthropic' : 'F1 · Código: Python + terminal + Git';
+  const fase = faseId === 'f0' ? 'F0 · La Escuela de Anthropic (auditar ✓)' : 'F1 · Stack del vibecoding: Claude Code · Supabase · n8n';
   const bloques = [];
   if (wd === 'Dom') {
-    // v3 (13-jun): TODOS los domingos LIBRES (pedido por Joseph) — sin misión, sin repaso.
-    bloques.push({
-      tag: 'R', min: 0, formato: 'repaso', material: 'Domingo LIBRE',
-      leccion: 'Domingo LIBRE (v3: todos los domingos sin actividad). Sin misión SYNAPSE hoy; si quieres conservar la racha, márcalo ✓ y listo.',
-      real: true,
-    });
+    // v5.7: domingo = Feynman del proyecto de la semana (10', opcional). Sigue siendo día libre: sin A/B/C.
+    bloques.push(bloqueDom(semana));
   } else {
     const a = aUnits[aIdx++];
     bloques.push({ tag: 'A', min: 15, formato: 'pantalla', ...a });
@@ -295,14 +329,16 @@ const blkTs = (b) => {
   let o = `{tag:"${b.tag}",min:${b.min},formato:"${b.formato}",material:"${esc(b.material)}",leccion:"${esc(b.leccion)}"`;
   if (b.url) o += `,url:"${esc(b.url)}"`;
   if (b.dur) o += `,dur:"${esc(b.dur)}"`;
-  o += `,real:${b.real !== false}}`;
+  o += `,real:${b.real !== false}`;
+  if (b.audit) o += `,audit:true`;
+  o += `}`;
   return o;
 };
 const diaTs = (x) => `{d:${x.d},fecha:"${x.fecha}",wd:"${x.wd}",semana:${x.semana},faseId:"${x.faseId}",fase:"${esc(x.fase)}",bloques:[${x.bloques.map(blkTs).join(',')}]}`;
 
 const ts = `/**
  * synapseDailyPlan.ts — Motor día-a-día SYNAPSE (12 semanas · ${TOTAL} días · ${dias[0].fecha} → ${dias[TOTAL - 1].fecha}).
- * Arranque ${dias[0].wd} ${dias[0].fecha} (START parametrizado) · sem 1 = ${dias[0].wd}→dom · TODOS los domingos LIBRES (sin misión) ·
+ * Arranque ${dias[0].wd} ${dias[0].fecha} (START parametrizado) · sem 1 = ${dias[0].wd}→dom · domingos = Feynman del proyecto (10', opcional; día libre) ·
  * sáb = A/B/C + PC (bloque personal, sí va en finde).
  * GENERADO por DATA/_scripts/gen_synapse_plan.js desde DATA/SYNAPSE/curricula/_extracted.json
  * (temarios REALES extraídos con WebFetch/oEmbed + verificación adversarial, 10-jun-2026).
@@ -312,11 +348,13 @@ const ts = `/**
  *  A (15', pantalla)  lección EXACTA de la fase actual con link directo
  *  B (10', audio)     rotación: No Priors → Dwarkesh → Lex #452 (outline real) → The Batch (jue) → canal Anthropic (vie)
  *  C (5', lectura)    píldora móvil: Pro Git / Willison / Python Tutorial / Automate / research de Anthropic
- *  PC (sáb, 60-90', OPCIONAL) teclado: setup, repo público, problem sets CS50P
- *  Dom = LIBRE (sin misión). Progreso REAL manual (PlanKey 'synapse', empieza 0%).
+ *  PC (sáb 15:00-17:00) = SHIP del proyecto de la semana del VIBECODING 04:15 (src/lib/vibecodingPlan.ts)
+ *  Dom = Feynman del proyecto (10', opcional; el domingo sigue libre). Progreso REAL manual (PlanKey 'synapse', empieza 0%).
  * real:true = lección/temario verificado; real:false = "siguiente episodio/tramo" (honesto, sin inventar).
- * Cobertura: F0 completa (sem 1-8) + arranque F1 (sem 9-12, CS50P Weeks 0-3). Las semanas 13+
- * se generan al avanzar de fase añadiendo A-units en el script y re-ejecutándolo.
+ * audit:true = A-unit de F0 ya cursada en jun-ago (progreso solo en localStorage): "auditar con Joseph: ✓ si ya hecho".
+ * Cobertura v5.7: F0 (sem 1-8, auditar) + F1 = STACK DEL VIBECODING (sem 9-12: Claude Code docs · Academy
+ * skills/subagentes/MCP/Claude Code in Action · Supabase RLS/select/triggers/webhooks/Edge Functions · n8n).
+ * Las semanas 13+ se generan al avanzar de fase añadiendo A-units en el script y re-ejecutándolo.
  */
 export type SynFormato = 'pantalla' | 'audio' | 'lectura' | 'pc' | 'repaso';
 export interface SynBloque {
@@ -328,6 +366,7 @@ export interface SynBloque {
   url?: string;
   dur?: string;
   real: boolean;
+  audit?: boolean; // F0: "auditar con Joseph: ✓ si ya hecho"
 }
 export interface DiaSynapse {
   d: number; fecha: string; wd: string; semana: number;
@@ -336,8 +375,8 @@ export interface DiaSynapse {
 
 export const SYN_PLAN_META = {
   inicio: '${dias[0].fecha}', fin: '${dias[TOTAL - 1].fecha}', totalDias: ${TOTAL}, semanas: 12,
-  bloque: "A 15' pantalla · B 10' audio · C 5' lectura · sáb PC 60-90' opcional · dom repaso",
-  fases: { f0: 'F0 · La Escuela de Anthropic (sem 1-8)', f1: 'F1 · Código: Python (arranque, sem 9-12)' },
+  bloque: "A 15' pantalla · B 10' audio · C 5' lectura · sáb PC 2h = SHIP del proyecto · dom Feynman 10' opcional",
+  fases: { f0: 'F0 · La Escuela de Anthropic (sem 1-8, auditar ✓ si ya hecho)', f1: 'F1 · Stack del vibecoding: Claude Code · Supabase · n8n (sem 9-12)' },
 } as const;
 
 export const SYN_DIAS: DiaSynapse[] = [
@@ -351,12 +390,12 @@ export const SYN_FORMATO_ICON: Record<SynFormato, string> = {
   pantalla: '📱', audio: '🎧', lectura: '📖', pc: '⌨️', repaso: '🌿',
 };
 export const SYN_TAG_LABEL: Record<SynBloque['tag'], string> = {
-  A: "A · 15' lección", B: "B · 10' audio", C: "C · 5' lectura", PC: "PC · 60-90' (opcional)", R: "Repaso · 30'",
+  A: "A · 15' lección", B: "B · 10' audio", C: "C · 5' lectura", PC: "PC · sáb 2h · SHIP", R: "Feynman · 10' (opcional)",
 };
 `;
 
 fs.writeFileSync(path.join(ROOT, 'src/lib/synapseDailyPlan.ts'), ts, 'utf8');
-console.log('OK src/lib/synapseDailyPlan.ts ·', TOTAL, 'días ·', aUnits.length, 'A-units · F0 sem 1-8 · F1 sem 9-12');
+console.log('OK src/lib/synapseDailyPlan.ts ·', TOTAL, 'días ·', aUnits.length, 'A-units · F0 sem 1-8 (audit) · F1 sem 9-12 = stack vibecoding · PC = SHIP S1-S12');
 
 // ─── Emitir curricula/<id>.md (temarios reales para futuras vueltas) ───
 const curDir = path.join(ROOT, 'DATA/SYNAPSE/curricula');
@@ -366,7 +405,9 @@ for (const t of EX) {
     `# ${t.nombre}`,
     '',
     `> URL: ${t.urlFinal || t.url}`,
-    `> Extraído y verificado adversarialmente el 10-jun-2026 (WebFetch/oEmbed, workflow 30 agentes).`,
+    /^(claude-code-docs|academy-|supabase-docs|n8n-docs)/.test(t.id)
+      ? `> Extraído con WebFetch el 5-sep-2026 (stack del vibecoding, v5.7) · URL verificada 200 con check_links.js.`
+      : `> Extraído y verificado adversarialmente el 10-jun-2026 (WebFetch/oEmbed, workflow 30 agentes).`,
     t.verificado ? `> Verificación: CONFIRMADA.` : `> Verificación: con observaciones (ver _extracted.json · problemas).`,
     '',
     ...t.lecciones.map((l, i) => `${i + 1}. ${l.modulo ? `**[${l.modulo}]** ` : ''}${l.titulo}${l.dur ? ` _(${l.dur})_` : ''}${l.url ? ` — ${l.url}` : ''}`),

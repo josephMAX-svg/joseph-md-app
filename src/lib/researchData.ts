@@ -47,17 +47,134 @@ export const RESEARCH_META = {
   subtitulo: 'De cero a publicado — el camino a Mayo Clinic',
   accent: '#6BB8B0', // teal apagado (Colors.teal · quiet-luxury) — antes #0FD4A0 neón
   tesis: 'La aguja la mueven las publicaciones indexadas reales (no el "27.7" de marketing). Meta para competir: ~3 PIPs; nivel Mayo-stretch: 8–15, con 2+ de original research first-author.',
-  cuelloBotella: 'El cuello de botella NO es escribir — es conseguir un dermatólogo-mentor con quien co-publicar y acceso a casos. Tarea #1: asegurar mentor desde la semana 1.',
+  cuelloBotella: 'El cuello de botella NO es escribir — es el senior author y el acceso a casos. Desde el 05-sep tiene FECHA: M1 (Dr. Ciro · propuesta de 3 coautorías) · M2 (Rising Scholars · mentor de inglés) · M3 (Prof. Finlay · CADI) en septiembre, y cada entregable de la Mesa editorial lleva su senior author y su cascada de revistas.',
 };
 
-// Mega-stat + anillos del cockpit
-export const RESEARCH_KPIS = {
-  pipsActuales: 0,
-  pipsParaCompetir: 3,
-  pipsMayo: 10,
-  primerSubmissionMes: 3,
-  readiness: 6, // % madurez del perfil research
+// ─────────────────────────────────────────────────────────────────────────
+// MESA EDITORIAL — los 5 entregables reales de la RUTA 2027 (DATA/RESEARCH/RUTA_PUBLICACION_2027.md).
+// Sustituye a RESEARCH_TIMELINE (S1–S13 "submit mes 3") y RESEARCH_HORARIO (Lun–Vie): el calendario
+// editorial es UNO (el plan día-a-día que genera DATA/_scripts/gen_research_plan.js) y aquí vive el
+// ESTADO de cada entregable. La fecha EXACTA de cada hito la da researchDailyPlan.ts → RESEARCH_HITOS
+// (se re-fecha con el pipeline de corrimiento); `fechaObjetivo` es el MES de la RUTA.
+// ─────────────────────────────────────────────────────────────────────────
+export type EstadoEntregable = 'idea' | 'borrador' | 'revision-mentor' | 'enviado' | 'en-revision' | 'revision-mayor' | 'aceptado' | 'publicado';
+export const ESTADOS_ENTREGABLE: EstadoEntregable[] = ['idea', 'borrador', 'revision-mentor', 'enviado', 'en-revision', 'revision-mayor', 'aceptado', 'publicado'];
+export const PASOS_ENTREGABLE = 7; // idea=0 … publicado=7
+// Joya apagada (tokens): muted · sapphire · amatista · brass · coral · jade · oro.
+export const ESTADO_ENTREGABLE_INFO: Record<EstadoEntregable, { lbl: string; color: string; paso: number }> = {
+  idea:              { lbl: 'idea',            color: '#7C8496', paso: 0 },
+  borrador:          { lbl: 'borrador',        color: '#4F7DD6', paso: 1 },
+  'revision-mentor': { lbl: 'revisión mentor', color: '#9A7BC8', paso: 2 },
+  enviado:           { lbl: 'enviado',         color: '#B8934E', paso: 3 },
+  'en-revision':     { lbl: 'en revisión',     color: '#B8934E', paso: 4 },
+  'revision-mayor':  { lbl: 'revisión mayor',  color: '#C56A5A', paso: 5 },
+  aceptado:          { lbl: 'aceptado',        color: '#5FA88C', paso: 6 },
+  publicado:         { lbl: 'publicado',       color: '#C8A96A', paso: 7 },
 };
+export const ENVIADO_O_MAS: ReadonlySet<EstadoEntregable> = new Set<EstadoEntregable>(['enviado', 'en-revision', 'revision-mayor', 'aceptado', 'publicado']);
+
+export type PistaEntregable = 'C' | 'T' | 'CR' | 'R';
+export interface Entregable {
+  id: string;                 // = clave en researchDailyPlan.ts → RESEARCH_HITOS y en obsidianResearchMap → RESEARCH_OBS_ENTREGABLE
+  n: number;                  // orden en la mesa (0 = tesis)
+  titulo: string;
+  tipo: string;
+  pista: PistaEntregable;     // pista del plan día-a-día que lo empuja (C carta · T tesis · CR case report · R SR-1)
+  guia: string;               // guía de reporte que exige el journal
+  journalCascade: string[];   // en orden; una a la vez, nunca envío simultáneo
+  seniorAuthor: string;
+  fechaObjetivo: string;      // MES de la RUTA (YYYY-MM); la fecha exacta = RESEARCH_HITOS[id].fecha
+  fechaEnvio: string | null;  // se rellena al marcar "enviado" (persistido en localStorage)
+  estado: EstadoEntregable;   // estado por defecto; el real se persiste (loadEntregables)
+  coste: string;
+  doi: string | null;
+  atomos: string;             // átomos del plan que lo construyen
+  esPIP: boolean;             // cuenta como publicación indexada (PROSPERO no)
+  nota: string;
+}
+export const RESEARCH_ENTREGABLES: Entregable[] = [
+  { id: 'tesis-L0', n: 0, titulo: 'Tesis L0 · IGA × CADI (n=316) como research letter', tipo: 'Research letter · 600-1.000 palabras · 1 tabla · 1 figura', pista: 'T', guia: 'STROBE (transversal, 22 ítems)',
+    journalCascade: ['JAAD International', 'International Journal of Dermatology', 'Actas Dermo-Sifiliográficas', 'Anais Brasileiros de Dermatologia'],
+    seniorAuthor: 'Dr. Ciro Rodríguez (HRDCQ Daniel Alcides Carrión, Huancayo) · A CONFIRMAR en M1', fechaObjetivo: '2026-11', fechaEnvio: null, estado: 'idea',
+    coste: 'JAAD Intl US$2.575 de lista (DOAJ 1-sep-2026 · RUTA §3.1) → ≈ US$1.288 con Grupo B 50 % (GPOA A VERIFICAR) · IJD vía suscripción $0 · Anais $0 (SBD paga) · Actas: discrepancia $0 vs US$1.870 A VERIFICAR', doi: null, atomos: 'T-1 → T-8 (oct-nov 2026)', esPIP: true,
+    nota: 'Entregable #0: el único dataset original propio (rs=0,637 · κ=0,81 · prevalencia 39,8 %; defendida 20-abr-2026). Bloqueo real: nº y fecha del CEI + consentimiento parental (T-1 · DATA/RESEARCH/TESIS_L0/etica.md).' },
+  { id: 'carta-1', n: 1, titulo: 'Carta al editor #1 (artículo diana 2026)', tipo: 'Letter / Correspondence · 400-600 palabras · ≤5 refs', pista: 'C', guia: 'Sin guía EQUATOR; ventana y límites del journal diana (C-1/C-2)',
+    journalCascade: ['Journal del artículo diana (JAAD · JAAD Intl · IJD · JCD · Dermatol Surg — se elige en C-2)'],
+    seniorAuthor: 'Joseph (autor único) · Dr. Ciro coautor si aporta el dato clínico', fechaObjetivo: '2026-10', fechaEnvio: null, estado: 'idea',
+    coste: '$0 (correspondencia vía suscripción)', doi: null, atomos: 'C-1 → C-6 (sep-oct 2026) · X-2 post-submit', esPIP: true,
+    nota: 'Modo de fallo más probable: descubrir en octubre que la ventana de letters (típ. 4-12 semanas tras publicación) cerró → C-1 lista 5 candidatos con su ventana y C-2 fija la fecha límite.' },
+  { id: 'case-report-1', n: 2, titulo: 'Case report #1 (CARE)', tipo: 'Case report · CARE 13 ítems · fotos estandarizadas · consentimiento de publicación', pista: 'CR', guia: 'CARE (13 ítems + timeline + perspectiva del paciente)',
+    journalCascade: ['Dermatology Online Journal (eScholarship)', 'JAAD Case Reports (solo si es el MEJOR caso)', 'Case Reports in Dermatology (Karger)'],
+    seniorAuthor: 'Fuente A: Dr. Ciro (caso de su consulta) · plan B: dermatólogo/a SPD — se decide en CR-1 (antes del 31-oct)', fechaObjetivo: '2027-02', fechaEnvio: null, estado: 'idea',
+    coste: 'DOJ US$300 (DOAJ 1-sep-2026 · RUTA §3.1; sin waiver) · JAAD CR US$850 → ≈ $425 con Grupo B (solo para el MEJOR caso)', doi: null, atomos: 'CR-1 → CR-8 (oct-dic 2026, paquete congelado) · CR-9 SUBMIT (1er día-Research tras el Step 1)', esPIP: true,
+    nota: 'Hoy NO hay caso (DATA/RESEARCH/CASE_REPORT_1/caso_candidatos.md). Sin caso + consentimiento + senior author antes del 31-oct, el entregable de feb-2027 no ocurre.' },
+  { id: 'PROSPERO-SR1', n: 3, titulo: 'Registro PROSPERO de SR-1', tipo: 'Registro de protocolo (PRISMA-P) con equipo de revisión', pista: 'R', guia: 'PRISMA-P (17 ítems) · L4 §9 Equipo de revisión',
+    journalCascade: ['PROSPERO (CRD York)', 'OSF Registries (plan B si no encaja)'],
+    seniorAuthor: 'Garante: Joseph · revisor #2 nombrado en X-1 y confirmado en X-9 (sin revisor #2 no hay registro)', fechaObjetivo: '2027-02', fechaEnvio: null, estado: 'idea',
+    coste: '$0', doi: null, atomos: 'X-1 (nov 2026) · R6b · R8b · X-9 · R10 · R11 (feb-mar 2027)', esPIP: false,
+    nota: 'PRISMA 2020 ítem 8 y Cochrane exigen ≥2 revisores independientes: dos pases de la misma persona no son cribado dual y un LLM no cuenta como revisor.' },
+  { id: 'SR-1', n: 4, titulo: 'SR-1 · Complicaciones vasculares de fillers + tiempo-a-hialuronidasa (L4)', tipo: 'Revisión sistemática ± meta-análisis de proporciones', pista: 'R', guia: 'PRISMA 2020 (27 ítems) + PRISMA-S + GRADE + AMSTAR-2',
+    journalCascade: ['Dermatologic Surgery', 'JAAD (vía suscripción $0)', 'Journal of Cosmetic Dermatology (OA · Grupo B 50 %)', 'Anais Brasileiros / Actas (Diamond $0)'],
+    seniorAuthor: 'Joseph primer autor · revisor #2 coautor · senior author a definir (Dr. Ciro o colaborador de la campaña K1-K2)', fechaObjetivo: '2027-07', fechaEnvio: null, estado: 'idea',
+    coste: '$0 vía suscripción o Diamond; JCD 50 % A VERIFICAR en R39', doi: null, atomos: 'R12 → R43 (ciclo 2 · mar-jul 2027)', esPIP: true,
+    nota: 'Corpus ya descubierto: 200 registros pending_human desde 11-jun-2026 (151 OA sin PDF) → X-3 lo inventaría y R16 lo une a la búsqueda PRISMA-S final.' },
+];
+
+/** Persistencia del estado real de la mesa (localStorage web · no-op seguro sin storage). */
+export interface EntregableRegistro { estado: EstadoEntregable; fechaEnvio?: string | null; ref?: string | null; actualizado?: string }
+export type EntregablesRegistro = Record<string, EntregableRegistro>;
+const ENTREGABLES_KEY = 'jmd-research-entregables';
+export function loadEntregables(): EntregablesRegistro {
+  try {
+    const ls = (globalThis as any).localStorage;
+    if (ls) { const raw = ls.getItem(ENTREGABLES_KEY); if (raw) { const p = JSON.parse(raw); if (p && typeof p === 'object') return p as EntregablesRegistro; } }
+  } catch { /* sin storage: arranca vacío */ }
+  return {};
+}
+export function saveEntregables(r: EntregablesRegistro): void {
+  try { const ls = (globalThis as any).localStorage; if (ls) ls.setItem(ENTREGABLES_KEY, JSON.stringify(r)); } catch { /* ignore */ }
+}
+export function estadoDe(e: Entregable, reg: EntregablesRegistro): EstadoEntregable {
+  const s = reg[e.id]?.estado;
+  return s && ESTADOS_ENTREGABLE.includes(s) ? s : e.estado;
+}
+
+/** Infra académica: las 10 cuentas que exige el circuito editorial (átomo R0 · checklist persistida con PlanKey 'research-infra'). */
+export interface InfraItem { n: number; id: string; nombre: string; para: string; url: string | null; nota: string }
+export const INFRA_ACADEMICA: InfraItem[] = [
+  { n: 1, id: 'orcid', nombre: 'ORCID iD', para: 'Identidad de autor; Editorial Manager exige el del autor de correspondencia y PROSPERO el de todo el equipo', url: 'https://orcid.org/', nota: 'Guardar el iD en DATA/RESEARCH/MENTORES.md §Identificadores' },
+  { n: 2, id: 'scholar', nombre: 'Google Scholar (perfil público)', para: 'Citas y h-index visibles para mentores y programas', url: 'https://scholar.google.com/intl/en/scholar/citations.html', nota: 'Añadir la tesis cuando esté en el repositorio UNCP' },
+  { n: 3, id: 'cti', nombre: 'CTI Vitae / RENACYT (CONCYTEC)', para: 'La tesis publicada solo suma para RENACYT si está registrada', url: 'https://ctivitae.concytec.gob.pe/', nota: 'Registrar cada envío/aceptación (T-8, R43)' },
+  { n: 4, id: 'em', nombre: 'Editorial Manager (Elsevier · JAAD / JAAD Intl / JAAD CR)', para: 'Portal de envío de la tesis (JAAD Intl) y de la carta si el diana es JAAD', url: 'https://www.editorialmanager.com/', nota: 'La cuenta es por revista (editorialmanager.com/<revista>) · URL exacta de JAAD Intl A VERIFICAR (05-sep)' },
+  { n: 5, id: 's1', nombre: 'ScholarOne (Wiley · IJD / JCD / BJD)', para: 'Portal de envío de IJD (plan B de la tesis; candidato de carta)', url: null, nota: 'mc.manuscriptcentral.com devolvió 403 el 05-sep → A VERIFICAR la URL del portal en las Author Guidelines de IJD' },
+  { n: 6, id: 'doj', nombre: 'eScholarship · Dermatology Online Journal', para: 'Envío del case report #1 (CR-9)', url: 'https://doaj.org/toc/1087-2108', nota: 'Ficha DOAJ verificada; portal de envío en eScholarship A VERIFICAR (05-sep)' },
+  { n: 7, id: 'prospero', nombre: 'PROSPERO (CRD York)', para: 'Registro del protocolo de SR-1 (R10)', url: 'https://www.crd.york.ac.uk/PROSPERO/help/register', nota: 'Cuenta con ORCID; el equipo de revisión sale de lines/L4-complicaciones.md §9' },
+  { n: 8, id: 'rayyan', nombre: 'Rayyan', para: 'Cribado dual en ciego de SR-1 (R17-R19) · gratis ≤3 revisiones', url: 'https://www.rayyan.com/', nota: 'El revisor #2 también necesita cuenta' },
+  { n: 9, id: 'zotero', nombre: 'Zotero', para: 'Biblioteca de PDFs por entregable; respaldo del pipeline de citas (citation_verifier.py manda)', url: 'https://www.zotero.org/', nota: 'Conector del navegador + una carpeta por entregable' },
+  { n: 10, id: 'keys', nombre: 'OpenAlex API key + NCBI API key', para: 'Motor research-discovery (OpenAlex troncal) y E-utilities a 10 req/s', url: 'https://developers.openalex.org/api-reference/authentication', nota: 'NCBI: https://account.ncbi.nlm.nih.gov/ → Settings → API Key Management' },
+];
+
+/** KPIs del cockpit DERIVADOS de la mesa (no constantes). */
+export interface ResearchKpis { pipsActuales: number; pipsParaCompetir: number; pipsMayo: number; enviados: number; primerSubmissionMes: number; readiness: number }
+const RUTA_MES_1 = '2026-09'; // sep-2026 = mes 1 de la RUTA
+function mesesDesde(ym: string, base = RUTA_MES_1): number {
+  const [y, m] = ym.slice(0, 7).split('-').map(Number); const [by, bm] = base.split('-').map(Number);
+  if (!y || !m || !by || !bm) return 0;
+  return (y - by) * 12 + (m - bm) + 1;
+}
+export function calcResearchKpis(reg: EntregablesRegistro, infraHechos = 0): ResearchKpis {
+  const est = RESEARCH_ENTREGABLES.map((e) => ({ e, s: estadoDe(e, reg), r: reg[e.id] }));
+  const pipsActuales = est.filter((x) => x.e.esPIP && (x.s === 'aceptado' || x.s === 'publicado')).length;
+  const enviados = est.filter((x) => ENVIADO_O_MAS.has(x.s)).length;
+  const fechas = est.filter((x) => x.e.esPIP).map((x) => (ENVIADO_O_MAS.has(x.s) && x.r?.fechaEnvio) ? x.r.fechaEnvio : x.e.fechaObjetivo).sort();
+  const primerSubmissionMes = fechas.length ? mesesDesde(fechas[0]) : 0;
+  const avance = est.reduce((a, x) => a + ESTADO_ENTREGABLE_INFO[x.s].paso / PASOS_ENTREGABLE, 0) / (est.length || 1);
+  const infra = Math.max(0, Math.min(INFRA_ACADEMICA.length, infraHechos)) / INFRA_ACADEMICA.length;
+  const readiness = Math.round(100 * (0.3 * infra + 0.7 * avance));
+  return { pipsActuales, pipsParaCompetir: 3, pipsMayo: 10, enviados, primerSubmissionMes, readiness };
+}
+/** Valores por defecto (mesa sin estado persistido · infra 0/10). En la app se recalculan con calcResearchKpis. */
+export const RESEARCH_KPIS: ResearchKpis = calcResearchKpis({}, 0);
 
 // Targets de publicación (mix realista)
 export const RESEARCH_TARGETS = [
@@ -73,7 +190,7 @@ export const RESEARCH_TARGETS = [
 export const RESEARCH_FASES = [
   { fase: 'A · Ahora', titulo: 'Construir el motor', estado: 'activa',
     desc: 'Pre-residencia. Romper el 0: mentor + pipeline + nicho. Meta 2–4 PIPs antes de residencia.',
-    entregable: '1 case report + 2 images/letters + 1 retrospectivo iniciado.' },
+    entregable: 'Mesa editorial: carta al editor (oct-26) · tesis como research letter (nov-26) · case report #1 (feb-27) · SR-1 registrada (feb-27) y enviada (jul-27).' },
   { fase: 'B · Residencia', titulo: 'Compounding clínico', estado: 'futura',
     desc: 'MIR (España) o ENCAPS (Perú). Acceso a pacientes → escalar de 3 a 10+ PIPs. Empezar USMLE.',
     entregable: 'Series de casos + original research clínico + LORs fuertes.' },
@@ -152,24 +269,9 @@ export const RESEARCH_PIPELINE = [
 ];
 export const PIPELINE_NOTA = 'Regla dura: solo OA legal (PMC, Unpaywall, Europe PMC, DOAJ, preprints). CyberLeninka = legal (CC-BY); Sci-Hub = sombra/ilegal en muchas jurisdicciones — no se usa. 5 gates humanos (~10-15 min) entre fases; el humano revisa, no escribe desde cero.';
 
-// Micro-horario sugerido (1h/día, días Research)
-export const RESEARCH_HORARIO = [
-  { dia: 'Lun', foco: 'Literature search práctico (papers de tu nicho)' },
-  { dia: 'Mar', foco: 'Diseño de estudios / bioestadística (video + nota)' },
-  { dia: 'Mié', foco: 'Lectura crítica (1 paper completo, método PICO)' },
-  { dia: 'Jue', foco: 'Escritura (avanzar draft del case report / images)' },
-  { dia: 'Vie', foco: 'Repaso de vueltas vencidas + planificar semana' },
-];
-
-// Timeline 0 → primer paper
-export const RESEARCH_TIMELINE = [
-  { sem: 'S1–S2', foco: 'Infra: NCBI/PubMed, Scholar alert, Zotero, leer 3 case reports modelo', out: 'Sistema listo' },
-  { sem: 'S3–S4', foco: 'Conseguir mentor + elegir nicho dermato', out: 'Mentor sí/no' },
-  { sem: 'S5–S6', foco: 'Formato CARE + IMRaD. Identificar 1 caso publicable', out: 'Caso elegido' },
-  { sem: 'S7–S10', foco: 'Escribir draft + consentimiento + revisión literatura', out: 'Draft 1' },
-  { sem: 'S11–S12', foco: 'Iterar con mentor + formatear al journal', out: 'Manuscrito final' },
-  { sem: 'S13', foco: 'SUBMIT primer paper', out: '✅ Submitted (~mes 3)' },
-];
+// (05-sep-2026) RESEARCH_HORARIO (Lun–Vie) y RESEARCH_TIMELINE (S1–S13) ELIMINADOS: eran la 3ª línea temporal
+// contradictoria. El calendario editorial es el plan día-a-día (researchDailyPlan.ts / researchDailyPlan2027.ts)
+// y el estado vive en RESEARCH_ENTREGABLES (arriba). El bloque real es 13:30–14:15 interdiario (FRANJAS del plan).
 
 export const RESEARCH_ADVERTENCIAS = [
   'El cuello de botella es el mentor y el acceso a casos, no escribir. Consigue un dermatólogo-autor desde la semana 1.',

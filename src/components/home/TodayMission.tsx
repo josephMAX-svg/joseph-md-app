@@ -1,10 +1,14 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Linking, Animated, Platform } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
 import { MIR_DIAS, mirDiaDe, capUrl } from '../../lib/mirDailyPlan';
 import { DIAS, diaDe, QBQ } from '../../lib/usmleStep1Daily';
 import { mirObsUrl, usmleObsUrl, encapsObsUrl, OBS_MAPA_URL } from '../../lib/obsidianMap';
+import { vibeDiaDe, vibeProyectoEnFecha, VIBE_TIPO_LABEL, VIBE_ROTACION_ICON } from '../../lib/vibecodingPlan';
+import {
+  semanaStep1, semanaLabel, leerModo, guardarModo, minimoPorFrente, MODO_INFO, ModoNivel, Frente,
+} from '../../lib/homeBriefing';
 
 /**
  * TodayMission — "MISIÓN DE HOY" del cockpit (Home). Línea de tiempo REAL del Google
@@ -12,6 +16,13 @@ import { mirObsUrl, usmleObsUrl, encapsObsUrl, OBS_MAPA_URL } from '../../lib/ob
  * con el tema del día de cada plan (mirDailyPlan / usmleStep1Daily) y accesos
  * directos: ProMIR ↗ · Qbankly (◆ Edge) · ◆ Obsidian (nota madre donde caen los APEX).
  * El bloque en curso se resalta con "AHORA". Fase = detect_phase del orquestador.
+ *
+ * v5.7 (5-sep-2026):
+ *  · bloque 04:15 enlazado al PROYECTO DE LA SEMANA del vibecoding (src/lib/vibecodingPlan.ts, S1-S12):
+ *    paso del día + docs ↗; el ✓ diario vive en SYNAPSE → ⚡ run (PlanKey 'vibecoding').
+ *  · selector de MODO del día (VERDE / ÁMBAR / ROJO, localStorage 'jmd-modo', default VERDE) según
+ *    DATA/PROTOCOLO_MODO_MINIMO.md: cada bloque muestra su mínimo cuando el nivel no es VERDE.
+ *  · chip "S N/20" (semana del Step 1) y "DELOAD" en las semanas post-NBME 26 / post-NBME 28.
  *
  * Colores por-segmento en JOYA APAGADA (mapeo cognitivo NASA), tokens v4:
  * ENCAPS→teal · MIR→gold(amber) · USMLE→jade(green) · Obsidian→amethyst(purple) · Edge→sapphire(blue)
@@ -23,6 +34,7 @@ const EDGE = Colors.blue;     // Edge/Qbankly — sapphire
 const OBS = Colors.purple;    // Obsidian — amethyst
 
 const MONO = Platform.OS === 'web' ? "'JetBrains Mono', 'SF Mono', monospace" : undefined;
+const MODO_COLOR: Record<ModoNivel, string> = { VERDE: Colors.green, AMBAR: Colors.amber, ROJO: Colors.coral };
 
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
 export function todayISO(): string {
@@ -52,7 +64,7 @@ export function usmleLabelDe(iso: string): string | null {
 }
 
 interface Accion { lbl: string; color: string; url: string; fill?: boolean }
-interface Bloque { flag: string; nombre: string; ini: string; fin: string; color: string; tema: string; sub: string; acciones: Accion[] }
+interface Bloque { flag: string; nombre: string; ini: string; fin: string; color: string; tema: string; sub: string; acciones: Accion[]; frente: Frente }
 
 /** chip AHORA con pulso animado (élite, sutil) */
 function AhoraChip({ color }: { color: string }) {
@@ -72,27 +84,57 @@ function AhoraChip({ color }: { color: string }) {
   );
 }
 
+/** Selector VERDE / ÁMBAR / ROJO del día (PROTOCOLO_MODO_MINIMO). Persistente por día en localStorage 'jmd-modo'. */
+function ModoSelector({ nivel, onChange }: { nivel: ModoNivel; onChange: (n: ModoNivel) => void }) {
+  return (
+    <View style={st.modoRow}>
+      <Text style={st.modoLbl}>MODO</Text>
+      {(['VERDE', 'AMBAR', 'ROJO'] as ModoNivel[]).map((n) => {
+        const on = n === nivel; const c = MODO_COLOR[n];
+        return (
+          <TouchableOpacity key={n} activeOpacity={0.8} onPress={() => onChange(n)} hitSlop={{ top: 6, bottom: 6, left: 2, right: 2 }}
+            style={[st.modoChip, { borderColor: c + (on ? 'AA' : '44') }, on && { backgroundColor: c + '22' }]}>
+            <View style={[st.modoDot, { backgroundColor: c, opacity: on ? 1 : 0.45 }]} />
+            <Text style={[st.modoTxt, { color: on ? c : Colors.muted }]}>{MODO_INFO[n].label}</Text>
+          </TouchableOpacity>
+        );
+      })}
+    </View>
+  );
+}
+
 export default function TodayMission({ onGo }: { onGo?: (screen: string) => void }) {
   const iso = todayISO();
   const mir = mirDiaDe(iso);
   const us = diaDe(iso);
   const ahora = nowMin();
+  const sem = semanaStep1(iso);
+  const vibeDia = vibeDiaDe(iso);
+  const vibeP = vibeProyectoEnFecha(iso);
+  const [modo, setModo] = useState<ModoNivel>(() => leerModo(iso));
+  const cambiarModo = (n: ModoNivel) => { setModo(n); guardarModo(iso, n); };
+
+  const vibeTema = vibeP
+    ? (vibeDia
+      ? `S${vibeP.s} · ${vibeP.nombre} — hoy (${VIBE_TIPO_LABEL[vibeDia.tipo]}${vibeDia.min !== 45 ? ` ${vibeDia.min}'` : ''}): ${vibeDia.paso}`
+      : `S${vibeP.s} · ${vibeP.nombre} — sáb PC 15:00 = SHIP · dom = Feynman (fuera de L-V)`)
+    : 'fuera del rango del plan (S1-S12: 7-sep → 27-nov)';
 
   const bloques: Bloque[] = [
     {
-      flag: '🧠', nombre: 'IA · VIBECODING con Claude Code (1 proyecto real/semana)', ini: '04:15', fin: '05:00', color: OBS,
-      tema: '5\' objetivo → 35\' construir → 5\' commit (synapse-journal) — NO programar desde cero',
-      sub: 'reactivado 31-ago · teoría estructurada sigue en la misión SYNAPSE 12:30',
-      acciones: [],
+      flag: '🧠', nombre: 'IA · VIBECODING con Claude Code (1 proyecto real/semana)', ini: '04:15', fin: '05:00', color: OBS, frente: 'vibecoding',
+      tema: vibeTema,
+      sub: vibeP ? `${VIBE_ROTACION_ICON[vibeP.rotacion]} ${vibeP.rotacion} · entregable: ${vibeP.entregable}${vibeP.deload ? ' · DELOAD 50%' : ''} · ✓ diario en SYNAPSE → ⚡ run` : "5' objetivo → 35' construir → 5' commit (synapse-journal)",
+      acciones: vibeP ? [{ lbl: 'docs ↗', color: OBS, url: vibeP.docs[0].url, fill: true }] : [],
     },
     {
-      flag: '🇺🇸', nombre: 'USMLE · ANKI AM (madrugada fresca · Palmerton 2x)', ini: '05:00', fin: '05:45', color: GREEN,
+      flag: '🇺🇸', nombre: 'USMLE · ANKI AM (madrugada fresca · Palmerton 2x)', ini: '05:00', fin: '05:45', color: GREEN, frente: 'usmle-anki',
       tema: 'Pasada principal FSRS del deck USMLE · Fases B-C: + stress set 10Q/12min',
-      sub: 'Step 1 = 6h15/día × 98 días (~612h) · el 07:15 queda para repaso anclado D-1/D-3/D-7',
+      sub: 'Step 1 = 6h15/día × 97 días (~606h) · el 07:15 queda para repaso anclado D-1/D-3/D-7',
       acciones: [],
     },
     {
-      flag: '🇺🇸', nombre: 'USMLE · BLOQUE PRINCIPAL (Anki → Pre-test → Deep Prime → 30Q)', ini: '07:15', fin: '12:00', color: GREEN,
+      flag: '🇺🇸', nombre: 'USMLE · BLOQUE PRINCIPAL (Anki → Pre-test → Deep Prime → 30Q)', ini: '07:15', fin: '12:00', color: GREEN, frente: 'usmle-principal',
       tema: us ? `D${us.d}/${DIAS.length} · ${us.system} — ${us.sub}` : 'fuera del rango del plan',
       sub: us ? `${us.bbCh}: ${us.bbVid} · ${us.mat} · todo en inglés` : 'Step 1 · v5.6 desde lun 7-sep',
       acciones: us ? [
@@ -101,7 +143,7 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
       ] : [],
     },
     {
-      flag: '🇪🇸', nombre: 'MIR · Eval D-1 + Deep Work', ini: '15:15', fin: '16:15', color: AMBER,
+      flag: '🇪🇸', nombre: 'MIR · Eval D-1 + Deep Work', ini: '15:15', fin: '16:15', color: AMBER, frente: 'mir',
       tema: mir ? `D${mir.d}/${MIR_DIAS.length} · ${mir.asignatura} — ${mir.tema}` : 'fuera del rango del plan',
       sub: mir && mir.peso != null ? `Peso MIR ${mir.peso}% · ${mir.vuelta}ª vuelta` : '1ª vuelta',
       acciones: mir ? [
@@ -110,19 +152,19 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
       ] : [],
     },
     {
-      flag: '🇵🇪', nombre: 'ENCAPS · 1h banqueo (mantenimiento 2027-I)', ini: '16:15', fin: '17:15', color: TEAL,
+      flag: '🇵🇪', nombre: 'ENCAPS · 1h banqueo (mantenimiento 2027-I)', ini: '16:15', fin: '17:15', color: TEAL, frente: 'encaps',
       tema: 'Banco del día según pronóstico v3 (rotación II·I·V·III·IV) · viernes = mini-simulacro 25Q',
       sub: 'registro de errores en TRACKING_ERRORES · feb-mar 2027 vuelve a principal',
       acciones: [{ lbl: '◆ Obsidian', color: OBS, url: encapsObsUrl('salud_publica') || OBS_MAPA_URL }],
     },
     {
-      flag: '⚖️', nombre: 'LIVIANO · Academia (obesidad/GLP-1/nutrición)', ini: '17:15', fin: '18:00', color: AMBER,
+      flag: '⚖️', nombre: 'LIVIANO · Academia (obesidad/GLP-1/nutrición)', ini: '17:15', fin: '18:00', color: AMBER, frente: 'liviano',
       tema: 'Módulo del día — ver Business → LIVIANO → Academia',
       sub: '25 min estudio + 20 min aplicación (explicárselo a un paciente)',
       acciones: [],
     },
     {
-      flag: '🇺🇸', nombre: 'USMLE · Evaluación acumulativa (modo examen)', ini: '18:00', fin: '18:45', color: GREEN,
+      flag: '🇺🇸', nombre: 'USMLE · Evaluación acumulativa (modo examen)', ini: '18:00', fin: '18:45', color: GREEN, frente: 'usmle-eval',
       tema: 'Bloque timed mixto de temas vistos + corrección + APEX',
       sub: 'termómetro diario del Step 1 · anchoring pre-sueño',
       acciones: [{ lbl: '◆ Obsidian', color: OBS, url: OBS_MAPA_URL }],
@@ -135,14 +177,30 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
         <View style={st.titleRail} />
         <Text style={st.title}>MISIÓN DE HOY</Text>
         <View style={st.faseChip}><Text style={st.faseTxt}>{faseActual(iso)}</Text></View>
+        {!sem.fueraDeRango && (
+          <View style={[st.faseChip, sem.deload && { borderColor: Colors.amber + '66', backgroundColor: Colors.amber + '1A' }]}>
+            <Text style={[st.faseTxt, sem.deload && { color: Colors.amber }]}>{semanaLabel(sem)}{sem.hito ? ` · ${sem.hito}` : ''}{sem.deload ? ' · DELOAD secundarios 50%' : ''}</Text>
+          </View>
+        )}
         <Text style={st.fecha}>{iso}</Text>
+      </View>
+      {/* v5.7 · modo del día (PROTOCOLO_MODO_MINIMO): VERDE todo · ÁMBAR secundarios al mínimo · ROJO Anki + 10Q + dormir + remap */}
+      <View style={[st.modoCard, { borderColor: MODO_COLOR[modo] + '55' }]}>
+        <ModoSelector nivel={modo} onChange={cambiarModo} />
+        <Text style={st.modoInfo}>
+          {modo === 'VERDE'
+            ? `VERDE · ${MODO_INFO.VERDE.resumen} Pasa a ÁMBAR si: ${MODO_INFO.AMBAR.disparador}. ROJO si: ${MODO_INFO.ROJO.disparador}.`
+            : `${MODO_INFO[modo].label} · ${MODO_INFO[modo].resumen} (disparador: ${MODO_INFO[modo].disparador})${modo === 'ROJO' ? ' · si el día cuenta como perdido: node DATA/_scripts/remap_inicio.js <mañana>' : ''}`}
+        </Text>
       </View>
       {bloques.map((b, i) => {
         const enCurso = ahora >= hm(b.ini) && ahora < hm(b.fin);
         const pasado = ahora >= hm(b.fin);
+        const minimo = minimoPorFrente(b.frente, modo);
+        const omitido = !!minimo && /^Omitid/.test(minimo);
         return (
           <TouchableOpacity key={i} activeOpacity={onGo ? 0.8 : 1} onPress={() => onGo?.('Estudio')}
-            style={[st.bloque, { borderLeftColor: b.color }, enCurso && { backgroundColor: b.color + '14', borderColor: b.color + '66' }, pasado && { opacity: 0.5 }]}>
+            style={[st.bloque, { borderLeftColor: b.color }, enCurso && { backgroundColor: b.color + '14', borderColor: b.color + '66' }, (pasado || omitido) && { opacity: 0.5 }]}>
             <View style={st.horaCol}>
               <Text style={[st.hora, { color: b.color }]}>{b.ini}</Text>
               <Text style={st.horaFin}>{b.fin}</Text>
@@ -151,6 +209,9 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
             </View>
             <View style={{ flex: 1, minWidth: 0 }}>
               <Text style={st.bloqueNombre}>{b.flag} {b.nombre}</Text>
+              {minimo ? (
+                <Text style={[st.bloqueTema, { color: MODO_COLOR[modo] }]} numberOfLines={2}>{MODO_INFO[modo].label} → {minimo}</Text>
+              ) : null}
               <Text style={st.bloqueTema} numberOfLines={2}>{b.tema}</Text>
               <Text style={st.bloqueSub} numberOfLines={1}>{b.sub}</Text>
             </View>
@@ -165,7 +226,7 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
           </TouchableOpacity>
         );
       })}
-      <Text style={st.nota}>Horario real del Google Calendar (Lima) · toca un bloque → abre Estudio · ◆ Obsidian = nota madre donde caen los APEX</Text>
+      <Text style={st.nota}>Horario real del Google Calendar (Lima) · toca un bloque → abre Estudio · ◆ Obsidian = nota madre donde caen los APEX · sáb 07:15-07:35 = revisión semanal (DATA/REVISION_SEMANAL.md)</Text>
     </View>
   );
 }
@@ -178,6 +239,17 @@ const st = StyleSheet.create({
   faseChip: { backgroundColor: TEAL + '1A', borderWidth: 1, borderColor: TEAL + '55', borderRadius: BorderRadius.full, paddingVertical: 2, paddingHorizontal: 10 },
   faseTxt: { fontSize: 10, fontWeight: '800', color: TEAL, letterSpacing: 0.4, fontFamily: MONO },
   fecha: { fontSize: 11, color: Colors.muted, marginLeft: 'auto', fontVariant: ['tabular-nums'], fontFamily: MONO },
+
+  modoCard: {
+    backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1,
+    paddingVertical: 8, paddingHorizontal: 12, marginBottom: 8,
+  },
+  modoRow: { flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap' },
+  modoLbl: { fontSize: 9, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 1.2, fontFamily: MONO, marginRight: 4 },
+  modoChip: { flexDirection: 'row', alignItems: 'center', gap: 5, borderWidth: 1, borderRadius: BorderRadius.full, paddingVertical: 3, paddingHorizontal: 9 },
+  modoDot: { width: 7, height: 7, borderRadius: 4 },
+  modoTxt: { fontSize: 10, fontWeight: '800', letterSpacing: 0.5, fontFamily: MONO },
+  modoInfo: { fontSize: 9, color: Colors.muted, marginTop: 5, lineHeight: 13 },
 
   bloque: {
     flexDirection: 'row', alignItems: 'center', gap: 12,

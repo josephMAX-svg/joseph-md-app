@@ -298,3 +298,15 @@ export const DERMA_GAP_MODULOS: DermaGapModulo[] = [
     porQue: 'Cierra el átomo 68 con rigor de evidencia, no marketing (exosomas, barrera, fotoprotección).',
     fuente: 'Cosmeceuticals and Cosmetic Ingredients (AccessDerma bookid 2812) + revisiones JAAD/JDD', url: 'https://dermatology.mhmedical.com/book.aspx?bookid=2812' },
 ];
+
+/**
+ * Cuaderno NotebookLM "DERMA · Élite Engine" (creado 05-sep-2026): fuentes OA verificadas en vivo
+ * (PubMed de referentes.md/PLAN_ELITE, DermNet Dermoscopy CME 18 módulos + terminología, Dermoscopedia,
+ * ABD CORE/APPLIED, ISSVA, AAD, Mind the Gap, rutas de fellowship ASDS/ACGME/Mayo). Detalle y prompts de
+ * uso en DATA/DERMATOLOGIA/recursos.md §0. Uso Palmerton: cierre 14:13 → "tarjeta de MECANISMO verificada
+ * del caso de hoy" · d45/d69 → "qué no sé del módulo X". Motor de verificación, NO sustituye la fuente.
+ */
+export const DERMA_NOTEBOOKLM = {
+  id: '0e9fac5c-01f3-406e-96f2-6230bd66a29c',
+  url: 'https://notebooklm.google.com/notebook/0e9fac5c-01f3-406e-96f2-6230bd66a29c',
+} as const;
