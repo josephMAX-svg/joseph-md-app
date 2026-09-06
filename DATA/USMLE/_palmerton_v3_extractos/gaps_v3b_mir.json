@@ -1,0 +1,153 @@
+{
+ "seccion": "MIR (España) · mantenimiento 1h/día 15:15-16:15 L-V · plan v3 78d (7-sep→23-dic-2026) + banqueo ene-mar 2027 · meta ene-2030 Top 50 → Derma Clínic · análisis v3b (segunda capa: lo que sigue faltando DESPUÉS de implementar gaps_mir.json v3)",
+ "puntos_ciegos": [
+  {
+   "gap": "El gate central de Palmerton no existe en el loop MIR y el mayor volumen de preguntas del día ni siquiera se registra. El plan avanza por calendario pase lo que pase: el pre-test 5Q se loguea como 'diagnóstico, no cuenta' y las 8-10Q comentadas (15:53-16:05, el 50 % de las preguntas diarias) no tienen `kind` en mirEvalLog (solo anclada/pretest/cierre/miniMIR/mantenimiento; MIR_FRANJAS tiene tipo 'quiz' pero MirTodayPlan no monta EvalForm para él). Palmerton (cuaderno, 'UWorld Complete Guide' / 'How to Guarantee a Step 1 Pass'): validar cada subtema con 10Q inéditas en 24-48 h; si <80 % 'don't move on', diagnosticar cuál de los 4 componentes está roto (recursos / comprensión / aplicación / retención) y corregir la raíz. Hoy un tema puede salir con 3/10 y solo reaparece por el azar del calendario (D-1, D-3, D-7 fijos); el único verdicto llega en el cierre 10Q al terminar el bloque (1-2 semanas después) y sobre una muestra de 10Q (±10 pp por pregunta).",
+   "impacto": "alto",
+   "propuesta": "Con 1h/día el gate no puede parar el calendario, así que se convierte en SELECCIÓN DE ANCLAS: (a) registrar el quiz 8-10Q (kind 'quiz', n/total + brecha, 20 s en el formulario ya existente); (b) regla de validación por tema = pre-test 5Q + quiz 8-10Q + ancla D-1 ≥ 80 % acumulado → 'validado'; si <60 % en el quiz o <50 % acumulado → tema NO validado: ocupa la Q de D-3 del día siguiente (mirAnclas pasa de posiciones fijas a 'D-1 fijo + 2 slots dinámicos priorizando temas no validados del bloque') y sigue caliente hasta 2 aciertos consecutivos; (c) al 2º fallo, campo obligatorio `ajuste` (recursos / comprensión / aplicación / retención) = los 4 ajustes de Palmerton, que alimenta la corrección de la revisión semanal; (d) el Temario muestra ✓ validado / ● caliente por tema, y `mirAsignaturasEnAnclasD7` usa el agregado de la asignatura (cierre + ancladas + quiz, n≥20) en vez del último cierre de 10Q. Ningún minuto nuevo: solo cambia qué pregunta ocupa cada ancla.",
+   "esfuerzo": "M",
+   "toca_app": true,
+   "ficheros": [
+    "D:\\joseph-md-app\\src\\lib\\mirEvalLog.ts",
+    "D:\\joseph-md-app\\src\\lib\\mirDailyPlan.ts",
+    "D:\\joseph-md-app\\src\\components\\study\\MirTodayPlan.tsx",
+    "D:\\joseph-md-app\\DATA\\MIR\\README.md"
+   ]
+  },
+  {
+   "gap": "El pool de preguntas oficiales sigue VACÍO (`MIR_PREGUNTAS_OFICIALES = []`, `MIR_POOL_META.estado = 'A VERIFICAR'`) y todo el loop (pre-test, anclas, cierre, mini-MIR D77, 25Q del mantenimiento) se apoya en 'test del capítulo ProMIR' sin anti-repetición ni trazabilidad. Es la propiedad más rentable del MIR (recicla conceptos año tras año; Palmerton: 'questions as the curriculum') y el requisito de la regla de la memoria 'verificar contra fuente real'. Verificado en vivo (6-sep): examenesmir.com ofrece 13 convocatorias 2014-2026 con cuadernillo + plantilla definitiva + archivo de imágenes, gratis y sin registro, pero SIN clasificación estructurada por asignatura; el Ministerio publica las 5 versiones + imágenes. El obstáculo real no es el acceso sino la clasificación por asignatura/capítulo.",
+   "impacto": "alto",
+   "propuesta": "MVP en 3 pasos sin scrape logueado: (1) descargar 2022-2026 (5 × 210 ≈ 1.050 Q) + plantillas definitivas → `DATA/MIR/pool/AAAA.json` {id 'AAAA-NNN', enunciado, 4 opciones, clave, imagen sí/no, anulada}; parse con pdftotext + script (S); (2) clasificar cada pregunta en las 14 asignaturas del plan y, dentro de ellas, al capId de los 76 capítulos con un pase LLM + verificación manual por muestreo del 10 % y contraste con los 'análisis por especialidad' de examenesmir/academias (M); lo que no cae en las 14 asignaturas queda etiquetado 'fuera de plan' (sirve al punto Tier C express); (3) `mirPreguntasOficiales.ts` se genera desde esos JSON (`gen_mir_pool.js`), la UI sirve `preguntasSinUsar(capId, usadas)` para pre-test/anclas/cierre/mini-MIR y el log guarda `qIds` consumidos; la cuota '1 de cada 4 APEX con imagen' toma las Q con `imagen:true` (≈25/convocatoria). Segunda fase (cuando haya sesión ProMIR): cruzar con 'preguntas MIR de este capítulo' para validar la clasificación.",
+   "esfuerzo": "L",
+   "toca_app": true,
+   "ficheros": [
+    "D:\\joseph-md-app\\src\\lib\\mirPreguntasOficiales.ts",
+    "D:\\joseph-md-app\\src\\lib\\mirEvalLog.ts",
+    "D:\\joseph-md-app\\src\\components\\study\\MirTodayPlan.tsx",
+    "D:\\joseph-md-app\\DATA\\MIR\\README.md",
+    "D:\\joseph-md-app\\DATA\\_scripts\\gen_mir_mantenimiento.js"
+   ]
+  },
+  {
+   "gap": "Dermatología MIR no existe en ningún sitio del sistema, y es la especialidad meta. El plan MIR la excluye ('tiene su propia franja 13:30'), pero esa franja (dermaDailyPlan v2.1) es 100 % USMLE-style/AccessDerma: los 10 capIds ProMIR de Derma están verificados en `PM_CAP` y el campo `promir` es `null` en los 70 días ('NO usados por el plan v2 — compat'); `ankiLinks.MIR_DECK` no tiene entrada para Dermatología. Datos reales: ProMIR Derma = 5-8 Q/año, 10 capítulos, Oncología cutánea 23,4 % + Infecciosas 17,3 % = 41 % de la asignatura en 2 capítulos, 18h35 de contenido; MIR 2025: última plaza de Dermatología = 137,8 netas (puesto 233), la especialidad más competida. mirData.ts la marca 'sobreinvierte' y el propio Calendar dice 'Soy dermatólogo del Clínic — este es mi training', pero ni una pregunta MIR de Derma se hace hasta abr-2027.",
+   "impacto": "alto",
+   "propuesta": "Sin tocar horarios ni el bloque 15:15: (a) en las sesiones Derma (13:30), 1 de cada 3 sesiones sustituye el slot '~10Q review' por 10Q MIR-Derma del test del capítulo ProMIR (rotación de los 10 capítulos por peso: Oncología cutánea → Infecciosas → …; 2 vueltas antes de mar-2027), activando el campo `promir` con `pm(PM_CAP.cN)` y logueando en mirEvalLog con asignatura 'Dermatología' (kind 'cierre'-like) para que entre en la tabla baseline de D78/31-mar; (b) en el mantenimiento ene-mar, añadir Dermatología al pool de interleaving (gen_mir_mantenimiento ASIGS: {num:5, peso:3} → 1 slot de 10Q cada 2 semanas); (c) `MIR_DECK['Dermatología'] = 'dermatologia'` y doble tag con Dermki; (d) chip en DermaTodayPlan 'MIR-Derma hoy: cap N'. Palmerton 'double-dipping': la misma sesión sirve a la meta (Clínic) y al examen que la decide.",
+   "esfuerzo": "M",
+   "toca_app": true,
+   "ficheros": [
+    "D:\\joseph-md-app\\src\\lib\\dermaDailyPlan.ts",
+    "D:\\joseph-md-app\\src\\components\\study\\DermaTodayPlan.tsx",
+    "D:\\joseph-md-app\\DATA\\_scripts\\gen_mir_mantenimiento.js",
+    "D:\\joseph-md-app\\src\\lib\\mirEvalLog.ts",
+    "D:\\joseph-md-app\\src\\lib\\ankiLinks.ts",
+    "D:\\joseph-md-app\\DATA\\MIR\\README.md"
+   ]
+  },
+  {
+   "gap": "≈1 de cada 5 preguntas del MIR (≈45-50 Q/año) no tendrá NINGUNA exposición hasta abr-2027 y la decisión no está documentada, así que la baseline de D78/31-mar sobreestimará el readiness. Las 14 asignaturas del plan y del mantenimiento dejan fuera, con su peso real de ProMIR (mirDetalleData.pesoGlobal): Traumatología ~10 Q/año (4-5 %, 'entre las 15 más preguntadas'), Radiología-Urgencias 4-5 %, Oncología Médica ~4 % (al alza), Geriatría 4-8 Q/año, ORL 3-5 Q (subiendo a ~4 %), Cuidados Paliativos >20 Q en 5 años, Urología 2,2 %, Oftalmología ~3 Q, más Genética/Inmunología/Farmacología/Estadística/Gestión ~1 % cada una. Muchas son 'un capítulo = la mitad de la asignatura' (Paliativos: Control de síntomas 49,7 % · Geriatría: enfermedad en mayores 47,2 % · Trauma: miembro inferior 31,9 + superior 24,0 % · ORL: Oído 34,4 % · Oftalmo: Retina 35,5 % · Genética: enfermedades genéticas 85,3 %) = el ratio preguntas/hora más alto que queda sin usar.",
+   "impacto": "medio",
+   "propuesta": "Sin días nuevos: (a) en el mantenimiento ene-mar (63 días), 1 de los 4 slots semanales de '10Q interleaving' (lun-jue) pasa a ser 'Tier C express' = 10Q del capítulo top-1 de una asignatura pequeña (12 semanas → 12 asignaturas: Trauma MI, Trauma MS, Rx-Urgencias síndromes torácicos/politrauma, Onco urgencias, Geriatría, ORL oído, Paliativos control de síntomas, Uro HBP/ITU, Oftalmo retina, Genética, Inmuno, Estadística/Gestión), con capId real de mirTemarioData y logueado con su propia asignatura; (b) README §1 declara explícitamente la exclusión deliberada + tabla de pesos de las 16 asignaturas fuera del plan (fichero de evidencia scratchpad/palmerton_v3/mir_v3b_evidencia.md); (c) la tabla baseline de D78 muestra 'cobertura del examen medida: ~80 %' para no leer el neto como readiness global.",
+   "esfuerzo": "S",
+   "toca_app": true,
+   "ficheros": [
+    "D:\\joseph-md-app\\DATA\\_scripts\\gen_mir_mantenimiento.js",
+    "D:\\joseph-md-app\\src\\lib\\mirMantenimiento.ts",
+    "D:\\joseph-md-app\\src\\lib\\mirEvalLog.ts",
+    "D:\\joseph-md-app\\DATA\\MIR\\README.md"
+   ]
+  },
+  {
+   "gap": "Ninguna métrica MIR está calibrada a 'Top 50': los umbrales del cierre (≥70 % consolidada / <55 % anclas D-7) y la banda de MIR_SIMULACROS ('neto ≥120 → zona plaza') miden 'aprobar/plaza', el readiness es un % sin referencia y, a diferencia del USMLE (homeBriefing.ts tiene 'mínimo on-track por hito, regla 5 %/mes'), MIR no tiene trayectoria objetivo. Datos reales (web, 6-sep): MIR 2026 nº1 = 188 netas/200 (récord); MIR 2025: Dermatología última plaza 137,8 netas (puesto 233), top-1000 ≈ 126,7, >3.000 ≈ 110 → Top 50 ≈ 150-165 netas (75-82 % neto) según la dificultad del año. Es decir: 'consolidada al 70 %' está 10 puntos por debajo de lo que la meta exige, y el mensaje de la app ('neto ≥120 → zona plaza') apunta al puesto ~1.500, no al 50.",
+   "impacto": "medio",
+   "propuesta": "(a) `MIR_HITOS` en mirData.ts con mínimo on-track por hito, en % neto ciego: mini-MIR D77 (dic-2026) ≥ 50 · handoff 31-mar-2027 ≥ 60 · fin de 1ª vuelta completa (dic-2027) ≥ 68 · simulacros 2028 ≥ 75 · 2029 ≥ 82 (banda Top 50); ReadinessBar MIR muestra 'a X pts del mínimo on-track del siguiente hito' como el USMLE; (b) `MIR_CIERRE_UMBRAL` parametrizado por fase (70/55 hasta mar-2027 → 75/60 desde abr-2027); (c) MIR_SIMULACROS.banda de ProMIR pasa a 'neto ≥150 (75 %) = banda Top 50 · ≥138 = Derma 2025'; (d) README §4 documenta la fuente (tablas netas–nº de orden 2025/2026) y la regla de recalibración anual con el examen recién rendido (ROADMAP regla 3).",
+   "esfuerzo": "S",
+   "toca_app": true,
+   "ficheros": [
+    "D:\\joseph-md-app\\src\\lib\\mirData.ts",
+    "D:\\joseph-md-app\\src\\lib\\mirEvalLog.ts",
+    "D:\\joseph-md-app\\src\\components\\study\\MirHub.tsx",
+    "D:\\joseph-md-app\\src\\lib\\homeBriefing.ts",
+    "D:\\joseph-md-app\\DATA\\MIR\\README.md"
+   ]
+  },
+  {
+   "gap": "La táctica −1/3 (la única habilidad genuinamente MIR que el USMLE no entrena) se documenta pero no se mide ni se practica con reloj: `MIR_TACTICA` (EV +0,33 / +1,0 / 0) es texto en la pestaña Táctica; el log guarda `blancos` pero no si esos blancos habrían sido aciertos ni cuántos fallos fueron 'entre dos'; no hay cronómetro en la app (77 s/Q aparece solo como texto) y no se registra si se cambiaron respuestas. Palmerton: regla de los 2 min (adivinar-marcar-avanzar; en MIR el análogo es ~100 s con la opción 'en blanco'), 'solo cambiar una respuesta por error objetivo de lectura, nunca por duda' y 'hasta el 50 % de los fallos son de interpretación'. Un Top 50 deja ≤3-5 blancos: la calibración del riesgo es puntos netos directos.",
+   "impacto": "medio",
+   "propuesta": "(a) 3 campos opcionales en EvalForm al corregir: `blancosAcertables` (blancos que habrían sido correctos), `fallosEntreDos` (errores con 2 opciones vivas) y `cambiadas` (respuestas cambiadas: acierto→fallo / fallo→acierto); (b) `mirStatsPorAsignatura` calcula 'EV de tu política de blanco' = (blancosAcertables·1 − (blancos−blancosAcertables)·0) vs riesgo real en 'entre dos' y emite consejo por asignatura ('arriesga más' / 'deja en blanco cuando no descartas 2'); (c) componente Timer en HOY para 4Q/10Q/25Q/40Q (77 s/Q, aviso a 100 s por pregunta, cuenta atrás del bloque) — reutilizable en USMLE con 90 s; (d) MIR_TACTICA incorpora la regla Palmerton de no cambiar respuestas y el registro semanal de `cambiadas`.",
+   "esfuerzo": "S",
+   "toca_app": true,
+   "ficheros": [
+    "D:\\joseph-md-app\\src\\lib\\mirEvalLog.ts",
+    "D:\\joseph-md-app\\src\\components\\study\\MirTodayPlan.tsx",
+    "D:\\joseph-md-app\\src\\lib\\mirData.ts"
+   ]
+  },
+  {
+   "gap": "El log MIR vive solo en localStorage de UN dispositivo y ningún proceso lo lee: export manual a JSON, sin espejo Supabase (README §4 'pendiente'), `gen_revision_semanal.js` aún no existe (el vibecoding S3/S4, 21-sep→10-oct, lo planifica solo con `usmle_daily_scores`) y el informe semanal que proponen los gaps de SYNAPSE lista 'MIR eval D-1' como métrica sin fuente. El bucle cerrado de Palmerton (validar en 24-48 h → diagnosticar → ajustar) exige que alguien lea el dato; hoy el viernes del mantenimiento ('asignatura peor del log') y la cola D+14 dependen de que Joseph use siempre el mismo navegador.",
+   "impacto": "medio",
+   "propuesta": "Subirse al proyecto S3 sin crear infraestructura nueva: (a) misma tabla `study_sim_scores` (examen='MIR', fecha, d, kind, asignatura, capId, aciertos, total, blancos, tipoError, delta_es, qIds jsonb, ajuste) con upsert espejo desde `mirEvalLogAppend` y merge por id al cargar (ya existe `mirEvalLogImportJSON`); migración en supabase-schema.sql, aplicada con Joseph; (b) bloque MIR en gen_revision_semanal.js: neto semanal por asignatura, temas no validados, % delta_es, cola D+14 vencida, nº APEX creadas vs cuota 20/semana, reviews Anki APEX::MIR (si AnkiConnect local); (c) criterio de aceptación: registrar en el móvil y verlo en la web + fila en Supabase. Ampliar el alcance de S3 en vibecodingPlan.ts (mismo esquema, +1 examen).",
+   "esfuerzo": "M",
+   "toca_app": true,
+   "ficheros": [
+    "D:\\joseph-md-app\\src\\lib\\mirEvalLog.ts",
+    "D:\\joseph-md-app\\src\\lib\\supabase-schema.sql",
+    "D:\\joseph-md-app\\DATA\\_scripts\\gen_revision_semanal.js",
+    "D:\\joseph-md-app\\src\\lib\\vibecodingPlan.ts",
+    "D:\\joseph-md-app\\DATA\\MIR\\README.md"
+   ]
+  },
+  {
+   "gap": "Lo que Joseph lee a las 15:15 contradice lo que la app le pide. Leído en vivo (6-sep) en los eventos reales del Calendar: `2ldp6obaapnvo76li28uprrddg` (actualizado 05-sep 10:28) sigue diciendo '4Q ProMIR/AMIR del tema D-1 · 90-100 s/Q · banco AMIR Test · mini-corrección en Obsidian MIR errores (conceptual/terminológico/aplicación) · 3/4 → repaso fin de semana · <3/4 → mañana se repite EN VEZ de tema nuevo · métricas en Obsidian 06_MIR/Evaluaciones · 800-1000 cards a marzo 2028'; `00k364heibh1n6f9hfspcv9dpi` (sin tocar desde 07-may) dice '3Q ciegas AMIR Test · free recall 60 s · Compendio AMIR 25 min · <60 % recall → mañana repetir · ≥1 comparativa MIR vs ENCAPS · 380 cards al 10-ago-2026'. La app v3: 77 s/Q, 2Q D-1 + 1Q D-3 + 1Q D-7, ProMIR (AMIR no verificado), pre-test 5Q + 8-10Q, log en la app, sáb+dom libres, cola D+14, tag USMLE. CALENDAR_SEGMENTOS_V5_6.md §15:15/§15:30 (la 'autoridad del CÓMO') repite el texto viejo, PROTOCOLO_MODO_MINIMO fila 8 dice 'solo eval D-1' (Palmerton: 'reviews first' → el mínimo debe ser Anki a cero + 4Q) y `MIR_CALENDARIO` en mirData.ts aún describe 'Fase 0-4 por meses' del plan de junio.",
+   "impacto": "medio",
+   "propuesta": "Reescribir SOLO las descripciones (no la hora, no la recurrencia; update_event de description funciona, el bug es recurrenceData): 15:15 = eval anclada 4Q multi-temporal · Anki APEX::MIR · log en la app (knowledge/transfer/proceso + 🇪🇸 delta) · 1er día de bloque = test de cierre 10Q; 15:30 = pre-test 5Q → lectura dirigida a los gaps → 8-10Q Rule-In/Rule-Out → ≤4 APEX con tag USMLE; quitar AMIR/Obsidian-errores/finde/'repetir mañana'; meta de tarjetas coherente (≤4/día × 76 ≈ 300 APEX a dic-2026; ~950 conceptos a 2,5 años con 17-18 reviews/día, cifra de Palmerton 'one thing a day'). Mismo texto en CALENDAR_SEGMENTOS §15:15/§15:30, MODO_MINIMO fila 8 ('Anki a cero + 4Q anclada, 15 min') y MIR_CALENDARIO (fases reales: 1ª vuelta sep-dic · banqueo ene-mar · principal abr-2027→).",
+   "esfuerzo": "S",
+   "toca_app": true,
+   "ficheros": [
+    "D:\\joseph-md-app\\DATA\\ENCAPS\\CALENDAR_SEGMENTOS_V5_6.md",
+    "D:\\joseph-md-app\\DATA\\PROTOCOLO_MODO_MINIMO.md",
+    "D:\\joseph-md-app\\src\\lib\\mirData.ts",
+    "D:\\joseph-md-app\\DATA\\MIR\\README.md"
+   ]
+  },
+  {
+   "gap": "La transferencia Step 1 ↔ MIR es unidireccional y el Anki no está preparado para reutilizarse entre exámenes. `mirUsmleBridge.ts` existe pero `UsmleTodayPlan.tsx` no lo importa (0 coincidencias): desde el bloque principal de la mañana no se ve 'MIR en paralelo: Cardiología (D5-D11)' ni el doble tag, así que el 'prime en español 7 días antes' no se explota en el repaso anclado de las 07:15 (pendiente del agente G del traspaso, pero es la mitad del puente). `MIR_DECK` no tiene Epidemiología, Medicina Legal y Bioética ni Dermatología (el fallback genera slugs no verificados en Anki). Palmerton (Med School Anki FAQ / 'I Haven't Had to Re-Learn Anything'): nunca resetear el mazo, etiquetar por sistema orgánico y suspender quirúrgicamente lo que no aplique → en abr-2027 las tarjetas de mecanismo del USMLE deberían servir al MIR con un filtro por sistema, y hoy no comparten ningún tag.",
+   "impacto": "medio",
+   "propuesta": "(a) Chip `usmleMirParalelo(fecha)` en UsmleTodayPlan (HOY y en la franja 07:15 'repaso anclado': 'MIR precedió esta semana: <asignatura>'); (b) esquema de tag compartido `sys::<usmleSystem>` (Cardiovascular, Renal…) que llevan tanto APEX::USMLE como APEX::MIR (ankiLinks exporta `sysTag(system)`; MIR_DECK añade 'Epidemiología': 'epidemiologia', 'Medicina Legal y Bioética': 'bioetica', 'Dermatología': 'dermatologia' verificando los nombres reales por AnkiConnect); (c) receta del handoff 31-mar en SYNC_ANKI_OBSIDIAN_APP.md: 'filtered deck por sistema = MIR + USMLE' y qué suspender (bioquímica pura) al abrir la fase principal MIR; (d) plantilla APEX-MIR: el campo 'delta' pasa a ser '🇪🇸 vs Perú/USA' (ya) y el campo obligatorio 'Pregunta oficial origen' se rellena desde el pool (punto 2).",
+   "esfuerzo": "S",
+   "toca_app": true,
+   "ficheros": [
+    "D:\\joseph-md-app\\src\\components\\study\\UsmleTodayPlan.tsx",
+    "D:\\joseph-md-app\\src\\lib\\mirUsmleBridge.ts",
+    "D:\\joseph-md-app\\src\\lib\\ankiLinks.ts",
+    "D:\\joseph-md-app\\DATA\\SYNC_ANKI_OBSIDIAN_APP.md"
+   ]
+  },
+  {
+   "gap": "El 'delta-España' es el modo de fallo más probable de un médico formado en Perú y solo existe como flag booleano: no hay ninguna base de conocimiento que diga QUÉ cambia en España por asignatura, ni la UI avisa en los días donde el delta es seguro. Días con delta previsible en el plan: D4 Bioética (Ley 41/2002 autonomía, LO 3/2021 eutanasia, LO 2/2010 IVE, ley de trasplantes, documentos médico-legales), D49 Infecciones tropicales (aquí Perú es ventaja, no delta), D53 Antibacterianos (resistencias y empírica españolas), D60-D61 Infecciones/control de gestación (protocolos SEGO), D73 Vacunación infantil (12,3 % de Pediatría: calendario común CISNS/AEP, no MINSA), cribados (PAPPS), unidades y nombres comerciales. Sin lista, el flag se marca a posteriori y el APEX 'delta' no tiene fuente española verificable (regla anti-alucinación).",
+   "impacto": "medio",
+   "propuesta": "`DATA/MIR/DELTA_ESPANA.md` pre-sembrado por asignatura (14 + Derma) con formato ítem · manejo Perú/USA · manejo España · fuente oficial española (BOE / CISNS / guía SEC-SEPAR-GESIDA-SEGO-AEP) · capId; se alimenta con cada entrada `delta_es` del log (script `gen_delta_espana.js` que vuelca las entradas y deja la fila para completar); chip 🇪🇸 'delta previsible' en HOY para los capIds marcados (campo opcional `delta:true` en DiaMIR o mapa por capId); la tabla baseline de D78 ya cuenta `deltaEs` por asignatura → objetivo: 0 fallos delta repetidos en el mantenimiento.",
+   "esfuerzo": "S",
+   "toca_app": true,
+   "ficheros": [
+    "D:\\joseph-md-app\\DATA\\MIR\\DELTA_ESPANA.md",
+    "D:\\joseph-md-app\\src\\lib\\mirDailyPlan.ts",
+    "D:\\joseph-md-app\\src\\components\\study\\MirTodayPlan.tsx",
+    "D:\\joseph-md-app\\DATA\\MIR\\README.md"
+   ]
+  },
+  {
+   "gap": "MIR es el plan más dependiente de Anki de todos (horizonte 3 años; Palmerton: '1 concepto/día → 947 conceptos a 2,5 años con 17-18 reviews/día', 'reviews first, new cards second', 'one missed day turns into two') y es el que menos verificación tiene: la UI manda los APEX a la 'nota madre Obsidian (motor APEX)', pero la AUDITORIA §8 dice que P0-2/P0-3 (parser truncaba multilínea, nota Obsidian vacía) están corregidos EN DISCO con n8n SIN redesplegar; solo existe el deck `APEX::MIR::cardiologia` (creación lazy); el preset FSRS 0,85 está 'A VERIFICAR' y la app no tiene AnkiConnect. Si durante sep-dic las tarjetas llegan truncadas o no llegan, los 76 días se evaporan antes de abr-2027 y no hay ninguna señal que lo detecte.",
+   "impacto": "alto",
+   "propuesta": "(a) Hasta que el redeploy de n8n esté verificado con un test multilínea real, los APEX MIR se crean DIRECTAMENTE en Anki (Palmerton 'as you learn': la tarjeta es la nota, sin intermediarios) — cambiar el texto de la cola de HOY y del README; (b) test de humo semanal en la revisión: `findNotes 'deck:APEX::MIR* added:7'` por AnkiConnect local (o conteo manual) vs cuota 20/semana, y `deck:APEX::MIR* is:due` <60 dos días seguidos → bajar nuevas a 2 (regla ya escrita en README §5, hoy sin dato); (c) verificar UNA vez y anotar en SYNC_ANKI_OBSIDIAN_APP.md: preset APEX::MIR (retention 0,85, nuevas 4, reviews sin cap, Good/Again), sub-decks creados, plantilla APEX-MIR con los 5 campos; (d) el handoff 31-mar exige el export de stats FSRS del deck (retención real, intervalos medios) como criterio de entrada a la fase principal.",
+   "esfuerzo": "S",
+   "toca_app": false,
+   "ficheros": [
+    "D:\\joseph-md-app\\DATA\\SYNC_ANKI_OBSIDIAN_APP.md",
+    "D:\\joseph-md-app\\DATA\\ENCAPS\\AUDITORIA_AGENTE_ESTUDIO_2026-07-02.md",
+    "D:\\joseph-md-app\\DATA\\MIR\\README.md",
+    "D:\\joseph-md-app\\src\\components\\study\\MirTodayPlan.tsx"
+   ]
+  }
+ ],
+ "notas": "Alcance: segunda capa de vacíos. Los 11 del gaps_mir.json anterior (5-sep 05:15) están implementados en el repo v3 (generador top-N + núcleo rabi_94, D1-D4 Epi/Bioética, orden alineado al Step 1, mirEvalLog, cierre 10Q, D77/D78, mirMantenimiento, mirUsmleBridge, franjas 17-19 Q, pool esqueleto, taxonomía + delta_es, README §5 Anki) — no se repiten salvo el pool, que sigue vacío y se reformula como MVP con fuentes verificadas hoy. Verificado en código: mirEvalLog no tiene kind para el quiz 8-10Q; MirTodayPlan no monta formulario para 'quiz'; UsmleTodayPlan no importa mirUsmleBridge; dermaDailyPlan `promir: null` en los 70 días con PM_CAP verificados; MIR_DECK sin Derma/Epi/Bioética; gen_revision_semanal.js no existe aún; log solo localStorage. Verificado en vivo: descripciones reales de los dos eventos MIR del Calendar (pre-v3), examenesmir.com (13 convocatorias gratis con plantilla e imágenes, sin clasificación por asignatura), netas MIR 2026 nº1 = 188/200 y MIR 2025 Derma última plaza 137,8 netas (puesto 233). Evidencia Palmerton tomada del cuaderno NotebookLM (2 consultas, 6-sep): 'reviews first, new cards second' · 'double-dipping / chase one rabbit' · validación por subtema 10Q en 24-48 h, <80 % = 'don't move on' + 4 ajustes (recursos/comprensión/aplicación/retención) · 'one thing a day' (947 conceptos a 2,5 años, 17-18 reviews/día) · 'one push-up rule' · tags por sistema y suspensión quirúrgica entre exámenes · regla de 2 min y no cambiar respuestas salvo error objetivo de lectura. Lo que está BIEN y no toqué: el interior del bloque (eval multi-temporal → pre-test → lectura dirigida → 8-10Q → APEX) mapea los niveles 1-5 de Palmerton (pre-test = nivel 1, anclas timed = 2, cierre 10Q = 3, mantenimiento 15+10 = 4, mini-MIR 40Q = 5); 77 s/Q correcto; orden MIR precede 1 semana al Step 1 = double-dipping literal; retention 0,85 hasta mar-2027 coherente con la curva de Palmerton. Menores (no elevados a vacío): entre D78 (23-dic) y M1 (4-ene) hay 4 días hábiles sin sesión MIR (24, 28, 29, 30-dic) justo después de la baseline — bastaría `gen_mir_mantenimiento.js 2026-12-24` en modo reducido; el test de cierre de 10Q clasifica una asignatura con ±10 pp por pregunta (se mitiga en el punto 1 usando el agregado); `MIR_KPIS.vueltasCritica = 6` y `PROMIR_FASES` son texto heredado. Fichero de evidencia intermedio: scratchpad/palmerton_v3/mir_v3b_evidencia.md (tabla de pesos de las 30 asignaturas en plan vs fuera, referencias de netas, fuentes del pool, texto real del Calendar). Ninguna propuesta mueve el bloque 15:15-16:15, los sub-bloques del Calendar, las metas ni el número de días."
+}

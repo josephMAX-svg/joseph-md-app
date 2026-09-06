@@ -1,0 +1,1858 @@
+{
+ "_meta": {
+  "descripcion": "Etiquetado v3 de los 300 ítems reales CON CLAVE OFICIAL (2024-2A · 2025-1A · 2025-2; A/B son el mismo examen barajado, 2026-1 no tiene clave en disco) por código v3, sub_eje (claves de _encaps_ciclo_v3.js SUB_EJES para los códigos de la rotación) y formato_pretest. Hecho leyendo enunciado por enunciado el 05-sep-2026. Es la línea base real por código (vacío 1 y 8 de gaps_v3b_encaps.json). Fuente de los enunciados/claves: _examenes_reales_2024-2A_2026-1.json.",
+  "formato": "viñeta | directa | cifra | viñeta+cifra (cifra = la respuesta es un número/plazo/dosis)",
+  "LISTA_NEGRA": "2026-II NO está aquí (reservado como pre-test, PRETEST_2026-II.md).",
+  "generado": "2026-09-05",
+  "por_codigo": {
+   "I-3": 25,
+   "III-2": 8,
+   "V-MED": 22,
+   "II-7": 8,
+   "II-5": 8,
+   "II-4": 6,
+   "IV-6+IV-7": 6,
+   "V-3": 7,
+   "II-8": 11,
+   "IV-1+IV-2": 21,
+   "II-1": 11,
+   "III-5": 15,
+   "I-1": 8,
+   "V-2": 36,
+   "I-4": 17,
+   "II-11": 5,
+   "II-6": 5,
+   "V-1": 8,
+   "III-3": 4,
+   "I-10": 7,
+   "I-OCC": 3,
+   "II-2": 2,
+   "I-9": 3,
+   "III-8": 10,
+   "III-1": 4,
+   "I-2": 4,
+   "III-9": 3,
+   "II-3": 5,
+   "I-5+I-6": 7,
+   "II-10": 5,
+   "I-11+I-12": 7,
+   "V-6": 2,
+   "II-9": 4,
+   "II-12": 1,
+   "II-EMG": 2
+  },
+  "por_proceso": {
+   "2024-2A": 100,
+   "2025-1A": 100,
+   "2025-2": 100
+  }
+ },
+ "items": {
+  "2024-2A": {
+   "1": {
+    "codigo": "I-3",
+    "sub_eje": "tipos_vigilancia",
+    "formato": "directa",
+    "clave": "C"
+   },
+   "2": {
+    "codigo": "III-2",
+    "sub_eje": "comunicacion_asertiva",
+    "formato": "directa",
+    "clave": "A"
+   },
+   "3": {
+    "codigo": "V-MED",
+    "sub_eje": "esenciales_sismed",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "4": {
+    "codigo": "II-7",
+    "sub_eje": "cuidados_comunitarios",
+    "formato": "directa",
+    "clave": "A"
+   },
+   "5": {
+    "codigo": "II-5",
+    "sub_eje": "nts_adolescente",
+    "formato": "cifra",
+    "clave": "B"
+   },
+   "6": {
+    "codigo": "II-4",
+    "sub_eje": "plan_multisectorial",
+    "formato": "directa",
+    "clave": "A"
+   },
+   "7": {
+    "codigo": "II-5",
+    "sub_eje": "nts_adolescente",
+    "formato": "directa",
+    "clave": "B"
+   },
+   "8": {
+    "codigo": "II-4",
+    "sub_eje": "anemia_dx_tto",
+    "formato": "viñeta+cifra",
+    "clave": "B"
+   },
+   "9": {
+    "codigo": "IV-6+IV-7",
+    "sub_eje": "estadistica_descriptiva",
+    "formato": "directa",
+    "clave": "A"
+   },
+   "10": {
+    "codigo": "V-3",
+    "sub_eje": "sistemas_salud",
+    "formato": "directa",
+    "clave": "A"
+   },
+   "11": {
+    "codigo": "II-8",
+    "sub_eje": "paquetes_tamizaje",
+    "formato": "directa",
+    "clave": "C"
+   },
+   "12": {
+    "codigo": "IV-1+IV-2",
+    "sub_eje": "metodo_cientifico",
+    "formato": "directa",
+    "clave": "C"
+   },
+   "13": {
+    "codigo": "V-MED",
+    "sub_eje": "farmacovigilancia_urm",
+    "formato": "directa",
+    "clave": "D"
+   },
+   "14": {
+    "codigo": "IV-1+IV-2",
+    "sub_eje": "metodo_cientifico",
+    "formato": "directa",
+    "clave": "A"
+   },
+   "15": {
+    "codigo": "V-MED",
+    "sub_eje": "esenciales_sismed",
+    "formato": "directa",
+    "clave": "B"
+   },
+   "16": {
+    "codigo": "II-1",
+    "sub_eje": "prenatal_emergencias",
+    "formato": "directa",
+    "clave": "A"
+   },
+   "17": {
+    "codigo": "V-MED",
+    "sub_eje": "contrataciones_digemid",
+    "formato": "directa",
+    "clave": "D"
+   },
+   "18": {
+    "codigo": "V-MED",
+    "sub_eje": "farmacovigilancia_urm",
+    "formato": "viñeta",
+    "clave": "A"
+   },
+   "19": {
+    "codigo": "III-5",
+    "sub_eje": "inclusion_migrantes",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "20": {
+    "codigo": "IV-1+IV-2",
+    "sub_eje": "tipos_estudio",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "21": {
+    "codigo": "V-MED",
+    "sub_eje": "contrataciones_digemid",
+    "formato": "viñeta+cifra",
+    "clave": "B"
+   },
+   "22": {
+    "codigo": "IV-1+IV-2",
+    "sub_eje": "instrumentos",
+    "formato": "directa",
+    "clave": "A"
+   },
+   "23": {
+    "codigo": "I-1",
+    "sub_eje": "autocuidado",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "24": {
+    "codigo": "IV-1+IV-2",
+    "sub_eje": "tipos_estudio",
+    "formato": "directa",
+    "clave": "A"
+   },
+   "25": {
+    "codigo": "V-2",
+    "sub_eje": "planeamiento",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "26": {
+    "codigo": "V-2",
+    "sub_eje": "clima_calidad",
+    "formato": "viñeta+cifra",
+    "clave": "C"
+   },
+   "27": {
+    "codigo": "V-2",
+    "sub_eje": "planeamiento",
+    "formato": "viñeta+cifra",
+    "clave": "D"
+   },
+   "28": {
+    "codigo": "V-2",
+    "sub_eje": "residuos_bioseguridad",
+    "formato": "directa",
+    "clave": "A"
+   },
+   "29": {
+    "codigo": "II-1",
+    "sub_eje": "parto_lactancia",
+    "formato": "directa",
+    "clave": "C"
+   },
+   "30": {
+    "codigo": "V-MED",
+    "sub_eje": "esenciales_sismed",
+    "formato": "cifra",
+    "clave": "D"
+   },
+   "31": {
+    "codigo": "I-4",
+    "sub_eje": "dengue",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "32": {
+    "codigo": "V-MED",
+    "sub_eje": "esenciales_sismed",
+    "formato": "directa",
+    "clave": "D"
+   },
+   "33": {
+    "codigo": "V-3",
+    "sub_eje": "sistemas_salud",
+    "formato": "directa",
+    "clave": "B"
+   },
+   "34": {
+    "codigo": "IV-1+IV-2",
+    "sub_eje": "muestreo",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "35": {
+    "codigo": "IV-1+IV-2",
+    "sub_eje": "muestreo",
+    "formato": "directa",
+    "clave": "D"
+   },
+   "36": {
+    "codigo": "V-3",
+    "sub_eje": "rrhh",
+    "formato": "directa",
+    "clave": "D"
+   },
+   "37": {
+    "codigo": "II-11",
+    "sub_eje": "sifilis_sindromico",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "38": {
+    "codigo": "II-6",
+    "sub_eje": "tratamiento_ram",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "39": {
+    "codigo": "V-MED",
+    "sub_eje": "esenciales_sismed",
+    "formato": "cifra",
+    "clave": "B"
+   },
+   "40": {
+    "codigo": "I-4",
+    "sub_eje": "dengue",
+    "formato": "viñeta",
+    "clave": "A"
+   },
+   "41": {
+    "codigo": "V-2",
+    "sub_eje": "planeamiento",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "42": {
+    "codigo": "V-2",
+    "sub_eje": "planeamiento",
+    "formato": "directa",
+    "clave": "C"
+   },
+   "43": {
+    "codigo": "V-1",
+    "sub_eje": "acreditacion",
+    "formato": "directa",
+    "clave": "D"
+   },
+   "44": {
+    "codigo": "III-5",
+    "sub_eje": "pertinencia_barreras",
+    "formato": "directa",
+    "clave": "B"
+   },
+   "45": {
+    "codigo": "III-3",
+    "sub_eje": "consentimiento",
+    "formato": "directa",
+    "clave": "C"
+   },
+   "46": {
+    "codigo": "IV-1+IV-2",
+    "sub_eje": "metodo_cientifico",
+    "formato": "directa",
+    "clave": "B"
+   },
+   "47": {
+    "codigo": "I-10",
+    "sub_eje": "prevencion",
+    "formato": "directa",
+    "clave": "A"
+   },
+   "48": {
+    "codigo": "V-MED",
+    "sub_eje": "farmacovigilancia_urm",
+    "formato": "viñeta",
+    "clave": "A"
+   },
+   "49": {
+    "codigo": "III-3",
+    "sub_eje": "autonomia_rechazo",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "50": {
+    "codigo": "I-OCC",
+    "sub_eje": "intoxicacion_plaguicidas",
+    "formato": "viñeta",
+    "clave": "A"
+   },
+   "51": {
+    "codigo": "IV-1+IV-2",
+    "sub_eje": "instrumentos",
+    "formato": "directa",
+    "clave": "A"
+   },
+   "52": {
+    "codigo": "II-11",
+    "sub_eje": "sifilis_sindromico",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "53": {
+    "codigo": "IV-1+IV-2",
+    "sub_eje": "tipos_estudio",
+    "formato": "directa",
+    "clave": "D"
+   },
+   "54": {
+    "codigo": "I-3",
+    "sub_eje": "causalidad_hill",
+    "formato": "directa",
+    "clave": "A"
+   },
+   "55": {
+    "codigo": "II-8",
+    "sub_eje": "metas_hta_dm",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "56": {
+    "codigo": "II-2",
+    "sub_eje": "aiepi_eda",
+    "formato": "cifra",
+    "clave": "A"
+   },
+   "57": {
+    "codigo": "I-9",
+    "sub_eje": "salud_familiar",
+    "formato": "directa",
+    "clave": "D"
+   },
+   "58": {
+    "codigo": "V-MED",
+    "sub_eje": "farmacovigilancia_urm",
+    "formato": "directa",
+    "clave": "B"
+   },
+   "59": {
+    "codigo": "I-3",
+    "sub_eje": "causalidad_hill",
+    "formato": "directa",
+    "clave": "B"
+   },
+   "60": {
+    "codigo": "II-1",
+    "sub_eje": "prenatal_emergencias",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "61": {
+    "codigo": "I-10",
+    "sub_eje": "prevencion",
+    "formato": "directa",
+    "clave": "D"
+   },
+   "62": {
+    "codigo": "II-5",
+    "sub_eje": "mci_curso_vida",
+    "formato": "directa",
+    "clave": "B"
+   },
+   "63": {
+    "codigo": "V-2",
+    "sub_eje": "planeamiento",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "64": {
+    "codigo": "II-8",
+    "sub_eje": "metas_hta_dm",
+    "formato": "cifra",
+    "clave": "D"
+   },
+   "65": {
+    "codigo": "III-8",
+    "sub_eje": "ley_27815",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "66": {
+    "codigo": "I-3",
+    "sub_eje": "historia_natural",
+    "formato": "directa",
+    "clave": "A"
+   },
+   "67": {
+    "codigo": "V-1",
+    "sub_eje": "acreditacion",
+    "formato": "cifra",
+    "clave": "C"
+   },
+   "68": {
+    "codigo": "IV-1+IV-2",
+    "sub_eje": "tipos_estudio",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "69": {
+    "codigo": "II-7",
+    "sub_eje": "vacam",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "70": {
+    "codigo": "III-1",
+    "sub_eje": "principios_bioetica",
+    "formato": "directa",
+    "clave": "D"
+   },
+   "71": {
+    "codigo": "I-2",
+    "sub_eje": "efectividad",
+    "formato": "directa",
+    "clave": "B"
+   },
+   "72": {
+    "codigo": "II-6",
+    "sub_eje": "pantbc",
+    "formato": "cifra",
+    "clave": "A"
+   },
+   "73": {
+    "codigo": "V-2",
+    "sub_eje": "clima_calidad",
+    "formato": "directa",
+    "clave": "A"
+   },
+   "74": {
+    "codigo": "V-2",
+    "sub_eje": "planeamiento",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "75": {
+    "codigo": "I-4",
+    "sub_eje": "dengue",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "76": {
+    "codigo": "V-2",
+    "sub_eje": "planeamiento",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "77": {
+    "codigo": "III-5",
+    "sub_eje": "pertinencia_barreras",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "78": {
+    "codigo": "I-10",
+    "sub_eje": "prevencion",
+    "formato": "directa",
+    "clave": "B"
+   },
+   "79": {
+    "codigo": "V-1",
+    "sub_eje": "categorias_rrhh",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "80": {
+    "codigo": "III-2",
+    "sub_eje": "acto_medico",
+    "formato": "directa",
+    "clave": "C"
+   },
+   "81": {
+    "codigo": "IV-1+IV-2",
+    "sub_eje": "instrumentos",
+    "formato": "directa",
+    "clave": "B"
+   },
+   "82": {
+    "codigo": "V-2",
+    "sub_eje": "clima_calidad",
+    "formato": "viñeta",
+    "clave": "A"
+   },
+   "83": {
+    "codigo": "I-4",
+    "sub_eje": "dengue",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "84": {
+    "codigo": "I-3",
+    "sub_eje": "tlp",
+    "formato": "directa",
+    "clave": "C"
+   },
+   "85": {
+    "codigo": "I-10",
+    "sub_eje": "prevencion",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "86": {
+    "codigo": "II-11",
+    "sub_eje": "sifilis_sindromico",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "87": {
+    "codigo": "III-9",
+    "sub_eje": "acceso_servicios",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "88": {
+    "codigo": "II-4",
+    "sub_eje": "plan_multisectorial",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "89": {
+    "codigo": "II-5",
+    "sub_eje": "mci_curso_vida",
+    "formato": "directa",
+    "clave": "A"
+   },
+   "90": {
+    "codigo": "I-4",
+    "sub_eje": "dengue",
+    "formato": "viñeta+cifra",
+    "clave": "C"
+   },
+   "91": {
+    "codigo": "I-4",
+    "sub_eje": "malaria_zoonosis",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "92": {
+    "codigo": "II-3",
+    "sub_eje": "esavi_kit",
+    "formato": "viñeta",
+    "clave": "A"
+   },
+   "93": {
+    "codigo": "I-2",
+    "sub_eje": "fesp",
+    "formato": "directa",
+    "clave": "C"
+   },
+   "94": {
+    "codigo": "V-3",
+    "sub_eje": "rrhh",
+    "formato": "directa",
+    "clave": "C"
+   },
+   "95": {
+    "codigo": "I-3",
+    "sub_eje": "tipos_vigilancia",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "96": {
+    "codigo": "V-MED",
+    "sub_eje": "farmacovigilancia_urm",
+    "formato": "directa",
+    "clave": "C"
+   },
+   "97": {
+    "codigo": "I-5+I-6",
+    "sub_eje": "bioestadistica",
+    "formato": "directa",
+    "clave": "D"
+   },
+   "98": {
+    "codigo": "II-3",
+    "sub_eje": "esavi_kit",
+    "formato": "directa",
+    "clave": "C"
+   },
+   "99": {
+    "codigo": "III-1",
+    "sub_eje": "principios_bioetica",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "100": {
+    "codigo": "II-8",
+    "sub_eje": "paquetes_tamizaje",
+    "formato": "cifra",
+    "clave": "B"
+   }
+  },
+  "2025-1A": {
+   "1": {
+    "codigo": "I-1",
+    "sub_eje": "estilos_vida",
+    "formato": "directa",
+    "clave": "A"
+   },
+   "2": {
+    "codigo": "V-MED",
+    "sub_eje": "farmacovigilancia_urm",
+    "formato": "directa",
+    "clave": "A"
+   },
+   "3": {
+    "codigo": "II-5",
+    "sub_eje": "mci_curso_vida",
+    "formato": "directa",
+    "clave": "A"
+   },
+   "4": {
+    "codigo": "V-2",
+    "sub_eje": "clima_calidad",
+    "formato": "viñeta",
+    "clave": "A"
+   },
+   "5": {
+    "codigo": "IV-6+IV-7",
+    "sub_eje": "imryd",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "6": {
+    "codigo": "V-MED",
+    "sub_eje": "farmacovigilancia_urm",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "7": {
+    "codigo": "IV-1+IV-2",
+    "sub_eje": "metodo_cientifico",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "8": {
+    "codigo": "V-2",
+    "sub_eje": "planeamiento",
+    "formato": "directa",
+    "clave": "B"
+   },
+   "9": {
+    "codigo": "II-8",
+    "sub_eje": "metas_hta_dm",
+    "formato": "cifra",
+    "clave": "B"
+   },
+   "10": {
+    "codigo": "III-5",
+    "sub_eje": "pertinencia_barreras",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "11": {
+    "codigo": "I-5+I-6",
+    "sub_eje": "transicion_epidemiologica",
+    "formato": "directa",
+    "clave": "C"
+   },
+   "12": {
+    "codigo": "III-5",
+    "sub_eje": "medicina_tradicional",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "13": {
+    "codigo": "III-8",
+    "sub_eje": "historia_clinica",
+    "formato": "cifra",
+    "clave": "A"
+   },
+   "14": {
+    "codigo": "II-5",
+    "sub_eje": "nts_adolescente",
+    "formato": "cifra",
+    "clave": "D"
+   },
+   "15": {
+    "codigo": "V-2",
+    "sub_eje": "planeamiento",
+    "formato": "cifra",
+    "clave": "D"
+   },
+   "16": {
+    "codigo": "V-3",
+    "sub_eje": "referencia_contrarreferencia",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "17": {
+    "codigo": "III-3",
+    "sub_eje": "consentimiento",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "18": {
+    "codigo": "IV-6+IV-7",
+    "sub_eje": "estadistica_descriptiva",
+    "formato": "viñeta",
+    "clave": "A"
+   },
+   "19": {
+    "codigo": "I-3",
+    "sub_eje": "tlp",
+    "formato": "viñeta+cifra",
+    "clave": "C"
+   },
+   "20": {
+    "codigo": "III-2",
+    "sub_eje": "deontologia",
+    "formato": "directa",
+    "clave": "A"
+   },
+   "21": {
+    "codigo": "II-10",
+    "sub_eje": "cancer_infantil",
+    "formato": "directa",
+    "clave": "C"
+   },
+   "22": {
+    "codigo": "I-3",
+    "sub_eje": "tipos_vigilancia",
+    "formato": "directa",
+    "clave": "D"
+   },
+   "23": {
+    "codigo": "V-3",
+    "sub_eje": "referencia_contrarreferencia",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "24": {
+    "codigo": "IV-1+IV-2",
+    "sub_eje": "tipos_estudio",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "25": {
+    "codigo": "I-3",
+    "sub_eje": "notificacion",
+    "formato": "viñeta",
+    "clave": "A"
+   },
+   "26": {
+    "codigo": "V-2",
+    "sub_eje": "residuos_bioseguridad",
+    "formato": "viñeta",
+    "clave": "A"
+   },
+   "27": {
+    "codigo": "III-2",
+    "sub_eje": "deontologia",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "28": {
+    "codigo": "V-MED",
+    "sub_eje": "farmacovigilancia_urm",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "29": {
+    "codigo": "II-1",
+    "sub_eje": "salud_sexual_reproductiva",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "30": {
+    "codigo": "V-MED",
+    "sub_eje": "esenciales_sismed",
+    "formato": "directa",
+    "clave": "D"
+   },
+   "31": {
+    "codigo": "II-7",
+    "sub_eje": "cuidados_comunitarios",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "32": {
+    "codigo": "III-8",
+    "sub_eje": "historia_clinica",
+    "formato": "directa",
+    "clave": "D"
+   },
+   "33": {
+    "codigo": "I-5+I-6",
+    "sub_eje": "determinantes",
+    "formato": "directa",
+    "clave": "C"
+   },
+   "34": {
+    "codigo": "I-3",
+    "sub_eje": "tlp",
+    "formato": "directa",
+    "clave": "C"
+   },
+   "35": {
+    "codigo": "IV-1+IV-2",
+    "sub_eje": "tipos_estudio",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "36": {
+    "codigo": "V-MED",
+    "sub_eje": "contrataciones_digemid",
+    "formato": "directa",
+    "clave": "A"
+   },
+   "37": {
+    "codigo": "II-10",
+    "sub_eje": "cancer_cervix_mama",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "38": {
+    "codigo": "V-1",
+    "sub_eje": "categorias_rrhh",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "39": {
+    "codigo": "I-2",
+    "sub_eje": "fesp",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "40": {
+    "codigo": "IV-6+IV-7",
+    "sub_eje": "imryd",
+    "formato": "viñeta",
+    "clave": "A"
+   },
+   "41": {
+    "codigo": "I-1",
+    "sub_eje": "promocion_ottawa",
+    "formato": "directa",
+    "clave": "B"
+   },
+   "42": {
+    "codigo": "V-2",
+    "sub_eje": "planeamiento",
+    "formato": "directa",
+    "clave": "D"
+   },
+   "43": {
+    "codigo": "I-4",
+    "sub_eje": "dengue",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "44": {
+    "codigo": "III-3",
+    "sub_eje": "consentimiento",
+    "formato": "viñeta",
+    "clave": "A"
+   },
+   "45": {
+    "codigo": "II-3",
+    "sub_eje": "esquema_intervalos",
+    "formato": "directa",
+    "clave": "D"
+   },
+   "46": {
+    "codigo": "I-11+I-12",
+    "sub_eje": "participacion_comunitaria",
+    "formato": "directa",
+    "clave": "A"
+   },
+   "47": {
+    "codigo": "V-MED",
+    "sub_eje": "esenciales_sismed",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "48": {
+    "codigo": "III-8",
+    "sub_eje": "ley_27815",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "49": {
+    "codigo": "V-2",
+    "sub_eje": "planeamiento",
+    "formato": "directa",
+    "clave": "B"
+   },
+   "50": {
+    "codigo": "II-6",
+    "sub_eje": "tpt",
+    "formato": "directa",
+    "clave": "B"
+   },
+   "51": {
+    "codigo": "V-2",
+    "sub_eje": "clima_calidad",
+    "formato": "directa",
+    "clave": "B"
+   },
+   "52": {
+    "codigo": "I-3",
+    "sub_eje": "tipos_vigilancia",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "53": {
+    "codigo": "II-8",
+    "sub_eje": "metas_hta_dm",
+    "formato": "directa",
+    "clave": "D"
+   },
+   "54": {
+    "codigo": "I-4",
+    "sub_eje": "dengue",
+    "formato": "directa",
+    "clave": "A"
+   },
+   "55": {
+    "codigo": "III-5",
+    "sub_eje": "medicina_tradicional",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "56": {
+    "codigo": "IV-1+IV-2",
+    "sub_eje": "metodo_cientifico",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "57": {
+    "codigo": "II-7",
+    "sub_eje": "vacam",
+    "formato": "directa",
+    "clave": "A"
+   },
+   "58": {
+    "codigo": "I-1",
+    "sub_eje": "familia_saludable",
+    "formato": "directa",
+    "clave": "B"
+   },
+   "59": {
+    "codigo": "IV-6+IV-7",
+    "sub_eje": "estadistica_descriptiva",
+    "formato": "directa",
+    "clave": "C"
+   },
+   "60": {
+    "codigo": "III-8",
+    "sub_eje": "historia_clinica",
+    "formato": "viñeta+cifra",
+    "clave": "B"
+   },
+   "61": {
+    "codigo": "V-MED",
+    "sub_eje": "esenciales_sismed",
+    "formato": "directa",
+    "clave": "C"
+   },
+   "62": {
+    "codigo": "V-2",
+    "sub_eje": "planeamiento",
+    "formato": "directa",
+    "clave": "D"
+   },
+   "63": {
+    "codigo": "II-1",
+    "sub_eje": "prenatal_emergencias",
+    "formato": "viñeta",
+    "clave": "A"
+   },
+   "64": {
+    "codigo": "III-9",
+    "sub_eje": "reclamos",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "65": {
+    "codigo": "V-6",
+    "sub_eje": "telesalud",
+    "formato": "directa",
+    "clave": "C"
+   },
+   "66": {
+    "codigo": "II-4",
+    "sub_eje": "suplementacion_cifras",
+    "formato": "cifra",
+    "clave": "A"
+   },
+   "67": {
+    "codigo": "IV-6+IV-7",
+    "sub_eje": "imryd",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "68": {
+    "codigo": "V-2",
+    "sub_eje": "clima_calidad",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "69": {
+    "codigo": "IV-1+IV-2",
+    "sub_eje": "tipos_estudio",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "70": {
+    "codigo": "III-2",
+    "sub_eje": "deontologia",
+    "formato": "directa",
+    "clave": "A"
+   },
+   "71": {
+    "codigo": "I-9",
+    "sub_eje": "salud_familiar",
+    "formato": "directa",
+    "clave": "A"
+   },
+   "72": {
+    "codigo": "V-2",
+    "sub_eje": "planeamiento",
+    "formato": "viñeta",
+    "clave": "A"
+   },
+   "73": {
+    "codigo": "V-2",
+    "sub_eje": "planeamiento",
+    "formato": "viñeta",
+    "clave": "A"
+   },
+   "74": {
+    "codigo": "I-3",
+    "sub_eje": "sala_situacional_asis",
+    "formato": "directa",
+    "clave": "B"
+   },
+   "75": {
+    "codigo": "II-2",
+    "sub_eje": "cred",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "76": {
+    "codigo": "III-5",
+    "sub_eje": "pertinencia_barreras",
+    "formato": "directa",
+    "clave": "A"
+   },
+   "77": {
+    "codigo": "I-1",
+    "sub_eje": "autocuidado",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "78": {
+    "codigo": "II-9",
+    "sub_eje": "depresion",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "79": {
+    "codigo": "I-3",
+    "sub_eje": "historia_natural",
+    "formato": "directa",
+    "clave": "B"
+   },
+   "80": {
+    "codigo": "I-4",
+    "sub_eje": "epp_precauciones",
+    "formato": "directa",
+    "clave": "C"
+   },
+   "81": {
+    "codigo": "I-3",
+    "sub_eje": "brote_bloqueo",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "82": {
+    "codigo": "I-OCC",
+    "sub_eje": "accidente_punzocortante",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "83": {
+    "codigo": "I-3",
+    "sub_eje": "causalidad_hill",
+    "formato": "directa",
+    "clave": "D"
+   },
+   "84": {
+    "codigo": "I-10",
+    "sub_eje": "aps_principios",
+    "formato": "directa",
+    "clave": "B"
+   },
+   "85": {
+    "codigo": "IV-1+IV-2",
+    "sub_eje": "metodo_cientifico",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "86": {
+    "codigo": "I-3",
+    "sub_eje": "tlp",
+    "formato": "directa",
+    "clave": "C"
+   },
+   "87": {
+    "codigo": "I-2",
+    "sub_eje": "fesp",
+    "formato": "directa",
+    "clave": "B"
+   },
+   "88": {
+    "codigo": "II-8",
+    "sub_eje": "metas_hta_dm",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "89": {
+    "codigo": "III-9",
+    "sub_eje": "acceso_servicios",
+    "formato": "viñeta",
+    "clave": "A"
+   },
+   "90": {
+    "codigo": "II-12",
+    "sub_eje": "salud_bucal",
+    "formato": "directa",
+    "clave": "D"
+   },
+   "91": {
+    "codigo": "IV-1+IV-2",
+    "sub_eje": "muestreo",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "92": {
+    "codigo": "III-1",
+    "sub_eje": "principios_bioetica",
+    "formato": "directa",
+    "clave": "B"
+   },
+   "93": {
+    "codigo": "I-4",
+    "sub_eje": "malaria_zoonosis",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "94": {
+    "codigo": "I-11+I-12",
+    "sub_eje": "alianzas_intersectorialidad",
+    "formato": "directa",
+    "clave": "D"
+   },
+   "95": {
+    "codigo": "V-MED",
+    "sub_eje": "esenciales_sismed",
+    "formato": "directa",
+    "clave": "A"
+   },
+   "96": {
+    "codigo": "III-8",
+    "sub_eje": "ley_27815",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "97": {
+    "codigo": "II-7",
+    "sub_eje": "cuidados_comunitarios",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "98": {
+    "codigo": "I-5+I-6",
+    "sub_eje": "determinantes",
+    "formato": "viñeta",
+    "clave": "A"
+   },
+   "99": {
+    "codigo": "II-11",
+    "sub_eje": "sifilis_sindromico",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "100": {
+    "codigo": "I-10",
+    "sub_eje": "prevencion",
+    "formato": "directa",
+    "clave": "B"
+   }
+  },
+  "2025-2": {
+   "1": {
+    "codigo": "III-5",
+    "sub_eje": "medicina_tradicional",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "2": {
+    "codigo": "II-8",
+    "sub_eje": "paquetes_tamizaje",
+    "formato": "cifra",
+    "clave": "C"
+   },
+   "3": {
+    "codigo": "I-5+I-6",
+    "sub_eje": "demografia",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "4": {
+    "codigo": "II-6",
+    "sub_eje": "tb_dr",
+    "formato": "viñeta",
+    "clave": "A"
+   },
+   "5": {
+    "codigo": "II-1",
+    "sub_eje": "prenatal_emergencias",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "6": {
+    "codigo": "III-8",
+    "sub_eje": "ley_27815",
+    "formato": "directa",
+    "clave": "D"
+   },
+   "7": {
+    "codigo": "II-4",
+    "sub_eje": "anemia_dx_tto",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "8": {
+    "codigo": "II-7",
+    "sub_eje": "cuidados_comunitarios",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "9": {
+    "codigo": "I-3",
+    "sub_eje": "desastres",
+    "formato": "directa",
+    "clave": "B"
+   },
+   "10": {
+    "codigo": "V-MED",
+    "sub_eje": "esenciales_sismed",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "11": {
+    "codigo": "I-5+I-6",
+    "sub_eje": "determinantes",
+    "formato": "viñeta",
+    "clave": "A"
+   },
+   "12": {
+    "codigo": "II-10",
+    "sub_eje": "cancer_tamizaje",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "13": {
+    "codigo": "V-1",
+    "sub_eje": "categorizacion",
+    "formato": "directa",
+    "clave": "C"
+   },
+   "14": {
+    "codigo": "II-4",
+    "sub_eje": "anemia_dx_tto",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "15": {
+    "codigo": "II-10",
+    "sub_eje": "cancer_infantil",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "16": {
+    "codigo": "II-EMG",
+    "sub_eje": "referencia_urgencia",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "17": {
+    "codigo": "II-9",
+    "sub_eje": "depresion",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "18": {
+    "codigo": "III-5",
+    "sub_eje": "pertinencia_barreras",
+    "formato": "viñeta",
+    "clave": "A"
+   },
+   "19": {
+    "codigo": "I-9",
+    "sub_eje": "salud_familiar",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "20": {
+    "codigo": "V-2",
+    "sub_eje": "planeamiento",
+    "formato": "directa",
+    "clave": "D"
+   },
+   "21": {
+    "codigo": "I-3",
+    "sub_eje": "sala_situacional_asis",
+    "formato": "directa",
+    "clave": "A"
+   },
+   "22": {
+    "codigo": "I-3",
+    "sub_eje": "brote_bloqueo",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "23": {
+    "codigo": "I-4",
+    "sub_eje": "dengue",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "24": {
+    "codigo": "III-8",
+    "sub_eje": "historia_clinica",
+    "formato": "viñeta+cifra",
+    "clave": "D"
+   },
+   "25": {
+    "codigo": "II-7",
+    "sub_eje": "cuidados_comunitarios",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "26": {
+    "codigo": "III-5",
+    "sub_eje": "pertinencia_barreras",
+    "formato": "directa",
+    "clave": "D"
+   },
+   "27": {
+    "codigo": "IV-1+IV-2",
+    "sub_eje": "metodo_cientifico",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "28": {
+    "codigo": "I-11+I-12",
+    "sub_eje": "alianzas_intersectorialidad",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "29": {
+    "codigo": "V-2",
+    "sub_eje": "planeamiento",
+    "formato": "cifra",
+    "clave": "C"
+   },
+   "30": {
+    "codigo": "I-4",
+    "sub_eje": "epp_precauciones",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "31": {
+    "codigo": "II-8",
+    "sub_eje": "paquetes_tamizaje",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "32": {
+    "codigo": "V-1",
+    "sub_eje": "categorizacion",
+    "formato": "directa",
+    "clave": "D"
+   },
+   "33": {
+    "codigo": "II-8",
+    "sub_eje": "paquetes_tamizaje",
+    "formato": "cifra",
+    "clave": "D"
+   },
+   "34": {
+    "codigo": "I-1",
+    "sub_eje": "enfoques_transversales",
+    "formato": "viñeta",
+    "clave": "A"
+   },
+   "35": {
+    "codigo": "I-4",
+    "sub_eje": "malaria_zoonosis",
+    "formato": "directa",
+    "clave": "D"
+   },
+   "36": {
+    "codigo": "III-5",
+    "sub_eje": "medicina_tradicional",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "37": {
+    "codigo": "I-1",
+    "sub_eje": "entornos_saludables",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "38": {
+    "codigo": "I-3",
+    "sub_eje": "sala_situacional_asis",
+    "formato": "viñeta",
+    "clave": "A"
+   },
+   "39": {
+    "codigo": "V-3",
+    "sub_eje": "ris",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "40": {
+    "codigo": "III-1",
+    "sub_eje": "principios_bioetica",
+    "formato": "viñeta",
+    "clave": "A"
+   },
+   "41": {
+    "codigo": "I-3",
+    "sub_eje": "notificacion",
+    "formato": "viñeta+cifra",
+    "clave": "A"
+   },
+   "42": {
+    "codigo": "V-1",
+    "sub_eje": "categorias_rrhh",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "43": {
+    "codigo": "II-5",
+    "sub_eje": "mci_curso_vida",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "44": {
+    "codigo": "III-5",
+    "sub_eje": "pertinencia_barreras",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "45": {
+    "codigo": "III-2",
+    "sub_eje": "deontologia",
+    "formato": "directa",
+    "clave": "A"
+   },
+   "46": {
+    "codigo": "I-3",
+    "sub_eje": "desastres",
+    "formato": "directa",
+    "clave": "A"
+   },
+   "47": {
+    "codigo": "III-5",
+    "sub_eje": "pertinencia_barreras",
+    "formato": "directa",
+    "clave": "B"
+   },
+   "48": {
+    "codigo": "I-4",
+    "sub_eje": "malaria_zoonosis",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "49": {
+    "codigo": "V-2",
+    "sub_eje": "clima_calidad",
+    "formato": "directa",
+    "clave": "D"
+   },
+   "50": {
+    "codigo": "II-1",
+    "sub_eje": "parto_lactancia",
+    "formato": "directa",
+    "clave": "D"
+   },
+   "51": {
+    "codigo": "II-1",
+    "sub_eje": "prenatal_emergencias",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "52": {
+    "codigo": "V-2",
+    "sub_eje": "planeamiento",
+    "formato": "cifra",
+    "clave": "B"
+   },
+   "53": {
+    "codigo": "V-2",
+    "sub_eje": "planeamiento",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "54": {
+    "codigo": "V-2",
+    "sub_eje": "clima_calidad",
+    "formato": "directa",
+    "clave": "D"
+   },
+   "55": {
+    "codigo": "II-1",
+    "sub_eje": "prenatal_emergencias",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "56": {
+    "codigo": "V-2",
+    "sub_eje": "planeamiento",
+    "formato": "directa",
+    "clave": "B"
+   },
+   "57": {
+    "codigo": "II-5",
+    "sub_eje": "nts_adolescente",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "58": {
+    "codigo": "V-2",
+    "sub_eje": "clima_calidad",
+    "formato": "directa",
+    "clave": "C"
+   },
+   "59": {
+    "codigo": "IV-1+IV-2",
+    "sub_eje": "instrumentos",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "60": {
+    "codigo": "V-6",
+    "sub_eje": "telesalud",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "61": {
+    "codigo": "I-4",
+    "sub_eje": "epp_precauciones",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "62": {
+    "codigo": "I-3",
+    "sub_eje": "desastres",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "63": {
+    "codigo": "V-2",
+    "sub_eje": "residuos_bioseguridad",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "64": {
+    "codigo": "III-2",
+    "sub_eje": "deontologia",
+    "formato": "directa",
+    "clave": "C"
+   },
+   "65": {
+    "codigo": "V-MED",
+    "sub_eje": "esenciales_sismed",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "66": {
+    "codigo": "I-4",
+    "sub_eje": "malaria_zoonosis",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "67": {
+    "codigo": "V-2",
+    "sub_eje": "clima_calidad",
+    "formato": "directa",
+    "clave": "D"
+   },
+   "68": {
+    "codigo": "II-9",
+    "sub_eje": "adicciones",
+    "formato": "viñeta+cifra",
+    "clave": "C"
+   },
+   "69": {
+    "codigo": "III-5",
+    "sub_eje": "inclusion_migrantes",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "70": {
+    "codigo": "III-2",
+    "sub_eje": "deontologia",
+    "formato": "directa",
+    "clave": "A"
+   },
+   "71": {
+    "codigo": "II-6",
+    "sub_eje": "tpt",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "72": {
+    "codigo": "V-2",
+    "sub_eje": "residuos_bioseguridad",
+    "formato": "directa",
+    "clave": "B"
+   },
+   "73": {
+    "codigo": "V-2",
+    "sub_eje": "clima_calidad",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "74": {
+    "codigo": "I-5+I-6",
+    "sub_eje": "determinantes",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "75": {
+    "codigo": "II-9",
+    "sub_eje": "modelo_comunitario",
+    "formato": "directa",
+    "clave": "C"
+   },
+   "76": {
+    "codigo": "II-1",
+    "sub_eje": "prenatal_emergencias",
+    "formato": "viñeta",
+    "clave": "A"
+   },
+   "77": {
+    "codigo": "V-2",
+    "sub_eje": "clima_calidad",
+    "formato": "directa",
+    "clave": "A"
+   },
+   "78": {
+    "codigo": "III-8",
+    "sub_eje": "ley_27815",
+    "formato": "viñeta",
+    "clave": "A"
+   },
+   "79": {
+    "codigo": "II-1",
+    "sub_eje": "prenatal_emergencias",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "80": {
+    "codigo": "II-7",
+    "sub_eje": "vacam",
+    "formato": "viñeta",
+    "clave": "A"
+   },
+   "81": {
+    "codigo": "II-10",
+    "sub_eje": "cancer_cervix_mama",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "82": {
+    "codigo": "V-1",
+    "sub_eje": "categorias_rrhh",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "83": {
+    "codigo": "I-OCC",
+    "sub_eje": "accidente_punzocortante",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "84": {
+    "codigo": "I-11+I-12",
+    "sub_eje": "participacion_comunitaria",
+    "formato": "viñeta",
+    "clave": "A"
+   },
+   "85": {
+    "codigo": "III-8",
+    "sub_eje": "ley_27815",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "86": {
+    "codigo": "II-3",
+    "sub_eje": "esquema_intervalos",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "87": {
+    "codigo": "I-1",
+    "sub_eje": "promocion_ottawa",
+    "formato": "directa",
+    "clave": "A"
+   },
+   "88": {
+    "codigo": "I-10",
+    "sub_eje": "aps_principios",
+    "formato": "directa",
+    "clave": "D"
+   },
+   "89": {
+    "codigo": "II-8",
+    "sub_eje": "metas_hta_dm",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "90": {
+    "codigo": "II-EMG",
+    "sub_eje": "referencia_urgencia",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "91": {
+    "codigo": "I-3",
+    "sub_eje": "tlp",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "92": {
+    "codigo": "II-11",
+    "sub_eje": "prep_dual_ptmi",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "93": {
+    "codigo": "I-11+I-12",
+    "sub_eje": "alianzas_intersectorialidad",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "94": {
+    "codigo": "I-11+I-12",
+    "sub_eje": "participacion_comunitaria",
+    "formato": "viñeta",
+    "clave": "D"
+   },
+   "95": {
+    "codigo": "V-2",
+    "sub_eje": "planeamiento",
+    "formato": "directa",
+    "clave": "A"
+   },
+   "96": {
+    "codigo": "I-11+I-12",
+    "sub_eje": "plan_local",
+    "formato": "directa",
+    "clave": "B"
+   },
+   "97": {
+    "codigo": "II-3",
+    "sub_eje": "esquema_intervalos",
+    "formato": "viñeta",
+    "clave": "A"
+   },
+   "98": {
+    "codigo": "I-3",
+    "sub_eje": "sala_situacional_asis",
+    "formato": "viñeta",
+    "clave": "B"
+   },
+   "99": {
+    "codigo": "I-4",
+    "sub_eje": "malaria_zoonosis",
+    "formato": "viñeta",
+    "clave": "C"
+   },
+   "100": {
+    "codigo": "III-5",
+    "sub_eje": "pertinencia_barreras",
+    "formato": "viñeta",
+    "clave": "D"
+   }
+  }
+ }
+}

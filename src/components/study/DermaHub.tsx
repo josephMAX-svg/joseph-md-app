@@ -7,10 +7,13 @@ import { RingStat, MegaStat, FadeUp, CommandBackdrop } from '../empresa/visuals'
 import { diaEstudioTipo, VUELTAS } from '../../lib/researchData';
 import {
   DERMA_META, DERMA_BLOQUES, DERMA_RECURSOS, DERMA_FASES, DERMA_HORARIO, DERMA_NOTAS,
-  PRIORIDAD_COLOR, DermaAtlas, SKIN_TONES, SkinTone, DERMA_GAP_MODULOS,
+  PRIORIDAD_COLOR, DermaAtlas, SKIN_TONES, SkinTone, DERMA_GAP_MODULOS, DERMA_NOTEBOOKLM,
 } from '../../lib/dermaData';
-import { DERMA_DIAS } from '../../lib/dermaDailyPlan';
+import { DERMA_DIAS, DERMA_PROMIR_DIAS } from '../../lib/dermaDailyPlan';
+import { dermaPctCiego } from '../../lib/dermaLedger';
 import DermaTodayPlan from './DermaTodayPlan';
+import DermaWeaknessWidget from '../derma/DermaWeaknessWidget';
+import { useDermaLedger, dermaCopiar } from '../derma/dermaLedgerBus';
 import AIFirstPanel from './AIFirstPanel';
 import SkinToneToggle from '../derma/SkinToneToggle';
 import DermaBodyMap from '../derma/DermaBodyMap';
@@ -37,21 +40,42 @@ function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
 const TOTAL_SUB = DERMA_BLOQUES.reduce((n, b) => n + b.subtemas.length, 0);
 const CRITICAS = DERMA_BLOQUES.reduce((n, b) => n + b.subtemas.filter(s => s.prioridad === 'CRITICA').length, 0);
 
-type Sub = 'hoy' | 'atlas' | 'dermatoscopia' | 'fuentes' | 'cerebro';
+type Sub = 'hoy' | 'atlas' | 'dermatoscopia' | 'fuentes' | 'debilidades' | 'cerebro';
+
+/** Prompts de uso del cuaderno NotebookLM "DERMA · Élite Engine" (motor de verificación, NO fuente). */
+const NBLM_PROMPTS: Array<{ cuando: string; t: string; p: string }> = [
+  { cuando: 'cierre 14:13 · cada sesión', t: 'Tarjeta de MECANISMO verificada', p: 'Con las fuentes del cuaderno, dame la tarjeta de MECANISMO verificada del caso de hoy [dx / átomo dNN]. Formato: FRENTE "¿por qué…?" → POR QUÉ (cascada tejido/fisiología) · CCSN (con qué se confunde + el rasgo discriminador) · FUENTE (cita exacta del cuaderno). Marca "A VERIFICAR" toda dosis, concentración o cifra que no esté literalmente en las fuentes.' },
+  { cuando: 'd45 (11-ene) · d69 (18-mar)', t: 'Qué no sé del módulo X', p: 'Con las fuentes del cuaderno y esta lista de mis fallos del ledger [pegar export JSON: por_modulo + tipos de error], dime qué NO sé del módulo CORE [Med/Path/Peds/Surg]: los 10 conceptos/mecanismos con más probabilidad de fallo, cada uno con su rasgo discriminador y la fuente exacta. Sin adular; ordena por impacto en el examen CORE.' },
+];
+
+/** Pestaña DEBILIDADES — el ledger (dermaLedger.ts) leído como mapa: % ciego, % fallo por módulo CORE y por bloque A-X, tipo de error, gate A, 2ª pasada, export JSON. */
+function DebilidadesView() {
+  return (
+    <View>
+      <SectionLabel>Debilidades por módulo CORE · % ciego REAL desde el ledger (alimenta d45 · d46 · d69 · d70)</SectionLabel>
+      <Text style={fst.note}>Cada caso ciego (✓/✗ en la lámina de Hoy), cada pregunta fallada del banco, la imagen dermatoscópica y el drill HDPH escriben aquí. Solo los aciertos "Lo sabía" cuentan para el % ciego; "acerté por suerte" cuenta como fallo (Palmerton). Exporta el JSON cada viernes → DATA/DERMATOLOGIA/TRACKING/_registro_derma.json.</Text>
+      <View style={{ marginTop: Spacing.md, marginBottom: Spacing.xl }}>
+        <DermaWeaknessWidget accent={PURPLE} />
+      </View>
+    </View>
+  );
+}
 
 /** Pestaña FUENTES — biblioteca REAL extraída y verificada (links 200 en vivo). */
 function FuentesView() {
   const EDGE = DermaAtlas.edge;
   const openEdge = (u: string) => Linking.openURL('microsoft-edge:' + u).catch(() => openUrl(u));
+  const [nblmMsg, setNblmMsg] = useState('');
   return (
     <View>
-      {/* Las 3 fuentes */}
-      <SectionLabel>Las 3 fuentes · data extraída y verificada en vivo (10-jun-2026)</SectionLabel>
-      <View style={[gridStyle(250), { marginBottom: Spacing.lg }]}>
+      {/* Las 3 fuentes + el motor de verificación */}
+      <SectionLabel>Las 3 fuentes · data extraída y verificada en vivo (10-jun-2026) + cuaderno NotebookLM (05-sep-2026)</SectionLabel>
+      <View style={[gridStyle(250), { marginBottom: Spacing.md }]}>
         {[
           { ic: 'atlas' as const, t: 'AccessDermatologyDxRx', sub: '36 libros · 1.301 preguntas · 300 casos · 180 vídeos · sesión UF', url: 'https://dermatology.mhmedical.com/index.aspx', c: PURPLE },
           { ic: 'flask' as const, t: 'Qbankly (⚠ SOLO Edge)', sub: 'derma: S1 488 Q · S2 CK 534 Q · S3 263 Q · 136 flashcards', url: 'https://qbankly.app/qbanks', c: EDGE, edge: true },
-          { ic: 'body' as const, t: 'ProMIR · Dermatología', sub: '11 capítulos · resumen 3:18:11 · Masterclass melanoma 1:39:10', url: 'https://promir.medicapanamericana.com/capitulo/62836950c0f8415ab9efb5c7', c: DermaAtlas.promir },
+          { ic: 'body' as const, t: 'ProMIR · Dermatología', sub: `11 capítulos · resumen 3:18:11 · Masterclass melanoma 1:39:10 · 10Q del test del capítulo en ${DERMA_PROMIR_DIAS.length} sesiones Derma (1 de cada 3) → log MIR`, url: 'https://promir.medicapanamericana.com/capitulo/62836950c0f8415ab9efb5c7', c: DermaAtlas.promir },
+          { ic: 'skinLayers' as const, t: 'NotebookLM · DERMA · Élite Engine', sub: 'cuaderno con las fuentes OA verificadas (PubMed de referentes.md/PLAN_ELITE, DermNet CME 18 módulos + terminología, Dermoscopedia, ABD CORE/APPLIED, ISSVA, AAD, rutas de fellowship) · motor de VERIFICACIÓN de tarjetas, no sustituye la fuente', url: DERMA_NOTEBOOKLM.url, c: GOLD },
         ].map((f, i) => (
           <View key={i} style={gridItemStyle(250)}>
             <FadeUp delay={i * 50}>
@@ -65,6 +89,25 @@ function FuentesView() {
           </View>
         ))}
       </View>
+
+      {/* Prompts de uso del cuaderno (regla: motor de verificación, no fuente) */}
+      <GlassPanel accent={GOLD} style={{ marginBottom: Spacing.lg, padding: Spacing.md }}>
+        <Text style={fst.nblmTitle}>NotebookLM "DERMA · Élite Engine" · 2 prompts de uso · id {DERMA_NOTEBOOKLM.id.slice(0, 8)}…</Text>
+        {NBLM_PROMPTS.map((p, i) => (
+          <View key={i} style={[fst.nblmRow, i === 0 && { borderTopWidth: 0 }]}>
+            <View style={{ flex: 1 }}>
+              <Text style={fst.nblmWhen}>{p.cuando}</Text>
+              <Text style={fst.nblmT}>{p.t}</Text>
+              <Text style={fst.nblmP} numberOfLines={4}>{p.p}</Text>
+            </View>
+            <View style={{ gap: 5 }}>
+              <TouchableOpacity activeOpacity={0.85} onPress={() => { const ok = dermaCopiar(p.p); setNblmMsg(ok ? `✓ prompt "${p.t}" copiado` : 'sin portapapeles en esta plataforma'); }} style={[fst.nblmBtn, { borderColor: GOLD + '88' }]}><Text style={[fst.nblmBtnTxt, { color: GOLD }]}>copiar</Text></TouchableOpacity>
+              <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(DERMA_NOTEBOOKLM.url)} style={[fst.nblmBtn, { borderColor: GOLD + '88', backgroundColor: GOLD + '1A' }]}><Text style={[fst.nblmBtnTxt, { color: GOLD }]}>abrir ↗</Text></TouchableOpacity>
+            </View>
+          </View>
+        ))}
+        <Text style={fst.note}>Regla de honestidad: el cuaderno verifica contra fuente; toda dosis/cifra que no esté literal en las fuentes va como "A VERIFICAR". {nblmMsg ? `· ${nblmMsg}` : ''}</Text>
+      </GlassPanel>
 
       {/* Q-banks + casos de Access */}
       <SectionLabel>Preguntas y casos (AccessDerma · conteos reales)</SectionLabel>
@@ -163,6 +206,13 @@ const fst = StyleSheet.create({
   starChip: { backgroundColor: 'rgba(154,123,200,0.10)', borderWidth: 1, borderColor: 'rgba(154,123,200,0.35)', borderRadius: BorderRadius.full, paddingVertical: 4, paddingHorizontal: 10, maxWidth: 320, ...WEB_LINK },
   starTxt: { fontSize: FontSize.labelSm, color: '#C6B4E0', fontWeight: '600' },
   note: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: Spacing.sm, lineHeight: LineHeight.labelSm },
+  nblmTitle: { fontSize: FontSize.labelLg, fontWeight: '800', color: Colors.onSurface, letterSpacing: -0.2, marginBottom: 4 },
+  nblmRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 10, paddingVertical: 9, borderTopWidth: 1, borderTopColor: Hairline.soft },
+  nblmWhen: { fontSize: 9, fontWeight: '800', color: GOLD, letterSpacing: 0.4, textTransform: 'uppercase' },
+  nblmT: { fontSize: FontSize.labelMd, fontWeight: '800', color: Colors.onSurface, marginTop: 2 },
+  nblmP: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 3, lineHeight: LineHeight.labelSm, fontStyle: 'italic' },
+  nblmBtn: { borderWidth: 1, borderRadius: BorderRadius.md, paddingVertical: 5, paddingHorizontal: 10, alignItems: 'center', ...WEB_LINK },
+  nblmBtnTxt: { fontSize: FontSize.labelSm, fontWeight: '800', letterSpacing: 0.2 },
 });
 
 const BLOQUE_ACCENT: Record<string, string> = {
@@ -313,6 +363,7 @@ const ATLAS_NAV: { k: Sub; label: string; icon: React.ComponentProps<typeof Derm
   { k: 'atlas', label: 'Atlas', icon: 'atlas' },
   { k: 'dermatoscopia', label: 'Dermatoscopia', icon: 'dermatoscope' },
   { k: 'fuentes', label: 'Fuentes', icon: 'flask' },
+  { k: 'debilidades', label: 'Debilidades', icon: 'differential' },
   { k: 'cerebro', label: 'Temario', icon: 'skinLayers' },
 ];
 
@@ -323,6 +374,8 @@ export default function DermaHub({ variant = 'mobile' }: { variant?: 'mobile' | 
   const [toneId, setToneId] = useState<SkinTone['id']>('III');
   const [filters, setFilters] = useState<DermaFilters>({ morfologia: null, sitio: null, categoria: null });
   const tone = SKIN_TONES.find((t) => t.id === toneId) || SKIN_TONES[2];
+  const { entries: ledger } = useDermaLedger();
+  const ciego = dermaPctCiego(ledger);
   const hoyColor = hoy === 'derma' ? PURPLE : hoy === 'research' ? DermaAtlas.jade : Colors.muted;
   const hoyLabel = hoy === 'derma' ? 'DERMA · hoy te toca' : hoy === 'research' ? 'RESEARCH · día alterno →' : 'Descanso · finde';
 
@@ -382,7 +435,8 @@ export default function DermaHub({ variant = 'mobile' }: { variant?: 'mobile' | 
       {sub === 'hoy' ? <DermaTodayPlan tone={tone} />
         : sub === 'atlas' ? <AtlasView filters={filters} onPick={goCase} tone={tone} />
         : sub === 'dermatoscopia' ? <DermatoscopiaView />
-        : sub === 'fuentes' ? <FuentesView /> : (
+        : sub === 'fuentes' ? <FuentesView />
+        : sub === 'debilidades' ? <DebilidadesView /> : (
         <View>
         <GapModulos />
 
@@ -395,7 +449,7 @@ export default function DermaHub({ variant = 'mobile' }: { variant?: 'mobile' | 
           <View style={st.ringCard}><RingStat value={DERMA_BLOQUES.length} max={7} label="Bloques" sub="mapa SPEC A–G" accent={PURPLE} /></View>
           <View style={st.ringCard}><RingStat value={CRITICAS} max={TOTAL_SUB} label="Críticos" sub="no errar" accent={DermaAtlas.crit} /></View>
           <View style={st.ringCard}><RingStat value={12} max={12} label="Semanas" sub="protocolo starter" accent={DermaAtlas.gold} /></View>
-          <View style={st.ringCard}><RingStat value={8} label="Readiness" sub="currículo" accent={DermaAtlas.teal} suffix="%" /></View>
+          <View style={st.ringCard}><RingStat value={ciego.pctCiego} max={100} label="% ciego" sub={ciego.n ? `${ciego.seguras}/${ciego.n} seguras · ledger` : 'ledger vacío · registra casos'} accent={DermaAtlas.teal} suffix="%" /></View>
         </View>
 
         {/* ESTRATEGIA MAYO */}

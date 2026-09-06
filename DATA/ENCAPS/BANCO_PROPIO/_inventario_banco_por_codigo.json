@@ -1,0 +1,1714 @@
+{
+ "_meta": {
+  "descripcion": "Inventario de preguntas por CÓDIGO v3: oferta (BANCO_PROPIO: sets + banco_items_v1 + set_reales_otros; exámenes reales etiquetados; claves.json de julio; QX/Theomed por área) vs demanda sembrada en study_schedule (102 días de mantenimiento, _encaps_mantenimiento_2027.sql) y déficit. Regenerar: node DATA/_scripts/gen_encaps_minisim.js --inventario",
+  "generado": "2026-09-05",
+  "rotacion": "I-3 11 · V-2 11 · II-3 6 · resto 5 (CICLO de _encaps_ciclo_v3.js)",
+  "lista_negra": "2026-II excluido de toda oferta hasta el pre-test",
+  "totales": {
+   "pool_total": 434,
+   "pool_disponible": 247,
+   "filas_sql": 102,
+   "minisims_sembrados": 19,
+   "demanda_total_q": 1974,
+   "deficit_codigos": [
+    "I-1:16",
+    "I-10:29",
+    "I-11+I-12:21",
+    "I-3:198",
+    "I-4:69",
+    "I-5+I-6:24",
+    "I-OCC:25",
+    "II-1:79",
+    "II-10:26",
+    "II-11:85",
+    "II-2:31",
+    "II-3:108",
+    "II-4:70",
+    "II-5:65",
+    "II-6:31",
+    "II-7:16",
+    "II-8:79",
+    "II-9:24",
+    "II-EMG:26",
+    "III-1:24",
+    "III-3:24",
+    "III-5:85",
+    "III-8:82",
+    "III-9:26",
+    "IV-1+IV-2:67",
+    "IV-6+IV-7:84",
+    "V-1:20",
+    "V-2:192",
+    "V-3:21",
+    "V-6:28",
+    "V-MED:68"
+   ]
+  }
+ },
+ "por_codigo": {
+  "I-1": {
+   "area": "I",
+   "critico": false,
+   "rebote": false,
+   "cola_larga": true,
+   "demanda_sembrada": {
+    "sesiones_principal": 0,
+    "slots_secundario": 4,
+    "viernes_cola_larga": 2,
+    "q_estimadas_102_dias": 24,
+    "receta": "16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos"
+   },
+   "oferta": {
+    "banco_propio_pool": {
+     "total": 8,
+     "disponibles_no_usados": 8,
+     "ya_consumidos_en_runner": 0,
+     "por_fichero": {
+      "set_reales_otros_1.json": 8
+     },
+     "por_sub_eje": {
+      "autocuidado": 2,
+      "estilos_vida": 1,
+      "promocion_ottawa": 2,
+      "familia_saludable": 1,
+      "enfoques_transversales": 1,
+      "entornos_saludables": 1
+     },
+     "con_clave_oficial": 8
+    },
+    "examenes_reales_etiquetados": {
+     "total": 8,
+     "por_proceso": {
+      "2024-2A": 1,
+      "2025-1A": 4,
+      "2025-2": 3
+     }
+    },
+    "sets_claves_json_2026": {
+     "banco_rentabilidad_20Q_2026-08-05_claves.json": 1
+    },
+    "theomed_postests_area": "17 quizzes del área Salud Pública (por ÁREA, no filtrables por código)",
+    "qx_banqueo_area": "688Q del área Salud Pública (scan 20-jul-2026, por ÁREA; acceso 2027-I A VERIFICAR)"
+   },
+   "resueltas": {
+    "rondas_registro": 0,
+    "consumidos_en_runner": 0
+   },
+   "deficit_vs_demanda": 16,
+   "estado": "déficit moderado (cubrir con QX/Theomed del área o 1 set nuevo)"
+  },
+  "I-10": {
+   "area": "I",
+   "critico": false,
+   "rebote": false,
+   "cola_larga": true,
+   "demanda_sembrada": {
+    "sesiones_principal": 0,
+    "slots_secundario": 5,
+    "viernes_cola_larga": 3,
+    "q_estimadas_102_dias": 31,
+    "receta": "16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos"
+   },
+   "oferta": {
+    "banco_propio_pool": {
+     "total": 9,
+     "disponibles_no_usados": 2,
+     "ya_consumidos_en_runner": 7,
+     "por_fichero": {
+      "banco_items_v1.json": 2,
+      "set_reales_otros_1.json": 7
+     },
+     "por_sub_eje": {
+      "sin_sub_eje": 2,
+      "prevencion": 5,
+      "aps_principios": 2
+     },
+     "con_clave_oficial": 9
+    },
+    "examenes_reales_etiquetados": {
+     "total": 7,
+     "por_proceso": {
+      "2024-2A": 4,
+      "2025-1A": 2,
+      "2025-2": 1
+     }
+    },
+    "sets_claves_json_2026": {},
+    "theomed_postests_area": "17 quizzes del área Salud Pública (por ÁREA, no filtrables por código)",
+    "qx_banqueo_area": "688Q del área Salud Pública (scan 20-jul-2026, por ÁREA; acceso 2027-I A VERIFICAR)"
+   },
+   "resueltas": {
+    "rondas_registro": 0,
+    "consumidos_en_runner": 7
+   },
+   "deficit_vs_demanda": 29,
+   "estado": "déficit moderado (cubrir con QX/Theomed del área o 1 set nuevo)"
+  },
+  "I-11+I-12": {
+   "area": "I",
+   "critico": false,
+   "rebote": false,
+   "cola_larga": true,
+   "demanda_sembrada": {
+    "sesiones_principal": 0,
+    "slots_secundario": 5,
+    "viernes_cola_larga": 2,
+    "q_estimadas_102_dias": 28,
+    "receta": "16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos"
+   },
+   "oferta": {
+    "banco_propio_pool": {
+     "total": 7,
+     "disponibles_no_usados": 7,
+     "ya_consumidos_en_runner": 0,
+     "por_fichero": {
+      "set_reales_otros_1.json": 7
+     },
+     "por_sub_eje": {
+      "participacion_comunitaria": 3,
+      "alianzas_intersectorialidad": 3,
+      "plan_local": 1
+     },
+     "con_clave_oficial": 7
+    },
+    "examenes_reales_etiquetados": {
+     "total": 7,
+     "por_proceso": {
+      "2025-1A": 2,
+      "2025-2": 5
+     }
+    },
+    "sets_claves_json_2026": {},
+    "theomed_postests_area": "17 quizzes del área Salud Pública (por ÁREA, no filtrables por código)",
+    "qx_banqueo_area": "688Q del área Salud Pública (scan 20-jul-2026, por ÁREA; acceso 2027-I A VERIFICAR)"
+   },
+   "resueltas": {
+    "rondas_registro": 0,
+    "consumidos_en_runner": 0
+   },
+   "deficit_vs_demanda": 21,
+   "estado": "déficit moderado (cubrir con QX/Theomed del área o 1 set nuevo)"
+  },
+  "I-2": {
+   "area": "I",
+   "critico": false,
+   "rebote": false,
+   "cola_larga": false,
+   "demanda_sembrada": {
+    "sesiones_principal": 0,
+    "slots_secundario": 0,
+    "viernes_cola_larga": 0,
+    "q_estimadas_102_dias": 0,
+    "receta": "16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos"
+   },
+   "oferta": {
+    "banco_propio_pool": {
+     "total": 4,
+     "disponibles_no_usados": 4,
+     "ya_consumidos_en_runner": 0,
+     "por_fichero": {
+      "set_reales_otros_1.json": 4
+     },
+     "por_sub_eje": {
+      "efectividad": 1,
+      "fesp": 3
+     },
+     "con_clave_oficial": 4
+    },
+    "examenes_reales_etiquetados": {
+     "total": 4,
+     "por_proceso": {
+      "2024-2A": 2,
+      "2025-1A": 2
+     }
+    },
+    "sets_claves_json_2026": {},
+    "theomed_postests_area": "17 quizzes del área Salud Pública (por ÁREA, no filtrables por código)",
+    "qx_banqueo_area": "688Q del área Salud Pública (scan 20-jul-2026, por ÁREA; acceso 2027-I A VERIFICAR)"
+   },
+   "resueltas": {
+    "rondas_registro": 0,
+    "consumidos_en_runner": 0
+   },
+   "deficit_vs_demanda": -4,
+   "estado": "cubierto"
+  },
+  "I-3": {
+   "area": "I",
+   "critico": true,
+   "rebote": false,
+   "cola_larga": false,
+   "demanda_sembrada": {
+    "sesiones_principal": 11,
+    "slots_secundario": 0,
+    "viernes_cola_larga": 0,
+    "q_estimadas_102_dias": 198,
+    "receta": "16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos"
+   },
+   "oferta": {
+    "banco_propio_pool": {
+     "total": 33,
+     "disponibles_no_usados": 0,
+     "ya_consumidos_en_runner": 33,
+     "por_fichero": {
+      "banco_items_v1.json": 8,
+      "set_I-3_1.json": 25
+     },
+     "por_sub_eje": {
+      "sin_sub_eje": 8,
+      "causalidad_hill": 3,
+      "historia_natural": 2,
+      "tlp": 5,
+      "tipos_vigilancia": 4,
+      "notificacion": 2,
+      "sala_situacional_asis": 4,
+      "brote_bloqueo": 2,
+      "desastres": 3
+     },
+     "con_clave_oficial": 31
+    },
+    "examenes_reales_etiquetados": {
+     "total": 25,
+     "por_proceso": {
+      "2024-2A": 6,
+      "2025-1A": 10,
+      "2025-2": 9
+     }
+    },
+    "sets_claves_json_2026": {
+     "banco_rentabilidad_20Q_2026-08-05_claves.json": 3,
+     "pretest_i3_d1b_claves.json": 20,
+     "pretest_i3_D1_20jul_claves.json": 20,
+     "pretest_i3_D1_24jul_claves.json": 20,
+     "pretest_i3_HOY_claves.json": 20,
+     "warmup_i3_SET2_28jul_claves.json": 20
+    },
+    "theomed_postests_area": "17 quizzes del área Salud Pública (por ÁREA, no filtrables por código)",
+    "qx_banqueo_area": "688Q del área Salud Pública (scan 20-jul-2026, por ÁREA; acceso 2027-I A VERIFICAR)"
+   },
+   "resueltas": {
+    "rondas_registro": 40,
+    "consumidos_en_runner": 33
+   },
+   "deficit_vs_demanda": 198,
+   "estado": "DÉFICIT (pre-generar sets nuevos)"
+  },
+  "I-4": {
+   "area": "I",
+   "critico": true,
+   "rebote": false,
+   "cola_larga": false,
+   "demanda_sembrada": {
+    "sesiones_principal": 5,
+    "slots_secundario": 0,
+    "viernes_cola_larga": 0,
+    "q_estimadas_102_dias": 90,
+    "receta": "16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos"
+   },
+   "oferta": {
+    "banco_propio_pool": {
+     "total": 28,
+     "disponibles_no_usados": 21,
+     "ya_consumidos_en_runner": 7,
+     "por_fichero": {
+      "banco_items_v1.json": 3,
+      "set_I-4_1.json": 25
+     },
+     "por_sub_eje": {
+      "sin_sub_eje": 3,
+      "dengue": 13,
+      "malaria_zoonosis": 6,
+      "epp_precauciones": 3,
+      "rabia": 3
+     },
+     "con_clave_oficial": 20
+    },
+    "examenes_reales_etiquetados": {
+     "total": 17,
+     "por_proceso": {
+      "2024-2A": 6,
+      "2025-1A": 4,
+      "2025-2": 7
+     }
+    },
+    "sets_claves_json_2026": {},
+    "theomed_postests_area": "17 quizzes del área Salud Pública (por ÁREA, no filtrables por código)",
+    "qx_banqueo_area": "688Q del área Salud Pública (scan 20-jul-2026, por ÁREA; acceso 2027-I A VERIFICAR)"
+   },
+   "resueltas": {
+    "rondas_registro": 0,
+    "consumidos_en_runner": 7
+   },
+   "deficit_vs_demanda": 69,
+   "estado": "DÉFICIT (pre-generar sets nuevos)"
+  },
+  "I-5+I-6": {
+   "area": "I",
+   "critico": false,
+   "rebote": false,
+   "cola_larga": true,
+   "demanda_sembrada": {
+    "sesiones_principal": 0,
+    "slots_secundario": 5,
+    "viernes_cola_larga": 2,
+    "q_estimadas_102_dias": 28,
+    "receta": "16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos"
+   },
+   "oferta": {
+    "banco_propio_pool": {
+     "total": 8,
+     "disponibles_no_usados": 4,
+     "ya_consumidos_en_runner": 4,
+     "por_fichero": {
+      "banco_items_v1.json": 1,
+      "set_reales_otros_1.json": 7
+     },
+     "por_sub_eje": {
+      "sin_sub_eje": 1,
+      "bioestadistica": 1,
+      "transicion_epidemiologica": 1,
+      "determinantes": 4,
+      "demografia": 1
+     },
+     "con_clave_oficial": 8
+    },
+    "examenes_reales_etiquetados": {
+     "total": 7,
+     "por_proceso": {
+      "2024-2A": 1,
+      "2025-1A": 3,
+      "2025-2": 3
+     }
+    },
+    "sets_claves_json_2026": {
+     "banco_rentabilidad_20Q_2026-08-05_claves.json": 1
+    },
+    "theomed_postests_area": "17 quizzes del área Salud Pública (por ÁREA, no filtrables por código)",
+    "qx_banqueo_area": "688Q del área Salud Pública (scan 20-jul-2026, por ÁREA; acceso 2027-I A VERIFICAR)"
+   },
+   "resueltas": {
+    "rondas_registro": 0,
+    "consumidos_en_runner": 4
+   },
+   "deficit_vs_demanda": 24,
+   "estado": "déficit moderado (cubrir con QX/Theomed del área o 1 set nuevo)"
+  },
+  "I-9": {
+   "area": "I",
+   "critico": false,
+   "rebote": false,
+   "cola_larga": false,
+   "demanda_sembrada": {
+    "sesiones_principal": 0,
+    "slots_secundario": 0,
+    "viernes_cola_larga": 0,
+    "q_estimadas_102_dias": 0,
+    "receta": "16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos"
+   },
+   "oferta": {
+    "banco_propio_pool": {
+     "total": 3,
+     "disponibles_no_usados": 3,
+     "ya_consumidos_en_runner": 0,
+     "por_fichero": {
+      "set_reales_otros_1.json": 3
+     },
+     "por_sub_eje": {
+      "salud_familiar": 3
+     },
+     "con_clave_oficial": 3
+    },
+    "examenes_reales_etiquetados": {
+     "total": 3,
+     "por_proceso": {
+      "2024-2A": 1,
+      "2025-1A": 1,
+      "2025-2": 1
+     }
+    },
+    "sets_claves_json_2026": {},
+    "theomed_postests_area": "17 quizzes del área Salud Pública (por ÁREA, no filtrables por código)",
+    "qx_banqueo_area": "688Q del área Salud Pública (scan 20-jul-2026, por ÁREA; acceso 2027-I A VERIFICAR)"
+   },
+   "resueltas": {
+    "rondas_registro": 0,
+    "consumidos_en_runner": 0
+   },
+   "deficit_vs_demanda": -3,
+   "estado": "cubierto"
+  },
+  "I-OCC": {
+   "area": "I",
+   "critico": false,
+   "rebote": false,
+   "cola_larga": true,
+   "demanda_sembrada": {
+    "sesiones_principal": 0,
+    "slots_secundario": 5,
+    "viernes_cola_larga": 2,
+    "q_estimadas_102_dias": 28,
+    "receta": "16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos"
+   },
+   "oferta": {
+    "banco_propio_pool": {
+     "total": 3,
+     "disponibles_no_usados": 3,
+     "ya_consumidos_en_runner": 0,
+     "por_fichero": {
+      "set_reales_otros_1.json": 3
+     },
+     "por_sub_eje": {
+      "intoxicacion_plaguicidas": 1,
+      "accidente_punzocortante": 2
+     },
+     "con_clave_oficial": 3
+    },
+    "examenes_reales_etiquetados": {
+     "total": 3,
+     "por_proceso": {
+      "2024-2A": 1,
+      "2025-1A": 1,
+      "2025-2": 1
+     }
+    },
+    "sets_claves_json_2026": {},
+    "theomed_postests_area": "17 quizzes del área Salud Pública (por ÁREA, no filtrables por código)",
+    "qx_banqueo_area": "688Q del área Salud Pública (scan 20-jul-2026, por ÁREA; acceso 2027-I A VERIFICAR)"
+   },
+   "resueltas": {
+    "rondas_registro": 0,
+    "consumidos_en_runner": 0
+   },
+   "deficit_vs_demanda": 25,
+   "estado": "déficit moderado (cubrir con QX/Theomed del área o 1 set nuevo)"
+  },
+  "II-1": {
+   "area": "II",
+   "critico": false,
+   "rebote": true,
+   "cola_larga": false,
+   "demanda_sembrada": {
+    "sesiones_principal": 5,
+    "slots_secundario": 0,
+    "viernes_cola_larga": 0,
+    "q_estimadas_102_dias": 90,
+    "receta": "16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos"
+   },
+   "oferta": {
+    "banco_propio_pool": {
+     "total": 12,
+     "disponibles_no_usados": 11,
+     "ya_consumidos_en_runner": 1,
+     "por_fichero": {
+      "banco_items_v1.json": 1,
+      "set_reales_otros_1.json": 11
+     },
+     "por_sub_eje": {
+      "sin_sub_eje": 1,
+      "prenatal_emergencias": 8,
+      "parto_lactancia": 2,
+      "salud_sexual_reproductiva": 1
+     },
+     "con_clave_oficial": 12
+    },
+    "examenes_reales_etiquetados": {
+     "total": 11,
+     "por_proceso": {
+      "2024-2A": 3,
+      "2025-1A": 2,
+      "2025-2": 6
+     }
+    },
+    "sets_claves_json_2026": {
+     "banco_rentabilidad_20Q_2026-08-05_claves.json": 2
+    },
+    "theomed_postests_area": "13 quizzes del área Cuidado Integral (por ÁREA, no filtrables por código)",
+    "qx_banqueo_area": "1109Q del área Cuidado Integral (scan 20-jul-2026, por ÁREA; acceso 2027-I A VERIFICAR)"
+   },
+   "resueltas": {
+    "rondas_registro": 0,
+    "consumidos_en_runner": 1
+   },
+   "deficit_vs_demanda": 79,
+   "estado": "DÉFICIT (pre-generar sets nuevos)"
+  },
+  "II-10": {
+   "area": "II",
+   "critico": false,
+   "rebote": false,
+   "cola_larga": true,
+   "demanda_sembrada": {
+    "sesiones_principal": 0,
+    "slots_secundario": 5,
+    "viernes_cola_larga": 2,
+    "q_estimadas_102_dias": 28,
+    "receta": "16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos"
+   },
+   "oferta": {
+    "banco_propio_pool": {
+     "total": 5,
+     "disponibles_no_usados": 2,
+     "ya_consumidos_en_runner": 3,
+     "por_fichero": {
+      "set_reales_otros_1.json": 5
+     },
+     "por_sub_eje": {
+      "cancer_infantil": 2,
+      "cancer_cervix_mama": 2,
+      "cancer_tamizaje": 1
+     },
+     "con_clave_oficial": 5
+    },
+    "examenes_reales_etiquetados": {
+     "total": 5,
+     "por_proceso": {
+      "2025-1A": 2,
+      "2025-2": 3
+     }
+    },
+    "sets_claves_json_2026": {},
+    "theomed_postests_area": "13 quizzes del área Cuidado Integral (por ÁREA, no filtrables por código)",
+    "qx_banqueo_area": "1109Q del área Cuidado Integral (scan 20-jul-2026, por ÁREA; acceso 2027-I A VERIFICAR)"
+   },
+   "resueltas": {
+    "rondas_registro": 0,
+    "consumidos_en_runner": 3
+   },
+   "deficit_vs_demanda": 26,
+   "estado": "déficit moderado (cubrir con QX/Theomed del área o 1 set nuevo)"
+  },
+  "II-11": {
+   "area": "II",
+   "critico": false,
+   "rebote": true,
+   "cola_larga": false,
+   "demanda_sembrada": {
+    "sesiones_principal": 5,
+    "slots_secundario": 0,
+    "viernes_cola_larga": 0,
+    "q_estimadas_102_dias": 90,
+    "receta": "16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos"
+   },
+   "oferta": {
+    "banco_propio_pool": {
+     "total": 6,
+     "disponibles_no_usados": 5,
+     "ya_consumidos_en_runner": 1,
+     "por_fichero": {
+      "banco_items_v1.json": 1,
+      "set_reales_otros_1.json": 5
+     },
+     "por_sub_eje": {
+      "sin_sub_eje": 1,
+      "sifilis_sindromico": 4,
+      "prep_dual_ptmi": 1
+     },
+     "con_clave_oficial": 6
+    },
+    "examenes_reales_etiquetados": {
+     "total": 5,
+     "por_proceso": {
+      "2024-2A": 3,
+      "2025-1A": 1,
+      "2025-2": 1
+     }
+    },
+    "sets_claves_json_2026": {
+     "banco_rentabilidad_20Q_2026-08-05_claves.json": 2
+    },
+    "theomed_postests_area": "13 quizzes del área Cuidado Integral (por ÁREA, no filtrables por código)",
+    "qx_banqueo_area": "1109Q del área Cuidado Integral (scan 20-jul-2026, por ÁREA; acceso 2027-I A VERIFICAR)"
+   },
+   "resueltas": {
+    "rondas_registro": 0,
+    "consumidos_en_runner": 1
+   },
+   "deficit_vs_demanda": 85,
+   "estado": "DÉFICIT (pre-generar sets nuevos)"
+  },
+  "II-12": {
+   "area": "II",
+   "critico": false,
+   "rebote": false,
+   "cola_larga": false,
+   "demanda_sembrada": {
+    "sesiones_principal": 0,
+    "slots_secundario": 0,
+    "viernes_cola_larga": 0,
+    "q_estimadas_102_dias": 0,
+    "receta": "16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos"
+   },
+   "oferta": {
+    "banco_propio_pool": {
+     "total": 1,
+     "disponibles_no_usados": 1,
+     "ya_consumidos_en_runner": 0,
+     "por_fichero": {
+      "set_reales_otros_1.json": 1
+     },
+     "por_sub_eje": {
+      "salud_bucal": 1
+     },
+     "con_clave_oficial": 1
+    },
+    "examenes_reales_etiquetados": {
+     "total": 1,
+     "por_proceso": {
+      "2025-1A": 1
+     }
+    },
+    "sets_claves_json_2026": {},
+    "theomed_postests_area": "13 quizzes del área Cuidado Integral (por ÁREA, no filtrables por código)",
+    "qx_banqueo_area": "1109Q del área Cuidado Integral (scan 20-jul-2026, por ÁREA; acceso 2027-I A VERIFICAR)"
+   },
+   "resueltas": {
+    "rondas_registro": 0,
+    "consumidos_en_runner": 0
+   },
+   "deficit_vs_demanda": -1,
+   "estado": "cubierto"
+  },
+  "II-2": {
+   "area": "II",
+   "critico": false,
+   "rebote": false,
+   "cola_larga": true,
+   "demanda_sembrada": {
+    "sesiones_principal": 0,
+    "slots_secundario": 5,
+    "viernes_cola_larga": 3,
+    "q_estimadas_102_dias": 31,
+    "receta": "16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos"
+   },
+   "oferta": {
+    "banco_propio_pool": {
+     "total": 5,
+     "disponibles_no_usados": 0,
+     "ya_consumidos_en_runner": 5,
+     "por_fichero": {
+      "banco_items_v1.json": 3,
+      "set_reales_otros_1.json": 2
+     },
+     "por_sub_eje": {
+      "sin_sub_eje": 3,
+      "aiepi_eda": 1,
+      "cred": 1
+     },
+     "con_clave_oficial": 5
+    },
+    "examenes_reales_etiquetados": {
+     "total": 2,
+     "por_proceso": {
+      "2024-2A": 1,
+      "2025-1A": 1
+     }
+    },
+    "sets_claves_json_2026": {},
+    "theomed_postests_area": "13 quizzes del área Cuidado Integral (por ÁREA, no filtrables por código)",
+    "qx_banqueo_area": "1109Q del área Cuidado Integral (scan 20-jul-2026, por ÁREA; acceso 2027-I A VERIFICAR)"
+   },
+   "resueltas": {
+    "rondas_registro": 0,
+    "consumidos_en_runner": 5
+   },
+   "deficit_vs_demanda": 31,
+   "estado": "déficit moderado (cubrir con QX/Theomed del área o 1 set nuevo)"
+  },
+  "II-3": {
+   "area": "II",
+   "critico": true,
+   "rebote": false,
+   "cola_larga": false,
+   "demanda_sembrada": {
+    "sesiones_principal": 6,
+    "slots_secundario": 0,
+    "viernes_cola_larga": 0,
+    "q_estimadas_102_dias": 108,
+    "receta": "16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos"
+   },
+   "oferta": {
+    "banco_propio_pool": {
+     "total": 28,
+     "disponibles_no_usados": 0,
+     "ya_consumidos_en_runner": 28,
+     "por_fichero": {
+      "banco_items_v1.json": 3,
+      "set_II-3_1.json": 25
+     },
+     "por_sub_eje": {
+      "sin_sub_eje": 3,
+      "esavi_kit": 8,
+      "esquema_intervalos": 10,
+      "novedades_gestante": 2,
+      "cadena_frio": 5
+     },
+     "con_clave_oficial": 8
+    },
+    "examenes_reales_etiquetados": {
+     "total": 5,
+     "por_proceso": {
+      "2024-2A": 2,
+      "2025-1A": 1,
+      "2025-2": 2
+     }
+    },
+    "sets_claves_json_2026": {
+     "banco_rentabilidad_20Q_2026-08-05_claves.json": 2
+    },
+    "theomed_postests_area": "13 quizzes del área Cuidado Integral (por ÁREA, no filtrables por código)",
+    "qx_banqueo_area": "1109Q del área Cuidado Integral (scan 20-jul-2026, por ÁREA; acceso 2027-I A VERIFICAR)"
+   },
+   "resueltas": {
+    "rondas_registro": 0,
+    "consumidos_en_runner": 28
+   },
+   "deficit_vs_demanda": 108,
+   "estado": "DÉFICIT (pre-generar sets nuevos)"
+  },
+  "II-4": {
+   "area": "II",
+   "critico": true,
+   "rebote": false,
+   "cola_larga": false,
+   "demanda_sembrada": {
+    "sesiones_principal": 5,
+    "slots_secundario": 0,
+    "viernes_cola_larga": 0,
+    "q_estimadas_102_dias": 90,
+    "receta": "16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos"
+   },
+   "oferta": {
+    "banco_propio_pool": {
+     "total": 27,
+     "disponibles_no_usados": 20,
+     "ya_consumidos_en_runner": 7,
+     "por_fichero": {
+      "banco_items_v1.json": 2,
+      "set_II-4_1.json": 25
+     },
+     "por_sub_eje": {
+      "sin_sub_eje": 2,
+      "suplementacion_cifras": 10,
+      "anemia_dx_tto": 12,
+      "plan_multisectorial": 3
+     },
+     "con_clave_oficial": 8
+    },
+    "examenes_reales_etiquetados": {
+     "total": 6,
+     "por_proceso": {
+      "2024-2A": 3,
+      "2025-1A": 1,
+      "2025-2": 2
+     }
+    },
+    "sets_claves_json_2026": {},
+    "theomed_postests_area": "13 quizzes del área Cuidado Integral (por ÁREA, no filtrables por código)",
+    "qx_banqueo_area": "1109Q del área Cuidado Integral (scan 20-jul-2026, por ÁREA; acceso 2027-I A VERIFICAR)"
+   },
+   "resueltas": {
+    "rondas_registro": 0,
+    "consumidos_en_runner": 7
+   },
+   "deficit_vs_demanda": 70,
+   "estado": "DÉFICIT (pre-generar sets nuevos)"
+  },
+  "II-5": {
+   "area": "II",
+   "critico": true,
+   "rebote": false,
+   "cola_larga": false,
+   "demanda_sembrada": {
+    "sesiones_principal": 5,
+    "slots_secundario": 0,
+    "viernes_cola_larga": 0,
+    "q_estimadas_102_dias": 90,
+    "receta": "16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos"
+   },
+   "oferta": {
+    "banco_propio_pool": {
+     "total": 27,
+     "disponibles_no_usados": 25,
+     "ya_consumidos_en_runner": 2,
+     "por_fichero": {
+      "banco_items_v1.json": 2,
+      "set_II-5_1.json": 25
+     },
+     "por_sub_eje": {
+      "sin_sub_eje": 2,
+      "mci_curso_vida": 13,
+      "nts_adolescente": 12
+     },
+     "con_clave_oficial": 10
+    },
+    "examenes_reales_etiquetados": {
+     "total": 8,
+     "por_proceso": {
+      "2024-2A": 4,
+      "2025-1A": 2,
+      "2025-2": 2
+     }
+    },
+    "sets_claves_json_2026": {},
+    "theomed_postests_area": "13 quizzes del área Cuidado Integral (por ÁREA, no filtrables por código)",
+    "qx_banqueo_area": "1109Q del área Cuidado Integral (scan 20-jul-2026, por ÁREA; acceso 2027-I A VERIFICAR)"
+   },
+   "resueltas": {
+    "rondas_registro": 0,
+    "consumidos_en_runner": 2
+   },
+   "deficit_vs_demanda": 65,
+   "estado": "DÉFICIT (pre-generar sets nuevos)"
+  },
+  "II-6": {
+   "area": "II",
+   "critico": false,
+   "rebote": false,
+   "cola_larga": true,
+   "demanda_sembrada": {
+    "sesiones_principal": 0,
+    "slots_secundario": 5,
+    "viernes_cola_larga": 3,
+    "q_estimadas_102_dias": 31,
+    "receta": "16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos"
+   },
+   "oferta": {
+    "banco_propio_pool": {
+     "total": 8,
+     "disponibles_no_usados": 0,
+     "ya_consumidos_en_runner": 8,
+     "por_fichero": {
+      "banco_items_v1.json": 3,
+      "set_reales_otros_1.json": 5
+     },
+     "por_sub_eje": {
+      "sin_sub_eje": 3,
+      "tratamiento_ram": 1,
+      "pantbc": 1,
+      "tpt": 2,
+      "tb_dr": 1
+     },
+     "con_clave_oficial": 8
+    },
+    "examenes_reales_etiquetados": {
+     "total": 5,
+     "por_proceso": {
+      "2024-2A": 2,
+      "2025-1A": 1,
+      "2025-2": 2
+     }
+    },
+    "sets_claves_json_2026": {},
+    "theomed_postests_area": "13 quizzes del área Cuidado Integral (por ÁREA, no filtrables por código)",
+    "qx_banqueo_area": "1109Q del área Cuidado Integral (scan 20-jul-2026, por ÁREA; acceso 2027-I A VERIFICAR)"
+   },
+   "resueltas": {
+    "rondas_registro": 0,
+    "consumidos_en_runner": 8
+   },
+   "deficit_vs_demanda": 31,
+   "estado": "déficit moderado (cubrir con QX/Theomed del área o 1 set nuevo)"
+  },
+  "II-7": {
+   "area": "II",
+   "critico": false,
+   "rebote": false,
+   "cola_larga": true,
+   "demanda_sembrada": {
+    "sesiones_principal": 0,
+    "slots_secundario": 4,
+    "viernes_cola_larga": 2,
+    "q_estimadas_102_dias": 24,
+    "receta": "16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos"
+   },
+   "oferta": {
+    "banco_propio_pool": {
+     "total": 8,
+     "disponibles_no_usados": 8,
+     "ya_consumidos_en_runner": 0,
+     "por_fichero": {
+      "set_reales_otros_1.json": 8
+     },
+     "por_sub_eje": {
+      "cuidados_comunitarios": 5,
+      "vacam": 3
+     },
+     "con_clave_oficial": 8
+    },
+    "examenes_reales_etiquetados": {
+     "total": 8,
+     "por_proceso": {
+      "2024-2A": 2,
+      "2025-1A": 3,
+      "2025-2": 3
+     }
+    },
+    "sets_claves_json_2026": {},
+    "theomed_postests_area": "13 quizzes del área Cuidado Integral (por ÁREA, no filtrables por código)",
+    "qx_banqueo_area": "1109Q del área Cuidado Integral (scan 20-jul-2026, por ÁREA; acceso 2027-I A VERIFICAR)"
+   },
+   "resueltas": {
+    "rondas_registro": 0,
+    "consumidos_en_runner": 0
+   },
+   "deficit_vs_demanda": 16,
+   "estado": "déficit moderado (cubrir con QX/Theomed del área o 1 set nuevo)"
+  },
+  "II-8": {
+   "area": "II",
+   "critico": false,
+   "rebote": true,
+   "cola_larga": false,
+   "demanda_sembrada": {
+    "sesiones_principal": 5,
+    "slots_secundario": 0,
+    "viernes_cola_larga": 0,
+    "q_estimadas_102_dias": 90,
+    "receta": "16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos"
+   },
+   "oferta": {
+    "banco_propio_pool": {
+     "total": 12,
+     "disponibles_no_usados": 11,
+     "ya_consumidos_en_runner": 1,
+     "por_fichero": {
+      "banco_items_v1.json": 1,
+      "set_reales_otros_1.json": 11
+     },
+     "por_sub_eje": {
+      "sin_sub_eje": 1,
+      "paquetes_tamizaje": 5,
+      "metas_hta_dm": 6
+     },
+     "con_clave_oficial": 12
+    },
+    "examenes_reales_etiquetados": {
+     "total": 11,
+     "por_proceso": {
+      "2024-2A": 4,
+      "2025-1A": 3,
+      "2025-2": 4
+     }
+    },
+    "sets_claves_json_2026": {
+     "banco_rentabilidad_20Q_2026-08-05_claves.json": 1
+    },
+    "theomed_postests_area": "13 quizzes del área Cuidado Integral (por ÁREA, no filtrables por código)",
+    "qx_banqueo_area": "1109Q del área Cuidado Integral (scan 20-jul-2026, por ÁREA; acceso 2027-I A VERIFICAR)"
+   },
+   "resueltas": {
+    "rondas_registro": 0,
+    "consumidos_en_runner": 1
+   },
+   "deficit_vs_demanda": 79,
+   "estado": "DÉFICIT (pre-generar sets nuevos)"
+  },
+  "II-9": {
+   "area": "II",
+   "critico": false,
+   "rebote": false,
+   "cola_larga": true,
+   "demanda_sembrada": {
+    "sesiones_principal": 0,
+    "slots_secundario": 5,
+    "viernes_cola_larga": 2,
+    "q_estimadas_102_dias": 28,
+    "receta": "16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos"
+   },
+   "oferta": {
+    "banco_propio_pool": {
+     "total": 4,
+     "disponibles_no_usados": 4,
+     "ya_consumidos_en_runner": 0,
+     "por_fichero": {
+      "set_reales_otros_1.json": 4
+     },
+     "por_sub_eje": {
+      "depresion": 2,
+      "adicciones": 1,
+      "modelo_comunitario": 1
+     },
+     "con_clave_oficial": 4
+    },
+    "examenes_reales_etiquetados": {
+     "total": 4,
+     "por_proceso": {
+      "2025-1A": 1,
+      "2025-2": 3
+     }
+    },
+    "sets_claves_json_2026": {},
+    "theomed_postests_area": "13 quizzes del área Cuidado Integral (por ÁREA, no filtrables por código)",
+    "qx_banqueo_area": "1109Q del área Cuidado Integral (scan 20-jul-2026, por ÁREA; acceso 2027-I A VERIFICAR)"
+   },
+   "resueltas": {
+    "rondas_registro": 0,
+    "consumidos_en_runner": 0
+   },
+   "deficit_vs_demanda": 24,
+   "estado": "déficit moderado (cubrir con QX/Theomed del área o 1 set nuevo)"
+  },
+  "II-EMG": {
+   "area": "II",
+   "critico": false,
+   "rebote": false,
+   "cola_larga": true,
+   "demanda_sembrada": {
+    "sesiones_principal": 0,
+    "slots_secundario": 5,
+    "viernes_cola_larga": 2,
+    "q_estimadas_102_dias": 28,
+    "receta": "16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos"
+   },
+   "oferta": {
+    "banco_propio_pool": {
+     "total": 2,
+     "disponibles_no_usados": 2,
+     "ya_consumidos_en_runner": 0,
+     "por_fichero": {
+      "set_reales_otros_1.json": 2
+     },
+     "por_sub_eje": {
+      "referencia_urgencia": 2
+     },
+     "con_clave_oficial": 2
+    },
+    "examenes_reales_etiquetados": {
+     "total": 2,
+     "por_proceso": {
+      "2025-2": 2
+     }
+    },
+    "sets_claves_json_2026": {},
+    "theomed_postests_area": "13 quizzes del área Cuidado Integral (por ÁREA, no filtrables por código)",
+    "qx_banqueo_area": "1109Q del área Cuidado Integral (scan 20-jul-2026, por ÁREA; acceso 2027-I A VERIFICAR)"
+   },
+   "resueltas": {
+    "rondas_registro": 0,
+    "consumidos_en_runner": 0
+   },
+   "deficit_vs_demanda": 26,
+   "estado": "déficit moderado (cubrir con QX/Theomed del área o 1 set nuevo)"
+  },
+  "III-1": {
+   "area": "III",
+   "critico": false,
+   "rebote": false,
+   "cola_larga": true,
+   "demanda_sembrada": {
+    "sesiones_principal": 0,
+    "slots_secundario": 5,
+    "viernes_cola_larga": 2,
+    "q_estimadas_102_dias": 28,
+    "receta": "16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos"
+   },
+   "oferta": {
+    "banco_propio_pool": {
+     "total": 4,
+     "disponibles_no_usados": 4,
+     "ya_consumidos_en_runner": 0,
+     "por_fichero": {
+      "set_reales_otros_1.json": 4
+     },
+     "por_sub_eje": {
+      "principios_bioetica": 4
+     },
+     "con_clave_oficial": 4
+    },
+    "examenes_reales_etiquetados": {
+     "total": 4,
+     "por_proceso": {
+      "2024-2A": 2,
+      "2025-1A": 1,
+      "2025-2": 1
+     }
+    },
+    "sets_claves_json_2026": {},
+    "theomed_postests_area": "5 quizzes del área Ética e Interculturalidad (por ÁREA, no filtrables por código)",
+    "qx_banqueo_area": "255Q del área Ética e Interculturalidad (scan 20-jul-2026, por ÁREA; acceso 2027-I A VERIFICAR)"
+   },
+   "resueltas": {
+    "rondas_registro": 0,
+    "consumidos_en_runner": 0
+   },
+   "deficit_vs_demanda": 24,
+   "estado": "déficit moderado (cubrir con QX/Theomed del área o 1 set nuevo)"
+  },
+  "III-2": {
+   "area": "III",
+   "critico": false,
+   "rebote": false,
+   "cola_larga": false,
+   "demanda_sembrada": {
+    "sesiones_principal": 0,
+    "slots_secundario": 0,
+    "viernes_cola_larga": 0,
+    "q_estimadas_102_dias": 0,
+    "receta": "16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos"
+   },
+   "oferta": {
+    "banco_propio_pool": {
+     "total": 8,
+     "disponibles_no_usados": 8,
+     "ya_consumidos_en_runner": 0,
+     "por_fichero": {
+      "set_reales_otros_1.json": 8
+     },
+     "por_sub_eje": {
+      "comunicacion_asertiva": 1,
+      "acto_medico": 1,
+      "deontologia": 6
+     },
+     "con_clave_oficial": 8
+    },
+    "examenes_reales_etiquetados": {
+     "total": 8,
+     "por_proceso": {
+      "2024-2A": 2,
+      "2025-1A": 3,
+      "2025-2": 3
+     }
+    },
+    "sets_claves_json_2026": {},
+    "theomed_postests_area": "5 quizzes del área Ética e Interculturalidad (por ÁREA, no filtrables por código)",
+    "qx_banqueo_area": "255Q del área Ética e Interculturalidad (scan 20-jul-2026, por ÁREA; acceso 2027-I A VERIFICAR)"
+   },
+   "resueltas": {
+    "rondas_registro": 0,
+    "consumidos_en_runner": 0
+   },
+   "deficit_vs_demanda": -8,
+   "estado": "cubierto"
+  },
+  "III-3": {
+   "area": "III",
+   "critico": false,
+   "rebote": false,
+   "cola_larga": true,
+   "demanda_sembrada": {
+    "sesiones_principal": 0,
+    "slots_secundario": 5,
+    "viernes_cola_larga": 2,
+    "q_estimadas_102_dias": 28,
+    "receta": "16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos"
+   },
+   "oferta": {
+    "banco_propio_pool": {
+     "total": 5,
+     "disponibles_no_usados": 4,
+     "ya_consumidos_en_runner": 1,
+     "por_fichero": {
+      "banco_items_v1.json": 1,
+      "set_reales_otros_1.json": 4
+     },
+     "por_sub_eje": {
+      "sin_sub_eje": 1,
+      "consentimiento": 3,
+      "autonomia_rechazo": 1
+     },
+     "con_clave_oficial": 5
+    },
+    "examenes_reales_etiquetados": {
+     "total": 4,
+     "por_proceso": {
+      "2024-2A": 2,
+      "2025-1A": 2
+     }
+    },
+    "sets_claves_json_2026": {},
+    "theomed_postests_area": "5 quizzes del área Ética e Interculturalidad (por ÁREA, no filtrables por código)",
+    "qx_banqueo_area": "255Q del área Ética e Interculturalidad (scan 20-jul-2026, por ÁREA; acceso 2027-I A VERIFICAR)"
+   },
+   "resueltas": {
+    "rondas_registro": 0,
+    "consumidos_en_runner": 1
+   },
+   "deficit_vs_demanda": 24,
+   "estado": "déficit moderado (cubrir con QX/Theomed del área o 1 set nuevo)"
+  },
+  "III-5": {
+   "area": "III",
+   "critico": true,
+   "rebote": false,
+   "cola_larga": false,
+   "demanda_sembrada": {
+    "sesiones_principal": 5,
+    "slots_secundario": 0,
+    "viernes_cola_larga": 0,
+    "q_estimadas_102_dias": 90,
+    "receta": "16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos"
+   },
+   "oferta": {
+    "banco_propio_pool": {
+     "total": 29,
+     "disponibles_no_usados": 5,
+     "ya_consumidos_en_runner": 24,
+     "por_fichero": {
+      "banco_items_v1.json": 4,
+      "set_III-5_1.json": 25
+     },
+     "por_sub_eje": {
+      "sin_sub_eje": 4,
+      "pertinencia_barreras": 16,
+      "medicina_tradicional": 6,
+      "inclusion_migrantes": 3
+     },
+     "con_clave_oficial": 19
+    },
+    "examenes_reales_etiquetados": {
+     "total": 15,
+     "por_proceso": {
+      "2024-2A": 3,
+      "2025-1A": 4,
+      "2025-2": 8
+     }
+    },
+    "sets_claves_json_2026": {
+     "banco_rentabilidad_20Q_2026-08-05_claves.json": 2
+    },
+    "theomed_postests_area": "5 quizzes del área Ética e Interculturalidad (por ÁREA, no filtrables por código)",
+    "qx_banqueo_area": "255Q del área Ética e Interculturalidad (scan 20-jul-2026, por ÁREA; acceso 2027-I A VERIFICAR)"
+   },
+   "resueltas": {
+    "rondas_registro": 0,
+    "consumidos_en_runner": 24
+   },
+   "deficit_vs_demanda": 85,
+   "estado": "DÉFICIT (pre-generar sets nuevos)"
+  },
+  "III-8": {
+   "area": "III",
+   "critico": false,
+   "rebote": false,
+   "cola_larga": false,
+   "demanda_sembrada": {
+    "sesiones_principal": 5,
+    "slots_secundario": 0,
+    "viernes_cola_larga": 0,
+    "q_estimadas_102_dias": 90,
+    "receta": "16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos"
+   },
+   "oferta": {
+    "banco_propio_pool": {
+     "total": 11,
+     "disponibles_no_usados": 8,
+     "ya_consumidos_en_runner": 3,
+     "por_fichero": {
+      "banco_items_v1.json": 1,
+      "set_reales_otros_1.json": 10
+     },
+     "por_sub_eje": {
+      "sin_sub_eje": 1,
+      "ley_27815": 6,
+      "historia_clinica": 4
+     },
+     "con_clave_oficial": 11
+    },
+    "examenes_reales_etiquetados": {
+     "total": 10,
+     "por_proceso": {
+      "2024-2A": 1,
+      "2025-1A": 5,
+      "2025-2": 4
+     }
+    },
+    "sets_claves_json_2026": {
+     "banco_rentabilidad_20Q_2026-08-05_claves.json": 1
+    },
+    "theomed_postests_area": "5 quizzes del área Ética e Interculturalidad (por ÁREA, no filtrables por código)",
+    "qx_banqueo_area": "255Q del área Ética e Interculturalidad (scan 20-jul-2026, por ÁREA; acceso 2027-I A VERIFICAR)"
+   },
+   "resueltas": {
+    "rondas_registro": 0,
+    "consumidos_en_runner": 3
+   },
+   "deficit_vs_demanda": 82,
+   "estado": "DÉFICIT (pre-generar sets nuevos)"
+  },
+  "III-9": {
+   "area": "III",
+   "critico": false,
+   "rebote": false,
+   "cola_larga": true,
+   "demanda_sembrada": {
+    "sesiones_principal": 0,
+    "slots_secundario": 5,
+    "viernes_cola_larga": 2,
+    "q_estimadas_102_dias": 28,
+    "receta": "16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos"
+   },
+   "oferta": {
+    "banco_propio_pool": {
+     "total": 3,
+     "disponibles_no_usados": 2,
+     "ya_consumidos_en_runner": 1,
+     "por_fichero": {
+      "set_reales_otros_1.json": 3
+     },
+     "por_sub_eje": {
+      "acceso_servicios": 2,
+      "reclamos": 1
+     },
+     "con_clave_oficial": 3
+    },
+    "examenes_reales_etiquetados": {
+     "total": 3,
+     "por_proceso": {
+      "2024-2A": 1,
+      "2025-1A": 2
+     }
+    },
+    "sets_claves_json_2026": {},
+    "theomed_postests_area": "5 quizzes del área Ética e Interculturalidad (por ÁREA, no filtrables por código)",
+    "qx_banqueo_area": "255Q del área Ética e Interculturalidad (scan 20-jul-2026, por ÁREA; acceso 2027-I A VERIFICAR)"
+   },
+   "resueltas": {
+    "rondas_registro": 0,
+    "consumidos_en_runner": 1
+   },
+   "deficit_vs_demanda": 26,
+   "estado": "déficit moderado (cubrir con QX/Theomed del área o 1 set nuevo)"
+  },
+  "IV-1+IV-2": {
+   "area": "IV",
+   "critico": true,
+   "rebote": false,
+   "cola_larga": false,
+   "demanda_sembrada": {
+    "sesiones_principal": 5,
+    "slots_secundario": 0,
+    "viernes_cola_larga": 0,
+    "q_estimadas_102_dias": 90,
+    "receta": "16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos"
+   },
+   "oferta": {
+    "banco_propio_pool": {
+     "total": 28,
+     "disponibles_no_usados": 23,
+     "ya_consumidos_en_runner": 5,
+     "por_fichero": {
+      "banco_items_v1.json": 3,
+      "set_IV-1+IV-2_1.json": 25
+     },
+     "por_sub_eje": {
+      "sin_sub_eje": 3,
+      "muestreo": 5,
+      "metodo_cientifico": 8,
+      "instrumentos": 5,
+      "tipos_estudio": 7
+     },
+     "con_clave_oficial": 24
+    },
+    "examenes_reales_etiquetados": {
+     "total": 21,
+     "por_proceso": {
+      "2024-2A": 12,
+      "2025-1A": 7,
+      "2025-2": 2
+     }
+    },
+    "sets_claves_json_2026": {},
+    "theomed_postests_area": "15 quizzes del área Investigación (por ÁREA, no filtrables por código)",
+    "qx_banqueo_area": "NO publicado al 20-jul-2026 (A VERIFICAR re-scan)"
+   },
+   "resueltas": {
+    "rondas_registro": 0,
+    "consumidos_en_runner": 5
+   },
+   "deficit_vs_demanda": 67,
+   "estado": "DÉFICIT (pre-generar sets nuevos)"
+  },
+  "IV-6+IV-7": {
+   "area": "IV",
+   "critico": false,
+   "rebote": false,
+   "cola_larga": false,
+   "demanda_sembrada": {
+    "sesiones_principal": 5,
+    "slots_secundario": 0,
+    "viernes_cola_larga": 0,
+    "q_estimadas_102_dias": 90,
+    "receta": "16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos"
+   },
+   "oferta": {
+    "banco_propio_pool": {
+     "total": 7,
+     "disponibles_no_usados": 6,
+     "ya_consumidos_en_runner": 1,
+     "por_fichero": {
+      "banco_items_v1.json": 1,
+      "set_reales_otros_1.json": 6
+     },
+     "por_sub_eje": {
+      "sin_sub_eje": 1,
+      "estadistica_descriptiva": 3,
+      "imryd": 3
+     },
+     "con_clave_oficial": 7
+    },
+    "examenes_reales_etiquetados": {
+     "total": 6,
+     "por_proceso": {
+      "2024-2A": 1,
+      "2025-1A": 5
+     }
+    },
+    "sets_claves_json_2026": {},
+    "theomed_postests_area": "15 quizzes del área Investigación (por ÁREA, no filtrables por código)",
+    "qx_banqueo_area": "NO publicado al 20-jul-2026 (A VERIFICAR re-scan)"
+   },
+   "resueltas": {
+    "rondas_registro": 0,
+    "consumidos_en_runner": 1
+   },
+   "deficit_vs_demanda": 84,
+   "estado": "DÉFICIT (pre-generar sets nuevos)"
+  },
+  "V-1": {
+   "area": "V",
+   "critico": false,
+   "rebote": false,
+   "cola_larga": true,
+   "demanda_sembrada": {
+    "sesiones_principal": 0,
+    "slots_secundario": 5,
+    "viernes_cola_larga": 2,
+    "q_estimadas_102_dias": 28,
+    "receta": "16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos"
+   },
+   "oferta": {
+    "banco_propio_pool": {
+     "total": 9,
+     "disponibles_no_usados": 8,
+     "ya_consumidos_en_runner": 1,
+     "por_fichero": {
+      "banco_items_v1.json": 1,
+      "set_reales_otros_1.json": 8
+     },
+     "por_sub_eje": {
+      "sin_sub_eje": 1,
+      "acreditacion": 2,
+      "categorias_rrhh": 4,
+      "categorizacion": 2
+     },
+     "con_clave_oficial": 9
+    },
+    "examenes_reales_etiquetados": {
+     "total": 8,
+     "por_proceso": {
+      "2024-2A": 3,
+      "2025-1A": 1,
+      "2025-2": 4
+     }
+    },
+    "sets_claves_json_2026": {
+     "banco_rentabilidad_20Q_2026-08-05_claves.json": 1
+    },
+    "theomed_postests_area": "sin dato",
+    "qx_banqueo_area": "NO publicado al 20-jul-2026 (A VERIFICAR re-scan)"
+   },
+   "resueltas": {
+    "rondas_registro": 0,
+    "consumidos_en_runner": 1
+   },
+   "deficit_vs_demanda": 20,
+   "estado": "déficit moderado (cubrir con QX/Theomed del área o 1 set nuevo)"
+  },
+  "V-2": {
+   "area": "V",
+   "critico": true,
+   "rebote": false,
+   "cola_larga": false,
+   "demanda_sembrada": {
+    "sesiones_principal": 11,
+    "slots_secundario": 0,
+    "viernes_cola_larga": 0,
+    "q_estimadas_102_dias": 198,
+    "receta": "16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos"
+   },
+   "oferta": {
+    "banco_propio_pool": {
+     "total": 41,
+     "disponibles_no_usados": 6,
+     "ya_consumidos_en_runner": 35,
+     "por_fichero": {
+      "banco_items_v1.json": 5,
+      "set_reales_otros_1.json": 11,
+      "set_V-2_1.json": 25
+     },
+     "por_sub_eje": {
+      "sin_sub_eje": 5,
+      "planeamiento": 20,
+      "clima_calidad": 12,
+      "residuos_bioseguridad": 4
+     },
+     "con_clave_oficial": 41
+    },
+    "examenes_reales_etiquetados": {
+     "total": 36,
+     "por_proceso": {
+      "2024-2A": 11,
+      "2025-1A": 11,
+      "2025-2": 14
+     }
+    },
+    "sets_claves_json_2026": {
+     "banco_rentabilidad_20Q_2026-08-05_claves.json": 3
+    },
+    "theomed_postests_area": "sin dato",
+    "qx_banqueo_area": "NO publicado al 20-jul-2026 (A VERIFICAR re-scan)"
+   },
+   "resueltas": {
+    "rondas_registro": 0,
+    "consumidos_en_runner": 35
+   },
+   "deficit_vs_demanda": 192,
+   "estado": "DÉFICIT (pre-generar sets nuevos)"
+  },
+  "V-3": {
+   "area": "V",
+   "critico": false,
+   "rebote": false,
+   "cola_larga": true,
+   "demanda_sembrada": {
+    "sesiones_principal": 0,
+    "slots_secundario": 5,
+    "viernes_cola_larga": 2,
+    "q_estimadas_102_dias": 28,
+    "receta": "16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos"
+   },
+   "oferta": {
+    "banco_propio_pool": {
+     "total": 8,
+     "disponibles_no_usados": 7,
+     "ya_consumidos_en_runner": 1,
+     "por_fichero": {
+      "banco_items_v1.json": 1,
+      "set_reales_otros_1.json": 7
+     },
+     "por_sub_eje": {
+      "sin_sub_eje": 1,
+      "sistemas_salud": 2,
+      "rrhh": 2,
+      "referencia_contrarreferencia": 2,
+      "ris": 1
+     },
+     "con_clave_oficial": 8
+    },
+    "examenes_reales_etiquetados": {
+     "total": 7,
+     "por_proceso": {
+      "2024-2A": 4,
+      "2025-1A": 2,
+      "2025-2": 1
+     }
+    },
+    "sets_claves_json_2026": {
+     "banco_rentabilidad_20Q_2026-08-05_claves.json": 1
+    },
+    "theomed_postests_area": "sin dato",
+    "qx_banqueo_area": "NO publicado al 20-jul-2026 (A VERIFICAR re-scan)"
+   },
+   "resueltas": {
+    "rondas_registro": 0,
+    "consumidos_en_runner": 1
+   },
+   "deficit_vs_demanda": 21,
+   "estado": "déficit moderado (cubrir con QX/Theomed del área o 1 set nuevo)"
+  },
+  "V-6": {
+   "area": "V",
+   "critico": false,
+   "rebote": false,
+   "cola_larga": true,
+   "demanda_sembrada": {
+    "sesiones_principal": 0,
+    "slots_secundario": 5,
+    "viernes_cola_larga": 3,
+    "q_estimadas_102_dias": 31,
+    "receta": "16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos"
+   },
+   "oferta": {
+    "banco_propio_pool": {
+     "total": 10,
+     "disponibles_no_usados": 3,
+     "ya_consumidos_en_runner": 7,
+     "por_fichero": {
+      "banco_items_v1.json": 2,
+      "set_cola_larga_1.json": 6,
+      "set_reales_otros_1.json": 2
+     },
+     "por_sub_eje": {
+      "sin_sub_eje": 2,
+      "telesalud": 8
+     },
+     "con_clave_oficial": 4
+    },
+    "examenes_reales_etiquetados": {
+     "total": 2,
+     "por_proceso": {
+      "2025-1A": 1,
+      "2025-2": 1
+     }
+    },
+    "sets_claves_json_2026": {},
+    "theomed_postests_area": "sin dato",
+    "qx_banqueo_area": "NO publicado al 20-jul-2026 (A VERIFICAR re-scan)"
+   },
+   "resueltas": {
+    "rondas_registro": 0,
+    "consumidos_en_runner": 7
+   },
+   "deficit_vs_demanda": 28,
+   "estado": "déficit moderado (cubrir con QX/Theomed del área o 1 set nuevo)"
+  },
+  "V-MED": {
+   "area": "V",
+   "critico": false,
+   "rebote": false,
+   "cola_larga": false,
+   "demanda_sembrada": {
+    "sesiones_principal": 5,
+    "slots_secundario": 0,
+    "viernes_cola_larga": 0,
+    "q_estimadas_102_dias": 90,
+    "receta": "16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos"
+   },
+   "oferta": {
+    "banco_propio_pool": {
+     "total": 23,
+     "disponibles_no_usados": 22,
+     "ya_consumidos_en_runner": 1,
+     "por_fichero": {
+      "banco_items_v1.json": 1,
+      "set_reales_otros_1.json": 22
+     },
+     "por_sub_eje": {
+      "sin_sub_eje": 1,
+      "esenciales_sismed": 11,
+      "farmacovigilancia_urm": 8,
+      "contrataciones_digemid": 3
+     },
+     "con_clave_oficial": 23
+    },
+    "examenes_reales_etiquetados": {
+     "total": 22,
+     "por_proceso": {
+      "2024-2A": 12,
+      "2025-1A": 8,
+      "2025-2": 2
+     }
+    },
+    "sets_claves_json_2026": {},
+    "theomed_postests_area": "sin dato",
+    "qx_banqueo_area": "NO publicado al 20-jul-2026 (A VERIFICAR re-scan)"
+   },
+   "resueltas": {
+    "rondas_registro": 0,
+    "consumidos_en_runner": 1
+   },
+   "deficit_vs_demanda": 68,
+   "estado": "DÉFICIT (pre-generar sets nuevos)"
+  }
+ }
+}

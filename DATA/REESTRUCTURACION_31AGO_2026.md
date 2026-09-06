@@ -137,6 +137,120 @@ Pendientes menores (no bloqueantes): martes ALISTARSE 18:30 pisa 15' la eval USM
 
 ## 6 · NotebookLM
 
-Cuaderno nuevo **"STEP 1 · Palmerton Engine (método + sistemas)"** — 25 videos del canal
-(10 de método + 15 High-Yield) procesados y consultables:
-https://notebooklm.google.com/notebook/6b39b85e-1450-49aa-a5ca-c31f9d659f86
+- **"STEP 1 · Palmerton Engine (método + sistemas)"** — **295 fuentes (tope del plan)**: ~146 videos del canal
+  (método + High-Yield por sistema, catálogo completo vía playlists) + **149 artículos de yousmle.com** (crawl del
+  sitemap 615 posts → 151 relevantes Step 1/método; 2 duplicados omitidos). Es el motor de consulta del método y
+  de las tarjetas de mecanismo. https://notebooklm.google.com/notebook/6b39b85e-1450-49aa-a5ca-c31f9d659f86
+- **"DERMA · Élite Engine (Palmerton derma · fuentes verificadas)"** — 75 fuentes OA verificadas (DermNet
+  describing-lesions + Dermoscopy CME, Dermoscopedia, Cotofana, DeLorenzi, Goodman, MD Codes, láser, acné, ISSVA,
+  StatPearls…), enlazado en la pestaña Fuentes del Hub Derma (`DERMA_NOTEBOOKLM` en dermaData.ts).
+  https://notebooklm.google.com/notebook/0e9fac5c-01f3-406e-96f2-6230bd66a29c
+
+## 8 · "Cero puntos ciegos" — investigación Palmerton v3 + Fase C por sección (4→6-sep-2026)
+
+**Método.** (1) Crawl completo de yousmle.com e ingesta al cuaderno (295 fuentes). (2) Seis análisis de vacíos por
+sección con criterio de preparador de élite (MIR, ENCAPS, Derma, Research, LIVIANO/AURUM/Business, SYNAPSE/VITALS/rutina)
+→ **65 vacíos** con impacto/esfuerzo/ficheros (`DATA/USMLE/_palmerton_v3_extractos/gaps_*.json`). (3) **Fase C**: 12
+agentes en paralelo con ficheros disjuntos implementaron los de impacto alto/medio sin tocar franjas, metas ni fechas
+(commit `22ac163`). (4) Segunda capa de vacíos post-implementación (`gaps_v3b_*.json`) para la siguiente iteración.
+(5) Extracción exhaustiva del método (6 temas + 6 grupos de materias) y síntesis en `DATA/USMLE/PALMERTON_METODO_COMPLETO.md`
+y `PALMERTON_POR_MATERIA.md` v3; plan USMLE ceñido a los 5 niveles UWorld (§8.8).
+
+### 8.1 MIR (15:15-16:15)
+- **Plan v3 regenerado** (`STUDY_HUB/_scrape/gen_mir_daily.js --check`): selección **top-N por Peso MIR** + núcleos
+  rabi_94 forzados (cobertura 744 → **957 puntos-peso**, 20 pesos corruptos → 0), **D1-D4 = Epidemiología + Bioética**
+  (mejor ratio Q/día; transferencia directa del I-3 de ENCAPS), bloques permutados para que cada asignatura **preceda ~1
+  semana a su sistema Step 1** (campo `usmleSystem`), D77 mini-MIR 40Q/51 min + D78 baseline por asignatura.
+- Franjas rebalanceadas dentro del bloque (7 → 17-19 Q/día; lectura dirigida a los gaps del pre-test; 77 s/Q real);
+  eval anclada multi-temporal **D-1/D-3/D-7**; test de cierre 10Q por asignatura (≥70% consolidada, <55% a anclas).
+- **Medición**: `mirEvalLog.ts` (localStorage, neto A−F/3, tipo de error knowledge/transfer/proceso + `delta_es`
+  🇪🇸), MIR_READINESS derivado del log; puente `mirUsmleBridge.ts` (chip "Step 1 esta semana" / "MIR en paralelo").
+- **Mantenimiento ene-mar 2027** (`mirMantenimiento.ts`, 63 días, 25Q/día ponderadas por peso y por el log; modo
+  reducido 4-22 ene) → el bloque 15:15 ya no queda vacío entre el 24-dic y el 31-mar.
+- Pendiente Joseph: pool de preguntas oficiales (`mirPreguntasOficiales.ts` vacío; MVP = cuadernillos 2022-2026 de
+  examenesmir.com clasificados por capId) · preset FSRS `APEX::MIR` retention 0,85 · confirmar acceso AMIR.
+
+### 8.2 ENCAPS (16:15-17:15) — ver también DATA/ENCAPS/PROTOCOLO_HORA_MANTENIMIENTO.md
+- App/datos a **v3**: `encapsRentabilidad.ts` y `encapsCobertura.ts` (8 críticos + 3 ALTA rebote, IV nunca <6%;
+  II-EMG e I-OCC creados); **Supabase re-sembrado** (102 filas, backup `study_schedule_bk_0906b`) con **sub-eje por
+  sesión** (V-2 planeamiento/clima+calidad/residuos, I-3 8 sub-ejes…) y **`temas_secundarios` = cola larga** (17
+  códigos → ≈30 pp del vector que antes no tenían slot); mini-sim de viernes con receta fija y nota persistida en
+  `study_sim_scores` (Cockpit grafica vs 18/25).
+- **Tracking unificado** multi-examen (`_registro_resoluciones.json` _meta v3, taxonomía Palmerton + CCSN + delta_es)
+  + cierre de sesión en 1 línea + `gen_encaps_semana.js` (% ciego semanal vs vector, temas calientes, override del CICLO).
+- **Sellado del 2026-II** (texto + ítems extraídos = LISTA NEGRA; pre-test vie 5-feb-2027 en `PRETEST_2026-II.md`),
+  banco propio (`BANCO_PROPIO/`: exámenes reales 2024-2A→2026-1 por código, mini-sims HTML con temporizador 72s/Q
+  para 11 y 18-sep, `gen_encaps_minisim.js`), **cifras críticas** (CSV Anki `ENCAPS_Cifras_2027-I` para el bloque
+  05:00), `gen_encaps_intensivo_2027.js` (SQL de la fase intensiva feb-mar, se aplica al confirmar la fecha).
+- Pendiente Joseph: re-scan logueado QX/Theomed el 7-sep (¿acceso vivo? ¿Investigación/Gestión publicados?) ·
+  verificar RM de emergencia (II-EMG) y base legal SST (I-OCC) · convocatoria SERUMS 2027-I (fecha real).
+
+### 8.3 Derma (13:30, interdiario)
+- `dermaDailyPlan.ts` v2.1: **200 casos en permutación fija** (2/día, `casoIds`), micro-track de **dermatoscopia**
+  (18 módulos DermNet CME + 1 imagen ciega/sesión), **swap de contenido d19-20 ↔ d57-58** (oclusión vascular/HDPH y
+  ceguera ANTES de la extracción de SR-1), `puenteResearch`, campos `nitida` (protocolo/guion/seguimiento) en el
+  módulo B, capa ATLAS completada.
+- `dermaCerebro.ts` (**35 fichas de 7 pasos** X + CRIT, con checklist HDPH), `dermaLedger.ts` (ledger por caso y
+  fallos por módulo CORE), decks `APEX::DERMA::<A..X>` + plantilla de sesión, registro `TRACKING/_registro_derma.json`,
+  componentes (dictado morfológico 8 ejes con gate del módulo A, cerebro clínico modo recitar, simulador oclusión
+  vascular 90 s, registro por caso, widget de debilidades, checkpoints), cuaderno NotebookLM Derma, rama Obsidian
+  `10_DERMATOLOGIA` + `obsidianDermaMap.ts`, `RUTA_FELLOWSHIP_ESTETICO.md` (ASDS/ACGME/Mayo verificados),
+  `NITIDA_PROTOCOLOS.md`.
+- Pendiente Joseph: crear los 10 sub-decks en Anki · TOC de Fitzpatrick/Barnhill/Weinberg con sesión UF (método en
+  `_scrape/README_TOC_PENDIENTE.md`) · dermatoscopio de bolsillo antes de d45 · cifras "A VERIFICAR" de las fichas.
+
+### 8.4 Research (13:30, interdiario)
+- **Plan re-cortado** (`gen_research_plan.js <fecha>`, fuente única → `researchDailyPlan.ts` + `daily-plan.md` +
+  `obsidianResearchMap.ts`): pistas **R0 infra académica** (checklist 10 cuentas) · **M contactos** (Dr. Ciro,
+  AuthorAID, Finlay) · **C carta al editor** (C-1 candidatos verificados → submit oct-nov) · **T tesis L0** (research
+  letter: ética/CEI → STROBE → cascada JAAD Intl → IJD → Actas → Anais) · **CR case report** (consentimiento, fotos,
+  CARE 13) · 0 átomos del 4 al 29-ene · **SR-1 pasa al ciclo 2** (`researchDailyPlan2027.ts`, 5-feb→10-ago-2027, con
+  revisor humano #2 y equipo PROSPERO).
+- `RESEARCH_ENTREGABLES` + **Mesa editorial** en el Hub (estado por entregable), timeline/horario viejos eliminados;
+  docs: `MENTORES.md` (3 mensajes listos), `CARTA_1/candidatos.md` (5 artículos 2026 con DOI verificado por
+  Crossref), `CASE_REPORT_1/` (consentimiento ES/EN, protocolo de fotos, CARE), `TESIS_L0/`, presupuesto en RUTA §3;
+  Edge Functions `research-discovery`/`research-fulltext` descargadas al repo (`supabase/functions/`), DDL faltante,
+  `research_agent_tasks` a idle, `exportResearchCorpus()` CSV/RIS para Rayyan, plantillas letter/CARE/STROBE + `docx_assembler --template`.
+- Pendiente Joseph: ENVIAR los 3 mensajes (2ª-3ª semana sep) · documentar CEI/consentimientos de la tesis (1ª
+  semana oct) · caso + consentimiento + senior author antes del 31-oct · crear ORCID/Scholar/CTI Vitae · decidir si
+  la tesis se somete el 17-nov (plan) o en feb (RUTA §3.1).
+
+### 8.5 LIVIANO · AURUM · Business · CURVA/DENSA · VITALS
+- **LIVIANO**: currículo como dato (`liviano_curriculum.json`) + generador `gen_liviano_plan.js` (absorbe el reslot de
+  viernes), **16 casos únicos** con datos clínicos, red flags y rúbrica 0-2×4 (`livianoCasos.ts`), **módulo 7 "Acceso en
+  Perú"** (DIGEMID, condición de venta, 2 cotizaciones + magistral, cadena de frío) como tarea verificable →
+  `LIVIANO_ACCESO_PERU`, revisión trimestral, pre-test ciego lunes + drills de cifras, **216 tarjetas de mecanismo**
+  (CSV), score real en vez de ✓, `LivianoKpiLog` semanal con semáforo, `LIVIANO_PROTOCOLO_CLINICO_v1.md` (capstone).
+- **AURUM**: variante LIVIANO en F3-F6 (1 de cada 5 drills, PITCH v4-v6, mismo paciente que el caso integral),
+  `AURUM_RUBRICA_PITCH` (6 ítems) en los 7 viernes de cierre, scoreboard semanal editable con semáforo.
+- **Business**: plan Pulso re-scope a formato **L** (lectura 20-25'/día + 1 output viernes; sin bloque de 2h
+  inexistente; sin contradicciones con la Academia) desde `plan_pulso_v3_L.json`.
+- **CURVA / DENSA**: esqueletos curriculares con fuentes verificadas (menopausia/andrología; S3 alopecia + AAD) para
+  convertir en plan de 90 días en enero. **VITALS**: `LIVIANO_VITALS_BRIDGE.md` (estándar Academia → regla VITALS; 3 tareas).
+- Pendiente Joseph: decidir eje de CURVA (estética corporal vs hormonal) · leer las guías descargadas y rellenar
+  cifras "A VERIFICAR" · las 3 tareas VITALS requieren un chat de VITALS (código en producción, no tocado).
+
+### 8.6 SYNAPSE · vibecoding · sistema transversal
+- **Vibecoding 04:15 como dato**: `VIBECODING_12_PROYECTOS.md` + `vibecodingPlan.ts` (S1 parser APEX → S2 telemetría
+  Anki → S3 scores USMLE → S4 revisión semanal → S5 hook remap → **S6 RLS datos_tesis** → S7 VITALS → S8 motor de
+  preguntas → S9 overlays → S10 bot LIVIANO → S11 contenido → S12 capstone), con entregable verificable y ✓ en la app;
+  F1 de SYNAPSE (12:30) sustituye CS50P por el stack real (Claude Code/Academy · Supabase · n8n), PC sáb = SHIP, dom = Feynman.
+- **Revisión semanal** (`DATA/REVISION_SEMANAL.md`, 10 métricas; `gen_revision_semanal.js` pre-rellena desde
+  Supabase/localStorage/AnkiConnect/VITALS y appendea a `DATA/USMLE/REVISIONES/_semanas.json`; tarjeta "Semana N/20"),
+  **telemetría Anki** (`anki_telemetria.js`, KPI due/backlog/retención en el cockpit; Anki de finde = due × 20 s),
+  **`PROTOCOLO_MODO_MINIMO.md`** (VERDE/ÁMBAR/ROJO con disparadores medibles y orden de degradación; selector en Home).
+- **Rutina/Calendar**: `CALENDAR_SEGMENTOS_V5_6.md` re-extraído del Calendar vivo (autoridad de CUÁNDO y CÓMO);
+  descripciones de desayuno/almuerzo/deep prime/MIR/ENCAPS→LIVIANO/GYM con comida-hidratación; **protocolo test-day
+  de Palmerton en los 12 overlays de hito** (Ziploc 1/2/3, sit-in breaks, almuerzo dentro del sim, VITALS como ensayo);
+  `RUTINA_EXTREMA_MILITARIZADA.md` a v5.6 (Step 1 primario hasta enero); memoria de Claude con "ESTADO VIGENTE".
+- **Parser APEX** (D:/agente_estudio): P0-2 (lookahead sin `$`) y P0-3 (caso_clinico/fisio_expandida) arreglados con
+  test multilínea verde; n8n sigue con el código del 7-may hasta redeploy.
+- Pendiente Joseph: crear el evento sáb 07:15 "REVISIÓN SEMANAL" · auditar F0 en 5' el 7-sep · verificar FSRS/10
+  nuevas en Anki D1-D2 · redeploy n8n (APEX-MOTOR-FLOW-V2) · `datos_tesis` RLS OFF sigue abierto (proyecto S6, 12-16 oct).
+
+### 8.7 Pipeline de corrimiento (si un día no se estudia)
+`node DATA/_scripts/remap_inicio.js <fecha>` → después, en este orden: `gen_research_plan.js <fecha>` (la pausa de enero
+no la conoce el remap) · `gen_liviano_plan.js <fecha>` · `gen_business_plan.py <fecha>` · `gen_synapse_plan.js <fecha>`
+· `gen_vibecoding_plan.js <fecha>` · `gen_aurum_plan.js <fecha>` · `STUDY_HUB/_scrape/gen_mir_daily.js <fecha> --check`
+· `gen_encaps_mantenimiento_2027.js <fecha>` → execute_sql · USMLE con `gen_usmle_v5.js` (scratchpad; recorta 1 día
+de contenido para mantener los hitos en viernes) · docs + D# de los overlays del Calendar.

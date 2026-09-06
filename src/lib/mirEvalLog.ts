@@ -12,6 +12,10 @@
  *  · cierre       — 1er día del bloque siguiente, 10Q reales de la asignatura cerrada (77 s/Q).
  *  · miniMIR      — D77: 40Q mixto cronometrado (51 min).
  *  · mantenimiento— ene-mar 2027: 25Q/30Q/10Q reales mixtas.
+ *  · derma10Q     — bloque DERMA (13:52, 1 de cada 3 sesiones Derma, v2.1 segunda capa): 10Q del test del
+ *                   capítulo ProMIR de Dermatología en vez del banco AccessDerma; asignatura 'Dermatología',
+ *                   `d` = sesión del plan Derma (no del MIR). Cuenta en las estadísticas por asignatura
+ *                   (mirStatsPorAsignatura) pero NO en readiness, cierres ni en la cola D+14 (solo 'anclada').
  * Neto MIR = A − F/3 (4 opciones, −1/3 por fallo, en blanco = 0). netoPct = neto / total × 100.
  * Umbrales de cierre: ≥70 % neto = consolidada · <55 % = la asignatura entra a las anclas D-7.
  * Un fallo en el ancla D-7 reprograma el tema a la COLA D+14 (no hay "repaso finde": sáb+dom libres).
@@ -30,7 +34,10 @@ export const MIR_TIPO_ERROR: Array<{ k: MirTipoError; label: string; desc: strin
   { k: 'transfer', label: 'Transfer', desc: 'lo sabía pero no lo reconocí en la viñeta (→ Rule-In/Rule-Out, más preguntas)' },
   { k: 'proceso', label: 'Proceso', desc: 'lectura/tiempo/cambié la respuesta (→ táctica 77 s/Q, cover-the-options)' },
 ];
-export type MirEvalKind = 'anclada' | 'pretest' | 'cierre' | 'miniMIR' | 'mantenimiento';
+export type MirEvalKind = 'anclada' | 'pretest' | 'cierre' | 'miniMIR' | 'mantenimiento' | 'derma10Q';
+/** Asignatura y nº ProMIR con que el bloque Derma escribe en este log (kind 'derma10Q'). */
+export const MIR_DERMA_ASIGNATURA = 'Dermatología';
+export const MIR_DERMA_NUM = 5;
 
 export interface MirEvalEntry {
   /** id único (ts + aleatorio) · ts = ISO de creación · append-only: nunca se edita ni borra */
@@ -164,6 +171,15 @@ export function mirPeorAsignatura(entries: MirEvalEntry[] = leer(), minTotal = 4
 /** Entrada ya registrada para un día/kind (para no duplicar en la UI). */
 export function mirEntradaDe(fecha: string, kind: MirEvalKind, entries: MirEvalEntry[] = leer()): MirEvalEntry | undefined {
   return entries.filter((e) => e.fecha === fecha && e.kind === kind).sort((a, b) => (b.ts || '').localeCompare(a.ts || ''))[0];
+}
+/** Entradas 'derma10Q' (10Q ProMIR Dermatología hechas desde el bloque Derma), más reciente primero. */
+export function mirDermaEntradas(entries: MirEvalEntry[] = leer()): MirEvalEntry[] {
+  return entries.filter((e) => e.kind === 'derma10Q').sort((a, b) => (b.ts || '').localeCompare(a.ts || ''));
+}
+/** Neto acumulado de las 10Q ProMIR-Derma (mide la asignatura 'Dermatología' desde el bloque Derma). */
+export function mirDermaResumen(entries: MirEvalEntry[] = leer()): { n: number; aciertos: number; total: number; blancos: number; netoPct: number } {
+  const t = mirDermaEntradas(entries).reduce((s, e) => ({ a: s.a + e.aciertos, t: s.t + e.total, b: s.b + e.blancos, n: s.n + 1 }), { a: 0, t: 0, b: 0, n: 0 });
+  return { n: t.n, aciertos: t.a, total: t.t, blancos: t.b, netoPct: mirNeto(t.a, t.t, t.b).netoPct };
 }
 
 // ── cola D+14 (fallo en el ancla D-7) ──

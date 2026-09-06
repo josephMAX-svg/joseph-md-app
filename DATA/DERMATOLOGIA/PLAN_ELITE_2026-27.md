@@ -210,5 +210,52 @@ variable de ajuste. Al liberar agenda post-Step 1 (feb-2027), evaluar volver al 
 ### 9. Qué queda fuera de esta versión (pendiente)
 - TOC con `sectionid` de Fitzpatrick 9e (2570) / Barnhill 4e (2802) / Weinberg 5e (1913): 20 lecturas siguen apuntando a
   portada de libro → método CDP en `_scrape/README_TOC_PENDIENTE.md` (requiere la sesión UF en Chrome).
-- Componentes de UI (lámina con botón acierto/fallo, dictado de 8 ejes, tarjeta del cerebro en modo recitar, drill
-  cronometrado, widget "Debilidades por módulo CORE" en el Hub): agente de componentes.
+- ~~Componentes de UI (lámina con botón acierto/fallo, dictado de 8 ejes, tarjeta del cerebro en modo recitar, drill
+  cronometrado, widget "Debilidades por módulo CORE" en el Hub)~~ → hecho, ver §10.
+
+### 10. Cableado en la UI (5-sep-2026, tarde) — la capa Palmerton ya es visible el lunes 7-sep
+Cierra el vacío nº1 de la segunda pasada (gaps_v3b_derma: "toda la capa Palmerton es invisible para Joseph el lunes").
+Nada de esto toca franjas, fechas, metas ni el Calendar; todo lee/escribe en `dermaLedger.ts` (localStorage `jmd-derma-*`).
+
+**`src/components/study/DermaTodayPlan.tsx` (pestaña Caso de hoy)**
+- Lámina: chips **"Caso #a · Medical" / "Caso #b · Peds…"** desde `casoIds` (área por `dermaCasoArea`, link al banco groupid 1546) con
+  estado ✓/✗ del ledger y botón **registrar** → `DermaCasoRegistro` (matriz confianza×acierto → tipo de error CCSN/CONCEPTO/
+  MORFOLOGIA/DDX → módulo CORE → 0-8 ejes → nota). Chips **"alimenta SR-1/SR-2"** (`puenteResearch`, despliega la nota),
+  **"Nítida · protocolo"** (`nitida`: protocolo / guion / seguimiento) y **◆ Obsidian** (#A78BFA, `dermaObsUrlDay`).
+- **① Dictado morfológico** (`DermaMorphologyDictation`, plegable, abierto por defecto): rúbrica de 8 ejes con chips + dictado +
+  autoevaluación 0-8 → gate del módulo A (10 descripciones ≥6/8) visible con contador.
+- **①b Imagen dermatoscópica ciega** (`dermatoscopiaImg`: Self-Assessment 2e impares · Dermoscopedia pares) con registro
+  (fuente `dermatoscopia`).
+- `DermaCerebroCard` (7 pasos, modo **recitar** oculto por paso + catástrofe/rescate + guion + mastery gate §6.3) cuando el átomo
+  tiene ficha en `dermaCerebro.ts` (35: 22 X + 13 CRIT) · `DermaEmergencyDrill` (HDPH 90 s, resultado al ledger) en **d19/d20/
+  d46/d70** · `DermaCheckpointPanel` en **d45/d46/d69/d70** (mapa de fallos, re-drill, 2ª pasada solo de fallos, plan post-Step 1).
+- Cola de materiales: caso ciego (ids reales) → **review** (banco AccessDerma con registro de fallos por nº de pregunta, o
+  **10Q MIR** en las sesiones d ≡ 0 mod 3, §11) → **lectura 10′** (módulo DermNet CME en las pares d6-d44; la lectura del módulo
+  queda demotada "si sobra tiempo") → **ANKI** `APEX::DERMA::<bloque>` + pista Dermki + **cola de tarjetas de MECANISMO** de la
+  sesión (`DermaAnkiCola`: FRENTE → POR QUÉ · CCSN · FUENTE, export TSV importable, checklist de oclusión) → **◆ Obsidian**
+  (nota madre del átomo + índice del bloque, rama 10_DERMATOLOGIA) → **cierre 14:13** con NotebookLM (prompt "tarjeta de
+  mecanismo verificada" copiado al portapapeles) y **⇩ Exportar ledger JSON** (resaltado los viernes).
+- Anillo nuevo **% ciego** (solo aciertos "Lo sabía") junto a Global/Críticos/Board/Estética; 7 días y Temario marcan MIR/CME/
+  drill/checkpoint/SR/Nítida y llevan ◆ Obsidian por átomo y por bloque.
+
+**`src/components/study/DermaHub.tsx`**
+- Pestaña nueva **Debilidades** = `DermaWeaknessWidget`: % ciego, % fallo Palmerton por módulo CORE (Med/Path/Peds/Surg) y por
+  bloque A-X, tipo de error dominante + cura, gate A, drill HDPH, dermatoscopia ciega, casos de la 2ª pasada, **export JSON /
+  import-merge por uid** (esquema de `TRACKING/_registro_derma.json`).
+- Pestaña Fuentes: tarjeta **NotebookLM "DERMA · Élite Engine"** (`DERMA_NOTEBOOKLM`) + los 2 prompts de uso (tarjeta de
+  mecanismo verificada · qué no sé del módulo X) con botón copiar. El anillo "Readiness 8 %" (hardcoded v1) pasa a **% ciego**
+  real del ledger.
+
+### 11. Segunda capa MIR: 10Q ProMIR-Dermatología en 1 de cada 3 sesiones (gaps_v3b_derma nº3 de MIR/Derma)
+- En las sesiones **d ≡ 0 mod 3** (23: d3, d6 … d69) el slot "~10Q review" (13:52-14:03) pasa a las **10Q del test del capítulo
+  ProMIR de Dermatología** (campo `promir` = `pm(PM_CAP.cN)`); el banco AccessDerma de ese día queda "si sobra tiempo".
+- Rotación **por peso MIR histórico** (temario.md §2; slots ∝ peso, mínimo 1): cap 4 Oncología ×5 (d21, d24, d27, d60, d69) ·
+  cap 2 Infecciosas ×4 (d15, d18, d48, d57) · cap 3 Sistémicas ×3 (d33, d51, d63) · cap 1 Conceptos ×3 (d3, d30, d54) ·
+  cap 5 Eritematodescamativas ×2 (d39, d45) · cap 8 Toxicodermias ×2 (d12, d66) · cap 6 Ampollosas (d42) · cap 7 Glandular/
+  urticaria (d9) · cap 9 Genodermatosis (d36) · cap 10 Dermatoscopia (d6) — cada uno en la sesión cuyo bloque más se acerca
+  al capítulo (`PROMIR_DERMA_ROTACION`, `promirDermaCapDe`).
+- Registro (`DermaMir10Q`) en **`mirEvalLog`** con kind nuevo compatible **`derma10Q`**, asignatura **'Dermatología'** (num 5),
+  neto A − F/3, brecha knowledge/transfer/proceso + 🇪🇸 delta: cuenta en `mirStatsPorAsignatura` (la asignatura Dermatología del
+  MIR se mide desde el bloque Derma) y NO en readiness, cierres ni cola D+14.
+- Verificado por script (5-sep): 70 átomos, fechas = slots derma interdiarios D1 7-sep → D70 22-mar (sáb/dom + 25-dic/31-dic/
+  1-ene fuera), `remap_inicio.js` sigue casando (marker + 70 `fecha:` + META), casoIds = permutación, 23 `promir` alineados.

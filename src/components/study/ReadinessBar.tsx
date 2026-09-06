@@ -13,6 +13,8 @@ import { useMountProgress } from '../empresa/visuals';
  *
  * Puramente presentacional: recibe valores ya calculados por el Hub. No toca datos,
  * progreso ni localStorage. Números tabulares (aire de terminal financiero clínico).
+ * v5.6-Palmerton (5-sep-2026): stats opcionales `media7d` (media móvil 7 días de la eval timed) y
+ * `onTrack` (distancia al mínimo on-track del próximo hito) — solo se pintan si el Hub tiene datos.
  */
 const GOLD = Colors.gold;
 const isWeb = Platform.OS === 'web';
@@ -33,12 +35,16 @@ export function ConsoleStat({ label, value, hint, accent = GOLD }: ReadinessStat
 export default function ReadinessBar({
   flag, title, subtitle, accent,
   dia, total, temarioPct, racha, readinessPct, readinessLabel,
-  extraStat,
+  extraStat, media7d, onTrack,
 }: {
   flag: string; title: string; subtitle: string; accent: string;
   dia: number; total: number; temarioPct: number; racha?: string;
   readinessPct: number; readinessLabel: string;
   extraStat?: ReadinessStat;
+  /** media móvil 7d (usmleScores.mediaMovil7d) — opcional, solo con datos */
+  media7d?: ReadinessStat | null;
+  /** distancia al mínimo on-track del próximo hito (usmleScores.distanciaOnTrack) — opcional, solo con datos */
+  onTrack?: ReadinessStat | null;
 }) {
   const gauge = useMountProgress(Math.max(0, Math.min(100, readinessPct)));
   return (
@@ -62,6 +68,8 @@ export default function ReadinessBar({
           <ConsoleStat label="TEMARIO" value={`${temarioPct}%`} hint="cubierto" />
           {racha ? (<><View style={st.divider} /><ConsoleStat label="RACHA" value={racha} hint="constancia" /></>) : null}
           {extraStat ? (<><View style={st.divider} /><ConsoleStat {...extraStat} /></>) : null}
+          {media7d ? (<><View style={st.divider} /><ConsoleStat {...media7d} /></>) : null}
+          {onTrack ? (<><View style={st.divider} /><ConsoleStat {...onTrack} /></>) : null}
         </View>
 
         {/* GAUGE de readiness (acento de país) */}

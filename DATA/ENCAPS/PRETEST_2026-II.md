@@ -4,6 +4,7 @@
 > **Qué:** el examen real **ENCAPS/SERUMS 2026-II** (09-ago-2026), 100 preguntas, **clave oficial verificada 100/100**, que Joseph **no rindió** y que está en **LISTA NEGRA** de generación desde el 05-sep-2026 (`PROTOCOLO_GENERACION_PREGUNTAS.md §3-bis-LN`). Es la única medición limpia posible del nivel real antes de las 7 semanas intensivas.
 > **Material:** `_examen_2026-2_items.json` (100 ítems A-D + clave + código v3 + formato) y `exams_txt/2026-2.txt`. Runner: `node DATA/_scripts/gen_encaps_minisim.js --pretest` → `BANCO_PROPIO/pretest_2026-II.html` (**generarlo el jueves 4-feb, no antes**; el generador se niega si no se pasa `--pretest`).
 > **Umbral de arranque: ≥ 70/100** (el que fija `PROTOCOLO_HORA_MANTENIMIENTO.md`: llegar a febrero desde ~70%).
+> **Fecha del examen (05-sep-2026):** ASUMIDA, no confirmada. Las fechas que circulan (26-mar y 28-mar-2027) caen en Semana Santa 2027 (Jue 25 · Vie 26 · Pascua dom 28-mar, verificado) y son imposibles; hasta la convocatoria SERUMS 2027-I (`SENALES_2027-I.md`) se planifica con el escenario CORTO (examen dom 14-mar-2027 → intensiva de 6 semanas). El viernes 5-feb como pre-test **no cambia** en ningún escenario (`FASE_INTENSIVA_2027-I.md` §0-§1).
 
 ---
 

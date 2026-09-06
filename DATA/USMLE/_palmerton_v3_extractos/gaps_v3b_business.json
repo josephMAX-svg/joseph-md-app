@@ -1,0 +1,166 @@
+{
+ "seccion": "business-liviano-aurum",
+ "puntos_ciegos": [
+  {
+   "gap": "LIVIANO Academia no mide retención: 19 filas del plan dicen \"Repaso Anki\" pero no existe deck (SYNC_ANKI_OBSIDIAN_APP: Business \"sin decks aún\"; ankiLinks.ts sin mapeo liviano); solo 3 momentos ciegos en 90 días (D16, D38, D86); el único registro es un ✓ binario en localStorage (LivianoTodayPlan). Es lo contrario del método Palmerton que la propia Academia invoca (recall ciego medido, tarjetas de mecanismo, 80% mastery antes de avanzar).",
+   "impacto": "alto",
+   "propuesta": "(a) Deck `APEX::LIVIANO::<módulo>` con ~10 tarjetas de MECANISMO/semana generadas desde el campo `estudio` de LIV_DIAS (¿por qué sube la grelina tras la dieta?) + entrada en ankiLinks.ts; (b) dentro de los 25' de estudio: pre-test ciego de 5Q cada lunes sobre la semana D-7 y drill de cifras ancla cada ~20 días (D38 existe → añadir D58, D75); (c) el ✓ pasa a score (% ciego del pre-test + rúbrica del viernes) persistido en studyProgress (clave `liviano_score`) y visible en el panel Academia como % real; (d) D86-90: examen final ciego de 40-50Q mapeado al blueprint ABOM como criterio de cierre (≥80%).",
+   "esfuerzo": "M",
+   "toca_app": true,
+   "ficheros": [
+    "src/lib/livianoStudyPlan.ts",
+    "src/components/empresa/LivianoTodayPlan.tsx",
+    "src/lib/studyProgress.ts",
+    "src/lib/ankiLinks.ts",
+    "DATA/BUSINESS/LIVIANO_ACADEMIA.md"
+   ]
+  },
+  {
+   "gap": "Los 16 viernes-caso reutilizan solo 6 viñetas (la \"mujer 38a, IMC 33\" se repite en D5, D10, D15 y D20 con la misma consigna); ningún caso trae datos clínicos (labs, comorbilidades, MEN2/embarazo/pancreatitis), decisión de derivación ni cierre consulta→programa; no hay criterio de éxito ni rúbrica, así que el role-play no es evaluable ni progresivo.",
+   "impacto": "alto",
+   "propuesta": "Banco `LIV_CASOS` de 16 casos únicos con progresión por competencia: sem 1-4 explicar mecanismo sin culpa · sem 5-8 elegir fármaco y titular · sem 9-12 manejar EA/estancamiento/proteína · sem 13-15 límite de competencia y derivación bariátrica · sem 16 caso integral con cierre de programa. Cada caso: datos (antropometría, labs, comorbilidades), 3 decisiones esperadas, red flags, frase de cierre, rúbrica 0-2 en 4 ítems (mecanismo correcto · metáfora · people-first/sin estigma · plan pactado y medible). Campo `caso` en DiaLiviano o fichero `livianoCasos.ts`; el viernes guarda el score de la rúbrica (enlaza con el gap 1).",
+   "esfuerzo": "M",
+   "toca_app": true,
+   "ficheros": [
+    "src/lib/livianoStudyPlan.ts",
+    "src/lib/livianoCasos.ts (nuevo)",
+    "src/components/empresa/LivianoTodayPlan.tsx",
+    "DATA/BUSINESS/LIVIANO_ACADEMIA.md"
+   ]
+  },
+  {
+   "gap": "La Academia salta la EVALUACIÓN CLÍNICA del paciente con obesidad (sección 1 del Obesity Algorithm y bloque mayor del blueprint ABOM): 0 días sobre anamnesis/antropometría/labs basales (HbA1c, lípidos, TSH, hepatograma), screening de comorbilidades (SAOS, MASLD/hígado graso, SOP, DM2, HTA), causas secundarias y fármacos obesogénicos (hipotiroidismo, Cushing, antipsicóticos, corticoides), embarazo/anticoncepción con GLP-1 (suspensión pre-concepción; interacción tirzepatida-anticonceptivo oral), trastorno por atracón/depresión como modificadores de candidatura, ni poblaciones especiales (adolescente, adulto mayor con sarcopenia). La oferta vende \"Evaluación Integral\", \"InBody de partida\" y \"Labs trimestrales\" que el médico nunca estudia; el módulo 1 (20 días) es fisiología pura.",
+   "impacto": "alto",
+   "propuesta": "Módulo \"Evaluación integral\" de 6-7 días insertado tras M1 (compensar recortando FISIOLOGÍA de 20→15 días: D17/D18/D19 repiten repaso y D11/D17 son el mismo eje inverso, y 1 día de SÍNTESIS): D-a: historia clínica + fármacos obesogénicos + causas secundarias · D-b: labs basales y qué cambia la conducta · D-c: SAOS/MASLD/SOP/DM2 — cuándo sospechar y derivar · D-d: mujer en edad fértil (anticoncepción, embarazo, lactancia) · D-e: TCA/atracón y salud mental como puerta de entrada · D-f: adolescente y adulto mayor (sarcopenia) · D-g: checklist de la primera consulta LIVIANO (sale directamente al protocolo, gap 5). Fuentes a verificar: Obesity Algorithm 2026 sección 1, Obesity Canada cap. evaluación, ABOM blueprint. Añadir las tarjetas de mecanismo al deck del gap 1 y un caso de viernes con labs reales.",
+   "esfuerzo": "M",
+   "toca_app": true,
+   "ficheros": [
+    "DATA/BUSINESS/LIVIANO_ACADEMIA.md",
+    "src/lib/livianoStudyPlan.ts",
+    "src/lib/livianoCasos.ts (nuevo)"
+   ]
+  },
+  {
+   "gap": "Cero días del currículo sobre acceso y regulación en Perú: registro sanitario DIGEMID de semaglutida/tirzepatida, condición de venta, precio real en farmacia en soles, cadena de frío doméstica, legalidad del magistral. LIVIANO_PENDIENTES lleva \"Legalidad DIGEMID\" y \"Cotización Sterilelabs\" en ROJO desde junio sin dueño ni fecha y toda la oferta (S/ 1,290/mes, margen ~57%, medicamento 3m S/ 3,600 asumido) descansa sobre un COGS PENDIENTE. La regla 3 del programa (revisión trimestral de farmacoterapia) y las \"novedades 2026\" del módulo 2 no tienen evento ni checklist: caducan y se publicarán en contenido.",
+   "impacto": "alto",
+   "propuesta": "Módulo \"Acceso en Perú\" de 4-5 días (sustituye días de FARMACO+QX de menor valor —D78 orlistat/metformina, D79 setmelanotida— y 1 de SÍNTESIS, sin tocar la franja): tarea de investigación verificable con regla anti-alucinación (registros DIGEMID vigentes, 2 cotizaciones de farmacia + 1 magistral, condición de venta, requisitos de receta) cuya salida es la tabla `LIVIANO_ACCESO_PERU` (molécula · registro · condición · precio farmacia · costo LIVIANO · fecha de verificación) en empresaData.ts y el cierre con fecha de los 2 pendientes rojos. Añadir `LIVIANO_REVISION_TRIMESTRAL` con 2 filas fijas en el plan (~D45 y D90) y regla: ningún dato de farmacoterapia se publica sin fecha de verificación. Los datos regulatorios/precios NO se afirman aquí: son la tarea.",
+   "esfuerzo": "M",
+   "toca_app": true,
+   "ficheros": [
+    "DATA/BUSINESS/LIVIANO_ACADEMIA.md",
+    "src/lib/empresaData.ts",
+    "src/lib/livianoStudyPlan.ts"
+   ]
+  },
+  {
+   "gap": "El protocolo clínico real de LIVIANO (elegibilidad, screening de contraindicaciones, labs basales, esquema de titulación, contenido de las \"4 sesiones/mes\", check-in de EA, criterios de escalada/suspensión, plan de salida, cadencia de seguimiento) no existe en el repo: en la app solo hay bonos (\"Titulación inteligente supervisada\"), garantías y objeciones. Su único dueño es la fila D92 (7-dic) del plan Business, que vive en un bloque de 2h que no está en el horario v5.6 → nadie lo va a producir, y la Academia termina el 13-ene sin entregable clínico.",
+   "impacto": "alto",
+   "propuesta": "Hacer del protocolo el capstone de la Academia sin añadir minutos: cada \"Síntesis módulo X\" ya existente produce 1 sección (Evaluación → checklist 1ª consulta; M1-2 → elegibilidad + titulación + EA; M3-4 → estándar proteína/fuerza + qué medir; M5 → 5As, automonitoreo y cadencia de check-in; M6 → derivación y límites); D88-90 ensamblan `DATA/BUSINESS/LIVIANO_PROTOCOLO_CLINICO_v1.md` y `LIVIANO_PROTOCOLO` en empresaData.ts (sección nueva del Cockpit o panel Logística). Criterio de éxito: el caso integral de D87 se resuelve solo con el protocolo; el protocolo lleva fecha de verificación por sección.",
+   "esfuerzo": "M",
+   "toca_app": true,
+   "ficheros": [
+    "DATA/BUSINESS/LIVIANO_PROTOCOLO_CLINICO_v1.md (nuevo)",
+    "src/lib/empresaData.ts",
+    "src/lib/livianoStudyPlan.ts",
+    "src/components/empresa/panels.tsx"
+   ]
+  },
+  {
+   "gap": "AURUM entrena 130 drills sobre terrenos (88 menciones ALLPA) y cachorros (48 Qori) y 0 sobre LIVIANO/paciente/consulta médica, cuando el KPI motor de LIVIANO es la conversión consulta→programa >40% (LIVIANO_VENTAS.motor) y las 6 objeciones + value stack ya están en LIVIANO_OFERTA. El closer que se forma nunca practica la venta ética de un programa médico (límite CMP Art. 73: no prometer kg; garantía de servicio, no de resultado).",
+   "impacto": "alto",
+   "propuesta": "En `_curriculum_v2.json` añadir variante LIVIANO a los drills de F3 (SPIN de la Evaluación Integral), F4 (value stack S/ 6,360 vs S/ 3,870 + ancla bariátrica), F5 (las 6 objeciones + \"no devolvemos el medicamento\") y F6 (cierre ético sin promesa clínica) — p.ej. los viernes de esas fases o 1 de cada 5 drills — y versión LIVIANO de PITCH v4-v6. Enlazar con el caso integral de la Academia (mismo paciente → mismo cierre). Regenerar con gen_aurum_plan.js.",
+   "esfuerzo": "M",
+   "toca_app": true,
+   "ficheros": [
+    "DATA/AURUM/curricula/_curriculum_v2.json",
+    "DATA/_scripts/gen_aurum_plan.js",
+    "src/lib/aurumDailyPlan.ts",
+    "src/lib/empresaData.ts"
+   ]
+  },
+  {
+   "gap": "El plan Business de 116 filas (84 días × 2h = 168 h) es un zombie: no tiene franja en el horario v5.6 (TodayMission.tsx lista IA/USMLE/MIR/ENCAPS/LIVIANO/eval; la tabla horaria de REESTRUCTURACION no tiene Business); D1 manda \"22:00 dormir\" (con despertar 04:15 = 6h15, contra la doctrina de 7h) y D2 \"ejercicio 6:30-7:15\" (choca con Anki AM 05:00-07:15); conserva textos vencidos (\"Lo que sé de Pulso al 31 ago\", \"agendar primeras 4 semanas sept\", pre-launch el 25-dic); duplica a AURUM ($100M Offers/Leads/Money Models son libro ancla F4/F7 y LIVIANO_OFERTA ya está construida); contradice a la Academia (D30-33 The Obesity Code: \"insulina variable maestra\", ayuno = \"Protocolo Liviano fase 1\" vs M1/M3: homeostasis energética, AI = restricción continua, DIETFITS); y brandContentPlan/BrandHorario siguen prometiendo \"lectura 2h del plan 96 días\".",
+   "impacto": "medio",
+   "propuesta": "Sin tocar el horario: re-scope del plan al formato \"L\" de AURUM (audiolibro/lectura en huecos, 20-25'/día) con 1 output semanal el viernes; recortar a lo que no cubren AURUM ni la Academia (BIOLOGIA, SUEÑO, MENTAL, FOCO, PAREJA + OUTPUT); marcar los días PESO/HORMONAL como \"lectura crítica: contrastar con la Academia\" o sustituirlos por lecturas nivel 3-5 de la Biblioteca (Hungry Brain, Pontzer, Attia); borrar D1-D2 (el régimen ya está fijado en v5.6); actualizar textos vencidos en el xlsx y regenerar con gen_business_plan.py; corregir las referencias \"plan 96 días / 2h\" en brandContentPlan.ts y BrandHorario.tsx para que el Home no sugiera un bloque inexistente.",
+   "esfuerzo": "M",
+   "toca_app": true,
+   "ficheros": [
+    "src/lib/businessStudyPlan.ts",
+    "DATA/BUSINESS/plan_estudio_pulso_v2_mejorado.xlsx",
+    "DATA/_scripts/gen_business_plan.py",
+    "src/components/empresa/PulsoTodayPlan.tsx",
+    "src/lib/brandContentPlan.ts",
+    "src/components/empresa/BrandHorario.tsx",
+    "DATA/BUSINESS/README.md"
+   ]
+  },
+  {
+   "gap": "AURUM manda \"grabar\" 75 veces y hay 9 hitos de PITCH (v1 D9/D15 → v7 D129/D130) pero la rúbrica solo aparece en D130 y en el entregable de F6 (hablaste <40%, empatía táctica, SPIN, oferta, objeciones, cierre, compromiso); no hay score por grabación ni comparación v1 vs v7. El Closer Scoreboard (dials/sets/show/close/cash, \"registro manual, empieza en 0\") es una constante que AurumHub renderiza sin ningún input (el único input de la sección es saveDone('aurum')) → no hay dónde escribir la actividad real ni medir si el closer mejora.",
+   "impacto": "medio",
+   "propuesta": "(a) `AURUM_RUBRICA_PITCH` (6-7 ítems 0-2) en aurumData.ts aplicada en los hitos de PITCH (D15, D35, D75, D95, D115, D130) con score persistido (studyProgress clave `aurum_pitch`) y mini-gráfica v1→v7 en AurumHub; (b) scoreboard editable por semana ISO (dials/sets/show/close/cash/q2c) persistido en localStorage `jmd-aurum-scoreboard-v1` (o tabla Supabase) con semáforo contra `meta`; (c) el drill del viernes lee el scoreboard de la semana (hoja de promedios Bettger real, no estimada).",
+   "esfuerzo": "M",
+   "toca_app": true,
+   "ficheros": [
+    "src/lib/aurumData.ts",
+    "src/components/empresa/AurumHub.tsx",
+    "src/components/empresa/AurumTodayPlan.tsx",
+    "src/components/empresa/aurumVisuals.tsx",
+    "src/lib/studyProgress.ts"
+   ]
+  },
+  {
+   "gap": "Los 18 KPIs del Cockpit LIVIANO son constantes (\"S/ 0 (EST)\", \"—\", \"PENDIENTE\") sin mecanismo de captura; el tracker semanal `Metricas_v2` (32 filas) y la hoja `Outputs` (output dominical por semana) del Excel nunca llegaron a la app; el CRM en vivo no es embebible (RLS/service_role, decisión documentada). Resultado: no se puede saber si LIVIANO avanza ni disparar la regla \"<80% dos semanas → ajustar\".",
+   "impacto": "medio",
+   "propuesta": "`LivianoKpiLog` de entrada manual por semana ISO (leads · consultas · altas · MRR · churn · COGS · output semanal 0/1) en el panel Cockpit, semáforo calculado contra la `meta` ya definida en LIVIANO_KPIS, regla de alerta \"<80% dos semanas\" y export JSON a DATA/BUSINESS/_kpi/. Puente honesto hasta que el CRM exponga un proxy serverless read-only (vía ya identificada en business-hub).",
+   "esfuerzo": "M",
+   "toca_app": true,
+   "ficheros": [
+    "src/lib/empresaData.ts",
+    "src/components/empresa/panels.tsx",
+    "src/lib/studyProgress.ts",
+    "DATA/BUSINESS/_scrape/plan_pulso_v2.json"
+   ]
+  },
+  {
+   "gap": "Academia ↔ VITALS sin puente documentado y con estándar desalineado: VITALS ya tiene `bajo_glp1` en el perfil, RED_FLAGS GLP-1 (vómito severo → escalateTask), piso de proteína PROTEINA_PISO=1.6 / PROTEINA_DEFICIT=2.0 g/kg y un único split (`SPLIT_JOSEPH`, 5 días para el propio Joseph); la Academia enseña \"proteína 1,2-1,6 g/kg + fuerza 2x/sem innegociable\", pérdida de masa magra, escalada anti-náusea, automonitoreo como predictor #1 y \"composición corporal, no balanza\". Nada dice qué aprende el médico → qué impone/mide la app del paciente; el plan Business D94 (\"plan ejercicio 12 sem casa→gimnasio\") duplica lo que VITALS ya hace con 49 videos verificados.",
+   "impacto": "medio",
+   "propuesta": "`DATA/VITALS/LIVIANO_VITALS_BRIDGE.md`: tabla estándar Academia → regla/campo VITALS → estado (existe/falta/desalineado). De ahí 3 tareas concretas en VITALS: split paciente GLP-1 (fuerza 2x/sem + caminata progresiva, distinto de SPLIT_JOSEPH), check-in semanal de EA GLP-1 (náusea/estreñimiento/deshidratación/hipoglucemia) condicionado a `bajo_glp1` con escalada al médico, y métricas de composición (cintura/fotos/fuerza) en el reporte de lunes. Decidir y documentar UN rango de proteína (Academia vs motor) y que el módulo 3-4 de la Academia cite el valor que la app aplica.",
+   "esfuerzo": "M",
+   "toca_app": true,
+   "ficheros": [
+    "DATA/VITALS/LIVIANO_VITALS_BRIDGE.md (nuevo)",
+    "VITALS/web/src/lib/engine/plan.ts",
+    "VITALS/web/src/lib/engine/ai.ts",
+    "VITALS/web/src/lib/engine/domain.ts",
+    "DATA/BUSINESS/LIVIANO_ACADEMIA.md"
+   ]
+  },
+  {
+   "gap": "El header de livianoStudyPlan.ts ordena \"NO editar a mano — regenerar desde el currículo\", pero no existe ningún generador (DATA/_scripts solo tiene liviano_reslot_viernes.js y remap_inicio.js); el plan es un JSON de ~85 KB en una línea. Cualquier mejora de los gaps 1-5 (casos, drills, módulos nuevos) obliga a edición manual y rompe la regla del sistema (USMLE/ENCAPS/SYNAPSE/AURUM tienen gen_*.js). El propio handoff ya lista gen_liviano_plan.js en el pipeline de corrimiento como si existiera.",
+   "impacto": "medio",
+   "propuesta": "`gen_liviano_plan.js <fechaInicio>` que lea `DATA/BUSINESS/liviano_curriculum.json` (módulos → temas → casos → drills → revisiones trimestrales) y escriba livianoStudyPlan.ts (+ livianoCasos.ts) saltando finde/feriados y sloteando casos en viernes (absorbe liviano_reslot_viernes.js); documentarlo en la regla de corrimiento de REESTRUCTURACION junto a gen_synapse/gen_aurum. Es prerrequisito barato de los gaps 1-5.",
+   "esfuerzo": "S",
+   "toca_app": true,
+   "ficheros": [
+    "DATA/_scripts/gen_liviano_plan.js (nuevo)",
+    "DATA/BUSINESS/liviano_curriculum.json (nuevo)",
+    "DATA/_scripts/liviano_reslot_viernes.js",
+    "DATA/REESTRUCTURACION_31AGO_2026.md"
+   ]
+  },
+  {
+   "gap": "CURVA y DENSA arrancan en febrero pero solo existen 2 líneas (\"currículo tipo LIVIANO_ACADEMIA\" en ROADMAP_MAESTRO y CURSO_IA) y fichas placeholder en la app (progreso 5%/4%); DENSA no tiene ningún doc propio (alopecia/minoxidil solo aparecen dentro de DERMATOLOGIA; \"capilar\" solo en un bono y en la cartera); lo único que trata a Curva son 8 días del plan Business zombie (The Hormone Cure, Estrogen Matters: divulgación) y la app se contradice sobre qué ES Curva (empresaData: \"Estética & figura / estética corporal médica\" vs estudioPulsoData y brandContentPlan: hormonal — perimenopausia, TRH, testosterona). La regla de transición exige preparar la Fase 2 la semana previa (última de enero): sin esqueleto ni definición ahora, febrero arranca improvisando.",
+   "impacto": "medio",
+   "propuesta": "2 docs-esqueleto de 1 página (sin días) ahora, generables luego con gen_liviano_plan.js: objetivo y definición cerrada de la línea (resolver primero Curva = hormonal vs estética con Joseph), 6 módulos, 3 esqueletos curriculares candidatos a verificar (CURVA → posicionamientos de sociedades de menopausia/andrología sobre terapia hormonal e hipogonadismo; DENSA → guía europea S3 de alopecia androgenética + AAD, efluvio telógeno, minoxidil oral, evidencia PRP), cifras ancla a verificar, límites de competencia/derivación, metáforas de paciente, ruta de credencial, y el módulo \"Acceso en Perú\" heredado del gap 4. Corregir la categoría de Curva en CARTERA_PULSO cuando se decida (1 línea).",
+   "esfuerzo": "S",
+   "toca_app": false,
+   "ficheros": [
+    "DATA/BUSINESS/CURVA_ACADEMIA.md (nuevo)",
+    "DATA/BUSINESS/DENSA_ACADEMIA.md (nuevo)",
+    "DATA/ROADMAP_MAESTRO_2026-2034.md",
+    "src/lib/empresaData.ts (solo etiqueta de categoría, opcional)"
+   ]
+  }
+ ],
+ "notas": "Evidencia re-verificada el 5-sep contra el working tree de D:\\joseph-md-app (la Fase C liviano/aurum-business NO ha aterrizado: git status solo muestra studyProgress.ts con PlanKey +vibecoding/+research-infra y los gaps_*.json sin trackear), volcada en scratchpad/palmerton_v3/evidencia_business_liviano_aurum.json. Ficheros leídos: DATA/BUSINESS/LIVIANO_ACADEMIA.md; src/lib/livianoStudyPlan.ts (90 días; módulos 20/20/13/12/11/10/4; 16 viernes-caso con 6 viñetas, máx. 4 repeticiones; 19 menciones Anki sin deck ni ankiLinks; ciego solo D16/D38/D86; 0 hits en SAOS/MASLD/SOP/embarazo/anticoncepción/Cushing/labs/adolescente-adulto mayor/TCA/DIGEMID; sin generador); src/lib/businessStudyPlan.ts (116 filas, 84 trabajo, 2h sin franja en TodayMission ni REESTRUCTURACION; D1 dormir 22:00 y D2 ejercicio 6:30-7:15 chocan con el régimen v5.6; textos vencidos; D30-33 Obesity Code vs Academia M1/M3); src/lib/brandContentPlan.ts y BrandHorario.tsx (aún 'lectura 2h del plan 96 días'); src/lib/aurumDailyPlan.ts (130 días hasta 10-mar-2027; ALLPA 88 / Qori 48 / LIVIANO-paciente-consulta 0; 'graba' ×75; rúbrica ×2 solo D130; 9 hitos PITCH; 1 URL no verificada) y aurumData.ts + AurumHub.tsx (scoreboard const, único input saveDone); src/lib/empresaData.ts (18 KPIs sin dato; pendientes rojos DIGEMID/Sterilelabs; COGS pendiente bajo oferta S/1,290 ~57%; sin protocolo clínico; Curva 'Estética & figura' vs estudioPulsoData Hormonal); DATA/BUSINESS/_scrape/plan_pulso_v2.json (hojas Outputs 19 filas y Metricas_v2 32 filas no migradas); VITALS/web/src/lib/engine (bajo_glp1, RED_FLAGS, PROTEINA_PISO 1.6/DEFICIT 2.0, solo SPLIT_JOSEPH; sin doc puente); DATA/AURUM/*.md y _curriculum_v2.json (keys roster/fases/week_map/detalles); DATA/ROADMAP_MAESTRO y REESTRUCTURACION_31AGO (CURVA/DENSA = 2 líneas); memoria business-hub/business-study/aurum/handoff. Ninguna propuesta cambia franjas ni metas: todo cabe dentro de los 45' LIVIANO (recortando días redundantes de FISIOLOGÍA/FARMACO+QX/SÍNTESIS), la ventana 14:15 de AURUM o huecos de viaje. Los datos regulatorios/precios de Perú NO se afirman: el gap 4 los convierte en tarea de verificación con regla anti-alucinación. Orden sugerido de ejecución: gap 11 (generador) → 1-5 (Academia) → 6 (AURUM-LIVIANO) → 8/9 (medición) → 7/10/12."
+}

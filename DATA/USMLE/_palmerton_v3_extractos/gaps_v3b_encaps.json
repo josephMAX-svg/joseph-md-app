@@ -1,0 +1,127 @@
+{
+ "seccion": "ENCAPS Perú 2027-I · análisis de vacíos v2 (05-sep-2026, tras la ola de implementación de la mañana) · meta ≥17/20 fines de marzo 2027",
+ "puntos_ciegos": [
+  {
+   "gap": "Stock de preguntas por código/sub-eje para el banco del día = 0. La rotación sembrada exige cada tarde 20-25Q CIEGAS de un sub-eje concreto (p.ej. 'V-2 · clima organizacional + calidad', 'I-3 · desastres') más 4-5Q de un código de cola larga: demanda ≈ 2.100-2.550Q en 102 días. Oferta real: BANCO_PROPIO solo tiene _examenes_reales_2024-2A_2026-1.json (600 ítems, 0 con campo `codigo` v3 → no filtrable por código ni sub-eje; A/B duplicados → 400 únicos con clave oficial; 2026-1 100 ítems SIN clave, inutilizables para el gate); QX Banqueo son sets por ÁREA (Investigación y Gestión no publicados al scan del 20-jul) y no se sabe si el acceso QX/Theomed sigue vivo el 7-sep ni si se matricula el ciclo 2027-I (los 7 simulacros de la intensiva lo marcan 'A VERIFICAR'). Sin stock pre-generado, la única fuente que cumple sub-eje + gate de clave oficial es generar en vivo a las 16:30, y eso no cabe en la hora.",
+   "impacto": "alto",
+   "propuesta": "(1) Etiquetar los 400 ítems únicos con clave (2024-2A, 2025-1A, 2025-2) con `codigo` v3 + `sub_eje` + `formato_pretest` (mismo esquema que _examen_2026-2_items.json) → banco real filtrable y línea base por código. (2) `_inventario_banco_por_codigo.json`: por código/sub-eje → oferta (reales etiquetados, QX por área, postests Theomed, sets propios) vs demanda de las 102 sesiones sembradas; marcar déficit (V-2 clima+calidad, IV-1/2, IV-6/7, II-5, II-EMG, I-OCC serán los primeros). (3) Pre-generación por lotes fuera de la hora (viernes tarde o domingo, sesión Claude): los sets de la semana siguiente en BANCO_PROPIO/<codigo>_<sub_eje>_<n>.json (enunciado, opciones A-D, clave, fuente con número/año, verificado_contra, formato viñeta|directa|cifra), gate §3-bis pasado antes de guardar; regla: ≥5 sesiones de stock por delante. (4) Re-scan logueado QX + Theomed el lun 7-sep (acceso, ¿publicaron Inv/Gestión?, ciclo 2027-I) y decisión escrita de matrícula en PROTOCOLO_HORA_MANTENIMIENTO. (5) Conseguir 'CLAVE DE RESPUESTA 2026-1.pdf' (Tío López/QX): son 100 ítems del comité más reciente antes del 2026-II hoy sin clave.",
+   "esfuerzo": "L",
+   "toca_app": true,
+   "ficheros": [
+    "D:\\joseph-md-app\\DATA\\ENCAPS\\BANCO_PROPIO\\_examenes_reales_2024-2A_2026-1.json",
+    "D:\\joseph-md-app\\DATA\\ENCAPS\\PROTOCOLO_GENERACION_PREGUNTAS.md",
+    "D:\\joseph-md-app\\DATA\\ENCAPS\\PROTOCOLO_HORA_MANTENIMIENTO.md",
+    "D:\\joseph-md-app\\src\\lib\\encapsResumenes.ts",
+    "D:\\joseph-md-app\\DATA\\_scripts\\_encaps_ciclo_v3.js"
+   ]
+  },
+  {
+   "gap": "El runner de preguntas `gen_encaps_minisim.js` no existe, pero ya lo invocan cuatro piezas: PRETEST_2026-II.md (`--pretest` → BANCO_PROPIO/pretest_2026-II.html, 'generarlo el jueves 4-feb'), gen_encaps_intensivo_2027.js (`--sim100 2025-2|2025-1A|2024-2A|propio`, dress rehearsal), PROTOCOLO_GENERACION §3-bis-LN ('los generadores lo aplican por código: gen_encaps_minisim.js excluye 2026-II hasta la ronda PRETEST') y la receta del viernes en study_schedule.extra. Consecuencias hoy: los 19 mini-sims no tienen set de 25Q, ni reloj 72 s/Q, ni captura de confianza por ítem (el ítem del viernes en la app enlaza a QX BanqueApp, por área y sin temporizador); la regla '≥5Q de fallos previos con OTRO enfoque' y el ruteo Anki/Obsidian exigen `preguntas[]` por ítem con causa, y el cierre de 1 línea no guarda ítems (RONDAS/ tiene un solo fichero, de julio).",
+   "impacto": "alto",
+   "propuesta": "Un único runner HTML autocontenido (sin CDN, abre en el navegador) emitido por `gen_encaps_minisim.js` con modos: `--banco <fecha>` (lee study_schedule/ciclo: 20-25Q del sub-eje del día + 4-5Q del secundario, corrección inmediata), `--eval <fecha>` (5Q: 3 cifras + 2 viñetas del código de ayer), `--minisim <fecha>` (25Q con la receta de extra: 8/7/5/3/2, 50% viñeta, ≥10 críticos, ≥5 fallos previos del registro, 2 cola larga; solución al final), `--pretest` (100Q 2026-II, orden original) y `--sim100 <proceso|propio>`. Temporizador 72 s/Q, confianza 1-3 obligatoria por ítem, marcador de tipo de error al corregir, botón 'Exportar' que produce (a) RONDAS/<codigo>_<tipo>_<fecha>.json con el esquema por pregunta del README y (b) la línea de cierre lista para `gen_encaps_semana.js --cerrar`. Excluir todo ítem con `verificado_contra`/`molde` 2026-II mientras no exista la ronda PRETEST_2026-II. Sembrar los 19 sets de viernes por adelantado (nombrados por sim_n = dia).",
+   "esfuerzo": "M",
+   "toca_app": true,
+   "ficheros": [
+    "D:\\joseph-md-app\\DATA\\_scripts\\gen_encaps_semana.js",
+    "D:\\joseph-md-app\\DATA\\_scripts\\_encaps_ciclo_v3.js",
+    "D:\\joseph-md-app\\DATA\\ENCAPS\\PRETEST_2026-II.md",
+    "D:\\joseph-md-app\\DATA\\ENCAPS\\TRACKING_ERRORES\\README_SISTEMA_TRACKING.md",
+    "D:\\joseph-md-app\\src\\lib\\encapsPlan.ts"
+   ]
+  },
+  {
+   "gap": "El circuito de la métrica que manda (% CIEGO = seguras/total) está diseñado pero es 100% manual y depende de una sesión de Claude cada día: la única entrada es `node gen_encaps_semana.js --cerrar` + `--sql` + aplicar el SQL por MCP execute_sql (los scripts no escriben Supabase por regla; la app solo escribe study_checks y study_sim_scores). Verificado en vivo: study_progress = 0 filas, study_sim_scores ENCAPS = 0, study_checks 0 desde septiembre. Si Joseph no abre Claude a las 17:10, el Cockpit (que ya pinta % ciego semanal vs 85 y la serie 18/25) queda vacío, el override semanal no tiene n≥5 por código y el checkpoint de fin de enero (v3 §6 regla 3) nace sin datos.",
+   "impacto": "alto",
+   "propuesta": "(1) App: formulario de cierre en EncapsPlanView (n, seguras, dudosas, 8 subtipos knowledge/transfer/proceso, t medio, sub-eje) → nueva `setStudyProgress()` que upsertea en study_progress con la misma fórmula del script (porcentaje = seguras/n×100, especialidad = código, fuente 'app:cierre', errores_por_tipo = fallos) y, si tipo = mini_sim, espejo en study_sim_scores. (2) `gen_encaps_semana.js --pull` que lea study_progress (export CSV o MCP) y reconstruya rondas v3 en _registro_resoluciones.json, para que el registro y Supabase converjan desde cualquiera de los dos lados. (3) Hasta que exista (1): regla operativa de pegar las 5 líneas de la semana en UNA sola ejecución el viernes 17:00 junto al cierre semanal, y el runner del vacío 2 genera la línea para no escribirla a mano.",
+   "esfuerzo": "M",
+   "toca_app": true,
+   "ficheros": [
+    "D:\\joseph-md-app\\src\\lib\\encapsPlan.ts",
+    "D:\\joseph-md-app\\src\\components\\EncapsPlanView.tsx",
+    "D:\\joseph-md-app\\src\\components\\EncapsCockpit.tsx",
+    "D:\\joseph-md-app\\DATA\\_scripts\\gen_encaps_semana.js",
+    "D:\\joseph-md-app\\DATA\\ENCAPS\\TRACKING_ERRORES\\README_SISTEMA_TRACKING.md"
+   ]
+  },
+  {
+   "gap": "Las dos fechas asumidas del examen caen en Semana Santa 2027 y nadie vigila la convocatoria ni las señales adelantadas. study_metrics.exam_date = 2027-03-28 = DOMINGO DE PASCUA (dias_a_examen 205, marcado 'estático: recalcular a mano'); gen_encaps_intensivo_2027.js asume 2027-03-26 = VIERNES SANTO (el propio script lo salta como feriado y avisa). Los ENCAPS caen en domingo (9-ago-2026): los candidatos reales son dom 14-mar, 21-mar o 11-abr-2027 → la intensiva puede durar 5, 6 u 8 semanas y cambia el número de simulacros, el barrido de críticos y el D-2. Las señales que el propio análisis llamó predictivas (L3 coyuntura DGE: dengue/sarampión = 13Q del 2026-II; L6 RM/NTS publicadas 0-6 meses antes entran directo — RM jul-2026 cayó en ago-2026; novedades PNI; QX Tendencias cuyo scan es del 01-jul) no tienen proceso ni responsable, y SENALES_2027-I.md no existe aunque lo citan el generador de la intensiva y el PRETEST.",
+   "impacto": "alto",
+   "propuesta": "(1) DATA/ENCAPS/SENALES_2027-I.md como log fechado con 5 canales: convocatoria + cronograma SERUMS 2027-I (MINSA/DIGEP), normas MINSA en El Peruano (RM/NTS/Directivas), DGE sala situacional + boletín semanal (dengue, sarampión, tosferina, oropouche, leptospirosis), ESAVI/PNI incorporaciones, y en enero QX Tendencias + simulacros de academias. (2) Tarea programada quincenal desde el 1-oct (scheduled-tasks MCP o /loop) que produce un delta de ≤10 líneas; regla de conversión: cada señal nueva → ficha de 1 página + 3-5Q en el mini-sim del viernes siguiente + filas en la tabla de cifras. (3) Regla de fecha: hasta la convocatoria, planificar con el escenario CORTO (dom 14-mar = 6 semanas de intensiva) para que un examen temprano no reviente el barrido; la fecha confirmada dispara `gen_encaps_intensivo_2027.js 2027-02-01 <fecha>` + update de study_metrics.exam_date/dias_a_examen (calcularlo en la app desde exam_date, no a mano) + STUDY_TOTAL_DAYS.",
+   "esfuerzo": "M",
+   "toca_app": true,
+   "ficheros": [
+    "D:\\joseph-md-app\\DATA\\_scripts\\gen_encaps_intensivo_2027.js",
+    "D:\\joseph-md-app\\DATA\\ENCAPS\\PRONOSTICO_WALKFORWARD_2027-1_v3.md",
+    "D:\\joseph-md-app\\DATA\\ENCAPS\\ANALISIS_EXAMEN_2026-2_REAL.md",
+    "D:\\joseph-md-app\\DATA\\ENCAPS\\_qx_tendencias.json",
+    "D:\\joseph-md-app\\src\\lib\\encapsPlan.ts"
+   ]
+  },
+  {
+   "gap": "La fase intensiva feb-mar tiene generador (SQL emitido, no aplicado por diseño) pero no tiene doc, ni rama en la app, ni inventario cerrado de simulacros. FASE_INTENSIVA_2027-I.md no existe y lo citan PRETEST §4, el script (§4 'inventario real de sims') y el README de tracking. encapsPlan.ts: STUDY_TOTAL_DAYS = 102 fijo y `diaActual` hace min(total) → en febrero la app se quedaría clavada en el día 102; itemsForDay no tiene rama modo='INTENSIVO' (las filas traen extra.loop de 8 segmentos, extra.sim, extra.repaso D-1/D-3/D-7, extra.drill_cifras que nadie renderiza); simDays solo incluye `simulacro` o `mini_sim` → pretest/sim100/dress_rehearsal no podrían guardar nota. El loop hereda horas del USMLE (05:00 · 07:15 · 08:15 · 09:00 · 11:00 · 12:00 · 17:15 · 18:00) marcadas 'a confirmar'; el 17:15 coincide con LIVIANO en el calendario vigente (no propongo mover nada: solo que la reestructuración de febrero fije las franjas ANTES de sembrar). De los 7 simulacros de viernes, 3 tienen clave oficial (2025-2, 2025-1A, 2024-2A), 2 dependen de acceso QX/Theomed no confirmado y 2 son propios sin generador (vacío 2).",
+   "impacto": "alto",
+   "propuesta": "(1) Escribir FASE_INTENSIVA_2027-I.md: §1 esqueleto de semanas exactamente como lo siembra el script (sem 1 señales + calentamiento + PRE-TEST; sem 2-5 barrido 16 slots por índice de brecha; sem 6-7 rebotes + watch-list; repaso final, D-2 dress rehearsal, D-1 medio día), con variantes para 5/6/8 semanas según la fecha real; §2 loop diario y sus horas PENDIENTES de la reestructuración de febrero; §3 inventario de los 7 sims con fuente y estado de clave; §4 gates (pre-test ≥70, alerta <60, umbral por simulacro). (2) App: STUDY_TOTAL_DAYS dinámico (max(dia) leído de study_schedule) o constante 102+N fijada al aplicar el SQL; rama `modo==='INTENSIVO'` en itemsForDay que pinte extra.loop como 8 ítems chequeables con hora, extra.sim como ítem de simulacro, extra.repaso y extra.drill_cifras; simDays incluya tipos pretest/sim100/dress_rehearsal (sim_n = dia) para que el Cockpit grafique los 100Q contra la meta 85. (3) Mantener el SQL sin aplicar hasta la convocatoria (ya está bien) pero ensayar la aplicación en enero con `--bk` propio para no descubrir bugs el 1-feb.",
+   "esfuerzo": "L",
+   "toca_app": true,
+   "ficheros": [
+    "D:\\joseph-md-app\\DATA\\_scripts\\gen_encaps_intensivo_2027.js",
+    "D:\\joseph-md-app\\src\\lib\\encapsPlan.ts",
+    "D:\\joseph-md-app\\src\\components\\EncapsPlanView.tsx",
+    "D:\\joseph-md-app\\DATA\\ENCAPS\\PRETEST_2026-II.md",
+    "D:\\joseph-md-app\\DATA\\REESTRUCTURACION_31AGO_2026.md"
+   ]
+  },
+  {
+   "gap": "CIFRAS_CRITICAS_2027-I.md y el deck ENCAPS::Cifras no existen, aunque son (a) el ÚNICO uso permitido del 2026-II antes del pre-test (PROTOCOLO §3-bis-LN), (b) el instrumento de la lección L2 (el comité 2026-II preguntó 13 cifras puras o viñeta+cifra: 0.01 mg/kg, 60 mg+400 µg, 2.4 M UI, 10'/30', 5 años, 24 h, 32 sem, 150 min, 25 manzanas, 3/4) y (c) lo que ya asumen la eval anclada de la app ('3 cifras + 2 viñetas'), el drill de 10 min y el segmento 05:00 'Anki ENCAPS::Cifras' de la intensiva, y la regla del PRETEST 'todo fallo OLVIDO → tarjeta esa misma tarde en ANKI_COLA/ENCAPS_Cifras_2027-I.csv'. En el régimen de mantenimiento no hay ninguna repetición espaciada ENCAPS (ANKI_COLA tiene un solo fichero de julio; el Anki de las 05:00 es USMLE, y AnkiConnect ya funciona para su telemetría).",
+   "impacto": "alto",
+   "propuesta": "(1) Tabla de 120-150 filas (código · dato · valor · norma con número y año · trazabilidad 'Q<n> 2026-II' solo como referencia · sub-eje) construida desde los núcleos de los 8 críticos v3 y las cifras del 2026-II clasificado, cerrada contra el gate de fuentes (nada 'por confirmar' entra al deck). (2) CSV Anki ENCAPS_Cifras_2027-I.csv (frente/reverso/código/fuente/tag) importado a un deck ENCAPS::Cifras que se repasa ≤5 min dentro del bloque Anki 05:00 ya existente (no cambia el horario; FSRS igual que el USMLE). (3) El runner (vacío 2) toma de la tabla las 3 cifras de la eval anclada y el 40-50% de recall directo del banco del día. (4) Cada fallo OLVIDO/CRONOLOGIA del registro añade una fila esa tarde; `anki_telemetria.js` puede extender su lectura al deck ENCAPS::Cifras para que el Cockpit muestre retención de cifras.",
+   "esfuerzo": "M",
+   "toca_app": false,
+   "ficheros": [
+    "D:\\joseph-md-app\\DATA\\ENCAPS\\PROTOCOLO_GENERACION_PREGUNTAS.md",
+    "D:\\joseph-md-app\\DATA\\ENCAPS\\PRETEST_2026-II.md",
+    "D:\\joseph-md-app\\DATA\\ENCAPS\\_examen_2026-2_items.json",
+    "D:\\joseph-md-app\\DATA\\ENCAPS\\TRACKING_ERRORES\\ANKI_COLA",
+    "D:\\joseph-md-app\\DATA\\_scripts\\anki_telemetria.js"
+   ]
+  },
+  {
+   "gap": "El flujo semanal de override re-siembra los 102 días con `DELETE FROM study_schedule WHERE examen='ENCAPS'` (no filtra modo) y con un backup de nombre fijo (`study_schedule_bk_0906b`) que se pisa en cada ejecución; además `--override` acepta el JSON de UNA semana (gen_encaps_semana escribe override_<lunes>.json por semana), así que al aplicar la semana N los overrides de las semanas 1..N-1 se pierden y las filas pasadas vuelven a la rotación base (cambia retroactivamente `instancia/de` y la secuencia de sub-ejes; los item_key de study_checks se conservan porque van por día). Este flujo se ejecutará ~19 veces; cuando en enero se siembre la intensiva (modo INTENSIVO, dia 103+), el primer override de mantenimiento la borraría entera.",
+   "impacto": "medio",
+   "propuesta": "(1) gen_encaps_mantenimiento_2027.js: `DELETE … AND modo='MANTENIMIENTO'`; `--bk` por defecto fechado (`study_schedule_bk_<YYYYMMDD>`) y aviso si existen >3 backups; imprimir al final la verificación esperada (`select modo,tipo,count(*)`) para pegarla tras execute_sql. (2) gen_encaps_semana.js: mantener SEMANAS/overrides_acumulado.json (merge de todas las semanas) y que el generador lo lea por defecto; el override de una semana se añade, no sustituye. (3) Regla en README_SISTEMA_TRACKING: nunca regenerar mantenimiento después de sembrar la intensiva sin el filtro de modo.",
+   "esfuerzo": "S",
+   "toca_app": true,
+   "ficheros": [
+    "D:\\joseph-md-app\\DATA\\_scripts\\gen_encaps_mantenimiento_2027.js",
+    "D:\\joseph-md-app\\DATA\\_scripts\\gen_encaps_semana.js",
+    "D:\\joseph-md-app\\DATA\\ENCAPS\\TRACKING_ERRORES\\README_SISTEMA_TRACKING.md"
+   ]
+  },
+  {
+   "gap": "Línea base ciega inexistente: el registro tiene 2 rondas, ambas de I-3 (4/20 el 02-jul → 16/20 el 28-jul), resumen_por_subtema solo conoce I-3 y PERFIL_CONOCIMIENTO está congelado al 02-jul. Los otros 13 códigos del ciclo (V-2, II-3, III-5, I-4, II-5, II-4, IV-1/2, II-1, II-11, II-8, III-8, IV-6/7, V-7) y los 17 de cola larga no tienen una sola medición ciega. El override semanal exige n≥5 por código y el primer cierre semanal (vie 11-sep) solo podrá ver 4 códigos; el índice de brecha real por crítico no se conoce hasta febrero, aunque el 2026-II reservado no es la única forma de medirlo: los 400 ítems reales con clave de 2024-2A/2025-1A/2025-2 (vacío 1) sirven de pre-test por código sin quemar el 2026-II.",
+   "impacto": "medio",
+   "propuesta": "Pre-test de arranque de 40Q ciegas (5Q × 8 críticos, tomadas de los ítems reales 2024-2A→2025-2 ya etiquetados por código, confianza 1-3 por ítem, modo examen) repartido en los dos primeros bancos del día de la semana A (sustituye el contenido de esas sesiones, no el horario) → ronda `pretest` en el registro con % ciego por crítico y tipo de error; PERFIL_CONOCIMIENTO.md pasa a generarse desde resumen_por_subtema (gen_encaps_semana lo puede emitir) en vez de editarse a mano; el primer override (semana del 14-sep) se calcula ya con n≥5 en los 8 críticos.",
+   "esfuerzo": "S",
+   "toca_app": false,
+   "ficheros": [
+    "D:\\joseph-md-app\\DATA\\ENCAPS\\TRACKING_ERRORES\\_registro_resoluciones.json",
+    "D:\\joseph-md-app\\DATA\\ENCAPS\\TRACKING_ERRORES\\PERFIL_CONOCIMIENTO.md",
+    "D:\\joseph-md-app\\DATA\\_scripts\\gen_encaps_semana.js",
+    "D:\\joseph-md-app\\DATA\\ENCAPS\\BANCO_PROPIO\\_examenes_reales_2024-2A_2026-1.json"
+   ]
+  },
+  {
+   "gap": "Doc ≠ implementación en la eval anclada: PROTOCOLO_HORA_MANTENIMIENTO y los horarios guardados en study_metrics dicen 'si fallas ≥2 → el tema vuelve caliente y desplaza al del día siguiente' (misma semana), pero lo implementado en gen_encaps_semana es un override para la SEMANA SIGUIENTE con máximo 2 sustituciones, I-3/V-2 intocables y críticos cedidos solo si ≥85%. Además el lunes la eval 'del tema de AYER' apunta al mini-sim MIX del viernes (sin código), y la eval del viernes no existe (correcto), así que 19 de las 83 evals no tienen definición. Riesgo: Joseph espera un desplazamiento que el sistema no hará y el lunes no sabe qué 5Q resolver.",
+   "impacto": "bajo",
+   "propuesta": "Alinear el PROTOCOLO_HORA_MANTENIMIENTO (y el JSON `horarios` de study_metrics.extra) con la regla real: fallos ≥2 en la eval marcan el código como caliente para el override del viernes; eval del lunes = 5Q rehechas con otro enfoque de los fallos del mini-sim del viernes (ya son los '≥5Q fallos previos' del registro); eval del martes = código del lunes, etc. El runner (vacío 2) codifica esta regla en `--eval <fecha>`.",
+   "esfuerzo": "S",
+   "toca_app": false,
+   "ficheros": [
+    "D:\\joseph-md-app\\DATA\\ENCAPS\\PROTOCOLO_HORA_MANTENIMIENTO.md",
+    "D:\\joseph-md-app\\DATA\\_scripts\\gen_encaps_semana.js",
+    "D:\\joseph-md-app\\src\\lib\\encapsPlan.ts"
+   ]
+  }
+ ],
+ "notas": "Verificación 05-sep-2026 (repo + Supabase read-only, proyecto qacynpqdrorpuegsmtcy; resumen en scratchpad/palmerton_v3/encaps_vacios_evidencia_v2.md). Este análisis SUPERSEDE al extracto previo (DATA/USMLE/_palmerton_v3_extractos/gaps_encaps.json, 05:15): entre las 05:28 y las 10:07 se cerraron 6 de sus 10 vacíos — sub-ejes por instancia y cola larga (_encaps_ciclo_v3.js), II-EMG/I-OCC en cobertura y tiers v3, encapsRentabilidad v3, mini_sim en simDays + % ciego semanal en el Cockpit, cierre de 1 línea + override semanal (gen_encaps_semana.js), _examen_2026-2_items.json + exams_txt/2026-2.txt + LISTA NEGRA + PRETEST_2026-II.md, banco real 600 ítems con clave programática, _meta del registro en v3. Datos duros actuales: study_schedule ENCAPS = 83 banqueo1h + 19 mini_sim (MANTENIMIENTO, 7-sep→29-ene); study_progress 0 · study_sim_scores 0 · study_checks 0 desde sep; study_metrics exam_date 2027-03-28 = Domingo de Pascua 2027 (dias_a_examen 205 estático); gen_encaps_intensivo asume 2027-03-26 = Viernes Santo. Ficheros citados por el sistema que NO existen: FASE_INTENSIVA_2027-I.md, SENALES_2027-I.md, CIFRAS_CRITICAS_2027-I.md, ANKI_COLA/ENCAPS_Cifras_2027-I.csv, gen_encaps_minisim.js, BANCO_PROPIO/pretest_2026-II.html. Lo que NO es vacío y no propongo tocar: el régimen 16:15-17:15 y las metas (≥17/20, 85% ciego, 18/25); V-MED (va como V-7+V-10 con 5 sesiones ≈ 6% de slots frente a 3 pp de pronóstico + cola larga: sobre-cubierto, no infra); la rotación de 4 semanas; el pronóstico v3. Orden sugerido por rentabilidad/tiempo: (1) vacío 7 (S, antes del primer override del 11-sep, evita perder datos) → (2) vacíos 1 y 2 en la semana del 7-sep (sin stock ni runner la hora ENCAPS no produce preguntas ciegas ni dato) → (3) vacío 8 dentro de la semana A (línea base) y vacío 3 (app escribe study_progress) → (4) vacío 6 (cifras) semanas 2-3 → (5) vacío 4 (señales + fecha) desde el 1-oct, con escenario corto 14-mar → (6) vacío 5 (doc + rama INTENSIVO) en diciembre-enero, disparado por la convocatoria → (7) vacío 9 cuando se toque el protocolo."
+}

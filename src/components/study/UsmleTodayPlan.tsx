@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Linking, Platform } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Linking, Platform, TextInput, Share } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, Motion, LineHeight } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
 import { Chip, GlassPanel } from '../empresa/primitives';
 import { FadeUp } from '../empresa/visuals';
 import {
   DAILY_META, FRANJAS, DIAS, DiaUSMLE, diaDe, diaPrevio, ventana7d, TIER_INFO,
-  QBV, QBQ, QBF, QBL, yt,
+  QBV, QBQ, QBF, QBL, yt, nivelInfo, esHito, faseDe, USMLE_GATE,
 } from '../../lib/usmleStep1Daily';
+import {
+  UsmleScore, TipoErrorUW, TIPOS_ERROR, TIPO_ERROR_INFO, loadScores, scoreDe, upsertScore, gateDelDia, exportScoresJSON,
+} from '../../lib/usmleScores';
+import { usmleMirParalelo } from '../../lib/mirUsmleBridge';
 import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, loadDone, saveDone } from '../../lib/studyProgress';
 import { usmleObsUrl } from '../../lib/obsidianMap';
 import { usmleAnkiDeck, ANKIWEB } from '../../lib/ankiLinks';
@@ -18,6 +22,9 @@ import { usmleAnkiDeck, ANKIWEB } from '../../lib/ankiLinks';
  * Qbankly SOLO abre en Edge → cada link Qbankly ofrece botón "Edge" (microsoft-edge:)
  * además del de Chrome. 7 días y temario son clicables → saltan al día. El badge de
  * sistema lleva al Temario con el progreso real del plan por sistema.
+ * v5.6-Palmerton (5-sep-2026): chip de NIVEL UWorld del día (DIAS[].nivelUW) + chip "MIR en paralelo" +
+ * tarjeta 📏 MEDICIÓN (pre-test /10 · consolidación % · eval % · tipo de error · gate ✓ subir / ✗ repetir ·
+ * export JSON) → usmleScores.ts (localStorage 'jmd-usmle-scores' + Supabase usmle_daily_scores).
  */
 const GREEN = Colors.green;   // jade (US console) — migrado de #3FB984 fosforescente
 const RED = Colors.coral;     // terracotta — migrado de #E5484D
@@ -63,6 +70,8 @@ function ColaItem({ icon, lbl, val, sub, color, url, edge }: { icon: string; lbl
 function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaUSMLE; onOpenTemario: () => void; hecho: boolean; onToggle: (d: number) => void }) {
   const prev = diaPrevio(dia);
   const tier = TIER_INFO[dia.tier];
+  const niv = nivelInfo(dia.nivelUW);
+  const mir = usmleMirParalelo(dia.fecha);
   return (
     <View>
       {/* Tema del día — el badge de sistema lleva al Temario */}
@@ -74,7 +83,9 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaUSMLE; onOpe
             </TouchableOpacity>
             <Chip label={tier.t} color={tier.c} small />
             <Chip label="1ª vuelta" color={GREEN} small />
-            <Chip label="Modo A" color={Colors.muted} small />
+            <Chip label={`Fase ${faseDe(dia.d)}`} color={Colors.muted} small />
+            <Chip label={`Nivel UW ${dia.nivelUW} · ${dia.qDia}Q`} color={niv.color} small />
+            {mir && <Chip label={mir.texto} color={Colors.gold} small />}
             {usmleObsUrl(dia.d) && (
               <TouchableOpacity activeOpacity={0.8} onPress={() => openUrl(usmleObsUrl(dia.d)!)}
                 style={[st.sysBadge, { backgroundColor: OBS + '1F', borderColor: OBS + '77' }]}>
@@ -84,11 +95,15 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaUSMLE; onOpe
           </View>
           <Text style={st.temaTitle}>{dia.sub}</Text>
           <Text style={st.temaSub}>Subtema atómico del día · 1/día · toca el sistema para ver todo el temario y tu avance ›</Text>
+          <Text style={[st.temaSub, { color: niv.color }]}>Nivel {niv.nivel} · {niv.nombre} — {niv.formato}. Gate: {niv.umbral}.</Text>
           <TouchableOpacity activeOpacity={0.85} onPress={() => onToggle(dia.d)} style={[st.doneBtn, hecho ? st.doneBtnOn : st.doneBtnOff]}>
             <Text style={[st.doneBtnTxt, { color: hecho ? '#0A1A12' : GREEN }]}>{hecho ? '✓ Completado hoy' : '○ Marcar como completado'}</Text>
           </TouchableOpacity>
         </View>
       </FadeUp>
+
+      {/* Medición Palmerton del día (gate 80%) */}
+      <FadeUp delay={30}><MedicionCard dia={dia} /></FadeUp>
 
       {/* Anchored eval (tema previo) */}
       {prev && (
@@ -96,7 +111,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaUSMLE; onOpe
           <View style={st.anchor}>
             <Text style={st.anchorLbl}>🎯 07:15 · Repaso anclado (tema de AYER + D-3/D-7)</Text>
             <Text style={st.anchorVal}>{prev.system} → {prev.sub}</Text>
-            <Text style={st.anchorSub}>Anki FSRS deck USMLE + 2Q uWorld del tema previo · si free recall &lt;60% → re-encolar</Text>
+            <Text style={st.anchorSub}>Anki FSRS deck USMLE + 5Q uWorld TIMED del subtema de ayer (1ª mitad del gate de 10Q; la 2ª mitad va en la consolidación) · si free recall &lt;60% → re-encolar</Text>
             <View style={{ flexDirection: 'row', gap: 6, marginTop: 8 }}>
               <TouchableOpacity activeOpacity={0.85} onPress={() => openEdge(QBQ)} style={st.edgeBtnWide}><Text style={st.edgeTxt}>◆ Abrir en Edge</Text></TouchableOpacity>
               <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(QBQ)} style={[st.verBtn, { borderColor: READ + '88' }]}><Text style={[st.verTxt, { color: READ }]}>Chrome ↗</Text></TouchableOpacity>
@@ -107,7 +122,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaUSMLE; onOpe
 
       {/* Cola de materiales de hoy */}
       <Text style={st.secLbl}>📋 Cola de hoy · 05:00 Anki AM · 07:15–12:00 + 18:00–18:45 (en orden) · Qbankly = botón Edge</Text>
-      <FadeUp delay={60}><ColaItem icon="🅠" lbl="PRE-TEST 08:15 · uWorld (modo tutor)" val={`${dia.system} → ${dia.uw} · 10 preguntas ciegas + free recall 90s`} sub="Qbankly → QBanks → uWorld Step 1" color={GREEN} url={QBQ} edge /></FadeUp>
+      <FadeUp delay={60}><ColaItem icon="🅠" lbl="PRE-TEST 08:15 · uWorld (modo tutor · SIN tiempo · nivel 1)" val={`${dia.system} → ${dia.uw} · 10 preguntas ciegas + free recall 90s`} sub="Qbankly → QBanks → uWorld Step 1 · UWorld primero para diagnosticar, First Aid después" color={GREEN} url={QBQ} edge /></FadeUp>
       <FadeUp delay={90}><ColaItem icon="🎬" lbl="VÍDEO · Boards & Beyond Step 1" val={`${dia.bbCh} → ${dia.bbVid}`} sub="Qbankly → Video Library → B&B Step 1" color={RED} url={QBV} edge /></FadeUp>
       <FadeUp delay={120}><ColaItem icon="📖" lbl="ACTIVE READING · material primario" val={dia.mat} sub="Qbankly → Library (uWorld/AMBOSS) · 25 min · 3-5 puntos high-yield" color={READ} url={QBL} edge /></FadeUp>
       <FadeUp delay={150}><ColaItem icon="🗂️" lbl="FLASHCARDS · uWorld Step 1" val={`Deck: ${dia.system}`} sub="Qbankly → Flashcards · Anki SRS" color={Colors.teal} url={QBF} edge /></FadeUp>
@@ -122,12 +137,100 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaUSMLE; onOpe
         <View style={[st.cola, { borderLeftColor: APEX }]}>
           <Text style={st.colaIcon}>🃏</Text>
           <View style={{ flex: 1 }}>
-            <Text style={st.colaLbl}>APEX · 10:45–11:00 (cierre del DEEP PRIME) + 30Q consolidación 11:00</Text>
-            <Text style={st.colaVal}>Crea ≤10 tarjetas de MECANISMO (formato Palmerton: patogenia→presentación) · luego 30Q uWorld de temas vistos</Text>
-            <Text style={st.colaSub}>Free recall a papel en blanco antes (en inglés) · 18:00 evaluación acumulativa modo examen</Text>
+            <Text style={st.colaLbl}>APEX · 10:45–11:00 (cierre del DEEP PRIME) + CONSOLIDACIÓN 11:00 · nivel {dia.nivelUW}</Text>
+            <Text style={st.colaVal}>Crea ≤10 tarjetas de MECANISMO (patogenia→presentación) · luego {dia.nivelUW === 1 ? '20Q en bloques de 5Q tutor del subtema (nivel 1)' : dia.nivelUW === 3 ? '20Q del sistema completo TIMED + 10Q tutor (nivel 3, viernes)' : dia.nivelUW === 2 ? '30Q en bloques de 5Q TIMED de subtemas validados (nivel 2)' : `${dia.qDia}Q en bloques timed mixtos (nivel ${dia.nivelUW})`}</Text>
+            <Text style={st.colaSub}>Gate: ≥{USMLE_GATE.pct}% → mañana sube de nivel · &lt;{USMLE_GATE.pct}% → repetir 5Q del subtema fallado · 18:00 eval 10Q mixta timed (dosis de nivel 4) · registra todo en 📏 Medición</Text>
           </View>
         </View>
       </FadeUp>
+    </View>
+  );
+}
+
+/** 📏 Medición Palmerton del día: 3 números + tipo de error + gate ✓/✗ + export JSON (usmleScores). */
+function MedicionCard({ dia }: { dia: DiaUSMLE }) {
+  const hito = esHito(dia);
+  const fase = faseDe(dia.d);
+  const niv = nivelInfo(dia.nivelUW);
+  const [pre, setPre] = useState('');
+  const [con, setCon] = useState('');
+  const [ev, setEv] = useState('');
+  const [tipo, setTipo] = useState<TipoErrorUW | null>(null);
+  const [notas, setNotas] = useState('');
+  const [estado, setEstado] = useState<'idle' | 'saving' | 'ok' | 'local'>('idle');
+  const [exp, setExp] = useState('');
+  useEffect(() => {
+    const s = scoreDe(loadScores(), dia.fecha);
+    setPre(s?.pretest10 != null ? String(s.pretest10) : '');
+    setCon(s?.consol30pct != null ? String(s.consol30pct) : '');
+    setEv(s?.evalPct != null ? String(s.evalPct) : '');
+    setTipo(s?.tipoError ?? null);
+    setNotas(s?.notas ?? '');
+    setEstado('idle'); setExp('');
+  }, [dia.fecha]);
+  const num = (t: string, max: number): number | null => {
+    const v = t.trim(); if (!v) return null;
+    const n = Number(v.replace(',', '.'));
+    return isNaN(n) ? null : Math.max(0, Math.min(max, n));
+  };
+  const score: UsmleScore = { fecha: dia.fecha, d: dia.d, pretest10: num(pre, 10), consol30pct: num(con, 100), evalPct: num(ev, 100), tipoError: tipo, nivelUW: dia.nivelUW, notas, updatedAt: '' };
+  const gate = gateDelDia(score, dia);
+  const gateColor = gate.estado === 'sube' ? GREEN : gate.estado === 'repite' ? RED : Colors.muted;
+  const guardar = async () => {
+    setEstado('saving');
+    try { const r = await upsertScore(score); setEstado(r.supabase ? 'ok' : 'local'); } catch { setEstado('local'); }
+  };
+  const exportar = async () => {
+    const json = exportScoresJSON();
+    try {
+      const nav = (globalThis as any).navigator;
+      if (Platform.OS === 'web' && nav && nav.clipboard && nav.clipboard.writeText) { await nav.clipboard.writeText(json); setExp('✓ JSON copiado al portapapeles'); return; }
+    } catch { /* cae al Share */ }
+    try { await Share.share({ message: json, title: 'usmle-scores.json' }); setExp('✓ JSON compartido'); } catch { setExp('no se pudo exportar en este dispositivo'); }
+  };
+  const lblPre = fase === 'A' ? 'Pre-test 08:15 (aciertos /10)' : 'Stress set 05:00 (aciertos /10)';
+  const lblCon = hito ? 'Bloque timed extra (%) · opcional' : fase === 'A' ? 'Consolidación 11:00 (%)' : 'Bloques timed del día (%)';
+  const lblEv = hito ? `% del ${dia.uw}` : 'Eval 18:00 timed mixta (%)';
+  return (
+    <View style={[st.medCard, { borderColor: niv.color + '66' }]}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+        <Text style={st.medTitle}>📏 MEDICIÓN DEL DÍA</Text>
+        <Chip label={`nivel ${dia.nivelUW} · ${niv.nombre}`} color={niv.color} small />
+        <Chip label={`${dia.qDia}Q objetivo`} color={Colors.muted} small />
+        {hito && <Chip label="HITO" color={Colors.gold} small />}
+      </View>
+      <Text style={st.medHint}>{hito ? `Día de hito: registra el % del ${dia.uw} en el campo eval. ${gate.detalle}.` : `Gate del día = ${gate.metrica} ≥ ${USMLE_GATE.pct}%. El % de UWorld es gate de proceso, no predicción (solo el NBME predice).`}</Text>
+      <View style={st.medRow}>
+        <View style={st.medField}><Text style={st.medLbl}>{lblPre}</Text><TextInput style={st.medInput} value={pre} onChangeText={setPre} keyboardType="numeric" placeholder="–" placeholderTextColor={Colors.muted} returnKeyType="done" /></View>
+        <View style={st.medField}><Text style={st.medLbl}>{lblCon}</Text><TextInput style={st.medInput} value={con} onChangeText={setCon} keyboardType="numeric" placeholder="–" placeholderTextColor={Colors.muted} returnKeyType="done" /></View>
+        <View style={st.medField}><Text style={st.medLbl}>{lblEv}</Text><TextInput style={st.medInput} value={ev} onChangeText={setEv} keyboardType="numeric" placeholder="–" placeholderTextColor={Colors.muted} returnKeyType="done" /></View>
+      </View>
+      <Text style={st.medLbl}>Tipo de error dominante (knowledge / transfer / proceso)</Text>
+      <View style={{ flexDirection: 'row', gap: 6, flexWrap: 'wrap', marginTop: 4 }}>
+        {TIPOS_ERROR.map((t) => {
+          const info = TIPO_ERROR_INFO[t]; const on = tipo === t;
+          return (
+            <TouchableOpacity key={t} activeOpacity={0.8} onPress={() => setTipo(on ? null : t)} style={[st.tipoChip, { borderColor: info.color + (on ? 'CC' : '55'), backgroundColor: on ? info.color + '26' : 'transparent' }]}>
+              <Text style={[st.tipoChipTxt, { color: on ? info.color : Colors.muted }]}>{info.corto}</Text>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
+      {tipo && <Text style={[st.medHint, { color: TIPO_ERROR_INFO[tipo].color }]}>{TIPO_ERROR_INFO[tipo].label}: {TIPO_ERROR_INFO[tipo].fix}</Text>}
+      <TextInput style={st.medNotas} value={notas} onChangeText={setNotas} placeholder="Notas: shopping list, subtema a repetir, sensación del bloque…" placeholderTextColor={Colors.muted} multiline />
+      <View style={[st.gateBox, { borderColor: gateColor + '77', backgroundColor: gateColor + '14' }]}>
+        <Text style={[st.gateTxt, { color: gateColor }]}>{gate.label}</Text>
+        {gate.estado !== 'sin-dato' && <Text style={st.gateDet}>{gate.detalle}</Text>}
+      </View>
+      <View style={{ flexDirection: 'row', gap: 6, marginTop: 8, flexWrap: 'wrap', alignItems: 'center' }}>
+        <TouchableOpacity activeOpacity={0.85} onPress={guardar} style={[st.doneBtn, st.doneBtnOff, { flex: 1, marginTop: 0, minWidth: 160 }]}>
+          <Text style={[st.doneBtnTxt, { color: GREEN }]}>{estado === 'saving' ? 'guardando…' : estado === 'ok' ? '✓ guardado (local + Supabase)' : estado === 'local' ? '✓ guardado en este dispositivo (Supabase sin respuesta)' : '💾 Guardar medición'}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.85} onPress={exportar} style={[st.verBtn, { borderColor: Colors.gold + '88' }]}>
+          <Text style={[st.verTxt, { color: Colors.gold }]}>⇪ Export JSON</Text>
+        </TouchableOpacity>
+      </View>
+      {exp ? <Text style={st.medHint}>{exp}</Text> : null}
     </View>
   );
 }
@@ -152,12 +255,13 @@ function HorarioView({ dia }: { dia: DiaUSMLE }) {
               <View style={{ flex: 1 }}>
                 <Text style={st.franjaFase}>{f.fase}</Text>
                 {det ? <Text style={st.franjaDet}>↳ {det}</Text> : null}
+                {f.nivel && f.nivel !== '—' ? <Text style={st.franjaNivel}>🎚️ nivel UW {f.nivel}{f.gate && f.gate !== '—' ? ` · gate: ${f.gate}` : ''}</Text> : null}
               </View>
             </View>
           </FadeUp>
         );
       })}
-      <Text style={st.note}>05:00 Anki AM · 07:15 repaso anclado · 08:15 pre-test 10Q · 09:00 DEEP PRIME 2h · 11:00 30Q consolidación · 18:00 eval modo examen (6h15/día). Todo en inglés. Sáb/dom libres.</Text>
+      <Text style={st.note}>05:00 Anki AM · 07:15 repaso anclado · 08:15 pre-test 10Q · 09:00 DEEP PRIME 2h · 11:00 consolidación por nivel · 18:00 eval modo examen (6h15/día). Todo en inglés. Sáb/dom libres. Hoy: nivel UW {dia.nivelUW} ({nivelInfo(dia.nivelUW).nombre}) · {dia.qDia}Q objetivo. {DAILY_META.metodo}</Text>
     </View>
   );
 }
@@ -386,6 +490,22 @@ const st = StyleSheet.create({
   franjaHoraTxt: { fontSize: FontSize.labelSm, fontWeight: '800', color: GREEN, letterSpacing: 0.2 },
   franjaFase: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 17 },
   franjaDet: { fontSize: FontSize.labelSm, color: GREEN, marginTop: 3, fontWeight: '600' },
+  franjaNivel: { fontSize: 10, color: Colors.champagne, marginTop: 3, lineHeight: 14 },
+
+  // 📏 Medición Palmerton
+  medCard: { ...cardBase, borderWidth: 1, padding: Spacing.md, marginBottom: Spacing.sm },
+  medTitle: { fontSize: FontSize.labelMd, fontWeight: '800', color: Colors.onSurface, letterSpacing: 0.4 },
+  medHint: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 5, lineHeight: LineHeight.labelSm },
+  medRow: { flexDirection: 'row', gap: 8, flexWrap: 'wrap', marginTop: 8, marginBottom: 8 },
+  medField: { flex: 1, minWidth: 120 },
+  medLbl: { fontSize: 9, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 0.4, textTransform: 'uppercase', marginBottom: 4 },
+  medInput: { height: 36, backgroundColor: Colors.surfaceContainerHighest, borderRadius: BorderRadius.md, borderWidth: 1, borderColor: Hairline.medium, color: Colors.onSurface, textAlign: 'center', fontSize: FontSize.bodyMd, fontWeight: '800', paddingVertical: 0, ...(Platform.OS === 'web' ? { outlineStyle: 'none' as any } : {}) },
+  medNotas: { marginTop: 8, minHeight: 40, backgroundColor: Colors.surfaceContainerHighest, borderRadius: BorderRadius.md, borderWidth: 1, borderColor: Hairline.medium, color: Colors.onSurface, fontSize: FontSize.labelMd, paddingHorizontal: 10, paddingVertical: 8, ...(Platform.OS === 'web' ? { outlineStyle: 'none' as any } : {}) },
+  tipoChip: { borderWidth: 1, borderRadius: BorderRadius.full, paddingVertical: 4, paddingHorizontal: 11, ...WEB_LINK },
+  tipoChipTxt: { fontSize: FontSize.labelSm, fontWeight: '800', letterSpacing: 0.2 },
+  gateBox: { marginTop: 10, borderWidth: 1, borderRadius: BorderRadius.md, padding: Spacing.sm },
+  gateTxt: { fontSize: FontSize.labelLg, fontWeight: '800', letterSpacing: 0.2 },
+  gateDet: { fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant, marginTop: 3, lineHeight: LineHeight.labelSm },
   note: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: Spacing.sm, lineHeight: LineHeight.labelSm },
 
   d7: { ...cardBase, borderLeftWidth: 3, flexDirection: 'row', alignItems: 'center', gap: 10, padding: Spacing.sm, marginBottom: 5, ...WEB_LINK },

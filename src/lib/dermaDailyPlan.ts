@@ -16,6 +16,9 @@
  *      → CORE Exam Bank 104Q (~9, cierre de módulo) → Barnhill's Challenge 403Q (dermpath)
  *      → QOTW 50Q (checkpoints). Etiquetar CADA fallo con su módulo CORE (med/ped/surg/path)
  *      en el ledger (dermaLedger.ts · localStorage 'jmd-derma-casos' / 'jmd-derma-fallos').
+ *      SEGUNDA CAPA (v2.1): 1 de cada 3 sesiones (d ≡ 0 mod 3) el slot pasa a 10Q del TEST DEL
+ *      CAPÍTULO ProMIR de Dermatología (campo promir, rotación por peso PROMIR_DERMA_ROTACION) y se
+ *      registra en mirEvalLog (kind 'derma10Q', asignatura 'Dermatología').
  *   3) 10′ de LECTURA dirigida del módulo semanal: Fitzpatrick (clínica) · Baumann 3e /
  *      Lasers / Procedural / Dermatologic Surgery (estética) — nunca lectura lineal.
  *      MICRO-TRACK DERMATOSCOPIA: en las sesiones PARES d6→d40 el slot de lectura lo ocupa
@@ -64,7 +67,7 @@ export const BOOKS_LIB = `${MH}/books.aspx?view=library`;
 export const qb = (doc: number) => `https://qbankly.app/library?e=1&doc=${doc}`;
 export const QB_QBANKS = 'https://qbankly.app/qbanks';
 export const pm = (capId: string) => `https://promir.medicapanamericana.com/capitulo/${capId}`;
-/** capIds ProMIR Dermatología (asignatura 5) — verificados; NO usados por el plan v2 (compat). */
+/** capIds ProMIR Dermatología (asignatura 5) — verificados; usados por la rotación MIR 10Q (PROMIR_DERMA_CAPS). */
 export const PM_CAP = {
   intro: '62836950c0f8415ab9efb5c7', c1: '570779c8f4d68bf008dbc646', c2: '570779c8f4d68bf008dbc6a2',
   c3: '570779c9f4d68bf008dbc71f', c4: '570779c9f4d68bf008dbc77b', c5: '570779c8f4d68bf008dbc5fc',
@@ -107,7 +110,7 @@ export interface DiaDerma {
   sub: string; referente: string | null;
   access: MatLink;            // CASO del día (Cases for Board Review / DD Challenge — el motor)
   qbankly: MatLink | null;    // REVIEW ~10Q del banco rotante de AccessDerma (Pictorial/CORE/Barnhill/QOTW)
-  promir: MatLink | null;     // 2º pase ES (NO usado en el plan v2 — compat con la UI)
+  promir: MatLink | null;     // 10Q del TEST del capítulo ProMIR Dermatología (solo en d ≡ 0 mod 3 — sustituye al review de AccessDerma ese día)
   extra: MatLink | null;      // LECTURA dirigida 10′ del módulo (libro AccessDerma o paper del referente)
   /** Los 2 casos CIEGOS de la sesión (ids 1-200 de DERMA_CASOS, permutación fija DERMA_CASO_ORDEN). */
   casoIds: [number, number];
@@ -299,6 +302,46 @@ const N_COSM: NitidaProtocolo = {
   seguimiento: 'Foto estandarizada basal y a 12 semanas (misma luz/ángulo). Métrica: tolerancia al retinoide (subir concentración/frecuencia), MASI si melasma. Revisión de fotoprotección en cada visita.',
 };
 
+/* ────────────────────────────────────────────────────────────────────────────
+ * ROTACIÓN MIR-DERMATOLOGÍA (v2.1 · segunda capa, 5-sep-2026)
+ * 1 de cada 3 sesiones (d ≡ 0 mod 3 → 23 sesiones) el slot "~10Q review" (13:52-14:03) pasa a las 10Q del
+ * TEST DEL CAPÍTULO ProMIR de Dermatología (asignatura 5) y se registra en mirEvalLog con kind 'derma10Q' y
+ * asignatura 'Dermatología' (neto MIR A − F/3). Rotación de los 10 capítulos por PESO MIR histórico
+ * (DATA/DERMATOLOGIA/temario.md §2: Oncología 23,39 · Infecciosas 17,29 · Sistémicas 15,25 · Conceptos 12,88 ·
+ * Eritematodescamativas 8,81 · Toxicodermias 8,14 · Ampollosas 6,10 · Glandular/urticaria 4,75 · Genodermatosis 3,39 ·
+ * Dermatoscopia 0 → mínimo 1 slot por ser el diferenciador). Slots ∝ peso (mín. 1): cap4 ×5 · cap2 ×4 · cap3 ×3 ·
+ * cap1 ×3 · cap5 ×2 · cap8 ×2 · caps 6/7/9/10 ×1 = 23, cada uno en la sesión cuyo bloque más se acerca al capítulo
+ * (interleaving MIR ↔ CORE). El banco AccessDerma de esa sesión queda como "si sobra tiempo" (qbankly no se toca).
+ * ────────────────────────────────────────────────────────────────────────── */
+export interface PromirDermaCap { n: number; t: string; capId: string; peso: number }
+export const PROMIR_DERMA_CAPS: PromirDermaCap[] = [
+  { n: 1, t: 'Conceptos generales (lesiones elementales, tratamientos)', capId: PM_CAP.c1, peso: 12.88 },
+  { n: 2, t: 'Enfermedades infecciosas', capId: PM_CAP.c2, peso: 17.29 },
+  { n: 3, t: 'Dermatología y enfermedades sistémicas', capId: PM_CAP.c3, peso: 15.25 },
+  { n: 4, t: 'Oncología cutánea (melanoma = subtema nº1 del MIR)', capId: PM_CAP.c4, peso: 23.39 },
+  { n: 5, t: 'Eritematodescamativas · eccemas', capId: PM_CAP.c5, peso: 8.81 },
+  { n: 6, t: 'Ampollosas autoinmunes', capId: PM_CAP.c6, peso: 6.10 },
+  { n: 7, t: 'Glandular · folículos · urticaria/angioedema', capId: PM_CAP.c7, peso: 4.75 },
+  { n: 8, t: 'Toxicodermias · fotodermatosis', capId: PM_CAP.c8, peso: 8.14 },
+  { n: 9, t: 'Genodermatosis · facomatosis', capId: PM_CAP.c9, peso: 3.39 },
+  { n: 10, t: 'Dermatoscopia', capId: PM_CAP.c10, peso: 0 },
+];
+/** Sesión Derma (d ≡ 0 mod 3) → capítulo ProMIR del test 10Q de ese día (rotación por peso, alineada al bloque). */
+export const PROMIR_DERMA_ROTACION: Record<number, number> = {
+  3: 1, 6: 10, 9: 7, 12: 8, 15: 2, 18: 2, 21: 4, 24: 4, 27: 4, 30: 1, 33: 3, 36: 9,
+  39: 5, 42: 6, 45: 5, 48: 2, 51: 3, 54: 1, 57: 2, 60: 4, 63: 3, 66: 8, 69: 4,
+};
+export const DERMA_PROMIR_DIAS: number[] = Object.keys(PROMIR_DERMA_ROTACION).map(Number).sort((a, b) => a - b);
+export const dermaEsSesionMir = (d: number): boolean => d in PROMIR_DERMA_ROTACION;
+export function promirDermaCapDe(d: number): PromirDermaCap | undefined {
+  const n = PROMIR_DERMA_ROTACION[d]; return n ? PROMIR_DERMA_CAPS[n - 1] : undefined;
+}
+/** MatLink del campo `promir` de la fila (10Q del test del capítulo N). */
+const PMD = (n: number): MatLink => {
+  const c = PROMIR_DERMA_CAPS[n - 1];
+  return { t: `ProMIR Derma · cap ${c.n} ${c.t} · TEST 10Q (peso MIR ${c.peso} %)`, url: pm(c.capId) };
+};
+
 export const DERMA_DIAS: DiaDerma[] = [
   // ── MÓDULO A · Fundamentos / morfología (🔴 el idioma del caso ciego, semanas 1-3 del élite) ──
   { d: 1, fecha: '2026-09-07', bloque: B.A, bKey: 'A', tier: 'CRIT', sub: 'Lesiones elementales 1ª/2ª: el vocabulario del paso ① (describir ANTES de diagnosticar)', referente: null,
@@ -310,7 +353,7 @@ export const DERMA_DIAS: DiaDerma[] = [
     morfologia: 'Mácula', sitio: 'Difuso', ddx: ['Anular: tiña vs granuloma anular vs eritema anular centrífugo', 'Herpetiforme: HSV vs dermatitis herpetiforme', 'Lineal/Blaschko: liquen estriado vs nevus epidérmico', 'Dermatomal: zóster'],
     atlasUrl: `${DN}/topics/terminology`, dermatoscopiaImg: DSP.red },
   { d: 3, fecha: '2026-09-11', bloque: B.A, bKey: 'A', tier: 'ALTA', sub: 'Estructura de la piel: epidermis → BMZ → dermis → anejos (la base de toda tarjeta de MECANISMO)', referente: null,
-    access: CASO, qbankly: rPIC, promir: null, extra: { t: "Fitzpatrick's Dermatology 9e · Structure & Function", url: book(2570) }, casoIds: [25, 165],
+    access: CASO, qbankly: rPIC, promir: PMD(1), extra: { t: "Fitzpatrick's Dermatology 9e · Structure & Function", url: book(2570) }, casoIds: [25, 165],
     morfologia: 'Escama', sitio: 'Difuso', ddx: ['Epidermis: espongiosis (eccema) vs acantosis (psoriasis)', 'BMZ: ampolla subepidérmica (penfigoide)', 'Dermis: habón (urticaria) vs nódulo (paniculitis)', 'Anejos: acné vs hidradenitis'],
     atlasUrl: `${DN}/topics/the-structure-of-normal-skin`, histoUrl: 'https://www.dermpathatlas.com/', dermatoscopiaImg: DSA },
   { d: 4, fecha: '2026-09-15', bloque: B.A, bKey: 'A', tier: 'CRIT', sub: 'Fototipos I–VI + piel de color: cómo cambian los signos (eje Perú · conecta con L4/L5 de research)', referente: null,
@@ -323,7 +366,7 @@ export const DERMA_DIAS: DiaDerma[] = [
     morfologia: 'Anatomía (arterias)', sitio: 'Cara', ddx: ['Glabela: a. supratroclear/supraorbitaria → a. oftálmica (ceguera)', 'Nariz: a. dorsal nasal / angular', 'Surco nasogeniano: a. facial', 'Sien: rama frontal de la a. temporal superficial'],
     atlasUrl: ANIM3D, dermatoscopiaImg: DSA },
   { d: 6, fecha: '2026-09-21', bloque: B.A, bKey: 'A', tier: 'ALTA', sub: 'Dermatoscopia temprana: patrones básicos (3 de los 4 módulos CORE la preguntan transversalmente) · arranca el micro-track DermNet CME', referente: null,
-    access: CASO, qbankly: rCORE, promir: null, extra: { t: 'Dermoscopy Criteria Review', url: book(2804) }, casoIds: [49, 14],
+    access: CASO, qbankly: rCORE, promir: PMD(10), extra: { t: 'Dermoscopy Criteria Review', url: book(2804) }, casoIds: [49, 14],
     morfologia: 'Mácula', sitio: 'Difuso', ddx: ['Melanocítica vs no melanocítica (paso 1)', 'Retículo vs glóbulos vs homogéneo', 'CBC: vasos arboriformes + nidos ovoides', 'QS: quistes de milium + aperturas comedonianas'],
     atlasUrl: `${DN}/topics/dermoscopy`, dermatoscopiaUrl: DSP.melano, dermatoscopiaModulo: M(1), dermatoscopiaImg: DSP.twoStep },
   // ── MÓDULO B · Dermatosis inflamatorias (el corazón del área Medical: 110/200 casos · materia prima de NÍTIDA) ──
@@ -337,7 +380,7 @@ export const DERMA_DIAS: DiaDerma[] = [
     ddx: ['DA', 'Dermatitis de contacto', 'Seborreica', 'Psoriasis', 'Tiña corporis'],
     atlasUrl: `${DN}/topics/atopic-dermatitis`, dermatoscopiaModulo: M(2), dermatoscopiaImg: DSP.pso, nitida: N_ECZ },
   { d: 9, fecha: '2026-09-29', bloque: B.B, bKey: 'B', tier: 'CRIT', sub: 'Acné + rosácea + hidradenitis (mecanismo → tratamiento; puente futuro a láser-acné y peelings)', referente: null,
-    access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Color Atlas 9e · S1 Sebaceous/Eccrine/Apocrine', url: ca(275941112) }, casoIds: [82, 47],
+    access: CASO, qbankly: rPIC, promir: PMD(7), extra: { t: 'Color Atlas 9e · S1 Sebaceous/Eccrine/Apocrine', url: ca(275941112) }, casoIds: [82, 47],
     morfologia: 'Pápula/pústula', sitio: 'Cara', ddx: ['Acné vulgar', 'Rosácea', 'Foliculitis', 'Dermatitis perioral'],
     atlasUrl: `${DN}/topics/acne`, dermatoscopiaUrl: DSP.rosacea, dermatoscopiaImg: DSA, nitida: N_ACNE },
   { d: 10, fecha: '2026-10-01', bloque: B.B, bKey: 'B', tier: 'CRIT', sub: 'Ampollosas autoinmunes: pénfigo vs penfigoide + dermatitis herpetiforme (nivel de la ampolla = mecanismo)', referente: null,
@@ -349,7 +392,7 @@ export const DERMA_DIAS: DiaDerma[] = [
     morfologia: 'Habón', sitio: 'Difuso', ddx: ['Urticaria aguda vs crónica espontánea', 'Angioedema por bradicinina (IECA, hereditario) vs histaminérgico', 'Vasculitis urticarial (>24 h, dolor, púrpura residual)', 'Prurito sine materia: colestasis, IRC, linfoma, tiroides'],
     atlasUrl: `${DN}/topics/urticaria-an-overview`, dermatoscopiaImg: DSA, nitida: N_URT },
   { d: 12, fecha: '2026-10-07', bloque: B.B, bKey: 'B', tier: 'CRIT', sub: 'Farmacodermias graves: SJS/TEN, DRESS, AGEP (no errar)', referente: null,
-    access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Color Atlas 9e · S23 Adverse Drug Reactions', url: ca(275944593) }, casoIds: [142, 103],
+    access: CASO, qbankly: rPIC, promir: PMD(8), extra: { t: 'Color Atlas 9e · S23 Adverse Drug Reactions', url: ca(275944593) }, casoIds: [142, 103],
     morfologia: 'Ampolla', sitio: 'Difuso', ddx: ['SJS/TEN', 'DRESS', 'AGEP', 'EM mayor', 'SSSS', 'Pénfigo paraneoplásico'],
     atlasUrl: `${DN}/topics/stevens-johnson-syndrome-toxic-epidermal-necrolysis`, dermatoscopiaModulo: M(4), dermatoscopiaImg: DSP.glob, nitida: N_FARM },
   { d: 13, fecha: '2026-10-09', bloque: B.B, bKey: 'B', tier: 'ALTA', sub: 'Conectivopatías (lupus, dermatomiositis, morfea) + vasculitis y paniculitis', referente: null,
@@ -362,7 +405,7 @@ export const DERMA_DIAS: DiaDerma[] = [
     morfologia: 'Placa', sitio: 'Cara', ddx: ['Erisipela', 'Celulitis', 'Impétigo', 'SSSS', 'Dermatitis de contacto aguda'],
     atlasUrl: `${DN}/topics/cellulitis`, dermatoscopiaModulo: M(5), dermatoscopiaImg: DSP.streaks },
   { d: 15, fecha: '2026-10-15', bloque: B.C, bKey: 'C', tier: 'ALTA', sub: 'Sífilis (la gran imitadora) + ITS cutáneas + micobacterias (TB cutánea, lepra)', referente: null,
-    access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Color Atlas 9e · S30 STDs', url: ca(275946713) }, casoIds: [146, 105],
+    access: CASO, qbankly: rPIC, promir: PMD(2), extra: { t: 'Color Atlas 9e · S30 STDs', url: ca(275946713) }, casoIds: [146, 105],
     morfologia: 'Pápula', sitio: 'Manos', ddx: ['Sífilis 2ª (palmoplantar, collarete) vs pitiriasis rosada vs psoriasis guttata', 'Chancro duro vs herpes vs chancroide', 'Lepra (mácula hipoestésica) vs versicolor vs vitíligo', 'TB cutánea (lupus vulgar) vs leishmaniasis vs esporotricosis'],
     atlasUrl: `${DN}/topics/syphilis`, dermatoscopiaImg: DSA },
   { d: 16, fecha: '2026-10-19', bloque: B.C, bKey: 'C', tier: 'CRIT', sub: 'Virales: HSV/VZV (Tzanck), VPH, molusco', referente: null,
@@ -374,7 +417,7 @@ export const DERMA_DIAS: DiaDerma[] = [
     morfologia: 'Placa', sitio: 'Pies', ddx: ['Tiña pedis (interdigital/mocasín) vs eccema dishidrótico vs psoriasis palmoplantar', 'Pitiriasis versicolor vs vitíligo vs pitiriasis alba', 'Esporotricosis (linfangítica) vs leishmaniasis vs micobacteria atípica', 'Cromoblastomicosis (células muriformes) vs CEC verrucoso'],
     atlasUrl: `${DN}/topics/fungal-skin-infections`, dermatoscopiaImg: DSA },
   { d: 18, fecha: '2026-10-23', bloque: B.C, bKey: 'C', tier: 'CRIT', sub: 'Parasitosis: escabiosis, leishmaniasis (Perú), pediculosis, larva migrans', referente: null,
-    access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Color Atlas 9e · S28 Infestations', url: ca(275946425) }, casoIds: [150, 96],
+    access: CASO, qbankly: rPIC, promir: PMD(2), extra: { t: 'Color Atlas 9e · S28 Infestations', url: ca(275946425) }, casoIds: [150, 96],
     morfologia: 'Nódulo', sitio: 'Cara', fototipo: 'Alto ROI Perú · úlcera de leishmaniasis en piel de color',
     ddx: ['Leishmaniasis', 'Esporotricosis', 'TB cutánea', 'Carcinoma basocelular', 'Úlcera piógena'],
     atlasUrl: `${DN}/topics/leishmaniasis`, dermatoscopiaUrl: DSP.scabies, dermatoscopiaModulo: M(7), dermatoscopiaImg: DSP.scabies },
@@ -389,7 +432,7 @@ export const DERMA_DIAS: DiaDerma[] = [
     atlasUrl: `${DN}/topics/fillers`, dermatoscopiaModulo: M(8), dermatoscopiaImg: DSP.vasos, puenteResearch: PR_L4(SR1_NOTA) },
   // ── MÓDULO D · Tumores benignos / malignos + dermatoscopia ──
   { d: 21, fecha: '2026-11-02', bloque: B.D, bKey: 'D', tier: 'ALTA', sub: 'Tumores benignos: q. seborreica, nevus melanocíticos, quistes (qué NO biopsiar)', referente: null,
-    access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Color Atlas 9e · S9 Benign Neoplasms', url: ca(275942363) }, casoIds: [6, 159],
+    access: CASO, qbankly: rPIC, promir: PMD(4), extra: { t: 'Color Atlas 9e · S9 Benign Neoplasms', url: ca(275942363) }, casoIds: [6, 159],
     morfologia: 'Pápula', sitio: 'Tronco', ddx: ['QS ("pegada", milium, comedón-like) vs melanoma vs lentigo solar', 'Nevus intradérmico vs CBC nodular', 'Quiste epidermoide (poro central) vs lipoma vs pilomatricoma', 'Dermatofibroma (signo del hoyuelo) vs melanoma desmoplásico'],
     atlasUrl: `${DN}/topics/seborrhoeic-keratosis`, dermatoscopiaUrl: DSP.sk, dermatoscopiaImg: DSA },
   { d: 22, fecha: '2026-11-04', bloque: B.D, bKey: 'D', tier: 'CRIT', sub: 'Queratosis actínica + campo de cancerización (base del manejo con peelings/PDT después)', referente: null,
@@ -401,7 +444,7 @@ export const DERMA_DIAS: DiaDerma[] = [
     morfologia: 'Pápula perlada', sitio: 'Cara', ddx: ['CBC', 'CEC', 'Queratoacantoma', 'Nevus intradérmico', 'Hiperplasia sebácea'],
     atlasUrl: `${DN}/topics/basal-cell-carcinoma`, dermatoscopiaUrl: DSP.bcc, dermatoscopiaImg: DSA },
   { d: 24, fecha: '2026-11-10', bloque: B.D, bKey: 'D', tier: 'CRIT', sub: 'Melanoma: ABCDE, Breslow, TNM, manejo (acral/lentiginoso en fototipos altos = Perú)', referente: null,
-    access: CASO, qbankly: rBARN, promir: null, extra: { t: 'Color Atlas 9e · S12 Melanoma', url: ca(275942978) }, casoIds: [39, 121],
+    access: CASO, qbankly: rBARN, promir: PMD(4), extra: { t: 'Color Atlas 9e · S12 Melanoma', url: ca(275942978) }, casoIds: [39, 121],
     morfologia: 'Mácula', sitio: 'Tronco', fototipo: 'Acral/lentiginoso más frecuente en fototipos altos (Perú)',
     ddx: ['Melanoma', 'Nevus displásico', 'Queratosis seborreica', 'CBC pigmentado', 'Lentigo'],
     atlasUrl: `${DN}/topics/melanoma`, dermatoscopiaUrl: DSP.mel, histoUrl: 'https://www.dermpathatlas.com/', dermatoscopiaModulo: M(10), dermatoscopiaImg: DSP.veil },
@@ -414,7 +457,7 @@ export const DERMA_DIAS: DiaDerma[] = [
     morfologia: 'Pápula', sitio: 'Difuso', ddx: ['CBC (arboriformes, nidos ovoides azul-gris, hojas de arce)', 'QS (milium, aperturas comedonianas, fisuras cerebriformes)', 'Dermatofibroma (parche blanco central + retículo periférico fino)', 'Angioma (lagunas rojas) vs melanoma nodular (vasos polimorfos)'],
     atlasUrl: `${CME}/dermoscopy-of-other-non-melanocytic-lesions`, dermatoscopiaUrl: DSP.chaos, dermatoscopiaModulo: M(11), dermatoscopiaImg: DSP.df },
   { d: 27, fecha: '2026-11-18', bloque: B.D, bKey: 'D', tier: 'ALTA', sub: 'Linfomas cutáneos (MF/Sézary), Merkel, Kaposi, DFSP', referente: null,
-    access: CASO, qbankly: rBARN, promir: null, extra: { t: 'Color Atlas 9e · S21 Lymphomas & Sarcoma', url: ca(275944447) }, casoIds: [164, 108],
+    access: CASO, qbankly: rBARN, promir: PMD(4), extra: { t: 'Color Atlas 9e · S21 Lymphomas & Sarcoma', url: ca(275944447) }, casoIds: [164, 108],
     morfologia: 'Placa', sitio: 'Tronco', ddx: ['MF en parches (zonas no fotoexpuestas, "bañador") vs eccema vs psoriasis vs parapsoriasis', 'Merkel (nódulo rojo-violáceo de crecimiento rápido, AEIOU) vs CBC vs quiste', 'Kaposi (máculas/placas violáceas, VIH/HHV-8) vs angioma vs hematoma', 'DFSP (placa indurada en tronco joven) vs queloide vs dermatofibroma'],
     atlasUrl: `${DN}/topics/mycosis-fungoides`, dermatoscopiaUrl: DSP.mf, histoUrl: 'https://www.dermpathatlas.com/', dermatoscopiaImg: DSA },
   { d: 28, fecha: '2026-11-20', bloque: B.D, bKey: 'D', tier: 'ALTA', sub: 'Fotoenvejecimiento + fotoprotección (ciencia básica que el CORE surgical exige → estética)', referente: null,
@@ -427,7 +470,7 @@ export const DERMA_DIAS: DiaDerma[] = [
     morfologia: 'Patrón (histo)', sitio: 'Difuso', ddx: ['Espongiótico (eccema) vs psoriasiforme (psoriasis) vs liquenoide/interfase (LP, LE, EM)', 'Vesículo-ampolloso (nivel de la ampolla) vs granulomatoso vs vasculopático', 'Perivascular superficial vs nodular/difuso'],
     atlasUrl: `${DN}/topics/introduction-to-dermatopathology`, histoUrl: 'https://www.dermpathatlas.com/', dermatoscopiaImg: DSA },
   { d: 30, fecha: '2026-11-26', bloque: B.E, bKey: 'E', tier: 'ALTA', sub: 'Vocabulario dermpath: espongiosis, acantosis, interfase, granulomas (el idioma de la discusión del caso)', referente: null,
-    access: CASO, qbankly: rBARN, promir: null, extra: { t: "Barnhill's Dermatopathology 4e", url: book(2802) }, casoIds: [59, 134],
+    access: CASO, qbankly: rBARN, promir: PMD(1), extra: { t: "Barnhill's Dermatopathology 4e", url: book(2802) }, casoIds: [59, 134],
     morfologia: 'Patrón (histo)', sitio: 'Difuso', ddx: ['Espongiosis vs acantosis vs paraqueratosis vs hipergranulosis', 'Interfase vacuolar (EM, LE) vs liquenoide en banda (LP)', 'Granuloma sarcoideo ("desnudo") vs tuberculoide (caseoso) vs necrobiótico vs cuerpo extraño'],
     atlasUrl: `${DN}/topics/dermatopathology`, histoUrl: 'https://www.dermpathatlas.com/', dermatoscopiaModulo: M(13), dermatoscopiaImg: DSP.abcd },
   { d: 31, fecha: '2026-11-30', bloque: B.E, bKey: 'E', tier: 'ALTA', sub: 'Ampollosas al microscopio: nivel de la ampolla + IF directa/indirecta', referente: null,
@@ -439,7 +482,7 @@ export const DERMA_DIAS: DiaDerma[] = [
     morfologia: 'Tumor', sitio: 'Difuso', ddx: ['Nidos basaloides en empalizada + retracción (CBC) vs perlas córneas/atipia (CEC) vs atipia basal con paraqueratosis (QA)', 'Melanoma (asimetría, nidos irregulares, diseminación pagetoide, sin maduración) vs nevus (maduración en profundidad)', 'QS (pseudoquistes córneos, acantosis) vs verruga (koilocitos, papilomatosis)'],
     atlasUrl: `${DN}/topics/basal-cell-carcinoma`, dermatoscopiaUrl: DSP.bcc, histoUrl: 'https://www.dermpathatlas.com/', dermatoscopiaModulo: M(14), dermatoscopiaImg: DSP.menzies },
   { d: 33, fecha: '2026-12-04', bloque: B.E, bKey: 'E', tier: 'MED', sub: 'Depósitos, infiltrados y paniculitis + drill dermpath de cierre', referente: null,
-    access: CASO, qbankly: rCORE, promir: null, extra: { t: "Barnhill's Dermatopathology 4e", url: book(2802) }, casoIds: [27, 187],
+    access: CASO, qbankly: rCORE, promir: PMD(3), extra: { t: "Barnhill's Dermatopathology 4e", url: book(2802) }, casoIds: [27, 187],
     morfologia: 'Nódulo', sitio: 'Difuso', ddx: ['Paniculitis septal (eritema nodoso) vs lobulillar (eritema indurado/vasculitis nodular, pancreática)', 'Depósitos: amiloide (rojo Congo) vs mucina (azul alcián) vs calcio (von Kossa) vs urato', 'Infiltrados: mastocitosis (Giemsa) vs leucemia cutis vs linfoma'],
     atlasUrl: `${DN}/topics/dermatopathology`, histoUrl: 'https://www.dermpathatlas.com/', dermatoscopiaImg: DSA },
   // ── MÓDULO F · Pediátrica (30/200 casos) ──
@@ -452,7 +495,7 @@ export const DERMA_DIAS: DiaDerma[] = [
     morfologia: 'Mácula', sitio: 'Difuso', ddx: ['Kawasaki (fiebre ≥5 d + conjuntivitis + labios/lengua + manos-pies + adenopatía + exantema) vs escarlatina vs sarampión', 'Exantema súbito (fiebre → rash) vs rubéola vs eritema infeccioso (mejillas abofeteadas)', 'Mano-pie-boca vs varicela vs impétigo', 'Shock tóxico vs SSSS'],
     atlasUrl: `${DN}/topics/kawasaki-disease`, dermatoscopiaImg: DSA },
   { d: 36, fecha: '2026-12-14', bloque: B.F, bKey: 'F', tier: 'CRIT', sub: 'Facomatosis: NF1, esclerosis tuberosa, Sturge-Weber (criterios en la piel)', referente: null,
-    access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Color Atlas 9e · S16 Genetic Diseases', url: ca(275943937) }, casoIds: [126, 188],
+    access: CASO, qbankly: rPIC, promir: PMD(9), extra: { t: 'Color Atlas 9e · S16 Genetic Diseases', url: ca(275943937) }, casoIds: [126, 188],
     morfologia: 'Mácula', sitio: 'Tronco', ddx: ['NF1 (≥6 café con leche, efélides axilares/inguinales, neurofibromas, nódulos de Lisch) vs síndrome de Legius vs McCune-Albright (borde irregular)', 'Esclerosis tuberosa (máculas hipomelanóticas "hoja de fresno", angiofibromas, placa de chagrín, fibromas ungueales)', 'Sturge-Weber (malformación capilar V1 + leptomeninges/glaucoma) vs hemangioma segmentario facial (PHACE)'],
     atlasUrl: `${DN}/topics/neurofibromatosis`, dermatoscopiaModulo: M(16), dermatoscopiaImg: DSP.seven },
   { d: 37, fecha: '2026-12-16', bloque: B.F, bKey: 'F', tier: 'ALTA', sub: 'Genodermatosis: ictiosis + epidermólisis bullosas (queratinas y colágenos = mecanismo)', referente: null,
@@ -465,7 +508,7 @@ export const DERMA_DIAS: DiaDerma[] = [
     atlasUrl: `${DN}/topics/infantile-acne`, dermatoscopiaModulo: M(17), dermatoscopiaImg: DSP.trico },
   // ── MÓDULO G · Quirúrgica / anatomía facial (30/200 casos; el CORE surgical INCLUYE la cosmética) ──
   { d: 39, fecha: '2026-12-22', bloque: B.G, bKey: 'G', tier: 'CRIT', sub: 'Anatomía quirúrgica facial II: RSTL, subunidades estéticas, nervios en riesgo (temporal, marginal)', referente: 'Cotofana',
-    access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Dermatologic Surgery · Surgical Anatomy & Cosmetic Subunits', url: `${MH}/content.aspx?bookid=2811&sectionid=245216992` }, casoIds: [72, 11],
+    access: CASO, qbankly: rPIC, promir: PMD(5), extra: { t: 'Dermatologic Surgery · Surgical Anatomy & Cosmetic Subunits', url: `${MH}/content.aspx?bookid=2811&sectionid=245216992` }, casoIds: [72, 11],
     morfologia: 'Anatomía (nervios)', sitio: 'Cara', ddx: ['Rama temporal del facial (zona de Pitanguy, sobre el arco cigomático) → ptosis de ceja', 'Rama marginal mandibular (bajo el borde mandibular, cruza la a. facial) → asimetría de sonrisa', 'N. espinal accesorio (triángulo posterior, punto de Erb) → hombro caído', 'N. auricular mayor → hipoestesia del lóbulo'],
     atlasUrl: ANIM3D, dermatoscopiaImg: DSA },
   { d: 40, fecha: '2026-12-24', bloque: B.G, bKey: 'G', tier: 'ALTA', sub: 'Biopsias (punch/shave/excisional) + anestesia local: lidocaína y dosis máximas', referente: null,
@@ -477,7 +520,7 @@ export const DERMA_DIAS: DiaDerma[] = [
     morfologia: 'Sutura', sitio: 'Difuso', ddx: ['Absorbible (poliglactina, PDS: subcutáneo/enterrado) vs no absorbible (nylon, polipropileno: piel)', 'Simple vs colchonero vertical (eversión) vs horizontal (hemostasia) vs intradérmica continua (estética)', 'Nudo cuadrado vs de cirujano; tensión mínima en cara'],
     atlasUrl: `${DN}/topics/suturing-techniques`, dermatoscopiaImg: DSA },
   { d: 42, fecha: '2026-12-30', bloque: B.G, bKey: 'G', tier: 'MED', sub: 'Colgajos e injertos: avance, rotación, romboidal, bilobulado', referente: null,
-    access: CASO, qbankly: rBARN, promir: null, extra: { t: 'Facial Flap Surgery', url: book(2829) }, casoIds: [195, 88],
+    access: CASO, qbankly: rBARN, promir: PMD(6), extra: { t: 'Facial Flap Surgery', url: book(2829) }, casoIds: [195, 88],
     morfologia: 'Colgajo', sitio: 'Cara', ddx: ['Avance (frente, RSTL) vs rotación (mejilla) vs transposición (romboidal de Limberg, bilobulado nasal)', 'Colgajo (aporte vascular propio) vs injerto de espesor total (cara) vs parcial (grandes defectos)', 'Cierre por segunda intención (superficies cóncavas: canto interno, concha, sien)'],
     atlasUrl: `${DN}/topics/skin-flaps`, dermatoscopiaModulo: DSC_QUIZ, dermatoscopiaImg: DSP.struct },
   { d: 43, fecha: '2027-01-05', bloque: B.G, bKey: 'G', tier: 'ALTA', sub: 'Mohs + control de márgenes: indicaciones (área H) y lógica', referente: null,
@@ -490,7 +533,7 @@ export const DERMA_DIAS: DiaDerma[] = [
     atlasUrl: `${DN}/topics/keloid-and-hypertrophic-scar`, dermatoscopiaModulo: DSC_COMP, dermatoscopiaImg: DSP.vasos },
   // ── MÓDULO H · Checkpoint CORE (mapa de debilidades antes de la fase estética — lee el ledger) ──
   { d: 45, fecha: '2027-01-11', bloque: B.H, bKey: 'H', tier: 'ALTA', sub: 'Checkpoint 1: mapa de fallos por módulo CORE (med/ped/surg/path) desde el ledger → qué re-drillear en FSRS', referente: null,
-    access: CASO_DD, qbankly: rQOTW, promir: null, extra: { t: 'ABD CORE Study Guide (PDF oficial)', url: ABD_GUIDE }, casoIds: [73, 54],
+    access: CASO_DD, qbankly: rQOTW, promir: PMD(5), extra: { t: 'ABD CORE Study Guide (PDF oficial)', url: ABD_GUIDE }, casoIds: [73, 54],
     morfologia: 'Mapa de fallos', sitio: 'Difuso', ddx: ['% fallo por área del ledger: Med (110) · Path (30) · Peds (30) · Surg (30)', 'Tipo de error dominante: CCSN vs CONCEPTO vs MORFOLOGIA vs DDX', 'Descripción 8 ejes: media ≥6/8 = gate del módulo A superado'],
     atlasUrl: IMG_LIB, dermatoscopiaImg: DSA },
   { d: 46, fecha: '2027-01-13', bloque: B.H, bKey: 'H', tier: 'ALTA', sub: 'Checkpoint 2: re-drill de fallos etiquetados + pares del DD Challenge de tus áreas flojas + drill oclusión vascular 90 s', referente: null,
@@ -503,7 +546,7 @@ export const DERMA_DIAS: DiaDerma[] = [
     morfologia: 'Capas (5)', sitio: 'Cara', ddx: ['Piel → grasa subcutánea (compartimentos superficiales) → SMAS/músculo → grasa profunda/espacios → periostio (Cotofana)', 'Ligamentos de retención: orbicular, cigomático, mandibular, masetérico-cutáneo', 'Plano supraperióstico profundo (relativamente seguro) vs subcutáneo superficial (arterias nominadas)'],
     atlasUrl: ANIM3D, dermatoscopiaImg: DSA },
   { d: 48, fecha: '2027-01-19', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'Arterias peligrosas + zonas seguras: glabela, nariz, temple, surco nasogeniano (no errar)', referente: 'Cotofana',
-    access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Vascular Safe Zones (PAN 2022)', url: 'https://pubmed.ncbi.nlm.nih.gov/36469395/' }, casoIds: [128, 144],
+    access: CASO, qbankly: rPIC, promir: PMD(2), extra: { t: 'Vascular Safe Zones (PAN 2022)', url: 'https://pubmed.ncbi.nlm.nih.gov/36469395/' }, casoIds: [128, 144],
     morfologia: 'Anatomía (arterias)', sitio: 'Cara', ddx: ['Riesgo de ceguera grado 4 (Goodman 2020): glabela, nariz, frente — nariz 56,3 % de los casos, glabela 27,1 %, frente 18,8 %', 'Grado 3: sien, surco nasogeniano, surco lagrimal, periorbital, mejilla medial', 'Zonas seguras por región + plano (Cotofana PAN 2022 / Freytag JDD 2019)'],
     atlasUrl: `${DN}/topics/fillers`, dermatoscopiaImg: DSP.vasos, puenteResearch: PR_L4('Mapa anatómico del riesgo = variable "zona" de los subgrupos de SR-1 (R33).') },
   { d: 49, fecha: '2027-01-21', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Envejecimiento estructural (hueso → grasa → ligamento → piel) + análisis facial: tercios, MD ASA', referente: 'de Maio',
@@ -515,7 +558,7 @@ export const DERMA_DIAS: DiaDerma[] = [
     morfologia: 'Arruga dinámica', sitio: 'Cara', ddx: ['Serotipo A (onabotulinum, abobotulinum, incobotulinum, prabotulinum, daxibotulinum): unidades NO intercambiables — tablas de conversión por producto (A VERIFICAR en Carruthers 5e)', 'Arruga dinámica (toxina) vs estática (relleno/láser/peeling)', 'Mecanismo: clivaje de SNAP-25 → bloqueo de la exocitosis de ACh → denervación química reversible'],
     atlasUrl: `${DN}/topics/botulinum-toxin`, dermatoscopiaImg: DSP.red },
   { d: 51, fecha: '2027-01-27', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Toxina II: tercio superior (frontal, glabela, patas de gallo) — músculos, dosis, cómo evitar la ptosis', referente: 'Carruthers',
-    access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Dermatologic Surgery · Neuromodulators', url: `${MH}/content.aspx?bookid=2811&sectionid=245227386` }, casoIds: [171, 123],
+    access: CASO, qbankly: rPIC, promir: PMD(3), extra: { t: 'Dermatologic Surgery · Neuromodulators', url: `${MH}/content.aspx?bookid=2811&sectionid=245227386` }, casoIds: [171, 123],
     morfologia: 'Arruga dinámica', sitio: 'Cara', ddx: ['Glabela: corrugador + prócer (± depresor superciliar) — vector medial/inferior', 'Frontal: ÚNICO elevador de la ceja → sobredosis o puntos bajos = ptosis de ceja', 'Patas de gallo: orbicular lateral (puntos ≥1 cm del reborde orbitario — A VERIFICAR)', 'Ptosis palpebral (difusión al elevador del párpado) vs ptosis de ceja (frontal debilitado)'],
     atlasUrl: `${DN}/topics/botulinum-toxin`, dermatoscopiaImg: DSA },
   { d: 52, fecha: '2027-01-29', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Toxina III: tercio inferior, Nefertiti, masetero, hiperhidrosis', referente: 'Carruthers',
@@ -527,7 +570,7 @@ export const DERMA_DIAS: DiaDerma[] = [
     morfologia: 'Ptosis', sitio: 'Cara', ddx: ['Ptosis palpebral (apraclonidina colirio — concentración/pauta A VERIFICAR en Cureus 2026) vs ptosis de ceja (esperar; no hay antídoto)', 'Asimetría (retoque a las 2 semanas) vs "Spock brow" (frontal lateral no tratado)', 'Difusión al cigomático (sonrisa asimétrica) / disfagia y debilidad cervical (platisma)', 'Fallo secundario: anticuerpos neutralizantes vs dosis insuficiente'],
     atlasUrl: `${DN}/topics/botulinum-toxin`, dermatoscopiaImg: DSA },
   { d: 54, fecha: '2027-02-04', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: "Rellenos I: reología del HA (G', cohesividad) + bioestimuladores (CaHA/PLLA)", referente: 'de Maio',
-    access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Cosmeceuticals · Hyaluronic Acid', url: `${MH}/content.aspx?bookid=2812&sectionid=244978644` }, casoIds: [200, 18],
+    access: CASO, qbankly: rPIC, promir: PMD(1), extra: { t: 'Cosmeceuticals · Hyaluronic Acid', url: `${MH}/content.aspx?bookid=2812&sectionid=244978644` }, casoIds: [200, 18],
     morfologia: 'Volumen', sitio: 'Cara', ddx: ["G' alto (proyección/soporte: mentón, mandíbula, pómulo) vs G' bajo (labio, surco lagrimal, líneas finas)", 'Cohesividad y tamaño de partícula → integración vs migración', 'HA (reversible con hialuronidasa) vs CaHA/PLLA (bioestimuladores NO reversibles: no en zonas de riesgo vascular alto)'],
     atlasUrl: `${DN}/topics/fillers`, dermatoscopiaImg: DSP.streaks },
   { d: 55, fecha: '2027-02-08', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Rellenos II: planos de inyección, aguja vs cánula, técnicas por región', referente: 'de Maio',
@@ -540,7 +583,7 @@ export const DERMA_DIAS: DiaDerma[] = [
     atlasUrl: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8012343/', dermatoscopiaImg: DSP.abcd },
   // ── SWAP v2.1 · contenido original de d19-20 (Infecciosas) trasladado aquí; fechas intactas ──
   { d: 57, fecha: '2027-02-12', bloque: B.C, bKey: 'C', tier: 'MED', sub: 'El paciente agudo con fiebre y rash: meningococemia, endocarditis, necrotizantes (trasladado desde d19 por el swap de seguridad de fillers)', referente: null,
-    access: CASO, qbankly: rQOTW, promir: null, extra: { t: 'Color Atlas 9e · S8 The Acutely Ill Patient', url: ca(275942269) }, casoIds: [130, 92],
+    access: CASO, qbankly: rQOTW, promir: PMD(2), extra: { t: 'Color Atlas 9e · S8 The Acutely Ill Patient', url: ca(275942269) }, casoIds: [130, 92],
     morfologia: 'Púrpura', sitio: 'Difuso', ddx: ['Meningococemia (púrpura retiforme + fiebre + shock) vs vasculitis vs CID', 'Endocarditis: lesiones de Janeway, nódulos de Osler, hemorragias en astilla', 'Fascitis necrotizante (dolor desproporcionado, crepitación, bullas hemorrágicas) vs celulitis', 'SSSS vs TEN vs shock tóxico'],
     atlasUrl: `${DN}/topics/meningococcal-disease`, dermatoscopiaImg: DSA },
   { d: 58, fecha: '2027-02-16', bloque: B.C, bKey: 'C', tier: 'MED', sub: 'Pelo y uñas infecciosos (tiña capitis, onicomicosis) + repaso del módulo (trasladado desde d20)', referente: null,
@@ -553,7 +596,7 @@ export const DERMA_DIAS: DiaDerma[] = [
     ddx: ['Proporciones étnicas (no "occidentalizar": proyección malar, mentón, perfil)', 'Género: ángulo mandibular, ceja, labio — vectores distintos', 'Fat transfer: volumen grande, supervivencia variable, riesgo embólico alto y NO reversible'],
     atlasUrl: `${DN}/topics/ethnic-dermatology`, dermatoscopiaImg: DSA, puenteResearch: PR_L5(SR2_NOTA) },
   { d: 60, fecha: '2027-02-22', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Peelings I: profundidad (superficial/medio/profundo), agentes (glicólico, salicílico, TCA, fenol), frosting', referente: 'Baumann',
-    access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Baumann 3e · Chemical Peels', url: `${MH}/content.aspx?bookid=3200&sectionid=266616672` }, casoIds: [51, 174],
+    access: CASO, qbankly: rPIC, promir: PMD(4), extra: { t: 'Baumann 3e · Chemical Peels', url: `${MH}/content.aspx?bookid=3200&sectionid=266616672` }, casoIds: [51, 174],
     morfologia: 'Escama', sitio: 'Cara', ddx: ['Superficial (glicólico, salicílico, Jessner): epidermis — sin downtime', 'Medio (TCA a concentración media — A VERIFICAR % en Baumann 3e): dermis papilar; frosting nivel II', 'Profundo (fenol / Baker-Gordon): dermis reticular; cardiotoxicidad → monitorización'],
     atlasUrl: `${DN}/topics/chemical-peels`, dermatoscopiaImg: DSP.struct },
   { d: 61, fecha: '2027-02-24', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Peelings II: por fototipo (IV–VI), prevención de PIH, complicaciones (conecta con L4/L5 research)', referente: 'Baumann',
@@ -566,7 +609,7 @@ export const DERMA_DIAS: DiaDerma[] = [
     morfologia: 'Cromóforo', sitio: 'Difuso', ddx: ['Cromóforos: melanina (absorción decrece con λ) vs hemoglobina (picos en visible) vs agua (IR medio: Er:YAG, CO2) vs tinta', 'Duración de pulso < tiempo de relajación térmica del objetivo (Anderson-Parrish 1983): dañar el blanco sin cocer alrededor', 'Enfriamiento epidérmico (contacto, criógeno, aire) protege la melanina epidérmica → clave en fototipos altos'],
     atlasUrl: `${DN}/topics/lasers-in-dermatology`, dermatoscopiaImg: DSP.twoStep },
   { d: 63, fecha: '2027-03-02', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Láser II: lesiones vasculares (PDL) + pigmento y tatuajes (Q-switched/pico)', referente: 'Anderson',
-    access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Lasers in Dermatology · Cutaneous Vascular Lesions', url: `${MH}/content.aspx?bookid=2818&sectionid=240357136` }, casoIds: [133, 29],
+    access: CASO, qbankly: rPIC, promir: PMD(3), extra: { t: 'Lasers in Dermatology · Cutaneous Vascular Lesions', url: `${MH}/content.aspx?bookid=2818&sectionid=240357136` }, casoIds: [133, 29],
     morfologia: 'Mácula', sitio: 'Cara', ddx: ['PDL (amarillo, absorción Hb): malformación capilar, telangiectasias, hemangioma, rosácea eritematosa — púrpura esperable', 'Q-switched / picosegundo (Nd:YAG 1064/532, alexandrita, rubí): tatuaje según color de tinta, lentigos, nevus de Ota — λ exactas A VERIFICAR en 2818/240357136', 'Púrpura post-PDL (esperada) vs quemadura (ampolla, hipopigmentación)'],
     atlasUrl: `${DN}/topics/lasers-in-dermatology`, dermatoscopiaUrl: DSP.vasos, dermatoscopiaImg: DSA },
   { d: 64, fecha: '2027-03-04', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Láser III: resurfacing fraccional (ablativo/no-ablativo) + radiofrecuencia + tightening', referente: 'Manstein/Anderson',
@@ -579,7 +622,7 @@ export const DERMA_DIAS: DiaDerma[] = [
     ddx: ['Depilación en fototipo V-VI: Nd:YAG de pulso largo > diodo > alexandrita (mayor riesgo de quemadura por absorción epidérmica)', 'PIH post-láser vs hipopigmentación (daño melanocítico) vs quemadura', 'Test spot + esperar respuesta + parámetros conservadores (cifras A VERIFICAR en 2811/245228834)'],
     atlasUrl: `${DN}/topics/ethnic-dermatology`, dermatoscopiaImg: DSA, puenteResearch: PR_L5(SR2_NOTA) },
   { d: 66, fecha: '2027-03-10', bloque: B.X, bKey: 'X', tier: 'MED', sub: 'Contorno corporal (criolipólisis, HIFU) + escleroterapia básica (ambos en el temario CORE surgical)', referente: null,
-    access: CASO, qbankly: rBARN, promir: null, extra: { t: 'Lasers in Dermatology · Devices for Body Contour', url: `${MH}/content.aspx?bookid=2818&sectionid=240357542` }, casoIds: [139, 197],
+    access: CASO, qbankly: rBARN, promir: PMD(8), extra: { t: 'Lasers in Dermatology · Devices for Body Contour', url: `${MH}/content.aspx?bookid=2818&sectionid=240357542` }, casoIds: [139, 197],
     morfologia: 'Volumen', sitio: 'Tronco', ddx: ['Criolipólisis (apoptosis del adipocito por frío) vs HIFU vs RF: hiperplasia adiposa paradójica (criolipólisis)', 'Escleroterapia: telangiectasias/venas reticulares (polidocanol, STS — concentraciones A VERIFICAR); matting, pigmentación, úlcera por extravasación', 'Varices tronculares → dúplex primero'],
     atlasUrl: `${DN}/topics/sclerotherapy`, dermatoscopiaImg: DSP.glob },
   { d: 67, fecha: '2027-03-12', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Microneedling + PRP + skinboosters: evidencia y técnica', referente: 'Baumann',
@@ -592,7 +635,7 @@ export const DERMA_DIAS: DiaDerma[] = [
     atlasUrl: `${DN}/topics/topical-retinoids`, dermatoscopiaImg: DSP.red, nitida: N_COSM },
   // ── MÓDULO Z · Cierre (integración + repaso de fallos desde el ledger) ──
   { d: 69, fecha: '2027-03-18', bloque: B.Z, bKey: 'Z', tier: 'MED', sub: 'REPASO 1: segunda pasada FSRS — SOLO casos y preguntas fallados del ledger, por módulo CORE más flojo', referente: null,
-    access: CASO_FALLOS, qbankly: rPIC, promir: null, extra: { t: 'Guidebook to Dermatologic Diagnosis (repaso)', url: book(2960) }, casoIds: [157, 181],
+    access: CASO_FALLOS, qbankly: rPIC, promir: PMD(4), extra: { t: 'Guidebook to Dermatologic Diagnosis (repaso)', url: book(2960) }, casoIds: [157, 181],
     morfologia: 'Repaso', sitio: 'Difuso', ddx: ['SOLO fallos del ledger (dermaLedger.casosParaSegundaPasada)', 'Ordenados por módulo CORE con mayor % fallo', 'Re-describir los 8 ejes antes de reabrir la discusión'],
     atlasUrl: IMG_LIB, dermatoscopiaImg: DSA },
   { d: 70, fecha: '2027-03-22', bloque: B.Z, bKey: 'Z', tier: 'MED', sub: 'REPASO 2: mapa final de debilidades + plan del ciclo siguiente (post-Step 1: 5 casos/sesión con los 60 casos restantes)', referente: null,

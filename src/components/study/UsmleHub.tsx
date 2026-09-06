@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Linking, Platform } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, Motion } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
@@ -10,8 +10,12 @@ import {
   USMLE_STEP2_RESOURCES, USMLE_CHECKPOINTS, USMLE_READINESS, FIRST_AID_INDEX, SKETCHY_SYMBOLS,
   PRIORIDAD_COLOR, VUELTAS,
 } from '../../lib/usmleData';
-import { DIAS } from '../../lib/usmleStep1Daily';
+import { DIAS, USMLE_NIVELES, USMLE_GATE } from '../../lib/usmleStep1Daily';
 import { planHoyD, progresoGlobal, loadDone } from '../../lib/studyProgress';
+import {
+  UsmleScore, loadScores, pullScores, onScoresChange, mediaMovil7d, distanciaOnTrack, readinessDesdeHitos,
+  hitosPlan, HITOS_ONTRACK_FUENTE,
+} from '../../lib/usmleScores';
 import ReadinessBar from './ReadinessBar';
 import { ConsoleTabs, CheckpointCard } from './ConsoleKit';
 import UsmlePalmertonExplorer from './UsmlePalmertonExplorer';
@@ -45,8 +49,21 @@ export default function UsmleHub() {
   const [sub, setSub] = useState('hoy');
   // Command-bar readiness metrics (derived, no data mutation).
   const done = loadDone('usmle');
-  const hoyD = planHoyD(DIAS, todayISO());
+  const iso = todayISO();
+  const hoyD = planHoyD(DIAS, iso);
   const glob = progresoGlobal(DIAS, new Set(done));
+  // Medición Palmerton (usmleScores): local al instante, Supabase al montar, y refresco cuando UsmleTodayPlan guarda.
+  const [scores, setScores] = useState<UsmleScore[]>(() => loadScores());
+  useEffect(() => {
+    let vivo = true;
+    const off = onScoresChange((s) => { if (vivo) setScores(s); });
+    pullScores().then((s) => { if (vivo) setScores(s); }).catch(() => {});
+    return () => { vivo = false; off(); };
+  }, []);
+  const media = mediaMovil7d(scores, iso);
+  const dist = distanciaOnTrack(scores, iso);
+  const rd = readinessDesdeHitos(scores);
+  const mediaVal = media ? (media.evalPct ?? media.consolPct ?? media.pretestPct) : null;
 
   return (
     <View>
@@ -56,8 +73,10 @@ export default function UsmleHub() {
         accent={JADE}
         dia={hoyD} total={glob.total} temarioPct={glob.pct}
         racha={`${done.length} temas`}
-        readinessPct={USMLE_READINESS.pct} readinessLabel={USMLE_READINESS.status}
+        readinessPct={rd ? rd.pct : USMLE_READINESS.pct} readinessLabel={rd ? rd.label : USMLE_READINESS.status}
         extraStat={{ label: 'PATH', value: `${USMLE_KPIS.pathologyPct}%`, hint: 'del examen', accent: Colors.coral }}
+        media7d={media && mediaVal != null ? { label: 'MEDIA 7D', value: `${mediaVal}%`, hint: media.evalPct != null ? `eval timed · ${media.n} días` : `consolidación · ${media.n} días`, accent: mediaVal >= USMLE_GATE.pct ? Colors.green : Colors.gold } : null}
+        onTrack={dist ? { label: `Δ ${dist.hito.clave.toUpperCase()}`, value: `${dist.delta >= 0 ? '+' : ''}${dist.delta}`, hint: `mín ${dist.hito.min}% · ${dist.referencia}`, accent: dist.delta >= 0 ? Colors.green : Colors.coral } : null}
       />
 
       <ConsoleTabs tabs={TABS} active={sub} accent={JADE} onSelect={setSub} />
@@ -65,17 +84,69 @@ export default function UsmleHub() {
       {sub === 'hoy' ? <UsmleTodayPlan />
         : sub === 'hy' ? <UsmlePalmertonExplorer />
         : sub === 'qbankly' ? <UsmleQbanklyExplorer />
-        : sub === 'readiness' ? <ReadinessView />
+        : sub === 'readiness' ? <ReadinessView scores={scores} />
         : sub === 'roi' ? <RoiPlan />
         : <PalmertonBrain />}
     </View>
   );
 }
 
-// ── READINESS · NBME/UWSA/Free120 + Step 2 CK + First Aid + Sketchy ──
-function ReadinessView() {
+// ── 5 NIVELES UWORLD (Palmerton) · tabla ──
+function NivelesTable() {
+  return (
+    <GlassPanel accent={JADE} style={{ marginBottom: Spacing.xl, padding: Spacing.lg }}>
+      <Text style={st.h3}>🎚️ 5 niveles de maestría UWorld → fases A/B/C</Text>
+      <Text style={[st.smallNote, { marginBottom: Spacing.sm }]}>{USMLE_GATE.regla} {USMLE_GATE.medida}</Text>
+      {USMLE_NIVELES.map((n) => (
+        <View key={n.nivel} style={[st.nivRow, { borderLeftColor: n.color }]}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+            <View style={[st.nivBadge, { backgroundColor: n.color + '22', borderColor: n.color + '77' }]}><Text style={[st.nivBadgeTxt, { color: n.color }]}>NIVEL {n.nivel}</Text></View>
+            <Text style={st.nivName}>{n.nombre}</Text>
+            <Chip label={`Fase ${n.fase}`} color={Colors.muted} small />
+          </View>
+          <Text style={st.nivLine}><Text style={st.nivKey}>Formato · </Text>{n.formato}</Text>
+          <Text style={st.nivLine}><Text style={st.nivKey}>Q/día · </Text>{n.qDia}</Text>
+          <Text style={st.nivLine}><Text style={[st.nivKey, { color: Colors.gold }]}>Umbral para subir · </Text>{n.umbral}</Text>
+          <Text style={st.nivLine}><Text style={[st.nivKey, { color: JADE }]}>Dónde vive · </Text>{n.dondeVive}</Text>
+        </View>
+      ))}
+      <Text style={[st.smallNote, { marginTop: Spacing.sm }]}>Si falla el gate: {USMLE_GATE.siFalla}</Text>
+    </GlassPanel>
+  );
+}
+
+// ── SERIE DE HITOS con mínimo on-track (Parte V) y % registrado ──
+function HitosSerie({ scores }: { scores: UsmleScore[] }) {
+  const hs = hitosPlan(scores);
+  const color = (e: string) => e === 'on-track' ? Colors.green : e === 'bajo' ? Colors.coral : e === 'registrado' ? Colors.gold : Colors.muted;
+  return (
+    <GlassPanel accent={Colors.gold} style={{ marginBottom: Spacing.xl, padding: Spacing.lg }}>
+      <Text style={st.h3}>🎯 Serie de hitos · mínimo on-track vs registrado</Text>
+      <Text style={[st.smallNote, { marginBottom: Spacing.sm }]}>Mínimos: {HITOS_ONTRACK_FUENTE}. El % se registra el día del hito en 📏 Medición (Cola de hoy → campo eval). GO = 2 NBME consecutivos ≥68% + UWSA2 low risk.</Text>
+      {hs.map((h) => (
+        <View key={h.d} style={st.hitoRow}>
+          <Text style={[st.hitoD, tabular]}>D{h.d}</Text>
+          <Text style={[st.hitoFecha, tabular]}>{h.fecha.slice(5)}</Text>
+          <View style={{ flex: 1, minWidth: 0 }}>
+            <Text style={st.hitoClave} numberOfLines={1}>{h.clave}</Text>
+            {h.nota ? <Text style={st.hitoNota} numberOfLines={2}>{h.nota}</Text> : null}
+          </View>
+          <Text style={[st.hitoMin, tabular]}>{h.min != null ? `≥${h.min}%` : 'baseline'}</Text>
+          <Text style={[st.hitoVal, tabular, { color: color(h.estado) }]}>{h.valor != null ? `${Math.round(h.valor)}%` : '—'}</Text>
+          <Text style={[st.hitoEstado, { color: color(h.estado) }]}>{h.estado === 'on-track' ? '✓' : h.estado === 'bajo' ? '✗' : h.estado === 'registrado' ? '●' : '○'}</Text>
+        </View>
+      ))}
+      <Text style={[st.smallNote, { marginTop: Spacing.sm }]}>Un hito &gt;5 puntos bajo su mínimo → auditar el MÉTODO esa semana (checklist §G), no sumar horas; dos hitos seguidos bajo mínimo → plan B de fecha (feb-mar, mismo eligibility period).</Text>
+    </GlassPanel>
+  );
+}
+
+// ── READINESS · niveles UWorld + serie de hitos + NBME/UWSA/Free120 + Step 2 CK + First Aid + Sketchy ──
+function ReadinessView({ scores }: { scores: UsmleScore[] }) {
   return (
     <View>
+      <NivelesTable />
+      <HitosSerie scores={scores} />
       <CheckpointCard
         title="Score checkpoints · NBME / UWSA / Free 120"
         subtitle={USMLE_READINESS.next}
@@ -371,4 +442,20 @@ const st = StyleSheet.create({
 
   resCard: { ...cardBase, ...WEB_LINK },
   resLabel: { fontSize: FontSize.labelMd, color: JADE, fontWeight: '600', lineHeight: 16 },
+
+  // niveles UWorld + serie de hitos (Palmerton v3)
+  nivRow: { borderLeftWidth: 3, paddingLeft: Spacing.md, paddingVertical: Spacing.sm, marginTop: Spacing.sm, borderTopWidth: 1, borderTopColor: Hairline.soft },
+  nivBadge: { borderRadius: BorderRadius.full, borderWidth: 1, paddingVertical: 2, paddingHorizontal: 9 },
+  nivBadgeTxt: { fontSize: 10, fontWeight: '800', letterSpacing: 0.6 },
+  nivName: { fontSize: FontSize.bodyMd, fontWeight: '700', color: Colors.onSurface, letterSpacing: -0.2 },
+  nivLine: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 17, marginTop: 4 },
+  nivKey: { fontWeight: '800', color: Colors.smallLabel, letterSpacing: 0.2 },
+  hitoRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 7, borderTopWidth: 1, borderTopColor: Hairline.soft },
+  hitoD: { fontSize: FontSize.labelSm, fontWeight: '800', color: JADE, width: 34 },
+  hitoFecha: { fontSize: FontSize.labelSm, color: Colors.muted, width: 40 },
+  hitoClave: { fontSize: FontSize.labelMd, fontWeight: '700', color: Colors.onSurface },
+  hitoNota: { fontSize: 9, color: Colors.muted, marginTop: 1, lineHeight: 12 },
+  hitoMin: { fontSize: FontSize.labelSm, fontWeight: '700', color: Colors.gold, width: 56, textAlign: 'right' },
+  hitoVal: { fontSize: FontSize.labelLg, fontWeight: '800', width: 44, textAlign: 'right' },
+  hitoEstado: { fontSize: FontSize.bodyMd, fontWeight: '800', width: 16, textAlign: 'center' },
 });

@@ -1,0 +1,141 @@
+{
+ "seccion": "derma",
+ "puntos_ciegos": [
+  {
+   "gap": "Toda la capa Palmerton creada el 05-sep es invisible para Joseph el lunes 7-sep (D1): dermaLedger.ts (matriz confianza×acierto, taxonomía CCSN/CONCEPTO/MORFOLOGIA/DDX, rúbrica 8 ejes, gate del módulo A), casoIds (2 casos fijos por sesión), dermatoscopiaImg/dermatoscopiaModulo (micro-track), puenteResearch (8 átomos), nitida (8 átomos → NITIDA_PROTOCOLOS.md), obsidianDermaMap.ts (rama 10_DERMATOLOGIA), DERMA_NOTEBOOKLM (cuaderno 'DERMA · Élite Engine', 86 fuentes) y dermaAnkiTsv/APEX::DERMA::<bloque>. Verificado con grep: 0 referencias a cualquiera de ellos en src/components y src/screens; DermaTodayPlan sigue mostrando 'Cases for Board Review' genérico, el ítem Anki 'Dermki → capítulo' y un cierre de texto sin botones. Sin UI no hay % ciego, no hay mapa de fallos por módulo CORE para d45, ni segunda pasada real en d69 (el ledger queda vacío). Además todo esto está sin commit (git status: dermaLedger.ts, ANKI_COLA/, TRACKING/, NITIDA_PROTOCOLOS.md, build_vault_derma.js sin trackear).",
+   "impacto": "alto",
+   "propuesta": "Commit del estado 05-sep y un único pase de UI sobre DermaTodayPlan/DermaHub, en este orden de valor: (1) en la lámina: chips 'Caso Nº a · Med' y 'Caso Nº b · Peds' desde casoIds + dermaCasoArea, y el link ①b 'imagen dermatoscópica ciega' (dermatoscopiaImg); en sesiones pares d6-d44 el slot de lectura muestra dermatoscopiaModulo en vez de extra; (2) cierre 14:13: por cada caso botones Lo sabía / Suerte / Confundí / No sabía + tipo de error + slider 0-8 (DERMA_EJES_MORFOLOGIA como chips) → dermaLedgerAdd; contador de descripciones ≥6/8 para el gate del módulo A (10 antes de d6 = 21-sep); (3) botón 'Exportar ledger' (dermaLedgerExportJSON) visible cada viernes y pegado a TRACKING/_registro_derma.json, o tabla Supabase derma_ledger (espejo de study_schedule) porque localStorage es el único depósito del % ciego y se pierde al limpiar el navegador o cambiar de dispositivo; (4) chips 'alimenta SR-1/SR-2' (puenteResearch) y 'Nítida' (abre la sección del protocolo); (5) ítem Anki → APEX::DERMA::<bKey> + botón que descargue el TSV de la sesión (dermaAnkiTsv); (6) botones ◆ Obsidian (dermaObsUrlDay/dermaObsUrlBlock, chip 📷 Dictado) y link al cuaderno NotebookLM en Fuentes con los 2 prompts de uso (tarjeta de mecanismo verificada · qué no sé del módulo X); (7) Hub: widget 'Debilidades por módulo CORE' (% fallo Med/Path/Peds/Surg y por bloque A-X) que alimenta d45/d46/d69/d70. Copiar el patrón de UsmleTodayPlan/MirTodayPlan para los botones Obsidian.",
+   "esfuerzo": "L",
+   "ficheros": [
+    "src/components/study/DermaTodayPlan.tsx",
+    "src/components/study/DermaHub.tsx",
+    "src/components/derma/DermaClinicalPlate.tsx",
+    "src/lib/dermaLedger.ts",
+    "src/lib/ankiLinks.ts",
+    "src/lib/obsidianDermaMap.ts",
+    "src/lib/dermaData.ts",
+    "DATA/DERMATOLOGIA/TRACKING/_registro_derma.json"
+   ],
+   "toca_app": true
+  },
+  {
+   "gap": "No hay taper de examen en Derma, lo contrario de lo que Palmerton exige en la última semana. Derma d47 (15-ene, Anatomía 3D CRIT) cae el día del NBME 31 + GO/NO-GO; d48 (19-ene) y d49 (21-ene) caen en el sprint final (NBME 32/33, FREE 120); d50 (25-ene, Toxina I CRIT), d51 (27-ene = día objetivo del examen Step 1) y d52 (29-ene) son contenido NUEVO de estética en plena semana de examen. Y d69-d70 (18/22-mar) coinciden con 'fines de marzo' del ENCAPS 2027-I. El análisis v3 lo midió ('cruce_step1') pero no propuso corrección y el plan v2.1 lo mantiene.",
+   "impacto": "alto",
+   "propuesta": "Swap de CONTENIDO (fechas intactas, mismo precedente que el swap v2.1 d19/20↔d57/58): d47-d52 pasan a 'modo taper' = 1 caso ciego (no 2) + repaso FSRS de fallos del ledger + 0 lectura nueva, absorbiendo ahí el contenido ligero MED que hoy está en d57 (paciente agudo), d58 (pelo/uñas) y d66 (contorno corporal) más 3 sesiones 'segunda pasada parcial' (mismo esquema que d69); Anatomía 3D → Arterias → Envejecimiento → Toxina I-III se corren a d53-d58 y el resto de X desliza en orden, extendiendo el plan a d73 (24/26/30-mar, generados por remap_inicio.js — la regex ya es año-agnóstica) o comprimiendo Contorno+Microneedling en una sesión. Añadir campo taper?: 'step1'|'encaps' en DiaDerma para que la UI muestre 'semana de examen: solo FSRS + 1 caso' y aplicar el mismo criterio a d69-d70 cuando se fije la fecha real del ENCAPS 2027-I. Regla explícita en PLAN_ELITE: ningún átomo CRIT nuevo a ±3 días hábiles de un examen mayor.",
+   "esfuerzo": "M",
+   "ficheros": [
+    "src/lib/dermaDailyPlan.ts",
+    "DATA/DERMATOLOGIA/PLAN_ELITE_2026-27.md",
+    "DATA/_scripts/remap_inicio.js",
+    "src/components/study/DermaTodayPlan.tsx"
+   ],
+   "toca_app": true
+  },
+  {
+   "gap": "El 'no puedes errar' de la meta estética sigue sin motor: dermaCerebro.ts (7 pasos del Cerebro Clínico por átomo + checklist HDPH) no existe, pero ya lo citan como si existiera dermaLedger.ts, ANKI_COLA/README_COLA_DERMA.md y TRACKING/_registro_derma.json (fuente 'drill' = 'checklist HDPH de dermaCerebro.ts'). El drill de oclusión vascular 90 s está programado en d19 (27-oct), d46 y d70 y hoy no tiene ni checklist ni cronómetro ni forma de registrar acierto. El mastery gate del SPEC §6.3 (recitar 7 pasos + catástrofe + rescate + guion) no existe en la app; solo hay una frase de 'mastery gate' en la lámina.",
+   "impacto": "alto",
+   "propuesta": "MVP antes del d19 (27-oct): src/lib/dermaCerebro.ts con (a) la checklist HDPH en 5 pasos (signos → dosis/pulsos → intervalos → ceguera → oftalmología) construida SOLO con lo ya verificado en PLANTILLA_SESION.txt (DeLorenzi 2017 PMID 28333326, Goodman 2020 PMC7427155; las UI por área quedan 'A VERIFICAR' hasta leer el texto completo) y (b) las fichas de 7 pasos de d19 y d20 usando el acné del SPEC §3.2 como formato. Componente DermaEmergencyDrill (cronómetro 90 s + checklist tocable + resultado a dermaLedgerAdd fuente 'drill'). Fase 2 antes de d47 (15-ene): fichas de 7 pasos de los 20 átomos X restantes + los 13 CRIT no-X, y DermaCerebroCard plegable en HOY con modo 'recitar' (oculta los 7 pasos hasta pulsar) → la marca 'átomo dominado' pasa a exigir 7/7 recitados. Fuente de redacción: cuaderno NotebookLM derma (tiene los papers) con la regla 'mecanismo estable vs parámetro clínico A VERIFICAR'.",
+   "esfuerzo": "L",
+   "ficheros": [
+    "src/lib/dermaCerebro.ts",
+    "src/components/derma/DermaEmergencyDrill.tsx",
+    "src/components/derma/DermaCerebroCard.tsx",
+    "src/components/study/DermaTodayPlan.tsx",
+    "src/lib/dermaLedger.ts"
+   ],
+   "toca_app": true
+  },
+  {
+   "gap": "Tres bloqueos distintos dependen de la misma sesión UF de AccessDerma con el Chrome de Joseph y ninguno se ha ejecutado: (1) 20 átomos siguen enlazando a PORTADA de libro (d1-4, d6, d26, d29-35, d38, d41-43, d46, d68-69) porque no hay TOC con sectionid de Fitzpatrick 9e (2570), Barnhill 4e (2802), Weinberg 5e (1913), Guidebook (2960) ni de los libros de dermatoscopia (2804, 2929) → el 'si fallas el caso, lee aquí 10′' (fitzCap) no existe; (2) la 'imagen dermatoscópica CIEGA por sesión' no es ciega: 35 sesiones apuntan a book(2929) (portada del Self-Assessment) y 35 a páginas de Dermoscopedia que muestran el diagnóstico en el título; (3) el etiquetado CORE de los 200 casos (Med 1-110 · Path 111-140 · Peds 141-170 · Surg 171-200) es una SUPOSICIÓN marcada 'A VERIFICAR' en dermaCasoArea(): si el listado no está ordenado por área, todo el mapa de fallos por módulo CORE del ledger es ruido. Añadir que AnkiConnect no respondió y los 10 decks APEX::DERMA::A…X están 'A VERIFICAR crear antes del d1'.",
+   "impacto": "alto",
+   "propuesta": "Una sola sesión de ~20 min con el Chrome de Joseph adjunto (chrome-devtools, método exacto ya escrito en _scrape/README_TOC_PENDIENTE.md): extraer los TOC de 2570/2802/1913/2960/2804/2929 → accessderma_clinica_tocs.json; en la misma sesión leer el listado de cases.aspx?groupid=1546 (título + área de cada uno de los 200) → DATA/DERMATOLOGIA/_scrape/accessderma_cases_200.json y corregir dermaCasoArea() si el orden no es por área (DERMA_CASO_ORDEN no se toca); y para 2929 guardar los sectionid por pregunta para que dermatoscopiaImg apunte a la pregunta N (cursor por sesión) en vez de a la portada. Después, fuera de la sesión: regenerar dermaSourcesData.ts (hoy escrito a mano), sustituir los 20 book() por srcCap(), añadir fitzCap?: {sid, t} a los 70 átomos con chip 'si fallas, lee aquí 10′', y verificar deckNames con AnkiConnect (o crear los 10 decks vía createDeck) antes del lunes 7-sep.",
+   "esfuerzo": "M",
+   "ficheros": [
+    "DATA/DERMATOLOGIA/_scrape/README_TOC_PENDIENTE.md",
+    "DATA/DERMATOLOGIA/_scrape/accessderma_clinica_tocs.json",
+    "DATA/DERMATOLOGIA/_scrape/accessderma_cases_200.json",
+    "src/lib/dermaSourcesData.ts",
+    "src/lib/dermaDailyPlan.ts",
+    "src/lib/ankiLinks.ts"
+   ],
+   "toca_app": true
+  },
+  {
+   "gap": "El presupuesto de preguntas no cuadra y no hay cursor: la rotación real es rPIC 43 sesiones × ~10Q = 430 > 381Q del Pictorial 4e (se agota hacia d38 y las últimas ~5 sesiones repetirían preguntas), Barnhill 15 sesiones (150 de 403), CORE 9 (90 de 104), QOTW 3; Pictorial 3e (363Q) y LANGE (48Q) quedan sin uso y el Differential Diagnosis Challenge (100 sets, la cura declarada del error CCSN en DERMA_TIPO_ERROR) solo aparece en 3 sesiones. Cada link qa.aspx abre el banco desde el principio: tras 38 sesiones Joseph tiene que recordar de memoria en qué pregunta va.",
+   "impacto": "medio",
+   "propuesta": "En dermaDailyPlan.ts: las 5 últimas sesiones rPIC (d55 en adelante) pasan a Pictorial 3e (qa(2948), ya verificado en temario.md) y la última sesión de módulo usa LANGE; en dermaLedger.ts añadir dermaBancoCursor(fuente) = max(id)+1 de las entradas de ese banco, mostrado en el ColaItem de review como 'retoma en Q#'; en el cierre, si tipoError = CCSN el ledger devuelve el link al DD Challenge (cases(1616)) como 'cura' obligatoria de la siguiente sesión (dermaCuraPendiente). Documentar el presupuesto por banco (Q disponibles / Q asignadas / sesiones) en PLAN_ELITE para que el ajuste sea visible.",
+   "esfuerzo": "S",
+   "ficheros": [
+    "src/lib/dermaDailyPlan.ts",
+    "src/lib/dermaLedger.ts",
+    "src/components/study/DermaTodayPlan.tsx",
+    "DATA/DERMATOLOGIA/PLAN_ELITE_2026-27.md"
+   ],
+   "toca_app": true
+  },
+  {
+   "gap": "La sinergia Step 1 ↔ Derma ('la derma de Step 1 cuenta doble, mismo mazo FSRS') es una frase, no un mecanismo: usmleStep1Daily D72 (15-dic, 'dermato Step 1', B&B Dermatology) no referencia los átomos derma ya estudiados en sep-nov (d7 psoriasis, d8 eccemas, d10 pénfigo/penfigoide, d12 SJS/TEN/DRESS, d14 bacterianas, d16 HSV/VZV/VPH, d23 BCC/SCC, d24 melanoma) y las tarjetas APEX::DERMA no llevan ninguna etiqueta que permita filtrarlas como repaso anclado de Step 1. Joseph estudiará la derma dos veces sin que el segundo pase use el primero.",
+   "impacto": "medio",
+   "propuesta": "Campo step1?: true en esos 8 átomos de dermaDailyPlan.ts → dermaAnkiTags añade 'step1' y HOY muestra chip 'cuenta doble Step 1'; en usmleStep1Daily D72 el pre-test 10Q de las 08:15 y el repaso anclado de las 07:15 apuntan a 'APEX::DERMA tag:step1 + fallos del ledger derma de esos 8 átomos' (texto en palm/mat, sin cambiar horario ni contenido USMLE); en sentido inverso, d24 melanoma y d12 SJS/TEN enlazan la sección de First Aid correspondiente como 'anclaje Step 1'.",
+   "esfuerzo": "S",
+   "ficheros": [
+    "src/lib/dermaDailyPlan.ts",
+    "src/lib/ankiLinks.ts",
+    "src/lib/usmleStep1Daily.ts",
+    "src/components/study/DermaTodayPlan.tsx"
+   ],
+   "toca_app": true
+  },
+  {
+   "gap": "La pestaña Cerebro de DermaHub sigue mostrando la capa v1 de junio que contradice el plan élite: RingStat 'Readiness 8%' hardcoded, 'Protocolo starter · 12 semanas' (DERMA_FASES v1), 'Micro-horario · sesión de 60 min' (DERMA_HORARIO v1: 40′ de material nuevo + Derm In-Review) frente al ciclo real de 45′ con caso ciego, y el 'mapa mental del SPEC A-G, 54 subtemas' con vueltas que no se registran en ningún sitio. Para un preparador de élite un panel que muestra métricas falsas y un horario distinto al que se ejecuta es peor que ninguno: erosiona la confianza en la app justo donde debería vivir el mapa de debilidades.",
+   "impacto": "medio",
+   "propuesta": "Retirar DERMA_FASES, DERMA_HORARIO y el RingStat de readiness de la pestaña Cerebro (o moverlos a un bloque 'histórico v1' plegado) y sustituirlos por datos vivos: % ciego real y por módulo CORE desde el ledger, progreso por bloque A-X desde studyProgress, próximos checkpoints (d45 11-ene, d69 18-mar) y el mapa SPEC A-G solo como índice hacia las fichas de 7 pasos cuando exista dermaCerebro.ts. DERMA_HORARIO se reemplaza por DERMA_FRANJAS (que ya es la verdad).",
+   "esfuerzo": "S",
+   "ficheros": [
+    "src/components/study/DermaHub.tsx",
+    "src/lib/dermaData.ts"
+   ],
+   "toca_app": true
+  },
+  {
+   "gap": "El plan termina en d70 (22-mar-2027) y nada existe después: quedan 60 casos (dermaCasosPostStep1), los 9 módulos de enriquecimiento G+1…G+9 (patch testing, fototerapia, granulomatosas, embarazo/inmunodeprimido, mucosas, ISSVA, dermatoscopia élite, terapéutica 2024-25, cosmecéuticos) tienen 0 menciones en dermaDailyPlan.ts (flotan en el Hub sin fecha), y el propio DERMA_CASO_META dice 'resto post-Step 1 a 5/sesión desde feb-2027' mientras las filas d54-d70 (feb-mar) siguen a 2 casos/sesión: el código se contradice a sí mismo y la 'nota de divergencia' del PLAN_ELITE (evaluar 5 casos/sesión al liberar agenda en feb) nunca se resolvió.",
+   "impacto": "medio",
+   "propuesta": "Decidir y codificar la cadencia post-Step 1 SIN tocar la franja: desde d54 (4-feb, primera sesión tras el examen) 3 casos/sesión con los 10Q como variable de ajuste (permutación posiciones 106-156 → primera pasada de ~157 casos al d70 en vez de 140), y generar un 'ciclo 2' d71-d100 (23-mar → jul-2027, mismo interdiario con Research, generado por un gen_derma_ciclo2.js que reutilice la lógica de remap_inicio.js) con: los ~43 casos restantes a 3/sesión, Pictorial 3e + Barnhill restante como review, un G+ por semana en el slot de lectura, y los fallos del ledger como cola FSRS. Registrar la decisión en PLAN_ELITE (sección 'Ciclo 2') y en DERMA_CASO_META.",
+   "esfuerzo": "M",
+   "ficheros": [
+    "src/lib/dermaDailyPlan.ts",
+    "src/lib/dermaData.ts",
+    "DATA/_scripts/gen_derma_ciclo2.js",
+    "DATA/DERMATOLOGIA/PLAN_ELITE_2026-27.md"
+   ],
+   "toca_app": true
+  },
+  {
+   "gap": "La ruta formal al fellowship estético (la etapa que define 'dermatólogo estético Mayo ~2034') sigue sin documento: RUTA_PUBLICACION_2027.md cubre IMG → residencia derma (ECFMG, research fellowship 2028, DIGA, Mayo residency) y PLAN_ELITE §2 cubre CORE/APPLIED, pero nadie ha escrito qué fellowship (ASDS Cosmetic Dermatologic Surgery vs ACGME Micrographic Surgery & Dermatologic Oncology vs procedural de Mayo), requisitos, ventanas de aplicación, cronograma inverso 2034→2027 ni plan B (MIR → IMCAS/Cotofana/MD Codes + observership). El vacío v3 nº 11 lo pidió y no se ejecutó, aunque el cuaderno NotebookLM 'DERMA · Élite Engine' ya cargó las fuentes ASDS/ACGME/Mayo/ABD el 05-sep.",
+   "impacto": "medio",
+   "propuesta": "Redactar DATA/DERMATOLOGIA/RUTA_FELLOWSHIP_ESTETICO.md consultando el cuaderno NotebookLM derma (notebook_query sobre 'requisitos y calendario de fellowships ASDS / MSDO / Mayo procedural') y verificando cada URL en vivo: tabla ruta A (residencia US → fellowship 1 año) / ruta B (MIR España → Cotofana Anatomy + MD Codes + IMCAS + observership Mayo) con requisitos, fechas límite y qué produce cada fase del plan actual (Step 1 ene-2027, SR-1/SR-2, ENCAPS/MIR) para esa ruta; cronograma inverso desde 2034; enlazarlo como 'Norte' en la pestaña Cerebro del Hub. No re-derivar las cifras de match ya documentadas en RUTA_PUBLICACION_2027.md.",
+   "esfuerzo": "M",
+   "ficheros": [
+    "DATA/DERMATOLOGIA/RUTA_FELLOWSHIP_ESTETICO.md",
+    "DATA/RESEARCH/RUTA_PUBLICACION_2027.md",
+    "src/lib/dermaData.ts"
+   ],
+   "toca_app": false
+  },
+  {
+   "gap": "Documentación desincronizada tras la v2.1: dermaData.ts remite a 'recursos.md §0' para los prompts de uso del cuaderno NotebookLM y esa sección no existe (recursos.md no menciona NotebookLM); PLAN_ELITE §3 sigue diciendo '1 caso visual + 10Q + 10′ lectura' y no recoge los 2 casos fijos, la imagen dermatoscópica ciega, el micro-track DermNet CME, el swap d19/20↔d57/58 ni el ledger; README_TOC_PENDIENTE habla de '20 de los 70 átomos' (correcto) pero el encabezado del .ts afirma 'URLs 100% reales… deep-links con sectionid verificado'; y hay dos protocolos de foto clínica divergentes (NITIDA_PROTOCOLOS §0.2: 5 tomas, luz natural, sin flash / RESEARCH/CASE_REPORT_1/protocolo_fotos.md: fondo azul-gris, flash rebotado, balance fijo, tarjeta gris) que servirán al mismo paciente de tele-derma y al mismo case report.",
+   "impacto": "bajo",
+   "propuesta": "Un pase de docs: añadir 'recursos.md §0 · NotebookLM DERMA · Élite Engine' (id, 86 fuentes, los 2 prompts de uso y la regla 'motor de verificación, no fuente'); actualizar PLAN_ELITE §3 al ciclo v2.1 real (2 casos + ①b + micro-track + ledger + swap) y añadir la sección 'Ciclo 2' cuando se decida; corregir el encabezado del .ts a 'sectionid verificado en 50/70; 20 pendientes de TOC'; fusionar los dos protocolos de foto en uno solo (RESEARCH/CASE_REPORT_1/protocolo_fotos.md como canónico, NITIDA_PROTOCOLOS §0.2 solo con el set mínimo de tele-derma y un enlace).",
+   "esfuerzo": "S",
+   "ficheros": [
+    "DATA/DERMATOLOGIA/recursos.md",
+    "DATA/DERMATOLOGIA/PLAN_ELITE_2026-27.md",
+    "src/lib/dermaDailyPlan.ts",
+    "DATA/DERMATOLOGIA/NITIDA_PROTOCOLOS.md",
+    "DATA/RESEARCH/CASE_REPORT_1/protocolo_fotos.md"
+   ],
+   "toca_app": false
+  }
+ ],
+ "notas": "Pasada v2 sobre el estado real del 05-sep (el análisis v3 del 04-sep, scratchpad/palmerton_v3/gaps_derma.json, ya fue implementado en su capa de DATOS: permutación seeded de 200 con casoIds válidos —verificado por script: 200 únicos, 0 desajustes fila↔permutación—, dermaLedger.ts con matriz Palmerton y rúbrica 8 ejes, ANKI_COLA con 4 tarjetas verificadas, micro-track DermNet CME 18 módulos, swap d19/20↔d57/58 + puenteResearch, NITIDA_PROTOCOLOS + campo nitida, cuaderno NotebookLM 'DERMA · Élite Engine' con 86 fuentes, rama Obsidian 10_DERMATOLOGIA + obsidianDermaMap.ts, README_TOC_PENDIENTE). Nada de eso se re-propone. Lo que queda son 10 vacíos: el primero y más grave es que esa capa no llega a la UI ni está commiteada, y D1 es el lunes 7-sep. Medidas nuevas: rotación real de review rPIC 43 / rBARN 15 / rCORE 9 / rQOTW 3 (Pictorial 4e sobreasignado 430 vs 381Q); 20 átomos a portada de libro; imagen dermatoscópica 'ciega' = 35× portada de book(2929) + 35× páginas Dermoscopedia con el dx en el título; colisión d47-d52 con NBME 31/32/33, FREE 120 y el examen del 27-ene; d69-d70 vs ENCAPS 2027-I; USMLE D72 sin puente a d7-d24; Hub Cerebro con Readiness 8% hardcoded, protocolo 12 semanas y horario de 60 min; G+1…G+9 con 0 slots; DERMA_CASO_META promete 5 casos/sesión desde feb mientras las filas siguen a 2. Descartado como vacío: 'atlas de casos propios con fotos reales' — RESEARCH/CASE_REPORT_1/caso_candidatos.md confirma que Joseph no tiene consulta ni plaza SERUMS ('NO HAY CASO'), así que el atlas propio hoy es la colección Anki de oclusiones + el ledger, y las fotos reales llegarán vía NÍTIDA (2026 T4) o el Dr. Ciro; el dermatoscopio físico queda para la fase práctica 2027. Tampoco se propone lectura lineal de Bolognia/Fitzpatrick (PLAN_ELITE lo rechaza con razón; lo accionable es el mapa fitzCap del vacío 4). No se pudo verificar desde aquí que existan los decks APEX::DERMA::A…X (AnkiConnect no responde): crearlos antes del lunes es prerrequisito del vacío 1. Respetado: ninguna propuesta toca la franja 13:30-14:15 interdiaria, el Calendar ni las metas; los cambios de d47-d52 son swaps de contenido con fechas intactas (precedente v2.1). Fichero intermedio: C:\\\\Users\\\\JOSEPH~1\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\D--joseph-md-app\\\\3b73ef89-6aa7-49fe-a236-e6aed6aef118\\\\scratchpad\\\\palmerton_v3\\\\vacios_derma_v2_2026-09-05.md (+ check_derma.js con la validación de la permutación y la rotación)."
+}

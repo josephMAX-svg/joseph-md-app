@@ -1,0 +1,170 @@
+{
+ "_meta": {
+  "set": "set_cola_larga_1",
+  "n": 6,
+  "descripcion": "Ítems NUEVOS para códigos de COLA LARGA con menos de 4 reales en el pool (hoy: V-6 telesalud ×6; II-2, II-EMG, I-OCC, III-9, V-3 siguen deficitarios → ver _inventario_banco_por_codigo.json). Clave respaldada por texto extraído del Compendio López Gestión 2026-I (definiciones textuales de telesalud). Esquema = banco_items_v1.json. Se consumen como SECUNDARIO del banco del día (--banco) y en los mini-sims.",
+  "generado": "2026-09-05 (scratchpad/build_cola.js)",
+  "por_codigo": {
+   "V-6": 6
+  },
+  "LISTA_NEGRA": "2026-II excluido por construcción"
+ },
+ "items": [
+  {
+   "id": "N-V6-CL001",
+   "codigo": "V-6",
+   "area": "V",
+   "formato": "directa",
+   "critico": false,
+   "sub_eje": "telesalud",
+   "subangulo": "Ley 30421 telesalud: teleconsulta / teleinterconsulta / telemonitoreo / teleorientación (definiciones textuales)",
+   "fallo_previo": null,
+   "reservado_para": null,
+   "dif": "media",
+   "origen": "nuevo_05sep2026",
+   "enunciado": "Consulta a distancia que se realiza entre un profesional de la salud y una persona usuaria mediante el uso de las TIC, con fines de promoción, prevención, diagnóstico, tratamiento, recuperación, rehabilitación y cuidados paliativos:",
+   "opciones": {
+    "A": "Teleorientación",
+    "B": "Teleconsulta",
+    "C": "Teleinterconsulta",
+    "D": "Telemonitoreo"
+   },
+   "clave": "B",
+   "respuesta": "Teleconsulta",
+   "explicacion": "TELECONSULTA = profesional ↔ persona usuaria (con fines diagnósticos/terapéuticos). Teleorientación = consejería/asesoría; teleinterconsulta = profesional ↔ profesional; telemonitoreo = seguimiento a distancia con parámetros clínicos.",
+   "fuente": "Compendio López GESTIÓN 2026-I (pdftotext 05-sep-2026), sección Telesalud",
+   "verificado_contra": "Compendio López GESTIÓN 2026-I (pdftotext 05-sep-2026), sección Telesalud: \"Teleconsulta: consulta a distancia que se realiza entre un profesional de la salud, en el marco de sus competencias, y una persona usuaria mediante el uso de las TIC, con fines de promoción, prevención, diagnóstico, tratamiento, recuperación, rehabilitación y cuidados paliativos\"",
+   "molde": "sin molde (definición textual de la norma según compendio)"
+  },
+  {
+   "id": "N-V6-CL002",
+   "codigo": "V-6",
+   "area": "V",
+   "formato": "viñeta",
+   "critico": false,
+   "sub_eje": "telesalud",
+   "subangulo": "Ley 30421 telesalud: teleconsulta / teleinterconsulta / telemonitoreo / teleorientación (definiciones textuales)",
+   "fallo_previo": null,
+   "reservado_para": null,
+   "dif": "alta",
+   "origen": "nuevo_05sep2026",
+   "enunciado": "El médico serumista del P.S. I-2 de Balsapuerto envía por videollamada el caso de un paciente con arritmia al cardiólogo del hospital regional para definir el manejo; el paciente está presente durante la sesión. Esta prestación de telemedicina se denomina:",
+   "opciones": {
+    "A": "Teleconsulta",
+    "B": "Teleinterconsulta",
+    "C": "Telemonitoreo",
+    "D": "Teleorientación"
+   },
+   "clave": "B",
+   "respuesta": "Teleinterconsulta",
+   "explicacion": "TELEINTERCONSULTA: consulta a distancia que realiza un personal de salud a otro profesional para la atención de una persona usuaria, que puede estar o no presente. El serumista es el TELECONSULTANTE (IPRESS consultante) y el cardiólogo el TELECONSULTOR (IPRESS consultora).",
+   "fuente": "Compendio López GESTIÓN 2026-I (pdftotext 05-sep-2026), sección Telesalud",
+   "verificado_contra": "Compendio López GESTIÓN 2026-I (pdftotext 05-sep-2026), sección Telesalud: \"Teleinterconsulta: consulta a distancia mediante el uso de las TIC, que realiza un personal de salud a un profesional de la salud para la atención de una persona usuaria, pudiendo ésta estar o no presente\" · \"TELECONSULTANTE: Personal de salud de una IPRESS consultante que solicita servicios de Telemedicina\" · \"TELECONSULTOR: Médico especialista u otro profesional de salud de una IPRESS consultora\"",
+   "molde": "sin molde (definición textual de la norma según compendio)"
+  },
+  {
+   "id": "N-V6-CL003",
+   "codigo": "V-6",
+   "area": "V",
+   "formato": "viñeta",
+   "critico": false,
+   "sub_eje": "telesalud",
+   "subangulo": "Ley 30421 telesalud: teleconsulta / teleinterconsulta / telemonitoreo / teleorientación (definiciones textuales)",
+   "fallo_previo": null,
+   "reservado_para": null,
+   "dif": "media",
+   "origen": "nuevo_05sep2026",
+   "enunciado": "Enfermera del C.S. de Ilave llama por teléfono a una gestante para reforzar la toma de sulfato ferroso y los signos de alarma, sin realizar diagnóstico ni prescripción. Esta acción corresponde a:",
+   "opciones": {
+    "A": "Teleconsulta",
+    "B": "Telemonitoreo",
+    "C": "Teleorientación",
+    "D": "Teleinterconsulta"
+   },
+   "clave": "C",
+   "respuesta": "Teleorientación",
+   "explicacion": "TELEORIENTACIÓN = consejería y asesoría con fines de promoción, prevención, recuperación o rehabilitación; no hay acto diagnóstico ni prescripción (eso sería teleconsulta) ni transmisión de parámetros clínicos (telemonitoreo).",
+   "fuente": "Compendio López GESTIÓN 2026-I (pdftotext 05-sep-2026), sección Telesalud",
+   "verificado_contra": "Compendio López GESTIÓN 2026-I (pdftotext 05-sep-2026), sección Telesalud: \"Teleorientación: conjunto de acciones que desarrolla un profesional de la salud mediante el uso de las TIC, para proporcionar a la persona usuaria de salud consejería y asesoría con fines de promoción de la salud, prevención, recuperación o rehabilitación\"",
+   "molde": "sin molde (definición textual de la norma según compendio)"
+  },
+  {
+   "id": "N-V6-CL004",
+   "codigo": "V-6",
+   "area": "V",
+   "formato": "viñeta",
+   "critico": false,
+   "sub_eje": "telesalud",
+   "subangulo": "Ley 30421 telesalud: teleconsulta / teleinterconsulta / telemonitoreo / teleorientación (definiciones textuales)",
+   "fallo_previo": null,
+   "reservado_para": null,
+   "dif": "media",
+   "origen": "nuevo_05sep2026",
+   "enunciado": "Paciente hipertenso de 65 años del C.S. de Chupaca transmite semanalmente sus valores de presión arterial a su médico tratante, quien ajusta la dosis del antihipertensivo cuando corresponde. Esta prestación es:",
+   "opciones": {
+    "A": "Teleorientación",
+    "B": "Telemonitoreo",
+    "C": "Teleconsulta",
+    "D": "Telegestión"
+   },
+   "clave": "B",
+   "respuesta": "Telemonitoreo",
+   "explicacion": "TELEMONITOREO = seguimiento a distancia en el que se transmite información clínica y, según criterio médico, parámetros biomédicos/exámenes auxiliares; puede incluir prescripción.",
+   "fuente": "Compendio López GESTIÓN 2026-I (pdftotext 05-sep-2026), sección Telesalud",
+   "verificado_contra": "Compendio López GESTIÓN 2026-I (pdftotext 05-sep-2026), sección Telesalud: \"Telemonitoreo: monitorización o seguimiento a distancia de la persona usuaria, en las IPRESS, en las que se transmite la información clínica de la persona usuaria, y si el caso lo amerita según criterio médico los parámetros biomédicos y/o exámenes auxiliares ... Se puede o no incluir la prescripción de medicamentos\"",
+   "molde": "sin molde (definición textual de la norma según compendio)"
+  },
+  {
+   "id": "N-V6-CL005",
+   "codigo": "V-6",
+   "area": "V",
+   "formato": "directa",
+   "critico": false,
+   "sub_eje": "telesalud",
+   "subangulo": "Ley 30421 telesalud: teleconsulta / teleinterconsulta / telemonitoreo / teleorientación (definiciones textuales)",
+   "fallo_previo": null,
+   "reservado_para": null,
+   "dif": "media",
+   "origen": "nuevo_05sep2026",
+   "enunciado": "El conjunto de IPRESS, procesos, personal y TIC que prestan el servicio de telesalud, cuya conducción, regulación, articulación y evaluación está a cargo del Ministerio de Salud, se denomina:",
+   "opciones": {
+    "A": "Red Integrada de Salud (RIS)",
+    "B": "Red Nacional de Telesalud (RNT)",
+    "C": "Sistema de Referencia y Contrarreferencia",
+    "D": "Plataforma Nacional de Telemedicina"
+   },
+   "clave": "B",
+   "respuesta": "Red Nacional de Telesalud (RNT)",
+   "explicacion": "RNT = Red Nacional de Telesalud; la conduce y regula el MINSA. No confundir con la RIS (organización territorial de la prestación).",
+   "fuente": "Compendio López GESTIÓN 2026-I (pdftotext 05-sep-2026), sección Telesalud",
+   "verificado_contra": "Compendio López GESTIÓN 2026-I (pdftotext 05-sep-2026), sección Telesalud: \"RED NACIONAL DE TELESALUD (RNT): Conjunto de IPRESS, procesos, personal y TIC que prestan el servicio de Telesalud. Su conducción, regulación, articulación y evaluación está a cargo del Ministerio de Salud\"",
+   "molde": "sin molde (definición textual de la norma según compendio)"
+  },
+  {
+   "id": "N-V6-CL006",
+   "codigo": "V-6",
+   "area": "V",
+   "formato": "directa",
+   "critico": false,
+   "sub_eje": "telesalud",
+   "subangulo": "Ley 30421 telesalud: teleconsulta / teleinterconsulta / telemonitoreo / teleorientación (definiciones textuales)",
+   "fallo_previo": null,
+   "reservado_para": null,
+   "dif": "media",
+   "origen": "nuevo_05sep2026",
+   "enunciado": "En telemedicina, el médico especialista u otro profesional de salud de una IPRESS consultora que brinda el servicio a quien lo solicita se denomina:",
+   "opciones": {
+    "A": "Teleconsultante",
+    "B": "Teleconsultor",
+    "C": "Telegestor",
+    "D": "Teleorientador"
+   },
+   "clave": "B",
+   "respuesta": "Teleconsultor",
+   "explicacion": "TELECONSULTOR = el que brinda (IPRESS consultora, especialista). TELECONSULTANTE = el que solicita (personal de la IPRESS consultante, p. ej. el serumista).",
+   "fuente": "Compendio López GESTIÓN 2026-I (pdftotext 05-sep-2026), sección Telesalud",
+   "verificado_contra": "Compendio López GESTIÓN 2026-I (pdftotext 05-sep-2026), sección Telesalud: \"TELECONSULTOR: Médico especialista u otro profesional de salud de una IPRESS consultora que brinda servicios de Telemedicina a teleconsultantes\" · \"TELECONSULTANTE: Personal de salud de una IPRESS consultante que solicita servicios de Telemedicina a una o más IPRESS consultoras\"",
+   "molde": "sin molde (definición textual de la norma según compendio)"
+  }
+ ]
+}

@@ -26,16 +26,16 @@ export interface UsmleCheckpoint {
   when: string; predictor: string; band: string; url: string; gated: boolean;
 }
 export const USMLE_CHECKPOINTS: UsmleCheckpoint[] = [
-  { form: 'NBME Forms 30–33', kind: 'NBME', when: 'every 3–4 weeks, last phase', predictor: 'Best single predictor of a Step 1 pass', band: '≥ 60% ≈ pass zone', url: 'https://www.nbme.org/examinees/self-assessments', gated: true },
-  { form: 'USMLE Free 120', kind: 'FREE120', when: '1–2 weeks pre-exam', predictor: 'Real NBME item feel, free · ≥ 65% → green', band: 'do it timed, single block', url: 'https://www.usmle.org/prepare-your-exam', gated: false },
-  { form: 'UWorld Self-Assessment 1–2', kind: 'UWSA', when: 'mid + late phase', predictor: 'Over-predicts ~5–8 pts — read it soft', band: 'trend > absolute number', url: 'https://www.uworld.com/', gated: true },
+  { form: 'NBME CBSSA Forms 25–33', kind: 'NBME', when: 'plan v5.6: 7 in Phase A (every ~3 weeks) · NBME 31 = GO/NO-GO · 32/33 final week', predictor: 'Best single predictor of a Step 1 pass (Palmerton: the ONLY one — UWorld % is a vanity metric)', band: '≥65% ≈ 95% pass · ≥70% ≈ 99% · plan GO = 2 consecutive ≥68% · on-track minimums per milestone in usmleScores.HITOS_ONTRACK', url: 'https://www.nbme.org/examinees/self-assessments', gated: true },
+  { form: 'USMLE Free 120', kind: 'FREE120', when: '1–2 weeks pre-exam (plan: D97, vie 22-ene) — ideally at the real Prometric', predictor: 'Current NBME item wording · no official explanations → audit the PROCESS, not theory', band: '≥70% heuristic (community, not Palmerton) · 3 blocks of 40, timed', url: 'https://www.usmle.org/prepare-your-exam', gated: false },
+  { form: 'UWorld Self-Assessment 1–2', kind: 'UWSA', when: 'UWSA1 = week-1 baseline (D5) · UWSA2 = D87', predictor: 'Systematically OVER-predicts (Palmerton, same authors as the bank) — endurance only, never a date decision', band: 'trend > absolute number · the date is decided by NBMEs', url: 'https://www.uworld.com/', gated: true },
   { form: 'AMBOSS Score Predictor', kind: 'AMBOSS', when: 'from your Qbank %', predictor: 'Predicted range ±7–10 pts from Qbank performance', band: 'confirm with an NBME', url: 'https://www.amboss.com/us/usmle/score-predictor', gated: true },
 ];
 // Readiness derived from the checkpoint layer (replaces the hardcoded 4).
 export const USMLE_READINESS = {
   pct: 4, // pre-first-NBME baseline · rises only when a checkpoint is logged
   status: 'Baseline · no NBME logged yet',
-  next: 'UWSA1 vie 11-sep (D5, baseline) → luego NBME 25/26/27/28/29 cada ~3 semanas (plan v5.6).',
+  next: 'UWSA1 vie 11-sep (D5, baseline) → luego NBME 25/26/27/28/29 cada ~3 semanas (plan v5.6). Registra el % de cada hito en 📏 Medición (Cola de hoy): el gauge se ancla al último hito y muestra la distancia al mínimo on-track.',
 };
 
 // Organ systems ordered by official exam weight (order of attack)
@@ -111,14 +111,16 @@ export const USMLE_HOUR = [
   { slot: '00:55–01:00', act: '1–2 sentences out loud describing what you learned (English output)' },
 ];
 
+// Palmerton v3 (5-sep-2026): the 5 UWorld mastery levels govern the plan (usmleStep1Daily.USMLE_NIVELES · DIAS[].nivelUW).
 export const USMLE_QBANK_RULES = [
-  'The Qbank is NOT a test — it is your main LEARNING tool. The explanations matter more than the questions.',
-  'Do NOT start the Qbank on day 1. Begin in Phase 2 (~week 17), once you have pathology base.',
-  'Start Tutored + Untimed + by-system. Switch to Random + Timed only in Phase 3.',
-  '10 questions/day, reading EVERY explanation (right and wrong). 10 digested > 40 rushed.',
-  'Every missed question → its own card. Treat Qbank errors as CRÍTICA (6 vueltas) automatically.',
-  '% correct does not matter at first (40–50% is normal for a non-native). Understand the WHY.',
-  'NBME Self-Assessments are the best predictor of passing — do one every 3–4 weeks near the end.',
+  'The Qbank is NOT a test — it is your main LEARNING tool. UWorld FIRST to diagnose, First Aid AFTER to treat (the blind 10Q pre-test at 08:15 is exactly that).',
+  'Level 1 → 5, like a video game: 5Q tutor untimed of ONE subtopic → 5Q timed → 10-20Q full system timed → 20-30Q mixed → 40Q random timed. You do NOT level up without 80% in 10 consecutive questions (validated within 24-48 h).',
+  'If <80%: do NOT move to a new topic. Repeat 5Q blocks of the failed subtopic and audit resources → comprehension → application → memory. 1-2 days without 80% = the method is broken, fix it NOW.',
+  'Volume follows skill, not the other way round (NBA analogy): level 1 = 20-30Q/day; only 80-100Q/day in the final dedicated weeks. >120Q/day means you stopped reviewing.',
+  'Review = Educational Objective + shopping list (every discomfort, ALSO in correct answers) + Whole Page Rule (the whole First Aid section, not the missed detail) → mechanism cards (≤50 new/day).',
+  'Classify every miss: knowledge gap · transfer/interpretation gap · unforced process error. Up to 50% of NBME misses are interpretation, not knowledge.',
+  'One deep pass of UWorld. Never reset. Incorrects + flagged only (Phase B); if time remains, a NEW bank (AMBOSS/Kaplan), never a second pass.',
+  'UWorld % is a vanity metric (40-60% is normal early); it is a PROCESS gate, not a prediction. Only NBMEs predict: ≥65% ≈ 95% pass, ≥70% ≈ 99%. Never sit "hoping for a good day".',
 ];
 
 export const USMLE_RESOURCES = [

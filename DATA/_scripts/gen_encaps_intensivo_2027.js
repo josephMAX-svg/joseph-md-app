@@ -78,7 +78,12 @@ const plan = [...fechas(D1, HASTA)];
 if (!plan.length) throw new Error('sin días hábiles entre D1 y D-1');
 const offset = [...fechas(BASE, addDays(D1, -1))].length; // días L-V ya numerados por el mantenimiento
 if (fromISO(D1).getUTCDay() !== 1) console.warn('⚠ D1 no es lunes: la semana 1 quedará incompleta');
-if (SKIP_INT.has(EXAMEN) || [0, 6].includes(fromISO(EXAMEN).getUTCDay())) console.warn(`⚠ EXAMEN ${EXAMEN} cae en feriado/fin de semana (Semana Santa 2027 = ${[...SKIP_INT].slice(-2).join(', ')}): es una fecha ASUMIDA, confirmar en la convocatoria`);
+{ // ENCAPS se rinde en DOMINGO (2026-II fue dom 9-ago). Semana Santa 2027 verificada (Meeus): Jue 25-mar · Vie 26-mar · Pascua dom 28-mar.
+  const pas = iso(pascua(fromISO(EXAMEN).getUTCFullYear())), dowEx = fromISO(EXAMEN).getUTCDay();
+  if (SKIP_INT.has(EXAMEN) || EXAMEN === pas) console.warn(`⛔ EXAMEN ${EXAMEN} cae en Semana Santa 2027 (Jue ${addDays(pas, -3)} · Vie ${addDays(pas, -2)} · Pascua ${pas}): fecha IMPOSIBLE/ASUMIDA → esperar la convocatoria SERUMS 2027-I (SENALES_2027-I.md) y regenerar con la real`);
+  else if (dowEx !== 0) console.warn(`⚠ EXAMEN ${EXAMEN} no es domingo (${WD[dowEx]}): los ENCAPS se rinden en domingo; fecha ASUMIDA, confirmar en la convocatoria`);
+  else console.log(`ℹ EXAMEN ${EXAMEN} (domingo) — escenario ${EXAMEN <= '2027-03-14' ? 'CORTO' : EXAMEN <= '2027-03-28' ? 'MEDIO' : 'LARGO'} de FASE_INTENSIVA_2027-I.md; sigue siendo fecha ASUMIDA hasta la convocatoria`);
+}
 
 // ── labels desde encapsCobertura.ts (NO se inventan) ──
 const cobSrc = fs.readFileSync(path.join(ROOT, 'src/lib/encapsCobertura.ts'), 'utf8');

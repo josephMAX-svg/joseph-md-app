@@ -1,0 +1,157 @@
+{
+ "seccion": "RESEARCH",
+ "puntos_ciegos": [
+  {
+   "gap": "Ética de la tesis L0 sin fecha de SOLICITUD ni gate de envío. T-1 (14-oct) solo 'verifica y archiva' el nº de CEI; la aprobación expedita/retrospectiva tarda semanas y no tiene átomo de solicitud; T-8 SUBMIT (17-nov) no está condicionado → riesgo de desk-reject en JAAD Intl/IJD. Dato nuevo verificado hoy en D:\\motor_apex\\datos_tesis_acne.xlsx (portada): el censo fue con consentimiento parental + asentimiento (291 excluidas por no consentir: 271 padres + 20 alumnas; 1.256 matriculadas → 100 ausentes → 865 evaluadas → 785 completas → 316 IGA≥1), así que el punto 4-5 de etica.md ya tiene respuesta; lo que sigue sin constar es el nº/fecha del CEI. El outline dice '865 tamizadas' y omite el flujo real (STROBE 13).",
+   "impacto": "alto",
+   "propuesta": "(1) Adelantar T-1 a d7 24-sep (intercambio con M3 Finlay → d8 28-sep: el email a Finlay necesita la versión del CADI que sale de los mismos documentos) y añadir en T-1 la acción 'solicitud CEI expedita presentada ≤ 30-sep (FMH-UNCP u hospital)'. (2) Chip-gate en T-7/T-8: 'sin nº de CEI o constancia de exención NO se envía a JAAD Intl/IJD; T-8 pasa a feb-2027 (cascada) y el átomo se convierte en seguimiento CEI'. (3) Rellenar etica.md 1.4-1.5 con los 291/865 de la portada y corregir el flujo de participantes en research_letter_outline.md §2 (1.256 → 291 → 100 → 865 → 785 → 316).",
+   "esfuerzo": "S",
+   "ficheros": [
+    "DATA/_scripts/gen_research_plan.js",
+    "src/lib/researchDailyPlan.ts",
+    "DATA/RESEARCH/TESIS_L0/etica.md",
+    "DATA/RESEARCH/TESIS_L0/research_letter_outline.md",
+    "DATA/RESEARCH/daily-plan.md"
+   ],
+   "toca_app": true
+  },
+  {
+   "gap": "Case report #1: zona muerta de 6 semanas y consentimiento DESPUÉS de la fecha límite. M1 (14-sep) pide el caso al Dr. Ciro, pero el siguiente átomo CR es CR-1 el 28-oct; el consentimiento (CR-2) cae el 3-nov y las fotos (CR-3) el 9-nov, cuando RUTA/MENTORES exigen 'caso + consentimiento + senior author' antes del 31-oct; el disparador del plan B (1ª semana de oct si Ciro no da caso en 3 semanas) no tiene átomo. El consentimiento depende de la próxima cita del paciente (no controlable) → sin adelantar, el paquete de dic no se congela.",
+   "impacto": "alto",
+   "propuesta": "Adelantar CR-1 a d15 16-oct (intercambio con T-2 STROBE → d19 28-oct, sin deadline externo) y CR-2 consentimiento a d16 20-oct (intercambio con R7 criterios → d21 3-nov). Añadir chip a d8 (28-sep) y d10 (2-oct): 'seguimiento del caso con el Dr. Ciro; si el 5-oct no hay caso → activar fuente B (colega SPD) con el mensaje único de caso_candidatos.md §2'. Registrar la regla en MENTORES.md fila 6.",
+   "esfuerzo": "S",
+   "ficheros": [
+    "DATA/_scripts/gen_research_plan.js",
+    "src/lib/researchDailyPlan.ts",
+    "DATA/RESEARCH/CASE_REPORT_1/caso_candidatos.md",
+    "DATA/RESEARCH/MENTORES.md"
+   ],
+   "toca_app": true
+  },
+  {
+   "gap": "SR-1 puede ser redundante y el plan lo comprueba 3 meses tarde. R9 (¿existe ya una SR del mismo PICO?) está el 11-dic, después de fijar PICO (R6 30-sep), criterios PICOS (R7 20-oct) y protocolo v0 (R8 9-dic). Búsqueda PubMed hecha hoy: 16 SR/MA sobre filler + oclusión vascular/necrosis/ceguera + hialuronidasa; solapan directamente PMID 41249530 (Aesthet Plast Surg 2026, protocolo de hialuronidasa en complicaciones vasculares), 37178872 (SR complicaciones vasculares con necrosis, 2024), 39214904 (alta vs baja dosis, 2024), 36574028 (hialuronidasa en pérdida visual, 2024) y 40406769 (factores de riesgo, Cureus 2025). Sin ángulo diferencial demostrado, PROSPERO/los revisores la marcarán como duplicada.",
+   "impacto": "alto",
+   "propuesta": "Mover R9 a d9 30-sep (antes de R6, que pasa a d14 14-oct; R2 diseños va a d35 11-dic). En R9: AMSTAR-2 rápido de esas 4-5 SR + decisión escrita en L4 §6 con UNA de tres salidas: (a) ángulo diferencial defendible (tiempo-a-hialuronidasa agrupado por retraso <24 h/≥24 h, rellenos no-HA/PMMA-silicona, inyectores no médicos, LATAM/LILACS), (b) pivotar SR-1 a scoping review, o (c) adelantar SR-2 (L5, fototipos IV-VI) como SR-1. Dejar los 5 PMID en L4 §6 como línea base.",
+   "esfuerzo": "S",
+   "ficheros": [
+    "DATA/_scripts/gen_research_plan.js",
+    "src/lib/researchDailyPlan.ts",
+    "DATA/RESEARCH/lines/L4-complicaciones.md",
+    "DATA/RESEARCH/daily-plan.md"
+   ],
+   "toca_app": true
+  },
+  {
+   "gap": "El research letter se escribe a un formato que no acepta ningún escalón de la cascada. El outline y T-3/T-5 producen 750 ± 150 palabras + 1 tabla + 1 figura + ≤10 refs; los propios docs registran IJD Correspondence ≤600 palabras/≤5 refs/≤2 figuras-tablas y JAAD Intl Notes & Comments ≤375/2 refs (fragmentos, A VERIFICAR); los límites de Research Letter de JAAD Intl siguen sin leerse (403 el 5-sep y hoy en ScienceDirect/jaad.org). Recortar de 1.000 a 500-600 en T-7 tira 3 átomos de redacción.",
+   "impacto": "medio",
+   "propuesta": "En T-1 (o C-2) abrir con el Chrome MCP (sesión real, no WebFetch) la Guide for Authors de JAAD International e IJD y fijar en research_letter_outline.md §1 los límites reales con fecha. Redactar T-3→T-5 al límite MÁS ESTRICTO de la cascada (≈500-600 palabras, ≤5 refs, 1 tabla O 1 figura) y mantener solo un apéndice 'versión larga' para Actas (800/3/10). Ajustar el prompt research_letter_STROBE.md al mismo límite.",
+   "esfuerzo": "S",
+   "ficheros": [
+    "DATA/RESEARCH/TESIS_L0/research_letter_outline.md",
+    "DATA/RESEARCH/agentic/prompts_claude_code/research_letter_STROBE.md",
+    "DATA/RESEARCH/journals.md"
+   ],
+   "toca_app": false
+  },
+  {
+   "gap": "El pipeline de corrimiento rompe Research en cada slip. remap_inicio.js bloque 4 re-fecha los 42 átomos con slots() que solo salta SKIP_FIJOS y NO conoce la pausa 4→29-ene, y no toca RESEARCH_HITOS, DAILY_META.finNucleo/pausa ni researchDailyPlan2027.ts; gen_research_plan.js sí lo sabe pero remap no lo invoca (solo llama por execSync a liviano_reslot_viernes.js). Resultado tras un slip: d41/d42 caen en enero, el 'Próximo hito' del ResearchHub y la Mesa editorial muestran fechas viejas, y el paso manual 'gen_research_plan.js <D1>' depende de acordarse.",
+   "impacto": "alto",
+   "propuesta": "En remap_inicio.js bloque 4 sustituir el re-fechado por slots() por `execSync('node gen_research_plan.js '+START)` (mismo patrón que liviano_reslot), manteniendo la comprobación de 42 átomos, y añadir una aserción post-run: fecha de d41 ≥ 2027-02-01 y RESEARCH_HITOS coherentes con DIAS. Actualizar la nota del pipeline en daily-plan.md y en la memoria usmle-step1-v5 (orden de scripts).",
+   "esfuerzo": "S",
+   "ficheros": [
+    "DATA/_scripts/remap_inicio.js",
+    "DATA/_scripts/gen_research_plan.js",
+    "DATA/RESEARCH/daily-plan.md"
+   ],
+   "toca_app": true
+  },
+  {
+   "gap": "citation_verifier.py (gate de C-4 el 6-oct, T-7, CR-7, R41) se cae en la consola de Windows: el self-test lanza UnicodeEncodeError (cp1252) al imprimir los emojis ✅/❌/🟡; con PYTHONIOENCODING=utf-8 funciona (verificado hoy: DeLorenzi 10.1177/1090820X14525035 → verified; DOI falso → rejected). El día del átomo, Joseph lo ejecutará desde PowerShell y verá un traceback en vez del veredicto. openpyxl tampoco está instalado (afecta a T-4 si se usa Python para la tabla 1).",
+   "impacto": "medio",
+   "propuesta": "Añadir `sys.stdout.reconfigure(encoding='utf-8', errors='replace')` (o sustituir emojis por [OK]/[X]/[?]) en citation_verifier.py y docx_assembler.py; crear DATA/RESEARCH/agentic/run_verifier.bat con PYTHONIOENCODING=utf-8 y el uso de cada plantilla; añadir requirements.txt mínimo (openpyxl, rapidfuzz opcional) y probar los 3 comandos del flujo C-4/C-5 una vez en R0.",
+   "esfuerzo": "S",
+   "ficheros": [
+    "DATA/RESEARCH/agentic/citation_verifier.py",
+    "DATA/RESEARCH/agentic/docx_assembler.py",
+    "DATA/RESEARCH/agentic/run_research_free.bat"
+   ],
+   "toca_app": true
+  },
+  {
+   "gap": "Los hitos de Research no existen en Google Calendar. RUTA §9 dice que cada fecha de envío fijada lleva overlay naranja 'como los hitos NBME'; RESEARCH_HITOS ya las fija (C-2 22-sep decisión + deadline interno de la carta, C-6 12-oct, CR-1 28-oct/31-oct, T-8 17-nov, X-7 29-dic, CR-9 1-feb, R10 17-feb, R43 29-jun), pero la búsqueda en GCal solo devuelve el recordatorio Research4Life del 1-jul-2027; los NBME sí están (colorId 6, transparent, con protocolo en la descripción). Sin overlay, un día-Derma o un slip tapa el deadline de la carta (ventana de letters).",
+   "impacto": "medio",
+   "propuesta": "Crear 8 overlays colorId 6 / transparent en el bloque 13:30-14:15 de cada hito (título '🔬 RESEARCH · <code> <entregable>', descripción = objetivo + artefacto + fecha límite externa si la hay) con create_event del MCP; añadir un bloque a gen_research_plan.js que emita el JSON de esos eventos para re-crearlos (delete+create) cuando se re-feche, igual que los overlays NBME.",
+   "esfuerzo": "S",
+   "ficheros": [
+    "DATA/_scripts/gen_research_plan.js",
+    "DATA/RESEARCH/RUTA_PUBLICACION_2027.md"
+   ],
+   "toca_app": false
+  },
+  {
+   "gap": "La Mesa editorial vive solo en localStorage ('jmd-research-entregables': estado, fechaEnvio, nº de manuscrito) y su gemelo es la tabla manual de RUTA §9 → dos fuentes de verdad, invisible desde el móvil, se pierde al limpiar el navegador, y no hay histórico de decisiones editoriales (rebuttal, rechazo, siguiente revista de la cascada). ENCAPS ya usa Supabase; existen research_manuscripts y research_citations en el proyecto pero con RLS OFF y sin uso.",
+   "impacto": "medio",
+   "propuesta": "Persistir EntregablesRegistro en Supabase (tabla research_entregables: id, estado, fecha_envio, ref_manuscrito, journal_actual, decision, updated_at; RLS como research_papers) con cache localStorage y merge por updated_at; el ResearchHub escribe ahí al cambiar estado y RUTA §9 pasa a ser 'solo lectura, se regenera'. Activar RLS en research_manuscripts y research_citations.",
+   "esfuerzo": "M",
+   "ficheros": [
+    "src/lib/researchData.ts",
+    "src/lib/supabase.ts",
+    "src/components/study/ResearchHub.tsx",
+    "DATA/RESEARCH/agentic/supabase_schema.sql",
+    "DATA/RESEARCH/RUTA_PUBLICACION_2027.md"
+   ],
+   "toca_app": true
+  },
+  {
+   "gap": "El motor de descubrimiento está parado y, cuando se use (X-3 dic, R16 mar-2027), no es de grado PRISMA-S: verificado hoy en Supabase, 200 registros SR-1 pending_human desde el 11-jun, 151 OA y 0 con pdf_url, engine idle; la edge function research-discovery trata OPENALEX_KEY como opcional y, sin ella, openalex() devuelve [] en silencio y reporta ok (OpenAlex exige key desde 13-feb-2026) → discovery = PubMed + Europe PMC, sin LILACS ni Semantic Scholar, tope 200 por score de palabras del título. La búsqueda reproducible con 5 fuentes (discovery_engine.py, 666 papers probados) solo corre en local.",
+   "impacto": "medio",
+   "propuesta": "En R0 (8-sep) cargar OPENALEX_KEY y NCBI_KEY como secrets de Supabase (ya en la checklist de infra) y redesplegar la función con fallo explícito si OpenAlex devuelve 0 (registrar 'sources_ok' en research_engine_state). Documentar en X-3/R16 que la búsqueda PRISMA-S final se corre con discovery_engine.py (5 fuentes, sin tope) exportada a RIS para Rayyan vía exportResearchCorpus, y la edge function queda como feeder de la app. Resolver PDFs en lote (research-fulltext) en X-3 para que R19 no arranque con 0 textos completos.",
+   "esfuerzo": "M",
+   "ficheros": [
+    "supabase/functions/research-discovery/index.ts",
+    "DATA/RESEARCH/agentic/discovery_engine.py",
+    "src/lib/supabase.ts",
+    "DATA/RESEARCH/daily-plan.md"
+   ],
+   "toca_app": true
+  },
+  {
+   "gap": "Ciclo 2 asigna 75 min a tareas de 8-15 h. R18 = 3 átomos × 25 min de deep work para cribar título/abstract ≥666-1.500 registros por DOS revisores; R19 = 2 átomos para texto completo; R24 = 3 átomos para extracción doble; R26 = 2 para sesgo. A 1-2 registros/min, solo el nivel 1 son 6-12 h por revisor. Las fechas previstas se copian a PROSPERO (L4 §9.4) y quedarán públicamente incumplidas; el revisor #2 no tiene ni estimación de horas que aceptar en X-1.",
+   "impacto": "medio",
+   "propuesta": "Sin tocar el bloque 13:30: declarar en cada átomo de R17-R26 las horas reales (campo `horas` o chip 'sesión ≈ N h fuera del bloque') y de dónde salen post-Step 1 (la RUTA ya dice que la SR arranca 'cuando Step 1 libera la agenda'); usar el pre-orden por relevancia (Ollama/score) solo para priorizar el orden de cribado; incluir la carga horaria en la invitación al revisor #2 (X-1) y en L4 §9.4 poner fechas con margen (fin de cribado ≥ 6 semanas).",
+   "esfuerzo": "S",
+   "ficheros": [
+    "DATA/_scripts/gen_research_plan.js",
+    "src/lib/researchDailyPlan2027.ts",
+    "DATA/RESEARCH/lines/L4-complicaciones.md",
+    "DATA/RESEARCH/daily-plan.md"
+   ],
+   "toca_app": true
+  },
+  {
+   "gap": "La base de datos de la tesis está localizada y pseudonimizada pero sin plan de depósito ni de protección: D:\\motor_apex\\datos_tesis_acne.xlsx (hoja BASE DATOS, 1.256 filas: ID P-001…, edad, grado, sección, IGA, CADI 1-5, fecha; sin nombres) — etica.md 1.8 aún dice 'A VERIFICAR'. La copia en Supabase (datos_tesis: id_paciente, edad, grado, seccion…) tiene RLS OFF y 0 policies con anon key en repo. Para el data availability statement (T-7) y el depósito OSF/Zenodo que propone etica.md §3, 'sección + grado + edad + fecha' en un colegio nombrado son cuasi-identificadores de menores (Ley 29733).",
+   "impacto": "medio",
+   "propuesta": "Rellenar etica.md 1.8 con la ruta y el diccionario de variables ahora; script export_tesis_deid.py (elimina sección y fecha, conserva edad/grado/IGA/CADI, re-hash de ID) → depósito en OSF con DOI en T-7 y frase de data availability sin 'on request'; activar RLS (o borrar) datos_tesis en Supabase antes de cualquier envío.",
+   "esfuerzo": "S",
+   "ficheros": [
+    "DATA/RESEARCH/TESIS_L0/etica.md",
+    "DATA/RESEARCH/TESIS_L0/research_letter_outline.md",
+    "DATA/RESEARCH/agentic/supabase_schema.sql"
+   ],
+   "toca_app": true
+  },
+  {
+   "gap": "No hay revisión de inglés antes del SUBMIT de la tesis. M2 pide mentor en Rising Scholars el 18-sep (tarda semanas; plan B 'editor profesional' a las 4 semanas sin fecha en el plan); T-6 (5-nov) es la revisión clínica del Dr. Ciro, T-7 (11-nov) formatea y T-8 (17-nov) envía: ningún átomo pasa el manuscrito por un lector nativo, mientras que CR-6 sí lo hace para el case report. Inglés deficiente = desk-reject en JAAD Intl para un autor no nativo, y el presupuesto de edición ($200-400) ya existe pero no tiene disparador.",
+   "impacto": "medio",
+   "propuesta": "Chip-gate en T-7: 'inglés revisado por mentor de Rising Scholars o por editor ($200-400, RUTA §3.1); si no hay revisión, T-8 se desplaza al siguiente día-Research'. En M2 fijar la fecha de decisión del plan B (16-oct, 4 semanas) en MENTORES.md fila 2 y añadir en X-2 (27-nov) la comprobación de que el mentor también revisará el case report (CR-6).",
+   "esfuerzo": "S",
+   "ficheros": [
+    "DATA/_scripts/gen_research_plan.js",
+    "src/lib/researchDailyPlan.ts",
+    "DATA/RESEARCH/MENTORES.md"
+   ],
+   "toca_app": true
+  }
+ ],
+ "notas": "Segunda pasada sobre lo implementado hoy (5-sep) por el lote research-app/research-docs; los 12 vacíos son residuales y verificados en vivo, no de memoria. Verificaciones hechas: Supabase qacynpqdrorpuegsmtcy (research_papers 200 pending_human/151 OA/0 pdf; engine idle desde 11-jun; RLS OFF en datos_tesis, research_citations, research_manuscripts), Google Calendar (solo existe el recordatorio Research4Life 1-jul-2027; overlays NBME sí existen con colorId 6), PubMed esearch (16 SR/MA solapantes con SR-1, PMIDs listados en el gap 3), D:\\motor_apex\\datos_tesis_acne.xlsx (portada + BASE DATOS leídas: censo con consentimiento, 291 excluidas, sin nombres), citation_verifier.py ejecutado (falla cp1252, funciona en UTF-8), remap_inicio.js bloque 4 (slots() sin pausa, no invoca gen_research_plan.js). Guías de autor JAAD Intl/JAAD/DOJ devolvieron 403 a WebFetch (ScienceDirect, jaad.org, eScholarship) → deben leerse con el Chrome MCP en sesión real. Ya cubierto y NO re-proponer: ORCID + 10 cuentas (R0, checklist research-infra), plantillas de consentimiento ES/EN, protocolo de fotos, CARE 13, presupuesto §3.1 con APC verificados, MENTORES.md con 3 mensajes, CARTA_1 con 5+7 candidatos DOI-verificados y regla de 8 semanas, revisor #2 (X-1), PROSPERO con equipo (L4 §9), Mesa editorial en app. Los intercambios de átomos propuestos en los gaps 1, 2 y 3 son compatibles entre sí y mantienen los invariantes (42 átomos, bloque 13:30-14:15, sáb/dom libres, pausa de enero): d7 24-sep T-1 · d8 28-sep M3 · d9 30-sep R9 · d14 14-oct R6 · d15 16-oct CR-1 · d16 20-oct CR-2 · d19 28-oct T-2 · d21 3-nov R7 · d35 11-dic R2 (todos los movidos R2/R7/T-2 no tienen deadline externo); se implementan en gen_research_plan.js y se regeneran los 3 .ts + daily-plan.md. Fichero intermedio con el detalle: scratchpad/palmerton_v3/gaps_research_v3b.md."
+}

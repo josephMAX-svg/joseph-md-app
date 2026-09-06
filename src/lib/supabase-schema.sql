@@ -111,3 +111,23 @@ CREATE TABLE agent_reports (
 -- CREATE POLICY "Allow all" ON study_progress FOR ALL USING (true);
 -- CREATE POLICY "Allow all" ON deep_work_sessions FOR ALL USING (true);
 -- CREATE POLICY "Allow all" ON agent_reports FOR ALL USING (true);
+
+-- ═══════════════════════════════════════════════
+-- USMLE Step 1 · medición diaria (Palmerton v3 · 5 niveles UWorld) — 5-sep-2026
+-- Espejo de localStorage 'jmd-usmle-scores' (src/lib/usmleScores.ts). Aplicada en Supabase como
+-- migración usmle_daily_scores_palmerton_v3. Mismo patrón que study_sim_scores:
+-- RLS ON + policy permisiva "Allow all" (app single-user con anon key; pg_policies: cmd ALL, qual true, with_check true).
+-- ═══════════════════════════════════════════════
+CREATE TABLE IF NOT EXISTS usmle_daily_scores (
+  fecha DATE PRIMARY KEY,                               -- día (clave)
+  d INTEGER,                                            -- día del plan (DIAS[].d)
+  pretest10 INTEGER CHECK (pretest10 IS NULL OR (pretest10 BETWEEN 0 AND 10)),          -- aciertos pre-test 08:15 (B-C: stress set 05:00)
+  consol30_pct NUMERIC CHECK (consol30_pct IS NULL OR (consol30_pct BETWEEN 0 AND 100)), -- % consolidación 11:00 (B-C: bloques timed)
+  eval_pct NUMERIC CHECK (eval_pct IS NULL OR (eval_pct BETWEEN 0 AND 100)),             -- % eval 18:00 timed · hito = % NBME/UWSA/Free 120
+  tipo_error TEXT CHECK (tipo_error IS NULL OR tipo_error IN ('knowledge', 'transfer', 'proceso')),
+  nivel_uw INTEGER CHECK (nivel_uw IS NULL OR (nivel_uw BETWEEN 1 AND 5)),
+  notas TEXT,
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
+ALTER TABLE usmle_daily_scores ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Allow all" ON usmle_daily_scores FOR ALL USING (true) WITH CHECK (true);
