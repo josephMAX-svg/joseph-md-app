@@ -282,7 +282,8 @@ y `PALMERTON_POR_MATERIA.md` v3; plan USMLE ceñido a los 5 niveles UWorld (§8.
 
 ### 8.7 Pipeline de corrimiento (si un día no se estudia)
 `node DATA/_scripts/remap_inicio.js <fecha>` → después, en este orden: `gen_research_plan.js <fecha>` (la pausa de enero
-no la conoce el remap) · `gen_liviano_plan.js <fecha>` · `gen_business_plan.py <fecha>` · `gen_synapse_plan.js <fecha>`
+no la conoce el remap) · `gen_liviano_plan.js <fecha>` · `gen_business_plan.py <fecha>` · **`gen_vibecoding_plan.js <fecha>` ANTES que** `gen_synapse_plan.js <fecha>`
+(el PC del sábado lee las fechas de SHIP de `vibecodingPlan.ts`; si se invierte el orden, el sábado anuncia el cierre de un proyecto que aún no terminó)
 · `gen_vibecoding_plan.js <fecha>` · `gen_aurum_plan.js <fecha>` · `STUDY_HUB/_scrape/gen_mir_daily.js <fecha> --check`
 · `gen_encaps_mantenimiento_2027.js <fecha>` → execute_sql · USMLE con `gen_usmle_v5.js` (scratchpad; recorta 1 día
 de contenido para mantener los hitos en viernes) · docs + D# de los overlays del Calendar.

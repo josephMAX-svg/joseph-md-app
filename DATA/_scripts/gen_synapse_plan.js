@@ -23,6 +23,17 @@ const ROOT = path.join(__dirname, '..', '..');
 const EX = JSON.parse(fs.readFileSync(path.join(ROOT, 'DATA/SYNAPSE/curricula/_extracted.json'), 'utf8'));
 const VIBE = JSON.parse(fs.readFileSync(path.join(ROOT, 'DATA/SYNAPSE/vibecoding_proyectos.json'), 'utf8')).proyectos;
 if (VIBE.length !== 12) throw new Error('vibecoding_proyectos.json debe tener 12 proyectos');
+// v5.7: fechas REALES de cada proyecto del vibecoding (ini/fin/ship) leídas de src/lib/vibecodingPlan.ts,
+// que las calcula sobre días hábiles desde D1. Sin esto, el PC del sábado anunciaba el SHIP de un proyecto
+// que aún no había terminado (D1 en miércoles ⇒ las semanas del vibecoding no coinciden con las de SYNAPSE).
+let VIBE_FECHAS = [];
+try {
+  const vp = fs.readFileSync(path.join(ROOT, 'src/lib/vibecodingPlan.ts'), 'utf8');
+  VIBE_FECHAS = [...vp.matchAll(/\{s:(\d+),id:"[^"]*",nombre:"[^"]*"[\s\S]*?ini:"(20\d\d-\d\d-\d\d)",fin:"(20\d\d-\d\d-\d\d)",ship:"(20\d\d-\d\d-\d\d)"/g)]
+    .map((m) => ({ s: +m[1], ini: m[2], fin: m[3], ship: m[4] }));
+} catch { /* aún no generado: se cae al comportamiento por semana */ }
+const vibeDe = (fecha) => VIBE_FECHAS.find((x) => x.ship === fecha) || null;
+const vibeEnCurso = (fecha) => VIBE_FECHAS.find((x) => x.ini <= fecha && fecha <= x.ship) || null;
 const cur = (id) => {
   const t = EX.find((x) => x.id === id);
   if (!t || !t.accesible) throw new Error('curriculum no accesible: ' + id);
@@ -263,10 +274,19 @@ function bloqueC(wd, semana) {
 // ─── Bloque PC (sábado 15:00-17:00) = SHIP del proyecto de la semana (vibecoding S1-S12) ───
 // v5.7: el PC ya no es "setup / Problem Set CS50P" — es cerrar y publicar el proyecto de 04:15 de esa semana
 // (commit / URL viva / test verde según su criterio de aceptación en vibecoding_proyectos.json).
-function bloquePC(semana) {
-  const p = VIBE.find((x) => x.s === semana);
+function bloquePC(semana, fecha) {
+  // v5.7: el sábado cierra el proyecto cuyo SHIP cae ESE día (fechas de vibecodingPlan.ts). Si ese sábado
+  // no cierra ninguno, el PC es avance del proyecto en curso y se dice cuándo es su SHIP real.
+  const f = fecha || null;
+  const vs = f ? vibeDe(f) : null;
+  const vc = f && !vs ? vibeEnCurso(f) : null;
+  const n = (vs || vc || {}).s || semana;
+  const p = VIBE.find((x) => x.s === n) || VIBE.find((x) => x.s === semana);
   if (!p) throw new Error('sin proyecto vibecoding para la semana ' + semana);
-  const material = `SHIP proyecto S${p.s} · ${p.nombre}${p.deload ? ' (semana DELOAD: alcance mínimo)' : ''}`;
+  const dl = p.deload ? ' (semana DELOAD: alcance mínimo)' : '';
+  const material = vs || !vc
+    ? `SHIP proyecto S${p.s} · ${p.nombre}${dl}`
+    : `Avance del proyecto S${p.s} · ${p.nombre}${dl} — SHIP el ${vc.ship}`;
   const leccion = `${p.ship} Criterio de aceptación: ${p.aceptacion.join(' · ')}. Entregable: ${p.entregable}`;
   return { tag: 'PC', min: 120, formato: 'pc', material, leccion, url: assertUrl(p.docs[0].url), real: true };
 }
@@ -315,9 +335,9 @@ for (let d = 1; d <= TOTAL; d++) {
     bloques.push({ tag: 'A', min: 15, formato: 'pantalla', ...a });
     const b = bloqueB(wd, semana); if (b) bloques.push(b);
     const c = bloqueC(wd, semana); if (c) bloques.push(c);
-    if (wd === 'Sáb') { bloques.push(bloquePC(semana)); if (semana === 12) pc12Emitido = true; }
+    if (wd === 'Sáb') { bloques.push(bloquePC(semana, fecha)); if (semana === 12) pc12Emitido = true; }
     // si la sem 12 no llega a tener sábado, su Proyecto-PC (CS50P PS3) se coloca en el último día (sin duplicarlo)
-    if (d === TOTAL && wd !== 'Sáb' && !pc12Emitido) { bloques.push(bloquePC(12)); pc12Emitido = true; }
+    if (d === TOTAL && wd !== 'Sáb' && !pc12Emitido) { bloques.push(bloquePC(12, fecha)); pc12Emitido = true; }
   }
   dias.push({ d, fecha, wd, semana, faseId, fase, bloques });
 }
