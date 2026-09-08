@@ -34,9 +34,9 @@ function countFechas(file,marker){const s=fs.readFileSync(path.join(ROOT,file),'
 /** Actualiza inicio/fin (regex) dentro del bloque META que sigue al marcador. Año-agnóstico (Derma cruza a 2027). */
 function setMeta(file,metaMarker,inicio,fin){const p=path.join(ROOT,file);let s=fs.readFileSync(p,'utf8');const i=s.indexOf(metaMarker);if(i<0)throw new Error(file+': meta '+metaMarker);const end=s.indexOf('};',i);let reg=s.slice(i,end);reg=reg.replace(/inicio:\s*'20\d\d-\d\d-\d\d'/, `inicio: '${inicio}'`);if(fin)reg=reg.replace(/fin:\s*'20\d\d-\d\d-\d\d'/, `fin: '${fin}'`);s=s.slice(0,i)+reg+s.slice(end);fs.writeFileSync(p,s,'utf8');}
 
-// 1) USMLE daily (98 · v5.5) — ⚠ los simulacros de hito están anclados a VIERNES con D1=4-sep;
+// 1) USMLE daily (95 · v5.7) — ⚠ los simulacros de hito están anclados a VIERNES con D1=4-sep;
 //    si remapeas a otro START, los hitos caen en otro día de la semana (aceptado: corrimiento determinista).
-{const f='src/lib/usmleStep1Daily.ts';if(countFechas(f,'export const DIAS').length!==97)throw new Error('USMLE!=97');const nd=calNoWeekend(START,97);replaceFechas(f,'export const DIAS',nd);setMeta(f,'export const DAILY_META',START,nd[96]);console.log('USMLE ✓ '+nd[0]+'→'+nd[96]);}
+{const f='src/lib/usmleStep1Daily.ts';const n=countFechas(f,'export const DIAS').length;if(n!==95)throw new Error('USMLE!=95 (v5.7) — tiene '+n+'; si cambió el nº de días, regenera con el scratchpad gen_usmle_v5.js y ajusta este guard');const nd=calNoWeekend(START,95);replaceFechas(f,'export const DIAS',nd);setMeta(f,'export const DAILY_META',START,nd[94]);console.log('USMLE ✓ '+nd[0]+'→'+nd[94]+' (95 d · v5.7; ⚠ los hitos dejan de caer en viernes: regenera con gen_usmle_v5.js recortando contenido)');}
 // 2) MIR (78)
 {const f='src/lib/mirDailyPlan.ts';if(countFechas(f,'export const MIR_DIAS').length!==78)throw new Error('MIR!=78');const nd=calNoWeekend(START,78);replaceFechas(f,'export const MIR_DIAS',nd);setMeta(f,'export const MIR_DAILY_META',START,nd[77]);console.log('MIR ✓ '+nd[0]+'→'+nd[77]);}
 // 3) USMLE plan UNIDADES (5)

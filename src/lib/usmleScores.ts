@@ -272,7 +272,7 @@ export function readinessDesdeHitos(scores: UsmleScore[]): { pct: number; label:
 // ── Export ──
 export function exportScoresJSON(): string {
   return JSON.stringify({
-    exportado: new Date().toISOString(), plan: 'USMLE Step 1 v5.6 (D1 = 2026-09-07 · 97 días)', clave: KEY, tabla: TABLA,
+    exportado: new Date().toISOString(), plan: 'USMLE Step 1 v5.7 (D1 = 2026-09-09 · 95 días)', clave: KEY, tabla: TABLA,
     gate: USMLE_GATE, minimosOnTrack: { fuente: HITOS_ONTRACK_FUENTE, hitos: HITOS_ONTRACK.map((h) => ({ clave: h.clave, min: h.min, nota: h.nota })) },
     scores: leer(),
   }, null, 2);

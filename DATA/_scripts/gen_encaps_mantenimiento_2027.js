@@ -20,7 +20,7 @@
  * viven en _encaps_ciclo_v3.js (compartido con gen_encaps_semana.js).
  *
  * Uso:
- *   node DATA/_scripts/gen_encaps_mantenimiento_2027.js [D1=2026-09-07] [--bk study_schedule_bk_0906b]
+ *   node DATA/_scripts/gen_encaps_mantenimiento_2027.js [D1=2026-09-07] [--bk study_schedule_bk_0908]
  *        [--override <json|ruta.json>] [--hasta 2027-01-29]
  *   --override: {"semanas":{"<lunes ISO>":{"principal":["I-3","V-2","II-5","IV-1"],"secundarios":["II-2","I-10","V-6","II-6"],"motivo":"…"}}}
  *               (lo emite gen_encaps_semana.js; sustituye SOLO esa semana, la rotación sigue igual).
@@ -37,7 +37,7 @@ const argv = process.argv.slice(2);
 const D1 = argv.find((a) => /^20\d\d-\d\d-\d\d$/.test(a)) || '2026-09-07';
 const opt = (k, def) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] ? argv[i + 1] : def; };
 const HASTA = opt('--hasta', '2027-01-29');
-const BK = opt('--bk', 'study_schedule_bk_0906b');
+const BK = opt('--bk', 'study_schedule_bk_0908');
 let OVERRIDE = { semanas: {} };
 const ovArg = opt('--override', null);
 if (ovArg) {
