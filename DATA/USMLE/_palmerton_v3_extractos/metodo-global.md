@@ -468,7 +468,7 @@ Síntomas: releer el mismo párrafo sin comprender, irritabilidad extrema, indif
 
 ---
 
-## 15. IMPLICACIONES DIRECTAS PARA EL PLAN v5.6 (lectura para la síntesis, no prescripción)
+## 15. IMPLICACIONES DIRECTAS PARA EL PLAN v5.7 (lectura para la síntesis, no prescripción)
 
 - El plan ya tiene los cuatro pilares Palmerton en cada día: Anki AM (05:00), pre-test 10Q, deep prime,
   30Q consolidación, eval timed 18:00. Encaje con el método:

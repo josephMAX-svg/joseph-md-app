@@ -1,6 +1,6 @@
 # 🚦 PROTOCOLO DE MODO MÍNIMO — VERDE · ÁMBAR · ROJO (v5.7 · 5-sep-2026)
 
-> Válvula de burnout del régimen v5.6 (D1 = lun 7-sep-2026 · Step 1 = bloque principal · examen 25-29 ene 2027).
+> Válvula de burnout del régimen v5.7 (D1 = mié 9-sep-2026 · Step 1 = bloque principal · examen 25-29 ene 2027).
 > **No cambia franjas, metas ni fechas de examen.** Solo define, por escrito y con disparadores medibles, qué
 > se recorta primero cuando el día no da para todo — para que el recorte sea una decisión y no un colapso.
 > Palmerton: el fracaso es de comportamiento y proceso; "estudiar de noche exhausto" y la "procrastinación

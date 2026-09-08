@@ -71,7 +71,7 @@
   la telemetría muestre el tiempo real (Anki Stats → "Review time"). **No tocar el Calendar** por esto: solo se
   alarga/acorta la sesión dentro del hueco (si un finde necesita > 60', avisar en la revisión semanal).
 
-### Verificación D1-D2 (lun 7 / mar 8-sep-2026 · setup FSRS) — A VERIFICAR (7-sep)
+### Verificación D1-D2 (mié 9 / jue 10-sep-2026 · setup FSRS) — A VERIFICAR (9-sep)
 1. Anki → Preferencias → Repaso → **FSRS activado** (colección completa).
 2. Preset del deck `APEX::USMLE` (y sub-decks): **desired retention 0.90** · **nuevas/día = 10** · sin límite artificial
    de repasos/día (dejar 9999) · "Optimize" de parámetros FSRS solo cuando haya ≥ 1.000 revisiones (mediados de oct).

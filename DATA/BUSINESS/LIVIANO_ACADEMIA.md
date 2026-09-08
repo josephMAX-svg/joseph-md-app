@@ -1,12 +1,19 @@
 # LIVIANO ACADEMIA — Currículo de medicina de la obesidad
 
-> **Franja: 17:15-18:00 L-V · D1 = lun 7-sep-2026 (v5.6)** — 90 días L-V → mié 13-ene-2027 (salta 25-dic, 31-dic y 1-ene);
+> **Franja: 17:15-18:00 L-V · D1 = MIÉ 9-SEP-2026 (v5.7)** — 90 días L-V → **vie 15-ene-2027** (salta 25-dic, 31-dic y 1-ene);
 > bloque del Calendar v5 (serie desde 31-ago). Formato de 45 min: **25' estudio del módulo + 20'
 > aplicación** (explicárselo a un paciente: metáforas, role-play, caso).
 >
+> **v5.7 (8-sep-2026).** El 7 y el 8 de septiembre no se estudiaron → +2 días hábiles: el plan se
+> regeneró con `node DATA/_scripts/gen_liviano_plan.js 2026-09-09`. **Sigue teniendo 90 días, 16 casos
+> y 4 drills**; la franja, el currículo y las metas no cambian. Como el generador re-slotea los casos a
+> los VIERNES reales, los números de día se re-acomodan: el índice D → fecha vigente está en §"Índice
+> v5.7" al final de este doc, y las tablas de abajo ya usan los D y las fechas REALES de
+> `src/lib/livianoStudyPlan.ts` / `livianoCasos.ts` (parseados el 8-sep, no estimados).
+>
 > **v2 · Palmerton v3 (5-sep-2026).** El plan día-a-día se GENERA: `DATA/BUSINESS/liviano_curriculum.json`
 > (fuente única: módulos → temas → estudio/aplicación/fuente/min · tarjetas Anki · drills · 16 casos · rúbrica)
-> → `node DATA/_scripts/gen_liviano_plan.js 2026-09-07` → `src/lib/livianoStudyPlan.ts` + `src/lib/livianoCasos.ts`
+> → `node DATA/_scripts/gen_liviano_plan.js 2026-09-09` → `src/lib/livianoStudyPlan.ts` + `src/lib/livianoCasos.ts`
 > + `DATA/BUSINESS/ANKI_COLA/LIVIANO_mecanismo.csv`. **No se editan los .ts a mano.** Fuente del currículo:
 > agente macro:liviano-obesidad (27-ago-2026) + vacíos 1-5 y 9 del análisis Palmerton v3 (5-sep-2026).
 
@@ -24,21 +31,22 @@ peso: la comunicación sin estigma es contenido nuclear, no accesorio.
 
 | Vacío detectado (5-sep) | Solución implementada |
 |---|---|
-| 1 · "Repaso Anki" sin deck; solo 2 drills ciegos; progreso = ✓ binario | Deck `APEX::LIVIANO::<módulo>` con **216 tarjetas de MECANISMO** (10-15/semana) generadas del campo `estudio` + CSV importable · **pre-test ciego 5Q cada lunes** sobre la semana D-7 · **drills de cifras ancla** D37 · D58 · D77 · D88 · el ✓ pasa a **SCORE** (% ciego + rúbrica) persistido en `jmd-liviano-score` |
+| 1 · "Repaso Anki" sin deck; solo 2 drills ciegos; progreso = ✓ binario | Deck `APEX::LIVIANO::<módulo>` con **216 tarjetas de MECANISMO** (10-15/semana) generadas del campo `estudio` + CSV importable · **pre-test ciego 5Q cada lunes** sobre la semana D-7 · **drills de cifras ancla** D36 (28-oct) · D57 (26-nov) · D76 (23-dic) · D87 (12-ene) · el ✓ pasa a **SCORE** (% ciego + rúbrica) persistido en `jmd-liviano-score` |
 | 2 · 16 viernes con 6 viñetas repetidas, sin datos ni rúbrica | **`LIV_CASOS`: 16 casos únicos** con progresión por competencia, datos clínicos, red flags, 3 decisiones esperadas, frase de cierre y **rúbrica 0-2 × 4** |
 | 3 · Sin generador; JSON de 85 KB a mano | `gen_liviano_plan.js <fecha>` (L-V, feriados fuera, casos en viernes reales, pre-tests en lunes); `liviano_reslot_viernes.js` delega en el generador (remap_inicio.js bloque 7/7b sigue igual) |
-| 4 · 0 días sobre acceso/regulación en Perú; pendientes rojos sin dueño | **Módulo 7 · Acceso en Perú** (5 días, D39-D44) con tarea de verificación anti-alucinación → tabla `LIVIANO_ACCESO_PERU` · 2 filas fijas `LIVIANO_REVISION_TRIMESTRAL` (D46 y D90) · pendientes rojos con dueño, día y salida |
-| 5 · Sin protocolo clínico; la Academia terminaba sin entregable | Cada "Síntesis de módulo" produce UNA sección del **protocolo clínico** (capstone D89) → `DATA/BUSINESS/LIVIANO_PROTOCOLO_CLINICO_v1.md` + `LIVIANO_PROTOCOLO` en la app |
+| 4 · 0 días sobre acceso/regulación en Perú; pendientes rojos sin dueño | **Módulo 7 · Acceso en Perú** (6 días: D39-D42 · D44 · D48-caso) con tarea de verificación anti-alucinación → tabla `LIVIANO_ACCESO_PERU` · 2 filas fijas `LIVIANO_REVISION_TRIMESTRAL` (**D45 mar 10-nov** y **D89 jue 14-ene**) · pendientes rojos con dueño, día y salida |
+| 5 · Sin protocolo clínico; la Academia terminaba sin entregable | Cada "Síntesis de módulo" produce UNA sección del **protocolo clínico** (capstone **D88 mié 13-ene**) → `DATA/BUSINESS/LIVIANO_PROTOCOLO_CLINICO_v1.md` + `LIVIANO_PROTOCOLO` en la app |
 | 9 · 18 KPIs constantes sin captura | **`LivianoKpiLog`** semanal (semana ISO: leads · consultas · altas · MRR · churn · COGS) con semáforo contra meta, regla "< 80 % dos semanas → ajustar", persistido en `jmd-liviano-kpi` + export JSON |
 
-**Redistribución de días** (90 en total, sin tocar la franja): FISIOLOGÍA 16 + 4 casos · GLP-1 15 + 5 casos ·
-**ACCESO PERÚ 5 + 1 caso** · NUTRICIÓN 10 + 2 casos · EJERCICIO 8 + 1 caso · FARMACO+QX 7 + 2 casos ·
-CONDUCTA 9 · SÍNTESIS 4 + 1 caso integral. El Módulo 7 sustituye 2 días de síntesis genérica y 3 días de
+**Redistribución de días** (90 en total, sin tocar la franja; recuento REAL de `LIV_DIAS` v5.7):
+FISIOLOGÍA 20 (16 + 4 casos) · GLP-1 20 (15 + 5 casos) · **ACCESO PERÚ 6 (5 + 1 caso)** · NUTRICIÓN 12
+(10 + 2 casos) · EJERCICIO 9 (8 + 1 caso) · FARMACO+QX 9 (7 + 2 casos) · CONDUCTA 9 · SÍNTESIS 5
+(4 + 1 caso integral). El Módulo 7 sustituye 2 días de síntesis genérica y 3 días de
 FARMACO+QX de menor valor (fármacos sin registro verificado en Perú se estudian en 2 días, no en 5).
 
 ---
 
-## Módulo 1 · Fisiología del peso (D1-D20 · empezar aquí, a fondo)
+## Módulo 1 · Fisiología del peso (20 días: D1-D19 + D23 · mié 9-sep → vie 9-oct · empezar aquí, a fondo)
 
 **Temas**: la obesidad como disfunción del sistema de homeostasis energética (no acumulación
 pasiva) · el cerebro "defiende" un nivel de adiposidad (set point elevado) · leptina y
@@ -59,9 +67,9 @@ como la hipertensión."
 **Método de estudio**: estilo Palmerton — tarjetas Anki de MECANISMO (¿por qué sube la grelina
 tras la dieta?, ¿por qué persiste la adaptación metabólica?), no datos sueltos.
 
-**Produce para el protocolo**: §1 Fundamento (Síntesis D19). Casos de viernes 1-4 (mecanismo sin culpa).
+**Produce para el protocolo**: §1 Fundamento (**Síntesis D19 = lun 5-oct-2026**). Casos de viernes 1-4 (mecanismo sin culpa).
 
-## Módulo 2 · GLP-1 y tirzepatida (D21-D38 · la evidencia, con cifras ancla)
+## Módulo 2 · GLP-1 y tirzepatida (20 días: D20-D22 · D24-D38 · D43 · D68 · mar 6-oct → vie 11-dic · la evidencia, con cifras ancla)
 
 **Cifras ancla verificadas (memorizarlas para consulta y contenido)**:
 - **STEP 1** (semaglutida 2.4 mg): **−14,9%** vs −2,4% placebo a 68 semanas.
@@ -79,7 +87,7 @@ MEN2/carcinoma medular de tiroides · **pérdida de masa magra → exige proteí
 no peptídico, FDA abr-2026, ~8% en diabéticos ACHIEVE-1, GI 44-70%) · pipeline: retatrutide,
 CagriSema · **genéricos de semaglutida en Brasil/India desde mar-2026** → el costo en Perú va a
 cambiar rápido; revisión trimestral de farmacoterapia obligatoria para LIVIANO (ahora con dos
-filas FIJAS en el plan: D46 y D90).
+filas FIJAS en el plan: **D45 = mar 10-nov-2026** y **D89 = jue 14-ene-2027**).
 
 **Fuentes**: [Semaglutide (STEP 1, SELECT, oral)](https://en.wikipedia.org/wiki/Semaglutide) ·
 [Tirzepatide (SURMOUNT)](https://en.wikipedia.org/wiki/Tirzepatide) ·
@@ -90,25 +98,27 @@ la comida deja de gritarte. Copia una hormona que tu intestino ya produce cuando
 dice a tu cerebro 'ya estamos satisfechos'. Si lo suspendes sin cambiar nada más, el termostato
 sigue donde estaba — por eso lo acompañamos de proteína, fuerza y hábitos."
 
-**Drill de cifras ancla (ciego)**: D37. **Produce para el protocolo**: §2 Elegibilidad + titulación
-(Síntesis D38; dosis solo desde ficha técnica, si no "A VERIFICAR"). Casos 5-8 (elegir fármaco y titular).
+**Drill de cifras ancla (ciego)**: **D36 = mié 28-oct-2026**. **Produce para el protocolo**: §2 Elegibilidad + titulación
+(**Síntesis D37 = jue 29-oct-2026**; dosis solo desde ficha técnica, si no "A VERIFICAR"). Casos 5-8 (elegir fármaco y titular).
 
-## Módulo 7 · Acceso en Perú (D39-D45 · NUEVO en v2 — tarea de verificación)
+## Módulo 7 · Acceso en Perú (6 días: D39-D42 · D44 · D48 · lun 2-nov → vie 13-nov-2026 · NUEVO en v2 — tarea de verificación)
 
 **Por qué existe**: toda la oferta (S/ 1,290/mes, margen ~57 %) descansa sobre un COGS "PENDIENTE" y
 los dos pendientes rojos ("Legalidad DIGEMID", "Cotización Sterilelabs") llevaban abiertos desde
 jun-2026 sin dueño ni fecha. Este módulo no enseña "datos de Perú" (no se afirman aquí): **asigna 5
-días para VERIFICARLOS con regla anti-alucinación** y deja el resultado en una tabla fechada.
+días para VERIFICARLOS con regla anti-alucinación** (+ el caso 9 del viernes) y deja el resultado en
+una tabla fechada.
 
-| Día | Fecha (v5.6) | Tarea | Salida |
+| Día | **Fecha v5.7** | Tarea | Salida |
 |---|---|---|---|
-| D39 | jue 29-oct | Registro sanitario DIGEMID de semaglutida (inyectable y oral) y tirzepatida: ¿existen, titular, presentación, vigencia? Portal público de DIGEMID (URL A VERIFICAR), captura con fecha. Si no aparece: "SIN REGISTRO HALLADO (fecha)". | Columnas *registro* de `LIVIANO_ACCESO_PERU` |
-| D41 | lun 2-nov | Condición de venta (con receta / receta retenida — A VERIFICAR por molécula) y flujo receta → farmacia → paciente en el CRM | Columna *condición* |
-| D42 | mar 3-nov | Precio real en farmacia: 2 cotizaciones escritas y fechadas (cadena + independiente) por presentación/dosis; recalcular "medicamento 3 m = S/ 3,600" del value stack | Columna *precio farmacia* |
-| D43 | mié 4-nov | Magistral: legalidad del preparado de molécula comercial (dictamen QF + abogado de salud, cita normativa exacta — A VERIFICAR) + 1 cotización Sterilelabs con certificado de análisis por lote → **cierra los 2 pendientes rojos** | Columna *costo LIVIANO* + KPI COGS |
-| D44 | jue 5-nov | Cadena de frío doméstica 2–8 °C: transporte, almacenamiento, tiempo fuera de frío según ficha técnica (A VERIFICAR), excursiones; guion de 8 líneas del kit de bienvenida | Anexo A del protocolo |
-| D45 | vie 6-nov | **Caso 9**: "Lo consigo más barato en una web" (registro, condición de venta, cadena de frío) | Rúbrica |
-| D46 | lun 9-nov | **REVISIÓN TRIMESTRAL I** de farmacoterapia y precios (fila fija) | `LIVIANO_REVISION_TRIMESTRAL` |
+| D39 | **lun 2-nov** | Registro sanitario DIGEMID de semaglutida (inyectable y oral) y tirzepatida: ¿existen, titular, presentación, vigencia? Portal público de DIGEMID (URL A VERIFICAR), captura con fecha. Si no aparece: "SIN REGISTRO HALLADO (fecha)". | Columnas *registro* de `LIVIANO_ACCESO_PERU` |
+| D40 | **mar 3-nov** | Condición de venta (con receta / receta retenida — A VERIFICAR por molécula) y flujo receta → farmacia → paciente en el CRM | Columna *condición* |
+| D41 | **mié 4-nov** | Precio real en farmacia: 2 cotizaciones escritas y fechadas (cadena + independiente) por presentación/dosis; recalcular "medicamento 3 m = S/ 3,600" del value stack | Columna *precio farmacia* |
+| D42 | **jue 5-nov** | Magistral: legalidad del preparado de molécula comercial (dictamen QF + abogado de salud, cita normativa exacta — A VERIFICAR) + 1 cotización Sterilelabs con certificado de análisis por lote → **cierra los 2 pendientes rojos** | Columna *costo LIVIANO* + KPI COGS |
+| *(D43)* | *vie 6-nov* | *(caso 8 del módulo GLP-1 — el viernes no es de Acceso)* | Rúbrica |
+| D44 | **lun 9-nov** | Cadena de frío doméstica 2–8 °C: transporte, almacenamiento, tiempo fuera de frío según ficha técnica (A VERIFICAR), excursiones; guion de 8 líneas del kit de bienvenida | Anexo A del protocolo |
+| D45 | **mar 10-nov** | **REVISIÓN TRIMESTRAL I** de farmacoterapia y precios (fila fija) | `LIVIANO_REVISION_TRIMESTRAL` |
+| D48 | **vie 13-nov** | **Caso 9**: "Lo consigo más barato en una web" (registro, condición de venta, cadena de frío) | Rúbrica |
 
 **Regla anti-alucinación del módulo**: ninguna celda de la tabla se rellena sin fuente primaria
 fechada (captura del portal DIGEMID, cotización escrita, dictamen). Ningún precio se publica sin
@@ -119,10 +129,10 @@ cotización. Nunca mercado gris. Hasta la verificación, cada celda dice `PENDIE
 producto que no sé qué contiene ni a qué temperatura viajó."
 
 **Pendientes rojos con dueño (cierre con fecha)**:
-- Legalidad DIGEMID → Joseph + QF y abogado de salud (nombres A VERIFICAR) · D39-D43 (29-oct → 4-nov) · salida: columnas registro/condición con captura fechada + dictamen escrito sobre el magistral.
-- Cotización Sterilelabs → Joseph · D43 (4-nov) · salida: cotización escrita y fechada → "costo LIVIANO" + KPI COGS del Cockpit.
+- Legalidad DIGEMID → Joseph + QF y abogado de salud (nombres A VERIFICAR) · **D39-D42 (2-nov → 5-nov-2026)** · salida: columnas registro/condición con captura fechada + dictamen escrito sobre el magistral.
+- Cotización Sterilelabs → Joseph · **D42 (jue 5-nov-2026)** · salida: cotización escrita y fechada → "costo LIVIANO" + KPI COGS del Cockpit.
 
-## Módulo 3 · Nutrición (D47-D58)
+## Módulo 3 · Nutrición (12 días: D46-D47 · D49-D58 · mié 11-nov → vie 27-nov-2026)
 
 **Temas**: el déficit calórico como mecanismo común · **DIETFITS**: low-fat vs low-carb no
 difieren si la calidad es alta — **la adherencia predice el resultado, no el nombre de la
@@ -137,10 +147,10 @@ contra-argumentario de mitos.
 **Cómo explicárselo al paciente**: "No existe LA dieta. Existe la dieta que TÚ puedes sostener.
 Lo que no se negocia es la proteína: es el ladrillo que protege tu músculo mientras bajas grasa."
 
-**Drill de cifras (ciego)**: D58 (módulos 2-3-7). **Produce para el protocolo**: §3 política nutricional
-(Síntesis D58). Casos 10-11 (proteína/masa magra · adherencia).
+**Drill de cifras (ciego)**: **D57 = jue 26-nov-2026** (módulos 2-3-7; la misma sesión es Síntesis del módulo 3).
+**Produce para el protocolo**: §3 política nutricional. Casos 10-11 (proteína/masa magra · adherencia).
 
-## Módulo 4 · Ejercicio (D59-D68)
+## Módulo 4 · Ejercicio (9 días: D59-D67 · lun 30-nov → jue 10-dic-2026)
 
 **Temas**: el ejercicio solo baja poco peso (~2-3 kg) pero es **el mejor predictor de
 mantenimiento** (National Weight Control Registry: ~1 h/día ≈ 2.800 kcal/sem; el umbral 200-300 min/sem
@@ -155,10 +165,10 @@ preserva masa magra durante farmacoterapia · beneficio cardiometabólico indepe
 volver a subirlo** y para que lo que pierdas sea grasa y no músculo. La balanza no distingue;
 nosotros sí."
 
-**Produce para el protocolo**: §4 estándar proteína/fuerza + qué medir y con qué cadencia (Síntesis D68).
-Caso 12 (estancamiento).
+**Produce para el protocolo**: §4 estándar proteína/fuerza + qué medir y con qué cadencia (**Síntesis D67 = jue 10-dic-2026**).
+Caso 12 (estancamiento, D63 vie 4-dic).
 
-## Módulo 6 · Farmacología no-GLP1 + cirugía (D69-D77 · límites de competencia)
+## Módulo 6 · Farmacología no-GLP1 + cirugía (9 días: D69-D76 · D85 · lun 14-dic-2026 → vie 8-ene-2027 · límites de competencia)
 
 **Fármacos**: fentermina · fentermina/topiramato · naltrexona/bupropión · orlistat ·
 setmelanotida (obesidad monogénica) · metformina off-label. **Disponibilidad y registro en Perú:
@@ -177,10 +187,11 @@ pérdida sostenida 25-30% y remisión de diabetes. **El médico LIVIANO debe sab
 que tenemos para casos concretos, con criterios claros. Si es tu caso, te acompaño antes,
 durante y después."
 
-**Drill de cifras (ciego)**: D77 (módulos 4-6). **Produce para el protocolo**: §6 derivación y límites +
-escalera terapéutica (Síntesis D77). Casos 13-15 (límite de competencia y derivación).
+**Drill de cifras (ciego)**: **D76 = mié 23-dic-2026** (módulos 4-6; la misma sesión es Síntesis del módulo 6).
+**Produce para el protocolo**: §6 derivación y límites + escalera terapéutica. Casos 13-15 (límite de competencia
+y derivación: D68 11-dic · D73 18-dic · D85 8-ene).
 
-## Módulo 5 · Conducta (D78-D86 · se estudia al final para que el caso integral lo use)
+## Módulo 5 · Conducta (9 días: D77-D84 · D86 · jue 24-dic-2026 → lun 11-ene-2027 · se estudia al final para que el caso integral lo use)
 
 **Temas**: marco **5As** (Ask-Assess-Advise-Agree-Assist, Obesity Canada) · entrevista
 motivacional · **automonitoreo como predictor #1 de éxito** · DPP (−58% incidencia de diabetes
@@ -196,15 +207,16 @@ estudios muestran que la gente que se monitorea es la que llega. Y aquí nadie t
 por el peso — vamos a tratar una condición médica, juntos."
 
 **Produce para el protocolo**: §5 guion 5As · automonitoreo · cadencia de check-in por fase (4 sesiones/mes
-en Despegue) · check-in de EA (Síntesis D86).
+en Despegue) · check-in de EA (**Síntesis D86 = lun 11-ene-2027**).
 
-## Síntesis final (D87-D90)
+## Síntesis final (D87-D90 · mar 12-ene → vie 15-ene-2027)
 
-- **D87 (vie 8-ene)** · **Caso 16 integral**: 6 meses en LIVIANO, −16 %, "¿ya puedo dejar todo?" (con la esposa
+- **D87 (mar 12-ene)** · Repaso integral I: **drill ciego de cifras** + mecanismos de los 7 módulos + pre-test.
+- **D88 (mié 13-ene)** · **Capstone**: ensamblaje de `LIVIANO_PROTOCOLO_CLINICO_v1.md` (§1-§6 + Anexo A) + ruta de credencial.
+- **D89 (jue 14-ene)** · **REVISIÓN TRIMESTRAL II** + cierre de la Academia (fila fija).
+- **D90 (vie 15-ene)** · **Caso 16 integral**: 6 meses en LIVIANO, −16 %, "¿ya puedo dejar todo?" (con la esposa
   presente). Criterio de éxito de la Academia: **se resuelve SOLO con el protocolo v1**; lo que falte es una sección que falta.
-- **D88 (lun 11-ene)** · Repaso integral: drill ciego de cifras + 20 tarjetas de mecanismo de los 7 módulos + pre-test.
-- **D89 (mar 12-ene)** · **Capstone**: ensamblaje de `LIVIANO_PROTOCOLO_CLINICO_v1.md` (§1-§6 + Anexo A) + ruta de credencial.
-- **D90 (mié 13-ene)** · **REVISIÓN TRIMESTRAL II** + cierre: charla completa LIVIANO de 10 min grabada.
+  Cierra la Academia el mismo viernes: charla completa LIVIANO de 10 min grabada.
 
 ---
 
@@ -213,7 +225,7 @@ en Despegue) · check-in de EA (Síntesis D86).
 | Instrumento | Cuándo | Qué mide | Meta | Dónde se guarda |
 |---|---|---|---|---|
 | **Pre-test ciego 5Q** | cada LUNES desde la semana 2 (18 en total), primeros 5-7' de los 25' de estudio | 5 tarjetas de mecanismo de la semana D-7 (selección determinista, `livPretest(d)`) | ≥ 80 % | `jmd-liviano-score.pretests[d]` |
-| **Drill de cifras ancla** | D37 (M2) · D58 (M2-3-7) · D77 (M4-6) · D88 (integral) | cifras de memoria, sin notas (`LIV_DRILLS`) | ≥ 80 % | `jmd-liviano-score.drills[d]` |
+| **Drill de cifras ancla** | **D36 28-oct (M2) · D57 26-nov (M2-3-7) · D76 23-dic (M4-6) · D87 12-ene (integral)** | cifras de memoria, sin notas (`LIV_DRILLS`) | ≥ 80 % | `jmd-liviano-score.drills[d]` |
 | **Caso de viernes + rúbrica** | 16 viernes reales | 4 ítems 0-2: mecanismo correcto · metáfora de paciente · people-first/sin estigma · plan pactado y medible | ≥ 6/8 por caso · media ≥ 80 % | `jmd-liviano-score.rubricas[casoId]` |
 | **Score global** | panel Academia (F9) | media de % ciego y % rúbrica | ≥ 80 % | calculado |
 
@@ -221,8 +233,10 @@ El ✓ de `studyProgress('liviano')` se sigue escribiendo para el progreso globa
 muestra el panel es el **% real** (cabecera: % ciego · rúbrica media · score). Los días de contenido sin
 instrumento conservan un "marcar hecho" explícitamente etiquetado como no-medido.
 
-**Nota sobre los días de drill**: el análisis pedía D38/D58/D75; en el plan generado son D37 (el D38 es la
-Síntesis del módulo 2), D58 y D77 (el D75 es viernes = caso 15). Cambiarlos = mover `drill: true` en el JSON.
+**Nota sobre los días de drill (v5.7)**: el análisis original pedía D38/D58/D75; en el plan generado del 8-sep son
+**D36 · D57 · D76 · D87** (leídos de `LIV_DRILLS`). El generador re-numera al re-slotear los casos a viernes
+reales, así que el número de día NO es estable entre versiones — la fecha sí. Cambiarlos = mover `drill: true`
+en `liviano_curriculum.json` y regenerar.
 
 ## Banco de casos (`LIV_CASOS`, 16 únicos · progresión por competencia)
 
@@ -231,24 +245,31 @@ dato depende de una fuente que no está en este currículo), red flags (MEN2 · 
 cardiología · psiquiatría · producto sin registro), consigna de 20 min, 3 decisiones esperadas, frase de
 cierre, pistas por ítem de la rúbrica y fuente.
 
-| # | D (fecha) | Bloque | Caso |
+Los 16 casos caen **todos en VIERNES** (verificado sobre `LIV_CASOS` el 8-sep: 16/16 con `wd = Vie`).
+
+| # | D · **fecha v5.7** | Bloque | Caso |
 |---|---|---|---|
-| 1 | D5 (11-sep) | mecanismo sin culpa | La que se culpa: tres dietas, tres rebotes |
-| 2 | D10 (18-sep) | mecanismo sin culpa | El que come de noche: hambre hormonal vs hambre real |
-| 3 | D15 (25-sep) | mecanismo sin culpa | "Quemo menos que antes": adaptación metabólica que persiste |
-| 4 | D20 (2-oct) | mecanismo sin culpa | El escéptico: "es disciplina, mi hermano bajó solo" |
-| 5 | D25 (9-oct) | elegir fármaco y titular | "Quiero la inyección ya": candidatura y consentimiento hablado |
-| 6 | D30 (16-oct) | elegir fármaco y titular | Prediabetes con historia familiar: ¿semaglutida o tirzepatida? |
-| 7 | D35 (23-oct) | elegir fármaco y titular | Semana 3 de titulación: náusea diaria y un vómito — ¿sigo? |
-| 8 | D40 (30-oct) | elegir fármaco y titular | Post-infarto que "solo quiere verse mejor": SELECT y límite de competencia |
-| 9 | D45 (6-nov) | EA · estancamiento · proteína (+ acceso) | "Lo consigo más barato en una web": acceso, registro y cadena de frío |
-| 10 | D50 (13-nov) | EA · estancamiento · proteína | Casi sin apetito, come una vez al día: proteína y masa magra |
-| 11 | D55 (20-nov) | EA · estancamiento · proteína | El fan del 16/8 y del keto que abandona a las 6 semanas |
-| 12 | D60 (27-nov) | EA · estancamiento · proteína | −12 kg y estancado 3 semanas: quiere dejar todo |
-| 13 | D65 (4-dic) | límite de competencia y derivación | Dolor abdominal intenso + vómitos… y está buscando embarazo |
-| 14 | D70 (11-dic) | límite de competencia y derivación | No puede pagar el GLP-1 y pide "pastillas": opciones no-GLP1 y límite |
-| 15 | D75 (18-dic) | límite de competencia y derivación | IMC 41 con diabetes mal controlada y falla a semaglutida: "no quiero que me corten" |
-| 16 | D87 (8-ene) | integral con cierre de programa | 6 meses en LIVIANO, −16 %: "¿ya puedo dejar todo?" (con la esposa presente) |
+| 1 | D8 · **vie 18-sep-2026** | mecanismo sin culpa | La que se culpa: tres dietas, tres rebotes |
+| 2 | D13 · **vie 25-sep** | mecanismo sin culpa | El que come de noche: hambre hormonal vs hambre real |
+| 3 | D18 · **vie 2-oct** | mecanismo sin culpa | "Quemo menos que antes": adaptación metabólica que persiste |
+| 4 | D23 · **vie 9-oct** | mecanismo sin culpa | El escéptico: "es disciplina, mi hermano bajó solo" |
+| 5 | D28 · **vie 16-oct** | elegir fármaco y titular | "Quiero la inyección ya": candidatura y consentimiento hablado |
+| 6 | D33 · **vie 23-oct** | elegir fármaco y titular | Prediabetes con historia familiar: ¿semaglutida o tirzepatida? |
+| 7 | D38 · **vie 30-oct** | elegir fármaco y titular | Semana 3 de titulación: náusea diaria y un vómito — ¿sigo? |
+| 8 | D43 · **vie 6-nov** | elegir fármaco y titular | Post-infarto que "solo quiere verse mejor": SELECT y límite de competencia |
+| 9 | D48 · **vie 13-nov** | EA · estancamiento · proteína (+ acceso) | "Lo consigo más barato en una web": acceso, registro y cadena de frío |
+| 10 | D53 · **vie 20-nov** | EA · estancamiento · proteína | Casi sin apetito, come una vez al día: proteína y masa magra |
+| 11 | D58 · **vie 27-nov** | EA · estancamiento · proteína | El fan del 16/8 y del keto que abandona a las 6 semanas |
+| 12 | D63 · **vie 4-dic** | EA · estancamiento · proteína | −12 kg y estancado 3 semanas: quiere dejar todo |
+| 13 | D68 · **vie 11-dic** | límite de competencia y derivación | Dolor abdominal intenso + vómitos… y está buscando embarazo |
+| 14 | D73 · **vie 18-dic** | límite de competencia y derivación | No puede pagar el GLP-1 y pide "pastillas": opciones no-GLP1 y límite |
+| 15 | D85 · **vie 8-ene-2027** | límite de competencia y derivación | IMC 41 con diabetes mal controlada y falla a semaglutida: "no quiero que me corten" |
+| 16 | D90 · **vie 15-ene-2027** | integral con cierre de programa | 6 meses en LIVIANO, −16 %: "¿ya puedo dejar todo?" (con la esposa presente) |
+
+> El plan tiene **17 viernes** y 16 casos: el único viernes sin caso es **D3 (vie 11-sep-2026)** — el
+> primer caso necesita una semana de contenido detrás. El salto entre el caso 14 (vie 18-dic) y el 15
+> (vie 8-ene) es de tres semanas porque el **25-dic y el 1-ene no son días del plan** (feriados fijos que
+> el generador excluye), así que esos dos viernes no existen como día LIVIANO.
 
 **Rúbrica (0-2 × 4)**: mecanismo correcto (encadena causa→efecto, sin cifras inventadas) · metáfora de
 paciente (de la biblioteca, en ≤ 60 s, el paciente la repite) · people-first / sin estigma (valida, pide
@@ -269,15 +290,15 @@ de escalada/derivación). Las 3 decisiones y el cierre se revelan **después** d
 
 ## Capstone: el protocolo clínico LIVIANO se produce dentro de la Academia (sin añadir minutos)
 
-| Sección | Módulo → Síntesis que la redacta | Día (v5.6) | Estado 5-sep |
+| Sección | Módulo → Síntesis que la redacta | **Día · fecha v5.7** | Estado 5-sep |
 |---|---|---|---|
-| §1 Fundamento: por qué tratamiento crónico | M1 | D19 (1-oct) | borrador (desde el currículo) |
-| §2 Elegibilidad + titulación | M2 | D38 (28-oct) | borrador (dosis A VERIFICAR) |
-| §3 Política nutricional · §4 estándar proteína/fuerza + qué medir | M3 · M4 | D58 (25-nov) · D68 (9-dic) | borrador |
-| §5 5As · automonitoreo · cadencia de check-in · check-in de EA | M5 | D86 (7-ene) | borrador |
-| §6 Derivación y límites de competencia | M6 | D77 (22-dic) | borrador |
-| Anexo A · Acceso en Perú (tabla + cadena de frío + regla) | M7 | D39-D44 + D46 + D90 | pendiente (verificación) |
-| Ensamblaje v1 + ruta de credencial | Capstone | D89 (12-ene) | pendiente |
+| §1 Fundamento: por qué tratamiento crónico | M1 | **D19 · lun 5-oct-2026** | borrador (desde el currículo) |
+| §2 Elegibilidad + titulación | M2 | **D37 · jue 29-oct-2026** | borrador (dosis A VERIFICAR) |
+| §3 Política nutricional · §4 estándar proteína/fuerza + qué medir | M3 · M4 | **D57 · jue 26-nov** · **D67 · jue 10-dic** | borrador |
+| §5 5As · automonitoreo · cadencia de check-in · check-in de EA | M5 | **D86 · lun 11-ene-2027** | borrador |
+| §6 Derivación y límites de competencia | M6 | **D76 · mié 23-dic-2026** | borrador |
+| Anexo A · Acceso en Perú (tabla + cadena de frío + regla) | M7 | **D39-D42 · D44 (2→9-nov)** + **D45 (10-nov)** + **D89 (14-ene)** | pendiente (verificación) |
+| Ensamblaje v1 + ruta de credencial | Capstone | **D88 · mié 13-ene-2027** | pendiente |
 
 Documento: `DATA/BUSINESS/LIVIANO_PROTOCOLO_CLINICO_v1.md` (esqueleto con todo lo que ya se puede afirmar desde el
 currículo, con fuente; ninguna dosis sin ficha técnica). En la app: `LIVIANO_PROTOCOLO` (Logística F5 → sección
@@ -307,12 +328,12 @@ Persistido en `jmd-liviano-kpi`; botón **Exportar JSON** (descarga `liviano_kpi
 Curso **"Fundamentals of Obesity Treatment"** (OMA, ~9.75 CME) → micro-credentials OMA →
 vía CME (60 créditos) hacia el examen **ABOM** ([abom.org](https://www.abom.org/) ·
 [blueprint](https://www.abom.org/content-outline-and-exam-blueprint/)). Posiciona a LIVIANO
-como referente con certificación internacional real. Se anota en el capstone (D89).
+como referente con certificación internacional real. Se anota en el **capstone (D88 · mié 13-ene-2027)**.
 
 ## Pipeline de regeneración y corrimiento (cada día sin estudiar = +1 hábil)
 
 1. Editar **solo** `DATA/BUSINESS/liviano_curriculum.json` (temas, tarjetas, casos, drills, colores).
-2. `node DATA/_scripts/gen_liviano_plan.js <YYYY-MM-DD>` → reescribe `livianoStudyPlan.ts`, `livianoCasos.ts` y el CSV.
+2. `node DATA/_scripts/gen_liviano_plan.js <YYYY-MM-DD>` (v5.7: `2026-09-09`) → reescribe `livianoStudyPlan.ts`, `livianoCasos.ts` y el CSV.
    Determinista; verifica 90 filas L-V, feriados fuera, 16 casos en viernes, pre-tests en lunes.
 3. Corrimiento global: `node DATA/_scripts/remap_inicio.js <fecha>` re-fecha las 90 filas (bloque 7, regex
    `"fecha":"…","wd":"…"` y `inicio/fin/totalDias: 90` de `LIV_META` — formato conservado) y llama a
@@ -325,10 +346,51 @@ como referente con certificación internacional real. Se anota en el capstone (D
 1. Biblioteca de **metáforas de paciente por módulo** (termostato, timbre, acelerador/freno, ruido de comida,
    ladrillo, GPS) — se ensayan en los 20' de aplicación y se puntúan en la rúbrica.
 2. Tarjetas de mecanismo (mismo formato Palmerton del resto del sistema de estudio); recall medido en ciego.
-3. Revisión **trimestral** de farmacoterapia (aprobaciones y precios se mueven rápido): filas fijas D46 y D90,
-   luego cada trimestre (`LIVIANO_REVISION_TRIMESTRAL`).
+3. Revisión **trimestral** de farmacoterapia (aprobaciones y precios se mueven rápido): filas fijas **D45
+   (mar 10-nov-2026)** y **D89 (jue 14-ene-2027)**, luego cada trimestre (`LIVIANO_REVISION_TRIMESTRAL`).
 4. Todo dato clínico, regulatorio o de precio que se publique en contenido LIVIANO se verifica contra la fuente
    primaria (misma regla anti-alucinación del motor de preguntas ENCAPS). Lo no verificado se escribe
    "A VERIFICAR (dd-mmm)".
 5. La Academia produce entregables, no solo repaso: tabla de acceso fechada, protocolo clínico v1, KPI log con
    números reales.
+
+---
+
+## Índice v5.7 (8-sep-2026) — D → fecha de los 90 días
+
+Leído de `src/lib/livianoStudyPlan.ts` → `LIV_DIAS` (parseado, no estimado). **D1 = mié 9-sep-2026 ·
+D90 = vie 15-ene-2027 · 90 días L-V · 25-dic, 31-dic y 1-ene fuera · franja 17:15-18:00 intacta.**
+
+| Módulo | Días (D) | Nº | Rango de fechas |
+|---|---|---|---|
+| M1 · FISIOLOGÍA | D1-D19 · D23 | 20 | mié 9-sep → vie 9-oct-2026 |
+| M2 · GLP-1 | D20-D22 · D24-D38 · D43 · D68 | 20 | mar 6-oct → vie 11-dic-2026 |
+| M7 · ACCESO PERÚ | D39-D42 · D44 · D48 | 6 | lun 2-nov → vie 13-nov-2026 |
+| SÍNTESIS (trimestral I + cierre) | D45 · D87-D90 | 5 | mar 10-nov-2026 · mar 12-ene → vie 15-ene-2027 |
+| M3 · NUTRICIÓN | D46-D47 · D49-D58 | 12 | mié 11-nov → vie 27-nov-2026 |
+| M4 · EJERCICIO | D59-D67 | 9 | lun 30-nov → jue 10-dic-2026 |
+| M6 · FARMACO+QX | D69-D76 · D85 | 9 | lun 14-dic-2026 → vie 8-ene-2027 |
+| M5 · CONDUCTA | D77-D84 · D86 | 9 | jue 24-dic-2026 → lun 11-ene-2027 |
+
+*(Los módulos se solapan en el calendario porque el generador coloca cada caso en su VIERNES real; por eso
+un día de un módulo puede caer dentro del rango de otro.)*
+
+**Hitos v5.6 → v5.7** (columna v5.6 leída de `b24f986:src/lib/livianoStudyPlan.ts` y `livianoCasos.ts`;
+el Dn cambia porque el generador re-sloteó los casos a viernes reales, la fecha es lo estable)
+
+| Hito | v5.6 | **v5.7** |
+|---|---|---|
+| D1 · arranque | lun 7-sep-2026 | **mié 9-sep-2026** |
+| Caso 1 | vie 11-sep-2026 (D5) | **vie 18-sep-2026** (D8) |
+| Drill de cifras M2 | 27-oct-2026 (D37) | **mié 28-oct-2026** (D36) |
+| Síntesis M2 | 28-oct-2026 (D38) | **jue 29-oct-2026** (D37) |
+| Módulo 7 · Acceso en Perú | 29-oct → 6-nov-2026 | **lun 2-nov → vie 13-nov-2026** |
+| REVISIÓN TRIMESTRAL I | 9-nov-2026 (D46) | **mar 10-nov-2026** (D45) |
+| Drill M2-3-7 + Síntesis M3 | 25-nov-2026 (D58) | **jue 26-nov-2026** (D57) |
+| Síntesis M4 | 9-dic-2026 (D68) | **jue 10-dic-2026** (D67) |
+| Drill M4-6 + Síntesis M6 | 22-dic-2026 (D77) | **mié 23-dic-2026** (D76) |
+| Síntesis M5 | 7-ene-2027 (D86) | **lun 11-ene-2027** (D86) |
+| Repaso integral + drill final | 11-ene-2027 (D88) | **mar 12-ene-2027** (D87) |
+| Capstone (protocolo v1) | 12-ene-2027 (D89) | **mié 13-ene-2027** (D88) |
+| REVISIÓN TRIMESTRAL II + cierre | 13-ene-2027 (D90) | **jue 14-ene-2027** (D89) |
+| Caso 16 integral · fin de la Academia | vie 8-ene-2027 (D87) | **vie 15-ene-2027** (D90) |

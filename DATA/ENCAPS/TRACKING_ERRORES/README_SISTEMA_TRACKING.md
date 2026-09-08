@@ -99,7 +99,7 @@ Produce `SEMANAS/semana_<lunes>.md` (% ciego por área vs vector v3 II30·I27·V
 - temas calientes = % ciego < 75% (n ≥ 5) · eval anclada con ≥ 2 fallos · ≥ 3 fallos knowledge, ordenados por `peso del área v3 × brecha a 85` (×1.5 críticos, ×1.2 rebote);
 - máximo 2 sustituciones por semana; **I-3 y V-2 nunca se ceden**; un crítico solo se cede si ya está ≥ 85% con n ≥ 5;
 - secundarios: los códigos de cola larga con fallos pasan primero.
-Aplicar: `node DATA/_scripts/gen_encaps_mantenimiento_2027.js 2026-09-07 --override DATA/ENCAPS/TRACKING_ERRORES/SEMANAS/override_<lunes>.json` → revisar el SQL → `execute_sql`. El checkpoint de fin de enero (v3 §6 regla 3) sale de esta misma serie: no se reconstruye a mano.
+Aplicar: `node DATA/_scripts/gen_encaps_mantenimiento_2027.js 2026-09-09 --override DATA/ENCAPS/TRACKING_ERRORES/SEMANAS/override_<lunes>.json` → revisar el SQL → `execute_sql`. El checkpoint de fin de enero (v3 §6 regla 3) sale de esta misma serie: no se reconstruye a mano.
 
 ## Reglas de ruteo Anki / Obsidian
 - **→ ANKI** (repetición espaciada, dato puntual): **OLVIDO** y **CRONOLOGIA**, y **CONCEPTO por definición cerrada** en temas **CRÍTICOS**. Prioridad: lo que Joseph falla MUCHO en los temas más rentables (críticos v3).

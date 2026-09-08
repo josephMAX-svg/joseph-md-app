@@ -344,7 +344,7 @@ Contexto: entró a Stanford tras dos años de Fulbright en Corea sintiendo "I do
 
 ---
 
-## 14. IMPLICACIONES PARA EL PLAN v5.6 (lectura para la síntesis, no prescripción)
+## 14. IMPLICACIONES PARA EL PLAN v5.7 (lectura para la síntesis, no prescripción)
 
 - El plan mide por "% ciego" (coherente con "where am I weakest"); falta la **hoja de micro-destrezas** por pregunta (contexto/cronología/severidad/SAQ/rule-in/abogado/ghosts/emocional/conocimiento) y la **regla del tercio** como disparador para cambiar de adquisición a interpretación; y una **shopping list** por oración del enunciado tras cada bloque.
 - **Franja 04:15-05:45 de IA + Anki 05:00**: Palmerton pone lo más demandante antes de la primera obligación; la coexistencia es válida si la IA no roba la ventana prefrontal del USMLE; el brick nocturno (20:30) y 8 h de sueño son condición del método.

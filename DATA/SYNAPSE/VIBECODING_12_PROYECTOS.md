@@ -2,6 +2,18 @@
 
 > GENERADO por `DATA/_scripts/gen_vibecoding_plan.js 2026-09-09` desde `DATA/SYNAPSE/vibecoding_proyectos.json` (editar el JSON, no este .md). Franja **04:15–05:00 L-V (45')** · sábado **PC SYNAPSE 15:00-17:00 = SHIP** del proyecto · domingo = Feynman del proyecto (10', opcional). Progreso real en la app: pestaña ⚡ run de SYNAPSE (PlanKey `vibecoding`, ✓ por día) y bloque 04:15 de MISIÓN DE HOY.
 
+> **v5.7 (8-sep-2026) — corrimiento.** Este doc y `src/lib/vibecodingPlan.ts` ya están regenerados con
+> `gen_vibecoding_plan.js 2026-09-09`: **60 días · mié 9-sep-2026 → mar 1-dic-2026**, 12 proyectos de 5 pasos,
+> **12 SHIP en sábados: sáb 19-sep-2026 → sáb 5-dic-2026** (uno por proyecto, verificados contra `VIBE_PROYECTOS`).
+>
+> ⚠ **Desalineación conocida con SYNAPSE (a arreglar en el generador, no aquí).** Con D1 = miércoles, la semana
+> de un proyecto va de mié a mar, así que su SHIP cae **el sábado SIGUIENTE** al cierre de la semana natural.
+> El plan SYNAPSE (`synapseDailyPlan.ts`) sigue poniendo el texto "SHIP Sn" en el sábado de SU semana n
+> (sáb 12-sep = "SHIP S1"), es decir **una semana antes** de lo que dice `VIBE_PROYECTOS` (sáb 19-sep) — y el
+> **SHIP S12 (sáb 5-dic-2026) queda fuera del plan SYNAPSE**, que termina el sáb 28-nov-2026. Manda esta tabla
+> (`VIBE_PROYECTOS.ship`); el sábado que SYNAPSE etiqueta "SHIP Sn" es en realidad el cierre de S(n−1).
+> En v5.6 (D1 lunes) ambos coincidían. Ver "pendiente" al final.
+
 ## Reglas (Palmerton aplicado a construir)
 
 - Se mide por OUTPUT verificable (commit/URL viva/test verde), nunca por tiempo sentado (Palmerton: medir por resultado, no por material consumido). 5' objetivo → 35' construir con Claude Code → 5' commit + nota en synapse-journal.
@@ -31,7 +43,7 @@
 ## S1 · Fix parser APEX (P0-2 / P0-3) + test multilínea
 
 - **Semana**: mié 09-sep → mar 15-sep · **SHIP**: sábado sáb 19-sep (PC SYNAPSE 15:00-17:00) · rotación `yocpmd`
-- **A quién sirve**: USMLE — el plan de 97 días apoya en ≤10 tarjetas de MECANISMO/día vía APEX; hoy el parser trunca REVERSO/CASO_CLINICO/FISIO_EXPANDIDA a la 1ª línea (verificado 4-sep, mtime 7-may)
+- **A quién sirve**: USMLE — el plan de **95 días** (v5.7) apoya en ≤10 tarjetas de MECANISMO/día vía APEX; hoy el parser trunca REVERSO/CASO_CLINICO/FISIO_EXPANDIDA a la 1ª línea (verificado 4-sep, mtime 7-may)
 - **Objetivo**: Que un APEX multilínea llegue ÍNTEGRO a Anki (tarjeta) y a Obsidian (nota con caso_clinico + fisio_expandida).
 - **Entregable verificable**: Commit en D:/agente_estudio (parsers + creador de nota) + scripts/test_parser_multilinea.js verde (3/3) + 1 APEX de prueba íntegro en Anki y en el vault (is_test=true).
 - **Dónde**: D:/agente_estudio/scripts (node_parsear_tarjeta_v2_3.js:27 · n8n_parser_v2_3.js:56 · node_crear_nota_v2_3.js)
@@ -115,7 +127,7 @@
 ## S5 · remap_todo.js: corrimiento de 1 comando + verificación automática
 
 - **Semana**: mié 07-oct → mar 13-oct · **SHIP**: sábado sáb 17-oct (PC SYNAPSE 15:00-17:00) · rotación `yocpmd`
-- **A quién sirve**: TODOS los planes — ya van 5 corrimientos (31-ago→7-sep) y cada uno exige 5 scripts a mano + execute_sql + docs; un error de fecha rompe el Home de todos los frentes
+- **A quién sirve**: TODOS los planes — ya van **6 corrimientos (31-ago → 9-sep)** y cada uno exige 5 scripts a mano + execute_sql + docs; un error de fecha rompe el Home de todos los frentes
 - **Objetivo**: Un solo comando que encadene remap_inicio.js + gen_synapse_plan.js + gen_aurum_plan.js + gen_vibecoding_plan.js + gen_encaps_mantenimiento_2027.js y VERIFIQUE (nº de días, L-V, feriados, fechas monótonas, tsc) antes de dar el OK.
 - **Entregable verificable**: DATA/_scripts/remap_todo.js <fecha> [--dry-run] + DATA/_scripts/verificar_planes.js + skill /remap.
 - **Dónde**: DATA/_scripts/remap_inicio.js (leer, no romper sus regex) · gen_*_plan.js · .claude/skills/remap/SKILL.md
@@ -210,7 +222,7 @@
   - [ ] Nada se ejecuta sin confirmación explícita de Joseph
 - **Docs (verificadas 5-sep-2026)**: [Claude Code — Connect Claude Code to tools via MCP (Installing MCP servers · Practical examples)](https://code.claude.com/docs/en/mcp) · [Claude Code — Connect to MCP servers (quickstart)](https://code.claude.com/docs/en/mcp-quickstart)
 - **Pasos diarios (45' cada uno)**:
-  - **Mié 04-11 · construir con Claude Code**: Listar los hitos y su D# desde usmleStep1Daily.ts (DIAS con palm/hito) y la regla 'hito = viernes de su semana'; escribir la tabla esperada para START=2026-09-07 y comparar con CALENDARIO_5_MESES.md.
+  - **Mié 04-11 · construir con Claude Code**: Listar los hitos y su D# desde usmleStep1Daily.ts (DIAS con palm/hito) y la regla 'hito = viernes de su semana'; escribir la tabla esperada para START=2026-09-09 y comparar con CALENDARIO_5_MESES.md.
   - **Jue 05-11 · verificar en vivo (test/URL/dato)**: gen_hitos_overlays.js: lee el .ts, calcula fechas, emite JSON {hito, fecha, hora, descripcion, accion:'delete+create'}; sin llamadas al Calendar.
   - **Vie 06-11 · doc + commit + preparar SHIP**: Descripción del overlay = protocolo test-day generado desde PALMERTON_POR_MATERIA §F (texto fijo + hora de cada break).
   - **Lun 09-11 · 5' objetivo → spec del día**: Diff en seco: con el MCP (list_events/search_events 'NBME'|'UWSA') comparar fechas y listar solo cambios; corregir falsos positivos.
@@ -296,3 +308,19 @@
 | S10 | ☐ | | |
 | S11 | ☐ | | |
 | S12 | ☐ | | |
+
+---
+
+## Pendiente v5.7 (fuera del alcance de este doc)
+
+**Realinear el SHIP entre `synapseDailyPlan.ts` y `vibecodingPlan.ts`.** Dos opciones, las dos en los
+generadores (`DATA/_scripts/gen_synapse_plan.js` y `gen_vibecoding_plan.js`), no en los `.md`:
+
+1. **Que SYNAPSE lea el `ship` real** de `VIBE_PROYECTOS` en vez de asumir "sábado de la semana n"
+   (recomendada: una sola fuente de verdad para la fecha de SHIP).
+2. **Que el vibecoding arranque en lunes** (que el primer paso de S1 caiga el lun 14-sep-2026 y S1 use el
+   sáb 19-sep) — cuesta 3 días de plan y deja S12 terminando más tarde.
+
+Mientras no se arregle: el sábado PC de SYNAPSE se usa para **cerrar el proyecto de la semana que acaba de
+terminar sus 5 pasos**, que es el de la etiqueta anterior. El **SHIP S12 (sáb 5-dic-2026)** no tiene sábado
+SYNAPSE asignado: se ejecuta igual en la franja PC 15:00-17:00 de ese sábado.

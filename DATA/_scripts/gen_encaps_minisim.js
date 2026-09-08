@@ -22,11 +22,12 @@
  *
  * Uso:
  *   node DATA/_scripts/gen_encaps_minisim.js 2026-09-11                → BANCO_PROPIO/minisim_2026-09-11.json + .html (viernes)
- *   node DATA/_scripts/gen_encaps_minisim.js --banco 2026-09-07        → BANCO_PROPIO/banco_2026-09-07.json + .html: BANCO DEL DÍA
+ *   node DATA/_scripts/gen_encaps_minisim.js --banco 2026-09-09        → BANCO_PROPIO/banco_2026-09-09.json + .html: BANCO DEL DÍA
  *        (lun-jue): 16-20Q del código y SUB-EJE de la fila banqueo1h de ese día + 4-5Q del secundario de cola larga;
  *        corrección INMEDIATA pregunta a pregunta (Palmerton); ≥40 % recall directo cuando el stock lo permite.
- *   node DATA/_scripts/gen_encaps_minisim.js --eval 2026-09-08         → BANCO_PROPIO/eval_2026-09-08.json + .html: EVAL ANCLADA
- *        16:15 (5Q del código de AYER = 3 cifras + 2 viñetas, solución al final; lunes = 5Q de fallos previos).
+ *   node DATA/_scripts/gen_encaps_minisim.js --eval 2026-09-10         → BANCO_PROPIO/eval_2026-09-10.json + .html: EVAL ANCLADA
+ *        16:15 (5Q del código de AYER = 3 cifras + 2 viñetas, solución al final; lunes = 5Q de fallos previos; si NO hay sesión
+ *        anterior en el SQL —D1 del régimen— cae en el mismo modo «fallos previos» en vez de fallar).
  *   node DATA/_scripts/gen_encaps_minisim.js --semana 2026-09-07       → --banco lun-jue + --eval mar-jue de esa semana (el viernes no
  *        lleva eval: el mini-sim ocupa las 16:15) + mini-sim del viernes si no existe. Con --dry solo informa.
  *   node DATA/_scripts/gen_encaps_minisim.js --inventario              → BANCO_PROPIO/_inventario_banco_por_codigo.json (oferta vs
@@ -373,7 +374,8 @@ function modoEval(fecha) {
   if (!fila) throw new Error(`no hay fila en _encaps_mantenimiento_2027.sql para ${fecha}`);
   let ayer = addDays(fecha, -1), filaAyer = filaSQL(ayer), back = 1;
   while (!filaAyer && back < 6) { back++; ayer = addDays(fecha, -back); filaAyer = filaSQL(ayer); }
-  if (!filaAyer) throw new Error('no se encuentra la sesión anterior en el SQL');
+  // D1 del régimen: no hay sesión anterior en el SQL → la eval anclada arranca en modo «fallos previos»
+  if (!filaAyer) { ayer = null; filaAyer = { fecha: null, tipo: 'inicio_regimen', codigo: null, subtema: null, secundarios: [], extra: {} }; }
   const { fallos, debiles, pretestHecho } = leerRegistro();
   const { pool } = cargarPool(pretestHecho);
   const usados = usadosPrevios(`eval_${fecha}`);
@@ -382,7 +384,9 @@ function modoEval(fecha) {
   const esFalloPrevio = (it) => !!it.fallo_previo && (fallos.has(norm(it.fallo_previo)) || debiles.has(it.codigo));
   let items = []; let modo;
   if (filaAyer.tipo === 'mini_sim' || !filaAyer.codigo) {
-    modo = 'lunes: 5Q de fallos previos del registro (otro enfoque), críticos primero';
+    modo = filaAyer.tipo === 'inicio_regimen'
+      ? 'D1 del régimen (sin sesión anterior): 5Q de fallos previos del registro, críticos primero'
+      : 'lunes: 5Q de fallos previos del registro (otro enfoque), críticos primero';
     const fp = cand.filter(esFalloPrevio).sort((a, b) => (CRITICOS_V3.includes(b.codigo) - CRITICOS_V3.includes(a.codigo)));
     items = fp.slice(0, 5);
     if (items.length < 5) items = items.concat(cand.filter((x) => CRITICOS_V3.includes(x.codigo) && !items.includes(x)).slice(0, 5 - items.length));
@@ -530,7 +534,7 @@ function modoInventario() {
     };
   }
   const totales = { pool_total: pool.length, pool_disponible: pool.filter((x) => !usados.has(x.id)).length, filas_sql: filas, minisims_sembrados: minisims, demanda_total_q: Object.values(inv).reduce((s, x) => s + x.demanda_sembrada.q_estimadas_102_dias, 0), deficit_codigos: Object.entries(inv).filter(([, v]) => v.deficit_vs_demanda > 0).map(([k, v]) => `${k}:${v.deficit_vs_demanda}`) };
-  const out = { _meta: { descripcion: 'Inventario de preguntas por CÓDIGO v3: oferta (BANCO_PROPIO: sets + banco_items_v1 + set_reales_otros; exámenes reales etiquetados; claves.json de julio; QX/Theomed por área) vs demanda sembrada en study_schedule (102 días de mantenimiento, _encaps_mantenimiento_2027.sql) y déficit. Regenerar: node DATA/_scripts/gen_encaps_minisim.js --inventario', generado: new Date().toISOString().slice(0, 10), rotacion: 'I-3 11 · V-2 11 · II-3 6 · resto 5 (CICLO de _encaps_ciclo_v3.js)', lista_negra: '2026-II excluido de toda oferta hasta el pre-test', totales }, por_codigo: inv };
+  const out = { _meta: { descripcion: 'Inventario de preguntas por CÓDIGO v3: oferta (BANCO_PROPIO: sets + banco_items_v1 + set_reales_otros; exámenes reales etiquetados; claves.json de julio; QX/Theomed por área) vs demanda sembrada en study_schedule (los días de mantenimiento que haya en _encaps_mantenimiento_2027.sql; hoy 100, D1 = mié 9-sep-2026) y déficit. Regenerar: node DATA/_scripts/gen_encaps_minisim.js --inventario', generado: new Date().toISOString().slice(0, 10), rotacion: 'I-3 10 · V-2 10 · II-3 6 · resto 5 (CICLO de _encaps_ciclo_v3.js · siembra de 100 días desde el 08-sep-2026)', lista_negra: '2026-II excluido de toda oferta hasta el pre-test', totales }, por_codigo: inv };
   fs.writeFileSync(path.join(BANCO, '_inventario_banco_por_codigo.json'), JSON.stringify(out, null, 1) + '\n', 'utf8');
   console.log('OK → _inventario_banco_por_codigo.json ·', JSON.stringify(totales));
   for (const [k, v] of Object.entries(inv)) console.log(`${k.padEnd(10)} demanda ${String(v.demanda_sembrada.q_estimadas_102_dias).padStart(4)} · pool ${String(v.oferta.banco_propio_pool.disponibles_no_usados).padStart(3)} disp (${v.oferta.banco_propio_pool.total} tot) · reales ${String(v.oferta.examenes_reales_etiquetados.total).padStart(2)} · déficit ${String(v.deficit_vs_demanda).padStart(4)} · ${v.estado}`);

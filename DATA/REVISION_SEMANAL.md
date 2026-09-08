@@ -1,6 +1,6 @@
 # 📋 REVISIÓN SEMANAL — sábado 07:15-07:35 (20') · v5.7 · 5-sep-2026
 
-> Ritual único que revisa los 9 frentes del régimen v5.6 (D1 = lun 7-sep-2026, Step 1 = principal) con
+> Ritual único que revisa los 9 frentes del régimen v5.7 (D1 = mié 9-sep-2026, Step 1 = principal) con
 > **10 métricas** y una sola pregunta: *¿el sistema va on-track o hay que corregir ESTA semana?*
 > Palmerton revisa el checklist G "en cada hito NBME" (~3 semanas): demasiado grueso para un plan donde
 > 1 día perdido = +1 hábil. Aquí la cadencia es semanal y el trabajo de recopilar lo hace un script.

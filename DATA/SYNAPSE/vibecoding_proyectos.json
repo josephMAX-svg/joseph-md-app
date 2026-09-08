@@ -10,7 +10,7 @@
     {
       "s": 1, "id": "apex-parser", "rotacion": "yocpmd", "deload": false,
       "nombre": "Fix parser APEX (P0-2 / P0-3) + test multilínea",
-      "sirveA": "USMLE — el plan de 97 días apoya en ≤10 tarjetas de MECANISMO/día vía APEX; hoy el parser trunca REVERSO/CASO_CLINICO/FISIO_EXPANDIDA a la 1ª línea (verificado 4-sep, mtime 7-may)",
+      "sirveA": "USMLE — el plan de 95 días apoya en ≤10 tarjetas de MECANISMO/día vía APEX; hoy el parser trunca REVERSO/CASO_CLINICO/FISIO_EXPANDIDA a la 1ª línea (verificado 4-sep, mtime 7-may)",
       "objetivo": "Que un APEX multilínea llegue ÍNTEGRO a Anki (tarjeta) y a Obsidian (nota con caso_clinico + fisio_expandida).",
       "entregable": "Commit en D:/agente_estudio (parsers + creador de nota) + scripts/test_parser_multilinea.js verde (3/3) + 1 APEX de prueba íntegro en Anki y en el vault (is_test=true).",
       "aceptacion": [
@@ -117,7 +117,7 @@
     {
       "s": 5, "id": "remap-verificado", "rotacion": "yocpmd", "deload": false,
       "nombre": "remap_todo.js: corrimiento de 1 comando + verificación automática",
-      "sirveA": "TODOS los planes — ya van 5 corrimientos (31-ago→7-sep) y cada uno exige 5 scripts a mano + execute_sql + docs; un error de fecha rompe el Home de todos los frentes",
+      "sirveA": "TODOS los planes — ya van 7 corrimientos (31-ago→9-sep) y cada uno exige 5 scripts a mano + execute_sql + docs; un error de fecha rompe el Home de todos los frentes",
       "objetivo": "Un solo comando que encadene remap_inicio.js + gen_synapse_plan.js + gen_aurum_plan.js + gen_vibecoding_plan.js + gen_encaps_mantenimiento_2027.js y VERIFIQUE (nº de días, L-V, feriados, fechas monótonas, tsc) antes de dar el OK.",
       "entregable": "DATA/_scripts/remap_todo.js <fecha> [--dry-run] + DATA/_scripts/verificar_planes.js + skill /remap.",
       "aceptacion": [

@@ -17,7 +17,7 @@
 | IV | Step 1 vs Step 2 CK primero (era pass/fail, IMGs) | Step 1 vs. Step 2 First; Should You Take Step 2 CK Before Step 1 |
 | V | Eficiencia: 5 tips, secretos, "too busy", dentista, "every hour", "feels like cheating", reglas transversales | Step 1 Study Plan: 5 Tips; The Secrets to Excelling; How to Study When You're Too Busy; How a Busy Dentist; How to Get More From Every Hour; How to Study So Fast It Feels Like Cheating |
 | VI | Catálogo de errores: 10 behaviors, 8 signs, 9 habits, errores típicos de IMGs | The 10 Behaviors; 8 Signs That You're Studying Wrong; 9 Habits to Quit |
-| VII-X | Reglas numéricas consolidadas, implicaciones plan v5.6, pendientes, fuentes | — |
+| VII-X | Reglas numéricas consolidadas, implicaciones plan v5.7, pendientes, fuentes | — |
 
 ---
 
@@ -426,11 +426,11 @@ Recursos: UWorld (una sola pasada profunda), First Aid como mapa, Costanzo, Path
 
 ---
 
-## PARTE VIII — IMPLICACIONES PARA EL PLAN v5.6 (lectura para la síntesis, no prescripción)
+## PARTE VIII — IMPLICACIONES PARA EL PLAN v5.7 (lectura para la síntesis, no prescripción)
 
 - **GO/NO-GO 15-ene (2 NBME ≥68%)** está entre el 65% (95%) y el 70% (99%) de Palmerton; su regla añade "consistentemente" y lectura por sistema ≥80% en lo ya estudiado. Con D1 = 7-sep y examen 25-29 ene (≈4,7 meses hábiles), la regla 5%/mes ("≈10 puntos por 4 semanas") implica que un baseline < 45-48% en el primer NBME hace matemáticamente inalcanzable el 70% → el primer NBME de Fase A debería servir de "Goldilocks check" temprano, no esperar al 15-ene. Para Step 1 la predicción del NBME es ajustada (sólo 7% supera en ≥20 y 9% cae ≥11), así que la regla de umbral es fiable.
 - El bloque **pre-test 10Q 08:15 + deep prime + 30Q 11:00** es exactamente el Subtopic Validation (≥80% en 10 consecutivas el mismo día) si el pre-test y las 30Q son del subtema del día; el criterio de paso de Fase A debería ser ese 80% "en 2-3 bloques, no en 6-9", no "haber cubierto" el tema.
-- **Fase B (D83-92)** coincide con "bloques mezclados cronometrados 2-4 semanas antes"; Free 120 debería caer D-14..D-7; un día NBME+UWSA back-to-back entre D-15 y D-7 (viernes) para medir fatiga.
+- **Fase B (D81-90)** coincide con "bloques mezclados cronometrados 2-4 semanas antes"; Free 120 debería caer D-14..D-7; un día NBME+UWSA back-to-back entre D-15 y D-7 (viernes) para medir fatiga.
 - **Eval timed 18:00**: Palmerton desaconseja el trabajo analítico nocturno ("that same hour that was producing almost nothing at 9 p.m."); si se mantiene, que sea corta y de revisión, no de adquisición.
 - La franja **04:15-05:45 (IA)** ocupa la ventana que Palmerton reserva para lo de mayor demanda; el 05:00 Anki AM es coherente con "Anki antes de la primera obligación" y con "make it non-negotiable".
 - **Anki**: cap 50 nuevas/día (Kate, dentista, Parth), FSRS, Good ≈90%, backlog con cap 200 y +100 tras llegar a cero → parámetros del deck; tarjetas en ambas direcciones y sin regalar la respuesta en el frente (Miriam).

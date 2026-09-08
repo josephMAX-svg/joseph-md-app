@@ -31,7 +31,7 @@
 21. Cierre del banco: últimas 1-2 semanas, maratón de resistencia, D-2 y D-1
 22. Anexo A — Resumen operativo de interpretación (SAQ, CCSN, PC, Juez vs Abogado, Rule-In/Out, transfer gap, 9 open secrets)
 23. Anexo B — Detalle: "How to Study So Fast" (5 claves, transcripción) · Melody 6 fails completos + su plan M1-M2-dedicated + calendario de 65 días (transcripción) · log de errores · revisar un NBME · cambiar respuestas · imágenes/experimentos · tamaño del banco + tablas por materia y sistema (abril 2024) · AMBOSS 4 criterios · Kaplan vs AMBOSS · formas NBME y tabla de pase · UWorld/UWSA/Step 1/Step 2 · Free 120
-24. Discrepancias entre fuentes y notas para el plan v5.6
+24. Discrepancias entre fuentes y notas para el plan v5.7
 25. Fuentes usadas
 
 ---
@@ -478,14 +478,14 @@ Tesis: *"most students study eight hours a day and gain five points; I've coache
 - Free 120 = mismo software del real; las preguntas de la sesión en Prometric son las mismas que las gratuitas; % inmediato; 3,5 h; registro con hasta 7 días de espera; labs idénticos salvo lipasa/troponina; objetivo = eliminar la fricción logística (NASA: *familiarity breeds calm*). (§7, transcripción)
 - "Before You Take Your USMLE": worst-case scenario planning; preguntas WTF; solo bloques mixtos 20-40 hasta el día del examen; casos Shelby/Kate/Jay/Christie (detalle en `interpretacion-testday.md` §16.3).
 
-## 24. DISCREPANCIAS ENTRE FUENTES Y NOTAS PARA EL PLAN v5.6
+## 24. DISCREPANCIAS ENTRE FUENTES Y NOTAS PARA EL PLAN v5.7
 (lectura para la síntesis, no prescripción; no se tocan franjas, metas, fechas ni nº de días)
 
 - ⚠ **Volumen Nivel 1**: 20-30 Q/día ("UWorld Complete Guide") vs 5-10 Q/día ("The ONLY Video…", caso Jay, "How Many UWorld Questions…"). Regla de conciliación del propio cuaderno: el volumen es marcador del nivel previo; con base débil 5-10, con base sólida 20-30. Melody, en dedicated con sistema débil: mini-bloques de **10-25 Q** por sistema en la mañana.
-- ⚠ **Timed/mixto obligatorio**: 4-8 semanas antes ("UWorld Complete Guide") vs mínimo 2-4 semanas ("UWorld FAQ") vs "2ª mitad del dedicated como muy tarde" (Melody). En v5.6 la Fase B (banco, D83-92) y C (sprint, D93-97) ya son timed/mixtas; los hitos UWSA/NBME están fijos en viernes.
+- ⚠ **Timed/mixto obligatorio**: 4-8 semanas antes ("UWorld Complete Guide") vs mínimo 2-4 semanas ("UWorld FAQ") vs "2ª mitad del dedicated como muy tarde" (Melody). En v5.7 la Fase B (banco, D81-90) y C (sprint, D91-95) ya son timed/mixtas; los hitos UWSA/NBME están fijos en viernes.
 - ⚠ **Volumen en las últimas 1-2 semanas**: **80-100 Q/día timed mixed** ("Final 1-2 Weeks: Top 8", transcripción) vs **20-40 mixed/timed** ("Before you take your USMLE"). Principio común: mixed + timed + nada en tutor mode.
 - ⚠ **Formas NBME**: 25-31 (v1) vs 25-30 (cierre, con fechas y tabla). Verificar en MyNBME qué formas están activas en ene-2027 antes de asignarlas a los viernes de hitos (A VERIFICAR, pendiente_usuario).
-- ⚠ **Frecuencia NBME**: 1-2 (Ultimate Guide, Melody) / 2-3 / 2-4 semanas. Hitos v5.6 no se mueven.
+- ⚠ **Frecuencia NBME**: 1-2 (Ultimate Guide, Melody) / 2-3 / 2-4 semanas. Hitos v5.7 no se mueven.
 - ⚠ **UWSA sobreestimación**: "no da cifra" (ronda 1) vs "10-15+ puntos" (cierre). Tratar el UWSA solo como resistencia y como primera mitad de la maratón (UWSA → NBME).
 - ⚠ **Maratón**: 3 variantes (UWSA+NBME = 360 Q [la que Alec llama "favorita" en la transcripción] · NBME+3-4 UW · Free 120+4 UW). Principio común: más bloques que el examen, con los mismos snacks/ID/permiso.
 - ⚠ **Precisión >2 min**: "<40%" (ronda 1, sin cita) vs **~50% en un bloque al 80%** (transcripción "10 USMLE Study Strategies") vs "well below average" ("USMLE Test Day Strategies"). Usar la cifra con transcripción: ~50% vs 80%.
@@ -494,7 +494,7 @@ Tesis: *"most students study eight hours a day and gain five points; I've coache
 - ⚠ **Ejemplo TEP→eco**: atribuido en ronda 1 a "How to Make Hard USMLE Questions Easy" pero ausente de su transcripción (ese video es la tutoría KCU). Conservar el ejemplo con atribución A VERIFICAR.
 - **Vacíos CERRADOS en esta versión** (con transcripción): Melody fails #1-#6 + plan + calendario de 65 días; protocolo literal de "Study So Fast" (5 claves); ejemplos literales de "Make Hard Questions Easy" (4 casos + Comparación Extrema); nº de preguntas UWorld 2024 por materia/sistema; Free 120 (7 días de espera, 3,5 h, labs, break automático); maratón UWSA→NBME y 3 preguntas de readiness; regla 30% con dato real.
 - **Vacíos que siguen abiertos** (pendiente_usuario si se quiere el literal): ejercicios diarios de micro-habilidades del video de Jay; protocolo para preguntas de imagen; Forma NBME 31; repasos 200-300/día en cierre; procedencia del protocolo "PC manuscrita + Costanzo/Pathoma" para el Free 120.
-- **Constataciones de encaje con v5.6** (sin prescribir): los 5 niveles mapean a Fase A (niveles 1-3 por sistema, gate 80% en 10Q = el pre-test/consolidación existentes) → Fase B (niveles 4-5, 40Q mixtas) → Fase C (maratón + Free 120 + flagged); la "regla del 30% = 2 min" y la eval de las 18:00 a 72 s/Q ya son coherentes con la doctrina; el cierre de tarjetas nuevas 1-2 semanas antes coincide con Fase C; la tabla por sistema de B.7 permite contrastar el peso de cada sistema en el plan de 97 días con el peso real del banco (cardio 11,3% · neuro 10,9% · GI 8,4% · ID 7,4% · pulmonar 7,2% · heme/onc 6,3% · renal 6,1% · endocrino 5,5%).
+- **Constataciones de encaje con v5.7** (sin prescribir): los 5 niveles mapean a Fase A (niveles 1-3 por sistema, gate 80% en 10Q = el pre-test/consolidación existentes) → Fase B (niveles 4-5, 40Q mixtas) → Fase C (maratón + Free 120 + flagged); la "regla del 30% = 2 min" y la eval de las 18:00 a 72 s/Q ya son coherentes con la doctrina; el cierre de tarjetas nuevas 1-2 semanas antes coincide con Fase C; la tabla por sistema de B.7 permite contrastar el peso de cada sistema en el plan de 95 días con el peso real del banco (cardio 11,3% · neuro 10,9% · GI 8,4% · ID 7,4% · pulmonar 7,2% · heme/onc 6,3% · renal 6,1% · endocrino 5,5%).
 
 ## 25. FUENTES USADAS (nombres tal como los devuelve el cuaderno / artículos)
 **Transcripciones crudas (source_get_content, 5-sep)**: UWorld: Overcoming 6 "Fails" to a USMLE 260 (artículo de Melody) · How to Study So Fast for the USMLE It Feels Like Cheating · How to Make Hard USMLE Questions Easy (Without Knowing More) - USMLE Tutoring · How Many UWorld Step 1 or Step 2 CK Questions Are There in 2025? (artículo) · Mastering the USMLE Free 120: Tips and Tricks for Success! · Final 1-2 Weeks Before USMLE: Top 8 Strategies to Improve Your Score! · USMLE Test Day Strategies: Step 1 + 2, Shelf · Fixing USMLE Test-Day Mistakes: The STRESS Strategy (entrevista con Dr. Ben Shirley, UNC) · Why "I'm a Bad Test Taker" Is Costing You 30+ USMLE Points · (local, articles_txt) 10 USMLE Study Strategies to Instantly Boost Your Score · "Bad Test-Taker" Is a Lie You Tell Yourself.

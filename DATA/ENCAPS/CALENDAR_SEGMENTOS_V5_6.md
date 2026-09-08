@@ -1,20 +1,35 @@
-# 📅 SEGMENTOS DEL CALENDAR — RÉGIMEN v5.6 (extraído en vivo 05-sep-2026)
-> Fuente: Google Calendar `josephsototocas@gmail.com` · zona `America/Lima` · semana **lun 7 → dom 13 sep 2026** (166 eventos, `list_events`) + `get_event` de los 12 overlays de hito.
-> **Autoridad de CUÁNDO y CÓMO** se ejecuta cada segmento (L-V + sábado/domingo). El **QUÉ** (tema/misión del día) lo mandan la app YoCPMD y sus planes: `src/lib/usmleStep1Daily.ts` (97 días), Supabase `study_schedule` (ENCAPS 102 días), `mirDailyPlan.ts`, `researchDailyPlan.ts`/`dermaDailyPlan.ts`, `aurumDailyPlan.ts`, `livianoStudyPlan.ts`, `synapseDailyPlan.ts`.
+# 📅 SEGMENTOS DEL CALENDAR — RÉGIMEN v5.7 (corrimiento verificado en vivo 08-sep-2026)
+> ⚠ El fichero conserva el nombre `CALENDAR_SEGMENTOS_V5_6.md` por estabilidad de enlaces (lo citan las descripciones de 8 series del Calendar y varios docs), pero **su contenido es v5.7**. Toda referencia a "v5.6" fuera de las citas literales del Calendar está superada.
+> Fuente: Google Calendar `josephsototocas@gmail.com` · zona `America/Lima` · estructura L-V/sáb/dom extraída el 05-sep (166 eventos) y **reverificada en vivo el 08-sep sobre la semana real mié 9 → dom 13 sep 2026** (`list_events` día a día + `get_event` de los 12 overlays de hito).
+> **Autoridad de CUÁNDO y CÓMO** se ejecuta cada segmento (L-V + sábado/domingo). El **QUÉ** (tema/misión del día) lo mandan la app YoCPMD y sus planes: `src/lib/usmleStep1Daily.ts` (**95 días**, D1 = 2026-09-09 → D95 = 2027-01-22), Supabase `study_schedule` (ENCAPS **100 días**, `encapsPlan.ts`), `mirDailyPlan.ts`, `researchDailyPlan.ts`/`dermaDailyPlan.ts`, `aurumDailyPlan.ts`, `livianoStudyPlan.ts`, `synapseDailyPlan.ts`.
 > Sustituye a [`CALENDAR_SEGMENTOS_LUNES_VIERNES.md`](./CALENDAR_SEGMENTOS_LUNES_VIERNES.md) (24-jul, loop ENCAPS — HISTÓRICO). Doc maestro del régimen: `DATA/REESTRUCTURACION_31AGO_2026.md`.
 
-## 0 · Reglas del régimen v5.6 (las que el Calendar materializa)
+## 0 · Reglas del régimen v5.7 (las que el Calendar materializa)
 | Regla | Valor |
 |---|---|
-| **D1** | **lunes 7-sep-2026** (31-ago→4-sep no estudiados; 5 corrimientos acumulados) |
+| **D1** | **miércoles 9-sep-2026** (31-ago→8-sep no estudiados; **7 corrimientos acumulados**. v5.6 tenía D1 = lun 7-sep: el 7 y el 8 de septiembre no se estudiaron y el plan corrió +2 días hábiles) |
+| **Fases USMLE** | **A · contenido D1-D80** (9-sep→30-dic) · **B · banco D81-D90** (4-ene→15-ene) · **C · sprint D91-D95** (18-ene→22-ene). El corrimiento fusionó en 2 los 4 días de cierre de Fase A (bioquímica HY + genética/farmacología general): **ningún tema se perdió** |
 | Días de plan | L-V; feriados fuera del plan: 25-dic, 31-dic, 1-ene |
 | **Bloque principal** | **USMLE Step 1** — 6h15/día: 05:00 Anki AM · 07:15 repaso anclado · 08:15 pre-test 10Q · 09:00 deep prime · 11:00 30Q · 18:00 eval |
 | Examen Step 1 | semana **25-29 ene 2027** (target mié 27) · **GO/NO-GO vie 15-ene** (NBME 31): 2 NBME consecutivos ≥68 % + UWSA2 low-risk |
 | Secundarios | MIR 15:15-16:15 · ENCAPS 16:15-17:15 (mantenimiento 1h; examen fin-mar 2027, meta ≥17/20; feb-mar vuelve a principal) · LIVIANO 17:15-18:00 · Research↔Derma 13:30-14:15 (alternos) · AURUM 14:15-15:15 · SYNAPSE 12:30 (30') + vibecoding 04:15 |
 | Fin de semana | **SÁBADO Y DOMINGO LIBRES de banco de preguntas** (los hitos van en viernes). No es "libre" literal: despertar 04:00 (EKER), caminata, SYNAPSE PC 15:00-17:00 ambos días, video empresa sáb 17:00, Anki sáb 19:00 / dom 17:00, baile |
-| Corrimiento | cada día hábil sin estudiar = +1: `node DATA/_scripts/remap_inicio.js <fecha>` + `gen_encaps_mantenimiento_2027.js` + `gen_synapse_plan.js` + `gen_aurum_plan.js` + regenerar USMLE. **Los overlays de hito NO se mueven** (fechas fijas en viernes) |
+| Corrimiento | cada día hábil sin estudiar = +1: `node DATA/_scripts/remap_inicio.js <fecha>` + `gen_encaps_mantenimiento_2027.js` + `gen_synapse_plan.js` + `gen_aurum_plan.js` + regenerar USMLE. **Los overlays de hito NO se mueven** (fechas fijas en viernes) — pero **su D# sí cambia** y hay que reescribir la `description` de los 12 (ver §5 y §7) |
 | Sueño | 21:00 → 04:00 (7h) todos los días. Ley cero de `RUTINA_EXTREMA_MILITARIZADA.md` |
 | Comida/hidratación (05-sep) | desayuno ≥30 g proteína + 500 ml · 500 ml + snack al abrir deep prime 09:00 y MIR 15:15 · almuerzo = comida principal (VITALS dimensiona) · **cena ligera 5' en el cambio ENCAPS→LIVIANO 17:15** · post-GYM/BAILE solo agua/electrolitos (nada pesado <2h antes de las 21:00). Pisos VITALS: proteína 1,6 g/kg · agua 3.000 ml · sueño 7h (`VITALS/web/src/lib/engine/domain.ts`) |
+
+### 0.1 · Semana real de arranque v5.7 — mié 9 → dom 13 sep 2026 (verificado en vivo 08-sep)
+La semana de arranque es **corta: 3 días hábiles** (mié-jue-vie). Comprobado con `list_events` día a día que **los 11 bloques de estudio del régimen siguen en su sitio los tres días** (04:15 IA · 05:00 Anki AM · el tramo USMLE 07:15-12:00 · 12:30 SYNAPSE · 13:30 Research↔Derma · 14:15 AURUM · 15:15 MIR · 16:15 ENCAPS · 17:15 LIVIANO · 18:00 eval; en el Calendar son **13 series**, porque el tramo USMLE de la mañana son 4 series (07:15/08:15/09:00/11:00) y MIR son 2 (15:15/15:30)) y que **sáb 12 y dom 13 no tienen banco de preguntas**. No se creó ni borró ningún evento.
+
+| Día | D# USMLE | Bloques de estudio verificados (13/13 series) | Hito |
+|---|---|---|---|
+| **Mié 9-sep** | **D1** — Fundamentos · Pathoma 1-2 (lesión/muerte celular + inflamación) · nivelUW 1 · 30Q | 04:15 IA vibecoding · 05:00 Anki AM · 07:15 repaso · 08:15 pre-test · 09:00 deep prime · 11:00 30Q · 12:30 SYNAPSE · 13:30 Research↔Derma · 14:15 AURUM · 15:15+15:30 MIR · 16:15 ENCAPS · 17:15 LIVIANO · 18:00 eval | — |
+| **Jue 10-sep** | **D2** — Fundamentos · Pathoma 3 (neoplasia) + setup Anki FSRS · nivelUW 1 · 30Q | idénticos (mismas series L-V) | — |
+| **Vie 11-sep** | **D3** — Assessment · nivelUW 5 · 160Q | idénticos + **overlay 🎯 UWSA1 09:00-13:00** (pisa deep prime, 30Q, almuerzo y SYNAPSE — ver §5) | 🎯 **UWSA1 BASELINE** |
+| Sáb 12-sep | — | **libre de banco**: rutina 04:00-07:15 · 15:00-17:00 SYNAPSE PC · 17:00-19:00 video empresa · 19:00 Anki · 20:00 baile | — |
+| Dom 13-sep | — | **libre de banco**: rutina 04:00-07:15 · 15:00-17:00 SYNAPSE repaso+PC · 17:00 Anki · 17:15/18:00 baile | — |
+
+⚠ **Miércoles**: el entrenamiento es BAILE largo 19:00-20:30 (sin gym) — el 9-sep arranca así. **Viernes 11**: GYM 19:00-20:00 + BAILE 20:00-20:30, con el UWSA1 ya cerrado por la tarde.
 
 ## 1 · LUNES-VIERNES — tabla maestra
 Series recurrentes (`recurringEventId`). Color = `colorId` de Google. "desc" = longitud de la descripción en el Calendar (0 = sin descripción).
@@ -104,29 +119,32 @@ Descripción común (añadida 05-sep a las 12 series): hidratación durante; **p
 ⚠ **Anki de fin de semana**: sáb 30' (19:00) y dom 15' (17:00). Regla operativa (descripción del DESAYUNO sáb/dom): la duración real la marcan las tarjetas **due**, no el reloj — cero backlog el lunes (regla del 100 % de Palmerton). Cuando el mazo pase de ~1.500 tarjetas (nov), 15' el domingo no alcanzan: alargar el bloque ese día, no saltarlo.
 
 ## 5 · OVERLAYS DE HITO USMLE (viernes · color 6 naranja · `transparency: transparent` · eventos únicos, no series)
-D# verificado contra L-V con feriados 25-dic/31-dic/1-ene (D1 = 7-sep). Todos los overlays conservan su texto v5.6 original y desde el 05-sep llevan **anexado el protocolo de test-day de Palmerton** (§F de `DATA/USMLE/PALMERTON_POR_MATERIA.md`): Ziploc BREAK 1/2/3 preparadas la noche anterior (proteína magra + grasas, **sin carbohidratos simples**), cronograma de descansos (sit-in 1-2' / activo 10' / almuerzo dentro del sim), sin cambiar respuestas por ruido, SYNAPSE de ese día a la tarde, registro de agua/sueño en VITALS como ensayo, y el mapa del día real de 7 bloques.
+**Las FECHAS no se movieron con el corrimiento v5.7 — los D# sí.** Cada D# de la tabla se leyó con `node` del array `DIAS` de `src/lib/usmleStep1Daily.ts` (95 entradas, D1 = 2026-09-09), no se estimó. El **08-sep-2026 se reescribió el campo `description` de los 12 overlays** para sustituir el D# viejo y la referencia "D1 = lun 7-sep" por "**D1 = mié 9-sep, v5.7, 95 días**"; **el protocolo de test-day de Palmerton se conservó íntegro** (§F de `DATA/USMLE/PALMERTON_POR_MATERIA.md`): Ziploc BREAK 1/2/3 preparadas la noche anterior (proteína magra + grasas, **sin carbohidratos simples**), cronograma de descansos (sit-in 1-2' / activo 10' / almuerzo dentro del sim), sin cambiar respuestas por ruido, SYNAPSE de ese día a la tarde, registro de agua/sueño en VITALS como ensayo, y el mapa del día real de 7 bloques. Horas, títulos, `colorId`, `transparency` y la ausencia de recurrencia quedaron intactos (verificado con `get_event` en los 12).
 
-| # | Fecha (vie) | Hora | Título literal | ID | D# | Mínimo on-track (texto del overlay) |
-|---|---|---|---|---|---|---|
-| 1 | 11-sep-2026 | 09:00-13:00 | 🎯 UWSA1 — BASELINE Step 1 (160Q · 4 bloques) | `o1gla7846uae4tgngvc4q45osg` | D5 | línea base |
-| 2 | 02-oct-2026 | 07:15-11:00 | 🎯 NBME 25 (200Q) + revisión | `4hjv5lkvluj06ahc2qndtsi6as` | D20 | ≥51 % |
-| 3 | 23-oct-2026 | 07:15-11:00 | 🎯 NBME 26 (200Q) + revisión | `lr7ktrbiffj4hrlke7lh7cv6h4` | D35 | ≥55 % |
-| 4 | 13-nov-2026 | 07:15-11:00 | 🎯 NBME 27 (200Q) + revisión | `sm4baa2v453ifaub325h9v08mg` | D50 | ≥58 % |
-| 5 | 04-dic-2026 | 07:15-11:00 | 🎯 NBME 28 (200Q) + revisión | `ecu784689p8osrhqabuct8d5jg` | D65 | ≥61 % |
-| 6 | 18-dic-2026 | 07:15-11:00 | 🎯 NBME 29 (200Q) + revisión | `ae93qv0nqqs36h439hid1jcq8o` | D75 | ≥63 % |
-| 7 | 30-dic-2026 (mié) | 07:15-11:00 | 🎯 NBME 30 — CIERRE FASE A (200Q) + plan Fase B | `mael3p9uhp036jbep45ql6v9oc` | D82 | ≥65 % |
-| 8 | 08-ene-2027 | 09:00-13:00 | 🎯 UWSA2 — predictor gold-standard (160Q) | `2u7viv0elr6aedo0m9undfa5kg` | D87 | low-risk |
-| 9 | 15-ene-2027 | 07:15-11:00 | 🎯 NBME 31 (200Q) — GO/NO-GO fecha de examen | `l771lvcfv0jcebt61do6svia18` | D92 | **GO = 2 NBME ≥68 % + UWSA2 low-risk** |
-| 10 | 18-ene-2027 (lun) | 07:15-11:00 | 🎯 NBME 32 (200Q) + repaso FA 1-5 | `h65e772pqsa4hgc5b6bh9n8h50` | D93 | sprint |
-| 11 | 20-ene-2027 (mié) | 07:15-11:00 | 🎯 NBME 33 (200Q) + repaso FA 11-14 | `la5rsbuiqj1o35lb5adf93abuo` | D95 | sprint |
-| 12 | 22-ene-2027 | 07:15-11:00 | 🎯 FREE 120 oficial + logística del examen | `lh9jfjsmoif74ci6jcn8f1mq30` | D97 | último día del plan |
+| # | Fecha (vie) | Hora | Título literal | ID | **D# v5.7** | D# v5.6 (histórico) | Mínimo on-track (texto del overlay) |
+|---|---|---|---|---|---|---|---|
+| 1 | 11-sep-2026 | 09:00-13:00 | 🎯 UWSA1 — BASELINE Step 1 (160Q · 4 bloques) | `o1gla7846uae4tgngvc4q45osg` | **D3** | D5 | línea base |
+| 2 | 02-oct-2026 | 07:15-11:00 | 🎯 NBME 25 (200Q) + revisión | `4hjv5lkvluj06ahc2qndtsi6as` | **D18** | D20 | ≥51 % |
+| 3 | 23-oct-2026 | 07:15-11:00 | 🎯 NBME 26 (200Q) + revisión | `lr7ktrbiffj4hrlke7lh7cv6h4` | **D33** | D35 | ≥55 % |
+| 4 | 13-nov-2026 | 07:15-11:00 | 🎯 NBME 27 (200Q) + revisión | `sm4baa2v453ifaub325h9v08mg` | **D48** | D50 | ≥58 % |
+| 5 | 04-dic-2026 | 07:15-11:00 | 🎯 NBME 28 (200Q) + revisión | `ecu784689p8osrhqabuct8d5jg` | **D63** | D65 | ≥61 % |
+| 6 | 18-dic-2026 | 07:15-11:00 | 🎯 NBME 29 (200Q) + revisión | `ae93qv0nqqs36h439hid1jcq8o` | **D73** | D75 | ≥63 % |
+| 7 | 30-dic-2026 (mié) | 07:15-11:00 | 🎯 NBME 30 — CIERRE FASE A (200Q) + plan Fase B | `mael3p9uhp036jbep45ql6v9oc` | **D80** | D82 | ≥65 % · cierra Fase A |
+| 8 | 08-ene-2027 | 09:00-13:00 | 🎯 UWSA2 — predictor gold-standard (160Q) | `2u7viv0elr6aedo0m9undfa5kg` | **D85** | D87 | low-risk |
+| 9 | 15-ene-2027 | 07:15-11:00 | 🎯 NBME 31 (200Q) — GO/NO-GO fecha de examen | `l771lvcfv0jcebt61do6svia18` | **D90** | D92 | **GO = 2 NBME ≥68 % + UWSA2 low-risk** · cierra Fase B |
+| 10 | 18-ene-2027 (lun) | 07:15-11:00 | 🎯 NBME 32 (200Q) + repaso FA 1-5 | `h65e772pqsa4hgc5b6bh9n8h50` | **D91** | D93 | sprint (Fase C) |
+| 11 | 20-ene-2027 (mié) | 07:15-11:00 | 🎯 NBME 33 (200Q) + repaso FA 11-14 | `la5rsbuiqj1o35lb5adf93abuo` | **D93** | D95 | sprint (Fase C) |
+| 12 | 22-ene-2027 | 07:15-11:00 | 🎯 FREE 120 oficial + logística del examen | `lh9jfjsmoif74ci6jcn8f1mq30` | **D95** | D97 | **último día del plan** |
+
+⚠ Los overlays 10-12 caen lun/mié/vie de la última semana (no todos en viernes): el título y la hora se mantienen; el D# es el que manda para leer el contenido del día en la app.
+⚠ Tras el 30-dic (D80) los feriados jue 31-dic y vie 1-ene quedan fuera del plan: **el siguiente día hábil es el lun 4-ene = D81** (arranque de la Fase B). Esta línea ya está corregida dentro de la descripción del overlay NBME 30.
 
 **Colisiones de un día de hito (aceptadas, no se mueven franjas):**
 - UWSA (09:00-13:00 + ~30' de descansos reales → ~13:30): pisa deep prime 09:00, 30Q 11:00, ALMUERZO 12:00 y SYNAPSE 12:30 → el almuerzo se come dentro del sim (Ziploc BREAK 2), SYNAPSE pasa a la tarde, la revisión completa va en las franjas USMLE de la tarde + 18:00.
 - NBME (07:15-11:00 orientativo; 4 bloques × 50Q, el reloj lo pone la interfaz NBME): pisa repaso 07:15, pre-test 08:15, deep prime 09:00 y (si se alarga) 30Q 11:00 → almuerzo 12:00 normal; si el sim pasa de las 12:00, almuerzo dentro del sim entre B3 y B4.
 - El resto del día (Research/Derma, AURUM, MIR, ENCAPS, LIVIANO, GYM/BAILE) **no cambia**.
 
-## 6 · Descripciones literales de los bloques L-V (estado 05-sep-2026)
+## 6 · Descripciones literales de los bloques L-V (texto del 05-sep, revalidado el 08-sep)
 Texto tal como está en el Calendar tras la actualización del 05-sep (solo se tocó el campo `description`; nunca horas, títulos ni recurrencias). Los bloques marcados **[05-sep]** recibieron el protocolo de comida/hidratación.
 
 ### 04:00-04:15 · DECLARACIONES EKER - REPROGRAMA TU BLUEPRINT
@@ -156,7 +174,8 @@ Doc: DATA/SYNAPSE/CURSO_IA_04H_31AGO.md · plan del día: app → SYNAPSE
 • FASES B-C (dic-ene): 05:00-05:12 🔥 STRESS SET (10Q uWorld random en 12 min — confiar en el instinto, sin rumiar) + 05:12-05:45 Anki.
 Con este bloque el Step 1 pasa de 5h30 a 6h15/día (97 días desde lun 7-sep ≈ 606h totales) — colchón real para base cero.
 Todo en inglés. AGAIN/GOOD honesto. Config FSRS: retención 0.90, máx 50 nuevas/día, SOLO Good/Again.
-*(Nota: el plan v5.6 dice ≤10 tarjetas de mecanismo/día creadas; el "máx 50 nuevas/día" es el tope de Anki, no el objetivo de creación.)*
+*(Nota: el plan dice ≤10 tarjetas de mecanismo/día creadas; el "máx 50 nuevas/día" es el tope de Anki, no el objetivo de creación.)*
+*(⚠ **Cifra desactualizada en el Calendar**: la descripción sigue diciendo "97 días desde lun 7-sep ≈ 606h". En v5.7 son **95 días desde mié 9-sep ≈ 594 h**. Editar esa `description` queda **pendiente para Joseph** — este agente solo tenía permiso sobre los 12 overlays de hito.)*
 
 ### 05:45-06:45 · PREPARAR PARA CORRER · CORRER (sáb/dom solo caminata) · CALISTEMIA
 Sin descripción.
@@ -226,7 +245,7 @@ Misión exacta del día: https://joseph-md-app.vercel.app → 🧠 SYNAPSE → p
 Sin descripción (Biblioteca del Fundador: app → Home).
 
 ### 13:30-14:15 · 🔬 RESEARCH ↔ 💎 DERMA (alterna diario · ver app YoCPMD)
-ALTERNANCIA DIARIA (desde mié 10 jun 2026, solo días de estudio L–V): un día RESEARCH (investigación → camino a Mayo Clinic), al día siguiente DERMA (dermatología → ser referente clínico). Alterna en cada día hábil. *(El mapa de fechas de junio que sigue en la descripción es histórico; la alternancia vigente la calcula la app desde D1 = 7-sep.)* Protocolo estructurado (por fechas, vueltas, links) en la app YoCPMD: RESEARCH vive en la sección Research · DERMA vive en la sección Derma. (45 min · 1 entregable atómico/día · APEX + Obsidian)
+ALTERNANCIA DIARIA (desde mié 10 jun 2026, solo días de estudio L–V): un día RESEARCH (investigación → camino a Mayo Clinic), al día siguiente DERMA (dermatología → ser referente clínico). Alterna en cada día hábil. *(El mapa de fechas de junio que sigue en la descripción es histórico; la alternancia vigente la calcula la app desde **D1 = mié 9-sep** — `researchDailyPlan.ts` arranca el 10-sep y `dermaDailyPlan.ts` el 9-sep, 0 solapes.)* Protocolo estructurado (por fechas, vueltas, links) en la app YoCPMD: RESEARCH vive en la sección Research · DERMA vive en la sección Derma. (45 min · 1 entregable atómico/día · APEX + Obsidian)
 
 ### 14:15-15:15 · 🪙 AURUM — Closer de ventas (30-60' · 14:15-15:15 · L-V)
 🪙 AURUM — formación de closer de ventas de élite · L-V · núcleo 30-60 min dentro de 14:15-15:15 · plan de 6 meses (26 semanas · 130 lecciones · 7 fases). SOLO referentes REALES + ciencia rigurosa: Alex Hormozi, Grant Cardone, Chris Voss, Robert Cialdini, Neil Rackham (SPIN), Joe Girard, Brian Tracy, Jeb Blount, Aaron Ross, Tom Hopkins, Frank Bettger + Josué Peña (solo su contenido gratis de YouTube) · 11 libros ancla con audiolibros gratis. Cada día: VER 1 video + PRACTICAR el pitch (drill aplicado a tus leads reales ALLPA / Qori Golden). La LECTURA / audiolibro va en tus huecos de viaje, no en esta hora.
@@ -313,3 +332,42 @@ Solo campo `description`; verificado con `get_event` tras cada `update_event` (R
 | 12 overlays de hito | ver §5 | texto original v5.6 + protocolo test-day Palmerton §F |
 
 **No tocado (fuera de alcance o decisión de Joseph):** título "ALUMUERZO" (typo), `<br>` escapados en SYNAPSE, texto CS50P del PC sábado, mapa de junio en Research↔Derma, frases EKER, hueco 13:15-13:30, colisión ALISTARSE martes 18:30.
+
+## 8 · Registro de cambios en el Calendar (08-sep-2026 · corrimiento v5.7)
+Corrimiento D1 lun 7-sep → **mié 9-sep** (el 7 y el 8 no se estudiaron). **Las fechas de los 12 overlays de hito NO se movieron**; solo cambió su D#, y con él el texto de la `description`.
+
+Método: `get_event` para leer la descripción viva → sustitución del D# viejo y de "D1 = lun 7-sep / plan v5.6" por "**D1 = mié 9-sep, v5.7, 95 días**" → `update_event` **solo con el campo `description`** → `get_event` de verificación. **No se usó `recurrenceData`, no se creó, borró ni recreó ningún evento, y no se tocaron horas, títulos, `colorId` ni `transparency`.** Los 12 son eventos únicos (sin `recurringEventId`), así que no había recurrencia en riesgo.
+
+| # | Overlay | ID | D# viejo → nuevo | Otros cambios en el texto |
+|---|---|---|---|---|
+| 1 | UWSA1 11-sep | `o1gla7846uae4tgngvc4q45osg` | D5 → **D3** | — |
+| 2 | NBME 25 02-oct | `4hjv5lkvluj06ahc2qndtsi6as` | D20 → **D18** | — |
+| 3 | NBME 26 23-oct | `lr7ktrbiffj4hrlke7lh7cv6h4` | D35 → **D33** | — |
+| 4 | NBME 27 13-nov | `sm4baa2v453ifaub325h9v08mg` | D50 → **D48** | — |
+| 5 | NBME 28 04-dic | `ecu784689p8osrhqabuct8d5jg` | D65 → **D63** | — |
+| 6 | NBME 29 18-dic | `ae93qv0nqqs36h439hid1jcq8o` | D75 → **D73** | — |
+| 7 | NBME 30 30-dic | `mael3p9uhp036jbep45ql6v9oc` | D82 → **D80** | rango de la Fase B explicitado (4-ene→15-ene = **D81-D90**) y "el siguiente día de plan es el lun 4-ene" corregido de **D83 → D81** |
+| 8 | UWSA2 08-ene | `2u7viv0elr6aedo0m9undfa5kg` | D87 → **D85** | el GO/NO-GO del 15-ene ahora se cita como **NBME 31, D90** |
+| 9 | NBME 31 15-ene | `l771lvcfv0jcebt61do6svia18` | D92 → **D90** | — |
+| 10 | NBME 32 18-ene | `h65e772pqsa4hgc5b6bh9n8h50` | D93 → **D91** | — |
+| 11 | NBME 33 20-ene | `la5rsbuiqj1o35lb5adf93abuo` | D95 → **D93** | — |
+| 12 | Free 120 22-ene | `lh9jfjsmoif74ci6jcn8f1mq30` | D97 → **D95** | sigue siendo "último día del plan" |
+
+**Verificado además (sin escribir nada):** los 11 bloques de estudio L-V existen los tres días hábiles de la semana de arranque (mié 9, jue 10, vie 11 — ver §0.1) y el fin de semana sigue sin banco de preguntas.
+
+### Pendiente para Joseph (fuera del alcance de este cambio)
+Estas descripciones del Calendar siguen citando **"Régimen v5.6"** o **"D1 = lun 7-sep-2026"**. No son overlays de hito, así que no se tocaron; el contenido operativo (comida, hidratación, protocolo) sigue siendo correcto — solo la etiqueta de versión está vieja:
+
+| Serie | ID | Texto viejo |
+|---|---|---|
+| ANKI AM 05:00 | `i8afj7uppkb3ntj8h9890dhecc` | "97 días desde lun 7-sep ≈ 606h" → v5.7: **95 días desde mié 9-sep ≈ 594 h** |
+| DESAYUNO L-V 07:00 | `7agi60f2bp8qnh6cnqvfo22giv` | "Régimen v5.6 (D1 = lun 7-sep-2026)" |
+| DESAYUNO sáb/dom | `2u9je70pif58hgf2f8t3vgu8b8` | "Régimen v5.6" |
+| DEEP PRIME 09:00 | `cb2uh20jnvu7pgfev4183pgctc` | "Régimen v5.6" |
+| ALUMUERZO 12:00 | `43dq3oib16esjcqj1dcd8osot2` | "Régimen v5.6" |
+| MIR 15:15 | `2ldp6obaapnvo76li28uprrddg` | "Régimen v5.6" |
+| ENCAPS 16:15 | `papebi46etlo8glgfs5akd5mig` | "Régimen v5.6" |
+| LIVIANO 17:15 | `8epae6hlfmrc9j0h2kib7iuc84` | "Régimen v5.6" |
+| BAILE mié/sáb/dom | `0tod56pc6pgecm5lf7g4e3ji9v` · `3jkfb6097rtc1jbec19eg3sd57` · `7j6pucil43vuca70p082g5ub3d` | "Régimen v5.6" |
+
+Todas apuntan a este mismo fichero como autoridad, así que la etiqueta "v5.6" del nombre sigue resolviendo bien; el cambio es puramente cosmético y puede hacerse en el siguiente corrimiento.

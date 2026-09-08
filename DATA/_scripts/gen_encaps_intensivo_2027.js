@@ -2,7 +2,7 @@
  * gen_encaps_intensivo_2027.js — siembra la FASE INTENSIVA ENCAPS 2027-I (feb → D-1 del examen) en Supabase.
  *
  * Contexto (régimen v5.6, PRONOSTICO_WALKFORWARD_2027-1_v3.md §6 Fase B + FASE_INTENSIVA_2027-I.md):
- *   · Sep-2026 → 29-ene-2027: MANTENIMIENTO 1h/día (gen_encaps_mantenimiento_2027.js, 102 días, dia 1-102).
+ *   · 9-sep-2026 → 29-ene-2027: MANTENIMIENTO 1h/día (gen_encaps_mantenimiento_2027.js, 100 días, dia 1-100 · v5.7).
  *   · Feb-2027 → D-1: INTENSIVA — ENCAPS vuelve a bloque principal (el USMLE Step 1 se rinde el 25-29 ene).
  *     Se siembra con modo='INTENSIVO' y dia = 103… (continúa la cuenta L-V desde la base del mantenimiento,
  *     así el cálculo de "día de hoy" de la app no cambia; la app necesita STUDY_TOTAL_DAYS = 102 + N y una
@@ -45,7 +45,7 @@ const fechasArg = argv.filter((a) => /^20\d\d-\d\d-\d\d$/.test(a));
 const D1 = fechasArg[0] || '2027-02-01';
 const EXAMEN = fechasArg[1] || '2027-03-26';
 const opt = (k, def) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] ? argv[i + 1] : def; };
-const BASE = opt('--base', '2026-09-07');
+const BASE = opt('--base', '2026-09-09');   // v5.7 (8-sep): D1 del mantenimiento = mié 9-sep → la intensiva continúa en el día 101
 const BK = opt('--bk', 'study_schedule_bk_intensivo');
 const PRETEST = opt('--pretest', null);
 const SIMS_ARG = opt('--sims', null);

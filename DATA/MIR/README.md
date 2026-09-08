@@ -9,11 +9,16 @@ Anki de mecanismo FSRS · medir por % ciego). Meta: Top 50 MIR 2030.
 > v3 "cero puntos ciegos" (5-sep-2026): selección por Peso MIR + núcleo rabi_94, Epi/Bioética
 > en D1-D4, bloques alineados al Step 1, eval multi-temporal, registro de mediciones, test de
 > cierre, mini-MIR D77, modo banqueo ene-mar 2027. El Calendar (15:15-16:15 L-V) NO cambia.
+>
+> **v5.7 (8-sep-2026): D1 = MIÉ 9-SEP-2026.** El 7 y el 8 de septiembre no se estudiaron → +2 días
+> hábiles a todo el régimen. El plan sigue teniendo **78 días** (no se recorta nada del MIR) y las
+> franjas, metas y contenidos son idénticos: solo se re-fechó. D78 pasa de mié 23-dic a **lun 28-dic**
+> (25-dic no es día hábil del plan).
 
-## 1. Plan día-a-día (78 días = 76 temas + D77 mini-MIR + D78 corrección · D1 lun 7-sep-2026 → D78 mié 23-dic-2026)
+## 1. Plan día-a-día (78 días = 76 temas + D77 mini-MIR + D78 corrección · D1 mié 9-sep-2026 → D78 lun 28-dic-2026)
 Fuente de verdad: [`src/lib/mirDailyPlan.ts`](../../src/lib/mirDailyPlan.ts) (bloque GENERADO por
 [`STUDY_HUB/_scrape/gen_mir_daily.js`](../../STUDY_HUB/_scrape/gen_mir_daily.js) `[YYYY-MM-DD]`).
-L-V, sáb+dom libres, sin skips hasta el 23-dic. 1 tema atómico/día, 1ª vuelta.
+L-V, sáb+dom libres, sin skips hasta el 28-dic. 1 tema atómico/día, 1ª vuelta.
 
 **Regla de selección (v3):** por asignatura, top-N capítulos por `pesoPct` de `mirDetalleData`
 (N = días del bloque) + los capítulos **núcleo rabi_94** (`mirPrioridades1V`) forzados: un núcleo
@@ -26,26 +31,41 @@ temas) · capIds reales de `mirTemarioData` · fechas L-V · D1-D4 = Epi×3 + Bi
 
 **Orden de bloques = cada asignatura PRECEDE ~1 semana a su sistema Step 1** (clínica en español
 como prime → mecanismo en inglés 7 días después = re-exposición espaciada del mismo sistema).
-Homólogo Step 1 = rangos reales de `usmleStep1Daily.ts` v5.6.
+Homólogo Step 1 = rangos reales de `usmleStep1Daily.ts` **v5.7** (95 días, D1 = 9-sep-2026),
+leídos del array `DIAS` — no estimados.
 
-| # | Asignatura | Días MIR | Fechas | Capítulos (orden del bloque) | Cobertura peso | Homólogo Step 1 |
-|---|------------|----------|--------|------------------------------|----------------|-----------------|
-| 1 | Epidemiología (Tier S) | D1–D3 | 7-sep→9-sep | Ensayo clínico 32,2 · Clasificación de estudios 24,3 · Pruebas diagnósticas 13,5 | 70,1 / 70,1 | Biostats/Epi (D77, 22-dic) |
-| 2 | Medicina Legal y Bioética (Tier S) | D4 | 10-sep | Principios de bioética y relación médico-paciente 39,8 | 39,8 / 39,8 | Ethics/Behavioral (D77) |
-| 3 | Cardiología | D5–D11 | 11-sep→21-sep | Cardiología básica · Ritmo · Isquémica · IC · Valvulopatías★ · Riesgo CV · Miocardio | 71,8 / 71,8 | Cardiovascular D6–D15 (14→25-sep) |
-| 4 | Neumología | D12–D16 | 22-sep→28-sep | Fisiología★ · Cáncer de pulmón★ · Pleura/mediastino · EPOC★ · Intersticiales | 61,2 / 61,2 | Respiratory D16–D22 (28-sep→6-oct) |
-| 5 | Nefrología | D17–D22 | 29-sep→6-oct | Fisiología renal★ · FRA · GN primarias · Riñón y sistémicas · IRC · Síndromes clínicos | 80,5 / 80,5 | Renal D23–D28 (7→14-oct) |
-| 6 | Gastroenterología | D23–D30 | 7-oct→16-oct | Hígado · Colon · Intestino delgado · Estómago★ · Misc. quirúrgica · Páncreas · Esófago★ · Vía biliar | 100 / 100 | Gastrointestinal D29–D36 (15→26-oct) |
-| 7 | Endocrinología y Nutrición | D31–D36 | 19-oct→26-oct | DM★ · Tiroides★ · Hipófisis · Suprarrenales · Nutrición/obesidad · Lípidos | 78,0 / 78,0 | Endocrine D37–D41 (27-oct→2-nov) |
-| 8 | Neurología | D37–D43 | 27-oct→4-nov | Semiología · Neurocirugía · ECV★ · Movimiento · Epilepsia · Demencias · Cefaleas | 76,6 / 76,6 | Nervous System D42–D49 (3→12-nov) |
-| 9 | Hematología | D44–D48 | 5-nov→11-nov | Coagulación 21,5 · Linfomas · Hemolíticas · Carenciales · NMP | 65,0 / 65,0 | Hematology & Oncology D51–D56 (16→23-nov) |
-| 10 | Enfermedades Infecciosas | D49–D56 | 12-nov→23-nov | Tropicales 12,6 · VIH · TBC · ITRI/neumonía · SNC · Antibacterianos★ · Hongos · Sepsis | 62,9 / 62,9 | Microbiology / ID D57–D63 (24-nov→2-dic) |
-| 11 | Ginecología y Obstetricia | D57–D62 | 24-nov→1-dic | Ca mama★ 15,7 · Hemorragia gestación · Complicaciones maternas · Infecciones y embarazo · Control gestación · Masas anexiales/Ca ovario★ | 46,7 / 46,7 | Reproductive D64–D69 (3→10-dic) |
-| 12 | Reumatología | D63–D68 | 2-dic→9-dic | Vasculitis★ · Espondiloartropatías · Otras conectivopatías · AR · Cristales★ · LES★ | 65,1 / 65,5 | Musculoskeletal / Rheum D70–D72 (11→15-dic) |
-| 13 | Pediatría | D69–D73 | 10-dic→16-dic | Digestivo · Neonatología · Desarrollo/nutrición · Infecciosa · Vacunación (🇪🇸 delta) | 78,1 / 78,1 | — (sin homólogo) |
-| 14 | Psiquiatría | D74–D76 | 17-dic→21-dic | Ánimo★ · Neuróticos★ · Psicóticos | 61,5 / 61,5 | Psychiatry & Behavioral D73–D77 (16→22-dic) |
-| — | Repaso integral | D77 | 22-dic | **mini-MIR 40Q mixto cronometrado (51 min · 77 s/Q · en blanco permitido)** | — | — |
-| — | Repaso integral | D78 | 23-dic | **corrección Whole-Page + Shopping List + tabla de neto por asignatura = baseline abr-2027** | — | — |
+| # | Asignatura | Días MIR | Fechas | Capítulos (orden del bloque) | Cobertura peso | Homólogo Step 1 | Lag |
+|---|------------|----------|--------|------------------------------|----------------|-----------------|-----|
+| 1 | Epidemiología (Tier S) | D1–D3 | 9-sep→11-sep | Ensayo clínico 32,2 · Clasificación de estudios 24,3 · Pruebas diagnósticas 13,5 | 70,1 / 70,1 | Biostats/Epi (D77, 24-dic) | — |
+| 2 | Medicina Legal y Bioética (Tier S) | D4 | 14-sep | Principios de bioética y relación médico-paciente 39,8 | 39,8 / 39,8 | Ethics/Behavioral (D77, 24-dic) | — |
+| 3 | Cardiología | D5–D11 | 15-sep→23-sep | Cardiología básica · Ritmo · Isquémica · IC · Valvulopatías★ · Riesgo CV · Miocardio | 71,8 / 71,8 | Cardiovascular D6–D15 (16→29-sep) | ⚠ +1 d |
+| 4 | Neumología | D12–D16 | 24-sep→30-sep | Fisiología★ · Cáncer de pulmón★ · Pleura/mediastino · EPOC★ · Intersticiales | 61,2 / 61,2 | Respiratory D16–D22 (30-sep→8-oct) | +6 d |
+| 5 | Nefrología | D17–D22 | 1-oct→8-oct | Fisiología renal★ · FRA · GN primarias · Riñón y sistémicas · IRC · Síndromes clínicos | 80,5 / 80,5 | Renal D23–D28 (9→16-oct) | +8 d |
+| 6 | Gastroenterología | D23–D30 | 9-oct→20-oct | Hígado · Colon · Intestino delgado · Estómago★ · Misc. quirúrgica · Páncreas · Esófago★ · Vía biliar | 100 / 100 | Gastrointestinal D29–D36 (19→28-oct) | +10 d |
+| 7 | Endocrinología y Nutrición | D31–D36 | 21-oct→28-oct | DM★ · Tiroides★ · Hipófisis · Suprarrenales · Nutrición/obesidad · Lípidos | 78,0 / 78,0 | Endocrine D37–D41 (29-oct→4-nov) | +8 d |
+| 8 | Neurología | D37–D43 | 29-oct→6-nov | Semiología · Neurocirugía · ECV★ · Movimiento · Epilepsia · Demencias · Cefaleas | 76,6 / 76,6 | Nervous System D42–D50 (5→17-nov) | +7 d |
+| 9 | Hematología | D44–D48 | 9-nov→13-nov | Coagulación 21,5 · Linfomas · Hemolíticas · Carenciales · NMP | 65,0 / 65,0 | Hematology & Oncology D51–D56 (18→25-nov) | +9 d |
+| 10 | Enfermedades Infecciosas | D49–D56 | 16-nov→25-nov | Tropicales 12,6 · VIH · TBC · ITRI/neumonía · SNC · Antibacterianos★ · Hongos · Sepsis | 62,9 / 62,9 | Microbiology / ID D57–D64 (26-nov→7-dic) | +10 d |
+| 11 | Ginecología y Obstetricia | D57–D62 | 26-nov→3-dic | Ca mama★ 15,7 · Hemorragia gestación · Complicaciones maternas · Infecciones y embarazo · Control gestación · Masas anexiales/Ca ovario★ | 46,7 / 46,7 | Reproductive D65–D69 (8→14-dic) | +12 d |
+| 12 | Reumatología | D63–D68 | 4-dic→11-dic | Vasculitis★ · Espondiloartropatías · Otras conectivopatías · AR · Cristales★ · LES★ | 65,1 / 65,5 | Musculoskeletal / Rheum D70–D72 (15→17-dic) | +11 d |
+| 13 | Pediatría | D69–D73 | 14-dic→18-dic | Digestivo · Neonatología · Desarrollo/nutrición · Infecciosa · Vacunación (🇪🇸 delta) | 78,1 / 78,1 | — (sin homólogo) | — |
+| 14 | Psiquiatría | D74–D76 | 21-dic→23-dic | Ánimo★ · Neuróticos★ · Psicóticos | 61,5 / 61,5 | Psychiatry & Behavioral D74–D77 (21→24-dic) | ⚠ 0 d |
+| — | Repaso integral | D77 | 24-dic | **mini-MIR 40Q mixto cronometrado (51 min · 77 s/Q · en blanco permitido)** | — | — | — |
+| — | Repaso integral | D78 | 28-dic | **corrección Whole-Page + Shopping List + tabla de neto por asignatura = baseline abr-2027** | — | — | — |
+
+> **Nota v5.7 — dos correspondencias que el corrimiento estrechó.** El MIR mantiene 78 días y el
+> Step 1 bajó a 95 (−2 días de contenido en el cierre de Fase A), así que los desfases se movieron.
+> `Lag` = días naturales entre el inicio del bloque MIR y el inicio de su sistema Step 1 (cálculo
+> sobre las fechas reales de los dos `.ts`, no estimado).
+> - **Cardiología (⚠ +1 d):** MIR arranca el mar 15-sep y Cardiovascular el mié 16-sep. El prime
+>   en español ya casi no precede al mecanismo en inglés; en la práctica van **en paralelo**. Es la
+>   correspondencia más débil del plan. Sigue siendo re-exposición del mismo sistema (no se pierde
+>   contenido), pero el efecto "espaciado de 7 días" no se cumple en este bloque.
+> - **Psiquiatría (⚠ 0 d):** ambos arrancan el lun 21-dic — solapamiento total, igual que en v5.6
+>   (donde el Step 1 incluso precedía en 1 día). Aquí el prime es simultáneo, no anticipado.
+> - Los otros 9 bloques quedan entre **+6 y +12 días**, es decir dentro o por encima del objetivo
+>   de ~1 semana. No se re-permuta el MIR para arreglar Cardiología: hacerlo movería 11 bloques y
+>   el objetivo primario hasta el 29-ene es el Step 1, no el MIR.
 
 ★ = núcleo rabi_94. Total: **957,4 puntos-peso** de 957,8 óptimos (plan previo: 744,2 · +28,6 %).
 Núcleos que NO entran (peso demasiado bajo; el generador lo avisa): Intro endocrino 1,9 · Bacterias
