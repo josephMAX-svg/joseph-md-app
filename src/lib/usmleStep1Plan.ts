@@ -5,10 +5,10 @@
  * subtema), Librerías, Flashcards, Video Library (B&B Step 1/2 + Sketchy) y la
  * biblioteca High-Yield de Palmerton + lo que Palmerton dice de cada sistema.
  *
- * v5.6 (6-sep-2026): D1 = LUN 7-sep-2026 → D97 = vie 22-ene-2027 · Step 1 = BLOQUE PRINCIPAL (6h15/día L-V):
+ * v5.6 (6-sep-2026): D1 = MIÉ 9-sep-2026 → D95 = vie 22-ene-2027 · Step 1 = BLOQUE PRINCIPAL (6h15/día L-V):
  *  05:00 ANKI AM · 07:15 repaso anclado · 08:15 PRE-TEST 10Q · 09:00-11:00 DEEP PRIME · 11:00 30Q · 18:00 eval examen.
  *  Sáb y dom LIBRES (skip 25-dic, 31-dic, 1-ene). Examen: semana 25-29 ene 2027. Los diaInicio apuntan
- *  al plan de 97 días de usmleStep1Daily.ts (fuente de verdad): Fase A D1-82 · B D83-92 · C D93-97.
+ *  al plan de 95 días de usmleStep1Daily.ts (fuente de verdad): Fase A D1-80 · B D81-90 · C D91-95.
  *
  * Prioridad: Step 1. Sistemas ordenados por peso real (preguntas uWorld) +
  * la serie High-Yield de Palmerton.

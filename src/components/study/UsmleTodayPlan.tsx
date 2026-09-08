@@ -22,7 +22,7 @@ import { usmleAnkiDeck, ANKIWEB } from '../../lib/ankiLinks';
  * Qbankly SOLO abre en Edge → cada link Qbankly ofrece botón "Edge" (microsoft-edge:)
  * además del de Chrome. 7 días y temario son clicables → saltan al día. El badge de
  * sistema lleva al Temario con el progreso real del plan por sistema.
- * v5.6-Palmerton (5-sep-2026): chip de NIVEL UWorld del día (DIAS[].nivelUW) + chip "MIR en paralelo" +
+ * Palmerton (5-sep-2026): chip de NIVEL UWorld del día (DIAS[].nivelUW) + chip "MIR en paralelo" +
  * tarjeta 📏 MEDICIÓN (pre-test /10 · consolidación % · eval % · tipo de error · gate ✓ subir / ✗ repetir ·
  * export JSON) → usmleScores.ts (localStorage 'jmd-usmle-scores' + Supabase usmle_daily_scores).
  */

@@ -575,7 +575,7 @@ export default function MirTodayPlan() {
       <View style={st.ctxRow}>
         <TouchableOpacity activeOpacity={0.85} onPress={() => setModo('plan')} style={[st.ctxBtn, modo === 'plan' ? st.ctxActive : st.ctxSoon]}>
           <Text style={[st.ctxBig, modo !== 'plan' && { color: Colors.muted }]}>MIR 2030</Text>
-          <Text style={st.ctxSub}>1ª vuelta · ProMIR · 78 d (7-sep→23-dic)</Text>
+          <Text style={st.ctxSub}>{`1ª vuelta · ProMIR · ${MIR_DIAS.length} d (${MIR_DAILY_META.inicio.slice(5).replace('-', '-')}→${MIR_DAILY_META.fin.slice(5)})`}</Text>
         </TouchableOpacity>
         <TouchableOpacity activeOpacity={0.85} onPress={() => setModo('mant')} style={[st.ctxBtn, modo === 'mant' ? st.ctxActive : st.ctxSoon]}>
           <Text style={[st.ctxBig, modo !== 'mant' && { color: Colors.muted }]}>Banqueo</Text>

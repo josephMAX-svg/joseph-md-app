@@ -99,7 +99,7 @@ def gen_v3(start_iso):
  * GENERADO por DATA/_scripts/gen_business_plan.py desde DATA/BUSINESS/plan_pulso_v3_L.json — NO editar a mano.
  * Regenerar: python DATA/_scripts/gen_business_plan.py YYYY-MM-DD (re-fechado en corrimientos: remap_inicio.js, bloque Business).
  *
- * Formato L (5-sep-2026, Palmerton cero puntos ciegos): SIN franja en el horario v5.6. 20-25 min/día de
+ * Formato L (5-sep-2026, Palmerton cero puntos ciegos): SIN franja en el horario v5.7. 20-25 min/día de
  * audiolibro/lectura en los huecos (L-J) + 1 OUTPUT pequeño el viernes (25-40 min). Solo lo que no cubren
  * AURUM (marketing/ventas) ni LIVIANO_ACADEMIA (obesidad/GLP-1): BIOLOGIA · SUEÑO · MENTAL · FOCO · PAREJA
  * + OUTPUT; PESO = Biblioteca del Fundador nivel 3-4 (Hungry Brain, Burn, Outlive) y PESO/HORMONAL en modo
@@ -116,7 +116,7 @@ export interface DiaBiz {
 
 export const BIZ_META = {
   inicio: '%s', fin: '%s', totalDias: %d, // %s
-  bloque: 'Formato L · 20-25 min/día en huecos (audiolibro/lectura, L-J) + 1 output el viernes · sin franja en el horario v5.6',
+  bloque: 'Formato L · 20-25 min/día en huecos (audiolibro/lectura, L-J) + 1 output el viernes · sin franja en el horario v5.7',
   minLectura: 25, minOutput: 40,
 };
 

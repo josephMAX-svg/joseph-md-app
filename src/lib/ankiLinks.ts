@@ -25,9 +25,15 @@ const USMLE_DECK: Record<string, string> = {
   'Immunology': 'Immunology',
   'Microbiology / ID': 'Microbiology',
   'Biochemistry': 'Biochemistry',
+  // v5.7: sistemas del plan que no son de órgano — antes caían al deck de Cardiology por el fallback.
+  'Fundamentos': 'General',
+  'Pharmacology (transversal)': 'Pharmacology',
+  'Assessment': 'General',
+  'Banco intensivo': 'General',
+  'Sprint final': 'General',
 };
 export const usmleAnkiDeck = (system: string): string =>
-  `APEX::USMLE::${USMLE_DECK[system] || 'Cardiology'}`;
+  `APEX::USMLE::${USMLE_DECK[system] || 'General'}`;
 
 /** MIR — asignatura del plan → apex_lowercase (tags clínicos existentes en Anki) */
 const MIR_DECK: Record<string, string> = {

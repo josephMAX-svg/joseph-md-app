@@ -13,7 +13,7 @@ import { useMountProgress } from '../empresa/visuals';
  *
  * Puramente presentacional: recibe valores ya calculados por el Hub. No toca datos,
  * progreso ni localStorage. Números tabulares (aire de terminal financiero clínico).
- * v5.6-Palmerton (5-sep-2026): stats opcionales `media7d` (media móvil 7 días de la eval timed) y
+ * Palmerton (5-sep-2026): stats opcionales `media7d` (media móvil 7 días de la eval timed) y
  * `onTrack` (distancia al mínimo on-track del próximo hito) — solo se pintan si el Hub tiene datos.
  */
 const GOLD = Colors.gold;

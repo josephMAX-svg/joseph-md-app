@@ -3,9 +3,9 @@ import { View, Text, TouchableOpacity, StyleSheet, Linking, Animated, Platform }
 import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
 import { MIR_DIAS, mirDiaDe, capUrl } from '../../lib/mirDailyPlan';
-import { DIAS, diaDe, QBQ } from '../../lib/usmleStep1Daily';
+import { DIAS, diaDe, QBQ, DAILY_META as USMLE_META } from '../../lib/usmleStep1Daily';
 import { mirObsUrl, usmleObsUrl, encapsObsUrl, OBS_MAPA_URL } from '../../lib/obsidianMap';
-import { vibeDiaDe, vibeProyectoEnFecha, VIBE_TIPO_LABEL, VIBE_ROTACION_ICON } from '../../lib/vibecodingPlan';
+import { vibeDiaDe, vibeProyectoEnFecha, VIBE_TIPO_LABEL, VIBE_ROTACION_ICON, VIBE_META } from '../../lib/vibecodingPlan';
 import {
   semanaStep1, semanaLabel, leerModo, guardarModo, minimoPorFrente, MODO_INFO, ModoNivel, Frente,
 } from '../../lib/homeBriefing';
@@ -118,7 +118,7 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
     ? (vibeDia
       ? `S${vibeP.s} · ${vibeP.nombre} — hoy (${VIBE_TIPO_LABEL[vibeDia.tipo]}${vibeDia.min !== 45 ? ` ${vibeDia.min}'` : ''}): ${vibeDia.paso}`
       : `S${vibeP.s} · ${vibeP.nombre} — sáb PC 15:00 = SHIP · dom = Feynman (fuera de L-V)`)
-    : 'fuera del rango del plan (S1-S12: 7-sep → 27-nov)';
+    : `fuera del rango del plan (S1-S12: ${VIBE_META.inicio.slice(8)}-${VIBE_META.inicio.slice(5,7)} → ${VIBE_META.fin.slice(8)}-${VIBE_META.fin.slice(5,7)})`;
 
   const bloques: Bloque[] = [
     {
@@ -130,13 +130,13 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
     {
       flag: '🇺🇸', nombre: 'USMLE · ANKI AM (madrugada fresca · Palmerton 2x)', ini: '05:00', fin: '05:45', color: GREEN, frente: 'usmle-anki',
       tema: 'Pasada principal FSRS del deck USMLE · Fases B-C: + stress set 10Q/12min',
-      sub: 'Step 1 = 6h15/día × 97 días (~606h) · el 07:15 queda para repaso anclado D-1/D-3/D-7',
+      sub: `Step 1 = 6h15/día × ${DIAS.length} días (~${Math.round(DIAS.length * 6.25)}h) · el 07:15 queda para repaso anclado D-1/D-3/D-7`,
       acciones: [],
     },
     {
       flag: '🇺🇸', nombre: 'USMLE · BLOQUE PRINCIPAL (Anki → Pre-test → Deep Prime → 30Q)', ini: '07:15', fin: '12:00', color: GREEN, frente: 'usmle-principal',
       tema: us ? `D${us.d}/${DIAS.length} · ${us.system} — ${us.sub}` : 'fuera del rango del plan',
-      sub: us ? `${us.bbCh}: ${us.bbVid} · ${us.mat} · todo en inglés` : 'Step 1 · v5.6 desde lun 7-sep',
+      sub: us ? `${us.bbCh}: ${us.bbVid} · ${us.mat} · todo en inglés` : `Step 1 · v5.7 desde ${USMLE_META.inicio}`,
       acciones: us ? [
         { lbl: '◆ Edge', color: EDGE, url: 'microsoft-edge:' + QBQ, fill: true },
         ...(usmleObsUrl(us.d) ? [{ lbl: '◆ Obsidian', color: OBS, url: usmleObsUrl(us.d)! }] : []),

@@ -1,5 +1,5 @@
 /**
- * researchDailyPlan.ts — Plan DÍA A DÍA de Research · CICLO 1 (v5.6 · 3 pistas alineadas con RUTA_PUBLICACION_2027).
+ * researchDailyPlan.ts — Plan DÍA A DÍA de Research · CICLO 1 (v5.7 · 3 pistas alineadas con RUTA_PUBLICACION_2027).
  * GENERADO por DATA/_scripts/gen_research_plan.js (2026-09-08) — NO editar a mano: `node DATA/_scripts/gen_research_plan.js [YYYY-MM-DD]`
  *
  * 42 átomos · D1 = Jue 2026-09-10 → D42 = Vie 2027-02-05 · 1 átomo por DÍA-RESEARCH

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * gen_research_plan.js — FUENTE ÚNICA del plan día-a-día de Research (v5.6 · 3 pistas alineadas con
+ * gen_research_plan.js — FUENTE ÚNICA del plan día-a-día de Research (v5.7 · 3 pistas alineadas con
  * DATA/RESEARCH/RUTA_PUBLICACION_2027.md). GENERA (no editar los .ts/.md a mano):
  *
  *   src/lib/researchDailyPlan.ts       ciclo 1 · 42 átomos · 40 en sep→dic 2026 (carta · tesis · case report · mentores · cimientos SR-1)
@@ -635,7 +635,7 @@ const hitosTs = Object.entries(HITOS).map(([k, h]) => `  ${q(k)}: { code: ${q(h.
 const genLine = `GENERADO por DATA/_scripts/gen_research_plan.js (${HOY}) — NO editar a mano: \`node DATA/_scripts/gen_research_plan.js [YYYY-MM-DD]\``;
 
 const TS1 = `/**
- * researchDailyPlan.ts — Plan DÍA A DÍA de Research · CICLO 1 (v5.6 · 3 pistas alineadas con RUTA_PUBLICACION_2027).
+ * researchDailyPlan.ts — Plan DÍA A DÍA de Research · CICLO 1 (v5.7 · 3 pistas alineadas con RUTA_PUBLICACION_2027).
  * ${genLine}
  *
  * ${D1.length} átomos · D1 = ${wdOf(D1[0].fecha)} ${D1[0].fecha} → D${D1.length} = ${wdOf(D1[D1.length - 1].fecha)} ${D1[D1.length - 1].fecha} · 1 átomo por DÍA-RESEARCH

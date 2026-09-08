@@ -76,7 +76,7 @@ export const PM_CAP = {
 } as const;
 
 export const DERMA_DAILY_META = {
-  inicio: '2026-09-09', fin: '2027-03-24', totalDias: 70, // v5.6 (5-sep): D1=lun 7-sep-2026 · interdiario con Research (paridad researchData.ts) · sáb+dom libres · salta 25-dic/31-dic/1-ene · NO tocar a mano
+  inicio: '2026-09-09', fin: '2027-03-24', totalDias: 70, // v5.7 (8-sep): D1=mié 9-sep-2026 · interdiario con Research (paridad researchData.ts) · sáb+dom libres · salta 25-dic/31-dic/1-ene · NO tocar a mano
   bloque: '13:30–14:15 (45 min · franja boards del Calendar, alterna con Research — interdiario)',
   nota: 'PLAN ÉLITE v2.1: cada sesión = 2 casos CIEGOS fijos (casoIds, permutación seeded de los 200) + 1 imagen dermatoscópica ciega + ~10Q review (rotación 1.301Q, fallos etiquetados med/ped/surg/path en el ledger) + 10′ lectura del módulo (o módulo DermNet Dermoscopy CME en las pares d6-d44). Progreso REAL marcable (studyProgress key "derma"). El día mostrado salta los días-Research.',
 };
@@ -161,7 +161,7 @@ export function dermaCasoArea(id: number): DermaAreaCORE {
 export const DERMA_CASOS: DermaCaso[] = Array.from({ length: 200 }, (_, i) => ({ id: i + 1, area: dermaCasoArea(i + 1) }));
 /**
  * Permutación seeded FIJA de los 200 casos (interleaving real, sin agrupar por tema).
- * Generada una sola vez con mulberry32(seed 20260907 = D1 v5.6) + Fisher-Yates
+ * Generada una sola vez con mulberry32(seed 20260907) + Fisher-Yates — la permutación se CONGELA
  * (script: scratchpad/perm.js del agente derma v2.1) y CONGELADA aquí como literal para que
  * ningún cambio de runtime altere qué caso toca qué día. Posiciones 0-139 = primera pasada
  * (2/sesión × 70) · 140-199 = resto post-Step 1 (feb-2027, al subir a 5 casos/sesión).

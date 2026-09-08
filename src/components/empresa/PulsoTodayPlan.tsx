@@ -10,7 +10,7 @@ import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, loadDone, sav
 
 /**
  * PulsoTodayPlan — "Estudio Pulso" día a día en FORMATO L (v3, 5-sep-2026): SIN franja en el
- * horario v5.6. 20-25 min de audiolibro/lectura en los huecos (L-J) + 1 OUTPUT pequeño el viernes
+ * horario v5.7. 20-25 min de audiolibro/lectura en los huecos (L-J) + 1 OUTPUT pequeño el viernes
  * (25-40 min) + tracker semanal (Metricas_v2). Mismo motor que ENCAPS/USMLE/MIR: Día X/N, HOY
  * (lectura + acción + link real), Formato L, 7d clicable y Temario por materia con PROGRESO REAL
  * marcable (empieza 0%, localStorage 'business'). Ya NO sugiere el bloque de 2h (no existe en el
@@ -133,7 +133,7 @@ function HorarioView({ dia }: { dia: DiaBiz }) {
           <View style={{ flex: 1 }}><Text style={st.franjaFase}>{t.metrica}</Text></View>
         </View>
       ))}
-      <Text style={st.note}>No hay bloque de 2h ni franja en el Calendar v5.6: el formato L vive en tus huecos. Lo que sí tiene hora es AURUM (14:15-15:15, ventas) y LIVIANO Academia (17:15-18:00, obesidad). Fuente: DATA/BUSINESS/plan_pulso_v3_L.json → gen_business_plan.py.</Text>
+      <Text style={st.note}>No hay bloque de 2h ni franja en el Calendar v5.7: el formato L vive en tus huecos. Lo que sí tiene hora es AURUM (14:15-15:15, ventas) y LIVIANO Academia (17:15-18:00, obesidad). Fuente: DATA/BUSINESS/plan_pulso_v3_L.json → gen_business_plan.py.</Text>
     </View>
   );
 }
