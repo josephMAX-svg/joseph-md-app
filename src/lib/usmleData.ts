@@ -26,16 +26,16 @@ export interface UsmleCheckpoint {
   when: string; predictor: string; band: string; url: string; gated: boolean;
 }
 export const USMLE_CHECKPOINTS: UsmleCheckpoint[] = [
-  { form: 'NBME CBSSA Forms 25–33', kind: 'NBME', when: 'plan v5.7: 7 in Phase A (every ~3 weeks) · NBME 31 (D90) = GO/NO-GO · 32/33 final week', predictor: 'Best single predictor of a Step 1 pass (Palmerton: the ONLY one — UWorld % is a vanity metric)', band: '≥65% ≈ 95% pass · ≥70% ≈ 99% · plan GO = 2 consecutive ≥68% · on-track minimums per milestone in usmleScores.HITOS_ONTRACK', url: 'https://www.nbme.org/examinees/self-assessments', gated: true },
-  { form: 'USMLE Free 120', kind: 'FREE120', when: '1–2 weeks pre-exam (plan: D95, vie 22-ene) — ideally at the real Prometric', predictor: 'Current NBME item wording · no official explanations → audit the PROCESS, not theory', band: '≥70% heuristic (community, not Palmerton) · 3 blocks of 40, timed', url: 'https://www.usmle.org/prepare-your-exam', gated: false },
-  { form: 'UWorld Self-Assessment 1–2', kind: 'UWSA', when: 'UWSA1 = week-1 baseline (D3, vie 11-sep) · UWSA2 = D85 (vie 8-ene)', predictor: 'Systematically OVER-predicts (Palmerton, same authors as the bank) — endurance only, never a date decision', band: 'trend > absolute number · the date is decided by NBMEs', url: 'https://www.uworld.com/', gated: true },
+  { form: 'NBME CBSSA Forms 25–33', kind: 'NBME', when: 'plan v5.8: 7 in Phase A (every ~3 weeks) · NBME 31 (D89, vie 15-ene) = GO/NO-GO · 32/33 final week', predictor: 'Best single predictor of a Step 1 pass (Palmerton: the ONLY one — UWorld % is a vanity metric)', band: '≥65% ≈ 95% pass · ≥70% ≈ 99% · plan GO = 2 consecutive ≥68% · on-track minimums per milestone in usmleScores.HITOS_ONTRACK', url: 'https://www.nbme.org/examinees/self-assessments', gated: true },
+  { form: 'USMLE Free 120', kind: 'FREE120', when: '1–2 weeks pre-exam (plan: D94, vie 22-ene; D95 lun 25-ene = taper) — ideally at the real Prometric', predictor: 'Current NBME item wording · no official explanations → audit the PROCESS, not theory', band: '≥70% heuristic (community, not Palmerton) · 3 blocks of 40, timed', url: 'https://www.usmle.org/prepare-your-exam', gated: false },
+  { form: 'UWorld Self-Assessment 1–2', kind: 'UWSA', when: 'UWSA1 = week-1 baseline (D2, vie 11-sep) · UWSA2 = D84 (vie 8-ene)', predictor: 'Systematically OVER-predicts (Palmerton, same authors as the bank) — endurance only, never a date decision', band: 'trend > absolute number · the date is decided by NBMEs', url: 'https://www.uworld.com/', gated: true },
   { form: 'AMBOSS Score Predictor', kind: 'AMBOSS', when: 'from your Qbank %', predictor: 'Predicted range ±7–10 pts from Qbank performance', band: 'confirm with an NBME', url: 'https://www.amboss.com/us/usmle/score-predictor', gated: true },
 ];
 // Readiness derived from the checkpoint layer (replaces the hardcoded 4).
 export const USMLE_READINESS = {
   pct: 4, // pre-first-NBME baseline · rises only when a checkpoint is logged
   status: 'Baseline · no NBME logged yet',
-  next: 'UWSA1 vie 11-sep (D3, baseline) → luego NBME 25/26/27/28/29 cada ~3 semanas (plan v5.7). Registra el % de cada hito en 📏 Medición (Cola de hoy): el gauge se ancla al último hito y muestra la distancia al mínimo on-track.',
+  next: 'UWSA1 vie 11-sep (D2, baseline) → luego NBME 25/26/27/28/29 cada ~3 semanas (plan v5.8). Registra el % de cada hito en 📏 Medición (Cola de hoy): el gauge se ancla al último hito y muestra la distancia al mínimo on-track.',
 };
 
 // Organ systems ordered by official exam weight (order of attack)

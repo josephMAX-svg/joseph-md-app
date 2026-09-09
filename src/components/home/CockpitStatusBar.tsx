@@ -38,7 +38,7 @@ export function limaHHMM(): string {
 }
 function hoyISO(): string {
   try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; }
-  catch { return '2026-09-09'; }
+  catch { return '2026-09-10'; }
 }
 
 interface Item {

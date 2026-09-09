@@ -39,7 +39,7 @@
  *   7-dic). "El paciente agudo con fiebre y rash" y "pelo y uñas infecciosos" pasan a d57-58.
  *   Campo puenteResearch marca los átomos que alimentan SR-1 (L4) / SR-2 (L5).
  *
- * ⚠ FECHAS re-fechadas v5.7: D1 mié 2026-09-09 → D70 mié 2027-03-24 (interdiario con Research,
+ * ⚠ FECHAS re-fechadas v5.8: D1 vie 2026-09-11 → D70 vie 2027-03-26 (interdiario con Research,
  * ancla en researchData.ts#diaEstudioTipo; sáb+dom libres; salta 25-dic/31-dic/1-ene) — NO TOCAR
  * las fechas a mano (usar DATA/_scripts/remap_inicio.js, que localiza la PRIMERA aparición del
  * marcador del array de días y parsea cada campo fecha hasta el cierre del array — por eso este
@@ -76,7 +76,7 @@ export const PM_CAP = {
 } as const;
 
 export const DERMA_DAILY_META = {
-  inicio: '2026-09-11', fin: '2027-03-26', totalDias: 70, // v5.7 (8-sep): D1=mié 9-sep-2026 · interdiario con Research (paridad researchData.ts) · sáb+dom libres · salta 25-dic/31-dic/1-ene · NO tocar a mano
+  inicio: '2026-09-11', fin: '2027-03-26', totalDias: 70, // v5.8 (9-sep): D1=vie 11-sep-2026 · interdiario con Research (paridad researchData.ts) · sáb+dom libres · salta 25-dic/31-dic/1-ene · NO tocar a mano
   bloque: '13:30–14:15 (45 min · franja boards del Calendar, alterna con Research — interdiario)',
   nota: 'PLAN ÉLITE v2.1: cada sesión = 2 casos CIEGOS fijos (casoIds, permutación seeded de los 200) + 1 imagen dermatoscópica ciega + ~10Q review (rotación 1.301Q, fallos etiquetados med/ped/surg/path en el ledger) + 10′ lectura del módulo (o módulo DermNet Dermoscopy CME en las pares d6-d44). Progreso REAL marcable (studyProgress key "derma"). El día mostrado salta los días-Research.',
 };

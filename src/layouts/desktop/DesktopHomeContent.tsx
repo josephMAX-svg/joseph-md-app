@@ -138,7 +138,10 @@ export default function DesktopHomeContent({ onNavigate }: { onNavigate?: (scree
   const timerPresetTotal = 5 * 60 * 60;
   const timerProgress = Math.min((timerSeconds / timerPresetTotal) * 100, 100);
   const accumProgress = Math.min((liveDeepWorkHours / 5) * 100, 100);
-  const cdDays = localPhase?.days_remaining ?? mirCountdown();
+  // v5.8: el instrumento se llama "MIR 2030", así que cuenta SIEMPRE a la fecha del MIR.
+  // Antes prefería localPhase.days_remaining (del agente local), que mide otra cosa y hacía que la
+  // barra de escritorio y la de móvil mostraran dos números distintos a la vez.
+  const cdDays = mirCountdown();
 
   // Briefing de 1 línea (Superhuman Morning Briefing) — compuesto de datos ya presentes.
   const briefing = componerBriefing({
