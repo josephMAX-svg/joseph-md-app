@@ -1,6 +1,15 @@
-# PENDIENTES DE JOSEPH · régimen v5.7
+# PENDIENTES DE JOSEPH · régimen v5.8
 
-**Generado:** 08-sep-2026 · **D1 = miércoles 9-sep-2026**
+**Generado:** 08-sep-2026 · **re-fechado a v5.8 el 09-sep-2026** · **D1 = JUEVES 10-SEP-2026**
+
+> ⚠ **El régimen vigente es v5.8 desde el 10-sep-2026.** El 9 de septiembre tampoco se estudió → +1 día
+> hábil sobre v5.7 (que ya arrastraba +2 por el 7 y el 8). Instrucción literal de Joseph en este corrimiento:
+> **ni un tema ni un subtema se deja atrás — no se fusiona ni se recorta nada**; el desfase se absorbe
+> alargando el final de cada plan (Step 1: D95 = lun 25-ene-2027). Los 12 hitos (UWSA1-2 · NBME 25-33 ·
+> Free 120), las franjas, las metas y la ventana de examen (25-29 ene, target mié 27) **no se movieron**;
+> lo que cambia es la fecha del contenido diario y, en varios planes, el **número de día** de un hito.
+> **Regla al leer este doc: la FECHA es lo estable; el D# puede haber cambiado** — verifícalo contra el
+> `.ts` del plan antes de actuar. Fechas de abajo releídas de los `.ts` el 09-sep-2026.
 
 Este documento consolida **todo lo que los ~25 agentes de la reestructuración dejaron marcado como
 `pendiente_usuario`**: decisiones que solo tú puedes tomar, verificaciones que exigen sesión logueada
@@ -14,16 +23,17 @@ compras, envíos). No incluye nada que los agentes ya resolvieron.
 `DATA/USMLE/_palmerton_v3_extractos/gaps_v3b_*.json`. Cuando dos agentes se contradicen manda el más
 reciente (V57 > CIERRE > FASEC).
 
-**Ya resuelto — no lo busques aquí:** el SQL de ENCAPS está aplicado (100 filas, 9-sep→29-ene, backup
-`study_schedule_bk_0908`; **no re-ejecutarlo**: un segundo DELETE+INSERT pisaría ese backup) · los 12
-overlays de hito y las series del Calendar están re-fechados · `PALMERTON_METODO_COMPLETO.md` y
-`PALMERTON_POR_MATERIA.md` v3 están escritos · `gen_encaps_intensivo_2027.js` ya tiene `--base 2026-09-09`
-· el SHIP del vibecoding está alineado con SYNAPSE · la memoria (`MEMORY.md`, `coach-stance-encaps.md`)
-ya declara el estado vigente.
+**Ya resuelto — no lo busques aquí:** el SQL de ENCAPS está aplicado (**99 filas, 10-sep→29-ene, backup
+`study_schedule_bk_0909`**; el `bk_0908` de v5.7 sigue intacto y **no hay que re-ejecutar el SQL**: un
+segundo DELETE+INSERT pisaría el backup nuevo) · los 12 overlays de hito y las series del Calendar están
+re-fechados · `PALMERTON_METODO_COMPLETO.md` y `PALMERTON_POR_MATERIA.md` v3 están escritos ·
+`gen_encaps_intensivo_2027.js` se invoca con **`--base 2026-09-10`** (su default interno sigue siendo
+`2026-09-07`: hay que pasar el flag) · el SHIP del vibecoding está alineado con SYNAPSE · la memoria
+(`MEMORY.md`, `coach-stance-encaps.md`) declara el estado vigente.
 
 ---
 
-## 🔴 ANTES DEL D1 (hoy 8-sep / mañana 9-sep temprano)
+## 🔴 ANTES DEL D1 (hoy 9-sep / mañana 10-sep temprano)
 
 Sin esto el plan arranca ciego o con el contenido equivocado el primer día.
 
@@ -37,7 +47,7 @@ Sin esto el plan arranca ciego o con el contenido equivocado el primer día.
       Perú/USA · tag sistema USMLE · pregunta oficial de origen). *(MIR)*
 - [ ] **Crear los 10 sub-decks `APEX::DERMA::A…X`** en Anki escritorio (o `createDeck` por AnkiConnect) y
       verificar con `deckNames` — AnkiConnect no respondió el 05-sep. Sin ellos el TSV de la cola crea
-      decks con nombre suelto al importar. *(Derma — antes de la sesión d1, mié 9-sep)*
+      decks con nombre suelto al importar. *(Derma — antes de la sesión d1, que en v5.8 es el **vie 11-sep**)*
 - [ ] **Importar el deck de cifras ENCAPS** — Anki → Importar
       `DATA/ENCAPS/TRACKING_ERRORES/ANKI_COLA/ENCAPS_Cifras_2027-I.csv` (separador `;` · HTML · deck en
       columna 3 → `ENCAPS::Cifras` · tags en columna 3), FSRS, 20 nuevas/día. Se repasa **dentro del
@@ -67,7 +77,7 @@ Sin esto el plan arranca ciego o con el contenido equivocado el primer día.
       *(USMLE/rutina)*
       > Contexto: el UWSA1 cae en el día 3 del régimen, con solo 2 días de contenido encima. Es la línea
       > base por diseño — no lo leas como un mal resultado.
-- [ ] **Cerrar cada sesión de ENCAPS desde el 9-sep** (rutina diaria):
+- [ ] **Cerrar cada sesión de ENCAPS desde el 10-sep** (rutina diaria):
       `node DATA/_scripts/gen_encaps_semana.js --cerrar "…" --sql` → aplicar el SQL por `execute_sql`
       (MCP, proyecto `qacynpqdrorpuegsmtcy`). Los **viernes**: cargar la nota /25 en ▲ SIM y correr
       `gen_encaps_semana.js`. Sin esos datos el Cockpit muestra "SIN DATOS" en % ciego y barras vacías.
@@ -81,8 +91,10 @@ Sin esto el plan arranca ciego o con el contenido equivocado el primer día.
       editor y el semáforo cambia; navegando a **D15** aparece la rúbrica y el score se guarda en
       `jmd-aurum-rubrica`; en **D40** aparece la tarjeta VARIANTE LIVIANO. *(AURUM)*
 > ~~Corregir 2 descripciones del Calendar (ANKI AM 05:00, DESAYUNO L-V)~~ — **HECHO el 8-sep 15:10**:
-> verificado con `get_event` que ANKI AM ya dice "régimen v5.7: 95 días desde mié 9-sep ≈ 594h totales"
-> y que las 16 series (10 de estudio + 6 de rutina) llevan la etiqueta v5.7.
+> verificado con `get_event` que ANKI AM decía "régimen v5.7: 95 días desde mié 9-sep ≈ 594h totales"
+> y que las 16 series (10 de estudio + 6 de rutina) llevaban la etiqueta v5.7.
+> ⚠ **v5.8 · A VERIFICAR (09-sep)**: esas descripciones deben decir ahora **"95 días desde jue 10-sep"** y la
+> etiqueta **v5.8**. Lo actualiza el agente de Calendar; confírmalo con `get_event` antes de darlo por hecho.
 - [ ] **Crear el evento recurrente `📋 REVISIÓN SEMANAL`** sáb 07:15-07:35 desde el **sáb 12-sep** (hueco
       libre tras el desayuno). Descripción sugerida: `node DATA/_scripts/gen_revision_semanal.js →
       DATA/USMLE/REVISIONES/S<NN>.md · 10 métricas · DATA/REVISION_SEMANAL.md`. *(sistema)*
@@ -100,17 +112,17 @@ Sin esto el plan arranca ciego o con el contenido equivocado el primer día.
       > pierdes 76 días de tarjetas sin ninguna señal que lo detecte).
 - [ ] **Alinear `D:\agente_estudio\config\fases.json`** — sigue con `FASE_4_ENCAPS_DOMINANTE.is_current_phase
       = true` y `FASE_7.inicio = 2026-10-01`. Poner `false` en FASE_4 (o `true` en FASE_7) y
-      `FASE_7.inicio = 2026-09-09`. Verificar antes que `orquestador.py` lee ese campo. *(sistema)*
+      `FASE_7.inicio = 2026-09-10`. Verificar antes que `orquestador.py` lee ese campo. *(sistema)*
 - [ ] **Reponer stock del banco ENCAPS antes de la semana 3 (21-sep)** — avisos reales del runner al
       generar la semana 1: el secundario de cola larga **II-2** solo tenía 2Q (la receta pide 4-5), el
-      sub-eje `tipos_vigilancia` solo 2Q propias, y tras el banco del 10-sep quedan **0Q de I-3**.
+      sub-eje `tipos_vigilancia` sigue con 2Q propias; tras el banco del 10-sep el secundario **II-2 queda en 0Q** y **II-3 en 5Q** (I-3 vuelve a 20Q porque su sesión se corrió al lun 14-sep).
       Pre-generar `set_I-3_2.json` y cola larga II-2. Déficit total: **I-3 180Q · V-2 149Q · II-3 108Q**.
       *(ENCAPS)*
 - [ ] **Conseguir `CLAVE DE RESPUESTA 2026-1.pdf`** (Tío López / QX): los 100 ítems del 2026-1 siguen sin
       clave y no sirven ni como simulacro ni como stock verificado. *(ENCAPS)*
 - [ ] **Importar `DATA/BUSINESS/ANKI_COLA/LIVIANO_mecanismo.csv`** en Anki (Archivo → Importar,
-      tabulador, deck en columna 3, etiquetas en columna 4, FSRS) — **antes del D6 (mié 16-sep)**, tope
-      D16 (30-sep). *(LIVIANO)*
+      tabulador, deck en columna 3, etiquetas en columna 4, FSRS) — **antes del D6 (jue 17-sep)**, tope
+      **D15 (mié 30-sep**, el día que el plan reserva para las 10 tarjetas del módulo). *(LIVIANO)*
 - [ ] **Rutina de export del ledger** (dos claves distintas, ambas solo en el localStorage de UN
       navegador) *(Derma/MIR)*:
       - Derma, cada viernes: botón de export del cierre (o en Debilidades) → pegar en
@@ -129,8 +141,10 @@ Sin esto el plan arranca ciego o con el contenido equivocado el primer día.
 - [ ] **Decidir/crear la tarea programada de telemetría Anki** (proyecto S2, 14-18 sep): tarea de Windows
       `schtasks /create /tn "JMD Anki telemetria" /tr "node D:\joseph-md-app\DATA\_scripts\anki_telemetria.js"
       /sc daily /st 21:05` **o** hook `SessionEnd` de Claude Code. *(SYNAPSE)*
-> ~~Corregir `DATA/SYNAPSE/vibecoding_proyectos.json`~~ — **HECHO el 8-sep**: el JSON fuente ya dice
-> "plan de 95 días" y "7 corrimientos (31-ago→9-sep)", así que la próxima regeneración no lo revierte.
+> ~~Corregir `DATA/SYNAPSE/vibecoding_proyectos.json`~~ — **HECHO el 8-sep y re-actualizado el 9-sep (v5.8)**:
+> el JSON fuente dice ahora "plan de 95 días", "**8 corrimientos (31-ago→10-sep)**", el conteo esperado
+> "**USMLE 95 · MIR 78 · LIVIANO 90 · SYNAPSE 82 · VIBE 60 · … · ENCAPS 99**" y `START=2026-09-10`, así que la
+> próxima regeneración no lo revierte.
 - [ ] **Los D# de LIVIANO cambiaron de número** (el generador re-slotea los casos a viernes reales):
       drills D37/D58/D77/D88 → **D36/D57/D76/D87** · trimestral D46/D90 → **D45/D89** · capstone D89 →
       **D88**. Actualizar cualquier doc, componente o nota externa que cite los viejos. **La fecha es lo
@@ -182,13 +196,13 @@ Sin esto el plan arranca ciego o con el contenido equivocado el primer día.
       URL exacta de Editorial Manager de JAAD International, y los **límites y ventana de *letters*** de
       JAAD / JAAD Intl / IJD (403). *(Research)*
 - [ ] **Crear los overlays de hitos Research en Google Calendar** (naranja, como los NBME): C-2 24-sep ·
-      C-6 14-oct · CR-1 30-oct · T-8 19-nov · X-7 29-dic · CR-9 1-feb · R10 19-feb · R43 29-jun-2027.
+      C-6 14-oct · CR-1 30-oct · T-8 19-nov · X-7 29-dic · CR-9 1-feb · R10 19-feb · R43 **1-jul-2027**. (Research es el único plan que NO se movió en v5.8.)
       Hoy solo existe el recordatorio Research4Life del 1-jul-2027 → **un día-Derma o un slip puede tapar
       el deadline de la carta**. *(Research)*
 
 ### USMLE — reservas y verificaciones externas
 
-- [ ] **Reservar el Free 120 en el Prometric de Lima** para el **vie 22-ene-2027 (D95)** — hay que hacerlo
+- [ ] **Reservar el Free 120 en el Prometric de Lima** para el **vie 22-ene-2027 (D94 en v5.8; era D95)** — hay que hacerlo
       en sep-oct. Verificar en `usmle.org` / Prometric la **cuota internacional citada como $155**
       (la cifra sale del extracto `uworld-preguntas.md` §7 y está marcada A VERIFICAR; el cuaderno menciona
       $75 EE.UU./Canadá). *(USMLE)*
@@ -212,7 +226,7 @@ Sin esto el plan arranca ciego o con el contenido equivocado el primer día.
 - [ ] **Verificar DeLorenzi 2017** (ASJ, PMID 28333326; requiere acceso OUP/UF) — las **UI de
       hialuronidasa por "área"** (~450 UI y ~900 UI que cita el SPEC §2.4) y el **criterio de parada de
       los pulsos**. Hasta entonces el ítem `ui` del drill y la ficha X-19 los muestran como A VERIFICAR:
-      **no fijar esas cifras en Anki**. Deadline: antes del drill de oclusión **d19 = jue 29-oct**.
+      **no fijar esas cifras en Anki**. Deadline: antes del drill de oclusión **d19 = lun 2-nov** (v5.8).
       *(Derma)*
 - [ ] **Asignar el deck `APEX::LIVIANO`** en `src/lib/ankiLinks.ts` (y, si lo quieres, la entrada
       "Academia → Logística F5" en `EmpresaHub.tsx` para acceso directo al Protocolo). Ninguno de los dos
@@ -222,24 +236,24 @@ Sin esto el plan arranca ciego o con el contenido equivocado el primer día.
 
 ### LIVIANO · Acceso Perú — las verificaciones DIGEMID
 
-*El plan las agenda como átomos D39-D44 (2 → 9-nov), pero cierran los 2 pendientes ROJOS que arrastras
+*El plan las agenda como átomos D39-D41 + D43-D44 (**3 → 10-nov** en v5.8), pero cierran los 2 pendientes ROJOS que arrastras
 desde junio ("Legalidad DIGEMID" y "Cotización Sterilelabs") y de ellos depende todo el COGS y el value
 stack. Regla anti-alucinación: si un dato no aparece, se escribe `SIN REGISTRO HALLADO (fecha)`.*
 
-- [ ] **D39 · lun 2-nov — Registro sanitario DIGEMID**: consultar el portal público (URL sin verificar),
+- [ ] **D39 · mar 3-nov — Registro sanitario DIGEMID**: consultar el portal público (URL sin verificar),
       capturar pantalla fechada de semaglutida SC/oral y tirzepatida (titular, presentación, vigencia) →
       columna `registro` de `LIVIANO_ACCESO_PERU` en `src/lib/empresaData.ts`.
-- [ ] **D40 · mar 3-nov — Condición de venta por molécula** (con receta / receta retenida) leída del
+- [ ] **D40 · mié 4-nov — Condición de venta por molécula** (con receta / receta retenida) leída del
       registro → columna `condicion` + flujo receta → farmacia → paciente en el CRM.
-- [ ] **D41 · mié 4-nov — 2 cotizaciones escritas y fechadas** (cadena + independiente) por
+- [ ] **D41 · jue 5-nov — 2 cotizaciones escritas y fechadas** (cadena + independiente) por
       presentación/dosis → columna `precioFarmacia`; **recalcular el "medicamento 3 m = S/ 3,600"** del
       value stack (`LIVIANO_OFERTA`).
-- [ ] **D42 · jue 5-nov — Dictamen de legalidad del magistral** (QF + abogado de salud: **nombres a
+- [ ] **D43 · lun 9-nov — Dictamen de legalidad del magistral** (QF + abogado de salud: **nombres a
       definir**) + cotización Sterilelabs con certificado de análisis por lote → columna `costoLiviano`,
       KPI COGS y cierre de los 2 pendientes rojos (estado → "VERIFICADO" con fecha).
-- [ ] **D44 · lun 9-nov — Tiempo permitido fuera de refrigeración** por producto (ficha técnica) → guion
+- [ ] **D44 · mar 10-nov — Tiempo permitido fuera de refrigeración** por producto (ficha técnica) → guion
       de cadena de frío del kit de bienvenida (Anexo A del protocolo).
-- [ ] **D38 · vie 30-oct — Rellenar `LIVIANO_PROTOCOLO_CLINICO_v1.md` §2**: criterio numérico de
+- [ ] **D38 · lun 2-nov — Rellenar `LIVIANO_PROTOCOLO_CLINICO_v1.md` §2**: criterio numérico de
       elegibilidad (Obesity Algorithm 2026), panel de labs basales y su cadencia, esquema de
       dosis/intervalos/periodo de lavado **solo desde la ficha técnica del producto registrado**, y
       definición operativa de "falla a farmacoterapia" (lista completa con dueño y día en el Anexo C).
@@ -303,15 +317,15 @@ stack. Regla anti-alucinación: si un dato no aparece, se escribe `SIN REGISTRO 
 - [ ] **Al usar `--sim100 2025-2 / 2025-1A / 2024-2A` en la intensiva**: **122 ítems** de esos exámenes ya
       viven en los sets del banco del día. Rendirlos **antes** de consumir esos sets, o aceptar el solape.
       *(ENCAPS)*
-- [ ] **Antes del d19 (jue 29-oct) · importar `DATA/DERMATOLOGIA/ANKI_COLA/PLANTILLA_SESION.txt`** en Anki
+- [ ] **Antes del d19 (lun 2-nov) · importar `DATA/DERMATOLOGIA/ANKI_COLA/PLANTILLA_SESION.txt`** en Anki
       (Archivo → Importar, notetype Basic); a partir de ahí copiar la plantilla por sesión
       (`SESION_dNN_<fecha>.txt`). *(Derma)*
-- [ ] **Antes del d45 (mié 13-ene-2027) · decidir y comprar el dermatoscopio de bolsillo** (DermLite o
+- [ ] **Antes del d45 (vie 15-ene-2027) · decidir y comprar el dermatoscopio de bolsillo** (DermLite o
       Heine; modelo y precio A VERIFICAR en sus webs oficiales) para la fase práctica 2027. *(Derma)*
 - [ ] **Cotejar las cifras "A VERIFICAR" de las 35 fichas del cerebro clínico** contra el capítulo de
       AccessDerma citado en cada una antes de recitarlas como definitivas: dosis de apraclonidina, % de
       TCA, mm de microneedling, λ por tinta, márgenes de Mohs y de melanoma. *(Derma)*
-- [ ] **Post-D89 (jue 14-ene-2027) · revisión por par del protocolo LIVIANO** por un médico con
+- [ ] **Post-D88 (jue 14-ene-2027, el capstone) · revisión por par del protocolo LIVIANO** por un médico con
       experiencia en obesidad, **antes de usarlo con pacientes reales**. *(LIVIANO)*
 - [ ] **Antes de febrero (arranque de CURVA) · cerrar las fuentes**: abrir el PDF ya descargado de
       menopause.org (`nams-2022-hormone-therapy-position-statement.pdf`) y **confirmar que es la versión
@@ -372,10 +386,10 @@ docs de cada sección; el plan corre hoy con la opción por defecto que se indic
 | # | Decisión | Hoy corre así |
 |---|---|---|
 | 1 | **Consolidación 11:00 a 20Q permanentes** si en S2-S3 la revisión completa no cabe en 60 min (Palmerton: 10Q + revisión = 60 min) | 30Q (10 pre-test + 20 consolidación) en nivel 1; 40Q desde nivel 2 |
-| 2 | **Viernes de nivel 4** (20-30Q mixtos de sistemas dominados) desde **S11 / D53 = vie 20-nov** | No activado (requiere flag en `gen_usmle_v5.js` + regenerar) |
+| 2 | **Viernes de nivel 4** (20-30Q mixtos de sistemas dominados) desde **S11 / D52 = vie 20-nov** (v5.8) | No activado (requiere flag en `gen_usmle_v5.js` + regenerar) |
 | 3 | **Reformular el GO/NO-GO para que el UWSA2 sea solo informativo** (Palmerton: el UWSA sobreestima; la fecha la decide el NBME) | "2 NBME ≥68 % + UWSA2 low risk" |
-| 4 | **Free 120 + maratón de resistencia**: la única ventana sin tocar franjas es **D93, mié 20-ene** (NBME 33 + 3 bloques de *flagged* ≈5 h) **cediendo Research/Derma/AURUM ese día** | Solo el Free 120 en D95 (vie 22-ene) |
-| 5 | **Protocolo D-2 / D-1** (lun 25 y mar 26-ene: Anki maduro + flagged / solo Anki vencido), **fuera del plan de 95 días** | Sin escribir |
+| 4 | **Free 120 + maratón de resistencia**: la única ventana sin tocar franjas es **D92, mié 20-ene** (NBME 33 + 3 bloques de *flagged* ≈5 h) **cediendo Research/Derma/AURUM ese día** | Solo el Free 120 en D94 (vie 22-ene) |
+| 5 | **Protocolo D-2 / D-1** (lun 25 y mar 26-ene: Anki maduro + flagged / solo Anki vencido). ⚠ v5.8: el **lun 25-ene ya ES el D95 del plan** (repaso rapid review + Anki), así que solo el mar 26-ene queda fuera | Sin escribir |
 | 6 | **Mover la eval timed 18:00-18:45 a 12:00-12:45** — Palmerton: "estudiar cansado = 2-4× más lento"; su tesis de que la analítica nocturna rinde peor **choca frontalmente con la franja actual** (divergencia #26). Cambia una franja del Calendar | 18:00-18:45 |
 | 7 | **Escribir el protocolo de burnout** (2 hitos seguidos bajo el mínimo + síntomas → 3-5 días solo Anki AM) | Sin escribir |
 | 8 | **Si el UWSA1 (vie 11-sep) sale <40 % → bajar S2-S3 a 20Q/día** (tipo Jay) | Sin regla activa |
@@ -383,22 +397,22 @@ docs de cada sección; el plan corre hoy con la opción por defecto que se indic
 | 10 | Choque entre **"no zero days"** y el corrimiento determinista **+1 día hábil** por día no estudiado | Corrimiento |
 
 - [ ] **Régimen · ¿se acepta seguir con 5 días L-V o se recupera algo?** El plan bajó de **~606 h (97 d) a
-      ~594 h (95 d)** y el colchón consumido desde el 31-ago ya son **7 días hábiles**. Escrito en README §4
+      ~594 h (95 d)** y el colchón consumido desde el 31-ago ya son **8 días hábiles**. Escrito en README §4
       y en CALENDARIO "Reglas de reprogramación" punto 4. *(USMLE)*
-- [ ] **Puente MIR ↔ Step 1** — Cardiología MIR (D5, 15-sep) ahora precede a Cardiovascular Step 1 (D6,
-      16-sep) por **1 solo día**: el "prime en español 7 días antes" no se cumple en ese bloque; Psiquiatría
-      arranca **el mismo día** (21-dic) que *Psychiatry & Behavioral*. Los otros 9 bloques quedan entre +6 y
+- [ ] **Puente MIR ↔ Step 1** — Cardiología MIR (D5, mié 16-sep) ahora precede a Cardiovascular Step 1 (D6,
+      jue 17-sep) por **1 solo día**: el "prime en español 7 días antes" no se cumple en ese bloque; Psiquiatría
+      arranca **el mismo día** (mar 22-dic) que *Psychiatry & Behavioral*. Los otros 9 bloques quedan entre +6 y
       +12 días. **Recomendación escrita: NO re-permutar el MIR** (movería 11 bloques y hasta el 29-ene el
       objetivo primario es el Step 1). *(USMLE/MIR)*
 - [ ] **Materias sin columna vertebral en el corpus Palmerton — decidir la fuente sustituta** *(USMLE)*:
-      - **13 días completos**: Micro/ID (D57-D64, 26-nov→7-dic), MSK/Reuma+Derma (D70-D72, 15-17 dic) y
+      - **13 días completos**: Micro/ID (D57-D64, 27-nov→8-dic), MSK/Reuma+Derma (D70-D73, 16→21-dic) y
         Psiquiatría (D74-D76, 21-23 dic). No hay ningún vídeo ni artículo dedicado en las 295 fuentes.
         Propuesta del análisis: **subir el peso del pre-test 10Q de las 08:15 como FUENTE** (no solo
         diagnóstico) y de la *shopping list*, y no perder tiempo buscando "el vídeo de Palmerton".
-      - **Cardio D8 (18-sep) y D15 (29-sep)**: bucles presión-volumen, Frank-Starling con curvas de retorno
+      - **Cardio D8 (lun 21-sep) y D15 (mié 30-sep)**: bucles presión-volumen, Frank-Starling con curvas de retorno
         venoso, fórmula de Laplace, maniobras de soplos, desdoblamiento de S2 y criterios de Jones están
         **CONFIRMADOS AUSENTES**. ¿Costanzo, B&B o First Aid? Decidir **antes de esa mañana**.
-      - **Bioestadística (D77, jue 24-dic)**: el corpus cubre la mitad conceptual pero **no la de cálculo**
+      - **Bioestadística (D77, lun 28-dic)**: el corpus cubre la mitad conceptual pero **no la de cálculo**
         (sensibilidad, especificidad, VPP/VPN, ROC, likelihood ratios, NNT/ARR/RRR, IC, lead-time/
         length-time, pruebas estadísticas). El propio Palmerton remite al paquete de stats de UWorld → el
         único día disponible debe repartirse vídeo+AMBOSS / paquete UWorld.
@@ -406,8 +420,8 @@ docs de cada sección; el plan corre hoy con la opción por defecto que se indic
 
 ### Resto de secciones
 
-- [ ] **MIR · modo "reducido" de enero** — el mantenimiento del 4 al 22-ene está fijado por defecto en
-      `gen_mir_mantenimiento.js` (`REDUCIDO_HASTA = 2027-01-22`) como **solo Anki + 10Q**. Si prefieres el
+- [ ] **MIR · modo "reducido" de enero** — el mantenimiento del **4 al 25-ene** está fijado por defecto en
+      `gen_mir_mantenimiento.js` (`REDUCIDO_HASTA = 2027-01-25`, 16 días) como **solo Anki + 10Q**. Si prefieres el
       bloque completo también en enero, hay que regenerar con esa constante cambiada. *(MIR)*
 - [ ] **Supabase · qué se hace con los backups viejos** — `study_schedule_bk_0906b` (el anterior al
       corrimiento) sigue existiendo, y en total hay **~43 tablas `study_schedule_bk_*`** expuestas a la anon
@@ -423,15 +437,19 @@ docs de cada sección; el plan corre hoy con la opción por defecto que se indic
 - [ ] **Research · ¿nov-2026 o feb-2027 para el SUBMIT de la tesis L0?** `RUTA_PUBLICACION_2027.md` §3.1
       dice "research letter, envío feb-2027"; el plan generado fija **T-8 = jue 19-nov-2026**. Decidir cuál
       prevalece; si es feb-2027, es 1 línea en C1/TAIL1 del script + regenerar. *(Research)*
-- [ ] **AURUM · política de semanas después del 25-dic.** La "semana" del plan (5 hábiles consecutivos)
-      deja de alinearse con el viernes: las **variantes LIVIANO D80-D115 y los PITCH v5-v7 caen en lunes y
-      miércoles**. Se respeta el invariante "1 de cada 5 drills". Si quieres viernes estrictos, hay que
+- [ ] **AURUM · política de semanas: los drills LIVIANO y los PITCH ya no caen en viernes.** La "semana" del
+      plan (5 hábiles consecutivos) no se alinea con el viernes: en v5.8 las **16 variantes LIVIANO caen en
+      MIÉRCOLES (d40 · d45 · d50 · d55 · d60 · d65 · d70 · d75, del 4-nov al 23-dic) y en LUNES (d80 · d85 ·
+      d90 · d95 · d100 · d105 · d110 · d115, del 4-ene al 22-feb)**; los **PITCH 1-4 en miércoles (d15 30-sep ·
+      d35 28-oct · d55 25-nov · d75 23-dic) y los PITCH 5-7 en lunes (d95 25-ene · d115 22-feb · d130 15-mar)**. Se respeta el invariante "1 de cada 5 drills". Si quieres viernes estrictos, hay que
       cambiar la política en `gen_aurum_plan.js`. *(AURUM)*
-- [ ] **Business · los 2 últimos OUTPUT caen lun 4 y mar 5-ene-2027** (S16 documento de cierre + retro del
-      formato L) porque las lecturas se agotan antes. Si quieres que **todos** los outputs sean viernes,
+- [ ] **Business · los 2 últimos OUTPUT caen jue 7-ene (S16, documento de cierre) y vie 8-ene-2027 (retro del
+      formato L)** porque las lecturas se agotan antes; en v5.8 el extra sí cae en viernes y solo S16 queda en jueves
+      (16 de los 17 OUTPUT son viernes). Si quieres que **todos** los outputs sean viernes,
       hay que añadir 2 lecturas META en `plan_pulso_v3_L.json`. *(Business)*
-- [ ] **LIVIANO · posición de los drills de cifras.** Quedaron en **D36/D57/D76/D87**; el análisis pedía
-      D38/D58/D75 (pero D38 es la Síntesis M2 y D75 es viernes-caso). Si prefieres D38 exacto, mover
+- [ ] **LIVIANO · posición de los drills de cifras.** En v5.8 quedaron en **D36 (jue 29-oct) · D58 (lun 30-nov) ·
+      D76 (jue 24-dic) · D87 (mié 13-ene)**; el análisis pedía D38/D58/D75 (pero D38 es la Síntesis M2 y D75 es
+      "cuándo derivar"). Si prefieres D38 exacto, mover
       `drill: true` en `liviano_curriculum.json` y regenerar. *(LIVIANO — menor)*
 - [ ] **ENCAPS · ¿se aplica el override semanal** que propone `gen_encaps_semana.js`? No es automático:
       hay que revisar el SQL y ejecutarlo por `execute_sql`. Diseño: en las semanas con 4 slots CRÍTICA un
@@ -445,7 +463,7 @@ docs de cada sección; el plan corre hoy con la opción por defecto que se indic
       (e) **martes**: ALISTARSE 18:30 recorta 15′ a la Eval USMLE 18:00-18:45 → ¿cerrar la eval a las 18:30
       o mover ALISTARSE?;
       (f) el texto CS50P/synapse-journal del PC del sábado contradice el vibecoding de las 04:15.
-- [ ] **Renombrar `DATA/ENCAPS/CALENDAR_SEGMENTOS_V5_6.md` → `_V5_7.md`?** El contenido ya es v5.7, el
+- [ ] **Renombrar `DATA/ENCAPS/CALENDAR_SEGMENTOS_V5_6.md` → `_V5_8.md`?** El contenido ya va por v5.8, el
       nombre no. Si se renombra hay que actualizar **en el mismo movimiento** las 8 descripciones del
       Calendar que lo citan por ruta, `CALENDAR_SEGMENTOS_LUNES_VIERNES.md` y la memoria. *(sistema)*
 - [ ] **Confirmar que es intencional**: los hitos **NBME 32 (lun 18-ene)**, **NBME 33 (mié 20-ene)** y
@@ -464,8 +482,8 @@ JSON.
 - [ ] **No hay freno duro entre el bloque 04:15 y el Anki AM 05:00** (la recomendación #1 de Palmerton):
       ni regla de corte, ni timer, ni KPI que detecte que el Anki empezó tarde → regla "04:55
       commit-or-stash obligatorio" + KPI "hora de la 1ª review del día". `gaps_v3b_synapse` #4.
-- [ ] **Semanas 13-20 (30-nov → 22-ene) sin misión** en 04:15, 12:30 y PC sáb/dom: SYNAPSE termina el
-      26-nov y el vibecoding el 27-nov, pero el Step 1 sigue 8 semanas más — justo la fase más dura →
+- [ ] **Semanas 13-20 (dic → 25-ene) sin misión** en 04:15, 12:30 y PC sáb/dom: SYNAPSE termina el
+      **lun 30-nov** y el vibecoding el **mié 2-dic** (último SHIP: sáb 5-dic), pero el Step 1 sigue 8 semanas más — justo la fase más dura →
       generar S13-S20 como *taper* explícito con flag deload. `gaps_v3b_synapse` #5.
 - [ ] **Todo el progreso vive en un solo `localStorage`** (`jmd-study-progress-v1`, los ✓ de 10 planes) sin
       exportar/importar ni espejo en Supabase: un cambio de navegador borra la evidencia de 20 semanas y
@@ -475,17 +493,19 @@ JSON.
       cuando la ventana de mayor fragilidad es ahora. `gaps_v3b_synapse` #1.
 
 **ENCAPS**
-- [ ] **Stock de preguntas por código/sub-eje = 0** frente a una demanda de ~2.100-2.550Q en 102 días:
-      etiquetar los 400 ítems reales con clave (2024-2A / 2025-1A / 2025-2) con `codigo` v3 + `sub_eje` +
-      `formato_pretest` y pre-generar los sets por lotes fuera de la hora. `gaps_v3b_encaps` #1.
+- [ ] **Stock de preguntas por código/sub-eje** frente a una demanda de **~1.905Q en los 99 días del ciclo v5.8**
+      (80 bancos × 16-20Q + 80 secundarios × 4-5Q + 19 mini-sims × 5-6Q de cola larga; hoy el pool tiene 434 ítems,
+      332 disponibles tras la semana 1): etiquetar los ítems reales con clave (2024-2A / 2025-1A / 2025-2) con
+      `codigo` v3 + `sub_eje` + `formato_pretest` y pre-generar los sets por lotes fuera de la hora.
+      `gaps_v3b_encaps` #1 · detalle por código en `BANCO_PROPIO/README.md` §4.
 - [ ] **El % ciego (la métrica que manda) es 100 % manual** y depende de que abras Claude cada día a las
       17:10: `study_progress` = 0 filas → formulario de cierre en `EncapsPlanView` + `setStudyProgress()`
       que escriba en Supabase. `gaps_v3b_encaps` #3.
 
 **Derma**
 - [ ] **No hay taper de examen en Derma** — lo contrario de lo que Palmerton exige en la última semana:
-      d45/d46 (13/15-ene) chocan con el NBME 31 y el GO/NO-GO, y **d47-d52 (19-ene → 2-feb) traen contenido
-      NUEVO de estética en plena semana del Step 1** (d51 = 27-ene es el día objetivo del examen) → swap de
+      d45/d46 (**15/19-ene** en v5.8) chocan con el NBME 31 y el GO/NO-GO, y **d47-d52 (21-ene → 4-feb) traen
+      contenido NUEVO de estética en plena semana del Step 1** (d49 = mié 27-ene es el día objetivo del examen) → swap de
       contenido a "modo taper" sin mover fechas. `gaps_v3b_derma` #2.
 
 **MIR**

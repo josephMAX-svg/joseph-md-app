@@ -11,7 +11,7 @@ import { PRACTICA_DEEP_PRIME, PRACTICA_REPASO } from './encapsPracticaExtra';
 
 // ── D1 por examen (para calcular el día actual) ──
 export const STUDY_D1: Record<string, string> = {
-  ENCAPS: '2026-09-09',   // v6.5 MANTENIMIENTO 2027-I (D1=mié 9-sep; 31-ago→8-sep no estudiados): examen 2026-II rendido el 9-ago (Joseph NO lo dio; análisis real en DATA/ENCAPS/ANALISIS_EXAMEN_2026-2_REAL.md). Meta: ENCAPS 2027-I fines de MARZO 2027. 1h/día (16:15-17:15 L-V): banqueo puro guiado por el PRONÓSTICO v3 (II 30 · I 27 · V 21 · III 13 · IV 9 · 8 críticos: I-3 V-2 II-3 III-5 I-4 II-5 II-4 IV-1/2). Feb-mar 2027: vuelve a bloque principal (fase intensiva, se re-siembra entonces). Ciclo sembrado por gen_encaps_mantenimiento_2027.js (05-sep: sub-ejes por instancia + cola larga como secundario + receta del mini-sim en extra) · backup study_schedule_bk_0908.
+  ENCAPS: '2026-09-10',   // v6.6 MANTENIMIENTO 2027-I (D1=jue 10-sep; 31-ago→9-sep no estudiados): examen 2026-II rendido el 9-ago (Joseph NO lo dio; análisis real en DATA/ENCAPS/ANALISIS_EXAMEN_2026-2_REAL.md). Meta: ENCAPS 2027-I fines de MARZO 2027. 1h/día (16:15-17:15 L-V): banqueo puro guiado por el PRONÓSTICO v3 (II 30 · I 27 · V 21 · III 13 · IV 9 · 8 críticos: I-3 V-2 II-3 III-5 I-4 II-5 II-4 IV-1/2). Feb-mar 2027: vuelve a bloque principal (fase intensiva, se re-siembra entonces). Ciclo sembrado por gen_encaps_mantenimiento_2027.js (05-sep: sub-ejes por instancia + cola larga como secundario + receta del mini-sim en extra) · backup study_schedule_bk_0909.
   // MIR / USMLE se agregan cuando se construyan sus cronogramas.
 };
 // Fechas SIN actividad (bloqueadas por Joseph) — no cuentan como día de plan.
@@ -20,7 +20,7 @@ export const STUDY_SKIP_DATES: Record<string, string[]> = {
 };
 // v6 (27-ago): SÁBADOS Y DOMINGOS LIBRES en el régimen de mantenimiento — no cuentan como día de plan.
 export const STUDY_SKIP_WEEKENDS: Record<string, boolean> = { ENCAPS: true };
-const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 100 };
+const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 99 }; // v5.8: 10-sep-2026 → 29-ene-2027 = 99 hábiles (el fin del ciclo NO se mueve, se acorta por delante)
 
 // ── Tipos (espejo de las columnas study_*) ──
 export interface StudyVideo {

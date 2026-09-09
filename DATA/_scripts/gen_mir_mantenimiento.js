@@ -15,7 +15,7 @@
  *    de introducción de ProMIR, mirDetalleData.pesoGlobal; smooth weighted round-robin +
  *    reparto por resto mayor = cuotas exactas). Viernes = 30Q de la asignatura PEOR DEL LOG
  *    (mirEvalLog.mirPeorAsignatura(); fallback = la de mayor peso vista esa semana).
- *  · modo 'reducido' 4-22 ene (Fase B/C del Step 1): solo Anki + 10Q (flag modoReducido).
+ *  · modo 'reducido' 4-25 ene (Fase B/C del Step 1, v5.8: el sprint acaba el lun 25-ene): solo Anki + 10Q (flag modoReducido).
  *  · Handoff 31-mar: export JSON del log + tabla de neto por asignatura + stats FSRS → entrada
  *    de la fase principal (abr-2027).
  *
@@ -32,7 +32,7 @@ const INICIO = process.argv[2] || '2027-01-04';
 const FIN = process.argv[3] || '2027-03-31';
 for (const s of [INICIO, FIN]) if (!/^20\d\d-\d\d-\d\d$/.test(s)) throw new Error('fecha inválida: ' + s);
 /** hasta esta fecha (incl.) el bloque va en modo reducido (Fase B/C Step 1 · examen 25-29 ene) */
-const REDUCIDO_HASTA = '2027-01-22';
+const REDUCIDO_HASTA = '2027-01-25'; // v5.8: el Step 1 termina D95 = lun 25-ene (antes vie 22-ene)
 
 // ── calendario (idéntico a remap_inicio.js) ──
 const SKIP_FIJOS = new Set(['2026-12-25', '2026-12-31', '2027-01-01']);
@@ -158,7 +158,7 @@ const out = `/**
  */
 export interface DiaMIRMant {
   d: number; fecha: string; wd: string; semana: number;
-  /** 'reducido' = solo Anki + 10Q (4-22 ene, Fase B/C del Step 1) · 'normal' = Anki + 25Q/30Q */
+  /** 'reducido' = solo Anki + 10Q (4-25 ene, Fase B/C del Step 1) · 'normal' = Anki + 25Q/30Q */
   modo: 'normal' | 'reducido';
   /** 'banco' lun-jue (rotación ponderada) · 'viernes' (asignatura peor del log) */
   tipo: 'banco' | 'viernes';

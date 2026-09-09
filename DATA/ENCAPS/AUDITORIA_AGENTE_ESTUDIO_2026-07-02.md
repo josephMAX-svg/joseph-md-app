@@ -50,7 +50,7 @@ Mantener `agente_estudio` y `joseph-md-app` como **vecinos separados**. Razones:
 ---
 
 ## 8. ESTADO 05-sep-2026 — P0-2 y P0-3 CORREGIDOS EN DISCO (n8n SIN redesplegar)
-> Contexto: régimen v5.7 (D1 = mié 9-sep-2026) apoya 95 días de Step 1 en "≤10 tarjetas de MECANISMO/día + APEX" — exactamente el contenido multilínea que el parser perdía. Verificado el 05-sep que los 3 ficheros seguían con mtime 07-may y el bug intacto; corregidos hoy. Vibecoding S1 (mié 9-sep → mar 15-sep, SHIP sáb 19-sep) = validar esto en vivo.
+> Contexto: régimen **v5.8 (D1 = jue 10-sep-2026)** apoya 95 días de Step 1 en "≤10 tarjetas de MECANISMO/día + APEX" — exactamente el contenido multilínea que el parser perdía. Verificado el 05-sep que los 3 ficheros seguían con mtime 07-may y el bug intacto; corregidos entonces. Vibecoding S1 (**jue 10-sep → mié 16-sep, SHIP sáb 19-sep**) = validar esto en vivo.
 
 | Ítem | Estado | Detalle |
 |--|--|--|
@@ -62,4 +62,4 @@ Mantener `agente_estudio` y `joseph-md-app` como **vecinos separados**. Razones:
 | **Redeploy n8n (APEX-MOTOR-FLOW-V2)** | ⏳ **PENDIENTE (Joseph)** | El workflow vivo en :5678 sigue con el código del 07-may. Redesplegar con `python D:\agente_estudio\scripts\_ARCHIVO_DESARROLLO\update_n8n_workflow_v2_3.py` (lee `SCRIPTS = D:\agente_estudio\scripts` y hace PUT de `apex-node-002` = parser y `apex-node-005` = crear nota; usa `config/n8n_config.json`). Antes: n8n arriba, exportar backup del workflow desde la UI. Después: enviar 1 APEX ::OBSIDIAN de prueba (p. ej. la ficha del test) con Ctrl+Shift+A y comprobar que la nota en `01_USMLE\...\APEX_creados\` y la card en Anki llegan íntegras. |
 | Regla de formato para los chats tutores | 📌 | Un campo `LABEL:` puede ocupar varias líneas; termina en la siguiente línea que empieza con `OTRO_LABEL:` (mayúsculas + dos puntos), en una línea `═` o al final. **Una línea de continuación no debe empezar con MAYÚSCULAS seguidas de `:`** (p. ej. `NTS:` o `DDX:`) porque se interpreta como label nuevo — escribir `Nts:`/`Diferencial:`. |
 
-Sin cambios hoy: P0-1 (scheduler), P0-4 (cleanup loop), P1-2 (drift de plan — ahora el plan vigente es v5.7, D1 = 9-sep, Step 1 principal; `config/fases.json` sigue con `FASE_4.is_current_phase=true` y `FASE_7.inicio=2026-10-01`, mientras `CLAUDE.md` ya dice FASE_7 desde el 7-sep), seguridad §4 (**sigue abierta**: `datos_tesis` RLS OFF + anon key en repo).
+Sin cambios hoy: P0-1 (scheduler), P0-4 (cleanup loop), P1-2 (drift de plan — ahora el plan vigente es **v5.8, D1 = 10-sep**, Step 1 principal; `config/fases.json` sigue con `FASE_4.is_current_phase=true` y `FASE_7.inicio=2026-10-01`, mientras `CLAUDE.md` ya dice FASE_7 desde el 7-sep), seguridad §4 (**sigue abierta**: `datos_tesis` RLS OFF + anon key en repo).

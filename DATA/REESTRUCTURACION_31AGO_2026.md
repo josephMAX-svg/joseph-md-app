@@ -1,19 +1,28 @@
-# REESTRUCTURACIÓN MASIVA · D1 = MIÉRCOLES 9-SEP-2026 (v5.7)
+# REESTRUCTURACIÓN MASIVA · D1 = JUEVES 10-SEP-2026 (v5.8)
 
-> **Corrimientos:** 31-ago, 1-sep, 2-sep, 3-sep, 4-sep, **7-sep y 8-sep** no se estudiaron → TODO corrió a
-> **D1 = mié 9-sep-2026** (regla determinista: cada día sin estudiar = +1 hábil). USMLE = **95 días**
-> (fases **A D1-D80 · B D81-D90 · C D91-D95**) · ENCAPS = **100 días** (SQL regenerado, backup
-> `study_schedule_bk_0908`) · MIR/Research/Derma/Business/LIVIANO/SYNAPSE/AURUM/vibecoding re-fechados.
+> **Corrimientos:** 31-ago, 1-sep, 2-sep, 3-sep, 4-sep, 7-sep, 8-sep y **9-sep** no se estudiaron → TODO
+> corrió a **D1 = jue 10-sep-2026** (regla determinista: cada día sin estudiar = +1 hábil). USMLE =
+> **95 días** (fases **A D1-D80 · B D81-D89 · C D90-D95**), ahora **jue 10-sep-2026 → lun 25-ene-2027** ·
+> ENCAPS = **99 días** (Supabase re-sembrado, backup `study_schedule_bk_0909`) ·
+> MIR/Research/Derma/Business/LIVIANO/SYNAPSE/AURUM/vibecoding re-fechados.
 > Los HITOS UWSA/NBME se quedaron en sus VIERNES originales (no se movieron); las franjas, las metas y la
-> fecha de examen (semana 25-29 ene-2027) tampoco. **Detalle del corrimiento v5.7 en §9.**
+> fecha de examen (semana 25-29 ene-2027) tampoco.
+>
+> ⚠ **REGLA NUEVA DE JOSEPH (9-sep-2026), y es la que manda desde la v5.8:**
+> ***"ni un subtema ni tema dejar por detrás, absolutamente todo de Joseph MD corre a partir del 10".***
+> De la v5.3 a la v5.7 el desfase se pagaba **fusionando días de contenido** para que los hitos no
+> cambiaran de fecha. **Desde la v5.8 no se fusiona ni se recorta nada**: el temario sale 1:1 y el
+> desfase se absorbe **alargando el final del plan**. **Detalle del corrimiento v5.8 en §10** (§9 = v5.7,
+> histórico).
 >
 > *Histórico:* el 31-ago se amplió el cuaderno NotebookLM "STEP 1 · Palmerton Engine" de 25 a ~140 fuentes
 > (catálogo completo del canal) y la guía PALMERTON_POR_MATERIA pasó a v2. El 2-sep se corrió una
 > verificación total (frontend build, backend Supabase, deploy, temas citados, Calendar) — ver §7.
 > El 3-sep tampoco se estudió: corrimiento a D1 = vie 4-sep (v5.5) — mismo pipeline, hitos de
 > viernes intactos, 1 día de contenido USMLE fusionado. El 4-sep TAMPOCO se estudió: corrimiento
-> determinista a D1 = lun 7-sep (v5.6). El **7 y el 8-sep tampoco** → v5.7 (este documento).
-> **§7 y §8 son el registro histórico de la v5.6 y se conservan íntegros: sus fechas y D# son los de
+> determinista a D1 = lun 7-sep (v5.6). El 7 y el 8-sep tampoco → v5.7. El **9-sep tampoco** → **v5.8**
+> (este documento).
+> **§7, §8 y §9 son registro histórico (v5.6 y v5.7) y se conservan íntegros: sus fechas y D# son los de
 > ANTES de este corrimiento.**
 
 > Ejecutada el 27-ago-2026. **Supersede** a PLAN_DEFINITIVO_28JUL_2026-2 y al sprint ENCAPS 2026-II
@@ -34,18 +43,23 @@
 **Exámenes objetivo:** USMLE Step 1 → semana **25-29 ene 2027** (target mié 27) ·
 ENCAPS 2027-I → **fines de marzo 2027** (feb-mar: ENCAPS vuelve a principal) · MIR sigue su curso.
 
-## 1 · USMLE Step 1 — plan v5.7 MAESTRO (95 días)
+## 1 · USMLE Step 1 — plan v5.8 MAESTRO (95 días)
 
-- **Fuente de verdad:** `src/lib/usmleStep1Daily.ts` (v5.7, **D1 = mié 9-sep-2026 → D95 = vie 22-ene-2027**).
+- **Fuente de verdad:** `src/lib/usmleStep1Daily.ts` (v5.8, **D1 = jue 10-sep-2026 → D95 = lun 25-ene-2027**).
   Docs: `DATA/USMLE/README.md`, `PALMERTON_POR_MATERIA.md` (v3, catálogo completo), `CALENDARIO_5_MESES.md`,
   `RECURSOS_META_2026.md`.
-- **Fases:** A contenido **D1-D80** (9-sep→30-dic, ~40Q uWorld/día = 1ª vuelta completa del banco 3659Q) ·
-  B banco intensivo **D81-D90** (4→15-ene) · C sprint **D91-D95** (18→22-ene). Cada día conserva su
-  `nivelUW` (1-5) y su `qDia`.
-- **Hitos (fechas intactas, D# nuevos):** UWSA1 **11-sep = D3** (baseline) · NBME 25 **2-oct = D18** ·
-  NBME 26 **23-oct = D33** · NBME 27 **13-nov = D48** · NBME 28 **4-dic = D63** · NBME 29 **18-dic = D73** ·
-  NBME 30 **30-dic = D80** (cierre de Fase A) · UWSA2 **8-ene = D85** · NBME 31 **15-ene = D90**
-  (**GO/NO-GO**) · NBME 32 **18-ene = D91** · NBME 33 **20-ene = D93** · Free 120 **22-ene = D95**.
+- **Fases:** A contenido **D1-D80** (10-sep→**4-ene**, ~40Q uWorld/día = 1ª vuelta completa del banco 3659Q) ·
+  B banco intensivo **D81-D89** (5→15-ene) · C sprint **D90-D95** (18→**25-ene**). Cada día conserva su
+  `nivelUW` (1-5) y su `qDia`; el total sigue siendo **5580Q** (3340 de banco diario + 2240 de simulacros).
+- **Hitos (fechas intactas, D# nuevos):** UWSA1 **11-sep = D2** (baseline) · NBME 25 **2-oct = D17** ·
+  NBME 26 **23-oct = D32** · NBME 27 **13-nov = D47** · NBME 28 **4-dic = D62** · NBME 29 **18-dic = D72** ·
+  NBME 30 **30-dic = D79** (cierre del contenido de 2026) · UWSA2 **8-ene = D84** · NBME 31 **15-ene = D89**
+  (**GO/NO-GO**) · NBME 32 **18-ene = D90** · NBME 33 **20-ene = D92** · Free 120 **22-ene = D94**.
+- **Regla v5.8 (Joseph): NADA se fusiona ni se recorta.** El multiconjunto de campos de contenido de
+  `DIAS` es **idéntico** al de la v5.7 (0 diferencias en las 95 filas) y el generador reporta
+  "contenido usado 73/73, 0 sobrante". El desfase se absorbió **alargando el plan** hasta el lun 25-ene.
+  Los 2 días dobles de Bioquímica (D78 y D80) vienen de la v5.7 y conservan todos sus temas; **no se
+  creó ningún día doble nuevo**.
 - **Criterio GO (Step 1 es pass/fail y un fail queda PARA SIEMPRE en ECFMG):**
   2 NBME consecutivos ≥68% + UWSA2 low-risk → confirmar fecha. Si no → correr a feb-mar (el
   eligibility period lo permite sin costo).
@@ -60,17 +74,22 @@ ENCAPS 2027-I → **fines de marzo 2027** (feb-mar: ENCAPS vuelve a principal) �
   `gen_encaps_mantenimiento_2027.js <fecha>` → execute_sql, `gen_synapse_plan.js <fecha>`,
   `gen_aurum_plan.js <fecha>`). Los hitos USMLE están anclados a fechas: si se corre, migrar los
   overlays del Calendar o aceptar que caigan en otro día de la semana.
-  **Coste acumulado:** cada corrimiento recorta 1 día de CONTENIDO de la Fase A para no mover los hitos;
-  en v5.7 se recortaron **2 días** (ver §9).
+  **Coste acumulado hasta la v5.7:** cada corrimiento recortaba 1 día de CONTENIDO de la Fase A para no
+  mover los hitos (en v5.7 se recortaron 2 días — ver §9). **Desde la v5.8 esa regla se DEROGA**: ya no
+  se recorta nada; el precio se paga alargando el plan por la cola y consumiendo colchón de calendario
+  (D95 ya cae el lun 25-ene, primer día de la ventana de examen — ver §10).
 
 ## 2 · ENCAPS — mantenimiento 2027-I (1h/día)
 
-- **Supabase (v5.7): 100 días L-V (9-sep-2026 → 29-ene-2027)** en `study_schedule`, modo `MANTENIMIENTO`
+- **Supabase (v5.8): 99 días L-V (10-sep-2026 → 29-ene-2027)** en `study_schedule`, modo `MANTENIMIENTO`
   (backups: `study_schedule_bk_0827` → `bk_0831` → `bk_0902` → `bk_0903` → `bk_0906` → `bk_0906b` →
-  **`bk_0908`**). Generador: `DATA/_scripts/gen_encaps_mantenimiento_2027.js <fecha>`.
-  ⚠ **El SQL ya está generado en `DATA/_scripts/_encaps_mantenimiento_2027.sql` (100 filas, verificado)
-  pero NO aplicado todavía**: falta ejecutarlo con `execute_sql` contra el proyecto `qacynpqdrorpuegsmtcy`.
-  Hasta entonces Supabase sigue con el calendario de la v5.6 y la app mostrará el día equivocado.
+  `bk_0908` → **`bk_0909`**). Generador: `DATA/_scripts/gen_encaps_mantenimiento_2027.js <fecha>`.
+  ✅ **Aplicado y verificado el 9-sep** (`select count(*), min(fecha), max(fecha) from study_schedule`
+  → **99 filas · 2026-09-10 → 2027-01-29**, 0 fines de semana, 0 feriados).
+  ⚠ **ENCAPS es el único bloque que NO se alargó**: mantiene su fecha de cierre (vie 29-ene, alineada al
+  examen 2027-I) y por eso pasa de 100 a **99 días**. Como la hora ENCAPS es **banqueo puro** (no temario
+  secuencial), no se pierde ningún tema: se pierde una sesión de banco. **Confirmar con Joseph** si
+  prefiere eso o extender ENCAPS a 100 días hasta el lun 1-feb-2027.
 - **Rotación de 4 semanas** ponderada por el **PRONÓSTICO WALK-FORWARD v3**
   (`DATA/ENCAPS/PRONOSTICO_WALKFORWARD_2027-1_v3.md`, construido con los 7 exámenes reales
   2024-II→2026-II): vector **II 30 · I 27 · V 21 · III 13 · IV 9** · 8 críticos
@@ -81,8 +100,8 @@ ENCAPS 2027-I → **fines de marzo 2027** (feb-mar: ENCAPS vuelve a principal) �
   mixto 72s/Q** (19 en total).
 - **Lección del 2026-II** (el pronóstico v2 tuvo su mejor fold, MAE 3.2pp, PERO Investigación saltó
   4→12): el área IV ya nunca va a piso — por eso IV-1/2 es crítico condicional en la rotación.
-- App: `src/lib/encapsPlan.ts` **v6.5** (`STUDY_D1.ENCAPS = '2026-09-09'`, backup `bk_0908` citado en el
-  comentario; el nº de días lo define la siembra de Supabase = **100**), skip fines de semana + feriados,
+- App: `src/lib/encapsPlan.ts` **v6.6** (`STUDY_D1.ENCAPS = '2026-09-10'`, backup `bk_0909` citado en el
+  comentario; el nº de días lo define la siembra de Supabase = **99**), skip fines de semana + feriados,
   rama compacta `MANTENIMIENTO` en `itemsForDay`; los viernes `tipo='mini_sim'` usan la plantilla de simulacro.
 
 ## 3 · Google Calendar — cambios aplicados
@@ -107,44 +126,47 @@ post-Step 1 (NÍTIDA se fusiona con Derma). Protocolo operativo de la hora ENCAP
 ## 4 · Derma · LIVIANO · Research
 
 - **Derma** (`DATA/DERMATOLOGIA/PLAN_ELITE_2026-27.md` + `src/lib/dermaDailyPlan.ts` renovado):
-  70 átomos interdiarios (**9-sep-2026 → mié 24-mar-2027**, salta feriados) sobre AccessDermatology real — 200 casos visuales ciegos +
+  70 átomos interdiarios (**vie 11-sep-2026 → vie 26-mar-2027**, salta feriados) sobre AccessDermatology real — 200 casos visuales ciegos +
   1.301 review questions (Pictorial 4e 381 · CORE 104 · Barnhill's 403 · 3e 363 · QOTW 50) +
   Fitzpatrick/Baumann; los últimos ~20-25 átomos = ESTÉTICA (toxina, fillers, láser, peelings).
   Dato clave: la cosmética está formalmente dentro del CORE surgical del board americano.
 - **LIVIANO Academia** (`DATA/BUSINESS/LIVIANO_ACADEMIA.md` + `src/lib/livianoStudyPlan.ts` +
-  panel 📚 Academia en Business→LIVIANO): **90 días, 9-sep-2026 → vie 15-ene-2027**; 6 módulos + M7 Acceso
+  panel 📚 Academia en Business→LIVIANO): **90 días, jue 10-sep-2026 → lun 18-ene-2027**; 6 módulos + M7 Acceso
   en Perú (fisiología del peso → GLP-1/tirzepatida → acceso Perú → nutrición → ejercicio →
   farmacología/bariátrica → conducta → síntesis), 45'/día (25' estudio + 20' explicarlo
-  en palabras simples), **16 casos, todos en viernes** (18-sep → 15-ene). Cifras ancla: semaglutida −15% · tirzepatida −21% ·
+  en palabras simples), **16 casos, todos en viernes** (18-sep → 15-ene, fechas de caso sin cambio).
+  Cifras ancla: semaglutida −15% · tirzepatida −21% ·
   SELECT −20% CV · 67% del peso se recupera al suspender (argumento del tratamiento crónico).
 - **Research** (`DATA/RESEARCH/RUTA_PUBLICACION_2027.md`): escalera carta→case report→revisión
   sistemática; case report #1 → Dermatology Online Journal (MEDLINE, APC ≤$300); Cureus deslistada
   de WoS (máx 1-2 ítems); dato NRMP: IMGs no-match en derma tenían mediana 12 publicaciones —
   el volumen sin Steps no compensa → proteger Step 1 hasta enero es la jugada correcta.
-  Plan diario re-fechado (**ciclo 1: 42 átomos, jue 10-sep-2026 → vie 5-feb-2027** por paridad interdiaria con
-  Derma, que toma el mié 9-sep; **ciclo 2: 67 átomos, mar 9-feb → jue 12-ago-2027**; pausa 4→29-ene = 0 átomos).
-  Hitos editoriales v5.7: mentor 16-sep · carta diana 24-sep · **SUBMIT carta-1 14-oct** · ética tesis 16-oct ·
+  Plan diario (**ciclo 1: 42 átomos, jue 10-sep-2026 → vie 5-feb-2027 — SIN CAMBIO en la v5.8**: la paridad
+  interdiaria se invirtió, así que ahora Research toma el jue 10-sep y **Derma el vie 11-sep**;
+  **ciclo 2: 67 átomos, mar 9-feb → jue 12-ago-2027**; pausa 4→29-ene = 0 átomos).
+  Hitos editoriales (sin cambio en v5.8): mentor 16-sep · carta diana 24-sep · **SUBMIT carta-1 14-oct** · ética tesis 16-oct ·
   caso del case report 30-oct · **SUBMIT tesis-L0 19-nov** · revisor #2 25-nov · paquete CR congelado 7-dic ·
   **SUBMIT case report 1-feb** · equipo 15-feb · **PROSPERO 19-feb** · **SUBMIT SR-1 1-jul-2027**.
 
-## 5 · Qué se re-fechó en la app (corrimiento v5.7 · 8-sep-2026 · D1 = mié 9-sep)
+## 5 · Qué se re-fechó en la app (corrimiento v5.8 · 9-sep-2026 · D1 = jue 10-sep)
 
-Fechas leídas de los `.ts` con `node` (no estimadas):
+Fechas leídas de los `.ts` con `node` el 9-sep-2026 (no estimadas); ENCAPS leído de Supabase con
+`execute_sql`:
 
 | Plan | Fichero | D1 | Dfin | Nº |
 |---|---|---|---|---|
-| 🇺🇸 USMLE Step 1 | `usmleStep1Daily.ts` | mié 9-sep-2026 | vie 22-ene-2027 | **95** |
-| 🇵🇪 ENCAPS mantenimiento | `encapsPlan.ts` + Supabase | mié 9-sep-2026 | vie 29-ene-2027 | **100** |
-| 🇪🇸 MIR 1ª vuelta | `mirDailyPlan.ts` | mié 9-sep-2026 | lun 28-dic-2026 | 78 |
+| 🇺🇸 USMLE Step 1 | `usmleStep1Daily.ts` | jue 10-sep-2026 | **lun 25-ene-2027** | **95** |
+| 🇵🇪 ENCAPS mantenimiento | `encapsPlan.ts` + Supabase | jue 10-sep-2026 | vie 29-ene-2027 | **99** ⬇1 |
+| 🇪🇸 MIR 1ª vuelta | `mirDailyPlan.ts` | jue 10-sep-2026 | mar 29-dic-2026 | 78 |
 | 🇪🇸 MIR mantenimiento | `mirMantenimiento.ts` | lun 4-ene-2027 | mié 31-mar-2027 | 63 *(sin cambios)* |
-| 🔬 Research ciclo 1 | `researchDailyPlan.ts` | jue 10-sep-2026 | vie 5-feb-2027 | 42 |
-| 🔬 Research ciclo 2 | `researchDailyPlan2027.ts` | mar 9-feb-2027 | jue 12-ago-2027 | 67 |
-| 🩺 Derma élite | `dermaDailyPlan.ts` | mié 9-sep-2026 | mié 24-mar-2027 | 70 |
-| ⚖️ LIVIANO Academia | `livianoStudyPlan.ts` | mié 9-sep-2026 | vie 15-ene-2027 | 90 |
-| 💼 Business formato L | `businessStudyPlan.ts` | mié 9-sep-2026 | jue 7-ene-2027 | 121 (84 trabajo + 37 DESCANSO) |
-| 💰 AURUM | `aurumDailyPlan.ts` | mié 9-sep-2026 | vie 12-mar-2027 | 130 |
-| 🧠 SYNAPSE | `synapseDailyPlan.ts` | mié 9-sep-2026 | sáb 28-nov-2026 | 81 |
-| 🛠 Vibecoding 04:15 | `vibecodingPlan.ts` | mié 9-sep-2026 | mar 1-dic-2026 | 60 (12 SHIP, sáb 19-sep → 5-dic) |
+| 🔬 Research ciclo 1 | `researchDailyPlan.ts` | jue 10-sep-2026 | vie 5-feb-2027 | 42 *(sin cambios)* |
+| 🔬 Research ciclo 2 | `researchDailyPlan2027.ts` | mar 9-feb-2027 | jue 12-ago-2027 | 67 *(sin cambios)* |
+| 🩺 Derma élite | `dermaDailyPlan.ts` | **vie 11-sep-2026** | vie 26-mar-2027 | 70 |
+| ⚖️ LIVIANO Academia | `livianoStudyPlan.ts` | jue 10-sep-2026 | lun 18-ene-2027 | 90 |
+| 💼 Business formato L | `businessStudyPlan.ts` | jue 10-sep-2026 | vie 8-ene-2027 | 121 (84 trabajo + 37 DESCANSO) |
+| 💰 AURUM | `aurumDailyPlan.ts` | jue 10-sep-2026 | lun 15-mar-2027 | 130 |
+| 🧠 SYNAPSE | `synapseDailyPlan.ts` | jue 10-sep-2026 | lun 30-nov-2026 | **82** ⬆1 |
+| 🛠 Vibecoding 04:15 | `vibecodingPlan.ts` | jue 10-sep-2026 | mié 2-dic-2026 | 60 (12 SHIP en viernes, 11-sep → 27-nov) |
 
 `remap_inicio.js` salta sáb+dom+feriados (25-dic, 31-dic, 1-ene) en USMLE/MIR/LIVIANO
 (Business solo inserta DESCANSO en finde; Research, SYNAPSE, AURUM, LIVIANO y vibecoding se regeneran
@@ -285,10 +307,15 @@ y `PALMERTON_POR_MATERIA.md` v3; plan USMLE ceñido a los 5 niveles UWorld (§8.
 no la conoce el remap) · `gen_liviano_plan.js <fecha>` · `gen_business_plan.py <fecha>` · **`gen_vibecoding_plan.js <fecha>` ANTES que** `gen_synapse_plan.js <fecha>`
 (el PC del sábado lee las fechas de SHIP de `vibecodingPlan.ts`; si se invierte el orden, el sábado anuncia el cierre de un proyecto que aún no terminó)
 · `gen_vibecoding_plan.js <fecha>` · `gen_aurum_plan.js <fecha>` · `STUDY_HUB/_scrape/gen_mir_daily.js <fecha> --check`
-· `gen_encaps_mantenimiento_2027.js <fecha>` → execute_sql · USMLE con `gen_usmle_v5.js` (scratchpad; recorta 1 día
-de contenido para mantener los hitos en viernes) · docs + D# de los overlays del Calendar.
+· `gen_encaps_mantenimiento_2027.js <fecha>` → execute_sql · USMLE con `gen_usmle_v5.js` (scratchpad;
+**desde la v5.8 NO recorta ni fusiona contenido**: los 12 hitos van anclados por fecha en el mapa `SIMS`
+y el plan se alarga por la cola) · docs + D# de los overlays del Calendar.
 
 ## 9 · Corrimiento v5.7 (8-sep-2026) — D1 pasa de lun 7-sep a MIÉ 9-SEP-2026
+
+> 🗂 **HISTÓRICO — SUPERSEDIDO por §10 (v5.8, 9-sep-2026).** Se conserva íntegro como registro del
+> último corrimiento que todavía FUSIONABA contenido; sus fechas, D# y cifras son las de ANTES de la
+> v5.8. La regla que describe (§9.2 "qué se recortó") **ya no rige**.
 
 ### 9.1 Por qué
 
@@ -393,3 +420,146 @@ Free 120 22-ene D97→**D95**.
 5. **Los D# de LIVIANO cambiaron de número, no solo de fecha** (el generador re-sloteó los casos a los
    viernes reales): drills D37/D58/D77/D88 → **D36/D57/D76/D87**; revisión trimestral D46/D90 →
    **D45/D89**; capstone D89 → **D88**. La fecha es lo estable, no el número de día.
+
+## 10 · Corrimiento v5.8 (9-sep-2026) — D1 pasa de mié 9-sep a JUE 10-SEP-2026
+
+### 10.1 Por qué
+
+**El 9 de septiembre tampoco se estudió.** Regla determinista del sistema: cada día sin estudiar =
+**+1 día hábil** para todos los planes → el D1 del régimen pasa de **mié 9-sep-2026** a
+**jue 10-sep-2026** (v5.8). Es el **octavo** día hábil de colchón consumido desde el 31-ago.
+
+### 10.2 La regla NUEVA (y es la que manda)
+
+> ***"ni un subtema ni tema dejar por detrás, absolutamente todo de Joseph MD corre a partir del 10"***
+> — Joseph, 9-sep-2026.
+
+De la **v5.3 a la v5.7** el desfase se pagaba **fusionando días de contenido** del cierre de Fase A
+para que los 12 hitos NBME/UWSA no cambiaran de fecha (97 → 95 días, 4 días de bioquímica/farmacología
+comprimidos en 2 días dobles — §9.2).
+
+**Desde la v5.8 eso queda derogado:**
+
+| | Hasta v5.7 | **Desde v5.8** |
+|---|---|---|
+| Qué se hace con el desfase | se **comprime contenido** (fusión de días) | se **alarga el plan por la cola** |
+| Temario | perdía granularidad (días dobles) | **1:1, intacto** |
+| Fecha final del USMLE | fija (vie 22-ene-2027) | **se mueve** (ahora lun 25-ene-2027) |
+| Hitos NBME/UWSA | fijos | **fijos** (no cambia) |
+| Franjas, metas, ventana de examen | fijas | **fijas** (no cambia) |
+
+**Prueba dura de que nada se perdió** (verificada, no estimada): el multiconjunto de
+`(system, tier, sub, bbCh, bbVid, uw, mat, matType, palm)` de `DIAS` en `usmleStep1Daily.ts` es
+**idéntico** al de la v5.7 — **0 diferencias en las 95 filas** — y el total de preguntas objetivo
+sigue siendo **5580Q** (3340 de banco diario + 2240 de simulacros). El generador reporta
+*"contenido usado 73/73, 0 sobrante"*.
+
+**Cómo se logró que los 12 hitos no se movieran.** Los 5 hitos de enero (UWSA2, NBME 31/32/33,
+Free 120) estaban colocados **por posición** dentro de los arrays de Fase B/C, así que al ganar un día
+se habrían corrido. Ahora están **anclados por fecha** en el mapa `SIMS` del generador (igual que los 7
+hitos de 2026) y los 10 días no-hito restantes se consumen desde un único array `POST_A` en los huecos
+libres. Además, la clasificación de `nivelUW`/`qDia` dejó de depender de umbrales de fecha
+(`>= 2027-01-04` / `>= 2027-01-18`) y pasa a depender del **origen de la fila** (`bbCh` = `Banco` /
+`Sprint`): así la regla es exactamente la misma aunque el contenido se derrame hasta el 4-ene.
+
+### 10.3 Tabla plan → D1 / Dfin / nº de días · ANTES (v5.7) y AHORA (v5.8)
+
+Todas las fechas parseadas de los `.ts` con `node` (v5.7 desde `git show HEAD`; v5.8 desde el árbol de
+trabajo). ENCAPS leído de Supabase con `execute_sql`.
+
+| Plan | D1 v5.7 | Dfin v5.7 | Nº v5.7 | **D1 v5.8** | **Dfin v5.8** | **Nº v5.8** |
+|---|---|---|---|---|---|---|
+| 🇺🇸 USMLE Step 1 | mié 9-sep-2026 | vie 22-ene-2027 | 95 | **jue 10-sep-2026** | **lun 25-ene-2027** | **95** |
+| 🇵🇪 ENCAPS mantenimiento | mié 9-sep-2026 | vie 29-ene-2027 | 100 | **jue 10-sep-2026** | vie 29-ene-2027 | **99** ⬇1 |
+| 🇪🇸 MIR 1ª vuelta | mié 9-sep-2026 | lun 28-dic-2026 | 78 | **jue 10-sep-2026** | **mar 29-dic-2026** | 78 |
+| 🇪🇸 MIR mantenimiento | lun 4-ene-2027 | mié 31-mar-2027 | 63 | lun 4-ene-2027 | mié 31-mar-2027 | 63 *(fijo)* |
+| 🔬 Research ciclo 1 | jue 10-sep-2026 | vie 5-feb-2027 | 42 | jue 10-sep-2026 | vie 5-feb-2027 | 42 *(sin cambio)* |
+| 🔬 Research ciclo 2 | mar 9-feb-2027 | jue 12-ago-2027 | 67 | mar 9-feb-2027 | jue 12-ago-2027 | 67 *(sin cambio)* |
+| 🩺 Derma élite | mié 9-sep-2026 | mié 24-mar-2027 | 70 | **vie 11-sep-2026** | **vie 26-mar-2027** | 70 |
+| ⚖️ LIVIANO Academia | mié 9-sep-2026 | vie 15-ene-2027 | 90 | **jue 10-sep-2026** | **lun 18-ene-2027** | 90 |
+| 💼 Business formato L | mié 9-sep-2026 | jue 7-ene-2027 | 121 | **jue 10-sep-2026** | **vie 8-ene-2027** | 121 |
+| 💰 AURUM | mié 9-sep-2026 | vie 12-mar-2027 | 130 | **jue 10-sep-2026** | **lun 15-mar-2027** | 130 |
+| 🧠 SYNAPSE | mié 9-sep-2026 | sáb 28-nov-2026 | 81 | **jue 10-sep-2026** | **lun 30-nov-2026** | **82** ⬆1 |
+| 🛠 Vibecoding 04:15 | mié 9-sep-2026 | mar 1-dic-2026 | 60 | **jue 10-sep-2026** | **mié 2-dic-2026** | 60 |
+
+**Tres planes NO se movieron +1 día como el resto — leerlo antes de asumir nada:**
+
+1. **Research ciclos 1 y 2: fechas idénticas.** Research y Derma se alternan en la franja 13:30-14:15;
+   con D1 en jueves la **paridad se invirtió**, así que Research se queda con el jue 10-sep (que ya era
+   suyo) y **Derma pasa del mié 9-sep al vie 11-sep** (+2 días de calendario, no +1).
+2. **ENCAPS pierde un día (100 → 99).** Es el único bloque que **no se alargó**: conserva su cierre en
+   **vie 29-ene-2027** porque esa fecha está alineada al examen ENCAPS 2027-I, no al Step 1. Como la
+   hora ENCAPS es **banqueo puro** (no temario secuencial), no desaparece ningún tema: desaparece una
+   sesión de banco. → **decisión pendiente de Joseph** (§10.5).
+3. **SYNAPSE gana un día (81 → 82).** Su generador cuenta también sábados/domingos (PC de fin de
+   semana): al arrancar en jueves, la última semana entra completa y el plan cierra el **lun 30-nov**.
+
+**Hitos USMLE: fecha idéntica, D# nuevo** — UWSA1 11-sep D3→**D2** · NBME 25 2-oct D18→**D17** ·
+NBME 26 23-oct D33→**D32** · NBME 27 13-nov D48→**D47** · NBME 28 4-dic D63→**D62** ·
+NBME 29 18-dic D73→**D72** · NBME 30 30-dic D80→**D79** · UWSA2 8-ene D85→**D84** ·
+NBME 31 15-ene D90→**D89** (GO/NO-GO) · NBME 32 18-ene D91→**D90** · NBME 33 20-ene D93→**D92** ·
+Free 120 22-ene D95→**D94**. Los 12 overlays naranjas del Google Calendar **no cambian de fecha**:
+solo hay que actualizar el D# de su título.
+
+### 10.4 Pipeline ejecutado, en orden
+
+> **Trazabilidad:** los comandos de esta lista son el pipeline canónico de §8.7 instanciado con la fecha
+> `2026-09-10`; el detalle de qué se ejecutó lo reportó el agente de datos. Lo que sí está **verificado
+> de forma independiente** (parseo con `node` de cada `.ts` + `execute_sql` sobre `study_schedule`) son
+> los **resultados**: las fechas, los D# y los conteos de §10.3. El log exacto de los pasos 1-8 y 11
+> (`npx tsc --noEmit`) es **A VERIFICAR (09-sep)**.
+
+1. `node DATA/_scripts/remap_inicio.js 2026-09-10` — re-fecha MIR, Derma, Business, LIVIANO y los demás
+   bloques del remap (salta sáb+dom y los feriados 25-dic / 31-dic / 1-ene) + reslot LIVIANO.
+2. `node DATA/_scripts/gen_research_plan.js 2026-09-10` — Research ciclos 1 y 2 (el remap no conoce la
+   pausa de enero) → `researchDailyPlan.ts`, `researchDailyPlan2027.ts`, `obsidianResearchMap.ts`,
+   `DATA/RESEARCH/daily-plan.md`.
+3. `node DATA/_scripts/gen_liviano_plan.js 2026-09-10` — 90 días, 16 casos re-sloteados a VIERNES reales
+   → `livianoStudyPlan.ts` + `livianoCasos.ts` + CSV Anki.
+4. `python DATA/_scripts/gen_business_plan.py 2026-09-10` — 121 filas (84 trabajo + 37 DESCANSO).
+5. `node DATA/_scripts/gen_vibecoding_plan.js 2026-09-10` — **ANTES que SYNAPSE** (el PC del sábado lee
+   las fechas de SHIP de `vibecodingPlan.ts`): 60 días + 12 SHIP en viernes (11-sep → 27-nov).
+6. `node DATA/_scripts/gen_synapse_plan.js 2026-09-10` — 82 días (10-sep → 30-nov).
+7. `node DATA/_scripts/gen_aurum_plan.js 2026-09-10` — 130 días (10-sep → 15-mar-2027).
+8. `node STUDY_HUB/_scrape/gen_mir_daily.js 2026-09-10 --check` — 78 días con verificación de pesos,
+   capIds y fechas L-V.
+9. `node DATA/_scripts/gen_encaps_mantenimiento_2027.js 2026-09-10` → `execute_sql` contra
+   `qacynpqdrorpuegsmtcy`, con backup previo **`study_schedule_bk_0909`**. Verificado: 99 filas,
+   10-sep-2026 → 29-ene-2027, 0 fines de semana, 0 feriados.
+10. USMLE con `gen_usmle_v5.js` (scratchpad) **en su versión v5.8**: 95 días, fases 80/89/95, hitos
+    anclados por FECHA en `SIMS`, array `POST_A` para los días no-hito, clasificación por `bbCh`.
+    **Sin fusiones ni recortes** (contenido 73/73, 0 sobrante).
+11. `npx tsc --noEmit -p .` → 0 errores *(reportado por el agente de datos · **A VERIFICAR (09-sep)**)*.
+12. Docs a v5.8: este fichero (§1, §2, §4, §5, §10), `DATA/USMLE/README.md`,
+    `DATA/USMLE/CALENDARIO_5_MESES.md`, `DATA/USMLE/PALMERTON_POR_MATERIA.md`,
+    `DATA/USMLE/PALMERTON_DIVERGENCIAS_PLAN.md`, `DATA/USMLE/RECURSOS_META_2026.md` + D# de los 12
+    overlays de hito del Calendar.
+
+> **El orden importa**: `gen_vibecoding_plan.js` SIEMPRE antes que `gen_synapse_plan.js`, y el SQL de
+> ENCAPS SIEMPRE con backup previo. El paso 10 (USMLE) va al final porque consume las fechas ya fijadas.
+
+### 10.5 Efectos colaterales de la v5.8 (y qué hacer)
+
+1. **D95 = lun 25-ene-2027 cae DENTRO de la ventana de examen** (25-29 ene, target mié 27). El plan y la
+   semana de examen ahora se solapan: el D95 (repaso rapid review First Aid + Anki + 20Q flagged) es de
+   hecho el **D-2** del target. El mar 26-ene (D-1) sigue **fuera** de los 95 días — su protocolo es una
+   decisión abierta (`DATA/USMLE/PALMERTON_DIVERGENCIAS_PLAN.md` §E-5).
+2. **Se acabó el colchón barato.** Con la regla de no recortar, **cada día perdido a partir de ahora
+   empuja D95 más adentro de la ventana** (26 → 27 → 28-ene) y obliga a mover el target del examen o a
+   activar el plan B de fecha (feb-mar, mismo eligibility period). Ya no hay "fusión" que absorba el golpe.
+3. **ENCAPS: 100 → 99 días.** Único bloque no alargado (§10.3, nota 2). Decidir: dejarlo en 99 o
+   extenderlo al **lun 1-feb-2027** para recuperar la sesión. Requiere re-sembrar Supabase.
+4. **Los niveles UWorld de 9 días cambiaron de N3↔N2** (el viernes de cada sistema cae sobre otro
+   subtema): **Heme/Onc se queda sin viernes de nivel 3** y **Respiratorio gana uno**. Reparto v5.8:
+   N3 en **D12 (25-sep, Cardio) · D22 (9-oct, Resp) · D27 (16-oct, Renal) · D67 (11-dic, Repro)**;
+   N1 en los viernes de sistema recién abierto **D7, D37, D42, D52, D57**. Totales: N3×4 y N2×41
+   (antes N3×5 y N2×40). **Ningún tema cambió: solo el formato del bloque de las 11:00 de esos días.**
+5. **NBME 29 (vie 18-dic) ahora PARTE el bloque MSK** en vez de cerrarlo: D70-D71 antes del hito y
+   **D73 (lun 21-dic)** después. Llegar al hito con artritis + LES/vasculitis validados.
+6. **NBME 30 (mié 30-dic) queda ENTRE los dos días dobles de Bioquímica**: D78 el mar 29-dic y
+   **D80 el lun 4-ene-2027** (jue 31-dic y vie 1-ene son skip). El "cierre de Fase A" ya no termina en
+   2026: la Fase A muere el **4-ene**.
+7. **Derma se movió +2 días, no +1** (mié 9-sep → vie 11-sep) por la inversión de paridad con Research.
+   Verificar en el Calendar que la alternancia RESEARCH↔DERMA de las 13:30 quedó con la nueva paridad.
+8. **Los D# de los 12 overlays del Calendar quedan desfasados** hasta que se editen los títulos: las
+   FECHAS son correctas, el número de día no.

@@ -1,6 +1,6 @@
 /**
  * researchDailyPlan2027.ts — Plan DÍA A DÍA de Research · CICLO 2 (SR-1 completa: PROSPERO → SUBMIT, con revisor humano #2).
- * GENERADO por DATA/_scripts/gen_research_plan.js (2026-09-08) — NO editar a mano: `node DATA/_scripts/gen_research_plan.js [YYYY-MM-DD]` (`--ciclo 2 YYYY-MM-DD` para re-fechar solo este ciclo)
+ * GENERADO por DATA/_scripts/gen_research_plan.js (2026-09-09) — NO editar a mano: `node DATA/_scripts/gen_research_plan.js [YYYY-MM-DD]` (`--ciclo 2 YYYY-MM-DD` para re-fechar solo este ciclo)
  *
  * 67 átomos · d43-d109 (numeración continúa la del ciclo 1 → una sola clave de progreso 'research') ·
  * D1 = Mar 2027-02-09 → fin Jue 2027-08-12 · interdiario con Derma · sáb+dom libres.

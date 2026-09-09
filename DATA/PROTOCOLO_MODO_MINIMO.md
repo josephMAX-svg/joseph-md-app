@@ -1,6 +1,6 @@
-# 🚦 PROTOCOLO DE MODO MÍNIMO — VERDE · ÁMBAR · ROJO (v5.7 · 5-sep-2026)
+# 🚦 PROTOCOLO DE MODO MÍNIMO — VERDE · ÁMBAR · ROJO (v5.8 · re-fechado 9-sep-2026)
 
-> Válvula de burnout del régimen v5.7 (D1 = mié 9-sep-2026 · Step 1 = bloque principal · examen 25-29 ene 2027).
+> Válvula de burnout del régimen v5.8 (D1 = jue 10-sep-2026 · Step 1 = bloque principal · D95 = lun 25-ene-2027 · examen 25-29 ene 2027).
 > **No cambia franjas, metas ni fechas de examen.** Solo define, por escrito y con disparadores medibles, qué
 > se recorta primero cuando el día no da para todo — para que el recorte sea una decisión y no un colapso.
 > Palmerton: el fracaso es de comportamiento y proceso; "estudiar de noche exhausto" y la "procrastinación
@@ -70,8 +70,8 @@ La app marca la semana en el cockpit ("SEMANA · DELOAD") y en MISIÓN DE HOY (c
 
 | Semana | Fechas | Motivo | Qué significa 50 % |
 |---|---|---|---|
-| **S8** | lun 26 → vie 30-oct-2026 | post-NBME 26 (vie 23-oct) | MIR: eval D-1 + 30' (no 60') · ENCAPS: 12Q del tema del día (no 25) + registro · LIVIANO: 25' solo estudio (sin aplicación) · Research/Derma: 20' · AURUM: 30' · SYNAPSE: solo A (15') · Vibecoding: proyecto S8 ya en deload en el catálogo (2 días de 45' + 3 de 15') |
-| **S14** | lun 7 → vie 11-dic-2026 | post-NBME 28 (vie 4-dic) | ídem (el vibecoding S1-S12 ya terminó el 27-nov: la franja 04:15 en S14 = Anki extra o dormir) |
+| **S8** | lun 26 → vie 30-oct-2026 | post-NBME 26 (vie 23-oct) | MIR: eval D-1 + 30' (no 60') · ENCAPS: 12Q del tema del día (no 25) + registro · LIVIANO: 25' solo estudio (sin aplicación) · Research/Derma: 20' · AURUM: 30' · SYNAPSE: solo A (15') · Vibecoding: proyecto S8 ya en deload en el catálogo (2 días de 45' + 3 de 15') — ⚠ en v5.8 ese proyecto corre jue 29-oct → mié 4-nov, así que solo el 29 y el 30-oct caen dentro de esta semana de deload |
+| **S14** | lun 7 → vie 11-dic-2026 | post-NBME 28 (vie 4-dic) | ídem (el vibecoding S1-S12 termina el mié 2-dic-2026 y su último SHIP es el sáb 5-dic: en S14 la franja 04:15 = Anki extra o dormir) |
 
 Reglas del deload: los temas/días de cada plan NO se mueven (el tema de ese día se hace a la mitad, no se
 pospone); el Anki de sáb/dom sigue dimensionándose por `due × 20 s`; si la semana de deload coincide con
@@ -81,8 +81,8 @@ pospone); el Anki de sáb/dom sigue dimensionándose por `due × 20 s`; si la se
 
 - **Sueño**: quick-log de VITALS a las 07:00 (20 s, `mv_wellness_logs` tipo `sueno`, user `joseph`). Mientras no
   haya registro reciente (último dato: jun-2026), el disparador se evalúa por autoreporte al elegir el modo.
-  Proyecto **S7** del vibecoding (19-23 oct) lleva el dato al Home y sugiere ÁMBAR automáticamente.
-- **Eval 18:00 y pre-test**: proyecto **S3** (21-25 sep) crea `jmd-usmle-scores` → Supabase. Hasta entonces se anota
+  Proyecto **S7** del vibecoding (jue 22-oct → mié 28-oct, SHIP sáb 31-oct) lleva el dato al Home y sugiere ÁMBAR automáticamente.
+- **Eval 18:00 y pre-test**: proyecto **S3** (jue 24-sep → mié 30-sep, SHIP sáb 3-oct) crea `jmd-usmle-scores` → Supabase. Hasta entonces se anota
   a mano en la revisión semanal.
 - **Anki backlog/retención**: `node DATA/_scripts/anki_telemetria.js` (Anki abierto) → KPI del cockpit + alarma G.
 - **Días perdidos / niveles**: `jmd-modo-log` (la app) → export de localStorage → `gen_revision_semanal.js`

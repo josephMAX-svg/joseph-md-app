@@ -4,17 +4,20 @@
 > bloque principal del día; todo lo demás orbita en mantenimiento. Regla de oro: **nunca dos reyes
 > a la vez**. Sáb/dom libres en todas las fases (el descanso consolida — no es negociable).
 >
-> **Actualizado a v5.7 (8-sep-2026).** El 7 y el 8 de septiembre no se estudiaron → **D1 de la Fase 1 = mié
-> 9-sep-2026** (regla del sistema: cada día sin estudiar = +1 hábil). Las **fechas de examen, los hitos NBME/UWSA,
-> las franjas y las metas NO se movieron**; lo que se movió es el contenido diario. Fechas de la Fase 1 abajo,
-> leídas de los `.ts` (no estimadas).
+> **Actualizado a v5.8 (9-sep-2026).** El 9 de septiembre tampoco se estudió → **D1 de la Fase 1 = jue
+> 10-sep-2026** (regla del sistema: cada día sin estudiar = +1 hábil). Instrucción literal de Joseph en este
+> corrimiento: **ni un tema ni un subtema se deja atrás — no se fusiona ni se recorta nada**; el desfase se
+> absorbe alargando el final de cada plan (el Step 1 llega a D95 = lun 25-ene-2027). Las **fechas de examen,
+> los 12 hitos NBME/UWSA/Free 120, las franjas y las metas NO se movieron**; lo que se movió es el contenido
+> diario y, en algunos planes, el número de día de un hito. Fechas de la Fase 1 abajo, leídas de los `.ts`
+> el 9-sep (no estimadas).
 
 ## Las fases
 
 | Fase | Ventana | REY (bloque principal) | Mantenimiento | Hito de salida |
 |---|---|---|---|---|
-| **1 · STEP 1** | **D1 mié 9-sep-2026** → fin-ene-2027 (serie del Calendar desde 31-ago) | 🇺🇸 Step 1 (6h15/día: Anki AM 05:00 + mañana completa + eval 18:00) · **95 días D1-D95 · 9-sep-2026 → vie 22-ene-2027** (Fase A contenido D1-D80 · B banco D81-D90 · C sprint D91-D95) | ENCAPS 1h (100 días → 29-ene) · MIR 1h (78 días → 28-dic) · Derma↔Research 45' · LIVIANO 45' (90 días → 15-ene) · IA 45' | **STEP 1 PASS** (semana 25-29 ene, gate: **GO/NO-GO vie 15-ene-2027 = NBME 31**, 2 NBME ≥68% + UWSA2 8-ene) |
-| **2 · ENCAPS** | feb → fin-mar-2027 | 🇵🇪 ENCAPS intensivo (hereda la mañana; pre-test = examen 2026-II reservado) | MIR mantenimiento 63 días (4-ene → 31-mar-2027, sin cambios) · Derma↔Research (Derma hasta d70 mié 24-mar-2027) · academias CURVA+DENSA arrancan | **ENCAPS ≥17/20** (fines de marzo, percentil 1%) |
+| **1 · STEP 1** | **D1 jue 10-sep-2026** → fin-ene-2027 (serie del Calendar desde 31-ago) | 🇺🇸 Step 1 (6h15/día: Anki AM 05:00 + mañana completa + eval 18:00) · **95 días D1-D95 · 10-sep-2026 → lun 25-ene-2027** (Fase A contenido D1-D80 10-sep→4-ene · B banco D81-D89 5→15-ene · C sprint D90-D95 18→25-ene) | ENCAPS 1h (99 días → 29-ene) · MIR 1h (78 días → 29-dic) · Derma↔Research 45' · LIVIANO 45' (90 días → 18-ene) · IA 45' | **STEP 1 PASS** (semana 25-29 ene, gate: **GO/NO-GO vie 15-ene-2027 = NBME 31**, 2 NBME ≥68% + UWSA2 8-ene) |
+| **2 · ENCAPS** | feb → fin-mar-2027 | 🇵🇪 ENCAPS intensivo (hereda la mañana; pre-test = examen 2026-II reservado; arranca en el día 100 de la cuenta de la app) | MIR mantenimiento 63 días (4-ene → 31-mar-2027, sin cambios) · Derma↔Research (Derma hasta d70 vie 26-mar-2027) · academias CURVA+DENSA arrancan | **ENCAPS ≥17/20** (fines de marzo, percentil 1%) |
 | **3 · MIR** | abr-2027 → ene-2030 (~2 años de prep + SERUMS) | 🇪🇸 MIR sube a principal progresivamente (CTO/AMIR/ProMIR, vueltas completas) | Step 2 CK secundario creciente (bancos ya inventariados) · research pipeline a régimen | **MIR ene-2030 · Top 50** → Dermatología (Clínic) |
 | **4 · Residencia + Step 2 CK** | 2030 → 2033 | Residencia derma + 🇺🇸 Step 2 CK (el score SÍ cuenta: mediana IMG match derma ≈ 253) | Publicaciones en serie (la residencia da casos) · estética desde derma quirúrgica | Step 2 CK 250+ · CV de fellowship |
 | **5 · MAYO CLINIC** | 2033-2034 | Aplicación fellowship dermatología estética (ERAS/ECFMG completo) | — | **Mayo Clinic ~2034** |
@@ -38,7 +41,7 @@ publicación (de `DATA/RESEARCH/RUTA_PUBLICACION_2027.md`, revistas y APCs verif
 
 ## LIVIANO y las academias — suficiencia
 
-- **LIVIANO 45'/día** cubre el currículo académico completo (90 días, **9-sep-2026 → vie 15-ene-2027**:
+- **LIVIANO 45'/día** cubre el currículo académico completo (90 días, **10-sep-2026 → lun 18-ene-2027**:
   fisiología → GLP-1 → acceso Perú → nutrición → ejercicio → fármacos/bariátrica → conducta → síntesis).
   En enero Joseph explica obesidad al
   nivel de un obesity-medicine fellow — suficiente para ser EL referente del programa. La
@@ -46,8 +49,8 @@ publicación (de `DATA/RESEARCH/RUTA_PUBLICACION_2027.md`, revistas y APCs verif
 - **CURVA y DENSA**: febrero 2027 (Fase 2), con currículo tipo LIVIANO_ACADEMIA. NÍTIDA = Derma.
 - **IA (vibecoding 45' + misión 30' + PC finde)**: cada proyecto semanal automatiza un pedazo del
   sistema → devuelve MÁS horas de las que consume. Es el único slot cuya rentabilidad es compuesta.
-  v5.7: **vibecoding 60 días 9-sep → 1-dic-2026** (12 SHIP en sábados 19-sep → 5-dic) · **SYNAPSE 81 días
-  9-sep → 28-nov-2026** · **AURUM 130 días 9-sep-2026 → 12-mar-2027**.
+  v5.8: **vibecoding 60 días 10-sep → 2-dic-2026** (12 SHIP en sábados 19-sep → 5-dic, sin mover) · **SYNAPSE 82 días
+  10-sep → 30-nov-2026** · **AURUM 130 días 10-sep-2026 → lun 15-mar-2027**.
 
 ## Reglas de transición entre fases
 
@@ -59,24 +62,30 @@ publicación (de `DATA/RESEARCH/RUTA_PUBLICACION_2027.md`, revistas y APCs verif
 3. Cada fase cierra con post-mortem de datos (como el ANALISIS_EXAMEN_2026-2_REAL) → el modelo
    de pronóstico del siguiente examen SIEMPRE se re-entrena con el examen recién rendido.
 
-## Fase 1 en fechas v5.7 (leídas de los `.ts` el 8-sep-2026)
+## Fase 1 en fechas v5.8 (leídas de los `.ts` el 9-sep-2026)
 
 | Plan | D1 | Dfin | Nº días | Fichero |
 |---|---|---|---|---|
-| 🇺🇸 USMLE Step 1 | mié 9-sep-2026 | vie 22-ene-2027 | 95 | `src/lib/usmleStep1Daily.ts` |
-| 🇵🇪 ENCAPS mantenimiento | mié 9-sep-2026 | vie 29-ene-2027 | 100 | `src/lib/encapsPlan.ts` + Supabase |
-| 🇪🇸 MIR 1ª vuelta | mié 9-sep-2026 | lun 28-dic-2026 | 78 | `src/lib/mirDailyPlan.ts` |
+| 🇺🇸 USMLE Step 1 | jue 10-sep-2026 | lun 25-ene-2027 | 95 | `src/lib/usmleStep1Daily.ts` |
+| 🇵🇪 ENCAPS mantenimiento | jue 10-sep-2026 | vie 29-ene-2027 | 99 | `src/lib/encapsPlan.ts` + Supabase |
+| 🇪🇸 MIR 1ª vuelta | jue 10-sep-2026 | mar 29-dic-2026 | 78 | `src/lib/mirDailyPlan.ts` |
 | 🇪🇸 MIR mantenimiento | lun 4-ene-2027 | mié 31-mar-2027 | 63 | `src/lib/mirMantenimiento.ts` (sin cambios) |
-| 🔬 Research ciclo 1 | jue 10-sep-2026 | vie 5-feb-2027 | 42 | `src/lib/researchDailyPlan.ts` |
-| 🔬 Research ciclo 2 | mar 9-feb-2027 | jue 12-ago-2027 | 67 | `src/lib/researchDailyPlan2027.ts` |
-| 🩺 Derma élite | mié 9-sep-2026 | mié 24-mar-2027 | 70 | `src/lib/dermaDailyPlan.ts` |
-| ⚖️ LIVIANO Academia | mié 9-sep-2026 | vie 15-ene-2027 | 90 | `src/lib/livianoStudyPlan.ts` |
-| 💼 Business formato L | mié 9-sep-2026 | jue 7-ene-2027 | 121 | `src/lib/businessStudyPlan.ts` |
-| 💰 AURUM | mié 9-sep-2026 | vie 12-mar-2027 | 130 | `src/lib/aurumDailyPlan.ts` |
-| 🧠 SYNAPSE | mié 9-sep-2026 | sáb 28-nov-2026 | 81 | `src/lib/synapseDailyPlan.ts` |
-| 🛠 Vibecoding 04:15 | mié 9-sep-2026 | mar 1-dic-2026 | 60 | `src/lib/vibecodingPlan.ts` |
+| 🔬 Research ciclo 1 | jue 10-sep-2026 | vie 5-feb-2027 | 42 | `src/lib/researchDailyPlan.ts` (sin cambios) |
+| 🔬 Research ciclo 2 | mar 9-feb-2027 | jue 12-ago-2027 | 67 | `src/lib/researchDailyPlan2027.ts` (sin cambios) |
+| 🩺 Derma élite | vie 11-sep-2026 | vie 26-mar-2027 | 70 | `src/lib/dermaDailyPlan.ts` |
+| ⚖️ LIVIANO Academia | jue 10-sep-2026 | lun 18-ene-2027 | 90 | `src/lib/livianoStudyPlan.ts` |
+| 💼 Business formato L | jue 10-sep-2026 | vie 8-ene-2027 | 121 | `src/lib/businessStudyPlan.ts` |
+| 💰 AURUM | jue 10-sep-2026 | lun 15-mar-2027 | 130 | `src/lib/aurumDailyPlan.ts` |
+| 🧠 SYNAPSE | jue 10-sep-2026 | lun 30-nov-2026 | 82 | `src/lib/synapseDailyPlan.ts` |
+| 🛠 Vibecoding 04:15 | jue 10-sep-2026 | mié 2-dic-2026 | 60 | `src/lib/vibecodingPlan.ts` |
 
-**Hitos de la Fase 1 que NO se movieron** (fechas fijas, solo cambia su D#): UWSA1 11-sep (D3) ·
-NBME 25 2-oct (D18) · NBME 26 23-oct (D33) · NBME 27 13-nov (D48) · NBME 28 4-dic (D63) ·
-NBME 29 18-dic (D73) · NBME 30 30-dic (D80) · UWSA2 8-ene (D85) · **NBME 31 15-ene (D90) = GO/NO-GO** ·
-NBME 32 18-ene (D91) · NBME 33 20-ene (D93) · Free 120 22-ene (D95) · **examen semana 25-29 ene-2027**.
+*(Research es el único plan cuyas fechas NO cambiaron en v5.8: ya arrancaba el jue 10-sep. Lo que cambió es
+la paridad del interdiario — Research toma los días impares del régimen y Derma los pares, por eso Derma d1
+pasó de mié 9-sep a vie 11-sep.)*
+
+**Los 12 hitos de la Fase 1 NO se movieron** (fechas fijas, solo cambia su D#): UWSA1 11-sep (D2) ·
+NBME 25 2-oct (D17) · NBME 26 23-oct (D32) · NBME 27 13-nov (D47) · NBME 28 4-dic (D62) ·
+NBME 29 18-dic (D72) · NBME 30 30-dic (D79) · UWSA2 8-ene (D84) · **NBME 31 15-ene (D89) = GO/NO-GO** ·
+NBME 32 18-ene (D90) · NBME 33 20-ene (D92) · Free 120 22-ene (D94) · **examen semana 25-29 ene-2027
+(target mié 27)**. Nueve caen en viernes; NBME 30 (mié 30-dic), NBME 32 (lun 18-ene) y NBME 33
+(mié 20-ene) no.

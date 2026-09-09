@@ -1,17 +1,17 @@
 # 🔥 FASE INTENSIVA ENCAPS 2027-I — diseño completo (feb → D-1 del examen)
 
-> **Qué es:** las 5-8 semanas en que ENCAPS vuelve a **bloque principal** (el USMLE Step 1 se rinde el 25-29 ene 2027). Empieza el **lunes 1-feb-2027 (D1)** y termina el **D-1** del examen SERUMS 2027-I. Continúa la cuenta de días de la app: mantenimiento = días 1-100 (9-sep-2026 → 29-ene-2027, `modo='MANTENIMIENTO'`; re-fechado el 08-sep-2026, régimen v5.7: el 7 y el 8 de septiembre no se estudiaron y el ciclo bajó de 102 a 100 días sin mover la fecha de cierre), intensiva = **día 101 en adelante**, `modo='INTENSIVO'`.
+> **Qué es:** las 5-8 semanas en que ENCAPS vuelve a **bloque principal** (el USMLE Step 1 se rinde el 25-29 ene 2027). Empieza el **lunes 1-feb-2027 (D1)** y termina el **D-1** del examen SERUMS 2027-I. Continúa la cuenta de días de la app: mantenimiento = días 1-99 (10-sep-2026 → 29-ene-2027, `modo='MANTENIMIENTO'`; re-fechado el 09-sep-2026, régimen v5.8: el 9 de septiembre tampoco se estudió y el ciclo bajó de 100 a 99 días sin mover la fecha de cierre), intensiva = **día 100 en adelante**, `modo='INTENSIVO'`.
 > **Meta:** ≥17/20 (≥85 % ciego) el día del examen; la fase arranca desde el ~70 % ciego que deja el mantenimiento (`PROTOCOLO_HORA_MANTENIMIENTO.md`).
 > **Fuente única de pesos/críticos:** `PRONOSTICO_WALKFORWARD_2027-1_v3.md` (vector II 30 · I 27 · V 21 · III 13 · IV 9; 8 críticos I-3 · V-2 · II-3 · III-5 · I-4 · II-5 · II-4 · IV-1+IV-2; rebotes II-1 · II-11 · II-8; formato 45-70 % viñeta).
 > **Generador:** `DATA/_scripts/gen_encaps_intensivo_2027.js` → `DATA/_scripts/_encaps_intensivo_2027.sql` (**emitido, NO aplicado**: se aplica el día que la convocatoria confirme la fecha, §5).
 > **Estado 05-sep-2026:** diseño cerrado; la fecha del examen es ASUMIDA (§6); la app aún no tiene rama `INTENSIVO` (§7).
-> **Actualización 08-sep-2026:** el mantenimiento se re-sembró con D1 = mié 9-sep-2026 (100 días, backup `study_schedule_bk_0908`); la intensiva **no se mueve** (sigue arrancando el lun 1-feb-2027) y solo cambia el número de día con que continúa: **101**, no 103. `study_metrics.exam_date` sigue en dom 28-mar-2027 (imposible, §0) y `dias_a_examen` quedó SIN recalcular a propósito hasta que la convocatoria confirme la fecha.
+> **Actualización 09-sep-2026 (régimen v5.8):** el mantenimiento se re-sembró con D1 = jue 10-sep-2026 (99 días, backup `study_schedule_bk_0909`; el `bk_0908` de v5.7 sigue intacto); la intensiva **no se mueve** (sigue arrancando el lun 1-feb-2027) y solo cambia el número de día con que continúa: **100**, no 101 ni 103. Esto es coherente con la regla de Joseph de este corrimiento (no se fusiona ni se recorta nada): el mantenimiento es banqueo puro, se acorta por delante y no pierde temario. `study_metrics.exam_date` sigue en dom 28-mar-2027 (imposible, §0) y `dias_a_examen` quedó SIN recalcular a propósito hasta que la convocatoria confirme la fecha.
 
 ---
 
 ## 0) ⚠️ ALERTA DE FECHA — Semana Santa 2027 y la convocatoria SERUMS 2027-I
 
-Calendario **verificado** (algoritmo de Meeus, `gen_encaps_intensivo_2027.js`): **Jueves Santo = jue 25-mar-2027 · Viernes Santo = vie 26-mar-2027 · Domingo de Pascua = dom 28-mar-2027**. Ambos jueves y viernes son feriados nacionales en el Perú (el régimen v5.7 no siembra sesiones en feriados). *(La nota previa del workflow que situaba Semana Santa 2027 el 1-2 de abril era incorrecta: esas fechas corresponden a jueves/viernes comunes; la Semana Santa 2026 fue el 2-3 de abril.)*
+Calendario **verificado** (algoritmo de Meeus, `gen_encaps_intensivo_2027.js`): **Jueves Santo = jue 25-mar-2027 · Viernes Santo = vie 26-mar-2027 · Domingo de Pascua = dom 28-mar-2027**. Ambos jueves y viernes son feriados nacionales en el Perú (el régimen v5.8 no siembra sesiones en feriados). *(La nota previa del workflow que situaba Semana Santa 2027 el 1-2 de abril era incorrecta: esas fechas corresponden a jueves/viernes comunes; la Semana Santa 2026 fue el 2-3 de abril.)*
 
 Las dos fechas "asumidas" que hoy circulan en el sistema son **imposibles**:
 
@@ -24,10 +24,10 @@ Las dos fechas "asumidas" que hoy circulan en el sistema son **imposibles**:
 
 | Escenario | Examen (dom) | Días hábiles D1→D-1 | Semanas | Viernes | Simulacros 100Q tras el pre-test | D-2 dress rehearsal | D-1 medio día | Comando |
 |---|---|---|---|---|---|---|---|---|
-| **CORTO** (planificar con este hasta la convocatoria) | 14-mar-2027 | 30 (días 101-130) | 6 | 6 | 4 | jue 11-mar | vie 12-mar | `node DATA/_scripts/gen_encaps_intensivo_2027.js 2027-02-01 2027-03-14` |
-| MEDIO | 21-mar-2027 | 35 (101-135) | 7 | 7 | 5 | jue 18-mar | vie 19-mar | `... 2027-02-01 2027-03-21` |
-| (asumido hoy, imposible) | 26/28-mar-2027 | 38 (101-138; salta jue 25-mar) | 7.6 | 7 | 6 | mar 23-mar | mié 24-mar | default del script |
-| LARGO | 11-abr-2027 (o 4-abr) | 48 (101-148; salta 25/26-mar) | 10 | 9 | 7 | jue 8-abr | vie 9-abr | `... 2027-02-01 2027-04-11` |
+| **CORTO** (planificar con este hasta la convocatoria) | 14-mar-2027 | 30 (días 100-129) | 6 | 6 | 4 | jue 11-mar | vie 12-mar | `node DATA/_scripts/gen_encaps_intensivo_2027.js 2027-02-01 2027-03-14` |
+| MEDIO | 21-mar-2027 | 35 (100-134) | 7 | 7 | 5 | jue 18-mar | vie 19-mar | `... 2027-02-01 2027-03-21` |
+| (asumido hoy, imposible) | 26/28-mar-2027 | 38 (100-137; salta jue 25-mar) | 7.6 | 7 | 6 | mar 23-mar | mié 24-mar | default del script |
+| LARGO | 11-abr-2027 (o 4-abr) | 48 (100-147; salta 25/26-mar) | 10 | 9 | 7 | jue 8-abr | vie 9-abr | `... 2027-02-01 2027-04-11` |
 
 Regla de decisión (gaps_v3b_encaps.json, vacío 4): **hasta la convocatoria se planifica con el escenario CORTO** — si el examen resulta más tarde, sobran semanas para rebotes/watch-list; si se planificara con el largo y cayera el 14-mar, el barrido de críticos quedaría a medias. **Qué se hace si el examen se mueve** (§5): regenerar el SQL con la fecha real (1 comando), aplicar por MCP, actualizar `study_metrics.exam_date`/`dias_a_examen` y `STUDY_TOTAL_DAYS` en la app, y ajustar a mano el Google Calendar (este doc y los scripts **no** tocan franjas ni Calendar). Si la fecha cae después de Semana Santa, el jueves y viernes santos quedan sin sesión sembrada (feriados): decidir ese día si se usan como repaso libre.
 
@@ -95,10 +95,10 @@ Lista sembrada por default en el script (`SIMS`, en este orden de viernes): 2025
 ## 5) Cómo se siembra (NO aplicar ahora)
 
 1. **Disparador:** la convocatoria SERUMS 2027-I confirma la fecha (canal 1 de `SENALES_2027-I.md`). Hasta entonces el SQL en disco es un ensayo (fecha asumida 26-mar, imposible).
-2. **Generar:** `node DATA/_scripts/gen_encaps_intensivo_2027.js 2027-02-01 <fecha-examen> [--pretest DATA/ENCAPS/TRACKING_ERRORES/RONDAS/PRETEST_2026-II.json] [--sims ruta.json] [--bk study_schedule_bk_intensivo_<AAAAMMDD>] **--base 2026-09-09**`  ⚠ **08-sep-2026:** el default del script sigue siendo `--base 2026-09-07` (offset 102). Con el re-fechado a D1 = mié 9-sep hay que pasar `--base 2026-09-09` para que la intensiva empiece en el **día 101** y no en el 103; si no se corrige el default de `gen_encaps_intensivo_2027.js`, la cuenta de la app queda desfasada 2 días. → escribe `DATA/_scripts/_encaps_intensivo_2027.sql` (backup `--bk` → `DELETE ... WHERE examen='ENCAPS' AND modo='INTENSIVO'` → `INSERT` de N filas `dia 101…`). El script avisa si la fecha cae en Semana Santa (⛔) o no es domingo (⚠), no siembra fines de semana ni feriados y continúa la numeración desde el día 100.
+2. **Generar:** `node DATA/_scripts/gen_encaps_intensivo_2027.js 2027-02-01 <fecha-examen> [--pretest DATA/ENCAPS/TRACKING_ERRORES/RONDAS/PRETEST_2026-II.json] [--sims ruta.json] [--bk study_schedule_bk_intensivo_<AAAAMMDD>] **--base 2026-09-10**`  ⚠ **09-sep-2026 (v5.8):** el default del script sigue siendo `--base 2026-09-07` (offset 102). Con el re-fechado a D1 = jue 10-sep hay que pasar `--base 2026-09-10` para que la intensiva empiece en el **día 100** y no en el 103; si no se corrige el default de `gen_encaps_intensivo_2027.js`, la cuenta de la app queda desfasada 3 días. → escribe `DATA/_scripts/_encaps_intensivo_2027.sql` (backup `--bk` → `DELETE ... WHERE examen='ENCAPS' AND modo='INTENSIVO'` → `INSERT` de N filas `dia 100…`). El script avisa si la fecha cae en Semana Santa (⛔) o no es domingo (⚠), no siembra fines de semana ni feriados y continúa la numeración desde el día 99 (última fila del mantenimiento).
 3. **Revisar** el SQL (tipos por día: `senales · loop · pretest · sim100 · repaso_final · dress_rehearsal · medio_dia`; nº de viernes; barrido de 16 slots).
 4. **Aplicar** por MCP `execute_sql` (proyecto `qacynpqdrorpuegsmtcy`) el día de la confirmación; verificar con `select modo, tipo, count(*) from study_schedule where examen='ENCAPS' group by 1,2`.
-5. Con el pre-test rendido (5-feb): re-generar con `--pretest` y volver a aplicar (solo se reescriben las filas `INTENSIVO`; el mantenimiento 1-100 queda intacto). **Regla:** nunca correr `gen_encaps_mantenimiento_2027.js` después de sembrar la intensiva sin el filtro de modo (gaps_v3b vacío 7).
+5. Con el pre-test rendido (5-feb): re-generar con `--pretest` y volver a aplicar (solo se reescriben las filas `INTENSIVO`; el mantenimiento 1-99 queda intacto). **Regla:** nunca correr `gen_encaps_mantenimiento_2027.js` después de sembrar la intensiva sin el filtro de modo (gaps_v3b vacío 7).
 6. Ensayo recomendado en enero (sin aplicar): `--bk study_schedule_bk_intensivo_test` para no descubrir errores el 1-feb.
 
 ## 6) Gates y lectura de resultados
@@ -113,7 +113,7 @@ Lista sembrada por default en el script (`SIMS`, en este orden de viernes): 2025
 
 ## 7) Lo que falta fuera de este doc (pendiente, otros ficheros)
 
-- **App** (`src/lib/encapsPlan.ts`, `EncapsPlanView.tsx`, `EncapsCockpit.tsx`): `STUDY_TOTAL_DAYS` dinámico (máx(dia) leído de `study_schedule`) o constante 100+N al aplicar; rama `modo==='INTENSIVO'` en `itemsForDay` que pinte `extra.loop` (8 ítems chequeables con hora), `extra.sim`, `extra.repaso` (D-1/D-3/D-7) y `extra.drill_cifras`; `simDays` con tipos `pretest`/`sim100`/`dress_rehearsal` (`sim_n` = día) para guardar la nota en `study_sim_scores` contra la meta 85.
+- **App** (`src/lib/encapsPlan.ts`, `EncapsPlanView.tsx`, `EncapsCockpit.tsx`): `STUDY_TOTAL_DAYS` dinámico (máx(dia) leído de `study_schedule`) o constante 99+N al aplicar (hoy vale 99); rama `modo==='INTENSIVO'` en `itemsForDay` que pinte `extra.loop` (8 ítems chequeables con hora), `extra.sim`, `extra.repaso` (D-1/D-3/D-7) y `extra.drill_cifras`; `simDays` con tipos `pretest`/`sim100`/`dress_rehearsal` (`sim_n` = día) para guardar la nota en `study_sim_scores` contra la meta 85.
 - **Supabase:** `study_metrics.exam_date` (hoy 28-mar = Pascua) y `dias_a_examen` estático → calcularlo desde `exam_date`.
 - **Calendar:** overlays de viernes-simulacro y las horas del loop → reestructuración de febrero.
 - **Stock de preguntas:** el barrido consume ~30-40Q/día de críticos; el inventario (`_inventario_banco_por_codigo.json`) muestra que los sets de hoy cubren el arranque, no la intensiva → pre-generar sets `set_<codigo>_2/3` en enero y usar el 2026-II como cantera desde el 8-feb.

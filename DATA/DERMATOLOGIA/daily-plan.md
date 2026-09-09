@@ -1,9 +1,11 @@
 # DERMA · Plan tema-átomo/día (68 átomos · interdiario con Research)
 
-> ⚠ **DESACTUALIZADO — re-fechado a D1=9-sep-2026 (v5.7); fuente de verdad = el `.ts`**
-> (`src/lib/dermaDailyPlan.ts`: PLAN ÉLITE v2, 70 átomos, D1 mié 9-sep-2026, interdiario con Research,
-> sáb+dom libres, salta 25-dic/31-dic/1-ene). Este documento conserva la cola v1 (68 átomos, fechas
-> jun→dic-2026) solo como histórico; el temario vigente está en `PLAN_ELITE_2026-27.md`.
+> ⚠ **DESACTUALIZADO — re-fechado a D1 = vie 11-sep-2026 (régimen v5.8, 9-sep-2026); fuente de verdad = el `.ts`**
+> (`src/lib/dermaDailyPlan.ts`: PLAN ÉLITE v2.1, **70 átomos, d1 vie 11-sep-2026 → d70 vie 26-mar-2027**, interdiario
+> con Research, sáb+dom libres, salta 25-dic/31-dic/1-ene). En v5.8 no se fusionó ni se recortó nada: los 70 átomos
+> siguen enteros y el desfase se absorbe alargando el final. Este documento conserva la cola v1 (68 átomos, fechas
+> jun→dic-2026) solo como histórico — sus D# y fechas son de 2026-I y NO deben usarse; el temario vigente y el
+> índice de fechas están en `PLAN_ELITE_2026-27.md` §12.
 
 > **Motor:** el mismo de USMLE/MIR (`UsmleTodayPlan`/`MirTodayPlan`): sub-pestañas
 > HOY/Horario/7d/Temario, navegación Día X/68, progreso REAL marcable (empieza 0%,

@@ -1,12 +1,12 @@
 # 🎖️ RUTINA EXTREMA MILITARIZADA — objetivo vigente: **STEP 1 primario** (GO/NO-GO 15-ene-2027 · examen 25-29 ene) → **ENCAPS ≥17 primario en feb-mar 2027**
 > Doctrina de disciplina para Joseph. Generada 25-jun-2026 con investigación en vivo (Goggins · Jocko/SEALs · West Point/Ericsson · ciencia del sueño Walker/Diekelmann). El entrenador (Claude) la hace cumplir: cuestiona, no adula, mide por **% en ciego**, no por sensación.
-> **Tabla horaria y contrato actualizados el 05-sep-2026; re-fechados el 08-sep al régimen v5.7** (D1 = mié 9-sep-2026). La doctrina (§🔩) y la Ley Cero no cambian: se aplican igual al Step 1 que a ENCAPS.
+> **Tabla horaria y contrato actualizados el 05-sep-2026; re-fechados el 09-sep al régimen v5.8** (D1 = jue 10-sep-2026; el 9-sep tampoco se estudió y nada se recortó: el desfase se absorbe alargando el final). La doctrina (§🔩) y la Ley Cero no cambian: se aplican igual al Step 1 que a ENCAPS.
 
 ## 🎯 PRIORIDAD POR FASE (la que manda sobre cualquier memoria o chat antiguo)
 | Ventana | Frente PRIMARIO | Secundarios (nunca roban al primario) | Criterio de éxito |
 |---|---|---|---|
-| **mié 9-sep-2026 → vie 15-ene-2027** (D1-D90) | **USMLE Step 1** — 6h15/día | MIR 1h · ENCAPS 1h banqueo · LIVIANO 45' · Research↔Derma 45' · AURUM 1h · SYNAPSE 30' + vibecoding 45' | **GO/NO-GO vie 15-ene**: 2 NBME consecutivos ≥68 % + UWSA2 low-risk. Mínimos on-track por hito: NBME 25 ≥51 · 26 ≥55 · 27 ≥58 · 28 ≥61 · 29 ≥63 · 30 ≥65 |
-| 18-22 ene 2027 (D91-D95) + **examen semana 25-29 ene** (target mié 27) | Step 1 sprint | todo lo demás a mínimo | Free 120 vie 22-ene · fin de semana previo descanso real |
+| **jue 10-sep-2026 → vie 15-ene-2027** (D1-D89 del Step 1; el plan sigue hasta D95 = lun 25-ene) | **USMLE Step 1** — 6h15/día | MIR 1h · ENCAPS 1h banqueo · LIVIANO 45' · Research↔Derma 45' · AURUM 1h · SYNAPSE 30' + vibecoding 45' | **GO/NO-GO vie 15-ene**: 2 NBME consecutivos ≥68 % + UWSA2 low-risk. Mínimos on-track por hito: NBME 25 ≥51 · 26 ≥55 · 27 ≥58 · 28 ≥61 · 29 ≥63 · 30 ≥65 |
+| 18-25 ene 2027 (D90-D95, Fase C) + **examen semana 25-29 ene** (target mié 27) | Step 1 sprint | todo lo demás a mínimo | Free 120 vie 22-ene (D94) · D95 = lun 25-ene (rapid review) · fin de semana previo descanso real |
 | **feb → fin-mar 2027** | **ENCAPS 2027-I** vuelve a principal (loop completo) | MIR, Business (CURVA/DENSA arrancan) | **≥17/20** (percentil 1 %) · pre-test de arranque = examen 2026-II reservado |
 | siempre | — | MIR (enero 2030) es maratón: nunca se sacrifica el sueño por él | 800-1000 cards MIR sólidas a marzo 2028 |
 
@@ -18,7 +18,7 @@ Un fail del Step 1 queda **para siempre** en ECFMG → si el 15-ene no hay GO, l
 - Diekelmann & Born 2010: lo que estudias se consolida **durante el sueño NREM** (replay hipocampal). Sin esa noche, lo de hoy no se "guarda".
 - El sueño es un **bloque de estudio invisible.** Quien duerme 3-4h "para estudiar más" borra con el codo lo que escribió con la mano. Goggins/SEALs/Hell Week = privación como **estresor de selección física**, NO modelo de aprendizaje. Bill Gates lo intentó y se retractó.
 - **Si falta tiempo, se sacrifica VOLUMEN de preguntas nuevas, JAMÁS las 7h.**
-- (v5.7) Lo mismo vale para el Step 1: 95 días de tarjetas de MECANISMO se consolidan de noche. Por eso la última comida sólida es a las 17:15 y después del baile solo agua: la digestión activa fragmenta el sueño profundo (Walker).
+- (v5.8) Lo mismo vale para el Step 1: 95 días de tarjetas de MECANISMO se consolidan de noche. Por eso la última comida sólida es a las 17:15 y después del baile solo agua: la digestión activa fragmenta el sueño profundo (Walker).
 
 ## 🔩 DOCTRINA (motor mental — Goggins + Jocko)
 1. **Discipline = Freedom (Jocko):** la disciplina, no la motivación. La motivación es voluble; la estructura es fiable. *"Don't think. Do."*

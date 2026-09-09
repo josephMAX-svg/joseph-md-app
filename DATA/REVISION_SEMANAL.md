@@ -1,12 +1,12 @@
-# 📋 REVISIÓN SEMANAL — sábado 07:15-07:35 (20') · v5.7 · 5-sep-2026
+# 📋 REVISIÓN SEMANAL — sábado 07:15-07:35 (20') · v5.8 · re-fechado 9-sep-2026
 
-> Ritual único que revisa los 9 frentes del régimen v5.7 (D1 = mié 9-sep-2026, Step 1 = principal) con
+> Ritual único que revisa los 9 frentes del régimen v5.8 (D1 = jue 10-sep-2026, Step 1 = principal) con
 > **10 métricas** y una sola pregunta: *¿el sistema va on-track o hay que corregir ESTA semana?*
 > Palmerton revisa el checklist G "en cada hito NBME" (~3 semanas): demasiado grueso para un plan donde
 > 1 día perdido = +1 hábil. Aquí la cadencia es semanal y el trabajo de recopilar lo hace un script.
 >
 > **Franja**: sábado 07:15-07:35 (hueco libre tras el desayuno; no toca las franjas L-V). El evento en el
-> Google Calendar NO se ha creado: decisión de Joseph (pendiente). **Semana 1 = sáb 12-sep-2026.**
+> Google Calendar NO se ha creado: decisión de Joseph (pendiente). **Semana 1 = sáb 12-sep-2026** (no se movió en v5.8: las 20 semanas se anclan a los hitos, que conservan su fecha).
 >
 > **Pre-relleno automático** (viernes 21:00 o sábado 07:10, 1 comando):
 > `node DATA/_scripts/gen_revision_semanal.js` → `DATA/USMLE/REVISIONES/S<NN>_<sábado>.md` + append en
@@ -93,8 +93,8 @@ copy(JSON.stringify(Object.fromEntries(Object.keys(localStorage).filter(k => k.s
 | S9 | 7-nov | — | — |
 | S10 | 14-nov | NBME 27 (≥ 57 %) | — |
 | S11 | 21-nov | — | — |
-| S12 | 28-nov | — (cierre vibecoding S12) | — |
-| S13 | 5-dic | NBME 28 (≥ 61 %) | — |
+| S12 | 28-nov | — (SHIP S11 del vibecoding) | — |
+| S13 | 5-dic | NBME 28 (≥ 61 %) · **SHIP S12 = cierre del vibecoding** | — |
 | **S14** | 12-dic | — | **sí (7-11 dic)** |
 | S15 | 19-dic | NBME 29 (≥ 63 %) | — |
 | S16 | 26-dic | (25-dic feriado) | — |

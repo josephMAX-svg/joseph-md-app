@@ -22,7 +22,7 @@
  *
  * Uso:
  *   node DATA/_scripts/gen_encaps_minisim.js 2026-09-11                → BANCO_PROPIO/minisim_2026-09-11.json + .html (viernes)
- *   node DATA/_scripts/gen_encaps_minisim.js --banco 2026-09-09        → BANCO_PROPIO/banco_2026-09-09.json + .html: BANCO DEL DÍA
+ *   node DATA/_scripts/gen_encaps_minisim.js --banco 2026-09-10        → BANCO_PROPIO/banco_2026-09-10.json + .html: BANCO DEL DÍA
  *        (lun-jue): 16-20Q del código y SUB-EJE de la fila banqueo1h de ese día + 4-5Q del secundario de cola larga;
  *        corrección INMEDIATA pregunta a pregunta (Palmerton); ≥40 % recall directo cuando el stock lo permite.
  *   node DATA/_scripts/gen_encaps_minisim.js --eval 2026-09-10         → BANCO_PROPIO/eval_2026-09-10.json + .html: EVAL ANCLADA
@@ -484,12 +484,12 @@ function modoInventario() {
   const usados = usadosPrevios('__ninguno__');
   // demanda desde el SQL de mantenimiento
   const demanda = {}; const D = (c, k, v = 1) => { const cc = poolCode(c); demanda[cc] = demanda[cc] || { sesiones_principal: 0, slots_secundario: 0, viernes_cola_larga: 0 }; demanda[cc][k] += v; };
-  let filas = 0, minisims = 0;
+  let filas = 0, minisims = 0; const fechasSQL = [];
   try {
     for (const l of fs.readFileSync(SQL_MANT, 'utf8').split('\n')) {
       if (!l.startsWith(`('ENCAPS',`)) continue;
       const m = l.match(/^\('ENCAPS',\d+,'([\d-]+)'/); if (!m) continue;
-      const f = filaSQL(m[1]); if (!f) continue; filas++;
+      const f = filaSQL(m[1]); if (!f) continue; filas++; fechasSQL.push(f.fecha);
       if (f.tipo === 'banqueo1h') { D(f.codigo, 'sesiones_principal'); for (const s of f.secundarios) if (s.rol === 'cola_larga') D(s.codigo, 'slots_secundario'); for (const s of f.secundarios) if (s.rol === 'paraguas') D(s.codigo, 'sesiones_principal', 0); }
       if (f.tipo === 'mini_sim') { minisims++; for (const c of f.extra.cola_larga || []) D(c, 'viernes_cola_larga'); }
     }
@@ -521,7 +521,7 @@ function modoInventario() {
     const deficit = demandaQ - disponibles;
     inv[c] = {
       area, critico: CRITICOS_V3.includes(c), rebote: REBOTE_V3.includes(c), cola_larga: COLA_LARGA.some((x) => x.codigo === c),
-      demanda_sembrada: { ...d, q_estimadas_102_dias: demandaQ, receta: '16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos' },
+      demanda_sembrada: { ...d, q_estimadas_regimen: demandaQ, receta: '16-20Q principal · 4-5Q secundario · 5-6Q/viernes entre 2 códigos' },
       oferta: {
         banco_propio_pool: { total: enPool.length, disponibles_no_usados: disponibles, ya_consumidos_en_runner: enPool.length - disponibles, por_fichero: porFichero, por_sub_eje: subEjes, con_clave_oficial: enPool.filter((x) => /CLAVE OFICIAL/i.test(x.verificado_contra || '')).length },
         examenes_reales_etiquetados: realesPorCod[c] || { total: 0, por_proceso: {} },
@@ -533,11 +533,14 @@ function modoInventario() {
       deficit_vs_demanda: deficit, estado: deficit <= 0 ? 'cubierto' : deficit <= 40 ? 'déficit moderado (cubrir con QX/Theomed del área o 1 set nuevo)' : 'DÉFICIT (pre-generar sets nuevos)',
     };
   }
-  const totales = { pool_total: pool.length, pool_disponible: pool.filter((x) => !usados.has(x.id)).length, filas_sql: filas, minisims_sembrados: minisims, demanda_total_q: Object.values(inv).reduce((s, x) => s + x.demanda_sembrada.q_estimadas_102_dias, 0), deficit_codigos: Object.entries(inv).filter(([, v]) => v.deficit_vs_demanda > 0).map(([k, v]) => `${k}:${v.deficit_vs_demanda}`) };
-  const out = { _meta: { descripcion: 'Inventario de preguntas por CÓDIGO v3: oferta (BANCO_PROPIO: sets + banco_items_v1 + set_reales_otros; exámenes reales etiquetados; claves.json de julio; QX/Theomed por área) vs demanda sembrada en study_schedule (los días de mantenimiento que haya en _encaps_mantenimiento_2027.sql; hoy 100, D1 = mié 9-sep-2026) y déficit. Regenerar: node DATA/_scripts/gen_encaps_minisim.js --inventario', generado: new Date().toISOString().slice(0, 10), rotacion: 'I-3 10 · V-2 10 · II-3 6 · resto 5 (CICLO de _encaps_ciclo_v3.js · siembra de 100 días desde el 08-sep-2026)', lista_negra: '2026-II excluido de toda oferta hasta el pre-test', totales }, por_codigo: inv };
+  // ventana del régimen leída del SQL (no se asume: D1 y cierre salen de las propias filas sembradas)
+  const D1_SQL = fechasSQL[0] || '—', DFIN_SQL = fechasSQL[fechasSQL.length - 1] || '—';
+  const rotacionTxt = Object.entries(demanda).filter(([, v]) => v.sesiones_principal > 0).sort((a, b) => b[1].sesiones_principal - a[1].sesiones_principal || (a[0] < b[0] ? -1 : 1)).map(([c, v]) => `${c} ${v.sesiones_principal}`).join(' · ');
+  const totales = { pool_total: pool.length, pool_disponible: pool.filter((x) => !usados.has(x.id)).length, filas_sql: filas, minisims_sembrados: minisims, dias_sembrados: filas, d1: D1_SQL, cierre: DFIN_SQL, demanda_total_q: Object.values(inv).reduce((s, x) => s + x.demanda_sembrada.q_estimadas_regimen, 0), deficit_codigos: Object.entries(inv).filter(([, v]) => v.deficit_vs_demanda > 0).map(([k, v]) => `${k}:${v.deficit_vs_demanda}`) };
+  const out = { _meta: { descripcion: `Inventario de preguntas por CÓDIGO v3: oferta (BANCO_PROPIO: sets + banco_items_v1 + set_reales_otros; exámenes reales etiquetados; claves.json de julio; QX/Theomed por área) vs demanda sembrada en study_schedule (los días de mantenimiento que haya en _encaps_mantenimiento_2027.sql; hoy ${filas} días, D1 = ${D1_SQL}, cierre = ${DFIN_SQL}) y déficit. Regenerar: node DATA/_scripts/gen_encaps_minisim.js --inventario`, generado: new Date().toISOString().slice(0, 10), rotacion: `${rotacionTxt} (sesiones banqueo1h por código en el SQL vigente · CICLO de _encaps_ciclo_v3.js · siembra de ${filas} días desde el ${D1_SQL})`, lista_negra: '2026-II excluido de toda oferta hasta el pre-test', totales }, por_codigo: inv };
   fs.writeFileSync(path.join(BANCO, '_inventario_banco_por_codigo.json'), JSON.stringify(out, null, 1) + '\n', 'utf8');
   console.log('OK → _inventario_banco_por_codigo.json ·', JSON.stringify(totales));
-  for (const [k, v] of Object.entries(inv)) console.log(`${k.padEnd(10)} demanda ${String(v.demanda_sembrada.q_estimadas_102_dias).padStart(4)} · pool ${String(v.oferta.banco_propio_pool.disponibles_no_usados).padStart(3)} disp (${v.oferta.banco_propio_pool.total} tot) · reales ${String(v.oferta.examenes_reales_etiquetados.total).padStart(2)} · déficit ${String(v.deficit_vs_demanda).padStart(4)} · ${v.estado}`);
+  for (const [k, v] of Object.entries(inv)) console.log(`${k.padEnd(10)} demanda ${String(v.demanda_sembrada.q_estimadas_regimen).padStart(4)} · pool ${String(v.oferta.banco_propio_pool.disponibles_no_usados).padStart(3)} disp (${v.oferta.banco_propio_pool.total} tot) · reales ${String(v.oferta.examenes_reales_etiquetados.total).padStart(2)} · déficit ${String(v.deficit_vs_demanda).padStart(4)} · ${v.estado}`);
 }
 function escribir(base, doc) {
   fs.mkdirSync(OUT_DIR, { recursive: true });
