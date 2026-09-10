@@ -1,9 +1,9 @@
 # LIVIANO · Protocolo clínico v1 (esqueleto → se completa en la Academia)
 
-> **Estado (5-sep-2026): ESQUELETO · fechas al régimen v5.8 (9-sep-2026).** Cada sección la redacta una
-> "Síntesis de módulo" de LIVIANO Academia (D1 = **jue 10-sep-2026**, v5.8 — el temario no se recortó, solo
-> se re-fechó) y el capstone D88 (**jue 14-ene-2027**) las ensambla. Los D# de abajo son los del plan
-> generado el 9-sep: **la fecha es lo estable, el número de día puede cambiar** al re-slotear los casos. Aquí está todo lo que **ya se
+> **Estado (5-sep-2026): ESQUELETO · fechas al régimen v5.9 (10-sep-2026).** Cada sección la redacta una
+> "Síntesis de módulo" de LIVIANO Academia (D1 = **vie 11-sep-2026**, v5.9 — el temario no se recortó, solo
+> se re-fechó) y el capstone D89 (**lun 18-ene-2027**) las ensambla. Los D# de abajo son los del plan
+> generado el 10-sep y parseados con node: **la fecha es lo estable, el número de día puede cambiar** al re-slotear los casos. Aquí está todo lo que **ya se
 > puede afirmar desde el currículo, con fuente**; lo que exige ficha técnica, guía específica, QF/abogado o
 > dato de Perú va como **A VERIFICAR (dueño · día)**. **Ninguna dosis se escribe de memoria.**
 > Espejo en la app: `LIVIANO_PROTOCOLO` (`src/lib/empresaData.ts`) → Logística F5 → "Protocolo clínico".
@@ -13,20 +13,20 @@
 > transversal: CMP Art. 73 — no prometer cifras de pérdida de peso; los datos de ensayos se presentan como
 > promedios de estudio, no como resultado individual.
 
-**Criterio de éxito de la v1**: el caso integral del viernes 16 (D89 · vie 15-ene-2027: varón 48 a, −16 % en 6 meses,
+**Criterio de éxito de la v1**: el caso integral del viernes 16 (D88 · vie 15-ene-2027: varón 48 a, −16 % en 6 meses,
 "¿ya puedo dejar todo?", esposa presente) **se resuelve solo con este protocolo**. Lo que falte es una sección que falta.
 
 | Sección | La redacta | Día | Estado |
 |---|---|---|---|
-| §1 Fundamento | Síntesis M1 | D19 · mar 6-oct | borrador |
-| §2 Elegibilidad + titulación | Síntesis M2 | D38 · lun 2-nov | borrador (dosis A VERIFICAR) |
-| §3 Política nutricional | Síntesis M3 | D58 · lun 30-nov | borrador |
-| §4 Estándar proteína/fuerza + qué medir | Síntesis M4 | D68 · lun 14-dic | borrador |
-| §5 Consulta 5As · automonitoreo · cadencia de check-in | Síntesis M5 | D86 · mar 12-ene | borrador |
-| §6 Derivación y límites de competencia | Síntesis M6 | D76 · jue 24-dic | borrador |
-| Anexo A · Acceso en Perú | Módulo 7 | D39-D41 · D43-D44 · 3-nov → 10-nov (+ D45, D90) | pendiente |
-| Anexo B · Validación con casos | viernes 1-16 | D7 (18-sep) → D89 (15-ene) | en curso |
-| Ensamblaje v1 + ruta de credencial | Capstone | D88 · jue 14-ene | pendiente |
+| §1 Fundamento | Síntesis M1 | D19 · mié 7-oct | borrador |
+| §2 Elegibilidad + titulación | Síntesis M2 | D38 · mar 3-nov | borrador (dosis A VERIFICAR) |
+| §3 Política nutricional | Síntesis M3 | D58 · mar 1-dic | borrador |
+| §4 Estándar proteína/fuerza + qué medir | Síntesis M4 | D68 · mar 15-dic | borrador |
+| §5 Consulta 5As · automonitoreo · cadencia de check-in | Síntesis M5 | D86 · mié 13-ene | borrador |
+| §6 Derivación y límites de competencia | Síntesis M6 | D76 · lun 28-dic | borrador |
+| Anexo A · Acceso en Perú | Módulo 7 | D39-D40 · D42-D44 · 4-nov → 11-nov (+ D45, D90) | pendiente |
+| Anexo B · Validación con casos | viernes 1-16 | D6 (18-sep) → D88 (15-ene) | en curso |
+| Ensamblaje v1 + ruta de credencial | Capstone | D89 · lun 18-ene | pendiente |
 
 ---
 
@@ -59,7 +59,7 @@
 **Frase de apertura del programa**: "No fallaste tú: falló el método, porque peleaba contra tu biología. Ahora
 vamos a tratar la biología."
 
-**Pendiente D19 (mar 6-oct)**: redactar las 10 líneas finales para el kit de bienvenida (versión paciente).
+**Pendiente D19 (mié 7-oct)**: redactar las 10 líneas finales para el kit de bienvenida (versión paciente).
 
 ## §2 · Elegibilidad, screening, consentimiento y titulación (M2 → D38)
 

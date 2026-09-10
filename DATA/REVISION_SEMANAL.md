@@ -1,12 +1,12 @@
-# 📋 REVISIÓN SEMANAL — sábado 07:15-07:35 (20') · v5.8 · re-fechado 9-sep-2026
+# 📋 REVISIÓN SEMANAL — sábado 07:15-07:35 (20') · v5.9 · re-fechado 10-sep-2026
 
-> Ritual único que revisa los 9 frentes del régimen v5.8 (D1 = jue 10-sep-2026, Step 1 = principal) con
+> Ritual único que revisa los 9 frentes del régimen v5.9 (D1 = vie 11-sep-2026, Step 1 = principal) con
 > **10 métricas** y una sola pregunta: *¿el sistema va on-track o hay que corregir ESTA semana?*
 > Palmerton revisa el checklist G "en cada hito NBME" (~3 semanas): demasiado grueso para un plan donde
 > 1 día perdido = +1 hábil. Aquí la cadencia es semanal y el trabajo de recopilar lo hace un script.
 >
 > **Franja**: sábado 07:15-07:35 (hueco libre tras el desayuno; no toca las franjas L-V). El evento en el
-> Google Calendar NO se ha creado: decisión de Joseph (pendiente). **Semana 1 = sáb 12-sep-2026** (no se movió en v5.8: las 20 semanas se anclan a los hitos, que conservan su fecha).
+> Google Calendar NO se ha creado: decisión de Joseph (pendiente). **Semana 1 = sáb 12-sep-2026** (tampoco se movió en v5.9: las 20 semanas se anclan a los sábados y a los hitos, que conservan su fecha — el D1 del régimen pasó al vie 11-sep, dentro de esa misma semana 1).
 >
 > **Pre-relleno automático** (viernes 21:00 o sábado 07:10, 1 comando):
 > `node DATA/_scripts/gen_revision_semanal.js` → `DATA/USMLE/REVISIONES/S<NN>_<sábado>.md` + append en
@@ -102,6 +102,10 @@ copy(JSON.stringify(Object.fromEntries(Object.keys(localStorage).filter(k => k.s
 | S18 | 9-ene | UWSA2 (low risk) | — |
 | S19 | 16-ene | NBME 31 · GO/NO-GO (≥ 68 %) | — |
 | S20 | 23-ene | NBME 32 (lun) · NBME 33 (mié) · Free 120 (vie ≥ 70 %) → examen 25-29 ene | — |
+
+⚠ **v5.9:** el plan Step 1 ya no termina el lunes de la semana de examen sino el **mar 26-ene-2027 (D95)**, así que
+la semana 21 (25-29 ene) contiene D94 y D95 de taper **y** la ventana de examen. No se añade una S21 de revisión: el
+cierre de esa semana es el post-mortem del examen, no el ritual de 20'.
 
 ## Historial
 

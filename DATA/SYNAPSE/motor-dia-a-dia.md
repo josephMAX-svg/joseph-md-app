@@ -1,10 +1,12 @@
 # SYNAPSE — Motor día-a-día (diseño y operación)
 
 > Construido el 10-jun-2026 por el chat SYNAPSE (PROMPT_CHAT_SYNAPSE.md).
-> **v5.8 · corrimiento (9-sep-2026)**: D1 = **jue 10-sep-2026** (el 9-sep tampoco se estudió) → el plan
-> se regeneró con `node DATA/_scripts/gen_synapse_plan.js 2026-09-10`: **82 días · jue 10-sep → lun 30-nov-2026**,
-> 12 semanas (S1 10-13 sep de 4 días · S12 23-30 nov de 8 días), misma franja 12:30-13:00 y mismo currículo.
-> No se recortó ninguna misión: el desfase se absorbe alargando el final.
+> **v5.9 · corrimiento (10-sep-2026)**: D1 = **vie 11-sep-2026** (el 10-sep tampoco se estudió; octavo
+> corrimiento del ciclo 31-ago→11-sep) → el plan se regeneró con
+> `node DATA/_scripts/gen_synapse_plan.js 2026-09-11`: **82 días · vie 11-sep → mar 1-dic-2026**,
+> 12 semanas (**S1 = 11-13 sep, 3 días · S12 = 23-nov→1-dic, 9 días**), misma franja 12:30-13:00 y mismo
+> currículo. No se recortó ninguna misión: el desfase se absorbe alargando el final. Cifras leídas con node
+> de `synapseDailyPlan.ts`, no estimadas.
 >
 > **v5.7 · contenido (5-sep-2026)**: F1 (sem 9-12) = stack del vibecoding (Claude Code docs · Academy skills/subagentes/MCP/
 > Claude Code in Action · Supabase · n8n) en vez de CS50P; F0 se AUDITA (✓ si ya hecho, no se reinicia);
@@ -16,7 +18,7 @@
 
 | Pieza | Archivo | Qué hace |
 |---|---|---|
-| Datos del plan | `src/lib/synapseDailyPlan.ts` | **GENERADO** — 82 días (12 semanas, **jue 10-sep → lun 30-nov-2026 · v5.8**; regenerar con `node DATA/_scripts/gen_synapse_plan.js YYYY-MM-DD`), bloques A/B/C/PC/R por día |
+| Datos del plan | `src/lib/synapseDailyPlan.ts` | **GENERADO** — 82 días (12 semanas, **vie 11-sep → mar 1-dic-2026 · v5.9**; regenerar con `node DATA/_scripts/gen_synapse_plan.js YYYY-MM-DD`), bloques A/B/C/PC/R por día |
 | Generador | `DATA/_scripts/gen_synapse_plan.js` | Lee `curricula/_extracted.json`, valida cada URL contra los sets verificados (cero inventos) y emite el TS + los MDs de curricula |
 | Temarios reales | `DATA/SYNAPSE/curricula/*.md` + `_extracted.json` | 15 fuentes extraídas con WebFetch/oEmbed + verificación adversarial (workflow de 30 agentes, 10-jun-2026) |
 | UI | `src/components/study/SynapseTodayPlan.tsx` | Pestaña **⚡ Hoy** (primera) de `SynapseHub`: HOY / 7 días / 12 semanas, checkbox real |
@@ -29,21 +31,22 @@
 - **B (10', audio)** — rotación fija por día de semana: Lun No Priors · Mar Dwarkesh (Dario→Demis→Sholto&Trenton→Latent Space) · Mié Lex #452 (capítulo real del outline, 40 entradas con timestamps) · Jue The Batch · Vie canal Anthropic (5 vídeos verificados por oEmbed) · Sáb comodín (retoma lo pendiente).
 - **C (5', lectura móvil)** — Lun Pro Git (capítulo real con URL) · Mar serie Prompt injection de Willison · Mié The Python Tutorial (sección real) · Jue Automate the Boring Stuff 3ª ed. (capítulo real) · Vie research de Anthropic (lethal trifecta, many-shot, constitutional classifiers, RSP) · Sáb comodín.
 - **PC (sábado 15:00-17:00)** — **SHIP del proyecto de la semana** del vibecoding 04:15 (criterio de aceptación en `DATA/SYNAPSE/vibecoding_proyectos.json`). Desde v5.7 el generador lee el `ship` REAL de `VIBE_PROYECTOS` en vez de asumir "sábado de la semana n". Nada se arrastra a la semana siguiente.
-  ✔ **Verificado el 9-sep (v5.8)**: los sábados del plan llevan `SHIP proyecto Sn` alineado con `VIBE_PROYECTOS.ship`
-  (sáb 19-sep = S1 … sáb 28-nov = S11); el sáb 12-sep, que no cierra ningún proyecto, anuncia "SHIP el 2026-09-19".
-  ⚠ **Queda un desajuste de borde**: el **SHIP S12 = sáb 5-dic-2026** cae fuera de los 82 días del plan SYNAPSE,
-  que termina el lun 30-nov-2026 (último sábado 28-nov). **Manda `VIBE_PROYECTOS.ship`**: ese sábado se ejecuta
+  ✔ **Verificado el 10-sep (v5.9)**: los 12 sábados del plan (12-sep … 28-nov) llevan `SHIP proyecto Sn` alineado
+  con `VIBE_PROYECTOS.ship` (sáb 19-sep = S1 … sáb 28-nov = S11); el sáb 12-sep, que no cierra ningún proyecto,
+  anuncia "SHIP el 2026-09-19".
+  ⚠ **Sigue el desajuste de borde**: el **SHIP S12 = sáb 5-dic-2026** cae fuera de los 82 días del plan SYNAPSE,
+  que termina el mar 1-dic-2026 (último sábado 28-nov). **Manda `VIBE_PROYECTOS.ship`**: ese sábado se ejecuta
   aunque SYNAPSE ya no lo liste.
 - **Domingo = Feynman del proyecto (10', opcional)** — explicar en voz alta qué construiste y cómo funciona; el domingo sigue libre (v5 sáb/dom libres) y es marcable para conservar la racha.
 
 ## Cobertura (12 semanas honestas a 30'/día)
 
-- **F0 · La Escuela de Anthropic = semanas 1-8** (45 misiones A · **jue 10-sep → dom 1-nov-2026**): Academy + AI Fluency
+- **F0 · La Escuela de Anthropic = semanas 1-8** (45 misiones A · **vie 11-sep → dom 1-nov-2026**): Academy + AI Fluency
   (13 lecciones reales) + Claude 101 / Code 101 / Platform 101 (temarios reales) +
   ensayo Building Effective Agents (16 secciones reales) + Karpathy Intro (3 tramos
   por chapters reales) + Deep Dive (11 tramos por los 24 capítulos reales, con `&t=`)
   + 3Blue1Brown (8 vídeos verificados; el 9º —invitado— va al PC de la sem 8).
-- **F1 · stack del vibecoding = semanas 9-12** (25 misiones A · **lun 2-nov → lun 30-nov-2026**): sem 9 Claude Code core (memoria · skills · hooks · subagentes; docs + Academy) · sem 10 MCP · headless · Agent SDK · plugins/workflows · sem 11 Supabase (RLS · select · triggers · webhooks · Edge Functions) · sem 12 n8n + Claude Code in Action + best practices. Temarios extraídos con WebFetch el 5-sep-2026 (`curricula/claude-code-docs.md`, `academy-*.md`, `supabase-docs.md`, `n8n-docs.md`; 106/106 URLs OK en check_links). CS50P/Automate quedan como biblioteca de consulta (Python se lee, no se memoriza).
+- **F1 · stack del vibecoding = semanas 9-12** (25 misiones A · **lun 2-nov → mar 1-dic-2026**): sem 9 Claude Code core (memoria · skills · hooks · subagentes; docs + Academy) · sem 10 MCP · headless · Agent SDK · plugins/workflows · sem 11 Supabase (RLS · select · triggers · webhooks · Edge Functions) · sem 12 n8n + Claude Code in Action + best practices. Temarios extraídos con WebFetch el 5-sep-2026 (`curricula/claude-code-docs.md`, `academy-*.md`, `supabase-docs.md`, `n8n-docs.md`; 106/106 URLs OK en check_links). CS50P/Automate quedan como biblioteca de consulta (Python se lee, no se memoriza).
 - **F0 no se reinicia**: sus 45 A-units llevan `audit:true` (chip "auditar: ✓ si ya hecho") porque F0 y la minifase corrieron jun-ago con progreso solo en localStorage. Día 1 = auditoría de 5' en "My courses" de la Academy.
 - Nota: `synapseData.ts` decía "F0 sem 1-4"; a 30 min/día reales F0 ocupa 8 semanas.
   El motor manda sobre la estimación optimista — honestidad antes que calendario bonito.

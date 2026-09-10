@@ -18,7 +18,7 @@ import { usmleAnkiDeck, ANKIWEB } from '../../lib/ankiLinks';
 
 /**
  * UsmleTodayPlan — Plan Step 1 día-a-día, estilo Perú/ENCAPS pero mejor.
- * Botones Step 1/2/3 · navegación Día X/99 (◄►, v5.4) · sub-pestañas HOY/Horario/7d/Temario.
+ * Botones Step 1/2/3 · navegación Día X/95 (◄►) · sub-pestañas HOY/Horario/7d/Temario.
  * Qbankly SOLO abre en Edge → cada link Qbankly ofrece botón "Edge" (microsoft-edge:)
  * además del de Chrome. 7 días y temario son clicables → saltan al día. El badge de
  * sistema lleva al Temario con el progreso real del plan por sistema.

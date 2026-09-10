@@ -32,7 +32,7 @@ const INICIO = process.argv[2] || '2027-01-04';
 const FIN = process.argv[3] || '2027-03-31';
 for (const s of [INICIO, FIN]) if (!/^20\d\d-\d\d-\d\d$/.test(s)) throw new Error('fecha inválida: ' + s);
 /** hasta esta fecha (incl.) el bloque va en modo reducido (Fase B/C Step 1 · examen 25-29 ene) */
-const REDUCIDO_HASTA = '2027-01-25'; // v5.8: el Step 1 termina D95 = lun 25-ene (antes vie 22-ene)
+const REDUCIDO_HASTA = '2027-01-26'; // v5.9: el Step 1 termina D95 = mar 26-ene (v5.8: lun 25-ene)
 
 // ── calendario (idéntico a remap_inicio.js) ──
 const SKIP_FIJOS = new Set(['2026-12-25', '2026-12-31', '2027-01-01']);

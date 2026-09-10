@@ -404,13 +404,13 @@ export const LIVIANO_LOGISTICA = {
 // ===================== PENDIENTES CRÍTICOS (riesgos) =====================
 // v2 (sep-2026): los 2 pendientes ROJOS (abiertos desde jun-2026 sin dueño) pasan a TAREAS con
 // dueño, día del plan LIVIANO Academia (Módulo 7 · Acceso en Perú) y salida verificable
-// (fila en LIVIANO_ACCESO_PERU). Las fechas son las del plan v5.7 (D1 = mié 9-sep-2026): si el
+// (fila en LIVIANO_ACCESO_PERU). Las fechas son las del plan v5.9 (D1 = vie 11-sep-2026): si el
 // plan se corre con remap_inicio.js, manda `planDia` (la fecha se resuelve contra LIV_DIAS).
 export interface PendienteLiviano {
   titulo: string; detalle: string; nivel: Semaforo;
   dueno?: string;      // quién cierra la tarea
   planDia?: number;    // día del plan LIVIANO Academia en que se ejecuta
-  fecha?: string;      // fecha límite (plan v5.7) — se recalcula si el plan se corre
+  fecha?: string;      // fecha límite (plan v5.9) — se recalcula si el plan se corre
   salida?: string;     // entregable verificable que cierra el pendiente
 }
 export const LIVIANO_PENDIENTES: PendienteLiviano[] = [
@@ -431,7 +431,7 @@ export const LIVIANO_PENDIENTES: PendienteLiviano[] = [
 // Tabla de VERIFICACIÓN con regla anti-alucinación: ninguna celda se rellena sin fuente primaria
 // (captura fechada del portal público de DIGEMID, cotización escrita de farmacia, dictamen de QF /
 // abogado). Hasta entonces cada celda dice "PENDIENTE DE VERIFICACIÓN". Se produce en los días
-// D39-D48 del plan (2-nov → 13-nov-2026, v5.7) y se re-verifica en cada REVISIÓN TRIMESTRAL.
+// D39-D48 del plan (v5.9; las fechas se recalculan desde livianoStudyPlan) y se re-verifica en cada REVISIÓN TRIMESTRAL.
 export type EstadoVerificacion = 'PENDIENTE DE VERIFICACIÓN' | 'VERIFICADO' | 'SIN REGISTRO HALLADO';
 export interface AccesoPeruFila {
   molecula: string;          // molécula + marca de referencia (la marca en Perú se confirma en el registro)
@@ -465,7 +465,7 @@ export const LIVIANO_ACCESO_PERU_REGLAS = {
   titulo: 'Protocolo de verificación (Módulo 7 · Acceso en Perú)',
   dueno: 'Joseph (+ QF y abogado de salud — A VERIFICAR nombres)',
   planDias: [39, 41, 42, 43, 44],
-  ventana: 'D39-D48 · lun 2-nov → vie 13-nov-2026 (v5.7) · re-verificación en cada revisión trimestral (D45 10-nov, D89 14-ene)',
+  ventana: 'D39-D48 (v5.9 · noviembre-2026) · re-verificación en cada revisión trimestral · fechas exactas en livianoStudyPlan',
   pasos: [
     'D39 · Registro: consultar el portal público de DIGEMID (URL A VERIFICAR), capturar pantalla con fecha por molécula; si no aparece → "SIN REGISTRO HALLADO (fecha)".',
     'D41 · Condición de venta: leerla en el registro (con receta / receta retenida) y mapear el flujo receta → farmacia → paciente en el CRM.',
@@ -506,9 +506,9 @@ export interface ProtocoloSeccion {
   pendientes: string[];     // lo que falta verificar (ficha técnica, guía, QF)
 }
 export const LIVIANO_PROTOCOLO = {
-  version: 'v1 · esqueleto (sep-2026) → v1 completa el D88 (13-ene-2027, v5.7)',
+  version: 'v1 · esqueleto (sep-2026) → v1 completa en el capstone (D89, v5.9)',
   doc: 'DATA/BUSINESS/LIVIANO_PROTOCOLO_CLINICO_v1.md',
-  criterioExito: 'El caso integral del viernes 16 (D87) se resuelve SOLO con el protocolo. Lo que falte es una sección que falta.',
+  criterioExito: 'El caso integral del viernes 16 (D88) se resuelve SOLO con el protocolo. Lo que falte es una sección que falta.',
   secciones: [
     { id: 'fundamento', titulo: '§1 Fundamento: por qué tratamiento crónico', produceEn: 'Síntesis módulo 1', planDias: [19], estado: 'borrador',
       contenido: ['Obesidad = disfunción del sistema de homeostasis energética (Schwartz 2017); set point elevado; adaptación metabólica persiste años → tratamiento crónico como la hipertensión.', 'Metáforas oficiales: termostato · timbre · acelerador/freno.'],

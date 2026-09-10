@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "descripcion": "Catálogo de los 12 proyectos semanales del VIBECODING 04:15-05:00 (L-V, 45') · fuente única para gen_vibecoding_plan.js (→ src/lib/vibecodingPlan.ts + VIBECODING_12_PROYECTOS.md) y para el bloque PC 'SHIP proyecto N' de gen_synapse_plan.js. Backlog REAL del repo (auditoría 2-jul + vacíos Palmerton v3 4-sep-2026). Editar AQUÍ y regenerar: node DATA/_scripts/gen_vibecoding_plan.js 2026-09-10 (régimen v5.8, D1 = jue 10-sep-2026)",
+    "descripcion": "Catálogo de los 12 proyectos semanales del VIBECODING 04:15-05:00 (L-V, 45') · fuente única para gen_vibecoding_plan.js (→ src/lib/vibecodingPlan.ts + VIBECODING_12_PROYECTOS.md) y para el bloque PC 'SHIP proyecto N' de gen_synapse_plan.js. Backlog REAL del repo (auditoría 2-jul + vacíos Palmerton v3 4-sep-2026). Editar AQUÍ y regenerar: node DATA/_scripts/gen_vibecoding_plan.js 2026-09-11 (régimen v5.9, D1 = vie 11-sep-2026)",
     "regla": "Se mide por OUTPUT verificable (commit/URL viva/test verde), nunca por tiempo sentado (Palmerton: medir por resultado, no por material consumido). 5' objetivo → 35' construir con Claude Code → 5' commit + nota en synapse-journal.",
     "rotacion": { "yocpmd": "Automatización YoCPMD (skills, hooks, generadores)", "preguntas": "Pipeline de preguntas ENCAPS/USMLE", "bots": "Bots CRM Pulso / LIVIANO", "contenido": "Contenido IA para las marcas" },
     "deload": "La semana posterior a NBME 26 (26-30 oct) es DELOAD: carga 50% (2 días de 45' + 3 días de 15'), fechas intactas. NBME 28 (4-dic) cae fuera del rango S1-S12 — su deload (7-11 dic) lo cubre PROTOCOLO_MODO_MINIMO.md.",
@@ -117,7 +117,7 @@
     {
       "s": 5, "id": "remap-verificado", "rotacion": "yocpmd", "deload": false,
       "nombre": "remap_todo.js: corrimiento de 1 comando + verificación automática",
-      "sirveA": "TODOS los planes — ya van 8 corrimientos (31-ago→10-sep, régimen v5.8) y cada uno exige 5 scripts a mano + execute_sql + docs; un error de fecha rompe el Home de todos los frentes",
+      "sirveA": "TODOS los planes — ya van 8 corrimientos (31-ago→11-sep, régimen v5.9) y cada uno exige 5 scripts a mano + execute_sql + docs; un error de fecha rompe el Home de todos los frentes",
       "objetivo": "Un solo comando que encadene remap_inicio.js + gen_synapse_plan.js + gen_aurum_plan.js + gen_vibecoding_plan.js + gen_encaps_mantenimiento_2027.js y VERIFIQUE (nº de días, L-V, feriados, fechas monótonas, tsc) antes de dar el OK.",
       "entregable": "DATA/_scripts/remap_todo.js <fecha> [--dry-run] + DATA/_scripts/verificar_planes.js + skill /remap.",
       "aceptacion": [
@@ -134,7 +134,7 @@
       ],
       "pasos": [
         "Escribir remap_todo.js: encadena los 5 generadores con child_process, acepta --dry-run (trabaja sobre una copia temporal de src/lib) y resume fechas inicio→fin por plan.",
-        "verificar_planes.js: lee cada src/lib/*DailyPlan.ts y usmleStep1Daily.ts (regex fecha:\"20\\d\\d-\\d\\d-\\d\\d\"), falla si hay sáb/dom, 25-dic/31-dic/1-ene, duplicados o fechas no crecientes; imprime nº de días vs esperado (v5.8: USMLE 95 · MIR 78 · LIVIANO 90 · SYNAPSE 82 · VIBE 60 · AURUM 130 · Business 121 · Derma 70 · Research 42+67 · ENCAPS 99).",
+        "verificar_planes.js: lee cada src/lib/*DailyPlan.ts y usmleStep1Daily.ts (regex fecha:\"20\\d\\d-\\d\\d-\\d\\d\"), falla si hay sáb/dom, 25-dic/31-dic/1-ene, duplicados o fechas no crecientes; imprime nº de días vs esperado (v5.9: USMLE 95 · MIR 78 · LIVIANO 90 · SYNAPSE 82 · VIBE 60 · AURUM 130 · Business 123 · Derma 70 · Research 42+67 · ENCAPS 98).",
         "Skill /remap <fecha> (.claude/skills/remap/SKILL.md, disable-model-invocation: true): ejecuta el dry-run, muestra el diff y pide confirmación; hook PostToolUse opcional que corre verificar_planes.js al editar src/lib/*Plan.ts.",
         "Prueba negativa: inyectar un sábado en una copia y ver que verificar_planes.js falla; prueba positiva con la fecha real.",
         "Doc breve en DATA/_scripts (cabecera del script) + memoria de Claude (regla: usar remap_todo.js) + commit + nota synapse-journal."
@@ -237,7 +237,7 @@
         { "label": "Claude Code — Connect to MCP servers (quickstart)", "url": "https://code.claude.com/docs/en/mcp-quickstart" }
       ],
       "pasos": [
-        "Listar los hitos y su D# desde usmleStep1Daily.ts (DIAS con palm/hito) y la regla 'hito = viernes de su semana'; escribir la tabla esperada para START=2026-09-10 (v5.8) y comparar con CALENDARIO_5_MESES.md.",
+        "Listar los hitos y su D# desde usmleStep1Daily.ts (DIAS con palm/hito) y la regla 'hito = viernes de su semana'; escribir la tabla esperada para START=2026-09-11 (v5.9) y comparar con CALENDARIO_5_MESES.md.",
         "gen_hitos_overlays.js: lee el .ts, calcula fechas, emite JSON {hito, fecha, hora, descripcion, accion:'delete+create'}; sin llamadas al Calendar.",
         "Descripción del overlay = protocolo test-day generado desde PALMERTON_POR_MATERIA §F (texto fijo + hora de cada break).",
         "Diff en seco: con el MCP (list_events/search_events 'NBME'|'UWSA') comparar fechas y listar solo cambios; corregir falsos positivos.",

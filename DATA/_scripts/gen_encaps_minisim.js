@@ -28,7 +28,7 @@
  *   node DATA/_scripts/gen_encaps_minisim.js --eval 2026-09-10         → BANCO_PROPIO/eval_2026-09-10.json + .html: EVAL ANCLADA
  *        16:15 (5Q del código de AYER = 3 cifras + 2 viñetas, solución al final; lunes = 5Q de fallos previos; si NO hay sesión
  *        anterior en el SQL —D1 del régimen— cae en el mismo modo «fallos previos» en vez de fallar).
- *   node DATA/_scripts/gen_encaps_minisim.js --semana 2026-09-07       → --banco lun-jue + --eval mar-jue de esa semana (el viernes no
+ *   node DATA/_scripts/gen_encaps_minisim.js --semana 2026-09-14       → --banco lun-jue + --eval mar-jue de esa semana (el viernes no
  *        lleva eval: el mini-sim ocupa las 16:15) + mini-sim del viernes si no existe. Con --dry solo informa.
  *   node DATA/_scripts/gen_encaps_minisim.js --inventario              → BANCO_PROPIO/_inventario_banco_por_codigo.json (oferta vs
  *        demanda por código v3: sets, reales etiquetados, banco_items_v1, claves.json, QX/Theomed, resueltas, déficit).
@@ -131,11 +131,17 @@ function filaSQL(fecha) {
   const secs = jsons.length >= 2 && Array.isArray(jsons[jsons.length - 2]) ? jsons[jsons.length - 2] : [];
   return { dia: +m[1], fecha: m[2], weekday: m[3], tipo: m[4], codigo: m[5] === 'NULL' ? null : m[5].replace(/'/g, ''), subtema: m[6].replace(/''/g, "'"), secundarios: secs, extra: extra || {} };
 }
+// rango sembrado en el SQL de mantenimiento vigente (D1 y cierre reales, sin fechas hardcodeadas)
+function rangoSQL() {
+  let sql; try { sql = fs.readFileSync(SQL_MANT, 'utf8'); } catch (e) { return { d1: null, cierre: null, fechas: [] }; }
+  const fechas = [...sql.matchAll(/^\('ENCAPS',\d+,'([\d-]+)'/gm)].map((m) => m[1]).sort();
+  return { d1: fechas[0] || null, cierre: fechas[fechas.length - 1] || null, fechas };
+}
 function colaLargaDe(fecha) {
   const fila = filaSQL(fecha);
   if (fila && fila.extra && Array.isArray(fila.extra.cola_larga) && fila.extra.cola_larga.length) return { codigos: fila.extra.cola_larga, origen: '_encaps_mantenimiento_2027.sql' };
   // fallback: rota COLA_LARGA por índice de viernes desde el D1 del régimen
-  const d1 = new Date('2026-09-07T12:00:00Z'), d = new Date(fecha + 'T12:00:00Z');
+  const d1 = new Date((rangoSQL().d1 || fecha) + 'T12:00:00Z'), d = new Date(fecha + 'T12:00:00Z');
   const k = Math.max(0, Math.floor((d - d1) / (7 * 864e5)));
   return { codigos: [COLA_LARGA[(2 * k) % COLA_LARGA.length].codigo, COLA_LARGA[(2 * k + 1) % COLA_LARGA.length].codigo], origen: 'rotación COLA_LARGA (fallback)' };
 }
@@ -413,12 +419,19 @@ function modoEval(fecha) {
   console.log(`EVAL ${fecha} · ${modo} · ${items.length}Q (${items.filter(esCifra).length} cifra · ${items.filter((x) => esVineta(x) && !esCifra(x)).length} viñeta · ${items.filter((x) => !esVineta(x) && !esCifra(x)).length} directa)`);
   if (!DRY) escribir(`eval_${fecha}`, doc);
 }
+// por qué un día hábil no tiene fila en el SQL: antes del arranque del plan, después del cierre o feriado del régimen
+function motivoSinSesion(fecha) {
+  const { d1, cierre } = rangoSQL();
+  if (d1 && fecha < d1) return `anterior al D1 del plan (${d1})`;
+  if (cierre && fecha > cierre) return `posterior al cierre del plan (${cierre})`;
+  return 'feriado del régimen';
+}
 function modoSemana(lunes) {
   if (dowDe(lunes) !== 1) throw new Error(`${lunes} no es lunes`);
   for (let i = 0; i < 5; i++) {
     const f = addDays(lunes, i); const fila = filaSQL(f);
-    if (!fila) { console.log(`— ${f}: sin sesión (feriado)`); continue; }
-    if (fila.tipo === 'banqueo1h') { // viernes (mini_sim) no lleva eval anclada: el mini-sim ocupa las 16:15
+    if (!fila) { console.log(`— ${f}: sin sesión (${motivoSinSesion(f)})`); continue; }
+    if (fila.tipo === 'banqueo1h') { // eval anclada mar-jue (el lunes la pide el protocolo pero hoy NO hay stock del código: ver README); el viernes (mini_sim) no lleva: el mini-sim ocupa las 16:15
       if (i > 0) { try { modoEval(f); } catch (e) { console.warn('⚠ eval', f, e.message); } }
       try { modoBanco(f); } catch (e) { console.warn('⚠ banco', f, e.message); }
     }
