@@ -16,13 +16,20 @@
  *    reparto por resto mayor = cuotas exactas). Viernes = 30Q de la asignatura PEOR DEL LOG
  *    (mirEvalLog.mirPeorAsignatura(); fallback = la de mayor peso vista esa semana).
  *  · modo 'reducido' 4-27 ene (Fase B/C del Step 1, v5.10: el sprint acaba el mié 27-ene): solo Anki + 10Q (flag modoReducido).
+ *  · TIER C EXPRESS (v3b, gaps_v3b_mir.json punto 4, 13-sep-2026): 1 de los 4 slots semanales lun-jue (el ÚLTIMO
+ *    lun-jue de cada semana, 12 semanas → 12 asignaturas FUERA del plan) cambia sus '10Q interleaving' (o sus 10Q
+ *    mixtas en modo reducido) por 10Q del capítulo TOP-1 de una asignatura pequeña, con capId REAL de
+ *    mirTemarioData.ts y peso del capítulo leído de mirDetalleData.ts. Ningún minuto nuevo: solo cambia qué
+ *    10Q ocupan ese slot. Se loguea con SU asignatura (campo tierC del día; la UI debe usar tierC.asignatura
+ *    en el registro de esas 10Q, no la asignatura foco).
  *  · Handoff 31-mar: export JSON del log + tabla de neto por asignatura + stats FSRS → entrada
  *    de la fase principal (abr-2027).
  *
  * Fuentes: pesos = mirDetalleData.ts (pesoGlobal por asignatura, texto real de ProMIR);
  * asignaturas = las 14 del plan (gen_mir_daily.js BLOQUES). No se inventan preguntas: el pool
- * es ProMIR (test por asignatura) o cuadernillos oficiales (examenesmir.com) → ver
- * mirPreguntasOficiales.ts (pendiente de scrape).
+ * oficial es src/lib/mirPreguntasOficiales.ts (1.050 Q MIR 2022-2026 clasificadas, DATA/MIR/pool/)
+ * → preguntasSinUsarDeAsignatura(num, usadas) / preguntasSinUsar(capId, usadas); fallback = test
+ * por asignatura de ProMIR. Cómo consume cada segmento el pool: DATA/MIR/POOL_USO.md.
  */
 const fs = require('fs');
 const path = require('path');
@@ -73,6 +80,54 @@ for (const a of ASIGS) {
   const rangos = [...pg.matchAll(/(\d+)-(\d+)%/g)].map((m) => [+m[1], +m[2]]);
   const ok = nums.some((n) => Math.abs(n - a.peso) <= 1.5) || rangos.some(([x, y]) => a.peso >= x && a.peso <= y);
   if (!ok) throw new Error(`peso ${a.peso} de ${a.asignatura} no se rastrea en pesoGlobal: "${pg}"`);
+}
+
+// ── TIER C EXPRESS: 12 asignaturas FUERA del plan × su capítulo top-1 (mirDetalleData.temas[0]) ──
+// Orden = el del punto 4 de gaps_v3b_mir.json (Trauma MI, Trauma MS, Rx-Urgencias, Onco urgencias, Geriatría, ORL,
+// Paliativos, Uro, Oftalmo, Genética, Inmuno, Estadística/Gestión). Para 'Estadística/Gestión' se toma Gestión
+// (Estadística no ha tenido preguntas en las últimas 5 convocatorias según su pesoGlobal en mirDetalleData.ts).
+// capId y peso NO se escriben a mano: se resuelven contra mirTemarioData.ts y mirDetalleData.ts y el script falla si no cuadran.
+const TIER_C = [
+  { semana: 1, num: 29, asignatura: 'Traumatología', capN: 5, capitulo: 'Patología del miembro inferior' },
+  { semana: 2, num: 29, asignatura: 'Traumatología', capN: 4, capitulo: 'Patología del miembro superior', top: 2, nota: 'top-2 de Traumatología (el gap pide Trauma MI y Trauma MS: 31,9 + 24,0 % = 56 % de la asignatura)' },
+  { semana: 3, num: 27, asignatura: 'Radiología-Urgencias', capN: 6, capitulo: 'Síndromes torácicos' },
+  { semana: 4, num: 22, asignatura: 'Oncología Médica', capN: 5, capitulo: 'Urgencias oncológicas' },
+  { semana: 5, num: 13, asignatura: 'Geriatría', capN: 2, capitulo: 'La enfermedad en las personas mayores' },
+  { semana: 6, num: 23, asignatura: 'ORL', capN: 1, capitulo: 'Oído' },
+  { semana: 7, num: 4, asignatura: 'Cuidados Paliativos', capN: 3, capitulo: 'Control de síntomas' },
+  { semana: 8, num: 30, asignatura: 'Urología', capN: 2, capitulo: 'Próstata: hiperplasia benigna y cáncer de próstata' },
+  { semana: 9, num: 21, asignatura: 'Oftalmología', capN: 5, capitulo: 'Retina' },
+  { semana: 10, num: 12, asignatura: 'Genética', capN: 1, capitulo: 'Enfermedades genéticas' },
+  { semana: 11, num: 16, asignatura: 'Inmunología', capN: 1, capitulo: 'Inmunología básica' },
+  { semana: 12, num: 25, asignatura: 'Planificación y Gestión Sanitaria', capN: 3, capitulo: 'Economía de la salud', nota: 'slot "Estadística/Gestión" del gap: Estadística (num 9) sin preguntas en las últimas 5 convocatorias' },
+];
+{
+  const temSrc = fs.readFileSync(path.join(ROOT, 'src/lib/mirTemarioData.ts'), 'utf8');
+  for (const t of TIER_C) {
+    if (byNum[t.num]) throw new Error(`Tier C: ${t.asignatura} está en las 14 del plan (no es Tier C)`);
+    const i = temSrc.indexOf(`{ num: ${t.num}, name: '${t.asignatura}'`); if (i < 0) throw new Error(`mirTemarioData sin num ${t.num} ${t.asignatura}`);
+    const j = temSrc.indexOf('] },', i);
+    const m = temSrc.slice(i, j).match(new RegExp(`\\{ n: ${t.capN}, titulo: '((?:[^'\\\\]|\\\\.)*)', capId: '([0-9a-f]+)' \\}`));
+    if (!m) throw new Error(`mirTemarioData: capítulo ${t.capN} no encontrado en ${t.asignatura}`);
+    const titulo = m[1].replace(/\\'/g, "'");
+    if (titulo !== t.capitulo) throw new Error(`Tier C ${t.asignatura} cap ${t.capN}: título '${titulo}' ≠ '${t.capitulo}'`);
+    t.capId = m[2];
+    // peso del capítulo (mirDetalleData.temas) — debe ser el top-1 de su asignatura
+    const k = detSrc.indexOf('\n  ' + t.num + ': {'); if (k < 0) throw new Error('mirDetalleData sin num ' + t.num);
+    const temas = [...detSrc.slice(k, detSrc.indexOf('\n  },', k)).matchAll(/\{ nombre: '((?:[^'\\]|\\.)*)', pesoPct: ([\d.]+)/g)].map((x) => ({ nombre: x[1].replace(/\\'/g, "'"), pct: +x[2] }));
+    const norm = (s) => s.toLowerCase().replace(/[^a-záéíóúñ]/g, '');
+    const prefijoComun = (a, b) => { let i = 0; while (i < a.length && i < b.length && a[i] === b[i]) i++; return i; };
+    // 1) título idéntico · 2) uno contiene al otro · 3) prefijo común ≥ 22 caracteres y candidato ÚNICO
+    //    (p. ej. "Próstata: hiperplasia benigna y cáncer…" vs "…benigna de próstata y cáncer…"; MI/MS solo comparten 19 → no se confunden)
+    const objetivo = norm(t.capitulo);
+    let tema = temas.find((x) => norm(x.nombre) === objetivo) || temas.find((x) => norm(x.nombre).startsWith(objetivo) || objetivo.startsWith(norm(x.nombre)));
+    if (!tema) { const cand = temas.filter((x) => prefijoComun(norm(x.nombre), objetivo) >= 22); if (cand.length === 1) tema = cand[0]; }
+    if (!tema) throw new Error(`mirDetalleData: peso no encontrado para ${t.asignatura} · ${t.capitulo}`);
+    const orden = temas.slice().sort((a, b) => b.pct - a.pct);
+    const rango = t.top || 1;
+    if (Math.abs(tema.pct - orden[rango - 1].pct) > 0.01) throw new Error(`Tier C ${t.asignatura}: '${t.capitulo}' (${tema.pct}%) no es el top-${rango} (${orden[rango - 1].nombre} ${orden[rango - 1].pct}%)`);
+    t.pesoCap = tema.pct;
+  }
 }
 
 // ── días ──
@@ -140,9 +195,21 @@ for (const x of DIAS_CAL) {
   previos.push(num);
 }
 
+// ── Tier C express: el ÚLTIMO slot lun-jue ('banco') de cada semana 1..12 cambia sus 10Q interleaving/mixtas ──
+for (const t of TIER_C) {
+  const slots = ROWS.filter((r) => r.semana === t.semana && r.tipo === 'banco');
+  if (!slots.length) throw new Error('Tier C: semana sin slots lun-jue ' + t.semana);
+  const r = slots[slots.length - 1];
+  r.tierC = { num: t.num, asignatura: t.asignatura, capId: t.capId, capitulo: t.capitulo, pesoCap: t.pesoCap, nQ: 10, ...(t.nota ? { nota: t.nota } : {}) };
+  r.num2 = t.num; r.asignatura2 = t.asignatura; // el "interleaving" de ese día ES el Tier C (la UI ya muestra asignatura2)
+  r.tema = r.modo === 'reducido'
+    ? `REDUCIDO (Fase B/C Step 1) · Anki APEX::MIR + 10Q TIER C EXPRESS · ${t.asignatura} — ${t.capitulo} (${t.pesoCap} % de la asignatura) · 13 min · registrar con asignatura '${t.asignatura}'`
+    : `BANCO · 25Q reales MIR: 15Q ${byNum[r.num].asignatura} + 10Q TIER C EXPRESS · ${t.asignatura} — ${t.capitulo} (${t.pesoCap} % de la asignatura) · 32 min + 13 min corrección · las 10Q Tier C se registran con asignatura '${t.asignatura}'`;
+}
+
 // ── emitir ──
-const KEYS = ['d', 'fecha', 'wd', 'semana', 'modo', 'tipo', 'num', 'asignatura', 'num2', 'asignatura2', 'nQ', 'minQ', 'minCorr', 'tema'];
-const rowTS = (r) => '{' + KEYS.map((k) => k + ':' + JSON.stringify(r[k])).join(',') + '}';
+const KEYS = ['d', 'fecha', 'wd', 'semana', 'modo', 'tipo', 'num', 'asignatura', 'num2', 'asignatura2', 'nQ', 'minQ', 'minCorr', 'tema', 'tierC'];
+const rowTS = (r) => '{' + KEYS.filter((k) => k !== 'tierC' || r.tierC).map((k) => k + ':' + JSON.stringify(r[k])).join(',') + '}';
 const nRed = ROWS.filter((r) => r.modo === 'reducido').length;
 const out = `/**
  * mirMantenimiento.ts — MIR modo BANQUEO PURO (ene→mar 2027) · GENERADO por
@@ -154,30 +221,47 @@ const out = `/**
  *  · viernes:  15:15-15:25 Anki · 15:25-16:04 30Q de la asignatura PEOR del log (mirEvalLog) · 16:04-16:15 corrección + neto semanal
  *  · reducido (hasta ${REDUCIDO_HASTA}, Fase B/C Step 1): 15:15-15:35 Anki · 15:35-15:48 10Q · 15:48-15:55 log · resto al Step 1
  * Rotación lun-jue ponderada por Peso MIR global (ProMIR intro, mirDetalleData.pesoGlobal) → cuotas: ${ASIGS.map((a) => a.asignatura.split(' ')[0] + ' ' + cuotaDe[a.num]).join(' · ')}.
+ * TIER C EXPRESS (v3b, gap 4): el último slot lun-jue de las semanas 1-12 cambia sus 10Q interleaving (o sus 10Q mixtas
+ * en modo reducido) por 10Q del capítulo TOP-1 de una asignatura FUERA del plan (campo tierC · capId real de mirTemarioData
+ * · peso de mirDetalleData): ${TIER_C.map((t) => `s${t.semana} ${t.asignatura}`).join(' · ')}. Ningún minuto nuevo. Esas 10Q
+ * se registran en mirEvalLog con asignatura = tierC.asignatura (no con la foco). Pool: mirPreguntasOficiales.preguntasSinUsar(tierC.capId, usadas).
  * Handoff 31-mar: mirMantHandoff() → export del log + tabla de neto por asignatura = entrada de la fase principal (abr-2027).
  */
+export interface MirMantTierC {
+  /** asignatura FUERA del plan (num real de mirTemarioData) y su capítulo top-1 (capId real) */
+  num: number; asignatura: string; capId: string; capitulo: string;
+  /** % de la asignatura que concentra ese capítulo (mirDetalleData.temas) */
+  pesoCap: number;
+  nQ: number;
+  nota?: string;
+}
 export interface DiaMIRMant {
   d: number; fecha: string; wd: string; semana: number;
-  /** 'reducido' = solo Anki + 10Q (4-25 ene, Fase B/C del Step 1) · 'normal' = Anki + 25Q/30Q */
+  /** 'reducido' = solo Anki + 10Q (5-27 ene, Fase B/C del Step 1) · 'normal' = Anki + 25Q/30Q */
   modo: 'normal' | 'reducido';
   /** 'banco' lun-jue (rotación ponderada) · 'viernes' (asignatura peor del log) */
   tipo: 'banco' | 'viernes';
   /** asignatura foco del día (viernes: fallback si el log está vacío) */
   num: number; asignatura: string;
-  /** asignatura secundaria para el interleaving (la del slot anterior) */
+  /** asignatura secundaria para el interleaving (la del slot anterior; en los días Tier C = la asignatura Tier C) */
   num2: number | null; asignatura2: string | null;
   /** nº de preguntas, minutos cronometrados (77 s/Q) y minutos de corrección */
   nQ: number; minQ: number; minCorr: number;
   tema: string;
+  /** TIER C EXPRESS: las 10Q interleaving/mixtas de este día son de este capítulo (se loguean con SU asignatura) */
+  tierC?: MirMantTierC;
 }
 export const MIR_MANT_META = {
   inicio: '${ROWS[0].fecha}', fin: '${ROWS[ROWS.length - 1].fecha}', totalDias: ${ROWS.length},
   modoReducidoHasta: '${REDUCIDO_HASTA}', diasReducidos: ${nRed}, segPorQ: 77,
-  bloque: '15:15–16:15 · Anki APEX::MIR + 25Q reales MIR mixtas (77 s/Q) + corrección · viernes 30Q de la asignatura peor del log',
+  bloque: '15:15–16:15 · Anki APEX::MIR + 25Q reales MIR mixtas (77 s/Q) + corrección · viernes 30Q de la asignatura peor del log · 1 slot/semana Tier C express (10Q de una asignatura fuera del plan)',
+  tierC: { slots: ${TIER_C.length}, regla: 'último slot lun-jue de las semanas 1-12: sus 10Q interleaving (o las 10Q mixtas en modo reducido) pasan a ser 10Q del capítulo top-1 de una asignatura fuera del plan; ningún minuto nuevo; se registran con la asignatura Tier C', cobertura: 'con las 12 asignaturas Tier C + Dermatología (bloque 13:30) el examen medido pasa de ~80 % a ~95 % del peso ProMIR (A VERIFICAR con la tabla de pesos de DATA/MIR/README.md)' },
   handoff: '31-mar-2027: export JSON del log (mirEvalLog) + tabla de neto por asignatura + stats FSRS del deck APEX::MIR → entrada de la fase principal MIR (abr-2027)',
 };
 /** Peso MIR global por asignatura (texto real del capítulo intro de ProMIR · mirDetalleData.pesoGlobal) y cuota de slots lun-jue. */
 export const MIR_MANT_PESOS: Array<{ num: number; asignatura: string; peso: number; fuente: string; slots: number }> = [${ASIGS.map((a) => JSON.stringify({ num: a.num, asignatura: a.asignatura, peso: a.peso, fuente: a.fuente, slots: cuotaDe[a.num] })).join(',')}];
+/** TIER C EXPRESS: 12 semanas → 12 asignaturas fuera del plan × capítulo top-1 (capId real de mirTemarioData · peso de mirDetalleData). */
+export const MIR_MANT_TIER_C: Array<MirMantTierC & { semana: number; fecha: string; d: number }> = [${TIER_C.map((t) => { const r = ROWS.find((x) => x.tierC && x.tierC.num === t.num && x.semana === t.semana); return JSON.stringify({ semana: t.semana, fecha: r.fecha, d: r.d, num: t.num, asignatura: t.asignatura, capId: t.capId, capitulo: t.capitulo, pesoCap: t.pesoCap, nQ: 10, ...(t.nota ? { nota: t.nota } : {}) }); }).join(',')}];
 export const MIR_MANT_DIAS: DiaMIRMant[] = [${ROWS.map(rowTS).join(',')}];
 
 export const MIR_MANT_FRANJAS: Record<DiaMIRMant['modo'] | 'viernes', Array<{ hora: string; fase: string; tipo: string }>> = {
@@ -211,6 +295,10 @@ export function mirMantFoco(dia: DiaMIRMant, peorAsignaturaLog?: string | null):
 }
 export function mirMant7d(fromD: number): DiaMIRMant[] { return MIR_MANT_DIAS.filter((x) => x.d >= fromD && x.d < fromD + 7); }
 export function mirMantHandoff(): string { return MIR_MANT_META.handoff; }
+/** Tier C express del día (si lo hay): las 10Q interleaving/mixtas son de tierC.capId y se registran con tierC.asignatura. */
+export function mirMantTierC(dia: DiaMIRMant): MirMantTierC | undefined { return dia.tierC; }
+/** Próximo Tier C a partir de un D# (para el chip "próximo Tier C: ORL · Oído · jue 11-feb"). */
+export function mirMantProximoTierC(fromD: number) { return MIR_MANT_TIER_C.find((t) => t.d >= fromD); }
 `;
 fs.writeFileSync(OUT, out, 'utf8');
 

@@ -988,7 +988,14 @@ ${[...REC_KEYS].map((k) => { const r = recLabel(k); return r ? `| \`${k}\` | ${m
 `;
 
 // ─── Escritura ───
-const w = (rel, s) => { fs.writeFileSync(path.join(ROOT, rel), s, 'utf8'); console.log('✓ ' + rel); };
+// v5.10b (13-sep-2026, integrador): IDEMPOTENTE — remap_inicio.js (bloque 4) invoca este script en cada corrimiento; si el contenido
+// solo difiere en la fecha de generación (HOY), el fichero NO se reescribe y conserva su fecha previa → el diff queda limpio.
+const STAMP_RE = /gen_research_plan\.js \(20\d\d-\d\d-\d\d\)/g;
+const w = (rel, s) => {
+  const p = path.join(ROOT, rel);
+  try { const old = fs.readFileSync(p, 'utf8'); if (old.replace(STAMP_RE, '') === s.replace(STAMP_RE, '')) { console.log('= ' + rel + ' (sin cambios de contenido; conserva su fecha de generación)'); return; } } catch { /* aún no existe */ }
+  fs.writeFileSync(p, s, 'utf8'); console.log('✓ ' + rel);
+};
 if (SOLO_CICLO !== 2) w('src/lib/researchDailyPlan.ts', TS1);
 if (SOLO_CICLO !== 1) w('src/lib/researchDailyPlan2027.ts', TS2);
 w('src/lib/obsidianResearchMap.ts', MAP_TS);

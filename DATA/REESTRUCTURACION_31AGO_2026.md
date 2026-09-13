@@ -335,6 +335,8 @@ y `PALMERTON_POR_MATERIA.md` v3; plan USMLE ceñido a los 5 niveles UWorld (§8.
   nuevas en Anki D1-D2 · redeploy n8n (APEX-MOTOR-FLOW-V2) · `datos_tesis` RLS OFF sigue abierto (proyecto S6, 12-16 oct).
 
 ### 8.7 Pipeline de corrimiento (si un día no se estudia)
+> **⚠ SUPERADO el 13-sep-2026 por §13.3** (remap ya invoca `gen_research_plan.js`, `gen_derma_ciclo2.js` y `gen_business_plan.py`; SYNAPSE hasta ene-2027; `gen_research_calendar.js`; `gen_mir_pool.js --emit`). Se conserva como histórico.
+
 `node DATA/_scripts/remap_inicio.js <fecha>` → después, en este orden: `gen_research_plan.js <fecha>` (la pausa de enero
 no la conoce el remap) · `gen_liviano_plan.js <fecha>` · `gen_business_plan.py <fecha>` · **`gen_vibecoding_plan.js <fecha>` ANTES que** `gen_synapse_plan.js <fecha>`
 (el PC del sábado lee las fechas de SHIP de `vibecodingPlan.ts`; si se invierte el orden, el sábado anuncia el cierre de un proyecto que aún no terminó)
@@ -943,3 +945,85 @@ decisión del target vie 29-ene en §E-5; las 8 decisiones abiertas siguen abier
 contextuales de nivel: los 7 viernes N3 nuevos, Cardio partido por el NBME 25, MSK íntegro, §F test day) ·
 `DATA/USMLE/PALMERTON_METODO_COMPLETO.md` §12 (tabla 12.3 regenerada, hitos 12.4, fases B-C 12.5 con el
 jue 28 de descanso y el vie 29 de examen) · y este fichero.
+
+
+## 13 · Segunda capa "cero puntos ciegos" (12-13 sep-2026) — 13 agentes sobre `gaps_v3b_*.json` (65 puntos ciegos)
+
+> **Base:** commit `16c1c28` (v5.10 limpio) → `a884de4` (wip de los primeros 11 agentes: 145 ficheros, +48.642/−2.007) →
+> árbol de trabajo con `mir-pool-clasificar`, `derma-ui` e integración (17 ficheros modificados + 8 nuevos en `DATA/MIR/pool/`).
+> Fuente de esta sección: los 13 informes estructurados (`hecho / ficheros / gaps_cerrados / pendiente_usuario / notas`) leídos
+> íntegros por el integrador el 13-sep-2026. **Régimen v5.10 intacto:** ni franjas, ni metas, ni fechas de examen, ni un solo
+> tema o subtema cambió (comprobado con `node` sobre cada `.ts` tras regenerar todo: mismas fechas, mismos multiconjuntos).
+> **Sin `gaps_v3b_usmle*.json`:** el crítico USMLE auditó las 10 divergencias abiertas de `PALMERTON_METODO_COMPLETO.md` §12.6.
+
+### 13.1 Tabla por sección — gaps hechos / parciales / pendientes de Joseph
+
+Leyenda: **✅** hecho · **◐** parcial (qué falta) · **⏳** pendiente de Joseph (decisión, sesión logueada o acción fuera del repo) · **—** descartado (motivo).
+
+| Sección (agente) | ✅ Hechos | ◐ Parciales | ⏳ Pendientes de Joseph | — Descartados |
+|---|---|---|---|---|
+| **USMLE · crítico de completitud** (solo lectura, §1-§11 + §12.6) | §12.6-10 (día parcial = PROTOCOLO_MODO_MINIMO); §12.6-2/-5/-7 cerrados después por `usmle-palmerton-2` | §12.6-5: taper/D-1 en código y docs, pero el Calendar del jue 28 y vie 29-ene sigue con las 6 series USMLE + MIR/ENCAPS/GYM y sin overlay | §12.6-1 (20Q permanente) · -3 (GO sin UWSA2) · -4 (Free 120 Prometric + maratón) · -6 (eval 18:00→12:00) · -8 (UWSA1 <40 %) · -9 (ítems experimentales) + 31 hallazgos (#1-#31: series 07:15/11:00/18:00 del Calendar desactualizadas desde el 27-ago, bug `diaPrevio` post-hito, gate sin mecánica de 2.º fallo, regla del tercio, micro-destrezas, respuestas cambiadas, NBME por bloque/sistema, Day-After, mazo Pharm aparte, config Anki §4.2, `gen_usmle_v5.js` solo en scratchpad…) | no existe `gaps_v3b_usmle` (auditó §12.6) |
+| **USMLE · Palmerton implementables** (`usmle-palmerton-2`) | mir v3b #9 (puente MIR: chip "MIR precedió", `sysTag`/`sysFilteredQuery`, MIR_DECK) · derma v3b #6 lado USMLE (D73 cuenta doble, `DERMA_STEP1_DIAS`) · §E-2 viernes N4 (flag semana 11 → D55) · §E-5 taper D94/D95 + D-1 jue 28 + test day (`USMLE_TAPER`) · §E-7 burnout como REGLA (`gateHito` 'ALERTA BURNOUT' + banner) | — | §E-1 · §E-3 · §E-4 · §E-6 · §E-8 (se decide el lun 14-sep con el UWSA1 real) · MIR_DECK epidemiologia/bioetica/dermatologia A VERIFICAR con AnkiConnect · tag `sys::` a mano hasta que APEX lo ponga | — |
+| **ENCAPS · app y % ciego** (`encaps-app`) | [3] cierre de sesión en la app (`encapsProgressSync.ts`, fórmula del script, `study_progress` fuente `app:cierre`, espejo `study_sim_scores`, localStorage `jmd-encaps-cierres`) + Cockpit (% ciego por código, tendencia a 85 %, temas calientes) · [9] eval anclada con la regla REAL en la cola y HORARIO + `study_metrics.extra.horarios` corregido | [3] la parte `gen_encaps_semana.js --pull` (Supabase → registro) no existe | primer cierre real lun 14-sep 17:10 · nota /25 del vie 18-sep una sola vez · decidir la convergencia registro↔Supabase (`--pull`) · deploy Vercel | [1][2][4][5][6][7][8]: ya cubiertos (1.ª capa o `encaps-scripts`) |
+| **ENCAPS · scripts, backups, pre-test** (`encaps-scripts`) | [7] DELETE filtrado por modo + backup `study_schedule_bk_<YYYYMMDD>` que aborta si existe + `overrides_acumulado.json` + verificación impresa · [8] pre-test de arranque 40Q (36/40 reales) lun 14 / mar 15-sep · [9] PROTOCOLO §1/§1-bis con la regla real · [4] rutina quincenal de señales DOCUMENTADA (§2-bis/§2-ter) | [8] 4 ítems nuevos (II-3 ×1, III-5 ×3) por la regla de no reutilizar ids de la semana | crear la rutina quincenal (scheduled-tasks) · resolver los 2 pre-tests y registrarlos con `--registrar --append` · vie 18-sep primer override · reponer stock V-2 / III-5 / II-3 / I-3 · decidir 40/40 reales | — |
+| **Transversal** (`synapse-ia-vitals-rutina` 6-11) | [6] diario USMLE en el vault (plantilla plana v5.10 + Dashboard + parser YAML en `gen_revision_semanal.js`) · [7] burnout §6 como disparadores ÁMBAR/ROJO (PROTOCOLO, RUTINA, DOCTRINA, 🚗 VIAJE VUELTA) · [8] cafeína ≤11:00 + siesta ≤20' opcional · [9] progreso persistente (`plan_checks` + `studyProgressSync.ts` + Exportar/Importar en CockpitStatusBar) · [10] ANKI sáb/dom + EKER (los 4 eventos SYNAPSE los cerró `vibecoding`) | [11] (a) CORRER/CALISTENIA piden registro en VITALS; (b)(c) Tarea D documentada, código de VITALS no se toca | comprobar PROGRESO '☁ ok' en Vercel · activar Dataview en el vault · crear la 1.ª nota `05_DIARY/2026-09-14.md` · Tarea D en el chat de VITALS (MET A VERIFICAR) · UNTIL de 7 series y 9 series GYM/BAILE v5.6 | — |
+| **SYNAPSE · vibecoding** (`vibecoding` 1-5) | [1] catálogo re-secuenciado por riesgo + `verificacion[]` + `[S<n>]` (deload S7 = 26-30 oct) · [2] journal `D:/synapse-journal` + `journal_hoy.js` + enlace 📓 · [3] `verify_vibecoding.js` + `_vibecoding_ship.json` + `VIBE_SHIP_LOG` (la métrica 7 de `gen_revision_semanal.js` ya lo lee: lo hizo `transversal`) · [4] freno 04:55 (regla + KPI 1ª review en `anki_telemetria.js` v2 + cuenta atrás) · [5] vibecoding S13-S20 (95 días = D#) + SYNAPSE F2 sem 13-19 hasta el vie 22-ene-2027 (131 días) | — | `gh repo create synapse-journal --private` · validar `anki_telemetria.js` con Anki abierto · página oficial CCA-F A VERIFICAR · RLS `datos_tesis` ya o en S6 · `git init` en D:/agente_estudio (opcional) · elegir sáb o dom para la revisión semanal | [6]-[11] (otros agentes) |
+| **RESEARCH · plan** (`research-plan` 1-4, 10, 12) | [1] T-1 (ética/CEI) a d7 mié 30-sep con solicitud expedita + gates CEI en T-7/T-8 + etica.md con los 1.256/291/865/785/316 reales del xlsx · [2] CR-1/CR-2 a d15/d16 (22 y 26-oct) + regla "sin caso el 8-oct → fuente B" · [3] R9 (AMSTAR-2 de las 5 SR/MA, PMID verificados) antes de R6 · [10] `horas` reales en R17-R26 (62 h) + PROSPERO con margen · [12] gate de inglés + plan B 22-oct + X-2 revisa CR-6 · [5] **cerrado por el integrador** (remap bloque 4 → `gen_research_plan.js` + aserciones + `--check` de overlays) | [4] Actas y Anais leídos en vivo; JAAD Intl / IJD → 403 (abrir con Chrome) | confirmar el re-orden v5.10b · T-1: nº/fecha del CEI o solicitud el 30-sep · modelos de consentimiento/asentimiento · denominador de la prevalencia 39,8 % · dónde caen las 40-70 h/revisor de SR-1 · reglas MENTORES fila 2 y 6 · R9 rellenar AMSTAR-2 | [6][7][8][9][11] (`research-infra`) |
+| **RESEARCH · infraestructura** (`research-infra`) | [6] `citation_verifier.py`/`docx_assembler.py` UTF-8 + CLI + `run_verifier.bat` probado · [7] 12 overlays 🔬 RESEARCH en el Calendar + `gen_research_calendar.js` (--check rc=0, 12/12 sincronizados el 13-sep) · [8] `research_entregables` (RLS + policy) + `researchEntregablesSync.ts` + Mesa editorial con histórico; RLS activado en `research_manuscripts`/`research_citations` · [5] cerrado por el integrador | [8] RUTA §9 debe marcarse "solo lectura, se regenera" (`mesaMarkdown()`) · [9] research-discovery v3 en el repo, NO desplegada · [11] export de-identificado (865 filas, gitignored) + DATOS_README; RLS/borrado de `datos_tesis` = decisión | secrets OPENALEX_KEY/NCBI_KEY + deploy v3 · DECISIÓN `datos_tesis` (opción A recomendada; comprobar la key de `bot_tesis.py`) · revisar el CSV de-id antes de OSF/Zenodo (T-7) · script exacto de rs/κ A VERIFICAR · desglose de los 100 ausentes | — |
+| **Derma · datos** (`derma-data`) | [1] capa Palmerton (verificada) · [2] taper Step 1 d44-d49 por swap de contenido, plan 70→73, 0 átomos perdidos · [3] fichas cerebro (verificadas) · [5] presupuesto por banco + cursor "retoma en Q#" + cura pendiente · [6] `step1` en 8 átomos + `anclajeStep1` d12/d24 · [8] ciclo 2 d74-d103 (`gen_derma_ciclo2.js` → `dermaCiclo2.ts`, 36 casos a 3/sesión, 0 solapes con Research) · [9] ruta fellowship (existía) | [10] PLAN_ELITE §3/§13-§16 al ciclo real; recursos.md lo tocó `derma-ui` | fecha REAL del examen ENCAPS 2027-I → `DERMA_TAPER_ENCAPS_FECHA` · sección de First Aid para d12/d24 · decidir la sesión OPCIONAL del vie 29-ene (d49) · confirmar 3 casos/sesión desde d50 | [4] (sesión AccessDerma) · [7] (UI) |
+| **Derma · UI** (`derma-ui`) | [5] "retoma en Q#" en el ColaItem + banco secundario + cura obligatoria DD Challenge tras fallo CCSN · [7] pestaña Cerebro con % ciego real (ledger), progreso A-X, hitos v5.10 leídos del plan, SPEC A-G como índice · [8] fallback automático al ciclo 2 | informe truncado en el encargo del integrador (13-sep): el detalle de [1][3][6][10] lado UI queda **A VERIFICAR (13-sep)** contra `DermaHub.tsx`/`DermaTodayPlan.tsx` (compilan: tsc 0) | — | — |
+| **MIR · loop** (`mir-loop`) | [1] gate por tema (pre-test + quiz 8-10Q + ancla D-1 ≥80 %; caliente hasta 2 aciertos; ajuste obligatorio al 2.º fallo; anclas dinámicas) · [5] MIR_HITOS Top 50 + umbrales por fase 70/55→75/60 · [6] táctica −1/3 + `TimerQ` 77 s/Q + no cambiar · [10] `DELTA_ESPANA.md` (17 fuentes verificadas) + `gen_delta_espana.js` + `delta:true` en 11 días · [9] parte MIR (Pregunta oficial origen) | [7] espejo `mir_eval_log` hecho; falta bloque MIR en `gen_revision_semanal.js`/`vibecodingPlan.ts` + prueba con 2 dispositivos · [11] "APEX MIR directamente en Anki" como regla; preset FSRS/sub-decks/n8n manuales | probar el espejo desde el móvil · completar `DELTA_ESPANA.md` (403/404) · tablas oficiales netas–nº de orden + fecha MIR 2030 · Anki: preset APEX::MIR · flujo semanal del delta · confirmar "acumulado <50 % no cuenta como evento" | [2][3][4][8] (otros agentes; MIR_CALENDARIO sí se actualizó) |
+| **MIR · pool oficial** (`mir-pool-descarga` + `mir-pool-clasificar`) | [2] paso 1 (5 cuadernos + plantillas DEFINITIVAS del portal FSE, 1.050 Q, 0 errores de parseo, contrastes con prensa) + paso 2 (clasificación LLM: 30 asignaturas ProMIR + 'Otras', 477 en plan, 0 capítulos a cero, muestra 10 % verificada 100 %/99 %) + paso 3 (`mirPreguntasOficiales.ts` 1,1 MB, `preguntasSinUsar`/`poolResumen`/`preguntasDeAsignatura`) + `POOL_USO.md` · [4] Tier C express: 12 jueves del mantenimiento con `capId` real y peso (`gen_mir_mantenimiento.js`, `MIR_MANT_TIER_C`) | [2] UI: solo el quiz 8-10Q pide ids al pool; pre-test/anclada/cierre/mini-MIR y el 2.º formulario Tier C son cableado de `MirTodayPlan.tsx` · [4] README §1 tabla de pesos de las 16 asignaturas fuera del plan + aviso "cobertura ~80 %" en D78 + 2.º EvalForm en MantenimientoView | clave de la 2025-208 (Ministerio 2 vs prensa 3) A VERIFICAR · decidir `.gitignore` para `DATA/MIR/pool/raw/*.pdf` (6,2 MB, "PROHIBIDA LA REPRODUCCIÓN") y los JSON del pool antes del commit · imágenes bajo demanda (`--con-imagenes`) · 2.ª fase: cruce con "preguntas MIR de este capítulo" de ProMIR | [1][3][5]-[11] (otros agentes) |
+
+**Recuento (13 informes):** de los 65 puntos ciegos + las 10 divergencias §12.6, quedan **hechos** ~46, **parciales** 13 (todos con la parte
+que falta nombrada arriba) y **pendientes de Joseph** las decisiones §E (5) + `datos_tesis` + las verificaciones con sesión logueada;
+los "descartados" son solapes entre agentes (el punto lo cerró otro), no puntos abandonados. El detalle operativo de cada pendiente
+está en `DATA/PENDIENTES_JOSEPH.md` (el consolidador reescribe sus bloques 🔴/🟠/🟡/🔵/⚪ con los `pendiente_usuario` de esta capa).
+
+### 13.2 Qué corrigió el integrador (13-sep-2026)
+
+- **`remap_inicio.js` v5.10b** (`DATA/_scripts/`): bloque 4 Research delega en `gen_research_plan.js <fecha>` (la pausa 4→29-ene,
+  `RESEARCH_HITOS`, `finNucleo/pausa`, chips `chipsDyn` y el ciclo 2 viven en el generador; `slots()` no sabe de la pausa) y comprueba
+  42 átomos · d41 ≥ 2027-02-01 · 9 hitos del ciclo 1 ⊂ `DIAS` · `gen_research_calendar.js --check` (aviso si un overlay 🔬 se desfasa);
+  bloque 5 Derma con guard **73** (`nd[72]`) + aviso si d44-d49 salen de la ventana `taperStep1` + **5b** `gen_derma_ciclo2.js`;
+  bloque 6 Business delega en **`gen_business_plan.py <fecha>`** (antes el remap reconstruía SIN feriados: 116 filas ≠ las 121 del
+  generador → no era idempotente); USMLE avisa si D95 alcanza `descansoD1`/`examenTarget`; MIR avisa si D78 pisa el inicio del
+  mantenimiento (`mirMantenimiento.ts`). Guards comprobados contra los `.ts`: USMLE 95 · MIR 78 · UNIDADES 5 · Research 42 · Derma 73 ·
+  Business 84 trabajo · LIVIANO 90.
+- **Idempotencia** (generadores con fecha de generación incrustada): `gen_research_plan.js`, `gen_derma_ciclo2.js` y
+  `gen_mir_pool.js --emit` ya **no reescriben** el fichero cuando solo cambia la marca de fecha/timestamp (conservan la anterior).
+  Verificado el 13-sep: `remap_inicio.js 2026-09-14` ×2 + `gen_liviano_plan.js` · `gen_vibecoding_plan.js` · `gen_synapse_plan.js` ·
+  `gen_aurum_plan.js` · `gen_mir_daily.js 2026-09-14` + `--check` · `gen_mir_mantenimiento.js` · `gen_derma_ciclo2.js` ·
+  `gen_mir_pool.js --emit` → **`git diff` vacío en todos los planes** (fechas, D# y contenido idénticos; Business 121 filas).
+- **Supabase** (`qacynpqdrorpuegsmtcy`, verificado con `execute_sql` sobre `pg_class`/`pg_policies`/`information_schema`):
+  `mir_eval_log` (26 col) · `plan_checks` (4) · `research_entregables` (9) con RLS ON + policy "Allow all" [ALL/true/true] (patrón
+  `study_sim_scores`); RLS + "Allow all" en `research_manuscripts` y `research_citations`; `research_engine_state.sources_ok/last_error`;
+  `study_metrics.extra.horarios._nota` = v5.10. Migraciones concatenadas al final de `src/lib/supabase-schema.sql` (con su origen) y el
+  DDL de Research documentado en `DATA/RESEARCH/agentic/supabase_schema.sql` §11. `datos_tesis` sigue con RLS OFF (decisión de Joseph).
+- **Compilación:** `npx tsc --noEmit -p .` → **0 errores** (los 14+ errores cruzados que reportaban los agentes durante la sesión
+  —`dermaDailyPlan.ts`, `encapsPlan.ts` zona, `mirEvalSync.ts`, `MirHub.tsx` estilos— ya estaban resueltos en el árbol final) ·
+  `npx expo export --platform web` → **0** (13-sep-2026: bundle web `index-06dab137….js` 6,5 MB · `dist/` está en .gitignore).
+
+### 13.3 Pipeline de corrimiento v5.10b (sustituye al de §8.7 y §12.7)
+
+1. `node DATA/_scripts/remap_inicio.js <fecha>` — USMLE (solo re-fecha) · MIR · UNIDADES · **Research vía `gen_research_plan.js`**
+   (+ aserciones + `gen_research_calendar.js --check`) · **Derma 73 + ciclo 2 (`gen_derma_ciclo2.js`)** · **Business vía
+   `gen_business_plan.py`** · LIVIANO + reslot (`gen_liviano_plan.js`). Idempotente: correrlo dos veces no cambia nada.
+2. `node DATA/_scripts/gen_vibecoding_plan.js <fecha>` **ANTES que** `node DATA/_scripts/gen_synapse_plan.js <fecha>`
+   (vibecoding = 95 días = D# del Step 1 con taper S13-S20; SYNAPSE = 131 días hasta el vie 22-ene-2027, F2 sem 13-19).
+3. `node DATA/_scripts/gen_aurum_plan.js <fecha>`.
+4. `node STUDY_HUB/_scrape/gen_mir_daily.js <fecha> --check`; si el remap avisa que D78 pisa el 5-ene →
+   `node DATA/_scripts/gen_mir_mantenimiento.js <primer hábil > D78> 2027-03-31` (Tier C express incluido).
+5. `node DATA/_scripts/gen_encaps_mantenimiento_2027.js <fecha> [--override SEMANAS/override_<lunes>.json]` → revisar el SQL
+   (backup `study_schedule_bk_<YYYYMMDD>` automático que ABORTA si ya existe · DELETE solo `modo='MANTENIMIENTO'` · overrides
+   acumulados) → `execute_sql` → pegar la verificación que imprime el script (79 banqueo1h + 18 mini_sim).
+6. USMLE con `gen_usmle_v5.js` (hitos anclados por FECHA, flag `VIERNES_N4_DESDE_SEMANA`, `TAPER_ACTIVO`; **nunca recorta ni
+   fusiona**) → `assemble_usmle_ts.js` → `update_diainicio.js` → `remap_obsidian_usmle.js`. ⚠ Viven en el scratchpad temporal:
+   copiarlos a `DATA/_scripts/` es pendiente (hallazgo #29 del crítico).
+7. Si el paso 1 avisó de overlays 🔬 desfasados: `node DATA/_scripts/gen_research_calendar.js` → `update_event` (o delete+create)
+   de los `recrear` con su payload → `--set hito=eventId`.
+8. Pool MIR — **no depende de fechas**; solo cuando cambie el pool o la clasificación: `node DATA/_scripts/gen_mir_pool.js --clasificar`
+   → `--verificar` → `--emit` (idempotente: no reescribe si el contenido no cambió).
+9. `npx tsc --noEmit -p .` → 0 · `npx expo export --platform web` → 0.
+10. Docs (`REESTRUCTURACION`, `USMLE/README`, `CALENDARIO_5_MESES`, `PALMERTON_*`, `PENDIENTES_JOSEPH`) + D# de los overlays del Calendar
+    (los 12 🎯 USMLE a mano; los 12 🔬 RESEARCH con el paso 7).

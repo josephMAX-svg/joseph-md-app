@@ -744,7 +744,8 @@ export default function MirTodayPlan() {
   const [done, setDone] = useState<Set<number>>(() => new Set(loadDone('mir')));
   const [, setTick] = useState(0);
   const [sync, setSync] = useState<SyncInfo>(null);
-  const bump = () => setTick((t) => t + 1);
+  // bump = re-render tras guardar; el contador del espejo sube 1 (el push va en segundo plano)
+  const bump = () => { setTick((t) => t + 1); setSync((s) => (s && s.ok ? { ...s, remotas: s.remotas + 1 } : s)); };
   // espejo Supabase: merge por id en ambos sentidos al montar (fallback silencioso)
   useEffect(() => {
     let vivo = true;

@@ -322,7 +322,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, tone }: { dia: DiaDerma;
       {/* Drill "Oclusión vascular · 90 s" (d19/d20 + checkpoints H/Z) */}
       {esDrill && <FadeUp delay={70}><DermaEmergencyDrill dia={dia} /></FadeUp>}
 
-      {/* Checkpoints y repasos que LEEN del ledger (d45/d46/d69/d70) */}
+      {/* Checkpoints y repasos que LEEN del ledger (v3: cp1 d51 · cp2 d52 · repaso1 d72 · repaso2 d73 + d85/d94/d103 del ciclo 2) */}
       {esCheckpoint && <FadeUp delay={70}><DermaCheckpointPanel dia={dia} accent={fc} /></FadeUp>}
 
       {/* Eval anclada (átomo previo) */}

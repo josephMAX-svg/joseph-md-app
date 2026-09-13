@@ -152,7 +152,7 @@ function ProgresoPanel({ info, onClose }: { info: SyncInfo; onClose: () => void 
   return (
     <View style={st.panel}>
       <View style={st.panelRow}>
-        <Text style={st.panelTitle}>PROGRESO · {info.totalChecks} ✓ · {SYNC_LABEL[info.estado]}{info.ultimoOk ? ` ${info.ultimoOk.slice(11, 16)}` : ''} · {info.device}</Text>
+        <Text style={st.panelTitle}>PROGRESO · {info.totalChecks} ✓ · {SYNC_LABEL[info.estado]}{info.ultimoOk ? ` ${new Date(info.ultimoOk).toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'America/Lima' })}` : ''} · {info.device}</Text>
         <TouchableOpacity onPress={onClose} hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}><Text style={st.panelClose}>✕</Text></TouchableOpacity>
       </View>
       <View style={st.panelRow}>

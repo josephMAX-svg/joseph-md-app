@@ -5,11 +5,11 @@
 > (`STUDY_HUB/02_DERMA_curriculo.md`, investigación web con fuentes) + verificación nueva de
 > referentes ([`referentes.md`](./referentes.md)). Sin URLs inventadas.
 
-## 0. Cuaderno NotebookLM «DERMA · Élite Engine» (creado 05-sep-2026 · vacío nº 9 Palmerton v3 · releído 12-sep-2026)
+## 0. Cuaderno NotebookLM «DERMA · Élite Engine» (creado 05-sep-2026 · vacío nº 9 Palmerton v3 · releído 12-sep-2026 · reverificado 13-sep-2026)
 - **ID** `0e9fac5c-01f3-406e-96f2-6230bd66a29c` · **URL** <https://notebooklm.google.com/notebook/0e9fac5c-01f3-406e-96f2-6230bd66a29c>
   · constante `DERMA_NOTEBOOKLM` en `src/lib/dermaData.ts` (para la pestaña Fuentes del Hub) · Dashboard Obsidian
   `10_DERMATOLOGIA/00_DASHBOARD_DERMA` lo enlaza.
-- **86 fuentes** — conteo REAL con `notebook_get` el 12-sep-2026 (`source_count: 86`, título «DERMA · Élite Engine (Palmerton derma · fuentes verificadas)»; constante `DERMA_NOTEBOOKLM.fuentes` en `dermaData.ts`): **79 útiles + 7 fallidas** («Checking your browser – reCAPTCHA»: PMC y NCBI Bookshelf
+- **86 fuentes** — conteo REAL con `notebook_get` el 12-sep-2026 y de nuevo el 13-sep-2026 (`source_count: 86`, 7 títulos «Checking your browser - reCAPTCHA» contados en el listado; título «DERMA · Élite Engine (Palmerton derma · fuentes verificadas)»; constante `DERMA_NOTEBOOKLM.fuentes` en `dermaData.ts`): **79 útiles + 7 fallidas** («Checking your browser – reCAPTCHA»: PMC y NCBI Bookshelf
   bloquean al crawler de NotebookLM → PMC8012343, PMC7427155, PMC7447619, PMC12737568, PMC12865869, PMC13172661,
   NBK430685). Sus equivalentes **PubMed sí están cargados** (MD Codes, Goodman 2020 PMID 31693068, myomodulation
   update, los 3 de toxina 2025-26). → **Borrar las 7 a mano en la UI** (el agente no borra datos). StatPearls no es

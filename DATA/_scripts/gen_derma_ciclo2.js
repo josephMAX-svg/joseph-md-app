@@ -280,7 +280,11 @@ export const dermaCasosPorSesionCiclo2 = (d: number): number => d > DERMA_CICLO2
 void DERMA_CASO_META;
 `;
 const outPath = path.join(ROOT, 'src/lib/dermaCiclo2.ts');
-fs.writeFileSync(outPath, TS, 'utf8');
+// v5.10b (13-sep-2026, integrador): IDEMPOTENTE — remap_inicio.js (bloque 5b) invoca este script en cada corrimiento; si el contenido
+// solo difiere en la fecha de generación (HOY: cabecera + comentario de DERMA_CICLO2_META), NO se reescribe (conserva la fecha previa).
+const STAMP_RE = /gen_derma_ciclo2\.js \(20\d\d-\d\d-\d\d\)|generado 20\d\d-\d\d-\d\d/g;
+{ let igual = false; try { igual = fs.readFileSync(outPath, 'utf8').replace(STAMP_RE, '') === TS.replace(STAMP_RE, ''); } catch { /* aún no existe */ }
+  if (igual) console.log('= src/lib/dermaCiclo2.ts sin cambios de contenido (conserva su fecha de generación)'); else fs.writeFileSync(outPath, TS, 'utf8'); }
 
 // ─── Resumen ───
 console.log(`dermaCiclo2.ts ✓ d${D_OFFSET + 1}→d${D_OFFSET + N} · ${FECHAS[0]} (${wdOf(FECHAS[0])}) → ${FECHAS[N - 1]} (${wdOf(FECHAS[N - 1])}) · ${RESTANTES.length} casos restantes en 12 sesiones · 0 solapes con Research (${RES.size} fechas comprobadas)`);

@@ -1,8 +1,8 @@
 # MIR · pool de preguntas oficiales (2022-2026)
 
-Pool de las **1.050 preguntas oficiales** del examen MIR (Medicina) de las convocatorias **MIR 2022, 2023, 2024, 2025 y 2026** (5 × 210: 200 + 10 de reserva), con la **clave definitiva** del Ministerio de Sanidad, parseadas a JSON desde los PDF oficiales. Es el **paso 1** del punto 2 de `DATA/USMLE/_palmerton_v3_extractos/gaps_v3b_mir.json` ("questions as the curriculum"): descarga + parseo. **La clasificación por asignatura/capítulo (paso 2) y la generación de `src/lib/mirPreguntasOficiales.ts` (paso 3) NO están aquí** — las hace el siguiente agente; este directorio no toca la app.
+Pool de las **1.050 preguntas oficiales** del examen MIR (Medicina) de las convocatorias **MIR 2022, 2023, 2024, 2025 y 2026** (5 × 210: 200 + 10 de reserva), con la **clave definitiva** del Ministerio de Sanidad, parseadas a JSON desde los PDF oficiales y **clasificadas por asignatura y capítulo real de ProMIR** (`src/lib/mirTemarioData.ts`). Cubre los tres pasos del punto 2 de `DATA/USMLE/_palmerton_v3_extractos/gaps_v3b_mir.json` ("questions as the curriculum"): (1) descarga + parseo → `AAAA.json`; (2) clasificación LLM + verificación → `AAAA_clasificado.json`; (3) generación de [`src/lib/mirPreguntasOficiales.ts`](../../../src/lib/mirPreguntasOficiales.ts) (`--emit`). Cómo lo consume cada segmento del loop (anti-repetición por `qIds`): [`../POOL_USO.md`](../POOL_USO.md).
 
-Creado el 12-sep-2026 (régimen v5.10).
+Creado el 12-sep-2026 (paso 1) · clasificación y `.ts` el 13-sep-2026 (régimen v5.10).
 
 ## Origen de los datos (verificado 12-sep-2026)
 
@@ -30,9 +30,15 @@ Acceso: el portal FSE es una SPA Angular que pide un **token anónimo** (`POST /
 DATA/MIR/pool/
 ├── README.md                          ← este fichero
 ├── _fuentes.json                      ← por convocatoria: URL exacta, parámetros, fecha de descarga, sha256, bytes, espejo
-├── _stats.json                        ← estadísticas por año (las genera --parse)
+├── _stats.json                        ← estadísticas del parseo por año (las genera --parse)
 ├── _parse_errores.json                ← lo que el parser no resolvió o pide revisión (nunca se rellena a mano)
-├── 2022.json … 2026.json              ← 210 preguntas por año (formato abajo)
+├── _clasificacion_stats.json          ← paso 2: distribución por asignatura/confianza, contraste con CTO, muestra y % de acuerdo (--clasificar/--verificar)
+├── _clasificacion_llm/
+│   ├── AAAA.json                      ← etiquetas del pase LLM {numero: 'ASIG.cap.confianza'} (la ÚNICA entrada manual del paso 2)
+│   ├── _muestra_2pasada_lectura.txt   ← las 105 preguntas de la muestra (10 %) con enunciado íntegro, SIN etiqueta (para clasificar a ciegas)
+│   └── _muestra_2pasada.json          ← etiquetas de la 2ª pasada {id: 'ASIG.cap.confianza'}
+├── 2022.json … 2026.json              ← 210 preguntas por año parseadas (formato abajo)
+├── 2022_clasificado.json … 2026_clasificado.json ← las mismas + asignatura/num/capId/capitulo/fueraDePlan/enPlan/confianza (--clasificar)
 └── raw/
     ├── AAAA_cuadernillo.pdf           ← PDF oficial versión 0 (idéntico Ministerio = espejo)
     ├── AAAA_cuadernillo.txt           ← pdftotext -enc UTF-8 -raw (trazabilidad del parseo)
@@ -57,7 +63,34 @@ Array de 210 objetos, en orden:
 }
 ```
 
-Los siete primeros campos son el contrato del punto 2 del gap; `imagen_num` y `reserva` son extras para el clasificador. Las preguntas anuladas **se conservan** (con `clave: null`) para que el siguiente paso decida si las usa como material (suelen ser preguntas con defecto).
+Los siete primeros campos son el contrato del punto 2 del gap; `imagen_num` y `reserva` son extras para el clasificador. Las preguntas anuladas **se conservan** (con `clave: null`); el `.ts` NO las sirve por defecto (`MirPoolOpts.incluirAnuladas`).
+
+### Formato de `AAAA_clasificado.json` (paso 2)
+
+Los campos de arriba más:
+
+```json
+{
+  "num": 11, "asignatura": "Gastroenterología",        // asignatura REAL de mirTemarioData (0 = 'Otras · sin asignatura ProMIR'; -1 = SIN CLASIFICAR)
+  "capN": 7, "capId": "570779c8f4d68bf008dbc64c", "capitulo": "Enfermedades del colon",   // capId REAL (null si el enunciado no fija capítulo)
+  "fueraDePlan": false,     // la asignatura NO está entre las 14 del plan (Tier C / mini-MIR)
+  "enPlan": true,           // el capId es uno de los 76 capítulos de mirDailyPlan D1-D76
+  "confianza": "alta",      // alta · media · baja · pendiente
+  "etiqueta": "GAS.7.a"     // la etiqueta LLM de origen (_clasificacion_llm/AAAA.json)
+}
+```
+
+Nota sobre `capId` en asignaturas fuera del plan: el gap pedía `capId null` para ellas; se conserva el **capId real** cuando el capítulo es evidente porque el Tier C express (punto 4) necesita servir "10Q del capítulo top-1" (`preguntasSinUsar(tierC.capId)`); `fueraDePlan:true` sigue marcando que no son del plan.
+
+## Clasificación (paso 2, 13-sep-2026)
+
+- **Método:** pase LLM (Claude, sesión del 13-sep) sobre enunciado + 4 opciones de cada una de las 1.050 preguntas → etiqueta `ASIG.cap.conf` (30 códigos de asignatura = las 30 de ProMIR + `OTR`; `cap` = nº de capítulo real en `mirTemarioData.ts`, `x` = sin capítulo; `conf` = a/m/b). `--clasificar` resuelve cada etiqueta contra el temario real (falla si el capítulo no existe), cruza con el plan y escribe `AAAA_clasificado.json`. Criterios: **alta** = capítulo evidente · **media** = asignatura clara, capítulo por mejor ajuste (p. ej. EII → intestino delgado/colon; vacunas de adulto → Infecciosas sin capítulo) · **baja** = la propia asignatura es discutible (fisiología aplicada, cirugía general sin órgano claro, rehabilitación). `OTR` (num 0, 20 preguntas) = fisiología/bioquímica/anatomía básicas, cirugía plástica, rehabilitación: sin asignatura ProMIR, se dejan con `capId null` y NO se les inventa un capítulo. Cirugía general → Gastroenterología (cap 8 "Miscelánea de temas quirúrgicos" u órgano); cirugía vascular → Cardiología 13-15; neurocirugía → Neurología 2; maxilofacial → ORL 6; medicina intensiva → Infecciosas 3 (sepsis/shock) o Neumología 15 (SDRA/VM); prevención hospitalaria (IRAS, aislamientos, higiene de manos) → Infecciosas 21; cribados/prevención poblacional → Gestión 1.
+- **Resultado (1.050):** confianza alta 796 · media 218 · baja 36 · pendiente 0 · con capítulo 1.029 · en los 76 capítulos del plan **477** · asignatura fuera del plan 344. Por asignatura (5 años): Cardiología 86 · Gastroenterología 80 · Infecciosas 66 · Neurología 61 · Endocrino 60 · Ginecología 54 · Traumatología 53 · Neumología 52 · Reumatología 42 · Pediatría 40 · Psiquiatría 40 · Nefrología 39 · Geriatría 36 · Hematología 36 · ORL 31 · Dermatología 31 · Oncología 28 · Epidemiología 26 · Legal y Bioética 24 · Inmunología 22 · Otras 20 · Urología 20 · Oftalmología 19 · Rx-Urgencias 18 · Paliativos 16 · Genética 13 · Gestión 13 · Farmacología 9 · Alergología 8 · Anestesiología 7 · Estadística 0 (coincide con su `pesoGlobal`: sin preguntas en las últimas 5 convocatorias). Ningún capítulo del plan queda a cero; mediana 5 preguntas usables por capítulo del plan (lista de los que tienen < 5 en `../POOL_USO.md` §2).
+- **Verificación por muestreo (10 %):** 105 ids deterministas (semilla 20260913, `_clasificacion_stats.json.muestra2Pasada`) reclasificados **a ciegas** en un paso separado leyendo el enunciado íntegro sin la etiqueta de la 1ª pasada (`_muestra_2pasada_lectura.txt` → `_muestra_2pasada.json`, `--verificar`). Acuerdo: **asignatura 100 % (105/105) · capítulo 99,0 % (101/102)** en la comparación original; el único desacuerdo (2025-103: disección de aorta proximal, 1ª pasada "Cardiopatía isquémica" → 2ª "Enfermedades de la aorta") se corrigió en la etiqueta a favor de la 2ª pasada y el fichero de stats quedó en 100/100. **Limitación honesta:** la 2ª pasada la hizo el mismo LLM; no es un evaluador humano independiente ni la validación cruzada con "preguntas MIR de este capítulo" de ProMIR (pendiente, requiere sesión logueada).
+- **Contraste externo** con el desglose por asignatura que publicó ConSalud citando a **Academia CTO** (200 preguntas sin reserva; MIR 2026 y 2025; tabla y agrupación CTO→ProMIR en `CONTRASTE_CTO`/`CTO_A_PROMIR` del script; para 2022-2024 no se localizó tabla comparable con WebFetch). Desviaciones |Δ| ≥ 3 y su explicación (todas son de **frontera de categoría**, no de preguntas mal leídas):
+  - MIR 2025 · Gastroenterología 12 vs CTO Digestivo 8 + Cirugía General 13 = 21 (−9): CTO agrupa como "Cirugía General" preguntas que ProMIR reparte en Endocrino (tiroides 123), Hematología (esplenectomía 128), Infecciosas 21 (infección de herida 129 y 171), Rx-Urgencias (aerobilia 18), Oncología (hepatitis por nivolumab 119) → coherente con Infecciosas +3 y Oncología +3. Paliativos +4 y Gestión +1: CTO no tiene esas categorías. Pediatría −3 / Psiquiatría −3 / Epidemiología −3 / Otras −3: pediatría-psiquiatría infantil, prevención (→ Gestión/Infecciosas 21) y básicas repartidas.
+  - MIR 2026 · Epidemiología 3 vs 10 (−7): CTO mete en "Epidemiología" la prevención hospitalaria (higiene de manos, IRAS, aislamiento por gotas = Infecciosas 21, 3 Q), calidad/seguridad del paciente y cribados (Gestión, 3 Q) y el sobrediagnóstico → 3 + 3 + 3 + 1 = 10. Neurología 8 vs 12 (−4): narcolepsia (→ Psiquiatría 10), amiloidosis con clínica neurológica (→ Reumatología 10), rehabilitación de la marcha (→ Otras) y la HTIC. Pediatría 7 vs 11 (−4): SMSL (→ Legal 10), maltrato (→ Legal 5), TEA (→ Psiquiatría 9), dermatitis del pañal (→ Dermatología 5). Otras/básicas 6 vs 10 (−4): fisiología cardíaca/renal/respiratoria asignada al capítulo básico de su asignatura. Infecciosas +3, Paliativos +3, Gestión +3: categorías que CTO no separa.
+  - Asignaturas donde LLM y CTO coinciden exactamente: 2025 → Cardiología 16, Traumatología 11, Hematología 7, Oftalmología 5, Alergología 2, Genética 1; 2026 → Ginecología 9, Reumatología 9, Legal/Bioética 8, Nefrología 7, Dermatología 6, Geriatría 6, ORL 5, Inmunología 2.
 
 ## Cómo regenerar
 
@@ -66,11 +99,14 @@ Los siete primeros campos son el contrato del punto 2 del gap; `imagen_num` y `r
 node DATA/_scripts/gen_mir_pool.js --descargar            # cuadernos v0 + plantillas definitivas → raw/ + _fuentes.json (idempotente: compara sha256)
 node DATA/_scripts/gen_mir_pool.js --descargar --con-imagenes   # además los cuadernos de imágenes (pesados; la API oficial falla para 2024 → usar el espejo)
 node DATA/_scripts/gen_mir_pool.js --parse                # pdftotext -raw + parseo + claves → AAAA.json, _stats.json, _parse_errores.json
-node DATA/_scripts/gen_mir_pool.js --stats                # tabla Markdown de estadísticas
-# --anios 2025,2026 limita cualquier modo a esas convocatorias
+node DATA/_scripts/gen_mir_pool.js --stats                # tabla Markdown de estadísticas del parseo
+node DATA/_scripts/gen_mir_pool.js --clasificar           # etiquetas LLM (_clasificacion_llm/AAAA.json) × pool → AAAA_clasificado.json + _clasificacion_stats.json (+ muestra 2ª pasada la 1ª vez)
+node DATA/_scripts/gen_mir_pool.js --verificar            # % de acuerdo de _clasificacion_llm/_muestra_2pasada.json con la clasificación
+node DATA/_scripts/gen_mir_pool.js --emit                 # src/lib/mirPreguntasOficiales.ts (< 3 MB; luego npx tsc --noEmit -p .)
+# --anios 2025,2026 limita --descargar/--parse/--clasificar a esas convocatorias
 ```
 
-Cuando salga el **MIR 2027** (examen 23-ene-2027): añadir `2027` a `ANIOS_MIR` en el script y ejecutar `--descargar` + `--parse` **después** de que el Ministerio publique la plantilla **definitiva** (≈ 2 semanas tras el examen; antes `tieneRespuesta` puede ser `false` o servir la provisional).
+Cuando salga el **MIR 2027** (examen 23-ene-2027): añadir `2027` a `ANIOS_MIR` en el script y ejecutar `--descargar` + `--parse` **después** de que el Ministerio publique la plantilla **definitiva** (≈ 2 semanas tras el examen; antes `tieneRespuesta` puede ser `false` o servir la provisional); después un nuevo pase LLM → `_clasificacion_llm/2027.json` (mismo formato) → `--clasificar` → 2ª pasada sobre la nueva muestra → `--verificar` → `--emit`. Corregir una clasificación = editar la etiqueta en `_clasificacion_llm/AAAA.json` y regenerar (nunca el `.ts` ni `AAAA_clasificado.json` a mano).
 
 ### Cómo parsea
 
@@ -108,10 +144,14 @@ Cuando salga el **MIR 2027** (examen 23-ene-2027): añadir `2027` a `ANIOS_MIR` 
 - Solo la **versión 0** de cada cuaderno (la canónica; las versiones 1-4 son permutaciones del mismo examen).
 - Las **imágenes no están en el repo** (pesan 15-25 MB por año y la API oficial falla para 2024 con `OutOfMemoryError` al codificar en base64). URLs oficiales y del espejo en `_fuentes.json` (`tipo: imagenes_v0`); `--con-imagenes` las descarga bajo demanda.
 - La fecha de examen por año viene de la API de examenesmir.com (campo `exam_date`), no del BOE → etiquetada "A VERIFICAR" en `_fuentes.json`.
-- Sin clasificación por asignatura/capítulo ni etiquetas de dificultad: eso es el paso 2 (LLM + muestreo manual del 10 % + contraste con los análisis por especialidad).
+- La clasificación es de un LLM, verificada por muestreo del 10 % por el mismo LLM y contrastada solo a nivel de asignatura con CTO (2025-2026): 36 preguntas con confianza **baja** y 21 sin capítulo; la validación cruzada capítulo a capítulo con "preguntas MIR de este capítulo" de ProMIR (sesión logueada) sigue pendiente. Sin etiquetas de dificultad.
+- 20 preguntas (`num 0`, "Otras · sin asignatura ProMIR") no tienen asignatura en el temario de ProMIR (fisiología, bioquímica, anatomía, cirugía plástica, rehabilitación): solo se sirven en el mini-MIR mixto si se pide `soloPlan:false`.
 - El texto es el oficial tal cual (incluidas erratas del cuaderno, p. ej. "triangulo", "auriculo-ventricular").
+- `src/lib/mirPreguntasOficiales.ts` pesa ≈ 1,1 MB y entra en el bundle web (lo importa `MirTodayPlan.tsx`); si el pool crece por encima de 3 MB, `--emit` falla y hay que pasar los enunciados a carga lazy.
 
 ## Pendientes
 
 - Verificar la clave de la **208 del MIR 2025** (reserva; IAMSEST no revascularizable → antiagregación) contra la resolución definitiva de la Comisión Calificadora (portal FSE o BOE): la hoja de la API da 2 (AAS + clopidogrel), Redacción Médica e iSanidad dicen 3 (AAS + ticagrelor). No corregir `raw/2025_plantilla_definitiva_v0.json` a mano: si se confirma 3, añadir la clave verificada al mecanismo de contraste del script (`CONTRASTES_PRENSA`) y que el paso 2 la trate como clave verificada; si la API cambia, `--descargar --anios 2025` + `--parse` la recogen solos.
-- Decidir si `raw/*.pdf` y los JSON se excluyen del remoto (leyenda "prohibida la reproducción").
+- Decidir si `raw/*.pdf` y los JSON se excluyen del remoto (leyenda "prohibida la reproducción"). Ojo: `src/lib/mirPreguntasOficiales.ts` contiene los 1.050 enunciados y SÍ va al repo/bundle; si se excluye, hay que excluirlo también (y entonces la app queda "sin pool oficial").
+- Revisar con sesión ProMIR las 36 preguntas de confianza baja y las 21 sin capítulo (`jq '.[] | select(.confianza=="baja" or .capId==null)' AAAA_clasificado.json`); corregir la etiqueta y regenerar.
+- Buscar las tablas por asignatura de MIR 2022-2024 (CTO/AMIR/ConSalud) para completar `CONTRASTE_CTO`.

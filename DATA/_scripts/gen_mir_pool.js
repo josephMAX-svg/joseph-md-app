@@ -2,12 +2,17 @@
 /**
  * gen_mir_pool.js — Pool de preguntas OFICIALES del examen MIR (Ministerio de Sanidad, España).
  *
- * Paso 1 del pipeline "MIR · pool de preguntas oficiales" (gaps_v3b_mir.json, punto 2):
- * descarga los cuadernos de examen (versión 0) y las hojas de respuestas definitivas de las
- * convocatorias MIR 2022-2026 y las parsea a JSON. NO clasifica por asignatura (eso lo hace el
- * paso 2) y NO toca src/lib/mirPreguntasOficiales.ts.
+ * Pipeline completo "MIR · pool de preguntas oficiales" (gaps_v3b_mir.json, punto 2):
+ *   paso 1 (--descargar, --parse): cuadernos versión 0 + hojas de respuestas DEFINITIVAS 2022-2026 → AAAA.json
+ *   paso 2 (--clasificar, --verificar): etiquetas del pase LLM (_clasificacion_llm/AAAA.json) × pool → AAAA_clasificado.json
+ *          + _clasificacion_stats.json (distribución, contraste con Academia CTO/ConSalud, muestra del 10 % y % de acuerdo)
+ *   paso 3 (--emit): src/lib/mirPreguntasOficiales.ts (MIR_PREGUNTAS_OFICIALES + MIR_POOL_META + helpers que consume la UI)
  *
  * Uso (desde D:\joseph-md-app):
+ *   node DATA/_scripts/gen_mir_pool.js --clasificar [--anios …]   → DATA/MIR/pool/AAAA_clasificado.json + _clasificacion_stats.json
+ *                                                                   (+ _clasificacion_llm/_muestra_2pasada_lectura.txt la 1ª vez)
+ *   node DATA/_scripts/gen_mir_pool.js --verificar                → % de acuerdo de _clasificacion_llm/_muestra_2pasada.json
+ *   node DATA/_scripts/gen_mir_pool.js --emit                     → src/lib/mirPreguntasOficiales.ts (< 3 MB, tsc limpio)
  *   node DATA/_scripts/gen_mir_pool.js --descargar [--con-imagenes] [--anios 2022,2026]
  *       → DATA/MIR/pool/raw/AAAA_cuadernillo.pdf            (cuaderno versión 0, PDF oficial)
  *         DATA/MIR/pool/raw/AAAA_plantilla_definitiva_v0.json (hoja de respuestas oficial, tal cual la sirve la API)
@@ -502,12 +507,407 @@ function imprimirStats() {
   console.log(filas.join('\n'));
 }
 
+// ═════════════════════════════ PASO 2 · clasificación (LLM) ═════════════════════════════
+/**
+ * Códigos de asignatura de las etiquetas LLM → num real de mirTemarioData.ts (30 asignaturas ProMIR).
+ * 'OTR' (num 0) = pregunta sin asignatura ProMIR (fisiología/bioquímica/anatomía básicas, cirugía plástica,
+ * rehabilitación…): se conserva en el pool con capId null y fueraDePlan:true; NUNCA se le inventa un capítulo.
+ */
+const CODIGOS_ASIG = {
+  ALE: 1, ANE: 2, CAR: 3, PAL: 4, DER: 5, END: 6, INF: 7, EPI: 8, EST: 9, FAR: 10, GAS: 11, GEN: 12, GER: 13, GIN: 14, HEM: 15,
+  INM: 16, LEG: 17, NEF: 18, NEU: 19, NRL: 20, OFT: 21, ONC: 22, ORL: 23, PED: 24, GES: 25, PSQ: 26, RXU: 27, REU: 28, TRA: 29, URO: 30,
+  OTR: 0,
+};
+const ASIG_OTRAS = 'Otras · sin asignatura ProMIR';
+const CONFIANZA = { a: 'alta', m: 'media', b: 'baja', p: 'pendiente' };
+const CLAS_DIR = path.join(POOL_DIR, '_clasificacion_llm');
+const CLAS_STATS = path.join(POOL_DIR, '_clasificacion_stats.json');
+const MUESTRA_2P = path.join(CLAS_DIR, '_muestra_2pasada.json');
+const TEMARIO_TS = path.join(ROOT, 'src', 'lib', 'mirTemarioData.ts');
+const PLAN_TS = path.join(ROOT, 'src', 'lib', 'mirDailyPlan.ts');
+const OUT_TS = path.join(ROOT, 'src', 'lib', 'mirPreguntasOficiales.ts');
+const FECHA_CLAS = '13-sep-2026';
+/**
+ * Resultado de la 2ª pasada ANTES de corregir etiquetas (registro histórico, no se recalcula): la comparación original
+ * del 13-sep-2026 dio 100 % de acuerdo en asignatura y 99,0 % en capítulo (101/102); el único desacuerdo (2025-103,
+ * disección de aorta proximal: 1ª pasada CAR.5 → 2ª pasada CAR.13) se corrigió en _clasificacion_llm/2025.json a favor
+ * de la 2ª pasada, por lo que --verificar devuelve 100/100 desde entonces. Poner null si se rehace la muestra.
+ */
+const VERIF_ORIGINAL = { fecha: '2026-09-13', acuerdoAsignaturaPct: 100, acuerdoCapIdPct: 99.0, capIdEvaluables: 102, corregidas: ['2025-103: CAR.5.m → CAR.13.m'] };
+
+/**
+ * Contraste externo (anti-alucinación) para la clasificación: desglose por asignatura que publicó ConSalud
+ * citando a Academia CTO (200 preguntas, sin reserva). Leído con WebFetch el 13-sep-2026:
+ *  2026 https://www.consalud.es/formacion/mir/desglose-por-asignaturas-del-examen-mir-de-2026-digestivo-y-pediatria-entran-en-el-top.html
+ *  2025 https://www.consalud.es/formacion/mir/mir-2025-estas-son-preguntas-han-caido-por-cada-asignatura-en-examen_153897_102.html
+ * Las categorías de CTO no son las de ProMIR: se agrupan con CTO_A_PROMIR antes de comparar.
+ */
+const CONTRASTE_CTO = {
+  2026: { Cardiología: 18, Digestivo: 17, Pediatría: 11, Epidemiología: 10, Neurología: 10, Reumatología: 9, Ginecología: 9, Neumología: 9, Bioética: 8, Infecciosas: 8, 'Cirugía General': 7, Endocrino: 7, Hematología: 7, Nefrología: 7, Psiquiatría: 7, Dermatología: 6, Geriatría: 6, Urología: 6, Oncología: 5, Traumatología: 5, Oftalmología: 4, Otorrino: 4, Genética: 3, Urgencias: 3, 'Angiología y Cirugía Vascular': 2, 'Cirugía Plástica': 2, 'Medicina Familiar': 2, Farmacología: 2, Fisiología: 2, Inmunología: 2, Neurocirugía: 2, Anestesia: 2, 'Anatomía Patológica': 1, Anatomía: 1, Bioquímica: 1, 'Cirugía Cardiaca': 1, 'Cirugía Torácica': 1, 'Cirugía Maxilofacial': 1, Rehabilitación: 1, Alergología: 1 },
+  2025: { Cardiología: 16, Neurología: 15, 'Cirugía General': 13, Infecciosas: 13, Endocrino: 12, Reumatología: 11, Traumatología: 11, Ginecología: 9, Digestivo: 8, Pediatría: 8, Psiquiatría: 8, Hematología: 7, Nefrología: 7, Neumología: 7, Otorrino: 7, Bioética: 6, Epidemiología: 6, Oncología: 6, Urología: 6, Oftalmología: 5, Urgencias: 5, Dermatología: 4, 'Anatomía Patológica': 3, Anestesia: 3, Geriatría: 3, Inmunología: 3, Alergología: 2, Fisiología: 2, Bioquímica: 1, Farmacología: 1, Genética: 1, 'Medicina Familiar': 1 },
+};
+/** categoría CTO → grupo comparable (num ProMIR o 'OTR'); las categorías básicas van al grupo OTR/varios. */
+const CTO_A_PROMIR = {
+  Cardiología: 3, 'Cirugía Cardiaca': 3, 'Angiología y Cirugía Vascular': 3,
+  Digestivo: 11, 'Cirugía General': 11,
+  Pediatría: 24, Epidemiología: 8, Neurología: 20, Neurocirugía: 20, Reumatología: 28, Ginecología: 14, Neumología: 19, 'Cirugía Torácica': 19,
+  Bioética: 17, Infecciosas: 7, Endocrino: 6, Hematología: 15, Nefrología: 18, Psiquiatría: 26, Dermatología: 5, Geriatría: 13, Urología: 30,
+  Oncología: 22, Traumatología: 29, Oftalmología: 21, Otorrino: 23, 'Cirugía Maxilofacial': 23, Genética: 12, Urgencias: 27, Farmacología: 10,
+  Inmunología: 16, Anestesia: 2, Alergología: 1,
+  'Cirugía Plástica': 'OTR', 'Medicina Familiar': 'OTR', Fisiología: 'OTR', 'Anatomía Patológica': 'OTR', Anatomía: 'OTR', Bioquímica: 'OTR', Rehabilitación: 'OTR',
+};
+
+/** Lee el temario real desde el .ts (sin compilar): [{num, name, chapters:[{n, titulo, capId}]}]. */
+function leerTemario() {
+  const src = fs.readFileSync(TEMARIO_TS, 'utf8');
+  const out = [];
+  const asigRe = /\{ num: (\d+), name: '([^']+)', subjectId: '([0-9a-f]+)', rentColor: '(\w+)'(?:, priorityKey: '(\w+)')?(?:, detalle: '(\w+)')?, chapters: \[([\s\S]*?)\] \},/g;
+  let m;
+  while ((m = asigRe.exec(src))) {
+    const caps = []; const capRe = /\{ n: (\d+), titulo: '((?:[^'\\]|\\.)*)', capId: '([0-9a-f]+)' \}/g; let c;
+    while ((c = capRe.exec(m[7]))) caps.push({ n: +c[1], titulo: c[2].replace(/\\'/g, "'"), capId: c[3] });
+    out.push({ num: +m[1], name: m[2], chapters: caps });
+  }
+  if (out.length !== 30) throw new Error('mirTemarioData.ts: esperaba 30 asignaturas, leídas ' + out.length);
+  return out;
+}
+/** Lee del plan (mirDailyPlan.ts) los capIds de los 76 temas y los num de las 14 asignaturas. */
+function leerPlan() {
+  const src = fs.readFileSync(PLAN_TS, 'utf8');
+  const re = /\{d:(\d+),fecha:"([^"]+)",asignatura:"([^"]+)",num:(\d+),rent:"\w+",tema:"(?:[^"\\]|\\.)*",capId:"([0-9a-f]+)"/g;
+  const capIds = new Set(); const nums = new Set(); let m;
+  while ((m = re.exec(src))) { const d = +m[1], num = +m[4]; if (num > 0) { nums.add(num); if (d <= 76) capIds.add(m[5]); } }
+  if (capIds.size !== 76 || nums.size !== 14) throw new Error(`mirDailyPlan.ts: esperaba 76 capIds/14 asignaturas, leídos ${capIds.size}/${nums.size}`);
+  return { capIds, nums };
+}
+function leerEtiquetas(anio) {
+  const p = path.join(CLAS_DIR, `${anio}.json`);
+  if (!fs.existsSync(p)) return null;
+  return JSON.parse(fs.readFileSync(p, 'utf8'));
+}
+/** Resuelve una etiqueta 'ASIG.cap.conf' contra el temario real. Devuelve {num, asignatura, capN, capId, capitulo, confianza} o lanza. */
+function resolverEtiqueta(etq, temario) {
+  const [cod, capStr, conf] = String(etq).split('.');
+  if (!(cod in CODIGOS_ASIG)) throw new Error('código de asignatura desconocido: ' + etq);
+  if (!(conf in CONFIANZA)) throw new Error('confianza desconocida: ' + etq);
+  const num = CODIGOS_ASIG[cod];
+  if (num === 0) return { num: 0, asignatura: ASIG_OTRAS, capN: null, capId: null, capitulo: null, confianza: CONFIANZA[conf] };
+  const asig = temario.find((a) => a.num === num);
+  if (capStr === 'x') return { num, asignatura: asig.name, capN: null, capId: null, capitulo: null, confianza: CONFIANZA[conf] };
+  const capN = parseInt(capStr, 10);
+  const cap = asig.chapters.find((c) => c.n === capN);
+  if (!cap || capN === 0) throw new Error(`capítulo ${capN} inexistente en ${asig.name} (${etq})`);
+  return { num, asignatura: asig.name, capN, capId: cap.capId, capitulo: cap.titulo, confianza: CONFIANZA[conf] };
+}
+/** Muestra determinista del 10 % (LCG con semilla fija) para la 2ª pasada de verificación. */
+function muestraIds(ids, fraccion = 0.10, semilla = 20260913) {
+  let s = semilla >>> 0; const rnd = () => { s = (Math.imul(1664525, s) + 1013904223) >>> 0; return s / 4294967296; };
+  const arr = ids.slice();
+  for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; }
+  return arr.slice(0, Math.round(ids.length * fraccion)).sort();
+}
+
+// ───────────────────────────── --clasificar ─────────────────────────────
+/** Cruza las etiquetas LLM (_clasificacion_llm/AAAA.json) con el pool parseado → AAAA_clasificado.json + _clasificacion_stats.json */
+function clasificar() {
+  const temario = leerTemario();
+  const plan = leerPlan();
+  const stats = leerJSON(CLAS_STATS, { generado: null, metodo: null, anios: {}, verificacion: null });
+  stats.metodo = `Pase LLM (Claude, ${FECHA_CLAS}) sobre enunciado + 4 opciones de cada pregunta → una asignatura de mirTemarioData.ts (30 de ProMIR; 'OTR' si no hay asignatura ProMIR) y, cuando el enunciado lo permite, el capítulo real (capId). Etiquetas en DATA/MIR/pool/_clasificacion_llm/AAAA.json ('ASIG.cap.confianza'); confianza alta = capítulo evidente · media = asignatura clara, capítulo por mejor ajuste · baja = asignatura discutible · pendiente = sin clasificar. fueraDePlan = la asignatura no está entre las 14 del plan; enPlan = el capId es uno de los 76 del plan.`;
+  let totalGlobal = 0; const errores = [];
+  for (const anio of aniosSeleccionados()) {
+    const pool = leerJSON(path.join(POOL_DIR, `${anio}.json`), null);
+    if (!pool) { console.warn(`⚠ ${anio}: falta ${anio}.json (ejecuta --parse)`); continue; }
+    const etq = leerEtiquetas(anio) || {};
+    const salida = [];
+    const porAsig = {}; const porConf = { alta: 0, media: 0, baja: 0, pendiente: 0 };
+    let enPlan = 0, fueraDePlan = 0, sinCap = 0;
+    for (const q of pool) {
+      const e = etq[String(q.numero)];
+      let r;
+      if (!e) { r = { num: -1, asignatura: 'SIN CLASIFICAR', capN: null, capId: null, capitulo: null, confianza: 'pendiente' }; }
+      else { try { r = resolverEtiqueta(e, temario); } catch (err) { errores.push({ anio, numero: q.numero, motivo: err.message }); r = { num: -1, asignatura: 'SIN CLASIFICAR', capN: null, capId: null, capitulo: null, confianza: 'pendiente' }; } }
+      const fp = r.num < 0 ? null : !plan.nums.has(r.num);
+      const ep = !!(r.capId && plan.capIds.has(r.capId));
+      const rec = {
+        id: q.id, anio, numero: q.numero, reserva: !!q.reserva,
+        enunciado: q.enunciado, opciones: q.opciones, clave: q.clave, anulada: !!q.anulada, imagen: !!q.imagen, imagen_num: q.imagen_num ?? null,
+        ...(q.nota ? { nota: q.nota } : {}),
+        num: r.num, asignatura: r.asignatura, capN: r.capN, capId: r.capId, capitulo: r.capitulo,
+        fueraDePlan: fp, enPlan: ep, confianza: r.confianza, etiqueta: e || null,
+      };
+      salida.push(rec);
+      porAsig[r.asignatura] = (porAsig[r.asignatura] || 0) + 1;
+      porConf[r.confianza]++;
+      if (ep) enPlan++; if (fp) fueraDePlan++; if (!r.capId) sinCap++;
+    }
+    escribirJSON(path.join(POOL_DIR, `${anio}_clasificado.json`), salida);
+    // contraste con CTO (solo 1-200, sin reserva)
+    const cto = CONTRASTE_CTO[anio];
+    let contraste = null;
+    if (cto) {
+      const grupoCTO = {}; for (const [cat, n] of Object.entries(cto)) { const g = CTO_A_PROMIR[cat]; if (g === undefined) throw new Error('categoría CTO sin mapa: ' + cat); grupoCTO[g] = (grupoCTO[g] || 0) + n; }
+      const grupoLLM = {}; for (const r of salida) { if (r.reserva) continue; const g = r.num === 0 ? 'OTR' : r.num; grupoLLM[g] = (grupoLLM[g] || 0) + 1; }
+      // EPI+EST+GES se comparan juntos con 'Epidemiología'+'Medicina Familiar' de CTO (CTO no separa gestión/estadística)
+      const nombre = (g) => (g === 'OTR' ? 'Otras/básicas' : temario.find((a) => a.num === +g).name);
+      const filas = [];
+      const grupos = new Set([...Object.keys(grupoCTO), ...Object.keys(grupoLLM)]);
+      for (const g of grupos) {
+        const a = grupoLLM[g] || 0, b = grupoCTO[g] || 0;
+        filas.push({ grupo: nombre(g), llm: a, cto: b, delta: a - b });
+      }
+      filas.sort((x, y) => Math.abs(y.delta) - Math.abs(x.delta));
+      contraste = { fuente: 'ConSalud citando Academia CTO (200 Q, sin reserva) · WebFetch 13-sep-2026', desviacionesGrandes: filas.filter((f) => Math.abs(f.delta) >= 3), filas };
+    }
+    stats.anios[String(anio)] = {
+      preguntas: salida.length, sinClasificar: porConf.pendiente, porConfianza: porConf, enPlanCapId: enPlan, fueraDePlanAsignatura: fueraDePlan, sinCapitulo: sinCap,
+      porAsignatura: Object.fromEntries(Object.entries(porAsig).sort((x, y) => y[1] - x[1])),
+      contrasteCTO: contraste,
+      clasificado: hoyISO(),
+    };
+    totalGlobal += salida.length;
+    console.log(`${anio}: ${salida.length} clasificadas · alta ${porConf.alta} · media ${porConf.media} · baja ${porConf.baja} · pendiente ${porConf.pendiente} · enPlan(capId) ${enPlan} · fueraDePlan(asig) ${fueraDePlan} · sin capítulo ${sinCap}`);
+    if (contraste) console.log(`   contraste CTO (|Δ|≥3): ${contraste.desviacionesGrandes.map((f) => `${f.grupo} ${f.llm} vs ${f.cto} (${f.delta > 0 ? '+' : ''}${f.delta})`).join(' · ') || 'ninguna'}`);
+  }
+  // muestra del 10 % para la 2ª pasada (ids deterministas)
+  const todos = []; for (const a of ANIOS_MIR) { const c = leerJSON(path.join(POOL_DIR, `${a}_clasificado.json`), []); for (const r of c) todos.push(r.id); }
+  const muestra = muestraIds(todos);
+  stats.muestra2Pasada = { n: muestra.length, semilla: 20260913, ids: muestra, fichero: path.relative(ROOT, MUESTRA_2P) };
+  if (!fs.existsSync(MUESTRA_2P)) {
+    // plantilla vacía para la 2ª pasada + fichero de lectura con enunciado ÍNTEGRO (sin la etiqueta de la 1ª pasada)
+    const txt = [];
+    for (const id of muestra) { const [a] = id.split('-'); const r = leerJSON(path.join(POOL_DIR, `${a}_clasificado.json`), []).find((x) => x.id === id); txt.push(`${id}${r.imagen ? ' #' : ''} | ${r.enunciado} || ${r.opciones.join(' ; ')}`); }
+    fs.writeFileSync(path.join(CLAS_DIR, '_muestra_2pasada_lectura.txt'), txt.join('\n'), 'utf8');
+    console.log(`\nMuestra 2ª pasada: ${muestra.length} ids → ${path.relative(ROOT, path.join(CLAS_DIR, '_muestra_2pasada_lectura.txt'))} (clasificar a ciegas y guardar en ${path.relative(ROOT, MUESTRA_2P)} como {id: 'ASIG.cap.conf'}; luego --verificar)`);
+  }
+  stats.total = totalGlobal; stats.generado = hoyISO();
+  if (errores.length) { stats.errores = errores; console.error('✗ etiquetas inválidas:', JSON.stringify(errores)); }
+  escribirJSON(CLAS_STATS, stats);
+  console.log(`\n_clasificacion_stats.json → ${path.relative(ROOT, CLAS_STATS)} · total ${totalGlobal}`);
+  if (errores.length) process.exit(1);
+}
+
+// ───────────────────────────── --verificar ─────────────────────────────
+/** Compara la 2ª pasada (_muestra_2pasada.json) con la clasificación y guarda el % de acuerdo en _clasificacion_stats.json */
+function verificar() {
+  const temario = leerTemario();
+  const stats = leerJSON(CLAS_STATS, null); if (!stats) throw new Error('falta _clasificacion_stats.json (ejecuta --clasificar)');
+  const seg = leerJSON(MUESTRA_2P, null); if (!seg) throw new Error('falta ' + MUESTRA_2P);
+  const ids = stats.muestra2Pasada.ids;
+  let n = 0, okAsig = 0, okCap = 0, okCapEval = 0; const desacuerdos = [];
+  for (const id of ids) {
+    const [a] = id.split('-');
+    const r = leerJSON(path.join(POOL_DIR, `${a}_clasificado.json`), []).find((x) => x.id === id);
+    const e2 = seg[id]; if (!r || !e2) { desacuerdos.push({ id, motivo: 'sin 2ª pasada' }); continue; }
+    const r2 = resolverEtiqueta(e2, temario); n++;
+    const mismaAsig = r2.num === r.num; if (mismaAsig) okAsig++;
+    if (r.capId && r2.capId) { okCapEval++; if (r.capId === r2.capId) okCap++; }
+    if (!mismaAsig || (r.capId && r2.capId && r.capId !== r2.capId)) desacuerdos.push({ id, primera: `${r.asignatura} · ${r.capitulo || '—'} (${r.etiqueta})`, segunda: `${r2.asignatura} · ${r2.capitulo || '—'} (${e2})` });
+  }
+  const pctAsig = n ? Math.round((okAsig / n) * 1000) / 10 : 0;
+  const pctCap = okCapEval ? Math.round((okCap / okCapEval) * 1000) / 10 : 0;
+  stats.verificacion = { fecha: hoyISO(), n, acuerdoAsignaturaPct: pctAsig, acuerdoCapIdPct: pctCap, capIdEvaluables: okCapEval, desacuerdos, nota: '2ª pasada realizada por el mismo LLM en un paso separado y a ciegas (fichero de lectura sin la etiqueta de la 1ª pasada); NO es un evaluador humano independiente.' };
+  escribirJSON(CLAS_STATS, stats);
+  console.log(`Verificación 2ª pasada: n=${n} · acuerdo asignatura ${pctAsig} % · acuerdo capId ${pctCap} % (sobre ${okCapEval} con capítulo en ambas) · desacuerdos ${desacuerdos.length}`);
+  for (const d of desacuerdos) console.log('  ', d.id, '|', d.primera || d.motivo, '→', d.segunda || '');
+}
+
+// ───────────────────────────── --emit ─────────────────────────────
+/** Genera src/lib/mirPreguntasOficiales.ts desde los AAAA_clasificado.json (interfaz + helpers que la UI ya consume). */
+function emitir() {
+  const temario = leerTemario();
+  const plan = leerPlan();
+  const stats = leerJSON(CLAS_STATS, null); if (!stats) throw new Error('falta _clasificacion_stats.json (ejecuta --clasificar)');
+  const fuentes = leerJSON(FUENTES, { convocatorias: {} });
+  const todas = [];
+  for (const anio of ANIOS_MIR) {
+    const c = leerJSON(path.join(POOL_DIR, `${anio}_clasificado.json`), null);
+    if (!c) throw new Error(`falta ${anio}_clasificado.json (ejecuta --clasificar)`);
+    const conv = (fuentes.convocatorias || {})[String(anio)] || {};
+    const fich = (conv.ficheros || []).find((f) => f.tipo === 'cuadernillo_v0') || {};
+    const url = fich.url || FSE_PORTAL;
+    for (const r of c) todas.push({
+      id: r.id, anio: r.anio, numero: r.numero, reserva: r.reserva,
+      num: r.num, asignatura: r.asignatura, capId: r.capId, capitulo: r.capitulo,
+      imagen: r.imagen, imagenNum: r.imagen_num, anulada: r.anulada, fueraDePlan: r.fueraDePlan, enPlan: r.enPlan, confianza: r.confianza,
+      enunciado: r.enunciado, opciones: r.opciones, clave: r.clave, ...(r.nota ? { nota: r.nota } : {}),
+      fuente: 'Ministerio-FSE', url,
+    });
+  }
+  const tot = todas.length, conClave = todas.filter((q) => q.clave != null).length, anul = todas.filter((q) => q.anulada).length, img = todas.filter((q) => q.imagen).length;
+  const porConf = { alta: 0, media: 0, baja: 0, pendiente: 0 }; for (const q of todas) porConf[q.confianza]++;
+  const sinClas = porConf.pendiente;
+  const v = stats.verificacion;
+  const verifTxt = v ? `muestra verificada ${v.acuerdoAsignaturaPct} % asignatura / ${v.acuerdoCapIdPct} % capítulo (n=${v.n}${VERIF_ORIGINAL ? `; ${VERIF_ORIGINAL.acuerdoCapIdPct} % capítulo antes de corregir ${VERIF_ORIGINAL.corregidas.length} etiqueta` : ''})` : 'muestra verificada PENDIENTE';
+  const estado = `v1 · ${FECHA_CLAS} · ${tot} preguntas · clasificación LLM con ${verifTxt}`;
+  const capIdsPlanConQ = new Set(todas.filter((q) => q.enPlan).map((q) => q.capId));
+  const capsPlanSinQ = [...plan.capIds].filter((c) => !capIdsPlanConQ.has(c)).map((c) => { for (const a of temario) { const ch = a.chapters.find((x) => x.capId === c); if (ch) return `${a.name} · ${ch.titulo}`; } return c; });
+  const contrastes = Object.fromEntries(Object.entries(stats.anios).filter(([, s]) => s.contrasteCTO).map(([a, s]) => [a, s.contrasteCTO.desviacionesGrandes.map((f) => `${f.grupo} LLM ${f.llm} vs CTO ${f.cto}`)]));
+  const rowTS = (q) => JSON.stringify(q);
+  const out = `/**
+ * mirPreguntasOficiales.ts — POOL OFICIAL de preguntas MIR (Ministerio de Sanidad) clasificadas por asignatura/capítulo ProMIR.
+ * GENERADO por DATA/_scripts/gen_mir_pool.js --emit (${FECHA_CLAS}) — NO editar a mano.
+ *
+ * Pipeline (DATA/MIR/pool/README.md · DATA/MIR/POOL_USO.md):
+ *   --descargar → cuadernos v0 + hojas de respuestas DEFINITIVAS del portal FSE (token anónimo) → --parse → AAAA.json
+ *   → --clasificar (etiquetas LLM en _clasificacion_llm/AAAA.json, contraste con CTO/ConSalud) → AAAA_clasificado.json
+ *   → --verificar (2ª pasada a ciegas sobre el 10 %) → --emit (este fichero).
+ * Palmerton "questions as the curriculum": pre-test 5Q, anclas, quiz 8-10Q, cierre 10Q, mini-MIR 40Q y el banqueo ene-mar
+ * consumen preguntasSinUsar(capId, mirUsadasIds()) / preguntasSinUsarDeAsignatura(); el log guarda los qIds (anti-repetición).
+ *
+ * Reglas: texto oficial sin corregir (erratas incluidas) · clave DEFINITIVA (null = anulada; las anuladas NO se sirven por
+ * defecto) · la 2025-208 lleva \`nota\` (clave A VERIFICAR) y tampoco se sirve por defecto · 'OTR' (num 0) = sin asignatura
+ * ProMIR (fisiología/bioquímica/anatomía/plástica/rehabilitación): capId null · fueraDePlan = asignatura fuera de las 14 del
+ * plan (mirDailyPlan) · enPlan = capId ∈ 76 capítulos del plan · confianza = alta/media/baja de la clasificación LLM.
+ * Uso privado de estudio (cuaderno: "PROHIBIDA LA REPRODUCCIÓN TOTAL O PARCIAL"). Tamaño ≈ ${Math.round(todas.reduce((s, q) => s + rowTS(q).length, 0) / 1024)} KB.
+ */
+export type MirFuentePregunta = 'Ministerio-FSE' | 'ProMIR' | 'examenesmir' | 'BOE';
+export type MirConfianza = 'alta' | 'media' | 'baja' | 'pendiente';
+
+export interface MirPreguntaOficial {
+  /** id canónico "AAAA-NNN" (convocatoria-nº en la versión 0), p. ej. "2025-114" */
+  id: string;
+  anio: number;
+  numero: number;
+  /** true si es de reserva (201-210) */
+  reserva: boolean;
+  /** asignatura ProMIR real (num 1-30 de mirTemarioData; 0 = 'Otras · sin asignatura ProMIR'; -1 = SIN CLASIFICAR) */
+  num: number; asignatura: string;
+  /** capId REAL de mirTemarioData (null si el enunciado no permite fijar capítulo) y su título */
+  capId: string | null; capitulo: string | null;
+  /** ligada al cuaderno de imágenes (nº tal como lo cita el cuaderno) → cuota 1/4 de APEX con imagen */
+  imagen: boolean; imagenNum: string | null;
+  /** anulada en la plantilla definitiva (clave null) */
+  anulada: boolean;
+  /** la asignatura NO está entre las 14 del plan (Tier C / mini-MIR); null si SIN CLASIFICAR */
+  fueraDePlan: boolean | null;
+  /** el capId es uno de los 76 capítulos del plan */
+  enPlan: boolean;
+  confianza: MirConfianza;
+  enunciado: string;
+  opciones: string[];
+  /** 1-4 según la plantilla DEFINITIVA del Ministerio; null si anulada */
+  clave: number | null;
+  /** solo si hay un contraste abierto (p. ej. 2025-208) */
+  nota?: string;
+  fuente: MirFuentePregunta;
+  /** cuaderno oficial (versión 0) del que procede */
+  url: string;
+  /** subtema/etiqueta de ProMIR si existe (compat) */
+  tema?: string;
+}
+
+export const MIR_POOL_META = {
+  estado: ${JSON.stringify(estado)},
+  generado: ${JSON.stringify(hoyISO())},
+  convocatorias: ${JSON.stringify(ANIOS_MIR)},
+  total: ${tot}, conClave: ${conClave}, anuladas: ${anul}, conImagen: ${img}, sinClasificar: ${sinClas},
+  porConfianza: ${JSON.stringify(porConf)},
+  enPlanCapId: ${todas.filter((q) => q.enPlan).length}, fueraDePlanAsignatura: ${todas.filter((q) => q.fueraDePlan).length}, sinCapitulo: ${todas.filter((q) => !q.capId).length},
+  /** capítulos del plan (76) sin ninguna pregunta oficial 2022-2026 en el pool */
+  capitulosPlanSinPreguntas: ${JSON.stringify(capsPlanSinQ)},
+  verificacion: ${JSON.stringify(v ? { n: v.n, acuerdoAsignaturaPct: v.acuerdoAsignaturaPct, acuerdoCapIdPct: v.acuerdoCapIdPct, original: VERIF_ORIGINAL, nota: v.nota } : null)},
+  /** desviaciones |Δ| ≥ 3 preguntas frente al desglose de Academia CTO (ConSalud) por año, 1-200 */
+  contrasteCTO: ${JSON.stringify(contrastes)},
+  fuente: 'Ministerio de Sanidad · portal FSE (cuaderno versión 0 + hoja de respuestas definitiva) · DATA/MIR/pool/_fuentes.json',
+  licencia: 'Uso privado de estudio. Cuaderno: "PROHIBIDA LA REPRODUCCIÓN TOTAL O PARCIAL". No redistribuir.',
+  convocatoriasObjetivo: '2022–2026 (5 × 210); ampliar con MIR 2027 tras la plantilla definitiva (≈ feb-2027)',
+  fuentesLibres: [
+    { fuente: 'Ministerio de Sanidad · FSE', url: ${JSON.stringify(FSE_PORTAL)}, nota: 'cuadernos + hojas de respuestas oficiales (API con token anónimo)' },
+    { fuente: 'examenesmir.com', url: 'https://www.examenesmir.com/examenes-mir', nota: 'espejo de los cuadernillos (sin plantillas)' },
+  ],
+};
+
+export const MIR_PREGUNTAS_OFICIALES: MirPreguntaOficial[] = [
+${todas.map(rowTS).join(',\n')}
+];
+
+export interface MirPoolOpts {
+  /** incluir anuladas (clave null) — por defecto NO */
+  incluirAnuladas?: boolean;
+  /** incluir las que llevan \`nota\` de clave A VERIFICAR — por defecto NO */
+  incluirDudosas?: boolean;
+  /** solo con imagen (cuota 1/4 APEX con imagen) */
+  soloImagen?: boolean;
+}
+const usable = (q: MirPreguntaOficial, o: MirPoolOpts = {}) =>
+  (o.incluirAnuladas || (!q.anulada && q.clave != null)) && (o.incluirDudosas || !q.nota) && (!o.soloImagen || q.imagen);
+
+/** Preguntas oficiales de un capítulo (capId real de mirTemarioData). Por defecto excluye anuladas y dudosas. */
+export function preguntasDeCapitulo(capId: string, opts?: MirPoolOpts): MirPreguntaOficial[] {
+  return MIR_PREGUNTAS_OFICIALES.filter((q) => q.capId === capId && usable(q, opts));
+}
+/** Preguntas no usadas todavía (anti-repetición): \`usadas\` = ids ya consumidas (mirEvalLog.mirUsadasIds()). Orden: año desc, nº asc. */
+export function preguntasSinUsar(capId: string, usadas: Iterable<string>, opts?: MirPoolOpts): MirPreguntaOficial[] {
+  const u = new Set(usadas); return preguntasDeCapitulo(capId, opts).filter((q) => !u.has(q.id)).sort(ordenPool);
+}
+/** Preguntas de una asignatura (num 1-30 o nombre exacto de mirTemarioData). Por defecto excluye anuladas y dudosas. */
+export function preguntasDeAsignatura(asignatura: number | string, opts?: MirPoolOpts): MirPreguntaOficial[] {
+  return MIR_PREGUNTAS_OFICIALES.filter((q) => (typeof asignatura === 'number' ? q.num === asignatura : q.asignatura === asignatura) && usable(q, opts));
+}
+/** Anti-repetición a nivel de asignatura (banqueo ene-mar, Tier C express, viernes 'peor asignatura'). */
+export function preguntasSinUsarDeAsignatura(asignatura: number | string, usadas: Iterable<string>, opts?: MirPoolOpts): MirPreguntaOficial[] {
+  const u = new Set(usadas); return preguntasDeAsignatura(asignatura, opts).filter((q) => !u.has(q.id)).sort(ordenPool);
+}
+/** Preguntas ligadas a una imagen (cuota '1 de cada 4 APEX con imagen'); filtro opcional por capId o num. */
+export function preguntasConImagen(filtro?: { capId?: string; num?: number }, opts?: MirPoolOpts): MirPreguntaOficial[] {
+  return MIR_PREGUNTAS_OFICIALES.filter((q) => q.imagen && usable(q, opts) && (!filtro?.capId || q.capId === filtro.capId) && (filtro?.num == null || q.num === filtro.num));
+}
+/** Mezcla determinista para el mini-MIR / banqueo (semilla = fecha ISO): mismo día ⇒ mismo set, sin Math.random. */
+export function mezclaDeterminista<T>(arr: T[], semilla: string): T[] {
+  let s = 0; for (let i = 0; i < semilla.length; i++) s = (s * 31 + semilla.charCodeAt(i)) >>> 0;
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) { s = (Math.imul(1664525, s) + 1013904223) >>> 0; const j = Math.floor((s / 4294967296) * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+/** Set mixto sin usar (mini-MIR D77 40Q · banqueo 25Q): solo asignaturas del plan salvo que se pidan todas. */
+export function preguntasMixtasSinUsar(n: number, usadas: Iterable<string>, semilla: string, filtro?: { soloPlan?: boolean; nums?: number[] }, opts?: MirPoolOpts): MirPreguntaOficial[] {
+  const u = new Set(usadas);
+  const base = MIR_PREGUNTAS_OFICIALES.filter((q) => usable(q, opts) && !u.has(q.id) && (!filtro?.soloPlan || q.fueraDePlan === false) && (!filtro?.nums || filtro.nums.includes(q.num)));
+  return mezclaDeterminista(base, semilla).slice(0, n);
+}
+export function preguntaPorId(id: string): MirPreguntaOficial | undefined { return MIR_PREGUNTAS_OFICIALES.find((q) => q.id === id); }
+/** Resumen del pool por asignatura (para la UI: "N Q oficiales mapeadas"). */
+export function poolResumen(): Array<{ num: number; asignatura: string; n: number; conImagen: number; conCapitulo: number; enPlan: number; fueraDePlan: boolean | null }> {
+  const m = new Map<number, { num: number; asignatura: string; n: number; conImagen: number; conCapitulo: number; enPlan: number; fueraDePlan: boolean | null }>();
+  for (const q of MIR_PREGUNTAS_OFICIALES) {
+    const s = m.get(q.num) || { num: q.num, asignatura: q.asignatura, n: 0, conImagen: 0, conCapitulo: 0, enPlan: 0, fueraDePlan: q.fueraDePlan };
+    s.n++; if (q.imagen) s.conImagen++; if (q.capId) s.conCapitulo++; if (q.enPlan) s.enPlan++; m.set(q.num, s);
+  }
+  return Array.from(m.values()).sort((a, b) => b.n - a.n);
+}
+/** Resumen por capítulo dentro de una asignatura (para el Temario: "cap X · N Q"). */
+export function poolResumenCapitulos(num: number): Array<{ capId: string; capitulo: string; n: number; conImagen: number; enPlan: boolean }> {
+  const m = new Map<string, { capId: string; capitulo: string; n: number; conImagen: number; enPlan: boolean }>();
+  for (const q of MIR_PREGUNTAS_OFICIALES) {
+    if (q.num !== num || !q.capId) continue;
+    const s = m.get(q.capId) || { capId: q.capId, capitulo: q.capitulo || '', n: 0, conImagen: 0, enPlan: q.enPlan };
+    s.n++; if (q.imagen) s.conImagen++; m.set(q.capId, s);
+  }
+  return Array.from(m.values()).sort((a, b) => b.n - a.n);
+}
+const ordenPool = (a: MirPreguntaOficial, b: MirPreguntaOficial) => (b.anio - a.anio) || (a.numero - b.numero);
+export const mirPoolDisponible = (): boolean => MIR_PREGUNTAS_OFICIALES.length > 0;
+`;
+  // v5.10b (13-sep-2026, integrador): IDEMPOTENTE — si el pool no cambió, NO se reescribe (MIR_POOL_META.generado conserva su timestamp; diff limpio).
+  const STAMP_RE = /generado: "[^"]*"/g;
+  let sinCambios = false; try { sinCambios = fs.readFileSync(OUT_TS, 'utf8').replace(STAMP_RE, '') === out.replace(STAMP_RE, ''); } catch { /* aún no existe */ }
+  if (sinCambios) console.log(`= ${path.relative(ROOT, OUT_TS)} sin cambios de contenido (conserva MIR_POOL_META.generado)`); else fs.writeFileSync(OUT_TS, out, 'utf8');
+  const bytes = Buffer.byteLength(out, 'utf8');
+  if (bytes > 3 * 1024 * 1024) throw new Error(`mirPreguntasOficiales.ts pesa ${bytes} bytes (> 3 MB): mover enunciados a carga lazy`);
+  console.log(`${sinCambios ? "OK (sin reescribir)" : "Wrote"} ${path.relative(ROOT, OUT_TS)} · ${tot} preguntas · ${Math.round(bytes / 1024)} KB · clave ${conClave} · anuladas ${anul} · imagen ${img} · ${verifTxt}`);
+  console.log(`capítulos del plan sin preguntas oficiales: ${capsPlanSinQ.length}` + (capsPlanSinQ.length ? ' → ' + capsPlanSinQ.join(' | ') : ''));
+}
+
 // ───────────────────────────── main ─────────────────────────────
 (async () => {
   try {
     if (flag('--descargar')) await descargar();
     else if (flag('--parse')) parsear();
     else if (flag('--stats')) imprimirStats();
-    else { console.log('Uso: node DATA/_scripts/gen_mir_pool.js --descargar [--con-imagenes] [--anios 2022,2026] | --parse [--anios …] | --stats'); process.exit(1); }
+    else if (flag('--clasificar')) clasificar();
+    else if (flag('--verificar')) verificar();
+    else if (flag('--emit')) emitir();
+    else { console.log('Uso: node DATA/_scripts/gen_mir_pool.js --descargar [--con-imagenes] [--anios 2022,2026] | --parse [--anios …] | --stats | --clasificar [--anios …] | --verificar | --emit'); process.exit(1); }
   } catch (e) { console.error('✗ ' + (e && e.stack || e)); process.exit(1); }
 })();

@@ -108,6 +108,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaUSMLE; onOpe
   const mirPrev = mirPrecedio(dia);
   const viernesN4 = esViernesNivel4(dia);
   const taper = esDiaTaper(dia);
+  const hitoHoy = esHito(dia); // día de UWSA/NBME/Free 120: no hay pre-test de nivel 1, la mañana es el sim
   const derma = esDiaDermaStep1(dia);
   const atomos = derma ? dermaStep1Atomos() : [];
   const notaColor = taper ? RED : Colors.gold;
@@ -200,7 +201,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaUSMLE; onOpe
 
       {/* Cola de materiales de hoy */}
       <Text style={st.secLbl}>📋 Cola de hoy · 05:00 Anki AM · 07:15–12:00 + 18:00–18:45 (en orden) · Qbankly = botón Edge</Text>
-      <FadeUp delay={60}><ColaItem icon="🅠" lbl="PRE-TEST 08:15 · uWorld (modo tutor · SIN tiempo · nivel 1)" val={derma ? `${DERMA_STEP1_QUERY} + fallos del ledger derma → luego ${dia.uw} · 10 preguntas ciegas` : `${dia.system} → ${dia.uw} · 10 preguntas ciegas + free recall 90s`} sub={derma ? 'Cuenta doble Derma ↔ Step 1: 15 min de tarjetas step1 + casos fallados del ledger, después las 10Q ciegas de uWorld (Qbankly, Edge)' : 'Qbankly → QBanks → uWorld Step 1 · UWorld primero para diagnosticar, First Aid después'} color={GREEN} url={QBQ} edge /></FadeUp>
+      <FadeUp delay={60}><ColaItem icon="🅠" lbl={hitoHoy ? `HITO · ${dia.uw} (${dia.qDia}Q · nivel 5 · timed)` : "PRE-TEST 08:15 · uWorld (modo tutor · SIN tiempo · nivel 1)"} val={hitoHoy ? `${dia.sub} · protocolo test-day (Ziploc BREAK 1/2/3, sit-in breaks, sin cambiar respuestas)` : derma ? `${DERMA_STEP1_QUERY} + fallos del ledger derma → luego ${dia.uw} · 10 preguntas ciegas` : `${dia.system} → ${dia.uw} · 10 preguntas ciegas + free recall 90s`} sub={derma ? 'Cuenta doble Derma ↔ Step 1: 15 min de tarjetas step1 + casos fallados del ledger, después las 10Q ciegas de uWorld (Qbankly, Edge)' : 'Qbankly → QBanks → uWorld Step 1 · UWorld primero para diagnosticar, First Aid después'} color={GREEN} url={QBQ} edge /></FadeUp>
       <FadeUp delay={90}><ColaItem icon="🎬" lbl="VÍDEO · Boards & Beyond Step 1" val={`${dia.bbCh} → ${dia.bbVid}`} sub="Qbankly → Video Library → B&B Step 1" color={RED} url={QBV} edge /></FadeUp>
       <FadeUp delay={120}><ColaItem icon="📖" lbl="ACTIVE READING · material primario" val={dia.mat} sub="Qbankly → Library (uWorld/AMBOSS) · 25 min · 3-5 puntos high-yield" color={READ} url={QBL} edge /></FadeUp>
       <FadeUp delay={150}><ColaItem icon="🗂️" lbl="FLASHCARDS · uWorld Step 1" val={`Deck: ${dia.system}`} sub="Qbankly → Flashcards · Anki SRS" color={Colors.teal} url={QBF} edge /></FadeUp>

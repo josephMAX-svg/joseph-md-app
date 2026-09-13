@@ -43,3 +43,8 @@ STUDY_HUB/_scrape/
 
 DATA/BUSINESS/_scrape/_tmp_*.txt
 DATA/BUSINESS/_upload/
+
+# MIR pool: cuadernillos oficiales (PDF/TXT con "prohibida la reproducción") se quedan en local; los JSON parseados sí se versionan
+DATA/MIR/pool/raw/*.pdf
+DATA/MIR/pool/raw/*.txt
+DATA/_scripts/usmle/usmle_dias_v5.txt

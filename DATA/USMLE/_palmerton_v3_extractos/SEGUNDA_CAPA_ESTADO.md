@@ -1,0 +1,214 @@
+# SEGUNDA CAPA "cero puntos ciegos" — ESTADO gap a gap (13-sep-2026 · régimen v5.10)
+
+**Qué es:** el cierre contable de los **65 puntos ciegos** de `gaps_v3b_{business,derma,encaps,mir,research,synapse}.json`
+(05-sep-2026, segunda capa tras la Fase C) implementados el 12-13 sep por **13 agentes** + el integrador, más las **10
+divergencias abiertas §12.6** de `PALMERTON_METODO_COMPLETO.md` (auditadas por el crítico de completitud porque no existe
+`gaps_v3b_usmle*.json`) y los **31 hallazgos** de ese crítico. Base limpia `16c1c28` (v5.10) → wip `a884de4` (11 agentes)
+→ working tree del 13-sep (`mir-pool-clasificar`, `derma-ui`, integración; **sin commit**). Detalle narrativo en
+`DATA/REESTRUCTURACION_31AGO_2026.md` §13; lo que queda abierto para Joseph, por bloque, en `DATA/PENDIENTES_JOSEPH.md`.
+
+**Fuentes de este fichero:** los 13 informes estructurados (`hecho / ficheros / gaps_cerrados / pendiente_usuario / notas`)
++ comprobaciones directas del 13-sep sobre el repo (grep/node) para Business, que **no tuvo agente en la 2.ª capa**. Nada
+está inferido de memoria; lo no comprobado lleva "A VERIFICAR (13-sep)".
+
+**Leyenda:** **hecho** = implementado en el repo (o en Supabase/Calendar) y verificable · **parcial** = implementado con
+una parte que falta, nombrada · **pendiente-joseph** = nada que un agente pudiera hacer (decisión, sesión logueada, acción
+fuera del repo) · **descartado** = punto abandonado con motivo. Los "descartado (fuera de mi sección)" de los informes
+son **solapes entre agentes** (otro lo cerró), no puntos abandonados: aquí cada gap aparece una sola vez con su estado real.
+
+**Régimen intacto:** ni franjas, ni metas, ni fechas de examen, ni un tema o subtema cambiaron (comprobado con `node` sobre
+cada `.ts` tras regenerar: mismas fechas, mismos multiconjuntos; `remap_inicio.js 2026-09-14` ×2 → `git diff` vacío).
+
+---
+
+## 1 · Tabla resumen por sección
+
+| Sección (JSON) | Agentes 2.ª capa | nº gaps | ✅ hechos | ◐ parciales | ⏳ pendientes-Joseph | — descartados |
+|---|---|---:|---:|---:|---:|---:|
+| **Business / LIVIANO / AURUM** (`gaps_v3b_business`) | ninguno (1.ª capa + lectura del repo 13-sep) | 12 | 9 | 3 | 0 | 0 |
+| **Derma** (`gaps_v3b_derma`) | `derma-data` · `derma-ui` | 10 | 9 | 0 | 1 | 0 |
+| **ENCAPS** (`gaps_v3b_encaps`) | `encaps-app` · `encaps-scripts` | 9 | 8 | 1 | 0 | 0 |
+| **MIR** (`gaps_v3b_mir`) | `mir-loop` · `mir-pool-descarga` · `mir-pool-clasificar` | 11 | 5 | 6 | 0 | 0 |
+| **Research** (`gaps_v3b_research`) | `research-plan` · `research-infra` · integrador | 12 | 9 | 3 | 0 | 0 |
+| **SYNAPSE / IA / VITALS / rutina** (`gaps_v3b_synapse`) | `vibecoding` (1-5) · `transversal` (6-11) | 11 | 10 | 1 | 0 | 0 |
+| **TOTAL 65** | | **65** | **50** | **14** | **1** | **0** |
+| *USMLE · divergencias §12.6* (fuera de los 65) | `critico-completitud` (solo lectura) · `usmle-palmerton-2` | 10 | 3 | 1 | 6 | 0 |
+
+Lectura: **50/65 cerrados (77 %)**, 14 parciales con la parte que falta nombrada abajo (la mayoría es cableado de UI o doc
+de un fichero que no estaba en la lista del agente → próxima pasada), 1 exige sesión logueada de Joseph (AccessDerma). De
+las 10 divergencias USMLE, las 6 pendientes son decisiones §E (tabla ⚪ de `PENDIENTES_JOSEPH.md`).
+
+---
+
+## 2 · Gap a gap — estado y dónde vive lo hecho
+
+Formato: `[n] título corto — ESTADO (agente) — fichero(s) · qué falta / quién`.
+
+### 2.1 Business / LIVIANO / AURUM (12) — sin agente en la 2.ª capa; estado leído del repo el 13-sep
+
+- [1] LIVIANO no mide retención (sin deck, ✓ binario) — **parcial** (1.ª capa) — `src/lib/livianoStudyPlan.ts` (`LIV_META`: 18 `pretest:true` de lunes, 4 `drill:true`, `metaCiegoPct 80`) · **falta**: deck en `src/lib/ankiLinks.ts` (0 menciones "liviano") y score persistido (`liviano_score`: 0 menciones) → importar `ANKI_COLA/LIVIANO_mecanismo.csv` (Joseph) + asignar deck y score (agente futuro).
+- [2] 16 viernes-caso con 6 viñetas repetidas — **hecho** (1.ª capa) — `DATA/BUSINESS/liviano_curriculum.json` (casos con datos clínicos, p. ej. pancreatitis + abandono del anticonceptivo) · `src/lib/livianoCasos.ts` (`LIV_RUBRICA`, `LIV_META_CIEGO_PCT`) · 16 `casoId` en el plan. A VERIFICAR (13-sep): que las 16 viñetas sean distintas (no contado).
+- [3] La Academia salta la EVALUACIÓN CLÍNICA del paciente con obesidad — **parcial / A VERIFICAR (13-sep)** — `liviano_curriculum.json` tiene 17 menciones (anamnesis, comorbilidades, obesogénicos…) dentro de casos; **no se auditó** si existe un bloque de días dedicado. Si no, es contenido nuevo para febrero (no se recorta el plan vigente).
+- [4] Cero días sobre acceso y regulación en Perú — **hecho (datos)** — `src/lib/empresaData.ts` (`LIVIANO_ACCESO_PERU`) + átomos D38-D44 del plan (mié 4 → jue 12-nov) · las verificaciones DIGEMID son de Joseph (🟡 de PENDIENTES).
+- [5] Protocolo clínico real de LIVIANO — **hecho (doc)** — `DATA/BUSINESS/LIVIANO_PROTOCOLO_CLINICO_v1.md` · §2 (elegibilidad, labs, dosis desde ficha técnica) lo rellena Joseph el D38 (mié 4-nov).
+- [6] AURUM entrena terrenos/cachorros y 0 LIVIANO — **hecho** — `src/lib/aurumDailyPlan.ts` (39 menciones LIVIANO: 16 variantes + bloque `liviano.paciente`), `DATA/_scripts/gen_aurum_plan.js`, `DATA/AURUM/curricula/_curriculum_v2.json`.
+- [7] Plan Business "zombie" sin franja — **hecho** — `src/lib/businessStudyPlan.ts` formato L (121 filas, 14-sep → mar 12-ene-2027; sin franja: lectura en huecos + 1 OUTPUT en viernes) generado por `DATA/_scripts/gen_business_plan.py`, ya invocado por `remap_inicio.js` v5.10b (bloque 6).
+- [8] Rúbrica de PITCH solo en D130 — **hecho** (1.ª capa) — `src/lib/aurumData.ts`, `AurumHub.tsx`, `AurumTodayPlan.tsx` (rúbrica en D15 vie 2-oct, `jmd-aurum-rubrica`, editor "✎ registrar semana") · verificación en vivo pendiente (🟠).
+- [9] 18 KPIs del Cockpit LIVIANO constantes — **parcial** — botón "Exportar JSON" del Cockpit F1 (`src/components/empresa/panels.tsx`) · **falta**: tracker `Metricas_v2` / hoja `Outputs` en la app (A VERIFICAR) y la carpeta `DATA/BUSINESS/_kpi/` (no existe).
+- [10] Academia ↔ VITALS sin puente — **hecho (doc)** — `DATA/VITALS/LIVIANO_VITALS_BRIDGE.md` (+ §2 Tarea D cardio AM) · el código de VITALS (`VITALS/web/src/lib/engine/*`) no se toca por regla → chat de VITALS (Joseph, 3 decisiones + MET/migración).
+- [11] Sin generador de `livianoStudyPlan.ts` — **hecho** — `DATA/_scripts/gen_liviano_plan.js` + `DATA/BUSINESS/liviano_curriculum.json` (el header del `.ts` lo declara GENERADO; `liviano_reslot_viernes.js` sigue).
+- [12] CURVA y DENSA sin doc — **hecho (esqueleto)** — `DATA/BUSINESS/CURVA_ACADEMIA.md`, `DATA/BUSINESS/DENSA_ACADEMIA.md` · fuentes "A VERIFICAR" (NAMS 2022, NICE NG23, S3 EDF 2018, AEDV 2024) y el eje de CURVA (hormonal vs estética corporal) = Joseph (🔵/⚪).
+
+### 2.2 Derma (10) — `derma-data` (datos) + `derma-ui` (UI)
+
+- [1] Capa Palmerton invisible en la UI — **hecho** (ya en `16c1c28`, verificado por `derma-data`) — `src/components/study/DermaTodayPlan.tsx`, `DermaHub.tsx`, `src/components/derma/DermaWeaknessWidget.tsx`, `DermaCasoRegistro.tsx`; `PLAN_ELITE_2026-27.md` §10.
+- [2] Sin taper de examen — **hecho** (`derma-data`) — `src/lib/dermaDailyPlan.ts` (`DERMA_TAPER_DIAS` d44-d49 = 15 → 29-ene-2027 por swap de contenido, plan 70→73, 0 átomos perdidos, `taperStep1`, `dermaTaperEfectivo`/`dermaVentanaTaper`, `DERMA_TAPER_ENCAPS_FECHA = null`), `PLAN_ELITE` §13, `remap_inicio.js` bloque 5 (guard 73 + aviso de ventana) · la fecha ENCAPS la fija Joseph (disparador SERUMS) · doc rezagado: `CALENDAR_SEGMENTOS_V5_6.md` §6.1 aún dice "70 sesiones → 30-mar" (el `.ts` termina el mié 7-abr-2027, d73).
+- [3] Cerebro Clínico sin motor — **hecho** (existía; verificado) — `src/lib/dermaCerebro.ts` (35 fichas + `DERMA_DRILL_HDPH`), `DermaEmergencyDrill.tsx`, `DermaCerebroCard.tsx`; `derma-ui`: SPEC A-G como índice hacia las fichas en `DermaHub.tsx` · **para el integrador**: 22 fichas siguen keyed por `d` de la v2.1 (la UI lo resuelve con `dermaDNuevo` + sentinela `G-44-cicatrizacion` d=50); `DERMA_DRILL_DIAS` sin uso.
+- [4] Tres bloqueos de la misma sesión AccessDerma — **pendiente-joseph** — `DATA/DERMATOLOGIA/_scrape/README_TOC_PENDIENTE.md` (TOC con `sectionid` de 6 libros → 20 átomos en portada; `cases.aspx?groupid=1546` para `dermaCasoArea()`; `sectionid` por pregunta del 2929).
+- [5] Presupuesto de preguntas y cursor — **hecho** (`derma-data` + `derma-ui`) — `dermaDailyPlan.ts` (`DERMA_BANCOS`, `dermaPresupuestoBancos`, Pictorial 4e → 3e desde d67, LANGE d71), `src/lib/dermaLedger.ts` (`dermaBancoCursor*`, `DERMA_CURA_LINK`, `dermaCuraPendiente`/`dermaCuraAplicaA`), `DermaTodayPlan.tsx` («retoma en Q#» en el ColaItem + banco secundario en días MIR + aviso de banco agotado + CURA OBLIGATORIA DD Challenge tras fallo CCSN), `PLAN_ELITE` §14.
+- [6] Sinergia Step 1 ↔ Derma es una frase — **hecho** (`derma-data` + `usmle-palmerton-2`) — `dermaDailyPlan.ts` (`step1` en 8 átomos, `DERMA_STEP1_DIAS` [7,8,10,12,14,16,23,24], `anclajeStep1` d12/d24 con First Aid **A VERIFICAR (12-sep)**), `src/lib/usmleStep1Daily.ts` D73 (mié 23-dic) "cuenta doble" leyendo `DERMA_STEP1_DIAS`, `src/lib/ankiLinks.ts` (`dermaAnkiTags` step1 + `sys::Dermatology`).
+- [7] Pestaña Cerebro con la capa v1 hardcoded — **hecho** (`derma-ui`) — `DermaHub.tsx` (% ciego real global y por módulo CORE desde el ledger, progreso A-X desde `studyProgress`, hitos v5.10 leídos del plan — taper, checkpoints d51/d52/d72/d73, drills, ciclo 2 —, `DERMA_FRANJAS` como ciclo real, `DERMA_FASES`/`DERMA_HORARIO`/RingStat plegados en «histórico v1», salto a HOY), `src/lib/dermaData.ts` · verificación en vivo pendiente (🟠).
+- [8] El plan termina en d70 y nada existe después — **hecho** (`derma-data` + `derma-ui`) — `DATA/_scripts/gen_derma_ciclo2.js` → `src/lib/dermaCiclo2.ts` (GENERADO: d74-d103, vie 9-abr → mié 30-jun-2027, 36 casos a 3/sesión, G+1…G+9, checkpoints, 0 solapes con `researchDailyPlan2027.ts`), `DERMA_CASO_META` (3 casos/sesión desde d50), fallback automático al ciclo 2 en la UI + chips G+ en el Hub, `PLAN_ELITE` §16; integrado en `remap_inicio.js` 5b.
+- [9] Ruta al fellowship estético sin documento — **hecho** (existía) — `DATA/DERMATOLOGIA/RUTA_FELLOWSHIP_ESTETICO.md`.
+- [10] Documentación desincronizada tras la v2.1 — **hecho** (`derma-data` + `derma-ui`) — `PLAN_ELITE` §3 + §13-§16, header del `.ts` ("sectionid verificado en 50/70"), `DATA/DERMATOLOGIA/recursos.md` §0 (cuaderno NotebookLM: 86 fuentes reverificadas el 13-sep, 2 prompts, regla motor-de-verificación), `protocolo_fotos.md` canónico + §1b tele-derma, `NITIDA_PROTOCOLOS.md` §0.2 solo enlace.
+
+### 2.3 ENCAPS (9) — `encaps-app` (app) + `encaps-scripts` (scripts/docs); [1][2][5][6] ya cerrados en la 1.ª capa
+
+- [1] Stock de preguntas por código/sub-eje = 0 — **hecho** (1.ª capa; verificado por `encaps-app`) — `DATA/ENCAPS/BANCO_PROPIO/_etiquetas_examenes_reales_v3.json`, `_inventario_banco_por_codigo.json`, sets `banco_/eval_/minisim_<fecha>` · **reponer stock** (247 disponibles tras el pre-test; déficit I-3 180 · V-2 174 · II-3 90 · II-11 85 · III-5 85) = Joseph (🟠).
+- [2] Runner `gen_encaps_minisim.js` no existe — **hecho** (1.ª capa) — `DATA/_scripts/gen_encaps_minisim.js` (`--banco/--eval/--minisim/--pretest/--sim100/--registrar/--pretest-arranque/--perfil`).
+- [3] El % ciego es 100 % manual — **parcial** (`encaps-app`) — `src/lib/encapsProgressSync.ts` (`setStudyProgress()`/`cerrarSesion()` con la fórmula del script, fuente `app:cierre` en `study_progress`, espejo `study_sim_scores` en mini_sim, fallback `jmd-encaps-cierres`, export JSON/línea `--cerrar`), `src/components/EncapsPlanView.tsx` (formulario CIERRE DE SESIÓN), `src/components/EncapsCockpit.tsx` (% ciego semanal por área/código vs v3, tendencia a 85 %, temas calientes) · **falta**: `gen_encaps_semana.js --pull` (Supabase → registro) — fichero de otro agente → integrador; convergencia = decisión ⚪.
+- [4] Fechas en Semana Santa y nadie vigila la convocatoria — **hecho (doc)** (`encaps-scripts`) — `DATA/ENCAPS/SENALES_2027-I.md` §2-bis (comando exacto de la rutina quincenal, scheduled-tasks `encaps-senales-quincenal`, cron `0 7 1,15 * *`) + §2-ter (prompt) + §3 · crear la rutina y fijar la fecha real = Joseph (🟡/🔵).
+- [5] Fase intensiva sin doc ni rama — **hecho (doc)** (1.ª capa) — `DATA/ENCAPS/FASE_INTENSIVA_2027-I.md` + `DATA/_scripts/gen_encaps_intensivo_2027.js` (pasar `--base 2026-09-14`) · la rama `modo='INTENSIVO'` de la app queda para la reestructuración de febrero (🔵).
+- [6] CIFRAS_CRITICAS y deck ENCAPS::Cifras — **hecho** (1.ª capa) — `DATA/ENCAPS/CIFRAS_CRITICAS_2027-I.md`, `TRACKING_ERRORES/ANKI_COLA/ENCAPS_Cifras_2027-I.csv` · importar en Anki = Joseph (🔴).
+- [7] Re-siembra sin filtro de modo y backup de nombre fijo — **hecho** (`encaps-scripts`) — `DATA/_scripts/gen_encaps_mantenimiento_2027.js` (`DELETE … AND modo='MANTENIMIENTO'`, `--bk` por defecto `study_schedule_bk_<YYYYMMDD>` que **aborta si existe**, `--bk-reemplazar`, verificación impresa), `gen_encaps_semana.js` (`SEMANAS/overrides_acumulado.json`), `TRACKING_ERRORES/README_SISTEMA_TRACKING.md` «Reglas de re-siembra». SQL regenerado = 97 filas idénticas a HEAD (no aplicado).
+- [8] Línea base ciega inexistente — **hecho** (`encaps-scripts`, 36/40 reales) — `BANCO_PROPIO/pretest_arranque_2026-09-14` y `_15` (.html + .json; 40 ids únicos, 0 del 2026-II), `TRACKING_ERRORES/PERFIL_CONOCIMIENTO.md` (`--perfil`), `_registro_resoluciones.json` (resumen v3), `PROTOCOLO_HORA_MANTENIMIENTO.md` §1-bis · resolver lun 14 / mar 15-sep y registrar con `--registrar --append` = Joseph; 40/40 reales = decisión ⚪.
+- [9] Doc ≠ implementación en la eval anclada — **hecho** (`encaps-app` + `encaps-scripts`) — `PROTOCOLO_HORA_MANTENIMIENTO.md` §1 (regla real: fallos ≥2 → caliente para el override del viernes; lunes = fallos del mini-sim; D1 sin eval), `study_metrics.extra.horarios` (UPDATE `jsonb_set`, `DATA/_scripts/_migrations/study_metrics_horarios.sql`, aplicado), `EncapsPlanView.tsx` (texto en la cola 16:15-16:30 y en HORARIO).
+
+### 2.4 MIR (11) — `mir-loop` · `mir-pool-descarga` (paso 1) · `mir-pool-clasificar` (pasos 2-3 + Tier C)
+
+- [1] El gate de Palmerton no existe en el loop — **hecho** (`mir-loop`) — `src/lib/mirEvalLog.ts` (kind `'quiz'`, `mirTemaEstado`: pre-test + quiz + ancla D-1 ≥80 % → validado; <60 % quiz / <50 % acumulado / ancla ✗ → caliente hasta 2 aciertos; ajuste obligatorio al 2.º fallo; anclas dinámicas D-1 + 2 slots), `src/lib/mirDailyPlan.ts`, `src/components/study/MirTodayPlan.tsx` (EvalForm del quiz), Temario ✓/●.
+- [2] Pool de preguntas oficiales VACÍO — **parcial** (`mir-pool-descarga` + `mir-pool-clasificar`) — `DATA/_scripts/gen_mir_pool.js` (`--descargar | --parse | --clasificar | --verificar | --emit`, idempotente), `DATA/MIR/pool/` (`AAAA.json` 2022-2026 = 1.050 Q · 1.025 con clave · 25 anuladas · 124 con imagen; `AAAA_clasificado.json`; `_clasificacion_llm/`; `_clasificacion_stats.json`; `_fuentes.json` con sha256; `README.md`), `src/lib/mirPreguntasOficiales.ts` (1,1 MB: 30 asignaturas ProMIR + 'Otras', 477 en plan, 0 capítulos a cero; `preguntasSinUsar`, `poolResumen`, `preguntasDeAsignatura`, `preguntasConImagen`, `preguntaPorId`), `DATA/MIR/POOL_USO.md` (protocolo anti-repetición por `qIds`) · **falta** (integrador, `MirTodayPlan.tsx`): solo el quiz 8-10Q pide ids al pool; pre-test 5Q / anclada 4Q / cierre 10Q / mini-MIR 40Q y la vista de pregunta siguen sin cablear (llamadas exactas en `POOL_USO.md` §2/§5) · Joseph: clave 2025-208, `.gitignore` de `raw/*.pdf` + JSON + decisión sobre el `.ts` en el bundle público, 2.ª fase con ProMIR (36 baja confianza + 21 sin capítulo), imágenes `--con-imagenes`.
+- [3] Dermatología MIR no existe en el sistema — **parcial** — `src/lib/dermaDailyPlan.ts` (`PROMIR_DERMA_ROTACION`, 24 slots: 10Q MIR del capítulo ProMIR 1 de cada 3 sesiones), el pool sirve Dermatología (num 5, 30 usables, `POOL_USO.md` §4) · **falta**: `DermaTodayPlan.tsx` no importa `mirPreguntasOficiales` (grep 13-sep) → sin ids del pool ni anti-repetición en el bloque 13:30 → integrador.
+- [4] ≈1 de cada 5 preguntas sin exposición hasta abril — **parcial** (`mir-pool-clasificar`) — `DATA/_scripts/gen_mir_mantenimiento.js` + `src/lib/mirMantenimiento.ts` (`tierC` en 12 jueves con `capId` real y peso, `MIR_MANT_TIER_C` + helpers; 62 días mar 5-ene → mié 31-mar, 17 reducidos hasta el 27-ene), `POOL_USO.md` §3 · **falta** (integrador): `DATA/MIR/README.md` §1 tabla de pesos de las 16 asignaturas fuera del plan + aviso "cobertura medida ≈80 %" en la baseline de D78 + §6 (dice 63 días / 4-ene) · 2.º `EvalForm` Tier C en `MantenimientoView` + chip `mirMantProximoTierC`.
+- [5] Ninguna métrica calibrada a Top 50 — **hecho** (`mir-loop`) — `src/lib/mirData.ts` (`MIR_HITOS` con mínimo on-track por hito, `MIR_CIERRE_UMBRAL` 70/55 → 75/60, bandas ≥150/≥138, `MIR_CALENDARIO` a fases reales), `MirHub.tsx` ("a X pts del mínimo del siguiente hito"), `DATA/MIR/README.md` §4.2 · tablas oficiales netas–nº de orden y fecha MIR 2030 = A VERIFICAR (Joseph).
+- [6] Táctica −1/3 no se mide ni se practica con reloj — **hecho** (`mir-loop`) — `mirEvalLog.ts` (`blancosAcertables`, `fallosEntreDos`, `cambiadas`/`cambiadasAFallo`), `MirTodayPlan.tsx` (`TimerQ` 4/10/25/40Q a 77 s/Q, aviso a 100 s), `mirData.ts` (`MIR_TACTICA` + EV + regla de no cambiar).
+- [7] Log solo en localStorage de UN dispositivo — **parcial** (`mir-loop`) — Supabase `mir_eval_log` (26 col, RLS + policy "Allow all"; `DATA/_scripts/_migrations/mir_eval_log.sql` → `src/lib/supabase-schema.sql`), `src/lib/mirEvalSync.ts` (push/pull, merge por id, chip de estado) · **falta**: bloque MIR en `gen_revision_semanal.js` y `vibecodingPlan.ts` (integrador) + prueba con 2 dispositivos y comprobar que `qIds` viaja (Joseph, 🟠).
+- [8] Lo que Joseph lee a las 15:15 contradice la app — **parcial** — `mirData.ts` `MIR_CALENDARIO` actualizado (`mir-loop`) · **falta**: la `description` del evento `2ldp6obaapnvo76li28uprrddg` sigue con "4Q ProMIR/AMIR · 4/4 avanzar" (releído 12-sep en `CALENDAR_SEGMENTOS_V5_6.md` §6.1) → `update_event` (Joseph/agente Calendar, 🟠).
+- [9] Transferencia Step 1 ↔ MIR unidireccional — **hecho** (`usmle-palmerton-2` + `mir-loop`) — `src/components/study/UsmleTodayPlan.tsx` (chip «MIR precedió esta semana» vía `usmleMirParalelo`), `src/lib/ankiLinks.ts` (`sysTag`/`sysFilteredQuery`/`SYS_TAGS`, `MIR_DECK` ampliado — nombres A VERIFICAR con AnkiConnect), `DATA/SYNC_ANKI_OBSIDIAN_APP.md` (handoff 31-mar), `MirTodayPlan.tsx` (campo "Pregunta oficial de origen" desde el pool) · tag `sys::` a mano hasta que APEX lo ponga.
+- [10] Delta-España solo como flag — **hecho** (`mir-loop`) — `DATA/MIR/DELTA_ESPANA.md` (14 asignaturas + Derma + transversal; 17 fuentes BOE/Ministerio/sociedades verificadas), `DATA/_scripts/gen_delta_espana.js` (`--write` desde el export del log), `mirDailyPlan.ts` (`delta:true` en 11 días, idéntico a HEAD), chip 🇪🇸 en HOY/7d/Temario · filas 403/404 = Joseph.
+- [11] El plan más dependiente de Anki y el menos verificado — **parcial** (`mir-loop`) — regla «APEX MIR directamente en Anki hasta verificar el redeploy de n8n» en la cola de HOY, bloque APEX, mantenimiento y README §5 + test de humo semanal documentado (`findNotes 'deck:APEX::MIR* added:7'`) · **falta** (Joseph): preset FSRS `APEX::MIR`, sub-decks, plantilla de 5 campos, redeploy de n8n.
+
+### 2.5 Research (12) — `research-plan` (1-4, 10, 12) · `research-infra` (6-9, 11) · integrador (5)
+
+- [1] Ética de la tesis sin fecha de solicitud ni gate — **hecho** — `DATA/_scripts/gen_research_plan.js` → `src/lib/researchDailyPlan.ts` (T-1 = d7 **mié 30-sep** con "solicitud CEI expedita presentada hoy"; gates CEI en T-7/T-8), `DATA/RESEARCH/TESIS_L0/etica.md` 1.4-1.5/§4 (1.256 → 291 → 100 → 865 → 785 → 316 reales del xlsx), `research_letter_outline.md` §2 (STROBE 13), prompt STROBE · nº/fecha del CEI = Joseph.
+- [2] Case report: zona muerta de 6 semanas — **hecho** — CR-1 = d15 **jue 22-oct**, CR-2 = d16 **lun 26-oct** (antes del 31-oct), chips en d8/d10 con la regla "3 semanas desde M1 (18-sep) → jue 8-oct → fuente B", `DATA/RESEARCH/MENTORES.md` fila 6, `CASE_REPORT_1/caso_candidatos.md` §2/§4 (mensaje único listo).
+- [3] SR-1 puede ser redundante — **hecho** — R9 = d9 **mar 6-oct** antes de R6 (d14, 20-oct); `DATA/RESEARCH/lines/L4-complicaciones.md` §6 (AMSTAR-2 rápido de las 5 SR/MA, PMID verificados por E-utilities, salidas a/b/c) · rellenar AMSTAR-2 y elegir salida = Joseph (R9).
+- [4] Research letter a un formato que nadie acepta — **parcial** — `research_letter_outline.md` §1 (Actas y Anais leídos en vivo el 12-sep), T-3→T-5/T-7, `src/lib/researchData.ts`, `agentic/prompts_claude_code/research_letter_STROBE.md` (≈500-600 palabras · ≤5 refs · 1 tabla o 1 figura + apéndice "versión larga") · **falta**: límites reales de JAAD International / IJD (403 en 4 URLs) → Joseph con Chrome en C-2 (28-sep) o T-7.
+- [5] `remap_inicio.js` rompe Research en cada slip — **hecho** (integrador v5.10b) — `DATA/_scripts/remap_inicio.js` bloque 4 (`execSync gen_research_plan.js <fecha>` + aserciones 42 · d41 ≥ 2027-02-01 · 9 hitos del ciclo 1 ⊂ DIAS + `gen_research_calendar.js --check`), `REESTRUCTURACION` §13.2/§13.3; probado ×2 con diff vacío.
+- [6] `citation_verifier.py` se cae en cp1252 — **hecho** (`research-infra`) — `DATA/RESEARCH/agentic/citation_verifier.py`, `docx_assembler.py` (UTF-8, veredictos ASCII, CLI), `run_verifier.bat` (PYTHONIOENCODING), `requirements.txt`; flujo C-4/C-5 probado (self-test rc 0, DOI falso rechazado).
+- [7] Hitos Research sin Calendar — **hecho** — 12 overlays 🔬 RESEARCH (colorId 6, transparent, 13:30-14:15) creados; ids en `DATA/RESEARCH/_calendar_overlays.json`; `DATA/_scripts/gen_research_calendar.js` (payloads, `--check` = 12/12 sincronizados el 13-sep, `--set hito=eventId`).
+- [8] Mesa editorial solo en localStorage — **hecho** — Supabase `research_entregables` (9 col, RLS + policy; `_migrations/research_entregables.sql` → `supabase-schema.sql`), `src/lib/researchEntregablesSync.ts` (merge por `updated_at`, histórico de decisiones, cache local, `mesaMarkdown()`), `ResearchHub.tsx`; RLS activado en `research_manuscripts`/`research_citations` · **falta** (integrador): marcar `RUTA_PUBLICACION_2027.md` §9 como "solo lectura, se regenera".
+- [9] Motor de descubrimiento parado y no PRISMA-S — **parcial** — `supabase/functions/research-discovery/index.ts` v3 (fallo explícito, `sources_ok`/`last_error` en `research_engine_state`), `agentic-system.md` §9.1, README · **NO desplegada**: secrets `OPENALEX_KEY`/`NCBI_KEY` + deploy = Joseph (🟡).
+- [10] Ciclo 2 asigna 75 min a tareas de 8-15 h — **hecho** — `gen_research_plan.js` / `src/lib/researchDailyPlan2027.ts` (campo `horas` + chip ⏱ en R17-R26 = 62 h declaradas), L4 §9.1/§9.4 (PROSPERO con margen ≥ 6 semanas desde R17) · dónde caen las 40-70 h/revisor = Joseph (🔵).
+- [11] Base de datos de la tesis sin plan de depósito ni protección — **parcial** — `DATA/RESEARCH/agentic/export_tesis_deid.py` (865 filas → `TESIS_L0/_deid/`, gitignored), `TESIS_L0/DATOS_README.md` (diccionario, flujo, SQL, data availability), `agentic/supabase_schema.sql` §11 · **falta**: RLS/borrado de `datos_tesis` (decisión Joseph, opción A recomendada; comprobar la key de `bot_tesis.py`) + revisar el CSV antes de OSF/Zenodo en T-7.
+- [12] Sin revisión de inglés antes del SUBMIT — **hecho** — gate 2 de inglés en T-7/T-8, M2 con plan B **jue 22-oct** (chip + `MENTORES.md` fila 2: editor US$200-400), X-2 (jue 3-dic) comprueba que el mentor revisa CR-6, mensaje 2 de Rising Scholars (3 piezas).
+
+### 2.6 SYNAPSE / IA / VITALS / rutina (11) — `vibecoding` (1-5) · `transversal` (6-11)
+
+- [1] Catálogo vibecoding desactualizado y sin orden de riesgo — **hecho** (`vibecoding`) — `DATA/SYNAPSE/vibecoding_proyectos.json` (re-secuenciado con lo ya construido, `verificacion[]` mecánica, `repo_git`, convención `[S<n>]`, `deload` en S7 = 26-30 oct), `DATA/_scripts/gen_vibecoding_plan.js` → `src/lib/vibecodingPlan.ts`, `VIBECODING_12_PROYECTOS.md` (fechas idénticas a HEAD) · RLS `datos_tesis` sigue en S6 por decisión del encargo (aplicable en D1-D2 si Joseph aprueba).
+- [2] El repo `synapse-journal` no existe — **hecho** (remoto = Joseph) — `D:/synapse-journal` (README + `journal/2026-W38.md`, `git init` sin commit), `DATA/_scripts/journal_hoy.js`, enlace 📓 en `TodayMission.tsx`/`SynapseTodayPlan.tsx`, `CURSO_IA_04H_31AGO.md`.
+- [3] "Shipped" es auto-reporte — **hecho** — `DATA/_scripts/verify_vibecoding.js`, `DATA/SYNAPSE/_vibecoding_ship.json`, `VIBE_SHIP_LOG` horneado en `vibecodingPlan.ts`, `localStorage jmd-vibe-ship`, KPI "ship (verify)" en la app · diff para la métrica 7 de `gen_revision_semanal.js` → integrador (S4 lo cierra).
+- [4] Sin freno duro entre las 04:15 y el Anki AM — **hecho** — regla en `_meta` del catálogo, `CURSO_IA`, `synapseData.ts`, evento 🧠 IA 04:15 (`description`), `DATA/_scripts/anki_telemetria.js` v2 (KPI `primeraReview`, `sync` previo tolerante a Anki cerrado), cuenta atrás `Freno0455` en `TodayMission.tsx` · color del instrumento ANKI en `CockpitStatusBar` = S2 paso 4.
+- [5] Semanas 13-20 sin misión — **hecho** — `vibecodingPlan.ts` S13-S20 (95 días = D# del Step 1: S13-S16 ≤15'/día con deload, S17-S20 journal 5', S20 = semana del examen), `gen_synapse_plan.js` → `src/lib/synapseDailyPlan.ts` (131 días hasta el **vie 22-ene-2027**, F2 sem 13-19, deload sem 17-19; días 1-81 idénticos, 0 lecciones perdidas) · página CCA-F A VERIFICAR (Joseph, jue 21-ene).
+- [6] Diario USMLE en Obsidian desfasado y vacío — **hecho** (`transversal`) — vault `01_USMLE/_template_day_usmle.md` (plantilla v5.10 plana, frontmatter con bloques/pretest10/q30_pct/eval_pct/error_dominante/sueno_h/modo/5 casillas burnout/evite_hoy, regla 18:25-18:45), `00_DASHBOARD_USMLE` (dataview semanal), `gen_revision_semanal.js` (parser YAML + fallback métricas 1/8/9 + alarma burnout), `SYNC_ANKI_OBSIDIAN_APP.md` · activar Dataview + 1.ª nota el 14-sep = Joseph.
+- [7] Checklist de burnout de 60 s sin lugar — **hecho** — `DATA/PROTOCOLO_MODO_MINIMO.md` §1/§2/§6 (5 señales §6 como ÁMBAR; saltarse el gym = ROJO conductual), `RUTINA_EXTREMA_MILITARIZADA.md`, `DOCTRINA_SPRINT_FINAL_EVIDENCIA.md` §6 (VIGENTE), 🚗 VIAJE VUELTA (`description`), plantilla del vault.
+- [8] Higiene circadiana incompleta — **hecho** — LEY CERO en `RUTINA_EXTREMA`, `CALENDAR_SEGMENTOS` §0, DESAYUNO + DEEP PRIME (cafeína ≤11:00, 2 tomas), LECTURA 13:00 (siesta opcional ≤20' solo ÁMBAR), `PROTOCOLO_MODO_MINIMO` · cifras NASA/Rosekind marcadas A VERIFICAR en el doc, no en el Calendar.
+- [9] Todo el progreso en un solo localStorage — **hecho** — Supabase `plan_checks` (4 col, RLS + policy = patrón `study_sim_scores`; `_migrations/plan_checks.sql` → `supabase-schema.sql`), `src/lib/studyProgressSync.ts` (upsert desde `saveDone`, pull en `loadDone`, cache local, `jmd-device`, `onProgressSync`), `studyProgress.ts`, `CockpitStatusBar.tsx` (Exportar/Importar/Sincronizar), `gen_revision_semanal.js` lee Supabase · comprobación "☁ ok" en Vercel = Joseph (🔴).
+- [10] Eventos personales de fin de semana desalineados — **hecho** (`transversal` 3 + `vibecoding` 4; solo `description`, verificado con `get_event`) — ANKI sáb `6ta0e3c019dep76spdgumfm0pl` · ANKI dom `619c1672eej1qgmvddbfkb5fu9` · EKER `22bh9m5jhc7ro6aj3m4ffjad7g` (+ frase 6 de identidad de examen) · 🧠 IA 04:15 `udr09j9ng983o0d4nipkfe4494` · misión 12:30 `j99thg3eaqesosmvppj4rfgvh4` · PC sáb `hv2lk04orquvivthtkfhilb1ps` · PC dom `s7r8tiu66286t156l0odpv5nvo` · **doc rezagado**: `CALENDAR_SEGMENTOS_V5_6.md` §6.2/§11.2 aún los lista como "sin tocar" → integrador.
+- [11] VITALS ciego a la mitad del entrenamiento — **parcial** (`transversal`) — `description` de CORRER `5mrm4ru08go9k70408jm8vcjku` y CALISTENIA `2lpvftrc3fp64e0om6qg0mcs34` (registro en VITALS al volver, 20 s), `DATA/VITALS/LIVIANO_VITALS_BRIDGE.md` §2 Tarea D (pasos por fichero) + aviso en `vitals-app-map.md` · **falta**: el código de VITALS (`plan.ts` actividad_am · `domain.ts` factor sin doble conteo · `scoreDay` · `weeklyReport`) — no se toca por regla → Joseph (chat de VITALS; MET y nº de migración A VERIFICAR).
+
+### 2.7 USMLE · las 10 divergencias abiertas de `PALMERTON_METODO_COMPLETO.md` §12.6 (= §E de `PALMERTON_DIVERGENCIAS_PLAN.md`)
+
+- [§12.6-1] Consolidación 20Q permanente — **pendiente-joseph** (decidir tras S1-S2; la serie 11:00 del Calendar además contradice la revisión selectiva, hallazgo #3).
+- [§12.6-2] Viernes de nivel 4 — **hecho** (`usmle-palmerton-2`) — `gen_usmle_v5.js` flag `VIERNES_N4_DESDE_SEMANA = 11` → `src/lib/usmleStep1Daily.ts` (D55 vie 27-nov N3→N4 como REGLA: viernes sin hito, Fase A, sistema ≥3 días, semana ≥11; D65 vie 11-dic queda N1 por ser 1.er día de Repro), `DAILY_META.viernesN4DesdeSemana`, `PALMERTON_DIVERGENCIAS_PLAN.md` #6, README, METODO §12.3. ⚠ el generador vive en el scratchpad (hallazgo #29).
+- [§12.6-3] GO/NO-GO con UWSA2 solo informativo — **pendiente-joseph** — `HITOS_ONTRACK` ya lo trata como 'low risk · solo resistencia'; falta la frase del GO.
+- [§12.6-4] Free 120 en Prometric Lima + maratón — **pendiente-joseph** — los docs se contradicen sobre el día (METODO §12.6 = NBME 33 mié 20-ene · POR_MATERIA §E = "un viernes"); ningún `DIAS`/overlay lo contiene (hallazgos #22-#23).
+- [§12.6-5] Protocolo D-2/D-1 — **parcial** (`usmle-palmerton-2`) — `USMLE_TAPER` en `usmleStep1Daily.ts` (D94/D95 taper 20Q flagged + Anki maduro; `descansoD1 = 2027-01-28`; `examenTarget = 2027-01-29`), `DATA/USMLE/README.md` §3b, `CALENDARIO_5_MESES.md`, METODO §12.5, UI (D95 + Readiness) · **falta**: el Calendar del jue 28 y vie 29-ene sigue con las 6 series USMLE + MIR/ENCAPS/LIVIANO/GYM/BAILE y sin overlay (hallazgo #1 → Joseph/agente Calendar).
+- [§12.6-6] Eval 18:00 → 12:00-12:45 — **pendiente-joseph** (cambia franja; solapa SYNAPSE 12:30).
+- [§12.6-7] Protocolo de burnout — **hecho** (`usmle-palmerton-2`) — REGLA escrita en `PALMERTON_DIVERGENCIAS_PLAN.md`, README §3b, CALENDARIO, METODO + `usmleScores.ts` `gateHito` 'ALERTA BURNOUT' (2 hitos consecutivos bajo mínimo) + banner en `UsmleHub.tsx`; los síntomas los decide Joseph.
+- [§12.6-8] UWSA1 <40 % → 20Q/día — **pendiente-joseph** (lun 14-sep con el % real; `qDia` en `gen_usmle_v5.js`; la app oculta los tramos, hallazgo #12).
+- [§12.6-9] Ítems experimentales/de mecanismo — **pendiente-joseph** (propuesta: integrarlos en el Day-After, hallazgo #5).
+- [§12.6-10] "No zero days" vs corrimiento +1 — **hecho** (por doc) — `DATA/PROTOCOLO_MODO_MINIMO.md` define "día perdido = sin Anki AM + pre-test 10Q" y el mínimo innegociable; queda solo el toggle binario del día en `UsmleTodayPlan.tsx` (menor, integrador).
+
+---
+
+## 3 · Hallazgos del crítico de completitud (técnicas del método sin reflejo) — lista priorizada
+
+Fuente: `critico-completitud` (12-sep, solo lectura; §1-§11 del método contrastados con `usmleStep1Daily.ts`, `usmleScores.ts`,
+`usmleData.ts`, `ankiLinks.ts`, `UsmleTodayPlan.tsx`, `UsmleHub.tsx`, `ReadinessBar.tsx`, docs, las 6 series + 4 overlays del
+Calendar y Supabase). Numeración #1-#31 = la de su informe. **Cerrados en la misma capa por otro agente:** #25 (burnout →
+`usmle-palmerton-2`, §12.6-7) y, dentro de #31, §E-2 (viernes N4) y §E-5 (taper; queda el Calendar). Nada más de esta lista
+está implementado al 13-sep.
+
+### P0 — antes del D1 o en la primera semana (contradicen el método en producción o bloquean la reproducibilidad)
+
+1. **#1 D-1 y test day sin reflejo en el Calendar** — jue 28-ene y vie 29-ene con las 6 series USMLE + MIR/ENCAPS/LIVIANO/GYM/BAILE activas y sin overlay. Propuesta: 2 overlays FREE/transparent (§8.3 y §8.4) + línea en las 6 series; decisión GYM/BAILE la víspera. *(Joseph/agente Calendar; `update_event` solo `description`)*
+2. **#2 · #3 · #4 Series 07:15 / 11:00 / 18:00 con texto del 27-ago** — "2Q" vs 5Q del gate; "explicación completa" vs Educational Objective + tiempos §3.4; "15Q · 72 s/Q · STRESS strategy entre 2" vs 10Q · 90 s/Q · tope 2 min · rule-in → juez → flag (el *stress set* §7.5 es otra técnica). Misma frase errónea en los overlays UWSA1/NBME 25/NBME 31/Free 120. *(Joseph/agente Calendar)*
+3. **#29 `gen_usmle_v5.js` solo en el scratchpad temporal** (con `assemble_usmle_ts.js`, `update_diainicio.js`, `remap_obsidian_usmle.js`) → copiar a `DATA/_scripts/` y apuntar `remap_inicio.js`. *(Joseph/integrador — 🔴)*
+4. **#12 Lectura del UWSA1 por tramos oculta** — `HITOS_ONTRACK.UWSA1.nota` "cualquier valor sirve"; escribir los 3 tramos (<40 % Jay · 40-48 % justo · ≥48 % on-track) y que `gateDelDia` los devuelva sin convertirlos en gate. *(código, `usmleScores.ts`)*
+5. **#26 Kit anti-pánico sin lugar en la app** — constante `PROTOCOLO_BLOQUE` (AVP 10 s · 2 min · juez · flag · "game on") en `usmleStep1Daily.ts` mostrada en HoyView los días `esHito`; campo persistente `jmd-usmle-worstcase` (localStorage con try/catch) en Readiness para el plan B escrito antes del UWSA1. *(código; mientras tanto: plan B en papel el lun 14-sep)*
+
+### P1 — código de la app/scripts, sin decisión de Joseph (mediciones que el método exige y bugs)
+
+6. **#6 Bug `diaPrevio` en día post-hito** — en D16, D31, D46, D61, D71, D78, D83, D88, D89, D91, D93 la tarjeta 07:15 pide validar "🎯 NBME…" como subtema; nueva `ultimoDiaContenido(d)` que salte `esHito`, usada en HoyView y HorarioView. *(`usmleStep1Daily.ts`, `UsmleTodayPlan.tsx`)*
+7. **#5 Day-After Protocol y lectura por sistema ausentes** — constante `DAY_AFTER` (trayectoria 15' · auditoría de honestidad 15' · triaje 1 h · 10 PC manuscritas 2,5 h · reporte por sistema ≥80 % · ítems experimentales → tarjetas de diseño) mostrada cuando `esHito(dia)`; línea en los 11 overlays 🎯; los `DIAS` post-hito solo se anotan en la app (regla de no fusionar). Integra §12.6-9. *(`usmleStep1Daily.ts`, `UsmleTodayPlan.tsx`, Calendar)*
+8. **#13 Gate de nivel 3 y umbral de nivel 2 mal medidos** — en días N3 etiquetar "20Q sistema TIMED (%) — solo ese bloque"; `subtemasValidados(scores, dia)` = nº de días N1/N2 del mismo sistema con consol ≥80 → "x/3 subtemas validados" en el chip de nivel. *(`usmleScores.ts`, `UsmleTodayPlan.tsx`)*
+9. **#8 Regla del tercio ausente** (§6.1: >1/3 de fallos en temas conocidos → parar adquisición) — `reglaDelTercio(scores, hasta)` sobre `tipoError` (o campos `nKnowledge/nTransfer/nProceso`), stat "⅓" en coral en `ReadinessBar`, alarma en `REVISION_SEMANAL` métrica 10. *(`usmleScores.ts`, `ReadinessBar.tsx`, `gen_revision_semanal.js`)*
+10. **#11 Respuestas cambiadas y relecturas no se miden** (§7.3-7.4) — campos opcionales `cambiadas`/`relecturas` en `UsmleScore` + columnas en migración propia (patrón RLS `study_sim_scores`); alarma "abogado" si cambiadas ≥2; G6 en la revisión semanal. *(`usmleScores.ts`, `_migrations/`)*
+11. **#27 Registro del NBME por bloque y por sistema** (§8.5, §9.1) — en día de hito `MedicionCard` con B1-B4 % + plantilla por sistema derivada de `DIAS` en notas (o columna `bloques_pct JSONB`). *(`UsmleTodayPlan.tsx`, `usmleScores.ts`)*
+12. **#28 Shopping list sin arrastre** (§3.5.B/§6.5) — pintar `scoreDe(loadScores(), prev.fecha)?.notas` bajo "🎯 07:15 Repaso anclado" como "Shopping list de ayer"; listar las notas de la semana en `REVISION_SEMANAL`. *(`UsmleTodayPlan.tsx`, `gen_revision_semanal.js`)*
+13. **#10 Temporizador de 2 min / 12 min ausente** (§7.1-7.2, §7.5) — cuenta atrás con presets 2:00 · 12:00 · 60:00 en 📏 Medición o la cola de eval (setInterval, sin persistencia); alternativa cero-código: "temporizador del teléfono a 2:00 reiniciado por pregunta" en FRANJAS[5] y la serie 18:00. *(`UsmleTodayPlan.tsx`)*
+14. **#14 Mazo de Farmacología aparte no reflejado** (§3.5.F regla 5, §4.2) — `usmleAnkiDeck(system, matType?)` → `APEX::USMLE::Pharmacology` cuando `matType === 'pharm'` (D11, D24, D46, D48, D76, D80); ColaItem pasa `dia.matType`; FRANJAS[0] "pharm = mazo aparte, 20 nuevas/día dentro del cap de 50". *(`ankiLinks.ts`, `usmleStep1Daily.ts`)*
+15. **#18 Fixes de tarjeta incompletos en `TIPO_ERROR_INFO`** (§4.4, §6.2, §6.5) — "diagnóstico fallado → PC card · reconocimiento visual → 20 tarjetas de imagen · skills gap → transfer card · noise gap → compare&contrast" (relevante en D27, D51-D52, D73). *(`usmleScores.ts`)*
+16. **#15 Configuración Anki §4.2 incompleta y no auditada** — constante `ANKI_CONFIG_PALMERTON` (9 ajustes: reviews/day 9999 · reviews first · rollover 4 h · sync · note type · ≤3 mazos · Set Due Date 0 …) en la pestaña Palmerton y enlazada desde D3; `anki_telemetria.js` lee `getDeckConfig → rev.perDay` y rollover y alarma (nombre exacto de la clave en AnkiConnect A VERIFICAR). *(`ankiLinks.ts`, `anki_telemetria.js`; Joseph aplica los ajustes el mié 16-sep)*
+17. **#16 Protocolo de backlog y freno por NBME estancado** (§4.10) — párrafo "BACKLOG (Palmerton §4.10)" en README §4b y FRANJAS[0] (cap 200 psicológico, nunca Forget en bloque); `HitosSerie`: "hito bajo mínimo + backlog>0 → nuevas=0"; métrica 3: días con backlog>0 (regla del 100 %). *(docs + `usmleScores.ts` + `gen_revision_semanal.js`)*
+18. **#17 IA y anverso de la tarjeta** (§4.12) — "el FRENTE lo redactas tú (sujeto-primero, sin pistas, sin cloze); APEX/Claude solo reverso o compare&contrast" en FRANJAS[3], `USMLE_QBANK_RULES` y las series 09:00/11:00. *(`usmleStep1Daily.ts` + Calendar)*
+19. **#21 Dos umbrales para la misma métrica** — `REVISION_SEMANAL` on-track 30Q ≥65 % / eval ≥60 % vs gate 80 % de la app: declarar 65/60 como "pisos ÁMBAR" y exponer `PISO_AMBAR = {consol: 65, eval: 60}` en `usmleScores.ts` para barra, revisión semanal y modo mínimo. *(`usmleScores.ts`, `REVISION_SEMANAL.md`)*
+20. **#19 `usmleData.ts` contradice el método en 3 puntos visibles** — `FIRST_AID_INDEX.role` "Annotate it from Qbank misses" (→ "índice de objetivos de maestría; NO anotar"); `USMLE_RAMP`/`USMLE_HOUR` pre-v5 aún en la pestaña ROI (→ `legacy:true`/ocultar); `PALMERTON_METHOD` "biochem first" vs plan D79-D80 (→ nota "divergencia consciente"); `USMLE_META.thesis`/`USMLE_DISCIPLINES` no son Palmerton (A VERIFICAR contra el Content Outline). *(`usmleData.ts`, `RoiPlan`)*
+21. **#30 Checklist §11.5 casi sin datos** — con los campos de #7/#8/#9/#11 el script puede pre-marcar "abogado", "cambio respuestas", ">2 min habitual", ">1/3 fallos conocidos" y "Hard/Easy" (AnkiConnect `rated:1:2`/`rated:1:4`). *(`gen_revision_semanal.js`; depende de los anteriores)*
+22. **§12.6-10 toggle binario del día parcial** en `UsmleTodayPlan.tsx` (el día parcial ya está definido en `PROTOCOLO_MODO_MINIMO`). *(menor)*
+
+### P2 — decisiones de Joseph (tabla ⚪ de `PENDIENTES_JOSEPH.md`)
+
+23. **#7 Gate fallido sin mecánica operativa** — `siFalla2`: 2.º fallo consecutivo del mismo subtema → mañana DÍA DE REPETICIÓN (misma fila de `DIAS`) y +1 hábil con `remap_inicio.js`; campo `bloques5Q` con alarma ≥5 (§11.5) y columna `bloques_5q` en migración propia. *(coherente con "no fusionar"; exige OK)*
+24. **#9 Hoja de micro-destrezas y doble sentido de "CCSN"** — campo `micro` (contexto · cronología · severidad · saq · abogado · ghosts · emocional · relectura) en `MedicionCard` + agregado semanal; decidir si el subtipo `CCSN` de `TRACKING_ERRORES` se renombra a `SIMILARES` o se documenta la doble acepción.
+25. **#20 NBME 32/33: código ("confirma el GO") vs `POR_MATERIA` V-A ("medición, no gate")** — mantener el código y corregir la tabla; decidir si un 32/33 <68 tras un GO revierte la fecha.
+26. **#22 Maratón de resistencia sin día** (= §E-4) — fijar D90 (mié 20-ene): `DIAS[89].sub` "🎯 NBME 33 + 3 bloques flagged = maratón 7 bloques", overlay NBME 33, ceder Research/Derma/AURUM ese día; corregir POR_MATERIA §E.
+27. **#23 Free 120 en el Prometric de Lima** — verificar disponibilidad/costo ($155 internacional A VERIFICAR) al agendar el examen (~30-nov) y reservar para el vie 22-ene; si no existe, dejarlo escrito en README §3.
+28. **#24 NBME en Qbankly ≠ NBME oficial** — % bruto sin curva ni reporte por sistema; decidir qué formas se compran en MyNBME (mínimo 31/32/33 + Free 120 oficial) y anotar "Qbankly = % bruto" en `HITOS_ONTRACK.nota` y README §3.
+29. **#31 Divergencias §E sin novedad** — #1 · #3 · #4 · #6 · #8 · #9 (ver §2.7). Divergencias CONSCIENTES que no se proponen cambiar: sueño 7 h, fin de semana libre, eval timed desde D2, B&B/AMBOSS en vez de Costanzo/Goljan.
+
+### P3 — técnicas del método sin reflejo y de bajo impacto (no numeradas en el informe; opcionales)
+
+30. §7.7 *negative cognitions* / journaling 3 listas / body scan nocturno (la noche protege el sueño 21:00; opcional en VITALS).
+31. §10.5 *accountability* con costo / screenshots de stats a un tercero.
+32. §10.7 "1 % experiments" (la media 7d y Δ hito ya son la comparación consigo mismo).
+33. §4.13 *downtime* (bici estática, colas) no escrito.
+34. §5.0-5.2 drill de SAQ escrita: sin registro (se cubre en parte con #9/#24 micro-destrezas).
+35. §4.7 alarma ">1 h por 100 tarjetas viejas" (la telemetría ya calcula `minFinde = due × 20 s`, más estricta).
+36. §3.8 ítems experimentales/gráficos sin bloque propio (queda absorbido en #5 si se decide §12.6-9).
+
+---
+
+## 4 · Conteos finales (13-sep-2026)
+
+- **65 puntos ciegos v3b:** 50 hechos · 14 parciales · 1 pendiente-joseph · 0 descartados.
+  - Parciales (14): business 1, 3, 9 · encaps 3 · mir 2, 3, 4, 7, 8, 11 · research 4, 9, 11 · synapse 11.
+  - Pendiente-joseph (1): derma 4 (sesión AccessDerma).
+- **10 divergencias USMLE §12.6:** 3 hechas (#2, #7, #10) · 1 parcial (#5, solo falta el Calendar) · 6 pendientes-Joseph (#1, #3, #4, #6, #8, #9).
+- **31 hallazgos del crítico:** 1 cerrado por otro agente (#25) · 7 en P0 (#1, #2, #3, #4, #12, #26, #29; 5 ítems porque #2-#4 van juntos) · 16 en P1 (código sin decisión; + §12.6-10 = 17 ítems) · 7 en P2 (decisiones: #7, #9, #20, #22, #23, #24, #31) = 31 · más 7 técnicas P3 opcionales no numeradas.
+- **Agentes:** 13 (11 en `a884de4` + `mir-pool-clasificar` + `derma-ui` en el working tree) + integrador. `npx tsc --noEmit -p .` = 0 · `npx expo export --platform web` = 0 (13-sep).
+- **Siguiente pasada de agentes (sin decisión de Joseph):** las 14 parciales de arriba + los 17 P1 del crítico + los docs rezagados listados en `PENDIENTES_JOSEPH.md` § "Segunda capa — lo que SIGUE ABIERTO".
+
+> Regla de mantenimiento: este fichero se actualiza a mano en cada pasada (no lo genera ningún script). Cuando un parcial
+> se cierre, cambiar su estado aquí y borrar la línea correspondiente de `PENDIENTES_JOSEPH.md`.

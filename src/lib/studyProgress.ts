@@ -79,7 +79,9 @@ export type PlanKey = 'usmle' | 'mir' | 'research' | 'derma' | 'business' | 'syn
 
 /** Carga los días marcados como hechos para un plan (caché local; en segundo plano sincroniza con Supabase). */
 export function loadDone(plan: PlanKey): number[] {
-  ensurePulled();
+  // El pull se difiere a un microtask: loadDone se llama durante el render de varios componentes y
+  // ensurePulled acaba en setState de CockpitStatusBar (React: 'Cannot update a component while rendering').
+  void Promise.resolve().then(ensurePulled);
   const s = leerStoreLS();
   return Array.isArray(s[plan]) ? s[plan] : [];
 }

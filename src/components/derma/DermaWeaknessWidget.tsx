@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Platform, TextInput, Linking 
 import { Colors, Spacing, FontSize, BorderRadius, Motion, LineHeight, Hairline, Elevation } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
 import { DermaAtlas } from '../../lib/dermaData';
-import { cases, DERMA_CASOS_META, type DermaAreaCORE } from '../../lib/dermaDailyPlan';
+import { cases, DERMA_CASOS_META, DERMA_CHECKPOINTS, type DermaAreaCORE } from '../../lib/dermaDailyPlan';
 import {
   dermaPctCiego, dermaPctFalloPorModulo, dermaPctFalloPorBloque, dermaTiposError, dermaGateModuloA,
   dermaCasosParaSegundaPasada, dermaLedgerExportJSON, dermaLedgerImportJSON, dermaFallosRebuild,
@@ -13,7 +13,7 @@ import DermaLineIcon from './DermaLineIcons';
 import { useDermaLedger, notifyDermaLedger, dermaHoyISO, DERMA_AREA_LABEL, DERMA_AREA_COLOR } from './dermaLedgerBus';
 
 /**
- * DermaWeaknessWidget — "Debilidades por módulo CORE" (Hub · pestaña Debilidades y checkpoints d45/d46/d69/d70).
+ * DermaWeaknessWidget — "Debilidades por módulo CORE" (Hub · pestañas Debilidades/Cerebro y checkpoints v3 cp1 d51 · cp2 d52 · repaso1 d72 · repaso2 d73 + ciclo 2).
  * Lee SOLO el ledger (dermaLedger.ts): % ciego real (solo aciertos seguros), % fallo Palmerton (fallos + suerte)
  * por módulo Med/Path/Peds/Surg y por bloque A-X, tipo de error dominante (+ cura), gate del módulo A,
  * drill HDPH, casos para la 2ª pasada FSRS. Export JSON = bloque para pegar en
@@ -136,7 +136,7 @@ export default function DermaWeaknessWidget({ compact = false, accent = DermaAtl
       </View>
 
       {/* 2ª pasada */}
-      <Text style={st.lbl}>2ª pasada FSRS (d69) · casos fallados / por suerte · {segunda.length}</Text>
+      <Text style={st.lbl}>2ª pasada FSRS (repaso 1 · d{DERMA_CHECKPOINTS.repaso1}) · casos fallados / por suerte · {segunda.length}</Text>
       {segunda.length ? (
         <View style={st.casosRow}>
           {segunda.slice(0, compact ? 12 : 60).map((c) => (
@@ -165,7 +165,7 @@ export default function DermaWeaknessWidget({ compact = false, accent = DermaAtl
         </View>
       )}
       {!!msg && <Text style={st.msg}>{msg}</Text>}
-      {!compact ? <Text style={st.foot}>Esquema idéntico a DATA/DERMATOLOGIA/TRACKING/_registro_derma.json (rondas[] · items[]). Mientras no haya backend, el ledger vive en este navegador (localStorage jmd-derma-casos / jmd-derma-fallos): exporta en el cierre 14:13 y en d70.</Text> : null}
+      {!compact ? <Text style={st.foot}>Esquema idéntico a DATA/DERMATOLOGIA/TRACKING/_registro_derma.json (rondas[] · items[]). Mientras no haya backend, el ledger vive en este navegador (localStorage jmd-derma-casos / jmd-derma-fallos): exporta en el cierre 14:13 de cada viernes y en cada checkpoint (d{DERMA_CHECKPOINTS.cp1}/d{DERMA_CHECKPOINTS.cp2}/d{DERMA_CHECKPOINTS.repaso1}/d{DERMA_CHECKPOINTS.repaso2}).</Text> : null}
     </View>
   );
 }

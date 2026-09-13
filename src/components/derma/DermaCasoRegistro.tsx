@@ -13,7 +13,7 @@ import { dermaDictadoScore } from './dermaDictadoDraft';
 /**
  * DermaCasoRegistro — el ÚNICO formulario que escribe un caso/pregunta en el ledger (dermaLedger.ts).
  * Lo abren la lámina (botones ✓/✗ por caso), el dictado morfológico (tras la autoevaluación 0-8) y la
- * 2ª pasada del d69. Campos = esquema del ledger: matriz Palmerton confianza×acierto → tipo de error
+ * 2ª pasada del repaso 1 (v3: d72; antes d69). Campos = esquema del ledger: matriz Palmerton confianza×acierto → tipo de error
  * (solo fallos) → módulo CORE (los casos lo derivan del id; en preguntas de banco es editable) →
  * descripción 8 ejes (pre-rellena desde el borrador del dictado) → nota. Una entrada por guardado.
  */
@@ -27,7 +27,7 @@ export interface DermaCasoRegistroProps {
   acierto?: boolean;                // pre-selección (✓ / ✗)
   accent?: string;
   titulo?: string;
-  segundaPasada?: boolean;          // d69: se anota en la nota
+  segundaPasada?: boolean;          // repaso 1 (d72 en la v3): se anota en la nota
   onDone?: () => void;
   onCancel?: () => void;
 }
@@ -49,7 +49,7 @@ export default function DermaCasoRegistro({ dia, id, fuente = 'caso', acierto, a
       id, fecha: dermaHoyISO(), d: dia.d, bKey: dia.bKey, fuente,
       acierto: esAcierto, evalAcierto, tipoError: esAcierto ? null : tipoError,
       moduloCORE: modulo, descripcion8ejes: score,
-      nota: [segundaPasada ? '2ª pasada FSRS (d69)' : '', nota.trim()].filter(Boolean).join(' · ') || undefined,
+      nota: [segundaPasada ? '2ª pasada FSRS (repaso 1)' : '', nota.trim()].filter(Boolean).join(' · ') || undefined,
     });
     notifyDermaLedger();
     setMsg(r.guardado ? `✓ guardado en el ledger (${r.entry.moduloCORE} · ${r.entry.evalAcierto}${r.entry.tipoError ? ' · ' + r.entry.tipoError : ''})` : '⚠ sin localStorage: no se pudo guardar (SSR/nativo)');

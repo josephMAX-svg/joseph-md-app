@@ -1,0 +1,822 @@
+{
+  "generado": "2026-09-13T06:26:06.165Z",
+  "metodo": "Pase LLM (Claude, 13-sep-2026) sobre enunciado + 4 opciones de cada pregunta → una asignatura de mirTemarioData.ts (30 de ProMIR; 'OTR' si no hay asignatura ProMIR) y, cuando el enunciado lo permite, el capítulo real (capId). Etiquetas en DATA/MIR/pool/_clasificacion_llm/AAAA.json ('ASIG.cap.confianza'); confianza alta = capítulo evidente · media = asignatura clara, capítulo por mejor ajuste · baja = asignatura discutible · pendiente = sin clasificar. fueraDePlan = la asignatura no está entre las 14 del plan; enPlan = el capId es uno de los 76 del plan.",
+  "anios": {
+    "2022": {
+      "preguntas": 210,
+      "sinClasificar": 0,
+      "porConfianza": {
+        "alta": 153,
+        "media": 50,
+        "baja": 7,
+        "pendiente": 0
+      },
+      "enPlanCapId": 99,
+      "fueraDePlanAsignatura": 69,
+      "sinCapitulo": 6,
+      "porAsignatura": {
+        "Cardiología": 17,
+        "Neurología": 15,
+        "Gastroenterología": 13,
+        "Endocrinología y Nutrición": 13,
+        "Neumología": 12,
+        "Enfermedades Infecciosas": 12,
+        "Traumatología": 12,
+        "Ginecología y Obstetricia": 10,
+        "Nefrología": 10,
+        "Pediatría": 9,
+        "Psiquiatría": 9,
+        "ORL": 8,
+        "Geriatría": 7,
+        "Hematología": 6,
+        "Otras · sin asignatura ProMIR": 6,
+        "Epidemiología": 6,
+        "Reumatología": 5,
+        "Inmunología": 5,
+        "Oncología Médica": 5,
+        "Dermatología": 4,
+        "Oftalmología": 4,
+        "Medicina Legal y Bioética": 4,
+        "Radiología-Urgencias": 3,
+        "Genética": 3,
+        "Alergología": 3,
+        "Planificación y Gestión Sanitaria": 3,
+        "Anestesiología y Reanimación": 2,
+        "Cuidados Paliativos": 2,
+        "Farmacología": 1,
+        "Urología": 1
+      },
+      "contrasteCTO": null,
+      "clasificado": "2026-09-13T06:26:06.140Z"
+    },
+    "2023": {
+      "preguntas": 210,
+      "sinClasificar": 0,
+      "porConfianza": {
+        "alta": 166,
+        "media": 35,
+        "baja": 9,
+        "pendiente": 0
+      },
+      "enPlanCapId": 99,
+      "fueraDePlanAsignatura": 61,
+      "sinCapitulo": 2,
+      "porAsignatura": {
+        "Endocrinología y Nutrición": 16,
+        "Enfermedades Infecciosas": 15,
+        "Neurología": 13,
+        "Gastroenterología": 13,
+        "Cardiología": 12,
+        "Ginecología y Obstetricia": 12,
+        "Traumatología": 10,
+        "Pediatría": 10,
+        "Reumatología": 10,
+        "Neumología": 9,
+        "Hematología": 9,
+        "Psiquiatría": 9,
+        "Nefrología": 8,
+        "Geriatría": 8,
+        "Epidemiología": 7,
+        "Inmunología": 6,
+        "Medicina Legal y Bioética": 6,
+        "ORL": 5,
+        "Dermatología": 4,
+        "Radiología-Urgencias": 4,
+        "Oncología Médica": 4,
+        "Genética": 3,
+        "Farmacología": 3,
+        "Oftalmología": 3,
+        "Otras · sin asignatura ProMIR": 2,
+        "Alergología": 2,
+        "Planificación y Gestión Sanitaria": 2,
+        "Urología": 2,
+        "Cuidados Paliativos": 2,
+        "Anestesiología y Reanimación": 1
+      },
+      "contrasteCTO": null,
+      "clasificado": "2026-09-13T06:26:06.145Z"
+    },
+    "2024": {
+      "preguntas": 210,
+      "sinClasificar": 0,
+      "porConfianza": {
+        "alta": 163,
+        "media": 42,
+        "baja": 5,
+        "pendiente": 0
+      },
+      "enPlanCapId": 87,
+      "fueraDePlanAsignatura": 79,
+      "sinCapitulo": 2,
+      "porAsignatura": {
+        "Gastroenterología": 17,
+        "Cardiología": 17,
+        "Traumatología": 13,
+        "Dermatología": 11,
+        "Enfermedades Infecciosas": 11,
+        "Ginecología y Obstetricia": 11,
+        "Endocrinología y Nutrición": 10,
+        "Neumología": 10,
+        "Neurología": 9,
+        "Geriatría": 9,
+        "Hematología": 8,
+        "Reumatología": 8,
+        "Psiquiatría": 8,
+        "Pediatría": 8,
+        "ORL": 7,
+        "Oncología Médica": 7,
+        "Nefrología": 6,
+        "Epidemiología": 6,
+        "Urología": 5,
+        "Inmunología": 5,
+        "Cuidados Paliativos": 5,
+        "Planificación y Gestión Sanitaria": 3,
+        "Anestesiología y Reanimación": 3,
+        "Oftalmología": 3,
+        "Radiología-Urgencias": 2,
+        "Otras · sin asignatura ProMIR": 2,
+        "Genética": 2,
+        "Farmacología": 2,
+        "Medicina Legal y Bioética": 2
+      },
+      "contrasteCTO": null,
+      "clasificado": "2026-09-13T06:26:06.149Z"
+    },
+    "2025": {
+      "preguntas": 210,
+      "sinClasificar": 0,
+      "porConfianza": {
+        "alta": 159,
+        "media": 44,
+        "baja": 7,
+        "pendiente": 0
+      },
+      "enPlanCapId": 91,
+      "fueraDePlanAsignatura": 70,
+      "sinCapitulo": 4,
+      "porAsignatura": {
+        "Cardiología": 17,
+        "Enfermedades Infecciosas": 17,
+        "Neurología": 14,
+        "Gastroenterología": 13,
+        "Endocrinología y Nutrición": 13,
+        "Ginecología y Obstetricia": 12,
+        "Traumatología": 12,
+        "Reumatología": 10,
+        "Oncología Médica": 9,
+        "Neumología": 9,
+        "Nefrología": 8,
+        "Hematología": 7,
+        "ORL": 6,
+        "Urología": 6,
+        "Dermatología": 6,
+        "Pediatría": 6,
+        "Psiquiatría": 6,
+        "Oftalmología": 5,
+        "Geriatría": 5,
+        "Radiología-Urgencias": 4,
+        "Otras · sin asignatura ProMIR": 4,
+        "Inmunología": 4,
+        "Epidemiología": 4,
+        "Medicina Legal y Bioética": 4,
+        "Cuidados Paliativos": 4,
+        "Alergología": 2,
+        "Genética": 1,
+        "Planificación y Gestión Sanitaria": 1,
+        "Anestesiología y Reanimación": 1
+      },
+      "contrasteCTO": {
+        "fuente": "ConSalud citando Academia CTO (200 Q, sin reserva) · WebFetch 13-sep-2026",
+        "desviacionesGrandes": [
+          {
+            "grupo": "Gastroenterología",
+            "llm": 12,
+            "cto": 21,
+            "delta": -9
+          },
+          {
+            "grupo": "Cuidados Paliativos",
+            "llm": 4,
+            "cto": 0,
+            "delta": 4
+          },
+          {
+            "grupo": "Enfermedades Infecciosas",
+            "llm": 16,
+            "cto": 13,
+            "delta": 3
+          },
+          {
+            "grupo": "Epidemiología",
+            "llm": 3,
+            "cto": 6,
+            "delta": -3
+          },
+          {
+            "grupo": "Oncología Médica",
+            "llm": 9,
+            "cto": 6,
+            "delta": 3
+          },
+          {
+            "grupo": "Pediatría",
+            "llm": 5,
+            "cto": 8,
+            "delta": -3
+          },
+          {
+            "grupo": "Psiquiatría",
+            "llm": 5,
+            "cto": 8,
+            "delta": -3
+          },
+          {
+            "grupo": "Otras/básicas",
+            "llm": 4,
+            "cto": 7,
+            "delta": -3
+          }
+        ],
+        "filas": [
+          {
+            "grupo": "Gastroenterología",
+            "llm": 12,
+            "cto": 21,
+            "delta": -9
+          },
+          {
+            "grupo": "Cuidados Paliativos",
+            "llm": 4,
+            "cto": 0,
+            "delta": 4
+          },
+          {
+            "grupo": "Enfermedades Infecciosas",
+            "llm": 16,
+            "cto": 13,
+            "delta": 3
+          },
+          {
+            "grupo": "Epidemiología",
+            "llm": 3,
+            "cto": 6,
+            "delta": -3
+          },
+          {
+            "grupo": "Oncología Médica",
+            "llm": 9,
+            "cto": 6,
+            "delta": 3
+          },
+          {
+            "grupo": "Pediatría",
+            "llm": 5,
+            "cto": 8,
+            "delta": -3
+          },
+          {
+            "grupo": "Psiquiatría",
+            "llm": 5,
+            "cto": 8,
+            "delta": -3
+          },
+          {
+            "grupo": "Otras/básicas",
+            "llm": 4,
+            "cto": 7,
+            "delta": -3
+          },
+          {
+            "grupo": "Anestesiología y Reanimación",
+            "llm": 1,
+            "cto": 3,
+            "delta": -2
+          },
+          {
+            "grupo": "Dermatología",
+            "llm": 6,
+            "cto": 4,
+            "delta": 2
+          },
+          {
+            "grupo": "Geriatría",
+            "llm": 5,
+            "cto": 3,
+            "delta": 2
+          },
+          {
+            "grupo": "Ginecología y Obstetricia",
+            "llm": 11,
+            "cto": 9,
+            "delta": 2
+          },
+          {
+            "grupo": "Medicina Legal y Bioética",
+            "llm": 4,
+            "cto": 6,
+            "delta": -2
+          },
+          {
+            "grupo": "Neumología",
+            "llm": 9,
+            "cto": 7,
+            "delta": 2
+          },
+          {
+            "grupo": "Reumatología",
+            "llm": 9,
+            "cto": 11,
+            "delta": -2
+          },
+          {
+            "grupo": "Endocrinología y Nutrición",
+            "llm": 13,
+            "cto": 12,
+            "delta": 1
+          },
+          {
+            "grupo": "Farmacología",
+            "llm": 0,
+            "cto": 1,
+            "delta": -1
+          },
+          {
+            "grupo": "Inmunología",
+            "llm": 4,
+            "cto": 3,
+            "delta": 1
+          },
+          {
+            "grupo": "Nefrología",
+            "llm": 8,
+            "cto": 7,
+            "delta": 1
+          },
+          {
+            "grupo": "Neurología",
+            "llm": 14,
+            "cto": 15,
+            "delta": -1
+          },
+          {
+            "grupo": "ORL",
+            "llm": 6,
+            "cto": 7,
+            "delta": -1
+          },
+          {
+            "grupo": "Radiología-Urgencias",
+            "llm": 4,
+            "cto": 5,
+            "delta": -1
+          },
+          {
+            "grupo": "Urología",
+            "llm": 5,
+            "cto": 6,
+            "delta": -1
+          },
+          {
+            "grupo": "Planificación y Gestión Sanitaria",
+            "llm": 1,
+            "cto": 0,
+            "delta": 1
+          },
+          {
+            "grupo": "Alergología",
+            "llm": 2,
+            "cto": 2,
+            "delta": 0
+          },
+          {
+            "grupo": "Cardiología",
+            "llm": 16,
+            "cto": 16,
+            "delta": 0
+          },
+          {
+            "grupo": "Genética",
+            "llm": 1,
+            "cto": 1,
+            "delta": 0
+          },
+          {
+            "grupo": "Hematología",
+            "llm": 7,
+            "cto": 7,
+            "delta": 0
+          },
+          {
+            "grupo": "Oftalmología",
+            "llm": 5,
+            "cto": 5,
+            "delta": 0
+          },
+          {
+            "grupo": "Traumatología",
+            "llm": 11,
+            "cto": 11,
+            "delta": 0
+          }
+        ]
+      },
+      "clasificado": "2026-09-13T06:26:06.153Z"
+    },
+    "2026": {
+      "preguntas": 210,
+      "sinClasificar": 0,
+      "porConfianza": {
+        "alta": 155,
+        "media": 47,
+        "baja": 8,
+        "pendiente": 0
+      },
+      "enPlanCapId": 101,
+      "fueraDePlanAsignatura": 65,
+      "sinCapitulo": 7,
+      "porAsignatura": {
+        "Gastroenterología": 24,
+        "Cardiología": 23,
+        "Neumología": 12,
+        "Enfermedades Infecciosas": 11,
+        "Neurología": 10,
+        "Reumatología": 9,
+        "Ginecología y Obstetricia": 9,
+        "Medicina Legal y Bioética": 8,
+        "Psiquiatría": 8,
+        "Endocrinología y Nutrición": 8,
+        "Pediatría": 7,
+        "Geriatría": 7,
+        "Nefrología": 7,
+        "Traumatología": 6,
+        "Dermatología": 6,
+        "Hematología": 6,
+        "Otras · sin asignatura ProMIR": 6,
+        "Urología": 6,
+        "ORL": 5,
+        "Radiología-Urgencias": 5,
+        "Genética": 4,
+        "Oftalmología": 4,
+        "Planificación y Gestión Sanitaria": 4,
+        "Epidemiología": 3,
+        "Farmacología": 3,
+        "Cuidados Paliativos": 3,
+        "Oncología Médica": 3,
+        "Inmunología": 2,
+        "Alergología": 1
+      },
+      "contrasteCTO": {
+        "fuente": "ConSalud citando Academia CTO (200 Q, sin reserva) · WebFetch 13-sep-2026",
+        "desviacionesGrandes": [
+          {
+            "grupo": "Epidemiología",
+            "llm": 3,
+            "cto": 10,
+            "delta": -7
+          },
+          {
+            "grupo": "Neurología",
+            "llm": 8,
+            "cto": 12,
+            "delta": -4
+          },
+          {
+            "grupo": "Pediatría",
+            "llm": 7,
+            "cto": 11,
+            "delta": -4
+          },
+          {
+            "grupo": "Otras/básicas",
+            "llm": 6,
+            "cto": 10,
+            "delta": -4
+          },
+          {
+            "grupo": "Enfermedades Infecciosas",
+            "llm": 11,
+            "cto": 8,
+            "delta": 3
+          },
+          {
+            "grupo": "Cuidados Paliativos",
+            "llm": 3,
+            "cto": 0,
+            "delta": 3
+          },
+          {
+            "grupo": "Planificación y Gestión Sanitaria",
+            "llm": 3,
+            "cto": 0,
+            "delta": 3
+          }
+        ],
+        "filas": [
+          {
+            "grupo": "Epidemiología",
+            "llm": 3,
+            "cto": 10,
+            "delta": -7
+          },
+          {
+            "grupo": "Neurología",
+            "llm": 8,
+            "cto": 12,
+            "delta": -4
+          },
+          {
+            "grupo": "Pediatría",
+            "llm": 7,
+            "cto": 11,
+            "delta": -4
+          },
+          {
+            "grupo": "Otras/básicas",
+            "llm": 6,
+            "cto": 10,
+            "delta": -4
+          },
+          {
+            "grupo": "Enfermedades Infecciosas",
+            "llm": 11,
+            "cto": 8,
+            "delta": 3
+          },
+          {
+            "grupo": "Cuidados Paliativos",
+            "llm": 3,
+            "cto": 0,
+            "delta": 3
+          },
+          {
+            "grupo": "Planificación y Gestión Sanitaria",
+            "llm": 3,
+            "cto": 0,
+            "delta": 3
+          },
+          {
+            "grupo": "Anestesiología y Reanimación",
+            "llm": 0,
+            "cto": 2,
+            "delta": -2
+          },
+          {
+            "grupo": "Gastroenterología",
+            "llm": 22,
+            "cto": 24,
+            "delta": -2
+          },
+          {
+            "grupo": "Neumología",
+            "llm": 12,
+            "cto": 10,
+            "delta": 2
+          },
+          {
+            "grupo": "Oncología Médica",
+            "llm": 3,
+            "cto": 5,
+            "delta": -2
+          },
+          {
+            "grupo": "Radiología-Urgencias",
+            "llm": 5,
+            "cto": 3,
+            "delta": 2
+          },
+          {
+            "grupo": "Alergología",
+            "llm": 0,
+            "cto": 1,
+            "delta": -1
+          },
+          {
+            "grupo": "Cardiología",
+            "llm": 22,
+            "cto": 21,
+            "delta": 1
+          },
+          {
+            "grupo": "Endocrinología y Nutrición",
+            "llm": 8,
+            "cto": 7,
+            "delta": 1
+          },
+          {
+            "grupo": "Farmacología",
+            "llm": 3,
+            "cto": 2,
+            "delta": 1
+          },
+          {
+            "grupo": "Genética",
+            "llm": 4,
+            "cto": 3,
+            "delta": 1
+          },
+          {
+            "grupo": "Hematología",
+            "llm": 6,
+            "cto": 7,
+            "delta": -1
+          },
+          {
+            "grupo": "Oftalmología",
+            "llm": 3,
+            "cto": 4,
+            "delta": -1
+          },
+          {
+            "grupo": "Psiquiatría",
+            "llm": 8,
+            "cto": 7,
+            "delta": 1
+          },
+          {
+            "grupo": "Traumatología",
+            "llm": 6,
+            "cto": 5,
+            "delta": 1
+          },
+          {
+            "grupo": "Urología",
+            "llm": 5,
+            "cto": 6,
+            "delta": -1
+          },
+          {
+            "grupo": "Dermatología",
+            "llm": 6,
+            "cto": 6,
+            "delta": 0
+          },
+          {
+            "grupo": "Geriatría",
+            "llm": 6,
+            "cto": 6,
+            "delta": 0
+          },
+          {
+            "grupo": "Ginecología y Obstetricia",
+            "llm": 9,
+            "cto": 9,
+            "delta": 0
+          },
+          {
+            "grupo": "Inmunología",
+            "llm": 2,
+            "cto": 2,
+            "delta": 0
+          },
+          {
+            "grupo": "Medicina Legal y Bioética",
+            "llm": 8,
+            "cto": 8,
+            "delta": 0
+          },
+          {
+            "grupo": "Nefrología",
+            "llm": 7,
+            "cto": 7,
+            "delta": 0
+          },
+          {
+            "grupo": "ORL",
+            "llm": 5,
+            "cto": 5,
+            "delta": 0
+          },
+          {
+            "grupo": "Reumatología",
+            "llm": 9,
+            "cto": 9,
+            "delta": 0
+          }
+        ]
+      },
+      "clasificado": "2026-09-13T06:26:06.156Z"
+    }
+  },
+  "verificacion": {
+    "fecha": "2026-09-13T06:26:06.414Z",
+    "n": 105,
+    "acuerdoAsignaturaPct": 100,
+    "acuerdoCapIdPct": 100,
+    "capIdEvaluables": 102,
+    "desacuerdos": [],
+    "nota": "2ª pasada realizada por el mismo LLM en un paso separado y a ciegas (fichero de lectura sin la etiqueta de la 1ª pasada); NO es un evaluador humano independiente."
+  },
+  "muestra2Pasada": {
+    "n": 105,
+    "semilla": 20260913,
+    "ids": [
+      "2022-001",
+      "2022-013",
+      "2022-031",
+      "2022-032",
+      "2022-053",
+      "2022-081",
+      "2022-089",
+      "2022-101",
+      "2022-131",
+      "2022-136",
+      "2022-151",
+      "2022-153",
+      "2022-158",
+      "2022-180",
+      "2022-183",
+      "2022-189",
+      "2022-209",
+      "2023-006",
+      "2023-040",
+      "2023-044",
+      "2023-054",
+      "2023-074",
+      "2023-080",
+      "2023-084",
+      "2023-093",
+      "2023-109",
+      "2023-115",
+      "2023-120",
+      "2023-121",
+      "2023-138",
+      "2023-145",
+      "2023-163",
+      "2023-177",
+      "2023-190",
+      "2023-195",
+      "2023-210",
+      "2024-013",
+      "2024-043",
+      "2024-046",
+      "2024-053",
+      "2024-078",
+      "2024-086",
+      "2024-108",
+      "2024-114",
+      "2024-122",
+      "2024-137",
+      "2024-149",
+      "2024-151",
+      "2024-154",
+      "2024-156",
+      "2024-158",
+      "2024-160",
+      "2024-167",
+      "2024-193",
+      "2024-200",
+      "2025-008",
+      "2025-026",
+      "2025-030",
+      "2025-038",
+      "2025-053",
+      "2025-055",
+      "2025-061",
+      "2025-073",
+      "2025-076",
+      "2025-083",
+      "2025-086",
+      "2025-087",
+      "2025-089",
+      "2025-090",
+      "2025-103",
+      "2025-116",
+      "2025-125",
+      "2025-150",
+      "2025-158",
+      "2025-166",
+      "2025-175",
+      "2025-180",
+      "2025-200",
+      "2026-002",
+      "2026-006",
+      "2026-013",
+      "2026-016",
+      "2026-055",
+      "2026-058",
+      "2026-061",
+      "2026-067",
+      "2026-068",
+      "2026-075",
+      "2026-084",
+      "2026-085",
+      "2026-089",
+      "2026-090",
+      "2026-092",
+      "2026-126",
+      "2026-132",
+      "2026-141",
+      "2026-149",
+      "2026-153",
+      "2026-163",
+      "2026-167",
+      "2026-169",
+      "2026-185",
+      "2026-195",
+      "2026-198",
+      "2026-199"
+    ],
+    "fichero": "DATA\\MIR\\pool\\_clasificacion_llm\\_muestra_2pasada.json"
+  },
+  "total": 1050
+}
