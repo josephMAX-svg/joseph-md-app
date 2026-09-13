@@ -2,7 +2,7 @@
 // PE Perú → ENCAPS → "Plan diario": HOY · Camino a 17/20 · Simulacros · 7 días.
 // Lee study_schedule/metrics/checks/sim_scores de Supabase; los checks se
 // sincronizan a study_checks (dashboard ↔ app ↔ Supabase ↔ Telegram).
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View, Text, TouchableOpacity, StyleSheet, Linking, TextInput, Platform, ActivityIndicator,
 } from 'react-native';
@@ -10,13 +10,19 @@ import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, Motion, L
 import {
   useEncapsPlan, itemsForDay, vueltaLabel, repasoKey, vueltasHechasDe, subEjeDe, miniSimRecetaDe, miniSimRecetaTexto,
   type PlanItem, type StudyScheduleDay, type StudyMetrics, type ProximoVideo, type MiniSimPunto, type CiegoSemana,
+  type CiegoCodigo, type TemaCaliente, type TendenciaCiego, type EvalAnclada,
 } from '../lib/encapsPlan';
+import {
+  cerrarSesion, sincronizarPendientes, borrarCierreLocal, lineaCierre, exportCierreJSON, exportCierresJSON, copiarTexto,
+  validarCierre, normalizarCierre, fallosDesdePlano, fallosAPlano, sumFallos, SUBTIPOS, SUBTIPO_INFO, TIPOS_RONDA, TIPO_RONDA_LABEL,
+  type TipoRonda, type SubtipoFallo, type TipoFallo, type CierreSesion,
+} from '../lib/encapsProgressSync';
 import EncapsWebView from './EncapsWebView';
 import { encapsObsByTitle, encapsMatch } from '../lib/obsidianEncaps';
 import { ANKIWEB } from '../lib/ankiLinks';
 import { ENCAPS_FICHAS_MINSA, ENCAPS_FICHAS_POR_TEMA, ENCAPS_ACADEMIAS_RESPALDO, ENCAPS_THEOMED_SIMULACROS, ENCAPS_QX_ACCESOS, ENCAPS_FUENTES_META, ENCAPS_THEOMED_AREA, ENCAPS_THEOMED_EXTRA, ENCAPS_THEOMED_VIDEOS } from '../lib/encapsFuentes';
-import { CountdownCockpit, RentabilidadStrip, RetrievalRadarLegend, GoNoGoAltimeter, MiniSimTrend, CiegoSemanalStrip } from './EncapsCockpit';
-import { encapsGoZone, encapsGoColor, encapsMiniSimZone, ENCAPS_MINISIM_META } from '../lib/encapsRentabilidad';
+import { CountdownCockpit, RentabilidadStrip, RetrievalRadarLegend, GoNoGoAltimeter, MiniSimTrend, CiegoSemanalStrip, TemasCalientesStrip } from './EncapsCockpit';
+import { encapsGoZone, encapsGoColor, encapsMiniSimZone, encapsCiegoZone, ENCAPS_MINISIM_META } from '../lib/encapsRentabilidad';
 import { ENCAPS_COBERTURA, CoberturaTema } from '../lib/encapsCobertura';
 
 const TIER_COLOR: Record<string, string> = { 'CRÍTICA': Colors.coral, 'ALTA': Colors.gold, 'MEDIA': Colors.blue, 'BAJA': Colors.muted };
@@ -277,7 +283,7 @@ export default function EncapsPlanView() {
 
       {sub === 'hoy' && <HoyView plan={plan} />}
       {sub === 'horario' && <HorarioView plan={plan} />}
-      {sub === 'meta' && <MetaView metrics={plan.metrics} simScores={plan.simScores} simDays={plan.simDays} miniSims={plan.miniSims} ciego={plan.ciego} />}
+      {sub === 'meta' && <MetaView metrics={plan.metrics} simScores={plan.simScores} simDays={plan.simDays} miniSims={plan.miniSims} ciego={plan.ciego} tendencia={plan.tendencia} porCodigo={plan.porCodigo} calientes={plan.calientes} hayDatos={plan.progressAll.length > 0} />}
       {sub === 'sim' && <SimView plan={plan} />}
       {sub === 'sem' && <SemView days={plan.days} dia={plan.dia} proximos={plan.proximos} metrics={plan.metrics} onOpenDay={(dn) => { plan.setDia(dn); setSub('hoy'); }} />}
       {sub === 'material' && <MaterialView />}
@@ -426,7 +432,7 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
             <Text style={styles.recetaLine}>
               Cola larga del viernes ({receta.colaLargaQ}Q): {(today.temas_secundarios || []).map(s => `${s.codigo} ${s.subtema}`).join(' · ') || receta.colaLarga.join(' + ')}
             </Text>
-            <Text style={styles.recetaHint}>Al terminar: nota /25 en ▲ SIM (se guarda en study_sim_scores) + cierre de 1 línea. Alerta: &lt;{receta.alerta}/25 dos viernes seguidos → re-ponderar la semana siguiente.</Text>
+            <Text style={styles.recetaHint}>Al terminar: CIERRE DE SESIÓN tipo mini_sim al final de la cola (nota /25 → study_sim_scores + % ciego → study_progress; también vale ▲ SIM). Alerta: &lt;{receta.alerta}/25 dos viernes seguidos → re-ponderar la semana siguiente.</Text>
           </View>
         )}
         {/* Lun-jue de MANTENIMIENTO: el sub-eje concreto de esta sesión (para no repetir POI/PEI/FODA 11 veces) */}
@@ -501,6 +507,9 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
           ))}
         </>
       )}
+
+      {/* CIERRE DE SESIÓN al final de la cola (MANTENIMIENTO): % ciego real → study_progress (+ study_sim_scores el viernes) */}
+      {esMant && <CierreSesionCard plan={plan} />}
 
       {/* NTS Tier-1 — qué normas y dónde estudiarlas */}
       {!!today.nts && (
@@ -592,12 +601,16 @@ function CheckRow({ item, checked, onToggle, todayDia }: { item: PlanItem; check
 }
 
 // ─── Camino a 17/20 ───
-function MetaView({ metrics, simScores, simDays, miniSims, ciego }: {
+function MetaView({ metrics, simScores, simDays, miniSims, ciego, tendencia, porCodigo, calientes, hayDatos }: {
   metrics: StudyMetrics | null;
   simScores: Record<number, { nota?: number | null }>;
   simDays: StudyScheduleDay[];
   miniSims: MiniSimPunto[];
   ciego: CiegoSemana[];
+  tendencia: TendenciaCiego;
+  porCodigo: CiegoCodigo[];
+  calientes: TemaCaliente[];
+  hayDatos: boolean;
 }) {
   const prom = metrics?.prom_sim ?? null;
   const notas = Object.values(simScores).map(s => s.nota).filter((n): n is number => n != null);
@@ -620,7 +633,8 @@ function MetaView({ metrics, simScores, simDays, miniSims, ciego }: {
 
       {/* Serie de mini-sims de viernes (/25 vs 18/25) + % ciego semanal (study_progress vs 85%) */}
       {miniSims.length > 0 && <MiniSimTrend serie={miniSims} />}
-      <CiegoSemanalStrip semanas={ciego} />
+      <CiegoSemanalStrip semanas={ciego} tendencia={tendencia} porCodigo={porCodigo} />
+      <TemasCalientesStrip calientes={calientes} hayDatos={hayDatos} />
 
       {/* Telemetría de rentabilidad por área (Bloomberg strip) + tickers críticos */}
       <RentabilidadStrip />
@@ -842,7 +856,7 @@ function SemView({ days, dia, proximos, metrics, onOpenDay }: { days: StudySched
 }
 
 // ─── Horario (bloques del día, leídos de Google Calendar vía sync) ───
-function HorarioBlockRow({ b, tema }: { b: HorarioBlock; tema?: string }) {
+function HorarioBlockRow({ b, tema, evalHoy }: { b: HorarioBlock; tema?: string; evalHoy?: EvalAnclada | null }) {
   const [open, setOpen] = useState(!!b.apex); // deep-prime arranca abierto
   const hasDetail = (b.pasos && b.pasos.length > 0) || !!b.fuente;
   return (
@@ -858,6 +872,8 @@ function HorarioBlockRow({ b, tema }: { b: HorarioBlock; tema?: string }) {
             {b.titulo}{hasDetail ? (open ? '  ▾' : '  ▸') : ''}
           </Text>
           {b.apex && !!tema && <Text style={styles.horarioTema}>→ HOY: {tema}</Text>}
+          {/* Eval anclada del día según la regla real (código de ayer / fallos del mini-sim / arranque) */}
+          {!!evalHoy && /^EVAL ANCLADA/i.test(b.titulo) && <Text style={styles.horarioTema}>→ HOY: {evalHoy.label.replace(/^🎯 /, '')}</Text>}
           {!!b.fuente && <Text style={styles.horarioFuente}>▪ {b.fuente.label}</Text>}
           {open && (b.pasos || []).map((p, i) => (
             <View key={i} style={styles.pasoRow}>
@@ -919,7 +935,7 @@ function HorarioView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
       {blocks.length === 0 ? (
         <Text style={styles.empty}>Sin bloques cargados. Corré el sync.</Text>
       ) : blocks.map((b, i) => (
-        <HorarioBlockRow key={i} b={b} tema={tema} />
+        <HorarioBlockRow key={i} b={b} tema={tema} evalHoy={plan.evalHoy} />
       ))}
       <Text style={styles.horarioFoot}>● / ▲ = ventana donde se crean los APEX del día.</Text>
 
@@ -947,6 +963,237 @@ function HorarioView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
         subtitle="Tu agenda ENCAPS del día, minuto a minuto."
         height={620}
       />
+    </View>
+  );
+}
+
+// ─── CIERRE DE SESIÓN (final de la cola del día · régimen MANTENIMIENTO) ───
+// n · correctas seguras · correctas dudosas · fallos por subtipo (knowledge / transfer / proceso) · t medio · código / sub-eje
+// → encapsProgressSync.cerrarSesion(): localStorage 'jmd-encaps-cierres' SIEMPRE + upsert en study_progress (fuente app:cierre,
+// porcentaje = seguras / n × 100, especialidad = código, misma fórmula que gen_encaps_semana.js) + espejo en study_sim_scores
+// si la ronda lleva nota (mini_sim / simulacro / pretest). Export: línea para `gen_encaps_semana.js --cerrar` y JSON con la
+// forma del runner (`gen_encaps_minisim.js --registrar <json> --append`), para que registro y Supabase converjan.
+const FALLO_COLOR: Record<TipoFallo, string> = { knowledge: Colors.purple, transfer: Colors.blue, proceso: Colors.brass };
+const toInt = (s: string): number => { const v = parseInt(String(s).replace(/[^0-9]/g, ''), 10); return isNaN(v) ? 0 : v; };
+const SUBTIPOS_PLANO = (Object.keys(SUBTIPOS) as TipoFallo[]).flatMap(t => SUBTIPOS[t]);
+const fallosVacios = (): Record<SubtipoFallo, string> => Object.fromEntries(SUBTIPOS_PLANO.map(s => [s, ''])) as Record<SubtipoFallo, string>;
+
+function NumField({ label, value, onChange, width = 56, placeholder = '–', hint }: {
+  label: string; value: string; onChange: (v: string) => void; width?: number; placeholder?: string; hint?: string;
+}) {
+  return (
+    <View style={[styles.cField, { width }]}>
+      <Text style={styles.cFieldLabel} numberOfLines={1}>{label}</Text>
+      <TextInput
+        style={[styles.cInput, NUM]} value={value} onChangeText={v => onChange(v.replace(/[^0-9]/g, ''))}
+        keyboardType="number-pad" placeholder={placeholder} placeholderTextColor={Colors.muted} maxLength={3}
+      />
+      {!!hint && <Text style={styles.cFieldHint} numberOfLines={1}>{hint}</Text>}
+    </View>
+  );
+}
+
+function CierreSesionCard({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
+  const { today, prevDay, evalHoy, cierres, refetch } = plan;
+  const [open, setOpen] = useState(true);
+  const [tipo, setTipo] = useState<TipoRonda>('banco_dia');
+  const [n, setN] = useState('');
+  const [seg, setSeg] = useState('');
+  const [dud, setDud] = useState('');
+  const [t, setT] = useState('');
+  const [nota, setNota] = useState('');
+  const [codigo, setCodigo] = useState('');
+  const [subEje, setSubEje] = useState('');
+  const [tema, setTema] = useState('');
+  const [fallos, setFallos] = useState<Record<SubtipoFallo, string>>(fallosVacios());
+  const [estado, setEstado] = useState<{ tipo: 'ok' | 'local' | 'error' | 'info'; msg: string } | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [ultimo, setUltimo] = useState<CierreSesion | null>(null);
+  const [verExport, setVerExport] = useState(false);
+
+  // Prellenado desde la fila del día: tipo (mini_sim los viernes) · código · sub-eje · tema. Se rehace al cambiar de día o de tipo.
+  const prefill = (tp: TipoRonda) => {
+    const se = today ? subEjeDe(today) : null;
+    const sePrev = prevDay ? subEjeDe(prevDay) : null;
+    if (tp === 'mini_sim') { setN('25'); setCodigo('MIX'); setSubEje(''); setTema(today?.subtema || 'mini-sim v3'); }
+    else if (tp === 'eval_anclada') { setN('5'); setCodigo(evalHoy?.codigo || 'MIX'); setSubEje(evalHoy?.modo === 'ayer' && sePrev ? sePrev.key : ''); setTema(evalHoy ? evalHoy.label.replace(/^🎯 /, '') : 'eval anclada'); }
+    else if (tp === 'pretest' || tp === 'simulacro') { setN(''); setCodigo('MIX'); setSubEje(''); setTema(''); }
+    else { setN(''); setCodigo(today?.codigo || 'MIX'); setSubEje(se?.key || ''); setTema(se?.label || today?.subtema || ''); }
+    setNota('');
+  };
+  const cambiarTipo = (tp: TipoRonda) => { setTipo(tp); prefill(tp); };
+  useEffect(() => {
+    const tp: TipoRonda = today?.tipo === 'mini_sim' ? 'mini_sim' : 'banco_dia';
+    setTipo(tp); prefill(tp); setSeg(''); setDud(''); setT(''); setFallos(fallosVacios()); setEstado(null); setUltimo(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [today?.dia]);
+
+  if (!today) return null;
+  const fechaISO = String(today.fecha).slice(0, 10);
+  const nN = toInt(n), segN = toInt(seg), dudN = toInt(dud);
+  const plano = Object.fromEntries(SUBTIPOS_PLANO.map(s => [s, toInt(fallos[s])])) as Record<SubtipoFallo, number>;
+  const input = {
+    tipoRonda: tipo, fecha: fechaISO, dia: today.dia, codigo: codigo.trim() || 'MIX', tema: tema.trim(), sub_eje: subEje.trim() || null,
+    n: nN, correctas_seguras: segN, correctas_dudosas: dudN, fallos_por_tipo: fallosDesdePlano(plano),
+    tiempo_medio_seg: t.trim() ? toInt(t) : null, nota: nota.trim() ? toInt(nota) : null,
+  };
+  const draft = normalizarCierre(input);
+  const { errores, avisos } = validarCierre(draft);
+  const esperado = Math.max(0, nN - segN - dudN);
+  const clasificados = sumFallos(draft.fallos_por_tipo);
+  const pctColor = encapsGoColor(encapsCiegoZone(nN ? draft.pct_ciego : null));
+  const conNota = tipo === 'mini_sim' || tipo === 'simulacro' || tipo === 'pretest';
+  const delDia = cierres.filter(c => c.fecha === fechaISO);
+  const pendientes = cierres.filter(c => !c.supabase);
+  const base = ultimo ?? draft;
+  const estadoColor = estado?.tipo === 'ok' ? Colors.green : estado?.tipo === 'local' ? Colors.brass : estado?.tipo === 'error' ? Colors.coral : Colors.muted;
+
+  const guardar = async () => {
+    if (errores.length || saving) return;
+    setSaving(true); setEstado({ tipo: 'info', msg: 'Guardando…' });
+    try {
+      const { cierre, sync } = await cerrarSesion(input);
+      setUltimo(cierre);
+      if (sync.ok) {
+        const sim = sync.simOk ? ` · nota ${cierre.nota}/${cierre.n} → study_sim_scores #${cierre.sim_n}` : sync.simOk === false ? ' · ⚠ study_sim_scores no respondió (cárgala en ▲ SIM)' : '';
+        setEstado({ tipo: 'ok', msg: `Guardado en study_progress · % ciego ${cierre.pct_ciego}% (${cierre.correctas_seguras}/${cierre.n} seguras)${sim}` });
+        refetch();
+      } else {
+        setEstado({ tipo: 'local', msg: `Guardado SOLO en este dispositivo (jmd-encaps-cierres): ${sync.error || 'Supabase no respondió'}. Reintenta con «Sincronizar pendientes».` });
+      }
+    } catch (e) {
+      setEstado({ tipo: 'error', msg: e instanceof Error ? e.message : 'error inesperado al guardar' });
+    }
+    setSaving(false);
+  };
+  const sincronizar = async () => {
+    if (saving) return;
+    setSaving(true);
+    const r = await sincronizarPendientes();
+    setEstado({ tipo: r.ok === r.intentados ? 'ok' : 'local', msg: `Sincronizados ${r.ok}/${r.intentados} cierres pendientes` });
+    if (r.ok) refetch();
+    setSaving(false);
+  };
+  const copiar = async (txt: string, que: string) => {
+    const ok = await copiarTexto(txt);
+    setEstado({ tipo: ok ? 'ok' : 'info', msg: ok ? `${que} copiado al portapapeles` : 'Sin portapapeles en este entorno: selecciona el texto de abajo' });
+    if (!ok) setVerExport(true);
+  };
+  const cargar = (c: CierreSesion) => {
+    setTipo(c.tipoRonda); setN(String(c.n)); setSeg(String(c.correctas_seguras)); setDud(String(c.correctas_dudosas));
+    setT(c.tiempo_medio_seg != null ? String(c.tiempo_medio_seg) : ''); setNota(c.nota != null ? String(c.nota) : '');
+    setCodigo(c.codigo); setSubEje(c.sub_eje || ''); setTema(c.tema || '');
+    const pl = fallosAPlano(c.fallos_por_tipo);
+    setFallos(Object.fromEntries(SUBTIPOS_PLANO.map(s => [s, pl[s] ? String(pl[s]) : ''])) as Record<SubtipoFallo, string>);
+    setUltimo(c); setEstado({ tipo: 'info', msg: `Cargado ${c.id}: «Guardar de nuevo» sobrescribe esa misma ronda` });
+  };
+
+  return (
+    <View style={styles.cBox}>
+      <TouchableOpacity onPress={() => setOpen(o => !o)} activeOpacity={0.8} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Text style={styles.cTitle}>■ CIERRE DE SESIÓN · {fechaISO.slice(5)} {open ? '▾' : '▸'}</Text>
+        <Text style={[styles.cPct, NUM, { color: pctColor }]}>{nN ? `${draft.pct_ciego}%` : '––'}<Text style={styles.cPctSub}> ciego</Text></Text>
+      </TouchableOpacity>
+      <Text style={styles.cHint}>% CIEGO = correctas SEGURAS / n (las dudosas no cuentan). Se guarda en study_progress (fuente app:cierre) y alimenta el Cockpit «17/20»; si Supabase no responde queda en este dispositivo y se reintenta.</Text>
+      {open && (
+        <>
+          <View style={styles.cChipRow}>
+            {TIPOS_RONDA.map(tp => (
+              <TouchableOpacity key={tp} onPress={() => cambiarTipo(tp)} activeOpacity={0.8} style={[styles.cChip, tipo === tp && styles.cChipOn]}>
+                <Text style={[styles.cChipText, tipo === tp && styles.cChipTextOn]}>{TIPO_RONDA_LABEL[tp]}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+          <View style={styles.cRow}>
+            <NumField label="n" value={n} onChange={setN} hint={tipo === 'mini_sim' ? '25Q' : tipo === 'eval_anclada' ? '5Q' : '16-25Q'} />
+            <NumField label="seguras" value={seg} onChange={setSeg} hint="cuentan" />
+            <NumField label="dudosas" value={dud} onChange={setDud} hint="no cuentan" />
+            <NumField label="t medio (s)" value={t} onChange={setT} width={74} hint="ritmo 72 s/Q" />
+            {conNota && <NumField label={`nota /${nN || 25}`} value={nota} onChange={setNota} width={66} hint={`vacío = ${segN + dudN}`} />}
+          </View>
+          <View style={styles.cRow}>
+            <View style={[styles.cField, { width: 88 }]}>
+              <Text style={styles.cFieldLabel}>código</Text>
+              <TextInput style={[styles.cInput, NUM, { textAlign: 'left' }]} value={codigo} onChangeText={setCodigo} placeholder="II-3 · MIX" placeholderTextColor={Colors.muted} autoCapitalize="characters" />
+            </View>
+            <View style={[styles.cField, { width: 156 }]}>
+              <Text style={styles.cFieldLabel}>sub-eje (clave)</Text>
+              <TextInput style={[styles.cInput, { textAlign: 'left' }]} value={subEje} onChangeText={setSubEje} placeholder="esquema_intervalos" placeholderTextColor={Colors.muted} autoCapitalize="none" />
+            </View>
+            <View style={[styles.cField, { flex: 1, minWidth: 160 }]}>
+              <Text style={styles.cFieldLabel}>tema (texto libre)</Text>
+              <TextInput style={[styles.cInput, { textAlign: 'left' }]} value={tema} onChangeText={setTema} placeholder="sub-eje del día" placeholderTextColor={Colors.muted} />
+            </View>
+          </View>
+          <Text style={styles.cSubTitle}>
+            FALLOS POR SUBTIPO · deben sumar n − seguras − dudosas = <Text style={[NUM, { color: clasificados === esperado ? Colors.green : Colors.brass }]}>{esperado}</Text> (clasificados {clasificados})
+          </Text>
+          {(Object.keys(SUBTIPOS) as TipoFallo[]).map(tf => (
+            <View key={tf} style={styles.cGroup}>
+              <Text style={[styles.cGroupName, { color: FALLO_COLOR[tf] }]}>{tf}</Text>
+              <View style={styles.cGroupCells}>
+                {SUBTIPOS[tf].map(s => (
+                  <NumField key={s} label={s} value={fallos[s]} onChange={v => setFallos(f => ({ ...f, [s]: v }))} width={96} hint={SUBTIPO_INFO[s].label} />
+                ))}
+              </View>
+            </View>
+          ))}
+          {errores.map((e, i) => <Text key={`e${i}`} style={styles.cErr}>✕ {e}</Text>)}
+          {avisos.map((a, i) => <Text key={`a${i}`} style={styles.cWarn}>⚠ {a}</Text>)}
+          <View style={styles.cBtnRow}>
+            <TouchableOpacity onPress={guardar} disabled={!!errores.length || saving} activeOpacity={0.8} style={[styles.cBtn, (!!errores.length || saving) && { opacity: 0.45 }]}>
+              <Text style={styles.cBtnText}>{saving ? '…' : ultimo && ultimo.id === draft.id ? '↻ Guardar de nuevo (corrige)' : '✓ Guardar cierre'}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => copiar(lineaCierre(base), 'Línea de cierre')} activeOpacity={0.8} style={styles.cBtnGhost}>
+              <Text style={styles.cBtnGhostText}>⎘ línea --cerrar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => copiar(exportCierreJSON(base), 'JSON de la ronda')} activeOpacity={0.8} style={styles.cBtnGhost}>
+              <Text style={styles.cBtnGhostText}>⎘ JSON ronda</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setVerExport(v => !v)} activeOpacity={0.8} style={styles.cBtnGhost}>
+              <Text style={styles.cBtnGhostText}>{verExport ? '▾ ocultar texto' : '▸ ver texto'}</Text>
+            </TouchableOpacity>
+          </View>
+          {!!estado && <Text style={[styles.cEstado, { color: estadoColor }]}>{estado.msg}</Text>}
+          {verExport && (
+            <View style={styles.cMono}>
+              <Text selectable style={[styles.cMonoText, NUM]}>{lineaCierre(base)}</Text>
+              <Text style={styles.cFieldHint}>→ node DATA/_scripts/gen_encaps_semana.js --cerrar "&lt;línea&gt;" · JSON: gen_encaps_minisim.js --registrar &lt;ronda.json&gt; --append</Text>
+            </View>
+          )}
+          {delDia.length > 0 && (
+            <View style={{ marginTop: Spacing.sm }}>
+              <Text style={styles.cSubTitle}>CIERRES DE ESTE DÍA ({delDia.length})</Text>
+              {delDia.map(c => (
+                <View key={c.id} style={styles.cListRow}>
+                  <Text style={[styles.cListText, NUM]} numberOfLines={1}>
+                    {TIPO_RONDA_LABEL[c.tipoRonda]} · {c.codigo} · {c.correctas_seguras}/{c.n} seg · {c.correctas_dudosas} dud · <Text style={{ color: encapsGoColor(encapsCiegoZone(c.pct_ciego)), fontWeight: '800' }}>{c.pct_ciego}%</Text>{c.nota != null ? ` · nota ${c.nota}` : ''}
+                  </Text>
+                  <Text style={[styles.cListBadge, { color: c.supabase ? Colors.green : Colors.brass }]}>{c.supabase ? '✓ supabase' : '⟳ local'}</Text>
+                  <TouchableOpacity onPress={() => cargar(c)} activeOpacity={0.8}><Text style={styles.cListAction}>editar</Text></TouchableOpacity>
+                  {!c.supabase && (
+                    <TouchableOpacity onPress={() => borrarCierreLocal(c.id)} activeOpacity={0.8}><Text style={[styles.cListAction, { color: Colors.coral }]}>descartar</Text></TouchableOpacity>
+                  )}
+                </View>
+              ))}
+            </View>
+          )}
+          {(pendientes.length > 0 || cierres.length > 0) && (
+            <View style={styles.cBtnRow}>
+              {pendientes.length > 0 && (
+                <TouchableOpacity onPress={sincronizar} disabled={saving} activeOpacity={0.8} style={styles.cBtnGhost}>
+                  <Text style={[styles.cBtnGhostText, { color: Colors.brass }]}>⟳ Sincronizar {pendientes.length} pendiente{pendientes.length === 1 ? '' : 's'}</Text>
+                </TouchableOpacity>
+              )}
+              {cierres.length > 0 && (
+                <TouchableOpacity onPress={() => copiar(exportCierresJSON(cierres), `JSON de ${cierres.length} cierres`)} activeOpacity={0.8} style={styles.cBtnGhost}>
+                  <Text style={styles.cBtnGhostText}>⎘ exportar todos ({cierres.length})</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+          )}
+        </>
+      )}
     </View>
   );
 }
@@ -1137,4 +1384,39 @@ const styles = StyleSheet.create({
   refBody: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 17 },
   refWhere: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 4, fontStyle: 'italic' },
   matLink: { fontSize: FontSize.labelMd, color: Colors.blue, marginTop: 4, lineHeight: 17 },
+
+  // Cierre de sesión (formulario al final de la cola · study_progress)
+  cBox: { backgroundColor: Colors.gold + '0D', borderRadius: BorderRadius.lg, padding: Spacing.md, marginTop: Spacing.lg, marginBottom: Spacing.md, borderWidth: 1, borderColor: Hairline.accentSoft, borderLeftWidth: 3, borderLeftColor: Colors.gold, ...Elevation.sm },
+  cTitle: { fontSize: FontSize.labelMd, fontWeight: '900', color: Colors.gold, letterSpacing: 0.8 },
+  cPct: { fontSize: FontSize.titleMd, fontWeight: '900', letterSpacing: 0.3 },
+  cPctSub: { fontSize: FontSize.labelSm, color: Colors.muted, fontWeight: '700' },
+  cHint: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 3, lineHeight: 15, fontStyle: 'italic' },
+  cChipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: Spacing.sm },
+  cChip: { borderWidth: 1, borderColor: Hairline.soft, backgroundColor: Colors.surfaceContainerLowest, borderRadius: BorderRadius.full, paddingVertical: 4, paddingHorizontal: 10, ...webTransition },
+  cChipOn: { borderColor: Colors.gold + '99', backgroundColor: Colors.gold + '22' },
+  cChipText: { fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.muted, letterSpacing: 0.3 },
+  cChipTextOn: { color: Colors.gold },
+  cRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: Spacing.sm },
+  cField: { gap: 3 },
+  cFieldLabel: { fontSize: 9, fontWeight: '800', color: Colors.smallLabel, letterSpacing: 0.6, textTransform: 'uppercase' },
+  cFieldHint: { fontSize: 8, color: Colors.muted },
+  cInput: { height: 34, backgroundColor: Colors.surfaceContainerHighest, borderRadius: BorderRadius.md, borderWidth: 1, borderColor: Hairline.medium, color: Colors.onSurface, textAlign: 'center', fontSize: FontSize.bodyMd, fontWeight: '800', paddingVertical: 0, paddingHorizontal: 8, ...(Platform.OS === 'web' ? { outlineStyle: 'none' as any } : {}) },
+  cSubTitle: { fontSize: 9, fontWeight: '900', color: Colors.brass, letterSpacing: 1, marginTop: Spacing.md, marginBottom: 4 },
+  cGroup: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, marginTop: 4 },
+  cGroupName: { width: 66, fontSize: FontSize.labelSm, fontWeight: '900', letterSpacing: 0.4, marginTop: 14 },
+  cGroupCells: { flex: 1, flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
+  cErr: { fontSize: FontSize.labelSm, color: Colors.coral, fontWeight: '700', marginTop: 6 },
+  cWarn: { fontSize: FontSize.labelSm, color: Colors.brass, marginTop: 6, lineHeight: 15 },
+  cBtnRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: Spacing.md, alignItems: 'center' },
+  cBtn: { backgroundColor: Colors.gold, borderRadius: BorderRadius.md, paddingVertical: 8, paddingHorizontal: 14 },
+  cBtnText: { fontSize: FontSize.labelMd, fontWeight: '900', color: '#1A1408', letterSpacing: 0.3 },
+  cBtnGhost: { borderWidth: 1, borderColor: Hairline.soft, backgroundColor: Colors.surfaceContainerLowest, borderRadius: BorderRadius.md, paddingVertical: 7, paddingHorizontal: 10 },
+  cBtnGhostText: { fontSize: FontSize.labelSm, fontWeight: '800', color: Colors.blue, letterSpacing: 0.2 },
+  cEstado: { fontSize: FontSize.labelSm, fontWeight: '700', marginTop: Spacing.sm, lineHeight: 16 },
+  cMono: { backgroundColor: Colors.surfaceContainerLowest, borderRadius: BorderRadius.sm, borderWidth: 1, borderColor: Hairline.soft, padding: Spacing.sm, marginTop: Spacing.sm, gap: 4 },
+  cMonoText: { fontSize: 10.5, color: Colors.onSurfaceVariant, lineHeight: 15 },
+  cListRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 4, borderTopWidth: 1, borderTopColor: Hairline.soft },
+  cListText: { flex: 1, fontSize: FontSize.labelSm, color: Colors.onSurfaceVariant },
+  cListBadge: { fontSize: 9, fontWeight: '800', letterSpacing: 0.3 },
+  cListAction: { fontSize: 9, fontWeight: '800', color: Colors.blue, letterSpacing: 0.3 },
 });

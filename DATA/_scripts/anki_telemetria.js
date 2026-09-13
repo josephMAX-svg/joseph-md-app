@@ -14,8 +14,17 @@
 // Tolerante a Anki cerrado: si AnkiConnect no responde imprime "Anki cerrado" y sale con código 0 SIN escribir
 // (con --registrar-cerrado deja una entrada {estado:'anki_cerrado'} para que el hueco quede visible).
 //
+// v2 (12-sep-2026, vacío 4 de gaps_v3b_synapse.json — FRENO 04:55):
+//   4) `sync` ANTES de leer (la app abre AnkiWeb: sin sync, el escritorio puede ir por detrás del móvil). --no-sync lo salta;
+//      si el sync falla (sin login AnkiWeb, sin red) se registra `sync:'fallo: …'` y se sigue leyendo (tolerante).
+//   5) KPI 'hora de la 1ª review de Anki del día' (primeraReview / primeraReviewEstado): regla "05:00 Anki sin excepción" →
+//      1ª review ≤ 05:10 = verde · > 05:10 = ámbar (el bloque 04:15 se comió el Anki) · sin review en L-V tras las 05:00 = rojo ·
+//      sáb/dom = 'finde' (no aplica: Anki 19:00/17:00) · antes de las 05:00 = 'pendiente'. Lo lee la revisión semanal (métrica 3)
+//      y el KPI ANKI del Home (localStorage jmd-anki-telemetria).
+//
 // Uso:
-//   node DATA/_scripts/anki_telemetria.js                       # deck APEX::USMLE*, 20 s/tarjeta
+//   node DATA/_scripts/anki_telemetria.js                       # deck APEX::USMLE*, 20 s/tarjeta, sync previo
+//   node DATA/_scripts/anki_telemetria.js --no-sync             # sin sync (p. ej. sin red)
 //   node DATA/_scripts/anki_telemetria.js --query "deck:AnKing*" # otro deck/patrón de búsqueda Anki
 //   node DATA/_scripts/anki_telemetria.js --seg 18 --json        # seg por tarjeta · imprime la entrada en JSON
 //   node DATA/_scripts/anki_telemetria.js --registrar-cerrado    # registra el día aunque Anki esté cerrado
@@ -41,12 +50,18 @@ const SEG = Number(arg('--seg', '20')) || 20;           // segundos por tarjeta 
 const OUT_COPY = arg('--out', null);
 const PRINT_JSON = has('--json');
 const REGISTRAR_CERRADO = has('--registrar-cerrado');
+const NO_SYNC = has('--no-sync');
+const SYNC_TIMEOUT = (Number(arg('--sync-timeout', '90')) || 90) * 1000;
 
 // ─── fecha/hora Lima (determinista respecto al reloj local del PC) ───
 const pad = (n) => String(n).padStart(2, '0');
 const now = new Date();
 const FECHA = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
 const HORA = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+const WD_HOY = now.getDay();                                   // 0 = dom … 6 = sáb
+const MEDIANOCHE = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+const ANKI_INICIO = '05:00';                                   // franja USMLE · ANKI AM (L-V)
+const LIMITE_1A_REVIEW = '05:10';                              // freno 04:55: 1ª review > 05:10 = ámbar
 
 // ─── AnkiConnect ───
 async function anki(action, params = {}, timeoutMs = 20000) {
@@ -74,7 +89,8 @@ function leerJson() {
   } catch {
     return {
       _meta: {
-        descripcion: 'Telemetría diaria del Anki del USMLE (AnkiConnect) — append idempotente por fecha. Generado por DATA/_scripts/anki_telemetria.js. Lo consumen CockpitStatusBar (KPI Anki, vía localStorage jmd-anki-telemetria) y gen_revision_semanal.js (métrica 3).',
+        descripcion: 'Telemetría diaria del Anki del USMLE (AnkiConnect) — append idempotente por fecha. Generado por DATA/_scripts/anki_telemetria.js (v2: sync previo + primeraReview). Lo consumen CockpitStatusBar (KPI Anki, vía localStorage jmd-anki-telemetria), gen_revision_semanal.js (métrica 3) y verify_vibecoding.js --sensores.',
+        freno_0455: 'primeraReview = hora de la 1ª review del día (revlog): ≤ 05:10 verde · > 05:10 ámbar · sin review L-V rojo · sáb/dom finde · antes de las 05:00 pendiente',
         query_default: 'deck:APEX::USMLE*',
         alarma_G: 'backlog > 100 o retencion30 < 0.85 → no añadir nuevas hasta backlog < 20; NUNCA capar revisiones',
         regla_finde: 'minFinde = due × segPorTarjeta ÷ 60 (dato, no reloj)',
@@ -129,6 +145,31 @@ async function retencion30(q) {
   }
 }
 
+// ─── KPI freno 04:55: hora de la 1ª review de Anki de HOY (v2, 12-sep-2026) ───
+// Regla (vibecoding_proyectos.json · _meta.freno_0455): 05:00 Anki sin excepción → 1ª review ≤ 05:10 = verde;
+// > 05:10 = ámbar; sin review en L-V ya pasadas las 05:00 = rojo; sáb/dom = 'finde' (Anki 19:00/17:00, no aplica);
+// antes de las 05:00 = 'pendiente'. Fuente: revlog vía getReviewsOfCards (min id ≥ medianoche local) sobre `rated:1`.
+async function primeraReviewHoy(q) {
+  const finde = WD_HOY === 0 || WD_HOY === 6;
+  try {
+    const cards = await anki('findCards', { query: `${q} rated:1` });
+    let min = null;
+    for (let i = 0; i < cards.length; i += 400) {
+      const rev = await anki('getReviewsOfCards', { cards: cards.slice(i, i + 400) }, 60000);
+      for (const cid of Object.keys(rev)) for (const r of rev[cid] || []) if (r.id >= MEDIANOCHE && (min == null || r.id < min)) min = r.id;
+    }
+    if (min == null) {
+      const estado = finde ? 'finde' : HORA < ANKI_INICIO ? 'pendiente' : 'rojo';
+      return { hora: null, estado, metodo: cards.length ? 'rated:1 sin reviews de hoy en el revlog' : 'sin tarjetas revisadas hoy' };
+    }
+    const d = new Date(min);
+    const hora = `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    return { hora, estado: finde ? 'finde' : hora <= LIMITE_1A_REVIEW ? 'verde' : 'ambar', metodo: 'getReviewsOfCards (min id ≥ medianoche local)' };
+  } catch (e) {
+    return { hora: null, estado: 'desconocido', metodo: 'no disponible: ' + String(e.message).slice(0, 80) };
+  }
+}
+
 // ─── config del deck (nuevas/día · desired retention FSRS) ───
 async function configDeck(prefijo) {
   try {
@@ -163,8 +204,15 @@ async function configDeck(prefijo) {
     process.exit(0);
   }
 
+  // v2: sync ANTES de leer (la app abre AnkiWeb). Tolerante: si falla, se anota y se sigue.
+  let sync = 'omitido (--no-sync)';
+  if (!NO_SYNC) {
+    try { await anki('sync', {}, SYNC_TIMEOUT); sync = 'ok'; }
+    catch (e) { sync = 'fallo: ' + String(e.message).slice(0, 80); }
+  }
+
   const prefijo = (QUERY.match(/deck:"?([^"*]+)/) || [])[1] || 'APEX::USMLE';
-  const [total, maduras, due, backlog, nuevas, suspendidas, revisadasHoy, againHoy, revisadasHoyTotal, ret, cfg] = await Promise.all([
+  const [total, maduras, due, backlog, nuevas, suspendidas, revisadasHoy, againHoy, revisadasHoyTotal, ret, cfg, pr] = await Promise.all([
     count(QUERY),
     count(`${QUERY} prop:ivl>=21`),
     count(`${QUERY} is:due`),
@@ -176,6 +224,7 @@ async function configDeck(prefijo) {
     anki('getNumCardsReviewedToday'),
     retencion30(QUERY),
     configDeck(prefijo.replace(/::$/, '')),
+    primeraReviewHoy(QUERY),
   ]);
 
   const againHoyPct = revisadasHoy ? Number(((againHoy / revisadasHoy) * 100).toFixed(1)) : null;
@@ -187,19 +236,24 @@ async function configDeck(prefijo) {
   if (cfg.desiredRetention != null && Math.abs(cfg.desiredRetention - 0.9) > 0.001) avisos.push(`config: desired retention = ${cfg.desiredRetention} (esperado 0.90) → corregir en Anki`);
   if (cfg.nota) avisos.push('config: ' + cfg.nota);
   if (total === 0) avisos.push(`el patrón "${QUERY}" no devuelve tarjetas: ¿deck aún no creado (lazy) o nombre distinto? (deckNames: ${cfg.decks.join(', ') || 'ninguno con ese prefijo'})`);
+  if (pr.estado === 'ambar') avisos.push(`FRENO 04:55: 1ª review de Anki a las ${pr.hora} (> ${LIMITE_1A_REVIEW}) → el bloque 04:15 se comió el Anki; mañana commit-or-stash a las 04:55`);
+  if (pr.estado === 'rojo') avisos.push('FRENO 04:55: sin review de Anki hoy (L-V, ya pasadas las 05:00) → ROJO: el Anki no se salta, se recorta el proyecto');
+  if (sync.startsWith('fallo')) avisos.push('sync AnkiWeb ' + sync + ' (los números pueden ir por detrás del móvil)');
 
   const entrada = {
-    fecha: FECHA, hora: HORA, estado: 'ok', ankiConnect: version, query: QUERY, decks: cfg.decks,
+    fecha: FECHA, hora: HORA, estado: 'ok', ankiConnect: version, sync, query: QUERY, decks: cfg.decks,
     total, maduras, due, backlog, nuevas, suspendidas,
     revisadasHoy, revisadasHoyTotal, againHoy, againHoyPct,
     retencion30: ret.valor, retencionMetodo: ret.metodo, revisiones30: ret.revisiones, again30: ret.again,
+    primeraReview: pr.hora, primeraReviewEstado: pr.estado, primeraReviewMetodo: pr.metodo,
     segPorTarjeta: SEG, minFinde, alarma,
     config: { preset: cfg.preset, nuevasPorDia: cfg.nuevasPorDia, desiredRetention: cfg.desiredRetention, fsrsParams: cfg.fsrsParams ?? null },
     avisos,
   };
   const n = guardar(entrada);
 
-  console.log(`ANKI ${FECHA} ${HORA} · ${QUERY} (${cfg.decks.length} decks)`);
+  console.log(`ANKI ${FECHA} ${HORA} · ${QUERY} (${cfg.decks.length} decks) · sync ${sync}`);
+  console.log(`  1ª review de hoy: ${pr.hora || '—'} (${pr.estado}; ${pr.metodo}) · regla: ≤ ${LIMITE_1A_REVIEW} verde · > ámbar · sin review L-V rojo`);
   console.log(`  total ${total} · maduras ${maduras} · nuevas disp. ${nuevas} · suspendidas ${suspendidas}`);
   console.log(`  DUE hoy ${due} · BACKLOG (vencidas) ${backlog} · revisadas hoy ${revisadasHoy} (total colección ${revisadasHoyTotal}) · Again hoy ${againHoy}${againHoyPct != null ? ` (${againHoyPct}%)` : ''}`);
   console.log(`  retención 30 d: ${ret.valor != null ? Math.round(ret.valor * 100) + '%' : '—'} (${ret.metodo}; ${ret.revisiones} revisiones, ${ret.again} again)`);

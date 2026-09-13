@@ -12,13 +12,15 @@ import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, loadDone, sav
 import { synObsUrl } from '../../lib/obsidianVaultMap';
 import { PERIWINKLE, statusGlyph, tagBar, PromptGlyph } from './synapseConsole';
 import {
-  VIBE_META, VIBE_DIAS, vibeDiaDe, vibeProyectoEnFecha, vibeShipped, VIBE_TIPO_LABEL, VIBE_ROTACION_ICON,
+  VIBE_META, VIBE_DIAS, vibeDiaDe, vibeProyectoEnFecha, vibeTaperEnFecha, vibeShipped, vibeShippedVerificado, vibeUltimoVerify, vibeJournalUrl,
+  VIBE_TIPO_LABEL, VIBE_ROTACION_ICON,
 } from '../../lib/vibecodingPlan';
 
 const OBS = '#A78BFA'; // mismo morado ◆ que el resto de planes
 
 /**
- * SynapseTodayPlan — motor día-a-día SYNAPSE (82 días · 12 semanas), RE-SKIN como
+ * SynapseTodayPlan — motor día-a-día SYNAPSE (SYN_PLAN_META.totalDias · SYN_PLAN_META.semanas semanas; v5.10-b: F0-F1 +
+ * F2 sem 13-19 = Academy restante + prep CCA-F, taper del Step 1), RE-SKIN como
  * CONSOLA NEURAL: cada día es un "run", cada bloque un "job" (RunBlock estilo Warp
  * con barra-de-status lateral + header mono + exit-status ○/▷/✓). Mismo molde que
  * ENCAPS/Business (HOY / 7 días / 12 semanas) con PROGRESO REAL marcable (empieza 0%,
@@ -50,7 +52,7 @@ function BloqueRow({ b }: { b: SynBloque }) {
   const accent = tagBar(b.tag);
   const { glyph, color: stColor } = statusGlyph(b.tag);
   const obs = synObsUrl(b.material, b.leccion); // nota exacta del material en el vault (nombre + lección para desambiguar)
-  const minTxt = b.tag === 'R' ? "30'" : `${b.min}'`;
+  const minTxt = b.tag === 'R' ? (b.min === 0 ? 'libre' : "30'") : b.min === 0 ? 'opc' : `${b.min}'`;
   const inner = (
     <>
       {/* barra-de-status lateral (data-plane) */}
@@ -84,46 +86,93 @@ function BloqueRow({ b }: { b: SynBloque }) {
 }
 
 /** VibeCard — proyecto de la semana del VIBECODING 04:15 (src/lib/vibecodingPlan.ts) para la fecha del run
- *  seleccionado: paso del día (L-V) con ✓ propio (PlanKey 'vibecoding'), o SHIP (sáb) / Feynman (dom). */
+ *  seleccionado: paso del día (L-V) con ✓ propio (PlanKey 'vibecoding'), o SHIP (sáb) / Feynman (dom).
+ *  v5.10-b: el ✓ manual solo cuenta días; SHIPPED lo dice el último verify (node DATA/_scripts/verify_vibecoding.js <s> →
+ *  VIBE_SHIP_LOG horneado + localStorage 'jmd-vibe-ship'). S13-S20 (taper) se pintan desde VIBE_TAPER. Botón 📓 journal. */
 function VibeCard({ fecha, vibeDone, onToggleVibe }: { fecha: string; vibeDone: Set<number>; onToggleVibe: (d: number) => void }) {
   const p = vibeProyectoEnFecha(fecha);
+  const t = vibeTaperEnFecha(fecha);
   const vd = vibeDiaDe(fecha);
-  if (!p) return null;
   const hecho = vd ? vibeDone.has(vd.d) : false;
-  const semDias = VIBE_DIAS.filter((x) => x.semana === p.s);
-  const semHechos = semDias.filter((x) => vibeDone.has(x.d)).length;
   const shipped = vibeShipped(vibeDone);
+  const verificados = vibeShippedVerificado();
   const wd = (() => { try { return new Date(fecha + 'T12:00:00').getDay(); } catch { return 1; } })();
   const accent = OBS;
+  const journal = vibeJournalUrl(fecha);
+  const btnDia = vd ? (
+    <TouchableOpacity activeOpacity={0.85} onPress={() => onToggleVibe(vd.d)}
+      style={[st.doneBtn, { flex: 1, marginTop: 0 }, hecho ? { backgroundColor: accent, borderColor: accent } : { backgroundColor: accent + '14', borderColor: accent + '66' }]}>
+      <Text style={[st.doneBtnTxt, { color: hecho ? '#10122B' : accent }]}>{hecho ? '✓ paso del día hecho' : '○ marcar paso del día'}</Text>
+    </TouchableOpacity>
+  ) : null;
+  const btnJournal = (
+    <TouchableOpacity activeOpacity={0.8} onPress={() => openUrl(journal)} style={[st.verBtn, { borderColor: accent + '88' }]}>
+      <Text style={[st.verTxt, { color: accent }]} numberOfLines={1}>📓 journal</Text>
+    </TouchableOpacity>
+  );
+  if (!p && t) {
+    const semDias = VIBE_DIAS.filter((x) => x.semana === t.s);
+    const semHechos = semDias.filter((x) => vibeDone.has(x.d)).length;
+    return (
+      <View style={[st.vibeCard, { borderColor: Colors.amber + '55' }]}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+          <Chip label={`04:15 TAPER · S${t.s}/${VIBE_META.semanas}`} color={accent} small />
+          <Chip label={t.tipo === 'deload' ? "DELOAD TOTAL · journal 5' + audio" : "MANTENIMIENTO ≤15'/día"} color={Colors.amber} small />
+          <Text style={[st.vibeStat, { marginLeft: 'auto' }]}>{semHechos}/{semDias.length} días · {verificados}/12 shipped (verify)</Text>
+        </View>
+        <Text style={st.vibeTitle}>{t.nombre}</Text>
+        {vd ? (
+          <Text style={st.vibeStep}>› {vd.wd} · {VIBE_TIPO_LABEL[vd.tipo]} ({vd.min}'): {vd.paso}</Text>
+        ) : wd === 6 ? (
+          <Text style={st.vibeStep}>› SÁBADO: {t.shipTxt}</Text>
+        ) : (
+          <Text style={st.vibeStep}>› DOMINGO libre: {t.shipTxt}</Text>
+        )}
+        <Text style={st.vibeSub} numberOfLines={2}>{t.semanaStep1} · {t.objetivo}</Text>
+        <Text style={[st.vibeSub, { color: Colors.amber }]} numberOfLines={1}>{VIBE_META.freno}</Text>
+        <View style={{ flexDirection: 'row', gap: 6, marginTop: 8, flexWrap: 'wrap' }}>
+          {btnDia}
+          {btnJournal}
+        </View>
+      </View>
+    );
+  }
+  if (!p) return null;
+  const semDias = VIBE_DIAS.filter((x) => x.semana === p.s);
+  const semHechos = semDias.filter((x) => vibeDone.has(x.d)).length;
+  const verify = vibeUltimoVerify(p.s);
+  const verifyColor = verify ? (verify.shipped ? Colors.green : Colors.amber) : Colors.muted;
   return (
     <View style={[st.vibeCard, { borderColor: accent + '55' }]}>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
         <Chip label={`04:15 VIBECODING · S${p.s}/12`} color={accent} small />
         <Chip label={`${VIBE_ROTACION_ICON[p.rotacion]} ${p.rotacion}`} color={Colors.muted} small />
         {p.deload ? <Chip label="DELOAD 50%" color={Colors.amber} small /> : null}
-        <Text style={[st.vibeStat, { marginLeft: 'auto' }]}>{semHechos}/{semDias.length} días · {shipped}/12 shipped</Text>
+        {verify ? <Chip label={verify.shipped ? `verify ✅ ${verify.criterios_ok}/${verify.total}` : `verify ✗ ${verify.criterios_ok}/${verify.total}`} color={verifyColor} small /> : null}
+        <Text style={[st.vibeStat, { marginLeft: 'auto' }]}>{semHechos}/{semDias.length} días · ✓{shipped}/12 · {verificados}/12 shipped (verify)</Text>
       </View>
       <Text style={st.vibeTitle}>{p.nombre}</Text>
       {vd ? (
         <Text style={st.vibeStep}>› {vd.wd} · {VIBE_TIPO_LABEL[vd.tipo]}{vd.min !== 45 ? ` (${vd.min}')` : ''}: {vd.paso}</Text>
       ) : wd === 6 ? (
-        <Text style={st.vibeStep}>› SÁBADO PC 15:00-17:00 = SHIP: {p.shipTxt}</Text>
+        <Text style={st.vibeStep}>› SÁBADO PC 15:00-17:00 = SHIP: {p.shipTxt} Antes de marcar: node DATA/_scripts/verify_vibecoding.js {p.s}</Text>
       ) : (
         <Text style={st.vibeStep}>› DOMINGO (opcional): Feynman del proyecto — explica en voz alta qué construiste y cómo funciona.</Text>
       )}
       <Text style={st.vibeSub} numberOfLines={2}>entregable: {p.entregable}</Text>
+      <Text style={[st.vibeSub, { color: verifyColor }]} numberOfLines={2}>
+        {verify
+          ? `último verify ${verify.fecha} ${verify.hora}: ${verify.criterios_ok}/${verify.total} · ${verify.shipped ? 'SHIPPED ✅' : 'NO shipped'} · ${verify.resumen}`
+          : `sin verify todavía: node DATA/_scripts/verify_vibecoding.js ${p.s} (sáb PC, antes de marcar) · commits [S${p.s}] …`}
+      </Text>
       <View style={{ flexDirection: 'row', gap: 6, marginTop: 8, flexWrap: 'wrap' }}>
-        {vd ? (
-          <TouchableOpacity activeOpacity={0.85} onPress={() => onToggleVibe(vd.d)}
-            style={[st.doneBtn, { flex: 1, marginTop: 0 }, hecho ? { backgroundColor: accent, borderColor: accent } : { backgroundColor: accent + '14', borderColor: accent + '66' }]}>
-            <Text style={[st.doneBtnTxt, { color: hecho ? '#10122B' : accent }]}>{hecho ? '✓ paso del día hecho' : '○ marcar paso del día'}</Text>
-          </TouchableOpacity>
-        ) : null}
+        {btnDia}
         {p.docs.slice(0, 2).map((d, i) => (
           <TouchableOpacity key={i} activeOpacity={0.8} onPress={() => openUrl(d.url)} style={[st.verBtn, { borderColor: accent + '88' }]}>
             <Text style={[st.verTxt, { color: accent }]} numberOfLines={1}>docs {i + 1} ↗</Text>
           </TouchableOpacity>
         ))}
+        {btnJournal}
       </View>
     </View>
   );
@@ -142,7 +191,7 @@ function HoyView({ dia, hoyD, done, onToggle, vibeDone, onToggleVibe }: { dia: D
       {/* telemetría del run: streak · semana · % checkpoint (todo REAL, desde los ✓) */}
       <View style={st.statsRow}>
         <View style={st.statCard}><Text style={[st.statVal, { color: racha > 0 ? INDIGO : Colors.muted }]}>{racha > 0 ? `🔥${racha}` : '—'}</Text><Text style={st.statLbl}>streak · días ✓</Text></View>
-        <View style={st.statCard}><Text style={[st.statVal, { color: Colors.onSurface }]}>{semHechos}/{semDias.length}</Text><Text style={st.statLbl}>week {dia.semana}/12</Text></View>
+        <View style={st.statCard}><Text style={[st.statVal, { color: Colors.onSurface }]}>{semHechos}/{semDias.length}</Text><Text style={st.statLbl}>week {dia.semana}/{SYN_PLAN_META.semanas}</Text></View>
         <View style={st.statCard}><Text style={[st.statVal, { color: fasePct > 0 ? Colors.green : Colors.muted }]}>{fasePct}%</Text><Text style={st.statLbl}>{dia.faseId.toUpperCase()} checkpoint</Text></View>
       </View>
 
@@ -151,6 +200,7 @@ function HoyView({ dia, hoyD, done, onToggle, vibeDone, onToggleVibe }: { dia: D
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
             <Chip label={dia.fase} color={INDIGO} small />
             <Chip label={`week ${dia.semana}`} color={Colors.muted} small />
+            {dia.deload ? <Chip label="DELOAD · si aprieta: solo A o solo B" color={Colors.amber} small /> : null}
             {dia.wd !== 'Dom' && <Chip label={`${dia.bloques.reduce((n, b) => n + (b.tag === 'PC' ? 0 : b.min), 0)} min${dia.bloques.some(b => b.tag === 'PC') ? ' + PC opt' : ''}`} color={Colors.amber} small />}
           </View>
           <Text style={st.misionKicker}>{dia.wd === 'Dom' ? '$ run --review' : `$ run --day ${dia.d}`}</Text>
@@ -233,7 +283,7 @@ function SemanaCard({ g, hoyD, onPick, done, onToggle }: { g: GrupoProgreso<DiaS
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={0.8} onPress={() => onPick(x.d)} style={st.diaRowMain}>
                   <Text style={[st.diaRowD, { color: hecho ? Colors.green : now ? INDIGO : Colors.muted }]}>{now ? '▶' : ''} D{x.d}</Text>
-                  <Text style={st.diaRowTxt} numberOfLines={1}>{x.wd === 'Dom' ? '🌿 Repaso semanal' : `${a.material} — ${a.leccion}`}</Text>
+                  <Text style={st.diaRowTxt} numberOfLines={1}>{a.tag === 'R' ? (x.wd === 'Dom' ? `🌿 ${a.material}` : a.material) : `${a.material} — ${a.leccion}`}</Text>
                   <Text style={st.diaRowGo}>→</Text>
                 </TouchableOpacity>
               </View>
@@ -252,14 +302,14 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
     <View>
       <View style={st.globCard}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-          <Text style={st.globTitle}>◈ 12 checkpoints · training progress</Text>
+          <Text style={st.globTitle}>◈ {SYN_PLAN_META.semanas} checkpoints · training progress</Text>
           <Text style={[st.globPct, { color: INDIGO }]}>{glob.pct}%</Text>
         </View>
         <ProgressBar pct={glob.pct} color={INDIGO} />
-        <Text style={st.globSub}>{glob.hechos}/{glob.total} runs passed · F0 sem 1-8 (auditar ✓ lo ya cursado) · F1 sem 9-12 = stack del vibecoding · sáb PC = SHIP · empieza en 0% (avance manual real)</Text>
+        <Text style={st.globSub}>{glob.hechos}/{glob.total} runs passed · F0 sem 1-8 (auditar ✓ lo ya cursado) · F1 sem 9-12 = stack del vibecoding · F2 sem 13-{SYN_PLAN_META.semanas} = Academy restante + prep CCA-F (taper del Step 1; sem {SYN_PLAN_META.deloadDesde}+ deload) · sáb PC = SHIP · empieza en 0% (avance manual real)</Text>
       </View>
       {grupos.map((g) => <SemanaCard key={g.clave} g={g} hoyD={hoyD} onPick={onPick} done={done} onToggle={onToggle} />)}
-      <Text style={st.note}>☑ marca un run como passed (se guarda en este dispositivo). ▶ = run de hoy. Los checkpoints 13+ se generan al avanzar de fase (node DATA/_scripts/gen_synapse_plan.js).</Text>
+      <Text style={st.note}>☑ marca un run como passed (se guarda en este dispositivo). ▶ = run de hoy. El plan termina el {SYN_PLAN_META.fin} (fin del Step 1 menos la semana del examen); feriados 25-dic/31-dic/1-ene = libres (node DATA/_scripts/gen_synapse_plan.js).</Text>
     </View>
   );
 }

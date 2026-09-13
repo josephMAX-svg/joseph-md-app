@@ -1,41 +1,53 @@
 /**
- * dermaLedger.ts — LEDGER por caso/pregunta del bloque Derma (PLAN ÉLITE v2.1 · 5-sep-2026).
+ * dermaLedger.ts — LEDGER por caso/pregunta del bloque Derma (PLAN ÉLITE v2.1 · 5-sep-2026 · v3 12-sep-2026).
  *
  * Palmerton: "medir por % ciego" + "etiquetar cada fallo con su módulo CORE". Hasta ahora Derma solo
- * persistía el día hecho (studyProgress 'derma'); aquí se registra CADA caso ciego (2/sesión, ids fijos
- * de DERMA_CASO_ORDEN), cada ~10Q de review, la imagen dermatoscópica ciega y el drill HDPH, con:
+ * persistía el día hecho (studyProgress 'derma'); aquí se registra CADA caso ciego (2/sesión · 1 en el taper
+ * d44-d49 · 3 desde d50, ids fijos de DERMA_CASO_ORDEN), cada ~10Q de review, la imagen dermatoscópica ciega y el drill HDPH, con:
+ *  · v3: CURSOR por banco (dermaBancoCursor = max(id)+1 → "retoma en Q#", porque cada link qa.aspx abre el banco
+ *    desde el principio) · CURA PENDIENTE (dermaCuraPendiente: un fallo CCSN en la última sesión devuelve el
+ *    Differential Diagnosis Challenge, cases 1616, como cura OBLIGATORIA de la siguiente sesión) · sesiones del
+ *    ciclo 2 (d74-d103, dermaCiclo2.ts) resueltas por dermaDiaPorD.
  *  · acierto (paso ③, antes de la discusión) · evalAcierto = matriz confianza×acierto
  *    (conocimiento | suerte | confusion | no-sabia) · tipoError (CCSN | CONCEPTO | MORFOLOGIA | DDX)
  *  · moduloCORE (Med/Path/Peds/Surg — los casos lo traen por id) · descripcion8ejes 0-8 (paso ①).
  *
  * Persistencia (web): localStorage 'jmd-derma-casos' = TODAS las entradas (append-only) y
  * 'jmd-derma-fallos' = espejo con el MISMO esquema, solo fallos + aciertos por suerte (la lista de la
- * 2ª pasada FSRS del d69). Sin storage (SSR/nativo) todo es no-op seguro y devuelve [].
+ * 2ª pasada FSRS: parciales d47-d49 del taper y REPASO 1 d72). Sin storage (SSR/nativo) todo es no-op seguro y devuelve [].
  * Esquema idéntico al de DATA/DERMATOLOGIA/TRACKING/_registro_derma.json (esquema_item / esquema_ronda):
- * dermaLedgerExportJSON() produce el bloque que se pega en rondas[] (d70 · cierre 14:13).
+ * dermaLedgerExportJSON() produce el bloque que se pega en rondas[] (d73 · cierre 14:13).
  *
- * Consumidores previstos (agente de componentes): DermaClinicalPlate (botón acierto/fallo + chips),
- * DermaMorphologyDictation (descripcion8ejes), DermaHub "Debilidades por módulo CORE", d45/d46/d69/d70.
+ * Consumidores (componentes): DermaClinicalPlate (botón acierto/fallo + chips), DermaMorphologyDictation (descripcion8ejes),
+ * DermaHub "Debilidades por módulo CORE", checkpoints d51/d52/d72/d73 (DERMA_CHECKPOINTS de dermaDailyPlan.ts).
  */
-import { DERMA_DIAS, dermaCasoArea, type DermaAreaCORE, type DermaBloqueKey } from './dermaDailyPlan';
+import { dermaCasoArea, cases, DERMA_BANCOS, dermaBancoDeUrl, type DermaAreaCORE, type DermaBloqueKey, type DermaBancoKey, type MatLink, type DiaDerma } from './dermaDailyPlan';
+import { dermaDiaPorD } from './dermaCiclo2';
 
 export const DERMA_LEDGER_KEY = 'jmd-derma-casos';
 export const DERMA_FALLOS_KEY = 'jmd-derma-fallos';
 export const DERMA_LEDGER_VERSION = 1;
 
-export type DermaFuente = 'caso' | 'pictorial' | 'core' | 'barnhill' | 'qotw' | 'dermatoscopia' | 'drill';
+/** Fuente de una entrada: caso ciego · banco de review (clave = DermaBancoKey de dermaDailyPlan) · imagen dermatoscópica · drill. */
+export type DermaFuente = 'caso' | DermaBancoKey | 'dermatoscopia' | 'drill';
 export type DermaEvalAcierto = 'conocimiento' | 'suerte' | 'confusion' | 'no-sabia';
 export type DermaTipoError = 'CCSN' | 'CONCEPTO' | 'MORFOLOGIA' | 'DDX';
 
 export const DERMA_FUENTES: Array<{ k: DermaFuente; label: string }> = [
   { k: 'caso', label: 'Caso ciego (Board Review 200)' },
   { k: 'pictorial', label: 'Pictorial Review 4e' },
+  { k: 'pictorial3', label: 'Pictorial Review 3e (relevo desde d67)' },
   { k: 'core', label: 'CORE Exam Bank' },
   { k: 'barnhill', label: "Barnhill's Challenge (dermpath)" },
   { k: 'qotw', label: 'Question of the Week' },
+  { k: 'lange', label: 'LANGE Clinical Dermatology Cases (48Q)' },
   { k: 'dermatoscopia', label: 'Imagen dermatoscópica ciega' },
   { k: 'drill', label: 'Drill oclusión vascular 90 s' },
 ];
+/** Fuentes que son bancos de preguntas (las que llevan cursor "retoma en Q#"). */
+export const DERMA_FUENTES_BANCO: DermaBancoKey[] = DERMA_BANCOS.map((b) => b.fuente);
+/** Fuentes que cuentan para el % ciego y el mapa de fallos (casos + bancos; NO drill ni dermatoscopia). */
+export const DERMA_FUENTES_MEDIBLES: DermaFuente[] = ['caso', ...DERMA_FUENTES_BANCO];
 /** Matriz Palmerton confianza × acierto (chips del cierre). Solo 'conocimiento' cuenta para el % ciego. */
 export const DERMA_EVAL_ACIERTO: Array<{ k: DermaEvalAcierto; label: string; acierto: boolean; desc: string }> = [
   { k: 'conocimiento', label: 'Lo sabía', acierto: true, desc: 'acierto seguro → cuenta para el % ciego' },
@@ -75,7 +87,7 @@ export interface DermaLedgerEntry {
   /** id del caso (1-200) · nº de pregunta del banco · 0 para el drill / imagen dermatoscópica sin id */
   id: number;
   fecha: string;                 // YYYY-MM-DD de la sesión
-  d?: number;                    // sesión del plan (1-70)
+  d?: number;                    // sesión del plan (1-73 ciclo 1 · 74-103 ciclo 2)
   bKey?: DermaBloqueKey;         // bloque del plan (A..X)
   fuente: DermaFuente;
   acierto: boolean;              // diagnóstico correcto en el paso ③ (antes de la discusión)
@@ -119,7 +131,7 @@ export function dermaFallosLoad(): DermaLedgerEntry[] { return leer(DERMA_FALLOS
  * evalAcierto por defecto: acierto → 'conocimiento' · fallo → 'no-sabia'.
  */
 export function dermaLedgerAppend(e: DermaLedgerInput): { entry: DermaLedgerEntry; guardado: boolean } {
-  const dia = e.d ? DERMA_DIAS.find((x) => x.d === e.d) : undefined;
+  const dia = e.d ? dermaDiaPorD(e.d) : undefined;
   const bKey = e.bKey || dia?.bKey;
   const id = clamp(e.id, 0, 100000);
   const moduloCORE: DermaAreaCORE = e.fuente === 'caso' && id >= 1 && id <= 200 ? dermaCasoArea(id)
@@ -177,15 +189,15 @@ function statsPor(entries: DermaLedgerEntry[], claves: string[], claveDe: (e: De
   return Array.from(m.values()).map(cerrar);
 }
 /** % fallo por módulo CORE (Med/Path/Peds/Surg), ordenado de peor a mejor. Por defecto excluye drill/dermatoscopia. */
-export function dermaPctFalloPorModulo(entries: DermaLedgerEntry[] = dermaLedgerLoad(), fuentes: DermaFuente[] = ['caso', 'pictorial', 'core', 'barnhill', 'qotw']): DermaStat[] {
+export function dermaPctFalloPorModulo(entries: DermaLedgerEntry[] = dermaLedgerLoad(), fuentes: DermaFuente[] = DERMA_FUENTES_MEDIBLES): DermaStat[] {
   return statsPor(entries, DERMA_AREAS, (e) => e.moduloCORE, fuentes).sort((a, b) => b.pctFallo - a.pctFallo || b.n - a.n);
 }
 /** % fallo por bloque del plan (A..X), ordenado de peor a mejor (bloque por bKey o por d). */
 export function dermaPctFalloPorBloque(entries: DermaLedgerEntry[] = dermaLedgerLoad(), fuentes?: DermaFuente[]): DermaStat[] {
-  return statsPor(entries, DERMA_BLOQUES, (e) => e.bKey || DERMA_DIAS.find((x) => x.d === e.d)?.bKey, fuentes).sort((a, b) => b.pctFallo - a.pctFallo || b.n - a.n);
+  return statsPor(entries, DERMA_BLOQUES, (e) => e.bKey || (e.d ? dermaDiaPorD(e.d)?.bKey : undefined), fuentes).sort((a, b) => b.pctFallo - a.pctFallo || b.n - a.n);
 }
 /** % ciego global = aciertos seguros / n (dudosas y adivinadas NO cuentan). */
-export function dermaPctCiego(entries: DermaLedgerEntry[] = dermaLedgerLoad(), fuentes: DermaFuente[] = ['caso', 'pictorial', 'core', 'barnhill', 'qotw']) {
+export function dermaPctCiego(entries: DermaLedgerEntry[] = dermaLedgerLoad(), fuentes: DermaFuente[] = DERMA_FUENTES_MEDIBLES) {
   const s = cerrar(entries.filter((e) => fuentes.includes(e.fuente)).reduce((acc, e) => { acumular(acc, e); return acc; }, statVacio('total')));
   return { n: s.n, seguras: s.seguras, suerte: s.suerte, fallos: s.fallos, pctCiego: s.pctCiego, pctFallo: s.pctFallo };
 }
@@ -226,9 +238,81 @@ export function dermaCasosParaSegundaPasada(entries: DermaLedgerEntry[] = dermaL
   const out = Array.from(m.values()).filter((r) => { const u = dermaCasoEstado(r.id, entries); return !u || esFalloPalmerton(u); });
   return out.sort((a, b) => orden.indexOf(a.area) - orden.indexOf(b.area) || b.veces - a.veces || a.ultimaFecha.localeCompare(b.ultimaFecha));
 }
-/** Preguntas de banco falladas (para el re-drill del d46 por fuente). */
+/** Preguntas de banco falladas (para el re-drill del checkpoint 2 por fuente). */
 export function dermaPreguntasFalladas(entries: DermaLedgerEntry[] = dermaLedgerLoad(), fuente?: DermaFuente): DermaLedgerEntry[] {
   return entries.filter((e) => e.fuente !== 'caso' && esFalloPalmerton(e) && (!fuente || e.fuente === fuente));
+}
+
+// ── v3 · CURSOR por banco ("retoma en Q#") ──
+/**
+ * Próxima pregunta del banco = max(id) + 1 de las entradas de esa fuente (id ≥ 1). Sin entradas → 1.
+ * Cada link qa.aspx abre el banco desde el principio; el ColaItem de review muestra "retoma en Q#".
+ * Con `url` (el link de review de la fila) se resuelve la fuente por resourceid (dermaBancoDeUrl).
+ */
+export function dermaBancoCursor(fuente: DermaBancoKey, entries: DermaLedgerEntry[] = dermaLedgerLoad()): number {
+  let max = 0;
+  for (const e of entries) if (e.fuente === fuente && e.id >= 1 && e.id > max) max = e.id;
+  return max + 1;
+}
+export function dermaBancoCursorDeUrl(url: string | undefined | null, entries: DermaLedgerEntry[] = dermaLedgerLoad()): { fuente: DermaBancoKey; cursor: number; totalQ: number; agotado: boolean } | undefined {
+  const fuente = dermaBancoDeUrl(url); if (!fuente) return undefined;
+  const banco = DERMA_BANCOS.find((b) => b.fuente === fuente)!;
+  const cursor = dermaBancoCursor(fuente, entries);
+  return { fuente, cursor, totalQ: banco.totalQ, agotado: cursor > banco.totalQ };
+}
+/** Cursores de todos los bancos (widget de Debilidades / presupuesto). */
+export function dermaBancoCursores(entries: DermaLedgerEntry[] = dermaLedgerLoad()): Array<{ fuente: DermaBancoKey; t: string; cursor: number; totalQ: number; hechas: number; restantes: number }> {
+  return DERMA_BANCOS.map((b) => { const cursor = dermaBancoCursor(b.fuente, entries); return { fuente: b.fuente, t: b.t, cursor, totalQ: b.totalQ, hechas: Math.min(cursor - 1, b.totalQ), restantes: Math.max(0, b.totalQ - (cursor - 1)) }; });
+}
+
+// ── v3 · CURA PENDIENTE (tipoError CCSN → DD Challenge obligatorio en la siguiente sesión) ──
+/** Link de cura por tipo de error (DERMA_TIPO_ERROR.cura hecho accionable). CCSN y DDX → Differential Diagnosis Challenge (cases 1616). */
+export const DERMA_CURA_LINK: Record<DermaTipoError, MatLink> = {
+  CCSN: { t: 'CURA CCSN · Differential Diagnosis Challenge: 3 pares del bloque del fallo + tabla comparativa + oclusión del rasgo discriminador', url: cases(1616) },
+  DDX: { t: 'CURA DDX · Differential Diagnosis Challenge: "¿qué 3 entidades dan esta morfología aquí?"', url: cases(1616) },
+  MORFOLOGIA: { t: 'CURA MORFOLOGÍA · re-describir con los 8 ejes (DermNet terminology)', url: 'https://dermnetnz.org/topics/terminology' },
+  CONCEPTO: { t: 'CURA CONCEPTO · tarjeta de MECANISMO + 10′ de Fitzpatrick del diagnóstico fallado', url: 'https://dermatology.mhmedical.com/book.aspx?bookid=2570' },
+};
+export interface DermaCuraPendiente {
+  /** Sesión (fecha/d) cuyos fallos originan la cura; se cumple en la SIGUIENTE sesión. */
+  desdeFecha: string; desdeD?: number;
+  tipo: DermaTipoError; obligatoria: boolean; n: number;
+  /** ids de los casos (fuente 'caso') y preguntas (fuente+id) fallados con ese tipo. */
+  casos: number[]; preguntas: Array<{ fuente: DermaFuente; id: number }>;
+  link: MatLink; cura: string;
+}
+/**
+ * Cura pendiente para la próxima sesión: mira la ÚLTIMA sesión registrada (mayor fecha) y, si tiene fallos con
+ * tipoError CCSN, devuelve el DD Challenge como cura OBLIGATORIA (regla v3, gaps_v3b_derma nº5). Si no hay CCSN pero sí
+ * otro tipo dominante, devuelve su cura como recomendada (obligatoria: false). `hoy` (ISO) opcional: si la última sesión
+ * registrada ES hoy, la cura sigue siendo "para la siguiente" (se devuelve igual, con desdeFecha = hoy). null = nada pendiente.
+ */
+export function dermaCuraPendiente(entries: DermaLedgerEntry[] = dermaLedgerLoad()): DermaCuraPendiente | null {
+  const medibles = entries.filter((e) => DERMA_FUENTES_MEDIBLES.includes(e.fuente) && e.fecha);
+  if (!medibles.length) return null;
+  const ultima = medibles.reduce((m, e) => (e.fecha > m ? e.fecha : m), '');
+  const fallos = medibles.filter((e) => e.fecha === ultima && !e.acierto && e.tipoError);
+  if (!fallos.length) return null;
+  const porTipo = (t: DermaTipoError) => fallos.filter((e) => e.tipoError === t);
+  const ccsn = porTipo('CCSN');
+  let tipo: DermaTipoError; let obligatoria: boolean;
+  if (ccsn.length) { tipo = 'CCSN'; obligatoria = true; }
+  else {
+    tipo = (['DDX', 'MORFOLOGIA', 'CONCEPTO'] as DermaTipoError[]).sort((a, b) => porTipo(b).length - porTipo(a).length)[0];
+    obligatoria = false;
+  }
+  const sel = porTipo(tipo);
+  const cura = DERMA_TIPO_ERROR.find((x) => x.k === tipo)?.cura || '';
+  return {
+    desdeFecha: ultima, desdeD: sel.find((e) => e.d)?.d, tipo, obligatoria, n: sel.length,
+    casos: Array.from(new Set(sel.filter((e) => e.fuente === 'caso').map((e) => e.id))),
+    preguntas: sel.filter((e) => e.fuente !== 'caso').map((e) => ({ fuente: e.fuente, id: e.id })),
+    link: DERMA_CURA_LINK[tipo], cura,
+  };
+}
+/** ¿La cura pendiente aplica a esta sesión? (la sesión es posterior a la que originó el fallo). */
+export function dermaCuraAplicaA(dia: Pick<DiaDerma, 'fecha'>, cura: DermaCuraPendiente | null = dermaCuraPendiente()): boolean {
+  return !!cura && dia.fecha > cura.desdeFecha;
 }
 
 // ── export / import (esquema de _registro_derma.json) ──

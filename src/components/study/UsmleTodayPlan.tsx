@@ -7,14 +7,17 @@ import { FadeUp } from '../empresa/visuals';
 import {
   DAILY_META, FRANJAS, DIAS, DiaUSMLE, diaDe, diaPrevio, ventana7d, TIER_INFO,
   QBV, QBQ, QBF, QBL, yt, nivelInfo, esHito, faseDe, USMLE_GATE,
+  semanaDe, esViernesNivel4, esDiaTaper, esDiaDermaStep1, USMLE_TAPER,
 } from '../../lib/usmleStep1Daily';
 import {
   UsmleScore, TipoErrorUW, TIPOS_ERROR, TIPO_ERROR_INFO, loadScores, scoreDe, upsertScore, gateDelDia, exportScoresJSON,
 } from '../../lib/usmleScores';
 import { usmleMirParalelo } from '../../lib/mirUsmleBridge';
+import { mirBloques } from '../../lib/mirDailyPlan';
+import * as dermaPlan from '../../lib/dermaDailyPlan';
 import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, loadDone, saveDone } from '../../lib/studyProgress';
 import { usmleObsUrl } from '../../lib/obsidianMap';
-import { usmleAnkiDeck, ANKIWEB } from '../../lib/ankiLinks';
+import { usmleAnkiDeck, ANKIWEB, sysTag, DERMA_STEP1_QUERY } from '../../lib/ankiLinks';
 
 /**
  * UsmleTodayPlan — Plan Step 1 día-a-día, estilo Perú/ENCAPS pero mejor.
@@ -41,6 +44,36 @@ function todayISO(): string {
 function fmtFecha(iso: string): string {
   const dias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
   try { const d = new Date(iso + 'T12:00:00'); return `${dias[d.getDay()]} ${iso.slice(8, 10)}-${iso.slice(5, 7)}`; } catch { return iso; }
+}
+function addDiasISO(iso: string, n: number): string {
+  try { const d = new Date(iso + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); } catch { return iso; }
+}
+
+/**
+ * Puente MIR → Step 1 (gaps v3b mir #9): el plan MIR v3 precede ~1 semana a su sistema Step 1 (prime en español 7 días
+ * antes). Para el repaso anclado de las 07:15: la asignatura MIR de la SEMANA PASADA + el homólogo MIR del sistema de hoy.
+ */
+function mirPrecedio(dia: DiaUSMLE): { texto: string; tag: string } | null {
+  const prev = usmleMirParalelo(addDiasISO(dia.fecha, -7)) || usmleMirParalelo(dia.fecha);
+  let homologo: { asignatura: string; dIni: number; dFin: number } | null = null;
+  try { homologo = mirBloques().find((b) => b.usmleSystem === dia.system) || null; } catch { homologo = null; }
+  if (!prev && !homologo) return null;
+  const partes: string[] = [];
+  if (prev) partes.push(`MIR precedió esta semana: ${prev.asignatura} (D${prev.dIni}-D${prev.dFin})`);
+  if (homologo && (!prev || homologo.asignatura !== prev.asignatura)) partes.push(`homólogo MIR de ${dia.system}: ${homologo.asignatura} (D${homologo.dIni}-D${homologo.dFin})`);
+  return { texto: partes.join(' · '), tag: sysTag(dia.system) };
+}
+
+/**
+ * Puente Derma → Step 1 (gaps v3b derma #6): los átomos Derma que cuentan doble el día de "dermato Step 1".
+ * `DERMA_STEP1_DIAS` lo exporta otro agente en dermaDailyPlan.ts (import defensivo); si aún no existe, la lista fija del gap.
+ */
+const DERMA_STEP1_FALLBACK = [7, 8, 10, 12, 14, 16, 23, 24];
+function dermaStep1Atomos(): { d: number; sub: string; fecha: string }[] {
+  const mod: any = dermaPlan;
+  const ids: number[] = Array.isArray(mod.DERMA_STEP1_DIAS) && mod.DERMA_STEP1_DIAS.length ? mod.DERMA_STEP1_DIAS : DERMA_STEP1_FALLBACK;
+  const dias: any[] = Array.isArray(mod.DERMA_DIAS) ? mod.DERMA_DIAS : [];
+  return ids.map((d) => { const x = dias.find((y) => y && y.d === d); return { d, sub: x ? String(x.sub) : `átomo d${d}`, fecha: x ? String(x.fecha) : '' }; });
 }
 
 /** Cola de hoy: ítem con link. `edge` añade el botón Microsoft Edge (para Qbankly). */
@@ -72,6 +105,12 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaUSMLE; onOpe
   const tier = TIER_INFO[dia.tier];
   const niv = nivelInfo(dia.nivelUW);
   const mir = usmleMirParalelo(dia.fecha);
+  const mirPrev = mirPrecedio(dia);
+  const viernesN4 = esViernesNivel4(dia);
+  const taper = esDiaTaper(dia);
+  const derma = esDiaDermaStep1(dia);
+  const atomos = derma ? dermaStep1Atomos() : [];
+  const notaColor = taper ? RED : Colors.gold;
   return (
     <View>
       {/* Tema del día — el badge de sistema lleva al Temario */}
@@ -85,6 +124,9 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaUSMLE; onOpe
             <Chip label="1ª vuelta" color={GREEN} small />
             <Chip label={`Fase ${faseDe(dia.d)}`} color={Colors.muted} small />
             <Chip label={`Nivel UW ${dia.nivelUW} · ${dia.qDia}Q`} color={niv.color} small />
+            {viernesN4 && <Chip label={`Viernes N4 · S${semanaDe(dia.fecha)}`} color={Colors.gold} small />}
+            {taper && <Chip label={dia.d === 95 ? 'TAPER · D-2' : 'TAPER · D-3'} color={RED} small />}
+            {derma && <Chip label="cuenta doble Derma ↔ Step 1" color={Colors.gold} small />}
             {mir && <Chip label={mir.texto} color={Colors.gold} small />}
             {usmleObsUrl(dia.d) && (
               <TouchableOpacity activeOpacity={0.8} onPress={() => openUrl(usmleObsUrl(dia.d)!)}
@@ -102,8 +144,43 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaUSMLE; onOpe
         </View>
       </FadeUp>
 
+      {/* Nota de franja 11:00 (viernes de nivel 4 desde S11 · taper D94-D95) — NO es contenido: el subtema sigue siendo `sub` */}
+      {dia.franjaNota ? (
+        <FadeUp delay={20}>
+          <View style={[st.anchor, { borderLeftColor: notaColor }]}>
+            <Text style={[st.anchorLbl, { color: notaColor }]}>{taper ? '🧘 TAPER · cierre pre-examen (Palmerton §8.3)' : '🎚️ 11:00 · VIERNES DE NIVEL 4 (mixto de sistemas dominados)'}</Text>
+            <Text style={st.anchorSub}>{dia.franjaNota}</Text>
+          </View>
+        </FadeUp>
+      ) : null}
+      {/* D-1 y examen: fuera del plan (solo se muestran en D95 para que el cierre quede a la vista) */}
+      {dia.d === DAILY_META.totalDias && (
+        <FadeUp delay={25}>
+          <View style={[st.anchor, { borderLeftColor: RED }]}>
+            <Text style={[st.anchorLbl, { color: RED }]}>📅 {fmtFecha(USMLE_TAPER.dMenos1.fecha)} · {USMLE_TAPER.dMenos1.rol}</Text>
+            {USMLE_TAPER.dMenos1.pasos.map((p, i) => <Text key={i} style={st.anchorSub}>• {p}</Text>)}
+            <Text style={[st.anchorLbl, { color: GREEN, marginTop: 8 }]}>🏁 {fmtFecha(USMLE_TAPER.examen.fecha)} · {USMLE_TAPER.examen.rol}</Text>
+            {USMLE_TAPER.examen.pasos.map((p, i) => <Text key={i} style={st.anchorSub}>• {p}</Text>)}
+            <Text style={[st.anchorSub, { color: Colors.muted }]}>Fuente: {USMLE_TAPER.fuente}</Text>
+          </View>
+        </FadeUp>
+      )}
+
       {/* Medición Palmerton del día (gate 80%) */}
       <FadeUp delay={30}><MedicionCard dia={dia} /></FadeUp>
+
+      {/* Puente Derma ↔ Step 1: el día de "dermato Step 1" cuenta doble con los átomos Derma ya estudiados */}
+      {derma && (
+        <FadeUp delay={35}>
+          <View style={[st.anchor, { borderLeftColor: Colors.gold }]}>
+            <Text style={[st.anchorLbl, { color: Colors.gold }]}>🧬 Cuenta doble Step 1 ↔ Derma · átomos Derma ya estudiados (sep-nov)</Text>
+            <Text style={st.anchorSub}>Hoy el pre-test 08:15 y el repaso anclado 07:15 apuntan a <Text style={{ color: Colors.onSurface, fontWeight: '700' }}>{DERMA_STEP1_QUERY}</Text> + fallos del ledger derma de estos {atomos.length} átomos (mismo motor FSRS; la derma de Step 1 no se estudia dos veces). El contenido USMLE del día no cambia.</Text>
+            {atomos.map((a) => (
+              <Text key={a.d} style={st.anchorSub}>• d{a.d}{a.fecha ? ` · ${fmtFecha(a.fecha)}` : ''} · {a.sub}</Text>
+            ))}
+          </View>
+        </FadeUp>
+      )}
 
       {/* Anchored eval (tema previo) */}
       {prev && (
@@ -111,7 +188,8 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaUSMLE; onOpe
           <View style={st.anchor}>
             <Text style={st.anchorLbl}>🎯 07:15 · Repaso anclado (tema de AYER + D-3/D-7)</Text>
             <Text style={st.anchorVal}>{prev.system} → {prev.sub}</Text>
-            <Text style={st.anchorSub}>Anki FSRS deck USMLE + 5Q uWorld TIMED del subtema de ayer (1ª mitad del gate de 10Q; la 2ª mitad va en la consolidación) · si free recall &lt;60% → re-encolar</Text>
+            <Text style={st.anchorSub}>{derma ? `HOY: ${DERMA_STEP1_QUERY} + fallos del ledger derma (cuenta doble) antes de las 5Q del subtema de ayer · ` : ''}Anki FSRS deck USMLE + 5Q uWorld TIMED del subtema de ayer (1ª mitad del gate de 10Q; la 2ª mitad va en la consolidación) · si free recall &lt;60% → re-encolar</Text>
+            {mirPrev && <Text style={[st.anchorSub, { color: Colors.gold }]}>🇪🇸 {mirPrev.texto} · Anki: tag compartido {mirPrev.tag} (APEX::MIR + APEX::USMLE) para el D-7 en español</Text>}
             <View style={{ flexDirection: 'row', gap: 6, marginTop: 8 }}>
               <TouchableOpacity activeOpacity={0.85} onPress={() => openEdge(QBQ)} style={st.edgeBtnWide}><Text style={st.edgeTxt}>◆ Abrir en Edge</Text></TouchableOpacity>
               <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(QBQ)} style={[st.verBtn, { borderColor: READ + '88' }]}><Text style={[st.verTxt, { color: READ }]}>Chrome ↗</Text></TouchableOpacity>
@@ -122,7 +200,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaUSMLE; onOpe
 
       {/* Cola de materiales de hoy */}
       <Text style={st.secLbl}>📋 Cola de hoy · 05:00 Anki AM · 07:15–12:00 + 18:00–18:45 (en orden) · Qbankly = botón Edge</Text>
-      <FadeUp delay={60}><ColaItem icon="🅠" lbl="PRE-TEST 08:15 · uWorld (modo tutor · SIN tiempo · nivel 1)" val={`${dia.system} → ${dia.uw} · 10 preguntas ciegas + free recall 90s`} sub="Qbankly → QBanks → uWorld Step 1 · UWorld primero para diagnosticar, First Aid después" color={GREEN} url={QBQ} edge /></FadeUp>
+      <FadeUp delay={60}><ColaItem icon="🅠" lbl="PRE-TEST 08:15 · uWorld (modo tutor · SIN tiempo · nivel 1)" val={derma ? `${DERMA_STEP1_QUERY} + fallos del ledger derma → luego ${dia.uw} · 10 preguntas ciegas` : `${dia.system} → ${dia.uw} · 10 preguntas ciegas + free recall 90s`} sub={derma ? 'Cuenta doble Derma ↔ Step 1: 15 min de tarjetas step1 + casos fallados del ledger, después las 10Q ciegas de uWorld (Qbankly, Edge)' : 'Qbankly → QBanks → uWorld Step 1 · UWorld primero para diagnosticar, First Aid después'} color={GREEN} url={QBQ} edge /></FadeUp>
       <FadeUp delay={90}><ColaItem icon="🎬" lbl="VÍDEO · Boards & Beyond Step 1" val={`${dia.bbCh} → ${dia.bbVid}`} sub="Qbankly → Video Library → B&B Step 1" color={RED} url={QBV} edge /></FadeUp>
       <FadeUp delay={120}><ColaItem icon="📖" lbl="ACTIVE READING · material primario" val={dia.mat} sub="Qbankly → Library (uWorld/AMBOSS) · 25 min · 3-5 puntos high-yield" color={READ} url={QBL} edge /></FadeUp>
       <FadeUp delay={150}><ColaItem icon="🗂️" lbl="FLASHCARDS · uWorld Step 1" val={`Deck: ${dia.system}`} sub="Qbankly → Flashcards · Anki SRS" color={Colors.teal} url={QBF} edge /></FadeUp>
@@ -138,7 +216,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaUSMLE; onOpe
           <Text style={st.colaIcon}>🃏</Text>
           <View style={{ flex: 1 }}>
             <Text style={st.colaLbl}>APEX · 10:45–11:00 (cierre del DEEP PRIME) + CONSOLIDACIÓN 11:00 · nivel {dia.nivelUW}</Text>
-            <Text style={st.colaVal}>Crea ≤10 tarjetas de MECANISMO (patogenia→presentación) · luego {dia.nivelUW === 1 ? '20Q en bloques de 5Q tutor del subtema (nivel 1)' : dia.nivelUW === 3 ? '20Q del sistema completo TIMED + 10Q tutor (nivel 3, viernes)' : dia.nivelUW === 2 ? '30Q en bloques de 5Q TIMED de subtemas validados (nivel 2)' : `${dia.qDia}Q en bloques timed mixtos (nivel ${dia.nivelUW})`}</Text>
+            <Text style={st.colaVal}>{taper ? 'CERO tarjetas nuevas (taper) · solo Anki MADURO · luego ' : 'Crea ≤10 tarjetas de MECANISMO (patogenia→presentación) · luego '}{taper ? `${dia.qDia}Q flagged/incorrects ya vistos, sin bloque timed (nivel 5, taper ${dia.d === 95 ? 'D-2' : 'D-3'})` : dia.nivelUW === 1 ? '20Q en bloques de 5Q tutor del subtema (nivel 1)' : dia.nivelUW === 3 ? '20Q del sistema completo TIMED + 10Q tutor (nivel 3, viernes)' : viernesN4 ? '20-30Q TIMED MIXTOS de los sistemas ya dominados + 10Q tutor del subtema (nivel 4, viernes desde S11)' : dia.nivelUW === 2 ? '30Q en bloques de 5Q TIMED de subtemas validados (nivel 2)' : `${dia.qDia}Q en bloques timed mixtos (nivel ${dia.nivelUW})`}</Text>
             <Text style={st.colaSub}>Gate: ≥{USMLE_GATE.pct}% → mañana sube de nivel · &lt;{USMLE_GATE.pct}% → repetir 5Q del subtema fallado · 18:00 eval 10Q mixta timed (dosis de nivel 4) · registra todo en 📏 Medición</Text>
           </View>
         </View>
@@ -256,6 +334,8 @@ function HorarioView({ dia }: { dia: DiaUSMLE }) {
                 <Text style={st.franjaFase}>{f.fase}</Text>
                 {det ? <Text style={st.franjaDet}>↳ {det}</Text> : null}
                 {f.nivel && f.nivel !== '—' ? <Text style={st.franjaNivel}>🎚️ nivel UW {f.nivel}{f.gate && f.gate !== '—' ? ` · gate: ${f.gate}` : ''}</Text> : null}
+                {f.hora.startsWith('11:00') && dia.franjaNota ? <Text style={[st.franjaDet, { color: esDiaTaper(dia) ? RED : Colors.gold }]}>↳ HOY: {dia.franjaNota}</Text> : null}
+                {f.hora.startsWith('07:15') && esDiaDermaStep1(dia) ? <Text style={[st.franjaDet, { color: Colors.gold }]}>↳ HOY (cuenta doble Derma): {DERMA_STEP1_QUERY} + fallos del ledger derma</Text> : null}
               </View>
             </View>
           </FadeUp>

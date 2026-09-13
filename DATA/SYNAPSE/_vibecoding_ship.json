@@ -1,0 +1,8 @@
+{
+ "_meta": {
+  "descripcion": "Resultados de node DATA/_scripts/verify_vibecoding.js <s> (append por ejecución). 'shipped' = criterios_ok === total. s=0 = --sensores (S13-S16). Lo hornea gen_vibecoding_plan.js en VIBE_SHIP_LOG y lo lee gen_revision_semanal.js (métrica 7).",
+  "regla": "El ✓ manual de la app solo cuenta días; SHIPPED lo decide este JSON. Sábado PC = correr verify antes de marcar.",
+  "creado": "2026-09-12 (vacío, sin verify aún)"
+ },
+ "entradas": []
+}

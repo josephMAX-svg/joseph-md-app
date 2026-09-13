@@ -33,8 +33,23 @@ USO:
   python docx_assembler.py SR-1_revision_v1.docx                                          # legado: demo SR (sin gate)
 API (agentic_writer.py): build_docx(meta, sections, table_rows, refs, out_path, template="sr", tables=None, figures=None)
 ENV: CONTACT_EMAIL / NCBI_KEY (los usa citation_verifier).
+Windows: usar DATA/RESEARCH/agentic/run_verifier.bat (fija PYTHONIOENCODING=utf-8); la salida usa [OK]/[?]/[X]/[!]
+en vez de emojis para que la consola cp1252/850 no reviente (Palmerton v3b · gap 6 · 12-sep-2026).
 """
 import sys, os, re, json, zipfile, argparse, xml.sax.saxutils as sx
+
+
+def _utf8_console():
+    """Windows: la consola cp1252/850 no imprime emojis (UnicodeEncodeError) → UTF-8 forzado + veredictos ASCII.
+    Palmerton v3b · gap 6 (12-sep-2026). run_verifier.bat además fija PYTHONIOENCODING=utf-8."""
+    for stream in (sys.stdout, sys.stderr):
+        try:
+            stream.reconfigure(encoding="utf-8", errors="replace")
+        except Exception:
+            pass
+
+
+_utf8_console()
 
 TEMPLATES = ("sr", "letter", "care", "strobe")
 
@@ -138,10 +153,10 @@ def gate_refs(refs, verify=True, allow_needs_review=False, log=print):
             if status == "needs_review":
                 van += "  [NEEDS REVIEW — confirmar a mano]"
             out.append(van); id_of[rid] = len(out)
-            log(f"   {'✅' if status == 'verified' else '🟡'} [{rid}] {status} · {r['reason']}")
+            log(f"   {'[OK]' if status == 'verified' else '[?]'} [{rid}] {status} · {r['reason']}")
         else:
             warnings.append(f"ref '{rid}' {status}: {r['reason']} → EXCLUIDA")
-            log(f"   ❌ [{rid}] {status} · {r['reason']} → EXCLUIDA")
+            log(f"   [X] [{rid}] {status} · {r['reason']} → EXCLUIDA")
     return out, id_of, warnings
 
 
@@ -377,19 +392,19 @@ def main(argv=None):
     else:
         ap.error("indica --in fichero.json o --demo (o una ruta .docx legada)")
     out = a.out or f"{a.template}_v1.docx"
-    print(f"📄 plantilla={a.template} · gate de citas={'OFF (--no-verify)' if a.no_verify else 'ON (citation_verifier)'} · salida={out}")
+    print(f"[DOCX] plantilla={a.template} · gate de citas={'OFF (--no-verify)' if a.no_verify else 'ON (citation_verifier)'} · salida={out}")
     try:
         build_docx(payload.get("meta", {}), payload.get("sections", []), payload.get("table_rows", []),
                    payload.get("refs", []), out, template=a.template, tables=payload.get("tables"),
                    figures=payload.get("figures"), verify=not a.no_verify,
                    allow_needs_review=a.allow_needs_review, strict=not a.lenient)
     except ValueError as e:
-        print(f"❌ NO se generó el .docx: {e}")
+        print(f"[X] NO se generó el .docx: {e}")
         return 2
     rep = build_docx.last_report
-    print(f"✅ .docx generado: {out} ({os.path.getsize(out)} bytes) · cuerpo {rep['words']} palabras · {rep['refs']} refs verificadas")
+    print(f"[OK] .docx generado: {out} ({os.path.getsize(out)} bytes) · cuerpo {rep['words']} palabras · {rep['refs']} refs verificadas")
     if rep["problems"]:
-        print("⚠ NO LISTO PARA ENVIAR — resolver antes:")
+        print("[!] NO LISTO PARA ENVIAR — resolver antes:")
         for p in rep["problems"]:
             print(f"   - {p}")
         return 1

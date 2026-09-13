@@ -1,0 +1,11 @@
+# DATA/RESEARCH/agentic — dependencias MÍNIMAS (Python 3.12 · verificado 12-sep-2026 en este PC).
+#
+# El flujo C-4/C-5 (gate de citas + .docx), el discovery local, la cascada de texto completo y el runner
+# son SOLO STDLIB: citation_verifier.py · docx_assembler.py (OOXML por zipfile, NO necesita python-docx) ·
+# discovery_engine.py · fulltext_cascade.py · research_runner.py · export_tesis_deid.py (lee el .xlsx por zipfile).
+# → `python citation_verifier.py` y `run_verifier.bat` funcionan sin instalar nada.
+#
+# Opcionales (pip install -r requirements.txt cuando hagan falta):
+openpyxl>=3.1       # T-4 (tabla 1 desde D:\motor_apex\datos_tesis_acne.xlsx con fórmulas/estilos); export_tesis_deid.py NO lo necesita
+rapidfuzz>=3.0      # fuzzy de títulos más robusto que difflib; citation_verifier.py lo usa automáticamente si está instalado
+# python-docx>=1.2  # ya instalado en este PC (12-sep-2026); solo lo usa el esqueleto de agentic-system.md §8, no docx_assembler.py

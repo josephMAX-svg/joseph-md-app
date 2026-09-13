@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Linking, Platform, TextInput } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, Motion, LineHeight } from '../../theme/tokens';
 import { desktopStyles, DesktopColors } from '../../theme/desktopStyles';
@@ -13,6 +13,7 @@ import {
   Entregable, EstadoEntregable, EntregablesRegistro, EntregableRegistro, ResearchKpis,
 } from '../../lib/researchData';
 import { RESEARCH_RECURSOS_TOP, RESEARCH_MAESTRIA, REC, RESEARCH_HITOS, PISTA_INFO, DAILY_META } from '../../lib/researchDailyPlan';
+import { pullEntregables, pushEntregable, aplicarCambio, EntregableRegistroSync, TABLA_ENTREGABLES } from '../../lib/researchEntregablesSync';
 import { loadDone, saveDone } from '../../lib/studyProgress';
 import { researchObsUrlEntregable } from '../../lib/obsidianResearchMap';
 import { getResearchEngineState } from '../../lib/supabase';
@@ -29,10 +30,13 @@ import AIFirstPanel from './AIFirstPanel';
  * (serif, con el status del motor y el PIP counter en oro) y pestañas tipo revista (subrayado oro).
  * "Hoy" = motor día-a-día (3 pistas: carta · tesis · case report + SR-1); "Sistema" = sistema agéntico;
  * "Líneas" = las 8 líneas; "Panel" = el desk: MESA EDITORIAL (estado real de los 5 entregables de la
- * RUTA 2027, persistido en localStorage 'jmd-research-entregables'), checklist INFRA ACADÉMICA (10 cuentas,
- * PlanKey 'research-infra'), KPIs derivados de ambos, fases, journals, maestría transversal.
+ * RUTA 2027, caché localStorage 'jmd-research-entregables' + espejo Supabase `research_entregables` con merge por
+ * updated_at e histórico de decisiones editoriales — researchEntregablesSync.ts, 12-sep-2026), checklist INFRA
+ * ACADÉMICA (10 cuentas, PlanKey 'research-infra'), KPIs derivados de ambos, fases, journals, maestría transversal.
  * (05-sep-2026) Sustituye a "Timeline 0→primer paper" y "Micro-horario": eran calendarios contradictorios.
  */
+type SyncEstado = { estado: 'cargando' | 'ok' | 'error'; detalle: string };
+function hhmm(): string { const d = new Date(); return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`; }
 const TEAL = RESEARCH_META.accent;   // #6BB8B0 (token)
 const GOLD = InkColors.gold;         // #C8A96A — capa de estatus (manuscrito/PIP/sellos)
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
@@ -201,17 +205,23 @@ function EstadoSelector({ value, onChange }: { value: EstadoEntregable; onChange
 }
 
 /** Tarjeta de un entregable de la Mesa editorial: estado real + hito del plan + cascada + senior author. */
-function EntregableCard({ e, reg, onChange }: { e: Entregable; reg: EntregablesRegistro; onChange: (id: string, patch: Partial<EntregableRegistro>) => void }) {
+function EntregableCard({ e, reg, onChange }: { e: Entregable; reg: EntregablesRegistro; onChange: (id: string, patch: Partial<EntregableRegistroSync>) => void }) {
   const estado = estadoDe(e, reg);
   const info = ESTADO_ENTREGABLE_INFO[estado];
   const hito = RESEARCH_HITOS[e.id];
   const pista = PISTA_INFO[e.pista];
   const r = reg[e.id];
+  const rx = r as EntregableRegistroSync | undefined;   // campos de la mesa persistidos en Supabase (journal · decisión · historial)
+  const hist = rx?.historial ?? [];
   const pct = Math.round((info.paso / PASOS_ENTREGABLE) * 100);
   const obs = researchObsUrlEntregable(e.id);
   const hoy = todayISO();
   const atrasado = !!hito && hoy > hito.fecha && !ENVIADO_O_MAS.has(estado);
   const [ref, setRef] = useState<string>(r?.ref ?? '');
+  const [journal, setJournal] = useState<string>(rx?.journal ?? '');
+  const [decision, setDecision] = useState<string>(rx?.decision ?? '');
+  // Tras el pull de Supabase (merge por updated_at) los inputs se realinean con el registro mezclado.
+  useEffect(() => { setRef(r?.ref ?? ''); setJournal(rx?.journal ?? ''); setDecision(rx?.decision ?? ''); }, [r?.ref, rx?.journal, rx?.decision]);
   const cambiarEstado = (s: EstadoEntregable) => {
     const patch: Partial<EntregableRegistro> = { estado: s };
     if (ENVIADO_O_MAS.has(s) && !r?.fechaEnvio) patch.fechaEnvio = hoy;
@@ -226,6 +236,7 @@ function EntregableCard({ e, reg, onChange }: { e: Entregable; reg: EntregablesR
         <Chip label={info.lbl} color={info.color} small solid />
         {e.esPIP ? <Chip label="PIP" color={GOLD} small /> : <Chip label="registro" color={Colors.muted} small />}
         {atrasado && <Chip label="ATRASADO vs plan" color={Colors.coral} small />}
+        {rx?.synced === false && <Chip label="pendiente de subir a Supabase" color={Colors.brass} small />}
       </View>
       <Text style={[st.entTitle, serifTitle]}>{e.titulo}</Text>
       <Text style={st.entTipo}>{e.tipo} · guía: {e.guia}</Text>
@@ -248,6 +259,7 @@ function EntregableCard({ e, reg, onChange }: { e: Entregable; reg: EntregablesR
         <View style={st.entCell}>
           <Text style={st.entLbl}>ENVÍO REAL</Text>
           <Text style={st.entVal}>{r?.fechaEnvio ? fmtFecha(r.fechaEnvio) : 'aún no enviado'}{r?.ref ? ` · ${r.ref}` : ''}</Text>
+          {rx?.journal ? <Text style={st.entSub}>revista actual: {rx.journal}{rx.decision ? ` · ${rx.decision}` : ''}</Text> : null}
           {e.doi ? <Text style={st.entSub}>DOI {e.doi}</Text> : null}
         </View>
       </View>
@@ -263,7 +275,7 @@ function EntregableCard({ e, reg, onChange }: { e: Entregable; reg: EntregablesR
 
       <Text style={st.entNota}>{e.nota}</Text>
 
-      <Text style={[st.entLbl, { marginTop: 10 }]}>ESTADO (se guarda en este dispositivo)</Text>
+      <Text style={[st.entLbl, { marginTop: 10 }]}>ESTADO (se guarda en este dispositivo y en Supabase · {TABLA_ENTREGABLES})</Text>
       <View style={{ marginTop: 6 }}><EstadoSelector value={estado} onChange={cambiarEstado} /></View>
 
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 10, flexWrap: 'wrap' }}>
@@ -275,6 +287,18 @@ function EntregableCard({ e, reg, onChange }: { e: Entregable; reg: EntregablesR
           </TouchableOpacity>
         )}
       </View>
+      {/* Cascada real + decisión editorial (histórico en Supabase: cada cambio de estado deja una entrada) */}
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 8, flexWrap: 'wrap' }}>
+        <TextInput value={journal} onChangeText={setJournal} onBlur={() => onChange(e.id, { journal: journal.trim() || null })}
+          placeholder="revista actual (escalón de la cascada)" placeholderTextColor={Colors.muted} style={st.input} />
+        <TextInput value={decision} onChangeText={setDecision} onBlur={() => onChange(e.id, { decision: decision.trim() || null })}
+          placeholder="última decisión editorial (desk-reject · major revision · aceptado…)" placeholderTextColor={Colors.muted} style={[st.input, { minWidth: 260 }]} />
+      </View>
+      {hist.length > 0 && (
+        <Text style={[st.entSub, { marginTop: 6 }]}>
+          Histórico editorial ({hist.length}): {hist.slice(-4).map((h) => `${h.ts.slice(0, 10)} → ${ESTADO_ENTREGABLE_INFO[h.estado].lbl}${h.journal ? ` (${h.journal})` : ''}${h.decision ? ` · ${h.decision}` : ''}`).join('  |  ')}
+        </Text>
+      )}
     </View>
   );
 }
@@ -321,9 +345,9 @@ function InfraChecklist({ done, onToggle }: { done: Set<number>; onToggle: (n: n
 }
 
 /** Panel = el "desk" editorial (KPIs derivados, MESA EDITORIAL, infra, fases, targets, currículo, maestría, journals, advertencias). */
-function PanelView({ reg, onChange, infra, onToggleInfra, kpis }: {
-  reg: EntregablesRegistro; onChange: (id: string, patch: Partial<EntregableRegistro>) => void;
-  infra: Set<number>; onToggleInfra: (n: number) => void; kpis: ResearchKpis;
+function PanelView({ reg, onChange, infra, onToggleInfra, kpis, sync }: {
+  reg: EntregablesRegistro; onChange: (id: string, patch: Partial<EntregableRegistroSync>) => void;
+  infra: Set<number>; onToggleInfra: (n: number) => void; kpis: ResearchKpis; sync: SyncEstado;
 }) {
   const proximo = [...RESEARCH_ENTREGABLES]
     .filter((e) => !ENVIADO_O_MAS.has(estadoDe(e, reg)) && RESEARCH_HITOS[e.id])
@@ -350,9 +374,15 @@ function PanelView({ reg, onChange, infra, onToggleInfra, kpis }: {
 
       {/* ★ MESA EDITORIAL — sustituye a Timeline + Micro-horario */}
       <SectionLabel>★ Mesa editorial · los 5 entregables de la RUTA 2027 (estado real)</SectionLabel>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 6 }}>
+        <Chip
+          label={sync.estado === 'ok' ? `☁ Supabase ${TABLA_ENTREGABLES} · ${sync.detalle}` : sync.estado === 'error' ? `⚠ solo en este dispositivo · ${sync.detalle}` : `… ${sync.detalle}`}
+          color={sync.estado === 'ok' ? InkColors.jade : sync.estado === 'error' ? Colors.coral : Colors.muted} small />
+      </View>
       <Text style={st.desk}>
         Un solo calendario: el hito de cada tarjeta es la fecha del átomo que lo cierra en el plan día-a-día
-        (se re-fecha con el pipeline). El estado lo marcas tú; "enviado" registra la fecha automáticamente.
+        (se re-fecha con el pipeline; los hitos tienen overlay 🔬 naranja en el Calendar). El estado lo marcas tú; "enviado"
+        registra la fecha automáticamente y cada cambio queda en el histórico editorial (visible en cualquier dispositivo).
         {proximo ? ` Próximo hito pendiente: ${proximo.titulo} → ${RESEARCH_HITOS[proximo.id].code} ${fmtFecha(RESEARCH_HITOS[proximo.id].fecha)}.` : ' Todos los entregables están enviados.'}
       </Text>
       <View style={{ marginBottom: Spacing.xl }}>
@@ -544,17 +574,37 @@ export default function ResearchHub({ variant = 'mobile' }: { variant?: 'mobile'
   const isDesktop = variant === 'desktop';
   const hoy = diaEstudioTipo(new Date());
   const [sub, setSub] = useState<Sub>('hoy');
-  // Estado real de la Mesa editorial (localStorage 'jmd-research-entregables') + checklist infra (PlanKey 'research-infra').
+  // Estado real de la Mesa editorial: caché localStorage 'jmd-research-entregables' + espejo Supabase research_entregables
+  // (pull con merge por updated_at al montar; upsert en cada cambio; si Supabase falla, el cambio queda local y se reintenta
+  // en el siguiente pull). Checklist infra (PlanKey 'research-infra').
   const [reg, setReg] = useState<EntregablesRegistro>(() => loadEntregables());
+  const regRef = useRef<EntregablesRegistro>(reg);
+  regRef.current = reg;
+  const [sync, setSync] = useState<SyncEstado>({ estado: 'cargando', detalle: 'consultando Supabase' });
   const [infra, setInfra] = useState<Set<number>>(() => new Set(loadDone('research-infra')));
   const kpis = calcResearchKpis(reg, infra.size);
-  const onChange = (id: string, patch: Partial<EntregableRegistro>) => setReg((prev) => {
-    const base = RESEARCH_ENTREGABLES.find((e) => e.id === id);
-    const cur: EntregableRegistro = prev[id] ?? { estado: base ? base.estado : 'idea' };
-    const next: EntregablesRegistro = { ...prev, [id]: { ...cur, ...patch, actualizado: todayISO() } };
+  const onChange = (id: string, patch: Partial<EntregableRegistroSync>) => {
+    const cur = aplicarCambio(regRef.current[id] as EntregableRegistroSync | undefined, patch, id);
+    const next: EntregablesRegistro = { ...regRef.current, [id]: cur };
+    regRef.current = next;
     saveEntregables(next);
-    return next;
-  });
+    setReg(next);
+    pushEntregable(id, cur).then((res) => {
+      setSync(res.ok ? { estado: 'ok', detalle: `guardado ${hhmm()}` } : { estado: 'error', detalle: res.error ?? 'sin red' });
+      if (res.ok) setReg((p) => ({ ...p, [id]: { ...(p[id] ?? cur), synced: true } as EntregableRegistroSync }));
+    });
+  };
+  useEffect(() => {
+    let vivo = true;
+    pullEntregables().then((res) => {
+      if (!vivo) return;
+      setReg(res.reg);
+      setSync(res.ok
+        ? { estado: 'ok', detalle: `sincronizado ${hhmm()}${res.pushed ? ` · ${res.pushed} subido(s)` : ''}` }
+        : { estado: 'error', detalle: res.error ?? 'sin red' });
+    });
+    return () => { vivo = false; };
+  }, []);
   const onToggleInfra = (n: number) => setInfra((prev) => {
     const s = new Set(prev);
     if (s.has(n)) s.delete(n); else s.add(n);
@@ -589,7 +639,7 @@ export default function ResearchHub({ variant = 'mobile' }: { variant?: 'mobile'
         {sub === 'hoy' ? <ResearchTodayPlan />
           : sub === 'sistema' ? <ResearchAgenticSystem />
           : sub === 'lineas' ? <ResearchLinesExplorer />
-          : <PanelView reg={reg} onChange={onChange} infra={infra} onToggleInfra={onToggleInfra} kpis={kpis} />}
+          : <PanelView reg={reg} onChange={onChange} infra={infra} onToggleInfra={onToggleInfra} kpis={kpis} sync={sync} />}
       </View>
     </ScrollView>
   );

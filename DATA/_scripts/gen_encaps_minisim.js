@@ -45,6 +45,17 @@
  *   node DATA/_scripts/gen_encaps_minisim.js --sim100 2025-2 [fecha]   → simulacro 100Q con un examen real con CLAVE OFICIAL
  *                                                                        (2024-2A · 2025-1A · 2025-2; 2026-1 no tiene clave → se rechaza)
  *   node DATA/_scripts/gen_encaps_minisim.js --sim100 propio <fecha>   → 100Q desde el banco propio (vector v3 ×4)
+ *   node DATA/_scripts/gen_encaps_minisim.js --pretest-arranque [lunes=D1 del SQL]
+ *        → PRE-TEST DE ARRANQUE (línea base ciega por crítico, gaps_v3b_encaps punto 8): 40Q = 5Q × 8 críticos v3 tomadas de los
+ *          ítems REALES con clave oficial 2024-2A · 2025-1A · 2025-2 (nunca el examen de agosto-2026: lista negra), repartidas en
+ *          BANCO_PROPIO/pretest_arranque_<lunes>.{json,html} (parte 1: II-3 · I-3 · V-2 · III-5) y pretest_arranque_<martes>.{json,html}
+ *          (parte 2: II-5 · I-4 · IV-1+IV-2 · II-4). Modo examen (72 s/Q, solución al final), confianza 1-3 obligatoria, orden barajado.
+ *          SUSTITUYEN EL CONTENIDO de los dos primeros bancos del día de la semana A (banco_<lunes> y banco_<martes> quedan marcados
+ *          `_meta.sustituido_por` y su HTML muestra el aviso; el horario 16:15-17:15 no cambia). Regla de ids: no se reutiliza ningún id
+ *          consumido por eval_/minisim_/banco_ vigentes; los ids que SOLO estaban en los dos bancos sustituidos vuelven a estar
+ *          disponibles (esas sesiones no se resuelven) y se prefieren los reales libres → reales del banco sustituido → nuevos.
+ *          Export del runner → `--registrar <export.json> --append`: ronda `pretest` con preguntas[] por código (gen_encaps_semana.js
+ *          la reparte por código → n = 5 por crítico → el override de la semana del 21-sep ya se calcula con n ≥ 5).
  *   node DATA/_scripts/gen_encaps_minisim.js --registrar <export.json> [--append]
  *        → guarda TRACKING_ERRORES/RONDAS/<id>.json y muestra la línea para `gen_encaps_semana.js --cerrar`;
  *          con --append apenda la ronda (con preguntas[]) a _registro_resoluciones.json (append-only).
@@ -84,7 +95,10 @@ const addDays = (iso, n) => { const d = new Date(iso + 'T12:00:00Z'); d.setUTCDa
 const POOL_CODE = { 'IV-1': 'IV-1+IV-2', 'IV-2': 'IV-1+IV-2', 'IV-6': 'IV-6+IV-7', 'IV-7': 'IV-6+IV-7', 'V-7': 'V-MED', 'V-10': 'V-MED', 'V-7+V-10': 'V-MED', 'I-5': 'I-5+I-6', 'I-6': 'I-5+I-6', 'I-11': 'I-11+I-12', 'I-12': 'I-11+I-12', 'V-RRHH': 'V-3' };
 const poolCode = (c) => POOL_CODE[c] || c;
 const SALIDAS_RE = /^(minisim_\d{4}-|banco_\d{4}-|eval_\d{4}-|pretest_|sim100_)/; // salidas del runner (banco_items_v1.json NO es salida)
-const USADOS_RE = /^(minisim|banco|eval)_\d{4}-\d\d-\d\d\.json$/;
+const USADOS_RE = /^(minisim|banco|eval|pretest_arranque)_\d{4}-\d\d-\d\d\.json$/;   // salidas cuyos ids quedan consumidos
+// una salida SUSTITUIDA (banco_<fecha> reemplazado por el pre-test de arranque) no consume ids: esa sesión no se resuelve
+const estaSustituida = (doc) => !!(doc && doc._meta && doc._meta.sustituido_por);
+const pretestArranqueDe = (fecha) => (fs.existsSync(path.join(OUT_DIR, `pretest_arranque_${fecha}.json`)) ? `pretest_arranque_${fecha}` : null);
 
 // ── registro: fallos previos + lista negra ──
 function leerRegistro() {
@@ -93,7 +107,9 @@ function leerRegistro() {
   const fallos = new Set();
   let pretestHecho = false;
   for (const r of reg.rondas || []) {
-    if (/PRETEST_2026-II/i.test(r.id || '') || /PRETEST_2026-II/i.test(r.tema || '') || (r.tipoRonda === 'pretest' && /2026-2|2026-II/i.test(r.fuente_preguntas || r.tema || ''))) pretestHecho = true;
+    // solo la ronda del examen real 2026-II levanta la lista negra; el PRE-TEST DE ARRANQUE (PRETEST_ARRANQUE_*, ítems 2024-2A→2025-2) nunca
+    const esArranque = /^PRETEST_ARRANQUE/i.test(r.id || '');
+    if (!esArranque && (/PRETEST_2026-II/i.test(r.id || '') || /PRETEST_2026-II/i.test(r.tema || '') || (r.tipoRonda === 'pretest' && /2026-2\b|2026-II/i.test(r.fuente_preguntas || r.tema || '')))) pretestHecho = true;
     for (const q of r.preguntas || []) if (q.ok === false) { fallos.add(norm(q.tema || q.subangulo)); if (q.subangulo) fallos.add(norm(q.subangulo)); }
   }
   const debiles = new Set(Object.entries(reg.resumen_por_subtema || {}).filter(([, v]) => /debil/i.test(v.estado || '')).map(([c]) => c));
@@ -123,7 +139,7 @@ function usadosPrevios(base, ignorar = new Set()) {
   const usados = new Set();
   for (const f of fs.readdirSync(BANCO)) {
     if (!USADOS_RE.test(f) || f === `${base}.json` || ignorar.has(f)) continue;
-    try { for (const it of readJSON(path.join(BANCO, f)).items || []) usados.add(it.id); } catch (e) { /* ignorar */ }
+    try { const doc = readJSON(path.join(BANCO, f)); if (estaSustituida(doc)) continue; for (const it of doc.items || []) usados.add(it.id); } catch (e) { /* ignorar */ }
   }
   return usados;
 }
@@ -240,6 +256,7 @@ textarea{width:100%;min-height:180px;font:12px/1.4 ui-monospace,Consolas,monospa
 <header><h1>${doc.titulo}</h1><span class="pill">${doc.n} preguntas · ${doc.seg_por_q} s/Q · ${Math.round(doc.n * doc.seg_por_q / 60)} min</span><span class="pill">${doc.correccion_inmediata ? 'corrección inmediata (Palmerton)' : 'vector v3 · modo examen: solución al final'}</span>
 <span id="timer">--:--</span><span id="prog" class="pill">0/${doc.n}</span><button id="start">Empezar</button><button id="finish" class="sec" disabled>Terminar y corregir</button><button id="reset" class="sec">Reiniciar</button></header>
 <main>
+${estaSustituida(doc) ? `<div class="q" style="border:2px solid var(--bad)"><p><b class="bad">⛔ SESIÓN SUSTITUIDA — NO RESOLVER ESTE BANCO.</b> El ${doc.fecha} se resuelve <b>${doc._meta.sustituido_por}.html</b> (${doc._meta.sustituido_motivo || 'pre-test de arranque'}). Este fichero se conserva solo como registro; sus ítems no cuentan como usados.</p></div>` : ''}
 <div id="intro" class="q"><p><b>Instrucciones.</b> ${doc.instrucciones}</p><p class="note">Regla Palmerton: marca la <b>confianza</b> en cada ítem. Un acierto con confianza «adivinada» o «dudosa» NO cuenta como conocimiento (% CIEGO = correctas seguras / total). El reloj no se detiene. Al terminar, exporta el JSON y guárdalo en <code>TRACKING_ERRORES/RONDAS/</code>; la línea de cierre va a <code>gen_encaps_semana.js --cerrar</code>.</p></div>
 <div id="qs" class="hidden"></div>
 <div id="res" class="hidden"></div>
@@ -267,7 +284,7 @@ function prog(){$('#prog').textContent=Object.keys(state.ans).length+'/'+DOC.n;}
 let tick=null;function startTimer(){clearInterval(tick);tick=setInterval(()=>{if(state.done)return clearInterval(tick);state.left--;if(state.active)state.seg[state.active]=(state.seg[state.active]||0)+1;
  $('#timer').textContent=fmt(state.left);if(state.left<=120)$('#timer').classList.add('low');if(state.left%5===0)save();if(state.left<=0){finish(true);}},1000);}
 function start(){state.started=true;state.startAt=state.startAt||new Date().toISOString();save();$('#intro').classList.add('hidden');$('#qs').classList.remove('hidden');$('#start').disabled=true;$('#finish').disabled=false;startTimer();}
-function finish(auto){if(state.done)return;if(!auto){const sin=DOC.items.filter((it)=>!state.ans[it.n]).length;if(sin&&!confirm(sin+' preguntas sin responder. ¿Terminar igual? (quedan como fallo)'))return;}
+function finish(auto){if(state.done)return;if(!auto){const sinConf=DOC.items.filter((it)=>state.ans[it.n]&&!state.conf[it.n]).length;if(sinConf){alert(sinConf+' pregunta(s) respondida(s) SIN confianza (adivinada / dudosa / segura). Es obligatoria: el % CIEGO se calcula con ella. Márcala y vuelve a Terminar.');return;}const sin=DOC.items.filter((it)=>!state.ans[it.n]).length;if(sin&&!confirm(sin+' preguntas sin responder. ¿Terminar igual? (quedan como fallo)'))return;}
  state.done=true;clearInterval(tick);save();$('#qs').classList.add('hidden');$('#finish').disabled=true;corregir();}
 function corregir(){const res=$('#res');res.classList.remove('hidden');const rows=DOC.items.map((it)=>{const tu=state.ans[it.n]||null,ok=tu===it.clave,conf=state.conf[it.n]||1;return {it,tu,ok,conf,seg:state.seg[it.n]||0};});
  const n=rows.length,ok=rows.filter((r)=>r.ok).length,seg=rows.filter((r)=>r.ok&&r.conf===3).length,dud=ok-seg,pct=(a,b)=>b?Math.round(a/b*1000)/10:0;
@@ -298,6 +315,7 @@ function corregir(){const res=$('#res');res.classList.remove('hidden');const row
  $('#dl').addEventListener('click',()=>{const r=build();const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(r,null,1)],{type:'application/json'}));a.download=DOC.id+'.json';a.click();});
  build();}
 load();render();prog();$('#timer').textContent=fmt(state.left);
+if(DOC._meta&&DOC._meta.sustituido_por){$('#start').disabled=true;$('#finish').disabled=true;}
 $('#start').addEventListener('click',start);$('#finish').addEventListener('click',()=>finish(false));
 $('#reset').addEventListener('click',()=>{if(!confirm('¿Borrar respuestas y reiniciar el reloj?'))return;try{localStorage.removeItem(KEY);}catch(e){}location.reload();});
 if(state.started&&!state.done){$('#intro').classList.add('hidden');$('#qs').classList.remove('hidden');$('#start').disabled=true;$('#finish').disabled=false;startTimer();}
@@ -336,6 +354,8 @@ function modoBanco(fecha, ignorar) {
   const fila = filaSQL(fecha);
   if (!fila) throw new Error(`no hay fila en _encaps_mantenimiento_2027.sql para ${fecha} (¿fin de semana/feriado o SQL no regenerado?)`);
   if (fila.tipo !== 'banqueo1h') throw new Error(`${fecha} es '${fila.tipo}', no banqueo1h (para viernes usar el mini-sim)`);
+  const pa = pretestArranqueDe(fecha);
+  if (pa && !has('--forzar')) throw new Error(`${fecha}: el contenido de esta sesión lo ocupa el PRE-TEST DE ARRANQUE (${pa}.html); banco_${fecha} queda sustituido y no se regenera (--forzar para ignorarlo)`);
   const { pretestHecho } = leerRegistro();
   const { pool, rechazados } = cargarPool(pretestHecho);
   const usados = usadosPrevios(`banco_${fecha}`, ignorar);
@@ -445,7 +465,9 @@ function modoSemana(lunes) {
     if (!fila) { console.log(`— ${f}: sin sesión (${motivoSinSesion(f)})`); continue; }
     if (fila.tipo === 'banqueo1h') { // eval anclada mar-jue (el lunes la pide el protocolo pero hoy NO hay stock del código: ver README); el viernes (mini_sim) no lleva: el mini-sim ocupa las 16:15
       if (i > 0) { try { modoEval(f, pendientes); } catch (e) { console.warn('⚠ eval', f, e.message); } pendientes.delete(`eval_${f}.json`); }
-      try { modoBanco(f, pendientes); } catch (e) { console.warn('⚠ banco', f, e.message); }
+      const pa = pretestArranqueDe(f);
+      if (pa) console.log(`— ${f}: banco sustituido por ${pa} (pre-test de arranque): no se regenera`);
+      else { try { modoBanco(f, pendientes); } catch (e) { console.warn('⚠ banco', f, e.message); } }
       pendientes.delete(`banco_${f}.json`);
     }
     else if (fila.tipo === 'mini_sim') { if (fs.existsSync(path.join(OUT_DIR, `minisim_${f}.json`))) console.log(`— ${f}: minisim ya existe`); else modoMinisim(f); }
@@ -551,6 +573,7 @@ function modoRegistrar(file, append) {
   } else {
     console.log('→ cerrar con: node DATA/_scripts/gen_encaps_semana.js --cerrar "' + linea + '"');
     console.log('   (o --append aquí para apendar la ronda completa con preguntas[] al registro)');
+    if (ronda.codigo === 'MIX' || ronda.tipoRonda === 'pretest') console.log('   ⚠ ronda MIXTA: usa --append (con preguntas[] gen_encaps_semana.js la reparte por código; la línea de 1 renglón la dejaría como MIX sin línea base por crítico)');
   }
 }
 
@@ -619,6 +642,107 @@ function modoInventario() {
   console.log('OK → _inventario_banco_por_codigo.json ·', JSON.stringify(totales));
   for (const [k, v] of Object.entries(inv)) console.log(`${k.padEnd(10)} demanda ${String(v.demanda_sembrada.q_estimadas_regimen).padStart(4)} · pool ${String(v.oferta.banco_propio_pool.disponibles_no_usados).padStart(3)} disp (${v.oferta.banco_propio_pool.total} tot) · reales ${String(v.oferta.examenes_reales_etiquetados.total).padStart(2)} · déficit ${String(v.deficit_vs_demanda).padStart(4)} · ${v.estado}`);
 }
+// PRE-TEST DE ARRANQUE (línea base ciega por crítico): 40Q = 5Q × 8 críticos v3, ítems REALES con clave oficial 2024-2A → 2025-2,
+// en 2 partes de 20Q que SUSTITUYEN el contenido de los dos primeros bancos del día de la semana A (banco_<lunes>, banco_<martes>).
+const PARTES_ARRANQUE = [
+  { codigos: ['II-3', 'I-3', 'V-2', 'III-5'], etiqueta: 'parte 1 · críticos de la semana A del ciclo' },
+  { codigos: ['II-5', 'I-4', 'IV-1+IV-2', 'II-4'], etiqueta: 'parte 2 · críticos de la semana B del ciclo' },
+];
+const Q_POR_CODIGO_ARRANQUE = 5;
+// 5 ítems de un código: primero por rango (real libre → real del banco sustituido → nuevo libre → nuevo del banco sustituido),
+// dentro del rango un sub-eje distinto por ítem mientras haya (la línea base no debe caer entera en un solo sub-eje); barajado con semilla.
+function eligeArranque(cand, rango, r, k) {
+  const orden = shuffle(cand, r).sort((a, b) => rango(a) - rango(b));
+  const sel = []; const subs = new Set();
+  // nivel a nivel: un rango solo se abandona cuando está agotado (un real repetido de sub-eje gana a un nuevo de sub-eje distinto)
+  for (const nivel of [0, 1, 2, 3]) {
+    const del = orden.filter((it) => rango(it) === nivel);
+    for (const it of del) { if (sel.length >= k) break; const s = it.sub_eje || '—'; if (subs.has(s)) continue; sel.push(it); subs.add(s); }
+    for (const it of del) { if (sel.length >= k) break; if (!sel.includes(it)) { sel.push(it); subs.add(it.sub_eje || '—'); } }
+    if (sel.length >= k) break;
+  }
+  return sel;
+}
+function modoPretestArranque(lunesArg) {
+  const { d1 } = rangoSQL();
+  const lunes = lunesArg || d1;
+  if (!lunes) throw new Error('sin D1 en _encaps_mantenimiento_2027.sql (regenerar la siembra)');
+  if (dowDe(lunes) !== 1) throw new Error(`${lunes} no es lunes (${WD[dowDe(lunes)]}): el pre-test de arranque ocupa lun + mar de la semana A`);
+  const martes = addDays(lunes, 1);
+  const filas = [filaSQL(lunes), filaSQL(martes)];
+  filas.forEach((f, i) => { const fe = i ? martes : lunes; if (!f || f.tipo !== 'banqueo1h') throw new Error(`${fe}: no hay fila banqueo1h en el SQL (${f ? f.tipo : 'sin sesión'}); el pre-test sustituye dos bancos del día consecutivos`); });
+  const { pretestHecho } = leerRegistro();
+  const { pool, rechazados } = cargarPool(pretestHecho);
+  const sustituidos = [`banco_${lunes}.json`, `banco_${martes}.json`];
+  const propias = [`pretest_arranque_${lunes}.json`, `pretest_arranque_${martes}.json`];
+  // ids consumidos por las salidas VIGENTES (eval_, minisim_, otros banco_) — nunca se reutilizan
+  const usados = usadosPrevios('__pretest_arranque__', new Set([...sustituidos, ...propias]));
+  // ids que estaban en los dos bancos sustituidos: disponibles (esas sesiones no se resuelven), con rango inferior a los libres
+  const enSustituidos = new Set();
+  for (const f of sustituidos) { try { for (const it of readJSON(path.join(OUT_DIR, f)).items || []) enSustituidos.add(it.id); } catch (e) { /* no existe: nada que sustituir */ } }
+  const esReal = (it) => /^R-/.test(it.id) && /CLAVE OFICIAL/i.test(it.verificado_contra || '') && /2024-2A|2025-1A|2025-2/.test(`${it.verificado_contra || ''} ${it.fuente || ''}`);
+  const rango = (it) => (esReal(it) ? 0 : 2) + (enSustituidos.has(it.id) ? 1 : 0);
+  const MOTIVO = { 0: 'real con clave oficial (libre)', 1: 'real con clave oficial (estaba en el banco sustituido)', 2: 'nuevo verificado contra compendio/norma (sin real disponible)', 3: 'nuevo (estaba en el banco sustituido; sin real disponible)' };
+  const tomados = new Set();
+  const docs = [];
+  PARTES_ARRANQUE.forEach((parte, i) => {
+    const fecha = i ? martes : lunes; const fila = filas[i];
+    const r = rng('pretest_arranque' + fecha);
+    const avisos = []; const seleccion = {}; let items = [];
+    for (const c of parte.codigos) {
+      const cand = pool.filter((it) => poolCode(it.codigo) === c && !usados.has(it.id) && !tomados.has(it.id));
+      const sel = eligeArranque(cand, rango, r, Q_POR_CODIGO_ARRANQUE);
+      const reales = sel.filter(esReal).length;
+      seleccion[c] = { candidatos: cand.length, reales_libres: cand.filter((x) => rango(x) === 0).length, reales_en_banco_sustituido: cand.filter((x) => rango(x) === 1).length, elegidos: sel.map((x) => `${x.id} · ${x.sub_eje || '—'} · ${x.formato} · ${MOTIVO[rango(x)]}`), reales, nuevos: sel.length - reales };
+      if (sel.length < Q_POR_CODIGO_ARRANQUE) avisos.push(`${c}: solo ${sel.length}/${Q_POR_CODIGO_ARRANQUE} ítems disponibles`);
+      if (reales < Q_POR_CODIGO_ARRANQUE) avisos.push(`${c}: ${reales} reales + ${sel.length - reales} nuevos (los reales restantes están consumidos por eval_/banco_/minisim_ vigentes)`);
+      for (const it of sel) { tomados.add(it.id); items.push({ ...it, motivo_seleccion: MOTIVO[rango(it)], origen_pretest: esReal(it) ? 'examen_real' : 'nuevo' }); }
+    }
+    items = shuffle(items, r).map(({ _file, ...it }, k) => ({ n: k + 1, ...it }));
+    const nReales = items.filter((x) => x.origen_pretest === 'examen_real').length;
+    const conteos = {
+      total: items.length, reales_clave_oficial: nReales, nuevos: items.length - nReales,
+      por_codigo: items.reduce((a, x) => ((a[poolCode(x.codigo)] = (a[poolCode(x.codigo)] || 0) + 1), a), {}),
+      por_sub_eje: items.reduce((a, x) => ((a[`${poolCode(x.codigo)}:${x.sub_eje || '—'}`] = (a[`${poolCode(x.codigo)}:${x.sub_eje || '—'}`] || 0) + 1), a), {}),
+      por_formato: items.reduce((a, x) => ((a[x.formato || '—'] = (a[x.formato || '—'] || 0) + 1), a), {}),
+      por_proceso: items.reduce((a, x) => { const m = (x.id || '').match(/^R-(\d{4}-\d[AB]?)-/); const k = m ? m[1] : 'nuevo'; a[k] = (a[k] || 0) + 1; return a; }, {}),
+      ids_del_banco_sustituido: items.filter((x) => enSustituidos.has(x.id)).length,
+    };
+    const doc = {
+      id: `PRETEST_ARRANQUE_${fecha}`, titulo: `Pre-test de arranque ENCAPS · ${WD[dowDe(fecha)]} ${fecha} · ${parte.etiqueta}`, tipoRonda: 'pretest', fecha, codigo: 'MIX',
+      tema: `pre-test de arranque · 5Q × 4 críticos (${parte.codigos.join(' · ')}) · ${parte.etiqueta}`,
+      fuente_preguntas: `ítems reales ENCAPS/SERUMS 2024-2A · 2025-1A · 2025-2 con clave oficial (BANCO_PROPIO: ${[...new Set(items.map((x) => x._file || 'set'))].join(', ')})${items.length - nReales ? ` + ${items.length - nReales} ítem(s) nuevos verificados contra compendio/norma` : ''} · el examen de agosto de 2026 queda fuera (lista negra hasta el pre-test de febrero)`,
+      n: items.length, seg_por_q: 72, umbral: 70, alerta: 60, mostrar_codigo: false, correccion_inmediata: false,
+      instrucciones: `${items.length} preguntas CIEGAS (${Q_POR_CODIGO_ARRANQUE} por código: ${parte.codigos.join(' · ')}), 72 s/Q = ${Math.round(items.length * 72 / 60)} min, MODO EXAMEN: sin material, sin pausa, solución al final. Confianza 1-3 OBLIGATORIA en cada ítem: esta ronda es la LÍNEA BASE por crítico (% CIEGO = seguras/total). Sustituye el CONTENIDO del banco del día de hoy (${fila.codigo}${fila.extra.sub_eje ? ' · ' + fila.extra.sub_eje : ''}); el horario no cambia (16:15 eval anclada si toca · 16:30 pre-test · 17:10 cierre). Al terminar: «Generar JSON» → guardar → node DATA/_scripts/gen_encaps_minisim.js --registrar <export.json> --append (ronda 'pretest' repartida por código en el registro; NO usar la línea de 1 renglón: la dejaría como MIX).`,
+      _meta: {
+        generado: new Date().toISOString().slice(0, 10), parte: i + 1, de: PARTES_ARRANQUE.length, codigos: parte.codigos, q_por_codigo: Q_POR_CODIGO_ARRANQUE,
+        sustituye: { fichero: `banco_${fecha}`, dia: fila.dia, codigo: fila.codigo, sub_eje: fila.extra.sub_eje || null, secundario: fila.extra.secundario || null, horario: 'sin cambio (16:15-17:15)' },
+        regla_ids: 'no reutiliza ningún id de eval_/minisim_/banco_ vigentes de la semana; los ids que SOLO estaban en los dos bancos sustituidos vuelven a estar disponibles (esas sesiones no se resuelven) y se prefieren: real libre → real del banco sustituido → nuevo libre → nuevo del banco sustituido',
+        seleccion, conteos, avisos, lista_negra_2026_II: pretestHecho ? 'levantada' : 'VIGENTE: ningún ítem deriva del examen de agosto de 2026', rechazados: rechazados.slice(0, 10),
+        registro: "export → --registrar <json> --append → ronda tipo 'pretest' con preguntas[] (codigo MIX) que gen_encaps_semana.js reparte por código: n = 5 por crítico para el override de la semana del 21-sep",
+      },
+      items,
+    };
+    docs.push(doc);
+    console.log(`PRETEST ARRANQUE ${fecha} (${WD[dowDe(fecha)]}) · ${parte.etiqueta} · ${items.length}Q · reales ${nReales}/${items.length} · por código ${JSON.stringify(conteos.por_codigo)} · procesos ${JSON.stringify(conteos.por_proceso)} · formato ${JSON.stringify(conteos.por_formato)} · del banco sustituido ${conteos.ids_del_banco_sustituido}`);
+    for (const [c, s] of Object.entries(seleccion)) console.log(`  ${c.padEnd(10)} cand ${String(s.candidatos).padStart(3)} (reales libres ${s.reales_libres} · reales en banco sustituido ${s.reales_en_banco_sustituido}) → ${s.reales}R + ${s.nuevos}N`);
+    for (const a of avisos) console.warn('  ⚠', a);
+    if (items.length !== parte.codigos.length * Q_POR_CODIGO_ARRANQUE) { console.error(`✗ ${fecha}: ${items.length}Q ≠ ${parte.codigos.length * Q_POR_CODIGO_ARRANQUE}: no se escribe`); process.exit(1); }
+  });
+  if (DRY) return;
+  for (const doc of docs) escribir(`pretest_arranque_${doc.fecha}`, doc);
+  // marcar los dos bancos sustituidos (JSON + HTML con aviso); sus ids dejan de contar como usados (usadosPrevios los salta)
+  for (const f of sustituidos) {
+    const p = path.join(OUT_DIR, f); if (!fs.existsSync(p)) continue;
+    const doc = readJSON(p); const fecha = f.slice(6, 16);
+    doc._meta = doc._meta || {};
+    doc._meta.sustituido_por = `pretest_arranque_${fecha}`;
+    doc._meta.sustituido_el = new Date().toISOString().slice(0, 10);
+    doc._meta.sustituido_motivo = 'pre-test de arranque (línea base ciega por crítico, 5Q × 8 críticos v3): sustituye el CONTENIDO de esta sesión, no el horario';
+    escribir(f.replace('.json', ''), doc);
+    console.log(`sustituido → ${f} (_meta.sustituido_por = pretest_arranque_${fecha}; sus ids ya no cuentan como usados)`);
+  }
+}
 function escribir(base, doc) {
   fs.mkdirSync(OUT_DIR, { recursive: true });
   const j = path.join(OUT_DIR, base + '.json'), h = path.join(OUT_DIR, base + '.html');
@@ -630,6 +754,7 @@ function escribir(base, doc) {
 // ── main ──
 try {
   if (has('--registrar')) modoRegistrar(opt('--registrar'), has('--append'));
+  else if (has('--pretest-arranque')) modoPretestArranque(opt('--pretest-arranque', null) && /^20\d\d-\d\d-\d\d$/.test(opt('--pretest-arranque')) ? opt('--pretest-arranque') : null);
   else if (has('--pretest')) modoPretest();
   else if (has('--sim100')) modoSim100(opt('--sim100'));
   else if (has('--inventario')) modoInventario();
@@ -638,5 +763,5 @@ try {
   else if (has('--eval')) modoEval(opt('--eval'));
   else if (has('--semana')) modoSemana(opt('--semana'));
   else if (fechaArg) modoMinisim(fechaArg);
-  else { console.log('uso: node gen_encaps_minisim.js <viernes YYYY-MM-DD> [--dry] | --banco <fecha> | --eval <fecha> | --semana <lunes> | --realinear [--dry] | --inventario | --pretest | --sim100 <2024-2A|2025-1A|2025-2|propio> [fecha] | --registrar <export.json> [--append]'); process.exit(1); }
+  else { console.log('uso: node gen_encaps_minisim.js <viernes YYYY-MM-DD> [--dry] | --banco <fecha> [--forzar] | --eval <fecha> | --semana <lunes> | --pretest-arranque [lunes] [--dry] | --realinear [--dry] | --inventario | --pretest | --sim100 <2024-2A|2025-1A|2025-2|propio> [fecha] | --registrar <export.json> [--append]'); process.exit(1); }
 } catch (e) { console.error('✗', e.message); process.exit(1); }

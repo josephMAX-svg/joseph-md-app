@@ -2,7 +2,7 @@
 
 > **Por qué existe:** el backtest del 2026-II probó que el comité escribe alrededor de lo RECIENTE: normas publicadas 0-6 meses antes entran directo (RM de jul-2026 sobre prioridades de emergencia cayó en ago-2026: lección **L6**), la coyuntura epidemiológica genera clusters (dengue 8Q + sarampión 5Q en 2026-II: lección **L3**) y las novedades del esquema de vacunación (VRS gestante) se preguntan al año siguiente (`ANALISIS_EXAMEN_2026-2_REAL.md` §3, `PRONOSTICO_WALKFORWARD_2027-1_v3.md` §4-5). Además, **toda la fase intensiva depende de la fecha real del examen**, que solo la fija la convocatoria SERUMS 2027-I (`FASE_INTENSIVA_2027-I.md` §0).
 > **Regla:** nada entra al banco por "me suena": cada señal se anota aquí con fecha y fuente, y solo se convierte en preguntas/tarjetas cuando está verificada (gate §3-bis del `PROTOCOLO_GENERACION_PREGUNTAS.md`). Lo no verificable queda marcado **A VERIFICAR (dd-mmm)**.
-> **Sin tareas programadas creadas** (05-sep-2026): la rutina de §2 se ejecuta a mano o con una tarea quincenal que Joseph decide crear (pendiente).
+> **Sin tareas programadas creadas** (05-sep-2026; reconfirmado 12-sep-2026: ningún agente la crea por Joseph). La rutina de §2 se ejecuta a mano o con la tarea quincenal que **Joseph crea con el comando exacto de §2-bis** (una sola vez).
 
 ---
 
@@ -29,11 +29,58 @@ Fechas: 1-oct · 15-oct · 29-oct · 12-nov · 26-nov · 10-dic · 24-dic · 7-e
 4. Si la señal es la **fecha del examen** (canal 1): ese mismo día se ejecuta `FASE_INTENSIVA_2027-I.md` §5 (generar SQL con la fecha real → revisar → `execute_sql`), se actualiza `study_metrics.exam_date` y se ajusta el Calendar (a mano).
 5. Cierre: actualizar la línea "Última revisión" de §3.
 
+## 2-bis) Cómo crear la rutina quincenal (la crea JOSEPH, una sola vez; al 12-sep-2026 no existe)
+
+Regla: ningún agente la crea por él (decisión de Joseph). Elegir UNA opción y pegar el comando tal cual en una sesión de Claude Code abierta en `D:\joseph-md-app`.
+
+**Opción A — MCP `scheduled-tasks` (recomendada: local, sin sesión abierta; corre mientras la app Claude Code está abierta y, si estaba cerrada a la hora, corre al abrirla).** Pegar en el chat:
+
+```
+Crea una tarea programada con el MCP scheduled-tasks (create_scheduled_task) con EXACTAMENTE estos campos y sin cambiar el prompt:
+- taskId: encaps-senales-quincenal
+- title: 📡 ENCAPS · vigía quincenal de señales 2027-I
+- description: Cada 1 y 15 de mes revisa convocatoria SERUMS 2027-I, normas MINSA, DGE y ESAVI/PNI y añade filas al log de DATA/ENCAPS/SENALES_2027-I.md
+- cronExpression: 0 7 1,15 * *
+- notifyOnCompletion: true
+- prompt: el bloque íntegro de §2-ter de DATA/ENCAPS/SENALES_2027-I.md (cópialo literal)
+Confírmame el taskId creado y la próxima ejecución (nextRunAt) con list_scheduled_tasks.
+```
+
+Notas: `0 7 1,15 * *` = días 1 y 15 de cada mes a las 07:00 hora local (Lima) → primera corrida **jue 1-oct-2026**; cron no expresa "cada 14 días", así que esta cadencia sustituye a la lista de fechas de §2 (desfase ≤3 días: 1-oct · 15-oct · 1-nov · 15-nov · 1-dic · 15-dic · 1-ene · 15-ene · 1-feb). La hora es indiferente (Joseph lee el delta cuando abre la app); si prefiere otra, cambiar solo el `7`. Para verla/borrarla: `list_scheduled_tasks` / `delete_scheduled_task encaps-senales-quincenal`.
+
+**Opción B — `/loop` (solo mientras esa sesión de Claude Code siga abierta; si se cierra, muere; sirve para probar la rutina hoy, no para 5 meses).** Pegar:
+
+```
+/loop 14d Ejecuta la rutina quincenal del vigía ENCAPS: sigue al pie de la letra el bloque §2-ter de D:\joseph-md-app\DATA\ENCAPS\SENALES_2027-I.md
+```
+
+**A VERIFICAR (12-sep):** que `/loop` acepte intervalos en días (`14d`); si solo acepta minutos/horas, usar `336h`. Para una única ejecución de prueba sin esperar: pegar el bloque §2-ter directamente en el chat.
+
+**Opción C — `/schedule` (rutina en la nube, cron):** misma `cronExpression` y mismo prompt de §2-ter; **A VERIFICAR (12-sep)** que la cuenta tenga rutinas en la nube habilitadas y que el agente en la nube pueda leer/escribir `DATA/ENCAPS/SENALES_2027-I.md` (necesita el repo GitHub y permiso de escritura; si no, la opción A).
+
+## 2-ter) Prompt de la tarea (autocontenido: cada corrida arranca sin memoria de esta conversación)
+
+```
+Eres el vigía quincenal ENCAPS 2027-I de Joseph. Repositorio: D:\joseph-md-app. Hoy revisas señales para el examen ENCAPS/SERUMS 2027-I (Perú).
+1) Lee DATA/ENCAPS/SENALES_2027-I.md completo (§1 canales, §2 rutina, §3 estado con la "Última revisión", §4 log, §5 qué NO es señal) y DATA/ENCAPS/PROTOCOLO_HORA_MANTENIMIENTO.md §4 (LISTA NEGRA: el examen 2026-II no se usa para nada hasta el pre-test de febrero).
+2) Revisa con WebSearch/WebFetch, SOLO en dominios oficiales, qué hay nuevo desde la fecha de "Última revisión":
+   canal 1 convocatoria y cronograma SERUMS 2027-I (gob.pe/minsa, DIGEP-SERUMS: fecha del examen ENCAPS, bases, inscripción, plazas);
+   canal 2 normas MINSA (elperuano.pe Normas Legales/Salud y gob.pe/minsa/normas: RM, NTS, Directivas nuevas o modificatorias);
+   canal 3 DGE (dge.gob.pe: sala situacional, boletín epidemiológico semanal, alertas: dengue, sarampión, tosferina, oropouche, leptospirosis, rabia, fiebre amarilla);
+   canal 4 ESAVI/PNI (gob.pe/minsa DGIESP-Inmunizaciones, DGE ESAVI: incorporaciones al esquema, cambios de intervalos, campañas);
+   canal 5 (SOLO si la fecha de hoy es de enero de 2027 en adelante) QX Tendencias y simulacros de academias.
+3) Por cada novedad añade UNA fila ARRIBA de la tabla de §4 con el formato exacto de la tabla: fecha de hoy · canal · señal (título + número/año de la norma o fecha del boletín + URL) · código v3 (I-3, I-4, II-3, II-EMG, etc., según §1) · impacto ALTO/MEDIO/BAJO · acción propuesta (ficha / Q / cifras) · estado "A VERIFICAR (dd-mmm)" salvo que hayas leído la fuente primaria completa (entonces "VERIFICADA"). Si un canal no tiene novedad, añade una sola fila "canal N: sin novedad" con la fecha de hoy.
+4) No generes preguntas, fichas ni tarjetas (eso lo hace Joseph con Claude en sesión, gate §3-bis del PROTOCOLO_GENERACION_PREGUNTAS.md). No inventes números de norma, fechas ni cifras: lo que no puedas leer en la fuente queda "A VERIFICAR".
+5) Si la señal es la FECHA DEL EXAMEN 2027-I (canal 1): márcala ALTO y escribe en la PRIMERA línea de tu resumen "FECHA DEL EXAMEN PUBLICADA: <fecha> → ejecutar FASE_INTENSIVA_2027-I.md §5".
+6) Actualiza la línea "Última revisión" de §3 con la fecha de hoy y el nº de filas añadidas. No toques ningún otro fichero. No hagas git commit ni push.
+7) Entrega un delta de ≤10 líneas: canal → señal → estado, y nada más.
+```
+
 ## 3) Estado
 
 - **Última revisión:** 05-sep-2026 (arranque del log; ninguna búsqueda en vivo hecha en esta sesión: las filas de §4 salen de los materiales ya extraídos y quedan **A VERIFICAR** contra la fuente primaria).
 - **Convocatoria SERUMS 2027-I:** NO publicada al 05-sep-2026 (A VERIFICAR el 1-oct). Fecha del examen: desconocida; escenario de trabajo = CORTO (dom 14-mar-2027).
-- **Tarea programada quincenal:** no creada (decisión de Joseph: scheduled-tasks MCP o `/loop`).
+- **Tarea programada quincenal:** NO creada al 12-sep-2026 (decisión y acción de Joseph: comando exacto en §2-bis, opción A `scheduled-tasks` con `cronExpression 0 7 1,15 * *` y el prompt de §2-ter; primera corrida jue 1-oct-2026).
 
 ## 4) Log fechado (append-only; nuevas filas ARRIBA)
 

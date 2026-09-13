@@ -1,0 +1,150 @@
+{
+  "generado": "2026-09-13T01:48:03.940Z",
+  "anios": {
+    "2022": {
+      "pruebas_selectivas": 2021,
+      "preguntas_parseadas": 210,
+      "esperadas": 210,
+      "con_clave": 207,
+      "anuladas": 3,
+      "anuladas_numeros": [
+        120,
+        126,
+        189
+      ],
+      "sin_plantilla": 0,
+      "con_imagen": 25,
+      "reserva": 10,
+      "distribucion_claves": {
+        "1": 52,
+        "2": 53,
+        "3": 52,
+        "4": 50
+      },
+      "long_media_enunciado": 294,
+      "errores": 0,
+      "avisos_revisar": 2,
+      "contrastes_prensa_discrepantes": 0,
+      "sha256_cuadernillo": "4b27c718c16c7a69a1a30412def595fb7d04a9985bfc06d184032157e1233626",
+      "parseado": "2026-09-13T01:48:03.390Z"
+    },
+    "2023": {
+      "pruebas_selectivas": 2022,
+      "preguntas_parseadas": 210,
+      "esperadas": 210,
+      "con_clave": 206,
+      "anuladas": 4,
+      "anuladas_numeros": [
+        15,
+        40,
+        128,
+        138
+      ],
+      "sin_plantilla": 0,
+      "con_imagen": 25,
+      "reserva": 10,
+      "distribucion_claves": {
+        "1": 53,
+        "2": 51,
+        "3": 53,
+        "4": 49
+      },
+      "long_media_enunciado": 302,
+      "errores": 0,
+      "avisos_revisar": 1,
+      "contrastes_prensa_discrepantes": 0,
+      "sha256_cuadernillo": "2a4e95f12bdda4700fdb44bf4bed042566b7ac784a842f0634ae412cc016029b",
+      "parseado": "2026-09-13T01:48:03.505Z"
+    },
+    "2024": {
+      "pruebas_selectivas": 2023,
+      "preguntas_parseadas": 210,
+      "esperadas": 210,
+      "con_clave": 205,
+      "anuladas": 5,
+      "anuladas_numeros": [
+        64,
+        68,
+        113,
+        180,
+        206
+      ],
+      "sin_plantilla": 0,
+      "con_imagen": 25,
+      "reserva": 10,
+      "distribucion_claves": {
+        "1": 50,
+        "2": 53,
+        "3": 52,
+        "4": 50
+      },
+      "long_media_enunciado": 325,
+      "errores": 0,
+      "avisos_revisar": 0,
+      "contrastes_prensa_discrepantes": 0,
+      "sha256_cuadernillo": "80939606d25a7ea3975ef4e480f2955b6c1b728b8fedd467bb4877871a4fb791",
+      "parseado": "2026-09-13T01:48:03.660Z"
+    },
+    "2025": {
+      "pruebas_selectivas": 2024,
+      "preguntas_parseadas": 210,
+      "esperadas": 210,
+      "con_clave": 204,
+      "anuladas": 6,
+      "anuladas_numeros": [
+        15,
+        26,
+        28,
+        56,
+        162,
+        186
+      ],
+      "sin_plantilla": 0,
+      "con_imagen": 25,
+      "reserva": 10,
+      "distribucion_claves": {
+        "1": 51,
+        "2": 54,
+        "3": 50,
+        "4": 49
+      },
+      "long_media_enunciado": 371,
+      "errores": 0,
+      "avisos_revisar": 1,
+      "contrastes_prensa_discrepantes": 1,
+      "sha256_cuadernillo": "101a097f566fa3d20648c1b4c67d5ae739a507bce0645127472b482a9b946c4b",
+      "parseado": "2026-09-13T01:48:03.805Z"
+    },
+    "2026": {
+      "pruebas_selectivas": 2025,
+      "preguntas_parseadas": 210,
+      "esperadas": 210,
+      "con_clave": 203,
+      "anuladas": 7,
+      "anuladas_numeros": [
+        13,
+        50,
+        64,
+        139,
+        142,
+        161,
+        208
+      ],
+      "sin_plantilla": 0,
+      "con_imagen": 24,
+      "reserva": 10,
+      "distribucion_claves": {
+        "1": 41,
+        "2": 62,
+        "3": 65,
+        "4": 35
+      },
+      "long_media_enunciado": 269,
+      "errores": 0,
+      "avisos_revisar": 1,
+      "contrastes_prensa_discrepantes": 0,
+      "sha256_cuadernillo": "fdbd2d0a7eeb6911eddbc156c26091f756b8752a2ff23a2dceed8e1b714e006a",
+      "parseado": "2026-09-13T01:48:03.940Z"
+    }
+  }
+}

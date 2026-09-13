@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Linking, Platform, TextInput } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, Motion, LineHeight } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
@@ -6,32 +6,43 @@ import { Chip, GlassPanel } from '../empresa/primitives';
 import { FadeUp } from '../empresa/visuals';
 import {
   MIR_DAILY_META, MIR_DIAS, DiaMIR, mirDiaDe, mirDiaN, mir7d, MIR_RENT, capUrl,
-  mirAnclas, MIR_ANCLAS_Q, mirCierreDe, mirFranjasDe, mirSesionDe, MIR_SEG_POR_Q, mirMinutos, MIR_TEMAS_TOTAL,
+  mirCierreDe, mirFranjasDe, mirSesionDe, MIR_SEG_POR_Q, mirMinutos, MIR_TEMAS_TOTAL,
 } from '../../lib/mirDailyPlan';
 import { DiaMIRMant, MIR_MANT_META, MIR_MANT_DIAS, mirMantFranjas, mirMantFoco, mirMant7d } from '../../lib/mirMantenimiento';
 import {
-  mirEvalLogAppend, mirEvalLogExportJSON, mirEvalLogLoad, mirEntradaDe, mirNeto, MIR_TIPO_ERROR, MirTipoError, MirEvalKind,
-  mirCierreDeAsignatura, MIR_ESTADO_CIERRE_TXT, mirPeorAsignatura, mirColaD14, mirBaselineTabla, mirAsignaturasEnAnclasD7,
+  mirEvalLogAppend, mirEvalLogExportJSON, mirEvalLogLoad, mirEvalLogPull, mirEntradaDe, mirNeto, MIR_TIPO_ERROR, MirTipoError, MirEvalKind,
+  mirCierreDeAsignatura, mirEstadoCierreTxt, mirCierreUmbral, mirPeorAsignatura, mirColaD14, mirBaselineTabla, mirAsignaturasEnAnclasD7,
+  mirAnclasDinamicas, MirAnclaSlot, mirEstadosTemas, MirTemaEstado, MIR_AJUSTES, MirAjuste, mirTemasQueExigenAjuste,
+  mirAgregadoAsignatura, MIR_AGREGADO_MIN_Q, mirUsadasIds, MIR_VALIDACION_TXT, MIR_GATE,
 } from '../../lib/mirEvalLog';
+import { preguntasSinUsar, poolResumen } from '../../lib/mirPreguntasOficiales';
 import { mirUsmleBridge } from '../../lib/mirUsmleBridge';
 import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, loadDone, saveDone } from '../../lib/studyProgress';
 import { mirObsUrl } from '../../lib/obsidianMap';
 import { mirAnkiDeck, ANKIWEB } from '../../lib/ankiLinks';
 
 /**
- * MirTodayPlan — Plan MIR día-a-día (ProMIR), estilo USMLE/Perú. v3 Palmerton (5-sep-2026):
- *  · 3 anclas clicables (D-1 2Q · D-3 1Q · D-7 1Q) + formulario mínimo de la eval que escribe en
- *    mirEvalLog (aciertos/4 · brecha knowledge/transfer/proceso · 🇪🇸 delta · fallo D-7 → cola D+14).
+ * MirTodayPlan — Plan MIR día-a-día (ProMIR), estilo USMLE/Perú. v3 Palmerton (5-sep-2026) + v3b (12-sep-2026):
+ *  · Anclas DINÁMICAS: D-1 fijo (2Q) + 2 slots que priorizan temas 'caliente' del gate (mirAnclasDinamicas);
+ *    formulario de la eval que escribe en mirEvalLog con el D# real de cada slot (anclasD).
+ *  · GATE PALMERTON por tema (gap 1): se registran el pre-test 5Q y el quiz 8-10Q (kind 'quiz', 20 s);
+ *    pre-test + quiz + ancla D-1 ≥80 % → ✓ validado; quiz <60 % / acumulado <50 % / ancla ✗ → ● caliente
+ *    (ocupa un slot mañana hasta 2 aciertos seguidos); al 2º fallo del tema, `ajuste` obligatorio.
+ *  · Táctica −1/3 (gap 6): campos opcionales blancos acertables / fallos entre dos / cambiadas + cronómetro
+ *    77 s/Q (4Q/10Q/25Q/40Q, aviso a 100 s por pregunta, sin librerías).
+ *  · 🇪🇸 chip 'delta previsible' en los días con `delta:true` (DATA/MIR/DELTA_ESPANA.md).
+ *  · Espejo Supabase: al montar, mirEvalLogPull() fusiona por id en ambos sentidos (fallback silencioso).
  *  · Chip "Step 1 esta semana: <sistema> D#-D#" (mirUsmleBridge, lectura de usmleStep1Daily).
  *  · Test de cierre 10Q el 1er día de cada bloque · D77 mini-MIR 40Q · D78 tabla de neto (baseline).
- *  · Fallback a mirMantenimiento (4-ene→31-mar-2027) cuando no hay DiaMIR.
- *  · sáb+dom libres: no existe "repaso finde" → cola D+7/D+14.
+ *  · Fallback a mirMantenimiento (4-ene→31-mar-2027) cuando no hay DiaMIR. sáb+dom libres → cola D+14.
+ *  · Regla v3b (gap 11): los APEX MIR se crean DIRECTAMENTE en Anki hasta que el redeploy de n8n esté verificado.
  */
 const AMBER = '#F5A623';       // ámbar España (acento oficial de la consola MIR)
 const BLUE = Colors.blue;      // sapphire
 const GREEN = Colors.green;    // jade
 const OBS = Colors.purple;     // amethyst
 const CORAL = Colors.coral;
+const APEX_DIRECTO_ANKI = 'Crea los APEX DIRECTAMENTE en Anki escritorio (no por la nota Obsidian / n8n) hasta que el redeploy de n8n esté verificado con un test multilínea real.';
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
 function todayISO(): string {
   try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; }
@@ -46,6 +57,8 @@ function copiar(texto: string): boolean {
   try { const nav = (globalThis as any).navigator; if (nav?.clipboard?.writeText) { nav.clipboard.writeText(texto); return true; } } catch { /* sin clipboard */ }
   return false;
 }
+const mmss = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+type SyncInfo = { ok: boolean; anadidas: number; subidas: number; remotas: number } | null;
 
 function ColaItem({ icon, lbl, val, sub, color, url }: { icon: string; lbl: string; val: string; sub: string; color: string; url: string }) {
   return (
@@ -73,13 +86,76 @@ function Stepper({ label, value, min, max, onChange, color }: { label: string; v
   );
 }
 
+/** Sección plegable (los formularios de pre-test / quiz / táctica no deben ocupar pantalla si no se usan). */
+function Plegable({ titulo, color, abierto = false, children }: { titulo: string; color: string; abierto?: boolean; children: React.ReactNode }) {
+  const [open, setOpen] = useState(abierto);
+  return (
+    <View>
+      <TouchableOpacity activeOpacity={0.8} onPress={() => setOpen((o) => !o)} style={[st.plegHead, { borderColor: color + '55' }]}>
+        <Text style={[st.plegTxt, { color }]}>{open ? '▾' : '▸'} {titulo}</Text>
+      </TouchableOpacity>
+      {open ? children : null}
+    </View>
+  );
+}
+
+/** Cronómetro 77 s/Q (gap 6): cuenta atrás del bloque + reloj por pregunta con aviso a 100 s. Sin librerías. */
+function TimerQ({ color, presets = [4, 10, 25, 40], segPorQ = MIR_SEG_POR_Q, aviso = 100 }: { color: string; presets?: number[]; segPorQ?: number; aviso?: number }) {
+  const [nQ, setNQ] = useState(presets[0]);
+  const [restante, setRestante] = useState(presets[0] * segPorQ);
+  const [lap, setLap] = useState(0);
+  const [q, setQ] = useState(1);
+  const [on, setOn] = useState(false);
+  useEffect(() => {
+    if (!on) return;
+    const id = setInterval(() => { setRestante((r) => Math.max(0, r - 1)); setLap((l) => l + 1); }, 1000);
+    return () => clearInterval(id);
+  }, [on]);
+  useEffect(() => { if (restante === 0 && on) setOn(false); }, [restante, on]);
+  const reset = (n: number) => { setOn(false); setNQ(n); setRestante(n * segPorQ); setLap(0); setQ(1); };
+  const siguiente = () => { setQ((x) => Math.min(nQ, x + 1)); setLap(0); };
+  const transcurrido = nQ * segPorQ - restante;
+  const ritmoQ = Math.min(nQ, Math.floor(transcurrido / segPorQ) + 1);
+  const atrasado = q < ritmoQ;
+  const alerta = lap >= aviso;
+  return (
+    <View style={[st.formCard, { borderColor: color + '44' }]}>
+      <View style={st.chipRow}>
+        <Text style={st.stepLbl}>⏱ Bloque</Text>
+        {presets.map((n) => (
+          <TouchableOpacity key={n} activeOpacity={0.8} onPress={() => reset(n)} style={[st.numChip, nQ === n && { backgroundColor: color + '33', borderColor: color }]}>
+            <Text style={[st.numChipTxt, nQ === n && { color }]}>{n}Q · {mirMinutos(n)} min</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+      <View style={st.timerRow}>
+        <Text style={[st.timerBig, { color: restante === 0 ? CORAL : atrasado ? AMBER : color }]}>{mmss(restante)}</Text>
+        <View style={{ flex: 1 }}>
+          <Text style={[st.timerLap, { color: alerta ? CORAL : Colors.onSurface }]}>Q {q}/{nQ} · esta pregunta: {lap} s{alerta ? ' · ≥100 s → adivina-marca-avanza' : ''}</Text>
+          <Text style={st.formHint}>{segPorQ} s/Q real · ritmo esperado: Q {ritmoQ}{atrasado ? ' (vas por detrás)' : ''} · no cambies respuestas salvo error objetivo de lectura</Text>
+        </View>
+      </View>
+      <View style={{ flexDirection: 'row', gap: 8, flexWrap: 'wrap' }}>
+        <TouchableOpacity activeOpacity={0.85} onPress={() => setOn((v) => !v)} style={[st.saveBtn, { backgroundColor: color, marginTop: 0 }]}><Text style={st.saveBtnTxt}>{on ? '⏸ Pausa' : restante === 0 ? '✓ Tiempo' : '▶ Iniciar'}</Text></TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.85} onPress={siguiente} style={[st.verBtn, { borderColor: color + '88' }]}><Text style={[st.verTxt, { color }]}>siguiente Q →</Text></TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.85} onPress={() => reset(nQ)} style={[st.verBtn, { borderColor: Colors.muted + '88' }]}><Text style={[st.verTxt, { color: Colors.muted }]}>⟲ reset</Text></TouchableOpacity>
+      </View>
+    </View>
+  );
+}
+
 /**
- * Formulario mínimo de medición → mirEvalLog (append-only). Muestra la entrada ya registrada del día.
- * kind anclada: aciertos/4 + brecha + delta + toggles por ancla (D-1/D-3/D-7).
+ * Formulario mínimo de medición → mirEvalLog (append-only + espejo Supabase). Muestra la entrada ya registrada.
+ *  · kind anclada: aciertos/4 + brecha + delta + toggles por slot (D-1 + 2 dinámicos) → anclasD real.
+ *  · kind pretest / quiz: `temaD` alimenta el gate del tema; quiz <60 % → caliente; 2º fallo → `ajuste` obligatorio.
+ *  · `tactica`: blancos acertables / fallos entre dos / cambiadas (opcionales, plegados).
+ *  · `qIds`: ids del pool oficial consumidos (anti-repetición) si el pool existe.
  */
-function EvalForm({ dia, kind, total, asignatura, tema, color, titulo, conAnclas, onSaved }: {
-  dia: { d: number; fecha: string; num?: number }; kind: MirEvalKind; total: number; asignatura: string; tema: string; color: string; titulo: string; conAnclas?: boolean; onSaved?: () => void;
+function EvalForm({ dia, kind, total, totalOpciones, asignatura, tema, capId, temaD, color, titulo, conAnclas, slots, tactica, qIds, onSaved }: {
+  dia: { d: number; fecha: string; num?: number }; kind: MirEvalKind; total: number; totalOpciones?: number[]; asignatura: string; tema: string;
+  capId?: string; temaD?: number; color: string; titulo: string; conAnclas?: boolean; slots?: MirAnclaSlot[]; tactica?: boolean; qIds?: string[]; onSaved?: () => void;
 }) {
+  const [tot, setTot] = useState<number>(total);
   const [aciertos, setAciertos] = useState<number>(total);
   const [blancos, setBlancos] = useState<number>(0);
   const [tipo, setTipo] = useState<MirTipoError | null>(null);
@@ -87,19 +163,38 @@ function EvalForm({ dia, kind, total, asignatura, tema, color, titulo, conAnclas
   const [tiempo, setTiempo] = useState<string>('');
   const [ccsn, setCcsn] = useState<string>('');
   const [anclas, setAnclas] = useState<{ d1: boolean; d3: boolean; d7: boolean }>({ d1: true, d3: true, d7: true });
+  const [ajuste, setAjuste] = useState<MirAjuste | null>(null);
+  const [bAcert, setBAcert] = useState(0);
+  const [fDos, setFDos] = useState(0);
+  const [camb, setCamb] = useState(0);
+  const [cambF, setCambF] = useState(0);
+  const [tacticaOn, setTacticaOn] = useState(false);
   const [msg, setMsg] = useState<string>('');
   const [tick, setTick] = useState(0);
-  const previa = useMemo(() => mirEntradaDe(dia.fecha, kind), [dia.fecha, kind, tick]);
-  const fallos = Math.max(0, total - aciertos - blancos);
-  const r = mirNeto(aciertos, total, blancos);
+  const previa = useMemo(() => mirEntradaDe(dia.fecha, kind, undefined, kind === 'pretest' || kind === 'quiz' ? dia.d : undefined), [dia.fecha, dia.d, kind, tick]);
+  const fallos = Math.max(0, tot - aciertos - blancos);
+  const r = mirNeto(aciertos, tot, blancos);
+  const pct = tot ? Math.round((aciertos / tot) * 1000) / 10 : 0;
+  const cambiarTotal = (n: number) => { setTot(n); setAciertos((a) => Math.min(a, n)); setBlancos((b) => Math.min(b, Math.max(0, n - Math.min(aciertos, n)))); };
+  // temas que fallarían con este registro (gate) → ¿exigen ajuste?
+  const temasQueFallan: number[] = kind === 'quiz' && temaD && pct < MIR_GATE.quizMinPct ? [temaD]
+    : conAnclas && slots ? slots.filter((s) => s.dia && !anclas[s.k]).map((s) => s.dia!.d) : [];
+  const exigen = useMemo(() => (temasQueFallan.length ? mirTemasQueExigenAjuste(temasQueFallan) : []), [temasQueFallan.join(','), tick]);
+  const hayFallo = fallos > 0 || temasQueFallan.length > 0;
   const guardar = () => {
     if (fallos > 0 && !tipo) { setMsg('Marca la brecha del fallo (knowledge / transfer / proceso).'); return; }
+    if (exigen.length && !ajuste) { setMsg(`2º fallo de ${exigen.map((s) => `D${s.d} ${s.tema}`).join(' · ')}: marca el AJUSTE (recursos / comprensión / aplicación / retención) — Palmerton: no sigas sin diagnosticar la raíz.`); return; }
+    const anclasD = slots ? { d1: slots[0]?.dia?.d, d3: slots[1]?.dia?.d, d7: slots[2]?.dia?.d } : undefined;
     const res = mirEvalLogAppend({
-      fecha: dia.fecha, d: dia.d, tema, asignatura, num: dia.num, aciertos, total, blancos,
+      fecha: dia.fecha, d: dia.d, tema, asignatura, num: dia.num, capId, aciertos, total: tot, blancos,
       tiempoSeg: Math.round((Number(tiempo) || 0) * 60), tipoError: fallos > 0 ? tipo : null, ccsn: ccsn.trim() || undefined,
-      delta_es: deltaEs, kind, anclas: conAnclas ? anclas : undefined,
+      delta_es: deltaEs, kind, anclas: conAnclas ? anclas : undefined, anclasD: conAnclas ? anclasD : undefined,
+      ajuste: ajuste || undefined, qIds: qIds && qIds.length ? qIds : undefined,
+      blancosAcertables: tacticaOn ? bAcert : undefined, fallosEntreDos: tacticaOn ? fDos : undefined,
+      cambiadas: tacticaOn ? camb : undefined, cambiadasAFallo: tacticaOn ? cambF : undefined,
     });
-    setMsg(res.guardado ? `Registrado · neto ${r.neto}/${total} (${r.netoPct} %)` : 'Sin storage en este dispositivo: no se guardó (copia el JSON).');
+    const gate = kind === 'quiz' ? (pct < MIR_GATE.quizMinPct ? ' · quiz <60 % → tema CALIENTE (ancla de mañana)' : pct >= MIR_GATE.validadoPct ? ' · ≥80 %' : '') : '';
+    setMsg(res.guardado ? `Registrado · neto ${r.neto}/${tot} (${r.netoPct} %)${gate} · espejo Supabase en segundo plano` : 'Sin storage en este dispositivo: no se guardó (copia el JSON).');
     setTick((t) => t + 1);
     if (onSaved) onSaved();
   };
@@ -108,32 +203,44 @@ function EvalForm({ dia, kind, total, asignatura, tema, color, titulo, conAnclas
       <Text style={[st.formTitle, { color }]}>{titulo}</Text>
       {previa && (
         <Text style={st.formPrev}>
-          ✓ ya registrado hoy: {previa.aciertos}/{previa.total} · blancos {previa.blancos} · neto {mirNeto(previa.aciertos, previa.total, previa.blancos).netoPct} %{previa.tipoError ? ` · ${previa.tipoError}` : ''}{previa.delta_es ? ' · 🇪🇸 delta' : ''} (append-only: un nuevo guardado añade otra entrada)
+          ✓ ya registrado hoy: {previa.aciertos}/{previa.total} · blancos {previa.blancos} · neto {mirNeto(previa.aciertos, previa.total, previa.blancos).netoPct} %{previa.tipoError ? ` · ${previa.tipoError}` : ''}{previa.delta_es ? ' · 🇪🇸 delta' : ''}{previa.ajuste ? ` · ajuste ${previa.ajuste}` : ''} (append-only: un nuevo guardado añade otra entrada)
         </Text>
       )}
-      {total <= 4 ? (
+      {qIds && qIds.length > 0 && <Text style={st.formHint}>pool oficial · ids que se marcarán como usadas: {qIds.join(', ')}</Text>}
+      {totalOpciones && totalOpciones.length > 1 && (
+        <View style={st.chipRow}>
+          <Text style={st.stepLbl}>Total Q</Text>
+          {totalOpciones.map((n) => (
+            <TouchableOpacity key={n} activeOpacity={0.8} onPress={() => cambiarTotal(n)} style={[st.numChip, tot === n && { backgroundColor: color + '33', borderColor: color }]}>
+              <Text style={[st.numChipTxt, tot === n && { color }]}>{n}Q</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      )}
+      {tot <= 5 ? (
         <View style={st.chipRow}>
           <Text style={st.stepLbl}>Aciertos</Text>
-          {Array.from({ length: total + 1 }, (_, i) => i).map((n) => (
-            <TouchableOpacity key={n} activeOpacity={0.8} onPress={() => { setAciertos(n); if (blancos > total - n) setBlancos(total - n); }} style={[st.numChip, aciertos === n && { backgroundColor: color + '33', borderColor: color }]}>
-              <Text style={[st.numChipTxt, aciertos === n && { color }]}>{n}/{total}</Text>
+          {Array.from({ length: tot + 1 }, (_, i) => i).map((n) => (
+            <TouchableOpacity key={n} activeOpacity={0.8} onPress={() => { setAciertos(n); if (blancos > tot - n) setBlancos(tot - n); }} style={[st.numChip, aciertos === n && { backgroundColor: color + '33', borderColor: color }]}>
+              <Text style={[st.numChipTxt, aciertos === n && { color }]}>{n}/{tot}</Text>
             </TouchableOpacity>
           ))}
         </View>
       ) : (
-        <Stepper label={`Aciertos /${total}`} value={aciertos} min={0} max={total} onChange={(n) => { setAciertos(n); if (blancos > total - n) setBlancos(total - n); }} color={color} />
+        <Stepper label={`Aciertos /${tot}`} value={aciertos} min={0} max={tot} onChange={(n) => { setAciertos(n); if (blancos > tot - n) setBlancos(tot - n); }} color={color} />
       )}
-      <Stepper label="En blanco" value={blancos} min={0} max={total - aciertos} onChange={setBlancos} color={Colors.muted} />
-      <Text style={st.formNeto}>fallos {fallos} → neto = {aciertos} − {fallos}/3 = <Text style={{ color, fontWeight: '800' }}>{r.neto}</Text> ({r.netoPct} %)</Text>
-      {conAnclas && (
+      <Stepper label="En blanco" value={blancos} min={0} max={tot - aciertos} onChange={(n) => { setBlancos(n); if (bAcert > n) setBAcert(n); }} color={Colors.muted} />
+      <Text style={st.formNeto}>fallos {fallos} → neto = {aciertos} − {fallos}/3 = <Text style={{ color, fontWeight: '800' }}>{r.neto}</Text> ({r.netoPct} %){kind === 'quiz' || kind === 'pretest' ? ` · gate: ${pct} % acertado` : ''}</Text>
+      {conAnclas && slots && (
         <View style={st.chipRow}>
-          <Text style={st.stepLbl}>Anclas OK</Text>
-          {(['d1', 'd3', 'd7'] as const).map((k) => (
-            <TouchableOpacity key={k} activeOpacity={0.8} onPress={() => setAnclas((a) => ({ ...a, [k]: !a[k] }))} style={[st.numChip, anclas[k] ? { backgroundColor: GREEN + '2A', borderColor: GREEN } : { backgroundColor: CORAL + '2A', borderColor: CORAL }]}>
-              <Text style={[st.numChipTxt, { color: anclas[k] ? GREEN : CORAL }]}>{k.toUpperCase().replace('D', 'D-')} {anclas[k] ? '✓' : '✗'}</Text>
+          <Text style={st.stepLbl}>Slots OK</Text>
+          {slots.map((s) => (
+            <TouchableOpacity key={s.k} activeOpacity={0.8} disabled={!s.dia} onPress={() => setAnclas((a) => ({ ...a, [s.k]: !a[s.k] }))} style={[st.numChip, !s.dia ? { opacity: 0.4 } : anclas[s.k] ? { backgroundColor: GREEN + '2A', borderColor: GREEN } : { backgroundColor: CORAL + '2A', borderColor: CORAL }]}>
+              <Text style={[st.numChipTxt, { color: !s.dia ? Colors.muted : anclas[s.k] ? GREEN : CORAL }]}>{s.label}{s.dia ? ` D${s.dia.d}` : ''} {s.dia ? (anclas[s.k] ? '✓' : '✗') : '—'}</Text>
             </TouchableOpacity>
           ))}
-          {!anclas.d7 && <Text style={st.formHint}>fallo D-7 → el tema entra en la cola D+14</Text>}
+          {slots[2]?.dia && !anclas.d7 && slots[2].motivo === 'fijo' && <Text style={st.formHint}>fallo D-7 → el tema entra en la cola D+14</Text>}
+          {temasQueFallan.length > 0 && <Text style={[st.formHint, { color: CORAL }]}>slot ✗ → el tema queda CALIENTE y vuelve mañana</Text>}
         </View>
       )}
       {fallos > 0 && (
@@ -147,6 +254,34 @@ function EvalForm({ dia, kind, total, asignatura, tema, color, titulo, conAnclas
         </View>
       )}
       {fallos > 0 && tipo && <Text style={st.formHint}>{MIR_TIPO_ERROR.find((t) => t.k === tipo)?.desc}</Text>}
+      {hayFallo && (kind === 'quiz' || conAnclas) && (
+        <View style={st.chipRow}>
+          <Text style={[st.stepLbl, exigen.length ? { color: CORAL } : null]}>Ajuste{exigen.length ? ' ⚠' : ''}</Text>
+          {MIR_AJUSTES.map((a) => (
+            <TouchableOpacity key={a.k} activeOpacity={0.8} onPress={() => setAjuste((v) => (v === a.k ? null : a.k))} style={[st.numChip, ajuste === a.k && { backgroundColor: AMBER + '2A', borderColor: AMBER }]}>
+              <Text style={[st.numChipTxt, ajuste === a.k && { color: AMBER }]}>{a.label}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      )}
+      {exigen.length > 0 && <Text style={[st.formHint, { color: CORAL }]}>2º fallo de {exigen.map((s) => `D${s.d} ${s.tema}`).join(' · ')} → ajuste OBLIGATORIO (¿qué está roto: recursos, comprensión, aplicación o retención?)</Text>}
+      {ajuste && <Text style={st.formHint}>{MIR_AJUSTES.find((a) => a.k === ajuste)?.desc}</Text>}
+      {tactica && (
+        <View>
+          <TouchableOpacity activeOpacity={0.8} onPress={() => setTacticaOn((v) => !v)} style={[st.plegHead, { borderColor: AMBER + '44', marginTop: 4 }]}>
+            <Text style={[st.plegTxt, { color: AMBER }]}>{tacticaOn ? '▾' : '▸'} táctica −1/3 (opcional · 10 s): blancos acertables · fallos entre dos · cambiadas</Text>
+          </TouchableOpacity>
+          {tacticaOn && (
+            <View>
+              <Stepper label="Blancos acertables" value={bAcert} min={0} max={blancos} onChange={setBAcert} color={AMBER} />
+              <Stepper label="Fallos entre dos" value={fDos} min={0} max={fallos} onChange={setFDos} color={AMBER} />
+              <Stepper label="Cambiadas" value={camb} min={0} max={tot} onChange={(n) => { setCamb(n); if (cambF > n) setCambF(n); }} color={AMBER} />
+              <Stepper label="…a fallo" value={cambF} min={0} max={Math.min(camb, fallos)} onChange={setCambF} color={CORAL} />
+              <Text style={st.formHint}>EV de responder tus blancos = acertables − (blancos − acertables)/3 · un Top 50 deja ≤3-5 blancos · cambia solo por error objetivo de lectura</Text>
+            </View>
+          )}
+        </View>
+      )}
       <View style={st.chipRow}>
         <TouchableOpacity activeOpacity={0.8} onPress={() => setDeltaEs((v) => !v)} style={[st.numChip, deltaEs && { backgroundColor: AMBER + '2A', borderColor: AMBER }]}>
           <Text style={[st.numChipTxt, deltaEs && { color: AMBER }]}>🇪🇸 delta-España {deltaEs ? '✓' : ''}</Text>
@@ -156,20 +291,22 @@ function EvalForm({ dia, kind, total, asignatura, tema, color, titulo, conAnclas
       </View>
       <View style={{ flexDirection: 'row', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
         <TouchableOpacity activeOpacity={0.85} onPress={guardar} style={[st.saveBtn, { backgroundColor: color }]}><Text style={st.saveBtnTxt}>Guardar en el log</Text></TouchableOpacity>
-        {!!msg && <Text style={[st.formHint, { color: Colors.onSurfaceVariant }]}>{msg}</Text>}
+        {!!msg && <Text style={[st.formHint, { color: Colors.onSurfaceVariant, flex: 1 }]}>{msg}</Text>}
       </View>
     </View>
   );
 }
 
-function ExportRow() {
+function ExportRow({ sync }: { sync: SyncInfo }) {
   const [msg, setMsg] = useState('');
   const n = mirEvalLogLoad().length;
+  const syncTxt = sync == null ? 'espejo Supabase: conectando…' : sync.ok ? `espejo Supabase ✓ ${sync.remotas} filas${sync.anadidas ? ` · +${sync.anadidas} traídas` : ''}${sync.subidas ? ` · ${sync.subidas} subidas` : ''}` : 'espejo Supabase: sin conexión (solo local)';
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 6, flexWrap: 'wrap' }}>
-      <TouchableOpacity activeOpacity={0.85} onPress={() => { const ok = copiar(mirEvalLogExportJSON()); setMsg(ok ? 'JSON copiado al portapapeles ✓' : 'Sin portapapeles: abre la consola y usa mirEvalLogExportJSON()'); }} style={[st.verWide, { borderColor: BLUE + '88', marginTop: 0, flex: 1 }]}>
+      <TouchableOpacity activeOpacity={0.85} onPress={() => { const ok = copiar(mirEvalLogExportJSON()); setMsg(ok ? 'JSON copiado ✓ → pégalo en DATA/MIR/mir_eval_log_export.json (gen_delta_espana.js)' : 'Sin portapapeles: abre la consola y usa mirEvalLogExportJSON()'); }} style={[st.verWide, { borderColor: BLUE + '88', marginTop: 0, flex: 1 }]}>
         <Text style={[st.verTxt, { color: BLUE }]}>⤓ Exportar log JSON ({n} entradas · plan:MIR)</Text>
       </TouchableOpacity>
+      <Text style={[st.formHint, { color: sync?.ok ? GREEN : Colors.muted }]}>{syncTxt}</Text>
       {!!msg && <Text style={st.formHint}>{msg}</Text>}
     </View>
   );
@@ -186,36 +323,39 @@ function BridgeChip({ fecha }: { fecha: string }) {
   );
 }
 
-/** 3 anclas clicables de la eval 15:15 (D-1 2Q · D-3 1Q · D-7 1Q). */
-function AnclasView({ dia, onPick }: { dia: DiaMIR; onPick: (d: number) => void }) {
-  const a = mirAnclas(dia.d);
-  const enD7 = mirAsignaturasEnAnclasD7();
+/** Anclas DINÁMICAS de la eval 15:15: D-1 fijo (2Q) + 2 slots que priorizan temas calientes (gate Palmerton). */
+function AnclasView({ dia, slots, calientes, onPick }: { dia: DiaMIR; slots: MirAnclaSlot[]; calientes: MirTemaEstado[]; onPick: (d: number) => void }) {
+  const enD7 = mirAsignaturasEnAnclasD7(undefined, dia.fecha);
+  const motivoColor = (m: MirAnclaSlot['motivo']) => (m === 'caliente' ? CORAL : m === 'cola' ? AMBER : BLUE);
   return (
     <View>
-      <Text style={st.secLbl}>🎯 15:15 · Evaluación anclada 4Q (2Q D-1 · 1Q D-3 · 1Q D-7) · {MIR_SEG_POR_Q} s/Q</Text>
-      {MIR_ANCLAS_Q.map((q, i) => {
-        const x = a[q.k];
+      <Text style={st.secLbl}>🎯 15:15 · Evaluación anclada 4Q (2Q D-1 + 2 slots dinámicos) · {MIR_SEG_POR_Q} s/Q</Text>
+      {slots.map((s, i) => {
+        const x = s.dia; const c = motivoColor(s.motivo);
         return (
-          <FadeUp key={q.k} delay={30 + i * 25}>
+          <FadeUp key={s.k} delay={30 + i * 25}>
             {x ? (
-              <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(capUrl(x.capId))} style={st.anchor}>
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-                  <TouchableOpacity activeOpacity={0.7} onPress={() => onPick(x.d)} style={[st.dChip, { borderColor: BLUE + '88' }]}><Text style={[st.dChipTxt, { color: BLUE }]}>{q.label} · D{x.d}</Text></TouchableOpacity>
-                  <Text style={st.anchorLbl}>{q.nQ}Q · {x.asignatura}</Text>
+              <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(capUrl(x.capId))} style={[st.anchor, { borderLeftColor: c }]}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                  <TouchableOpacity activeOpacity={0.7} onPress={() => onPick(x.d)} style={[st.dChip, { borderColor: c + '88' }]}><Text style={[st.dChipTxt, { color: c }]}>{s.label} · D{x.d}</Text></TouchableOpacity>
+                  <Text style={[st.anchorLbl, { color: c }]}>{s.nQ}Q · {x.asignatura}</Text>
+                  {s.motivo === 'caliente' && s.estado ? <Chip label={`● caliente · ${s.estado.pct} % · ${s.estado.fallos} fallo${s.estado.fallos === 1 ? '' : 's'} · ${s.estado.consecutivosOk}/2 OK`} color={CORAL} small /> : null}
+                  {s.motivo === 'cola' ? <Chip label="cola D+14 vencida" color={AMBER} small /> : null}
                 </View>
                 <Text style={st.anchorVal} numberOfLines={2}>{x.tema}</Text>
-                <Text style={st.anchorSub}>test del capítulo ProMIR ↗ · {q.k === 'd7' ? 'fallo aquí → cola D+14 (no hay finde)' : 'fallo → Whole-Page del capítulo + APEX'}</Text>
+                <Text style={st.anchorSub}>test del capítulo ProMIR ↗ · {s.motivo === 'caliente' ? `sale de caliente con ${MIR_GATE.aciertosConsecutivos} aciertos seguidos${s.estado?.necesitaAjuste ? ' · ⚠ 2º fallo: ajuste obligatorio' : ''}` : s.k === 'd7' && s.motivo === 'fijo' ? 'fallo aquí → cola D+14 (no hay finde) y tema caliente' : 'fallo → tema caliente mañana + Whole-Page del capítulo + APEX'}</Text>
               </TouchableOpacity>
             ) : (
               <View style={[st.anchor, { borderLeftColor: Hairline.medium }]}>
-                <Text style={st.anchorLbl}>{q.label} · sin ancla todavía (arranque del plan)</Text>
-                <Text style={st.anchorSub}>{q.nQ}Q pasan al tema D-1 hasta que exista</Text>
+                <Text style={st.anchorLbl}>{s.label} · sin ancla todavía (arranque del plan)</Text>
+                <Text style={st.anchorSub}>{s.nQ}Q pasan al tema D-1 hasta que exista</Text>
               </View>
             )}
           </FadeUp>
         );
       })}
-      {enD7.length > 0 && <Text style={st.formHint}>Asignaturas en rotación D-7 por cierre &lt;55 %: {enD7.join(' · ')}</Text>}
+      {calientes.length > 2 && <Text style={st.formHint}>Temas calientes en espera ({calientes.length - 2} más): {calientes.slice(2, 8).map((s) => `D${s.d}`).join(' · ')} — entran cuando se liberen slots.</Text>}
+      {enD7.length > 0 && <Text style={st.formHint}>Asignaturas en rotación D-7 (agregado n≥{MIR_AGREGADO_MIN_Q} o último cierre &lt;{mirCierreUmbral(dia.fecha).anclasD7} %): {enD7.join(' · ')}</Text>}
     </View>
   );
 }
@@ -225,18 +365,22 @@ function CierreCard({ dia, onSaved }: { dia: DiaMIR; onSaved: () => void }) {
   const c = mirCierreDe(dia.d);
   if (!c) return null;
   const prev = mirCierreDeAsignatura(c.asignatura);
+  const agg = mirAgregadoAsignatura(c.asignatura, undefined, dia.fecha);
+  const u = mirCierreUmbral(dia.fecha);
   return (
     <FadeUp delay={30}>
       <View style={[st.temaCard, { borderColor: CORAL + '66' }]}>
         <Text style={[st.formTitle, { color: CORAL }]}>🏁 15:15–15:30 · TEST DE CIERRE · {c.asignatura} (D{c.dIni}-D{c.dFin})</Text>
-        <Text style={st.temaSub}>10Q reales MIR mixtas de la asignatura · cronometrado {mirMinutos(10)} min ({MIR_SEG_POR_Q} s/Q) · en blanco permitido · neto = A − F/3 · ≥70 % consolidada · &lt;55 % entra a las anclas D-7. Sustituye hoy a la eval anclada.</Text>
+        <Text style={st.temaSub}>10Q reales MIR mixtas de la asignatura · cronometrado {mirMinutos(10)} min ({MIR_SEG_POR_Q} s/Q) · en blanco permitido · neto = A − F/3 · ≥{u.consolidada} % consolidada · &lt;{u.anclasD7} % entra a las anclas D-7 ({u.fase}). Sustituye hoy a la eval anclada.</Text>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 8 }}>
           {c.capIds.map((id, i) => (
             <TouchableOpacity key={id} activeOpacity={0.8} onPress={() => openUrl(capUrl(id))} style={[st.dChip, { borderColor: CORAL + '66' }]}><Text style={[st.dChipTxt, { color: CORAL }]}>cap {i + 1} ↗</Text></TouchableOpacity>
           ))}
         </View>
-        {prev && <Text style={[st.formHint, { marginTop: 8 }]}>Último cierre registrado: {prev.entry.fecha} · neto {prev.netoPct} % → {MIR_ESTADO_CIERRE_TXT[prev.estado]}</Text>}
-        <EvalForm dia={{ d: dia.d, fecha: dia.fecha, num: c.num }} kind="cierre" total={10} asignatura={c.asignatura} tema={`Cierre ${c.asignatura}`} color={CORAL} titulo="Registrar test de cierre (10Q)" onSaved={onSaved} />
+        {prev && <Text style={[st.formHint, { marginTop: 8 }]}>Último cierre registrado: {prev.entry.fecha} · neto {prev.netoPct} % → {mirEstadoCierreTxt(prev.estado, dia.fecha)}</Text>}
+        {agg.fuente === 'agregado' && <Text style={st.formHint}>Agregado de la asignatura (cierre + ancladas + quiz, {agg.total}Q): neto {agg.netoPct} % → {mirEstadoCierreTxt(agg.estado, dia.fecha)} (el agregado manda sobre el cierre de 10Q)</Text>}
+        <TimerQ color={CORAL} presets={[10, 25, 40]} />
+        <EvalForm dia={{ d: dia.d, fecha: dia.fecha, num: c.num }} kind="cierre" total={10} asignatura={c.asignatura} tema={`Cierre ${c.asignatura}`} color={CORAL} titulo="Registrar test de cierre (10Q)" tactica onSaved={onSaved} />
       </View>
     </FadeUp>
   );
@@ -247,7 +391,7 @@ function ColaD14({ hoy }: { hoy: string }) {
   if (!cola.length) return null;
   return (
     <View style={[st.formCard, { borderColor: AMBER + '44' }]}>
-      <Text style={[st.formTitle, { color: AMBER }]}>⏳ Cola D+14 (fallos en el ancla D-7)</Text>
+      <Text style={[st.formTitle, { color: AMBER }]}>⏳ Cola D+14 (fallos en el slot D-7)</Text>
       {cola.slice(0, 6).map((c, i) => (
         <Text key={i} style={[st.formHint, c.vencida && { color: CORAL }]}>{c.vencida ? '● ' : '○ '}{c.fechaObjetivo} · D{c.d} {c.asignatura} → {c.tema}</Text>
       ))}
@@ -255,10 +399,16 @@ function ColaD14({ hoy }: { hoy: string }) {
   );
 }
 
-function HoyView({ dia, onOpenTemario, hecho, onToggle, onPick, hoyISO, bump }: { dia: DiaMIR; onOpenTemario: () => void; hecho: boolean; onToggle: (d: number) => void; onPick: (d: number) => void; hoyISO: string; bump: () => void }) {
+function HoyView({ dia, onOpenTemario, hecho, onToggle, onPick, hoyISO, bump, sync }: { dia: DiaMIR; onOpenTemario: () => void; hecho: boolean; onToggle: (d: number) => void; onPick: (d: number) => void; hoyISO: string; bump: () => void; sync: SyncInfo }) {
   const tier = MIR_RENT[dia.rent] || MIR_RENT.verde;
   const cierre = mirCierreDe(dia.d);
   const esTema = dia.d <= MIR_TEMAS_TOTAL;
+  const entries = mirEvalLogLoad();
+  const din = useMemo(() => mirAnclasDinamicas(dia.d, entries, hoyISO), [dia.d, entries.length, hoyISO]);
+  const estadoTema = esTema ? mirEstadosTemas(entries).get(dia.d) : undefined;
+  const poolOK = poolResumen().length > 0;
+  const qIdsQuiz = useMemo(() => (poolOK ? preguntasSinUsar(dia.capId, mirUsadasIds(entries)).slice(0, 10).map((q) => q.id) : []), [dia.capId, entries.length, poolOK]);
+  const d1 = din.slots[0].dia;
   return (
     <View>
       <FadeUp>
@@ -271,6 +421,8 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, onPick, hoyISO, bump }: 
             {dia.peso != null ? <Chip label={`Peso MIR ${dia.peso}%`} color={AMBER} small /> : null}
             {dia.sub ? <Chip label={dia.sub === 'epi' ? 'Tier S · Epi' : 'Tier S · Bioética'} color={GREEN} small /> : null}
             <Chip label={vueltaTxt(dia.vuelta)} color={GREEN} small />
+            {dia.delta ? <Chip label="🇪🇸 delta previsible" color={AMBER} small /> : null}
+            {estadoTema && estadoTema.estado !== 'sin-dato' ? <Chip label={estadoTema.estado === 'validado' ? `✓ validado ${estadoTema.pct} %` : estadoTema.estado === 'caliente' ? `● caliente ${estadoTema.pct} %` : `○ ${estadoTema.pct} % (${estadoTema.total}Q)`} color={estadoTema.estado === 'validado' ? GREEN : estadoTema.estado === 'caliente' ? CORAL : Colors.muted} small /> : null}
             {mirObsUrl(dia.capId) && (
               <TouchableOpacity activeOpacity={0.8} onPress={() => openUrl(mirObsUrl(dia.capId)!)}
                 style={[st.sysBadge, { backgroundColor: OBS + '1F', borderColor: OBS + '77' }]}>
@@ -280,6 +432,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, onPick, hoyISO, bump }: 
           </View>
           <Text style={st.temaTitle}>{dia.tema}</Text>
           <Text style={st.temaSub}>{esTema ? 'Tema atómico del día · 1/día · toca la asignatura para ver todo el temario y tu avance ›' : 'Día de medición: sin tema nuevo'}</Text>
+          {dia.delta ? <Text style={[st.formHint, { color: AMBER, marginTop: 6 }]}>🇪🇸 Delta-España previsible en este capítulo (legislación / guías de sociedad / calendario vacunal / cribados): lee antes la fila de DATA/MIR/DELTA_ESPANA.md y marca 🇪🇸 en el log si fallas por contestar con el manejo Perú/USA. Cada APEX delta lleva fuente oficial española verificada.</Text> : null}
           <TouchableOpacity activeOpacity={0.85} onPress={() => onToggle(dia.d)} style={[st.doneBtn, hecho ? st.doneBtnOn : st.doneBtnOff]}>
             <Text style={[st.doneBtnTxt, { color: hecho ? '#1A1205' : AMBER }]}>{hecho ? '✓ Completado hoy' : '○ Marcar como completado'}</Text>
           </TouchableOpacity>
@@ -292,8 +445,9 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, onPick, hoyISO, bump }: 
         <FadeUp delay={30}>
           <View style={[st.temaCard, { borderColor: CORAL + '66' }]}>
             <Text style={[st.formTitle, { color: CORAL }]}>🏁 mini-MIR 40Q mixto · {mirMinutos(40)} min cronometrados · en blanco permitido</Text>
-            <Text style={st.temaSub}>Preguntas oficiales de las 14 asignaturas (cuadernillos examenesmir.com hasta que exista el pool mapeado). Solo plantilla + neto hoy; la corrección es mañana (D78).</Text>
-            <EvalForm dia={{ d: dia.d, fecha: dia.fecha }} kind="miniMIR" total={40} asignatura="Repaso integral" tema="mini-MIR 40Q" color={CORAL} titulo="Registrar mini-MIR (40Q)" onSaved={bump} />
+            <Text style={st.temaSub}>Preguntas oficiales de las 14 asignaturas (cuadernillos examenesmir.com hasta que exista el pool mapeado). Solo plantilla + neto hoy; la corrección es mañana (D78). Mínimo on-track del hito: 50 % neto.</Text>
+            <TimerQ color={CORAL} presets={[40, 25, 10]} />
+            <EvalForm dia={{ d: dia.d, fecha: dia.fecha }} kind="miniMIR" total={40} asignatura="Repaso integral" tema="mini-MIR 40Q" color={CORAL} titulo="Registrar mini-MIR (40Q)" tactica onSaved={bump} />
           </View>
         </FadeUp>
       )}
@@ -301,8 +455,15 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, onPick, hoyISO, bump }: 
 
       {esTema && (cierre ? <CierreCard dia={dia} onSaved={bump} /> : (
         <>
-          <AnclasView dia={dia} onPick={onPick} />
-          {(dia.d > 1) && <EvalForm dia={{ d: dia.d, fecha: dia.fecha, num: dia.num }} kind="anclada" total={4} asignatura={mirDiaN(dia.d - 1)?.asignatura || dia.asignatura} tema={mirDiaN(dia.d - 1)?.tema || dia.tema} color={BLUE} titulo="15:27 · Registrar eval anclada (4Q)" conAnclas onSaved={bump} />}
+          <AnclasView dia={dia} slots={din.slots} calientes={din.calientes} onPick={onPick} />
+          {dia.d > 1 && (
+            <>
+              <Plegable titulo={`⏱ Cronómetro ${MIR_SEG_POR_Q} s/Q (4Q · 10Q · 25Q · 40Q) · aviso a 100 s por pregunta`} color={BLUE}>
+                <TimerQ color={BLUE} />
+              </Plegable>
+              <EvalForm dia={{ d: dia.d, fecha: dia.fecha, num: dia.num }} kind="anclada" total={4} asignatura={d1?.asignatura || dia.asignatura} tema={d1?.tema || dia.tema} capId={d1?.capId} color={BLUE} titulo="15:27 · Registrar eval anclada (4Q)" conAnclas slots={din.slots} tactica onSaved={bump} />
+            </>
+          )}
         </>
       ))}
       <ColaD14 hoy={hoyISO} />
@@ -310,26 +471,32 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, onPick, hoyISO, bump }: 
       {esTema && (
         <>
           <Text style={st.secLbl}>📋 Cola de hoy · 15:30–16:15 (en orden) · 17-19 Q/día</Text>
-          <FadeUp delay={60}><ColaItem icon="❓" lbl="PRE-TEST · 5Q ciegas (test del capítulo ProMIR) · 8 min" val={`${dia.asignatura} → ${dia.tema}`} sub="ProMIR → Entrenar · marca los gaps: solo eso se lee después" color={GREEN} url={capUrl(dia.capId)} /></FadeUp>
+          <FadeUp delay={60}><ColaItem icon="❓" lbl="PRE-TEST · 5Q ciegas (test del capítulo ProMIR) · 8 min" val={`${dia.asignatura} → ${dia.tema}`} sub="ProMIR → Entrenar · marca los gaps: solo eso se lee después · REGÍSTRALO: cuenta para el gate del tema" color={GREEN} url={capUrl(dia.capId)} /></FadeUp>
+          <Plegable titulo="Registrar pre-test 5Q (10 s · diagnóstico, no cuenta para readiness; sí para validar el tema)" color={GREEN}>
+            <EvalForm dia={{ d: dia.d, fecha: dia.fecha, num: dia.num }} kind="pretest" total={5} asignatura={dia.asignatura} tema={dia.tema} capId={dia.capId} temaD={dia.d} color={GREEN} titulo="15:38 · Pre-test 5Q ciegas" />
+          </Plegable>
           <FadeUp delay={90}><ColaItem icon="📖" lbl="LECTURA DIRIGIDA · solo los gaps del pre-test · 15 min" val={`Whole Page Rule sobre el capítulo ProMIR${dia.resumenVid ? ` · (vídeo RESUMEN DE ASIGNATURA ${dia.resumenVid}: no es del capítulo, no verlo entero)` : ''}`} sub="vídeo solo si el clip del capítulo es ≤12 min verificado · dudas → CCSN" color={AMBER} url={capUrl(dia.capId)} /></FadeUp>
-          <FadeUp delay={120}><ColaItem icon="🧪" lbl="8-10Q COMENTADAS · Rule-In → Rule-Out · 12 min" val={`Test del capítulo ProMIR · cover-the-options · ${MIR_SEG_POR_Q} s/Q`} sub="cada fallo → Shopping List (knowledge / transfer / proceso · 🇪🇸 delta)" color={BLUE} url={capUrl(dia.capId)} /></FadeUp>
+          <FadeUp delay={120}><ColaItem icon="🧪" lbl="8-10Q COMENTADAS · Rule-In → Rule-Out · 12 min" val={`Test del capítulo ProMIR · cover-the-options · ${MIR_SEG_POR_Q} s/Q${poolOK ? ` · pool oficial: ${qIdsQuiz.length} Q sin usar de este capítulo` : ' · sin pool oficial (test del capítulo)'}`} sub="cada fallo → Shopping List (knowledge / transfer / proceso · 🇪🇸 delta) · REGÍSTRALO (20 s): <60 % = tema caliente → ancla de mañana" color={BLUE} url={capUrl(dia.capId)} /></FadeUp>
+          <Plegable titulo="Registrar quiz 8-10Q (20 s · gate Palmerton: <60 % → caliente · 2º fallo → ajuste)" color={BLUE} abierto={!!mirEntradaDe(dia.fecha, 'pretest', entries, dia.d)}>
+            <EvalForm dia={{ d: dia.d, fecha: dia.fecha, num: dia.num }} kind="quiz" total={10} totalOpciones={[8, 9, 10]} asignatura={dia.asignatura} tema={dia.tema} capId={dia.capId} temaD={dia.d} color={BLUE} titulo="16:05 · Quiz 8-10Q comentadas" tactica qIds={qIdsQuiz} onSaved={bump} />
+          </Plegable>
           {mirObsUrl(dia.capId) && (
-            <FadeUp delay={135}><ColaItem icon="◆" lbl="OBSIDIAN · nota madre del tema" val={`${dia.asignatura} → ${dia.tema}`} sub="Vault_Medicina MIR_Joseph · aquí caen los APEX de hoy (motor APEX)" color={OBS} url={mirObsUrl(dia.capId)!} /></FadeUp>
+            <FadeUp delay={135}><ColaItem icon="◆" lbl="OBSIDIAN · nota madre del tema (lectura / Shopping List)" val={`${dia.asignatura} → ${dia.tema}`} sub="Vault_Medicina MIR_Joseph · los APEX NO pasan por aquí hasta verificar n8n (P0-2/P0-3): van directos a Anki" color={OBS} url={mirObsUrl(dia.capId)!} /></FadeUp>
           )}
-          <FadeUp delay={142}><ColaItem icon="🃏" lbl="ANKI · deck de la asignatura (FSRS · retention 0,85)" val={mirAnkiDeck(dia.asignatura)} sub="abre AnkiWeb ↗ · en Anki escritorio busca este deck exacto · preset APEX::MIR" color={Colors.teal} url={ANKIWEB} /></FadeUp>
+          <FadeUp delay={142}><ColaItem icon="🃏" lbl="ANKI · deck de la asignatura (FSRS · retention 0,85)" val={mirAnkiDeck(dia.asignatura)} sub={`abre AnkiWeb ↗ · en Anki escritorio busca este deck exacto · preset APEX::MIR · ${APEX_DIRECTO_ANKI}`} color={Colors.teal} url={ANKIWEB} /></FadeUp>
           <FadeUp delay={150}>
             <View style={[st.cola, { borderLeftColor: AMBER }]}>
               <Text style={st.colaIcon}>🃏</Text>
               <View style={{ flex: 1 }}>
-                <Text style={st.colaLbl}>APEX · 16:05–16:15 · ≤4 desde el Shopping List</Text>
-                <Text style={st.colaVal}>SAQ + por qué fisiopatológico + 🇪🇸 delta vs Perú/USA + tag {dia.usmleSystem !== '—' ? `USMLE ${dia.usmleSystem}` : 'USMLE'} · 1 de cada 4 con imagen</Text>
-                <Text style={st.colaSub}>doble tag: {mirAnkiDeck(dia.asignatura)} + sistema USMLE</Text>
+                <Text style={st.colaLbl}>APEX · 16:05–16:15 · ≤4 desde el Shopping List · DIRECTAMENTE EN ANKI</Text>
+                <Text style={st.colaVal}>SAQ + por qué fisiopatológico + 🇪🇸 delta vs Perú/USA + tag {dia.usmleSystem !== '—' ? `USMLE ${dia.usmleSystem}` : 'USMLE'} · 1 de cada 4 con imagen{poolOK ? ` · campo "Pregunta oficial origen" = id del pool (${qIdsQuiz.slice(0, 3).join(', ')}${qIdsQuiz.length > 3 ? '…' : ''})` : ' · campo "Pregunta oficial origen" cuando exista el pool'}</Text>
+                <Text style={st.colaSub}>doble tag: {mirAnkiDeck(dia.asignatura)} + sistema USMLE · {APEX_DIRECTO_ANKI}{dia.delta ? ' · APEX delta: fuente oficial española de DELTA_ESPANA.md' : ''}</Text>
               </View>
             </View>
           </FadeUp>
         </>
       )}
-      <ExportRow />
+      <ExportRow sync={sync} />
     </View>
   );
 }
@@ -337,6 +504,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, onPick, hoyISO, bump }: 
 /** D78 / handoff: tabla de neto por asignatura (cierres + mini-MIR + mantenimiento). */
 function BaselineView() {
   const tabla = mirBaselineTabla();
+  const u = mirCierreUmbral();
   return (
     <FadeUp delay={30}>
       <View style={[st.temaCard, { borderColor: CORAL + '66' }]}>
@@ -344,26 +512,26 @@ function BaselineView() {
         {tabla.length === 0 ? <Text style={st.temaSub}>Sin mediciones ciegas registradas (cierres / mini-MIR). Registra el mini-MIR de ayer y los cierres.</Text> : tabla.map((s) => (
           <View key={s.asignatura} style={st.baseRow}>
             <Text style={st.baseAsig} numberOfLines={1}>{s.asignatura}</Text>
-            <Text style={[st.baseNeto, { color: s.netoPct >= 70 ? GREEN : s.netoPct < 55 ? CORAL : AMBER }]}>{s.netoPct} %</Text>
+            <Text style={[st.baseNeto, { color: s.netoPct >= u.consolidada ? GREEN : s.netoPct < u.anclasD7 ? CORAL : AMBER }]}>{s.netoPct} %</Text>
             <Text style={st.baseSub}>{s.aciertos}/{s.total} · bl {s.blancos} · 🇪🇸 {s.deltaEs}</Text>
           </View>
         ))}
-        <Text style={st.formHint}>Corrección Whole-Page de cada fallo + Shopping List → APEX. &lt;55 % → anclas D-7 / viernes del mantenimiento.</Text>
+        <Text style={st.formHint}>Corrección Whole-Page de cada fallo + Shopping List → APEX (directos en Anki). &lt;{u.anclasD7} % → anclas D-7 / viernes del mantenimiento. Handoff 31-mar: mínimo on-track 60 % neto · 🇪🇸 = fallos delta (objetivo 0 repetidos).</Text>
       </View>
     </FadeUp>
   );
 }
 
 function HorarioView({ dia }: { dia: DiaMIR }) {
-  const a = mirAnclas(dia.d);
+  const din = mirAnclasDinamicas(dia.d);
   const cierre = mirCierreDe(dia.d);
   const franjas = mirFranjasDe(dia);
   const detalle = (tipo: string): string => {
-    if (tipo === 'eval') return [a.d1 ? `D-1 ${a.d1.tema}` : '', a.d3 ? `D-3 ${a.d3.tema}` : '', a.d7 ? `D-7 ${a.d7.tema}` : ''].filter(Boolean).join(' · ') || 'sin anclas (arranque)';
+    if (tipo === 'eval') return din.slots.map((s) => (s.dia ? `${s.label} ${s.dia.tema}` : '')).filter(Boolean).join(' · ') || 'sin anclas (arranque)';
     if (tipo === 'cierre') return cierre ? `${cierre.asignatura} (D${cierre.dIni}-D${cierre.dFin})` : '';
-    if (tipo === 'pretest' || tipo === 'quiz') return `${dia.asignatura} → ${dia.tema}`;
-    if (tipo === 'read') return `${dia.tema}${dia.resumenVid ? ` · resumen de ASIGNATURA ${dia.resumenVid} (no del capítulo)` : ''}`;
-    if (tipo === 'apex') return dia.usmleSystem !== '—' ? `tag USMLE: ${dia.usmleSystem}` : '';
+    if (tipo === 'pretest' || tipo === 'quiz') return `${dia.asignatura} → ${dia.tema}${tipo === 'quiz' ? ' · registrar n/total (gate)' : ' · registrar /5'}`;
+    if (tipo === 'read') return `${dia.tema}${dia.resumenVid ? ` · resumen de ASIGNATURA ${dia.resumenVid} (no del capítulo)` : ''}${dia.delta ? ' · 🇪🇸 delta previsible' : ''}`;
+    if (tipo === 'apex') return `${dia.usmleSystem !== '—' ? `tag USMLE: ${dia.usmleSystem} · ` : ''}directo en Anki (n8n sin verificar)`;
     return '';
   };
   return (
@@ -383,7 +551,7 @@ function HorarioView({ dia }: { dia: DiaMIR }) {
           </FadeUp>
         );
       })}
-      <Text style={st.note}>15:15–15:30 = eval anclada multi-temporal (o test de cierre el 1er día de bloque). 15:30–16:15 = capítulo nuevo (pre-test → lectura dirigida → 8-10Q → APEX). Sáb y dom libres: lo que falla va a la cola D+7/D+14, no al finde.</Text>
+      <Text style={st.note}>15:15–15:30 = eval anclada multi-temporal (D-1 fijo + 2 slots que priorizan temas calientes) o test de cierre el 1er día de bloque. 15:30–16:15 = capítulo nuevo (pre-test → lectura dirigida → 8-10Q → APEX). Sáb y dom libres: lo que falla va a la cola D+7/D+14, no al finde.</Text>
     </View>
   );
 }
@@ -403,7 +571,7 @@ function SieteView({ fromD, onPick }: { fromD: number; onPick: (d: number) => vo
               <Text style={st.d7fecha}>{fmtFecha(x.fecha)}</Text>
               <View style={{ flex: 1 }}>
                 <Text style={st.d7sub} numberOfLines={1}>{x.tema}</Text>
-                <Text style={st.d7sys}>{x.asignatura}{x.peso != null ? ` · ${x.peso}%` : ''} · {vueltaTxt(x.vuelta)}{cierre ? ` · 🏁 cierre ${cierre.asignatura}` : ''}{x.usmleSystem !== '—' ? ` · 🇺🇸 ${x.usmleSystem}` : ''}</Text>
+                <Text style={st.d7sys}>{x.asignatura}{x.peso != null ? ` · ${x.peso}%` : ''} · {vueltaTxt(x.vuelta)}{cierre ? ` · 🏁 cierre ${cierre.asignatura}` : ''}{x.usmleSystem !== '—' ? ` · 🇺🇸 ${x.usmleSystem}` : ''}{x.delta ? ' · 🇪🇸 delta' : ''}</Text>
               </View>
               <Text style={st.d7go}>→</Text>
             </TouchableOpacity>
@@ -422,13 +590,23 @@ function ProgressBar({ pct, color }: { pct: number; color: string }) {
   );
 }
 
-function AsignaturaCard({ g, hoyD, onPick, done, onToggle }: { g: GrupoProgreso<DiaMIR>; hoyD: number; onPick: (d: number) => void; done: Set<number>; onToggle: (d: number) => void }) {
+const marcaTema = (s?: MirTemaEstado): { txt: string; color: string } => {
+  if (!s || s.estado === 'sin-dato') return { txt: '', color: Colors.muted };
+  if (s.estado === 'validado') return { txt: '✓', color: GREEN };
+  if (s.estado === 'caliente') return { txt: '●', color: CORAL };
+  return { txt: '○', color: AMBER };
+};
+
+function AsignaturaCard({ g, hoyD, onPick, done, onToggle, estados }: { g: GrupoProgreso<DiaMIR>; hoyD: number; onPick: (d: number) => void; done: Set<number>; onToggle: (d: number) => void; estados: Map<number, MirTemaEstado> }) {
   const [open, setOpen] = useState(g.estado === 'en-curso');
   const tier = MIR_RENT[g.dias[0].rent] || MIR_RENT.verde;
   const pesoBloque = Math.round(g.dias.reduce((s, x) => s + (x.peso || 0), 0) * 10) / 10;
-  const cierre = mirCierreDeAsignatura(g.clave);
+  const agg = mirAgregadoAsignatura(g.clave);
+  const nVal = g.dias.filter((x) => estados.get(x.d)?.estado === 'validado').length;
+  const nCal = g.dias.filter((x) => estados.get(x.d)?.estado === 'caliente').length;
   const estadoTxt = g.estado === 'completado' ? '✓ completado' : g.estado === 'en-curso' ? `en curso · ${g.pct}%` : `pendiente · empieza D${g.primerD}`;
   const estadoColor = g.estado === 'completado' ? GREEN : g.estado === 'en-curso' ? tier.c : Colors.muted;
+  const aggTxt = agg.fuente === 'agregado' ? ` · agregado ${agg.netoPct} % (${agg.total}Q)` : agg.fuente === 'cierre' ? ` · cierre ${agg.netoPct} %` : '';
   return (
     <View style={[st.sysCard, { borderColor: tier.c + (g.estado === 'en-curso' ? '88' : '2E') }]}>
       <TouchableOpacity activeOpacity={0.8} onPress={() => setOpen((o) => !o)}>
@@ -439,8 +617,9 @@ function AsignaturaCard({ g, hoyD, onPick, done, onToggle }: { g: GrupoProgreso<
         </View>
         <ProgressBar pct={g.pct} color={tier.c} />
         <Text style={[st.sysEstado, { color: estadoColor }]}>
-          {estadoTxt}{g.diaActual ? ` · hoy: ${g.diaActual.tema}` : ''}{g.dias[0].usmleSystem !== '—' ? ` · 🇺🇸 ${g.dias[0].usmleSystem}` : ''}{cierre ? ` · cierre ${cierre.netoPct} %` : ''}
+          {estadoTxt}{g.diaActual ? ` · hoy: ${g.diaActual.tema}` : ''}{g.dias[0].usmleSystem !== '—' ? ` · 🇺🇸 ${g.dias[0].usmleSystem}` : ''}{aggTxt}{agg.estado === 'anclasD7' ? ' · ⚠ anclas D-7' : ''}
         </Text>
+        {(nVal > 0 || nCal > 0) && <Text style={[st.formHint, { marginTop: 3 }]}>gate: {nVal > 0 ? <Text style={{ color: GREEN }}>✓ {nVal} validado{nVal === 1 ? '' : 's'}</Text> : null}{nVal > 0 && nCal > 0 ? ' · ' : ''}{nCal > 0 ? <Text style={{ color: CORAL }}>● {nCal} caliente{nCal === 1 ? '' : 's'}</Text> : null}</Text>}
       </TouchableOpacity>
       <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(capUrl(g.dias[0].capId))} style={[st.verWide, { borderColor: tier.c + '88' }]}>
         <Text style={[st.verTxt, { color: tier.c }]}>Ver todo el temario en ProMIR ↗</Text>
@@ -449,6 +628,7 @@ function AsignaturaCard({ g, hoyD, onPick, done, onToggle }: { g: GrupoProgreso<
         <View style={{ marginTop: 8 }}>
           {g.dias.map((x) => {
             const hecho = done.has(x.d), now = x.d === hoyD;
+            const m = marcaTema(estados.get(x.d));
             return (
               <View key={x.d} style={[st.temaRow, now && st.temaRowOn]}>
                 <TouchableOpacity activeOpacity={0.7} onPress={() => onToggle(x.d)} hitSlop={{ top: 8, bottom: 8, left: 8, right: 4 }}>
@@ -456,7 +636,8 @@ function AsignaturaCard({ g, hoyD, onPick, done, onToggle }: { g: GrupoProgreso<
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={0.8} onPress={() => onPick(x.d)} style={st.temaRowMain}>
                   <Text style={[st.temaRowD, { color: hecho ? GREEN : now ? tier.c : Colors.muted }]}>{now ? '▶' : ''} D{x.d}</Text>
-                  <Text style={st.temaRowTxt} numberOfLines={1}>{x.tema}{x.peso != null ? ` · ${x.peso}%` : ''}</Text>
+                  <Text style={st.temaRowTxt} numberOfLines={1}>{x.tema}{x.peso != null ? ` · ${x.peso}%` : ''}{x.delta ? ' · 🇪🇸' : ''}</Text>
+                  {m.txt ? <Text style={[st.markTxt, { color: m.color }]}>{m.txt}</Text> : null}
                   <Text style={st.temaRowGo}>→</Text>
                 </TouchableOpacity>
                 {mirObsUrl(x.capId) && (
@@ -476,6 +657,9 @@ function AsignaturaCard({ g, hoyD, onPick, done, onToggle }: { g: GrupoProgreso<
 function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (d: number) => void; done: Set<number>; onToggle: (d: number) => void }) {
   const grupos = agruparProgreso(MIR_DIAS, (x) => x.asignatura, hoyD, done);
   const glob = progresoGlobal(MIR_DIAS, done);
+  const estados = useMemo(() => mirEstadosTemas(), [done.size, hoyD]);
+  const nVal = Array.from(estados.values()).filter((s) => s.estado === 'validado').length;
+  const nCal = Array.from(estados.values()).filter((s) => s.estado === 'caliente').length;
   return (
     <View>
       <View style={st.globCard}>
@@ -485,15 +669,16 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
         </View>
         <ProgressBar pct={glob.pct} color={AMBER} />
         <Text style={st.globSub}>{glob.hechos}/{glob.total} días · hoy = Día {hoyD} de {glob.total} · {grupos.length} bloques · 1ª vuelta · selección top-N por Peso MIR + núcleo rabi_94 · cobertura {MIR_DAILY_META.coberturaPeso} pts (óptimo {MIR_DAILY_META.optimoTopN}; plan previo 744)</Text>
+        <Text style={[st.globSub, { marginTop: 4 }]}>Gate Palmerton: <Text style={{ color: GREEN }}>✓ {nVal} validado{nVal === 1 ? '' : 's'}</Text> · <Text style={{ color: CORAL }}>● {nCal} caliente{nCal === 1 ? '' : 's'}</Text> · {MIR_VALIDACION_TXT.validado} · {MIR_VALIDACION_TXT.caliente}</Text>
       </View>
-      {grupos.map((g) => <AsignaturaCard key={g.clave} g={g} hoyD={hoyD} onPick={onPick} done={done} onToggle={onToggle} />)}
-      <Text style={st.note}>Progreso REAL: empezamos en 0%. ☑ marca un tema como completado (se guarda en este dispositivo). ▶ = día de hoy. Toca el título de un tema para ir a ese día. "% cubierto" = suma del Peso MIR de los capítulos elegidos de esa asignatura.</Text>
+      {grupos.map((g) => <AsignaturaCard key={g.clave} g={g} hoyD={hoyD} onPick={onPick} done={done} onToggle={onToggle} estados={estados} />)}
+      <Text style={st.note}>Progreso REAL: empezamos en 0%. ☑ marca un tema como completado (se guarda en este dispositivo). ▶ = día de hoy. Toca el título de un tema para ir a ese día. "% cubierto" = suma del Peso MIR de los capítulos elegidos de esa asignatura. ✓ / ● / ○ = gate por tema (validado / caliente / medido sin veredicto); "agregado" = cierre + ancladas + quiz con n≥{MIR_AGREGADO_MIN_Q} (manda sobre el cierre de 10Q). 🇪🇸 = delta-España previsible.</Text>
     </View>
   );
 }
 
 /** Modo MANTENIMIENTO (4-ene→31-mar-2027): banqueo puro sin contenido nuevo. */
-function MantenimientoView({ dia, onPick, bump }: { dia: DiaMIRMant; onPick: (d: number) => void; bump: () => void }) {
+function MantenimientoView({ dia, onPick, bump, sync }: { dia: DiaMIRMant; onPick: (d: number) => void; bump: () => void; sync: SyncInfo }) {
   const peor = mirPeorAsignatura();
   const foco = mirMantFoco(dia, peor);
   const franjas = mirMantFranjas(dia);
@@ -522,10 +707,11 @@ function MantenimientoView({ dia, onPick, bump }: { dia: DiaMIRMant; onPick: (d:
           </View>
         </FadeUp>
       ))}
-      <FadeUp delay={100}><ColaItem icon="🃏" lbl="ANKI · APEX::MIR (todas las asignaturas)" val={mirAnkiDeck(foco.asignatura)} sub="AnkiWeb ↗ · preset FSRS retention 0,85 hasta 31-mar (→ 0,90 en fase principal)" color={Colors.teal} url={ANKIWEB} /></FadeUp>
+      <FadeUp delay={100}><ColaItem icon="🃏" lbl="ANKI · APEX::MIR (todas las asignaturas)" val={mirAnkiDeck(foco.asignatura)} sub={`AnkiWeb ↗ · preset FSRS retention 0,85 hasta 31-mar (→ 0,90 en fase principal) · ${APEX_DIRECTO_ANKI}`} color={Colors.teal} url={ANKIWEB} /></FadeUp>
       <FadeUp delay={120}><ColaItem icon="🧪" lbl={`${foco.nQ}Q reales MIR · cronometradas`} val={`${foco.asignatura}${dia.asignatura2 ? ` (+ ${dia.asignatura2} interleaving)` : ''}`} sub="cuadernillos oficiales gratis (examenesmir) o test por asignatura ProMIR · en blanco permitido" color={AMBER} url="https://www.examenesmir.com/examenes-mir" /></FadeUp>
-      <EvalForm dia={{ d: dia.d, fecha: dia.fecha, num: foco.num ?? undefined }} kind="mantenimiento" total={foco.nQ} asignatura={foco.asignatura} tema={`Mantenimiento ${dia.tipo} ${foco.nQ}Q`} color={color} titulo={`Registrar ${foco.nQ}Q (${dia.minCorr} min corrección)`} onSaved={bump} />
-      <ExportRow />
+      <TimerQ color={color} presets={[foco.nQ, 10, 25, 40].filter((v, i, a) => a.indexOf(v) === i)} />
+      <EvalForm dia={{ d: dia.d, fecha: dia.fecha, num: foco.num ?? undefined }} kind="mantenimiento" total={foco.nQ} asignatura={foco.asignatura} tema={`Mantenimiento ${dia.tipo} ${foco.nQ}Q`} color={color} titulo={`Registrar ${foco.nQ}Q (${dia.minCorr} min corrección)`} tactica onSaved={bump} />
+      <ExportRow sync={sync} />
       <Text style={st.secLbl}>📆 Próximos 7 días</Text>
       {mirMant7d(dia.d).map((x, i) => (
         <FadeUp key={x.d} delay={i * 25}>
@@ -557,7 +743,14 @@ export default function MirTodayPlan() {
   const [view, setView] = useState<'hoy' | 'horario' | '7d' | 'temario'>('hoy');
   const [done, setDone] = useState<Set<number>>(() => new Set(loadDone('mir')));
   const [, setTick] = useState(0);
+  const [sync, setSync] = useState<SyncInfo>(null);
   const bump = () => setTick((t) => t + 1);
+  // espejo Supabase: merge por id en ambos sentidos al montar (fallback silencioso)
+  useEffect(() => {
+    let vivo = true;
+    mirEvalLogPull().then((r) => { if (!vivo) return; setSync(r); if (r.anadidas) bump(); }).catch(() => { if (vivo) setSync({ ok: false, anadidas: 0, subidas: 0, remotas: 0 }); });
+    return () => { vivo = false; };
+  }, []);
   const dia = MIR_DIAS.find((x) => x.d === sel) || MIR_DIAS[0];
   const diaM = MIR_MANT_DIAS.find((x) => x.d === selM) || MIR_MANT_DIAS[0];
   const esHoy = dia.fecha === iso;
@@ -595,7 +788,7 @@ export default function MirTodayPlan() {
             <TouchableOpacity activeOpacity={0.7} onPress={() => setSelM((s) => Math.min(MIR_MANT_META.totalDias, s + 1))} style={st.navArrow}><Text style={st.navArrowTxt}>►</Text></TouchableOpacity>
           </View>
           <GlassPanel style={{ marginBottom: Spacing.xl, padding: Spacing.md }}>
-            <MantenimientoView dia={diaM} onPick={(d) => setSelM(d)} bump={bump} />
+            <MantenimientoView dia={diaM} onPick={(d) => setSelM(d)} bump={bump} sync={sync} />
           </GlassPanel>
         </>
       ) : (
@@ -619,7 +812,7 @@ export default function MirTodayPlan() {
           </View>
 
           <GlassPanel style={{ marginBottom: Spacing.xl, padding: Spacing.md }}>
-            {view === 'hoy' ? <HoyView dia={dia} onOpenTemario={() => setView('temario')} hecho={done.has(dia.d)} onToggle={toggleDone} onPick={pickDay} hoyISO={iso} bump={bump} />
+            {view === 'hoy' ? <HoyView dia={dia} onOpenTemario={() => setView('temario')} hecho={done.has(dia.d)} onToggle={toggleDone} onPick={pickDay} hoyISO={iso} bump={bump} sync={sync} />
               : view === 'horario' ? <HorarioView dia={dia} />
               : view === '7d' ? <SieteView fromD={dia.d} onPick={pickDay} />
               : <TemarioView hoyD={hoyD} onPick={pickDay} done={done} onToggle={toggleDone} />}
@@ -632,6 +825,7 @@ export default function MirTodayPlan() {
 
 const cardBase = { backgroundColor: DesktopColors.glass, borderRadius: BorderRadius.lg, borderWidth: 1, borderColor: Hairline.soft, ...Elevation.sm };
 const WEB_LINK = { cursor: 'pointer', transition: Motion.base } as any;
+const tabular = Platform.OS === 'web' ? ({ fontVariantNumeric: 'tabular-nums' } as any) : {};
 const st = StyleSheet.create({
   ctxRow: { flexDirection: 'row', gap: Spacing.sm, marginBottom: Spacing.md },
   ctxBtn: { flex: 1, borderRadius: BorderRadius.lg, borderWidth: 1, paddingVertical: Spacing.md, alignItems: 'center', ...WEB_LINK },
@@ -691,6 +885,12 @@ const st = StyleSheet.create({
   input: { borderWidth: 1, borderColor: Hairline.medium, borderRadius: BorderRadius.md, paddingVertical: 4, paddingHorizontal: 8, color: Colors.onSurface, fontSize: FontSize.labelSm, minWidth: 56, backgroundColor: 'rgba(255,255,255,0.03)' },
   saveBtn: { paddingVertical: 8, paddingHorizontal: 14, borderRadius: BorderRadius.md, marginTop: 6, ...WEB_LINK },
   saveBtnTxt: { fontSize: FontSize.labelMd, fontWeight: '800', color: '#1A1205', letterSpacing: 0.2 },
+  plegHead: { borderWidth: 1, borderRadius: BorderRadius.md, paddingVertical: 6, paddingHorizontal: 10, marginBottom: 6, backgroundColor: 'rgba(255,255,255,0.02)', ...WEB_LINK },
+  plegTxt: { fontSize: FontSize.labelSm, fontWeight: '800', letterSpacing: 0.2 },
+
+  timerRow: { flexDirection: 'row', alignItems: 'center', gap: 12, marginVertical: 6 },
+  timerBig: { fontSize: 30, fontWeight: '900', letterSpacing: -1, minWidth: 92, ...tabular },
+  timerLap: { fontSize: FontSize.labelMd, fontWeight: '700', ...tabular },
 
   baseRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 6, borderTopWidth: 1, borderTopColor: Hairline.soft },
   baseAsig: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurface, fontWeight: '600' },
@@ -741,4 +941,5 @@ const st = StyleSheet.create({
   temaRowD: { fontSize: FontSize.labelSm, fontWeight: '800', width: 40 },
   temaRowTxt: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant },
   temaRowGo: { fontSize: 14, color: Colors.muted, width: 16, textAlign: 'center' },
+  markTxt: { fontSize: 13, fontWeight: '900', width: 16, textAlign: 'center' },
 });

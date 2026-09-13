@@ -1,0 +1,298 @@
+{
+  "generado": "2026-09-13T01:41:23.750Z",
+  "metodo": {
+    "fuente_oficial": "https://fse.sanidad.gob.es/fseweb/view/public/datosanteriores/cuadernosExamen/busquedaConvocatoria.xhtml",
+    "como": "API REST del portal FSE (Angular) con token anónimo: POST /hera/oauth/api/v1/oidc/token {client_id:'herapublico', grant_type:'session_id'} → GET getVersiones / tieneRespuesta / getHojaRespuestas / getDatosCuadernosExamen (titulacion=M, anyo=<pruebas selectivas>, version=0). Replicado con gen_mir_pool.js --descargar.",
+    "espejo": "https://www.examenesmir.com/examenes-mir-pdf (cuadernillo PDF idéntico byte a byte cuando sha256 coincide; NO publica plantillas: answer_key_url=null en su API)",
+    "convencion_anios": "AAAA = año del examen (MIR 2026 = pruebas selectivas 2025). 'anyo' en la API FSE = AAAA-1.",
+    "plantilla": "getHojaRespuestas devuelve la hoja de respuestas de 'Datos, Exámenes anteriores' (la tabla vigente tras la resolución definitiva de la Comisión Calificadora); casilla en blanco = pregunta anulada. Se guarda tal cual (raw/AAAA_plantilla_definitiva_v0.json).",
+    "uso": "Uso privado de estudio. El cuaderno lleva la leyenda \"PROHIBIDA LA REPRODUCCIÓN TOTAL O PARCIAL\": no redistribuir."
+  },
+  "convocatorias": {
+    "2022": {
+      "pruebas_selectivas": 2021,
+      "ficheros": [
+        {
+          "tipo": "plantilla_definitiva_v0",
+          "fichero": "DATA/MIR/pool/raw/2022_plantilla_definitiva_v0.json",
+          "url": "https://fse.sanidad.gob.es/hera/api/datos/convocatoria/getHojaRespuestas?titulacion=M&anyo=2021&version=0",
+          "metodo": "GET con cabeceras de sesión anónima (ver metodo)",
+          "descargado": "2026-09-13T01:41:11.701Z",
+          "sha256": "9ca42b7de8aae3b1db754d0f932e1f31ff8fd8c104e0703c604a09ec28d9ede5",
+          "bytes": 6657,
+          "preguntas": 210,
+          "formato": "filas {V_k: nº pregunta, RC_k: respuesta correcta (1-4) o \" \" si anulada} para k=0..4 (5 columnas de 42)"
+        },
+        {
+          "tipo": "cuadernillo_v0",
+          "fichero": "DATA/MIR/pool/raw/2022_cuadernillo.pdf",
+          "url": "https://fse.sanidad.gob.es/hera/api/datos/convocatoria/getDatosCuadernosExamen?titulacion=M&anyo=2021&version=0&opcionSelect=C",
+          "nombre_oficial": "Cuaderno_2021_M_0_C.pdf",
+          "mimeType": "application/pdf",
+          "idDocumentum": null,
+          "metodo": "GET (JSON con content en base64) con cabeceras de sesión anónima",
+          "descargado": "2026-09-13T01:41:12.508Z",
+          "sha256": "4b27c718c16c7a69a1a30412def595fb7d04a9985bfc06d184032157e1233626",
+          "bytes": 1534604,
+          "espejo": {
+            "url": "https://api.examenesmir.com/api/v1/public/convocatorias/2022/download/cuadernillo",
+            "url_final": "https://api.examenesmir.com/media/exams/2022/cuadernillo.pdf?v=1781544964",
+            "identico": true
+          },
+          "nota": "idéntico (sha256) al fichero ya presente en raw/ (descargado del espejo examenesmir.com)"
+        },
+        {
+          "tipo": "imagenes_v0",
+          "url": "https://fse.sanidad.gob.es/hera/api/datos/convocatoria/getDatosCuadernosExamen?titulacion=M&anyo=2021&version=0&opcionSelect=I",
+          "metodo": "GET (JSON con content en base64) con cabeceras de sesión anónima · opcional: --con-imagenes",
+          "espejo": {
+            "url": "https://api.examenesmir.com/api/v1/public/convocatorias/2022/download/images",
+            "url_final": "https://api.examenesmir.com/media/exams/2022/images.pdf?v=1781544971"
+          },
+          "fichero": null,
+          "descargado": null,
+          "nota": "no almacenado en el repo (15-25 MB/año); descargar bajo demanda con --con-imagenes o desde el espejo"
+        }
+      ],
+      "fecha_examen": {
+        "valor": "2022-01-29",
+        "fuente": "https://api.examenesmir.com/api/v1/public/convocatorias (campo exam_date; A VERIFICAR contra la orden de convocatoria en BOE)"
+      },
+      "versiones_publicadas": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "2023": {
+      "pruebas_selectivas": 2022,
+      "ficheros": [
+        {
+          "tipo": "plantilla_definitiva_v0",
+          "fichero": "DATA/MIR/pool/raw/2023_plantilla_definitiva_v0.json",
+          "url": "https://fse.sanidad.gob.es/hera/api/datos/convocatoria/getHojaRespuestas?titulacion=M&anyo=2022&version=0",
+          "metodo": "GET con cabeceras de sesión anónima (ver metodo)",
+          "descargado": "2026-09-13T01:41:13.275Z",
+          "sha256": "395a813f1d466b89708fe60430d16b6e48a1c6eadd532c926dbb77b746e39d56",
+          "bytes": 6657,
+          "preguntas": 210,
+          "formato": "filas {V_k: nº pregunta, RC_k: respuesta correcta (1-4) o \" \" si anulada} para k=0..4 (5 columnas de 42)"
+        },
+        {
+          "tipo": "cuadernillo_v0",
+          "fichero": "DATA/MIR/pool/raw/2023_cuadernillo.pdf",
+          "url": "https://fse.sanidad.gob.es/hera/api/datos/convocatoria/getDatosCuadernosExamen?titulacion=M&anyo=2022&version=0&opcionSelect=C",
+          "nombre_oficial": "Cuaderno_2022_M_0_C.pdf",
+          "mimeType": "application/pdf",
+          "idDocumentum": null,
+          "metodo": "GET (JSON con content en base64) con cabeceras de sesión anónima",
+          "descargado": "2026-09-13T01:41:14.463Z",
+          "sha256": "2a4e95f12bdda4700fdb44bf4bed042566b7ac784a842f0634ae412cc016029b",
+          "bytes": 1589543,
+          "espejo": {
+            "url": "https://api.examenesmir.com/api/v1/public/convocatorias/2023/download/cuadernillo",
+            "url_final": "https://api.examenesmir.com/media/exams/2023/cuadernillo.pdf?v=1781544745",
+            "identico": true
+          },
+          "nota": "idéntico (sha256) al fichero ya presente en raw/ (descargado del espejo examenesmir.com)"
+        },
+        {
+          "tipo": "imagenes_v0",
+          "url": "https://fse.sanidad.gob.es/hera/api/datos/convocatoria/getDatosCuadernosExamen?titulacion=M&anyo=2022&version=0&opcionSelect=I",
+          "metodo": "GET (JSON con content en base64) con cabeceras de sesión anónima · opcional: --con-imagenes",
+          "espejo": {
+            "url": "https://api.examenesmir.com/api/v1/public/convocatorias/2023/download/images",
+            "url_final": "https://api.examenesmir.com/media/exams/2023/images.pdf?v=1781544753"
+          },
+          "fichero": null,
+          "descargado": null,
+          "nota": "no almacenado en el repo (15-25 MB/año); descargar bajo demanda con --con-imagenes o desde el espejo"
+        }
+      ],
+      "fecha_examen": {
+        "valor": "2023-01-28",
+        "fuente": "https://api.examenesmir.com/api/v1/public/convocatorias (campo exam_date; A VERIFICAR contra la orden de convocatoria en BOE)"
+      },
+      "versiones_publicadas": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "2024": {
+      "pruebas_selectivas": 2023,
+      "ficheros": [
+        {
+          "tipo": "plantilla_definitiva_v0",
+          "fichero": "DATA/MIR/pool/raw/2024_plantilla_definitiva_v0.json",
+          "url": "https://fse.sanidad.gob.es/hera/api/datos/convocatoria/getHojaRespuestas?titulacion=M&anyo=2023&version=0",
+          "metodo": "GET con cabeceras de sesión anónima (ver metodo)",
+          "descargado": "2026-09-13T01:41:15.224Z",
+          "sha256": "1c7d9c4049efb3b5502fe41694e7d1f1d60d62d2246195688b97c5ecda1ce74d",
+          "bytes": 6657,
+          "preguntas": 210,
+          "formato": "filas {V_k: nº pregunta, RC_k: respuesta correcta (1-4) o \" \" si anulada} para k=0..4 (5 columnas de 42)"
+        },
+        {
+          "tipo": "cuadernillo_v0",
+          "fichero": "DATA/MIR/pool/raw/2024_cuadernillo.pdf",
+          "url": "https://fse.sanidad.gob.es/hera/api/datos/convocatoria/getDatosCuadernosExamen?titulacion=M&anyo=2023&version=0&opcionSelect=C",
+          "nombre_oficial": "Cuaderno_2023_M_0_C.pdf",
+          "mimeType": "application/pdf",
+          "idDocumentum": null,
+          "metodo": "GET (JSON con content en base64) con cabeceras de sesión anónima",
+          "descargado": "2026-09-13T01:41:16.287Z",
+          "sha256": "80939606d25a7ea3975ef4e480f2955b6c1b728b8fedd467bb4877871a4fb791",
+          "bytes": 1603702,
+          "espejo": {
+            "url": "https://api.examenesmir.com/api/v1/public/convocatorias/2024/download/cuadernillo",
+            "url_final": "https://api.examenesmir.com/media/exams/2024/cuadernillo.pdf?v=1777841168",
+            "identico": true
+          },
+          "nota": "idéntico (sha256) al fichero ya presente en raw/ (descargado del espejo examenesmir.com)"
+        },
+        {
+          "tipo": "imagenes_v0",
+          "url": "https://fse.sanidad.gob.es/hera/api/datos/convocatoria/getDatosCuadernosExamen?titulacion=M&anyo=2023&version=0&opcionSelect=I",
+          "metodo": "GET (JSON con content en base64) con cabeceras de sesión anónima · opcional: --con-imagenes",
+          "espejo": {
+            "url": "https://api.examenesmir.com/api/v1/public/convocatorias/2024/download/images",
+            "url_final": "https://api.examenesmir.com/media/exams/2024/images.pdf?v=1777841189"
+          },
+          "fichero": null,
+          "descargado": null,
+          "nota": "no almacenado en el repo (15-25 MB/año); descargar bajo demanda con --con-imagenes o desde el espejo"
+        }
+      ],
+      "fecha_examen": {
+        "valor": "2024-01-27",
+        "fuente": "https://api.examenesmir.com/api/v1/public/convocatorias (campo exam_date; A VERIFICAR contra la orden de convocatoria en BOE)"
+      },
+      "versiones_publicadas": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "2025": {
+      "pruebas_selectivas": 2024,
+      "ficheros": [
+        {
+          "tipo": "plantilla_definitiva_v0",
+          "fichero": "DATA/MIR/pool/raw/2025_plantilla_definitiva_v0.json",
+          "url": "https://fse.sanidad.gob.es/hera/api/datos/convocatoria/getHojaRespuestas?titulacion=M&anyo=2024&version=0",
+          "metodo": "GET con cabeceras de sesión anónima (ver metodo)",
+          "descargado": "2026-09-13T01:41:17.050Z",
+          "sha256": "ca5c6168a89239ac7605ec81b72406b82ab6cc7c35d738b3686b6633ac03dc5e",
+          "bytes": 6657,
+          "preguntas": 210,
+          "formato": "filas {V_k: nº pregunta, RC_k: respuesta correcta (1-4) o \" \" si anulada} para k=0..4 (5 columnas de 42)"
+        },
+        {
+          "tipo": "cuadernillo_v0",
+          "fichero": "DATA/MIR/pool/raw/2025_cuadernillo.pdf",
+          "url": "https://fse.sanidad.gob.es/hera/api/datos/convocatoria/getDatosCuadernosExamen?titulacion=M&anyo=2024&version=0&opcionSelect=C",
+          "nombre_oficial": "Cuaderno_2024_M_0_C.pdf",
+          "mimeType": "application/pdf",
+          "idDocumentum": null,
+          "metodo": "GET (JSON con content en base64) con cabeceras de sesión anónima",
+          "descargado": "2026-09-13T01:41:22.161Z",
+          "sha256": "101a097f566fa3d20648c1b4c67d5ae739a507bce0645127472b482a9b946c4b",
+          "bytes": 797219,
+          "espejo": {
+            "url": "https://api.examenesmir.com/api/v1/public/convocatorias/2025/download/cuadernillo",
+            "url_final": "https://api.examenesmir.com/media/exams/2025/cuadernillo.pdf?v=1777840676",
+            "identico": true
+          },
+          "nota": "idéntico (sha256) al fichero ya presente en raw/ (descargado del espejo examenesmir.com)"
+        },
+        {
+          "tipo": "imagenes_v0",
+          "url": "https://fse.sanidad.gob.es/hera/api/datos/convocatoria/getDatosCuadernosExamen?titulacion=M&anyo=2024&version=0&opcionSelect=I",
+          "metodo": "GET (JSON con content en base64) con cabeceras de sesión anónima · opcional: --con-imagenes",
+          "espejo": {
+            "url": "https://api.examenesmir.com/api/v1/public/convocatorias/2025/download/images",
+            "url_final": "https://api.examenesmir.com/media/exams/2025/images.pdf?v=1777840667"
+          },
+          "fichero": null,
+          "descargado": null,
+          "nota": "no almacenado en el repo (15-25 MB/año); descargar bajo demanda con --con-imagenes o desde el espejo"
+        }
+      ],
+      "fecha_examen": {
+        "valor": "2025-01-25",
+        "fuente": "https://api.examenesmir.com/api/v1/public/convocatorias (campo exam_date; A VERIFICAR contra la orden de convocatoria en BOE)"
+      },
+      "versiones_publicadas": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "2026": {
+      "pruebas_selectivas": 2025,
+      "ficheros": [
+        {
+          "tipo": "plantilla_definitiva_v0",
+          "fichero": "DATA/MIR/pool/raw/2026_plantilla_definitiva_v0.json",
+          "url": "https://fse.sanidad.gob.es/hera/api/datos/convocatoria/getHojaRespuestas?titulacion=M&anyo=2025&version=0",
+          "metodo": "GET con cabeceras de sesión anónima (ver metodo)",
+          "descargado": "2026-09-13T01:41:22.932Z",
+          "sha256": "598db9844759eed4c0359d97cf4f9deae3099fc803ec58205d73ac5aad0de1e4",
+          "bytes": 6657,
+          "preguntas": 210,
+          "formato": "filas {V_k: nº pregunta, RC_k: respuesta correcta (1-4) o \" \" si anulada} para k=0..4 (5 columnas de 42)"
+        },
+        {
+          "tipo": "cuadernillo_v0",
+          "fichero": "DATA/MIR/pool/raw/2026_cuadernillo.pdf",
+          "url": "https://fse.sanidad.gob.es/hera/api/datos/convocatoria/getDatosCuadernosExamen?titulacion=M&anyo=2025&version=0&opcionSelect=C",
+          "nombre_oficial": "Cuaderno_2025_M_0_C.pdf",
+          "mimeType": "application/pdf",
+          "idDocumentum": null,
+          "metodo": "GET (JSON con content en base64) con cabeceras de sesión anónima",
+          "descargado": "2026-09-13T01:41:23.750Z",
+          "sha256": "fdbd2d0a7eeb6911eddbc156c26091f756b8752a2ff23a2dceed8e1b714e006a",
+          "bytes": 697859,
+          "espejo": {
+            "url": "https://api.examenesmir.com/api/v1/public/convocatorias/2026/download/cuadernillo",
+            "url_final": "https://api.examenesmir.com/media/exams/2026/cuadernillo.pdf?v=1777840546",
+            "identico": true
+          },
+          "nota": "idéntico (sha256) al fichero ya presente en raw/ (descargado del espejo examenesmir.com)"
+        },
+        {
+          "tipo": "imagenes_v0",
+          "url": "https://fse.sanidad.gob.es/hera/api/datos/convocatoria/getDatosCuadernosExamen?titulacion=M&anyo=2025&version=0&opcionSelect=I",
+          "metodo": "GET (JSON con content en base64) con cabeceras de sesión anónima · opcional: --con-imagenes",
+          "espejo": {
+            "url": "https://api.examenesmir.com/api/v1/public/convocatorias/2026/download/images",
+            "url_final": "https://api.examenesmir.com/media/exams/2026/images.pdf?v=1777840573"
+          },
+          "fichero": null,
+          "descargado": null,
+          "nota": "no almacenado en el repo (15-25 MB/año); descargar bajo demanda con --con-imagenes o desde el espejo"
+        }
+      ],
+      "fecha_examen": {
+        "valor": "2026-01-24",
+        "fuente": "https://api.examenesmir.com/api/v1/public/convocatorias (campo exam_date; A VERIFICAR contra la orden de convocatoria en BOE)"
+      },
+      "versiones_publicadas": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ]
+    }
+  }
+}

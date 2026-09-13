@@ -3,21 +3,32 @@
 Del agente macro:derma-estetica-elite (27-ago-2026) + inventario AccessDermatology REAL.
 
 > **Franja: RESEARCH↔DERMA alternante 13:30-14:15 (interdiario, SE MANTIENE en v5).**
-> Ciclo de 45': **1 caso visual del banco de 200 + 10Q de review + 10' de lectura
-> Fitzpatrick/Baumann según el módulo de la semana.** Módulos semanales orientados a
+> Ciclo REAL de 45' (v2.1 → v3, ver §3): **casos visuales CIEGOS fijos del banco de 200 (2/sesión · 1 en el taper ·
+> 3 desde d50) + 1 imagen dermatoscópica ciega + ~10Q de review con presupuesto por banco y cursor + 10' de lectura
+> Fitzpatrick/Baumann del módulo (o módulo DermNet CME) + ledger de cada caso.** Módulos semanales orientados a
 > dermatología estética.
 >
-> **v5.10 (12-sep-2026) — DERMA CORRE +2 DÍAS DE CALENDARIO: d1 = MAR 15-SEP-2026 → d70 = MAR 30-MAR-2027.** El 11 de
+> **v5.10 (12-sep-2026) — DERMA CORRE +2 DÍAS DE CALENDARIO: d1 = MAR 15-SEP-2026.** El 11 de
 > septiembre tampoco se estudió (+1 día hábil sobre v5.9, noveno corrimiento del ciclo 31-ago→14-sep). Esta vez
 > **se invierte lo de v5.9**: la alternancia Research↔Derma sigue anclada al mié 10-jun-2026 y hace del **lun 14-sep
 > (D1 del régimen) un día Research**, así que Research no se mueve (ya arrancaba el lun 14-sep desde v5.9) y Derma
 > pasa de vie 11-sep a **mar 15-sep** (+2 días de calendario, +1 slot interdiario). `src/lib/dermaDailyPlan.ts`
-> se regeneró con las 70 fechas nuevas (leídas con node el 12-sep: 0 en fin de semana, 0 en 25-dic/31-dic/1-ene).
-> Regla de este corrimiento: **no se fusiona ni se recorta nada** — siguen siendo **70 átomos**, misma
-> franja, mismo contenido, mismo orden de casos (`DERMA_CASO_ORDEN` congelada) y 0 solapes con Research.
+> se regeneró con las fechas nuevas (leídas con node el 12-sep: 0 en fin de semana, 0 en 25-dic/31-dic/1-ene).
+> Regla de este corrimiento: **no se fusiona ni se recorta nada** — misma franja, mismo contenido, mismo orden de
+> casos (`DERMA_CASO_ORDEN` congelada) y 0 solapes con Research.
+>
+> **v3 · TAPER DE EXAMEN (12-sep-2026, tarde) — el plan pasa de 70 a 73 átomos: d1 = MAR 15-SEP-2026 → d73 = MIÉ 7-ABR-2027.**
+> Las 6 sesiones que caen entre el NBME 31 (vie 15-ene, GO/NO-GO) y el examen Step 1 (vie 29-ene) — d44 15-ene · d45 19-ene ·
+> d46 21-ene · d47 25-ene · d48 27-ene (D95) · d49 29-ene (día del examen) — pasan a **modo taper** (1 caso ciego + FSRS
+> de fallos + 0 lectura nueva) por un **swap de contenido con fechas intactas** (§13): Cicatrización, los 2 checkpoints,
+> Anatomía 3D, Arterias, Envejecimiento y todo lo que sigue se corren DESPUÉS del examen en el mismo orden, y en la ventana
+> viven los 3 átomos ligeros MED (paciente agudo, pelo/uñas, contorno corporal) + 3 segundas pasadas parciales (nuevas).
+> **0 átomos perdidos** (verificado con node contra HEAD: los 70 subtemas, lecturas y láminas siguen; CRIT 27 y ALTA 35 intactos);
+> el desfase se absorbe alargando el plan (d71 jue 1-abr · d72 lun 5-abr · d73 mié 7-abr). Desde d50 (mar 2-feb, primera
+> sesión post-examen) **3 casos/sesión** (§16) y desde d67 el Pictorial 4e se releva con el 3e (§14). El **CICLO 2**
+> (d74-d103, vie 9-abr → mié 30-jun-2027) vive en `src/lib/dermaCiclo2.ts`, generado por `DATA/_scripts/gen_derma_ciclo2.js` (§16).
 > Índice completo de fechas en §12. **La fecha es lo estable, el nº de día puede moverse: comprobar
-> siempre contra `dermaDailyPlan.ts`.** ⚠ En v5.10 el **d49 = vie 29-ene-2027 es el día objetivo del examen Step 1**
-> y el d48 = mié 27-ene su D95: ver el vacío "taper" en `DATA/PENDIENTES_JOSEPH.md`.
+> siempre contra `dermaDailyPlan.ts`.**
 
 ## 1. Inventario AccessDermatology (REAL, extraído)
 
@@ -48,24 +59,37 @@ física del láser, fotoenvejecimiento, cicatrización. **La ruta élite hacia e
 formalmente por dominar surgical derm y su ciencia básica — no es un anexo.** La dermoscopía
 la piden transversalmente 3 de los 4 módulos → introducirla temprano.
 
-## 3. Método del caso visual (Palmerton aplicado a los 200 casos)
+## 3. Método del caso visual (Palmerton aplicado a los 200 casos) — el ciclo REAL v2.1/v3
 
-Caso ciego en 4 pasos:
-1. Ver SOLO la imagen y **describir la morfología en terminología estándar** (lesión primaria,
-   secundaria, color, distribución, configuración) — entrena el ojo, la habilidad núcleo.
-2. **Diferencial de 3** antes de leer nada.
-3. Leer la viñeta y responder.
-4. Leer la discusión → **1-2 tarjetas Anki de MECANISMO** ("¿por qué esta enfermedad produce
-   este hallazgo?") + 1 tarjeta de oclusión de imagen.
+*(Actualizado el 12-sep-2026 al ciclo que ejecuta `dermaDailyPlan.ts` y `DermaTodayPlan`; el texto original
+"1 caso + 10Q + 10' de lectura" era el diseño del 27-ago.)*
+
+**La sesión de 45' (`DERMA_FRANJAS`)**
+
+| Franja | Fase |
+|---|---|
+| 13:30-13:33 | **Repaso FSRS** de tarjetas de MECANISMO + fallos etiquetados de la sesión previa. Si el ledger dejó una **cura pendiente** (fallo CCSN → Differential Diagnosis Challenge, `dermaCuraPendiente`), se hace AQUÍ, antes del primer caso. |
+| 13:33-13:36 | **CASOS CIEGOS ①②** — los `casoIds` fijos de la fila (permutación seeded `DERMA_CASO_ORDEN`, interleaving real): SOLO la imagen → **describir con los 8 ejes** (`DERMA_EJES_MORFOLOGIA`, dictado en `DermaMorphologyDictation`) + **diferencial de 3** sin leer nada · **①b 1 imagen dermatoscópica CIEGA** (`dermatoscopiaImg`: Self-Assessment 2e en las impares, Dermoscopedia por patrón en las pares). |
+| 13:36-13:52 | **CASOS ③④** — viñeta y responder → discusión → **1-2 tarjetas de MECANISMO + 1 oclusión** (`DermaAnkiCola`, deck `APEX::DERMA::<bloque>`) → cada caso al **ledger** con la matriz confianza×acierto (Lo sabía / suerte / confundí / no sabía), tipo de error (CCSN / CONCEPTO / MORFOLOGÍA / DDX) y módulo CORE. El caso NUNCA se salta. |
+| 13:52-14:03 | **~10Q de review** del banco rotante con **presupuesto** (§14: Pictorial 4e 38 sesiones → 3e desde d67 · CORE en cierres de módulo · Barnhill en dermpath · QOTW en checkpoints · LANGE en d71) **retomando en el Q# del cursor** (`dermaBancoCursor`). 1 de cada 3 sesiones (d ≡ 0 mod 3) = **10Q ProMIR-Dermatología** (§11). Variable de ajuste si los casos pidieron más. |
+| 14:03-14:13 | **Lectura dirigida 10'** del módulo (Fitzpatrick / Baumann / Lasers / Dermatologic Surgery, nunca lineal) — en las sesiones **pares d6-d44 el slot lo ocupa el micro-track DermNet Dermoscopy CME** (18 módulos + quizzes + comparativas). |
+| 14:13-14:15 | **Cierre**: free recall (7 pasos del cerebro clínico si el átomo tiene ficha en `dermaCerebro.ts`) + drill HDPH 90 s en d19/d20/d52/d73 + marcar progreso real + viernes: exportar el ledger (JSON → `TRACKING/_registro_derma.json`). |
+
+**Cadencia de casos (v3)**: **2 casos/sesión** en d1-d43 · **1 caso** en las 6 sesiones del taper Step 1 (d44-d49) ·
+**3 casos/sesión desde d50** (mar 2-feb-2027, primera sesión post-examen; los 10Q son la variable de ajuste) →
+**164 casos en la primera pasada** (hasta d73) y los **36 restantes** a 3/sesión en d74-d85 del ciclo 2 (§16).
+`dermaCasosPorSesion(d)` / `dermaCasoOffset(d)` / `dermaCasosDeSesion(d)` reproducen exactamente el literal `casoIds` de cada fila.
 
 Reglas: mantener el **orden aleatorio** del banco (interleaving, no agrupar por tema) ·
-segunda pasada solo de fallos vía FSRS · **etiquetar cada fallo con su módulo CORE**
-(med/ped/surg/path) en el tracking → mapa de debilidades con la misma lógica de rentabilidad
-de ENCAPS · las tarjetas usan el MISMO formato Palmerton del mazo Step 1 (un solo sistema FSRS).
+segunda pasada solo de fallos vía FSRS (d72 y d47-d49 parciales) · **etiquetar cada fallo con su módulo CORE**
+(med/ped/surg/path) en el ledger → mapa de debilidades con la misma lógica de rentabilidad
+de ENCAPS · las tarjetas usan el MISMO formato Palmerton del mazo Step 1 (un solo sistema FSRS; los 8 átomos
+`step1: true` de §15 cuentan doble) · **swap v2.1**: la seguridad de fillers (oclusión vascular + HDPH · ceguera + kit)
+se estudia en d19-d20 (nov-2026), antes que la técnica · **taper**: ningún átomo CRIT nuevo a ±3 días hábiles de un
+examen mayor (§13).
 
-**Ritmo**: ~2-3 sesiones DERMA/semana (interdiario con RESEARCH) × 1 caso + 10Q → primera
-pasada de los 200 casos + barrido de los bancos de review en ~20 semanas ≈ horizonte a
-ene-2027¹.
+**Ritmo**: ~2-3 sesiones DERMA/semana (interdiario con RESEARCH) → 73 sesiones del ciclo 1 (15-sep-2026 → 7-abr-2027)
++ 30 del ciclo 2 (9-abr → 30-jun-2027): primera pasada de los 200 casos completa en d85 (11-may-2027)¹.
 
 ## 4. Módulos semanales (la lectura de 10' + sesión teórica)
 
@@ -132,6 +156,12 @@ enero; prioridad dentro del ciclo: el caso visual NUNCA se salta — los 10Q de 
 variable de ajuste. Al liberar agenda post-Step 1 (feb-2027), evaluar volver al ritmo de
 5 casos/sesión del agente.
 
+**Resolución (v3, 12-sep-2026)**: la divergencia se cierra con **3 casos/sesión desde d50** (primera sesión
+post-Step 1), no 5: en 45' con caso ciego completo (8 ejes + diferencial + discusión + tarjetas), 3 casos ocupan ~28'
+y dejan ~5Q de review; 5 casos convertirían la sesión en lectura de respuestas, que es lo que el método prohíbe.
+Codificado en `DERMA_CASO_META.porSesion = { base: 2, taper: 1, postStep1: 3 }`; los 36 casos que quedan tras d73 se hacen
+en las 12 primeras sesiones del ciclo 2 (§16). `DERMA_CASO_META` ya no dice "5 casos/sesión desde feb".
+
 ---
 
 ## v2.1 (5-sep-2026) · casos, dermatoscopia, ledger, Anki, swap d19-20↔d57-58, Nítida, dermatoscopio de bolsillo
@@ -147,10 +177,12 @@ variable de ajuste. Al liberar agenda post-Step 1 (feb-2027), evaluar volver al 
   Med 1-110 · Path 111-140 · Peds 141-170 · Surg 171-200 (`dermaCasoArea`). **A VERIFICAR (05-sep)** que el listado de
   `cases.aspx?groupid=1546` esté ordenado por área en ese orden; si no, se re-mapea `dermaCasoArea` sin tocar la permutación.
 - `DERMA_CASO_ORDEN` = permutación seeded **congelada** (mulberry32 seed 20260907 + Fisher-Yates, reproducida y verificada
-  el 5-sep: 200 ids únicos, suma 20.100). Cada sesión trae `casoIds: [a, b]` = posiciones 2(d-1) y 2(d-1)+1.
-- Primera pasada = **140 casos** en 70 sesiones (Med 75 · Path 18 · Peds 22 · Surg 25); los **60 restantes**
-  (`dermaCasosPostStep1()`) se hacen post-Step 1 (feb-2027) al subir a 5 casos/sesión (nota de divergencia original).
-- Ledger por caso (§4): el d69 (2ª pasada FSRS) y el d70 (mapa final) leen SOLO de ahí.
+  el 5-sep: 200 ids únicos, suma 20.100). Cada sesión trae `casoIds` = las posiciones que le tocan en orden.
+  *(v2.1: `[a, b]` = 2(d-1), 2(d-1)+1 · **v3**: las sesiones consumen 2 · 1 en el taper d44-d49 · 3 desde d50 → `casoIds: number[]`.)*
+- Primera pasada *(v2.1)* = 140 casos en 70 sesiones → **v3 = 164 casos en 73 sesiones** (Med 88 · Path 21 · Peds 26 · Surg 29,
+  leído de la permutación el 12-sep); los **36 restantes** (`dermaCasosPostStep1()` = `dermaCasosCiclo2()`; Med 22 · Path 9 ·
+  Peds 4 · Surg 1) se hacen a 3/sesión en d74-d85 del ciclo 2 (§16).
+- Ledger por caso (§4): el d72 (2ª pasada FSRS, antes d69) y el d73 (mapa final, antes d70) leen SOLO de ahí.
 
 ### 2. Micro-track de dermatoscopia (sin tocar el horario)
 - `dermatoscopiaModulo` ocupa el slot de lectura de 10 min en las sesiones **pares d6→d40** = los 18 módulos del
@@ -193,8 +225,9 @@ variable de ajuste. Al liberar agenda post-Step 1 (feb-2027), evaluar volver al 
 
 ### 6. Swap d19-20 ↔ d57-58 (contenido, no fechas de la franja) + puente Research
 - **Fechas v5.10:** d19 = **mié 4-nov-2026** = **oclusión vascular + HDPH** · d20 = **vie 6-nov-2026** = **ceguera + kit de
-  emergencia** (antes eran el contenido de d57/d58); "paciente agudo con fiebre y rash" y "pelo y uñas infecciosos" pasan a
-  d57 = **lun 22-feb-2027** y d58 = **mié 24-feb-2027**. El swap es de CONTENIDO entre posiciones del plan: las posiciones y
+  emergencia** (antes eran el contenido de d57/d58); "paciente agudo con fiebre y rash" y "pelo y uñas infecciosos" pasaron a
+  d57 = lun 22-feb-2027 y d58 = mié 24-feb-2027 **y en v3 (taper, §13) viven en d44 = vie 15-ene-2027 y d45 = mar 19-ene-2027**
+  como átomos ligeros de la ventana del examen. El swap es de CONTENIDO entre posiciones del plan: las posiciones y
   la cadencia interdiaria no se tocan, solo se re-fecharon con el corrimiento (v5.6: d19 27-oct · d20 29-oct · d57 12-feb ·
   d58 16-feb · v5.7: d19 29-oct · d20 2-nov · d57 16-feb · d58 18-feb · v5.8 = v5.9: d19 2-nov · d20 4-nov · d57 18-feb · d58 22-feb).
 - Motivo (revalidado contra los `.ts` el 12-sep; el CICLO 2 de Research no cambia en v5.10): SR-1 revalida su PICO de oclusión vascular / tiempo-a-hialuronidasa en
@@ -279,40 +312,141 @@ Nada de esto toca franjas, fechas, metas ni el Calendar; todo lee/escribe en `de
 - Verificado por script (5-sep, re-verificado 12-sep sobre `DERMA_DIAS`): 70 átomos, fechas = slots derma interdiarios
   **d1 15-sep-2026 → d70 30-mar-2027** (sáb/dom + 25-dic/31-dic/1-ene fuera; 0 fechas en finde, 0 en feriado),
   `remap_inicio.js` sigue casando (marker + 70 `fecha:` + META), casoIds = permutación, 23 `promir` alineados.
+- **v3 (taper)**: la rotación es POSICIONAL (d ≡ 0 mod 3) y no se mueve con el contenido; al alargar el plan a 73 aparece
+  un **24º slot en d72 (REPASO 1) = cap 4 Oncología** (×6: d21, d24, d27, d60, d69, d72). Los 2 slots que caen en el taper
+  (d45 cap 5 · d48 cap 2) se mantienen: 10Q MIR no son lectura nueva y sostienen la señal MIR. En el ciclo 2 hay 10 slots
+  más (d75…d102 = los 10 capítulos, uno cada uno, por peso). Re-verificado 12-sep: 73 átomos, 73 `fecha:`, META 73, 24 `promir`.
 
-### 12. Índice de fechas v5.10 (12-sep-2026) — los 70 átomos
+### 12. Índice de fechas v5.10 + taper v3 (12-sep-2026) — los 73 átomos del ciclo 1
 
 Leído de `src/lib/dermaDailyPlan.ts` → `DERMA_DIAS` (no estimado). d1 = **mar 15-sep-2026** ·
-d70 = **mar 30-mar-2027** · 70 átomos · franja 13:30-14:15 · interdiario con Research (0 solapes) ·
-sáb+dom, 25-dic, 31-dic y 1-ene fuera. La numeración del módulo NO es contigua porque el swap
-d19-20 ↔ d57-58 (§6) intercambia contenido entre bloques C y X.
+d73 = **mié 7-abr-2027** · 73 átomos · franja 13:30-14:15 · interdiario con Research (0 solapes, verificado
+también contra `researchDailyPlan2027.ts`) · sáb+dom, 25-dic, 31-dic y 1-ene fuera. La numeración del módulo NO es
+contigua porque el swap v2.1 (§6) y el taper v3 (§13) mueven CONTENIDO entre posiciones; las fechas d1-d70 son las
+mismas de v5.10 y d71-d73 son los 3 slots Derma siguientes.
 
 | Módulo | Átomos | Fechas (d = fecha real de `DERMA_DIAS`) |
 |--------|--------|------------------------------------------|
 | A · Fundamentos / morfología | 6 | d1 mar 15-sep · d2 jue 17-sep · d3 lun 21-sep · d4 mié 23-sep · d5 vie 25-sep · d6 mar 29-sep |
 | B · Inflamatorias | 7 | d7 jue 1-oct · d8 lun 5-oct · d9 mié 7-oct · d10 vie 9-oct · d11 mar 13-oct · d12 jue 15-oct · d13 lun 19-oct |
-| C · Infecciosas | 7 | d14 mié 21-oct · d15 vie 23-oct · d16 mar 27-oct · d17 jue 29-oct · d18 lun 2-nov · d57 lun 22-feb-27 · d58 mié 24-feb-27 |
-| X · Estética (danger zones, toxina, rellenos, peelings, láser) | 22 | d19 mié 4-nov · d20 vie 6-nov · d47 lun 25-ene-27 · d48 mié 27-ene-27 · d49 vie 29-ene-27 · d50 mar 2-feb-27 · d51 jue 4-feb-27 · d52 lun 8-feb-27 · d53 mié 10-feb-27 · d54 vie 12-feb-27 · d55 mar 16-feb-27 · d56 jue 18-feb-27 · d59 vie 26-feb-27 · d60 mar 2-mar-27 · d61 jue 4-mar-27 · d62 lun 8-mar-27 · d63 mié 10-mar-27 · d64 vie 12-mar-27 · d65 mar 16-mar-27 · d66 jue 18-mar-27 · d67 lun 22-mar-27 · d68 mié 24-mar-27 |
+| C · Infecciosas | 7 | d14 mié 21-oct · d15 vie 23-oct · d16 mar 27-oct · d17 jue 29-oct · d18 lun 2-nov · **d44 vie 15-ene-27 (taper)** · **d45 mar 19-ene-27 (taper)** |
+| X · Estética (danger zones, toxina, rellenos, peelings, láser) | 22 | d19 mié 4-nov · d20 vie 6-nov · **d46 jue 21-ene-27 (contorno, taper)** · d53 mié 10-feb-27 · d54 vie 12-feb-27 · d55 mar 16-feb-27 · d56 jue 18-feb-27 · d57 lun 22-feb-27 · d58 mié 24-feb-27 · d59 vie 26-feb-27 · d60 mar 2-mar-27 · d61 jue 4-mar-27 · d62 lun 8-mar-27 · d63 mié 10-mar-27 · d64 vie 12-mar-27 · d65 mar 16-mar-27 · d66 jue 18-mar-27 · d67 lun 22-mar-27 · d68 mié 24-mar-27 · d69 vie 26-mar-27 · d70 mar 30-mar-27 · d71 jue 1-abr-27 |
 | D · Tumores + dermatoscopia | 8 | d21 mar 10-nov · d22 jue 12-nov · d23 lun 16-nov · d24 mié 18-nov · d25 vie 20-nov · d26 mar 24-nov · d27 jue 26-nov · d28 lun 30-nov |
 | E · Dermatopatología | 5 | d29 mié 2-dic · d30 vie 4-dic · d31 mar 8-dic · d32 jue 10-dic · d33 lun 14-dic |
 | F · Pediátrica / genodermatosis | 5 | d34 mié 16-dic · d35 vie 18-dic · d36 mar 22-dic · d37 jue 24-dic · d38 lun 28-dic |
-| G · Quirúrgica | 6 | d39 mié 30-dic · d40 mar 5-ene-27 · d41 jue 7-ene-27 · d42 lun 11-ene-27 · d43 mié 13-ene-27 · d44 vie 15-ene-27 |
-| H · Checkpoints | 2 | d45 mar 19-ene-27 · d46 jue 21-ene-27 |
-| Z · Repaso final | 2 | d69 vie 26-mar-27 · d70 mar 30-mar-27 |
+| G · Quirúrgica | 6 | d39 mié 30-dic · d40 mar 5-ene-27 · d41 jue 7-ene-27 · d42 lun 11-ene-27 · d43 mié 13-ene-27 · **d50 mar 2-feb-27 (cicatrización, post-examen)** |
+| H · Checkpoints + segundas pasadas parciales (taper) | 5 | **d47 lun 25-ene-27 · d48 mié 27-ene-27 · d49 vie 29-ene-27 (parciales, taper)** · d51 jue 4-feb-27 (cp1) · d52 lun 8-feb-27 (cp2) |
+| Z · Repaso final | 2 | d72 lun 5-abr-27 · d73 mié 7-abr-27 |
 
-**Hitos re-fechados (v5.6 → v5.7 → v5.8 = v5.9 → v5.10)**
+**Hitos re-fechados (v5.6 → v5.7 → v5.8 = v5.9 → v5.10 → v3 taper)** — desde v3 el hito se identifica por CONTENIDO, no por d.
 
-| Hito | v5.6 | v5.7 | v5.8 = v5.9 | **v5.10 (vigente)** |
-|------|------|------|-------------|---------------------|
-| d1 · arranque (lesiones elementales) | lun 7-sep-2026 | mié 9-sep-2026 | vie 11-sep-2026 | **mar 15-sep-2026** |
-| d19 · oclusión vascular + HDPH (drill) | 27-oct-2026 | jue 29-oct-2026 | lun 2-nov-2026 | **mié 4-nov-2026** |
-| d20 · ceguera por relleno + kit (drill) | 29-oct-2026 | lun 2-nov-2026 | mié 4-nov-2026 | **vie 6-nov-2026** |
-| d45 · Checkpoint 1 (mapa de fallos por módulo CORE) | 11-ene-2027 | mié 13-ene-2027 | vie 15-ene-2027 | **mar 19-ene-2027** |
-| d46 · Checkpoint 2 (re-drill + HDPH) | 13-ene-2027 | vie 15-ene-2027 | mar 19-ene-2027 | **jue 21-ene-2027** |
-| d57 · paciente agudo con fiebre y rash | 12-feb-2027 | mar 16-feb-2027 | jue 18-feb-2027 | **lun 22-feb-2027** |
-| d58 · pelo y uñas infecciosos | 16-feb-2027 | jue 18-feb-2027 | lun 22-feb-2027 | **mié 24-feb-2027** |
-| d69 · Repaso 1 · 2ª pasada FSRS solo de fallos | 18-mar-2027 | lun 22-mar-2027 | mié 24-mar-2027 | **vie 26-mar-2027** |
-| d70 · Repaso 2 · mapa final + plan post-Step 1 | lun 22-mar-2027 | mié 24-mar-2027 | vie 26-mar-2027 | **mar 30-mar-2027** |
+| Hito (contenido) | v5.6 | v5.7 | v5.8 = v5.9 | v5.10 | **v3 taper (vigente)** |
+|------|------|------|-------------|-------|------------------------|
+| arranque (lesiones elementales) | d1 lun 7-sep-2026 | mié 9-sep | vie 11-sep | mar 15-sep | **d1 · mar 15-sep-2026** |
+| oclusión vascular + HDPH (drill) | d19 27-oct | jue 29-oct | lun 2-nov | mié 4-nov | **d19 · mié 4-nov-2026** |
+| ceguera por relleno + kit (drill) | d20 29-oct | lun 2-nov | mié 4-nov | vie 6-nov | **d20 · vie 6-nov-2026** |
+| cicatrización + complicaciones qx (cierre G) | d44 | — | — | vie 15-ene-2027 | **d50 · mar 2-feb-2027** |
+| paciente agudo con fiebre y rash | d57 12-feb-2027 | mar 16-feb | jue 18-feb | lun 22-feb | **d44 · vie 15-ene-2027 (taper)** |
+| pelo y uñas infecciosos | d58 16-feb-2027 | jue 18-feb | lun 22-feb | mié 24-feb | **d45 · mar 19-ene-2027 (taper)** |
+| contorno corporal + escleroterapia | d66 | — | — | jue 18-mar-2027 | **d46 · jue 21-ene-2027 (taper)** |
+| segundas pasadas parciales I · II · III (nuevas) | — | — | — | — | **d47 lun 25-ene · d48 mié 27-ene · d49 vie 29-ene-2027** |
+| Checkpoint 1 (mapa de fallos por módulo CORE) | d45 11-ene-2027 | mié 13-ene | vie 15-ene | mar 19-ene | **d51 · jue 4-feb-2027** |
+| Checkpoint 2 (re-drill + HDPH) | d46 13-ene-2027 | vie 15-ene | mar 19-ene | jue 21-ene | **d52 · lun 8-feb-2027** |
+| Anatomía facial 3D (primer átomo X post-examen) | d47 | — | — | lun 25-ene-2027 | **d53 · mié 10-feb-2027** |
+| Toxina I | d50 | — | — | mar 2-feb-2027 | **d56 · jue 18-feb-2027** |
+| Ciencia cosmecéutica (cierre X, LANGE) | d68 | — | — | mié 24-mar-2027 | **d71 · jue 1-abr-2027** |
+| Repaso 1 · 2ª pasada FSRS solo de fallos | d69 18-mar-2027 | lun 22-mar | mié 24-mar | vie 26-mar | **d72 · lun 5-abr-2027** |
+| Repaso 2 · mapa final + arranque del ciclo 2 | d70 lun 22-mar-2027 | mié 24-mar | vie 26-mar | mar 30-mar | **d73 · mié 7-abr-2027** |
 
-Los 4 paneles de checkpoint (`DermaCheckpointPanel` en d45/d46/d69/d70) y los 4 drills HDPH
-(`DermaEmergencyDrill` en d19/d20/d46/d70) siguen en los MISMOS átomos: solo cambian sus fechas.
+Los 4 paneles de checkpoint (`DermaCheckpointPanel`) y los 4 drills HDPH (`DermaEmergencyDrill`) siguen en los MISMOS
+átomos de CONTENIDO; sus d cambian: checkpoints **d51/d52/d72/d73** (`DERMA_CHECKPOINTS`, `DERMA_CHECKPOINT_DIAS_V3`) y
+drills **d19/d20/d52/d73** (`DERMA_DRILL_DIAS_V3`). Mapa completo d(v2.1) → d(v3) en `DERMA_TAPER_REMAP_D` (`dermaDNuevo`).
+
+### 13. Taper de examen (v3 · 12-sep-2026 · gaps_v3b_derma nº2)
+
+**Regla (Palmerton, "taper antes del examen"):** *ningún átomo CRIT nuevo a ±3 días hábiles de un examen mayor*, y en la
+semana del examen **solo repaso FSRS + 1 caso**. Con las fechas v5.10, entre el NBME 31 (vie 15-ene-2027, GO/NO-GO) y el
+examen Step 1 (vie 29-ene-2027) caían — calculado con node, no estimado — **6 sesiones Derma**: d44 15-ene (Cicatrización,
+CRIT, el mismo día del NBME 31), d45 19-ene y d46 21-ene (checkpoints, en la semana de NBME 32/33 + FREE 120), d47 25-ene
+(Anatomía 3D, CRIT), d48 27-ene (Arterias, CRIT, D95 de Step 1) y d49 29-ene (Envejecimiento, **el día del examen**).
+
+**Solución = swap de CONTENIDO con fechas intactas** (mismo precedente que el swap v2.1 d19/20↔d57/58):
+
+| d · fecha | Antes (v2.1) | Ahora (v3, `taper: {modo:'step1'}`) |
+|---|---|---|
+| d44 vie 15-ene (NBME 31) | Cicatrización (G, CRIT) | **Paciente agudo con fiebre y rash** (C, MED; antes d57) — 1 caso + FSRS + lectura ligera |
+| d45 mar 19-ene (NBME 32) | Checkpoint 1 | **Pelo y uñas infecciosos** (C, MED; antes d58) — 1 caso + FSRS + lectura ligera |
+| d46 jue 21-ene (NBME 33) | Checkpoint 2 | **Contorno corporal + escleroterapia** (X, MED; antes d66) — 1 caso + FSRS + lectura ligera |
+| d47 lun 25-ene (semana del examen) | Anatomía 3D (X, CRIT) | **Segunda pasada parcial I** (nueva, H): 1 caso + FSRS de fallos A-D · 0 lectura |
+| d48 mié 27-ene (D95 Step 1) | Arterias (X, CRIT) | **Segunda pasada parcial II** (nueva, H): 1 caso + FSRS de fallos E-G + drill HDPH mental · 10Q MIR cap 2 |
+| d49 vie 29-ene (EXAMEN) | Envejecimiento (X, ALTA) | **Segunda pasada parcial III** (nueva, H): **sesión OPCIONAL** — si se salta no se pierde nada |
+
+Todo lo desplazado se corre DESPUÉS del examen **en el mismo orden**: d50 Cicatrización → d51/d52 Checkpoints → d53 Anatomía
+3D → d54 Arterias → d55 Envejecimiento → d56-d59 Toxina I-IV → d60-d63 Rellenos I-IV → d64-d65 Peelings → d66-d69 Láser I-IV →
+d70 Microneedling → d71 Cosmecéutica → d72/d73 Repasos. **0 átomos perdidos** (verificado con node contra el HEAD del 12-sep:
+los 70 subtemas, las 70 lecturas y las 70 láminas siguen; CRIT 27 y ALTA 35 intactos; solo suben los MED de 8 a 11 por las 3
+parciales nuevas) y el plan se alarga de 70 a **73** sesiones (d71 jue 1-abr · d72 lun 5-abr · d73 mié 7-abr-2027), con paridad
+Research intacta. El "modo taper" en la fila = `taper` (motivo + nota), `casoIds` de 1, `qbankly: rFALLOS` (0 preguntas
+nuevas) y `extra: null` en las parciales; la UI muestra "semana de examen: solo FSRS + 1 caso". Lo posicional (micro-track
+DermNet en d44, rotación ProMIR d45/d48, alternancia impar/par de la imagen dermatoscópica) NO se movió con el contenido.
+
+**ENCAPS 2027-I**: la fecha real del examen aún no está fijada ("fines de marzo"; **A VERIFICAR (12-sep)**, decisión de Joseph).
+Cuando se fije, `DERMA_TAPER_ENCAPS_FECHA` en `dermaDailyPlan.ts` activa `modo:'encaps'` en las sesiones a ±3 días hábiles
+(`dermaTaperEfectivo`, `dermaVentanaTaper`) sin tocar filas ni fechas; con d72/d73 ya en abril, hoy ningún átomo del ciclo 1
+cae en "fines de marzo" salvo d67-d70 (láser II-IV, microneedling — ALTA/CRIT), que serían los candidatos si el examen
+cae en la semana del 22-26 de marzo.
+
+### 14. Presupuesto de preguntas por banco + cursor (v3 · gaps_v3b_derma nº5)
+
+La rotación v2.1 sobreasignaba el Pictorial 4e (43 sesiones × ~10Q = 430 > 381Q) y dejaba sin uso el Pictorial 3e y LANGE.
+Presupuesto real leído de `DERMA_DIAS` (`dermaPresupuestoBancos()`, 12-sep):
+
+| Banco (`fuente` del ledger) | Q disponibles | Sesiones ciclo 1 | Q asignadas | Quedan para el ciclo 2 | Dónde |
+|---|---|---|---|---|---|
+| Pictorial Review 4e (`pictorial`, qa 3626) | 381 | **38** | 380 | 1 | d1…d66 (se agota en d66) |
+| Pictorial Review 3e (`pictorial3`, qa 2948) | 363 | **4** | 40 | 323 | d67 · d69 · d70 · d72 (relevo) + ciclo 2 (14 sesiones) |
+| CORE Exam Bank (`core`, qa 3479) | 104 | 8 | 80 | 24 | cierres de módulo (d6 d13 d20 d28 d33 d38 d50 d52) + cp2 del ciclo 2 |
+| Barnhill's Challenge (`barnhill`, qa 2865) | 403 | 14 | 140 | 263 | dermpath D/E y alternancia en X + ciclo 2 (13 sesiones) |
+| Question of the Week (`qotw`, qa 3562) | 50 | 2 | 20 | 30 | d51 (cp1) · d73 (repaso 2) + checkpoints del ciclo 2 |
+| LANGE Clinical Dermatology Cases (`lange`, gboscontainerid 258) | 48 | 1 | 10 | 38 | d71 (cierre del módulo X) |
+| — TAPER (`rFALLOS`, sin preguntas nuevas) | — | 6 | 0 | — | d44-d49 |
+
+**Cursor**: cada link `qa.aspx` abre el banco desde el principio; `dermaBancoCursor(fuente)` = max(id)+1 de las entradas del
+ledger de ese banco (`dermaBancoCursorDeUrl(url)` lo resuelve desde el link de la fila) → el ítem de review muestra
+**"retoma en Q#"** y `agotado` cuando el cursor supera el total. `dermaBancoCursores()` alimenta el widget de Debilidades.
+
+**Cura obligatoria**: si en la última sesión registrada hubo un fallo con `tipoError: 'CCSN'`, `dermaCuraPendiente()` devuelve
+el **Differential Diagnosis Challenge (cases 1616)** como cura OBLIGATORIA de la siguiente sesión (3 pares del bloque + tabla
+comparativa + oclusión del rasgo discriminador), con los ids de los casos/preguntas que la originan; otros tipos devuelven su
+cura recomendada (`DERMA_CURA_LINK`: DDX → DD Challenge · MORFOLOGÍA → DermNet terminology · CONCEPTO → Fitzpatrick).
+`dermaCuraAplicaA(dia)` dice si toca hoy (la sesión es posterior a la del fallo).
+
+### 15. Sinergia Step 1 ↔ Derma (v3 · gaps_v3b_derma nº6)
+
+"La derma de Step 1 cuenta doble" ahora es un mecanismo: `step1: true` en los **8 átomos** que el USMLE vuelve a preguntar —
+**d7 psoriasis · d8 eccemas · d10 pénfigo/penfigoide · d12 SJS/TEN/DRESS · d14 bacterianas · d16 HSV/VZV/VPH · d23 BCC/SCC ·
+d24 melanoma** (`DERMA_STEP1_DIAS`). Sus tarjetas van al MISMO mazo FSRS con el tag `step1` (lo añade `dermaAnkiTags` —
+pendiente del agente de ankiLinks) y HOY muestra el chip "cuenta doble Step 1". En sentido inverso, **d12 y d24** llevan
+`anclajeStep1` hacia el día "dermato Step 1" del plan USMLE (**D73, mié 23-dic-2026**, bloque MSK/Reuma) y a la sección de
+First Aid correspondiente — **página A VERIFICAR (12-sep)**: la sección de FA no consta en el repo. El lado USMLE (que D73
+apunte a `APEX::DERMA tag:step1` + fallos del ledger de esos 8 átomos) lo cablea el agente de USMLE.
+
+### 16. Ciclo 2 (v3 · gaps_v3b_derma nº8) — `src/lib/dermaCiclo2.ts`, generado por `DATA/_scripts/gen_derma_ciclo2.js`
+
+Decisión codificada (cierra la contradicción "5 casos/sesión desde feb" de `DERMA_CASO_META` vs filas a 2):
+
+- **Cadencia**: 2 casos/sesión (d1-d43) · 1 en el taper (d44-d49) · **3 desde d50** → 164 casos al d73; los **36 restantes**
+  a 3/sesión en **d74-d85** (vie 9-abr → mar 11-may-2027) → primera pasada de los 200 completa en d85.
+- **Ciclo 2 = 30 sesiones, d74-d103, vie 9-abr → mié 30-jun-2027**, misma franja interdiaria (0 solapes con
+  `researchDailyPlan2027.ts`, verificado por el generador), misma clave de progreso `derma` (numeración continua), mismas filas
+  `DiaDerma` (+ `ciclo: 2`, `tipo: 'casos' | 'fsrs' | 'checkpoint'`, `gplus`).
+  - d74-d85 `casos`: 3 casos ciegos nuevos + review · d86-d103 `fsrs`: SOLO fallos del ledger (0 casos nuevos).
+  - **Review**: Pictorial 3e ⇄ Barnhill restante (14 + 13 sesiones, retomando en el Q# del cursor); QOTW en cp1/repaso2 y CORE en cp2.
+  - **1 módulo G+ por semana** en el slot de lectura (`DERMA_GAP_MODULOS` de `dermaData.ts`, primera sesión Derma de cada semana):
+    G+1 d74 · G+2 d75 · G+3 d77 · G+4 d80 · G+5 d82 · G+6 d87 · G+7 d90 · G+8 d92 · G+9 d95 (`DERMA_CICLO2_GPLUS_DIAS`).
+  - **Checkpoints**: cp1 d85 (11-may, fin de la primera pasada) · cp2 d94 (4-jun, re-drill + drill HDPH) · repaso2 d103 (30-jun,
+    mapa final + drill + plan de la fase práctica). 10Q ProMIR en d ≡ 0 mod 3 (10 slots = 10 capítulos por peso).
+- **Helpers**: `dermaDiaDeConCiclo2(fechaISO)` (fallback al ciclo 2), `dermaDiaPorD(d)`, `dermaCicloDe(d)`, `DERMA_DIAS_TODOS`,
+  `dermaVentana7Todos`, `dermaGplusDe(dia)`, `DERMA_CICLO2_META` (`dOffset: 73`). Tras un corrimiento: `remap_inicio.js <fecha>`
+  → `node DATA/_scripts/gen_derma_ciclo2.js` (sin fecha arranca en el primer día-Derma tras `DERMA_DAILY_META.fin`).
+- Fuera del ciclo 2 (fase práctica 2027): dermatoscopio de bolsillo, Nítida y la ruta al fellowship (`RUTA_FELLOWSHIP_ESTETICO.md`).

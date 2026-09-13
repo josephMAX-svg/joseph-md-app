@@ -158,8 +158,8 @@ decisión informada sobre research fellowship presencial 2028.
   bloqueó la verificación automática.
 - Leer **en la página** (no en fragmentos de buscador) la ventana temporal y los límites de cartas de JAAD, JCD y
   Dermatologic Surgery el día de C-2 (URLs en `CARTA_1/candidatos.md`); las guías devolvieron 403/402 el 5-sep.
-- **Actas Dermo-Sifiliográficas**: ¿Diamond $0 (AEDV) o APC US$1.870/1.900 EUR (DOAJ)? — resolver antes de contar con
-  ese escalón a $0 en la cascada de la tesis.
+- ~~**Actas Dermo-Sifiliográficas**: ¿Diamond $0 (AEDV) o APC US$1.870/1.900 EUR (DOAJ)?~~ **RESUELTO 12-sep-2026**: la página
+  Open Access de la revista lista APC EUR 1.710 / USD 1.870 y declara que la AEDV lo cubre para todos los aceptados → **$0**.
 - Importe exacto de JAAD Intl / JAAD CR en el Excel de APC de Elsevier y grupo GPOA de Perú (§3.1).
 - Dr. Ciro: aceptación de las 3 coautorías + vía CEI de la tesis (`MENTORES.md`, `TESIS_L0/etica.md`).
 
@@ -174,28 +174,32 @@ decisión informada sobre research fellowship presencial 2028.
 | id | Entregable | Tipo / guía | Cascada de revistas | Senior author · mentor (`MENTORES.md`) | Fecha objetivo | Fecha real | Estado (5-sep-2026) | Coste (§3.1) | DOI |
 |---|---|---|---|---|---|---|---|---|---|
 | `carta-1` | Carta al editor #1 | Letter / Notes & Comments (≤500 palabras) · `agentic/prompts_claude_code/letter_to_editor.md` | JAAD o JCD (elegir en C-2; candidatos en `CARTA_1/candidatos.md`) → plan B misma familia | Dr. Ciro (coautor) | **elegir artículo: ≤ 2ª sem. sep-2026 · enviar: ≤ 15-oct-2026** (fecha límite interna de la fila elegida) · *plan v5.9 = v5.10: diana C-2 = lun 28-sep-2026 · SUBMIT C-6 = vie 16-oct-2026 🔴 un día tarde vs el ≤15-oct (§9.1)* | — | **idea** → candidatos con DOI verificado (C-1 hecho) | $0 | — |
-| `tesis-L0` | Tesis IGA×CADI → research letter | Research letter STROBE (600-1.000 palabras, 1 tabla, 1 figura) · `TESIS_L0/` · `research_letter_STROBE.md` | JAAD International → IJD → Actas Dermo-Sifiliográficas → Anais Brasileiros | Dr. Ciro (último autor) · Rising Scholars (inglés) · Finlay (permiso CADI) | ética/CEI: oct-2026 · borrador: dic-2026 · **enviar: ≤ 15-feb-2027** · *plan v5.9 = v5.10: ética T-1 = mar 20-oct-2026 · SUBMIT T-8 = lun 23-nov-2026 (84 días de margen)* | — | **borrador** (outline + checklists; bloqueado por CEI/consentimientos A VERIFICAR) | $0-1.288 | — |
-| `case-report-1` | Case report #1 | CARE 2013 (13 ítems) · `CASE_REPORT_1/` · `case_report_CARE.md` | Dermatology Online Journal → IJD (correspondence) → JAAD Case Reports | Dr. Ciro o colega SPD (senior author) | caso + consentimiento: **31-oct-2026** · borrador: dic-2026 · **enviar: ≤ 28-feb-2027** · *plan v5.9 = v5.10: CR-1 (fuente del caso) = mar 3-nov-2026 🔴 3 días TARDE vs el 31-oct · paquete congelado CR-8 = mié 9-dic-2026 · SUBMIT CR-9 = lun 1-feb-2027 (sin mover)* | — | **idea** (sin caso; plantillas listas) | ≤ $300 | — |
-| `prospero-SR-1` | Registro PROSPERO de SR-1 (L4) | Protocolo PRISMA-P · equipo de revisión (revisor #2 humano) | PROSPERO | Dr. Ciro (revisor #2 / validación clínica) + colaborador IMG | **≤ 31-mar-2027** · *plan v5.9 = v5.10: revisor #2 nombrado X-1 = vie 27-nov-2026 · equipo confirmado X-9 = mié 17-feb-2027 · REGISTRO R10 = mar 23-feb-2027 (36 días de margen)* | — | **idea** (corpus de 200 papers descubierto 11-jun-2026, 0 cribados; export Rayyan listo: `exportResearchCorpus`) | $0 | — |
+| `tesis-L0` | Tesis IGA×CADI → research letter | Research letter STROBE (≈500-600 palabras · ≤5 refs · 1 tabla o 1 figura + apéndice «versión larga» 800/3/10) · `TESIS_L0/` · `research_letter_STROBE.md` | JAAD International → IJD → Actas Dermo-Sifiliográficas → Anais Brasileiros | Dr. Ciro (último autor) · Rising Scholars (inglés) · Finlay (permiso CADI) | ética/CEI: oct-2026 · borrador: dic-2026 · **enviar: ≤ 15-feb-2027** · *plan v5.10b (12-sep): ética T-1 = **mié 30-sep-2026** (solicitud CEI expedita presentada ese día) · SUBMIT T-8 = lun 23-nov-2026 (84 días de margen) — **GATES en T-7/T-8: sin nº de CEI o exención, o sin inglés revisado, NO se envía → feb-2027*** | — | **borrador** (outline + checklists; bloqueado por CEI/consentimientos A VERIFICAR) | $0-1.288 | — |
+| `case-report-1` | Case report #1 | CARE 2013 (13 ítems) · `CASE_REPORT_1/` · `case_report_CARE.md` | Dermatology Online Journal → IJD (correspondence) → JAAD Case Reports | Dr. Ciro o colega SPD (senior author) | caso + consentimiento: **31-oct-2026** · borrador: dic-2026 · **enviar: ≤ 28-feb-2027** · *plan v5.10b (12-sep): CR-1 (caso) = **jue 22-oct-2026** · CR-2 (consentimiento) = **lun 26-oct-2026** ✅ antes del 31-oct (antes caían el 3-nov / 9-nov) · seguimiento con el Dr. Ciro el 2-oct y el 8-oct (sin caso el 8-oct → fuente B) · paquete congelado CR-8 = mié 9-dic-2026 · SUBMIT CR-9 = lun 1-feb-2027 (sin mover)* | — | **idea** (sin caso; plantillas listas) | ≤ $300 | — |
+| `prospero-SR-1` | Registro PROSPERO de SR-1 (L4) | Protocolo PRISMA-P · equipo de revisión (revisor #2 humano) | PROSPERO | Dr. Ciro (revisor #2 / validación clínica) + colaborador IMG | **≤ 31-mar-2027** · *plan v5.10b: revisor #2 nombrado X-1 = vie 27-nov-2026 (la invitación declara la carga real ≈ 40-70 h fuera del bloque y exige aceptación escrita · L4 §9.4) · equipo confirmado X-9 = mié 17-feb-2027 · REGISTRO R10 = mar 23-feb-2027 (36 días de margen); las fechas previstas que se copian a PROSPERO son las de L4 §9.4 (con margen), no las de los átomos* | — | **idea** (corpus de 200 papers descubierto 11-jun-2026, 0 cribados; export Rayyan listo: `exportResearchCorpus`) | $0 | — |
 | `SR-1` | Revisión sistemática L4 (complicaciones de inyectables, fototipos IV-VI) | PRISMA 2020 + GRADE · `agentic/` (pipeline SR) | Dermatologic Surgery → JAAD → JAAD International | Cotofana (contacto feb-mar 2027) · coautores IMG | ejecución abr-jun 2027 · **enviar: ≤ 31-ago-2027** · *plan v5.9 = v5.10: extracción R22-R25 = 12-abr → 26-abr-2027 · SUBMIT R43 = lun 5-jul-2027 (57 días de margen)* | — | **idea** | $0 (techo $1.288) | — |
 
-### 9.1 Calendario editorial v5.9 = v5.10 (fechas leídas con `node` de `researchDailyPlan.ts` / `researchDailyPlan2027.ts`)
+### 9.1 Calendario editorial v5.9 = v5.10 → **v5.10b (re-orden del 12-sep-2026)** (fechas leídas con `node` de `researchDailyPlan.ts` / `researchDailyPlan2027.ts`)
 
 Ningún deadline externo se movió. En v5.9 **todo el ciclo 1 de Research corrió +2 días hábiles**
 (su d1 pasó de jue 10-sep a lun 14-sep) y el ciclo 2 corrió con él; **en v5.10 Research no se mueve** (el lun 14-sep
 sigue siendo día Research). La columna **v5.9 = v5.10** es la fecha REAL del átomo que ejecuta el hito (parseada de
-los `.ts` el 10-sep-2026 y re-verificada el 12-sep-2026), no una estimación.
+los `.ts` el 10-sep-2026 y re-verificada el 12-sep-2026), no una estimación. **v5.10b (12-sep-2026, gaps v3b 1-3):** mismos 42
+átomos y mismas fechas por slot; solo cambian de sitio T-1 (d14 → d7), M3 (d7 → d8), R9 (d35 → d9), R6 (d9 → d14), CR-1 (d19 → d15),
+CR-2 (d21 → d16), T-2 (d15 → d19), R7 (d16 → d21) y R2 (d8 → d35). Las filas afectadas llevan la fecha v5.10b en negrita.
 
-| Hito | Átomo | v5.7 = v5.8 | **v5.9 = v5.10 (vigente)** | Deadline externo | Margen |
+| Hito | Átomo | v5.7 = v5.8 | **v5.9 = v5.10 → v5.10b (vigente)** | Deadline externo | Margen |
 |------|-------|-------------|--------------------|------------------|--------|
 | Infra académica (10 cuentas) | R0 | jue 10-sep-2026 | **lun 14-sep-2026** | — | — |
 | Mentor: email al Dr. Ciro (3 coautorías) | M1 | mié 16-sep-2026 | **vie 18-sep-2026** | — | — |
 | Artículo DIANA de la carta + deadline calculado | C-2 | jue 24-sep-2026 | **lun 28-sep-2026** | ventana del journal | según fila elegida |
-| PICO de SR-1 fijado | R6 | vie 2-oct-2026 | **mar 6-oct-2026** | — | — |
+| ¿Existe ya la SR? AMSTAR-2 de 5 SR vecinas + decisión a/b/c (L4 §6) | R9 | jue 11-dic-2026 | **mar 6-oct-2026 (v5.10b · antes de R6)** | — | gate del PICO |
+| PICO de SR-1 fijado | R6 | vie 2-oct-2026 | **mar 20-oct-2026 (v5.10b · tras la decisión de R9)** | — | — |
 | **SUBMIT carta al editor #1** | C-6 | mié 14-oct-2026 | **vie 16-oct-2026** | ≤ 15-oct-2026 | 🔴 **−1 día (VENCIDO)** |
-| Ética / CEI de la tesis archivada | T-1 | vie 16-oct-2026 | **mar 20-oct-2026** | oct-2026 | dentro del mes |
-| **Caso + senior author del case report** | CR-1 | vie 30-oct-2026 | **mar 3-nov-2026** | 31-oct-2026 | 🔴 **−3 días (VENCIDO)** |
-| **SUBMIT research letter de la tesis (L0)** | T-8 | jue 19-nov-2026 | **lun 23-nov-2026** | ≤ 15-feb-2027 | 84 días |
+| Ética / CEI de la tesis: nº archivado o **solicitud expedita PRESENTADA ese día** | T-1 | vie 16-oct-2026 | **mié 30-sep-2026 (v5.10b)** | solicitud ≤ 30-sep | 0 días (la aprobación tarda semanas → gate en T-7/T-8) |
+| **Caso + senior author del case report** | CR-1 | vie 30-oct-2026 | **jue 22-oct-2026 (v5.10b)** | 31-oct-2026 | ✅ +9 días |
+| Consentimiento de publicación firmado | CR-2 | jue 5-nov-2026 | **lun 26-oct-2026 (v5.10b)** | 31-oct-2026 | ✅ +5 días |
+| **SUBMIT research letter de la tesis (L0)** | T-8 | jue 19-nov-2026 | **lun 23-nov-2026** (gates: nº CEI/exención + inglés revisado; si fallan → feb-2027) | ≤ 15-feb-2027 | 84 días |
 | Revisor humano #2 nombrado (pre-PROSPERO) | X-1 | mié 25-nov-2026 | **vie 27-nov-2026** | antes de PROSPERO | 88 días |
 | **Paquete del case report CONGELADO** | CR-8 | lun 7-dic-2026 | **mié 9-dic-2026** | antes del submit | 54 días |
 | Cierre antes de la pausa de enero | X-7 | mar 29-dic-2026 | **mar 29-dic-2026** *(no se movió)* | — | — |
@@ -212,10 +216,10 @@ los `.ts` el 10-sep-2026 y re-verificada el 12-sep-2026), no una estimación.
 >   cae **un día tarde**. Opciones: (a) hacer el SUBMIT el jue 15-oct fuera del átomo (el paquete ya
 >   está listo en C-5, mié 14-oct), (b) elegir en C-2 (lun 28-sep) una fila de candidatos cuya ventana
 >   cierre más tarde. **Lo que NO vale es dejarlo correr:** la ventana del journal no se negocia.
-> - **CR-1 = mar 3-nov-2026** contra el deadline interno del 31-oct para tener caso + consentimiento
->   + senior author. Se pasa **3 días**. Si el Dr. Ciro no ha respondido antes del 30-oct hay que
->   activar la fuente B (colega SPD) sin esperar al átomo; el 31-oct es interno, así que la alternativa
->   honesta es moverlo a la 1ª semana de noviembre y dejarlo escrito.
+> - ~~**CR-1 = mar 3-nov-2026** contra el deadline interno del 31-oct~~ **RESUELTO en v5.10b (12-sep):** CR-1 = jue 22-oct y
+>   CR-2 = lun 26-oct (intercambio con T-2 y R7, que no tienen deadline externo). Regla operativa: seguimiento con el Dr. Ciro
+>   el 2-oct (d8) y el 8-oct (d10, 3 semanas desde M1); sin caso el 8-oct → fuente B (colega SPD) con el mensaje único de
+>   `CASE_REPORT_1/caso_candidatos.md` §2 (MENTORES fila 6).
 > - **X-9 = 17-feb-2027 → R10 = 23-feb-2027**: 6 días entre confirmar el equipo y registrar (mejor
 >   que los 4 de v5.8). El revisor #2 debe estar comprometido desde X-1 (27-nov-2026); X-9 solo confirma.
 >

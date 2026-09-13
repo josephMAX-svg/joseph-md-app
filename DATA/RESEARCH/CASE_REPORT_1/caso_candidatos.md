@@ -6,6 +6,12 @@
 > caso se identifica **antes del 31-oct-2026** (fecha límite para tener consentimiento + fotos + senior author
 > y redactar en nov-dic con el CARE). Este fichero es la tabla que se rellena en el átomo CR-1 y el punto de
 > partida de la conversación con el Dr. Ciro (ver `../MENTORES.md`, mensaje 1).
+>
+> **Plan v5.10b (12-sep-2026 · gap 2):** M1 (petición al Dr. Ciro) = vie 18-sep · **seguimiento** = vie 2-oct (d8) y jue 8-oct
+> (d10, 3 semanas desde M1) · **sin caso el 8-oct → fuente B** con el mensaje único de §2 · **CR-1 (caso elegido) = jue 22-oct** ·
+> **CR-2 (consentimiento firmado) = lun 26-oct** — los dos antes del 31-oct (antes caían el 3-nov y el 9-nov, fuera del plazo).
+> Como el consentimiento depende de la próxima cita del paciente, si esa cita cae después del 31-oct se le pide al senior author
+> que lo obtenga él en consulta (chip de CR-2).
 
 ## 1. Tabla de candidatos (vacía — rellenar una fila por caso propuesto)
 
@@ -47,6 +53,13 @@ en fototipo IV-V / ninguno en Perú"). Un caso "interesante" sin (a) o (b) se de
   Peruana de Dermatología — comprobar si es público antes de contar con él.
 - Regla: **un solo mensaje concreto** ("busco 1 caso de complicación de relleno con fotos para un case report
   CARE en Dermatology Online Journal; yo redacto, usted es senior author; tiempo suyo estimado: 2 h en 3 meses").
+- **Mensaje único listo (activar el jue 8-oct-2026 si el Dr. Ciro no dio caso; WhatsApp o email, 6 líneas):**
+  > Dr./Dra. [nombre], buenos días. Soy Joseph Soto, médico egresado de la UNCP (Huancayo); me lo recomendó el Dr. Ciro Rodríguez.
+  > Estoy preparando un reporte de caso con formato CARE para Dermatology Online Journal (MEDLINE) y busco **un solo caso de
+  > complicación de relleno o de láser/RF con fotos de evolución** de su consulta. Yo hago el 100 % del trabajo: consentimiento de
+  > publicación (plantilla bilingüe lista), fotos según protocolo, redacción, citas verificadas y envío; usted sería **senior author**
+  > y validaría la clínica. Su tiempo estimado: unas 2 horas en 3 meses. Necesitaría elegir el caso antes del **31 de octubre**.
+  > ¿Le interesa? Le envío el resumen del proceso en una página. Gracias.
 
 ### Fuente C (oportunista, no planificar sobre ella)
 - Casos que Joseph vea en la rotación/derma clínica de la app (sección Derma) o consultas informales de
@@ -54,11 +67,11 @@ en fototipo IV-V / ninguno en Perú"). Un caso "interesante" sin (a) o (b) se de
   redirigen a A o B.
 
 ## 3. Flujo desde que aparece un candidato (encaja en la franja Research 13:30-14:15 interdiaria)
-1. **CR-1** Rellenar la fila; búsqueda de novedad en PubMed/OpenAlex documentada (base, fecha, términos, n) → si
+1. **CR-1 (jue 22-oct-2026)** Rellenar la fila; búsqueda de novedad en PubMed/OpenAlex documentada (base, fecha, términos, n) → si
    hay >10 casos similares publicados, el ángulo debe ser otro (fototipo, contexto peruano, manejo con recursos
    limitados) o se descarta.
-2. **CR-2** Consentimiento de publicación firmado (ES) en la siguiente cita del paciente; escanear y guardar en
-   `_privado/` (fuera de git) — ver `consentimiento_publicacion_ES_EN.md`.
+2. **CR-2 (lun 26-oct-2026)** Consentimiento de publicación firmado (ES) en la siguiente cita del paciente; escanear y guardar en
+   `_privado/` (fuera de git) — ver `consentimiento_publicacion_ES_EN.md`. Si la cita cae después del 31-oct, lo obtiene el senior author.
 3. **CR-3** Fotos según `protocolo_fotos.md` (o auditar las existentes: fondo, luz, escala, EXIF).
 4. **CR-4** Timeline del caso (tabla CARE ítem 7) + perspectiva del paciente (ítem 12) recogida en la misma cita.
 5. **CR-5** Borrador con `agentic/prompts_claude_code/case_report_CARE.md` (13 secciones) → citas por
@@ -73,3 +86,4 @@ en fototipo IV-V / ninguno en Perú"). Un caso "interesante" sin (a) o (b) se de
 | Fecha | Decisión | Quién |
 |---|---|---|
 | 5-sep-2026 | Se crea la carpeta y se fija el 31-oct-2026 como fecha límite para tener caso + consentimiento + senior author. Fuente A primero; B solo si A no tiene caso en 3 semanas. | Claude (análisis Palmerton v3) — pendiente de que Joseph lo confirme |
+| 12-sep-2026 | CR-1 y CR-2 adelantados al 22-oct y 26-oct (intercambio con T-2 y R7, sin deadline externo). Regla operativa: seguimiento con el Dr. Ciro el 2-oct (d8) y el 8-oct (d10); **si el 8-oct (3 semanas desde M1) no hay caso → fuente B** con el mensaje único de §2 (`MENTORES.md` fila 6). | Claude (gaps v3b, punto 2) — pendiente de que Joseph lo confirme |

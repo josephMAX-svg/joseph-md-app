@@ -8,6 +8,8 @@ import { ENCAPS_FICHAS_POR_TEMA, ENCAPS_VIDEO_DRIVE, ENCAPS_THEOMED_AREA, ENCAPS
 import { ENCAPS_VIDEOS_POR_TEMA } from './encapsVideosPorTema';
 import { ENCAPS_THEOMED_RESUMENES, ENCAPS_BANCOS, ENCAPS_MAPAS_PDF, ENCAPS_POSTESTS, ENCAPS_BIBLIOTECA_QX, ENCAPS_MANUALES_THEOMED } from './encapsResumenes';
 import { PRACTICA_DEEP_PRIME, PRACTICA_REPASO } from './encapsPracticaExtra';
+import { ENCAPS_AREA_FORECAST, ENCAPS_CRITICAL_TOPICS, ENCAPS_REBOTE_TOPICS, ENCAPS_CIEGO_META_PCT, ENCAPS_CIEGO_CRUCERO_PCT } from './encapsRentabilidad';
+import { loadCierres, onCierresChange, cierreARow, fallosDeErrores, sumTipo, type CierreSesion } from './encapsProgressSync';
 
 // ── D1 por examen (para calcular el día actual) ──
 export const STUDY_D1: Record<string, string> = {
@@ -125,6 +127,150 @@ export function ciegoSemanal(rows: StudyProgressRow[]): CiegoSemana[] {
     for (const ar of Object.keys(a.area)) porArea[ar] = { pct: Math.round(a.area[ar].sum / a.area[ar].n), n: a.area[ar].n };
     return { lunes: k, pct: Math.round(a.sum / a.n), n: a.n, rondas: a.rondas, porArea };
   });
+}
+
+// ── % CIEGO por CÓDIGO · temas calientes · tendencia hacia 85% (v5.10 · 12-sep) ──
+// Espejo en la app de las reglas de DATA/_scripts/gen_encaps_semana.js (cierre semanal), leídas de
+// study_progress (+ cierres locales aún no sincronizados). La app NO decide el override: lo propone el
+// script del viernes; aquí solo se ve venir (temas calientes = candidatos al override).
+function addDaysISO(iso: string, n: number): string {
+  const d = new Date(`${iso.slice(0, 10)}T12:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + n);
+  return d.toISOString().slice(0, 10);
+}
+export const areaDeCodigo = (code: string | null | undefined): string => ((code || '').match(/^[IVX]+/) || [''])[0];
+const VECTOR_V3_PCT: Record<string, number> = Object.fromEntries(ENCAPS_AREA_FORECAST.map(a => [a.code, a.pct]));
+// 'IV-1/2' (ticker agregado del strip) → ['IV-1', 'IV-2']; el resto tal cual.
+function expandirCodigo(code: string): string[] {
+  const m = code.match(/^([IVX]+)-(\d+)\/(\d+)$/);
+  return m ? [`${m[1]}-${m[2]}`, `${m[1]}-${m[3]}`] : [code];
+}
+const CRITICOS_V3_SET = new Set(ENCAPS_CRITICAL_TOPICS.flatMap(t => expandirCodigo(t.code)));
+const REBOTE_V3_SET = new Set(ENCAPS_REBOTE_TOPICS.map(t => t.code));
+export const esCriticoV3 = (code: string): boolean => CRITICOS_V3_SET.has(code);
+
+export interface CiegoCodigo {
+  codigo: string; area: string; peso: number;          // peso = % del área en el vector v3 (0 si el código no tiene área v3, p.ej. MIX)
+  n: number; seg: number; dud: number; fallos: number; rondas: number;
+  pct: number;                                          // % ciego = seguras / n (1 decimal, como el script)
+  evalFallos: number;                                   // fallos acumulados en rondas eval_anclada
+  knowledge: number; transfer: number; proceso: number; // fallos por tipo (taxonomía v3)
+  esCrit: boolean; rebote: boolean; ultima: string;
+  zona: 'go' | 'warn' | 'nogo';
+}
+// Lee una fila de study_progress con tolerancia: filas de la app/script traen errores_por_tipo.{seguras,dudosas,fallos,tipoRonda};
+// una fila ajena (sin seguras) se aproxima con porcentaje × n y 0 dudosas.
+function leerRondaProgress(r: StudyProgressRow) {
+  const n = Math.max(0, Math.round(Number(r.preguntas_resueltas || 0)));
+  const e = (r.errores_por_tipo || {}) as Record<string, unknown>;
+  const pct = Number(r.porcentaje || 0);
+  const seg = typeof e.seguras === 'number' ? e.seguras : Math.round((pct / 100) * n);
+  const dud = typeof e.dudosas === 'number' ? e.dudosas : 0;
+  const tipoRonda = typeof e.tipoRonda === 'string' ? e.tipoRonda : (String(r.fuente || '').split(':')[1] || '');
+  return { n, seg, dud, pct, fallos: fallosDeErrores(e), tipoRonda, codigo: String(r.especialidad || '?'), fecha: String(r.fecha || '').slice(0, 10) };
+}
+export function ciegoPorCodigo(rows: StudyProgressRow[], desde?: string, hasta?: string): CiegoCodigo[] {
+  const acc: Record<string, CiegoCodigo> = {};
+  for (const r of rows) {
+    if (!r.fecha || r.porcentaje == null) continue;
+    const x = leerRondaProgress(r);
+    if (desde && x.fecha < desde) continue;
+    if (hasta && x.fecha > hasta) continue;
+    const area = areaDeCodigo(x.codigo);
+    const a = (acc[x.codigo] ||= {
+      codigo: x.codigo, area, peso: VECTOR_V3_PCT[area] || 0, n: 0, seg: 0, dud: 0, fallos: 0, rondas: 0, pct: 0, evalFallos: 0,
+      knowledge: 0, transfer: 0, proceso: 0, esCrit: CRITICOS_V3_SET.has(x.codigo), rebote: REBOTE_V3_SET.has(x.codigo), ultima: '', zona: 'nogo',
+    });
+    const fallosRonda = Math.max(0, x.n - x.seg - x.dud);
+    a.n += x.n; a.seg += x.seg; a.dud += x.dud; a.fallos += fallosRonda; a.rondas++;
+    if (x.fecha > a.ultima) a.ultima = x.fecha;
+    if (x.tipoRonda === 'eval_anclada') a.evalFallos += fallosRonda;
+    a.knowledge += sumTipo(x.fallos, 'knowledge'); a.transfer += sumTipo(x.fallos, 'transfer'); a.proceso += sumTipo(x.fallos, 'proceso');
+  }
+  return Object.values(acc).map(a => {
+    const pct = a.n ? Math.round((a.seg / a.n) * 1000) / 10 : 0;
+    const zona: CiegoCodigo['zona'] = pct >= ENCAPS_CIEGO_META_PCT ? 'go' : pct >= ENCAPS_CIEGO_CRUCERO_PCT ? 'warn' : 'nogo';
+    return { ...a, pct, zona };
+  }).sort((p, q) => p.pct - q.pct || q.n - p.n);
+}
+// Temas CALIENTES (últimas 2 semanas ISO, misma ventana y misma regla que gen_encaps_semana.js):
+// % ciego < 75 con n ≥ 5 · eval anclada con ≥ 2 fallos · ≥ 3 fallos knowledge; score = peso v3 × brecha a 85 (×1.5 crítico, ×1.2 rebote).
+// Los códigos sin área v3 (MIX de mini-sim / pretest) no son "tema": su señal es la nota /25.
+export interface TemaCaliente { codigo: string; area: string; peso: number; pct: number; n: number; motivos: string[]; score: number; esCrit: boolean; evalFallos: number }
+export function temasCalientes(rows: StudyProgressRow[], hoyISO: string): TemaCaliente[] {
+  const lunes = lunesISO(hoyISO);
+  return ciegoPorCodigo(rows, addDaysISO(lunes, -7), addDaysISO(lunes, 6))
+    .filter(c => !!VECTOR_V3_PCT[c.area])
+    .map(c => {
+      const motivos: string[] = [];
+      if (c.n >= 5 && c.pct < ENCAPS_CIEGO_CRUCERO_PCT) motivos.push(`% ciego ${c.pct}% < ${ENCAPS_CIEGO_CRUCERO_PCT}%`);
+      if (c.evalFallos >= 2) motivos.push(`eval anclada ${c.evalFallos} fallos`);
+      if (c.knowledge >= 3) motivos.push(`${c.knowledge} fallos knowledge`);
+      const score = Math.round(c.peso * Math.max(0, ENCAPS_CIEGO_META_PCT - c.pct) * (c.esCrit ? 1.5 : 1) * (c.rebote ? 1.2 : 1));
+      return { codigo: c.codigo, area: c.area, peso: c.peso, pct: c.pct, n: c.n, motivos, score, esCrit: c.esCrit, evalFallos: c.evalFallos };
+    })
+    .filter(x => x.motivos.length)
+    .sort((a, b) => b.score - a.score);
+}
+// Tendencia del % ciego semanal hacia la meta 85%: pendiente (pp/semana) por regresión lineal ponderada por Q
+// sobre las últimas ≤6 semanas con datos, y semanas estimadas para llegar a 85 si la pendiente es positiva.
+export interface TendenciaCiego { simbolo: '▲' | '▼' | '►' | '–'; deltaPP: number | null; ultimo: number | null; brecha: number | null; semanasA85: number | null; texto: string }
+export function tendenciaCiego(semanas: CiegoSemana[]): TendenciaCiego {
+  const s = semanas.filter(x => x.n > 0);
+  const ultimo = s.length ? s[s.length - 1].pct : null;
+  const brecha = ultimo == null ? null : Math.max(0, ENCAPS_CIEGO_META_PCT - ultimo);
+  if (s.length < 2) {
+    return { simbolo: '–', deltaPP: null, ultimo, brecha, semanasA85: null, texto: ultimo == null ? 'sin cierres todavía' : `1 semana con datos · brecha a ${ENCAPS_CIEGO_META_PCT}%: ${brecha} pp (la tendencia aparece con 2 semanas)` };
+  }
+  const w = s.slice(-6);
+  const ws = w.map(x => x.n), ys = w.map(x => x.pct), xs = w.map((_, i) => i);
+  const W = ws.reduce((a, b) => a + b, 0);
+  const mx = xs.reduce((a, x, i) => a + x * ws[i], 0) / W, my = ys.reduce((a, y, i) => a + y * ws[i], 0) / W;
+  let num = 0, den = 0;
+  xs.forEach((x, i) => { num += ws[i] * (x - mx) * (ys[i] - my); den += ws[i] * (x - mx) * (x - mx); });
+  const slope = den ? num / den : 0;
+  const deltaPP = Math.round(slope * 10) / 10;
+  const simbolo: TendenciaCiego['simbolo'] = deltaPP >= 1 ? '▲' : deltaPP <= -1 ? '▼' : '►';
+  const semanasA85 = ultimo != null && ultimo < ENCAPS_CIEGO_META_PCT && slope > 0.05 ? Math.ceil((ENCAPS_CIEGO_META_PCT - ultimo) / slope) : null;
+  const signo = deltaPP >= 0 ? '+' : '';
+  const texto = ultimo != null && ultimo >= ENCAPS_CIEGO_META_PCT
+    ? `en meta (${ultimo}% ≥ ${ENCAPS_CIEGO_META_PCT}%) · ${simbolo} ${signo}${deltaPP} pp/sem`
+    : `${simbolo} ${signo}${deltaPP} pp/sem · brecha ${brecha} pp` + (semanasA85 != null ? ` → a este ritmo, 85% en ~${semanasA85} sem` : ' · sin ritmo hacia 85%');
+  return { simbolo, deltaPP, ultimo, brecha, semanasA85, texto };
+}
+
+// ── EVAL ANCLADA del día (16:15-16:30): regla REAL (gen_encaps_semana.js + gen_encaps_minisim.js --eval) ──
+// fallos ≥2 → el código queda CALIENTE para el override del VIERNES (semana siguiente; máx. 2 sustituciones; I-3/V-2 nunca
+// se ceden; un crítico solo se cede si ya está ≥85% con n ≥ 5). NO desplaza al tema de mañana.
+// lunes = 5Q rehechas con OTRO enfoque de los fallos del mini-sim del viernes · mar-jue = código de AYER (3 cifras + 2 viñetas)
+// · D1 (sin sesión anterior) = 5Q de fallos previos del registro, críticos primero · viernes = sin eval (la trae el mini-sim).
+export const EVAL_ANCLADA_REGLA = 'si fallas ≥2 → el código queda CALIENTE para el override del viernes (no desplaza al tema de mañana)';
+export interface EvalAnclada { modo: 'inicio' | 'lunes' | 'ayer' | 'ninguna'; codigo: string; label: string; detail: string; regla: string }
+export function evalAncladaDe(day: StudyScheduleDay, prev: StudyScheduleDay | null | undefined): EvalAnclada {
+  const regla = EVAL_ANCLADA_REGLA;
+  if (day.tipo === 'mini_sim') {
+    return { modo: 'ninguna', codigo: 'MIX', label: 'Viernes: sin eval anclada (el mini-sim ya incluye ≥5Q de fallos previos)', detail: regla, regla };
+  }
+  if (!prev) {
+    return {
+      modo: 'inicio', codigo: 'MIX',
+      label: `🎯 EVAL ANCLADA D${day.dia}: 5Q de FALLOS PREVIOS del registro, críticos v3 primero (sin sesión anterior)`,
+      detail: `Arranque del régimen: no hay tema de ayer → 5Q del registro de errores, de memoria, sin material · ${regla}`, regla,
+    };
+  }
+  if (prev.tipo === 'mini_sim' || !prev.codigo) {
+    return {
+      modo: 'lunes', codigo: 'MIX',
+      label: `🎯 EVAL ANCLADA (lunes): 5Q REHECHAS con otro enfoque de los fallos del mini-sim del viernes (D${prev.dia})`,
+      detail: `Mismo concepto, otro escenario (nunca la misma pregunta) · de memoria, sin material · ${regla}`, regla,
+    };
+  }
+  const se = subEjeDe(prev);
+  return {
+    modo: 'ayer', codigo: prev.codigo,
+    label: `🎯 EVAL ANCLADA: 5Q del código de AYER ${prev.codigo} (D${prev.dia}) · 3 cifras + 2 viñetas`,
+    detail: `${prev.subtema || prev.codigo}${se ? ` · sub-eje ${se.n}/${se.total}` : ''} · de memoria, sin material, recall + corrección · ${regla}`, regla,
+  };
 }
 
 // Item chequeable del día (mismo esquema item_key que encaps_telegram_daemon.py)
@@ -325,7 +471,8 @@ export function diaActual(examen: string): number {
 }
 
 // ── Enumera los items chequeables de un día (debe coincidir con el daemon) ──
-export function itemsForDay(day: StudyScheduleDay, focusByCode: Record<string, number> = {}): PlanItem[] {
+// `prev` = sesión anterior del plan (dia − 1): define la EVAL ANCLADA del día (código de ayer / fallos del mini-sim / arranque).
+export function itemsForDay(day: StudyScheduleDay, focusByCode: Record<string, number> = {}, prev: StudyScheduleDay | null = null): PlanItem[] {
   const N = day.dia;
   const items: PlanItem[] = [];
   const pad = (n: number) => String(n).padStart(2, '0');
@@ -345,18 +492,20 @@ export function itemsForDay(day: StudyScheduleDay, focusByCode: Record<string, n
       });
       items.push({
         key: `D${N}:msim_corr`, kind: 'eval',
-        label: '📊 Corrección + nota /25 en ▲ SIM + cierre de 1 línea (TRACKING_ERRORES)',
-        detail: `Cada fallo: ¿área? ¿tipo knowledge/transfer/proceso (CONCEPTO·OLVIDO·CRONOLOGIA / CCSN·CONTEXTO / CAMBIO·TIEMPO)? → gen_encaps_semana.js --cerrar → override de la semana siguiente${rec ? ` · umbral ${rec.umbral}/25 · alerta <${rec.alerta}/25 dos viernes` : ''}`,
+        label: '📊 Corrección + CIERRE DE SESIÓN tipo mini_sim (nota /25 → study_sim_scores + % ciego → study_progress)',
+        detail: `Cada fallo: ¿área? ¿tipo knowledge/transfer/proceso (CONCEPTO·OLVIDO·CRONOLOGIA / CCSN·CONTEXTO / CAMBIO·TIEMPO·LECTURA)? → formulario al final de la cola (o gen_encaps_semana.js --cerrar) → override de la semana siguiente${rec ? ` · umbral ${rec.umbral}/25 · alerta <${rec.alerta}/25 dos viernes` : ''}`,
         dur: 30, hora: '16:45–17:15',
       });
       return items;
     }
     const se = subEjeDe(day);
     const secCL = (day.temas_secundarios || []).find(s => (s as { rol?: string }).rol === 'cola_larga') || (day.temas_secundarios || [])[0];
+    const ev = evalAncladaDe(day, prev);
     items.push({
       key: `D${N}:m_eval`, kind: 'eval',
-      label: '🎯 EVAL ANCLADA: 5Q del tema de AYER (3 cifras + 2 viñetas, recall + corrección)',
-      detail: 'Testing effect: si fallas ≥2 → el tema de ayer vuelve caliente a la rotación (override semanal)',
+      label: ev.label,
+      detail: ev.detail,
+      code: ev.codigo !== 'MIX' ? ev.codigo : undefined,
       dur: 15, hora: '16:15–16:30',
     });
     items.push({
@@ -383,8 +532,8 @@ export function itemsForDay(day: StudyScheduleDay, focusByCode: Record<string, n
     });
     items.push({
       key: `D${N}:m_log`, kind: 'material',
-      label: '📝 Cierre de 1 línea (TRACKING_ERRORES) + 1-3 APEX de errores de conocimiento',
-      detail: `ENCAPS|banco_dia|${day.fecha}|${day.codigo}|n=..|seg=..|dud=..|CONCEPTO:..,OLVIDO:..,CCSN:..|t=.. → gen_encaps_semana.js --cerrar · los APEX caen en Obsidian ENCAPS`,
+      label: '📝 CIERRE DE SESIÓN (formulario al final de la cola → study_progress) + 1-3 APEX de errores de conocimiento',
+      detail: `n · seguras · dudosas · fallos por subtipo · t medio → % ciego = seguras/n (fuente app:cierre) · equivale a ENCAPS|banco_dia|${day.fecha}|${day.codigo}|n=..|seg=..|dud=..|CONCEPTO:..|t=.. · los APEX caen en Obsidian ENCAPS`,
       dur: 5, hora: '17:10–17:15',
     });
     return items;
@@ -786,7 +935,14 @@ export interface UseEncapsPlan {
   simDays: StudyScheduleDay[];
   miniSims: MiniSimPunto[];             // serie de viernes (nota /25, sim_n = dia) para el Cockpit
   progress: StudyProgressRow[];         // cierres de sesión (study_progress examen='ENCAPS')
-  ciego: CiegoSemana[];                 // % ciego semanal derivado de progress
+  progressAll: StudyProgressRow[];      // progress + cierres locales aún no sincronizados (localStorage jmd-encaps-cierres)
+  ciego: CiegoSemana[];                 // % ciego semanal derivado de progressAll
+  porCodigo: CiegoCodigo[];             // % ciego por código (últimas 2 semanas ISO) vs vector v3
+  calientes: TemaCaliente[];            // temas calientes = candidatos al override del viernes (regla de gen_encaps_semana.js)
+  tendencia: TendenciaCiego;            // tendencia semanal hacia 85%
+  cierres: CierreSesion[];              // cierres guardados en este dispositivo (sincronizados o pendientes)
+  prevDay: StudyScheduleDay | null;     // sesión anterior del plan (dia − 1) → eval anclada
+  evalHoy: EvalAnclada | null;          // eval anclada del día visible (solo MANTENIMIENTO)
   todayItems: PlanItem[];
   doneToday: number;
   totalToday: number;
@@ -806,6 +962,9 @@ export function useEncapsPlan(examen: string = 'ENCAPS'): UseEncapsPlan {
   const [simScores, setSimScores] = useState<Record<number, StudySimScore>>({});
   const [progress, setProgress] = useState<StudyProgressRow[]>([]);
   const [loading, setLoading] = useState(true);
+  // Cierres de sesión guardados en el dispositivo (encapsProgressSync): se mezclan con study_progress hasta que sincronizan.
+  const [cierres, setCierres] = useState<CierreSesion[]>(() => loadCierres());
+  useEffect(() => onCierresChange(setCierres), []);
 
   const hoyDia = diaActual(examen);
   const total = STUDY_TOTAL_DAYS[examen] ?? 71;
@@ -837,9 +996,24 @@ export function useEncapsPlan(examen: string = 'ENCAPS'): UseEncapsPlan {
   // su nota /25 se guarda en study_sim_scores con sim_n = dia (SimView) y el Cockpit grafica la serie contra 18/25.
   const simDays = useMemo(() => days.filter(d => d.simulacro || d.tipo === 'mini_sim'), [days]);
   const miniSims = useMemo(() => miniSimSerie(days, simScores), [days, simScores]);
-  const ciego = useMemo(() => ciegoSemanal(progress), [progress]);
+  // study_progress + cierres locales que aún no llegaron (o que Supabase todavía no devolvió tras el refetch), sin duplicar por id.
+  const progressAll = useMemo(() => {
+    const remotos = new Set(progress.map(r => String((r.errores_por_tipo as Record<string, unknown> | null)?.id || '')));
+    const locales = cierres.filter(c => c.examen === examen && !remotos.has(c.id)).map(cierreARow);
+    return [...progress, ...locales].sort((a, b) => String(a.fecha || '').localeCompare(String(b.fecha || '')));
+  }, [progress, cierres, examen]);
+  const ciego = useMemo(() => ciegoSemanal(progressAll), [progressAll]);
+  const hoyISO = todayLimaISO();
+  const porCodigo = useMemo(() => {
+    const lunes = lunesISO(hoyISO);
+    return ciegoPorCodigo(progressAll, addDaysISO(lunes, -7), addDaysISO(lunes, 6));
+  }, [progressAll, hoyISO]);
+  const calientes = useMemo(() => temasCalientes(progressAll, hoyISO), [progressAll, hoyISO]);
+  const tendencia = useMemo(() => tendenciaCiego(ciego), [ciego]);
+  const prevDay = useMemo(() => days.find(d => d.dia === dia - 1) ?? null, [days, dia]);
+  const evalHoy = useMemo(() => (today && today.modo === 'MANTENIMIENTO' ? evalAncladaDe(today, prevDay) : null), [today, prevDay]);
   const focusByCode = useMemo(() => focusDayByCode(days), [days]);
-  const todayItems = useMemo(() => (today ? itemsForDay(today, focusByCode) : []), [today, focusByCode]);
+  const todayItems = useMemo(() => (today ? itemsForDay(today, focusByCode, prevDay) : []), [today, focusByCode, prevDay]);
   const repasos = useMemo(() => repasosDeHoy(days, dia), [days, dia]);
   const proximos = useMemo(() => proximosVideos(days, todayLimaISO()), [days]);
   const totalToday = todayItems.length;
@@ -856,7 +1030,8 @@ export function useEncapsPlan(examen: string = 'ENCAPS'): UseEncapsPlan {
   }, [examen]);
 
   return {
-    loading, dia, total, today, days, metrics, checks, simScores, simDays, miniSims, progress, ciego,
+    loading, dia, total, today, days, metrics, checks, simScores, simDays, miniSims, progress, progressAll, ciego,
+    porCodigo, calientes, tendencia, cierres, prevDay, evalHoy,
     todayItems, doneToday, totalToday, repasos, proximos, hoyDia, setDia, toggleCheck, saveSim, refetch: load,
   };
 }

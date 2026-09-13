@@ -1,13 +1,18 @@
 # DERMA · Plan tema-átomo/día (68 átomos · interdiario con Research)
 
-> ⚠ **DESACTUALIZADO — vigente D1 del régimen = lun 14-sep-2026 (v5.10, 12-sep-2026); fuente de verdad = el `.ts`**
-> (`src/lib/dermaDailyPlan.ts`: PLAN ÉLITE v2.1, **70 átomos, d1 mar 15-sep-2026 → d70 mar 30-mar-2027**, interdiario
-> con Research, sáb+dom libres, salta 25-dic/31-dic/1-ene). El corrimiento a v5.10 **movió Derma +2 días de calendario**
-> (la paridad Research↔Derma sigue anclada al mié 10-jun-2026: el lun 14-sep es día Research, así que Derma arranca el
-> mar 15-sep y Research no se mueve). No se fusionó
-> ni se recortó nada: los 70 átomos siguen enteros. Este documento conserva la cola v1 (68 átomos, fechas
-> jun→dic-2026) solo como histórico — sus D# y fechas son de 2026-I y NO deben usarse; el temario vigente y el
-> índice de fechas están en `PLAN_ELITE_2026-27.md` §12.
+> ⚠ **DESACTUALIZADO — vigente D1 del régimen = lun 14-sep-2026 (v5.10 + taper v3, 12-sep-2026); fuente de verdad = el `.ts`**
+> (`src/lib/dermaDailyPlan.ts`: PLAN ÉLITE v3, **73 átomos, d1 mar 15-sep-2026 → d73 mié 7-abr-2027**, interdiario
+> con Research, sáb+dom libres, salta 25-dic/31-dic/1-ene; y `src/lib/dermaCiclo2.ts`: **CICLO 2, d74-d103, vie 9-abr →
+> mié 30-jun-2027**, generado por `DATA/_scripts/gen_derma_ciclo2.js`). El corrimiento a v5.10 **movió Derma +2 días de
+> calendario** (la paridad Research↔Derma sigue anclada al mié 10-jun-2026: el lun 14-sep es día Research, así que Derma
+> arranca el mar 15-sep y Research no se mueve). El **taper v3** convirtió las 6 sesiones entre el NBME 31 (vie 15-ene-2027) y
+> el examen Step 1 (vie 29-ene-2027) — d44-d49 — en sesiones de 1 caso + FSRS + 0 lectura nueva por un swap de CONTENIDO
+> (fechas intactas): Cicatrización → Checkpoints → Anatomía 3D → Arterias → Envejecimiento → Toxina… se corren después del
+> examen y el plan crece de 70 a 73 (d71 1-abr · d72 5-abr · d73 7-abr). No se fusionó ni se recortó nada: los 70 átomos
+> siguen enteros (+3 segundas pasadas parciales). Cadencia de casos: 2/sesión · 1 en el taper · **3 desde d50** (2-feb-2027);
+> Pictorial 4e → 3e desde d67; LANGE en d71. Este documento conserva la cola v1 (68 átomos, fechas
+> jun→dic-2026) solo como histórico — sus D# y fechas son de 2026-I y NO deben usarse; el temario vigente, el
+> índice de fechas, el taper, el presupuesto de preguntas y el ciclo 2 están en `PLAN_ELITE_2026-27.md` §12-§16.
 
 > **Motor:** el mismo de USMLE/MIR (`UsmleTodayPlan`/`MirTodayPlan`): sub-pestañas
 > HOY/Horario/7d/Temario, navegación Día X/68, progreso REAL marcable (empieza 0%,

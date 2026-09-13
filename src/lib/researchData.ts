@@ -93,11 +93,11 @@ export interface Entregable {
   nota: string;
 }
 export const RESEARCH_ENTREGABLES: Entregable[] = [
-  { id: 'tesis-L0', n: 0, titulo: 'Tesis L0 · IGA × CADI (n=316) como research letter', tipo: 'Research letter · 600-1.000 palabras · 1 tabla · 1 figura', pista: 'T', guia: 'STROBE (transversal, 22 ítems)',
+  { id: 'tesis-L0', n: 0, titulo: 'Tesis L0 · IGA × CADI (n=316) como research letter', tipo: 'Research letter · ≈500-600 palabras (límite más estricto de la cascada) · ≤5 refs · 1 tabla o 1 figura · apéndice «versión larga» 800/3/10 para Actas-Anais', pista: 'T', guia: 'STROBE (transversal, 22 ítems)',
     journalCascade: ['JAAD International', 'International Journal of Dermatology', 'Actas Dermo-Sifiliográficas', 'Anais Brasileiros de Dermatologia'],
     seniorAuthor: 'Dr. Ciro Rodríguez (HRDCQ Daniel Alcides Carrión, Huancayo) · A CONFIRMAR en M1', fechaObjetivo: '2026-11', fechaEnvio: null, estado: 'idea',
     coste: 'JAAD Intl US$2.575 de lista (DOAJ 1-sep-2026 · RUTA §3.1) → ≈ US$1.288 con Grupo B 50 % (GPOA A VERIFICAR) · IJD vía suscripción $0 · Anais $0 (SBD paga) · Actas: discrepancia $0 vs US$1.870 A VERIFICAR', doi: null, atomos: 'T-1 → T-8 (oct-nov 2026)', esPIP: true,
-    nota: 'Entregable #0: el único dataset original propio (rs=0,637 · κ=0,81 · prevalencia 39,8 %; defendida 20-abr-2026). Bloqueo real: nº y fecha del CEI + consentimiento parental (T-1 · DATA/RESEARCH/TESIS_L0/etica.md).' },
+    nota: 'Entregable #0: el único dataset original propio (rs=0,637 · κ=0,81 · n=316 de 865 evaluadas; defendida 20-abr-2026). Bloqueo real: nº y fecha del CEI — T-1 presenta la solicitud expedita; GATES en T-7/T-8: sin nº de CEI o exención, o sin inglés revisado (mentor Rising Scholars / editor), NO se envía → feb-2027. Consentimiento parental + asentimiento YA constan (censo con consentimiento, 291 excluidas por no consentir · etica.md 1.4-1.5).' },
   { id: 'carta-1', n: 1, titulo: 'Carta al editor #1 (artículo diana 2026)', tipo: 'Letter / Correspondence · 400-600 palabras · ≤5 refs', pista: 'C', guia: 'Sin guía EQUATOR; ventana y límites del journal diana (C-1/C-2)',
     journalCascade: ['Journal del artículo diana (JAAD · JAAD Intl · IJD · JCD · Dermatol Surg — se elige en C-2)'],
     seniorAuthor: 'Joseph (autor único) · Dr. Ciro coautor si aporta el dato clínico', fechaObjetivo: '2026-10', fechaEnvio: null, estado: 'idea',
@@ -107,10 +107,10 @@ export const RESEARCH_ENTREGABLES: Entregable[] = [
     journalCascade: ['Dermatology Online Journal (eScholarship)', 'JAAD Case Reports (solo si es el MEJOR caso)', 'Case Reports in Dermatology (Karger)'],
     seniorAuthor: 'Fuente A: Dr. Ciro (caso de su consulta) · plan B: dermatólogo/a SPD — se decide en CR-1 (antes del 31-oct)', fechaObjetivo: '2027-02', fechaEnvio: null, estado: 'idea',
     coste: 'DOJ US$300 (DOAJ 1-sep-2026 · RUTA §3.1; sin waiver) · JAAD CR US$850 → ≈ $425 con Grupo B (solo para el MEJOR caso)', doi: null, atomos: 'CR-1 → CR-8 (oct-dic 2026, paquete congelado) · CR-9 SUBMIT (1er día-Research tras el Step 1)', esPIP: true,
-    nota: 'Hoy NO hay caso (DATA/RESEARCH/CASE_REPORT_1/caso_candidatos.md). Sin caso + consentimiento + senior author antes del 31-oct, el entregable de feb-2027 no ocurre.' },
+    nota: 'Hoy NO hay caso (DATA/RESEARCH/CASE_REPORT_1/caso_candidatos.md). Sin caso + consentimiento + senior author antes del 31-oct, el entregable de feb-2027 no ocurre. Regla v5.10b: seguimiento con el Dr. Ciro en d8/d10 (3 semanas desde M1); sin caso → fuente B (colega SPD, mensaje único de caso_candidatos.md §2); CR-1/CR-2 van en la 2ª quincena de octubre.' },
   { id: 'PROSPERO-SR1', n: 3, titulo: 'Registro PROSPERO de SR-1', tipo: 'Registro de protocolo (PRISMA-P) con equipo de revisión', pista: 'R', guia: 'PRISMA-P (17 ítems) · L4 §9 Equipo de revisión',
     journalCascade: ['PROSPERO (CRD York)', 'OSF Registries (plan B si no encaja)'],
-    seniorAuthor: 'Garante: Joseph · revisor #2 nombrado en X-1 y confirmado en X-9 (sin revisor #2 no hay registro)', fechaObjetivo: '2027-02', fechaEnvio: null, estado: 'idea',
+    seniorAuthor: 'Garante: Joseph · revisor #2 nombrado en X-1 (acepta por escrito la carga real ≈ 40-70 h fuera del bloque, L4 §9.4) y confirmado en X-9 (sin revisor #2 no hay registro)', fechaObjetivo: '2027-02', fechaEnvio: null, estado: 'idea',
     coste: '$0', doi: null, atomos: 'X-1 (nov 2026) · R6b · R8b · X-9 · R10 · R11 (feb-mar 2027)', esPIP: false,
     nota: 'PRISMA 2020 ítem 8 y Cochrane exigen ≥2 revisores independientes: dos pases de la misma persona no son cribado dual y un LLM no cuenta como revisor.' },
   { id: 'SR-1', n: 4, titulo: 'SR-1 · Complicaciones vasculares de fillers + tiempo-a-hialuronidasa (L4)', tipo: 'Revisión sistemática ± meta-análisis de proporciones', pista: 'R', guia: 'PRISMA 2020 (27 ítems) + PRISMA-S + GRADE + AMSTAR-2',

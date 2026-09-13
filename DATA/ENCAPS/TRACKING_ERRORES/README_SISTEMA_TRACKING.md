@@ -1,4 +1,4 @@
-# 📊 SISTEMA DE TRACKING DE RESPUESTAS — multi-examen (ENCAPS · USMLE · MIR · DERMA) · v3 (05-sep-2026)
+# 📊 SISTEMA DE TRACKING DE RESPUESTAS — multi-examen (ENCAPS · USMLE · MIR · DERMA) · v3.1 (12-sep-2026)
 > Cómo se guarda CADA ronda que Joseph resuelve, por qué falló, y qué se rutea a Anki/Obsidian. Regla de Joseph (24-jul-2026): *"toda esta data la vas guardando... respondido mal, respondido bien, ¿pero por qué respondió mal? ¿o respondió bien por casualidad?"*. Alimenta el **% CIEGO REAL**, los **temas calientes**, el **override semanal del CICLO** ENCAPS y el **pronóstico de nota**.
 >
 > v3 = esquema **multi-examen** + **formato mínimo de cierre de sesión (1 línea)** + pipeline `gen_encaps_semana.js`. Compatible hacia atrás con las 2 rondas de julio (v1/v2): el script las normaliza.
@@ -8,8 +8,9 @@
 TRACKING_ERRORES/
 ├── _registro_resoluciones.json   ← APPEND-ONLY. Toda ronda (rondas[]), _meta v3 (vector, críticos, esquema), resumen_por_subtema (recalculado)
 ├── README_SISTEMA_TRACKING.md    ← este doc
-├── PERFIL_CONOCIMIENTO.md        ← estado por sub-ángulo (histórico jul-2026; desde sep el estado vive en resumen_por_subtema + SEMANAS/)
+├── PERFIL_CONOCIMIENTO.md        ← GENERADO por `gen_encaps_semana.js --perfil` desde resumen_por_subtema + rondas (NO editar a mano; se reescribe tras cada --cerrar y cada cierre semanal)
 ├── SEMANAS/                      ← 1 informe por semana (semana_<lunes>.md) + override propuesto (override_<lunes siguiente>.json)
+│   └── overrides_acumulado.json  ← MERGE de todos los overrides aplicados (clave = lunes ISO); gen_encaps_mantenimiento_2027.js lo lee por defecto
 ├── RONDAS/                       ← detalle por ronda cuando se guarda pregunta a pregunta: <codigo>_<bloque>_<fecha>.json
 ├── ANKI_COLA/                    ← tarjetas pendientes de enviar a Anki
 └── OBSIDIAN_COLA/                ← notas conceptuales pendientes de enviar al vault
@@ -42,6 +43,8 @@ TRACKING_ERRORES/
 }
 ```
 `n − correctas_seguras − correctas_dudosas` debe coincidir con la suma de `fallos_por_tipo` (el script avisa si no).
+
+**Rondas MIXTAS (`codigo: "MIX"` — pre-test de arranque, mini-sim, simulacro) con `preguntas[]` etiquetadas por `codigo`:** `gen_encaps_semana.js` las **explota por el código de cada ítem** para `resumen_por_subtema`, el % por área y los temas calientes (así el pre-test de arranque de 40Q da n = 5 por crítico); la nota /25 y el % ciego semanal se calculan sobre la ronda entera (no se cuenta dos veces). Por eso una ronda mixta se apenda con `gen_encaps_minisim.js --registrar <export.json> --append` (con `preguntas[]`), no con la línea de 1 renglón (quedaría como MIX sin línea base por código). Códigos del banco ≠ códigos del ciclo: `IV-1+IV-2` → slot `IV-1`, `V-MED` → `V-7`, `IV-6+IV-7` → `IV-6` (el script lo mapea al proponer el override).
 
 ### Esquema por PREGUNTA (opcional, cuando se guarda ítem a ítem)
 ```json
@@ -99,7 +102,13 @@ Produce `SEMANAS/semana_<lunes>.md` (% ciego por área vs vector v3 II30·I27·V
 - temas calientes = % ciego < 75% (n ≥ 5) · eval anclada con ≥ 2 fallos · ≥ 3 fallos knowledge, ordenados por `peso del área v3 × brecha a 85` (×1.5 críticos, ×1.2 rebote);
 - máximo 2 sustituciones por semana; **I-3 y V-2 nunca se ceden**; un crítico solo se cede si ya está ≥ 85% con n ≥ 5;
 - secundarios: los códigos de cola larga con fallos pasan primero.
-Aplicar: `node DATA/_scripts/gen_encaps_mantenimiento_2027.js 2026-09-09 --override DATA/ENCAPS/TRACKING_ERRORES/SEMANAS/override_<lunes>.json` → revisar el SQL → `execute_sql`. El checkpoint de fin de enero (v3 §6 regla 3) sale de esta misma serie: no se reconstruye a mano.
+Aplicar: `node DATA/_scripts/gen_encaps_mantenimiento_2027.js 2026-09-14 --override DATA/ENCAPS/TRACKING_ERRORES/SEMANAS/override_<lunes>.json` → revisar el SQL → `execute_sql` → pegar la verificación que imprime el script (`select modo, tipo, count(*) …` → 79 banqueo1h + 18 mini_sim). El checkpoint de fin de enero (v3 §6 regla 3) sale de esta misma serie: no se reconstruye a mano.
+
+### ⚠ Reglas de re-siembra (desde el 12-sep-2026; gaps_v3b_encaps punto 7)
+1. **Nunca regenerar el mantenimiento sin `SEMANAS/overrides_acumulado.json`.** El cierre semanal hace el merge de TODAS las semanas en ese fichero y `gen_encaps_mantenimiento_2027.js` lo lee por defecto: el `--override` de la semana N se AÑADE (y se persiste ahí), nunca sustituye a las semanas 1..N-1. Regenerar con `--sin-acumulado` devolvería las semanas pasadas a la rotación base (cambia `instancia/de` y la secuencia de sub-ejes de filas ya resueltas). Solo para depurar.
+2. **El `DELETE` va filtrado por `modo = 'MANTENIMIENTO'`.** Cuando en enero se siembre la fase intensiva (modo `INTENSIVO`, `gen_encaps_intensivo_2027.js`), un override de mantenimiento ya no la borra. Nunca volver al `DELETE … WHERE examen = 'ENCAPS'` a secas.
+3. **Backup fechado y no pisable:** `study_schedule_bk_<YYYYMMDD>` por defecto; el SQL aborta (`RAISE EXCEPTION`) si esa tabla ya existe. Segunda corrida el mismo día → `--bk study_schedule_bk_<YYYYMMDD>b`; `--bk-reemplazar` solo si de verdad se quiere sobrescribir. Los backups viejos (`bk_0703 … bk_0912`) no se borran desde los scripts.
+4. Un override "sin cambios (rotación base)" no altera ninguna fila: `extra.override` solo se estampa en las filas cuyo código principal o secundario cambió de verdad (`extra.override_base` guarda el código base).
 
 ## Reglas de ruteo Anki / Obsidian
 - **→ ANKI** (repetición espaciada, dato puntual): **OLVIDO** y **CRONOLOGIA**, y **CONCEPTO por definición cerrada** en temas **CRÍTICOS**. Prioridad: lo que Joseph falla MUCHO en los temas más rentables (críticos v3).
@@ -109,8 +118,8 @@ Aplicar: `node DATA/_scripts/gen_encaps_mantenimiento_2027.js 2026-09-09 --overr
 
 ## Loop operativo
 1. Antes de generar: mirar hora → segmento del Calendar → mapa del examen (ENCAPS: vector v3 + sub-eje del día en la app) → formato (`PROTOCOLO_GENERACION_PREGUNTAS.md`). ⚠ Examen 2026-II = LISTA NEGRA hasta el pre-test de febrero.
-2. Joseph responde a ciegas (confianza por ítem: segura / dudosa / adivinada).
-3. Calificar → clasificar fallos (knowledge / transfer / proceso) → **línea de cierre** → `--cerrar`.
+2. Joseph responde a ciegas (confianza por ítem: segura / dudosa / adivinada; en el runner es obligatoria antes de «Terminar»).
+3. Calificar → clasificar fallos (knowledge / transfer / proceso) → **línea de cierre** → `--cerrar` (rondas de un solo código). Rondas mixtas (pre-test de arranque `PRETEST_ARRANQUE_<fecha>`, mini-sim, simulacro): export del runner → `gen_encaps_minisim.js --registrar <export.json> --append` (guarda `RONDAS/<id>.json` y apenda la ronda con `preguntas[]`; el reparto por código lo hace `gen_encaps_semana.js`). **Semana 1 (lun 14 y mar 15-sep-2026): el pre-test de arranque de 40Q (5Q × 8 críticos, ítems reales 2024-2A→2025-2) es la línea base ciega por crítico** — ronda tipo `pretest`, dos partes de 20Q.
 4. Rutear a `ANKI_COLA/` y `OBSIDIAN_COLA/` (solo knowledge/transfer).
 5. Viernes: nota del mini-sim en ▲ SIM + `gen_encaps_semana.js` → override de la semana siguiente si hay calientes.
 6. Los fallados vuelven **con OTRO enfoque** (no la misma pregunta) en D+1 (eval anclada), D+3, D+7 y en los ≥5Q de "fallos previos" del mini-sim.

@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Platform, TextInput } from 'react-native';
 import { Colors, Spacing, BorderRadius, Hairline } from '../../theme/tokens';
 import { HeroBackdrop } from '../HeroBackdrop';
 import {
   semanaStep1, semanaLabel, SemanaStep1,
   leerAnkiKpi, ankiKpiLabel, ankiAlarma, AnkiKpi, ANKI_KPI_KEY,
 } from '../../lib/homeBriefing';
+import {
+  estadoSync, onProgressSync, pullAll, exportProgresoJSON, importProgresoJSON,
+  copiarAlPortapapeles, leerPortapapeles, SyncInfo,
+} from '../../lib/studyProgressSync';
 
 /**
  * CockpitStatusBar — la "línea de estado" firma del Home (mission control).
@@ -20,6 +24,10 @@ import {
  * + instrumento ANKI "due · backlog · retención" leído de localStorage 'jmd-anki-telemetria'
  * (lo escribe DATA/_scripts/anki_telemetria.js; opcionalmente /anki_telemetria.json en web).
  * Ambos son opcionales: si el Home no los pasa, se calculan aquí sin pedir data nueva.
+ *
+ * v5.10 (12-sep-2026): + instrumento PROGRESO "N ✓ · ☁ ok/offline" (espejo Supabase `plan_checks`,
+ * src/lib/studyProgressSync.ts). Tocar = panel con "Exportar / Importar progreso" (JSON al portapapeles y
+ * pegar) + "Sincronizar ahora". Vacío 9 de gaps_v3b_synapse.json: el progreso ya no vive solo en un navegador.
  */
 
 const MONO = Platform.OS === 'web' ? "'JetBrains Mono', 'SF Mono', monospace" : undefined;
@@ -110,6 +118,57 @@ export function exportarLocalStorageJmd(): boolean {
   } catch { return false; }
 }
 
+/** Estado del espejo de progreso (plan_checks): se refresca con cada pull/push/import. */
+function useProgresoSync(): SyncInfo {
+  const [info, setInfo] = useState<SyncInfo>(() => estadoSync());
+  useEffect(() => onProgressSync(setInfo), []);
+  return info;
+}
+const SYNC_LABEL: Record<SyncInfo['estado'], string> = { idle: '☁ —', sync: '☁ …', ok: '☁ ok', offline: '☁ offline' };
+
+/**
+ * Panel "Exportar / Importar progreso" (v5.10). Exportar = JSON de los ✓ de los 10 planes (+ jmd-modo-log) al
+ * portapapeles; Importar = lee el portapapeles (si el navegador lo permite) o el campo de texto, fusiona por UNIÓN
+ * (nunca borra un ✓) y empuja a Supabase. También sirve para pegar el export jmd-* del instrumento SEMANA.
+ */
+function ProgresoPanel({ info, onClose }: { info: SyncInfo; onClose: () => void }) {
+  const [texto, setTexto] = useState('');
+  const [msg, setMsg] = useState<string>(info.error ? `último error: ${info.error.slice(0, 60)}` : '');
+  const exportar = async () => {
+    const json = exportProgresoJSON();
+    const ok = await copiarAlPortapapeles(json);
+    setTexto(ok ? '' : json);
+    setMsg(ok ? `copiado (${info.totalChecks} ✓ de los planes) — pégalo en el otro navegador o en DATA/USMLE/REVISIONES/_localstorage_export.json` : 'sin portapapeles: copia el JSON del campo de abajo');
+  };
+  const importar = async (src?: string) => {
+    let t = (src ?? texto).trim();
+    if (!t) { const clip = await leerPortapapeles(); if (clip) t = clip.trim(); }
+    if (!t) { setMsg('nada que importar: pega el JSON en el campo (el navegador no deja leer el portapapeles)'); return; }
+    const r = importProgresoJSON(t);
+    setMsg(r.ok ? `importado: ${r.planes} plan(es), +${r.nuevos} ✓ nuevos (total ${r.total}) · subiendo a Supabase…` : `no importado: ${r.error}`);
+    if (r.ok) setTexto('');
+  };
+  const sincronizar = async () => { setMsg('sincronizando…'); const ok = await pullAll(true); setMsg(ok ? 'sincronizado con Supabase (plan_checks)' : `sin conexión: ${estadoSync().error || 'reintenta luego'} · el progreso sigue guardado en este navegador`); };
+  return (
+    <View style={st.panel}>
+      <View style={st.panelRow}>
+        <Text style={st.panelTitle}>PROGRESO · {info.totalChecks} ✓ · {SYNC_LABEL[info.estado]}{info.ultimoOk ? ` ${info.ultimoOk.slice(11, 16)}` : ''} · {info.device}</Text>
+        <TouchableOpacity onPress={onClose} hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}><Text style={st.panelClose}>✕</Text></TouchableOpacity>
+      </View>
+      <View style={st.panelRow}>
+        <TouchableOpacity style={st.panelBtn} onPress={() => { void exportar(); }}><Text style={st.panelBtnTxt}>EXPORTAR → portapapeles</Text></TouchableOpacity>
+        <TouchableOpacity style={st.panelBtn} onPress={() => { void importar(); }}><Text style={st.panelBtnTxt}>IMPORTAR ← portapapeles / campo</Text></TouchableOpacity>
+        <TouchableOpacity style={st.panelBtn} onPress={() => { void sincronizar(); }}><Text style={st.panelBtnTxt}>SINCRONIZAR AHORA</Text></TouchableOpacity>
+      </View>
+      <TextInput
+        value={texto} onChangeText={setTexto} placeholder='pega aquí el JSON exportado ({"progreso":{"usmle":[1,2,…]}}) y toca IMPORTAR'
+        placeholderTextColor={Colors.muted} multiline numberOfLines={2} style={st.panelInput} autoCapitalize="none" autoCorrect={false}
+      />
+      {!!msg && <Text style={st.panelMsg}>{msg}</Text>}
+    </View>
+  );
+}
+
 export default function CockpitStatusBar({
   timeLabel, phase, countdownDays, online, streak, unread, onBell, compact, semana, anki,
 }: CockpitStatusBarProps) {
@@ -119,6 +178,9 @@ export default function CockpitStatusBar({
   const alarma = ankiAlarma(kpi);
   const semColor = sem.fueraDeRango ? Colors.muted : sem.deload ? Colors.amber : Colors.teal;
   const [exportado, setExportado] = useState<'ok' | 'no' | null>(null); // feedback del export jmd-* (revisión semanal)
+  const prog = useProgresoSync();                                         // v5.10 · espejo plan_checks
+  const [panel, setPanel] = useState(false);                              // panel Exportar / Importar progreso
+  const progColor = prog.estado === 'ok' ? Colors.green : prog.estado === 'offline' ? Colors.amber : Colors.muted;
 
   const bell = (
     <View style={[st.bell, unread > 0 && { borderColor: Colors.coral + '55' }]}>
@@ -165,6 +227,12 @@ export default function CockpitStatusBar({
         <View style={st.vDiv} />
         <Instrument label="STREAK" value={`${streak}d`} color={streak > 0 ? Colors.champagne : Colors.muted} />
         <View style={st.vDiv} />
+        {/* v5.10 · PROGRESO: ✓ de los 10 planes + estado del espejo Supabase (plan_checks). Tocar = Exportar / Importar */}
+        <TouchableOpacity activeOpacity={0.7} onPress={() => setPanel((p) => !p)} hitSlop={{ top: 6, bottom: 6, left: 4, right: 4 }}
+          style={Platform.OS === 'web' ? ({ cursor: 'pointer' } as any) : undefined}>
+          <Instrument label={panel ? 'PROGRESO · cerrar' : 'PROGRESO · exportar/importar'} value={`${prog.totalChecks} ✓ · ${SYNC_LABEL[prog.estado]}`} color={progColor} />
+        </TouchableOpacity>
+        <View style={st.vDiv} />
         {/* Online/Offline */}
         <View style={st.inst}>
           <Text style={st.instLabel}>LINK</Text>
@@ -183,6 +251,8 @@ export default function CockpitStatusBar({
           </TouchableOpacity>
         ) : bell}
       </View>
+      {/* v5.10 · panel Exportar / Importar progreso (ocupa toda la fila; solo cuando se abre) */}
+      {panel && <ProgresoPanel info={prog} onClose={() => setPanel(false)} />}
     </View>
   );
 }
@@ -224,4 +294,24 @@ const st = StyleSheet.create({
   bellGlyph: { fontSize: 11, color: Colors.onSurfaceVariant },
   bellTxt: { fontSize: 10, fontWeight: '700', color: Colors.onSurfaceVariant, letterSpacing: 0.5, fontFamily: MONO },
   bellDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: Colors.coral, marginLeft: 2 },
+
+  // v5.10 · panel Exportar / Importar progreso (mismo lenguaje que la barra: mono, hairlines, oro)
+  panel: {
+    width: '100%', gap: 8, paddingTop: 10, marginTop: 2,
+    borderTopWidth: 1, borderTopColor: Hairline.soft,
+  },
+  panelRow: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: 8, justifyContent: 'space-between' },
+  panelTitle: { fontSize: 9, fontWeight: '700', color: Colors.smallLabel, letterSpacing: 1, fontFamily: MONO, flexShrink: 1 },
+  panelClose: { fontSize: 12, color: Colors.onSurfaceVariant, paddingHorizontal: 6 },
+  panelBtn: {
+    backgroundColor: 'rgba(231,234,242,0.04)', borderWidth: 1, borderColor: Hairline.accentSoft,
+    borderRadius: BorderRadius.full, paddingVertical: 5, paddingHorizontal: 11,
+  },
+  panelBtnTxt: { fontSize: 10, fontWeight: '700', color: GOLD, letterSpacing: 0.5, fontFamily: MONO },
+  panelInput: {
+    minHeight: 34, maxHeight: 72, fontSize: 10, color: Colors.onSurface, fontFamily: MONO,
+    backgroundColor: 'rgba(0,0,0,0.25)', borderWidth: 1, borderColor: Hairline.soft, borderRadius: BorderRadius.md,
+    paddingVertical: 6, paddingHorizontal: 10,
+  },
+  panelMsg: { fontSize: 10, color: Colors.onSurfaceVariant, fontFamily: MONO, letterSpacing: 0.2 },
 });

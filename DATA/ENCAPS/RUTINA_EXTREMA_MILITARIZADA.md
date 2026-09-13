@@ -19,6 +19,10 @@ Un fail del Step 1 queda **para siempre** en ECFMG → si el 15-ene no hay GO, l
 - El sueño es un **bloque de estudio invisible.** Quien duerme 3-4h "para estudiar más" borra con el codo lo que escribió con la mano. Goggins/SEALs/Hell Week = privación como **estresor de selección física**, NO modelo de aprendizaje. Bill Gates lo intentó y se retractó.
 - **Si falta tiempo, se sacrifica VOLUMEN de preguntas nuevas, JAMÁS las 7h.**
 - (v5.10) Lo mismo vale para el Step 1: 95 días de tarjetas de MECANISMO se consolidan de noche. Por eso la última comida sólida es a las 17:15 y después del baile solo agua: la digestión activa fragmenta el sueño profundo (Walker).
+- **☕ CAFEÍNA ≤ 11:00 — máximo 2 tomas: 05:00 (Anki AM) y 07:00 (desayuno). Después, agua o descafeinado.** (12-sep-2026) La cafeína tiene una vida media de ~5-6 h (Walker): un café a las 12:00 sigue activo a las 21:00 y recorta el sueño profundo NREM que consolida lo estudiado — el sistema ya defendía las 7 h, pero no su *calidad*. Está escrito en las descripciones de DESAYUNO 07:00 y DEEP PRIME 09:00 del Calendar y en `CALENDAR_SEGMENTOS_V5_6.md` §0. Nada de energéticas ni "un cafecito" en el MIR de las 15:15 (su descripción ya dice "no con café").
+- **🌅 La carrera de las 06:00 se hace AL AIRE LIBRE:** la luz de la mañana es la señal circadiana que fija el 04:00 y el corte 21:00. No se pasa a indoor; en ÁMBAR se camina 20', no se suprime.
+- **😴 Siesta OPCIONAL 13:15-13:30, ≤ 20' con alarma** — válvula ÁMBAR del `DATA/PROTOCOLO_MODO_MINIMO.md` §2 (hueco que ya existía entre LECTURA 13:00 y Research/Derma 13:30; descripción del evento LECTURA DE LIBRO). Solo si el modo es ÁMBAR, dormiste < 6 h o anoche marcaste ≥ 1 señal de burnout; más de 20' = inercia de sueño. **Nunca sustituye las 7 h.** (Siesta corta de ~20-26' = mejora de alerta/rendimiento en pilotos, Rosekind/NASA 1995; cifras exactas A VERIFICAR (12-sep).)
+- **🔥 Burnout — checklist nocturno de 60 s (DOCTRINA_SPRINT_FINAL_EVIDENCIA §6), VIGENTE desde el 12-sep-2026:** (1) % en ciego cayendo 2 días seguidos en temas ya dominados · (2) releer la misma viñeta > 2 veces o +20 % de tiempo/pregunta sin ganar precisión · (3) dormirse en < 5 min o insomnio pese al agotamiento · (4) cinismo · (5) saltarse el gym "para estudiar". Las 4 primeras = disparadores **ÁMBAR** del protocolo de modo mínimo; la 5 = señal **ROJA conductual**. Viven como 5 casillas en la nota del día del vault (`01_USMLE/05_DIARY`, cierre 18:25-18:45) y se confirman en voz alta en el 🚗 VIAJE VUELTA 20:30. Dejan de ser un párrafo histórico: son la válvula.
 
 ## 🔩 DOCTRINA (motor mental — Goggins + Jocko)
 1. **Discipline = Freedom (Jocko):** la disciplina, no la motivación. La motivación es voluble; la estructura es fiable. *"Don't think. Do."*
@@ -41,21 +45,23 @@ Autoridad de CUÁNDO y CÓMO: `DATA/ENCAPS/CALENDAR_SEGMENTOS_V5_6.md` (IDs de s
 | 04:15 | 🧠 Vibecoding con Claude Code (45') | 1 proyecto real por semana; se mide por output (commit/URL/test), no por tiempo sentado |
 | **05:00** | 🇺🇸 **ANKI AM** FSRS deck USMLE (45') · Fases B-C: stress set 10Q/12' + Anki | Mente fresca = doble de tarjetas en la mitad de tiempo (Palmerton). **Cero backlog** — nunca capar revisiones |
 | 05:45-07:00 | Correr 30' + calistenia 15' + ducha | Sáb/dom solo caminata |
-| 07:00 | Desayuno ≥30 g proteína + 500 ml · **VITALS: sueño de anoche + agua** | 20 s de registro: la única señal fisiológica del sistema |
+| 06:45 | Vuelta de correr + calistenia | **VITALS: registrar la actividad AM (correr/caminata, 30-45')** — 20 s; hoy VITALS no la modela en el TDEE (tarea D del puente) |
+| 07:00 | Desayuno ≥30 g proteína + 500 ml · **VITALS: sueño de anoche + agua** · **última cafeína del día (2.ª toma; la 1.ª a las 05:00)** | 20 s de registro: la única señal fisiológica del sistema · después de las 11:00 solo agua/descafeinado |
 | 07:15 | 🇺🇸 Repaso multi-temporal D-1/D-3/D-7 + **VALIDACIÓN 5Q timed del subtema de AYER** (1ª mitad del gate de 10Q) | Free recall 90 s ANTES de abrir nada; <80 % en las 10Q → 5Q más del subtema antes de pasar a otro |
 | **08:15** | 🇺🇸 **PRE-TEST 10Q ciegas** del tema del día + free recall | Sin haber estudiado. Fallar a propósito para mapear huecos. El bloque sagrado nº 1 |
 | **09:00–11:00** | 🇺🇸 **NÚCLEO DEEP PRIME** (vídeo B&B/Pathoma/Sketchy → First Aid activo → ≤10 tarjetas de MECANISMO) | 500 ml + snack en la mesa al abrir · teléfono en otro cuarto · 0 notificaciones · viernes de hito = UWSA/NBME en condiciones de Prometric |
 | 11:00 | 🇺🇸 **CONSOLIDACIÓN por nivel del día** (`DIAS[].nivelUW`): nivel 1 = 20Q en bloques de 5Q tutor · nivel 2 = 30Q timed (incluye las 5Q que cierran el gate de ayer) · nivel 3 (viernes sin hito) = 20Q del sistema timed + 10Q tutor | Log de CADA fallo: conocimiento / transfer / proceso (~50 % no son de conocimiento). Gate ≥80 % para subir de nivel |
 | 12:00 | Almuerzo = comida principal (VITALS dimensiona) | Sin pantalla del banco. Sin azúcar simple |
 | 12:30 | 🧠 SYNAPSE misión 30' | Marcar ✓ real |
+| 13:00 | 📖 Lectura 15' · **13:15-13:30 siesta OPCIONAL ≤ 20'** (solo ÁMBAR / < 6 h / señal §6 anoche) | Alarma a los 20'; sin pantalla; a las 13:30 se arranca igual |
 | 13:30 | 🔬 Research ↔ 💎 Derma (alternos, 45') | 1 entregable atómico |
 | 14:15 | 🪙 AURUM (1h) | Ver 1 video + drill del pitch con leads reales |
 | 15:15 | 🇪🇸 MIR eval anclada D-1 (4Q) + deep work mini (45') | 500 ml + snack proteico al abrir · <3/4 → mañana se repite el tema |
 | 16:15 | 🇵🇪 ENCAPS banqueo 1h (rotación v3 II·I·V·III·IV; viernes mini-sim 25Q a 72 s/Q) | Cada fallo a TRACKING_ERRORES · 17:10 cena ligera 5' (última comida sólida) |
 | 17:15 | ⚖️ LIVIANO Academia (45') | Explicarlo como a un paciente |
-| **18:00** | 🇺🇸 **Evaluación acumulativa modo examen** 10Q mixta timed (90 s/Q · tope 2 min) + corrección + APEX | El espejo del día. % → app. Día de hito: aquí se registra el % del NBME/UWSA/Free 120. Martes cierra 18:30 (alistarse) |
-| 19:00-20:30 | GYM / BAILE (según día) | Post-entreno SOLO agua/electrolitos. Nada pesado <2h antes de las 21:00 |
-| 20:30 | Viaje vuelta = reflexión sin pantallas | ¿Qué aprendí? ¿Qué falló? ¿Qué hago distinto mañana? |
+| **18:00** | 🇺🇸 **Evaluación acumulativa modo examen** 10Q mixta timed (90 s/Q · tope 2 min) + corrección + APEX · **18:25-18:45 cierre: nota del día en el vault (60 s)** — `01_USMLE/05_DIARY`, plantilla `_template_day_usmle`: bloques ✓, pre-test/30Q/eval, error dominante, sueño, modo y las 5 casillas de burnout | El espejo del día. % → app. Día de hito: aquí se registra el % del NBME/UWSA/Free 120. Martes cierra 18:30 (alistarse) |
+| 19:00-20:30 | GYM / BAILE (según día) | Post-entreno SOLO agua/electrolitos. Nada pesado <2h antes de las 21:00. **Saltarlo "para estudiar" = ROJO conductual (§6.5)** |
+| 20:30 | Viaje vuelta = reflexión sin pantallas | ¿Qué aprendí? ¿Qué falló? ¿Qué hago distinto mañana? **¿Alguna de las 5 señales hoy?** (≥1 → mañana ÁMBAR) |
 | **21:00** | CORTE. A dormir. | Protege la codificación de mañana. 0 luz azul desde 20:30 |
 
 - **Despertar fijo 04:00 = la línea.** Mover el inicio es el enemigo #1 (cada día hábil perdido corre TODO el plan +1: ya van **9 corrimientos, 31-ago→14-sep**, 10 días hábiles perdidos — y **el siguiente ya no cabe**: el plan termina el mié 27-ene y el examen es el vie 29-ene, así que otro día perdido obliga a recortar contenido o a salir de la ventana 25-29 ene).

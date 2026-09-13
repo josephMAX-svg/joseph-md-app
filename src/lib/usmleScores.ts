@@ -9,6 +9,8 @@
  *  · Derivados: gate del día (≥80% → SUBE de nivel · <80% → REPITE), media móvil de 7 días, distancia al mínimo
  *    on-track del próximo hito (tabla de DATA/USMLE/PALMERTON_POR_MATERIA.md · Parte V-A: regla del 5%/mes
  *    hacia atrás desde 68% en NBME 31), readiness anclado al último hito registrado y export JSON.
+ *  · Gate de HITOS (12-sep-2026, REGLA §E-7): `gateHito` → 'ALERTA BURNOUT' cuando 2 hitos consecutivos con mínimo quedan
+ *    bajo mínimo; el protocolo (3-5 días solo Anki AM + sueño) vive en BURNOUT_PROTOCOLO y se pinta en UsmleHub.
  * Regla de lectura (Palmerton): el % de UWorld es gate de PROCESO, no predicción — solo los NBME predicen.
  */
 import { supabase } from './supabase';
@@ -172,7 +174,13 @@ export function gateDelDia(s: UsmleScore | null | undefined, dia: DiaUSMLE): Gat
     if (pct == null) return { estado: 'sin-dato', pct, minimo, metrica: `% del ${h?.clave || dia.uw}`, label: '— sin registrar', detalle: h?.min != null ? `mínimo on-track ${h.min}%` : (h?.nota || 'baseline: cualquier valor sirve') };
     if (h?.min == null) return { estado: 'sube', pct, minimo, metrica: `% del ${h?.clave || dia.uw}`, label: `✓ ${pct}% registrado`, detalle: h?.nota || 'baseline' };
     const ok = pct >= h.min;
-    return { estado: ok ? 'sube' : 'repite', pct, minimo: h.min, metrica: `% del ${h.clave}`, label: ok ? `✓ ON-TRACK · ${pct}% ≥ ${h.min}%` : `✗ BAJO MÍNIMO · ${pct}% < ${h.min}%`, detalle: ok ? 'trayectoria de GO intacta' : 'auditar el MÉTODO esta semana (checklist §G), no sumar horas' };
+    if (!ok && s) {
+      // REGLA §E-7: si el hito con mínimo anterior también quedó bajo mínimo → ALERTA BURNOUT (gateHito sobre local + este registro)
+      const merged = leer().filter((x) => x.fecha !== s.fecha).concat([normalizar({ ...s, updatedAt: s.updatedAt || new Date().toISOString() })]);
+      const gh = gateHito(merged, dia.fecha);
+      if (gh.estado === 'ALERTA BURNOUT') return { estado: 'repite', pct, minimo: h.min, metrica: `% del ${h.clave}`, label: gh.label, detalle: gh.detalle };
+    }
+    return { estado: ok ? 'sube' : 'repite', pct, minimo: h.min, metrica: `% del ${h.clave}`, label: ok ? `✓ ON-TRACK · ${pct}% ≥ ${h.min}%` : `✗ BAJO MÍNIMO · ${pct}% < ${h.min}%`, detalle: ok ? 'trayectoria de GO intacta' : 'auditar el MÉTODO esta semana (checklist §G), no sumar horas · un segundo hito bajo mínimo dispara ALERTA BURNOUT (§E-7)' };
   }
   const fase = faseDe(dia.d);
   const pct = fase === 'A' ? (s?.consol30pct ?? null) : (s?.consol30pct ?? s?.evalPct ?? null);
@@ -269,11 +277,67 @@ export function readinessDesdeHitos(scores: UsmleScore[]): { pct: number; label:
   return { pct: Math.round(u.valor), label: `${u.clave} (${u.fecha.slice(5)}): ${Math.round(u.valor)}%${u.min != null ? ` · mín ${u.min}%${ok}` : ' · baseline'}` };
 }
 
+// ── Gate de HITOS + protocolo de burnout (DIVERGENCIAS #29 → REGLA §E-7 · METODO §9.12) · 12-sep-2026 ──
+/**
+ * REGLA (no propuesta): 2 hitos consecutivos bajo su mínimo on-track + síntomas → 3-5 días con SOLO Anki AM + sueño.
+ * La señal la calcula `gateHito`; los síntomas los pone Joseph. Texto de PALMERTON_METODO_COMPLETO.md §9.12; nada estimado.
+ */
+export const BURNOUT_PROTOCOLO = {
+  regla: '2 hitos consecutivos bajo su mínimo on-track + síntomas de burnout (releer el mismo párrafo sin comprender, irritabilidad extrema, indiferencia por el examen, descansos de 5 min que se vuelven de 1 h) → 3-5 días con SOLO Anki AM (30-45 min de tarjetas viejas) + sueño. Frenar QBank y contenido nuevo. El corrimiento determinista (+1 día hábil por día no estudiado) absorbe la pausa: no se recorta ni se fusiona temario. Se reanuda por el gate del 80%, no por la fecha.',
+  pasos: [
+    'Frenar el QBank: seguir haciendo preguntas consolida malos hábitos de lectura bajo estrés',
+    'Parar la adquisición: sin vídeos, sin temas nuevos, sin tarjetas nuevas',
+    'Mantenimiento mínimo: 30-45 min/día de Anki viejo (la franja de las 05:00) y nada más',
+    'Recuperación con flow: 3-5 días de descanso activo (correr, journaling, meditación, cenas familiares); Palmerton da 3-7',
+    'Cada día parado = +1 día hábil en el plan (remap_inicio.js): el temario no se toca',
+    'Reanudar por el gate (80% en 10Q del último subtema validado); si el siguiente hito vuelve a quedar bajo mínimo → plan B de fecha (feb-mar 2027, mismo eligibility period)',
+    'Burnout ≠ depresión (Palmerton): si el deseo cumplido lo disolvería es burnout; si no, buscar ayuda profesional (sábado, nunca sacrificando sueño)',
+  ],
+  fuente: 'DATA/USMLE/PALMERTON_METODO_COMPLETO.md §9.12 · PALMERTON_DIVERGENCIAS_PLAN.md #29 y §E-7 · README §3b',
+};
+export interface GateHito {
+  estado: 'sin-dato' | 'on-track' | 'bajo' | 'ALERTA BURNOUT';
+  /** hito evaluado (último con mínimo registrado, o el de `fecha`) */
+  hito: HitoPlan | null;
+  /** hito con mínimo inmediatamente anterior (UWSA1/UWSA2 no tienen mínimo y no cuentan) */
+  previo: HitoPlan | null;
+  label: string; detalle: string;
+}
+/**
+ * Gate de HITOS (no del día): evalúa el último hito CON mínimo registrado (o el de `fecha` si se pasa) contra su mínimo
+ * on-track y mira el hito con mínimo anterior. Dos consecutivos bajo mínimo → 'ALERTA BURNOUT' (REGLA §E-7).
+ * Los hitos sin mínimo (UWSA1 baseline, UWSA2 "low risk") no rompen ni cuentan la secuencia.
+ */
+export function gateHito(scores: UsmleScore[], fecha?: string): GateHito {
+  const conMin = hitosPlan(scores).filter((h) => h.min != null);
+  let idx = fecha ? conMin.findIndex((h) => h.fecha === fecha) : -1;
+  if (idx < 0) { for (let i = conMin.length - 1; i >= 0; i--) if (conMin[i].valor != null) { idx = i; break; } }
+  if (idx < 0) return { estado: 'sin-dato', hito: null, previo: null, label: '— sin hitos con mínimo registrados', detalle: 'registra el % del NBME el día del hito en 📏 Medición (campo eval)' };
+  const hito = conMin[idx];
+  const previo = idx > 0 ? conMin[idx - 1] : null;
+  if (hito.valor == null) return { estado: 'sin-dato', hito, previo, label: `${hito.clave}: sin registrar`, detalle: `mínimo on-track ${hito.min}%` };
+  const bajo = hito.estado === 'bajo';
+  const previoBajo = !!previo && previo.estado === 'bajo';
+  if (bajo && previoBajo && previo) {
+    return {
+      estado: 'ALERTA BURNOUT', hito, previo,
+      label: `⚠ ALERTA BURNOUT · ${previo.clave} ${Math.round(previo.valor as number)}% < ${previo.min}% y ${hito.clave} ${Math.round(hito.valor)}% < ${hito.min}% (2 hitos seguidos bajo mínimo)`,
+      detalle: BURNOUT_PROTOCOLO.regla,
+    };
+  }
+  if (bajo) return { estado: 'bajo', hito, previo, label: `✗ ${hito.clave} bajo mínimo · ${Math.round(hito.valor)}% < ${hito.min}%`, detalle: 'auditar el MÉTODO esta semana (checklist §G), no sumar horas · si el siguiente hito con mínimo también queda bajo → ALERTA BURNOUT (§E-7)' };
+  return { estado: 'on-track', hito, previo, label: `✓ ${hito.clave} on-track · ${Math.round(hito.valor)}% ≥ ${hito.min}%`, detalle: 'trayectoria de GO intacta' };
+}
+/** true cuando el último hito con mínimo registrado y el anterior quedaron ambos bajo mínimo (REGLA §E-7). */
+export function alertaBurnout(scores: UsmleScore[]): boolean { return gateHito(scores).estado === 'ALERTA BURNOUT'; }
+
 // ── Export ──
 export function exportScoresJSON(): string {
+  const scores = leer();
   return JSON.stringify({
     exportado: new Date().toISOString(), plan: 'USMLE Step 1 v5.10 (D1 = 2026-09-14 · 95 días)', clave: KEY, tabla: TABLA,
     gate: USMLE_GATE, minimosOnTrack: { fuente: HITOS_ONTRACK_FUENTE, hitos: HITOS_ONTRACK.map((h) => ({ clave: h.clave, min: h.min, nota: h.nota })) },
-    scores: leer(),
+    gateHitos: (({ estado, label }) => ({ estado, label }))(gateHito(scores)),
+    scores,
   }, null, 2);
 }

@@ -247,7 +247,7 @@ export const SYNAPSE_META = {
   subtitulo: 'MIND · AI-ENGINEERED — médico → especialista en IA nivel Anthropic',
   tesis: 'La sinapsis entre tu cerebro médico y las máquinas. Python, datos, deep learning, agentes, ciberseguridad y post-training — SOLO con los referentes (Anthropic, Stanford, MIT, Harvard, creadores de las herramientas), cero youtubers del momento. 30 min/día en espacios muertos, proyecto público por fase.',
   accent: '#7C83D6', // periwinkle — color canónico de la consola (alineado con SidebarAccents.Synapse)
-  nota: 'Motor ACTIVO (pestaña ⚡ run): 12 semanas día a día — F0 (sem 1-8, auditar ✓ lo ya cursado en jun-ago) + F1 = STACK DEL VIBECODING (sem 9-12: Claude Code docs · Academy skills/subagentes/MCP/Claude Code in Action · Supabase RLS/select/triggers/Edge Functions · n8n) — con lecciones EXACTAS de temarios reales (DATA/SYNAPSE/curricula/, extraídos 10-jun y 5-sep-2026). Bloques A 15\' pantalla · B 10\' audio · C 5\' lectura · sábado PC 2h = SHIP del proyecto de la semana del vibecoding 04:15 (12 proyectos S1-S12, DATA/SYNAPSE/VIBECODING_12_PROYECTOS.md) · domingo Feynman 10\' opcional. Progreso manual real (empieza 0%). Regenerar: node DATA/_scripts/gen_synapse_plan.js YYYY-MM-DD.',
+  nota: 'Motor ACTIVO (pestaña ⚡ run): 19 semanas día a día hasta el vie 22-ene-2027 — F0 (sem 1-8, auditar ✓ lo ya cursado en jun-ago) + F1 = STACK DEL VIBECODING (sem 9-12: Claude Code docs · Academy skills/subagentes/MCP/Claude Code in Action · Supabase RLS/select/triggers/Edge Functions · n8n) + F2 (sem 13-19, taper del Step 1) = ANTHROPIC ACADEMY RESTANTE + PREP CCA-F (Building with the Claude API · MCP restante + MCP Advanced Topics · AI Capabilities and Limitations · Claude Cowork · 3 ensayos de context engineering · repaso por los 5 dominios · simulacro; sem 17-19 deload) — con lecciones EXACTAS de temarios reales (DATA/SYNAPSE/curricula/, extraídos 10-jun, 5-sep y 12-sep-2026). Bloques A 15\' pantalla · B 10\' audio · C 5\' lectura · sábado PC 2h = SHIP del proyecto de la semana del vibecoding 04:15 (12 proyectos S1-S12 + taper S13-S20, DATA/SYNAPSE/VIBECODING_12_PROYECTOS.md; shipped = verify_vibecoding.js) · domingo Feynman 10\' opcional. Progreso manual real (empieza 0%). Regenerar: node DATA/_scripts/gen_synapse_plan.js YYYY-MM-DD.',
 } as const;
 
 // ─── Fases ───
@@ -265,8 +265,8 @@ export const SYNAPSE_FASES: SynapseFase[] = [
     materiales: [M.claudeCodeDocs, M.claudeCodeBest, M.agentSkills, M.mcpIntro, M.claudeCodeAction, M.agentSdk, M.n8nLevelOne, M.proGit, M.pyTutorial, M.cs50p, M.automate, M.missingSemester],
   },
   {
-    id: 'f2', fase: 'F2', titulo: 'Datos: pandas + SQL + probabilidad', duracion: 'sem 13–20', estado: 'pendiente',
-    desc: 'Data science por los CREADORES de las herramientas (McKinney = pandas) + la probabilidad de Harvard que todo el ML asume.',
+    id: 'f2', fase: 'F2', titulo: 'Datos: pandas + SQL + probabilidad', duracion: 'feb-2027+ (post-Step 1)', estado: 'pendiente',
+    desc: 'Data science por los CREADORES de las herramientas (McKinney = pandas) + la probabilidad de Harvard que todo el ML asume. ⚠ v5.10-b (12-sep-2026): las sem 13-19 del motor (7-dic → 22-ene) NO son esta fase sino el taper del Step 1 = Anthropic Academy restante + prep CCA-F a 30\' (pestaña ⚡ run); esta F2 de datos arranca en la reestructuración de febrero.',
     entregable: 'Análisis pandas de un dataset real (Pulso/LIVIANO) publicado en GitHub',
     materiales: [M.kaggle, M.mckinney, M.vanderplas, M.sqlbolt, M.widom, M.stat110],
   },
@@ -328,7 +328,7 @@ export const SYNAPSE_KPIS = {
 
 // ─── Protocolo (horario REAL en Google Calendar — confirmado por Joseph el 10-jun-2026) ───
 export const SYNAPSE_HORARIO: { min: string; bloque: string; que: string; formato: string }[] = [
-  { min: "45'", bloque: 'L–V 04:15–05:00 · "🧠 IA — VIBECODING con Claude Code"', que: "1 proyecto REAL por semana (S1-S12, src/lib/vibecodingPlan.ts): 5' objetivo → 35' construir → 5' commit + nota synapse-journal. Se mide por entregable (commit/URL/test), no por tiempo", formato: 'requiere PC' },
+  { min: "45'", bloque: 'L–V 04:15–05:00 · "🧠 IA — VIBECODING con Claude Code"', que: "1 proyecto REAL por semana (S1-S12, src/lib/vibecodingPlan.ts): 5' objetivo → 35' construir → 5' commit + journal (D:/synapse-journal). FRENO 04:55 commit-or-stash · 05:00 Anki sin excepción (si el día se recorta pierde el proyecto, nunca el Anki). Shipped = node DATA/_scripts/verify_vibecoding.js <n>, no el ✓. S13-S16 mantenimiento ≤15'/día · S17-S20 journal 5' + audio", formato: 'requiere PC' },
   { min: "30'", bloque: 'L–V 12:30–13:00 · evento "🧠 SYNAPSE — misión del día"', que: "La misión completa de la pestaña ⚡ run: A lección 15' + B audio 10' + C lectura 5' (F1 = el stack que el vibecoding necesita)", formato: 'pantalla' },
   { min: '2 h', bloque: 'Sábado 15:00–17:00 · "🧠 SYNAPSE — PC sábado"', que: 'SHIP del proyecto de la semana: cerrar el criterio de aceptación (commit / URL viva / test verde) y publicarlo. Nada se arrastra a la semana siguiente', formato: 'requiere PC' },
   { min: "10'", bloque: 'Domingo · "🧠 SYNAPSE — repaso + PC" (opcional)', que: 'Feynman del proyecto: explicar en voz alta qué construiste y cómo funciona + línea "qué falta" en synapse-journal. El domingo sigue libre (v5 sáb/dom libres)', formato: 'repaso' },

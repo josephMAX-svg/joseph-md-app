@@ -100,8 +100,7 @@
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/synapseDailyPlan.ts",
-   "src/lib/vibecodingPlan.ts"
+   "src/lib/synapseDailyPlan.ts"
   ]
  },
  {
@@ -141,8 +140,7 @@
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/synapseDailyPlan.ts",
-   "src/lib/vibecodingPlan.ts"
+   "src/lib/synapseDailyPlan.ts"
   ]
  },
  {
@@ -206,8 +204,7 @@
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/synapseDailyPlan.ts",
-   "src/lib/vibecodingPlan.ts"
+   "src/lib/synapseDailyPlan.ts"
   ]
  },
  {
@@ -279,8 +276,7 @@
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/synapseDailyPlan.ts",
-   "src/lib/vibecodingPlan.ts"
+   "src/lib/synapseDailyPlan.ts"
   ]
  },
  {
@@ -364,6 +360,14 @@
   ]
  },
  {
+  "u": "https://supabase.com/docs/guides/database/postgres/row-level-security",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseDailyPlan.ts"
+  ]
+ },
+ {
   "u": "https://www.youtube.com/watch?v=7xTGNNLPyMI&t=4832s",
   "status": 200,
   "cls": "OK",
@@ -433,15 +437,6 @@
   "cls": "OK",
   "files": [
    "src/lib/synapseDailyPlan.ts"
-  ]
- },
- {
-  "u": "https://supabase.com/docs/guides/database/postgres/row-level-security",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/synapseDailyPlan.ts",
-   "src/lib/vibecodingPlan.ts"
   ]
  },
  {
@@ -525,6 +520,14 @@
   ]
  },
  {
+  "u": "https://anthropic.skilljar.com/introduction-to-agent-skills",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseDailyPlan.ts"
+  ]
+ },
+ {
   "u": "https://www.youtube.com/watch?v=eMlx5fFNoYc",
   "status": 200,
   "cls": "OK",
@@ -561,8 +564,7 @@
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/synapseDailyPlan.ts",
-   "src/lib/vibecodingPlan.ts"
+   "src/lib/synapseDailyPlan.ts"
   ]
  },
  {
@@ -574,12 +576,11 @@
   ]
  },
  {
-  "u": "https://anthropic.skilljar.com/introduction-to-agent-skills",
+  "u": "https://automatetheboringstuff.com/3e/chapter17.html",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/synapseDailyPlan.ts",
-   "src/lib/vibecodingPlan.ts"
+   "src/lib/synapseDailyPlan.ts"
   ]
  },
  {
@@ -595,8 +596,7 @@
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/synapseDailyPlan.ts",
-   "src/lib/vibecodingPlan.ts"
+   "src/lib/synapseDailyPlan.ts"
   ]
  },
  {
@@ -652,8 +652,7 @@
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/synapseDailyPlan.ts",
-   "src/lib/vibecodingPlan.ts"
+   "src/lib/synapseDailyPlan.ts"
   ]
  },
  {
@@ -661,8 +660,7 @@
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/synapseDailyPlan.ts",
-   "src/lib/vibecodingPlan.ts"
+   "src/lib/synapseDailyPlan.ts"
   ]
  },
  {
@@ -670,8 +668,7 @@
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/synapseDailyPlan.ts",
-   "src/lib/vibecodingPlan.ts"
+   "src/lib/synapseDailyPlan.ts"
   ]
  },
  {
@@ -695,8 +692,7 @@
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/synapseDailyPlan.ts",
-   "src/lib/vibecodingPlan.ts"
+   "src/lib/synapseDailyPlan.ts"
   ]
  },
  {
@@ -712,8 +708,7 @@
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/synapseDailyPlan.ts",
-   "src/lib/vibecodingPlan.ts"
+   "src/lib/synapseDailyPlan.ts"
   ]
  },
  {
@@ -753,8 +748,7 @@
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/synapseDailyPlan.ts",
-   "src/lib/vibecodingPlan.ts"
+   "src/lib/synapseDailyPlan.ts"
   ]
  },
  {
@@ -770,8 +764,7 @@
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/synapseDailyPlan.ts",
-   "src/lib/vibecodingPlan.ts"
+   "src/lib/synapseDailyPlan.ts"
   ]
  },
  {
@@ -779,8 +772,7 @@
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/synapseDailyPlan.ts",
-   "src/lib/vibecodingPlan.ts"
+   "src/lib/synapseDailyPlan.ts"
   ]
  },
  {
@@ -788,8 +780,7 @@
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/synapseDailyPlan.ts",
-   "src/lib/vibecodingPlan.ts"
+   "src/lib/synapseDailyPlan.ts"
   ]
  },
  {
@@ -797,8 +788,7 @@
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/synapseDailyPlan.ts",
-   "src/lib/vibecodingPlan.ts"
+   "src/lib/synapseDailyPlan.ts"
   ]
  },
  {
@@ -818,11 +808,163 @@
   ]
  },
  {
-  "u": "https://ankiweb.net/shared/info/2055492159",
+  "u": "https://code.claude.com/docs/en/hooks",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/vibecodingPlan.ts"
+   "src/lib/synapseDailyPlan.ts"
+  ]
+ },
+ {
+  "u": "https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseDailyPlan.ts"
+  ]
+ },
+ {
+  "u": "https://docs.python.org/3/tutorial/whatnow.html",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseDailyPlan.ts"
+  ]
+ },
+ {
+  "u": "https://automatetheboringstuff.com/3e/chapter12.html",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseDailyPlan.ts"
+  ]
+ },
+ {
+  "u": "https://docs.python.org/3/tutorial/interactive.html",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseDailyPlan.ts"
+  ]
+ },
+ {
+  "u": "https://automatetheboringstuff.com/3e/chapter13.html",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseDailyPlan.ts"
+  ]
+ },
+ {
+  "u": "https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseDailyPlan.ts"
+  ]
+ },
+ {
+  "u": "https://docs.python.org/3/tutorial/floatingpoint.html",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseDailyPlan.ts"
+  ]
+ },
+ {
+  "u": "https://automatetheboringstuff.com/3e/chapter14.html",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseDailyPlan.ts"
+  ]
+ },
+ {
+  "u": "https://anthropic.skilljar.com/model-context-protocol-advanced-topics",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseDailyPlan.ts"
+  ]
+ },
+ {
+  "u": "https://docs.python.org/3/tutorial/appendix.html",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseDailyPlan.ts"
+  ]
+ },
+ {
+  "u": "https://git-scm.com/book/en/v2/Appendix-C:-Git-Commands-Setup-and-Config",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseDailyPlan.ts"
+  ]
+ },
+ {
+  "u": "https://docs.python.org/3/tutorial/",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseDailyPlan.ts"
+  ]
+ },
+ {
+  "u": "https://automatetheboringstuff.com/3e/chapter16.html",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseDailyPlan.ts"
+  ]
+ },
+ {
+  "u": "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseDailyPlan.ts"
+  ]
+ },
+ {
+  "u": "https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseDailyPlan.ts"
+  ]
+ },
+ {
+  "u": "https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseDailyPlan.ts"
+  ]
+ },
+ {
+  "u": "https://anthropic.skilljar.com/ai-capabilities-and-limitations",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseDailyPlan.ts"
+  ]
+ },
+ {
+  "u": "https://anthropic.skilljar.com/introduction-to-claude-cowork",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseDailyPlan.ts"
+  ]
+ },
+ {
+  "u": "https://github.com/anthropics/prompt-eng-interactive-tutorial",
+  "status": 200,
+  "cls": "OK",
+  "files": [
+   "src/lib/synapseDailyPlan.ts"
   ]
  },
  {
@@ -830,39 +972,15 @@
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/vibecodingPlan.ts"
+   "src/lib/synapseDailyPlan.ts"
   ]
  },
  {
-  "u": "https://supabase.com/docs/guides/api",
+  "u": "https://automatetheboringstuff.com/3e/chapter18.html",
   "status": 200,
   "cls": "OK",
   "files": [
-   "src/lib/vibecodingPlan.ts"
-  ]
- },
- {
-  "u": "https://code.claude.com/docs/en/hooks",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/vibecodingPlan.ts"
-  ]
- },
- {
-  "u": "https://supabase.com/docs/guides/getting-started/tutorials/with-expo-react-native",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/vibecodingPlan.ts"
-  ]
- },
- {
-  "u": "https://anthropic.skilljar.com/",
-  "status": 200,
-  "cls": "OK",
-  "files": [
-   "src/lib/vibecodingPlan.ts"
+   "src/lib/synapseDailyPlan.ts"
   ]
  }
 ]

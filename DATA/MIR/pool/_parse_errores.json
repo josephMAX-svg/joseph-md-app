@@ -1,0 +1,79 @@
+{
+  "generado": "2026-09-13T01:48:03.940Z",
+  "nota": "Lo que el parser no pudo resolver o pide revisión manual. Nunca se rellena a mano en el JSON del año sin contrastar con el PDF oficial.",
+  "total": 6,
+  "errores": [
+    {
+      "anio": 2022,
+      "numero": 76,
+      "motivo": "revisar: el enunciado contiene \"k. Xxx\" (posible opción absorbida)",
+      "enunciado": "Mujer de 40 años que consulta porque desde hace un mes se nota un bulto en el cuadrante superoexterno de la mama derecha. Aporta un informe de una mamografía que describe una lesión BIRADS 3. ¿Cuál es",
+      "opciones": [
+        "Tranquilizarle, puesto que ya se ha hecho una prueba de imagen y se ha descartado malignidad.",
+        "Esa clasificación implica probablemente cirugía dado que la probabilidad de cáncer es mayor del 10 %. Se lo explica y le deriva de forma preferente a la Unidad de Mama.",
+        "Se trata de un hallazgo probablemente benigno, dado que hay menos de un 2 % de probabilidad de cáncer. Le explica que requiere de un seguimiento cada 6-12 meses hasta los 24 meses o una biopsia.",
+        "Los hallazgos son de baja sospecha de cáncer (entre un 2 y un 10 %) pero es necesario hacer una biopsia."
+      ]
+    },
+    {
+      "anio": 2022,
+      "numero": 195,
+      "motivo": "revisar: el enunciado contiene \"k. Xxx\" (posible opción absorbida)",
+      "enunciado": "Mujer de 66 años con diabetes mellitus tipo 2. Valorando su función renal presenta un estadio G3a/A1. ¿A qué valores corresponde este estadío, el más frecuente en pacientes con nefropatía diabética?:",
+      "opciones": [
+        "Filtrado glomerular 45-59 ml/min/1,73 m2 y albuminuria < 30 mg/ml.",
+        "Filtrado glomerular 30-44 ml/min/1,73 m2 y albuminuria < 30 mg/ml.",
+        "Filtrado glomerular 45-59 ml/min/1,73 m2 y albuminuria 30-300 mg/ml.",
+        "Filtrado glomerular 15-29 ml/min/1,73 m2 y albuminuria < 30 mg/ml."
+      ]
+    },
+    {
+      "anio": 2023,
+      "numero": 178,
+      "motivo": "revisar: el enunciado contiene \"k. Xxx\" (posible opción absorbida)",
+      "enunciado": "Varón de 56 años, que acude para control de su diabetes mellitus tipo 2. En tratamiento con metformina 850 mg dos veces al día desde hace ocho semanas. Refiere encontrarse bien, sin poliuria ni polidi",
+      "opciones": [
+        "Estudio de orina de 24 horas para determinación de proteínas y creatinina.",
+        "Indicar una ecografía renal.",
+        "Iniciar tratamiento con antagonistas del calcio.",
+        "Iniciar tratamiento con IECAs."
+      ]
+    },
+    {
+      "anio": 2025,
+      "numero": 131,
+      "motivo": "revisar: el enunciado contiene \"k. Xxx\" (posible opción absorbida)",
+      "enunciado": "Mujer de 54 años diagnosticada de diabetes mellitus tipo 2 hace tres años en tratamiento con metformina y lisinopril con buen control metabólico. Es enviada a consulta de Nefrología por creatinina sér",
+      "opciones": [
+        "No hacer modificaciones en el tratamiento dada la estabilidad y buen control de su enfermedad.",
+        "Añadir un antagonista del receptor de la angiotensina II para lograr un mejor control de la presión arterial y disminuir la albuminuria.",
+        "Indicar la realización de una biopsia renal para confirmar la existencia de una enfermedad renal diabética.",
+        "Iniciar tratamiento con un inhibidor del cotransportador de sodio-glucosa tipo 2 que promueve la excreción urinaria de glucosa y tiene un efecto nefroprotector."
+      ]
+    },
+    {
+      "anio": 2025,
+      "numero": 208,
+      "motivo": "contraste-prensa: la hoja del Ministerio da clave 2; la prensa (plantilla definitiva) dice 3",
+      "enunciado": "Hombre de 80 años con antecedentes de hipertensión arterial y diabetes mellitus, así como un accidente isquémico cerebral transitorio 2 años antes. Hospitalizado actualmente tras presentar un infarto ",
+      "opciones": [
+        "Ácido acetil salicílico 100 mg/día de forma indefinida.",
+        "Ácido acetil salicílico 100 mg/día de forma indefinida y clopidogrel 75 mg/día durante 1 año.",
+        "Ácido acetil salicílico 100 mg/día de forma indefinida y ticagrelor 90 mg/día durante 1 año.",
+        "Ácido acetil salicílico 100 mg/día de forma indefinida y prasugrel 5 mg/día durante 1 año."
+      ]
+    },
+    {
+      "anio": 2026,
+      "numero": 87,
+      "motivo": "revisar: el enunciado contiene \"k. Xxx\" (posible opción absorbida)",
+      "enunciado": "Paciente mujer de 61 años con Diabetes Mellitus II, colesterol elevado y con diagnóstico de vejiga hiperactiva desde 2021 por EUD (Estudio Urodinámico) sin más datos de interés. En tratamiento con Ant",
+      "opciones": [
+        "Retirar los anticolinérgicos y añadir Agonistas Beta 3 a dosis máximas.",
+        "Inyección de toxina botulínica intradetrusor.",
+        "Cateterismos intermitentes.",
+        "Enterocistoplastia de aumento."
+      ]
+    }
+  ]
+}

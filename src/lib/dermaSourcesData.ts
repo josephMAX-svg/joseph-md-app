@@ -1,8 +1,18 @@
 /**
- * dermaSourcesData.ts — Biblioteca REAL de fuentes Derma (10-jun-2026, verificada en vivo).
- * GENERADO desde DATA/DERMATOLOGIA/_scrape/ (accessderma_estetica_tocs.json + videos_full
- * + qbankly_derm_step2.json). Los 62 links de AccessDerma del plan devolvieron 200 con el
- * título exacto al verificarlos con la sesión UF. NO editar a mano los ids: regenerar.
+ * dermaSourcesData.ts — Biblioteca REAL de fuentes Derma (10-jun-2026, verificada en vivo · cabecera releída 12-sep-2026).
+ * GENERADO desde DATA/DERMATOLOGIA/_scrape/ (accessderma_estetica_tocs.json + videos_full + qbankly_derm_step2.json)
+ * — en la práctica transcrito a mano desde esos JSON (no existe generador en DATA/_scripts/). NO editar a mano los ids: regenerar.
+ * Q-banks (srcQa) y casos (srcCases): resourceid/groupid verificados 200 con la sesión UF. Deep-links de capítulo (srcCap):
+ * sectionid verificado SOLO para el Color Atlas 9e (bookid 3309) y los 16 libros estéticos/quirúrgicos de este fichero (740 caps).
+ *
+ * ESTADO REAL de las lecturas del plan (src/lib/dermaDailyPlan.ts · 73 átomos del ciclo 1 · contado con node el 12-sep-2026):
+ *   · sectionid VERIFICADO en 43/73 átomos: 23 al Color Atlas 9e (d7-d18, d21-d25, d27-d28, d36-d37, d44-d45) + 20 a los
+ *     libros estéticos/quirúrgicos de este fichero (d5, d39-d40, d46, d50, d53, d55-d58, d60-d61, d63-d70).
+ *   · 20/73 átomos a PORTADA de libro = sectionid PENDIENTE de TOC (d1-d4, d6, d26, d29-d35, d38, d41-d43, d52, d71-d72:
+ *     Fitzpatrick 9e 2570 · Barnhill 4e 2802 · Weinberg 5e 1913 · Guidebook 2960 · Dermoscopy 2804/2929 · Kantor 3138 ·
+ *     Facial Flap 2829 · Margin Control 3319 · Cosmeceuticals 2812) → método exacto: DATA/DERMATOLOGIA/_scrape/README_TOC_PENDIENTE.md.
+ *   · 7 a fuente externa verificada (PubMed/PMC/ABD PDF) · 3 sin lectura nueva (taper Step 1 d47-d49).
+ * Es decir: "sectionid verificado en 43/73; 20 pendientes de TOC" — no "deep-links 100 % verificados".
  */
 const MH = 'https://dermatology.mhmedical.com';
 export const srcBook = (id: number) => `${MH}/book.aspx?bookid=${id}`;

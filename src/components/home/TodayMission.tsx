@@ -5,7 +5,7 @@ import { DesktopColors } from '../../theme/desktopStyles';
 import { MIR_DIAS, mirDiaDe, capUrl } from '../../lib/mirDailyPlan';
 import { DIAS, diaDe, QBQ, DAILY_META as USMLE_META } from '../../lib/usmleStep1Daily';
 import { mirObsUrl, usmleObsUrl, encapsObsUrl, OBS_MAPA_URL } from '../../lib/obsidianMap';
-import { vibeDiaDe, vibeProyectoEnFecha, VIBE_TIPO_LABEL, VIBE_ROTACION_ICON, VIBE_META } from '../../lib/vibecodingPlan';
+import { vibeDiaDe, vibeProyectoEnFecha, vibeTaperEnFecha, vibeJournalUrl, VIBE_TIPO_LABEL, VIBE_ROTACION_ICON, VIBE_META } from '../../lib/vibecodingPlan';
 import {
   semanaStep1, semanaLabel, leerModo, guardarModo, minimoPorFrente, MODO_INFO, ModoNivel, Frente,
 } from '../../lib/homeBriefing';
@@ -23,6 +23,11 @@ import {
  *  · selector de MODO del día (VERDE / ÁMBAR / ROJO, localStorage 'jmd-modo', default VERDE) según
  *    DATA/PROTOCOLO_MODO_MINIMO.md: cada bloque muestra su mínimo cuando el nivel no es VERDE.
  *  · chip "S N/20" (semana del Step 1) y "DELOAD" en las semanas post-NBME 26 / post-NBME 28.
+ * v5.10-b (12-sep-2026, gaps_v3b_synapse 2/4/5):
+ *  · FRENO 04:55: cuenta atrás en la tarjeta 04:15 (solo mientras la hora está dentro del bloque): "commit-or-stash en
+ *    m:ss" y, desde las 04:55, "COMMIT OR STASH · Anki 05:00 en m:ss". Regla: si el día se recorta pierde el proyecto, nunca el Anki.
+ *  · botón "📓 journal" → D:/synapse-journal/journal/<semana ISO>.md (vscode://; node DATA/_scripts/journal_hoy.js lo crea).
+ *  · S13-S20 (taper: mantenimiento ≤15' / deload total) se muestran desde VIBE_TAPER cuando ya no hay proyecto.
  *
  * Colores por-segmento en JOYA APAGADA (mapeo cognitivo NASA), tokens v4:
  * ENCAPS→teal · MIR→gold(amber) · USMLE→jade(green) · Obsidian→amethyst(purple) · Edge→sapphire(blue)
@@ -84,6 +89,33 @@ function AhoraChip({ color }: { color: string }) {
   );
 }
 
+function segundosDia(): number { try { const d = new Date(); return d.getHours() * 3600 + d.getMinutes() * 60 + d.getSeconds(); } catch { return 0; } }
+/** FRENO 04:55 (vacío 4 · gaps_v3b_synapse): cuenta atrás hasta el commit-or-stash y hasta el Anki de las 05:00.
+ *  Tick de 1 s propio (como EncapsCockpit/ApexManualModal); fuera del bloque 04:15-05:00 no renderiza nada. */
+function Freno0455() {
+  const [seg, setSeg] = useState<number>(() => segundosDia());
+  useEffect(() => {
+    const id = setInterval(() => setSeg(segundosDia()), 1000);
+    return () => clearInterval(id);
+  }, []);
+  const ini = hm('04:15') * 60, freno = hm(VIBE_META.freno0455) * 60, anki = hm(VIBE_META.ankiInicio) * 60;
+  if (seg < ini || seg >= anki) return null;
+  const mmss = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+  if (seg < freno) {
+    const falta = freno - seg; const urgente = falta <= 5 * 60; const c = urgente ? Colors.amber : OBS;
+    return (
+      <View style={[st.frenoChip, { borderColor: c + '88', backgroundColor: c + '18' }]}>
+        <Text style={[st.frenoTxt, { color: c }]}>⏱ commit-or-stash en {mmss(falta)} · Anki {VIBE_META.ankiInicio}</Text>
+      </View>
+    );
+  }
+  return (
+    <View style={[st.frenoChip, { borderColor: Colors.coral + 'AA', backgroundColor: Colors.coral + '22' }]}>
+      <Text style={[st.frenoTxt, { color: Colors.coral }]}>COMMIT OR STASH · Anki {VIBE_META.ankiInicio} en {mmss(anki - seg)}</Text>
+    </View>
+  );
+}
+
 /** Selector VERDE / ÁMBAR / ROJO del día (PROTOCOLO_MODO_MINIMO). Persistente por día en localStorage 'jmd-modo'. */
 function ModoSelector({ nivel, onChange }: { nivel: ModoNivel; onChange: (n: ModoNivel) => void }) {
   return (
@@ -114,18 +146,28 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
   const [modo, setModo] = useState<ModoNivel>(() => leerModo(iso));
   const cambiarModo = (n: ModoNivel) => { setModo(n); guardarModo(iso, n); };
 
+  const vibeT = vibeTaperEnFecha(iso); // v5.10-b: S13-S20 (mantenimiento / deload total)
   const vibeTema = vibeP
     ? (vibeDia
       ? `S${vibeP.s} · ${vibeP.nombre} — hoy (${VIBE_TIPO_LABEL[vibeDia.tipo]}${vibeDia.min !== 45 ? ` ${vibeDia.min}'` : ''}): ${vibeDia.paso}`
-      : `S${vibeP.s} · ${vibeP.nombre} — sáb PC 15:00 = SHIP · dom = Feynman (fuera de L-V)`)
-    : `fuera del rango del plan (S1-S12: ${VIBE_META.inicio.slice(8)}-${VIBE_META.inicio.slice(5,7)} → ${VIBE_META.fin.slice(8)}-${VIBE_META.fin.slice(5,7)})`;
+      : `S${vibeP.s} · ${vibeP.nombre} — sáb PC 15:00 = SHIP (node DATA/_scripts/verify_vibecoding.js ${vibeP.s}) · dom = Feynman (fuera de L-V)`)
+    : vibeT
+      ? (vibeDia
+        ? `S${vibeT.s} · ${vibeT.nombre} — hoy (${VIBE_TIPO_LABEL[vibeDia.tipo]} ${vibeDia.min}'): ${vibeDia.paso}`
+        : `S${vibeT.s} · ${vibeT.nombre} — ${vibeT.shipTxt}`)
+      : `fuera del rango del plan (${VIBE_META.inicio.slice(8)}-${VIBE_META.inicio.slice(5,7)} → ${VIBE_META.finTaper.slice(8)}-${VIBE_META.finTaper.slice(5,7)})`;
 
   const bloques: Bloque[] = [
     {
-      flag: '🧠', nombre: 'IA · VIBECODING con Claude Code (1 proyecto real/semana)', ini: '04:15', fin: '05:00', color: OBS, frente: 'vibecoding',
+      flag: '🧠', nombre: vibeT ? `IA · VIBECODING taper (${vibeT.tipo === 'deload' ? "deload total: journal 5' + audio" : "mantenimiento ≤15'/día"})` : 'IA · VIBECODING con Claude Code (1 proyecto real/semana)', ini: '04:15', fin: '05:00', color: OBS, frente: 'vibecoding',
       tema: vibeTema,
-      sub: vibeP ? `${VIBE_ROTACION_ICON[vibeP.rotacion]} ${vibeP.rotacion} · entregable: ${vibeP.entregable}${vibeP.deload ? ' · DELOAD 50%' : ''} · ✓ diario en SYNAPSE → ⚡ run` : "5' objetivo → 35' construir → 5' commit (synapse-journal)",
-      acciones: vibeP ? [{ lbl: 'docs ↗', color: OBS, url: vibeP.docs[0].url, fill: true }] : [],
+      sub: vibeP
+        ? `${VIBE_ROTACION_ICON[vibeP.rotacion]} ${vibeP.rotacion} · entregable: ${vibeP.entregable}${vibeP.deload ? ' · DELOAD 50%' : ''} · ✓ diario en SYNAPSE → ⚡ run · ${VIBE_META.freno}`
+        : vibeT ? `taper · ${vibeT.tipo} · ${vibeT.semanaStep1} · ${VIBE_META.freno}` : `5' objetivo → 35' construir → 5' journal · ${VIBE_META.freno}`,
+      acciones: [
+        ...(vibeP ? [{ lbl: 'docs ↗', color: OBS, url: vibeP.docs[0].url, fill: true }] : []),
+        { lbl: '📓 journal', color: OBS, url: vibeJournalUrl(iso) },
+      ],
     },
     {
       flag: '🇺🇸', nombre: 'USMLE · ANKI AM (madrugada fresca · Palmerton 2x)', ini: '05:00', fin: '05:45', color: GREEN, frente: 'usmle-anki',
@@ -214,6 +256,7 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
               ) : null}
               <Text style={st.bloqueTema} numberOfLines={2}>{b.tema}</Text>
               <Text style={st.bloqueSub} numberOfLines={1}>{b.sub}</Text>
+              {b.frente === 'vibecoding' ? <Freno0455 /> : null}
             </View>
             <View style={st.btnCol}>
               {b.acciones.map((a, j) => (
@@ -226,7 +269,7 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
           </TouchableOpacity>
         );
       })}
-      <Text style={st.nota}>Horario real del Google Calendar (Lima) · toca un bloque → abre Estudio · ◆ Obsidian = nota madre donde caen los APEX · sáb 07:15-07:35 = revisión semanal (DATA/REVISION_SEMANAL.md)</Text>
+      <Text style={st.nota}>Horario real del Google Calendar (Lima) · toca un bloque → abre Estudio · ◆ Obsidian = nota madre donde caen los APEX · 04:55 commit-or-stash → 05:00 Anki sin excepción · 📓 journal = D:/synapse-journal (node DATA/_scripts/journal_hoy.js) · sáb 07:15-07:35 = revisión semanal (DATA/REVISION_SEMANAL.md)</Text>
     </View>
   );
 }
@@ -263,6 +306,9 @@ const st = StyleSheet.create({
   ahoraChip: { borderRadius: BorderRadius.sm, paddingVertical: 1, paddingHorizontal: 6, marginTop: 3 },
   ahoraTxt: { fontSize: 8, fontWeight: '900', color: '#081325', letterSpacing: 0.5 },
   checkTxt: { fontSize: 11, color: Colors.muted, marginTop: 2 },
+
+  frenoChip: { alignSelf: 'flex-start', borderWidth: 1, borderRadius: BorderRadius.full, paddingVertical: 2, paddingHorizontal: 9, marginTop: 5 },
+  frenoTxt: { fontSize: 10, fontWeight: '900', letterSpacing: 0.5, fontVariant: ['tabular-nums'], fontFamily: MONO },
 
   bloqueNombre: { fontSize: FontSize.labelMd, fontWeight: '800', color: Colors.onSurface },
   bloqueTema: { fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, marginTop: 2, lineHeight: 16 },

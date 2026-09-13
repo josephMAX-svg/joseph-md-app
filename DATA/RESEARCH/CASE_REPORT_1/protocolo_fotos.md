@@ -1,4 +1,10 @@
-# Protocolo de fotografía clínica estandarizada + anonimización — Case Report #1
+# Protocolo de fotografía clínica estandarizada + anonimización — Case Report #1 · NÍTIDA tele-derma
+
+> **Protocolo ÚNICO de foto clínica (fusión 12-sep-2026).** Hasta el 12-sep había dos recetas divergentes para el mismo
+> paciente (este doc: fondo azul-gris, flash rebotado, balance fijo, tarjeta gris · `NITIDA_PROTOCOLOS.md` §0.2: 5 tomas,
+> luz natural, sin flash). Ahora este fichero es el **canónico** para (a) el case report y cualquier control que dispare el
+> clínico (§1) y (b) el set mínimo de tele-derma NÍTIDA que fotografía el propio paciente en casa (§1b). NÍTIDA §0.2 solo
+> enlaza aquí. La regla común a ambos: **misma receta en cada visita** (§1, fila "Repetición").
 
 > Objetivo: que las fotos del caso pasen el filtro editorial a la primera (DOJ / JAAD Case Reports / IJD)
 > y que el "antes-después" sea comparable. Las reglas de las revistas citadas abajo se verificaron el
@@ -33,6 +39,27 @@
 **Serie mínima para un case report estético/complicación**: 3 fotos de la fase aguda (localización + macro + serie
 facial si hay asimetría), 3 del control (misma receta) y, si hubo tratamiento (hialuronidasa, láser, etc.), 1 del
 momento del tratamiento. Total 6-8 imágenes; al manuscrito van 2-4 (las revistas limitan figuras).
+
+## 1b. Set mínimo tele-derma NÍTIDA (el paciente fotografía en casa)
+
+Cuando no hay clínico con cámara (consulta por suscripción a distancia), la receta de §1 no es ejecutable: no hay flash
+rebotado ni tarjeta gris en casa. Este set mínimo es el que pide el intake de NÍTIDA y el que se repite en el control;
+las fotos así obtenidas sirven para seguimiento clínico y comparación antes/después, **no** para un manuscrito (para
+publicar, repetir la serie con la receta de §1 en presencial).
+
+| Parámetro | Regla en casa | Por qué |
+|---|---|---|
+| Tomas (cara) | **5**: frontal · oblicua 45° derecha · oblicua 45° izquierda · perfil 90° derecho · perfil 90° izquierdo. Cabeza en plano de Frankfort (misma pauta que §1), expresión neutra, boca cerrada, ojos abiertos. | La misma serie facial de §1, para que el control presencial sea comparable. |
+| Tomas (tronco / extremidades) | 1 general de la región + 1 detalle perpendicular con **moneda o regla** en el mismo plano de la lesión. | Escala y localización (equivale a la fila "Encuadre de lesión" de §1). |
+| Luz | **Natural difusa** por ventana **lateral** (no de frente, no a contraluz); **sin flash** (el flash frontal del móvil quema el eritema y aplana el relieve); nunca luz mixta ventana + fluorescente. | Sustituye al flash rebotado de §1 cuando no hay difusor; el eritema, la PIH y la descamación se juzgan por color. |
+| Fondo | Pared lisa de color neutro (blanco/gris/beige), sin cuadros ni ventana detrás. | Versión doméstica del fondo uniforme de §1. |
+| Preparación | Sin maquillaje ni cremas, pelo recogido, sin gafas ni joyas. | Igual que §1. |
+| Cámara | Móvil en modo foto normal: sin filtros, sin "modo belleza", HDR y zoom digital desactivados; cámara **a la altura de los ojos**, a **~40 cm**; enfocar tocando la lesión. | Igual que §1 (dispositivo) adaptado al móvil. |
+| Repetición | **Misma hora del día, mismo sitio de la casa, misma ventana** en cada control (6-8 semanas) → comparación lado a lado que el paciente ve. | La fila "Repetición" de §1 es la que hace válido el "después". |
+| Envío | Por el canal cifrado del intake (no WhatsApp abierto ni redes); el fichero llega con EXIF → se borra en custodia (§2). Nombre sin datos del paciente. | Cadena de custodia y anonimización de §2-§3. |
+| Triaje | Lesión pigmentada nueva o cambiante, fiebre + rash, ampollas/erosiones extensas, mucosas, dolor desproporcionado → **presencial + dermatoscopia**, no tele-derma. | Límites de NÍTIDA (`NITIDA_PROTOCOLOS.md` §0.2 y §0.4). |
+
+Métrica del control: IGA 0-4 anotado en cada visita (definición por diagnóstico **A VERIFICAR**, ver NÍTIDA §0.2 y §9).
 
 ## 2. Anonimización (lo que exigen las revistas)
 - **No** enviar fotos con **tiras negras** sobre los ojos: DOJ lo prohíbe expresamente ("Please do not submit
@@ -69,7 +96,7 @@ momento del tratamiento. Total 6-8 imágenes; al manuscrito van 2-4 (las revista
   es aceptable y debe declararse en la leyenda.
 
 ## 5. Checklist de 60 segundos antes de cerrar la sesión
-☐ consentimiento firmado y escaneado · ☐ fondo/luz/WB/distancia anotados · ☐ serie completa (localización + macro
+☐ consentimiento firmado y escaneado (tele-derma: consentimiento de telesalud + imágenes del intake) · ☐ fondo/luz/WB/distancia anotados · ☐ serie completa (localización + macro
 con regla + facial 5 vistas si aplica) · ☐ fotos nítidas al 100 % · ☐ sin joyas/tatuajes/nombres en cuadro ·
 ☐ ficheros renombrados sin datos del paciente · ☐ copia cifrada hecha · ☐ EXIF pendiente de borrar (se hace al
 preparar el envío, sobre la copia).

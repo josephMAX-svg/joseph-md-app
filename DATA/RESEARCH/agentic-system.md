@@ -382,6 +382,45 @@ n8n Schedule Trigger (cron) + Google Calendar (¿hay bloque "research" hoy?) →
 - ⚠️ Esto **descubre y pre-filtra**, no decide inclusión final: la inclusión formal sigue el cribado de 2
   revisores + Kappa (átomos R17–R21). La Capa 0 es un *feeder*, no el screening oficial.
 
+
+### 9.1 Estado real del motor y ruta PRISMA-S FINAL (Palmerton v3b · gap 9 · 12-sep-2026)
+
+**Lo que hay hoy (verificado en Supabase `qacynpqdrorpuegsmtcy`, SQL en vivo):** `research_papers` = 200 registros `SR-1`
+descubiertos el 11-jun-2026, todos `pending_human`, 151 `is_oa` y **0** con `pdf_url`; `research_engine_state.run_state =
+idle`. La Edge Function `research-discovery` v2 (copia fiel en `supabase/functions/research-discovery/index.ts`) usa **3
+fuentes** (OpenAlex + Europe PMC + PubMed), tope 200 por score de palabras del título, y trataba `OPENALEX_KEY` como
+opcional: **sin la key, OpenAlex devuelve 0 en silencio y la función reportaba `ok`** (OpenAlex exige key desde el
+13-feb-2026 → en la práctica discovery = PubMed + Europe PMC, sin LILACS ni Semantic Scholar). Eso NO es una búsqueda
+de grado PRISMA-S (ítems 1-16: fuentes nombradas, cadenas completas, fecha, límites, sin tope arbitrario).
+
+**Decisión de arquitectura (vigente):**
+
+| Capa | Herramienta | Para qué sirve | Para qué NO sirve |
+|---|---|---|---|
+| Feeder de la app (botón ▶ · monitor · cola de screening) | Edge Function `research-discovery` (3 fuentes, tope 200) | Descubrir/pre-ordenar candidatos para que Joseph criba en la app; alimentar `research_papers` | **NO es la búsqueda oficial de la SR** ni cuenta como fuente PRISMA-S |
+| **Búsqueda PRISMA-S final** (X-3 dic-2026 · R16 mar-2027) | `DATA/RESEARCH/agentic/discovery_engine.py` — **5 fuentes** (OpenAlex ⭐ · PubMed/MEDLINE · Europe PMC · LILACS/BVS · Semantic Scholar), **sin tope**, dedup por DOI, CSV/JSON | Cadena booleana registrada en PROSPERO (L4 §9) ejecutada con fecha y nº de registros por fuente → PRISMA-S 1-16 y diagrama de flujo | Corre en local (stdlib); requiere `OPENALEX_KEY` y opcionalmente `NCBI_KEY`/`S2_KEY` |
+| Cribado dual | Rayyan (2 revisores · κ) | Importar el corpus como RIS/CSV | — |
+| Puente corpus → Rayyan | `exportResearchCorpus(line)` en `src/lib/supabase.ts` (CSV + RIS desde `research_papers`) | Export del feeder de la app; y el CSV de `discovery_engine.py` se sube a Rayyan directamente | — |
+| Texto completo | `research-fulltext` (uno a uno) · `fulltext_cascade.py` (lote) | Unpaywall → Europe PMC → preprints → ALICIA → autor | Sci-Hub (nunca) |
+
+**Ruta operativa PRISMA-S final (la que se copia a Methods):**
+1. R12/R16: cadena booleana definitiva por fuente (con sintaxis nativa de cada una) escrita en `lines/L4-complicaciones.md` §9.
+2. `set OPENALEX_KEY=…` (gratis, openalex.org/settings/api) y `python discovery_engine.py "<cadena>" --line SR-1 --out corpus_SR-1_<fecha>.csv`
+   → el script imprime **nº bruto por fuente** y nº único tras dedup (= ítems PRISMA-S 13-16 y la fila "identified" del diagrama).
+3. Importar el CSV a Rayyan (Import → CSV) para el cribado dual (R17-R21); `exportResearchCorpus('SR-1')` solo si se quiere
+   sumar lo que ya descubrió el feeder de la app (se deduplica en Rayyan por DOI).
+4. Resolver PDFs en LOTE en X-3 (`fulltext_cascade.py` sobre el CSV, o bucle `resolveFullText(doi)` con 300 ms) para que
+   R19 (texto completo) no arranque con 0 PDFs.
+5. El feeder de la app se queda como está (monitor + cola de screening); su output nunca sustituye al paso 2.
+
+**Cambio en la Edge Function (copia del repo, `supabase/functions/research-discovery/index.ts`; NO redesplegada aún):**
+`openalex()` ya no falla en silencio — si no hay `OPENALEX_KEY` o la API devuelve error/0 resultados, se registra
+`sources_ok = {openalex: 0, europepmc: n, pubmed: n}` + `last_error` en `research_engine_state` (columnas añadidas por
+`DATA/_scripts/_migrations/research_entregables.sql`) y la respuesta lleva `ok: false` con `error: 'OPENALEX_KEY ausente…'`
+cuando la fuente troncal no aportó nada (`strict` por defecto; `{ line, strict: false }` solo avisa). Para activarlo:
+(1) cargar `OPENALEX_KEY` y `NCBI_KEY` en Dashboard → Edge Functions → Secrets (pendiente de Joseph, átomo R0);
+(2) `supabase functions deploy research-discovery` o `deploy_edge_function` del MCP; (3) anotar la versión en `supabase/functions/README.md`.
+
 ---
 
 ## 10. QA de paráfrasis (Turnitin) — además de la verificación de citas

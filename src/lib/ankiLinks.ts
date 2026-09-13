@@ -49,9 +49,45 @@ const MIR_DECK: Record<string, string> = {
   'Ginecología y Obstetricia': 'ginecologia',
   'Pediatría': 'pediatria',
   'Psiquiatría': 'psiquiatria',
+  // 12-sep-2026 (puente MIR ↔ USMLE, gaps v3b mir #9): asignaturas del plan MIR v3 que caían al slug automático.
+  // ⚠ A VERIFICAR (12-sep): nombres reales por AnkiConnect `deckNames` — Anki estaba CERRADO al escribir esto
+  // (localhost:8765 sin respuesta). El motor crea el sub-deck lazy al primer APEX: el slug debe coincidir con la
+  // carpeta del vault 03_MIR (epidemiologia / bioetica / dermatologia). No crear variantes a mano.
+  'Epidemiología': 'epidemiologia',
+  'Medicina Legal y Bioética': 'bioetica',
+  'Dermatología': 'dermatologia',
 };
 export const mirAnkiDeck = (asignatura: string): string =>
   `APEX::MIR::${MIR_DECK[asignatura] || asignatura.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z]/g, '')}`;
+
+/* ────────────────────────────────────────────────────────────────────────────
+ * TAG COMPARTIDO POR SISTEMA · sys::<UsmleSystem> (12-sep-2026 · gaps v3b mir #9 · Palmerton "I Haven't Had to
+ * Re-Learn Anything" / Med School Anki FAQ: nunca resetear el mazo, etiquetar por sistema orgánico, suspender
+ * quirúrgicamente lo que no aplique).
+ *  · Lo llevan las tarjetas de APEX::USMLE (sistema del día = DIAS[].system), de APEX::MIR (usmleSystem del día MIR,
+ *    mirDailyPlan) y de APEX::DERMA cuando el átomo cruza con Step 1 (sys::Dermatology + step1).
+ *  · Handoff 31-mar-2027 (fase principal MIR): un filtered deck por sistema = `tag:sys::Cardiovascular` reúne el
+ *    mecanismo (USMLE) + la clínica (MIR) sin crear ni resetear nada — receta en DATA/SYNC_ANKI_OBSIDIAN_APP.md.
+ *  · Formato: Anki separa tags por espacio → sin espacios ni símbolos ('Hematology & Oncology' → Hematology_Oncology).
+ * ────────────────────────────────────────────────────────────────────────── */
+export const SYS_TAG_SLUG: Record<string, string> = {
+  'Fundamentos': 'Fundamentos', 'Immunology': 'Immunology', 'Cardiovascular': 'Cardiovascular', 'Respiratory': 'Respiratory',
+  'Renal': 'Renal', 'Gastrointestinal': 'Gastrointestinal', 'Endocrine': 'Endocrine', 'Nervous System': 'Nervous_System',
+  'Hematology & Oncology': 'Hematology_Oncology', 'Microbiology / ID': 'Microbiology_ID', 'Reproductive': 'Reproductive',
+  'Musculoskeletal / Rheum': 'Musculoskeletal_Rheum', 'Psychiatry & Behavioral': 'Psychiatry_Behavioral', 'Biochemistry': 'Biochemistry',
+  // bbCh/usmleSystem que no son sistema de órgano (MIR Epidemiología → Biostats/Epi · Bioética → Ethics/Behavioral · Derma)
+  'Biostats/Epi': 'Biostats_Epi', 'Ethics/Behavioral': 'Ethics_Behavioral', 'Dermatology': 'Dermatology',
+};
+const sysSlug = (system: string): string =>
+  SYS_TAG_SLUG[system]
+  || String(system || '').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^A-Za-z0-9]+/g, '_').replace(/^_+|_+$/g, '')
+  || 'General';
+/** Tag compartido USMLE ↔ MIR ↔ Derma: 'sys::<usmleSystem>'. MIR pasa `dia.usmleSystem`; '—' / vacío → 'sys::General'. */
+export const sysTag = (system: string): string => `sys::${!system || system === '—' ? 'General' : sysSlug(system)}`;
+/** Búsqueda Anki (Browse / filtered deck) que reúne USMLE + MIR de un sistema — la receta del handoff 31-mar. */
+export const sysFilteredQuery = (system: string): string => `${sysTag(system).replace(/^/, 'tag:')} (deck:APEX::USMLE OR deck:APEX::MIR)`;
+/** Los 14 sistemas del plan Step 1 con su tag (para el checklist de arranque y la tabla de SYNC_ANKI). */
+export const SYS_TAGS: { system: string; tag: string }[] = Object.keys(SYS_TAG_SLUG).map((system) => ({ system, tag: sysTag(system) }));
 
 /** ENCAPS — bloque + subtema → sub-deck exacto (94 pre-creados, verificado 94/94) */
 export const encapsAnkiDeck = (blockId: string, subtemaId: string): string =>
@@ -112,12 +148,19 @@ export interface DermaTarjetaMecanismo {
   d: number;             // sesión del plan
   casoId?: number;       // id 1-200 del banco (si viene de un caso)
   moduloCORE?: 'Med' | 'Path' | 'Peds' | 'Surg';
+  /** 12-sep-2026 (puente Derma ↔ Step 1, gaps v3b derma #6): el átomo cruza con "dermato Step 1" (DiaDerma.step1 / DERMA_STEP1_DIAS) → tag `step1`. */
+  step1?: boolean;
 }
-/** Tags Anki de una tarjeta Derma: derma::<bloque> dNN mecanismo [caso-ID] [core-Área]. */
-export function dermaAnkiTags(t: Pick<DermaTarjetaMecanismo, 'bKey' | 'd' | 'casoId' | 'moduloCORE'>): string {
+/** Tag de cuenta doble Derma ↔ Step 1: las tarjetas con este tag son el repaso anclado del día "dermato Step 1" (D73). */
+export const DERMA_STEP1_TAG = 'step1';
+/** Búsqueda Anki del repaso anclado / pre-test del día "dermato Step 1" (texto de UI; el contenido USMLE no cambia). */
+export const DERMA_STEP1_QUERY = `deck:${DERMA_ANKI_ROOT} tag:${DERMA_STEP1_TAG}`;
+/** Tags Anki de una tarjeta Derma: derma::<bloque> dNN mecanismo [caso-ID] [core-Área] [step1 sys::Dermatology]. */
+export function dermaAnkiTags(t: Pick<DermaTarjetaMecanismo, 'bKey' | 'd' | 'casoId' | 'moduloCORE' | 'step1'>): string {
   const tags = [`derma::${(DERMA_ANKI_BLOQUES as readonly string[]).includes(t.bKey) ? t.bKey : 'A'}`, `d${String(t.d).padStart(2, '0')}`, 'mecanismo'];
   if (t.casoId) tags.push(`caso-${t.casoId}`);
   if (t.moduloCORE) tags.push(`core-${t.moduloCORE}`);
+  if (t.step1) tags.push(DERMA_STEP1_TAG, sysTag('Dermatology'));
   return tags.join(' ');
 }
 const tsvSafe = (s: string) => String(s || '').replace(/\t/g, ' ').replace(/\r?\n/g, ' · ').trim();

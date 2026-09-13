@@ -1,7 +1,8 @@
 // EncapsCockpit — componentes-firma del segmento ENCAPS: "sala de guerra / cockpit de examen".
 // HUD superior con cuenta regresiva al examen 2027-I, altímetro Go/No-Go, strip de telemetría v3
 // de rentabilidad por área (Bloomberg), radar de repasos por prioridad, serie de MINI-SIMS de viernes
-// contra la línea 18/25 y % CIEGO semanal (study_progress) contra la meta 85%.
+// contra la línea 18/25 y % CIEGO semanal (study_progress) contra la meta 85% — por área y por código vs vector v3,
+// tendencia hacia 85% y TEMAS CALIENTES (candidatos al override del viernes; regla de gen_encaps_semana.js).
 //
 // REGLAS: presentacional puro. NO recalcula fechas (recibe días de metrics), NO toca el motor
 // ni Supabase ni item_key. Numerales monoespaciados/tabulares (motivo Bloomberg/cockpit).
@@ -255,7 +256,14 @@ export function MiniSimTrend({ serie, compact }: { serie: MiniSimPuntoView[]; co
 // y el crucero 75%. La última semana se desglosa por área contra el vector v3.
 // ─────────────────────────────────────────────────────────────────────────────
 export interface CiegoSemanaView { lunes: string; pct: number; n: number; rondas: number; porArea: Record<string, { pct: number; n: number }> }
-export function CiegoSemanalStrip({ semanas }: { semanas: CiegoSemanaView[] }) {
+export interface TendenciaView { simbolo: string; deltaPP: number | null; ultimo: number | null; brecha: number | null; semanasA85: number | null; texto: string }
+export interface CiegoCodigoView {
+  codigo: string; area: string; peso: number; n: number; seg: number; dud: number; fallos: number; rondas: number; pct: number;
+  evalFallos: number; knowledge: number; transfer: number; proceso: number; esCrit: boolean; rebote: boolean; zona: 'go' | 'warn' | 'nogo';
+}
+export interface TemaCalienteView { codigo: string; area: string; peso: number; pct: number; n: number; motivos: string[]; score: number; esCrit: boolean; evalFallos: number }
+const areaAccent = (area: string): string => ENCAPS_AREA_FORECAST.find(a => a.code === area)?.accent || Colors.muted;
+export function CiegoSemanalStrip({ semanas, tendencia, porCodigo }: { semanas: CiegoSemanaView[]; tendencia?: TendenciaView | null; porCodigo?: CiegoCodigoView[] }) {
   const H = 64;
   const last = semanas.length ? semanas[semanas.length - 1] : null;
   const zone = encapsCiegoZone(last?.pct);
@@ -270,10 +278,10 @@ export function CiegoSemanalStrip({ semanas }: { semanas: CiegoSemanaView[] }) {
         </Text>
       </View>
       <Text style={styles.telDisclaimer}>
-        meta {ENCAPS_CIEGO_META_PCT}% (≥17/20, línea oro) · crucero {ENCAPS_CIEGO_CRUCERO_PCT}% en bancos del día · fuente: study_progress (cierre de 1 línea → gen_encaps_semana.js --sql)
+        meta {ENCAPS_CIEGO_META_PCT}% (≥17/20, línea oro) · crucero {ENCAPS_CIEGO_CRUCERO_PCT}% en bancos del día · fuente: study_progress (CIERRE DE SESIÓN al final de la cola de HOY · o línea de cierre → gen_encaps_semana.js --sql)
       </Text>
       {vis.length === 0 ? (
-        <Text style={styles.msEmpty}>Sin cierres registrados todavía. Cada sesión termina con la línea de cierre (17:10) y el viernes se corre gen_encaps_semana.js: ahí nace esta serie.</Text>
+        <Text style={styles.msEmpty}>Sin cierres registrados todavía. Cada sesión termina con el CIERRE DE SESIÓN al final de la cola de HOY (n · seguras · dudosas · fallos por subtipo): ahí nace esta serie. El viernes gen_encaps_semana.js la lee para proponer el override.</Text>
       ) : (
         <>
           <View style={[styles.msChart, { height: H }]}>
@@ -306,8 +314,62 @@ export function CiegoSemanalStrip({ semanas }: { semanas: CiegoSemanaView[] }) {
             </View>
           )}
           <Text style={styles.altFootHint}>semana del {last?.lunes.slice(5)} · {last?.rondas} rondas · {last?.n}Q · brecha a 85%: {last ? `${Math.max(0, ENCAPS_CIEGO_META_PCT - last.pct)} pp` : '––'}</Text>
+          {!!tendencia && (
+            <Text style={[styles.altFootHint, { color: tendencia.simbolo === '▲' ? Colors.green : tendencia.simbolo === '▼' ? Colors.coral : Colors.muted, fontWeight: '700', marginTop: 3 }]}>
+              tendencia hacia {ENCAPS_CIEGO_META_PCT}%: {tendencia.texto}
+            </Text>
+          )}
+          {!!porCodigo && porCodigo.length > 0 && (
+            <>
+              <Text style={styles.telSubhead}>▼ POR CÓDIGO · últimas 2 semanas · % ciego vs peso v3 del área · k/t/p = fallos knowledge / transfer / proceso</Text>
+              {porCodigo.slice(0, 10).map(c => (
+                <View key={c.codigo} style={styles.telRow}>
+                  <Text style={[styles.codCode, tabular, { color: areaAccent(c.area) }]} numberOfLines={1}>{c.codigo}{c.esCrit ? ' ★' : c.rebote ? ' ↩' : ''}</Text>
+                  <Text style={[styles.codPeso, tabular]}>{c.peso ? `v3 ${c.peso}%` : '—'}</Text>
+                  <View style={styles.telBarTrack}>
+                    <View style={[styles.telBarFill, { width: `${Math.max(0, Math.min(100, c.pct))}%`, backgroundColor: encapsGoColor(c.zona) }]} />
+                  </View>
+                  <Text style={[styles.telPct, tabular, { color: encapsGoColor(c.zona) }]}>{c.pct}%</Text>
+                  <Text style={[styles.codKtp, tabular]}>{c.n}Q · {c.knowledge}/{c.transfer}/{c.proceso}</Text>
+                </View>
+              ))}
+              {porCodigo.length > 10 && <Text style={styles.altFootHint}>… y {porCodigo.length - 10} códigos más (ordenados de menor a mayor % ciego)</Text>}
+            </>
+          )}
         </>
       )}
+    </View>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// TEMAS CALIENTES = candidatos al override del viernes (misma regla que gen_encaps_semana.js, últimas 2 semanas):
+// % ciego < 75 con n ≥ 5 · eval anclada con ≥ 2 fallos · ≥ 3 fallos knowledge · score = peso v3 × brecha a 85 (×1.5 crítico, ×1.2 rebote).
+// Solo se pinta si hay cierres (hayDatos); con datos y sin calientes muestra el vacío elegante.
+// ─────────────────────────────────────────────────────────────────────────────
+export function TemasCalientesStrip({ calientes, hayDatos }: { calientes: TemaCalienteView[]; hayDatos: boolean }) {
+  if (!hayDatos) return null;
+  const c0 = calientes.length ? Colors.coral : Colors.green;
+  return (
+    <View style={styles.telBox}>
+      <View style={styles.telHeader}>
+        <Text style={styles.telTitle}>■ TEMAS CALIENTES · override del viernes</Text>
+        <Text style={[styles.telEst, { color: c0, borderColor: c0 + '55' }]}>{calientes.length ? `${calientes.length} CALIENTE${calientes.length === 1 ? '' : 'S'}` : 'NINGUNO'}</Text>
+      </View>
+      <Text style={styles.telDisclaimer}>
+        regla (últimas 2 semanas): % ciego &lt; {ENCAPS_CIEGO_CRUCERO_PCT}% con n ≥ 5 · eval anclada con ≥ 2 fallos · ≥ 3 fallos knowledge · orden = peso v3 × brecha a {ENCAPS_CIEGO_META_PCT} (×1.5 crítico ★, ×1.2 rebote) · el viernes gen_encaps_semana.js propone máx. 2 sustituciones (I-3 y V-2 nunca se ceden)
+      </Text>
+      {calientes.length === 0 ? (
+        <Text style={styles.msEmpty}>Ningún código cumple la regla con los cierres de las últimas 2 semanas: sigue la rotación base del ciclo.</Text>
+      ) : calientes.slice(0, 8).map(c => (
+        <View key={c.codigo} style={styles.calRow}>
+          <Text style={[styles.calCode, tabular, { color: areaAccent(c.area) }]}>{c.codigo}{c.esCrit ? ' ★' : ''}</Text>
+          <Text style={[styles.calPct, tabular, { color: encapsGoColor(encapsCiegoZone(c.pct)) }]}>{c.pct}%</Text>
+          <Text style={[styles.calN, tabular]}>{c.n}Q</Text>
+          <Text style={styles.calMotivo} numberOfLines={2}>{c.motivos.join(' · ')}</Text>
+          <Text style={[styles.calScore, tabular]}>{c.score}</Text>
+        </View>
+      ))}
     </View>
   );
 }
@@ -418,6 +480,16 @@ const styles = StyleSheet.create({
   ciegoAreaCode: { fontSize: 9, fontWeight: '900', letterSpacing: 0.5 },
   ciegoAreaPct: { fontSize: FontSize.bodyMd, fontWeight: '900', marginTop: 1 },
   ciegoAreaSub: { fontSize: 8, color: Colors.muted, marginTop: 1 },
+  // ── % ciego por código (filas densas) + temas calientes
+  codCode: { width: 52, fontSize: FontSize.labelSm, fontWeight: '900', letterSpacing: 0.3 },
+  codPeso: { width: 46, fontSize: 9, color: Colors.muted, fontWeight: '700' },
+  codKtp: { width: 78, textAlign: 'right', fontSize: 9, color: Colors.muted, fontWeight: '700' },
+  calRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 5, borderTopWidth: 1, borderTopColor: Hairline.soft, gap: 6 },
+  calCode: { width: 52, fontSize: FontSize.labelMd, fontWeight: '900', letterSpacing: 0.3 },
+  calPct: { width: 46, fontSize: FontSize.bodyMd, fontWeight: '900', textAlign: 'right' },
+  calN: { width: 34, fontSize: 9, color: Colors.muted, fontWeight: '700', textAlign: 'right' },
+  calMotivo: { flex: 1, fontSize: 9, color: Colors.onSurfaceVariant, lineHeight: 12 },
+  calScore: { width: 36, textAlign: 'right', fontSize: 9, color: Colors.brass, fontWeight: '800' },
 
   // ── Radar leyenda
   radarLegend: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: Spacing.sm },

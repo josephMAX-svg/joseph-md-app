@@ -3,8 +3,13 @@
  * gen_research_plan.js — FUENTE ÚNICA del plan día-a-día de Research (v5.7 · 3 pistas alineadas con
  * DATA/RESEARCH/RUTA_PUBLICACION_2027.md). GENERA (no editar los .ts/.md a mano):
  *
- *   src/lib/researchDailyPlan.ts       ciclo 1 · 42 átomos · 40 en sep→dic 2026 (carta · tesis · case report · mentores · cimientos SR-1)
- *                                      + 2 justo tras la pausa (CR-9 SUBMIT case report · X-8 re-arranque) → total FIJO = 42
+ *   src/lib/researchDailyPlan.ts       ciclo 1 · 42 átomos · los que caben en sep→dic 2026 (carta · tesis · case report · mentores · cimientos SR-1)
+ *                                      + la cola tras la pausa (CR-9 SUBMIT case report · X-8 re-arranque · recortables desplazados) → total FIJO = 42
+ *
+ * v5.10b (12-sep-2026 · gaps_v3b_research 1-3, 10, 12): re-orden con GATES — T-1 (ética/CEI, solicitud expedita presentada
+ * ≤30-sep) a d7 · M3 a d8 · R9 (¿ya existe la SR? AMSTAR-2 + decisión a/b/c) a d9 ANTES de R6 (d14) · CR-1/CR-2 a d15/d16
+ * (caso + consentimiento antes del 31-oct; T-2 → d19, R7 → d21) · R2 → d35 · gates CEI + inglés en T-7/T-8 · seguimiento del
+ * caso en d8/d10 · carga REAL (`horas`) en R17-R26 del ciclo 2 · chips con fechas se calculan DESPUÉS del fechado (chipsDyn).
  *   src/lib/researchDailyPlan2027.ts   ciclo 2 · SR-1 PROSPERO→submit + campaña + CR #2 + bibliométrico · feb→ago 2027
  *   src/lib/obsidianResearchMap.ts     mapa átomo/entregable → carpeta del vault (antes lo escribía build_vault_research.js)
  *   DATA/RESEARCH/daily-plan.md        documentación (misma data)
@@ -40,7 +45,7 @@ const fechas = argv.filter((a) => /^20\d\d-\d\d-\d\d$/.test(a));
 if (SOLO_CICLO && ![1, 2].includes(SOLO_CICLO)) throw new Error('--ciclo debe ser 1 o 2');
 const START1 = SOLO_CICLO === 2 ? '2026-09-08' : (fechas[0] || '2026-09-08');
 const START2 = SOLO_CICLO === 2 ? (fechas[0] || '2027-02-01') : (fechas[1] || '2027-02-01');
-const HOY = new Date().toISOString().slice(0, 10);
+const HOY = (() => { const d = new Date(); const z = (n) => String(n).padStart(2, '0'); return d.getFullYear() + '-' + z(d.getMonth() + 1) + '-' + z(d.getDate()); })(); // fecha LOCAL (Lima), no UTC
 
 // ─── Calendario (idéntico a remap_inicio.js, UTC) ───
 const WD = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
@@ -144,35 +149,44 @@ const C1 = [
   a('M1', 'M', 'M', 'CRITICA', 'Dr. Ciro Rodríguez (Hospital Regional Daniel Alcides Carrión, Huancayo): propuesta CONCRETA de 3 coautorías — tesis→research letter (él senior), carta al editor (coautor) y case report de SU consulta (él senior author)',
     'Mensaje o reunión con las 3 coautorías propuestas + respuesta registrada (sí / no / cuándo)',
     'DATA/RESEARCH/MENTORES.md: fila Dr. Ciro (qué pido · fecha · estado · siguiente paso)',
-    'WhatsApp / presencial', ['ICMJE', 'CREDIT'], { apex: { id: 'mentor-ciro', t: 'Senior author local confirmado' }, hito: 'mentor' }),
+    'WhatsApp / presencial', ['ICMJE', 'CREDIT'], { apex: { id: 'mentor-ciro', t: 'Senior author local confirmado' }, hito: 'mentor',
+      chipsDyn: ({ f, fmt }) => [`antes de T-1 (${fmt(f('T-1'))}): reunir los 10 documentos de etica.md §1 y preguntar al Dr. Ciro la vía CEI (expedita / retrospectiva / exención)`] }),
   a('C-1', 'C', 'C', 'CRITICA', 'Discovery de 5 artículos 2026 (últimos 30-60 días) en JAAD / JAAD Intl / IJD / JCD / Dermatol Surg sobre derma estética · fototipos IV-VI · complicaciones de fillers, con la ventana de letters y los límites de cada journal',
     'Tabla de 5 candidatos: journal · fecha de publicación · ventana de correspondencia (URL de Author Guidelines) · límite palabras/refs · coste · ángulo de la carta (dato peruano/latino que el paper no considera)',
     'DATA/RESEARCH/CARTA_1/candidatos.md (tabla de 5) + correo a IJD Editorial Office pidiendo su política de correspondencia (pendiente desde 27-ago)',
     'research-discovery · PubMed', ['PM', 'OPENALEX', 'JAADINT', 'IJD'], { chips: ['ventana de letters típica 4-12 semanas · A VERIFICAR por journal (JAAD/IJD dieron 403 el 05-sep)'] }),
-  a('M2', 'M', 'M', 'ALTA', 'Rising Scholars (ex-AuthorAID, INASP): solicitar mentor 1-a-1 gratuito para la revisión en inglés del primer manuscrito — tarda semanas, pedirlo YA',
+  a('M2', 'M', 'M', 'ALTA', 'Rising Scholars (ex-AuthorAID, INASP): solicitar mentor 1-a-1 gratuito para la revisión en inglés del primer manuscrito — tarda semanas, pedirlo YA; el mentor debe cubrir la carta (C), la tesis (T-7) y el case report (CR-6)',
     'Perfil creado + solicitud de mentor enviada (área: dermatología / escritura científica)',
-    'MENTORES.md: fila Rising Scholars (fecha de solicitud · estado)',
-    'risingscholars.net', ['RISING', 'SCIWRITE', 'PHRASE']),
+    'MENTORES.md: fila Rising Scholars (fecha de solicitud · estado · fecha de decisión del plan B)',
+    'risingscholars.net', ['RISING', 'SCIWRITE', 'PHRASE'],
+    { chipsDyn: ({ f, fmt, addDays }) => [`plan B (editor profesional US$200-400 · RUTA §3.1) se decide el ${fmt(addDays(f('M2'), 28))} (4 semanas) si no hay mentor asignado — MENTORES fila 2`] }),
   a('C-2', 'C', 'C', 'CRITICA', 'Elegir 1 artículo diana con FECHA LÍMITE de submit calculada (ventana del journal) + leer 5 letters modelo del mismo journal (cita → aporte u objeción con 1 dato verificable → implicación)',
     'Artículo diana fijado + deadline en la Mesa editorial + esqueleto de la carta (3 párrafos) calcado de los 5 modelos',
     'CARTA_1/diana.md (DOI del artículo, deadline, límites, esqueleto) + Mesa editorial: carta-1 → borrador',
     'PubMed · Mesa editorial', ['PM', 'PHRASE', 'ICMJE'], { apex: { id: 'carta-diana', t: 'Artículo diana + deadline' }, hito: 'carta-diana' }),
+  // (12-sep-2026) T-1 adelantado desde d14 (intercambio con M3 → d8): la solicitud al CEI tarda semanas y M3 necesita la versión del CADI que sale de los mismos documentos
+  a('T-1', 'T', 'T', 'CRITICA', 'Ética de la tesis (adolescentes, colegio): verificar y ARCHIVAR nº y fecha de aprobación del CEI (FMH-UNCP u hospital). Los consentimientos YA constan (censo con consentimiento parental + asentimiento: 291 excluidas por no consentir, portada de datos_tesis_acne.xlsx → etica.md 1.4-1.5). Si no hubo CEI formal → PRESENTAR HOY la solicitud de revisión expedita/retrospectiva (o pedir la constancia de exención) con protocolo + modelos de consentimiento/asentimiento + oficio de la I.E. + resumen de resultados (etica.md §2.1)',
+    'Nº de CEI archivado O solicitud de revisión expedita PRESENTADA (nº de cargo + fecha) + párrafo de ética/consentimiento listo para Methods',
+    'DATA/RESEARCH/TESIS_L0/etica.md (nº CEI o nº de cargo de la solicitud, fecha, consentimientos, párrafo para Methods)',
+    'Archivo de la tesis · asesor · mesa de partes del CEI', ['ICMJE', 'COPE'],
+    { chips: ['sin nº de CEI o constancia de exención JAAD Intl e IJD rechazan de entrada → gate en T-7/T-8'],
+      chipsDyn: ({ f, fmt }) => [`solicitud CEI expedita presentada ≤ ${fmt(f('T-1'))} (HOY): documentos reunidos desde M1 (${fmt(f('M1'))}) · desbloquea M3 (versión del CADI · etica.md 1.7)`], hito: 'tesis-etica' }),
   a('M3', 'M', 'M', 'ALTA', 'Email a Prof. Andrew Finlay (Cardiff, creador CADI/DLQI): 6 líneas — permiso / versión española del CADI + ofrecer los datos de la tesis (n=316, rs=0.637) como validación peruana; desbloquea L6',
     'Email enviado (6 líneas, asunto claro, 1 pregunta concreta) + copia archivada',
     'MENTORES.md: fila Finlay (fecha · estado) + copia del email en §Plantillas',
-    'Email institucional', ['PHRASE', 'ICMJE']),
-  a('R2', 'R0', 'R', 'ALTA', 'Diseños de estudio y niveles de evidencia + regla EQUATOR: elegir la guía de reporte ANTES de escribir (carta = sin guía · tesis = STROBE transversal · case report = CARE · SR = PRISMA 2020)',
-    'Mapa de 1 página: diseño → nivel → sesgos típicos → guía de reporte que exige el journal',
-    'Nota 02_disenos_guias.md en el vault + checklists STROBE y CARE descargadas a DATA/RESEARCH/',
-    '—', ['EQ', 'STROBE', 'CARE', 'STAT']),
-  a('R6', 'R1', 'R', 'CRITICA', 'Fijar el PICO de SR-1 (complicaciones vasculares de fillers + tiempo-a-hialuronidasa) + 1 desenlace primario, validado contra la ficha L4 · PICO v1 PROVISIONAL: se revalida en R6b (ciclo 2) cuando Derma d19-20 haya cubierto el mecanismo de la oclusión',
-    'PICO de SR-1 escrito (P/I/C/O + desenlace primario único) y contrastado con L4 §2',
-    'lines/L4-complicaciones.md §2 actualizado + nota 01_protocolo_PICO en el vault',
-    '—', ['DELO', 'CIL1', 'COCHB'], { ...CD, apex: { id: 'pico-sr1', t: 'PICO de SR-1' } }),
+    'Email institucional', ['PHRASE', 'ICMJE'],
+    { chips: ['requiere T-1 (versión del CADI usada · etica.md 1.7)'],
+      chipsDyn: ({ f, fmt }) => [`seguimiento del caso con el Dr. Ciro (M1 ${fmt(f('M1'))}); si el ${fmt(f('C-3'))} (3 semanas desde M1) no hay caso → activar fuente B (colega SPD) con el mensaje único de caso_candidatos.md §2`] }),
+  // (12-sep-2026) R9 adelantado desde d35: hay ≥5 SR/MA publicadas del mismo PICO (PMID verificados por E-utilities) → la decisión de ángulo va ANTES de fijar el PICO (R6)
+  a('R9', 'R1', 'R', 'CRITICA', '¿Existe ya una SR del mismo PICO? AMSTAR-2 RÁPIDO (16 ítems, 10 min por SR) de las 5 SR/MA que ya solapan con SR-1 — PMID 41249530 (protocolo de hialuronidasa, SR+MA 2026) · 37178872 (complicaciones vasculares con necrosis, SR 2024) · 39214904 (alta vs baja dosis, SR+MA 2024) · 36574028 (hialuronidasa en pérdida visual, SR 2024) · 40406769 (factores de riesgo, Cureus 2025) — + búsqueda PROSPERO/PubMed de registros nuevos → DECISIÓN ESCRITA en L4 §6 con UNA de tres salidas: (a) ángulo diferencial defendible (tiempo-a-hialuronidasa <24 h / ≥24 h, rellenos no-HA, inyectores no médicos, LATAM/LILACS), (b) pivotar SR-1 a scoping review, (c) adelantar SR-2 (L5, fototipos IV-VI) como SR-1',
+    'AMSTAR-2 rápido de las 5 SR vecinas + decisión escrita (a) / (b) / (c) en L4 §6 — ANTES de fijar el PICO (R6)',
+    'lines/L4-complicaciones.md §6 actualizado (tabla AMSTAR-2 + decisión firmada con fecha)',
+    'PROSPERO · PubMed · AMSTAR-2', ['AMSTAR', 'PROS', 'PM'], { chips: ['gate: R6 (PICO) no se fija sin la salida (a)/(b)/(c) escrita en L4 §6'] }),
   a('C-3', 'C', 'C', 'ALTA', 'Borrador de la carta: 400-600 palabras, ≤5 referencias, 3 párrafos (qué dice el artículo → qué falta u objeción con 1 dato verificable de Perú/LATAM/fototipos IV-VI → implicación clínica); frases del Academic Phrasebank',
     'Borrador v1 completo (400-600 palabras) con marcadores [CIT:id] en lugar de referencias escritas',
     'CARTA_1/borrador_v1.md',
-    'Obsidian · Phrasebank', ['PHRASE', 'SCIWRITE'], { apex: { id: 'carta-v1', t: 'Borrador de la carta' } }),
+    'Obsidian · Phrasebank', ['PHRASE', 'SCIWRITE'], { apex: { id: 'carta-v1', t: 'Borrador de la carta' },
+      chipsDyn: ({ f, fmt }) => [`HOY ${fmt(f('C-3'))} vence el plazo del Dr. Ciro (3 semanas desde M1 ${fmt(f('M1'))}): sin caso → activar fuente B (colega SPD) con el mensaje único de caso_candidatos.md §2 (MENTORES fila 6)`] }),
   a('C-4', 'C', 'C', 'CRITICA', 'Citas verificadas: cada [CIT:id] resuelto a DOI/PMID real con citation_verifier.py (Crossref/PubMed + CSL-JSON → Vancouver); cero referencias de memoria',
     '≤5 referencias con status verified + lista Vancouver generada; ninguna needs_review / rejected',
     'CARTA_1/refs_verified.json (salida de citation_verifier.py) + borrador v2 con [n]',
@@ -185,38 +199,42 @@ const C1 = [
     'Carta ENVIADA ✅ · estado carta-1 → enviado',
     'Mesa editorial: carta-1 = enviado (fecha) + MENTORES.md actualizado si hay coautor',
     'Editorial Manager / ScholarOne', ['ICMJE'], { apex: { id: 'carta-submit', t: 'Carta #1 enviada' }, hito: 'carta-1' }),
-  a('T-1', 'T', 'T', 'CRITICA', 'Ética de la tesis (adolescentes, colegio): verificar y ARCHIVAR nº y fecha de aprobación del CEI (UNCP u hospital) + asentimiento / consentimiento parental; si no hubo CEI formal → consultar con el asesor la vía (aprobación retrospectiva o expedita, o journal que acepte declaración)',
-    'Documento de ética localizado (o decisión escrita de la vía alternativa) + párrafo de ética/consentimiento listo para Methods',
-    'DATA/RESEARCH/TESIS_L0/etica.md (nº CEI, fecha, consentimientos, párrafo para Methods)',
-    'Archivo de la tesis · asesor', ['ICMJE', 'COPE'], { chips: ['sin nº de CEI muchos journals (JAAD Intl, IJD) rechazan de entrada'], hito: 'tesis-etica' }),
-  a('T-2', 'T', 'T', 'ALTA', 'STROBE (transversal, 22 ítems) sobre la tesis: marcar qué ítem ya está, qué falta y qué se recorta para el formato research letter',
+  // (12-sep-2026) R6 pasa de d9 a d14: el PICO se fija DESPUÉS de la decisión de ángulo de R9
+  a('R6', 'R1', 'R', 'CRITICA', 'Fijar el PICO de SR-1 (complicaciones vasculares de fillers + tiempo-a-hialuronidasa) + 1 desenlace primario, validado contra la ficha L4 y según la salida (a)/(b)/(c) de R9 · PICO v1 PROVISIONAL: se revalida en R6b (ciclo 2) cuando Derma d19-20 haya cubierto el mecanismo de la oclusión',
+    'PICO de SR-1 escrito (P/I/C/O + desenlace primario único) y contrastado con L4 §2',
+    'lines/L4-complicaciones.md §2 actualizado + nota 01_protocolo_PICO en el vault',
+    '—', ['DELO', 'CIL1', 'COCHB'], { chips: [CHIP_DERMA, 'requiere R9: el PICO se fija según la salida (a)/(b)/(c) escrita en L4 §6'], apex: { id: 'pico-sr1', t: 'PICO de SR-1' } }),
+  // (12-sep-2026) CR-1 y CR-2 adelantados a la 2ª quincena de octubre (intercambio con T-2 → d19 y R7 → d21): caso + consentimiento ANTES del 31-oct
+  a('CR-1', 'CR', 'CR', 'CRITICA', 'CASE REPORT #1 — decidir la FUENTE del caso antes del 31-oct: (a) Dr. Ciro: 1-2 casos de su consulta (ideal complicación de inyectable = L4, o caso raro con buenas fotos) con él como senior author; (b) plan B: dermatólogo de la Sociedad Peruana de Dermatología',
+    'Tabla de casos candidatos (diagnóstico · por qué es publicable · fotos disponibles · senior author · estado) + 1 caso ELEGIDO',
+    'DATA/RESEARCH/CASE_REPORT_1/caso_candidatos.md + Mesa editorial: senior author del case report',
+    'Dr. Ciro · SPD', ['CARE', 'DOJ', 'JAADCR'], { chips: ['sin caso antes del 31-oct el entregable de feb-2027 no ocurre'],
+      chipsDyn: ({ f, fmt }) => [`si el Dr. Ciro no dio caso el ${fmt(f('C-3'))}, la fuente B ya debe estar activada (MENTORES fila 6)`], apex: { id: 'cr-caso', t: 'Caso + senior author' }, hito: 'cr-caso' }),
+  a('CR-2', 'CR', 'CR', 'CRITICA', 'Consentimiento de PUBLICACIÓN (distinto del asistencial): plantilla bilingüe ES/EN según lo que exigen DOJ y CARE, con fotos y datos clínicos; firmado por el paciente (o tutor)',
+    'Consentimiento firmado y escaneado (sin él no hay case report)',
+    'CASE_REPORT_1/consentimiento_publicacion_ES_EN.md (plantilla) + consentimiento_firmado.pdf (fuera del repo)',
+    'Plantilla + consulta', ['CARE', 'COPE', 'ICMJE'], { chips: ['el consentimiento depende de la próxima cita del paciente (no controlable): si la cita cae después del 31-oct, pedir al senior author que lo obtenga él en consulta'] }),
+  // (12-sep-2026) T-3 → T-5 redactan al LÍMITE MÁS ESTRICTO de la cascada (≈500-600 palabras · ≤5 refs · 1 tabla O 1 figura) + apéndice "versión larga" (Actas 800/3/10 · Anais 1.000/4/10)
+  a('T-3', 'T', 'T', 'ALTA', 'Research letter AL LÍMITE MÁS ESTRICTO de la cascada (≈500-600 palabras, ≤5 refs, 1 tabla O 1 figura · límites por revista en research_letter_outline.md §1, releídos ese día): Introduction (gap: QoL en acné adolescente andino, CADI en LMIC) + Methods (transversal censal 23-mar→1-abr-2026, n=316, IGA como gold standard del Dr. Ciro, CADI, rs de Spearman, κ)',
+    'Intro + Methods redactados (≤250 palabras) con [CIT:id]',
+    'TESIS_L0/research_letter_v1.md (Intro + Methods)',
+    'Obsidian · Phrasebank', ['PHRASE', 'STROBE', 'SCIWRITE']),
+  a('T-4', 'T', 'T', 'ALTA', 'Results: 1 tabla (características + IGA×CADI; n por grado 112/110/60/34) y 1 figura (CADI por grado IGA o correlación rs=0.637) con gtsummary / R base — UNA va al texto principal (límite estricto: 1 tabla O 1 figura), la otra al apéndice "versión larga"; prevalencia 39.8 %, κ=0.81',
+    'Tabla 1 + Figura 1 (300 dpi) generadas desde la base + párrafo de Results (≤150 palabras); una pieza en el texto, la otra en el apéndice',
+    'TESIS_L0/tabla1.docx + figura1.tiff + research_letter_v1.md (Results)',
+    'R · gtsummary', ['GTS', 'BBR'], { apex: { id: 'tesis-results', t: 'Tabla 1 + Figura 1 de la tesis' } }),
+  a('T-2', 'T', 'T', 'ALTA', 'STROBE (transversal, 22 ítems) sobre la tesis y el borrador v1 (T-3/T-4): marcar qué ítem ya está, qué falta y qué se recorta para el formato research letter (lo que no cabe en 500-600 palabras va al apéndice "versión larga")',
     'Checklist STROBE rellenada (22 ítems con página / estado) — base del Methods',
     'TESIS_L0/STROBE_checklist.md',
     'STROBE', ['STROBE', 'EQ']),
+  a('T-5', 'T', 'T', 'ALTA', 'Discussion (≤150 palabras: hallazgo, comparación con la literatura CADI, limitaciones, implicación) + apéndice "versión larga" (800 palabras / 3 tablas-figuras / 10 refs para Actas; 1.000 / 4 / 10 para Anais Cartas-Investigação) + decidir la CASCADA y el coste: JAAD International (OA, 50 % Grupo B) → IJD → Actas Dermo-Sifiliográficas ($0) → Anais Brasileiros ($0)',
+    'Discussion redactada (v1 completa ≈500-600 palabras) + apéndice "versión larga" + cascada con APC verificado en la web de cada journal (con fecha) o "A VERIFICAR"',
+    'TESIS_L0/research_letter_v1.md (completo) + research_letter_v1_larga.md (apéndice) + TESIS_L0/cascada_journals.md',
+    'Obsidian', ['JAADINT', 'IJD', 'ACTAS', 'ANAIS', 'PHRASE']),
   a('R7', 'R1', 'R', 'ALTA', 'Criterios de elegibilidad de SR-1 (inclusión / exclusión, diseños admitidos, idiomas, años) en tabla PICOS',
     'Tabla PICOS de SR-1 congelable para el protocolo',
     'lines/L4-complicaciones.md §3 actualizado + nota 01_protocolo_PICO',
     '—', ['COCHB', 'PRISMA']),
-  a('T-3', 'T', 'T', 'ALTA', 'Research letter (600-1000 palabras): Introduction (gap: QoL en acné adolescente andino, CADI en LMIC) + Methods (transversal, n=316, IGA como gold standard del Dr. Ciro, CADI, rs de Spearman, κ)',
-    'Intro + Methods redactados (≤400 palabras) con [CIT:id]',
-    'TESIS_L0/research_letter_v1.md (Intro + Methods)',
-    'Obsidian · Phrasebank', ['PHRASE', 'STROBE', 'SCIWRITE']),
-  a('T-4', 'T', 'T', 'ALTA', 'Results: 1 tabla (características + IGA×CADI) y 1 figura (correlación rs=0.637 o distribución por severidad) con gtsummary / R base; prevalencia 39.8 %, κ=0.81',
-    'Tabla 1 + Figura 1 (300 dpi) + párrafo de Results',
-    'TESIS_L0/tabla1.docx + figura1.tiff + research_letter_v1.md (Results)',
-    'R · gtsummary', ['GTS', 'BBR'], { apex: { id: 'tesis-results', t: 'Tabla 1 + Figura 1 de la tesis' } }),
-  a('CR-1', 'CR', 'CR', 'CRITICA', 'CASE REPORT #1 — decidir la FUENTE del caso antes del 31-oct: (a) Dr. Ciro: 1-2 casos de su consulta (ideal complicación de inyectable = L4, o caso raro con buenas fotos) con él como senior author; (b) plan B: dermatólogo de la Sociedad Peruana de Dermatología',
-    'Tabla de casos candidatos (diagnóstico · por qué es publicable · fotos disponibles · senior author · estado) + 1 caso ELEGIDO',
-    'DATA/RESEARCH/CASE_REPORT_1/caso_candidatos.md + Mesa editorial: senior author del case report',
-    'Dr. Ciro · SPD', ['CARE', 'DOJ', 'JAADCR'], { chips: ['sin caso antes del 31-oct el entregable de feb-2027 no ocurre'], apex: { id: 'cr-caso', t: 'Caso + senior author' }, hito: 'cr-caso' }),
-  a('T-5', 'T', 'T', 'ALTA', 'Discussion (≤250 palabras: hallazgo, comparación con la literatura CADI, limitaciones, implicación) + decidir la CASCADA y el coste: JAAD International (OA, 50 % Grupo B) → IJD → Actas Dermo-Sifiliográficas ($0) → Anais Brasileiros ($0)',
-    'Discussion redactada + cascada con APC verificado en la web de cada journal (con fecha) o "A VERIFICAR"',
-    'TESIS_L0/research_letter_v1.md (completo) + TESIS_L0/cascada_journals.md',
-    'Obsidian', ['JAADINT', 'IJD', 'ACTAS', 'ANAIS', 'PHRASE']),
-  a('CR-2', 'CR', 'CR', 'CRITICA', 'Consentimiento de PUBLICACIÓN (distinto del asistencial): plantilla bilingüe ES/EN según lo que exigen DOJ y CARE, con fotos y datos clínicos; firmado por el paciente (o tutor)',
-    'Consentimiento firmado y escaneado (sin él no hay case report)',
-    'CASE_REPORT_1/consentimiento_publicacion_ES_EN.md (plantilla) + consentimiento_firmado.pdf (fuera del repo)',
-    'Plantilla + consulta', ['CARE', 'COPE', 'ICMJE']),
   a('T-6', 'T', 'T', 'ALTA', 'Revisión del research letter por el Dr. Ciro (coautor / senior): comentarios incorporados + criterios ICMJE de autoría + roles CRediT + conflictos + ORCID de ambos',
     'v2 revisada por el senior author + página de autoría (ICMJE / CRediT / conflictos)',
     'TESIS_L0/research_letter_v2.md + autoria.md',
@@ -225,10 +243,12 @@ const C1 = [
     'Set de fotos (≥2, 300 dpi, anonimizadas) + protocolo fotográfico',
     'CASE_REPORT_1/protocolo_fotos.md + carpeta fotos/ (fuera del repo)',
     'Cámara / móvil · editor de imagen', ['CARE', 'DOJ']),
-  a('T-7', 'T', 'T', 'CRITICA', 'Formateo a JAAD International (Author Guidelines · Editorial Manager): research letter 600-1000 palabras, 1 tabla, 1 figura, ≤10 refs verificadas con citation_verifier.py, declaración de ética (T-1), cover letter',
-    'Manuscrito formateado + refs verified + cover letter + declaración de ética',
+  a('T-7', 'T', 'T', 'CRITICA', 'Formateo a JAAD International (Guide for Authors leída ESE DÍA con Chrome · Editorial Manager): research letter al límite real de la revista (≈500-600 palabras, ≤5 refs verificadas con citation_verifier.py, 1 tabla o 1 figura), declaración de ética con nº de CEI o exención (T-1), inglés revisado (mentor / editor), cover letter',
+    'Manuscrito formateado + refs verified + cover letter + declaración de ética + constancia de revisión de inglés',
     'TESIS_L0/research_letter_final.docx + refs_verified.json + cover_letter.md',
-    'citation_verifier.py · Editorial Manager', ['JAADINT', 'CROSSREF', 'EM']),
+    'citation_verifier.py · Editorial Manager', ['JAADINT', 'CROSSREF', 'EM'],
+    { chips: ['GATE 1: sin nº de CEI o constancia de exención NO se envía a JAAD Intl/IJD → T-8 pasa a feb-2027 (cascada) y el átomo se convierte en seguimiento del CEI',
+              'GATE 2: inglés revisado por el mentor de Rising Scholars o por editor (US$200-400 · RUTA §3.1); si no hay revisión, T-8 se desplaza al siguiente día-Research'] }),
   a('CR-4', 'CR', 'CR', 'ALTA', 'CARE (13 ítems): rellenar la checklist + tabla TIMELINE del paciente + párrafo de perspectiva del paciente + declaración de consentimiento',
     'CARE checklist 13/13 con página + timeline en tabla',
     'CASE_REPORT_1/CARE_checklist_13.md + timeline.md',
@@ -236,23 +256,24 @@ const C1 = [
   a('T-8', 'T', 'T', 'CRITICA', 'SUBMIT research letter de la tesis a JAAD International (o al siguiente de la cascada si el primero no aplica) + registrar en la Mesa editorial y en CTI Vitae',
     'Tesis ENVIADA ✅ (nº de manuscrito) · estado tesis-L0 → enviado',
     'Mesa editorial: tesis-L0 = enviado (fecha) + CTI Vitae actualizado',
-    'Editorial Manager', ['JAADINT', 'ICMJE'], { apex: { id: 'tesis-submit', t: 'Tesis enviada' }, hito: 'tesis-L0' }),
+    'Editorial Manager', ['JAADINT', 'ICMJE'], { apex: { id: 'tesis-submit', t: 'Tesis enviada' }, hito: 'tesis-L0',
+      chips: ['GATE 1: sin nº de CEI o constancia de exención NO se envía → T-8 pasa a feb-2027 (cascada)', 'GATE 2: sin revisión de inglés (mentor / editor) el envío se desplaza al siguiente día-Research'] }),
   a('CR-5', 'CR', 'CR', 'ALTA', 'Borrador del case report (límite de palabras de DOJ: A VERIFICAR en sus guías): presentación → hallazgos → diagnóstico → tratamiento → evolución → discusión con 3-5 refs [CIT:id] + "por qué este caso enseña algo"',
     'Borrador v1 completo siguiendo el orden CARE',
     'CASE_REPORT_1/borrador_v1.md',
     'Obsidian · Phrasebank', ['CARE', 'PHRASE', 'DOJ']),
-  a('X-1', 'X', 'R', 'ALTA', 'SR-1 · EQUIPO DE REVISIÓN: nombrar al revisor humano #2 ANTES de PROSPERO (opciones: Dr. Ciro · egresado UNCP con interés en investigación · colaborador IMG de la campaña); ofrecer coautoría por 2º cribado + extracción; cuenta Rayyan (gratis ≤3 revisiones)',
-    'Revisor #2 propuesto (nombre, afiliación, ORCID, conflicto) + invitación enviada',
+  a('X-1', 'X', 'R', 'ALTA', 'SR-1 · EQUIPO DE REVISIÓN: nombrar al revisor humano #2 ANTES de PROSPERO (opciones: Dr. Ciro · egresado UNCP con interés en investigación · colaborador IMG de la campaña); ofrecer coautoría por 2º cribado + extracción; cuenta Rayyan (gratis ≤3 revisiones). La invitación declara la CARGA REAL por revisor, fuera del bloque 13:30 (agenda post-Step 1): cribado título/abstract ≈ 6-12 h · texto completo ≈ 10-16 h · extracción doble ≈ 15-25 h · riesgo de sesgo ≈ 8-14 h entre mar y may-2027 (campo horas de researchDailyPlan2027.ts)',
+    'Revisor #2 propuesto (nombre, afiliación, ORCID, conflicto) + invitación enviada con la carga horaria escrita',
     'lines/L4-complicaciones.md §9 "Equipo de revisión" rellenado + MENTORES.md',
-    'Rayyan', ['RAY', 'PROS', 'COCHB'], { chips: ['PRISMA 2020 ítem 8 y Cochrane exigen ≥2 revisores independientes; 2 pases de la misma persona NO son cribado dual'], hito: 'revisor2' }),
+    'Rayyan', ['RAY', 'PROS', 'COCHB'], { chips: ['PRISMA 2020 ítem 8 y Cochrane exigen ≥2 revisores independientes; 2 pases de la misma persona NO son cribado dual', 'sin aceptación escrita de las horas (≈40-70 h en 3 meses) no hay revisor #2 ni PROSPERO'], hito: 'revisor2' }),
   a('CR-6', 'CR', 'CR', 'ALTA', 'Revisión del case report por el senior author (mentor local) + mentor de Rising Scholars (inglés): incorporar cambios y verificar cada afirmación clínica contra fuente primaria',
     'v2 con comentarios del senior + inglés revisado · estado case-report-1 → revision-mentor',
     'CASE_REPORT_1/borrador_v2.md',
     'Senior author · Rising Scholars', ['RISING', 'CARE']),
-  a('X-2', 'X', 'C', 'MEDIA', 'Post-submit de la carta: plantilla de rebuttal punto por punto (comentario → respuesta → cambio exacto) + actualizar el estado real (en-revisión / decisión) en la Mesa editorial; si llegó decisión, responder en ≤7 días',
-    'Plantilla de rebuttal lista + estado real de carta-1',
-    'CARTA_1/rebuttal_plantilla.md + Mesa editorial',
-    'Mesa editorial', ['REBUTTAL', 'SCIWRITE']),
+  a('X-2', 'X', 'C', 'MEDIA', 'Post-submit de la carta: plantilla de rebuttal punto por punto (comentario → respuesta → cambio exacto) + actualizar el estado real (en-revisión / decisión) en la Mesa editorial; si llegó decisión, responder en ≤7 días. Además: comprobar que el mentor de Rising Scholars (M2) revisó o revisará (≤7 días) el inglés del case report (CR-6) antes del formateo CR-7; si no, activar el plan B de MENTORES fila 2',
+    'Plantilla de rebuttal lista + estado real de carta-1 + confirmación escrita del mentor para el case report',
+    'CARTA_1/rebuttal_plantilla.md + Mesa editorial + MENTORES.md fila 2',
+    'Mesa editorial', ['REBUTTAL', 'SCIWRITE'], { chips: ['sin revisor de inglés para el case report, CR-7 formatea sobre un inglés no revisado → activar editor (plan B)'] }),
   a('CR-7', 'CR', 'CR', 'ALTA', 'Formateo a Dermatology Online Journal (eScholarship): guías de autor (A VERIFICAR: límite de palabras / fotos / coste ≤US$300), refs verificadas con citation_verifier.py, figuras con leyenda, consentimiento adjunto',
     'Manuscrito formateado + refs verified + figuras + consentimiento + cover letter',
     'CASE_REPORT_1/case_report_final.docx + refs_verified.json + cover_letter.md',
@@ -269,10 +290,11 @@ const C1 = [
     'Borrador de protocolo (secciones PRISMA-P) con huecos marcados [PROTOCOL GAP]',
     'Vault SR-1/01_protocolo_PICO/protocolo_PRISMA-P_v0.md',
     '—', ['PRISMA', 'COCHB'], { recortable: true }),
-  a('R9', 'R1', 'R', 'ALTA', '¿Existe ya una SR publicada o registrada del mismo PICO? Búsqueda en PROSPERO + PubMed ("systematic review" filler vascular occlusion hyaluronidase) → decisión seguir / afinar el ángulo (tiempo-a-tratamiento + LATAM)',
-    'Lista de SR y registros vecinos + decisión escrita (seguir / afinar) en L4 §6',
-    'lines/L4-complicaciones.md §6 actualizado',
-    'PROSPERO · PubMed', ['PROS', 'PM', 'AMSTAR'], { recortable: true }),
+  // (12-sep-2026) R2 pasa de d8 a d35 (el hueco que deja R9): cimientos sin deadline externo; las checklists STROBE y CARE ya están en DATA/RESEARCH desde el 05-sep
+  a('R2', 'R0', 'R', 'ALTA', 'Diseños de estudio y niveles de evidencia + regla EQUATOR: elegir la guía de reporte ANTES de escribir (carta = sin guía · tesis = STROBE transversal · case report = CARE · SR = PRISMA 2020)',
+    'Mapa de 1 página: diseño → nivel → sesgos típicos → guía de reporte que exige el journal',
+    'Nota 02_disenos_guias.md en el vault + checklists STROBE y CARE descargadas a DATA/RESEARCH/',
+    '—', ['EQ', 'STROBE', 'CARE', 'STAT'], { chips: ['las checklists STROBE y CARE ya existen en DATA/RESEARCH (05-sep): este átomo cierra el mapa diseño → guía con lo aprendido en T y CR'] }),
   a('X-3', 'X', 'R', 'MEDIA', 'Corpus SR-1 YA descubierto: inventariar los 200 registros de research_papers (pending_human desde 11-jun-2026; 151 OA sin PDF resuelto) — contar, exportar CSV (título, autores, año, DOI, abstract) y NO re-correr discovery hasta tener la query PRISMA-S final (ciclo 2 · R12)',
     'CSV del corpus + nota de estado (n, OA, duplicados por DOI)',
     'Vault SR-1/02_busqueda/corpus_2026-06_inventario.csv + nota',
@@ -297,6 +319,11 @@ const C1 = [
 
 // ─── Átomos · CICLO 2 (feb→ago 2027) · SR-1 completa con revisor humano #2 ───
 const DUAL = 'por DOS revisores humanos independientes en ciego (Joseph + revisor #2); ningún LLM cuenta como revisor';
+// Carga REAL de cribado/extracción (gap 10 · 12-sep-2026): el bloque 13:30 (45 min) solo coordina y cierra; el trabajo va FUERA del
+// bloque, en la agenda que el Step 1 libera desde feb-2027 (RUTA §Nota de divergencia). Cifras = estimación por revisor sobre un
+// corpus de 666-1.500 registros a 1-2 registros/min (nivel 1); se recalibran con el n real en R16/R21. No se toca el Calendar.
+const H = (h, txt) => `sesión ≈ ${txt} fuera del bloque 13:30 por revisor (estimación · recalibrar con el n real)`;
+const HORAS_NOTA = 'las horas salen de la agenda post-Step 1 (feb-2027 →), no del bloque de 45 min; el revisor #2 las aceptó por escrito en X-1';
 // Cola del ciclo 1 (d41-d42): los 2 primeros días-Research TRAS la pausa. Fijan el total en 42 (lo que remap_inicio.js exige).
 const TAIL1 = [
   a('CR-9', 'CR', 'CR', 'CRITICA', 'SUBMIT case report #1 a Dermatology Online Journal (paquete congelado en CR-8) + registrar el nº de manuscrito — primer día-Research tras el Step 1',
@@ -333,31 +360,31 @@ const C2 = [
     'Tabla PRISMA-S de SR-1', 'vault 02_busqueda/PRISMA-S.md', '—', ['PRISMAS']),
   a('R16', 'R3', 'R', 'ALTA', 'Corpus: re-correr discovery con la query final + unir con los 200 registros de jun-2026 + dedup por DOI + resolver texto completo en lote (Unpaywall) + exportar CSV/RIS para Rayyan',
     'Biblioteca dedup (n registros) + PDFs OA + CSV/RIS', 'vault 02_busqueda/corpus_final.csv', 'research-discovery · Unpaywall', ['UNPAY', 'OPENALEX', 'RAY']),
-  a('R17', 'R4', 'R', 'CRITICA', 'Rayyan: crear la SR-1, subir el corpus, INVITAR al revisor #2 (cuenta creada en X-9), etiquetas de exclusión y modo CIEGO activado',
-    'Proyecto Rayyan con 2 revisores en ciego', 'Rayyan (SR-1) + vault 03_screening/_README', 'Rayyan', ['RAY', 'RAYHC', 'RAYYT'], { apex: { id: 'rayyan', t: 'Cribado dual en Rayyan' } }),
-  a('R18 (1/3)', 'R4', 'R', 'CRITICA', `Cribado título/abstract (nivel 1) ${DUAL} — primer tercio`, 'Primer tercio cribado por ambos revisores', 'Rayyan: decisiones de ambos', 'Rayyan', ['RAY', 'COCHB']),
-  a('R18 (2/3)', 'R4', 'R', 'CRITICA', `Cribado título/abstract (nivel 1) ${DUAL} — segundo tercio`, 'Dos tercios cribados por ambos', 'Rayyan: decisiones de ambos', 'Rayyan', ['RAY', 'COCHB']),
-  a('R18 (3/3)', 'R4', 'R', 'CRITICA', `Cribado título/abstract (nivel 1) ${DUAL} — cierre`, 'Nivel 1 completo por ambos; conflictos marcados', 'Rayyan: decisiones de ambos + lista de conflictos', 'Rayyan', ['RAY', 'COCHB']),
+  a('R17', 'R4', 'R', 'CRITICA', 'Rayyan: crear la SR-1, subir el corpus, INVITAR al revisor #2 (cuenta creada en X-9), etiquetas de exclusión y modo CIEGO activado + pre-orden por relevancia (score del motor / Ollama) SOLO para fijar el ORDEN de cribado — ninguna decisión de inclusión es automática',
+    'Proyecto Rayyan con 2 revisores en ciego + corpus pre-ordenado por relevancia', 'Rayyan (SR-1) + vault 03_screening/_README', 'Rayyan', ['RAY', 'RAYHC', 'RAYYT'], { apex: { id: 'rayyan', t: 'Cribado dual en Rayyan' }, horas: 2, chips: [H(2, '2 h'), HORAS_NOTA] }),
+  a('R18 (1/3)', 'R4', 'R', 'CRITICA', `Cribado título/abstract (nivel 1) ${DUAL} — primer tercio (en el orden del pre-orden por relevancia)`, 'Primer tercio cribado por ambos revisores', 'Rayyan: decisiones de ambos', 'Rayyan', ['RAY', 'COCHB'], { horas: 3, chips: [H(3, '2-4 h · nivel 1 completo ≈ 6-12 h: 666-1.500 registros a 1-2/min')] }),
+  a('R18 (2/3)', 'R4', 'R', 'CRITICA', `Cribado título/abstract (nivel 1) ${DUAL} — segundo tercio`, 'Dos tercios cribados por ambos', 'Rayyan: decisiones de ambos', 'Rayyan', ['RAY', 'COCHB'], { horas: 3, chips: [H(3, '2-4 h · nivel 1 completo ≈ 6-12 h')] }),
+  a('R18 (3/3)', 'R4', 'R', 'CRITICA', `Cribado título/abstract (nivel 1) ${DUAL} — cierre`, 'Nivel 1 completo por ambos; conflictos marcados', 'Rayyan: decisiones de ambos + lista de conflictos', 'Rayyan', ['RAY', 'COCHB'], { horas: 3, chips: [H(3, '2-4 h · nivel 1 completo ≈ 6-12 h')] }),
   a('R20', 'R4', 'R', 'ALTA', 'κ de Cohen del nivel 1 con las decisiones de los 2 humanos (Python/R) + reunión de resolución de conflictos (regla escrita: consenso o 3er revisor)',
-    'κ + IC95 % reportado + conflictos resueltos', 'vault 03_screening/kappa_n1.md', 'Python/R', ['STEPSR', 'COCHB'], { chips: ['κ con un solo humano no tiene sentido: exige 2 revisores'] }),
-  a('R19 (1/2)', 'R4', 'R', 'ALTA', `Texto completo (nivel 2) ${DUAL} con razones de exclusión estandarizadas — primera mitad`, 'Mitad de los textos completos revisada por ambos', 'Rayyan + vault 03_screening/excluidos.md', 'Rayyan', ['RAY']),
-  a('R19 (2/2)', 'R4', 'R', 'ALTA', `Texto completo (nivel 2) ${DUAL} — segunda mitad`, 'Nivel 2 completo; excluidos con motivo', 'Rayyan + vault 03_screening/excluidos.md', 'Rayyan', ['RAY']),
+    'κ + IC95 % reportado + conflictos resueltos', 'vault 03_screening/kappa_n1.md', 'Python/R', ['STEPSR', 'COCHB'], { horas: 2, chips: ['κ con un solo humano no tiene sentido: exige 2 revisores', H(2, '1-2 h · κ en Python/R + reunión de conflictos de 45 min')] }),
+  a('R19 (1/2)', 'R4', 'R', 'ALTA', `Texto completo (nivel 2) ${DUAL} con razones de exclusión estandarizadas — primera mitad`, 'Mitad de los textos completos revisada por ambos', 'Rayyan + vault 03_screening/excluidos.md', 'Rayyan', ['RAY'], { horas: 6, chips: [H(6, '5-8 h · nivel 2 completo ≈ 10-16 h: 60-120 textos a 8-10 min; PDFs resueltos en lote en R16')] }),
+  a('R19 (2/2)', 'R4', 'R', 'ALTA', `Texto completo (nivel 2) ${DUAL} — segunda mitad`, 'Nivel 2 completo; excluidos con motivo', 'Rayyan + vault 03_screening/excluidos.md', 'Rayyan', ['RAY'], { horas: 6, chips: [H(6, '5-8 h · nivel 2 completo ≈ 10-16 h')] }),
   a('R21', 'R4', 'R', 'ALTA', 'κ del nivel 2 + diagrama de flujo PRISMA 2020 con números reales (identificados, cribados, excluidos por motivo, incluidos)',
-    'κ nivel 2 + PRISMA flow', 'vault 03_screening/PRISMA_flow.png', 'eshackathon Shiny', ['PRISMAF', 'STEPSR'], { apex: { id: 'prisma-flow', t: 'Diagrama PRISMA 2020' } }),
+    'κ nivel 2 + PRISMA flow', 'vault 03_screening/PRISMA_flow.png', 'eshackathon Shiny', ['PRISMAF', 'STEPSR'], { apex: { id: 'prisma-flow', t: 'Diagrama PRISMA 2020' }, horas: 2, chips: [H(2, '1-2 h · κ nivel 2 + diagrama con números reales'), 'fin de cribado: PROSPERO lleva la fecha CON MARGEN de L4 §9.4 (≥ 6 semanas desde R17), no la de este átomo'] }),
   a('R22', 'R5', 'R', 'ALTA', 'Formulario de extracción piloteado (diseño, n, producto, zona, tiempo-a-hialuronidasa, dosis, desenlace, secuelas, dominios de sesgo) — mecanismo de la oclusión aprendido en Derma',
-    'Plantilla de extracción v1', 'vault 04_extraccion/formulario_v1.xlsx', 'Sheets', ['COCHB', 'DELO'], CD),
+    'Plantilla de extracción v1', 'vault 04_extraccion/formulario_v1.xlsx', 'Sheets', ['COCHB', 'DELO'], { ...CD, horas: 2, chips: [CHIP_DERMA, H(2, '2 h · diseño del formulario; se pilotea en R23')] }),
   a('R23', 'R5', 'R', 'ALTA', 'Piloto de extracción en 2-3 estudios por AMBOS revisores + ajustar el formulario (v2)',
-    'Formulario v2 + 3 filas piloto ×2', 'vault 04_extraccion/formulario_v2.xlsx', 'Sheets', ['COCHB']),
+    'Formulario v2 + 3 filas piloto ×2', 'vault 04_extraccion/formulario_v2.xlsx', 'Sheets', ['COCHB'], { horas: 3, chips: [H(3, '2-3 h · piloto en 2-3 estudios ×2 revisores + ajuste del formulario')] }),
   a('R24 (1/3)', 'R5', 'R', 'ALTA', 'Extracción DOBLE independiente (Joseph + revisor #2); Elicit solo como asistencia para localizar datos, nunca como segundo extractor — primer tercio',
-    'Primer tercio extraído ×2', 'vault 04_extraccion/extraccion_A.xlsx + extraccion_B.xlsx', 'Sheets · Elicit', ['COCHB', 'ELI']),
-  a('R24 (2/3)', 'R5', 'R', 'ALTA', 'Extracción DOBLE independiente — segundo tercio', 'Dos tercios extraídos ×2', 'vault 04_extraccion/extraccion_A.xlsx + extraccion_B.xlsx', 'Sheets · Elicit', ['COCHB', 'ELI']),
+    'Primer tercio extraído ×2', 'vault 04_extraccion/extraccion_A.xlsx + extraccion_B.xlsx', 'Sheets · Elicit', ['COCHB', 'ELI'], { horas: 6, chips: [H(6, '5-8 h · extracción doble completa ≈ 15-25 h: 60-100 estudios a 15-20 min; Elicit solo localiza celdas')] }),
+  a('R24 (2/3)', 'R5', 'R', 'ALTA', 'Extracción DOBLE independiente — segundo tercio', 'Dos tercios extraídos ×2', 'vault 04_extraccion/extraccion_A.xlsx + extraccion_B.xlsx', 'Sheets · Elicit', ['COCHB', 'ELI'], { horas: 6, chips: [H(6, '5-8 h · extracción doble completa ≈ 15-25 h')] }),
   a('R24 (3/3)', 'R5', 'R', 'ALTA', 'Extracción DOBLE independiente — cierre + reconciliación de discrepancias registrada',
-    'Extracción completa + discrepancias reconciliadas y registradas', 'vault 04_extraccion/discrepancias.md', 'Sheets', ['COCHB'], { chips: ['la reconciliación se reporta en Methods (PRISMA 2020 ítem 9)'] }),
+    'Extracción completa + discrepancias reconciliadas y registradas', 'vault 04_extraccion/discrepancias.md', 'Sheets', ['COCHB'], { horas: 6, chips: ['la reconciliación se reporta en Methods (PRISMA 2020 ítem 9)', H(6, '5-8 h · último tercio + reunión de reconciliación')] }),
   a('R25', 'R5', 'R', 'MEDIA', 'Cerrar la tabla de características de estudios (1 fila por estudio)',
-    'Tabla completa lista para Results', 'vault 04_extraccion/tabla_caracteristicas.xlsx', '—', ['COCHB'], { apex: { id: 'extraction', t: 'Tabla de extracción cerrada' } }),
+    'Tabla completa lista para Results', 'vault 04_extraccion/tabla_caracteristicas.xlsx', '—', ['COCHB'], { apex: { id: 'extraction', t: 'Tabla de extracción cerrada' }, horas: 3, chips: [H(3, '2-3 h · 1 fila por estudio desde las extracciones reconciliadas')] }),
   a('R26 (1/2)', 'R6', 'R', 'ALTA', 'Riesgo de sesgo por ambos revisores: ROBINS-I (no-aleatorizados) / JBI-Murad para series y reportes de caso — primera mitad',
-    'Mitad evaluada ×2', 'vault 04_extraccion/RoB.xlsx', 'riskofbias.info', ['ROBINS', 'ROB2']),
-  a('R26 (2/2)', 'R6', 'R', 'ALTA', 'Riesgo de sesgo — segunda mitad + consenso', 'RoB completo ×2 + consenso', 'vault 04_extraccion/RoB.xlsx', 'riskofbias.info', ['ROBINS', 'ROB2'], { apex: { id: 'rob', t: 'Riesgo de sesgo evaluado' } }),
+    'Mitad evaluada ×2', 'vault 04_extraccion/RoB.xlsx', 'riskofbias.info', ['ROBINS', 'ROB2'], { horas: 5, chips: [H(5, '4-7 h · RoB completo ≈ 8-14 h: JBI-Murad ≈ 8 min por reporte, ROBINS-I ≈ 20 min por serie/cohorte')] }),
+  a('R26 (2/2)', 'R6', 'R', 'ALTA', 'Riesgo de sesgo — segunda mitad + consenso', 'RoB completo ×2 + consenso', 'vault 04_extraccion/RoB.xlsx', 'riskofbias.info', ['ROBINS', 'ROB2'], { apex: { id: 'rob', t: 'Riesgo de sesgo evaluado' }, horas: 5, chips: [H(5, '4-7 h · segunda mitad + reunión de consenso')] }),
   a('R27', 'R6', 'R', 'ALTA', 'GRADE (5 dominios) + Summary of Findings por desenlace', 'SoF table de SR-1', 'GRADEpro + vault 04_extraccion/SoF.md', 'GRADEpro', ['GRADE']),
   a('R28', 'R6', 'R', 'MEDIA', 'AMSTAR-2 sobre 2-3 SR vecinas para posicionar la nuestra en la Discussion', 'Nota AMSTAR-2', 'vault 05_manuscrito/AMSTAR2_vecinas.md', '—', ['AMSTAR']),
   a('R29 (1/2)', 'R7', 'R', 'ALTA', 'R + metafor: cargar la tabla de extracción real y preparar el dataset (1 fila por estudio y desenlace)',
@@ -599,6 +626,23 @@ function fecharCiclo2(start, dOffset, minStart) {
 const D1 = fecharCiclo1(START1);
 const D2 = fecharCiclo2(START2, D1.length, addDays(D1[D1.length - 1].fecha, 1));
 const TODOS = [...D1, ...D2];
+const N_CORE = D1.filter((x) => x.fecha < PAUSA.desde).length; // átomos del ciclo 1 ANTES de la pausa (el resto va detrás de la pausa)
+
+// ─── Chips dinámicos: fechas REALES de otros átomos, resueltas DESPUÉS del fechado (sobreviven a los corrimientos) ───
+const MES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+const fmtCorto = (s) => `${wdOf(s).toLowerCase()} ${s.slice(8, 10)}-${MES[Number(s.slice(5, 7)) - 1]}-${s.slice(0, 4)}`;
+const byCode = Object.fromEntries(TODOS.map((x) => [x.code, x]));
+const fechaDe = (code) => { const x = byCode[code]; if (!x) throw new Error('chipsDyn: átomo desconocido ' + code); return x.fecha; };
+for (const x of TODOS) if (x.chipsDyn) { x.chips = [...(x.chips || []), ...x.chipsDyn({ f: fechaDe, fmt: fmtCorto, addDays })]; delete x.chipsDyn; }
+
+// ─── Aserciones de orden (gates del 12-sep-2026) — si un corrimiento las rompe, el script aborta y se revisa a mano ───
+const dDe = (code) => byCode[code].d;
+if (!(dDe('T-1') < dDe('M3'))) throw new Error('orden: T-1 (versión del CADI) debe ir antes de M3 (Finlay)');
+if (!(dDe('R9') < dDe('R6'))) throw new Error('orden: R9 (¿existe la SR?) debe ir antes de R6 (PICO)');
+if (!(dDe('CR-1') < dDe('CR-2') && fechaDe('CR-2') <= '2026-10-31')) console.warn(`⚠ CR-2 (${fechaDe('CR-2')}) cae después del 31-oct: caso + consentimiento fuera del deadline interno`);
+if (!(dDe('T-1') < dDe('T-7') && dDe('T-7') < dDe('T-8'))) throw new Error('orden: T-1 → T-7 → T-8');
+if (D1[D1.length - 1].fecha <= PAUSA.hasta) throw new Error('ciclo 1: d42 debe caer después de la pausa');
+if (D1[40].fecha < '2027-02-01') throw new Error('ciclo 1: d41 debe ser ≥ 2027-02-01 (tras la pausa del Step 1)');
 
 // ─── Validaciones ───
 for (const x of TODOS) {
@@ -620,8 +664,9 @@ for (const h of ['carta-1', 'tesis-L0', 'case-report-1', 'PROSPERO-SR1', 'SR-1']
 // ─── Emisión .ts ───
 const fila = (x) => {
   const chips = x.chips && x.chips.length ? `, chips: [${x.chips.map(q).join(', ')}]` : '';
+  const horas = x.horas ? `, horas: ${x.horas}` : '';
   const apex = x.apex ? `{ id: ${q(x.apex.id)}, t: ${q(x.apex.t)} }` : 'null';
-  return `  { d: ${x.d}, fecha: ${q(x.fecha)}, ciclo: ${x.ciclo}, fase: ${q(x.fase)}, pista: ${q(x.pista)}, code: ${q(x.code)}, prioridad: ${q(x.prio)}, objetivo: ${q(x.obj)}, entregable: ${q(x.ent)}, artefacto: ${q(x.art)}, tool: ${q(x.tool)}, recs: [${x.recs.map(q).join(', ')}]${chips}, apex: ${apex} },`;
+  return `  { d: ${x.d}, fecha: ${q(x.fecha)}, ciclo: ${x.ciclo}, fase: ${q(x.fase)}, pista: ${q(x.pista)}, code: ${q(x.code)}, prioridad: ${q(x.prio)}, objetivo: ${q(x.obj)}, entregable: ${q(x.ent)}, artefacto: ${q(x.art)}, tool: ${q(x.tool)}, recs: [${x.recs.map(q).join(', ')}]${horas}${chips}, apex: ${apex} },`;
 };
 const bloque = (dias) => {
   const out = []; let fase = null;
@@ -640,9 +685,11 @@ const TS1 = `/**
  *
  * ${D1.length} átomos · D1 = ${wdOf(D1[0].fecha)} ${D1[0].fecha} → D${D1.length} = ${wdOf(D1[D1.length - 1].fecha)} ${D1[D1.length - 1].fecha} · 1 átomo por DÍA-RESEARCH
  * (interdiario con Derma: researchData.ts → diaEstudioTipo · sáb+dom libres · salta 25-dic/31-dic/1-ene ·
- * PAUSA ${PAUSA.desde} → ${PAUSA.hasta} = 0 átomos, Step 1). d1-d${D1.length - TAIL1.length} caben antes de la pausa (último: ${D1[D1.length - TAIL1.length - 1].fecha});
- * d${D1.length - TAIL1.length + 1}-d${D1.length} son los 2 primeros días-Research tras la pausa (SUBMIT del case report + re-arranque) — el total 42 es
+ * PAUSA ${PAUSA.desde} → ${PAUSA.hasta} = 0 átomos, Step 1). d1-d${N_CORE} caben antes de la pausa (último: ${D1[N_CORE - 1].fecha});
+ * d${N_CORE + 1}-d${D1.length} van tras la pausa (CR-9 SUBMIT del case report · X-8 re-arranque${D1.length - N_CORE > TAIL1.length ? ' · ' + D1.slice(N_CORE + TAIL1.length).map((x) => x.code).join(' / ') + ' desplazados por no caber antes' : ''}) — el total 42 es
  * el invariante que remap_inicio.js comprueba. El bloque del Calendar 13:30–14:15 NO se toca.
+ * v5.10b (12-sep-2026): gates — T-1 solicitud CEI ≤30-sep (d7) · R9 antes de R6 · CR-1/CR-2 antes del 31-oct · T-7/T-8 no se envían
+ * sin nº de CEI ni inglés revisado · chips con fechas se recalculan en cada corrimiento (chipsDyn del generador).
  *
  * Pistas del ciclo 1: R0 infra + cimientos (PICO · diseños · PICO de SR-1) · M1-M3 mentores (Ciro · Rising Scholars ·
  * Finlay) · C carta al editor (6 átomos, sep-oct) · T tesis L0 → research letter (8 átomos, oct-nov) · CR case report #1
@@ -653,9 +700,9 @@ const TS1 = `/**
 import { Prioridad } from './researchData';
 
 export const DAILY_META = {
-  inicio: ${q(D1[0].fecha)}, fin: ${q(D1[D1.length - 1].fecha)}, totalDias: ${D1.length}, // ciclo 1 · D1=${wdOf(D1[0].fecha)} ${D1[0].fecha} · alterna con Derma · sáb+dom libres · salta 25-dic/31-dic/1-ene · d41-d42 tras la pausa
+  inicio: ${q(D1[0].fecha)}, fin: ${q(D1[D1.length - 1].fecha)}, totalDias: ${D1.length}, // ciclo 1 · D1=${wdOf(D1[0].fecha)} ${D1[0].fecha} · alterna con Derma · sáb+dom libres · salta 25-dic/31-dic/1-ene · d${N_CORE + 1}-d${D1.length} tras la pausa
   ciclo: 1 as const,
-  finNucleo: ${q(D1[D1.length - TAIL1.length - 1].fecha)}, // último átomo antes de la pausa de enero
+  finNucleo: ${q(D1[N_CORE - 1].fecha)}, // último átomo antes de la pausa de enero
   pausa: ${q(`${PAUSA.desde} → ${PAUSA.hasta} · 0 átomos (Step 1)`)},
   bloque: '13:30–14:15 (boards · alterna con Derma) · 1 átomo-research por día-Research',
   artefacto: 'Carta al editor #1 (oct) · tesis L0 como research letter (nov) · case report #1 listo (dic, submit 1-feb) · SR-1 con PICO, criterios y revisor #2 nombrados',
@@ -682,6 +729,7 @@ export interface DiaResearch {
   d: number; fecha: string; ciclo: 1 | 2; fase: FaseId; pista: PistaId; code: string; prioridad: Prioridad;
   objetivo: string; entregable: string; artefacto: string; tool: string; recs: string[];
   chips?: string[];
+  horas?: number; // ciclo 2 · R17-R26: carga REAL por revisor FUERA del bloque 13:30 (estimación; se recalibra con el n real en R16/R21)
   apex?: { id: string; t: string } | null;
 }
 
@@ -810,7 +858,8 @@ function tablaMd(dias) {
   for (const x of dias) {
     const chips = x.chips && x.chips.length ? ` ⚑ _${x.chips.map(mdEsc).join(' · ')}_` : '';
     const hito = x.hito ? ` **[hito ${x.hito}]**` : '';
-    out.push(`| ${x.d} | ${x.code} | ${wdOf(x.fecha)} ${x.fecha} | ${x.fase} · ${FASES[x.fase].nombre} | ${x.pista} | ${x.prio} | ${mdEsc(x.obj)}${chips}${hito} | ${mdEsc(x.ent)} | \`${mdEsc(x.art)}\` | ${x.recs.map((r) => '`' + r + '`').join(', ')} | ${mdEsc(x.tool)} |`);
+    const horas = x.horas ? ` ⏱ **≈ ${x.horas} h fuera del bloque**` : '';
+    out.push(`| ${x.d} | ${x.code} | ${wdOf(x.fecha)} ${x.fecha} | ${x.fase} · ${FASES[x.fase].nombre} | ${x.pista} | ${x.prio} | ${mdEsc(x.obj)}${horas}${chips}${hito} | ${mdEsc(x.ent)} | \`${mdEsc(x.art)}\` | ${x.recs.map((r) => '`' + r + '`').join(', ')} | ${mdEsc(x.tool)} |`);
   }
   return out.join('\n');
 }
@@ -829,6 +878,18 @@ const MD = `# Plan DÍA-A-DÍA de Research — 3 pistas alineadas con la RUTA de
 > preparación de SR-1 con **revisor humano #2** nombrado antes de PROSPERO;
 > **ciclo 2 (feb→ago 2027)** = SR-1 completa (PROSPERO → submit) con cribado y extracción DUALES, campaña de colaboradores,
 > case report #2, bibliométrico y apertura de SR-2. **Enero 2027 = 0 átomos (Step 1).**
+
+> **Qué cambió el 12-sep-2026 (v5.10b · gaps_v3b_research puntos 1-3, 10 y 12 · mismos 42 átomos, solo cambia el orden).**
+> **T-1** (ética/CEI) pasa de d14 a **d7** con la acción "solicitud CEI expedita PRESENTADA hoy" (la aprobación tarda semanas y M3
+> necesita la versión del CADI que sale de los mismos documentos → **M3** a d8); los consentimientos ya constan (censo con
+> consentimiento parental + asentimiento: 291 excluidas, portada de \`datos_tesis_acne.xlsx\`). **R9** (¿ya existe la SR? AMSTAR-2
+> rápido de las 5 SR/MA que solapan + decisión escrita a/b/c en L4 §6) pasa de d35 a **d9, ANTES de R6** (PICO, d9 → d14); **R2**
+> (diseños) ocupa d35. **CR-1** (caso) y **CR-2** (consentimiento) pasan a **d15/d16** (2ª quincena de octubre, antes del 31-oct;
+> T-2 → d19 y R7 → d21, sin deadline externo). Gates: T-7/T-8 no se envían sin nº de CEI o exención (T-8 pasaría a feb-2027) ni sin
+> inglés revisado (mentor de Rising Scholars o editor); d8/d10 hacen seguimiento del caso con el Dr. Ciro (sin caso a las 3 semanas
+> de M1 → fuente B); M2 fija la fecha de decisión del plan B (4 semanas); X-2 comprueba que el mentor revisa también el case report.
+> Ciclo 2: **R17-R26 declaran las horas reales** por revisor fuera del bloque (campo \`horas\` + chip ⏱; el pre-orden por relevancia
+> solo fija el orden de cribado) y X-1 las incluye en la invitación al revisor #2; las fechas para PROSPERO van con margen en L4 §9.4.
 
 ---
 
@@ -872,7 +933,7 @@ const MD = `# Plan DÍA-A-DÍA de Research — 3 pistas alineadas con la RUTA de
 **Chips de dependencia:** \`${CHIP_DERMA}\` en R6, R6b, R22 y R33 (el mecanismo de la oclusión y el protocolo de
 hialuronidasa se aprenden en el plan Derma antes de fijar desenlaces, extraer y hacer subgrupos).
 
-## 4. Ciclo 1 — sep-2026 → feb-2027 (${D1.length} átomos: ${D1.length - TAIL1.length} antes de la pausa + ${TAIL1.length} justo después)
+## 4. Ciclo 1 — sep-2026 → feb-2027 (${D1.length} átomos: ${N_CORE} antes de la pausa + ${D1.length - N_CORE} justo después)
 
 > \`code\` · \`fecha\` (día-Research real) · \`prio\` (vueltas: CRÍTICA 6 · ALTA 5 · MEDIA 4 · BAJA 3) · \`pista\` · **objetivo** ·
 > **entregable** · \`artefacto\` (fichero / nota / estado que queda) · \`rec\` (clave → §6) · \`tool\`.
@@ -882,6 +943,10 @@ ${tablaMd(D1)}
 
 > R18 / R20 / R24 reescritos: cribado y extracción por **dos revisores humanos independientes** (κ real); un LLM (Ollama /
 > Elicit) solo pre-ordena o asiste, nunca cuenta como revisor. El **equipo de revisión** (L4 §9) se copia a PROSPERO en R10.
+> **Horas reales (12-sep-2026):** R17-R26 llevan el campo \`horas\` (⏱) = carga estimada **por revisor y fuera del bloque 13:30**
+> (nivel 1 ≈ 6-12 h · texto completo ≈ 10-16 h · extracción doble ≈ 15-25 h · RoB ≈ 8-14 h; total ≈ 40-70 h entre mar y may-2027,
+> agenda post-Step 1). El átomo de 45 min coordina y cierra; las fechas previstas de PROSPERO se copian de L4 §9.4 (con margen), no de
+> la fecha del átomo. Total ciclo 2: ${D2.reduce((a, x) => a + (x.horas || 0), 0)} h declaradas.
 ${tablaMd(D2)}
 
 ## 6. Leyenda de recursos (clave → recurso · URL · verificación)
@@ -901,6 +966,25 @@ ${[...REC_KEYS].map((k) => { const r = recLabel(k); return r ? `| \`${k}\` | ${m
 - **Pendientes de Joseph (no derivables del repo):** nº de CEI y consentimiento parental de la tesis (T-1) · aceptación del
   Dr. Ciro como senior author (M1) · política de correspondencia de IJD (correo) · revisor #2 de SR-1 (X-1 / L4 §9).
 - **No se modificó el Google Calendar.**
+
+## 8. Notas de verificación (12-sep-2026 · v5.10b)
+
+- **Verificado por E-utilities (esummary JSON):** las 5 SR/MA que solapan con SR-1 (R9): PMID 41249530 (Aesthet Plast Surg 2026,
+  SR+MA protocolo de hialuronidasa · DOI 10.1007/s00266-025-05431-5) · 37178872 (J Stomatol Oral Maxillofac Surg 2024, SR necrosis ·
+  10.1016/j.jormas.2023.101499) · 39214904 (Aesthet Plast Surg 2024, SR+MA alta vs baja dosis · 10.1007/s00266-024-04334-1) ·
+  36574028 (Aesthet Plast Surg 2024, SR pérdida visual · 10.1007/s00266-022-03215-9) · 40406769 (Cureus 2025, SR+MA factores de
+  riesgo · 10.7759/cureus.82800). Línea base en \`lines/L4-complicaciones.md\` §6.
+- **Límites editoriales leídos en vivo:** Actas Dermo-Sifiliográficas (guía de autores, actasdermo.org/es-guia-autores): Cartas
+  científicas/clínicas 800 palabras · ≤6 autores · ≤10 refs · 3 figuras/tablas · sin resumen; APC EUR 1.710 / USD 1.870 (corta EUR 710 /
+  USD 775) **cubierto por la AEDV para todos los aceptados → $0 para el autor** (resuelve la discrepancia DOAJ). Anais Brasileiros
+  (SciELO · instrucciones): Cartas-Investigação 1.000 palabras · 10 refs · 4 figuras · sin resumen; Correspondência 400 palabras ·
+  ≤4 autores · 5 refs · 2 figuras. **403 el 12-sep:** JAAD International (jaadinternational.org/content/authorinfo y ScienceDirect) e
+  IJD (Wiley) → los límites de Research Letter / Correspondence siguen **A VERIFICAR (12-sep) — abrir con Chrome** en T-7 (C-2 para la carta).
+- **Datos del censo (portada + FLUJO PARTICIPANTES de \`D:\\motor_apex\\datos_tesis_acne.xlsx\`, leído el 12-sep):** 1.256 matriculadas →
+  291 excluidas por consentimiento (271 padres + 20 alumnas) → 965 elegibles → 100 ausentes → 865 evaluadas (23-mar → 1-abr-2026) →
+  80 incompletos → 785 completos → 469 IGA=0 → **316** analizadas. Ya está en \`TESIS_L0/etica.md\` 1.4-1.5 y en el outline §2.
+- **Pipeline (pendiente del integrador):** \`remap_inicio.js\` bloque 4 debe invocar \`gen_research_plan.js <D1>\` por execSync en vez de
+  re-fechar por slots() (ver notas de la tarea); este script ya aborta si d41 < 2027-02-01 o si los gates de orden se rompen.
 `;
 
 // ─── Escritura ───

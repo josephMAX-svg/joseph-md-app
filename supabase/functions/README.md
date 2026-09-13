@@ -47,3 +47,13 @@ backend: (a) bucle desde la app/Claude Code: `for doi of dois: await resolveFull
 llamadas (Unpaywall pide ≤100k req/día con email; sobra); (b) `DATA/RESEARCH/agentic/fulltext_cascade.py` sobre el
 CSV exportado. Hacerlo en el átomo R17 (exportar corpus) — no antes de definir la query PRISMA-S final (R12), porque
 el corpus se re-descubre y los PDFs de papers que se excluyen no sirven.
+
+## research-discovery v3 (12-sep-2026 · Palmerton v3b gap 9) — EN EL REPO, NO DESPLEGADA
+`index.ts` ya no trata OpenAlex como opcional en silencio: cada fuente devuelve `{rows, ok, error}`; la función escribe
+`sources_ok` ({openalex, europepmc, pubmed} = nº de registros) y `last_error` en `research_engine_state` (columnas creadas
+por `DATA/_scripts/_migrations/research_entregables.sql`, aplicada el 12-sep-2026) y, si OpenAlex (troncal) aporta 0
+registros, responde **`ok:false` HTTP 502 sin insertar nada** (`{ line, strict: false }` inserta lo que haya y solo avisa).
+Antes de desplegar: cargar `OPENALEX_KEY` (y `NCBI_KEY`) en Dashboard → Edge Functions → Secrets (pendiente de Joseph).
+Luego `supabase functions deploy research-discovery` / `deploy_edge_function` y anotar aquí versión+fecha. La búsqueda
+PRISMA-S final de la SR NO es esta función: es `DATA/RESEARCH/agentic/discovery_engine.py` (5 fuentes, sin tope) →
+Rayyan — ver `DATA/RESEARCH/agentic-system.md` §9.1.

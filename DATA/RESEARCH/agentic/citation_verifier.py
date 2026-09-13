@@ -12,10 +12,36 @@ Flujo (discovery-engine.md §5):
   5. status: verified | needs_review | rejected.  Cero fabricación.
 
 USO:  python citation_verifier.py            # corre los auto-tests en vivo (DOI real vs falso)
+      python citation_verifier.py --doi 10.1177/1090820X14525035 [--title "..."] [--year 2014]
+      python citation_verifier.py --pmid 24515216 [--title "..."]
+      python citation_verifier.py --refs refs.json   # [{id, doi?, pmid?, title?, year?}, ...] -> veredicto por ref + resumen
+      python citation_verifier.py ... --json         # salida JSON (para pegar en el manuscrito / la mesa editorial)
       import citation_verifier as cv; cv.verify_reference({...})
+      (Windows: DATA/RESEARCH/agentic/run_verifier.bat envuelve estos comandos con PYTHONIOENCODING=utf-8)
 ENV:  CONTACT_EMAIL (polite pool Crossref + PubMed), NCBI_KEY (opcional)
+SALIDA: UTF-8 forzada (sys.stdout.reconfigure) + veredictos ASCII [OK]/[?]/[X] — la consola cp1252/850 de Windows
+        lanzaba UnicodeEncodeError con los emojis (Palmerton v3b · gap 6 · verificado 12-sep-2026).
 """
-import os, sys, json, re, urllib.parse, urllib.request, difflib
+import os, sys, json, re, urllib.parse, urllib.request, difflib, argparse
+
+
+def _utf8_console():
+    """Windows: la consola cp1252/850 no sabe imprimir emojis → forzamos UTF-8 (errors='replace' nunca revienta)."""
+    for stream in (sys.stdout, sys.stderr):
+        try:
+            stream.reconfigure(encoding="utf-8", errors="replace")
+        except Exception:
+            pass
+
+
+_utf8_console()
+
+try:  # rapidfuzz (opcional, requirements.txt): más robusto que difflib con títulos largos; si no está, difflib
+    from rapidfuzz import fuzz as _rf
+except Exception:  # pragma: no cover
+    _rf = None
+
+FLAG = {"verified": "[OK]", "needs_review": "[?]", "rejected": "[X]"}  # ASCII: legible en cualquier consola/log
 
 CONTACT = os.environ.get("CONTACT_EMAIL", "josephsototocas@gmail.com")
 NCBI_KEY = os.environ.get("NCBI_KEY", "")
@@ -37,7 +63,10 @@ def _norm(s):
 
 
 def title_sim(a, b):
-    return difflib.SequenceMatcher(None, _norm(a), _norm(b)).ratio()
+    na, nb = _norm(a), _norm(b)
+    if _rf is not None:
+        return _rf.ratio(na, nb) / 100.0
+    return difflib.SequenceMatcher(None, na, nb).ratio()
 
 
 def crossref_by_doi(doi):
@@ -141,7 +170,7 @@ def verify_reference(ref):
 
 
 def _tests():
-    print("GATE de citas — auto-test en vivo\n")
+    print("GATE de citas -- auto-test en vivo (Crossref + PubMed)\n")
     cases = [
         {"name": "Real (ancla SR-1)", "ref": {"title": "Complications of Injectable Fillers, Part 2: Vascular Complications",
                                                "doi": "10.1177/1090820X14525035", "year": 2014}},
@@ -149,14 +178,59 @@ def _tests():
                                                     "doi": "10.9999/this.doi.is.fake.2026"}},
         {"name": "Solo título real", "ref": {"title": "Complications of Injectable Fillers, Part 2: Vascular Complications"}},
     ]
+    esperado = {"Real (ancla SR-1)": "verified", "DOI FALSO (alucinación)": "rejected", "Solo título real": "needs_review"}
+    fallos = 0
     for c in cases:
         r = verify_reference(c["ref"])
-        flag = {"verified": "✅", "needs_review": "🟡", "rejected": "❌"}[r["status"]]
-        print(f"{flag} {c['name']:26} → {r['status']:12} (sim={r['match_score']}) · {r['reason']}")
+        ok = r["status"] == esperado[c["name"]]
+        fallos += 0 if ok else 1
+        print(f"{FLAG[r['status']]:4} {c['name']:26} -> {r['status']:12} (sim={r['match_score']}) · {r['reason']}{'' if ok else '   <-- INESPERADO'}")
         if r["vancouver"]:
             print(f"     Vancouver: {r['vancouver'][:110]}")
-    print("\nRegla: solo 'verified' (DOI/PMID real) entra al manuscrito. ❌/🟡 a revisión humana.")
+    print("\nRegla: solo 'verified' (DOI/PMID real) entra al manuscrito. [X]/[?] a revisión humana.")
+    print(f"Self-test: {'OK' if not fallos else str(fallos) + ' caso(s) fuera de lo esperado (sin red?)'}")
+    return 0 if not fallos else 1
+
+
+def _print_result(r, rid=None):
+    tag = f"[{rid}] " if rid else ""
+    print(f"{FLAG[r['status']]:4} {tag}{r['status']:12} (sim={r['match_score']}) · {r['reason']}")
+    if r.get("doi"):
+        print(f"     DOI: {r['doi']}" + (f"  · PMID: {r['pmid']}" if r.get("pmid") else ""))
+    if r.get("vancouver"):
+        print(f"     Vancouver: {r['vancouver']}")
+
+
+def main(argv=None):
+    ap = argparse.ArgumentParser(prog="citation_verifier.py", description="Gate anti-alucinación de citas (Crossref/PubMed).")
+    ap.add_argument("--doi"); ap.add_argument("--pmid"); ap.add_argument("--title"); ap.add_argument("--year", type=int)
+    ap.add_argument("--refs", help="JSON con una lista [{id, doi?, pmid?, title?, year?}, ...]")
+    ap.add_argument("--json", action="store_true", help="imprime el resultado completo en JSON (sin csl_json)")
+    a = ap.parse_args(argv)
+    if not (a.doi or a.pmid or a.title or a.refs):
+        return _tests()
+    if a.refs:
+        with open(a.refs, encoding="utf-8") as f:
+            data = json.load(f)
+        refs = data.get("refs", data) if isinstance(data, dict) else data
+    else:
+        refs = [{k: v for k, v in (("doi", a.doi), ("pmid", a.pmid), ("title", a.title), ("year", a.year)) if v}]
+    results, resumen = [], {"verified": 0, "needs_review": 0, "rejected": 0}
+    for i, ref in enumerate(refs):
+        rid = ref.get("id") if isinstance(ref, dict) else None
+        r = verify_reference({k: ref.get(k) for k in ("title", "authors", "year", "doi", "pmid") if ref.get(k)})
+        resumen[r["status"]] += 1
+        results.append({"id": rid or f"r{i + 1}", **{k: v for k, v in r.items() if k != "csl_json"}})
+        if not a.json:
+            _print_result(r, rid or f"r{i + 1}")
+    if a.json:
+        print(json.dumps({"resumen": resumen, "refs": results}, ensure_ascii=False, indent=1))
+    else:
+        listo = resumen["needs_review"] + resumen["rejected"] == 0
+        print(f"\nResumen: {resumen['verified']} verified · {resumen['needs_review']} needs_review · {resumen['rejected']} rejected"
+              f" -> {'LISTO para el manuscrito' if listo else 'NO entra al manuscrito hasta resolver [?]/[X]'}")
+    return 0 if resumen["needs_review"] + resumen["rejected"] == 0 else 1
 
 
 if __name__ == "__main__":
-    _tests()
+    sys.exit(main())

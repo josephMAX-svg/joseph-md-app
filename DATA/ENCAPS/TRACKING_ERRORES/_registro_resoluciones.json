@@ -128,10 +128,33 @@
  },
  "resumen_por_subtema": {
   "I-3": {
-   "resueltas": 20,
-   "aciertos": 4,
-   "fallos": 16,
-   "pct": 20,
+   "resueltas": 40,
+   "seguras": 16,
+   "dudosas": 4,
+   "fallos": 20,
+   "fallos_por_tipo": {
+    "knowledge": {
+     "CONCEPTO": 8,
+     "OLVIDO": 0,
+     "CRONOLOGIA": 2
+    },
+    "transfer": {
+     "CCSN": 10,
+     "CONTEXTO": 0
+    },
+    "proceso": {
+     "CAMBIO": 0,
+     "TIEMPO": 0,
+     "LECTURA": 0
+    }
+   },
+   "ultima": "2026-07-28",
+   "rondas": 2,
+   "tipos": {
+    "warmup_20q": 1,
+    "warmup_d1": 1
+   },
+   "pct_ciego": 40,
    "estado": "CRITICO-debil",
    "nota": "4 aciertos con confianza baja = 3 posibles suerte; patron CCSN (inversiones activa/pasiva, letalidad/mortalidad, EESS/DIRESA, VPP/oportunidad)"
   }

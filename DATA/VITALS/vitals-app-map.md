@@ -84,6 +84,9 @@ PWA mobile-first. Motor serverless en TS (no depende de la PC).
   Mié baile · Jue torso jalón 30' · Vie pierna ant 60') + `generarPlan()` + `reestructurarPlan()`
   + pisos de seguridad (kcal, proteína 1.6 g/kg, ≤1% pérdida/sem; violación → escala a médico).
 - `web/src/lib/engine/domain.ts`: scoreDay/scorePeriod, TDEE, progresión, e1RM.
+- ⚠ **Actividad AM no modelada (12-sep-2026):** el split solo cubre la tarde; CORRER 06:00 + CALISTENIA 06:30 L-V y la
+  caminata de sáb/dom (≈4-5 h/semana) no entran en `generarPlan()` ni en el TDEE. Tarea D (con pasos por fichero y criterio de
+  éxito) en `DATA/VITALS/LIVIANO_VITALS_BRIDGE.md` §2; mientras tanto el Calendar ya pide registrarlo en VITALS al volver (20 s).
 - `web/src/lib/engine/index.ts` (296 líneas): API del motor.
 - Supabase: `supabase/migrations/0001_movimiento_schema.sql` (1210 líneas): mv_users, mv_plans
   (JSON versionado), mv_exercise_logs, mv_food_logs, mv_foods (~500 alimentos peruanos),

@@ -5,14 +5,18 @@ import { DesktopColors } from '../../theme/desktopStyles';
 import { Chip, GlassPanel } from '../empresa/primitives';
 import { FadeUp, RingStat } from '../empresa/visuals';
 import {
-  DERMA_DAILY_META, DERMA_FRANJAS, DERMA_DIAS, DERMA_TIER_INFO, DERMA_PROMIR_DIAS,
-  DiaDerma, DermaBloqueKey, DermaTier, dermaDiaPrevio, dermaVentana7, diaEstudioTipo, dermaCasoArea,
+  DERMA_DAILY_META, DERMA_FRANJAS, DERMA_DIAS, DERMA_TIER_INFO, DERMA_PROMIR_DIAS, DERMA_CHECKPOINTS,
+  DiaDerma, DermaBloqueKey, DermaTier, diaEstudioTipo, dermaCasoArea, dermaTaperEfectivo, dermaDNuevo,
 } from '../../lib/dermaDailyPlan';
+import {
+  DERMA_DIAS_TODOS, DERMA_TOTAL_DIAS_TODOS, DERMA_CICLO2_META, DERMA_CICLO2_PROMIR_DIAS,
+  dermaCicloDe, dermaDiaPorD, dermaVentana7Todos, dermaGplusDe,
+} from '../../lib/dermaCiclo2';
 import { VUELTAS, INTERVALOS, type Prioridad } from '../../lib/researchData';
 import { agruparProgreso, progresoGlobal, planHoyD, GrupoProgreso, loadDone, saveDone } from '../../lib/studyProgress';
 import { DermaAtlas, SKIN_TONES, SkinTone, DERMA_NOTEBOOKLM } from '../../lib/dermaData';
-import { dermaCasoEstado, dermaPctCiego, dermaLedgerExportJSON, type DermaFuente } from '../../lib/dermaLedger';
-import { dermaCerebroDe, DERMA_DRILL_DIAS } from '../../lib/dermaCerebro';
+import { dermaCasoEstado, dermaPctCiego, dermaLedgerExportJSON, dermaBancoCursorDeUrl, dermaCuraPendiente, dermaCuraAplicaA, type DermaFuente } from '../../lib/dermaLedger';
+import { DERMA_CEREBRO } from '../../lib/dermaCerebro';
 import { dermaObsUrlDay, dermaObsUrlBlock } from '../../lib/obsidianDermaMap';
 import DermaClinicalPlate from '../derma/DermaClinicalPlate';
 import DermaTriptych from '../derma/DermaTriptych';
@@ -22,25 +26,30 @@ import DermaMorphologyDictation from '../derma/DermaMorphologyDictation';
 import DermaCasoRegistro from '../derma/DermaCasoRegistro';
 import DermaCerebroCard from '../derma/DermaCerebroCard';
 import DermaEmergencyDrill from '../derma/DermaEmergencyDrill';
-import DermaCheckpointPanel, { DERMA_CHECKPOINT_DIAS } from '../derma/DermaCheckpointPanel';
+import DermaCheckpointPanel from '../derma/DermaCheckpointPanel';
 import DermaMir10Q from '../derma/DermaMir10Q';
 import DermaAnkiCola from '../derma/DermaAnkiCola';
 import { useDermaLedger, dermaHoyISO, dermaCopiar, dermaDescargar, dermaEsViernes, DERMA_AREA_LABEL, DERMA_AREA_COLOR } from '../derma/dermaLedgerBus';
 
 /**
- * DermaTodayPlan — Plan Derma día-a-día PLAN ÉLITE v2.1 (70 sesiones: 46 board + 22 estética
- * + 2 checkpoint), mismo motor que Usmle/Mir/ResearchTodayPlan: nav ◄► Día X/70,
- * sub-pestañas HOY/Horario/7d/Temario, progreso REAL marcable (localStorage 'derma'),
- * interdiario con Research. Cada sesión (ciclo único de 45′) = 2 casos CIEGOS fijos (casoIds,
- * permutación de los 200 de "Cases for Board Review") + 1 imagen dermatoscópica ciega + ~10Q review
- * del banco rotante (1 de cada 3 sesiones = 10Q MIR del capítulo ProMIR → mirEvalLog) + 10′ lectura
- * (o módulo DermNet Dermoscopy CME en las pares d6-d44). Bloque Calendar 13:30–14:15.
+ * DermaTodayPlan — Plan Derma día-a-día PLAN ÉLITE v3 (ciclo 1 = 73 sesiones: 15-sep-2026 → 7-abr-2027; ciclo 2 =
+ * d74-d103 en dermaCiclo2.ts, 9-abr → 30-jun-2027), mismo motor que Usmle/Mir/ResearchTodayPlan: nav ◄► por
+ * DERMA_DIAS_TODOS (numeración continua, la fecha de hoy cae en el ciclo 2 automáticamente cuando pasa del último átomo
+ * del ciclo 1), sub-pestañas HOY/Horario/7d/Temario, progreso REAL marcable (localStorage 'derma'), interdiario con
+ * Research. Cada sesión (ciclo único de 45′) = casos CIEGOS fijos (casoIds, permutación de los 200 de "Cases for Board
+ * Review": 2/sesión · 1 en el TAPER d44-d49 · 3 desde d50 post-Step 1) + 1 imagen dermatoscópica ciega + ~10Q review
+ * del banco rotante retomando en el Q# del cursor del ledger (1 de cada 3 sesiones = 10Q MIR del capítulo ProMIR →
+ * mirEvalLog) + 10′ lectura (o módulo DermNet Dermoscopy CME en las pares d6-d44; módulo G+ en el ciclo 2).
+ * Bloque Calendar 13:30–14:15.
  *
- * CAPA PALMERTON cableada (5-sep-2026): paso ① DermaMorphologyDictation (8 ejes + gate A) · registro por
- * caso DermaCasoRegistro (matriz confianza×acierto + módulo CORE + tipo de error → dermaLedger) ·
- * DermaCerebroCard (7 pasos, modo recitar) cuando el átomo tiene ficha · DermaEmergencyDrill (HDPH 90 s)
- * en d19/d20/d46/d70 · DermaCheckpointPanel en d45/d46/d69/d70 (lee el ledger) · chips "alimenta SR-1/SR-2"
- * y "Nítida" · ANKI → APEX::DERMA::<bloque> + cola TSV · ◆ Obsidian (rama 10_DERMATOLOGIA) · export del ledger.
+ * CAPA PALMERTON cableada (5-sep-2026) + v3 (12-sep-2026, gaps v3b derma nº 5/7/8): paso ① DermaMorphologyDictation
+ * (8 ejes + gate A) · registro por caso DermaCasoRegistro (matriz confianza×acierto + módulo CORE + tipo de error →
+ * dermaLedger) · DermaCerebroCard (7 pasos, modo recitar) cuando el átomo tiene ficha · DermaEmergencyDrill (HDPH 90 s)
+ * en los átomos con drillHDPH (d19/d20/d52/d73 + d94/d103) · DermaCheckpointPanel en los átomos con checkpoint
+ * (d51/d52/d72/d73 + d85/d94/d103; lee el ledger) · chips "TAPER · semana de examen", "cuenta doble Step 1",
+ * "alimenta SR-1/SR-2" y "Nítida" · "retoma en Q#" (dermaBancoCursor) en el review · CURA OBLIGATORIA (DD Challenge)
+ * cuando la última sesión registró un fallo CCSN (dermaCuraPendiente) · ANKI → APEX::DERMA::<bloque> + cola TSV ·
+ * ◆ Obsidian (rama 10_DERMATOLOGIA) · export del ledger.
  */
 const PURPLE = DermaAtlas.amethyst; // #9A7BC8 amatista (antes #8B5CF6 fosforescente)
 const TEAL = DermaAtlas.jade;        // #5FA88C jade (antes #0FD4A0 neón)
@@ -75,15 +84,17 @@ const BLOQUE_COLOR: Record<DermaBloqueKey, string> = {
 /** Tier del plan → prioridad del motor de vueltas compartido (ENCAPS/Research). */
 const TIER_PRIO: Record<DermaTier, Prioridad> = { CRIT: 'CRITICA', ALTA: 'ALTA', MED: 'MEDIA' };
 const bc = (d: DiaDerma) => BLOQUE_COLOR[d.bKey];
-/** Fuente del ledger para el banco de review de la sesión (por resourceid REAL de AccessDerma). */
-function bancoFuente(url: string | undefined): DermaFuente {
-  if (!url) return 'pictorial';
-  if (url.includes('resourceid=3479')) return 'core';
-  if (url.includes('resourceid=2865')) return 'barnhill';
-  if (url.includes('resourceid=3562')) return 'qotw';
-  return 'pictorial';
-}
-const casosTxt = (dia: DiaDerma) => dia.casoIds.map((id) => `#${id} ${DERMA_AREA_LABEL[dermaCasoArea(id)]}`).join(' + ');
+/**
+ * Ficha del cerebro clínico del átomo mostrado. dermaCerebro.ts (fichero del agente de datos) sigue keyed por el d de la
+ * v2.1 (5-sep) en las 22 fichas desplazadas por el taper (d44 → d50, d47-d68 → d53-d71, d66 → d46): se resuelve con el
+ * mapa d(v2.1)→d(v3) (dermaDNuevo). Si algún día dermaCerebro.ts se re-ancla a la v3 (sentinela: 'G-44-cicatrizacion'
+ * pasa a d 50), la búsqueda cae a exacta sin tocar nada aquí. Las 3 sesiones nuevas (d47-d49) y el ciclo 2 no tienen ficha.
+ */
+const CEREBRO_REANCLADO_V3 = DERMA_CEREBRO.some((f) => f.id === 'G-44-cicatrizacion' && f.d === 50);
+const fichaCerebroDe = (dV3: number) => (CEREBRO_REANCLADO_V3 ? DERMA_CEREBRO.find((f) => f.d === dV3) : DERMA_CEREBRO.find((f) => dermaDNuevo(f.d) === dV3));
+/** Sesión previa cruzando ciclos (d74 → d73). */
+const diaPrevioDe = (dia: DiaDerma) => DERMA_DIAS_TODOS.find((x) => x.d === dia.d - 1);
+const casosTxt = (dia: DiaDerma) => (dia.casoIds.length ? dia.casoIds.map((id) => `#${id} ${DERMA_AREA_LABEL[dermaCasoArea(id)]}`).join(' + ') : 'sin casos nuevos (solo fallos del ledger)');
 
 type ColaIconName = 'read' | 'flask' | 'atlas' | 'body' | 'differential' | 'dermatoscope' | 'layers';
 const COLA_ICON: Record<ColaIconName, React.ComponentProps<typeof DermaLineIcon>['name']> = {
@@ -131,25 +142,37 @@ function ChipBtn({ label, color, on, onPress }: { label: string; color: string; 
 }
 
 function HoyView({ dia, onOpenTemario, hecho, onToggle, tone }: { dia: DiaDerma; onOpenTemario: () => void; hecho: boolean; onToggle: (d: number) => void; tone: SkinTone }) {
-  const prev = dermaDiaPrevio(dia);
+  const prev = diaPrevioDe(dia);
   const fc = bc(dia);
   const prio = TIER_PRIO[dia.tier];
   const { entries } = useDermaLedger();
   const [reg, setReg] = useState<{ id: number; fuente: DermaFuente; acierto?: boolean } | null>(null);
   const [showNitida, setShowNitida] = useState(false);
   const [showPuente, setShowPuente] = useState(false);
+  const [showTaper, setShowTaper] = useState(false);
+  const [showStep1, setShowStep1] = useState(false);
   const [dictado, setDictado] = useState(true);
   const [bancoQ, setBancoQ] = useState('');
   const [cierreMsg, setCierreMsg] = useState('');
-  useEffect(() => { setReg(null); setShowNitida(false); setShowPuente(false); setBancoQ(''); setCierreMsg(''); }, [dia.d]);
+  useEffect(() => { setReg(null); setShowNitida(false); setShowPuente(false); setShowTaper(false); setShowStep1(false); setBancoQ(''); setCierreMsg(''); }, [dia.d]);
 
   const hoy = dermaHoyISO();
-  const ficha = dermaCerebroDe(dia.d);
-  const esDrill = DERMA_DRILL_DIAS.includes(dia.d);
-  const esCheckpoint = DERMA_CHECKPOINT_DIAS.includes(dia.d);
+  const ficha = fichaCerebroDe(dia.d);
+  const esDrill = !!dia.drillHDPH;        // derivado del contenido (d19 · d20 · d52 · d73 · d94 · d103), no de una lista fija
+  const esCheckpoint = !!dia.checkpoint;  // cp1 d51 · cp2 d52 · repaso1 d72 · repaso2 d73 (+ d85 · d94 · d103 del ciclo 2)
+  const ciclo = dermaCicloDe(dia.d) ?? 1;
+  const taper = dermaTaperEfectivo(dia);  // d44-d49 (Step 1) · ENCAPS por fecha cuando Joseph fije el examen 2027-I
+  const gplus = dermaGplusDe(dia);        // ciclo 2: módulo G+ en el slot de lectura
+  const nCasos = dia.casoIds.length;
+  const promirLista = ciclo === 2 ? DERMA_CICLO2_PROMIR_DIAS : DERMA_PROMIR_DIAS;
   const obsDay = dermaObsUrlDay(dia.d);
   const obsBlock = dermaObsUrlBlock(dia.bKey);
-  const fuenteBanco = bancoFuente(dia.qbankly?.url);
+  /** Banco de review REAL (por resourceid) + cursor "retoma en Q#" del ledger; undefined en taper (rFALLOS) y en sesiones sin banco → no se registra como banco. */
+  const banco = useMemo(() => dermaBancoCursorDeUrl(dia.qbankly?.url, entries), [dia.qbankly?.url, entries]);
+  const fuenteBanco: DermaFuente | undefined = banco?.fuente;
+  /** Cura pendiente: un fallo CCSN en la última sesión registrada → DD Challenge OBLIGATORIO en la sesión siguiente (regla v3). */
+  const cura = useMemo(() => dermaCuraPendiente(entries), [entries]);
+  const curaHoy = dermaCuraAplicaA(dia, cura) ? cura : null;
   const dscSelf = !!dia.dermatoscopiaImg && dia.dermatoscopiaImg.includes('bookid=2929');
   const dscHoy = useMemo(() => entries.find((e) => e.fuente === 'dermatoscopia' && e.d === dia.d), [entries, dia.d]);
   const viernes = dermaEsViernes(dia.fecha);
@@ -180,6 +203,12 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, tone }: { dia: DiaDerma;
             {dia.puenteResearch && <ChipBtn label={`alimenta ${dia.puenteResearch.sr} (${dia.puenteResearch.linea})`} color={TEAL} on={showPuente} onPress={() => setShowPuente((s) => !s)} />}
             {dia.nitida && <ChipBtn label="Nítida · protocolo" color={DermaAtlas.champagne} on={showNitida} onPress={() => setShowNitida((s) => !s)} />}
             {dia.promir && <Chip label="MIR 10Q hoy" color={MIR_AMBER} small />}
+            {taper && <ChipBtn label={`TAPER ${taper.modo === 'step1' ? 'Step 1' : 'ENCAPS'} · semana de examen: solo FSRS + 1 caso`} color={DermaAtlas.crit} on={showTaper} onPress={() => setShowTaper((s) => !s)} />}
+            {dia.step1 && (dia.anclajeStep1
+              ? <ChipBtn label="cuenta doble Step 1" color={DermaAtlas.periwinkle} on={showStep1} onPress={() => setShowStep1((s) => !s)} />
+              : <Chip label="cuenta doble Step 1" color={DermaAtlas.periwinkle} small />)}
+            {ciclo === 2 && <Chip label={`CICLO 2 · sesión ${dia.d - DERMA_CICLO2_META.dOffset}/${DERMA_CICLO2_META.totalDias}`} color={GOLD} small />}
+            {gplus && <Chip label={`${gplus.id} · lectura de enriquecimiento`} color={GOLD} small />}
             {obsDay && (
               <TouchableOpacity activeOpacity={0.8} onPress={() => openUrl(obsDay)} style={[st.sysBadge, { backgroundColor: OBS + '1F', borderColor: OBS + '77' }]}>
                 <Text style={[st.sysBadgeTxt, { color: OBS }]}>◆ Obsidian</Text>
@@ -190,6 +219,19 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, tone }: { dia: DiaDerma;
             <View style={[st.infoBox, { borderColor: TEAL + '66' }]}>
               <Text style={[st.infoLbl, { color: TEAL }]}>PUENTE RESEARCH · {dia.puenteResearch.linea} → {dia.puenteResearch.sr}</Text>
               <Text style={st.infoTxt}>{dia.puenteResearch.nota}</Text>
+            </View>
+          )}
+          {showTaper && taper && (
+            <View style={[st.infoBox, { borderColor: DermaAtlas.crit + '66' }]}>
+              <Text style={[st.infoLbl, { color: DermaAtlas.crit }]}>MODO TAPER · {taper.motivo}</Text>
+              <Text style={st.infoTxt}>{taper.nota}</Text>
+              <Text style={st.infoFoot}>Palmerton: la última semana no se aprende contenido nuevo, se consolida lo fallado. Regla PLAN_ELITE: ningún átomo CRIT nuevo a ±3 días hábiles de un examen mayor. Hoy = {taper.casos} caso ciego + FSRS de fallos del ledger + 0 preguntas nuevas{dia.extra ? ' (lectura ligera opcional)' : ' + 0 lectura nueva'}.</Text>
+            </View>
+          )}
+          {showStep1 && dia.step1 && dia.anclajeStep1 && (
+            <View style={[st.infoBox, { borderColor: DermaAtlas.periwinkle + '66' }]}>
+              <Text style={[st.infoLbl, { color: DermaAtlas.periwinkle }]}>CUENTA DOBLE STEP 1 · mismo mazo FSRS · tag step1 en las tarjetas de hoy</Text>
+              <Text style={st.infoTxt}>{dia.anclajeStep1}</Text>
             </View>
           )}
           {showNitida && dia.nitida && (
@@ -204,7 +246,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, tone }: { dia: DiaDerma;
 
           {/* Los 2 casos CIEGOS fijos de la sesión (ids reales de la permutación) → registro en el ledger */}
           <View style={st.casosRow}>
-            <Text style={st.casosLbl}>CASOS CIEGOS DE HOY · Board Review</Text>
+            <Text style={st.casosLbl}>{nCasos ? `CASOS CIEGOS DE HOY · Board Review · ${nCasos}${taper ? ' (taper: 1 caso)' : nCasos >= 3 ? ' (post-Step 1: 3/sesión)' : ''}` : 'SIN CASOS NUEVOS · segunda pasada FSRS de los fallos del ledger'}</Text>
             {dia.casoIds.map((id) => {
               const a = dermaCasoArea(id); const c = DERMA_AREA_COLOR[a]; const e = dermaCasoEstado(id, entries);
               const estado = e ? `${e.acierto ? '✓' : '✗'} ${e.evalAcierto}${e.fecha === hoy ? ' · hoy' : ' · ' + e.fecha}` : '○ registrar';
@@ -289,53 +331,93 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, tone }: { dia: DiaDerma;
           <View style={st.anchor}>
             <Text style={st.anchorLbl}>13:30 · Repaso FSRS (sesión ANTERIOR)</Text>
             <Text style={st.anchorVal}>D{prev.d} · {prev.sub}</Text>
-            <Text style={st.anchorSub}>Tarjetas de MECANISMO + oclusiones de los casos {casosTxt(prev)} · fallo repetido → 2ª pasada FSRS (d69) · cada fallo ya lleva su módulo CORE en el ledger</Text>
+            <Text style={st.anchorSub}>Tarjetas de MECANISMO + oclusiones de los casos {casosTxt(prev)} · fallo repetido → 2ª pasada FSRS (repaso 1 = d{DERMA_CHECKPOINTS.repaso1}) · cada fallo ya lleva su módulo CORE en el ledger</Text>
           </View>
         </FadeUp>
       )}
 
       {/* Cola de materiales reales de hoy (caso ciego → review → lectura) */}
       <Text style={st.secLbl}>Materiales de la sesión · 13:33–14:13 · links REALES (en orden)</Text>
+
+      {/* CURA PENDIENTE del ledger: fallo CCSN en la última sesión → DD Challenge OBLIGATORIO antes del primer caso (otros tipos: recomendada) */}
+      {curaHoy && (
+        <FadeUp delay={85}>
+          <ColaItem icon="differential"
+            lbl={`${curaHoy.obligatoria ? 'CURA OBLIGATORIA' : 'CURA RECOMENDADA'} · fallo ${curaHoy.tipo} en la última sesión registrada (${curaHoy.desdeFecha}${curaHoy.desdeD ? ` · d${curaHoy.desdeD}` : ''})`}
+            val={curaHoy.link.t}
+            sub={`${curaHoy.n} ítem(s): ${[...curaHoy.casos.map((c) => `caso #${c}`), ...curaHoy.preguntas.map((p) => `${p.fuente} Q${p.id}`)].join(', ') || '—'} · ${curaHoy.cura} · ${curaHoy.obligatoria ? 'ANTES del primer caso de hoy (no se salta)' : 'si sobra tiempo'}`}
+            color={curaHoy.obligatoria ? DermaAtlas.crit : DermaAtlas.alta} url={curaHoy.link.url} dim={!curaHoy.obligatoria} />
+        </FadeUp>
+      )}
+
       <FadeUp delay={90}>
-        <ColaItem icon="read" lbl="CASO CIEGO ①②③④ · Cases for Board Review" val={`Casos ${casosTxt(dia)} · ${dia.access.t}`} sub={dia.sub} color={fc} url={dia.access.url} />
+        <ColaItem icon="read" lbl={nCasos ? `CASO CIEGO ①②③④ · Cases for Board Review · ${nCasos} caso${nCasos > 1 ? 's' : ''}` : 'SEGUNDA PASADA FSRS · solo casos fallados del ledger (0 casos nuevos)'} val={`Casos ${casosTxt(dia)} · ${dia.access.t}`} sub={dia.sub} color={fc} url={dia.access.url} />
       </FadeUp>
 
-      {/* REVIEW: 10Q MIR (1 de cada 3) o banco AccessDerma */}
+      {/* REVIEW: 10Q MIR (1 de cada 3) · TAPER (FSRS de fallos, 0 preguntas nuevas) · banco AccessDerma con cursor "retoma en Q#" */}
       {dia.promir ? (
         <FadeUp delay={100}>
-          <ColaItem icon="flask" lbl={`REVIEW · 10Q MIR-DERMATOLOGÍA (sesión MIR ${DERMA_PROMIR_DIAS.indexOf(dia.d) + 1}/${DERMA_PROMIR_DIAS.length} · 1 de cada 3)`} val={dia.promir.t} sub="test del capítulo ProMIR · 77 s/Q · neto A − F/3 → log MIR (asignatura Dermatología) · sustituye hoy al banco AccessDerma" color={DermaAtlas.promir} url={dia.promir.url} />
+          <ColaItem icon="flask" lbl={`REVIEW · 10Q MIR-DERMATOLOGÍA (sesión MIR ${promirLista.indexOf(dia.d) + 1}/${promirLista.length} · 1 de cada 3)`} val={dia.promir.t} sub="test del capítulo ProMIR · 77 s/Q · neto A − F/3 → log MIR (asignatura Dermatología) · sustituye hoy al banco AccessDerma" color={DermaAtlas.promir} url={dia.promir.url} />
           <DermaMir10Q dia={dia} accent={DermaAtlas.promir} />
           {dia.qbankly && (
-            <ColaItem icon="flask" lbl="BANCO ACCESSDERMA · solo si sobra tiempo" val={dia.qbankly.t} sub="hoy el review es MIR; el banco rotante sigue mañana" color={EDGE} url={dia.qbankly.url} edge={dia.qbankly.via === 'edge'} dim />
+            <ColaItem icon="flask" lbl={`BANCO ACCESSDERMA · solo si sobra tiempo${banco ? ` · retoma en Q#${banco.cursor}` : ''}`} val={dia.qbankly.t} sub="hoy el review es MIR; el banco rotante sigue en la próxima sesión" color={EDGE} url={dia.qbankly.url} edge={dia.qbankly.via === 'edge'} dim />
           )}
         </FadeUp>
+      ) : taper ? (
+        dia.qbankly && (
+          <FadeUp delay={100}>
+            <ColaItem icon="flask" lbl="REVIEW · TAPER: repaso FSRS de fallos (0 preguntas nuevas)" val={dia.qbankly.t} sub="cada banco se retoma después del examen en su Q# (el cursor del ledger no se mueve hoy) · re-registra cada caso fallado desde su chip: si sale con «Lo sabía», abandona la lista" color={DermaAtlas.crit} url={dia.qbankly.url} />
+          </FadeUp>
+        )
       ) : dia.qbankly && (
         <FadeUp delay={100}>
-          <ColaItem icon="flask" lbl="REVIEW · ~10Q del banco rotante" val={dia.qbankly.t} sub="variable de ajuste · cada fallo o acierto por suerte → ledger con su módulo CORE (med/ped/surg/path)" color={EDGE} url={dia.qbankly.url} edge={dia.qbankly.via === 'edge'}
-            action={{ lbl: reg?.fuente === fuenteBanco ? 'cerrar' : 'fallo →', onPress: () => setReg(reg?.fuente === fuenteBanco ? null : { id: Number(bancoQ) || 0, fuente: fuenteBanco, acierto: false }) }} actionOn={reg?.fuente === fuenteBanco} />
-          {reg?.fuente === fuenteBanco && (
+          <ColaItem icon="flask" lbl={`REVIEW · ~10Q del banco rotante${banco ? ` · retoma en Q#${banco.cursor}` : ''}`} val={dia.qbankly.t}
+            sub={banco
+              ? (banco.agotado
+                ? `banco AGOTADO (cursor Q#${banco.cursor} > ${banco.totalQ}Q): pasa al relevo (Pictorial 3e · LANGE) y regístralo con su fuente`
+                : `retoma en Q#${banco.cursor} de ${banco.totalQ} (cursor = último Q# registrado + 1) · variable de ajuste · cada fallo o acierto por suerte → ledger con su módulo CORE (med/ped/surg/path)`)
+              : 'este link no es un banco de preguntas (no se registra como banco)'}
+            color={EDGE} url={dia.qbankly.url} edge={dia.qbankly.via === 'edge'}
+            action={fuenteBanco ? { lbl: reg?.fuente === fuenteBanco ? 'cerrar' : 'fallo →', onPress: () => setReg(reg?.fuente === fuenteBanco ? null : { id: Number(bancoQ) || banco?.cursor || 0, fuente: fuenteBanco, acierto: false }) } : undefined}
+            actionOn={!!fuenteBanco && reg?.fuente === fuenteBanco} />
+          {fuenteBanco && reg?.fuente === fuenteBanco && (
             <View>
               <View style={st.bancoRow}>
-                <Text style={st.bancoLbl}>nº de pregunta del banco (opcional, para retomar):</Text>
-                <TextInput value={bancoQ} onChangeText={setBancoQ} placeholder="Q#" placeholderTextColor={Colors.muted} keyboardType="numeric" style={st.bancoInput} />
+                <Text style={st.bancoLbl}>nº de pregunta del banco (mueve el cursor «retoma en Q#»; vacío = Q#{banco?.cursor}):</Text>
+                <TextInput value={bancoQ} onChangeText={setBancoQ} placeholder={`Q${banco?.cursor ?? ''}`} placeholderTextColor={Colors.muted} keyboardType="numeric" style={st.bancoInput} />
               </View>
-              <DermaCasoRegistro dia={dia} id={Number(bancoQ) || 0} fuente={fuenteBanco} acierto={false} accent={EDGE} titulo={`Registrar pregunta del banco (${fuenteBanco}${bancoQ ? ' #' + bancoQ : ''})`} onDone={() => setReg(null)} onCancel={() => setReg(null)} />
+              <DermaCasoRegistro dia={dia} id={Number(bancoQ) || banco?.cursor || 0} fuente={fuenteBanco} acierto={false} accent={EDGE} titulo={`Registrar pregunta del banco (${fuenteBanco} #${Number(bancoQ) || banco?.cursor || '?'})`} onDone={() => setReg(null)} onCancel={() => setReg(null)} />
             </View>
           )}
         </FadeUp>
       )}
 
-      {/* LECTURA 10′: micro-track DermNet CME (pares d6-d44) o lectura dirigida del módulo */}
+      {/* LECTURA 10′: micro-track DermNet CME (pares d6-d44) · lectura dirigida del módulo · módulo G+ (ciclo 2) · 0 lectura nueva (taper) */}
       {modulo ? (
         <FadeUp delay={120}>
           <ColaItem icon="dermatoscope" lbl={`LECTURA 10′ · MICRO-TRACK DERMATOSCOPIA (DermNet CME ${modulo.n <= 18 ? `módulo ${modulo.n}/18` : 'repaso'})`} val={modulo.t} sub="3 de 4 módulos CORE preguntan dermatoscopia transversalmente · el mayor diferenciador · la lectura del módulo queda para la sesión impar" color={DermaAtlas.teal} url={modulo.url} />
           {dia.extra && <ColaItem icon="body" lbl="LECTURA DEL MÓDULO · pasa a la sesión impar (si sobra tiempo)" val={dia.extra.t} sub={dia.referente ? `fuente nº1 de ${dia.referente} · nunca lectura lineal` : 'lectura del módulo · nunca lineal'} color={DermaAtlas.periwinkle} url={dia.extra.url} dim />}
         </FadeUp>
-      ) : dia.extra && (
+      ) : dia.extra ? (
         <FadeUp delay={120}>
-          <ColaItem icon="body" lbl="LECTURA 10′ · dirigida del módulo" val={dia.extra.t} sub={dia.referente ? `fuente nº1 de ${dia.referente} · nunca lectura lineal` : 'lectura del módulo · nunca lineal'} color={DermaAtlas.periwinkle} url={dia.extra.url} />
+          <ColaItem icon="body"
+            lbl={gplus ? `LECTURA 10′ · MÓDULO ${gplus.id} (enriquecimiento · ciclo 2)` : taper ? 'LECTURA LIGERA · opcional en taper (átomo MED absorbido)' : 'LECTURA 10′ · dirigida del módulo'}
+            val={dia.extra.t}
+            sub={gplus ? `${gplus.porQue} · fuente: ${gplus.fuente}` : taper ? 'solo si sobra energía: la prioridad de la semana de examen es el FSRS de fallos' : dia.referente ? `fuente nº1 de ${dia.referente} · nunca lectura lineal` : 'lectura del módulo · nunca lineal'}
+            color={gplus ? GOLD : DermaAtlas.periwinkle} url={dia.extra.url} dim={!!taper} />
         </FadeUp>
-      )}
+      ) : taper ? (
+        <FadeUp delay={120}>
+          <View style={[st.cola, { borderLeftColor: DermaAtlas.crit, opacity: 0.85 }]}>
+            <View style={st.colaIconBox}><DermaLineIcon name="atlas" size={18} color={DermaAtlas.crit} /></View>
+            <View style={{ flex: 1 }}>
+              <Text style={st.colaLbl}>LECTURA · 0 lectura nueva (taper)</Text>
+              <Text style={st.colaVal}>Semana de examen: el slot de lectura es repaso FSRS de las tarjetas de MECANISMO falladas</Text>
+              <Text style={st.colaSub}>{taper.motivo}</Text>
+            </View>
+          </View>
+        </FadeUp>
+      ) : null}
 
       {/* ANKI · deck del bloque + cola de tarjetas de MECANISMO (TSV) + oclusión */}
       <FadeUp delay={140}><DermaAnkiCola dia={dia} accent={DermaAtlas.teal} /></FadeUp>
@@ -364,7 +446,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, tone }: { dia: DiaDerma;
           <View style={st.colaIconBox}><DermaLineIcon name="histoDrop" size={18} color={GOLD} /></View>
           <View style={{ flex: 1 }}>
             <Text style={st.colaLbl}>CIERRE · 14:13–14:15</Text>
-            <Text style={st.colaVal}>Free recall de los 2 casos en voz alta → 1-2 tarjetas de MECANISMO + 1 oclusión (cola Anki de arriba) → registrar en el ledger lo que falte</Text>
+            <Text style={st.colaVal}>Free recall {nCasos ? `de los ${nCasos} casos` : 'de los fallos repasados'} en voz alta → 1-2 tarjetas de MECANISMO + 1 oclusión (cola Anki de arriba) → registrar en el ledger lo que falte{taper ? ' · TAPER: 0 tarjetas nuevas salvo del caso fallado' : ''}</Text>
             <Text style={st.colaSub}>NotebookLM "DERMA · Élite Engine" = motor de verificación de la tarjeta (no sustituye la fuente) · {viernes ? 'VIERNES: exporta el ledger' : 'exporta el ledger cada viernes'} (localStorage es el único depósito del % ciego)</Text>
             <View style={st.cierreRow}>
               <TouchableOpacity activeOpacity={0.85} onPress={() => { const ok = dermaCopiar(promptNblm); openUrl(DERMA_NOTEBOOKLM.url); setCierreMsg(ok ? '✓ prompt copiado → pégalo en el cuaderno' : 'cuaderno abierto (sin portapapeles: escribe el prompt a mano)'); }} style={[st.cierreBtn, { borderColor: GOLD + '88', backgroundColor: GOLD + '1A' }, Platform.OS === 'web' ? WEB_LINK : null]}>
@@ -383,10 +465,10 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, tone }: { dia: DiaDerma;
 }
 
 function HorarioView({ dia }: { dia: DiaDerma }) {
-  const prev = dermaDiaPrevio(dia);
+  const prev = diaPrevioDe(dia);
   const detalle = (tipo: string): string => {
     if (tipo === 'eval') return prev ? `D${prev.d} · ${prev.sub}` : 'no hay sesión previa';
-    if (tipo === 'pretest') return `casos ${casosTxt(dia)}${dia.dermatoscopiaImg ? ' · ①b imagen dermatoscópica ciega' : ''}`;
+    if (tipo === 'pretest') return `casos ${casosTxt(dia)}${dermaTaperEfectivo(dia) ? ' · TAPER: 1 caso' : ''}${dia.dermatoscopiaImg ? ' · ①b imagen dermatoscópica ciega' : ''}`;
     if (tipo === 'read') return `${dia.access.t} · registrar acierto/fallo de cada caso en el ledger`;
     if (tipo === 'review') return dia.promir ? `MIR 10Q · ${dia.promir.t}` : dia.qbankly ? dia.qbankly.t : '— (hoy sin bloque de review)';
     if (tipo === 'lectura') return dia.dermatoscopiaModulo ? `micro-track: ${dia.dermatoscopiaModulo.t}` : dia.extra ? dia.extra.t : '— (hoy sin lectura dirigida)';
@@ -418,13 +500,13 @@ function HorarioView({ dia }: { dia: DiaDerma }) {
 }
 
 function SieteView({ fromD, onPick }: { fromD: number; onPick: (d: number) => void }) {
-  const win = dermaVentana7(fromD);
+  const win = dermaVentana7Todos(fromD);
   return (
     <View>
       <Text style={st.secLbl}>Próximos 7 átomos-Derma · toca uno para abrirlo</Text>
       {win.map((x, i) => {
         const fc = bc(x);
-        const tags = [x.promir ? 'MIR 10Q' : '', x.dermatoscopiaModulo ? 'CME' : '', DERMA_DRILL_DIAS.includes(x.d) ? 'drill' : '', DERMA_CHECKPOINT_DIAS.includes(x.d) ? 'checkpoint' : '', x.puenteResearch ? x.puenteResearch.sr : '', x.nitida ? 'Nítida' : ''].filter(Boolean);
+        const tags = [x.promir ? 'MIR 10Q' : '', x.dermatoscopiaModulo ? 'CME' : '', x.taper ? 'TAPER' : '', x.step1 ? 'Step 1 ×2' : '', x.drillHDPH ? 'drill' : '', x.checkpoint ? `checkpoint ${x.checkpoint}` : '', x.puenteResearch ? x.puenteResearch.sr : '', x.nitida ? 'Nítida' : '', x.d > DERMA_DAILY_META.totalDias ? 'ciclo 2' : ''].filter(Boolean);
         return (
           <FadeUp key={x.d} delay={i * 30}>
             <TouchableOpacity activeOpacity={0.8} onPress={() => onPick(x.d)} style={[st.d7, { borderLeftColor: fc }]}>
@@ -504,8 +586,9 @@ function BloqueCard({ g, hoyD, onPick, done, onToggle }: { g: GrupoProgreso<DiaD
 }
 
 function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (d: number) => void; done: Set<number>; onToggle: (d: number) => void }) {
-  const grupos = agruparProgreso(DERMA_DIAS, (x) => `${x.bKey} · ${x.bloque}`, hoyD, done);
+  const grupos = agruparProgreso(DERMA_DIAS_TODOS, (x) => `${x.bKey} · ${x.bloque}`, hoyD, done);
   const glob = progresoGlobal(DERMA_DIAS, done);
+  const c2 = DERMA_DIAS_TODOS.filter((x) => x.d > DERMA_DAILY_META.totalDias && done.has(x.d)).length;
   return (
     <View>
       <View style={st.globCard}>
@@ -514,7 +597,7 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
           <Text style={[st.globPct, { color: PURPLE }]}>{glob.pct}%</Text>
         </View>
         <ProgressBar pct={glob.pct} color={PURPLE} />
-        <Text style={st.globSub}>{glob.hechos}/{glob.total} átomos · hoy = Día {hoyD} · {grupos.length} bloques (A–H board · Z cierre · X estética) · vueltas: CRÍT {VUELTAS.CRITICA}v D+{INTERVALOS.CRITICA.join('/')} · ALTA {VUELTAS.ALTA}v · MEDIA {VUELTAS.MEDIA}v · ◆ = nota Obsidian (10_DERMATOLOGIA) · MIR = sesión con 10Q ProMIR</Text>
+        <Text style={st.globSub}>{glob.hechos}/{glob.total} átomos del ciclo 1 (+{c2}/{DERMA_CICLO2_META.totalDias} del ciclo 2, d{DERMA_CICLO2_META.dOffset + 1}-d{DERMA_TOTAL_DIAS_TODOS}) · hoy = Día {hoyD} · {grupos.length} bloques (A–H board · Z cierre · X estética · ciclo 2) · vueltas: CRÍT {VUELTAS.CRITICA}v D+{INTERVALOS.CRITICA.join('/')} · ALTA {VUELTAS.ALTA}v · MEDIA {VUELTAS.MEDIA}v · ◆ = nota Obsidian (10_DERMATOLOGIA) · MIR = sesión con 10Q ProMIR</Text>
       </View>
       {grupos.map((g) => <BloqueCard key={g.clave} g={g} hoyD={hoyD} onPick={onPick} done={done} onToggle={onToggle} />)}
       <Text style={st.note}>Progreso REAL: empezamos en 0%. ☑ marca un átomo como hecho (1ª vuelta; se guarda en este dispositivo). ▶ = átomo de hoy. Nv = vueltas objetivo según prioridad. Toca el subtema para ir a ese día.</Text>
@@ -522,18 +605,27 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
   );
 }
 
-export default function DermaTodayPlan({ tone }: { tone?: SkinTone }) {
+/**
+ * @param jump — salto externo a un día (pestaña Cerebro/Atlas del Hub): `k` es un nonce para que el mismo `d` pueda
+ * pedirse dos veces seguidas.
+ */
+export default function DermaTodayPlan({ tone, jump }: { tone?: SkinTone; jump?: { d: number; k: number } }) {
   const iso = todayISO();
   const tipoHoy = diaEstudioTipo(new Date());
-  const hoyD = planHoyD(DERMA_DIAS, iso);
+  // Fallback al CICLO 2: cuando la fecha pasa del último átomo del ciclo 1 (d73), planHoyD cae en dermaCiclo2.ts.
+  const hoyD = planHoyD(DERMA_DIAS_TODOS, iso);
   const [sel, setSel] = useState<number>(hoyD);
   const [view, setView] = useState<'hoy' | 'horario' | '7d' | 'temario'>('hoy');
   const [done, setDone] = useState<Set<number>>(() => new Set(loadDone('derma')));
   const { entries } = useDermaLedger();
   const ciego = useMemo(() => dermaPctCiego(entries), [entries]);
   const activeTone = tone ?? SKIN_TONES[2];
-  const dia = DERMA_DIAS.find((x) => x.d === sel) || DERMA_DIAS[0];
+  const dia = dermaDiaPorD(sel) || DERMA_DIAS[0];
   const esHoy = dia.fecha === iso;
+  const esCiclo2 = dia.d > DERMA_DAILY_META.totalDias;
+  const hechosC1 = DERMA_DIAS.filter((x) => done.has(x.d)).length;
+  const hechosC2 = done.size - hechosC1;
+  useEffect(() => { if (jump) { setSel(jump.d); setView('hoy'); } }, [jump?.k]); // eslint-disable-line react-hooks/exhaustive-deps
   const pickDay = (d: number) => { setSel(d); setView('hoy'); };
   const toggleDone = (d: number) => setDone((prev) => {
     const n = new Set(prev);
@@ -560,13 +652,13 @@ export default function DermaTodayPlan({ tone }: { tone?: SkinTone }) {
         </View>
       </View>
       <View style={st.artefactoBar}>
-        <Text style={st.artefactoTxt}>PLAN ÉLITE v2.1: 2 casos CIEGOS fijos por sesión (permutación de los 200 Board Review) + imagen dermatoscópica ciega + ~10Q review (1 de cada 3 sesiones = 10Q MIR ProMIR) + micro-track DermNet CME + ledger por caso (% ciego real, fallos por módulo CORE) → DERMATOLOGÍA ESTÉTICA (seguridad de fillers d19-20 → anatomía → toxina → fillers → peelings → láser → cosmecéutica) · {DERMA_DAILY_META.bloque}</Text>
+        <Text style={st.artefactoTxt}>PLAN ÉLITE v3: casos CIEGOS fijos por sesión (permutación de los 200 Board Review: 2 · 1 en el TAPER d44-d49 · 3 desde d50 post-Step 1) + imagen dermatoscópica ciega + ~10Q review retomando en el Q# del cursor (1 de cada 3 sesiones = 10Q MIR ProMIR) + micro-track DermNet CME + ledger por caso (% ciego real, fallos por módulo CORE, cura CCSN → DD Challenge) → DERMATOLOGÍA ESTÉTICA (seguridad de fillers d19-20 → anatomía → toxina → fillers → peelings → láser → cosmecéutica) · ciclo 2 (d74-d103): 36 casos restantes + 2ª pasada FSRS + módulos G+ · {DERMA_DAILY_META.bloque}</Text>
       </View>
 
       {/* Anillos de progreso REAL (global · críticos · board · estética · % ciego del ledger) */}
       <View style={st.ringRow}>
         <View style={st.ringCard}>
-          <RingStat value={done.size} max={DERMA_DAILY_META.totalDias} label="Global" sub={`${done.size}/${DERMA_DAILY_META.totalDias} átomos`} accent={PURPLE} />
+          <RingStat value={hechosC1} max={DERMA_DAILY_META.totalDias} label="Global" sub={`${hechosC1}/${DERMA_DAILY_META.totalDias} átomos · ciclo 1${hechosC2 > 0 ? ` · +${hechosC2} ciclo 2` : ''}`} accent={PURPLE} />
         </View>
         <View style={st.ringCard}>
           <RingStat value={DERMA_DIAS.filter(x => x.tier === 'CRIT' && done.has(x.d)).length} max={DERMA_DIAS.filter(x => x.tier === 'CRIT').length} label="Críticos" sub="no errar" accent={DermaAtlas.crit} />
@@ -586,10 +678,10 @@ export default function DermaTodayPlan({ tone }: { tone?: SkinTone }) {
       <View style={st.navRow}>
         <TouchableOpacity activeOpacity={0.7} onPress={() => setSel((s) => Math.max(1, s - 1))} style={st.navArrow}><Text style={st.navArrowTxt}>◄</Text></TouchableOpacity>
         <View style={{ flex: 1, alignItems: 'center' }}>
-          <Text style={st.navDay}>D{dia.d} · Día {dia.d}/{DERMA_DAILY_META.totalDias}{esHoy ? ' · HOY' : ''}</Text>
+          <Text style={st.navDay}>{esCiclo2 ? `D${dia.d} · CICLO 2 · sesión ${dia.d - DERMA_CICLO2_META.dOffset}/${DERMA_CICLO2_META.totalDias}` : `D${dia.d} · Día ${dia.d}/${DERMA_DAILY_META.totalDias}`}{esHoy ? ' · HOY' : ''}</Text>
           <Text style={st.navFecha}>{fmtFecha(dia.fecha)} · {dia.fecha}</Text>
         </View>
-        <TouchableOpacity activeOpacity={0.7} onPress={() => setSel((s) => Math.min(DERMA_DAILY_META.totalDias, s + 1))} style={st.navArrow}><Text style={st.navArrowTxt}>►</Text></TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.7} onPress={() => setSel((s) => Math.min(DERMA_TOTAL_DIAS_TODOS, s + 1))} style={st.navArrow}><Text style={st.navArrowTxt}>►</Text></TouchableOpacity>
       </View>
       {!esHoy && <TouchableOpacity activeOpacity={0.8} onPress={() => setSel(hoyD)} style={st.hoyBtn}><Text style={st.hoyBtnTxt}>↩ volver a HOY</Text></TouchableOpacity>}
 

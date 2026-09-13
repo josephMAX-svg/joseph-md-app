@@ -10,11 +10,11 @@ import {
   USMLE_STEP2_RESOURCES, USMLE_CHECKPOINTS, USMLE_READINESS, FIRST_AID_INDEX, SKETCHY_SYMBOLS,
   PRIORIDAD_COLOR, VUELTAS,
 } from '../../lib/usmleData';
-import { DIAS, USMLE_NIVELES, USMLE_GATE } from '../../lib/usmleStep1Daily';
+import { DIAS, USMLE_NIVELES, USMLE_GATE, USMLE_TAPER, DAILY_META } from '../../lib/usmleStep1Daily';
 import { planHoyD, progresoGlobal, loadDone } from '../../lib/studyProgress';
 import {
   UsmleScore, loadScores, pullScores, onScoresChange, mediaMovil7d, distanciaOnTrack, readinessDesdeHitos,
-  hitosPlan, HITOS_ONTRACK_FUENTE,
+  hitosPlan, HITOS_ONTRACK_FUENTE, gateHito, GateHito, BURNOUT_PROTOCOLO,
 } from '../../lib/usmleScores';
 import ReadinessBar from './ReadinessBar';
 import { ConsoleTabs, CheckpointCard } from './ConsoleKit';
@@ -64,9 +64,12 @@ export default function UsmleHub() {
   const dist = distanciaOnTrack(scores, iso);
   const rd = readinessDesdeHitos(scores);
   const mediaVal = media ? (media.evalPct ?? media.consolPct ?? media.pretestPct) : null;
+  // REGLA §E-7 (12-sep-2026): 2 hitos consecutivos bajo mínimo → ALERTA BURNOUT visible en todas las pestañas.
+  const gh = gateHito(scores);
 
   return (
     <View>
+      {gh.estado === 'ALERTA BURNOUT' && <BurnoutAlert gh={gh} />}
       <ReadinessBar
         flag={USMLE_META.flag} title={USMLE_META.title}
         subtitle="US knowledge-bank terminal · Pathology + Physiology = the exam"
@@ -136,17 +139,81 @@ function HitosSerie({ scores }: { scores: UsmleScore[] }) {
           <Text style={[st.hitoEstado, { color: color(h.estado) }]}>{h.estado === 'on-track' ? '✓' : h.estado === 'bajo' ? '✗' : h.estado === 'registrado' ? '●' : '○'}</Text>
         </View>
       ))}
-      <Text style={[st.smallNote, { marginTop: Spacing.sm }]}>Un hito &gt;5 puntos bajo su mínimo → auditar el MÉTODO esa semana (checklist §G), no sumar horas; dos hitos seguidos bajo mínimo → plan B de fecha (feb-mar, mismo eligibility period).</Text>
+      <Text style={[st.smallNote, { marginTop: Spacing.sm }]}>Un hito &gt;5 puntos bajo su mínimo → auditar el MÉTODO esa semana (checklist §G), no sumar horas; dos hitos seguidos bajo mínimo → ⚠ ALERTA BURNOUT (REGLA §E-7: 3-5 días solo Anki AM + sueño) y plan B de fecha (feb-mar, mismo eligibility period).</Text>
+    </GlassPanel>
+  );
+}
+
+// ── ALERTA BURNOUT (REGLA §E-7 · usmleScores.gateHito) — banner sobre las pestañas cuando 2 hitos seguidos quedan bajo mínimo ──
+function BurnoutAlert({ gh }: { gh: GateHito }) {
+  return (
+    <GlassPanel accent={Colors.coral} style={{ marginBottom: Spacing.md, padding: Spacing.lg, borderColor: Colors.coral + '88' }}>
+      <Text style={[st.h3, { color: Colors.coral }]}>{gh.label}</Text>
+      <Text style={st.body}>{BURNOUT_PROTOCOLO.regla}</Text>
+      {BURNOUT_PROTOCOLO.pasos.map((p, i) => (
+        <View key={i} style={{ flexDirection: 'row', gap: 8, paddingVertical: 3 }}>
+          <Text style={{ color: Colors.coral }}>{i + 1}.</Text>
+          <Text style={[st.smallNote, { flex: 1, color: Colors.onSurfaceVariant }]}>{p}</Text>
+        </View>
+      ))}
+      <Text style={[st.smallNote, { marginTop: Spacing.xs }]}>Fuente: {BURNOUT_PROTOCOLO.fuente}. Los síntomas los decides tú; la señal numérica la da la serie de hitos.</Text>
+    </GlassPanel>
+  );
+}
+
+// ── GATE DE HITOS + protocolo de burnout (siempre visible en Readiness, con o sin alerta) ──
+function HitoGateCard({ gh }: { gh: GateHito }) {
+  const color = gh.estado === 'on-track' ? Colors.green : gh.estado === 'bajo' ? Colors.gold : gh.estado === 'ALERTA BURNOUT' ? Colors.coral : Colors.muted;
+  return (
+    <GlassPanel accent={color} style={{ marginBottom: Spacing.xl, padding: Spacing.lg }}>
+      <Text style={st.h3}>🔥 Gate de hitos · protocolo de burnout (REGLA §E-7)</Text>
+      <View style={[st.gateBox, { borderColor: color + '77', backgroundColor: color + '14' }]}>
+        <Text style={[st.gateTxt, { color }]}>{gh.label}</Text>
+        <Text style={st.smallNote}>{gh.detalle}</Text>
+      </View>
+      <Text style={[st.smallNote, { marginTop: Spacing.sm }]}>Regla: {BURNOUT_PROTOCOLO.regla}</Text>
+    </GlassPanel>
+  );
+}
+
+// ── TAPER · D-1 · TEST DAY (Palmerton §8.3-§8.4 · DIVERGENCIAS §E-5 implementada 12-sep-2026) ──
+function TaperCard() {
+  const t = USMLE_TAPER;
+  return (
+    <GlassPanel accent={Colors.coral} style={{ marginBottom: Spacing.xl, padding: Spacing.lg }}>
+      <Text style={st.h3}>🧘 Taper y semana de examen · D94-D95 dentro del plan · D-1 fuera · examen {DAILY_META.examenTarget}</Text>
+      <Text style={[st.smallNote, { marginBottom: Spacing.sm }]}>{t.cierre}</Text>
+      {[t.d94, t.d95].map((d) => (
+        <View key={d.d} style={st.taperRow}>
+          <Text style={[st.taperRol, tabular, { color: Colors.gold }]}>D{d.d} · {d.rol}</Text>
+          <Text style={[st.taperFecha, tabular]}>{d.fecha.slice(5)}</Text>
+          <Text style={[st.body, { flex: 1 }]}>{d.resumen}</Text>
+        </View>
+      ))}
+      <View style={st.taperRow}>
+        <Text style={[st.taperRol, tabular, { color: Colors.coral }]}>D-1 · fuera del plan</Text>
+        <Text style={[st.taperFecha, tabular]}>{t.dMenos1.fecha.slice(5)}</Text>
+        <View style={{ flex: 1 }}>{t.dMenos1.pasos.map((p, i) => <Text key={i} style={st.body}>• {p}</Text>)}</View>
+      </View>
+      <View style={st.taperRow}>
+        <Text style={[st.taperRol, tabular, { color: Colors.green }]}>EXAMEN</Text>
+        <Text style={[st.taperFecha, tabular]}>{t.examen.fecha.slice(5)}</Text>
+        <View style={{ flex: 1 }}>{t.examen.pasos.map((p, i) => <Text key={i} style={st.body}>• {p}</Text>)}</View>
+      </View>
+      <Text style={[st.smallNote, { marginTop: Spacing.sm }]}>Fuente: {t.fuente}. Las franjas horarias no cambian; solo el volumen (20Q) y el contenido (nada nuevo).</Text>
     </GlassPanel>
   );
 }
 
 // ── READINESS · niveles UWorld + serie de hitos + NBME/UWSA/Free120 + Step 2 CK + First Aid + Sketchy ──
 function ReadinessView({ scores }: { scores: UsmleScore[] }) {
+  const gh = gateHito(scores);
   return (
     <View>
       <NivelesTable />
       <HitosSerie scores={scores} />
+      <HitoGateCard gh={gh} />
+      <TaperCard />
       <CheckpointCard
         title="Score checkpoints · NBME / UWSA / Free 120"
         subtitle={USMLE_READINESS.next}
@@ -458,4 +525,11 @@ const st = StyleSheet.create({
   hitoMin: { fontSize: FontSize.labelSm, fontWeight: '700', color: Colors.gold, width: 56, textAlign: 'right' },
   hitoVal: { fontSize: FontSize.labelLg, fontWeight: '800', width: 44, textAlign: 'right' },
   hitoEstado: { fontSize: FontSize.bodyMd, fontWeight: '800', width: 16, textAlign: 'center' },
+
+  // gate de hitos / burnout + taper (12-sep-2026)
+  gateBox: { marginTop: Spacing.sm, borderWidth: 1, borderRadius: BorderRadius.md, padding: Spacing.sm },
+  gateTxt: { fontSize: FontSize.labelLg, fontWeight: '800', letterSpacing: 0.2, marginBottom: 3 },
+  taperRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, paddingVertical: 7, borderTopWidth: 1, borderTopColor: Hairline.soft },
+  taperRol: { fontSize: FontSize.labelSm, fontWeight: '800', width: 118, letterSpacing: 0.2 },
+  taperFecha: { fontSize: FontSize.labelSm, color: Colors.muted, width: 40 },
 });

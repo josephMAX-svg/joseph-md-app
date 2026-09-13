@@ -7,9 +7,11 @@ import MirTodayPlan from './MirTodayPlan';
 import { RingStat, FadeUp } from '../empresa/visuals';
 import {
   MIR_META, MIR_KPIS, PROMIR_FASES, MIR_HORA, MIR_CALENDARIO,
-  MIR_TACTICA, MIR_RECURSOS, MIR_NOTA, MIR_SIMULACROS, mirReadiness, MIR_DESGLOSES,
+  MIR_TACTICA, MIR_TACTICA_NOTA, MIR_RECURSOS, MIR_NOTA, MIR_SIMULACROS, mirReadiness, MIR_DESGLOSES,
+  MIR_HITOS, MIR_HITOS_FUENTE, mirDistanciaOnTrack,
   PRIORIDAD_COLOR, VUELTAS,
 } from '../../lib/mirData';
+import { mirStatsPorAsignatura, mirCierreUmbral, MIR_AGREGADO_MIN_Q } from '../../lib/mirEvalLog';
 import { DIGESTIVO_META, DIGESTIVO_CAPITULOS, DIGESTIVO_PLAN, capUrl } from '../../lib/mirDigestivoData';
 import { CARDIO_META, CARDIO_CAPITULOS, capUrl as cardioUrl } from '../../lib/mirCardiologiaData';
 import { MIR_DIAS } from '../../lib/mirDailyPlan';
@@ -45,17 +47,23 @@ export default function MirHub() {
   const hoyD = planHoyD(MIR_DIAS, todayISO());
   const glob = progresoGlobal(MIR_DIAS, new Set(done));
   const readiness = mirReadiness(); // derivado del log de evals (mini-MIR > cierres > ancladas), no hardcodeado
+  const iso = todayISO();
+  const dist = mirDistanciaOnTrack(iso); // 'a X pts del mínimo on-track del siguiente hito' (como el USMLE)
+  const proximoHito = MIR_HITOS.find((h) => h.fecha >= iso);
 
   return (
     <View>
       <ReadinessBar
         flag={MIR_META.flag} title={MIR_META.titulo}
-        subtitle="Consola española · rentabilidad = preguntas ÷ temario · medido por % ciego"
+        subtitle="Consola española · rentabilidad = preguntas ÷ temario · medido por % ciego · meta Top 50"
         accent={AMBER}
         dia={hoyD} total={glob.total} temarioPct={glob.pct}
         racha={`${done.length} temas`}
         readinessPct={readiness.pct} readinessLabel={readiness.estado}
         extraStat={{ label: 'TIER S', value: `${MIR_KPIS.asignaturasTierS}`, hint: 'ROI máx', accent: Colors.coral }}
+        onTrack={dist
+          ? { label: `Δ ${dist.hito.clave.toUpperCase()}`, value: `${dist.delta >= 0 ? '+' : ''}${dist.delta}`, hint: `mín ${dist.hito.min}% · ${dist.referencia}`, accent: dist.delta >= 0 ? Colors.green : Colors.coral }
+          : proximoHito ? { label: `Δ ${proximoHito.clave.toUpperCase()}`, value: '—', hint: `mín ${proximoHito.min}% · sin medición`, accent: Colors.muted } : null}
       />
 
       <ConsoleTabs tabs={TABS} active={sub} accent={AMBER} onSelect={setSub} />
@@ -71,8 +79,34 @@ export default function MirHub() {
 // ── SIMULACROS · readiness cronometrado + desgloses por asignatura ──
 function SimulacrosView() {
   const readiness = mirReadiness();
+  const iso = todayISO();
+  const dist = mirDistanciaOnTrack(iso);
+  const u = mirCierreUmbral(iso);
   return (
     <View>
+      {/* Trayectoria Top 50 · mínimo on-track por hito (gap 5) */}
+      <SectionLabel>Trayectoria Top 50 · mínimo on-track por hito (% neto ciego)</SectionLabel>
+      <GlassPanel accent={AMBER} style={{ marginBottom: Spacing.md, padding: Spacing.lg }}>
+        <Text style={[st.body, { marginBottom: Spacing.sm }]}>
+          {dist ? <Text style={{ color: dist.delta >= 0 ? Colors.green : Colors.coral, fontWeight: '800' }}>{dist.texto}</Text> : <Text style={{ color: Colors.muted }}>Sin medición ciega todavía: el primer punto de la trayectoria lo fija el test de cierre y el mini-MIR D77.</Text>}
+        </Text>
+        {MIR_HITOS.map((h, i) => {
+          const esProximo = dist ? dist.hito.clave === h.clave : h.fecha >= iso && !MIR_HITOS.slice(0, i).some((x) => x.fecha >= iso);
+          const pasado = h.fecha < iso;
+          return (
+            <View key={h.clave} style={[st.hitoRow, i === 0 && { borderTopWidth: 0 }, esProximo && { backgroundColor: AMBER + '12' }]}>
+              <Text style={[st.hitoFecha, { color: pasado ? Colors.muted : AMBER }]}>{h.fecha}</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={[st.hitoNombre, pasado && { color: Colors.muted }]}>{esProximo ? '▶ ' : ''}{h.nombre}</Text>
+                <Text style={st.hitoNota}>{h.fase} · {h.nota}</Text>
+              </View>
+              <Text style={[st.hitoMin, { color: pasado ? Colors.muted : Colors.gold }]}>≥{h.min} %</Text>
+            </View>
+          );
+        })}
+        <Text style={[st.smallNote, { marginTop: Spacing.sm }]}>Umbral de cierre vigente ({u.fase}): ≥{u.consolidada} % consolidada · &lt;{u.anclasD7} % anclas D-7 (75/60 desde abr-2027). Agregado por asignatura con n≥{MIR_AGREGADO_MIN_Q} Q manda sobre el cierre de 10Q. {MIR_HITOS_FUENTE}</Text>
+      </GlassPanel>
+
       <CheckpointCard
         title="Simulacros cronometrados · readiness real"
         subtitle={`${readiness.estado} · siguiente: ${readiness.siguiente}`}
@@ -147,18 +181,22 @@ function TacticaView() {
         ))}
       </GlassPanel>
 
-      <SectionLabel>Táctica de examen · regla numérica (−1/3)</SectionLabel>
-      <View style={[gridStyle(200), { marginBottom: Spacing.xl }]}>
+      <SectionLabel>Táctica de examen · regla numérica (−1/3) + reglas Palmerton</SectionLabel>
+      <View style={[gridStyle(200), { marginBottom: Spacing.md }]}>
         {MIR_TACTICA.map((t, i) => (
           <View key={i} style={gridItemStyle(200)}>
             <View style={st.tactCard}>
               <Text style={st.tactCaso}>{t.caso}</Text>
               <Text style={[st.tactEv, { color: AMBER }]}>{t.ev}</Text>
-              <Chip label={t.accion} color={t.accion.startsWith('Responde') ? Colors.green : Colors.muted} small />
+              <Chip label={t.accion} color={t.accion.startsWith('Responde') ? Colors.green : t.accion.startsWith('Solo') || t.accion.startsWith('Adivina') ? Colors.coral : Colors.muted} small />
             </View>
           </View>
         ))}
       </View>
+      <GlassPanel accent={AMBER} style={{ marginBottom: Spacing.md, padding: Spacing.lg }}>
+        <Text style={st.body}>{MIR_TACTICA_NOTA}</Text>
+      </GlassPanel>
+      <TacticaConsejos />
 
       <SectionLabel>Recursos · cuadernillos oficiales gratis</SectionLabel>
       <View style={[gridStyle(240), { marginBottom: Spacing.lg }]}>
@@ -171,6 +209,24 @@ function TacticaView() {
         ))}
       </View>
     </View>
+  );
+}
+
+/** Consejo táctico por asignatura (gap 6): EV de la política de blanco + fallos "entre dos" + respuestas cambiadas, desde el log. */
+function TacticaConsejos() {
+  const stats = mirStatsPorAsignatura().filter((s) => s.tactica.n > 0);
+  return (
+    <GlassPanel style={{ marginBottom: Spacing.xl }}>
+      <Text style={[st.hourBloque, { marginBottom: 4 }]}>Consejo por asignatura · EV de tu política de blanco (log)</Text>
+      {stats.length === 0 ? (
+        <Text style={st.smallNote}>Sin datos tácticos todavía: al corregir cada test (anclada, quiz, cierre, mini-MIR, mantenimiento) despliega "táctica −1/3" en el formulario de HOY y registra blancos acertables · fallos entre dos · cambiadas. Con 20 s por test la app calcula si te conviene arriesgar más o dejar en blanco.</Text>
+      ) : stats.map((s, i) => (
+        <View key={s.asignatura} style={[st.calRow, i === 0 && { borderTopWidth: 0 }]}>
+          <Text style={[st.calFase, { color: s.tactica.evBlanco != null && s.tactica.evBlanco > 0.5 ? Colors.coral : AMBER }]}>{s.asignatura}</Text>
+          <Text style={st.calFoco}>{s.tactica.n} tests · blancos {s.tactica.blancos} ({s.tactica.blancosAcertables} acertables{s.tactica.evBlanco != null ? ` · EV responderlos ${s.tactica.evBlanco >= 0 ? '+' : ''}${s.tactica.evBlanco}` : ''}) · entre dos {s.tactica.fallosEntreDos}/{s.tactica.fallos} · cambiadas {s.tactica.cambiadas} ({s.tactica.cambiadasAFallo} a fallo) → {s.tactica.consejo}</Text>
+        </View>
+      ))}
+    </GlassPanel>
   );
 }
 
@@ -288,6 +344,12 @@ const st = StyleSheet.create({
   calRow: { flexDirection: 'row', alignItems: 'flex-start', paddingVertical: Spacing.md, borderTopWidth: 1, borderTopColor: Hairline.soft, gap: Spacing.md },
   calFase: { fontSize: FontSize.labelMd, fontWeight: '800', width: 110, letterSpacing: 0.2 },
   calFoco: { flex: 1, fontSize: FontSize.labelMd, color: Colors.onSurfaceVariant, lineHeight: 16 },
+
+  hitoRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md, paddingVertical: Spacing.sm, paddingHorizontal: 6, borderTopWidth: 1, borderTopColor: Hairline.soft, borderRadius: BorderRadius.sm },
+  hitoFecha: { fontSize: FontSize.labelSm, fontWeight: '800', width: 84, ...tabular },
+  hitoNombre: { fontSize: FontSize.labelLg, fontWeight: '700', color: Colors.onSurface },
+  hitoNota: { fontSize: FontSize.labelSm, color: Colors.muted, marginTop: 2, lineHeight: 15 },
+  hitoMin: { fontSize: FontSize.titleMd, fontWeight: '900', width: 62, textAlign: 'right', letterSpacing: -0.3, ...tabular },
 
   tactCard: { ...cardBase, alignItems: 'center' },
   tactCaso: { fontSize: FontSize.labelMd, color: Colors.onSurface, fontWeight: '600', textAlign: 'center' },

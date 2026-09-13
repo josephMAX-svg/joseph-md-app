@@ -1,24 +1,31 @@
 /**
- * dermaDailyPlan.ts — Plan DÍA A DÍA Dermatología · PLAN ÉLITE v2.1 (5-sep-2026).
+ * dermaDailyPlan.ts — Plan DÍA A DÍA Dermatología · PLAN ÉLITE v3 (taper de examen, 12-sep-2026; base v2.1 del 5-sep).
  * Fuente: DATA/DERMATOLOGIA/PLAN_ELITE_2026-27.md (agente macro:derma-estetica-elite +
- * inventario AccessDermatology REAL) — 70 sesiones hacia DERMATOLOGÍA ESTÉTICA.
+ * inventario AccessDermatology REAL) — 73 sesiones (CICLO 1) hacia DERMATOLOGÍA ESTÉTICA;
+ * el CICLO 2 (d74-d103) vive en dermaCiclo2.ts (GENERADO por DATA/_scripts/gen_derma_ciclo2.js).
  *
  * CICLO ÚNICO de 45′ por sesión (franja 13:30–14:15, interdiario con Research):
- *   1) 2 casos VISUALES CIEGOS de "Dermatology Cases for Board Review" (200 casos:
+ *   1) casos VISUALES CIEGOS de "Dermatology Cases for Board Review" (200 casos:
  *      Med 110 · Path 30 · Peds 30 · Surg 30) en ORDEN ALEATORIO FIJO (permutación seeded
- *      DERMA_CASO_ORDEN → campo casoIds por sesión; 140 en la primera pasada, 60 post-Step 1) —
+ *      DERMA_CASO_ORDEN → campo casoIds por sesión). CADENCIA v3: 2 casos/sesión d1-d43 ·
+ *      1 caso en las 6 sesiones TAPER (d44-d49) · 3 casos/sesión desde d50 (primera sesión post-Step 1)
+ *      → 164 casos en la primera pasada (d73), 36 restantes al ciclo 2 (dermaCasosPostStep1) —
  *      método Palmerton en 4 pasos: ① morfología en terminología estándar ② diferencial
  *      de 3 ③ viñeta y responder ④ discusión → 1-2 tarjetas de MECANISMO + 1 oclusión.
  *      El caso NUNCA se salta; los 10Q de review son la variable de ajuste.
  *      ①b) 1 imagen DERMATOSCÓPICA ciega por sesión (campo dermatoscopiaImg: Self-Assessment 2e
  *      en las impares · Dermoscopedia por patrón en las pares).
- *   2) ~10Q de review rotando los bancos REALES (1.301Q): Pictorial 4e 381Q (~38 sesiones)
- *      → CORE Exam Bank 104Q (~9, cierre de módulo) → Barnhill's Challenge 403Q (dermpath)
- *      → QOTW 50Q (checkpoints). Etiquetar CADA fallo con su módulo CORE (med/ped/surg/path)
- *      en el ledger (dermaLedger.ts · localStorage 'jmd-derma-casos' / 'jmd-derma-fallos').
+ *   2) ~10Q de review rotando los bancos REALES (1.349Q + 48 casos LANGE) con PRESUPUESTO (v3, DERMA_BANCOS):
+ *      Pictorial 4e 381Q = 38 sesiones (380Q, se agota en d66) → relevo Pictorial 3e 363Q (qa 2948, desde d67)
+ *      · CORE Exam Bank 104Q (cierre de módulo) · Barnhill's Challenge 403Q (dermpath) · QOTW 50Q (checkpoints)
+ *      · LANGE Clinical Dermatology Cases 48Q = cierre del módulo X (d71). Cada link abre el banco desde el
+ *      principio: el CURSOR "retoma en Q#" lo da dermaLedger.dermaBancoCursor(fuente) = max(id)+1 del ledger.
+ *      Etiquetar CADA fallo con su módulo CORE (med/ped/surg/path) en el ledger (dermaLedger.ts ·
+ *      localStorage 'jmd-derma-casos' / 'jmd-derma-fallos'); un fallo CCSN → dermaCuraPendiente() devuelve el
+ *      DD Challenge (cases 1616) como cura OBLIGATORIA de la siguiente sesión.
  *      SEGUNDA CAPA (v2.1): 1 de cada 3 sesiones (d ≡ 0 mod 3) el slot pasa a 10Q del TEST DEL
  *      CAPÍTULO ProMIR de Dermatología (campo promir, rotación por peso PROMIR_DERMA_ROTACION) y se
- *      registra en mirEvalLog (kind 'derma10Q', asignatura 'Dermatología').
+ *      registra en mirEvalLog (kind 'derma10Q', asignatura 'Dermatología'). d72 = 24º slot (cap 4).
  *   3) 10′ de LECTURA dirigida del módulo semanal: Fitzpatrick (clínica) · Baumann 3e /
  *      Lasers / Procedural / Dermatologic Surgery (estética) — nunca lectura lineal.
  *      MICRO-TRACK DERMATOSCOPIA: en las sesiones PARES d6→d40 el slot de lectura lo ocupa
@@ -26,29 +33,46 @@
  *      y d44 imágenes comparativas. La lectura del módulo queda en las impares.
  *
  * PROGRESIÓN de módulos (fundamentos → … → ESTÉTICA = la meta, 22 átomos X):
- *   A Fundamentos/morfología (d1-6) · B Inflamatorias (d7-13) · C Infecciosas (d14-18, d57-58) ·
+ *   A Fundamentos/morfología (d1-6) · B Inflamatorias (d7-13) · C Infecciosas (d14-18, d44-45) ·
  *   X SEGURIDAD DE FILLERS adelantada (d19-20: oclusión vascular + HDPH · ceguera + kit) ·
  *   D Tumores (d21-28) · E Dermpath básica (d29-33) · F Pediátrica (d34-38) ·
- *   G Quirúrgica/anatomía facial (d39-44) · H Checkpoint CORE (d45-46) ·
- *   X ESTÉTICA (d47-56, d59-68: toxina → fillers → peelings → láser → cosmecéutica) ·
- *   Z Cierre (d69-70). Regla de SEGURIDAD primero: complicaciones antes que técnica.
+ *   G Quirúrgica/anatomía facial (d39-43, d50) · TAPER Step 1 (d44-49) · H Checkpoint CORE (d51-52) ·
+ *   X ESTÉTICA (d46 contorno [taper], d53-71: anatomía 3D → arterias → toxina → fillers → peelings → láser →
+ *   cosmecéutica) · Z Cierre (d72-73). Regla de SEGURIDAD primero: complicaciones antes que técnica.
  *
- * ⚠ SWAP v2.1 (de CONTENIDO, no de fechas): d19↔d57 y d20↔d58. La seguridad de fillers
- *   (oclusión vascular/HDPH + ceguera) se estudia en octubre para preceder a la extracción de
- *   datos de SR-1 en Research (R22-R25, 5-13 nov) y a los subgrupos tiempo-a-hialuronidasa (R33,
- *   7-dic). "El paciente agudo con fiebre y rash" y "pelo y uñas infecciosos" pasan a d57-58.
+ * ⚠ SWAP v2.1 (de CONTENIDO, no de fechas): la seguridad de fillers (oclusión vascular/HDPH + ceguera,
+ *   originalmente en la fase X) se estudia en noviembre (d19-20) para preceder a la revalidación del PICO
+ *   de SR-1 (R6b, 11-feb-2027) y a la extracción R22-R25 (abr-2027). "El paciente agudo con fiebre y rash"
+ *   y "pelo y uñas infecciosos" (los átomos ligeros C que dejaron el hueco) viven hoy en el taper (d44-45).
  *   Campo puenteResearch marca los átomos que alimentan SR-1 (L4) / SR-2 (L5).
  *
- * ⚠ FECHAS re-fechadas v5.10: D1 mar 2026-09-15 → D70 mar 2027-03-30 (interdiario con Research,
+ * ⚠ TAPER DE EXAMEN v3 (12-sep-2026, gaps_v3b_derma nº2 — swap de CONTENIDO, fechas intactas):
+ *   las 6 sesiones que caen entre el NBME 31 (vie 15-ene-2027, GO/NO-GO) y el examen Step 1 (vie 29-ene)
+ *   = d44 15-ene · d45 19-ene · d46 21-ene · d47 25-ene · d48 27-ene (D95) · d49 29-ene (EXAMEN, opcional)
+ *   pasan a `taper: {modo:'step1'}` = 1 caso ciego (no 2) + review = FSRS de fallos del ledger (rFALLOS, 0 preguntas
+ *   nuevas) + 0 lectura nueva (o lectura LIGERA del átomo MED absorbido). Contenido de la ventana: los 3 átomos
+ *   ligeros MED (paciente agudo, pelo/uñas, contorno corporal — antes d57/d58/d66) + 3 "segundas pasadas
+ *   parciales" (nuevas: A-D · E-G · opcional del día del examen). Lo desplazado (Cicatrización → Checkpoints →
+ *   Anatomía 3D → Arterias → Envejecimiento → Toxina I-IV → Rellenos → Peelings → Láser → Microneedling →
+ *   Cosmecéutica → Repasos) se corre DESPUÉS del examen en el mismo orden: 0 átomos perdidos, el plan se alarga
+ *   de 70 a 73 sesiones (d71 jue 1-abr · d72 lun 5-abr · d73 mié 7-abr-2027). Mapa d(v2.1) → d(v3):
+ *   DERMA_TAPER_REMAP_D. Regla PLAN_ELITE: ningún átomo CRIT nuevo a ±3 días hábiles de un examen mayor
+ *   (ENCAPS 2027-I: aplicar `modo:'encaps'` vía DERMA_TAPER_ENCAPS_FECHA cuando Joseph fije la fecha).
+ *
+ * ⚠ FECHAS re-fechadas v5.10: D1 mar 2026-09-15 → D73 mié 2027-04-07 (interdiario con Research,
  * ancla en researchData.ts#diaEstudioTipo; sáb+dom libres; salta 25-dic/31-dic/1-ene) — NO TOCAR
- * las fechas a mano (usar DATA/_scripts/remap_inicio.js, que localiza la PRIMERA aparición del
+ * las fechas a mano (usar DATA/_scripts/remap_inicio.js — guard DER=73 —, que localiza la PRIMERA aparición del
  * marcador del array de días y parsea cada campo fecha hasta el cierre del array — por eso este
  * comentario NO repite el marcador literal ni el cierre; no meter cierres de array ni otros campos
  * fecha dentro del bloque de días).
  * URLs 100% reales: q-banks y cases verificados en dermaSourcesData.ts; deep-links de libros con
- * sectionid verificado; papers = DOIs/PMC del PLAN_ELITE y de referentes.md; DermNet/Dermoscopedia
- * verificados por HTTP 200 / TOC del sitio el 5-sep-2026 (describing-skin-lesions y
- * cutaneous-leishmaniasis daban 404 → sustituidos por terminology / leishmaniasis).
+ * sectionid verificado en 50/70 átomos (20 siguen a portada de libro: TOC pendiente, _scrape/README_TOC_PENDIENTE.md);
+ * papers = DOIs/PMC del PLAN_ELITE y de referentes.md; DermNet/Dermoscopedia verificados por HTTP 200 / TOC del
+ * sitio el 5-sep-2026 (describing-skin-lesions y cutaneous-leishmaniasis daban 404 → sustituidos por
+ * terminology / leishmaniasis). SINERGIA STEP 1 (v3): `step1: true` en los 8 átomos que Step 1 vuelve a preguntar
+ * (d7 psoriasis · d8 eccemas · d10 pénfigo/penfigoide · d12 SJS/TEN/DRESS · d14 bacterianas · d16 HSV/VZV/VPH ·
+ * d23 BCC/SCC · d24 melanoma) → DERMA_STEP1_DIAS; el día "dermato Step 1" del plan USMLE (D73, 23-dic-2026)
+ * repasa esas tarjetas (tag step1) y los fallos del ledger de esos 8 átomos.
  */
 import { diaEstudioTipo, VUELTAS, INTERVALOS, type Prioridad } from './researchData';
 
@@ -76,18 +100,22 @@ export const PM_CAP = {
 } as const;
 
 export const DERMA_DAILY_META = {
-  inicio: '2026-09-15', fin: '2027-03-30', totalDias: 70, // v5.10 (12-sep): D1=mar 15-sep-2026 (el lun 14-sep es día Research) · interdiario con Research (paridad researchData.ts) · sáb+dom libres · salta 25-dic/31-dic/1-ene · NO tocar a mano
+  inicio: '2026-09-15', fin: '2027-04-07', totalDias: 73, // v5.10 + taper v3 (12-sep): D1=mar 15-sep-2026 (el lun 14-sep es día Research) · D73=mié 7-abr-2027 (70→73: 3 segundas pasadas parciales en la ventana del examen, 0 átomos recortados) · interdiario con Research (paridad researchData.ts) · sáb+dom libres · salta 25-dic/31-dic/1-ene · NO tocar a mano
   bloque: '13:30–14:15 (45 min · franja boards del Calendar, alterna con Research — interdiario)',
-  nota: 'PLAN ÉLITE v2.1: cada sesión = 2 casos CIEGOS fijos (casoIds, permutación seeded de los 200) + 1 imagen dermatoscópica ciega + ~10Q review (rotación 1.301Q, fallos etiquetados med/ped/surg/path en el ledger) + 10′ lectura del módulo (o módulo DermNet Dermoscopy CME en las pares d6-d44). Progreso REAL marcable (studyProgress key "derma"). El día mostrado salta los días-Research.',
+  nota: 'PLAN ÉLITE v3: cada sesión = casos CIEGOS fijos (casoIds, permutación seeded de los 200: 2/sesión · 1 en el taper d44-d49 · 3 desde d50) + 1 imagen dermatoscópica ciega + ~10Q review (presupuesto por banco DERMA_BANCOS, cursor "retoma en Q#" desde el ledger; fallos etiquetados med/ped/surg/path) + 10′ lectura del módulo (o módulo DermNet Dermoscopy CME en las pares d6-d44). TAPER Step 1 d44-d49 (15→29-ene): 1 caso + FSRS de fallos + 0 lectura nueva. Progreso REAL marcable (studyProgress key "derma"). El día mostrado salta los días-Research. Ciclo 2 (d74-d103) en dermaCiclo2.ts.',
+  /** Primera sesión tras el examen Step 1 (vie 29-ene-2027): desde aquí 3 casos/sesión. */
+  postStep1D1: 50,
+  /** Ventana del taper Step 1 (inclusive): NBME 31 (vie 15-ene) → examen (vie 29-ene-2027). */
+  taperStep1: { desdeD: 44, hastaD: 49, desde: '2027-01-15', hasta: '2027-01-29' },
 };
 
 /** Franjas de la sesión Derma de 45 min — ciclo único del PLAN ÉLITE (caso ciego + review + lectura). */
 export const DERMA_FRANJAS = [
   { hora: '13:30–13:33', fase: 'Repaso FSRS: tarjetas de MECANISMO + fallos etiquetados (med/ped/surg/path) de la sesión previa', tipo: 'eval' },
-  { hora: '13:33–13:36', fase: 'CASO CIEGO ①②: SOLO la imagen → describe la morfología en terminología estándar (8 ejes) + diferencial de 3 (sin leer nada) · ①b imagen dermatoscópica ciega', tipo: 'pretest' },
-  { hora: '13:36–13:52', fase: 'CASO ③④: leer la viñeta y responder → discusión → 1-2 tarjetas de MECANISMO + 1 oclusión de imagen (el caso NUNCA se salta) · acierto/fallo al ledger', tipo: 'read' },
-  { hora: '13:52–14:03', fase: '~10Q review del banco rotante (Pictorial 4e → CORE → Barnhill dermpath → QOTW) — variable de ajuste si el caso pidió más', tipo: 'review' },
-  { hora: '14:03–14:13', fase: 'LECTURA dirigida 10′ del módulo (Fitzpatrick clínica · Baumann/Lasers/Procedural estética) — o módulo DermNet Dermoscopy CME en sesiones pares d6-d44', tipo: 'lectura' },
+  { hora: '13:33–13:36', fase: 'CASO CIEGO ①②: SOLO la imagen → describe la morfología en terminología estándar (8 ejes) + diferencial de 3 (sin leer nada) · ①b imagen dermatoscópica ciega (casos por sesión: 2 · 1 en taper d44-d49 · 3 desde d50)', tipo: 'pretest' },
+  { hora: '13:36–13:52', fase: 'CASO ③④: leer la viñeta y responder → discusión → 1-2 tarjetas de MECANISMO + 1 oclusión de imagen (el caso NUNCA se salta) · acierto/fallo al ledger (con 3 casos el bloque crece y los 10Q se acortan)', tipo: 'read' },
+  { hora: '13:52–14:03', fase: '~10Q review del banco rotante (Pictorial 4e → 3e → CORE → Barnhill dermpath → QOTW → LANGE) retomando en el Q# del cursor del ledger — variable de ajuste si el caso pidió más · en TAPER: solo FSRS de fallos, 0 preguntas nuevas', tipo: 'review' },
+  { hora: '14:03–14:13', fase: 'LECTURA dirigida 10′ del módulo (Fitzpatrick clínica · Baumann/Lasers/Procedural estética) — o módulo DermNet Dermoscopy CME en sesiones pares d6-d44 · en TAPER: 0 lectura nueva (o lectura ligera del átomo MED)', tipo: 'lectura' },
   { hora: '14:13–14:15', fase: 'Cierre: free recall del caso (7 pasos del cerebro clínico si es ficha) + etiquetar fallos con su módulo CORE + marcar progreso real', tipo: 'apex' },
 ];
 
@@ -104,16 +132,33 @@ export interface DermatoscopiaModulo { n: number; t: string; url: string }
 export interface PuenteResearch { linea: 'L4' | 'L5'; sr: 'SR-1' | 'SR-2'; nota: string }
 /** Capa Nítida (Pulso · dermatología médica por suscripción): el átomo convertido en protocolo de producto. */
 export interface NitidaProtocolo { protocolo: string; guion: string; seguimiento: string }
+/**
+ * TAPER de examen (v3): la sesión cae a ±3 días hábiles de un examen mayor → 1 caso ciego (no 2), review = FSRS de
+ * fallos del ledger (0 preguntas nuevas) y 0 lectura nueva (o lectura ligera del átomo MED absorbido).
+ * 'step1' = ventana NBME 31 → examen Step 1 (d44-d49, fijo en el plan) · 'encaps' = se activa por fecha con
+ * DERMA_TAPER_ENCAPS_FECHA cuando Joseph fije el examen ENCAPS 2027-I (dermaTaperEfectivo).
+ */
+export interface DermaTaper { modo: 'step1' | 'encaps'; motivo: string; casos: 1; nota: string }
+/** Checkpoints del ciclo 1 (leen el ledger): cp1/cp2 antes de la fase estética · repaso1/repaso2 al cierre. */
+export type DermaCheckpointKey = 'cp1' | 'cp2' | 'repaso1' | 'repaso2';
+/** Bancos de review REALES de AccessDerma (clave = `fuente` del ledger para preguntas de banco). */
+export type DermaBancoKey = 'pictorial' | 'pictorial3' | 'core' | 'barnhill' | 'qotw' | 'lange';
 
 export interface DiaDerma {
   d: number; fecha: string; bloque: string; bKey: DermaBloqueKey; tier: DermaTier;
   sub: string; referente: string | null;
   access: MatLink;            // CASO del día (Cases for Board Review / DD Challenge — el motor)
-  qbankly: MatLink | null;    // REVIEW ~10Q del banco rotante de AccessDerma (Pictorial/CORE/Barnhill/QOTW)
+  qbankly: MatLink | null;    // REVIEW ~10Q del banco rotante de AccessDerma (Pictorial 4e/3e · CORE · Barnhill · QOTW · LANGE) — en TAPER: rFALLOS
   promir: MatLink | null;     // 10Q del TEST del capítulo ProMIR Dermatología (solo en d ≡ 0 mod 3 — sustituye al review de AccessDerma ese día)
-  extra: MatLink | null;      // LECTURA dirigida 10′ del módulo (libro AccessDerma o paper del referente)
-  /** Los 2 casos CIEGOS de la sesión (ids 1-200 de DERMA_CASOS, permutación fija DERMA_CASO_ORDEN). */
-  casoIds: [number, number];
+  extra: MatLink | null;      // LECTURA dirigida 10′ del módulo (libro AccessDerma o paper del referente) — null = 0 lectura nueva (taper)
+  /** Casos CIEGOS de la sesión (ids 1-200 de DERMA_CASOS, permutación fija DERMA_CASO_ORDEN): 2 · 1 en taper · 3 desde d50 · 0 en review puro del ciclo 2. */
+  casoIds: number[];
+  // ── Capa v3 (taper · sinergia Step 1 · checkpoints; todos OPCIONALES) ──
+  taper?: DermaTaper;         // d44-d49: modo taper Step 1 (1 caso + FSRS + 0 lectura nueva)
+  step1?: true;               // los 8 átomos que Step 1 vuelve a preguntar (cuenta doble: mismo mazo FSRS, tag step1)
+  anclajeStep1?: string;      // anclaje a First Aid / día USMLE (melanoma, SJS/TEN) — sección "A VERIFICAR" hasta cotejar el ejemplar
+  checkpoint?: DermaCheckpointKey; // d51 cp1 · d52 cp2 · d72 repaso1 · d73 repaso2 (DermaCheckpointPanel)
+  drillHDPH?: true;           // d19 · d20 · d52 · d73: drill "Oclusión vascular · 90 s" cronometrado (DermaEmergencyDrill)
   // ── Capa ATLAS (todos OPCIONALES — no rompen ningún átomo existente) ──
   morfologia?: string;        // lesión elemental dominante (chip de la lámina)
   sitio?: string;             // sitio corporal → BodyMap
@@ -126,7 +171,7 @@ export interface DiaDerma {
   dermatoscopiaModulo?: DermatoscopiaModulo; // módulo DermNet Dermoscopy CME de la sesión (pares d6-d44)
   dermatoscopiaImg?: string;  // 1 imagen dermatoscópica CIEGA por sesión (Self-Assessment 2e ↔ Dermoscopedia por patrón)
   puenteResearch?: PuenteResearch; // alimenta SR-1 (L4 oclusión vascular) / SR-2 (L5 fototipos IV-VI)
-  nitida?: NitidaProtocolo;   // 7 átomos B + d68: consulta tipo tele-derma (foto estandarizada, rutina ≤3 pasos, revisión 6-8 sem, métrica)
+  nitida?: NitidaProtocolo;   // 7 átomos B + d71 (cosmecéutica; antes d68): consulta tipo tele-derma (foto estandarizada, rutina ≤3 pasos, revisión 6-8 sem, métrica)
 }
 
 const B = {
@@ -135,16 +180,42 @@ const B = {
   G: 'Quirúrgica / anatomía facial', H: 'Checkpoint CORE', Z: 'Cierre / repaso', X: 'Estética',
 };
 
-// ── Bloques de review rotantes (q-banks REALES de AccessDerma, ids verificados) ──
-const rPIC: MatLink = { t: 'Pictorial Review 4e · ~10Q (de 381)', url: qa(3626) };
+// ── Bloques de review rotantes (q-banks REALES de AccessDerma, ids verificados) — PRESUPUESTO v3 en DERMA_BANCOS ──
+const rPIC: MatLink = { t: 'Pictorial Review 4e · ~10Q (de 381 · 38 sesiones, se agota en d66)', url: qa(3626) };
+const rPIC3: MatLink = { t: 'Pictorial Review 3e · ~10Q (de 363) — relevo del 4e agotado (desde d67)', url: qa(2948) };
 const rCORE: MatLink = { t: 'CORE Exam Bank · ~10Q (de 104) — cierre de módulo', url: qa(3479) };
 const rBARN: MatLink = { t: "Barnhill's Challenge · ~10Q dermpath (de 403)", url: qa(2865) };
 const rQOTW: MatLink = { t: 'Question of the Week · archivo (50Q)', url: qa(3562) };
+/** LANGE Clinical Dermatology Cases (casos-incógnita, 48Q de autoevaluación; gboscontainerid 258 verificado en _scrape/accessderma_estructura.json). */
+export const LANGE_CASES_URL = `${MH}/cases.aspx?gboscontainerid=258`;
+const rLANGE: MatLink = { t: 'LANGE Clinical Dermatology Cases · casos-incógnita (48Q) — cierre del módulo X', url: LANGE_CASES_URL };
+/** TAPER: el slot de review NO abre preguntas nuevas — solo la cola FSRS de fallos del ledger (casos + preguntas, cada banco en su Q#). */
+const rFALLOS: MatLink = { t: 'TAPER · repaso FSRS: SOLO casos y preguntas fallados del ledger (0 preguntas nuevas; retoma cada banco en su Q#)', url: cases(1546) };
 // ── El motor: casos visuales ciegos ──
-const CASO: MatLink = { t: 'Cases for Board Review · 2 casos CIEGOS (casoIds · permutación fija de 200)', url: cases(1546) };
+const CASO: MatLink = { t: 'Cases for Board Review · casos CIEGOS de la sesión (casoIds · permutación fija de 200: 2 · 1 en taper · 3 desde d50)', url: cases(1546) };
 const CASO_DD: MatLink = { t: 'Differential Diagnosis Challenge · pares de diferencial (100 sets)', url: cases(1616) };
 const CASO_FALLOS: MatLink = { t: 'Board Review · SOLO casos fallados del ledger (segunda pasada FSRS)', url: cases(1546) };
 const ABD_GUIDE = 'https://dlpgnf31z4a6s.cloudfront.net/media/252836/core-study-guide-012021.pdf';
+/** Taper Step 1 (d44-d49): mismo motivo, nota propia por sesión. */
+const TAPER_STEP1 = (nota: string): DermaTaper => ({ modo: 'step1', motivo: 'Ventana NBME 31 (vie 15-ene-2027, GO/NO-GO) → examen Step 1 (vie 29-ene-2027)', casos: 1, nota });
+/**
+ * Presupuesto de preguntas por banco (v3 · gaps_v3b_derma nº5): Q disponibles vs sesiones asignadas en el ciclo 1.
+ * `sesiones` y `qAsignadas` se calculan desde DERMA_DIAS (verdad del plan, no una cifra escrita a mano).
+ */
+export interface DermaBanco { fuente: DermaBancoKey; t: string; url: string; totalQ: number; qPorSesion: number }
+export const DERMA_BANCOS: DermaBanco[] = [
+  { fuente: 'pictorial', t: 'Pictorial Review 4e', url: qa(3626), totalQ: 381, qPorSesion: 10 },
+  { fuente: 'pictorial3', t: 'Pictorial Review 3e', url: qa(2948), totalQ: 363, qPorSesion: 10 },
+  { fuente: 'core', t: 'CORE Exam Bank', url: qa(3479), totalQ: 104, qPorSesion: 10 },
+  { fuente: 'barnhill', t: "Barnhill's Dermatopathology Challenge", url: qa(2865), totalQ: 403, qPorSesion: 10 },
+  { fuente: 'qotw', t: 'Question of the Week (archivo)', url: qa(3562), totalQ: 50, qPorSesion: 10 },
+  { fuente: 'lange', t: 'LANGE Clinical Dermatology Cases', url: LANGE_CASES_URL, totalQ: 48, qPorSesion: 10 },
+];
+/** Banco (clave del ledger) a partir de la URL real del link de review; undefined = no es un banco (p. ej. rFALLOS → cases 1546). */
+export function dermaBancoDeUrl(url: string | undefined | null): DermaBancoKey | undefined {
+  if (!url) return undefined;
+  return DERMA_BANCOS.find((b) => url.startsWith(b.url))?.fuente;
+}
 
 /* ────────────────────────────────────────────────────────────────────────────
  * CASOS · "Dermatology Cases for Board Review" (AccessDerma groupid 1546)
@@ -163,8 +234,9 @@ export const DERMA_CASOS: DermaCaso[] = Array.from({ length: 200 }, (_, i) => ({
  * Permutación seeded FIJA de los 200 casos (interleaving real, sin agrupar por tema).
  * Generada una sola vez con mulberry32(seed 20260907) + Fisher-Yates — la permutación se CONGELA
  * (script: scratchpad/perm.js del agente derma v2.1) y CONGELADA aquí como literal para que
- * ningún cambio de runtime altere qué caso toca qué día. Posiciones 0-139 = primera pasada
- * (2/sesión × 70) · 140-199 = resto post-Step 1 (feb-2027, al subir a 5 casos/sesión).
+ * ningún cambio de runtime altere qué caso toca qué día. v3: las sesiones CONSUMEN posiciones en orden
+ * (2 en d1-d43 · 1 en el taper d44-d49 · 3 desde d50): posiciones 0-163 = primera pasada (164 casos, d73)
+ * · 164-199 = los 36 restantes, a 3/sesión en las 12 primeras sesiones del CICLO 2 (dermaCiclo2.ts).
  */
 export const DERMA_CASO_ORDEN: number[] = [
   192, 43, 112, 166, 25, 165, 21, 194, 36, 84, 49, 14, 124, 67, 151, 179, 82, 47, 109, 176,
@@ -180,18 +252,34 @@ export const DERMA_CASO_ORDEN: number[] = [
 ];
 export const DERMA_CASO_META = {
   seed: 20260907, algoritmo: 'mulberry32 + Fisher-Yates (congelado como literal)',
-  porSesion: 2, primeraPasada: 140, restoPostStep1: 60,
-  primeraPasadaPorArea: { Med: 75, Path: 18, Peds: 22, Surg: 25 },
+  /** Cadencia v3 (decisión 12-sep: cierra la contradicción "5 casos/sesión desde feb" vs filas a 2): 2 · 1 en taper · 3 desde d50, con los 10Q como variable de ajuste. */
+  porSesion: { base: 2, taper: 1, postStep1: 3 },
+  primeraPasada: 164, restoCiclo2: 36, sesionesRestoCiclo2: 12,
+  primeraPasadaPorArea: { Med: 88, Path: 21, Peds: 26, Surg: 29 }, // leído de la permutación (posiciones 0-163) el 12-sep
+  restoCiclo2PorArea: { Med: 22, Path: 9, Peds: 4, Surg: 1 },
 } as const;
-/** Par de casos de la sesión d (1-70) según la permutación fija (idéntico al literal casoIds de la fila). */
-export function dermaCasosDeSesion(d: number): [number, number] {
-  const i = Math.max(0, Math.min(69, d - 1)) * 2;
-  return [DERMA_CASO_ORDEN[i], DERMA_CASO_ORDEN[i + 1]];
+/** Nº de casos que consume la sesión d del ciclo 1 (2 · 1 en el taper d44-d49 · 3 desde d50). */
+export function dermaCasosPorSesion(d: number): number {
+  const t = DERMA_DAILY_META.taperStep1;
+  if (d >= t.desdeD && d <= t.hastaD) return DERMA_CASO_META.porSesion.taper;
+  return d >= DERMA_DAILY_META.postStep1D1 ? DERMA_CASO_META.porSesion.postStep1 : DERMA_CASO_META.porSesion.base;
 }
-/** Los 60 casos que quedan para la 2ª fase (post-Step 1, feb-2027), en el orden de la permutación. */
+/** Posición de la permutación en la que arranca la sesión d (suma de los casos de las sesiones previas). */
+export function dermaCasoOffset(d: number): number {
+  let o = 0; for (let i = 1; i < d; i++) o += dermaCasosPorSesion(i); return o;
+}
+/** Casos de la sesión d (1-73) según la permutación fija (idéntico al literal casoIds de la fila). */
+export function dermaCasosDeSesion(d: number): number[] {
+  const dd = Math.max(1, Math.min(DERMA_DAILY_META.totalDias, Math.round(d)));
+  const o = dermaCasoOffset(dd);
+  return DERMA_CASO_ORDEN.slice(o, o + dermaCasosPorSesion(dd));
+}
+/** Los 36 casos que quedan tras la primera pasada (d73 · 7-abr-2027): a 3/sesión en d74-d85 del CICLO 2 (dermaCiclo2.ts). Nombre histórico. */
 export function dermaCasosPostStep1(): DermaCaso[] {
-  return DERMA_CASO_ORDEN.slice(140).map((id) => ({ id, area: dermaCasoArea(id) }));
+  return DERMA_CASO_ORDEN.slice(DERMA_CASO_META.primeraPasada).map((id) => ({ id, area: dermaCasoArea(id) }));
 }
+/** Alias v3 (mismo resultado que dermaCasosPostStep1): los casos que consume el ciclo 2. */
+export const dermaCasosCiclo2 = dermaCasosPostStep1;
 
 /* ────────────────────────────────────────────────────────────────────────────
  * MICRO-TRACK DERMATOSCOPIA · DermNet Dermoscopy CME (18 módulos, URLs verificadas 5-sep-2026
@@ -373,12 +461,12 @@ export const DERMA_DIAS: DiaDerma[] = [
   { d: 7, fecha: '2026-10-01', bloque: B.B, bKey: 'B', tier: 'CRIT', sub: 'Psoriasis + papuloescamosas (liquen plano, pitiriasis rosada/rubra)', referente: null,
     access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Color Atlas 9e · S3 Psoriasiform Dermatoses', url: ca(275941727) }, casoIds: [124, 67],
     morfologia: 'Placa', sitio: 'Tronco', ddx: ['Psoriasis vulgar', 'Liquen plano', 'Pitiriasis rosada', 'Tiña corporis', 'Micosis fungoide'],
-    atlasUrl: `${DN}/topics/psoriasis`, dermatoscopiaUrl: DSP.infl, dermatoscopiaImg: DSA, nitida: N_PSO },
+    atlasUrl: `${DN}/topics/psoriasis`, dermatoscopiaUrl: DSP.infl, dermatoscopiaImg: DSA, nitida: N_PSO, step1: true },
   { d: 8, fecha: '2026-10-05', bloque: B.B, bKey: 'B', tier: 'CRIT', sub: 'Eccemas: dermatitis atópica, de contacto, seborreica', referente: null,
     access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Color Atlas 9e · S2 Eczema/Dermatitis', url: ca(275941291) }, casoIds: [151, 179],
     morfologia: 'Placa', sitio: 'Pliegues', fototipo: 'DA en piel de color: eritema violáceo/gris, papulosa folicular',
     ddx: ['DA', 'Dermatitis de contacto', 'Seborreica', 'Psoriasis', 'Tiña corporis'],
-    atlasUrl: `${DN}/topics/atopic-dermatitis`, dermatoscopiaModulo: M(2), dermatoscopiaImg: DSP.pso, nitida: N_ECZ },
+    atlasUrl: `${DN}/topics/atopic-dermatitis`, dermatoscopiaModulo: M(2), dermatoscopiaImg: DSP.pso, nitida: N_ECZ, step1: true },
   { d: 9, fecha: '2026-10-07', bloque: B.B, bKey: 'B', tier: 'CRIT', sub: 'Acné + rosácea + hidradenitis (mecanismo → tratamiento; puente futuro a láser-acné y peelings)', referente: null,
     access: CASO, qbankly: rPIC, promir: PMD(7), extra: { t: 'Color Atlas 9e · S1 Sebaceous/Eccrine/Apocrine', url: ca(275941112) }, casoIds: [82, 47],
     morfologia: 'Pápula/pústula', sitio: 'Cara', ddx: ['Acné vulgar', 'Rosácea', 'Foliculitis', 'Dermatitis perioral'],
@@ -386,7 +474,7 @@ export const DERMA_DIAS: DiaDerma[] = [
   { d: 10, fecha: '2026-10-09', bloque: B.B, bKey: 'B', tier: 'CRIT', sub: 'Ampollosas autoinmunes: pénfigo vs penfigoide + dermatitis herpetiforme (nivel de la ampolla = mecanismo)', referente: null,
     access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Color Atlas 9e · S6 Bullous Diseases', url: ca(275942016) }, casoIds: [109, 176],
     morfologia: 'Ampolla', sitio: 'Tronco', ddx: ['Pénfigo vulgar (flácida, Nikolsky +, mucosas)', 'Penfigoide ampolloso (tensa, prurito, anciano)', 'Dermatitis herpetiforme (vesículas agrupadas, codos, celiaquía)', 'Pénfigo foliáceo', 'Epidermólisis bullosa adquirida'],
-    atlasUrl: `${DN}/topics/pemphigus-vulgaris`, histoUrl: 'https://www.dermpathatlas.com/', dermatoscopiaModulo: M(3), dermatoscopiaImg: DSP.three, nitida: N_AMP },
+    atlasUrl: `${DN}/topics/pemphigus-vulgaris`, histoUrl: 'https://www.dermpathatlas.com/', dermatoscopiaModulo: M(3), dermatoscopiaImg: DSP.three, nitida: N_AMP, step1: true },
   { d: 11, fecha: '2026-10-13', bloque: B.B, bKey: 'B', tier: 'ALTA', sub: 'Urticaria y angioedema + prurito sine materia', referente: null,
     access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Color Atlas 9e · S35 Generalized Pruritus', url: ca(275947685) }, casoIds: [162, 170],
     morfologia: 'Habón', sitio: 'Difuso', ddx: ['Urticaria aguda vs crónica espontánea', 'Angioedema por bradicinina (IECA, hereditario) vs histaminérgico', 'Vasculitis urticarial (>24 h, dolor, púrpura residual)', 'Prurito sine materia: colestasis, IRC, linfoma, tiroides'],
@@ -394,7 +482,8 @@ export const DERMA_DIAS: DiaDerma[] = [
   { d: 12, fecha: '2026-10-15', bloque: B.B, bKey: 'B', tier: 'CRIT', sub: 'Farmacodermias graves: SJS/TEN, DRESS, AGEP (no errar)', referente: null,
     access: CASO, qbankly: rPIC, promir: PMD(8), extra: { t: 'Color Atlas 9e · S23 Adverse Drug Reactions', url: ca(275944593) }, casoIds: [142, 103],
     morfologia: 'Ampolla', sitio: 'Difuso', ddx: ['SJS/TEN', 'DRESS', 'AGEP', 'EM mayor', 'SSSS', 'Pénfigo paraneoplásico'],
-    atlasUrl: `${DN}/topics/stevens-johnson-syndrome-toxic-epidermal-necrolysis`, dermatoscopiaModulo: M(4), dermatoscopiaImg: DSP.glob, nitida: N_FARM },
+    atlasUrl: `${DN}/topics/stevens-johnson-syndrome-toxic-epidermal-necrolysis`, dermatoscopiaModulo: M(4), dermatoscopiaImg: DSP.glob, nitida: N_FARM, step1: true,
+    anclajeStep1: 'Anclaje Step 1: SJS/TEN/DRESS se vuelve a preguntar en el USMLE (día "dermato Step 1" = D73, mié 23-dic-2026, bloque MSK/Reuma) → repasar desde las tarjetas APEX::DERMA::B con tag step1 + fallos del ledger de este átomo. Sección de First Aid (Dermatology · hypersensitivity/drug reactions): página A VERIFICAR (12-sep) en el ejemplar de Joseph — no consta en el repo.' },
   { d: 13, fecha: '2026-10-19', bloque: B.B, bKey: 'B', tier: 'ALTA', sub: 'Conectivopatías (lupus, dermatomiositis, morfea) + vasculitis y paniculitis', referente: null,
     access: CASO, qbankly: rCORE, promir: null, extra: { t: 'Color Atlas 9e · S14 Autoimmune/Rheumatic', url: ca(275943310) }, casoIds: [155, 57],
     morfologia: 'Placa', sitio: 'Cara', ddx: ['LE cutáneo agudo (malar, respeta surcos) vs rosácea vs dermatomiositis (heliotropo, Gottron)', 'LE discoide vs sarcoidosis vs tiña facial', 'Morfea vs liquen escleroso', 'Vasculitis de pequeño vaso (púrpura palpable) vs paniculitis (eritema nodoso)'],
@@ -403,7 +492,7 @@ export const DERMA_DIAS: DiaDerma[] = [
   { d: 14, fecha: '2026-10-21', bloque: B.C, bKey: 'C', tier: 'CRIT', sub: 'Bacterianas: impétigo, celulitis/erisipela, SSSS, fascitis (cuándo NO es celulitis)', referente: null,
     access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Color Atlas 9e · S25 Bacterial Infections', url: ca(275944706) }, casoIds: [55, 30],
     morfologia: 'Placa', sitio: 'Cara', ddx: ['Erisipela', 'Celulitis', 'Impétigo', 'SSSS', 'Dermatitis de contacto aguda'],
-    atlasUrl: `${DN}/topics/cellulitis`, dermatoscopiaModulo: M(5), dermatoscopiaImg: DSP.streaks },
+    atlasUrl: `${DN}/topics/cellulitis`, dermatoscopiaModulo: M(5), dermatoscopiaImg: DSP.streaks, step1: true },
   { d: 15, fecha: '2026-10-23', bloque: B.C, bKey: 'C', tier: 'ALTA', sub: 'Sífilis (la gran imitadora) + ITS cutáneas + micobacterias (TB cutánea, lepra)', referente: null,
     access: CASO, qbankly: rPIC, promir: PMD(2), extra: { t: 'Color Atlas 9e · S30 STDs', url: ca(275946713) }, casoIds: [146, 105],
     morfologia: 'Pápula', sitio: 'Manos', ddx: ['Sífilis 2ª (palmoplantar, collarete) vs pitiriasis rosada vs psoriasis guttata', 'Chancro duro vs herpes vs chancroide', 'Lepra (mácula hipoestésica) vs versicolor vs vitíligo', 'TB cutánea (lupus vulgar) vs leishmaniasis vs esporotricosis'],
@@ -411,7 +500,7 @@ export const DERMA_DIAS: DiaDerma[] = [
   { d: 16, fecha: '2026-10-27', bloque: B.C, bKey: 'C', tier: 'CRIT', sub: 'Virales: HSV/VZV (Tzanck), VPH, molusco', referente: null,
     access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Color Atlas 9e · S27 Viral Diseases', url: ca(275945801) }, casoIds: [76, 168],
     morfologia: 'Vesícula', sitio: 'Cara', ddx: ['HSV (agrupadas sobre eritema) vs zóster (dermatomal, no cruza línea media) vs impétigo ampolloso', 'Verruga vulgar (puntos negros, interrumpe dermatoglifos) vs QS vs callo', 'Molusco (umbilicado) vs criptococosis/histoplasmosis en VIH'],
-    atlasUrl: `${DN}/topics/herpes-simplex`, dermatoscopiaUrl: DSP.warts, dermatoscopiaModulo: M(6), dermatoscopiaImg: DSP.mollusc },
+    atlasUrl: `${DN}/topics/herpes-simplex`, dermatoscopiaUrl: DSP.warts, dermatoscopiaModulo: M(6), dermatoscopiaImg: DSP.mollusc, step1: true },
   { d: 17, fecha: '2026-10-29', bloque: B.C, bKey: 'C', tier: 'ALTA', sub: 'Micosis superficiales y profundas + KOH (esporotricosis, cromoblastomicosis)', referente: null,
     access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Color Atlas 9e · S26 Fungal Infections', url: ca(275945320) }, casoIds: [20, 104],
     morfologia: 'Placa', sitio: 'Pies', ddx: ['Tiña pedis (interdigital/mocasín) vs eccema dishidrótico vs psoriasis palmoplantar', 'Pitiriasis versicolor vs vitíligo vs pitiriasis alba', 'Esporotricosis (linfangítica) vs leishmaniasis vs micobacteria atípica', 'Cromoblastomicosis (células muriformes) vs CEC verrucoso'],
@@ -421,15 +510,15 @@ export const DERMA_DIAS: DiaDerma[] = [
     morfologia: 'Nódulo', sitio: 'Cara', fototipo: 'Alto ROI Perú · úlcera de leishmaniasis en piel de color',
     ddx: ['Leishmaniasis', 'Esporotricosis', 'TB cutánea', 'Carcinoma basocelular', 'Úlcera piógena'],
     atlasUrl: `${DN}/topics/leishmaniasis`, dermatoscopiaUrl: DSP.scabies, dermatoscopiaModulo: M(7), dermatoscopiaImg: DSP.scabies },
-  // ── SWAP v2.1 · SEGURIDAD DE FILLERS adelantada (contenido original de d57-58; fechas intactas) ──
-  { d: 19, fecha: '2026-11-04', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'OCLUSIÓN VASCULAR: reconocimiento inmediato + protocolo HDPH de hialuronidasa DE MEMORIA (no errar) — adelantado desde d57 para preceder a la extracción de SR-1 (R22-R25)', referente: 'DeLorenzi',
+  // ── SWAP v2.1 · SEGURIDAD DE FILLERS adelantada (contenido original de la fase X; fechas intactas) ──
+  { d: 19, fecha: '2026-11-04', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'OCLUSIÓN VASCULAR: reconocimiento inmediato + protocolo HDPH de hialuronidasa DE MEMORIA (no errar) — adelantado desde la fase X (swap v2.1) para preceder a la revalidación del PICO (R6b) y la extracción de SR-1 (R22-R25)', referente: 'DeLorenzi',
     access: CASO, qbankly: rPIC, promir: null, extra: { t: 'HDPH Protocol (ASJ 2017)', url: 'https://pubmed.ncbi.nlm.nih.gov/28333326/' }, casoIds: [148, 180],
     morfologia: 'Livedo / blanqueo', sitio: 'Cara', ddx: ['Oclusión ARTERIAL (blanqueo inmediato → livedo reticular → cianosis → necrosis) vs congestión venosa (edema violáceo tardío)', 'Dolor desproporcionado vs efecto del anestésico (el dolor PUEDE faltar — DeLorenzi)', 'Necrosis inminente vs hematoma vs Tyndall'],
-    atlasUrl: `${DN}/topics/fillers`, dermatoscopiaImg: DSA, puenteResearch: PR_L4(SR1_NOTA) },
-  { d: 20, fecha: '2026-11-06', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'Ceguera por relleno: prevención, manejo inmediato, kit de emergencia (no errar) — adelantado desde d58 · cierre de módulo C (CORE bank)', referente: 'Goodman/Magnusson',
+    atlasUrl: `${DN}/topics/fillers`, dermatoscopiaImg: DSA, puenteResearch: PR_L4(SR1_NOTA), drillHDPH: true },
+  { d: 20, fecha: '2026-11-06', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'Ceguera por relleno: prevención, manejo inmediato, kit de emergencia (no errar) — adelantado desde la fase X (swap v2.1) · cierre de módulo C (CORE bank)', referente: 'Goodman/Magnusson',
     access: CASO, qbankly: rCORE, promir: null, extra: { t: 'Consenso Embolic Visual Loss (ASJ 2020, OA)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7427155/' }, casoIds: [89, 9],
     morfologia: 'Livedo / blanqueo', sitio: 'Cara', ddx: ['Oclusión de a. central de la retina vs rama (oftálmica ← supratroclear/dorsal nasal)', 'Pérdida visual + ptosis + oftalmoplejía + dolor ocular (síndrome orbitario)', 'Ictus asociado (habla, fuerza, nivel de conciencia — Goodman 2020)'],
-    atlasUrl: `${DN}/topics/fillers`, dermatoscopiaModulo: M(8), dermatoscopiaImg: DSP.vasos, puenteResearch: PR_L4(SR1_NOTA) },
+    atlasUrl: `${DN}/topics/fillers`, dermatoscopiaModulo: M(8), dermatoscopiaImg: DSP.vasos, puenteResearch: PR_L4(SR1_NOTA), drillHDPH: true },
   // ── MÓDULO D · Tumores benignos / malignos + dermatoscopia ──
   { d: 21, fecha: '2026-11-10', bloque: B.D, bKey: 'D', tier: 'ALTA', sub: 'Tumores benignos: q. seborreica, nevus melanocíticos, quistes (qué NO biopsiar)', referente: null,
     access: CASO, qbankly: rPIC, promir: PMD(4), extra: { t: 'Color Atlas 9e · S9 Benign Neoplasms', url: ca(275942363) }, casoIds: [6, 159],
@@ -442,12 +531,13 @@ export const DERMA_DIAS: DiaDerma[] = [
   { d: 23, fecha: '2026-11-16', bloque: B.D, bKey: 'D', tier: 'CRIT', sub: 'Carcinoma basocelular + espinocelular: subtipos, riesgo, manejo', referente: null,
     access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Color Atlas 9e · S11 Cutaneous Carcinomas', url: ca(275942807) }, casoIds: [129, 32],
     morfologia: 'Pápula perlada', sitio: 'Cara', ddx: ['CBC', 'CEC', 'Queratoacantoma', 'Nevus intradérmico', 'Hiperplasia sebácea'],
-    atlasUrl: `${DN}/topics/basal-cell-carcinoma`, dermatoscopiaUrl: DSP.bcc, dermatoscopiaImg: DSA },
+    atlasUrl: `${DN}/topics/basal-cell-carcinoma`, dermatoscopiaUrl: DSP.bcc, dermatoscopiaImg: DSA, step1: true },
   { d: 24, fecha: '2026-11-18', bloque: B.D, bKey: 'D', tier: 'CRIT', sub: 'Melanoma: ABCDE, Breslow, TNM, manejo (acral/lentiginoso en fototipos altos = Perú)', referente: null,
     access: CASO, qbankly: rBARN, promir: PMD(4), extra: { t: 'Color Atlas 9e · S12 Melanoma', url: ca(275942978) }, casoIds: [39, 121],
     morfologia: 'Mácula', sitio: 'Tronco', fototipo: 'Acral/lentiginoso más frecuente en fototipos altos (Perú)',
     ddx: ['Melanoma', 'Nevus displásico', 'Queratosis seborreica', 'CBC pigmentado', 'Lentigo'],
-    atlasUrl: `${DN}/topics/melanoma`, dermatoscopiaUrl: DSP.mel, histoUrl: 'https://www.dermpathatlas.com/', dermatoscopiaModulo: M(10), dermatoscopiaImg: DSP.veil },
+    atlasUrl: `${DN}/topics/melanoma`, dermatoscopiaUrl: DSP.mel, histoUrl: 'https://www.dermpathatlas.com/', dermatoscopiaModulo: M(10), dermatoscopiaImg: DSP.veil, step1: true,
+    anclajeStep1: 'Anclaje Step 1: melanoma (ABCDE, Breslow, BRAF, nevus displásico) se vuelve a preguntar en el USMLE (día "dermato Step 1" = D73, mié 23-dic-2026) → repasar desde las tarjetas APEX::DERMA::D con tag step1 + fallos del ledger de este átomo. Sección de First Aid (Dermatology · skin cancer): página A VERIFICAR (12-sep) en el ejemplar de Joseph — no consta en el repo.' },
   { d: 25, fecha: '2026-11-20', bloque: B.D, bKey: 'D', tier: 'CRIT', sub: 'Dermatoscopia II: lesiones melanocíticas (patrones, 2-step)', referente: null,
     access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Color Atlas 9e · Apéndice B Dermoscopy', url: ca(275944419) }, casoIds: [91, 42],
     morfologia: 'Mácula', sitio: 'Difuso', ddx: ['Patrón reticular', 'Globular', 'Homogéneo', 'Multicomponente (alarma)'],
@@ -527,132 +617,203 @@ export const DERMA_DIAS: DiaDerma[] = [
     access: CASO, qbankly: rBARN, promir: null, extra: { t: 'Margin Control Surgery of the Skin', url: book(3319) }, casoIds: [63, 86],
     morfologia: 'Tumor', sitio: 'Cara', ddx: ['Mohs indicado: área H (máscara facial), recurrente, subtipo agresivo (morfeiforme/infiltrativo/micronodular), bordes mal definidos, inmunodeprimido', 'Mohs vs excisión estándar con margen clínico (mm según riesgo — A VERIFICAR en Margin Control Surgery)', 'Mohs vs radioterapia (no candidato quirúrgico) vs hedgehog (localmente avanzado)'],
     atlasUrl: `${DN}/topics/mohs-micrographic-surgery`, dermatoscopiaImg: DSA },
-  { d: 44, fecha: '2027-01-15', bloque: B.G, bKey: 'G', tier: 'CRIT', sub: 'Cicatrización + complicaciones quirúrgicas y su manejo (ciencia CORE surgical)', referente: null,
-    access: CASO, qbankly: rCORE, promir: null, extra: { t: 'Dermatologic Surgery · Managing Surgical Complications', url: `${MH}/content.aspx?bookid=2811&sectionid=245222451` }, casoIds: [175, 122],
+  // ── TAPER STEP 1 (v3 · 12-sep-2026) · ventana NBME 31 (vie 15-ene) → examen (vie 29-ene): 1 caso ciego + FSRS de fallos + 0 lectura nueva.
+  //    Swap de CONTENIDO con fechas intactas: aquí viven los 3 átomos ligeros MED (antes d57/d58/d66) + 3 segundas pasadas parciales;
+  //    Cicatrización → Checkpoints → Anatomía 3D → Arterias → Envejecimiento → Toxina… se corren DESPUÉS del examen (d50+). ──
+  { d: 44, fecha: '2027-01-15', bloque: B.C, bKey: 'C', tier: 'MED', sub: 'TAPER Step 1 (día del NBME 31 + GO/NO-GO) · El paciente agudo con fiebre y rash: meningococemia, endocarditis, necrotizantes — átomo ligero C absorbido en la ventana del examen (swap v2.1 → v3; antes d57)', referente: null,
+    access: CASO, qbankly: rFALLOS, promir: null, extra: { t: 'Color Atlas 9e · S8 The Acutely Ill Patient', url: ca(275942269) }, casoIds: [175],
+    morfologia: 'Púrpura', sitio: 'Difuso', ddx: ['Meningococemia (púrpura retiforme + fiebre + shock) vs vasculitis vs CID', 'Endocarditis: lesiones de Janeway, nódulos de Osler, hemorragias en astilla', 'Fascitis necrotizante (dolor desproporcionado, crepitación, bullas hemorrágicas) vs celulitis', 'SSSS vs TEN vs shock tóxico'],
+    atlasUrl: `${DN}/topics/meningococcal-disease`, dermatoscopiaImg: DSP.infl, taper: TAPER_STEP1('Átomo ligero MED absorbido en la ventana de examen (día del NBME 31 + GO/NO-GO): 1 caso ciego + review = FSRS de fallos del ledger (sin preguntas nuevas) + lectura ligera 10′ del átomo, sin ficha del cerebro ni tarjetas nuevas obligatorias.') },
+  { d: 45, fecha: '2027-01-19', bloque: B.C, bKey: 'C', tier: 'MED', sub: 'TAPER Step 1 (semana NBME 32/33 + FREE 120) · Pelo y uñas infecciosos (tiña capitis, onicomicosis) + repaso del módulo C — átomo ligero absorbido en la ventana del examen (antes d58)', referente: null,
+    access: CASO, qbankly: rFALLOS, promir: PMD(5), extra: { t: 'Color Atlas 9e · S31 Hair Disorders', url: ca(275947046) }, casoIds: [122],
+    morfologia: 'Escama', sitio: 'Cuero cabelludo', ddx: ['Tiña capitis (querion, puntos negros, adenopatía) vs alopecia areata (pelos en signo de exclamación) vs tricotilomanía', 'Onicomicosis (subungueal distal, KOH/cultivo) vs psoriasis ungueal (pits, mancha de aceite) vs liquen plano (pterigion)', 'Melanoniquia longitudinal vs hematoma subungueal vs melanoma (Hutchinson)'],
+    atlasUrl: `${DN}/topics/tinea-capitis`, dermatoscopiaUrl: DSP.nail, dermatoscopiaImg: DSA, taper: TAPER_STEP1('Átomo ligero MED en la semana de NBME 32/33 + FREE 120: 1 caso ciego + FSRS de fallos (sin preguntas nuevas) + lectura ligera 10′; el drill HDPH no se cronometra esta semana.') },
+  { d: 46, fecha: '2027-01-21', bloque: B.X, bKey: 'X', tier: 'MED', sub: 'TAPER Step 1 (semana NBME 32/33 + FREE 120) · Contorno corporal (criolipólisis, HIFU) + escleroterapia básica (ambos en el temario CORE surgical) — átomo ligero X absorbido en la ventana del examen (antes d66)', referente: null,
+    access: CASO, qbankly: rFALLOS, promir: null, extra: { t: 'Lasers in Dermatology · Devices for Body Contour', url: `${MH}/content.aspx?bookid=2818&sectionid=240357542` }, casoIds: [73],
+    morfologia: 'Volumen', sitio: 'Tronco', ddx: ['Criolipólisis (apoptosis del adipocito por frío) vs HIFU vs RF: hiperplasia adiposa paradójica (criolipólisis)', 'Escleroterapia: telangiectasias/venas reticulares (polidocanol, STS — concentraciones A VERIFICAR); matting, pigmentación, úlcera por extravasación', 'Varices tronculares → dúplex primero'],
+    atlasUrl: `${DN}/topics/sclerotherapy`, dermatoscopiaImg: DSP.glob, taper: TAPER_STEP1('Átomo ligero MED (X) en la semana de NBME 32/33 + FREE 120: 1 caso ciego + FSRS de fallos + lectura ligera 10′. Última sesión Derma antes de la semana del examen.') },
+  { d: 47, fecha: '2027-01-25', bloque: B.H, bKey: 'H', tier: 'MED', sub: 'TAPER Step 1 · Segunda pasada parcial I: 1 caso ciego + repaso FSRS de los fallos del ledger de los módulos A-D (0 lectura nueva — semana del examen)', referente: null,
+    access: CASO_FALLOS, qbankly: rFALLOS, promir: null, extra: null, casoIds: [54],
+    morfologia: 'Repaso', sitio: 'Difuso', ddx: ['SOLO fallos del ledger de A-D (dermaCasosParaSegundaPasada filtrado por bKey A/B/C/D)', 'Re-describir los 8 ejes del caso fallado antes de reabrir la discusión', 'Tarjetas de MECANISMO vencidas del mazo APEX::DERMA (FSRS) — sin tarjetas nuevas'],
+    atlasUrl: IMG_LIB, dermatoscopiaImg: DSA, taper: TAPER_STEP1('Semana del examen Step 1 (lun 25-ene): 0 lectura nueva. 1 caso ciego + repaso FSRS de los casos y preguntas fallados de los módulos A-D (ledger), en voz baja y sin cronómetro.') },
+  { d: 48, fecha: '2027-01-27', bloque: B.H, bKey: 'H', tier: 'MED', sub: 'TAPER Step 1 · Segunda pasada parcial II: 1 caso ciego + repaso FSRS de los fallos de los módulos E-G + drill HDPH mental sin cronómetro (víspera del descanso pre-examen)', referente: null,
+    access: CASO_FALLOS, qbankly: rFALLOS, promir: PMD(2), extra: null, casoIds: [41],
+    morfologia: 'Repaso', sitio: 'Difuso', ddx: ['SOLO fallos del ledger de E-G (dermpath · pediátrica · quirúrgica)', 'Recitar los 13 ítems del drill HDPH sin cronómetro (DERMA_DRILL_HDPH) — no se registra como drill', 'Las 10Q MIR del capítulo 2 se mantienen (señal MIR), el banco AccessDerma no'],
+    atlasUrl: DN_QUIZ, dermatoscopiaImg: DSP.three, taper: TAPER_STEP1('Víspera del descanso pre-examen (D95 de Step 1, mié 27-ene): 0 lectura nueva. 1 caso ciego + FSRS de fallos de los módulos E-G + drill HDPH mental (recitar, sin cronómetro).') },
+  { d: 49, fecha: '2027-01-29', bloque: B.H, bKey: 'H', tier: 'MED', sub: 'TAPER Step 1 · Segunda pasada parcial III — DÍA DEL EXAMEN Step 1 (sesión OPCIONAL: 1 caso ciego + 5′ FSRS; si se salta no se pierde nada, los fallos siguen en la cola)', referente: null,
+    access: CASO_FALLOS, qbankly: rFALLOS, promir: null, extra: null, casoIds: [198],
+    morfologia: 'Repaso', sitio: 'Difuso', ddx: ['Sesión opcional: el examen Step 1 dura ~8 h; Derma solo si queda energía real por la tarde', 'Si se hace: 1 caso ciego + FSRS de las tarjetas vencidas (5′) y cerrar', 'Nada se recorta: el ciclo sigue el mar 2-feb con d50 (cicatrización, cierre del módulo G)'],
+    atlasUrl: IMG_LIB, dermatoscopiaImg: DSA, taper: TAPER_STEP1('DÍA DEL EXAMEN Step 1 (vie 29-ene): sesión OPCIONAL. Si hay energía por la tarde: 1 caso ciego + 5′ de FSRS. Si se salta, no se pierde nada: los fallos siguen en la cola y el ciclo continúa el mar 2-feb (d50).') },
+  // ── MÓDULO G · cierre (desplazado por el taper: antes d44) ──
+  { d: 50, fecha: '2027-02-02', bloque: B.G, bKey: 'G', tier: 'CRIT', sub: 'Cicatrización + complicaciones quirúrgicas y su manejo (ciencia CORE surgical)', referente: null,
+    access: CASO, qbankly: rCORE, promir: null, extra: { t: 'Dermatologic Surgery · Managing Surgical Complications', url: `${MH}/content.aspx?bookid=2811&sectionid=245222451` }, casoIds: [114, 110, 128],
     morfologia: 'Costra', sitio: 'Difuso', ddx: ['Fases: hemostasia → inflamación → proliferación (granulación/epitelización) → remodelación (colágeno III → I)', 'Hematoma (24-48 h, tenso, doloroso: drenar) vs infección (día 4-7: eritema, calor, exudado) vs dehiscencia (tensión, día 7-10)', 'Queloide (sobrepasa los bordes) vs cicatriz hipertrófica (confinada) — fototipos altos', 'Necrosis de colgajo (tensión, tabaco, hematoma bajo el colgajo)'],
     atlasUrl: `${DN}/topics/keloid-and-hypertrophic-scar`, dermatoscopiaModulo: DSC_COMP, dermatoscopiaImg: DSP.vasos },
-  // ── MÓDULO H · Checkpoint CORE (mapa de debilidades antes de la fase estética — lee el ledger) ──
-  { d: 45, fecha: '2027-01-19', bloque: B.H, bKey: 'H', tier: 'ALTA', sub: 'Checkpoint 1: mapa de fallos por módulo CORE (med/ped/surg/path) desde el ledger → qué re-drillear en FSRS', referente: null,
-    access: CASO_DD, qbankly: rQOTW, promir: PMD(5), extra: { t: 'ABD CORE Study Guide (PDF oficial)', url: ABD_GUIDE }, casoIds: [73, 54],
+  // ── MÓDULO H · Checkpoint CORE (mapa de debilidades antes de la fase estética — lee el ledger; antes d45-46) ──
+  { d: 51, fecha: '2027-02-04', bloque: B.H, bKey: 'H', tier: 'ALTA', sub: 'Checkpoint 1: mapa de fallos por módulo CORE (med/ped/surg/path) desde el ledger → qué re-drillear en FSRS', referente: null,
+    access: CASO_DD, qbankly: rQOTW, promir: PMD(3), extra: { t: 'ABD CORE Study Guide (PDF oficial)', url: ABD_GUIDE }, casoIds: [144, 138, 28],
     morfologia: 'Mapa de fallos', sitio: 'Difuso', ddx: ['% fallo por área del ledger: Med (110) · Path (30) · Peds (30) · Surg (30)', 'Tipo de error dominante: CCSN vs CONCEPTO vs MORFOLOGIA vs DDX', 'Descripción 8 ejes: media ≥6/8 = gate del módulo A superado'],
-    atlasUrl: IMG_LIB, dermatoscopiaImg: DSA },
-  { d: 46, fecha: '2027-01-21', bloque: B.H, bKey: 'H', tier: 'ALTA', sub: 'Checkpoint 2: re-drill de fallos etiquetados + pares del DD Challenge de tus áreas flojas + drill oclusión vascular 90 s', referente: null,
-    access: CASO_DD, qbankly: rCORE, promir: null, extra: { t: 'Guidebook to Dermatologic Diagnosis (repaso)', url: book(2960) }, casoIds: [41, 198],
+    atlasUrl: IMG_LIB, dermatoscopiaImg: DSA, checkpoint: 'cp1' },
+  { d: 52, fecha: '2027-02-08', bloque: B.H, bKey: 'H', tier: 'ALTA', sub: 'Checkpoint 2: re-drill de fallos etiquetados + pares del DD Challenge de tus áreas flojas + drill oclusión vascular 90 s', referente: null,
+    access: CASO_DD, qbankly: rCORE, promir: null, extra: { t: 'Guidebook to Dermatologic Diagnosis (repaso)', url: book(2960) }, casoIds: [16, 177, 171],
     morfologia: 'Mapa de fallos', sitio: 'Difuso', ddx: ['Pares del DD Challenge de las 2 áreas con mayor % fallo', 'Re-drill FSRS de los casos fallados (ledger jmd-derma-fallos)', 'Drill HDPH cronometrado: recitar signos → dosis → intervalos → ceguera → oftalmología'],
-    atlasUrl: DN_QUIZ, dermatoscopiaImg: DSP.chaos },
-  // ── MÓDULO X · ESTÉTICA (la meta: 22 átomos = d19-20 + d47-56 + d59-68 · seguridad ANTES que técnica) ──
-  { d: 47, fecha: '2027-01-25', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'Anatomía facial 3D: 5 capas, SMAS, compartimentos grasos, ligamentos de retención', referente: 'Cotofana',
-    access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Baumann 3e · Facial Anatomy and Aging', url: `${MH}/content.aspx?bookid=3200&sectionid=266614877` }, casoIds: [114, 110],
+    atlasUrl: DN_QUIZ, dermatoscopiaImg: DSP.chaos, checkpoint: 'cp2', drillHDPH: true },
+  // ── MÓDULO X · ESTÉTICA (la meta: 22 átomos = d19-20 + d46 + d53-71 · seguridad ANTES que técnica) — desde d50: 3 casos/sesión ──
+  { d: 53, fecha: '2027-02-10', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'Anatomía facial 3D: 5 capas, SMAS, compartimentos grasos, ligamentos de retención', referente: 'Cotofana',
+    access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Baumann 3e · Facial Anatomy and Aging', url: `${MH}/content.aspx?bookid=3200&sectionid=266614877` }, casoIds: [123, 127, 44],
     morfologia: 'Capas (5)', sitio: 'Cara', ddx: ['Piel → grasa subcutánea (compartimentos superficiales) → SMAS/músculo → grasa profunda/espacios → periostio (Cotofana)', 'Ligamentos de retención: orbicular, cigomático, mandibular, masetérico-cutáneo', 'Plano supraperióstico profundo (relativamente seguro) vs subcutáneo superficial (arterias nominadas)'],
     atlasUrl: ANIM3D, dermatoscopiaImg: DSA },
-  { d: 48, fecha: '2027-01-27', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'Arterias peligrosas + zonas seguras: glabela, nariz, temple, surco nasogeniano (no errar)', referente: 'Cotofana',
-    access: CASO, qbankly: rPIC, promir: PMD(2), extra: { t: 'Vascular Safe Zones (PAN 2022)', url: 'https://pubmed.ncbi.nlm.nih.gov/36469395/' }, casoIds: [128, 144],
+  { d: 54, fecha: '2027-02-12', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'Arterias peligrosas + zonas seguras: glabela, nariz, temple, surco nasogeniano (no errar)', referente: 'Cotofana',
+    access: CASO, qbankly: rPIC, promir: PMD(1), extra: { t: 'Vascular Safe Zones (PAN 2022)', url: 'https://pubmed.ncbi.nlm.nih.gov/36469395/' }, casoIds: [48, 178, 200],
     morfologia: 'Anatomía (arterias)', sitio: 'Cara', ddx: ['Riesgo de ceguera grado 4 (Goodman 2020): glabela, nariz, frente — nariz 56,3 % de los casos, glabela 27,1 %, frente 18,8 %', 'Grado 3: sien, surco nasogeniano, surco lagrimal, periorbital, mejilla medial', 'Zonas seguras por región + plano (Cotofana PAN 2022 / Freytag JDD 2019)'],
     atlasUrl: `${DN}/topics/fillers`, dermatoscopiaImg: DSP.vasos, puenteResearch: PR_L4('Mapa anatómico del riesgo = variable "zona" de los subgrupos de SR-1 (R33).') },
-  { d: 49, fecha: '2027-01-29', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Envejecimiento estructural (hueso → grasa → ligamento → piel) + análisis facial: tercios, MD ASA', referente: 'de Maio',
-    access: CASO, qbankly: rBARN, promir: null, extra: { t: 'Baumann 3e · Intrinsic Aging', url: `${MH}/content.aspx?bookid=3200&sectionid=266614593` }, casoIds: [138, 28],
+  { d: 55, fecha: '2027-02-16', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Envejecimiento estructural (hueso → grasa → ligamento → piel) + análisis facial: tercios, MD ASA', referente: 'de Maio',
+    access: CASO, qbankly: rBARN, promir: null, extra: { t: 'Baumann 3e · Intrinsic Aging', url: `${MH}/content.aspx?bookid=3200&sectionid=266614593` }, casoIds: [18, 81, 106],
     morfologia: 'Surco / pliegue', sitio: 'Cara', ddx: ['MD ASA H1 (de Maio 2021): cansado/triste/enfadado/caído vs joven/atractivo/contorneado/fem-masc → 3 atributos prioritarios', 'Hueso (reabsorción orbitaria/maxilar/mandibular) vs grasa (deflación por compartimentos) vs ligamento (laxitud) vs piel (elastosis)', 'H2 tercios · H3 dinámica periorbital/perioral · H4 unidades · H5 subunidades'],
     atlasUrl: `${DN}/topics/facial-rejuvenation`, dermatoscopiaImg: DSA },
-  { d: 50, fecha: '2027-02-02', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'Toxina I: mecanismo (clivaje de SNAP-25), serotipos, unidades NO intercambiables entre marcas', referente: 'Carruthers',
-    access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Baumann 3e · Botulinum Toxins', url: `${MH}/content.aspx?bookid=3200&sectionid=266616475` }, casoIds: [16, 177],
+  { d: 56, fecha: '2027-02-18', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'Toxina I: mecanismo (clivaje de SNAP-25), serotipos, unidades NO intercambiables entre marcas', referente: 'Carruthers',
+    access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Baumann 3e · Botulinum Toxins', url: `${MH}/content.aspx?bookid=3200&sectionid=266616475` }, casoIds: [182, 167, 130],
     morfologia: 'Arruga dinámica', sitio: 'Cara', ddx: ['Serotipo A (onabotulinum, abobotulinum, incobotulinum, prabotulinum, daxibotulinum): unidades NO intercambiables — tablas de conversión por producto (A VERIFICAR en Carruthers 5e)', 'Arruga dinámica (toxina) vs estática (relleno/láser/peeling)', 'Mecanismo: clivaje de SNAP-25 → bloqueo de la exocitosis de ACh → denervación química reversible'],
     atlasUrl: `${DN}/topics/botulinum-toxin`, dermatoscopiaImg: DSP.red },
-  { d: 51, fecha: '2027-02-04', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Toxina II: tercio superior (frontal, glabela, patas de gallo) — músculos, dosis, cómo evitar la ptosis', referente: 'Carruthers',
-    access: CASO, qbankly: rPIC, promir: PMD(3), extra: { t: 'Dermatologic Surgery · Neuromodulators', url: `${MH}/content.aspx?bookid=2811&sectionid=245227386` }, casoIds: [171, 123],
+  { d: 57, fecha: '2027-02-22', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Toxina II: tercio superior (frontal, glabela, patas de gallo) — músculos, dosis, cómo evitar la ptosis', referente: 'Carruthers',
+    access: CASO, qbankly: rPIC, promir: PMD(2), extra: { t: 'Dermatologic Surgery · Neuromodulators', url: `${MH}/content.aspx?bookid=2811&sectionid=245227386` }, casoIds: [92, 61, 183],
     morfologia: 'Arruga dinámica', sitio: 'Cara', ddx: ['Glabela: corrugador + prócer (± depresor superciliar) — vector medial/inferior', 'Frontal: ÚNICO elevador de la ceja → sobredosis o puntos bajos = ptosis de ceja', 'Patas de gallo: orbicular lateral (puntos ≥1 cm del reborde orbitario — A VERIFICAR)', 'Ptosis palpebral (difusión al elevador del párpado) vs ptosis de ceja (frontal debilitado)'],
     atlasUrl: `${DN}/topics/botulinum-toxin`, dermatoscopiaImg: DSA },
-  { d: 52, fecha: '2027-02-08', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Toxina III: tercio inferior, Nefertiti, masetero, hiperhidrosis', referente: 'Carruthers',
-    access: CASO, qbankly: rBARN, promir: null, extra: { t: 'Cosmetic Procedures in Primary Care · Botulinum Toxin', url: `${MH}/content.aspx?bookid=2953&sectionid=248412579` }, casoIds: [127, 44],
+  { d: 58, fecha: '2027-02-24', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Toxina III: tercio inferior, Nefertiti, masetero, hiperhidrosis', referente: 'Carruthers',
+    access: CASO, qbankly: rBARN, promir: null, extra: { t: 'Cosmetic Procedures in Primary Care · Botulinum Toxin', url: `${MH}/content.aspx?bookid=2953&sectionid=248412579` }, casoIds: [31, 7, 51],
     morfologia: 'Arruga dinámica', sitio: 'Cara', ddx: ['Nefertiti: bandas platismales → libera el vector elevador (interacción de fuerzas)', 'Masetero: bruxismo/contorno mandibular (riesgo: debilidad masticatoria, sonrisa asimétrica por risorio)', 'DAO (comisura caída), mentalis (mentón empedrado), sonrisa gingival (elevador del labio superior y ala nasal)', 'Hiperhidrosis axilar: test de Minor (yodo-almidón) para mapear'],
     atlasUrl: `${DN}/topics/hyperhidrosis`, dermatoscopiaImg: DSP.glob },
-  { d: 53, fecha: '2027-02-10', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'Toxina IV: complicaciones y manejo — ptosis (apraclonidina), asimetrías, difusión (seguridad primero)', referente: 'Carruthers',
-    access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Complicaciones de toxina (Cureus 2026, OA)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC12865869/' }, casoIds: [48, 178],
+  { d: 59, fecha: '2027-02-26', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'Toxina IV: complicaciones y manejo — ptosis (apraclonidina), asimetrías, difusión (seguridad primero)', referente: 'Carruthers',
+    access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Complicaciones de toxina (Cureus 2026, OA)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC12865869/' }, casoIds: [174, 135, 8],
     morfologia: 'Ptosis', sitio: 'Cara', ddx: ['Ptosis palpebral (apraclonidina colirio — concentración/pauta A VERIFICAR en Cureus 2026) vs ptosis de ceja (esperar; no hay antídoto)', 'Asimetría (retoque a las 2 semanas) vs "Spock brow" (frontal lateral no tratado)', 'Difusión al cigomático (sonrisa asimétrica) / disfagia y debilidad cervical (platisma)', 'Fallo secundario: anticuerpos neutralizantes vs dosis insuficiente'],
     atlasUrl: `${DN}/topics/botulinum-toxin`, dermatoscopiaImg: DSA },
-  { d: 54, fecha: '2027-02-12', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: "Rellenos I: reología del HA (G', cohesividad) + bioestimuladores (CaHA/PLLA)", referente: 'de Maio',
-    access: CASO, qbankly: rPIC, promir: PMD(1), extra: { t: 'Cosmeceuticals · Hyaluronic Acid', url: `${MH}/content.aspx?bookid=2812&sectionid=244978644` }, casoIds: [200, 18],
+  { d: 60, fecha: '2027-03-02', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: "Rellenos I: reología del HA (G', cohesividad) + bioestimuladores (CaHA/PLLA)", referente: 'de Maio',
+    access: CASO, qbankly: rPIC, promir: PMD(4), extra: { t: 'Cosmeceuticals · Hyaluronic Acid', url: `${MH}/content.aspx?bookid=2812&sectionid=244978644` }, casoIds: [38, 186, 133],
     morfologia: 'Volumen', sitio: 'Cara', ddx: ["G' alto (proyección/soporte: mentón, mandíbula, pómulo) vs G' bajo (labio, surco lagrimal, líneas finas)", 'Cohesividad y tamaño de partícula → integración vs migración', 'HA (reversible con hialuronidasa) vs CaHA/PLLA (bioestimuladores NO reversibles: no en zonas de riesgo vascular alto)'],
     atlasUrl: `${DN}/topics/fillers`, dermatoscopiaImg: DSP.streaks },
-  { d: 55, fecha: '2027-02-16', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Rellenos II: planos de inyección, aguja vs cánula, técnicas por región', referente: 'de Maio',
-    access: CASO, qbankly: rBARN, promir: null, extra: { t: 'Dermatologic Surgery · Fillers and Injectable Implants', url: `${MH}/content.aspx?bookid=2811&sectionid=245227491` }, casoIds: [81, 106],
+  { d: 61, fecha: '2027-03-04', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Rellenos II: planos de inyección, aguja vs cánula, técnicas por región', referente: 'de Maio',
+    access: CASO, qbankly: rBARN, promir: null, extra: { t: 'Dermatologic Surgery · Fillers and Injectable Implants', url: `${MH}/content.aspx?bookid=2811&sectionid=245227491` }, casoIds: [29, 199, 70],
     morfologia: 'Volumen', sitio: 'Cara', ddx: ['Aguja (bolo supraperióstico, precisión) vs cánula (subcutáneo, considerada más segura en ciertas zonas — Goodman 2020)', 'Plano por región: pómulo supraperióstico · labio submucoso · sien interfascial/supraperióstico · surco lagrimal profundo', 'Microbolos <0,1 mL, muy lento, baja presión de extrusión, aguja en movimiento; la aspiración NO tiene evidencia (Goodman 2020)'],
     atlasUrl: `${DN}/topics/fillers`, dermatoscopiaImg: DSA, puenteResearch: PR_L4('Técnica (aguja/cánula, plano, volumen) = variables de la plantilla de extracción de SR-1 (R22).') },
-  { d: 56, fecha: '2027-02-18', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Rellenos III: MD Codes fundación (Ck, T, Tt) + myomodulation', referente: 'de Maio',
-    access: CASO, qbankly: rPIC, promir: null, extra: { t: 'MD Codes paper (open access PMC)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8012343/' }, casoIds: [182, 167],
+  { d: 62, fecha: '2027-03-08', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Rellenos III: MD Codes fundación (Ck, T, Tt) + myomodulation', referente: 'de Maio',
+    access: CASO, qbankly: rPIC, promir: null, extra: { t: 'MD Codes paper (open access PMC)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8012343/' }, casoIds: [113, 95, 139],
     morfologia: 'Volumen', sitio: 'Cara', ddx: ['MD Codes (de Maio 2021): Ck1-Ck5 mejilla · T1-T2 sien · Tt1-Tt3 surco lagrimal — checklist anatómico, no secuencia', 'Fundación (mediofacial) antes de refinamiento (labio, surcos)', 'Myomodulation (de Maio 2018 / update 2020 PMC7447619): el relleno modula la acción muscular'],
     atlasUrl: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8012343/', dermatoscopiaImg: DSP.abcd },
-  // ── SWAP v2.1 · contenido original de d19-20 (Infecciosas) trasladado aquí; fechas intactas ──
-  { d: 57, fecha: '2027-02-22', bloque: B.C, bKey: 'C', tier: 'MED', sub: 'El paciente agudo con fiebre y rash: meningococemia, endocarditis, necrotizantes (trasladado desde d19 por el swap de seguridad de fillers)', referente: null,
-    access: CASO, qbankly: rQOTW, promir: PMD(2), extra: { t: 'Color Atlas 9e · S8 The Acutely Ill Patient', url: ca(275942269) }, casoIds: [130, 92],
-    morfologia: 'Púrpura', sitio: 'Difuso', ddx: ['Meningococemia (púrpura retiforme + fiebre + shock) vs vasculitis vs CID', 'Endocarditis: lesiones de Janeway, nódulos de Osler, hemorragias en astilla', 'Fascitis necrotizante (dolor desproporcionado, crepitación, bullas hemorrágicas) vs celulitis', 'SSSS vs TEN vs shock tóxico'],
-    atlasUrl: `${DN}/topics/meningococcal-disease`, dermatoscopiaImg: DSA },
-  { d: 58, fecha: '2027-02-24', bloque: B.C, bKey: 'C', tier: 'MED', sub: 'Pelo y uñas infecciosos (tiña capitis, onicomicosis) + repaso del módulo (trasladado desde d20)', referente: null,
-    access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Color Atlas 9e · S31 Hair Disorders', url: ca(275947046) }, casoIds: [61, 183],
-    morfologia: 'Escama', sitio: 'Cuero cabelludo', ddx: ['Tiña capitis (querion, puntos negros, adenopatía) vs alopecia areata (pelos en signo de exclamación) vs tricotilomanía', 'Onicomicosis (subungueal distal, KOH/cultivo) vs psoriasis ungueal (pits, mancha de aceite) vs liquen plano (pterigion)', 'Melanoniquia longitudinal vs hematoma subungueal vs melanoma (Hutchinson)'],
-    atlasUrl: `${DN}/topics/tinea-capitis`, dermatoscopiaUrl: DSP.nail, dermatoscopiaImg: DSP.nailMel },
-  { d: 59, fecha: '2027-02-26', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Rellenos IV: consideraciones étnicas y de género + fat transfer', referente: 'de Maio',
-    access: CASO, qbankly: rBARN, promir: null, extra: { t: 'Dermatologic Surgery · Ethnic & Gender Considerations (Fillers)', url: `${MH}/content.aspx?bookid=2811&sectionid=245227608` }, casoIds: [31, 7],
+  { d: 63, fecha: '2027-03-10', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Rellenos IV: consideraciones étnicas y de género + fat transfer', referente: 'de Maio',
+    access: CASO, qbankly: rBARN, promir: PMD(3), extra: { t: 'Dermatologic Surgery · Ethnic & Gender Considerations (Fillers)', url: `${MH}/content.aspx?bookid=2811&sectionid=245227608` }, casoIds: [197, 131, 185],
     morfologia: 'Volumen', sitio: 'Cara', fototipo: 'Fototipo IV-VI: riesgo de PIH/queloide en puntos de entrada; preferir cánula y menos punciones',
     ddx: ['Proporciones étnicas (no "occidentalizar": proyección malar, mentón, perfil)', 'Género: ángulo mandibular, ceja, labio — vectores distintos', 'Fat transfer: volumen grande, supervivencia variable, riesgo embólico alto y NO reversible'],
     atlasUrl: `${DN}/topics/ethnic-dermatology`, dermatoscopiaImg: DSA, puenteResearch: PR_L5(SR2_NOTA) },
-  { d: 60, fecha: '2027-03-02', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Peelings I: profundidad (superficial/medio/profundo), agentes (glicólico, salicílico, TCA, fenol), frosting', referente: 'Baumann',
-    access: CASO, qbankly: rPIC, promir: PMD(4), extra: { t: 'Baumann 3e · Chemical Peels', url: `${MH}/content.aspx?bookid=3200&sectionid=266616672` }, casoIds: [51, 174],
+  { d: 64, fecha: '2027-03-12', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Peelings I: profundidad (superficial/medio/profundo), agentes (glicólico, salicílico, TCA, fenol), frosting', referente: 'Baumann',
+    access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Baumann 3e · Chemical Peels', url: `${MH}/content.aspx?bookid=3200&sectionid=266616672` }, casoIds: [149, 33, 157],
     morfologia: 'Escama', sitio: 'Cara', ddx: ['Superficial (glicólico, salicílico, Jessner): epidermis — sin downtime', 'Medio (TCA a concentración media — A VERIFICAR % en Baumann 3e): dermis papilar; frosting nivel II', 'Profundo (fenol / Baker-Gordon): dermis reticular; cardiotoxicidad → monitorización'],
     atlasUrl: `${DN}/topics/chemical-peels`, dermatoscopiaImg: DSP.struct },
-  { d: 61, fecha: '2027-03-04', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Peelings II: por fototipo (IV–VI), prevención de PIH, complicaciones (conecta con L4/L5 research)', referente: 'Baumann',
-    access: CASO, qbankly: rBARN, promir: null, extra: { t: 'Cosmetic Derm for Skin of Color · Ablative/Deep Peels', url: `${MH}/content.aspx?bookid=2956&sectionid=248485136` }, casoIds: [135, 8],
+  { d: 65, fecha: '2027-03-16', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Peelings II: por fototipo (IV–VI), prevención de PIH, complicaciones (conecta con L4/L5 research)', referente: 'Baumann',
+    access: CASO, qbankly: rBARN, promir: null, extra: { t: 'Cosmetic Derm for Skin of Color · Ablative/Deep Peels', url: `${MH}/content.aspx?bookid=2956&sectionid=248485136` }, casoIds: [181, 69, 66],
     morfologia: 'Mácula', sitio: 'Cara', fototipo: 'Fototipo IV-VI: solo superficiales/medios con pre-tratamiento; evitar profundos',
     ddx: ['PIH (epidérmica vs dérmica: luz de Wood) vs melasma vs hipopigmentación post-peel', 'Pre-tratamiento con retinoide/despigmentante y fotoprotección estricta (protocolo A VERIFICAR en 2956/248485136)', 'Herpes reactivado (profilaxis antiviral) vs infección bacteriana vs cicatriz'],
     atlasUrl: `${DN}/topics/postinflammatory-hyperpigmentation`, dermatoscopiaImg: DSA, puenteResearch: PR_L5(SR2_NOTA) },
-  { d: 62, fecha: '2027-03-08', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'Láser I: fototermólisis selectiva (Anderson-Parrish) — cromóforo → λ → duración de pulso → enfriamiento (la MISMA física del CORE surgical)', referente: 'Anderson',
-    access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Lasers in Dermatology · Fundamentals', url: `${MH}/content.aspx?bookid=2818&sectionid=240357100` }, casoIds: [38, 186],
+  { d: 66, fecha: '2027-03-18', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'Láser I: fototermólisis selectiva (Anderson-Parrish) — cromóforo → λ → duración de pulso → enfriamiento (la MISMA física del CORE surgical)', referente: 'Anderson',
+    access: CASO, qbankly: rPIC, promir: PMD(8), extra: { t: 'Lasers in Dermatology · Fundamentals', url: `${MH}/content.aspx?bookid=2818&sectionid=240357100` }, casoIds: [115, 101, 156],
     morfologia: 'Cromóforo', sitio: 'Difuso', ddx: ['Cromóforos: melanina (absorción decrece con λ) vs hemoglobina (picos en visible) vs agua (IR medio: Er:YAG, CO2) vs tinta', 'Duración de pulso < tiempo de relajación térmica del objetivo (Anderson-Parrish 1983): dañar el blanco sin cocer alrededor', 'Enfriamiento epidérmico (contacto, criógeno, aire) protege la melanina epidérmica → clave en fototipos altos'],
     atlasUrl: `${DN}/topics/lasers-in-dermatology`, dermatoscopiaImg: DSP.twoStep },
-  { d: 63, fecha: '2027-03-10', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Láser II: lesiones vasculares (PDL) + pigmento y tatuajes (Q-switched/pico)', referente: 'Anderson',
-    access: CASO, qbankly: rPIC, promir: PMD(3), extra: { t: 'Lasers in Dermatology · Cutaneous Vascular Lesions', url: `${MH}/content.aspx?bookid=2818&sectionid=240357136` }, casoIds: [133, 29],
+  { d: 67, fecha: '2027-03-22', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Láser II: lesiones vasculares (PDL) + pigmento y tatuajes (Q-switched/pico)', referente: 'Anderson',
+    access: CASO, qbankly: rPIC3, promir: null, extra: { t: 'Lasers in Dermatology · Cutaneous Vascular Lesions', url: `${MH}/content.aspx?bookid=2818&sectionid=240357136` }, casoIds: [19, 191, 119],
     morfologia: 'Mácula', sitio: 'Cara', ddx: ['PDL (amarillo, absorción Hb): malformación capilar, telangiectasias, hemangioma, rosácea eritematosa — púrpura esperable', 'Q-switched / picosegundo (Nd:YAG 1064/532, alexandrita, rubí): tatuaje según color de tinta, lentigos, nevus de Ota — λ exactas A VERIFICAR en 2818/240357136', 'Púrpura post-PDL (esperada) vs quemadura (ampolla, hipopigmentación)'],
     atlasUrl: `${DN}/topics/lasers-in-dermatology`, dermatoscopiaUrl: DSP.vasos, dermatoscopiaImg: DSA },
-  { d: 64, fecha: '2027-03-12', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Láser III: resurfacing fraccional (ablativo/no-ablativo) + radiofrecuencia + tightening', referente: 'Manstein/Anderson',
-    access: CASO, qbankly: rBARN, promir: null, extra: { t: 'Lasers in Dermatology · Laser & RF Resurfacing', url: `${MH}/content.aspx?bookid=2818&sectionid=240357478` }, casoIds: [199, 70],
+  { d: 68, fecha: '2027-03-24', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Láser III: resurfacing fraccional (ablativo/no-ablativo) + radiofrecuencia + tightening', referente: 'Manstein/Anderson',
+    access: CASO, qbankly: rBARN, promir: null, extra: { t: 'Lasers in Dermatology · Laser & RF Resurfacing', url: `${MH}/content.aspx?bookid=2818&sectionid=240357478` }, casoIds: [99, 53, 145],
     morfologia: 'Textura / cicatriz', sitio: 'Cara', ddx: ['Ablativo fraccional (CO2, Er:YAG — Manstein 2004): cicatrices, fotoenvejecimiento severo; más downtime y riesgo de PIH', 'No ablativo fraccional (columnas de daño térmico con epidermis intacta): sesiones múltiples, más seguro en fototipos altos', 'RF (mono/bipolar, microagujas) y HIFU: calentamiento dérmico sin cromóforo → tightening independiente del fototipo'],
     atlasUrl: `${DN}/topics/laser-resurfacing`, dermatoscopiaImg: DSP.pattern },
-  { d: 65, fecha: '2027-03-16', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'Láser IV: seguridad en fototipos IV–VI — parámetros, PIH, depilación en piel étnica (no errar)', referente: 'Anderson',
-    access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Dermatologic Surgery · Laser/Light en piel de color', url: `${MH}/content.aspx?bookid=2811&sectionid=245228834` }, casoIds: [113, 95],
+  { d: 69, fecha: '2027-03-26', bloque: B.X, bKey: 'X', tier: 'CRIT', sub: 'Láser IV: seguridad en fototipos IV–VI — parámetros, PIH, depilación en piel étnica (no errar)', referente: 'Anderson',
+    access: CASO, qbankly: rPIC3, promir: PMD(4), extra: { t: 'Dermatologic Surgery · Laser/Light en piel de color', url: `${MH}/content.aspx?bookid=2811&sectionid=245228834` }, casoIds: [141, 172, 45],
     morfologia: 'Mácula', sitio: 'Difuso', fototipo: 'Fototipo V-VI: λ larga (Nd:YAG), pulso largo, fluencia conservadora, enfriamiento y test spot',
     ddx: ['Depilación en fototipo V-VI: Nd:YAG de pulso largo > diodo > alexandrita (mayor riesgo de quemadura por absorción epidérmica)', 'PIH post-láser vs hipopigmentación (daño melanocítico) vs quemadura', 'Test spot + esperar respuesta + parámetros conservadores (cifras A VERIFICAR en 2811/245228834)'],
     atlasUrl: `${DN}/topics/ethnic-dermatology`, dermatoscopiaImg: DSA, puenteResearch: PR_L5(SR2_NOTA) },
-  { d: 66, fecha: '2027-03-18', bloque: B.X, bKey: 'X', tier: 'MED', sub: 'Contorno corporal (criolipólisis, HIFU) + escleroterapia básica (ambos en el temario CORE surgical)', referente: null,
-    access: CASO, qbankly: rBARN, promir: PMD(8), extra: { t: 'Lasers in Dermatology · Devices for Body Contour', url: `${MH}/content.aspx?bookid=2818&sectionid=240357542` }, casoIds: [139, 197],
-    morfologia: 'Volumen', sitio: 'Tronco', ddx: ['Criolipólisis (apoptosis del adipocito por frío) vs HIFU vs RF: hiperplasia adiposa paradójica (criolipólisis)', 'Escleroterapia: telangiectasias/venas reticulares (polidocanol, STS — concentraciones A VERIFICAR); matting, pigmentación, úlcera por extravasación', 'Varices tronculares → dúplex primero'],
-    atlasUrl: `${DN}/topics/sclerotherapy`, dermatoscopiaImg: DSP.glob },
-  { d: 67, fecha: '2027-03-22', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Microneedling + PRP + skinboosters: evidencia y técnica', referente: 'Baumann',
-    access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Baumann 3e · Microneedling and PRP', url: `${MH}/content.aspx?bookid=3200&sectionid=266617053` }, casoIds: [131, 185],
+  { d: 70, fecha: '2027-03-30', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Microneedling + PRP + skinboosters: evidencia y técnica', referente: 'Baumann',
+    access: CASO, qbankly: rPIC3, promir: null, extra: { t: 'Baumann 3e · Microneedling and PRP', url: `${MH}/content.aspx?bookid=3200&sectionid=266617053` }, casoIds: [34, 102, 163],
     morfologia: 'Textura / cicatriz', sitio: 'Cara', ddx: ['Microneedling (profundidad por indicación — A VERIFICAR mm en Baumann 3e): cicatriz de acné, estrías; seguro en fototipos altos', 'PRP: evidencia moderada (alopecia androgénica, cicatrices, combinación con microneedling)', 'Skinboosters (HA poco reticulado): hidratación/calidad de piel, no volumen'],
-    atlasUrl: `${DN}/topics/skin-needling`, dermatoscopiaImg: DSA },
-  { d: 68, fecha: '2027-03-24', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Ciencia cosmecéutica: Baumann Skin Typing, retinoides tópicos, antioxidantes, fotoprotección (protocolo Nítida)', referente: 'Baumann',
-    access: CASO, qbankly: rCORE, promir: null, extra: { t: 'Cosmeceuticals and Cosmetic Ingredients (83 caps)', url: book(2812) }, casoIds: [149, 33],
+    atlasUrl: `${DN}/topics/skin-needling`, dermatoscopiaImg: DSP.menzies },
+  { d: 71, fecha: '2027-04-01', bloque: B.X, bKey: 'X', tier: 'ALTA', sub: 'Ciencia cosmecéutica: Baumann Skin Typing, retinoides tópicos, antioxidantes, fotoprotección (protocolo Nítida)', referente: 'Baumann',
+    access: CASO, qbankly: rLANGE, promir: null, extra: { t: 'Cosmeceuticals and Cosmetic Ingredients (83 caps)', url: book(2812) }, casoIds: [46, 87, 136],
     morfologia: 'Mácula', sitio: 'Cara', ddx: ['Baumann Skin Type (16 tipos: seco/graso × sensible/resistente × pigmentado/no × arrugado/tenso)', 'Retinoides tópicos (retinol → retinaldehído → tretinoína/adapaleno) vs vitamina C (L-ascórbico) vs niacinamida', 'Fotoprotección amplio espectro diaria (SPF mínimo A VERIFICAR en guía) + con color (óxido de hierro) para melasma/PIH'],
-    atlasUrl: `${DN}/topics/topical-retinoids`, dermatoscopiaImg: DSP.red, nitida: N_COSM },
-  // ── MÓDULO Z · Cierre (integración + repaso de fallos desde el ledger) ──
-  { d: 69, fecha: '2027-03-26', bloque: B.Z, bKey: 'Z', tier: 'MED', sub: 'REPASO 1: segunda pasada FSRS — SOLO casos y preguntas fallados del ledger, por módulo CORE más flojo', referente: null,
-    access: CASO_FALLOS, qbankly: rPIC, promir: PMD(4), extra: { t: 'Guidebook to Dermatologic Diagnosis (repaso)', url: book(2960) }, casoIds: [157, 181],
+    atlasUrl: `${DN}/topics/topical-retinoids`, dermatoscopiaImg: DSA, nitida: N_COSM },
+  // ── MÓDULO Z · Cierre (integración + repaso de fallos desde el ledger; antes d69-70) ──
+  { d: 72, fecha: '2027-04-05', bloque: B.Z, bKey: 'Z', tier: 'MED', sub: 'REPASO 1: segunda pasada FSRS — SOLO casos y preguntas fallados del ledger, por módulo CORE más flojo', referente: null,
+    access: CASO_FALLOS, qbankly: rPIC3, promir: PMD(4), extra: { t: 'Guidebook to Dermatologic Diagnosis (repaso)', url: book(2960) }, casoIds: [77, 50, 2],
     morfologia: 'Repaso', sitio: 'Difuso', ddx: ['SOLO fallos del ledger (dermaLedger.casosParaSegundaPasada)', 'Ordenados por módulo CORE con mayor % fallo', 'Re-describir los 8 ejes antes de reabrir la discusión'],
-    atlasUrl: IMG_LIB, dermatoscopiaImg: DSA },
-  { d: 70, fecha: '2027-03-30', bloque: B.Z, bKey: 'Z', tier: 'MED', sub: 'REPASO 2: mapa final de debilidades + plan del ciclo siguiente (post-Step 1: 5 casos/sesión con los 60 casos restantes)', referente: null,
-    access: CASO_DD, qbankly: rQOTW, promir: null, extra: { t: 'ABD CORE Study Guide (PDF oficial)', url: ABD_GUIDE }, casoIds: [69, 66],
-    morfologia: 'Repaso', sitio: 'Difuso', ddx: ['Mapa final por módulo CORE y por bloque A-X (exportLedgerJSON → _registro_derma.json)', 'Los 60 casos post-Step 1 (dermaCasosPostStep1) a 5/sesión', 'Drill HDPH 90 s final: recitar sin mirar'],
-    atlasUrl: DN_QUIZ, dermatoscopiaImg: DSP.chaos },];
+    atlasUrl: IMG_LIB, dermatoscopiaImg: DSP.chaos, checkpoint: 'repaso1' },
+  { d: 73, fecha: '2027-04-07', bloque: B.Z, bKey: 'Z', tier: 'MED', sub: 'REPASO 2: mapa final de debilidades + arranque del CICLO 2 (dermaCiclo2.ts: 36 casos restantes a 3/sesión en d74-d85 + Pictorial 3e/Barnhill + G+1…G+9)', referente: null,
+    access: CASO_DD, qbankly: rQOTW, promir: null, extra: { t: 'ABD CORE Study Guide (PDF oficial)', url: ABD_GUIDE }, casoIds: [196, 60, 190],
+    morfologia: 'Repaso', sitio: 'Difuso', ddx: ['Mapa final por módulo CORE y por bloque A-X (exportLedgerJSON → _registro_derma.json)', 'Los 36 casos restantes (dermaCasosPostStep1) a 3/sesión desde d74 (vie 9-abr-2027)', 'Drill HDPH 90 s final: recitar sin mirar'],
+    atlasUrl: DN_QUIZ, dermatoscopiaImg: DSA, checkpoint: 'repaso2', drillHDPH: true },];
 
 export function dermaDiaDe(fechaISO: string): DiaDerma | undefined { return DERMA_DIAS.find(x => x.fecha === fechaISO); }
 export function dermaDiaPrevio(d: DiaDerma): DiaDerma | undefined { return DERMA_DIAS.find(x => x.d === d.d - 1); }
 export function dermaVentana7(fromD: number): DiaDerma[] { return DERMA_DIAS.filter(x => x.d >= fromD && x.d < fromD + 7); }
-/** Los 22 átomos X (estética) tras el swap v2.1: d19-20 + d47-56 + d59-68. */
+/** Los 22 átomos X (estética) tras el swap v2.1 + taper v3: d19-20 + d46 (contorno, en taper) + d53-71. */
 export const DERMA_X_DIAS: number[] = DERMA_DIAS.filter(x => x.bKey === 'X').map(x => x.d);
+
+// ── v3 · TAPER de examen ──
+/** Sesiones en modo taper Step 1 (fijas en el plan): d44-d49 (15-ene → 29-ene-2027). */
+export const DERMA_TAPER_DIAS: number[] = DERMA_DIAS.filter(x => !!x.taper).map(x => x.d);
+export const dermaEsTaper = (d: number): boolean => DERMA_TAPER_DIAS.includes(d);
+/**
+ * Examen ENCAPS 2027-I: fecha REAL aún no fijada ("fines de marzo 2027" · A VERIFICAR (12-sep) — decisión de Joseph).
+ * Cuando se fije (YYYY-MM-DD), dermaTaperEfectivo() aplica `modo:'encaps'` a las sesiones a ±3 días hábiles sin tocar filas ni fechas.
+ */
+export const DERMA_TAPER_ENCAPS_FECHA: string | null = null;
+export const DERMA_TAPER_MARGEN_HABILES = 3;
+function diasHabilesEntre(aISO: string, bISO: string): number {
+  const [a, b] = aISO <= bISO ? [aISO, bISO] : [bISO, aISO];
+  let n = 0; const cur = new Date(a + 'T12:00:00Z'); const end = new Date(b + 'T12:00:00Z');
+  while (cur < end) { cur.setUTCDate(cur.getUTCDate() + 1); const wd = cur.getUTCDay(); if (wd !== 0 && wd !== 6) n++; }
+  return n;
+}
+/** Taper vigente de una sesión: el fijo (`taper`) o el ENCAPS por fecha (si DERMA_TAPER_ENCAPS_FECHA está fijada y la sesión cae a ±3 hábiles). */
+export function dermaTaperEfectivo(dia: Pick<DiaDerma, 'fecha' | 'taper'>, examenEncaps: string | null = DERMA_TAPER_ENCAPS_FECHA): DermaTaper | undefined {
+  if (dia.taper) return dia.taper;
+  if (!examenEncaps || !/^\d{4}-\d{2}-\d{2}$/.test(examenEncaps)) return undefined;
+  if (diasHabilesEntre(dia.fecha, examenEncaps) > DERMA_TAPER_MARGEN_HABILES) return undefined;
+  return { modo: 'encaps', motivo: `Examen ENCAPS 2027-I (${examenEncaps}): ±${DERMA_TAPER_MARGEN_HABILES} días hábiles`, casos: 1, nota: 'Semana de examen ENCAPS: 1 caso ciego + FSRS de fallos del ledger + 0 lectura nueva (regla PLAN_ELITE: ningún átomo CRIT nuevo a ±3 días hábiles de un examen mayor).' };
+}
+/** Sesiones del plan a ±3 días hábiles de una fecha de examen (para previsualizar un taper antes de fijarlo). */
+export function dermaVentanaTaper(fechaExamenISO: string, margen = DERMA_TAPER_MARGEN_HABILES): DiaDerma[] {
+  return DERMA_DIAS.filter(x => diasHabilesEntre(x.fecha, fechaExamenISO) <= margen);
+}
+/**
+ * Mapa d(v2.1, 5-sep) → d(v3, 12-sep) de los átomos DESPLAZADOS por el taper (los no listados no se movieron).
+ * Para re-anclar lo que estaba keyed por d: dermaCerebro.ts (fichas d44, d47-d68), obsidianDermaMap.ts (DERMA_OBS_DAY),
+ * DERMA_DRILL_DIAS ([19,20,46,70] → [19,20,52,73]) y DERMA_CHECKPOINT_DIAS ([45,46,69,70] → [51,52,72,73]).
+ * Los 3 nuevos (d47, d48, d49 = segundas pasadas parciales) no tienen d previo.
+ */
+export const DERMA_TAPER_REMAP_D: Record<number, number> = {
+  44: 50, 45: 51, 46: 52, 47: 53, 48: 54, 49: 55, 50: 56, 51: 57, 52: 58, 53: 59, 54: 60, 55: 61, 56: 62,
+  57: 44, 58: 45, 59: 63, 60: 64, 61: 65, 62: 66, 63: 67, 64: 68, 65: 69, 66: 46, 67: 70, 68: 71, 69: 72, 70: 73,
+};
+export const dermaDNuevo = (dV21: number): number => DERMA_TAPER_REMAP_D[dV21] ?? dV21;
+
+// ── v3 · sinergia Step 1 · checkpoints · drills (derivados del CONTENIDO, no de números fijos) ──
+/** Los 8 átomos que Step 1 vuelve a preguntar (chip "cuenta doble Step 1" · tag Anki step1): d7 d8 d10 d12 d14 d16 d23 d24. */
+export const DERMA_STEP1_DIAS: number[] = DERMA_DIAS.filter(x => x.step1).map(x => x.d);
+/** Checkpoints del ciclo 1 por clave (cp1 d51 · cp2 d52 · repaso1 d72 · repaso2 d73). */
+export const DERMA_CHECKPOINTS: Record<DermaCheckpointKey, number> = DERMA_DIAS.reduce((acc, x) => { if (x.checkpoint) acc[x.checkpoint] = x.d; return acc; }, {} as Record<DermaCheckpointKey, number>);
+export const DERMA_CHECKPOINT_DIAS_V3: number[] = DERMA_DIAS.filter(x => !!x.checkpoint).map(x => x.d);
+/** Sesiones con drill HDPH cronometrado (DermaEmergencyDrill): d19 · d20 · d52 · d73. */
+export const DERMA_DRILL_DIAS_V3: number[] = DERMA_DIAS.filter(x => !!x.drillHDPH).map(x => x.d);
+/** Presupuesto real por banco leído de DERMA_DIAS: sesiones asignadas, Q asignadas (10/sesión) y Q que quedan para el ciclo 2. */
+export function dermaPresupuestoBancos(dias: readonly DiaDerma[] = DERMA_DIAS): Array<DermaBanco & { sesiones: number; qAsignadas: number; restante: number; dias: number[] }> {
+  return DERMA_BANCOS.map((b) => {
+    const ds = dias.filter((x) => dermaBancoDeUrl(x.qbankly?.url) === b.fuente).map((x) => x.d);
+    const qAsignadas = ds.length * b.qPorSesion;
+    return { ...b, sesiones: ds.length, qAsignadas, restante: Math.max(0, b.totalQ - qAsignadas), dias: ds };
+  });
+}
 /** Átomos que alimentan una SR del programa de Research (chip "alimenta SR-1/SR-2"). */
 export function dermaPuentesResearch(sr?: 'SR-1' | 'SR-2'): DiaDerma[] {
   return DERMA_DIAS.filter(x => x.puenteResearch && (!sr || x.puenteResearch.sr === sr));
 }
-/** Átomos con protocolo Nítida (7 B + d68). */
+/** Átomos con protocolo Nítida (7 B + d71 cosmecéutica). */
 export const DERMA_NITIDA_DIAS: number[] = DERMA_DIAS.filter(x => !!x.nitida).map(x => x.d);
 export const DERMA_TIER_INFO: Record<DermaTier, { c: string; t: string }> = {
   // escala MINERAL (no neón): granate apagado · brass tostado · jade

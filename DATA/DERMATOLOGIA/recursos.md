@@ -5,11 +5,11 @@
 > (`STUDY_HUB/02_DERMA_curriculo.md`, investigación web con fuentes) + verificación nueva de
 > referentes ([`referentes.md`](./referentes.md)). Sin URLs inventadas.
 
-## 0. Cuaderno NotebookLM «DERMA · Élite Engine» (creado 05-sep-2026 · vacío nº 9 Palmerton v3)
+## 0. Cuaderno NotebookLM «DERMA · Élite Engine» (creado 05-sep-2026 · vacío nº 9 Palmerton v3 · releído 12-sep-2026)
 - **ID** `0e9fac5c-01f3-406e-96f2-6230bd66a29c` · **URL** <https://notebooklm.google.com/notebook/0e9fac5c-01f3-406e-96f2-6230bd66a29c>
   · constante `DERMA_NOTEBOOKLM` en `src/lib/dermaData.ts` (para la pestaña Fuentes del Hub) · Dashboard Obsidian
   `10_DERMATOLOGIA/00_DASHBOARD_DERMA` lo enlaza.
-- **86 fuentes** (05-sep-2026): **79 útiles + 7 fallidas** («Checking your browser – reCAPTCHA»: PMC y NCBI Bookshelf
+- **86 fuentes** — conteo REAL con `notebook_get` el 12-sep-2026 (`source_count: 86`, título «DERMA · Élite Engine (Palmerton derma · fuentes verificadas)»; constante `DERMA_NOTEBOOKLM.fuentes` en `dermaData.ts`): **79 útiles + 7 fallidas** («Checking your browser – reCAPTCHA»: PMC y NCBI Bookshelf
   bloquean al crawler de NotebookLM → PMC8012343, PMC7427155, PMC7447619, PMC12737568, PMC12865869, PMC13172661,
   NBK430685). Sus equivalentes **PubMed sí están cargados** (MD Codes, Goodman 2020 PMID 31693068, myomodulation
   update, los 3 de toxina 2025-26). → **Borrar las 7 a mano en la UI** (el agente no borra datos). StatPearls no es
@@ -25,12 +25,23 @@
   | Boards / currículo | ABD CORE exam · APPLIED content overview · CORE Study Guide (PDF) · AAD Basic Dermatology Curriculum · ISSVA classification · «Pearls for resident education in cosmetic and laser procedures» |
   | Ruta fellowship (`RUTA_FELLOWSHIP_ESTETICO.md`) | ASDS Cosmetic Fellowship + International Preceptorship · ACGME MSDO (overview + Program Requirements 2026 PDF) · ACMS residents + match policy · Mayo (admissions, derm residency application, fellowship opportunities, MSDO overview + application, Medical Dermatology fellowship) · ABD (MSDO fellowship training, prerrequisitos de subespecialidad, fin del practice pathway, MDS 2027) · IMCAS Academy · AMWC |
 
-- **Uso Palmerton** (es el motor de verificación; NO sustituye a la fuente ni al caso ciego):
-  - Cierre 14:13 de cada sesión → «Con las fuentes, redacta la tarjeta de MECANISMO del caso de hoy (frente: pregunta
-    de mecanismo · reverso: por qué + CCSN) y cita la fuente exacta».
-  - d45 / d69 → «Del módulo CORE X, lista lo que NO sé: los 10 conceptos que aparecen en las fuentes y no en mis notas».
-  - Módulo X (d19/d20 y checkpoints) → «Recita el protocolo HDPH (DeLorenzi 2017) y el manejo inmediato de pérdida
-    visual (Goodman 2020) y corrígeme paso a paso».
+- **REGLA: motor de VERIFICACIÓN, no fuente.** El cuaderno comprueba una tarjeta contra las fuentes cargadas; nunca
+  sustituye al caso ciego, a la lectura del capítulo ni a la fuente primaria. Toda dosis, concentración o cifra que no
+  esté **literal** en una fuente cargada sale como `A VERIFICAR (dd-mmm)` y no entra en Anki, en NÍTIDA ni en la app.
+- **Los 2 prompts de uso** (los mismos que copia la pestaña Fuentes del Hub, `NBLM_PROMPTS` en `DermaHub.tsx`; el cierre
+  14:13 de HOY copia el primero ya relleno con los casos del día):
+  1. **Cierre 14:13 · cada sesión → Tarjeta de MECANISMO verificada**
+     > Con las fuentes del cuaderno, dame la tarjeta de MECANISMO verificada del caso de hoy [dx / átomo dNN]. Formato:
+     > FRENTE "¿por qué…?" → POR QUÉ (cascada tejido/fisiología) · CCSN (con qué se confunde + el rasgo discriminador)
+     > · FUENTE (cita exacta del cuaderno). Marca "A VERIFICAR" toda dosis, concentración o cifra que no esté
+     > literalmente en las fuentes.
+  2. **Checkpoints (v3 taper: cp1 d51 jue 4-feb-2027 · repaso1 d72 lun 5-abr-2027 · ciclo 2 d85 / d94 / d103) → Qué no sé del módulo X**
+     > Con las fuentes del cuaderno y esta lista de mis fallos del ledger [pegar export JSON: por_modulo + tipos de
+     > error], dime qué NO sé del módulo CORE [Med/Path/Peds/Surg]: los 10 conceptos/mecanismos con más probabilidad
+     > de fallo, cada uno con su rasgo discriminador y la fuente exacta. Sin adular; ordena por impacto en el examen CORE.
+- Usos secundarios (mismo cuaderno):
+  - Módulo X (d19/d20 y los drills de d52/d73) → «Recita el protocolo HDPH (DeLorenzi 2017) y el manejo inmediato de
+    pérdida visual (Goodman 2020) y corrígeme paso a paso».
   - Antes de fijar una cifra/dosis en `NITIDA_PROTOCOLOS.md` → «¿Qué dice exactamente la fuente cargada sobre …?
     Si no está, dilo» (todo lo que no esté queda `A VERIFICAR`).
 - Ampliar: `source_add` por lotes de 10 URL, siempre tras WebFetch 200; **no cargar PMC ni NCBI Bookshelf** (reCAPTCHA).
@@ -77,6 +88,8 @@ for Skin of Color (`2956`).
 - VisualDx: preguntar acceso institucional UF antes de pagar.
 - `[pendiente]` conteo de vídeos de las categorías "Dermatologic Surgery" y "3D Modules"
   de AccessDerma (no cargaron por click programático).
-- `[pendiente]` TOC con `sectionid` de Fitzpatrick 9e (`2570`), Barnhill 4e (`2802`) y Weinberg 5e (`1913`):
+- `[pendiente]` TOC con `sectionid` de Fitzpatrick 9e (`2570`), Barnhill 4e (`2802`), Weinberg 5e (`1913`), Guidebook (`2960`) y
+  Dermoscopy (`2804`/`2929`) — estado real 12-sep-2026: **43/73 átomos con sectionid verificado, 20/73 a portada** (cabecera de
+  `src/lib/dermaSourcesData.ts`):
   requiere la sesión UF en tu Chrome → método CDP exacto en
   [`_scrape/README_TOC_PENDIENTE.md`](./_scrape/README_TOC_PENDIENTE.md) (vacío nº 8 Palmerton v3).

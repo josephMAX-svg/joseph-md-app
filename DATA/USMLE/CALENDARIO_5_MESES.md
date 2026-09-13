@@ -49,7 +49,7 @@ día de descanso pre-examen).
 | S17 | 4-ene | **Psych** D78 (lun) · **Biochem** D79 · D80 (mar-mié) · **Banco intensivo** D81 (jue) | **UWSA2** (D82, vie 8-ene) |
 | S18 | 11-ene | **Banco intensivo** D83-D86 (lun-jue) | **NBME 31** (D87, vie 15-ene) |
 | S19 | 18-ene | **Banco intensivo** D89 · D91 (mar-jue) | **NBME 32** (D88, lun 18-ene) · **NBME 33** (D90, mié 20-ene) · **FREE 120 oficial** (D92, vie 22-ene) |
-| S20 | 25-ene | **Banco intensivo** D93 (lun) · **Sprint final** D94 · D95 (mar-mié) | — |
+| S20 | 25-ene | **Banco intensivo** D93 (lun) · **Sprint final** D94 · D95 (mar-mié) = **TAPER** (20Q flagged + Anki maduro, nada nuevo) → **jue 28 D-1 fuera del plan · vie 29 EXAMEN** | — |
 
 Fines de semana: **todos los sábados y domingos del plan están libres** (régimen 31-ago:
 sostenibilidad > volumen). Únicos días hábiles saltados: **vie 25-dic-2026 (S15), jue 31-dic-2026
@@ -91,15 +91,15 @@ bloque no cambian; cambia el FORMATO de la consolidación de las 11:00 según el
 |-------|--------|---------|-------|-------------------|----------------------|------|
 | **1** | Subtema · tutor sin tiempo | Bloques de 5Q de UN solo subtema · modo tutor · sin reloj (aprender a leer: CCSN + SAQ + cover-the-options) | Palmerton 20-30Q/día → plan: 30Q (10 pre-test + 20 consolidación) | 80% en 10Q consecutivas del subtema, ≤24-48 h tras estudiarlo | 08:15 PRE-TEST del tema nuevo (siempre) · 11:00 los 2 primeros días de cada sistema | A |
 | **2** | Subtema · timed | Bloques de 5Q del subtema · cronometrado (90 s/Q · tope 2 min: adivinar, marcar, avanzar) | Volumen creciente → plan: 40Q (10 + 30) | 80% en ≥3 subtemas distintos, ≥1 validado en <48 h | 11:00 CONSOLIDACIÓN desde el 3er día de cada sistema (subtemas ya validados) · 07:15: 5Q timed del subtema de AYER (1ª mitad del gate de 10Q) | A |
-| **3** | Sistema completo · timed | Bloques de 10-20Q de TODO el sistema · timed (sin la "ventaja injusta" de saber el subtema) | Palmerton 40-50Q/día → plan: 40Q (10 pre-test + 20Q sistema + 10 tutor) | 80% en 20Q timed consecutivas del sistema | VIERNES sin NBME/UWSA a las 11:00 (20Q del sistema en curso, o del anterior si el sistema lleva <3 días) | A |
-| **4** | Sistemas mixtos · timed | Bloques de 20-30Q mezclando ≥3 sistemas dominados + el nuevo (saltar entre especialidades bajo presión) | Palmerton 50-70Q/día → plan Fase B: 2×40Q (80Q) | 80% en bloques mixtos de 20Q timed de ≥3 sistemas | 18:00 EVAL (10Q mixta timed) toda la Fase A como dosis diaria · **Fase B D81 · D83 · D84 · D85** (random timed 2×40Q + sistema débil) | A (dosis diaria) → B |
+| **3** | Sistema completo · timed | Bloques de 10-20Q de TODO el sistema · timed (sin la "ventaja injusta" de saber el subtema) | Palmerton 40-50Q/día → plan: 40Q (10 pre-test + 20Q sistema + 10 tutor) | 80% en 20Q timed consecutivas del sistema | VIERNES sin NBME/UWSA a las 11:00 **hasta S10** (D10 · D20 · D25 · D35 · D40 · D50): 20Q del sistema en curso, o del anterior si el sistema lleva <3 días · desde S11 el viernes pasa a nivel 4 | A |
+| **4** | Sistemas mixtos · timed | Bloques de 20-30Q mezclando ≥3 sistemas dominados + el nuevo (saltar entre especialidades bajo presión) | Palmerton 50-70Q/día → plan: viernes N4 = 40Q (10 pre-test + 30Q mixtos timed) · Fase B: 2×40Q (80Q) | 80% en bloques mixtos de 20Q timed de ≥3 sistemas | 18:00 EVAL (10Q mixta timed) toda la Fase A como dosis diaria · **VIERNES sin hito desde S11 (D55, vie 27-nov) = 20-30Q mixtos timed a las 11:00 en vez de sistema único** (flag `VIERNES_N4_DESDE_SEMANA = 11`, 12-sep tarde) · **Fase B D81 · D83 · D84 · D85** (random timed 2×40Q + sistema débil) | A (dosis diaria + viernes desde S11) → B |
 | **5** | Mixto completo 40Q · timed | Bloques de 40Q random · timed 60 min (90 s/Q) = simulación exacta del examen | Palmerton 80-100Q/día (máx. 2 bloques de 40) · hitos: UWSA 160Q · NBME 200Q · Free 120 | 80% sostenido (90% para 260+) · pase seguro = NBME ≥65% (≈95%) / ≥70% (≈99%) | 05:00 STRESS SET 10Q/12min (Fases B-C) · **Fase B D86 + NBME 31 (D87)** y **D89 · D91 · D93** (incorrects 2ª pasada + AMBOSS 200 mitades 1-2, alojados en el sprint) · Fase C (NBME 32/33 + Free 120 + taper D94-D95) · hitos de viernes = formato nivel 5 como MEDICIÓN, no como progresión | B → C (+ todos los hitos) |
 
 **Regla determinista del generador** (no toca fechas, sistemas, hitos ni el total de 95 días):
-- Fase A: posición del día dentro de su sistema (sin contar Assessment) → **1º-2º día = nivel 1** (30Q = 10 pre-test + 20 consolidación en bloques 5Q tutor) · **viernes sin hito y ≥3º día = nivel 3** (40Q = 10 + 20 sistema completo timed + 10 tutor) · **resto = nivel 2** (40Q = 10 + 30 en bloques 5Q timed).
+- Fase A: posición del día dentro de su sistema (sin contar Assessment) → **1º-2º día = nivel 1** (30Q = 10 pre-test + 20 consolidación en bloques 5Q tutor) · **viernes sin hito y ≥3º día = nivel 3 hasta S10** (40Q = 10 + 20 sistema completo timed + 10 tutor) · **viernes sin hito y ≥3º día desde S11 = nivel 4** (40Q = 10 pre-test + 20-30Q timed mixtos de sistemas dominados + 10 tutor; flag `VIERNES_N4_DESDE_SEMANA = 11`, en v5.10 = **D55**) · **resto = nivel 2** (40Q = 10 + 30 en bloques 5Q timed).
 - Hitos (🎯): formato **nivel 5 como MEDICIÓN** (UWSA 160Q · NBME 200Q · Free 120 = 120Q), no como progresión.
 - Fase B (D81-D87): **D81, D83, D84 y D85 nivel 4** (2×40Q mixtos timed = 80Q) · **D86 nivel 5** (incorrects, 80Q) · **D82 = UWSA2** y **D87 = NBME 31** (nivel 5 como medición).
-- Fase C (D88-D95): **nivel 5**; **D89 (mar 19-ene), D91 (jue 21-ene) y D93 (lun 25-ene) siguen siendo días de banco** (incorrects 2ª pasada · AMBOSS 200 mitad 1 · mitad 2, 80Q cada uno) y los días sin simulacro son solo flagged/incorrects, sin preguntas nuevas (**D94 = 40Q · D95 = 20Q**).
+- Fase C (D88-D95): **nivel 5**; **D89 (mar 19-ene), D91 (jue 21-ene) y D93 (lun 25-ene) siguen siendo días de banco** (incorrects 2ª pasada · AMBOSS 200 mitad 1 · mitad 2, 80Q cada uno) y los días sin simulacro son **taper** (`TAPER_ACTIVO`, 12-sep tarde): solo flagged/incorrects ya vistos + Anki maduro, cero preguntas y cero tarjetas nuevas (**D94 = 20Q · D95 = 20Q**; D94 bajó de 40 a 20). Texto de esos días en `DIAS[].franjaNota`; el `sub` no cambia.
 - **La clasificación no depende de umbrales de FECHA** sino del **origen de la fila** (`bbCh` = `Banco` / `Sprint`): así la regla queda idéntica aunque el contenido se derrame hasta el 6-ene.
 - La eval de las 18:00 (10Q mixta timed) es la **dosis diaria de nivel 4** durante toda la Fase A; los stress sets 10Q/12min (nivel 5) solo en Fases B-C a las 05:00.
 
@@ -107,15 +107,17 @@ bloque no cambian; cambia el FORMATO de la consolidación de las 11:00 según el
 
 | Fase | Días | Niveles | Q objetivo (`qDia`) |
 |------|------|---------|------------------------|
-| **A** · D1-D80 | 80 | N1×28 · N2×38 · N3×7 · N5×7 | 4000 |
+| **A** · D1-D80 | 80 | N1×28 · N2×38 · N3×6 · N4×1 · N5×7 | 4000 |
 | **B** · D81-D87 | 7 | N4×4 · N5×3 | 760 |
-| **C** · D88-D95 | 8 | N5×8 | 820 |
-| **Total** | **95** | **N1×28 · N2×38 · N3×7 · N4×4 · N5×18** | **5580** |
+| **C** · D88-D95 | 8 | N5×8 | 800 |
+| **Total** | **95** | **N1×28 · N2×38 · N3×6 · N4×5 · N5×18** | **5560** |
 
-Desglose: **3340Q de trabajo diario** (83 días) + **2240Q de simulacros**
-(9×200Q NBME + 2×160Q UWSA + 1×120Q Free 120). **El total no se movió respecto de la v5.9**: es la
-prueba aritmética de que en el corrimiento v5.10 no se recortó ni un subtema.
-Viernes de Fase A sin hito (9): D5 (18-sep) Immuno **N1** · D10 (25-sep) Cardio **N3** · D20 (9-oct) Resp **N3** · D25 (16-oct) Renal **N3** · D35 (30-oct) GI **N3** · D40 (6-nov) Endo **N3** · D50 (20-nov) Neuro **N3** · D55 (27-nov) Heme/Onc **N3** · D65 (11-dic) Repro **N1**.
+Desglose: **3320Q de trabajo diario** (83 días) + **2240Q de simulacros**
+(9×200Q NBME + 2×160Q UWSA + 1×120Q Free 120). El corrimiento v5.10 de la mañana dejó el total en 5580Q
+(prueba aritmética de que no se recortó ni un subtema); la **segunda pasada del 12-sep (tarde)** lo deja en
+**5560Q** por dos cambios de VOLUMEN, no de contenido: **D55 pasa de N3 a N4** (mismo 40Q) y **D94 baja de
+40Q a 20Q** (taper). El multiconjunto (sistema, subtema) es idéntico (verificado con `verify_usmle_n4.js`).
+Viernes de Fase A sin hito (9): D5 (18-sep) Immuno **N1** · D10 (25-sep) Cardio **N3** · D20 (9-oct) Resp **N3** · D25 (16-oct) Renal **N3** · D35 (30-oct) GI **N3** · D40 (6-nov) Endo **N3** · D50 (20-nov) Neuro **N3** · **D55 (27-nov) Heme/Onc N4** (primer viernes desde S11: 20-30Q mixtos de los 8 sistemas ya cerrados) · D65 (11-dic) Repro **N1**.
 Los que quedan en **N1** (D5, D65) lo hacen porque su sistema lleva <3 días: ese viernes el bloque
 de sistema completo timed se hace del sistema **anterior**. Cambio de niveles de la v5.9 → v5.10: al
 correr todo +1 día hábil, el viernes de cada sistema cae sobre otro subtema — **Neuro estrena viernes de
@@ -137,7 +139,7 @@ El UWSA1, ahora en lunes, deja de ocupar un viernes (17 viernes en el plan, 8 so
 | S8 | 2-nov | lun N2 · mar N1 · mié N1 · jue N2 · vie N3 | 40/30/30/40/40 |
 | S9 | 9-nov | lun N2 · mar N1 · mié N1 · jue N2 · vie N5🎯 | 40/30/30/40/200 |
 | S10 | 16-nov | lun N2 · mar N2 · mié N2 · jue N2 · vie N3 | 40/40/40/40/40 |
-| S11 | 23-nov | lun N1 · mar N1 · mié N2 · jue N2 · vie N3 | 30/30/40/40/40 |
+| S11 | 23-nov | lun N1 · mar N1 · mié N2 · jue N2 · **vie N4** (mixto de sistemas dominados) | 30/30/40/40/40 |
 | S12 | 30-nov | lun N2 · mar N1 · mié N1 · jue N2 · vie N5🎯 | 40/30/30/40/200 |
 | S13 | 7-dic | lun N2 · mar N2 · mié N2 · jue N2 · vie N1 | 40/40/40/40/30 |
 | S14 | 14-dic | lun N1 · mar N2 · mié N2 · jue N2 · vie N5🎯 | 30/40/40/40/200 |
@@ -146,7 +148,7 @@ El UWSA1, ahora en lunes, deja de ocupar un viernes (17 viernes en el plan, 8 so
 | S17 | 4-ene | lun N2 · mar N1 · mié N1 · jue N4 · vie N5🎯 | 40/30/30/80/160 |
 | S18 | 11-ene | lun N4 · mar N4 · mié N4 · jue N5 · vie N5🎯 | 80/80/80/80/200 |
 | S19 | 18-ene | lun N5🎯 · mar N5 · mié N5🎯 · jue N5 · vie N5🎯 | 200/80/200/80/120 |
-| S20 | 25-ene | lun N5 · mar N5 · mié N5 | 80/40/20 |
+| S20 | 25-ene | lun N5 · mar N5 (taper D-3) · mié N5 (taper D-2) · jue **D-1 fuera del plan** · vie **EXAMEN** | 80/20/20 |
 
 ### Medición (Palmerton: "se mide por % ciego, no por horas")
 
@@ -224,7 +226,7 @@ Código: [`src/lib/usmleScores.ts`](../../src/lib/usmleScores.ts) → localStora
 | D52 | mar 24-nov | Hematology & Oncology | Macro/normocíticas + hemólisis + drepanocitosis | N1 | 30 |
 | D53 | mié 25-nov | Hematology & Oncology | Coagulación: cascada + PT/PTT + hemofilias + vWD | N2 | 40 |
 | D54 | jue 26-nov | Hematology & Oncology | Plaquetas (PTI/PTT/SUH) + hipercoagulabilidad + CID | N2 | 40 |
-| D55 | vie 27-nov | Hematology & Oncology | Leucemias agudas y crónicas + mielodisplasia | N3 | 40 |
+| D55 | vie 27-nov | Hematology & Oncology | Leucemias agudas y crónicas + mielodisplasia — **viernes de NIVEL 4** (S11): 11:00 = 20-30Q timed mixtos de los sistemas dominados + 10Q tutor del subtema | N4 | 40 |
 | D56 | lun 30-nov | Hematology & Oncology | Linfomas + mieloma + transfusión + fármacos onco | N2 | 40 |
 | D57 | mar 1-dic | Microbiology / ID | Bacteriología general + genética bacteriana + Gram+ cocos | N1 | 30 |
 | D58 | mié 2-dic | Microbiology / ID | Gram+ bacilos + anaerobios + Gram− cocos | N1 | 30 |
@@ -242,7 +244,7 @@ Código: [`src/lib/usmleScores.ts`](../../src/lib/usmleScores.ts) → localStora
 | D70 | vie 18-dic | Assessment | 🎯 NBME 29 (07:15-11:00) + revisión de errores + Anki de gaps | N5 (hito) | 200 |
 | D71 | lun 21-dic | Musculoskeletal / Rheum | Artritis: AR/OA/gota/espondiloartropatías + autoanticuerpos | N1 | 30 |
 | D72 | mar 22-dic | Musculoskeletal / Rheum | LES + conectivopatías + vasculitis | N1 | 30 |
-| D73 | mié 23-dic | Musculoskeletal / Rheum | Hueso (osteoporosis/Paget/tumores) + anatomía MSK high-yield (plexos, nervios) + dermato Step 1 | N2 | 40 |
+| D73 | mié 23-dic | Musculoskeletal / Rheum | Hueso (osteoporosis/Paget/tumores) + anatomía MSK high-yield (plexos, nervios) + dermato Step 1 — **cuenta doble Derma ↔ Step 1**: pre-test 08:15 y repaso 07:15 = `deck:APEX::DERMA tag:step1` + fallos del ledger derma (8 átomos d7·d8·d10·d12·d14·d16·d23·d24) | N2 | 40 |
 | D74 | jue 24-dic | Psychiatry & Behavioral | Trastornos del ánimo + psicóticos + DSM esquema | N1 | 30 |
 | D75 | lun 28-dic | Psychiatry & Behavioral | Ansiedad + personalidad + infancia (TDAH/autismo) + sustancias/toxidromes | N1 | 30 |
 | D76 | mar 29-dic | Psychiatry & Behavioral | Psicofármacos: AD + antipsicóticos + litio + ansiolíticos | N2 | 40 |
@@ -263,8 +265,10 @@ Código: [`src/lib/usmleScores.ts`](../../src/lib/usmleScores.ts) → localStora
 | D91 | jue 21-ene | Banco intensivo | uWorld incorrects + AMBOSS 200 Concepts Step 1 (mitad 1) | N5 | 80 |
 | D92 | vie 22-ene | Sprint final | 🎯 FREE 120 oficial (07:15-11:00) + logística del examen + cierre | N5 (hito) | 120 |
 | D93 | lun 25-ene | Banco intensivo | uWorld incorrects + AMBOSS 200 Concepts Step 1 (mitad 2) | N5 | 80 |
-| D94 | mar 26-ene | Sprint final | Repaso First Aid rápido sistemas 6-10 + Anki marathon + incorrects | N5 | 40 |
-| D95 | mié 27-ene | Sprint final | Repaso rapid review First Aid (páginas finales) + Anki + laboratorio de dudas | N5 | 20 |
+| D94 | mar 26-ene | Sprint final | Repaso First Aid rápido sistemas 6-10 + Anki marathon + incorrects — **TAPER D-3**: solo Anki maduro + 20Q flagged ya vistos, nada nuevo | N5 | 20 |
+| D95 | mié 27-ene | Sprint final | Repaso rapid review First Aid (páginas finales) + Anki + laboratorio de dudas — **TAPER D-2**: última sesión ligera, 20Q flagged con esquemas; tarde: permiso + 2 ID + bolsas Ziploc | N5 | 20 |
+| — | **jue 28-ene** | **D-1 (fuera del plan)** | Solo Anki vencido · nada después de las 17:00 · empacar · dormir temprano (Palmerton §8.3; `USMLE_TAPER.dMenos1`) | — | 0 |
+| — | **vie 29-ene** | **EXAMEN (target)** | Step 1 · 7 bloques × 40Q · plan de descansos de Alec (`USMLE_TAPER.examen`) | — | 280 |
 
 ## Reglas de reprogramación
 
@@ -292,6 +296,32 @@ Código: [`src/lib/usmleScores.ts`](../../src/lib/usmleScores.ts) → localStora
    fuera de la ventana 25-29 ene** (plan B: feb-mar, mismo eligibility period — ver gates).
    **Con la v5.10 ya se consumieron 10 días hábiles de colchón desde el 31-ago.**
 5. Sábados y domingos NO se estudia (régimen 31-ago; sostenibilidad > volumen).
+6. **REGLA de burnout (12-sep, tarde; divergencia Palmerton #29 → §E-7).** Si **2 hitos consecutivos con
+   mínimo** quedan **bajo su mínimo on-track** (UWSA1/UWSA2 no cuentan) **y** hay síntomas (releer sin
+   comprender, irritabilidad, indiferencia, descansos de 5 min que se vuelven de 1 h) → **3-5 días con SOLO
+   Anki AM (30-45 min de tarjetas viejas) + sueño**; frenar QBank y toda adquisición. **Cada día parado = +1
+   día hábil (regla 1)**: no se recorta ni se fusiona temario (regla 3). Se reanuda **por el gate del 80%**,
+   no por la fecha; si el siguiente hito vuelve a quedar bajo mínimo → plan B de fecha (feb-mar, mismo
+   eligibility period). En la app: `usmleScores.gateHito` → `'ALERTA BURNOUT'` + banner en `UsmleHub`.
+
+## Semana de examen: taper D94-D95 · D-1 fuera del plan · test day (Palmerton §8.3-§8.4)
+
+*(Implementado el 12-sep por la tarde — divergencia #22 / §E-5. Código: `USMLE_TAPER`, `DAILY_META.examenTarget =
+'2027-01-29'`, `DAILY_META.descansoD1 = '2027-01-28'` en `usmleStep1Daily.ts`; los D94/D95 llevan `franjaNota` y chip
+TAPER en Cola de hoy; D95 muestra el D-1 y el test day; Readiness → tarjeta "Taper y semana de examen".)*
+
+| Día | Fecha | Protocolo | Q |
+|-----|-------|-----------|---|
+| desde D87 (NBME 31) | vie 15-ene | **Cese de lo nuevo**: cero preguntas nuevas, cero tarjetas nuevas; solo incorrects/flagged + AMBOSS 200 como repaso de lo ya visto; no repetir NBME ya hechos | — |
+| **D94 · D-3** | mar 26-ene | Solo Anki **maduro** + 20Q flagged/incorrects ya vistos (sin bloque timed, sin AMBOSS) · repaso First Aid de esquemas (sistemas 6-10) · dormir ≥7 h | 20 |
+| **D95 · D-2** | mié 27-ene | Última sesión ligera: Anki maduro + 20Q flagged con los mejores esquemas e imágenes · rapid review FA · tarde: permiso impreso + digital, **2 ID con el nombre EXACTO del permiso**, bolsas Ziploc numeradas (Break #1-#4), ruta al Prometric | 20 |
+| **D-1 · fuera del plan** | **jue 28-ene** | Solo Anki vencido (idealmente adelantado) · PROHIBIDO bloques, temas densos y abrir First Aid "para ver cuánto sé" · nada de estudio después de las 17:00 (journaling, ejercicio suave, visualización) · somnífero nunca por primera vez · dormir temprano, alarma y ruta comprobadas | 0 |
+| **EXAMEN** | **vie 29-ene** | Desayuno proteína + grasa (sin carbohidratos simples), el café de siempre · tutorial: auriculares y terminar (+15 min de descanso) · bloques 1-2 → 10 min · 3-4 → 10 min · 5 → almuerzo 20-30 min · 6 → 10 min · 7 · entre bloques las 40Q dejan de existir (nunca revisar ni abrir FA en el casillero) · nunca salir a mitad de bloque · post-test: premiarse | 280 |
+
+Las franjas del Calendar no cambian en D94-D95 (05:00 Anki · 07:15 · 11:00 siguen en pie); cambia el **volumen** (20Q) y el
+**contenido** (nada nuevo). El jue 28 solo conserva el Anki de las 05:00. Lo que sigue A VERIFICAR (12-sep): repasos
+200-300/día en el cierre (cifra del studio guide) y el costo del Free 120 en el Prometric de Lima ($155 internacional según
+el cuaderno).
 
 ## Gates y logística (evidencia macro:calendario-5-meses)
 

@@ -65,6 +65,42 @@
 - **Criterio de éxito**: con 2 mediciones separadas ≥ 28 días, el reporte muestra Δ cintura y Δ masa magra; sin
   ellas muestra "pendiente: mide cintura este lunes" (una acción).
 
+### Tarea D · Actividad AM no modelada — `actividad_am` en el plan y en el TDEE (12-sep-2026, vacío 11 de gaps_v3b_synapse.json)
+
+**El problema (leído del engine real, sin tocarlo):** `SPLIT_JOSEPH` (`plan.ts`) solo modela la tarde — 4 días de fuerza
+30-60' (lun torso empuje · mar pierna posterior · jue torso jalón · vie pierna anterior) + baile mié 45' — y `estimarTdee()`
+(`domain.ts`) usa un `factor` genérico (1.5 por defecto) o el método adaptativo pesos×ingesta. Pero el Calendar de Joseph tiene
+además **CORRER 06:00-06:30 + CALISTENIA 06:30-06:45 todos los L-V** (en ayunas, tras 2 h de cognición) y **caminata 30' sáb/dom**
++ baile 90' sáb/dom: **≈4-5 h/semana de cardio matinal que no entran en `generarPlan()` ni en el TDEE**. El pilar `cardio` de
+`scoreDay()` marca "hecho" con *cualquier* `mv_activity_proofs` (peso 0,6 fuera de `dias_cardio`, 1,0 en ellos), sin objetivo de
+minutos, y hasta el 12-sep los eventos CORRER/CALISTENIA (a diferencia de GYM) no pedían registrar nada en VITALS. En un déficit con
+front-loading ~20 % y 6 h 15 de carga cognitiva diaria, un gasto no contabilizado de ese tamaño empuja el déficit real por encima
+del planificado sin que los pisos (`PISO_KCAL`, `PROTEINA_PISO 1,6 g/kg`, `VEL_MAX_PCT_SEM 1 %`) lo vean.
+
+**Ya hecho (12-sep, fuera del código de VITALS):** descripciones de CORRER `5mrm4ru08go9k70408jm8vcjku` y CALISTENIA
+`2lpvftrc3fp64e0om6qg0mcs34` en el Calendar → "📲 AL VOLVER (06:45): registrar en VITALS — correr/caminata 30' (o una sola
+entrada 'cardio' 45' = carrera + calistenia) — 20 s". Los tipos existen ya en `activity_proofs.tipo` (`caminata`,`correr`,`baile`,`cardio`).
+Con eso los datos empiezan a acumularse desde el lun 14-sep aunque el engine aún no los use.
+
+**Qué hacer en el chat de VITALS (sin tocar pisos de seguridad):**
+1. **`plan.ts`** — nuevo bloque en el plan generado: `actividad_am: { lv: { tipo: 'correr', min: 30 } + { tipo: 'calistenia', min: 15 },
+   finde: { tipo: 'caminata', min: 30 } }` (o un array por día 0-6 con `tipo` y `min`), dentro de `entrenamiento` junto a `split`,
+   `dias_fuerza`, `dias_cardio`. Solo para el perfil de Joseph (`role === 'joseph'`) o para todo perfil con `actividad_am` en `mv_profiles`
+   (campo nuevo opcional, jsonb; migración `0003_actividad_am.sql` — A VERIFICAR (12-sep) el número libre de migración).
+2. **`domain.ts`** — `estimarTdee()`: cuando el método es `formula`, sustituir el `factor` genérico por un **factor explícito**
+   = base (1.2 sedentario por la carga de escritorio) + Σ(min/semana de cada actividad × coste) / 7 / TMB, o más simple: sumar al
+   TDEE un `kcal_actividad_am` diario estimado por MET × peso × horas (MET de referencia a confirmar en el compendio de Ainsworth —
+   **A VERIFICAR (12-sep)**, no fijar cifras sin fuente). Cuando el método es `adaptativo` (pesos × ingesta) el gasto ya está
+   implícito: **no sumar dos veces**; solo dejar el desglose informativo en `tdee.detalle`.
+3. **`objetivoCalorico()`** no cambia: recibe el TDEE ya corregido. `safetyValidate()` sigue igual (pisos intactos).
+4. **`scoreDay()`** — pilar `cardio`: si el plan trae `actividad_am` para ese weekday, "hecho" = existe `mv_activity_proofs` de tipo
+   `correr|caminata|cardio` ese día con `duracion_min ≥ 0,7 × min planificados`; si no, sigue la regla actual (cualquier actividad).
+5. **`index.ts` `weeklyReport()`** — añadir `cardio_am: { hechos: n, plan: 5 }` (L-V con proof matinal) y que la tarjeta del lunes
+   muestre **"cardio AM cumplido x/5"** junto al split de tarde; el insight del coach recibe ese dato en el prompt (`reasonCoach`).
+6. **Criterio de éxito:** con 5 proofs `correr` L-V y 2 `caminata` el finde, el reporte del lunes muestra "cardio AM 5/5" y el TDEE
+   `formula` sube respecto al mismo perfil sin `actividad_am` (diferencia visible en `tdee.detalle`); un perfil sin `actividad_am`
+   no cambia en nada. Datos de referencia ya en `research/RESEARCH_REFERENTES.md` (Helms/Israetel) y `DATA/VITALS/retencion-research.md`.
+
 ## 3 · Alineación del piso de proteína (decisión propuesta, sin cambiar código todavía)
 
 - Academia: **1,2-1,6 g/kg/día** (rango; el extremo alto con GLP-1 y fuerza). VITALS: **piso 1,6 g/kg** y

@@ -3,7 +3,8 @@
 > **Qué es esto.** NÍTIDA es la línea Pulso "Dermatología médica por suscripción" (`empresaData.ts`, 2026 T4)
 > que el 27-ago-2026 se **fusionó con Derma**: su materia prima son los átomos del **módulo B** del plan
 > (d7 psoriasis · d8 eccemas/DA · d9 acné+rosácea · d10 ampollosas · d11 urticaria · d12 farmacodermias ·
-> d13 conectivopatías) + **d68 cosmecéutica**, y la capa de comunicación/adherencia del `DERMA_MASTER_SPEC` §4.
+> d13 conectivopatías) + **d71 cosmecéutica** (v3 taper 12-sep-2026; antes d68), y la capa de comunicación/adherencia del `DERMA_MASTER_SPEC` §4.
+> Campo `nitida` en esos 8 átomos de `dermaDailyPlan.ts` (`DERMA_NITIDA_DIAS`) → chip «Nítida · protocolo» en HOY.
 > Este doc convierte lo estudiado en **protocolo de producto**: una "consulta tipo" por diagnóstico.
 >
 > **Reglas de honestidad (SPEC §8).** Aquí van *mecanismos mentales* (estables) y *estructura de consulta*.
@@ -31,9 +32,7 @@
 | Paso | Qué | Detalle operativo |
 |---|---|---|
 | Intake | Formulario previo | Motivo, tiempo de evolución, qué ha usado (con fotos de los envases), alergias, embarazo/lactancia, fototipo autodeclarado (I-VI, con escala visual), medicación, antecedentes. |
-| **Foto estandarizada** | Set mínimo de 5 tomas (cara) | Frontal · 45° derecha · 45° izquierda · perfil derecho · perfil izquierdo. Tronco/extremidades: 1 general + 1 detalle con moneda/regla como escala. |
-| | Condiciones | Luz natural difusa (ventana lateral), sin flash directo, fondo neutro, sin maquillaje ni cremas, pelo recogido, cámara a la altura de los ojos, ~40 cm, **misma hora y mismo sitio** en cada control. |
-| | Control | Mismas 5 tomas a las 6-8 semanas → comparación lado a lado (antes/después) que el paciente ve. |
+| **Foto estandarizada** | **Protocolo ÚNICO** → [`DATA/RESEARCH/CASE_REPORT_1/protocolo_fotos.md`](../RESEARCH/CASE_REPORT_1/protocolo_fotos.md) (canónico desde el 12-sep-2026; aquí NO se duplica) | Set mínimo tele-derma = **§1b** de ese protocolo (el paciente fotografía en casa: 5 tomas de cara · 1 general + 1 detalle con escala en tronco/extremidades · luz natural difusa lateral, sin flash · misma hora y sitio). Cuando dispara el clínico (control presencial, case report) rige la receta completa de §1 (fondo, flash rebotado, balance fijo, tarjeta gris). Control a las 6-8 semanas con las **mismas** tomas → comparación lado a lado. Anonimización y custodia: §2-§3 del mismo protocolo. |
 | Triaje de exclusión | Lo que NO es tele-derma NÍTIDA | Lesión pigmentada nueva/cambiante (→ presencial + dermatoscopia), fiebre + rash, ampollas/erosiones extensas, afectación mucosa, dolor desproporcionado, sospecha de infección profunda, embarazo con dermatosis nueva, niño <2 años, paciente inmunodeprimido con lesión nueva. |
 | Consentimiento | Telesalud | Texto de consentimiento informado para teleconsulta + uso de imágenes (almacenamiento cifrado, no redes). **Marco legal telesalud Perú (Ley 30421 / normativa MINSA vigente) — A VERIFICAR (05-sep)** antes de lanzar. |
 | Rutina | **≤3 pasos** | Regla de adherencia (SPEC §4.2): una rutina de 3 pasos que se hace gana a una de 7 que se abandona. Formato fijo: **limpiador · activo · fotoprotector** (mañana) / **limpiador · activo** (noche). |
@@ -102,26 +101,26 @@ desenlace del producto (no es fracaso: es seguridad).
 | **Qué mira la foto** | Eritema centrofacial persistente, telangiectasias, pápulas/pústulas **sin comedones** (vs acné), fimas, ojos rojos/secos (ocular). |
 | **Causa → mecanismo** | Disregulación neurovascular + inflamación innata (± *Demodex*); desencadenantes (calor, alcohol, sol, comida picante, estrés). Dibujo: "vaso que se dilata y no vuelve". |
 | **Clasificación** | Por fenotipo: eritema persistente · pápulo-pustulosa · fimatosa · ocular. IGA para el componente pápulo-pustuloso. |
-| **Rutina ≤3 pasos** | AM: limpiador muy suave · **fotoprotector mineral** (obligatorio) · PM: **antiinflamatorio tópico** (metronidazol / ivermectina / ácido azelaico según fenotipo). Vasoconstrictor tópico para el eritema y láser vascular (PDL, d63) = fase presencial. Elección y pautas — **A VERIFICAR (05-sep)**. |
+| **Rutina ≤3 pasos** | AM: limpiador muy suave · **fotoprotector mineral** (obligatorio) · PM: **antiinflamatorio tópico** (metronidazol / ivermectina / ácido azelaico según fenotipo). Vasoconstrictor tópico para el eritema y láser vascular (PDL, d67) = fase presencial. Elección y pautas — **A VERIFICAR (05-sep)**. |
 | **Guion** | "No es acné aunque se parezca: los productos de acné la empeoran. La mitad del tratamiento es evitar tus disparadores; llevemos un diario de 2 semanas." |
 | **Revisión 6-8 sem** | Foto · IGA (pápulas) · escala de eritema 0-4 · diario de disparadores · síntomas oculares. |
 | **Lo que no puedo errar** | Rosácea ocular (derivar a oftalmología); confundir con lupus/dermatitis seborreica/dermatitis perioral por corticoide; corticoide tópico en cara (empeora). |
 | **Límites/derivar** | Fimas, ocular, fracaso a tópicos (oral), láser vascular. |
 
-## 5. PIGMENTACIÓN — melasma · PIH · fototipos IV-VI (d4 + d61/d65) — `A VERIFICAR` guía
+## 5. PIGMENTACIÓN — melasma · PIH · fototipos IV-VI (d4 + d65/d69) — `A VERIFICAR` guía
 
 | Campo | Contenido |
 |---|---|
 | **Qué mira la foto** | Melasma: máculas marrones simétricas malares/frontales/labio superior (luz de Wood no aplica en tele-derma: describir profundidad por color). PIH: máculas que siguen la huella de una inflamación previa (acné, picadura, procedimiento). Descartar léntigos/nevus (→ presencial si duda). |
 | **Causa → mecanismo** | Melanocito hiperestimulado (luz UV **y visible**, hormonas, inflamación, calor) → melanina que se deposita en epidermis y/o dermis (la dérmica responde peor). Dibujo: "fábrica de pigmento con el interruptor pegado". |
 | **Clasificación** | Extensión y oscuridad (escala MASI simplificada o foto comparada), fototipo IV-VI = riesgo alto de PIH con cualquier procedimiento (conecta con SR-2 L5). |
-| **Rutina ≤3 pasos** | AM: limpiador · **fotoprotector de amplio espectro con color/óxido de hierro** (contra luz visible) · PM: **despigmentante** (retinoide, ácido azelaico, tranexámico tópico, hidroquinona/triple combinación por ciclos). Agentes, concentraciones y duración — **A VERIFICAR (05-sep)**. Peelings/láser solo en fase presencial y con la regla "seguridad antes que técnica" (d61/d65). |
+| **Rutina ≤3 pasos** | AM: limpiador · **fotoprotector de amplio espectro con color/óxido de hierro** (contra luz visible) · PM: **despigmentante** (retinoide, ácido azelaico, tranexámico tópico, hidroquinona/triple combinación por ciclos). Agentes, concentraciones y duración — **A VERIFICAR (05-sep)**. Peelings/láser solo en fase presencial y con la regla "seguridad antes que técnica" (d65/d69). |
 | **Guion** | "La fotoprotección es el tratamiento; lo demás es ayuda. Sin ella todo lo que hagamos vuelve. Es lento: 8-12 semanas para ver cambio y tendencia a recaer en verano." |
 | **Revisión 6-8 sem** | Foto (misma luz, misma hora — aquí es crítico) · irritación · aplicación real del fotoprotector (cantidad, reaplicación). |
 | **Lo que no puedo errar** | Ocronosis exógena por hidroquinona prolongada sin control; irritación que genera MÁS PIH; tratar una lesión pigmentada que era melanoma (nunca despigmentar una lesión no diagnosticada). |
 | **Límites/derivar** | Lesión pigmentada única/asimétrica → dermatoscopia presencial; melasma dérmico refractario; cualquier procedimiento. |
 
-## 6. COSMECÉUTICA — la "rutina base NÍTIDA" (d68 + gap-module G+9)
+## 6. COSMECÉUTICA — la "rutina base NÍTIDA" (d71 + gap-module G+9 en el ciclo 2, d95)
 
 Fuentes del plan: *Cosmeceuticals and Cosmetic Ingredients* (AccessDerma bookid 2812) · Baumann 3e (Skin Typing).
 Principio: **evidencia, no marketing**. Rutina base de 3 pasos que luego se personaliza por diagnóstico:
@@ -133,7 +132,7 @@ Principio: **evidencia, no marketing**. Rutina base de 3 pasos que luego se pers
 | Proteger | **Fotoprotector amplio espectro** (mineral/con color en pigmentación y rosácea) | Todos, todos los días | "Es el único paso innegociable." |
 
 Concentraciones, vehículos y compatibilidades (p. ej. retinoide + vit C) — **A VERIFICAR (05-sep)** contra
-bookid 2812 / Baumann 3e antes de recomendar productos concretos. Exosomas, "boosters" y similares: sin
+bookid 2812 / Baumann 3e antes de recomendar productos concretos (átomo d71). Exosomas, "boosters" y similares: sin
 evidencia suficiente → NÍTIDA no los recomienda (posición de producto).
 
 ---
@@ -164,5 +163,6 @@ evidencia suficiente → NÍTIDA no los recomienda (posición de producto).
 - [ ] Definición exacta de IGA por diagnóstico (acné / DA / rosácea) y escala de eritema; MASI para melasma.
 - [ ] Guías de referencia para DA, psoriasis, rosácea y pigmentación (añadirlas a `referentes.md` con DOI cuando se verifiquen) — hoy solo acné (Global Alliance 2018) está verificado.
 - [ ] Concentraciones/pautas de cada clase tópica (retinoide, BPO, corticoide por zona, calcineurínicos, metronidazol/ivermectina/azelaico, despigmentantes) contra fuente primaria.
-- [ ] Rutina base cosmecéutica: compatibilidades y vehículos contra bookid 2812 / Baumann 3e (d68).
-- [ ] Campo `nitida?: {protocolo, guion, seguimiento}` en los 7 átomos B + d68 de `dermaDailyPlan.ts` (fichero de otro agente) → chip "Nítida" en HOY que abra la sección correspondiente de este doc.
+- [ ] Rutina base cosmecéutica: compatibilidades y vehículos contra bookid 2812 / Baumann 3e (d71).
+- [x] Campo `nitida?: {protocolo, guion, seguimiento}` en los 7 átomos B + d71 de `dermaDailyPlan.ts` (`DERMA_NITIDA_DIAS`) → chip «Nítida · protocolo» en HOY (hecho; el chip muestra protocolo/guion/seguimiento del átomo y remite a este doc).
+- [x] Protocolo de foto: fusionado el 12-sep-2026 en `DATA/RESEARCH/CASE_REPORT_1/protocolo_fotos.md` (§1 clínico · §1b tele-derma); §0.2 de este doc solo enlaza.

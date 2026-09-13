@@ -2180,5 +2180,289 @@
   ],
   "evidencia": "H2/H3 literales de build-your-first-workflow y del nodo Webhook; título \"AI Agent\" y \"Learning paths\" verificados.",
   "notas": "Extraído con WebFetch el 5-sep-2026 (títulos H2/H3 literales de la página; sin duraciones). URL verificada 200 con DATA/_scripts/check_links.js el mismo día. Página de la Academy sin títulos extraíbles (client-side)."
+ },
+ {
+  "id": "academy-mcp-advanced",
+  "nombre": "Model Context Protocol: Advanced Topics (Anthropic Skilljar)",
+  "url": "https://anthropic.skilljar.com/model-context-protocol-advanced-topics",
+  "urlFinal": "https://anthropic.skilljar.com/model-context-protocol-advanced-topics",
+  "accesible": true,
+  "verificado": true,
+  "problemas": [],
+  "lecciones": [
+   {
+    "n": 1,
+    "modulo": "",
+    "titulo": "Introduction"
+   },
+   {
+    "n": 2,
+    "modulo": "",
+    "titulo": "Let's get started!"
+   },
+   {
+    "n": 3,
+    "modulo": "",
+    "titulo": "Core MCP features"
+   },
+   {
+    "n": 4,
+    "modulo": "",
+    "titulo": "Sampling"
+   },
+   {
+    "n": 5,
+    "modulo": "",
+    "titulo": "Sampling walkthrough"
+   },
+   {
+    "n": 6,
+    "modulo": "",
+    "titulo": "Log and progress notifications"
+   },
+   {
+    "n": 7,
+    "modulo": "",
+    "titulo": "Notifications walkthrough"
+   },
+   {
+    "n": 8,
+    "modulo": "",
+    "titulo": "Roots"
+   },
+   {
+    "n": 9,
+    "modulo": "",
+    "titulo": "Roots walkthrough"
+   },
+   {
+    "n": 10,
+    "modulo": "",
+    "titulo": "Survey"
+   },
+   {
+    "n": 11,
+    "modulo": "",
+    "titulo": "Transports and communication"
+   },
+   {
+    "n": 12,
+    "modulo": "",
+    "titulo": "JSON message types"
+   },
+   {
+    "n": 13,
+    "modulo": "",
+    "titulo": "The STDIO transport"
+   },
+   {
+    "n": 14,
+    "modulo": "",
+    "titulo": "The StreamableHTTP transport"
+   },
+   {
+    "n": 15,
+    "modulo": "",
+    "titulo": "StreamableHTTP in depth"
+   },
+   {
+    "n": 16,
+    "modulo": "",
+    "titulo": "State and the StreamableHTTP transport"
+   },
+   {
+    "n": 17,
+    "modulo": "",
+    "titulo": "Assessment and next steps"
+   },
+   {
+    "n": 18,
+    "modulo": "",
+    "titulo": "Assessment on MCP concepts"
+   },
+   {
+    "n": 19,
+    "modulo": "",
+    "titulo": "Wrapping up"
+   }
+  ],
+  "evidencia": "WebFetch 12-sep-2026: curriculum en orden tal como aparece en la página del curso (19 entradas); descripción literal: \"This course examines advanced features and implementation patterns for Model Context Protocol (MCP) development, focusing on server-client communication, transport mechanisms, and production deployment considerations.\"",
+  "notas": "Extraído el 12-sep-2026 para las semanas 15-17 del motor (F2 · Academy restante + prep CCA-F). Sin duración declarada en la página."
+ },
+ {
+  "id": "academy-cowork",
+  "nombre": "Introduction to Claude Cowork (Anthropic Skilljar)",
+  "url": "https://anthropic.skilljar.com/introduction-to-claude-cowork",
+  "urlFinal": "https://anthropic.skilljar.com/introduction-to-claude-cowork",
+  "accesible": true,
+  "verificado": true,
+  "problemas": [],
+  "lecciones": [
+   {
+    "n": 1,
+    "modulo": "Meet Claude Cowork",
+    "titulo": "What is Claude Cowork"
+   },
+   {
+    "n": 2,
+    "modulo": "Meet Claude Cowork",
+    "titulo": "Setting up Claude Cowork"
+   },
+   {
+    "n": 3,
+    "modulo": "Meet Claude Cowork",
+    "titulo": "What Claude Cowork can do for you"
+   },
+   {
+    "n": 4,
+    "modulo": "Hand Claude Cowork your first task",
+    "titulo": "Hand Claude Cowork your first task"
+   },
+   {
+    "n": 5,
+    "modulo": "Make Claude Cowork yours",
+    "titulo": "Get better results faster"
+   },
+   {
+    "n": 6,
+    "modulo": "Make Claude Cowork yours",
+    "titulo": "Standing context: Global instructions and projects"
+   },
+   {
+    "n": 7,
+    "modulo": "Make Claude Cowork yours",
+    "titulo": "Skills: Teach Claude Cowork your way"
+   },
+   {
+    "n": 8,
+    "modulo": "Make Claude Cowork yours",
+    "titulo": "Plugins: Encode your team's expertise"
+   },
+   {
+    "n": 9,
+    "modulo": "Use Claude wherever you work",
+    "titulo": "Claude in Chrome"
+   },
+   {
+    "n": 10,
+    "modulo": "Use Claude wherever you work",
+    "titulo": "Claude for Microsoft 365"
+   },
+   {
+    "n": 11,
+    "modulo": "Sharing and safety in Claude Cowork",
+    "titulo": "Best practices for working safely"
+   },
+   {
+    "n": 12,
+    "modulo": "Sharing and safety in Claude Cowork",
+    "titulo": "Validating skills for plugins"
+   },
+   {
+    "n": 13,
+    "modulo": "Sharing and safety in Claude Cowork",
+    "titulo": "Share what you build with your team"
+   },
+   {
+    "n": 14,
+    "modulo": "Wrap up and next steps",
+    "titulo": "Wrap up and next steps"
+   },
+   {
+    "n": 15,
+    "modulo": "Check your understanding",
+    "titulo": "Quiz on Claude Cowork"
+   }
+  ],
+  "evidencia": "WebFetch 12-sep-2026: módulos y lecciones en orden tal como aparecen; descripción literal: \"Cowork is Claude working directly with your files, folders, and apps — reading, editing, and producing real outputs on your machine.\"",
+  "notas": "Extraído el 12-sep-2026 (curso nuevo del catálogo: 22 cursos el 12-sep). Sin duración declarada."
+ },
+ {
+  "id": "academy-ai-capabilities",
+  "nombre": "AI Capabilities and Limitations (Anthropic Skilljar)",
+  "url": "https://anthropic.skilljar.com/ai-capabilities-and-limitations",
+  "urlFinal": "https://anthropic.skilljar.com/ai-capabilities-and-limitations",
+  "accesible": true,
+  "verificado": true,
+  "problemas": [],
+  "lecciones": [
+   {
+    "n": 1,
+    "modulo": "",
+    "titulo": "Getting started"
+   },
+   {
+    "n": 2,
+    "modulo": "",
+    "titulo": "Intro to AI Capabilities and Limitations"
+   },
+   {
+    "n": 3,
+    "modulo": "",
+    "titulo": "What We Mean by AI"
+   },
+   {
+    "n": 4,
+    "modulo": "",
+    "titulo": "How AI Gets Its Character"
+   },
+   {
+    "n": 5,
+    "modulo": "",
+    "titulo": "Next Token Prediction"
+   },
+   {
+    "n": 6,
+    "modulo": "",
+    "titulo": "Try it out"
+   },
+   {
+    "n": 7,
+    "modulo": "",
+    "titulo": "Knowledge"
+   },
+   {
+    "n": 8,
+    "modulo": "",
+    "titulo": "Try it out"
+   },
+   {
+    "n": 9,
+    "modulo": "",
+    "titulo": "Working Memory"
+   },
+   {
+    "n": 10,
+    "modulo": "",
+    "titulo": "Try it out"
+   },
+   {
+    "n": 11,
+    "modulo": "",
+    "titulo": "Steerability"
+   },
+   {
+    "n": 12,
+    "modulo": "",
+    "titulo": "Try it out"
+   },
+   {
+    "n": 13,
+    "modulo": "",
+    "titulo": "When Properties Collide"
+   },
+   {
+    "n": 14,
+    "modulo": "",
+    "titulo": "Next Steps"
+   },
+   {
+    "n": 15,
+    "modulo": "",
+    "titulo": "Course Quiz"
+   }
+  ],
+  "evidencia": "WebFetch 12-sep-2026: curriculum en orden (15 entradas); descripción literal: \"This course gives learners a working mental model of how modern generative AI systems behave and why.\" Gratis.",
+  "notas": "Extraído el 12-sep-2026 (curso nuevo del catálogo). Sin duración declarada."
  }
 ]

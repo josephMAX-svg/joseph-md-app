@@ -1,7 +1,10 @@
 /**
  * dermaData.ts — Sección Derma (referente clínico → camino a Mayo).
- * Data destilada de STUDY_HUB/02_DERMA_curriculo.md. Estructura ENCAPS:
- * bloques → subtemas con prioridad → vueltas → recursos con links → protocolo 12 sem.
+ * Data destilada de STUDY_HUB/02_DERMA_curriculo.md (jun-2026): mapa mental del SPEC (bloques A-G → subtemas con
+ * prioridad → vueltas), recursos con links, módulos G+ de enriquecimiento y el cuaderno NotebookLM.
+ * 12-sep-2026 (gaps v3b derma nº 7): DERMA_FASES y DERMA_HORARIO son HISTÓRICO v1 (la verdad operativa es
+ * dermaDailyPlan.ts: DERMA_FRANJAS + DERMA_DIAS + ledger); DERMA_SPEC_TO_PLAN une el mapa SPEC A-G con los
+ * bloques del plan día-a-día (y con las fichas de dermaCerebro.ts) para que la pestaña Cerebro sea un índice vivo.
  * Reutiliza la alternancia/prioridades de researchData.
  */
 import { Prioridad, PRIORIDAD_COLOR } from './researchData';
@@ -175,6 +178,19 @@ export const DERMA_BLOQUES: BloqueDerma[] = [
     ] },
 ];
 
+/**
+ * Mapa del SPEC (A-G, DERMA_BLOQUES) → bloques del PLAN día-a-día (DiaDerma.bKey) — el puente que faltaba para que la
+ * pestaña Cerebro del Hub sea un ÍNDICE hacia las fichas de 7 pasos (dermaCerebro.ts, keyed por bKey del plan) y hacia
+ * los átomos de HOY, en vez de un mapa mental con "vueltas" que no se registran en ningún sitio.
+ *   SPEC A fundamentos → plan A · SPEC B médica → plan B (inflamatorias) + C (infecciosas) + H (checkpoint CORE) ·
+ *   SPEC C oncología+dermatoscopia → plan D · SPEC D dermatopatología → plan E · SPEC E cirugía/Mohs → plan G ·
+ *   SPEC F estética → plan X · SPEC G subespecialidades (pediátrica, pelo, uñas, piel de color) → plan F.
+ * Z (cierre/repasos) no pertenece a ningún bloque del SPEC: son sesiones que leen el ledger.
+ */
+export const DERMA_SPEC_TO_PLAN: Record<string, string[]> = {
+  A: ['A'], B: ['B', 'C', 'H'], C: ['D'], D: ['E'], E: ['G'], F: ['X'], G: ['F'],
+};
+
 export interface RecursoDerma { categoria: string; items: { label: string; url: string; nota?: string; gated?: boolean }[] }
 export const DERMA_RECURSOS: RecursoDerma[] = [
   { categoria: '★ TOP 2026 (verificado)', items: [
@@ -230,6 +246,11 @@ export const DERMA_RECURSOS: RecursoDerma[] = [
   ] },
 ];
 
+/**
+ * @deprecated HISTÓRICO v1 (jun-2026, "protocolo starter · 12 semanas"). Superado por el PLAN ÉLITE v3 de
+ * dermaDailyPlan.ts (73 sesiones + ciclo 2). Se conserva SOLO para el bloque plegado "histórico v1" del Hub;
+ * no alimenta ningún cálculo. No usar para fechas ni metas.
+ */
 export const DERMA_FASES = [
   { fase: 'Fase 1 · Cimientos', semanas: 'Sem 1–3', deadline: 'fin Sem 3', bloques: 'A (+B inicio)',
     foco: 'Lesiones + semiología + Fitzpatrick. No avances sin dominar el "alfabeto".', criticas: 'A-1,2,3,6' },
@@ -241,6 +262,11 @@ export const DERMA_FASES = [
     foco: 'Anatomía quirúrgica, anestesia, biopsias, suturas, Mohs. Puente a estética.', criticas: 'E-1, E-3, E-7' },
 ];
 
+/**
+ * @deprecated HISTÓRICO v1 (jun-2026, "sesión de 60 min" con Derm In-Review). La sesión REAL es el ciclo único
+ * de 45′ de DERMA_FRANJAS (dermaDailyPlan.ts): caso ciego + review + lectura + cierre. Solo para el bloque
+ * plegado "histórico v1" del Hub.
+ */
 export const DERMA_HORARIO = [
   { franja: '0:00–0:05', min: 5, act: 'Cola de repaso de HOY (recall activo de los codes que vencen)' },
   { franja: '0:05–0:45', min: 40, act: 'Material nuevo (video/atlas/texto) + nota 3 viñetas + 1 imagen al banco' },
@@ -300,13 +326,19 @@ export const DERMA_GAP_MODULOS: DermaGapModulo[] = [
 ];
 
 /**
- * Cuaderno NotebookLM "DERMA · Élite Engine" (creado 05-sep-2026): fuentes OA verificadas en vivo
- * (PubMed de referentes.md/PLAN_ELITE, DermNet Dermoscopy CME 18 módulos + terminología, Dermoscopedia,
- * ABD CORE/APPLIED, ISSVA, AAD, Mind the Gap, rutas de fellowship ASDS/ACGME/Mayo). Detalle y prompts de
- * uso en DATA/DERMATOLOGIA/recursos.md §0. Uso Palmerton: cierre 14:13 → "tarjeta de MECANISMO verificada
- * del caso de hoy" · d45/d69 → "qué no sé del módulo X". Motor de verificación, NO sustituye la fuente.
+ * Cuaderno NotebookLM "DERMA · Élite Engine (Palmerton derma · fuentes verificadas)" (creado 05-sep-2026):
+ * fuentes OA verificadas en vivo (PubMed de referentes.md/PLAN_ELITE, DermNet Dermoscopy CME 18 módulos +
+ * terminología, Dermoscopedia, ABD CORE/APPLIED, ISSVA, AAD, Mind the Gap, rutas de fellowship ASDS/ACGME/Mayo).
+ * Conteo REAL releído con notebook_get el 12-sep-2026: 86 fuentes = 79 útiles + 7 "Checking your browser – reCAPTCHA"
+ * (PMC/NCBI Bookshelf bloquean al crawler; sus equivalentes PubMed sí están cargados → borrar las 7 a mano en la UI).
+ * Detalle y prompts de uso en DATA/DERMATOLOGIA/recursos.md §0. Uso Palmerton: cierre 14:13 → "tarjeta de MECANISMO
+ * verificada del caso de hoy" · checkpoints cp1 (d51) / repaso1 (d72) [v3; antes d45/d69] → "qué no sé del módulo X".
+ * Motor de VERIFICACIÓN, NO sustituye la fuente ni el caso ciego.
  */
 export const DERMA_NOTEBOOKLM = {
   id: '0e9fac5c-01f3-406e-96f2-6230bd66a29c',
   url: 'https://notebooklm.google.com/notebook/0e9fac5c-01f3-406e-96f2-6230bd66a29c',
+  titulo: 'DERMA · Élite Engine (Palmerton derma · fuentes verificadas)',
+  /** notebook_get 12-sep-2026: source_count 86 (79 útiles + 7 fallidas por reCAPTCHA). */
+  fuentes: 86, fuentesUtiles: 79, fuentesFallidas: 7, verificado: '2026-09-12',
 } as const;

@@ -22,6 +22,8 @@ import { serifTitle, InkColors, OBSIDIAN } from './researchTheme';
  * interdiario con Derma. Navega los DOS ciclos (ciclo 1 sep-26→feb-27 · ciclo 2 feb→ago-27, SR-1) con una
  * numeración continua de d. Cada recurso de la cola abre un sitio REAL verificado.
  * (05-sep-2026) Muestra PISTA (C/T/CR/R/M/K/B/X), ARTEFACTO y chips de dependencia (p. ej. "requiere Derma d19-20").
+ * (12-sep-2026) Chips-gate ("GATE 1/2" en T-7/T-8, seguimiento del caso, plan B de inglés) y CARGA REAL (`horas`) de los átomos
+ * R17-R26 del ciclo 2: horas por revisor FUERA del bloque 13:30 (el átomo de 45 min coordina y cierra; no toca el Calendar).
  */
 const TEAL = InkColors.teal;      // #6BB8B0
 const GOLD = InkColors.gold;      // #C8A96A — estatus (artefacto/entregable hecho)
@@ -86,11 +88,15 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaResearch; on
           <Text style={[st.temaTitle, serifTitle]}>{dia.objetivo}</Text>
           {dia.chips && dia.chips.length > 0 && (
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 8 }}>
-              {dia.chips.map((c, i) => (
-                <View key={i} style={[st.depChip, { borderColor: (c.startsWith('requiere') ? PURPLE : Colors.coral) + '77' }]}>
-                  <Text style={[st.depChipTxt, { color: c.startsWith('requiere') ? PURPLE : Colors.coral }]}>⚑ {c}</Text>
-                </View>
-              ))}
+              {dia.chips.map((c, i) => {
+                const cc = c.startsWith('requiere') ? PURPLE : c.startsWith('sesión') || c.startsWith('las horas') ? ANCLA : Colors.coral;
+                const icon = c.startsWith('GATE') ? '⛔' : c.startsWith('sesión') ? '⏱' : '⚑';
+                return (
+                  <View key={i} style={[st.depChip, { borderColor: cc + '77' }]}>
+                    <Text style={[st.depChipTxt, { color: cc }]}>{icon} {c}</Text>
+                  </View>
+                );
+              })}
             </View>
           )}
           <View style={[st.entregBox, { borderColor: GOLD + '3A' }]}>
@@ -102,6 +108,12 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaResearch; on
             <Text style={st.entregTxt}>{dia.artefacto}</Text>
             {pista.entregableId && <Text style={st.artefSub}>→ avanza el entregable «{pista.entregableId}» de la Mesa editorial (Desk)</Text>}
           </View>
+          {typeof dia.horas === 'number' && dia.horas > 0 && (
+            <View style={[st.artefBox, { borderColor: ANCLA + '55' }]}>
+              <Text style={[st.entregLbl, { color: ANCLA }]}>⏱ CARGA REAL · ≈ {dia.horas} h por revisor FUERA del bloque 13:30</Text>
+              <Text style={st.entregTxt}>El átomo de 45 min coordina y cierra; el cribado/extracción se hace en la agenda que el Step 1 libera desde feb-2027. Las fechas para PROSPERO se copian de L4 §9.4 (con margen), no de este átomo.</Text>
+            </View>
+          )}
           <TouchableOpacity activeOpacity={0.85} onPress={() => onToggle(dia.d)} style={[st.doneBtn, hecho ? st.doneBtnOn : st.doneBtnOff]}>
             <Text style={[st.doneBtnTxt, { color: hecho ? '#1A1505' : GOLD }]}>{hecho ? '✓ Artefacto sellado' : '○ Sellar artefacto como hecho'}</Text>
           </TouchableOpacity>
@@ -198,7 +210,7 @@ function SieteView({ fromD, onPick }: { fromD: number; onPick: (d: number) => vo
               <Text style={[st.d7day, { color: fc }]}>{x.code}</Text>
               <Text style={st.d7fecha}>{fmtFecha(x.fecha)}</Text>
               <View style={{ flex: 1 }}>
-                <Text style={st.d7sub} numberOfLines={1}>{x.objetivo}</Text>
+                <Text style={st.d7sub} numberOfLines={1}>{x.horas ? `⏱ ≈${x.horas} h · ` : ''}{x.objetivo}</Text>
                 <Text style={st.d7sys}><Text style={{ color: p.color, fontWeight: '800' }}>{x.pista}</Text> · {x.fase} · {FASE_INFO[x.fase].nombre} · {x.artefacto}</Text>
               </View>
               <Text style={st.d7go}>→</Text>

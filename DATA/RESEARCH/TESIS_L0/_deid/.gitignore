@@ -1,0 +1,4 @@
+# datos de menores de-identificados: NUNCA al repo (remoto GitHub). Solo se versionan este .gitignore y el README.
+*.csv
+.salt
+_manifest.json

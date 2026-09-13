@@ -42,7 +42,10 @@
   ],
   "lista_negra_2026_II": "VIGENTE",
   "rechazados": [],
-  "pool_disponible_codigo": 5
+  "pool_disponible_codigo": 5,
+  "sustituido_por": "pretest_arranque_2026-09-14",
+  "sustituido_el": "2026-09-13",
+  "sustituido_motivo": "pre-test de arranque (línea base ciega por crítico, 5Q × 8 críticos v3): sustituye el CONTENIDO de esta sesión, no el horario"
  },
  "items": [
   {

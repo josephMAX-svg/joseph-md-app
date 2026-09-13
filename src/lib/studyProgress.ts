@@ -66,34 +66,27 @@ export function progresoGlobal(dias: DiaBase[], done: Set<number>) {
 }
 
 /* ----------------------------------------------------------------------------
- * Persistencia del progreso real (localStorage en web; no-op seguro si no hay).
- * Estructura: { usmle: number[], mir: number[] } = días marcados como hechos.
+ * Persistencia del progreso real.
+ * Estructura: { usmle: number[], mir: number[], … } = días marcados como hechos.
+ * v5.10 (12-sep-2026): localStorage 'jmd-study-progress-v1' sigue siendo la caché/fallback offline,
+ * pero la fuente de verdad entre dispositivos es Supabase `plan_checks` (src/lib/studyProgressSync.ts):
+ * `saveDone` empuja el diff y el primer `loadDone` de la sesión dispara el pull (fusión + migración única).
+ * La API (loadDone/saveDone/PlanKey) no cambia: los componentes siguen leyendo síncrono.
  * -------------------------------------------------------------------------- */
+import { leerStoreLS, escribirStoreLS, syncSaveDone, ensurePulled } from './studyProgressSync';
+
 export type PlanKey = 'usmle' | 'mir' | 'research' | 'derma' | 'business' | 'synapse' | 'aurum' | 'liviano' | 'vibecoding' | 'research-infra';
-const STORE_KEY = 'jmd-study-progress-v1';
 
-function leerStore(): Record<string, number[]> {
-  try {
-    const ls = (globalThis as any).localStorage;
-    if (ls) { const raw = ls.getItem(STORE_KEY); if (raw) return JSON.parse(raw); }
-  } catch { /* sin storage: arranca vacío */ }
-  return {};
-}
-function escribirStore(s: Record<string, number[]>): void {
-  try {
-    const ls = (globalThis as any).localStorage;
-    if (ls) ls.setItem(STORE_KEY, JSON.stringify(s));
-  } catch { /* ignore */ }
-}
-
-/** Carga los días marcados como hechos para un plan. */
+/** Carga los días marcados como hechos para un plan (caché local; en segundo plano sincroniza con Supabase). */
 export function loadDone(plan: PlanKey): number[] {
-  const s = leerStore();
+  ensurePulled();
+  const s = leerStoreLS();
   return Array.isArray(s[plan]) ? s[plan] : [];
 }
-/** Guarda los días marcados como hechos para un plan. */
+/** Guarda los días marcados como hechos para un plan (local al instante + upsert/delete en plan_checks). */
 export function saveDone(plan: PlanKey, days: number[]): void {
-  const s = leerStore();
+  const s = leerStoreLS();
   s[plan] = days;
-  escribirStore(s);
+  escribirStoreLS(s);
+  syncSaveDone(plan, days);
 }

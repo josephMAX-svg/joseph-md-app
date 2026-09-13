@@ -14,7 +14,7 @@ import { OBS_SYNAPSE_MATERIALES, OBS_SYNAPSE_FASES } from '../../lib/obsidianVau
 
 const OBS = '#A78BFA'; // mismo morado ◆ que USMLE/MIR/ENCAPS
 import { SYN_PLAN_META, SYN_DIAS, synDiaDe } from '../../lib/synapseDailyPlan';
-import { vibeShipped } from '../../lib/vibecodingPlan';
+import { vibeShipped, vibeShippedVerificado } from '../../lib/vibecodingPlan';
 import { loadDone, saveDone, planHoyD } from '../../lib/studyProgress';
 import { synTodayISO } from './SynapseTodayPlan';
 import SynapseTodayPlan from './SynapseTodayPlan';
@@ -286,13 +286,16 @@ export default function SynapseHub({ variant = 'mobile' }: { variant?: 'mobile' 
 
   const t = useSynTelemetry(done);
   const activa = SYNAPSE_FASES.find((f) => f.estado === 'activa');
+  // v5.10-b: 'ship 04:15' = proyectos cuyo último verify_vibecoding.js dio shipped (VIBE_SHIP_LOG + localStorage jmd-vibe-ship);
+  // el ✓ manual (5/5 días) se muestra aparte en la etiqueta: es auto-reporte, no evidencia.
+  const shipVerif = vibeShippedVerificado();
   // telemetría del run: run · loss↓ (dominio) · checkpoint · uptime · registry
   const telemetry = [
     { label: 'run', value: `D${t.hoyD}/${t.total}`, accent: true as const },
     { label: 'loss ↓ dominio', value: `${t.pct}%`, color: t.pct > 0 ? CONSOLE.passed : Colors.muted },
     { label: `checkpoint ${activa?.fase ?? 'F0'}`, value: `${t.fasePct}%`, accent: true as const },
     { label: 'uptime', value: `${done.size}d`, color: Colors.onSurface },
-    { label: 'ship 04:15', value: `${vibeShipped(vibeDone)}/12`, color: vibeShipped(vibeDone) > 0 ? CONSOLE.passed : Colors.muted },
+    { label: `ship 04:15 (verify · ✓${vibeShipped(vibeDone)})`, value: `${shipVerif}/12`, color: shipVerif > 0 ? CONSOLE.passed : Colors.muted },
     { label: 'registry', value: `${SYNAPSE_KPIS.materialesVerificados}`, color: CONSOLE.milestone },
   ];
 
