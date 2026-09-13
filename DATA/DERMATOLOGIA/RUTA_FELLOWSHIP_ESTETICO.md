@@ -109,7 +109,7 @@
 
 | Fase del plan (v5.8) | Ruta A (EE.UU.) | Ruta B (Perú/España + estética internacional) |
 |---|---|---|
-| **USMLE Step 1** (D1 vie 11-sep-2026 → D95 mar 26-ene-2027; examen 25-29 ene 2027, target mié 27; GO/NO-GO 15-ene con 2 NBME ≥68 %) | Requisito ECFMG y de la visa J-1 (Steps 1+2). Sin él no hay Fase C. | Opcional, pero mantiene abierta A y es la base de Step 2 CK. |
+| **USMLE Step 1** (D1 lun 14-sep-2026 → D95 mié 27-ene-2027, v5.10; examen 25-29 ene 2027, target vie 29; GO/NO-GO 15-ene con 2 NBME ≥68 %) | Requisito ECFMG y de la visa J-1 (Steps 1+2). Sin él no hay Fase C. | Opcional, pero mantiene abierta A y es la base de Step 2 CK. |
 | **ENCAPS** (1 h/día → examen fin-mar 2027, meta ≥17/20) | Puerta de respaldo (A2) o se abandona al obtener research fellowship (A1). | **Puerta principal**: residencia derma Perú 2027-2030. |
 | **MIR** (mantenimiento 15:15 → examen ene-2028) | Respaldo. | Alternativa a ENCAPS: residencia España 2028-2032 (4 años). |
 | **Derma · 70 átomos** (13:30-14:15 alternos, Palmerton, CORE/APPLIED, 2 casos ciegos/sesión, dermatoscopia CME, Cerebro Clínico 7 pasos) | Base del ABD BASIC/CORE y de las entrevistas (casos); el módulo X = lenguaje del fellowship cosmético. | Base clínica de la residencia y de NÍTIDA; módulo X = criterio de seguridad para IMCAS/MD Codes. |

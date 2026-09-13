@@ -1,5 +1,5 @@
 /**
- * obsidianResearchMap.ts — GENERADO por DATA/_scripts/gen_research_plan.js (2026-09-10) — NO editar a mano: `node DATA/_scripts/gen_research_plan.js [YYYY-MM-DD]`
+ * obsidianResearchMap.ts — GENERADO por DATA/_scripts/gen_research_plan.js (2026-09-12) — NO editar a mano: `node DATA/_scripts/gen_research_plan.js [YYYY-MM-DD]`
  * (antes lo escribía build_vault_research.js; desde el 05-sep-2026 el mapa de átomos sale del generador del plan).
  * Deep-links obsidian:// hacia la rama "04_INVESTIGACIÓN DERMATOLÓGICA" del vault "Vault_Medicina MIR_Joseph". Reutiliza obsUrl() de obsidianMap.ts.
  * SOLO es un mapa: las carpetas 03_ENTREGABLES/* del vault se crean al abrir la nota desde Obsidian (no se crean notas aquí).

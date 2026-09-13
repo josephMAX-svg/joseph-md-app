@@ -7,17 +7,17 @@ Del agente macro:derma-estetica-elite (27-ago-2026) + inventario AccessDermatolo
 > Fitzpatrick/Baumann según el módulo de la semana.** Módulos semanales orientados a
 > dermatología estética.
 >
-> **v5.9 (10-sep-2026) — SIN CAMBIO DE FECHAS: d1 = VIE 11-SEP-2026 → d70 = VIE 26-MAR-2027.** El 10 de
-> septiembre tampoco se estudió (+1 día hábil sobre v5.8, octavo corrimiento del ciclo 31-ago→11-sep),
-> pero **Derma es el único plan que no se movió**: `src/lib/dermaDailyPlan.ts` sale byte-idéntico a la
-> versión v5.8 (0 diffs contra `git HEAD`, verificado el 10-sep). El motivo es la alternancia con
-> Research: en v5.8 el D1 del régimen era jue 10-sep = Research y Derma caía el vie 11-sep; en v5.9 el
-> D1 del régimen ES el vie 11-sep y **ese día ya era el d1 de Derma**, así que la cadencia interdiaria
-> vuelve a caer sobre las mismas fechas (lo que se corrió fue Research, cuyo d1 pasa al lun 14-sep).
+> **v5.10 (12-sep-2026) — DERMA CORRE +2 DÍAS DE CALENDARIO: d1 = MAR 15-SEP-2026 → d70 = MAR 30-MAR-2027.** El 11 de
+> septiembre tampoco se estudió (+1 día hábil sobre v5.9, noveno corrimiento del ciclo 31-ago→14-sep). Esta vez
+> **se invierte lo de v5.9**: la alternancia Research↔Derma sigue anclada al mié 10-jun-2026 y hace del **lun 14-sep
+> (D1 del régimen) un día Research**, así que Research no se mueve (ya arrancaba el lun 14-sep desde v5.9) y Derma
+> pasa de vie 11-sep a **mar 15-sep** (+2 días de calendario, +1 slot interdiario). `src/lib/dermaDailyPlan.ts`
+> se regeneró con las 70 fechas nuevas (leídas con node el 12-sep: 0 en fin de semana, 0 en 25-dic/31-dic/1-ene).
 > Regla de este corrimiento: **no se fusiona ni se recorta nada** — siguen siendo **70 átomos**, misma
 > franja, mismo contenido, mismo orden de casos (`DERMA_CASO_ORDEN` congelada) y 0 solapes con Research.
 > Índice completo de fechas en §12. **La fecha es lo estable, el nº de día puede moverse: comprobar
-> siempre contra `dermaDailyPlan.ts`.**
+> siempre contra `dermaDailyPlan.ts`.** ⚠ En v5.10 el **d49 = vie 29-ene-2027 es el día objetivo del examen Step 1**
+> y el d48 = mié 27-ene su D95: ver el vacío "taper" en `DATA/PENDIENTES_JOSEPH.md`.
 
 ## 1. Inventario AccessDermatology (REAL, extraído)
 
@@ -138,7 +138,7 @@ variable de ajuste. Al liberar agenda post-Step 1 (feb-2027), evaluar volver al 
 
 > Implementación de los 12 vacíos del análisis "Palmerton cero puntos ciegos" (gaps_derma.json) en la capa de
 > DATOS del plan (`src/lib/dermaDailyPlan.ts` · `dermaLedger.ts` · `dermaCerebro.ts` · `ankiLinks.ts`).
-> Horario, fechas de examen y Calendar intactos: franja 13:30-14:15 interdiaria, D1 = **vie 11-sep-2026**, D70 = **vie 26-mar-2027** (v5.9, mismas fechas que v5.8).
+> Horario, fechas de examen y Calendar intactos: franja 13:30-14:15 interdiaria, D1 = **mar 15-sep-2026**, D70 = **mar 30-mar-2027** (v5.10: +2 días de calendario respecto a v5.8/v5.9).
 > Los componentes (DermaClinicalPlate, DermaMorphologyDictation, DermaCerebroCard, DermaEmergencyDrill, widget del Hub)
 > se construyen sobre estos campos en un paso posterior.
 
@@ -165,7 +165,7 @@ variable de ajuste. Al liberar agenda post-Step 1 (feb-2027), evaluar volver al 
 - `dermatoscopiaUrl` (panel de la lámina) poblado en 16 átomos (7/8 del módulo D).
 - **Dermatoscopio de bolsillo para la fase práctica 2027** (DermLite o Heine de bolsillo; modelo y precio
   **A VERIFICAR (05-sep)** en las webs oficiales de DermLite y Heine antes de comprar; decisión de Joseph): sin él la
-  dermatoscopia se queda en imágenes ajenas. Objetivo: adquirido antes del d45 (**vie 15-ene-2027**, v5.9) para usarlo en el
+  dermatoscopia se queda en imágenes ajenas. Objetivo: adquirido antes del d45 (**mar 19-ene-2027**, v5.10) para usarlo en el
   checkpoint y en la fase post-Step 1.
 
 ### 3. Capa ATLAS completa (70/70) + los 22 X
@@ -192,16 +192,16 @@ variable de ajuste. Al liberar agenda post-Step 1 (feb-2027), evaluar volver al 
   privado, NO re-host (checklist `DERMA_OCLUSION_CHECKLIST`). Dermki queda como pista por bloque (`dermkiPista`).
 
 ### 6. Swap d19-20 ↔ d57-58 (contenido, no fechas de la franja) + puente Research
-- **Fechas v5.9 (idénticas a v5.8):** d19 = **lun 2-nov-2026** = **oclusión vascular + HDPH** · d20 = **mié 4-nov-2026** = **ceguera + kit de
+- **Fechas v5.10:** d19 = **mié 4-nov-2026** = **oclusión vascular + HDPH** · d20 = **vie 6-nov-2026** = **ceguera + kit de
   emergencia** (antes eran el contenido de d57/d58); "paciente agudo con fiebre y rash" y "pelo y uñas infecciosos" pasan a
-  d57 = **jue 18-feb-2027** y d58 = **lun 22-feb-2027**. El swap es de CONTENIDO entre posiciones del plan: las posiciones y
+  d57 = **lun 22-feb-2027** y d58 = **mié 24-feb-2027**. El swap es de CONTENIDO entre posiciones del plan: las posiciones y
   la cadencia interdiaria no se tocan, solo se re-fecharon con el corrimiento (v5.6: d19 27-oct · d20 29-oct · d57 12-feb ·
-  d58 16-feb · v5.7: d19 29-oct · d20 2-nov · d57 16-feb · d58 18-feb; v5.9 = v5.8).
-- Motivo (revalidado contra los `.ts` el 10-sep; el CICLO 2 de Research SÍ se re-fechó en v5.9): SR-1 revalida su PICO de oclusión vascular / tiempo-a-hialuronidasa en
+  d58 16-feb · v5.7: d19 29-oct · d20 2-nov · d57 16-feb · d58 18-feb · v5.8 = v5.9: d19 2-nov · d20 4-nov · d57 18-feb · d58 22-feb).
+- Motivo (revalidado contra los `.ts` el 12-sep; el CICLO 2 de Research no cambia en v5.10): SR-1 revalida su PICO de oclusión vascular / tiempo-a-hialuronidasa en
   **R6b = jue 11-feb-2027** (`researchDailyPlan2027.ts` d43), extrae datos en **R22-R25 = 12-abr → 26-abr-2027** (d64-d69) y
   hace los subgrupos tiempo-a-hialuronidasa en **R33 = 28-may → 1-jun-2027** (d81-d82). La seguridad se estudia ANTES de
   revalidar y de extraer, con **>3 meses** de margen, y se cumple la regla "seguridad antes que técnica".
-  *(Corrección v5.7, vigente en v5.9: la nota v2.1 citaba "R22-R25 (5-13 nov)" y "R33 (7-dic)" de una numeración de research anterior;
+  *(Corrección v5.7, vigente en v5.10: la nota v2.1 citaba "R22-R25 (5-13 nov)" y "R33 (7-dic)" de una numeración de research anterior;
   esos códigos viven hoy en el CICLO 2 del plan de research, en 2027.)*
 - `puenteResearch` en 8 átomos: L4/SR-1 en d19, d20, d48, d55 · L5/SR-2 en d4, d59, d61, d65 (chip "alimenta SR-1/SR-2").
   El chip inverso en R6/R22/R33 de `researchDailyPlan.ts` lo pone el agente de Research.
@@ -232,7 +232,7 @@ variable de ajuste. Al liberar agenda post-Step 1 (feb-2027), evaluar volver al 
 - ~~Componentes de UI (lámina con botón acierto/fallo, dictado de 8 ejes, tarjeta del cerebro en modo recitar, drill
   cronometrado, widget "Debilidades por módulo CORE" en el Hub)~~ → hecho, ver §10.
 
-### 10. Cableado en la UI (5-sep-2026, tarde) — la capa Palmerton ya es visible el viernes 11-sep (d1, que en v5.9 es además el D1 del régimen)
+### 10. Cableado en la UI (5-sep-2026, tarde) — la capa Palmerton ya es visible el martes 15-sep (d1 en v5.10; el lun 14-sep, D1 del régimen, es día Research)
 Cierra el vacío nº1 de la segunda pasada (gaps_v3b_derma: "toda la capa Palmerton es invisible para Joseph el lunes").
 Nada de esto toca franjas, fechas, metas ni el Calendar; todo lee/escribe en `dermaLedger.ts` (localStorage `jmd-derma-*`).
 
@@ -276,43 +276,43 @@ Nada de esto toca franjas, fechas, metas ni el Calendar; todo lee/escribe en `de
 - Registro (`DermaMir10Q`) en **`mirEvalLog`** con kind nuevo compatible **`derma10Q`**, asignatura **'Dermatología'** (num 5),
   neto A − F/3, brecha knowledge/transfer/proceso + 🇪🇸 delta: cuenta en `mirStatsPorAsignatura` (la asignatura Dermatología del
   MIR se mide desde el bloque Derma) y NO en readiness, cierres ni cola D+14.
-- Verificado por script (5-sep, re-verificado 9-sep sobre `DERMA_DIAS`): 70 átomos, fechas = slots derma interdiarios
-  **d1 11-sep-2026 → d70 26-mar-2027** (sáb/dom + 25-dic/31-dic/1-ene fuera; 0 fechas en finde, 0 en feriado),
+- Verificado por script (5-sep, re-verificado 12-sep sobre `DERMA_DIAS`): 70 átomos, fechas = slots derma interdiarios
+  **d1 15-sep-2026 → d70 30-mar-2027** (sáb/dom + 25-dic/31-dic/1-ene fuera; 0 fechas en finde, 0 en feriado),
   `remap_inicio.js` sigue casando (marker + 70 `fecha:` + META), casoIds = permutación, 23 `promir` alineados.
 
-### 12. Índice de fechas v5.9 (10-sep-2026) — los 70 átomos
+### 12. Índice de fechas v5.10 (12-sep-2026) — los 70 átomos
 
-Leído de `src/lib/dermaDailyPlan.ts` → `DERMA_DIAS` (no estimado). d1 = **vie 11-sep-2026** ·
-d70 = **vie 26-mar-2027** · 70 átomos · franja 13:30-14:15 · interdiario con Research (0 solapes) ·
+Leído de `src/lib/dermaDailyPlan.ts` → `DERMA_DIAS` (no estimado). d1 = **mar 15-sep-2026** ·
+d70 = **mar 30-mar-2027** · 70 átomos · franja 13:30-14:15 · interdiario con Research (0 solapes) ·
 sáb+dom, 25-dic, 31-dic y 1-ene fuera. La numeración del módulo NO es contigua porque el swap
 d19-20 ↔ d57-58 (§6) intercambia contenido entre bloques C y X.
 
 | Módulo | Átomos | Fechas (d = fecha real de `DERMA_DIAS`) |
 |--------|--------|------------------------------------------|
-| A · Fundamentos / morfología | 6 | d1 vie 11-sep · d2 mar 15-sep · d3 jue 17-sep · d4 lun 21-sep · d5 mié 23-sep · d6 vie 25-sep |
-| B · Inflamatorias | 7 | d7 mar 29-sep · d8 jue 1-oct · d9 lun 5-oct · d10 mié 7-oct · d11 vie 9-oct · d12 mar 13-oct · d13 jue 15-oct |
-| C · Infecciosas | 7 | d14 lun 19-oct · d15 mié 21-oct · d16 vie 23-oct · d17 mar 27-oct · d18 jue 29-oct · d57 jue 18-feb-27 · d58 lun 22-feb-27 |
-| X · Estética (danger zones, toxina, rellenos, peelings, láser) | 22 | d19 lun 2-nov · d20 mié 4-nov · d47 jue 21-ene-27 · d48 lun 25-ene-27 · d49 mié 27-ene-27 · d50 vie 29-ene-27 · d51 mar 2-feb-27 · d52 jue 4-feb-27 · d53 lun 8-feb-27 · d54 mié 10-feb-27 · d55 vie 12-feb-27 · d56 mar 16-feb-27 · d59 mié 24-feb-27 · d60 vie 26-feb-27 · d61 mar 2-mar-27 · d62 jue 4-mar-27 · d63 lun 8-mar-27 · d64 mié 10-mar-27 · d65 vie 12-mar-27 · d66 mar 16-mar-27 · d67 jue 18-mar-27 · d68 lun 22-mar-27 |
-| D · Tumores + dermatoscopia | 8 | d21 vie 6-nov · d22 mar 10-nov · d23 jue 12-nov · d24 lun 16-nov · d25 mié 18-nov · d26 vie 20-nov · d27 mar 24-nov · d28 jue 26-nov |
-| E · Dermatopatología | 5 | d29 lun 30-nov · d30 mié 2-dic · d31 vie 4-dic · d32 mar 8-dic · d33 jue 10-dic |
-| F · Pediátrica / genodermatosis | 5 | d34 lun 14-dic · d35 mié 16-dic · d36 vie 18-dic · d37 mar 22-dic · d38 jue 24-dic |
-| G · Quirúrgica | 6 | d39 lun 28-dic · d40 mié 30-dic · d41 mar 5-ene-27 · d42 jue 7-ene-27 · d43 lun 11-ene-27 · d44 mié 13-ene-27 |
-| H · Checkpoints | 2 | d45 vie 15-ene-27 · d46 mar 19-ene-27 |
-| Z · Repaso final | 2 | d69 mié 24-mar-27 · d70 vie 26-mar-27 |
+| A · Fundamentos / morfología | 6 | d1 mar 15-sep · d2 jue 17-sep · d3 lun 21-sep · d4 mié 23-sep · d5 vie 25-sep · d6 mar 29-sep |
+| B · Inflamatorias | 7 | d7 jue 1-oct · d8 lun 5-oct · d9 mié 7-oct · d10 vie 9-oct · d11 mar 13-oct · d12 jue 15-oct · d13 lun 19-oct |
+| C · Infecciosas | 7 | d14 mié 21-oct · d15 vie 23-oct · d16 mar 27-oct · d17 jue 29-oct · d18 lun 2-nov · d57 lun 22-feb-27 · d58 mié 24-feb-27 |
+| X · Estética (danger zones, toxina, rellenos, peelings, láser) | 22 | d19 mié 4-nov · d20 vie 6-nov · d47 lun 25-ene-27 · d48 mié 27-ene-27 · d49 vie 29-ene-27 · d50 mar 2-feb-27 · d51 jue 4-feb-27 · d52 lun 8-feb-27 · d53 mié 10-feb-27 · d54 vie 12-feb-27 · d55 mar 16-feb-27 · d56 jue 18-feb-27 · d59 vie 26-feb-27 · d60 mar 2-mar-27 · d61 jue 4-mar-27 · d62 lun 8-mar-27 · d63 mié 10-mar-27 · d64 vie 12-mar-27 · d65 mar 16-mar-27 · d66 jue 18-mar-27 · d67 lun 22-mar-27 · d68 mié 24-mar-27 |
+| D · Tumores + dermatoscopia | 8 | d21 mar 10-nov · d22 jue 12-nov · d23 lun 16-nov · d24 mié 18-nov · d25 vie 20-nov · d26 mar 24-nov · d27 jue 26-nov · d28 lun 30-nov |
+| E · Dermatopatología | 5 | d29 mié 2-dic · d30 vie 4-dic · d31 mar 8-dic · d32 jue 10-dic · d33 lun 14-dic |
+| F · Pediátrica / genodermatosis | 5 | d34 mié 16-dic · d35 vie 18-dic · d36 mar 22-dic · d37 jue 24-dic · d38 lun 28-dic |
+| G · Quirúrgica | 6 | d39 mié 30-dic · d40 mar 5-ene-27 · d41 jue 7-ene-27 · d42 lun 11-ene-27 · d43 mié 13-ene-27 · d44 vie 15-ene-27 |
+| H · Checkpoints | 2 | d45 mar 19-ene-27 · d46 jue 21-ene-27 |
+| Z · Repaso final | 2 | d69 vie 26-mar-27 · d70 mar 30-mar-27 |
 
-**Hitos re-fechados (v5.6 → v5.7 → v5.8 = v5.9)**
+**Hitos re-fechados (v5.6 → v5.7 → v5.8 = v5.9 → v5.10)**
 
-| Hito | v5.6 | v5.7 | **v5.8 = v5.9 (vigente)** |
-|------|------|------|--------------------|
-| d1 · arranque (lesiones elementales) | lun 7-sep-2026 | mié 9-sep-2026 | **vie 11-sep-2026** |
-| d19 · oclusión vascular + HDPH (drill) | 27-oct-2026 | jue 29-oct-2026 | **lun 2-nov-2026** |
-| d20 · ceguera por relleno + kit (drill) | 29-oct-2026 | lun 2-nov-2026 | **mié 4-nov-2026** |
-| d45 · Checkpoint 1 (mapa de fallos por módulo CORE) | 11-ene-2027 | mié 13-ene-2027 | **vie 15-ene-2027** |
-| d46 · Checkpoint 2 (re-drill + HDPH) | 13-ene-2027 | vie 15-ene-2027 | **mar 19-ene-2027** |
-| d57 · paciente agudo con fiebre y rash | 12-feb-2027 | mar 16-feb-2027 | **jue 18-feb-2027** |
-| d58 · pelo y uñas infecciosos | 16-feb-2027 | jue 18-feb-2027 | **lun 22-feb-2027** |
-| d69 · Repaso 1 · 2ª pasada FSRS solo de fallos | 18-mar-2027 | lun 22-mar-2027 | **mié 24-mar-2027** |
-| d70 · Repaso 2 · mapa final + plan post-Step 1 | lun 22-mar-2027 | mié 24-mar-2027 | **vie 26-mar-2027** |
+| Hito | v5.6 | v5.7 | v5.8 = v5.9 | **v5.10 (vigente)** |
+|------|------|------|-------------|---------------------|
+| d1 · arranque (lesiones elementales) | lun 7-sep-2026 | mié 9-sep-2026 | vie 11-sep-2026 | **mar 15-sep-2026** |
+| d19 · oclusión vascular + HDPH (drill) | 27-oct-2026 | jue 29-oct-2026 | lun 2-nov-2026 | **mié 4-nov-2026** |
+| d20 · ceguera por relleno + kit (drill) | 29-oct-2026 | lun 2-nov-2026 | mié 4-nov-2026 | **vie 6-nov-2026** |
+| d45 · Checkpoint 1 (mapa de fallos por módulo CORE) | 11-ene-2027 | mié 13-ene-2027 | vie 15-ene-2027 | **mar 19-ene-2027** |
+| d46 · Checkpoint 2 (re-drill + HDPH) | 13-ene-2027 | vie 15-ene-2027 | mar 19-ene-2027 | **jue 21-ene-2027** |
+| d57 · paciente agudo con fiebre y rash | 12-feb-2027 | mar 16-feb-2027 | jue 18-feb-2027 | **lun 22-feb-2027** |
+| d58 · pelo y uñas infecciosos | 16-feb-2027 | jue 18-feb-2027 | lun 22-feb-2027 | **mié 24-feb-2027** |
+| d69 · Repaso 1 · 2ª pasada FSRS solo de fallos | 18-mar-2027 | lun 22-mar-2027 | mié 24-mar-2027 | **vie 26-mar-2027** |
+| d70 · Repaso 2 · mapa final + plan post-Step 1 | lun 22-mar-2027 | mié 24-mar-2027 | vie 26-mar-2027 | **mar 30-mar-2027** |
 
 Los 4 paneles de checkpoint (`DermaCheckpointPanel` en d45/d46/d69/d70) y los 4 drills HDPH
 (`DermaEmergencyDrill` en d19/d20/d46/d70) siguen en los MISMOS átomos: solo cambian sus fechas.

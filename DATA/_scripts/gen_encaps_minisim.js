@@ -21,18 +21,25 @@
  * rota COLA_LARGA por índice de viernes).
  *
  * Uso:
- *   node DATA/_scripts/gen_encaps_minisim.js 2026-09-11                → BANCO_PROPIO/minisim_2026-09-11.json + .html (viernes)
- *   node DATA/_scripts/gen_encaps_minisim.js --banco 2026-09-10        → BANCO_PROPIO/banco_2026-09-10.json + .html: BANCO DEL DÍA
+ *   node DATA/_scripts/gen_encaps_minisim.js 2026-09-18                → BANCO_PROPIO/minisim_2026-09-18.json + .html (viernes)
+ *   node DATA/_scripts/gen_encaps_minisim.js --banco 2026-09-14        → BANCO_PROPIO/banco_2026-09-14.json + .html: BANCO DEL DÍA
  *        (lun-jue): 16-20Q del código y SUB-EJE de la fila banqueo1h de ese día + 4-5Q del secundario de cola larga;
  *        corrección INMEDIATA pregunta a pregunta (Palmerton); ≥40 % recall directo cuando el stock lo permite.
- *   node DATA/_scripts/gen_encaps_minisim.js --eval 2026-09-10         → BANCO_PROPIO/eval_2026-09-10.json + .html: EVAL ANCLADA
+ *   node DATA/_scripts/gen_encaps_minisim.js --eval 2026-09-15         → BANCO_PROPIO/eval_2026-09-15.json + .html: EVAL ANCLADA
  *        16:15 (5Q del código de AYER = 3 cifras + 2 viñetas, solución al final; lunes = 5Q de fallos previos; si NO hay sesión
  *        anterior en el SQL —D1 del régimen— cae en el mismo modo «fallos previos» en vez de fallar).
  *   node DATA/_scripts/gen_encaps_minisim.js --semana 2026-09-14       → --banco lun-jue + --eval mar-jue de esa semana (el viernes no
- *        lleva eval: el mini-sim ocupa las 16:15) + mini-sim del viernes si no existe. Con --dry solo informa.
+ *        lleva eval: el mini-sim ocupa las 16:15) + mini-sim del viernes si no existe. Con --dry solo informa. Es DETERMINISTA: las
+ *        salidas banco_/eval_ de esa misma semana que ya existan se sobrescriben y sus ids viejos no cuentan como «usados» hasta
+ *        que cada una se regenera (da lo mismo que existan o no de una corrida anterior).
+ *   node DATA/_scripts/gen_encaps_minisim.js --realinear [--dry]       → tras un CORRIMIENTO del régimen (SQL regenerado con otro D1): cada
+ *        minisim_<viernes>.json ya armado cuya cola larga ya no coincide con la fila mini_sim de su fecha se MUEVE al primer viernes
+ *        ≥ su fecha con la misma cola larga y sin mini-sim (ítems intactos: no se regenera ni se pierde contenido; queda
+ *        _meta.realineado y los reservado_para del pool se re-fechan). Si no encaja en ninguno: se borra (fecha sin sesión) o se
+ *        regenera (fecha que sigue siendo viernes de mini-sim).
  *   node DATA/_scripts/gen_encaps_minisim.js --inventario              → BANCO_PROPIO/_inventario_banco_por_codigo.json (oferta vs
  *        demanda por código v3: sets, reales etiquetados, banco_items_v1, claves.json, QX/Theomed, resueltas, déficit).
- *   node DATA/_scripts/gen_encaps_minisim.js 2026-09-11 --dry          → solo informe (no escribe)
+ *   node DATA/_scripts/gen_encaps_minisim.js 2026-09-18 --dry          → solo informe (no escribe)
  *   node DATA/_scripts/gen_encaps_minisim.js --pretest                 → BANCO_PROPIO/pretest_2026-II.html (100Q, examen real
  *                                                                        2026-II, PRETEST_2026-II.md). Generarlo el jue 4-feb-2027.
  *   node DATA/_scripts/gen_encaps_minisim.js --sim100 2025-2 [fecha]   → simulacro 100Q con un examen real con CLAVE OFICIAL
@@ -111,10 +118,11 @@ function cargarPool(pretestHecho) {
   return { pool, rechazados };
 }
 // ids ya consumidos en CUALQUIER salida del runner (minisim_/banco_/eval_), salvo la que se está (re)generando
-function usadosPrevios(base) {
+// y salvo las salidas de `ignorar` (ficheros de la misma semana que --semana va a sobrescribir después)
+function usadosPrevios(base, ignorar = new Set()) {
   const usados = new Set();
   for (const f of fs.readdirSync(BANCO)) {
-    if (!USADOS_RE.test(f) || f === `${base}.json`) continue;
+    if (!USADOS_RE.test(f) || f === `${base}.json` || ignorar.has(f)) continue;
     try { for (const it of readJSON(path.join(BANCO, f)).items || []) usados.add(it.id); } catch (e) { /* ignorar */ }
   }
   return usados;
@@ -324,13 +332,13 @@ function modoMinisim(fecha) {
 }
 
 // BANCO DEL DÍA (lun-jue 16:30-17:10): 16-20Q del código + sub-eje de la fila banqueo1h + 4-5Q del secundario
-function modoBanco(fecha) {
+function modoBanco(fecha, ignorar) {
   const fila = filaSQL(fecha);
   if (!fila) throw new Error(`no hay fila en _encaps_mantenimiento_2027.sql para ${fecha} (¿fin de semana/feriado o SQL no regenerado?)`);
   if (fila.tipo !== 'banqueo1h') throw new Error(`${fecha} es '${fila.tipo}', no banqueo1h (para viernes usar el mini-sim)`);
   const { pretestHecho } = leerRegistro();
   const { pool, rechazados } = cargarPool(pretestHecho);
-  const usados = usadosPrevios(`banco_${fecha}`);
+  const usados = usadosPrevios(`banco_${fecha}`, ignorar);
   const r = rng(fecha + 'banco');
   const codigoPool = poolCode(fila.codigo);
   const subEje = fila.extra.sub_eje || null;
@@ -375,7 +383,7 @@ function modoBanco(fecha) {
 }
 
 // EVAL ANCLADA (mar-vie 16:15): 5Q del código de AYER = 3 cifras + 2 viñetas, solución al final; lunes = 5Q de fallos previos
-function modoEval(fecha) {
+function modoEval(fecha, ignorar) {
   const fila = filaSQL(fecha);
   if (!fila) throw new Error(`no hay fila en _encaps_mantenimiento_2027.sql para ${fecha}`);
   let ayer = addDays(fecha, -1), filaAyer = filaSQL(ayer), back = 1;
@@ -384,7 +392,7 @@ function modoEval(fecha) {
   if (!filaAyer) { ayer = null; filaAyer = { fecha: null, tipo: 'inicio_regimen', codigo: null, subtema: null, secundarios: [], extra: {} }; }
   const { fallos, debiles, pretestHecho } = leerRegistro();
   const { pool } = cargarPool(pretestHecho);
-  const usados = usadosPrevios(`eval_${fecha}`);
+  const usados = usadosPrevios(`eval_${fecha}`, ignorar);
   const r = rng(fecha + 'eval');
   const cand = shuffle(pool.filter((it) => !usados.has(it.id)), r);
   const esFalloPrevio = (it) => !!it.fallo_previo && (fallos.has(norm(it.fallo_previo)) || debiles.has(it.codigo));
@@ -428,16 +436,72 @@ function motivoSinSesion(fecha) {
 }
 function modoSemana(lunes) {
   if (dowDe(lunes) !== 1) throw new Error(`${lunes} no es lunes`);
+  // salidas banco_/eval_ de ESTA semana que se van a sobrescribir: sus ids viejos no cuentan como «usados» hasta que cada una
+  // se regenera → --semana es determinista (misma salida exista o no una corrida anterior) y no encadena exclusiones espurias
+  const pendientes = new Set();
+  for (let i = 0; i < 5; i++) { const f = addDays(lunes, i); const fila = filaSQL(f); if (fila && fila.tipo === 'banqueo1h') { pendientes.add(`banco_${f}.json`); if (i > 0) pendientes.add(`eval_${f}.json`); } }
   for (let i = 0; i < 5; i++) {
     const f = addDays(lunes, i); const fila = filaSQL(f);
     if (!fila) { console.log(`— ${f}: sin sesión (${motivoSinSesion(f)})`); continue; }
     if (fila.tipo === 'banqueo1h') { // eval anclada mar-jue (el lunes la pide el protocolo pero hoy NO hay stock del código: ver README); el viernes (mini_sim) no lleva: el mini-sim ocupa las 16:15
-      if (i > 0) { try { modoEval(f); } catch (e) { console.warn('⚠ eval', f, e.message); } }
-      try { modoBanco(f); } catch (e) { console.warn('⚠ banco', f, e.message); }
+      if (i > 0) { try { modoEval(f, pendientes); } catch (e) { console.warn('⚠ eval', f, e.message); } pendientes.delete(`eval_${f}.json`); }
+      try { modoBanco(f, pendientes); } catch (e) { console.warn('⚠ banco', f, e.message); }
+      pendientes.delete(`banco_${f}.json`);
     }
     else if (fila.tipo === 'mini_sim') { if (fs.existsSync(path.join(OUT_DIR, `minisim_${f}.json`))) console.log(`— ${f}: minisim ya existe`); else modoMinisim(f); }
   }
 }
+// REALINEAR (tras un corrimiento del régimen): los mini-sims ya armados NO se regeneran ni se pierden. Cada minisim_<viernes>.json
+// cuya cola larga (_meta.cola_larga.codigos) ya no coincide con la fila mini_sim de su fecha se mueve al primer viernes ≥ su fecha
+// del SQL nuevo con la MISMA cola larga y sin mini-sim: ítems intactos, cambian id/título/fecha, queda constancia en _meta.realineado
+// y los reservado_para de ese viernes se re-fechan en el pool. Si no encaja en ningún viernes: se borra cuando su fecha ya no tiene
+// sesión de mini-sim, o se regenera cuando la sigue teniendo. Con --dry solo informa.
+function modoRealinear() {
+  const hoy = new Date().toISOString().slice(0, 10);
+  const { d1, fechas } = rangoSQL();
+  const simsSQL = fechas.map(filaSQL).filter((f) => f && f.tipo === 'mini_sim').map((f) => ({ fecha: f.fecha, cola: f.extra.cola_larga || [] }));
+  const clave = (codigos) => (codigos || []).map(poolCode).join('+');
+  const docs = fs.readdirSync(OUT_DIR).filter((f) => /^minisim_\d{4}-\d\d-\d\d\.json$/.test(f)).sort()
+    .map((f) => { const doc = readJSON(path.join(OUT_DIR, f)); return { fecha: f.slice(8, 18), doc, cola: clave(doc._meta && doc._meta.cola_larga && doc._meta.cola_larga.codigos), accion: null, destino: null, motivo: '' }; });
+  if (!docs.length) { console.log('sin minisim_*.json en', OUT_DIR); return; }
+  const ocupados = new Set();
+  for (const d of docs) { const s = simsSQL.find((x) => x.fecha === d.fecha); if (s && clave(s.cola) === d.cola) { d.accion = 'conservar'; ocupados.add(d.fecha); } }
+  for (const d of docs.filter((x) => !x.accion)) {
+    const destino = simsSQL.find((s) => s.fecha >= d.fecha && clave(s.cola) === d.cola && !ocupados.has(s.fecha));
+    if (destino) { d.accion = 'mover'; d.destino = destino.fecha; ocupados.add(destino.fecha); continue; }
+    const fila = filaSQL(d.fecha);
+    if (fila && fila.tipo === 'mini_sim') { d.accion = 'regenerar'; d.motivo = `la fila mini_sim del ${d.fecha} pide ${clave(fila.extra.cola_larga)} y ningún viernes libre lleva ${d.cola}`; }
+    else { d.accion = 'borrar'; d.motivo = fila ? `${d.fecha} ya no es viernes de mini-sim (${fila.tipo})` : motivoSinSesion(d.fecha); d.motivo += ' y ninguna fila mini_sim libre lleva esa cola larga'; }
+  }
+  for (const d of docs) console.log(`minisim_${d.fecha} (cola larga ${d.cola || '?'}) → ${d.accion}${d.destino ? ' → minisim_' + d.destino : ''}${d.motivo ? ' (' + d.motivo + ')' : ''}`);
+  if (DRY) return;
+  // mover de la fecha más tardía a la más temprana: el destino de cada uno ya está libre cuando se escribe
+  const mapa = {};
+  for (const d of docs.filter((x) => x.accion === 'mover').sort((a, b) => (a.fecha < b.fecha ? 1 : -1))) {
+    if (fs.existsSync(path.join(OUT_DIR, `minisim_${d.destino}.json`))) throw new Error(`minisim_${d.destino}.json ya existe: no se sobrescribe`);
+    const { doc } = d; const de = d.fecha, a = d.destino;
+    doc.id = `MINISIM_${a}`; doc.titulo = `Mini-simulacro ENCAPS · viernes ${a}`; doc.fecha = a;
+    doc._meta = doc._meta || {};
+    doc._meta.realineado = [...(doc._meta.realineado || []), { de, a, el: hoy, motivo: `corrimiento del régimen (D1 = ${d1}): la cola larga ${d.cola} pasó del vie ${de} al vie ${a}; ítems intactos, sin regenerar` }];
+    for (const it of doc.items || []) if (it.reservado_para === de) it.reservado_para = a;
+    escribir(`minisim_${a}`, doc);
+    borrarSalida(`minisim_${de}`);
+    mapa[de] = a;
+  }
+  for (const d of docs.filter((x) => x.accion === 'borrar')) borrarSalida(`minisim_${d.fecha}`);
+  for (const d of docs.filter((x) => x.accion === 'regenerar')) { borrarSalida(`minisim_${d.fecha}`); modoMinisim(d.fecha); }
+  if (Object.keys(mapa).length) realinearReservas(mapa);
+}
+// reservado_para en los ficheros del pool: la fecha del viernes movido pasa a la nueva (una sola pasada: no encadena 11→18→25)
+function realinearReservas(mapa) {
+  for (const f of fs.readdirSync(BANCO)) {
+    if (!f.endsWith('.json') || f.startsWith('_') || SALIDAS_RE.test(f)) continue;
+    const p = path.join(BANCO, f); const src = fs.readFileSync(p, 'utf8'); let n = 0;
+    const out = src.replace(/("reservado_para":\s*")(\d{4}-\d\d-\d\d)(")/g, (m, a, fecha, b) => (mapa[fecha] ? (n++, a + mapa[fecha] + b) : m));
+    if (n) { fs.writeFileSync(p, out, 'utf8'); console.log(`reservado_para re-fechado en ${f}: ${n} ítems (${Object.entries(mapa).map(([k, v]) => k + '→' + v).join(', ')})`); }
+  }
+}
+function borrarSalida(base) { for (const ext of ['.json', '.html']) { const p = path.join(OUT_DIR, base + ext); if (fs.existsSync(p)) { fs.unlinkSync(p); console.log('borrado →', p); } } }
 function modoPretest() {
   const src = readJSON(path.join(ENCAPS, '_examen_2026-2_items.json'));
   const items = src.items.map((it) => ({ n: it.numero, id: `2026-II-Q${it.numero}`, codigo: it.codigo, area: areaDe(it.codigo), formato: it.tipo, formato_pretest: it.formato_pretest, subangulo: it.subtema, enunciado: it.enunciado, opciones: it.opciones, clave: it.clave, respuesta: it.respuesta, fuente: 'ENCAPS/SERUMS 2026-II (clave oficial verificada 100/100)', verificado_contra: 'CLAVE OFICIAL 2026-II (resaltados del PDF, 27-ago-2026)' }));
@@ -569,9 +633,10 @@ try {
   else if (has('--pretest')) modoPretest();
   else if (has('--sim100')) modoSim100(opt('--sim100'));
   else if (has('--inventario')) modoInventario();
+  else if (has('--realinear')) modoRealinear();
   else if (has('--banco')) modoBanco(opt('--banco'));
   else if (has('--eval')) modoEval(opt('--eval'));
   else if (has('--semana')) modoSemana(opt('--semana'));
   else if (fechaArg) modoMinisim(fechaArg);
-  else { console.log('uso: node gen_encaps_minisim.js <viernes YYYY-MM-DD> [--dry] | --banco <fecha> | --eval <fecha> | --semana <lunes> | --inventario | --pretest | --sim100 <2024-2A|2025-1A|2025-2|propio> [fecha] | --registrar <export.json> [--append]'); process.exit(1); }
+  else { console.log('uso: node gen_encaps_minisim.js <viernes YYYY-MM-DD> [--dry] | --banco <fecha> | --eval <fecha> | --semana <lunes> | --realinear [--dry] | --inventario | --pretest | --sim100 <2024-2A|2025-1A|2025-2|propio> [fecha] | --registrar <export.json> [--append]'); process.exit(1); }
 } catch (e) { console.error('✗', e.message); process.exit(1); }

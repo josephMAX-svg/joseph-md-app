@@ -15,9 +15,9 @@
  "correccion_inmediata": true,
  "instrucciones": "20Q CIEGAS de III-5 (sub-eje: pertinencia_barreras) + 5Q del secundario de cola larga II-6. Corrección INMEDIATA al marcar respuesta + confianza (Palmerton: intenta primero, luego lee la clave y recalibra). Meta crucero ≥75 % ciego. Al terminar: exporta el JSON → línea de cierre → gen_encaps_semana.js --cerrar.",
  "_meta": {
-  "generado": "2026-09-10",
+  "generado": "2026-09-12",
   "fila_sql": {
-   "dia": 5,
+   "dia": 4,
    "tipo": "banqueo1h",
    "codigo": "III-5",
    "sub_eje": "pertinencia_barreras",

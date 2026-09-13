@@ -2,7 +2,7 @@
  * gen_mir_mantenimiento.js — genera src/lib/mirMantenimiento.ts (MIR modo BANQUEO PURO ene-mar 2027).
  *
  *   Uso:  node DATA/_scripts/gen_mir_mantenimiento.js [YYYY-MM-DD inicio] [YYYY-MM-DD fin]
- *         (default 2027-01-04 → 2027-03-31; L-V; salta sáb/dom y SKIP_FIJOS: 25-dic/31-dic/1-ene)
+ *         (default 2027-01-05 → 2027-03-31; L-V; salta sáb/dom y SKIP_FIJOS: 25-dic/31-dic/1-ene)
  *
  * Contexto (v5.6): el plan MIR de 78 días termina el 23-dic-2026; del 4-ene al 31-mar-2027 el
  * bloque 15:15-16:15 sigue en el Calendar pero MIR_DIAS no tiene contenido (ROADMAP mantiene
@@ -15,7 +15,7 @@
  *    de introducción de ProMIR, mirDetalleData.pesoGlobal; smooth weighted round-robin +
  *    reparto por resto mayor = cuotas exactas). Viernes = 30Q de la asignatura PEOR DEL LOG
  *    (mirEvalLog.mirPeorAsignatura(); fallback = la de mayor peso vista esa semana).
- *  · modo 'reducido' 4-25 ene (Fase B/C del Step 1, v5.8: el sprint acaba el lun 25-ene): solo Anki + 10Q (flag modoReducido).
+ *  · modo 'reducido' 4-27 ene (Fase B/C del Step 1, v5.10: el sprint acaba el mié 27-ene): solo Anki + 10Q (flag modoReducido).
  *  · Handoff 31-mar: export JSON del log + tabla de neto por asignatura + stats FSRS → entrada
  *    de la fase principal (abr-2027).
  *
@@ -28,11 +28,11 @@ const fs = require('fs');
 const path = require('path');
 const ROOT = path.join(__dirname, '..', '..');
 const OUT = path.join(ROOT, 'src/lib/mirMantenimiento.ts');
-const INICIO = process.argv[2] || '2027-01-04';
+const INICIO = process.argv[2] || '2027-01-05'; // v5.10: la 1ª vuelta MIR termina el lun 4-ene (D78 = corrección del mini-MIR) → el mantenimiento arranca el mar 5-ene para no solapar
 const FIN = process.argv[3] || '2027-03-31';
 for (const s of [INICIO, FIN]) if (!/^20\d\d-\d\d-\d\d$/.test(s)) throw new Error('fecha inválida: ' + s);
 /** hasta esta fecha (incl.) el bloque va en modo reducido (Fase B/C Step 1 · examen 25-29 ene) */
-const REDUCIDO_HASTA = '2027-01-26'; // v5.9: el Step 1 termina D95 = mar 26-ene (v5.8: lun 25-ene)
+const REDUCIDO_HASTA = '2027-01-27'; // v5.10: el Step 1 termina D95 = mié 27-ene (v5.9: mar 26-ene · v5.8: lun 25-ene)
 
 // ── calendario (idéntico a remap_inicio.js) ──
 const SKIP_FIJOS = new Set(['2026-12-25', '2026-12-31', '2027-01-01']);

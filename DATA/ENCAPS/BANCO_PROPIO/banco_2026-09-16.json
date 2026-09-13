@@ -15,9 +15,9 @@
  "correccion_inmediata": true,
  "instrucciones": "20Q CIEGAS de V-2 (sub-eje: planeamiento) + 5Q del secundario de cola larga V-6. Corrección INMEDIATA al marcar respuesta + confianza (Palmerton: intenta primero, luego lee la clave y recalibra). Meta crucero ≥75 % ciego. Al terminar: exporta el JSON → línea de cierre → gen_encaps_semana.js --cerrar.",
  "_meta": {
-  "generado": "2026-09-10",
+  "generado": "2026-09-12",
   "fila_sql": {
-   "dia": 4,
+   "dia": 3,
    "tipo": "banqueo1h",
    "codigo": "V-2",
    "sub_eje": "planeamiento",

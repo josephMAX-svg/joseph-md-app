@@ -1,12 +1,12 @@
-# 📋 REVISIÓN SEMANAL — sábado 07:15-07:35 (20') · v5.9 · re-fechado 10-sep-2026
+# 📋 REVISIÓN SEMANAL — sábado 07:15-07:35 (20') · v5.10 · re-fechado 12-sep-2026
 
-> Ritual único que revisa los 9 frentes del régimen v5.9 (D1 = vie 11-sep-2026, Step 1 = principal) con
+> Ritual único que revisa los 9 frentes del régimen v5.10 (D1 = lun 14-sep-2026, Step 1 = principal) con
 > **10 métricas** y una sola pregunta: *¿el sistema va on-track o hay que corregir ESTA semana?*
 > Palmerton revisa el checklist G "en cada hito NBME" (~3 semanas): demasiado grueso para un plan donde
 > 1 día perdido = +1 hábil. Aquí la cadencia es semanal y el trabajo de recopilar lo hace un script.
 >
 > **Franja**: sábado 07:15-07:35 (hueco libre tras el desayuno; no toca las franjas L-V). El evento en el
-> Google Calendar NO se ha creado: decisión de Joseph (pendiente). **Semana 1 = sáb 12-sep-2026** (tampoco se movió en v5.9: las 20 semanas se anclan a los sábados y a los hitos, que conservan su fecha — el D1 del régimen pasó al vie 11-sep, dentro de esa misma semana 1).
+> Google Calendar NO se ha creado: decisión de Joseph (pendiente). **Semana 1 = sáb 19-sep-2026** (v5.10: la S1 del Step 1 es la semana lun 14 → vie 18-sep; el sáb 12-sep queda como "pre-D1" en el cockpit y no lleva revisión). Las 20 semanas se numeran desde `DAILY_META.inicio` = 14-sep — misma regla que `semanaStep1()` del cockpit y que `gen_revision_semanal.js` (lee el `inicio` del `.ts`) — y los hitos conservan su fecha, así que la tabla de abajo corre una fila respecto a v5.9.
 >
 > **Pre-relleno automático** (viernes 21:00 o sábado 07:10, 1 comando):
 > `node DATA/_scripts/gen_revision_semanal.js` → `DATA/USMLE/REVISIONES/S<NN>_<sábado>.md` + append en
@@ -32,7 +32,7 @@
 | # | Métrica | Fuente automática | On-track | Alarma → acción |
 |---|---|---|---|---|
 | 1 | **USMLE · medias de la semana**: pre-test /10 · 30Q % · eval 18:00 % | `jmd-usmle-scores` (proyecto S3 del vibecoding; hasta entonces "sin dato") | pre-test ≥ 5/10 · 30Q ≥ 65 % · eval ≥ 60 % (gate Palmerton 80 % = tema dominado) | eval < 60 % dos días seguidos → ÁMBAR; media 7 d < 55 % → auditar el tipo de error dominante (knowledge/transfer/proceso), no sumar horas |
-| 2 | **uWorld % acumulado vs mínimo on-track** del próximo hito | manual (dashboard uWorld); el script imprime el hito y su mínimo (Parte V) | NBME 25 ≥ 51 · 26 ≥ 54 · 27 ≥ 57 · 28 ≥ 61 · 29 ≥ 63 · 30 ≥ 65 · 31 ≥ 68 (GO) | > 5 puntos bajo el mínimo → auditar método (no horas); UWSA1 11-sep = baseline sin juicio |
+| 2 | **uWorld % acumulado vs mínimo on-track** del próximo hito | manual (dashboard uWorld); el script imprime el hito y su mínimo (Parte V) | NBME 25 ≥ 51 · 26 ≥ 54 · 27 ≥ 57 · 28 ≥ 61 · 29 ≥ 63 · 30 ≥ 65 · 31 ≥ 68 (GO) | > 5 puntos bajo el mínimo → auditar método (no horas); UWSA1 lun 14-sep = baseline sin juicio |
 | 3 | **Anki**: due medio · backlog · retención 30 d · % Again · **minFinde** | `_anki_telemetria.json` + AnkiConnect en vivo | backlog < 20 · retención 85-92 % · Again < 15 % | backlog > 100 o retención < 85 % = **alarma G "avalancha"** → cero nuevas hasta backlog < 20; Anki finde = due × 20 s |
 | 4 | **ENCAPS · % ciego del viernes** (mini-sim 25Q) + rondas de la semana | `_registro_resoluciones.json` (examen ENCAPS, fecha en la semana) | ≥ 18/25 hacia diciembre (crucero 75 %; meta 85 %) | < 15/25 dos viernes seguidos → re-ponderar la rotación (PROTOCOLO_HORA_MANTENIMIENTO) |
 | 5 | **MIR · eval D-1** media + días con eval | `jmd-mir-eval-log` (export localStorage) | ≥ 60 % · 5/5 días | < 50 % media → solo eval D-1 la semana siguiente (deep work al tema peor) |
@@ -82,30 +82,31 @@ copy(JSON.stringify(Object.fromEntries(Object.keys(localStorage).filter(k => k.s
 
 | S | Sábado | Hito de esa semana (viernes) | Deload secundarios |
 |---|---|---|---|
-| S1 | 12-sep | UWSA1 (baseline) | — |
-| S2 | 19-sep | — | — |
-| S3 | 26-sep | — | — |
-| S4 | 3-oct | NBME 25 (≥ 51 %) | — |
-| S5 | 10-oct | — | — |
-| S6 | 17-oct | — | — |
-| S7 | 24-oct | NBME 26 (≥ 54 %) | — |
-| **S8** | 31-oct | — | **sí (26-30 oct)** |
-| S9 | 7-nov | — | — |
-| S10 | 14-nov | NBME 27 (≥ 57 %) | — |
-| S11 | 21-nov | — | — |
-| S12 | 28-nov | — (SHIP S11 del vibecoding) | — |
-| S13 | 5-dic | NBME 28 (≥ 61 %) · **SHIP S12 = cierre del vibecoding** | — |
-| **S14** | 12-dic | — | **sí (7-11 dic)** |
-| S15 | 19-dic | NBME 29 (≥ 63 %) | — |
-| S16 | 26-dic | (25-dic feriado) | — |
-| S17 | 2-ene | NBME 30 mié 30-dic (≥ 65 %) · 31-dic/1-ene feriados | — |
-| S18 | 9-ene | UWSA2 (low risk) | — |
-| S19 | 16-ene | NBME 31 · GO/NO-GO (≥ 68 %) | — |
-| S20 | 23-ene | NBME 32 (lun) · NBME 33 (mié) · Free 120 (vie ≥ 70 %) → examen 25-29 ene | — |
+| S1 | 19-sep | UWSA1 (baseline, **lun 14-sep = D1**; movido del vie 11-sep) · SHIP S1 del vibecoding | — |
+| S2 | 26-sep | — | — |
+| S3 | 3-oct | NBME 25 (≥ 51 %) | — |
+| S4 | 10-oct | — | — |
+| S5 | 17-oct | — | — |
+| S6 | 24-oct | NBME 26 (≥ 54 %) | — |
+| **S7** | 31-oct | — | **sí (26-30 oct)** |
+| S8 | 7-nov | — (proyecto S8 del vibecoding, deload en el catálogo: 2-6 nov) | — |
+| S9 | 14-nov | NBME 27 (≥ 57 %) | — |
+| S10 | 21-nov | — | — |
+| S11 | 28-nov | — (SHIP S11 del vibecoding) | — |
+| S12 | 5-dic | NBME 28 (≥ 61 %) · **SHIP S12 = cierre del vibecoding** | — |
+| **S13** | 12-dic | — | **sí (7-11 dic)** |
+| S14 | 19-dic | NBME 29 (≥ 63 %) | — |
+| S15 | 26-dic | (25-dic feriado) | — |
+| S16 | 2-ene | NBME 30 mié 30-dic (≥ 65 %) · 31-dic/1-ene feriados | — |
+| S17 | 9-ene | UWSA2 (low risk) | — |
+| S18 | 16-ene | NBME 31 · GO/NO-GO (≥ 68 %) | — |
+| S19 | 23-ene | NBME 32 (lun) · NBME 33 (mié) · Free 120 (vie ≥ 70 %) | — |
+| S20 | 30-ene | D93-D95 taper (lun-mié) · jue 28 descanso · **examen vie 29-ene** → el sábado es post-mortem, no ritual | — |
 
-⚠ **v5.9:** el plan Step 1 ya no termina el lunes de la semana de examen sino el **mar 26-ene-2027 (D95)**, así que
-la semana 21 (25-29 ene) contiene D94 y D95 de taper **y** la ventana de examen. No se añade una S21 de revisión: el
-cierre de esa semana es el post-mortem del examen, no el ritual de 20'.
+⚠ **v5.10:** el plan Step 1 termina el **mié 27-ene-2027 (D95)** y el examen target pasa al **vie 29-ene** (jue 28 =
+descanso pre-examen), así que la S20 (25-29 ene) contiene D93-D95 de taper, el descanso **y** el examen. El sáb 30-ene no
+lleva el ritual de 20': el cierre de esa semana es el post-mortem del examen. Las dos semanas DELOAD (26-30 oct y 7-11 dic)
+conservan sus fechas (`gen_revision_semanal.js` las tiene fijas) y pasan a numerarse S7 y S13.
 
 ## Historial
 

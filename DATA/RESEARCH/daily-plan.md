@@ -1,6 +1,6 @@
 # Plan DÍA-A-DÍA de Research — 3 pistas alineadas con la RUTA de publicación 2027
 
-> **GENERADO por DATA/_scripts/gen_research_plan.js (2026-09-10) — NO editar a mano: `node DATA/_scripts/gen_research_plan.js [YYYY-MM-DD]`.** Fuente de verdad = los `.ts` que emite el mismo script
+> **GENERADO por DATA/_scripts/gen_research_plan.js (2026-09-12) — NO editar a mano: `node DATA/_scripts/gen_research_plan.js [YYYY-MM-DD]`.** Fuente de verdad = los `.ts` que emite el mismo script
 > (`src/lib/researchDailyPlan.ts` ciclo 1 · `src/lib/researchDailyPlan2027.ts` ciclo 2 · `src/lib/obsidianResearchMap.ts`).
 > Este doc es la MISMA data en tablas. Se re-fecha con el pipeline de corrimiento (`gen_research_plan.js <fecha>`).
 

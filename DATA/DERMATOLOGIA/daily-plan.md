@@ -1,9 +1,10 @@
 # DERMA · Plan tema-átomo/día (68 átomos · interdiario con Research)
 
-> ⚠ **DESACTUALIZADO — vigente D1 = vie 11-sep-2026 (régimen v5.9, 10-sep-2026); fuente de verdad = el `.ts`**
-> (`src/lib/dermaDailyPlan.ts`: PLAN ÉLITE v2.1, **70 átomos, d1 vie 11-sep-2026 → d70 vie 26-mar-2027**, interdiario
-> con Research, sáb+dom libres, salta 25-dic/31-dic/1-ene). El corrimiento a v5.9 **no movió ni una fecha de Derma**
-> (el `.ts` sale idéntico al de v5.8: el nuevo D1 del régimen, vie 11-sep, ya era el d1 de Derma). Tampoco se fusionó
+> ⚠ **DESACTUALIZADO — vigente D1 del régimen = lun 14-sep-2026 (v5.10, 12-sep-2026); fuente de verdad = el `.ts`**
+> (`src/lib/dermaDailyPlan.ts`: PLAN ÉLITE v2.1, **70 átomos, d1 mar 15-sep-2026 → d70 mar 30-mar-2027**, interdiario
+> con Research, sáb+dom libres, salta 25-dic/31-dic/1-ene). El corrimiento a v5.10 **movió Derma +2 días de calendario**
+> (la paridad Research↔Derma sigue anclada al mié 10-jun-2026: el lun 14-sep es día Research, así que Derma arranca el
+> mar 15-sep y Research no se mueve). No se fusionó
 > ni se recortó nada: los 70 átomos siguen enteros. Este documento conserva la cola v1 (68 átomos, fechas
 > jun→dic-2026) solo como histórico — sus D# y fechas son de 2026-I y NO deben usarse; el temario vigente y el
 > índice de fechas están en `PLAN_ELITE_2026-27.md` §12.

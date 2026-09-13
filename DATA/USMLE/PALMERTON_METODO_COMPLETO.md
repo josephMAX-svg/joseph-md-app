@@ -1,6 +1,6 @@
-# MÉTODO PALMERTON — DE LA A A LA Z (síntesis maestra · 8-sep-2026 · §12 remapeado al régimen v5.9 el 10-sep-2026)
+# MÉTODO PALMERTON — DE LA A A LA Z (síntesis maestra · 8-sep-2026 · §12 remapeado al régimen v5.10 el 12-sep-2026)
 
-> **Qué es este documento.** La síntesis completa del método de **Alec Palmerton, MD** (Stanford Med · anestesiología en Harvard-MGH · Step 1 = 270, top 0,1%) tal como está publicado en su canal de YouTube y en **yousmle.com**, ordenado para ejecutarse. Es el documento maestro del bloque USMLE Step 1 de Joseph: la doctrina (§1-§11) y su traducción exacta al plan **v5.9** día por día (§12).
+> **Qué es este documento.** La síntesis completa del método de **Alec Palmerton, MD** (Stanford Med · anestesiología en Harvard-MGH · Step 1 = 270, top 0,1%) tal como está publicado en su canal de YouTube y en **yousmle.com**, ordenado para ejecutarse. Es el documento maestro del bloque USMLE Step 1 de Joseph: la doctrina (§1-§11) y su traducción exacta al plan **v5.10** día por día (§12).
 >
 > **De dónde sale.** Se construyó exclusivamente sobre los 6 extractos v3 del cuaderno NotebookLM *"STEP 1 · Palmerton Engine"* (295 fuentes: ~140 vídeos del canal + 149 artículos de yousmle.com), verificados en buena parte contra transcripciones crudas (`source_get_content`) el 4 y el 5-sep-2026: `metodo-global.md` · `anki.md` · `uworld-preguntas.md` · `interpretacion-testday.md` · `planificacion-nbme-img.md` · `mindset-productividad.md` (copia de trabajo en `DATA/USMLE/_palmerton_v3_extractos/`).
 >
@@ -23,7 +23,7 @@
 9. **Planificación, NBME, criterio de fecha, retakes, IMG** — umbrales, 5%/mes, Goldilocks, retake, IMG
 10. **Mentalidad, productividad, TDAH, procrastinación** — identidad vs destrezas, ingeniería de entorno, motivación
 11. **Patrones de los que fallan** — checklist de alarmas + discrepancias entre fuentes
-12. **MAPEO AL PLAN v5.9 DE JOSEPH** — cada técnica en su bloque horario, fase, días y fechas reales + divergencias abiertas
+12. **MAPEO AL PLAN v5.10 DE JOSEPH** — cada técnica en su bloque horario, fase, días y fechas reales + divergencias abiertas
 
 ---
 
@@ -1498,20 +1498,20 @@ Marcar cualquiera de estas **es una orden de parar y cambiar**, no una nota ment
 
 ---
 
-# 12. MAPEO AL PLAN v5.9 DE JOSEPH
+# 12. MAPEO AL PLAN v5.10 DE JOSEPH
 
-> **Fuente de los datos de esta sección**: parseo directo de `src/lib/usmleStep1Daily.ts` con Node — versión original 8-sep-2026, **re-parseada el 10-sep-2026 para el corrimiento v5.9** (`DAILY_META`, `FRANJAS`, `USMLE_NIVELES`, `USMLE_GATE`, `DIAS`) y de `src/lib/usmleScores.ts` (`HITOS_ONTRACK`, `TIPO_ERROR_INFO`). **Ninguna fecha de esta sección está estimada de memoria.**
+> **Fuente de los datos de esta sección**: parseo directo de `src/lib/usmleStep1Daily.ts` con Node — versión original 8-sep-2026, **re-parseada el 10-sep-2026 para el corrimiento v5.9 y el 12-sep-2026 para el v5.10** (`DAILY_META`, `FRANJAS`, `USMLE_NIVELES`, `USMLE_GATE`, `DIAS`) y de `src/lib/usmleScores.ts` (`HITOS_ONTRACK`, `TIPO_ERROR_INFO`). **Ninguna fecha de esta sección está estimada de memoria.**
 >
-> **v5.9 (regla de Joseph): no se fusionó ni se recortó nada.** El temario salió 1:1 y el desfase se absorbió alargando el plan hasta el **mar 26-ene-2027**; los 12 hitos conservan su fecha y solo cambian de D#.
+> **v5.10 (regla de Joseph): no se fusionó ni se recortó nada.** El temario salió 1:1 y el desfase se absorbió alargando el plan hasta el **mié 27-ene-2027**; 11 de los 12 hitos conservan su fecha y solo cambian de D#. **El UWSA1 es el primer hito que cambia de fecha** (vie 11-sep, ya pasada → **lun 14-sep**) y sigue siendo el D1. **El target de examen pasa al vie 29-ene** (el plan termina el mié 27; el jue 28 queda como descanso pre-examen).
 >
-> 🔴 **El D1 es ahora el UWSA1** (vie 11-sep: baseline antes de estudiar nada, como prescribe Palmerton) y el **contenido arranca el lun 14-sep = D2**.
+> 🔴 **El D1 es ahora el UWSA1** (lun 14-sep: baseline antes de estudiar nada, como prescribe Palmerton) y el **contenido arranca el mar 15-sep = D2**.
 
 ## 12.1 El marco: qué dice el plan hoy
 
-- **95 días hábiles · D1 = viernes 11-sep-2026 (UWSA1) → D95 = martes 26-ene-2027.** Examen en la ventana **25-29 ene 2027** (target miércoles 27-ene; **D95 cae dentro de la ventana y es la víspera del target**: no queda día de descanso previo). Sábados y domingos **libres**; skips extra: 25-dic, 31-dic, 1-ene.
-- **Fases**: **A · Contenido por sistemas D1-D80** (11-sep → **5-ene**; el contenido empieza en D2, lun 14-sep) · **B · Banco intensivo D81-D88** (6-ene → 15-ene) · **C · Sprint final D89-D95** (18-ene → **26-ene**). D90 (mar 19-ene) y D92 (jue 21-ene) siguen siendo días de banco (AMBOSS 200 mitades 1 y 2) alojados dentro de la semana del sprint.
+- **95 días hábiles · D1 = lunes 14-sep-2026 (UWSA1) → D95 = miércoles 27-ene-2027.** Examen en la ventana **25-29 ene 2027** (target **viernes 29-ene**; D95 cae dentro de la ventana y el **jue 28-ene queda como único día de descanso previo**). Sábados y domingos **libres**; skips extra: 25-dic, 31-dic, 1-ene.
+- **Fases**: **A · Contenido por sistemas D1-D80** (14-sep → **6-ene**; el contenido empieza en D2, mar 15-sep) · **B · Banco intensivo D81-D87** (7-ene → 15-ene) · **C · Sprint final D88-D95** (18-ene → **27-ene**). D91 (jue 21-ene) y D93 (lun 25-ene) siguen siendo días de banco (AMBOSS 200 mitades 1 y 2) alojados dentro de la semana del sprint.
 - **Carga de preguntas de Fase A** (suma de `qDia` D1-D80): **4.000 Q**, de las cuales **1.360** corresponden a los 7 hitos (UWSA1 160 + 6 NBME × 200) y **2.640** a los 73 días de contenido.
-- **Distribución de niveles UWorld**: Fase A → **28 días de nivel 1** (30 Q), **39 días de nivel 2** (40 Q), **6 días de nivel 3** (40 Q) y 7 hitos en formato nivel 5; Fase B (D81-D88) → **4 días de nivel 4** (D81 · D82 · D84 · D85, 80 Q) y **4 de nivel 5**; Fase C (D89-D95) → **7 días de nivel 5**. Total: **5.580 Q** (idéntico a la v5.7 y a la v5.8 — la prueba aritmética de que no se recortó nada).
+- **Distribución de niveles UWorld**: Fase A → **28 días de nivel 1** (30 Q), **38 días de nivel 2** (40 Q), **7 días de nivel 3** (40 Q) y 7 hitos en formato nivel 5 (4.000 Q); Fase B (D81-D87) → **4 días de nivel 4** (D81 · D83 · D84 · D85, 80 Q) y **3 de nivel 5** (D82 UWSA2 · D86 incorrects · D87 NBME 31) = 760 Q; Fase C (D88-D95) → **8 días de nivel 5** = 820 Q. Total: **5.580 Q** (idéntico a la v5.7, la v5.8 y la v5.9 — la prueba aritmética de que no se recortó nada).
 - **Gate** (`USMLE_GATE`): **80% en 10Q consecutivas del nivel actual, validadas ≤24-48 h**; si <80%, no se avanza de tema y se auditan recursos → comprensión → aplicación → memoria.
 
 ## 12.2 Cada técnica Palmerton, en su bloque horario
@@ -1525,7 +1525,7 @@ Marcar cualquiera de estas **es una orden de parar y cambiar**, no una nota ment
 | **11:00–12:00 · CONSOLIDACIÓN** | El bloque que **materializa los 5 niveles**: nivel 1 = 20Q en bloques de 5Q tutor del subtema · nivel 2 = 30Q en bloques de 5Q timed de subtemas validados (incluye las 5Q del subtema de ayer) · nivel 3 = 20Q de sistema completo timed + 10Q tutor. Revisión = **Educational Objective + shopping list + log de errores** (knowledge / transfer / proceso) | nivel del día · **gate: ≥80% → sube; <80% → repetir 5Q del subtema, NO avanzar** |
 | **18:00–18:45 · EVALUACIÓN** | **10Q mixta timed modo examen** (90 s/Q · **tope 2 min: adivinar, marcar, avanzar** · **cover-the-options** · **juez, no abogado**) + corrección + APEX. En Fase A es la **dosis diaria de nivel 4**; en día de hito, aquí se registra el % del NBME/UWSA/Free 120 | nivel 4 (Fase A) · 5 (B-C) · gate: ≥80% sostenido = listo para mezclar |
 
-## 12.3 Fase A (D1-D80 · lun 14-sep → mar 5-ene): los niveles 1→3 y el gate del 80%
+## 12.3 Fase A (D1-D80 · lun 14-sep → mié 6-ene): los niveles 1→3 y el gate del 80%
 
 **Regla de generación de niveles** (determinista, ya aplicada en `DIAS[].nivelUW`): los **2 primeros días de cada sistema** = nivel 1 (30 Q) · **viernes sin hito con el sistema ≥3 días** = nivel 3 (40 Q) · **el resto** = nivel 2 (40 Q) · los **hitos** usan formato nivel 5 como **medición**, no como progresión.
 
@@ -1533,62 +1533,63 @@ Marcar cualquiera de estas **es una orden de parar y cambiar**, no una nota ment
 
 | Sistema | Días | Fechas reales | Nivel(es) |
 |---|---|---|---|
-| Fundamentos (Pathoma 1-3) | D2 · D3 | lun 14-sep → mar 15-sep | 1 |
-| **UWSA1 — baseline** | **D1** | **vie 11-sep** | 5 (160 Q) |
-| Immunology | D4 · D5 | mié 16-sep → jue 17-sep | 1 |
-| **Cardiovascular** | D6-D15 | vie 18-sep → jue 1-oct | 1 → 2 → **3 (D12, lun 28-sep)** |
-| Respiratory (1.ª parte) | D17 · D18 | lun 5-oct → mar 6-oct | 1 |
-| **NBME 25** | **D16** | **vie 2-oct** | 5 (200 Q) |
-| Respiratory (2.ª parte) | D19-D22 | mié 7-oct → lun 12-oct | 2 → **3 (D22, lun 12-oct)** |
-| **Renal** | D23-D28 | mar 13-oct → mar 20-oct | 1 → **3 (D27, lun 19-oct)** → 2 |
-| Gastrointestinal (1.ª parte) | D29 · D30 · D32 · D33 | mié 21-oct → mar 27-oct | 1 → 2 |
-| **NBME 26** | **D31** | **vie 23-oct** | 5 (200 Q) |
-| Gastrointestinal (2.ª parte) | D34-D36 | mié 28-oct → vie 30-oct | 2 |
-| Endocrine | D37-D41 | lun 2-nov → vie 6-nov | 1 → 2 |
-| Nervous System (1.ª parte) | D42-D45 · D47 · D48 | lun 9-nov → mar 17-nov | 1 → 2 |
-| **NBME 27** | **D46** | **vie 13-nov** | 5 (200 Q) |
-| Nervous System (2.ª parte) | D49 · D50 | mié 18-nov → jue 19-nov | 2 |
-| **Hematology & Oncology** | D51-D56 | vie 20-nov → vie 27-nov | 1 → 2 → **3 en D56 (vie 27-nov)**: en v5.9 el bloque recupera su viernes de nivel 3 |
-| Microbiology / ID (1.ª parte) | D57-D60 · D62 · D63 | lun 30-nov → mar 8-dic | 1 → 2 |
-| **NBME 28** | **D61** | **vie 4-dic** | 5 (200 Q) |
-| Microbiology / ID (cierre) | D64 | mié 9-dic | 2 |
-| **Reproductive** | D65-D69 | jue 10-dic → mié 16-dic | 1 → **3 (D67, lun 14-dic)** → 2 |
-| Musculoskeletal / Rheum (+ derma Step 1) | D70 · D72 · D73 | jue 17-dic → mar 22-dic | 1 → 2 |
-| **NBME 29** | **D71** | **vie 18-dic** | 5 (200 Q) |
-| Psychiatry & Behavioral (+ biostats/ética D77) | D74-D77 | mié 23-dic → mar 29-dic | 1 → 2 |
-| Biochemistry (2 días dobles de cierre) | D79 · D80 | lun 4-ene · mar 5-ene | 1 |
-| **NBME 30 — cierre del contenido de 2026** | **D78** | **mié 30-dic** | 5 (200 Q) |
+| **UWSA1 — baseline** | **D1** | **lun 14-sep** | 5 (160 Q) |
+| Fundamentos (Pathoma 1-3) | D2 · D3 | mar 15-sep → mié 16-sep | 1 |
+| Immunology | D4 · D5 | jue 17-sep → vie 18-sep | 1 (D5 es viernes con el sistema recién abierto: el bloque de sistema se hace del anterior) |
+| **Cardiovascular (1.ª parte)** | D6-D14 | lun 21-sep → jue 1-oct | 1 → 2 → **3 (D10, vie 25-sep)** → 2 |
+| **NBME 25** | **D15** | **vie 2-oct** | 5 (200 Q) |
+| Cardiovascular (cierre) | D16 | lun 5-oct | 2 |
+| **Respiratory** | D17-D22 | mar 6-oct → mar 13-oct | 1 → 2 → **3 (D20, vie 9-oct)** → 2 |
+| **Renal** | D23-D28 | mié 14-oct → mié 21-oct | 1 → **3 (D25, vie 16-oct)** → 2 |
+| Gastrointestinal (1.ª parte) | D29 | jue 22-oct | 1 |
+| **NBME 26** | **D30** | **vie 23-oct** | 5 (200 Q) |
+| **Gastrointestinal (2.ª parte)** | D31-D36 | lun 26-oct → lun 2-nov | 1 → 2 → **3 (D35, vie 30-oct)** → 2 |
+| **Endocrine** | D37-D41 | mar 3-nov → lun 9-nov | 1 → 2 → **3 (D40, vie 6-nov)** → 2 |
+| Nervous System (1.ª parte) | D42-D44 | mar 10-nov → jue 12-nov | 1 → 2 |
+| **NBME 27** | **D45** | **vie 13-nov** | 5 (200 Q) |
+| **Nervous System (2.ª parte)** | D46-D50 | lun 16-nov → vie 20-nov | 2 → **3 (D50, vie 20-nov)**: Neuro estrena viernes de nivel 3 en la v5.10 |
+| **Hematology & Oncology** | D51-D56 | lun 23-nov → lun 30-nov | 1 → 2 → **3 (D55, vie 27-nov)** → 2 |
+| Microbiology / ID (1.ª parte) | D57-D59 | mar 1-dic → jue 3-dic | 1 → 2 |
+| **NBME 28** | **D60** | **vie 4-dic** | 5 (200 Q) |
+| Microbiology / ID (2.ª parte) | D61-D64 | lun 7-dic → jue 10-dic | 2 |
+| Reproductive | D65-D69 | vie 11-dic → jue 17-dic | 1 → 2 (sin viernes de nivel 3: D65 abre el sistema) |
+| **NBME 29** | **D70** | **vie 18-dic** | 5 (200 Q) |
+| Musculoskeletal / Rheum (+ derma Step 1) | D71-D73 | lun 21-dic → mié 23-dic | 1 → 2 (bloque íntegro detrás del hito) |
+| Psychiatry & Behavioral | D74-D76 | jue 24-dic → mar 29-dic | 1 → 2 |
+| **NBME 30 — cierre del contenido de 2026** | **D77** | **mié 30-dic** | 5 (200 Q) |
+| Biostats / epi / ética (`system` = Psychiatry & Behavioral) | D78 | lun 4-ene | 2 |
+| Biochemistry (2 días dobles de cierre) | D79 · D80 | mar 5-ene · mié 6-ene | 1 |
 
-> En v5.9 el **NBME 30 (D78, mié 30-dic) va DELANTE de los dos días dobles de Bioquímica**, que quedan consecutivos: **D79 el lun 4-ene** y **D80 el mar 5-ene-2027** (jue 31-dic y vie 1-ene son skip). La Fase A ya no muere en 2026: muere el **5-ene**.
+> En v5.10 el **NBME 30 (D77, mié 30-dic) va DELANTE de Biostats (D78, lun 4-ene) y de los dos días dobles de Bioquímica**, que quedan consecutivos: **D79 el mar 5-ene** y **D80 el mié 6-ene-2027** (jue 31-dic y vie 1-ene son skip). La Fase A muere el **6-ene**. El NBME 29 (D70, vie 18-dic) ya no parte el bloque MSK: D71-D73 van íntegros detrás.
 
 **Dónde vive cada técnica en la Fase A:**
 
 - **80% Mastery Method / Milestone 1** (§2 Fase 3): **todos los días**, repartido entre el pre-test de las 08:15 (10Q ciegas), la consolidación de las 11:00 y la validación de las 07:15 del día siguiente. El gate se registra en `usmleScores.gateDelDia`.
-- **Milestone 2 (subtema timed)**: los **41 días de nivel 2**, es decir, desde el 3.er día de cada sistema.
-- **Milestone 3 (sistema completo timed, 20Q)**: en v5.9 son **exactamente 6 días**, todos viernes sin hito y con el sistema ya ≥3 días abierto — **D11 (vie 25-sep, Cardio)**, **D21 (vie 9-oct, Respiratory)**, **D26 (vie 16-oct, Renal)**, **D36 (vie 30-oct, Gastrointestinal)**, **D41 (vie 6-nov, Endocrine)** y **D56 (vie 27-nov, Hematology & Oncology)**. Los otros tres viernes sin hito (**D6 18-sep, D51 20-nov, D66 11-dic**) caen con un sistema recién abierto → van a nivel 1 y el bloque de sistema se hace **del sistema anterior**. *(Cambio v5.8 → v5.9: al correr todo +1 día hábil, GI, Endo y Heme/Onc estrenan viernes de nivel 3 y Reproductive lo pierde; N3×4 → N3×6 y N2×41 → N2×39.)*
-- **Milestone 4 (mixto de ≥3 sistemas)**: como **dosis diaria** en la eval de las 18:00 (10Q mixtas timed) durante toda la Fase A, y como fase propia en D81 · D82 · D84 · D85.
+- **Milestone 2 (subtema timed)**: los **38 días de nivel 2**, es decir, desde el 3.er día de cada sistema.
+- **Milestone 3 (sistema completo timed, 20Q)**: en v5.10 son **exactamente 7 días**, todos viernes sin hito y con el sistema ya ≥3 días abierto — **D10 (vie 25-sep, Cardio)**, **D20 (vie 9-oct, Respiratory)**, **D25 (vie 16-oct, Renal)**, **D35 (vie 30-oct, Gastrointestinal)**, **D40 (vie 6-nov, Endocrine)**, **D50 (vie 20-nov, Nervous System)** y **D55 (vie 27-nov, Hematology & Oncology)**. Los otros dos viernes sin hito (**D5 18-sep** Immunology, **D65 11-dic** Reproductive) caen con un sistema recién abierto → van a nivel 1 y el bloque de sistema se hace **del sistema anterior**. *(Cambio v5.9 → v5.10: al correr todo +1 día hábil, el viernes de cada bloque cae sobre otro subtema — Cardio pasa de antiarrítmicos a taquiarritmias, Resp de neumonía a restrictivas, Renal de ácido-base a electrolitos, GI de biliar a hígado II, Endo de calcio a DM, Heme de linfomas a leucemias — y Nervous System estrena su gate de sistema; N3×6 → N3×7 y N2×39 → N2×38. Los 7 hitos de Fase A siguen usando formato nivel 5 como medición.)*
+- **Milestone 4 (mixto de ≥3 sistemas)**: como **dosis diaria** en la eval de las 18:00 (10Q mixtas timed) durante toda la Fase A, y como fase propia en D81 · D83 · D84 · D85.
 - **Whole Page Rule + tarjetas de mecanismo**: 09:00-11:00, todos los días.
 - **Shopping list**: 08:15 (pre-test), 11:00 (consolidación) y 18:00 (eval); es el insumo de las tarjetas del día siguiente.
-- **Regla de los 2 minutos y "juez, no abogado"**: 18:00 desde **D2 (lun 14-sep)** — se pueden entrenar desde el primer día sin coste.
-- **Ancla CAD**: el subtema de **enfermedad coronaria** que Palmerton recomienda como primera validación cae en **D12 (lun 28-sep, "aterosclerosis + isquemia + angina")** y **D13 (mar 29-sep, SCA)**; el sistema cardiovascular arranca el **vie 18-sep**.
+- **Regla de los 2 minutos y "juez, no abogado"**: 18:00 desde **D2 (mar 15-sep)** — se pueden entrenar desde el primer día sin coste.
+- **Ancla CAD**: el subtema de **enfermedad coronaria** que Palmerton recomienda como primera validación cae en **D12 (mar 29-sep, "aterosclerosis + isquemia + angina")** y **D13 (mié 30-sep, SCA)**; el sistema cardiovascular arranca el **lun 21-sep**.
 - **Peso por sistema**: los sistemas más pesados del banco real (Cardio 11,3% · Neuro 10,9% · GI 8,4%, §3.9) son también los de más días en Fase A (Cardio 10 días; Neuro 8; GI 7), lo que es coherente con el "secreto 3" del NBME (§5.2).
 
 ## 12.4 Los hitos: fechas reales y mínimo on-track
 
 | Hito | Día | Fecha real | Q | Mínimo on-track (`HITOS_ONTRACK`) | Lectura Palmerton |
 |---|---|---|---|---|---|
-| **UWSA1 (baseline)** | D1 | **vie 11-sep-2026** | 160 | — (cualquier valor sirve) | Baseline temprano: rompe el miedo a evaluarse y fija prioridades (§9.8). **Con la regla del 5%/mes, un baseline <45-48% haría matemáticamente inalcanzable el 70%** → es el "Goldilocks check" real, no el 15-ene |
-| **NBME 25** | D16 | **vie 2-oct-2026** | 200 | **51%** | Pase seguro de la forma 25 = 64% |
-| **NBME 26** | D31 | **vie 23-oct-2026** | 200 | **54%** | forma 26 = 64% |
-| **NBME 27** | D46 | **vie 13-nov-2026** | 200 | **57%** (gate 1 ECFMG ≥55%) | forma 27 = 65% |
-| **NBME 28** | D61 | **vie 4-dic-2026** | 200 | **61%** | forma 28 = 63% |
-| **NBME 29** | D71 | **vie 18-dic-2026** | 200 | **63%** (gate 2 ≥60%) | forma 29 = 64% |
-| **NBME 30 (cierre Fase A)** | D78 | **mié 30-dic-2026** | 200 | **65%** | **umbral de seguridad Palmerton ≈95% de pase**; forma 30 = la más difícil (65%) |
-| **UWSA2** | D83 | **vie 8-ene-2027** | 160 | "low risk" | **El UWSA sobreestima 10-15+ puntos**: resistencia y señal secundaria; **la fecha la decide el NBME** |
-| **NBME 31 — GO/NO-GO** | D88 | **vie 15-ene-2027** | 200 | **68%** | 68% está entre el 65% (≈95%) y el 70% (≈99%) de Palmerton; el criterio de **2 NBME consecutivos** es **más robusto** que su regla |
-| **NBME 32** | D89 | **lun 18-ene-2027** | 200 | **68%** | confirma el GO |
-| **NBME 33** | D91 | **mié 20-ene-2027** | 200 | **68%** | confirma el GO |
-| **Free 120** | D93 | **vie 22-ene-2027** | 120 | **70%** (heurística comunitaria, **no** cifra Palmerton) | Sweet spot 1-2 semanas antes ✔ · **rendirlo en el Prometric real** = decisión pendiente (§12.6) |
+| **UWSA1 (baseline)** | D1 | **lun 14-sep-2026** | 160 | — (cualquier valor sirve) | Baseline temprano: rompe el miedo a evaluarse y fija prioridades (§9.8). **Con la regla del 5%/mes, un baseline <45-48% haría matemáticamente inalcanzable el 70%** → es el "Goldilocks check" real, no el 15-ene |
+| **NBME 25** | D15 | **vie 2-oct-2026** | 200 | **51%** | Pase seguro de la forma 25 = 64% |
+| **NBME 26** | D30 | **vie 23-oct-2026** | 200 | **54%** | forma 26 = 64% |
+| **NBME 27** | D45 | **vie 13-nov-2026** | 200 | **57%** (gate 1 ECFMG ≥55%) | forma 27 = 65% |
+| **NBME 28** | D60 | **vie 4-dic-2026** | 200 | **61%** | forma 28 = 63% |
+| **NBME 29** | D70 | **vie 18-dic-2026** | 200 | **63%** (gate 2 ≥60%) | forma 29 = 64% |
+| **NBME 30 (cierre Fase A)** | D77 | **mié 30-dic-2026** | 200 | **65%** | **umbral de seguridad Palmerton ≈95% de pase**; forma 30 = la más difícil (65%) |
+| **UWSA2** | D82 | **vie 8-ene-2027** | 160 | "low risk" | **El UWSA sobreestima 10-15+ puntos**: resistencia y señal secundaria; **la fecha la decide el NBME** |
+| **NBME 31 — GO/NO-GO** | D87 | **vie 15-ene-2027** | 200 | **68%** | 68% está entre el 65% (≈95%) y el 70% (≈99%) de Palmerton; el criterio de **2 NBME consecutivos** es **más robusto** que su regla |
+| **NBME 32** | D88 | **lun 18-ene-2027** | 200 | **68%** | confirma el GO |
+| **NBME 33** | D90 | **mié 20-ene-2027** | 200 | **68%** | confirma el GO |
+| **Free 120** | D92 | **vie 22-ene-2027** | 120 | **70%** (heurística comunitaria, **no** cifra Palmerton) | Sweet spot 1-2 semanas antes ✔ · **rendirlo en el Prometric real** = decisión pendiente (§12.6) |
 
 **Cadencia**: los 7 hitos de Fase A caen cada ~3 semanas → dentro del rango operativo 1-4 semanas de Palmerton, en su extremo lento (justificado: las formas NBME son finitas, 25-33).
 
@@ -1598,34 +1599,35 @@ Marcar cualquiera de estas **es una orden de parar y cambiar**, no una nota ment
 
 | Día | Fecha | Contenido del plan | Técnica Palmerton |
 |---|---|---|---|
-| **D81 · D82 · D84** + **D85** | mié 6-ene → lun 11-ene · mar 12-ene | Random timed **2×40Q (80 Q/día)** + revisión profunda + **sistemas débiles #1 y #2** según NBME | **Nivel 4** (mixto de sistemas dominados) + el reparto de Melody: *"distribute more time to your weakest subjects"* |
-| **D83** | vie 8-ene | **UWSA2** (160 Q) | Resistencia + señal secundaria |
-| **D86 · D87 · D90** | mié 13-ene → mar 19-ene | **uWorld incorrects + flagged** (nunca re-hacer acertadas) + **AMBOSS 200 Concepts (mitad 1)** + sistema débil #3 | **Nivel 5** · coherente con "una sola pasada, nunca reset": los incorrects/flagged sí, y AMBOSS = banco **nuevo** |
-| **D88** | vie 15-ene | **NBME 31** + decisión **GO/NO-GO** | §9.1: nunca presentarse si los dos últimos NBME no respaldan |
-| **D89** | lun 18-ene | **NBME 32** + repaso FA sistemas 1-5 | Nivel 5 |
-| **D92** | jue 21-ene | **AMBOSS 200 Concepts (mitad 2)** + incorrects (80 Q) — sigue siendo `system = Banco intensivo` dentro de la semana del sprint | Nivel 5 |
-| **D91** | mié 20-ene | **NBME 33** + repaso FA sistemas 11-14 | Nivel 5 · **candidato natural a la maratón de resistencia** (§12.6 #4) |
-| **D94** | lun 25-ene | Repaso FA sistemas 6-10 + **Anki marathon** + incorrects (40 Q) | Cierre: sólo flagged |
-| **D93** | vie 22-ene | **FREE 120 oficial** + logística del examen + cierre | Free 120 en la ventana correcta (D-3 a D-7 del examen) |
-| **D95** | **mar 26-ene** | Rapid review de First Aid + Anki + laboratorio de dudas (20 Q) | Sólo flagged · **en v5.9 es el D-1 del target (mié 27)**: ya no queda día libre antes del examen |
-| **(fuera del plan)** | mar 26-ene | — | **D-1** según §8.3: sólo Anki vencido, nada nuevo después de las 17:00, empacar y dormir temprano |
+| **D81 · D83 · D84 · D85** | jue 7-ene · lun 11-ene → mié 13-ene | Random timed **2×40Q (80 Q/día)** + revisión profunda + **sistemas débiles #1 y #2** según NBME | **Nivel 4** (mixto de sistemas dominados) + el reparto de Melody: *"distribute more time to your weakest subjects"* |
+| **D82** | vie 8-ene | **UWSA2** (160 Q) | Resistencia + señal secundaria |
+| **D86 · D89 · D91** | jue 14-ene · mar 19-ene · jue 21-ene | **uWorld incorrects + flagged** (nunca re-hacer acertadas) + **AMBOSS 200 Concepts (mitad 1)** + sistema débil #3 | **Nivel 5** · coherente con "una sola pasada, nunca reset": los incorrects/flagged sí, y AMBOSS = banco **nuevo** |
+| **D87** | vie 15-ene | **NBME 31** + decisión **GO/NO-GO** | §9.1: nunca presentarse si los dos últimos NBME no respaldan |
+| **D88** | lun 18-ene | **NBME 32** + repaso FA sistemas 1-5 | Nivel 5 |
+| **D90** | mié 20-ene | **NBME 33** + repaso FA sistemas 11-14 | Nivel 5 · **candidato natural a la maratón de resistencia** (§12.6 #4) |
+| **D92** | vie 22-ene | **FREE 120 oficial** + logística del examen + cierre | Free 120 en la ventana correcta (D-3 a D-7 del examen) |
+| **D93** | lun 25-ene | **AMBOSS 200 Concepts (mitad 2)** + incorrects (80 Q) — sigue siendo `system = Banco intensivo` dentro de la semana del sprint | Nivel 5 |
+| **D94** | mar 26-ene | Repaso FA sistemas 6-10 + **Anki marathon** + incorrects (40 Q) | Cierre: sólo flagged |
+| **D95** | **mié 27-ene** | Rapid review de First Aid + Anki + laboratorio de dudas (20 Q) | Sólo flagged · **en v5.10 es el D-2 del target (vie 29-ene)** |
+| **(fuera del plan)** | **jue 28-ene** | Día de descanso pre-examen (decisión 12-sep) | **D-1** según §8.3: sólo Anki vencido, nada nuevo después de las 17:00, empacar y dormir temprano |
+| **(examen)** | **vie 29-ene** | USMLE Step 1 — target (último día de la ventana 25-29 ene) | Test day (§8) |
 
-**Stress sets** (§7.5): el plan los sitúa a las **05:00 en Fases B y C** (D81 en adelante, desde el **mié 6-ene**), lo que respeta el criterio de entrada de su autor (≥60% del contenido cubierto, últimas 2-3 semanas) — con la Fase A cerrada el **5-ene** (D80), el contenido está cubierto al 100% desde el primer stress set.
+**Stress sets** (§7.5): el plan los sitúa a las **05:00 en Fases B y C** (D81 en adelante, desde el **jue 7-ene**), lo que respeta el criterio de entrada de su autor (≥60% del contenido cubierto, últimas 2-3 semanas) — con la Fase A cerrada el **6-ene** (D80), el contenido está cubierto al 100% desde el primer stress set.
 
-**Cese de contenido nuevo**: Palmerton pide parar preguntas y tarjetas nuevas **1-2 semanas antes**. Con examen el **27-ene**, eso equivale a partir del **13-20 de enero** → coincide con **D87 (14-ene) en adelante**. El plan trata **AMBOSS 200 Concepts como repaso** de conceptos ya vistos, no como banco nuevo, y la Fase C ya sólo usa flagged.
+**Cese de contenido nuevo**: Palmerton pide parar preguntas y tarjetas nuevas **1-2 semanas antes**. Con examen el **vie 29-ene**, eso equivale a partir del **15-22 de enero** → coincide con **NBME 31 (D87, vie 15-ene) en adelante**, es decir, toda la Fase C. El plan trata **AMBOSS 200 Concepts como repaso** de conceptos ya vistos, no como banco nuevo, y la Fase C ya sólo usa flagged.
 
 ## 12.6 Divergencias que quedan abiertas
 
 > Estas son **exactamente** las de `PALMERTON_DIVERGENCIAS_PLAN.md` (§E). Este documento **no las contradice ni las resuelve**: las hereda y las deja a decisión de Joseph.
 
 1. **Consolidación a 20Q permanente** si la revisión metodológica completa no cabe en los 60 min de las 11:00 (Palmerton: 10Q + revisión = 60 min máximo). No cambia horario. *(divergencia #3)*
-2. **Viernes de nivel 4** (mixto de 20-30Q de sistemas dominados) desde el **viernes D52 (23-nov)**, cuando ya hay ≥6 sistemas cerrados, en vez de bloque de sistema único. Flag en `gen_usmle_v5.js`; no cambia horario. *(divergencia #6)*
+2. **Viernes de nivel 4** (mixto de 20-30Q de sistemas dominados) desde el **viernes D55 (27-nov)**, cuando ya hay ≥6 sistemas cerrados, en vez de bloque de sistema único. Flag en `gen_usmle_v5.js`; no cambia horario. *(divergencia #6)*
 3. **Reformular el GO** para que el **UWSA2 sea sólo informativo** ("2 NBME ≥68%"), dado que el UWSA sobreestima 10-15+ puntos. Cambia el criterio de meta. *(divergencia #19)*
-4. **Free 120 en el Prometric real de Lima + maratón de resistencia**: (a) reservar la sesión de práctica en Prometric (costo internacional citado por el cuaderno: **$155 — A VERIFICAR (08-sep)**; registro con hasta 7 días de espera); (b) la maratón de 7+ bloques **no cabe** en la tarde de un viernes de plan y los sábados son libres por régimen → única opción sin tocar franjas: **NBME 33 (D91, mié 20-ene) + 3 bloques de flagged** (≈5 h), cediendo Research/Derma/AURUM ese día. *(divergencia #21)*
-5. **Protocolo D-2 / D-1** escrito (lun 25 y mar 26-ene si el examen es el mié 27). **Cambió otra vez la premisa con la v5.9**: el lun 25-ene es **D94** y el mar 26-ene ya ES el **D95**, así que **ningún día de taper queda fuera de los 95** y no hay descanso previo al examen; con el examen el jue 28 o el vie 29 (misma ventana) sobran 1 o 2 días. *(divergencia #22)*
+4. **Free 120 en el Prometric real de Lima + maratón de resistencia**: (a) reservar la sesión de práctica en Prometric (costo internacional citado por el cuaderno: **$155 — A VERIFICAR (08-sep)**; registro con hasta 7 días de espera); (b) la maratón de 7+ bloques **no cabe** en la tarde de un viernes de plan y los sábados son libres por régimen → única opción sin tocar franjas: **NBME 33 (D90, mié 20-ene) + 3 bloques de flagged** (≈5 h), cediendo Research/Derma/AURUM ese día. *(divergencia #21)*
+5. **Protocolo D-2 / D-1** escrito (mié 27 y jue 28-ene para el examen del vie 29). **Con la v5.10 la premisa quedó fijada (12-sep)**: el mié 27-ene ES el **D95** (D-2, dentro del plan) y el **jue 28-ene es el día de descanso** (D-1, fuera del plan); target vie 29-ene, último día de la ventana. Sigue abierto el contenido hora a hora del protocolo. ⚠ Ya no queda margen: un corrimiento más obliga a recortar temario o a rendir fuera de la ventana. *(divergencia #22)*
 6. **Eval 18:00 → 12:00-12:45**: Palmerton desaconseja el trabajo analítico nocturno ("estudiar cansado = 2-4× más lento"; *"that same hour that was producing almost nothing at 9 p.m. was completely different at 6 a.m."*). Cambia una franja del Google Calendar. *(divergencia #26)*
 7. **Protocolo de burnout escrito** en el README: si 2 hitos seguidos caen bajo el mínimo **y** hay síntomas, 3-5 días con sólo Anki AM + sueño (el corrimiento determinista +1 día absorbe la pausa). *(divergencia #29)*
-8. **Si el UWSA1 del vie 11-sep sale <40%**: bajar S2-S3 a **20 Q/día** al estilo Jay/Melody. *(divergencia #2)*
+8. **Si el UWSA1 del lun 14-sep sale <40%**: bajar S1-S2 (semanas del 14 y del 21-sep) a **20 Q/día** al estilo Jay/Melody. *(divergencia #2)*
 9. **Preguntas experimentales/de mecanismo** (knockouts, gráficos): UWorld es débil en ese formato → separar esos ítems en cada revisión de NBME y hacer 2-3 tarjetas de "diseño del experimento". *(divergencia #24)*
 10. **"No zero days" vs el corrimiento +1**: el remap suma un día hábil por cada día no estudiado, mientras Palmerton exige un mínimo innegociable diario (1 pregunta / 10 tarjetas / ≥1 tarjeta buena). Falta definir qué cuenta como **día hábil parcial**.
 
@@ -1650,4 +1652,4 @@ Marcar cualquiera de estas **es una orden de parar y cambiar**, no una nota ment
 
 ---
 
-*Documento generado el 8-sep-2026 sobre los extractos v3 del cuaderno "STEP 1 · Palmerton Engine"; **§12 remapeado el 10-sep-2026 al régimen v5.9**. Todas las fechas y los D# de §12 provienen del parseo de `src/lib/usmleStep1Daily.ts` (95 días, D1 = 2026-09-11 → D95 = 2027-01-26) y de `src/lib/usmleScores.ts`; no hay fechas estimadas.*
+*Documento generado el 8-sep-2026 sobre los extractos v3 del cuaderno "STEP 1 · Palmerton Engine"; **§12 remapeado el 10-sep-2026 al régimen v5.9 y el 12-sep-2026 al v5.10**. Todas las fechas y los D# de §12 provienen del parseo de `src/lib/usmleStep1Daily.ts` (95 días, D1 = 2026-09-14 → D95 = 2027-01-27) y de `src/lib/usmleScores.ts`; no hay fechas estimadas.*
