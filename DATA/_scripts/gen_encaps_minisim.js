@@ -22,7 +22,7 @@
  *
  * Uso:
  *   node DATA/_scripts/gen_encaps_minisim.js 2026-09-18                → BANCO_PROPIO/minisim_2026-09-18.json + .html (viernes)
- *   node DATA/_scripts/gen_encaps_minisim.js --banco 2026-09-14        → BANCO_PROPIO/banco_2026-09-14.json + .html: BANCO DEL DÍA
+ *   node DATA/_scripts/gen_encaps_minisim.js --banco 2026-09-15        → BANCO_PROPIO/banco_2026-09-15.json + .html: BANCO DEL DÍA
  *        (lun-jue): 16-20Q del código y SUB-EJE de la fila banqueo1h de ese día + 4-5Q del secundario de cola larga;
  *        corrección INMEDIATA pregunta a pregunta (Palmerton); ≥40 % recall directo cuando el stock lo permite.
  *   node DATA/_scripts/gen_encaps_minisim.js --eval 2026-09-15         → BANCO_PROPIO/eval_2026-09-15.json + .html: EVAL ANCLADA
@@ -45,7 +45,7 @@
  *   node DATA/_scripts/gen_encaps_minisim.js --sim100 2025-2 [fecha]   → simulacro 100Q con un examen real con CLAVE OFICIAL
  *                                                                        (2024-2A · 2025-1A · 2025-2; 2026-1 no tiene clave → se rechaza)
  *   node DATA/_scripts/gen_encaps_minisim.js --sim100 propio <fecha>   → 100Q desde el banco propio (vector v3 ×4)
- *   node DATA/_scripts/gen_encaps_minisim.js --pretest-arranque [lunes=D1 del SQL]
+ *   node DATA/_scripts/gen_encaps_minisim.js --pretest-arranque [D1 del SQL; v5.11: cualquier día hábil, ocupa D1 + D2]
  *        → PRE-TEST DE ARRANQUE (línea base ciega por crítico, gaps_v3b_encaps punto 8): 40Q = 5Q × 8 críticos v3 tomadas de los
  *          ítems REALES con clave oficial 2024-2A · 2025-1A · 2025-2 (nunca el examen de agosto-2026: lista negra), repartidas en
  *          BANCO_PROPIO/pretest_arranque_<lunes>.{json,html} (parte 1: II-3 · I-3 · V-2 · III-5) y pretest_arranque_<martes>.{json,html}
@@ -667,8 +667,10 @@ function modoPretestArranque(lunesArg) {
   const { d1 } = rangoSQL();
   const lunes = lunesArg || d1;
   if (!lunes) throw new Error('sin D1 en _encaps_mantenimiento_2027.sql (regenerar la siembra)');
-  if (dowDe(lunes) !== 1) throw new Error(`${lunes} no es lunes (${WD[dowDe(lunes)]}): el pre-test de arranque ocupa lun + mar de la semana A`);
-  const martes = addDays(lunes, 1);
+  // v5.11 (14-sep-2026): el pre-test ocupa D1 y D2 del régimen (dos primeros hábiles con fila banqueo1h), sea cual sea el
+  // día de la semana del D1 (v5.10 exigía lunes; con D1 = mar 15-sep son mar 15 + mié 16). Las variables conservan el nombre.
+  if (dowDe(lunes) === 0 || dowDe(lunes) === 6) throw new Error(`${lunes} cae en fin de semana (${WD[dowDe(lunes)]}): el pre-test de arranque ocupa D1 + D2 del régimen`);
+  let martes = addDays(lunes, 1); while (dowDe(martes) === 0 || dowDe(martes) === 6 || !filaSQL(martes)) martes = addDays(martes, 1);
   const filas = [filaSQL(lunes), filaSQL(martes)];
   filas.forEach((f, i) => { const fe = i ? martes : lunes; if (!f || f.tipo !== 'banqueo1h') throw new Error(`${fe}: no hay fila banqueo1h en el SQL (${f ? f.tipo : 'sin sesión'}); el pre-test sustituye dos bancos del día consecutivos`); });
   const { pretestHecho } = leerRegistro();

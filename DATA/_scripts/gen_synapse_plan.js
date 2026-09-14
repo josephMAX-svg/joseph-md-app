@@ -37,7 +37,7 @@ const VCAT = JSON.parse(fs.readFileSync(path.join(ROOT, 'DATA/SYNAPSE/vibecoding
 const VIBE = VCAT.proyectos;
 const TAPER = VCAT.taper || []; // S13-S20 (v5.10-b): mantenimiento/deload; el PC del sábado los referencia
 if (VIBE.length !== 12) throw new Error('vibecoding_proyectos.json debe tener 12 proyectos');
-const FIN_PLAN = '2027-01-22'; // vie 22-ene-2027: fin del Step 1 menos el taper (semana del examen 25-29 ene). Se comprueba al final.
+const FIN_PLAN = '2027-01-23'; // v5.11 (14-sep-2026): sáb 23-ene-2027. Con D1 = mar 15-sep las 110 A-units corren +1 día (nada se fusiona) y la última cae en el sábado previo a la semana del examen (25-29 ene): 30' de lectura, sin PC. v5.10: vie 22-ene. Se comprueba al final.
 const SKIP_FIJOS = new Set(['2026-12-25', '2026-12-31', '2027-01-01']); // feriados libres (misma regla que remap_inicio.js)
 // v5.7: fechas REALES de cada proyecto del vibecoding (ini/fin/ship) leídas de src/lib/vibecodingPlan.ts,
 // que las calcula sobre días hábiles desde D1. Sin esto, el PC del sábado anunciaba el SHIP de un proyecto

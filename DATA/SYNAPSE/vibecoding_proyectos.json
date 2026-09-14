@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "descripcion": "Catálogo del VIBECODING 04:15-05:00 (L-V, 45') · v5.10-b (12-sep-2026, re-secuenciado con lo YA construido por agentes): 12 proyectos S1-S12 ORDENADOS POR RIESGO PARA EL STEP 1 (lun 14-sep → vie 4-dic-2026) + taper S13-S20 (lun 7-dic-2026 → mié 27-ene-2027, ver `taper`). Fuente única para gen_vibecoding_plan.js (→ src/lib/vibecodingPlan.ts + VIBECODING_12_PROYECTOS.md) y para el bloque PC 'SHIP proyecto N' de gen_synapse_plan.js. Solo trabajo REAL pendiente: lo ya hecho (parser APEX v2.5.1 + test, usmleScores.ts, anki_telemetria.js v1, gen_revision_semanal.js v1, plan_checks.sql, verify_vibecoding.js, journal_hoy.js) se da por hecho y cada proyecto lo COMPLETA o lo pone en producción. Editar AQUÍ y regenerar: node DATA/_scripts/gen_vibecoding_plan.js 2026-09-14 (régimen v5.10, D1 = lun 14-sep-2026).",
+    "descripcion": "Catálogo del VIBECODING 04:15-05:00 (L-V, 45') · v5.11 (14-sep-2026; base v5.10-b re-secuenciada con lo YA construido por agentes): 12 proyectos S1-S12 ORDENADOS POR RIESGO PARA EL STEP 1 (mar 15-sep → lun 7-dic-2026, bloques de 5 hábiles) + taper S13-S20 (mar 8-dic-2026 → jue 28-ene-2027 = D95 = D-1, bloques secuenciales de pasos.length hábiles, ver `taper`). Fuente única para gen_vibecoding_plan.js (→ src/lib/vibecodingPlan.ts + VIBECODING_12_PROYECTOS.md) y para el bloque PC 'SHIP proyecto N' de gen_synapse_plan.js. Solo trabajo REAL pendiente: lo ya hecho (parser APEX v2.5.1 + test, usmleScores.ts, anki_telemetria.js v1, gen_revision_semanal.js v1, plan_checks.sql, verify_vibecoding.js, journal_hoy.js) se da por hecho y cada proyecto lo COMPLETA o lo pone en producción. Editar AQUÍ y regenerar: node DATA/_scripts/gen_vibecoding_plan.js 2026-09-15 (régimen v5.11, D1 = mar 15-sep-2026).",
     "regla": "Se mide por OUTPUT verificable (commit/URL viva/test verde/fichero de salida), nunca por tiempo sentado (Palmerton: medir por resultado, no por material consumido). Ciclo diario 5' objetivo → 35' construir con Claude Code → 5' commit + entrada en el journal (D:/synapse-journal, node DATA/_scripts/journal_hoy.js). 'Shipped' NO es auto-reporte: lo decide node DATA/_scripts/verify_vibecoding.js <n> (criterios mecánicos del proyecto → DATA/SYNAPSE/_vibecoding_ship.json); el ✓ manual de la app solo cuenta días.",
     "freno_0455": "04:55 commit-or-stash OBLIGATORIO (git commit si compila; git stash si no); 05:00 Anki sin excepción (recomendación #1 de Palmerton: Anki a primera hora con la mente fresca). Si el día se recorta, pierde el proyecto, NUNCA el Anki. KPI: hora de la 1ª review de Anki del día (anki_telemetria.js → primeraReview; > 05:10 = ámbar; sin review L-V = rojo). La app muestra la cuenta atrás hasta las 04:55 en la tarjeta 04:15 de MISIÓN DE HOY.",
     "commit_convencion": "Todo commit del proyecto n lleva el prefijo '[S<n>] …' en el repo declarado en `repo_git` (p. ej. '[S3] plan_checks: upsert desde saveDone'). verify_vibecoding.js lo comprueba con git log --all --grep '\\[S<n>\\]'.",
@@ -11,8 +11,8 @@
       "bots": "Bots CRM Pulso / LIVIANO",
       "contenido": "Contenido IA para las marcas"
     },
-    "deload": "Semanas DELOAD de los frentes secundarios (PROTOCOLO_MODO_MINIMO §4, fechas intactas, carga 50%): post-NBME 26 = lun 26 → vie 30-oct-2026 y post-NBME 28 = lun 7 → vie 11-dic-2026. Con el orden v5.10-b el proyecto con `deload: true` es S7 (motor de preguntas ENCAPS), que corre exactamente lun 26 → vie 30-oct: 2 días de 45' + 3 días de ≤15'. RESUELTO el 'A VERIFICAR' del 12-sep (el flag ya no cae una semana tarde). La semana post-NBME 28 (7-11 dic) es S13 = primera semana del taper (≤15'/día).",
-    "taper_regla": "S13-S16 (7-dic → 30-dic): MANTENIMIENTO ≤15'/día con flag deload (sensores verdes: node DATA/_scripts/verify_vibecoding.js --sensores · 1 mejora pequeña · retro) y el resto del bloque 04:15 = journal + lectura de docs (sin teclado pesado). S17-S20 (4-ene → 27-ene, Fases B-C del Step 1): DELOAD TOTAL del vibecoding = journal 5' + audio (bloque B del SYNAPSE); PC sáb/dom OPCIONAL (30' máx, solo en día VERDE). S20 = semana del examen: lun 25 → mié 27-ene (D93-D95), jue 28 descanso, vie 29 EXAMEN. Ningún proyecto nuevo después de S12; la decisión de febrero (IA vs ENCAPS intensivo) sigue intacta.",
+    "deload": "Semanas DELOAD de los frentes secundarios (PROTOCOLO_MODO_MINIMO §4, fechas intactas, carga 50%): post-NBME 26 = lun 26 → vie 30-oct-2026 y post-NBME 28 = lun 7 → vie 11-dic-2026. Con el orden v5.10-b el proyecto con `deload: true` es S7 (motor de preguntas ENCAPS), que en la v5.11 corre mar 27-oct → lun 2-nov (con D1 en martes los bloques de 5 hábiles van un día por detrás de la semana de calendario: el lun 26-oct es el 5º día de S6): 2 días de 45' + 3 días de ≤15'. La semana post-NBME 28 (7-11 dic) = 5º día de S12 (lun 7) + S13 taper desde el mar 8-dic (≤15'/día).",
+    "taper_regla": "S13-S16 (8-dic → 4-ene, bloques secuenciales): MANTENIMIENTO ≤15'/día con flag deload (sensores verdes: node DATA/_scripts/verify_vibecoding.js --sensores · 1 mejora pequeña · retro) y el resto del bloque 04:15 = journal + lectura de docs (sin teclado pesado). S17-S20 (5-ene → 28-ene, Fases B-C del Step 1): DELOAD TOTAL del vibecoding = journal 5' + audio (bloque B del SYNAPSE); PC sáb/dom OPCIONAL (30' máx, solo en día VERDE). S20 = semana del examen: mar 26 → jue 28-ene (D93-D95; el jue 28 = D95 = D-1 dentro del plan desde la v5.11), vie 29 EXAMEN. Ningún proyecto nuevo después de S12; la decisión de febrero (IA vs ENCAPS intensivo) sigue intacta.",
     "urls_verificadas": "Todas las URLs de 'docs' respondieron 200 el 5-sep-2026 (check_links.js) y su contenido se extrajo con WebFetch a curricula/_extracted.json; las que se reutilizan aquí son exactamente esas (cero inventos, ninguna URL nueva el 12-sep)."
   },
   "proyectos": [
@@ -507,7 +507,7 @@
       "objetivo": "gen_hitos_overlays.js con el mismo contrato que gen_research_calendar.js: lee usmleStep1Daily.ts, calcula las fechas de los 12 hitos, emite el JSON de acciones (crear/recrear/nada por hash) con la descripción del protocolo test-day, y un diff en seco contra el Calendar vivo.",
       "entregable": "DATA/_scripts/gen_hitos_overlays.js <START> → DATA/USMLE/_hitos_overlays.json + diff en seco (list_events) sin falsos positivos + commit [S9].",
       "aceptacion": [
-        "node DATA/_scripts/gen_hitos_overlays.js 2026-09-14 imprime '12 hitos' y escribe DATA/USMLE/_hitos_overlays.json con fecha = la del .ts para cada uno",
+        "node DATA/_scripts/gen_hitos_overlays.js 2026-09-15 imprime '12 hitos' y escribe DATA/USMLE/_hitos_overlays.json con fecha = la del .ts para cada uno",
         "La descripción de cada overlay incluye el protocolo test-day (breaks, Ziploc Break 1/2/3, almuerzo dentro del sim, sin carbohidratos simples) tomado de PALMERTON_POR_MATERIA §F (texto 'Ziploc' presente)",
         "Un diff en seco contra el Calendar (search_events 'NBME'|'UWSA') lista solo los overlays que cambian; nada se ejecuta sin confirmación explícita de Joseph",
         "Commit [S9] en joseph-md-app"
@@ -516,7 +516,7 @@
         {
           "tipo": "test",
           "cwd": "D:/joseph-md-app",
-          "cmd": "node DATA/_scripts/gen_hitos_overlays.js 2026-09-14",
+          "cmd": "node DATA/_scripts/gen_hitos_overlays.js 2026-09-15",
           "expect": "12 hitos"
         },
         {
@@ -547,7 +547,7 @@
         }
       ],
       "pasos": [
-        "Leer gen_research_calendar.js (--print/--check/--set, hash por (fecha, título, descripción)) y listar los hitos y su D# desde usmleStep1Daily.ts (DIAS con 🎯); tabla esperada para START=2026-09-14 comparada con CALENDARIO_5_MESES.md. Objetivo del día: tabla de hitos + contrato del script.",
+        "Leer gen_research_calendar.js (--print/--check/--set, hash por (fecha, título, descripción)) y listar los hitos y su D# desde usmleStep1Daily.ts (DIAS con 🎯); tabla esperada para START=2026-09-15 comparada con CALENDARIO_5_MESES.md. Objetivo del día: tabla de hitos + contrato del script.",
         "gen_hitos_overlays.js: mismo esquema que el de Research (DATA/USMLE/_hitos_overlays.json con ids + hash + accion); lee el .ts, calcula fechas, sin llamadas al Calendar.",
         "Descripción del overlay = protocolo test-day generado desde PALMERTON_POR_MATERIA §F (texto fijo + hora de cada break).",
         "Diff en seco: con el MCP (list_events/search_events 'NBME'|'UWSA') comparar fechas y listar solo cambios; corregir falsos positivos.",
@@ -809,9 +809,9 @@
       "id": "taper-sensores-4",
       "tipo": "mantenimiento",
       "minDia": 15,
-      "semana_step1": "S16 · fin de Fase A (D80 = mié 6-ene) · 31-dic y 1-ene libres",
+      "semana_step1": "S16 · fin de Fase A (D80 = jue 7-ene) · 31-dic y 1-ene libres",
       "nombre": "Mantenimiento 4: cierre de año, sensores verdes antes de la Fase B",
-      "objetivo": "Entrar en la Fase B (7-ene) con todos los sensores verdes y el journal al día; 3 días hábiles (31-dic y 1-ene feriados).",
+      "objetivo": "Entrar en la Fase B (8-ene) con todos los sensores verdes y el journal al día; 3 días hábiles (31-dic y 1-ene feriados).",
       "sensores": [
         "node DATA/_scripts/verify_vibecoding.js --sensores",
         "node DATA/_scripts/anki_telemetria.js"
@@ -828,7 +828,7 @@
       "id": "taper-deload-1",
       "tipo": "deload",
       "minDia": 5,
-      "semana_step1": "S17 · Fase B (D81 jue 7-ene) · UWSA2 vie 8-ene",
+      "semana_step1": "S17 · Fase B (D81 = UWSA2 vie 8-ene)",
       "nombre": "Deload total 1: journal 5' + audio (Fase B)",
       "objetivo": "El 04:15 se reduce a 5' de journal + el audio B del SYNAPSE; el resto de la franja es dormir o Anki si hay backlog. Ningún teclado.",
       "sensores": [],
@@ -864,7 +864,7 @@
       "id": "taper-deload-3",
       "tipo": "deload",
       "minDia": 5,
-      "semana_step1": "S19 · Fase C (D88 lun 18-ene) · NBME 32 lun · NBME 33 mié · Free 120 vie 22-ene",
+      "semana_step1": "S19 · Fase C (D87 lun 18-ene) · NBME 32 lun · NBME 33 mié · Free 120 vie 22-ene",
       "nombre": "Deload total 3: journal 5' + audio (Fase C, última semana con SYNAPSE)",
       "objetivo": "Igual que S17-S18. El SYNAPSE de las 12:30 cierra el vie 22-ene (F2 · CCA-F prep); desde el sáb 23 solo Step 1.",
       "sensores": [],
@@ -882,14 +882,14 @@
       "id": "taper-examen",
       "tipo": "deload",
       "minDia": 5,
-      "semana_step1": "S20 · semana del EXAMEN: lun 25 → mié 27-ene (D93-D95) · jue 28 descanso · vie 29 EXAMEN",
-      "nombre": "Semana del examen: journal 5' (lun-mié), jue descanso, vie EXAMEN",
-      "objetivo": "Solo 5' de journal a las 04:15 los tres últimos días del plan; el jueves se duerme y el viernes es el Step 1. Cero IA.",
+      "semana_step1": "S20 · semana del EXAMEN: mar 26 → jue 28-ene (D93-D95 · jue 28 = D-1 dentro del plan) · vie 29 EXAMEN",
+      "nombre": "Semana del examen: journal 5' (mar-jue), vie EXAMEN",
+      "objetivo": "Solo 5' de journal a las 04:15 los tres últimos días del plan (mar 26 → jue 28 = D-1); el viernes es el Step 1. Cero IA.",
       "sensores": [],
       "pasos": [
         "Journal 5' (sueño · modo · 1 frase de identidad). Nada más.",
         "Journal 5'.",
-        "Journal 5' (D95, último día del plan): cierre del journal del ciclo. Jueves 28 = descanso total · viernes 29 = EXAMEN."
+        "Journal 5' (D95 = jue 28-ene = D-1, último día del plan): cierre del journal del ciclo · nada de IA · dormir temprano. Viernes 29 = EXAMEN."
       ],
       "ship": "Sin PC: sáb 30-ene es post-examen (descanso). La decisión de febrero decide qué vuelve a la franja 04:15."
     }

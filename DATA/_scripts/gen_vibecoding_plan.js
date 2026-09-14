@@ -6,7 +6,7 @@
 //   · taper:     8 semanas S13-S20 (v5.10-b, 12-sep-2026): S13-S16 mantenimiento ≤15'/día (flag deload) ·
 //                S17-S20 deload total (journal 5' + audio) · S20 = semana del examen (lun-mié, D93-D95).
 //   · _meta:     freno 04:55 · convención de commit [S<n>] · verificación mecánica (verify_vibecoding.js).
-// Calendario: START = argv[2] (YYYY-MM-DD, default 2026-09-14 = D1 v5.10) · días HÁBILES L-V (salta sáb/dom y los
+// Calendario: START = argv[2] (YYYY-MM-DD, default 2026-09-15 = D1 v5.11) · días HÁBILES L-V (salta sáb/dom y los
 // feriados fijos 25-dic/31-dic/1-ene, misma regla que remap_inicio.js).
 //   · S1-S12: 5 días hábiles por proyecto (Lun definir · Mar/Mié construir · Jue verificar · Vie doc+commit) →
 //     60 días · sábado PC (SYNAPSE 15:00-17:00) = SHIP del proyecto · domingo = Feynman.
@@ -16,16 +16,16 @@
 // Ship log: si existe DATA/SYNAPSE/_vibecoding_ship.json (escrito por verify_vibecoding.js) se hornea en el TS
 // (VIBE_SHIP_LOG) para que la app muestre el último verify aunque no haya localStorage.
 //
-// Uso:  node DATA/_scripts/gen_vibecoding_plan.js 2026-09-14
+// Uso:  node DATA/_scripts/gen_vibecoding_plan.js 2026-09-15
 // Pipeline de corrimiento: tras remap_inicio.js <fecha>, correr también este script con la misma fecha
 // (igual que gen_synapse_plan.js / gen_aurum_plan.js). Determinista: sin Date.now() ni aleatoriedad.
 const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..', '..');
-const START = process.argv[2] || '2026-09-14';
+const START = process.argv[2] || '2026-09-15';
 if (!/^20\d\d-\d\d-\d\d$/.test(START)) throw new Error('START inválido (YYYY-MM-DD): ' + START);
-// Último día del taper = D95 del Step 1 (mié 27-ene-2027 con START=2026-09-14). Se calcula, no se fija a mano:
+// Último día del taper = D95 del Step 1 (jue 28-ene-2027 con START=2026-09-15). Se calcula, no se fija a mano:
 // 95 días hábiles desde START con la misma regla de feriados.
 const DIAS_STEP1 = 95;
 
@@ -99,19 +99,22 @@ const semanas = P.map((p) => {
   return { s: p.s, id: p.id, ini: ds[0].fecha, fin: ds[ds.length - 1].fecha, ship: sabadoShip(ds[ds.length - 1].fecha) };
 });
 
-// ─── S13-S20: semanas de calendario (lun→vie) desde el lunes siguiente a S12, feriados fuera, tope = D95 ───
-let lunes = finS12; while (dow(lunes) !== 1) lunes = addDays(lunes, 1);
+// ─── S13-S20: bloques SECUENCIALES de pasos.length días hábiles a partir del hábil siguiente a S12, tope = D95 ───
+// v5.11 (14-sep-2026): antes eran semanas de calendario (lun→vie); con D1 en martes las semanas de proyecto ya no
+// coinciden con las de calendario, así que el taper sigue la misma regla que S1-S12: cada entrada del catálogo ocupa
+// tantos hábiles consecutivos como pasos trae (5·5·4·3·5·5·5·3 = 35 = hábiles que quedan hasta D95). Nada se fusiona:
+// todos los pasos corren +1 hábil respecto a la v5.10 y el último cae en D95 (= D-1 del examen).
+let curT = addDays(finS12, 1);
 const taperSemanas = [];
 for (const t of T) {
   const ds = [];
-  for (let i = 0; i < 5; i++) { const f = addDays(lunes, i); if (isHabil(f) && f <= finStep1) ds.push(f); }
-  if (ds.length !== t.pasos.length) throw new Error(`Taper ${t.id}: la semana ${lunes} tiene ${ds.length} días hábiles pero el catálogo trae ${t.pasos.length} pasos`);
+  while (ds.length < t.pasos.length) { if (isHabil(curT) && curT <= finStep1) ds.push(curT); else if (curT > finStep1) break; curT = addDays(curT, 1); }
+  if (ds.length !== t.pasos.length) throw new Error(`Taper ${t.id}: quedan ${ds.length} días hábiles hasta D95 (${finStep1}) pero el catálogo trae ${t.pasos.length} pasos`);
   ds.forEach((f, k) => {
     d++;
     dias.push({ d, fecha: f, wd: WD[dow(f)], semana: t.s, proyecto: t.id, k: k + 1, tipo: tipoTaper(t.pasos[k]), min: t.minDia, paso: t.pasos[k], deload: true });
   });
   taperSemanas.push({ s: t.s, id: t.id, ini: ds[0], fin: ds[ds.length - 1], ship: sabadoShip(ds[ds.length - 1]) });
-  lunes = addDays(lunes, 7);
 }
 if (dias.length !== DIAS_STEP1) throw new Error(`Deben salir ${DIAS_STEP1} días en total (= D# del Step 1), salieron ${dias.length}`);
 if (dias[dias.length - 1].fecha !== finStep1) throw new Error('El último día del taper debe ser el D95 del Step 1: ' + finStep1);

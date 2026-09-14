@@ -23,11 +23,11 @@
  *
  * Uso:
  *   node DATA/_scripts/gen_encaps_intensivo_2027.js [D1=2027-02-01] [EXAMEN=2027-03-26]
- *        [--base 2026-09-07] [--bk study_schedule_bk_intensivo] [--pretest ruta.json] [--sims ruta.json] [--apply-note]
+ *        [--base 2026-09-15] [--bk study_schedule_bk_intensivo] [--pretest ruta.json] [--sims ruta.json] [--apply-note]
  *   · D1      = primer día de la intensiva (lunes). Default 2027-02-01.
  *   · EXAMEN  = fecha ASUMIDA del examen (default 2027-03-26). ⚠ La real sale de la convocatoria SERUMS 2027-I
  *               (SENALES_2027-I.md). 25/26-mar-2027 son Jueves/Viernes Santo → se saltan como feriados.
- *   · --base  = D1 del mantenimiento (para continuar la numeración `dia`). Default 2026-09-07.
+ *   · --base  = D1 del mantenimiento (para continuar la numeración `dia`). Default 2026-09-15 (v5.11).
  *   · --pretest = JSON de la ronda PRETEST_2026-II (export del runner) → re-ordena las semanas 2-5 por brecha.
  *   · --sims  = JSON [{fecha?, label, fuente, url?}] para sustituir la lista de simulacros de viernes.
  * Emite DATA/_scripts/_encaps_intensivo_2027.sql (backup → delete SOLO modo='INTENSIVO' → insert).
@@ -45,7 +45,7 @@ const fechasArg = argv.filter((a) => /^20\d\d-\d\d-\d\d$/.test(a));
 const D1 = fechasArg[0] || '2027-02-01';
 const EXAMEN = fechasArg[1] || '2027-03-26';
 const opt = (k, def) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] ? argv[i + 1] : def; };
-const BASE = opt('--base', '2026-09-09');   // v5.7 (8-sep): D1 del mantenimiento = mié 9-sep → la intensiva continúa en el día 101
+const BASE = opt('--base', '2026-09-15');   // v5.11 (14-sep): D1 del mantenimiento = mar 15-sep (96 días hasta el 29-ene) → la intensiva continúa en el día 97
 const BK = opt('--bk', 'study_schedule_bk_intensivo');
 const PRETEST = opt('--pretest', null);
 const SIMS_ARG = opt('--sims', null);
@@ -284,5 +284,5 @@ const feriadosDentro = plan.filter((p) => SKIP_INT.has(p.fecha)).length;
 console.log('OK →', out, '·', rows.length, 'días ·', plan[0].fecha, '→', plan[N - 1].fecha, '· dia', offset + 1, '-', offset + N, '· examen asumido', EXAMEN);
 console.log('tipos:', JSON.stringify(tipos), '· fines de semana dentro:', finde, '· feriados dentro:', feriadosDentro, '· viernes:', plan.filter((p) => p.dow === 5).length);
 console.log('barrido semanas 2-5 (16 slots):', colaCriticos.join(' · '));
-console.log('offset mantenimiento:', offset, '(esperado 102 si BASE=2026-09-07 y D1=2027-02-01)');
+console.log('offset mantenimiento:', offset, '(esperado 96 si BASE=2026-09-15 y D1=2027-02-01)');
 if (finde || feriadosDentro) throw new Error('el plan contiene fines de semana o feriados');

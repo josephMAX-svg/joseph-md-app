@@ -42,7 +42,7 @@ import {
  * Fuentes + Debilidades (ledger) + CEREBRO CLÍNICO.
  *
  * Pestaña Cerebro (12-sep-2026, gaps v3b derma nº 7): SOLO datos vivos — % ciego real global y por módulo CORE (ledger),
- * progreso por bloque A–X del plan (studyProgress 'derma'), próximos hitos con las fechas v5.10 leídas del plan
+ * progreso por bloque A–X del plan (studyProgress 'derma'), próximos hitos con las fechas del plan vigente leídas del plan
  * (taper Step 1, checkpoints cp1/cp2/repaso1/repaso2, drills HDPH, ciclo 2), el ciclo real de 45′ (DERMA_FRANJAS) y el
  * mapa del SPEC A–G como ÍNDICE hacia las fichas de 7 pasos (dermaCerebro.ts) y hacia el día del plan (salto a HOY).
  * DERMA_FASES / DERMA_HORARIO (junio, v1) y el RingStat «12 semanas» ya no se muestran como verdad: quedan en un bloque
@@ -64,7 +64,7 @@ function fmtFecha(iso: string): string {
   const dias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
   try { const d = new Date(iso + 'T12:00:00'); return `${dias[d.getDay()]} ${Number(iso.slice(8, 10))}-${MESES[d.getMonth()]}-${iso.slice(0, 4)}`; } catch { return iso; }
 }
-/** Fecha v5.10 de un d (ciclo 1 o 2) leída del plan; '' si no existe. */
+/** Fecha (plan vigente) de un d (ciclo 1 o 2) leída del plan; '' si no existe. */
 const fechaDeD = (d: number | undefined): string => (d ? dermaDiaPorD(d)?.fecha ?? '' : '');
 /**
  * Ficha del cerebro clínico → d de la v3. dermaCerebro.ts (fichero del agente de datos) sigue keyed por el d de la v2.1 en las
@@ -379,7 +379,7 @@ interface BloquePlanStat { bKey: DermaBloqueKey; bloque: string; total: number; 
 
 /**
  * Pestaña CEREBRO — SOLO datos vivos (gaps v3b derma nº 7). Nada hardcoded: el % ciego sale del ledger, el progreso del
- * marcado real de HOY, las fechas de los hitos del plan v5.10 (dermaDailyPlan/dermaCiclo2) y el SPEC A–G es un índice
+ * marcado real de HOY, las fechas de los hitos del plan vigente (dermaDailyPlan/dermaCiclo2) y el SPEC A–G es un índice
  * (DERMA_SPEC_TO_PLAN) hacia las fichas de 7 pasos y hacia el día del plan. El histórico v1 de junio queda plegado al final.
  */
 function CerebroView({ hoyD, onJump, onGoDebilidades }: { hoyD: number; onJump: (d: number) => void; onGoDebilidades: () => void }) {
@@ -406,7 +406,7 @@ function CerebroView({ hoyD, onJump, onGoDebilidades }: { hoyD: number; onJump: 
   const [fichaOpen, setFichaOpen] = useState<string | null>(null);
   const [histOpen, setHistOpen] = useState(false);
 
-  /** Hitos con fecha v5.10 — todo leído del plan (taper, checkpoints, drills, ciclo 2), ordenado por fecha. */
+  /** Hitos con fecha del plan vigente — todo leído del plan (taper, checkpoints, drills, ciclo 2), ordenado por fecha. */
   const hitos = useMemo(() => {
     const t = DERMA_DAILY_META.taperStep1;
     const items: Array<{ d: number; fecha: string; t: string; sub: string; color: string }> = [];
@@ -427,7 +427,7 @@ function CerebroView({ hoyD, onJump, onGoDebilidades }: { hoyD: number; onJump: 
 
   return (
     <View>
-      <Text style={cst.intro}>Datos VIVOS: % ciego del ledger (solo aciertos «lo sabía»), progreso real marcado en Hoy, hitos con las fechas v5.10 leídas del plan y el mapa del SPEC A–G como índice hacia las fichas de 7 pasos. El material de junio (protocolo starter 12 semanas · micro-horario 60′) queda plegado al final como histórico v1: no alimenta ninguna cifra.</Text>
+      <Text style={cst.intro}>Datos VIVOS: % ciego del ledger (solo aciertos «lo sabía»), progreso real marcado en Hoy, hitos con las fechas del plan vigente leídas del plan y el mapa del SPEC A–G como índice hacia las fichas de 7 pasos. El material de junio (protocolo starter 12 semanas · micro-horario 60′) queda plegado al final como histórico v1: no alimenta ninguna cifra.</Text>
 
       {/* MEGA STAT — % ciego REAL (ledger), no un readiness inventado */}
       <MegaStat value={ciego.pctCiego} suffix="%" decimals={1} label="% CIEGO REAL · aciertos seguros / registrados (ledger)" accent={PURPLE}
@@ -491,8 +491,8 @@ function CerebroView({ hoyD, onJump, onGoDebilidades }: { hoyD: number; onJump: 
         </TouchableOpacity>
       </View>
 
-      {/* PRÓXIMOS HITOS · fechas v5.10 */}
-      <SectionLabel>Hitos del plan · fechas v5.10 leídas de dermaDailyPlan/dermaCiclo2 (toca → abre el día en Hoy)</SectionLabel>
+      {/* PRÓXIMOS HITOS · fechas del plan vigente */}
+      <SectionLabel>Hitos del plan · fechas leídas de dermaDailyPlan/dermaCiclo2 (toca → abre el día en Hoy)</SectionLabel>
       <GlassPanel accent={PURPLE} style={{ marginBottom: Spacing.xl, padding: Spacing.md }}>
         {hitos.map((h, i) => {
           const pasado = h.fecha < hoy; const esProx = !!proximo && proximo.d === h.d && proximo.t === h.t;

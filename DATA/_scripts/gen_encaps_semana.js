@@ -15,7 +15,7 @@
  *     (las rondas con preguntas[] —export del runner gen_encaps_minisim.js— se apendan con `gen_encaps_minisim.js --registrar <export> --append`)
  *
  *  2) CIERRE SEMANAL (viernes):
- *     node DATA/_scripts/gen_encaps_semana.js [--semana 2026-09-14] [--sql] [--d1 2026-09-14]
+ *     node DATA/_scripts/gen_encaps_semana.js [--semana 2026-09-14] [--sql] [--d1 2026-09-15]
  *     → % ciego semanal por área/código vs vector v3, tabla de brecha, temas calientes (últimas 2 semanas),
  *       alerta de mini-sims (<15/25 dos viernes) y PROPUESTA DE OVERRIDE del CICLO para la semana siguiente:
  *       DATA/ENCAPS/TRACKING_ERRORES/SEMANAS/override_<lunes siguiente>.json
@@ -65,7 +65,7 @@ const esCritico = (c) => CRITICOS_V3.includes(c) || c === 'IV-1' || c === 'IV-2'
 const argv = process.argv.slice(2);
 const opt = (k, def) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] != null ? argv[i + 1] : def; };
 const has = (k) => argv.includes(k);
-const D1 = opt('--d1', '2026-09-14');
+const D1 = opt('--d1', '2026-09-15');
 const hoyISO = () => new Date(Date.now() - 5 * 3600 * 1000).toISOString().slice(0, 10); // Lima
 const addDays = (iso, n) => { const d = new Date(iso + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
 
@@ -232,7 +232,7 @@ function generarPerfil(j) {
     L.push('|---|---|---|---|---|---|---|---|');
     for (const r of pre.sort((a, b) => (esCritico(b.codigo) - esCritico(a.codigo)) || a.pct_ciego - b.pct_ciego)) L.push(`| ${r.codigo}${esCritico(r.codigo) ? ' ★' : ''} | ${r.n} | ${r.correctas_seguras} | ${r.correctas_dudosas} | ${r.n - r.correctas_seguras - r.correctas_dudosas} | **${r.pct_ciego} %** | ${fmtF(r.fallos_por_tipo)} | ${r.fecha} |`);
   } else {
-    L.push('- Pendiente: resolver `BANCO_PROPIO/pretest_arranque_2026-09-14.html` (lun 14-sep, parte 1: II-3 · I-3 · V-2 · III-5) y `pretest_arranque_2026-09-15.html` (mar 15-sep, parte 2: II-5 · I-4 · IV-1+IV-2 · II-4), exportar el JSON y apendar con `node DATA/_scripts/gen_encaps_minisim.js --registrar <export.json> --append`. Esta tabla se llena sola.');
+    L.push('- Pendiente: resolver `BANCO_PROPIO/pretest_arranque_2026-09-15.html` (mar 15-sep = D1, parte 1: II-3 · I-3 · V-2 · III-5) y `pretest_arranque_2026-09-16.html` (mié 16-sep = D2, parte 2: II-5 · I-4 · IV-1+IV-2 · II-4), exportar el JSON y apendar con `node DATA/_scripts/gen_encaps_minisim.js --registrar <export.json> --append`. Esta tabla se llena sola.');
   }
   L.push('');
   // mapa por sub-ángulo desde preguntas[]
