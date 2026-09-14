@@ -1,11 +1,11 @@
 # DERMA · Plan tema-átomo/día (68 átomos · interdiario con Research)
 
-> ⚠ **DESACTUALIZADO — vigente D1 del régimen = lun 14-sep-2026 (v5.10 + taper v3, 12-sep-2026); fuente de verdad = el `.ts`**
+> ⚠ **DESACTUALIZADO — vigente D1 del régimen = mar 15-sep-2026 (v5.11, 14-sep-2026; Derma no se movió: d1 sigue siendo el mar 15-sep, era ya día Derma) + taper v3 (12-sep-2026); fuente de verdad = el `.ts`**
 > (`src/lib/dermaDailyPlan.ts`: PLAN ÉLITE v3, **73 átomos, d1 mar 15-sep-2026 → d73 mié 7-abr-2027**, interdiario
 > con Research, sáb+dom libres, salta 25-dic/31-dic/1-ene; y `src/lib/dermaCiclo2.ts`: **CICLO 2, d74-d103, vie 9-abr →
 > mié 30-jun-2027**, generado por `DATA/_scripts/gen_derma_ciclo2.js`). El corrimiento a v5.10 **movió Derma +2 días de
-> calendario** (la paridad Research↔Derma sigue anclada al mié 10-jun-2026: el lun 14-sep es día Research, así que Derma
-> arranca el mar 15-sep y Research no se mueve). El **taper v3** convirtió las 6 sesiones entre el NBME 31 (vie 15-ene-2027) y
+> calendario** (la paridad Research↔Derma sigue anclada al mié 10-jun-2026: el lun 14-sep era día Research, así que Derma
+> arranca el mar 15-sep); en v5.11 (D1 = mar 15-sep) **Derma no se mueve** y la que corre es Research (ciclo 1 desde el mié 16-sep). El Step 1 termina ahora el jue 28-ene-2027 (D95 = D-1); el examen sigue el vie 29-ene. El **taper v3** convirtió las 6 sesiones entre el NBME 31 (vie 15-ene-2027) y
 > el examen Step 1 (vie 29-ene-2027) — d44-d49 — en sesiones de 1 caso + FSRS + 0 lectura nueva por un swap de CONTENIDO
 > (fechas intactas): Cicatrización → Checkpoints → Anatomía 3D → Arterias → Envejecimiento → Toxina… se corren después del
 > examen y el plan crece de 70 a 73 (d71 1-abr · d72 5-abr · d73 7-abr). No se fusionó ni se recortó nada: los 70 átomos

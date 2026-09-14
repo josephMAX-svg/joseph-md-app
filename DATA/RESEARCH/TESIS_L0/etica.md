@@ -7,7 +7,7 @@
 > (CEI/IRB) y (2) declaración de consentimiento parental + asentimiento. **Actualización 12-sep-2026:** el punto (2) YA
 > consta — la portada y la hoja "FLUJO PARTICIPANTES" de `D:\motor_apex\datos_tesis_acne.xlsx` registran un censo **solo con
 > consentimiento** (291 excluidas por no consentir: 271 padres + 20 alumnas) — ver 1.4-1.5 y §4. **Lo que sigue sin constar es
-> el nº y la fecha del CEI (1.1)**: por eso T-1 pasa al mié 30-sep-2026 con la solicitud de revisión expedita presentada ese día
+> el nº y la fecha del CEI (1.1)**: por eso T-1 pasa a d7 (mié 30-sep-2026 en v5.10b; **vie 2-oct-2026 en v5.11**) con la solicitud de revisión expedita presentada ese día
 > y T-7/T-8 llevan el gate "sin nº de CEI o exención NO se envía" (MD_MAESTRO L0 y MANUAL §10.1 solo dicen "envío a JAAD
 > International jun-jul 2026", que no ocurrió).
 > Todo lo marcado **A VERIFICAR (5-sep)** lo tiene que responder Joseph con el documento en la mano; no se
@@ -88,11 +88,11 @@ de salud de menores = datos sensibles → consentimiento del titular/representan
 ## 5. Calendario mínimo (paralelo a la carta al editor; 45' interdiarios)
 | Cuándo | Qué |
 |---|---|
-| vie 18-sep-2026 (M1) | Pedir al Dr. Ciro, en la misma reunión de las 3 coautorías, la vía CEI (2.1 expedita/retrospectiva o 2.2 exención) y reunir los 10 documentos de la tabla |
-| **mié 30-sep-2026 (T-1 · d7)** | Nº de CEI archivado **o solicitud de revisión expedita PRESENTADA ese día** (nº de cargo + fecha en 1.1); párrafo de ética listo |
-| vie 2-oct-2026 (M3) | Permiso CADI (mensaje 3 de MENTORES.md) — necesita la versión del CADI de 1.7 |
-| oct-nov 2026 | T-3/T-4 (28/30-oct) → T-2 STROBE (3-nov) → T-5 (5-nov) → T-6 revisión Dr. Ciro (11-nov) → T-7 formateo + gates (17-nov) |
-| lun 23-nov-2026 (T-8) | SUBMIT a JAAD International **solo si** hay nº de CEI/exención (gate 1) e inglés revisado (gate 2); si no, cascada a feb-2027 |
+| mar 22-sep-2026 (M1 · v5.11) | Pedir al Dr. Ciro, en la misma reunión de las 3 coautorías, la vía CEI (2.1 expedita/retrospectiva o 2.2 exención) y reunir los 10 documentos de la tabla |
+| **vie 2-oct-2026 (T-1 · d7 · v5.11; el interno ≤ 30-sep queda 2 días atrás: presentar la solicitud el mié 30-sep fuera del átomo si se quiere respetar)** | Nº de CEI archivado **o solicitud de revisión expedita PRESENTADA ese día** (nº de cargo + fecha en 1.1); párrafo de ética listo |
+| mar 6-oct-2026 (M3) | Permiso CADI (mensaje 3 de MENTORES.md) — necesita la versión del CADI de 1.7 |
+| oct-nov 2026 | T-3/T-4 (30-oct / 3-nov) → T-2 STROBE (5-nov) → T-5 (9-nov) → T-6 revisión Dr. Ciro (13-nov) → T-7 formateo + gates (19-nov) |
+| mié 25-nov-2026 (T-8) | SUBMIT a JAAD International **solo si** hay nº de CEI/exención (gate 1) e inglés revisado (gate 2); si no, cascada a feb-2027 |
 | ene-2027 | PAUSA (Step 1) |
 | feb-2027 | Plan B del SUBMIT (si falló un gate): edición de inglés (Rising Scholars o editor) → envío JAAD International |
 

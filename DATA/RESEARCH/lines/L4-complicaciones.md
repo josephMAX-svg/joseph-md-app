@@ -47,7 +47,7 @@ laboratorio, alto impacto y directamente conectable al **registro PERÚ-SAFE** (
 - _(añadir 4–6 anclas más en R12–R16: guías de manejo de oclusión vascular y literatura de ceguera por
   filler; cada una con PMID/DOI verificado por el agente References antes de citar.)_
 
-## 6. SR/MA previas (diferenciación) — línea base verificada el 12-sep-2026 · decisión en R9 (d9 · mar 6-oct-2026), ANTES de fijar el PICO (R6 · mar 20-oct-2026)
+## 6. SR/MA previas (diferenciación) — línea base verificada el 12-sep-2026 · decisión en R9 (d9 · **jue 8-oct-2026**, v5.11), ANTES de fijar el PICO (R6 · **jue 22-oct-2026**)
 
 > **Por qué R9 va antes de R6 (gap 3 · 12-sep-2026).** Una búsqueda PubMed del 5-sep-2026 encontró 16 SR/MA sobre filler +
 > oclusión vascular/necrosis/ceguera + hialuronidasa; las 5 de abajo **solapan directamente** con el PICO de §2 (metadatos
@@ -73,8 +73,8 @@ con **subgrupos que ninguna de las 5 SR agrupa así**: rellenos no-HA (PMMA, sil
 médicos, **LATAM/LILACS** y disponibilidad de hialuronidasa (conecta con el survey PERÚ-SAFE Fase 2). Solo se defiende si la
 tabla 6.1 muestra, celda por celda, que ninguna de las 5 SR lo cubre con datos.
 
-### 6.3 Decisión (escribir en R9 · mar 6-oct-2026 · firmada con fecha) — UNA de tres salidas
-- [ ] **(a) Ángulo diferencial defendible** → SR-1 sigue; R6 (20-oct) fija el PICO de §2 ajustado a ese ángulo; la Discussion se
+### 6.3 Decisión (escribir en R9 · jue 8-oct-2026 · firmada con fecha) — UNA de tres salidas
+- [ ] **(a) Ángulo diferencial defendible** → SR-1 sigue; R6 (22-oct) fija el PICO de §2 ajustado a ese ángulo; la Discussion se
       posiciona contra las 5 SR con AMSTAR-2 (R28).
 - [ ] **(b) Pivotar SR-1 a scoping review** (PRISMA-ScR; registro en OSF en vez de PROSPERO — R11 ya tiene ese plan B): mapa de
       evidencia sobre tiempo-a-tratamiento y disponibilidad regional; menos "Mayo", pero publicable y no duplicado.
@@ -110,8 +110,8 @@ Decisión: ______ (a / b / c) · fecha: ______ · motivo en 3 líneas: ______ ·
 | Rol PROSPERO | Persona | Afiliación | ORCID | Conflictos de interés | Estado |
 |---|---|---|---|---|---|
 | Garante (guarantor) / contacto | Joseph Max Soto Tocas | Facultad de Medicina Humana, Universidad Nacional del Centro del Perú (Huancayo) | A VERIFICAR (05-sep) — se obtiene en R0 (checklist Infra académica) | Ninguno | primer autor · cribador 1 · extractor 1 · redacción |
-| Revisor #2 (cribado + extracción independientes, en ciego) | A DEFINIR en X-1 — opciones: (a) Dr. Ciro Jesús Rodríguez Aliaga, (b) egresado FMH-UNCP con interés en investigación, (c) colaborador IMG de la campaña K1-K2 / DIGA | según (a)/(b)/(c) | A VERIFICAR (05-sep) | declarar | se le ofrece coautoría por 2º cribado + extracción; **acepta POR ESCRITO la carga de §9.4 (≈ 40-70 h fuera del bloque, mar → may-2027) en la invitación de X-1 (vie 27-nov-2026)** — sin esa aceptación no hay revisor #2 ni PROSPERO |
-| Senior author / clínico que valida relevancia | Dr. Ciro Jesús Rodríguez Aliaga (propuesta M1) | Servicio de Dermatología, Hospital Regional Docente Clínico Quirúrgico Daniel Alcides Carrión, Huancayo | A VERIFICAR (05-sep) | declarar | aceptación pendiente (M1, 14-sep-2026) |
+| Revisor #2 (cribado + extracción independientes, en ciego) | A DEFINIR en X-1 — opciones: (a) Dr. Ciro Jesús Rodríguez Aliaga, (b) egresado FMH-UNCP con interés en investigación, (c) colaborador IMG de la campaña K1-K2 / DIGA | según (a)/(b)/(c) | A VERIFICAR (05-sep) | declarar | se le ofrece coautoría por 2º cribado + extracción; **acepta POR ESCRITO la carga de §9.4 (≈ 40-70 h fuera del bloque, mar → may-2027) en la invitación de X-1 (mar 1-dic-2026)** — sin esa aceptación no hay revisor #2 ni PROSPERO |
+| Senior author / clínico que valida relevancia | Dr. Ciro Jesús Rodríguez Aliaga (propuesta M1) | Servicio de Dermatología, Hospital Regional Docente Clínico Quirúrgico Daniel Alcides Carrión, Huancayo | A VERIFICAR (05-sep) | declarar | aceptación pendiente (M1, mar 22-sep-2026 · v5.11) |
 | Tercer revisor (desempate de conflictos) | = senior author, o revisor externo de la campaña | — | — | — | regla escrita en 9.3 |
 | Apoyo metodológico / estadístico (meta-análisis en R) | Joseph (R29-R33) + revisión externa opcional (Rising Scholars) | — | — | — | opcional |
 
@@ -139,15 +139,15 @@ Decisión: ______ (a / b / c) · fecha: ______ · motivo en 3 líneas: ______ ·
 > con el n real en R16/R21. El pre-orden por relevancia (score del motor / Ollama) solo fija el ORDEN de cribado. PROSPERO publica
 > estas fechas: se copian las de la columna "PROSPERO (con margen)", no las del átomo, para no incumplirlas en público.
 
-| Hito | Átomo (fecha del plan v5.10b) | PROSPERO (con margen) | Regla del margen |
+| Hito | Átomo (fecha del plan v5.11, 14-sep; orden v5.10b) | PROSPERO (con margen) | Regla del margen |
 |---|---|---|---|
-| Registro | R10 · mar 23-feb-2027 (`RESEARCH_HITOS['PROSPERO-SR1']`) | 23-feb-2027 | estado al registrar: *"Preliminary searches"* (el corpus de jun-2026 existe; la búsqueda PRISMA-S final se corre en R12-R16) |
-| Inicio de búsquedas | R12 · vie 5-mar-2027 | 1-mar-2027 | — |
-| Carga en Rayyan + invitación al revisor #2 | R17 · vie 19-mar-2027 | 19-mar-2027 | — |
-| **Fin de cribado (niveles 1 y 2)** | R21 · jue 8-abr-2027 | **≥ vie 30-abr-2027 (6 semanas desde R17) → en PROSPERO: 15-may-2027** | ≥ 6 semanas desde R17: 2 revisores × 16-28 h fuera del bloque |
-| Fin de extracción + riesgo de sesgo | R25-R26 · 26-abr → 30-abr-2027 | 30-jun-2027 | ≥ 6 semanas desde el fin de cribado con margen |
-| Síntesis (meta-análisis en R) | R29-R33 · 10-may → 1-jun-2027 | 31-jul-2027 | — |
-| Envío | R43 · lun 5-jul-2027 (`RESEARCH_HITOS['SR-1']`) | ≤ 31-ago-2027 (deadline externo de la RUTA §9) | 57 días de margen en el plan |
+| Registro | R10 · jue 25-feb-2027 (`RESEARCH_HITOS['PROSPERO-SR1']`) | 25-feb-2027 | estado al registrar: *"Preliminary searches"* (el corpus de jun-2026 existe; la búsqueda PRISMA-S final se corre en R12-R16) |
+| Inicio de búsquedas | R12 · mar 9-mar-2027 | 1-mar-2027 | — |
+| Carga en Rayyan + invitación al revisor #2 | R17 · mar 23-mar-2027 | 23-mar-2027 | — |
+| **Fin de cribado (niveles 1 y 2)** | R21 · lun 12-abr-2027 | **≥ mar 4-may-2027 (6 semanas desde R17) → en PROSPERO: 15-may-2027** | ≥ 6 semanas desde R17: 2 revisores × 16-28 h fuera del bloque |
+| Fin de extracción + riesgo de sesgo | R25-R26 · 28-abr → 4-may-2027 | 30-jun-2027 | ≥ 6 semanas desde el fin de cribado con margen |
+| Síntesis (meta-análisis en R) | R29-R33 · 12-may → 3-jun-2027 | 31-jul-2027 | — |
+| Envío | R43 · mié 7-jul-2027 (`RESEARCH_HITOS['SR-1']`) | ≤ 31-ago-2027 (deadline externo de la RUTA §9) | 55 días de margen en el plan |
 
 Si un corrimiento mueve los átomos, se re-lee `RESEARCH_HITOS` y se enmiendan las fechas en PROSPERO (lo permite antes de publicar el registro).
 

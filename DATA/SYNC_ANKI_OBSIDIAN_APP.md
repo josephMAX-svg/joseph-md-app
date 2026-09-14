@@ -84,7 +84,7 @@
 ### Qué hay ahora (vault `D:\JOSEPH\Vault_Medicina MIR_Joseph`)
 - **`01_USMLE/_template_day_usmle.md`** — plantilla **plana** (core *Templates*, carpeta `09_PLANTILLAS` configurada; `{{date:YYYY-MM-DD}}`),
   sin Templater. Frontmatter YAML plano que Obsidian muestra como propiedades (booleanos = casillas):
-  `date · day_of_week · exam · type: study_day · regimen: v5.10 · d_num · tema` · bloques `b0500_anki · b0715_repaso · b0815_pretest ·
+  `date · day_of_week · exam · type: study_day · regimen: v5.11 · d_num · tema` · bloques `b0500_anki · b0715_repaso · b0815_pretest ·
   b0900_deep_prime · b1100_consolidacion · b1800_eval` · `pretest10 · q30_pct · eval_pct · error_dominante` (taxonomía v3:
   CONCEPTO/OLVIDO/CRONOLOGIA/CCSN/CONTEXTO/CAMBIO/TIEMPO/LECTURA) · `sueno_h` · `modo` (VERDE/ÁMBAR/ROJO) · **5 casillas
   `burnout_ciego_cae · burnout_releer · burnout_sueno · burnout_cinismo · burnout_gym`** (DOCTRINA §6) · `evite_hoy` (espejo Goggins).
@@ -116,7 +116,7 @@
 
 ---
 
-### Verificación D1-D2 (mié 9 / jue 10-sep-2026 · setup FSRS) — A VERIFICAR (9-sep)
+### Verificación D2-D3 (mié 16 / jue 17-sep-2026 · primeros días de contenido, setup FSRS en D3; el D1 mar 15-sep es el UWSA1 · v5.11) — A VERIFICAR (16-sep)
 1. Anki → Preferencias → Repaso → **FSRS activado** (colección completa).
 2. Preset del deck `APEX::USMLE` (y sub-decks): **desired retention 0.90** · **nuevas/día = 10** · sin límite artificial
    de repasos/día (dejar 9999) · "Optimize" de parámetros FSRS solo cuando haya ≥ 1.000 revisiones (mediados de oct).
@@ -163,7 +163,7 @@ carpeta del vault `03_MIR` correspondiente; si el vault usa otro slug, corregir 
 3. **Suspender quirúrgicamente, no borrar**: al abrir la fase MIR, suspender (`Ctrl+J`) `tag:sys::Biochemistry` y las
    tarjetas `deck:APEX::USMLE tag:sys::Fundamentos` que sean rutas metabólicas puras (bajo ROI MIR); nunca suspender
    por deck entero. Antes de un Step 2 CK futuro se des-suspenden con la misma búsqueda.
-4. **Derma cuenta doble**: `deck:APEX::DERMA tag:step1` es el repaso anclado del D73 (23-dic, "dermato Step 1") y en
+4. **Derma cuenta doble**: `deck:APEX::DERMA tag:step1` es el repaso anclado del D73 (jue 24-dic, "dermato Step 1") y en
    abril entra al filtered deck de `sys::Dermatology` junto con `APEX::MIR::dermatologia`.
 5. **Verificación** (AnkiConnect, Anki abierto): `findCards` con `tag:sys::*` debe devolver >0 en `APEX::USMLE` desde S1 y
    en `APEX::MIR` desde la primera semana con APEX; anotar aquí la fecha de la primera verificación. Mientras el motor

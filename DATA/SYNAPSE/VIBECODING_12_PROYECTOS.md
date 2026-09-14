@@ -331,7 +331,7 @@
   - **Mar 22-12 · sensores verdes (≤15')**: Sensores (≤15'): verify --sensores; journal 5'.
   - **Mié 23-12 · 1 mejora pequeña (≤15')**: 1 mejora pequeña (≤15') o ninguna; commit [S15].
   - **Jue 24-12 · journal + lectura de docs**: Journal 5' + lectura de docs (15').
-  - **Lun 28-12 · retro semanal**: Retro semanal (≤15') + commit [S15] + verify --sensores (el viernes 25 es feriado: la semana cierra hoy).
+  - **Lun 28-12 · retro semanal**: Retro semanal (≤15') + commit [S15] + verify --sensores (el vie 25-dic es feriado: el bloque S15 cierra el lun 28).
 - **Sábado/domingo**: Sábado 26-dic PC (opcional, 30'): verify --sensores + retro; si descansas, marca ✓ igual.
 
 ### S16 · Mantenimiento 4: cierre de año, sensores verdes antes de la Fase B · MANTENIMIENTO (15'/día)
@@ -353,8 +353,8 @@
   - **Mar 05-01 · journal 5' + audio (deload total)**: Journal 5' (objetivo del día del Step 1 · sueño · modo) + audio B. Nada más.
   - **Mié 06-01 · journal 5' + audio (deload total)**: Journal 5' + audio B.
   - **Jue 07-01 · journal 5' + audio (deload total)**: Journal 5' + audio B.
-  - **Vie 08-01 · journal 5' + audio (deload total)**: Journal 5' + audio B.
-  - **Lun 11-01 · journal 5' + audio (deload total)**: Journal 5' + audio B (UWSA2 hoy: el journal anota solo cómo dormiste).
+  - **Vie 08-01 · journal 5' + audio (deload total)**: Journal 5' + audio B (UWSA2 hoy, vie 8-ene: el journal anota solo cómo dormiste).
+  - **Lun 11-01 · journal 5' + audio (deload total)**: Journal 5' + audio B (lun 11-ene: post-UWSA2, sin juicios).
 - **Sábado/domingo**: PC sáb/dom OPCIONAL (30' máx, solo en día VERDE): verify --sensores; si no, nada.
 
 ### S18 · Deload total 2: journal 5' + audio (semana GO/NO-GO) · DELOAD (5'/día)
@@ -365,20 +365,20 @@
   - **Mar 12-01 · journal 5' + audio (deload total)**: Journal 5' + audio B.
   - **Mié 13-01 · journal 5' + audio (deload total)**: Journal 5' + audio B.
   - **Jue 14-01 · journal 5' + audio (deload total)**: Journal 5' + audio B.
-  - **Vie 15-01 · journal 5' + audio (deload total)**: Journal 5' + audio B.
-  - **Lun 18-01 · journal 5' + audio (deload total)**: Journal 5' + audio B (NBME 31 hoy).
+  - **Vie 15-01 · journal 5' + audio (deload total)**: Journal 5' + audio B (NBME 31 hoy, vie 15-ene: GO/NO-GO).
+  - **Lun 18-01 · journal 5' + audio (deload total)**: Journal 5' + audio B (NBME 32 hoy, lun 18-ene).
 - **Sábado/domingo**: PC sáb/dom OPCIONAL (30' máx, solo en día VERDE).
 
 ### S19 · Deload total 3: journal 5' + audio (Fase C, última semana con SYNAPSE) · DELOAD (5'/día)
 
-- **Semana**: mar 19-ene → lun 25-ene (5 días hábiles) · Step 1: S19 · Fase C (D87 lun 18-ene) · NBME 32 lun · NBME 33 mié · Free 120 vie 22-ene
-- **Objetivo**: Igual que S17-S18. El SYNAPSE de las 12:30 cierra el vie 22-ene (F2 · CCA-F prep); desde el sáb 23 solo Step 1.
+- **Semana**: mar 19-ene → lun 25-ene (5 días hábiles) · Step 1: S19 · Fase C (mar 19 → lun 25-ene) · NBME 33 mié 20 · Free 120 vie 22-ene (el NBME 32 del lun 18 cierra S18)
+- **Objetivo**: Igual que S17-S18. El SYNAPSE de las 12:30 cierra el sáb 23-ene (F2 · CCA-F prep, última A-unit); desde el dom 24 solo Step 1.
 - **Días**:
-  - **Mar 19-01 · journal 5' + audio (deload total)**: Journal 5' + audio B (NBME 32 hoy).
-  - **Mié 20-01 · journal 5' + audio (deload total)**: Journal 5' + audio B.
-  - **Jue 21-01 · journal 5' + audio (deload total)**: Journal 5' + audio B (NBME 33 hoy).
-  - **Vie 22-01 · journal 5' + audio (deload total)**: Journal 5' + audio B.
-  - **Lun 25-01 · journal 5' + audio (deload total)**: Journal 5' + audio B (Free 120 hoy) · cierre del journal S13-S19: 3 líneas para la reestructuración de febrero (IA vs ENCAPS intensivo).
+  - **Mar 19-01 · journal 5' + audio (deload total)**: Journal 5' + audio B (mar 19-ene: post-NBME 32).
+  - **Mié 20-01 · journal 5' + audio (deload total)**: Journal 5' + audio B (NBME 33 hoy, mié 20-ene).
+  - **Jue 21-01 · journal 5' + audio (deload total)**: Journal 5' + audio B.
+  - **Vie 22-01 · journal 5' + audio (deload total)**: Journal 5' + audio B (Free 120 hoy, vie 22-ene).
+  - **Lun 25-01 · journal 5' + audio (deload total)**: Journal 5' + audio B (lun 25-ene) · cierre del journal S13-S19: 3 líneas para la reestructuración de febrero (IA vs ENCAPS intensivo).
 - **Sábado/domingo**: Sáb 23 / dom 24-ene: NADA de IA (fin de semana pre-examen). PC = no.
 
 ### S20 · Semana del examen: journal 5' (mar-jue), vie EXAMEN · DELOAD (5'/día)

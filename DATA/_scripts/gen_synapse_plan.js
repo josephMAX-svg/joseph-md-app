@@ -20,7 +20,7 @@
 // v5.10-b (12-sep-2026, vacío 5 de gaps_v3b_synapse.json — "semanas 13-20 sin misión"): el plan deja de terminar en
 // la sem 12 y cubre hasta el VIE 22-ENE-2027 (fin del Step 1 menos el taper de la semana del examen):
 //   · sem 12 gana vie 4-dic, sáb 5-dic (PC = SHIP S12, antes fuera del plan) y dom 6-dic (2 A-units de cierre F1);
-//   · F2 · sem 13-19 (lun 7-dic → vie 22-ene) = ANTHROPIC ACADEMY RESTANTE + prep CCA-F a 30': Building with the
+//   · F2 · sem 13-19 (lun 7-dic → sáb 23-ene, v5.11) = ANTHROPIC ACADEMY RESTANTE + prep CCA-F a 30': Building with the
 //     Claude API (12 módulos) · MCP restante + MCP Advanced Topics · agent skills/subagentes restantes · Claude Code in
 //     Action restante · AI Capabilities and Limitations · Claude Cowork · los 3 ensayos de context engineering · repaso
 //     por los 5 dominios del CCA-F · simulacro (quizzes) · cierre. Temarios en curricula/_extracted.json (5-sep + 12-sep).
@@ -231,7 +231,7 @@ function buildAUnits() {
   push('Claude Code docs — ' + ccDoc(4).modulo, ccDoc(4).titulo + '. Repaso antes del taper: qué hook automatiza cada sensor (SessionEnd → telemetría Anki; PostToolUse → verificar_planes). SHIP S12 hoy en el PC.', ccDoc(4).url);
   if (A.length !== 72) throw new Error('Total A-units F0+F1 (+cierre sem 12) debe ser 72, hay ' + A.length);
 
-  // F2 · ANTHROPIC ACADEMY RESTANTE + PREP CCA-F (sem 13-19 · lun 7-dic → vie 22-ene · 38 A-units · 30'/día · taper del Step 1)
+  // F2 · ANTHROPIC ACADEMY RESTANTE + PREP CCA-F (sem 13-19 · lun 7-dic → sáb 23-ene · 38 A-units · 30'/día · taper del Step 1)
   // Temarios reales: academy-claude-api (12 módulos, 5-sep) · academy-mcp 7-13 · academy-mcp-advanced (12-sep) ·
   // academy-agent-skills 3-6 · academy-subagents 4 · academy-cc-in-action 10-13 · academy-ai-capabilities (12-sep) ·
   // academy-cowork (12-sep) · 3 ensayos de Anthropic Engineering · repaso por dominio del CCA-F (pesos según CALIDAD/Synapse.md:
@@ -289,7 +289,7 @@ function buildAUnits() {
   push('Prep CCA-F · dominios 3-4 (repaso)', 'Tool Design & MCP (18%) = quickstart MCP + tu servidor de S9 · Prompt Engineering (20%) = Prompt Engineering Interactive Tutorial (caps 1-3, repaso rápido).', U.promptTut);
   push('Prep CCA-F · dominio 5 (repaso) + Claude Code docs — ' + ccDoc(14).modulo, `Context Management (15%) = memoria (CLAUDE.md, /compact) + el ensayo de context engineering · ${ccDoc(14).modulo} + ${ccDoc(15).modulo} (páginas reales, contenido por leer).`, ccDoc(14).url);
   push('Prep CCA-F · simulacro', `Repite en modo examen (sin apuntes) el "${api(11).modulo}" de Building with the Claude API y el "${acad('academy-cc-in-action', 14).titulo}" de Claude Code in Action; anota % por dominio en el journal.`, apiU);
-  push('Prep CCA-F · cierre F2', 'Página oficial de la certificación CCA-F: A VERIFICAR (12-sep-2026 no aparece enlazada en academy.claude.com ni en anthropic.skilljar.com) → buscarla en la Academy, anotar formato/precio/fecha y decidir fecha post-Step 1 (feb-2027). CIERRE F2 (vie 22-ene): relee el journal S13-S19 y escribe 3 líneas para la reestructuración de febrero (IA vs ENCAPS intensivo). Desde mañana: solo Step 1.', U.academy, { real: false });
+  push('Prep CCA-F · cierre F2', 'Página oficial de la certificación CCA-F: A VERIFICAR (12-sep-2026 no aparece enlazada en academy.claude.com ni en anthropic.skilljar.com) → buscarla en la Academy, anotar formato/precio/fecha y decidir fecha post-Step 1 (feb-2027). CIERRE F2 (último día del motor, sáb 23-ene en v5.11): relee el journal S13-S19 y escribe 3 líneas para la reestructuración de febrero (IA vs ENCAPS intensivo). Desde mañana: solo Step 1.', U.academy, { real: false });
   if (A.length !== 110) throw new Error('Total A-units (F0 46 + F1 26 + F2 38) debe ser 110, hay ' + A.length);
   return A;
 }
@@ -429,7 +429,7 @@ const aUnits = buildAUnits();
 let TOTAL = 0; { let ns = 0, dd = 0; while (ns < aUnits.length) { dd++; const dt = new Date(START.getTime() + (dd - 1) * 86400000); const f = dt.toISOString().slice(0, 10); if (dt.getDay() !== 0 && !SKIP_FIJOS.has(f)) ns++; } TOTAL = dd; }
 let aIdx = 0;
 let pc12Emitido = false; // evita duplicar el PC de la sem 12 cuando esa semana SÍ tiene sábado
-const SEM_MAX = 19; // v5.10-b: sem 13-19 = F2 (hasta el vie 22-ene-2027)
+const SEM_MAX = 19; // v5.10-b: sem 13-19 = F2 (v5.11: hasta el sáb 23-ene-2027)
 const dias = [];
 for (let d = 1; d <= TOTAL; d++) {
   const date = new Date(START.getTime() + (d - 1) * 86400000);
@@ -478,7 +478,7 @@ const ts = `/**
  * synapseDailyPlan.ts — Motor día-a-día SYNAPSE (${SEM_MAX} semanas · ${TOTAL} días · ${dias[0].fecha} → ${dias[TOTAL - 1].fecha}).
  * Arranque ${dias[0].wd} ${dias[0].fecha} (START parametrizado) · sem 1 = ${dias[0].wd}→dom · domingos = Feynman del proyecto (10', opcional; día libre) ·
  * sáb = A/B/C + PC (bloque personal, sí va en finde) · feriados 25-dic/31-dic/1-ene = libres (bloque R).
- * v5.10-b (12-sep-2026): + F2 · sem 13-19 (${nF2} días, lun 7-dic → vie 22-ene-2027) = Anthropic Academy restante + prep CCA-F
+ * v5.10-b (12-sep-2026): + F2 · sem 13-19 (${nF2} días, lun 7-dic → ${FIN_PLAN}) = Anthropic Academy restante + prep CCA-F
  * (taper del Step 1; sem 17-19 con deload:true). Los días 1-81 son idénticos a v5.10.
  * GENERADO por DATA/_scripts/gen_synapse_plan.js desde DATA/SYNAPSE/curricula/_extracted.json
  * (temarios REALES extraídos con WebFetch/oEmbed + verificación adversarial, 10-jun-2026).
@@ -497,7 +497,7 @@ const ts = `/**
  * + F2 (sem 13-19): Building with the Claude API · MCP restante + MCP Advanced Topics · agent skills/subagentes ·
  * Claude Code in Action restante · AI Capabilities and Limitations · Claude Cowork · 3 ensayos de context engineering ·
  * repaso por los 5 dominios del CCA-F · simulacro · cierre (curricula/_extracted.json, extraído 5-sep y 12-sep-2026).
- * Después del vie 22-ene-2027 no hay SYNAPSE: semana del examen (25-29 ene) = solo Step 1.
+ * Después del ${FIN_PLAN} (sáb 23-ene-2027 en v5.11) no hay SYNAPSE: semana del examen (25-29 ene) = solo Step 1.
  */
 export type SynFormato = 'pantalla' | 'audio' | 'lectura' | 'pc' | 'repaso';
 export interface SynBloque {

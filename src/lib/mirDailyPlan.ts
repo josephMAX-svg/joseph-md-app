@@ -1,8 +1,8 @@
 /**
  * mirDailyPlan.ts — Plan DÍA A DÍA MIR (ProMIR), 1 tema atómico/día, 1ª vuelta.
- * v5.10 · Palmerton v3 (12-sep-2026): D1 = lun 2026-09-14 → D78 lun 2027-01-04 (76 temas + D77
- * mini-MIR + D78 corrección), L-V, sáb+dom libres, salta 25-dic/31-dic/1-ene (ya cruza al 4-ene:
- * D78 coincide con el D1 del mantenimiento ene-mar; mirSesionDe() prioriza el plan ese día).
+ * v5.11 · Palmerton v3 (14-sep-2026): D1 = mar 2026-09-15 → D78 mar 2027-01-05 (76 temas + D77
+ * mini-MIR + D78 corrección), L-V, sáb+dom libres, salta 25-dic/31-dic/1-ene (cruza a enero: el
+ * mantenimiento ene-mar arranca el hábil siguiente, mié 6-ene; mirSesionDe() prioriza el plan si solapan).
  *
  *  · Selección de capítulos = top-N por Peso MIR (mirDetalleData) + núcleo rabi_94 forzado.
  *  · Orden de bloques = cada asignatura PRECEDE ~1 semana a su sistema Step 1 (usmleStep1Daily):
@@ -33,7 +33,7 @@ export const mirMinutos = (nQ: number): number => Math.round((nQ * MIR_SEG_POR_Q
 
 // ── GENERADO por STUDY_HUB/_scrape/gen_mir_daily.js (v3 · top-N por Peso MIR + núcleo rabi_94) — NO editar a mano entre marcadores ──
 export const MIR_DAILY_META = {
-  inicio: '2026-09-15', fin: '2027-01-05', totalDias: 78, // D1=2026-09-14 · L-V (sáb+dom libres) · 76 temas + D77 mini-MIR + D78 corrección · orden alineado a Step 1 (cada asignatura precede ~1 semana a su sistema)
+  inicio: '2026-09-15', fin: '2027-01-05', totalDias: 78, // D1=2026-09-15 · L-V (sáb+dom libres) · 76 temas + D77 mini-MIR + D78 corrección · orden alineado a Step 1 (cada asignatura precede ~1 semana a su sistema)
   bloque: '15:15–15:30 Evaluación Anclada D-1/D-3/D-7 · 15:30–16:15 Deep Work Mini (pre-test 5Q → lectura dirigida → 8-10Q → APEX)',
   coberturaPeso: 957.4, optimoTopN: 957.76, // suma de Peso MIR % de los 76 capítulos vs óptimo top-N puro (plan previo: 744,2)
 };

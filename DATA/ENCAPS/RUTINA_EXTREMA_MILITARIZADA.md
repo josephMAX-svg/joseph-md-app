@@ -1,12 +1,12 @@
 # 🎖️ RUTINA EXTREMA MILITARIZADA — objetivo vigente: **STEP 1 primario** (GO/NO-GO 15-ene-2027 · examen 25-29 ene) → **ENCAPS ≥17 primario en feb-mar 2027**
 > Doctrina de disciplina para Joseph. Generada 25-jun-2026 con investigación en vivo (Goggins · Jocko/SEALs · West Point/Ericsson · ciencia del sueño Walker/Diekelmann). El entrenador (Claude) la hace cumplir: cuestiona, no adula, mide por **% en ciego**, no por sensación.
-> **Tabla horaria y contrato actualizados el 05-sep-2026; re-fechados el 12-sep al régimen v5.10** (D1 = lun 14-sep-2026; el 11-sep tampoco se estudió y nada se recortó: el desfase se absorbe alargando el final — el plan cierra el mié 27-ene-2027 y el target de examen pasa al **vie 29-ene-2027**, último día de la ventana 25-29 ene). Las franjas del §⏱ se releyeron de `FRANJAS` en `src/lib/usmleStep1Daily.ts` con node, no de memoria. La doctrina (§🔩) y la Ley Cero no cambian: se aplican igual al Step 1 que a ENCAPS.
+> **Tabla horaria y contrato actualizados el 05-sep-2026; re-fechados el 14-sep al régimen v5.11** (D1 = **mar 15-sep-2026**; el lun 14-sep tampoco se estudió y nada se recortó: el desfase se absorbe alargando el final — el plan cierra el **jue 28-ene-2027 (D95 = D-1, ya DENTRO del plan)** y el target de examen sigue siendo el **vie 29-ene-2027**, último día de la ventana 25-29 ene; el día de descanso pre-examen que en v5.10 quedaba fuera del plan se absorbió con este corrimiento y **ya no queda ningún margen**). Las franjas del §⏱ se releyeron de `FRANJAS` en `src/lib/usmleStep1Daily.ts` con node, no de memoria. La doctrina (§🔩) y la Ley Cero no cambian: se aplican igual al Step 1 que a ENCAPS.
 
 ## 🎯 PRIORIDAD POR FASE (la que manda sobre cualquier memoria o chat antiguo)
 | Ventana | Frente PRIMARIO | Secundarios (nunca roban al primario) | Criterio de éxito |
 |---|---|---|---|
-| **lun 14-sep-2026 → vie 15-ene-2027** (D1-D87 del Step 1; el plan sigue hasta D95 = mié 27-ene) | **USMLE Step 1** — 6h15/día | MIR 1h · ENCAPS 1h banqueo · LIVIANO 45' · Research↔Derma 45' · AURUM 1h · SYNAPSE 30' + vibecoding 45' | **GO/NO-GO vie 15-ene**: 2 NBME consecutivos ≥68 % + UWSA2 low-risk. Mínimos on-track por hito: NBME 25 ≥51 · 26 ≥54 · 27 ≥57 · 28 ≥61 · 29 ≥63 · 30 ≥65 (fuente única: `src/lib/usmleScores.ts` HITOS_ONTRACK = PALMERTON_METODO_COMPLETO §Parte V) |
-| 18-27 ene 2027 (D88-D95, Fase C) + **examen semana 25-29 ene** (target **vie 29-ene**; jue 28 descanso pre-examen) | Step 1 sprint | todo lo demás a mínimo | Free 120 vie 22-ene (D92) · D94 = mar 26-ene (repaso FA 6-10 + 40Q flagged) · D95 = mié 27-ene (rapid review + 20Q) · jue 28-ene descanso · examen vie 29-ene · fin de semana previo descanso real |
+| **mar 15-sep-2026 → vie 15-ene-2027** (D1-D86 del Step 1; el plan sigue hasta D95 = jue 28-ene) | **USMLE Step 1** — 6h15/día | MIR 1h · ENCAPS 1h banqueo · LIVIANO 45' · Research↔Derma 45' · AURUM 1h · SYNAPSE 30' + vibecoding 45' | **GO/NO-GO vie 15-ene**: 2 NBME consecutivos ≥68 % + UWSA2 low-risk. Mínimos on-track por hito: NBME 25 ≥51 · 26 ≥54 · 27 ≥57 · 28 ≥61 · 29 ≥63 · 30 ≥65 (fuente única: `src/lib/usmleScores.ts` HITOS_ONTRACK = PALMERTON_METODO_COMPLETO §Parte V) |
+| 18-28 ene 2027 (D87-D95, Fase C) + **examen semana 25-29 ene** (target **vie 29-ene**; jue 28 = D95 = D-1 dentro del plan) | Step 1 sprint | todo lo demás a mínimo | Free 120 vie 22-ene (D91) · D94 = mié 27-ene (D-2: repaso FA 6-10 + Anki maduro + 20Q flagged) · D95 = jue 28-ene (D-1: sesión mínima AM ≤2 h — Anki maduro + 20Q flagged + rapid review FA; tarde = logística Prometric; nada después de las 17:00) · examen vie 29-ene · fin de semana previo descanso real |
 | **feb → fin-mar 2027** | **ENCAPS 2027-I** vuelve a principal (loop completo) | MIR, Business (CURVA/DENSA arrancan) | **≥17/20** (percentil 1 %) · pre-test de arranque = examen 2026-II reservado |
 | siempre | — | MIR (enero 2030) es maratón: nunca se sacrifica el sueño por él | 800-1000 cards MIR sólidas a marzo 2028 |
 
@@ -18,7 +18,7 @@ Un fail del Step 1 queda **para siempre** en ECFMG → si el 15-ene no hay GO, l
 - Diekelmann & Born 2010: lo que estudias se consolida **durante el sueño NREM** (replay hipocampal). Sin esa noche, lo de hoy no se "guarda".
 - El sueño es un **bloque de estudio invisible.** Quien duerme 3-4h "para estudiar más" borra con el codo lo que escribió con la mano. Goggins/SEALs/Hell Week = privación como **estresor de selección física**, NO modelo de aprendizaje. Bill Gates lo intentó y se retractó.
 - **Si falta tiempo, se sacrifica VOLUMEN de preguntas nuevas, JAMÁS las 7h.**
-- (v5.10) Lo mismo vale para el Step 1: 95 días de tarjetas de MECANISMO se consolidan de noche. Por eso la última comida sólida es a las 17:15 y después del baile solo agua: la digestión activa fragmenta el sueño profundo (Walker).
+- (v5.11) Lo mismo vale para el Step 1: 95 días de tarjetas de MECANISMO se consolidan de noche. Por eso la última comida sólida es a las 17:15 y después del baile solo agua: la digestión activa fragmenta el sueño profundo (Walker).
 - **☕ CAFEÍNA ≤ 11:00 — máximo 2 tomas: 05:00 (Anki AM) y 07:00 (desayuno). Después, agua o descafeinado.** (12-sep-2026) La cafeína tiene una vida media de ~5-6 h (Walker): un café a las 12:00 sigue activo a las 21:00 y recorta el sueño profundo NREM que consolida lo estudiado — el sistema ya defendía las 7 h, pero no su *calidad*. Está escrito en las descripciones de DESAYUNO 07:00 y DEEP PRIME 09:00 del Calendar y en `CALENDAR_SEGMENTOS_V5_6.md` §0. Nada de energéticas ni "un cafecito" en el MIR de las 15:15 (su descripción ya dice "no con café").
 - **🌅 La carrera de las 06:00 se hace AL AIRE LIBRE:** la luz de la mañana es la señal circadiana que fija el 04:00 y el corte 21:00. No se pasa a indoor; en ÁMBAR se camina 20', no se suprime.
 - **😴 Siesta OPCIONAL 13:15-13:30, ≤ 20' con alarma** — válvula ÁMBAR del `DATA/PROTOCOLO_MODO_MINIMO.md` §2 (hueco que ya existía entre LECTURA 13:00 y Research/Derma 13:30; descripción del evento LECTURA DE LIBRO). Solo si el modo es ÁMBAR, dormiste < 6 h o anoche marcaste ≥ 1 señal de burnout; más de 20' = inercia de sueño. **Nunca sustituye las 7 h.** (Siesta corta de ~20-26' = mejora de alerta/rendimiento en pilotos, Rosekind/NASA 1995; cifras exactas A VERIFICAR (12-sep).)
@@ -36,7 +36,7 @@ Un fail del Step 1 queda **para siempre** en ECFMG → si el 15-ene no hay GO, l
 9. **Cookie Jar:** registro de simulacros remontados y días duros que igual estudiaste → combustible para la recta final de agosto.
 10. **Día = identidad, no evento:** cero días perdidos sin recuperarlos. Hoy 25-jun perdiste 11:00→15:00 → se confiesa en el espejo y se recupera.
 
-## ⏱ HORARIO MILITAR v5.10 (franjas del Google Calendar, extraídas 05-sep-2026 — cada bloque es una MISIÓN; las horas NO cambiaron con el corrimiento)
+## ⏱ HORARIO MILITAR v5.11 (franjas del Google Calendar, extraídas 05-sep-2026 — cada bloque es una MISIÓN; las horas NO cambiaron con el corrimiento; el UWSA1 del D1 mar 15-sep ocupa 09:00-13:00)
 Autoridad de CUÁNDO y CÓMO: `DATA/ENCAPS/CALENDAR_SEGMENTOS_V5_6.md` (IDs de series, overlays, fin de semana). El QUÉ: app YoCPMD (cola USMLE del día = `usmleStep1Daily.ts`).
 
 | Hora | Misión | Responsabilidad innegociable |
@@ -64,26 +64,26 @@ Autoridad de CUÁNDO y CÓMO: `DATA/ENCAPS/CALENDAR_SEGMENTOS_V5_6.md` (IDs de s
 | 20:30 | Viaje vuelta = reflexión sin pantallas | ¿Qué aprendí? ¿Qué falló? ¿Qué hago distinto mañana? **¿Alguna de las 5 señales hoy?** (≥1 → mañana ÁMBAR) |
 | **21:00** | CORTE. A dormir. | Protege la codificación de mañana. 0 luz azul desde 20:30 |
 
-- **Despertar fijo 04:00 = la línea.** Mover el inicio es el enemigo #1 (cada día hábil perdido corre TODO el plan +1: ya van **9 corrimientos, 31-ago→14-sep**, 10 días hábiles perdidos — y **el siguiente ya no cabe**: el plan termina el mié 27-ene y el examen es el vie 29-ene, así que otro día perdido obliga a recortar contenido o a salir de la ventana 25-29 ene).
+- **Despertar fijo 04:00 = la línea.** Mover el inicio es el enemigo #1 (cada día hábil perdido corre TODO el plan +1: ya van **10 corrimientos, 31-ago→15-sep**, 11 días hábiles perdidos — y **el siguiente YA NO CABE**: el plan termina el jue 28-ene (D95 = D-1) y el examen es el vie 29-ene, así que otro día perdido obliga a decidir entre recortar temario o rendir fuera de la ventana 25-29 ene reprogramando en Prometric).
 - **SÁBADO Y DOMINGO LIBRES de banco** = consolidación, NO debilidad. Lo que sí hay: EKER 04:00, caminata, SYNAPSE PC 15:00-17:00 (sáb = SHIP del proyecto de la semana), Anki **dimensionado por tarjetas due** (sáb 19:00 · dom 17:00 — si hay 200 due, son 200, no 15'), baile.
-- **12 hitos de sim, 8 en viernes** — D# del régimen **v5.10**, leídos del array `DIAS` de `src/lib/usmleStep1Daily.ts` con node (no estimados). **Las fechas son FIJAS: el corrimiento no las mueve, solo cambia el D#** — con una única excepción en v5.10: el **UWSA1**, anclado al vie 11-sep (ya pasado), **se movió al lun 14-sep** y sigue siendo el D1 (baseline en el primer día, como prescribe Palmerton). Los otros 11 conservan su fecha.
+- **12 hitos de sim, 8 en viernes** — D# del régimen **v5.11**, leídos del array `DIAS` de `src/lib/usmleStep1Daily.ts` con node el 14-sep (no estimados). **Las fechas son FIJAS: el corrimiento no las mueve, solo cambia el D#** — con una única excepción, igual que en v5.10: el **UWSA1**, que es el único hito que cambia de fecha en cada corrimiento (vie 11 → lun 14 → **mar 15-sep**) para seguir siendo el D1 (baseline en el primer día, como prescribe Palmerton). Los otros 11 conservan su fecha y bajan 1 su D#.
 
-| # | Hito | Fecha | D# v5.10 | D# v5.9 | Mínimo on-track (`usmleScores.HITOS_ONTRACK`) |
+| # | Hito | Fecha | D# v5.11 | D# v5.10 | Mínimo on-track (`usmleScores.HITOS_ONTRACK`) |
 |---|---|---|---|---|---|
-| 1 | UWSA1 (baseline) | **lun 14-sep-2026** (movido del vie 11-sep) | **D1** | D1 (vie 11-sep) | — baseline: cualquier valor sirve (~48 % ya es trayectoria de GO) |
-| 2 | NBME 25 | vie 2-oct-2026 | **D15** | D16 | **≥51 %** |
-| 3 | NBME 26 | vie 23-oct-2026 | **D30** | D31 | **≥54 %** |
-| 4 | NBME 27 | vie 13-nov-2026 | **D45** | D46 | **≥57 %** (gate 1 ECFMG pide ≥55 %) |
-| 5 | NBME 28 | vie 4-dic-2026 | **D60** | D61 | **≥61 %** |
-| 6 | NBME 29 | vie 18-dic-2026 | **D70** | D71 | **≥63 %** (gate 2 pide ≥60 %) |
-| 7 | NBME 30 — cierre Fase A | **mié** 30-dic-2026 | **D77** | D78 | **≥65 %** (umbral de seguridad Palmerton, ≈95 % de pase) |
-| 8 | UWSA2 | vie 8-ene-2027 | **D82** | D83 | "low risk" — el UWSA sobreestima: la fecha la decide el NBME |
-| 9 | NBME 31 — **GO/NO-GO** | vie 15-ene-2027 | **D87** | D88 | **≥68 %** (2 NBME consecutivos ≥68 % + UWSA2 low risk) |
-| 10 | NBME 32 | **lun** 18-ene-2027 | **D88** | D89 | ≥68 % (confirma el GO) |
-| 11 | NBME 33 | **mié** 20-ene-2027 | **D90** | D91 | ≥68 % (confirma el GO) |
-| 12 | Free 120 oficial | vie 22-ene-2027 | **D92** | D93 | ≥70 % (heurística comunitaria, no cifra Palmerton) |
+| 1 | UWSA1 (baseline) | **mar 15-sep-2026** (09:00-13:00; movido del lun 14-sep) | **D1** | D1 (lun 14-sep) | — baseline: cualquier valor sirve (~48 % ya es trayectoria de GO) |
+| 2 | NBME 25 | vie 2-oct-2026 | **D14** | D15 | **≥51 %** |
+| 3 | NBME 26 | vie 23-oct-2026 | **D29** | D30 | **≥54 %** |
+| 4 | NBME 27 | vie 13-nov-2026 | **D44** | D45 | **≥57 %** (gate 1 ECFMG pide ≥55 %) |
+| 5 | NBME 28 | vie 4-dic-2026 | **D59** | D60 | **≥61 %** |
+| 6 | NBME 29 | vie 18-dic-2026 | **D69** | D70 | **≥63 %** (gate 2 pide ≥60 %) |
+| 7 | NBME 30 — cierre Fase A | **mié** 30-dic-2026 | **D76** | D77 | **≥65 %** (umbral de seguridad Palmerton, ≈95 % de pase) |
+| 8 | UWSA2 | vie 8-ene-2027 | **D81** | D82 | "low risk" — el UWSA sobreestima: la fecha la decide el NBME |
+| 9 | NBME 31 — **GO/NO-GO** | vie 15-ene-2027 | **D86** | D87 | **≥68 %** (2 NBME consecutivos ≥68 % + UWSA2 low risk) |
+| 10 | NBME 32 | **lun** 18-ene-2027 | **D87** | D88 | ≥68 % (confirma el GO) |
+| 11 | NBME 33 | **mié** 20-ene-2027 | **D89** | D90 | ≥68 % (confirma el GO) |
+| 12 | Free 120 oficial | vie 22-ene-2027 | **D91** | D92 | ≥70 % (heurística comunitaria, no cifra Palmerton) |
 
-El **D94 = mar 26-ene-2027** (repaso First Aid sistemas 6-10 + 40Q flagged + Anki marathon) y el **D95 = mié 27-ene-2027** (rapid review First Aid + 20Q + laboratorio de dudas) **no llevan overlay**: no son simulacros, y caen dentro de la ventana de examen 25-29 ene. El **jue 28-ene** queda como día de descanso pre-examen (fuera del plan) y el examen se rinde el **vie 29-ene** (target; era el mié 27, que ahora es el D95).
+Fases v5.11 (`faseDe`): **A** contenido D1-D80 (15-sep → jue 7-ene) · **B** banco D81-D86 (8 → 15-ene) · **C** sprint D87-D95 (18 → 28-ene). Viernes de nivel 4 desde S11: **D54 vie 27-nov** y **D64 vie 11-dic** (`esViernesNivel4`). El **D94 = mié 27-ene-2027 (D-2)** (repaso First Aid sistemas 6-10 + Anki marathon + 20Q flagged; cesa todo lo nuevo, Palmerton §8.3) y el **D95 = jue 28-ene-2027 (D-1)** (rapid review First Aid + Anki maduro + 20Q flagged, ≤2 h y solo por la mañana; tarde = permiso impreso y digital, 2 ID con el nombre EXACTO del permiso, bolsas Ziploc numeradas, ruta al Prometric; nada después de las 17:00 — `USMLE_TAPER.dMenos1`) **no llevan overlay**: no son simulacros, y caen dentro de la ventana de examen 25-29 ene. **El D-1 quedó DENTRO del plan** (en v5.10 el jue 28 era descanso fuera del plan): el examen se rinde el **vie 29-ene** (target; ventana 25-29 sin cambio).
 
 El sim reemplaza los bloques USMLE de la mañana y se hace con el protocolo de test-day de Palmerton §F (Ziploc BREAK 1/2/3 preparadas la noche anterior sin carbohidratos simples, sit-in breaks 1-2' / activo 10' / almuerzo dentro del sim, sin cambiar respuestas por ruido, SYNAPSE a la tarde, agua+sueño registrados en VITALS como ensayo). El resto del día no cambia.
 

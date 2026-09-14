@@ -1,9 +1,17 @@
 # SYNAPSE — Motor día-a-día (diseño y operación)
 
 > Construido el 10-jun-2026 por el chat SYNAPSE (PROMPT_CHAT_SYNAPSE.md).
+> **v5.11 · corrimiento (14-sep-2026)**: D1 = **mar 15-sep-2026** (el lun 14-sep tampoco se estudió; décimo corrimiento 31-ago→15-sep) →
+> `node DATA/_scripts/gen_synapse_plan.js 2026-09-15` → **131 días · 19 semanas · mar 15-sep-2026 → sáb 23-ene-2027** (110 A-units
+> intactas; sem 1 = 15-20 sep, corta de 6 días; sem 2-19 lun-dom; sem 19 = 18-23 ene). Contado con node: F0 sem 1-8 (mar 15-sep → dom 8-nov, 47 A) ·
+> F1 sem 9-12 (lun 9-nov → dom 6-dic, 24 A) · F2 sem 13-19 (lun 7-dic → sáb 23-ene, 39 A). Los PC de sábado siguen el `ship` REAL de
+> `VIBE_PROYECTOS` (v5.11: SHIP S1 sáb 26-sep … S12 sáb 12-dic; el sáb 19-sep = "avance del proyecto S1 — SHIP el 26-sep").
+> ⚠ Con D1 en martes la **última A-unit (d131) cae el SÁBADO 23-ene**, fin de semana previo a la semana del examen (v5.10: vie 22-ene):
+> decisión de Joseph si se mantiene o se adelanta (`PENDIENTES_JOSEPH.md`). El texto de esa A-unit aún dice "CIERRE F2 (vie 22-ene)" — verificado el 14-sep en el `.ts` (`synapseDailyPlan.ts` d131, y la cabecera del fichero + `synapseData.ts` siguen diciendo "vie 22-ene"): pendiente de `gen_synapse_plan.js`, fuera del alcance de los docs.
+>
 > **v5.10-b · semanas 13-19 (12-sep-2026, vacío 5 de gaps_v3b_synapse.json)**: el plan ya no termina en la sem 12.
 > `node DATA/_scripts/gen_synapse_plan.js 2026-09-14` → **131 días · 19 semanas · lun 14-sep-2026 → vie 22-ene-2027**
-> (fin del Step 1 menos la semana del examen). Los **días 1-81 son idénticos** a v5.10 (comprobado bloque a bloque: cabecera +
+> (fin del Step 1 menos la semana del examen; re-fechado a v5.11 el 14-sep, ver arriba). Los **días 1-81 son idénticos** a v5.10 (comprobado bloque a bloque: cabecera +
 > A/B/C iguales; solo cambian los textos de los PC/Feynman de sábado/domingo, que vienen del catálogo re-secuenciado del
 > vibecoding); se añaden **vie 4-dic, sáb 5-dic (PC = SHIP S12, que antes caía fuera del plan) y dom 6-dic** a la sem 12, y
 > **F2 · sem 13-19 (47 días) = Anthropic Academy restante + prep CCA-F** a 30': Building with the Claude API (12 módulos) ·
@@ -31,8 +39,8 @@
 
 | Pieza | Archivo | Qué hace |
 |---|---|---|
-| Datos del plan | `src/lib/synapseDailyPlan.ts` | **GENERADO** — 131 días (19 semanas, **lun 14-sep-2026 → vie 22-ene-2027 · v5.10-b**; regenerar con `node DATA/_scripts/gen_synapse_plan.js YYYY-MM-DD`), bloques A/B/C/PC/R por día, `deload` en sem 17-19 |
-| Vibecoding 04:15 | `src/lib/vibecodingPlan.ts` + `DATA/SYNAPSE/vibecoding_proyectos.json` | **GENERADO** — 12 proyectos S1-S12 (60 días) + taper S13-S20 (35 días) = 95 días (`node DATA/_scripts/gen_vibecoding_plan.js YYYY-MM-DD`); `verificacion[]` por criterio; `VIBE_SHIP_LOG` horneado desde `_vibecoding_ship.json` |
+| Datos del plan | `src/lib/synapseDailyPlan.ts` | **GENERADO** — 131 días (19 semanas, **mar 15-sep-2026 → sáb 23-ene-2027 · v5.11**; regenerar con `node DATA/_scripts/gen_synapse_plan.js YYYY-MM-DD`), bloques A/B/C/PC/R por día, `deload` en sem 17-19 |
+| Vibecoding 04:15 | `src/lib/vibecodingPlan.ts` + `DATA/SYNAPSE/vibecoding_proyectos.json` | **GENERADO** — 12 proyectos S1-S12 (60 días, mar 15-sep → lun 7-dic, SHIP sábados 26-sep → 12-dic) + taper S13-S20 (35 días en bloques secuenciales, 8-dic → 28-ene) = 95 días (`node DATA/_scripts/gen_vibecoding_plan.js YYYY-MM-DD`, v5.11: `2026-09-15`); `verificacion[]` por criterio; `VIBE_SHIP_LOG` horneado desde `_vibecoding_ship.json` |
 | Verify / journal | `DATA/_scripts/verify_vibecoding.js` · `DATA/_scripts/journal_hoy.js` | `verify <s>` comprueba los 4 criterios mecánicos y apenda a `DATA/SYNAPSE/_vibecoding_ship.json` (`--sensores` para S13-S16); `journal_hoy.js` crea la entrada de la semana ISO en `D:/synapse-journal/journal/` |
 | Generador | `DATA/_scripts/gen_synapse_plan.js` | Lee `curricula/_extracted.json`, valida cada URL contra los sets verificados (cero inventos) y emite el TS + los MDs de curricula |
 | Temarios reales | `DATA/SYNAPSE/curricula/*.md` + `_extracted.json` | 15 fuentes extraídas con WebFetch/oEmbed + verificación adversarial (workflow de 30 agentes, 10-jun-2026) |
@@ -46,21 +54,22 @@
 - **B (10', audio)** — rotación fija por día de semana: Lun No Priors · Mar Dwarkesh (Dario→Demis→Sholto&Trenton→Latent Space) · Mié Lex #452 (capítulo real del outline, 40 entradas con timestamps) · Jue The Batch · Vie canal Anthropic (5 vídeos verificados por oEmbed) · Sáb comodín (retoma lo pendiente).
 - **C (5', lectura móvil)** — Lun Pro Git (capítulo real con URL) · Mar serie Prompt injection de Willison · Mié The Python Tutorial (sección real) · Jue Automate the Boring Stuff 3ª ed. (capítulo real) · Vie research de Anthropic (lethal trifecta, many-shot, constitutional classifiers, RSP) · Sáb comodín.
 - **PC (sábado 15:00-17:00)** — **SHIP del proyecto de la semana** del vibecoding 04:15 (criterio de aceptación en `DATA/SYNAPSE/vibecoding_proyectos.json`). Desde v5.7 el generador lee el `ship` REAL de `VIBE_PROYECTOS` en vez de asumir "sábado de la semana n". Nada se arrastra a la semana siguiente.
-  ✔ **Verificado el 12-sep (v5.10)**: los 11 sábados del plan (19-sep … 28-nov) llevan `SHIP proyecto Sn` alineado
-  con `VIBE_PROYECTOS.ship` (sáb 19-sep = S1 … sáb 28-nov = S11); el sáb 12-sep ya no pertenece al plan.
-  ✔ **v5.10-b**: el desajuste de borde desapareció — el **SHIP S12 = sáb 5-dic-2026** ya está dentro del plan (d83, PC
-  "SHIP proyecto S12"). Sábados de sem 13-16 = "PC opcional · taper" (30': `verify_vibecoding.js --sensores` + retro);
+  ✔ **Verificado el 12-sep (v5.10)**: los 11 sábados del plan (19-sep … 28-nov) llevaban `SHIP proyecto Sn` alineado
+  con `VIBE_PROYECTOS.ship` (sáb 19-sep = S1 … sáb 28-nov = S11).
+  ✔ **v5.10-b**: el desajuste de borde desapareció — el **SHIP S12** ya está dentro del plan.
+  ✔ **Re-verificado el 14-sep (v5.11)**: con los bloques mar→lun del vibecoding los SHIP corren una semana — sáb 19-sep = "Avance del proyecto S1 — SHIP el 26-sep",
+  sáb 26-sep = SHIP S1 … sáb 12-dic (d89) = SHIP S12; 19 PC en total (12 SHIP + 7 opcionales del taper). Sábados de sem 13-16 = "PC opcional · taper" (30': `verify_vibecoding.js --sensores` + retro);
   sem 17-19 = PC opcional/no. **Manda `VIBE_PROYECTOS.ship`** en todo caso.
 - **Domingo = Feynman del proyecto (10', opcional)** — explicar en voz alta qué construiste y cómo funciona; el domingo sigue libre (v5 sáb/dom libres) y es marcable para conservar la racha.
 
 ## Cobertura (12 semanas honestas a 30'/día)
 
-- **F0 · La Escuela de Anthropic = semanas 1-8** (45 misiones A · **lun 14-sep → dom 8-nov-2026**): Academy + AI Fluency
+- **F0 · La Escuela de Anthropic = semanas 1-8** (47 bloques A contados con node el 14-sep · **mar 15-sep → dom 8-nov-2026**, v5.11): Academy + AI Fluency
   (13 lecciones reales) + Claude 101 / Code 101 / Platform 101 (temarios reales) +
   ensayo Building Effective Agents (16 secciones reales) + Karpathy Intro (3 tramos
   por chapters reales) + Deep Dive (11 tramos por los 24 capítulos reales, con `&t=`)
   + 3Blue1Brown (8 vídeos verificados; el 9º —invitado— va al PC de la sem 8).
-- **F1 · stack del vibecoding = semanas 9-12** (25 misiones A · **lun 9-nov → jue 3-dic-2026**): sem 9 Claude Code core (memoria · skills · hooks · subagentes; docs + Academy) · sem 10 MCP · headless · Agent SDK · plugins/workflows · sem 11 Supabase (RLS · select · triggers · webhooks · Edge Functions) · sem 12 n8n + Claude Code in Action + best practices. Temarios extraídos con WebFetch el 5-sep-2026 (`curricula/claude-code-docs.md`, `academy-*.md`, `supabase-docs.md`, `n8n-docs.md`; 106/106 URLs OK en check_links). CS50P/Automate quedan como biblioteca de consulta (Python se lee, no se memoriza).
+- **F1 · stack del vibecoding = semanas 9-12** (24 bloques A · **lun 9-nov → dom 6-dic-2026**): sem 9 Claude Code core (memoria · skills · hooks · subagentes; docs + Academy) · sem 10 MCP · headless · Agent SDK · plugins/workflows · sem 11 Supabase (RLS · select · triggers · webhooks · Edge Functions) · sem 12 n8n + Claude Code in Action + best practices. Temarios extraídos con WebFetch el 5-sep-2026 (`curricula/claude-code-docs.md`, `academy-*.md`, `supabase-docs.md`, `n8n-docs.md`; 106/106 URLs OK en check_links). CS50P/Automate quedan como biblioteca de consulta (Python se lee, no se memoriza).
 - **F0 no se reinicia**: sus 45 A-units llevan `audit:true` (chip "auditar: ✓ si ya hecho") porque F0 y la minifase corrieron jun-ago con progreso solo en localStorage. Día 1 = auditoría de 5' en "My courses" de la Academy.
 - Nota: `synapseData.ts` decía "F0 sem 1-4"; a 30 min/día reales F0 ocupa 8 semanas.
   El motor manda sobre la estimación optimista — honestidad antes que calendario bonito.
@@ -72,7 +81,7 @@ Cada bloque lleva `real: true|false`:
 - `false` → misión honesta tipo "el episodio más reciente / retoma donde quedaste"
   (No Priors semanal, números de The Batch, artículos sueltos de Willison, tramos de podcasts).
 
-- **F2 · Academy restante + prep CCA-F = semanas 13-19** (38 misiones A · **lun 7-dic-2026 → vie 22-ene-2027**, taper del Step 1):
+- **F2 · Academy restante + prep CCA-F = semanas 13-19** (39 bloques A · **lun 7-dic-2026 → sáb 23-ene-2027**, taper del Step 1; v5.11):
   sem 13 API I (modelos · acceso · prompt engineering · evals) · sem 14 API II (tool use · RAG · features) · sem 15 API III +
   MCP restante (certificado) + MCP Advanced I (Navidad: 25-dic libre) · sem 16 API IV (agentes y workflows → certificado
   Building with the Claude API; 31-dic y 1-ene libres) · sem 17 (deload) agent skills 3-6 + subagentes 4 + Claude Code in

@@ -11,7 +11,7 @@
 //   · S1-S12: 5 días hábiles por proyecto (Lun definir · Mar/Mié construir · Jue verificar · Vie doc+commit) →
 //     60 días · sábado PC (SYNAPSE 15:00-17:00) = SHIP del proyecto · domingo = Feynman.
 //   · S13-S20: semanas de CALENDARIO (lun→vie) desde el lunes siguiente al fin de S12, con los feriados fuera
-//     (S15 = 4 días, S16 = 3, S20 = 3: lun 25 → mié 27-ene-2027 = D95 del Step 1; jue 28 descanso, vie 29 EXAMEN).
+//     (S15 = 4 días, S16 = 3, S20 = 3; v5.11: bloques secuenciales, S20 = mar 26 → jue 28-ene-2027 = D95 = D-1 del Step 1; vie 29 EXAMEN).
 //     Con D1 = lun 14-sep, el día d del vibecoding coincide con el D# del Step 1 (95 días).
 // Ship log: si existe DATA/SYNAPSE/_vibecoding_ship.json (escrito por verify_vibecoding.js) se hornea en el TS
 // (VIBE_SHIP_LOG) para que la app muestre el último verify aunque no haya localStorage.

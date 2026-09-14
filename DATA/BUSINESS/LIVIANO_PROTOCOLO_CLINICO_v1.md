@@ -1,8 +1,8 @@
 # LIVIANO · Protocolo clínico v1 (esqueleto → se completa en la Academia)
 
-> **Estado (5-sep-2026): ESQUELETO · fechas al régimen v5.10 (12-sep-2026).** Cada sección la redacta una
-> "Síntesis de módulo" de LIVIANO Academia (D1 = **lun 14-sep-2026**, v5.10 — el temario no se recortó, solo
-> se re-fechó) y el capstone D89 (**mar 19-ene-2027**) las ensambla. Los D# de abajo son los del plan
+> **Estado (5-sep-2026): ESQUELETO · fechas al régimen v5.11 (14-sep-2026).** Cada sección la redacta una
+> "Síntesis de módulo" de LIVIANO Academia (D1 = **mar 15-sep-2026**, v5.11 — el temario no se recortó, solo
+> se re-fechó) y el capstone D89 (**mié 20-ene-2027**) las ensambla. Los D# de abajo son los del plan
 > generado el 12-sep y parseados con node: **la fecha es lo estable, el número de día puede cambiar** al re-slotear los casos. Aquí está todo lo que **ya se
 > puede afirmar desde el currículo, con fuente**; lo que exige ficha técnica, guía específica, QF/abogado o
 > dato de Perú va como **A VERIFICAR (dueño · día)**. **Ninguna dosis se escribe de memoria.**
@@ -13,20 +13,20 @@
 > transversal: CMP Art. 73 — no prometer cifras de pérdida de peso; los datos de ensayos se presentan como
 > promedios de estudio, no como resultado individual.
 
-**Criterio de éxito de la v1**: el caso integral del viernes 16 (D87 · vie 15-ene-2027: varón 48 a, −16 % en 6 meses,
+**Criterio de éxito de la v1**: el caso integral del viernes 16 (D86 · vie 15-ene-2027: varón 48 a, −16 % en 6 meses,
 "¿ya puedo dejar todo?", esposa presente) **se resuelve solo con este protocolo**. Lo que falte es una sección que falta.
 
 | Sección | La redacta | Día | Estado |
 |---|---|---|---|
-| §1 Fundamento | Síntesis M1 | D19 · jue 8-oct | borrador |
-| §2 Elegibilidad + titulación | Síntesis M2 | D38 · mié 4-nov | borrador (dosis A VERIFICAR) |
-| §3 Política nutricional | Síntesis M3 | D58 · mié 2-dic | borrador |
-| §4 Estándar proteína/fuerza + qué medir | Síntesis M4 | D68 · mié 16-dic | borrador |
-| §5 Consulta 5As · automonitoreo · cadencia de check-in | Síntesis M5 | D86 · jue 14-ene | borrador |
-| §6 Derivación y límites de competencia | Síntesis M6 | D76 · mar 29-dic | borrador |
-| Anexo A · Acceso en Perú | Módulo 7 | D39 · D41-D44 · 5-nov → 12-nov (+ D46, D90) | pendiente |
-| Anexo B · Validación con casos | viernes 1-16 | D5 (18-sep) → D87 (15-ene) | en curso |
-| Ensamblaje v1 + ruta de credencial | Capstone | D89 · mar 19-ene | pendiente |
+| §1 Fundamento | Síntesis M1 | D20 · lun 12-oct | borrador |
+| §2 Elegibilidad + titulación | Síntesis M2 | D38 · jue 5-nov | borrador (dosis A VERIFICAR) |
+| §3 Política nutricional | Síntesis M3 | D58 · jue 3-dic | borrador |
+| §4 Estándar proteína/fuerza + qué medir | Síntesis M4 | D68 · jue 17-dic | borrador |
+| §5 Consulta 5As · automonitoreo · cadencia de check-in | Síntesis M5 | D87 · lun 18-ene | borrador |
+| §6 Derivación y límites de competencia | Síntesis M6 | D76 · mié 30-dic | borrador |
+| Anexo A · Acceso en Perú | Módulo 7 | D40-D43 · 9-nov → 12-nov (+ D45 16-nov, D46, D90) | pendiente |
+| Anexo B · Validación con casos | viernes 1-16 | D4 (18-sep) → D86 (15-ene) | en curso |
+| Ensamblaje v1 + ruta de credencial | Capstone | D89 · mié 20-ene | pendiente |
 
 ---
 
@@ -43,7 +43,7 @@
   (PMC10098946) · DIETFITS · National Weight Control Registry · DPP · ASMBS/IFSO 2022 (PMC9834364).
 - **Lenguaje**: people-first ("persona con obesidad"), sin culpa, con permiso. Es ítem evaluable (Anexo B).
 
-## §1 · Fundamento: por qué tratamiento crónico (M1 → D19)
+## §1 · Fundamento: por qué tratamiento crónico (M1 → D20)
 
 **Ya afirmable (Schwartz 2017; Obesity Algorithm 2026):**
 1. La obesidad es una enfermedad del **sistema de homeostasis energética** (tejido adiposo–intestino–hipotálamo),
@@ -59,7 +59,7 @@
 **Frase de apertura del programa**: "No fallaste tú: falló el método, porque peleaba contra tu biología. Ahora
 vamos a tratar la biología."
 
-**Pendiente D19 (jue 8-oct)**: redactar las 10 líneas finales para el kit de bienvenida (versión paciente).
+**Pendiente D20 (lun 12-oct)**: redactar las 10 líneas finales para el kit de bienvenida (versión paciente).
 
 ## §2 · Elegibilidad, screening, consentimiento y titulación (M2 → D38)
 
@@ -96,7 +96,7 @@ vamos a tratar la biología."
 
 ### 2.4 Inicio y titulación
 - **Esquema de dosis e intervalos por molécula: SOLO desde la ficha técnica del producto con registro en Perú —
-  A VERIFICAR (Joseph · D38 / Anexo A D39)**. No se transcribe aquí ninguna dosis hasta entonces.
+  A VERIFICAR (Joseph · D38 / Anexo A D40)**. No se transcribe aquí ninguna dosis hasta entonces.
 - Reglas ya afirmables: escalada **lenta**; **no escalar mientras haya EA GI activos** (mantener la dosis hasta
   tolerar); **check-in semanal de EA durante toda la titulación** (§5.4); medidas anti-náusea (porciones pequeñas,
   menos grasa, comer lento, hidratación, proteína primero).
@@ -156,7 +156,7 @@ ingestas muy bajas (fuente); manejo del alcohol.
 **A VERIFICAR (D68)**: contraindicaciones de ejercicio en paciente cardiológico (con cardiología); umbrales de
 progresión de carga (fuente).
 
-## §5 · Consulta LIVIANO: 5As, automonitoreo, cadencia de check-in (M5 → D86)
+## §5 · Consulta LIVIANO: 5As, automonitoreo, cadencia de check-in (M5 → D87)
 
 **Ya afirmable (Obesity Canada 5As; DPP; cap. 1 Obesity Canada):**
 1. **Guion 5As**: *Ask* (pedir permiso: "¿te parece si hablamos hoy de tu peso?") → *Assess* (historia del peso,
@@ -174,7 +174,7 @@ progresión de carga (fuente).
    cada caso (Anexo B).
 
 ### 5.3 Cadencia de acompañamiento por fase (oferta LIVIANO) y contenido de las 4 sesiones/mes del Despegue
-| Fase | Sesiones/mes | Contenido (estructura propuesta; detalle se redacta en D86) |
+| Fase | Sesiones/mes | Contenido (estructura propuesta; detalle se redacta en D87) |
 |---|---|---|
 | Despegue (meses 1-3) | 4 | S1 titulación y EA · S2 proteína y método del plato · S3 fuerza y actividad · S4 automonitoreo y revisión de métricas — cada una con 5As |
 | Progreso | 2 | métricas §4.3 + ajuste de plan + adherencia |
@@ -206,7 +206,7 @@ presencial o emergencia, nunca manejo por chat.
 5. **Rol LIVIANO pre y post bariátrica**: preparación (proteína, fuerza, automonitoreo, estudio de apnea), seguimiento
    y manejo de la recidiva (GLP-1 post-cirugía: esquema **A VERIFICAR**).
 
-## Anexo A · Acceso en Perú (M7 → D39 · D41-D44; re-verificación D46 y D90)
+## Anexo A · Acceso en Perú (M7 → D40-D43 + D45, 9→16-nov · v5.11; re-verificación D46 y D90)
 
 **Regla**: ninguna celda se rellena sin fuente primaria fechada (captura del portal público de DIGEMID — URL A
 VERIFICAR —, cotización escrita, dictamen QF/abogado). Ningún precio se publica sin cotización. **Nunca mercado gris**:
@@ -223,34 +223,34 @@ solo farmacia licenciada con certificado de análisis por lote.
 
 (Espejo vivo: `LIVIANO_ACCESO_PERU` en `empresaData.ts`; se actualiza con fecha en cada verificación.)
 
-**Cadena de frío doméstica (kit de bienvenida — guion de 8 líneas, se redacta en D44, jue 12-nov)**: 2–8 °C extremo a extremo ·
+**Cadena de frío doméstica (kit de bienvenida — guion de 8 líneas, se redacta en D45, lun 16-nov · v5.11)**: 2–8 °C extremo a extremo ·
 transporte desde la farmacia con gel frío · en casa en estante interior del refrigerador, **no en la puerta**, nunca
 congelar · tiempo permitido fuera de refrigeración **según ficha técnica del producto (A VERIFICAR)** · ante
 excursión de temperatura: no usar ni desechar por su cuenta, anotar tiempo/temperatura y consultar · viaje en bus:
 gel frío + registro de horas.
 
-**Tareas con dueño**: Legalidad DIGEMID → Joseph + QF y abogado de salud (A VERIFICAR nombres), D39 + D41-D43 · Cotización
-Sterilelabs → Joseph, D43 (mié 11-nov) · Cadena de frío / ficha técnica → Joseph, D44 (jue 12-nov) · Re-verificación → D46 (lun 16-nov) y D90 (mié 20-ene).
+**Tareas con dueño**: Legalidad DIGEMID → Joseph + QF y abogado de salud (A VERIFICAR nombres), D40-D43 (lun 9 → jue 12-nov) · Cotización
+Sterilelabs → Joseph, D43 (jue 12-nov) · Cadena de frío / ficha técnica → Joseph, D45 (lun 16-nov) · Re-verificación → D46 (mar 17-nov) y D90 (jue 21-ene).
 
 ## Anexo B · Validación con los 16 casos (rúbrica 0-2 × 4)
 
 Cada viernes el caso se resuelve en voz alta **solo con lo que el protocolo ya dice**; se puntúa: mecanismo correcto ·
 metáfora de paciente · people-first/sin estigma · plan pactado y medible (meta ≥ 6/8; media ≥ 80 %). Un ítem en 0
 señala una sección del protocolo a completar. Casos → sección que validan: 1-4 → §1 · 5-8 → §2 · 9 → Anexo A ·
-10-11 → §3 · 12 → §4 · 13-15 → §6 · 16 → todo (se resuelve el vie 15-ene, D87; el capstone es el mar 19-ene, D89). Score persistido en `jmd-liviano-score` (panel Academia).
+10-11 → §3 · 12 → §4 · 13-15 → §6 · 16 → todo (se resuelve el vie 15-ene, D86; el capstone es el mié 20-ene, D89). Score persistido en `jmd-liviano-score` (panel Academia).
 
 ## Anexo C · Lista consolidada de "A VERIFICAR" (dueño · día)
 
 | Ítem | Fuente esperada | Dueño · día |
 |---|---|---|
-| Criterio numérico de elegibilidad (IMC/comorbilidad) | Obesity Algorithm 2026 | Joseph · D38 (mié 4-nov) |
+| Criterio numérico de elegibilidad (IMC/comorbilidad) | Obesity Algorithm 2026 | Joseph · D38 (jue 5-nov) |
 | Panel de labs basales y cadencia de control | OMA / Obesity Canada | Joseph · D38 (y D68) |
-| Esquema de dosis, intervalos y periodo de lavado por molécula | ficha técnica del producto registrado | Joseph · D38 + Anexo A D39 |
+| Esquema de dosis, intervalos y periodo de lavado por molécula | ficha técnica del producto registrado | Joseph · D38 + Anexo A D40 |
 | Definición operativa de "falla a farmacoterapia" y criterios de reinicio | guía OMA / decisión clínica documentada | Joseph · D38 |
 | Interacciones relevantes (insulina, sulfonilureas, psicofármacos) | ficha técnica / interconsulta | Joseph · D38, D69 |
-| Registro DIGEMID, condición de venta, precios, magistral, tiempo fuera de frío | portal DIGEMID · cotizaciones · QF/abogado · ficha técnica | Joseph (+ QF, abogado) · D39 · D41-D44 |
+| Registro DIGEMID, condición de venta, precios, magistral, tiempo fuera de frío | portal DIGEMID · cotizaciones · QF/abogado · ficha técnica | Joseph (+ QF, abogado) · D40-D43 · D45 |
 | Líquidos objetivo / suplementación en ingestas muy bajas | fuente nutricional | Joseph · D58 |
 | Contraindicaciones de ejercicio en ECV | cardiología | Joseph · D68 |
 | Criterios de setmelanotida / estudio genético · GLP-1 post-bariátrica | guía específica | Joseph · D71, D75 |
 | Puente con VITALS (`bajo_glp1`, check-in EA, piso de proteína 1,6 vs rango 1,2-1,6) | `DATA/VITALS/LIVIANO_VITALS_BRIDGE.md` (otra tarea) | Joseph · fuera de esta Academia |
-| Revisión por par antes de uso clínico | médico con experiencia en obesidad | Joseph · post-D89 (capstone, mar 19-ene) |
+| Revisión por par antes de uso clínico | médico con experiencia en obesidad | Joseph · post-D89 (capstone, mié 20-ene) |

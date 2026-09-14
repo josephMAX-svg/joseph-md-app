@@ -800,7 +800,7 @@
         "Sensores (≤15'): verify --sensores; journal 5'.",
         "1 mejora pequeña (≤15') o ninguna; commit [S15].",
         "Journal 5' + lectura de docs (15').",
-        "Retro semanal (≤15') + commit [S15] + verify --sensores (el viernes 25 es feriado: la semana cierra hoy)."
+        "Retro semanal (≤15') + commit [S15] + verify --sensores (el vie 25-dic es feriado: el bloque S15 cierra el lun 28)."
       ],
       "ship": "Sábado 26-dic PC (opcional, 30'): verify --sensores + retro; si descansas, marca ✓ igual."
     },
@@ -836,8 +836,8 @@
         "Journal 5' (objetivo del día del Step 1 · sueño · modo) + audio B. Nada más.",
         "Journal 5' + audio B.",
         "Journal 5' + audio B.",
-        "Journal 5' + audio B.",
-        "Journal 5' + audio B (UWSA2 hoy: el journal anota solo cómo dormiste)."
+        "Journal 5' + audio B (UWSA2 hoy, vie 8-ene: el journal anota solo cómo dormiste).",
+        "Journal 5' + audio B (lun 11-ene: post-UWSA2, sin juicios)."
       ],
       "ship": "PC sáb/dom OPCIONAL (30' máx, solo en día VERDE): verify --sensores; si no, nada."
     },
@@ -854,8 +854,8 @@
         "Journal 5' + audio B.",
         "Journal 5' + audio B.",
         "Journal 5' + audio B.",
-        "Journal 5' + audio B.",
-        "Journal 5' + audio B (NBME 31 hoy)."
+        "Journal 5' + audio B (NBME 31 hoy, vie 15-ene: GO/NO-GO).",
+        "Journal 5' + audio B (NBME 32 hoy, lun 18-ene)."
       ],
       "ship": "PC sáb/dom OPCIONAL (30' máx, solo en día VERDE)."
     },
@@ -864,16 +864,16 @@
       "id": "taper-deload-3",
       "tipo": "deload",
       "minDia": 5,
-      "semana_step1": "S19 · Fase C (D87 lun 18-ene) · NBME 32 lun · NBME 33 mié · Free 120 vie 22-ene",
+      "semana_step1": "S19 · Fase C (mar 19 → lun 25-ene) · NBME 33 mié 20 · Free 120 vie 22-ene (el NBME 32 del lun 18 cierra S18)",
       "nombre": "Deload total 3: journal 5' + audio (Fase C, última semana con SYNAPSE)",
-      "objetivo": "Igual que S17-S18. El SYNAPSE de las 12:30 cierra el vie 22-ene (F2 · CCA-F prep); desde el sáb 23 solo Step 1.",
+      "objetivo": "Igual que S17-S18. El SYNAPSE de las 12:30 cierra el sáb 23-ene (F2 · CCA-F prep, última A-unit); desde el dom 24 solo Step 1.",
       "sensores": [],
       "pasos": [
-        "Journal 5' + audio B (NBME 32 hoy).",
+        "Journal 5' + audio B (mar 19-ene: post-NBME 32).",
+        "Journal 5' + audio B (NBME 33 hoy, mié 20-ene).",
         "Journal 5' + audio B.",
-        "Journal 5' + audio B (NBME 33 hoy).",
-        "Journal 5' + audio B.",
-        "Journal 5' + audio B (Free 120 hoy) · cierre del journal S13-S19: 3 líneas para la reestructuración de febrero (IA vs ENCAPS intensivo)."
+        "Journal 5' + audio B (Free 120 hoy, vie 22-ene).",
+        "Journal 5' + audio B (lun 25-ene) · cierre del journal S13-S19: 3 líneas para la reestructuración de febrero (IA vs ENCAPS intensivo)."
       ],
       "ship": "Sáb 23 / dom 24-ene: NADA de IA (fin de semana pre-examen). PC = no."
     },
