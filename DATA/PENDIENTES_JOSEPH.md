@@ -45,7 +45,7 @@ Sin esto el plan arranca ciego, con el contenido equivocado o con la app vieja e
       `src/lib/mirPreguntasOficiales.ts` **se queda en la app** (opción a): es uso privado de estudio, el bundle de Vercel
       no está indexado ni enlazado públicamente, y sin él el quiz MIR pierde la anti-repetición. Si prefieres la opción (c)
       —carga privada— pídelo y se hace en una pasada. *(sistema)*
-- [ ] **Deploy a Vercel — el push del cierre está hecho (13-sep) y los planes v5.11 regenerados el 14-sep están en el árbol (el commit y el push son tuyos). Antes del mar 15-sep 16:15 abre la web y comprueba** para que estén vivos el D1: formulario **CIERRE DE
+- [ ] **Deploy a Vercel — HECHO el lun 14-sep 14:17 (commits 8114d65 + 714167e pusheados; bundle `index-749f0cfe…` verificado por contenido: D1 2026-09-15, D95 2027-01-28, ENCAPS 96, MIR mant. desde el 6-ene, SYNAPSE 23-ene). Lo que queda es tuyo: antes del mar 15-sep 16:15 abre la web y comprueba** para que estén vivos el D1: formulario **CIERRE DE
       SESIÓN** de ENCAPS (16:15), instrumento **PROGRESO** con `plan_checks` ('☁ ok'), quiz MIR con pool oficial, pestaña
       **Cerebro** de Derma, taper/burnout USMLE, freno 04:55 en TodayMission. Comprobar en la web: el instrumento PROGRESO
       pasa de '☁ —' a '☁ ok' (sube los ✓ existentes; migración única) y en Supabase
@@ -225,7 +225,7 @@ Sin esto el plan arranca ciego, con el contenido equivocado o con la app vieja e
         `node DATA/_scripts/gen_delta_espana.js --write` (completar las filas del delta volcadas y subir las estables a la
         tabla de su asignatura) y volcar también en `_registro_resoluciones.json` con `plan:'MIR'`. El espejo Supabase
         `mir_eval_log` reduce el riesgo, no lo elimina.
-- [ ] **Actualizar la memoria `usmle-step1-v5.md` con el pipeline v5.10b y el estado v5.11** (D1 mar 15-sep · D95 jue 28-ene = D-1 dentro del plan · sin margen; los agentes no tocan la memoria): el orden
+- [x] **(hecho 14-sep por Claude: usmle-step1-v5.md, encaps-mantenimiento-2027-1.md, handoff y MEMORY.md ya en v5.11) Actualizar la memoria `usmle-step1-v5.md` con el pipeline v5.10b y el estado v5.11** (D1 mar 15-sep · D95 jue 28-ene = D-1 dentro del plan · sin margen; los agentes no tocan la memoria): el orden
       real es el de `REESTRUCTURACION` §13.3 — `remap_inicio.js <fecha>` (ya incluye Research vía `gen_research_plan.js`,
       Derma 73 + ciclo 2, Business vía `gen_business_plan.py`, LIVIANO) → `gen_vibecoding_plan.js` **antes que**
       `gen_synapse_plan.js` → `gen_aurum_plan.js` → `gen_mir_daily.js --check` (+ `gen_mir_mantenimiento.js` si D78 pisa el
