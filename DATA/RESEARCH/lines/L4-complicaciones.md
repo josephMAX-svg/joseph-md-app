@@ -47,7 +47,7 @@ laboratorio, alto impacto y directamente conectable al **registro PERÚ-SAFE** (
 - _(añadir 4–6 anclas más en R12–R16: guías de manejo de oclusión vascular y literatura de ceguera por
   filler; cada una con PMID/DOI verificado por el agente References antes de citar.)_
 
-## 6. SR/MA previas (diferenciación) — línea base verificada el 12-sep-2026 · decisión en R9 (d9 · **jue 8-oct-2026**, v5.11), ANTES de fijar el PICO (R6 · **jue 22-oct-2026**)
+## 6. SR/MA previas (diferenciación) — línea base verificada el 12-sep-2026 · decisión en R9 (d9 · **jue 8-oct-2026**, v5.11 = v5.12), ANTES de fijar el PICO (R6 · **jue 22-oct-2026**)
 
 > **Por qué R9 va antes de R6 (gap 3 · 12-sep-2026).** Una búsqueda PubMed del 5-sep-2026 encontró 16 SR/MA sobre filler +
 > oclusión vascular/necrosis/ceguera + hialuronidasa; las 5 de abajo **solapan directamente** con el PICO de §2 (metadatos
@@ -139,7 +139,7 @@ Decisión: ______ (a / b / c) · fecha: ______ · motivo en 3 líneas: ______ ·
 > con el n real en R16/R21. El pre-orden por relevancia (score del motor / Ollama) solo fija el ORDEN de cribado. PROSPERO publica
 > estas fechas: se copian las de la columna "PROSPERO (con margen)", no las del átomo, para no incumplirlas en público.
 
-| Hito | Átomo (fecha del plan v5.11, 14-sep; orden v5.10b) | PROSPERO (con margen) | Regla del margen |
+| Hito | Átomo (fecha del plan v5.11 = v5.12, re-verificada el 15-sep; orden v5.10b) | PROSPERO (con margen) | Regla del margen |
 |---|---|---|---|
 | Registro | R10 · jue 25-feb-2027 (`RESEARCH_HITOS['PROSPERO-SR1']`) | 25-feb-2027 | estado al registrar: *"Preliminary searches"* (el corpus de jun-2026 existe; la búsqueda PRISMA-S final se corre en R12-R16) |
 | Inicio de búsquedas | R12 · mar 9-mar-2027 | 1-mar-2027 | — |

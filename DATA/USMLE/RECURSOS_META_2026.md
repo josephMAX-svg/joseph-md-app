@@ -1,15 +1,17 @@
 # RECURSOS META 2026 — USMLE Step 1 (rol, fase, horas, qué NO usar)
 
-> **D# y semanas actualizados al plan v5.11** (corrimiento del 14-sep-2026: **D1 = mar 15-sep-2026 →
-> D95 = jue 28-ene-2027**, 95 días; Fase A D1-D80 · B D81-D86 · C D87-D95). Las **fechas de 11 de los 12
-> hitos** no cambiaron: solo su número de día. El **UWSA1** vuelve a moverse con el D1 (lun 14-sep, ya pasada →
-> **mar 15-sep, sigue siendo el D1**: baseline en el primer día, como prescribe Palmerton); el **contenido
-> arranca el mié 16-sep (D2)**. Todo el contenido corrió +1 día hábil y el desfase se absorbió alargando el final
-> del plan al jue 28-ene (**nada se fusionó ni se recortó**).
-> **Target de examen: vie 29-ene-2027** (sin cambio); **el plan termina el jue 28 = D95 = D-1 DENTRO del plan** (sesión
-> mínima AM + ritual de test-day; el día de descanso pre-examen que en la v5.10 quedaba fuera se absorbió).
-> ⚠ Margen agotado: otro corrimiento obliga a recortar temario o rendir fuera de la ventana 25-29 ene.
-> Semanas: S1 = 15-18 sep (4 días, el martes es el UWSA1) … S20 = 25-28 ene (4 días, D92-D95).
+> **D# y semanas actualizados al plan v5.12** (corrimiento del 15-sep-2026: **D1 = mié 16-sep-2026 →
+> D95 = vie 29-ene-2027**, 95 días; Fase A D1-D81 · B D82-D85 · C D86-D95). Las **fechas de 11 de los 12
+> hitos** no cambiaron: solo su número de día. El **UWSA1** vuelve a moverse con el D1 (mar 15-sep, ya pasada →
+> **mié 16-sep, sigue siendo el D1**: baseline en el primer día, como prescribe Palmerton); el **contenido
+> arranca el jue 17-sep (D2)**. Todo el contenido corrió +1 día hábil y el desfase se absorbió alargando el final
+> del plan al vie 29-ene (**nada se fusionó ni se recortó**: undécimo corrimiento, 31-ago→15-sep = 12 hábiles perdidos).
+> **El plan llena ya TODA la ventana 25-29 ene (D95 = vie 29-ene = última sesión, D-3)** → **examen target LUN 1-FEB-2027,
+> FUERA de la ventana**; sáb 30 (D-2) y dom 31-ene (D-1) quedan fuera del plan como descanso (solo Anki vencido + ritual
+> de test-day el domingo). Joseph debe **agendar/reprogramar el Prometric y confirmar que el eligibility period cubre el
+> 1-feb** (si no: extenderlo, o decidir recortar temario — decisión suya).
+> ⚠ **Desde hoy cada día no estudiado mueve el examen un día hábil más (o exige recortar temario).**
+> Semanas: S1 = 16-18 sep (3 días, el miércoles es el UWSA1) … S20 = 25-29 ene (5 días, D91-D95; el vie 29 es la última sesión).
 
 Del agente macro:recursos-2026 (r/step1 2024-2026, write-ups IMG, Yousmle) cruzado con el
 inventario Qbankly REAL. Regla madre: **stack CERRADO** — añadir recursos fuera de esta lista
@@ -20,13 +22,13 @@ como HERRAMIENTA DE APRENDIZAJE (no termómetro); el árbitro de readiness son l
 
 ### uWorld Step 1 (3.659Q) — EL MOTOR
 - **Rol**: banco principal y profesor. Es lo más parecido al examen real en estilo/longitud y sus explicaciones desglosan cada distractor. Write-up IMG feb-2026 (3h/día × 7 meses, 1er pase 59%, aprobó): "undoubtedly the most critical resource".
-- **Fase**: TODAS. Fase A: 10Q pre-test + 30Q consolidación/día en tutor por sistema (= 1ª vuelta completa del banco al cierre de Fase A, jue 7-ene). Fase B: random timed + segunda pasada SOLO de incorrects.
+- **Fase**: TODAS. Fase A: 10Q pre-test + 30Q consolidación/día en tutor por sistema (= 1ª vuelta completa del banco al cierre de Fase A, lun 11-ene). Fase B: random timed + segunda pasada SOLO de incorrects.
 - **Horas**: ~2h/día dentro de las franjas (8-10h/sem).
 - **NO**: segunda pasada completa (el valor es la primera exposición — Palmerton); memorizar respuestas; perseguir % en vez de mecanismo.
 
 ### AMBOSS (2.745Q + plan 81 bloques + 200 Concepts + HY Biostats 155Q + suscripción propia)
 - **Rol**: BIBLIOTECA de referencia (artículos linkados) + add-on oficial de Anki (lookup instantáneo dentro de las tarjetas) + su lista **200 Concepts** como barrido final. Su qbank es más difícil y detallista que el real ("almost a little excessive") → riesgo de overthinking.
-- **Fase**: library todo el plan; qbank SOLO en Fase B para bloques de 1-3 martillos en áreas débiles detectadas por NBME; 200 Concepts en los días de banco alojados en el sprint (D92 = lun 25-ene y D93 = mar 26-ene); HY Biostats 155Q junto a Psych/Biostats (S16-S17, D74-D75 · D77-D78; el bloque de bioestadística/epi/ética es D78, mar 5-ene, ya detrás del NBME 30).
+- **Fase**: library todo el plan; qbank SOLO en Fase B para bloques de 1-3 martillos en áreas débiles detectadas por NBME; 200 Concepts en los días de banco alojados en el sprint (D92 = mar 26-ene y D93 = mié 27-ene); HY Biostats 155Q junto a Psych/Biostats (S16-S17, D74 · D76-D78; el NBME 30, D75 mié 30-dic, parte el bloque: ansiedad/personalidad D76 lun 4-ene, psicofármacos D77 mar 5-ene y bioestadística/epi/ética D78 mié 6-ene quedan detrás).
 - **Horas**: ≤2h/sem como qbank; library a demanda.
 - **NO**: correrlo como qbank paralelo a uWorld en Fase A (duplica esfuerzo sin señal nueva).
 
@@ -38,13 +40,13 @@ como HERRAMIENTA DE APRENDIZAJE (no termómetro); el árbitro de readiness son l
 
 ### Pathoma (Sattar)
 - **Rol**: columna conceptual de patología. **Caps. 1-3 = lo más rentable del examen entero** ("disgustingly high yield"); bloques GI/hepático, heme y renal son los capítulos estrella.
-- **Fase**: caps. 1-3 completos en D2 · D3 (S1, mié 16-sep y jue 17-sep); resto por sistema en Fase A; **re-ver 1-3 la última semana** (S19-S20, D87-D95).
+- **Fase**: caps. 1-3 completos en D2 · D3 (S1, jue 17-sep y vie 18-sep); resto por sistema en Fase A; **re-ver 1-3 la última semana** (S19-S20, D86-D95).
 - **Horas**: ~5h/cap al inicio, luego integrado en DEEP PRIME.
 - **NO**: usarlo para anatomía MSK, inmuno conceptual ni bioestadística (ahí aporta poco).
 
 ### Sketchy (14 secciones en Qbankly)
 - **Rol**: mnemotecnia visual para lo genuinamente ARBITRARIO. Micro "worth its weight in gold"; Pharm renta (y paga dividendos en Step 2). Fórmula: vídeo 1x + fijar con tarjetas, no re-ver el vídeo.
-- **Fase**: A-B, pegado al sistema del día (micro en S12-S13, D57-D58 · D60-D64; pharm por sistemas donde toque: autonómicos, diuréticos, antiarrítmicos, antibióticos, quimioterápicos).
+- **Fase**: A-B, pegado al sistema del día (micro en S12-S13, D57 · D59-D64 — el NBME 28, D58 vie 4-dic, parte el bloque; pharm por sistemas donde toque: autonómicos, diuréticos, antiarrítmicos, antibióticos, quimioterápicos).
 - **Horas**: ~4h/sem cuando toca micro/pharm.
 - **NO**: usarlo para PK/PD, autonomics conceptual, patología general ni fisiología — Palmerton advierte que el mnemónico visual da falsa confianza (alto recall aislado, mala transferencia). El mecanismo primero, Sketchy después.
 
@@ -61,7 +63,7 @@ como HERRAMIENTA DE APRENDIZAJE (no termómetro); el árbitro de readiness son l
 
 ### Mehlman PDFs (7.278Q en Qbankly + PDFs HY)
 - **Rol**: "power tools" de las últimas semanas. Los más citados: **HY Arrows** (el nº1 — repetirlo varias veces) y **HY Neuroanatomy**; luego Risk Factors, Immuno, Pharm.
-- **Fase**: SOLO B-C (últimas 3 semanas: S17-S20, D81-D95 · 8-ene → 28-ene), ~3-4h/sem.
+- **Fase**: SOLO B-C (últimas 3 semanas: S18-S20, D82-D95 · 12-ene → 29-ene; el UWSA2 del vie 8-ene = D80 aún es Fase A), ~3-4h/sem.
 - **NO**: usarlo como fuente primaria en Fase A; el examen 2025-2026 se aleja del buzzword puro — Mehlman complementa, no sustituye, la comprensión mecanística.
 
 ### USMLERx (2.150Q) y PassMedicine (3.846Q)
@@ -69,7 +71,7 @@ como HERRAMIENTA DE APRENDIZAJE (no termómetro); el árbitro de readiness son l
 - **NO**: abrirlos en Fase A. Stack cerrado.
 
 ### NBME 21-33 + UWSA 1/2/3 + Free 120
-- **Rol**: árbitros de readiness. Solo los 12 hitos del calendario (UWSA1 15-sep = D1 · NBME 25-30 en Fase A: 2-oct D14, 23-oct D29, 13-nov D44, 4-dic D59, 18-dic D69, 30-dic D76 · UWSA2 8-ene = D81 · NBME 31 15-ene = D86 GO/NO-GO · NBME 32 18-ene = D87, NBME 33 20-ene = D89 y Free 120 22-ene = D91 en Fase C). Las formas viejas (21-24) quedan como cantera de preguntas de repaso, no como predictores.
+- **Rol**: árbitros de readiness. Solo los 12 hitos del calendario (UWSA1 16-sep = D1 · NBME 25-30 en Fase A: 2-oct D13, 23-oct D28, 13-nov D43, 4-dic D58, 18-dic D68, 30-dic D75 · UWSA2 8-ene = D80 · NBME 31 15-ene = D85 GO/NO-GO · NBME 32 18-ene = D86, NBME 33 20-ene = D88 y Free 120 22-ene = D90 en Fase C). Las formas viejas (21-24) quedan como cantera de preguntas de repaso, no como predictores.
 - **NO**: quemar NBMEs nuevos antes de tiempo; rendir simulacro sin revisar después (la revisión ES el valor).
 
 ## Presupuesto semanal aproximado (Fase A)
@@ -116,5 +118,5 @@ como HERRAMIENTA DE APRENDIZAJE (no termómetro); el árbitro de readiness son l
 ¹ El agente recomienda **Bootcamp** como vídeo de contenido (el meta 2025-2026 desplazó a B&B)
 si Pathoma + AMBOSS library no bastan para fisiología con base cero. El diseño v5 mantiene
 **B&B** porque ya está en el inventario Qbankly (22 secciones, 473 vídeos, sin costo extra) y
-el plan día-a-día ya mapea `bbCh`/`bbVid`. Si en S2-S3 (semanas del 21-sep y del 28-sep, Cardio D6-D13) la fisiología de B&B no fija, evaluar
+el plan día-a-día ya mapea `bbCh`/`bbVid`. Si en S2-S3 (semanas del 21-sep y del 28-sep, Cardio D6-D12) la fisiología de B&B no fija, evaluar
 Bootcamp como reemplazo puntual — no como adición.

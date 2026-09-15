@@ -1,4 +1,4 @@
-# 👤 PERFIL DE CONOCIMIENTO — Joseph (ENCAPS 2027-I) · GENERADO 2026-09-12
+# 👤 PERFIL DE CONOCIMIENTO — Joseph (ENCAPS 2027-I) · GENERADO 2026-09-15
 
 > **GENERADO por `DATA/_scripts/gen_encaps_semana.js --perfil` desde `_registro_resoluciones.json` (resumen_por_subtema + rondas). NO editar a mano:** se reescribe tras cada `--cerrar`, cada cierre semanal y cada `--perfil`. Base de datos SOBRE JOSEPH (separada de la doctrina de métodos: `../CONOCIMIENTO/METODO_PALMERTON_Y_MEMORIA.md`). Métrica que manda: **% CIEGO REAL = correctas SEGURAS / total** (dudosas y adivinadas NO cuentan). Metas: ≥85 % (≈17/20) · crucero ≥75 % · mini-sim ≥18/25.
 
@@ -6,7 +6,7 @@
 - Rondas ENCAPS registradas: **2** (warmup_20q 1 · warmup_d1 1) · última: 2026-07-28.
 - Preguntas resueltas: **40** · seguras 16 · **% ciego global 40 %**.
 - Códigos con medición ciega: **1** de 16 del ciclo + 17 de cola larga · críticos v3 medidos: 1/8 · con n ≥ 5 (cuentan para el override): 1.
-- Regla del override semanal (gen_encaps_semana.js): un código solo entra en «calientes» con **n ≥ 5**. El **pre-test de arranque** (mar 15 y mié 16-sep-2026, 5Q × 8 críticos, ítems reales 2024-2A→2025-2) es la línea base ciega por crítico: el **primer override calculado con n ≥ 5 en los 8 críticos es el de la semana del 21-sep-2026** (cierre semanal del vie 18-sep).
+- Regla del override semanal (gen_encaps_semana.js): un código solo entra en «calientes» con **n ≥ 5**. El **pre-test de arranque** (mié 16 y jue 17-sep-2026 = D1 + D2, 5Q × 8 críticos, ítems reales 2024-2A→2025-2) es la línea base ciega por crítico: el **primer override calculado con n ≥ 5 en los 8 críticos es el de la semana del 21-sep-2026** (cierre semanal del vie 18-sep).
 
 ## Mapa de dominio por código (resumen_por_subtema)
 | Código | Rol v3 | Rondas | Q | Seguras | Dudosas | Fallos | % ciego | Estado | k / t / p | Última | Nota |
@@ -16,7 +16,7 @@
 k / t / p = fallos knowledge / transfer / proceso. Estado: 🟢 DOMINADO ≥85 · 🟡 crucero ≥75 · 🔴 débil (CRITICO-debil si es crítico v3).
 
 ## Línea base ciega por crítico (pre-test de arranque, ronda `pretest`)
-- Pendiente: resolver `BANCO_PROPIO/pretest_arranque_2026-09-15.html` (mar 15-sep = D1, parte 1: II-3 · I-3 · V-2 · III-5) y `pretest_arranque_2026-09-16.html` (mié 16-sep = D2, parte 2: II-5 · I-4 · IV-1+IV-2 · II-4), exportar el JSON y apendar con `node DATA/_scripts/gen_encaps_minisim.js --registrar <export.json> --append`. Esta tabla se llena sola.
+- Pendiente: resolver `BANCO_PROPIO/pretest_arranque_2026-09-16.html` (mié 16-sep = D1, parte 1: II-3 · I-3 · V-2 · III-5) y `pretest_arranque_2026-09-17.html` (jue 17-sep = D2, parte 2: II-5 · I-4 · IV-1+IV-2 · II-4), exportar el JSON y apendar con `node DATA/_scripts/gen_encaps_minisim.js --registrar <export.json> --append`. Esta tabla se llena sola.
 
 ## Mapa por sub-ángulo (solo rondas guardadas ítem a ítem: RONDAS/ y exports del runner)
 | Código | Sub-ángulo | Q | ok | seguras | % ciego | Errores | Última |

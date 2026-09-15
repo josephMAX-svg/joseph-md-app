@@ -1,6 +1,6 @@
 > ## ⚠️ HISTÓRICO — SUPERSEDIDO el 05-sep-2026
 > Este fichero describe el calendario del **loop ENCAPS de julio 2026** (ENCAPS por la mañana, USMLE 16:15, NAP 13:15, anclajes 04:15/17:15) y **ya no es la autoridad**.
-> Desde el régimen **v5.11 (D1 = mar 15-sep-2026; décimo corrimiento 31-ago→15-sep, ninguno recorta contenido; re-fechado el 14-sep-2026)** el bloque principal es el **USMLE Step 1** (05:00 Anki AM · 07:15-12:00 · 18:00 eval) y ENCAPS queda en 1h de banqueo (16:15-17:15; mantenimiento de 96 días, 15-sep → 29-ene-2027).
+> Desde el régimen **v5.12 (D1 = mié 16-sep-2026; undécimo corrimiento 31-ago→16-sep, ninguno recorta contenido; re-fechado el 15-sep-2026)** el bloque principal es el **USMLE Step 1** (05:00 Anki AM · 07:15-12:00 · 18:00 eval; D95 = vie 29-ene-2027 llena la ventana 25-29 ene → examen target lun 1-feb-2027, sáb 30 y dom 31-ene descanso fuera del plan) y ENCAPS queda en 1h de banqueo (16:15-17:15; mantenimiento de 95 días, 16-sep → 29-ene-2027).
 > **Autoridad vigente de CUÁNDO y CÓMO:** [`CALENDAR_SEGMENTOS_V5_6.md`](./CALENDAR_SEGMENTOS_V5_6.md) (L-V + sáb/dom, IDs de series, overlays de hito con D#).
 > Se conserva íntegro, sin editar, como referencia de las descripciones largas de los bloques ENCAPS (útiles cuando ENCAPS vuelva a ser principal en feb-mar 2027).
 

@@ -104,7 +104,7 @@ BASE DATOS en T-4 (mar 3-nov-2026), nunca se estiman.
 
 Nota al pie: n con datos faltantes por variable (STROBE 14b); cortes del CADI; IGA según escala FDA.
 
-## 4. Plan de trabajo (átomos de 45', interdiarios · fechas v5.11 del 14-sep-2026 — orden v5.10b, todo +2 hábiles; ver `etica.md` §5)
+## 4. Plan de trabajo (átomos de 45', interdiarios · fechas v5.11 del 14-sep-2026 = v5.12 (Research no se movió el 15-sep) — orden v5.10b; ver `etica.md` §5)
 1. **T-1 · vie 2-oct-2026** — ética: nº de CEI archivado o solicitud expedita PRESENTADA ese día (gate de T-7/T-8).
 2. **T-3 · vie 30-oct** — Intro + Methods (≤250 palabras) al límite estricto. **T-4 · mar 3-nov** — abrir la base → Tabla 1 + Figura 1
    (matplotlib/seaborn, 300 dpi, sobria); UNA va al texto, la otra al apéndice.

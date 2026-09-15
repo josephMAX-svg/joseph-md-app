@@ -53,7 +53,7 @@ Es **peor cuanto más corto es el plazo**, no menos.
 4. **Cinismo** ("es una lotería", "igual no llego") — no es lucidez, es síntoma (MBI). Burnout en estudiantes de medicina: 37-44%.
 5. **Saltarse el gym "para estudiar" = primer indicador conductual de descompensación**, no de compromiso.
 
-> **VIGENTE en el régimen v5.10/v5.11 (desde el 12-sep-2026; v5.11 = D1 mar 15-sep-2026, sin margen para otro corrimiento) — ya no es un párrafo histórico.** Las señales 1-4 son los
+> **VIGENTE en el régimen v5.10/v5.11/v5.12 (desde el 12-sep-2026; v5.12 = D1 mié 16-sep-2026: el margen ya se agotó — el Step 1 llena la ventana 25-29 ene y el examen pasa al lun 1-feb-2027; cada día más sin estudiar lo mueve otro hábil) — ya no es un párrafo histórico.** Las señales 1-4 son los
 > **disparadores ÁMBAR** y la 5 la **señal ROJA conductual** de `DATA/PROTOCOLO_MODO_MINIMO.md` §1 (válvula del Step 1).
 > Se contestan en 60 s como las 5 casillas `burnout_*` de la nota del día del vault (`01_USMLE/05_DIARY`, plantilla
 > `_template_day_usmle.md`, cierre 18:25-18:45), se confirman en voz alta en el 🚗 VIAJE VUELTA 20:30 (`3l59kpei7sg0l6kq51343or383`:

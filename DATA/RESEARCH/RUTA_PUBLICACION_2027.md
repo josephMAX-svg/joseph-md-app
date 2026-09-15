@@ -6,7 +6,9 @@ estándares CARE/PRISMA, y cómo se conecta con las líneas **L0-L8** de
 [`src/lib/researchProgram.ts`](../../src/lib/researchProgram.ts) — este doc NO reemplaza el
 programa de líneas: le pone el calendario editorial encima.
 
-> **⚠ v5.11 (14-sep-2026) — Research CORRE +2 días de calendario (+1 slot interdiario): ciclo 1 = 42 átomos mié 16-sep-2026 → jue 11-feb-2027 · ciclo 2 = 67 átomos lun 15-feb → mié 18-ago-2027.** El lun 14 de septiembre tampoco se estudió y el D1 del régimen pasa al **mar 15-sep-2026** (décimo corrimiento, 31-ago→15-sep). Ese martes es día **Derma** en la alternancia (paridad anclada al mié 10-jun-2026), así que Derma no se mueve y el ciclo 1 de Research arranca el primer día-Research ≥ D1: el **mié 16-sep**. Cada hito corre exactamente **2 días hábiles** (un slot interdiario) y conserva su D#; la pausa del Step 1 (4→29-ene = 0 átomos) y los dos átomos anclados a ella (X-7 mar 29-dic · CR-9 lun 1-feb) no se mueven. Fechas releídas con `node` de `researchDailyPlan.ts` / `researchDailyPlan2027.ts` el 14-sep-2026 (`RESEARCH_HITOS`), no estimadas: M1 mar 22-sep · C-2 mié 30-sep · T-1 vie 2-oct · **C-6 mar 20-oct** · CR-1 lun 26-oct · T-8 mié 25-nov · X-1 mar 1-dic · CR-8 vie 11-dic · CR-9 lun 1-feb · X-9 vie 19-feb · R10 jue 25-feb · R43 mié 7-jul-2027. `DATA/RESEARCH/daily-plan.md` ya está regenerado por `gen_research_plan.js` (14-sep) con estas fechas.
+> **⚠ v5.12 (15-sep-2026) — Research NO SE MUEVE: ciclo 1 = 42 átomos mié 16-sep-2026 → jue 11-feb-2027 · ciclo 2 = 67 átomos lun 15-feb → mié 18-ago-2027 (idéntico a v5.11).** El mar 15 de septiembre tampoco se estudió y el D1 del régimen pasa al **mié 16-sep-2026** (undécimo corrimiento, 31-ago→16-sep), que ya era el d1 de Research: los 12 hitos conservan fecha y D# (re-verificado con node el 15-sep contra `RESEARCH_HITOS` y los dos `.ts`; `gen_research_calendar.js --check` = 0 overlays 🔬 cambiados). Esta vez la que corre es **Derma** (+1 slot: d1 jue 17-sep → d73 vie 9-abr-2027). **⚠ Lo que sí cambia de contexto: el Step 1 llena la ventana 25-29 ene (D95 = vie 29-ene) y su examen pasa al LUN 1-FEB-2027 — el mismo día del átomo CR-9 (SUBMIT del case report #1)**: el generador ancla CR-9 al primer día-Research tras la pausa del Step 1 (4→29-ene), no al examen, y **no lo mueve solo**; moverlo al mar 2-feb (o hacer el SUBMIT en la tarde del lunes, después del examen) es **decisión de Joseph** (`DATA/PENDIENTES_JOSEPH.md`). La pausa de research sigue siendo 4→29-ene = 0 átomos.
+>
+> *(Histórico v5.11, 14-sep — Research CORRÍA +2 días de calendario (+1 slot interdiario) hasta las fechas vigentes: ciclo 1 = 42 átomos mié 16-sep-2026 → jue 11-feb-2027 · ciclo 2 = 67 átomos lun 15-feb → mié 18-ago-2027.)* El lun 14 de septiembre tampoco se estudió y el D1 del régimen pasa al **mar 15-sep-2026** (décimo corrimiento, 31-ago→15-sep). Ese martes es día **Derma** en la alternancia (paridad anclada al mié 10-jun-2026), así que Derma no se mueve y el ciclo 1 de Research arranca el primer día-Research ≥ D1: el **mié 16-sep**. Cada hito corre exactamente **2 días hábiles** (un slot interdiario) y conserva su D#; la pausa del Step 1 (4→29-ene = 0 átomos) y los dos átomos anclados a ella (X-7 mar 29-dic · CR-9 lun 1-feb) no se mueven. Fechas releídas con `node` de `researchDailyPlan.ts` / `researchDailyPlan2027.ts` el 14-sep-2026 (`RESEARCH_HITOS`), no estimadas: M1 mar 22-sep · C-2 mié 30-sep · T-1 vie 2-oct · **C-6 mar 20-oct** · CR-1 lun 26-oct · T-8 mié 25-nov · X-1 mar 1-dic · CR-8 vie 11-dic · CR-9 lun 1-feb · X-9 vie 19-feb · R10 jue 25-feb · R43 mié 7-jul-2027. `DATA/RESEARCH/daily-plan.md` ya está regenerado por `gen_research_plan.js` (14-sep) con estas fechas.
 >
 > **🔴 Consecuencia editorial:** el deadline interno de la carta (≤15-oct) ya estaba roto desde v5.9 y ahora **C-6 cae el mar 20-oct-2026 (5 días tarde)**; el paquete queda listo en C-5 (vie 16-oct), así que el SUBMIT hay que hacerlo fuera del átomo (jue 15-oct) o elegir en C-2 (mié 30-sep) una diana con ventana más larga. **CR-1 (lun 26-oct) y CR-2 (mié 28-oct) siguen ANTES del 31-oct** (el re-orden v5.10b aguanta este corrimiento con 5 y 3 días de margen). Los deadlines NO se mueven, los átomos sí: **decisión de Joseph, no de la app** (§9.1).
 >
@@ -116,7 +118,7 @@ Perú (APC)"** (con las 4 URLs a comprobar en la descripción). La clasificació
 |-------|-----|----------------|
 | M1-2 (sep-oct 2026) | ORCID + Zotero · leer CARE + 10 case reports de JAADCR/DOJ · escribir **1 carta al editor** (respuesta a artículo 2026 de JAAD/IJD) · identificar 1-2 casos peruanos con consentimiento — **v5.11: R0 mié 16-sep · C-6 SUBMIT mar 20-oct ⚠ · CR-1 caso lun 26-oct ✅** | transversal |
 | M3-4 (nov-dic 2026) | **Tesis L0 → research letter SUBMIT (T-8 mié 25-nov)** · **Case report #1** con mentor local: borrador, fotos, CARE y **paquete CONGELADO (CR-8 vie 11-dic)** — el SUBMIT a DOJ se ejecuta el 1-feb-2027, no en diciembre · revisor #2 nombrado (X-1 mar 1-dic) | L4 si es complicación estética; si no, el mejor caso disponible |
-| M5 (ene-2027) | **PAUSA TOTAL — examen Step 1** (4-ene → 29-ene-2027 = 0 átomos de research) | — |
+| M5 (ene-2027) | **PAUSA TOTAL — examen Step 1** (4-ene → 29-ene-2027 = 0 átomos de research; v5.12: el examen se rinde el lun 1-feb, fuera de la ventana 25-29 ene) | — |
 | M6-7 (feb-mar 2027) | **SUBMIT case report #1 (CR-9 lun 1-feb)** · protocolo de **revisión sistemática** en derm estética y **registro PROSPERO (R10 jue 25-feb)** · reclutar 2-3 coautores IMG · campaña de cold emails (K1 lun 1-mar · K2 vie 5-mar) | **SR-1 (L4)** o **SR-2 (L5)** — las líneas ACTIVAS del programa |
 | M8-10 (abr-jun 2027) | Ejecutar SR (extracción R22-R25 14→28-abr · MA en R may-2027) · case report #2 · 1 estudio bibliométrico · abstracts a AAD/CILAD/RADLA | L4/L5 + transversal |
 | M11-12 (jul-ago 2027) | **SUBMIT SR-1 (R43 mié 7-jul)** · SR-2 abierta (PROSPERO R46 mar 10-ago) · **balance (X-12 jue 12-ago)** | — |
@@ -168,15 +170,15 @@ decisión informada sobre research fellowship presencial 2028.
 | `prospero-SR-1` | Registro PROSPERO de SR-1 (L4) | Protocolo PRISMA-P · equipo de revisión (revisor #2 humano) | PROSPERO | Dr. Ciro (revisor #2 / validación clínica) + colaborador IMG | **≤ 31-mar-2027** · *plan v5.11: revisor #2 nombrado X-1 = mar 1-dic-2026 (la invitación declara la carga real ≈ 40-70 h fuera del bloque y exige aceptación escrita · L4 §9.4) · equipo confirmado X-9 = vie 19-feb-2027 · REGISTRO R10 = jue 25-feb-2027 (34 días de margen); las fechas previstas que se copian a PROSPERO son las de L4 §9.4 (con margen), no las de los átomos* | — | **idea** (corpus de 200 papers descubierto 11-jun-2026, 0 cribados; export Rayyan listo: `exportResearchCorpus`) | $0 | — |
 | `SR-1` | Revisión sistemática L4 (complicaciones de inyectables, fototipos IV-VI) | PRISMA 2020 + GRADE · `agentic/` (pipeline SR) | Dermatologic Surgery → JAAD → JAAD International | Cotofana (contacto feb-mar 2027) · coautores IMG | ejecución abr-jun 2027 · **enviar: ≤ 31-ago-2027** · *plan v5.11: extracción R22-R25 = mié 14-abr → mié 28-abr-2027 · SUBMIT R43 = mié 7-jul-2027 (55 días de margen)* | — | **idea** | $0 (techo $1.288) | — |
 
-### 9.1 Calendario editorial v5.10b (re-orden del 12-sep-2026) → **v5.11 (re-fechado el 14-sep-2026)** (fechas leídas con `node` de `researchDailyPlan.ts` / `researchDailyPlan2027.ts`)
+### 9.1 Calendario editorial v5.10b (re-orden del 12-sep-2026) → **v5.11 (re-fechado el 14-sep-2026) = v5.12 (re-verificado el 15-sep-2026: Research no se mueve)** (fechas leídas con `node` de `researchDailyPlan.ts` / `researchDailyPlan2027.ts`)
 
 Ningún deadline externo se movió. En v5.9 **todo el ciclo 1 de Research corrió +2 días hábiles**
 (su d1 pasó de jue 10-sep a lun 14-sep); en v5.10 Research no se movió; **en v5.11 vuelve a correr +2 días hábiles** (su d1 pasa
-del lun 14 al **mié 16-sep**, porque el mar 15-sep es día Derma) y el ciclo 2 corre con él (d43 = lun 15-feb-2027). La columna **v5.11** es la fecha REAL del
-átomo que ejecuta el hito (parseada de los `.ts` el 14-sep-2026), no una estimación. El **orden v5.10b (12-sep-2026, gaps v3b 1-3)** se mantiene: mismos 42
+del lun 14 al **mié 16-sep**, porque el mar 15-sep es día Derma) y el ciclo 2 corre con él (d43 = lun 15-feb-2027); **en v5.12 (D1 del régimen = mié 16-sep, ya día Research) no cambia nada**. La columna **v5.11 = v5.12** es la fecha REAL del
+átomo que ejecuta el hito (parseada de los `.ts` el 14-sep-2026 y re-verificada el 15-sep), no una estimación. El **orden v5.10b (12-sep-2026, gaps v3b 1-3)** se mantiene: mismos 42
 átomos; T-1 en d7, M3 en d8, R9 en d9 (antes de R6, d14), CR-1 en d15, CR-2 en d16, T-2 en d19, R7 en d21 y R2 en d35.
 
-| Hito | Átomo | v5.7 = v5.8 | v5.9 = v5.10 (v5.10b) | **v5.11 (vigente)** | Deadline externo | Margen |
+| Hito | Átomo | v5.7 = v5.8 | v5.9 = v5.10 (v5.10b) | **v5.11 = v5.12 (vigente)** | Deadline externo | Margen |
 |------|-------|-------------|--------------------|--------------------|------------------|--------|
 | Infra académica (10 cuentas) | R0 | jue 10-sep-2026 | lun 14-sep-2026 | **mié 16-sep-2026** | — | — |
 | Mentor: email al Dr. Ciro (3 coautorías) | M1 | mié 16-sep-2026 | vie 18-sep-2026 | **mar 22-sep-2026** | — | — |
@@ -192,7 +194,7 @@ del lun 14 al **mié 16-sep**, porque el mar 15-sep es día Derma) y el ciclo 2 
 | **Paquete del case report CONGELADO** | CR-8 | lun 7-dic-2026 | mié 9-dic-2026 | **vie 11-dic-2026** | antes del submit | 52 días |
 | Cierre antes de la pausa de enero | X-7 | mar 29-dic-2026 | mar 29-dic-2026 | **mar 29-dic-2026** *(no se movió: anclado a la pausa)* | — | — |
 | *(pausa Step 1: 4-ene → 29-ene-2027 = 0 átomos)* | — | igual | igual | **igual** | — | — |
-| **SUBMIT case report #1 (DOJ)** | CR-9 | lun 1-feb-2027 | lun 1-feb-2027 | **lun 1-feb-2027** *(no se movió: primer día-Research tras el examen)* | ≤ 28-feb-2027 | 27 días |
+| **SUBMIT case report #1 (DOJ)** | CR-9 | lun 1-feb-2027 | lun 1-feb-2027 | **lun 1-feb-2027** *(no se movió: primer día-Research tras la pausa)* — ⚠ **v5.12: es el DÍA DEL EXAMEN Step 1** (target lun 1-feb); mover el átomo al mar 2-feb o submitear por la tarde = decisión de Joseph | ≤ 28-feb-2027 | 27 días |
 | Equipo de revisión CONFIRMADO | X-9 | lun 15-feb-2027 | mié 17-feb-2027 | **vie 19-feb-2027** | antes de PROSPERO | 6 días |
 | **REGISTRO PROSPERO de SR-1** | R10 | vie 19-feb-2027 | mar 23-feb-2027 | **jue 25-feb-2027** | ≤ 31-mar-2027 | 34 días |
 | Extracción doble de SR-1 | R22-R25 | 8-abr → 22-abr-2027 | 12-abr → 26-abr-2027 | **mié 14-abr → mié 28-abr-2027** | — | — |
@@ -212,8 +214,9 @@ del lun 14 al **mié 16-sep**, porque el mar 15-sep es día Derma) y el ciclo 2 
 >
 > **Dos átomos que NO se movieron** (el generador los ancla a la pausa del Step 1, no a D1):
 > **X-7** (cierre antes de la pausa, mar 29-dic-2026) y **CR-9** (SUBMIT del case report, lun
-> 1-feb-2027 = primer día-Research tras el examen). Por eso el ciclo 1 absorbe el corrimiento en el
+> 1-feb-2027 = primer día-Research tras la pausa). Por eso el ciclo 1 absorbe el corrimiento en el
 > tramo dic-2026 en vez de empujar la pausa (en v5.11 X-3 pasa del lun 21 al mié 23-dic y el hueco entre X-3 y X-7 se cierra).
+> **⚠ v5.12:** el examen Step 1 ya no cae en la ventana 25-29 ene sino el **lun 1-feb-2027 = el día de CR-9**. El generador no lo sabe (ancla a la pausa 4→29-ene, no a `DAILY_META.examenTarget`): el átomo NO se mueve solo. Opciones para Joseph: (a) SUBMIT el mar 2-feb (mover CR-9 un slot y correr el ciclo 2 +1 slot: `gen_research_plan.js` + overlays), (b) SUBMIT la tarde del 1-feb tras el examen (el paquete está congelado desde CR-8, vie 11-dic: son 20-30 min), (c) dejarlo y aceptar que ese día no se hace nada de research. Registrado en `DATA/PENDIENTES_JOSEPH.md`.
 
 **Fuentes**:
 [NRMP Charting Outcomes Non-US IMGs 2026 (PDF)](https://www.nrmp.org/wp-content/uploads/2026/07/Non-US-IMG_Charting-Outcomes_FINAL.pdf) ·

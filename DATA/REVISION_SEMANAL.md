@@ -1,12 +1,12 @@
-# 📋 REVISIÓN SEMANAL — sábado 07:15-07:35 (20') · v5.11 · re-fechado 14-sep-2026
+# 📋 REVISIÓN SEMANAL — sábado 07:15-07:35 (20') · v5.12 · re-fechado 15-sep-2026
 
-> Ritual único que revisa los 9 frentes del régimen v5.11 (D1 = mar 15-sep-2026, Step 1 = principal) con
+> Ritual único que revisa los 9 frentes del régimen v5.12 (D1 = mié 16-sep-2026, Step 1 = principal; examen target lun 1-feb-2027) con
 > **10 métricas** y una sola pregunta: *¿el sistema va on-track o hay que corregir ESTA semana?*
 > Palmerton revisa el checklist G "en cada hito NBME" (~3 semanas): demasiado grueso para un plan donde
 > 1 día perdido = +1 hábil. Aquí la cadencia es semanal y el trabajo de recopilar lo hace un script.
 >
 > **Franja**: sábado 07:15-07:35 (hueco libre tras el desayuno; no toca las franjas L-V). El evento en el
-> Google Calendar NO se ha creado: decisión de Joseph (pendiente). **Semana 1 = sáb 19-sep-2026** (v5.11: la S1 del Step 1 es la semana corta mar 15 → vie 18-sep; el sáb 12-sep queda como "pre-D1" en el cockpit y no lleva revisión). Las 20 semanas se numeran desde `DAILY_META.inicio` = 15-sep — misma regla que `semanaStep1()` del cockpit y que `gen_revision_semanal.js` (lee el `inicio` del `.ts`) — y los hitos conservan su fecha, así que la tabla de abajo es la misma de v5.10 salvo el UWSA1 (mar 15-sep) y los SHIP del vibecoding (corren una semana: S1 sáb 26-sep … S12 sáb 12-dic).
+> Google Calendar NO se ha creado: decisión de Joseph (pendiente). **Semana 1 = sáb 19-sep-2026** (v5.12: la S1 del Step 1 es la semana corta mié 16 → vie 18-sep; el sáb 12-sep queda como "pre-D1" en el cockpit y no lleva revisión). Las 20 semanas se numeran desde `DAILY_META.inicio` = 16-sep — misma regla que `semanaStep1()` del cockpit y que `gen_revision_semanal.js` (lee el `inicio` del `.ts`) — y los hitos conservan su fecha, así que la tabla de abajo es la misma de v5.11 salvo el UWSA1 (mié 16-sep) y la S20, que ahora contiene la última sesión del plan (vie 29-ene) pero NO el examen (lun 1-feb). Los SHIP del vibecoding siguen en los mismos sábados (S1 sáb 26-sep … S12 sáb 12-dic).
 >
 > **Pre-relleno automático** (viernes 21:00 o sábado 07:10, 1 comando):
 > `node DATA/_scripts/gen_revision_semanal.js` → `DATA/USMLE/REVISIONES/S<NN>_<sábado>.md` + append en
@@ -72,7 +72,7 @@ Generado: <fecha hora> · fuentes OK: [supabase, localStorage(<fecha export>), a
 - Anki sáb/dom: __' / __' (= due × 20 s)
 ```
 
-## Progreso persistente (v5.10 · 12-sep; vigente en v5.11) y export de localStorage
+## Progreso persistente (v5.10 · 12-sep; vigente en v5.11 y v5.12) y export de localStorage
 
 **Los ✓ ya no dependen del navegador.** `src/lib/studyProgressSync.ts` espeja `jmd-study-progress-v1` en Supabase
 `plan_checks` {plan_key, dia, checked_at, device}: cada ✓/✗ sube al instante (diff), el primer `loadDone` de la sesión
@@ -94,14 +94,14 @@ copy(JSON.stringify(Object.fromEntries(Object.keys(localStorage).filter(k => k.s
 
 | S | Sábado | Hito de esa semana (viernes) | Deload secundarios |
 |---|---|---|---|
-| S1 | 19-sep | UWSA1 (baseline, **mar 15-sep = D1**; movido del lun 14-sep) · PC = avance del proyecto S1 (SHIP el 26-sep) | — |
+| S1 | 19-sep | UWSA1 (baseline, **mié 16-sep = D1**; movido del mar 15-sep) · PC = avance del proyecto S1 (SHIP el 26-sep) | — |
 | S2 | 26-sep | — (SHIP S1 del vibecoding) | — |
 | S3 | 3-oct | NBME 25 (≥ 51 %) | — |
 | S4 | 10-oct | — | — |
 | S5 | 17-oct | — | — |
 | S6 | 24-oct | NBME 26 (≥ 54 %) | — |
 | **S7** | 31-oct | — | **sí (26-30 oct)** |
-| S8 | 7-nov | — (SHIP S7 del vibecoding = proyecto deload, mar 27-oct → lun 2-nov) | — |
+| S8 | 7-nov | — (SHIP S7 del vibecoding = proyecto deload, mié 28-oct → mar 3-nov) | — |
 | S9 | 14-nov | NBME 27 (≥ 57 %) | — |
 | S10 | 21-nov | — | — |
 | S11 | 28-nov | — (SHIP S10 del vibecoding) | — |
@@ -112,11 +112,10 @@ copy(JSON.stringify(Object.fromEntries(Object.keys(localStorage).filter(k => k.s
 | S16 | 2-ene | NBME 30 mié 30-dic (≥ 65 %) · 31-dic/1-ene feriados | — |
 | S17 | 9-ene | UWSA2 (low risk) | — |
 | S18 | 16-ene | NBME 31 · GO/NO-GO (≥ 68 %) | — |
-| S19 | 23-ene | NBME 32 (lun) · NBME 33 (mié) · Free 120 (vie ≥ 70 %) | — |
-| S20 | 30-ene | D92-D95 (lun 25 → jue 28; D94 = D-2 · **D95 jue 28 = D-1 dentro del plan**) · **examen vie 29-ene** → el sábado es post-mortem, no ritual | — |
+| S19 | 23-ene | NBME 32 (lun) · NBME 33 (mié) · Free 120 (vie ≥ 70 %) · desde el NBME 31 cero contenido nuevo | — |
+| S20 | 30-ene | D91-D95 (lun 25 → vie 29; D94 jue 28 = D-4 · **D95 vie 29 = D-3, última sesión**; la última A-unit de SYNAPSE es el lun 25) · sáb 30 (D-2) y dom 31 (D-1) descanso fuera del plan → el sábado NO lleva ritual de 20': solo Anki vencido y checklist de logística Prometric · **examen LUN 1-FEB** (post-mortem el sáb 6-feb) | — |
 
-⚠ **v5.11:** el plan Step 1 termina el **jue 28-ene-2027 (D95 = D-1)** y el examen target sigue siendo el **vie 29-ene**, así que la S20 (25-29 ene) contiene D92-D95 (incorrects + AMBOSS 200 lun-mar, taper D-2/D-1 mié-jue) **y** el examen. El sáb 30-ene no
-lleva el ritual de 20': el cierre de esa semana es el post-mortem del examen. La última A-unit de SYNAPSE cae el sáb 23-ene (S19) — A DECIDIR. Las dos semanas DELOAD (26-30 oct y 7-11 dic)
+⚠ **v5.12:** el plan Step 1 termina el **vie 29-ene-2027 (D95 = última sesión)** y llena la ventana 25-29 ene, así que el examen pasa al **lun 1-feb-2027** (fuera de la ventana; Prometric/eligibility a confirmar por Joseph). La S20 (25-29 ene) contiene D91-D95 (incorrects + AMBOSS 200 lun-mié, taper D-4/D-3 jue-vie) y **no** el examen: el sáb 30-ene no lleva el ritual de 20' (descanso: solo Anki vencido + logística), el dom 31 es el ritual de test-day (`USMLE_TAPER.dMenos1`) y el post-mortem del examen se hace el sáb 6-feb. La última A-unit de SYNAPSE cae el lun 25-ene (S20) — A DECIDIR si se adelanta al vie 22. *(v5.11: D95 = jue 28-ene = D-1 y examen vie 29-ene dentro de la S20.)* Las dos semanas DELOAD (26-30 oct y 7-11 dic)
 conservan sus fechas (`gen_revision_semanal.js` las tiene fijas) y pasan a numerarse S7 y S13.
 
 ## Historial

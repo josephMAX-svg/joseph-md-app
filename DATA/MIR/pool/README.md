@@ -2,7 +2,7 @@
 
 Pool de las **1.050 preguntas oficiales** del examen MIR (Medicina) de las convocatorias **MIR 2022, 2023, 2024, 2025 y 2026** (5 × 210: 200 + 10 de reserva), con la **clave definitiva** del Ministerio de Sanidad, parseadas a JSON desde los PDF oficiales y **clasificadas por asignatura y capítulo real de ProMIR** (`src/lib/mirTemarioData.ts`). Cubre los tres pasos del punto 2 de `DATA/USMLE/_palmerton_v3_extractos/gaps_v3b_mir.json` ("questions as the curriculum"): (1) descarga + parseo → `AAAA.json`; (2) clasificación LLM + verificación → `AAAA_clasificado.json`; (3) generación de [`src/lib/mirPreguntasOficiales.ts`](../../../src/lib/mirPreguntasOficiales.ts) (`--emit`). Cómo lo consume cada segmento del loop (anti-repetición por `qIds`): [`../POOL_USO.md`](../POOL_USO.md).
 
-Creado el 12-sep-2026 (paso 1) · clasificación y `.ts` el 13-sep-2026 (régimen v5.10; sin cambios en v5.11, 14-sep: el pool no depende de fechas — el plan 1ª vuelta va ahora mar 15-sep → mar 5-ene-2027 y el mantenimiento mié 6-ene → mié 31-mar).
+Creado el 12-sep-2026 (paso 1) · clasificación y `.ts` el 13-sep-2026 (régimen v5.10; sin cambios en v5.11 ni en v5.12, 15-sep: el pool no depende de fechas — el plan 1ª vuelta va ahora mié 16-sep → mié 6-ene-2027 y el mantenimiento jue 7-ene → mié 31-mar).
 
 ## Origen de los datos (verificado 12-sep-2026)
 

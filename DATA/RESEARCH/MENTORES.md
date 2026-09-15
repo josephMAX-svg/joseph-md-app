@@ -30,6 +30,7 @@ Leyenda de estado: 🔴 no contactado · 🟡 contactado, sin respuesta · 🟢 
 | 5-sep-2026 | — | — | Se crea el CRM y se redactan los 3 mensajes de septiembre (no enviados) | Joseph revisa y envía (mensajes 1-3) |
 | 12-sep-2026 | — | — | v5.10b: fechas reales de M1 (18-sep) · M2 (24-sep) · T-1 (30-sep) · M3 (2-oct) desde el plan; regla del plan B de inglés (fila 2: decisión 22-oct) y de la fuente B del caso (fila 6: 8-oct); X-2 (3-dic) comprueba que el mentor revisa también el case report | Joseph ejecuta según el plan; nada enviado aún |
 | 14-sep-2026 | — | — | **v5.11 (Research corre +2 hábiles, mismo orden v5.10b; leído de `researchDailyPlan.ts` con node):** M1 **mar 22-sep** · M2 **lun 28-sep** · T-1 **vie 2-oct** · M3 **mar 6-oct** · plan B de inglés: decisión **lun 26-oct** (4 semanas desde M2) · fuente B del caso: **lun 12-oct** (d10) · CR-1 lun 26-oct · CR-2 mié 28-oct · T-7 jue 19-nov · T-8 mié 25-nov · X-1 mar 1-dic · X-2 lun 7-dic | Joseph ejecuta según el plan; nada enviado aún |
+| 15-sep-2026 | — | — | **v5.12: Research NO se mueve** (el D1 del régimen, mié 16-sep, ya era su d1; re-verificado con node: mismas fechas y D# de M1 · M2 · T-1 · M3 · X-1 · X-2 que en v5.11). Único cambio de contexto: el examen Step 1 pasa al **lun 1-feb-2027** = día de CR-9 (SUBMIT del case report) → decisión de Joseph (`DATA/PENDIENTES_JOSEPH.md`) | Nada que reenviar; el mentor no se entera del corrimiento |
 
 ## 3. Borradores de los 3 mensajes de septiembre (NO ENVIADOS — revisar, personalizar y enviar)
 
