@@ -6,26 +6,26 @@
 //   · taper:     8 semanas S13-S20 (v5.10-b, 12-sep-2026): S13-S16 mantenimiento ≤15'/día (flag deload) ·
 //                S17-S20 deload total (journal 5' + audio) · S20 = semana del examen (lun-mié, D93-D95).
 //   · _meta:     freno 04:55 · convención de commit [S<n>] · verificación mecánica (verify_vibecoding.js).
-// Calendario: START = argv[2] (YYYY-MM-DD, default 2026-09-15 = D1 v5.11) · días HÁBILES L-V (salta sáb/dom y los
+// Calendario: START = argv[2] (YYYY-MM-DD, default 2026-09-16 = D1 v5.12) · días HÁBILES L-V (salta sáb/dom y los
 // feriados fijos 25-dic/31-dic/1-ene, misma regla que remap_inicio.js).
 //   · S1-S12: 5 días hábiles por proyecto (Lun definir · Mar/Mié construir · Jue verificar · Vie doc+commit) →
 //     60 días · sábado PC (SYNAPSE 15:00-17:00) = SHIP del proyecto · domingo = Feynman.
 //   · S13-S20: semanas de CALENDARIO (lun→vie) desde el lunes siguiente al fin de S12, con los feriados fuera
-//     (S15 = 4 días, S16 = 3, S20 = 3; v5.11: bloques secuenciales, S20 = mar 26 → jue 28-ene-2027 = D95 = D-1 del Step 1; vie 29 EXAMEN).
+//     (S15 = 4 días, S16 = 3, S20 = 3; v5.12: bloques secuenciales, S20 = mié 27 → vie 29-ene-2027 = D95 del Step 1; examen lun 1-feb).
 //     Con D1 = lun 14-sep, el día d del vibecoding coincide con el D# del Step 1 (95 días).
 // Ship log: si existe DATA/SYNAPSE/_vibecoding_ship.json (escrito por verify_vibecoding.js) se hornea en el TS
 // (VIBE_SHIP_LOG) para que la app muestre el último verify aunque no haya localStorage.
 //
-// Uso:  node DATA/_scripts/gen_vibecoding_plan.js 2026-09-15
+// Uso:  node DATA/_scripts/gen_vibecoding_plan.js 2026-09-16
 // Pipeline de corrimiento: tras remap_inicio.js <fecha>, correr también este script con la misma fecha
 // (igual que gen_synapse_plan.js / gen_aurum_plan.js). Determinista: sin Date.now() ni aleatoriedad.
 const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..', '..');
-const START = process.argv[2] || '2026-09-15';
+const START = process.argv[2] || '2026-09-16';
 if (!/^20\d\d-\d\d-\d\d$/.test(START)) throw new Error('START inválido (YYYY-MM-DD): ' + START);
-// Último día del taper = D95 del Step 1 (jue 28-ene-2027 con START=2026-09-15). Se calcula, no se fija a mano:
+// Último día del taper = D95 del Step 1 (vie 29-ene-2027 con START=2026-09-16). Se calcula, no se fija a mano:
 // 95 días hábiles desde START con la misma regla de feriados.
 const DIAS_STEP1 = 95;
 

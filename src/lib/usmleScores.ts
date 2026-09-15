@@ -335,7 +335,7 @@ export function alertaBurnout(scores: UsmleScore[]): boolean { return gateHito(s
 export function exportScoresJSON(): string {
   const scores = leer();
   return JSON.stringify({
-    exportado: new Date().toISOString(), plan: 'USMLE Step 1 v5.11 (D1 = 2026-09-15 · 95 días)', clave: KEY, tabla: TABLA,
+    exportado: new Date().toISOString(), plan: 'USMLE Step 1 v5.12 (D1 = 2026-09-16 · 95 días · examen lun 1-feb-2027)', clave: KEY, tabla: TABLA,
     gate: USMLE_GATE, minimosOnTrack: { fuente: HITOS_ONTRACK_FUENTE, hitos: HITOS_ONTRACK.map((h) => ({ clave: h.clave, min: h.min, nota: h.nota })) },
     gateHitos: (({ estado, label }) => ({ estado, label }))(gateHito(scores)),
     scores,

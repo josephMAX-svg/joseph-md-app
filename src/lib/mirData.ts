@@ -138,8 +138,8 @@ export const MIR_HORA = [
 
 // Fases REALES del calendario MIR (v3b; antes describía las "Fase 0-4 por meses" del plan de junio)
 export const MIR_CALENDARIO = [
-  { fase: '1ª vuelta · sep→dic-2026', foco: '78 días (15-sep→5-ene): 76 temas top-N por Peso MIR + núcleo rabi_94, Epi/Bioética D1-D4, cada bloque precede ~1 semana a su sistema Step 1. mini-MIR D77 ≥ 50 % neto.' },
-  { fase: 'Banqueo · ene→mar-2027', foco: 'Sin contenido nuevo: Anki + 25Q/día reales (viernes 30Q de la asignatura peor del log). Modo reducido hasta el 28-ene (Step 1). Mantenimiento desde el mié 6-ene. Handoff 31-mar ≥ 60 %.' },
+  { fase: '1ª vuelta · sep→dic-2026', foco: '78 días (16-sep→6-ene): 76 temas top-N por Peso MIR + núcleo rabi_94, Epi/Bioética D1-D4, cada bloque precede ~1 semana a su sistema Step 1. mini-MIR D77 ≥ 50 % neto.' },
+  { fase: 'Banqueo · ene→mar-2027', foco: 'Sin contenido nuevo: Anki + 25Q/día reales (viernes 30Q de la asignatura peor del log). Modo reducido hasta el 29-ene (Step 1; examen lun 1-feb). Mantenimiento desde el jue 7-ene. Handoff 31-mar ≥ 60 %.' },
   { fase: 'Principal · abr-2027→dic-2027', foco: 'MIR pasa a bloque principal: 1ª vuelta COMPLETA (30 asignaturas, Tier C incluido), umbrales de cierre 75/60, retention FSRS 0,90. Fin de vuelta ≥ 68 %.' },
   { fase: 'Vueltas + simulacros · 2028→2029', foco: 'Vueltas numéricas (motor ENCAPS) + simulacros 200Q cronometrados con plantilla idéntica. 2028 ≥ 75 % · 2029 ≥ 82 % (banda Top 50 = 150-165 netas).' },
   { fase: 'Competición · ene-2030', foco: 'Solo simulacros + cuaderno de errores + taper. Examen MIR 2030 → Top 50 → Dermatología (Clínic).' },

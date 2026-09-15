@@ -404,13 +404,13 @@ export const LIVIANO_LOGISTICA = {
 // ===================== PENDIENTES CRÍTICOS (riesgos) =====================
 // v2 (sep-2026): los 2 pendientes ROJOS (abiertos desde jun-2026 sin dueño) pasan a TAREAS con
 // dueño, día del plan LIVIANO Academia (Módulo 7 · Acceso en Perú) y salida verificable
-// (fila en LIVIANO_ACCESO_PERU). Las fechas son las del plan v5.11 (D1 = mar 15-sep-2026): si el
+// (fila en LIVIANO_ACCESO_PERU). Las fechas son las del plan v5.12 (D1 = mié 16-sep-2026): si el
 // plan se corre con remap_inicio.js, manda `planDia` (la fecha se resuelve contra LIV_DIAS).
 export interface PendienteLiviano {
   titulo: string; detalle: string; nivel: Semaforo;
   dueno?: string;      // quién cierra la tarea
   planDia?: number;    // día del plan LIVIANO Academia en que se ejecuta
-  fecha?: string;      // fecha límite (plan v5.11) — se recalcula si el plan se corre
+  fecha?: string;      // fecha límite (plan v5.12) — se recalcula si el plan se corre
   salida?: string;     // entregable verificable que cierra el pendiente
 }
 export const LIVIANO_PENDIENTES: PendienteLiviano[] = [
@@ -431,7 +431,7 @@ export const LIVIANO_PENDIENTES: PendienteLiviano[] = [
 // Tabla de VERIFICACIÓN con regla anti-alucinación: ninguna celda se rellena sin fuente primaria
 // (captura fechada del portal público de DIGEMID, cotización escrita de farmacia, dictamen de QF /
 // abogado). Hasta entonces cada celda dice "PENDIENTE DE VERIFICACIÓN". Se produce en los días
-// D39-D48 del plan (v5.11; las fechas se recalculan desde livianoStudyPlan) y se re-verifica en cada REVISIÓN TRIMESTRAL.
+// D39-D48 del plan (v5.12; las fechas se recalculan desde livianoStudyPlan) y se re-verifica en cada REVISIÓN TRIMESTRAL.
 export type EstadoVerificacion = 'PENDIENTE DE VERIFICACIÓN' | 'VERIFICADO' | 'SIN REGISTRO HALLADO';
 export interface AccesoPeruFila {
   molecula: string;          // molécula + marca de referencia (la marca en Perú se confirma en el registro)
@@ -465,7 +465,7 @@ export const LIVIANO_ACCESO_PERU_REGLAS = {
   titulo: 'Protocolo de verificación (Módulo 7 · Acceso en Perú)',
   dueno: 'Joseph (+ QF y abogado de salud — A VERIFICAR nombres)',
   planDias: [39, 41, 42, 43, 44],
-  ventana: 'D39-D48 (v5.11 · noviembre-2026) · re-verificación en cada revisión trimestral · fechas exactas en livianoStudyPlan',
+  ventana: 'D39-D48 (v5.12 · noviembre-2026) · re-verificación en cada revisión trimestral · fechas exactas en livianoStudyPlan',
   pasos: [
     'D39 · Registro: consultar el portal público de DIGEMID (URL A VERIFICAR), capturar pantalla con fecha por molécula; si no aparece → "SIN REGISTRO HALLADO (fecha)".',
     'D41 · Condición de venta: leerla en el registro (con receta / receta retenida) y mapear el flujo receta → farmacia → paciente en el CRM.',
@@ -495,7 +495,7 @@ export const LIVIANO_REVISION_TRIMESTRAL = {
 };
 
 // ===================== PROTOCOLO CLÍNICO LIVIANO (capstone de la Academia) =====================
-// Esqueleto: cada "Síntesis de módulo" del plan produce UNA sección; D89 (capstone) las ensambla en
+// Esqueleto: cada "Síntesis de módulo" del plan produce UNA sección; el capstone (D88 en v5.12) las ensambla en
 // DATA/BUSINESS/LIVIANO_PROTOCOLO_CLINICO_v1.md. Sin inventar dosis: cita fuente o "A VERIFICAR".
 export interface ProtocoloSeccion {
   id: string; titulo: string;
@@ -506,9 +506,9 @@ export interface ProtocoloSeccion {
   pendientes: string[];     // lo que falta verificar (ficha técnica, guía, QF)
 }
 export const LIVIANO_PROTOCOLO = {
-  version: 'v1 · esqueleto (sep-2026) → v1 completa en el capstone (D89, v5.11)',
+  version: 'v1 · esqueleto (sep-2026) → v1 completa en el capstone (D88 mié 20-ene, v5.12)',
   doc: 'DATA/BUSINESS/LIVIANO_PROTOCOLO_CLINICO_v1.md',
-  criterioExito: 'El caso integral del viernes 15-ene (D86) se resuelve SOLO con el protocolo. Lo que falte es una sección que falta.',
+  criterioExito: 'El caso integral del viernes 22-ene (D90, v5.12: cae dos días DESPUÉS del capstone) se resuelve SOLO con el protocolo. Lo que falte es una sección que falta.',
   secciones: [
     { id: 'fundamento', titulo: '§1 Fundamento: por qué tratamiento crónico', produceEn: 'Síntesis módulo 1', planDias: [19], estado: 'borrador',
       contenido: ['Obesidad = disfunción del sistema de homeostasis energética (Schwartz 2017); set point elevado; adaptación metabólica persiste años → tratamiento crónico como la hipertensión.', 'Metáforas oficiales: termostato · timbre · acelerador/freno.'],
@@ -521,14 +521,14 @@ export const LIVIANO_PROTOCOLO = {
       pendientes: ['Ingesta de líquidos objetivo y señales de deshidratación — A VERIFICAR.', 'Cadencia exacta de labs de control (bono "labs trimestrales") — A VERIFICAR.'] },
     { id: 'conducta', titulo: '§5 5As · automonitoreo · cadencia de check-in (M5)', produceEn: 'Síntesis módulo 5', planDias: [86], estado: 'borrador',
       contenido: ['Guion de consulta 5As (Obesity Canada): pedir permiso → evaluar sin juicio → informar → pactar UNA meta elegida por el paciente → asistir.', 'Automonitoreo = predictor #1: qué registra el paciente (comida, peso, pasos) y dónde.', 'Cadencia de acompañamiento por fase (oferta): Despegue 4 sesiones/mes · Progreso 2 · Consolidación 1 · Mantenimiento control trimestral; check-in de EA semanal durante la titulación.', 'Lenguaje people-first y protocolo sin estigma (balanza privada, mobiliario, guion). El estigma es ítem evaluable de cada caso.'],
-      pendientes: ['Contenido exacto de cada una de las 4 sesiones/mes del Despegue — se redacta en D86.'] },
+      pendientes: ['Contenido exacto de cada una de las 4 sesiones/mes del Despegue — se redacta en el capstone (D88).'] },
     { id: 'derivacion', titulo: '§6 Derivación y límites de competencia (M6)', produceEn: 'Síntesis módulo 6', planDias: [77], estado: 'borrador',
       contenido: ['Gatillos de derivación a cirugía: ASMBS/IFSO 2022 (IMC ≥ 35 sin exigir comorbilidades; 30-34,9 con enfermedad metabólica refractaria; asiáticos ≥ 27,5 — juicio clínico en población peruana) + falla a farmacoterapia.', 'Qué logra la cirugía: pérdida sostenida 25-30 % y remisión de diabetes; rol LIVIANO pre y post.', 'Otros límites: paciente cardiológico (coordinar con cardiología), tratamiento psiquiátrico (interconsulta antes de no-GLP1), red flags (pancreatitis, embarazo) → emergencia/obstetricia.', 'No-GLP1 (fentermina/topiramato, naltrexona/bupropión, orlistat, metformina off-label): papel real modesto; solo con registro verificado.'],
       pendientes: ['GLP-1 post-bariátrica: esquema — A VERIFICAR.', 'Setmelanotida: criterios de estudio genético — A VERIFICAR.'] },
     { id: 'acceso', titulo: 'Anexo A · Acceso en Perú (M7)', produceEn: 'Módulo 7 (D39-D48) + revisiones trimestrales', planDias: [39, 40, 41, 42, 44, 45, 48, 89], estado: 'pendiente',
       contenido: ['Tabla LIVIANO_ACCESO_PERU (molécula · registro · condición · precio farmacia · costo LIVIANO · fecha verificación).', 'Cadena de frío doméstica 2–8 °C: guion del kit de bienvenida.', 'Regla: nunca mercado gris; solo farmacia licenciada con certificado de análisis por lote.'],
       pendientes: ['Todas las celdas de la tabla (registro DIGEMID, condición de venta, 2 cotizaciones, magistral) — A VERIFICAR en D39-D48 (2-13 nov-2026).'] },
-    { id: 'capstone', titulo: 'Capstone · ensamblaje v1', produceEn: 'D89 (tras el caso integral D86)', planDias: [89], estado: 'pendiente',
+    { id: 'capstone', titulo: 'Capstone · ensamblaje v1', produceEn: 'D88 mié 20-ene (v5.12: el caso integral 16/16 cae el vie 22-ene = D90, después del capstone)', planDias: [88], estado: 'pendiente',
       contenido: ['Unir §1-§6 + Anexo A, marcar toda dosis sin ficha técnica como "A VERIFICAR", añadir lo que faltó en el caso integral.'],
       pendientes: ['Revisión por par (médico con experiencia en obesidad — A VERIFICAR) antes de usarlo con pacientes reales.'] },
   ] as ProtocoloSeccion[],

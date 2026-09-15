@@ -15,7 +15,7 @@ import { planHoyD, loadDone, saveDone } from '../../lib/studyProgress';
  * LivianoTodayPlan — "LIVIANO Academia" día a día (90 días L-V · medicina de la obesidad).
  * v2 (Palmerton v3): el ✓ binario pasa a SCORE medido:
  *   · LUNES  → pre-test ciego 5Q sobre la semana D-7 (tarjetas de mecanismo) → % ciego
- *   · DRILL  → cifras ancla en ciego (D37 · D58 · D76 · D88) → % ciego
+ *   · DRILL  → cifras ancla en ciego (D36 · D57 · D75 · D87) → % ciego
  *   · VIERNES→ caso del banco LIV_CASOS con rúbrica 0-2 × 4 → rúbrica media
  * Persistencia: localStorage 'jmd-liviano-score' (este dispositivo). El ✓ de studyProgress
  * ('liviano') se sigue escribiendo para el progreso global, pero lo que se muestra es el % real.
