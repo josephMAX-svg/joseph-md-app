@@ -10,15 +10,15 @@ Anki de mecanismo FSRS · medir por % ciego). Meta: Top 50 MIR 2030.
 > en D1-D4, bloques alineados al Step 1, eval multi-temporal, registro de mediciones, test de
 > cierre, mini-MIR D77, modo banqueo ene-mar 2027. El Calendar (15:15-16:15 L-V) NO cambia.
 >
-> **v5.12 (15-sep-2026): D1 = MIÉ 16-SEP-2026.** El mar 15 de septiembre tampoco se estudió → +1 día hábil
-> sobre v5.11. Es el **undécimo corrimiento** (31-ago → 16-sep; 12 días hábiles perdidos).
+> **v5.13 (16-sep-2026): D1 = JUE 17-SEP-2026.** El mié 16 de septiembre tampoco se estudió → +1 día hábil
+> sobre v5.12. Es el **duodécimo corrimiento** (31-ago → 17-sep; 13 días hábiles perdidos).
 > Regla literal de Joseph, reconfirmada en este corrimiento:
 > **ni un tema ni un subtema se deja atrás — no se fusiona ni se recorta nada**; el desfase se absorbe
 > alargando el final. El plan sigue teniendo **78 días** (76 temas + D77 mini-MIR + D78 corrección) y las franjas, metas y contenidos son
 > idénticos: solo se re-fechó. Como el 31-dic y el 1-ene no son días hábiles del plan, la cola salta a
-> enero: el último tema (D76, Psicóticos) queda el **lun 4-ene-2027**, D77 (mini-MIR) pasa al **mar 5-ene-2027** y D78 (corrección) al **mié 6-ene-2027**.
-> El mantenimiento se regeneró para no solapar: arranca el **jue 7-ene-2027** y sigue cerrando el **mié 31-mar-2027** (**60 días**, v5.11: 61 desde el mié 6-ene); pierde un slot lun-jue (49 → 48, Reuma 4 → 3) y las cuotas por asignatura se re-balancean por peso; su modo reducido sigue cubriendo hasta el **vie 29-ene** (D95 del Step 1 = última sesión). ⚠ **Consecuencia v5.12 en el Step 1:** el plan de 95 días llena toda la ventana 25-29 ene → el examen sale de la ventana: **target LUN 1-FEB-2027** (sáb 30 y dom 31-ene = descanso fuera del plan; Joseph debe agendar/reprogramar Prometric y confirmar el eligibility period, o recortar temario — decisión suya en `DATA/PENDIENTES_JOSEPH.md`). Fechas leídas de los dos `.ts` con node el 15-sep, no estimadas.
-> *(Histórico v5.11, 14-sep: D1 mar 15-sep · D77 lun 4-ene · D78 mar 5-ene · mantenimiento 61 días 6-ene → 31-mar, reducido hasta el 28-ene. v5.10, 12-sep: D1 lun 14-sep · D77 mié 30-dic · D78 lun 4-ene · mantenimiento 62 días 5-ene → 31-mar.)*
+> enero: el último tema (D76, Psicóticos) queda el **mar 5-ene-2027**, D77 (mini-MIR) pasa al **mié 6-ene-2027** y D78 (corrección) al **jue 7-ene-2027**.
+> El mantenimiento se regeneró para no solapar: arranca el **vie 8-ene-2027** (un viernes: la semana 1 del catálogo es solo ese viernes, así que la primera semana con slots lun-jue es la 2 y el Tier C express ocupa las semanas reales 2-13) y sigue cerrando el **mié 31-mar-2027** (**59 días** = 47 lun-jue + 12 viernes; v5.12: 60 desde el jue 7-ene); pierde un slot lun-jue (48 → 47, Neumo 4 → 3) y las cuotas por asignatura se re-balancean por peso; su modo reducido cubre hasta el **lun 1-feb** inclusive (D95 del Step 1 = D-1 dentro del plan; `modoReducidoHasta = '2027-02-01'`, 17 días). ⚠ **Consecuencia v5.13 en el Step 1:** el plan de 95 días termina el **lun 1-feb-2027 (D95 = D-1)** y el examen pasa al **MAR 2-FEB-2027** (fuera de la ventana 25-29 ene; el vie 29-ene = D94 es la última sesión de banco, sáb 30 y dom 31-ene libres; Joseph debe agendar/reprogramar Prometric y confirmar el eligibility period, o recortar temario — decisión suya en `DATA/PENDIENTES_JOSEPH.md`). El mar 2-feb (examen) es el D18 del mantenimiento y el primer día en modo normal: decisión de Joseph si va reducido o vacío. Fechas leídas de los dos `.ts` con node el 16-sep, no estimadas.
+> *(Histórico v5.12, 15-sep: D1 mié 16-sep · D77 mar 5-ene · D78 mié 6-ene · mantenimiento 60 días 7-ene → 31-mar, reducido hasta el 29-ene. v5.11, 14-sep: D1 mar 15-sep · D77 lun 4-ene · D78 mar 5-ene · mantenimiento 61 días 6-ene → 31-mar, reducido hasta el 28-ene. v5.10, 12-sep: D1 lun 14-sep · D77 mié 30-dic · D78 lun 4-ene · mantenimiento 62 días 5-ene → 31-mar.)*
 >
 > **v3b (12-sep-2026, segunda capa de vacíos · `gaps_v3b_mir.json` puntos 1, 5, 6, 7, 10, 11):** gate Palmerton
 > como selección de anclas (§3-§4), métricas calibradas a Top 50 (§4), táctica −1/3 medida + cronómetro (§4),
@@ -26,10 +26,10 @@ Anki de mecanismo FSRS · medir por % ciego). Meta: Top 50 MIR 2030.
 > "APEX directamente en Anki hasta verificar n8n" (§5). Fechas, franjas, metas y temario: sin cambios (verificado:
 > las 78 fechas y los 76 capIds del `.ts` regenerado son idénticos a HEAD).
 
-## 1. Plan día-a-día (78 días = 76 temas + D77 mini-MIR + D78 corrección · D1 mié 16-sep-2026 → D78 mié 6-ene-2027)
+## 1. Plan día-a-día (78 días = 76 temas + D77 mini-MIR + D78 corrección · D1 jue 17-sep-2026 → D78 jue 7-ene-2027)
 Fuente de verdad: [`src/lib/mirDailyPlan.ts`](../../src/lib/mirDailyPlan.ts) (bloque GENERADO por
 [`STUDY_HUB/_scrape/gen_mir_daily.js`](../../STUDY_HUB/_scrape/gen_mir_daily.js) `[YYYY-MM-DD]`).
-L-V, sáb+dom libres, skips = 25-dic, 31-dic y 1-ene (no son días hábiles del plan), hasta el mié 6-ene-2027 (D76 último tema lun 4-ene · D77 mini-MIR mar 5-ene · D78 corrección mié 6-ene). 1 tema atómico/día, 1ª vuelta.
+L-V, sáb+dom libres, skips = 25-dic, 31-dic y 1-ene (no son días hábiles del plan), hasta el jue 7-ene-2027 (D76 último tema mar 5-ene · D77 mini-MIR mié 6-ene · D78 corrección jue 7-ene). 1 tema atómico/día, 1ª vuelta.
 
 **Regla de selección (v3):** por asignatura, top-N capítulos por `pesoPct` de `mirDetalleData`
 (N = días del bloque) + los capítulos **núcleo rabi_94** (`mirPrioridades1V`) forzados: un núcleo
@@ -43,44 +43,44 @@ de `DELTA_CAPIDS` existen y sus filas llevan `delta:true`.
 
 **Orden de bloques = cada asignatura PRECEDE ~1 semana a su sistema Step 1** (clínica en español
 como prime → mecanismo en inglés 7 días después = re-exposición espaciada del mismo sistema).
-Homólogo Step 1 = rangos reales de `usmleStep1Daily.ts` **v5.12** (95 días, D1 = mié 16-sep-2026 → D95 = vie 29-ene-2027),
+Homólogo Step 1 = rangos reales de `usmleStep1Daily.ts` **v5.13** (95 días, D1 = jue 17-sep-2026 → D95 = lun 1-feb-2027 = D-1),
 leídos del array `DIAS` — no estimados.
 
 | # | Asignatura | Días MIR | Fechas | Capítulos (orden del bloque) | Cobertura peso | Homólogo Step 1 | Lag |
 |---|------------|----------|--------|------------------------------|----------------|-----------------|-----|
-| 1 | Epidemiología (Tier S) | D1–D3 | 16-sep→18-sep | Ensayo clínico 32,2 · Clasificación de estudios 24,3 · Pruebas diagnósticas 13,5 | 70,1 / 70,1 | Biostats/Epi (D78, 6-ene) | — |
-| 2 | Medicina Legal y Bioética (Tier S) | D4 | 21-sep | Principios de bioética y relación médico-paciente 39,8 🇪🇸 | 39,8 / 39,8 | Ethics/Behavioral (D78, 6-ene) | — |
-| 3 | Cardiología | D5–D11 | 22-sep→30-sep | Cardiología básica · Ritmo · Isquémica · IC · Valvulopatías★ · Riesgo CV 🇪🇸 · Miocardio | 71,8 / 71,8 | Cardiovascular D6–D16 (23-sep→7-oct; D13 = NBME 25) | ⚠ +1 d |
-| 4 | Neumología | D12–D16 | 1-oct→7-oct | Fisiología★ · Cáncer de pulmón★ · Pleura/mediastino · EPOC★ · Intersticiales | 61,2 / 61,2 | Respiratory D17–D22 (8→15-oct) | +7 d |
-| 5 | Nefrología | D17–D22 | 8-oct→15-oct | Fisiología renal★ · FRA · GN primarias · Riñón y sistémicas · IRC · Síndromes clínicos | 80,5 / 80,5 | Renal D23–D29 (16→26-oct; D28 = NBME 26, vie 23-oct) | +8 d |
-| 6 | Gastroenterología | D23–D30 | 16-oct→27-oct | Hígado · Colon 🇪🇸 · Intestino delgado · Estómago★ · Misc. quirúrgica · Páncreas · Esófago★ · Vía biliar | 100 / 100 | Gastrointestinal D30–D36 (27-oct→4-nov) | +11 d |
-| 7 | Endocrinología y Nutrición | D31–D36 | 28-oct→4-nov | DM★ · Tiroides★ · Hipófisis · Suprarrenales · Nutrición/obesidad · Lípidos | 78,0 / 78,0 | Endocrine D37–D41 (5→11-nov) | +8 d |
-| 8 | Neurología | D37–D43 | 5-nov→13-nov | Semiología · Neurocirugía · ECV★ · Movimiento · Epilepsia · Demencias · Cefaleas | 76,6 / 76,6 | Nervous System D42–D50 (12→24-nov; D43 = NBME 27) | +7 d |
-| 9 | Hematología | D44–D48 | 16-nov→20-nov | Coagulación 21,5 · Linfomas · Hemolíticas · Carenciales · NMP | 65,0 / 65,0 | Hematology & Oncology D51–D56 (25-nov→2-dic) | +9 d |
-| 10 | Enfermedades Infecciosas | D49–D56 | 23-nov→2-dic | Tropicales 12,6 · VIH 🇪🇸 · TBC 🇪🇸 · ITRI/neumonía · SNC · Antibacterianos★ 🇪🇸 · Hongos · Sepsis | 62,9 / 62,9 | Microbiology / ID D57–D64 (3→14-dic; D58 = NBME 28) | +10 d |
-| 11 | Ginecología y Obstetricia | D57–D62 | 3-dic→10-dic | Ca mama★ 15,7 🇪🇸 · Hemorragia gestación · Complicaciones maternas · Infecciones y embarazo 🇪🇸 · Control gestación 🇪🇸 · Masas anexiales/Ca ovario★ | 46,7 / 46,7 | Reproductive D65–D70 (15→22-dic; D68 = NBME 29) | +12 d |
-| 12 | Reumatología | D63–D68 | 11-dic→18-dic | Vasculitis★ · Espondiloartropatías · Otras conectivopatías · AR · Cristales★ · LES★ | 65,1 / 65,5 | Musculoskeletal / Rheum D71–D73 (23→28-dic) | +12 d |
-| 13 | Pediatría | D69–D73 | 21-dic→28-dic | Digestivo · Neonatología 🇪🇸 · Desarrollo/nutrición · Infecciosa · Vacunación 🇪🇸 | 78,1 / 78,1 | — (sin homólogo) | — |
-| 14 | Psiquiatría | D74–D76 | 29-dic→4-ene | Ánimo★ · Neuróticos★ · Psicóticos | 61,5 / 61,5 | Psychiatry & Behavioral D74–D78 (29-dic→6-ene; D75 = NBME 30) | ⚠ 0 d |
-| — | Repaso integral | D77 | 5-ene-2027 | **mini-MIR 40Q mixto cronometrado (51 min · 77 s/Q · en blanco permitido) · mínimo on-track ≥ 50 % neto** | — | — | — |
-| — | Repaso integral | D78 | 6-ene-2027 | **corrección Whole-Page + Shopping List + tabla de neto por asignatura = baseline abr-2027** | — | — | — |
+| 1 | Epidemiología (Tier S) | D1–D3 | 17-sep→21-sep | Ensayo clínico 32,2 · Clasificación de estudios 24,3 · Pruebas diagnósticas 13,5 | 70,1 / 70,1 | Biostats/Epi (D78, 7-ene) | — |
+| 2 | Medicina Legal y Bioética (Tier S) | D4 | 22-sep | Principios de bioética y relación médico-paciente 39,8 🇪🇸 | 39,8 / 39,8 | Ethics/Behavioral (D78, 7-ene) | — |
+| 3 | Cardiología | D5–D11 | 23-sep→1-oct | Cardiología básica · Ritmo · Isquémica · IC · Valvulopatías★ · Riesgo CV 🇪🇸 · Miocardio | 71,8 / 71,8 | Cardiovascular D6–D16 (24-sep→8-oct; D12 = NBME 25) | ⚠ +1 d |
+| 4 | Neumología | D12–D16 | 2-oct→8-oct | Fisiología★ · Cáncer de pulmón★ · Pleura/mediastino · EPOC★ · Intersticiales | 61,2 / 61,2 | Respiratory D17–D22 (9→16-oct) | +7 d |
+| 5 | Nefrología | D17–D22 | 9-oct→16-oct | Fisiología renal★ · FRA · GN primarias · Riñón y sistémicas · IRC · Síndromes clínicos | 80,5 / 80,5 | Renal D23–D29 (19→27-oct; D27 = NBME 26, vie 23-oct) | +10 d |
+| 6 | Gastroenterología | D23–D30 | 19-oct→28-oct | Hígado · Colon 🇪🇸 · Intestino delgado · Estómago★ · Misc. quirúrgica · Páncreas · Esófago★ · Vía biliar | 100 / 100 | Gastrointestinal D30–D36 (28-oct→5-nov) | +9 d |
+| 7 | Endocrinología y Nutrición | D31–D36 | 29-oct→5-nov | DM★ · Tiroides★ · Hipófisis · Suprarrenales · Nutrición/obesidad · Lípidos | 78,0 / 78,0 | Endocrine D37–D41 (6→12-nov) | +8 d |
+| 8 | Neurología | D37–D43 | 6-nov→16-nov | Semiología · Neurocirugía · ECV★ · Movimiento · Epilepsia · Demencias · Cefaleas | 76,6 / 76,6 | Nervous System D43–D50 (16→25-nov; el NBME 27 es el D42, vie 13-nov, justo antes) | +10 d |
+| 9 | Hematología | D44–D48 | 17-nov→23-nov | Coagulación 21,5 · Linfomas · Hemolíticas · Carenciales · NMP | 65,0 / 65,0 | Hematology & Oncology D51–D56 (26-nov→3-dic) | +9 d |
+| 10 | Enfermedades Infecciosas | D49–D56 | 24-nov→3-dic | Tropicales 12,6 · VIH 🇪🇸 · TBC 🇪🇸 · ITRI/neumonía · SNC · Antibacterianos★ 🇪🇸 · Hongos · Sepsis | 62,9 / 62,9 | Microbiology / ID D58–D64 (7→15-dic; el NBME 28 es el D57, vie 4-dic, justo antes) | +13 d |
+| 11 | Ginecología y Obstetricia | D57–D62 | 4-dic→11-dic | Ca mama★ 15,7 🇪🇸 · Hemorragia gestación · Complicaciones maternas · Infecciones y embarazo 🇪🇸 · Control gestación 🇪🇸 · Masas anexiales/Ca ovario★ | 46,7 / 46,7 | Reproductive D65–D70 (16→23-dic; D67 = NBME 29) | +12 d |
+| 12 | Reumatología | D63–D68 | 14-dic→21-dic | Vasculitis★ · Espondiloartropatías · Otras conectivopatías · AR · Cristales★ · LES★ | 65,1 / 65,5 | Musculoskeletal / Rheum D71–D73 (24→29-dic) | +10 d |
+| 13 | Pediatría | D69–D73 | 22-dic→29-dic | Digestivo · Neonatología 🇪🇸 · Desarrollo/nutrición · Infecciosa · Vacunación 🇪🇸 | 78,1 / 78,1 | — (sin homólogo) | — |
+| 14 | Psiquiatría | D74–D76 | 30-dic→5-ene | Ánimo★ · Neuróticos★ · Psicóticos | 61,5 / 61,5 | Psychiatry & Behavioral D75–D78 (4→7-ene; el NBME 30 es el D74, mié 30-dic, justo antes) | +5 d |
+| — | Repaso integral | D77 | 6-ene-2027 | **mini-MIR 40Q mixto cronometrado (51 min · 77 s/Q · en blanco permitido) · mínimo on-track ≥ 50 % neto** | — | — | — |
+| — | Repaso integral | D78 | 7-ene-2027 | **corrección Whole-Page + Shopping List + tabla de neto por asignatura = baseline abr-2027** | — | — | — |
 
 🇪🇸 = día con **delta-España previsible** (`delta:true`, 11 días; base de conocimiento en `DELTA_ESPANA.md`, §4).
 
-> **Nota v5.12 — las dos correspondencias estrechas siguen ahí, Cardiología sigue en +1.** MIR mantiene 78
-> días y Step 1 mantiene 95: en v5.12 **no se fusionó ni se recortó nada**, el día perdido se absorbió
-> alargando el Step 1 hasta el vie 29-ene-2027 (D95 = última sesión; el plan llena la ventana 25-29 ene → examen target lun 1-feb-2027, fuera de la ventana). `Lag` = días naturales entre el inicio del bloque MIR
-> y el inicio de su sistema Step 1 (cálculo sobre las fechas reales de los dos `.ts` el 15-sep, no estimado).
-> - **Cardiología (⚠ +1 d):** MIR arranca el mar 22-sep y Cardiovascular el mié 23-sep (el UWSA1 ocupa el
->   D1 mié 16-sep y el contenido del Step 1 empieza el jue 17-sep). El prime en español precede al mecanismo en
->   inglés por 1 solo día (como en v5.9 y v5.11; en v5.10 eran +3 con el fin de semana en medio): sigue siendo la
+> **Nota v5.13 — Cardiología sigue en +1; Psiquiatría deja de solaparse.** MIR mantiene 78
+> días y Step 1 mantiene 95: en v5.13 **no se fusionó ni se recortó nada**, el día perdido se absorbió
+> alargando el Step 1 hasta el lun 1-feb-2027 (D95 = D-1 dentro del plan → examen target mar 2-feb-2027, fuera de la ventana 25-29 ene). `Lag` = días naturales entre el inicio del bloque MIR
+> y el inicio de su sistema Step 1 (cálculo sobre las fechas reales de los dos `.ts` el 16-sep, no estimado).
+> - **Cardiología (⚠ +1 d):** MIR arranca el mié 23-sep y Cardiovascular el jue 24-sep (el UWSA1 ocupa el
+>   D1 jue 17-sep y el contenido del Step 1 empieza el vie 18-sep). El prime en español precede al mecanismo en
+>   inglés por 1 solo día (como en v5.9, v5.11 y v5.12; en v5.10 eran +3 con el fin de semana en medio): sigue siendo la
 >   correspondencia más débil del plan y el "espaciado de 7 días" no se cumple.
-> - **Psiquiatría (⚠ 0 d):** ambos arrancan el mar 29-dic — solapamiento total, igual que en v5.6-v5.11.
->   Aquí el prime es simultáneo, no anticipado.
-> - Los otros 9 bloques quedan entre **+7 y +12 días** (Neumo y Neuro +7 · Nefro y Endo +8 · Hemato +9 · Infecto +10 · Gastro +11 ·
->   Gine y Reuma +12), es decir dentro o por encima del objetivo
->   de ~1 semana (Hemato baja de +11 a +9 e Infecto de +12 a +10 porque el arranque MIR de esos bloques cruza un fin de semana —14-15 nov y 21-22 nov— y el del Step 1 no; Gastro sigue en +11 por el NBME 26 del vie 23-oct). No se re-permuta el MIR para arreglar Cardiología: hacerlo movería 11 bloques y
->   el objetivo primario hasta el 29-ene es el Step 1, no el MIR.
+> - **Psiquiatría (+5 d):** MIR arranca el mié 30-dic (día del NBME 30) y *Psychiatry & Behavioral* el lun 4-ene, con el 31-dic
+>   y el 1-ene en medio — en v5.6-v5.12 ambos arrancaban el mismo día (solapamiento total); ahora el prime vuelve a anticiparse.
+> - Los otros 9 bloques quedan entre **+7 y +13 días** (Neumo +7 · Endo +8 · Gastro y Hemato +9 · Nefro, Neuro y Reuma +10 · Gine +12 ·
+>   Infecto +13), es decir dentro o por encima del objetivo
+>   de ~1 semana (Nefro, Neuro y Reuma suben porque el arranque MIR de esos bloques cae en viernes y el del Step 1 cruza el fin de semana; Gastro baja de +11 a +9 porque el arranque MIR cae ahora en lunes; Infecto sube a +13 porque Micro/ID arranca el lun 7-dic tras el NBME 28 del vie 4-dic). No se re-permuta el MIR para arreglar Cardiología: hacerlo movería 11 bloques y
+>   el objetivo primario hasta el 2-feb es el Step 1, no el MIR.
 
 ★ = núcleo rabi_94. Total: **957,4 puntos-peso** de 957,8 óptimos (plan previo: 744,2 · +28,6 %).
 Núcleos que NO entran (peso demasiado bajo; el generador lo avisa): Intro endocrino 1,9 · Bacterias
@@ -170,7 +170,7 @@ ocupa cada ancla** (`mirTemaEstado`, `mirEstadosTemas`, `mirAnclasDinamicas`, `M
   ajuste → tras 2 anclas ✓ seguidas sale de caliente; la cola D+14 apunta al D# real del slot.
 
 ### 4.2 Métricas calibradas a Top 50 (gap 5) — `mirData.ts`
-- **`MIR_HITOS`** (mínimo on-track por hito, % neto ciego): mini-MIR D77 (mar 5-ene-2027; `mirData.ts` la lee de `mirDiaN(77)`, así que sigue al plan en cada corrimiento) **≥ 50** · handoff 31-mar-2027 **≥ 60** ·
+- **`MIR_HITOS`** (mínimo on-track por hito, % neto ciego): mini-MIR D77 (mié 6-ene-2027; `mirData.ts` la lee de `mirDiaN(77)`, así que sigue al plan en cada corrimiento) **≥ 50** · handoff 31-mar-2027 **≥ 60** ·
   fin 1ª vuelta completa dic-2027 **≥ 68** · simulacros 2028 **≥ 75** · simulacros 2029 **≥ 82** (banda Top 50) · examen MIR 2030 ≥ 82
   (fecha exacta de la convocatoria **A VERIFICAR (12-sep)**; cota 31-ene-2030). `mirDistanciaOnTrack(fecha)` = readiness derivado
   (mini-MIR > media de cierres > ancladas) − mínimo del próximo hito; MirHub lo muestra en la barra como `Δ MINI-MIR +X` (como el USMLE)
@@ -247,21 +247,21 @@ ocupa cada ancla** (`mirTemaEstado`, `mirEstadosTemas`, `mirAnclasDinamicas`, `M
 
 ## 6. Mantenimiento ene-mar 2027 (banqueo puro) — [`src/lib/mirMantenimiento.ts`](../../src/lib/mirMantenimiento.ts)
 Generado por [`DATA/_scripts/gen_mir_mantenimiento.js`](../../DATA/_scripts/gen_mir_mantenimiento.js) `[inicio] [fin]`
-(default v5.12: **jue 7-ene → mié 31-mar-2027; 60 días L-V** = 48 slots lun-jue + 12 viernes, salta sáb/dom; el inicio sigue al D78 de la 1ª vuelta para no solapar: v5.11 6-ene/61 días, v5.10 5-ene/62, v5.9 4-ene/63). Sin contenido nuevo. El fin (31-mar) está clavado al ENCAPS 2027-I y no se mueve: cada corrimiento le quita un slot lun-jue por delante y las cuotas se re-balancean por peso.
+(default v5.13: **vie 8-ene → mié 31-mar-2027; 59 días L-V** = 47 slots lun-jue + 12 viernes, salta sáb/dom; el inicio sigue al D78 de la 1ª vuelta para no solapar: v5.12 7-ene/60 días, v5.11 6-ene/61, v5.10 5-ene/62, v5.9 4-ene/63; como arranca en viernes, la semana 1 del catálogo es solo ese viernes y la primera semana con slots lun-jue es la 2). Sin contenido nuevo. El fin (31-mar) está clavado al ENCAPS 2027-I y no se mueve: cada corrimiento le quita un slot lun-jue por delante y las cuotas se re-balancean por peso.
 - **normal:** 15:15–15:30 Anki APEX::MIR · 15:30–16:02 25Q reales MIR (15Q asignatura foco + 10Q interleaving · 77 s/Q = 32 min) · 16:02–16:15 corrección (13 min).
 - **viernes:** 15:15–15:25 Anki · 15:25–16:04 **30Q de la asignatura PEOR del log** (`mirMantFoco(dia, mirPeorAsignatura())`; fallback = mayor peso de la semana) · corrección + neto semanal.
-- **modo reducido 7-29 ene** (Fase B/C Step 1, flag `modo:'reducido'`, **17 días** — cubre hasta el D95 del Step 1, vie 29-ene = última sesión; `REDUCIDO_HASTA = '2027-01-29'` en el generador, v5.12): 15:15–15:35 Anki · 15:35–15:48 10Q · 15:48–15:55 log · resto al Step 1. El lun 1-feb (examen Step 1, target v5.12) ya va en modo normal según el `.ts` (D18: 25Q Cardio + interleaving): **A VERIFICAR (15-sep)** con Joseph si el día del examen debe ir reducido o vacío.
-- **Tier C express (12 slots, todos JUEVES, semanas 1-12)** — leído de `MIR_MANT_TIER_C` con node el 15-sep (sin cambio: todos caen en jueves): Trauma MI (jue 7-ene) · Trauma MS (14-ene) · Radiología-Urgencias (21-ene) · Oncología Médica (28-ene) · Geriatría (4-feb) · ORL (11-feb) · Cuidados Paliativos (18-feb) · Urología (25-feb) · Oftalmología (4-mar) · Genética (11-mar) · Inmunología (18-mar) · Planificación y Gestión Sanitaria (25-mar). En modo reducido sus 10Q sustituyen a las 10Q mixtas; se registran con la asignatura Tier C.
+- **modo reducido 8-ene → 1-feb** (Fase B/C Step 1, flag `modo:'reducido'`, **17 días** — cubre hasta el D95 del Step 1, lun 1-feb = D-1 dentro del plan; `REDUCIDO_HASTA = '2027-02-01'` en el generador, v5.13): 15:15–15:35 Anki · 15:35–15:48 10Q · 15:48–15:55 log · resto al Step 1. El mar 2-feb (examen Step 1, target v5.13) ya va en modo normal según el `.ts` (D18: 25Q Cardio + interleaving): **A VERIFICAR (16-sep)** con Joseph si el día del examen debe ir reducido o vacío.
+- **Tier C express (12 slots, todos JUEVES salvo el último, semanas reales 2-13)** — leído de `MIR_MANT_TIER_C` con node el 16-sep (al arrancar en viernes, la semana 1 del catálogo se mapea a la primera semana con slots lun-jue, así que la lista corre una semana): Trauma MI (jue 14-ene) · Trauma MS (21-ene) · Radiología-Urgencias (28-ene) · Oncología Médica (4-feb) · Geriatría (11-feb) · ORL (18-feb) · Cuidados Paliativos (25-feb) · Urología (4-mar) · Oftalmología (11-mar) · Genética (18-mar) · Inmunología (25-mar) · Planificación y Gestión Sanitaria (**mié 31-mar**, D59 = último día). En modo reducido sus 10Q sustituyen a las 10Q mixtas; se registran con la asignatura Tier C.
 - Rotación lun-jue **ponderada por Peso MIR global** (texto real del intro ProMIR, `mirDetalleData.pesoGlobal`;
-  cuotas exactas por resto mayor + smooth weighted round-robin) — v5.12, contado de `MIR_MANT_PESOS.slots` y de los 48 días lun-jue del `.ts`: Cardio 5 · Gastro 5 · Neuro 5 · Infecto 5 ·
-  Endo 4 · Neumo 4 · Reuma 3 · Epi 3 · Nefro 3 · Hemato 3 · Psiq 3 · Pedia 2 · Gine 2 · Bioética 1 (= **48 slots**; v5.11 tenía 49 con Reuma 4, v5.10 50 con Cardio 6, v5.9 51 con Cardio 6 y Gastro 6).
+  cuotas exactas por resto mayor + smooth weighted round-robin) — v5.13, contado de `MIR_MANT_PESOS.slots` y de los 47 días lun-jue del `.ts`: Cardio 5 · Gastro 5 · Neuro 5 · Infecto 5 ·
+  Endo 4 · Neumo 3 · Reuma 3 · Epi 3 · Nefro 3 · Hemato 3 · Psiq 3 · Pedia 2 · Gine 2 · Bioética 1 (= **47 slots**; v5.12 tenía 48 con Neumo 4, v5.11 49 con Reuma 4, v5.10 50 con Cardio 6, v5.9 51 con Cardio 6 y Gastro 6).
 - `MirTodayPlan` hace fallback automático a este plan cuando no hay `DiaMIR` (pestaña "Banqueo"); el formulario del mantenimiento
   también lleva el cronómetro y los campos tácticos.
 - **Handoff 31-mar:** export JSON del log + tabla de neto por asignatura (mínimo on-track ≥ 60 %) + stats FSRS del deck → entrada de la fase principal (abr-2027), con umbrales 75/60.
 
 ## 7. Ficheros canónicos y pipeline
 - `src/lib/mirDailyPlan.ts` — plan 78 días (MIR_DIAS con `delta?`, MIR_FRANJAS, MIR_COBERTURA, helpers). GENERADO entre marcadores.
-- `src/lib/mirMantenimiento.ts` — 60 días ene-mar 2027, jue 7-ene → mié 31-mar (GENERADO, v5.12). `src/lib/mirEvalLog.ts` — registro/neto/gate/anclas dinámicas/táctica/readiness.
+- `src/lib/mirMantenimiento.ts` — 59 días ene-mar 2027, vie 8-ene → mié 31-mar (GENERADO, v5.13). `src/lib/mirEvalLog.ts` — registro/neto/gate/anclas dinámicas/táctica/readiness.
 - `src/lib/mirEvalSync.ts` — espejo Supabase (`mir_eval_log`). `DATA/_scripts/_migrations/mir_eval_log.sql` — DDL canónico.
 - `src/lib/mirData.ts` — MIR_HITOS / on-track / bandas / táctica / fases. `src/lib/mirUsmleBridge.ts` — puente Step 1 (lectura).
 - `src/lib/mirPreguntasOficiales.ts` — pool oficial (lo rellena el pipeline de `DATA/MIR/pool/`; la UI consume `preguntasSinUsar` + `qIds`).
@@ -272,8 +272,8 @@ Generado por [`DATA/_scripts/gen_mir_mantenimiento.js`](../../DATA/_scripts/gen_
 - Raw: `STUDY_HUB/_scrape/promir_full_temario.json`, `mir_detalle_clean.json`, `intros/`.
 - **Corrimiento** (cada día sin estudiar = +1 hábil): `node DATA/_scripts/remap_inicio.js <fecha>` re-fecha MIR_DIAS por regex
   (formato `fecha:"YYYY-MM-DD"` conservado; 78 filas; el sufijo `,delta:true` no lo afecta) — o regenerar con
-  `node STUDY_HUB/_scrape/gen_mir_daily.js <fecha>` (misma salida + verificación). El mantenimiento tiene el FIN fijo (31-mar) pero su INICIO sigue al D78 de la 1ª vuelta (v5.12: `INICIO = '2027-01-07'`) y su
-  `REDUCIDO_HASTA` sigue al D95 del Step 1 (v5.12 → `2027-01-29`); se regenera con `node DATA/_scripts/gen_mir_mantenimiento.js` después de cada corrimiento que mueva el D78 al mantenimiento.
+  `node STUDY_HUB/_scrape/gen_mir_daily.js <fecha>` (misma salida + verificación). El mantenimiento tiene el FIN fijo (31-mar) pero su INICIO sigue al D78 de la 1ª vuelta (v5.13: `INICIO = '2027-01-08'`) y su
+  `REDUCIDO_HASTA` sigue al D95 del Step 1 (v5.13 → `2027-02-01`); se regenera con `node DATA/_scripts/gen_mir_mantenimiento.js` después de cada corrimiento que mueva el D78 al mantenimiento.
 - `node STUDY_HUB/_scrape/gen_mir_daily.js --check` = test: falla (exit 1) si algún `peso` difiere >0,05 de MIR_DETALLE,
   si un capId no existe, si D1-D4 no son Epi+Bioética, si alguna fecha cae en finde o si un capId de `DELTA_CAPIDS` no lleva `delta:true`.
 

@@ -23,7 +23,7 @@ PASO 0 — LEE PRIMERO (todo el conocimiento YA está guardado; no re-investigue
 - DATA\BUSINESS\_scrape\research_raw.json y content_tools_referents_raw.json ← hallazgos con fuentes
 
 CÓDIGO (fuente canónica en src/):
-- src\lib\businessStudyPlan.ts    ← 121 filas (84 trabajo + 37 DESCANSO sáb/dom + feriados, v5.12: mié 16-sep-2026 → jue 14-ene-2027) GENERADO (py DATA\_scripts\gen_business_plan.py YYYY-MM-DD) + re-fechado (node DATA\_scripts\remap_inicio.js YYYY-MM-DD)
+- src\lib\businessStudyPlan.ts    ← 121 filas (84 trabajo + 37 DESCANSO sáb/dom + feriados, v5.13: jue 17-sep-2026 → vie 15-ene-2027) GENERADO (py DATA\_scripts\gen_business_plan.py YYYY-MM-DD) + re-fechado (node DATA\_scripts\remap_inicio.js YYYY-MM-DD)
 - src\lib\estudioPulsoData.ts     ← los 28 libros (ESTUDIO_LIBROS) + recursos
 - src\lib\businessBooksExtra.ts   ← frases-ancla + recursos por libro (GENERADO: extract_pulso_research.js)
 - src\lib\brandContentPlan.ts     ← TIME_SPLIT 70/10/10/10 + semanas de contenido por marca

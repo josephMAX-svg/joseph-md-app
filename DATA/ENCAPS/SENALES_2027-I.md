@@ -18,7 +18,7 @@
 
 ## 2) Rutina quincenal (desde el **jue 1-oct-2026**, 30 min, fuera de la hora ENCAPS)
 
-Fechas: 1-oct · 15-oct · 29-oct · 12-nov · 26-nov · 10-dic · 24-dic · 7-ene · 21-ene · **lun 1-feb** (re-scan completo, fila `senales` de la semana 1 de la intensiva — ⚠ v5.12 (15-sep): el lun 1-feb es el examen Step 1; si la intensiva arranca el mar 2-feb (propuesta en `FASE_INTENSIVA_2027-I.md`, decisión de Joseph) el re-scan pasa al **mar 2-feb**) · y semanal en feb-mar.
+Fechas: 1-oct · 15-oct · 29-oct · 12-nov · 26-nov · 10-dic · 24-dic · 7-ene · 21-ene · **lun 1-feb** (re-scan completo, fila `senales` de la semana 1 de la intensiva — ⚠ v5.13 (16-sep): el lun 1-feb es el D-1 del Step 1 (sesión mínima, nada de pantallas por la tarde) y el mar 2-feb es el examen; si la intensiva arranca el mié 3-feb (propuesta en `FASE_INTENSIVA_2027-I.md`, decisión de Joseph) el re-scan pasa al **mié 3-feb**) · y semanal en feb-mar.
 
 1. Canales 1-4 (canal 5 solo desde enero). Para cada uno: ¿hay algo nuevo desde la última fecha del log? Si no, se anota "sin novedad" (también es dato).
 2. Cada novedad → **una fila en el log de §4** con fecha, canal, señal (título + número/año de la norma o fecha del boletín), código v3, impacto (ALTO = entra al examen casi seguro / MEDIO / BAJO) y estado (VERIFICADA / A VERIFICAR).

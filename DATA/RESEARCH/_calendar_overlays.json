@@ -13,11 +13,11 @@
  "overlays": {
   "mentor": {
    "eventId": "shkul14j3o1bs1a5044u8ge1kk",
-   "fechaCreada": "2026-09-22",
-   "hash": "3aa4a32ad3e2",
+   "fechaCreada": "2026-09-24",
+   "hash": "b2017cb07da8",
    "summary": "🔬 RESEARCH · M1 Senior author local (Dr. Ciro) confirmado",
-   "registrado": "2026-09-14",
-   "accionPendiente": "recrear",
+   "registrado": "2026-09-16",
+   "accionPendiente": null,
    "payload": {
     "code": "M1",
     "d": 3,
@@ -35,11 +35,11 @@
   },
   "carta-diana": {
    "eventId": "iduh7fhst9uhl0t54hhk535ff4",
-   "fechaCreada": "2026-09-30",
-   "hash": "c3d41cf39267",
+   "fechaCreada": "2026-10-02",
+   "hash": "def7dc039e0a",
    "summary": "🔬 RESEARCH · C-2 Artículo DIANA + deadline de la carta #1",
-   "registrado": "2026-09-14",
-   "accionPendiente": "recrear",
+   "registrado": "2026-09-16",
+   "accionPendiente": null,
    "payload": {
     "code": "C-2",
     "d": 6,
@@ -57,11 +57,11 @@
   },
   "tesis-etica": {
    "eventId": "95aglmlk9qi32m4bv6v28rv5b0",
-   "fechaCreada": "2026-10-02",
-   "hash": "7b51bcce873b",
+   "fechaCreada": "2026-10-06",
+   "hash": "9c60af25f837",
    "summary": "🔬 RESEARCH · T-1 Ética/CEI de la tesis L0 archivada",
-   "registrado": "2026-09-14",
-   "accionPendiente": "recrear",
+   "registrado": "2026-09-16",
+   "accionPendiente": null,
    "payload": {
     "code": "T-1",
     "d": 7,
@@ -79,11 +79,11 @@
   },
   "carta-1": {
    "eventId": "k2oov1tk0jalt5f45ekemej4k0",
-   "fechaCreada": "2026-10-20",
-   "hash": "32a53ae81535",
+   "fechaCreada": "2026-10-22",
+   "hash": "15634fffaddb",
    "summary": "🔬 RESEARCH · C-6 SUBMIT carta al editor #1",
-   "registrado": "2026-09-14",
-   "accionPendiente": "recrear",
+   "registrado": "2026-09-16",
+   "accionPendiente": null,
    "payload": {
     "code": "C-6",
     "d": 13,
@@ -101,11 +101,11 @@
   },
   "cr-caso": {
    "eventId": "36tp7b995jnoi844d5uvgm58t0",
-   "fechaCreada": "2026-10-26",
-   "hash": "bfa828635e54",
+   "fechaCreada": "2026-10-28",
+   "hash": "6b7c9c1a9b6c",
    "summary": "🔬 RESEARCH · CR-1 Caso + senior author del case report #1",
-   "registrado": "2026-09-14",
-   "accionPendiente": "recrear",
+   "registrado": "2026-09-16",
+   "accionPendiente": null,
    "payload": {
     "code": "CR-1",
     "d": 15,
@@ -123,11 +123,11 @@
   },
   "tesis-L0": {
    "eventId": "ahl0tbimefcq8u7ps2qasjb708",
-   "fechaCreada": "2026-11-25",
-   "hash": "cb8b2a083d7c",
+   "fechaCreada": "2026-11-27",
+   "hash": "3b9f256f7ba5",
    "summary": "🔬 RESEARCH · T-8 SUBMIT research letter tesis L0",
-   "registrado": "2026-09-14",
-   "accionPendiente": "recrear",
+   "registrado": "2026-09-16",
+   "accionPendiente": null,
    "payload": {
     "code": "T-8",
     "d": 26,
@@ -145,11 +145,11 @@
   },
   "revisor2": {
    "eventId": "9hhe6q10da1ltbpk23h171gf9c",
-   "fechaCreada": "2026-12-01",
-   "hash": "64bec7c8fdd5",
+   "fechaCreada": "2026-12-03",
+   "hash": "1e128046019b",
    "summary": "🔬 RESEARCH · X-1 Revisor humano #2 de SR-1 nombrado",
-   "registrado": "2026-09-14",
-   "accionPendiente": "recrear",
+   "registrado": "2026-09-16",
+   "accionPendiente": null,
    "payload": {
     "code": "X-1",
     "d": 28,
@@ -167,11 +167,11 @@
   },
   "cr-paquete": {
    "eventId": "f2mn20ok30kl5k2t1s6tci7n7c",
-   "fechaCreada": "2026-12-11",
-   "hash": "01859e2f8410",
+   "fechaCreada": "2026-12-15",
+   "hash": "415cfedfbc6c",
    "summary": "🔬 RESEARCH · CR-8 Paquete del case report #1 CONGELADO",
-   "registrado": "2026-09-14",
-   "accionPendiente": "recrear",
+   "registrado": "2026-09-16",
+   "accionPendiente": null,
    "payload": {
     "code": "CR-8",
     "d": 32,
@@ -183,17 +183,17 @@
     "timeZone": "America/Lima",
     "colorId": "6",
     "availability": "AVAILABILITY_FREE",
-    "description": "HITO RESEARCH · CR-8 · d32 del ciclo 1 · bloque 13:30-14:15 (día-Research; alterna con Derma)\n\nOBJETIVO: Paquete de envío CONGELADO (manuscrito + fotos + consentimiento + CARE + cover) — el SUBMIT se ejecuta el 1-feb-2027 (ciclo 2 · CR-9), después del Step 1\nENTREGABLE: Paquete completo y revisado; nada pendiente para febrero · estado → revision-mentor\nARTEFACTO: CASE_REPORT_1/_PAQUETE_ENVIO/ (todo lo que se sube) + Mesa editorial: fecha objetivo 1-feb\nFECHA LÍMITE EXTERNA: antes del submit CR-9 (1-feb-2027): paquete congelado ANTES de la pausa Step 1 (Fases B-C, 8→29-ene)\n\nOverlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se\nregenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel\n→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.",
-    "hash": "542f5c1dd28d"
+    "description": "HITO RESEARCH · CR-8 · d32 del ciclo 1 · bloque 13:30-14:15 (día-Research; alterna con Derma)\n\nOBJETIVO: Paquete de envío CONGELADO (manuscrito + fotos + consentimiento + CARE + cover) — el SUBMIT se ejecuta el 1-feb-2027 (ciclo 2 · CR-9), después del Step 1\nENTREGABLE: Paquete completo y revisado; nada pendiente para febrero · estado → revision-mentor\nARTEFACTO: CASE_REPORT_1/_PAQUETE_ENVIO/ (todo lo que se sube) + Mesa editorial: fecha objetivo 1-feb\nFECHA LÍMITE EXTERNA: antes del submit CR-9 (lun 1-feb-2027 = D-1 del Step 1): paquete congelado ANTES de la pausa Research por el Step 1 (4→29-ene; Fases B-C 13-ene→1-feb)\n\nOverlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se\nregenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel\n→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.",
+    "hash": "415cfedfbc6c"
    }
   },
   "case-report-1": {
    "eventId": "t136recadd6vnv0iebrmmqiv48",
    "fechaCreada": "2027-02-01",
-   "hash": "bb38f7db29e0",
+   "hash": "3a6cf90f6e28",
    "summary": "🔬 RESEARCH · CR-9 SUBMIT case report #1",
-   "registrado": "2026-09-14",
-   "accionPendiente": "recrear",
+   "registrado": "2026-09-16",
+   "accionPendiente": null,
    "payload": {
     "code": "CR-9",
     "d": 37,
@@ -211,11 +211,11 @@
   },
   "equipo": {
    "eventId": "nibrfidt3qhct59qhtrvqpqqi0",
-   "fechaCreada": "2027-02-19",
-   "hash": "945c1947dd36",
+   "fechaCreada": "2027-02-23",
+   "hash": "79f81d0404ad",
    "summary": "🔬 RESEARCH · X-9 Equipo de revisión SR-1 confirmado",
-   "registrado": "2026-09-14",
-   "accionPendiente": "recrear",
+   "registrado": "2026-09-16",
+   "accionPendiente": null,
    "payload": {
     "code": "X-9",
     "d": 45,
@@ -227,17 +227,17 @@
     "timeZone": "America/Lima",
     "colorId": "6",
     "availability": "AVAILABILITY_FREE",
-    "description": "HITO RESEARCH · X-9 · d45 del ciclo 2 · bloque 13:30-14:15 (día-Research; alterna con Derma)\n\nOBJETIVO: EQUIPO DE REVISIÓN confirmado para PROSPERO: revisor #2 con cuenta Rayyan, ORCID de todos, afiliaciones, roles (garante, contacto, cribadores, extractores, estadístico), conflictos de interés, fechas previstas\nENTREGABLE: L4 §9 completo — se copia tal cual a PROSPERO\nARTEFACTO: lines/L4-complicaciones.md §9 + MENTORES.md\nFECHA LÍMITE EXTERNA: antes del registro R10 (jue 25-feb-2027)\n\nOverlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se\nregenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel\n→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.",
-    "hash": "a721b06aed1f"
+    "description": "HITO RESEARCH · X-9 · d45 del ciclo 2 · bloque 13:30-14:15 (día-Research; alterna con Derma)\n\nOBJETIVO: EQUIPO DE REVISIÓN confirmado para PROSPERO: revisor #2 con cuenta Rayyan, ORCID de todos, afiliaciones, roles (garante, contacto, cribadores, extractores, estadístico), conflictos de interés, fechas previstas\nENTREGABLE: L4 §9 completo — se copia tal cual a PROSPERO\nARTEFACTO: lines/L4-complicaciones.md §9 + MENTORES.md\nFECHA LÍMITE EXTERNA: antes del registro R10 (lun 1-mar-2027)\n\nOverlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se\nregenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel\n→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.",
+    "hash": "79f81d0404ad"
    }
   },
   "PROSPERO-SR1": {
    "eventId": "2k9idr3f3th6hj1e4r8ugj4iqk",
-   "fechaCreada": "2027-02-25",
-   "hash": "feea85b8512e",
+   "fechaCreada": "2027-03-01",
+   "hash": "18ae68051592",
    "summary": "🔬 RESEARCH · R10 REGISTRO PROSPERO de SR-1",
-   "registrado": "2026-09-14",
-   "accionPendiente": "recrear",
+   "registrado": "2026-09-16",
+   "accionPendiente": null,
    "payload": {
     "code": "R10",
     "d": 47,
@@ -255,11 +255,11 @@
   },
   "SR-1": {
    "eventId": "94mmg6li8egq2kh9401nti1pkg",
-   "fechaCreada": "2027-07-07",
-   "hash": "22931e8d0250",
+   "fechaCreada": "2027-07-09",
+   "hash": "64beae5d7d2b",
    "summary": "🔬 RESEARCH · R43 SUBMIT SR-1 (Dermatologic Surgery)",
-   "registrado": "2026-09-14",
-   "accionPendiente": "recrear",
+   "registrado": "2026-09-16",
+   "accionPendiente": null,
    "payload": {
     "code": "R43",
     "d": 94,

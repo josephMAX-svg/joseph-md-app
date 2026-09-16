@@ -51,7 +51,7 @@ export function faseActual(iso: string): string {
   if (iso < '2026-06-01') return 'FASE 4';
   if (iso < '2026-08-10') return 'FASE 5 · ENCAPS';
   if (iso < '2026-09-17') return 'FASE 6 · transición';
-  if (iso < '2027-02-01') return 'FASE 7 · STEP 1 PRINCIPAL';
+  if (iso < '2027-02-03') return 'FASE 7 · STEP 1 PRINCIPAL'; // v5.13: D95 lun 1-feb = D-1 · examen mar 2-feb · intensiva ENCAPS propuesta desde el mié 3-feb
   return 'FASE 8 · ENCAPS FINAL';
 }
 function nowMin(): number { try { const d = new Date(); return d.getHours() * 60 + d.getMinutes(); } catch { return 0; } }

@@ -100,7 +100,7 @@ export const PM_CAP = {
 } as const;
 
 export const DERMA_DAILY_META = {
-  inicio: '2026-09-17', fin: '2027-04-09', totalDias: 73, // v5.12 (15-sep) + taper v3 (12-sep): D1=jue 17-sep-2026 (el mié 16-sep es día Research) · D73=vie 9-abr-2027 (70→73: 3 segundas pasadas parciales en la ventana del examen, 0 átomos recortados) · interdiario con Research (paridad researchData.ts) · sáb+dom libres · salta 25-dic/31-dic/1-ene · NO tocar a mano
+  inicio: '2026-09-17', fin: '2027-04-09', totalDias: 73, // v5.12 (15-sep) = v5.13 (16-sep, sin cambio: el 17 ya era su d1; Research arranca el vie 18) + taper v3 (12-sep): D1=jue 17-sep-2026 · D73=vie 9-abr-2027 (70→73: 3 segundas pasadas parciales en la ventana del examen, 0 átomos recortados) · interdiario con Research (paridad researchData.ts) · sáb+dom libres · salta 25-dic/31-dic/1-ene · NO tocar a mano
   bloque: '13:30–14:15 (45 min · franja boards del Calendar, alterna con Research — interdiario)',
   nota: 'PLAN ÉLITE v3: cada sesión = casos CIEGOS fijos (casoIds, permutación seeded de los 200: 2/sesión · 1 en el taper d44-d49 · 3 desde d50) + 1 imagen dermatoscópica ciega + ~10Q review (presupuesto por banco DERMA_BANCOS, cursor "retoma en Q#" desde el ledger; fallos etiquetados med/ped/surg/path) + 10′ lectura del módulo (o módulo DermNet Dermoscopy CME en las pares d6-d44). TAPER Step 1 d44-d49 (15→29-ene): 1 caso + FSRS de fallos + 0 lectura nueva. Progreso REAL marcable (studyProgress key "derma"). El día mostrado salta los días-Research. Ciclo 2 (d74-d103) en dermaCiclo2.ts.',
   /** Primera sesión con carga completa tras el examen Step 1 (mar 2-feb-2027 en v5.13 = d49, sesión opcional): desde aquí 3 casos/sesión. */

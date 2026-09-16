@@ -27,19 +27,19 @@ Reglas fijas:
 | **Pre-test 5Q ciegas** (15:53) | `preguntasSinUsar(dia.capId, usadas).slice(0, 5)` | `pretest` | 5 |
 | **Quiz 8-10Q comentadas** (16:05) — YA IMPLEMENTADO en `HoyView` (`qIdsQuiz`) | `preguntasSinUsar(dia.capId, usadas).slice(0, 10)` (las 5 del pre-test ya están en `usadas` si se guardó) | `quiz` | 8-10 |
 | **Test de cierre 10Q** (1er día de cada bloque, `mirCierreDe(d)`) | `mezclaDeterminista(preguntasSinUsarDeAsignatura(num de la asignatura cerrada, usadas), fecha).slice(0, 10)` | `cierre` | 10 |
-| **Mini-MIR D77 40Q** (mar 5-ene-2027, v5.12) | `preguntasMixtasSinUsar(40, usadas, '2027-01-05', { soloPlan: true })` → tabla de neto por asignatura para la baseline de D78 | `miniMIR` | 40 |
+| **Mini-MIR D77 40Q** (mié 6-ene-2027, v5.13) | `preguntasMixtasSinUsar(40, usadas, '2027-01-06', { soloPlan: true })` → tabla de neto por asignatura para la baseline de D78 | `miniMIR` | 40 |
 | **APEX** (≤4/día) | *Pregunta oficial origen* = uno de los ids servidos ese día; 1 de cada 4 con `preguntasConImagen({ capId })` | — | — |
 
 Los pre-test/quiz del mismo capítulo comparten cola: al servir el quiz, `usadas` ya contiene los 5 ids del pre-test guardado (el orden año desc / nº asc hace que el pre-test se lleve 2026-2025 y el quiz continúe).
 
 **Presupuesto real** (13-sep-2026, `_clasificacion_stats.json`): 477 preguntas caen en los 76 capítulos del plan (mediana **5 usables por capítulo**, máx. 17 en Diabetes). El consumo teórico de la 1ª vuelta es 76 × (5 + 10) = 1.140 → el pool oficial cubre **≈ 40 %** de las preguntas de la 1ª vuelta por capítulo; el resto es test ProMIR (fallback). Capítulos del plan con **< 5 usables** (ese día el quiz será casi todo ProMIR): D22 Síndromes clínicos en nefrología (1) · D57 Cáncer de mama (1) · D60 Infecciones y embarazo (1) · D66 Artritis reumatoide (1) · D4 Bioética (2) · D33 Hipófisis (2) · D48 NMP crónicas (2) · D52 Neumonía (2) · D53 Antibacterianos (2) · D55 Hongos (2) · D58 Hemorragia gestación (2) · D62 Ovario (2) · y 19 capítulos con 3-4. Ningún capítulo del plan está a cero.
 
-## 3. Banqueo ene-mar 2027 (`src/lib/mirMantenimiento.ts`, **60 días, jue 7-ene → mié 31-mar** · v5.12, 15-sep; v5.11: 61 desde el 6-ene; v5.10: 62 desde el 5-ene)
+## 3. Banqueo ene-mar 2027 (`src/lib/mirMantenimiento.ts`, **59 días, vie 8-ene → mié 31-mar** · v5.13, 16-sep; v5.12: 60 desde el 7-ene; v5.11: 61 desde el 6-ene; v5.10: 62 desde el 5-ene)
 
 | Día | 15Q / 10Q foco | 10Q interleaving | Registro |
 |---|---|---|---|
 | lun-jue `banco` (normal) | `preguntasSinUsarDeAsignatura(dia.num, usadas)` → `mezclaDeterminista(…, fecha).slice(0, 15)` | `preguntasSinUsarDeAsignatura(dia.num2, usadas).slice(0, 10)` | `mantenimiento`, `asignatura` = foco, `qIds` = los 25 |
-| lun-jue `banco` (reducido, hasta el vie 29-ene = D95 del Step 1; examen target lun 1-feb) | `preguntasMixtasSinUsar(10, usadas, fecha, { nums: [dia.num, dia.num2] })` | — | `mantenimiento` |
+| lun-jue `banco` (reducido, hasta el lun 1-feb = D95 del Step 1 = D-1; examen target mar 2-feb) | `preguntasMixtasSinUsar(10, usadas, fecha, { nums: [dia.num, dia.num2] })` | — | `mantenimiento` |
 | **jueves TIER C EXPRESS** (semanas 1-12, campo `dia.tierC`, `MIR_MANT_TIER_C`) | foco igual que arriba (15Q) | **10Q = `preguntasSinUsar(tierC.capId, usadas)`**; si faltan, completar con `preguntasSinUsarDeAsignatura(tierC.num, usadas)`; si sigue faltando, test del capítulo ProMIR (`capUrl(tierC.capId)`) | **entrada propia** `mantenimiento` con `asignatura = tierC.asignatura`, `capId = tierC.capId`, `qIds` = las 10 (NO se mezclan con la asignatura foco: así entran en `mirStatsPorAsignatura` y en la tabla del handoff 31-mar) |
 | viernes | `preguntasSinUsarDeAsignatura(mirMantFoco(dia, mirPeorAsignatura()).num, usadas).slice(0, 30)` | — | `mantenimiento` (neto semanal) |
 
