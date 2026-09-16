@@ -404,13 +404,13 @@ export const LIVIANO_LOGISTICA = {
 // ===================== PENDIENTES CRÍTICOS (riesgos) =====================
 // v2 (sep-2026): los 2 pendientes ROJOS (abiertos desde jun-2026 sin dueño) pasan a TAREAS con
 // dueño, día del plan LIVIANO Academia (Módulo 7 · Acceso en Perú) y salida verificable
-// (fila en LIVIANO_ACCESO_PERU). Las fechas son las del plan v5.12 (D1 = mié 16-sep-2026): si el
+// (fila en LIVIANO_ACCESO_PERU). Las fechas son las del plan v5.13 (D1 = jue 17-sep-2026): si el
 // plan se corre con remap_inicio.js, manda `planDia` (la fecha se resuelve contra LIV_DIAS).
 export interface PendienteLiviano {
   titulo: string; detalle: string; nivel: Semaforo;
   dueno?: string;      // quién cierra la tarea
   planDia?: number;    // día del plan LIVIANO Academia en que se ejecuta
-  fecha?: string;      // fecha límite (plan v5.12) — se recalcula si el plan se corre
+  fecha?: string;      // fecha límite (plan v5.13) — se recalcula si el plan se corre
   salida?: string;     // entregable verificable que cierra el pendiente
 }
 export const LIVIANO_PENDIENTES: PendienteLiviano[] = [
@@ -431,7 +431,7 @@ export const LIVIANO_PENDIENTES: PendienteLiviano[] = [
 // Tabla de VERIFICACIÓN con regla anti-alucinación: ninguna celda se rellena sin fuente primaria
 // (captura fechada del portal público de DIGEMID, cotización escrita de farmacia, dictamen de QF /
 // abogado). Hasta entonces cada celda dice "PENDIENTE DE VERIFICACIÓN". Se produce en los días
-// D39-D48 del plan (v5.12; las fechas se recalculan desde livianoStudyPlan) y se re-verifica en cada REVISIÓN TRIMESTRAL.
+// D39-D48 del plan (v5.13; las fechas se recalculan desde livianoStudyPlan) y se re-verifica en cada REVISIÓN TRIMESTRAL.
 export type EstadoVerificacion = 'PENDIENTE DE VERIFICACIÓN' | 'VERIFICADO' | 'SIN REGISTRO HALLADO';
 export interface AccesoPeruFila {
   molecula: string;          // molécula + marca de referencia (la marca en Perú se confirma en el registro)
@@ -465,7 +465,7 @@ export const LIVIANO_ACCESO_PERU_REGLAS = {
   titulo: 'Protocolo de verificación (Módulo 7 · Acceso en Perú)',
   dueno: 'Joseph (+ QF y abogado de salud — A VERIFICAR nombres)',
   planDias: [39, 41, 42, 43, 44],
-  ventana: 'D39-D48 (v5.12 · noviembre-2026) · re-verificación en cada revisión trimestral · fechas exactas en livianoStudyPlan',
+  ventana: 'D39-D48 (v5.13 · noviembre-2026) · re-verificación en cada revisión trimestral · fechas exactas en livianoStudyPlan',
   pasos: [
     'D39 · Registro: consultar el portal público de DIGEMID (URL A VERIFICAR), capturar pantalla con fecha por molécula; si no aparece → "SIN REGISTRO HALLADO (fecha)".',
     'D41 · Condición de venta: leerla en el registro (con receta / receta retenida) y mapear el flujo receta → farmacia → paciente en el CRM.',

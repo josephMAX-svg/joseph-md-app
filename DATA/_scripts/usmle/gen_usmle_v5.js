@@ -1,14 +1,14 @@
-// Generador del array DIAS para usmleStep1Daily.ts v5 — v5.12: D1=2026-09-16 → D95=2027-01-29
-// v5.12 (15-sep-2026): el mar 15-sep tampoco se estudió → todo corre a D1 = MIÉ 16-SEP. REGLA DE ESTE CORRIMIENTO:
-//   NO se fusiona ni se recorta NADA. El temario (CONTENT) sale 1:1 y el desfase se absorbe ALARGANDO el final
-//   del plan hasta el vie 29-ene-2027 (= último día de la ventana 25-29 ene, que era el target de examen).
-//   11 de los 12 hitos conservan su FECHA (anclados en SIMS), solo cambia su D#. El UWSA1 se mueve con cada
-//   corrimiento (vie 11 → lun 14 → mar 15 → mié 16-sep) para seguir siendo el D1 (baseline el primer día, Palmerton).
-//   El primer día de CONTENIDO pasa al jue 17-sep (D2). Ninguna fila de CONTENT se pierde por eso.
-//   ⚠ CONSECUENCIA v5.12: el plan ya ocupa el vie 29-ene → el EXAMEN sale de la ventana: target LUN 1-FEB-2027
-//   (sáb 30 y dom 31-ene = descanso pre-examen FUERA del plan: solo Anki vencido + ritual D-1 el domingo).
-//   Joseph debe reprogramar/agendar el Prometric y confirmar que el eligibility period cubre el 1-feb (o decidir recortar).
-//   Desde aquí cada día no estudiado mueve el examen un día hábil más (o exige recortar temario).
+// Generador del array DIAS para usmleStep1Daily.ts v5 — v5.13: D1=2026-09-17 → D95=2027-02-01
+// v5.13 (16-sep-2026): el mié 16-sep tampoco se estudió → todo corre a D1 = JUE 17-SEP (13 hábiles perdidos desde el
+//   31-ago). REGLA DE ESTE CORRIMIENTO: NO se fusiona ni se recorta NADA. El temario (CONTENT) sale 1:1 y el desfase se
+//   absorbe ALARGANDO el final del plan hasta el lun 1-feb-2027. 11 de los 12 hitos conservan su FECHA (anclados en
+//   SIMS), solo cambia su D#. El UWSA1 se mueve con cada corrimiento (vie 11 → lun 14 → mar 15 → mié 16 → jue 17-sep)
+//   para seguir siendo el D1 (baseline el primer día, Palmerton). El primer día de CONTENIDO pasa al vie 18-sep (D2).
+//   Ninguna fila de CONTENT se pierde por eso.
+//   ⚠ EXAMEN v5.13: target MAR 2-FEB-2027 (v5.12: lun 1-feb; la ventana 25-29 ene quedó atrás en la v5.12). El D95
+//   (lun 1-feb) es el D-1 DENTRO del plan (sesión mínima AM + ritual de test-day); el finde 30-31 ene queda libre
+//   entre D94 (vie 29) y D95. Joseph debe agendar/reprogramar el Prometric y confirmar el eligibility period.
+//   Cada día no estudiado mueve el examen un día hábil más (o exige recortar temario: decisión de Joseph).
 // v5.6-Palmerton (5-sep-2026): añade nivelUW (1-5) y qDia por día (ver bloque al final). 12-sep (tarde): flags VIERNES_N4_DESDE_SEMANA (=11) y TAPER_ACTIVO → franjaNota. Uso: node gen_usmle_v5.js && node assemble_usmle_ts.js && node update_diainicio.js && node remap_obsidian_usmle.js
 // L-V únicamente. Skip: 2026-12-25, 2026-12-31, 2027-01-01. 95 días.
 const SKIP = new Set(['2026-12-25', '2026-12-31', '2027-01-01']);
@@ -22,7 +22,7 @@ function* fechas(desde, hasta) {
     d.setUTCDate(d.getUTCDate() + 1);
   }
 }
-const F = [...fechas('2026-09-16', '2027-01-29')]; // v5.12: D1=mié 16-sep (15-sep tampoco estudiado) → D95=vie 29-ene (del 16-sep al 29-ene caben exactamente 95 hábiles)
+const F = [...fechas('2026-09-17', '2027-02-01')]; // v5.13: D1=jue 17-sep (16-sep tampoco estudiado) → D95=lun 1-feb (del 17-sep al 1-feb caben exactamente 95 hábiles)
 console.log('// total dias:', F.length);
 
 // helpers de material
@@ -124,8 +124,8 @@ const CONTENT = [
 
 // Simulacros de hito (viernes) — fecha → entrada
 const SIMS = {
-  // v5.10-v5.12: el UWSA1 se MUEVE de fecha con cada corrimiento (vie 11 → lun 14 → mar 15 → mié 16-sep) para seguir siendo el D1. Único hito que cambia de fecha.
-  '2026-09-16': ['Assessment', 'CORE', '🎯 UWSA1 — BASELINE (160Q, 09:00-13:00) + revisión completa por la tarde', 'Assessment', '—', 'uWorld Self-Assessment 1', 'uWorld UWSA1', 'clin'],
+  // v5.10-v5.13: el UWSA1 se MUEVE de fecha con cada corrimiento (vie 11 → lun 14 → mar 15 → mié 16 → jue 17-sep) para seguir siendo el D1. Único hito que cambia de fecha.
+  '2026-09-17': ['Assessment', 'CORE', '🎯 UWSA1 — BASELINE (160Q, 09:00-13:00) + revisión completa por la tarde', 'Assessment', '—', 'uWorld Self-Assessment 1', 'uWorld UWSA1', 'clin'],
   '2026-10-02': ['Assessment', 'CORE', '🎯 NBME 25 (07:15-11:00) + revisión de errores + Anki de gaps', 'Assessment', '—', 'NBME CBS Form 25', 'NBME 25 (Qbankly)', 'clin'],
   '2026-10-23': ['Assessment', 'CORE', '🎯 NBME 26 (07:15-11:00) + revisión de errores + Anki de gaps', 'Assessment', '—', 'NBME CBS Form 26', 'NBME 26 (Qbankly)', 'clin'],
   '2026-11-13': ['Assessment', 'CORE', '🎯 NBME 27 (07:15-11:00) + revisión de errores + Anki de gaps', 'Assessment', '—', 'NBME CBS Form 27', 'NBME 27 (Qbankly)', 'clin'],
@@ -141,9 +141,9 @@ const SIMS = {
   '2027-01-22': ['Sprint final', 'CORE', '🎯 FREE 120 oficial (07:15-11:00) + logística del examen + cierre', 'Sprint', '—', 'NBME Free 120', 'uWorld + First Aid + Anki', 'clin'],
 };
 
-// POST-FASE A (v5.12) — los 10 días NO-hito que van después del último día de contenido.
+// POST-FASE A (v5.13) — los 10 días NO-hito que van después del último día de contenido.
 // Se consumen EN ORDEN en los huecos libres de enero (los 5 hitos de enero ya viven en SIMS, por fecha).
-// Ningún item se recorta: el que no cabe antes del Free 120 se alarga al vie 29-ene (D95, última sesión; examen lun 1-feb).
+// Ningún item se recorta: el que no cabe antes del Free 120 se alarga al lun 1-feb (D95 = D-1 dentro del plan; examen mar 2-feb).
 // [system, tier, sub, uw, bbCh]
 const POST_A = [
   ['Banco intensivo', 'CORE', 'Random timed 2×40Q + revisión profunda + sistema débil #1 (según NBMEs)', 'uWorld timed random', 'Banco'],
@@ -188,7 +188,7 @@ for (const fecha of F) {
 //  · Fase B (bbCh='Banco'): 'Random timed' → nivel 4 (2×40Q mixtos timed = 80Q) · resto → nivel 5 (incorrects + AMBOSS 200 = 80Q)
 //  · Fase C (bbCh='Sprint'): nivel 5 · días sin simulacro = SOLO flagged/incorrects, sin preguntas nuevas (1º 40Q · resto 20Q)
 //    v5.9+: la clasificación ya NO usa umbrales de fecha (2027-01-04 / 2027-01-18) sino el origen de la fila (bbCh),
-//    porque el contenido de Fase A se derrama hasta enero y el sprint se alarga (v5.12: hasta el vie 29-ene).
+//    porque el contenido de Fase A se derrama hasta enero y el sprint se alarga (v5.13: hasta el lun 1-feb).
 //  El gate (80% en 10Q consecutivas) vive en USMLE_GATE / usmleScores.ts, no aquí.
 //
 // ── 12-sep-2026 (tarde) · VIERNES DE NIVEL 4 (divergencia Palmerton #6 · decisión §E-2 → IMPLEMENTADA) ──
@@ -200,9 +200,9 @@ for (const fecha of F) {
 //  0 = desactivado (vuelve a la regla v5.10 original: viernes ≥3º día = nivel 3).
 const VIERNES_N4_DESDE_SEMANA = 11;
 // ── 12-sep-2026 (tarde) · TAPER D94-D95 (divergencia #22 · decisión §E-5 → IMPLEMENTADA) ──
-//  v5.12 (15-sep): el plan termina el vie 29-ene (D95 = última sesión, D-3) y el examen target es el LUN 1-FEB: D94 jue 28 y
-//  D95 vie 29 = taper (20Q flagged + Anki maduro); sáb 30 = D-2 y dom 31 = D-1 FUERA del plan (solo Anki vencido + ritual
-//  de test-day el domingo) → USMLE_TAPER en assemble_usmle_ts.js.
+//  v5.13 (16-sep): el plan termina el lun 1-feb (D95 = D-1 DENTRO del plan) y el examen target es el MAR 2-FEB: D94 vie 29-ene
+//  = última sesión de banco (taper 20Q), sáb 30 y dom 31 libres (solo Anki vencido), D95 lun 1-feb = sesión mínima AM (Anki
+//  maduro + 20Q flagged ≤2 h) + ritual de test-day por la tarde → USMLE_TAPER en assemble_usmle_ts.js.
 //  Ambos días bajan a 20Q (solo flagged/incorrects ya vistos) + Anki MADURO; cero preguntas nuevas, cero tarjetas nuevas.
 //  Cambia SOLO qDia (D94: 40 → 20) y franjaNota; el contenido (sub) de D94/D95 no se toca.
 const TAPER_ACTIVO = true;
@@ -228,8 +228,8 @@ for (const x of dias) {
       const esD2 = x === sprintNoHito[sprintNoHito.length - 1];
       x.qDia = 20;
       x.franjaNota = esD2
-        ? 'TAPER · ÚLTIMA SESIÓN (vie 29-ene = D95 = D-3 · Palmerton §8.3): sesión LIGERA — solo Anki MADURO + 20Q flagged de UWorld con los mejores esquemas e imágenes · cero preguntas nuevas, cero tarjetas nuevas, ningún bloque timed · tarde: preparar permiso impreso + 2 ID, bolsas Ziploc numeradas (Break #1-#4), ruta al Prometric · sáb 30 = D-2 y dom 31-ene = D-1 FUERA DEL PLAN (solo Anki vencido, nada después de las 17:00 del domingo, dormir temprano) · lun 1-feb = EXAMEN (target v5.12, fuera de la ventana 25-29 ene: reprogramar Prometric)'
-        : 'TAPER D-4 (jue 28-ene · Palmerton §8.3): cesa TODO lo nuevo — solo Anki MADURO + 20Q flagged/incorrects ya vistos (sin bloque timed, sin AMBOSS) · repaso First Aid de esquemas, no de detalle · dormir ≥7 h ya desde hoy';
+        ? 'TAPER D-1 (lun 1-feb = D95, DENTRO del plan · Palmerton §8.3): sesión MÍNIMA solo por la mañana — Anki MADURO/vencido + 20Q flagged de UWorld con los mejores esquemas e imágenes (≤2 h) · cero preguntas nuevas, cero tarjetas nuevas, ningún bloque timed, no abrir First Aid "para ver cuánto sé" · tarde: permiso impreso + 2 ID, bolsas Ziploc numeradas (Break #1-#4), ruta al Prometric · NADA de estudio después de las 17:00, dormir temprano (≥7-8 h) · mañana mar 2-feb = EXAMEN (target v5.13: agendar/reprogramar Prometric)'
+        : 'TAPER D-2 · ÚLTIMA SESIÓN DE BANCO (vie 29-ene · Palmerton §8.3): cesa TODO lo nuevo — solo Anki MADURO + 20Q flagged/incorrects ya vistos (sin bloque timed, sin AMBOSS) · repaso First Aid de esquemas, no de detalle · sáb 30 y dom 31 libres (solo Anki vencido) · dormir ≥7 h ya desde hoy';
     }
     continue;
   }

@@ -1,5 +1,5 @@
 /**
- * encapsProgressSync.ts — CIERRE DE SESIÓN ENCAPS desde la app (régimen MANTENIMIENTO 2027-I · v5.12, D1 = mié 16-sep-2026).
+ * encapsProgressSync.ts — CIERRE DE SESIÓN ENCAPS desde la app (régimen MANTENIMIENTO 2027-I · v5.13, D1 = jue 17-sep-2026).
  *
  * Cierra el circuito del % CIEGO REAL sin pasar por una sesión de Claude: el formulario de cierre de EncapsPlanView
  * (final de la cola del día) llama a `cerrarSesion()` y esta capa:

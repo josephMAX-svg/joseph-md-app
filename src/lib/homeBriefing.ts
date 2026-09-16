@@ -98,13 +98,13 @@ export function componerBriefing(inp: BriefingInput): string {
 // Doctrina: DATA/REVISION_SEMANAL.md · DATA/PROTOCOLO_MODO_MINIMO.md · DATA/SYNC_ANKI_OBSIDIAN_APP.md
 // ═══════════════════════════════════════════════════════════════════════════
 
-/** D1 del Step 1 (v5.12 = mié 16-sep-2026) — misma fuente que usmleStep1Daily.DAILY_META.inicio. */
+/** D1 del Step 1 (v5.13 = jue 17-sep-2026) — misma fuente que usmleStep1Daily.DAILY_META.inicio. */
 export const STEP1_INICIO = DAILY_META.inicio;
-export const STEP1_SEMANAS = 20; // S1 16-sep (mié) → S20 25-29 ene · D95 = vie 29-ene (examen target lun 1-feb-2027, fuera de la ventana 25-29 ene)
+export const STEP1_SEMANAS = 21; // S1 17-sep (jue) → S21 = lun 1-feb (D95 = D-1; examen target mar 2-feb-2027)
 
 /** Hitos FIJOS (viernes) con su mínimo on-track (PALMERTON_POR_MATERIA Parte V, regla 5%/mes). */
 export const HITOS_STEP1: { fecha: string; nombre: string; minimo: string }[] = [
-  { fecha: '2026-09-16', nombre: 'UWSA1', minimo: 'baseline (cualquier valor)' }, // v5.12: el UWSA1 se mueve con cada corrimiento (= D1)
+  { fecha: '2026-09-17', nombre: 'UWSA1', minimo: 'baseline (cualquier valor)' }, // v5.13: el UWSA1 se mueve con cada corrimiento (= D1)
   { fecha: '2026-10-02', nombre: 'NBME 25', minimo: '≥51%' },
   { fecha: '2026-10-23', nombre: 'NBME 26', minimo: '≥54%' },
   { fecha: '2026-11-13', nombre: 'NBME 27', minimo: '≥57%' },
@@ -142,9 +142,13 @@ export function semanaStep1(iso: string): SemanaStep1 {
     const dow = d.getUTCDay();                       // 0=Dom
     const offToMon = dow === 0 ? -6 : 1 - dow;       // lunes de la semana de `iso`
     lunes = addDaysISO(iso, offToMon);
+    // v5.13: S1 = semana L-V del D1 aunque el D1 no sea lunes (D1 en jueves → el lunes de esa semana ya es S1, no 'pre-D1')
     const d1 = new Date(STEP1_INICIO + 'T12:00:00Z');
-    const diff = Math.round((new Date(lunes + 'T12:00:00Z').getTime() - d1.getTime()) / 86400000);
+    const dowD1 = d1.getUTCDay();
+    const lunesD1 = addDaysISO(STEP1_INICIO, dowD1 === 0 ? -6 : 1 - dowD1);
+    const diff = Math.round((new Date(lunes + 'T12:00:00Z').getTime() - new Date(lunesD1 + 'T12:00:00Z').getTime()) / 86400000);
     n = Math.floor(diff / 7) + 1;
+    if (iso < STEP1_INICIO) n = 0;                    // los días de la semana 1 anteriores al D1 siguen siendo pre-D1
   } catch { /* fuera de rango */ }
   const viernes = addDaysISO(lunes, 4), sabado = addDaysISO(lunes, 5);
   const deload = DELOAD_SEMANAS.find((x) => x.lunes === lunes);

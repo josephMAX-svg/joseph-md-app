@@ -15,7 +15,7 @@
  *    de introducción de ProMIR, mirDetalleData.pesoGlobal; smooth weighted round-robin +
  *    reparto por resto mayor = cuotas exactas). Viernes = 30Q de la asignatura PEOR DEL LOG
  *    (mirEvalLog.mirPeorAsignatura(); fallback = la de mayor peso vista esa semana).
- *  · modo 'reducido' 7-29 ene (Fase B/C del Step 1, v5.12: el sprint acaba el vie 29-ene; examen lun 1-feb): solo Anki + 10Q (flag modoReducido).
+ *  · modo 'reducido' 8-ene → 1-feb (Fase B/C del Step 1, v5.13: el sprint acaba el lun 1-feb; examen mar 2-feb): solo Anki + 10Q (flag modoReducido).
  *  · TIER C EXPRESS (v3b, gaps_v3b_mir.json punto 4, 13-sep-2026): 1 de los 4 slots semanales lun-jue (el ÚLTIMO
  *    lun-jue de cada semana, 12 semanas → 12 asignaturas FUERA del plan) cambia sus '10Q interleaving' (o sus 10Q
  *    mixtas en modo reducido) por 10Q del capítulo TOP-1 de una asignatura pequeña, con capId REAL de
@@ -35,11 +35,11 @@ const fs = require('fs');
 const path = require('path');
 const ROOT = path.join(__dirname, '..', '..');
 const OUT = path.join(ROOT, 'src/lib/mirMantenimiento.ts');
-const INICIO = process.argv[2] || '2027-01-07'; // v5.12: la 1ª vuelta MIR termina el mié 6-ene (D78 = corrección del mini-MIR) → el mantenimiento arranca el jue 7-ene para no solapar (v5.11: 6-ene · v5.10: 5-ene)
+const INICIO = process.argv[2] || '2027-01-08'; // v5.13: la 1ª vuelta MIR termina el jue 7-ene (D78 = corrección del mini-MIR) → el mantenimiento arranca el vie 8-ene para no solapar (v5.12: 7-ene · v5.11: 6-ene)
 const FIN = process.argv[3] || '2027-03-31';
 for (const s of [INICIO, FIN]) if (!/^20\d\d-\d\d-\d\d$/.test(s)) throw new Error('fecha inválida: ' + s);
 /** hasta esta fecha (incl.) el bloque va en modo reducido (Fase B/C Step 1 · examen 25-29 ene) */
-const REDUCIDO_HASTA = '2027-01-29'; // v5.12: el Step 1 termina D95 = vie 29-ene (examen lun 1-feb) (v5.11: jue 28-ene · v5.10: mié 27-ene)
+const REDUCIDO_HASTA = '2027-02-01'; // v5.13: el Step 1 termina D95 = lun 1-feb (examen mar 2-feb) (v5.12: vie 29-ene · v5.11: jue 28-ene)
 
 // ── calendario (idéntico a remap_inicio.js) ──
 const SKIP_FIJOS = new Set(['2026-12-25', '2026-12-31', '2027-01-01']);
@@ -196,9 +196,13 @@ for (const x of DIAS_CAL) {
 }
 
 // ── Tier C express: el ÚLTIMO slot lun-jue ('banco') de cada semana 1..12 cambia sus 10Q interleaving/mixtas ──
+// v5.13 (16-sep-2026): si el INICIO cae en viernes, la semana 1 no tiene slots lun-jue → la semana N del catálogo se mapea a la
+// N-ésima semana del plan CON slots de banco (así el mantenimiento puede arrancar cualquier día hábil sin perder ningún Tier C).
+const semanasConBanco = [...new Set(ROWS.filter((r) => r.tipo === 'banco').map((r) => r.semana))].sort((x, y) => x - y);
 for (const t of TIER_C) {
-  const slots = ROWS.filter((r) => r.semana === t.semana && r.tipo === 'banco');
-  if (!slots.length) throw new Error('Tier C: semana sin slots lun-jue ' + t.semana);
+  const semanaReal = semanasConBanco[t.semana - 1];
+  const slots = ROWS.filter((r) => r.semana === semanaReal && r.tipo === 'banco');
+  if (!slots.length) throw new Error('Tier C: semana sin slots lun-jue ' + t.semana + ' (real ' + semanaReal + ')');
   const r = slots[slots.length - 1];
   r.tierC = { num: t.num, asignatura: t.asignatura, capId: t.capId, capitulo: t.capitulo, pesoCap: t.pesoCap, nQ: 10, ...(t.nota ? { nota: t.nota } : {}) };
   r.num2 = t.num; r.asignatura2 = t.asignatura; // el "interleaving" de ese día ES el Tier C (la UI ya muestra asignatura2)
@@ -261,7 +265,7 @@ export const MIR_MANT_META = {
 /** Peso MIR global por asignatura (texto real del capítulo intro de ProMIR · mirDetalleData.pesoGlobal) y cuota de slots lun-jue. */
 export const MIR_MANT_PESOS: Array<{ num: number; asignatura: string; peso: number; fuente: string; slots: number }> = [${ASIGS.map((a) => JSON.stringify({ num: a.num, asignatura: a.asignatura, peso: a.peso, fuente: a.fuente, slots: cuotaDe[a.num] })).join(',')}];
 /** TIER C EXPRESS: 12 semanas → 12 asignaturas fuera del plan × capítulo top-1 (capId real de mirTemarioData · peso de mirDetalleData). */
-export const MIR_MANT_TIER_C: Array<MirMantTierC & { semana: number; fecha: string; d: number }> = [${TIER_C.map((t) => { const r = ROWS.find((x) => x.tierC && x.tierC.num === t.num && x.semana === t.semana); return JSON.stringify({ semana: t.semana, fecha: r.fecha, d: r.d, num: t.num, asignatura: t.asignatura, capId: t.capId, capitulo: t.capitulo, pesoCap: t.pesoCap, nQ: 10, ...(t.nota ? { nota: t.nota } : {}) }); }).join(',')}];
+export const MIR_MANT_TIER_C: Array<MirMantTierC & { semana: number; fecha: string; d: number }> = [${TIER_C.map((t) => { const r = ROWS.find((x) => x.tierC && x.tierC.num === t.num && x.tierC.capId === t.capId); return JSON.stringify({ semana: r.semana, fecha: r.fecha, d: r.d, num: t.num, asignatura: t.asignatura, capId: t.capId, capitulo: t.capitulo, pesoCap: t.pesoCap, nQ: 10, ...(t.nota ? { nota: t.nota } : {}) }); }).join(',')}];
 export const MIR_MANT_DIAS: DiaMIRMant[] = [${ROWS.map(rowTS).join(',')}];
 
 export const MIR_MANT_FRANJAS: Record<DiaMIRMant['modo'] | 'viernes', Array<{ hora: string; fase: string; tipo: string }>> = {

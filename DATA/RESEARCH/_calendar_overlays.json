@@ -7,7 +7,7 @@
   "colorId": "6",
   "availability": "FREE/transparent",
   "regla": "tras cada corrimiento: node gen_research_plan.js <D1> → node gen_research_calendar.js → update_event (o delete+create) de los `recrear` con su payload → --set hito=eventId",
-  "actualizado": "2026-09-14",
+  "actualizado": "2026-09-16",
   "nHitos": 12
  },
  "overlays": {
@@ -17,20 +17,20 @@
    "hash": "3aa4a32ad3e2",
    "summary": "🔬 RESEARCH · M1 Senior author local (Dr. Ciro) confirmado",
    "registrado": "2026-09-14",
-   "accionPendiente": null,
+   "accionPendiente": "recrear",
    "payload": {
     "code": "M1",
     "d": 3,
     "ciclo": 1,
-    "fecha": "2026-09-22",
+    "fecha": "2026-09-24",
     "summary": "🔬 RESEARCH · M1 Senior author local (Dr. Ciro) confirmado",
-    "startTime": "2026-09-22T13:30:00-05:00",
-    "endTime": "2026-09-22T14:15:00-05:00",
+    "startTime": "2026-09-24T13:30:00-05:00",
+    "endTime": "2026-09-24T14:15:00-05:00",
     "timeZone": "America/Lima",
     "colorId": "6",
     "availability": "AVAILABILITY_FREE",
-    "description": "HITO RESEARCH · M1 · d3 del ciclo 1 · bloque 13:30-14:15 (día-Research; alterna con Derma)\n\nOBJETIVO: Dr. Ciro Rodríguez (Hospital Regional Daniel Alcides Carrión, Huancayo): propuesta CONCRETA de 3 coautorías — tesis→research letter (él senior), carta al editor (coautor) y case report de SU consulta (él senior author)\nENTREGABLE: Mensaje o reunión con las 3 coautorías propuestas + respuesta registrada (sí / no / cuándo)\nARTEFACTO: DATA/RESEARCH/MENTORES.md: fila Dr. Ciro (qué pido · fecha · estado · siguiente paso)\nAVISOS: antes de T-1 (vie 02-oct-2026): reunir los 10 documentos de etica.md §1 y preguntar al Dr. Ciro la vía CEI (expedita / retrospectiva / exención)\n\nOverlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se\nregenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel\n→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.",
-    "hash": "3aa4a32ad3e2"
+    "description": "HITO RESEARCH · M1 · d3 del ciclo 1 · bloque 13:30-14:15 (día-Research; alterna con Derma)\n\nOBJETIVO: Dr. Ciro Rodríguez (Hospital Regional Daniel Alcides Carrión, Huancayo): propuesta CONCRETA de 3 coautorías — tesis→research letter (él senior), carta al editor (coautor) y case report de SU consulta (él senior author)\nENTREGABLE: Mensaje o reunión con las 3 coautorías propuestas + respuesta registrada (sí / no / cuándo)\nARTEFACTO: DATA/RESEARCH/MENTORES.md: fila Dr. Ciro (qué pido · fecha · estado · siguiente paso)\nAVISOS: antes de T-1 (mar 06-oct-2026): reunir los 10 documentos de etica.md §1 y preguntar al Dr. Ciro la vía CEI (expedita / retrospectiva / exención)\n\nOverlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se\nregenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel\n→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.",
+    "hash": "b2017cb07da8"
    }
   },
   "carta-diana": {
@@ -39,20 +39,20 @@
    "hash": "c3d41cf39267",
    "summary": "🔬 RESEARCH · C-2 Artículo DIANA + deadline de la carta #1",
    "registrado": "2026-09-14",
-   "accionPendiente": null,
+   "accionPendiente": "recrear",
    "payload": {
     "code": "C-2",
     "d": 6,
     "ciclo": 1,
-    "fecha": "2026-09-30",
+    "fecha": "2026-10-02",
     "summary": "🔬 RESEARCH · C-2 Artículo DIANA + deadline de la carta #1",
-    "startTime": "2026-09-30T13:30:00-05:00",
-    "endTime": "2026-09-30T14:15:00-05:00",
+    "startTime": "2026-10-02T13:30:00-05:00",
+    "endTime": "2026-10-02T14:15:00-05:00",
     "timeZone": "America/Lima",
     "colorId": "6",
     "availability": "AVAILABILITY_FREE",
     "description": "HITO RESEARCH · C-2 · d6 del ciclo 1 · bloque 13:30-14:15 (día-Research; alterna con Derma)\n\nOBJETIVO: Elegir 1 artículo diana con FECHA LÍMITE de submit calculada (ventana del journal) + leer 5 letters modelo del mismo journal (cita → aporte u objeción con 1 dato verificable → implicación)\nENTREGABLE: Artículo diana fijado + deadline en la Mesa editorial + esqueleto de la carta (3 párrafos) calcado de los 5 modelos\nARTEFACTO: CARTA_1/diana.md (DOI del artículo, deadline, límites, esqueleto) + Mesa editorial: carta-1 → borrador\nFECHA LÍMITE EXTERNA: ventana de letters del journal diana (típ. 4-12 semanas tras la publicación · se fija en C-2)\n\nOverlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se\nregenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel\n→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.",
-    "hash": "c3d41cf39267"
+    "hash": "def7dc039e0a"
    }
   },
   "tesis-etica": {
@@ -61,20 +61,20 @@
    "hash": "7b51bcce873b",
    "summary": "🔬 RESEARCH · T-1 Ética/CEI de la tesis L0 archivada",
    "registrado": "2026-09-14",
-   "accionPendiente": null,
+   "accionPendiente": "recrear",
    "payload": {
     "code": "T-1",
     "d": 7,
     "ciclo": 1,
-    "fecha": "2026-10-02",
+    "fecha": "2026-10-06",
     "summary": "🔬 RESEARCH · T-1 Ética/CEI de la tesis L0 archivada",
-    "startTime": "2026-10-02T13:30:00-05:00",
-    "endTime": "2026-10-02T14:15:00-05:00",
+    "startTime": "2026-10-06T13:30:00-05:00",
+    "endTime": "2026-10-06T14:15:00-05:00",
     "timeZone": "America/Lima",
     "colorId": "6",
     "availability": "AVAILABILITY_FREE",
-    "description": "HITO RESEARCH · T-1 · d7 del ciclo 1 · bloque 13:30-14:15 (día-Research; alterna con Derma)\n\nOBJETIVO: Ética de la tesis (adolescentes, colegio): verificar y ARCHIVAR nº y fecha de aprobación del CEI (FMH-UNCP u hospital). Los consentimientos YA constan (censo con consentimiento parental + asentimiento: 291 excluidas por no consentir, portada de datos_tesis_acne.xlsx → etica.md 1.4-1.5). Si no hubo CEI formal → PRESENTAR HOY la solicitud de revisión expedita/retrospectiva (o pedir la constancia de exención) con protocolo + modelos de consentimiento/asentimiento + oficio de la I.E. + resumen de resultados (etica.md §2.1)\nENTREGABLE: Nº de CEI archivado O solicitud de revisión expedita PRESENTADA (nº de cargo + fecha) + párrafo de ética/consentimiento listo para Methods\nARTEFACTO: DATA/RESEARCH/TESIS_L0/etica.md (nº CEI o nº de cargo de la solicitud, fecha, consentimientos, párrafo para Methods)\nAVISOS: sin nº de CEI o constancia de exención JAAD Intl e IJD rechazan de entrada → gate en T-7/T-8 · solicitud CEI expedita presentada ≤ vie 02-oct-2026 (HOY): documentos reunidos desde M1 (mar 22-sep-2026) · desbloquea M3 (versión del CADI · etica.md 1.7)\nFECHA LÍMITE EXTERNA: oct-2026 (solicitud CEI expedita ≤ 30-sep según gap 1 de Palmerton v3b · sin nº de CEI NO se envía T-8)\n\nOverlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se\nregenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel\n→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.",
-    "hash": "7b51bcce873b"
+    "description": "HITO RESEARCH · T-1 · d7 del ciclo 1 · bloque 13:30-14:15 (día-Research; alterna con Derma)\n\nOBJETIVO: Ética de la tesis (adolescentes, colegio): verificar y ARCHIVAR nº y fecha de aprobación del CEI (FMH-UNCP u hospital). Los consentimientos YA constan (censo con consentimiento parental + asentimiento: 291 excluidas por no consentir, portada de datos_tesis_acne.xlsx → etica.md 1.4-1.5). Si no hubo CEI formal → PRESENTAR HOY la solicitud de revisión expedita/retrospectiva (o pedir la constancia de exención) con protocolo + modelos de consentimiento/asentimiento + oficio de la I.E. + resumen de resultados (etica.md §2.1)\nENTREGABLE: Nº de CEI archivado O solicitud de revisión expedita PRESENTADA (nº de cargo + fecha) + párrafo de ética/consentimiento listo para Methods\nARTEFACTO: DATA/RESEARCH/TESIS_L0/etica.md (nº CEI o nº de cargo de la solicitud, fecha, consentimientos, párrafo para Methods)\nAVISOS: sin nº de CEI o constancia de exención JAAD Intl e IJD rechazan de entrada → gate en T-7/T-8 · solicitud CEI expedita presentada ≤ mar 06-oct-2026 (HOY): documentos reunidos desde M1 (jue 24-sep-2026) · desbloquea M3 (versión del CADI · etica.md 1.7)\nFECHA LÍMITE EXTERNA: oct-2026 (solicitud CEI expedita ≤ 30-sep según gap 1 de Palmerton v3b · sin nº de CEI NO se envía T-8)\n\nOverlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se\nregenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel\n→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.",
+    "hash": "9c60af25f837"
    }
   },
   "carta-1": {
@@ -83,20 +83,20 @@
    "hash": "32a53ae81535",
    "summary": "🔬 RESEARCH · C-6 SUBMIT carta al editor #1",
    "registrado": "2026-09-14",
-   "accionPendiente": null,
+   "accionPendiente": "recrear",
    "payload": {
     "code": "C-6",
     "d": 13,
     "ciclo": 1,
-    "fecha": "2026-10-20",
+    "fecha": "2026-10-22",
     "summary": "🔬 RESEARCH · C-6 SUBMIT carta al editor #1",
-    "startTime": "2026-10-20T13:30:00-05:00",
-    "endTime": "2026-10-20T14:15:00-05:00",
+    "startTime": "2026-10-22T13:30:00-05:00",
+    "endTime": "2026-10-22T14:15:00-05:00",
     "timeZone": "America/Lima",
     "colorId": "6",
     "availability": "AVAILABILITY_FREE",
     "description": "HITO RESEARCH · C-6 · d13 del ciclo 1 · bloque 13:30-14:15 (día-Research; alterna con Derma)\n\nOBJETIVO: SUBMIT carta al editor #1 (antes del deadline calculado en C-2) + registrar la fecha de envío y el nº de manuscrito en la Mesa editorial\nENTREGABLE: Carta ENVIADA ✅ · estado carta-1 → enviado\nARTEFACTO: Mesa editorial: carta-1 = enviado (fecha) + MENTORES.md actualizado si hay coautor\nFECHA LÍMITE EXTERNA: ≤ 15-oct-2026 (límite interno de la carta; RUTA §9.1 marca −1 día: enviar ANTES del bloque si se puede)\n\nOverlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se\nregenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel\n→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.",
-    "hash": "32a53ae81535"
+    "hash": "15634fffaddb"
    }
   },
   "cr-caso": {
@@ -105,20 +105,20 @@
    "hash": "bfa828635e54",
    "summary": "🔬 RESEARCH · CR-1 Caso + senior author del case report #1",
    "registrado": "2026-09-14",
-   "accionPendiente": null,
+   "accionPendiente": "recrear",
    "payload": {
     "code": "CR-1",
     "d": 15,
     "ciclo": 1,
-    "fecha": "2026-10-26",
+    "fecha": "2026-10-28",
     "summary": "🔬 RESEARCH · CR-1 Caso + senior author del case report #1",
-    "startTime": "2026-10-26T13:30:00-05:00",
-    "endTime": "2026-10-26T14:15:00-05:00",
+    "startTime": "2026-10-28T13:30:00-05:00",
+    "endTime": "2026-10-28T14:15:00-05:00",
     "timeZone": "America/Lima",
     "colorId": "6",
     "availability": "AVAILABILITY_FREE",
-    "description": "HITO RESEARCH · CR-1 · d15 del ciclo 1 · bloque 13:30-14:15 (día-Research; alterna con Derma)\n\nOBJETIVO: CASE REPORT #1 — decidir la FUENTE del caso antes del 31-oct: (a) Dr. Ciro: 1-2 casos de su consulta (ideal complicación de inyectable = L4, o caso raro con buenas fotos) con él como senior author; (b) plan B: dermatólogo de la Sociedad Peruana de Dermatología\nENTREGABLE: Tabla de casos candidatos (diagnóstico · por qué es publicable · fotos disponibles · senior author · estado) + 1 caso ELEGIDO\nARTEFACTO: DATA/RESEARCH/CASE_REPORT_1/caso_candidatos.md + Mesa editorial: senior author del case report\nAVISOS: sin caso antes del 31-oct el entregable de feb-2027 no ocurre · si el Dr. Ciro no dio caso el lun 12-oct-2026, la fuente B ya debe estar activada (MENTORES fila 6)\nFECHA LÍMITE EXTERNA: 31-oct-2026 (caso + consentimiento + senior author · si el 5-oct no hay caso → plan B, colega SPD)\n\nOverlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se\nregenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel\n→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.",
-    "hash": "bfa828635e54"
+    "description": "HITO RESEARCH · CR-1 · d15 del ciclo 1 · bloque 13:30-14:15 (día-Research; alterna con Derma)\n\nOBJETIVO: CASE REPORT #1 — decidir la FUENTE del caso antes del 31-oct: (a) Dr. Ciro: 1-2 casos de su consulta (ideal complicación de inyectable = L4, o caso raro con buenas fotos) con él como senior author; (b) plan B: dermatólogo de la Sociedad Peruana de Dermatología\nENTREGABLE: Tabla de casos candidatos (diagnóstico · por qué es publicable · fotos disponibles · senior author · estado) + 1 caso ELEGIDO\nARTEFACTO: DATA/RESEARCH/CASE_REPORT_1/caso_candidatos.md + Mesa editorial: senior author del case report\nAVISOS: sin caso antes del 31-oct el entregable de feb-2027 no ocurre · si el Dr. Ciro no dio caso el mié 14-oct-2026, la fuente B ya debe estar activada (MENTORES fila 6)\nFECHA LÍMITE EXTERNA: 31-oct-2026 (caso + consentimiento + senior author · si el 5-oct no hay caso → plan B, colega SPD)\n\nOverlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se\nregenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel\n→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.",
+    "hash": "6b7c9c1a9b6c"
    }
   },
   "tesis-L0": {
@@ -127,20 +127,20 @@
    "hash": "cb8b2a083d7c",
    "summary": "🔬 RESEARCH · T-8 SUBMIT research letter tesis L0",
    "registrado": "2026-09-14",
-   "accionPendiente": null,
+   "accionPendiente": "recrear",
    "payload": {
     "code": "T-8",
     "d": 26,
     "ciclo": 1,
-    "fecha": "2026-11-25",
+    "fecha": "2026-11-27",
     "summary": "🔬 RESEARCH · T-8 SUBMIT research letter tesis L0",
-    "startTime": "2026-11-25T13:30:00-05:00",
-    "endTime": "2026-11-25T14:15:00-05:00",
+    "startTime": "2026-11-27T13:30:00-05:00",
+    "endTime": "2026-11-27T14:15:00-05:00",
     "timeZone": "America/Lima",
     "colorId": "6",
     "availability": "AVAILABILITY_FREE",
     "description": "HITO RESEARCH · T-8 · d26 del ciclo 1 · bloque 13:30-14:15 (día-Research; alterna con Derma)\n\nOBJETIVO: SUBMIT research letter de la tesis a JAAD International (o al siguiente de la cascada si el primero no aplica) + registrar en la Mesa editorial y en CTI Vitae\nENTREGABLE: Tesis ENVIADA ✅ (nº de manuscrito) · estado tesis-L0 → enviado\nARTEFACTO: Mesa editorial: tesis-L0 = enviado (fecha) + CTI Vitae actualizado\nAVISOS: GATE 1: sin nº de CEI o constancia de exención NO se envía → T-8 pasa a feb-2027 (cascada) · GATE 2: sin revisión de inglés (mentor / editor) el envío se desplaza al siguiente día-Research\nFECHA LÍMITE EXTERNA: ≤ 15-feb-2027 (JAAD International → IJD → Actas → Anais)\n\nOverlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se\nregenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel\n→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.",
-    "hash": "cb8b2a083d7c"
+    "hash": "3b9f256f7ba5"
    }
   },
   "revisor2": {
@@ -149,20 +149,20 @@
    "hash": "64bec7c8fdd5",
    "summary": "🔬 RESEARCH · X-1 Revisor humano #2 de SR-1 nombrado",
    "registrado": "2026-09-14",
-   "accionPendiente": null,
+   "accionPendiente": "recrear",
    "payload": {
     "code": "X-1",
     "d": 28,
     "ciclo": 1,
-    "fecha": "2026-12-01",
+    "fecha": "2026-12-03",
     "summary": "🔬 RESEARCH · X-1 Revisor humano #2 de SR-1 nombrado",
-    "startTime": "2026-12-01T13:30:00-05:00",
-    "endTime": "2026-12-01T14:15:00-05:00",
+    "startTime": "2026-12-03T13:30:00-05:00",
+    "endTime": "2026-12-03T14:15:00-05:00",
     "timeZone": "America/Lima",
     "colorId": "6",
     "availability": "AVAILABILITY_FREE",
     "description": "HITO RESEARCH · X-1 · d28 del ciclo 1 · bloque 13:30-14:15 (día-Research; alterna con Derma)\n\nOBJETIVO: SR-1 · EQUIPO DE REVISIÓN: nombrar al revisor humano #2 ANTES de PROSPERO (opciones: Dr. Ciro · egresado UNCP con interés en investigación · colaborador IMG de la campaña); ofrecer coautoría por 2º cribado + extracción; cuenta Rayyan (gratis ≤3 revisiones). La invitación declara la CARGA REAL por revisor, fuera del bloque 13:30 (agenda post-Step 1): cribado título/abstract ≈ 6-12 h · texto completo ≈ 10-16 h · extracción doble ≈ 15-25 h · riesgo de sesgo ≈ 8-14 h entre mar y may-2027 (campo horas de researchDailyPlan2027.ts)\nENTREGABLE: Revisor #2 propuesto (nombre, afiliación, ORCID, conflicto) + invitación enviada con la carga horaria escrita\nARTEFACTO: lines/L4-complicaciones.md §9 \"Equipo de revisión\" rellenado + MENTORES.md\nAVISOS: PRISMA 2020 ítem 8 y Cochrane exigen ≥2 revisores independientes; 2 pases de la misma persona NO son cribado dual · sin aceptación escrita de las horas (≈40-70 h en 3 meses) no hay revisor #2 ni PROSPERO\nFECHA LÍMITE EXTERNA: antes de PROSPERO (sin revisor #2 humano no hay registro · PRISMA 2020 ítem 8)\n\nOverlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se\nregenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel\n→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.",
-    "hash": "64bec7c8fdd5"
+    "hash": "1e128046019b"
    }
   },
   "cr-paquete": {
@@ -171,20 +171,20 @@
    "hash": "01859e2f8410",
    "summary": "🔬 RESEARCH · CR-8 Paquete del case report #1 CONGELADO",
    "registrado": "2026-09-14",
-   "accionPendiente": null,
+   "accionPendiente": "recrear",
    "payload": {
     "code": "CR-8",
     "d": 32,
     "ciclo": 1,
-    "fecha": "2026-12-11",
+    "fecha": "2026-12-15",
     "summary": "🔬 RESEARCH · CR-8 Paquete del case report #1 CONGELADO",
-    "startTime": "2026-12-11T13:30:00-05:00",
-    "endTime": "2026-12-11T14:15:00-05:00",
+    "startTime": "2026-12-15T13:30:00-05:00",
+    "endTime": "2026-12-15T14:15:00-05:00",
     "timeZone": "America/Lima",
     "colorId": "6",
     "availability": "AVAILABILITY_FREE",
     "description": "HITO RESEARCH · CR-8 · d32 del ciclo 1 · bloque 13:30-14:15 (día-Research; alterna con Derma)\n\nOBJETIVO: Paquete de envío CONGELADO (manuscrito + fotos + consentimiento + CARE + cover) — el SUBMIT se ejecuta el 1-feb-2027 (ciclo 2 · CR-9), después del Step 1\nENTREGABLE: Paquete completo y revisado; nada pendiente para febrero · estado → revision-mentor\nARTEFACTO: CASE_REPORT_1/_PAQUETE_ENVIO/ (todo lo que se sube) + Mesa editorial: fecha objetivo 1-feb\nFECHA LÍMITE EXTERNA: antes del submit CR-9 (1-feb-2027): paquete congelado ANTES de la pausa Step 1 (Fases B-C, 8→29-ene)\n\nOverlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se\nregenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel\n→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.",
-    "hash": "01859e2f8410"
+    "hash": "542f5c1dd28d"
    }
   },
   "case-report-1": {
@@ -193,10 +193,10 @@
    "hash": "bb38f7db29e0",
    "summary": "🔬 RESEARCH · CR-9 SUBMIT case report #1",
    "registrado": "2026-09-14",
-   "accionPendiente": null,
+   "accionPendiente": "recrear",
    "payload": {
     "code": "CR-9",
-    "d": 38,
+    "d": 37,
     "ciclo": 1,
     "fecha": "2027-02-01",
     "summary": "🔬 RESEARCH · CR-9 SUBMIT case report #1",
@@ -205,8 +205,8 @@
     "timeZone": "America/Lima",
     "colorId": "6",
     "availability": "AVAILABILITY_FREE",
-    "description": "HITO RESEARCH · CR-9 · d38 del ciclo 1 · bloque 13:30-14:15 (día-Research; alterna con Derma)\n\nOBJETIVO: SUBMIT case report #1 a Dermatology Online Journal (paquete congelado en CR-8) + registrar el nº de manuscrito — primer día-Research tras el Step 1\nENTREGABLE: Case report ENVIADO ✅ · estado case-report-1 → enviado\nARTEFACTO: Mesa editorial: case-report-1 = enviado (fecha)\nFECHA LÍMITE EXTERNA: ≤ 28-feb-2027 (Dermatology Online Journal → JAAD CR → Case Reports in Dermatology)\n\nOverlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se\nregenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel\n→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.",
-    "hash": "bb38f7db29e0"
+    "description": "HITO RESEARCH · CR-9 · d37 del ciclo 1 · bloque 13:30-14:15 (día-Research; alterna con Derma)\n\nOBJETIVO: SUBMIT case report #1 a Dermatology Online Journal (paquete congelado en CR-8) + registrar el nº de manuscrito — primer día-Research tras el Step 1\nENTREGABLE: Case report ENVIADO ✅ · estado case-report-1 → enviado\nARTEFACTO: Mesa editorial: case-report-1 = enviado (fecha)\nFECHA LÍMITE EXTERNA: ≤ 28-feb-2027 (Dermatology Online Journal → JAAD CR → Case Reports in Dermatology)\n\nOverlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se\nregenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel\n→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.",
+    "hash": "3a6cf90f6e28"
    }
   },
   "equipo": {
@@ -215,20 +215,20 @@
    "hash": "945c1947dd36",
    "summary": "🔬 RESEARCH · X-9 Equipo de revisión SR-1 confirmado",
    "registrado": "2026-09-14",
-   "accionPendiente": null,
+   "accionPendiente": "recrear",
    "payload": {
     "code": "X-9",
     "d": 45,
     "ciclo": 2,
-    "fecha": "2027-02-19",
+    "fecha": "2027-02-23",
     "summary": "🔬 RESEARCH · X-9 Equipo de revisión SR-1 confirmado",
-    "startTime": "2027-02-19T13:30:00-05:00",
-    "endTime": "2027-02-19T14:15:00-05:00",
+    "startTime": "2027-02-23T13:30:00-05:00",
+    "endTime": "2027-02-23T14:15:00-05:00",
     "timeZone": "America/Lima",
     "colorId": "6",
     "availability": "AVAILABILITY_FREE",
     "description": "HITO RESEARCH · X-9 · d45 del ciclo 2 · bloque 13:30-14:15 (día-Research; alterna con Derma)\n\nOBJETIVO: EQUIPO DE REVISIÓN confirmado para PROSPERO: revisor #2 con cuenta Rayyan, ORCID de todos, afiliaciones, roles (garante, contacto, cribadores, extractores, estadístico), conflictos de interés, fechas previstas\nENTREGABLE: L4 §9 completo — se copia tal cual a PROSPERO\nARTEFACTO: lines/L4-complicaciones.md §9 + MENTORES.md\nFECHA LÍMITE EXTERNA: antes del registro R10 (jue 25-feb-2027)\n\nOverlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se\nregenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel\n→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.",
-    "hash": "945c1947dd36"
+    "hash": "a721b06aed1f"
    }
   },
   "PROSPERO-SR1": {
@@ -237,20 +237,20 @@
    "hash": "feea85b8512e",
    "summary": "🔬 RESEARCH · R10 REGISTRO PROSPERO de SR-1",
    "registrado": "2026-09-14",
-   "accionPendiente": null,
+   "accionPendiente": "recrear",
    "payload": {
     "code": "R10",
     "d": 47,
     "ciclo": 2,
-    "fecha": "2027-02-25",
+    "fecha": "2027-03-01",
     "summary": "🔬 RESEARCH · R10 REGISTRO PROSPERO de SR-1",
-    "startTime": "2027-02-25T13:30:00-05:00",
-    "endTime": "2027-02-25T14:15:00-05:00",
+    "startTime": "2027-03-01T13:30:00-05:00",
+    "endTime": "2027-03-01T14:15:00-05:00",
     "timeZone": "America/Lima",
     "colorId": "6",
     "availability": "AVAILABILITY_FREE",
     "description": "HITO RESEARCH · R10 · d47 del ciclo 2 · bloque 13:30-14:15 (día-Research; alterna con Derma)\n\nOBJETIVO: PROSPERO: rellenar el formulario completo (campos obligatorios, equipo de revisión de L4 §9, fechas previstas, conflictos, fuentes) y ENVIAR\nENTREGABLE: Registro PROSPERO de SR-1 ENVIADO · estado PROSPERO-SR1 → enviado\nARTEFACTO: PDF del registro + Mesa editorial\nFECHA LÍMITE EXTERNA: ≤ 31-mar-2027\n\nOverlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se\nregenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel\n→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.",
-    "hash": "feea85b8512e"
+    "hash": "18ae68051592"
    }
   },
   "SR-1": {
@@ -259,20 +259,20 @@
    "hash": "22931e8d0250",
    "summary": "🔬 RESEARCH · R43 SUBMIT SR-1 (Dermatologic Surgery)",
    "registrado": "2026-09-14",
-   "accionPendiente": null,
+   "accionPendiente": "recrear",
    "payload": {
     "code": "R43",
     "d": 94,
     "ciclo": 2,
-    "fecha": "2027-07-07",
+    "fecha": "2027-07-09",
     "summary": "🔬 RESEARCH · R43 SUBMIT SR-1 (Dermatologic Surgery)",
-    "startTime": "2027-07-07T13:30:00-05:00",
-    "endTime": "2027-07-07T14:15:00-05:00",
+    "startTime": "2027-07-09T13:30:00-05:00",
+    "endTime": "2027-07-09T14:15:00-05:00",
     "timeZone": "America/Lima",
     "colorId": "6",
     "availability": "AVAILABILITY_FREE",
     "description": "HITO RESEARCH · R43 · d94 del ciclo 2 · bloque 13:30-14:15 (día-Research; alterna con Derma)\n\nOBJETIVO: SUBMIT SR-1 ✅ + registrar en la Mesa editorial y CTI Vitae + actualizar el estado en PROSPERO\nENTREGABLE: SR-1 ENVIADA · estado SR-1 → enviado\nARTEFACTO: Mesa editorial + PROSPERO actualizado\nFECHA LÍMITE EXTERNA: ≤ 31-ago-2027 (Dermatologic Surgery → JAAD → JCD → Anais/Actas)\n\nOverlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se\nregenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel\n→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.",
-    "hash": "22931e8d0250"
+    "hash": "64beae5d7d2b"
    }
   }
  }

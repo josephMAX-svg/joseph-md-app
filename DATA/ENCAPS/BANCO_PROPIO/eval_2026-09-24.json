@@ -1,0 +1,28 @@
+{
+ "id": "EVAL_2026-09-24",
+ "titulo": "Eval anclada ENCAPS · Jue 2026-09-24 · III-5",
+ "tipoRonda": "eval_anclada",
+ "fecha": "2026-09-24",
+ "codigo": "III-5",
+ "sub_eje": "pertinencia_barreras",
+ "tema": "eval anclada · código de ayer III-5: 3 cifras + 2 viñetas",
+ "fuente_preguntas": "BANCO_PROPIO ()",
+ "n": 0,
+ "seg_por_q": 72,
+ "umbral": 60,
+ "alerta": 60,
+ "mostrar_codigo": false,
+ "instrucciones": "5 preguntas del tema de AYER (código de ayer III-5: 3 cifras + 2 viñetas), de memoria, sin material; solución al final. Si fallas ≥2 el código queda CALIENTE para el override del viernes (gen_encaps_semana.js).",
+ "_meta": {
+  "generado": "2026-09-16",
+  "sesion_anterior": {
+   "fecha": "2026-09-23",
+   "tipo": "banqueo1h",
+   "codigo": "III-5",
+   "sub_eje": "pertinencia_barreras"
+  },
+  "modo": "código de ayer III-5: 3 cifras + 2 viñetas",
+  "lista_negra_2026_II": "VIGENTE"
+ },
+ "items": []
+}
