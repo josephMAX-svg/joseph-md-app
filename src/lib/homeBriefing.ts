@@ -98,13 +98,13 @@ export function componerBriefing(inp: BriefingInput): string {
 // Doctrina: DATA/REVISION_SEMANAL.md · DATA/PROTOCOLO_MODO_MINIMO.md · DATA/SYNC_ANKI_OBSIDIAN_APP.md
 // ═══════════════════════════════════════════════════════════════════════════
 
-/** D1 del Step 1 (v5.13 = jue 17-sep-2026) — misma fuente que usmleStep1Daily.DAILY_META.inicio. */
+/** D1 del Step 1 (v5.14 = lun 21-sep-2026) — misma fuente que usmleStep1Daily.DAILY_META.inicio. */
 export const STEP1_INICIO = DAILY_META.inicio;
-export const STEP1_SEMANAS = 21; // S1 17-sep (jue) → S21 = lun 1-feb (D95 = D-1; examen target mar 2-feb-2027)
+export const STEP1_SEMANAS = 20; // S1 = 21-25 sep (D1 en lunes: las semanas del plan coinciden con las de calendario) → S20 = 1-5 feb (D95 = mié 3-feb = D-1; examen target jue 4-feb-2027)
 
 /** Hitos FIJOS (viernes) con su mínimo on-track (PALMERTON_POR_MATERIA Parte V, regla 5%/mes). */
 export const HITOS_STEP1: { fecha: string; nombre: string; minimo: string }[] = [
-  { fecha: '2026-09-17', nombre: 'UWSA1', minimo: 'baseline (cualquier valor)' }, // v5.13: el UWSA1 se mueve con cada corrimiento (= D1)
+  { fecha: '2026-09-21', nombre: 'UWSA1', minimo: 'baseline (cualquier valor)' }, // v5.14: el UWSA1 se mueve con cada corrimiento (= D1)
   { fecha: '2026-10-02', nombre: 'NBME 25', minimo: '≥51%' },
   { fecha: '2026-10-23', nombre: 'NBME 26', minimo: '≥54%' },
   { fecha: '2026-11-13', nombre: 'NBME 27', minimo: '≥57%' },

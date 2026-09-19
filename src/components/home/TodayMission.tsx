@@ -50,8 +50,8 @@ export function todayISO(): string {
 export function faseActual(iso: string): string {
   if (iso < '2026-06-01') return 'FASE 4';
   if (iso < '2026-08-10') return 'FASE 5 · ENCAPS';
-  if (iso < '2026-09-17') return 'FASE 6 · transición';
-  if (iso < '2027-02-03') return 'FASE 7 · STEP 1 PRINCIPAL'; // v5.13: D95 lun 1-feb = D-1 · examen mar 2-feb · intensiva ENCAPS propuesta desde el mié 3-feb
+  if (iso < '2026-09-21') return 'FASE 6 · transición';
+  if (iso < '2027-02-05') return 'FASE 7 · STEP 1 PRINCIPAL'; // v5.14: D95 mié 3-feb = D-1 · examen jue 4-feb · intensiva ENCAPS propuesta desde el vie 5-feb
   return 'FASE 8 · ENCAPS FINAL';
 }
 function nowMin(): number { try { const d = new Date(); return d.getHours() * 60 + d.getMinutes(); } catch { return 0; } }
@@ -178,7 +178,7 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
     {
       flag: '🇺🇸', nombre: 'USMLE · BLOQUE PRINCIPAL (Anki → Pre-test → Deep Prime → 30Q)', ini: '07:15', fin: '12:00', color: GREEN, frente: 'usmle-principal',
       tema: us ? `D${us.d}/${DIAS.length} · ${us.system} — ${us.sub}` : 'fuera del rango del plan',
-      sub: us ? `${us.bbCh}: ${us.bbVid} · ${us.mat} · todo en inglés` : `Step 1 · v5.13 desde ${USMLE_META.inicio}`,
+      sub: us ? `${us.bbCh}: ${us.bbVid} · ${us.mat} · todo en inglés` : `Step 1 · v5.14 desde ${USMLE_META.inicio}`,
       acciones: us ? [
         { lbl: '◆ Edge', color: EDGE, url: 'microsoft-edge:' + QBQ, fill: true },
         ...(usmleObsUrl(us.d) ? [{ lbl: '◆ Obsidian', color: OBS, url: usmleObsUrl(us.d)! }] : []),

@@ -668,7 +668,7 @@ function modoPretestArranque(lunesArg) {
   const lunes = lunesArg || d1;
   if (!lunes) throw new Error('sin D1 en _encaps_mantenimiento_2027.sql (regenerar la siembra)');
   // v5.11 (14-sep-2026): el pre-test ocupa D1 y D2 del régimen (dos primeros hábiles con fila banqueo1h), sea cual sea el
-  // día de la semana del D1 (v5.10 exigía lunes; v5.11: mar 15 + mié 16; v5.12: mié 16 + jue 17; v5.13: jue 17 + lun 21-sep porque el
+  // día de la semana del D1 (v5.10 exigía lunes; v5.11: mar 15 + mié 16; v5.12: mié 16 + jue 17; v5.13: jue 17 + lun 21-sep; v5.14: lun 21 + mar 22-sep — en v5.13 porque el
   // vie 18 = D2 es mini-sim y el pre-test sustituye BANCOS, así que la parte 2 salta al siguiente banqueo1h). Las variables conservan el nombre.
   if (dowDe(lunes) === 0 || dowDe(lunes) === 6) throw new Error(`${lunes} cae en fin de semana (${WD[dowDe(lunes)]}): el pre-test de arranque ocupa D1 + D2 del régimen`);
   let martes = addDays(lunes, 1); while (dowDe(martes) === 0 || dowDe(martes) === 6 || !filaSQL(martes) || filaSQL(martes).tipo !== 'banqueo1h') martes = addDays(martes, 1);

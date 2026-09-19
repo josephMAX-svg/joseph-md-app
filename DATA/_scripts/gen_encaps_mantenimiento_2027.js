@@ -1,7 +1,7 @@
 /**
  * gen_encaps_mantenimiento_2027.js — siembra el ciclo ENCAPS MANTENIMIENTO 2027-I en Supabase.
  *
- * Régimen v5.13 (D1 = jue 2026-09-17; v5.12: mié 16-sep): ENCAPS = 1h/día (16:15-17:15 L-V) hasta el 29-ene-2027
+ * Régimen v5.14 (D1 = lun 2026-09-21; v5.13: jue 17-sep): ENCAPS = 1h/día (16:15-17:15 L-V) hasta el 29-ene-2027
  * (97 días L-V, skip 25-dic/31-dic/1-ene; sábado y domingo LIBRES). El bloque principal de la
  * mañana es USMLE Step 1. Feb-mar 2027: fase intensiva (se re-siembra entonces con modo INTENSIVO).
  * EXAMEN ENCAPS 2027-I: fines de marzo 2027 (fecha real = convocatoria SERUMS 2027-I, A VERIFICAR).
@@ -20,7 +20,7 @@
  * viven en _encaps_ciclo_v3.js (compartido con gen_encaps_semana.js).
  *
  * Uso:
- *   node DATA/_scripts/gen_encaps_mantenimiento_2027.js [D1=2026-09-17] [--bk study_schedule_bk_YYYYMMDD]
+ *   node DATA/_scripts/gen_encaps_mantenimiento_2027.js [D1=2026-09-21] [--bk study_schedule_bk_YYYYMMDD]
  *        [--override <json|ruta.json>] [--sin-acumulado] [--bk-reemplazar] [--hasta 2027-01-29] [--out <ruta.sql>]
  *
  *   --override: {"semanas":{"<lunes ISO>":{"principal":["I-3","V-2","II-5","IV-1"],"secundarios":["II-2","I-10","V-6","II-6"],"motivo":"…"}}}
@@ -47,7 +47,7 @@ const ACUMULADO = path.join(ROOT, 'DATA', 'ENCAPS', 'TRACKING_ERRORES', 'SEMANAS
 
 // ── argumentos ──
 const argv = process.argv.slice(2);
-const D1 = argv.find((a) => /^20\d\d-\d\d-\d\d$/.test(a)) || '2026-09-17';
+const D1 = argv.find((a) => /^20\d\d-\d\d-\d\d$/.test(a)) || '2026-09-21';
 const opt = (k, def) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] ? argv[i + 1] : def; };
 const has = (k) => argv.includes(k);
 const HASTA = opt('--hasta', '2027-01-29');

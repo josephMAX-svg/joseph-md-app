@@ -181,7 +181,7 @@ function TaperCard() {
   const t = USMLE_TAPER;
   return (
     <GlassPanel accent={Colors.coral} style={{ marginBottom: Spacing.xl, padding: Spacing.lg }}>
-      <Text style={st.h3}>🧘 Taper y semana de examen · D94 vie 29-ene última sesión de banco · finde libre · D95 lun 1-feb = D-1 · examen {DAILY_META.examenTarget}</Text>
+      <Text style={st.h3}>🧘 Taper y semana de examen · D94 mar 2-feb última sesión de banco · D95 mié 3-feb = D-1 · examen {DAILY_META.examenTarget}</Text>
       <Text style={[st.smallNote, { marginBottom: Spacing.sm }]}>{t.cierre}</Text>
       {[t.d94, t.d95].map((d) => (
         <View key={d.d} style={st.taperRow}>

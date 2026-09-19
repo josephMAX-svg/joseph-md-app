@@ -15,7 +15,7 @@
  *    de introducción de ProMIR, mirDetalleData.pesoGlobal; smooth weighted round-robin +
  *    reparto por resto mayor = cuotas exactas). Viernes = 30Q de la asignatura PEOR DEL LOG
  *    (mirEvalLog.mirPeorAsignatura(); fallback = la de mayor peso vista esa semana).
- *  · modo 'reducido' 8-ene → 1-feb (Fase B/C del Step 1, v5.13: el sprint acaba el lun 1-feb; examen mar 2-feb): solo Anki + 10Q (flag modoReducido).
+ *  · modo 'reducido' 12-ene → 3-feb (Fase B/C del Step 1, v5.14: el sprint acaba el mié 3-feb; examen jue 4-feb): solo Anki + 10Q (flag modoReducido).
  *  · TIER C EXPRESS (v3b, gaps_v3b_mir.json punto 4, 13-sep-2026): 1 de los 4 slots semanales lun-jue (el ÚLTIMO
  *    lun-jue de cada semana, 12 semanas → 12 asignaturas FUERA del plan) cambia sus '10Q interleaving' (o sus 10Q
  *    mixtas en modo reducido) por 10Q del capítulo TOP-1 de una asignatura pequeña, con capId REAL de
@@ -35,11 +35,11 @@ const fs = require('fs');
 const path = require('path');
 const ROOT = path.join(__dirname, '..', '..');
 const OUT = path.join(ROOT, 'src/lib/mirMantenimiento.ts');
-const INICIO = process.argv[2] || '2027-01-08'; // v5.13: la 1ª vuelta MIR termina el jue 7-ene (D78 = corrección del mini-MIR) → el mantenimiento arranca el vie 8-ene para no solapar (v5.12: 7-ene · v5.11: 6-ene)
+const INICIO = process.argv[2] || '2027-01-12'; // v5.14: la 1ª vuelta MIR termina el lun 11-ene (D78 = corrección del mini-MIR) → el mantenimiento arranca el mar 12-ene para no solapar (v5.13: 8-ene · v5.12: 7-ene)
 const FIN = process.argv[3] || '2027-03-31';
 for (const s of [INICIO, FIN]) if (!/^20\d\d-\d\d-\d\d$/.test(s)) throw new Error('fecha inválida: ' + s);
 /** hasta esta fecha (incl.) el bloque va en modo reducido (Fase B/C Step 1 · examen 25-29 ene) */
-const REDUCIDO_HASTA = '2027-02-01'; // v5.13: el Step 1 termina D95 = lun 1-feb (examen mar 2-feb) (v5.12: vie 29-ene · v5.11: jue 28-ene)
+const REDUCIDO_HASTA = '2027-02-03'; // v5.14: el Step 1 termina D95 = mié 3-feb (examen jue 4-feb) (v5.13: lun 1-feb · v5.12: vie 29-ene)
 
 // ── calendario (idéntico a remap_inicio.js) ──
 const SKIP_FIJOS = new Set(['2026-12-25', '2026-12-31', '2027-01-01']);

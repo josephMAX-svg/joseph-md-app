@@ -22,7 +22,7 @@
  },
  "items": [
   {
-   "id": "BP-0001", "codigo": "I-3", "area": "I", "formato": "viñeta", "critico": true, "subangulo": "Tipos de vigilancia (pasiva)", "fallo_previo": "tipo_pasiva", "reservado_para": "2026-09-18", "dif": "media",
+   "id": "BP-0001", "codigo": "I-3", "area": "I", "formato": "viñeta", "critico": true, "subangulo": "Tipos de vigilancia (pasiva)", "fallo_previo": "tipo_pasiva", "reservado_para": "2026-09-25", "dif": "media",
    "enunciado": "En el C.S. I-3 de Nauta (Loreto), el responsable de epidemiología consolida cada semana los casos de EDA e IRA que el personal registró durante las atenciones del establecimiento y los envía al nivel inmediato superior; no se realizan visitas ni búsqueda de casos en la comunidad. ¿Qué tipo de vigilancia describe?",
    "opciones": { "A": "Activa", "B": "Pasiva", "C": "Centinela", "D": "Comunitaria" },
    "clave": "B", "respuesta": "Pasiva",
@@ -32,7 +32,7 @@
    "molde": "2025-1A Q22"
   },
   {
-   "id": "BP-0002", "codigo": "I-3", "area": "I", "formato": "viñeta", "critico": true, "subangulo": "Notificación: brote → inmediata", "fallo_previo": "notif_individual", "reservado_para": "2026-09-18", "dif": "media",
+   "id": "BP-0002", "codigo": "I-3", "area": "I", "formato": "viñeta", "critico": true, "subangulo": "Notificación: brote → inmediata", "fallo_previo": "notif_individual", "reservado_para": "2026-09-25", "dif": "media",
    "enunciado": "El martes por la mañana llegan al P.S. I-2 de Huamanguilla (Ayacucho) doce comuneros con vómitos y diarrea; todos comieron el domingo en la fiesta patronal. Usted lo identifica como una enfermedad transmitida por alimentos. ¿En qué momento notifica el brote al nivel inmediato superior?",
    "opciones": { "A": "Con el consolidado semanal", "B": "De manera inmediata", "C": "A las 48 horas, con el resultado de laboratorio", "D": "Al cierre del brote, con el informe final" },
    "clave": "B", "respuesta": "De manera inmediata",
@@ -42,7 +42,7 @@
    "molde": "2025-1A Q25"
   },
   {
-   "id": "BP-0003", "codigo": "I-3", "area": "I", "formato": "viñeta+cifra", "critico": true, "subangulo": "Indicadores en brote: tasa de ataque", "fallo_previo": "tasa_ataque", "reservado_para": "2026-09-18", "dif": "media",
+   "id": "BP-0003", "codigo": "I-3", "area": "I", "formato": "viñeta+cifra", "critico": true, "subangulo": "Indicadores en brote: tasa de ataque", "fallo_previo": "tasa_ataque", "reservado_para": "2026-09-25", "dif": "media",
    "enunciado": "En la I.E. primaria de Lamas (San Martín), de 200 alumnos que recibieron el almuerzo escolar, 40 presentan diarrea aguda en las 24 h siguientes; ninguno fallece. ¿Qué indicador y qué valor caracterizan el riesgo de enfermar en ese brote?",
    "opciones": { "A": "Tasa de ataque, 20 %", "B": "Tasa de prevalencia, 200 × 1000", "C": "Letalidad, 20 %", "D": "Razón de incidencia, 1:5" },
    "clave": "A", "respuesta": "Tasa de ataque, 20 %",
@@ -52,7 +52,7 @@
    "molde": "2025-1A Q19"
   },
   {
-   "id": "BP-0004", "codigo": "I-3", "area": "I", "formato": "viñeta", "critico": true, "subangulo": "Investigación de brote: primera etapa", "fallo_previo": "investigacion_brote", "reservado_para": "2026-09-18", "dif": "alta",
+   "id": "BP-0004", "codigo": "I-3", "area": "I", "formato": "viñeta", "critico": true, "subangulo": "Investigación de brote: primera etapa", "fallo_previo": "investigacion_brote", "reservado_para": "2026-09-25", "dif": "alta",
    "enunciado": "Al C.S. I-3 de Contamana (Ucayali) acuden en tres días cinco pacientes con fiebre e ictericia procedentes de un mismo caserío, a cuatro horas de camino. Ante la sospecha de brote, ¿cuál es la primera etapa de la investigación epidemiológica?",
    "opciones": { "A": "Investigación preliminar", "B": "Identificación y búsqueda activa de casos", "C": "Intervención y control del brote", "D": "Elaboración del informe final" },
    "clave": "A", "respuesta": "Investigación preliminar",
@@ -62,7 +62,7 @@
    "molde": "2025-2 Q22"
   },
   {
-   "id": "BP-0005", "codigo": "I-4", "area": "I", "formato": "viñeta", "critico": true, "subangulo": "Dengue: definición de caso (probable con signos de alarma)", "fallo_previo": "definicion_caso", "reservado_para": "2026-09-18", "dif": "media",
+   "id": "BP-0005", "codigo": "I-4", "area": "I", "formato": "viñeta", "critico": true, "subangulo": "Dengue: definición de caso (probable con signos de alarma)", "fallo_previo": "definicion_caso", "reservado_para": "2026-09-25", "dif": "media",
    "enunciado": "Mujer de 34 años procedente de Yurimaguas, con fiebre de tres días, cefalea y artralgias, acude hoy al C.S. I-4 por vómitos persistentes y gingivorragia. PA 100/70 mmHg, FR 24. Aún sin resultado de laboratorio. ¿Cómo clasifica el caso?",
    "opciones": { "A": "Dengue grave", "B": "Probable con signos de alarma", "C": "Confirmado sin signos de alarma", "D": "Dengue hemorrágico" },
    "clave": "B", "respuesta": "Probable con signos de alarma",
@@ -72,7 +72,7 @@
    "molde": "2025-1A Q43"
   },
   {
-   "id": "BP-0006", "codigo": "I-10", "area": "I", "formato": "directa", "critico": false, "subangulo": "APS: principio de integralidad", "fallo_previo": null, "reservado_para": "2026-09-18", "dif": "baja",
+   "id": "BP-0006", "codigo": "I-10", "area": "I", "formato": "directa", "critico": false, "subangulo": "APS: principio de integralidad", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "baja",
    "enunciado": "El principio básico de la Atención Primaria de Salud que reúne los cuidados de promoción, prevención, recuperación y rehabilitación se denomina:",
    "opciones": { "A": "Universalidad", "B": "Equidad en salud", "C": "Integralidad", "D": "Continuidad" },
    "clave": "C", "respuesta": "Integralidad",
@@ -82,7 +82,7 @@
    "molde": "2025-2 Q88"
   },
   {
-   "id": "BP-0007", "codigo": "I-10", "area": "I", "formato": "directa", "critico": false, "subangulo": "APS: equidad en salud (definición)", "fallo_previo": null, "reservado_para": "2026-09-18", "dif": "media",
+   "id": "BP-0007", "codigo": "I-10", "area": "I", "formato": "directa", "critico": false, "subangulo": "APS: equidad en salud (definición)", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "media",
    "enunciado": "«Condición ideal en la población en la que todos tienen la oportunidad de acceder al cuidado de su salud y a las atenciones en el momento en que lo requieren, sin que ello sea alterado por razones evitables y por tanto injustas». Esta definición corresponde a:",
    "opciones": { "A": "Calidad", "B": "Equidad en salud", "C": "Integralidad", "D": "Universalidad" },
    "clave": "B", "respuesta": "Equidad en salud",
@@ -92,7 +92,7 @@
    "molde": "2025-1A Q84"
   },
   {
-   "id": "BP-0008", "codigo": "II-3", "area": "II", "formato": "viñeta", "critico": true, "subangulo": "Esquema nacional: vacuna que corresponde a los 6 meses", "fallo_previo": null, "reservado_para": "2026-09-18", "dif": "media",
+   "id": "BP-0008", "codigo": "II-3", "area": "II", "formato": "viñeta", "critico": true, "subangulo": "Esquema nacional: vacuna que corresponde a los 6 meses", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "media",
    "enunciado": "Lactante de 6 meses, eutrófico, con esquema de vacunación al día, acude al vacunatorio del C.S. I-3 de Paracas (Ica) para su cita. ¿Qué vacuna le corresponde en esta atención?",
    "opciones": { "A": "1.ª dosis de influenza", "B": "2.ª dosis de influenza", "C": "1.ª dosis de SPR", "D": "Antiamarílica (dosis única)" },
    "clave": "B", "respuesta": "2.ª dosis de influenza",
@@ -102,7 +102,7 @@
    "molde": "2025-2 Q97"
   },
   {
-   "id": "BP-0009", "codigo": "II-3", "area": "II", "formato": "directa", "critico": true, "subangulo": "ESAVI: clasificación (evento coincidente)", "fallo_previo": null, "reservado_para": "2026-09-18", "dif": "media",
+   "id": "BP-0009", "codigo": "II-3", "area": "II", "formato": "directa", "critico": true, "subangulo": "ESAVI: clasificación (evento coincidente)", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "media",
    "enunciado": "Evento que definitivamente no está relacionado con la vacuna y en el que se identifica una etiología o patología distinta que explica de manera razonable el cuadro clínico. Según la clasificación de ESAVI es un evento:",
    "opciones": { "A": "Coincidente", "B": "Relacionado con error programático", "C": "No concluyente", "D": "Relacionado con la vacuna" },
    "clave": "A", "respuesta": "Coincidente",
@@ -112,7 +112,7 @@
    "molde": "2024-2A Q98"
   },
   {
-   "id": "BP-0010", "codigo": "II-5", "area": "II", "formato": "cifra", "critico": true, "subangulo": "Paquete del adolescente: mediciones de Hb al año", "fallo_previo": null, "reservado_para": "2026-09-18", "dif": "media",
+   "id": "BP-0010", "codigo": "II-5", "area": "II", "formato": "cifra", "critico": true, "subangulo": "Paquete del adolescente: mediciones de Hb al año", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "media",
    "enunciado": "Dentro del paquete de atención integral del adolescente, ¿cuántas mediciones de hemoglobina al año se programan?",
    "opciones": { "A": "1", "B": "2", "C": "3", "D": "4" },
    "clave": "B", "respuesta": "2",
@@ -122,7 +122,7 @@
    "molde": "2025-1A Q14"
   },
   {
-   "id": "BP-0011", "codigo": "II-4", "area": "II", "formato": "viñeta+cifra", "critico": true, "subangulo": "Anemia en gestante: dosis de tratamiento", "fallo_previo": null, "reservado_para": "2026-09-18", "dif": "media",
+   "id": "BP-0011", "codigo": "II-4", "area": "II", "formato": "viñeta+cifra", "critico": true, "subangulo": "Anemia en gestante: dosis de tratamiento", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "media",
    "enunciado": "Gestante de 24 semanas atendida en el C.S. I-3 de Ayaviri (Puno) tiene Hb 9,8 g/dL ya corregida por altitud. Según la norma nacional de prevención y control de la anemia, ¿qué dosis diaria oral de hierro elemental y ácido fólico indica como tratamiento?",
    "opciones": { "A": "60 mg + 400 µg", "B": "120 mg + 800 µg", "C": "30 mg + 400 µg", "D": "200 mg + 1000 µg" },
    "clave": "B", "respuesta": "120 mg + 800 µg",
@@ -132,7 +132,7 @@
    "molde": "2025-1A Q66"
   },
   {
-   "id": "BP-0012", "codigo": "II-2", "area": "II", "formato": "cifra", "critico": false, "subangulo": "EDA persistente: definición de caso", "fallo_previo": null, "reservado_para": "2026-09-18", "dif": "baja",
+   "id": "BP-0012", "codigo": "II-2", "area": "II", "formato": "cifra", "critico": false, "subangulo": "EDA persistente: definición de caso", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "baja",
    "enunciado": "Según la definición de caso, la enfermedad diarreica persistente es aquella que inicia como diarrea aguda infecciosa pero se prolonga por ...... días o más.",
    "opciones": { "A": "7", "B": "10", "C": "14", "D": "21" },
    "clave": "C", "respuesta": "14",
@@ -142,7 +142,7 @@
    "molde": "2024-2A Q56"
   },
   {
-   "id": "BP-0013", "codigo": "II-2", "area": "II", "formato": "viñeta", "critico": false, "subangulo": "Inmunoprevenibles: medidas ante caso probable de tos ferina", "fallo_previo": null, "reservado_para": "2026-09-18", "dif": "alta",
+   "id": "BP-0013", "codigo": "II-2", "area": "II", "formato": "viñeta", "critico": false, "subangulo": "Inmunoprevenibles: medidas ante caso probable de tos ferina", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "alta",
    "enunciado": "En el C.S. I-3 de Lamas (San Martín) se notifica un caso probable de tos ferina en un lactante de 2 meses. ¿Qué medidas implementa el establecimiento?",
    "opciones": { "A": "Censo de contactos, barrido vacunal e investigación del caso índice", "B": "Seguimiento de contactos, búsqueda activa comunitaria e institucional y bloqueo vacunal", "C": "Jornada de vacunación y quimioprofilaxis a contactos indirectos", "D": "Búsqueda de casos secundarios e inamovilidad del caso" },
    "clave": "B", "respuesta": "Seguimiento de contactos, búsqueda activa comunitaria e institucional y bloqueo vacunal",
@@ -152,7 +152,7 @@
    "molde": "2025-1A Q80"
   },
   {
-   "id": "BP-0014", "codigo": "II-2", "area": "II", "formato": "viñeta", "critico": false, "subangulo": "Clínica pediátrica: hepatitis A", "fallo_previo": null, "reservado_para": "2026-09-18", "dif": "baja",
+   "id": "BP-0014", "codigo": "II-2", "area": "II", "formato": "viñeta", "critico": false, "subangulo": "Clínica pediátrica: hepatitis A", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "baja",
    "enunciado": "Niño de 9 años llevado al C.S. I-2 de La Victoria por astenia de una semana. Examen: FC 88, T° 36,6 °C; piel y escleras ictéricas, acolia. ¿Cuál es el diagnóstico más probable?",
    "opciones": { "A": "Malaria", "B": "Dengue con signos de alarma", "C": "Hepatitis A", "D": "Hepatitis B" },
    "clave": "C", "respuesta": "Hepatitis A",
@@ -162,7 +162,7 @@
    "molde": "2025-2 Q99"
   },
   {
-   "id": "BP-0015", "codigo": "II-1", "area": "II", "formato": "viñeta", "critico": false, "subangulo": "Emergencias obstétricas: eclampsia", "fallo_previo": null, "reservado_para": "2026-09-18", "dif": "media",
+   "id": "BP-0015", "codigo": "II-1", "area": "II", "formato": "viñeta", "critico": false, "subangulo": "Emergencias obstétricas: eclampsia", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "media",
    "enunciado": "Gestante de 33 semanas llega al C.S. I-4 de Andahuaylas con cefalea frontal, epigastralgia y visión borrosa; en admisión presenta una convulsión tónico-clónica presenciada. PA 170/110 mmHg. ¿Cuál es el diagnóstico?",
    "opciones": { "A": "Preeclampsia con criterios de severidad", "B": "Eclampsia", "C": "Emergencia hipertensiva", "D": "Hipertensión crónica" },
    "clave": "B", "respuesta": "Eclampsia",
@@ -172,7 +172,7 @@
    "molde": "2025-2 Q79"
   },
   {
-   "id": "BP-0016", "codigo": "V-2", "area": "V", "formato": "viñeta", "critico": true, "subangulo": "Planeamiento: FODA (amenaza)", "fallo_previo": null, "reservado_para": "2026-09-18", "dif": "media",
+   "id": "BP-0016", "codigo": "V-2", "area": "V", "formato": "viñeta", "critico": true, "subangulo": "Planeamiento: FODA (amenaza)", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "media",
    "enunciado": "El equipo del C.S. I-3 de Sicuani (Cusco) elabora su análisis FODA: la población conserva la costumbre de dar agua de anís en lugar de sales de rehidratación a los niños con diarrea, y es una práctica difícil de cambiar. ¿Cómo clasifica este hallazgo?",
    "opciones": { "A": "Debilidad", "B": "Amenaza", "C": "Oportunidad", "D": "Fortaleza" },
    "clave": "B", "respuesta": "Amenaza",
@@ -182,7 +182,7 @@
    "molde": "2025-1A Q62"
   },
   {
-   "id": "BP-0017", "codigo": "V-2", "area": "V", "formato": "directa", "critico": true, "subangulo": "Clima + calidad: cultura organizacional (vs clima)", "fallo_previo": null, "reservado_para": "2026-09-18", "dif": "media",
+   "id": "BP-0017", "codigo": "V-2", "area": "V", "formato": "directa", "critico": true, "subangulo": "Clima + calidad: cultura organizacional (vs clima)", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "media",
    "enunciado": "La forma característica de pensar y hacer las cosas en una entidad, basada en principios, valores, creencias, conductas y normas compartidas por sus miembros, se denomina:",
    "opciones": { "A": "Clima organizacional", "B": "Cultura organizacional", "C": "Valores institucionales", "D": "Identidad corporativa" },
    "clave": "B", "respuesta": "Cultura organizacional",
@@ -192,7 +192,7 @@
    "molde": "2025-1A Q51"
   },
   {
-   "id": "BP-0018", "codigo": "V-2", "area": "V", "formato": "directa", "critico": true, "subangulo": "Residuos sólidos: clasificación de medicamentos vencidos", "fallo_previo": null, "reservado_para": "2026-09-18", "dif": "media",
+   "id": "BP-0018", "codigo": "V-2", "area": "V", "formato": "directa", "critico": true, "subangulo": "Residuos sólidos: clasificación de medicamentos vencidos", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "media",
    "enunciado": "Según la norma de gestión y manejo de residuos sólidos en establecimientos de salud, los medicamentos vencidos se clasifican como residuos:",
    "opciones": { "A": "Comunes", "B": "Biocontaminados", "C": "Especiales", "D": "Punzocortantes" },
    "clave": "C", "respuesta": "Especiales",
@@ -202,7 +202,7 @@
    "molde": "2024-2A Q28"
   },
   {
-   "id": "BP-0019", "codigo": "V-MED", "area": "V", "formato": "directa", "critico": false, "subangulo": "Farmacovigilancia: rectoría", "fallo_previo": null, "reservado_para": "2026-09-18", "dif": "baja",
+   "id": "BP-0019", "codigo": "V-MED", "area": "V", "formato": "directa", "critico": false, "subangulo": "Farmacovigilancia: rectoría", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "baja",
    "enunciado": "¿Qué institución conduce el Centro Nacional de Farmacovigilancia y Tecnovigilancia?",
    "opciones": { "A": "Instituto Nacional de Salud (INS)", "B": "CDC Perú", "C": "DIGEMID", "D": "CENARES" },
    "clave": "C", "respuesta": "DIGEMID",
@@ -212,7 +212,7 @@
    "molde": "2024-2A Q13"
   },
   {
-   "id": "BP-0020", "codigo": "V-1", "area": "V", "formato": "directa", "critico": false, "subangulo": "Categorización: I-3 por UPSS", "fallo_previo": null, "reservado_para": "2026-09-18", "dif": "media",
+   "id": "BP-0020", "codigo": "V-1", "area": "V", "formato": "directa", "critico": false, "subangulo": "Categorización: I-3 por UPSS", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "media",
    "enunciado": "Un establecimiento de salud que brinda consulta externa por profesional médico y cuenta además con la UPSS de patología clínica, sin internamiento, corresponde a la categoría:",
    "opciones": { "A": "I-2", "B": "I-3", "C": "I-4", "D": "II-1" },
    "clave": "B", "respuesta": "I-3",
@@ -222,7 +222,7 @@
    "molde": "2025-2 Q42"
   },
   {
-   "id": "BP-0021", "codigo": "III-5", "area": "III", "formato": "directa", "critico": true, "subangulo": "Pertinencia cultural: 4 dimensiones", "fallo_previo": null, "reservado_para": "2026-09-18", "dif": "alta",
+   "id": "BP-0021", "codigo": "III-5", "area": "III", "formato": "directa", "critico": true, "subangulo": "Pertinencia cultural: 4 dimensiones", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "alta",
    "enunciado": "La pertinencia cultural de los servicios de salud se evalúa en cuatro dimensiones: gestión para la calidad de la atención, revaloración del sistema de salud tradicional, recursos humanos que promueven la salud intercultural y...",
    "opciones": { "A": "Atención intercultural", "B": "Participación ciudadana", "C": "Inclusión social", "D": "Interculturalidad en salud" },
    "clave": "B", "respuesta": "Participación ciudadana",
@@ -232,7 +232,7 @@
    "molde": "2025-1A Q76"
   },
   {
-   "id": "BP-0022", "codigo": "III-5", "area": "III", "formato": "viñeta", "critico": true, "subangulo": "Principios interculturales: diversidad cultural", "fallo_previo": null, "reservado_para": "2026-09-18", "dif": "media",
+   "id": "BP-0022", "codigo": "III-5", "area": "III", "formato": "viñeta", "critico": true, "subangulo": "Principios interculturales: diversidad cultural", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "media",
    "enunciado": "En la comunidad aimara de Juli (Puno), el serumista no logra comunicarse con una paciente adulta mayor y gestiona la presencia de un traductor para la atención. ¿Qué principio intercultural aplica?",
    "opciones": { "A": "Diversidad cultural", "B": "Equidad", "C": "Promoción de la inclusión", "D": "Creatividad cultural" },
    "clave": "A", "respuesta": "Diversidad cultural",
@@ -242,7 +242,7 @@
    "molde": "2025-2 Q18"
   },
   {
-   "id": "BP-0023", "codigo": "III-8", "area": "III", "formato": "directa", "critico": false, "subangulo": "Ley 27815: deber de discreción", "fallo_previo": null, "reservado_para": "2026-09-18", "dif": "media",
+   "id": "BP-0023", "codigo": "III-8", "area": "III", "formato": "directa", "critico": false, "subangulo": "Ley 27815: deber de discreción", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "media",
    "enunciado": "El deber del servidor público de guardar reserva respecto de los hechos o informaciones de los que tenga conocimiento con motivo del ejercicio de sus funciones se denomina:",
    "opciones": { "A": "Neutralidad", "B": "Transparencia", "C": "Discreción", "D": "Responsabilidad" },
    "clave": "C", "respuesta": "Discreción",
@@ -252,7 +252,7 @@
    "molde": "2025-2 Q78"
   },
   {
-   "id": "BP-0024", "codigo": "IV-1+IV-2", "area": "IV", "formato": "viñeta", "critico": true, "subangulo": "Muestreo no probabilístico (conveniencia)", "fallo_previo": null, "reservado_para": "2026-09-18", "dif": "media",
+   "id": "BP-0024", "codigo": "IV-1+IV-2", "area": "IV", "formato": "viñeta", "critico": true, "subangulo": "Muestreo no probabilístico (conveniencia)", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "media",
    "enunciado": "Para estudiar ansiedad en adolescentes, el serumista aplica un cuestionario a los alumnos de 5.º de secundaria del colegio vecino al C.S., por ser el más accesible. ¿Qué tipo de muestreo realiza?",
    "opciones": { "A": "Probabilístico aleatorio simple", "B": "Estratificado", "C": "No probabilístico", "D": "Censal" },
    "clave": "C", "respuesta": "No probabilístico",
@@ -262,7 +262,7 @@
    "molde": "2025-1A Q91"
   },
   {
-   "id": "BP-0025", "codigo": "IV-1+IV-2", "area": "IV", "formato": "directa", "critico": true, "subangulo": "Tipos de estudio: experimentales", "fallo_previo": null, "reservado_para": "2026-09-18", "dif": "baja",
+   "id": "BP-0025", "codigo": "IV-1+IV-2", "area": "IV", "formato": "directa", "critico": true, "subangulo": "Tipos de estudio: experimentales", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "baja",
    "enunciado": "¿Cuáles son los estudios prospectivos de mayor calidad de evidencia, en los que el investigador controla el factor de estudio?",
    "opciones": { "A": "Cohortes", "B": "Experimentales", "C": "Casos y controles", "D": "Descriptivos" },
    "clave": "B", "respuesta": "Experimentales",
@@ -272,7 +272,7 @@
    "molde": "2024-2A Q24"
   },
   {
-   "id": "BP-0026", "codigo": "I-3", "area": "I", "formato": "directa", "critico": true, "subangulo": "Tipos de vigilancia (centinela)", "fallo_previo": "tipo_centinela", "reservado_para": "2026-09-25", "dif": "media",
+   "id": "BP-0026", "codigo": "I-3", "area": "I", "formato": "directa", "critico": true, "subangulo": "Tipos de vigilancia (centinela)", "fallo_previo": "tipo_centinela", "reservado_para": "2026-10-02", "dif": "media",
    "enunciado": "La vigilancia que se realiza en establecimientos de salud seleccionados estratégicamente, que registran y notifican con detalle un evento para estimar su tendencia sin cubrir a toda la población, se denomina:",
    "opciones": { "A": "Activa", "B": "Centinela", "C": "Pasiva", "D": "Sindrómica" },
    "clave": "B", "respuesta": "Centinela",
@@ -282,7 +282,7 @@
    "molde": "2025-1A Q22 (distractor C)"
   },
   {
-   "id": "BP-0027", "codigo": "I-3", "area": "I", "formato": "directa", "critico": true, "subangulo": "Sala situacional: quién la analiza", "fallo_previo": "corredor_sala_situacional", "reservado_para": "2026-09-25", "dif": "media",
+   "id": "BP-0027", "codigo": "I-3", "area": "I", "formato": "directa", "critico": true, "subangulo": "Sala situacional: quién la analiza", "fallo_previo": "corredor_sala_situacional", "reservado_para": "2026-10-02", "dif": "media",
    "enunciado": "La sala situacional de salud del establecimiento ofrece evidencia sobre la eficacia de las intervenciones y la capacidad de respuesta del sistema. ¿Quiénes deben conocerla y analizarla prioritariamente?",
    "opciones": { "A": "El responsable de epidemiología y el jefe del establecimiento", "B": "Todo el personal de salud y las autoridades locales", "C": "Los coordinadores de red y el epidemiólogo regional", "D": "Los promotores de salud y el responsable de promoción" },
    "clave": "B", "respuesta": "Todo el personal de salud y las autoridades locales",
@@ -292,7 +292,7 @@
    "molde": "2025-1A Q74"
   },
   {
-   "id": "BP-0028", "codigo": "I-3", "area": "I", "formato": "viñeta+cifra", "critico": true, "subangulo": "Indicadores: letalidad", "fallo_previo": "letalidad", "reservado_para": "2026-09-25", "dif": "media",
+   "id": "BP-0028", "codigo": "I-3", "area": "I", "formato": "viñeta+cifra", "critico": true, "subangulo": "Indicadores: letalidad", "fallo_previo": "letalidad", "reservado_para": "2026-10-02", "dif": "media",
    "enunciado": "En el C.S. I-4 de Iñapari (Madre de Dios) se confirmaron por gota gruesa 50 casos de malaria por P. falciparum en el trimestre; dos de ellos fallecieron. El 4 % resultante corresponde a:",
    "opciones": { "A": "Tasa de mortalidad", "B": "Letalidad", "C": "Incidencia acumulada", "D": "Prevalencia" },
    "clave": "B", "respuesta": "Letalidad",
@@ -302,7 +302,7 @@
    "molde": "2026-1 Q79 (no verificable)"
   },
   {
-   "id": "BP-0029", "codigo": "I-3", "area": "I", "formato": "viñeta", "critico": true, "subangulo": "Definición de brote (enfermedad en eliminación)", "fallo_previo": "brote", "reservado_para": "2026-09-25", "dif": "alta",
+   "id": "BP-0029", "codigo": "I-3", "area": "I", "formato": "viñeta", "critico": true, "subangulo": "Definición de brote (enfermedad en eliminación)", "fallo_previo": "brote", "reservado_para": "2026-10-02", "dif": "alta",
    "enunciado": "En Andahuaylas se confirma un único caso de sarampión, enfermedad en fase de eliminación en el país. Según la Directiva Administrativa 341-MINSA/CDC-2023, ¿cómo se clasifica epidemiológicamente este evento?",
    "opciones": { "A": "Caso esporádico", "B": "Endemia", "C": "Brote", "D": "Conglomerado" },
    "clave": "C", "respuesta": "Brote",
@@ -312,7 +312,7 @@
    "molde": "propio (norma)"
   },
   {
-   "id": "BP-0030", "codigo": "I-4", "area": "I", "formato": "viñeta", "critico": true, "subangulo": "Dengue: escenarios epidemiológicos", "fallo_previo": "endemia", "reservado_para": "2026-09-25", "dif": "media",
+   "id": "BP-0030", "codigo": "I-4", "area": "I", "formato": "viñeta", "critico": true, "subangulo": "Dengue: escenarios epidemiológicos", "fallo_previo": "endemia", "reservado_para": "2026-10-02", "dif": "media",
    "enunciado": "La jurisdicción del P.S. I-2 de Bagua (Amazonas) tiene presencia de Aedes aegypti y en las últimas semanas registra casos autóctonos de dengue limitados a un sector, en un periodo definido. ¿A qué escenario epidemiológico corresponde?",
    "opciones": { "A": "Escenario I", "B": "Escenario II", "C": "Escenario III - brote", "D": "Escenario IV" },
    "clave": "C", "respuesta": "Escenario III - brote",
@@ -322,7 +322,7 @@
    "molde": "2024-2A Q31"
   },
   {
-   "id": "BP-0031", "codigo": "I-4", "area": "I", "formato": "cifra", "critico": true, "subangulo": "Dengue: hidratación grupo B2", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "media",
+   "id": "BP-0031", "codigo": "I-4", "area": "I", "formato": "cifra", "critico": true, "subangulo": "Dengue: hidratación grupo B2", "fallo_previo": null, "reservado_para": "2026-10-02", "dif": "media",
    "enunciado": "Paciente con dengue clasificado en el grupo B2, atendido en la UVICLIN del C.S.: el volumen inicial de solución salina al 0,9 % indicado es de ...... ml/kg de peso en una hora.",
    "opciones": { "A": "5", "B": "10", "C": "15", "D": "20" },
    "clave": "B", "respuesta": "10",
@@ -332,7 +332,7 @@
    "molde": "2024-2A Q90"
   },
   {
-   "id": "BP-0032", "codigo": "I-5+I-6", "area": "I", "formato": "directa", "critico": false, "subangulo": "Transición epidemiológica", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "baja",
+   "id": "BP-0032", "codigo": "I-5+I-6", "area": "I", "formato": "directa", "critico": false, "subangulo": "Transición epidemiológica", "fallo_previo": null, "reservado_para": "2026-10-02", "dif": "baja",
    "enunciado": "La transición epidemiológica se define como el proceso de paso del predominio de enfermedades ...... a la preponderancia de las enfermedades ......",
    "opciones": { "A": "crónicas / infecciosas", "B": "infecciosas / crónicas", "C": "degenerativas / infecciosas", "D": "agudas / prevalentes" },
    "clave": "B", "respuesta": "infecciosas / crónicas",
@@ -342,7 +342,7 @@
    "molde": "2025-1A Q11"
   },
   {
-   "id": "BP-0033", "codigo": "II-3", "area": "II", "formato": "cifra", "critico": true, "subangulo": "Cadena de frío: rango de conservación", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "baja",
+   "id": "BP-0033", "codigo": "II-3", "area": "II", "formato": "cifra", "critico": true, "subangulo": "Cadena de frío: rango de conservación", "fallo_previo": null, "reservado_para": "2026-10-02", "dif": "baja",
    "enunciado": "¿Cuál es el rango de temperatura de conservación de las vacunas en el refrigerador del establecimiento de salud?",
    "opciones": { "A": "0 °C a +4 °C", "B": "+2 °C a +8 °C", "C": "+4 °C a +10 °C", "D": "−2 °C a +6 °C" },
    "clave": "B", "respuesta": "+2 °C a +8 °C",
@@ -352,7 +352,7 @@
    "molde": "2026-1 Q7 (no verificable)"
   },
   {
-   "id": "BP-0034", "codigo": "II-5", "area": "II", "formato": "directa", "critico": true, "subangulo": "MCI: definición de curso de vida", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "media",
+   "id": "BP-0034", "codigo": "II-5", "area": "II", "formato": "directa", "critico": true, "subangulo": "MCI: definición de curso de vida", "fallo_previo": null, "reservado_para": "2026-10-02", "dif": "media",
    "enunciado": "Sucesión de eventos que ocurren a lo largo de la existencia de las personas y de la población, los cuales interactúan para influir en su salud desde la preconcepción hasta la muerte. ¿A qué definición corresponde?",
    "opciones": { "A": "Cuidado integral", "B": "Curso de vida", "C": "Vías de cuidado integral", "D": "Determinante social" },
    "clave": "B", "respuesta": "Curso de vida",
@@ -362,7 +362,7 @@
    "molde": "2025-1A Q3"
   },
   {
-   "id": "BP-0035", "codigo": "II-4", "area": "II", "formato": "viñeta", "critico": true, "subangulo": "CRED/anemia en preescolar: conducta", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "media",
+   "id": "BP-0035", "codigo": "II-4", "area": "II", "formato": "viñeta", "critico": true, "subangulo": "CRED/anemia en preescolar: conducta", "fallo_previo": null, "reservado_para": "2026-10-02", "dif": "media",
    "enunciado": "Niño de 4 años procedente de Pucallpa acude a su control CRED al C.S. I-3: mucosas pálidas, astenia marcada y abdomen globuloso doloroso a la palpación; Hb 9,5 g/dL. ¿Cuál es la conducta a seguir?",
    "opciones": { "A": "Referir al establecimiento de mayor capacidad resolutiva", "B": "Solicitar hemoglobina de control sin examen seriado de heces", "C": "Valoración por pediatría", "D": "Antiparasitario y sales de hierro (polimaltosado)" },
    "clave": "D", "respuesta": "Antiparasitario y sales de hierro (polimaltosado)",
@@ -372,7 +372,7 @@
    "molde": "2025-2 Q14"
   },
   {
-   "id": "BP-0036", "codigo": "II-6", "area": "II", "formato": "directa", "critico": false, "subangulo": "TB: indicación de terapia preventiva (TPT)", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "media",
+   "id": "BP-0036", "codigo": "II-6", "area": "II", "formato": "directa", "critico": false, "subangulo": "TB: indicación de terapia preventiva (TPT)", "fallo_previo": null, "reservado_para": "2026-10-02", "dif": "media",
    "enunciado": "¿Qué grupo de personas tiene indicación de terapia preventiva contra la tuberculosis?",
    "opciones": { "A": "Personas con TB sensible en tratamiento", "B": "Contactos adultos de un caso índice de TB pulmonar y personas con VIH", "C": "Personas sin diagnóstico de ITBL bajo corticoterapia", "D": "Todo contacto, aun sin descartar TB activa" },
    "clave": "B", "respuesta": "Contactos adultos de un caso índice de TB pulmonar y personas con VIH",
@@ -382,7 +382,7 @@
    "molde": "2025-1A Q50"
   },
   {
-   "id": "BP-0037", "codigo": "II-6", "area": "II", "formato": "viñeta", "critico": false, "subangulo": "TB: sospecha de resistencia (prueba de sensibilidad rápida)", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "alta",
+   "id": "BP-0037", "codigo": "II-6", "area": "II", "formato": "viñeta", "critico": false, "subangulo": "TB: sospecha de resistencia (prueba de sensibilidad rápida)", "fallo_previo": null, "reservado_para": "2026-10-02", "dif": "alta",
    "enunciado": "Varón de 28 años en tratamiento para TB sensible en el C.S. I-3 de San Juan de Lurigancho; al tercer mes persiste con baciloscopía positiva, sin deterioro clínico ni radiológico. Su padre tuvo TB-DR. ¿Cuál es la conducta inicial?",
    "opciones": { "A": "Iniciar esquema para TB-DR de inmediato", "B": "Tomar muestra de esputo para prueba de sensibilidad rápida", "C": "Referir al médico consultor", "D": "Prolongar la primera fase un mes más" },
    "clave": "B", "respuesta": "Tomar muestra de esputo para prueba de sensibilidad rápida",
@@ -392,7 +392,7 @@
    "molde": "2025-2 Q4"
   },
   {
-   "id": "BP-0038", "codigo": "II-6", "area": "II", "formato": "cifra", "critico": false, "subangulo": "PANTBC: cobertura de la ración", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "media",
+   "id": "BP-0038", "codigo": "II-6", "area": "II", "formato": "cifra", "critico": false, "subangulo": "PANTBC: cobertura de la ración", "fallo_previo": null, "reservado_para": "2026-10-02", "dif": "media",
    "enunciado": "La ración de alimentos del PCA-PANTBC cubre el ...... % de los requerimientos nutricionales calórico-proteicos mensuales de la persona afectada por TB.",
    "opciones": { "A": "30", "B": "40", "C": "50", "D": "60" },
    "clave": "C", "respuesta": "50",
@@ -402,7 +402,7 @@
    "molde": "2024-2A Q72"
   },
   {
-   "id": "BP-0039", "codigo": "II-11", "area": "II", "formato": "viñeta", "critico": false, "subangulo": "ITS: sífilis primaria", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "media",
+   "id": "BP-0039", "codigo": "II-11", "area": "II", "formato": "viñeta", "critico": false, "subangulo": "ITS: sífilis primaria", "fallo_previo": null, "reservado_para": "2026-10-02", "dif": "media",
    "enunciado": "Varón de 22 años acude al C.S. I-3 por una úlcera genital indolora de 10 días; relación sexual sin protección hace un mes. VDRL 1:16 y FTA-ABS reactivo; sin lesiones palmo-plantares ni adenopatías generalizadas. ¿Cuál es el diagnóstico más probable?",
    "opciones": { "A": "Sífilis secundaria", "B": "Sífilis primaria", "C": "Herpes genital", "D": "Chancroide" },
    "clave": "B", "respuesta": "Sífilis primaria",
@@ -412,7 +412,7 @@
    "molde": "2025-1A Q99"
   },
   {
-   "id": "BP-0040", "codigo": "II-8", "area": "II", "formato": "viñeta", "critico": false, "subangulo": "DM2: glicemia en zona gris → TTOG", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "media",
+   "id": "BP-0040", "codigo": "II-8", "area": "II", "formato": "viñeta", "critico": false, "subangulo": "DM2: glicemia en zona gris → TTOG", "fallo_previo": null, "reservado_para": "2026-10-02", "dif": "media",
    "enunciado": "Varón de 52 años, IMC 31, acude al C.S. I-3 por somnolencia diurna; glicemia plasmática en ayunas 118 mg/dL. ¿Cuál es el siguiente paso más adecuado para el diagnóstico?",
    "opciones": { "A": "Repetir la glicemia plasmática en ayunas", "B": "Test de tolerancia oral a la glucosa", "C": "Dosaje de insulina plasmática", "D": "Iniciar metformina" },
    "clave": "B", "respuesta": "Test de tolerancia oral a la glucosa",
@@ -422,7 +422,7 @@
    "molde": "2025-2 Q89"
   },
   {
-   "id": "BP-0041", "codigo": "V-2", "area": "V", "formato": "directa", "critico": true, "subangulo": "Planeamiento estratégico: definición CEPLAN", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "media",
+   "id": "BP-0041", "codigo": "V-2", "area": "V", "formato": "directa", "critico": true, "subangulo": "Planeamiento estratégico: definición CEPLAN", "fallo_previo": null, "reservado_para": "2026-10-02", "dif": "media",
    "enunciado": "«Proceso sistemático, cíclico y continuo, de naturaleza política, técnica y participativa, que involucra múltiples actores y se basa en un análisis riguroso, basado en evidencias, de la situación actual y futura, a través del cual se implementan los objetivos del Plan Estratégico de Desarrollo Nacional». Se refiere a:",
    "opciones": { "A": "Análisis de la situación actual", "B": "Planeamiento estratégico", "C": "Plan de salud local", "D": "Presupuesto por resultados" },
    "clave": "B", "respuesta": "Planeamiento estratégico",
@@ -432,7 +432,7 @@
    "molde": "2025-2 Q95"
   },
   {
-   "id": "BP-0042", "codigo": "V-2", "area": "V", "formato": "viñeta", "critico": true, "subangulo": "Gestión de la calidad: buzón de sugerencias", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "media",
+   "id": "BP-0042", "codigo": "V-2", "area": "V", "formato": "viñeta", "critico": true, "subangulo": "Gestión de la calidad: buzón de sugerencias", "fallo_previo": null, "reservado_para": "2026-10-02", "dif": "media",
    "enunciado": "En el plan anual de gestión de la calidad del C.S. I-4 de Huancavelica se programa la apertura del buzón de sugerencias para conocer la opinión de los usuarios y alimentar los planes de mejora. ¿Con qué frecuencia debe abrirse?",
    "opciones": { "A": "Semanal", "B": "Mensual", "C": "Trimestral", "D": "Semestral" },
    "clave": "B", "respuesta": "Mensual",
@@ -442,7 +442,7 @@
    "molde": "2024-2A Q26"
   },
   {
-   "id": "BP-0043", "codigo": "V-6", "area": "V", "formato": "directa", "critico": false, "subangulo": "Telesalud: teleorientación (definición)", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "media",
+   "id": "BP-0043", "codigo": "V-6", "area": "V", "formato": "directa", "critico": false, "subangulo": "Telesalud: teleorientación (definición)", "fallo_previo": null, "reservado_para": "2026-10-02", "dif": "media",
    "enunciado": "Conjunto de acciones que desarrolla un profesional de la salud mediante el uso de las TIC para proporcionar a la persona usuaria consejería y asesoría con fines de promoción, prevención, recuperación o rehabilitación. Corresponde a:",
    "opciones": { "A": "Teleconsulta", "B": "Telemonitoreo", "C": "Teleorientación", "D": "Teleinterconsulta" },
    "clave": "C", "respuesta": "Teleorientación",
@@ -452,7 +452,7 @@
    "molde": "2025-1A Q65"
   },
   {
-   "id": "BP-0044", "codigo": "V-6", "area": "V", "formato": "viñeta", "critico": false, "subangulo": "Telesalud: telemonitoreo", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "media",
+   "id": "BP-0044", "codigo": "V-6", "area": "V", "formato": "viñeta", "critico": false, "subangulo": "Telesalud: telemonitoreo", "fallo_previo": null, "reservado_para": "2026-10-02", "dif": "media",
    "enunciado": "Al alta de una mujer de 80 años hospitalizada por neumonía, por su fragilidad, se programa seguimiento telefónico a cargo de su médico tratante dentro del turno de telemedicina. ¿Cómo se denomina esta prestación?",
    "opciones": { "A": "Teleorientación", "B": "Telemonitoreo", "C": "Teleinterconsulta", "D": "Telegestión" },
    "clave": "B", "respuesta": "Telemonitoreo",
@@ -462,7 +462,7 @@
    "molde": "2025-2 Q60"
   },
   {
-   "id": "BP-0045", "codigo": "V-3", "area": "V", "formato": "viñeta", "critico": false, "subangulo": "RIS: dimensión de prestación", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "media",
+   "id": "BP-0045", "codigo": "V-3", "area": "V", "formato": "viñeta", "critico": false, "subangulo": "RIS: dimensión de prestación", "fallo_previo": null, "reservado_para": "2026-10-02", "dif": "media",
    "enunciado": "Como médico jefe del C.S. I-3, usted debe participar en el fortalecimiento de la dimensión de PRESTACIÓN del modelo de Redes Integradas de Salud. ¿Qué atributo corresponde a esa dimensión?",
    "opciones": { "A": "Participación ciudadana", "B": "Primer nivel de atención como puerta de entrada", "C": "Financiamiento alineado a los objetivos de la red", "D": "Gestión de recursos humanos" },
    "clave": "B", "respuesta": "Primer nivel de atención como puerta de entrada",
@@ -472,7 +472,7 @@
    "molde": "2025-2 Q39"
   },
   {
-   "id": "BP-0046", "codigo": "III-5", "area": "III", "formato": "directa", "critico": true, "subangulo": "Pertinencia cultural: parto vertical", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "baja",
+   "id": "BP-0046", "codigo": "III-5", "area": "III", "formato": "directa", "critico": true, "subangulo": "Pertinencia cultural: parto vertical", "fallo_previo": null, "reservado_para": "2026-10-02", "dif": "baja",
    "enunciado": "En una comunidad aimara, un ejemplo de atención con pertinencia cultural es:",
    "opciones": { "A": "Entregar material escrito en español", "B": "Atención del parto vertical", "C": "Atender al paciente sin traductor", "D": "Difundir material audiovisual nacional" },
    "clave": "B", "respuesta": "Atención del parto vertical",
@@ -482,7 +482,7 @@
    "molde": "2025-2 Q47"
   },
   {
-   "id": "BP-0047", "codigo": "III-5", "area": "III", "formato": "viñeta", "critico": true, "subangulo": "Diálogo intercultural: síndromes culturales (susto)", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "media",
+   "id": "BP-0047", "codigo": "III-5", "area": "III", "formato": "viñeta", "critico": true, "subangulo": "Diálogo intercultural: síndromes culturales (susto)", "fallo_previo": null, "reservado_para": "2026-10-02", "dif": "media",
    "enunciado": "Madre quechuahablante de 30 años, en el P.S. I-2 de Vilcashuamán, niega la atención de su hijo de un año con diarrea y deshidratación porque, según su creencia, es «susto» y debe verlo el curandero. ¿Cómo procede?",
    "opciones": { "A": "Solicita al presidente comunal que intervenga", "B": "Llega a un acuerdo en la terapia del niño, respetando sus creencias", "C": "Discrepa con su decisión porque no es correcta", "D": "Constata el hecho con la policía y la autoridad comunal" },
    "clave": "B", "respuesta": "Llega a un acuerdo en la terapia del niño, respetando sus creencias",
@@ -492,7 +492,7 @@
    "molde": "2025-1A Q12"
   },
   {
-   "id": "BP-0048", "codigo": "III-3", "area": "III", "formato": "viñeta", "critico": false, "subangulo": "Consentimiento informado en investigación con menores", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "media",
+   "id": "BP-0048", "codigo": "III-3", "area": "III", "formato": "viñeta", "critico": false, "subangulo": "Consentimiento informado en investigación con menores", "fallo_previo": null, "reservado_para": "2026-10-02", "dif": "media",
    "enunciado": "Para un estudio sobre obesidad infantil en el colegio de la comunidad, el director exige que los padres autoricen voluntariamente la participación de sus hijos. ¿Qué documento utiliza?",
    "opciones": { "A": "Consentimiento informado", "B": "Asentimiento informado", "C": "Carta de compromiso paterno", "D": "Autorización de atención" },
    "clave": "A", "respuesta": "Consentimiento informado",
@@ -502,7 +502,7 @@
    "molde": "2025-1A Q44"
   },
   {
-   "id": "BP-0049", "codigo": "IV-1+IV-2", "area": "IV", "formato": "viñeta", "critico": true, "subangulo": "Enfoques: cualitativo", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "media",
+   "id": "BP-0049", "codigo": "IV-1+IV-2", "area": "IV", "formato": "viñeta", "critico": true, "subangulo": "Enfoques: cualitativo", "fallo_previo": null, "reservado_para": "2026-10-02", "dif": "media",
    "enunciado": "Ante varios casos de violencia familiar en su jurisdicción, el serumista visita los hogares, entrevista en profundidad a las personas afectadas y a sus familiares, analiza los relatos y plantea explicaciones del problema. ¿Qué enfoque de investigación usa?",
    "opciones": { "A": "Cuantitativo", "B": "Cualitativo", "C": "Mixto", "D": "Experimental" },
    "clave": "B", "respuesta": "Cualitativo",
@@ -512,7 +512,7 @@
    "molde": "2025-2 Q27"
   },
   {
-   "id": "BP-0050", "codigo": "IV-6+IV-7", "area": "IV", "formato": "directa", "critico": false, "subangulo": "Estadística descriptiva: media", "fallo_previo": null, "reservado_para": "2026-09-25", "dif": "baja",
+   "id": "BP-0050", "codigo": "IV-6+IV-7", "area": "IV", "formato": "directa", "critico": false, "subangulo": "Estadística descriptiva: media", "fallo_previo": null, "reservado_para": "2026-10-02", "dif": "baja",
    "enunciado": "Medida de tendencia central que se interpreta como el promedio de los datos y se construye con la suma de todos los valores observados dividida entre el total de observaciones:",
    "opciones": { "A": "Moda", "B": "Mediana", "C": "Media", "D": "Rango" },
    "clave": "C", "respuesta": "Media",

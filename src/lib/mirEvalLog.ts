@@ -109,7 +109,7 @@ const clamp = (n: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, M
 const optNum = (v: unknown, max: number): number | undefined => (v == null || v === '' || Number.isNaN(Number(v)) ? undefined : clamp(Number(v), 0, max));
 function hoyISO(): string {
   try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; }
-  catch { return MIR_DIAS[0]?.fecha || '2026-09-17'; }
+  catch { return MIR_DIAS[0]?.fecha || '2026-09-21'; }
 }
 const porTs = (a: MirEvalEntry, b: MirEvalEntry) => (a.ts || '').localeCompare(b.ts || '');
 
@@ -217,10 +217,10 @@ export function mirEstadoCierreTxt(estado: MirEstadoCierre, fechaISO?: string): 
 }
 /** Compat: textos de la fase 1. */
 export const MIR_ESTADO_CIERRE_TXT: Record<MirEstadoCierre, string> = {
-  consolidada: mirEstadoCierreTxt('consolidada', '2026-09-17'),
-  intermedia: mirEstadoCierreTxt('intermedia', '2026-09-17'),
-  anclasD7: mirEstadoCierreTxt('anclasD7', '2026-09-17'),
-  'sin-dato': mirEstadoCierreTxt('sin-dato', '2026-09-17'),
+  consolidada: mirEstadoCierreTxt('consolidada', '2026-09-21'),
+  intermedia: mirEstadoCierreTxt('intermedia', '2026-09-21'),
+  anclasD7: mirEstadoCierreTxt('anclasD7', '2026-09-21'),
+  'sin-dato': mirEstadoCierreTxt('sin-dato', '2026-09-21'),
 };
 
 // ── táctica −1/3 (gap 6) ──

@@ -69,9 +69,9 @@ const DEADLINE = {
   'cr-caso': '31-oct-2026 (caso + consentimiento + senior author · si el 5-oct no hay caso → plan B, colega SPD)',
   'tesis-L0': '≤ 15-feb-2027 (JAAD International → IJD → Actas → Anais)',
   'revisor2': 'antes de PROSPERO (sin revisor #2 humano no hay registro · PRISMA 2020 ítem 8)',
-  'cr-paquete': 'antes del submit CR-9 (lun 1-feb-2027 = D-1 del Step 1): paquete congelado ANTES de la pausa Research por el Step 1 (4→29-ene; Fases B-C 13-ene→1-feb)',
+  'cr-paquete': 'antes del submit CR-9 (lun 1-feb-2027 = D93 del Step 1, primer día-Research tras la pausa): paquete congelado ANTES de la pausa Research por el Step 1 (4→29-ene; Fases B-C 15-ene→3-feb)',
   'case-report-1': '≤ 28-feb-2027 (Dermatology Online Journal → JAAD CR → Case Reports in Dermatology)',
-  'equipo': 'antes del registro R10 (lun 1-mar-2027)',
+  'equipo': 'antes del registro R10 (mié 3-mar-2027)',
   'PROSPERO-SR1': '≤ 31-mar-2027',
   'SR-1': '≤ 31-ago-2027 (Dermatologic Surgery → JAAD → JCD → Anais/Actas)',
 };
