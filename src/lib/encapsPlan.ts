@@ -2,7 +2,11 @@
 // Lee study_schedule / study_metrics / study_checks / study_sim_scores de Supabase
 // (regla #11: la app SOLO lee/escribe Supabase, nunca Claude).
 // Escalable: examen = 'ENCAPS' | 'MIR' | 'USMLE'. Hoy sólo ENCAPS (regla #7).
-import { useCallback, useEffect, useMemo, useState } from 'react';
+// v5.14 (19-sep-2026): D1 y total de días ya NO son fijos — se leen de study_metrics.extra (d1 · dias_ciclo) con fallback
+// a las constantes de abajo, y el total crece solo con max(dia) de study_schedule (así la FASE INTENSIVA feb-mar 2027,
+// modo='INTENSIVO', extiende el plan sin tocar código). Rama INTENSIVO en itemsForDay (extra.loop · sim · repaso ·
+// drill_cifras) y simDays con los tipos pretest / sim100 / dress_rehearsal (nota /100, sim_n = dia).
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { supabase } from './supabase';
 import { ENCAPS_FICHAS_POR_TEMA, ENCAPS_VIDEO_DRIVE, ENCAPS_THEOMED_AREA, ENCAPS_THEOMED_VIDEOS, ENCAPS_COMPENDIO, ENCAPS_AREA_PREFIJO, ENCAPS_THEOMED_TEMA_SESION } from './encapsFuentes';
 import { ENCAPS_VIDEOS_POR_TEMA } from './encapsVideosPorTema';
@@ -12,6 +16,8 @@ import { ENCAPS_AREA_FORECAST, ENCAPS_CRITICAL_TOPICS, ENCAPS_REBOTE_TOPICS, ENC
 import { loadCierres, onCierresChange, cierreARow, fallosDeErrores, sumTipo, type CierreSesion } from './encapsProgressSync';
 
 // ── D1 por examen (para calcular el día actual) ──
+// v5.14 (19-sep): SOLO FALLBACK. El valor vivo es study_metrics.extra.d1 (lo escribe gen_encaps_mantenimiento_2027.js en cada
+// corrimiento); la app lo lee en useEncapsPlan → regimenDe(). Si Supabase no responde, se usa esta constante.
 export const STUDY_D1: Record<string, string> = {
   ENCAPS: '2026-09-21',   // v6.12 MANTENIMIENTO 2027-I (D1=lun 21-sep; 31-ago→18-sep no estudiados): examen 2026-II rendido el 9-ago (Joseph NO lo dio; análisis real en DATA/ENCAPS/ANALISIS_EXAMEN_2026-2_REAL.md). Meta: ENCAPS 2027-I fines de MARZO 2027. 1h/día (16:15-17:15 L-V): banqueo puro guiado por el PRONÓSTICO v3 (II 30 · I 27 · V 21 · III 13 · IV 9 · 8 críticos: I-3 V-2 II-3 III-5 I-4 II-5 II-4 IV-1/2). Feb-mar 2027: vuelve a bloque principal (fase intensiva, se re-siembra entonces). Ciclo sembrado por gen_encaps_mantenimiento_2027.js (05-sep: sub-ejes por instancia + cola larga como secundario + receta del mini-sim en extra) · backup study_schedule_bk_0919.
   // MIR / USMLE se agregan cuando se construyan sus cronogramas.
@@ -22,7 +28,29 @@ export const STUDY_SKIP_DATES: Record<string, string[]> = {
 };
 // v6 (27-ago): SÁBADOS Y DOMINGOS LIBRES en el régimen de mantenimiento — no cuentan como día de plan.
 export const STUDY_SKIP_WEEKENDS: Record<string, boolean> = { ENCAPS: true };
-const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 92 }; // v5.14: 21-sep-2026 → 29-ene-2027 = 92 hábiles (el fin del ciclo NO se mueve — está clavado al examen ENCAPS 2027-I —, se acorta por delante)
+// v5.14 (19-sep): SOLO FALLBACK (antes fijo: 102 → 95 → 94 → 92). El valor vivo es study_metrics.extra.dias_ciclo (92 = lun 21-sep-2026
+// → vie 29-ene-2027; el fin del ciclo NO se mueve, está clavado al examen ENCAPS 2027-I, se acorta por delante) y crece solo con
+// max(dia) de study_schedule cuando se siembre la FASE INTENSIVA (modo='INTENSIVO', dia 93+ · gen_encaps_intensivo_2027.js).
+export const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 92 };
+// Régimen vigente resuelto en runtime: study_metrics.extra.d1 / dias_ciclo → fila dia=1 de study_schedule → constantes.
+export interface StudyRegimen { d1: string; total: number; origenD1: 'study_metrics' | 'study_schedule' | 'fallback'; origenTotal: 'study_metrics' | 'study_schedule' | 'fallback' }
+const ISO_RE = /^20\d\d-\d\d-\d\d$/;
+export function regimenDe(examen: string, metrics: StudyMetrics | null | undefined, days: StudyScheduleDay[] = []): StudyRegimen {
+  const ex = (metrics?.extra || {}) as Record<string, unknown>;
+  const d1Metrics = typeof ex.d1 === 'string' && ISO_RE.test(ex.d1) ? ex.d1 : null;
+  const filaD1 = days.find(d => d.dia === 1)?.fecha;
+  const d1Sched = typeof filaD1 === 'string' && ISO_RE.test(filaD1.slice(0, 10)) ? filaD1.slice(0, 10) : null;
+  const d1 = d1Metrics || d1Sched || STUDY_D1[examen] || '';
+  const totalMetrics = Number(ex.dias_ciclo);
+  const base = Number.isFinite(totalMetrics) && totalMetrics > 0 ? Math.round(totalMetrics) : (STUDY_TOTAL_DAYS[examen] ?? 71);
+  const maxDia = days.reduce((m, d) => Math.max(m, Number(d.dia) || 0), 0);
+  const total = Math.max(base, maxDia);
+  return {
+    d1, total,
+    origenD1: d1Metrics ? 'study_metrics' : d1Sched ? 'study_schedule' : 'fallback',
+    origenTotal: maxDia > base ? 'study_schedule' : (Number.isFinite(totalMetrics) && totalMetrics > 0 ? 'study_metrics' : 'fallback'),
+  };
+}
 
 // ── Tipos (espejo de las columnas study_*) ──
 export interface StudyVideo {
@@ -450,9 +478,10 @@ function todayLimaISO(): string {
   const lima = new Date(now.getTime() - 5 * 60 * 60 * 1000);
   return lima.toISOString().slice(0, 10);
 }
-export function diaActual(examen: string): number {
-  const d1 = STUDY_D1[examen];
-  const total = STUDY_TOTAL_DAYS[examen] ?? 71;
+// v5.14: `d1Override` / `totalOverride` vienen de regimenDe() (study_metrics.extra); sin ellos, las constantes de fallback.
+export function diaActual(examen: string, d1Override?: string, totalOverride?: number): number {
+  const d1 = d1Override || STUDY_D1[examen];
+  const total = totalOverride ?? (STUDY_TOTAL_DAYS[examen] ?? 71);
   if (!d1) return 1;
   const hoy = todayLimaISO();
   let diff = Math.floor((Date.parse(hoy) - Date.parse(d1)) / 86_400_000) + 1;
