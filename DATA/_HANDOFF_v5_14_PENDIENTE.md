@@ -1,4 +1,8 @@
-# HANDOFF · corrimiento v5.14 + sistematización — LO QUE FALTA (para la siguiente sesión, modelo Opus 5)
+# HANDOFF · corrimiento v5.14 + sistematización — HISTÓRICO (cerrado el dom 20-sep-2026 madrugada · commit `9de02c7`)
+
+> ✅ **TODO lo de §3 se ejecutó** (Opus 5, agentes de 2 en 2 + verificación de 3 lentes + crítico): ver `DATA/SISTEMATIZACION_2026-09-19.md`,
+> `DATA/ENCAPS/CALENDAR_SEGMENTOS_V5_6.md` §16 y `DATA/PENDIENTES_JOSEPH.md`. Este fichero se conserva como registro del corte de sesión
+> del 19-sep y del pipeline; los ids de §2.1 están corregidos (medidos con get_event). Lo único abierto son las decisiones de §5.
 
 **Escrito el sáb 19-sep-2026 ~20:00 Lima por la sesión Fable 5.1** al agotarse la sesión (100 %) y el límite semanal de
 Fable (96 %). Instrucción literal de Joseph: *"reestructuración y terminar todo lo que falta en cuanto a estructura y
