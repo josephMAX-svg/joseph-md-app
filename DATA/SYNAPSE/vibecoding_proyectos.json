@@ -204,7 +204,7 @@
       "deload": false,
       "nombre": "verify_vibecoding + revisión semanal cerrada (10 métricas con dato real)",
       "sirveA": "TODOS — verify_vibecoding.js (12-sep) ya mide 'shipped' mecánicamente y gen_revision_semanal.js v1 ya pre-rellena, pero la revisión sigue diciendo 'sin dato' en varias métricas y la 7 (vibecoding) se decide por el ✓ manual: hay que cerrar el circuito (scores USMLE de usmleScores.ts, telemetría v2, plan_checks, _vibecoding_ship.json) para que el sábado 07:15 Joseph solo DECIDA.",
-      "objetivo": "Que la revisión S04 (sáb 10-oct) salga con ≥8/10 métricas reales y que la métrica 7 lea el último verify del proyecto de la semana, no el auto-reporte.",
+      "objetivo": "Que la revisión S04 (sáb 17-oct, v5.14) salga con ≥8/10 métricas reales y que la métrica 7 lea el último verify del proyecto de la semana, no el auto-reporte.",
       "entregable": "DATA/USMLE/REVISIONES/S04_2026-10-10.md con ≥8/10 métricas reales + _vibecoding_ship.json con S1-S4 + gen_revision_semanal.js leyendo verify/scores/plan_checks + commit [S4].",
       "aceptacion": [
         "node DATA/_scripts/gen_revision_semanal.js genera DATA/USMLE/REVISIONES/S04_2026-10-10.md con ≤2 métricas 'sin dato'",
@@ -261,7 +261,7 @@
         "Generar S04 en seco, leerla completa y corregir la plantilla (DATA/REVISION_SEMANAL.md) donde no ayude a decidir; contar métricas reales (≥8/10).",
         "Automatizar el pre-relleno (viernes 21:00, schtasks o /schedule) + commit [S4] + node DATA/_scripts/verify_vibecoding.js 4 + journal."
       ],
-      "ship": "SHIP S4: sábado 10-oct 07:15 primera revisión con ≥8/10 métricas reales y métrica 7 verificada por script (verify 4 → 4/4)."
+      "ship": "SHIP S4: sábado 17-oct 07:15 revisión S04 con ≥8/10 métricas reales y métrica 7 verificada por script (verify 4 → 4/4)."
     },
     {
       "s": 5,
@@ -802,7 +802,7 @@
         "Journal 5' + lectura de docs (15').",
         "Retro semanal (≤15') + commit [S15] + verify --sensores (31-dic y 1-ene son feriados: el bloque S15 = mar 29 y mié 30-dic + lun 4 y mar 5-ene)."
       ],
-      "ship": "Sábado 2-ene PC (opcional, 30'): verify --sensores + retro; si descansas, marca ✓ igual."
+      "ship": "Sábado 9-ene PC (opcional, 30'): verify --sensores + retro; si descansas, marca ✓ igual (S15 termina el mar 5-ene: su PC es el sábado siguiente)."
     },
     {
       "s": 16,

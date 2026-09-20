@@ -377,3 +377,7 @@ SET extra = jsonb_set(extra, '{horarios}', $J$
 $J$::jsonb, true)
 WHERE examen = 'ENCAPS';
 -- verificación: select examen, extra->'horarios'->'_nota', jsonb_array_length(extra->'horarios'->'weekday') wd, jsonb_array_length(extra->'horarios'->'weekend') we from study_metrics where examen='ENCAPS';
+
+-- 19-sep-2026 (v5.14, 2.ª capa): columna `extra` JSONB en usmle_daily_scores (cambiadas · relecturas · nFallos · nConocidos · bloquesPct).
+-- Aplicada el 19-sep; copia canónica en DATA/_scripts/_migrations/usmle_daily_scores_extra.sql
+ALTER TABLE usmle_daily_scores ADD COLUMN IF NOT EXISTS extra JSONB;

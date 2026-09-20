@@ -123,8 +123,8 @@ Perú (APC)"** (con las 4 URLs a comprobar en la descripción). La clasificació
 | M3-4 (nov-dic 2026) | **Tesis L0 → research letter SUBMIT (T-8 mar 1-dic)** · **Case report #1** con mentor local: borrador, fotos, CARE y **paquete CONGELADO (CR-8 jue 17-dic)** — el SUBMIT a DOJ se ejecuta el 1-feb-2027, no en diciembre · revisor #2 nombrado (X-1 lun 7-dic) | L4 si es complicación estética; si no, el mejor caso disponible |
 | M5 (ene-2027) | **PAUSA TOTAL — examen Step 1** (4-ene → 29-ene-2027 = 0 átomos de research; v5.14: el lun 1-feb es el D93 del Step 1, el mié 3-feb su D-1 y el examen se rinde el jue 4-feb, fuera de la ventana 25-29 ene) | — |
 | M6-7 (feb-mar 2027) | **SUBMIT case report #1 (CR-9 lun 1-feb = D93 del Step 1, última semana de banco; ya no es la víspera)** · protocolo de **revisión sistemática** en derm estética y **registro PROSPERO (R10 mié 3-mar)** · reclutar 2-3 coautores IMG · campaña de cold emails (K1 vie 5-mar · K2 jue 11-mar) | **SR-1 (L4)** o **SR-2 (L5)** — las líneas ACTIVAS del programa |
-| M8-10 (abr-jun 2027) | Ejecutar SR (extracción R22-R25 14→28-abr · MA en R may-2027) · case report #2 · 1 estudio bibliométrico · abstracts a AAD/CILAD/RADLA | L4/L5 + transversal |
-| M11-12 (jul-ago 2027) | **SUBMIT SR-1 (R43 vie 9-jul)** · SR-2 abierta (PROSPERO R46 jue 12-ago) · **balance (X-12 lun 16-ago)** | — |
+| M8-10 (abr-jun 2027) | Ejecutar SR (extracción R22-R25 mar 20-abr → mar 4-may · MA en R may-2027) · case report #2 · 1 estudio bibliométrico · abstracts a AAD/CILAD/RADLA | L4/L5 + transversal |
+| M11-12 (jul-ago 2027) | **SUBMIT SR-1 (R43 mar 13-jul)** · SR-2 abierta (protocolo R45 jue 12-ago · PROSPERO R46 lun 16-ago) · **balance (X-12 mié 18-ago)** | — |
 
 **Balance realista a ago-2027**: 4-5 publicaciones + 2-3 abstracts + red de 1-2 mentores US +
 decisión informada sobre research fellowship presencial 2028.

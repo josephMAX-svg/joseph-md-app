@@ -3,6 +3,11 @@
  * Distilled from STUDY_HUB/05_USMLE_curriculo_roi.md + 07_USMLE_palmerton_por_sistema.md.
  * Includes the "Palmerton brain": his verified method + per-system mini-methods.
  * Spaced repetition reuses the ENCAPS engine (CRÍTICA=6/ALTA=5/MEDIA=4/BAJA=3).
+ * 2.ª capa Palmerton (19-sep-2026, #19 · #15 · #17): FIRST_AID_INDEX.role = índice de objetivos de maestría (NO anotar);
+ * USMLE_RAMP / USMLE_HOUR marcados LEGACY (pre-v5: el plan vigente es usmleStep1Daily.ts, 6h15/día); nota de divergencia
+ * consciente en "biochem first" (v5.14: Bioquímica cierra la Fase A en D80-D81); ANKI_CONFIG_PALMERTON (§4.2) para la pestaña
+ * Palmerton; regla del frente (§4.12) en USMLE_QBANK_RULES. A VERIFICAR (19-sep): USMLE_META.thesis "75–95 %" y los pesos de
+ * USMLE_DISCIPLINES no son cifras Palmerton → contrastar con el USMLE Content Outline oficial (pendiente de Joseph).
  */
 import { Prioridad, PRIORIDAD_COLOR, VUELTAS } from './researchData';
 export { PRIORIDAD_COLOR, VUELTAS };
@@ -13,6 +18,7 @@ export const USMLE_META = {
   subtitle: 'United States · pass with margin → springboard to Step 2 CK (Mayo)',
   accent: '#5FA88C', // jade (USA console) — quiet-luxury, non-neon
   flag: '🇺🇸',
+  // A VERIFICAR (19-sep): "75–95 %" no es cifra Palmerton ni del Content Outline oficial (#19).
   thesis: 'Step 1 is Pass/Fail but we train like it is 270. Pathology + Physiology are 75–95% of the exam. Medical English is not a separate subject — it is the VEHICLE: learn the content itself in English. Compounding beats cramming.',
 };
 
@@ -54,6 +60,7 @@ export const USMLE_SYSTEMS: UsmleSystem[] = [
 ];
 
 // Disciplines — the real truth of the exam
+// A VERIFICAR (19-sep, #19): pesos heurísticos del curriculo_roi, no del USMLE Content Outline oficial (Joseph decide si se sustituyen).
 export const USMLE_DISCIPLINES = [
   { name: 'Pathology', weight: '45–55%', anchor: 'Pathoma (the absolute ROI king)', prioridad: 'CRITICA' as Prioridad },
   { name: 'Physiology', weight: '30–40%', anchor: 'Ninja Nerd / Armando Hasudungan', prioridad: 'CRITICA' as Prioridad },
@@ -77,7 +84,7 @@ export const PALMERTON_METHOD = [
   { name: 'Pharm: forward + reverse, ~6/drug', desc: 'Mechanism / use / toxicity, each forward AND reverse ≈ 6 cards per drug. Class-level card for shared properties. "More but shorter cards."', verified: true },
   { name: 'Daily card-creation limit', desc: 'Cap new cards/day — "the more cards you make, the more you review." Permission to NOT remember everything.', verified: true },
   { name: 'Slow is fast', desc: 'Spend real time understanding the miss instead of grinding volume. A Qbank raises scores when each question teaches a decision rule, not by volume.', verified: true },
-  { name: 'Sequencing: biochem first', desc: 'Do biochemistry videos first to build a foundation, then fill gaps via questions, making cards from what you miss.', verified: true },
+  { name: 'Sequencing: biochem first', desc: 'Do biochemistry videos first to build a foundation, then fill gaps via questions, making cards from what you miss. ⚠ DIVERGENCIA CONSCIENTE del plan v5.14 (#19): Biochemistry cierra la Fase A en D80-D81 (mié 13 / jue 14-ene-2027); el orden por sistemas sigue el peso del examen y Pathoma 1-3 abre en D2-D3 (Fundamentos). No se cambia: el temario no se fusiona ni se reordena.', verified: true },
 ];
 
 // Per-system mini-methods (reconstructed in Palmerton's spirit)
@@ -96,7 +103,11 @@ export const PALMERTON_SYSTEMS: SystemMethod[] = [
   { system: 'Micro', anchor: 'Sketchy images: the picture carries the meaning without language. Ideal for IMG.', saq: '"Which bug fits the host + presentation?" Let the image cue the associations.', trap: 'Trying to memorize lists instead of using the visual mnemonic.' },
 ];
 
-// Beginner ramp (English + content), 1h/day Mon–Fri
+// ── LEGACY (pre-v5, #19): la rampa de 1 h/día y "la hora" son del plan de julio-2026; el plan vigente es usmleStep1Daily.ts
+// (6h15/día L-V, 95 días, D1 = lun 21-sep-2026). Se conservan como histórico; RoiPlan ya no los pinta cuando USMLE_RAMP_LEGACY = true.
+export const USMLE_RAMP_LEGACY = true;
+export const USMLE_LEGACY_NOTA = 'Rampa de principiante (1 h/día) y "la hora" = plan pre-v5 (julio-2026), sustituidos por el bloque principal de 6h15/día (usmleStep1Daily.ts · DAILY_META.bloque). Se conservan solo como histórico (usmleData.USMLE_RAMP / USMLE_HOUR, legacy).';
+// Beginner ramp (English + content), 1h/day Mon–Fri — LEGACY
 export const USMLE_RAMP = [
   { phase: 'Phase 0 · Weeks 1–4', focus: 'English foundations: 30 min medical English + 30 min Pathoma Ch.1 (free trial). Goal: follow a HY video at 0.75x without Spanish subs.', hours: '~20h' },
   { phase: 'Phase 1 · Weeks 5–16', focus: 'Pathoma as the backbone, chapter by chapter. English subs on. AnKing filtered by Pathoma tag. Covers 45–55% of the exam.', hours: '~60h' },
@@ -121,6 +132,28 @@ export const USMLE_QBANK_RULES = [
   'Classify every miss: knowledge gap · transfer/interpretation gap · unforced process error. Up to 50% of NBME misses are interpretation, not knowledge.',
   'One deep pass of UWorld. Never reset. Incorrects + flagged only (Phase B); if time remains, a NEW bank (AMBOSS/Kaplan), never a second pass.',
   'UWorld % is a vanity metric (40-60% is normal early); it is a PROCESS gate, not a prediction. Only NBMEs predict: ≥65% ≈ 95% pass, ≥70% ≈ 99%. Never sit "hoping for a good day".',
+  // #17 · §4.12 regla del frente (2.ª capa 19-sep-2026)
+  'FRONT RULE (§4.12): YOU write the front of every card (subject first, broad, no hints, no cloze); APEX/Claude may draft the BACK or a compare & contrast only after you understood. A front that leaks the answer = information leakage; AI-made fronts are an alarm (§11.5).',
+];
+
+/**
+ * #15 · Configuración Anki exacta de Palmerton (§4.2 de PALMERTON_METODO_COMPLETO.md; 2.ª capa 19-sep-2026). Se pinta en la pestaña
+ * Palmerton; la telemetría (anki_telemetria.js → getDeckConfig rev.perDay / rollover) queda fuera de la app (pendiente; nombre exacto
+ * de la clave en AnkiConnect A VERIFICAR). Joseph aplica los ajustes antes del D1.
+ */
+export const ANKI_CONFIG_PALMERTON: { ajuste: string; valor: string; porque: string; check?: string }[] = [
+  { ajuste: 'FSRS', valor: 'Activado (desired retention 0,90; rango sano 85-90 %)', porque: 'de 90 a 100 % = +500 % de tiempo; principiante sin datos → dejar SM-2 el primer mes', check: 'deckConfig.fsrs / desiredRetention' },
+  { ajuste: 'New cards/day', valor: '≤50 (principiantes 30-40); pharm aparte con 20/día dentro del cap', porque: '>50 → colisión de intervalos cortos entre la semana 3 y la 6 → avalancha y burnout', check: 'new.perDay' },
+  { ajuste: 'Maximum reviews/day', valor: '9999', porque: 'el default (100) OCULTA tarjetas vencidas y crea un backlog invisible', check: 'rev.perDay = 9999 (alarma si <9999)' },
+  { ajuste: 'Learning steps / intervalos', valor: 'los de por defecto', porque: 'manipularlos "para acelerar" deforma la matemática del algoritmo' },
+  { ajuste: 'Orden', valor: 'Reviews first, new cards second', porque: '"plugging the leaks" antes de añadir; si falta tiempo, nuevas = 0', check: 'newMix / reviewOrder' },
+  { ajuste: 'Next day starts at (rollover)', valor: '4 h (en vez de 9): despiertas a las 05:00', porque: 'que las tarjetas del día estén listas al abrir a las 05:00', check: 'rollover = 4 (alarma si ≠ 4)' },
+  { ajuste: 'Mazos', valor: '2 (Pharmacology + no-pharm); máximo 3 (micro aparte)', porque: 'nunca 6 mazos por materia ni "mother of all decks": fricción diaria', check: 'nº de mazos APEX::USMLE ≤ 3' },
+  { ajuste: 'Sync', valor: 'AnkiWeb al INICIO y al FINAL de cada sesión; conflicto → Upload desde el dispositivo recién usado', porque: 'elegir mal borra los repasos del día' },
+  { ajuste: 'Note type', valor: 'Basic (optional reversed card); "y" en Add Reverse SOLO si la dirección inversa se evalúa', porque: 'reversar todo duplica el mazo' },
+  { ajuste: 'Dispositivos', valor: 'crear/editar en desktop; móvil solo para repasar; en hospital AnkiWeb en el PC', porque: 'Med School Anki FAQ 12' },
+  { ajuste: 'Set Due Date', valor: '0 (hoy) solo para adelantar tarjetas concretas; NUNCA Forget en bloque ni reset del mazo', porque: 'destruye el historial de intervalos (§4.10)' },
+  { ajuste: 'Bury siblings', valor: 'no está en las fuentes', porque: '—' },
 ];
 
 export const USMLE_RESOURCES = [
@@ -151,7 +184,8 @@ export const USMLE_STEP2_RESOURCES = [
 // Gold-standard consolidation layer: FA is the spine everything else hangs off.
 export const FIRST_AID_INDEX = {
   title: 'First Aid for the USMLE Step 1',
-  role: 'The consolidation index — not a first-pass text. Annotate it from Qbank misses.',
+  // #19 (2.ª capa 19-sep-2026): Palmerton Fase 2 = First Aid como OBJETIVO de maestría; anotarlo es una alarma (§3.5.E · §11.5).
+  role: 'Index of MASTERY OBJECTIVES (Palmerton Phase 2): every section is a target to verify with Qbank questions (80% in 10Q) — NOT a first-pass text and NOT a notebook. Do NOT annotate it (no margins, no UWorld journal: §3.5.E / §11.5). A miss → the WHOLE section (Whole Page Rule) + your own mechanism cards, never a note in the margin.',
   sections: [
     { part: 'General Principles', chapters: ['Biochemistry', 'Immunology', 'Microbiology', 'Pathology', 'Pharmacology', 'Public Health Sciences'] },
     { part: 'Organ Systems', chapters: ['Cardiovascular', 'Endocrine', 'Gastrointestinal', 'Hematology & Oncology', 'Musculoskeletal / Skin', 'Neurology & Special Senses', 'Psychiatry', 'Renal', 'Reproductive', 'Respiratory'] },

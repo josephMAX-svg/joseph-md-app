@@ -5,9 +5,12 @@
  *  · USMLE:  APEX::USMLE::<Tag_PascalCase>          (los 44 canónicos; 8 ya creados)
  *  · ENCAPS: APEX::ENCAPS::<bloque>::<NN_subtema>   (94 sub-decks, 94/94 = vault)
  *  · Derma:  Dermki::<capítulo>                     (deck pagado, 11 capítulos + AAD)
+ *  · LIVIANO: APEX::LIVIANO::<modulo_slug>          (8 sub-decks, generados en livianoCasos.ts; CSV ANKI_COLA/LIVIANO_mecanismo.csv)
+ *  · USMLE Pharm: APEX::USMLE::Pharmacology          (mazo TRANSVERSAL aparte — Palmerton §3.5.F regla 5: los días matType='pharm' van ahí)
  * El botón abre AnkiWeb (sesión del usuario); el deck exacto se muestra como texto
  * para ubicarlo en Anki escritorio. NO se crean nombres nuevos.
  */
+import { LIV_ANKI_DECK as _LIV_ANKI_DECK } from './livianoCasos';
 export const ANKIWEB = 'https://ankiweb.net/decks';
 
 /** USMLE — sistema del plan → tag canónico (subtema_mapping.json USMLE, 44 tags) */
@@ -32,8 +35,13 @@ const USMLE_DECK: Record<string, string> = {
   'Banco intensivo': 'General',
   'Sprint final': 'General',
 };
-export const usmleAnkiDeck = (system: string): string =>
-  `APEX::USMLE::${USMLE_DECK[system] || 'General'}`;
+/** Mazo de Farmacología TRANSVERSAL (Palmerton §3.5.F regla 5 · ANKI_CONFIG_PALMERTON en usmleData.ts: "pharm = mazo aparte,
+ *  20 nuevas/día dentro del cap de 50"). v5.14: los días con `matType === 'pharm'` son D12 · D24 · D46 · D48 · D78 (leídos con node
+ *  de usmleStep1Daily.ts el 19-sep). El deck del SISTEMA sigue existiendo para esos días: solo cambia el deck de las tarjetas nuevas. */
+export const USMLE_PHARM_DECK = 'APEX::USMLE::Pharmacology';
+/** Deck exacto del día USMLE. `matType` (DiaUSMLE.matType) opcional: 'pharm' → mazo transversal de Farmacología. */
+export const usmleAnkiDeck = (system: string, matType?: string): string =>
+  matType === 'pharm' ? USMLE_PHARM_DECK : `APEX::USMLE::${USMLE_DECK[system] || 'General'}`;
 
 /** MIR — asignatura del plan → apex_lowercase (tags clínicos existentes en Anki) */
 const MIR_DECK: Record<string, string> = {
@@ -92,6 +100,20 @@ export const SYS_TAGS: { system: string; tag: string }[] = Object.keys(SYS_TAG_S
 /** ENCAPS — bloque + subtema → sub-deck exacto (94 pre-creados, verificado 94/94) */
 export const encapsAnkiDeck = (blockId: string, subtemaId: string): string =>
   `APEX::ENCAPS::${blockId}::${subtemaId}`;
+
+/* ─────────────────────────────────────────────────────────────────
+ * LIVIANO (Academia · Logística F5) — deck de MECANISMO APEX::LIVIANO::<modulo_slug> (19-sep-2026, v5.14)
+ *  · 8 sub-decks: fisiologia · glp1 · acceso_peru · nutricion · ejercicio · farmaco_qx · conducta · sintesis
+ *    (= módulos de livianoStudyPlan.ts; mapa GENERADO por DATA/_scripts/gen_liviano_plan.js en livianoCasos.ts:
+ *    LIV_ANKI_DECK / livAnkiDeck — aquí se RE-EXPORTA para que ankiLinks.ts siga siendo el catálogo único).
+ *  · 216 tarjetas en DATA/BUSINESS/ANKI_COLA/LIVIANO_mecanismo.csv (#deck column:3 · tags `liviano::<modulo> dNN mecanismo`).
+ *    ⚠ A VERIFICAR (19-sep): los 8 sub-decks NO están creados en Anki (Anki cerrado; sin AnkiConnect). Se crean solos al
+ *    importar el CSV (D16 lun 12-oct-2026 según LIVIANO_ACADEMIA.md) o antes con createDeck.
+ *  · Mismo motor FSRS que el resto del sistema APEX; sin deck de pago.
+ * ───────────────────────────────────────────────────────────────── */
+export { LIV_ANKI_DECK_ROOT as LIVIANO_ANKI_ROOT, LIV_ANKI_DECK as LIVIANO_DECK_POR_MODULO, livAnkiDeck as livianoAnkiDeck } from './livianoCasos';
+/** Los 8 sub-decks que deben existir en Anki (checklist de arranque / AnkiConnect deckNames), en orden del currículo. */
+export const LIVIANO_ANKI_DECKS: string[] = Array.from(new Set(Object.values(_LIV_ANKI_DECK)));
 
 /** Derma — deck pagado Dermki (capítulos reales verificados en Anki) */
 export const DERMKI_DECK = 'Dermki';

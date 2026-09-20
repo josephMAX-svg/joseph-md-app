@@ -2,7 +2,7 @@
 
 Pool de las **1.050 preguntas oficiales** del examen MIR (Medicina) de las convocatorias **MIR 2022, 2023, 2024, 2025 y 2026** (5 × 210: 200 + 10 de reserva), con la **clave definitiva** del Ministerio de Sanidad, parseadas a JSON desde los PDF oficiales y **clasificadas por asignatura y capítulo real de ProMIR** (`src/lib/mirTemarioData.ts`). Cubre los tres pasos del punto 2 de `DATA/USMLE/_palmerton_v3_extractos/gaps_v3b_mir.json` ("questions as the curriculum"): (1) descarga + parseo → `AAAA.json`; (2) clasificación LLM + verificación → `AAAA_clasificado.json`; (3) generación de [`src/lib/mirPreguntasOficiales.ts`](../../../src/lib/mirPreguntasOficiales.ts) (`--emit`). Cómo lo consume cada segmento del loop (anti-repetición por `qIds`): [`../POOL_USO.md`](../POOL_USO.md).
 
-Creado el 12-sep-2026 (paso 1) · clasificación y `.ts` el 13-sep-2026 (régimen v5.10; sin cambios en v5.11, v5.12 ni v5.13, 16-sep: el pool no depende de fechas — el plan 1ª vuelta va ahora jue 17-sep → jue 7-ene-2027 y el mantenimiento vie 8-ene → mié 31-mar).
+Creado el 12-sep-2026 (paso 1) · clasificación y `.ts` el 13-sep-2026 (régimen v5.10; sin cambios en v5.11, v5.12, v5.13 ni v5.14, 19-sep: el pool no depende de fechas — el plan 1ª vuelta va ahora lun 21-sep → lun 11-ene-2027 (78 días; D5 Cardiología vie 25-sep · D77 mini-MIR vie 8-ene · D78 corrección lun 11-ene) y el mantenimiento mar 12-ene → mié 31-mar, 57 días, reducido hasta el mié 3-feb).
 
 ## Origen de los datos (verificado 12-sep-2026)
 
@@ -155,3 +155,4 @@ Cuando salga el **MIR 2027** (examen 23-ene-2027): añadir `2027` a `ANIOS_MIR` 
 - Decidir si `raw/*.pdf` y los JSON se excluyen del remoto (leyenda "prohibida la reproducción"). Ojo: `src/lib/mirPreguntasOficiales.ts` contiene los 1.050 enunciados y SÍ va al repo/bundle; si se excluye, hay que excluirlo también (y entonces la app queda "sin pool oficial").
 - Revisar con sesión ProMIR las 36 preguntas de confianza baja y las 21 sin capítulo (`jq '.[] | select(.confianza=="baja" or .capId==null)' AAAA_clasificado.json`); corregir la etiqueta y regenerar.
 - Buscar las tablas por asignatura de MIR 2022-2024 (CTO/AMIR/ConSalud) para completar `CONTRASTE_CTO`.
+- ~~Cablear el pool en la UI (pre-test/anclada/cierre/mini-MIR, 2.º EvalForm Tier C, vista de pregunta, bloque Derma)~~ → **cerrado 19-sep-2026** (`POOL_USO.md` §5: `MirPoolEval.tsx`, `MirTodayPlan.tsx`, `DermaTodayPlan.tsx`; espejo `mir_eval_log.q_ids` verificado). Sigue abierto solo lo de esta lista (datos/decisiones).

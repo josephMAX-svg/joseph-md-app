@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Linking, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Linking, Platform, TextInput } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, Motion } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
 import { SectionLabel, Chip, GlassPanel, gridStyle, gridItemStyle, useHover } from '../empresa/primitives';
@@ -8,13 +8,14 @@ import {
   USMLE_META, USMLE_KPIS, USMLE_SYSTEMS, USMLE_DISCIPLINES, PALMERTON_WHO, PALMERTON_HONESTY,
   PALMERTON_METHOD, PALMERTON_SYSTEMS, USMLE_RAMP, USMLE_HOUR, USMLE_QBANK_RULES, USMLE_RESOURCES,
   USMLE_STEP2_RESOURCES, USMLE_CHECKPOINTS, USMLE_READINESS, FIRST_AID_INDEX, SKETCHY_SYMBOLS,
-  PRIORIDAD_COLOR, VUELTAS,
+  PRIORIDAD_COLOR, VUELTAS, ANKI_CONFIG_PALMERTON, USMLE_RAMP_LEGACY, USMLE_LEGACY_NOTA,
 } from '../../lib/usmleData';
-import { DIAS, USMLE_NIVELES, USMLE_GATE, USMLE_TAPER, DAILY_META } from '../../lib/usmleStep1Daily';
+import { DIAS, USMLE_NIVELES, USMLE_GATE, USMLE_TAPER, DAILY_META, PROTOCOLO_BLOQUE, DAY_AFTER } from '../../lib/usmleStep1Daily';
 import { planHoyD, progresoGlobal, loadDone } from '../../lib/studyProgress';
 import {
   UsmleScore, loadScores, pullScores, onScoresChange, mediaMovil7d, distanciaOnTrack, readinessDesdeHitos,
-  hitosPlan, HITOS_ONTRACK_FUENTE, gateHito, GateHito, BURNOUT_PROTOCOLO,
+  hitosPlan, HITOS_ONTRACK_FUENTE, HITOS_ONTRACK, gateHito, GateHito, BURNOUT_PROTOCOLO,
+  PISO_AMBAR, semaforoPct, reglaDelTercio, checklist115, loadWorstCase, saveWorstCase, REGLA_BACKLOG_HITO,
 } from '../../lib/usmleScores';
 import ReadinessBar from './ReadinessBar';
 import { ConsoleTabs, CheckpointCard } from './ConsoleKit';
@@ -27,6 +28,9 @@ import UsmleTodayPlan from './UsmleTodayPlan';
  * readiness arriba (Día X/N · % temario · gauge NBME), sub-nav de consola, y cuerpo
  * = explorador-banco + cola del día + capa de readiness/Step 2 CK/First Aid/Sketchy.
  * Render as a View inside EstudioScreen's ScrollView.
+ * 2.ª capa Palmerton (19-sep-2026): MEDIA 7D con semáforo verde/ámbar/rojo (gate 80 · pisos 65/60, #21) · serie de hitos con la
+ * lectura por tramos del UWSA1 (#12) y el freno del backlog (#16) · Readiness: plan B "worst case" (#26), checklist §11.5 pre-marcado
+ * (#30) + regla del tercio (#8), Day-After (#5) · ROI sin la rampa legacy (#19) · Palmerton: configuración Anki §4.2 (#15).
  */
 const JADE = USMLE_META.accent;         // #5FA88C — muted jade (US console)
 const FLAG_GREEN = '#5FB98C';           // verde bandera armonizado (core/pathology)
@@ -78,7 +82,7 @@ export default function UsmleHub() {
         racha={`${done.length} temas`}
         readinessPct={rd ? rd.pct : USMLE_READINESS.pct} readinessLabel={rd ? rd.label : USMLE_READINESS.status}
         extraStat={{ label: 'PATH', value: `${USMLE_KPIS.pathologyPct}%`, hint: 'del examen', accent: Colors.coral }}
-        media7d={media && mediaVal != null ? { label: 'MEDIA 7D', value: `${mediaVal}%`, hint: media.evalPct != null ? `eval timed · ${media.n} días` : `consolidación · ${media.n} días`, accent: mediaVal >= USMLE_GATE.pct ? Colors.green : Colors.gold } : null}
+        media7d={media && mediaVal != null ? (() => { const sem = semaforoPct(mediaVal, media.evalPct != null ? 'eval' : 'consol'); return { label: 'MEDIA 7D', value: `${mediaVal}%`, hint: `${media.evalPct != null ? 'eval timed' : 'consolidación'} · ${media.n} días · ${sem === 'verde' ? '≥ gate 80' : sem === 'ambar' ? `ámbar ≥${media.evalPct != null ? PISO_AMBAR.eval : PISO_AMBAR.consol}` : 'ROJO < piso'}`, accent: sem === 'verde' ? Colors.green : sem === 'ambar' ? Colors.gold : Colors.coral }; })() : null}
         onTrack={dist ? { label: `Δ ${dist.hito.clave.toUpperCase()}`, value: `${dist.delta >= 0 ? '+' : ''}${dist.delta}`, hint: `mín ${dist.hito.min}% · ${dist.referencia}`, accent: dist.delta >= 0 ? Colors.green : Colors.coral } : null}
       />
 
@@ -131,8 +135,8 @@ function HitosSerie({ scores }: { scores: UsmleScore[] }) {
           <Text style={[st.hitoD, tabular]}>D{h.d}</Text>
           <Text style={[st.hitoFecha, tabular]}>{h.fecha.slice(5)}</Text>
           <View style={{ flex: 1, minWidth: 0 }}>
-            <Text style={st.hitoClave} numberOfLines={1}>{h.clave}</Text>
-            {h.nota ? <Text style={st.hitoNota} numberOfLines={2}>{h.nota}</Text> : null}
+            <Text style={st.hitoClave} numberOfLines={1}>{h.clave}{h.tramo ? ` · ${h.tramo}` : ''}</Text>
+            {h.nota ? <Text style={st.hitoNota} numberOfLines={3}>{h.nota}</Text> : null}
           </View>
           <Text style={[st.hitoMin, tabular]}>{h.min != null ? `≥${h.min}%` : 'baseline'}</Text>
           <Text style={[st.hitoVal, tabular, { color: color(h.estado) }]}>{h.valor != null ? `${Math.round(h.valor)}%` : '—'}</Text>
@@ -140,6 +144,79 @@ function HitosSerie({ scores }: { scores: UsmleScore[] }) {
         </View>
       ))}
       <Text style={[st.smallNote, { marginTop: Spacing.sm }]}>Un hito &gt;5 puntos bajo su mínimo → auditar el MÉTODO esa semana (checklist §G), no sumar horas; dos hitos seguidos bajo mínimo → ⚠ ALERTA BURNOUT (REGLA §E-7: 3-5 días solo Anki AM + sueño) y plan B de fecha (feb-mar, mismo eligibility period).</Text>
+      {/* #12 · lectura del UWSA1 por tramos (no es gate) */}
+      {(HITOS_ONTRACK.find((h) => h.clave === 'UWSA1')?.tramos || []).map((t, i) => (
+        <Text key={i} style={[st.smallNote, { marginTop: 4 }]}><Text style={{ color: i === 0 ? Colors.coral : i === 1 ? Colors.gold : Colors.green, fontWeight: '800' }}>UWSA1 {t.label}</Text> → {t.accion}</Text>
+      ))}
+      {/* #16 · freno del backlog ligado al hito (§4.10) */}
+      <Text style={[st.smallNote, { marginTop: Spacing.sm, color: Colors.onSurfaceVariant }]}>🃏 {REGLA_BACKLOG_HITO}</Text>
+    </GlassPanel>
+  );
+}
+
+// ── #26 · PLAN B / PEOR ESCENARIO (Worst-Case Scenario Planning §7.6-1) — se escribe ANTES del primer bloque del UWSA1 (D1) ──
+function WorstCaseCard() {
+  const [txt, setTxt] = useState<string>(() => loadWorstCase());
+  const [guardado, setGuardado] = useState(false);
+  const guardar = () => { saveWorstCase(txt); setGuardado(true); };
+  return (
+    <GlassPanel accent={Colors.gold} style={{ marginBottom: Spacing.xl, padding: Spacing.lg }}>
+      <Text style={st.h3}>🧯 Plan B / peor escenario (kit anti-pánico #26 · Palmerton §7.6)</Text>
+      <Text style={[st.smallNote, { marginBottom: Spacing.sm }]}>{PROTOCOLO_BLOQUE.worstCase}</Text>
+      <TextInput
+        style={st.worstInput} multiline value={txt} onChangeText={(t) => { setTxt(t); setGuardado(false); }}
+        placeholder={'Peor escenario, en detalle: "fallo el UWSA1 con __ %" / "el NBME 31 sale <68 %" → qué hago exactamente: plan B de fecha (feb-mar 2027, mismo eligibility period), protocolo Jay, modo mínimo, a quién llamo, qué NO hago (no añadir recursos, no sumar horas). ¿Sería el fin del mundo? No: ...'}
+        placeholderTextColor={Colors.muted}
+      />
+      <View style={{ flexDirection: 'row', gap: 8, alignItems: 'center', marginTop: Spacing.sm, flexWrap: 'wrap' }}>
+        <TouchableOpacity activeOpacity={0.85} onPress={guardar} style={[st.faBtn, { marginTop: 0 }]}><Text style={st.faBtnTxt}>{guardado ? '✓ guardado en este dispositivo' : '💾 Guardar plan B'}</Text></TouchableOpacity>
+        <Text style={st.smallNote}>localStorage jmd-usmle-worstcase (solo este dispositivo; no viaja a Supabase)</Text>
+      </View>
+      <Text style={[st.smallNote, { marginTop: Spacing.sm }]}>Kit del bloque (se pinta en la Cola de hoy los días de hito): {PROTOCOLO_BLOQUE.pasos.map((p, i) => `${i + 1}) ${p.split(':')[0]}`).join(' · ')}.</Text>
+    </GlassPanel>
+  );
+}
+
+// ── #30 · CHECKLIST §11.5 pre-marcado con los datos de la semana + #8 regla del tercio + #5 Day-After ──
+function ChecklistCard({ scores }: { scores: UsmleScore[] }) {
+  const iso = todayISO();
+  const items = checklist115(scores, iso);
+  const tercio = reglaDelTercio(scores, iso);
+  const marcadas = items.filter((x) => x.marcada === true).length;
+  const color = marcadas ? Colors.coral : Colors.green;
+  return (
+    <GlassPanel accent={color} style={{ marginBottom: Spacing.xl, padding: Spacing.lg }}>
+      <Text style={st.h3}>🚨 Checklist de alarmas §11.5 · semana hasta {iso.slice(5)} · {marcadas ? `${marcadas} marcada${marcadas > 1 ? 's' : ''} = orden de parar y cambiar` : 'sin alarmas con datos'}</Text>
+      <Text style={[st.smallNote, { marginBottom: Spacing.sm, color: tercio.estado === 'ALARMA' ? Colors.coral : Colors.muted }]}>{tercio.label} · {tercio.detalle}</Text>
+      {items.map((it) => (
+        <View key={it.clave} style={{ flexDirection: 'row', gap: 8, paddingVertical: 4, alignItems: 'flex-start' }}>
+          <Text style={{ color: it.marcada === true ? Colors.coral : it.marcada === false ? Colors.green : Colors.muted, fontWeight: '800', width: 18 }}>{it.marcada === true ? '☒' : it.marcada === false ? '☐' : '·'}</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={[st.body, it.marcada === true && { color: Colors.coral }]}>{it.texto}</Text>
+            <Text style={st.smallNote}>{it.evidencia}</Text>
+          </View>
+        </View>
+      ))}
+      <Text style={[st.smallNote, { marginTop: Spacing.sm }]}>☒ = alarma con datos · ☐ = sin alarma · "·" = sin datos para decidir (Anki: telemetría fuera de la app). El resto del checklist (recursos nuevos, anotar First Aid, última línea primero, sueño, "solo necesito aprobar") se marca a mano el viernes (REVISION_SEMANAL).</Text>
+      <Text style={[st.smallNote, { marginTop: Spacing.sm, color: Colors.onSurfaceVariant }]}>🔍 {DAY_AFTER.titulo}: {DAY_AFTER.pasos.map((p) => p.split(':')[0]).join(' · ')} — se pinta en la Cola de hoy el día siguiente a cada hito (el subtema de ese día no cambia).</Text>
+    </GlassPanel>
+  );
+}
+
+// ── #15 · Configuración Anki §4.2 (Palmerton) ──
+function AnkiConfigCard() {
+  return (
+    <GlassPanel accent={Colors.teal} style={{ marginBottom: Spacing.xl, padding: Spacing.lg }}>
+      <Text style={st.h3}>🃏 Configuración Anki exacta (Palmerton §4.2) · aplicar antes del D1</Text>
+      {ANKI_CONFIG_PALMERTON.map((a, i) => (
+        <View key={i} style={[st.hourRow, i === 0 && { borderTopWidth: 0 }]}>
+          <View style={{ flex: 1 }}>
+            <Text style={[st.body, { color: Colors.onSurface }]}><Text style={{ fontWeight: '800' }}>{a.ajuste}</Text> · {a.valor}</Text>
+            <Text style={st.smallNote}>{a.porque}{a.check ? ` · telemetría: ${a.check}` : ''}</Text>
+          </View>
+        </View>
+      ))}
+      <Text style={[st.smallNote, { marginTop: Spacing.sm }]}>La telemetría (anki_telemetria.js · getDeckConfig) debe alarmar si rev.perDay &lt; 9999 o rollover ≠ 4 (nombre exacto de las claves en AnkiConnect A VERIFICAR). Fuente: DATA/USMLE/PALMERTON_METODO_COMPLETO.md §4.2 · §4.10.</Text>
     </GlassPanel>
   );
 }
@@ -191,7 +268,7 @@ function TaperCard() {
         </View>
       ))}
       <View style={st.taperRow}>
-        <Text style={[st.taperRol, tabular, { color: Colors.coral }]}>D-1 · fuera del plan</Text>
+        <Text style={[st.taperRol, tabular, { color: Colors.coral }]}>D-1 · = D95 (dentro del plan · v5.14)</Text>
         <Text style={[st.taperFecha, tabular]}>{t.dMenos1.fecha.slice(5)}</Text>
         <View style={{ flex: 1 }}>{t.dMenos1.pasos.map((p, i) => <Text key={i} style={st.body}>• {p}</Text>)}</View>
       </View>
@@ -213,6 +290,8 @@ function ReadinessView({ scores }: { scores: UsmleScore[] }) {
       <NivelesTable />
       <HitosSerie scores={scores} />
       <HitoGateCard gh={gh} />
+      <WorstCaseCard />
+      <ChecklistCard scores={scores} />
       <TaperCard />
       <CheckpointCard
         title="Score checkpoints · NBME / UWSA / Free 120"
@@ -313,8 +392,14 @@ function RoiPlan() {
         ))}
       </View>
 
-      <SectionLabel>Beginner ramp · English + content (1h/day Mon–Fri)</SectionLabel>
-      <View style={[gridStyle(240), { marginBottom: Spacing.xl }]}>
+      {USMLE_RAMP_LEGACY && (
+        <GlassPanel accent={Colors.muted} style={{ marginBottom: Spacing.xl, padding: Spacing.lg }}>
+          <Text style={st.h3}>🗄️ Rampa y "la hora" = LEGACY (pre-v5)</Text>
+          <Text style={st.smallNote}>{USMLE_LEGACY_NOTA} Bloque vigente: {DAILY_META.bloque}.</Text>
+        </GlassPanel>
+      )}
+      {!USMLE_RAMP_LEGACY && <SectionLabel>Beginner ramp · English + content (1h/day Mon–Fri)</SectionLabel>}
+      {!USMLE_RAMP_LEGACY && <View style={[gridStyle(240), { marginBottom: Spacing.xl }]}>
         {USMLE_RAMP.map((p, i) => (
           <View key={i} style={gridItemStyle(240)}>
             <FadeUp delay={i * 60}>
@@ -328,17 +413,17 @@ function RoiPlan() {
             </FadeUp>
           </View>
         ))}
-      </View>
+      </View>}
 
-      <SectionLabel>The hour (English micro-block)</SectionLabel>
-      <GlassPanel style={{ marginBottom: Spacing.xl }}>
+      {!USMLE_RAMP_LEGACY && <SectionLabel>The hour (English micro-block)</SectionLabel>}
+      {!USMLE_RAMP_LEGACY && <GlassPanel style={{ marginBottom: Spacing.xl }}>
         {USMLE_HOUR.map((h, i) => (
           <View key={i} style={[st.hourRow, i === 0 && { borderTopWidth: 0 }]}>
             <View style={[st.hourBadge, { backgroundColor: JADE + '1A' }]}><Text style={[st.hourSlot, { color: JADE }]}>{h.slot}</Text></View>
             <Text style={st.hourAct}>{h.act}</Text>
           </View>
         ))}
-      </GlassPanel>
+      </GlassPanel>}
 
       <SectionLabel>Qbank rules (Qbankly / UWorld-style)</SectionLabel>
       <GlassPanel accent={Colors.coral} style={{ marginBottom: Spacing.xl }}>
@@ -401,6 +486,9 @@ function PalmertonBrain() {
           </FadeUp>
         ))}
       </View>
+
+      <SectionLabel>Anki · configuración exacta (§4.2)</SectionLabel>
+      <AnkiConfigCard />
 
       <SectionLabel>How do I study… (tap a system)</SectionLabel>
       <Text style={[st.smallNote, { marginBottom: Spacing.md }]}>
@@ -528,6 +616,7 @@ const st = StyleSheet.create({
 
   // gate de hitos / burnout + taper (12-sep-2026)
   gateBox: { marginTop: Spacing.sm, borderWidth: 1, borderRadius: BorderRadius.md, padding: Spacing.sm },
+  worstInput: { minHeight: 96, backgroundColor: Colors.surfaceContainerHighest, borderRadius: BorderRadius.md, borderWidth: 1, borderColor: Hairline.medium, color: Colors.onSurface, fontSize: FontSize.labelMd, paddingHorizontal: 10, paddingVertical: 8, textAlignVertical: 'top', ...(Platform.OS === 'web' ? { outlineStyle: 'none' as any } : {}) },
   gateTxt: { fontSize: FontSize.labelLg, fontWeight: '800', letterSpacing: 0.2, marginBottom: 3 },
   taperRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, paddingVertical: 7, borderTopWidth: 1, borderTopColor: Hairline.soft },
   taperRol: { fontSize: FontSize.labelSm, fontWeight: '800', width: 118, letterSpacing: 0.2 },

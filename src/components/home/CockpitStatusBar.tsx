@@ -80,6 +80,25 @@ function Instrument({ label, value, color, mono = true }: Item) {
   );
 }
 
+/**
+ * v5.14 (19-sep) · KPI "1ª review de Anki del día" (regla "05:00 Anki sin excepción", telemetría v2 de anki_telemetria.js):
+ * primeraReview = 'HH:MM' de la 1ª review del revlog · primeraReviewEstado = verde (≤ 05:10) · ambar (> 05:10) · rojo (sin review L-V)
+ * · finde (sáb/dom) · pendiente (antes de las 05:00) · desconocido. Los campos viajan en la misma entrada de 'jmd-anki-telemetria';
+ * AnkiKpi (homeBriefing.ts) aún no los tipa → se leen aquí con un tipo ampliado. Solo cuenta la entrada de HOY (fecha = hoy).
+ */
+type AnkiKpiV2 = AnkiKpi & { primeraReview?: string | null; primeraReviewEstado?: 'verde' | 'ambar' | 'rojo' | 'finde' | 'pendiente' | 'desconocido' | string };
+export interface PrimeraReview { estado: string; hora: string | null; color: string | null; sufijo: string }
+export function primeraReviewDe(k: AnkiKpi | null, hoyISO?: string): PrimeraReview {
+  const e = k as AnkiKpiV2 | null;
+  const hoy = hoyISO ?? new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+  if (!e || !e.primeraReviewEstado || e.fecha !== hoy) return { estado: 'sin-dato', hora: null, color: null, sufijo: '' };
+  const estado = String(e.primeraReviewEstado);
+  const hora = e.primeraReview ?? null;
+  const color = estado === 'verde' ? Colors.green : estado === 'ambar' ? Colors.amber : estado === 'rojo' ? Colors.coral : null;
+  const sufijo = estado === 'verde' || estado === 'ambar' ? ` · 1ª ${hora ?? '?'}` : estado === 'rojo' ? ' · 1ª —' : estado === 'pendiente' ? ' · 1ª ⏳' : '';
+  return { estado, hora, color, sufijo };
+}
+
 /** KPI Anki: localStorage primero; en web intenta además /anki_telemetria.json (si se sirve desde public/). */
 function useAnkiKpi(prop?: AnkiKpi | null): AnkiKpi | null {
   const [kpi, setKpi] = useState<AnkiKpi | null>(() => (prop !== undefined ? prop : leerAnkiKpi()));
@@ -176,6 +195,7 @@ export default function CockpitStatusBar({
   const sem = semana !== undefined && semana !== null ? semana : semanaStep1(hoyISO());
   const kpi = useAnkiKpi(anki);
   const alarma = ankiAlarma(kpi);
+  const pr = primeraReviewDe(kpi);                                         // v5.14: 1ª review del día (verde ≤05:10 · ámbar · rojo)
   const semColor = sem.fueraDeRango ? Colors.muted : sem.deload ? Colors.amber : Colors.teal;
   const [exportado, setExportado] = useState<'ok' | 'no' | null>(null); // feedback del export jmd-* (revisión semanal)
   const prog = useProgresoSync();                                         // v5.10 · espejo plan_checks
@@ -220,8 +240,12 @@ export default function CockpitStatusBar({
           />
         </TouchableOpacity>
         <View style={st.vDiv} />
-        {/* v5.7 · KPI Anki (due hoy · backlog · retención 30d) — alarma G si backlog>100 o retención<85% */}
-        <Instrument label={alarma ? 'ANKI · ⚠ avalancha' : 'ANKI'} value={ankiKpiLabel(kpi)} color={alarma ? Colors.coral : kpi && kpi.estado === 'ok' ? Colors.green : Colors.muted} />
+        {/* v5.7 · KPI Anki (due hoy · backlog · retención 30d) — alarma G si backlog>100 o retención<85%.
+            v5.14 · color por 1ª review del día (primeraReviewEstado): verde ≤05:10 · ámbar >05:10 · rojo sin review L-V; la avalancha manda. */}
+        <Instrument
+          label={alarma ? 'ANKI · ⚠ avalancha' : pr.estado === 'rojo' ? 'ANKI · ⚠ sin 1ª review' : pr.estado === 'ambar' ? 'ANKI · 1ª tarde' : 'ANKI'}
+          value={`${ankiKpiLabel(kpi)}${pr.sufijo}`}
+          color={alarma ? Colors.coral : pr.color ?? (kpi && kpi.estado === 'ok' ? Colors.green : Colors.muted)} />
         <View style={st.vDiv} />
         <Instrument label="MIR 2030" value={`${countdownDays}d`} color={GOLD} />
         <View style={st.vDiv} />

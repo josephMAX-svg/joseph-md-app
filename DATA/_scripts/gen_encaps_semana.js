@@ -28,12 +28,23 @@
  *     → regenera DATA/ENCAPS/TRACKING_ERRORES/PERFIL_CONOCIMIENTO.md desde resumen_por_subtema + rondas (GENERADO, no editar a mano).
  *       También se regenera solo tras cada --cerrar y en cada cierre semanal.
  *
+ *  4) PULL DESDE LA APP (v5.14, 19-sep): node DATA/_scripts/gen_encaps_semana.js --pull [--dry] [--desde 2026-09-21] [--hasta 2027-03-31]
+ *     → lee study_progress (examen='ENCAPS', fuente='app:cierre') por REST de Supabase con la MISMA anon key que usa la app
+ *       (se parsea de src/lib/supabase.ts; override con SUPABASE_URL / SUPABASE_ANON_KEY en el entorno; solo lectura, RLS anon),
+ *       reconstruye cada fila como ronda v3 (errores_por_tipo trae tipoRonda · fallos · seguras · dudosas · sub_eje · nota · id ·
+ *       dia · tema · tiempo_medio_seg; porcentaje = % ciego) y la apenda a _registro_resoluciones.json SIN duplicar:
+ *       clave fecha+codigo+tipoRonda (también salta si ya existe por _app_id o _supabase_id). Marca _fuente:'app:cierre'.
+ *     → --dry SOLO informa (nuevas / duplicadas / inválidas), no escribe nada. Sin --dry: apenda + recalcula resumen + PERFIL.
+ *     → Flujo: el CIERRE DE SESIÓN de la app escribe study_progress; el viernes, ANTES del cierre semanal: `--pull` y luego `--semana`.
+ *       Si una ronda mixta (mini_sim / pretest) viene sin preguntas[] no puede explotarse por código (igual que --cerrar en 1 línea).
+ *
  *  RONDAS MIXTAS (codigo = MIX: pretest de arranque, mini-sim, simulacro) con preguntas[] por ítem: se EXPLOTAN por el
  *  código de cada pregunta para el resumen por código, el % por área y los temas calientes (así el pre-test de arranque
  *  de 40Q da n = 5 por crítico y el override de la semana del 21-sep ya se calcula con n ≥ 5 en los 8 críticos).
  *  La nota /25 del mini-sim y el % ciego semanal se calculan sobre la ronda entera (no se cuenta dos veces).
  *
- * Sin dependencias externas. No toca Supabase directamente (regla: la app y el MCP escriben Supabase, no los scripts).
+ * Sin dependencias externas. No ESCRIBE Supabase (regla: la app y el MCP escriben Supabase, no los scripts); --pull solo LEE por REST.
+ * v5.14 (19-sep): D1 = lun 21-sep-2026 · 92 días → vie 29-ene-2027 · modo --pull (study_progress app:cierre → registro v3).
  */
 const fs = require('fs');
 const path = require('path');
@@ -277,6 +288,102 @@ function generarPerfil(j) {
   return PERFIL;
 }
 
+// ── 4) PULL: study_progress (fuente app:cierre) → rondas v3 del registro, sin duplicar (v5.14, 19-sep) ──
+function credencialesSupabase() {
+  let url = process.env.SUPABASE_URL || '', key = process.env.SUPABASE_ANON_KEY || '';
+  if (!url || !key) {
+    const src = fs.readFileSync(path.join(ROOT, 'src', 'lib', 'supabase.ts'), 'utf8');
+    url = url || (src.match(/SUPABASE_URL\s*=\s*'([^']+)'/) || [])[1] || '';
+    key = key || (src.match(/SUPABASE_ANON_KEY\s*=\s*'([^']+)'/) || [])[1] || '';
+  }
+  if (!url || !key) throw new Error('no encuentro SUPABASE_URL / SUPABASE_ANON_KEY (src/lib/supabase.ts o entorno)');
+  return { url: url.replace(/\/$/, ''), key };
+}
+// interval de PostgREST ('00:01:08', '68 seconds', '1 min 8 secs') → segundos
+function segundosDeIntervalo(v) {
+  if (v == null || v === '') return null;
+  if (typeof v === 'number') return v;
+  const t = String(v).trim();
+  let m = t.match(/^(\d+):(\d{2}):(\d{2})(?:\.\d+)?$/); if (m) return +m[1] * 3600 + +m[2] * 60 + +m[3];
+  m = t.match(/^([\d.]+)\s*sec/); if (m) return Math.round(+m[1]);
+  m = t.match(/^(\d+)\s*min(?:s|utes?)?\s*(\d+)?\s*(?:sec|secs|seconds)?$/); if (m) return +m[1] * 60 + (+m[2] || 0);
+  const n = Number(t); return Number.isFinite(n) ? n : null;
+}
+// fallos de errores_por_tipo: forma v3 anidada ({knowledge:{CONCEPTO..}}) o plana ({CONCEPTO: 1, CCSN: 2})
+function fallosDeApp(f) {
+  const acc = emptyFallos();
+  if (!f || typeof f !== 'object') return acc;
+  const plano = Object.keys(f).some((k) => TIPO_DE[String(k).toUpperCase()]);
+  if (plano) { for (const [k, v] of Object.entries(f)) { const S = String(k).toUpperCase(); if (TIPO_DE[S]) acc[TIPO_DE[S]][S] += Number(v) || 0; } return acc; }
+  return addFallos(acc, f);
+}
+function rondaDesdeFila(row) {
+  const e = (row.errores_por_tipo && typeof row.errores_por_tipo === 'object') ? row.errores_por_tipo : {};
+  const tipoRonda = TIPOS_RONDA.includes(e.tipoRonda) ? e.tipoRonda : 'banco_dia';
+  const fecha = String(row.fecha || '').slice(0, 10);
+  const codigo = String(row.especialidad || '').trim();
+  const n = Number(row.preguntas_resueltas) || 0;
+  const seg = Number(e.seguras) || 0, dud = Number(e.dudosas) || 0;
+  if (!/^20\d\d-\d\d-\d\d$/.test(fecha) || !codigo || !n) return { error: `fila ${row.id || '?'} inválida (fecha=${fecha} codigo=${codigo} n=${n})` };
+  const t = e.tiempo_medio_seg != null ? Number(e.tiempo_medio_seg) : segundosDeIntervalo(row.tiempo_promedio_pregunta);
+  const ronda = {
+    examen: row.examen || 'ENCAPS', tipoRonda, fecha, codigo, tema: e.tema || '', n,
+    correctas_seguras: Math.min(seg, n), correctas_dudosas: Math.min(dud, Math.max(0, n - seg)),
+    fallos_por_tipo: fallosDeApp(e.fallos), delta_es: null, tiempo_medio_seg: Number.isFinite(t) ? t : null,
+  };
+  if (e.sub_eje) ronda.sub_eje = String(e.sub_eje);
+  if (e.nota != null && e.nota !== '') ronda.nota = Number(e.nota);
+  if (e.dia != null) ronda.dia = Number(e.dia);
+  ronda.pct_ciego = row.porcentaje != null ? Number(row.porcentaje) : pct(ronda.correctas_seguras, n);
+  ronda._fuente = String(row.fuente || 'app:cierre'); ronda._app_id = e.id || null; ronda._supabase_id = row.id || null; ronda._pull = hoyISO();
+  return { ronda };
+}
+const claveRonda = (r) => `${String(r.fecha || '').slice(0, 10)}|${r.codigo || r.subtema || ''}|${r.tipoRonda || r.bloque || ''}`;
+async function pullDesdeApp() {
+  const dry = has('--dry');
+  const desde = opt('--desde', null), hasta = opt('--hasta', null);
+  const { url, key } = credencialesSupabase();
+  const q = new URLSearchParams({
+    select: 'id,fecha,especialidad,examen,porcentaje,fuente,preguntas_resueltas,errores_por_tipo,tiempo_promedio_pregunta,created_at',
+    examen: 'eq.ENCAPS', fuente: 'eq.app:cierre', order: 'fecha.asc,created_at.asc', limit: '2000',
+  });
+  if (desde) q.append('fecha', `gte.${desde}`);
+  if (hasta) q.append('fecha', `lte.${hasta}`);
+  const res = await fetch(`${url}/rest/v1/study_progress?${q}`, { headers: { apikey: key, Authorization: `Bearer ${key}`, Accept: 'application/json' } });
+  if (!res.ok) throw new Error(`Supabase REST ${res.status}: ${(await res.text()).slice(0, 300)}`);
+  const filas = await res.json();
+  const j = loadReg();
+  const claves = new Set(j.rondas.map(claveRonda));
+  const appIds = new Set(j.rondas.map((r) => r._app_id).filter(Boolean));
+  const sbIds = new Set(j.rondas.map((r) => r._supabase_id).filter(Boolean));
+  const nuevas = [], dup = [], inval = [];
+  for (const row of filas) {
+    const { ronda, error } = rondaDesdeFila(row);
+    if (error) { inval.push(error); continue; }
+    const k = claveRonda(ronda);
+    if (claves.has(k) || (ronda._app_id && appIds.has(ronda._app_id)) || (ronda._supabase_id && sbIds.has(ronda._supabase_id))) { dup.push(k); continue; }
+    claves.add(k); if (ronda._app_id) appIds.add(ronda._app_id); if (ronda._supabase_id) sbIds.add(ronda._supabase_id);
+    nuevas.push(ronda);
+  }
+  console.log(`PULL study_progress (app:cierre${desde ? ` desde ${desde}` : ''}${hasta ? ` hasta ${hasta}` : ''}): ${filas.length} filas · ${nuevas.length} nuevas · ${dup.length} ya en el registro · ${inval.length} inválidas${dry ? ' · DRY (no se escribe nada)' : ''}`);
+  for (const r of nuevas) console.log(`  + ${r.fecha} ${r.tipoRonda} ${r.codigo}${r.sub_eje ? ' [' + r.sub_eje + ']' : ''} · n=${r.n} seg=${r.correctas_seguras} dud=${r.correctas_dudosas} · ${r.pct_ciego}% ciego${r.nota != null ? ` · nota ${r.nota}` : ''}${r.dia != null ? ` · D${r.dia}` : ''}`);
+  for (const k of dup) console.log(`  = ${k} (duplicada, se salta)`);
+  for (const e of inval) console.log(`  ! ${e}`);
+  if (dry || !nuevas.length) { if (!dry && !nuevas.length) console.log('nada que apendar'); return; }
+  j.rondas.push(...nuevas);
+  if (!j._meta) j._meta = {};
+  j._meta.actualizado = hoyISO(); j._meta.ultimo_pull = { fecha: hoyISO(), filas: filas.length, nuevas: nuevas.length };
+  recalculaResumen(j);
+  saveReg(j);
+  console.log(`OK ${nuevas.length} ronda(s) apendada(s) → ${REG} (total ${j.rondas.length}) · perfil → ${generarPerfil(j)}`);
+}
+if (has('--pull')) {
+  // sin process.exit(): en Node 24/Windows salir justo tras fetch dispara un assert de libuv; el proceso termina solo.
+  pullDesdeApp().then(() => { process.exitCode = 0; }).catch((e) => { console.error('✗ --pull:', e.message); process.exitCode = 1; });
+} else {
+  main();
+}
+function main() {
 if (has('--perfil')) {
   const j = loadReg();
   recalculaResumen(j);
@@ -453,3 +560,4 @@ fs.writeFileSync(path.join(SEMANAS_DIR, `override_${lunesSig}.json`), JSON.strin
 saveReg(j);
 console.log('perfil →', generarPerfil(j));
 if (has('--sql')) { fs.writeFileSync(SQL_OUT, sqlProgress(sem.filter((r) => !r._legacy)), 'utf8'); console.log('SQL →', SQL_OUT, '(rondas v3 de la semana; aplicar por MCP execute_sql)'); }
+} // main()

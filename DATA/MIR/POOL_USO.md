@@ -10,7 +10,7 @@ Palmerton, *"questions as the curriculum"*: el MIR recicla conceptos año tras a
 |---|---|---|
 | `mirUsadasIds(entries)` | `src/lib/mirEvalLog.ts` | devuelve el `Set` de ids ya consumidos: recorre el campo `qIds` de TODAS las entradas del log (local + espejo Supabase tras `mirEvalLogPull()`) |
 | `preguntasSinUsar(capId, usadas, opts?)` / `preguntasSinUsarDeAsignatura(num, usadas, opts?)` / `preguntasMixtasSinUsar(n, usadas, semilla, filtro?)` | `src/lib/mirPreguntasOficiales.ts` | filtran el pool quitando `usadas`; por defecto **excluyen anuladas** (clave `null`) y las que llevan `nota` (2025-208, clave A VERIFICAR); orden **año descendente, nº ascendente** (lo más reciente primero) |
-| `qIds` en `MirEvalEntry` | `EvalForm` de `MirTodayPlan.tsx` (`qIds` prop → `mirEvalLogAppend`) | al guardar la eval, la entrada lleva los ids que se sirvieron → a partir de ese momento `mirUsadasIds()` los excluye |
+| `qIds` en `MirEvalEntry` | `EvalForm` de `MirTodayPlan.tsx` (`qIds` prop → `mirEvalLogAppend`) y `MirPoolEvalCompacta` de `MirPoolEval.tsx` (bloque Derma) | al guardar la eval, la entrada lleva los ids que se sirvieron → a partir de ese momento `mirUsadasIds()` los excluye. Espejo Supabase: columna `mir_eval_log.q_ids` (jsonb) ↔ `mirEvalSync.ts` (`q_ids` en ambos sentidos) — verificado 19-sep-2026 |
 
 Reglas fijas:
 - **Nunca** se reutiliza un id de `qIds` en la 1ª vuelta ni en el banqueo. La repetición controlada (2ª vuelta, abr-2027 en adelante) se hará con un flag explícito de fase, no borrando el log.
@@ -21,42 +21,56 @@ Reglas fijas:
 
 ## 2. Segmento a segmento (Calendar 15:15-16:15, plan 1ª vuelta D1-D76)
 
+**Cableado en la UI el 19-sep-2026** (`HoyView` de `MirTodayPlan.tsx`, memo `pool`): los ids se **reservan en orden horario del día** (anclada/cierre → pre-test → quiz → mini-MIR); cada segmento excluye `mirUsadasIds(log)` + lo reservado antes ese día, y si el segmento ya se guardó muestra los ids de su entrada (no vuelve a repartir). Cada segmento enseña sus preguntas con `MirPoolLista` (enunciado + opciones, clave al tocar, `preguntaPorId`) y declara el fallback cuando el pool no llega ("faltan n → test del capítulo ProMIR").
+
 | Segmento | Llamada | `kind` del log | n |
 |---|---|---|---|
 | **Eval anclada 4Q** (15:15) | por cada slot de `mirAnclasDinamicas(d)`: `preguntasSinUsar(capId del tema del slot, usadas).slice(0, 2 \| 1)` (2Q al D-1, 1Q a cada slot dinámico) | `anclada` (+ `anclasD`) | 4 |
 | **Pre-test 5Q ciegas** (15:53) | `preguntasSinUsar(dia.capId, usadas).slice(0, 5)` | `pretest` | 5 |
-| **Quiz 8-10Q comentadas** (16:05) — YA IMPLEMENTADO en `HoyView` (`qIdsQuiz`) | `preguntasSinUsar(dia.capId, usadas).slice(0, 10)` (las 5 del pre-test ya están en `usadas` si se guardó) | `quiz` | 8-10 |
+| **Quiz 8-10Q comentadas** (16:05) | `preguntasSinUsar(dia.capId, usadas).slice(0, 10)` (las 5 del pre-test ya están en `usadas` si se guardó) | `quiz` | 8-10 |
 | **Test de cierre 10Q** (1er día de cada bloque, `mirCierreDe(d)`) | `mezclaDeterminista(preguntasSinUsarDeAsignatura(num de la asignatura cerrada, usadas), fecha).slice(0, 10)` | `cierre` | 10 |
-| **Mini-MIR D77 40Q** (mié 6-ene-2027, v5.13) | `preguntasMixtasSinUsar(40, usadas, '2027-01-06', { soloPlan: true })` → tabla de neto por asignatura para la baseline de D78 | `miniMIR` | 40 |
+| **Mini-MIR D77 40Q** (vie 8-ene-2027, v5.14; corrección D78 lun 11-ene) | `preguntasMixtasSinUsar(40, usadas, dia.fecha /* '2027-01-08' */, { soloPlan: true })` → tabla de neto por asignatura para la baseline de D78 (cobertura medida ≈80 % del peso ProMIR: solo las 14 asignaturas del plan) | `miniMIR` | 40 |
 | **APEX** (≤4/día) | *Pregunta oficial origen* = uno de los ids servidos ese día; 1 de cada 4 con `preguntasConImagen({ capId })` | — | — |
 
 Los pre-test/quiz del mismo capítulo comparten cola: al servir el quiz, `usadas` ya contiene los 5 ids del pre-test guardado (el orden año desc / nº asc hace que el pre-test se lleve 2026-2025 y el quiz continúe).
 
 **Presupuesto real** (13-sep-2026, `_clasificacion_stats.json`): 477 preguntas caen en los 76 capítulos del plan (mediana **5 usables por capítulo**, máx. 17 en Diabetes). El consumo teórico de la 1ª vuelta es 76 × (5 + 10) = 1.140 → el pool oficial cubre **≈ 40 %** de las preguntas de la 1ª vuelta por capítulo; el resto es test ProMIR (fallback). Capítulos del plan con **< 5 usables** (ese día el quiz será casi todo ProMIR): D22 Síndromes clínicos en nefrología (1) · D57 Cáncer de mama (1) · D60 Infecciones y embarazo (1) · D66 Artritis reumatoide (1) · D4 Bioética (2) · D33 Hipófisis (2) · D48 NMP crónicas (2) · D52 Neumonía (2) · D53 Antibacterianos (2) · D55 Hongos (2) · D58 Hemorragia gestación (2) · D62 Ovario (2) · y 19 capítulos con 3-4. Ningún capítulo del plan está a cero.
 
-## 3. Banqueo ene-mar 2027 (`src/lib/mirMantenimiento.ts`, **59 días, vie 8-ene → mié 31-mar** · v5.13, 16-sep; v5.12: 60 desde el 7-ene; v5.11: 61 desde el 6-ene; v5.10: 62 desde el 5-ene)
+## 3. Banqueo ene-mar 2027 (`src/lib/mirMantenimiento.ts`, **57 días, mar 12-ene → mié 31-mar** = 46 lun-jue + 11 viernes · v5.14, 19-sep; v5.13: 59 desde el vie 8-ene; v5.12: 60 desde el 7-ene; v5.11: 61 desde el 6-ene; v5.10: 62 desde el 5-ene)
 
 | Día | 15Q / 10Q foco | 10Q interleaving | Registro |
 |---|---|---|---|
 | lun-jue `banco` (normal) | `preguntasSinUsarDeAsignatura(dia.num, usadas)` → `mezclaDeterminista(…, fecha).slice(0, 15)` | `preguntasSinUsarDeAsignatura(dia.num2, usadas).slice(0, 10)` | `mantenimiento`, `asignatura` = foco, `qIds` = los 25 |
-| lun-jue `banco` (reducido, hasta el lun 1-feb = D95 del Step 1 = D-1; examen target mar 2-feb) | `preguntasMixtasSinUsar(10, usadas, fecha, { nums: [dia.num, dia.num2] })` | — | `mantenimiento` |
-| **jueves TIER C EXPRESS** (semanas 1-12, campo `dia.tierC`, `MIR_MANT_TIER_C`) | foco igual que arriba (15Q) | **10Q = `preguntasSinUsar(tierC.capId, usadas)`**; si faltan, completar con `preguntasSinUsarDeAsignatura(tierC.num, usadas)`; si sigue faltando, test del capítulo ProMIR (`capUrl(tierC.capId)`) | **entrada propia** `mantenimiento` con `asignatura = tierC.asignatura`, `capId = tierC.capId`, `qIds` = las 10 (NO se mezclan con la asignatura foco: así entran en `mirStatsPorAsignatura` y en la tabla del handoff 31-mar) |
+| lun-jue `banco` (reducido, 17 días mar 12-ene → mié 3-feb = D95 del Step 1 = D-1; el jue 4-feb = examen target = D18, primer día normal → decisión de Joseph si va reducido o vacío) | `preguntasMixtasSinUsar(10, usadas, fecha, { nums: [dia.num, dia.num2] })` | — | `mantenimiento` |
+| **jueves TIER C EXPRESS** (semanas reales 1-12 desde el jue 14-ene, campo `dia.tierC`, `MIR_MANT_TIER_C`; el 12.º cae el mié 31-mar) | foco igual que arriba (15Q) | **10Q = `preguntasSinUsar(tierC.capId, usadas)`**; si faltan, completar con `preguntasSinUsarDeAsignatura(tierC.num, usadas)`; si sigue faltando, test del capítulo ProMIR (`capUrl(tierC.capId)`) | **entrada propia** `mantenimiento` con `asignatura = tierC.asignatura`, `capId = tierC.capId`, `qIds` = las 10 (NO se mezclan con la asignatura foco: así entran en `mirStatsPorAsignatura` y en la tabla del handoff 31-mar) |
 | viernes | `preguntasSinUsarDeAsignatura(mirMantFoco(dia, mirPeorAsignatura()).num, usadas).slice(0, 30)` | — | `mantenimiento` (neto semanal) |
+
+**Cableado en la UI el 19-sep-2026** (`MantenimientoView`): foco/reducido/viernes reparten `qIds` según la tabla; los jueves con `dia.tierC` hay un **2.º `EvalForm`** (kind `mantenimiento`, `asignatura = tierC.asignatura`, `capId = tierC.capId`, `num = tierC.num`, `qIds` = capítulo → asignatura vía `poolConFallback`) y los chips "TIER C EXPRESS · …" y "próximo Tier C: … (M#)" (`mirMantProximoTierC`). Las 10Q Tier C **salen de `nQ`**: en los 3 jueves reducidos (M3 14-ene · M8 21-ene · M13 28-ene, 10Q) el día es solo Tier C (sin formulario foco); en los normales (25Q) = 15Q foco + 10Q Tier C. El `EvalForm` distingue "ya registrado hoy" por asignatura cuando el kind es `mantenimiento` (dos entradas el mismo día).
 
 Disponibilidad real para los 12 Tier C (preguntas usables del capítulo / de la asignatura): Trauma MI 13/52 · Trauma MS 12/52 · Rx-Urgencias síndromes torácicos **3**/17 · Onco urgencias 9/28 · Geriatría enfermedad en mayores 13/36 · ORL oído 12/30 · Paliativos control de síntomas 12/16 · Uro próstata 6/20 · Oftalmo retina 8/18 · Genética enfermedades genéticas 5/13 · Inmuno básica 14/22 · Gestión economía de la salud **1**/13. En Rx-Urgencias, Uro, Genética y Gestión el capítulo no llega a 10 → se completa con la asignatura (regla de arriba) y se anota en el log qué parte fue del capítulo.
 
-Agotamiento previsible: 61 días × 25-30Q ≈ 1.500 preguntas > 1.025 usables → hacia **mediados de febrero** las asignaturas grandes (Cardio 86, Gastro 80) se quedan sin preguntas oficiales sin usar. Cuando ocurra: (a) fallback al test por asignatura de ProMIR, (b) el MIR 2027 (examen 23-ene-2027; plantilla definitiva ≈ 2 semanas después) añade 210 preguntas nuevas: `ANIOS_MIR` += 2027 → `--descargar` → `--parse` → nuevo pase LLM a `pool/_clasificacion_llm/2027.json` → `--clasificar` → `--verificar` → `--emit` (≈ 1 h de trabajo, sin tocar la UI).
+Agotamiento previsible: 57 días × 25-30Q ≈ 1.400 preguntas (v5.14; 17 días reducidos a 10Q bajan la cifra a ≈ 1.150) > 1.025 usables → hacia **mediados de febrero** las asignaturas grandes (Cardio 86, Gastro 80) se quedan sin preguntas oficiales sin usar. Cuando ocurra: (a) fallback al test por asignatura de ProMIR, (b) el MIR 2027 (examen 23-ene-2027; plantilla definitiva ≈ 2 semanas después) añade 210 preguntas nuevas: `ANIOS_MIR` += 2027 → `--descargar` → `--parse` → nuevo pase LLM a `pool/_clasificacion_llm/2027.json` → `--clasificar` → `--verificar` → `--emit` (≈ 1 h de trabajo, sin tocar la UI).
 
 ## 4. Bloque Derma 13:30 (agente derma-ui · gap 3)
 
 1 de cada 3 sesiones Derma sustituye "~10Q review" por 10Q MIR-Derma: `preguntasSinUsar(capId del capítulo Derma en rotación, usadas)` (Dermatología = num 5; 30 preguntas usables 2022-2026, 6/año; Oncología cutánea e Infecciosas concentran la mitad) y, si faltan, `preguntasSinUsarDeAsignatura(5, usadas)`; se registra con `kind 'derma10Q'`, `asignatura 'Dermatología'` y `qIds`. Como el log es único, esas ids tampoco reaparecen en el mini-MIR ni en el banqueo.
 
-## 5. Lo que la UI todavía NO hace (pendiente integrador · 13-sep-2026)
+**Cableado el 19-sep-2026**: `DermaMirPool` en `DermaTodayPlan.tsx` (`poolConFallback(cap.capId, 5, 10, usadas)` → `MirPoolLista` + `MirPoolEvalCompacta` de `MirPoolEval.tsx`, nota `derma d# · bloque · pool oficial (n del capítulo + m de la asignatura)`). Si el pool no tiene NINGUNA sin usar, cae a `DermaMir10Q` (test del capítulo ProMIR, sin ids). Con 30 usables en Dermatología, el pool cubre ≈ 3 de las 24 sesiones (10Q c/u) — el resto es ProMIR por diseño, hasta que el MIR 2027 añada ~6 más.
 
-- `HoyView` solo pasa `qIds` al **quiz**; pre-test, anclada, cierre y mini-MIR aún no piden ids al pool (las funciones existen: tabla §2). Sin ese cableado, las preguntas del pre-test pueden reaparecer en el quiz del mismo capítulo.
-- `MantenimientoView`: un único `EvalForm` con la asignatura foco. Falta el **segundo formulario** para los 10Q Tier C (`dia.tierC`) con su asignatura (§3) y el chip "próximo Tier C" (`mirMantProximoTierC(d)`).
-- Espejo Supabase: **A VERIFICAR (13-sep)** que `mir_eval_log` guarda `qIds` (columna/JSON) y que `mirEvalLogPull()` los trae de vuelta; si no, la anti-repetición solo vale por dispositivo.
-- El texto de una pregunta servida se muestra desde `preguntaPorId(id)` (enunciado + 4 opciones + clave al corregir); mientras no haya vista de pregunta, la UI enseña los ids y Joseph las abre en el cuaderno (`url` de cada pregunta = PDF oficial v0).
+## 5. Estado de la UI (cerrado 19-sep-2026 · integrador-mir; abierto desde el 13-sep)
+
+| Pendiente del 13-sep | Estado | Dónde |
+|---|---|---|
+| `HoyView` solo pasaba `qIds` al quiz (pre-test podía repetirse en el quiz) | ✅ anclada 4Q · pre-test 5Q · quiz 8-10Q · cierre 10Q · mini-MIR 40Q reservan ids en orden horario, anti-repetición dentro del día y contra el log | `MirTodayPlan.tsx` › `HoyView` (memo `pool`), `CierreCard` (`qIds` prop) |
+| `MantenimientoView`: un único `EvalForm` con la foco; faltaba el 2.º formulario Tier C y el chip "próximo Tier C" | ✅ 2.º `EvalForm` jueves Tier C (entrada propia) + chips TIER C EXPRESS / próximo Tier C; foco/reducido/viernes con `qIds` | `MirTodayPlan.tsx` › `MantenimientoView` |
+| Espejo Supabase: A VERIFICAR que `mir_eval_log` guarda `qIds` | ✅ columna `q_ids` jsonb existe (0 filas el 19-sep) y `mirEvalSync.ts` la mapea en push y pull → la anti-repetición vale entre dispositivos tras `mirEvalLogPull()` | Supabase `qacynpqdrorpuegsmtcy` · `src/lib/mirEvalSync.ts` |
+| Sin vista de pregunta (la UI enseñaba ids) | ✅ `MirPreguntaVista` (`preguntaPorId`: enunciado + 4 opciones + clave definitiva al tocar + enlace al cuaderno oficial) dentro de `MirPoolLista` en cada segmento | `src/components/study/MirPoolEval.tsx` |
+| Bloque Derma 13:30 sin ids ni anti-repetición | ✅ `DermaMirPool` (§4) | `DermaTodayPlan.tsx` |
+
+Queda (no es estructura de la UI):
+- `DermaMir10Q.tsx` conserva su formulario sin `qIds` como fallback; limpieza opcional = darle una prop `qIds` y retirar `MirPoolEvalCompacta` (orquestador; el fichero no era de este integrador).
+- Cuaderno de imágenes fuera del repo (`--descargar --con-imagenes`): la vista marca "🖼 imagen n (cuaderno)" y enlaza el PDF oficial.
+- El pool cubre ≈ 40 % de la 1ª vuelta por capítulo (§2): el resto sigue siendo ProMIR, declarado en cada lista como "faltan n → test del capítulo ProMIR".
 
 ## 6. Anti-alucinación y trazabilidad
 

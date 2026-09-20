@@ -1,10 +1,16 @@
 /**
  * dermaCerebro.ts — el "CEREBRO CLÍNICO" del DERMA_MASTER_SPEC §3 convertido en datos (PLAN ÉLITE v2.1 · 5-sep-2026).
  *
- * 35 fichas = los 22 átomos X (estética, d19-20 + d47-56 + d59-68) + 13 átomos CRIT clínicos del plan
+ * 35 fichas = los 22 átomos X (estética, d19-20 + d46 + d53-62 + d63-71) + 13 átomos CRIT clínicos del plan
  * (d5 danger zones · d7 psoriasis · d8 eccemas · d9 acné [plantilla canónica §3.2] · d10 ampollosas ·
  * d12 farmacodermias · d14 bacterianas · d16 virales · d18 parasitosis · d22 QA · d23 CBC/CEC · d24 melanoma ·
- * d44 cicatrización/complicaciones). Cada ficha lleva los 7 pasos (causa → mecanismo → capa → decisión →
+ * d50 cicatrización/complicaciones).
+ * RE-ANCLAJE v3 (19-sep-2026, v5.14): `d` es el d del plan v3 (dermaDailyPlan.ts, d1 = lun 21-sep-2026 → d73 = mar 13-abr-2027);
+ * las 21 fichas desplazadas por el taper del Step 1 (G-44 → d50 · X-47…X-56 → d53…d62 · X-59…X-65 → d63…d69 · X-66 → d46 ·
+ * X-67 → d70 · X-68 → d71) conservan su id histórico y llevan `dV21` con el d de la v2.1. Cada ficha se comprobó contra el
+ * título (`sub`) y el bloque (`bKey`) del día v3 con node el 19-sep (35/35 coinciden). La sentinela de DermaTodayPlan/DermaHub
+ * ('G-44-cicatrizacion' con d 50 → CEREBRO_REANCLADO_V3) pasa a true y la búsqueda es exacta por d; dermaDNuevo() queda
+ * solo como mapa histórico (ya no se aplica sobre estas fichas: aplicarlo dos veces las movería mal). Cada ficha lleva los 7 pasos (causa → mecanismo → capa → decisión →
  * lo-que-no-puedo-errar → comunicación → hábito), la catástrofe+rescate en 1 línea y el guion de paciente
  * (mastery gate §6.3: recitar los 7 pasos + árbol + catástrofe/rescate + guion, sin mirar).
  *
@@ -15,7 +21,8 @@
  *
  * Simulador "Oclusión vascular · 90 s" (DermaEmergencyDrill, SPEC §9.5): DERMA_DRILL_HDPH = checklist que
  * Joseph recita de memoria (signos → hialuronidasa HDPH → endpoints → ceguera → oftalmología → kit → prevención);
- * dermaDrillEvaluar() devuelve acierto/fallos para el ledger (fuente 'drill'). Se ejecuta en d19/d20, d46 (H) y d70 (Z).
+ * dermaDrillEvaluar() devuelve acierto/fallos para el ledger (fuente 'drill'). Se ejecuta en d19/d20, d52 (cp2) y d73 (repaso 2)
+ *  — v3: DERMA_DRILL_DIAS_V3 de dermaDailyPlan.ts (derivado de `drillHDPH`), no una lista fija.
  */
 import type { DermaBloqueKey, DermaTier } from './dermaDailyPlan';
 
@@ -29,6 +36,8 @@ export interface DermaCerebroPasos {
   habito: string;       // 7 · qué cambia el paciente, adherencia, cuándo reviso, cómo mido
 }
 export interface DermaCerebroFicha {
+  /** d de la v2.1 (5-sep) que tenía la ficha antes del re-anclaje a la v3 (solo en las 21 desplazadas por el taper; trazabilidad). */
+  dV21?: number;
   id: string;             // 'X-19-oclusion-vascular'
   d: number;              // átomo del plan al que pertenece (dermaDailyPlan.ts)
   bKey: DermaBloqueKey;
@@ -267,7 +276,7 @@ export const DERMA_CEREBRO: DermaCerebroFicha[] = [
     fuentes: [F.ca(275942978, 'S12 Melanoma'), F.dn('melanoma')],
     verificar: ['Márgenes de ampliación por Breslow y umbral de ganglio centinela — A VERIFICAR (05-sep) en Color Atlas 9e S12 / guía AAD'] },
 
-  { id: 'G-44-cicatrizacion', d: 44, bKey: 'G', tier: 'CRIT', titulo: 'Cicatrización + complicaciones quirúrgicas y su manejo', referente: 'Dermatologic Surgery (AccessDerma)',
+  { id: 'G-44-cicatrizacion', d: 50, dV21: 44, bKey: 'G', tier: 'CRIT', titulo: 'Cicatrización + complicaciones quirúrgicas y su manejo', referente: 'Dermatologic Surgery (AccessDerma)',
     pasos: {
       causa: 'Toda herida repara en fases; la complicación es la fase que se descarrila: sangre acumulada (hematoma), bacteria (infección), tensión (dehiscencia/necrosis), exceso de colágeno (queloide).',
       mecanismo: 'Hemostasia → inflamación (días 1-3) → proliferación (granulación, epitelización, angiogénesis) → remodelación (colágeno III → I durante meses). Hematoma a 24-48 h (tenso, doloroso); infección día 4-7 (eritema, calor, exudado); dehiscencia día 7-10 (tensión, al retirar suturas); necrosis de colgajo por tensión/tabaco/hematoma bajo el colgajo; queloide sobrepasa los bordes (fototipos altos, tórax/hombros/lóbulo).',
@@ -313,7 +322,7 @@ export const DERMA_CEREBRO: DermaCerebroFicha[] = [
     fuentes: [F.goodman20, F.delorenzi17, F.cotofana22],
     verificar: ['Composición completa del kit de emergencia (más allá de hialuronidasa disponible siempre) — A VERIFICAR (05-sep) en Goodman 2020 tabla/apéndice', 'Ventana de isquemia retiniana tolerable (la cifra "90 min" NO aparece en el consenso) — A VERIFICAR (05-sep) en fuente oftalmológica primaria'] },
 
-  { id: 'X-47-anatomia-3d', d: 47, bKey: 'X', tier: 'CRIT', titulo: 'Anatomía facial 3D: 5 capas, SMAS, compartimentos grasos, ligamentos', referente: 'Cotofana',
+  { id: 'X-47-anatomia-3d', d: 53, dV21: 47, bKey: 'X', tier: 'CRIT', titulo: 'Anatomía facial 3D: 5 capas, SMAS, compartimentos grasos, ligamentos', referente: 'Cotofana',
     pasos: {
       causa: 'Lo que el paciente llama "surco" o "flacidez" es el resultado de cómo se apilan y deslizan cinco capas ancladas por ligamentos, no un defecto de la piel.',
       mecanismo: 'Las 5 capas (piel → grasa subcutánea en compartimentos → SMAS/músculo → grasa profunda y espacios → periostio/hueso) se mueven en bloque en la cara móvil y quedan fijas en los ligamentos de retención (orbicular, cigomático, mandibular, masetérico-cutáneo); la deflación de compartimentos profundos y la reabsorción ósea hunden las superficiales y marcan los surcos justo en los puntos de anclaje.',
@@ -327,7 +336,7 @@ export const DERMA_CEREBRO: DermaCerebroFicha[] = [
     guion: '"La línea es el humo; el fuego es la pérdida de estructura. Devolvemos soporte, no tapamos líneas."',
     fuentes: [F.ad(3200, 266614877, 'Baumann 3e · Facial Anatomy and Aging'), F.cotofana22, F.freytag19] },
 
-  { id: 'X-48-arterias-safe-zones', d: 48, bKey: 'X', tier: 'CRIT', titulo: 'Arterias peligrosas + zonas seguras: glabela, nariz, sien, surco nasogeniano', referente: 'Cotofana',
+  { id: 'X-48-arterias-safe-zones', d: 54, dV21: 48, bKey: 'X', tier: 'CRIT', titulo: 'Arterias peligrosas + zonas seguras: glabela, nariz, sien, surco nasogeniano', referente: 'Cotofana',
     pasos: {
       causa: 'El riesgo de un punto no es la región sino la combinación región × plano × arteria: la misma zona es segura en un plano y letal en otro.',
       mecanismo: 'Glabela: supratroclear/supraorbitaria (ramas de la oftálmica) superficiales → vía directa al ojo. Nariz: dorsal nasal + angular (anastomosis con oftálmica), muy superficiales en dorso/punta. Sien: temporal superficial (subcutánea) y temporal profunda (interfascial/periostio). Surco nasogeniano: a. facial cambia de plano (profunda abajo, superficial arriba) → el "punto de fuga" hacia la angular.',
@@ -341,7 +350,7 @@ export const DERMA_CEREBRO: DermaCerebroFicha[] = [
     guion: '"Inyecto en el plano donde el vaso no está; y si algo pasa, sé qué hacer."',
     fuentes: [F.cotofana22, F.freytag19, F.goodman20] },
 
-  { id: 'X-49-envejecimiento-mdasa', d: 49, bKey: 'X', tier: 'ALTA', titulo: 'Envejecimiento estructural + análisis facial (tercios, MD ASA)', referente: 'de Maio',
+  { id: 'X-49-envejecimiento-mdasa', d: 55, dV21: 49, bKey: 'X', tier: 'ALTA', titulo: 'Envejecimiento estructural + análisis facial (tercios, MD ASA)', referente: 'de Maio',
     pasos: {
       causa: 'La queja ("me veo cansada/triste") no es una línea: es el mensaje emocional que emite un conjunto de cambios estructurales (hueso, grasa, ligamento, piel).',
       mecanismo: 'Hueso: reabsorción orbitaria, maxilar, piriforme y mandibular → pérdida de soporte; grasa: deflación por compartimentos (profundos primero) → vacíos y descenso de los superficiales; ligamentos: laxitud → surcos en sus anclajes; piel: elastosis y arrugas. Todo junto emite atributos negativos (cansado, triste, enfadado, caído).',
@@ -355,7 +364,7 @@ export const DERMA_CEREBRO: DermaCerebroFicha[] = [
     guion: '"No te cambiamos la cara: te devolvemos lo que el tiempo movió."',
     fuentes: [F.mdasa, F.mdcodes, F.ad(3200, 266614593, 'Baumann 3e · Intrinsic Aging')] },
 
-  { id: 'X-50-toxina-i', d: 50, bKey: 'X', tier: 'CRIT', titulo: 'Toxina I: mecanismo (SNAP-25), serotipos, unidades NO intercambiables', referente: 'Carruthers',
+  { id: 'X-50-toxina-i', d: 56, dV21: 50, bKey: 'X', tier: 'CRIT', titulo: 'Toxina I: mecanismo (SNAP-25), serotipos, unidades NO intercambiables', referente: 'Carruthers',
     pasos: {
       causa: 'La arruga dinámica la produce un músculo que tracciona la piel; la toxina no "borra la arruga", quita la tracción.',
       mecanismo: 'La cadena pesada de la toxina A se une a la terminal colinérgica → endocitosis → la cadena ligera cliva SNAP-25 (complejo SNARE) → no hay exocitosis de acetilcolina → denervación química reversible; el efecto aparece en días y revierte en meses por brotes axonales y nueva SNARE.',
@@ -370,7 +379,7 @@ export const DERMA_CEREBRO: DermaCerebroFicha[] = [
     fuentes: [F.carruthers, F.ad(3200, 266616475, 'Baumann 3e · Botulinum Toxins'), F.toxins25],
     verificar: ['Tablas de conversión entre productos y dosis por punto — A VERIFICAR (05-sep) en Carruthers 5e / Baumann 3e 266616475'] },
 
-  { id: 'X-51-toxina-ii-superior', d: 51, bKey: 'X', tier: 'ALTA', titulo: 'Toxina II: tercio superior (frontal, glabela, patas de gallo) — cómo evitar la ptosis', referente: 'Carruthers',
+  { id: 'X-51-toxina-ii-superior', d: 57, dV21: 51, bKey: 'X', tier: 'ALTA', titulo: 'Toxina II: tercio superior (frontal, glabela, patas de gallo) — cómo evitar la ptosis', referente: 'Carruthers',
     pasos: {
       causa: 'Las líneas del tercio superior son vectores: glabela (corrugador + prócer tiran medial/inferior), frente (frontal eleva), periocular (orbicular cierra).',
       mecanismo: 'El frontal es el ÚNICO elevador de la ceja: si lo debilito más que a sus depresores (corrugador, prócer, orbicular), la ceja cae (ptosis de ceja). Si la toxina difunde al elevador del párpado superior, cae el párpado (ptosis palpebral). Debilitar depresores glabelares sin frontal = ceja sube ("Spock" si queda frontal lateral activo).',
@@ -385,7 +394,7 @@ export const DERMA_CEREBRO: DermaCerebroFicha[] = [
     fuentes: [F.carruthers, F.ad(2811, 245227386, 'Dermatologic Surgery · Neuromodulators'), F.cureus26],
     verificar: ['Distancia mínima al reborde orbitario y dosis por punto en frontal/glabela — A VERIFICAR (05-sep) en Carruthers 5e', 'Concentración/pauta de apraclonidina — A VERIFICAR (05-sep) en Cureus 2026 PMC12865869'] },
 
-  { id: 'X-52-toxina-iii-inferior', d: 52, bKey: 'X', tier: 'ALTA', titulo: 'Toxina III: tercio inferior, Nefertiti, masetero, hiperhidrosis', referente: 'Carruthers',
+  { id: 'X-52-toxina-iii-inferior', d: 58, dV21: 52, bKey: 'X', tier: 'ALTA', titulo: 'Toxina III: tercio inferior, Nefertiti, masetero, hiperhidrosis', referente: 'Carruthers',
     pasos: {
       causa: 'En el tercio inferior y cuello la toxina modula fuerzas (elevadores vs depresores) y funciones (masticación, sudoración), no solo arrugas.',
       mecanismo: 'Nefertiti: debilitar bandas platismales (depresor) libera el vector elevador → redefine el contorno mandibular. Masetero: atrofia por desuso → adelgaza el ángulo mandibular y alivia bruxismo. DAO: comisura sube; mentalis: mentón empedrado se alisa; sonrisa gingival: elevador del labio superior y del ala nasal. Hiperhidrosis: bloqueo colinérgico de la glándula ecrina.',
@@ -400,7 +409,7 @@ export const DERMA_CEREBRO: DermaCerebroFicha[] = [
     fuentes: [F.carruthers, F.ad(2953, 248412579, 'Cosmetic Procedures in Primary Care · Botulinum Toxin')],
     verificar: ['Dosis por músculo (masetero, platisma, DAO) y para hiperhidrosis axilar — A VERIFICAR (05-sep) en Carruthers 5e'] },
 
-  { id: 'X-53-toxina-iv-complicaciones', d: 53, bKey: 'X', tier: 'CRIT', titulo: 'Toxina IV: complicaciones y manejo — ptosis, asimetrías, difusión', referente: 'Carruthers (Cureus 2026)',
+  { id: 'X-53-toxina-iv-complicaciones', d: 59, dV21: 53, bKey: 'X', tier: 'CRIT', titulo: 'Toxina IV: complicaciones y manejo — ptosis, asimetrías, difusión', referente: 'Carruthers (Cureus 2026)',
     pasos: {
       causa: 'Casi todas las complicaciones de la toxina son la toxina haciendo su trabajo en el músculo equivocado o en exceso: difusión, dosis o mapa muscular incorrecto.',
       mecanismo: 'Difusión al elevador del párpado → ptosis palpebral (días 3-14, remite en semanas); frontal debilitado → ptosis de ceja; frontal lateral respetado → Spock; cigomático → sonrisa asimétrica; platisma → disfagia; dosis insuficiente o anticuerpos neutralizantes → fallo secundario; equimosis, cefalea, dolor local como efectos menores.',
@@ -415,7 +424,7 @@ export const DERMA_CEREBRO: DermaCerebroFicha[] = [
     fuentes: [F.cureus26, F.carruthers, F.ad(2811, 245227386, 'Dermatologic Surgery · Neuromodulators')],
     verificar: ['Concentración y pauta de apraclonidina y alternativas — A VERIFICAR (05-sep) en Cureus 2026 PMC12865869', 'Evidencia de las medidas post-inyección (no masajear, erguido) — A VERIFICAR (05-sep)'] },
 
-  { id: 'X-54-rellenos-i-reologia', d: 54, bKey: 'X', tier: 'ALTA', titulo: 'Rellenos I: reología del HA (G′, cohesividad) + bioestimuladores (CaHA/PLLA)', referente: 'de Maio',
+  { id: 'X-54-rellenos-i-reologia', d: 60, dV21: 54, bKey: 'X', tier: 'ALTA', titulo: 'Rellenos I: reología del HA (G′, cohesividad) + bioestimuladores (CaHA/PLLA)', referente: 'de Maio',
     pasos: {
       causa: 'El "relleno" no es un producto único: la reología decide si proyecta, se integra o migra, y la reversibilidad decide el margen de seguridad.',
       mecanismo: 'HA reticulado: G′ (elasticidad/firmeza) alto → soporte y proyección (mentón, mandíbula, pómulo profundo); G′ bajo → integración en tejidos finos (labio, surco lagrimal, líneas finas); cohesividad y tamaño de partícula → resistencia a la deformación y a la migración; HA es hidrolizable por hialuronidasa. CaHA/PLLA: bioestimulación de colágeno por respuesta a cuerpo extraño → NO reversibles.',
@@ -430,7 +439,7 @@ export const DERMA_CEREBRO: DermaCerebroFicha[] = [
     fuentes: [F.ad(2812, 244978644, 'Cosmeceuticals · Hyaluronic Acid'), F.mdcodes, F.delorenzi13],
     verificar: ['Valores de G′ por producto y volúmenes orientativos por región — A VERIFICAR (05-sep) en Soft Tissue Augmentation 5e (Carruthers, ISBN 9780323830751)'] },
 
-  { id: 'X-55-rellenos-ii-planos', d: 55, bKey: 'X', tier: 'ALTA', titulo: 'Rellenos II: planos de inyección, aguja vs cánula, técnica por región', referente: 'de Maio / Goodman 2020',
+  { id: 'X-55-rellenos-ii-planos', d: 61, dV21: 55, bKey: 'X', tier: 'ALTA', titulo: 'Rellenos II: planos de inyección, aguja vs cánula, técnica por región', referente: 'de Maio / Goodman 2020',
     pasos: {
       causa: 'La seguridad y el resultado de un relleno dependen más del PLANO y la TÉCNICA que del producto: dónde deposito, con qué, cuánto y a qué velocidad.',
       mecanismo: 'Bolo supraperióstico con aguja → proyección puntual (pómulo, mentón); cánula en subcutáneo → distribución lineal con menos punciones y, en ciertas zonas, menos riesgo de entrar en un vaso (ceja, mejilla lateral/anterior); presión y volumen del bolo determinan si un émbolo viaja retrógrado; la aguja en movimiento evita depositar todo el bolo en una luz vascular.',
@@ -444,7 +453,7 @@ export const DERMA_CEREBRO: DermaCerebroFicha[] = [
     guion: '"Poco a poco, despacio y en el plano correcto: eso es lo que reduce el riesgo."',
     fuentes: [F.goodman20, F.ad(2811, 245227491, 'Dermatologic Surgery · Fillers and Injectable Implants'), F.mdcodes] },
 
-  { id: 'X-56-md-codes', d: 56, bKey: 'X', tier: 'ALTA', titulo: 'Rellenos III: MD Codes fundación (Ck, T, Tt) + myomodulation', referente: 'de Maio',
+  { id: 'X-56-md-codes', d: 62, dV21: 56, bKey: 'X', tier: 'ALTA', titulo: 'Rellenos III: MD Codes fundación (Ck, T, Tt) + myomodulation', referente: 'de Maio',
     pasos: {
       causa: 'Sin un lenguaje anatómico compartido cada inyector improvisa; MD Codes convierte la inyección en un checklist reproducible ligado al atributo emocional que quiero cambiar.',
       mecanismo: 'Cada código = subunidad + plano + herramienta + producto + volumen orientativo (Ck1-Ck5 mejilla, T1-T2 sien, Tt1-Tt3 surco lagrimal…); la fundación (mediofacial/soporte) precede al refinamiento (labio, surcos). Myomodulation: el relleno bajo o sobre un músculo cambia su palanca y modula su acción (p. ej., soporte del DAO o del elevador) — el relleno también trata la dinámica.',
@@ -458,7 +467,7 @@ export const DERMA_CEREBRO: DermaCerebroFicha[] = [
     guion: '"Primero lo que sostiene, luego lo que perfila: por etapas."',
     fuentes: [F.mdcodes, F.myomod, F.mdasa] },
 
-  { id: 'X-59-etnia-genero-fat', d: 59, bKey: 'X', tier: 'ALTA', titulo: 'Rellenos IV: consideraciones étnicas y de género + fat transfer', referente: 'de Maio / Dermatologic Surgery',
+  { id: 'X-59-etnia-genero-fat', d: 63, dV21: 59, bKey: 'X', tier: 'ALTA', titulo: 'Rellenos IV: consideraciones étnicas y de género + fat transfer', referente: 'de Maio / Dermatologic Surgery',
     pasos: {
       causa: 'La belleza no es un canon único: proporciones étnicas y de género distintas exigen objetivos distintos; el error es "occidentalizar" o feminizar/masculinizar sin querer.',
       mecanismo: 'Diferencias de proyección malar, nasal y mentoniana, ángulo mandibular, forma de ceja y labio según etnia y género; en fototipos IV-VI cada punción es un riesgo de PIH y de queloide (puntos de entrada). Fat transfer: injerto autólogo con supervivencia variable, volumen grande, NO reversible y con riesgo embólico alto (partícula grande).',
@@ -472,7 +481,7 @@ export const DERMA_CEREBRO: DermaCerebroFicha[] = [
     guion: '"Que sigas siendo tú, con tus rasgos, más descansado."',
     fuentes: [F.ad(2811, 245227608, 'Dermatologic Surgery · Ethnic & Gender Considerations (Fillers)'), F.mdasa] },
 
-  { id: 'X-60-peelings-i', d: 60, bKey: 'X', tier: 'ALTA', titulo: 'Peelings I: profundidad, agentes (glicólico, salicílico, TCA, fenol), frosting', referente: 'Baumann',
+  { id: 'X-60-peelings-i', d: 64, dV21: 60, bKey: 'X', tier: 'ALTA', titulo: 'Peelings I: profundidad, agentes (glicólico, salicílico, TCA, fenol), frosting', referente: 'Baumann',
     pasos: {
       causa: 'Un peeling es una herida química controlada: la profundidad de la lesión decide el resultado y el riesgo, no el "nombre" del ácido.',
       mecanismo: 'Superficial (alfa/beta-hidroxiácidos, Jessner, TCA bajo): destruye epidermis parcial → renovación, sin downtime. Medio (TCA a concentración media, combinaciones): alcanza dermis papilar → frosting nivel II-III, remodelación de colágeno. Profundo (fenol/Baker-Gordon): dermis reticular → máximo efecto, riesgo de cicatriz, hipopigmentación y cardiotoxicidad del fenol (arritmias) → monitorización.',
@@ -487,7 +496,7 @@ export const DERMA_CEREBRO: DermaCerebroFicha[] = [
     fuentes: [F.ad(3200, 266616672, 'Baumann 3e · Chemical Peels'), F.dn('chemical-peels')],
     verificar: ['% de TCA para peeling medio y niveles de frosting — A VERIFICAR (05-sep) en Baumann 3e 266616672', 'Intervalo tras isotretinoína — A VERIFICAR (05-sep)'] },
 
-  { id: 'X-61-peelings-ii-fototipo', d: 61, bKey: 'X', tier: 'ALTA', titulo: 'Peelings II: por fototipo (IV-VI), prevención de PIH, complicaciones', referente: 'Baumann / Cosmetic Derm for Skin of Color',
+  { id: 'X-61-peelings-ii-fototipo', d: 65, dV21: 61, bKey: 'X', tier: 'ALTA', titulo: 'Peelings II: por fototipo (IV-VI), prevención de PIH, complicaciones', referente: 'Baumann / Cosmetic Derm for Skin of Color',
     pasos: {
       causa: 'En fototipos altos el melanocito responde a cualquier inflamación con más pigmento: la complicación más frecuente de un peeling no es la cicatriz sino la hiperpigmentación postinflamatoria.',
       mecanismo: 'Inflamación → activación melanocítica → PIH epidérmica (marrón, luz de Wood acentúa) o dérmica (gris-azulada, incontinencia de pigmento, no acentúa) → la dérmica dura meses-años; hipopigmentación por daño melanocítico en profundos; melasma se puede empeorar con calor/inflamación.',
@@ -502,7 +511,7 @@ export const DERMA_CEREBRO: DermaCerebroFicha[] = [
     fuentes: [F.ad(2956, 248485136, 'Cosmetic Derm for Skin of Color · Ablative/Deep Peels'), F.dn('postinflammatory-hyperpigmentation')],
     verificar: ['Protocolo de pretratamiento (retinoide/despigmentante, semanas) — A VERIFICAR (05-sep) en 2956/248485136'] },
 
-  { id: 'X-62-laser-i-fototermolisis', d: 62, bKey: 'X', tier: 'CRIT', titulo: 'Láser I: fototermólisis selectiva — cromóforo → λ → pulso → enfriamiento', referente: 'Anderson & Parrish',
+  { id: 'X-62-laser-i-fototermolisis', d: 66, dV21: 62, bKey: 'X', tier: 'CRIT', titulo: 'Láser I: fototermólisis selectiva — cromóforo → λ → pulso → enfriamiento', referente: 'Anderson & Parrish',
     pasos: {
       causa: 'Todo lo lumínico se reduce a una física: dañar un objetivo (cromóforo) sin cocer lo de alrededor.',
       mecanismo: 'Fototermólisis selectiva (Anderson-Parrish 1983): elegir la longitud de onda que el cromóforo absorbe más que el tejido vecino (melanina: absorción decrece con λ; hemoglobina: picos en visible; agua: infrarrojo medio; tinta: por color) y una duración de pulso menor que el tiempo de relajación térmica del objetivo → el calor se queda en el blanco. Fraccional (Manstein 2004): columnas microscópicas de daño con piel sana intercalada → curación rápida.',
@@ -516,7 +525,7 @@ export const DERMA_CEREBRO: DermaCerebroFicha[] = [
     guion: '"Luz que busca un objetivo y respeta lo demás; elegimos por tu problema y tu tono, y probamos primero."',
     fuentes: [F.anderson83, F.manstein04, F.ad(2818, 240357100, 'Lasers in Dermatology · Fundamentals')] },
 
-  { id: 'X-63-laser-ii-vascular-pigmento', d: 63, bKey: 'X', tier: 'ALTA', titulo: 'Láser II: lesiones vasculares (PDL) + pigmento y tatuajes (Q-switched/pico)', referente: 'Anderson',
+  { id: 'X-63-laser-ii-vascular-pigmento', d: 67, dV21: 63, bKey: 'X', tier: 'ALTA', titulo: 'Láser II: lesiones vasculares (PDL) + pigmento y tatuajes (Q-switched/pico)', referente: 'Anderson',
     pasos: {
       causa: 'Vasos y pigmento son cromóforos con física distinta: la hemoglobina pide luz amarilla-verde con pulsos de ms; el pigmento (melanosoma, partícula de tinta) pide pulsos de ns-ps (fotoacústico).',
       mecanismo: 'PDL: absorción por oxihemoglobina → coagulación del vaso → púrpura esperable días (malformación capilar, telangiectasias, hemangioma, rosácea eritematosa). Q-switched/picosegundo: pulso ultracorto → fragmentación fotoacústica de melanosomas/tinta → eliminación por macrófagos; λ según color de tinta (negro/azul con 1064, rojo con 532, verde con 755 — A VERIFICAR); nevus de Ota/lentigos.',
@@ -531,7 +540,7 @@ export const DERMA_CEREBRO: DermaCerebroFicha[] = [
     fuentes: [F.ad(2818, 240357136, 'Lasers in Dermatology · Cutaneous Vascular Lesions'), F.anderson83],
     verificar: ['λ exactas por color de tinta y parámetros de PDL — A VERIFICAR (05-sep) en 2818/240357136'] },
 
-  { id: 'X-64-laser-iii-fraccional-rf', d: 64, bKey: 'X', tier: 'ALTA', titulo: 'Láser III: resurfacing fraccional (ablativo/no ablativo) + radiofrecuencia + tightening', referente: 'Manstein / Anderson',
+  { id: 'X-64-laser-iii-fraccional-rf', d: 68, dV21: 64, bKey: 'X', tier: 'ALTA', titulo: 'Láser III: resurfacing fraccional (ablativo/no ablativo) + radiofrecuencia + tightening', referente: 'Manstein / Anderson',
     pasos: {
       causa: 'Textura, cicatriz y laxitud son problemas de colágeno dérmico: hay que provocar una lesión térmica controlada que dispare remodelación sin destruir la epidermis completa.',
       mecanismo: 'Ablativo fraccional (CO2 10 600 nm, Er:YAG 2940 nm; agua como cromóforo): columnas de vaporización + coagulación → máxima remodelación, más downtime y riesgo de PIH. No ablativo fraccional: columnas de daño térmico con epidermis intacta → menos efecto por sesión, más sesiones, más seguro en fototipos altos. RF (mono/bipolar, microagujas) y HIFU: calor dérmico sin cromóforo → contracción y neocolagénesis independientes del fototipo.',
@@ -546,7 +555,7 @@ export const DERMA_CEREBRO: DermaCerebroFicha[] = [
     fuentes: [F.manstein04, F.ad(2818, 240357478, 'Lasers in Dermatology · Laser & RF Resurfacing')],
     verificar: ['Parámetros de densidad/energía por fototipo — A VERIFICAR (05-sep) en 2818/240357478'] },
 
-  { id: 'X-65-laser-iv-fototipos-altos', d: 65, bKey: 'X', tier: 'CRIT', titulo: 'Láser IV: seguridad en fototipos IV-VI — parámetros, PIH, depilación en piel étnica', referente: 'Anderson / Dermatologic Surgery',
+  { id: 'X-65-laser-iv-fototipos-altos', d: 69, dV21: 65, bKey: 'X', tier: 'CRIT', titulo: 'Láser IV: seguridad en fototipos IV-VI — parámetros, PIH, depilación en piel étnica', referente: 'Anderson / Dermatologic Surgery',
     pasos: {
       causa: 'En piel de color el cromóforo que quiero (folículo, vaso) compite con el que no quiero (melanina epidérmica): el riesgo es tratar la epidermis del paciente en vez de su problema.',
       mecanismo: 'Absorción de melanina decrece con λ → λ larga (Nd:YAG 1064) deposita menos energía en la epidermis; pulso largo (ms) permite disipar calor epidérmico mientras el folículo, más grande, retiene; enfriamiento protege la epidermis; fluencia conservadora. Complicaciones: PIH (inflamación) vs hipopigmentación (daño melanocítico) vs quemadura (ampolla, costra).',
@@ -561,7 +570,7 @@ export const DERMA_CEREBRO: DermaCerebroFicha[] = [
     fuentes: [F.ad(2811, 245228834, 'Dermatologic Surgery · Laser/Light en piel de color'), F.anderson83],
     verificar: ['Fluencias y duraciones de pulso conservadoras por fototipo — A VERIFICAR (05-sep) en 2811/245228834'] },
 
-  { id: 'X-66-contorno-escleroterapia', d: 66, bKey: 'X', tier: 'MED', titulo: 'Contorno corporal (criolipólisis, HIFU) + escleroterapia básica', referente: 'Lasers in Dermatology / Sclerotherapy',
+  { id: 'X-66-contorno-escleroterapia', d: 46, dV21: 66, bKey: 'X', tier: 'MED', titulo: 'Contorno corporal (criolipólisis, HIFU) + escleroterapia básica', referente: 'Lasers in Dermatology / Sclerotherapy',
     pasos: {
       causa: 'Grasa localizada y venas superficiales son problemas de tejido diana (adipocito, endotelio): se destruyen selectivamente y el cuerpo los reabsorbe.',
       mecanismo: 'Criolipólisis: frío controlado → apoptosis del adipocito (más sensible al frío que la piel) → reabsorción en semanas; complicación paradójica: hiperplasia adiposa (crecimiento en la zona tratada, meses). HIFU/RF corporal: calor focal → daño térmico del adipocito/contracción. Escleroterapia: esclerosante (polidocanol, STS) daña el endotelio → fibrosis y oclusión de la vena; complicaciones: matting telangiectásico, pigmentación (hemosiderina), úlcera por extravasación/inyección arterial.',
@@ -576,7 +585,7 @@ export const DERMA_CEREBRO: DermaCerebroFicha[] = [
     fuentes: [F.ad(2818, 240357542, 'Lasers in Dermatology · Devices for Body Contour'), F.dn('sclerotherapy'), 'AccessDerma Sclerotherapy 2e (TOC extraído, ver DERMA_MASTER_SPEC B.5)'],
     verificar: ['Concentraciones de polidocanol/STS por calibre y tiempo de compresión — A VERIFICAR (05-sep) en Sclerotherapy 2e (AccessDerma)'] },
 
-  { id: 'X-67-microneedling-prp', d: 67, bKey: 'X', tier: 'ALTA', titulo: 'Microneedling + PRP + skinboosters: evidencia y técnica', referente: 'Baumann',
+  { id: 'X-67-microneedling-prp', d: 70, dV21: 67, bKey: 'X', tier: 'ALTA', titulo: 'Microneedling + PRP + skinboosters: evidencia y técnica', referente: 'Baumann',
     pasos: {
       causa: 'Cicatriz de acné, poros y calidad de piel son déficit de colágeno y de matriz: un microtrauma mecánico controlado dispara la reparación sin dañar la epidermis por completo.',
       mecanismo: 'Microagujas → microcanales dérmicos → cascada de cicatrización (factores de crecimiento, neocolagénesis, elastogénesis) con epidermis casi intacta → seguro en fototipos altos. PRP: concentrado de plaquetas con factores de crecimiento (evidencia moderada en alopecia androgénica y cicatrices, mejor combinado con microneedling). Skinboosters: HA poco reticulado en microdepósitos → hidratación y calidad, no volumen.',
@@ -591,7 +600,7 @@ export const DERMA_CEREBRO: DermaCerebroFicha[] = [
     fuentes: [F.ad(3200, 266617053, 'Baumann 3e · Microneedling and PRP'), F.dn('skin-needling')],
     verificar: ['Profundidad de aguja por indicación (mm) y protocolo de PRP — A VERIFICAR (05-sep) en Baumann 3e 266617053'] },
 
-  { id: 'X-68-cosmeceutica', d: 68, bKey: 'X', tier: 'ALTA', titulo: 'Ciencia cosmecéutica: Baumann Skin Typing, retinoides, antioxidantes, fotoprotección (protocolo Nítida)', referente: 'Baumann',
+  { id: 'X-68-cosmeceutica', d: 71, dV21: 68, bKey: 'X', tier: 'ALTA', titulo: 'Ciencia cosmecéutica: Baumann Skin Typing, retinoides, antioxidantes, fotoprotección (protocolo Nítida)', referente: 'Baumann',
     pasos: {
       causa: 'La rutina diaria del paciente es el tratamiento de fondo de toda la estética: sin barrera, fotoprotección y retinoide, cualquier procedimiento rinde menos y se complica más.',
       mecanismo: 'Retinoides tópicos (retinol → retinaldehído → tretinoína/adapaleno): normalizan la queratinización, estimulan colágeno y reducen pigmento; vitamina C (L-ascórbico): antioxidante y cofactor de colágeno; niacinamida: barrera y transferencia de melanosomas; fotoprotección de amplio espectro (+ color/óxido de hierro para luz visible en melasma/PIH); despigmentantes (hidroquinona en ciclos, azelaico, etc.).',
@@ -650,4 +659,9 @@ export function dermaDrillEvaluar(recitados: string[], segundos: number): { acie
   return { acierto: aTiempo && faltanVerificados.length === 0 && pct >= DERMA_DRILL_HDPH.minimoAcierto * 100, aTiempo, pct, faltan, faltanVerificados };
 }
 /** Sesiones en las que se ejecuta el drill (d19/d20 · checkpoint H d46 · cierre Z d70). */
-export const DERMA_DRILL_DIAS: number[] = [19, 20, 46, 70];
+/**
+ * @deprecated (19-sep-2026) Lista fija de la v2.1 ([19,20,46,70]); sin consumidores en src (grep 19-sep). La fuente viva es
+ * `DERMA_DRILL_DIAS_V3` de dermaDailyPlan.ts (d19 · d20 · d52 · d73, derivada de `drillHDPH`). Se conserva solo para que
+ * DermaEmergencyDrill.tsx (comentario) y docs antiguos no queden sin referencia; borrar en la próxima limpieza.
+ */
+export const DERMA_DRILL_DIAS: number[] = [19, 20, 52, 73];

@@ -59,7 +59,17 @@
  *   node DATA/_scripts/gen_encaps_minisim.js --registrar <export.json> [--append]
  *        → guarda TRACKING_ERRORES/RONDAS/<id>.json y muestra la línea para `gen_encaps_semana.js --cerrar`;
  *          con --append apenda la ronda (con preguntas[]) a _registro_resoluciones.json (append-only).
+ *
+ *  FALLBACK (v5.14, 19-sep): una EVAL nunca sale con 0Q (ni un BANCO con <16Q principal). Cuando el pool LIBRE del código está a 0
+ *  (o bajo el mínimo) se completa en cadena, con aviso en consola y constancia en `_meta.fallback` (motivo · cadena · n_fallback);
+ *  los ítems repetidos llevan `retest: true` y `fallback: <paso>` (el runner los marca «re-test»):
+ *    1) reales del MISMO código ya usados en salidas previas (re-test con otro enfoque) → 2) otros ítems del código ya usados (otros
+ *    sub-ejes primero) → 3) banco_items_v1 del ÁREA (libres, luego usados) → 4) cola larga del ÁREA: set_cola_larga / set_reales_otros
+ *    (libres, luego usados) → 5) último recurso: cualquier ítem del área, luego del pool. Las salidas ya completas NO cambian (la
+ *    cadena solo corre por debajo del mínimo) y la regla «un ítem se usa una sola vez» sigue vigente para los sets nuevos: el re-test
+ *    es la excepción explícita hasta que Joseph reponga stock (PENDIENTES: V-2 · I-3 · III-5).
  * Sin dependencias externas. No toca Supabase ni el Calendar.
+ * v5.14 (19-sep): D1 = lun 21-sep-2026 · 92 días → vie 29-ene-2027 · cadena de fallback (eval/banco nunca a 0Q).
  */
 const fs = require('fs');
 const path = require('path');
@@ -272,7 +282,7 @@ function revela(it,d){if(!DOC.correccion_inmediata||!state.ans[it.n]||!state.con
  d.querySelectorAll('.opts label').forEach((l)=>{const v=l.querySelector('input').value;if(v===it.clave)l.classList.add('right');else if(v===state.ans[it.n])l.classList.add('wrong');});
  if(!d.querySelector('.exp')){const ok=state.ans[it.n]===it.clave;const e=document.createElement('div');e.className='exp';e.innerHTML=(ok?'<span class=ok>CORRECTO</span>':'<span class=bad>FALLO</span>')+' · <b>'+it.clave+') '+esc(it.respuesta||it.opciones[it.clave])+'</b>'+(it.explicacion?'<br>'+esc(it.explicacion):'')+(it.fuente?'<br><span class=note>Fuente: '+esc(it.fuente)+'</span>':'')+(it.verificado_contra?'<br><span class=note>Verificado contra: '+esc(it.verificado_contra)+'</span>':'');d.appendChild(e);}}
 function render(){const box=$('#qs');box.innerHTML='';DOC.items.forEach((it)=>{const d=document.createElement('div');d.className='q';d.dataset.n=it.n;
- d.innerHTML='<h3>Pregunta '+it.n+' de '+DOC.n+(DOC.mostrar_codigo?' · '+(it.codigo||'')+(it.subangulo?' · '+esc(it.subangulo):'')+' · '+(it.formato||''):'')+'</h3><p>'+esc(it.enunciado)+'</p><div class="opts">'+
+ d.innerHTML='<h3>Pregunta '+it.n+' de '+DOC.n+(DOC.mostrar_codigo?' · '+(it.codigo||'')+(it.subangulo?' · '+esc(it.subangulo):'')+' · '+(it.formato||''):'')+(it.retest?' · <span style="opacity:.7;font-weight:normal">re-test (otro enfoque)</span>':'')+'</h3><p>'+esc(it.enunciado)+'</p><div class="opts">'+
  Object.entries(it.opciones).map(([k,v])=>'<label><input type="radio" name="a'+it.n+'" value="'+k+'"'+(state.ans[it.n]===k?' checked':'')+'> <b>'+k+')</b> '+esc(v)+'</label>').join('')+'</div>'+
  '<div class="conf">Confianza: '+[1,2,3].map((c)=>'<label><input type="radio" name="c'+it.n+'" value="'+c+'"'+(state.conf[it.n]==c?' checked':'')+'> '+({1:'adivinada',2:'dudosa',3:'segura'})[c]+'</label>').join('')+'</div>';
  d.addEventListener('mouseenter',()=>state.active=it.n);d.addEventListener('focusin',()=>state.active=it.n);
@@ -350,6 +360,34 @@ function modoMinisim(fecha) {
 }
 
 // BANCO DEL DÍA (lun-jue 16:30-17:10): 16-20Q del código + sub-eje de la fila banqueo1h + 4-5Q del secundario
+// ── v5.14 (19-sep): CADENA DE FALLBACK — una eval NUNCA sale con 0Q (ver cabecera). Devuelve la cadena usada; muta `items`. ──
+const esReal = (it) => it.origen === 'examen_real' || /examen real/i.test(String(it.fuente || ''));
+function completarConFallback(items, objetivo, { pool, usados, codigoPool, area, subEje, r, excluir = new Set() }) {
+  const cadena = [];
+  const tiene = new Set(items.map((x) => x.id));
+  const usado = (x) => usados.has(x.id), libre = (x) => !usados.has(x.id);
+  const otroSub = (l) => shuffle(l, r).sort((a, b) => ((a.sub_eje === subEje) - (b.sub_eje === subEje))); // otros sub-ejes primero (sort estable)
+  const toma = (paso, fuente, lista) => {
+    if (items.length >= objetivo) return;
+    const l = lista.filter((x) => !tiene.has(x.id) && !excluir.has(x.id)).slice(0, objetivo - items.length);
+    if (!l.length) return;
+    for (const it of l) { items.push({ ...it, retest: usado(it) || undefined, fallback: paso }); tiene.add(it.id); }
+    cadena.push({ paso, fuente, n: l.length });
+  };
+  const delCod = codigoPool ? pool.filter((x) => poolCode(x.codigo) === codigoPool) : [];
+  toma(1, `reales de ${codigoPool} ya usados (re-test con otro enfoque)`, otroSub(delCod.filter((x) => usado(x) && esReal(x))));
+  toma(2, `otros sub-ejes de ${codigoPool} ya usados (re-test)`, otroSub(delCod.filter((x) => usado(x) && !esReal(x))));
+  const delArea = area ? pool.filter((x) => x.area === area && poolCode(x.codigo) !== codigoPool) : [];
+  const esV1 = (x) => x._file === 'banco_items_v1.json', esCL = (x) => /^set_(cola_larga|reales_otros)/.test(x._file || '');
+  toma(3, `banco_items_v1 del área ${area} (libres)`, shuffle(delArea.filter((x) => esV1(x) && libre(x)), r));
+  toma(3, `banco_items_v1 del área ${area} (ya usados, re-test)`, shuffle(delArea.filter((x) => esV1(x) && usado(x)), r));
+  toma(4, `cola larga del área ${area} (libres)`, shuffle(delArea.filter((x) => esCL(x) && libre(x)), r));
+  toma(4, `cola larga del área ${area} (ya usados, re-test)`, shuffle(delArea.filter((x) => esCL(x) && usado(x)), r));
+  toma(5, `último recurso: cualquier ítem del área ${area || '?'} (libres primero)`, shuffle(delArea, r).sort((a, b) => usado(a) - usado(b)));
+  toma(5, 'último recurso: cualquier ítem del pool (libres primero)', shuffle(pool, r).sort((a, b) => usado(a) - usado(b)));
+  return cadena;
+}
+const textoCadena = (c) => (c.length ? c.map((x) => `paso ${x.paso} ${x.fuente} (${x.n}Q)`).join(' · ') : 'sin ítems en toda la cadena');
 function modoBanco(fecha, ignorar) {
   const fila = filaSQL(fecha);
   if (!fila) throw new Error(`no hay fila en _encaps_mantenimiento_2027.sql para ${fecha} (¿fin de semana/feriado o SQL no regenerado?)`);
@@ -381,7 +419,13 @@ function modoBanco(fecha, ignorar) {
   };
   tomaBalanceado(delSub, objetivoP);
   if (principal.length < objetivoP) tomaBalanceado(otrosSub, objetivoP);
-  if (principal.length < 16) avisos.push(`principal: solo ${principal.length}Q de ${codigoPool} en el pool (receta 16-20)`);
+  let fallback = null;
+  if (principal.length < 16) {
+    const n0 = principal.length;
+    const cadena = completarConFallback(principal, 16, { pool, usados, codigoPool, area: areaDe(fila.codigo), subEje, r });
+    fallback = { motivo: `pool libre de ${codigoPool}: ${n0}Q principal (mínimo 16)`, cadena, n_fallback: principal.length - n0 };
+    avisos.push(`principal: solo ${n0}Q libres de ${codigoPool} en el pool (receta 16-20) → FALLBACK ${principal.length - n0}Q: ${textoCadena(cadena)}`);
+  }
   if (subEje && delSub.length + principal.filter((x) => x.sub_eje === subEje).length < 8) avisos.push(`sub-eje '${subEje}': solo ${principal.filter((x) => x.sub_eje === subEje).length}Q ciñéndose al sub-eje; el resto es del código`);
   // secundario: 4-5Q
   const sec = secundario ? cand.filter((it) => poolCode(it.codigo) === poolCode(secundario) && !principal.includes(it)).slice(0, 5) : [];
@@ -394,10 +438,10 @@ function modoBanco(fecha, ignorar) {
     tema: fila.subtema, fuente_preguntas: `BANCO_PROPIO (${[...new Set(items.map((x) => x._file))].join(', ')})`,
     n: items.length, seg_por_q: 90, umbral: 75, alerta: 60, mostrar_codigo: true, correccion_inmediata: true,
     instrucciones: `${principal.length}Q CIEGAS de ${fila.codigo}${subEje ? ' (sub-eje: ' + subEje + ')' : ''} + ${sec.length}Q del secundario de cola larga ${secundario || ''}. Corrección INMEDIATA al marcar respuesta + confianza (Palmerton: intenta primero, luego lee la clave y recalibra). Meta crucero ≥75 % ciego. Al terminar: exporta el JSON → línea de cierre → gen_encaps_semana.js --cerrar.`,
-    _meta: { generado: new Date().toISOString().slice(0, 10), fila_sql: { dia: fila.dia, tipo: fila.tipo, codigo: fila.codigo, sub_eje: subEje, secundario, instancia: fila.extra.instancia, de: fila.extra.de }, conteos, avisos, lista_negra_2026_II: pretestHecho ? 'levantada' : 'VIGENTE', rechazados: rechazados.slice(0, 10), pool_disponible_codigo: delCodigo.length - principal.length },
+    _meta: { generado: new Date().toISOString().slice(0, 10), fila_sql: { dia: fila.dia, tipo: fila.tipo, codigo: fila.codigo, sub_eje: subEje, secundario, instancia: fila.extra.instancia, de: fila.extra.de }, conteos, avisos, lista_negra_2026_II: pretestHecho ? 'levantada' : 'VIGENTE', rechazados: rechazados.slice(0, 10), pool_disponible_codigo: delCodigo.length - principal.length , ...(fallback ? { fallback } : {}) },
     items: items.map(({ _file, ...it }) => it),
   };
-  console.log(`BANCO ${fecha} (${WD[dowDe(fecha)]}) · ${fila.codigo}${subEje ? ' · ' + subEje : ''} · ${principal.length}Q principal (${conteos.recall_directo_pct}% recall directo; sub-ejes ${JSON.stringify(conteos.por_sub_eje)}) + ${sec.length}Q secundario ${secundario || '—'} · reales ${conteos.reales}/${items.length} · quedan ${delCodigo.length - principal.length}Q de ${codigoPool} en el pool`);
+  console.log(`BANCO ${fecha} (${WD[dowDe(fecha)]}) · ${fila.codigo}${subEje ? ' · ' + subEje : ''} · ${principal.length}Q principal (${conteos.recall_directo_pct}% recall directo; sub-ejes ${JSON.stringify(conteos.por_sub_eje)}) + ${sec.length}Q secundario ${secundario || '—'} · reales ${conteos.reales}/${items.length} · quedan ${Math.max(0, delCodigo.length - principal.filter((x) => !x.fallback).length)}Q de ${codigoPool} en el pool`);
   for (const a of avisos) console.warn('⚠', a);
   if (!DRY) escribir(`banco_${fecha}`, doc);
 }
@@ -434,17 +478,25 @@ function modoEval(fecha, ignorar) {
     items = items.concat(vin.slice(0, 2));
     if (items.length < 5) items = items.concat(delCod.filter((x) => !items.includes(x)).slice(0, 5 - items.length));
   }
-  if (items.length < 5) console.warn(`⚠ eval ${fecha}: solo ${items.length}Q disponibles`);
+  // v5.14 (19-sep): una eval NUNCA sale con 0Q → cadena de fallback (cabecera) cuando el pool libre no llega a 5Q
+  let fallback = null;
+  if (items.length < 5) {
+    const n0 = items.length;
+    const cadena = completarConFallback(items, 5, { pool, usados, codigoPool: filaAyer.codigo ? poolCode(filaAyer.codigo) : null, area: filaAyer.codigo ? areaDe(filaAyer.codigo) : null, subEje: filaAyer.extra.sub_eje || null, r });
+    fallback = { motivo: `pool libre de ${filaAyer.codigo || 'fallos previos'}: ${n0}Q (mínimo 5)`, cadena, n_fallback: items.length - n0 };
+    console.warn(`⚠ eval ${fecha}: solo ${n0}Q libres de ${filaAyer.codigo || 'fallos previos'} → FALLBACK ${items.length - n0}Q: ${textoCadena(cadena)}`);
+    if (!items.length) throw new Error(`eval ${fecha}: 0Q incluso tras la cadena de fallback (¿pool vacío?)`);
+  }
   items = items.map((it, i) => ({ n: i + 1, ...it }));
   const doc = {
     id: `EVAL_${fecha}`, titulo: `Eval anclada ENCAPS · ${WD[dowDe(fecha)]} ${fecha} · ${filaAyer.codigo || 'fallos previos'}`, tipoRonda: 'eval_anclada', fecha, codigo: filaAyer.codigo || 'MIX', sub_eje: filaAyer.extra.sub_eje || null,
     tema: `eval anclada · ${modo}`, fuente_preguntas: `BANCO_PROPIO (${[...new Set(items.map((x) => x._file))].join(', ')})`,
     n: items.length, seg_por_q: 72, umbral: 60, alerta: 60, mostrar_codigo: false,
     instrucciones: `5 preguntas del tema de AYER (${modo}), de memoria, sin material; solución al final. Si fallas ≥2 el código queda CALIENTE para el override del viernes (gen_encaps_semana.js).`,
-    _meta: { generado: new Date().toISOString().slice(0, 10), sesion_anterior: { fecha: ayer, tipo: filaAyer.tipo, codigo: filaAyer.codigo, sub_eje: filaAyer.extra.sub_eje || null }, modo, lista_negra_2026_II: pretestHecho ? 'levantada' : 'VIGENTE' },
+    _meta: { generado: new Date().toISOString().slice(0, 10), sesion_anterior: { fecha: ayer, tipo: filaAyer.tipo, codigo: filaAyer.codigo, sub_eje: filaAyer.extra.sub_eje || null }, modo, lista_negra_2026_II: pretestHecho ? 'levantada' : 'VIGENTE', ...(fallback ? { fallback } : {}) },
     items: items.map(({ _file, ...it }) => it),
   };
-  console.log(`EVAL ${fecha} · ${modo} · ${items.length}Q (${items.filter(esCifra).length} cifra · ${items.filter((x) => esVineta(x) && !esCifra(x)).length} viñeta · ${items.filter((x) => !esVineta(x) && !esCifra(x)).length} directa)`);
+  console.log(`EVAL ${fecha} · ${modo} · ${items.length}Q (${items.filter(esCifra).length} cifra · ${items.filter((x) => esVineta(x) && !esCifra(x)).length} viñeta · ${items.filter((x) => !esVineta(x) && !esCifra(x)).length} directa)${fallback ? ` · ${fallback.n_fallback}Q por fallback (${items.filter((x) => x.retest).length} re-test)` : ''}`);
   if (!DRY) escribir(`eval_${fecha}`, doc);
 }
 // por qué un día hábil no tiene fila en el SQL: antes del arranque del plan, después del cierre o feriado del régimen

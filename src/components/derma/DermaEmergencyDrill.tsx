@@ -14,7 +14,7 @@ import { useDermaLedger, notifyDermaLedger, dermaHoyISO } from './dermaLedgerBus
  * Flujo: RECITAR (los ítems permanecen ocultos, solo se ven las fases; Joseph recita de memoria en voz
  * alta) → PARAR → marcar lo que dijo → evaluar (dermaDrillEvaluar: ≤90 s + todos los VERIFICADOS +
  * ≥80 %) → guardar en el ledger (fuente 'drill', id 0). Se ejecuta en d19/d20 (tras el swap v2.1) y en los
- * checkpoints d46 (H) / d70 (Z) — DERMA_DRILL_DIAS. Historial = entradas 'drill' del ledger.
+ * checkpoints d52 (cp2) / d73 (repaso 2) — DERMA_DRILL_DIAS_V3 (derivada de drillHDPH; v5.14). Historial = entradas 'drill' del ledger.
  */
 const WEB = { cursor: 'pointer', transition: Motion.base } as any;
 const FASE_LABEL: Record<DermaDrillItem['fase'], string> = {

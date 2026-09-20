@@ -6,6 +6,9 @@
 // a las constantes de abajo, y el total crece solo con max(dia) de study_schedule (así la FASE INTENSIVA feb-mar 2027,
 // modo='INTENSIVO', extiende el plan sin tocar código). Rama INTENSIVO en itemsForDay (extra.loop · sim · repaso ·
 // drill_cifras) y simDays con los tipos pretest / sim100 / dress_rehearsal (nota /100, sim_n = dia).
+// v5.14 (19-sep) · cableado en esta pasada: useEncapsPlan → regimenDe() (hoyDia/total vivos + `regimen` expuesto), rama INTENSIVO en
+// itemsForDay (loop de 8 segmentos · senales · repaso_final · medio_dia · sims /100), simDays + simIntensivoDe()/encapsSim100Zone()
+// y tipoRondaDe() para el CIERRE DE SESIÓN. ⚠ Horas del loop intensivo = extra.nota_horas (heredadas, A CONFIRMAR en febrero).
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { supabase } from './supabase';
 import { ENCAPS_FICHAS_POR_TEMA, ENCAPS_VIDEO_DRIVE, ENCAPS_THEOMED_AREA, ENCAPS_THEOMED_VIDEOS, ENCAPS_COMPENDIO, ENCAPS_AREA_PREFIJO, ENCAPS_THEOMED_TEMA_SESION } from './encapsFuentes';
@@ -13,7 +16,7 @@ import { ENCAPS_VIDEOS_POR_TEMA } from './encapsVideosPorTema';
 import { ENCAPS_THEOMED_RESUMENES, ENCAPS_BANCOS, ENCAPS_MAPAS_PDF, ENCAPS_POSTESTS, ENCAPS_BIBLIOTECA_QX, ENCAPS_MANUALES_THEOMED } from './encapsResumenes';
 import { PRACTICA_DEEP_PRIME, PRACTICA_REPASO } from './encapsPracticaExtra';
 import { ENCAPS_AREA_FORECAST, ENCAPS_CRITICAL_TOPICS, ENCAPS_REBOTE_TOPICS, ENCAPS_CIEGO_META_PCT, ENCAPS_CIEGO_CRUCERO_PCT } from './encapsRentabilidad';
-import { loadCierres, onCierresChange, cierreARow, fallosDeErrores, sumTipo, type CierreSesion } from './encapsProgressSync';
+import { loadCierres, onCierresChange, cierreARow, fallosDeErrores, sumTipo, type CierreSesion, type TipoRonda } from './encapsProgressSync';
 
 // ── D1 por examen (para calcular el día actual) ──
 // v5.14 (19-sep): SOLO FALLBACK. El valor vivo es study_metrics.extra.d1 (lo escribe gen_encaps_mantenimiento_2027.js en cada
@@ -128,6 +131,65 @@ export function miniSimSerie(days: StudyScheduleDay[], simScores: Record<number,
     const nota = simScores[simN]?.nota;
     return { dia: d.dia, fecha: d.fecha, simN, nota: nota == null ? null : Number(nota), semana: i + 1 };
   });
+}
+// ── FASE INTENSIVA 2027-I (modo='INTENSIVO', dia 93+ · sembrada por gen_encaps_intensivo_2027.js; v5.14 19-sep) ──
+// Tipos de día que emite el generador: senales · loop (lun-jue, extra.loop = 8 segmentos) · pretest · sim100 · dress_rehearsal ·
+// repaso_final · medio_dia. Los 3 tipos de simulacro son días-sim con escala /100 y sim_n = dia (study_sim_scores), igual que el mini_sim /25.
+export const ENCAPS_INTENSIVO_SIM_TIPOS = ['pretest', 'sim100', 'dress_rehearsal'] as const;
+export type IntensivoSimTipo = typeof ENCAPS_INTENSIVO_SIM_TIPOS[number];
+// FASE_INTENSIVA_2027-I.md §4: umbral del runner 85 % · alerta <70 % (el pre-test 2026-II usa umbral ≥70 en su fila: extra.sim.umbral manda).
+export const ENCAPS_SIM100_META = { n: 100, segPorQ: 72, umbral: ENCAPS_CIEGO_META_PCT, alerta: 70 } as const;
+export function esSimIntensivo(day: StudyScheduleDay | null | undefined): boolean {
+  return !!day && day.modo === 'INTENSIVO' && (ENCAPS_INTENSIVO_SIM_TIPOS as readonly string[]).includes(String(day.tipo));
+}
+export interface SimIntensivo {
+  tipo: IntensivoSimTipo; simN: number; n: number; segPorQ: number; label: string; fuente: string; clave: string;
+  url?: string; doc?: string; registro?: string; correccion?: string; umbral: number; alerta: number;
+}
+export function simIntensivoDe(day: StudyScheduleDay | null | undefined): SimIntensivo | null {
+  if (!day || !esSimIntensivo(day)) return null;
+  const ex = (day.extra || {}) as Record<string, unknown>;
+  const s = (ex.sim && typeof ex.sim === 'object' ? ex.sim : {}) as Record<string, unknown>;
+  const tipo = day.tipo as IntensivoSimTipo;
+  const labelDef = tipo === 'pretest' ? 'PRE-TEST 2026-II · 100Q' : tipo === 'dress_rehearsal' ? 'DRESS REHEARSAL · 100Q' : 'SIMULACRO 100Q';
+  const str = (k: string) => (typeof s[k] === 'string' ? (s[k] as string) : undefined);
+  return {
+    tipo, simN: Number(s.sim_n ?? day.dia), n: Number(s.n ?? ENCAPS_SIM100_META.n), segPorQ: Number(s.seg_por_q ?? ENCAPS_SIM100_META.segPorQ),
+    label: str('label') || day.subtema || labelDef, fuente: str('fuente') || '', clave: str('clave') || (tipo === 'pretest' ? 'oficial' : ''),
+    url: str('url'), doc: str('doc'), registro: str('registro'), correccion: str('correccion'),
+    umbral: Number(s.umbral ?? (tipo === 'pretest' ? 70 : ENCAPS_SIM100_META.umbral)), alerta: Number(s.alerta ?? ENCAPS_SIM100_META.alerta),
+  };
+}
+// nota /100 → zona: verde ≥85 (umbral del runner) · ámbar 70-84 · rojo <70 (alerta). `umbral` opcional por fila (pre-test = 70).
+export function encapsSim100Zone(nota: number | null | undefined, umbral: number = ENCAPS_SIM100_META.umbral, alerta: number = ENCAPS_SIM100_META.alerta): 'go' | 'warn' | 'nogo' | 'none' {
+  if (nota == null) return 'none';
+  if (nota >= umbral) return 'go';
+  if (nota >= alerta) return 'warn';
+  return 'nogo';
+}
+export interface LoopSegmento { h: string; seg: string; min: number }
+export function loopDe(day: StudyScheduleDay | null | undefined): LoopSegmento[] {
+  const ex = (day?.extra || {}) as Record<string, unknown>;
+  if (!Array.isArray(ex.loop)) return [];
+  return (ex.loop as unknown[]).filter(x => x && typeof x === 'object').map(x => {
+    const o = x as Record<string, unknown>;
+    return { h: String(o.h || ''), seg: String(o.seg || ''), min: Number(o.min || 0) };
+  });
+}
+// Repaso multi-temporal de la fila (extra.repaso = { 'D-1': código, 'D-3': código, 'D-7': código }) → lista corta.
+export function repasoIntensivoDe(day: StudyScheduleDay | null | undefined): { key: string; codigo: string }[] {
+  const ex = (day?.extra || {}) as Record<string, unknown>;
+  const r = (ex.repaso && typeof ex.repaso === 'object' ? ex.repaso : {}) as Record<string, unknown>;
+  return ['D-1', 'D-3', 'D-7'].filter(k => typeof r[k] === 'string' && r[k]).map(k => ({ key: k, codigo: String(r[k]) }));
+}
+// Tipo de ronda del CIERRE DE SESIÓN según el tipo de día (MANTENIMIENTO + INTENSIVO) — lo usa el formulario al final de la cola.
+export function tipoRondaDe(day: StudyScheduleDay | null | undefined): TipoRonda {
+  const t = String(day?.tipo || '');
+  if (t === 'mini_sim') return 'mini_sim';
+  if (t === 'pretest') return 'pretest';
+  if (t === 'sim100' || t === 'dress_rehearsal') return 'simulacro';
+  if (t === 'repaso_final' || t === 'medio_dia' || t === 'senales') return 'repaso';
+  return 'banco_dia';
 }
 // % ciego SEMANAL (lunes ISO) ponderado por preguntas, a partir de study_progress examen='ENCAPS'.
 export interface CiegoSemana { lunes: string; pct: number; n: number; rondas: number; porArea: Record<string, { pct: number; n: number }> }
@@ -505,6 +567,152 @@ export function itemsForDay(day: StudyScheduleDay, focusByCode: Record<string, n
   const N = day.dia;
   const items: PlanItem[] = [];
   const pad = (n: number) => String(n).padStart(2, '0');
+
+  // ── v5.14 (19-sep) · FASE INTENSIVA 2027-I (modo='INTENSIVO', feb-2027 → D-1): ENCAPS vuelve a bloque principal ──
+  // Renderiza lo que siembra gen_encaps_intensivo_2027.js: extra.loop (8 segmentos lun-jue) · extra.sim (viernes, /100) ·
+  // extra.repaso (D-1/D-3/D-7) · extra.drill_cifras · extra.sub_eje / critico_v3 / instancia · temas_secundarios (paraguas / cola larga).
+  // ⚠ Las horas de extra.loop son las heredadas del loop USMLE v5.6 (extra.nota_horas); se confirman en la reestructuración de febrero.
+  if (day.modo === 'INTENSIVO') {
+    const ex = (day.extra || {}) as Record<string, unknown>;
+    const sim = simIntensivoDe(day);
+    const rep = repasoIntensivoDe(day);
+    const repTxt = rep.length ? rep.map(r => `${r.key} ${r.codigo}`).join(' · ') : 'sin códigos previos aún';
+    const diasAExamen = Number(ex.dias_a_examen);
+    const sufijo = Number.isFinite(diasAExamen) ? ` · faltan ${diasAExamen} d` : '';
+    const banco = ENCAPS_BANCOS[0];
+    if (sim) {
+      const titulo = sim.tipo === 'pretest' ? '🔥 PRE-TEST 2026-II' : sim.tipo === 'dress_rehearsal' ? '🔥 DRESS REHEARSAL (D-2)' : '🔥 SIMULACRO COMPLETO';
+      items.push({
+        key: `D${N}:i_sim`, kind: 'sim',
+        label: `${titulo}: ${sim.n}Q cronometradas (${sim.segPorQ}s/Q) · ${sim.label}`,
+        detail: [
+          sim.fuente ? `Fuente: ${sim.fuente}` : null, sim.clave ? `clave ${sim.clave}` : null, sim.doc ? `doc ${sim.doc}` : null,
+          'modo examen estricto: sin pausa, sin material, confianza 1-3 por ítem',
+          sim.tipo === 'dress_rehearsal' ? 'a la hora real del examen · ropa, comida y traslado simulados' : null,
+        ].filter(Boolean).join(' · ') + sufijo,
+        url: sim.url || banco?.url, source: sim.fuente ? sim.fuente.split(' · ')[0] : (banco?.fuente || 'Banco'),
+        dur: Math.round(sim.n * sim.segPorQ / 60),
+      });
+      items.push({
+        key: `D${N}:i_sim_corr`, kind: 'eval',
+        label: `📊 Corrección + CIERRE tipo ${tipoRondaDe(day)} (nota /${sim.n} → study_sim_scores sim_n = ${sim.simN} · % ciego → study_progress)`,
+        detail: `${sim.correccion || 'corrección por código v3 y por formato (viñeta / viñeta+cifra / directa / cifra)'} · umbral ≥${sim.umbral}/100 · alerta <${sim.alerta}/100${sim.registro ? ` · ${sim.registro}` : ''} · cada fallo → subtipo (knowledge/transfer/proceso) → _registro_resoluciones.json`,
+        dur: 60,
+      });
+      return items;
+    }
+    if (day.tipo === 'senales') {
+      items.push({
+        key: `D${N}:i_senales`, kind: 'material',
+        label: `📡 ${day.subtema || 'RE-SCAN DE SEÑALES 2027-I'}`,
+        detail: `Actualizar ${String(ex.doc || 'SENALES_2027-I.md')} y los pesos del vector v3 (y el condicional de IV) antes del pre-test del viernes${sufijo}`,
+        dur: 120,
+      });
+      items.push({
+        key: `D${N}:i_log`, kind: 'eval',
+        label: '📝 CIERRE: pesos v3 revisados + lista de RM/NTS nuevas → Anki ENCAPS::Cifras',
+        detail: 'Sin banco nuevo hoy; las señales alimentan las semanas 2-5 (barrido de críticos por índice de brecha)', dur: 15,
+      });
+      return items;
+    }
+    if (day.tipo === 'medio_dia') {
+      items.push({
+        key: `D${N}:i_cifras`, kind: 'material',
+        label: '🧠 D-1 · MEDIO DÍA: 30 min de cifras (Anki ENCAPS::Cifras + CIFRAS_CRITICAS_2027-I.md)',
+        detail: String(ex.regla || 'doctrina del sprint 2026-II: D-1 medio día, cero preguntas nuevas'), dur: 30,
+      });
+      items.push({
+        key: `D${N}:i_hoja`, kind: 'eval',
+        label: '📋 Hoja de errores del dress rehearsal (solo lectura) · logística del examen · dormir 7 h',
+        detail: `Sin material nuevo · sin banco${sufijo}`, dur: 30,
+      });
+      return items;
+    }
+    if (day.tipo === 'repaso_final') {
+      items.push({
+        key: `D${N}:i_registro`, kind: 'eval',
+        label: '🔁 REPASO FINAL · errores del registro (_registro_resoluciones.json: CCSN · CONCEPTO · OLVIDO) rehechos con otro enfoque',
+        detail: `Repaso multi-temporal: ${repTxt} · sin material nuevo${sufijo}`, dur: 90,
+      });
+      items.push({
+        key: `D${N}:i_cifras`, kind: 'material',
+        label: '🧠 Drill de cifras: CIFRAS_CRITICAS_2027-I.md + Anki ENCAPS::Cifras',
+        detail: 'Recall directo de cifras de los 8 críticos v3 (I-3 · V-2 · II-3 · III-5 · I-4 · II-5 · II-4 · IV-1/2)', dur: 30,
+      });
+      items.push({
+        key: `D${N}:i_mapas`, kind: 'material',
+        label: '🗺 Mapas en blanco de los 8 críticos v3 (uno por hoja, sin mirar)',
+        detail: 'Cada hueco del mapa → tarjeta esa tarde', dur: 60,
+      });
+      items.push({
+        key: `D${N}:i_log`, kind: 'eval',
+        label: '📝 CIERRE DE SESIÓN tipo repaso (formulario al final de la cola → study_progress)',
+        detail: 'n · seguras · dudosas · fallos por subtipo · t medio → % ciego (fuente app:cierre)', dur: 10,
+      });
+      return items;
+    }
+    // ── loop de 8 segmentos (lun-jue): calentamiento · barrido de críticos · rebotes / watch-list ──
+    const loop = loopDe(day);
+    const se = typeof ex.sub_eje === 'string' && ex.sub_eje ? String(ex.sub_eje) : '';
+    const cv3 = typeof ex.critico_v3 === 'string' ? String(ex.critico_v3) : '';
+    const inst = Number(ex.instancia || 0);
+    const drill = typeof ex.drill_cifras === 'string' ? String(ex.drill_cifras) : '';
+    const secs = (day.temas_secundarios || []) as { codigo: string; subtema?: string; rol?: string; q?: string }[];
+    const paraguas = secs.filter(x => x.rol === 'paraguas');
+    const colaLarga = secs.filter(x => x.rol !== 'paraguas');
+    const temaTxt = `${day.codigo || ''} — ${day.subtema || ''}`.trim();
+    const horaDe = (h: string, min: number) => {
+      const m = /^(\d{1,2}):(\d{2})$/.exec(h);
+      if (!m) return undefined;
+      let hh = Number(m[1]), mm = Number(m[2]) + min; hh += Math.floor(mm / 60); mm %= 60;
+      return `${h}–${pad(hh)}:${pad(mm)}`;
+    };
+    const kindDe = (seg: string): PlanItem['kind'] => {
+      const t = seg.toLowerCase();
+      if (/deep prime|consolidaci/.test(t)) return 'theomed';
+      if (/pre-test|evaluaci|repaso/.test(t)) return 'eval';
+      return 'material';
+    };
+    if (!loop.length) {
+      items.push({
+        key: `D${N}:i_banco`, kind: 'theomed', label: `🎯 ${temaTxt} (loop intensivo sin segmentos en extra.loop)`,
+        detail: `Prioridad ${day.prioridad || 'CRITICA'}${sufijo}`, url: banco?.url, source: banco?.fuente || 'Banco', code: day.codigo, dur: 60,
+      });
+    }
+    loop.forEach((sg, i) => {
+      const kind = kindDe(sg.seg);
+      const t = sg.seg.toLowerCase();
+      let label = sg.seg, detail: string | undefined;
+      if (/repaso/.test(t)) { detail = `Códigos: ${repTxt}${typeof ex.repaso_registro === 'string' ? ` · ${ex.repaso_registro}` : ''}`; }
+      else if (/pre-test/.test(t)) { label = `🎯 ${sg.seg} · ${day.codigo || ''}`; detail = `10Q ciegas de ${temaTxt} · sin clave hasta responder · registro como pretest del día`; }
+      else if (/deep prime/.test(t)) {
+        label = `🔥 DEEP PRIME: ${temaTxt}`;
+        detail = [
+          `Prioridad ${day.prioridad || 'CRITICA'}`, cv3 ? `crítico v3 ${cv3}` : null, se ? `sub-eje ${se}` : null, inst ? `pasada/instancia ${inst}` : null,
+          drill || null, paraguas.length ? `paraguas: ${paraguas.map(p => p.codigo).join(' + ')}` : null,
+        ].filter(Boolean).join(' · ') + sufijo;
+      }
+      else if (/consolidaci/.test(t)) { label = `🎯 ${sg.seg} · ${day.codigo || ''}`; detail = `60 % ${day.codigo || 'hoy'} · 40 % previos (${repTxt}) · pregunta-por-pregunta con corrección inmediata`; }
+      else if (/evaluaci/.test(t)) { detail = `Eval modo examen del crítico del día (${day.codigo || 'MIX'}) · 72 s/Q · CIERRE DE SESIÓN al final de la cola → study_progress`; }
+      else if (/cierre/.test(t)) { detail = 'Cada fallo: ¿área? ¿tipo knowledge/transfer/proceso (CONCEPTO·OLVIDO·CRONOLOGIA / CCSN·CONTEXTO / CAMBIO·TIEMPO·LECTURA)?'; }
+      items.push({
+        key: `D${N}:i_loop:${i}`, kind, label, detail,
+        url: kind === 'theomed' ? banco?.url : undefined, source: kind === 'theomed' ? (banco?.fuente || 'Banco') : undefined,
+        code: kind === 'theomed' || /pre-test|evaluaci/.test(t) ? day.codigo : undefined,
+        dur: sg.min || undefined, hora: horaDe(sg.h, sg.min),
+      });
+      // Los secundarios (cola larga / watch-list) van dentro de la consolidación 30Q.
+      if (/consolidaci/.test(t)) {
+        colaLarga.forEach((c, j) => items.push({
+          key: `D${N}:i_sec:${j}`, kind: 'theomed',
+          label: `▶ SECUNDARIO (${c.rol || 'cola_larga'}): ${c.codigo} — ${c.subtema || ''} (${c.q || '5-6Q'})`,
+          detail: 'Código fuera de la rotación principal · ciegas dentro del bloque de consolidación',
+          url: banco?.url, source: banco?.fuente || 'Banco', code: c.codigo, dur: 8,
+        }));
+      }
+    });
+    return items;
+  }
 
   // ── v6 · RÉGIMEN MANTENIMIENTO 2027-I (31-ago-2026 → fines de enero): 1h/día 16:15-17:15 ──
   // Cola COMPACTA de banqueo puro; nada de videos/theomed/fichas largas. El deep work de la
@@ -961,7 +1169,8 @@ export interface UseEncapsPlan {
   metrics: StudyMetrics | null;
   checks: Record<string, boolean>;
   simScores: Record<number, StudySimScore>;
-  simDays: StudyScheduleDay[];
+  simDays: StudyScheduleDay[];          // simulacros reales + mini_sim (/25) + sims de la INTENSIVA (/100)
+  regimen: StudyRegimen;                // v5.14: D1/total vivos y su origen (study_metrics · study_schedule · fallback)
   miniSims: MiniSimPunto[];             // serie de viernes (nota /25, sim_n = dia) para el Cockpit
   progress: StudyProgressRow[];         // cierres de sesión (study_progress examen='ENCAPS')
   progressAll: StudyProgressRow[];      // progress + cierres locales aún no sincronizados (localStorage jmd-encaps-cierres)
@@ -995,10 +1204,16 @@ export function useEncapsPlan(examen: string = 'ENCAPS'): UseEncapsPlan {
   const [cierres, setCierres] = useState<CierreSesion[]>(() => loadCierres());
   useEffect(() => onCierresChange(setCierres), []);
 
-  const hoyDia = diaActual(examen);
-  const total = STUDY_TOTAL_DAYS[examen] ?? 71;
+  // v5.14 (19-sep): D1 y total VIVOS — study_metrics.extra.d1 / dias_ciclo (hoy 2026-09-21 / 92) → fila dia=1 y max(dia) de
+  // study_schedule (la INTENSIVA feb-mar extiende el total sin tocar código) → constantes STUDY_D1 / STUDY_TOTAL_DAYS como fallback.
+  const regimen = useMemo(() => regimenDe(examen, metrics, days), [examen, metrics, days]);
+  const hoyDia = diaActual(examen, regimen.d1 || undefined, regimen.total);
+  const total = regimen.total;
   const [dia, setDiaRaw] = useState(hoyDia);
-  const setDia = useCallback((d: number) => setDiaRaw(Math.max(1, Math.min(total, d))), [total]);
+  const navegado = useRef(false);   // true cuando Joseph navegó a otro día: no lo pisamos al resolver el régimen
+  const setDia = useCallback((d: number) => { navegado.current = true; setDiaRaw(Math.max(1, Math.min(total, d))); }, [total]);
+  // Cuando llega el régimen vivo (o cambia el día en Lima), re-sincroniza el día visible si no se navegó a mano.
+  useEffect(() => { if (!navegado.current) setDiaRaw(hoyDia); }, [hoyDia]);
 
   const load = useCallback(async () => {
     const [sched, met, chk, sims, prog] = await Promise.all([
@@ -1023,7 +1238,8 @@ export function useEncapsPlan(examen: string = 'ENCAPS'): UseEncapsPlan {
   const today = useMemo(() => days.find(d => d.dia === dia) ?? null, [days, dia]);
   // v6.5 (05-sep): los viernes de MANTENIMIENTO (tipo='mini_sim', simulacro NULL) también son días-sim:
   // su nota /25 se guarda en study_sim_scores con sim_n = dia (SimView) y el Cockpit grafica la serie contra 18/25.
-  const simDays = useMemo(() => days.filter(d => d.simulacro || d.tipo === 'mini_sim'), [days]);
+  // v5.14 (19-sep): + los viernes / D-2 de la INTENSIVA (tipo pretest · sim100 · dress_rehearsal, escala /100, sim_n = dia).
+  const simDays = useMemo(() => days.filter(d => d.simulacro || d.tipo === 'mini_sim' || esSimIntensivo(d)), [days]);
   const miniSims = useMemo(() => miniSimSerie(days, simScores), [days, simScores]);
   // study_progress + cierres locales que aún no llegaron (o que Supabase todavía no devolvió tras el refetch), sin duplicar por id.
   const progressAll = useMemo(() => {
@@ -1059,7 +1275,7 @@ export function useEncapsPlan(examen: string = 'ENCAPS'): UseEncapsPlan {
   }, [examen]);
 
   return {
-    loading, dia, total, today, days, metrics, checks, simScores, simDays, miniSims, progress, progressAll, ciego,
+    loading, dia, total, today, days, metrics, checks, simScores, simDays, regimen, miniSims, progress, progressAll, ciego,
     porCodigo, calientes, tendencia, cierres, prevDay, evalHoy,
     todayItems, doneToday, totalToday, repasos, proximos, hoyDia, setDia, toggleCheck, saveSim, refetch: load,
   };

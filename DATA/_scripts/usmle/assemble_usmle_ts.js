@@ -109,7 +109,19 @@ export interface DiaUSMLE {
 const footer = `
 
 export function diaDe(fechaISO: string): DiaUSMLE | undefined { return DIAS.find(x => x.fecha === fechaISO); }
-export function diaPrevio(d: DiaUSMLE): DiaUSMLE | undefined { return DIAS.find(x => x.d === d.d - 1); }
+/** Día anterior LITERAL del plan (D-1, puede ser un hito 🎯). Para el repaso anclado usar diaPrevio / ultimoDiaContenido. */
+export function diaAnterior(d: DiaUSMLE): DiaUSMLE | undefined { return DIAS.find(x => x.d === d.d - 1); }
+/**
+ * Día previo de CONTENIDO: salta los hitos 🎯 (fix #6 de la 2.ª capa, 19-sep-2026). En v5.14 los días post-hito son
+ * D2, D11, D26, D41, D56, D66, D73, D78, D83, D84, D86 y D88: la tarjeta 07:15 valida el último SUBTEMA, no el NBME.
+ * D2 (tras el UWSA1) no tiene día previo de contenido → undefined.
+ */
+export function diaPrevio(d: DiaUSMLE): DiaUSMLE | undefined {
+  for (let k = d.d - 1; k >= 1; k--) { const x = DIAS.find(y => y.d === k); if (x && !esHito(x)) return x; }
+  return undefined;
+}
+/** Alias con el nombre que propuso el crítico de completitud (#6). */
+export const ultimoDiaContenido = diaPrevio;
 export function ventana7d(fromD: number): DiaUSMLE[] { return DIAS.filter(x => x.d >= fromD && x.d < fromD + 7); }
 export const TIER_INFO: Record<string,{c:string;t:string}> = { CORE:{c:'#E5484D',t:'Core'}, HIGH:{c:'#F5A623',t:'Alto'}, MED:{c:'#3FB984',t:'Medio'} };
 /** Fase del plan por número de día (v5.14): A contenido D1-81 (21-sep→14-ene; UWSA2 D77 dentro) · B banco D82-86 (15→21-ene: NBME 31 abre, random timed D84/D86, NBME 32/33 dentro) · C sprint D87-95 (22-ene→3-feb). */
@@ -165,6 +177,65 @@ export const USMLE_TAPER = {
   },
   /** Regla escrita (DIVERGENCIAS #29 → REGLA §E-7): la señal la da usmleScores.gateHito ('ALERTA BURNOUT'). */
   burnout: 'Si 2 hitos consecutivos quedan bajo su mínimo on-track Y hay síntomas (releer sin comprender, irritabilidad, indiferencia, descansos de 5 min que se vuelven de 1 h): 3-5 días con SOLO Anki AM (30-45 min de tarjetas viejas) + sueño; frenar QBank y contenido nuevo; el corrimiento determinista (+1 día hábil por día no estudiado) absorbe la pausa; se reanuda por el gate del 80%, no por la fecha.',
+};
+
+/**
+ * KIT ANTI-PÁNICO del bloque (2.ª capa #26, 19-sep-2026). Se pinta en la Cola de hoy los días de hito (UWSA/NBME/Free 120)
+ * y vale para cualquier bloque timed. Texto de PALMERTON_METODO_COMPLETO.md §7.1 · §5.5 · §5.6 · §7.4 · §7.6 · §8.4; nada estimado.
+ */
+export const PROTOCOLO_BLOQUE = {
+  titulo: 'Kit anti-pánico del bloque (Palmerton §7.6 Panic Trap · §7.1 · §5.5 · §7.4)',
+  pasos: [
+    'AVP en 10 s DENTRO del bloque (Acknowledge · Validate · Permit): "siento mucha ansiedad ahora" → "claro que sí: es importante para mi carrera, llevo meses y hay una sola oportunidad" → "está bien sentirlo; me concentro en la pregunta y la miro como un puzzle, no como un juez de mi carácter"',
+    'Tope de 2 min por pregunta (90 s + 30 %): si se cumple → adivinar, marcar (flag) y avanzar; nunca 4-5 min en una (las preguntas de >2 min salen ~50 % vs 80 % del bloque)',
+    'Juez, no abogado: SAQ (pregunta autónoma) antes de mirar las opciones · CCSN (contexto · cronología · severidad · ruido) · rule-in antes de rule-out cuando quedan 2',
+    'Flag y sigue: la pregunta marcada deja de existir hasta el final del bloque; volver a las marcadas solo si sobra tiempo en la primera pasada',
+    'NO cambiar respuestas salvo error de lectura innegable (unidad, edad, signo vital omitido); nunca por sensación de duda (60-70 % de los cambios van de correcta a incorrecta)',
+    'Pregunta difícil = "game on": es difícil para todos y vale un punto; desconfiar y acertar es lo peor (matriz de confianza 2×2)',
+    'Entre bloques (sit-in break): "Oh F#@& to OK" en 10-15 s (nombrar la emoción · soltar con respiraciones nasales · recentrar · validar · reengancharse); al pulsar finalizar, esas 40Q dejan de existir',
+  ],
+  worstCase: 'Worst-Case Scenario Planning (§7.6-1): ANTES del primer bloque del primer hito, escribir en detalle el peor escenario y exactamente qué harías (plan B de fecha feb-mar 2027 dentro del eligibility period, sin recortar temario; "would it be the end of the world? No"). Vive en Readiness → "Plan B / peor escenario" (localStorage jmd-usmle-worstcase).',
+  fuente: 'DATA/USMLE/PALMERTON_METODO_COMPLETO.md §7.1 (2 min) · §5.5 (juez vs abogado) · §5.6 (rule-in) · §7.4 (cambiar respuestas) · §7.6 (Panic Trap: worst-case, drill, AVP) · §8.4 (test day)',
+};
+
+/**
+ * DAY-AFTER PROTOCOL (2.ª capa #5 + §12.6-9, 19-sep-2026): ~4 h el día siguiente a cada hito, alojadas en el deep prime
+ * (09:00-11:00 + resto de la mañana). El subtema de ese día NO cambia (regla de no fusionar): se anota en la app, no en DIAS.
+ * Texto de PALMERTON_METODO_COMPLETO.md §9.1-§9.2 y §12.5; nada estimado.
+ */
+export const DAY_AFTER = {
+  titulo: 'Day-After Protocol (Palmerton §9.2 · ~4 h · el día siguiente al hito)',
+  cuando: 'El hito se rinde por la mañana; la auditoría cabe en el deep prime del día siguiente (09:00-11:00 + resto de la mañana). El subtema de ese día sigue en pie (regla de no fusionar).',
+  pasos: [
+    'Trayectoria (15 min): curva del % frente a los hitos previos; ¿subieron los sistemas estudiados en las últimas 2 semanas?',
+    'Auditoría de honestidad (15 min, POR ESCRITO): "si sigo haciendo lo mismo que las últimas 2 semanas durante 6 meses, ¿qué resultado tendría?"',
+    'Triaje de errores (1 h): knowledge gap vs QI errors (interpretación / toma de examen), típicamente 50/50; ¿abogado o juez?',
+    'Drill de cronología fisiopatológica (2,5 h): 10 preguntas falladas (las más largas y con más labs) reescritas A MANO en orden cronológico estricto y en presente = 10 PC cards',
+    'Reporte POR SISTEMA (§9.1): leer el hito sistema a sistema, exigiendo ≥80 % en lo ya estudiado ("si estudio algo, ¿sube y se mantiene cuando estudio lo siguiente?"); cautela: pocos ítems por materia → intervalos de confianza enormes',
+    'Ítems experimentales / gráficos (knockouts, curvas) separados en la revisión → 2-3 tarjetas de "diseño del experimento" (§12.6-9: UWorld es débil en ese formato)',
+  ],
+  reglaDeOro: 'No dedicar el 70 % de la semana a repasar cada explicación del NBME (escribe los mejores enunciados y las peores explicaciones): usarlo como mapa de diagnóstico y rellenar con UWorld/Anki. Sin explicaciones (Free 120): PC manuscrita + Pathoma.',
+  fuente: 'DATA/USMLE/PALMERTON_METODO_COMPLETO.md §9.1 (lectura por sistema) · §9.2 (Day-After) · §12.5 · §12.6-9',
+};
+
+/**
+ * Reglas Palmerton por franja (2.ª capa #16 backlog · #17 regla del frente · #10 temporizador · #11 cambiadas/relecturas, 19-sep-2026).
+ * Clave = índice de FRANJAS (0 = 05:00 Anki · 3 = 09:00 deep prime · 4 = 11:00 · 5 = 18:00). NO cambian horas ni contenido; HorarioView las pinta.
+ */
+export const FRANJAS_REGLAS: Record<number, string[]> = {
+  0: [
+    'BACKLOG (§4.10): reviews first, nuevas después; si falta tiempo, nuevas = 0. Vencidas acumuladas → nuevas = 0 y cap de reviews 200 (número psicológico; 300 si sobra energía y volver a 200 antes de dormir) hasta la pantalla verde; NUNCA "Forget" en bloque ni resetear el mazo.',
+    'FRENO POR HITO (§4.10): % del banco / NBME estancado o en declive → nuevas = 0 y días dedicados a limpiar el backlog con honestidad; desde el NBME 31 (D82, vie 15-ene) nuevas = 0.',
+    'Pharm = mazo aparte (§4.2): 20 nuevas/día dentro del cap de 50; máximo 3 mazos.',
+  ],
+  3: [
+    'REGLA DEL FRENTE (§4.12): el anverso lo redactas TÚ (sujeto primero, amplio, sin pistas, sin cloze); APEX/Claude solo el reverso o compare & contrast una vez entendido. Anverso con la respuesta dentro = information leakage.',
+  ],
+  4: ['TEMPORIZADOR (§7.1): 2:00 por pregunta, reiniciado en cada una (si suena → adivinar, flag, avanzar); cuenta atrás en 📏 Medición o temporizador del teléfono.'],
+  5: [
+    'TEMPORIZADOR (§7.1 · §7.5): 2:00 por pregunta · 12:00 el stress set de 10Q (Fases B-C) · 60:00 el bloque de 40Q.',
+    'MÉTRICAS DEL BLOQUE (§7.3-§7.4): contar respuestas CAMBIADAS (≥2 = abogado; solo se cambia por error de lectura innegable) y RELECTURAS de una misma pregunta (3-4 = lectura circular); se registran en 📏 Medición.',
+  ],
 };
 `;
 

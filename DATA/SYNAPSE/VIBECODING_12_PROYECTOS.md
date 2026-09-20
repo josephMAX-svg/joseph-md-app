@@ -107,7 +107,7 @@
 
 - **Semana**: lun 12-oct → vie 16-oct · **SHIP**: sábado sáb 17-oct (PC SYNAPSE 15:00-17:00) · rotación `yocpmd` · commits `[S4] …` en `D:/joseph-md-app`
 - **A quién sirve**: TODOS — verify_vibecoding.js (12-sep) ya mide 'shipped' mecánicamente y gen_revision_semanal.js v1 ya pre-rellena, pero la revisión sigue diciendo 'sin dato' en varias métricas y la 7 (vibecoding) se decide por el ✓ manual: hay que cerrar el circuito (scores USMLE de usmleScores.ts, telemetría v2, plan_checks, _vibecoding_ship.json) para que el sábado 07:15 Joseph solo DECIDA.
-- **Objetivo**: Que la revisión S04 (sáb 10-oct) salga con ≥8/10 métricas reales y que la métrica 7 lea el último verify del proyecto de la semana, no el auto-reporte.
+- **Objetivo**: Que la revisión S04 (sáb 17-oct, v5.14) salga con ≥8/10 métricas reales y que la métrica 7 lea el último verify del proyecto de la semana, no el auto-reporte.
 - **Entregable verificable**: DATA/USMLE/REVISIONES/S04_2026-10-10.md con ≥8/10 métricas reales + _vibecoding_ship.json con S1-S4 + gen_revision_semanal.js leyendo verify/scores/plan_checks + commit [S4].
 - **Dónde**: DATA/_scripts/verify_vibecoding.js (ya existe) · DATA/_scripts/gen_revision_semanal.js (v1 ya existe) · DATA/REVISION_SEMANAL.md · DATA/USMLE/REVISIONES/ · src/lib/usmleScores.ts (solo lectura)
 - **Criterio de aceptación (definition of done)** — `node DATA/_scripts/verify_vibecoding.js 4`:
@@ -122,7 +122,7 @@
   - **Mié 14-10 · construir con Claude Code**: Métricas 6 y 9 desde plan_checks (S3) con fallback al export de localStorage; métrica 3 desde la telemetría v2 (primeraReview incluido).
   - **Jue 15-10 · verificar en vivo (test/URL/dato)**: Generar S04 en seco, leerla completa y corregir la plantilla (DATA/REVISION_SEMANAL.md) donde no ayude a decidir; contar métricas reales (≥8/10).
   - **Vie 16-10 · doc + commit + preparar SHIP**: Automatizar el pre-relleno (viernes 21:00, schtasks o /schedule) + commit [S4] + node DATA/_scripts/verify_vibecoding.js 4 + journal.
-- **SHIP**: SHIP S4: sábado 10-oct 07:15 primera revisión con ≥8/10 métricas reales y métrica 7 verificada por script (verify 4 → 4/4).
+- **SHIP**: SHIP S4: sábado 17-oct 07:15 revisión S04 con ≥8/10 métricas reales y métrica 7 verificada por script (verify 4 → 4/4).
 
 ## S5 · Puente VITALS → revisión (sueño y agua cruzados con % eval)
 
@@ -332,7 +332,7 @@
   - **Mié 30-12 · 1 mejora pequeña (≤15')**: 1 mejora pequeña (≤15') o ninguna; commit [S15].
   - **Lun 04-01 · journal + lectura de docs**: Journal 5' + lectura de docs (15').
   - **Mar 05-01 · retro semanal**: Retro semanal (≤15') + commit [S15] + verify --sensores (31-dic y 1-ene son feriados: el bloque S15 = mar 29 y mié 30-dic + lun 4 y mar 5-ene).
-- **Sábado/domingo**: Sábado 2-ene PC (opcional, 30'): verify --sensores + retro; si descansas, marca ✓ igual.
+- **Sábado/domingo**: Sábado 9-ene PC (opcional, 30'): verify --sensores + retro; si descansas, marca ✓ igual (S15 termina el mar 5-ene: su PC es el sábado siguiente).
 
 ### S16 · Mantenimiento 4: sensores verdes antes del UWSA2 y del cierre de Fase A · MANTENIMIENTO (15'/día)
 

@@ -60,7 +60,7 @@
 - **Revisión semanal** (`gen_revision_semanal.js`, métrica 3): media de due, último backlog, retención y `minFinde`.
 - Automatizar (decisión de Joseph; NO se ha creado): tarea programada de Windows a las 21:05 con Anki abierto, p. ej.
   `schtasks /create /tn "JMD Anki telemetria" /tr "node D:\joseph-md-app\DATA\_scripts\anki_telemetria.js" /sc daily /st 21:05`,
-  o un hook `SessionEnd` de Claude Code. Es el proyecto **S2 del vibecoding** (14-18 sep).
+  o un hook `SessionEnd` de Claude Code. Es el proyecto **S2 del vibecoding** (`anki-sync-kpi`, lun 28-sep → vie 2-oct-2026, SHIP sáb 3-oct · v5.14).
 
 ### Regla operativa: **Anki de sáb/dom = due × 20 s** (dato, no reloj)
 - Los eventos del Calendar (sáb 19:00 · dom 17:00) son el *hueco*; su **duración la fija el número** que imprime el
@@ -84,7 +84,7 @@
 ### Qué hay ahora (vault `D:\JOSEPH\Vault_Medicina MIR_Joseph`)
 - **`01_USMLE/_template_day_usmle.md`** — plantilla **plana** (core *Templates*, carpeta `09_PLANTILLAS` configurada; `{{date:YYYY-MM-DD}}`),
   sin Templater. Frontmatter YAML plano que Obsidian muestra como propiedades (booleanos = casillas):
-  `date · day_of_week · exam · type: study_day · regimen: v5.13 · d_num · tema` · bloques `b0500_anki · b0715_repaso · b0815_pretest ·
+  `date · day_of_week · exam · type: study_day · regimen: v5.14 · d_num · tema` · bloques `b0500_anki · b0715_repaso · b0815_pretest ·
   b0900_deep_prime · b1100_consolidacion · b1800_eval` · `pretest10 · q30_pct · eval_pct · error_dominante` (taxonomía v3:
   CONCEPTO/OLVIDO/CRONOLOGIA/CCSN/CONTEXTO/CAMBIO/TIEMPO/LECTURA) · `sueno_h` · `modo` (VERDE/ÁMBAR/ROJO) · **5 casillas
   `burnout_ciego_cae · burnout_releer · burnout_sueno · burnout_cinismo · burnout_gym`** (DOCTRINA §6) · `evite_hoy` (espejo Goggins).
@@ -116,7 +116,7 @@
 
 ---
 
-### Verificación D2-D3 (vie 18 / lun 21-sep-2026 · primeros días de contenido, setup FSRS en D3 = lun 21-sep; el D1 jue 17-sep es el UWSA1 · v5.13) — A VERIFICAR (18-sep)
+### Verificación D1-D3 (lun 21 / mar 22 / mié 23-sep-2026 · el D1 lun 21-sep es el UWSA1, D2-D3 = primeros días de contenido, setup FSRS en D3 = mié 23-sep · v5.14) — A VERIFICAR (23-sep)
 1. Anki → Preferencias → Repaso → **FSRS activado** (colección completa).
 2. Preset del deck `APEX::USMLE` (y sub-decks): **desired retention 0.90** · **nuevas/día = 10** · sin límite artificial
    de repasos/día (dejar 9999) · "Optimize" de parámetros FSRS solo cuando haya ≥ 1.000 revisiones (mediados de oct).
@@ -163,7 +163,7 @@ carpeta del vault `03_MIR` correspondiente; si el vault usa otro slug, corregir 
 3. **Suspender quirúrgicamente, no borrar**: al abrir la fase MIR, suspender (`Ctrl+J`) `tag:sys::Biochemistry` y las
    tarjetas `deck:APEX::USMLE tag:sys::Fundamentos` que sean rutas metabólicas puras (bajo ROI MIR); nunca suspender
    por deck entero. Antes de un Step 2 CK futuro se des-suspenden con la misma búsqueda.
-4. **Derma cuenta doble**: `deck:APEX::DERMA tag:step1` es el repaso anclado del D73 (mar 29-dic en v5.13, "dermato Step 1") y en
+4. **Derma cuenta doble**: `deck:APEX::DERMA tag:step1` es el repaso anclado del D74 (mar 5-ene-2027 en v5.14, "dermato Step 1" dentro de MSK/Rheum) y en
    abril entra al filtered deck de `sys::Dermatology` junto con `APEX::MIR::dermatologia`.
 5. **Verificación** (AnkiConnect, Anki abierto): `findCards` con `tag:sys::*` debe devolver >0 en `APEX::USMLE` desde S1 y
    en `APEX::MIR` desde la primera semana con APEX; anotar aquí la fecha de la primera verificación. Mientras el motor

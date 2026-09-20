@@ -44,7 +44,8 @@ function ObsMarcaLink({ company }: { company: string }) {
  * (placeholders). Reutilizado por mobile y desktop vía `variant`.
  */
 
-const LIVIANO_PANELS: { id: string; label: string; icon: string; fkey: string; render: () => React.ReactNode }[] = [
+// `render(go)`: `go(id)` cambia de panel desde dentro (Academia F9 → Logística F5, donde vive lo que la Academia produce).
+const LIVIANO_PANELS: { id: string; label: string; icon: string; fkey: string; render: (go: (id: string) => void) => React.ReactNode }[] = [
   { id: 'cockpit',     label: 'Cockpit',     icon: '📊', fkey: 'F1', render: () => <CockpitPanel /> },
   { id: 'oferta',      label: 'Oferta',      icon: '🎯', fkey: 'F2', render: () => <OfertaPanel /> },
   { id: 'marketing',   label: 'Marketing',   icon: '📣', fkey: 'F3', render: () => <MarketingPanel /> },
@@ -53,7 +54,7 @@ const LIVIANO_PANELS: { id: string; label: string; icon: string; fkey: string; r
   { id: 'web',         label: 'Web & Links', icon: '🌐', fkey: 'F6', render: () => <WebPanel /> },
   { id: 'directrices', label: 'Directrices', icon: '🧠', fkey: 'F7', render: () => <DirectricesPanel /> },
   { id: 'horario',     label: 'Horario',     icon: '🗓️', fkey: 'F8', render: () => <BrandHorario brand="pulso" /> },
-  { id: 'academia',    label: 'Academia',    icon: '📚', fkey: 'F9', render: () => <LivianoTodayPlan /> },
+  { id: 'academia',    label: 'Academia',    icon: '📚', fkey: 'F9', render: (go) => <LivianoTodayPlan onIrALogistica={() => go('logistica')} /> },
 ];
 
 const MAIN_IDS = ['pulso', 'liviano', 'pirqa'];
@@ -312,7 +313,7 @@ function LivianoView({
 
       {/* Ventana de terminal del panel activo */}
       <PanelChrome fkey={active.fkey} title={active.label} accent={salvia}>
-        {active.render()}
+        {active.render(setPanel)}
       </PanelChrome>
     </View>
   );

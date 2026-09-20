@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, LineHeight } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
@@ -10,6 +10,10 @@ import {
   livCasoDe, livDrillDe, livCardsDeDia, livPretest, livAnkiDeck,
 } from '../../lib/livianoCasos';
 import { planHoyD, loadDone, saveDone } from '../../lib/studyProgress';
+import {
+  LivianoScoreStore as ScoreStore, ScoreEntry, RubricaEntry, EntradaLiviano, LIVIANO_SCORE_KEY,
+  loadLivianoScore, saveLivianoScore, espejarLivianoScore, pullLivianoScores, mergeLivianoScore,
+} from '../../lib/livianoScore';
 
 /**
  * LivianoTodayPlan — "LIVIANO Academia" día a día (90 días L-V · medicina de la obesidad).
@@ -17,38 +21,18 @@ import { planHoyD, loadDone, saveDone } from '../../lib/studyProgress';
  *   · LUNES  → pre-test ciego 5Q sobre la semana D-7 (tarjetas de mecanismo) → % ciego
  *   · DRILL  → cifras ancla en ciego (D37 · D58 · D75 · D88, v5.14) → % ciego
  *   · VIERNES→ caso del banco LIV_CASOS con rúbrica 0-2 × 4 → rúbrica media
- * Persistencia: localStorage 'jmd-liviano-score' (este dispositivo). El ✓ de studyProgress
- * ('liviano') se sigue escribiendo para el progreso global, pero lo que se muestra es el % real.
+ * Persistencia (v5.14, 19-sep): localStorage 'jmd-liviano-score' + ESPEJO en Supabase `study_progress`
+ * (examen 'LIVIANO' · fuente 'app:liviano', mismo patrón que ENCAPS) vía src/lib/livianoScore.ts; al montar se hace pull
+ * y gana la entrada más reciente. El ✓ de studyProgress ('liviano') se sigue escribiendo para el progreso global,
+ * pero lo que se muestra es el % real. Enlace "→ Logística F5" (Acceso Perú + Protocolo clínico = lo que la Academia produce).
  * Generado desde DATA/BUSINESS/liviano_curriculum.json (gen_liviano_plan.js).
  */
 const SALVIA = '#9DB07F';
 const VIOLET = '#A78BFA';
-const SCORE_KEY = 'jmd-liviano-score';
+const SCORE_KEY = LIVIANO_SCORE_KEY;
 const isWeb = Platform.OS === 'web' && typeof window !== 'undefined';
-
-interface ScoreEntry { ok: number; total: number; fecha: string }
-interface RubricaEntry { items: number[]; fecha: string }
-interface ScoreStore {
-  v: 1;
-  pretests: Record<string, ScoreEntry>;
-  drills: Record<string, ScoreEntry>;
-  rubricas: Record<string, RubricaEntry>;
-}
-const EMPTY: ScoreStore = { v: 1, pretests: {}, drills: {}, rubricas: {} };
-
-function loadScore(): ScoreStore {
-  if (!isWeb) return EMPTY;
-  try {
-    const raw = window.localStorage.getItem(SCORE_KEY);
-    if (!raw) return EMPTY;
-    const p = JSON.parse(raw);
-    return { v: 1, pretests: p.pretests || {}, drills: p.drills || {}, rubricas: p.rubricas || {} };
-  } catch { return EMPTY; }
-}
-function saveScore(s: ScoreStore) {
-  if (!isWeb) return;
-  try { window.localStorage.setItem(SCORE_KEY, JSON.stringify(s)); } catch {}
-}
+const loadScore = (): ScoreStore => (isWeb ? loadLivianoScore() : { v: 1, pretests: {}, drills: {}, rubricas: {} });
+const saveScore = (st: ScoreStore) => { if (isWeb) saveLivianoScore(st); };
 
 function todayISO(): string {
   try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; }
@@ -245,7 +229,7 @@ function AnkiBlock({ cards, modulo, color }: { cards: LivAnkiCard[]; modulo: str
   );
 }
 
-export default function LivianoTodayPlan() {
+export default function LivianoTodayPlan({ onIrALogistica }: { onIrALogistica?: () => void } = {}) {
   const iso = todayISO();
   const hoyD = planHoyD(LIV_DIAS, iso);
   const todayDia = livDiaDe(iso) || LIV_DIAS.find((x) => x.d === hoyD) || LIV_DIAS[0];
@@ -265,7 +249,22 @@ export default function LivianoTodayPlan() {
     saveDone('liviano', Array.from(n));
     return n;
   });
-  const persist = (next: ScoreStore) => { setScore(next); saveScore(next); };
+  const [espejo, setEspejo] = useState<'idle' | 'ok' | 'offline'>('idle');
+  // Pull del espejo Supabase al montar (otro dispositivo): gana la entrada más reciente por fecha.
+  useEffect(() => {
+    let vivo = true;
+    pullLivianoScores().then((remoto) => {
+      if (!vivo) return;
+      if (!remoto) { setEspejo('offline'); return; }
+      setScore((prev) => { const m = mergeLivianoScore(prev, remoto); saveScore(m); return m; });
+      setEspejo('ok');
+    });
+    return () => { vivo = false; };
+  }, []);
+  const persist = (next: ScoreStore, entrada?: EntradaLiviano) => {
+    setScore(next); saveScore(next);
+    if (entrada) espejarLivianoScore(entrada).then((r) => setEspejo(r.ok ? 'ok' : 'offline'));
+  };
   const stamp = () => todayISO();
 
   const caso: LivCaso | undefined = dia.casoId ? livCasoDe(dia.casoId) : undefined;
@@ -337,7 +336,7 @@ export default function LivianoTodayPlan() {
               titulo="📝 Pre-test ciego · semana anterior (D-7)"
               sub={`5 tarjetas de mecanismo de los días D${dia.d - 5}-D${dia.d - 1}. Responde en voz alta ANTES de ver la respuesta; luego marca honesto. Meta ≥ ${LIV_META_CIEGO_PCT} %.`}
               color={Colors.blue} qs={pretestQs} guardado={score.pretests[String(dia.d)]}
-              onSave={(ok, total) => { persist({ ...score, pretests: { ...score.pretests, [String(dia.d)]: { ok, total, fecha: stamp() } } }); marcarHecho(dia.d, true); }}
+              onSave={(ok, total) => { const e: ScoreEntry = { ok, total, fecha: stamp() }; persist({ ...score, pretests: { ...score.pretests, [String(dia.d)]: e } }, { tipo: 'pretest', clave: String(dia.d), d: dia.d, modulo: dia.modulo, entry: e }); marcarHecho(dia.d, true); }}
             />
           </FadeUp>
         ) : null}
@@ -349,7 +348,7 @@ export default function LivianoTodayPlan() {
               titulo="🎯 Drill de cifras ancla (ciego)"
               sub={`${drill.titulo}. Una cifra por pregunta, sin notas. Lo fallado va a Anki hoy mismo.`}
               color={Colors.coral} qs={drill.qs} guardado={score.drills[String(dia.d)]}
-              onSave={(ok, total) => { persist({ ...score, drills: { ...score.drills, [String(dia.d)]: { ok, total, fecha: stamp() } } }); marcarHecho(dia.d, true); }}
+              onSave={(ok, total) => { const e: ScoreEntry = { ok, total, fecha: stamp() }; persist({ ...score, drills: { ...score.drills, [String(dia.d)]: e } }, { tipo: 'drill', clave: String(dia.d), d: dia.d, modulo: dia.modulo, entry: e }); marcarHecho(dia.d, true); }}
             />
           </FadeUp>
         ) : null}
@@ -358,7 +357,7 @@ export default function LivianoTodayPlan() {
         {caso ? (
           <FadeUp delay={40}>
             <CasoBlock caso={caso} color={SALVIA} guardado={score.rubricas[String(caso.id)]}
-              onSave={(items) => { persist({ ...score, rubricas: { ...score.rubricas, [String(caso.id)]: { items, fecha: stamp() } } }); marcarHecho(dia.d, true); }} />
+              onSave={(items) => { const e: RubricaEntry = { items, fecha: stamp() }; persist({ ...score, rubricas: { ...score.rubricas, [String(caso.id)]: e } }, { tipo: 'rubrica', clave: String(caso.id), d: dia.d, modulo: dia.modulo, casoId: caso.id, entry: e }); marcarHecho(dia.d, true); }} />
           </FadeUp>
         ) : null}
 
@@ -370,6 +369,18 @@ export default function LivianoTodayPlan() {
 
         {/* Anki del día */}
         <FadeUp delay={120}><AnkiBlock cards={cards} modulo={dia.modulo} color={c} /></FadeUp>
+
+        {/* Lo que la Academia PRODUCE vive en Logística F5 (Acceso Perú + Protocolo clínico) */}
+        <FadeUp delay={130}>
+          <TouchableOpacity activeOpacity={0.85} disabled={!onIrALogistica} onPress={onIrALogistica} style={[st.cola, { borderLeftColor: Colors.brass }]}>
+            <Text style={st.colaIcon}>📦</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={st.colaLbl}>ACADEMIA → LOGÍSTICA F5</Text>
+              <Text style={st.colaVal}>Acceso Perú (tabla DIGEMID + cadena de frío) · Protocolo clínico v1</Text>
+              <Text style={st.colaSub}>{dia.modulo === 'ACCESO PERÚ' ? 'Hoy toca el Anexo A: rellena la tabla en F5 con fuente fechada. ' : ''}Lo que la Academia produce se verifica ahí; el caso 16 se resuelve solo con el protocolo.{onIrALogistica ? ' Toca para abrir F5 →' : ''}</Text>
+            </View>
+          </TouchableOpacity>
+        </FadeUp>
 
         {/* Próximos 5 días */}
         <Text style={st.secLbl}>📆 Próximos 5 días</Text>
@@ -391,7 +402,7 @@ export default function LivianoTodayPlan() {
         })}
         <Text style={st.note}>
           {LIV_META.totalDias} días L-V ({LIV_META.inicio} → {LIV_META.fin}) · 7 módulos + síntesis (liviano_curriculum.json) · {LIV_META.casos} casos en viernes
-          · {LIV_META.pretests} pre-tests · {LIV_META.drills} drills. Score en este dispositivo ('{SCORE_KEY}').
+          · {LIV_META.pretests} pre-tests · {LIV_META.drills} drills. Score local ('{SCORE_KEY}') + espejo Supabase study_progress (LIVIANO · app:liviano): {espejo === 'ok' ? 'sincronizado' : espejo === 'offline' ? 'sin conexión — queda local' : 'comprobando…'}.
         </Text>
       </GlassPanel>
     </View>

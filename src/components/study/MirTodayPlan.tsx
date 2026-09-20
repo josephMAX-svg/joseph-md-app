@@ -8,14 +8,17 @@ import {
   MIR_DAILY_META, MIR_DIAS, DiaMIR, mirDiaDe, mirDiaN, mir7d, MIR_RENT, capUrl,
   mirCierreDe, mirFranjasDe, mirSesionDe, MIR_SEG_POR_Q, mirMinutos, MIR_TEMAS_TOTAL,
 } from '../../lib/mirDailyPlan';
-import { DiaMIRMant, MIR_MANT_META, MIR_MANT_DIAS, mirMantFranjas, mirMantFoco, mirMant7d } from '../../lib/mirMantenimiento';
+import { DiaMIRMant, MIR_MANT_META, MIR_MANT_DIAS, mirMantFranjas, mirMantFoco, mirMant7d, mirMantProximoTierC } from '../../lib/mirMantenimiento';
 import {
   mirEvalLogAppend, mirEvalLogExportJSON, mirEvalLogLoad, mirEvalLogPull, mirEntradaDe, mirNeto, MIR_TIPO_ERROR, MirTipoError, MirEvalKind,
   mirCierreDeAsignatura, mirEstadoCierreTxt, mirCierreUmbral, mirPeorAsignatura, mirColaD14, mirBaselineTabla, mirAsignaturasEnAnclasD7,
   mirAnclasDinamicas, MirAnclaSlot, mirEstadosTemas, MirTemaEstado, MIR_AJUSTES, MirAjuste, mirTemasQueExigenAjuste,
-  mirAgregadoAsignatura, MIR_AGREGADO_MIN_Q, mirUsadasIds, MIR_VALIDACION_TXT, MIR_GATE,
+  mirAgregadoAsignatura, MIR_AGREGADO_MIN_Q, mirUsadasIds, MIR_VALIDACION_TXT, MIR_GATE, MirEvalEntry,
 } from '../../lib/mirEvalLog';
-import { preguntasSinUsar, poolResumen } from '../../lib/mirPreguntasOficiales';
+import {
+  preguntasSinUsar, preguntasSinUsarDeAsignatura, preguntasMixtasSinUsar, mezclaDeterminista, mirPoolDisponible, MirPreguntaOficial,
+} from '../../lib/mirPreguntasOficiales';
+import { MirPoolLista, poolConFallback } from './MirPoolEval';
 import { mirUsmleBridge } from '../../lib/mirUsmleBridge';
 import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, loadDone, saveDone } from '../../lib/studyProgress';
 import { mirObsUrl } from '../../lib/obsidianMap';
@@ -36,6 +39,10 @@ import { mirAnkiDeck, ANKIWEB } from '../../lib/ankiLinks';
  *  · Test de cierre 10Q el 1er día de cada bloque · D77 mini-MIR 40Q · D78 tabla de neto (baseline).
  *  · Fallback a mirMantenimiento (4-ene→31-mar-2027) cuando no hay DiaMIR. sáb+dom libres → cola D+14.
  *  · Regla v3b (gap 11): los APEX MIR se crean DIRECTAMENTE en Anki hasta que el redeploy de n8n esté verificado.
+ *  · Pool oficial (19-sep-2026, DATA/MIR/POOL_USO.md §2-§5): anclada 4Q · pre-test 5Q · quiz 8-10Q · cierre 10Q · mini-MIR 40Q
+ *    reservan `qIds` en orden horario del día (cada segmento excluye las usadas del log + las reservadas antes ese día; si el
+ *    segmento ya se guardó, se muestran sus ids); banqueo: foco + 2.º EvalForm los jueves Tier C (`dia.tierC`, entrada propia);
+ *    vista de pregunta con `preguntaPorId` (MirPoolEval.tsx). Fallback declarado: test del capítulo/asignatura ProMIR.
  */
 const AMBER = '#F5A623';       // ámbar España (acento oficial de la consola MIR)
 const BLUE = Colors.blue;      // sapphire
@@ -171,7 +178,9 @@ function EvalForm({ dia, kind, total, totalOpciones, asignatura, tema, capId, te
   const [tacticaOn, setTacticaOn] = useState(false);
   const [msg, setMsg] = useState<string>('');
   const [tick, setTick] = useState(0);
-  const previa = useMemo(() => mirEntradaDe(dia.fecha, kind, undefined, kind === 'pretest' || kind === 'quiz' ? dia.d : undefined), [dia.fecha, dia.d, kind, tick]);
+  const previa = useMemo(() => kind === 'mantenimiento'
+    ? mirEvalLogLoad().filter((e) => e.fecha === dia.fecha && e.kind === kind && e.asignatura === asignatura).sort((a, b) => (b.ts || '').localeCompare(a.ts || ''))[0]
+    : mirEntradaDe(dia.fecha, kind, undefined, kind === 'pretest' || kind === 'quiz' ? dia.d : undefined), [dia.fecha, dia.d, kind, asignatura, tick]);
   const fallos = Math.max(0, tot - aciertos - blancos);
   const r = mirNeto(aciertos, tot, blancos);
   const pct = tot ? Math.round((aciertos / tot) * 1000) / 10 : 0;
@@ -361,7 +370,7 @@ function AnclasView({ dia, slots, calientes, onPick }: { dia: DiaMIR; slots: Mir
 }
 
 /** Test de cierre (1er día del bloque siguiente): 10Q de la asignatura cerrada. */
-function CierreCard({ dia, onSaved }: { dia: DiaMIR; onSaved: () => void }) {
+function CierreCard({ dia, qIds, onSaved }: { dia: DiaMIR; qIds: string[]; onSaved: () => void }) {
   const c = mirCierreDe(dia.d);
   if (!c) return null;
   const prev = mirCierreDeAsignatura(c.asignatura);
@@ -380,7 +389,8 @@ function CierreCard({ dia, onSaved }: { dia: DiaMIR; onSaved: () => void }) {
         {prev && <Text style={[st.formHint, { marginTop: 8 }]}>Último cierre registrado: {prev.entry.fecha} · neto {prev.netoPct} % → {mirEstadoCierreTxt(prev.estado, dia.fecha)}</Text>}
         {agg.fuente === 'agregado' && <Text style={st.formHint}>Agregado de la asignatura (cierre + ancladas + quiz, {agg.total}Q): neto {agg.netoPct} % → {mirEstadoCierreTxt(agg.estado, dia.fecha)} (el agregado manda sobre el cierre de 10Q)</Text>}
         <TimerQ color={CORAL} presets={[10, 25, 40]} />
-        <EvalForm dia={{ d: dia.d, fecha: dia.fecha, num: c.num }} kind="cierre" total={10} asignatura={c.asignatura} tema={`Cierre ${c.asignatura}`} color={CORAL} titulo="Registrar test de cierre (10Q)" tactica onSaved={onSaved} />
+        {mirPoolDisponible() && <MirPoolLista qIds={qIds} color={CORAL} titulo={`Pool oficial · ${c.asignatura} (mezcla determinista por fecha)`} pedidas={10} fallback="test por asignatura ProMIR" />}
+        <EvalForm dia={{ d: dia.d, fecha: dia.fecha, num: c.num }} kind="cierre" total={10} asignatura={c.asignatura} tema={`Cierre ${c.asignatura}`} color={CORAL} titulo="Registrar test de cierre (10Q)" tactica qIds={qIds} onSaved={onSaved} />
       </View>
     </FadeUp>
   );
@@ -406,9 +416,34 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, onPick, hoyISO, bump, sy
   const entries = mirEvalLogLoad();
   const din = useMemo(() => mirAnclasDinamicas(dia.d, entries, hoyISO), [dia.d, entries.length, hoyISO]);
   const estadoTema = esTema ? mirEstadosTemas(entries).get(dia.d) : undefined;
-  const poolOK = poolResumen().length > 0;
-  const qIdsQuiz = useMemo(() => (poolOK ? preguntasSinUsar(dia.capId, mirUsadasIds(entries)).slice(0, 10).map((q) => q.id) : []), [dia.capId, entries.length, poolOK]);
+  const poolOK = mirPoolDisponible();
   const d1 = din.slots[0].dia;
+  // Pool oficial: reserva de ids en orden horario (15:15 anclada/cierre → 15:38 pre-test → 16:05 quiz → D77 mini-MIR).
+  // Cada segmento excluye las usadas del log (local + espejo) y las reservadas antes ese día; si ya se guardó, muestra sus ids.
+  const pool = useMemo(() => {
+    const vacio = { anclada: [] as string[], cierre: [] as string[], pretest: [] as string[], quiz: [] as string[], miniMIR: [] as string[] };
+    if (!poolOK) return vacio;
+    const excl = new Set<string>(mirUsadasIds(entries));
+    const toma = (kind: MirEvalKind, d: number | undefined, fn: () => MirPreguntaOficial[], n: number): string[] => {
+      const prev: MirEvalEntry | undefined = mirEntradaDe(dia.fecha, kind, entries, d);
+      const ids = prev?.qIds?.length ? prev.qIds.slice() : fn().filter((q) => !excl.has(q.id)).slice(0, n).map((q) => q.id);
+      ids.forEach((id) => excl.add(id));
+      return ids;
+    };
+    const anclada: string[] = [];
+    if (esTema && !cierre && dia.d > 1) {
+      const prev = mirEntradaDe(dia.fecha, 'anclada', entries);
+      if (prev?.qIds?.length) anclada.push(...prev.qIds);
+      else for (const s of din.slots) { if (!s.dia) continue; const ids = preguntasSinUsar(s.dia.capId, excl).slice(0, s.nQ).map((q) => q.id); ids.forEach((id) => excl.add(id)); anclada.push(...ids); }
+      anclada.forEach((id) => excl.add(id));
+    }
+    const cierreIds = esTema && cierre ? toma('cierre', undefined, () => mezclaDeterminista(preguntasSinUsarDeAsignatura(cierre.num, excl), dia.fecha), 10) : [];
+    const pretest = esTema ? toma('pretest', dia.d, () => preguntasSinUsar(dia.capId, excl), 5) : [];
+    const quiz = esTema ? toma('quiz', dia.d, () => preguntasSinUsar(dia.capId, excl), 10) : [];
+    const miniMIR = dia.d === 77 ? toma('miniMIR', undefined, () => preguntasMixtasSinUsar(40, excl, dia.fecha, { soloPlan: true }), 40) : [];
+    return { anclada, cierre: cierreIds, pretest, quiz, miniMIR };
+  }, [dia.d, dia.fecha, dia.capId, entries.length, poolOK, esTema, cierre, din]);
+  const qIdsQuiz = pool.quiz;
   return (
     <View>
       <FadeUp>
@@ -445,15 +480,16 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, onPick, hoyISO, bump, sy
         <FadeUp delay={30}>
           <View style={[st.temaCard, { borderColor: CORAL + '66' }]}>
             <Text style={[st.formTitle, { color: CORAL }]}>🏁 mini-MIR 40Q mixto · {mirMinutos(40)} min cronometrados · en blanco permitido</Text>
-            <Text style={st.temaSub}>Preguntas oficiales de las 14 asignaturas (cuadernillos examenesmir.com hasta que exista el pool mapeado). Solo plantilla + neto hoy; la corrección es mañana (D78). Mínimo on-track del hito: 50 % neto.</Text>
+            <Text style={st.temaSub}>40Q oficiales sin usar de las 14 asignaturas del plan (preguntasMixtasSinUsar, mezcla determinista por fecha); si el pool no llega a 40, el resto con cuadernillos examenesmir.com. Solo plantilla + neto hoy; la corrección es mañana (D78). Mínimo on-track del hito: 50 % neto.</Text>
             <TimerQ color={CORAL} presets={[40, 25, 10]} />
-            <EvalForm dia={{ d: dia.d, fecha: dia.fecha }} kind="miniMIR" total={40} asignatura="Repaso integral" tema="mini-MIR 40Q" color={CORAL} titulo="Registrar mini-MIR (40Q)" tactica onSaved={bump} />
+            {poolOK && <MirPoolLista qIds={pool.miniMIR} color={CORAL} titulo="Pool oficial · mini-MIR mixto" pedidas={40} fallback="cuadernillos examenesmir.com" />}
+            <EvalForm dia={{ d: dia.d, fecha: dia.fecha }} kind="miniMIR" total={40} asignatura="Repaso integral" tema="mini-MIR 40Q" color={CORAL} titulo="Registrar mini-MIR (40Q)" tactica qIds={pool.miniMIR} onSaved={bump} />
           </View>
         </FadeUp>
       )}
       {dia.d === 78 && <BaselineView />}
 
-      {esTema && (cierre ? <CierreCard dia={dia} onSaved={bump} /> : (
+      {esTema && (cierre ? <CierreCard dia={dia} qIds={pool.cierre} onSaved={bump} /> : (
         <>
           <AnclasView dia={dia} slots={din.slots} calientes={din.calientes} onPick={onPick} />
           {dia.d > 1 && (
@@ -461,7 +497,8 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, onPick, hoyISO, bump, sy
               <Plegable titulo={`⏱ Cronómetro ${MIR_SEG_POR_Q} s/Q (4Q · 10Q · 25Q · 40Q) · aviso a 100 s por pregunta`} color={BLUE}>
                 <TimerQ color={BLUE} />
               </Plegable>
-              <EvalForm dia={{ d: dia.d, fecha: dia.fecha, num: dia.num }} kind="anclada" total={4} asignatura={d1?.asignatura || dia.asignatura} tema={d1?.tema || dia.tema} capId={d1?.capId} color={BLUE} titulo="15:27 · Registrar eval anclada (4Q)" conAnclas slots={din.slots} tactica onSaved={bump} />
+              {poolOK && <MirPoolLista qIds={pool.anclada} color={BLUE} titulo="Pool oficial · anclada (2Q D-1 + 1Q por slot dinámico)" pedidas={din.slots.reduce((a, s) => a + (s.dia ? s.nQ : 0), 0)} fallback="test del capítulo ProMIR de cada slot" />}
+              <EvalForm dia={{ d: dia.d, fecha: dia.fecha, num: dia.num }} kind="anclada" total={4} asignatura={d1?.asignatura || dia.asignatura} tema={d1?.tema || dia.tema} capId={d1?.capId} color={BLUE} titulo="15:27 · Registrar eval anclada (4Q)" conAnclas slots={din.slots} tactica qIds={pool.anclada} onSaved={bump} />
             </>
           )}
         </>
@@ -471,13 +508,15 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, onPick, hoyISO, bump, sy
       {esTema && (
         <>
           <Text style={st.secLbl}>📋 Cola de hoy · 15:30–16:15 (en orden) · 17-19 Q/día</Text>
-          <FadeUp delay={60}><ColaItem icon="❓" lbl="PRE-TEST · 5Q ciegas (test del capítulo ProMIR) · 8 min" val={`${dia.asignatura} → ${dia.tema}`} sub="ProMIR → Entrenar · marca los gaps: solo eso se lee después · REGÍSTRALO: cuenta para el gate del tema" color={GREEN} url={capUrl(dia.capId)} /></FadeUp>
+          <FadeUp delay={60}><ColaItem icon="❓" lbl="PRE-TEST · 5Q ciegas (pool oficial → test del capítulo ProMIR) · 8 min" val={`${dia.asignatura} → ${dia.tema}${poolOK ? ` · pool oficial: ${pool.pretest.length} Q sin usar` : ''}`} sub="ProMIR → Entrenar · marca los gaps: solo eso se lee después · REGÍSTRALO: cuenta para el gate del tema" color={GREEN} url={capUrl(dia.capId)} /></FadeUp>
           <Plegable titulo="Registrar pre-test 5Q (10 s · diagnóstico, no cuenta para readiness; sí para validar el tema)" color={GREEN}>
-            <EvalForm dia={{ d: dia.d, fecha: dia.fecha, num: dia.num }} kind="pretest" total={5} asignatura={dia.asignatura} tema={dia.tema} capId={dia.capId} temaD={dia.d} color={GREEN} titulo="15:38 · Pre-test 5Q ciegas" />
+            {poolOK && <MirPoolLista qIds={pool.pretest} color={GREEN} titulo="Pool oficial · pre-test (ciego: no abras la clave antes de contestar)" pedidas={5} />}
+            <EvalForm dia={{ d: dia.d, fecha: dia.fecha, num: dia.num }} kind="pretest" total={5} asignatura={dia.asignatura} tema={dia.tema} capId={dia.capId} temaD={dia.d} color={GREEN} titulo="15:38 · Pre-test 5Q ciegas" qIds={pool.pretest} onSaved={bump} />
           </Plegable>
           <FadeUp delay={90}><ColaItem icon="📖" lbl="LECTURA DIRIGIDA · solo los gaps del pre-test · 15 min" val={`Whole Page Rule sobre el capítulo ProMIR${dia.resumenVid ? ` · (vídeo RESUMEN DE ASIGNATURA ${dia.resumenVid}: no es del capítulo, no verlo entero)` : ''}`} sub="vídeo solo si el clip del capítulo es ≤12 min verificado · dudas → CCSN" color={AMBER} url={capUrl(dia.capId)} /></FadeUp>
           <FadeUp delay={120}><ColaItem icon="🧪" lbl="8-10Q COMENTADAS · Rule-In → Rule-Out · 12 min" val={`Test del capítulo ProMIR · cover-the-options · ${MIR_SEG_POR_Q} s/Q${poolOK ? ` · pool oficial: ${qIdsQuiz.length} Q sin usar de este capítulo` : ' · sin pool oficial (test del capítulo)'}`} sub="cada fallo → Shopping List (knowledge / transfer / proceso · 🇪🇸 delta) · REGÍSTRALO (20 s): <60 % = tema caliente → ancla de mañana" color={BLUE} url={capUrl(dia.capId)} /></FadeUp>
           <Plegable titulo="Registrar quiz 8-10Q (20 s · gate Palmerton: <60 % → caliente · 2º fallo → ajuste)" color={BLUE} abierto={!!mirEntradaDe(dia.fecha, 'pretest', entries, dia.d)}>
+            {poolOK && <MirPoolLista qIds={qIdsQuiz} color={BLUE} titulo="Pool oficial · quiz (sin las 5 del pre-test)" pedidas={10} />}
             <EvalForm dia={{ d: dia.d, fecha: dia.fecha, num: dia.num }} kind="quiz" total={10} totalOpciones={[8, 9, 10]} asignatura={dia.asignatura} tema={dia.tema} capId={dia.capId} temaD={dia.d} color={BLUE} titulo="16:05 · Quiz 8-10Q comentadas" tactica qIds={qIdsQuiz} onSaved={bump} />
           </Plegable>
           {mirObsUrl(dia.capId) && (
@@ -679,10 +718,46 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
 
 /** Modo MANTENIMIENTO (4-ene→31-mar-2027): banqueo puro sin contenido nuevo. */
 function MantenimientoView({ dia, onPick, bump, sync }: { dia: DiaMIRMant; onPick: (d: number) => void; bump: () => void; sync: SyncInfo }) {
-  const peor = mirPeorAsignatura();
+  const entries = mirEvalLogLoad();
+  const peor = mirPeorAsignatura(entries);
   const foco = mirMantFoco(dia, peor);
   const franjas = mirMantFranjas(dia);
   const color = dia.tipo === 'viernes' ? CORAL : dia.modo === 'reducido' ? Colors.muted : AMBER;
+  const tierC = dia.tierC;
+  // Tier C express (jueves): sus 10Q salen de foco.nQ (reducido 10Q → hoy todo es Tier C, sin EvalForm foco; normal 25Q → 15Q foco + 10Q Tier C).
+  const focoNQ = tierC ? Math.max(0, foco.nQ - tierC.nQ) : foco.nQ;
+  const proximoTierC = mirMantProximoTierC(dia.d + 1);
+  const poolOK = mirPoolDisponible();
+  // Pool oficial (POOL_USO §3): foco = asignatura (mezcla determinista por fecha) + 10Q interleaving de num2 en los días normales;
+  // reducido = mixtas [num, num2]; viernes = asignatura peor del log; Tier C = capítulo → asignatura → test ProMIR (entrada propia).
+  const pool = useMemo(() => {
+    const vacio = { foco: [] as string[], tierC: [] as string[], tierCDelCap: 0 };
+    if (!poolOK) return vacio;
+    const excl = new Set<string>(mirUsadasIds(entries));
+    const prevDe = (asig: string) => entries.filter((e) => e.fecha === dia.fecha && e.kind === 'mantenimiento' && e.asignatura === asig && e.qIds?.length).sort((a, b) => (b.ts || '').localeCompare(a.ts || ''))[0];
+    const prevFoco = prevDe(foco.asignatura);
+    let focoIds: string[] = [];
+    if (prevFoco?.qIds?.length) focoIds = prevFoco.qIds.slice();
+    else if (focoNQ > 0) {
+      const asig: number | string = foco.num ?? foco.asignatura;
+      if (dia.tipo === 'viernes') focoIds = preguntasSinUsarDeAsignatura(asig, excl).slice(0, focoNQ).map((q) => q.id);
+      else if (dia.modo === 'reducido') focoIds = preguntasMixtasSinUsar(focoNQ, excl, dia.fecha, { nums: [dia.num, dia.num2].filter((x): x is number => x != null) }).map((q) => q.id);
+      else {
+        const nInter = !tierC && dia.num2 != null ? Math.min(10, focoNQ) : 0;
+        focoIds = mezclaDeterminista(preguntasSinUsarDeAsignatura(asig, excl), dia.fecha).slice(0, focoNQ - nInter).map((q) => q.id);
+        focoIds.forEach((id) => excl.add(id));
+        if (nInter) focoIds = focoIds.concat(preguntasSinUsarDeAsignatura(dia.num2 as number, excl).slice(0, nInter).map((q) => q.id));
+      }
+    }
+    focoIds.forEach((id) => excl.add(id));
+    let tierCIds: string[] = []; let tierCDelCap = 0;
+    if (tierC) {
+      const prevC = prevDe(tierC.asignatura);
+      if (prevC?.qIds?.length) { tierCIds = prevC.qIds.slice(); tierCDelCap = -1; }
+      else { const r = poolConFallback(tierC.capId, tierC.num, tierC.nQ, excl); tierCIds = r.ids; tierCDelCap = r.delCap; }
+    }
+    return { foco: focoIds, tierC: tierCIds, tierCDelCap };
+  }, [dia.d, dia.fecha, foco.asignatura, foco.num, focoNQ, entries.length, poolOK, tierC]);
   return (
     <View>
       <FadeUp>
@@ -691,6 +766,8 @@ function MantenimientoView({ dia, onPick, bump, sync }: { dia: DiaMIRMant; onPic
             <Chip label={dia.modo === 'reducido' ? 'REDUCIDO · Fase B/C Step 1' : 'BANQUEO'} color={color} small />
             <Chip label={dia.tipo === 'viernes' ? 'viernes · asignatura peor del log' : `rotación ponderada · sem ${dia.semana}`} color={BLUE} small />
             <Chip label={`${foco.nQ}Q · ${dia.minQ} min · ${MIR_SEG_POR_Q} s/Q`} color={GREEN} small />
+            {tierC ? <Chip label={`TIER C EXPRESS · ${tierC.asignatura} › ${tierC.capitulo} (${tierC.nQ}Q · ${tierC.pesoCap} % de la asignatura)`} color={CORAL} small /> : null}
+            {proximoTierC ? <Chip label={`próximo Tier C: ${proximoTierC.asignatura} · ${proximoTierC.capitulo} · ${fmtFecha(proximoTierC.fecha)} (M${proximoTierC.d})`} color={Colors.muted} small /> : null}
           </View>
           <Text style={st.temaTitle}>{foco.asignatura}{dia.asignatura2 ? ` + ${dia.asignatura2}` : ''}</Text>
           <Text style={st.temaSub}>{dia.tema}</Text>
@@ -710,7 +787,24 @@ function MantenimientoView({ dia, onPick, bump, sync }: { dia: DiaMIRMant; onPic
       <FadeUp delay={100}><ColaItem icon="🃏" lbl="ANKI · APEX::MIR (todas las asignaturas)" val={mirAnkiDeck(foco.asignatura)} sub={`AnkiWeb ↗ · preset FSRS retention 0,85 hasta 31-mar (→ 0,90 en fase principal) · ${APEX_DIRECTO_ANKI}`} color={Colors.teal} url={ANKIWEB} /></FadeUp>
       <FadeUp delay={120}><ColaItem icon="🧪" lbl={`${foco.nQ}Q reales MIR · cronometradas`} val={`${foco.asignatura}${dia.asignatura2 ? ` (+ ${dia.asignatura2} interleaving)` : ''}`} sub="cuadernillos oficiales gratis (examenesmir) o test por asignatura ProMIR · en blanco permitido" color={AMBER} url="https://www.examenesmir.com/examenes-mir" /></FadeUp>
       <TimerQ color={color} presets={[foco.nQ, 10, 25, 40].filter((v, i, a) => a.indexOf(v) === i)} />
-      <EvalForm dia={{ d: dia.d, fecha: dia.fecha, num: foco.num ?? undefined }} kind="mantenimiento" total={foco.nQ} asignatura={foco.asignatura} tema={`Mantenimiento ${dia.tipo} ${foco.nQ}Q`} color={color} titulo={`Registrar ${foco.nQ}Q (${dia.minCorr} min corrección)`} tactica onSaved={bump} />
+      {focoNQ > 0 && (
+        <>
+          {poolOK && <MirPoolLista qIds={pool.foco} color={color} titulo={`Pool oficial · ${foco.asignatura}${!tierC && dia.modo === 'normal' && dia.asignatura2 ? ` + ${dia.asignatura2} (10Q interleaving)` : ''}`} pedidas={focoNQ} fallback="test por asignatura ProMIR / cuadernillos examenesmir" />}
+          <EvalForm dia={{ d: dia.d, fecha: dia.fecha, num: foco.num ?? undefined }} kind="mantenimiento" total={focoNQ} asignatura={foco.asignatura} tema={`Mantenimiento ${dia.tipo} ${focoNQ}Q`} color={color} titulo={`Registrar ${focoNQ}Q (${dia.minCorr} min corrección)`} tactica qIds={pool.foco} onSaved={bump} />
+        </>
+      )}
+      {tierC && (
+        <FadeUp delay={130}>
+          <View style={[st.temaCard, { borderColor: CORAL + '66' }]}>
+            <Text style={[st.formTitle, { color: CORAL }]}>🎯 TIER C EXPRESS · {tierC.asignatura} › {tierC.capitulo} · {tierC.nQ}Q</Text>
+            <Text style={st.temaSub}>Capítulo top-1 de una asignatura fuera del plan ({tierC.pesoCap} % de su peso; semana {dia.semana}). Entrada PROPIA en el log con asignatura {tierC.asignatura} (no se mezcla con la foco: así entra en las estadísticas por asignatura y en el handoff 31-mar).{tierC.nota ? ` · ${tierC.nota}` : ''}</Text>
+            {poolOK && <Text style={st.formHint}>{pool.tierCDelCap < 0 ? 'ids ya registradas hoy' : `${pool.tierCDelCap} del capítulo + ${pool.tierC.length - pool.tierCDelCap} de la asignatura`}{pool.tierC.length < tierC.nQ ? ` · faltan ${tierC.nQ - pool.tierC.length} → test del capítulo ProMIR` : ''}</Text>}
+            <TouchableOpacity activeOpacity={0.8} onPress={() => openUrl(capUrl(tierC.capId))} style={[st.dChip, { borderColor: CORAL + '66', alignSelf: 'flex-start', marginTop: 6 }]}><Text style={[st.dChipTxt, { color: CORAL }]}>capítulo ProMIR ↗</Text></TouchableOpacity>
+            {poolOK && <MirPoolLista qIds={pool.tierC} color={CORAL} titulo={`Pool oficial · ${tierC.asignatura}`} pedidas={tierC.nQ} />}
+            <EvalForm dia={{ d: dia.d, fecha: dia.fecha, num: tierC.num }} kind="mantenimiento" total={tierC.nQ} asignatura={tierC.asignatura} tema={`Tier C express · ${tierC.capitulo}`} capId={tierC.capId} color={CORAL} titulo={`Registrar ${tierC.nQ}Q Tier C · ${tierC.asignatura}`} tactica qIds={pool.tierC} onSaved={bump} />
+          </View>
+        </FadeUp>
+      )}
       <ExportRow sync={sync} />
       <Text style={st.secLbl}>📆 Próximos 7 días</Text>
       {mirMant7d(dia.d).map((x, i) => (

@@ -2,11 +2,13 @@
  * gen_encaps_intensivo_2027.js — siembra la FASE INTENSIVA ENCAPS 2027-I (feb → D-1 del examen) en Supabase.
  *
  * Contexto (régimen v5.6, PRONOSTICO_WALKFORWARD_2027-1_v3.md §6 Fase B + FASE_INTENSIVA_2027-I.md):
- *   · 9-sep-2026 → 29-ene-2027: MANTENIMIENTO 1h/día (gen_encaps_mantenimiento_2027.js, 100 días, dia 1-100 · v5.7).
- *   · Feb-2027 → D-1: INTENSIVA — ENCAPS vuelve a bloque principal (el USMLE Step 1 se rinde el 25-29 ene).
- *     Se siembra con modo='INTENSIVO' y dia = 103… (continúa la cuenta L-V desde la base del mantenimiento,
- *     así el cálculo de "día de hoy" de la app no cambia; la app necesita STUDY_TOTAL_DAYS = 102 + N y una
- *     rama modo==='INTENSIVO' en itemsForDay — pendiente en src/lib/encapsPlan.ts).
+ *   · 21-sep-2026 → 29-ene-2027: MANTENIMIENTO 1h/día (gen_encaps_mantenimiento_2027.js, 92 días, dia 1-92 · v5.14).
+ *   · Feb-2027 → D-1: INTENSIVA — ENCAPS vuelve a bloque principal (el USMLE Step 1 se rinde el jue 4-feb-2027 en v5.14).
+ *     Se siembra con modo='INTENSIVO' y dia = 93… (continúa la cuenta L-V desde la base del mantenimiento,
+ *     así el cálculo de "día de hoy" de la app no cambia). v5.14 (19-sep): la app YA renderiza modo='INTENSIVO'
+ *     (encapsPlan.ts: regimenDe() lee study_metrics.extra.d1/dias_ciclo y el total crece con max(dia) de study_schedule;
+ *     itemsForDay/simDays entienden extra.loop · sim · repaso · drill_cifras y los tipos pretest/sim100/dress_rehearsal).
+ *     ⚠ Al sembrar la intensiva hay que re-sembrar también study_metrics.extra.horarios (weekday/weekend).
  *
  * Esqueleto:
  *   · Semana 1: lun = re-scan de señales (QX Tendencias, DGE, RM/NTS sep-2026→, convocatoria) + mar-jue loop de
@@ -273,7 +275,7 @@ INSERT INTO study_schedule (examen, dia, fecha, weekday, tipo, codigo, subtema, 
 ${rows.join(',\n')};
 COMMIT;
 `;
-const out = path.join(__dirname, '_encaps_intensivo_2027.sql');
+const out = opt('--out', path.join(__dirname, '_encaps_intensivo_2027.sql')); // v5.14: --out <ruta> para pruebas en seco sin pisar el SQL versionado
 fs.writeFileSync(out, sql, 'utf8');
 
 // ── verificación ──

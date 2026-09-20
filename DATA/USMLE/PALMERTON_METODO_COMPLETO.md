@@ -23,7 +23,7 @@
 9. **Planificación, NBME, criterio de fecha, retakes, IMG** — umbrales, 5%/mes, Goldilocks, retake, IMG
 10. **Mentalidad, productividad, TDAH, procrastinación** — identidad vs destrezas, ingeniería de entorno, motivación
 11. **Patrones de los que fallan** — checklist de alarmas + discrepancias entre fuentes
-12. **MAPEO AL PLAN v5.13 DE JOSEPH** — cada técnica en su bloque horario, fase, días y fechas reales + divergencias abiertas
+12. **MAPEO AL PLAN v5.14 DE JOSEPH** — cada técnica en su bloque horario, fase, días y fechas reales + divergencias abiertas
 
 ---
 

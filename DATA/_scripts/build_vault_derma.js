@@ -22,6 +22,13 @@
  * defecto · datos REALES de src/lib/dermaDailyPlan.ts (compilado con el TypeScript del
  * propio repo, no se re-tipea nada a mano).
  *
+ * ⚠ HISTÓRICO (19-sep-2026, v5.14): el vault se construyó el 5-sep con el plan v2.1 (70 átomos). Las carpetas
+ * `dNN_*` de d44-d70 corresponden a ESA numeración; el plan v3 vigente (73 sesiones, d1 = lun 21-sep-2026, taper
+ * del Step 1 d44-d49) desplazó 26 átomos (mapa DERMA_TAPER_REMAP_D en dermaDailyPlan.ts). NO se regenera el vault:
+ * src/lib/obsidianDermaMap.ts traduce d(v3) → d(v2.1) en dermaObsUrlDay() con DERMA_OBS_DAY_V3_A_V21 (editado a mano
+ * el 19-sep; si se vuelve a ejecutar este script con --write, la plantilla de la sección 9 debe emitir esa misma
+ * traducción, o bien crearse las carpetas con el d v3 — decisión de Joseph, ver PENDIENTES).
+ *
  * Uso:  node build_vault_derma.js                 (dry-run: solo reporta)
  *       node build_vault_derma.js --write         (crea carpetas/notas + emite el .ts)
  *       node build_vault_derma.js --write --patch-mapa   (además AÑADE la sección 🧴 al

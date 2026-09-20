@@ -1,4 +1,5 @@
 // EncapsPlanView — Opción B (nativa) del PROMPT_ULTRAMAESTRO_APP.
+// v5.14 (19-sep): sims de la FASE INTENSIVA (pretest · sim100 · dress_rehearsal, escala /100) en ▲ Sim + tipo de ronda del cierre por tipo de día.
 // PE Perú → ENCAPS → "Plan diario": HOY · Camino a 17/20 · Simulacros · 7 días.
 // Lee study_schedule/metrics/checks/sim_scores de Supabase; los checks se
 // sincronizan a study_checks (dashboard ↔ app ↔ Supabase ↔ Telegram).
@@ -9,6 +10,7 @@ import {
 import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, Motion, LineHeight } from '../theme/tokens';
 import {
   useEncapsPlan, itemsForDay, vueltaLabel, repasoKey, vueltasHechasDe, subEjeDe, miniSimRecetaDe, miniSimRecetaTexto,
+  simIntensivoDe, encapsSim100Zone, tipoRondaDe,  // v5.14 (19-sep): sims de la FASE INTENSIVA (/100) + tipo de ronda del cierre
   type PlanItem, type StudyScheduleDay, type StudyMetrics, type ProximoVideo, type MiniSimPunto, type CiegoSemana,
   type CiegoCodigo, type TemaCaliente, type TendenciaCiego, type EvalAnclada,
 } from '../lib/encapsPlan';
@@ -665,7 +667,7 @@ function SimView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   const rows = simDays.flatMap(d => {
     const arr = Array.isArray((d.extra as any)?.sims) ? (d.extra as any).sims as any[] : null;
     if (arr && arr.length) {
-      return arr.map((ss: any) => ({ d, simN: ss.n as number, clave: ss.fuente || ss.label || `Sim ${ss.n}`, duracion: ss.duracion as string | undefined, url: ss.url as string | undefined, escala: 20 as 20 | 25 }));
+      return arr.map((ss: any) => ({ d, simN: ss.n as number, clave: ss.fuente || ss.label || `Sim ${ss.n}`, duracion: ss.duracion as string | undefined, url: ss.url as string | undefined, escala: 20 as 20 | 25 | 100 }));
     }
     if (d.tipo === 'mini_sim') {
       const rec = miniSimRecetaDe(d);
@@ -674,19 +676,31 @@ function SimView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
         d, simN: rec?.simN ?? d.dia,
         clave: `Mini-sim #${semana} · 25Q · cola larga ${rec ? rec.colaLarga.join(' + ') : ''}`,
         duracion: rec ? `${rec.segPorQ}s/Q · II ${rec.receta.II} I ${rec.receta.I} V ${rec.receta.V} III ${rec.receta.III} IV ${rec.receta.IV}` : '72s/Q',
-        url: undefined as string | undefined, escala: 25 as 20 | 25,
+        url: undefined as string | undefined, escala: 25 as 20 | 25 | 100,
       }];
     }
-    const s = d.simulacro!;
+    // v5.14 (19-sep): FASE INTENSIVA (modo='INTENSIVO'): pretest / sim100 / dress_rehearsal → escala /100, sim_n = dia.
+    const si = simIntensivoDe(d);
+    if (si) {
+      return [{
+        d, simN: si.simN,
+        clave: `${si.tipo === 'pretest' ? 'PRE-TEST 2026-II' : si.tipo === 'dress_rehearsal' ? 'DRESS REHEARSAL (D-2)' : 'SIMULACRO'} · ${si.label}`,
+        duracion: `${si.n}Q · ${si.segPorQ}s/Q · umbral ≥${si.umbral} · alerta <${si.alerta}${si.clave ? ` · clave ${si.clave}` : ''}`,
+        url: si.url, escala: 100 as 20 | 25 | 100, umbral: si.umbral, alerta: si.alerta,
+      }];
+    }
+    if (!d.simulacro) return [];
+    const s = d.simulacro;
     const simN = s.simulacro_n ?? d.dia;
-    return [{ d, simN, clave: s.clave || s.label || `Sim ${simN}`, duracion: s.duracion, url: s.theomed_bank?.url, escala: 20 as 20 | 25 }];
+    return [{ d, simN, clave: s.clave || s.label || `Sim ${simN}`, duracion: s.duracion, url: s.theomed_bank?.url, escala: 20 as 20 | 25 | 100 }];
   });
   const conNota = rows.filter(r => simScores[r.simN]?.nota != null).length;
   const nMini = rows.filter(r => r.escala === 25).length;
+  const nCien = rows.filter(r => r.escala === 100).length;   // v5.14: sims /100 de la fase intensiva
   return (
     <View>
       <View style={styles.simHeaderBox}>
-        <Text style={styles.simHeaderTitle}>▲ MODO SIMULACRO · {rows.length} sims{nMini ? ` (${nMini} mini-sims /25)` : ''} · {conNota} con nota · meta ≥17/20</Text>
+        <Text style={styles.simHeaderTitle}>▲ MODO SIMULACRO · {rows.length} sims{nMini ? ` (${nMini} mini-sims /25)` : ''}{nCien ? ` (${nCien} sims /100 intensiva)` : ''} · {conNota} con nota · meta ≥17/20</Text>
         <Text style={styles.simHeaderHint}>
           Régimen mantenimiento 2027-I: mini-simulacro de 25Q mixtas CADA VIERNES 16:15 ({ENCAPS_MINISIM_META.segPorQ}s/Q, receta v3 II {ENCAPS_MINISIM_META.receta.II} · I {ENCAPS_MINISIM_META.receta.I} · V {ENCAPS_MINISIM_META.receta.V} · III {ENCAPS_MINISIM_META.receta.III} · IV {ENCAPS_MINISIM_META.receta.IV}). Primer viernes: {simDays[0]?.fecha?.slice(5) || '—'}; examen ENCAPS 2027-I fines de marzo 2027 (fase intensiva feb-mar).
           Cargá la nota /25 al terminar cada uno (se guarda en study_sim_scores con sim_n = día y alimenta el gráfico de «17/20»). Umbral ≥{ENCAPS_MINISIM_META.umbral}/25 · alerta &lt;{ENCAPS_MINISIM_META.alerta}/25 dos viernes.
@@ -702,6 +716,8 @@ function SimView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
           duracion={r.duracion}
           url={r.url}
           escala={r.escala}
+          umbral={(r as { umbral?: number }).umbral}
+          alerta={(r as { alerta?: number }).alerta}
           nota={simScores[r.simN]?.nota ?? null}
           onSave={(nota) => saveSim(r.simN, nota, r.d.fecha)}
         />
@@ -710,9 +726,10 @@ function SimView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   );
 }
 
-function SimRow({ dia, weekday, fecha, clave, duracion, url, nota, onSave, escala = 20 }: {
+function SimRow({ dia, weekday, fecha, clave, duracion, url, nota, onSave, escala = 20, umbral, alerta }: {
   dia: number; weekday?: string; fecha: string; clave: string; duracion?: string;
-  url?: string; nota: number | null; onSave: (nota: number | null) => void; escala?: 20 | 25;
+  url?: string; nota: number | null; onSave: (nota: number | null) => void; escala?: 20 | 25 | 100;
+  umbral?: number; alerta?: number;   // v5.14: solo escala 100 (fase intensiva: umbral 85 / pre-test 70 · alerta 70)
 }) {
   const [txt, setTxt] = useState(nota != null ? String(nota) : '');
   const commit = () => {
@@ -721,11 +738,11 @@ function SimRow({ dia, weekday, fecha, clave, duracion, url, nota, onSave, escal
     const n = Number(t.replace(',', '.'));
     if (!isNaN(n)) onSave(Math.max(0, Math.min(escala, n)));
   };
-  const zone = escala === 25 ? encapsMiniSimZone(nota) : encapsGoZone(nota);
+  const zone = escala === 100 ? encapsSim100Zone(nota, umbral, alerta) : escala === 25 ? encapsMiniSimZone(nota) : encapsGoZone(nota);
   const zoneColor = encapsGoColor(zone);
   const passed = zone === 'go';
-  const goLabel = escala === 25 ? `✓ ≥${ENCAPS_MINISIM_META.umbral}/25` : '✓ GO ≥17';
-  const nogoLabel = escala === 25 ? `✕ <${ENCAPS_MINISIM_META.alerta} alerta` : '✕ NO-GO';
+  const goLabel = escala === 100 ? `✓ ≥${umbral ?? 85}/100` : escala === 25 ? `✓ ≥${ENCAPS_MINISIM_META.umbral}/25` : '✓ GO ≥17';
+  const nogoLabel = escala === 100 ? `✕ <${alerta ?? 70} alerta` : escala === 25 ? `✕ <${ENCAPS_MINISIM_META.alerta} alerta` : '✕ NO-GO';
   return (
     <View style={[styles.simCard, { borderLeftColor: nota == null ? Colors.muted : zoneColor }]}>
       <View style={{ flex: 1 }}>
@@ -901,7 +918,8 @@ function HorarioView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   // MANTENIMIENTO, tipo='mini_sim') → weekend/sim; si no → plantilla lun-jue (eval anclada + banco).
   const dow = today?.fecha ? new Date(`${today.fecha}T12:00:00`).getDay() : 1;
   const isWeekendDay = dow === 0 || dow === 6;
-  const useSimTemplate = !!today?.simulacro || today?.tipo === 'mini_sim';
+  const esIntensivo = today?.modo === 'INTENSIVO';   // v5.14: fase intensiva feb-mar 2027 (horas del loop A CONFIRMAR en febrero)
+  const useSimTemplate = !!today?.simulacro || today?.tipo === 'mini_sim' || !!simIntensivoDe(today);
   const blocks = (useSimTemplate ? horarios?.weekend : horarios?.weekday) ?? [];
 
   const tema = today ? `${today.codigo || ''} ${today.subtema || ''}`.trim() : '';
@@ -925,7 +943,9 @@ function HorarioView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   return (
     <View>
       <Text style={styles.horarioHint}>
-        {useSimTemplate ? '▲ Viernes: mini-simulacro 25Q mixtas (72s/Q) + corrección' : '● Mantenimiento 2027-I (lun-jue): eval anclada 5Q → banco 20-25Q → registro'}
+        {esIntensivo
+          ? (useSimTemplate ? '▲ Fase intensiva: simulacro 100Q (72s/Q) + corrección por código v3' : '● Fase intensiva (lun-jue): loop de 8 segmentos · horas heredadas del loop USMLE, A CONFIRMAR en la reestructuración de febrero')
+          : useSimTemplate ? '▲ Viernes: mini-simulacro 25Q mixtas (72s/Q) + corrección' : '● Mantenimiento 2027-I (lun-jue): eval anclada 5Q → banco 20-25Q → registro'}
       </Text>
       {isWeekendDay && !useSimTemplate && (
         <Text style={styles.horarioWarn}>
@@ -1017,13 +1037,13 @@ function CierreSesionCard({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) 
     const sePrev = prevDay ? subEjeDe(prevDay) : null;
     if (tp === 'mini_sim') { setN('25'); setCodigo('MIX'); setSubEje(''); setTema(today?.subtema || 'mini-sim v3'); }
     else if (tp === 'eval_anclada') { setN('5'); setCodigo(evalHoy?.codigo || 'MIX'); setSubEje(evalHoy?.modo === 'ayer' && sePrev ? sePrev.key : ''); setTema(evalHoy ? evalHoy.label.replace(/^🎯 /, '') : 'eval anclada'); }
-    else if (tp === 'pretest' || tp === 'simulacro') { setN(''); setCodigo('MIX'); setSubEje(''); setTema(''); }
+    else if (tp === 'pretest' || tp === 'simulacro') { const si = simIntensivoDe(today); setN(si ? String(si.n) : ''); setCodigo('MIX'); setSubEje(''); setTema(si ? si.label : ''); }
     else { setN(''); setCodigo(today?.codigo || 'MIX'); setSubEje(se?.key || ''); setTema(se?.label || today?.subtema || ''); }
     setNota('');
   };
   const cambiarTipo = (tp: TipoRonda) => { setTipo(tp); prefill(tp); };
   useEffect(() => {
-    const tp: TipoRonda = today?.tipo === 'mini_sim' ? 'mini_sim' : 'banco_dia';
+    const tp: TipoRonda = tipoRondaDe(today);   // v5.14: mini_sim · pretest · simulacro (sim100/dress) · repaso · banco_dia
     setTipo(tp); prefill(tp); setSeg(''); setDud(''); setT(''); setFallos(fallosVacios()); setEstado(null); setUltimo(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [today?.dia]);

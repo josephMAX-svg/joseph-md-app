@@ -230,6 +230,9 @@ export interface AnkiKpi {
   due?: number | null; backlog?: number | null; nuevas?: number | null;
   revisadasHoy?: number | null; retencion30?: number | null; againHoyPct?: number | null;
   minFinde?: number | null;                  // due × seg/tarjeta ÷ 60
+  /** v5.14 (19-sep): hora de la 1.ª review del día (anki_telemetria.js v2) y su estado (verde ≤05:10 · ámbar >05:10 · rojo sin review L-V). */
+  primeraReview?: string | null;
+  primeraReviewEstado?: 'verde' | 'ambar' | 'rojo' | 'finde' | 'pendiente' | 'desconocido' | string;
 }
 /** Lee el último KPI (acepta objeto o array de entradas). null si no hay. */
 export function leerAnkiKpi(): AnkiKpi | null {

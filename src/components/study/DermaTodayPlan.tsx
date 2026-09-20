@@ -6,7 +6,7 @@ import { Chip, GlassPanel } from '../empresa/primitives';
 import { FadeUp, RingStat } from '../empresa/visuals';
 import {
   DERMA_DAILY_META, DERMA_FRANJAS, DERMA_DIAS, DERMA_TIER_INFO, DERMA_PROMIR_DIAS, DERMA_CHECKPOINTS,
-  DiaDerma, DermaBloqueKey, DermaTier, diaEstudioTipo, dermaCasoArea, dermaTaperEfectivo, dermaDNuevo,
+  DiaDerma, DermaBloqueKey, DermaTier, diaEstudioTipo, dermaCasoArea, dermaTaperEfectivo, dermaDNuevo, promirDermaCapDe,
 } from '../../lib/dermaDailyPlan';
 import {
   DERMA_DIAS_TODOS, DERMA_TOTAL_DIAS_TODOS, DERMA_CICLO2_META, DERMA_CICLO2_PROMIR_DIAS,
@@ -28,12 +28,15 @@ import DermaCerebroCard from '../derma/DermaCerebroCard';
 import DermaEmergencyDrill from '../derma/DermaEmergencyDrill';
 import DermaCheckpointPanel from '../derma/DermaCheckpointPanel';
 import DermaMir10Q from '../derma/DermaMir10Q';
+import { mirEvalLogLoad, mirUsadasIds, MIR_DERMA_ASIGNATURA, MIR_DERMA_NUM } from '../../lib/mirEvalLog';
+import { mirPoolDisponible } from '../../lib/mirPreguntasOficiales';
+import { MirPoolLista, MirPoolEvalCompacta, poolConFallback } from './MirPoolEval';
 import DermaAnkiCola from '../derma/DermaAnkiCola';
 import { useDermaLedger, dermaHoyISO, dermaCopiar, dermaDescargar, dermaEsViernes, DERMA_AREA_LABEL, DERMA_AREA_COLOR } from '../derma/dermaLedgerBus';
 
 /**
  * DermaTodayPlan — Plan Derma día-a-día PLAN ÉLITE v3 (ciclo 1 = 73 sesiones: 21-sep-2026 → 13-abr-2027 en v5.14; ciclo 2 =
- * d74-d103 en dermaCiclo2.ts, 9-abr → 30-jun-2027), mismo motor que Usmle/Mir/ResearchTodayPlan: nav ◄► por
+ * d74-d103 en dermaCiclo2.ts, jue 15-abr → mar 6-jul-2027 en v5.14), mismo motor que Usmle/Mir/ResearchTodayPlan: nav ◄► por
  * DERMA_DIAS_TODOS (numeración continua, la fecha de hoy cae en el ciclo 2 automáticamente cuando pasa del último átomo
  * del ciclo 1), sub-pestañas HOY/Horario/7d/Temario, progreso REAL marcable (localStorage 'derma'), interdiario con
  * Research. Cada sesión (ciclo único de 45′) = casos CIEGOS fijos (casoIds, permutación de los 200 de "Cases for Board
@@ -85,10 +88,10 @@ const BLOQUE_COLOR: Record<DermaBloqueKey, string> = {
 const TIER_PRIO: Record<DermaTier, Prioridad> = { CRIT: 'CRITICA', ALTA: 'ALTA', MED: 'MEDIA' };
 const bc = (d: DiaDerma) => BLOQUE_COLOR[d.bKey];
 /**
- * Ficha del cerebro clínico del átomo mostrado. dermaCerebro.ts (fichero del agente de datos) sigue keyed por el d de la
- * v2.1 (5-sep) en las 22 fichas desplazadas por el taper (d44 → d50, d47-d68 → d53-d71, d66 → d46): se resuelve con el
- * mapa d(v2.1)→d(v3) (dermaDNuevo). Si algún día dermaCerebro.ts se re-ancla a la v3 (sentinela: 'G-44-cicatrizacion'
- * pasa a d 50), la búsqueda cae a exacta sin tocar nada aquí. Las 3 sesiones nuevas (d47-d49) y el ciclo 2 no tienen ficha.
+ * Ficha del cerebro clínico del átomo mostrado. v5.14 (19-sep): dermaCerebro.ts YA está re-anclado a los d de la v3
+ * (sentinela 'G-44-cicatrizacion' en d 50 → CEREBRO_REANCLADO_V3 = true y la búsqueda es exacta). El mapa d(v2.1)→d(v3)
+ * (dermaDNuevo) se conserva solo como fallback por si el fichero de datos volviera a la v2.1. Las 3 sesiones nuevas
+ * (d47-d49) y el ciclo 2 no tienen ficha.
  */
 const CEREBRO_REANCLADO_V3 = DERMA_CEREBRO.some((f) => f.id === 'G-44-cicatrizacion' && f.d === 50);
 const fichaCerebroDe = (dV3: number) => (CEREBRO_REANCLADO_V3 ? DERMA_CEREBRO.find((f) => f.d === dV3) : DERMA_CEREBRO.find((f) => dermaDNuevo(f.d) === dV3));
@@ -138,6 +141,35 @@ function ChipBtn({ label, color, on, onPress }: { label: string; color: string; 
     <TouchableOpacity activeOpacity={0.8} onPress={onPress} style={[st.sysBadge, { backgroundColor: color + (on ? '33' : '1F'), borderColor: color + (on ? 'CC' : '66') }]}>
       <Text style={[st.sysBadgeTxt, { color }]}>{label}</Text>
     </TouchableOpacity>
+  );
+}
+
+/**
+ * 10Q MIR-Dermatología del bloque 13:30 (1 de cada 3 sesiones) servidas desde el POOL OFICIAL (DATA/MIR/POOL_USO.md §4):
+ * `preguntasSinUsar(capId del capítulo ProMIR en rotación)` y, si faltan, `preguntasSinUsarDeAsignatura(5)`; se registra con
+ * kind 'derma10Q', asignatura 'Dermatología' y `qIds` (anti-repetición contra mirEvalLog local + espejo Supabase, compartida con
+ * el mini-MIR y el banqueo). Si el pool no tiene ninguna sin usar → DermaMir10Q (test del capítulo ProMIR, sin ids).
+ */
+function DermaMirPool({ dia, accent }: { dia: DiaDerma; accent: string }) {
+  const [tick, setTick] = useState(0);
+  const cap = promirDermaCapDe(dia.d);
+  const pool = useMemo(() => {
+    if (!cap || !mirPoolDisponible()) return null;
+    const entries = mirEvalLogLoad();
+    const prev = entries.filter((e) => e.kind === 'derma10Q' && e.fecha === dia.fecha && e.d === dia.d && e.qIds?.length).sort((a, b) => (b.ts || '').localeCompare(a.ts || ''))[0];
+    if (prev?.qIds?.length) return { ids: prev.qIds.slice(), delCap: -1, deAsig: 0 };
+    return poolConFallback(cap.capId, MIR_DERMA_NUM, 10, mirUsadasIds(entries));
+  }, [cap?.capId, dia.fecha, dia.d, tick]); // eslint-disable-line react-hooks/exhaustive-deps
+  if (!cap) return null;
+  if (!pool || !pool.ids.length) return <DermaMir10Q dia={dia} accent={accent} />;
+  const origen = pool.delCap < 0 ? 'ids ya registradas hoy' : `${pool.delCap} del capítulo + ${pool.deAsig} de la asignatura Dermatología`;
+  return (
+    <>
+      <MirPoolLista qIds={pool.ids} color={accent} titulo={`Pool oficial MIR · Dermatología › cap ${cap.n} ${cap.t} · ${origen}`} pedidas={10} fallback="test del capítulo ProMIR" />
+      <MirPoolEvalCompacta fecha={dia.fecha} d={dia.d} kind="derma10Q" asignatura={MIR_DERMA_ASIGNATURA} num={MIR_DERMA_NUM} capId={cap.capId} qIds={pool.ids} total={10} color={accent}
+        tema={`ProMIR Derma cap ${cap.n} · ${cap.t}`} titulo={`Registrar 10Q MIR-Derma (cap ${cap.n} · pool oficial)`}
+        nota={`derma d${dia.d} · bloque ${dia.bKey} · pool oficial (${origen})`} onSaved={() => setTick((t) => t + 1)} />
+    </>
   );
 }
 
@@ -358,7 +390,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, tone }: { dia: DiaDerma;
       {dia.promir ? (
         <FadeUp delay={100}>
           <ColaItem icon="flask" lbl={`REVIEW · 10Q MIR-DERMATOLOGÍA (sesión MIR ${promirLista.indexOf(dia.d) + 1}/${promirLista.length} · 1 de cada 3)`} val={dia.promir.t} sub="test del capítulo ProMIR · 77 s/Q · neto A − F/3 → log MIR (asignatura Dermatología) · sustituye hoy al banco AccessDerma" color={DermaAtlas.promir} url={dia.promir.url} />
-          <DermaMir10Q dia={dia} accent={DermaAtlas.promir} />
+          <DermaMirPool dia={dia} accent={DermaAtlas.promir} />
           {dia.qbankly && (
             <ColaItem icon="flask" lbl={`BANCO ACCESSDERMA · solo si sobra tiempo${banco ? ` · retoma en Q#${banco.cursor}` : ''}`} val={dia.qbankly.t} sub="hoy el review es MIR; el banco rotante sigue en la próxima sesión" color={EDGE} url={dia.qbankly.url} edge={dia.qbankly.via === 'edge'} dim />
           )}

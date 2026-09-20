@@ -37,7 +37,7 @@ el deploy son tuyos.
 
 **Estado del árbol el sáb 19-sep (v5.14):** el corrimiento a D1 = lun 21-sep está en el commit wip `76f17a2` (planes `.ts`, generadores,
 Supabase ENCAPS 92 d con backup `study_schedule_bk_0919`, bancos y textos de la app); los docs de esta pasada (este fichero, ENCAPS,
-Research, Derma, Business, SYNAPSE, roadmap) van en el working tree. El commit de cierre y el deploy siguen siendo tuyos.
+Research, Derma, Business, SYNAPSE, roadmap) van en el working tree, igual que **la pasada de integradores del 19-sep (noche)**: `src/**` (pool MIR → UI, hallazgos del crítico USMLE, ENCAPS `regimenDe()` + rama INTENSIVO, score LIVIANO, Derma v3, KPI 1.ª review), `DATA/_scripts` (`--pull`, fallback de la eval, revisión semanal) y `DATA/SISTEMATIZACION_2026-09-19.md` (tsc = 0 según los 4 integradores). El commit de cierre y el deploy siguen siendo tuyos.
 
 ---
 
@@ -180,7 +180,11 @@ Sin esto el plan arranca ciego, con el contenido equivocado o con la app vieja e
         anti-repetición del pool solo vale por dispositivo).
       - **AURUM** (`expo start` → AurumHub): «✎ registrar semana» abre el editor y el semáforo cambia; en **D15 (vie 9-oct, v5.14)**
         aparece la rúbrica y el score se guarda en `jmd-aurum-rubrica`; en **D40 (vie 13-nov)** la tarjeta VARIANTE LIVIANO.
-- [ ] **Calendar — una sesión de 20' con el MCP GCal (hallazgos #1-#4 del crítico + gap MIR 8; nadie los tocó):** *(sistema)*
+- [x] ~~**Calendar — una sesión de 20' con el MCP GCal (hallazgos #1-#4 del crítico + gap MIR 8)**~~ **RESUELTO el 19-sep por calendar-A/B** (overlays 🏁 D94
+      `neboplchsaua4snj39nrl480nc` mar 2-feb y 🛌 D95 `n90bdqhohadu1eqbctv148dn28` mié 3-feb; UNTIL cubierto con 6 series de EXTENSIÓN D93-D95; series 07:15 / 09:00 /
+      11:00 / 18:00 + MIR 15:15 (`MIR_FRANJAS`) + MIR 15:30 alineadas a FRANJAS; overlays UWSA1/NBME/Free120 «rule-in → juez → flag»; 9 GYM/BAILE re-etiquetadas v5.14;
+      SYNAPSE sáb/dom sin `<br>`; medido con `get_event` — `CALENDAR_SEGMENTOS_V5_6.md` §16 y `SISTEMATIZACION_2026-09-19.md` §5). **Solo quedan tus decisiones**
+      (⚪ Calendar · 6 decisiones + los 4 títulos): GYM/BAILE de la víspera, ALUMUERZO, ALISTARSE martes, series secundarias el jue 4-feb. *(lo pedido, histórico:)* *(sistema)*
       1. **Mar 2-feb (D94 = última sesión de banco, v5.14), MIÉ 3-FEB (D95 = D-1 dentro del plan) y JUE 4-FEB (examen) sin overlay y con TODO activo** (el sáb 30 / dom 31-ene, libres, quedan entre D92 y D93): las 6 series USMLE (RRULE UNTIL 20270130 — ya NO cubre ni D93-D95 ni el examen: hay que extenderlas a `20270204` o crear los overlays del lunes al jueves aparte)
          + MIR 15:15/15:30 + ENCAPS 16:15 + LIVIANO + GYM 19:00 y BAILE 19:30-20:30 la víspera. Crear 3 overlays
          FREE/transparent — mar 2-feb «🏁 D94 · última sesión de banco · D-2» (description = `USMLE_TAPER.d94`: solo Anki maduro + 20Q flagged/incorrects + repaso FA sistemas 6-10), mié 3-feb «🛌 D95 · D-1 · sesión mínima AM + ritual de test-day» (description = `USMLE_TAPER.d95`/`dMenos1`: ≤2 h por la mañana, Anki maduro + 20Q flagged + rapid review FA; tarde = permiso impreso + digital, 2 ID con el nombre exacto, Ziploc numeradas, ruta al Prometric; nada después de las 17:00, cama 21:00; **decidir GYM/BAILE del mar 2 y del mié 3-feb**) y jue 4-feb «🎯 USMLE STEP 1 · Prometric»
@@ -199,7 +203,7 @@ Sin esto el plan arranca ciego, con el contenido equivocado o con la app vieja e
          cloze); APEX/Claude solo reverso o compare&contrast» (Palmerton §4.12, hallazgo #17).
       > Las descripciones de ANKI AM 05:00, DESAYUNO, DEEP PRIME, LECTURA, VIAJE VUELTA, EKER, CORRER, CALISTENIA, ANKI
       > sáb/dom, 🧠 IA 04:15, misión 12:30 y PC sáb/dom **ya están en v5.10** (12-13 sep, verificadas con `get_event`); las horas no cambiaron en v5.11, v5.12, v5.13 ni v5.14; el 16-sep se re-fecharon los overlays de hito a v5.13 (verificado con `get_event`) y **hoy sáb 19-sep otro agente los re-fecha a v5.14** (UWSA1 → lun 21-sep 09:00, D# v5.14 en los otros 11, overlay del examen → jue 4-feb 07:00-16:00, los 12 🔬 Research recreados con `gen_research_calendar.js`, series con descripción v5.14) — **A VERIFICAR (19-sep)** con `get_event` cuando termine; detalle en `DATA/ENCAPS/CALENDAR_SEGMENTOS_V5_6.md` §15.
-- [ ] **Crear el evento recurrente `📋 REVISIÓN SEMANAL`** sáb 07:15-07:35 desde el **sáb 26-sep** (S1 = 21-25 sep; con D1 en lunes las 20 semanas del plan coinciden con las de calendario: S20 = 1-5 feb) — **lo crea hoy sáb 19-sep otro agente con ese default documentado en `REVISION_SEMANAL.md`**
+- [x] ~~**Crear el evento recurrente `📋 REVISIÓN SEMANAL`**~~ **CREADO el 19-sep: `21fbiohc1i47r4lqmaa3eb76l4`** (sáb 07:15-07:35, `WEEKLY;UNTIL=20270207;BYDAY=SA`, S1 = sáb 26-sep → S20 = sáb 6-feb; medido con `get_event`). Pedido original: sáb 07:15-07:35 desde el **sáb 26-sep** (S1 = 21-25 sep; con D1 en lunes las 20 semanas del plan coinciden con las de calendario: S20 = 1-5 feb) — **lo crea hoy sáb 19-sep otro agente con ese default documentado en `REVISION_SEMANAL.md`**
       **y decidir sáb o dom como día oficial** (sigue siendo tu decisión): la descripción nueva del domingo SYNAPSE dice «Feynman + 20' revisión
       semanal» y `REVISION_SEMANAL.md` fija el sábado 07:15 (ya dice «si la hiciste el sábado, solo Feynman»). Descripción
       sugerida: `node DATA/_scripts/gen_revision_semanal.js → DATA/USMLE/REVISIONES/S<NN>.md · 10 métricas`. *(sistema)*
@@ -339,9 +343,10 @@ Fechas releídas de `researchDailyPlan.ts` el 19-sep (v5.14: Research corre +2 h
 - [ ] **NotebookLM «DERMA · Élite Engine»**: las 7 fuentes fallidas «Checking your browser - reCAPTCHA» SIGUEN en el
       cuaderno el 13-sep (86 = 79 útiles + 7). Borrarlas a mano en la UI (el agente no borra datos); sus equivalentes PubMed
       ya están cargados. No cargar PMC ni NCBI Bookshelf.
-- [ ] **Asignar el deck `APEX::LIVIANO`** en `src/lib/ankiLinks.ts` (grep el 13-sep: 0 menciones) y, si lo quieres, la
-      entrada "Academia → Logística F5" en `EmpresaHub.tsx`. *(LIVIANO — asignar a un agente)*
-- [ ] **Crear la carpeta `DATA/BUSINESS/_kpi/`** (no existe) y guardar ahí el JSON del botón "Exportar JSON" del Cockpit F1. *(LIVIANO)*
+- [x] ~~**Asignar el deck `APEX::LIVIANO`** en `src/lib/ankiLinks.ts` y la entrada "Academia → Logística F5" en `EmpresaHub.tsx`~~ **RESUELTO 19-sep**
+      (`ankiLinks.ts:116` `LIVIANO_ANKI_DECKS` = 8 sub-decks `APEX::LIVIANO::<modulo>` re-exportados de `livianoCasos.ts`; botón «Academia → Logística F5» en
+      `LivianoTodayPlan.tsx:375` vía `EmpresaHub.tsx:57`). ⚠ **A VERIFICAR (19-sep) / tuyo:** los 8 sub-decks NO existen aún en Anki (se crean al importar el CSV, 🟠 D16). *(LIVIANO)*
+- [x] ~~**Crear la carpeta `DATA/BUSINESS/_kpi/`**~~ **CREADA el 19-sep** (`DATA/BUSINESS/_kpi/README.md`: destino del botón «Exportar JSON» del Cockpit F1, nombre `liviano_kpi_<AAAA>-W<SS>.json`, forma del JSON). **Sigue tuyo:** guardar ahí el JSON cada viernes. *(LIVIANO)*
 
 ### LIVIANO · Acceso Perú — las verificaciones DIGEMID
 
@@ -422,12 +427,12 @@ escribe `SIN REGISTRO HALLADO (fecha)`.*
       mínimo on-track → `gateHito` 'ALERTA BURNOUT' + banner) la da la app; **los síntomas los decides tú** (releer sin
       comprender, irritabilidad, indiferencia, descansos que se alargan). Si se activa: 3-5 días solo Anki AM y correr el
       plan con `remap_inicio.js` (cada día parado = +1 hábil; no se recorta temario). *(USMLE)*
-- [ ] **Antes del 1-feb-2027 · extender las series del Calendar con `UNTIL=20270130`** — ⚠ v5.14: el D93 es el lun 1-feb, el D95 el mié 3-feb y el examen el jue 4-feb, así que el `UNTIL` ya no cubre ni D93-D95, ni el examen, ni la intensiva: extender a `20270204` (o más) — son **7 series**, no 2
+- [x] ~~**Antes del 1-feb-2027 · extender las series del Calendar con `UNTIL=20270130`**~~ **RESUELTO el 19-sep con 6 SERIES DE EXTENSIÓN D93-D95** (`create_event`, no `delete`: repaso 07:15 `gfapfa25hm5d9s65n7oiu0jsms` · pre-test 08:15 `vi7lrsm2blitpqistrt87i3sqk` solo lun 1-feb · ANKI AM `mlqvrm4m8bn38qfl37qddjgk5g` · DEEP PRIME `39dm9gk3a58u3iqu9lk28noum0` · 30Q `u6alh9h3o43l2fu98gmvkvtk90` · eval 18:00 `r850pocdgcm8pi6a42cvv37v1k` MO,TU); las 9 GYM/BAILE ya llevan etiqueta v5.14 (3 ids nuevos); **ENCAPS 16:15 `papebi46etlo8glgfs5akd5mig` NO se extiende a propósito** (termina el 29-ene; la intensiva lleva serie propia cuando decidas su arranque, ⚪ A). *(histórico:)* ⚠ v5.14: el D93 es el lun 1-feb, el D95 el mié 3-feb y el examen el jue 4-feb, así que el `UNTIL` ya no cubre ni D93-D95, ni el examen, ni la intensiva: extender a `20270204` (o más) — son **7 series**, no 2
       (`CALENDAR_SEGMENTOS` §11.2); la **única bloqueante es `16:15 ENCAPS` (`papebi46etlo8glgfs5akd5mig`)** si ENCAPS
       vuelve a bloque principal en feb-mar; `09:00 DEEP PRIME` (`cb2uh20jnvu7pgfev4183pgctc`) también cubre el examen y corta
       el 30-ene. ⚠ `recurrenceData` del MCP está roto para UPDATE → delete(serie) + create. Aprovechar para re-etiquetar las
       **9 series de GYM/BAILE que siguen diciendo "Régimen v5.6"**. *(sistema)*
-- [ ] **Antes de sembrar la fase intensiva (feb-2027) · la app necesita**: `STUDY_TOTAL_DAYS` dinámico (hoy 102 fijo), rama
+- [x] ~~**Antes de sembrar la fase intensiva (feb-2027) · la app necesita**~~ **RESUELTO 19-sep en `src/lib/encapsPlan.ts`** (`useEncapsPlan` → `regimenDe()`: el total crece solo con `max(dia)` de `study_schedule`; rama `modo='INTENSIVO'` en `itemsForDay` con `extra.loop` / sims /100 / `repaso` / `drill_cifras`; `simDays` con `pretest` / `sim100` / `dress_rehearsal`; `EncapsPlanView.tsx` pinta los sims /100 y prellena el cierre; probado en seco con 25 filas del generador, nada sembrado — `SISTEMATIZACION_2026-09-19.md` §3). **Sigue tuyo:** las FRANJAS de la intensiva (17:15 choca con LIVIANO; ⚪ «Nuevo 19-sep») y, al sembrar, re-sembrar `study_metrics.extra.horarios` (orquestador). *(histórico:)* `STUDY_TOTAL_DAYS` dinámico (hoy 102 fijo), rama
       `modo='INTENSIVO'` en `itemsForDay` (renderizar `extra.loop` / `sim` / `repaso` / `drill_cifras`) y `simDays` con los
       tipos `pretest` / `sim100` / `dress_rehearsal`. ⚠ El segmento **17:15** del loop heredado **choca con LIVIANO** → fijar
       las franjas en la reestructuración de febrero **antes** de sembrar. *(ENCAPS — asignar a un agente)*
@@ -506,7 +511,7 @@ Ningún agente podía tomarlas. El plan corre hoy con la opción por defecto que
 
 | # | Decisión | Hoy corre así |
 |---|---|---|
-| A | **ENCAPS · la fase intensiva arrancaría en el día 93 de la cuenta de la app = lun 1-feb = D93 del Step 1 (última semana de banco), el mié 3-feb (día 95) es el D-1 y el jue 4-feb (día 96) el examen** (`FASE_INTENSIVA_2027-I.md`). Propuesta: **arrancarla el vie 5-feb (= día del pre-test 2026-II, día 97) o el lun 8-feb (día 98)** (`node DATA/_scripts/gen_encaps_intensivo_2027.js 2027-02-05 <fecha-examen>` o `… 2027-02-08 …`; los días 93-96 quedan sin fila). **A VERIFICAR (19-sep):** qué hace el script con el slot `senales` del lunes cuando el D1 cae en viernes (semana 1 = solo el 5-feb; con el lun 8-feb la semana 1 es completa). | SQL de la intensiva NO aplicado (ensayo del 8-sep en disco, base vieja); default documentado en `FASE_INTENSIVA_2027-I.md` = vie 5-feb; nada que ejecutar hasta la convocatoria SERUMS |
+| A | **ENCAPS · la fase intensiva arrancaría en el día 93 de la cuenta de la app = lun 1-feb = D93 del Step 1 (última semana de banco), el mié 3-feb (día 95) es el D-1 y el jue 4-feb (día 96) el examen** (`FASE_INTENSIVA_2027-I.md`). Propuesta: **arrancarla el vie 5-feb (= día del pre-test 2026-II, día 97) o el lun 8-feb (día 98)** (`node DATA/_scripts/gen_encaps_intensivo_2027.js 2027-02-05 <fecha-examen>` o `… 2027-02-08 …`; los días 93-96 quedan sin fila). **VERIFICADO 19-sep (integrador-encaps, ensayo en seco 2027-02-08 → 25 filas):** con D1 en viernes NO hay semana de señales (el 5-feb es solo el pre-test 2026-II); con el lun 8-feb la semana 1 es completa (señales lun + calentamiento + pre-test vie 12-feb; dia 98-122 con examen asumido 14-mar). Los días 93-97 (1-5 feb) quedan sin fila → la app muestra «sin sesión». **Propuesta por defecto: lun 8-feb.** | SQL de la intensiva NO aplicado (ensayo del 8-sep en disco, base vieja); default documentado en `FASE_INTENSIVA_2027-I.md` = vie 5-feb; nada que ejecutar hasta la convocatoria SERUMS |
 | B | ~~Research · CR-9 (SUBMIT del case report #1) cae el lun 1-feb = D95 = D-1 del Step 1~~ **RESUELTA por v5.14 (19-sep):** CR-9 sigue el lun 1-feb (`RESEARCH_HITOS`, d36), que ahora es el **D93** del Step 1 (primer día-Research tras la pausa 4→29-ene): ya no es la víspera del examen. Resto menor: **X-8 (re-arranque post-Step 1, d37) cae el mié 3-feb = D-1** → hacerlo dentro de las ≤2 h de la mañana o saltarlo (no es un submit). | CR-9 lun 1-feb; overlay 🔬 re-fechado hoy por otro agente (A VERIFICAR 19-sep con `get_event`) |
 | C | **Derma · el vie 15-ene (NBME 31, GO/NO-GO) es d42 (colgajos e injertos, sesión normal) y el mar 19-ene es d43 = Mohs, sesión NORMAL de 2 casos; el jue 4-feb (DÍA DEL EXAMEN) es d49 = última sesión del taper (opcional)** (el taper es posicional d44-d49 y con d1 = lun 21-sep va del jue 21-ene —día tras el NBME 33— al jue 4-feb). Alternativa: swap d43↔taper (Mohs al jue 4-feb —tras el examen— y el mar 19-ene en modo taper de 1 caso + FSRS). | d43 normal · taper 21-ene → 4-feb (`DERMA_DAILY_META.taperStep1`) · d49 opcional |
 | D | ~~LIVIANO · el caso integral 16/16 cae DESPUÉS del capstone~~ **RESUELTA por v5.14 (19-sep):** con D1 en lunes el plan tiene exactamente 16 viernes (caso 1 = vie 25-sep, D5) y el generador ya no salta ninguno: caso 16 integral = **D87 vie 22-ene**, capstone = **D89 mar 26-ene**, trimestral II = D90 mié 27-ene. Nada que decidir. | `livianoStudyPlan.ts` |
@@ -560,9 +565,31 @@ Ningún agente podía tomarlas. El plan corre hoy con la opción por defecto que
       - **Bioestadística (D79, mar 12-ene-2027)**: el corpus cubre la mitad conceptual pero **no la de cálculo** → repartir
         vídeo+AMBOSS / paquete de stats de UWorld.
 
+### Nuevo 19-sep — lo que los integradores dejaron para ti (default vigente entre paréntesis; detalle en `DATA/SISTEMATIZACION_2026-09-19.md`)
+
+- [ ] **MIR · jueves Tier C REDUCIDOS (M3 jue 14-ene · M8 jue 21-ene · M13 jue 28-ene, 10Q)**: las 10Q del día son todas Tier C, sin formulario de la
+      asignatura foco (**default**), o 10Q foco + 10Q Tier C (20Q, rompe el «reducido»). *(MIR)*
+- [ ] **MIR · pre-test 5Q se lleva las preguntas más recientes del capítulo y el quiz sigue con las siguientes**: en los capítulos con ≤5 usables (D22, D57,
+      D60, D66, D4, D33, D48, D52, D53, D55, D58, D62…) el quiz queda 100 % ProMIR. **Default = pre-test primero** (`POOL_USO.md` §2); alternativa: reservar las
+      oficiales para el quiz comentado y hacer el pre-test en ProMIR. *(MIR)*
+- [ ] **MIR · mini-MIR D77 (vie 8-ene-2027)**: semilla = `dia.fecha` (si el día se corre otra vez la mezcla cambia). **Default = por fecha**; alternativa semilla fija «D77». *(MIR)*
+- [ ] **MIR · cuaderno de imágenes fuera del repo** (`node DATA/_scripts/gen_mir_pool.js --descargar --con-imagenes`; leyenda «prohibida la reproducción»): la vista
+      marca «🖼 imagen n (cuaderno)» y enlaza el PDF oficial. **Default = no descargar.** *(MIR)*
+- [ ] **ENCAPS · FRANJAS de la fase intensiva (feb-mar 2027)**: `extra.loop` hereda las horas del loop USMLE v5.6 (05:00 Anki · 07:15 repaso · 08:15 pre-test ·
+      09:00 deep prime · 11:00 30Q · 12:00 cierre · 17:15 anclaje · 18:00 eval) y el 17:15 choca con LIVIANO/Research. **Default = mantener el esqueleto y fijar
+      las horas en la reestructuración de febrero** (la app ya muestra «A CONFIRMAR»). *(ENCAPS)*
+- [ ] **ENCAPS · umbral del simulacro /100 de la intensiva**: runner 85 % (`ENCAPS_CIEGO_META_PCT`) con alerta <70 %; el pre-test 2026-II usa ≥70 (su fila).
+      **Default = 85/70**; si prefieres otro, `ENCAPS_SIM100_META` en `encapsPlan.ts`. *(ENCAPS)*
+- [ ] **ENCAPS · fecha real del examen 2027-I (convocatoria SERUMS)** antes de sembrar la intensiva (⛔ el SQL no se aplica hasta entonces) — ya en 🟡; se repite aquí
+      porque el arranque (vie 5-feb vs **lun 8-feb**, ⚪ A) depende de ella. *(ENCAPS)*
+- [ ] **LIVIANO · los 8 sub-decks `APEX::LIVIANO::*` no existen en Anki** (Anki cerrado el 19-sep): se crean al importar `LIVIANO_mecanismo.csv` (🟠, D16 lun 12-oct) o antes
+      a mano. **Default = al importar el CSV.** *(LIVIANO)*
+- [ ] **Calendar · series secundarias el jue 4-feb (examen) y GYM/BAILE de la víspera (mié 3-feb, BAILE 19:00-20:30)**: dejarlas (el overlay ya avisa; **default**) o
+      vaciarlas a mano. **A VERIFICAR (19-sep)** con `list_events` del 3 y 4-feb. *(sistema)*
+
 ### Resto de secciones
 
-- [ ] **ENCAPS · convergencia registro ↔ Supabase**: hoy cada cierre de la app se lleva al registro a mano («⎘ línea
+- [x] ~~**ENCAPS · convergencia registro ↔ Supabase**~~ **RESUELTA el 19-sep: `node DATA/_scripts/gen_encaps_semana.js --pull [--dry]` existe** (lee `study_progress` fuente `app:cierre`, reconstruye rondas v3 sin duplicar, `_meta.ultimo_pull`; el botón «⎘ línea --cerrar» sigue como respaldo). Flujo: viernes ANTES del cierre semanal `--pull` → `--semana`. *(histórico:)* hoy cada cierre de la app se lleva al registro a mano («⎘ línea
       --cerrar»). El `--pull` propuesto (leer `study_progress` fuente `app:cierre` y reconstruir rondas v3 en
       `_registro_resoluciones.json`) **no existe**: ¿se pide al dueño de `gen_encaps_semana.js` (próxima pasada) o se
       mantiene el botón? `errores_por_tipo` ya trae la ronda v3 completa, es trivial.
@@ -600,7 +627,7 @@ Ningún agente podía tomarlas. El plan corre hoy con la opción por defecto que
       `drill: true` en `liviano_curriculum.json` y regenerar. *(LIVIANO — menor)*
 - [ ] **Calendar · 6 decisiones personales** (no se cambian horas sin tu OK) *(sistema)*: (a) reponer o no el NAP
       13:15-13:30 (hoy la LECTURA 13:00 ya define una **siesta OPCIONAL ≤20' solo en ÁMBAR**); (b) typo "ALUMUERZO"
-      (`summary`); (c) `<br>` escapados en SYNAPSE 12:30 y PC sáb/dom (se conservaron a propósito); (d) la frase de identidad
+      (`summary`); (c) ~~`<br>` escapados en SYNAPSE 12:30 y PC sáb/dom~~ las series SYNAPSE sáb/dom se reescribieron el 19-sep sin `<br>` (12:30 con descripción v5.14; texto literal **A VERIFICAR (19-sep)** con `get_event`); (d) la frase de identidad
       de examen ya está en EKER (frase 6) → ¿basta?; (e) **martes**: ALISTARSE 18:30 recorta 15′ a la Eval 18:00-18:45 →
       ¿cerrar la eval a las 18:30 o mover ALISTARSE?; (f) GYM/BAILE del mar 2-feb (D94) y del mié 3-feb (D-1) previos al examen del jue 4-feb, y del finde libre 30-31 ene (ver 🟠 Calendar 1).
 - [ ] **Renombrar `DATA/ENCAPS/CALENDAR_SEGMENTOS_V5_6.md` → `_V5_14.md`?** El contenido va por v5.10-v5.14 (12-19 sep), el nombre
@@ -614,59 +641,55 @@ Ningún agente podía tomarlas. El plan corre hoy con la opción por defecto que
 
 ## Segunda capa — lo que SIGUE ABIERTO de los 65 puntos ciegos (13-sep)
 
-Estado completo gap a gap en `DATA/USMLE/_palmerton_v3_extractos/SEGUNDA_CAPA_ESTADO.md`. Aquí solo lo abierto, en dos
+Estado completo gap a gap en `DATA/USMLE/_palmerton_v3_extractos/SEGUNDA_CAPA_ESTADO.md`; **la pasada de integradores del 19-sep está cerrada en
+`DATA/SISTEMATIZACION_2026-09-19.md`** (qué se hizo con `fichero:línea`, qué quedó parcial y por qué, qué exige tu decisión). Aquí solo lo abierto, en dos
 listas: lo que exige tu decisión o tu sesión (arriba ya está repartido por bloque) y lo que es **cableado de una próxima
 pasada de agentes** (no exige decisión; lo dejaron descrito los propios agentes porque el fichero no estaba en su lista).
 
-**Para la próxima pasada de agentes (integrador), sin decisión de Joseph:**
-- **MIR pool → UI** (`MirTodayPlan.tsx`, `POOL_USO.md` §2 y §5): pasar `qIds` del pool a pre-test 5Q, anclada 4Q, cierre
-  10Q y mini-MIR 40Q (hoy solo el quiz 8-10Q pide ids → las preguntas del pre-test pueden repetirse en el quiz del mismo
-  capítulo); **2.º `EvalForm` en `MantenimientoView` los jueves** con `dia.tierC` (asignatura = `tierC.asignatura`, capId
-  = `tierC.capId`, kind 'mantenimiento') + chip `mirMantProximoTierC`; vista de pregunta con `preguntaPorId(id)`.
-- **`DATA/MIR/README.md`**: §1 tabla de pesos de las 16 asignaturas fuera del plan · aviso "cobertura medida ≈80 %" en la
-  tabla baseline de D78 · ~~§6 dice "63 días, default 4-ene"~~ **RESUELTO 14-sep, re-fechado 16-sep**: §6 ya dice 59 días desde el vie 8-ene (17 reducidos, 12 Tier C en jueves), como el `.ts` v5.13
-  (`CALENDAR_SEGMENTOS_V5_6` §6.1 sigue desfasado: no estaba en la lista de este corrimiento).
-- **Bloque Derma 13:30 ↔ pool MIR** (gap MIR 3, parte UI): `dermaDailyPlan.ts` ya rota los capítulos ProMIR de Derma
-  (`PROMIR_DERMA_ROTACION`, 24 slots) y el pool sirve Dermatología (`POOL_USO.md` §4), pero `DermaTodayPlan.tsx` no importa
-  `mirPreguntasOficiales` (grep 13-sep) → los 10Q MIR de 1 de cada 3 sesiones siguen sin ids del pool ni anti-repetición.
-- **`gen_encaps_semana.js --pull`** (ver decisión ⚪ ENCAPS).
-- **Bloque MIR en `gen_revision_semanal.js` y `vibecodingPlan.ts`** (gap MIR 7) + diffs propuestos por `vibecoding`:
-  métrica 7 leer `_vibecoding_ship.json` (verify) y el texto "fuera del rango S1-S12 (7-sep → 27-nov)" desfasado; métrica 3
-  añadir `primeraReview`/`primeraReviewEstado` con alarma ≥2 días; `homeBriefing.ts` comentario `STEP1_SEMANAS` (S19 =
-  18-22 ene, S20 = 25-29 ene); `CockpitStatusBar` colorear ANKI con `primeraReviewEstado` (paso 4 de S2).
-- **`RUTA_PUBLICACION_2027.md` §9** → marcar "solo lectura, se regenera desde `research_entregables`" (helper
-  `mesaMarkdown()` en `researchEntregablesSync.ts`).
-- ~~**`PROTOCOLO_MODO_MINIMO.md` §4 fila S7** sigue diciendo "A VERIFICAR: el S8 corre 2-6 nov"~~ **RESUELTO 14-sep**: la fila dice "RESUELTO v5.10b: el
-  proyecto deload es S7 = motor de preguntas ENCAPS", y en v5.11 corría mar 27-oct → lun 2-nov; en v5.12 mié 28-oct → mar 3-nov; en v5.13 corre **jue 29-oct → mié 4-nov** (tres días por detrás de la semana deload 26-30 oct, como en el catálogo y en `vibecodingPlan.ts`; la fila re-fechada el 16-sep).
-- **Derma keyed por `d` viejo**: `dermaCerebro.ts` sigue keyed por `d` de la v2.1 en 22 fichas (la UI lo resuelve con
-  `dermaDNuevo` + sentinela `G-44-cicatrizacion` d=50; si se re-ancla a la v3 la UI cae sola a búsqueda exacta); su
-  `DERMA_DRILL_DIAS = [19,20,46,70]` ya no lo usa nadie (se usa `dia.drillHDPH`); `dermaLedger.ts` línea 225 conserva el
-  comentario "2ª pasada FSRS (d69)"; `obsidianDermaMap.ts` + `build_vault_derma.js` (carpetas d44-d70 viejas del vault:
-  renombrar o dejar como histórico).
-- **`CALENDAR_SEGMENTOS_V5_6.md` §6.2/§11.2** aún listan PC sáb/dom, 🧠 IA 04:15 y misión 12:30 como "sin tocar" — los 4
-  los actualizó `vibecoding` el 13-sep (solo `description`); y §6.1 sigue diciendo "Derma 70 sesiones → mar 30-mar" y
-  "mantenimiento MIR 63 días / 18 reducidos" cuando los `.ts` dicen **Derma 73 → vie 9-abr (+ ciclo 2 d74-d103 13-abr → 2-jul)** y **MIR
-  59 / 17 (vie 8-ene → mié 31-mar, v5.13)** (releído con node el 16-sep).
-- **Hallazgos del crítico que son código, no decisión** (P1 de `SEGUNDA_CAPA_ESTADO.md` §3): bug `diaPrevio` en día
-  post-hito (#6) · `DAY_AFTER` + lectura por sistema (#5) · gate N3/N2 mal medido (#13) · regla del tercio (#8) · respuestas
-  cambiadas/relecturas (#11) · NBME por bloque/sistema (#27) · shopping list arrastrada al 07:15 siguiente (#28) ·
-  temporizador 2:00/12:00 (#10) · mazo Pharm aparte en `ankiLinks` (#14) · fixes de tarjeta en `TIPO_ERROR_INFO` (#18) ·
-  `ANKI_CONFIG_PALMERTON` + telemetría `rev.perDay`/rollover (#15) · backlog §4.10 en README/FRANJAS (#16) · regla del
-  frente (#17) · `PISO_AMBAR` 65/60 vs gate 80 (#21) · `usmleData.ts` (`FIRST_AID_INDEX.role` "annotate", `USMLE_RAMP`
-  legacy, nota biochem) (#19) · checklist §11.5 pre-marcado (#30) · kit anti-pánico `PROTOCOLO_BLOQUE` + campo
-  `jmd-usmle-worstcase` (#26) · lectura del UWSA1 por tramos en `HITOS_ONTRACK` (#12) · toggle binario del día parcial en
-  `UsmleTodayPlan` (§12.6-10).
+**Para la próxima pasada de agentes (integrador), sin decisión de Joseph** — **CERRADO el sáb 19-sep-2026** (4 integradores en paralelo; detalle con
+`fichero:línea`, lo parcial y su porqué en `DATA/SISTEMATIZACION_2026-09-19.md`; ningún ítem se inventó como cerrado: cada uno se confirmó con `grep`/`git diff`):
+- [x] ~~**MIR pool → UI**~~ **RESUELTO 19-sep** (`src/components/study/MirPoolEval.tsx` NUEVO + `MirTodayPlan.tsx` HoyView/MantenimientoView + `DermaTodayPlan.tsx`;
+  `qIds` en pre-test 5Q · anclada · cierre 10Q · quiz · mini-MIR 40Q; 2.º `EvalForm` Tier C los jueves + chip `mirMantProximoTierC`; `preguntaPorId` en
+  `MirPreguntaVista`; espejo `mir_eval_log.q_ids` verificado en Supabase). → SISTEMATIZACION §1. **4 decisiones nuevas tuyas** (jueves Tier C reducidos ·
+  pre-test primero · semilla mini-MIR · cuaderno de imágenes) en ⚪ «Nuevo 19-sep».
+- [x] ~~**`DATA/MIR/README.md`** §1 tabla de pesos + aviso ≈80 %~~ **RESUELTO 19-sep** (docs-resto: tabla de las 16 asignaturas fuera del plan y aviso
+  «cobertura medida ≈80 %» en la fila D78; §6 ya en v5.14: 57 días mar 12-ene → mié 31-mar). `CALENDAR_SEGMENTOS_V5_6` §6.1 también en v5.14 (calendar-doc).
+- [x] ~~**Bloque Derma 13:30 ↔ pool MIR**~~ **RESUELTO 19-sep** (`DermaTodayPlan.tsx` › `DermaMirPool`: `poolConFallback(cap.capId, 5, 10, usadas)` +
+  `MirPoolEvalCompacta` kind `derma10Q`; sin pool → cae a `DermaMir10Q`). Limpieza opcional (`DermaMir10Q` con prop `qIds`) = orquestador, SISTEMATIZACION §6.
+- [x] ~~**`gen_encaps_semana.js --pull`**~~ **RESUELTO 19-sep** (`--pull [--dry] [--desde] [--hasta]`: lee `study_progress` fuente `app:cierre`, reconstruye rondas
+  v3, dedup fecha+codigo+tipoRonda, `_meta.ultimo_pull`; probado real y con mock). Flujo: viernes ANTES del cierre semanal `--pull` → `--semana`. **Parcial:** los
+  docs ENCAPS (`PROTOCOLO_HORA_MANTENIMIENTO`, `FASE_INTENSIVA_2027-I`) aún no lo describen → orquestador (SISTEMATIZACION §3/§6).
+- [x] ~~**Bloque MIR en `gen_revision_semanal.js` y `vibecodingPlan.ts`** (gap MIR 7) + diffs de `vibecoding`~~ **RESUELTO 19-sep salvo una línea**:
+  métrica 5 = `jmd-mir-eval-log` ∪ `mir_eval_log` (temas calientes, mantenimiento `mirMantenimiento.ts`); métrica 7 lee `_vibecoding_ship.json`; métrica 3
+  `primeraReview`/`primeraReviewEstado` + alarma ≥2 días; `homeBriefing.ts` `STEP1_SEMANAS` ya v5.14; `CockpitStatusBar` colorea ANKI con `primeraReviewDe`.
+  **Parcial:** `gen_revision_semanal.js:450` sigue diciendo «fuera del rango S1-S12 (14-sep → 4-dic)» → 21-sep → 11-dic (orquestador, SISTEMATIZACION §6).
+- [x] ~~**`RUTA_PUBLICACION_2027.md` §9** solo lectura~~ **RESUELTO 19-sep** (aviso «SECCIÓN DE SOLO LECTURA … se regenera desde `research_entregables` con `mesaMarkdown()`»).
+- [x] ~~**`PROTOCOLO_MODO_MINIMO.md` §4 fila S7**~~ **RESUELTO 14-sep, re-fechado a v5.14 el 19-sep**: con D1 en lunes el deload post-NBME 26 es la semana **S6 (lun 26
+  → vie 30-oct)** y el flag `deload` sigue en S7 → decisión ⚪ H (swap S6↔S7 o mover el flag; default vigente: flag en S7).
+- [x] ~~**Derma keyed por `d` viejo**~~ **RESUELTO 19-sep** (`dermaCerebro.ts` re-anclado a v3 con `dV21` histórico, 35/35 fichas comprobadas con node; `DERMA_DRILL_DIAS`
+  eliminado → `DERMA_DRILL_DIAS_V3` derivado de `drillHDPH`; `dermaLedger.ts:225` comentario v3; `obsidianDermaMap.ts` + `build_vault_derma.js` marcados ⚠ HISTÓRICO:
+  el vault d44-d70 NO se regenera, `dermaObsUrlDay(dV3)` traduce con el mapa inverso).
+- [x] ~~**`CALENDAR_SEGMENTOS_V5_6.md` §6.2/§11.2/§6.1**~~ **RESUELTO 19-sep** (calendar-doc: §6.1 con Derma 73 → 13-abr y MIR 57 → 31-mar; §16 nuevo con los ids
+  de la pasada v5.14; el renombrado a `_V5_14.md` sigue siendo tu decisión, ⚪ Resto).
+- [x] ~~**Hallazgos del crítico que son código, no decisión**~~ **RESUELTO 19-sep en la app (10 hechos + 9 hechos con resto fuera de ella)** — estado ítem a ítem
+  (`→ ESTADO 19-sep:`) en `SEGUNDA_CAPA_ESTADO.md` §3 y resumen en SISTEMATIZACION §2. Hechos: #12 · #26 · #6 · #13 · #27 · #10 · #18 · #19 (3/4) · §12.6-10 ·
+  residuos v5.14. Con resto fuera de la app (orquestador, SISTEMATIZACION §6): #11/#27 DDL `usmle_daily_scores.extra JSONB` · #15 `anki_telemetria.js` · #8/#11/#28/#30/#16/#21
+  bloques en `REVISION_SEMANAL.md` + README §4b · #14 `UsmleTodayPlan.tsx:264` sin `dia.matType` (el deck `APEX::USMLE::Pharmacology` ya existe en `ankiLinks.ts`) ·
+  #5/#17 Calendar (ya hecho por calendar-B). Ninguna decisión nueva.
 
 **Vacíos de la 2.ª capa que siguen sin agente y son tuyos o de un agente futuro:**
-- **LIVIANO no mide retención** (`gaps_v3b_business` #1, parcial): existen los 18 pre-tests de lunes y los 4 drills en
+- [x] ~~**LIVIANO no mide retención**~~ **RESUELTO 19-sep en la app** (`src/lib/livianoScore.ts` NUEVO: pre-tests 5Q · drills D37/D58/D75/D88 · rúbrica 0-2×4 de los 16 casos,
+  localStorage `jmd-liviano-score` + espejo `study_progress` fuente `app:liviano`; deck `APEX::LIVIANO::<modulo>` en `ankiLinks.ts:116`; SISTEMATIZACION §4). **Queda tuyo:**
+  importar el CSV (🟠 D16 lun 12-oct) — los 8 sub-decks se crean al importarlo. *(histórico del gap:)* existen los 18 pre-tests de lunes y los 4 drills en
   `livianoStudyPlan.ts`, pero **no hay deck en `ankiLinks.ts` ni score persistido** (`liviano_score`: 0 menciones) → el ✓
   sigue binario. Importar el CSV (🟠) + asignar el deck (🟡) + un agente para el score.
 - **Evaluación clínica del paciente con obesidad** (`gaps_v3b_business` #3): `liviano_curriculum.json` tiene 17 menciones
   (anamnesis, comorbilidades, obesogénicos…) dentro de casos, pero **A VERIFICAR (13-sep)** que exista un bloque de días
   dedicado (anamnesis/antropometría/labs basales, SAOS/MASLD/SOP, causas secundarias, embarazo/anticoncepción con GLP-1,
-  TCA). Si no, es contenido nuevo para febrero (no se recorta nada del plan vigente).
+  TCA). Si no, es contenido nuevo para febrero (no se recorta nada del plan vigente). **Sigue A VERIFICAR (19-sep): ningún integrador lo comprobó.**
 - **KPIs del Cockpit LIVIANO** (`gaps_v3b_business` #9, parcial): el botón "Exportar JSON" existe; el tracker
-  `Metricas_v2` y la hoja `Outputs` del Excel no están en la app (A VERIFICAR) y falta la carpeta `_kpi/`.
+  `Metricas_v2` y la hoja `Outputs` del Excel no están en la app (**A VERIFICAR (19-sep)**, sigue abierto); ~~falta la carpeta `_kpi/`~~ **carpeta creada el 19-sep**
+  (`DATA/BUSINESS/_kpi/README.md`: nombre `liviano_kpi_<AAAA>-W<SS>.json`, forma del JSON; guardar el export semanal ahí sigue siendo tuyo).
 - **Sesión AccessDerma** (`gaps_v3b_derma` #4) — 🟡 Derma.
 - **Código de VITALS** (`gaps_v3b_synapse` #11 y `gaps_v3b_business` #10) — 🔵 VITALS.
 

@@ -20,7 +20,12 @@
 //       nueva alarma "burnout" en la 10 (≥1 señal de DOCTRINA §6 en la semana). Vault: env JMD_VAULT o D:\JOSEPH\Vault_Medicina MIR_Joseph.
 //   · AnkiConnect (localhost:8765) en vivo; si no responde → "Anki cerrado" y se usa DATA/USMLE/_anki_telemetria.json.
 //   · DATA/ENCAPS/TRACKING_ERRORES/_registro_resoluciones.json (rondas ENCAPS/USMLE/MIR de la semana).
-//   · Planes: src/lib/usmleStep1Daily.ts (D1, hitos) · synapseDailyPlan.ts · vibecodingPlan.ts · mirDailyPlan.ts.
+//   · Planes: src/lib/usmleStep1Daily.ts (D1, hitos) · synapseDailyPlan.ts · vibecodingPlan.ts · mirDailyPlan.ts · mirMantenimiento.ts.
+//   · Supabase `mir_eval_log` (v5.14 · 19-sep, gap MIR 7): el registro MIR que la app espeja (mirEvalSync.ts) → métrica 5
+//       = unión por id con el export jmd-mir-eval-log: % de QUIZ (kind quiz), pre-test, neto, temas CALIENTES (regla del gate:
+//       quiz < 60 % o acumulado pretest+quiz+anclada < 50 % en los últimos 14 días) y sesiones de MANTENIMIENTO (ene-mar 2027).
+//   · Métrica 3 (v5.14): primeraReview / primeraReviewEstado de la telemetría v2 (regla "05:00 Anki"): días verde/ámbar/rojo
+//       de la semana y alarma "1ª review tarde o ausente ≥ 2 días hábiles".
 //
 // Uso:
 //   node DATA/_scripts/gen_revision_semanal.js                 # semana de HOY (Lima) → S<NN>_<sábado>.md + _semanas.json
@@ -104,6 +109,11 @@ const vibeP = vibeSemana.length ? VIBE_PROY.find((p) => p.s === vibeSemana[0].se
 const mirTs = readTs('mirDailyPlan.ts');
 const MIR_DIAS = [...mirTs.matchAll(/\{d:(\d+),fecha:"(\d{4}-\d{2}-\d{2})"/g)].map((m) => ({ d: +m[1], fecha: m[2] }));
 const mirSemana = MIR_DIAS.filter((x) => enSemana(x.fecha, LUNES, VIERNES));
+// v5.14 · mantenimiento MIR (mar 12-ene → 31-mar-2027, mirMantenimiento.ts): {d, fecha, modo, tipo, asignatura}
+const mirMantTs = readTs('mirMantenimiento.ts');
+const MIR_MANT = [...mirMantTs.matchAll(/\{d:(\d+),fecha:"(\d{4}-\d{2}-\d{2})",wd:"[^"]*",semana:\d+,modo:"([^"]*)",tipo:"([^"]*)",num:[^,]*,asignatura:("([^"]*)"|null)/g)]
+  .map((m) => ({ d: +m[1], fecha: m[2], modo: m[3], tipo: m[4], asignatura: m[6] || null }));
+const mirMantSemana = MIR_MANT.filter((x) => enSemana(x.fecha, LUNES, VIERNES));
 
 // ─── localStorage export ───
 let LS = null, lsFecha = 'sin export';
@@ -176,6 +186,8 @@ async function supabaseSemana() {
   const m = await safe(() => cli.select('study_metrics', 'examen,fecha,qx_pct,prom_sim,cobertura_pct,dias_a_examen', [['eq', 'examen', 'ENCAPS']]), 'study_metrics');
   out.metrics = m && m.length ? m[0] : null;
   const ch = await safe(() => cli.select('study_checks', 'examen,item_key,checked,ts', [['gte', 'ts', LUNES + 'T00:00:00'], ['lte', 'ts', DOMINGO + 'T23:59:59']]), 'study_checks');
+  // v5.14 · mir_eval_log: la semana + 14 días previos (ventana de temas calientes). null = sin acceso (se usa solo el export).
+  out.mirLog = await safe(() => cli.select('mir_eval_log', 'id,fecha,d,tema,asignatura,num,aciertos,total,blancos,tipo_error,kind,ajuste', [['gte', 'fecha', addDays(LUNES, -14)], ['lte', 'fecha', DOMINGO]]), 'mir_eval_log');
   out.checks = ch ? ch.filter((x) => x.checked).length : null;
   if (out.errores.length && !out.encaps.length && out.checks == null) out.estado = 'error';
   return out;
@@ -212,10 +224,11 @@ async function vitalsSemana() {
 
 // ─── Anki ───
 async function ankiSemana() {
-  const res = { estado: 'cerrado', live: null, json: [] };
+  const res = { estado: 'cerrado', live: null, json: [], jsonTodos: [] };
   try {
     const j = JSON.parse(fs.readFileSync(ANKI_JSON, 'utf8'));
-    res.json = (j.entradas || []).filter((e) => e.estado === 'ok' && enSemana(e.fecha, LUNES, DOMINGO));
+    res.jsonTodos = (j.entradas || []).filter((e) => e && e.fecha && enSemana(e.fecha, LUNES, DOMINGO));   // v5.14: también estado ≠ ok (primeraReview)
+    res.json = res.jsonTodos.filter((e) => e.estado === 'ok');
   } catch { /* sin json */ }
   try {
     const ctrl = new AbortController(); const t = setTimeout(() => ctrl.abort(), 3000);
@@ -335,6 +348,16 @@ function usmleScores() {
     minFinde: (() => { const d = anki.live ? anki.live.due : ja.length ? ja[ja.length - 1].due : null; return d == null ? null : Math.round(d * 20 / 60); })(),
   };
   m3.alarmaG = (m3.backlog != null && m3.backlog > 100) || (m3.retencion30 != null && m3.retencion30 < 0.85);
+  // v5.14 · 1ª review del día (telemetría v2): verde ≤ 05:10 · ámbar > 05:10 · rojo sin review L-V. Alarma ≥ 2 días hábiles no verdes.
+  const pr = anki.jsonTodos.filter((e) => e.primeraReviewEstado && enSemana(e.fecha, LUNES, VIERNES));
+  m3.primeraReview = {
+    dias: pr.map((e) => `${WD[dow(e.fecha)]} ${e.primeraReview || '—'} ${e.primeraReviewEstado}`),
+    verde: pr.filter((e) => e.primeraReviewEstado === 'verde').length,
+    ambar: pr.filter((e) => e.primeraReviewEstado === 'ambar').length,
+    rojo: pr.filter((e) => e.primeraReviewEstado === 'rojo').length,
+    sinDato: pr.length === 0,
+  };
+  m3.alarmaPrimeraReview = m3.primeraReview.ambar + m3.primeraReview.rojo >= 2;
   // 4 · ENCAPS
   const rEnc = reg.rondas.filter((r) => r.examen === 'ENCAPS');
   const miniSim = rEnc.find((r) => /mini|sim/i.test(r.tipo) && r.fecha === VIERNES) || rEnc.find((r) => /mini|sim/i.test(r.tipo)) || null;
@@ -345,10 +368,32 @@ function usmleScores() {
     rondas: rEnc.length, pctMedio: media(rEnc.map((r) => r.pct)), checks: sb.checks,
     qxPct: sb.metrics ? sb.metrics.qx_pct : null,
   };
-  // 5 · MIR
-  const mirLog = (ls('jmd-mir-eval-log') || []).filter((x) => x && enSemana(x.fecha, LUNES, VIERNES) && typeof x.total === 'number');
+  // 5 · MIR (v5.14): unión por id del export jmd-mir-eval-log y de Supabase mir_eval_log (mirEvalSync.ts)
+  const mirNorm = (x) => ({ id: x.id, fecha: x.fecha, tema: x.tema, asignatura: x.asignatura, kind: x.kind, aciertos: Number(x.aciertos) || 0, total: Number(x.total) || 0, blancos: Number(x.blancos) || 0, tipoError: x.tipoError || x.tipo_error || null, ajuste: x.ajuste || null });
+  const mirTodo = new Map();
+  for (const x of (ls('jmd-mir-eval-log') || [])) if (x && x.fecha && typeof x.total === 'number') mirTodo.set(x.id || `${x.fecha}-${x.kind}-${x.tema}`, mirNorm(x));
+  for (const x of (sb.mirLog || [])) if (x && x.fecha) mirTodo.set(x.id || `${x.fecha}-${x.kind}-${x.tema}`, mirNorm(x));
+  const mirVentana = [...mirTodo.values()].filter((x) => x.total > 0 && x.kind !== 'derma10Q');
+  const mirLog = mirVentana.filter((x) => enSemana(x.fecha, LUNES, VIERNES));
   const mirEval = mirLog.filter((x) => x.kind !== 'pretest');
-  const m5 = mirLog.length ? { dias: new Set(mirEval.map((x) => x.fecha)).size, entradas: mirLog.length, netoPct: media(mirEval.map((x) => x.total ? Number((((x.aciertos || 0) - ((x.total - (x.aciertos || 0) - (x.blancos || 0)) / 3)) / x.total * 100).toFixed(1)) : null)), brutoPct: media(mirEval.map((x) => x.total ? Number(((x.aciertos || 0) / x.total * 100).toFixed(1)) : null)), errores: mirEval.map((x) => x.tipoError).filter(Boolean), diasPlan: mirSemana.length } : null;
+  const brutoDe = (x) => (x.total ? Number(((x.aciertos || 0) / x.total * 100).toFixed(1)) : null);
+  const netoDe = (x) => (x.total ? Number((((x.aciertos || 0) - ((x.total - (x.aciertos || 0) - (x.blancos || 0)) / 3)) / x.total * 100).toFixed(1)) : null);
+  // temas CALIENTES (regla del gate, mirEvalLog.ts): quiz < 60 % o acumulado pretest+quiz+anclada < 50 % en los últimos 14 días
+  const porTema = new Map();
+  for (const x of mirVentana) { if (!x.tema) continue; const t = porTema.get(x.tema) || { tema: x.tema, asignatura: x.asignatura, quiz: [], acum: { a: 0, t: 0 } }; if (x.kind === 'quiz') t.quiz.push(brutoDe(x)); if (['pretest', 'quiz', 'anclada'].includes(x.kind)) { t.acum.a += x.aciertos; t.acum.t += x.total; } porTema.set(x.tema, t); }
+  const calientes = [...porTema.values()].map((t) => { const q = t.quiz.length ? t.quiz[t.quiz.length - 1] : null; const ac = t.acum.t ? Number((t.acum.a / t.acum.t * 100).toFixed(0)) : null; return { ...t, q, ac, caliente: (q != null && q < 60) || (ac != null && ac < 50) }; }).filter((t) => t.caliente).sort((a, b) => (a.ac ?? 100) - (b.ac ?? 100)).slice(0, 6);
+  const mirMantSem = mirLog.filter((x) => x.kind === 'mantenimiento');
+  const m5 = mirLog.length || mirMantSemana.length ? {
+    dias: new Set(mirEval.map((x) => x.fecha)).size, entradas: mirLog.length, diasPlan: mirSemana.length,
+    netoPct: media(mirEval.map(netoDe)), brutoPct: media(mirEval.map(brutoDe)),
+    quizPct: media(mirLog.filter((x) => x.kind === 'quiz').map(brutoDe)), quizN: mirLog.filter((x) => x.kind === 'quiz').length,
+    pretestPct: media(mirLog.filter((x) => x.kind === 'pretest').map(brutoDe)),
+    cierres: mirLog.filter((x) => x.kind === 'cierre').map((x) => `${x.asignatura || x.tema || '?'} ${pct(netoDe(x))}`),
+    errores: mirEval.map((x) => x.tipoError).filter(Boolean), ajustes: mirLog.map((x) => x.ajuste).filter(Boolean),
+    calientes: calientes.map((t) => `${t.tema}${t.asignatura ? ` (${t.asignatura})` : ''}: quiz ${pct(t.q)} · acum ${pct(t.ac)}`),
+    mantenimiento: mirMantSemana.length ? { plan: mirMantSemana.length, modos: [...new Set(mirMantSemana.map((x) => x.modo))].join('/'), sesiones: mirMantSem.length, pct: media(mirMantSem.map(brutoDe)), asignaturas: [...new Set(mirMantSemana.map((x) => x.asignatura).filter(Boolean))].join(' · ') } : null,
+    fuente: `${(ls('jmd-mir-eval-log') || []).length ? 'export' : ''}${(ls('jmd-mir-eval-log') || []).length && sb.mirLog ? ' ∪ ' : ''}${sb.mirLog ? 'mir_eval_log' : ''}` || 'sin fuente',
+  } : null;
   // 6 · SYNAPSE (✓ = plan_checks ∪ export localStorage)
   const synDone = doneSet('synapse');
   const m6 = { plan: synSemana.length, hechos: hayProgreso() ? synSemana.filter((x) => synDone.has(x.d)).length : null };
@@ -378,6 +423,7 @@ function usmleScores() {
   // 10 · checklist G (pre-marcado) + burnout (DOCTRINA §6 → disparadores ÁMBAR del PROTOCOLO_MODO_MINIMO)
   const g = [];
   if (m3.alarmaG) g.push('G8 capar/omitir Anki (backlog > 100 o retención < 85%)');
+  if (m3.alarmaPrimeraReview) g.push(`1ª review de Anki tarde/ausente ${m3.primeraReview.ambar + m3.primeraReview.rojo} días hábiles (regla 05:00)`);
   if (m1 && m1.evalMax != null && m1.evalMax >= 0 && m1.evalMax < 80) g.push('G1 validación rápida (ninguna eval ≥ 80% esta semana)');
   if (m8.noches6 > 0) g.push(`G10 noche exhausto (${m8.noches6} noche(s) < 6 h)`);
   const senalesSemana = dia.dias.flatMap((x) => x.senales.map((s) => `${fmt(x.fecha)}: ${BURNOUT_KEYS[s]}`));
@@ -397,11 +443,11 @@ function usmleScores() {
   L.push('');
   L.push(`## 1 USMLE medias         ${m1 ? `pre-test ${sd(m1.pretest, '/10')} · 30Q ${pct(m1.q30)} · eval ${pct(m1.eval)} (días con dato: ${m1.dias}/${usmleSemana.length}, fuente ${m1.fuente}) · error dominante: ${m1.errores.join(', ') || '—'}` : `sin dato (jmd-usmle-scores llega con el proyecto S3, 28-sep → 2-oct; hasta entonces el diario Obsidian 05_DIARY con pretest10/q30_pct/eval_pct rellena esta línea) · rellenar a mano: pre-test __/10 · 30Q __% · eval __%`}   → on-track (eval ≥ 60%): ${m1 && m1.eval != null ? on(m1.eval >= 60) : '__'}`);
   L.push(`## 2 uWorld acumulado     __% (n = ____) [manual: dashboard uWorld] · próximo hito: ${m2.proximo || '—'} · distancia: __ pts`);
-  L.push(`## 3 Anki                 ${m3.estado === 'cerrado' && !m3.diasTelemetria ? 'Anki cerrado y sin telemetría en la semana → correr node DATA/_scripts/anki_telemetria.js con Anki abierto' : `due ${sd(m3.due)} (medio ${sd(m3.dueMedio)}) · backlog ${sd(m3.backlog)} · retención 30d ${m3.retencion30 == null ? 'sin dato' : Math.round(m3.retencion30 * 100) + '%'} · again ${pct(m3.againPct)} · minFinde ${sd(m3.minFinde, "'")} · telemetría ${m3.diasTelemetria} días${m3.estado === 'live' ? ' (+ live)' : ''}`} · alarma G: ${m3.alarmaG ? 'SÍ → cero nuevas hasta backlog < 20' : 'no'}`);
+  L.push(`## 3 Anki                 ${m3.estado === 'cerrado' && !m3.diasTelemetria ? 'Anki cerrado y sin telemetría en la semana → correr node DATA/_scripts/anki_telemetria.js con Anki abierto' : `due ${sd(m3.due)} (medio ${sd(m3.dueMedio)}) · backlog ${sd(m3.backlog)} · retención 30d ${m3.retencion30 == null ? 'sin dato' : Math.round(m3.retencion30 * 100) + '%'} · again ${pct(m3.againPct)} · minFinde ${sd(m3.minFinde, "'")} · telemetría ${m3.diasTelemetria} días${m3.estado === 'live' ? ' (+ live)' : ''}`} · alarma G: ${m3.alarmaG ? 'SÍ → cero nuevas hasta backlog < 20' : 'no'} · 1ª review (05:00): ${m3.primeraReview.sinDato ? 'sin dato (telemetría v2 no corrida esta semana)' : `${m3.primeraReview.verde} verde · ${m3.primeraReview.ambar} ámbar · ${m3.primeraReview.rojo} rojo [${m3.primeraReview.dias.join(' · ')}]`}${m3.alarmaPrimeraReview ? ' · ⚠ ALARMA: ≥ 2 días hábiles con la 1ª review tarde o ausente → revisar la hora de dormir (DOCTRINA §6)' : ''}`);
   L.push(`## 4 ENCAPS viernes       mini-sim ${m4.miniSim || 'sin dato (registrar la ronda mini_sim en _registro_resoluciones.json)'} · rondas de la semana: ${m4.rondas}${m4.pctMedio != null ? ` (media ${pct(m4.pctMedio)} ciego)` : ''} · checks app: ${sd(m4.checks)} · QX acumulado: ${pct(m4.qxPct)} · temas: ${m4.temas.join(' · ') || 'sin filas en study_schedule'}`);
-  L.push(`## 5 MIR eval D-1         ${m5 ? `neto ${pct(m5.netoPct)} (bruto ${pct(m5.brutoPct)}) · días con eval ${m5.dias}/${m5.diasPlan} · entradas ${m5.entradas} · errores: ${m5.errores.join(', ') || '—'}` : `sin dato (jmd-mir-eval-log vacío o sin export) · días MIR en el plan: ${mirSemana.length} · rellenar: media __% · días _/5`}`);
+  L.push(`## 5 MIR eval D-1         ${m5 ? `neto ${pct(m5.netoPct)} (bruto ${pct(m5.brutoPct)}) · QUIZ ${pct(m5.quizPct)} (n=${m5.quizN}) · pre-test ${pct(m5.pretestPct)} · días con eval ${m5.dias}/${m5.diasPlan} · entradas ${m5.entradas} (${m5.fuente}) · errores: ${m5.errores.join(', ') || '—'}${m5.ajustes.length ? ` · ajustes: ${m5.ajustes.join(', ')}` : ''}${m5.cierres.length ? ` · cierres: ${m5.cierres.join(' · ')}` : ''} · temas CALIENTES (14 d): ${m5.calientes.length ? m5.calientes.join(' · ') : 'ninguno'}${m5.mantenimiento ? ` · MANTENIMIENTO: ${m5.mantenimiento.sesiones}/${m5.mantenimiento.plan} sesiones (${m5.mantenimiento.modos}${m5.mantenimiento.pct != null ? ` · ${pct(m5.mantenimiento.pct)}` : ''}) · ${m5.mantenimiento.asignaturas || '—'}` : ''}` : `sin dato (jmd-mir-eval-log vacío o sin export${sb.mirLog ? '; mir_eval_log sin filas' : '; mir_eval_log sin acceso'}) · días MIR en el plan: ${mirSemana.length} · rellenar: media __% · días _/5`}`);
   L.push(`## 6 SYNAPSE misiones     ${m6.hechos == null ? `sin plan_checks ni export de localStorage · plan ${m6.plan} misiones (L-sáb) · rellenar _/${m6.plan}` : `${m6.hechos}/${m6.plan} ✓`}`);
-  L.push(`## 7 Vibecoding           ${m7 ? `S${m7.s} ${m7.nombre} · días ✓ ${m7.hechos == null ? '_' : m7.hechos}/${m7.plan} · SHIP ${fmt(m7.ship)} (PC SYNAPSE 15:00) · SHIPPED: ${m7.verificador ? `${on(m7.shipped)} (verify_vibecoding ${m7.verificador.ok ?? '?'}/${m7.verificador.total ?? '?'} criterios${m7.verificador.fecha ? ' · ' + m7.verificador.fecha : ''})` : m7.hechos == null ? '__' : `${on(m7.shipped)} (auto-reporte: ✓ ${m7.hechos}/${m7.plan}; correr node DATA/_scripts/verify_vibecoding.js ${m7.s} para el dato real)`} · evidencia (commit/URL/test): ______` : 'fuera del rango S1-S12 (14-sep → 4-dic)'}`);
+  L.push(`## 7 Vibecoding           ${m7 ? `S${m7.s} ${m7.nombre} · días ✓ ${m7.hechos == null ? '_' : m7.hechos}/${m7.plan} · SHIP ${fmt(m7.ship)} (PC SYNAPSE 15:00) · SHIPPED: ${m7.verificador ? `${on(m7.shipped)} (verify_vibecoding ${m7.verificador.ok ?? '?'}/${m7.verificador.total ?? '?'} criterios${m7.verificador.fecha ? ' · ' + m7.verificador.fecha : ''})` : m7.hechos == null ? '__' : `${on(m7.shipped)} (auto-reporte: ✓ ${m7.hechos}/${m7.plan}; correr node DATA/_scripts/verify_vibecoding.js ${m7.s} para el dato real)`} · evidencia (commit/URL/test): ______` : 'fuera del rango S1-S12 (21-sep → 11-dic, v5.14)'}`);
   L.push(`## 8 VITALS               ${sue.length ? `${vit.logs.length ? `logs ${m8.logsDias}/7 días · ` : ''}sueño medio ${sd(m8.suenoMedio, ' h')} (${m8.suenoFuente}, ${sue.length} noche(s)) · noches < 7 h: ${m8.noches7} · < 6 h: ${m8.noches6} · agua media ${sd(m8.aguaMedia, ' ml')}` : `${vit.estado.startsWith('ok') ? 'sin registros de la semana (quick-log de VITALS a las 07:00)' : vit.estado} · sin sueno_h en el diario · rellenar: sueño medio __ h · noches < 7 h _ · agua ____ ml`}`);
   L.push(`## 9 Días perdidos        ${m9.sinCheckUsmle == null ? `sin plan_checks ni export · días USMLE transcurridos ${m9.transcurridos}/${m9.diasPlan}` : `sin ✓ USMLE: ${m9.sinCheckUsmle.length} (${m9.sinCheckUsmle.map(fmt).join(', ') || '—'}) de ${m9.transcurridos} transcurridos`}${m9.planChecksSemana != null ? ` · ✓ marcados esta semana (todos los planes): ${m9.planChecksSemana}` : ''} · ÁMBAR: ${m9.ambar.length} (${m9.ambar.map(fmt).join(', ') || '—'}) · ROJO: ${m9.rojo.length} (${m9.rojo.map(fmt).join(', ') || '—'}) · corrimiento ejecutado: sí / no / no aplica`);
   L.push(`## 10 Checklist G         activas (pre-marcadas): ${m10.activas.length ? m10.activas.join(' · ') : 'ninguna detectada'}${m10.sinDato.length ? ` · sin dato: ${m10.sinDato.join(', ')}` : ''}`);
