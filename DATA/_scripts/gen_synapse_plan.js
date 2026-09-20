@@ -20,7 +20,7 @@
 // v5.10-b (12-sep-2026, vacío 5 de gaps_v3b_synapse.json — "semanas 13-20 sin misión"): el plan deja de terminar en
 // la sem 12 y cubre hasta el VIE 22-ENE-2027 (fin del Step 1 menos el taper de la semana del examen):
 //   · sem 12 gana vie 4-dic, sáb 5-dic (PC = SHIP S12, antes fuera del plan) y dom 6-dic (2 A-units de cierre F1);
-//   · F2 · sem 13-19 (lun 7-dic → vie 29-ene, v5.14) = ANTHROPIC ACADEMY RESTANTE + prep CCA-F a 30': Building with the
+//   · F2 · sem 13-19 (lun 14-dic → vie 29-ene, v5.14) = ANTHROPIC ACADEMY RESTANTE + prep CCA-F a 30': Building with the
 //     Claude API (12 módulos) · MCP restante + MCP Advanced Topics · agent skills/subagentes restantes · Claude Code in
 //     Action restante · AI Capabilities and Limitations · Claude Cowork · los 3 ensayos de context engineering · repaso
 //     por los 5 dominios del CCA-F · simulacro (quizzes) · cierre. Temarios en curricula/_extracted.json (5-sep + 12-sep).
@@ -231,7 +231,7 @@ function buildAUnits() {
   push('Claude Code docs — ' + ccDoc(4).modulo, ccDoc(4).titulo + '. Repaso antes del taper: qué hook automatiza cada sensor (SessionEnd → telemetría Anki; PostToolUse → verificar_planes). SHIP S12 hoy en el PC.', ccDoc(4).url);
   if (A.length !== 72) throw new Error('Total A-units F0+F1 (+cierre sem 12) debe ser 72, hay ' + A.length);
 
-  // F2 · ANTHROPIC ACADEMY RESTANTE + PREP CCA-F (sem 13-19 · lun 7-dic → sáb 23-ene · 38 A-units · 30'/día · taper del Step 1)
+  // F2 · ANTHROPIC ACADEMY RESTANTE + PREP CCA-F (sem 13-19 · v5.14: lun 14-dic → vie 29-ene · 38 A-units · 30'/día · taper del Step 1)
   // Temarios reales: academy-claude-api (12 módulos, 5-sep) · academy-mcp 7-13 · academy-mcp-advanced (12-sep) ·
   // academy-agent-skills 3-6 · academy-subagents 4 · academy-cc-in-action 10-13 · academy-ai-capabilities (12-sep) ·
   // academy-cowork (12-sep) · 3 ensayos de Anthropic Engineering · repaso por dominio del CCA-F (pesos según CALIDAD/Synapse.md:
@@ -478,7 +478,7 @@ const ts = `/**
  * synapseDailyPlan.ts — Motor día-a-día SYNAPSE (${SEM_MAX} semanas · ${TOTAL} días · ${dias[0].fecha} → ${dias[TOTAL - 1].fecha}).
  * Arranque ${dias[0].wd} ${dias[0].fecha} (START parametrizado) · sem 1 = ${dias[0].wd}→dom · domingos = Feynman del proyecto (10', opcional; día libre) ·
  * sáb = A/B/C + PC (bloque personal, sí va en finde) · feriados 25-dic/31-dic/1-ene = libres (bloque R).
- * v5.10-b (12-sep-2026): + F2 · sem 13-19 (${nF2} días, lun 7-dic → ${FIN_PLAN}) = Anthropic Academy restante + prep CCA-F
+ * v5.10-b (12-sep-2026): + F2 · sem 13-19 (${nF2} días, ${dias.find(x => x.semana === 13).wd.toLowerCase()} ${dias.find(x => x.semana === 13).fecha} → ${FIN_PLAN}) = Anthropic Academy restante + prep CCA-F
  * (taper del Step 1; sem 17-19 con deload:true). Los días 1-81 son idénticos a v5.10.
  * GENERADO por DATA/_scripts/gen_synapse_plan.js desde DATA/SYNAPSE/curricula/_extracted.json
  * (temarios REALES extraídos con WebFetch/oEmbed + verificación adversarial, 10-jun-2026).

@@ -2,7 +2,7 @@
  * synapseDailyPlan.ts — Motor día-a-día SYNAPSE (19 semanas · 131 días · 2026-09-21 → 2027-01-29).
  * Arranque Lun 2026-09-21 (START parametrizado) · sem 1 = Lun→dom · domingos = Feynman del proyecto (10', opcional; día libre) ·
  * sáb = A/B/C + PC (bloque personal, sí va en finde) · feriados 25-dic/31-dic/1-ene = libres (bloque R).
- * v5.10-b (12-sep-2026): + F2 · sem 13-19 (47 días, lun 7-dic → 2027-01-29) = Anthropic Academy restante + prep CCA-F
+ * v5.10-b (12-sep-2026): + F2 · sem 13-19 (47 días, lun 2026-12-14 → 2027-01-29) = Anthropic Academy restante + prep CCA-F
  * (taper del Step 1; sem 17-19 con deload:true). Los días 1-81 son idénticos a v5.10.
  * GENERADO por DATA/_scripts/gen_synapse_plan.js desde DATA/SYNAPSE/curricula/_extracted.json
  * (temarios REALES extraídos con WebFetch/oEmbed + verificación adversarial, 10-jun-2026).

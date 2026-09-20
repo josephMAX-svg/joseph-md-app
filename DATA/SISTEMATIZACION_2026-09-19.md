@@ -60,7 +60,7 @@ D1 `2026-09-21`, D95 `2027-02-03`, `DAILY_META.examenTarget = 2027-02-04`; ENCAP
 
 Detalle ítem a ítem con `fichero:línea` en `SEGUNDA_CAPA_ESTADO.md` §3 (líneas `→ ESTADO 19-sep:`). Resumen:
 
-**Hecho (10)**: lectura del UWSA1 por tramos `HITOS_ONTRACK[0].tramos` + `lecturaHito` (#12, `usmleScores.ts:268/286`, `UsmleHub.tsx:138/152`) ·
+**Hecho (10)**: lectura del UWSA1 por tramos `HITOS_ONTRACK[0].tramos` + `lecturaHito` (#12, `usmleScores.ts:268/286`, `src/components/study/UsmleHub.tsx:132/148/152`) ·
 kit anti-pánico `PROTOCOLO_BLOQUE` + `jmd-usmle-worstcase` (#26, `assemble_usmle_ts.js:186` → `usmleStep1Daily.ts:180`, `UsmleTodayPlan.tsx:173`,
 `UsmleHub.tsx:158`) · bug `diaPrevio` post-hito (#6, `assemble_usmle_ts.js:113-119` → `usmleStep1Daily.ts:107-118`; verificado con node en los
 12 días post-hito v5.14) · gate N3/N2 por sistema (#13, `usmleScores.ts:232/406`) · NBME por bloque `bloquesPct` + `plantillaPorSistema` (#27,
@@ -137,7 +137,7 @@ toggle "día PARCIAL" (§12.6-10, `UsmleTodayPlan.tsx:119`, `usmleScores.ts:437`
 - **LIVIANO mide retención**: `src/lib/livianoScore.ts` (NUEVO; `LIVIANO_SCORE_KEY = 'jmd-liviano-score'` :22, `loadLivianoScore` :40, `espejarLivianoScore`,
   `pullLivianoScores`, `mergeLivianoScore`): pre-tests 5Q de lunes, drills D37/D58/D75/D88 y rúbrica 0-2×4 de los 16 casos; localStorage + espejo en
   `study_progress` (examen 'LIVIANO', fuente 'app:liviano', sin DDL). `LivianoTodayPlan.tsx` (:232 prop `onIrALogistica`, :256 pull al montar, :375 botón
-  "Academia → Logística F5"); `EmpresaHub.tsx:57` (`render(go)`). Cierra `gaps_v3b_business` #1 (parcial → hecho en la app).
+  "Academia → Logística F5"); `src/components/empresa/EmpresaHub.tsx:47` (`render(go)`). Cierra `gaps_v3b_business` #1 (parcial → hecho en la app).
 - **Decks**: `src/lib/ankiLinks.ts` — `APEX::LIVIANO::<modulo_slug>` re-exportado desde `livianoCasos.ts` (8 sub-decks, `LIVIANO_ANKI_DECKS` :116; CSV
   `DATA/BUSINESS/ANKI_COLA/LIVIANO_mecanismo.csv`, 216 tarjetas) + `USMLE_PHARM_DECK = 'APEX::USMLE::Pharmacology'` y `usmleAnkiDeck(system, matType?)` (:41-44).
 - **KPIs**: `DATA/BUSINESS/_kpi/README.md` (NUEVO; destino del botón "Exportar JSON" del Cockpit F1, nombre `liviano_kpi_<AAAA>-W<SS>.json`, forma del JSON).

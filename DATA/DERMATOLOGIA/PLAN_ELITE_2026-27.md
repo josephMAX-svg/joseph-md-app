@@ -390,7 +390,7 @@ drills **d19/d20/d52/d73** (`DERMA_DRILL_DIAS_V3`). Mapa completo d(v2.1) → d(
 ### 13. Taper de examen (v3 · 12-sep-2026 · gaps_v3b_derma nº2)
 
 **Regla (Palmerton, "taper antes del examen"):** *ningún átomo CRIT nuevo a ±3 días hábiles de un examen mayor*, y en la
-semana del examen **solo repaso FSRS + 1 caso**. Con las fechas v5.10, entre el NBME 31 (vie 15-ene-2027, GO/NO-GO) y el
+semana del examen **solo repaso FSRS + 1 caso**. Con las fechas v5.10 (HISTÓRICO: la ventana vigente v5.14 es d44 jue 21-ene → d49 jue 4-feb = día del examen, ver §12), entre el NBME 31 (vie 15-ene-2027, GO/NO-GO) y el
 examen Step 1 (vie 29-ene-2027) caían — calculado con node, no estimado — **6 sesiones Derma**: d44 15-ene (Cicatrización,
 CRIT, el mismo día del NBME 31), d45 19-ene y d46 21-ene (checkpoints, en la semana de NBME 32/33 + FREE 120), d47 25-ene
 (Anatomía 3D, CRIT), d48 27-ene (Arterias, CRIT, D95 de Step 1 en v5.10 — D94 = D-2 en v5.11) y d49 29-ene (Envejecimiento, **el día del examen**).

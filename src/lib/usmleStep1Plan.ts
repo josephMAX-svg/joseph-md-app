@@ -7,7 +7,7 @@
  *
  * v5.14 (19-sep-2026): D1 = LUN 21-sep-2026 → D95 = mié 3-feb-2027 · Step 1 = BLOQUE PRINCIPAL (6h15/día L-V):
  *  05:00 ANKI AM · 07:15 repaso anclado · 08:15 PRE-TEST 10Q · 09:00-11:00 DEEP PRIME · 11:00 30Q · 18:00 eval examen.
- *  Sáb y dom LIBRES (skip 25-dic, 31-dic, 1-ene). Examen: semana 25-29 ene 2027. Los diaInicio apuntan
+ *  Sáb y dom LIBRES (skip 25-dic, 31-dic, 1-ene). Examen target jue 4-feb-2027 (v5.14; ventana original 25-29 ene superada). Los diaInicio apuntan
  *  al plan de 95 días de usmleStep1Daily.ts (fuente de verdad): Fase A D1-81 · B D82-86 · C D87-95.
  *  El D1 (lun 21-sep) es el UWSA1 baseline (se mueve con cada corrimiento: vie 11 → lun 14 → mar 15 → mié 16 → jue 17 → lun 21); el contenido arranca el mar 22-sep (D2).
  *  Examen: D95 = mié 3-feb = D-1 dentro del plan → target JUE 4-FEB-2027; Prometric por agendar/reprogramar.

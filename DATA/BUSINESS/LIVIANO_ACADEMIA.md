@@ -36,11 +36,11 @@ peso: la comunicación sin estigma es contenido nuclear, no accesorio.
 
 | Vacío detectado (5-sep) | Solución implementada |
 |---|---|
-| 1 · "Repaso Anki" sin deck; solo 2 drills ciegos; progreso = ✓ binario | Deck `APEX::LIVIANO::<módulo>` con **216 tarjetas de MECANISMO** (10-15/semana) generadas del campo `estudio` + CSV importable · **pre-test ciego 5Q cada lunes** sobre la semana D-7 · **drills de cifras ancla** D36 (jue 5-nov) · D58 (lun 7-dic) · D75 (lun 4-ene) · D87 (mié 20-ene) · el ✓ pasa a **SCORE** (% ciego + rúbrica) persistido en `jmd-liviano-score` |
+| 1 · "Repaso Anki" sin deck; solo 2 drills ciegos; progreso = ✓ binario | Deck `APEX::LIVIANO::<módulo>` con **216 tarjetas de MECANISMO** (10-15/semana) generadas del campo `estudio` + CSV importable · **pre-test ciego 5Q cada lunes** sobre la semana D-7 · **drills de cifras ancla** D37 (mar 10-nov) · D58 (mié 9-dic) · D75 (mié 6-ene) · D88 (lun 25-ene) · el ✓ pasa a **SCORE** (% ciego + rúbrica) persistido en `jmd-liviano-score` |
 | 2 · 16 viernes con 6 viñetas repetidas, sin datos ni rúbrica | **`LIV_CASOS`: 16 casos únicos** con progresión por competencia, datos clínicos, red flags, 3 decisiones esperadas, frase de cierre y **rúbrica 0-2 × 4** |
 | 3 · Sin generador; JSON de 85 KB a mano | `gen_liviano_plan.js <fecha>` (L-V, feriados fuera, casos en viernes reales, pre-tests en lunes); `liviano_reslot_viernes.js` delega en el generador (remap_inicio.js bloque 7/7b sigue igual) |
 | 4 · 0 días sobre acceso/regulación en Perú; pendientes rojos sin dueño | **Módulo 7 · Acceso en Perú** (6 días: D39-D41 · D43-D44 · D47-caso) con tarea de verificación anti-alucinación → tabla `LIVIANO_ACCESO_PERU` · 2 filas fijas `LIVIANO_REVISION_TRIMESTRAL` (**D46 lun 23-nov** y **D90 mié 27-ene**, v5.14) · pendientes rojos con dueño, día y salida |
-| 5 · Sin protocolo clínico; la Academia terminaba sin entregable | Cada "Síntesis de módulo" produce UNA sección del **protocolo clínico** (capstone **D88 jue 21-ene**) → `DATA/BUSINESS/LIVIANO_PROTOCOLO_CLINICO_v1.md` + `LIVIANO_PROTOCOLO` en la app |
+| 5 · Sin protocolo clínico; la Academia terminaba sin entregable | Cada "Síntesis de módulo" produce UNA sección del **protocolo clínico** (capstone **D89 mar 26-ene**) → `DATA/BUSINESS/LIVIANO_PROTOCOLO_CLINICO_v1.md` + `LIVIANO_PROTOCOLO` en la app |
 | 9 · 18 KPIs constantes sin captura | **`LivianoKpiLog`** semanal (semana ISO: leads · consultas · altas · MRR · churn · COGS) con semáforo contra meta, regla "< 80 % dos semanas → ajustar", persistido en `jmd-liviano-kpi` + export JSON |
 
 **Redistribución de días** (90 en total, sin tocar la franja; recuento REAL de `LIV_DIAS` v5.14, idéntico al de v5.9-v5.13):
@@ -154,7 +154,7 @@ Lo que no se negocia es la proteína: es el ladrillo que protege tu músculo mie
 **Drill de cifras (ciego)**: **D58 = mié 9-dic-2026** (módulos 2-3-7; la misma sesión es Síntesis del módulo 3).
 **Produce para el protocolo**: §3 política nutricional. Casos 10-11 (proteína/masa magra · adherencia).
 
-## Módulo 4 · Ejercicio (9 días: D59-D66 · D68 · mar 8-dic → lun 21-dic-2026)
+## Módulo 4 · Ejercicio (9 días: D59-D66 · D68 · jue 10-dic → mié 23-dic-2026)
 
 **Temas**: el ejercicio solo baja poco peso (~2-3 kg) pero es **el mejor predictor de
 mantenimiento** (National Weight Control Registry: ~1 h/día ≈ 2.800 kcal/sem; el umbral 200-300 min/sem
@@ -169,7 +169,7 @@ preserva masa magra durante farmacoterapia · beneficio cardiometabólico indepe
 volver a subirlo** y para que lo que pierdas sea grasa y no músculo. La balanza no distingue;
 nosotros sí."
 
-**Produce para el protocolo**: §4 estándar proteína/fuerza + qué medir y con qué cadencia (**Síntesis D68 = lun 21-dic-2026**).
+**Produce para el protocolo**: §4 estándar proteína/fuerza + qué medir y con qué cadencia (**Síntesis D68 = mié 23-dic-2026**).
 Caso 12 (estancamiento, D60 vie 11-dic; v5.14).
 
 ## Módulo 6 · Farmacología no-GLP1 + cirugía (9 días: D69-D75 · D77 · D82 · jue 24-dic-2026 → vie 15-ene-2027 · límites de competencia)
@@ -193,7 +193,7 @@ durante y después."
 
 **Drill de cifras (ciego)**: **D75 = mié 6-ene-2027** (módulos 4-6; la misma sesión es Síntesis del módulo 6).
 **Produce para el protocolo**: §6 derivación y límites + escalera terapéutica. Casos 13-15 (límite de competencia
-y derivación: D67 vie 18-dic · D79 vie 8-ene · D84 vie 15-ene).
+y derivación: D65 vie 18-dic · D77 vie 8-ene · D82 vie 15-ene).
 
 ## Módulo 5 · Conducta (9 días: D76 · D78-D81 · D83-D86 · jue 7-ene → jue 21-ene-2027 · se estudia al final para que el caso integral lo use)
 
@@ -297,7 +297,7 @@ de escalada/derivación). Las 3 decisiones y el cierre se revelan **después** d
 
 | Sección | Módulo → Síntesis que la redacta | **Día · fecha v5.14** (leídos de `LIV_DIAS` con node el 19-sep) | Estado 5-sep |
 |---|---|---|---|
-| §1 Fundamento: por qué tratamiento crónico | M1 | **D19 · mar 13-oct-2026** | borrador (desde el currículo) |
+| §1 Fundamento: por qué tratamiento crónico | M1 | **D19 · jue 15-oct-2026** | borrador (desde el currículo) |
 | §2 Elegibilidad + titulación | M2 | **D38 · mié 11-nov-2026** (Síntesis módulo 2; el drill de cifras M2 es el D37 mar 10-nov) | borrador (dosis A VERIFICAR) |
 | §3 Política nutricional · §4 estándar proteína/fuerza + qué medir | M3 · M4 | **D58 · mié 9-dic** · **D68 · mié 23-dic** | borrador |
 | §5 5As · automonitoreo · cadencia de check-in · check-in de EA | M5 | **D86 · jue 21-ene-2027** | borrador |
@@ -388,8 +388,8 @@ generador re-sloteó los casos a viernes reales — **la fecha es lo estable, el
 |---|---|---|---|---|---|---|
 | D1 · arranque | vie 11-sep-2026 | lun 14-sep-2026 (D1) | mar 15-sep-2026 (D1) | mié 16-sep-2026 (D1) | **jue 17-sep-2026** (D1) | **lun 21-sep-2026** (D1) |
 | Caso 1 | vie 18-sep-2026 (D6) | vie 18-sep-2026 (D5) | vie 18-sep-2026 (D4) *(fecha intacta)* | vie 25-sep-2026 (D8) *(⚠ +1 semana: el vie 18-sep queda sin caso)* | **vie 25-sep-2026** (D7) *(fecha intacta)* | **vie 25-sep-2026** (D5) *(fecha intacta; con D1 en lunes ya no se salta ningún viernes)* |
-| Importar el CSV de Anki | mié 30-sep-2026 (D15) | jue 1-oct-2026 (D15) | lun 5-oct-2026 (D16) | mar 6-oct-2026 (D16) | mar 6-oct-2026 (D15) | **mié 7-oct-2026** (D15) |
-| Síntesis M1 (§1 del protocolo) | mar 6-oct-2026 (D19) | mié 7-oct-2026 (D19) | jue 8-oct-2026 (D19) | lun 12-oct-2026 (D20) *(el vie 9-oct es el caso 4)* | lun 12-oct-2026 (D19) | **mar 13-oct-2026** (D19) |
+| Importar el CSV de Anki | mié 30-sep-2026 (D15) | jue 1-oct-2026 (D15) | lun 5-oct-2026 (D16) | mar 6-oct-2026 (D16) | mar 6-oct-2026 (D15) | **lun 12-oct-2026** (D16) |
+| Síntesis M1 (§1 del protocolo) | mar 6-oct-2026 (D19) | mié 7-oct-2026 (D19) | jue 8-oct-2026 (D19) | lun 12-oct-2026 (D20) *(el vie 9-oct es el caso 4)* | lun 12-oct-2026 (D19) | **jue 15-oct-2026** (D19) |
 | Drill de cifras M2 | lun 2-nov-2026 (D37) | mar 3-nov-2026 (D37) | mié 4-nov-2026 (D37) | mié 4-nov-2026 (D36) | **jue 5-nov-2026** (D36) | **mar 10-nov-2026** (D37) |
 | Síntesis M2 | mar 3-nov-2026 (D38) | mié 4-nov-2026 (D38) | jue 5-nov-2026 (D38) | jue 5-nov-2026 (D37) | **lun 9-nov-2026** (D38) *(el vie 6-nov es el caso 7)* | **mié 11-nov-2026** (D38) *(el vie 13-nov es el caso 8)* |
 | Módulo 7 · Acceso en Perú | mié 4-nov → vie 13-nov-2026 | jue 5-nov → vie 13-nov-2026 | lun 9-nov → lun 16-nov-2026 (D40-D45) | lun 9-nov → lun 16-nov-2026 (D39-D42 · D44) + caso 9 vie 20-nov (D48) | **mar 10-nov → mar 17-nov-2026** (D39-D41 · D43-D44) + caso 9 vie 20-nov (D47) | **jue 12-nov → jue 19-nov-2026** (D39 · D41-D44) + caso 9 vie 20-nov (D45) |

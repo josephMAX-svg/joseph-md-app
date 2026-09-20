@@ -32,8 +32,8 @@ perdidos desde el 31-ago). REGLA: no se fusiona ni se recorta contenido; cada d�
 - Examen `oinh139dsnbuma9r3kfu56dhkc` → jue 4-feb-2027 07:00-16:00, título "🎯 USMLE STEP 1 · EXAMEN (target v5.14 — agendar en Prometric)".
 - Overlays nuevos: **D94** `neboplchsaua4snj39nrl480nc` (mar 2-feb 07:15-12:00) · **D95** `n90bdqhohadu1eqbctv148dn28` (mié 3-feb 05:00-12:00).
 - 12 overlays 🔬 Research re-fechados vía `gen_research_calendar.js` (`--set` ×12, `--check` = 0).
-- **UNTIL resuelto con SERIES DE EXTENSIÓN** (create, no delete) para D93-D95: repaso 07:15 `gfapfa25hm5d9s65n7oiu0jsms` ·
-  pre-test 08:15 `vi7lrsm2blitpqistrt87i3sqk` (solo lun 1-feb) · ANKI AM `mlqvrm4m8bn38qfl37qddjgk5g` · DEEP PRIME
+- **UNTIL resuelto con SERIES DE EXTENSIÓN** (create, no delete) para D93-D95 (ids MEDIDOS con get_event el 19-sep): ANKI AM 05:00 `gfapfa25hm5d9s65n7oiu0jsms` ·
+  repaso 07:15 `vi7lrsm2blitpqistrt87i3sqk` · pre-test 08:15 `mlqvrm4m8bn38qfl37qddjgk5g` (evento suelto, solo lun 1-feb) · DEEP PRIME
   `39dm9gk3a58u3iqu9lk28noum0` · 30Q `u6alh9h3o43l2fu98gmvkvtk90` · eval 18:00 `r850pocdgcm8pi6a42cvv37v1k` (MO,TU). ENCAPS no se extiende.
 - **📋 REVISIÓN SEMANAL** creada: `21fbiohc1i47r4lqmaa3eb76l4` (sáb 07:15-07:35 desde el 26-sep, UNTIL 7-feb; default sábado, decisión sáb/dom de Joseph).
 - 38 series con descripción v5.14 (23 de siempre + 9 GYM/BAILE con ids nuevos `4qvs34d84u82psvknpqhv3jc7a`, `3m8m4resu8akph4a7qfuf3h1qn`,

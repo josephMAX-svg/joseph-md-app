@@ -155,6 +155,13 @@ Esta tabla se ha releído del SQL sembrado el 19-sep (`DATA/_scripts/_encaps_man
 - **Perfil (no se edita a mano)**: `PERFIL_CONOCIMIENTO.md` lo genera `node DATA/_scripts/gen_encaps_semana.js --perfil` desde `resumen_por_subtema` + rondas (cabecera GENERADO + fecha); también se regenera solo tras cada `--cerrar` y cada cierre semanal.
 - Umbrales: **≥85 %** ciego = meta (≈17/20) · **≥75 %** crucero en bancos del día · mini-sim **≥18/25** hacia diciembre · alerta **<15/25 dos viernes seguidos** → override obligatorio.
 - Los fallos vuelven **con OTRO enfoque** en D+1 (eval anclada), D+3, D+7 y en los ≥5Q de "fallos previos" del mini-sim. Cada fallo OLVIDO (cifra/plazo) → tarjeta Anki esa misma tarde; CONCEPTO/CCSN → nota Obsidian (porqué).
+- **Convergencia app ↔ registro (v5.14 · 19-sep)**: el CIERRE DE SESIÓN de la app escribe `study_progress` (fuente `app:cierre`, `errores_por_tipo` trae la ronda v3 completa). El viernes, ANTES del cierre semanal, se trae todo al registro con
+  ```
+  node DATA/_scripts/gen_encaps_semana.js --pull [--dry] [--desde YYYY-MM-DD] [--hasta YYYY-MM-DD]
+  node DATA/_scripts/gen_encaps_semana.js --semana <lunes> --sql
+  ```
+  `--pull` lee `study_progress` por REST (anon key de la app), reconstruye las rondas v3 en `_registro_resoluciones.json` sin duplicar (clave `fecha+codigo+tipoRonda`; marca `_fuente 'app:cierre'` y `_meta.ultimo_pull`) y recalcula resumen + PERFIL; `--dry` solo informa. La línea `--cerrar` sigue valiendo para rondas hechas fuera de la app.
+- **La eval / el banco NUNCA salen con 0Q (v5.14)**: si el pool del código está a 0, `gen_encaps_minisim.js` completa en cadena — ítems REALES del mismo código ya usados (marcados `retest: true`, etiqueta "re-test (otro enfoque)" en el runner) → otros sub-ejes del código → `banco_items_v1` del área → cola larga del área — y lo deja escrito en `_meta.fallback` + aviso en consola. Ej.: `--eval 2026-10-22 --dry` (III-5 a 0) → 4Q re-test. Reponer stock (`set_<codigo>_2.json`) sigue siendo lo correcto: el fallback es la red, no el plan.
 - **Checkpoint de fin de enero** (v3 §6 regla 3): sale de la serie semanal (`SEMANAS/`), no se reconstruye a mano; redistribuye la mezcla de la fase intensiva hacia las áreas con brecha.
 
 ## 6) Qué NO se hace en esta hora

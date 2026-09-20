@@ -181,6 +181,11 @@ async function configDeck(prefijo) {
     return {
       decks, preset: cfg.name || null,
       nuevasPorDia: cfg.new && typeof cfg.new.perDay === 'number' ? cfg.new.perDay : null,
+      // v5.14 (19-sep, hallazgo #15 Palmerton §4.2): reviews/día ≥ 9999 (el default 100 oculta vencidas) y rollover 4 h (despierta a las 04:00)
+      revPorDia: cfg.rev && typeof cfg.rev.perDay === 'number' ? cfg.rev.perDay : null,
+      alertaRevPorDia: cfg.rev && typeof cfg.rev.perDay === 'number' && cfg.rev.perDay < 9999 ? `rev.perDay=${cfg.rev.perDay} < 9999: Anki oculta vencidas (Palmerton §4.2 · SYNC_ANKI D3)` : null,
+      rollover: typeof cfg.rollover === 'number' ? cfg.rollover : null,
+      alertaRollover: typeof cfg.rollover === 'number' && cfg.rollover !== 4 ? `rollover=${cfg.rollover} ≠ 4 h: las tarjetas de hoy no estarán listas a las 05:00` : null,
       desiredRetention: typeof dr === 'number' ? dr : null,
       fsrsParams: Array.isArray(cfg.fsrsParams5) ? cfg.fsrsParams5.length : Array.isArray(cfg.fsrsWeights) ? cfg.fsrsWeights.length : null,
       nota: dr == null ? 'desiredRetention no expuesto por esta versión de Anki/AnkiConnect → verificar FSRS en la UI (Preferencias → Repaso)' : null,

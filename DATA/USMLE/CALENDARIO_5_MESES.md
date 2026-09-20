@@ -333,9 +333,8 @@ Código: [`src/lib/usmleScores.ts`](../../src/lib/usmleScores.ts) → localStora
 
 Las franjas del Calendar no cambian en D94 (05:00 Anki · 07:15 · 11:00 siguen en pie); cambia el **volumen** (20Q) y el
 **contenido** (nada nuevo). El D-1 (D95, mié 3-feb) es un día del plan con sesión mínima solo por la mañana
-— A VERIFICAR (19-sep): las 7 series L-V del Calendar terminan con `UNTIL=20270130`, así que D93 lun 1-feb, D94 mar 2-feb y D95
-mié 3-feb quedan sin franjas USMLE hasta que se extiendan (el flujo Calendar de esta pasada mueve el overlay del examen al jue 4-feb;
-no hay overlay del D-1). Lo que sigue A VERIFICAR (12-sep): repasos 200-300/día en el cierre (cifra del studio guide) y
+— RESUELTO (19-sep, noche): las 6 series USMLE L-V originales terminan con `UNTIL=20270130`, pero D93-D95 (lun 1 → mié 3-feb) ya están
+cubiertos por 6 SERIES DE EXTENSIÓN creadas el 19-sep (ANKI AM 05:00 `gfapfa25hm5d9s65n7oiu0jsms` · repaso 07:15 `vi7lrsm2blitpqistrt87i3sqk` · pre-test 08:15 `mlqvrm4m8bn38qfl37qddjgk5g` (evento suelto, solo lun 1-feb) · DEEP PRIME `39dm9gk3a58u3iqu9lk28noum0` · 30Q `u6alh9h3o43l2fu98gmvkvtk90` · eval 18:00 `r850pocdgcm8pi6a42cvv37v1k` (MO,TU)); el overlay del examen está en el jue 4-feb 07:00-16:00 y hay overlays propios del D94 `neboplchsaua4snj39nrl480nc` (mar 2-feb) y del D95 = D-1 `n90bdqhohadu1eqbctv148dn28` (mié 3-feb). ENCAPS 16:15 no se extiende (termina el vie 29-ene por diseño). Lo que sigue A VERIFICAR (12-sep): repasos 200-300/día en el cierre (cifra del studio guide) y
 el costo del Free 120 en el Prometric de Lima ($155 internacional según el cuaderno). **Decisión pendiente de Joseph (19-sep)**:
 rendir el **jue 4-feb** (agendar/reprogramar Prometric + confirmar eligibility period) o **recortar temario** para volver atrás.
 

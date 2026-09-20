@@ -218,7 +218,7 @@ Sin esto el plan arranca ciego, con el contenido equivocado o con la app vieja e
       workflow → `python D:\agente_estudio\scripts\_ARCHIVO_DESARROLLO\update_n8n_workflow_v2_3.py` → enviar **1 APEX
       `::OBSIDIAN` multilínea de prueba** con Ctrl+Shift+A y comprobar que la nota llega íntegra a `01_USMLE\…\APEX_creados\`
       y la card a Anki. Candidato al proyecto S4 del vibecoding (catálogo re-secuenciado). *(sistema/SYNAPSE)*
-- [ ] **Alinear `D:\agente_estudio\config\fases.json`** — sigue con `FASE_4_ENCAPS_DOMINANTE.is_current_phase = true` y
+- [x] ~~**Alinear `D:\agente_estudio\config\fases.json`**~~ **HECHO 19-sep (integrador LIVIANO/SYNAPSE/Derma): FASE_4 `is_current_phase = false`, FASE_7 `true` e `inicio = 2026-09-21`; copia previa en el scratchpad (`fases.json.bak_0919`); queda opcional el `git init` local.** *(texto original:)* sigue con `FASE_4_ENCAPS_DOMINANTE.is_current_phase = true` y
       `FASE_7.inicio = 2026-10-01`. Poner `false` en FASE_4 (o `true` en FASE_7) y `FASE_7.inicio = 2026-09-21` (D1 del régimen v5.14). Verificar
       antes que `orquestador.py` lee ese campo. Opcional (S1): `git init` LOCAL en `D:\agente_estudio` (sin remoto,
       `.gitignore` para `.env`/`__pycache__`); mientras, los commits [S1]/[S6] van a joseph-md-app. *(sistema)*
@@ -237,7 +237,7 @@ Sin esto el plan arranca ciego, con el contenido equivocado o con la app vieja e
         `node DATA/_scripts/gen_delta_espana.js --write` (completar las filas del delta volcadas y subir las estables a la
         tabla de su asignatura) y volcar también en `_registro_resoluciones.json` con `plan:'MIR'`. El espejo Supabase
         `mir_eval_log` reduce el riesgo, no lo elimina.
-- [ ] **(hecho el 16-sep para v5.13; v5.14 PENDIENTE de Claude en la sesión principal — los agentes no tocan la memoria) Actualizar la memoria `usmle-step1-v5.md`, `encaps-mantenimiento-2027-1.md`, el handoff y MEMORY.md al estado v5.14** (D1 lun 21-sep · D94 mar 2-feb = última sesión de banco · D95 mié 3-feb = D-1 dentro del plan · examen target jue 4-feb · sáb 30/dom 31-ene libres entre D92 y D93 · MIR 78 d → lun 11-ene, mantenimiento 57 d desde el mar 12-ene · ENCAPS 92 d → vie 29-ene · SYNAPSE vie 29-ene · Research +2 (mar 22-sep → mié 17-feb, CR-9 lun 1-feb = D93) · Derma +1 slot 21-sep → mar 13-abr, taper 21-ene → 4-feb con d49 = día del examen): el orden
+- [x] **(HECHO 19-sep en la sesión principal, v5.14: MEMORY.md línea 1, usmle-step1-v5.md, encaps-mantenimiento-2027-1.md y el handoff; re-verificado tras la sistematización) Actualizar la memoria `usmle-step1-v5.md`, `encaps-mantenimiento-2027-1.md`, el handoff y MEMORY.md al estado v5.14** (D1 lun 21-sep · D94 mar 2-feb = última sesión de banco · D95 mié 3-feb = D-1 dentro del plan · examen target jue 4-feb · sáb 30/dom 31-ene libres entre D92 y D93 · MIR 78 d → lun 11-ene, mantenimiento 57 d desde el mar 12-ene · ENCAPS 92 d → vie 29-ene · SYNAPSE vie 29-ene · Research +2 (mar 22-sep → mié 17-feb, CR-9 lun 1-feb = D93) · Derma +1 slot 21-sep → mar 13-abr, taper 21-ene → 4-feb con d49 = día del examen): el orden
       real es el de `REESTRUCTURACION` §13.3 — `remap_inicio.js <fecha>` (ya incluye Research vía `gen_research_plan.js`,
       Derma 73 + ciclo 2, Business vía `gen_business_plan.py`, LIVIANO) → `gen_vibecoding_plan.js` **antes que**
       `gen_synapse_plan.js` → `gen_aurum_plan.js` → `gen_mir_daily.js --check` (+ `gen_mir_mantenimiento.js` si D78 pisa el
@@ -247,7 +247,7 @@ Sin esto el plan arranca ciego, con el contenido equivocado o con la app vieja e
 - [ ] **Los D# de LIVIANO volvieron a cambiar en v5.14 y esta vez también las fechas de drills/síntesis (los 16 casos siguen en viernes, ahora desde el vie 25-sep = D5: con D1 en lunes el plan tiene exactamente 16 viernes y ya no se salta ninguno)**:
       drills **D37 (mar 10-nov) / D58 (mié 9-dic) / D75 (mié 6-ene) / D88 (lun 25-ene, repaso integral)** · trimestral I **D46 (lun 23-nov)**
       y II D90 (**mié 27-ene**) · capstone D89 (**mar 26-ene**) · caso 16 integral **D87 (vie 22-ene, ANTES del capstone — la inversión de v5.13 desaparece)** · Síntesis M5 D86 (jue 21-ene) · Síntesis M2 D38 (mié 11-nov); pre-tests de lunes 18.
-      Actualizar cualquier doc o nota externa que cite los viejos. **La fecha es lo estable.** *(LIVIANO)*
+      Docs del repo ya alineados el 19-sep (LIVIANO_ACADEMIA, LIVIANO_PROTOCOLO_CLINICO_v1, empresaData.ts; verificado por la auditoría); queda solo cualquier nota EXTERNA tuya (Notability/Obsidian) que cite los D# viejos. **La fecha es lo estable.** *(LIVIANO)*
 
 ---
 
@@ -427,7 +427,7 @@ escribe `SIN REGISTRO HALLADO (fecha)`.*
       mínimo on-track → `gateHito` 'ALERTA BURNOUT' + banner) la da la app; **los síntomas los decides tú** (releer sin
       comprender, irritabilidad, indiferencia, descansos que se alargan). Si se activa: 3-5 días solo Anki AM y correr el
       plan con `remap_inicio.js` (cada día parado = +1 hábil; no se recorta temario). *(USMLE)*
-- [x] ~~**Antes del 1-feb-2027 · extender las series del Calendar con `UNTIL=20270130`**~~ **RESUELTO el 19-sep con 6 SERIES DE EXTENSIÓN D93-D95** (`create_event`, no `delete`: repaso 07:15 `gfapfa25hm5d9s65n7oiu0jsms` · pre-test 08:15 `vi7lrsm2blitpqistrt87i3sqk` solo lun 1-feb · ANKI AM `mlqvrm4m8bn38qfl37qddjgk5g` · DEEP PRIME `39dm9gk3a58u3iqu9lk28noum0` · 30Q `u6alh9h3o43l2fu98gmvkvtk90` · eval 18:00 `r850pocdgcm8pi6a42cvv37v1k` MO,TU); las 9 GYM/BAILE ya llevan etiqueta v5.14 (3 ids nuevos); **ENCAPS 16:15 `papebi46etlo8glgfs5akd5mig` NO se extiende a propósito** (termina el 29-ene; la intensiva lleva serie propia cuando decidas su arranque, ⚪ A). *(histórico:)* ⚠ v5.14: el D93 es el lun 1-feb, el D95 el mié 3-feb y el examen el jue 4-feb, así que el `UNTIL` ya no cubre ni D93-D95, ni el examen, ni la intensiva: extender a `20270204` (o más) — son **7 series**, no 2
+- [x] ~~**Antes del 1-feb-2027 · extender las series del Calendar con `UNTIL=20270130`**~~ **RESUELTO el 19-sep con 6 SERIES DE EXTENSIÓN D93-D95** (`create_event`, no `delete`: ANKI AM 05:00 `gfapfa25hm5d9s65n7oiu0jsms` · repaso 07:15 `vi7lrsm2blitpqistrt87i3sqk` · pre-test 08:15 `mlqvrm4m8bn38qfl37qddjgk5g` solo lun 1-feb · DEEP PRIME `39dm9gk3a58u3iqu9lk28noum0` · 30Q `u6alh9h3o43l2fu98gmvkvtk90` · eval 18:00 `r850pocdgcm8pi6a42cvv37v1k` MO,TU); las 9 GYM/BAILE ya llevan etiqueta v5.14 (3 ids nuevos); **ENCAPS 16:15 `papebi46etlo8glgfs5akd5mig` NO se extiende a propósito** (termina el 29-ene; la intensiva lleva serie propia cuando decidas su arranque, ⚪ A). *(histórico:)* ⚠ v5.14: el D93 es el lun 1-feb, el D95 el mié 3-feb y el examen el jue 4-feb, así que el `UNTIL` ya no cubre ni D93-D95, ni el examen, ni la intensiva: extender a `20270204` (o más) — son **7 series**, no 2
       (`CALENDAR_SEGMENTOS` §11.2); la **única bloqueante es `16:15 ENCAPS` (`papebi46etlo8glgfs5akd5mig`)** si ENCAPS
       vuelve a bloque principal en feb-mar; `09:00 DEEP PRIME` (`cb2uh20jnvu7pgfev4183pgctc`) también cubre el examen y corta
       el 30-ene. ⚠ `recurrenceData` del MCP está roto para UPDATE → delete(serie) + create. Aprovechar para re-etiquetar las
