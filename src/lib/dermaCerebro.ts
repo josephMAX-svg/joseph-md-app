@@ -5,7 +5,7 @@
  * (d5 danger zones · d7 psoriasis · d8 eccemas · d9 acné [plantilla canónica §3.2] · d10 ampollosas ·
  * d12 farmacodermias · d14 bacterianas · d16 virales · d18 parasitosis · d22 QA · d23 CBC/CEC · d24 melanoma ·
  * d50 cicatrización/complicaciones).
- * RE-ANCLAJE v3 (19-sep-2026, v5.14): `d` es el d del plan v3 (dermaDailyPlan.ts, d1 = lun 21-sep-2026 → d73 = mar 13-abr-2027);
+ * RE-ANCLAJE v3 (19-sep-2026; fechas al día en v5.15): `d` es el d del plan v3 (dermaDailyPlan.ts, d1 = mié 23-sep-2026 → d73 = jue 15-abr-2027);
  * las 21 fichas desplazadas por el taper del Step 1 (G-44 → d50 · X-47…X-56 → d53…d62 · X-59…X-65 → d63…d69 · X-66 → d46 ·
  * X-67 → d70 · X-68 → d71) conservan su id histórico y llevan `dV21` con el d de la v2.1. Cada ficha se comprobó contra el
  * título (`sub`) y el bloque (`bKey`) del día v3 con node el 19-sep (35/35 coinciden). La sentinela de DermaTodayPlan/DermaHub

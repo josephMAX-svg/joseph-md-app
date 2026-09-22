@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "descripcion": "Catálogo del VIBECODING 04:15-05:00 (L-V, 45') · v5.14 (19-sep-2026; base v5.10-b re-secuenciada con lo YA construido por agentes): 12 proyectos S1-S12 ORDENADOS POR RIESGO PARA EL STEP 1 (lun 21-sep → vie 11-dic-2026, bloques de 5 hábiles que con D1 en lunes coinciden con las semanas de calendario) + taper S13-S20 (lun 14-dic-2026 → mié 3-feb-2027 = D95, bloques secuenciales de pasos.length hábiles, ver `taper`). Fuente única para gen_vibecoding_plan.js (→ src/lib/vibecodingPlan.ts + VIBECODING_12_PROYECTOS.md) y para el bloque PC 'SHIP proyecto N' de gen_synapse_plan.js. Solo trabajo REAL pendiente: lo ya hecho (parser APEX v2.5.1 + test, usmleScores.ts, anki_telemetria.js v1, gen_revision_semanal.js v1, plan_checks.sql, verify_vibecoding.js, journal_hoy.js) se da por hecho y cada proyecto lo COMPLETA o lo pone en producción. Editar AQUÍ y regenerar: node DATA/_scripts/gen_vibecoding_plan.js 2026-09-21 (régimen v5.14, D1 = lun 21-sep-2026).",
+    "descripcion": "Catálogo del VIBECODING 04:15-05:00 (L-V, 45') · v5.15 (22-sep-2026; corrimiento RÍGIDO sobre la base v5.10-b re-secuenciada): 12 proyectos S1-S12 ORDENADOS POR RIESGO PARA EL STEP 1 (mié 23-sep → mar 15-dic-2026, bloques de 5 hábiles) + taper S13-S20 (mié 16-dic-2026 → vie 5-feb-2027 = D95, bloques secuenciales de pasos.length hábiles, ver `taper`). Fuente única para gen_vibecoding_plan.js (→ src/lib/vibecodingPlan.ts + VIBECODING_12_PROYECTOS.md) y para el bloque PC 'SHIP proyecto N' de gen_synapse_plan.js. Solo trabajo REAL pendiente: lo ya hecho (parser APEX v2.5.1 + test, usmleScores.ts, anki_telemetria.js v1, gen_revision_semanal.js v1, plan_checks.sql, verify_vibecoding.js, journal_hoy.js) se da por hecho y cada proyecto lo COMPLETA o lo pone en producción. Editar AQUÍ y regenerar: node DATA/_scripts/gen_vibecoding_plan.js 2026-09-21 (régimen v5.14, D1 = lun 21-sep-2026).",
     "regla": "Se mide por OUTPUT verificable (commit/URL viva/test verde/fichero de salida), nunca por tiempo sentado (Palmerton: medir por resultado, no por material consumido). Ciclo diario 5' objetivo → 35' construir con Claude Code → 5' commit + entrada en el journal (D:/synapse-journal, node DATA/_scripts/journal_hoy.js). 'Shipped' NO es auto-reporte: lo decide node DATA/_scripts/verify_vibecoding.js <n> (criterios mecánicos del proyecto → DATA/SYNAPSE/_vibecoding_ship.json); el ✓ manual de la app solo cuenta días.",
     "freno_0455": "04:55 commit-or-stash OBLIGATORIO (git commit si compila; git stash si no); 05:00 Anki sin excepción (recomendación #1 de Palmerton: Anki a primera hora con la mente fresca). Si el día se recorta, pierde el proyecto, NUNCA el Anki. KPI: hora de la 1ª review de Anki del día (anki_telemetria.js → primeraReview; > 05:10 = ámbar; sin review L-V = rojo). La app muestra la cuenta atrás hasta las 04:55 en la tarjeta 04:15 de MISIÓN DE HOY.",
     "commit_convencion": "Todo commit del proyecto n lleva el prefijo '[S<n>] …' en el repo declarado en `repo_git` (p. ej. '[S3] plan_checks: upsert desde saveDone'). verify_vibecoding.js lo comprueba con git log --all --grep '\\[S<n>\\]'.",
@@ -747,7 +747,7 @@
       "id": "taper-sensores-1",
       "tipo": "mantenimiento",
       "minDia": 15,
-      "semana_step1": "S13 · lun 14 → vie 18-dic (semana del NBME 29; la deload post-NBME 28 fue S12)",
+      "semana_step1": "S13 · mié 16 → mar 22-dic (el NBME 29 cae el mar 22-dic = D65; la deload post-NBME 28 fue S12)",
       "nombre": "Mantenimiento 1: sensores verdes tras la semana deload post-NBME 28",
       "objetivo": "Que telemetría Anki, verify, revisión semanal y plan_checks sigan verdes sin construir nada nuevo; el resto del bloque 04:15 = journal + lectura de docs.",
       "sensores": [
@@ -769,7 +769,7 @@
       "id": "taper-sensores-2",
       "tipo": "mantenimiento",
       "minDia": 15,
-      "semana_step1": "S14 · lun 21 → lun 28-dic (vie 25-dic libre)",
+      "semana_step1": "S14 · mié 23 → mié 30-dic (vie 25-dic libre)",
       "nombre": "Mantenimiento 2: revisión semanal automática y export",
       "objetivo": "Que la revisión del sábado se pre-genere sola (viernes 21:00) y que el export de progreso no dependa del navegador.",
       "sensores": [
@@ -790,7 +790,7 @@
       "id": "taper-sensores-3",
       "tipo": "mantenimiento",
       "minDia": 15,
-      "semana_step1": "S15 · mar 29-dic → mar 5-ene (31-dic y 1-ene libres; NBME 30 mié 30-dic = D72)",
+      "semana_step1": "S15 · lun 4 → jue 7-ene (31-dic y 1-ene libres; el NBME 30 cae el mar 5-ene = D72)",
       "nombre": "Mantenimiento 3: cierre de año (4 hábiles)",
       "objetivo": "Sensores verdes con 4 días hábiles; el 31-dic y el 1-ene son libres (feriados) y el vie 25-dic cayó en S14.",
       "sensores": [
@@ -802,16 +802,16 @@
         "Journal 5' + lectura de docs (15').",
         "Retro semanal (≤15') + commit [S15] + verify --sensores (31-dic y 1-ene son feriados: el bloque S15 = mar 29 y mié 30-dic + lun 4 y mar 5-ene)."
       ],
-      "ship": "Sábado 9-ene PC (opcional, 30'): verify --sensores + retro; si descansas, marca ✓ igual (S15 termina el mar 5-ene: su PC es el sábado siguiente)."
+      "ship": "Sábado 9-ene PC (opcional, 30'): verify --sensores + retro; si descansas, marca ✓ igual (S15 termina el jue 7-ene: su PC es el sábado siguiente)."
     },
     {
       "s": 16,
       "id": "taper-sensores-4",
       "tipo": "mantenimiento",
       "minDia": 15,
-      "semana_step1": "S16 · mié 6 → vie 8-ene · UWSA2 vie 8-ene (D77) · Fase A sigue hasta el jue 14-ene (D81)",
+      "semana_step1": "S16 · vie 8 → mar 12-ene · UWSA2 mar 12-ene (D77) · Fase A sigue hasta el lun 18-ene (D81)",
       "nombre": "Mantenimiento 4: sensores verdes antes del UWSA2 y del cierre de Fase A",
-      "objetivo": "Llegar al UWSA2 (vie 8-ene, paso 3 de este bloque) y al cierre de Fase A (jue 14-ene) con todos los sensores verdes y el journal al día; 3 días hábiles (mié 6 → vie 8-ene).",
+      "objetivo": "Llegar al UWSA2 (mar 12-ene, último paso de este bloque) y al cierre de Fase A (lun 18-ene) con todos los sensores verdes y el journal al día; 3 días hábiles (vie 8 → mar 12-ene).",
       "sensores": [
         "node DATA/_scripts/verify_vibecoding.js --sensores",
         "node DATA/_scripts/anki_telemetria.js"
@@ -821,14 +821,14 @@
         "1 mejora pequeña (≤15') o ninguna; commit [S16].",
         "Retro de S13-S16 (≤15') en el journal (UWSA2 hoy, vie 8-ene: el journal anota solo cómo dormiste): qué se mantiene en deload total, qué se apaga hasta febrero. Commit [S16] + verify --sensores."
       ],
-      "ship": "Sábado 9-ene PC (opcional, 30'): verify --sensores + retro; desde aquí, deload total."
+      "ship": "Sábado 16-ene PC (opcional, 30'): verify --sensores + retro; desde aquí, deload total."
     },
     {
       "s": 17,
       "id": "taper-deload-1",
       "tipo": "deload",
       "minDia": 5,
-      "semana_step1": "S17 · lun 11 → vie 15-ene · cierre de contenido jue 14-ene (D81) · NBME 31 vie 15-ene (D82, GO/NO-GO) abre la Fase B",
+      "semana_step1": "S17 · mié 13 → mar 19-ene · cierre de contenido lun 18-ene (D81) · NBME 31 mar 19-ene (D82, GO/NO-GO) abre la Fase B",
       "nombre": "Deload total 1: journal 5' + audio (cierre de Fase A → GO/NO-GO)",
       "objetivo": "El 04:15 se reduce a 5' de journal + el audio B del SYNAPSE; el resto de la franja es dormir o Anki si hay backlog. Ningún teclado.",
       "sensores": [],
@@ -836,7 +836,7 @@
         "Journal 5' (objetivo del día del Step 1 · sueño · modo) + audio B (lun 11-ene: post-UWSA2, sin juicios). Nada más.",
         "Journal 5' + audio B (mar 12-ene).",
         "Journal 5' + audio B (mié 13-ene: Bioquímica, 1.er día doble).",
-        "Journal 5' + audio B (jue 14-ene: cierre de Fase A, D81).",
+        "Journal 5' + audio B (lun 18-ene: cierre de Fase A, D81).",
         "Journal 5' + audio B (NBME 31 hoy, vie 15-ene: GO/NO-GO; el journal solo registra sueño y modo, sin juicios)."
       ],
       "ship": "PC sáb/dom OPCIONAL (30' máx, solo en día VERDE): verify --sensores; si no, nada."
@@ -846,7 +846,7 @@
       "id": "taper-deload-2",
       "tipo": "deload",
       "minDia": 5,
-      "semana_step1": "S18 · lun 18 → vie 22-ene · NBME 32 lun 18 (D83) · NBME 33 mié 20 (D85) · Free 120 vie 22-ene (D87)",
+      "semana_step1": "S18 · mié 20 → mar 26-ene · NBME 32 mié 20 (D83) · NBME 33 vie 22 (D85) · Free 120 mar 26-ene (D87)",
       "nombre": "Deload total 2: journal 5' + audio (semana NBME 32/33 + Free 120)",
       "objetivo": "Igual que S17. Tres hitos en cinco días (NBME 32, NBME 33 y Free 120): el journal solo registra sueño y modo, sin juicios.",
       "sensores": [],
@@ -864,16 +864,16 @@
       "id": "taper-deload-3",
       "tipo": "deload",
       "minDia": 5,
-      "semana_step1": "S19 · Fase C (lun 25 → vie 29-ene) · banco dentro del sprint D88-D92 · última A-unit del SYNAPSE vie 29-ene",
+      "semana_step1": "S19 · Fase C (mié 27-ene → mar 2-feb) · banco dentro del sprint D88-D92 · última A-unit del SYNAPSE lun 1-feb",
       "nombre": "Deload total 3: journal 5' + audio (Fase C, última semana con SYNAPSE)",
-      "objetivo": "Igual que S17-S18. El SYNAPSE de las 12:30 cierra el vie 29-ene (F2 · CCA-F prep, última A-unit); desde el lun 1-feb solo Step 1.",
+      "objetivo": "Igual que S17-S18. El SYNAPSE de las 12:30 cierra el lun 1-feb (F2 · CCA-F prep, última A-unit); desde el mar 2-feb solo Step 1.",
       "sensores": [],
       "pasos": [
         "Journal 5' + audio B (lun 25-ene).",
         "Journal 5' + audio B (mar 26-ene).",
         "Journal 5' + audio B (mié 27-ene).",
         "Journal 5' + audio B (jue 28-ene).",
-        "Journal 5' + audio B (vie 29-ene: última A-unit del SYNAPSE) · cierre del journal S13-S19: 3 líneas para la reestructuración de febrero (IA vs ENCAPS intensivo)."
+        "Journal 5' + audio B (lun 1-feb: última A-unit del SYNAPSE) · cierre del journal S13-S19: 3 líneas para la reestructuración de febrero (IA vs ENCAPS intensivo)."
       ],
       "ship": "Sáb 23 / dom 24-ene: NADA de IA (fin de semana pre-examen). PC = no."
     },
@@ -882,16 +882,16 @@
       "id": "taper-examen",
       "tipo": "deload",
       "minDia": 5,
-      "semana_step1": "S20 · cierre del plan: lun 1 → mié 3-feb (D93-D95; mar 2-feb = D94 última sesión de banco · mié 3-feb = D95 = D-1) · jue 4-feb EXAMEN",
-      "nombre": "Cierre del plan: journal 5' (lun 1, mar 2 y mié 3-feb), jue 4-feb EXAMEN",
-      "objetivo": "Solo 5' de journal a las 04:15 los tres últimos días del plan (lun 1, mar 2 y mié 3-feb = D95 = D-1); el finde 30-31 ene, libre, queda justo antes; el jue 4-feb es el Step 1. Cero IA.",
+      "semana_step1": "S20 · cierre del plan: mié 3 → vie 5-feb (D93-D95; jue 4-feb = D94 última sesión de banco · vie 5-feb = D95, último día del plan) · sáb 6 y dom 7 libres · lun 8-feb EXAMEN",
+      "nombre": "Cierre del plan: journal 5' (mié 3, jue 4 y vie 5-feb), lun 8-feb EXAMEN",
+      "objetivo": "Solo 5' de journal a las 04:15 los tres últimos días del plan (mié 3, jue 4 y vie 5-feb = D95); el finde 6-7 feb queda libre después; el lun 8-feb es el Step 1. Cero IA.",
       "sensores": [],
       "pasos": [
         "Journal 5' (sueño · modo · 1 frase de identidad). Nada más.",
         "Journal 5'.",
-        "Journal 5' (D95 = mié 3-feb = D-1, último día del plan): cierre del journal del ciclo · nada de IA · dormir temprano · jueves 4-feb = EXAMEN."
+        "Journal 5' (D95 = vie 5-feb, último día del plan): cierre del journal del ciclo · nada de IA · dormir temprano · sáb 6 y dom 7 libres (el domingo, ritual de D-1) · lunes 8-feb = EXAMEN."
       ],
-      "ship": "Sin PC: sáb 30-ene es post-examen (descanso). La decisión de febrero decide qué vuelve a la franja 04:15."
+      "ship": "Sin PC: el sáb 6-feb es la víspera del fin de semana previo al examen (descanso). La decisión de febrero decide qué vuelve a la franja 04:15."
     }
   ]
 }

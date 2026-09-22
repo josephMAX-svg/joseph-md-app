@@ -98,29 +98,31 @@ export function componerBriefing(inp: BriefingInput): string {
 // Doctrina: DATA/REVISION_SEMANAL.md · DATA/PROTOCOLO_MODO_MINIMO.md · DATA/SYNC_ANKI_OBSIDIAN_APP.md
 // ═══════════════════════════════════════════════════════════════════════════
 
-/** D1 del Step 1 (v5.14 = lun 21-sep-2026) — misma fuente que usmleStep1Daily.DAILY_META.inicio. */
+/** D1 del Step 1 (v5.15 = mié 23-sep-2026) — misma fuente que usmleStep1Daily.DAILY_META.inicio. */
 export const STEP1_INICIO = DAILY_META.inicio;
-export const STEP1_SEMANAS = 20; // S1 = 21-25 sep (D1 en lunes: las semanas del plan coinciden con las de calendario) → S20 = 1-5 feb (D95 = mié 3-feb = D-1; examen target jue 4-feb-2027)
+export const STEP1_SEMANAS = 20; // v5.15: S1 = 21-25 sep (el D1 es el mié 23) → S20 = 1-5 feb (D95 = vie 5-feb = D-1; examen target lun 8-feb-2027, ya en la S21 de calendario)
 
-/** Hitos FIJOS (viernes) con su mínimo on-track (PALMERTON_POR_MATERIA Parte V, regla 5%/mes). */
+/** Hitos del plan con su mínimo on-track (PALMERTON_POR_MATERIA Parte V, regla 5%/mes).
+ * v5.15 (22-sep): CORRIMIENTO RÍGIDO — los hitos ya NO están clavados a un viernes: corren con el plan y conservan su D#,
+ * así ningún NBME pierde días de contenido por delante. La mayoría pasa a MARTES. */
 export const HITOS_STEP1: { fecha: string; nombre: string; minimo: string }[] = [
-  { fecha: '2026-09-21', nombre: 'UWSA1', minimo: 'baseline (cualquier valor)' }, // v5.14: el UWSA1 se mueve con cada corrimiento (= D1)
-  { fecha: '2026-10-02', nombre: 'NBME 25', minimo: '≥51%' },
-  { fecha: '2026-10-23', nombre: 'NBME 26', minimo: '≥54%' },
-  { fecha: '2026-11-13', nombre: 'NBME 27', minimo: '≥57%' },
-  { fecha: '2026-12-04', nombre: 'NBME 28', minimo: '≥61%' },
-  { fecha: '2026-12-18', nombre: 'NBME 29', minimo: '≥63%' },
-  { fecha: '2026-12-30', nombre: 'NBME 30', minimo: '≥65%' },
-  { fecha: '2027-01-08', nombre: 'UWSA2', minimo: 'low risk' },
-  { fecha: '2027-01-15', nombre: 'NBME 31 · GO/NO-GO', minimo: '≥68%' },
-  { fecha: '2027-01-18', nombre: 'NBME 32', minimo: '≥68%' },
-  { fecha: '2027-01-20', nombre: 'NBME 33', minimo: '≥68%' },
-  { fecha: '2027-01-22', nombre: 'Free 120', minimo: '≥70%' },
+  { fecha: '2026-09-23', nombre: 'UWSA1', minimo: 'baseline (cualquier valor)' }, // v5.15: D1 (mié 23-sep)
+  { fecha: '2026-10-06', nombre: 'NBME 25', minimo: '≥51%' },   // D10 (mar)
+  { fecha: '2026-10-27', nombre: 'NBME 26', minimo: '≥54%' },   // D25 (mar)
+  { fecha: '2026-11-17', nombre: 'NBME 27', minimo: '≥57%' },   // D40 (mar)
+  { fecha: '2026-12-08', nombre: 'NBME 28', minimo: '≥61%' },   // D55 (mar)
+  { fecha: '2026-12-22', nombre: 'NBME 29', minimo: '≥63%' },   // D65 (mar)
+  { fecha: '2027-01-05', nombre: 'NBME 30', minimo: '≥65%' },   // D72 (mar)
+  { fecha: '2027-01-12', nombre: 'UWSA2', minimo: 'low risk' }, // D77 (mar)
+  { fecha: '2027-01-19', nombre: 'NBME 31 · GO/NO-GO', minimo: '≥68%' }, // D82 (mar)
+  { fecha: '2027-01-20', nombre: 'NBME 32', minimo: '≥68%' },   // D83 (mié)
+  { fecha: '2027-01-22', nombre: 'NBME 33', minimo: '≥68%' },   // D85 (vie)
+  { fecha: '2027-01-26', nombre: 'Free 120', minimo: '≥70%' },  // D87 (mar)
 ];
 /** Semanas DELOAD de los frentes SECUNDARIOS (50% de carga, fechas intactas): la posterior a NBME 26 y a NBME 28. */
 export const DELOAD_SEMANAS: { lunes: string; motivo: string }[] = [
-  { lunes: '2026-10-26', motivo: 'post-NBME 26 (23-oct)' },
-  { lunes: '2026-12-07', motivo: 'post-NBME 28 (4-dic)' },
+  { lunes: '2026-11-02', motivo: 'post-NBME 26 (mar 27-oct · v5.15)' },
+  { lunes: '2026-12-14', motivo: 'post-NBME 28 (mar 8-dic · v5.15)' },
 ];
 
 export interface SemanaStep1 {

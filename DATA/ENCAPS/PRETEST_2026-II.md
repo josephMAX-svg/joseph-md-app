@@ -1,11 +1,11 @@
 # 🧪 PRE-TEST DIAGNÓSTICO 2026-II — arranque de la fase intensiva ENCAPS 2027-I
 
-> **Cuándo:** viernes **5-feb-2027** (primer viernes de la fase intensiva; D1 intensiva = lun 1-feb en el diseño original — ⚠ v5.14: el lun 1-feb es ahora el D93 del Step 1, el mié 3-feb su D-1 y el jue 4-feb su examen, así que la propuesta es D1 = **vie 5-feb (el propio pre-test abre la intensiva)** o lun 8-feb (entonces el pre-test se rinde el vie 5 fuera de la siembra, el día siguiente al examen Step 1, o pasa al vie 12-feb — decisión de Joseph); el pre-test sigue en viernes). Es el primero de los simulacros 100Q de viernes (`FASE_INTENSIVA_2027-I.md`).
+> **Cuándo:** el **primer viernes de la fase intensiva**, que con el régimen **v5.15 arranca DESPUÉS del examen Step 1 del lun 8-feb-2027** → **vie 12-feb-2027** (o **vie 19-feb** si Joseph elige D1 = lun 15-feb en vez de mar 9-feb). ⚠ El vie 5-feb ya **no sirve**: con el corrimiento rígido es el **D95 del Step 1 = D-1** (sesión mínima AM + ritual de test-day, nada de simulacros de 100Q). El pre-test sigue siendo en viernes. Es el primero de los simulacros 100Q de viernes (`FASE_INTENSIVA_2027-I.md`).
 > **Qué:** el examen real **ENCAPS/SERUMS 2026-II** (09-ago-2026), 100 preguntas, **clave oficial verificada 100/100**, que Joseph **no rindió** y que está en **LISTA NEGRA** de generación desde el 05-sep-2026 (`PROTOCOLO_GENERACION_PREGUNTAS.md §3-bis-LN`). Es la única medición limpia posible del nivel real antes de las 7 semanas intensivas.
-> **Material:** `_examen_2026-2_items.json` (100 ítems A-D + clave + código v3 + formato) y `exams_txt/2026-2.txt`. Runner: `node DATA/_scripts/gen_encaps_minisim.js --pretest` → `BANCO_PROPIO/pretest_2026-II.html` (**generarlo el jueves 4-feb, no antes**; el generador se niega si no se pasa `--pretest`).
+> **Material:** `_examen_2026-2_items.json` (100 ítems A-D + clave + código v3 + formato) y `exams_txt/2026-2.txt`. Runner: `node DATA/_scripts/gen_encaps_minisim.js --pretest` → `BANCO_PROPIO/pretest_2026-II.html` (**generarlo el jue 4-feb-2027, no antes** — ese día es el **D94 del Step 1**, la última sesión de banco: correr el script por la tarde, fuera del bloque; si Joseph mueve el pre-test al vie 19-feb basta re-correrlo el jueves anterior. El generador se niega si no se pasa `--pretest`).
 > **Umbral de arranque: ≥ 70/100** (el que fija `PROTOCOLO_HORA_MANTENIMIENTO.md`: llegar a febrero desde ~70%).
-> **Re-fechado 19-sep-2026 (régimen v5.14):** el mantenimiento se re-sembró con **D1 = lun 21-sep-2026 · 92 días · cierre vie 29-ene-2027** (backup `study_schedule_bk_0919`; los `bk_0916` de v5.13, `bk_0915` de v5.12, `bk_0914` de v5.11, `bk_0912` de v5.10, `bk_0910` de v5.9, `bk_0909` de v5.8 y `bk_0908` de v5.7 siguen intactos) porque ni el jue 17 ni el vie 18 de septiembre se estudiaron (decimotercer corrimiento, 31-ago→21-sep, 15 hábiles perdidos). **El pre-test no se mueve:** sigue el **vie 5-feb-2027** y se genera el **jue 4-feb** (día del examen Step 1: generarlo por la tarde, al volver del Prometric, o la noche del mié 3 — el generador solo necesita `--pretest`). Lo que sí cambia: el USMLE Step 1 acaba el **mié 3-feb-2027 (D95 = D-1 dentro del plan; D94 mar 2-feb = última sesión de banco; sáb 30 y dom 31-ene libres entre D92 y D93)** y el examen pasa al **jue 4-feb-2027** (target fuera de la ventana 25-29 ene) — es decir, **los días 93-96 de la cuenta ENCAPS (lun 1 → jue 4-feb) son la última semana del Step 1 y su examen** → propuesta: intensiva desde el **vie 5-feb (día 97)** o el **lun 8-feb (día 98)** con `node DATA/_scripts/gen_encaps_intensivo_2027.js 2027-02-05 <fecha-examen>` (o `2027-02-08`); el escenario CORTO (examen dom 14-mar) sigue en pie. *(v5.13, 16-sep: D1 jue 17-sep · 94 días · bk_0916 · Step 1 D95 = lun 1-feb, examen mar 2-feb, intensiva propuesta desde el mié 3-feb.)*
-> **Fecha del examen (05-sep-2026):** ASUMIDA, no confirmada. Las fechas que circulan (26-mar y 28-mar-2027) caen en Semana Santa 2027 (Jue 25 · Vie 26 · Pascua dom 28-mar, verificado) y son imposibles; hasta la convocatoria SERUMS 2027-I (`SENALES_2027-I.md`) se planifica con el escenario CORTO (examen dom 14-mar-2027 → intensiva de 6 semanas). El viernes 5-feb como pre-test **no cambia** en ningún escenario (`FASE_INTENSIVA_2027-I.md` §0-§1).
+> **Re-fechado 22-sep-2026 (régimen v5.15):** el mantenimiento se re-sembró con **D1 = mié 23-sep-2026 · 92 días · cierre mar 2-feb-2027** (régimen `MANTENIMIENTO_2027-1 v6.13`, backup `study_schedule_bk_0922`; los `bk_0919` de v5.14, `bk_0916` de v5.13, `bk_0915` de v5.12, `bk_0914` de v5.11, `bk_0912` de v5.10, `bk_0910` de v5.9, `bk_0909` de v5.8 y `bk_0908` de v5.7 siguen intactos) porque tampoco se estudiaron el lun 21 ni el mar 22 de septiembre (decimocuarto corrimiento, 31-ago→23-sep, 17 hábiles perdidos). **CORRIMIENTO RÍGIDO:** solo corren los días — ningún tema se toca ni se recorta, y donde había fin clavado se amplían días, así que el mantenimiento conserva sus 92 sesiones y su cierre se corre del vie 29-ene al **mar 2-feb**. **El pre-test SÍ se mueve:** el vie 5-feb es ahora el D95 = D-1 del Step 1, así que pasa al **primer viernes de la intensiva (vie 12-feb, o vie 19-feb si D1 = lun 15-feb)**; se genera el **jue 4-feb** (D94 del Step 1, última sesión de banco: correr el script por la tarde — el generador solo necesita `--pretest`). Lo que también cambia: el USMLE Step 1 acaba el **vie 5-feb-2027 (D95 = D-1 dentro del plan; D94 jue 4-feb = última sesión de banco; sáb 6 y dom 7-feb libres entre D95 y el examen)** y el examen pasa al **lun 8-feb-2027** — es decir, **los días 93-96 de la cuenta ENCAPS (mié 3 → lun 8-feb) son el cierre del Step 1 y su examen** → propuesta: intensiva desde el **mar 9-feb (día 97)** o el **lun 15-feb (día 101)** con `node DATA/_scripts/gen_encaps_intensivo_2027.js 2027-02-09 <fecha-examen>` (o `2027-02-15`); el escenario CORTO (examen dom 14-mar) sigue en pie. *(v5.14, 19-sep: D1 lun 21-sep · 92 días · bk_0919 · Step 1 D95 = mié 3-feb, examen jue 4-feb, pre-test propuesto el vie 5-feb. v5.13, 16-sep: D1 jue 17-sep · 94 días · bk_0916 · Step 1 D95 = lun 1-feb, examen mar 2-feb, intensiva propuesta desde el mié 3-feb.)*
+> **Fecha del examen (05-sep-2026):** ASUMIDA, no confirmada. Las fechas que circulan (26-mar y 28-mar-2027) caen en Semana Santa 2027 (Jue 25 · Vie 26 · Pascua dom 28-mar, verificado) y son imposibles; hasta la convocatoria SERUMS 2027-I (`SENALES_2027-I.md`) se planifica con el escenario CORTO (examen dom 14-mar-2027 → intensiva de 6 semanas). El pre-test es siempre el **primer viernes de la intensiva** y no cambia con el escenario de examen ENCAPS (v5.15: vie 12-feb, o vie 19-feb si D1 = lun 15-feb — `FASE_INTENSIVA_2027-I.md` §0-§1).
 
 ---
 
@@ -19,7 +19,7 @@
 | Material | NADA: sin compendio, sin Anki, sin celular. Solo hoja de respuestas |
 | Por ítem | letra + **confianza** 1 (adivinada) · 2 (dudosa) · 3 (segura) — sin confianza el ítem no cuenta como ciego |
 | Corrección | **solo al final** (el runner no muestra la clave hasta cerrar las 100) |
-| Post-examen | 30 min de corrección por código + 15 min de registro. La tutoría (fallos → tarjetas/APEX) es el lunes 8-feb |
+| Post-examen | 30 min de corrección por código + 15 min de registro. La tutoría (fallos → tarjetas/APEX) es el **lunes siguiente** (v5.15: lun 15-feb si el pre-test es el vie 12-feb) |
 
 Regla de honestidad Palmerton: un acierto con confianza 1 **no es conocimiento** (`acierto_por_suerte = true`). La métrica que manda es el **% CIEGO REAL = correctas con confianza 3 / 100**.
 
@@ -136,7 +136,7 @@ Reglas fijas independientes del puntaje:
 1. Todo fallo tipo **OLVIDO** o de formato cifra → tarjeta en `TRACKING_ERRORES/ANKI_COLA/ENCAPS_Cifras_2027-I.csv` **esa misma tarde** (regla de `CIFRAS_CRITICAS_2027-I.md`).
 2. Todo fallo **CCSN** → ficha de 1 página del par confundido (ruta OBSIDIAN) antes del banco de ese código en las semanas 2-5.
 3. Los códigos con **100 % seguro** no reciben slot extra: solo repaso multi-temporal D-7 / D-14.
-4. El generador de la intensiva lee el JSON de la ronda y **re-ordena solo** las semanas 2-5: `node DATA/_scripts/gen_encaps_intensivo_2027.js 2027-02-01 <fecha-examen> --pretest DATA/ENCAPS/TRACKING_ERRORES/RONDAS/PRETEST_2026-II.json` (v5.14: `2027-02-05` si Joseph acepta arrancar la intensiva el viernes del pre-test, o `2027-02-08` si prefiere el lunes; la fecha de examen real la fija la convocatoria SERUMS 2027-I, ver `SENALES_2027-I.md`).
+4. El generador de la intensiva lee el JSON de la ronda y **re-ordena solo** las semanas 2-5: `node DATA/_scripts/gen_encaps_intensivo_2027.js 2027-02-09 <fecha-examen> --pretest DATA/ENCAPS/TRACKING_ERRORES/RONDAS/PRETEST_2026-II.json` (v5.15: `2027-02-09` = primer hábil tras el examen Step 1 del lun 8-feb, o `2027-02-15` si Joseph prefiere arrancar el lunes siguiente; la fecha de examen real la fija la convocatoria SERUMS 2027-I, ver `SENALES_2027-I.md`).
 
 ## 5) Registro: ronda `PRETEST_2026-II` en `_registro_resoluciones.json` (append, no reescribir)
 
@@ -145,7 +145,7 @@ El runner exporta este bloque (botón "Exportar JSON"); se guarda como `TRACKING
 ```json
 {
   "id": "PRETEST_2026-II",
-  "fecha": "2027-02-05",
+  "fecha": "2027-02-12",
   "bloque": "pretest_intensiva",
   "modo": "modo_examen_100q_72s_solucion_al_final",
   "fuente_preguntas": "DATA/ENCAPS/_examen_2026-2_items.json (examen real 2026-II · clave oficial 100/100 · LISTA NEGRA levantada al cerrar esta ronda)",
@@ -165,11 +165,11 @@ El runner exporta este bloque (botón "Exportar JSON"); se guarda como `TRACKING
 ```
 
 - `confianza`: 1 adivinada · 2 dudosa · 3 segura. `acierto_por_suerte = ok && confianza == 1`. `seg` = segundos empleados (el runner los mide).
-- `error` ∈ CCSN · CONCEPTO · CRONOLOGIA · CONTEXTO · OLVIDO (solo si `ok=false`); `causa` = una línea con el razonamiento que lo llevó ahí; `ruta` = ANKI · OBSIDIAN · AMBOS. Estos tres campos se rellenan en la tutoría del lunes 8-feb, no el viernes.
+- `error` ∈ CCSN · CONCEPTO · CRONOLOGIA · CONTEXTO · OLVIDO (solo si `ok=false`); `causa` = una línea con el razonamiento que lo llevó ahí; `ruta` = ANKI · OBSIDIAN · AMBOS. Estos tres campos se rellenan en la tutoría del lunes siguiente (v5.15: lun 15-feb si el pre-test es el vie 12-feb), no el viernes.
 - `resumen_por_subtema` del registro lo recalcula el sistema de tracking desde `rondas[]`; aquí no se edita a mano.
 
 ## 6) Qué NO hacer
 
-- No "estudiar el 2026-II" antes: cualquier lectura previa invalida el pre-test (la clasificación por código y la clave están en ficheros que **no se abren** hasta el 5-feb; las cifras del deck `ENCAPS::Cifras` son datos normativos y no revelan viñeta ni distractores).
+- No "estudiar el 2026-II" antes: cualquier lectura previa invalida el pre-test (la clasificación por código y la clave están en ficheros que **no se abren** hasta el día del pre-test (v5.15: vie 12-feb); las cifras del deck `ENCAPS::Cifras` son datos normativos y no revelan viñeta ni distractores).
 - No repetirlo como simulacro después: una vez rendido, el 2026-II pasa a banco espejo para las semanas 2-5 (viñetas espejo, no las mismas preguntas).
 - No comparar contra el 2026-I rendido en julio-agosto 2026: aquel se contaminó como cantera de moldes; este es la única línea base limpia.

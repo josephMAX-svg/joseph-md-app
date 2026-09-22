@@ -35,8 +35,8 @@ import DermaAnkiCola from '../derma/DermaAnkiCola';
 import { useDermaLedger, dermaHoyISO, dermaCopiar, dermaDescargar, dermaEsViernes, DERMA_AREA_LABEL, DERMA_AREA_COLOR } from '../derma/dermaLedgerBus';
 
 /**
- * DermaTodayPlan — Plan Derma día-a-día PLAN ÉLITE v3 (ciclo 1 = 73 sesiones: 21-sep-2026 → 13-abr-2027 en v5.14; ciclo 2 =
- * d74-d103 en dermaCiclo2.ts, jue 15-abr → mar 6-jul-2027 en v5.14), mismo motor que Usmle/Mir/ResearchTodayPlan: nav ◄► por
+ * DermaTodayPlan — Plan Derma día-a-día PLAN ÉLITE v3 (ciclo 1 = 73 sesiones: 23-sep-2026 → 15-abr-2027 en v5.15; ciclo 2 =
+ * d74-d103 en dermaCiclo2.ts, lun 19-abr → jue 8-jul-2027 en v5.15), mismo motor que Usmle/Mir/ResearchTodayPlan: nav ◄► por
  * DERMA_DIAS_TODOS (numeración continua, la fecha de hoy cae en el ciclo 2 automáticamente cuando pasa del último átomo
  * del ciclo 1), sub-pestañas HOY/Horario/7d/Temario, progreso REAL marcable (localStorage 'derma'), interdiario con
  * Research. Cada sesión (ciclo único de 45′) = casos CIEGOS fijos (casoIds, permutación de los 200 de "Cases for Board

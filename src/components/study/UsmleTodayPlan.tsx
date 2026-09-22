@@ -200,7 +200,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaUSMLE; onOpe
           </View>
         </FadeUp>
       ) : null}
-      {/* D-1 = D95 (dentro del plan, v5.14) y examen jue 4-feb: solo se muestran en D95 para que el cierre quede a la vista */}
+      {/* D95 = último día del plan (v5.15) y examen lun 8-feb: solo se muestran en D95 para que el cierre quede a la vista */}
       {dia.d === DAILY_META.totalDias && (
         <FadeUp delay={25}>
           <View style={[st.anchor, { borderLeftColor: RED }]}>
@@ -605,7 +605,7 @@ export default function UsmleTodayPlan() {
       <View style={st.stepRow}>
         <View style={[st.stepBtn, st.stepActive]}>
           <Text style={st.stepBig}>STEP 1</Text>
-          <Text style={st.stepSub}>BLOQUE PRINCIPAL · 6h15/día · examen jue 4-feb-2027 (v5.14)</Text>
+          <Text style={st.stepSub}>BLOQUE PRINCIPAL · 6h15/día · examen lun 8-feb-2027 (v5.15)</Text>
         </View>
         <View style={[st.stepBtn, st.stepStep2]}>
           <Text style={[st.stepBig, { color: Colors.champagne }]}>STEP 2 CK</Text>

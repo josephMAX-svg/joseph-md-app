@@ -20,7 +20,7 @@
 // v5.10-b (12-sep-2026, vacío 5 de gaps_v3b_synapse.json — "semanas 13-20 sin misión"): el plan deja de terminar en
 // la sem 12 y cubre hasta el VIE 22-ENE-2027 (fin del Step 1 menos el taper de la semana del examen):
 //   · sem 12 gana vie 4-dic, sáb 5-dic (PC = SHIP S12, antes fuera del plan) y dom 6-dic (2 A-units de cierre F1);
-//   · F2 · sem 13-19 (lun 14-dic → vie 29-ene, v5.14) = ANTHROPIC ACADEMY RESTANTE + prep CCA-F a 30': Building with the
+//   · F2 · sem 13-19 (lun 14-dic → lun 1-feb, v5.15) = ANTHROPIC ACADEMY RESTANTE + prep CCA-F a 30': Building with the
 //     Claude API (12 módulos) · MCP restante + MCP Advanced Topics · agent skills/subagentes restantes · Claude Code in
 //     Action restante · AI Capabilities and Limitations · Claude Cowork · los 3 ensayos de context engineering · repaso
 //     por los 5 dominios del CCA-F · simulacro (quizzes) · cierre. Temarios en curricula/_extracted.json (5-sep + 12-sep).
@@ -37,7 +37,7 @@ const VCAT = JSON.parse(fs.readFileSync(path.join(ROOT, 'DATA/SYNAPSE/vibecoding
 const VIBE = VCAT.proyectos;
 const TAPER = VCAT.taper || []; // S13-S20 (v5.10-b): mantenimiento/deload; el PC del sábado los referencia
 if (VIBE.length !== 12) throw new Error('vibecoding_proyectos.json debe tener 12 proyectos');
-const FIN_PLAN = '2027-01-29'; // v5.14 (19-sep-2026): vie 29-ene-2027. Con D1 = lun 21-sep las 110 A-units corren +3 días (jue 17, vie 18 y sáb 19-sep perdidos; nada se fusiona; el domingo no cuenta): 30' de lectura, sin PC. v5.13: mar 26-ene · v5.12: lun 25-ene · v5.11: sáb 23-ene. Se comprueba al final.
+const FIN_PLAN = '2027-02-01'; // v5.15 (22-sep-2026): lun 1-feb-2027. Con D1 = mié 23-sep las 110 A-units corren +2 hábiles (nada se fusiona; el domingo no cuenta): 30' de lectura, sin PC. v5.14: vie 29-ene · v5.13: mar 26-ene · v5.12: lun 25-ene. Se comprueba al final.
 const SKIP_FIJOS = new Set(['2026-12-25', '2026-12-31', '2027-01-01']); // feriados libres (misma regla que remap_inicio.js)
 // v5.7: fechas REALES de cada proyecto del vibecoding (ini/fin/ship) leídas de src/lib/vibecodingPlan.ts,
 // que las calcula sobre días hábiles desde D1. Sin esto, el PC del sábado anunciaba el SHIP de un proyecto
@@ -289,7 +289,7 @@ function buildAUnits() {
   push('Prep CCA-F · dominios 3-4 (repaso)', 'Tool Design & MCP (18%) = quickstart MCP + tu servidor de S9 · Prompt Engineering (20%) = Prompt Engineering Interactive Tutorial (caps 1-3, repaso rápido).', U.promptTut);
   push('Prep CCA-F · dominio 5 (repaso) + Claude Code docs — ' + ccDoc(14).modulo, `Context Management (15%) = memoria (CLAUDE.md, /compact) + el ensayo de context engineering · ${ccDoc(14).modulo} + ${ccDoc(15).modulo} (páginas reales, contenido por leer).`, ccDoc(14).url);
   push('Prep CCA-F · simulacro', `Repite en modo examen (sin apuntes) el "${api(11).modulo}" de Building with the Claude API y el "${acad('academy-cc-in-action', 14).titulo}" de Claude Code in Action; anota % por dominio en el journal.`, apiU);
-  push('Prep CCA-F · cierre F2', 'Página oficial de la certificación CCA-F: A VERIFICAR (12-sep-2026 no aparece enlazada en academy.claude.com ni en anthropic.skilljar.com) → buscarla en la Academy, anotar formato/precio/fecha y decidir fecha post-Step 1 (feb-2027). CIERRE F2 (último día del motor, vie 29-ene en v5.14): relee el journal S13-S19 y escribe 3 líneas para la reestructuración de febrero (IA vs ENCAPS intensivo). Desde mañana: solo Step 1.', U.academy, { real: false });
+  push('Prep CCA-F · cierre F2', 'Página oficial de la certificación CCA-F: A VERIFICAR (12-sep-2026 no aparece enlazada en academy.claude.com ni en anthropic.skilljar.com) → buscarla en la Academy, anotar formato/precio/fecha y decidir fecha post-Step 1 (feb-2027). CIERRE F2 (último día del motor, lun 1-feb en v5.15): relee el journal S13-S19 y escribe 3 líneas para la reestructuración de febrero (IA vs ENCAPS intensivo). Desde mañana: solo Step 1.', U.academy, { real: false });
   if (A.length !== 110) throw new Error('Total A-units (F0 46 + F1 26 + F2 38) debe ser 110, hay ' + A.length);
   return A;
 }
@@ -429,7 +429,7 @@ const aUnits = buildAUnits();
 let TOTAL = 0; { let ns = 0, dd = 0; while (ns < aUnits.length) { dd++; const dt = new Date(START.getTime() + (dd - 1) * 86400000); const f = dt.toISOString().slice(0, 10); if (dt.getDay() !== 0 && !SKIP_FIJOS.has(f)) ns++; } TOTAL = dd; }
 let aIdx = 0;
 let pc12Emitido = false; // evita duplicar el PC de la sem 12 cuando esa semana SÍ tiene sábado
-const SEM_MAX = 19; // v5.10-b: sem 13-19 = F2 (v5.14: la última A-unit cae el vie 29-ene-2027, día 131, dentro de la sem 19; el clamp queda como red)
+const SEM_MAX = 19; // v5.10-b: sem 13-19 = F2 (v5.15: la última A-unit cae el lun 1-feb-2027, día 132, dentro de la sem 19-20; el clamp de SEM_MAX queda como red)
 const dias = [];
 for (let d = 1; d <= TOTAL; d++) {
   const date = new Date(START.getTime() + (d - 1) * 86400000);
@@ -497,7 +497,7 @@ const ts = `/**
  * + F2 (sem 13-19): Building with the Claude API · MCP restante + MCP Advanced Topics · agent skills/subagentes ·
  * Claude Code in Action restante · AI Capabilities and Limitations · Claude Cowork · 3 ensayos de context engineering ·
  * repaso por los 5 dominios del CCA-F · simulacro · cierre (curricula/_extracted.json, extraído 5-sep y 12-sep-2026).
- * Después del ${FIN_PLAN} (vie 29-ene-2027 en v5.14) no hay SYNAPSE: el resto = solo Step 1 (D95 mié 3-feb, examen jue 4-feb).
+ * Después del ${FIN_PLAN} (lun 1-feb-2027 en v5.15) no hay SYNAPSE: el resto = solo Step 1 (D95 vie 5-feb, examen lun 8-feb).
  */
 export type SynFormato = 'pantalla' | 'audio' | 'lectura' | 'pc' | 'repaso';
 export interface SynBloque {

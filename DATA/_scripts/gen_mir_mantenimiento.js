@@ -15,7 +15,7 @@
  *    de introducción de ProMIR, mirDetalleData.pesoGlobal; smooth weighted round-robin +
  *    reparto por resto mayor = cuotas exactas). Viernes = 30Q de la asignatura PEOR DEL LOG
  *    (mirEvalLog.mirPeorAsignatura(); fallback = la de mayor peso vista esa semana).
- *  · modo 'reducido' 12-ene → 3-feb (Fase B/C del Step 1, v5.14: el sprint acaba el mié 3-feb; examen jue 4-feb): solo Anki + 10Q (flag modoReducido).
+ *  · modo 'reducido' 14-ene → 8-feb (Fase B/C del Step 1, v5.15: el sprint acaba el vie 5-feb; examen lun 8-feb, incluido en el modo reducido): solo Anki + 10Q (flag modoReducido).
  *  · TIER C EXPRESS (v3b, gaps_v3b_mir.json punto 4, 13-sep-2026): 1 de los 4 slots semanales lun-jue (el ÚLTIMO
  *    lun-jue de cada semana, 12 semanas → 12 asignaturas FUERA del plan) cambia sus '10Q interleaving' (o sus 10Q
  *    mixtas en modo reducido) por 10Q del capítulo TOP-1 de una asignatura pequeña, con capId REAL de
@@ -35,11 +35,11 @@ const fs = require('fs');
 const path = require('path');
 const ROOT = path.join(__dirname, '..', '..');
 const OUT = path.join(ROOT, 'src/lib/mirMantenimiento.ts');
-const INICIO = process.argv[2] || '2027-01-12'; // v5.14: la 1ª vuelta MIR termina el lun 11-ene (D78 = corrección del mini-MIR) → el mantenimiento arranca el mar 12-ene para no solapar (v5.13: 8-ene · v5.12: 7-ene)
-const FIN = process.argv[3] || '2027-03-31';
+const INICIO = process.argv[2] || '2027-01-14'; // v5.15: la 1ª vuelta MIR termina el mié 13-ene (D78 = corrección del mini-MIR) → el mantenimiento arranca el jue 14-ene para no solapar (v5.14: 12-ene · v5.13: 8-ene)
+const FIN = process.argv[3] || '2027-04-02'; // v5.15: el fin se ALARGA 2 hábiles (antes clavado al 31-mar) para conservar los 57 días del mantenimiento — "no perder contenido" (Joseph, 22-sep)
 for (const s of [INICIO, FIN]) if (!/^20\d\d-\d\d-\d\d$/.test(s)) throw new Error('fecha inválida: ' + s);
 /** hasta esta fecha (incl.) el bloque va en modo reducido (Fase B/C Step 1 · examen 25-29 ene) */
-const REDUCIDO_HASTA = '2027-02-03'; // v5.14: el Step 1 termina D95 = mié 3-feb (examen jue 4-feb) (v5.13: lun 1-feb · v5.12: vie 29-ene)
+const REDUCIDO_HASTA = '2027-02-08'; // v5.15: el Step 1 termina D95 = vie 5-feb y el examen es el lun 8-feb (incluido: ese día el MIR va reducido) (v5.14: mié 3-feb · v5.13: lun 1-feb)
 
 // ── calendario (idéntico a remap_inicio.js) ──
 const SKIP_FIJOS = new Set(['2026-12-25', '2026-12-31', '2027-01-01']);

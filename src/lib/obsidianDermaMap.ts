@@ -8,8 +8,8 @@
  *  · dashboard                    → 00_DASHBOARD_DERMA/Dashboard_Derma
  *
  * ⚠ HISTÓRICO (19-sep-2026, v5.14): DERMA_OBS_DAY sigue keyed por el d de la v2.1 (5-sep, 70 átomos) y las carpetas
- * `dNN_*` del vault para d44-d70 son las de esa versión (NO se regenera el vault: el plan v3 tiene 73 sesiones, d1 = lun
- * 21-sep-2026, y el taper del Step 1 desplazó 26 átomos: d44→d50 · d45→d51 · d46→d52 · d47-d56→d53-d62 · d57→d44 · d58→d45 ·
+ * `dNN_*` del vault para d44-d70 son las de esa versión (NO se regenera el vault: el plan v3 tiene 73 sesiones, d1 = mié
+ * 23-sep-2026, y el taper del Step 1 desplazó 26 átomos: d44→d50 · d45→d51 · d46→d52 · d47-d56→d53-d62 · d57→d44 · d58→d45 ·
  * d59-d65→d63-d69 · d66→d46 · d67→d70 · d68→d71 · d69→d72 · d70→d73). `dermaObsUrlDay(dV3)` traduce con el mapa INVERSO
  * (DERMA_OBS_DAY_V3_A_V21) para que cada sesión v3 abra su nota real; las 3 sesiones nuevas del taper (d47-d49, segundas
  * pasadas parciales) no tienen nota → null. Al regenerar con build_vault_derma.js hay que conservar esta traducción

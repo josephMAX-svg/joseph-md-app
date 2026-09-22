@@ -3,7 +3,7 @@
  *
  * Lo que mide LivianoTodayPlan (src/components/empresa/LivianoTodayPlan.tsx):
  *   · PRE-TEST ciego 5Q de los lunes (18 en LIV_META.pretests)  → pretests[d]   = { ok, total, fecha }
- *   · DRILL de cifras ancla (D37 · D58 · D75 · D88, v5.14)        → drills[d]     = { ok, total, fecha }
+ *   · DRILL de cifras ancla (D36 · D57 · D74 · D87, v5.15)        → drills[d]     = { ok, total, fecha }
  *   · CASO del viernes con rúbrica 0-2 × 4 (16 casos)            → rubricas[casoId] = { items[4], fecha }
  *
  * Persistencia (19-sep-2026, v5.14 — mismo patrón que ENCAPS `encapsProgressSync.ts`):

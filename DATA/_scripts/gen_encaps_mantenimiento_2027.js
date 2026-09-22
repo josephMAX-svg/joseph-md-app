@@ -1,7 +1,7 @@
 /**
  * gen_encaps_mantenimiento_2027.js — siembra el ciclo ENCAPS MANTENIMIENTO 2027-I en Supabase.
  *
- * Régimen v5.14 (D1 = lun 2026-09-21; v5.13: jue 17-sep): ENCAPS = 1h/día (16:15-17:15 L-V) hasta el 29-ene-2027
+ * Régimen v5.15 (D1 = mié 2026-09-23; v5.14: lun 21-sep): ENCAPS = 1h/día (16:15-17:15 L-V) hasta el mar 2-feb-2027
  * (97 días L-V, skip 25-dic/31-dic/1-ene; sábado y domingo LIBRES). El bloque principal de la
  * mañana es USMLE Step 1. Feb-mar 2027: fase intensiva (se re-siembra entonces con modo INTENSIVO).
  * EXAMEN ENCAPS 2027-I: fines de marzo 2027 (fecha real = convocatoria SERUMS 2027-I, A VERIFICAR).
@@ -20,7 +20,7 @@
  * viven en _encaps_ciclo_v3.js (compartido con gen_encaps_semana.js).
  *
  * Uso:
- *   node DATA/_scripts/gen_encaps_mantenimiento_2027.js [D1=2026-09-21] [--bk study_schedule_bk_YYYYMMDD]
+ *   node DATA/_scripts/gen_encaps_mantenimiento_2027.js [D1=2026-09-23] [--bk study_schedule_bk_YYYYMMDD]
  *        [--override <json|ruta.json>] [--sin-acumulado] [--bk-reemplazar] [--hasta 2027-01-29] [--out <ruta.sql>]
  *
  *   --override: {"semanas":{"<lunes ISO>":{"principal":["I-3","V-2","II-5","IV-1"],"secundarios":["II-2","I-10","V-6","II-6"],"motivo":"…"}}}
@@ -47,10 +47,10 @@ const ACUMULADO = path.join(ROOT, 'DATA', 'ENCAPS', 'TRACKING_ERRORES', 'SEMANAS
 
 // ── argumentos ──
 const argv = process.argv.slice(2);
-const D1 = argv.find((a) => /^20\d\d-\d\d-\d\d$/.test(a)) || '2026-09-21';
+const D1 = argv.find((a) => /^20\d\d-\d\d-\d\d$/.test(a)) || '2026-09-23';
 const opt = (k, def) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] ? argv[i + 1] : def; };
 const has = (k) => argv.includes(k);
-const HASTA = opt('--hasta', '2027-01-29');
+const HASTA = opt('--hasta', '2027-02-02'); // v5.15 (22-sep): el fin se ALARGA 2 hábiles (antes 29-ene) para conservar los 92 días del mantenimiento — "no perder sesiones" (Joseph); sigue antes del examen Step 1 (lun 8-feb)
 const hoyLima = () => new Date(Date.now() - 5 * 3600 * 1000).toISOString().slice(0, 10);
 const BK = opt('--bk', `study_schedule_bk_${hoyLima().replace(/-/g, '')}`);
 const BK_REEMPLAZAR = has('--bk-reemplazar');

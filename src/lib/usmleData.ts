@@ -32,16 +32,16 @@ export interface UsmleCheckpoint {
   when: string; predictor: string; band: string; url: string; gated: boolean;
 }
 export const USMLE_CHECKPOINTS: UsmleCheckpoint[] = [
-  { form: 'NBME CBSSA Forms 25–33', kind: 'NBME', when: 'plan v5.14: 7 in Phase A (every ~3 weeks) · NBME 31 (D82, vie 15-ene, el día siguiente al cierre de contenido) = GO/NO-GO · 32/33 final week', predictor: 'Best single predictor of a Step 1 pass (Palmerton: the ONLY one — UWorld % is a vanity metric)', band: '≥65% ≈ 95% pass · ≥70% ≈ 99% · plan GO = 2 consecutive ≥68% · on-track minimums per milestone in usmleScores.HITOS_ONTRACK', url: 'https://www.nbme.org/examinees/self-assessments', gated: true },
-  { form: 'USMLE Free 120', kind: 'FREE120', when: '1–2 weeks pre-exam (plan: D87, vie 22-ene; D94 mar 2-feb última sesión de banco · D95 mié 3-feb = D-1 · target exam jue 4-feb-2027) — ideally at the real Prometric', predictor: 'Current NBME item wording · no official explanations → audit the PROCESS, not theory', band: '≥70% heuristic (community, not Palmerton) · 3 blocks of 40, timed', url: 'https://www.usmle.org/prepare-your-exam', gated: false },
-  { form: 'UWorld Self-Assessment 1–2', kind: 'UWSA', when: 'UWSA1 = day-1 baseline (D1, lun 21-sep) · UWSA2 = D77 (vie 8-ene)', predictor: 'Systematically OVER-predicts (Palmerton, same authors as the bank) — endurance only, never a date decision', band: 'trend > absolute number · the date is decided by NBMEs', url: 'https://www.uworld.com/', gated: true },
+  { form: 'NBME CBSSA Forms 25–33', kind: 'NBME', when: 'plan v5.15: 7 in Phase A (every ~3 weeks) · NBME 31 (D82, mar 19-ene, el día siguiente al cierre de contenido) = GO/NO-GO · 32/33 final week', predictor: 'Best single predictor of a Step 1 pass (Palmerton: the ONLY one — UWorld % is a vanity metric)', band: '≥65% ≈ 95% pass · ≥70% ≈ 99% · plan GO = 2 consecutive ≥68% · on-track minimums per milestone in usmleScores.HITOS_ONTRACK', url: 'https://www.nbme.org/examinees/self-assessments', gated: true },
+  { form: 'USMLE Free 120', kind: 'FREE120', when: '1–2 weeks pre-exam (plan: D87, mar 26-ene; D94 jue 4-feb última sesión de banco · D95 vie 5-feb = D-1 · target exam lun 8-feb-2027) — ideally at the real Prometric', predictor: 'Current NBME item wording · no official explanations → audit the PROCESS, not theory', band: '≥70% heuristic (community, not Palmerton) · 3 blocks of 40, timed', url: 'https://www.usmle.org/prepare-your-exam', gated: false },
+  { form: 'UWorld Self-Assessment 1–2', kind: 'UWSA', when: 'UWSA1 = day-1 baseline (D1, mié 23-sep) · UWSA2 = D77 (mar 12-ene)', predictor: 'Systematically OVER-predicts (Palmerton, same authors as the bank) — endurance only, never a date decision', band: 'trend > absolute number · the date is decided by NBMEs', url: 'https://www.uworld.com/', gated: true },
   { form: 'AMBOSS Score Predictor', kind: 'AMBOSS', when: 'from your Qbank %', predictor: 'Predicted range ±7–10 pts from Qbank performance', band: 'confirm with an NBME', url: 'https://www.amboss.com/us/usmle/score-predictor', gated: true },
 ];
 // Readiness derived from the checkpoint layer (replaces the hardcoded 4).
 export const USMLE_READINESS = {
   pct: 4, // pre-first-NBME baseline · rises only when a checkpoint is logged
   status: 'Baseline · no NBME logged yet',
-  next: 'UWSA1 lun 21-sep (D1, baseline) → luego NBME 25/26/27/28/29 cada ~3 semanas (plan v5.14). Registra el % de cada hito en 📏 Medición (Cola de hoy): el gauge se ancla al último hito y muestra la distancia al mínimo on-track.',
+  next: 'UWSA1 mié 23-sep (D1, baseline) → luego NBME 25/26/27/28/29 cada ~3 semanas (plan v5.15: los hitos corren con el plan, ya no están clavados a un viernes). Registra el % de cada hito en 📏 Medición (Cola de hoy): el gauge se ancla al último hito y muestra la distancia al mínimo on-track.',
 };
 
 // Organ systems ordered by official exam weight (order of attack)
@@ -104,7 +104,7 @@ export const PALMERTON_SYSTEMS: SystemMethod[] = [
 ];
 
 // ── LEGACY (pre-v5, #19): la rampa de 1 h/día y "la hora" son del plan de julio-2026; el plan vigente es usmleStep1Daily.ts
-// (6h15/día L-V, 95 días, D1 = lun 21-sep-2026). Se conservan como histórico; RoiPlan ya no los pinta cuando USMLE_RAMP_LEGACY = true.
+// (6h15/día L-V, 95 días, D1 = mié 23-sep-2026). Se conservan como histórico; RoiPlan ya no los pinta cuando USMLE_RAMP_LEGACY = true.
 export const USMLE_RAMP_LEGACY = true;
 export const USMLE_LEGACY_NOTA = 'Rampa de principiante (1 h/día) y "la hora" = plan pre-v5 (julio-2026), sustituidos por el bloque principal de 6h15/día (usmleStep1Daily.ts · DAILY_META.bloque). Se conservan solo como histórico (usmleData.USMLE_RAMP / USMLE_HOUR, legacy).';
 // Beginner ramp (English + content), 1h/day Mon–Fri — LEGACY
