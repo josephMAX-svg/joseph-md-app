@@ -11,9 +11,11 @@
 > UWSA/NBME ya no están anclados por fecha**: corren con el plan y **conservan su D#**, así que ningún NBME vuelve a perder
 > días de contenido por delante. ⚠ Efecto colateral: **los hitos dejan de caer en viernes** (9 pasan a martes, NBME 32 a
 > miércoles, NBME 33 a viernes). El UWSA1 sigue siendo el D1 (sexta vez que cambia de fecha).
-> Las franjas y las metas no cambian; **lo que sí cambia es el examen: D94 = jue 4-feb = D-2 (última sesión de banco) y
-> D95 = vie 5-feb = D-1 DENTRO del plan → target LUN 8-FEB-2027**, con el sáb 6 y el dom 7-feb libres (solo Anki vencido)
-> entre el D95 y el examen y el D-1 como sesión mínima por la mañana + ritual de test-day. **Herencia de la v5.14: el
+> Las franjas y las metas no cambian; **lo que sí cambia es el examen: D94 = jue 4-feb (última sesión de banco) y
+> D95 = vie 5-feb = ÚLTIMO DÍA DEL PLAN (sesión mínima por la mañana, ≤2 h) → target LUN 8-FEB-2027**, con el sáb 6 y el
+> dom 7-feb libres entre el D95 y el examen. ⚠ Ojo con la terminología: `USMLE_TAPER.d95`/`dMenos1` siguen llamándose
+> "D-1" porque son el último día del plan, pero el **D-1 real del examen es el DOMINGO 7-feb** — ese día no hay banco,
+> solo el ritual de test-day (permiso, IDs, Ziplocs, ruta, cama temprano). **Herencia de la v5.14: el
 > contenido cierra el lun 18-ene (D81) y el NBME 31 GO/NO-GO cae el día siguiente (mar 19-ene = D82), sin días de banco de
 > consolidación delante** (los 2 random timed van en D84 y D86).
 >

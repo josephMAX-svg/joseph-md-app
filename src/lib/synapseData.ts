@@ -266,7 +266,7 @@ export const SYNAPSE_FASES: SynapseFase[] = [
   },
   {
     id: 'f2', fase: 'F2', titulo: 'Datos: pandas + SQL + probabilidad', duracion: 'feb-2027+ (post-Step 1)', estado: 'pendiente',
-    desc: 'Data science por los CREADORES de las herramientas (McKinney = pandas) + la probabilidad de Harvard que todo el ML asume. ⚠ v5.10-b (12-sep-2026): las sem 13-19 del motor (v5.15: lun 14-dic → 1-feb; 29-ene) NO son esta fase sino el taper del Step 1 = Anthropic Academy restante + prep CCA-F a 30\' (pestaña ⚡ run); esta F2 de datos arranca en la reestructuración de febrero.',
+    desc: 'Data science por los CREADORES de las herramientas (McKinney = pandas) + la probabilidad de Harvard que todo el ML asume. ⚠ v5.10-b (12-sep-2026): las sem 13-19 del motor (v5.15: lun 14-dic-2026 → lun 1-feb-2027) NO son esta fase sino el taper del Step 1 = Anthropic Academy restante + prep CCA-F a 30\' (pestaña ⚡ run); esta F2 de datos arranca en la reestructuración de febrero.',
     entregable: 'Análisis pandas de un dataset real (Pulso/LIVIANO) publicado en GitHub',
     materiales: [M.kaggle, M.mckinney, M.vanderplas, M.sqlbolt, M.widom, M.stat110],
   },

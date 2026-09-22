@@ -10,7 +10,8 @@
   constantes (`LIVIANO_KPIS`); el log guarda los 6 KPIs **semanales** reales definidos en
   `src/lib/empresaData.ts` → `LIVIANO_KPI_SEMANAL`: `leads` · `consultas` · `altas` · `mrr` · `churn` · `cogs`.
 - **Nombre del fichero**: `liviano_kpi_<AAAA>-W<SS>.json` (semana ISO del día en que se exporta, p. ej.
-  `liviano_kpi_2026-W39.json` para la semana del lun 21-sep-2026). Si el navegador bloquea la descarga, el JSON se
+  `liviano_kpi_2026-W39.json` para la semana del lun 21-sep-2026 — la misma en la que arranca la Academia en v5.15,
+  **D1 = mié 23-sep-2026**). Si el navegador bloquea la descarga, el JSON se
   copia al portapapeles: pegarlo aquí con ese mismo nombre.
 - **Forma del JSON** (una exportación = TODO el log, no solo la semana actual; el fichero más reciente contiene a los anteriores):
 

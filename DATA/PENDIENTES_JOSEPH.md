@@ -243,12 +243,14 @@ Sin esto el plan arranca ciego, con el contenido equivocado o con la app vieja e
       antes que `orquestador.py` lee ese campo. Opcional (S1): `git init` LOCAL en `D:\agente_estudio` (sin remoto,
       `.gitignore` para `.env`/`__pycache__`); mientras, los commits [S1]/[S6] van a joseph-md-app. *(sistema)*
 - [ ] **Reponer stock del banco ENCAPS** (inventario regenerado el **22-sep, v5.15**, con la semana 1, el pre-test de arranque y los 3 primeros mini-sims pre-generados; demanda ~1 786Q en 92 días).
-      **Lo más urgente: `set_I-3_2.json`** — I-3 queda a **0** tras `banco_2026-09-24` y vuelve el **lun 28-sep** (tipos_vigilancia ya se consumió; la siguiente instancia pide 16-20Q) · **`set_II-3_2.json`** (quedan 5 tras el pre-test) · **`set_V-2_2.json`** y **`set_III-5_2.json`** antes de sus siguientes instancias.
-      También la cola larga: II-2 (2Q, la receta pide 4-5), II-6, II-EMG (2Q), III-9 (2Q). Déficit por código (22-sep): **V-2 154Q · I-3 ~150Q · IV-1+IV-2 72Q · III-5 70Q · II-4 75Q · II-5 70Q · IV-6+IV-7 66Q · III-8 64Q · II-8 61Q · V-MED 50Q**.
+      **Cifras reales del inventario del 22-sep** (`disponibles_no_usados` / total del pool, tras devolver los ids que liberó la sustitución del pre-test):
+      **I-3 15/33 (déficit 165Q)** · **V-2 26/41 (154)** · II-1 11/12 (79) · **II-4 15/27 (75)** · **II-3 15/28 (75)** · **I-4 16/28 (74)** · **IV-1+IV-2 18/28 (72)** · **III-5 20/29 (70)** · **II-5 20/27 (70)** · II-11 5/6 (67) · IV-6+IV-7 6/7 (66) · III-8 8/11 (64).
+      **Lo más urgente por STOCK ABSOLUTO (no por déficit):** II-12 **1Q** · II-EMG **2Q** · II-2 **2Q** · II-10 **2Q** · III-9 **2Q** · I-OCC 3Q · I-9 3Q — varios son cola larga y la receta del viernes pide 4-5Q de cada uno, así que el primer mini-sim que los toque ya se queda corto.
+      Por códigos críticos, el orden de reposición es `set_I-3_2.json` → `set_V-2_2.json` → `set_II-3_2.json` / `set_II-4_2.json` → `set_I-4_2.json`.
       Fuente viva: `DATA/ENCAPS/BANCO_PROPIO/_inventario_banco_por_codigo.json`. Gate §3-bis (clave oficial o compendio/norma con número y año). *(ENCAPS)*
 - [ ] **Conseguir `CLAVE DE RESPUESTA 2026-1.pdf`** (Tío López / QX): los 100 ítems del 2026-1 siguen sin clave. *(ENCAPS)*
 - [ ] **Importar `DATA/BUSINESS/ANKI_COLA/LIVIANO_mecanismo.csv`** en Anki (tabulador, deck en columna 3, etiquetas en
-      columna 4, FSRS) — **antes del vie 2-oct (D8, caso 1)**, tope **mié 14-oct (D16**, el día de las 10 tarjetas de MECANISMO del
+      columna 4, FSRS) — **antes del vie 2-oct (D8, caso 1)**, tope **mar 13-oct (D15**, el día de las 10 tarjetas de MECANISMO del
       módulo). Fechas leídas de `livianoStudyPlan.ts` el 22-sep (v5.15). *(LIVIANO)*
 - [ ] **Rutina de export de los registros que viven solo en un navegador** *(Derma/MIR)*:
       - Derma, cada viernes: botón de export del cierre (o en Debilidades) → `DATA/DERMATOLOGIA/TRACKING/_registro_derma.json` → `rondas[]`.
