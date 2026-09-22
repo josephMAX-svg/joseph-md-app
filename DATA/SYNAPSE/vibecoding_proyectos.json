@@ -204,7 +204,7 @@
       "deload": false,
       "nombre": "verify_vibecoding + revisión semanal cerrada (10 métricas con dato real)",
       "sirveA": "TODOS — verify_vibecoding.js (12-sep) ya mide 'shipped' mecánicamente y gen_revision_semanal.js v1 ya pre-rellena, pero la revisión sigue diciendo 'sin dato' en varias métricas y la 7 (vibecoding) se decide por el ✓ manual: hay que cerrar el circuito (scores USMLE de usmleScores.ts, telemetría v2, plan_checks, _vibecoding_ship.json) para que el sábado 07:15 Joseph solo DECIDA.",
-      "objetivo": "Que la revisión S04 (sáb 17-oct, v5.14) salga con ≥8/10 métricas reales y que la métrica 7 lea el último verify del proyecto de la semana, no el auto-reporte.",
+      "objetivo": "Que la revisión semanal del sáb 24-oct (la que cierra S4, v5.15) salga con ≥8/10 métricas reales y que la métrica 7 lea el último verify del proyecto de la semana, no el auto-reporte.",
       "entregable": "DATA/USMLE/REVISIONES/S04_2026-10-10.md con ≥8/10 métricas reales + _vibecoding_ship.json con S1-S4 + gen_revision_semanal.js leyendo verify/scores/plan_checks + commit [S4].",
       "aceptacion": [
         "node DATA/_scripts/gen_revision_semanal.js genera DATA/USMLE/REVISIONES/S04_2026-10-10.md con ≤2 métricas 'sin dato'",
@@ -507,7 +507,7 @@
       "objetivo": "gen_hitos_overlays.js con el mismo contrato que gen_research_calendar.js: lee usmleStep1Daily.ts, calcula las fechas de los 12 hitos, emite el JSON de acciones (crear/recrear/nada por hash) con la descripción del protocolo test-day, y un diff en seco contra el Calendar vivo.",
       "entregable": "DATA/_scripts/gen_hitos_overlays.js <START> → DATA/USMLE/_hitos_overlays.json + diff en seco (list_events) sin falsos positivos + commit [S9].",
       "aceptacion": [
-        "node DATA/_scripts/gen_hitos_overlays.js 2026-09-21 imprime '12 hitos' y escribe DATA/USMLE/_hitos_overlays.json con fecha = la del .ts para cada uno",
+        "node DATA/_scripts/gen_hitos_overlays.js 2026-09-23 imprime '12 hitos' y escribe DATA/USMLE/_hitos_overlays.json con fecha = la del .ts para cada uno",
         "La descripción de cada overlay incluye el protocolo test-day (breaks, Ziploc Break 1/2/3, almuerzo dentro del sim, sin carbohidratos simples) tomado de PALMERTON_POR_MATERIA §F (texto 'Ziploc' presente)",
         "Un diff en seco contra el Calendar (search_events 'NBME'|'UWSA') lista solo los overlays que cambian; nada se ejecuta sin confirmación explícita de Joseph",
         "Commit [S9] en joseph-md-app"
@@ -516,7 +516,7 @@
         {
           "tipo": "test",
           "cwd": "D:/joseph-md-app",
-          "cmd": "node DATA/_scripts/gen_hitos_overlays.js 2026-09-21",
+          "cmd": "node DATA/_scripts/gen_hitos_overlays.js 2026-09-23",
           "expect": "12 hitos"
         },
         {
@@ -547,7 +547,7 @@
         }
       ],
       "pasos": [
-        "Leer gen_research_calendar.js (--print/--check/--set, hash por (fecha, título, descripción)) y listar los hitos y su D# desde usmleStep1Daily.ts (DIAS con 🎯); tabla esperada para START=2026-09-21 comparada con CALENDARIO_5_MESES.md. Objetivo del día: tabla de hitos + contrato del script.",
+        "Leer gen_research_calendar.js (--print/--check/--set, hash por (fecha, título, descripción)) y listar los hitos y su D# desde usmleStep1Daily.ts (DIAS con 🎯); tabla esperada para START=2026-09-23 comparada con CALENDARIO_5_MESES.md. Objetivo del día: tabla de hitos + contrato del script.",
         "gen_hitos_overlays.js: mismo esquema que el de Research (DATA/USMLE/_hitos_overlays.json con ids + hash + accion); lee el .ts, calcula fechas, sin llamadas al Calendar.",
         "Descripción del overlay = protocolo test-day generado desde PALMERTON_POR_MATERIA §F (texto fijo + hora de cada break).",
         "Diff en seco: con el MCP (list_events/search_events 'NBME'|'UWSA') comparar fechas y listar solo cambios; corregir falsos positivos.",

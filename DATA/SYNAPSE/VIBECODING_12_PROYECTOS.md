@@ -107,7 +107,7 @@
 
 - **Semana**: mié 14-oct → mar 20-oct · **SHIP**: sábado sáb 24-oct (PC SYNAPSE 15:00-17:00) · rotación `yocpmd` · commits `[S4] …` en `D:/joseph-md-app`
 - **A quién sirve**: TODOS — verify_vibecoding.js (12-sep) ya mide 'shipped' mecánicamente y gen_revision_semanal.js v1 ya pre-rellena, pero la revisión sigue diciendo 'sin dato' en varias métricas y la 7 (vibecoding) se decide por el ✓ manual: hay que cerrar el circuito (scores USMLE de usmleScores.ts, telemetría v2, plan_checks, _vibecoding_ship.json) para que el sábado 07:15 Joseph solo DECIDA.
-- **Objetivo**: Que la revisión S04 (sáb 17-oct, v5.14) salga con ≥8/10 métricas reales y que la métrica 7 lea el último verify del proyecto de la semana, no el auto-reporte.
+- **Objetivo**: Que la revisión semanal del sáb 24-oct (la que cierra S4, v5.15) salga con ≥8/10 métricas reales y que la métrica 7 lea el último verify del proyecto de la semana, no el auto-reporte.
 - **Entregable verificable**: DATA/USMLE/REVISIONES/S04_2026-10-10.md con ≥8/10 métricas reales + _vibecoding_ship.json con S1-S4 + gen_revision_semanal.js leyendo verify/scores/plan_checks + commit [S4].
 - **Dónde**: DATA/_scripts/verify_vibecoding.js (ya existe) · DATA/_scripts/gen_revision_semanal.js (v1 ya existe) · DATA/REVISION_SEMANAL.md · DATA/USMLE/REVISIONES/ · src/lib/usmleScores.ts (solo lectura)
 - **Criterio de aceptación (definition of done)** — `node DATA/_scripts/verify_vibecoding.js 4`:
@@ -216,13 +216,13 @@
 - **Entregable verificable**: DATA/_scripts/gen_hitos_overlays.js <START> → DATA/USMLE/_hitos_overlays.json + diff en seco (list_events) sin falsos positivos + commit [S9].
 - **Dónde**: src/lib/usmleStep1Daily.ts (solo lectura) · DATA/_scripts/gen_research_calendar.js + DATA/RESEARCH/_calendar_overlays.json (patrón ya hecho, 12-sep) · DATA/USMLE/CALENDARIO_5_MESES.md · DATA/_scripts/gen_hitos_overlays.js (nuevo) · MCP Google Calendar
 - **Criterio de aceptación (definition of done)** — `node DATA/_scripts/verify_vibecoding.js 9`:
-  - [ ] node DATA/_scripts/gen_hitos_overlays.js 2026-09-21 imprime '12 hitos' y escribe DATA/USMLE/_hitos_overlays.json con fecha = la del .ts para cada uno _(verify: test)_
+  - [ ] node DATA/_scripts/gen_hitos_overlays.js 2026-09-23 imprime '12 hitos' y escribe DATA/USMLE/_hitos_overlays.json con fecha = la del .ts para cada uno _(verify: test)_
   - [ ] La descripción de cada overlay incluye el protocolo test-day (breaks, Ziploc Break 1/2/3, almuerzo dentro del sim, sin carbohidratos simples) tomado de PALMERTON_POR_MATERIA §F (texto 'Ziploc' presente) _(verify: fichero)_
   - [ ] Un diff en seco contra el Calendar (search_events 'NBME'|'UWSA') lista solo los overlays que cambian; nada se ejecuta sin confirmación explícita de Joseph _(verify: manual — correr el diff con el MCP del Calendar y comprobar que solo lista cambios reales)_
   - [ ] Commit [S9] en joseph-md-app _(verify: git)_
 - **Docs (verificadas 5-sep-2026)**: [Claude Code — Connect Claude Code to tools via MCP (Installing MCP servers · Practical examples)](https://code.claude.com/docs/en/mcp) · [Claude Code — Connect to MCP servers (quickstart)](https://code.claude.com/docs/en/mcp-quickstart)
 - **Pasos diarios (45' cada uno)**:
-  - **Mié 18-11 · construir con Claude Code**: Leer gen_research_calendar.js (--print/--check/--set, hash por (fecha, título, descripción)) y listar los hitos y su D# desde usmleStep1Daily.ts (DIAS con 🎯); tabla esperada para START=2026-09-21 comparada con CALENDARIO_5_MESES.md. Objetivo del día: tabla de hitos + contrato del script.
+  - **Mié 18-11 · construir con Claude Code**: Leer gen_research_calendar.js (--print/--check/--set, hash por (fecha, título, descripción)) y listar los hitos y su D# desde usmleStep1Daily.ts (DIAS con 🎯); tabla esperada para START=2026-09-23 comparada con CALENDARIO_5_MESES.md. Objetivo del día: tabla de hitos + contrato del script.
   - **Jue 19-11 · verificar en vivo (test/URL/dato)**: gen_hitos_overlays.js: mismo esquema que el de Research (DATA/USMLE/_hitos_overlays.json con ids + hash + accion); lee el .ts, calcula fechas, sin llamadas al Calendar.
   - **Vie 20-11 · doc + commit + preparar SHIP**: Descripción del overlay = protocolo test-day generado desde PALMERTON_POR_MATERIA §F (texto fijo + hora de cada break).
   - **Lun 23-11 · 5' objetivo → spec del día**: Diff en seco: con el MCP (list_events/search_events 'NBME'|'UWSA') comparar fechas y listar solo cambios; corregir falsos positivos.

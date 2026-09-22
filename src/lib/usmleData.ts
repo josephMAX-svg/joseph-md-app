@@ -84,7 +84,7 @@ export const PALMERTON_METHOD = [
   { name: 'Pharm: forward + reverse, ~6/drug', desc: 'Mechanism / use / toxicity, each forward AND reverse ≈ 6 cards per drug. Class-level card for shared properties. "More but shorter cards."', verified: true },
   { name: 'Daily card-creation limit', desc: 'Cap new cards/day — "the more cards you make, the more you review." Permission to NOT remember everything.', verified: true },
   { name: 'Slow is fast', desc: 'Spend real time understanding the miss instead of grinding volume. A Qbank raises scores when each question teaches a decision rule, not by volume.', verified: true },
-  { name: 'Sequencing: biochem first', desc: 'Do biochemistry videos first to build a foundation, then fill gaps via questions, making cards from what you miss. ⚠ DIVERGENCIA CONSCIENTE del plan v5.14 (#19): Biochemistry cierra la Fase A en D80-D81 (mié 13 / jue 14-ene-2027); el orden por sistemas sigue el peso del examen y Pathoma 1-3 abre en D2-D3 (Fundamentos). No se cambia: el temario no se fusiona ni se reordena.', verified: true },
+  { name: 'Sequencing: biochem first', desc: 'Do biochemistry videos first to build a foundation, then fill gaps via questions, making cards from what you miss. ⚠ DIVERGENCIA CONSCIENTE del plan v5.15 (#19): Biochemistry cierra la Fase A en D80-D81 (vie 15 / lun 18-ene-2027); el orden por sistemas sigue el peso del examen y Pathoma 1-3 abre en D2-D3 (Fundamentos). No se cambia: el temario no se fusiona ni se reordena.', verified: true },
 ];
 
 // Per-system mini-methods (reconstructed in Palmerton's spirit)

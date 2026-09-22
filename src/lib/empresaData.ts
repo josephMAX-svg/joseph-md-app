@@ -551,7 +551,7 @@ export const LIVIANO_KPI_SEMANAL: KpiSemanalDef[] = [
   { key: 'altas',     label: 'Altas',            unidad: '#',  meta: 1,    direccion: 'mayor', hint: 'Nuevas suscripciones (Despegue) de la semana', origenMeta: 'KPI ventas_mes: 4 altas/mes → 1/sem' },
   { key: 'mrr',       label: 'MRR',              unidad: 'S/', meta: 5160, direccion: 'mayor', hint: 'Ingreso recurrente mensual vigente al cierre de la semana', origenMeta: 'KPI mrr: S/ 5,160 (4 fundadores)' },
   { key: 'churn',     label: 'Churn',            unidad: '%',  meta: 8,    direccion: 'menor', hint: 'Cancelaciones / activos (mensual, anotar en la última semana del mes)', origenMeta: 'KPI churn: < 8 %' },
-  { key: 'cogs',      label: 'COGS / pac-mes',   unidad: 'S/', meta: 555,  direccion: 'menor', hint: 'Costo del fármaco + dispensación por paciente-mes', origenMeta: 'Derivado: ticket S/ 1,290 × (1 − margen ~57 %) ≈ S/ 555 — se fija con la cotización real (D43 mié 18-nov, v5.14)' },
+  { key: 'cogs',      label: 'COGS / pac-mes',   unidad: 'S/', meta: 555,  direccion: 'menor', hint: 'Costo del fármaco + dispensación por paciente-mes', origenMeta: 'Derivado: ticket S/ 1,290 × (1 − margen ~57 %) ≈ S/ 555 — se fija con la cotización real (D43 vie 20-nov, v5.15)' },
 ];
 export const LIVIANO_KPI_REGLA = {
   umbralPct: 80, semanas: 2,
