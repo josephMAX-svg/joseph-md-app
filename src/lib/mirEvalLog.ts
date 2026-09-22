@@ -190,8 +190,8 @@ export function mirNeto(aciertos: number, total: number, blancos: number) {
 /** Umbrales del test de cierre POR FASE (gap 5: 'consolidada al 70 %' está 10 pts por debajo de lo que Top 50 exige). */
 export interface MirUmbralFase { fase: string; hasta: string; consolidada: number; anclasD7: number; }
 export const MIR_CIERRE_UMBRAL_FASES: MirUmbralFase[] = [
-  { fase: '1ª vuelta + banqueo (hasta 31-mar-2027)', hasta: '2027-03-31', consolidada: 70, anclasD7: 55 },
-  { fase: 'fase principal (desde abr-2027)', hasta: '9999-12-31', consolidada: 75, anclasD7: 60 },
+  { fase: '1ª vuelta + banqueo (hasta 2-abr-2027)', hasta: '2027-04-02', consolidada: 70, anclasD7: 55 },
+  { fase: 'fase principal (desde el lun 5-abr-2027)', hasta: '9999-12-31', consolidada: 75, anclasD7: 60 },
 ];
 export function mirCierreUmbral(fechaISO: string = hoyISO()): MirUmbralFase {
   return MIR_CIERRE_UMBRAL_FASES.find((f) => fechaISO <= f.hasta) || MIR_CIERRE_UMBRAL_FASES[MIR_CIERRE_UMBRAL_FASES.length - 1];

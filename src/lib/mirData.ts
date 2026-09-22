@@ -30,7 +30,7 @@ export const MIR_KPIS = { asignaturasTierS: 3, vueltasCritica: 6, simulacrosMeta
 export interface MirHito { clave: string; nombre: string; fecha: string; min: number; fase: string; nota: string; }
 export const MIR_HITOS: MirHito[] = [
   { clave: 'mini-MIR', nombre: 'mini-MIR 40Q mixto (D77)', fecha: mirDiaN(77)?.fecha || '2026-12-30', min: 50, fase: '1ª vuelta', nota: 'baseline honesto tras 76 temas; 40Q ⇒ ±2,5 pp por pregunta' },
-  { clave: 'handoff', nombre: 'Handoff 31-mar-2027 (entrada a la fase principal)', fecha: '2027-03-31', min: 60, fase: 'banqueo', nota: 'tabla de neto por asignatura (cierres + mini-MIR + mantenimiento) + stats FSRS del deck' },
+  { clave: 'handoff', nombre: 'Handoff 2-abr-2027 (entrada a la fase principal)', fecha: '2027-04-02', min: 60, fase: 'banqueo', nota: 'tabla de neto por asignatura (cierres + mini-MIR + mantenimiento) + stats FSRS del deck' },
   { clave: '1ª vuelta', nombre: 'Fin de la 1ª vuelta completa (dic-2027)', fecha: '2027-12-31', min: 68, fase: 'principal', nota: 'simulacro 200Q oficial cronometrado (examenesmir.com)' },
   { clave: 'sims 2028', nombre: 'Simulacros 2028', fecha: '2028-12-31', min: 75, fase: 'principal', nota: '≈150 netas: borde inferior de la banda Top 50' },
   { clave: 'sims 2029', nombre: 'Simulacros 2029', fecha: '2029-12-31', min: 82, fase: 'competición', nota: '≈165 netas: banda Top 50 en un año difícil' },

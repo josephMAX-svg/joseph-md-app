@@ -208,7 +208,7 @@ const C1 = [
   a('CR-1', 'CR', 'CR', 'CRITICA', 'CASE REPORT #1 — decidir la FUENTE del caso antes del 31-oct: (a) Dr. Ciro: 1-2 casos de su consulta (ideal complicación de inyectable = L4, o caso raro con buenas fotos) con él como senior author; (b) plan B: dermatólogo de la Sociedad Peruana de Dermatología',
     'Tabla de casos candidatos (diagnóstico · por qué es publicable · fotos disponibles · senior author · estado) + 1 caso ELEGIDO',
     'DATA/RESEARCH/CASE_REPORT_1/caso_candidatos.md + Mesa editorial: senior author del case report',
-    'Dr. Ciro · SPD', ['CARE', 'DOJ', 'JAADCR'], { chips: ['sin caso antes del 31-oct el entregable de feb-2027 no ocurre'],
+    'Dr. Ciro · SPD', ['CARE', 'DOJ', 'JAADCR'], { chips: ['⚠ v5.15: este átomo cae el mar 3-nov, ya DESPUÉS del 31-oct. La regla "sin caso antes del 31-oct el entregable de feb-2027 no ocurre" sigue viva: el caso y el senior author hay que cerrarlos FUERA del bloque de 45 min, antes de que llegue este día'],
       chipsDyn: ({ f, fmt }) => [`si el Dr. Ciro no dio caso el ${fmt(f('C-3'))}, la fuente B ya debe estar activada (MENTORES fila 6)`], apex: { id: 'cr-caso', t: 'Caso + senior author' }, hito: 'cr-caso' }),
   a('CR-2', 'CR', 'CR', 'CRITICA', 'Consentimiento de PUBLICACIÓN (distinto del asistencial): plantilla bilingüe ES/EN según lo que exigen DOJ y CARE, con fotos y datos clínicos; firmado por el paciente (o tutor)',
     'Consentimiento firmado y escaneado (sin él no hay case report)',
@@ -874,7 +874,7 @@ const MD = `# Plan DÍA-A-DÍA de Research — 3 pistas alineadas con la RUTA de
 > 2-oct y SUBMIT el 29-dic) contradecía [\`RUTA_PUBLICACION_2027.md\`](RUTA_PUBLICACION_2027.md) (carta oct-nov · case report
 > feb-mar · PROSPERO mar-abr · SR sometida jul-sep) y no contenía ni un átomo de los dos primeros entregables ni de la tesis.
 > Ahora: **ciclo 1 (sep-2026 → los 2 primeros días-Research de feb-2027; 42 átomos)** = infra académica + cimientos + mentores +
-> carta al editor + tesis L0 (research letter) + case report #1 (paquete listo en dic; SUBMIT = d41, primer día tras la pausa) +
+> carta al editor + tesis L0 (research letter) + case report #1 (paquete listo en dic; SUBMIT = d35 en v5.15, primer día tras la pausa) +
 > preparación de SR-1 con **revisor humano #2** nombrado antes de PROSPERO;
 > **ciclo 2 (feb→ago 2027)** = SR-1 completa (PROSPERO → submit) con cribado y extracción DUALES, campaña de colaboradores,
 > case report #2, bibliométrico y apertura de SR-2. **Enero 2027 = 0 átomos (Step 1).**
@@ -884,7 +884,7 @@ const MD = `# Plan DÍA-A-DÍA de Research — 3 pistas alineadas con la RUTA de
 > necesita la versión del CADI que sale de los mismos documentos → **M3** a d8); los consentimientos ya constan (censo con
 > consentimiento parental + asentimiento: 291 excluidas, portada de \`datos_tesis_acne.xlsx\`). **R9** (¿ya existe la SR? AMSTAR-2
 > rápido de las 5 SR/MA que solapan + decisión escrita a/b/c en L4 §6) pasa de d35 a **d9, ANTES de R6** (PICO, d9 → d14); **R2**
-> (diseños) ocupa d35. **CR-1** (caso) y **CR-2** (consentimiento) pasan a **d15/d16** (2ª quincena de octubre, antes del 31-oct;
+> (diseños) ocupa d35. **CR-1** (caso) y **CR-2** (consentimiento) pasan a **d15/d16** (⚠ v5.15: con el corrimiento caen el mar 3-nov y el jue 5-nov, es decir YA DESPUÉS del 31-oct — ver el chip de CR-1;
 > T-2 → d19 y R7 → d21, sin deadline externo). Gates: T-7/T-8 no se envían sin nº de CEI o exención (T-8 pasaría a feb-2027) ni sin
 > inglés revisado (mentor de Rising Scholars o editor); d8/d10 hacen seguimiento del caso con el Dr. Ciro (sin caso a las 3 semanas
 > de M1 → fuente B); M2 fija la fecha de decisión del plan B (4 semanas); X-2 comprueba que el mentor revisa también el case report.

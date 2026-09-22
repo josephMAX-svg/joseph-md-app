@@ -2,7 +2,7 @@
 
 Pool de las **1.050 preguntas oficiales** del examen MIR (Medicina) de las convocatorias **MIR 2022, 2023, 2024, 2025 y 2026** (5 × 210: 200 + 10 de reserva), con la **clave definitiva** del Ministerio de Sanidad, parseadas a JSON desde los PDF oficiales y **clasificadas por asignatura y capítulo real de ProMIR** (`src/lib/mirTemarioData.ts`). Cubre los tres pasos del punto 2 de `DATA/USMLE/_palmerton_v3_extractos/gaps_v3b_mir.json` ("questions as the curriculum"): (1) descarga + parseo → `AAAA.json`; (2) clasificación LLM + verificación → `AAAA_clasificado.json`; (3) generación de [`src/lib/mirPreguntasOficiales.ts`](../../../src/lib/mirPreguntasOficiales.ts) (`--emit`). Cómo lo consume cada segmento del loop (anti-repetición por `qIds`): [`../POOL_USO.md`](../POOL_USO.md).
 
-Creado el 12-sep-2026 (paso 1) · clasificación y `.ts` el 13-sep-2026 (régimen v5.10; sin cambios en v5.11, v5.12, v5.13 ni v5.14, 19-sep: el pool no depende de fechas — el plan 1ª vuelta va ahora lun 21-sep → lun 11-ene-2027 (78 días; D5 Cardiología vie 25-sep · D77 mini-MIR vie 8-ene · D78 corrección lun 11-ene) y el mantenimiento mar 12-ene → mié 31-mar, 57 días, reducido hasta el mié 3-feb).
+Creado el 12-sep-2026 (paso 1) · clasificación y `.ts` el 13-sep-2026 (régimen v5.10; sin cambios en v5.11-v5.14 ni en v5.15, 22-sep: el pool no depende de fechas — el plan 1ª vuelta va ahora mié 23-sep → mié 13-ene-2027 (78 días; D5 Cardiología mar 29-sep · D77 mini-MIR mar 12-ene · D78 corrección mié 13-ene) y el mantenimiento jue 14-ene → vie 2-abr, 57 días, reducido hasta el lun 8-feb inclusive).
 
 ## Origen de los datos (verificado 12-sep-2026)
 

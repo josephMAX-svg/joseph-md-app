@@ -104,16 +104,16 @@ BASE DATOS en T-4 (jue 5-nov-2026), nunca se estiman.
 
 Nota al pie: n con datos faltantes por variable (STROBE 14b); cortes del CADI; IGA según escala FDA.
 
-## 4. Plan de trabajo (átomos de 45', interdiarios · fechas v5.14 del 19-sep-2026 (Research corre +2 hábiles respecto a v5.13) — orden v5.10b; ver `etica.md` §5)
-1. **T-1 · jue 8-oct-2026** — ética: nº de CEI archivado o solicitud expedita PRESENTADA ese día (gate de T-7/T-8).
-2. **T-3 · jue 5-nov** — Intro + Methods (≤250 palabras) al límite estricto. **T-4 · lun 9-nov** — abrir la base → Tabla 1 + Figura 1
+## 4. Plan de trabajo (átomos de 45', interdiarios · fechas v5.15 del 22-sep-2026 (Research corre +2 hábiles respecto a v5.14; corrimiento RÍGIDO) — orden v5.10b; ver `etica.md` §5)
+1. **T-1 · lun 12-oct-2026** — ética: nº de CEI archivado o solicitud expedita PRESENTADA ese día (gate de T-7/T-8). 🔴 Cae 12 días después del límite interno “solicitud ≤ 30-sep”.
+2. **T-3 · lun 9-nov** — Intro + Methods (≤250 palabras) al límite estricto. **T-4 · mié 11-nov** — abrir la base → Tabla 1 + Figura 1
    (matplotlib/seaborn, 300 dpi, sobria); UNA va al texto, la otra al apéndice.
-3. **T-2 · mié 11-nov** — STROBE 22 ítems sobre el borrador v1: lo que no cabe en 500-600 palabras pasa al apéndice «versión larga».
-4. **T-5 · vie 13-nov** — Discussion (≤150 palabras) + apéndice largo (800 / 3 / 10) + cascada con APC verificado (§1).
+3. **T-2 · vie 13-nov** — STROBE 22 ítems sobre el borrador v1: lo que no cabe en 500-600 palabras pasa al apéndice «versión larga».
+4. **T-5 · mar 17-nov** — Discussion (≤150 palabras) + apéndice largo (800 / 3 / 10) + cascada con APC verificado (§1).
 5. Búsqueda de ≤5 referencias (OpenAlex/PubMed) → `citation_verifier.py` → solo `verified` (las 6-10 restantes solo en el apéndice).
-6. **T-6 · jue 19-nov** — revisión Dr. Ciro (coautoría, ICMJE/CRediT). **T-7 · mié 25-nov** — Guide for Authors de JAAD Intl leída
+6. **T-6 · lun 23-nov** — revisión Dr. Ciro (coautoría, ICMJE/CRediT). **T-7 · vie 27-nov** — Guide for Authors de JAAD Intl leída
    con Chrome ese día + formateo + **gate 1** (nº CEI / exención) + **gate 2** (inglés revisado por Rising Scholars o editor).
-7. **T-8 · mar 1-dic** — SUBMIT a JAAD International si pasan los dos gates; si no, seguimiento del CEI y envío en feb-2027 (cascada).
+7. **T-8 · jue 3-dic** — SUBMIT a JAAD International si pasan los dos gates; si no, seguimiento del CEI y envío en feb-2027 (cascada).
 
 ## 5. Apéndice «versión larga» (solo para Actas / Anais o si JAAD Intl acepta más)
 - Fichero: `TESIS_L0/research_letter_v1_larga.md` (se crea en T-5). Contiene lo que NO cabe en la versión corta: la pieza sobrante
