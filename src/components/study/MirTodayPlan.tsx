@@ -37,7 +37,7 @@ import { mirAnkiDeck, ANKIWEB } from '../../lib/ankiLinks';
  *  · Espejo Supabase: al montar, mirEvalLogPull() fusiona por id en ambos sentidos (fallback silencioso).
  *  · Chip "Step 1 esta semana: <sistema> D#-D#" (mirUsmleBridge, lectura de usmleStep1Daily).
  *  · Test de cierre 10Q el 1er día de cada bloque · D77 mini-MIR 40Q · D78 tabla de neto (baseline).
- *  · Fallback a mirMantenimiento (4-ene→31-mar-2027) cuando no hay DiaMIR. sáb+dom libres → cola D+14.
+ *  · Fallback a mirMantenimiento (19-ene→7-abr-2027) cuando no hay DiaMIR. sáb+dom libres → cola D+14.
  *  · Regla v3b (gap 11): los APEX MIR se crean DIRECTAMENTE en Anki hasta que el redeploy de n8n esté verificado.
  *  · Pool oficial (19-sep-2026, DATA/MIR/POOL_USO.md §2-§5): anclada 4Q · pre-test 5Q · quiz 8-10Q · cierre 10Q · mini-MIR 40Q
  *    reservan `qIds` en orden horario del día (cada segmento excluye las usadas del log + las reservadas antes ese día; si el
@@ -555,7 +555,7 @@ function BaselineView() {
             <Text style={st.baseSub}>{s.aciertos}/{s.total} · bl {s.blancos} · 🇪🇸 {s.deltaEs}</Text>
           </View>
         ))}
-        <Text style={st.formHint}>Corrección Whole-Page de cada fallo + Shopping List → APEX (directos en Anki). &lt;{u.anclasD7} % → anclas D-7 / viernes del mantenimiento. Handoff 31-mar: mínimo on-track 60 % neto · 🇪🇸 = fallos delta (objetivo 0 repetidos).</Text>
+        <Text style={st.formHint}>Corrección Whole-Page de cada fallo + Shopping List → APEX (directos en Anki). &lt;{u.anclasD7} % → anclas D-7 / viernes del mantenimiento. Handoff 7-abr: mínimo on-track 60 % neto · 🇪🇸 = fallos delta (objetivo 0 repetidos).</Text>
       </View>
     </FadeUp>
   );
@@ -716,7 +716,7 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
   );
 }
 
-/** Modo MANTENIMIENTO (4-ene→31-mar-2027): banqueo puro sin contenido nuevo. */
+/** Modo MANTENIMIENTO (19-ene→7-abr-2027): banqueo puro sin contenido nuevo. */
 function MantenimientoView({ dia, onPick, bump, sync }: { dia: DiaMIRMant; onPick: (d: number) => void; bump: () => void; sync: SyncInfo }) {
   const entries = mirEvalLogLoad();
   const peor = mirPeorAsignatura(entries);
@@ -784,7 +784,7 @@ function MantenimientoView({ dia, onPick, bump, sync }: { dia: DiaMIRMant; onPic
           </View>
         </FadeUp>
       ))}
-      <FadeUp delay={100}><ColaItem icon="🃏" lbl="ANKI · APEX::MIR (todas las asignaturas)" val={mirAnkiDeck(foco.asignatura)} sub={`AnkiWeb ↗ · preset FSRS retention 0,85 hasta 31-mar (→ 0,90 en fase principal) · ${APEX_DIRECTO_ANKI}`} color={Colors.teal} url={ANKIWEB} /></FadeUp>
+      <FadeUp delay={100}><ColaItem icon="🃏" lbl="ANKI · APEX::MIR (todas las asignaturas)" val={mirAnkiDeck(foco.asignatura)} sub={`AnkiWeb ↗ · preset FSRS retention 0,85 hasta 7-abr (→ 0,90 en fase principal) · ${APEX_DIRECTO_ANKI}`} color={Colors.teal} url={ANKIWEB} /></FadeUp>
       <FadeUp delay={120}><ColaItem icon="🧪" lbl={`${foco.nQ}Q reales MIR · cronometradas`} val={`${foco.asignatura}${dia.asignatura2 ? ` (+ ${dia.asignatura2} interleaving)` : ''}`} sub="cuadernillos oficiales gratis (examenesmir) o test por asignatura ProMIR · en blanco permitido" color={AMBER} url="https://www.examenesmir.com/examenes-mir" /></FadeUp>
       <TimerQ color={color} presets={[foco.nQ, 10, 25, 40].filter((v, i, a) => a.indexOf(v) === i)} />
       {focoNQ > 0 && (
@@ -797,7 +797,7 @@ function MantenimientoView({ dia, onPick, bump, sync }: { dia: DiaMIRMant; onPic
         <FadeUp delay={130}>
           <View style={[st.temaCard, { borderColor: CORAL + '66' }]}>
             <Text style={[st.formTitle, { color: CORAL }]}>🎯 TIER C EXPRESS · {tierC.asignatura} › {tierC.capitulo} · {tierC.nQ}Q</Text>
-            <Text style={st.temaSub}>Capítulo top-1 de una asignatura fuera del plan ({tierC.pesoCap} % de su peso; semana {dia.semana}). Entrada PROPIA en el log con asignatura {tierC.asignatura} (no se mezcla con la foco: así entra en las estadísticas por asignatura y en el handoff 31-mar).{tierC.nota ? ` · ${tierC.nota}` : ''}</Text>
+            <Text style={st.temaSub}>Capítulo top-1 de una asignatura fuera del plan ({tierC.pesoCap} % de su peso; semana {dia.semana}). Entrada PROPIA en el log con asignatura {tierC.asignatura} (no se mezcla con la foco: así entra en las estadísticas por asignatura y en el handoff 7-abr).{tierC.nota ? ` · ${tierC.nota}` : ''}</Text>
             {poolOK && <Text style={st.formHint}>{pool.tierCDelCap < 0 ? 'ids ya registradas hoy' : `${pool.tierCDelCap} del capítulo + ${pool.tierC.length - pool.tierCDelCap} de la asignatura`}{pool.tierC.length < tierC.nQ ? ` · faltan ${tierC.nQ - pool.tierC.length} → test del capítulo ProMIR` : ''}</Text>}
             <TouchableOpacity activeOpacity={0.8} onPress={() => openUrl(capUrl(tierC.capId))} style={[st.dChip, { borderColor: CORAL + '66', alignSelf: 'flex-start', marginTop: 6 }]}><Text style={[st.dChipTxt, { color: CORAL }]}>capítulo ProMIR ↗</Text></TouchableOpacity>
             {poolOK && <MirPoolLista qIds={pool.tierC} color={CORAL} titulo={`Pool oficial · ${tierC.asignatura}`} pedidas={tierC.nQ} />}

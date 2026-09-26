@@ -200,7 +200,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaUSMLE; onOpe
           </View>
         </FadeUp>
       ) : null}
-      {/* D95 = último día del plan (v5.15) y examen lun 8-feb: solo se muestran en D95 para que el cierre quede a la vista */}
+      {/* D95 = último día del plan (v5.16, mié 10-feb = D-1 real) y examen jue 11-feb: solo se muestran en D95 para que el cierre quede a la vista */}
       {dia.d === DAILY_META.totalDias && (
         <FadeUp delay={25}>
           <View style={[st.anchor, { borderLeftColor: RED }]}>
@@ -270,7 +270,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaUSMLE; onOpe
           <Text style={st.colaIcon}>🃏</Text>
           <View style={{ flex: 1 }}>
             <Text style={st.colaLbl}>APEX · 10:45–11:00 (cierre del DEEP PRIME) + CONSOLIDACIÓN 11:00 · nivel {dia.nivelUW}</Text>
-            <Text style={st.colaVal}>{taper ? 'CERO tarjetas nuevas (taper) · solo Anki MADURO · luego ' : 'Crea ≤10 tarjetas de MECANISMO (patogenia→presentación) · luego '}{taper ? `${dia.qDia}Q flagged/incorrects ya vistos, sin bloque timed (nivel 5, taper ${dia.d === 95 ? 'D-2' : 'D-3'})` : dia.nivelUW === 1 ? '20Q en bloques de 5Q tutor del subtema (nivel 1)' : dia.nivelUW === 3 ? '20Q del sistema completo TIMED + 10Q tutor (nivel 3, viernes)' : viernesN4 ? '20-30Q TIMED MIXTOS de los sistemas ya dominados + 10Q tutor del subtema (nivel 4, viernes desde S11)' : dia.nivelUW === 2 ? '30Q en bloques de 5Q TIMED de subtemas validados (nivel 2)' : `${dia.qDia}Q en bloques timed mixtos (nivel ${dia.nivelUW})`}</Text>
+            <Text style={st.colaVal}>{taper ? 'CERO tarjetas nuevas (taper) · solo Anki MADURO · luego ' : 'Crea ≤10 tarjetas de MECANISMO (patogenia→presentación) · luego '}{taper ? `${dia.qDia}Q flagged/incorrects ya vistos, sin bloque timed (nivel 5, taper ${dia.d === 95 ? 'D-1' : 'D-2'})` : dia.nivelUW === 1 ? '20Q en bloques de 5Q tutor del subtema (nivel 1)' : dia.nivelUW === 3 ? '20Q del sistema completo TIMED + 10Q tutor (nivel 3, viernes)' : viernesN4 ? '20-30Q TIMED MIXTOS de los sistemas ya dominados + 10Q tutor del subtema (nivel 4, viernes desde S11)' : dia.nivelUW === 2 ? '30Q en bloques de 5Q TIMED de subtemas validados (nivel 2)' : `${dia.qDia}Q en bloques timed mixtos (nivel ${dia.nivelUW})`}</Text>
             <Text style={st.colaSub}>Gate: ≥{USMLE_GATE.pct}% → mañana sube de nivel · &lt;{USMLE_GATE.pct}% → repetir 5Q del subtema fallado · 18:00 eval 10Q mixta timed (dosis de nivel 4) · registra todo en 📏 Medición</Text>
           </View>
         </View>
@@ -605,7 +605,7 @@ export default function UsmleTodayPlan() {
       <View style={st.stepRow}>
         <View style={[st.stepBtn, st.stepActive]}>
           <Text style={st.stepBig}>STEP 1</Text>
-          <Text style={st.stepSub}>BLOQUE PRINCIPAL · 6h15/día · examen lun 8-feb-2027 (v5.15)</Text>
+          <Text style={st.stepSub}>BLOQUE PRINCIPAL · 6h15/día · examen jue 11-feb-2027 (v5.16)</Text>
         </View>
         <View style={[st.stepBtn, st.stepStep2]}>
           <Text style={[st.stepBig, { color: Colors.champagne }]}>STEP 2 CK</Text>

@@ -74,7 +74,7 @@ export const mirAnkiDeck = (asignatura: string): string =>
  * quirúrgicamente lo que no aplique).
  *  · Lo llevan las tarjetas de APEX::USMLE (sistema del día = DIAS[].system), de APEX::MIR (usmleSystem del día MIR,
  *    mirDailyPlan) y de APEX::DERMA cuando el átomo cruza con Step 1 (sys::Dermatology + step1).
- *  · Handoff 31-mar-2027 (fase principal MIR): un filtered deck por sistema = `tag:sys::Cardiovascular` reúne el
+ *  · Handoff 7-abr-2027 (fase principal MIR): un filtered deck por sistema = `tag:sys::Cardiovascular` reúne el
  *    mecanismo (USMLE) + la clínica (MIR) sin crear ni resetear nada — receta en DATA/SYNC_ANKI_OBSIDIAN_APP.md.
  *  · Formato: Anki separa tags por espacio → sin espacios ni símbolos ('Hematology & Oncology' → Hematology_Oncology).
  * ────────────────────────────────────────────────────────────────────────── */
@@ -92,7 +92,7 @@ const sysSlug = (system: string): string =>
   || 'General';
 /** Tag compartido USMLE ↔ MIR ↔ Derma: 'sys::<usmleSystem>'. MIR pasa `dia.usmleSystem`; '—' / vacío → 'sys::General'. */
 export const sysTag = (system: string): string => `sys::${!system || system === '—' ? 'General' : sysSlug(system)}`;
-/** Búsqueda Anki (Browse / filtered deck) que reúne USMLE + MIR de un sistema — la receta del handoff 31-mar. */
+/** Búsqueda Anki (Browse / filtered deck) que reúne USMLE + MIR de un sistema — la receta del handoff 7-abr. */
 export const sysFilteredQuery = (system: string): string => `${sysTag(system).replace(/^/, 'tag:')} (deck:APEX::USMLE OR deck:APEX::MIR)`;
 /** Los 14 sistemas del plan Step 1 con su tag (para el checklist de arranque y la tabla de SYNC_ANKI). */
 export const SYS_TAGS: { system: string; tag: string }[] = Object.keys(SYS_TAG_SLUG).map((system) => ({ system, tag: sysTag(system) }));
@@ -108,7 +108,7 @@ export const encapsAnkiDeck = (blockId: string, subtemaId: string): string =>
  *    LIV_ANKI_DECK / livAnkiDeck — aquí se RE-EXPORTA para que ankiLinks.ts siga siendo el catálogo único).
  *  · 216 tarjetas en DATA/BUSINESS/ANKI_COLA/LIVIANO_mecanismo.csv (#deck column:3 · tags `liviano::<modulo> dNN mecanismo`).
  *    ⚠ A VERIFICAR (19-sep): los 8 sub-decks NO están creados en Anki (Anki cerrado; sin AnkiConnect). Se crean solos al
- *    importar el CSV (D16 lun 12-oct-2026 según LIVIANO_ACADEMIA.md) o antes con createDeck.
+ *    importar el CSV (D16 lun 19-oct-2026 en v5.16; ver LIVIANO_ACADEMIA.md) o antes con createDeck.
  *  · Mismo motor FSRS que el resto del sistema APEX; sin deck de pago.
  * ───────────────────────────────────────────────────────────────── */
 export { LIV_ANKI_DECK_ROOT as LIVIANO_ANKI_ROOT, LIV_ANKI_DECK as LIVIANO_DECK_POR_MODULO, livAnkiDeck as livianoAnkiDeck } from './livianoCasos';

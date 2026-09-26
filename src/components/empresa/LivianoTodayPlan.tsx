@@ -19,7 +19,7 @@ import {
  * LivianoTodayPlan — "LIVIANO Academia" día a día (90 días L-V · medicina de la obesidad).
  * v2 (Palmerton v3): el ✓ binario pasa a SCORE medido:
  *   · LUNES  → pre-test ciego 5Q sobre la semana D-7 (tarjetas de mecanismo) → % ciego
- *   · DRILL  → cifras ancla en ciego (D36 · D57 · D74 · D87, v5.15) → % ciego
+ *   · DRILL  → cifras ancla en ciego (D37 · D58 · D75 · D88, v5.16) → % ciego
  *   · VIERNES→ caso del banco LIV_CASOS con rúbrica 0-2 × 4 → rúbrica media
  * Persistencia (v5.14, 19-sep): localStorage 'jmd-liviano-score' + ESPEJO en Supabase `study_progress`
  * (examen 'LIVIANO' · fuente 'app:liviano', mismo patrón que ENCAPS) vía src/lib/livianoScore.ts; al montar se hace pull

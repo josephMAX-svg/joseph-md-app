@@ -26,7 +26,7 @@
  * retención = los 4 ajustes de Palmerton). Ningún minuto nuevo.
  *
  * Neto MIR = A − F/3 (4 opciones, −1/3 por fallo, en blanco = 0). netoPct = neto / total × 100.
- * Umbrales de cierre POR FASE (gap 5): 70/55 hasta el 31-mar-2027 → 75/60 desde abr-2027 (mirCierreUmbral).
+ * Umbrales de cierre POR FASE (gap 5): 70/55 hasta el mié 7-abr-2027 (último día del mantenimiento) → 75/60 desde el jue 8-abr-2027 (mirCierreUmbral).
  * Táctica −1/3 (gap 6): campos opcionales blancosAcertables / fallosEntreDos / cambiadas / cambiadasAFallo →
  * mirStatsPorAsignatura calcula la EV de la política de blanco y emite consejo por asignatura.
  * Un fallo en el ancla D-7 reprograma el tema a la COLA D+14 (no hay "repaso finde": sáb+dom libres).
@@ -109,7 +109,7 @@ const clamp = (n: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, M
 const optNum = (v: unknown, max: number): number | undefined => (v == null || v === '' || Number.isNaN(Number(v)) ? undefined : clamp(Number(v), 0, max));
 function hoyISO(): string {
   try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; }
-  catch { return MIR_DIAS[0]?.fecha || '2026-09-23'; }
+  catch { return MIR_DIAS[0]?.fecha || '2026-09-28'; }
 }
 const porTs = (a: MirEvalEntry, b: MirEvalEntry) => (a.ts || '').localeCompare(b.ts || '');
 
@@ -142,7 +142,7 @@ export function mirEvalLogAppend(e: MirEvalInput): { entry: MirEvalEntry; guarda
   try { void mirEvalSyncPush([entry]); } catch { /* espejo opcional */ }
   return { entry, guardado };
 }
-/** Export JSON (para consolidar en TRACKING_ERRORES / DELTA_ESPANA / handoff 31-mar). */
+/** Export JSON (para consolidar en TRACKING_ERRORES / DELTA_ESPANA / handoff 7-abr). */
 export function mirEvalLogExportJSON(): string {
   return JSON.stringify({ version: MIR_EVAL_LOG_VERSION, plan: 'MIR', exportado: new Date().toISOString(), entradas: leer() }, null, 2);
 }
@@ -190,8 +190,8 @@ export function mirNeto(aciertos: number, total: number, blancos: number) {
 /** Umbrales del test de cierre POR FASE (gap 5: 'consolidada al 70 %' está 10 pts por debajo de lo que Top 50 exige). */
 export interface MirUmbralFase { fase: string; hasta: string; consolidada: number; anclasD7: number; }
 export const MIR_CIERRE_UMBRAL_FASES: MirUmbralFase[] = [
-  { fase: '1ª vuelta + banqueo (hasta 2-abr-2027)', hasta: '2027-04-02', consolidada: 70, anclasD7: 55 },
-  { fase: 'fase principal (desde el lun 5-abr-2027)', hasta: '9999-12-31', consolidada: 75, anclasD7: 60 },
+  { fase: '1ª vuelta + banqueo (hasta 7-abr-2027)', hasta: '2027-04-07', consolidada: 70, anclasD7: 55 },
+  { fase: 'fase principal (desde el jue 8-abr-2027)', hasta: '9999-12-31', consolidada: 75, anclasD7: 60 },
 ];
 export function mirCierreUmbral(fechaISO: string = hoyISO()): MirUmbralFase {
   return MIR_CIERRE_UMBRAL_FASES.find((f) => fechaISO <= f.hasta) || MIR_CIERRE_UMBRAL_FASES[MIR_CIERRE_UMBRAL_FASES.length - 1];
@@ -217,10 +217,10 @@ export function mirEstadoCierreTxt(estado: MirEstadoCierre, fechaISO?: string): 
 }
 /** Compat: textos de la fase 1. */
 export const MIR_ESTADO_CIERRE_TXT: Record<MirEstadoCierre, string> = {
-  consolidada: mirEstadoCierreTxt('consolidada', '2026-09-23'),
-  intermedia: mirEstadoCierreTxt('intermedia', '2026-09-23'),
-  anclasD7: mirEstadoCierreTxt('anclasD7', '2026-09-23'),
-  'sin-dato': mirEstadoCierreTxt('sin-dato', '2026-09-23'),
+  consolidada: mirEstadoCierreTxt('consolidada', '2026-09-28'),
+  intermedia: mirEstadoCierreTxt('intermedia', '2026-09-28'),
+  anclasD7: mirEstadoCierreTxt('anclasD7', '2026-09-28'),
+  'sin-dato': mirEstadoCierreTxt('sin-dato', '2026-09-28'),
 };
 
 // ── táctica −1/3 (gap 6) ──
@@ -528,7 +528,7 @@ export function mirReadinessDerivado(entries: MirEvalEntry[] = leer()): MirReadi
   }
   return { pct: 0, estado: 'Sin registro · línea base = primer test de cierre (10Q, 77 s/Q)', siguiente: 'Registra la eval anclada de hoy (15:27) y el test de cierre al cambiar de asignatura.', fuente: 'ninguna', n: 0 };
 }
-/** Tabla de neto por asignatura para D78 / handoff 31-mar (cierres + mini-MIR + mantenimiento). */
+/** Tabla de neto por asignatura para D78 / handoff 7-abr (cierres + mini-MIR + mantenimiento). */
 export function mirBaselineTabla(entries: MirEvalEntry[] = leer()): MirStatAsig[] {
   return mirStatsPorAsignatura(entries, ['cierre', 'miniMIR', 'mantenimiento']);
 }

@@ -1,18 +1,19 @@
-# 📋 REVISIÓN SEMANAL — sábado 07:15-07:35 (20') · v5.15 · re-fechado 22-sep-2026
+# 📋 REVISIÓN SEMANAL — sábado 07:15-07:35 (20') · v5.16 · re-fechado 26-sep-2026
 
-> Ritual único que revisa los 9 frentes del régimen v5.15 (D1 = mié 23-sep-2026, Step 1 = principal; D95 = vie 5-feb = D-1; examen target lun 8-feb-2027) con
+> Ritual único que revisa los 9 frentes del régimen v5.16 (D1 = lun 28-sep-2026, Step 1 = principal; D95 = mié 10-feb = D-1 REAL; examen target jue 11-feb-2027) con
 > **10 métricas** y una sola pregunta: *¿el sistema va on-track o hay que corregir ESTA semana?*
 > Palmerton revisa el checklist G "en cada hito NBME" (~3 semanas): demasiado grueso para un plan donde
 > 1 día perdido = +1 hábil. Aquí la cadencia es semanal y el trabajo de recopilar lo hace un script.
 >
 > **Franja**: sábado 07:15-07:35 (hueco libre tras el desayuno; no toca las franjas L-V). El evento **📋 REVISIÓN SEMANAL ya existe en el
-> Google Calendar** (id **`0r2rmn0f4vea40dls47lg60t44`**, sáb 07:15-07:35 desde el 26-sep-2026, **`UNTIL=20270214`** — la serie se RECREÓ el 22-sep (el id viejo `21fbiohc1i47r4lqmaa3eb76l4` está borrado)
-> porque `recurrenceData` no se puede actualizar por MCP: se amplió del sáb 6-feb al **sáb 13-feb-2027** para que exista el **post-mortem del examen** (el Step 1 es el lun 8-feb) —
-> la elección sáb/dom sigue siendo decisión de Joseph). **Semana 1 = sáb 26-sep-2026** = semana **mié 23 → vie 25-sep (D1-D3, semana CORTA porque el D1 cae en miércoles)**. Las semanas se numeran desde `DAILY_META.inicio` = 23-sep — misma regla que `semanaStep1()` del cockpit y que
-> `gen_revision_semanal.js` (lee el `inicio` del `.ts`); el plan sigue cerrando en **20 semanas** (la S1 es corta: D1-D3, mié-vie): la S20 (lun 1 → vie 5-feb = D91-D95) contiene el D-1,
-> el finde 6-7 feb queda libre y el **examen es el lun 8-feb**, ya en la semana siguiente; el sábado 6-feb es la revisión S20 y el **sábado 13-feb** el post-mortem del examen.
-> 🆕 **En v5.15 los 12 hitos corren con el plan y conservan su D#** (cambian de fecha y dejan de caer en viernes: 9 pasan a martes);
-> los SHIP del vibecoding siguen en los mismos sábados (S1 sáb 26-sep … S12 sáb 12-dic) y ahora coinciden 1:1 con las semanas de revisión S1-S12.
+> Google Calendar** (id **`th5utf73brht5g0lkt87hd4940`**, sáb 07:15-07:35 desde el **sáb 3-oct-2026**, **`UNTIL=20270221T045959Z`** — la serie se RECREÓ el 26-sep (v5.16)
+> porque `recurrenceData` no se puede actualizar por MCP; los ids anteriores `0r2rmn0f4vea40dls47lg60t44` (v5.15) y `21fbiohc1i47r4lqmaa3eb76l4` (v5.14) están borrados. La serie llega al **sáb 20-feb-2027** para que existan la **S20 (sáb 13-feb, semana del examen)** y el
+> **post-mortem del examen (S21, sáb 20-feb)** — el Step 1 es el **jue 11-feb**; la elección sáb/dom sigue siendo decisión de Joseph). **Semana 1 = sáb 3-oct-2026** = semana **lun 28-sep → vie 2-oct (D1-D5: con el D1 en lunes la S1 vuelve a ser una semana COMPLETA)**. Las semanas se numeran desde `DAILY_META.inicio` = 28-sep — misma regla que `semanaStep1()` del cockpit (`STEP1_SEMANAS = 20`) y que
+> `gen_revision_semanal.js` (lee el `inicio` del `.ts`); el plan cierra en **20 semanas de calendario**: la S20 (lun 8 → vie 12-feb) contiene **D93-D95 y el examen (jue 11-feb)** —
+> ⚠ en v5.16 **no hay fin de semana libre entre el D95 y el examen**: el D-1 real ES el D95 (mié 10-feb); el sábado 13-feb es la revisión S20 (primera lectura del examen) y el **sábado 20-feb** el post-mortem (S21, fuera del plan de 95 días pero dentro de la serie).
+> 🆕 **En v5.16 los 12 hitos siguen corriendo con el plan y conservan su D#** (regla RÍGIDA de v5.15); con el D1 en lunes **vuelven a caer en viernes** (8 de los 12: D10 · D25 · D40 · D55 · D72 · D77 · D82 · D87), salvo **NBME 29 (lun 28-dic, por el salto del 25-dic), NBME 32 (lun 25-ene) y NBME 33 (mié 27-ene)**;
+> los SHIP del vibecoding van en los sábados 3-oct … 19-dic (S1-S12 = bloques de 5 hábiles lun→vie) y vuelven a coincidir 1:1 con las semanas de revisión S1-S12.
+> *(v5.15, 22-sep: D1 mié 23-sep · S1 = sáb 26-sep, semana corta de 3 días · id `0r2rmn0f4vea40dls47lg60t44` · S20 = sáb 6-feb · post-mortem sáb 13-feb · examen lun 8-feb.)*
 >
 > **Pre-relleno automático** (viernes 21:00 o sábado 07:10, 1 comando):
 > `node DATA/_scripts/gen_revision_semanal.js` → `DATA/USMLE/REVISIONES/S<NN>_<sábado>.md` + append en
@@ -42,7 +43,7 @@
 | # | Métrica | Fuente automática | On-track | Alarma → acción |
 |---|---|---|---|---|
 | 1 | **USMLE · medias de la semana**: pre-test /10 · 30Q % · eval 18:00 % | `jmd-usmle-scores` (proyecto S3 del vibecoding); **fallback: diario Obsidian** (`pretest10` / `q30_pct` / `eval_pct` / `error_dominante` de la nota del día, 60 s en el cierre 18:25-18:45) | pre-test ≥ 5/10 · 30Q ≥ 65 % · eval ≥ 60 % (gate Palmerton 80 % = tema dominado) | eval < 60 % dos días seguidos → ÁMBAR; media 7 d < 55 % → auditar el tipo de error dominante (knowledge/transfer/proceso), no sumar horas |
-| 2 | **uWorld % acumulado vs mínimo on-track** del próximo hito | manual (dashboard uWorld); el script imprime el hito y su mínimo (Parte V) | NBME 25 ≥ 51 · 26 ≥ 54 · 27 ≥ 57 · 28 ≥ 61 · 29 ≥ 63 · 30 ≥ 65 · 31 ≥ 68 (GO) | > 5 puntos bajo el mínimo → auditar método (no horas); UWSA1 mié 23-sep = baseline sin juicio |
+| 2 | **uWorld % acumulado vs mínimo on-track** del próximo hito | manual (dashboard uWorld); el script imprime el hito y su mínimo (Parte V) | NBME 25 ≥ 51 · 26 ≥ 54 · 27 ≥ 57 · 28 ≥ 61 · 29 ≥ 63 · 30 ≥ 65 · 31 ≥ 68 (GO) | > 5 puntos bajo el mínimo → auditar método (no horas); UWSA1 lun 28-sep = baseline sin juicio |
 | 3 | **Anki**: due medio · backlog · retención 30 d · % Again · **minFinde** | `_anki_telemetria.json` + AnkiConnect en vivo | backlog < 20 · retención 85-92 % · Again < 15 % | backlog > 100 o retención < 85 % = **alarma G "avalancha"** → cero nuevas hasta backlog < 20; Anki finde = due × 20 s |
 | 4 | **ENCAPS · % ciego del viernes** (mini-sim 25Q) + rondas de la semana | `_registro_resoluciones.json` (examen ENCAPS, fecha en la semana) | ≥ 18/25 hacia diciembre (crucero 75 %; meta 85 %) | < 15/25 dos viernes seguidos → re-ponderar la rotación (PROTOCOLO_HORA_MANTENIMIENTO) |
 | 5 | **MIR · eval D-1** media + días con eval | `jmd-mir-eval-log` (export localStorage) | ≥ 60 % · 5/5 días | < 50 % media → solo eval D-1 la semana siguiente (deep work al tema peor) |
@@ -87,7 +88,7 @@ Generado: <fecha hora> · fuentes OK: [supabase, localStorage(<fecha export>), a
 - Anki sáb/dom: __' / __' (= due × 20 s)
 ```
 
-## Progreso persistente (v5.10 · 12-sep; vigente en v5.11-v5.15) y export de localStorage
+## Progreso persistente (v5.10 · 12-sep; vigente en v5.11-v5.16) y export de localStorage
 
 **Los ✓ ya no dependen del navegador.** `src/lib/studyProgressSync.ts` espeja `jmd-study-progress-v1` en Supabase
 `plan_checks` {plan_key, dia, checked_at, device}: cada ✓/✗ sube al instante (diff), el primer `loadDone` de la sesión
@@ -105,33 +106,34 @@ hace la misma copia al portapapeles (solo web).
 copy(JSON.stringify(Object.fromEntries(Object.keys(localStorage).filter(k => k.startsWith('jmd-')).map(k => { try { return [k, JSON.parse(localStorage.getItem(k))]; } catch { return [k, localStorage.getItem(k)]; } }))))
 ```
 
-## Calendario de las 20 semanas (sábados de revisión)
+## Calendario de las 20 semanas (+ post-mortem) — sábados de revisión (v5.16, fechas leídas de los `.ts` el 26-sep)
 
-| S | Sábado | Hito de esa semana (en v5.15 casi siempre MARTES) | Deload secundarios |
+| S | Sábado | Hito de esa semana (en v5.16 casi siempre VIERNES) | Deload secundarios |
 |---|---|---|---|
-| S1 | 26-sep | UWSA1 (baseline, **mié 23-sep = D1**; movido del lun 21-sep) · D1-D3 (semana corta) · SHIP S1 (sáb 26-sep) | — |
-| S2 | 3-oct | D4-D8 (Immuno + Cardio; **viernes N3 el vie 2-oct = D8**) · Research M1 lun 28-sep · SHIP S2 | — |
-| S3 | 10-oct | **NBME 25 mar 6-oct (D10, ≥ 51 %)** · viernes N3 vie 9-oct (D13) · Research C-2 · T-1 · SHIP S3 | — |
-| S4 | 17-oct | D14-D18 (cierre Cardio + arranque Resp) · SHIP S4 (= este script con ≥ 8/10 métricas reales) | — |
-| S5 | 24-oct | D19-D23 (Resp + arranque Renal) · SHIP S5 | — |
-| **S6** | 31-oct | **NBME 26 mar 27-oct (D25, ≥ 54 %)** · D24-D28 · viernes N3 vie 30-oct (D28) · Research C-6 · CR-1 · SHIP S6 (`rls-datos-tesis`, sin flag deload) | **sí (26-30 oct)** |
-| S7 | 7-nov | D29-D33 (Renal + GI; **viernes N3 vie 6-nov = D33**) · SHIP S7 (proyecto con flag `deload`, lun 2 → vie 6-nov: mover el flag a S6 o dejarlo → decisión de Joseph) | — |
-| S8 | 14-nov | D34-D38 (GI + arranque Endo) · SHIP S8 | — |
-| S9 | 21-nov | **NBME 27 mar 17-nov (D40, ≥ 57 %)** · D39-D43 · SHIP S9 | — |
-| S10 | 28-nov | D44-D48 (Neuro; **viernes N3 vie 27-nov = D48**) · LIVIANO trimestral I · SHIP S10 | — |
-| S11 | 5-dic | D49-D53 (cierre Neuro + Heme; **viernes N4 vie 4-dic = D53**) · Research T-8 · SHIP S11 | — |
-| **S12** | 12-dic | **NBME 28 mar 8-dic (D55, ≥ 61 %)** · D54-D58 · Research X-1 · vibecoding S1-S12 cierra el **15-dic** | **sí (7-11 dic)** |
-| S13 | 19-dic | D59-D63 (Micro; **viernes N4 vie 18-dic = D63**) · Research CR-8 · taper vibecoding desde el 16-dic (≤ 15'/día) | — |
-| S14 | 26-dic | **NBME 29 mar 22-dic (D65, ≥ 63 %)** · D64-D67 (25-dic feriado) | — |
-| S15 | 2-ene | D68-D70 (cierre de Reproductive y del contenido de 2026) · 31-dic/1-ene feriados | — |
-| S16 | 9-ene | **NBME 30 mar 5-ene (D72, ≥ 65 %)** · D71-D75 · dermato Step 1 jue 7-ene (D74) | — |
-| S17 | 16-ene | **UWSA2 mar 12-ene (D77, low risk)** · D76-D80 · MIR 1ª vuelta cierra el mié 13-ene (D78) y el mantenimiento arranca el jue 14-ene | — |
-| S18 | 23-ene | **cierre de contenido lun 18-ene (D81)** · **NBME 31 mar 19-ene (D82) · GO/NO-GO (≥ 68 %)** · NBME 32 mié 20-ene (D83) · NBME 33 vie 22-ene (D85) · desde el NBME 31 cero contenido nuevo | — |
-| S19 | 30-ene | D86-D90 (lun 25 → vie 29-ene) · **Free 120 mar 26-ene (D87, ≥ 70 %)** — abre la Fase C · banco intensivo + incorrects · LIVIANO cierra el vie 29-ene | — |
-| S20 | 6-feb | **D91-D95 (lun 1 → vie 5-feb)**: AMBOSS 200 mitades 1 y 2 (D92 mar 2 · D93 mié 3) · **D94 jue 4-feb = D-2, última sesión de banco** · **D95 vie 5-feb = D-1 dentro del plan** (sesión mínima AM + ritual de test-day `USMLE_TAPER.d95`/`dMenos1`) · **sáb 6 y dom 7-feb libres** · el sábado 6-feb = revisión S20 + preparación final | — |
+| S1 | 3-oct | **UWSA1 lun 28-sep = D1** (baseline; movido del mié 23-sep) · D1-D5 (Fundamentos D2-D3 + Inmuno D4-D5; **viernes N1 vie 2-oct = D5 abre Inmuno**) · ENCAPS pre-test de arranque lun 28 + mar 29 y 1.ª mini-sim vie 2-oct · Research M1 vie 2-oct · LIVIANO caso 1 vie 2-oct · **SHIP S1 (sáb 3-oct)** | — |
+| S2 | 10-oct | D6-D10 (Cardio abre el **lun 5-oct = D6**) · **NBME 25 vie 9-oct (D10, ≥ 51 %)** · Research M2 jue 8-oct · SHIP S2 | — |
+| S3 | 17-oct | D11-D15 (Cardio; **viernes N3 vie 16-oct = D15**, IC + shock) · Research C-2 lun 12 · T-1 mié 14 · M3 vie 16-oct · AURUM pitch v1 vie 16-oct (D15) · SHIP S3 | — |
+| S4 | 24-oct | D16-D20 (cierre Cardio D16 + Resp D17-D20; **viernes N3 vie 23-oct = D20**) · Research R9 mar 20 · C-3 jue 22-oct (disparador del plan B del case report) · LIVIANO tarjetas MECANISMO D16 lun 19-oct · SHIP S4 (= este script con ≥ 8/10 métricas reales; fichero `S04_2026-10-24`) | — |
+| S5 | 31-oct | D21-D25 (Resp D21-D22 + Renal D23-D24) · **NBME 26 vie 30-oct (D25, ≥ 54 %)** · **Research C-6 SUBMIT carta #1 vie 30-oct** · SHIP S5 (`S05_2026-10-31`) | — |
+| **S6** | 7-nov | D26-D30 (Renal D26-D29; **viernes N1 vie 6-nov = D30 abre GI**) · Research R6 mar 3 · CR-1 jue 5-nov · SHIP S6 (`rls-datos-tesis`, **sin flag deload** — el flag lo lleva S7: decisión ⚪ H de PENDIENTES) | **sí (lun 2 → vie 6-nov, post-NBME 26)** |
+| S7 | 14-nov | D31-D35 (GI; **viernes N3 vie 13-nov = D35**, Hígado II) · Research CR-2 lun 9 · T-3 mié 11 · T-4 vie 13-nov · AURUM pitch v2 vie 13-nov (D35) · SHIP S7 (proyecto `motor-preguntas-encaps` con flag `deload`, lun 9 → vie 13-nov, una semana DESPUÉS de la deload real) | — |
+| S8 | 21-nov | D36-D40 (cierre GI D36 + Endo D37-D39) · **NBME 27 vie 20-nov (D40, ≥ 57 %)** · LIVIANO drill D37 mar 17 · DIGEMID D39 jue 19 · caso 8 vie 20-nov · Research T-2 mar 17 · T-5 jue 19-nov · SHIP S8 | — |
+| S9 | 28-nov | D41-D45 (Endo D41-D42 + Neuro D43-D45; **viernes N3 vie 27-nov = D45**) · LIVIANO Acceso Perú D41-D44 (lun 23 → jue 26-nov) + caso 9 vie 27-nov · Research R7 lun 23 · T-6 mié 25 · CR-3 vie 27-nov · SHIP S9 | — |
+| S10 | 5-dic | D46-D50 (Neuro; **viernes N3 vie 4-dic = D50**) · LIVIANO trimestral I D46 lun 30-nov · Research T-7 mar 1 · CR-4 jue 3-dic · SHIP S10 | — |
+| S11 | 12-dic | D51-D55 (Heme/Onc D51-D54) · **NBME 28 vie 11-dic (D55, ≥ 61 %)** · **Research T-8 SUBMIT tesis L0 lun 7-dic** · CR-5 mié 9 · X-1 vie 11-dic · AURUM pitch v3 vie 11-dic (D55) · SHIP S11 | — |
+| **S12** | 19-dic | D56-D60 (Heme D56-D57 + Micro D58-D60; **viernes N4 vie 18-dic = D60**, el único de nivel 4) · Research CR-6 mar 15 · X-2 jue 17-dic · LIVIANO drill D58 mié 16 · caso 12 vie 18-dic · **SHIP S12 capstone (sáb 19-dic): vibecoding S1-S12 cierra el vie 18-dic** | **sí (lun 14 → vie 18-dic, post-NBME 28)** |
+| S13 | 26-dic | D61-D64 (Micro; lun 21 → jue 24-dic; **vie 25-dic feriado**) · Research CR-7 lun 21 · CR-8 mié 23-dic (paquete del case report congelado) · taper vibecoding S13 desde el lun 21-dic (≤ 15'/día) | — |
+| S14 | 2-ene | **NBME 29 lun 28-dic (D65, ≥ 63 %)** · D66-D67 (Repro, mar 29 y mié 30-dic) · **31-dic y 1-ene feriados** · Research R3 mar 29-dic | — |
+| S15 | 9-ene | D68-D72 (cierre Repro D68-D70 + MSK D71) · **NBME 30 vie 8-ene (D72, ≥ 65 %)** · Research R2 lun 4 · **X-7 mié 6-ene = cierre antes de la PAUSA Research (jue 7-ene → mié 3-feb)** · LIVIANO caso 13 vie 8-ene · ENCAPS: las mini-sims saltan el 25-dic y el 1-ene y vuelven el vie 8-ene | — |
+| S16 | 16-ene | D73-D77 (MSK D73-D74 — **dermato Step 1 = D74 mar 12-ene** — + Psiquiatría D75-D76) · **UWSA2 vie 15-ene (D77, low risk)** · MIR D77 vie 15-ene = mini-MIR 40Q · AURUM pitch v4 mié 13-ene (D75) · LIVIANO drill D75 mié 13 · caso 14 vie 15-ene | — |
+| S17 | 23-ene | D78-D82: Psicofármacos D78 lun 18 · Biostats D79 mar 19 · Bioquímica días dobles D80 mié 20 + **D81 jue 21-ene = cierre de contenido** · **NBME 31 vie 22-ene (D82) · GO/NO-GO (≥ 68 %)**, el día siguiente al cierre, sin banco de consolidación delante · **MIR 1ª vuelta cierra el lun 18-ene (D78) y el mantenimiento arranca el mar 19-ene en modo reducido** · LIVIANO caso 15 vie 22-ene | — |
+| S18 | 30-ene | D83-D87 (lun 25 → vie 29-ene): **NBME 32 lun 25-ene (D83)** · random timed D84 · **NBME 33 mié 27-ene (D85)** · random timed D86 · **Free 120 vie 29-ene (D87, ≥ 70 %)** — abre la Fase C · Derma taper d44 vie 29-ene · **LIVIANO caso 16 integral vie 29-ene (D87), ANTES del capstone** | — |
+| S19 | 6-feb | **D88-D92 (lun 1 → vie 5-feb)**: random timed D88-D89 · incorrects 2.ª pasada D90-D91 · AMBOSS 200 mitad 1 D92 vie 5-feb · **Research CR-9 SUBMIT case report vie 5-feb (= D92)** · LIVIANO repaso integral D88 lun 1 · capstone D89 mar 2 · trimestral II D90 mié 3-feb = fin del plan LIVIANO · **SYNAPSE y ENCAPS mantenimiento cierran el vie 5-feb** (última A-unit · mini-sim 17 = D92 ENCAPS) · vibecoding S19 deload total · el finde 6-7 feb es un finde normal dentro del plan | — |
+| S20 | 13-feb | **D93-D95 + EXAMEN**: D93 lun 8-feb AMBOSS 200 mitad 2 · **D94 mar 9-feb = D-2, última sesión de banco** · **D95 mié 10-feb = D-1 REAL dentro del plan** (sesión mínima AM ≤ 2 h + ritual de test-day `USMLE_TAPER.d95`/`dMenos1`; nada después de las 17:00) · **🎯 EXAMEN JUE 11-FEB-2027** · vie 12-feb libre de Step 1 (Derma d49 opcional · MIR mantenimiento vuelve a modo normal · ENCAPS intensiva propuesta vie 12 o lun 15-feb con el pre-test 2026-II el vie 12) · Research X-8 mar 9-feb y **R8 jue 11-feb = día del examen (decisión: saltar o mover al lun 15-feb)** · AURUM pitch v5 mié 10-feb (D95) y D96 jue 11-feb (lección opcional) · el sábado 13-feb = revisión S20 + primera lectura del examen | — |
+| S21 | 20-feb | **POST-MORTEM del examen** (semana lun 15 → vie 19-feb, fuera del plan de 95 días): Research X-3 lun 15 · X-4 mié 17 · X-5 vie 19-feb · Derma d50 mar 16-feb (vuelve a 3 casos/sesión) · MIR mantenimiento en modo normal · último sábado de la serie (`UNTIL=20270221T045959Z`) | — |
 
-⚠ **v5.15 (corrimiento RÍGIDO):** el plan Step 1 termina el **vie 5-feb-2027 (D95 = D-1 DENTRO del plan)**, el **finde 6-7 feb queda libre** y el examen pasa al **lun 8-feb-2027** (fuera de la ventana 25-29 ene; Prometric/eligibility a confirmar por Joseph). El plan sigue en **20 semanas**, con la S1 corta (D1-D3, mié-vie): la S19 (25-29 ene) contiene D86-D90 y la S20 (1-5 feb) contiene D91-D95; el **examen cae ya fuera de la S20**, así que el sáb 6-feb es la revisión S20 y el **sáb 13-feb** el post-mortem del examen. 🆕 Los 12 hitos corren con el plan y conservan su D#, así que **casi todos caen en martes** (ver columna de hitos). La última A-unit de SYNAPSE cae el **lun 1-feb** — adelantarla sigue A DECIDIR. *(v5.13: D1 jue 17-sep, S1 = sáb 19-sep, D95 lun 1-feb en una S21 de un día y examen mar 2-feb; v5.12: D95 = vie 29-ene = última sesión y examen lun 1-feb; v5.11: D95 = jue 28-ene = D-1 y examen vie 29-ene dentro de la S20.)* Las dos semanas DELOAD (26-30 oct y 7-11 dic)
-conservan sus fechas (`gen_revision_semanal.js` las tiene fijas) y pasan a numerarse S6 y S12.
+⚠ **v5.16 (2.º corrimiento RÍGIDO, 26-sep):** el plan Step 1 termina el **mié 10-feb-2027 (D95 = D-1 REAL dentro del plan)** y el examen es el **jue 11-feb-2027** (fuera de la ventana 25-29 ene; Prometric/eligibility a confirmar por Joseph). **No hay fin de semana libre entre el D95 y el examen** (el sáb 6 y el dom 7-feb son un finde normal dentro del plan). El plan sigue en **20 semanas**, ahora todas de calendario (S1 completa, lun 28-sep → vie 2-oct): la S19 (1-5 feb) contiene D88-D92 y la S20 (8-12 feb) contiene D93-D95 **y el examen**, así que el sáb 13-feb es la revisión S20 y el **sáb 20-feb** el post-mortem (S21). 🆕 Los 12 hitos corren con el plan y conservan su D# (regla de v5.15), y con el D1 en lunes **vuelven a caer en viernes** (8 de 12; NBME 29 lun 28-dic, NBME 32 lun 25-ene, NBME 33 mié 27-ene). La última A-unit de SYNAPSE cae el **vie 5-feb (D92)** — adelantarla sigue A DECIDIR. *(v5.15: D1 mié 23-sep, S1 = sáb 26-sep corta de 3 días, D95 vie 5-feb, finde 6-7 libre y examen lun 8-feb con post-mortem el sáb 13-feb; v5.13: D1 jue 17-sep, S1 = sáb 19-sep, D95 lun 1-feb en una S21 de un día y examen mar 2-feb; v5.12: D95 = vie 29-ene = última sesión y examen lun 1-feb; v5.11: D95 = jue 28-ene = D-1 y examen vie 29-ene dentro de la S20.)* Las dos semanas DELOAD (**lun 2 → vie 6-nov** y **lun 14 → vie 18-dic**, los lunes siguientes al NBME 26 del vie 30-oct y al NBME 28 del vie 11-dic)
+las tiene `gen_revision_semanal.js` fijas (`DELOAD` = lunes `2026-11-02` y `2026-12-14`, misma pareja que `homeBriefing.DELOAD_SEMANAS`) y se numeran S6 y S12.
 
 ## Historial
 

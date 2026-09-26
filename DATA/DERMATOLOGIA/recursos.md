@@ -35,7 +35,7 @@
      > FRENTE "¿por qué…?" → POR QUÉ (cascada tejido/fisiología) · CCSN (con qué se confunde + el rasgo discriminador)
      > · FUENTE (cita exacta del cuaderno). Marca "A VERIFICAR" toda dosis, concentración o cifra que no esté
      > literalmente en las fuentes.
-  2. **Checkpoints (v3 taper, v5.15: cp1 d51 vie 12-feb-2027 · cp2 d52 mar 16-feb-2027 · repaso1 d72 lun 13-abr-2027 · repaso2 d73 jue 15-abr-2027 · ciclo 2 d85 mié 19-may / d94 lun 14-jun / d103 jue 8-jul-2027) → Qué no sé del módulo X**
+  2. **Checkpoints (v3 taper, v5.16: cp1 d51 jue 18-feb-2027 · cp2 d52 lun 22-feb-2027 · repaso1 d72 lun 19-abr-2027 · repaso2 d73 mié 21-abr-2027 · ciclo 2 d85 mar 25-may / d94 vie 18-jun / d103 mié 14-jul-2027; v5.15: d51 vie 12-feb · d52 mar 16-feb · d72 lun 13-abr · d73 jue 15-abr · d85 mié 19-may · d94 lun 14-jun · d103 jue 8-jul) → Qué no sé del módulo X**
      > Con las fuentes del cuaderno y esta lista de mis fallos del ledger [pegar export JSON: por_modulo + tipos de
      > error], dime qué NO sé del módulo CORE [Med/Path/Peds/Surg]: los 10 conceptos/mecanismos con más probabilidad
      > de fallo, cada uno con su rasgo discriminador y la fuente exacta. Sin adular; ordena por impacto en el examen CORE.

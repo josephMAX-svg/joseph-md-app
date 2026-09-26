@@ -2,7 +2,7 @@
  * remap_inicio.js — corre las fechas de arranque de los planes NO-ENCAPS a una fecha dada.
  *
  * v5.10b (13-sep-2026, integración segunda capa): Research ya NO se re-fecha con slots() — el bloque 4 delega en
- * gen_research_plan.js (conoce la pausa 4→29-ene, RESEARCH_HITOS, DAILY_META.finNucleo/pausa, los chips con fecha y
+ * gen_research_plan.js (conoce la pausa 7-ene→3-feb, RESEARCH_HITOS, DAILY_META.finNucleo/pausa, los chips con fecha y
  * el ciclo 2) y comprueba los invariantes antes y después (42 átomos · d41 ≥ 2027-02-01 · hitos ciclo 1 ⊂ DIAS) +
  * gen_research_calendar.js --check (overlays 🔬). Derma pasa a 73 slots (70 + 3 segundas pasadas parciales del taper
  * Step 1 d44-d49) y el bloque 5b regenera el ciclo 2 (gen_derma_ciclo2.js). USMLE avisa si el plan termina después de
@@ -42,23 +42,23 @@ function countFechas(file,marker){const s=fs.readFileSync(path.join(ROOT,file),'
 /** Actualiza inicio/fin (regex) dentro del bloque META que sigue al marcador. Año-agnóstico (Derma cruza a 2027). */
 function setMeta(file,metaMarker,inicio,fin){const p=path.join(ROOT,file);let s=fs.readFileSync(p,'utf8');const i=s.indexOf(metaMarker);if(i<0)throw new Error(file+': meta '+metaMarker);const end=s.indexOf('};',i);let reg=s.slice(i,end);reg=reg.replace(/inicio:\s*'20\d\d-\d\d-\d\d'/, `inicio: '${inicio}'`);if(fin)reg=reg.replace(/fin:\s*'20\d\d-\d\d-\d\d'/, `fin: '${fin}'`);s=s.slice(0,i)+reg+s.slice(end);fs.writeFileSync(p,s,'utf8');}
 
-// 1) USMLE daily (95 · v5.15) — ⚠ CAMBIO v5.15 (22-sep): los 12 hitos YA NO se anclan por fecha. Sus claves en
+// 1) USMLE daily (95 · v5.16) — ⚠ CAMBIO v5.15 (22-sep): los 12 hitos YA NO se anclan por fecha. Sus claves en
 //    gen_usmle_v5.js (SIMS) se re-fechan en cada corrimiento para que conserven su D# exacto
 //    (D1/10/25/40/55/65/72/77/82/83/85/87), así ningún NBME pierde días de contenido por delante.
 //    Consecuencia aceptada: los hitos ya no caen en viernes (la mayoría pasa a martes).
 //    Al remapear a otro START hay que re-fechar también esas 12 claves en el generador.
-{const f='src/lib/usmleStep1Daily.ts';const n=countFechas(f,'export const DIAS').length;if(n!==95)throw new Error('USMLE!=95 (v5.15) — tiene '+n+'; si cambió el nº de días, regenera con DATA/_scripts/usmle/gen_usmle_v5.js (cadena: gen_usmle_v5 → assemble_usmle_ts → update_diainicio → remap_obsidian_usmle) y ajusta este guard');const nd=calNoWeekend(START,95);replaceFechas(f,'export const DIAS',nd);setMeta(f,'export const DAILY_META',START,nd[94]);console.log('USMLE ✓ '+nd[0]+'→'+nd[94]+' (95 d · v5.15; ⚠ este paso SOLO re-fecha: para que los hitos sigan en su fecha hay que regenerar con gen_usmle_v5.js — desde la v5.8 NO se recorta contenido: el desfase se absorbe alargando el final del plan; v5.15 (22-sep): CORRIMIENTO RÍGIDO — los 12 hitos también corren y conservan su D#, así ningún NBME pierde días de contenido; D1 = mié 23-sep, D95 = vie 5-feb = D-1 dentro del plan → examen target lun 8-feb; cada día más sin estudiar mueve el examen un hábil)');
- // v5.10b: DAILY_META.examenTarget / descansoD1 NO los toca setMeta (solo inicio/fin). Si D95 alcanza el D-1 o el examen, hay decisión de Joseph (ventana 25-29 ene).
+{const f='src/lib/usmleStep1Daily.ts';const n=countFechas(f,'export const DIAS').length;if(n!==95)throw new Error('USMLE!=95 (v5.16) — tiene '+n+'; si cambió el nº de días, regenera con DATA/_scripts/usmle/gen_usmle_v5.js (cadena: gen_usmle_v5 → assemble_usmle_ts → update_diainicio → remap_obsidian_usmle) y ajusta este guard');const nd=calNoWeekend(START,95);replaceFechas(f,'export const DIAS',nd);setMeta(f,'export const DAILY_META',START,nd[94]);console.log('USMLE ✓ '+nd[0]+'→'+nd[94]+' (95 d · v5.16; ⚠ este paso SOLO re-fecha: para que los hitos sigan en su fecha hay que regenerar con gen_usmle_v5.js — desde la v5.8 NO se recorta contenido: el desfase se absorbe alargando el final del plan; v5.15 (22-sep): CORRIMIENTO RÍGIDO — los 12 hitos también corren y conservan su D#, así ningún NBME pierde días de contenido; v5.16 (26-sep): D1 = lun 28-sep, D95 = mié 10-feb = D-1 real dentro del plan → examen target jue 11-feb-2027; cada día más sin estudiar mueve el examen un hábil)');
+ // v5.10b: DAILY_META.examenTarget / descansoD1 NO los toca setMeta (solo inicio/fin). Si D95 alcanza el D-1 o el examen, hay decisión de Joseph (v5.16: D95 = mié 10-feb YA ES el D-1 real; examen target jue 11-feb-2027 → cada día perdido mueve el examen un hábil).
  const meta=fs.readFileSync(path.join(ROOT,f),'utf8');const tgt=(meta.match(/examenTarget:\s*'(20\d\d-\d\d-\d\d)'/)||[])[1];const dm1=(meta.match(/descansoD1:\s*'(20\d\d-\d\d-\d\d)'/)||[])[1];
  if(tgt&&dm1&&nd[94]>=dm1)console.warn('⚠ USMLE: D95 ('+nd[94]+') alcanza el D-1 ('+dm1+') / target '+tgt+' → decisión de Joseph: mover examenTarget/descansoD1 en DAILY_META (gen_usmle_v5.js) o recortar — el remap NO lo hace');}
 // 2) MIR (78)
 {const f='src/lib/mirDailyPlan.ts';if(countFechas(f,'export const MIR_DIAS').length!==78)throw new Error('MIR!=78');const nd=calNoWeekend(START,78);replaceFechas(f,'export const MIR_DIAS',nd);setMeta(f,'export const MIR_DAILY_META',START,nd[77]);console.log('MIR ✓ '+nd[0]+'→'+nd[77]);
  // v5.10b: el mantenimiento (mirMantenimiento.ts, generado) arranca el día hábil siguiente a D78; si D78 lo pisa, regenerar con otra fecha de inicio.
  try{const mm=fs.readFileSync(path.join(ROOT,'src/lib/mirMantenimiento.ts'),'utf8');const ini=(mm.match(/gen_mir_mantenimiento\.js (20\d\d-\d\d-\d\d) (20\d\d-\d\d-\d\d)/)||[])[1];
-  if(ini&&nd[77]>=ini)console.warn('⚠ MIR: D78 ('+nd[77]+') pisa el mantenimiento (inicio '+ini+') → node DATA/_scripts/gen_mir_mantenimiento.js <primer hábil > D78> 2027-03-31');}catch{}}
+  if(ini&&nd[77]>=ini)console.warn('⚠ MIR: D78 ('+nd[77]+') pisa el mantenimiento (inicio '+ini+') → node DATA/_scripts/gen_mir_mantenimiento.js <primer hábil > D78> 2027-04-07');}catch{}}
 // 3) USMLE plan UNIDADES (5)
 {const f='src/lib/usmleStep1Plan.ts';if(countFechas(f,'export const UNIDADES').length!==5)throw new Error('UNID!=5');replaceFechas(f,'export const UNIDADES',calNoWeekend(START,5));setMeta(f,'export const PLAN_META',START,null);console.log('USMLE UNIDADES ✓');}
-// 4) Research (42) — v5.10b: el re-fechado lo hace gen_research_plan.js (conoce la pausa 4→29-ene, RESEARCH_HITOS, DAILY_META.finNucleo/pausa,
+// 4) Research (42) — v5.10b: el re-fechado lo hace gen_research_plan.js (conoce la pausa 7-ene→3-feb, RESEARCH_HITOS, DAILY_META.finNucleo/pausa,
 //    los chips con fecha —chipsDyn— y el ciclo 2 researchDailyPlan2027.ts; slots() NO sabe de la pausa). remap solo comprueba el invariante antes y después.
 {const f='src/lib/researchDailyPlan.ts';if(countFechas(f,'export const DIAS').length!==42)throw new Error('RES!=42');
  require('child_process').execSync('node '+JSON.stringify(path.join(__dirname,'gen_research_plan.js'))+' '+START,{stdio:'inherit'});
@@ -79,7 +79,7 @@ function setMeta(file,metaMarker,inicio,fin){const p=path.join(ROOT,file);let s=
 try{require('child_process').execSync('node '+JSON.stringify(path.join(__dirname,'gen_derma_ciclo2.js')),{stdio:'inherit'});}
 catch{console.warn('⚠ gen_derma_ciclo2.js falló (paridad/feriados/solape con Research): dermaCiclo2.ts puede estar DESFASADO → revisar y correr a mano node DATA/_scripts/gen_derma_ciclo2.js');}
 // 6) Business — v5.10b (13-sep): delega en gen_business_plan.py <START> (fuente única DATA/BUSINESS/plan_pulso_v3_L.json; sáb/dom Y feriados fijos como DESCANSO
-//    → 84 trabajo + 37 descansos = 121 con START=2026-09-14 (v5.12: START=2026-09-16 · v5.13: 2026-09-17 · v5.14: 2026-09-21 · v5.15: 2026-09-23); antes el remap reconstruía SIN SKIP_FIJOS y dejaba 116 filas ≠ generador). Fallback JS alineado si no hay python.
+//    → 84 trabajo + 37 descansos = 121 con START=2026-09-14 (v5.12: START=2026-09-16 · v5.13: 2026-09-17 · v5.14: 2026-09-21 · v5.15: 2026-09-23 · v5.16: 2026-09-28); antes el remap reconstruía SIN SKIP_FIJOS y dejaba 116 filas ≠ generador). Fallback JS alineado si no hay python.
 {const f='src/lib/businessStudyPlan.ts';const p=path.join(ROOT,f);let viaPy=false;
  for(const py of ['python','py -3','python3']){try{require('child_process').execSync(py+' '+JSON.stringify(path.join(__dirname,'gen_business_plan.py'))+' '+START,{stdio:'inherit'});viaPy=true;break;}catch{}}
  if(!viaPy){console.warn('⚠ Business: python no disponible → reconstrucción JS alineada con gen_business_plan.py (feriados SKIP_FIJOS como DESCANSO, modo:"DESCANSO")');
@@ -95,4 +95,4 @@ catch{console.warn('⚠ gen_derma_ciclo2.js falló (paridad/feriados/solape con 
 // 7b) LIVIANO — invariante "caso clínico en VIERNES" (el remap fila a fila la rompe si START no es lunes)
 require('child_process').execSync('node '+JSON.stringify(path.join(__dirname,'liviano_reslot_viernes.js')),{stdio:'inherit'});
 
-console.log('\nOK — remap START='+START+' (USMLE · MIR · UNIDADES · Research vía gen_research_plan.js · Derma 73 + ciclo 2 · Business · LIVIANO + reslot). Aparte, con la MISMA fecha y en este orden: gen_vibecoding_plan.js <fecha> ANTES que gen_synapse_plan.js <fecha> (hasta ene-2027) · gen_aurum_plan.js <fecha> · STUDY_HUB/_scrape/gen_mir_daily.js <fecha> --check (+ gen_mir_mantenimiento.js si D78 pisa el 5-ene) · gen_encaps_mantenimiento_2027.js <fecha> → execute_sql (backup fechado, DELETE solo MANTENIMIENTO) · USMLE con gen_usmle_v5.js (hitos por fecha, sin recortar) · overlays 🔬 RESEARCH si --check avisó (gen_research_calendar.js) · docs + D# de los overlays del Calendar. El pool MIR (gen_mir_pool.js --emit) NO depende de fechas.');
+console.log('\nOK — remap START='+START+' (USMLE · MIR · UNIDADES · Research vía gen_research_plan.js · Derma 73 + ciclo 2 · Business · LIVIANO + reslot). Aparte, con la MISMA fecha y en este orden: gen_vibecoding_plan.js <fecha> ANTES que gen_synapse_plan.js <fecha> (hasta ene-2027) · gen_aurum_plan.js <fecha> · STUDY_HUB/_scrape/gen_mir_daily.js <fecha> --check (+ gen_mir_mantenimiento.js si D78 pisa el 19-ene) · gen_encaps_mantenimiento_2027.js <fecha> → execute_sql (backup fechado, DELETE solo MANTENIMIENTO) · USMLE con gen_usmle_v5.js (hitos por fecha, sin recortar) · overlays 🔬 RESEARCH si --check avisó (gen_research_calendar.js) · docs + D# de los overlays del Calendar. El pool MIR (gen_mir_pool.js --emit) NO depende de fechas.');

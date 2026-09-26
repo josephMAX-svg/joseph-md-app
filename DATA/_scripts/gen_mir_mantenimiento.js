@@ -2,9 +2,9 @@
  * gen_mir_mantenimiento.js — genera src/lib/mirMantenimiento.ts (MIR modo BANQUEO PURO ene-mar 2027).
  *
  *   Uso:  node DATA/_scripts/gen_mir_mantenimiento.js [YYYY-MM-DD inicio] [YYYY-MM-DD fin]
- *         (default 2027-01-05 → 2027-03-31; L-V; salta sáb/dom y SKIP_FIJOS: 25-dic/31-dic/1-ene)
+ *         (default 2027-01-19 → 2027-04-07; L-V; salta sáb/dom y SKIP_FIJOS: 25-dic/31-dic/1-ene)
  *
- * Contexto (v5.6): el plan MIR de 78 días termina el 23-dic-2026; del 4-ene al 31-mar-2027 el
+ * Contexto (v5.16; en v5.6 era 23-dic → 4-ene/31-mar): el plan MIR de 78 días termina el lun 18-ene-2027; del mar 19-ene al mié 7-abr-2027 el
  * bloque 15:15-16:15 sigue en el Calendar pero MIR_DIAS no tiene contenido (ROADMAP mantiene
  * "MIR 1h" en fase 1 y 2). Este fichero llena ese hueco SIN contenido nuevo: solo retrieval.
  *
@@ -15,14 +15,14 @@
  *    de introducción de ProMIR, mirDetalleData.pesoGlobal; smooth weighted round-robin +
  *    reparto por resto mayor = cuotas exactas). Viernes = 30Q de la asignatura PEOR DEL LOG
  *    (mirEvalLog.mirPeorAsignatura(); fallback = la de mayor peso vista esa semana).
- *  · modo 'reducido' 14-ene → 8-feb (Fase B/C del Step 1, v5.15: el sprint acaba el vie 5-feb; examen lun 8-feb, incluido en el modo reducido): solo Anki + 10Q (flag modoReducido).
+ *  · modo 'reducido' 19-ene → 11-feb (Fase B/C del Step 1, v5.16: el sprint acaba el mié 10-feb; examen jue 11-feb, incluido en el modo reducido): solo Anki + 10Q (flag modoReducido).
  *  · TIER C EXPRESS (v3b, gaps_v3b_mir.json punto 4, 13-sep-2026): 1 de los 4 slots semanales lun-jue (el ÚLTIMO
  *    lun-jue de cada semana, 12 semanas → 12 asignaturas FUERA del plan) cambia sus '10Q interleaving' (o sus 10Q
  *    mixtas en modo reducido) por 10Q del capítulo TOP-1 de una asignatura pequeña, con capId REAL de
  *    mirTemarioData.ts y peso del capítulo leído de mirDetalleData.ts. Ningún minuto nuevo: solo cambia qué
  *    10Q ocupan ese slot. Se loguea con SU asignatura (campo tierC del día; la UI debe usar tierC.asignatura
  *    en el registro de esas 10Q, no la asignatura foco).
- *  · Handoff 31-mar: export JSON del log + tabla de neto por asignatura + stats FSRS → entrada
+ *  · Handoff 7-abr (= último día del mantenimiento; v5.16): export JSON del log + tabla de neto por asignatura + stats FSRS → entrada
  *    de la fase principal (abr-2027).
  *
  * Fuentes: pesos = mirDetalleData.ts (pesoGlobal por asignatura, texto real de ProMIR);
@@ -35,11 +35,11 @@ const fs = require('fs');
 const path = require('path');
 const ROOT = path.join(__dirname, '..', '..');
 const OUT = path.join(ROOT, 'src/lib/mirMantenimiento.ts');
-const INICIO = process.argv[2] || '2027-01-14'; // v5.15: la 1ª vuelta MIR termina el mié 13-ene (D78 = corrección del mini-MIR) → el mantenimiento arranca el jue 14-ene para no solapar (v5.14: 12-ene · v5.13: 8-ene)
-const FIN = process.argv[3] || '2027-04-02'; // v5.15: el fin se ALARGA 2 hábiles (antes clavado al 31-mar) para conservar los 57 días del mantenimiento — "no perder contenido" (Joseph, 22-sep)
+const INICIO = process.argv[2] || '2027-01-19'; // v5.16: la 1ª vuelta MIR termina el lun 18-ene (D78 = corrección del mini-MIR) → el mantenimiento arranca el mar 19-ene para no solapar (v5.15: 14-ene (v5.14: 12-ene · v5.13: 8-ene)
+const FIN = process.argv[3] || '2027-04-07'; // v5.16: el fin se ALARGA 3 hábiles más (v5.15: 2-abr · v5.14: 31-mar) para conservar los 57 días del mantenimiento — "no perder contenido" (Joseph)
 for (const s of [INICIO, FIN]) if (!/^20\d\d-\d\d-\d\d$/.test(s)) throw new Error('fecha inválida: ' + s);
-/** hasta esta fecha (incl.) el bloque va en modo reducido (Fase B/C Step 1 · examen 25-29 ene) */
-const REDUCIDO_HASTA = '2027-02-08'; // v5.15: el Step 1 termina D95 = vie 5-feb y el examen es el lun 8-feb (incluido: ese día el MIR va reducido) (v5.14: mié 3-feb · v5.13: lun 1-feb)
+/** hasta esta fecha (incl.) el bloque va en modo reducido (Fase B/C Step 1 · examen jue 11-feb-2027, v5.16) */
+const REDUCIDO_HASTA = '2027-02-11'; // v5.16: el Step 1 termina D95 = mié 10-feb y el examen es el jue 11-feb (incluido: ese día el MIR va reducido) (v5.15: lun 8-feb · v5.14: mié 3-feb)
 
 // ── calendario (idéntico a remap_inicio.js) ──
 const SKIP_FIJOS = new Set(['2026-12-25', '2026-12-31', '2027-01-01']);
@@ -229,7 +229,7 @@ const out = `/**
  * en modo reducido) por 10Q del capítulo TOP-1 de una asignatura FUERA del plan (campo tierC · capId real de mirTemarioData
  * · peso de mirDetalleData): ${TIER_C.map((t) => `s${t.semana} ${t.asignatura}`).join(' · ')}. Ningún minuto nuevo. Esas 10Q
  * se registran en mirEvalLog con asignatura = tierC.asignatura (no con la foco). Pool: mirPreguntasOficiales.preguntasSinUsar(tierC.capId, usadas).
- * Handoff 31-mar: mirMantHandoff() → export del log + tabla de neto por asignatura = entrada de la fase principal (abr-2027).
+ * Handoff 7-abr-2027 (último día del mantenimiento): mirMantHandoff() → export del log + tabla de neto por asignatura = entrada de la fase principal (desde el jue 8-abr-2027).
  */
 export interface MirMantTierC {
   /** asignatura FUERA del plan (num real de mirTemarioData) y su capítulo top-1 (capId real) */
@@ -241,7 +241,7 @@ export interface MirMantTierC {
 }
 export interface DiaMIRMant {
   d: number; fecha: string; wd: string; semana: number;
-  /** 'reducido' = solo Anki + 10Q (5-27 ene, Fase B/C del Step 1) · 'normal' = Anki + 25Q/30Q */
+  /** 'reducido' = solo Anki + 10Q (19-ene → 11-feb, Fase B/C del Step 1) · 'normal' = Anki + 25Q/30Q */
   modo: 'normal' | 'reducido';
   /** 'banco' lun-jue (rotación ponderada) · 'viernes' (asignatura peor del log) */
   tipo: 'banco' | 'viernes';
@@ -260,7 +260,7 @@ export const MIR_MANT_META = {
   modoReducidoHasta: '${REDUCIDO_HASTA}', diasReducidos: ${nRed}, segPorQ: 77,
   bloque: '15:15–16:15 · Anki APEX::MIR + 25Q reales MIR mixtas (77 s/Q) + corrección · viernes 30Q de la asignatura peor del log · 1 slot/semana Tier C express (10Q de una asignatura fuera del plan)',
   tierC: { slots: ${TIER_C.length}, regla: 'último slot lun-jue de las semanas 1-12: sus 10Q interleaving (o las 10Q mixtas en modo reducido) pasan a ser 10Q del capítulo top-1 de una asignatura fuera del plan; ningún minuto nuevo; se registran con la asignatura Tier C', cobertura: 'con las 12 asignaturas Tier C + Dermatología (bloque 13:30) el examen medido pasa de ~80 % a ~95 % del peso ProMIR (A VERIFICAR con la tabla de pesos de DATA/MIR/README.md)' },
-  handoff: '31-mar-2027: export JSON del log (mirEvalLog) + tabla de neto por asignatura + stats FSRS del deck APEX::MIR → entrada de la fase principal MIR (abr-2027)',
+  handoff: '7-abr-2027 (último día del mantenimiento): export JSON del log (mirEvalLog) + tabla de neto por asignatura + stats FSRS del deck APEX::MIR → entrada de la fase principal MIR (desde el jue 8-abr-2027)',
 };
 /** Peso MIR global por asignatura (texto real del capítulo intro de ProMIR · mirDetalleData.pesoGlobal) y cuota de slots lun-jue. */
 export const MIR_MANT_PESOS: Array<{ num: number; asignatura: string; peso: number; fuente: string; slots: number }> = [${ASIGS.map((a) => JSON.stringify({ num: a.num, asignatura: a.asignatura, peso: a.peso, fuente: a.fuente, slots: cuotaDe[a.num] })).join(',')}];
@@ -270,7 +270,7 @@ export const MIR_MANT_DIAS: DiaMIRMant[] = [${ROWS.map(rowTS).join(',')}];
 
 export const MIR_MANT_FRANJAS: Record<DiaMIRMant['modo'] | 'viernes', Array<{ hora: string; fase: string; tipo: string }>> = {
   normal: [
-    { hora: '15:15–15:30', fase: 'Anki APEX::MIR (FSRS · Good/Again · retention 0,85 hasta 31-mar)', tipo: 'anki' },
+    { hora: '15:15–15:30', fase: 'Anki APEX::MIR (FSRS · Good/Again · retention 0,85 hasta el 7-abr → 0,90 desde el jue 8-abr, fase principal)', tipo: 'anki' },
     { hora: '15:30–16:02', fase: '25Q reales MIR cronometradas (15Q asignatura foco + 10Q interleaving · 77 s/Q · opción en blanco)', tipo: 'quiz' },
     { hora: '16:02–16:15', fase: 'Corrección −1/3 (neto = A − F/3) · Whole-Page Rule de cada fallo · log (knowledge/transfer/proceso · 🇪🇸 delta)', tipo: 'log' },
   ],
@@ -301,7 +301,7 @@ export function mirMant7d(fromD: number): DiaMIRMant[] { return MIR_MANT_DIAS.fi
 export function mirMantHandoff(): string { return MIR_MANT_META.handoff; }
 /** Tier C express del día (si lo hay): las 10Q interleaving/mixtas son de tierC.capId y se registran con tierC.asignatura. */
 export function mirMantTierC(dia: DiaMIRMant): MirMantTierC | undefined { return dia.tierC; }
-/** Próximo Tier C a partir de un D# (para el chip "próximo Tier C: ORL · Oído · jue 11-feb"). */
+/** Próximo Tier C a partir de un D# (para el chip "próximo Tier C: Oncología Médica · Urgencias oncológicas · jue 11-feb"). */
 export function mirMantProximoTierC(fromD: number) { return MIR_MANT_TIER_C.find((t) => t.d >= fromD); }
 `;
 fs.writeFileSync(OUT, out, 'utf8');
