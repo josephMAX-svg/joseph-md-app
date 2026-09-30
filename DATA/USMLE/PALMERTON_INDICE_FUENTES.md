@@ -458,7 +458,7 @@ Los 6 vídeos cuyo título es la propia URL no fueron resueltos por NotebookLM (
 
 ## 5. Fuentes de Step 2/shelf (fuera de foco hasta 2027) — 34 fuentes, solo título
 
-Se catalogan para no perderlas (Step 2 CK / shelf / clerkships / Step 3), pero **no se consultaron ni se resumen**: el objetivo primario hasta el 29-ene-2027 es el Step 1. Se retomarán al planificar el Step 2 CK.
+Se catalogan para no perderlas (Step 2 CK / shelf / clerkships / Step 3), pero **no se consultaron ni se resumen**: el objetivo primario hasta el examen es el Step 1 (target v5.17: mar 16-feb-2027; la ventana original 25-29 ene quedó atrás en la v5.12). Se retomarán al planificar el Step 2 CK.
 
 - 10 Step 2 Score Killers You’re Probably Overlooking (vídeo · <https://www.youtube.com/watch?v=miIvzNA6arE>)
 - Answer ANY Step 2 Management Questions (Without Guessing) - USMLE Tutoring (vídeo · <https://www.youtube.com/watch?v=5HJKQGMzniI>)

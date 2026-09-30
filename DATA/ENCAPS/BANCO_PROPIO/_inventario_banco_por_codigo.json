@@ -1,33 +1,33 @@
 {
  "_meta": {
-  "descripcion": "Inventario de preguntas por CÓDIGO v3: oferta (BANCO_PROPIO: sets + banco_items_v1 + set_reales_otros; exámenes reales etiquetados; claves.json de julio; QX/Theomed por área) vs demanda sembrada en study_schedule (los días de mantenimiento que haya en _encaps_mantenimiento_2027.sql; hoy 92 días, D1 = 2026-09-28, cierre = 2027-02-05) y déficit. Regenerar: node DATA/_scripts/gen_encaps_minisim.js --inventario",
-  "generado": "2026-09-26",
-  "rotacion": "I-3 10 · V-2 10 · I-4 5 · II-1 5 · II-3 5 · II-4 5 · II-5 5 · III-5 5 · IV-1+IV-2 5 · II-11 4 · II-8 4 · III-8 4 · IV-6+IV-7 4 · V-MED 4 (sesiones banqueo1h por código en el SQL vigente · CICLO de _encaps_ciclo_v3.js · siembra de 92 días desde el 2026-09-28)",
+  "descripcion": "Inventario de preguntas por CÓDIGO v3: oferta (BANCO_PROPIO: sets + banco_items_v1 + set_reales_otros; exámenes reales etiquetados; claves.json de julio; QX/Theomed por área) vs demanda sembrada en study_schedule (los días de mantenimiento que haya en _encaps_mantenimiento_2027.sql; hoy 92 días, D1 = 2026-10-01, cierre = 2027-02-10) y déficit. Regenerar: node DATA/_scripts/gen_encaps_minisim.js --inventario",
+  "generado": "2026-09-30",
+  "rotacion": "I-3 10 · V-2 10 · I-4 5 · II-1 5 · II-3 5 · II-4 5 · II-5 5 · III-5 5 · IV-1+IV-2 5 · II-11 4 · II-8 4 · III-8 4 · IV-6+IV-7 4 · V-MED 4 (sesiones banqueo1h por código en el SQL vigente · CICLO de _encaps_ciclo_v3.js · siembra de 92 días desde el 2026-10-01)",
   "lista_negra": "2026-II excluido de toda oferta hasta el pre-test",
   "totales": {
    "pool_total": 434,
-   "pool_disponible": 250,
+   "pool_disponible": 232,
    "filas_sql": 92,
    "minisims_sembrados": 17,
    "dias_sembrados": 92,
-   "d1": "2026-09-28",
-   "cierre": "2027-02-05",
+   "d1": "2026-10-01",
+   "cierre": "2027-02-10",
    "demanda_total_q": 1786,
    "deficit_codigos": [
     "I-1:16",
     "I-10:21",
     "I-11+I-12:17",
-    "I-3:165",
-    "I-4:76",
+    "I-3:170",
+    "I-4:74",
     "I-5+I-6:24",
     "I-OCC:21",
     "II-1:79",
-    "II-10:26",
+    "II-10:28",
     "II-11:67",
     "II-2:26",
-    "II-3:75",
-    "II-4:76",
-    "II-5:71",
+    "II-3:70",
+    "II-4:75",
+    "II-5:90",
     "II-6:28",
     "II-7:16",
     "II-8:61",
@@ -251,8 +251,8 @@
    "oferta": {
     "banco_propio_pool": {
      "total": 33,
-     "disponibles_no_usados": 15,
-     "ya_consumidos_en_runner": 18,
+     "disponibles_no_usados": 10,
+     "ya_consumidos_en_runner": 23,
      "por_fichero": {
       "banco_items_v1.json": 8,
       "set_I-3_1.json": 25
@@ -291,9 +291,9 @@
    },
    "resueltas": {
     "rondas_registro": 40,
-    "consumidos_en_runner": 18
+    "consumidos_en_runner": 23
    },
-   "deficit_vs_demanda": 165,
+   "deficit_vs_demanda": 170,
    "estado": "DÉFICIT (pre-generar sets nuevos)"
   },
   "I-4": {
@@ -311,8 +311,8 @@
    "oferta": {
     "banco_propio_pool": {
      "total": 28,
-     "disponibles_no_usados": 14,
-     "ya_consumidos_en_runner": 14,
+     "disponibles_no_usados": 16,
+     "ya_consumidos_en_runner": 12,
      "por_fichero": {
       "banco_items_v1.json": 3,
       "set_I-4_1.json": 25
@@ -340,9 +340,9 @@
    },
    "resueltas": {
     "rondas_registro": 0,
-    "consumidos_en_runner": 14
+    "consumidos_en_runner": 12
    },
-   "deficit_vs_demanda": 76,
+   "deficit_vs_demanda": 74,
    "estado": "DÉFICIT (pre-generar sets nuevos)"
   },
   "I-5+I-6": {
@@ -550,8 +550,8 @@
    "oferta": {
     "banco_propio_pool": {
      "total": 5,
-     "disponibles_no_usados": 2,
-     "ya_consumidos_en_runner": 3,
+     "disponibles_no_usados": 0,
+     "ya_consumidos_en_runner": 5,
      "por_fichero": {
       "set_reales_otros_1.json": 5
      },
@@ -575,9 +575,9 @@
    },
    "resueltas": {
     "rondas_registro": 0,
-    "consumidos_en_runner": 3
+    "consumidos_en_runner": 5
    },
-   "deficit_vs_demanda": 26,
+   "deficit_vs_demanda": 28,
    "estado": "déficit moderado (cubrir con QX/Theomed del área o 1 set nuevo)"
   },
   "II-11": {
@@ -732,8 +732,8 @@
    "oferta": {
     "banco_propio_pool": {
      "total": 28,
-     "disponibles_no_usados": 15,
-     "ya_consumidos_en_runner": 13,
+     "disponibles_no_usados": 20,
+     "ya_consumidos_en_runner": 8,
      "por_fichero": {
       "banco_items_v1.json": 3,
       "set_II-3_1.json": 25
@@ -763,9 +763,9 @@
    },
    "resueltas": {
     "rondas_registro": 0,
-    "consumidos_en_runner": 13
+    "consumidos_en_runner": 8
    },
-   "deficit_vs_demanda": 75,
+   "deficit_vs_demanda": 70,
    "estado": "DÉFICIT (pre-generar sets nuevos)"
   },
   "II-4": {
@@ -783,8 +783,8 @@
    "oferta": {
     "banco_propio_pool": {
      "total": 27,
-     "disponibles_no_usados": 14,
-     "ya_consumidos_en_runner": 13,
+     "disponibles_no_usados": 15,
+     "ya_consumidos_en_runner": 12,
      "por_fichero": {
       "banco_items_v1.json": 2,
       "set_II-4_1.json": 25
@@ -811,9 +811,9 @@
    },
    "resueltas": {
     "rondas_registro": 0,
-    "consumidos_en_runner": 13
+    "consumidos_en_runner": 12
    },
-   "deficit_vs_demanda": 76,
+   "deficit_vs_demanda": 75,
    "estado": "DÉFICIT (pre-generar sets nuevos)"
   },
   "II-5": {
@@ -831,8 +831,8 @@
    "oferta": {
     "banco_propio_pool": {
      "total": 27,
-     "disponibles_no_usados": 19,
-     "ya_consumidos_en_runner": 8,
+     "disponibles_no_usados": 0,
+     "ya_consumidos_en_runner": 27,
      "por_fichero": {
       "banco_items_v1.json": 2,
       "set_II-5_1.json": 25
@@ -858,9 +858,9 @@
    },
    "resueltas": {
     "rondas_registro": 0,
-    "consumidos_en_runner": 8
+    "consumidos_en_runner": 27
    },
-   "deficit_vs_demanda": 71,
+   "deficit_vs_demanda": 90,
    "estado": "DÉFICIT (pre-generar sets nuevos)"
   },
   "II-6": {

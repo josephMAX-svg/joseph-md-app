@@ -237,5 +237,5 @@ Archivo → Importar → `ENCAPS_Cifras_2027-I.csv`. El encabezado del CSV ya de
 
 - **Fuente única = el CSV.** Para añadir/corregir una cifra se edita el CSV (nunca esta tabla a mano) y se regenera el doc: `node <scratchpad>/build_cifras_doc.js` (script de sesión; si no está, cualquier script que lea el CSV y vuelque `#, código, frente, reverso, fuente`).
 - Cada quincena (`SENALES_2027-I.md` §2): las señales VERIFICADAS de canales 2-4 (normas nuevas, cambios de esquema, definiciones textuales) entran como filas con `fuente::senal-<fecha>`.
-- Desde el **8-feb-2027** (pre-test rendido) se pueden añadir las viñetas-con-cifra del 2026-II tal cual; hasta entonces solo el dato normativo.
+- Desde que se rinde el pre-test 2026-II (**v5.17: vie 19-feb o vie 26-feb-2027**, primer viernes de la intensiva; en el diseño original 8-feb) se pueden añadir las viñetas-con-cifra del 2026-II tal cual; hasta entonces solo el dato normativo.
 - Conteo mínimo exigido por el diseño: 120-150 tarjetas; hoy 207. Si supera 250, dividir el deck por área (`ENCAPS::Cifras::I`… ) sin cambiar el tiempo diario.

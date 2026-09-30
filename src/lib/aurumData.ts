@@ -430,8 +430,9 @@ export const AURUM_PRACTICA: AurumPractica = {
 };
 
 // ─── v3 (5-sep-2026) · Rúbrica del PITCH (6 ítems 0-2) — Palmerton: medir por score, no por "grabé" ───
-// Se aplica en los 7 viernes de cierre de fase (AURUM_PITCH_DIAS en aurumDailyPlan.ts: D15, D35, D55,
-// D75, D95, D115, D130) y a cada versión LIVIANO de v3-v6. Fuente de los ítems: entregable de F6 del
+// Se aplica en los 7 días de cierre de fase (AURUM_PITCH_DIAS en aurumDailyPlan.ts: D15, D35, D55,
+// D75, D95, D115, D130 — v5.17: mié 21-oct · mié 18-nov · mié 16-dic · lun 18-ene · lun 15-feb (⚠ D-1 real del
+// examen Step 1) · lun 15-mar · lun 5-abr; con el D1 en jueves ya no caen en viernes) y a cada versión LIVIANO de v3-v6. Fuente de los ítems: entregable de F6 del
 // currículo v2 ("hablaste <40%, empatía táctica, SPIN, oferta, objeciones, cierre, compromiso").
 export type AurumRubricaItem = { key: string; label: string; n0: string; n1: string; n2: string };
 export const AURUM_RUBRICA_PITCH: AurumRubricaItem[] = [

@@ -1,13 +1,13 @@
-# 🚦 PROTOCOLO DE MODO MÍNIMO — VERDE · ÁMBAR · ROJO (v5.16 · re-fechado 26-sep-2026)
+# 🚦 PROTOCOLO DE MODO MÍNIMO — VERDE · ÁMBAR · ROJO (v5.17 · re-fechado 30-sep-2026)
 
-> Válvula de burnout del régimen v5.16 (D1 = lun 28-sep-2026 · Step 1 = bloque principal · D94 = mar 9-feb-2027 = última sesión de banco · D95 = mié 10-feb = último día del plan y D-1 real · examen target JUE 11-FEB-2027, al día siguiente, fuera de la ventana 25-29 ene y sin finde libre en medio).
-> 🆕 **Corrimiento RÍGIDO (22-sep; aplicado de nuevo el 26-sep, v5.16)**: cuando un día se pierde, corre el plan ENTERO — contenido **y** los 12 hitos, que conservan su D# —, no se toca ningún tema y, donde un plan tenía un fin clavado (ENCAPS, MIR mantenimiento), **se amplían días** en vez de perder sesiones.
+> Válvula de burnout del régimen v5.17 (D1 = jue 1-oct-2026 · Step 1 = bloque principal · D94 = vie 12-feb-2027 = última sesión de banco · sáb 13 y dom 14-feb libres · D95 = lun 15-feb = último día del plan y D-1 real · examen target MAR 16-FEB-2027, al día siguiente, fuera de la ventana 25-29 ene).
+> 🆕 **Corrimiento RÍGIDO (22-sep; aplicado de nuevo el 26-sep, v5.16, y el 30-sep, v5.17)**: cuando un día se pierde, corre el plan ENTERO — contenido **y** los 12 hitos, que conservan su D# —, no se toca ningún tema y, donde un plan tenía un fin clavado (ENCAPS, MIR mantenimiento), **se amplían días** en vez de perder sesiones.
 > **No cambia franjas, metas ni fechas de examen.** Solo define, por escrito y con disparadores medibles, qué
 > se recorta primero cuando el día no da para todo — para que el recorte sea una decisión y no un colapso.
 > Palmerton: el fracaso es de comportamiento y proceso; "estudiar de noche exhausto" y la "procrastinación
 > productiva" son alarmas (checklist G de `DATA/USMLE/PALMERTON_POR_MATERIA.md`). El único mínimo que ya
 > existía era el del USMLE (Anki + 10Q); aquí se extiende a los 9 frentes con orden de degradación.
-> Evidencia de fragilidad que motiva el protocolo: **15 corrimientos seguidos (31-ago→28-sep, 20 días hábiles perdidos)** — 5 en bloque (31-ago→4-sep), luego uno a uno el 7, 8, 9, 10, 11, 14, 15 y 16 de septiembre, el jue 17 + vie 18-sep juntos, el lun 21 + mar 22-sep juntos y el mié 23 + jue 24 + vie 25-sep juntos — más el 25-jun. El plan ya desborda la ventana 25-29 ene (D95 = mié 10-feb = D-1 real) y **el examen salió de la ventana: jue 11-feb, al día siguiente del D95** (Prometric por agendar/reprogramar, eligibility por confirmar); **cada día más sin estudiar mueve el examen otro hábil o exige recortar temario** (decisión de Joseph). El modo mínimo es ahora la única válvula.
+> Evidencia de fragilidad que motiva el protocolo: **16 corrimientos seguidos (31-ago→1-oct, 23 días hábiles perdidos)** — 5 en bloque (31-ago→4-sep), luego uno a uno el 7, 8, 9, 10, 11, 14, 15 y 16 de septiembre, el jue 17 + vie 18-sep juntos, el lun 21 + mar 22-sep juntos, el mié 23 + jue 24 + vie 25-sep juntos y el lun 28 + mar 29 + mié 30-sep juntos — más el 25-jun. El plan ya desborda la ventana 25-29 ene (D95 = lun 15-feb = D-1 real) y **el examen salió de la ventana: mar 16-feb, al día siguiente del D95** (Prometric por agendar/reprogramar, eligibility por confirmar); **cada día más sin estudiar mueve el examen otro hábil o exige recortar temario** (decisión de Joseph). El modo mínimo es ahora la única válvula.
 
 ## 0. Principios
 
@@ -29,7 +29,7 @@
 
 Regla de conflicto: si dos disparadores apuntan a niveles distintos, manda el más grave.
 
-**Por qué las señales §6 entran aquí (12-sep-2026):** los disparadores anteriores (sueño, eval, día perdido) miden el daño *después* de ocurrido y el sensor de sueño no llega hasta el puente VITALS (proyecto S5 del vibecoding, lun 26 → vie 30-oct). Las 5 señales de `DATA/ENCAPS/DOCTRINA_SPRINT_FINAL_EVIDENCIA.md` §6 son las tempranas y objetivas: la 1 es la única con valor predictivo demostrado en el propio registro (aparece **antes** que la sensación), las 2-4 son conductuales y se contestan en 60 s, y la 5 (gym) ya estaba definida en PLAN_SABADO_25JUL como "primer signo de descompensación". Con esto la válvula deja de depender de un sensor externo: basta la nota del día.
+**Por qué las señales §6 entran aquí (12-sep-2026):** los disparadores anteriores (sueño, eval, día perdido) miden el daño *después* de ocurrido y el sensor de sueño no llega hasta el puente VITALS (proyecto S5 del vibecoding, jue 29-oct → mié 4-nov). Las 5 señales de `DATA/ENCAPS/DOCTRINA_SPRINT_FINAL_EVIDENCIA.md` §6 son las tempranas y objetivas: la 1 es la única con valor predictivo demostrado en el propio registro (aparece **antes** que la sensación), las 2-4 son conductuales y se contestan en 60 s, y la 5 (gym) ya estaba definida en PLAN_SABADO_25JUL como "primer signo de descompensación". Con esto la válvula deja de depender de un sensor externo: basta la nota del día.
 
 ## 2. Orden de degradación por frente (qué queda de cada uno)
 
@@ -70,7 +70,7 @@ al aire libre es la señal de luz matinal: no se pasa a indoor ni en ÁMBAR (se 
    (→ execute_sql con backup) + `gen_synapse_plan.js <mañana>` + `gen_aurum_plan.js <mañana>` +
    `gen_vibecoding_plan.js <mañana>` + regenerar USMLE (`gen_usmle_v5.js`; desde v5.8 NO recorta contenido: alarga el final) + docs.
    Los hitos UWSA/NBME son FIJOS en sus fechas: un corrimiento en Fase A mueve contenido, no hitos (única excepción: el UWSA1,
-   ya pasado, se movió al D1 en v5.10 → v5.16: lun 28-sep). 🆕 **Desde la v5.15 (y de nuevo en la v5.16) los otros 11 hitos también corren con el plan** (conservan su D#, cambian de fecha). ⚠ El D95 ya es el mié 10-feb (D-1 real, último día del plan) y el examen quedó FUERA de la ventana (jue 11-feb, al día siguiente, sin finde libre en medio): **no hay colchón**
+   ya pasado, se movió al D1 en v5.10 → v5.17: jue 1-oct). 🆕 **Desde la v5.15 (y de nuevo en la v5.16 y en la v5.17) los otros 11 hitos también corren con el plan** (conservan su D#, cambian de fecha). ⚠ El D95 ya es el lun 15-feb (D-1 real, último día del plan) y el examen quedó FUERA de la ventana (mar 16-feb, al día siguiente; el finde 13-14 feb libre queda entre el D94 y el D95, no delante del examen): **no hay colchón**
    — otro corrimiento mueve el examen otro hábil (reprogramar en Prometric; ¿cubre el eligibility period?) o exige recortar contenido — decisión de Joseph ANTES de ejecutar el remap.
 5. Al día siguiente: ÁMBAR obligatorio (no VERDE) aunque te sientas bien.
 
@@ -81,8 +81,8 @@ La app marca la semana en el cockpit ("SEMANA · DELOAD") y en MISIÓN DE HOY (c
 
 | Semana | Fechas | Motivo | Qué significa 50 % |
 |---|---|---|---|
-| **S6** (S7 en v5.13, S8 en v5.9) | lun 2 → vie 6-nov-2026 | post-NBME 26 (**vie 30-oct, D25**, el viernes anterior — en v5.16 la deload vuelve a ser la semana SIGUIENTE al hito) | MIR: eval D-1 + 30' (no 60') · ENCAPS: 12Q del tema del día (no 25) + registro · LIVIANO: 25' solo estudio (sin aplicación) · Research/Derma: 20' · AURUM: 30' · SYNAPSE: solo A (15') · Vibecoding: ⚠ **Sigue DESALINEADO en v5.16** (los bloques de vibecoding son semanas de calendario): la semana deload 2-6 nov es el proyecto **S6 `rls-datos-tesis` (sin flag)** y el proyecto con `deload: true` sigue siendo el **S7 motor de preguntas ENCAPS, lun 9 → vie 13-nov** — **decisión de Joseph**: mover el flag a S6 (editar `vibecoding_proyectos.json` + regenerar) o dejar el S7 en deload la semana siguiente · 2 días de 45' + 3 de ≤15' |
-| **S12** (S13 en v5.13, S14 en v5.9) | lun 14 → vie 18-dic-2026 | post-NBME 28 (**vie 11-dic, D55**, el viernes anterior) | ídem (en v5.16 el vibecoding S1-S12 termina el **vie 18-dic-2026** = capstone S12 en la propia semana deload; desde entonces la franja 04:15 = taper ≤15'/día hasta el **mié 10-feb-2027**: sensores verdes + journal) |
+| **S7** (S6 en v5.16, S7 en v5.13, S8 en v5.9) | lun 9 → vie 13-nov-2026 | post-NBME 26 (**mié 4-nov, D25**, el miércoles anterior — la deload sigue siendo la semana SIGUIENTE al hito) | MIR: eval D-1 + 30' (no 60') · ENCAPS: 12Q del tema del día (no 25) + registro · LIVIANO: 25' solo estudio (sin aplicación) · Research/Derma: 20' · AURUM: 30' · SYNAPSE: solo A (15') · Vibecoding: ⚠ **Sigue DESALINEADO en v5.17** (los bloques de vibecoding son jue→mié): la semana deload 9-13 nov queda repartida entre el proyecto **S6 `rls-datos-tesis` (jue 5 → mié 11-nov, sin flag)** y el **S7 motor de preguntas ENCAPS (jue 12 → mié 18-nov, con `deload: true`)** — **decisión de Joseph**: mover el flag (editar `vibecoding_proyectos.json` + regenerar) o dejarlo en el S7 · 2 días de 45' + 3 de ≤15' |
+| **S13** (S12 en v5.16, S13 en v5.13, S14 en v5.9) | lun 21 → jue 24-dic-2026 (vie 25-dic feriado) | post-NBME 28 (**mié 16-dic, D55**, el miércoles anterior) | ídem (en v5.17 el capstone S12 del vibecoding corre jue 17 → mié 23-dic —sus 3 últimos días caen en la semana deload— con SHIP el sáb 26-dic; desde el jue 24-dic la franja 04:15 = taper ≤15'/día hasta el **lun 15-feb-2027**: sensores verdes + journal) |
 
 Reglas del deload: los temas/días de cada plan NO se mueven (el tema de ese día se hace a la mitad, no se
 pospone); el Anki de sáb/dom sigue dimensionándose por `due × 20 s`; si la semana de deload coincide con
@@ -92,13 +92,13 @@ pospone); el Anki de sáb/dom sigue dimensionándose por `due × 20 s`; si la se
 
 - **Sueño**: quick-log de VITALS a las 07:00 (20 s, `mv_wellness_logs` tipo `sueno`, user `joseph`). Mientras no
   haya registro reciente (último dato: jun-2026), el disparador se evalúa por autoreporte al elegir el modo.
-  Proyecto **S5** del vibecoding (`vitals-puente`, lun 26 → vie 30-oct, SHIP sáb 31-oct · semana de calendario, v5.16) lleva el dato al Home y sugiere ÁMBAR automáticamente.
-- **Eval 18:00 y pre-test**: proyecto **S3** (lun 12 → vie 16-oct, SHIP sáb 17-oct · semana de calendario, v5.16) crea `jmd-usmle-scores` → Supabase. Hasta entonces se anota
+  Proyecto **S5** del vibecoding (`vitals-puente`, jue 29-oct → mié 4-nov, SHIP sáb 7-nov · bloque jue→mié, v5.17) lleva el dato al Home y sugiere ÁMBAR automáticamente.
+- **Eval 18:00 y pre-test**: proyecto **S3** (jue 15 → mié 21-oct, SHIP sáb 24-oct · bloque jue→mié, v5.17) crea `jmd-usmle-scores` → Supabase. Hasta entonces se anota
   a mano en la revisión semanal.
 - **Anki backlog/retención**: `node DATA/_scripts/anki_telemetria.js` (Anki abierto) → KPI del cockpit + alarma G.
 - **Días perdidos / niveles**: `jmd-modo-log` (la app) → export de localStorage → `gen_revision_semanal.js`
   (métrica 9). El sábado 07:15 se revisa cuántos días fueron ÁMBAR/ROJO y si el corrimiento se ejecutó.
-  **v5.10 (12-sep; vigente en v5.11-v5.16):** los ✓ de los 10 planes ya no viven solo en el navegador: la app los espeja en Supabase
+  **v5.10 (12-sep; vigente en v5.11-v5.17):** los ✓ de los 10 planes ya no viven solo en el navegador: la app los espeja en Supabase
   `plan_checks` (`src/lib/studyProgressSync.ts`; instrumento PROGRESO del cockpit = exportar/importar/sincronizar)
   y el script los lee directamente (unión con el export si lo hay) → "día perdido" se detecta sin tocar el navegador.
 - **Señales de burnout (§6) y modo del día**: la nota diaria del vault (`01_USMLE/05_DIARY/<fecha>.md`, plantilla

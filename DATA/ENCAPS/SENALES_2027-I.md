@@ -10,7 +10,7 @@
 
 | # | Canal | Dónde (dominios oficiales; rutas exactas A VERIFICAR) | Qué se busca | Alimenta |
 |---|---|---|---|---|
-| 1 | **Convocatoria y cronograma SERUMS 2027-I** | gob.pe/minsa (DIGEP-SERUMS: convocatoria, bases, cronograma de inscripción, fecha del ENCAPS) | **fecha y hora del examen**, sede, requisitos, nº de plazas, estructura del examen si cambia (100Q, 5 áreas) | dispara la siembra de la intensiva (`gen_encaps_intensivo_2027.js 2027-02-01 <fecha>`), `study_metrics.exam_date`, escenario CORTO/MEDIO/LARGO |
+| 1 | **Convocatoria y cronograma SERUMS 2027-I** | gob.pe/minsa (DIGEP-SERUMS: convocatoria, bases, cronograma de inscripción, fecha del ENCAPS) | **fecha y hora del examen**, sede, requisitos, nº de plazas, estructura del examen si cambia (100Q, 5 áreas) | dispara la siembra de la intensiva (`gen_encaps_intensivo_2027.js 2027-02-17 <fecha>` o `2027-02-22 <fecha>`, v5.17; en el diseño original `2027-02-01`), `study_metrics.exam_date`, escenario CORTO/MEDIO/LARGO |
 | 2 | **Normas MINSA en El Peruano** | elperuano.pe (Normas Legales, sección Salud) y gob.pe/minsa (normas) | RM / NTS / Directivas nuevas o modificatorias: esquema de vacunación, anemia, adolescente/MCI, dengue, emergencias/triaje, telesalud, residuos, interculturalidad, HC/derechos | el código v3 de cada norma; **L6**: lo publicado sep-2026 → mar-2027 entra al barrido de febrero con prioridad |
 | 3 | **DGE: sala situacional + boletín epidemiológico semanal** | dge.gob.pe | brotes/alertas vigentes: dengue (escenarios, regiones), sarampión, tosferina, oropouche, leptospirosis, rabia, fiebre amarilla; alertas epidemiológicas | I-3 (vigilancia/brote/bloqueo), I-4 (transmisibles), II-2/II-3 (inmunoprevenibles); **L3**: lo que esté en sala situacional dic-2026 → mar-2027 es material predictivo |
 | 4 | **ESAVI / PNI (inmunizaciones)** | gob.pe/minsa (DGIESP-Inmunizaciones), DGE (ESAVI) | incorporaciones al esquema (VRS gestante ya cayó; vigilar hexavalente, VPH dosis única, nuevas campañas), cambios de intervalos, kit/ESAVI | II-3 (esquema + novedades gestante + ESAVI + cadena de frío) → filas nuevas en `CIFRAS_CRITICAS_2027-I.md` |
@@ -18,7 +18,7 @@
 
 ## 2) Rutina quincenal (desde el **jue 1-oct-2026**, 30 min, fuera de la hora ENCAPS)
 
-Fechas: 1-oct · 15-oct · 29-oct · 12-nov · 26-nov · 10-dic · 24-dic · 7-ene · 21-ene · **re-scan completo en la semana 1 de la intensiva** (fila `senales` — ⚠ v5.15 (22-sep): con el corrimiento RÍGIDO el lun 1-feb ya no sirve; el jue 4-feb es el D94 del Step 1 (última sesión de banco), el vie 5-feb su D95 = D-1 (sesión mínima, nada de pantallas por la tarde) y el **lun 8-feb el examen Step 1**. La fase intensiva ENCAPS arranca DESPUÉS de ese examen → el re-scan pasa al **mar 9-feb-2027** (primer hábil tras el examen; el D1 exacto de la intensiva lo fija Joseph en `FASE_INTENSIVA_2027-I.md`) · y semanal en feb-mar.
+Fechas: 1-oct · 15-oct · 29-oct · 12-nov · 26-nov · 10-dic · 24-dic · 7-ene · 21-ene · **re-scan completo en la semana 1 de la intensiva** (fila `senales` — ⚠ v5.17 (30-sep): con el corrimiento RÍGIDO el lun 1-feb ya no sirve (es el D85 del Step 1, NBME 33); el vie 12-feb es el D94 (última sesión de banco), el sáb 13 y el dom 14-feb son libres, el lun 15-feb es el D95 = D-1 real (sesión mínima, nada de pantallas por la tarde) y el **mar 16-feb el examen Step 1**. La fase intensiva ENCAPS arranca DESPUÉS de ese examen → el re-scan pasa al **mié 17-feb-2027** (primer hábil tras el examen) o al **lun 22-feb** si Joseph elige ese D1 (el D1 exacto de la intensiva lo fija Joseph en `FASE_INTENSIVA_2027-I.md`; *v5.16: vie 12-feb o lun 15-feb · v5.15: mar 9-feb*) · y semanal en feb-mar.
 
 1. Canales 1-4 (canal 5 solo desde enero). Para cada uno: ¿hay algo nuevo desde la última fecha del log? Si no, se anota "sin novedad" (también es dato).
 2. Cada novedad → **una fila en el log de §4** con fecha, canal, señal (título + número/año de la norma o fecha del boletín), código v3, impacto (ALTO = entra al examen casi seguro / MEDIO / BAJO) y estado (VERIFICADA / A VERIFICAR).
@@ -99,4 +99,4 @@ Eres el vigía quincenal ENCAPS 2027-I de Joseph. Repositorio: D:\joseph-md-app.
 ## 5) Qué NO es señal
 
 - Materiales de academias sin número/año de norma ("dicen que ahora…"), posts en redes, resúmenes de terceros sin fuente. Se anotan como "rumor" solo si dos canales lo repiten, y nunca generan preguntas hasta verificarse.
-- El 2026-II en sí: no es señal, es el pre-test (LISTA NEGRA hasta el 5-feb-2027).
+- El 2026-II en sí: no es señal, es el pre-test (LISTA NEGRA hasta que se rinda: v5.17, primer viernes de la intensiva = vie 19-feb o vie 26-feb-2027; en el diseño original era el 5-feb).

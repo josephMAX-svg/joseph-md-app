@@ -22,7 +22,7 @@ import {
  *    paso del día + docs ↗; el ✓ diario vive en SYNAPSE → ⚡ run (PlanKey 'vibecoding').
  *  · selector de MODO del día (VERDE / ÁMBAR / ROJO, localStorage 'jmd-modo', default VERDE) según
  *    DATA/PROTOCOLO_MODO_MINIMO.md: cada bloque muestra su mínimo cuando el nivel no es VERDE.
- *  · chip "S N/20" (semana del Step 1) y "DELOAD" en las semanas post-NBME 26 / post-NBME 28.
+ *  · chip "S N/20" (semana del Step 1; v5.17: S N/21 = STEP1_SEMANAS) y "DELOAD" en las semanas post-NBME 26 / post-NBME 28.
  * v5.10-b (12-sep-2026, gaps_v3b_synapse 2/4/5):
  *  · FRENO 04:55: cuenta atrás en la tarjeta 04:15 (solo mientras la hora está dentro del bloque): "commit-or-stash en
  *    m:ss" y, desde las 04:55, "COMMIT OR STASH · Anki 05:00 en m:ss". Regla: si el día se recorta pierde el proyecto, nunca el Anki.
@@ -50,8 +50,8 @@ export function todayISO(): string {
 export function faseActual(iso: string): string {
   if (iso < '2026-06-01') return 'FASE 4';
   if (iso < '2026-08-10') return 'FASE 5 · ENCAPS';
-  if (iso < '2026-09-28') return 'FASE 6 · transición';
-  if (iso < '2027-02-12') return 'FASE 7 · STEP 1 PRINCIPAL'; // v5.16: D95 mié 10-feb = D-1 · examen jue 11-feb · intensiva ENCAPS propuesta desde el vie 12-feb o el lun 15-feb
+  if (iso < '2026-10-01') return 'FASE 6 · transición';
+  if (iso < '2027-02-17') return 'FASE 7 · STEP 1 PRINCIPAL'; // v5.17: D95 lun 15-feb = D-1 · examen mar 16-feb · intensiva ENCAPS propuesta desde el mié 17-feb o el lun 22-feb
   return 'FASE 8 · ENCAPS FINAL';
 }
 function nowMin(): number { try { const d = new Date(); return d.getHours() * 60 + d.getMinutes(); } catch { return 0; } }
@@ -178,7 +178,7 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
     {
       flag: '🇺🇸', nombre: 'USMLE · BLOQUE PRINCIPAL (Anki → Pre-test → Deep Prime → 30Q)', ini: '07:15', fin: '12:00', color: GREEN, frente: 'usmle-principal',
       tema: us ? `D${us.d}/${DIAS.length} · ${us.system} — ${us.sub}` : 'fuera del rango del plan',
-      sub: us ? `${us.bbCh}: ${us.bbVid} · ${us.mat} · todo en inglés` : `Step 1 · v5.16 desde ${USMLE_META.inicio}`,
+      sub: us ? `${us.bbCh}: ${us.bbVid} · ${us.mat} · todo en inglés` : `Step 1 · v5.17 desde ${USMLE_META.inicio}`,
       acciones: us ? [
         { lbl: '◆ Edge', color: EDGE, url: 'microsoft-edge:' + QBQ, fill: true },
         ...(usmleObsUrl(us.d) ? [{ lbl: '◆ Obsidian', color: OBS, url: usmleObsUrl(us.d)! }] : []),

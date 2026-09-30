@@ -1,0 +1,183 @@
+{
+ "id": "EVAL_2026-10-08",
+ "titulo": "Eval anclada ENCAPS · Jue 2026-10-08 · III-5",
+ "tipoRonda": "eval_anclada",
+ "fecha": "2026-10-08",
+ "codigo": "III-5",
+ "sub_eje": "pertinencia_barreras",
+ "tema": "eval anclada · código de ayer III-5: 3 cifras + 2 viñetas",
+ "fuente_preguntas": "BANCO_PROPIO (set_III-5_1.json, banco_items_v1.json)",
+ "n": 5,
+ "seg_por_q": 72,
+ "umbral": 60,
+ "alerta": 60,
+ "mostrar_codigo": false,
+ "instrucciones": "5 preguntas del tema de AYER (código de ayer III-5: 3 cifras + 2 viñetas), de memoria, sin material; solución al final. Si fallas ≥2 el código queda CALIENTE para el override del viernes (gen_encaps_semana.js).",
+ "_meta": {
+  "generado": "2026-09-30",
+  "sesion_anterior": {
+   "fecha": "2026-10-07",
+   "tipo": "banqueo1h",
+   "codigo": "III-5",
+   "sub_eje": "pertinencia_barreras"
+  },
+  "modo": "código de ayer III-5: 3 cifras + 2 viñetas",
+  "lista_negra_2026_II": "VIGENTE",
+  "fallback": {
+   "motivo": "pool libre de III-5: 0Q (mínimo 5)",
+   "cadena": [
+    {
+     "paso": 1,
+     "fuente": "reales de III-5 ya usados (re-test con otro enfoque)",
+     "n": 5
+    }
+   ],
+   "n_fallback": 5
+  }
+ },
+ "items": [
+  {
+   "n": 1,
+   "id": "R-2025-1A-Q55",
+   "codigo": "III-5",
+   "area": "III",
+   "formato": "viñeta",
+   "critico": true,
+   "sub_eje": "medicina_tradicional",
+   "subangulo": "Medicina tradicional/complementaria y pertenencia étnica (autoidentificación)",
+   "fallo_previo": null,
+   "reservado_para": null,
+   "dif": "real",
+   "origen": "examen_real",
+   "enunciado": "Realizando visita domiciliaria, según el plan del cuidado integral de salud de las personas adultas mayores, se encuentra a un varón de 66 años de edad, vive solo; refiere tener “mal de ojo”, presenta “dolor de cabeza y dolor muscular”, llegará el curandero, realizará una limpia con cuy macho de color negro. Se le muestra interés e integración de los cuidados que requiere. ¿Éste enunciado se denomina?",
+   "opciones": {
+    "A": "Salud pública",
+    "B": "Cultura",
+    "C": "Población indígena",
+    "D": "Interculturalidad en salud"
+   },
+   "clave": "D",
+   "respuesta": "Interculturalidad en salud",
+   "explicacion": null,
+   "fuente": "Examen real ENCAPS/SERUMS 2025-1A · pregunta 55 (texto íntegro; opciones normalizadas A/B/C/D)",
+   "verificado_contra": "CLAVE OFICIAL 2025-1A Q55 = D (Interculturalidad en salud) · resaltado amarillo del PDF 'CLAVE DE RESPUESTA 2025-1A.pdf', extracción programática 05-sep-2026",
+   "molde": "2025-1A Q55 (ítem real, no espejo)",
+   "retest": true,
+   "fallback": 1
+  },
+  {
+   "n": 2,
+   "id": "R-2025-2-Q36",
+   "codigo": "III-5",
+   "area": "III",
+   "formato": "viñeta",
+   "critico": true,
+   "sub_eje": "medicina_tradicional",
+   "subangulo": "Medicina tradicional/complementaria y pertenencia étnica (autoidentificación)",
+   "fallo_previo": null,
+   "reservado_para": null,
+   "dif": "real",
+   "origen": "examen_real",
+   "enunciado": "Usted se encuentra en Belempampa- Cusco donde acude un escolar de 7 años con su mamá por presentar herida en antebrazo derecho de 2 cm, usted indica sutura y su mamá se niega indicando que se le recomiende una planta de la zona. ¿Qué alternativa indicas?",
+   "opciones": {
+    "A": "Toronjil",
+    "B": "Ruda",
+    "C": "Orégano",
+    "D": "Matico"
+   },
+   "clave": "D",
+   "respuesta": "Matico",
+   "explicacion": null,
+   "fuente": "Examen real ENCAPS/SERUMS 2025-2 · pregunta 36 (texto íntegro; opciones normalizadas A/B/C/D)",
+   "verificado_contra": "CLAVE OFICIAL 2025-2 Q36 = D (Matico) · resaltado amarillo del PDF 'CLAVE DE RESPUESTA 2025-2.pdf', extracción programática 05-sep-2026",
+   "molde": "2025-2 Q36 (ítem real, no espejo)",
+   "retest": true,
+   "fallback": 1
+  },
+  {
+   "n": 3,
+   "id": "R-2024-2A-Q19",
+   "codigo": "III-5",
+   "area": "III",
+   "formato": "viñeta",
+   "critico": true,
+   "sub_eje": "inclusion_migrantes",
+   "subangulo": "Inclusión social, migrantes y adecuación cultural de servicios",
+   "fallo_previo": null,
+   "reservado_para": null,
+   "dif": "real",
+   "origen": "examen_real",
+   "enunciado": "El responsable del establecimiento de salud, han identificado que tienen una gran población de mujeres en edad fértil procedentes de Venezuela. Con el fin de promover un mejor proceso de integración como sociedad de acogida y al uso de servicios de sanitarios, planifica capacitar a su personal. ¿Cuál sería el tema principal de la capacitación?",
+   "opciones": {
+    "A": "Charla de drogas y violencia",
+    "B": "Empatía y buenas prácticas en salud",
+    "C": "Respeto al usuario",
+    "D": "Etnocentrismo y relativismo cultural"
+   },
+   "clave": "D",
+   "respuesta": "Etnocentrismo y relativismo cultural",
+   "explicacion": null,
+   "fuente": "Examen real ENCAPS/SERUMS 2024-2A · pregunta 19 (texto íntegro; opciones normalizadas A/B/C/D)",
+   "verificado_contra": "CLAVE OFICIAL 2024-2A Q19 = D (Etnocentrismo y relativismo cultural) · resaltado amarillo del PDF 'CLAVE DE RESPUESTA 2024-2A.pdf', extracción programática 05-sep-2026",
+   "molde": "2024-2A Q19 (ítem real, no espejo)",
+   "retest": true,
+   "fallback": 1
+  },
+  {
+   "n": 4,
+   "id": "R-2025-1A-Q12",
+   "codigo": "III-5",
+   "area": "III",
+   "formato": "viñeta",
+   "critico": true,
+   "sub_eje": "medicina_tradicional",
+   "subangulo": "Medicina tradicional/complementaria y pertenencia étnica (autoidentificación)",
+   "fallo_previo": null,
+   "reservado_para": null,
+   "dif": "real",
+   "origen": "examen_real",
+   "enunciado": "Madre quechua hablante de 30 años, tiene niño de un año con diarrea y deshidratación; ella niega su atención en el establecimiento de salud, porque según su creencia el caso corresponde a “susto” y lo debe atender el curandero. ¿Cómo procedes ante este caso?",
+   "opciones": {
+    "A": "Solicitar al presidente de la comunidad que intervenga",
+    "B": "Llegas a un acuerdo en la terapia del niño, respetando sus creencias",
+    "C": "Discrepas con su decisión porque no es correcto",
+    "D": "Constatar con la policía y la autoridad comunal"
+   },
+   "clave": "B",
+   "respuesta": "Llegas a un acuerdo en la terapia del niño, respetando sus creencias",
+   "explicacion": null,
+   "fuente": "Examen real ENCAPS/SERUMS 2025-1A · pregunta 12 (texto íntegro; opciones normalizadas A/B/C/D)",
+   "verificado_contra": "CLAVE OFICIAL 2025-1A Q12 = B (Llegas a un acuerdo en la terapia del niño, respetando sus creencias) · resaltado amarillo del PDF 'CLAVE DE RESPUESTA 2025-1A.pdf', extracción programática 05-sep-2026",
+   "molde": "2025-1A Q12 (ítem real, no espejo)",
+   "retest": true,
+   "fallback": 1
+  },
+  {
+   "n": 5,
+   "id": "BP-0022",
+   "codigo": "III-5",
+   "area": "III",
+   "formato": "viñeta",
+   "critico": true,
+   "subangulo": "Principios interculturales: diversidad cultural",
+   "fallo_previo": null,
+   "reservado_para": "2026-10-02",
+   "dif": "media",
+   "enunciado": "En la comunidad aimara de Juli (Puno), el serumista no logra comunicarse con una paciente adulta mayor y gestiona la presencia de un traductor para la atención. ¿Qué principio intercultural aplica?",
+   "opciones": {
+    "A": "Diversidad cultural",
+    "B": "Equidad",
+    "C": "Promoción de la inclusión",
+    "D": "Creatividad cultural"
+   },
+   "clave": "A",
+   "respuesta": "Diversidad cultural",
+   "explicacion": "Reconocer y adaptarse a la lengua originaria (traductor) = respeto a la DIVERSIDAD CULTURAL. Equidad = acceso según necesidad; inclusión = incorporar grupos excluidos.",
+   "fuente": "Examen real 2025-2 Q18 · Política Sectorial de Salud Intercultural (D.S. 016-2016-SA)",
+   "verificado_contra": "CLAVE OFICIAL 2025-2 Q18 (A: Diversidad cultural)",
+   "molde": "2025-2 Q18",
+   "retest": true,
+   "fallback": 1
+  }
+ ]
+}

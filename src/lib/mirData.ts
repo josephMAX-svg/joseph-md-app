@@ -30,7 +30,7 @@ export const MIR_KPIS = { asignaturasTierS: 3, vueltasCritica: 6, simulacrosMeta
 export interface MirHito { clave: string; nombre: string; fecha: string; min: number; fase: string; nota: string; }
 export const MIR_HITOS: MirHito[] = [
   { clave: 'mini-MIR', nombre: 'mini-MIR 40Q mixto (D77)', fecha: mirDiaN(77)?.fecha || '2026-12-30', min: 50, fase: '1ª vuelta', nota: 'baseline honesto tras 76 temas; 40Q ⇒ ±2,5 pp por pregunta' },
-  { clave: 'handoff', nombre: 'Handoff 7-abr-2027 (entrada a la fase principal)', fecha: '2027-04-07', min: 60, fase: 'banqueo', nota: 'tabla de neto por asignatura (cierres + mini-MIR + mantenimiento) + stats FSRS del deck' },
+  { clave: 'handoff', nombre: 'Handoff 13-abr-2027 (entrada a la fase principal)', fecha: '2027-04-13', min: 60, fase: 'banqueo', nota: 'tabla de neto por asignatura (cierres + mini-MIR + mantenimiento) + stats FSRS del deck' },
   { clave: '1ª vuelta', nombre: 'Fin de la 1ª vuelta completa (dic-2027)', fecha: '2027-12-31', min: 68, fase: 'principal', nota: 'simulacro 200Q oficial cronometrado (examenesmir.com)' },
   { clave: 'sims 2028', nombre: 'Simulacros 2028', fecha: '2028-12-31', min: 75, fase: 'principal', nota: '≈150 netas: borde inferior de la banda Top 50' },
   { clave: 'sims 2029', nombre: 'Simulacros 2029', fecha: '2029-12-31', min: 82, fase: 'competición', nota: '≈165 netas: banda Top 50 en un año difícil' },
@@ -138,8 +138,8 @@ export const MIR_HORA = [
 
 // Fases REALES del calendario MIR (v3b; antes describía las "Fase 0-4 por meses" del plan de junio)
 export const MIR_CALENDARIO = [
-  { fase: '1ª vuelta · sep-2026→ene-2027', foco: '78 días (28-sep→18-ene): 76 temas top-N por Peso MIR + núcleo rabi_94, Epi/Bioética D1-D4, cada bloque precede ~1 semana a su sistema Step 1. mini-MIR D77 ≥ 50 % neto.' },
-  { fase: 'Banqueo · ene→abr-2027', foco: 'Sin contenido nuevo: Anki + 25Q/día reales (viernes 30Q de la asignatura peor del log). Modo reducido hasta el 11-feb (Step 1; examen jue 11-feb, incluido). Mantenimiento mar 19-ene → mié 7-abr. Handoff 7-abr ≥ 60 %.' },
+  { fase: '1ª vuelta · oct-2026→ene-2027', foco: '78 días (1-oct→21-ene): 76 temas top-N por Peso MIR + núcleo rabi_94, Epi/Bioética D1-D4, cada bloque precede ~1 semana a su sistema Step 1. mini-MIR D77 ≥ 50 % neto.' },
+  { fase: 'Banqueo · ene→abr-2027', foco: 'Sin contenido nuevo: Anki + 25Q/día reales (viernes 30Q de la asignatura peor del log). Modo reducido hasta el 16-feb (Step 1; examen mar 16-feb, incluido). Mantenimiento vie 22-ene → mar 13-abr. Handoff 13-abr ≥ 60 %.' },
   { fase: 'Principal · abr-2027→dic-2027', foco: 'MIR pasa a bloque principal: 1ª vuelta COMPLETA (30 asignaturas, Tier C incluido), umbrales de cierre 75/60, retention FSRS 0,90. Fin de vuelta ≥ 68 %.' },
   { fase: 'Vueltas + simulacros · 2028→2029', foco: 'Vueltas numéricas (motor ENCAPS) + simulacros 200Q cronometrados con plantilla idéntica. 2028 ≥ 75 % · 2029 ≥ 82 % (banda Top 50 = 150-165 netas).' },
   { fase: 'Competición · ene-2030', foco: 'Solo simulacros + cuaderno de errores + taper. Examen MIR 2030 → Top 50 → Dermatología (Clínic).' },

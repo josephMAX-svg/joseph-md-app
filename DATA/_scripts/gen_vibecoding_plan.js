@@ -2,30 +2,30 @@
 // y DATA/SYNAPSE/VIBECODING_12_PROYECTOS.md (doc legible con fechas).
 //
 // Fuente única: DATA/SYNAPSE/vibecoding_proyectos.json
-//   · proyectos: 12 proyectos S1-S12 (backlog REAL, ordenados por riesgo para el Step 1) · 5 pasos L-V cada uno.
+//   · proyectos: 12 proyectos S1-S12 (backlog REAL, ordenados por riesgo para el Step 1) · 5 pasos (5 hábiles) cada uno.
 //   · taper:     8 semanas S13-S20 (v5.10-b, 12-sep-2026): S13-S16 mantenimiento ≤15'/día (flag deload) ·
-//                S17-S20 deload total (journal 5' + audio) · S20 = semana del examen (lun-mié, D93-D95).
+//                S17-S20 deload total (journal 5' + audio) · S20 = semana del examen (v5.17: jue 11 → lun 15-feb, D93-D95; v5.16: lun-mié).
 //   · _meta:     freno 04:55 · convención de commit [S<n>] · verificación mecánica (verify_vibecoding.js).
-// Calendario: START = argv[2] (YYYY-MM-DD, default 2026-09-28 = D1 v5.16) · días HÁBILES L-V (salta sáb/dom y los
+// Calendario: START = argv[2] (YYYY-MM-DD, default 2026-10-01 = D1 v5.17) · días HÁBILES L-V (salta sáb/dom y los
 // feriados fijos 25-dic/31-dic/1-ene, misma regla que remap_inicio.js).
-//   · S1-S12: 5 días hábiles por proyecto (Lun definir · Mar/Mié construir · Jue verificar · Vie doc+commit) →
-//     60 días · sábado PC (SYNAPSE 15:00-17:00) = SHIP del proyecto · domingo = Feynman.
-//   · S13-S20: semanas de CALENDARIO (lun→vie) desde el lunes siguiente al fin de S12, con los feriados fuera
-//     (v5.16: bloques secuenciales de pasos.length hábiles; el último termina el D95 del Step 1 = mié 10-feb-2027; examen jue 11-feb).
-//     Con D1 = lun 14-sep, el día d del vibecoding coincide con el D# del Step 1 (95 días).
+//   · S1-S12: 5 días hábiles por proyecto (paso 1 definir · 2-3 construir · 4 verificar · 5 doc+commit; v5.17: bloques jue → mié) →
+//     60 días · sábado PC (SYNAPSE 15:00-17:00) = SHIP del proyecto (sábado siguiente al 5º día) · domingo = Feynman.
+//   · S13-S20: (hasta v5.10) semanas de CALENDARIO (lun→vie) desde el lunes siguiente al fin de S12, con los feriados fuera
+//     (desde v5.11: bloques secuenciales de pasos.length hábiles; v5.17: el último termina el D95 del Step 1 = lun 15-feb-2027; examen mar 16-feb).
+//     Con cualquier D1 (v5.17: jue 1-oct), el día d del vibecoding coincide con el D# del Step 1 (95 días).
 // Ship log: si existe DATA/SYNAPSE/_vibecoding_ship.json (escrito por verify_vibecoding.js) se hornea en el TS
 // (VIBE_SHIP_LOG) para que la app muestre el último verify aunque no haya localStorage.
 //
-// Uso:  node DATA/_scripts/gen_vibecoding_plan.js 2026-09-28
+// Uso:  node DATA/_scripts/gen_vibecoding_plan.js 2026-10-01
 // Pipeline de corrimiento: tras remap_inicio.js <fecha>, correr también este script con la misma fecha
 // (igual que gen_synapse_plan.js / gen_aurum_plan.js). Determinista: sin Date.now() ni aleatoriedad.
 const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..', '..');
-const START = process.argv[2] || '2026-09-28';
+const START = process.argv[2] || '2026-10-01';
 if (!/^20\d\d-\d\d-\d\d$/.test(START)) throw new Error('START inválido (YYYY-MM-DD): ' + START);
-// Último día del taper = D95 del Step 1 (mié 10-feb-2027 con START=2026-09-28). Se calcula, no se fija a mano:
+// Último día del taper = D95 del Step 1 (lun 15-feb-2027 con START=2026-10-01). Se calcula, no se fija a mano:
 // 95 días hábiles desde START con la misma regla de feriados.
 const DIAS_STEP1 = 95;
 
@@ -61,7 +61,9 @@ const isHabil = (s) => dow(s) !== 0 && dow(s) !== 6 && !SKIP_FIJOS.has(s);
 // D95 del Step 1 (misma regla de hábiles): último día del taper
 const finStep1 = (() => { let c = START, n = 0; while (true) { if (isHabil(c)) { n++; if (n === DIAS_STEP1) return c; } c = addDays(c, 1); } })();
 
-const TIPO_POR_WD = { Lun: 'definir', Mar: 'construir', Mié: 'construir', Jue: 'verificar', Vie: 'ship-prep' };
+// v5.17 (30-sep-2026): el tipo va con el PASO (k), no con el día de la semana — con el D1 en jueves los bloques de 5 hábiles
+// corren jue→mié y un tipo por weekday desalinearía el paso 1 («Inventario…») con «verificar». Con D1 en lunes es idéntico al anterior.
+const TIPO_POR_K = ['definir', 'construir', 'construir', 'verificar', 'ship-prep'];
 const TIPO_LABEL = {
   definir: "5' objetivo → spec del día", construir: 'construir con Claude Code', verificar: 'verificar en vivo (test/URL/dato)', 'ship-prep': 'doc + commit + preparar SHIP',
   sensores: "sensores verdes (≤15')", mejora: "1 mejora pequeña (≤15')", lectura: 'journal + lectura de docs', retro: 'retro semanal', journal: "journal 5' + audio (deload total)",
@@ -83,7 +85,7 @@ for (const p of P) {
     while (!isHabil(cur)) cur = addDays(cur, 1);
     d++;
     const wd = WD[dow(cur)];
-    const tipo = TIPO_POR_WD[wd] || 'construir';
+    const tipo = TIPO_POR_K[k];
     // deload: días 2 y 4 de la semana a 15' (el catálogo ya lo refleja en el texto del paso)
     const min = p.deload ? (k === 0 || k === 2 ? 45 : 15) : 45;
     dias.push({ d, fecha: cur, wd, semana: p.s, proyecto: p.id, k: k + 1, tipo, min, paso: p.pasos[k], deload: !!p.deload });

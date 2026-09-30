@@ -20,7 +20,7 @@ import {
  * orquestador, countdown MIR, dot Online/Offline, racha discreta y campana de reports.
  * La racha vive AQUÍ (Things 3: nada de card 🔥 gigante — dato discreto de estado).
  *
- * v5.7 (5-sep-2026): + instrumento SEMANA "S N/20" del Step 1 (revisión semanal, deload) y
+ * v5.7 (5-sep-2026): + instrumento SEMANA "S N/20" del Step 1 (v5.17: "S N/21"; revisión semanal, deload) y
  * + instrumento ANKI "due · backlog · retención" leído de localStorage 'jmd-anki-telemetria'
  * (lo escribe DATA/_scripts/anki_telemetria.js; opcionalmente /anki_telemetria.json en web).
  * Ambos son opcionales: si el Home no los pasa, se calculan aquí sin pedir data nueva.
@@ -46,7 +46,7 @@ export function limaHHMM(): string {
 }
 function hoyISO(): string {
   try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; }
-  catch { return '2026-09-28'; }
+  catch { return '2026-10-01'; }
 }
 
 interface Item {
@@ -65,7 +65,7 @@ export interface CockpitStatusBarProps {
   unread: number;           // reports sin leer
   onBell?: () => void;      // abre modal de reports (mobile); undefined = sin campana táctil
   compact?: boolean;        // mobile
-  semana?: SemanaStep1 | null;   // v5.7 opcional: semana N/20 del Step 1 (si no, se calcula aquí)
+  semana?: SemanaStep1 | null;   // v5.7 opcional: semana N/21 del Step 1 (v5.17; N/STEP1_SEMANAS · si no, se calcula aquí)
   anki?: AnkiKpi | null;         // v5.7 opcional: KPI Anki (si no, localStorage 'jmd-anki-telemetria')
 }
 
@@ -231,7 +231,7 @@ export default function CockpitStatusBar({
         <View style={st.vDiv} />
         <Instrument label="PHASE" value={phase} color={Colors.teal} mono={false} />
         <View style={st.vDiv} />
-        {/* v5.7 · Semana N/20 del Step 1 (sáb 07:15 revisión semanal · deload secundarios). Tocar = copiar export jmd-* (web) */}
+        {/* v5.7 · Semana N/21 del Step 1 (v5.17 · sáb 07:15 revisión semanal · deload secundarios). Tocar = copiar export jmd-* (web) */}
         <TouchableOpacity activeOpacity={0.7} onPress={() => setExportado(exportarLocalStorageJmd() ? 'ok' : 'no')} hitSlop={{ top: 6, bottom: 6, left: 4, right: 4 }}>
           <Instrument
             label={exportado === 'ok' ? 'SEMANA · export ✓' : exportado === 'no' ? 'SEMANA · sin clipboard' : sem.deload ? 'SEMANA · DELOAD' : sem.hito ? `SEMANA · ${sem.hito}` : 'SEMANA'}
