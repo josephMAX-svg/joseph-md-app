@@ -93,50 +93,51 @@ export function componerBriefing(inp: BriefingInput): string {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// v5.7 (5-sep-2026) — Semana N/20 del Step 1 (v5.17: N/21) · revisión semanal · modo mínimo · KPI Anki
+// v5.7 (5-sep-2026) — Semana N/20 del Step 1 (v5.18: N/20 · v5.17: N/21) · revisión semanal · modo mínimo · KPI Anki
 // Todo se deriva de datos ya presentes (DAILY_META del USMLE + localStorage con prefijo jmd-).
 // Doctrina: DATA/REVISION_SEMANAL.md · DATA/PROTOCOLO_MODO_MINIMO.md · DATA/SYNC_ANKI_OBSIDIAN_APP.md
 // ═══════════════════════════════════════════════════════════════════════════
 
-/** D1 del Step 1 (v5.17 = jue 1-oct-2026) — misma fuente que usmleStep1Daily.DAILY_META.inicio. */
+/** D1 del Step 1 (v5.18 = lun 5-oct-2026 · v5.17: jue 1-oct) — misma fuente que usmleStep1Daily.DAILY_META.inicio. */
 export const STEP1_INICIO = DAILY_META.inicio;
-export const STEP1_SEMANAS = 21; // v5.17: S1 = semana L-V del D1 (lun 28-sep → vie 2-oct; D1 = jue 1-oct) → S20 = 8-12 feb (D90-D94) → S21 = 15-19 feb (D95 lun 15-feb = D-1; examen target mar 16-feb-2027, dentro de la S21). v5.16: 20
+export const STEP1_SEMANAS = 20; // v5.18: S1 = semana L-V del D1 (lun 5 → vie 9-oct) → S20 = 15-19 feb (D93 lun 15 · D94 mar 16 · D95 mié 17-feb = D-1 · examen target jue 18-feb) · v5.17: 21 · v5.16: 20
 
 /** Hitos del plan con su mínimo on-track (PALMERTON_POR_MATERIA Parte V, regla 5%/mes).
- * v5.17 (30-sep): 3.er CORRIMIENTO RÍGIDO — los hitos corren con el plan y conservan su D#, así ningún NBME pierde días de
- * contenido por delante. Con D1 en jueves caen casi todos en MIÉRCOLES (salvo NBME 29 lun 4-ene, NBME 32 jue 28-ene y NBME 33 lun 1-feb). */
+ * v5.18 (3-oct): 4.º CORRIMIENTO RÍGIDO (+2 hábiles; misma regla que v5.15/v5.16/v5.17) — los hitos corren con el plan y conservan
+ * su D#, así ningún NBME pierde días de contenido por delante. Con D1 en LUNES vuelven a caer casi todos en VIERNES (salvo NBME 29
+ * mié 6-ene, NBME 32 lun 1-feb y NBME 33 mié 3-feb). v5.17 (30-sep, D1 jue 1-oct): caían casi todos en miércoles. */
 export const HITOS_STEP1: { fecha: string; nombre: string; minimo: string }[] = [
-  { fecha: '2026-10-01', nombre: 'UWSA1', minimo: 'baseline (cualquier valor)' }, // v5.17: D1 (jue 1-oct)
-  { fecha: '2026-10-14', nombre: 'NBME 25', minimo: '≥51%' },   // D10 (mié)
-  { fecha: '2026-11-04', nombre: 'NBME 26', minimo: '≥54%' },   // D25 (mié)
-  { fecha: '2026-11-25', nombre: 'NBME 27', minimo: '≥57%' },   // D40 (mié)
-  { fecha: '2026-12-16', nombre: 'NBME 28', minimo: '≥61%' },   // D55 (mié)
-  { fecha: '2027-01-04', nombre: 'NBME 29', minimo: '≥63%' },   // D65 (lun, por los saltos de 25-dic/31-dic/1-ene)
-  { fecha: '2027-01-13', nombre: 'NBME 30', minimo: '≥65%' },   // D72 (mié)
-  { fecha: '2027-01-20', nombre: 'UWSA2', minimo: 'low risk' }, // D77 (mié)
-  { fecha: '2027-01-27', nombre: 'NBME 31 · GO/NO-GO', minimo: '≥68%' }, // D82 (mié)
-  { fecha: '2027-01-28', nombre: 'NBME 32', minimo: '≥68%' },   // D83 (jue)
-  { fecha: '2027-02-01', nombre: 'NBME 33', minimo: '≥68%' },   // D85 (lun)
-  { fecha: '2027-02-03', nombre: 'Free 120', minimo: '≥70%' },  // D87 (mié)
+  { fecha: '2026-10-05', nombre: 'UWSA1', minimo: 'baseline (cualquier valor)' }, // v5.18: D1 (lun 5-oct)
+  { fecha: '2026-10-16', nombre: 'NBME 25', minimo: '≥51%' },   // D10 (vie)
+  { fecha: '2026-11-06', nombre: 'NBME 26', minimo: '≥54%' },   // D25 (vie)
+  { fecha: '2026-11-27', nombre: 'NBME 27', minimo: '≥57%' },   // D40 (vie)
+  { fecha: '2026-12-18', nombre: 'NBME 28', minimo: '≥61%' },   // D55 (vie)
+  { fecha: '2027-01-06', nombre: 'NBME 29', minimo: '≥63%' },   // D65 (mié, por los saltos de 25-dic/31-dic/1-ene)
+  { fecha: '2027-01-15', nombre: 'NBME 30', minimo: '≥65%' },   // D72 (vie)
+  { fecha: '2027-01-22', nombre: 'UWSA2', minimo: 'low risk' }, // D77 (vie)
+  { fecha: '2027-01-29', nombre: 'NBME 31 · GO/NO-GO', minimo: '≥68%' }, // D82 (vie)
+  { fecha: '2027-02-01', nombre: 'NBME 32', minimo: '≥68%' },   // D83 (lun)
+  { fecha: '2027-02-03', nombre: 'NBME 33', minimo: '≥68%' },   // D85 (mié)
+  { fecha: '2027-02-05', nombre: 'Free 120', minimo: '≥70%' },  // D87 (vie)
 ];
 /** Semanas DELOAD de los frentes SECUNDARIOS (50% de carga, fechas intactas): la posterior a NBME 26 y a NBME 28. */
 export const DELOAD_SEMANAS: { lunes: string; motivo: string }[] = [
-  { lunes: '2026-11-09', motivo: 'post-NBME 26 (mié 4-nov · v5.17)' },
-  { lunes: '2026-12-21', motivo: 'post-NBME 28 (mié 16-dic · v5.17)' },
+  { lunes: '2026-11-09', motivo: 'post-NBME 26 (vie 6-nov · v5.18)' },
+  { lunes: '2026-12-21', motivo: 'post-NBME 28 (vie 18-dic · v5.18)' },
 ];
 
 export interface SemanaStep1 {
-  n: number;            // 1..21 (0 = antes del D1; >21 = después de la semana del examen)
-  total: number;        // 21 (v5.17)
+  n: number;            // 1..20 (0 = antes del D1; >20 = después de la semana del examen) · v5.17: 1..21
+  total: number;        // 20 (v5.18 = STEP1_SEMANAS · v5.17: 21)
   lunes: string; viernes: string; sabado: string;
   deload: boolean; deloadMotivo?: string;
-  hito?: string;        // hito que cae en esta semana (v5.17: casi siempre miércoles; v5.16: viernes)
+  hito?: string;        // hito que cae en esta semana (v5.18: casi siempre viernes · v5.17: miércoles · v5.16: viernes)
   fueraDeRango: boolean;
 }
 const addDaysISO = (iso: string, n: number): string => {
   try { const d = new Date(iso + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); } catch { return iso; }
 };
-/** Semana N/21 del Step 1 (v5.17; N/STEP1_SEMANAS) para una fecha (lunes→domingo). Determinista, sin reloj. */
+/** Semana N/20 del Step 1 (v5.18; N/STEP1_SEMANAS · v5.17: N/21) para una fecha (lunes→domingo). Determinista, sin reloj. */
 export function semanaStep1(iso: string): SemanaStep1 {
   let n = 0, lunes = STEP1_INICIO;
   try {
@@ -157,7 +158,7 @@ export function semanaStep1(iso: string): SemanaStep1 {
   const hito = HITOS_STEP1.filter((h) => h.fecha >= lunes && h.fecha <= addDaysISO(lunes, 6)).map((h) => h.nombre).join(' + ') || undefined;
   return { n, total: STEP1_SEMANAS, lunes, viernes, sabado, deload: !!deload, deloadMotivo: deload?.motivo, hito, fueraDeRango: n < 1 || n > STEP1_SEMANAS };
 }
-/** Etiqueta corta para el instrumento del cockpit: "S3/21" (o "pre-D1" / "examen"). */
+/** Etiqueta corta para el instrumento del cockpit: "S3/20" (o "pre-D1" / "examen"). */
 export function semanaLabel(s: SemanaStep1): string {
   if (s.n < 1) return 'pre-D1';
   if (s.n > s.total) return 'examen';

@@ -7,7 +7,7 @@
 > (CEI/IRB) y (2) declaración de consentimiento parental + asentimiento. **Actualización 12-sep-2026:** el punto (2) YA
 > consta — la portada y la hoja "FLUJO PARTICIPANTES" de `D:\motor_apex\datos_tesis_acne.xlsx` registran un censo **solo con
 > consentimiento** (291 excluidas por no consentir: 271 padres + 20 alumnas) — ver 1.4-1.5 y §4. **Lo que sigue sin constar es
-> el nº y la fecha del CEI (1.1)**: por eso T-1 pasa a d7 (mié 30-sep-2026 en v5.10b; vie 2-oct-2026 en v5.11 y v5.12; mar 6-oct-2026 en v5.13; jue 8-oct-2026 en v5.14; lun 12-oct-2026 en v5.15; mié 14-oct-2026 en v5.16; **mar 20-oct-2026 en v5.17** — 🔴 20 días después del límite interno ≤ 30-sep) con la solicitud de revisión expedita presentada ese día
+> el nº y la fecha del CEI (1.1)**: por eso T-1 pasa a d7 (mié 30-sep-2026 en v5.10b; vie 2-oct-2026 en v5.11 y v5.12; mar 6-oct-2026 en v5.13; jue 8-oct-2026 en v5.14; lun 12-oct-2026 en v5.15; mié 14-oct-2026 en v5.16; mar 20-oct-2026 en v5.17; **jue 22-oct-2026 en v5.18** — 🔴 22 días después del límite interno ≤ 30-sep) con la solicitud de revisión expedita presentada ese día
 > y T-7/T-8 llevan el gate "sin nº de CEI o exención NO se envía" (MD_MAESTRO L0 y MANUAL §10.1 solo dicen "envío a JAAD
 > International jun-jul 2026", que no ocurrió).
 > Todo lo marcado **A VERIFICAR (5-sep)** lo tiene que responder Joseph con el documento en la mano; no se
@@ -88,11 +88,11 @@ de salud de menores = datos sensibles → consentimiento del titular/representan
 ## 5. Calendario mínimo (paralelo a la carta al editor; 45' interdiarios)
 | Cuándo | Qué |
 |---|---|
-| jue 8-oct-2026 (M1 · v5.17; v5.16: vie 2-oct; v5.15: mié 30-sep) | Pedir al Dr. Ciro, en la misma reunión de las 3 coautorías, la vía CEI (2.1 expedita/retrospectiva o 2.2 exención) y reunir los 10 documentos de la tabla |
-| **mar 20-oct-2026 (T-1 · d7 · v5.17; 🔴 el interno ≤ 30-sep queda 20 días atrás y ya no lo alcanza ningún día del régimen (D1 = jue 1-oct): presentar la solicitud fuera del plan antes de que acabe el mié 30-sep o aceptar el retraso; v5.16: mié 14-oct; v5.15: lun 12-oct)** | Nº de CEI archivado **o solicitud de revisión expedita PRESENTADA ese día** (nº de cargo + fecha en 1.1); párrafo de ética listo |
-| jue 22-oct-2026 (M3 · v5.17; v5.16: vie 16-oct; v5.15: mié 14-oct) | Permiso CADI (mensaje 3 de MENTORES.md) — necesita la versión del CADI de 1.7 |
-| nov-dic 2026 | T-3/T-4 (mar 17-nov / jue 19-nov) → T-2 STROBE (lun 23-nov) → T-5 (mié 25-nov) → T-6 revisión Dr. Ciro (mar 1-dic) → T-7 formateo + gates (lun 7-dic) — v5.17 *(v5.16: 11/13-nov → 17-nov → 19-nov → 25-nov → 1-dic; v5.15: 9/11-nov → 13-nov → 17-nov → 23-nov → 27-nov)* |
-| vie 11-dic-2026 (T-8 · v5.17; v5.16: lun 7-dic; v5.15: jue 3-dic) | SUBMIT a JAAD International **solo si** hay nº de CEI/exención (gate 1) e inglés revisado (gate 2); si no, cascada a feb-2027 |
+| lun 12-oct-2026 (M1 · v5.18; v5.17: jue 8-oct; v5.16: vie 2-oct) | Pedir al Dr. Ciro, en la misma reunión de las 3 coautorías, la vía CEI (2.1 expedita/retrospectiva o 2.2 exención) y reunir los 10 documentos de la tabla |
+| **jue 22-oct-2026 (T-1 · d7 · v5.18; 🔴 el interno ≤ 30-sep queda 22 días atrás y ya no lo alcanza ningún día del régimen (D1 = lun 5-oct): presentar la solicitud fuera del plan cuanto antes o aceptar el retraso; v5.17: mar 20-oct; v5.16: mié 14-oct)** | Nº de CEI archivado **o solicitud de revisión expedita PRESENTADA ese día** (nº de cargo + fecha en 1.1); párrafo de ética listo |
+| lun 26-oct-2026 (M3 · v5.18; v5.17: jue 22-oct; v5.16: vie 16-oct) | Permiso CADI (mensaje 3 de MENTORES.md) — necesita la versión del CADI de 1.7 |
+| nov-dic 2026 | T-3/T-4 (jue 19-nov / lun 23-nov) → T-2 STROBE (mié 25-nov) → T-5 (vie 27-nov) → T-6 revisión Dr. Ciro (jue 3-dic) → T-7 formateo + gates (mié 9-dic) — v5.18 *(v5.17: 17/19-nov → 23-nov → 25-nov → 1-dic → 7-dic; v5.16: 11/13-nov → 17-nov → 19-nov → 25-nov → 1-dic)* |
+| mar 15-dic-2026 (T-8 · v5.18; v5.17: vie 11-dic; v5.16: lun 7-dic) | SUBMIT a JAAD International **solo si** hay nº de CEI/exención (gate 1) e inglés revisado (gate 2); si no, cascada a feb-2027 |
 | ene-2027 | PAUSA (Step 1) |
 | feb-2027 | Plan B del SUBMIT (si falló un gate): edición de inglés (Rising Scholars o editor) → envío JAAD International |
 

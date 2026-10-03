@@ -5,13 +5,14 @@
  * subtema), Librerías, Flashcards, Video Library (B&B Step 1/2 + Sketchy) y la
  * biblioteca High-Yield de Palmerton + lo que Palmerton dice de cada sistema.
  *
- * v5.17 (30-sep-2026): D1 = JUE 1-oct-2026 → D95 = lun 15-feb-2027 · Step 1 = BLOQUE PRINCIPAL (6h15/día L-V):
+ * v5.18 (3-oct-2026): D1 = LUN 5-oct-2026 → D95 = mié 17-feb-2027 · Step 1 = BLOQUE PRINCIPAL (6h15/día L-V):
  *  05:00 ANKI AM · 07:15 repaso anclado · 08:15 PRE-TEST 10Q · 09:00-11:00 DEEP PRIME · 11:00 30Q · 18:00 eval examen.
- *  Sáb y dom LIBRES (skip 25-dic, 31-dic, 1-ene). Examen target mar 16-feb-2027 (v5.17; v5.16: jue 11-feb; ventana original 25-29 ene superada). Los diaInicio apuntan
+ *  Sáb y dom LIBRES (skip 25-dic, 31-dic, 1-ene). Examen target jue 18-feb-2027 (v5.18; v5.17: mar 16-feb · v5.16: jue 11-feb; ventana original 25-29 ene superada). Los diaInicio apuntan
  *  al plan de 95 días de usmleStep1Daily.ts (fuente de verdad): Fase A D1-81 · B D82-86 · C D87-95.
- *  El D1 (jue 1-oct) es el UWSA1 baseline (vie 11 → lun 14 → mar 15 → mié 16 → jue 17 → lun 21 → mié 23 → lun 28-sep → jue 1-oct); el contenido arranca el vie 2-oct (D2).
- *  v5.17 (misma regla que v5.15/v5.16): CORRIMIENTO RÍGIDO — los 12 hitos corren con el plan y conservan su D#, así ningún NBME pierde días de contenido.
- *  Examen: D94 = vie 12-feb = última sesión de banco · sáb 13 y dom 14-feb libres · D95 = lun 15-feb = D-1 REAL (el examen es al día siguiente) → target MAR 16-FEB-2027; Prometric por agendar/reprogramar.
+ *  El D1 (lun 5-oct) es el UWSA1 baseline (vie 11 → lun 14 → mar 15 → mié 16 → jue 17 → lun 21 → mié 23 → lun 28-sep → jue 1-oct → lun 5-oct); el contenido arranca el mar 6-oct (D2).
+ *  v5.18 (misma regla que v5.15/v5.16/v5.17): CORRIMIENTO RÍGIDO — los 12 hitos corren con el plan y conservan su D#, así ningún NBME pierde días de contenido.
+ *  Examen: D94 = mar 16-feb = última sesión de banco · D95 = mié 17-feb = D-1 REAL (sin finde entre D94 y D95; el examen es al día siguiente) → target JUE 18-FEB-2027; Prometric por agendar/reprogramar.
+ *  (v5.17: D94 vie 12-feb · sáb 13/dom 14 libres · D95 lun 15-feb · examen mar 16-feb.)
  *
  * Prioridad: Step 1. Sistemas ordenados por peso real (preguntas uWorld) +
  * la serie High-Yield de Palmerton.
@@ -25,10 +26,10 @@ export const QB = {
 };
 
 export const PLAN_META = {
-  inicio: '2026-10-01', // v5.17 (30-sep): D1=jue 1-oct (UWSA1 baseline) · Step 1 = bloque PRINCIPAL (6h15/día L-V) · sáb y dom libres · examen target mar 16-feb-2027 (D95 lun 15-feb = D-1 real)
+  inicio: '2026-10-05', // v5.18 (3-oct): D1=lun 5-oct (UWSA1 baseline) · Step 1 = bloque PRINCIPAL (6h15/día L-V) · sáb y dom libres · examen target jue 18-feb-2027 (D95 mié 17-feb = D-1 real) · v5.17: D1 jue 1-oct · examen mar 16-feb
   bloque: '05:00 ANKI AM · 07:15 repaso anclado · 08:15 PRE-TEST 10Q · 09:00 DEEP PRIME 2h · 11:00 30Q consolidación · 18:00 eval modo examen (6h15/día)',
   metodo: 'Palmerton: ver vídeo High-Yield del sistema → leer (Library/First Aid) → Anki (FSRS) → preguntas en modo tutor → log de errores → APEX.',
-  nota: 'Prioridad Step 1 (v5.17 · corrimiento rígido: los hitos corren con el plan). D1 = jue 1-oct = UWSA1 baseline (movido del lun 28-sep) · D2 vie 2-oct Fundamentos/Pathoma · D6 Cardiovascular (jue 8-oct). Fase A contenido D1-81 · Fase B banco D82-86 · Fase C sprint D87-95 (D95 = lun 15-feb-2027 = D-1 real · examen target mar 16-feb).',
+  nota: 'Prioridad Step 1 (v5.18 · corrimiento rígido: los hitos corren con el plan). D1 = lun 5-oct = UWSA1 baseline (movido del jue 1-oct) · D2 mar 6-oct Fundamentos/Pathoma · D6 Cardiovascular (lun 12-oct). Fase A contenido D1-81 · Fase B banco D82-86 · Fase C sprint D87-95 (D95 = mié 17-feb-2027 = D-1 real · examen target jue 18-feb).',
 };
 
 export interface SistemaUSMLE {
@@ -36,7 +37,7 @@ export interface SistemaUSMLE {
   /** preguntas uWorld del sistema (peso real) */
   uworldQ: number;
   tier: 'CORE' | 'HIGH' | 'MED';
-  diaInicio: number; // día del plan en que empieza (Día 1 = jue 1-oct-2026 = UWSA1 · v5.17; lo regenera update_diainicio.js desde usmleStep1Daily.ts)
+  diaInicio: number; // día del plan en que empieza (Día 1 = lun 5-oct-2026 = UWSA1 · v5.18; lo regenera update_diainicio.js desde usmleStep1Daily.ts)
   /** subtemas uWorld top del sistema (nombre · nº preguntas) */
   uworldSubtemas: [string, number][];
   /** capítulo B&B Step 1 (nombre · nº vídeos · minutos) */
@@ -176,14 +177,14 @@ export const SISTEMAS: SistemaUSMLE[] = [
 ];
 
 /** LEGADO (sin uso en la UI): unidades del arranque de un plan anterior (empezaba por Cardio). El día a día
- *  real es DIAS de usmleStep1Daily.ts (D1-2 Fundamentos/Pathoma, D3-4 Inmuno, D5+ Cardio). Se conserva por compat. */
+ *  real es DIAS de usmleStep1Daily.ts (D1 UWSA1, D2-3 Fundamentos/Pathoma, D4-5 Inmuno, D6+ Cardio). Se conserva por compat. */
 export interface UnidadDia { dia: number; fecha: string; sistema: string; foco: string; bbVideo: { titulo: string; min: number }; uworld: string; sketchy?: string; palmerton?: { titulo: string; id: string }; flash: string; }
 export const UNIDADES: UnidadDia[] = [
-  { dia: 1, fecha: '2026-10-01', sistema: 'Cardiovascular', foco: 'Anatomía + Fisiología cardíaca (la base de todo cardio)', bbVideo: { titulo: 'B&B Step 1 · 01 - Cardiac Anatomy', min: 15 }, uworld: 'uWorld · Cardiovascular → Normal structure & function (pre-test 2-3Q)', sketchy: 'Sketchy Anatomy → Heart (Chambers / Coronary circulation)', palmerton: { titulo: 'Palmerton · Cómo los 260+ dominan el cardio', id: 'TYe-wrDuFqg' }, flash: 'uWorld Step 1 FlashCards → Cardiovascular (mazo del día)' },
-  { dia: 2, fecha: '2026-10-02', sistema: 'Cardiovascular', foco: 'Fisiología cardíaca II (PV loops, Wiggers, Starling)', bbVideo: { titulo: 'B&B Step 1 · 02 - Cardiac Physiology', min: 27 }, uworld: 'uWorld · Cardiovascular → Normal structure & function (10Q)', flash: 'FlashCards → Cardiovascular' },
-  { dia: 3, fecha: '2026-10-05', sistema: 'Cardiovascular', foco: 'Hemodinámica + regulación de la PA', bbVideo: { titulo: 'B&B Step 1 · 04-05 Blood Flow / BP Regulation', min: 32 }, uworld: 'uWorld · Cardiovascular → Hypertension (10Q)', flash: 'FlashCards → Cardiovascular' },
-  { dia: 4, fecha: '2026-10-06', sistema: 'Cardiovascular', foco: 'Cardiopatía isquémica (atero → SCA)', bbVideo: { titulo: 'B&B Step 1 · Cardiac Ischemia (01-06)', min: 64 }, uworld: 'uWorld · Cardiovascular → Coronary heart disease (10Q)', palmerton: { titulo: 'Palmerton · High Yield Cardiology', id: 'hOGhcie47nM' }, flash: 'FlashCards → Cardiovascular' },
-  { dia: 5, fecha: '2026-10-07', sistema: 'Cardiovascular', foco: 'Arritmias (potenciales de acción → taqui/bradi)', bbVideo: { titulo: 'B&B Step 1 · Arrhythmias (01-08)', min: 90 }, uworld: 'uWorld · Cardiovascular → Cardiac arrhythmias (10Q)', flash: 'FlashCards → Cardiovascular' },
+  { dia: 1, fecha: '2026-10-05', sistema: 'Cardiovascular', foco: 'Anatomía + Fisiología cardíaca (la base de todo cardio)', bbVideo: { titulo: 'B&B Step 1 · 01 - Cardiac Anatomy', min: 15 }, uworld: 'uWorld · Cardiovascular → Normal structure & function (pre-test 2-3Q)', sketchy: 'Sketchy Anatomy → Heart (Chambers / Coronary circulation)', palmerton: { titulo: 'Palmerton · Cómo los 260+ dominan el cardio', id: 'TYe-wrDuFqg' }, flash: 'uWorld Step 1 FlashCards → Cardiovascular (mazo del día)' },
+  { dia: 2, fecha: '2026-10-06', sistema: 'Cardiovascular', foco: 'Fisiología cardíaca II (PV loops, Wiggers, Starling)', bbVideo: { titulo: 'B&B Step 1 · 02 - Cardiac Physiology', min: 27 }, uworld: 'uWorld · Cardiovascular → Normal structure & function (10Q)', flash: 'FlashCards → Cardiovascular' },
+  { dia: 3, fecha: '2026-10-07', sistema: 'Cardiovascular', foco: 'Hemodinámica + regulación de la PA', bbVideo: { titulo: 'B&B Step 1 · 04-05 Blood Flow / BP Regulation', min: 32 }, uworld: 'uWorld · Cardiovascular → Hypertension (10Q)', flash: 'FlashCards → Cardiovascular' },
+  { dia: 4, fecha: '2026-10-08', sistema: 'Cardiovascular', foco: 'Cardiopatía isquémica (atero → SCA)', bbVideo: { titulo: 'B&B Step 1 · Cardiac Ischemia (01-06)', min: 64 }, uworld: 'uWorld · Cardiovascular → Coronary heart disease (10Q)', palmerton: { titulo: 'Palmerton · High Yield Cardiology', id: 'hOGhcie47nM' }, flash: 'FlashCards → Cardiovascular' },
+  { dia: 5, fecha: '2026-10-09', sistema: 'Cardiovascular', foco: 'Arritmias (potenciales de acción → taqui/bradi)', bbVideo: { titulo: 'B&B Step 1 · Arrhythmias (01-08)', min: 90 }, uworld: 'uWorld · Cardiovascular → Cardiac arrhythmias (10Q)', flash: 'FlashCards → Cardiovascular' },
 ];
 
 /** Devuelve la unidad del día según la fecha (YYYY-MM-DD). null si fuera de rango. */

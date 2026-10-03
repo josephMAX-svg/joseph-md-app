@@ -10,7 +10,7 @@
 
 | # | Canal | Dónde (dominios oficiales; rutas exactas A VERIFICAR) | Qué se busca | Alimenta |
 |---|---|---|---|---|
-| 1 | **Convocatoria y cronograma SERUMS 2027-I** | gob.pe/minsa (DIGEP-SERUMS: convocatoria, bases, cronograma de inscripción, fecha del ENCAPS) | **fecha y hora del examen**, sede, requisitos, nº de plazas, estructura del examen si cambia (100Q, 5 áreas) | dispara la siembra de la intensiva (`gen_encaps_intensivo_2027.js 2027-02-17 <fecha>` o `2027-02-22 <fecha>`, v5.17; en el diseño original `2027-02-01`), `study_metrics.exam_date`, escenario CORTO/MEDIO/LARGO |
+| 1 | **Convocatoria y cronograma SERUMS 2027-I** | gob.pe/minsa (DIGEP-SERUMS: convocatoria, bases, cronograma de inscripción, fecha del ENCAPS) | **fecha y hora del examen**, sede, requisitos, nº de plazas, estructura del examen si cambia (100Q, 5 áreas) | dispara la siembra de la intensiva (`gen_encaps_intensivo_2027.js 2027-02-19 <fecha>` o `2027-02-22 <fecha>`, v5.18 — v5.17: `2027-02-17` o `2027-02-22`; en el diseño original `2027-02-01`), `study_metrics.exam_date`, escenario CORTO/MEDIO/LARGO |
 | 2 | **Normas MINSA en El Peruano** | elperuano.pe (Normas Legales, sección Salud) y gob.pe/minsa (normas) | RM / NTS / Directivas nuevas o modificatorias: esquema de vacunación, anemia, adolescente/MCI, dengue, emergencias/triaje, telesalud, residuos, interculturalidad, HC/derechos | el código v3 de cada norma; **L6**: lo publicado sep-2026 → mar-2027 entra al barrido de febrero con prioridad |
 | 3 | **DGE: sala situacional + boletín epidemiológico semanal** | dge.gob.pe | brotes/alertas vigentes: dengue (escenarios, regiones), sarampión, tosferina, oropouche, leptospirosis, rabia, fiebre amarilla; alertas epidemiológicas | I-3 (vigilancia/brote/bloqueo), I-4 (transmisibles), II-2/II-3 (inmunoprevenibles); **L3**: lo que esté en sala situacional dic-2026 → mar-2027 es material predictivo |
 | 4 | **ESAVI / PNI (inmunizaciones)** | gob.pe/minsa (DGIESP-Inmunizaciones), DGE (ESAVI) | incorporaciones al esquema (VRS gestante ya cayó; vigilar hexavalente, VPH dosis única, nuevas campañas), cambios de intervalos, kit/ESAVI | II-3 (esquema + novedades gestante + ESAVI + cadena de frío) → filas nuevas en `CIFRAS_CRITICAS_2027-I.md` |
@@ -18,7 +18,7 @@
 
 ## 2) Rutina quincenal (desde el **jue 1-oct-2026**, 30 min, fuera de la hora ENCAPS)
 
-Fechas: 1-oct · 15-oct · 29-oct · 12-nov · 26-nov · 10-dic · 24-dic · 7-ene · 21-ene · **re-scan completo en la semana 1 de la intensiva** (fila `senales` — ⚠ v5.17 (30-sep): con el corrimiento RÍGIDO el lun 1-feb ya no sirve (es el D85 del Step 1, NBME 33); el vie 12-feb es el D94 (última sesión de banco), el sáb 13 y el dom 14-feb son libres, el lun 15-feb es el D95 = D-1 real (sesión mínima, nada de pantallas por la tarde) y el **mar 16-feb el examen Step 1**. La fase intensiva ENCAPS arranca DESPUÉS de ese examen → el re-scan pasa al **mié 17-feb-2027** (primer hábil tras el examen) o al **lun 22-feb** si Joseph elige ese D1 (el D1 exacto de la intensiva lo fija Joseph en `FASE_INTENSIVA_2027-I.md`; *v5.16: vie 12-feb o lun 15-feb · v5.15: mar 9-feb*) · y semanal en feb-mar.
+Fechas: 1-oct · 15-oct · 29-oct · 12-nov · 26-nov · 10-dic · 24-dic · 7-ene · 21-ene · **re-scan completo en la semana 1 de la intensiva** (fila `senales` — ⚠ v5.18 (3-oct): con el corrimiento RÍGIDO el lun 1-feb ya no sirve (es el D83 del Step 1, NBME 32); el vie 12-feb es el D92, el sáb 13 y el dom 14-feb son el último finde libre, el lun 15-feb es el D93, el mar 16-feb el D94 (última sesión de banco), el mié 17-feb el D95 = D-1 real (sesión mínima, nada de pantallas por la tarde) y el **jue 18-feb el examen Step 1**. La fase intensiva ENCAPS arranca DESPUÉS de ese examen → el re-scan pasa al **lun 22-feb-2027** con los dos D1 posibles: si la intensiva arranca el vie 19-feb, ese viernes es el pre-test 2026-II y el script siembra la fila `senales` en el lun 22 (lógica leída del script, `FASE_INTENSIVA_2027-I.md`, actualización del 3-oct); si arranca el lun 22-feb, es su D1 (el D1 exacto de la intensiva lo fija Joseph; *v5.17: mié 17-feb o lun 22-feb · v5.16: vie 12-feb o lun 15-feb · v5.15: mar 9-feb*) · y semanal en feb-mar.
 
 1. Canales 1-4 (canal 5 solo desde enero). Para cada uno: ¿hay algo nuevo desde la última fecha del log? Si no, se anota "sin novedad" (también es dato).
 2. Cada novedad → **una fila en el log de §4** con fecha, canal, señal (título + número/año de la norma o fecha del boletín), código v3, impacto (ALTO = entra al examen casi seguro / MEDIO / BAJO) y estado (VERIFICADA / A VERIFICAR).
@@ -46,7 +46,7 @@ Crea una tarea programada con el MCP scheduled-tasks (create_scheduled_task) con
 Confírmame el taskId creado y la próxima ejecución (nextRunAt) con list_scheduled_tasks.
 ```
 
-Notas: `0 7 1,15 * *` = días 1 y 15 de cada mes a las 07:00 hora local (Lima) → primera corrida **jue 1-oct-2026**; cron no expresa "cada 14 días", así que esta cadencia sustituye a la lista de fechas de §2 (desfase ≤3 días: 1-oct · 15-oct · 1-nov · 15-nov · 1-dic · 15-dic · 1-ene · 15-ene · 1-feb). La hora es indiferente (Joseph lee el delta cuando abre la app); si prefiere otra, cambiar solo el `7`. Para verla/borrarla: `list_scheduled_tasks` / `delete_scheduled_task encaps-senales-quincenal`.
+Notas: `0 7 1,15 * *` = días 1 y 15 de cada mes a las 07:00 hora local (Lima) → primera corrida **jue 15-oct-2026** si se crea antes de esa fecha (la del jue 1-oct pasó sin tarea creada; nota del 3-oct); cron no expresa "cada 14 días", así que esta cadencia sustituye a la lista de fechas de §2 (desfase ≤3 días: 1-oct · 15-oct · 1-nov · 15-nov · 1-dic · 15-dic · 1-ene · 15-ene · 1-feb). La hora es indiferente (Joseph lee el delta cuando abre la app); si prefiere otra, cambiar solo el `7`. Para verla/borrarla: `list_scheduled_tasks` / `delete_scheduled_task encaps-senales-quincenal`.
 
 **Opción B — `/loop` (solo mientras esa sesión de Claude Code siga abierta; si se cierra, muere; sirve para probar la rutina hoy, no para 5 meses).** Pegar:
 
@@ -80,7 +80,7 @@ Eres el vigía quincenal ENCAPS 2027-I de Joseph. Repositorio: D:\joseph-md-app.
 
 - **Última revisión:** 05-sep-2026 (arranque del log; ninguna búsqueda en vivo hecha en esta sesión: las filas de §4 salen de los materiales ya extraídos y quedan **A VERIFICAR** contra la fuente primaria).
 - **Convocatoria SERUMS 2027-I:** NO publicada al 05-sep-2026 (A VERIFICAR el 1-oct). Fecha del examen: desconocida; escenario de trabajo = CORTO (dom 14-mar-2027).
-- **Tarea programada quincenal:** NO creada al 12-sep-2026 (decisión y acción de Joseph: comando exacto en §2-bis, opción A `scheduled-tasks` con `cronExpression 0 7 1,15 * *` y el prompt de §2-ter; primera corrida jue 1-oct-2026).
+- **Tarea programada quincenal:** NO creada al 12-sep-2026 (decisión y acción de Joseph: comando exacto en §2-bis, opción A `scheduled-tasks` con `cronExpression 0 7 1,15 * *` y el prompt de §2-ter; creada ahora, primera corrida jue 15-oct-2026 — la del jue 1-oct ya pasó; 3-oct).
 
 ## 4) Log fechado (append-only; nuevas filas ARRIBA)
 
@@ -99,4 +99,4 @@ Eres el vigía quincenal ENCAPS 2027-I de Joseph. Repositorio: D:\joseph-md-app.
 ## 5) Qué NO es señal
 
 - Materiales de academias sin número/año de norma ("dicen que ahora…"), posts en redes, resúmenes de terceros sin fuente. Se anotan como "rumor" solo si dos canales lo repiten, y nunca generan preguntas hasta verificarse.
-- El 2026-II en sí: no es señal, es el pre-test (LISTA NEGRA hasta que se rinda: v5.17, primer viernes de la intensiva = vie 19-feb o vie 26-feb-2027; en el diseño original era el 5-feb).
+- El 2026-II en sí: no es señal, es el pre-test (LISTA NEGRA hasta que se rinda: v5.18, primer viernes de la intensiva = vie 19-feb o vie 26-feb-2027, tras el examen Step 1 del jue 18-feb; en el diseño original era el 5-feb).

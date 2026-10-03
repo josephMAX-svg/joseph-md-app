@@ -21,9 +21,9 @@ aquí se **consolida en formato legible** y se **guarda la data que extraen los 
 
 ## Ritmo de estudio (calendario real del usuario, hora Lima)
 - **USMLE Step 1** — **BLOQUE PRINCIPAL** desde la reestructuración del 31-ago (6h15/día L-V: 05:00 Anki AM · 07:15 repaso anclado ·
-  08:15 pre-test 10Q · 09:00 deep prime · 11:00 30Q · 18:00 eval). Régimen v5.17: D1 = jue 1-oct-2026 → D95 = lun 15-feb-2027 →
-  examen target mar 16-feb-2027 (`src/lib/usmleStep1Daily.ts`). *(Hasta el 31-ago era el bloque 16:15–17:15.)*
-- **ENCAPS** — 1h/día de banqueo (16:15–17:15 L-V, mantenimiento 2027-I: jue 1-oct-2026 → mié 10-feb-2027; `DATA/ENCAPS/PROTOCOLO_HORA_MANTENIMIENTO.md`).
+  08:15 pre-test 10Q · 09:00 deep prime · 11:00 30Q · 18:00 eval). Régimen v5.18: D1 = lun 5-oct-2026 → D95 = mié 17-feb-2027 (D-1 real) →
+  examen target jue 18-feb-2027 (`src/lib/usmleStep1Daily.ts`; v5.17: jue 1-oct → lun 15-feb, examen mar 16-feb). *(Hasta el 31-ago era el bloque 16:15–17:15.)*
+- **ENCAPS** — 1h/día de banqueo (16:15–17:15 L-V, mantenimiento 2027-I: lun 5-oct-2026 → vie 12-feb-2027, v5.18; v5.17: jue 1-oct → mié 10-feb; `DATA/ENCAPS/PROTOCOLO_HORA_MANTENIMIENTO.md`).
 - **MIR** — bloque diario 15:15–16:15 (prioridad España).
 - **Dermatología ↔ Research** — **interdiario alternando** (un día Derma, el siguiente
   Research), en el bloque de estudio que corresponda. Ambos se construyen día-a-día con

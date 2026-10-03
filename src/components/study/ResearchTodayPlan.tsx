@@ -19,7 +19,7 @@ import { serifTitle, InkColors, OBSIDIAN } from './researchTheme';
  * presentado como ENTRADA de cuaderno de laboratorio (fecha en el lomo, código del átomo, objetivo en serif,
  * ENTREGABLE + ARTEFACTO como sello del día). Mismo motor que UsmleTodayPlan: nav de día ◄►, sub-pestañas
  * HOY/Horario/7d/Temario, progreso REAL marcable (empieza 0%, localStorage clave 'research'),
- * interdiario con Derma. Navega los DOS ciclos (v5.17: ciclo 1 vie 2-oct-26→jue 25-feb-27 · ciclo 2 lun 1-mar→mié 1-sep-27, SR-1) con una
+ * interdiario con Derma. Navega los DOS ciclos (v5.18: ciclo 1 mar 6-oct-26→lun 1-mar-27 · ciclo 2 mié 3-mar→vie 3-sep-27, SR-1; v5.17: vie 2-oct→jue 25-feb · lun 1-mar→mié 1-sep) con una
  * numeración continua de d. Cada recurso de la cola abre un sitio REAL verificado.
  * (05-sep-2026) Muestra PISTA (C/T/CR/R/M/K/B/X), ARTEFACTO y chips de dependencia (p. ej. "requiere Derma d19-20").
  * (12-sep-2026) Chips-gate ("GATE 1/2" en T-7/T-8, seguimiento del caso, plan B de inglés) y CARGA REAL (`horas`) de los átomos

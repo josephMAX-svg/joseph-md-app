@@ -1,8 +1,8 @@
 /**
  * gen_encaps_mantenimiento_2027.js — siembra el ciclo ENCAPS MANTENIMIENTO 2027-I en Supabase.
  *
- * Régimen v5.17 (D1 = jue 2026-10-01; v5.16: lun 28-sep · v5.15: mié 23-sep · v5.14: lun 21-sep): ENCAPS = 1h/día (16:15-17:15 L-V) hasta el mié 10-feb-2027
- * (92 días L-V = 75 banqueo1h + 17 mini_sim, skip 25-dic/31-dic/1-ene; sábado y domingo LIBRES; régimen MANTENIMIENTO_2027-1 v6.15, backup study_schedule_bk_0930). El bloque principal de la
+ * Régimen v5.18 (D1 = lun 2026-10-05; v5.17: jue 1-oct → mié 10-feb · v5.16: lun 28-sep · v5.15: mié 23-sep · v5.14: lun 21-sep): ENCAPS = 1h/día (16:15-17:15 L-V) hasta el vie 12-feb-2027
+ * (92 días L-V = 75 banqueo1h + 17 mini_sim, skip 25-dic/31-dic/1-ene; sábado y domingo LIBRES; régimen MANTENIMIENTO_2027-1 v6.16, backup study_schedule_bk_1003; v5.17: v6.15 / bk_0930). El bloque principal de la
  * mañana es USMLE Step 1. Feb-mar 2027: fase intensiva (se re-siembra entonces con modo INTENSIVO).
  * EXAMEN ENCAPS 2027-I: fines de marzo 2027 (fecha real = convocatoria SERUMS 2027-I, A VERIFICAR).
  *
@@ -14,14 +14,14 @@
  *       - SECUNDARIO (temas_secundarios, 4-5Q de las 20-25Q): rota los 17 códigos de cola larga.
  *   · vie = mini-simulacro 25Q mixto cronometrado (72 s/Q) con la receta fija en extra
  *     ({II:8,I:7,V:5,III:3,IV:2, viñeta 50%, ≥10Q críticos, ≥5Q fallos previos}) + 2 códigos de
- *     cola larga en temas_secundarios (17 viernes, vie 2-oct → vie 5-feb → cada código cae ~2×). sim_n = dia (study_sim_scores).
+ *     cola larga en temas_secundarios (17 viernes, vie 9-oct → vie 12-feb en v5.18 → cada código cae ~2×; v5.17: vie 2-oct → vie 5-feb). sim_n = dia (study_sim_scores).
  *
  * Subtemas y tiers se leen de src/lib/encapsCobertura.ts (NO se inventan); ciclo/sub-ejes/cola larga
  * viven en _encaps_ciclo_v3.js (compartido con gen_encaps_semana.js).
  *
  * Uso:
- *   node DATA/_scripts/gen_encaps_mantenimiento_2027.js [D1=2026-10-01] [--bk study_schedule_bk_YYYYMMDD]
- *        [--override <json|ruta.json>] [--sin-acumulado] [--bk-reemplazar] [--hasta 2027-02-10] [--out <ruta.sql>]
+ *   node DATA/_scripts/gen_encaps_mantenimiento_2027.js [D1=2026-10-05] [--bk study_schedule_bk_YYYYMMDD]
+ *        [--override <json|ruta.json>] [--sin-acumulado] [--bk-reemplazar] [--hasta 2027-02-12] [--out <ruta.sql>]
  *
  *   --override: {"semanas":{"<lunes ISO>":{"principal":["I-3","V-2","II-5","IV-1"],"secundarios":["II-2","I-10","V-6","II-6"],"motivo":"…"}}}
  *               (lo emite gen_encaps_semana.js como SEMANAS/override_<lunes>.json; sustituye SOLO esa semana).
@@ -47,10 +47,10 @@ const ACUMULADO = path.join(ROOT, 'DATA', 'ENCAPS', 'TRACKING_ERRORES', 'SEMANAS
 
 // ── argumentos ──
 const argv = process.argv.slice(2);
-const D1 = argv.find((a) => /^20\d\d-\d\d-\d\d$/.test(a)) || '2026-10-01';
+const D1 = argv.find((a) => /^20\d\d-\d\d-\d\d$/.test(a)) || '2026-10-05'; // v5.18: lun 5-oct (v5.17: jue 1-oct)
 const opt = (k, def) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] ? argv[i + 1] : def; };
 const has = (k) => argv.includes(k);
-const HASTA = opt('--hasta', '2027-02-10'); // v5.17 (30-sep): el fin se ALARGA 3 hábiles más (v5.16: 5-feb · v5.15: 2-feb · v5.14: 29-ene) para conservar los 92 días del mantenimiento — "no perder sesiones" (Joseph); sigue antes del examen Step 1 (mar 16-feb-2027; v5.16: jue 11-feb)
+const HASTA = opt('--hasta', '2027-02-12'); // v5.18 (3-oct): vie 12-feb (+2 hábiles; 92 días intactos) · v5.17 (30-sep): mié 10-feb · el fin se ALARGA 3 hábiles más (v5.16: 5-feb · v5.15: 2-feb · v5.14: 29-ene) para conservar los 92 días del mantenimiento — "no perder sesiones" (Joseph); sigue antes del examen Step 1 (v5.18: jue 18-feb-2027; v5.17: mar 16-feb; v5.16: jue 11-feb)
 const hoyLima = () => new Date(Date.now() - 5 * 3600 * 1000).toISOString().slice(0, 10);
 const BK = opt('--bk', `study_schedule_bk_${hoyLima().replace(/-/g, '')}`);
 const BK_REEMPLAZAR = has('--bk-reemplazar');

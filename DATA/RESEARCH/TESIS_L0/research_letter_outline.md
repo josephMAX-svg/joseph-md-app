@@ -100,20 +100,21 @@ larga: Actas/Anais), Vancouver, todas `verified`.
 
 Fuente de las celdas verificadas: hoja "ESTADÍSTICA APA" de `D:\motor_apex\datos_tesis_acne.xlsx` (Tablas 1 y 4; n = 316; Shapiro-Wilk
 p < .001 en todas las variables → Spearman; rs por dominio CADI 0,34-0,39). Las celdas "A VERIFICAR → T-4" se calculan desde la hoja
-BASE DATOS en T-4 (jue 19-nov-2026 en v5.17; v5.16: vie 13-nov), nunca se estiman.
+BASE DATOS en T-4 (lun 23-nov-2026 en v5.18; v5.17: jue 19-nov), nunca se estiman.
 
 Nota al pie: n con datos faltantes por variable (STROBE 14b); cortes del CADI; IGA según escala FDA.
 
-## 4. Plan de trabajo (átomos de 45', interdiarios · fechas v5.17 del 30-sep-2026 (el ciclo 1 de Research corre +4 hábiles respecto a v5.16 porque el D1 del régimen, jue 1-oct, es día Derma; corrimiento RÍGIDO) — orden v5.10b; ver `etica.md` §5)
-1. **T-1 · mar 20-oct-2026** — ética: nº de CEI archivado o solicitud expedita PRESENTADA ese día (gate de T-7/T-8). 🔴 Cae 20 días después del límite interno “solicitud ≤ 30-sep”.
-2. **T-3 · mar 17-nov** — Intro + Methods (≤250 palabras) al límite estricto. **T-4 · jue 19-nov** — abrir la base → Tabla 1 + Figura 1
+## 4. Plan de trabajo (átomos de 45', interdiarios · fechas v5.18 del 3-oct-2026 (el ciclo 1 de Research corre +2 hábiles respecto a v5.17 porque el D1 del régimen pasa al lun 5-oct, que vuelve a ser día Derma; corrimiento RÍGIDO) — orden v5.10b; ver `etica.md` §5)
+1. **T-1 · jue 22-oct-2026** — ética: nº de CEI archivado o solicitud expedita PRESENTADA ese día (gate de T-7/T-8). 🔴 Cae 22 días después del límite interno “solicitud ≤ 30-sep”.
+2. **T-3 · jue 19-nov** — Intro + Methods (≤250 palabras) al límite estricto. **T-4 · lun 23-nov** — abrir la base → Tabla 1 + Figura 1
    (matplotlib/seaborn, 300 dpi, sobria); UNA va al texto, la otra al apéndice.
-3. **T-2 · lun 23-nov** — STROBE 22 ítems sobre el borrador v1: lo que no cabe en 500-600 palabras pasa al apéndice «versión larga».
-4. **T-5 · mié 25-nov** — Discussion (≤150 palabras) + apéndice largo (800 / 3 / 10) + cascada con APC verificado (§1).
+3. **T-2 · mié 25-nov** — STROBE 22 ítems sobre el borrador v1: lo que no cabe en 500-600 palabras pasa al apéndice «versión larga».
+4. **T-5 · vie 27-nov** — Discussion (≤150 palabras) + apéndice largo (800 / 3 / 10) + cascada con APC verificado (§1).
 5. Búsqueda de ≤5 referencias (OpenAlex/PubMed) → `citation_verifier.py` → solo `verified` (las 6-10 restantes solo en el apéndice).
-6. **T-6 · mar 1-dic** — revisión Dr. Ciro (coautoría, ICMJE/CRediT). **T-7 · lun 7-dic** — Guide for Authors de JAAD Intl leída
+6. **T-6 · jue 3-dic** — revisión Dr. Ciro (coautoría, ICMJE/CRediT). **T-7 · mié 9-dic** — Guide for Authors de JAAD Intl leída
    con Chrome ese día + formateo + **gate 1** (nº CEI / exención) + **gate 2** (inglés revisado por Rising Scholars o editor).
-7. **T-8 · vie 11-dic** — SUBMIT a JAAD International si pasan los dos gates; si no, seguimiento del CEI y envío en feb-2027 (cascada).
+7. **T-8 · mar 15-dic** — SUBMIT a JAAD International si pasan los dos gates; si no, seguimiento del CEI y envío en feb-2027 (cascada).
+*(v5.17, 30-sep: T-1 mar 20-oct · T-3 mar 17-nov · T-4 jue 19-nov · T-2 lun 23-nov · T-5 mié 25-nov · T-6 mar 1-dic · T-7 lun 7-dic · T-8 vie 11-dic.)*
 *(v5.16, 26-sep: T-1 mié 14-oct · T-3 mié 11-nov · T-4 vie 13-nov · T-2 mar 17-nov · T-5 jue 19-nov · T-6 mié 25-nov · T-7 mar 1-dic · T-8 lun 7-dic.)*
 *(v5.15, 22-sep: T-1 lun 12-oct · T-3 lun 9-nov · T-4 mié 11-nov · T-2 vie 13-nov · T-5 mar 17-nov · T-6 lun 23-nov · T-7 vie 27-nov · T-8 jue 3-dic.)*
 

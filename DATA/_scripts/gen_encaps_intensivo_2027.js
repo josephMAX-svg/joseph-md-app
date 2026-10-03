@@ -2,10 +2,10 @@
  * gen_encaps_intensivo_2027.js — siembra la FASE INTENSIVA ENCAPS 2027-I (feb → D-1 del examen) en Supabase.
  *
  * Contexto (régimen v5.6, PRONOSTICO_WALKFORWARD_2027-1_v3.md §6 Fase B + FASE_INTENSIVA_2027-I.md):
- *   · 1-oct-2026 → 10-feb-2027: MANTENIMIENTO 1h/día (gen_encaps_mantenimiento_2027.js, 92 días, dia 1-92 · v5.17;
- *     el fin se AMPLIÓ (v5.14 29-ene → v5.15 2-feb → v5.16 5-feb → v5.17 10-feb) para no perder sesiones).
- *   · Feb-2027 → D-1: INTENSIVA — ENCAPS vuelve a bloque principal (el USMLE Step 1 se rinde el mar 16-feb-2027 en v5.17;
- *     arranque propuesto: mié 17-feb o lun 22-feb, decisión de Joseph; v5.16: examen jue 11-feb, arranque vie 12-feb o lun 15-feb).
+ *   · 5-oct-2026 → 12-feb-2027: MANTENIMIENTO 1h/día (gen_encaps_mantenimiento_2027.js, 92 días, dia 1-92 · v5.18;
+ *     el fin se AMPLIÓ (v5.14 29-ene → v5.15 2-feb → v5.16 5-feb → v5.17 10-feb → v5.18 12-feb) para no perder sesiones).
+ *   · Feb-2027 → D-1: INTENSIVA — ENCAPS vuelve a bloque principal (el USMLE Step 1 se rinde el jue 18-feb-2027 en v5.18;
+ *     arranque propuesto: vie 19-feb o lun 22-feb, decisión de Joseph; v5.17: examen mar 16-feb, arranque mié 17-feb o lun 22-feb).
  *     Se siembra con modo='INTENSIVO' y dia = 93… (continúa la cuenta L-V desde la base del mantenimiento,
  *     así el cálculo de "día de hoy" de la app no cambia). v5.14 (19-sep): la app YA renderiza modo='INTENSIVO'
  *     (encapsPlan.ts: regimenDe() lee study_metrics.extra.d1/dias_ciclo y el total crece con max(dia) de study_schedule;
@@ -14,7 +14,7 @@
  *
  * Esqueleto:
  *   · Semana 1: lun = re-scan de señales (QX Tendencias, DGE, RM/NTS sep-2026→, convocatoria) + mar-jue loop de
- *     calentamiento (I-3, V-2, II-3, sin material nuevo) + el primer VIERNES de la intensiva = PRE-TEST 2026-II (PRETEST_2026-II.md; v5.17: vie 19-feb si arranca el mié 17-feb — con el D1 default lun 22-feb el script lo siembra el vie 26-feb, mientras el runner --pretest tiene default vie 19-feb: alinear al decidir el arranque; v5.16: vie 12-feb si arrancaba ese día, si no vie 19-feb).
+ *     calentamiento (I-3, V-2, II-3, sin material nuevo) + el primer VIERNES de la intensiva = PRE-TEST 2026-II (PRETEST_2026-II.md; v5.18: vie 19-feb si la intensiva arranca ese mismo vie 19-feb — con el D1 default lun 22-feb el script lo siembra el vie 26-feb, mientras el runner --pretest tiene default vie 19-feb: alinear al decidir el arranque; v5.17: vie 19-feb si arrancaba el mié 17-feb).
  *   · Semanas 2-5 (16 slots lun-jue): barrido de los 8 críticos v3 al 100 % (2 pasadas por sub-ejes) + drill diario
  *     de cifras. Con --pretest <json> el orden y el nº de slots por código se re-calculan por ÍNDICE DE BRECHA.
  *   · Semanas 6-7: rebotes II-1 / II-11 / II-8 + watch-list (cola larga v3) + repaso multi-temporal del registro.
@@ -27,11 +27,11 @@
  *
  * Uso:
  *   node DATA/_scripts/gen_encaps_intensivo_2027.js [D1=2027-02-22] [EXAMEN=2027-03-26]
- *        [--base 2026-10-01] [--bk study_schedule_bk_intensivo] [--pretest ruta.json] [--sims ruta.json] [--apply-note]
- *   · D1      = primer día de la intensiva (lunes). Default 2027-02-22 (v5.17: lun 22-feb = día 100 de la cuenta ENCAPS; la alternativa mié 17-feb = día 97, el día siguiente al examen Step 1 del mar 16-feb, se pasa por argv — decisión de Joseph; v5.16: lun 15-feb = día 98 / vie 12-feb = día 97).
+ *        [--base 2026-10-05] [--bk study_schedule_bk_intensivo] [--pretest ruta.json] [--sims ruta.json] [--apply-note]
+ *   · D1      = primer día de la intensiva (lunes). Default 2027-02-22 (v5.18: lun 22-feb = día 98 de la cuenta ENCAPS; la alternativa vie 19-feb = día 97, el día siguiente al examen Step 1 del jue 18-feb, se pasa por argv — decisión de Joseph; v5.17: lun 22-feb = día 100 / mié 17-feb = día 97).
  *   · EXAMEN  = fecha ASUMIDA del examen (default 2027-03-26). ⚠ La real sale de la convocatoria SERUMS 2027-I
  *               (SENALES_2027-I.md). 25/26-mar-2027 son Jueves/Viernes Santo → se saltan como feriados.
- *   · --base  = D1 del mantenimiento (para continuar la numeración `dia`). Default 2026-10-01 (v5.17; v5.16: 2026-09-28).
+ *   · --base  = D1 del mantenimiento (para continuar la numeración `dia`). Default 2026-10-05 (v5.18; v5.17: 2026-10-01; v5.16: 2026-09-28).
  *   · --pretest = JSON de la ronda PRETEST_2026-II (export del runner) → re-ordena las semanas 2-5 por brecha.
  *   · --sims  = JSON [{fecha?, label, fuente, url?}] para sustituir la lista de simulacros de viernes.
  * Emite DATA/_scripts/_encaps_intensivo_2027.sql (backup → delete SOLO modo='INTENSIVO' → insert).
@@ -46,10 +46,10 @@ const { CRITICOS_V3, REBOTE_V3, COLA_LARGA, SUB_EJES, VECTOR_V3, WD, SKIP } = ci
 // ── argumentos ──
 const argv = process.argv.slice(2);
 const fechasArg = argv.filter((a) => /^20\d\d-\d\d-\d\d$/.test(a));
-const D1 = fechasArg[0] || '2027-02-22'; // v5.17: lun 22-feb-2027; alternativa mié 17-feb (día siguiente al examen del mar 16-feb) por argv — decisión de Joseph. v5.16: 2027-02-15 · v5.15: 2027-02-01
+const D1 = fechasArg[0] || '2027-02-22'; // v5.18: lun 22-feb-2027; alternativa vie 19-feb (día siguiente al examen del jue 18-feb) por argv — decisión de Joseph. v5.17: lun 22-feb / mié 17-feb. v5.16: 2027-02-15 · v5.15: 2027-02-01
 const EXAMEN = fechasArg[1] || '2027-03-26';
 const opt = (k, def) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] ? argv[i + 1] : def; };
-const BASE = opt('--base', '2026-10-01');   // v5.17 (30-sep): D1 del mantenimiento = jue 1-oct (92 días hasta el mié 10-feb; v5.16: lun 28-sep → vie 5-feb) → la intensiva continúa la numeración desde el día 93 (los hábiles sin fila entre el jue 11 y el mar 16-feb = días 93-96 cuentan). ⚠ v5.17: el Step 1 cae el mar 16-feb (lun 15-feb = D-1) → la intensiva debería arrancar el mié 17-feb (día siguiente al examen) o el lun 22-feb (decisión de Joseph; pasar la fecha por argv)
+const BASE = opt('--base', '2026-10-05');   // v5.18 (3-oct): D1 del mantenimiento = lun 5-oct (92 días hasta el vie 12-feb; v5.17: jue 1-oct → mié 10-feb; v5.16: lun 28-sep → vie 5-feb) → la intensiva continúa la numeración desde el día 93 (los hábiles sin fila entre el lun 15 y el jue 18-feb = días 93-96 cuentan). ⚠ v5.18: el Step 1 cae el jue 18-feb (mié 17-feb = D-1) → la intensiva debería arrancar el vie 19-feb (día siguiente al examen) o el lun 22-feb (decisión de Joseph; pasar la fecha por argv)
 const BK = opt('--bk', 'study_schedule_bk_intensivo');
 const PRETEST = opt('--pretest', null);
 const SIMS_ARG = opt('--sims', null);
@@ -288,5 +288,5 @@ const feriadosDentro = plan.filter((p) => SKIP_INT.has(p.fecha)).length;
 console.log('OK →', out, '·', rows.length, 'días ·', plan[0].fecha, '→', plan[N - 1].fecha, '· dia', offset + 1, '-', offset + N, '· examen asumido', EXAMEN);
 console.log('tipos:', JSON.stringify(tipos), '· fines de semana dentro:', finde, '· feriados dentro:', feriadosDentro, '· viernes:', plan.filter((p) => p.dow === 5).length);
 console.log('barrido semanas 2-5 (16 slots):', colaCriticos.join(' · '));
-console.log('offset mantenimiento:', offset, '(v5.17: 92 días de mantenimiento hasta el mié 10-feb con BASE=2026-10-01; el día de la intensiva = offset + 1 → día 97 mié 17-feb o día 100 lun 22-feb según el D1 elegido)');
+console.log('offset mantenimiento:', offset, '(v5.18: 92 días de mantenimiento hasta el vie 12-feb con BASE=2026-10-05; el día de la intensiva = offset + 1 → día 97 vie 19-feb o día 98 lun 22-feb según el D1 elegido)');
 if (finde || feriadosDentro) throw new Error('el plan contiene fines de semana o feriados');

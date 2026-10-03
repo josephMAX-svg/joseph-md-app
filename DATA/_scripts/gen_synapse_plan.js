@@ -18,10 +18,10 @@
 // ("auditar con Joseph: ✓ si ya hecho") porque F0 y la minifase corrieron jun-ago (progreso solo en localStorage).
 //
 // v5.10-b (12-sep-2026, vacío 5 de gaps_v3b_synapse.json — "semanas 13-20 sin misión"): el plan deja de terminar en
-// la sem 12 y cubre hasta el VIE 22-ENE-2027 (fin del Step 1 menos el taper de la semana del examen; v5.17: hasta el mar 9-feb-2027 = D91; v5.16: hasta el vie 5-feb-2027 = D92):
-//   · sem 12 gana vie 4-dic, sáb 5-dic (PC = SHIP S12, antes fuera del plan) y dom 6-dic (2 A-units de cierre F1; v5.17: mar 22 y mié 23-dic —con el
-//     D1 en jueves las A-units llegan 3 hábiles más tarde y ya caen en la sem 13 por fecha; SHIP S12 = sáb 26-dic—; v5.16: vie 18, sáb 19 y dom 20-dic);
-//   · F2 · sem 13-19 (lun 21-dic → mar 9-feb, v5.17; v5.16: → vie 5-feb) = ANTHROPIC ACADEMY RESTANTE + prep CCA-F a 30': Building with the
+// la sem 12 y cubre hasta el VIE 22-ENE-2027 (fin del Step 1 menos el taper de la semana del examen; v5.18: hasta el vie 12-feb-2027 = D92; v5.17: mar 9-feb-2027 = D91; v5.16: vie 5-feb-2027 = D92):
+//   · sem 12 gana vie 4-dic, sáb 5-dic (PC = SHIP S12, antes fuera del plan) y dom 6-dic (2 A-units de cierre F1; v5.18: sáb 26-dic y lun 28-dic
+//     —la 2.ª ya cae en la sem 13 por fecha; SHIP S12 = sáb 2-ene—; v5.17: mar 22 y mié 23-dic, SHIP S12 sáb 26-dic; v5.16: vie 18, sáb 19 y dom 20-dic);
+//   · F2 · sem 13-19 (lun 28-dic → vie 12-feb, v5.18; v5.17: lun 21-dic → mar 9-feb; v5.16: → vie 5-feb) = ANTHROPIC ACADEMY RESTANTE + prep CCA-F a 30': Building with the
 //     Claude API (12 módulos) · MCP restante + MCP Advanced Topics · agent skills/subagentes restantes · Claude Code in
 //     Action restante · AI Capabilities and Limitations · Claude Cowork · los 3 ensayos de context engineering · repaso
 //     por los 5 dominios del CCA-F · simulacro (quizzes) · cierre. Temarios en curricula/_extracted.json (5-sep + 12-sep).
@@ -38,7 +38,7 @@ const VCAT = JSON.parse(fs.readFileSync(path.join(ROOT, 'DATA/SYNAPSE/vibecoding
 const VIBE = VCAT.proyectos;
 const TAPER = VCAT.taper || []; // S13-S20 (v5.10-b): mantenimiento/deload; el PC del sábado los referencia
 if (VIBE.length !== 12) throw new Error('vibecoding_proyectos.json debe tener 12 proyectos');
-const FIN_PLAN = '2027-02-09'; // v5.17 (30-sep-2026): mar 9-feb-2027 (= D91 del Step 1; con D1 en jueves las 110 A-units — que también usan los sábados — terminan un hábil antes que el +3 exacto: nada se recorta). v5.16: vie 5-feb. Con D1 = lun 28-sep las 110 A-units corren +3 hábiles más (nada se fusiona; el domingo no cuenta): 30' de lectura, sin PC. v5.15: lun 1-feb. v5.14: vie 29-ene · v5.13: mar 26-ene · v5.12: lun 25-ene. Se comprueba al final.
+const FIN_PLAN = '2027-02-12'; // v5.18 (3-oct-2026): vie 12-feb-2027 (= D92 del Step 1; con D1 lun 5-oct las 110 A-units Lun-Sáb terminan aquí) · v5.17 (30-sep-2026): mar 9-feb · mar 9-feb-2027 (= D91 del Step 1; con D1 en jueves las 110 A-units — que también usan los sábados — terminan un hábil antes que el +3 exacto: nada se recorta). v5.16: vie 5-feb. Con D1 = lun 28-sep las 110 A-units corren +3 hábiles más (nada se fusiona; el domingo no cuenta): 30' de lectura, sin PC. v5.15: lun 1-feb. v5.14: vie 29-ene · v5.13: mar 26-ene · v5.12: lun 25-ene. Se comprueba al final.
 const SKIP_FIJOS = new Set(['2026-12-25', '2026-12-31', '2027-01-01']); // feriados libres (misma regla que remap_inicio.js)
 // v5.7: fechas REALES de cada proyecto del vibecoding (ini/fin/ship) leídas de src/lib/vibecodingPlan.ts,
 // que las calcula sobre días hábiles desde D1. Sin esto, el PC del sábado anunciaba el SHIP de un proyecto
@@ -227,12 +227,12 @@ function buildAUnits() {
   push('Claude Code docs — ' + ccDoc(13).modulo, 'Give Claude a way to verify its work · Explore first, then plan, then code · Add an adversarial review step · Avoid common failure patterns → CIERRE F1: relee tu synapse-journal de 12 semanas y anota los 3 hábitos que faltan.', ccDoc(13).url);
   if (A.length !== 70) throw new Error('Total A-units F0+F1 debe ser 70, hay ' + A.length);
 
-  // v5.10-b · cierre de la sem 12 (v5.17: mar 22 + mié 23-dic, ya en la sem 13 por fecha; v5.16: vie 18-dic + sáb 19-dic; en v5.10-b vie 4 + sáb 5-dic, antes fuera del plan): 2 A-units F1 con lecciones reales aún no usadas
+  // v5.10-b · cierre de la sem 12 (v5.18: sáb 26-dic + lun 28-dic, la 2.ª ya en la sem 13 por fecha; v5.17: mar 22 + mié 23-dic; v5.16: vie 18-dic + sáb 19-dic; en v5.10-b vie 4 + sáb 5-dic, antes fuera del plan): 2 A-units F1 con lecciones reales aún no usadas
   push('Academy — ' + cur('academy-cc-in-action').nombre, `"${acad('academy-cc-in-action', 5).titulo}" · "${acad('academy-cc-in-action', 6).titulo}" — cierra S12: el capstone se VERIFICA (verify_vibecoding.js), no se recuerda.`, cur('academy-cc-in-action').url);
-  push('Claude Code docs — ' + ccDoc(4).modulo, ccDoc(4).titulo + '. Repaso antes del taper: qué hook automatiza cada sensor (SessionEnd → telemetría Anki; PostToolUse → verificar_planes). SHIP S12 en el PC del sábado (v5.17: sáb 26-dic).', ccDoc(4).url);
+  push('Claude Code docs — ' + ccDoc(4).modulo, ccDoc(4).titulo + '. Repaso antes del taper: qué hook automatiza cada sensor (SessionEnd → telemetría Anki; PostToolUse → verificar_planes). SHIP S12 en el PC del sábado (v5.18: sáb 2-ene · v5.17: sáb 26-dic).', ccDoc(4).url);
   if (A.length !== 72) throw new Error('Total A-units F0+F1 (+cierre sem 12) debe ser 72, hay ' + A.length);
 
-  // F2 · ANTHROPIC ACADEMY RESTANTE + PREP CCA-F (sem 13-19 · v5.17: lun 21-dic → mar 9-feb; v5.16: → vie 5-feb · 38 A-units · 30'/día · taper del Step 1)
+  // F2 · ANTHROPIC ACADEMY RESTANTE + PREP CCA-F (sem 13-19 · v5.18: lun 28-dic → vie 12-feb; v5.17: lun 21-dic → mar 9-feb; v5.16: → vie 5-feb · 38 A-units · 30'/día · taper del Step 1)
   // Temarios reales: academy-claude-api (12 módulos, 5-sep) · academy-mcp 7-13 · academy-mcp-advanced (12-sep) ·
   // academy-agent-skills 3-6 · academy-subagents 4 · academy-cc-in-action 10-13 · academy-ai-capabilities (12-sep) ·
   // academy-cowork (12-sep) · 3 ensayos de Anthropic Engineering · repaso por dominio del CCA-F (pesos según CALIDAD/Synapse.md:
@@ -290,7 +290,7 @@ function buildAUnits() {
   push('Prep CCA-F · dominios 3-4 (repaso)', 'Tool Design & MCP (18%) = quickstart MCP + tu servidor de S9 · Prompt Engineering (20%) = Prompt Engineering Interactive Tutorial (caps 1-3, repaso rápido).', U.promptTut);
   push('Prep CCA-F · dominio 5 (repaso) + Claude Code docs — ' + ccDoc(14).modulo, `Context Management (15%) = memoria (CLAUDE.md, /compact) + el ensayo de context engineering · ${ccDoc(14).modulo} + ${ccDoc(15).modulo} (páginas reales, contenido por leer).`, ccDoc(14).url);
   push('Prep CCA-F · simulacro', `Repite en modo examen (sin apuntes) el "${api(11).modulo}" de Building with the Claude API y el "${acad('academy-cc-in-action', 14).titulo}" de Claude Code in Action; anota % por dominio en el journal.`, apiU);
-  push('Prep CCA-F · cierre F2', 'Página oficial de la certificación CCA-F: A VERIFICAR (12-sep-2026 no aparece enlazada en academy.claude.com ni en anthropic.skilljar.com) → buscarla en la Academy, anotar formato/precio/fecha y decidir fecha post-Step 1 (feb-2027). CIERRE F2 (último día del motor, mar 9-feb en v5.17): relee el journal S13-S19 y escribe 3 líneas para la reestructuración de febrero (IA vs ENCAPS intensivo). Desde mañana: solo Step 1.', U.academy, { real: false });
+  push('Prep CCA-F · cierre F2', 'Página oficial de la certificación CCA-F: A VERIFICAR (12-sep-2026 no aparece enlazada en academy.claude.com ni en anthropic.skilljar.com) → buscarla en la Academy, anotar formato/precio/fecha y decidir fecha post-Step 1 (feb-2027). CIERRE F2 (último día del motor, vie 12-feb en v5.18): relee el journal S13-S19 y escribe 3 líneas para la reestructuración de febrero (IA vs ENCAPS intensivo). Desde mañana: solo Step 1.', U.academy, { real: false });
   if (A.length !== 110) throw new Error('Total A-units (F0 46 + F1 26 + F2 38) debe ser 110, hay ' + A.length);
   return A;
 }
@@ -331,7 +331,7 @@ function bloqueB(wd, semana) {
 }
 
 // ─── Bloque C (5', lectura móvil) por día de semana ───
-function bloqueC(wd, semana) {
+function bloqueC(wd, semana, fecha) {
   const C = (material, leccion, url, opts = {}) => ({ tag: 'C', min: 5, formato: 'lectura', material, leccion, url: url ? assertUrl(url) : undefined, real: opts.real !== false });
   if (wd === 'Lun') {
     // v5.10-b: sem 13-19 siguen con los capítulos reales restantes (8 Customizing · 10 Internals · Apéndice C Comandos)
@@ -364,6 +364,12 @@ function bloqueC(wd, semana) {
     const m = MAP[semana];
     if (m) return C(m[0], m[1], m[2]);
     return C('Simon Willison — serie Prompt injection', 'Siguiente artículo de la serie (o un número atrasado de The Batch)', U.willison, { real: false });
+  }
+  // v5.18 (3-oct): si el JUEVES de esta semana es feriado (31-dic), su capítulo de Automate se lee el SÁBADO (hueco de comodín)
+  // en vez de perderse (v5.16/v5.17 perdían el cap. 13; con D1 en lunes se habría perdido el 12) → los 19 capítulos quedan en el plan.
+  if (wd === 'Sáb' && fecha) {
+    const jue = new Date(new Date(fecha + 'T12:00:00Z').getTime() - 2 * 864e5).toISOString().slice(0, 10);
+    if (SKIP_FIJOS.has(jue)) { const cap = autoCap(semana - 1); if (cap) return C('Automate the Boring Stuff (3ª ed.)', `5' del cap. ${cap.n}: "${cap.titulo}"`, cap.url); }
   }
   if (wd === 'Sáb') return C('Comodín de lectura', 'Termina la lectura que quedó a medias esta semana. Nada nuevo.', undefined, { real: false });
   return null;
@@ -427,6 +433,7 @@ function bloqueDom(semana) {
 //   semana de ese día (Pro Git lun · Dwarkesh mar · PyTut mié) CORREN una semana (OFF_WD) en vez de saltarse la 1ª pieza;
 //   Lex #452 (19 caps = 19 miércoles) no puede correr sin perder el cap. 19 → su cap. 1 va al sábado de la sem 1
 //   (antes: «Lex cap 1 y PyTut §1 no se programan… Aceptado»; regla de Joseph: solo corren los días, nada se recorta).
+// v5.18 (3-oct-2026): START = lun 5-oct → OFF_WD = 0 en los tres días: todas las series arrancan completas en la sem 1.
 const WD = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
 const START_ISO = process.argv[2] || '2026-09-03'; if(!/^20\d\d-\d\d-\d\d$/.test(START_ISO)) throw new Error('START inválido: '+START_ISO);
 const START = new Date(START_ISO + 'T12:00:00'); // START parametrizado: node <script> YYYY-MM-DD
@@ -440,7 +447,7 @@ const aUnits = buildAUnits();
 let TOTAL = 0; { let ns = 0, dd = 0; while (ns < aUnits.length) { dd++; const dt = new Date(START.getTime() + (dd - 1) * 86400000); const f = dt.toISOString().slice(0, 10); if (dt.getDay() !== 0 && !SKIP_FIJOS.has(f)) ns++; } TOTAL = dd; }
 let aIdx = 0;
 let pc12Emitido = false; // evita duplicar el PC de la sem 12 cuando esa semana SÍ tiene sábado
-const SEM_MAX = 19; // v5.10-b: sem 13-19 = F2 (v5.17: la última A-unit cae el mar 9-feb-2027, día 132; lun 8 y mar 9-feb serían la sem 20 del calendario y el clamp de SEM_MAX los deja en la sem 19. v5.16: vie 5-feb-2027, día 131, dentro de la sem 19)
+const SEM_MAX = 19; // v5.10-b: sem 13-19 = F2 (v5.18: la última A-unit cae el vie 12-feb-2027, día 131, dentro de la sem 19 = lun 8 → vie 12-feb, sin clamp · v5.17: mar 9-feb-2027, día 132; lun 8 y mar 9-feb serían la sem 20 del calendario y el clamp de SEM_MAX los deja en la sem 19. v5.16: vie 5-feb-2027, día 131, dentro de la sem 19)
 const dias = [];
 for (let d = 1; d <= TOTAL; d++) {
   const date = new Date(START.getTime() + (d - 1) * 86400000);
@@ -461,7 +468,7 @@ for (let d = 1; d <= TOTAL; d++) {
     const a = aUnits[aIdx++];
     bloques.push({ tag: 'A', min: 15, formato: 'pantalla', ...a });
     const b = bloqueB(wd, semana); if (b) bloques.push(b);
-    const c = bloqueC(wd, semana); if (c) bloques.push(c);
+    const c = bloqueC(wd, semana, fecha); if (c) bloques.push(c);
     if (wd === 'Sáb') { bloques.push(bloquePC(semana, fecha)); if (semana === 12) pc12Emitido = true; }
     // si la sem 12 no llega a tener sábado, su Proyecto-PC (CS50P PS3) se coloca en el último día (sin duplicarlo)
     if (d === TOTAL && wd !== 'Sáb' && !pc12Emitido) { bloques.push(bloquePC(12, fecha)); pc12Emitido = true; }
@@ -469,7 +476,7 @@ for (let d = 1; d <= TOTAL; d++) {
   dias.push({ d, fecha, wd, semana, faseId, fase, deload, bloques });
 }
 if (aIdx !== aUnits.length) throw new Error(`A-units sin asignar: usadas ${aIdx}/${aUnits.length}`);
-if (dias[TOTAL - 1].fecha !== FIN_PLAN) throw new Error(`El plan debe terminar el ${FIN_PLAN} (mar 9-feb en v5.17, fin del Step 1 menos taper); termina el ${dias[TOTAL - 1].fecha}: ajusta las A-units de F2`);
+if (dias[TOTAL - 1].fecha !== FIN_PLAN) throw new Error(`El plan debe terminar el ${FIN_PLAN} (vie 12-feb en v5.18, fin del Step 1 menos taper); termina el ${dias[TOTAL - 1].fecha}: ajusta las A-units de F2`);
 
 // ─── Emitir TypeScript ───
 const esc = (s) => String(s).replace(/\\/g, '\\\\').replace(/"/g, '\\"');
@@ -508,7 +515,7 @@ const ts = `/**
  * + F2 (sem 13-19): Building with the Claude API · MCP restante + MCP Advanced Topics · agent skills/subagentes ·
  * Claude Code in Action restante · AI Capabilities and Limitations · Claude Cowork · 3 ensayos de context engineering ·
  * repaso por los 5 dominios del CCA-F · simulacro · cierre (curricula/_extracted.json, extraído 5-sep y 12-sep-2026).
- * Después del ${FIN_PLAN} (mar 9-feb-2027 en v5.17) no hay SYNAPSE: el resto = solo Step 1 (D94 vie 12-feb · D95 lun 15-feb = D-1 · examen mar 16-feb).
+ * Después del ${FIN_PLAN} (vie 12-feb-2027 en v5.18; v5.17: mar 9-feb) no hay SYNAPSE: el resto = solo Step 1 (D93 lun 15-feb · D94 mar 16-feb · D95 mié 17-feb = D-1 · examen jue 18-feb).
  */
 export type SynFormato = 'pantalla' | 'audio' | 'lectura' | 'pc' | 'repaso';
 export interface SynBloque {

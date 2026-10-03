@@ -1,4 +1,4 @@
-# PALMERTON POR MATERIA — USMLE Step 1 · v3 (10-sep-2026 · fechas remapeadas al régimen v5.17 — 3.er corrimiento RÍGIDO — el 30-sep-2026)
+# PALMERTON POR MATERIA — USMLE Step 1 · v3 (10-sep-2026 · fechas remapeadas al régimen v5.18 — 4.º corrimiento RÍGIDO — el 3-oct-2026)
 
 > **Qué es este documento.** La guía de estudio por materia del bloque USMLE, reconstruida desde el
 > método real de **Alec Palmerton, MD** (yousmle.com · canal `@alec.palmerton_md`) tal como está
@@ -28,34 +28,36 @@
 > conocimiento lleva a ~220-230; de ahí en adelante el puntaje sube reduciendo errores de
 > interpretación (~50 % de los fallos) y dominando mecanismo.
 >
-> **Plan de referencia (v5.17, NO tocar)**: D1 = **JUE 1-oct-2026** → D95 = **LUN 15-feb-2027** ·
+> **Plan de referencia (v5.18, NO tocar)**: D1 = **LUN 5-oct-2026** → D95 = **MIÉ 17-feb-2027** ·
 > Fases **A contenido D1-D81** · **B banco D82-D86** · **C sprint D87-D95** · el plan rebasa la ventana
-> 25-29 ene 2027 (D94 = vie 12-feb = D-2, última sesión de banco · sáb 13 y dom 14-feb libres · D95 = lun 15-feb = ÚLTIMO DÍA del
-> plan y D-1 REAL) → **examen target MAR 16-FEB-2027, fuera de la ventana y al día siguiente del D95** · fuente de verdad
-> `src/lib/usmleStep1Daily.ts` (95 días, cada uno con `nivelUW` 1-5 y `qDia`). Todas las fechas y D# de este documento están
-> **leídos del .ts**, no estimados.
+> 25-29 ene 2027 (D94 = mar 16-feb = D-2, última sesión de banco · D95 = mié 17-feb = ÚLTIMO DÍA del plan y D-1 REAL) → **examen
+> target JUE 18-FEB-2027, fuera de la ventana y al día siguiente del D95** (sin fin de semana en medio: el sáb 13 y el dom 14-feb
+> caen entre D92 y D93) · fuente de verdad `src/lib/usmleStep1Daily.ts` (95 días, cada uno con `nivelUW` 1-5 y `qDia`). Todas las
+> fechas y D# de este documento están **leídos del .ts**, no estimados.
 >
-> **Corrimiento v5.16 → v5.17 (30-sep-2026) · RÍGIDO (3.º)**: tampoco se estudiaron el lun 28, el mar 29 ni el mié 30 de septiembre →
-> todo corre +3 días hábiles (decimosexto corrimiento desde el 31-ago; 31-ago→30-sep no estudiados = 23 hábiles perdidos). **Misma
-> regla de Joseph que en la v5.15 y la v5.16** («todo inicia desde mañana, todo lo que estaba solo corre los días […] la fecha de
-> término alarga los días que no se realizó, solo corre los días en todos los aspectos»): **el corrimiento mueve el plan ENTERO —
-> contenido y los 12 hitos — en bloque, sin tocar ningún tema; donde había un fin clavado se AMPLÍAN días.** Sigue vigente la regla
-> permanente: **no se fusiona ni se recorta NADA**; el temario sale 1:1 y el desfase se absorbe alargando el final del plan hasta el
-> **lun 15-feb-2027**. **Los 12 hitos conservan su D# exacto y corren con el plan**, así que ningún NBME pierde días de contenido por
-> delante; ⚠ efecto colateral: con el D1 en **jueves**, **8 de los 12 hitos caen en miércoles** (NBME 25-28 y 30, UWSA2, NBME 31, Free
-> 120; UWSA1 y NBME 32 en jueves; NBME 29 y 33 en lunes) y **ninguno en viernes**. El **UWSA1 vuelve a cambiar de fecha (lun 28-sep, ya
-> pasada → JUE 1-OCT) y sigue siendo el D1** (baseline en el primer día, como prescribe Palmerton); el **contenido arranca el vie 2-oct
-> (D2)**. Semanas de calendario L-V: S1 = 28-sep → 2-oct (solo D1 y D2) · S2 = 5-9 oct … S20 = 8-12 feb (D90-D94) · S21 = 15-19 feb
-> (D95 + examen mar 16-feb).
-> Las franjas y las metas no cambian; **lo que sí cambia es el examen: el target pasa al MAR 16-FEB-2027**
-> (`DAILY_META.examenTarget = '2027-02-16'`), con el D-1 real (lun 15-feb = D95) como último día del plan, sesión mínima + ritual
-> (`descansoD1 = '2027-02-15'`, `USMLE_TAPER.d95`/`.dMenos1`), y con el **sáb 13 y el dom 14-feb libres entre el D94 y el D95** (entre
-> el D95 y el examen no hay finde). Joseph debe agendar/reprogramar el Prometric y confirmar que su eligibility period cubre el 16-feb
-> (si no: extenderlo); la alternativa es recortar temario (decisión suya). **Herencia de la v5.14: el contenido cierra el mar 26-ene
-> (D81) y el NBME 31 GO/NO-GO cae al día siguiente (D82, mié 27-ene), sin banco de consolidación delante** — los 2 random timed van en
-> D84 y D86, la Fase B es D82-D86 y la Fase C arranca con el Free 120 (D87, mié 3-feb). Los **D#** y el corte de fases NO cambian (el
-> UWSA2, D77, sigue DENTRO de la Fase A); lo que cambia es **qué contenido cae en viernes** (**6** viernes de nivel 3 y **4** viernes de
-> nivel 4, §A-5/§A-6 de DIVERGENCIAS).
+> **Corrimiento v5.17 → v5.18 (3-oct-2026) · RÍGIDO (4.º)**: tampoco se estudiaron el jue 1 ni el vie 2 de octubre → todo corre +2
+> días hábiles (decimoséptimo corrimiento desde el 31-ago; 31-ago→2-oct no estudiados = 25 hábiles perdidos). **Misma regla de Joseph
+> que en la v5.15, la v5.16 y la v5.17** («todo inicia el 5, corre lo que tengas que correr para que todo inicie el 5»): **el
+> corrimiento mueve el plan ENTERO — contenido y los 12 hitos — en bloque, sin tocar ningún tema; donde había un fin clavado se
+> AMPLÍAN días.** Sigue vigente la regla permanente: **no se fusiona ni se recorta NADA**; el temario sale 1:1 y el desfase se absorbe
+> alargando el final del plan hasta el **mié 17-feb-2027**. **Los 12 hitos conservan su D# exacto y corren con el plan**, así que
+> ningún NBME pierde días de contenido por delante; ⚠ efecto colateral inverso al de la v5.17 (igual que en la v5.16): con el D1 en
+> **lunes**, **8 de los 12 hitos vuelven a caer en viernes** (NBME 25-28 y 30, UWSA2, NBME 31, Free 120; UWSA1 y NBME 32 en lunes;
+> NBME 29 y 33 en miércoles). El **UWSA1 vuelve a cambiar de fecha (jue 1-oct, ya pasada → LUN 5-OCT) y sigue siendo el D1** (baseline
+> en el primer día, como prescribe Palmerton); el **contenido arranca el mar 6-oct (D2)**. Con el D1 en lunes, las 20 semanas del plan
+> vuelven a coincidir con las de calendario (S1 = 5-9 oct, D1-D5 · … · S19 = 8-12 feb, D88-D92 · S20 = 15-19 feb: D93 lun 15 · D94 mar
+> 16 · D95 mié 17 + examen jue 18-feb) (v5.17: 21 semanas, con una S1 corta de jueves a viernes).
+> Las franjas y las metas no cambian; **lo que sí cambia es el examen: el target pasa al JUE 18-FEB-2027**
+> (`DAILY_META.examenTarget = '2027-02-18'`), con el D-1 real (mié 17-feb = D95) como último día del plan, sesión mínima + ritual
+> (`descansoD1 = '2027-02-17'`, `USMLE_TAPER.d95`/`.dMenos1`), y **sin finde libre dentro del taper ni entre el D95 y el examen** (D94
+> mar y D95 mié van seguidos). Joseph debe agendar/reprogramar el Prometric y confirmar que su eligibility period cubre el 18-feb
+> (si no: extenderlo); la alternativa es recortar temario (decisión suya). **Herencia de la v5.14: el contenido cierra el jue 28-ene
+> (D81) y el NBME 31 GO/NO-GO cae al día siguiente (D82, vie 29-ene), sin banco de consolidación delante** — los 2 random timed van en
+> D84 y D86, la Fase B es D82-D86 y la Fase C arranca con el Free 120 (D87, vie 5-feb). Los **D#** y el corte de fases NO cambian (el
+> UWSA2, D77, sigue DENTRO de la Fase A); lo que cambia es **qué contenido cae en viernes** (**5** viernes de nivel 3 y **ningún**
+> viernes de nivel 4, §A-5/§A-6 de DIVERGENCIAS).
+> *(Histórico v5.17, 30-sep: D1 = jue 1-oct → D95 = lun 15-feb, examen mar 16-feb con el finde 13-14 feb libre entre D94 (vie 12) y
+> D95; 8 hitos en miércoles y ninguno en viernes; N3 = D12, D22, D27, D32, D42, D47 y N4 = D57, D69, D74, D79.)*
 > *(Histórico v5.16, 26-sep: D1 = lun 28-sep → D95 = mié 10-feb, examen jue 11-feb sin finde entre el taper y el examen; 8 hitos en
 > viernes; N3 = D15, D20, D35, D45, D50 y N4 = D60.)*
 > *(Histórico v5.15, 22-sep: D1 = mié 23-sep → D95 = vie 5-feb, examen lun 8-feb con el finde 6-7 feb libre; 9 hitos en martes; N3 = D8,
@@ -67,42 +69,43 @@
 
 | # | Materia / sistema | D# | Fechas reales | Nivel UW de esos días |
 |---|---|---|---|---|
-| 0 | Marco transversal (instalar en D2-D5) | D2-D5 | vie 2-oct → mié 7-oct | 1 (D1 = UWSA1, nivel 5, jue 1-oct) |
-| 1 | Fundamentos / Patología general | D2 · D3 | vie 2-oct · lun 5-oct | 1 · 30Q (D2 es viernes, pero es el 1.er día de contenido del plan → N1) |
-| 2 | Inmunología | D4 · D5 | mar 6-oct → mié 7-oct | 1 · 30Q |
-| 3 | Cardiología | D6-D9 · D11-D16 | jue 8-oct → mar 13-oct · jue 15-oct → jue 22-oct | 1 (D6-D7; D7 es viernes pero 2.º día del sistema → el bloque de sistema completo se hace de Inmunología) → 2 (D8, D9, D11, D13, D14, D15, D16) · **3 (D12, vie 16-oct, antiarrítmicos + fármacos autonómicos CV): en v5.17 Cardio tiene UN viernes de nivel 3** (en la v5.16 era D15) — el NBME 25 (D10, mié 14-oct) parte el bloque: taquiarritmias (D11), antiarrítmicos (D12), aterosclerosis (D13), SCA (D14), IC + shock (D15) y valvulopatías/miocardiopatías (D16) quedan detrás del hito |
-| 4 | Respiratorio | D17-D22 | vie 23-oct → vie 30-oct | 1 (D17, D18; D17 es viernes pero 1.er día del sistema → el bloque de sistema se hace de Cardio) · 2 (D19, D20, D21) · **3 (D22, vie 30-oct, TEP/TVP + HTP + ARDS + cáncer de pulmón)** — bloque íntegro y seguido detrás del NBME 25 |
-| 5 | Renal | D23-D24 · D26-D29 | lun 2-nov → mar 3-nov · jue 5-nov → mar 10-nov | 1 (D23-24) · 2 (D26, D28, D29) · **3 (D27, vie 6-nov, ácido-base paso a paso + compensaciones + GAP)** — 🆕 **en v5.17 Renal SÍ tiene viernes de nivel 3**; el NBME 26 (D25, mié 4-nov) sigue partiendo el bloque: electrolitos (D26), ácido-base (D27), glomerulares (D28) y AKI/ERC/litiasis (D29) quedan detrás |
-| 6 | Gastroenterología e hígado | D30-D36 | mié 11-nov → jue 19-nov | 1 (D30, D31) · 2 (D33, D34, D35, D36) · **3 (D32, vie 13-nov, intestino delgado: malabsorción + celiaquía + EII)** — bloque íntegro DESPUÉS del NBME 26 (D25, mié 4-nov) |
-| 7 | Endocrinología | D37-D39 · D41-D42 | vie 20-nov → mar 24-nov · jue 26-nov → vie 27-nov | 1 (D37-38; D37 es viernes pero 1.er día del sistema → el bloque de sistema se hace de GI) · 2 (D39, D41) · **3 (D42, vie 27-nov, calcio/PTH + MEN + patología hipofisaria)** — 🆕 **en v5.17 Endo SÍ tiene viernes de nivel 3**; el NBME 27 (D40, mié 25-nov) sigue partiendo el bloque: DM (D41) y calcio/PTH/MEN (D42) quedan detrás |
-| 8 | Neurología | D43-D50 | lun 30-nov → mié 9-dic | 1 (D43, D44) · 2 (D45, D46, D48, D49, D50) · **3 (D47, vie 4-dic, ictus: territorios + isquémico/hemorrágico + HSA): en v5.17 Neuro tiene UN viernes de nivel 3** (en la v5.16 eran dos, D45 y D50) — bloque íntegro DESPUÉS del NBME 27 (D40, mié 25-nov) |
-| 9 | Hematología y oncología | D51-D54 · D56-D57 | jue 10-dic → mar 15-dic · jue 17-dic → vie 18-dic | 1 (D51-52; D52 es viernes pero 2.º día del sistema → N1) · 2 (D53, D54, D56) · **4 (D57, vie 18-dic, linfomas + mieloma + transfusión + fármacos onco: 1.er viernes de nivel 4 del plan, S12)** — el NBME 28 (D55, mié 16-dic) sigue partiendo el bloque: leucemias (D56) y linfomas/mieloma/transfusión (D57) quedan detrás |
-| 10 | Microbiología / ID | D58-D64 | lun 21-dic → mié 30-dic | 1 (D58, D59) · 2 (D60, D61, D62, D63, D64) — **sin viernes en v5.17** (los dos viernes de su tramo, 25-dic y 1-ene, son skip) · bloque íntegro DESPUÉS del NBME 28 (D55, mié 16-dic) y **cierra el contenido de 2026** (D64, mié 30-dic) |
-| 11 | Reproductor / OB-GYN | D66-D70 | mar 5-ene → lun 11-ene | 1 (D66, D67) · 2 (D68, D70) · **4 (D69, vie 8-ene, mama + aparato masculino + próstata: viernes N4 de S15)** — bloque íntegro DESPUÉS del NBME 29 (D65, lun 4-ene, 1.er hito de 2027) |
-| 12 | MSK / Reuma / Derma Step 1 | D71 · D73-D74 | mar 12-ene · jue 14-ene → vie 15-ene | 1 (D71, D73) · **4 (D74, vie 15-ene, hueso/anatomía + dermato Step 1: viernes N4 de S16)** — **el NBME 30 (D72, mié 13-ene) parte el bloque**: artritis (D71) delante; LES/vasculitis (D73) y hueso/anatomía + dermato Step 1 (D74) detrás |
-| 13 | Psiquiatría y conductual | D75-D76 · D78 | lun 18-ene → mar 19-ene · jue 21-ene | 1 (D75, D76) · 2 (D78) — **el UWSA2 (D77, mié 20-ene) parte el bloque**: psicofármacos (D78) y Biostats (D79) quedan detrás |
-| 14 | Bioestadística + epidemiología + ética | D79 | vie 22-ene | **4 · 40Q** (viernes N4 de S17: 20-30Q mixtos timed + 10Q tutor del subtema; AMBOSS HY 155Q) |
-| 15 | Bioquímica + genética + farmacología general | D80 · D81 | lun 25-ene · mar 26-ene | 1 · 30Q (días dobles heredados de la v5.7) — detrás del UWSA2 (D77, mié 20-ene); D81 = cierre de la Fase A; **el NBME 31 (D82) cae al día siguiente** |
-| — | **Fase B** banco (`faseDe` = B: D82-D86) | D82 · D83 · D84 · D85 · D86 | mié 27-ene → mar 2-feb | 5 (NBME 31 D82 · NBME 32 D83 · NBME 33 D85) · 4 (D84 · D86: random timed 2×40Q + sistema débil #1, 80Q); **el NBME 31 abre la fase el día siguiente al cierre de contenido, sin banco de consolidación delante** |
-| — | **Fase C** sprint final (`faseDe` = C: D87-D95) | D87 · D88-D93 (banco alojado en el sprint) · D94 · D95 | mié 3-feb → lun 15-feb (D92 mié 10-feb · D93 jue 11-feb · D94 vie 12-feb = D-2, última sesión de banco · sáb 13 y dom 14-feb libres · D95 lun 15-feb = D-1 REAL, último día del plan → examen mar 16-feb, al día siguiente) | 5 (Free 120 D87 · D90-D93) · 4 (D88 · D89) · taper D94-D95 (20Q) |
+| 0 | Marco transversal (instalar en D2-D5) | D2-D5 | mar 6-oct → vie 9-oct | 1 (D1 = UWSA1, nivel 5, lun 5-oct) |
+| 1 | Fundamentos / Patología general | D2 · D3 | mar 6-oct · mié 7-oct | 1 · 30Q |
+| 2 | Inmunología | D4 · D5 | jue 8-oct → vie 9-oct | 1 · 30Q (D5 es viernes, pero es el 2.º día del sistema: el bloque de sistema completo se hace de Fundamentos) |
+| 3 | Cardiología | D6-D9 · D11-D16 | lun 12-oct → jue 15-oct · lun 19-oct → lun 26-oct | 1 (D6-D7) → 2 (D8, D9, D11, D12, D13, D14, D16) · **3 (D15, vie 23-oct, IC + shock + fármacos IC): en v5.18 Cardio tiene UN viernes de nivel 3** (en la v5.17 era D12) — el NBME 25 (D10, vie 16-oct) parte el bloque: taquiarritmias (D11), antiarrítmicos (D12), aterosclerosis (D13), SCA (D14), IC + shock (D15) y valvulopatías/miocardiopatías (D16) quedan detrás del hito |
+| 4 | Respiratorio | D17-D22 | mar 27-oct → mar 3-nov | 1 (D17, D18) · 2 (D19, D21, D22) · **3 (D20, vie 30-oct, restrictivas + intersticiales + ocupacionales)** (en la v5.17 era D22) — bloque íntegro y seguido detrás del NBME 25 |
+| 5 | Renal | D23-D24 · D26-D29 | mié 4-nov → jue 5-nov · lun 9-nov → jue 12-nov | 1 (D23-24) · 2 (D26, D27, D28, D29) — **sin viernes de nivel 3 en v5.18** (su único viernes, D25 vie 6-nov, es el NBME 26; en la v5.17 era D27); el NBME 26 sigue partiendo el bloque: electrolitos (D26), ácido-base (D27), glomerulares (D28) y AKI/ERC/litiasis (D29) quedan detrás |
+| 6 | Gastroenterología e hígado | D30-D36 | vie 13-nov → lun 23-nov | 1 (D30, D31) · 2 (D32, D33, D34, D36) · **3 (D35, vie 20-nov, hígado II: cirrosis + complicaciones + HCC + hereditarias)** (en la v5.17 era D32) — bloque íntegro DESPUÉS del NBME 26 (D25, vie 6-nov); en v5.18 GI empieza en viernes (D30 vie 13-nov, 1.er día del sistema → N1: el bloque de sistema de ese día se hace de Renal) |
+| 7 | Endocrinología | D37-D39 · D41-D42 | mar 24-nov → jue 26-nov · lun 30-nov → mar 1-dic | 1 (D37-38) · 2 (D39, D41, D42) — **sin viernes de nivel 3 en v5.18** (su único viernes, D40 vie 27-nov, es el NBME 27; en la v5.17 era D42); el NBME 27 sigue partiendo el bloque: DM (D41) y calcio/PTH/MEN (D42) quedan detrás |
+| 8 | Neurología | D43-D50 | mié 2-dic → vie 11-dic | 1 (D43, D44) · 2 (D46, D47, D48, D49) · **3 (D45, vie 4-dic, tronco + pares craneales + reflejos) y 3 (D50, vie 11-dic, EM/desmielinizantes + meningitis + NMJ + tumores SNC): en v5.18 Neuro tiene DOS viernes de nivel 3** (en la v5.17 uno, D47) — bloque íntegro DESPUÉS del NBME 27 (D40, vie 27-nov) |
+| 9 | Hematología y oncología | D51-D54 · D56-D57 | lun 14-dic → jue 17-dic · lun 21-dic → mar 22-dic | 1 (D51-52) · 2 (D53, D54, D56, D57) — **sin viernes propio en v5.18** (su único viernes, D55 vie 18-dic, es el NBME 28; en la v5.17 D57 era el 1.er viernes N4); el NBME 28 sigue partiendo el bloque: leucemias (D56) y linfomas/mieloma/transfusión (D57) quedan detrás |
+| 10 | Microbiología / ID | D58-D64 | mié 23-dic → mar 5-ene | 1 (D58, D59) · 2 (D60, D61, D62, D63, D64) — **sin viernes en v5.18** (los dos viernes de su tramo, 25-dic y 1-ene, son skip, como el jue 31-dic) · bloque íntegro DESPUÉS del NBME 28 (D55, vie 18-dic) y **cruza el fin de año**: el contenido de 2026 cierra con D62 (mié 30-dic) y el bloque termina el mar 5-ene (D64) |
+| 11 | Reproductor / OB-GYN | D66-D70 | jue 7-ene → mié 13-ene | 1 (D66, D67; D67 es viernes, vie 8-ene, pero 2.º día del sistema → N1) · 2 (D68, D69, D70) — bloque íntegro DESPUÉS del NBME 29 (D65, mié 6-ene, 1.er hito de 2027) (en la v5.17 D69 era viernes N4) |
+| 12 | MSK / Reuma / Derma Step 1 | D71 · D73-D74 | jue 14-ene · lun 18-ene → mar 19-ene | 1 (D71, D73) · 2 (D74) — **el NBME 30 (D72, vie 15-ene) parte el bloque**: artritis (D71) delante; LES/vasculitis (D73) y hueso/anatomía + dermato Step 1 (D74) detrás (en la v5.17 D74 era viernes N4) |
+| 13 | Psiquiatría y conductual | D75-D76 · D78 | mié 20-ene → jue 21-ene · lun 25-ene | 1 (D75, D76) · 2 (D78) — **el UWSA2 (D77, vie 22-ene) parte el bloque**: psicofármacos (D78) y Biostats (D79) quedan detrás |
+| 14 | Bioestadística + epidemiología + ética | D79 | mar 26-ene | 2 · 40Q (AMBOSS HY 155Q) (en la v5.17 era viernes N4, vie 22-ene) |
+| 15 | Bioquímica + genética + farmacología general | D80 · D81 | mié 27-ene · jue 28-ene | 1 · 30Q (días dobles heredados de la v5.7) — detrás del UWSA2 (D77, vie 22-ene); D81 = cierre de la Fase A; **el NBME 31 (D82) cae al día siguiente** |
+| — | **Fase B** banco (`faseDe` = B: D82-D86) | D82 · D83 · D84 · D85 · D86 | vie 29-ene → jue 4-feb | 5 (NBME 31 D82 · NBME 32 D83 · NBME 33 D85) · 4 (D84 · D86: random timed 2×40Q + sistema débil #1, 80Q); **el NBME 31 abre la fase el día siguiente al cierre de contenido, sin banco de consolidación delante** |
+| — | **Fase C** sprint final (`faseDe` = C: D87-D95) | D87 · D88-D93 (banco alojado en el sprint) · D94 · D95 | vie 5-feb → mié 17-feb (D92 vie 12-feb · sáb 13 y dom 14-feb = finde normal entre D92 y D93 · D93 lun 15-feb · D94 mar 16-feb = D-2, última sesión de banco · D95 mié 17-feb = D-1 REAL, último día del plan → examen jue 18-feb, al día siguiente) | 5 (Free 120 D87 · D90-D93) · 4 (D88 · D89) · taper D94-D95 (20Q) |
 
-**Hitos (v5.17: D# INTACTOS, fechas +3 hábiles — corren con el plan)**: UWSA1 **D1** 1-oct · NBME 25 **D10** 14-oct ·
-NBME 26 **D25** 4-nov · NBME 27 **D40** 25-nov · NBME 28 **D55** 16-dic · NBME 29 **D65** 4-ene ·
-NBME 30 **D72** 13-ene · UWSA2 **D77** 20-ene · NBME 31 **D82** 27-ene (GO/NO-GO) ·
-NBME 32 **D83** 28-ene · NBME 33 **D85** 1-feb · Free 120 **D87** 3-feb. Todos a nivel UW 5.
+**Hitos (v5.18: D# INTACTOS, fechas +2 hábiles — corren con el plan)**: UWSA1 **D1** 5-oct · NBME 25 **D10** 16-oct ·
+NBME 26 **D25** 6-nov · NBME 27 **D40** 27-nov · NBME 28 **D55** 18-dic · NBME 29 **D65** 6-ene ·
+NBME 30 **D72** 15-ene · UWSA2 **D77** 22-ene · NBME 31 **D82** 29-ene (GO/NO-GO) ·
+NBME 32 **D83** 1-feb · NBME 33 **D85** 3-feb · Free 120 **D87** 5-feb. Todos a nivel UW 5.
+*(v5.17: 1-oct · 14-oct · 4-nov · 25-nov · 16-dic · 4-ene · 13-ene · 20-ene · 27-ene · 28-ene · 1-feb · 3-feb.)*
 
-**Farmacología transversal (no tiene bloque propio hasta D81, mar 26-ene)**: D12 antiarrítmicos + autonómicos CV
-(16-oct) · D19 broncodilatadores (27-oct) · D24 diuréticos por segmento (3-nov) · D41 insulinas /
-ADO / GLP-1 / SGLT2 (26-nov) · D46 SNA completo (3-dic) · D48 antiepilépticos (7-dic) ·
-D57 quimioterápicos (18-dic) · D64 antimicrobianos (30-dic) · D70 anticoncepción (11-ene) ·
-D78 psicofármacos (21-ene) · **D81 PK/PD + toxicología + antídotos (26-ene)**.
+**Farmacología transversal (no tiene bloque propio hasta D81, jue 28-ene)**: D12 antiarrítmicos + autonómicos CV
+(20-oct) · D19 broncodilatadores (29-oct) · D24 diuréticos por segmento (5-nov) · D41 insulinas /
+ADO / GLP-1 / SGLT2 (30-nov) · D46 SNA completo (7-dic) · D48 antiepilépticos (9-dic) ·
+D57 quimioterápicos (22-dic) · D64 antimicrobianos (5-ene) · D70 anticoncepción (13-ene) ·
+D78 psicofármacos (25-ene) · **D81 PK/PD + toxicología + antídotos (28-ene)**.
 
 ---
 
 # PARTE 0 — EL MARCO QUE ATRAVIESA TODO (instalar ANTES de la patología)
 
 *(Fuentes: HY Cardiology 1 y 2, How 260+ Scorers Master Cardio, HY Respiratory — leídos íntegros)*
-**→ En tu plan: D2-D5 (2-oct → 7-oct, nivel UW 1); se re-audita en cada hito.** (El D1, jue 1-oct, es el UWSA1: baseline antes de instalar nada.)
+**→ En tu plan: D2-D5 (6-oct → 9-oct, nivel UW 1); se re-audita en cada hito.** (El D1, lun 5-oct, es el UWSA1: baseline antes de instalar nada.)
 
 **1. El tatuaje.** ✅ Lo repite en los tres vídeos de cardio como núcleo del sistema:
 > *"If I were to tattoo anything to my wrist, it would be preload, afterload, contractility, and the
@@ -202,7 +205,7 @@ donde titubeas al recitarla son el material de estudio del día siguiente.
 
 ## 1. Fundamentos y Patología general
 
-**→ En tu plan: D2 (vie 2-oct-2026, nivel UW 1 · 30Q) y D3 (lun 5-oct-2026, nivel UW 1 · 30Q).**
+**→ En tu plan: D2 (mar 6-oct-2026, nivel UW 1 · 30Q) y D3 (mié 7-oct-2026, nivel UW 1 · 30Q).**
 D2 = Pathoma 1-2 (lesión celular + muerte celular + inflamación) · D3 = Pathoma 3 (neoplasia,
 principios y carcinogénesis) + setup Anki FSRS. Vídeos anclados en el `.ts`: *The ONLY Video You Need
 to Pass Step 1 in 2026* (`BOtQJeFE_rc`) y *5X Your Anki Efficiency (FSRS)* (`Te5RnxeG_Gg`).
@@ -319,16 +322,16 @@ Artículos (URLs verificadas, conservadas de la v2): [Question Interpretation](h
 Material del plan: **Pathoma 1-3 primero y re-verlo la última semana**; Goljan Rapid Review de respaldo.
 
 ### (e) → En tu plan
-**D2 = vie 2-oct-2026 (nivel UW 1 · 30Q)** · **D3 = lun 5-oct-2026 (nivel UW 1 · 30Q)**.
-Reaparece transversalmente en Heme (D51-D57, 10-dic → 18-dic), Micro (D58-D64, 21-dic → 30-dic) y como
-marco de toda viñeta. El repaso rápido de First Aid/Pathoma vuelve en **Fase C: D94 (vie 12-feb) y
-D95 (lun 15-feb)**, ambos a nivel UW 5.
+**D2 = mar 6-oct-2026 (nivel UW 1 · 30Q)** · **D3 = mié 7-oct-2026 (nivel UW 1 · 30Q)**.
+Reaparece transversalmente en Heme (D51-D57, 14-dic → 22-dic), Micro (D58-D64, 23-dic → 5-ene) y como
+marco de toda viñeta. El repaso rápido de First Aid/Pathoma vuelve en **Fase C: D94 (mar 16-feb) y
+D95 (mié 17-feb)**, ambos a nivel UW 5.
 
 ---
 
 ## 2. Inmunología
 
-**→ En tu plan: D4 (mar 6-oct-2026, nivel UW 1 · 30Q) y D5 (mié 7-oct-2026, nivel UW 1 · 30Q).**
+**→ En tu plan: D4 (jue 8-oct-2026, nivel UW 1 · 30Q) y D5 (vie 9-oct-2026, nivel UW 1 · 30Q).**
 D4 = inmunidad innata/adaptativa + MHC + linfocitos T/B · D5 = hipersensibilidades I-IV +
 autoinmunidad + inmunodeficiencias. Vídeo: [High Yield Immunology](https://www.youtube.com/watch?v=Nfp3hs490wM).
 
@@ -520,20 +523,20 @@ Artículos ✅ (URLs conservadas de la v2):
 [Cheat Sheets (índice)](https://www.yousmle.com/usmle-step-1-cheat-sheets/).
 
 ### (e) → En tu plan
-**D4 = mar 6-oct-2026 (nivel UW 1 · 30Q)** · **D5 = mié 7-oct-2026 (nivel UW 1 · 30Q)**.
-Reaparece: **transversal en Micro D58-D64 (21-dic → 30-dic)** · **reuma = inmunología aplicada en
-D71 · D73 · D74 (12-ene → 15-ene)** · glomerulopatías por tipo de hipersensibilidad en **D28 (lun 9-nov)** ·
-transfusión y Coombs en **D57 (vie 18-dic)**.
+**D4 = jue 8-oct-2026 (nivel UW 1 · 30Q)** · **D5 = vie 9-oct-2026 (nivel UW 1 · 30Q; viernes, pero 2.º día del sistema → N1)**.
+Reaparece: **transversal en Micro D58-D64 (23-dic → 5-ene)** · **reuma = inmunología aplicada en
+D71 · D73 · D74 (14-ene → 19-ene)** · glomerulopatías por tipo de hipersensibilidad en **D28 (mié 11-nov)** ·
+transfusión y Coombs en **D57 (mar 22-dic)**.
 
 ---
 
 ## 3. Cardiología
 
-**→ En tu plan: D6-D9 · D11-D16 = jue 8-oct-2026 → mar 13-oct-2026 + jue 15-oct → jue 22-oct-2026** (el NBME 25,
-D10 mié 14-oct, parte el bloque).
-Niveles UW por día: D6 (jue 8-oct) N1 · D7 (vie 9-oct) N1 · D8 (lun 12-oct) N2 ·
-D9 (mar 13-oct) N2 · D11 (jue 15-oct) N2 · **D12 (vie 16-oct) N3 — viernes de nivel 3: 20Q del sistema completo timed sobre antiarrítmicos + fármacos autonómicos CV** · D13 (lun 19-oct) N2 ·
-D14 (mar 20-oct) N2 · D15 (mié 21-oct) N2 · D16 (jue 22-oct) N2. Contenido por día: anatomía+fisiología (D6) · hemodinámica y HTA
+**→ En tu plan: D6-D9 · D11-D16 = lun 12-oct-2026 → jue 15-oct-2026 + lun 19-oct → lun 26-oct-2026** (el NBME 25,
+D10 vie 16-oct, parte el bloque).
+Niveles UW por día: D6 (lun 12-oct) N1 · D7 (mar 13-oct) N1 · D8 (mié 14-oct) N2 ·
+D9 (jue 15-oct) N2 · D11 (lun 19-oct) N2 · D12 (mar 20-oct) N2 · D13 (mié 21-oct) N2 ·
+D14 (jue 22-oct) N2 · **D15 (vie 23-oct) N3 — viernes de nivel 3: 20Q del sistema completo timed sobre IC + shock + fármacos IC** · D16 (lun 26-oct) N2. Contenido por día: anatomía+fisiología (D6) · hemodinámica y HTA
 (D7) · curvas PV/Wiggers/Starling (D8) · electrofisiología y bloqueos (D9) · taquiarritmias (D11) ·
 antiarrítmicos + autonómicos CV (D12) · ateroesclerosis e isquemia (D13) · SCA y complicaciones del
 IAM (D14) · IC + shock (D15) · valvulopatías, endocarditis, miocardiopatías, pericardio y congénitas
@@ -1115,33 +1118,33 @@ Sin URL en el corpus (solo título): *The #1 USMLE Cardiology Equation* · *The 
 Equation Ever* · *Equilibrium/Nernst Potential for the USMLE*.
 
 ### (e) → En tu plan
-**D6-D9 · D11-D16 = jue 8-oct-2026 → mar 13-oct-2026 + jue 15-oct → jue 22-oct-2026.** En la v5.17 Cardio tiene **UN viernes de
-nivel 3**: **D12 (vie 16-oct, antiarrítmicos + fármacos autonómicos CV)** = 20Q del sistema completo timed, el gate real de Cardio (en
-la v5.16 era D15; su otro viernes, D7 vie 9-oct, es el 2.º día del sistema → N1). El hito (D10, NBME 25, mié 14-oct) sigue
-**partiendo el bloque**: taquiarritmias (D11, jue 15-oct), antiarrítmicos (D12, vie 16-oct), aterosclerosis (D13, lun 19-oct),
-SCA (D14, mar 20-oct), IC + shock (D15, mié 21-oct) y valvulopatías, endocarditis, miocardiopatías, pericardio y congénitas
-(D16, jue 22-oct) quedan detrás del simulacro.
-Cardio reaparece: hemodinámica del TEP en **D22 (vie 30-oct)** · fármacos autonómicos en **D46
-(jue 3-dic)** · Nernst/umbral aplicado a electrolitos en **D26 (jue 5-nov, N2)** · PK/PD y digoxina en
-**D81 (mar 26-ene)**.
+**D6-D9 · D11-D16 = lun 12-oct-2026 → jue 15-oct-2026 + lun 19-oct → lun 26-oct-2026.** En la v5.18 Cardio tiene **UN viernes de
+nivel 3**: **D15 (vie 23-oct, IC + shock + fármacos IC)** = 20Q del sistema completo timed, el gate real de Cardio (en
+la v5.17 era D12; su otro viernes, D10 vie 16-oct, es el NBME 25). El hito (D10, NBME 25, vie 16-oct) sigue
+**partiendo el bloque**: taquiarritmias (D11, lun 19-oct), antiarrítmicos (D12, mar 20-oct), aterosclerosis (D13, mié 21-oct),
+SCA (D14, jue 22-oct), IC + shock (D15, vie 23-oct) y valvulopatías, endocarditis, miocardiopatías, pericardio y congénitas
+(D16, lun 26-oct) quedan detrás del simulacro.
+Cardio reaparece: hemodinámica del TEP en **D22 (mar 3-nov)** · fármacos autonómicos en **D46
+(lun 7-dic)** · Nernst/umbral aplicado a electrolitos en **D26 (lun 9-nov, N2)** · PK/PD y digoxina en
+**D81 (jue 28-ene)**.
 
 ### ❌ VACÍOS CONFIRMADOS DEL CORPUS (cardio) — `pendiente_usuario`
 
 | Tema | Estado | Qué hacer |
 |---|---|---|
-| **Bucle presión-volumen del VI** (4 fases, EDV/ESV/VS/FE, efecto de precarga/poscarga/contractilidad) | ❌ NO ESTÁ | First Aid / Costanzo. Lo único de Palmerton aquí son las definiciones verbales de precarga/poscarga/contractilidad. **Cae en D8 (lun 12-oct, N2)** |
+| **Bucle presión-volumen del VI** (4 fases, EDV/ESV/VS/FE, efecto de precarga/poscarga/contractilidad) | ❌ NO ESTÁ | First Aid / Costanzo. Lo único de Palmerton aquí son las definiciones verbales de precarga/poscarga/contractilidad. **Cae en D8 (mié 14-oct, N2)** |
 | **Ley de Frank-Starling** (curva, desplazamiento en IC, intersección con retorno venoso) | ❌ NO ESTÁ | Ídem. Ojo: "Starling" en el corpus se refiere solo a las **fuerzas de Starling capilares** (edema). **Cae en D8** |
 | **Fórmula de Laplace** (T = P·r/2h) e hipertrofia concéntrica vs excéntrica | ❌ NO ESTÁ la fórmula | Sí está el concepto de **tensión de pared** vía nitratos (Art. MONA); la geometría hay que traerla de fuera |
-| **Maniobras de soplos**, **desdoblamiento de S2**, **criterios de Jones** | ❌ NO ESTÁN | Ver aviso de §3.15. **Cae en D16 (jue 22-oct)** |
+| **Maniobras de soplos**, **desdoblamiento de S2**, **criterios de Jones** | ❌ NO ESTÁN | Ver aviso de §3.15. **Cae en D16 (lun 26-oct)** |
 
 ---
 
 ## 4. Fisiología y patología Respiratoria
 
-**→ En tu plan: D17 · D18 (vie 23-oct y lun 26-oct, nivel UW 1 · 30Q) + D19 · D20 · D21 (mar 27-oct → jue 29-oct,
-nivel UW 2 · 40Q) + D22 (vie 30-oct, nivel UW 3 · 40Q). En v5.17 el viernes de nivel 3 de Resp es D22**: **(vie 30-oct, TEP/TVP + HTP + ARDS + cáncer de pulmón) = 20Q del
-sistema completo timed, el gate real de Resp** (en la v5.16 era D20; su otro viernes, D17 vie 23-oct, es el 1.er día del sistema → N1).** El NBME 25
-(**D10, mié 14-oct**) queda DELANTE del bloque, no en medio. Contenido: volúmenes/compliance/Hb
+**→ En tu plan: D17 · D18 (mar 27-oct y mié 28-oct, nivel UW 1 · 30Q) + D19 (jue 29-oct, nivel UW 2 · 40Q) + D20 (vie 30-oct,
+nivel UW 3 · 40Q) + D21 · D22 (lun 2-nov → mar 3-nov, nivel UW 2 · 40Q). En v5.18 el viernes de nivel 3 de Resp es D20**: **(vie 30-oct, restrictivas + intersticiales + ocupacionales) = 20Q del
+sistema completo timed, el gate real de Resp** (en la v5.17 era D22; Resp no tiene otro viernes en v5.18).** El NBME 25
+(**D10, vie 16-oct**) queda DELANTE del bloque, no en medio. Contenido: volúmenes/compliance/Hb
 (D17) · V/Q + gradiente A-a + hipoxemia (D18) · obstructivas + PFTs + broncodilatadores (D19) ·
 restrictivas e intersticiales (D20) · neumonía + TBC + absceso (D21) · TEP/TVP + HTP + SDRA + cáncer
 de pulmón (D22). Vídeo: [High Yield Respiratory](https://www.youtube.com/watch?v=HU3V0kftcqY) (D17).
@@ -1553,21 +1556,21 @@ Artículos ✅ (URLs conservadas de la v2):
 [High-Yield Respiratory — The Match Guy](https://thematchguy.com/usmle-step-1-high-yield-pulmonology-respiratory-concepts/).
 
 ### (e) → En tu plan
-**D10 = mié 14-oct → NBME 25 (N5 · 200Q)** · **D17 = vie 23-oct (N1 · 30Q)** · **D18 = lun 26-oct (N1 · 30Q)** ·
-**D19 = mar 27-oct (N2 · 40Q)** · **D20 = mié 28-oct (N2 · 40Q, restrictivas + intersticiales + ocupacionales)** · **D21 = jue 29-oct (N2 · 40Q)** · **D22 = vie 30-oct (N3 · 40Q: 20Q del sistema completo timed — el gate real de Resp — sobre TEP/TVP + HTP + ARDS + cáncer de
+**D10 = vie 16-oct → NBME 25 (N5 · 200Q)** · **D17 = mar 27-oct (N1 · 30Q)** · **D18 = mié 28-oct (N1 · 30Q)** ·
+**D19 = jue 29-oct (N2 · 40Q)** · **D20 = vie 30-oct (N3 · 40Q: 20Q del sistema completo timed — el gate real de Resp — sobre restrictivas + intersticiales + ocupacionales)** · **D21 = lun 2-nov (N2 · 40Q)** · **D22 = mar 3-nov (N2 · 40Q, TEP/TVP + HTP + ARDS + cáncer de
 pulmón)**. Ojo a la estructura: el NBME 25 cae **delante** del bloque (no lo parte) y el bloque va **íntegro y seguido**; la ecuación del gas
-alveolar y el V/Q (D17 · D18) deben estar **validados al 80 %** el mar 27-oct (D19, primer día de nivel 2), porque son la base de
-todo lo que viene después. **En v5.17 el viernes de nivel 3 de Resp es D22** (vie 30-oct): el gate de sistema completo de Resp se cobra ahí, en la eval mixta de las
-18:00 y en el propio NBME 26. El gas alveolar **vuelve** en Renal (acetazolamida, **D24 mar 3-nov** y
-ácido-base **D27 vie 6-nov**).
+alveolar y el V/Q (D17 · D18) deben estar **validados al 80 %** el jue 29-oct (D19, primer día de nivel 2), porque son la base de
+todo lo que viene después. **En v5.18 el viernes de nivel 3 de Resp es D20** (vie 30-oct; en la v5.17 era D22): el gate de sistema completo de Resp se cobra ahí, en la eval mixta de las
+18:00 y en el propio NBME 26. El gas alveolar **vuelve** en Renal (acetazolamida, **D24 jue 5-nov** y
+ácido-base **D27 mar 10-nov**).
 
 ---
 
 ## 5. Renal
 
-**→ En tu plan: D23-D24 · D26-D29 = lun 2-nov-2026 → mar 3-nov-2026 + jue 5-nov → mar 10-nov-2026** (el NBME 26, D25 mié 4-nov, parte el bloque: electrolitos, ácido-base, glomerulares y AKI/ERC/litiasis quedan detrás).
-Niveles: D23 (lun 2-nov) N1 · D24 (mar 3-nov) N1 · D26 (jue 5-nov) N2 · 40Q ·
-**D27 (vie 6-nov) N3** · D28 (lun 9-nov) N2 · D29 (mar 10-nov) N2. En la v5.17 **Renal SÍ tiene viernes de nivel 3**: **D27 (vie 6-nov, ácido-base paso a paso + compensaciones + GAP) = 20Q del sistema completo timed, el gate real de Renal** (en la v5.16 su único viernes era el NBME 26). Contenido: nefrona/filtración/clearance (D23) ·
+**→ En tu plan: D23-D24 · D26-D29 = mié 4-nov-2026 → jue 5-nov-2026 + lun 9-nov → jue 12-nov-2026** (el NBME 26, D25 vie 6-nov, parte el bloque: electrolitos, ácido-base, glomerulares y AKI/ERC/litiasis quedan detrás).
+Niveles: D23 (mié 4-nov) N1 · D24 (jue 5-nov) N1 · D26 (lun 9-nov) N2 · 40Q ·
+D27 (mar 10-nov) N2 · D28 (mié 11-nov) N2 · D29 (jue 12-nov) N2. En la v5.18 **Renal no tiene viernes de nivel 3**: su único viernes (D25, vie 6-nov) es el NBME 26, así que el gate de sistema completo de Renal se cobra en la eval mixta de las 18:00 y en el propio hito (en la v5.17 era D27, vie 6-nov, N3). Contenido: nefrona/filtración/clearance (D23) ·
 transporte tubular + diuréticos por sitio (D24) · electrolitos completos + SIADH/DI (D26) ·
 ácido-base paso a paso (D27) · glomerulares nefrítico vs nefrótico (D28) · AKI + ERC + litiasis +
 poliquistosis (D29). Vídeos: [High Yield Renal](https://www.youtube.com/watch?v=zeM8dMiRsJQ) (D23) ·
@@ -1853,19 +1856,19 @@ intrarenal AKI."*
 pauci-immune immunofluorescence."*
 
 ### (f) → En tu plan
-**D23 = lun 2-nov (N1)** · **D24 = mar 3-nov (N1)** · **D26 = jue 5-nov (N2)** · **D27 = vie 6-nov (N3 · 20Q del sistema completo timed — el gate real de Renal — sobre ácido-base)** ·
-**D25 = mié 4-nov → NBME 26 (N5 · 200Q)** · **D28 = lun 9-nov (N2, glomerulares: nefrítico vs nefrótico)** · **D29 = mar 10-nov (N2)**. **El NBME 26 parte el bloque**: electrolitos
+**D23 = mié 4-nov (N1)** · **D24 = jue 5-nov (N1)** · **D25 = vie 6-nov → NBME 26 (N5 · 200Q)** ·
+**D26 = lun 9-nov (N2)** · **D27 = mar 10-nov (N2, ácido-base)** · **D28 = mié 11-nov (N2, glomerulares: nefrítico vs nefrótico)** · **D29 = jue 12-nov (N2)**. **El NBME 26 parte el bloque**: electrolitos
 (D26), ácido-base (D27), glomerulares (D28) y AKI + ERC + litiasis + poliquistosis (D29) quedan detrás del simulacro (solo nefrona y transporte
-tubular, D23-D24, van delante). En la v5.17 **Renal SÍ tiene viernes propio** (D27, vie 6-nov, N3): el gate de sistema completo se cobra ahí, en la eval mixta de las 18:00 y en el NBME 27. La contracorriente (D24) y la
+tubular, D23-D24, van delante). En la v5.18 **Renal no tiene viernes propio** (su único viernes, D25, es el NBME 26; en la v5.17 D27 era N3): el gate de sistema completo se cobra en la eval mixta de las 18:00 y en el NBME 27. La contracorriente (D24) y la
 densidad ×30 (D26) son los dos automatismos que hay que salir teniendo.
 
 ---
 
 ## 6. Gastroenterología e hígado
 
-**→ En tu plan: D30-D36 (mié 11-nov → jue 19-nov), bloque íntegro y seguido.**
-Delante, **D25 = NBME 26 (mié 4-nov)** (en la v5.10 partía GI; desde la v5.13 parte Renal). Niveles: D30 N1 (mié 11-nov, 1.er día del sistema) · D31 N1 (jue 12-nov) ·
-**D32 N3 (vie 13-nov, intestino delgado: malabsorción + celiaquía + EII — el viernes de nivel 3 de GI)** · D33 N2 (lun 16-nov, colon + pólipos + CCR + diverticular + isquemia) · D34 N2 · D35 N2 (mié 18-nov, hígado II) · D36 N2. En v5.17 GI arranca en miércoles (D30). Contenido: fisiología GI (D30) · esófago y estómago (D31) · intestino delgado,
+**→ En tu plan: D30-D36 (vie 13-nov → lun 23-nov), bloque íntegro y seguido.**
+Delante, **D25 = NBME 26 (vie 6-nov)** (en la v5.10 partía GI; desde la v5.13 parte Renal). Niveles: D30 N1 (vie 13-nov, 1.er día del sistema: el bloque de sistema de ese viernes se hace de Renal) · D31 N1 (lun 16-nov) ·
+D32 N2 (mar 17-nov, intestino delgado: malabsorción + celiaquía + EII) · D33 N2 (mié 18-nov, colon + pólipos + CCR + diverticular + isquemia) · D34 N2 · **D35 N3 (vie 20-nov, hígado II: cirrosis + complicaciones + HCC + hereditarias — el viernes de nivel 3 de GI)** · D36 N2 (lun 23-nov). En v5.18 GI arranca en viernes (D30; en la v5.17 arrancaba en miércoles y su N3 era D32). Contenido: fisiología GI (D30) · esófago y estómago (D31) · intestino delgado,
 malabsorción y EII (D32) · colon, pólipos y CCR (D33) · hígado I: LFTs, bilirrubina, hepatitis (D34) ·
 hígado II: cirrosis y hereditarias (D35) · biliar y páncreas (D36). Vídeos:
 [High Yield GI](https://www.youtube.com/watch?v=8gfhX1aR9-A) (D30) ·
@@ -2070,8 +2073,8 @@ the urine color."*
 cholecystitis."*
 
 ### (f) → En tu plan
-**D25 = mié 4-nov → NBME 26 (N5 · 200Q)** · **D30 = mié 11-nov (N1 — 1.er día del sistema)** · **D31 = jue 12-nov (N1)** · **D32 = vie 13-nov (N3 · 20Q del sistema completo timed — el gate real de GI — sobre intestino delgado: malabsorción / celiaquía / EII)** · **D33 = lun 16-nov (N2, colon / pólipos / CCR / diverticular / isquemia)** · **D34 = mar 17-nov (N2)** ·
-**D35 = mié 18-nov (N2, hígado II: cirrosis / complicaciones / HCC / hereditarias)** · **D36 = jue 19-nov (N2)**.
+**D25 = vie 6-nov → NBME 26 (N5 · 200Q)** · **D30 = vie 13-nov (N1 — 1.er día del sistema)** · **D31 = lun 16-nov (N1)** · **D32 = mar 17-nov (N2, intestino delgado: malabsorción / celiaquía / EII)** · **D33 = mié 18-nov (N2, colon / pólipos / CCR / diverticular / isquemia)** · **D34 = jue 19-nov (N2)** ·
+**D35 = vie 20-nov (N3 · 20Q del sistema completo timed — el gate real de GI — sobre hígado II: cirrosis / complicaciones / HCC / hereditarias)** · **D36 = lun 23-nov (N2)**.
 **Todo el bloque GI cae DESPUÉS del NBME 26** (en la v5.10 el hito lo partía): se llega al hito sin GI estudiado, así que los
 fallos GI del NBME 26 son la shopping list de arranque de D30-D33.
 
@@ -2079,9 +2082,9 @@ fallos GI del NBME 26 son la shopping list de arranque de D30-D33.
 
 ## 7. Endocrinología
 
-**→ En tu plan: D37-D39 · D41-D42 = vie 20-nov-2026 → mar 24-nov-2026 + jue 26-nov → vie 27-nov-2026** (el NBME 27, D40 mié 25-nov,
+**→ En tu plan: D37-D39 · D41-D42 = mar 24-nov-2026 → jue 26-nov-2026 + lun 30-nov → mar 1-dic-2026** (el NBME 27, D40 vie 27-nov,
 parte el bloque: DM y calcio/PTH/MEN quedan detrás).
-Niveles: D37 N1 · D38 N1 · D39 N2 · D41 N2 · **D42 N3**. **En la v5.17 Endo SÍ tiene viernes de nivel 3: D42 (vie 27-nov, calcio/PTH + MEN + patología hipofisaria)**; su otro viernes, D37 vie 20-nov, es el 1.er día del sistema (N1). Contenido: ejes hipotálamo-hipófisis y feedback
+Niveles: D37 N1 · D38 N1 · D39 N2 · D41 N2 · D42 N2. **En la v5.18 Endo no tiene viernes de nivel 3**: su único viernes (D40, vie 27-nov) es el NBME 27 (en la v5.17 era D42, vie 27-nov, N3). Contenido: ejes hipotálamo-hipófisis y feedback
 1º/2º/3º (D37) · tiroides completa (D38) · suprarrenal (D39) · DM 1 y 2 + CAD/HHS + tratamiento
 (D41) · calcio/PTH + MEN + hipófisis (D42).
 Vídeo: [High Yield Endocrinology](https://www.youtube.com/watch?v=oQ8PSvInTgM) (D37).
@@ -2314,10 +2317,10 @@ Artículos ✅ (URLs conservadas de la v2):
 [High-Yield Endocrine — The Match Guy](https://thematchguy.com/usmle-step-1-high-yield-endocrine-concepts/).
 
 ### (e) → En tu plan
-**D37 = vie 20-nov (N1)** · **D38 = lun 23-nov (N1)** · **D39 = mar 24-nov (N2, suprarrenal: Cushing / Addison / CAH / feocromocitoma)** ·
-**D40 = mié 25-nov → NBME 27 (N5 · 200Q)** · **D41 = jue 26-nov (N2)** · **D42 = vie 27-nov (N3 · 20Q del sistema completo timed — el gate real de Endo — sobre calcio/PTH + MEN + hipófisis)**. **Desde la v5.14 el NBME 27 parte el
-bloque**: DM (D41) y calcio/PTH/MEN (D42) quedan detrás del simulacro; **en la v5.17 Endo SÍ tiene viernes de nivel 3** (D42): su gate de
-sistema completo se cobra ahí, en la eval mixta de las 18:00 y en el NBME 28. Ojo: el día del
+**D37 = mar 24-nov (N1)** · **D38 = mié 25-nov (N1)** · **D39 = jue 26-nov (N2, suprarrenal: Cushing / Addison / CAH / feocromocitoma)** ·
+**D40 = vie 27-nov → NBME 27 (N5 · 200Q)** · **D41 = lun 30-nov (N2)** · **D42 = mar 1-dic (N2, calcio/PTH + MEN + hipófisis)**. **Desde la v5.14 el NBME 27 parte el
+bloque**: DM (D41) y calcio/PTH/MEN (D42) quedan detrás del simulacro; **en la v5.18 Endo no tiene viernes de nivel 3** (en la v5.17 era D42): su gate de
+sistema completo se cobra en la eval mixta de las 18:00 y en el NBME 28. Ojo: el día del
 calcio (**D42**) es el que conecta con Renal (ERC, §5.9), Inmuno (sarcoidosis, §2.2), Cardio (umbral y
 Trousseau, §3.5) y MSK (**D71 · D73 · D74**): es el mejor candidato del plan para una **tarjeta PC única** que
 una los cinco.
@@ -2326,10 +2329,10 @@ una los cinco.
 
 ## 8. Neurología
 
-**→ En tu plan: D43-D50 (lun 30-nov → mié 9-dic), bloque íntegro y seguido.**
-Delante, **D40 = NBME 27 (mié 25-nov)** (en la v5.12 partía el bloque; desde la v5.13 va entero detrás del hito). Niveles: D43 N1 (lun 30-nov) · D44 N1 ·
-D45 N2 (mié 2-dic, tronco + pares craneales + reflejos) · D46 N2 · **D47 N3 (vie 4-dic, ictus: territorios + isquémico/hemorrágico + HSA — el viernes de nivel 3 de Neuro)** · D48 N2 (lun 7-dic, convulsiones + antiepilépticos) · D49 N2 ·
-D50 N2 (mié 9-dic, EM/desmielinizantes + meningitis + NMJ + tumores SNC). En la v5.17 Neuro tiene **un** viernes de nivel 3 (en la v5.16 eran dos, D45 y D50).
+**→ En tu plan: D43-D50 (mié 2-dic → vie 11-dic), bloque íntegro y seguido.**
+Delante, **D40 = NBME 27 (vie 27-nov)** (en la v5.12 partía el bloque; desde la v5.13 va entero detrás del hito). Niveles: D43 N1 (mié 2-dic) · D44 N1 (jue 3-dic) ·
+**D45 N3 (vie 4-dic, tronco + pares craneales + reflejos — 1.er viernes de nivel 3 de Neuro)** · D46 N2 (lun 7-dic) · D47 N2 (mar 8-dic, ictus: territorios + isquémico/hemorrágico + HSA) · D48 N2 (mié 9-dic, convulsiones + antiepilépticos) · D49 N2 (jue 10-dic) ·
+**D50 N3 (vie 11-dic, EM/desmielinizantes + meningitis + NMJ + tumores SNC — 2.º viernes de nivel 3 de Neuro)**. En la v5.18 Neuro tiene **dos** viernes de nivel 3 (en la v5.17 uno solo, D47).
 Contenido: neuroanatomía localizadora y vías (D43) · médula espinal y Brown-Séquard (D44) · tronco,
 pares craneales y reflejos (D45) · **SNA + fármacos autonómicos completo (D46)** · ictus por
 territorios + hemorrágico + HSA (D47) · convulsiones y antiepilépticos (D48) · demencias, Parkinson y
@@ -2515,7 +2518,7 @@ viñeta PKD), cefaleas, vértigo, **tumores del SNC**, **convulsiones y antiepil
 (solo dos menciones: cromosoma 21 y APP/amiloide en el Down, y *"si es Alzheimer lo trae otro"*).
 **Cubrir D48 (antiepilépticos), D49 (demencias/Parkinson) y D50 (tumores) con First Aid + UWorld.**
 
-**8.11 Unión neuromuscular y SNA** ✅ (HY Pharmacology Part 2, íntegro) — **cae en D46 (jue 3-dic)**
+**8.11 Unión neuromuscular y SNA** ✅ (HY Pharmacology Part 2, íntegro) — **cae en D46 (lun 7-dic)**
 · **Solo dos receptores de ACh para Step 1** ✅: **muscarínico (GPCR)** y **nicotínico (canal iónico)**.
 Pre/postganglionar son **localizaciones**, no tipos. Nicotínicos: **ganglios autonómicos y NMJ**;
 muscarínicos: órganos parasimpáticos **y glándulas sudoríparas**.
@@ -2584,23 +2587,23 @@ Artículos ✅ (URLs conservadas de la v2): [Question Interpretation](https://ww
 [Five 5-Minute Anki Card Tips](https://www.yousmle.com/five-5-minute-or-less-anki-card-tips-to-supercharge-your-usmle-step-1-score-5-will-make-your-a-superstar-on-wards/).
 
 ### (e) → En tu plan
-**D40 = mié 25-nov → NBME 27 (N5 · 200Q)** · **D43 = lun 30-nov (N1)** · **D44 = mar 1-dic (N1)** ·
-**D45 = mié 2-dic (N2, tronco / pares craneales / reflejos)** ·
-**D46 = jue 3-dic (N2, SNA completo)** · **D47 = vie 4-dic (N3 · 20Q del sistema completo timed — el gate de Neuro — sobre ictus: territorios / isquémico vs hemorrágico / HSA)** · **D48 = lun 7-dic (N2, convulsiones/antiepilépticos)** ·
-**D49 = mar 8-dic (N2)** · **D50 = mié 9-dic (N2, EM/desmielinizantes + meningitis + NMJ + tumores SNC)**.
+**D40 = vie 27-nov → NBME 27 (N5 · 200Q)** · **D43 = mié 2-dic (N1)** · **D44 = jue 3-dic (N1)** ·
+**D45 = vie 4-dic (N3 · 20Q del sistema completo timed — 1.er gate de Neuro — sobre tronco / pares craneales / reflejos)** ·
+**D46 = lun 7-dic (N2, SNA completo)** · **D47 = mar 8-dic (N2, ictus: territorios / isquémico vs hemorrágico / HSA)** · **D48 = mié 9-dic (N2, convulsiones/antiepilépticos)** ·
+**D49 = jue 10-dic (N2)** · **D50 = vie 11-dic (N3 · 20Q del sistema completo timed — 2.º gate de Neuro — sobre EM/desmielinizantes + meningitis + NMJ + tumores SNC)**.
 El NBME 27 va **delante** del bloque (desde la v5.13): se llega al hito sin Neuro estudiado, así que los fallos Neuro del
 NBME 27 son la shopping list de arranque; los tractos y Brown-Séquard (**D43 · D44**) tienen que estar **validados al
-80 %** antes del viernes N3 (D47, vie 4-dic), porque son el 100 % del rendimiento en médula e ictus. D49 · D50 (demencias,
+80 %** antes del primer viernes N3 (D45, vie 4-dic) y, sobre todo, antes del ictus (D47, mar 8-dic), porque son el 100 % del rendimiento en médula e ictus. D49 · D50 (demencias,
 tumores, EM) son los días con **menos respaldo del corpus**: allí el método manda más que la fuente.
 
 ---
 
 ## 9. Hematología y Oncología
 
-**→ En tu plan: D51-D54 · D56-D57 = jue 10-dic-2026 → mar 15-dic-2026 + jue 17-dic → vie 18-dic-2026** (el NBME 28, D55 mié 16-dic, parte el
+**→ En tu plan: D51-D54 · D56-D57 = lun 14-dic-2026 → jue 17-dic-2026 + lun 21-dic → mar 22-dic-2026** (el NBME 28, D55 vie 18-dic, parte el
 bloque: leucemias y linfomas/mieloma/transfusión quedan detrás).
-Niveles: D51 (jue 10-dic) N1 · D52 (vie 11-dic) N1 · D53 (lun 14-dic) N2 · D54 (mar 15-dic) N2 · D56 (jue 17-dic) N2 · **D57 (vie 18-dic) N4**.
-En la v5.17 **Heme/Onc tiene dos viernes**: D52 (vie 11-dic, 2.º día del sistema → N1) y **D57 (vie 18-dic, S12) = 1.er viernes de nivel 4 del plan** (20-30Q timed mixtos de los sistemas ya dominados + 10Q tutor de linfomas/mieloma/transfusión; `franjaNota`). Contenido:
+Niveles: D51 (lun 14-dic) N1 · D52 (mar 15-dic) N1 · D53 (mié 16-dic) N2 · D54 (jue 17-dic) N2 · D56 (lun 21-dic) N2 · D57 (mar 22-dic) N2.
+En la v5.18 **Heme/Onc no tiene viernes propio**: su único viernes (D55, vie 18-dic) es el NBME 28 (en la v5.17 tenía dos: D52, N1, y D57, el 1.er viernes de nivel 4 del plan). Contenido:
 microcíticas (Fe, talasemias, frotis) (D51) · macro/normocíticas, hemólisis y drepanocitosis (D52) ·
 coagulación: cascada, PT/PTT, hemofilias, vWD (D53) · plaquetas (PTI/PTT/SUH), hipercoagulabilidad y
 CID (D54) · leucemias y mielodisplasia (D56) · linfomas, mieloma, transfusión y fármacos onco (D57).
@@ -2779,7 +2782,7 @@ globo se llena menos → **microcítica**. **ERROR** ✅ corregido en el vídeo:
 normocítica "porque suele haber hemólisis" — *"So what's the fundamental problem? …it's a problem with
 making hemoglobin. So it would make sense if it was micro."*
 
-**9.7 Hemostasia primaria vs secundaria · PT vs PTT** ✅ (Coag 1 y 2, íntegros) — **D53 (lun 14-dic), N2** (en la v5.15 era el 1.er viernes de nivel 4 del plan; en la v5.16 cayó en miércoles y en la v5.17 cae en lunes)
+**9.7 Hemostasia primaria vs secundaria · PT vs PTT** ✅ (Coag 1 y 2, íntegros) — **D53 (mié 16-dic), N2** (en la v5.15 era el 1.er viernes de nivel 4 del plan; en la v5.16 cayó en miércoles, en la v5.17 en lunes y en la v5.18 vuelve a caer en miércoles)
 ```
 Hemostasia PRIMARIA   = tapón plaquetario     Hemostasia SECUNDARIA = cascada
 Propósito de la cascada: las plaquetas se adhieren entre sí MUY DÉBILMENTE; si el tapón se deshace
@@ -2950,10 +2953,10 @@ Artículos ✅ (URLs conservadas de la v2):
 [Tag Hematology](https://www.yousmle.com/tag/hematology/).
 
 ### (e) → En tu plan
-**D51 = jue 10-dic (N1)** · **D52 = vie 11-dic (N1)** ·
-**D53 = lun 14-dic (N2, COAGULACIÓN — el subtema más "razonable" del bloque)** ·
-**D54 = mar 15-dic (N2, plaquetas/hipercoagulabilidad/CID)** ·
-**D55 = mié 16-dic → NBME 28 (N5 · 200Q)** · **D56 = jue 17-dic (N2)** · **D57 = vie 18-dic (N4 · 1.er viernes de nivel 4 del plan, S12: 20-30Q timed mixtos de los sistemas dominados + 10Q tutor de linfomas/mieloma/transfusión/fármacos onco; `franjaNota`)**. En la v5.17 el gate de sistema completo de Heme/Onc se cobra en la eval mixta de las 18:00, en el bloque mixto del D57 y en el NBME 29.
+**D51 = lun 14-dic (N1)** · **D52 = mar 15-dic (N1)** ·
+**D53 = mié 16-dic (N2, COAGULACIÓN — el subtema más "razonable" del bloque)** ·
+**D54 = jue 17-dic (N2, plaquetas/hipercoagulabilidad/CID)** ·
+**D55 = vie 18-dic → NBME 28 (N5 · 200Q)** · **D56 = lun 21-dic (N2)** · **D57 = mar 22-dic (N2, linfomas/mieloma/transfusión/fármacos onco)**. En la v5.18 el gate de sistema completo de Heme/Onc se cobra en la eval mixta de las 18:00 y en el NBME 29 (en la v5.17 también en el bloque mixto del D57, viernes N4).
 **El NBME 28 parte el bloque**: leucemias (D56) y linfomas/mieloma/transfusión (D57) quedan detrás del simulacro. Los tres artículos (panel de hierro + Coag 1 y 2) cubren
 D51-D54 casi por completo; **D56 · D57 son el tramo con menos respaldo del corpus**: allí se aplica el
 método sobre First Aid.
@@ -2962,8 +2965,8 @@ método sobre First Aid.
 
 ## 10. Microbiología / Enfermedades infecciosas
 
-**→ En tu plan: D58-D64 (lun 21-dic → mié 30-dic), bloque íntegro y seguido; cierra el contenido de 2026.**
-Delante, **D55 = NBME 28 (mié 16-dic)** (en la v5.12 partía el bloque; desde la v5.13 va entero detrás del hito). Niveles: D58 N1 (lun 21-dic, 1.er día del sistema) · D59 N1 · D60 N2 (mié 23-dic, Gram− bacilos + zoonosis) · D61 N2 · D62 N2 (lun 28-dic) · D63 N2 · D64 N2 (mié 30-dic). **En la v5.17 Micro no tiene viernes** (los dos de su tramo, 25-dic y 1-ene, son skip). Contenido:
+**→ En tu plan: D58-D64 (mié 23-dic → mar 5-ene-2027), bloque íntegro y seguido; cruza el fin de año (el contenido de 2026 cierra con D62, mié 30-dic).**
+Delante, **D55 = NBME 28 (vie 18-dic)** (en la v5.12 partía el bloque; desde la v5.13 va entero detrás del hito). Niveles: D58 N1 (mié 23-dic, 1.er día del sistema) · D59 N1 (jue 24-dic) · D60 N2 (lun 28-dic, Gram− bacilos + zoonosis) · D61 N2 (mar 29-dic) · D62 N2 (mié 30-dic) · D63 N2 (lun 4-ene) · D64 N2 (mar 5-ene). **En la v5.18 Micro no tiene viernes** (los dos de su tramo, 25-dic y 1-ene, son skip, como el jue 31-dic). Contenido:
 bacteriología general + genética bacteriana + Gram+ cocos (D58) · Gram+ bacilos, anaerobios y Gram−
 cocos (D59) · Gram− bacilos (D60) · micobacterias, espiroquetas y atípicas (D61) · virus DNA, herpes
 y hepatitis (D62) · virus RNA, VIH y arbovirus (D63) · **hongos, parásitos y antimicrobianos (D64)**.
@@ -2977,7 +2980,7 @@ y hepatitis (D62) · virus RNA, VIH y arbovirus (D63) · **hongos, parásitos y 
 > fluoroquinolonas, vancomicina).
 > **Hongos, parásitos, betalactámicos, aminoglucósidos, macrólidos, tetraciclinas, antifúngicos y
 > antivirales NO ESTÁN** (declarado explícitamente).
-> **Consecuencia operativa para el plan v5.17**: en D58-D64 **no se puede anclar en el cuaderno**. Hay
+> **Consecuencia operativa para el plan v5.18**: en D58-D64 **no se puede anclar en el cuaderno**. Hay
 > que apoyarse en **Sketchy Micro + First Aid + UWorld** y aplicar **el método** (tarjeta PC + CCSN +
 > regla del 80 %). Esto ya está reflejado en `PALMERTON_DIVERGENCIAS_PLAN.md`. → `pendiente_usuario`.
 
@@ -3073,7 +3076,7 @@ cirrosis y regeneración.
 · **Serología de la vacuna VHB** ✅ (→ §6.3): contiene **HBsAg** pero **NO** el antígeno core →
 vacunado = **anti-HBs positivo, anti-HBc NEGATIVO**.
 
-**10.6 Antimicrobianos: lo único que hay es química (y es potente)** ✅ — **cae en D64 (mié 30-dic)**
+**10.6 Antimicrobianos: lo único que hay es química (y es potente)** ✅ — **cae en D64 (mar 5-ene)**
 La regla única: **"likes dissolve likes"** — pequeño + lipofílico + **sin carga** ⇒ cruza membranas
 pasivamente ⇒ buena biodisponibilidad oral, buena penetración tisular y al LCR.
 · **Metronidazol**: pequeño, muy lipofílico, **sin carga** → altísima biodisponibilidad oral, excelente
@@ -3116,8 +3119,8 @@ Vídeos con digresiones útiles ✅: [High Yield Immunology](https://www.youtube
 **Fuente principal real del bloque en el plan**: Sketchy Micro + First Aid + UWorld.
 
 ### (e) → En tu plan
-**D55 = mié 16-dic → NBME 28 (N5 · 200Q)** · **D58 = lun 21-dic (N1, 1.er día del sistema)** · **D59 = mar 22-dic (N1)** · **D60 = mié 23-dic (N2, Gram− bacilos entéricos/respiratorios + zoonosis)** ·
-**D61 = jue 24-dic (N2)** · **D62 = lun 28-dic (N2, virus DNA/herpes/hepatitis virales)** · **D63 = mar 29-dic (N2, virus RNA/VIH/arbovirus)** · **D64 = mié 30-dic (N2, hongos/parásitos/antimicrobianos)**. En la v5.17 el bloque no tiene viernes (25-dic y 1-ene son skip).
+**D55 = vie 18-dic → NBME 28 (N5 · 200Q)** · **D58 = mié 23-dic (N1, 1.er día del sistema)** · **D59 = jue 24-dic (N1)** · **D60 = lun 28-dic (N2, Gram− bacilos entéricos/respiratorios + zoonosis)** ·
+**D61 = mar 29-dic (N2)** · **D62 = mié 30-dic (N2, virus DNA/herpes/hepatitis virales)** · **D63 = lun 4-ene (N2, virus RNA/VIH/arbovirus)** · **D64 = mar 5-ene (N2, hongos/parásitos/antimicrobianos)**. En la v5.18 el bloque no tiene viernes (25-dic y 1-ene son skip, como el jue 31-dic) y cruza el fin de año.
 Es el bloque donde **el porcentaje del día que depende de UWorld sube al máximo**: el pre-test de las
 08:15 deja de ser "diagnóstico del tema" y pasa a ser **la fuente principal**. Aumenta el peso de la
 shopping list y del log de errores.
@@ -3126,8 +3129,8 @@ shopping list y del log de errores.
 
 ## 11. Reproductor / OB-GYN
 
-**→ En tu plan: D66-D70 (mar 5-ene → lun 11-ene-2027), bloque íntegro y seguido**; delante, **D65 = NBME 29 (lun 4-ene)** (desde la v5.14 va entero detrás del hito).
-Niveles: **D66 N1** (mar 5-ene) · D67 N1 · D68 (jue 7-ene) N2 · **D69 N4 (vie 8-ene, S15: 20-30Q timed mixtos de los sistemas dominados + 10Q tutor de mama/aparato masculino/próstata)** · D70 N2 (lun 11-ene). **En la v5.17 Repro SÍ tiene viernes propio** (D69, de nivel 4). Contenido: embriología
+**→ En tu plan: D66-D70 (jue 7-ene → mié 13-ene-2027), bloque íntegro y seguido**; delante, **D65 = NBME 29 (mié 6-ene)** (desde la v5.14 va entero detrás del hito).
+Niveles: **D66 N1** (jue 7-ene) · D67 N1 (vie 8-ene, 2.º día del sistema) · D68 (lun 11-ene) N2 · D69 (mar 12-ene, mama + aparato masculino + próstata) N2 · D70 N2 (mié 13-ene). **En la v5.18 el único viernes de Repro (D67, vie 8-ene) es el 2.º día del sistema → N1** (en la v5.17 su viernes era D69, de nivel 4). Contenido: embriología
 general + ciclo menstrual + hormonas (D66) · embarazo: fisiología, preeclampsia, TORCH (D67) ·
 gineco-oncología: cérvix, endometrio, ovario (D68) · mama + aparato masculino + próstata (D69) ·
 ITS + anticoncepción + amenorreas + SOP (D70). Vídeos:
@@ -3256,7 +3259,7 @@ PLACENTACIÓN ANORMAL: invasión inadecuada de las arterias espirales por el cit
 embarazo; taquicardia refleja → beta-bloqueante; síndrome lupus-like) — §15.2.
 
 **11.8 Incompatibilidad Rh vs ABO, RhoGAM y Coombs** ✅ → desarrollado en **§9.12** y **§2.4**.
-Cae en **D67 (mié 6-ene)**; es el mismo artículo que sostiene inmunología y transfusión: **una sola
+Cae en **D67 (vie 8-ene)**; es el mismo artículo que sostiene inmunología y transfusión: **una sola
 cadena, tres días del plan**.
 
 **11.9 Gineco-oncología** ✅/⚠
@@ -3333,11 +3336,11 @@ Artículos ✅ (URLs conservadas de la v2):
 [Could You Connect Conjugate Vaccines and ABO Incompatibility](https://www.yousmle.com/can-you-connect-conjugate-vaccines-and-abo-incompatibility-for-the-usmle-step-1/).
 
 ### (e) → En tu plan
-**D65 = lun 4-ene → NBME 29 (N5 · 200Q)** · **D66 = mar 5-ene (N1)** · **D67 = mié 6-ene (N1)** · **D68 = jue 7-ene (N2)** · **D69 = vie 8-ene
-(N4 · viernes N4 de S15: 20-30Q timed mixtos de los sistemas dominados + 10Q tutor de mama/masculino/próstata)** · **D70 = lun 11-ene (N2)**.
+**D65 = mié 6-ene → NBME 29 (N5 · 200Q)** · **D66 = jue 7-ene (N1)** · **D67 = vie 8-ene (N1 · viernes, pero 2.º día del sistema)** · **D68 = lun 11-ene (N2)** · **D69 = mar 12-ene
+(N2, mama/masculino/próstata)** · **D70 = mié 13-ene (N2)**.
 **El NBME 29 va delante del bloque (desde la v5.14 ya no lo parte)**: se llega al hito sin Repro estudiado, así que los fallos Repro del NBME 29 son la
-shopping list de arranque de D66-D68. **Repro sigue sin viernes de nivel 3**: en la v5.17 su único viernes (D69) es de nivel 4, mixto de sistemas
-dominados (en la v5.16 sus viernes, 25-dic y 1-ene, eran skip; en la v5.8 tenía N3 en gineco-oncología; en la v5.7, en mama/masculino). Usa
+shopping list de arranque de D66-D68. **Repro sigue sin viernes de nivel 3**: en la v5.18 su único viernes (D67, vie 8-ene) es el 2.º día del sistema (N1)
+(en la v5.17 su único viernes, D69, era de nivel 4; en la v5.16 sus viernes, 25-dic y 1-ene, eran skip; en la v5.8 tenía N3 en gineco-oncología; en la v5.7, en mama/masculino). Usa
 igualmente **D68 (cérvix/endometrio/ovario) como gate propio de 20Q timed**, con las cadenas de
 D66 · D67 (ciclo y placenta) ya automáticas.
 
@@ -3345,11 +3348,11 @@ D66 · D67 (ciclo y placenta) ya automáticas.
 
 ## 12. Musculoesquelético / Reumatología / Derma Step 1
 
-**→ En tu plan: D71 (mar 12-ene) + D73 · D74 (jue 14-ene y vie 15-ene-2027).** Niveles: D71 N1 · D73 N1 · **D74 N4** (viernes N4 de S16).
+**→ En tu plan: D71 (jue 14-ene) + D73 · D74 (lun 18-ene y mar 19-ene-2027).** Niveles: D71 N1 · D73 N1 · D74 N2 (en la v5.17 D74 era viernes N4 de S16).
 Contenido: artritis (AR/OA/gota/espondiloartropatías) + autoanticuerpos (D71) · LES,
 conectivopatías y vasculitis (D73) · hueso (osteoporosis/Paget/tumores) + anatomía MSK high-yield
-(plexos, nervios) + **dermatología Step 1** (D74). **El NBME 30 (D72, mié 13-ene) parte el bloque**: artritis (D71, mar 12-ene) queda
-delante y LES/vasculitis (D73) + hueso/anatomía/dermato Step 1 (D74) detrás; en v5.17 **todo el bloque cae en 2027**; en la
+(plexos, nervios) + **dermatología Step 1** (D74). **El NBME 30 (D72, vie 15-ene) parte el bloque**: artritis (D71, jue 14-ene) queda
+delante y LES/vasculitis (D73) + hueso/anatomía/dermato Step 1 (D74) detrás; en v5.18 **todo el bloque cae en 2027**; en la
 v5.10-v5.13 iba íntegro y seguido detrás del NBME 29.
 
 > **Aviso de cobertura** ✅: **no hay vídeo dedicado de MSK ni de reumatología** en las 295 fuentes. Lo
@@ -3470,8 +3473,8 @@ Artículos ✅ (URLs conservadas de la v2):
 [High-Yield MSK — The Match Guy](https://thematchguy.com/usmle-step-1-high-yield-musculoskeletal-concepts/).
 
 ### (e) → En tu plan
-**D71 = mar 12-ene (N1)** · **D72 = mié 13-ene → NBME 30 (N5 · 200Q)** · **D73 = jue 14-ene (N1)** ·
-**D74 = vie 15-ene (N4 · viernes N4 de S16: 20-30Q timed mixtos de los sistemas dominados + 10Q tutor de hueso/anatomía/dermato Step 1)** — desde la v5.14 **el NBME 30 parte el bloque MSK** (artritis delante; LES/vasculitis y hueso/anatomía detrás);
+**D71 = jue 14-ene (N1)** · **D72 = vie 15-ene → NBME 30 (N5 · 200Q)** · **D73 = lun 18-ene (N1)** ·
+**D74 = mar 19-ene (N2 · hueso/anatomía/dermato Step 1; en la v5.17 era viernes N4 de S16)** — desde la v5.14 **el NBME 30 parte el bloque MSK** (artritis delante; LES/vasculitis y hueso/anatomía detrás);
 en la v5.10-v5.13 iba íntegro y seguido detrás del NBME 29, y en la v5.8-v5.9 lo partía el NBME 29. Es el bloque **peor cubierto por el corpus junto con
 micro y psiquiatría**: aquí el rendimiento depende casi por completo de UWorld + First Aid con el
 método. Trae de vuelta explícitamente §2.1 (citocinas), §2.2 (granuloma) y §7.4 (calcio-PTH).
@@ -3483,8 +3486,8 @@ el log de errores como *proceso*, no solo como *knowledge gap*.
 
 ## 13. Psiquiatría y ciencias del comportamiento
 
-**→ En tu plan: D75-D76 · D78 (lun 18-ene → mar 19-ene + jue 21-ene-2027)**; **el UWSA2 (D77, mié 20-ene) parte el bloque**: psicofármacos (D78) y
-Biostats (D79) quedan detrás; delante, **D72 = NBME 30 (mié 13-ene)** (en la v5.12 partía el bloque; desde la v5.13 va entero detrás de él). Niveles: D75 N1 · D76 N1 · D78 N2.
+**→ En tu plan: D75-D76 · D78 (mié 20-ene → jue 21-ene + lun 25-ene-2027)**; **el UWSA2 (D77, vie 22-ene) parte el bloque**: psicofármacos (D78) y
+Biostats (D79) quedan detrás; delante, **D72 = NBME 30 (vie 15-ene)** (en la v5.12 partía el bloque; desde la v5.13 va entero detrás de él). Niveles: D75 N1 · D76 N1 · D78 N2.
 Contenido: trastornos del ánimo + psicóticos + esquema DSM (D75) · ansiedad, personalidad, infancia
 (TDAH/autismo) y sustancias/toxidromes (D76) · **psicofármacos: antidepresivos, antipsicóticos, litio,
 ansiolíticos (D78)**.
@@ -3571,8 +3574,8 @@ Weaknesses That Drove My Success* · *How to Stop Med School Procrastination* ·
 [9 Habits to Quit for USMLE 260+](https://www.youtube.com/watch?v=Kj7tAyooE3o).
 
 ### (d) → En tu plan
-**D72 = mié 13-ene → NBME 30 (N5 · 200Q)** · **D75 = lun 18-ene (N1)** · **D76 = mar 19-ene (N1)** · **D77 = mié 20-ene → UWSA2 (N5 · 160Q)**, que desde la
-v5.14 parte el bloque · **D78 = jue 21-ene (N2, psicofármacos, detrás del UWSA2)** — D75 (lun 18-ene) es el 1.er día del sistema (N1).
+**D72 = vie 15-ene → NBME 30 (N5 · 200Q)** · **D75 = mié 20-ene (N1)** · **D76 = jue 21-ene (N1)** · **D77 = vie 22-ene → UWSA2 (N5 · 160Q)**, que desde la
+v5.14 parte el bloque · **D78 = lun 25-ene (N2, psicofármacos, detrás del UWSA2)** — D75 (mié 20-ene) es el 1.er día del sistema (N1).
 Junto con Micro y MSK, es uno de los **tres bloques sin columna vertebral Palmerton**. Compensación:
 psiquiatría es de los sistemas donde el **CCSN (cronología + severidad)** rinde más — el caso de la
 esquizofrenia vs esquizofreniforme es exactamente eso.
@@ -3581,7 +3584,7 @@ esquizofrenia vs esquizofreniforme es exactamente eso.
 
 ## 14. Bioestadística, epidemiología y ética
 
-**→ En tu plan: D79 = vie 22-ene-2027 (nivel UW 4 · 40Q: viernes N4 de S17, 20-30Q timed mixtos de los sistemas dominados + 10Q tutor del subtema) + AMBOSS HY Biostats 155Q.**
+**→ En tu plan: D79 = mar 26-ene-2027 (nivel UW 2 · 40Q; en la v5.17 era viernes N4 de S17) + AMBOSS HY Biostats 155Q.**
 Vídeo: *Biostatistics SUMMARY STEP 1 + 2 — The Basics USMLE* (dos sesiones íntegras).
 
 ### (a) Concepto ancla
@@ -3681,7 +3684,7 @@ sesgos · IC y poder · ROC · media/mediana en distribuciones sesgadas. **Es el
 examen (~4-10 % del total, dominable en 1-2 semanas)**; complemento comunitario: Randy Neil MD.
 
 ### (e) → En tu plan
-**D79 = vie 22-ene-2027 (nivel UW 4 · 40Q, viernes N4 de S17)**, con **AMBOSS HY Biostats 155Q**. Un solo día: por eso
+**D79 = mar 26-ene-2027 (nivel UW 2 · 40Q; en la v5.17 era viernes N4 de S17)**, con **AMBOSS HY Biostats 155Q**. Un solo día: por eso
 la mitad "que sí está" (diseños, OR/RR, p/alfa/beta/poder, sesgos) se resuelve con el vídeo y **la
 otra mitad (sens/esp/VPP/ROC/NNT) exige el paquete de UWorld el mismo día**. Es el día con mayor
 ratio puntos/hora del plan entero: **no negociarlo**.
@@ -3690,11 +3693,11 @@ ratio puntos/hora del plan entero: **no negociarlo**.
 
 ## 15. Bioquímica, Genética y Farmacología general
 
-**→ En tu plan: D80 (lun 25-ene-2027, N1 · 30Q) y D81 (mar 26-ene-2027, N1 · 30Q) — los dos son
+**→ En tu plan: D80 (mié 27-ene-2027, N1 · 30Q) y D81 (jue 28-ene-2027, N1 · 30Q) — los dos son
 DÍAS DOBLES** heredados del corrimiento v5.7 (allí los 4 días de cierre de Fase A se fusionaron en 2;
-**ningún tema se perdió**). En **v5.14 no se fusionó nada más** (ni en v5.8-v5.13, ni en los corrimientos rígidos v5.15-v5.17): los dos días dobles siguen tal cual,
-ya en 2027, **detrás** del NBME 30 (D72, mié 13-ene), de Biostats (D79, vie 22-ene) y **del UWSA2 (D77, mié 20-ene), que ya no los parte** (quedan juntos: lun 25 y mar 26-ene);
-**el NBME 31 (D82, mié 27-ene) cae al día siguiente del cierre, sin banco de consolidación delante**:
+**ningún tema se perdió**). En **v5.14 no se fusionó nada más** (ni en v5.8-v5.13, ni en los corrimientos rígidos v5.15-v5.18): los dos días dobles siguen tal cual,
+ya en 2027, **detrás** del NBME 30 (D72, vie 15-ene), de Biostats (D79, mar 26-ene) y **del UWSA2 (D77, vie 22-ene), que ya no los parte** (quedan juntos: mié 27 y jue 28-ene);
+**el NBME 31 (D82, vie 29-ene) cae al día siguiente del cierre, sin banco de consolidación delante**:
 · **D80 = Bioquímica HY**: metabolismo (glucólisis / TCA / cadena de transporte) + glucógeno + lípidos ·
 aminoácidos + ciclo de la urea + errores innatos + vitaminas — **SOLO high-yield** (Palmerton: las
 rutas completas son poco ROI).
@@ -3703,9 +3706,9 @@ rutas completas son poco ROI).
 Vídeos: [High Yield Biochemistry](https://www.youtube.com/watch?v=FcXG3ux0a1I) (D80) ·
 [High Yield Pharmacology](https://www.youtube.com/watch?v=J2KWVQ67H2U) +
 [Part 2](https://www.youtube.com/watch?v=PvKp25ku0po) (D81).
-Delante de los dos: **D72 = NBME 30 (mié 13-ene-2027)** — en v5.17 el contenido de 2026 lo cierra D64 (Micro, mié 30-dic; el jue 31-dic
-y el vie 1-ene siguen siendo skip) y el primer hito de 2027 es el NBME 29 (D65, lun 4-ene); luego el UWSA2 (D77, mié 20-ene), Biostats
-(D79, vie 22-ene) y recién después D80 (lun 25-ene) y D81 (**mar 26-ene-2027**, cierre real de la Fase A).
+Delante de los dos: **D72 = NBME 30 (vie 15-ene-2027)** — en v5.18 el contenido de 2026 lo cierra D62 (Micro, mié 30-dic; el jue 31-dic
+y el vie 1-ene siguen siendo skip y Micro termina en 2027 con D63-D64, 4 y 5-ene) y el primer hito de 2027 es el NBME 29 (D65, mié 6-ene); luego el UWSA2 (D77, vie 22-ene), Biostats
+(D79, mar 26-ene) y recién después D80 (mié 27-ene) y D81 (**jue 28-ene-2027**, cierre real de la Fase A).
 
 ### (a) Concepto ancla de farmacología: "el ultimate memory hack"
 ```
@@ -3991,7 +3994,7 @@ Niemann-Pick)**, **porfirias**, Lesch-Nyhan, ciclo de la urea como bloque, alcap
 **Cubiertos** ✅: von Gierke, MCAD/VLCAD, déficit de carnitina, déficit de PDH, McArdle (como descarte),
 fructoquinasa (benigna), G6PD, Zellweger (mención).
 
-**15.8 Genética** ✅ — **cae en D81 (mar 26-ene)**
+**15.8 Genética** ✅ — **cae en D81 (jue 28-ene)**
 · **Dominante vs recesivo POR FISIOPATOLOGÍA** ✅ (la regla que sustituye a la lista):
 ```
 Si es una ENZIMA y falta, el 50 % suele bastar → RECESIVO
@@ -4076,9 +4079,9 @@ Artículos ✅ (URLs conservadas de la v2):
 [High-Yield Pharm — The Match Guy](https://thematchguy.com/usmle-step-1-high-yield-pharmacology-concepts/).
 
 ### (e) → En tu plan
-**D80 = lun 25-ene-2027 (N1 · 30Q)** · **D81 = mar 26-ene-2027 (N1 · 30Q)** ·
-**D72 = mié 13-ene-2027 → NBME 30 (N5 · 200Q)** — el hito cae **delante** de D79 (Biostats) y de los dos días dobles; **D77 = mié 20-ene → UWSA2 (N5 · 160Q)** va también delante de ambos (en la v5.12 los partía; desde la v5.14 parte Psiquiatría); la Fase A cierra con D81 y
-**el NBME 31 (D82, mié 27-ene) cae al día siguiente, sin banco de consolidación delante** — llegar al 26-ene con Bioquímica validada al 80 %.
+**D80 = mié 27-ene-2027 (N1 · 30Q)** · **D81 = jue 28-ene-2027 (N1 · 30Q)** ·
+**D72 = vie 15-ene-2027 → NBME 30 (N5 · 200Q)** — el hito cae **delante** de D79 (Biostats) y de los dos días dobles; **D77 = vie 22-ene → UWSA2 (N5 · 160Q)** va también delante de ambos (en la v5.12 los partía; desde la v5.14 parte Psiquiatría); la Fase A cierra con D81 y
+**el NBME 31 (D82, vie 29-ene) cae al día siguiente, sin banco de consolidación delante** — llegar al 28-ene con Bioquímica validada al 80 %.
 D80 y D81 son **días dobles**: la carga real es mayor que el `qDia` de 30Q. Prioriza lo que el corpus marca como
 rentable (**von Gierke, MCAD, gluconeogénesis, colesterol/estatinas, folato/B12, la regla dominante vs
 recesivo, likes dissolve likes**) y deja lo declarado ausente (CYP450, Hardy-Weinberg, imprinting,
@@ -4125,34 +4128,34 @@ Sistema progresivo:
 | **4** | Bloques de 20-30Q · CON tiempo · sistemas mixtos | 2 sistemas dominados + 1 nuevo: saltar entre especialidades sin perder la técnica | 50-70Q/día | confianza integrando múltiples sistemas |
 | **5** | Bloques de 40Q · CON tiempo · random completo | Simulación exacta del examen, sosteniendo 80 % | 80-100Q/día (máx. 2 bloques de 40) | — |
 
-**Mapeo al plan v5.17** (el `.ts` ya lleva `nivelUW` por día y el gate en `USMLE_GATE`):
+**Mapeo al plan v5.18** (el `.ts` ya lleva `nivelUW` por día y el gate en `USMLE_GATE`):
 
-- **Fase A (D1-D81 · 1-oct → 26-ene · D1 = UWSA1, el contenido arranca en D2, vie 2-oct)** = Niveles 1→3. El **PRE-TEST 10Q** (08:15, tutor, subtema
+- **Fase A (D1-D81 · 5-oct → 28-ene · D1 = UWSA1, el contenido arranca en D2, mar 6-oct)** = Niveles 1→3. El **PRE-TEST 10Q** (08:15, tutor, subtema
   nuevo) es Nivel 1; la **CONSOLIDACIÓN** de las 11:00 es Nivel 1 los dos primeros días de cada sistema
   y Nivel 2 desde el tercero; los **viernes sin hito** son Nivel 3 (20Q del sistema completo timed) **hasta S10**:
-  en el plan v5.17 son **6**: **D12 (vie 16-oct, Cardio: antiarrítmicos + fármacos autonómicos CV), D22 (vie 30-oct, Resp: TEP/TVP + HTP +
-  ARDS + cáncer de pulmón), D27 (vie 6-nov, Renal: ácido-base + compensaciones + GAP), D32 (vie 13-nov, GI: intestino delgado —
-  malabsorción + celiaquía + EII), D42 (vie 27-nov, Endo: calcio/PTH + MEN + hipófisis) y D47 (vie 4-dic, Neuro: ictus)**.
-  **Desde S11 el viernes sin hito es Nivel 4** (mixto de sistemas dominados, §A-6): en la v5.17 son **cuatro: D57 (vie 18-dic, S12,
-  Heme/Onc: linfomas + mieloma + transfusión), D69 (vie 8-ene, S15, Repro: mama + masculino + próstata), D74 (vie 15-ene, S16, MSK: hueso +
-  anatomía + dermato Step 1) y D79 (vie 22-ene, S17, Psiquiatría: bioestadística + epidemiología + ética)** — el viernes de S11 (D52) es el 2.º
-  día de Heme/Onc y S13-S14 no tienen viernes hábil. Los otros cinco viernes de Fase A (**D2** Fundamentos, **D7** Cardio, **D17** Resp, **D37**
-  Endo y **D52** Heme/Onc) caen en el 1.º-2.º día de su sistema → Nivel 1, y ese día el bloque de sistema completo se hace del sistema
-  ANTERIOR. Inmuno, Micro y Biochem quedan sin viernes (Micro solo tiene los skips del 25-dic y el 1-ene).
-  🆕 (Con el D1 en jueves **ningún hito cae en viernes** — los 15 viernes de Fase A son de contenido: 6 N3 + 4 N4 + 5 N1 —; Renal y Endo
-  ganan gate de sistema, Neuro pasa de dos a uno y Heme/Onc, Repro, MSK y Psiquiatría estrenan viernes de nivel 4.)
+  en el plan v5.18 son **5**: **D15 (vie 23-oct, Cardio: IC + shock + fármacos IC), D20 (vie 30-oct, Resp: restrictivas + intersticiales +
+  ocupacionales), D35 (vie 20-nov, GI: hígado II — cirrosis + HCC), D45 (vie 4-dic, Neuro: tronco + pares craneales + reflejos) y D50
+  (vie 11-dic, Neuro: EM + meningitis + NMJ + tumores SNC)**.
+  **Desde S11 el viernes sin hito sería Nivel 4** (mixto de sistemas dominados, §A-6), pero en la v5.18 **no hay ninguno**: los viernes
+  desde S11 son hito (D55 vie 18-dic NBME 28 · D72 vie 15-ene NBME 30 · D77 vie 22-ene UWSA2), skip (vie 25-dic y vie 1-ene) o 2.º día de
+  Repro (D67 vie 8-ene, N1). Los otros tres viernes de Fase A sin hito (**D5** Inmuno, **D30** GI y **D67** Repro) caen en el 1.º-2.º día
+  de su sistema → Nivel 1, y ese día el bloque de sistema completo se hace del sistema ANTERIOR. Renal, Endo, Heme/Onc, Micro, MSK,
+  Psiquiatría y Biochem quedan sin viernes de nivel ≥3 (su viernes es un hito o un skip, o no tienen).
+  🆕 (Con el D1 en lunes **los hitos vuelven a ocupar viernes** — 6 de los 14 viernes de Fase A —: quedan 8 viernes de contenido — 5 N3 + 0 N4 +
+  3 N1 —; Cardio y Resp conservan un gate de sistema cada uno, Neuro recupera dos, Renal y Endo lo pierden y desaparecen los viernes de
+  nivel 4. *(v5.17: 15 viernes de Fase A, todos sin hito = 6 N3 —D12, D22, D27, D32, D42, D47— + 4 N4 —D57, D69, D74, D79— + 5 N1.)*)
   La **EVALUACIÓN ACUMULATIVA de las 18:00** (timed, mixta) introduce el **Nivel 4 en dosis diaria**.
   **Regla de validación en ciclos de 24-48 h**: si estudiaste un subtema hoy, mañana debes poder sacar
   **≥ 80 %** en un bloque de ese subtema; si no, **el método del día falló — ajustar YA**.
-- **Fase B (`faseDe` = B: D82-D86 · 27-ene → 2-feb)** = **NBME 31 en D82 (mié 27-ene) ABRE la fase el día siguiente al cierre de contenido
-  (D81, mar 26-ene): sin banco de consolidación delante del GO/NO-GO**; Nivel **4 en D84 (vie 29-ene) y D86 (mar 2-feb)** (random timed 2×40Q +
-  sistema débil #1), intercalados con **NBME 32 (D83, jue 28-ene) y NBME 33 (D85, lun 1-feb)**. El resto del banco queda **alojado en el sprint**:
-  **D88 (jue 4-feb) y D89 (vie 5-feb) también N4** (sistema débil #2 / Mehlman) → Nivel **5 en D90 (lun 8-feb) y D91 (mar 9-feb)**
-  (incorrects 2ª pasada, `system = Banco intensivo`) y en **D92 (mié 10-feb) y D93 (jue 11-feb)** (AMBOSS 200 mitades 1 y 2). **El UWSA2 (D77, mié 20-ene) cae dentro de la Fase A** también en la v5.17.
-- **Fase C (`faseDe` = C: D87-D95 · 3-feb → 15-feb)** = Nivel 5 en formato simulacro completo
-  (**Free 120 D87, mié 3-feb, que abre la fase**), con los días de banco alojados (D88 · D89 · D90-D93) y **D94 (vie 12-feb, D-2 =
-  última sesión de banco)** + sáb 13 y dom 14-feb libres + **D95 (lun 15-feb, D-1 REAL = último día del plan)** de taper (20Q flagged + Anki maduro; D95 = sesión mínima AM ≤2 h +
-  ritual de test-day), rebasando la ventana de examen (D80-D84 = 25-29 ene); **examen target MAR 16-FEB-2027, al día siguiente del D95**
+- **Fase B (`faseDe` = B: D82-D86 · 29-ene → 4-feb)** = **NBME 31 en D82 (vie 29-ene) ABRE la fase el día siguiente al cierre de contenido
+  (D81, jue 28-ene): sin banco de consolidación delante del GO/NO-GO**; Nivel **4 en D84 (mar 2-feb) y D86 (jue 4-feb)** (random timed 2×40Q +
+  sistema débil #1), intercalados con **NBME 32 (D83, lun 1-feb) y NBME 33 (D85, mié 3-feb)**. El resto del banco queda **alojado en el sprint**:
+  **D88 (lun 8-feb) y D89 (mar 9-feb) también N4** (sistema débil #2 / Mehlman) → Nivel **5 en D90 (mié 10-feb) y D91 (jue 11-feb)**
+  (incorrects 2ª pasada, `system = Banco intensivo`) y en **D92 (vie 12-feb) y D93 (lun 15-feb)** (AMBOSS 200 mitades 1 y 2; el finde 13-14 feb cae entre los dos). **El UWSA2 (D77, vie 22-ene) cae dentro de la Fase A** también en la v5.18.
+- **Fase C (`faseDe` = C: D87-D95 · 5-feb → 17-feb)** = Nivel 5 en formato simulacro completo
+  (**Free 120 D87, vie 5-feb, que abre la fase**), con los días de banco alojados (D88 · D89 · D90-D93) y **D94 (mar 16-feb, D-2 =
+  última sesión de banco)** + **D95 (mié 17-feb, D-1 REAL = último día del plan)**, seguidos y sin finde en medio, de taper (20Q flagged + Anki maduro; D95 = sesión mínima AM ≤2 h +
+  ritual de test-day), rebasando la ventana de examen (D78-D82 = 25-29 ene); **examen target JUE 18-FEB-2027, al día siguiente del D95**
   (fuera de la ventana; agendar/reprogramar Prometric y confirmar eligibility period — o recortar temario: decisión de Joseph).
 
 **El gate, literal** (`USMLE_GATE` en `usmleStep1Daily.ts`): *no subir de nivel sin **≥ 80 % en 10Q
@@ -4314,7 +4317,7 @@ Kawasaki aparezcan completos en la viñeta, §6.4).
 - **Fix**: en práctica, temporizador físico de **2 minutos por pregunta**; al sonar → adivinar por
   instinto, marcar y avanzar.
 - **STRESS SETS** — *cuándo*: últimas 2-3 semanas, con ≥ 60 % del contenido cubierto → **en tu plan =
-  Fases B-C, desde el mié 27-ene (D82; el UWSA2 del mié 20-ene, D77, es aún Fase A)**, ya integrados en la franja 05:00 ("Fases B-C: + STRESS SET
+  Fases B-C, desde el vie 29-ene (D82; el UWSA2 del vie 22-ene, D77, es aún Fase A)**, ya integrados en la franja 05:00 ("Fases B-C: + STRESS SET
   10Q/12min"). *Formato*: abrir el día con **10Q random cronometradas a 12 minutos exactos**.
   *Objetivo*: el límite asfixiante impide racionalizar de más y entrena la confianza en el primer
   instinto (los scores de stress sets suelen igualar o superar los bloques normales — **prueba
@@ -4334,27 +4337,28 @@ Kawasaki aparezcan completos en la viñeta, §6.4).
 4. **EMDR**: para traumas de exámenes previos; recomienda sesiones nocturnas de auto-EMDR de 1-1,5 h
    (ver Divergencias — **no está en el diseño del plan**; opcional si aparece bloqueo real de test-day).
 
-## E. Últimas 1-2 semanas (= tu Fase C, D87-D95 · 3-feb → 15-feb; examen mar 16-feb)
+## E. Últimas 1-2 semanas (= tu Fase C, D87-D95 · 5-feb → 17-feb; examen jue 18-feb)
 
 - **Regla de retención 10x**: consolidar lo estudiado es **10 veces más eficiente** que meter contenido
   nuevo en un cerebro cansado → **cero temas nuevos**; solo Anki + bloques mixtos.
 - **Overtraining**: al menos un simulacro-maratón de **8-9 h seguidas** (UWSA + NBME el mismo día) para
   aclimatar resistencia. En tu plan: usar un viernes de Fase B/C si el GO está sólido.
 - **Familiarity breeds calm**: rendir el **Free 120 en el MISMO Prometric del examen** (ruta,
-  seguridad, sillas) — disuelve la ansiedad logística. Tu **D87 (mié 3-feb, D-13 del examen)** es el Free 120:
+  seguridad, sillas) — disuelve la ansiedad logística. Tu **D87 (vie 5-feb, D-13 del examen)** es el Free 120:
   evaluarlo presencial en Prometric Lima si la logística lo permite.
 
-## F. Test Day (MAR 16-FEB-2027 · fuera de la ventana 25-29 ene, que el plan rebasa)
+## F. Test Day (JUE 18-FEB-2027 · fuera de la ventana 25-29 ene, que el plan rebasa)
 
-> **v5.17 (30-sep · 3.er corrimiento RÍGIDO)**: el plan termina el **lun 15-feb = D95 = ÚLTIMO DÍA del plan y D-1 REAL** y rebasa **la ventana 25-29 ene** →
-> **examen target MAR 16-FEB-2027, al día siguiente del D95** (`DAILY_META.examenTarget = '2027-02-16'`). D94 (vie 12-feb) = D-2 = última
-> sesión de banco; **sáb 13 y dom 14-feb libres** (solo Anki vencido, dormir); D95 (lun 15-feb) = D-1 (20Q flagged + Anki maduro, nada nuevo;
-> sesión mínima solo por la mañana ≤2 h + tarde de logística: permiso + 2 ID, Ziploc, ruta; nada después de las 17:00). A diferencia de la
-> v5.16, **sí hay finde libre dentro del taper (entre D94 y D95)**; entre el D95 y el examen, no: el ritual de test-day se hace la tarde del
-> propio D95 (`descansoD1 = '2027-02-15'`, `USMLE_TAPER.d95`/`.dMenos1`). El protocolo taper/D-1/test day
+> **v5.18 (3-oct · 4.º corrimiento RÍGIDO)**: el plan termina el **mié 17-feb = D95 = ÚLTIMO DÍA del plan y D-1 REAL** y rebasa **la ventana 25-29 ene** →
+> **examen target JUE 18-FEB-2027, al día siguiente del D95** (`DAILY_META.examenTarget = '2027-02-18'`). D94 (mar 16-feb) = D-2 = última
+> sesión de banco; D95 (mié 17-feb) = D-1 (20Q flagged + Anki maduro, nada nuevo; sesión mínima solo por la mañana ≤2 h + tarde de
+> logística: permiso + 2 ID, Ziploc, ruta; nada después de las 17:00). A diferencia de la v5.17, **no hay finde libre dentro del taper ni
+> entre el D95 y el examen** (el sáb 13 y el dom 14-feb caen antes, entre D92 y D93): el ritual de test-day se hace la tarde del propio D95
+> (`descansoD1 = '2027-02-17'`, `USMLE_TAPER.d95`/`.dMenos1`). El protocolo taper/D-1/test day
 > vive en `USMLE_TAPER` y en `PALMERTON_DIVERGENCIAS_PLAN.md` §E-5. **Joseph debe agendar/reprogramar el Prometric para el
-> mar 16-feb y confirmar que su eligibility period cubre esa fecha** (si no: extenderlo); la alternativa es recortar temario
+> jue 18-feb y confirmar que su eligibility period cubre esa fecha** (si no: extenderlo); la alternativa es recortar temario
 > para volver atrás. **Desde hoy cada día no estudiado mueve el examen un hábil más (o exige recortar).**
+> *(Histórico v5.17, 30-sep: D94 vie 12-feb → sáb 13 y dom 14-feb libres → D95 lun 15-feb, examen mar 16-feb.)*
 > *(Histórico v5.16, 26-sep: D94 mar 9-feb + D95 mié 10-feb seguidos, examen jue 11-feb, sin finde entre el taper y el examen.)*
 
 - **Hack de +15 min**: saltar el tutorial (ya conoces la interfaz; solo verificar auriculares) → esos
@@ -4414,23 +4418,23 @@ lista **en cada hito NBME**; **una sola alarma activa = corregir esa semana**:
 
 **Integración con tu GO/NO-GO** (2 NBME consecutivos ≥ 68 % + UWSA2 "low risk" — **se MANTIENE**; el
 68 % queda dentro del rango Palmerton 65-70). Aplicando su regla del 5 %/mes hacia atrás desde el 68 %
-del NBME 31 (27-ene), los mínimos "on-track" por hito quedan **exactamente iguales que en la v2 — desde la v5.15 los
+del NBME 31 (29-ene), los mínimos "on-track" por hito quedan **exactamente iguales que en la v2 — desde la v5.15 los
 hitos corren con el plan conservando su D#, así que solo cambian las fechas**:
 
-| Hito | Fecha | D# (idéntico en v5.14, v5.15, v5.16 y v5.17) | Mínimo on-track (regla 5 %/mes) |
+| Hito | Fecha (v5.18) | D# (idéntico en v5.14, v5.15, v5.16, v5.17 y v5.18) | Mínimo on-track (regla 5 %/mes) |
 |------|-------|-----------|----------------------------------|
-| UWSA1 | jue 1-oct | **D1** | baseline — cualquier valor sirve; ~48 % ya es trayectoria de GO |
-| NBME 25 | mié 14-oct | **D10** | ≥ 51 % |
-| NBME 26 | mié 4-nov | **D25** | ≥ 54 % |
-| NBME 27 | mié 25-nov | **D40** | ≥ 57 % (gate 1 ECFMG pide ≥ 55 %: coherente) |
-| NBME 28 | mié 16-dic | **D55** | ≥ 61 % |
-| NBME 29 | lun 4-ene | **D65** | ≥ 63 % (gate 2 pide ≥ 60 %: coherente) |
-| NBME 30 | mié 13-ene | **D72** | ≥ 65 % (umbral de seguridad Palmerton alcanzado) |
-| UWSA2 | mié 20-ene | **D77** | "low risk" |
-| NBME 31 | mié 27-ene | **D82** | **≥ 68 % → GO** (el día siguiente al cierre de contenido, D81) |
-| NBME 32 | jue 28-ene | **D83** | sprint (medición, no gate) |
-| NBME 33 | lun 1-feb | **D85** | sprint (medición, no gate) |
-| Free 120 | mié 3-feb | **D87** | familiarización + logística |
+| UWSA1 | lun 5-oct | **D1** | baseline — cualquier valor sirve; ~48 % ya es trayectoria de GO |
+| NBME 25 | vie 16-oct | **D10** | ≥ 51 % |
+| NBME 26 | vie 6-nov | **D25** | ≥ 54 % |
+| NBME 27 | vie 27-nov | **D40** | ≥ 57 % (gate 1 ECFMG pide ≥ 55 %: coherente) |
+| NBME 28 | vie 18-dic | **D55** | ≥ 61 % |
+| NBME 29 | mié 6-ene | **D65** | ≥ 63 % (gate 2 pide ≥ 60 %: coherente) |
+| NBME 30 | vie 15-ene | **D72** | ≥ 65 % (umbral de seguridad Palmerton alcanzado) |
+| UWSA2 | vie 22-ene | **D77** | "low risk" |
+| NBME 31 | vie 29-ene | **D82** | **≥ 68 % → GO** (el día siguiente al cierre de contenido, D81) |
+| NBME 32 | lun 1-feb | **D83** | sprint (medición, no gate) |
+| NBME 33 | mié 3-feb | **D85** | sprint (medición, no gate) |
+| Free 120 | vie 5-feb | **D87** | familiarización + logística |
 
 Si un hito cae **> 5 puntos bajo su mínimo** → la respuesta **NO es estudiar más horas**: es **auditar
 el MÉTODO esa misma semana** (checklist §G) y, si **dos hitos seguidos** fallan, activar el plan B de
@@ -4438,7 +4442,7 @@ fecha (feb-mar, mismo *eligibility period*) **SIN tocar el proceso de maestría*
 
 ## B. Estructura de día que él recomienda vs la tuya
 
-| Elemento | Palmerton | Plan v5.17 | Veredicto |
+| Elemento | Palmerton | Plan v5.18 | Veredicto |
 |----------|-----------|-----------|-----------|
 | Anki a primera hora, mente fresca | Sí — "duplica la velocidad" | **05:00-05:45 ANKI AM** + 07:15 repaso | ✅ coincide (aún más temprano) |
 | Contenido: subtema de First Aid con el "por qué" + tarjetas propias | por la tarde | **DEEP PRIME 09:00-11:00** | ✅ mismo contenido; hora distinta (ver Divergencias) |
@@ -4584,25 +4588,25 @@ fuente estándar del plan (First Aid, Pathoma, Sketchy, B&B, AMBOSS) y **se le a
 
 | Bloque | D# del plan | Vacío confirmado | Fuente sustituta |
 |---|---|---|---|
-| **Cardio** | D8 (12-oct), D16 (22-oct) | bucles presión-volumen · Frank-Starling · fórmula de Laplace · maniobras de soplos · desdoblamiento de S2 · criterios de Jones | First Aid + Costanzo |
-| **Respiratorio** | D19-D22 (27-30 oct) | PFTs y DLCO ⚠ (síntesis, no verificado) · surfactante/NRDS ⚠⚠ | First Aid + B&B |
-| **Renal** | D28 · D29 (9 y 10-nov) | glomerulopatías por entidad · nefritis intersticial · ADPKD · litiasis por tipo ⚠ | First Aid + UWorld |
-| **GI** | D31-D36 (12-nov → 19-nov) | gastrina/CCK/somatostatina · IBP · H. pylori/ZE · Barrett · varices/SAAG · hemocromatosis · Wilson · A1AT · FAP/Lynch · isquemia mesentérica | First Aid + Pathoma |
-| **Endocrino** | D39, D42 (24 y 27-nov) | dexametasona y Cushing · feocromocitoma · MEN 1/2A/2B · insulinoma · acromegalia · DI central vs nefrogénica | First Aid + UWorld |
-| **Neuro** | D48, D49, D50 (7, 8 y 9-dic) | Wallenberg/Weber/Horner · HSA como entidad · cefaleas · vértigo · **convulsiones y antiepilépticos** · **demencias** · **tumores del SNC** · Guillain-Barré · Lambert-Eaton | First Aid + B&B |
-| **Heme** | D53-D57 (14-dic → 18-dic) | vWD vs hemofilia · tiempo de sangría y mezclas 1:1 · esferocitosis/Howell-Jolly · PNH · **casi todas las translocaciones** · policitemia vera/JAK2 · reacciones transfusionales (febril, alérgica, IgA) | First Aid + Pathoma |
-| **Micro/ID** | **D58-D64 (21-dic → 30-dic)** | **BLOQUE ENTERO sin columna vertebral**: hongos, parásitos, betalactámicos, aminoglucósidos, macrólidos, tetraciclinas, antifúngicos, antivirales | **Sketchy + First Aid + UWorld** |
-| **Inmuno** | D5 (7-oct) | **inmunodeficiencias primarias por patrón** (SCID, DiGeorge, CGD, complemento/Neisseria, Chédiak-Higashi, hiper-IgE, hiper-IgM, Wiskott-Aldrich) · rechazo y GVHD | First Aid + UWorld |
-| **Repro** | D67-D68 · D69-D70 (6 y 7-ene · 8 y 11-ene) | HPV E6/E7 y citología · BRCA · mola · placenta previa/abruptio/acreta · DMG · parto pretérmino · oxitocina · HPB/PSA/finasterida · masas escrotales · insensibilidad a andrógenos | First Aid + UWorld |
-| **MSK/Reuma** | **D71-D74 (12-15 ene)** | **BLOQUE ENTERO**: AR vs artrosis, panel de autoanticuerpos, vasculitis por entidad, esclerodermia, miositis, polimialgia, gota, osteoporosis, tumores óseos, anatomía MSK, **derma Step 1** | First Aid + UWorld |
-| **Psiquiatría** | **D75 · D76-D78 (18-ene · 19-21 ene)** | **BLOQUE ENTERO salvo la duración esquizofrenia/esquizofreniforme**: DSM, sustancias, litio, tricíclicos, IMAO, antipsicóticos, SNM vs serotoninérgico, defensas | First Aid + UWorld |
-| **Biostats** | D79 (22-ene) | **sens/esp/VPP/VPN, ROC, LR, NNT/ARR/RRR, IC, lead-time/length-time, pruebas estadísticas** | **paquete de stats de UWorld** (el propio Palmerton remite ahí) |
-| **Bioquímica** | D80 (25-ene) | PKU, homocistinuria, galactosemia, fructosa, Pompe/Cori, **lisosomales**, **porfirias**, Lesch-Nyhan, ciclo de la urea · **vitaminas A, B1, B3** | First Aid + Rapid Review Biochemistry |
-| **Farma/genética** | D81 (26-ene) | orden cero/primer orden, dosis de carga, **CYP450**, índice terapéutico, agonista parcial · curvas autonómicas (epi/NE/iso/fenilefrina) · **NAC, pralidoxima, naloxona, flumazenil, deferoxamina, fomepizol, azul de metileno** · **imprinting, Hardy-Weinberg, PCR, ELISA**, herencia mitocondrial | First Aid + UWorld |
+| **Cardio** | D8 (14-oct), D16 (26-oct) | bucles presión-volumen · Frank-Starling · fórmula de Laplace · maniobras de soplos · desdoblamiento de S2 · criterios de Jones | First Aid + Costanzo |
+| **Respiratorio** | D19-D22 (29-oct → 3-nov) | PFTs y DLCO ⚠ (síntesis, no verificado) · surfactante/NRDS ⚠⚠ | First Aid + B&B |
+| **Renal** | D28 · D29 (11 y 12-nov) | glomerulopatías por entidad · nefritis intersticial · ADPKD · litiasis por tipo ⚠ | First Aid + UWorld |
+| **GI** | D31-D36 (16-nov → 23-nov) | gastrina/CCK/somatostatina · IBP · H. pylori/ZE · Barrett · varices/SAAG · hemocromatosis · Wilson · A1AT · FAP/Lynch · isquemia mesentérica | First Aid + Pathoma |
+| **Endocrino** | D39, D42 (26-nov y 1-dic) | dexametasona y Cushing · feocromocitoma · MEN 1/2A/2B · insulinoma · acromegalia · DI central vs nefrogénica | First Aid + UWorld |
+| **Neuro** | D48, D49, D50 (9, 10 y 11-dic) | Wallenberg/Weber/Horner · HSA como entidad · cefaleas · vértigo · **convulsiones y antiepilépticos** · **demencias** · **tumores del SNC** · Guillain-Barré · Lambert-Eaton | First Aid + B&B |
+| **Heme** | D53-D57 (16-dic → 22-dic) | vWD vs hemofilia · tiempo de sangría y mezclas 1:1 · esferocitosis/Howell-Jolly · PNH · **casi todas las translocaciones** · policitemia vera/JAK2 · reacciones transfusionales (febril, alérgica, IgA) | First Aid + Pathoma |
+| **Micro/ID** | **D58-D64 (23-dic → 5-ene)** | **BLOQUE ENTERO sin columna vertebral**: hongos, parásitos, betalactámicos, aminoglucósidos, macrólidos, tetraciclinas, antifúngicos, antivirales | **Sketchy + First Aid + UWorld** |
+| **Inmuno** | D5 (9-oct) | **inmunodeficiencias primarias por patrón** (SCID, DiGeorge, CGD, complemento/Neisseria, Chédiak-Higashi, hiper-IgE, hiper-IgM, Wiskott-Aldrich) · rechazo y GVHD | First Aid + UWorld |
+| **Repro** | D67-D68 · D69-D70 (8 y 11-ene · 12 y 13-ene) | HPV E6/E7 y citología · BRCA · mola · placenta previa/abruptio/acreta · DMG · parto pretérmino · oxitocina · HPB/PSA/finasterida · masas escrotales · insensibilidad a andrógenos | First Aid + UWorld |
+| **MSK/Reuma** | **D71-D74 (14-19 ene)** | **BLOQUE ENTERO**: AR vs artrosis, panel de autoanticuerpos, vasculitis por entidad, esclerodermia, miositis, polimialgia, gota, osteoporosis, tumores óseos, anatomía MSK, **derma Step 1** | First Aid + UWorld |
+| **Psiquiatría** | **D75 · D76-D78 (20-ene · 21-25 ene)** | **BLOQUE ENTERO salvo la duración esquizofrenia/esquizofreniforme**: DSM, sustancias, litio, tricíclicos, IMAO, antipsicóticos, SNM vs serotoninérgico, defensas | First Aid + UWorld |
+| **Biostats** | D79 (26-ene) | **sens/esp/VPP/VPN, ROC, LR, NNT/ARR/RRR, IC, lead-time/length-time, pruebas estadísticas** | **paquete de stats de UWorld** (el propio Palmerton remite ahí) |
+| **Bioquímica** | D80 (27-ene) | PKU, homocistinuria, galactosemia, fructosa, Pompe/Cori, **lisosomales**, **porfirias**, Lesch-Nyhan, ciclo de la urea · **vitaminas A, B1, B3** | First Aid + Rapid Review Biochemistry |
+| **Farma/genética** | D81 (28-ene) | orden cero/primer orden, dosis de carga, **CYP450**, índice terapéutico, agonista parcial · curvas autonómicas (epi/NE/iso/fenilefrina) · **NAC, pralidoxima, naloxona, flumazenil, deferoxamina, fomepizol, azul de metileno** · **imprinting, Hardy-Weinberg, PCR, ELISA**, herencia mitocondrial | First Aid + UWorld |
 
 ---
 
-# DIVERGENCIAS DETECTADAS (corpus completo vs plan v5.17 — **el plan NO se cambia**)
+# DIVERGENCIAS DETECTADAS (corpus completo vs plan v5.18 — **el plan NO se cambia**)
 
 1. **Nivel 1 UWorld = 20-30Q/día; el plan hace 30-40Q/día desde D2** (10 pre-test + 20-30
    consolidación). Mitigación ya instrumentada en el `.ts`: los días de **nivel 1 llevan `qDia: 30`**
@@ -4615,9 +4619,9 @@ fuente estándar del plan (First Aid, Pathoma, Sketchy, B&B, AMBOSS) y **se le a
    con mente fresca y preguntas del tema el MISMO día** — y se adopta además su regla de reparto:
    **las tarjetas mecánicas de farmacología se hacen por la tarde/noche**.
 3. **Progresión de niveles vs bloques por sistema**: la Fase A va de 1→3 y la Fase B **sí** tiene ahora
-   una fase explícita de **Nivel 4 (D84 · D86 = 29-ene y 2-feb en la Fase B, más D88 · D89 = 4-5 feb dentro del sprint)** antes del Nivel 5 (D90 · D91 · D92 · D93), lo que resuelve
+   una fase explícita de **Nivel 4 (D84 · D86 = 2 y 4-feb en la Fase B, más D88 · D89 = 8-9 feb dentro del sprint)** antes del Nivel 5 (D90 · D91 · D92 · D93), lo que resuelve
    la divergencia nº 3 de la v2. La **EVAL de las 18:00** sigue dando dosis diaria de nivel 4 durante
-   toda la Fase A. **Vigilar en el NBME 30 (D72, 13-ene)** que la transición no duela.
+   toda la Fase A. **Vigilar en el NBME 30 (D72, 15-ene)** que la transición no duela.
 4. **EMDR nocturno 1-1,5 h/día**: recomendación fuerte suya para traumas de examen; **NO cabe en el
    plan** (las noches protegen las 7 h de sueño). Se adopta solo el tier ligero (worst-case planning +
    affect labeling + el modelo 20/80 de cognición negativa). Si en Fase B aparece pánico real en
@@ -4626,14 +4630,14 @@ fuente estándar del plan (First Aid, Pathoma, Sketchy, B&B, AMBOSS) y **se le a
    **2 × ≥ 68 % + UWSA2 low risk**. Sin conflicto — 68 está entre 65 y 70 y el requisito de **DOS
    consecutivos** lo hace más robusto que un 65 % aislado. **Se mantiene 68 %.**
 6. **"Múltiples pasadas de UWorld" vs Fase B**: su prohibición aplica a **REPETIR el banco completo**
-   (entrena reconocimiento de texto). La 2ª pasada de la Fase B (**D90 = 8-feb · D91 = 9-feb · D92 = 10-feb · D93 = 11-feb**, alojada ya en la semana del sprint) es **SOLO de
+   (entrena reconocimiento de texto). La 2ª pasada de la Fase B (**D90 = 10-feb · D91 = 11-feb · D92 = 12-feb · D93 = 15-feb**, alojada ya en el sprint) es **SOLO de
    incorrects + marked**, que él mismo exige revisar en profundidad. Sin conflicto real; **no convertir
    la Fase B en re-hacer preguntas ya acertadas**.
 7. **Heredadas de la v1-v2 (siguen vigentes)**: (a) él sugiere bioquímica/micro/inmuno **temprano** —
    el plan pone inmuno muy temprano (D4 · D5) pero **bioquímica al final (D80)** por rentabilidad de los
    sistemas CORE (compensado: aparece transversal en UWorld desde la S1); (b) él sugiere **PK/PD y
-   autonomics en las primeras 2-3 semanas** — el plan los cubre dentro de Cardio (**D12, 16-oct**) y el
-   SNA completo en **D46 (3-dic)**, con el día dedicado al final (**D81, 26-ene**); (c) él **rechaza
+   autonomics en las primeras 2-3 semanas** — el plan los cubre dentro de Cardio (**D12, 20-oct**) y el
+   SNA completo en **D46 (7-dic)**, con el día dedicado al final (**D81, 28-ene**); (c) él **rechaza
    los calendarios hora-por-hora** — el plan usa franjas fijas por adherencia demostrada, adoptando su
    red de seguridad: **mínimo innegociable del día caótico = Anki al día + 10Q pre-test**.
 8. **NUEVA (v3)**: **tres bloques del plan no tienen columna vertebral en el corpus** —
@@ -4644,7 +4648,7 @@ fuente estándar del plan (First Aid, Pathoma, Sketchy, B&B, AMBOSS) y **se le a
    `PALMERTON_DIVERGENCIAS_PLAN.md`.
 9. **NUEVA (v3)**: la **bioestadística del corpus cubre la mitad conceptual (diseños, OR/RR, p, alfa,
    beta, poder, sesgos) pero NO la mitad de cálculo (sens/esp/VPP/ROC/NNT/IC)**, y **el propio
-   Palmerton remite al paquete de stats de UWorld**. Como el plan le da **un solo día (D79, 22-ene)**,
+   Palmerton remite al paquete de stats de UWorld**. Como el plan le da **un solo día (D79, 26-ene)**,
    ese día debe repartirse: vídeo + AMBOSS HY para la mitad conceptual, **paquete UWorld para la mitad
    de cálculo**.
 
@@ -4693,7 +4697,7 @@ fuente estándar del plan (First Aid, Pathoma, Sketchy, B&B, AMBOSS) y **se le a
     generada por el propio NotebookLM. **Tratar como NO presentes.** → §15.7.
 
 **Decisiones de plan pendientes**:
-17. Decidir con qué fuente exacta se cubren **bucles PV, Frank-Starling y Laplace** en **D8 (lun 12-oct)** y **maniobras/S2/Jones** en **D16 (jue 22-oct)** — ¿Costanzo? ¿B&B? Anotarlo en el `.ts`
+17. Decidir con qué fuente exacta se cubren **bucles PV, Frank-Starling y Laplace** en **D8 (mié 14-oct)** y **maniobras/S2/Jones** en **D16 (lun 26-oct)** — ¿Costanzo? ¿B&B? Anotarlo en el `.ts`
     o en el doc del día para no improvisar esa mañana.
 18. **Fuentes no explotadas**: *High Yield Surgery Review*, *High Yield Family Medicine Review Part 2*,
     *The ONLY Video You Need to Pass the USMLE Step 1 in 2026* y *Anki Was Hurting This Med Student's

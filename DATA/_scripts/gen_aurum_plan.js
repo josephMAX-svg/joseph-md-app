@@ -7,14 +7,15 @@
 // día-a-día (ver + practica + lectura, suma = min_core).
 //
 // Reglas de calendario (idénticas en espíritu a gen_synapse_plan.js):
-//  · INICIO = argv[2] (YYYY-MM-DD; v5.4 = jue 2026-09-03 · v5.17 = jue 2026-10-01). Las 130 lecciones se asignan a días
+//  · INICIO = argv[2] (YYYY-MM-DD; v5.4 = jue 2026-09-03 · v5.17 = jue 2026-10-01 · v5.18 = lun 2026-10-05). Las 130 lecciones se asignan a días
 //    HÁBILES consecutivos Lunes→Viernes (SALTA sábados y domingos; NO salta feriados).
 //    El NÚCLEO L-V es la ventana 14:15-15:15.
 //  · 130 hábiles ≈ 26 semanas. La fecha fin se calcula y se imprime.
 //  · semana del plan = índice 1..26 (cada 5 días hábiles = 1 semana). El d=1..5 del JSON
-//    es el 1º..5º hábil de su semana del plan (= Lun..Vie solo si el D1 cae en lunes; v5.17: D1 jue 1-oct →
-//    d=1..5 = jue..mié hasta el mié 23-dic; la semana D61-D65 va del jue 24-dic al lun 4-ene con los 3 feriados
-//    fijos fuera, y desde el mar 5-ene d=1..5 = mar..lun).
+//    es el 1º..5º hábil de su semana del plan (= Lun..Vie solo si el D1 cae en lunes; v5.18: D1 lun 5-oct →
+//    d=1..5 = lun..vie hasta el vie 18-dic (D55); la semana D56-D60 va del lun 21 al lun 28-dic (vie 25 feriado), la
+//    D61-D65 del mar 29-dic al mié 6-ene (31-dic y 1-ene fuera), y desde el jue 7-ene d=1..5 = jue..mié.
+//    v5.17: D1 jue 1-oct → d=1..5 = jue..mié hasta el mié 23-dic y desde el mar 5-ene mar..lun).
 //
 // v2 — los bloques:
 //  · A    (ver)      — VÍDEO a ver        · formato 'pantalla' · slot 'core'
@@ -55,7 +56,7 @@ if (lecciones.length !== 130) throw new Error('Se esperaban 130 lecciones, hay '
 
 // ─── Calendario: 130 días hábiles L-V consecutivos desde START (argv[2]) ───
 const WD = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-const START_ISO = process.argv[2] || '2026-10-01'; // default = D1 v5.17 (antes 2026-09-07, v5.6); el pipeline pasa siempre la fecha if(!/^20\d\d-\d\d-\d\d$/.test(START_ISO)) throw new Error('START inválido: '+START_ISO); // v5.6: D1 = lun 7-sep-2026
+const START_ISO = process.argv[2] || '2026-10-05'; // default = D1 v5.18 (v5.17: 2026-10-01; antes 2026-09-07, v5.6); el pipeline pasa siempre la fecha if(!/^20\d\d-\d\d-\d\d$/.test(START_ISO)) throw new Error('START inválido: '+START_ISO); // v5.6: D1 = lun 7-sep-2026
 const START = new Date(START_ISO + 'T12:00:00'); // START parametrizado: node <script> YYYY-MM-DD
 const SKIP_FIJOS = new Set(['2026-12-25', '2026-12-31', '2027-01-01']); // v5.4: feriados libres en todos los planes
 const isoOf = (d) => new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
@@ -200,7 +201,7 @@ const ts = `/**
  * aurumDailyPlan.ts — Motor día-a-día AURUM v2 (${SEMANAS} semanas · ${TOTAL} días · ${dias[0].fecha} → ${finISO}).
  * AURUM = programa de 6 meses para volverse un closer de ventas de élite.
  * GENERADO por DATA/_scripts/gen_aurum_plan.js desde DATA/AURUM/curricula/_curriculum_v2.json.
- * NO editar a mano — regenerar: node DATA/_scripts/gen_aurum_plan.js YYYY-MM-DD (v5.17: 2026-10-01)
+ * NO editar a mano — regenerar: node DATA/_scripts/gen_aurum_plan.js YYYY-MM-DD (v5.18: 2026-10-05)
  *
  * Calendario: las ${TOTAL} lecciones se asignan a días HÁBILES consecutivos Lunes→Viernes
  * (salta sábados y domingos). Ventana fija en Google Calendar: 14:15-15:15.
@@ -252,7 +253,7 @@ export const AURUM_DIAS: DiaAurum[] = [
 ${dias.map(diaTs).join(',\n')}
 ];
 
-/** Los 7 días de cierre de fase (PITCH v1→v7; 5º día de la semana del plan: v5.17 = mié D15/D35/D55 y lun D75/D95/D115/D130). \`liviano\` = ese PITCH tiene versión LIVIANO. */
+/** Los 7 días de cierre de fase (PITCH v1→v7; 5º día de la semana del plan: v5.18 = vie D15/D35/D55 y mié D75/D95/D115/D130 · ⚠ D95 mié 17-feb = D-1 del Step 1 y D96 jue 18-feb = día del examen). \`liviano\` = ese PITCH tiene versión LIVIANO. */
 export const AURUM_PITCH_DIAS: { pitch: number; d: number; fecha: string; faseId: DiaAurum['faseId']; liviano: boolean }[] = [
   ${pitchDias.join(',\n  ')}
 ];
@@ -304,10 +305,10 @@ console.log('  drills con variante LIVIANO:', livDias.length, '(debe ser 16: 5º
 console.log('  cierres de fase / PITCH:', pitchD.join(' · '));
 // Nota: las semanas del plan son 5 días hábiles consecutivos; tras un feriado fijo (25-dic) el 5º día deja de
 // caer en viernes (deriva de calendario ya presente desde v5.4 con SKIP_FIJOS), y con el D1 fuera de lunes
-// (v5.17: jue 1-oct) no cae en viernes nunca. El invariante que se exige es "1 de cada 5 drills" (d=5 del JSON),
+// (v5.17: jue 1-oct) no cae en viernes nunca; v5.18 (D1 lun 5-oct): viernes hasta el D55, lun 28-dic el D60 y miércoles desde el D65. El invariante que se exige es "1 de cada 5 drills" (d=5 del JSON),
 // no el día de la semana.
 const livNoViernes = livDias.filter((x) => x.wd !== 'Vie').length;
-if (livNoViernes) console.log('  ⚠ variantes LIVIANO fuera de viernes por la deriva post-feriado o el D1 fuera de lunes:', livNoViernes, '(esperado tras 25-dic; con D1 en jueves, todas)');
+if (livNoViernes) console.log('  ⚠ variantes LIVIANO fuera de viernes por la deriva post-feriado o el D1 fuera de lunes:', livNoViernes, '(esperado tras 25-dic: en v5.18 D60 lun + D65-D115 mié; con D1 en jueves, todas)');
 if (TOTAL !== 130) throw new Error('Se esperaban 130 días, hay ' + TOTAL);
 if (finSemana.length) throw new Error('Hay días en sábado/domingo');
 if (enFeriado.length) throw new Error('Hay días en feriado fijo');

@@ -1,13 +1,14 @@
-# 🧠 FRANJA 04:15–05:45 (v5.2 · serie desde lun 31-ago-2026 · D1 efectivo JUE 1-OCT-2026, v5.17) — IA VIBECODING + ANKI AM
+# 🧠 FRANJA 04:15–05:45 (v5.2 · serie desde lun 31-ago-2026 · D1 efectivo LUN 5-OCT-2026, v5.18) — IA VIBECODING + ANKI AM
 
-> **v5.17 (30-sep-2026) · corrimiento RÍGIDO:** ni el lun 28, ni el mar 29 ni el mié 30 de septiembre se estudiaron → D1 efectivo = **jue 1-oct-2026**
-> (decimosexto corrimiento, 31-ago→1-oct; 23 hábiles perdidos). Regla de este corrimiento: **no se toca NINGÚN tema ni contenido — solo corren los días, y donde había un fin clavado se AMPLÍAN días**; el
+> **v5.18 (3-oct-2026) · corrimiento RÍGIDO:** ni el jue 1 ni el vie 2 de octubre se estudiaron → D1 efectivo = **lun 5-oct-2026**
+> (decimoséptimo corrimiento, 31-ago→5-oct; 25 hábiles perdidos). Regla de este corrimiento: **no se toca NINGÚN tema ni contenido — solo corren los días, y donde había un fin clavado se AMPLÍAN días**; el
 > desfase se absorbe alargando el final. La franja, el reparto 45'+45' y las metas NO cambian; solo se
-> re-fecharon los planes: **vibecoding S1-S12 = 12 bloques de 5 hábiles que YA NO coinciden con las semanas de calendario (van de JUEVES a MIÉRCOLES: jue 1-oct → mié 23-dic-2026;
-> el SHIP cae el sábado siguiente al 5º día de cada bloque: 10-oct → 26-dic, una semana más tarde que en v5.16, con el proyecto siguiente ya empezado jue/vie; el tipo del paso va con el paso k, no con el día de la semana) + taper
-> S13-S20 = bloques SECUENCIALES de `pasos.length` hábiles (jue 24-dic → lun 15-feb-2027; 95 días en total = los del Step 1, d == D#; ningún paso perdido)** y
-> **SYNAPSE 132 días · 19 semanas (jue 1-oct-2026 → mar 9-feb-2027; 110 A-units intactas: F0 45 · F1 24 · F2 41; F0 sem 1-8 · F1 sem 9-12 · F2 sem 13-19, deload sem 17-19 desde el lun 18-ene; la **semana 1 es corta** (jue 1 → dom 4-oct, 4 días) y la 19 es larga (lun 1 → mar 9-feb, 9 días); las series B/C por día de semana ya no se saltan la 1ª pieza cuando el START cae en jueves)**. ⚠ **El Step 1 termina el lun 15-feb (D95 = D-1 REAL; D94 vie 12-feb = última sesión de banco) → examen target MAR 16-FEB-2027**; sáb 13 y dom 14-feb libres entre D94 y D95. El Anki AM sigue hasta el lun 15-feb (D95, sesión mínima). Fechas leídas de `vibecodingPlan.ts` / `synapseDailyPlan.ts` /
-> `usmleStep1Daily.ts` el 30-sep, no estimadas. La **última A-unit de SYNAPSE (d132) cae el MARTES 9-feb = D91 del Step 1** (dentro del sprint final de banco D88-D92): la opción de adelantarla sigue abierta como **decisión de Joseph** (`PENDIENTES_JOSEPH.md`).
+> re-fecharon los planes: **vibecoding S1-S12 = 12 bloques de 5 hábiles que VUELVEN a coincidir con las semanas de calendario (lun → vie: lun 5-oct → lun 28-dic-2026; S12 = lun 21 → lun 28-dic porque el vie 25-dic es feriado;
+> el SHIP cae el sábado siguiente al 5º día de cada bloque: 10-oct → 19-dic para S1-S11 —los mismos sábados que en v5.17— y el sáb 2-ene para S12; el tipo del paso va con el paso k, no con el día de la semana) + taper
+> S13-S20 = bloques SECUENCIALES de `pasos.length` hábiles (mar 29-dic → mié 17-feb-2027; 95 días en total = los del Step 1, d == D#; ningún paso perdido)** y
+> **SYNAPSE 131 días · 19 semanas (lun 5-oct-2026 → vie 12-feb-2027; 110 A-units intactas: F0 48 · F1 23 · F2 39; F0 sem 1-8 · F1 sem 9-12 · F2 sem 13-19, deload sem 17-19 desde el lun 25-ene; la **semana 1 vuelve a ser completa** (lun 5 → dom 11-oct) y la 19 es corta (lun 8 → vie 12-feb, 5 días); con el START en lunes las series B/C por día de semana arrancan completas, y el capítulo de Automate del jue 31-dic (feriado) pasa al sáb 2-ene)**. ⚠ **El Step 1 termina el mié 17-feb (D95 = D-1 REAL; D94 mar 16-feb = última sesión de banco) → examen target JUE 18-FEB-2027**; ya NO hay finde entre D94 y D95 (el sáb 13/dom 14-feb cae entre D92 y D93). El Anki AM sigue hasta el mié 17-feb (D95, sesión mínima). Fechas leídas de `vibecodingPlan.ts` / `synapseDailyPlan.ts` /
+> `usmleStep1Daily.ts` el 3-oct, no estimadas. La **última A-unit de SYNAPSE (d131) cae el VIERNES 12-feb = D92 del Step 1** (último día del sprint final de banco D88-D92; desde el lun 15-feb solo Step 1): la opción de adelantarla sigue abierta como **decisión de Joseph** (`PENDIENTES_JOSEPH.md`).
+> *(v5.17, 30-sep: D1 jue 1-oct · vibecoding jue 1-oct → mié 23-dic en bloques jue→mié, SHIP 10-oct → 26-dic · taper jue 24-dic → lun 15-feb · SYNAPSE jue 1-oct → mar 9-feb, 132 días, F0 45 · F1 24 · F2 41, sem 1 corta de 4 días, última A-unit mar 9-feb = D91 · examen mar 16-feb, con el sáb 13/dom 14-feb libres entre D94 y D95.)*
 > *(v5.16, 26-sep: D1 lun 28-sep · vibecoding lun 28-sep → vie 18-dic en semanas de calendario, SHIP 3-oct → 19-dic · taper 21-dic → 10-feb · SYNAPSE lun 28-sep → vie 5-feb, 131 días, F0 48 · F1 24 · F2 38, última A-unit vie 5-feb = D92 · examen jue 11-feb. Texto original de v5.16:)* ni el mié 23, ni el jue 24 ni el vie 25 de septiembre se estudiaron → D1 efectivo = **lun 28-sep-2026**
 > (decimoquinto corrimiento, 31-ago→28-sep; 20 hábiles perdidos). Regla de este corrimiento: **no se toca NINGÚN tema ni contenido — solo corren los días, y donde había un fin clavado se AMPLÍAN días**; el
 > desfase se absorbe alargando el final. La franja, el reparto 45'+45' y las metas NO cambian; solo se
@@ -39,25 +40,25 @@
   sistemas propios. Cero teoría de sintaxis; la teoría estructurada vive en la misión SYNAPSE de
   las 12:30 (30' · desde v5.7 su F1 = el stack que el vibecoding necesita: Claude Code docs, Academy,
   Supabase, n8n) · **sábado PC 15:00-17:00 = SHIP** del proyecto de la semana · domingo = Feynman 10' opcional.
-- **Currículo (v5.10-b, RE-SECUENCIADO el 12-sep con lo ya construido; re-fechado a v5.17 el 30-sep)**: `DATA/SYNAPSE/VIBECODING_12_PROYECTOS.md` — 12 proyectos S1-S12
-  (**jue 1-oct → mié 23-dic-2026**, 5 pasos hábiles cada uno = bloques jue→mié (en v5.16 eran semanas de calendario lun→vie); SHIP en los sábados **10-oct → 26-dic**) ordenados por
+- **Currículo (v5.10-b, RE-SECUENCIADO el 12-sep con lo ya construido; re-fechado a v5.18 el 3-oct)**: `DATA/SYNAPSE/VIBECODING_12_PROYECTOS.md` — 12 proyectos S1-S12
+  (**lun 5-oct → lun 28-dic-2026**, 5 pasos hábiles cada uno = semanas de calendario lun→vie, salvo S12 = lun 21 → lun 28-dic por el feriado del vie 25-dic (en v5.17 eran bloques jue→mié); SHIP en los sábados **10-oct → 19-dic y el S12 el sáb 2-ene**) ordenados por
   **riesgo para el Step 1** y hechos SOLO de trabajo real pendiente (lo ya construido por agentes —parser APEX v2.5.1 +
   test 13/13, `usmleScores.ts`, `anki_telemetria.js` v1, `gen_revision_semanal.js` v1, `plan_checks.sql`,
   `verify_vibecoding.js`, `journal_hoy.js`— se da por hecho y cada proyecto lo COMPLETA o lo pone en producción):
   **S1** APEX end-to-end (redeploy n8n + 1 APEX USMLE íntegro en Anki y vault + ruteo por subtema) · **S2** Anki sync + KPI
   "1ª review del día" · **S3** espejo Supabase del progreso (`plan_checks`) + exportar/importar · **S4** verify + revisión
   semanal cerrada (≥8/10 métricas reales) · **S5** puente VITALS sueño/agua → revisión · **S6** RLS `datos_tesis` + auditoría de
-  tablas sin RLS · **S7** motor de preguntas ENCAPS desde el stock del banco propio (proyecto con flag `deload`: en v5.17 corre **jue 12 → mié 18-nov**; la
-  semana deload post-NBME 26 (D25 mié 4-nov) es la del **lun 9 → vie 13-nov** y queda repartida entre S6 `rls-datos-tesis` (jue 5 → mié 11-nov, sin flag) y S7 (jue 12 y vie 13); la otra semana deload post-NBME es la del **lun 21-dic** (tras el NBME 28 del mié 16-dic) = final de S12 (jue 17 → mié 23-dic) + el jue 24 de S13 — **decisión de Joseph** (pendiente desde v5.14): mover el flag o dejarlo en S7; v5.16: S7 lun 9 → vie 13-nov, S6 lun 2 → vie 6-nov = deload post-NBME 26; v5.15: S7 mié 4 → mar 10-nov, S6 mié 28-oct → mar 3-nov) · **S8** pool MIR (cuadernillos 2022-2026: clasificación verificada + UI 10Q) ·
+  tablas sin RLS · **S7** motor de preguntas ENCAPS desde el stock del banco propio (proyecto con flag `deload`: en v5.18 corre **lun 16 → vie 20-nov**; la
+  semana deload post-NBME 26 (D25 vie 6-nov) es la del **lun 9 → vie 13-nov** = exactamente S6 `rls-datos-tesis` (sin flag); la otra semana deload post-NBME es la del **lun 21-dic** (tras el NBME 28 del vie 18-dic) = S12 (lun 21 → lun 28-dic, con el vie 25-dic feriado) — **decisión de Joseph** (pendiente desde v5.14): mover el flag a S6 o dejarlo en S7; v5.17: S7 jue 12 → mié 18-nov, deload repartida entre S6 (jue 5 → mié 11-nov) y S7; v5.16: S7 lun 9 → vie 13-nov, S6 lun 2 → vie 6-nov = deload post-NBME 26; v5.15: S7 mié 4 → mar 10-nov, S6 mié 28-oct → mar 3-nov) · **S8** pool MIR (cuadernillos 2022-2026: clasificación verificada + UI 10Q) ·
   **S9** migrador de overlays de hitos (USMLE + Research) · **S10** bot WhatsApp→OCR LIVIANO · **S11** pipeline de contenido de
   marcas · **S12** capstone + README. Fuente única `vibecoding_proyectos.json` → `node DATA/_scripts/gen_vibecoding_plan.js
   <fecha>` → `src/lib/vibecodingPlan.ts`. Cada proyecto lleva **4 criterios de aceptación mecánicos** (`verificacion[]`: git ·
   test · url · supabase · fichero · manual) y la convención de commit **`[S<n>] …`**.
-- **Taper S13-S20 (jue 24-dic-2026 → lun 15-feb-2027, 35 días = D61-D95; el día d del vibecoding = D# del Step 1, 95 en total; desde v5.11 son bloques SECUENCIALES de `pasos.length` hábiles, ningún paso perdido)**:
-  S13 jue 24-dic → lun 4-ene (5 pasos; 25-dic, 31-dic y 1-ene libres; NBME 29 lun 4-ene = D65; PC sáb 9-ene) · S14 mar 5 → lun 11-ene (5 pasos; PC sáb 16-ene) · S15 mar 12 → vie 15-ene (4 pasos; NBME 30 mié 13-ene = D72; PC sáb 16-ene) · S16 lun 18 → mié 20-ene (3 pasos; UWSA2 mié 20-ene = D77; PC sáb 23-ene) = **mantenimiento ≤15'/día** con flag deload (sensores verdes: `node DATA/_scripts/verify_vibecoding.js
-  --sensores` · 1 mejora pequeña · retro) y el resto del bloque = journal + lectura de docs; S17 jue 21 → mié 27-ene (cierre de contenido mar 26-ene = D81; NBME 31 GO/NO-GO mié 27-ene = D82; PC sáb 30-ene) · S18 jue 28-ene → mié 3-feb (NBME 32 jue 28-ene · NBME 33 lun 1-feb · Free 120 mié 3-feb; PC sáb 6-feb) · S19 jue 4 → mié 10-feb (Fase C; PC sáb 13-feb) · S20 jue 11 → lun 15-feb (3 pasos)
-  = **deload total**: journal 5' + audio, PC sáb/dom opcional (30' máx, solo VERDE); S20 = cierre del plan (jue 11 · vie 12 · lun 15-feb = D93-D95,
-  vie 12-feb = D94 última sesión de banco del Step 1; sáb 13 y dom 14-feb libres; lun 15-feb = D95 = D-1 real (journal 5'); mar 16-feb EXAMEN). Ningún proyecto nuevo; la decisión de febrero (IA vs ENCAPS intensivo) sigue intacta. *(v5.16: taper lun 21-dic → mié 10-feb; S13 21-28 dic · S14 29-dic → 6-ene · S15 7-12 ene · S16 13-15 ene · S17 18-22 ene · S18 25-29 ene · S19 1-5 feb · S20 8-10 feb; examen jue 11-feb.)* *(v5.15: taper mié 16-dic → vie 5-feb; S13 16-22 dic · S14 23-30 dic · S15 4-7 ene · S16 8-12 ene · S17 13-19 ene · S18 20-26 ene · S19 27-ene → 2-feb · S20 3-5 feb; examen lun 8-feb.)*
+- **Taper S13-S20 (mar 29-dic-2026 → mié 17-feb-2027, 35 días = D61-D95; el día d del vibecoding = D# del Step 1, 95 en total; desde v5.11 son bloques SECUENCIALES de `pasos.length` hábiles, ningún paso perdido)**:
+  S13 mar 29-dic → mié 6-ene (5 pasos; 31-dic y 1-ene libres; NBME 29 mié 6-ene = D65; PC sáb 9-ene) · S14 jue 7 → mié 13-ene (5 pasos; PC sáb 16-ene) · S15 jue 14 → mar 19-ene (4 pasos; NBME 30 vie 15-ene = D72; PC sáb 23-ene) · S16 mié 20 → vie 22-ene (3 pasos; UWSA2 vie 22-ene = D77; PC sáb 23-ene) = **mantenimiento ≤15'/día** con flag deload (sensores verdes: `node DATA/_scripts/verify_vibecoding.js
+  --sensores` · 1 mejora pequeña · retro) y el resto del bloque = journal + lectura de docs; S17 lun 25 → vie 29-ene (cierre de contenido jue 28-ene = D81; NBME 31 GO/NO-GO vie 29-ene = D82; PC sáb 30-ene) · S18 lun 1 → vie 5-feb (NBME 32 lun 1-feb · NBME 33 mié 3-feb · Free 120 vie 5-feb; PC sáb 6-feb) · S19 lun 8 → vie 12-feb (Fase C; PC sáb 13-feb) · S20 lun 15 → mié 17-feb (3 pasos)
+  = **deload total**: journal 5' + audio, PC sáb/dom opcional (30' máx, solo VERDE); S20 = cierre del plan (lun 15 · mar 16 · mié 17-feb = D93-D95,
+  mar 16-feb = D94 última sesión de banco del Step 1; mié 17-feb = D95 = D-1 real (journal 5'), sin finde en medio; jue 18-feb EXAMEN). Ningún proyecto nuevo; la decisión de febrero (IA vs ENCAPS intensivo) sigue intacta. *(v5.17: taper jue 24-dic → lun 15-feb; S13 24-dic → 4-ene · S14 5-11 ene · S15 12-15 ene · S16 18-20 ene · S17 21-27 ene · S18 28-ene → 3-feb · S19 4-10 feb · S20 11-15 feb; examen mar 16-feb.)* *(v5.16: taper lun 21-dic → mié 10-feb; S13 21-28 dic · S14 29-dic → 6-ene · S15 7-12 ene · S16 13-15 ene · S17 18-22 ene · S18 25-29 ene · S19 1-5 feb · S20 8-10 feb; examen jue 11-feb.)*
 - **⛔ FRENO 04:55 (regla dura)**: **04:55 commit-or-stash OBLIGATORIO** (`git commit` si compila, `git stash` si no) ·
   **05:00 Anki sin excepción** (recomendación #1 de Palmerton) · **si el día se recorta, pierde el proyecto, NUNCA el Anki**.
   Sensores: la tarjeta 04:15 de MISIÓN DE HOY muestra la cuenta atrás ("commit-or-stash en m:ss" → "COMMIT OR STASH · Anki
@@ -77,25 +78,25 @@
   hooks) · `preguntas` pipeline de preguntas ENCAPS/USMLE/MIR · `bots` CRM Pulso / LIVIANO · `contenido` IA para las marcas.
 - **Stack a dominar por USO**: Claude Code (skills · MCP · subagentes · workflows · Agent SDK),
   Supabase, n8n, APIs. Fuente: docs.claude.com + los repos propios.
-- **SYNAPSE 12:30 sem 13-19 (lun 21-dic → mar 9-feb)**: Anthropic Academy restante + prep CCA-F (F2 del motor, 51 días, 41 A-units; sem 17-19
-  deload desde el lun 18-ene; la última A-unit cae el mar 9-feb, D91 del Step 1 — A DECIDIR si se adelanta; v5.16: lun 21-dic → vie 5-feb, 47 días, 38 A, deload desde el lun 18-ene; v5.15: lun 14-dic → lun 1-feb, 50 días, 40 A, deload desde el lun 11-ene). La página oficial del examen CCA-F no aparece enlazada en academy.claude.com ni en anthropic.skilljar.com
+- **SYNAPSE 12:30 sem 13-19 (lun 28-dic → vie 12-feb)**: Anthropic Academy restante + prep CCA-F (F2 del motor, 47 días, 39 A-units; sem 17-19
+  deload desde el lun 25-ene; la última A-unit cae el vie 12-feb, D92 del Step 1 — A DECIDIR si se adelanta; v5.17: lun 21-dic → mar 9-feb, 51 días, 41 A, deload desde el lun 18-ene; v5.16: lun 21-dic → vie 5-feb, 47 días, 38 A, deload desde el lun 18-ene). La página oficial del examen CCA-F no aparece enlazada en academy.claude.com ni en anthropic.skilljar.com
   (verificado 12-sep): **A VERIFICAR** antes de fijar fecha (post-Step 1, feb-2027).
 
-## 05:00–05:45 · 🇺🇸 USMLE — ANKI AM (L-V, hasta el lun 15-feb = D95 = D-1 real, sesión mínima; examen mar 16-feb — v5.17; v5.16: hasta el mié 10-feb, examen jue 11-feb)
+## 05:00–05:45 · 🇺🇸 USMLE — ANKI AM (L-V, hasta el mié 17-feb = D95 = D-1 real, sesión mínima; examen jue 18-feb — v5.18; v5.17: hasta el lun 15-feb, examen mar 16-feb)
 
 - **Por qué**: Palmerton — "Anki a primera hora con mente fresca = el doble de tarjetas en menos
   tiempo". Para noviembre el mazo tendrá 2.000+ tarjetas y los 60' de las 07:15 no alcanzarían.
-- **Fase A (oct-ene, D1-D81 = jue 1-oct-2026 → mar 26-ene-2027; v5.16: lun 28-sep → jue 21-ene)**: 45' pasada principal FSRS. El bloque de 07:15 queda para el repaso anclado
+- **Fase A (oct-ene, D1-D81 = lun 5-oct-2026 → jue 28-ene-2027; v5.17: jue 1-oct → mar 26-ene)**: 45' pasada principal FSRS. El bloque de 07:15 queda para el repaso anclado
   D-1/D-3/D-7 + free recall + Anki restante.
-- **Fases B-C (ene-feb, B = D82-D86 mié 27-ene→mar 2-feb · C = D87-D95 mié 3-feb→lun 15-feb-2027; v5.16: B vie 22→jue 28-ene · C vie 29-ene→mié 10-feb)**: 05:00-05:12 🔥 **STRESS SET** (10Q uWorld random en 12 min — confiar en
+- **Fases B-C (ene-feb, B = D82-D86 vie 29-ene→jue 4-feb · C = D87-D95 vie 5-feb→mié 17-feb-2027; v5.17: B mié 27-ene→mar 2-feb · C mié 3-feb→lun 15-feb)**: 05:00-05:12 🔥 **STRESS SET** (10Q uWorld random en 12 min — confiar en
   el instinto, técnica anti-rumiación de Palmerton) + 05:12-05:45 Anki.
 - **Con esto el Step 1 pasa de 5h30 → 6h15/día ≈ 640h totales** — colchón real para base cero.
-- Al terminar el Step 1 (examen mar 16-feb-2027; v5.16: jue 11-feb), esta media franja vuelve a IA o a ENCAPS intensivo (se
+- Al terminar el Step 1 (examen jue 18-feb-2027; v5.17: mar 16-feb), esta media franja vuelve a IA o a ENCAPS intensivo (se
   decide en la reestructuración de febrero).
 
 ## Decisión sobre las academias de Business (27-ago)
 
-- **LIVIANO** — única academia activa hasta enero (17:15–18:00, plan de 90 días en la app: **jue 1-oct-2026 → lun 8-feb-2027**, v5.17; 17 viernes con el vie 2-oct = D2 sin caso (caso 1 vie 9-oct = D7) y el caso integral (vie 5-feb, D89) vuelve a caer DESPUÉS del repaso (mié 3-feb, D87) y del capstone (jue 4-feb, D88), antes de la trimestral II (lun 8-feb, D90): la inversión reaparece y la decisión ⚪ D de `PENDIENTES_JOSEPH.md` se reabre — ver `DATA/BUSINESS/LIVIANO_ACADEMIA.md`; v5.16: lun 28-sep → mié 3-feb, caso 16 D87 vie 29-ene antes del capstone D89).
+- **LIVIANO** — única academia activa hasta enero (17:15–18:00, plan de 90 días en la app: **lun 5-oct-2026 → mié 10-feb-2027**, v5.18; 16 viernes hábiles = 16 casos, del caso 1 (vie 9-oct, D5) al caso integral 16 (vie 5-feb, D87), que vuelve a caer ANTES del repaso integral (lun 8-feb, D88), del capstone (mar 9-feb, D89) y de la trimestral II + cierre (mié 10-feb, D90): la decisión ⚪ D de `PENDIENTES_JOSEPH.md` vuelve a quedar resuelta — ver `DATA/BUSINESS/LIVIANO_ACADEMIA.md`; v5.17: jue 1-oct → lun 8-feb, caso integral vie 5-feb (D89) DESPUÉS del capstone (jue 4-feb, D88); v5.16: lun 28-sep → mié 3-feb, caso 16 D87 vie 29-ene antes del capstone D89).
 - **CURVA** (estética/figura) y **DENSA** (capilar) — arrancan en **FEBRERO 2027** post-Step 1,
   con franja y currículo propios tipo LIVIANO_ACADEMIA.
 - **NÍTIDA** — fusionada con el plan Derma élite (mismo conocimiento; duplicar = re-estudiar).

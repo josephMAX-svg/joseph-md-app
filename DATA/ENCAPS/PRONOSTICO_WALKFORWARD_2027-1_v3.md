@@ -135,11 +135,11 @@ Presupuesto semanal ≈ 105-125 preguntas (régimen v5.4: lun-jue 20-25Q del tem
 
 Reglas de la fase A:
 1. **Doble formato desde el día 1**: por cada tema, ~50% viñetas y ~50% recall directo de cifras/definiciones (tabla de números críticos aparte: dosis, plazos, semanas, porcentajes, categorías).
-2. Todas las claves verificadas contra fuente real (protocolo `PROTOCOLO_GENERACION_PREGUNTAS.md`); el examen 2026-II clasificado es ahora banco espejo de 100 preguntas reales con clave verificada — queda **RESERVADO como pre-test diagnóstico del arranque de la fase intensiva (1ª semana de febrero en el diseño original; v5.17: primer viernes de la intensiva = vie 19-feb o vie 26-feb-2027, tras el examen Step 1 del mar 16-feb — `PRETEST_2026-II.md`)**; no quemarlo antes (regla del `PROTOCOLO_HORA_MANTENIMIENTO.md`).
+2. Todas las claves verificadas contra fuente real (protocolo `PROTOCOLO_GENERACION_PREGUNTAS.md`); el examen 2026-II clasificado es ahora banco espejo de 100 preguntas reales con clave verificada — queda **RESERVADO como pre-test diagnóstico del arranque de la fase intensiva (1ª semana de febrero en el diseño original; v5.18: primer viernes de la intensiva = vie 19-feb o vie 26-feb-2027, tras el examen Step 1 del jue 18-feb — v5.17: mar 16-feb — `PRETEST_2026-II.md`)**; no quemarlo antes (regla del `PROTOCOLO_HORA_MANTENIMIENTO.md`).
 3. Fin de enero: **checkpoint** — % ciego por área contra el vector v3; redistribuir la mezcla hacia las áreas con brecha.
 
 ### Fase B — intensiva (feb → mar-2027, ~7 semanas)
-1. **Re-scan de señales** (semana 1 de feb en el diseño original; v5.17: semana 1 de la intensiva, desde el mié 17-feb o el lun 22-feb — `SENALES_2027-I.md` §2): QX Tendencias actualizado, materiales/lives nuevos, boletín DGE (coyuntura), RM/NTS publicadas desde sep-2026 → ajustar pesos y el condicional de IV.
+1. **Re-scan de señales** (semana 1 de feb en el diseño original; v5.18: semana 1 de la intensiva, fila `senales` el lun 22-feb con D1 = vie 19-feb o lun 22-feb — `SENALES_2027-I.md` §2; v5.17: mié 17-feb o lun 22-feb): QX Tendencias actualizado, materiales/lives nuevos, boletín DGE (coyuntura), RM/NTS publicadas desde sep-2026 → ajustar pesos y el condicional de IV.
 2. **Simulacros completos 100Q/72s** cada VIERNES por la mañana (sábados y domingos libres; formato mixto 50/50 viñeta-directa), con análisis de errores por código. El primero = el examen 2026-II real (reservado).
 3. Semanas 2-5: barrido de los 8 críticos al 100% + drills de números críticos diarios (10 min).
 4. Semanas 6-7: watch-list + rebotes (II-1/II-11/II-8) + repaso multi-temporal de todo el registro de errores; última semana solo repaso, sin material nuevo.

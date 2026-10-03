@@ -25,7 +25,7 @@ export interface MirUsmleBridge {
   homologo: RangoSistema | null;
   /** chip HOY: "Step 1 esta semana: Cardiovascular D6-D10" */
   texto: string;
-  /** "Homólogo Step 1 de Cardiología: Cardiovascular D6-D16 (8-oct→22-oct)" */
+  /** "Homólogo Step 1 de Cardiología: Cardiovascular D6-D16 (12-oct→26-oct)" (v5.18) */
   textoHomologo: string;
   /** para UsmleTodayPlan: "MIR en paralelo: Cardiología (D5-D11)" */
   textoUsmle: string;

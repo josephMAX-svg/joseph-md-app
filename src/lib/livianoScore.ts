@@ -2,8 +2,8 @@
  * livianoScore.ts — SCORE real de LIVIANO Academia (Palmerton: "se mide por % ciego, no por ✓").
  *
  * Lo que mide LivianoTodayPlan (src/components/empresa/LivianoTodayPlan.tsx):
- *   · PRE-TEST ciego 5Q de los lunes (19 en LIV_META.pretests)  → pretests[d]   = { ok, total, fecha }
- *   · DRILL de cifras ancla (D36 · D58 · D75 · D87, v5.17)        → drills[d]     = { ok, total, fecha }
+ *   · PRE-TEST ciego 5Q de los lunes (18 en LIV_META.pretests, v5.18) → pretests[d]   = { ok, total, fecha }
+ *   · DRILL de cifras ancla (D37 · D58 · D75 · D88, v5.18)        → drills[d]     = { ok, total, fecha }
  *   · CASO del viernes con rúbrica 0-2 × 4 (16 casos)            → rubricas[casoId] = { items[4], fecha }
  *
  * Persistencia (19-sep-2026, v5.14 — mismo patrón que ENCAPS `encapsProgressSync.ts`):
