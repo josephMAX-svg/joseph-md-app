@@ -173,7 +173,7 @@ export interface DermaTarjetaMecanismo {
   /** 12-sep-2026 (puente Derma ↔ Step 1, gaps v3b derma #6): el átomo cruza con "dermato Step 1" (DiaDerma.step1 / DERMA_STEP1_DIAS) → tag `step1`. */
   step1?: boolean;
 }
-/** Tag de cuenta doble Derma ↔ Step 1: las tarjetas con este tag son el repaso anclado del día "dermato Step 1" (D73). */
+/** Tag de cuenta doble Derma ↔ Step 1: las tarjetas con este tag son el repaso anclado del día "dermato Step 1" (D74, mar 19-ene-2027 en v5.18: hueso + anatomía MSK + dermato Step 1). */
 export const DERMA_STEP1_TAG = 'step1';
 /** Búsqueda Anki del repaso anclado / pre-test del día "dermato Step 1" (texto de UI; el contenido USMLE no cambia). */
 export const DERMA_STEP1_QUERY = `deck:${DERMA_ANKI_ROOT} tag:${DERMA_STEP1_TAG}`;

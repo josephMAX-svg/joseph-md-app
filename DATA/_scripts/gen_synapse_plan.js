@@ -260,13 +260,13 @@ function buildAUnits() {
   push(apiN, `Módulo 6 "${api(6).modulo}" (I): Introducing RAG · Text chunking strategies · Text embeddings · The full RAG flow`, apiU);
   push(apiN, `Módulo 6 "${api(6).modulo}" (II): Implementing the RAG flow · BM25 lexical search · A Multi-Index RAG pipeline`, apiU);
   push(apiN, `Módulo 7 "${api(7).modulo}" (I): Extended thinking · Image support · PDF support · Citations`, apiU);
-  // sem 15 (5 · 25-dic libre) · API III + MCP restante + MCP Advanced I
+  // sem 15 (5; v5.18: el 25-dic cae en la sem 12, no aquí) · API III + MCP restante + MCP Advanced I
   push(apiN, `Módulo 7 "${api(7).modulo}" (II): Prompt caching · Rules of prompt caching · Code execution and the Files API · Quiz — dominio Context Management (15%).`, apiU);
   push('Academy — ' + cur('academy-mcp').nombre, `Módulo Connecting with MCP clients: ${t(acad('academy-mcp', 7))} · ${t(acad('academy-mcp', 8))} · ${t(acad('academy-mcp', 9))}`, cur('academy-mcp').url);
   push('Academy — ' + cur('academy-mcp').nombre, `${t(acad('academy-mcp', 10))} · ${t(acad('academy-mcp', 11))}`, cur('academy-mcp').url);
   push('Academy — ' + cur('academy-mcp').nombre, `${t(acad('academy-mcp', 12))} · ${t(acad('academy-mcp', 13))} → CERTIFICADO Introduction to MCP`, cur('academy-mcp').url);
   push(mcpAN, `${t(mcpA(1))} · ${t(mcpA(2))} · ${t(mcpA(3))} · ${t(mcpA(4))} · ${t(mcpA(5))} (sampling: el servidor pide al cliente que llame al modelo)`, mcpAU);
-  // sem 16 (4 · 31-dic y 1-ene libres) · API IV: apps · agentes y workflows · certificado
+  // sem 16 (4; v5.18: el 31-dic y el 1-ene caen en la sem 13, no aquí) · API IV: apps · agentes y workflows · certificado
   push(apiN, `Módulo 9 "${api(9).modulo}": ${api(9).titulo}`, apiU);
   push(apiN, `Módulo 10 "${api(10).modulo}" (I): Agents and workflows · Parallelization workflows · Chaining workflows · Routing workflows`, apiU);
   push(apiN, `Módulo 10 "${api(10).modulo}" (II): Agents and tools · Environment inspection · Workflows vs agents · Quiz — dominio Agentic Architecture (27%), el de mayor peso.`, apiU);
