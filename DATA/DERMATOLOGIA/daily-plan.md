@@ -1,17 +1,18 @@
 # DERMA · Plan tema-átomo/día (68 átomos · interdiario con Research)
 
-> ⚠ **DESACTUALIZADO — vigente D1 del régimen = lun 5-oct-2026 (v5.18, 3-oct-2026; Derma corre +1 slot interdiario: d1 = lun 5-oct = el mismo D1 del régimen, porque los +2 hábiles conservan la paridad de v5.17 y ese lunes es día Derma) + taper v3 (12-sep-2026); fuente de verdad = el `.ts`**
-> (`src/lib/dermaDailyPlan.ts`: PLAN ÉLITE v3, **73 átomos, d1 lun 5-oct-2026 → d73 mar 27-abr-2027**, interdiario
-> con Research, sáb+dom libres, salta 25-dic/31-dic/1-ene; y `src/lib/dermaCiclo2.ts`: **CICLO 2, d74-d103, jue 29-abr →
-> mar 20-jul-2027**, regenerado el 3-oct por `DATA/_scripts/gen_derma_ciclo2.js`). La paridad Research↔Derma sigue anclada al
-> mié 10-jun-2026: en v5.18 el lun 5-oct (D1 del régimen) es día Derma, así que Research arranca el mar 6-oct (ciclo 1 mar 6-oct → lun 1-mar-2027 con PAUSA vie 15-ene → mié 10-feb, ciclo 2 mié 3-mar → vie 3-sep-2027) y Derma corre +1 slot (d1 jue 1-oct → lun 5-oct; d73 vie 23-abr → mar 27-abr). **El corrimiento v5.18 es RÍGIDO: solo corren las fechas, ningún átomo se toca.** El Step 1 termina ahora el **mié 17-feb-2027 (D95 = D-1 real; D94 mar 16-feb = última sesión de banco; ya no hay finde entre D94 y D95)** y su examen pasa al **jue 18-feb-2027**. El **taper v3** es POSICIONAL (d44-d49): va del **jue 4-feb** (d44 = D86, víspera del Free 120 del vie 5-feb)
-> al **jue 18-feb** (d49 = DÍA DEL EXAMEN, sesión opcional —lo esperado es saltarla—; d48 mar 16-feb = D94 = última sesión de banco; el mié 17-feb = D95 = D-1 real es día Research, R8); el vie 29-ene (NBME 31, GO/NO-GO) es d42 = colgajos y el mar 2-feb (D84) d43 = Mohs, sesiones normales (el NBME 32 del lun 1-feb, el NBME 33 del mié 3-feb y el Free 120 del vie 5-feb son días Research; swap d43↔taper = decisión de Joseph). Los átomos desplazados por el taper —
+> ⚠ **DESACTUALIZADO — vigente D1 del régimen = mar 6-oct-2026 (v5.19, 5-oct-2026; Derma corre +1 slot interdiario: el mar 6-oct es día Research por paridad, así que d1 = mié 7-oct = D2 del régimen) + taper v3 (12-sep-2026); fuente de verdad = el `.ts`**
+> (`src/lib/dermaDailyPlan.ts`: PLAN ÉLITE v3, **73 átomos, d1 mié 7-oct-2026 → d73 jue 29-abr-2027**, interdiario
+> con Research, sáb+dom libres, salta 25-dic/31-dic/1-ene; y `src/lib/dermaCiclo2.ts`: **CICLO 2, d74-d103, lun 3-may →
+> jue 22-jul-2027**, regenerado el 5-oct por `DATA/_scripts/gen_derma_ciclo2.js`). La paridad Research↔Derma sigue anclada al
+> mié 10-jun-2026: en v5.19 el mar 6-oct (D1 del régimen) es día Research y Research NO se mueve (ciclo 1 mar 6-oct → lun 1-mar-2027 con PAUSA vie 15-ene → mié 10-feb, ciclo 2 mié 3-mar → vie 3-sep-2027); Derma corre +1 slot (d1 lun 5-oct → mié 7-oct; d73 mar 27-abr → jue 29-abr). **El corrimiento v5.19 es RÍGIDO: solo corren las fechas, ningún átomo se toca.** El Step 1 termina ahora el **jue 18-feb-2027 (D95 = D-1 real; D94 mié 17-feb = última sesión de banco; sin finde entre D94 y D95)** y su examen pasa al **vie 19-feb-2027** (día Research). El **taper v3** es POSICIONAL (d44-d49): va del **lun 8-feb** (d44 = D87, día del Free 120: sesión por la tarde)
+> al **lun 22-feb** (d49 = primera sesión tras el examen); d48 **jue 18-feb = D95 = VÍSPERA real** (sesión opcional, corta, antes de las 17:00); el mié 17-feb (D94) es día Research (R8). El lun 1-feb (NBME 31, GO/NO-GO) es día Research (en pausa); el mar 2-feb (NBME 32) es d42 = colgajos y el jue 4-feb (NBME 33) d43 = Mohs, sesiones normales (alternativas = ⚪ C de PENDIENTES, decisión de Joseph). Los átomos desplazados por el taper —
 > Cicatrización → Checkpoints → Anatomía 3D → Arterias → Envejecimiento → Toxina… se corren después del
-> examen y el plan crece de 70 a 73 (v5.18: d71 mié 21-abr · d72 vie 23-abr · d73 mar 27-abr). No se fusionó ni se recortó nada: los 70 átomos
-> siguen enteros (+3 segundas pasadas parciales). Cadencia de casos: 2/sesión · 1 en el taper · **3 desde d50** (lun 22-feb-2027);
+> examen y el plan crece de 70 a 73 (v5.19: d71 vie 23-abr · d72 mar 27-abr · d73 jue 29-abr). No se fusionó ni se recortó nada: los 70 átomos
+> siguen enteros (+3 segundas pasadas parciales). Cadencia de casos: 2/sesión · 1 en el taper · **3 desde d50** (mié 24-feb-2027);
 > Pictorial 4e → 3e desde d67; LANGE en d71. Este documento conserva la cola v1 (68 átomos, fechas
 > jun→dic-2026) solo como histórico — sus D# y fechas son de 2026-I y NO deben usarse; el temario vigente, el
 > índice de fechas, el taper, el presupuesto de preguntas y el ciclo 2 están en `PLAN_ELITE_2026-27.md` §12-§16.
+> *(v5.18, 3-oct: D1 del régimen lun 5-oct = día Derma · d1 lun 5-oct → d73 mar 27-abr, ciclo 2 jue 29-abr → mar 20-jul · taper jue 4-feb → jue 18-feb con d49 = día del examen del jue 18-feb · d50 lun 22-feb.)*
 > *(v5.17, 30-sep: D1 del régimen jue 1-oct = día Derma · d1 jue 1-oct → d73 vie 23-abr, ciclo 2 mar 27-abr → vie 16-jul · taper mar 2-feb → mar 16-feb con d49 = día del examen del mar 16-feb · d50 jue 18-feb.)*
 > *(v5.16, 26-sep: D1 del régimen lun 28-sep = día Research · Derma d1 mar 29-sep → d73 mié 21-abr, ciclo 2 vie 23-abr → mié 14-jul · taper vie 29-ene → vie 12-feb con d49 = día siguiente al examen del jue 11-feb · d50 mar 16-feb.)*
 > **Motor:** el mismo de USMLE/MIR (`UsmleTodayPlan`/`MirTodayPlan`): sub-pestañas

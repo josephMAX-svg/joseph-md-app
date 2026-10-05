@@ -5,7 +5,14 @@ Data del estudio del fundador y de las academias médicas de Pulso. **Desde el 5
 audiolibro/lectura en los huecos, L-J, + 1 output pequeño el viernes) y solo cubre lo que no cubren
 **AURUM** (marketing/ventas, 14:15-15:15) ni **LIVIANO Academia** (medicina de la obesidad, 17:15-18:00).
 
-> **v5.18 (3-oct-2026) — corrimiento RÍGIDO.** Ni el jue 1 ni el vie 2 de octubre se estudiaron → **D1 = lun 5-oct-2026**
+> **v5.19 (5-oct-2026) — corrimiento RÍGIDO.** El lun 5-oct tampoco se estudió → **D1 = mar 6-oct-2026**
+> (+1 día hábil sobre v5.18; decimoctavo corrimiento del ciclo 31-ago→6-oct, 26 hábiles perdidos). **Regla del corrimiento rígido: no se toca NINGÚN tema ni contenido — solo corren los días, y donde había un fin clavado se AMPLÍAN días en vez de perder sesiones**:
+> las 84 filas de trabajo son las mismas y el desfase se absorbe alargando el final. Business: **121 filas ·
+> mar 6-oct-2026 → mié 3-feb-2027** (84 de trabajo + **37 DESCANSO**), **17 OUTPUT** de los cuales **15 caen en VIERNES**
+> (S1 vie 9-oct = D4 → S15 vie 29-ene = D116: las FECHAS de los 15 OUTPUT de viernes NO se mueven respecto a v5.18, solo baja su D# en 1), S16 el **mar 2-feb** (D120) y el OUTPUT
+> extra el **mié 3-feb** (D121, último día del plan). AURUM: **130 días · mar 6-oct-2026 → jue 8-abr-2027** (pitches v1 lun 26-oct (D15) · v2 lun 23-nov (D35) · v3 lun 21-dic (D55, día del NBME 28) · v4 jue 21-ene (D75) · v5 jue 18-feb (D95, = D95 del Step 1 = D-1 real, víspera del examen ⚠) · v6 jue 18-mar (D115) · v7 jue 8-abr (D130); **D96 vie 19-feb = DÍA DEL EXAMEN Step 1 ⚠ → mover/recuperar, decisión de Joseph**; 16 variantes LIVIANO, ninguna en viernes: lunes D40-D55, mar 29-dic D60, jueves D65-D115). LIVIANO: **90 días ·
+> mar 6-oct-2026 → jue 11-feb-2027** — con D1 en martes el plan sigue teniendo **16 viernes = 16 casos** (ninguno se salta): caso 1 = D4 vie 9-oct y el **caso integral 16/16 (D86 vie 5-feb) sigue cayendo ANTES del repaso (D88 mar 9-feb), del capstone (D89 mié 10-feb) y de la trimestral II (D90 jue 11-feb)** — la decisión ⚪ D de `DATA/PENDIENTES_JOSEPH.md` sigue resuelta; la Síntesis M5 pasa DETRÁS del caso (D87 lun 8-feb) (ver `LIVIANO_ACADEMIA.md`). Contexto: el Step 1 termina el jue 18-feb (D95 = D-1 real; D94 mié 17-feb = última sesión de banco; sin finde entre medio) → examen target **vie 19-feb-2027**. Fechas leídas de los `.ts` el 5-oct, no estimadas.
+> *(v5.18, 3-oct: D1 lun 5-oct · Business → mar 2-feb (S16 lun 1-feb; OUTPUT S1 vie 9-oct = D5 → S15 vie 29-ene = D117 + extra mar 2-feb = D121) · AURUM → mié 7-abr (pitches vie 23-oct · vie 20-nov · vie 18-dic · mié 20-ene · mié 17-feb · mié 17-mar · mié 7-abr) · LIVIANO → mié 10-feb, 16 viernes = 16 casos, caso 1 = D5 vie 9-oct, caso 16 = D87 vie 5-feb ANTES del repaso D88, del capstone D89 y de la trimestral II D90; examen jue 18-feb. Texto original de v5.18:)* Ni el jue 1 ni el vie 2 de octubre se estudiaron → **D1 = lun 5-oct-2026**
 > (+2 días hábiles sobre v5.17; decimoséptimo corrimiento del ciclo 31-ago→5-oct, 25 hábiles perdidos). **Regla del corrimiento rígido: no se toca NINGÚN tema ni contenido — solo corren los días, y donde había un fin clavado se AMPLÍAN días en vez de perder sesiones**:
 > las 84 filas de trabajo son las mismas y el desfase se absorbe alargando el final. Business: **121 filas ·
 > lun 5-oct-2026 → mar 2-feb-2027** (84 de trabajo + **37 DESCANSO**), **17 OUTPUT** de los cuales **15 caen en VIERNES**
@@ -44,7 +51,7 @@ audiolibro/lectura en los huecos, L-J, + 1 output pequeño el viernes) y solo cu
 | `plan_estudio_pulso_v2_mejorado.xlsx` | el Excel original (INTACTO, legado v2: 8 hojas — Análisis, Filosofía, Biblioteca 28 libros, Calendario 96 días, Técnicas, Outputs, Recursos, Métricas). Se regenera con `gen_business_plan.py --v2` solo por arqueología. |
 | `_scrape/plan_pulso_v2.json` | dump completo del Excel (todas las hojas); la hoja `Metricas_v2` es el tracker semanal que ahora vive en `BIZ_TRACKER`. |
 | `_scrape/research_raw.json` | hallazgos crudos del workflow (con fuentes) |
-| [`LIVIANO_ACADEMIA.md`](LIVIANO_ACADEMIA.md) | **Academia LIVIANO** (medicina de la obesidad, 6 módulos + M7 Acceso en Perú): franja 17:15-18:00, **90 días desde el lun 5-oct-2026 → mié 10-feb-2027 (v5.18; v5.17: jue 1-oct → lun 8-feb · v5.16: lun 28-sep → mié 3-feb · v5.15: mié 23-sep → vie 29-ene)**. Plan día a día en `src/lib/livianoStudyPlan.ts`; casos, rúbrica, drills y tarjetas en `src/lib/livianoCasos.ts` (ambos GENERADOS por `DATA/_scripts/gen_liviano_plan.js` desde `liviano_curriculum.json`). |
+| [`LIVIANO_ACADEMIA.md`](LIVIANO_ACADEMIA.md) | **Academia LIVIANO** (medicina de la obesidad, 6 módulos + M7 Acceso en Perú): franja 17:15-18:00, **90 días desde el mar 6-oct-2026 → jue 11-feb-2027 (v5.19; v5.18: lun 5-oct → mié 10-feb · v5.17: jue 1-oct → lun 8-feb)**. Plan día a día en `src/lib/livianoStudyPlan.ts`; casos, rúbrica, drills y tarjetas en `src/lib/livianoCasos.ts` (ambos GENERADOS por `DATA/_scripts/gen_liviano_plan.js` desde `liviano_curriculum.json`). |
 | `liviano_curriculum.json` | currículo fuente de la Academia LIVIANO (módulos → temas → casos → drills). |
 | [`CURVA_ACADEMIA.md`](CURVA_ACADEMIA.md) | **esqueleto** (sin días) de la academia CURVA — terapia hormonal de la menopausia e hipogonadismo masculino: objetivo, 6 módulos, 3 esqueletos curriculares con fuentes verificadas, límites de competencia, metáforas, ruta de credencial. Se convierte en plan de 90 días con `gen_liviano_plan.js` en enero-2027 (arranca en febrero). |
 | [`DENSA_ACADEMIA.md`](DENSA_ACADEMIA.md) | **esqueleto** (sin días) de la academia DENSA — alopecia androgenética, efluvio telógeno, minoxidil oral, PRP: misma estructura. Arranca en febrero-2027. |
@@ -57,15 +64,15 @@ audiolibro/lectura en los huecos, L-J, + 1 output pequeño el viernes) y solo cu
 | `_scrape/*_raw.md` (6, 11-jun) | investigación verificada: hormozi_seguimiento · lean_analytics · cro_landing · libros_inmobiliaria · referentes_terrenos_peru · golden_breeders · crm_pulso_eval · pirqa_publicaciones · catalogo_predios_huachac.txt |
 
 ## Regla de reparto (para no duplicar)
-- **AURUM** (`DATA/AURUM/`, `src/lib/aurumDailyPlan.ts`, 14:15-15:15 L-V, 130 días · **lun 5-oct-2026 → mié 7-abr-2027**, v5.18; v5.17: jue 1-oct → lun 5-abr · v5.16: lun 28-sep → mié 31-mar · v5.15: mié 23-sep → vie 26-mar): todo lo de ventas/oferta/objeciones/cierre. Desde v3 (5-sep) incluye **1 de cada 5 drills en variante LIVIANO** (venta ética de un programa médico con el mismo paciente de la Academia, CMP Art. 73) y la **rúbrica del PITCH** (6 ítems 0-2, 7 viernes de cierre de fase, score persistido) + **Closer Scoreboard editable** por semana.
+- **AURUM** (`DATA/AURUM/`, `src/lib/aurumDailyPlan.ts`, 14:15-15:15 L-V, 130 días · **mar 6-oct-2026 → jue 8-abr-2027**, v5.19; v5.18: lun 5-oct → mié 7-abr · v5.17: jue 1-oct → lun 5-abr): todo lo de ventas/oferta/objeciones/cierre. Desde v3 (5-sep) incluye **1 de cada 5 drills en variante LIVIANO** (venta ética de un programa médico con el mismo paciente de la Academia, CMP Art. 73) y la **rúbrica del PITCH** (6 ítems 0-2, 7 días de cierre de fase — v5.19: lun D15/D35/D55 y jue D75/D95/D115/D130; v5.18: vie y mié —, score persistido) + **Closer Scoreboard editable** por semana.
 - **LIVIANO Academia** (17:15-18:00): obesidad, GLP-1, nutrición, ejercicio, conducta, cirugía, acceso en Perú, protocolo clínico.
 - **Business formato L** (sin franja): BIOLOGIA · SUEÑO · MENTAL · FOCO · PAREJA (Calma/Foco/Cerca — las líneas no médicas de Pulso) + PESO nivel 3-4 como contrapeso científico + OUTPUT semanal.
 - **VITALS** (app del paciente, `VITALS/`): lo que el paciente hace/mide. Puente Academia ↔ VITALS en `DATA/VITALS/LIVIANO_VITALS_BRIDGE.md`.
 
 ## En la app (src/lib + componentes)
 - `src/lib/businessStudyPlan.ts` — GENERADO por `python DATA/_scripts/gen_business_plan.py [YYYY-MM-DD]`
-  (**v5.18: `2026-10-05` = D1**; v5.17: `2026-10-01` · v5.16: `2026-09-28` · v5.15: `2026-09-23`) desde `plan_pulso_v3_L.json`: 121 filas = 84 de trabajo + 37 DESCANSO
-  (sáb/dom + feriados 25-dic/31-dic/1-ene) · **lun 5-oct-2026 → mar 2-feb-2027** (v5.17: jue 1-oct → vie 29-ene · v5.16: lun 28-sep → mar 26-ene · v5.15: mié 23-sep → jue 21-ene) · `BIZ_META.bloque` = formato L ·
+  (**v5.19: `2026-10-06` = D1**; v5.18: `2026-10-05` · v5.17: `2026-10-01`) desde `plan_pulso_v3_L.json`: 121 filas = 84 de trabajo + 37 DESCANSO
+  (sáb/dom + feriados 25-dic/31-dic/1-ene) · **mar 6-oct-2026 → mié 3-feb-2027** (v5.18: lun 5-oct → mar 2-feb · v5.17: jue 1-oct → vie 29-ene) · `BIZ_META.bloque` = formato L ·
   `BIZ_FRANJAS` (micro-estructura de 25') · `BIZ_TRACKER` (Metricas_v2) · campo `modo` por fila ·
   `bizModo()`. Re-fechado en corrimientos por `DATA/_scripts/remap_inicio.js` (bloque 6 Business: exige
   84 filas de trabajo y filas sin llaves dentro de los strings; sus DESCANSO regenerados no traen `modo`
@@ -78,31 +85,31 @@ audiolibro/lectura en los huecos, L-J, + 1 output pequeño el viernes) y solo cu
 
 ## Pipeline de corrimiento (cada día sin estudiar = +1 hábil)
 `node DATA/_scripts/remap_inicio.js YYYY-MM-DD` (re-fecha Business y 6 planes más) · `node DATA/_scripts/gen_aurum_plan.js YYYY-MM-DD` · `python DATA/_scripts/gen_business_plan.py YYYY-MM-DD` (equivalente al remap para Business, y además salta los feriados fijos) · `node DATA/_scripts/gen_liviano_plan.js YYYY-MM-DD` (Academia).
-**Ejecutado el 3-oct-2026 con `2026-10-05` (v5.18; el 30-sep con `2026-10-01` = v5.17; el 26-sep con `2026-09-28` = v5.16; el 22-sep con `2026-09-23` = v5.15).**
+**Ejecutado el 5-oct-2026 con `2026-10-06` (v5.19; el 3-oct con `2026-10-05` = v5.18; el 30-sep con `2026-10-01` = v5.17; el 26-sep con `2026-09-28` = v5.16; el 22-sep con `2026-09-23` = v5.15).**
 
-### Calendario de OUTPUT v5.18 (15 viernes + el cierre de febrero · leído de `BIZ_DIAS` el 3-oct)
+### Calendario de OUTPUT v5.19 (15 viernes + el cierre de febrero · leído de `BIZ_DIAS` el 5-oct)
 
 | # | Fecha | Entregable (1 página salvo indicación) |
 |---|---|---|
-| S1 · D5 | vie 9-oct-2026 | Régimen biológico del fundador v1 |
-| S2 · D12 | vie 16-oct-2026 | Protocolo de sueño transversal Pulso v1 |
-| S3 · D19 | vie 23-oct-2026 | Guion de 60 s "luz de mañana y última comida temprano" |
-| S4 · D26 | vie 30-oct-2026 | Manual sesiones Calma v0 |
-| S5 · D33 | vie 6-nov-2026 | Voz editorial Calma: 5 hooks + 1 tarjeta de mecanismo |
-| S6 · D40 | vie 13-nov-2026 | Protocolo Foco adultos v0 |
-| S7 · D47 | vie 20-nov-2026 | Plantilla de coaching ejecutivo semanal |
-| S8 · D54 | vie 27-nov-2026 | Protocolo Cerca Mujer v0 |
-| S9 · D61 | vie 4-dic-2026 | Guion de la "Sesión para la pareja/familia" (bono LIVIANO) |
-| S10 · D68 | vie 11-dic-2026 | Protocolo Cerca v0 + mapa de derivación + 5 hooks |
-| S11 · D75 | vie 18-dic-2026 | 3 tarjetas de mecanismo Anki (leptina · recompensa · saciedad) |
-| S12 · D96 | **vie 8-ene-2027** | Guion de 90 s "por qué el ejercicio no adelgaza pero es innegociable" |
-| S13 · D103 | **vie 15-ene-2027** | Tabla "lo que dice el libro vs lo que dice la evidencia" |
-| S14 · D110 | **vie 22-ene-2027** | "Decatlón del centenario" + plan personal de 12 semanas |
-| S15 · D117 | **vie 29-ene-2027** | 10 preguntas abiertas para CURVA_ACADEMIA |
-| S16 · D120 | **lun 1-feb-2027** | Documento de cierre v2 + tracker de 16 semanas completo |
-| — · D121 | **mar 2-feb-2027** | OUTPUT extra · retro del formato L → ajustes para CURVA/DENSA (febrero) |
+| S1 · D4 | vie 9-oct-2026 | Régimen biológico del fundador v1 |
+| S2 · D11 | vie 16-oct-2026 | Protocolo de sueño transversal Pulso v1 |
+| S3 · D18 | vie 23-oct-2026 | Guion de 60 s "luz de mañana y última comida temprano" |
+| S4 · D25 | vie 30-oct-2026 | Manual sesiones Calma v0 |
+| S5 · D32 | vie 6-nov-2026 | Voz editorial Calma: 5 hooks + 1 tarjeta de mecanismo |
+| S6 · D39 | vie 13-nov-2026 | Protocolo Foco adultos v0 |
+| S7 · D46 | vie 20-nov-2026 | Plantilla de coaching ejecutivo semanal |
+| S8 · D53 | vie 27-nov-2026 | Protocolo Cerca Mujer v0 |
+| S9 · D60 | vie 4-dic-2026 | Guion de la "Sesión para la pareja/familia" (bono LIVIANO) |
+| S10 · D67 | vie 11-dic-2026 | Protocolo Cerca v0 + mapa de derivación + 5 hooks |
+| S11 · D74 | vie 18-dic-2026 | 3 tarjetas de mecanismo Anki (leptina · recompensa · saciedad) |
+| S12 · D95 | **vie 8-ene-2027** | Guion de 90 s "por qué el ejercicio no adelgaza pero es innegociable" |
+| S13 · D102 | **vie 15-ene-2027** | Tabla "lo que dice el libro vs lo que dice la evidencia" |
+| S14 · D109 | **vie 22-ene-2027** | "Decatlón del centenario" + plan personal de 12 semanas |
+| S15 · D116 | **vie 29-ene-2027** | 10 preguntas abiertas para CURVA_ACADEMIA |
+| S16 · D120 | **mar 2-feb-2027** | Documento de cierre v2 + tracker de 16 semanas completo |
+| — · D121 | **mié 3-feb-2027** | OUTPUT extra · retro del formato L → ajustes para CURVA/DENSA (febrero) |
 
-⚠ **Cambio v5.18:** con D1 en lunes, los **15 OUTPUT de viernes corren UNA SEMANA** respecto a v5.17 (el vie 2-oct ya no es día del plan: S1 pasa al vie 9-oct y S15 al vie 29-ene) y su D# **sube 3** (S1 = D5 … S15 = D117); el salto por los feriados (25-dic · 31-dic · 1-ene) queda ahora entre S11 (vie 18-dic) y S12 (vie 8-ene). El **S16 cae en lun 1-feb** (D120; v5.17: jue 28-ene · v5.16: lun 25-ene) y el OUTPUT extra en el **mar 2-feb** (D121), nuevo último día del plan (las lecturas se agotan antes de la cola de enero: META D107-D109 mar 19 → jue 21-ene + D113 lun 25-ene y COLCHÓN 1-3 D114-D116 mar 26 → jue 28-ene). Reparto de las 84 filas de trabajo intacto (`gen_business_plan.py` con `2026-10-05`). *(v5.17: S1 D2 vie 2-oct · … · S12 D79 vie 18-dic · S13 D100 vie 8-ene · S14 D107 vie 15-ene · S15 D114 vie 22-ene · S16 D120 jue 28-ene · extra D121 vie 29-ene. Texto original de v5.17:)* con D1 en jueves, las **FECHAS de los 15 OUTPUT de viernes NO se mueven** respecto a v5.16 (S1 sigue en el vie 2-oct y S15 en el vie 22-ene) y su D# **baja 3** (S1 = D2 … S15 = D114); el salto S12 → S13 sigue cruzando los feriados (25-dic · 31-dic · 1-ene). El **S16 cae en jue 28-ene** (D120; v5.16: lun 25-ene · v5.15: mié 20-ene) y el OUTPUT extra en el **vie 29-ene** (D121), nuevo último día del plan y 16º OUTPUT en viernes (las lecturas se agotan antes de la cola de enero: META D110-D113 lun 18 → jue 21-ene y COLCHÓN 1-3 D117-D119 lun 25 → mié 27-ene). Reparto de las 84 filas de trabajo intacto (`gen_business_plan.py` con `2026-10-01`). *(v5.16: S1 D5 vie 2-oct · … · S12 D82 vie 18-dic · S13 D103 vie 8-ene · S14 D110 vie 15-ene · S15 D117 vie 22-ene · S16 D120 lun 25-ene · extra D121 mar 26-ene. Texto original de v5.16:)* con D1 en lunes, los **15 OUTPUT de viernes corren UNA SEMANA** respecto a v5.15 (S1 pasa del vie 25-sep al vie 2-oct, S15 del vie 15-ene al vie 22-ene) y su D# **sube 2** (S1 = D5 … S15 = D117); el salto S12 → S13 cruza los feriados (25-dic · 31-dic · 1-ene). El **S16 cae en lun 25-ene** (D120; v5.15: mié 20-ene · v5.14: lun 18-ene · v5.13: jue 14-ene · v5.12: mié 13-ene · v5.11: mar 12-ene · v5.10: lun 11-ene) y el OUTPUT extra el **mar 26-ene** (D121), nuevo último día del plan (las lecturas se agotan antes de la cola de enero: colchones META mar 19 → jue 21-ene). Reparto de las 84 filas de trabajo intacto (`gen_business_plan.py` con `2026-09-28`). *(v5.15: S1 D3 vie 25-sep · S2 D10 vie 2-oct · … · S13 D87 vie 18-dic · S14 D108 vie 8-ene · S15 D115 vie 15-ene · S16 D120 mié 20-ene · extra D121 jue 21-ene.)*
+⚠ **Cambio v5.19:** con D1 en martes, las **FECHAS de los 15 OUTPUT de viernes NO se mueven** respecto a v5.18 (S1 sigue en el vie 9-oct y S15 en el vie 29-ene) y su D# **baja 1** (S1 = D4 … S15 = D116); el salto por los feriados (25-dic · 31-dic · 1-ene) sigue entre S11 (vie 18-dic) y S12 (vie 8-ene). El **S16 cae en mar 2-feb** (D120; v5.18: lun 1-feb) y el OUTPUT extra en el **mié 3-feb** (D121), nuevo último día del plan (las lecturas se agotan antes de la cola de enero: META D107-D108 mié 20 → jue 21-ene + D112-D113 lun 25 → mar 26-ene y COLCHÓN 1-3 D114-D115 mié 27 → jue 28-ene + D119 lun 1-feb). Reparto de las 84 filas de trabajo intacto (`gen_business_plan.py` con `2026-10-06`). *(v5.18: S1 D5 vie 9-oct · … · S11 D75 vie 18-dic · S12 D96 vie 8-ene · S13 D103 vie 15-ene · S14 D110 vie 22-ene · S15 D117 vie 29-ene · S16 D120 lun 1-feb · extra D121 mar 2-feb. Texto original de v5.18:)* con D1 en lunes, los **15 OUTPUT de viernes corren UNA SEMANA** respecto a v5.17 (el vie 2-oct ya no es día del plan: S1 pasa al vie 9-oct y S15 al vie 29-ene) y su D# **sube 3** (S1 = D5 … S15 = D117); el salto por los feriados (25-dic · 31-dic · 1-ene) queda ahora entre S11 (vie 18-dic) y S12 (vie 8-ene). El **S16 cae en lun 1-feb** (D120; v5.17: jue 28-ene · v5.16: lun 25-ene) y el OUTPUT extra en el **mar 2-feb** (D121), nuevo último día del plan (las lecturas se agotan antes de la cola de enero: META D107-D109 mar 19 → jue 21-ene + D113 lun 25-ene y COLCHÓN 1-3 D114-D116 mar 26 → jue 28-ene). Reparto de las 84 filas de trabajo intacto (`gen_business_plan.py` con `2026-10-05`). *(v5.17: S1 D2 vie 2-oct · … · S12 D79 vie 18-dic · S13 D100 vie 8-ene · S14 D107 vie 15-ene · S15 D114 vie 22-ene · S16 D120 jue 28-ene · extra D121 vie 29-ene. Texto original de v5.17:)* con D1 en jueves, las **FECHAS de los 15 OUTPUT de viernes NO se mueven** respecto a v5.16 (S1 sigue en el vie 2-oct y S15 en el vie 22-ene) y su D# **baja 3** (S1 = D2 … S15 = D114); el salto S12 → S13 sigue cruzando los feriados (25-dic · 31-dic · 1-ene). El **S16 cae en jue 28-ene** (D120; v5.16: lun 25-ene · v5.15: mié 20-ene) y el OUTPUT extra en el **vie 29-ene** (D121), nuevo último día del plan y 16º OUTPUT en viernes (las lecturas se agotan antes de la cola de enero: META D110-D113 lun 18 → jue 21-ene y COLCHÓN 1-3 D117-D119 lun 25 → mié 27-ene). Reparto de las 84 filas de trabajo intacto (`gen_business_plan.py` con `2026-10-01`). *(v5.16: S1 D5 vie 2-oct · … · S12 D82 vie 18-dic · S13 D103 vie 8-ene · S14 D110 vie 15-ene · S15 D117 vie 22-ene · S16 D120 lun 25-ene · extra D121 mar 26-ene. Texto original de v5.16:)* con D1 en lunes, los **15 OUTPUT de viernes corren UNA SEMANA** respecto a v5.15 (S1 pasa del vie 25-sep al vie 2-oct, S15 del vie 15-ene al vie 22-ene) y su D# **sube 2** (S1 = D5 … S15 = D117); el salto S12 → S13 cruza los feriados (25-dic · 31-dic · 1-ene). El **S16 cae en lun 25-ene** (D120; v5.15: mié 20-ene · v5.14: lun 18-ene · v5.13: jue 14-ene · v5.12: mié 13-ene · v5.11: mar 12-ene · v5.10: lun 11-ene) y el OUTPUT extra el **mar 26-ene** (D121), nuevo último día del plan (las lecturas se agotan antes de la cola de enero: colchones META mar 19 → jue 21-ene). Reparto de las 84 filas de trabajo intacto (`gen_business_plan.py` con `2026-09-28`). *(v5.15: S1 D3 vie 25-sep · S2 D10 vie 2-oct · … · S13 D87 vie 18-dic · S14 D108 vie 8-ene · S15 D115 vie 15-ene · S16 D120 mié 20-ene · extra D121 jue 21-ene.)*
 materias sin tocar (contado del `.ts`): BIOLOGIA 4 · SUEÑO 8 · MENTAL 9 · FOCO 8 · PAREJA 12 · PESO 16 ·
 HORMONAL 3 · META 7 · OUTPUT 17 = 84 de trabajo.
 

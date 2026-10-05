@@ -7,7 +7,7 @@
   "colorId": "6",
   "availability": "FREE/transparent",
   "regla": "tras cada corrimiento: node gen_research_plan.js <D1> → node gen_research_calendar.js → update_event (o delete+create) de los `recrear` con su payload → --set hito=eventId",
-  "actualizado": "2026-10-03",
+  "actualizado": "2026-10-05",
   "nHitos": 12
  },
  "overlays": {
@@ -168,9 +168,9 @@
   "cr-paquete": {
    "eventId": "f2mn20ok30kl5k2t1s6tci7n7c",
    "fechaCreada": "2027-01-06",
-   "hash": "4cb4ec6822e6",
+   "hash": "69f5e81041b7",
    "summary": "🔬 RESEARCH · CR-8 Paquete del case report #1 CONGELADO",
-   "registrado": "2026-10-03",
+   "registrado": "2026-10-05",
    "accionPendiente": null,
    "payload": {
     "code": "CR-8",
@@ -183,16 +183,16 @@
     "timeZone": "America/Lima",
     "colorId": "6",
     "availability": "AVAILABILITY_FREE",
-    "description": "HITO RESEARCH · CR-8 · d32 del ciclo 1 · bloque 13:30-14:15 (día-Research; alterna con Derma)\n\nOBJETIVO: Paquete de envío CONGELADO (manuscrito + fotos + consentimiento + CARE + cover) — el SUBMIT se ejecuta el jue 11-feb-2027 (CR-9 = d36 del ciclo 1, primer día-Research tras la pausa · = D91 del Step 1, antes del examen del jue 18-feb)\nENTREGABLE: Paquete completo y revisado; nada pendiente para febrero · estado → revision-mentor\nARTEFACTO: CASE_REPORT_1/_PAQUETE_ENVIO/ (todo lo que se sube) + Mesa editorial: fecha objetivo jue 11-feb-2027\nFECHA LÍMITE EXTERNA: antes del submit CR-9 (jue 11-feb-2027 = D91 del Step 1, primer día-Research tras la pausa): paquete congelado ANTES de la pausa Research por el Step 1 (vie 15-ene → mié 10-feb-2027; Fases B-C vie 29-ene → mié 17-feb; examen jue 18-feb)\n\nOverlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se\nregenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel\n→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.",
-    "hash": "4cb4ec6822e6"
+    "description": "HITO RESEARCH · CR-8 · d32 del ciclo 1 · bloque 13:30-14:15 (día-Research; alterna con Derma)\n\nOBJETIVO: Paquete de envío CONGELADO (manuscrito + fotos + consentimiento + CARE + cover) — el SUBMIT se ejecuta el jue 11-feb-2027 (CR-9 = d36 del ciclo 1, primer día-Research tras la pausa · = D90 del Step 1 en v5.19, antes del examen del vie 19-feb)\nENTREGABLE: Paquete completo y revisado; nada pendiente para febrero · estado → revision-mentor\nARTEFACTO: CASE_REPORT_1/_PAQUETE_ENVIO/ (todo lo que se sube) + Mesa editorial: fecha objetivo jue 11-feb-2027\nFECHA LÍMITE EXTERNA: antes del submit CR-9 (jue 11-feb-2027 = D90 del Step 1, primer día-Research tras la pausa): paquete congelado ANTES de la pausa Research por el Step 1 (vie 15-ene → mié 10-feb-2027; Fases B-C lun 1 → jue 18-feb; examen vie 19-feb · v5.19)\n\nOverlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se\nregenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel\n→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.",
+    "hash": "69f5e81041b7"
    }
   },
   "case-report-1": {
    "eventId": "t136recadd6vnv0iebrmmqiv48",
    "fechaCreada": "2027-02-11",
-   "hash": "381fccc738d1",
+   "hash": "1b1022e61c77",
    "summary": "🔬 RESEARCH · CR-9 SUBMIT case report #1",
-   "registrado": "2026-10-03",
+   "registrado": "2026-10-05",
    "accionPendiente": null,
    "payload": {
     "code": "CR-9",
@@ -205,8 +205,8 @@
     "timeZone": "America/Lima",
     "colorId": "6",
     "availability": "AVAILABILITY_FREE",
-    "description": "HITO RESEARCH · CR-9 · d36 del ciclo 1 · bloque 13:30-14:15 (día-Research; alterna con Derma)\n\nOBJETIVO: SUBMIT case report #1 a Dermatology Online Journal (paquete congelado en CR-8) + registrar el nº de manuscrito — primer día-Research tras la pausa (jue 11-feb-2027 = D91 del Step 1; el examen es el jue 18-feb)\nENTREGABLE: Case report ENVIADO ✅ · estado case-report-1 → enviado\nARTEFACTO: Mesa editorial: case-report-1 = enviado (fecha)\nFECHA LÍMITE EXTERNA: ≤ 28-feb-2027 (Dermatology Online Journal → JAAD CR → Case Reports in Dermatology)\n\nOverlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se\nregenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel\n→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.",
-    "hash": "381fccc738d1"
+    "description": "HITO RESEARCH · CR-9 · d36 del ciclo 1 · bloque 13:30-14:15 (día-Research; alterna con Derma)\n\nOBJETIVO: SUBMIT case report #1 a Dermatology Online Journal (paquete congelado en CR-8) + registrar el nº de manuscrito — primer día-Research tras la pausa (jue 11-feb-2027 = D90 del Step 1 en v5.19; el examen es el vie 19-feb)\nENTREGABLE: Case report ENVIADO ✅ · estado case-report-1 → enviado\nARTEFACTO: Mesa editorial: case-report-1 = enviado (fecha)\nFECHA LÍMITE EXTERNA: ≤ 28-feb-2027 (Dermatology Online Journal → JAAD CR → Case Reports in Dermatology)\n\nOverlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se\nregenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel\n→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.",
+    "hash": "1b1022e61c77"
    }
   },
   "equipo": {

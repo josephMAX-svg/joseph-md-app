@@ -4,28 +4,28 @@
 // Fuente única: DATA/SYNAPSE/vibecoding_proyectos.json
 //   · proyectos: 12 proyectos S1-S12 (backlog REAL, ordenados por riesgo para el Step 1) · 5 pasos (5 hábiles) cada uno.
 //   · taper:     8 semanas S13-S20 (v5.10-b, 12-sep-2026): S13-S16 mantenimiento ≤15'/día (flag deload) ·
-//                S17-S20 deload total (journal 5' + audio) · S20 = semana del examen (v5.18: lun 15 → mié 17-feb, D93-D95 · v5.17: jue 11 → lun 15-feb; v5.16: lun-mié).
+//                S17-S20 deload total (journal 5' + audio) · S20 = semana del examen (v5.19: mar 16 → jue 18-feb, D93-D95; examen vie 19-feb · v5.18: lun 15 → mié 17-feb · v5.17: jue 11 → lun 15-feb; v5.16: lun-mié).
 //   · _meta:     freno 04:55 · convención de commit [S<n>] · verificación mecánica (verify_vibecoding.js).
-// Calendario: START = argv[2] (YYYY-MM-DD, default 2026-10-05 = D1 v5.18; v5.17: 2026-10-01) · días HÁBILES L-V (salta sáb/dom y los
+// Calendario: START = argv[2] (YYYY-MM-DD, default 2026-10-06 = D1 v5.19; v5.18: 2026-10-05 · v5.17: 2026-10-01) · días HÁBILES L-V (salta sáb/dom y los
 // feriados fijos 25-dic/31-dic/1-ene, misma regla que remap_inicio.js).
-//   · S1-S12: 5 días hábiles por proyecto (paso 1 definir · 2-3 construir · 4 verificar · 5 doc+commit; v5.18: bloques lun → vie, S12 lun 21 → lun 28-dic por el festivo del vie 25-dic; v5.17: jue → mié) →
+//   · S1-S12: 5 días hábiles por proyecto (paso 1 definir · 2-3 construir · 4 verificar · 5 doc+commit; v5.19: bloques mar → lun, S12 mar 22 → mar 29-dic por el festivo del vie 25-dic; v5.18: lun → vie, S12 lun 21 → lun 28-dic; v5.17: jue → mié) →
 //     60 días · sábado PC (SYNAPSE 15:00-17:00) = SHIP del proyecto (sábado siguiente al 5º día) · domingo = Feynman.
 //   · S13-S20: (hasta v5.10) semanas de CALENDARIO (lun→vie) desde el lunes siguiente al fin de S12, con los feriados fuera
-//     (desde v5.11: bloques secuenciales de pasos.length hábiles; v5.18: el último termina el D95 del Step 1 = mié 17-feb-2027; examen jue 18-feb · v5.17: lun 15-feb / mar 16-feb).
-//     Con cualquier D1 (v5.18: lun 5-oct; v5.17: jue 1-oct), el día d del vibecoding coincide con el D# del Step 1 (95 días).
+//     (desde v5.11: bloques secuenciales de pasos.length hábiles; v5.19: el último termina el D95 del Step 1 = jue 18-feb-2027; examen vie 19-feb · v5.18: mié 17-feb / jue 18-feb · v5.17: lun 15-feb / mar 16-feb).
+//     Con cualquier D1 (v5.19: mar 6-oct; v5.18: lun 5-oct; v5.17: jue 1-oct), el día d del vibecoding coincide con el D# del Step 1 (95 días).
 // Ship log: si existe DATA/SYNAPSE/_vibecoding_ship.json (escrito por verify_vibecoding.js) se hornea en el TS
 // (VIBE_SHIP_LOG) para que la app muestre el último verify aunque no haya localStorage.
 //
-// Uso:  node DATA/_scripts/gen_vibecoding_plan.js 2026-10-05
+// Uso:  node DATA/_scripts/gen_vibecoding_plan.js 2026-10-06   (v5.19; v5.18: 2026-10-05)
 // Pipeline de corrimiento: tras remap_inicio.js <fecha>, correr también este script con la misma fecha
 // (igual que gen_synapse_plan.js / gen_aurum_plan.js). Determinista: sin Date.now() ni aleatoriedad.
 const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..', '..');
-const START = process.argv[2] || '2026-10-05'; // v5.18 (v5.17: 2026-10-01)
+const START = process.argv[2] || '2026-10-06'; // v5.19 (v5.18: 2026-10-05 · v5.17: 2026-10-01)
 if (!/^20\d\d-\d\d-\d\d$/.test(START)) throw new Error('START inválido (YYYY-MM-DD): ' + START);
-// Último día del taper = D95 del Step 1 (mié 17-feb-2027 con START=2026-10-05; v5.17: lun 15-feb con START=2026-10-01). Se calcula, no se fija a mano:
+// Último día del taper = D95 del Step 1 (jue 18-feb-2027 con START=2026-10-06 · v5.18: mié 17-feb con START=2026-10-05; v5.17: lun 15-feb con START=2026-10-01). Se calcula, no se fija a mano:
 // 95 días hábiles desde START con la misma regla de feriados.
 const DIAS_STEP1 = 95;
 
@@ -320,7 +320,9 @@ for (const p of P) {
   md.push(`- **Criterio de aceptación (definition of done)** — \`node DATA/_scripts/verify_vibecoding.js ${p.s}\`:`);
   p.aceptacion.forEach((a, i) => { const v = p.verificacion[i]; md.push(`  - [ ] ${a} _(verify: ${v.tipo}${v.tipo === 'manual' ? ' — ' + v.como : ''})_`); });
   md.push('- **Docs (verificadas 5-sep-2026)**: ' + p.docs.map((x) => `[${x.label}](${x.url})`).join(' · '));
-  md.push('- **Pasos diarios (45\' cada uno' + (p.deload ? '; deload: mar/jue 15\'' : '') + ')**:');
+  // v5.19: la etiqueta del deload sale de los días reales con 15' (antes fija en «mar/jue», solo cierta con bloques lun→vie)
+  const dl15 = ds.filter((x) => x.min === 15).map((x) => x.wd.toLowerCase());
+  md.push('- **Pasos diarios (45\' cada uno' + (p.deload ? `; deload: ${dl15.join('/') || '—'} 15'` : '') + ')**:');
   for (const x of ds) md.push(`  - **${x.wd} ${x.fecha.slice(8, 10)}-${x.fecha.slice(5, 7)} · ${TIPO_LABEL[x.tipo]}${x.min !== 45 ? ` (${x.min}')` : ''}**: ${x.paso}`);
   md.push(`- **SHIP**: ${p.ship}`);
   md.push('');

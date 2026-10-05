@@ -93,51 +93,52 @@ export function componerBriefing(inp: BriefingInput): string {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// v5.7 (5-sep-2026) — Semana N/20 del Step 1 (v5.18: N/20 · v5.17: N/21) · revisión semanal · modo mínimo · KPI Anki
+// v5.7 (5-sep-2026) — Semana N/20 del Step 1 (v5.19: N/20 · v5.18: N/20 · v5.17: N/21) · revisión semanal · modo mínimo · KPI Anki
 // Todo se deriva de datos ya presentes (DAILY_META del USMLE + localStorage con prefijo jmd-).
 // Doctrina: DATA/REVISION_SEMANAL.md · DATA/PROTOCOLO_MODO_MINIMO.md · DATA/SYNC_ANKI_OBSIDIAN_APP.md
 // ═══════════════════════════════════════════════════════════════════════════
 
-/** D1 del Step 1 (v5.18 = lun 5-oct-2026 · v5.17: jue 1-oct) — misma fuente que usmleStep1Daily.DAILY_META.inicio. */
+/** D1 del Step 1 (v5.19 = mar 6-oct-2026 · v5.18: lun 5-oct · v5.17: jue 1-oct) — misma fuente que usmleStep1Daily.DAILY_META.inicio. */
 export const STEP1_INICIO = DAILY_META.inicio;
-export const STEP1_SEMANAS = 20; // v5.18: S1 = semana L-V del D1 (lun 5 → vie 9-oct) → S20 = 15-19 feb (D93 lun 15 · D94 mar 16 · D95 mié 17-feb = D-1 · examen target jue 18-feb) · v5.17: 21 · v5.16: 20
+export const STEP1_SEMANAS = 20; // v5.19: S1 = semana L-V del D1 (lun 5 → vie 9-oct; sesiones mar 6 → vie 9 = D1-D4) → S20 = 15-19 feb (D92 lun 15 · D93 mar 16 · D94 mié 17 · D95 jue 18-feb = D-1 · examen target vie 19-feb) · v5.18: 20 (D95 mié 17 · examen jue 18-feb) · v5.17: 21 · v5.16: 20
 
 /** Hitos del plan con su mínimo on-track (PALMERTON_POR_MATERIA Parte V, regla 5%/mes).
- * v5.18 (3-oct): 4.º CORRIMIENTO RÍGIDO (+2 hábiles; misma regla que v5.15/v5.16/v5.17) — los hitos corren con el plan y conservan
- * su D#, así ningún NBME pierde días de contenido por delante. Con D1 en LUNES vuelven a caer casi todos en VIERNES (salvo NBME 29
- * mié 6-ene, NBME 32 lun 1-feb y NBME 33 mié 3-feb). v5.17 (30-sep, D1 jue 1-oct): caían casi todos en miércoles. */
+ * v5.19 (5-oct): 5.º CORRIMIENTO RÍGIDO (+1 hábil; misma regla que v5.15-v5.18) — los hitos corren con el plan y conservan
+ * su D#, así ningún NBME pierde días de contenido por delante. Con D1 en MARTES caen casi todos en LUNES (salvo UWSA1 mar 6-oct,
+ * NBME 29 jue 7-ene, NBME 32 mar 2-feb y NBME 33 jue 4-feb). v5.18 (3-oct, D1 lun 5-oct): casi todos en viernes (NBME 29 mié 6-ene,
+ * 32 lun 1-feb, 33 mié 3-feb). v5.17 (30-sep, D1 jue 1-oct): casi todos en miércoles. */
 export const HITOS_STEP1: { fecha: string; nombre: string; minimo: string }[] = [
-  { fecha: '2026-10-05', nombre: 'UWSA1', minimo: 'baseline (cualquier valor)' }, // v5.18: D1 (lun 5-oct)
-  { fecha: '2026-10-16', nombre: 'NBME 25', minimo: '≥51%' },   // D10 (vie)
-  { fecha: '2026-11-06', nombre: 'NBME 26', minimo: '≥54%' },   // D25 (vie)
-  { fecha: '2026-11-27', nombre: 'NBME 27', minimo: '≥57%' },   // D40 (vie)
-  { fecha: '2026-12-18', nombre: 'NBME 28', minimo: '≥61%' },   // D55 (vie)
-  { fecha: '2027-01-06', nombre: 'NBME 29', minimo: '≥63%' },   // D65 (mié, por los saltos de 25-dic/31-dic/1-ene)
-  { fecha: '2027-01-15', nombre: 'NBME 30', minimo: '≥65%' },   // D72 (vie)
-  { fecha: '2027-01-22', nombre: 'UWSA2', minimo: 'low risk' }, // D77 (vie)
-  { fecha: '2027-01-29', nombre: 'NBME 31 · GO/NO-GO', minimo: '≥68%' }, // D82 (vie)
-  { fecha: '2027-02-01', nombre: 'NBME 32', minimo: '≥68%' },   // D83 (lun)
-  { fecha: '2027-02-03', nombre: 'NBME 33', minimo: '≥68%' },   // D85 (mié)
-  { fecha: '2027-02-05', nombre: 'Free 120', minimo: '≥70%' },  // D87 (vie)
+  { fecha: '2026-10-06', nombre: 'UWSA1', minimo: 'baseline (cualquier valor)' }, // v5.19: D1 (mar 6-oct)
+  { fecha: '2026-10-19', nombre: 'NBME 25', minimo: '≥51%' },   // D10 (lun)
+  { fecha: '2026-11-09', nombre: 'NBME 26', minimo: '≥54%' },   // D25 (lun)
+  { fecha: '2026-11-30', nombre: 'NBME 27', minimo: '≥57%' },   // D40 (lun)
+  { fecha: '2026-12-21', nombre: 'NBME 28', minimo: '≥61%' },   // D55 (lun)
+  { fecha: '2027-01-07', nombre: 'NBME 29', minimo: '≥63%' },   // D65 (jue, por los saltos de 25-dic/31-dic/1-ene)
+  { fecha: '2027-01-18', nombre: 'NBME 30', minimo: '≥65%' },   // D72 (lun)
+  { fecha: '2027-01-25', nombre: 'UWSA2', minimo: 'low risk' }, // D77 (lun)
+  { fecha: '2027-02-01', nombre: 'NBME 31 · GO/NO-GO', minimo: '≥68%' }, // D82 (lun)
+  { fecha: '2027-02-02', nombre: 'NBME 32', minimo: '≥68%' },   // D83 (mar)
+  { fecha: '2027-02-04', nombre: 'NBME 33', minimo: '≥68%' },   // D85 (jue)
+  { fecha: '2027-02-08', nombre: 'Free 120', minimo: '≥70%' },  // D87 (lun)
 ];
 /** Semanas DELOAD de los frentes SECUNDARIOS (50% de carga, fechas intactas): la posterior a NBME 26 y a NBME 28. */
 export const DELOAD_SEMANAS: { lunes: string; motivo: string }[] = [
-  { lunes: '2026-11-09', motivo: 'post-NBME 26 (vie 6-nov · v5.18)' },
-  { lunes: '2026-12-21', motivo: 'post-NBME 28 (vie 18-dic · v5.18)' },
+  { lunes: '2026-11-16', motivo: 'post-NBME 26 (lun 9-nov · v5.19)' },
+  { lunes: '2026-12-28', motivo: 'post-NBME 28 (lun 21-dic · v5.19)' },
 ];
 
 export interface SemanaStep1 {
   n: number;            // 1..20 (0 = antes del D1; >20 = después de la semana del examen) · v5.17: 1..21
-  total: number;        // 20 (v5.18 = STEP1_SEMANAS · v5.17: 21)
+  total: number;        // 20 (v5.19 = STEP1_SEMANAS · v5.18: 20 · v5.17: 21)
   lunes: string; viernes: string; sabado: string;
   deload: boolean; deloadMotivo?: string;
-  hito?: string;        // hito que cae en esta semana (v5.18: casi siempre viernes · v5.17: miércoles · v5.16: viernes)
+  hito?: string;        // hito que cae en esta semana (v5.19: casi siempre lunes · v5.18: viernes · v5.17: miércoles · v5.16: viernes)
   fueraDeRango: boolean;
 }
 const addDaysISO = (iso: string, n: number): string => {
   try { const d = new Date(iso + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); } catch { return iso; }
 };
-/** Semana N/20 del Step 1 (v5.18; N/STEP1_SEMANAS · v5.17: N/21) para una fecha (lunes→domingo). Determinista, sin reloj. */
+/** Semana N/20 del Step 1 (v5.19; N/STEP1_SEMANAS · v5.18: N/20 · v5.17: N/21) para una fecha (lunes→domingo). Determinista, sin reloj. */
 export function semanaStep1(iso: string): SemanaStep1 {
   let n = 0, lunes = STEP1_INICIO;
   try {

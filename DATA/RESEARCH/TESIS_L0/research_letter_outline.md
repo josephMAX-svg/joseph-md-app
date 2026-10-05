@@ -100,11 +100,11 @@ larga: Actas/Anais), Vancouver, todas `verified`.
 
 Fuente de las celdas verificadas: hoja "ESTADÍSTICA APA" de `D:\motor_apex\datos_tesis_acne.xlsx` (Tablas 1 y 4; n = 316; Shapiro-Wilk
 p < .001 en todas las variables → Spearman; rs por dominio CADI 0,34-0,39). Las celdas "A VERIFICAR → T-4" se calculan desde la hoja
-BASE DATOS en T-4 (lun 23-nov-2026 en v5.18; v5.17: jue 19-nov), nunca se estiman.
+BASE DATOS en T-4 (lun 23-nov-2026 en v5.19 = v5.18; v5.17: jue 19-nov), nunca se estiman.
 
 Nota al pie: n con datos faltantes por variable (STROBE 14b); cortes del CADI; IGA según escala FDA.
 
-## 4. Plan de trabajo (átomos de 45', interdiarios · fechas v5.18 del 3-oct-2026 (el ciclo 1 de Research corre +2 hábiles respecto a v5.17 porque el D1 del régimen pasa al lun 5-oct, que vuelve a ser día Derma; corrimiento RÍGIDO) — orden v5.10b; ver `etica.md` §5)
+## 4. Plan de trabajo (átomos de 45', interdiarios · fechas v5.18 del 3-oct-2026 = v5.19 del 5-oct-2026 (en v5.18 el ciclo 1 de Research corrió +2 hábiles respecto a v5.17 porque el D1 del régimen pasó al lun 5-oct, día Derma; en v5.19 el D1 pasa al mar 6-oct, que ya era el d1 de Research, y Research NO se mueve; corrimiento RÍGIDO) — orden v5.10b; ver `etica.md` §5)
 1. **T-1 · jue 22-oct-2026** — ética: nº de CEI archivado o solicitud expedita PRESENTADA ese día (gate de T-7/T-8). 🔴 Cae 22 días después del límite interno “solicitud ≤ 30-sep”.
 2. **T-3 · jue 19-nov** — Intro + Methods (≤250 palabras) al límite estricto. **T-4 · lun 23-nov** — abrir la base → Tabla 1 + Figura 1
    (matplotlib/seaborn, 300 dpi, sobria); UNA va al texto, la otra al apéndice.

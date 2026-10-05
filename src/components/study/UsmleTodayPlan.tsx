@@ -200,7 +200,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaUSMLE; onOpe
           </View>
         </FadeUp>
       ) : null}
-      {/* D95 = último día del plan (v5.18, mié 17-feb = D-1 real) y examen jue 18-feb: solo se muestran en D95 para que el cierre quede a la vista */}
+      {/* D95 = último día del plan (v5.19, jue 18-feb = D-1 real) y examen vie 19-feb (v5.18: D95 mié 17-feb · examen jue 18-feb): solo se muestran en D95 para que el cierre quede a la vista */}
       {dia.d === DAILY_META.totalDias && (
         <FadeUp delay={25}>
           <View style={[st.anchor, { borderLeftColor: RED }]}>
@@ -220,7 +220,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaUSMLE; onOpe
       {derma && (
         <FadeUp delay={35}>
           <View style={[st.anchor, { borderLeftColor: Colors.gold }]}>
-            <Text style={[st.anchorLbl, { color: Colors.gold }]}>🧬 Cuenta doble Step 1 ↔ Derma · átomos Derma ya estudiados (sep-nov)</Text>
+            <Text style={[st.anchorLbl, { color: Colors.gold }]}>🧬 Cuenta doble Step 1 ↔ Derma · átomos Derma ya estudiados (oct-dic, v5.19)</Text>
             <Text style={st.anchorSub}>Hoy el pre-test 08:15 y el repaso anclado 07:15 apuntan a <Text style={{ color: Colors.onSurface, fontWeight: '700' }}>{DERMA_STEP1_QUERY}</Text> + fallos del ledger derma de estos {atomos.length} átomos (mismo motor FSRS; la derma de Step 1 no se estudia dos veces). El contenido USMLE del día no cambia.</Text>
             {atomos.map((a) => (
               <Text key={a.d} style={st.anchorSub}>• d{a.d}{a.fecha ? ` · ${fmtFecha(a.fecha)}` : ''} · {a.sub}</Text>
@@ -605,7 +605,7 @@ export default function UsmleTodayPlan() {
       <View style={st.stepRow}>
         <View style={[st.stepBtn, st.stepActive]}>
           <Text style={st.stepBig}>STEP 1</Text>
-          <Text style={st.stepSub}>BLOQUE PRINCIPAL · 6h15/día · examen jue 18-feb-2027 (v5.18)</Text>
+          <Text style={st.stepSub}>BLOQUE PRINCIPAL · 6h15/día · examen vie 19-feb-2027 (v5.19)</Text>
         </View>
         <View style={[st.stepBtn, st.stepStep2]}>
           <Text style={[st.stepBig, { color: Colors.champagne }]}>STEP 2 CK</Text>

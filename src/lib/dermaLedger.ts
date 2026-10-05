@@ -222,7 +222,7 @@ export function dermaGateModuloA(entries: DermaLedgerEntry[] = dermaLedgerLoad()
   return { n, media, buenas, superado: buenas >= DERMA_GATE_MODULO_A.descripciones, faltan: Math.max(0, DERMA_GATE_MODULO_A.descripciones - buenas) };
 }
 
-// ── 2ª pasada FSRS (v3: parciales d47-d49 = vie 12-feb → jue 18-feb-2027 del taper 4-feb → 18-feb en v5.18 (d49 = día del examen, opcional; v5.17: 10-feb → 16-feb) + REPASO 1 d72 vie 23-abr-2027; en la v2.1 era d69): SOLO fallos del ledger, por módulo más flojo ──
+// ── 2ª pasada FSRS (v3: parciales d47-d49 = mar 16-feb → lun 22-feb-2027 del taper 8-feb → 22-feb en v5.19 (d48 jue 18-feb = víspera, opcional y corta · d49 = primera sesión tras el examen del vie 19-feb; v5.18: vie 12-feb → jue 18-feb, d49 = día del examen · v5.17: 10-feb → 16-feb) + REPASO 1 d72 mar 27-abr-2027 (v5.18: vie 23-abr); en la v2.1 era d69): SOLO fallos del ledger, por módulo más flojo ──
 export interface DermaCasoRepaso { id: number; area: DermaAreaCORE; veces: number; ultimaFecha: string; tipoError: DermaTipoError | null; d?: number }
 /** Casos (fuente 'caso') fallados o acertados por suerte, sin duplicar, ordenados por el módulo con mayor % fallo y luego por nº de fallos. */
 export function dermaCasosParaSegundaPasada(entries: DermaLedgerEntry[] = dermaLedgerLoad()): DermaCasoRepaso[] {

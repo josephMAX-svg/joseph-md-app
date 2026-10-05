@@ -41,7 +41,7 @@
  *        demanda por código v3: sets, reales etiquetados, banco_items_v1, claves.json, QX/Theomed, resueltas, déficit).
  *   node DATA/_scripts/gen_encaps_minisim.js 2026-09-18 --dry          → solo informe (no escribe)
  *   node DATA/_scripts/gen_encaps_minisim.js --pretest                 → BANCO_PROPIO/pretest_2026-II.html (100Q, examen real
- *                                                                        2026-II, PRETEST_2026-II.md). Generarlo el mar 16-feb-2027 (D94, última sesión de banco del Step 1; v5.17: vie 12-feb); se rinde el vie 19-feb (default de fecha = día siguiente al examen Step 1 del jue 18-feb; si la intensiva arranca el lun 22-feb, el primer viernes es el vie 26-feb: alinear).
+ *                                                                        2026-II, PRETEST_2026-II.md). Generarlo el mié 17-feb-2027 (D94, última sesión de banco del Step 1; v5.18: mar 16-feb · v5.17: vie 12-feb); se rinde el vie 26-feb (v5.19: default de fecha 2027-02-26 = primer viernes de la intensiva, que arranca el lun 22-feb tras el examen Step 1 del vie 19-feb → ALINEADO con gen_encaps_intensivo_2027.js · v5.18: default vie 19-feb, día siguiente al examen del jue 18-feb).
  *   node DATA/_scripts/gen_encaps_minisim.js --sim100 2025-2 [fecha]   → simulacro 100Q con un examen real con CLAVE OFICIAL
  *                                                                        (2024-2A · 2025-1A · 2025-2; 2026-1 no tiene clave → se rechaza)
  *   node DATA/_scripts/gen_encaps_minisim.js --sim100 propio <fecha>   → 100Q desde el banco propio (vector v3 ×4)
@@ -49,13 +49,13 @@
  *        → PRE-TEST DE ARRANQUE (línea base ciega por crítico, gaps_v3b_encaps punto 8): 40Q = 5Q × 8 críticos v3 tomadas de los
  *          ítems REALES con clave oficial 2024-2A · 2025-1A · 2025-2 (nunca el examen de agosto-2026: lista negra), repartidas en
  *          BANCO_PROPIO/pretest_arranque_<D1>.{json,html} (parte 1: II-3 · I-3 · V-2 · III-5) y pretest_arranque_<siguiente banqueo1h>.{json,html}
- *          (parte 2: II-5 · I-4 · IV-1+IV-2 · II-4; v5.18: lun 5 + mar 6-oct · v5.17: jue 1-oct + lun 5-oct, el vie 2-oct = D2 era mini-sim). Modo examen (72 s/Q, solución al final), confianza 1-3 obligatoria, orden barajado.
+ *          (parte 2: II-5 · I-4 · IV-1+IV-2 · II-4; v5.19: mar 6 + mié 7-oct · v5.18: lun 5 + mar 6-oct · v5.17: jue 1-oct + lun 5-oct, el vie 2-oct = D2 era mini-sim). Modo examen (72 s/Q, solución al final), confianza 1-3 obligatoria, orden barajado.
  *          SUSTITUYEN EL CONTENIDO de los dos primeros bancos del día de la semana A (banco_<lunes> y banco_<martes> quedan marcados
  *          `_meta.sustituido_por` y su HTML muestra el aviso; el horario 16:15-17:15 no cambia). Regla de ids: no se reutiliza ningún id
  *          consumido por eval_/minisim_/banco_ vigentes; los ids que SOLO estaban en los dos bancos sustituidos vuelven a estar
  *          disponibles (esas sesiones no se resuelven) y se prefieren los reales libres → reales del banco sustituido → nuevos.
  *          Export del runner → `--registrar <export.json> --append`: ronda `pretest` con preguntas[] por código (gen_encaps_semana.js
- *          la reparte por código → n = 5 por crítico → el override de la semana siguiente al arranque —v5.18 (igual que v5.17): la del lun 12-oct— ya se calcula con n ≥ 5).
+ *          la reparte por código → n = 5 por crítico → el override de la semana siguiente al arranque —v5.19 (igual que v5.17-v5.18): la del lun 12-oct— ya se calcula con n ≥ 5).
  *   node DATA/_scripts/gen_encaps_minisim.js --registrar <export.json> [--append]
  *        → guarda TRACKING_ERRORES/RONDAS/<id>.json y muestra la línea para `gen_encaps_semana.js --cerrar`;
  *          con --append apenda la ronda (con preguntas[]) a _registro_resoluciones.json (append-only).
@@ -69,6 +69,8 @@
  *    cadena solo corre por debajo del mínimo) y la regla «un ítem se usa una sola vez» sigue vigente para los sets nuevos: el re-test
  *    es la excepción explícita hasta que Joseph reponga stock (PENDIENTES: V-2 · I-3 · III-5).
  * Sin dependencias externas. No toca Supabase ni el Calendar.
+ * v5.19 (5-oct): D1 = mar 6-oct-2026 · 92 días → lun 15-feb-2027 (régimen v6.17, backup study_schedule_bk_1005) · pre-test de arranque mar 6 + mié 7-oct ·
+ *   mini-sims en los MISMOS 17 viernes vie 9-oct → vie 12-feb · ficheros BANCO_PROPIO re-fechados (ítems intactos, _meta.realineado) · pre-test 2026-II vie 26-feb.
  * v5.18 (3-oct): D1 = lun 5-oct-2026 · 92 días → vie 12-feb-2027 (régimen v6.16, backup study_schedule_bk_1003) · pre-test de arranque lun 5 + mar 6-oct ·
  *   mini-sims todos los viernes vie 9-oct → vie 12-feb (minisim_2026-10-09/16/23 realineados; los del 2-oct se borraron) · pre-test 2026-II vie 19-feb.
  * v5.17 (30-sep): D1 = jue 1-oct-2026 · 92 días → mié 10-feb-2027 (régimen v6.15, backup study_schedule_bk_0930) · pre-test de arranque jue 1 + lun 5-oct ·
@@ -583,7 +585,7 @@ function borrarSalida(base) { for (const ext of ['.json', '.html']) { const p = 
 function modoPretest() {
   const src = readJSON(path.join(ENCAPS, '_examen_2026-2_items.json'));
   const items = src.items.map((it) => ({ n: it.numero, id: `2026-II-Q${it.numero}`, codigo: it.codigo, area: areaDe(it.codigo), formato: it.tipo, formato_pretest: it.formato_pretest, subangulo: it.subtema, enunciado: it.enunciado, opciones: it.opciones, clave: it.clave, respuesta: it.respuesta, fuente: 'ENCAPS/SERUMS 2026-II (clave oficial verificada 100/100)', verificado_contra: 'CLAVE OFICIAL 2026-II (resaltados del PDF, 27-ago-2026)' }));
-  const doc = { id: 'PRETEST_2026-II', titulo: 'PRE-TEST DIAGNÓSTICO · examen real ENCAPS 2026-II (100Q)', tipoRonda: 'pretest', fecha: fechaArg || '2027-02-19', codigo: 'MIX', tema: 'pre-test 2026-II · arranque fase intensiva', fuente_preguntas: 'DATA/ENCAPS/_examen_2026-2_items.json (examen real 2026-II · clave oficial 100/100 · LISTA NEGRA levantada al cerrar esta ronda)', n: 100, seg_por_q: 72, umbral: 70, alerta: 60, mostrar_codigo: false, instrucciones: 'Examen real 2026-II en orden original, 100 preguntas, 72 s/Q = 120 min sin pausa. Sin material. Umbral de arranque ≥70/100. Protocolo: DATA/ENCAPS/PRETEST_2026-II.md.', items };
+  const doc = { id: 'PRETEST_2026-II', titulo: 'PRE-TEST DIAGNÓSTICO · examen real ENCAPS 2026-II (100Q)', tipoRonda: 'pretest', fecha: fechaArg || '2027-02-26', codigo: 'MIX', tema: 'pre-test 2026-II · arranque fase intensiva', fuente_preguntas: 'DATA/ENCAPS/_examen_2026-2_items.json (examen real 2026-II · clave oficial 100/100 · LISTA NEGRA levantada al cerrar esta ronda)', n: 100, seg_por_q: 72, umbral: 70, alerta: 60, mostrar_codigo: false, instrucciones: 'Examen real 2026-II en orden original, 100 preguntas, 72 s/Q = 120 min sin pausa. Sin material. Umbral de arranque ≥70/100. Protocolo: DATA/ENCAPS/PRETEST_2026-II.md.', items };
   escribir('pretest_2026-II', doc);
 }
 function modoSim100(proceso) {
@@ -724,7 +726,7 @@ function modoPretestArranque(lunesArg) {
   const lunes = lunesArg || d1;
   if (!lunes) throw new Error('sin D1 en _encaps_mantenimiento_2027.sql (regenerar la siembra)');
   // v5.11 (14-sep-2026): el pre-test ocupa D1 y D2 del régimen (dos primeros hábiles con fila banqueo1h), sea cual sea el
-  // día de la semana del D1 (v5.10 exigía lunes; v5.11: mar 15 + mié 16; v5.12: mié 16 + jue 17; v5.13: jue 17 + lun 21-sep; v5.14: lun 21 + mar 22-sep; v5.15: mié 23 + jue 24-sep · v5.16: lun 28 + mar 29-sep · v5.17: jue 1 + lun 5-oct (el vie 2-oct = D2 era mini-sim) · v5.18: lun 5 + mar 6-oct — en v5.13 porque el
+  // día de la semana del D1 (v5.10 exigía lunes; v5.11: mar 15 + mié 16; v5.12: mié 16 + jue 17; v5.13: jue 17 + lun 21-sep; v5.14: lun 21 + mar 22-sep; v5.15: mié 23 + jue 24-sep · v5.16: lun 28 + mar 29-sep · v5.17: jue 1 + lun 5-oct (el vie 2-oct = D2 era mini-sim) · v5.18: lun 5 + mar 6-oct · v5.19: mar 6 + mié 7-oct — en v5.13 porque el
   // vie 18 = D2 es mini-sim y el pre-test sustituye BANCOS, así que la parte 2 salta al siguiente banqueo1h). Las variables conservan el nombre.
   if (dowDe(lunes) === 0 || dowDe(lunes) === 6) throw new Error(`${lunes} cae en fin de semana (${WD[dowDe(lunes)]}): el pre-test de arranque ocupa D1 + D2 del régimen`);
   let martes = addDays(lunes, 1); while (dowDe(martes) === 0 || dowDe(martes) === 6 || !filaSQL(martes) || filaSQL(martes).tipo !== 'banqueo1h') martes = addDays(martes, 1);

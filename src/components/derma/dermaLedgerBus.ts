@@ -32,7 +32,7 @@ export function dermaHoyISO(): string {
   try {
     const d = new Date(); const z = (n: number) => String(n).padStart(2, '0');
     return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`;
-  } catch { return '2026-10-05'; } // fallback = d1 Derma v5.18 (v5.17: 2026-10-01 · v5.16: 2026-09-29)
+  } catch { return '2026-10-07'; } // fallback = d1 Derma v5.19 (mié 7-oct: el mar 6 es día-Research por paridad · v5.18: 2026-10-05 · v5.17: 2026-10-01 · v5.16: 2026-09-29)
 }
 
 /** Copia texto al portapapeles (web). Devuelve false si no hay clipboard. */
