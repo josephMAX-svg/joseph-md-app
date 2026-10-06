@@ -7,13 +7,17 @@
 // día-a-día (ver + practica + lectura, suma = min_core).
 //
 // Reglas de calendario (idénticas en espíritu a gen_synapse_plan.js):
-//  · INICIO = argv[2] (YYYY-MM-DD; v5.4 = jue 2026-09-03 · v5.17 = jue 2026-10-01 · v5.18 = lun 2026-10-05 · v5.19 = mar 2026-10-06). Las 130 lecciones se asignan a días
+//  · INICIO = argv[2] (YYYY-MM-DD; v5.4 = jue 2026-09-03 · v5.17 = jue 2026-10-01 · v5.18 = lun 2026-10-05 · v5.19 = mar 2026-10-06 · v5.20 = mié 2026-10-07; salta además los DÍAS PROTEGIDOS 22-feb / 9-mar / 10-mar). Las 130 lecciones se asignan a días
 //    HÁBILES consecutivos Lunes→Viernes (SALTA sábados y domingos; NO salta feriados).
 //    El NÚCLEO L-V es la ventana 14:15-15:15.
 //  · 130 hábiles ≈ 26 semanas. La fecha fin se calcula y se imprime.
 //  · semana del plan = índice 1..26 (cada 5 días hábiles = 1 semana). El d=1..5 del JSON
-//    es el 1º..5º hábil de su semana del plan (= Lun..Vie solo si el D1 cae en lunes; v5.19: D1 mar 6-oct →
-//    d=1..5 = mar..lun hasta el lun 21-dic (D55); la semana D56-D60 va del mar 22 al mar 29-dic (vie 25 feriado), la
+//    es el 1º..5º hábil de su semana del plan (= Lun..Vie solo si el D1 cae en lunes; v5.20: D1 mié 7-oct →
+//    d=1..5 = mié..mar hasta el mar 22-dic (D55); la semana D56-D60 va del mié 23 al mié 30-dic (vie 25 feriado), la
+//    D61-D65 del lun 4 al vie 8-ene (31-dic y 1-ene fuera) y desde ahí d=1..5 = lun..vie hasta el vie 19-feb (D95 = D95 del Step 1);
+//    el lun 22-feb (PROTEGIDO) se salta → D96-D105 = mar..lun (mar 23-feb → lun 8-mar); el mar 9 y el mié 10-mar (PROTEGIDOS) se
+//    saltan → desde el jue 11-mar d=1..5 = jue..mié (D130 mié 14-abr).
+//    v5.19: D1 mar 6-oct → d=1..5 = mar..lun hasta el lun 21-dic (D55); la semana D56-D60 va del mar 22 al mar 29-dic (vie 25 feriado), la
 //    D61-D65 del mié 30-dic al jue 7-ene (31-dic y 1-ene fuera), y desde el vie 8-ene d=1..5 = vie..jue.
 //    v5.18: D1 lun 5-oct → d=1..5 = lun..vie hasta el vie 18-dic (D55); la semana D56-D60 va del lun 21 al lun 28-dic (vie 25 feriado), la
 //    D61-D65 del mar 29-dic al mié 6-ene (31-dic y 1-ene fuera), y desde el jue 7-ene d=1..5 = jue..mié.
@@ -58,13 +62,18 @@ if (lecciones.length !== 130) throw new Error('Se esperaban 130 lecciones, hay '
 
 // ─── Calendario: 130 días hábiles L-V consecutivos desde START (argv[2]) ───
 const WD = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-const START_ISO = process.argv[2] || '2026-10-06'; // default = D1 v5.19 (v5.18: 2026-10-05 · v5.17: 2026-10-01; antes 2026-09-07, v5.6); el pipeline pasa siempre la fecha if(!/^20\d\d-\d\d-\d\d$/.test(START_ISO)) throw new Error('START inválido: '+START_ISO); // v5.6: D1 = lun 7-sep-2026
+const START_ISO = process.argv[2] || '2026-10-07'; // default = D1 v5.20 (v5.19: 2026-10-06 · v5.18: 2026-10-05 · v5.17: 2026-10-01; antes 2026-09-07, v5.6); el pipeline pasa siempre la fecha if(!/^20\d\d-\d\d-\d\d$/.test(START_ISO)) throw new Error('START inválido: '+START_ISO); // v5.6: D1 = lun 7-sep-2026
 const START = new Date(START_ISO + 'T12:00:00'); // START parametrizado: node <script> YYYY-MM-DD
 const SKIP_FIJOS = new Set(['2026-12-25', '2026-12-31', '2027-01-01']); // v5.4: feriados libres en todos los planes
+// v5.20 (6-oct-2026) · DÍAS DE EXAMEN PROTEGIDOS: lun 22-feb-2027 (examen USMLE Step 1) · mar 9-mar (D-1 del ENCAPS) · mié 10-mar
+// (examen ENCAPS 2027-I). Sin sesiones de planes secundarios (Research · Derma · AURUM · MIR mantenimiento): esas fechas se SALTAN como
+// un feriado y el plan corre una ranura (nada se recorta). MISMA lista en gen_research_plan · gen_derma_ciclo2 · remap_inicio (Derma) ·
+// gen_aurum_plan · gen_mir_mantenimiento.
+const PROTEGIDOS = new Set(['2027-02-22', '2027-03-09', '2027-03-10']);
 const isoOf = (d) => new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
 function nextBusinessDay(date) {
   const d = new Date(date);
-  do { d.setTime(d.getTime() + 86400000); } while (d.getDay() === 0 || d.getDay() === 6 || SKIP_FIJOS.has(isoOf(d)));
+  do { d.setTime(d.getTime() + 86400000); } while (d.getDay() === 0 || d.getDay() === 6 || SKIP_FIJOS.has(isoOf(d)) || PROTEGIDOS.has(isoOf(d)));
   return d;
 }
 // primer día hábil ≥ START (si START cae en finde, se corre al lunes siguiente)
@@ -203,7 +212,7 @@ const ts = `/**
  * aurumDailyPlan.ts — Motor día-a-día AURUM v2 (${SEMANAS} semanas · ${TOTAL} días · ${dias[0].fecha} → ${finISO}).
  * AURUM = programa de 6 meses para volverse un closer de ventas de élite.
  * GENERADO por DATA/_scripts/gen_aurum_plan.js desde DATA/AURUM/curricula/_curriculum_v2.json.
- * NO editar a mano — regenerar: node DATA/_scripts/gen_aurum_plan.js YYYY-MM-DD (v5.19: 2026-10-06 · v5.18: 2026-10-05)
+ * NO editar a mano — regenerar: node DATA/_scripts/gen_aurum_plan.js YYYY-MM-DD (v5.20: 2026-10-07 · v5.19: 2026-10-06 · v5.18: 2026-10-05)
  *
  * Calendario: las ${TOTAL} lecciones se asignan a días HÁBILES consecutivos Lunes→Viernes
  * (salta sábados y domingos). Ventana fija en Google Calendar: 14:15-15:15.
@@ -255,7 +264,7 @@ export const AURUM_DIAS: DiaAurum[] = [
 ${dias.map(diaTs).join(',\n')}
 ];
 
-/** Los 7 días de cierre de fase (PITCH v1→v7; 5º día de la semana del plan: v5.19 = lun D15/D35/D55 y jue D75/D95/D115/D130 · ⚠ D95 jue 18-feb = D-1 del Step 1 y D96 vie 19-feb = día del examen · v5.18: vie D15-D55 y mié D75-D130). \`liviano\` = ese PITCH tiene versión LIVIANO. */
+/** Los 7 días de cierre de fase (PITCH v1→v7; 5º día de la semana del plan: v5.20 = mar D15/D35/D55, vie D75/D95 y mié D115/D130 · D95 vie 19-feb = último día del plan Step 1; el examen (lun 22-feb) y la víspera/día del ENCAPS (9-10 mar) son DÍAS PROTEGIDOS, sin AURUM · v5.19 = lun D15/D35/D55 y jue D75/D95/D115/D130 (⚠ D95 jue 18-feb = D-1 del Step 1 y D96 vie 19-feb = día del examen) · v5.18: vie D15-D55 y mié D75-D130). \`liviano\` = ese PITCH tiene versión LIVIANO. */
 export const AURUM_PITCH_DIAS: { pitch: number; d: number; fecha: string; faseId: DiaAurum['faseId']; liviano: boolean }[] = [
   ${pitchDias.join(',\n  ')}
 ];
@@ -299,7 +308,7 @@ console.log('  ventana:', '14:15–15:15');
 console.log('  días en fin de semana:', finSemana.length, '(debe ser 0)');
 console.log('  semanas cubiertas:', semanasCubiertas.size, '(debe ser', SEMANAS + ')');
 console.log('  días con min∉[30,60]:', minFuera.length, '(debe ser 0)');
-const enFeriado = dias.filter((x) => SKIP_FIJOS.has(x.fecha));
+const enFeriado = dias.filter((x) => SKIP_FIJOS.has(x.fecha) || PROTEGIDOS.has(x.fecha));
 const livDias = dias.filter((x) => x.liviano);
 const pitchD = dias.filter((x) => x.pitch).map((x) => `v${x.pitch}=D${x.d} (${x.wd} ${x.fecha})`);
 console.log('  días en feriado fijo:', enFeriado.length, '(debe ser 0)');
@@ -307,10 +316,10 @@ console.log('  drills con variante LIVIANO:', livDias.length, '(debe ser 16: 5º
 console.log('  cierres de fase / PITCH:', pitchD.join(' · '));
 // Nota: las semanas del plan son 5 días hábiles consecutivos; tras un feriado fijo (25-dic) el 5º día deja de
 // caer en viernes (deriva de calendario ya presente desde v5.4 con SKIP_FIJOS), y con el D1 fuera de lunes
-// (v5.17: jue 1-oct) no cae en viernes nunca; v5.19 (D1 mar 6-oct): lunes hasta el D55, mar 29-dic el D60 y jueves desde el D65 (ninguna en viernes) · v5.18 (D1 lun 5-oct): viernes hasta el D55, lun 28-dic el D60 y miércoles desde el D65. El invariante que se exige es "1 de cada 5 drills" (d=5 del JSON),
+// (v5.17: jue 1-oct) no cae en viernes nunca; v5.20 (D1 mié 7-oct, con los DÍAS PROTEGIDOS 22-feb / 9-10 mar saltados): martes hasta el D55, mié 30-dic el D60, viernes D65-D95, lunes D100-D105 y miércoles D110-D115 · v5.19 (D1 mar 6-oct): lunes hasta el D55, mar 29-dic el D60 y jueves desde el D65 (ninguna en viernes) · v5.18 (D1 lun 5-oct): viernes hasta el D55, lun 28-dic el D60 y miércoles desde el D65. El invariante que se exige es "1 de cada 5 drills" (d=5 del JSON),
 // no el día de la semana.
 const livNoViernes = livDias.filter((x) => x.wd !== 'Vie').length;
-if (livNoViernes) console.log('  ⚠ variantes LIVIANO fuera de viernes por la deriva post-feriado o el D1 fuera de lunes:', livNoViernes, '(esperado: en v5.19, con D1 en martes, todas —lun hasta D55, mar D60, jue D65-D115—; en v5.18 D60 lun + D65-D115 mié; con D1 en jueves, todas)');
+if (livNoViernes) console.log('  ⚠ variantes LIVIANO fuera de viernes por la deriva post-feriado o el D1 fuera de lunes:', livNoViernes, '(esperado: en v5.20, con D1 en miércoles, 9 —mar hasta D55, mié D60, lun D100-D105, mié D110-D115; D65-D95 sí caen en viernes—; en v5.19, con D1 en martes, todas —lun hasta D55, mar D60, jue D65-D115—; en v5.18 D60 lun + D65-D115 mié; con D1 en jueves, todas)');
 if (TOTAL !== 130) throw new Error('Se esperaban 130 días, hay ' + TOTAL);
 if (finSemana.length) throw new Error('Hay días en sábado/domingo');
 if (enFeriado.length) throw new Error('Hay días en feriado fijo');

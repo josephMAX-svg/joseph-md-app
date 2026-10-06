@@ -13,7 +13,9 @@
  *   · 3 checkpoints: cp1 (d85, fin de la primera pasada) · cp2 (d94, re-drill + drill HDPH) · repaso2 (d103, mapa final + drill).
  *
  * Calendario: días-Derma = paridad de días hábiles desde el ancla 2026-06-10 (researchData.ts#diaEstudioTipo, la misma
- * función de remap_inicio.js), L-V, salta 25-dic/31-dic/1-ene. Verifica 0 solapes con researchDailyPlan.ts y
+ * función de remap_inicio.js), L-V, salta 25-dic/31-dic/1-ene y los DÍAS PROTEGIDOS v5.20 (lun 22-feb examen Step 1 · mar 9-mar D-1
+ * ENCAPS · mié 10-mar examen ENCAPS). v5.20: ciclo 1 hasta el mié 5-may-2027 (d73) → ciclo 2 d74 vie 7-may → d103 mié 28-jul-2027.
+ * Verifica 0 solapes con researchDailyPlan.ts y
  * researchDailyPlan2027.ts antes de escribir.
  *
  * Uso:
@@ -40,6 +42,11 @@ const fromISO = (s) => new Date(s + 'T12:00:00Z');
 const addDays = (s, n) => { const d = fromISO(s); d.setUTCDate(d.getUTCDate() + n); return iso(d); };
 const wdOf = (s) => WD[fromISO(s).getUTCDay()];
 const SKIP_FIJOS = new Set(['2026-12-25', '2026-12-31', '2027-01-01']);
+// v5.20 (6-oct-2026) · DÍAS DE EXAMEN PROTEGIDOS: lun 22-feb-2027 (examen USMLE Step 1) · mar 9-mar (D-1 del ENCAPS) · mié 10-mar
+// (examen ENCAPS 2027-I). Sin sesiones de planes secundarios (Research · Derma · AURUM · MIR mantenimiento): esas fechas se SALTAN como
+// un feriado y el plan corre una ranura (nada se recorta). MISMA lista en gen_research_plan · gen_derma_ciclo2 · remap_inicio (Derma) ·
+// gen_aurum_plan · gen_mir_mantenimiento.
+const PROTEGIDOS = new Set(['2027-02-22', '2027-03-09', '2027-03-10']);
 function tipoDia(s) {
   const d = fromISO(s), dow = d.getUTCDay();
   if (dow === 0 || dow === 6) return 'descanso';
@@ -49,7 +56,7 @@ function tipoDia(s) {
 }
 function slots(start, n) {
   const o = []; let c = start;
-  while (o.length < n) { if (tipoDia(c) === 'derma' && !SKIP_FIJOS.has(c)) o.push(c); c = addDays(c, 1); }
+  while (o.length < n) { if (tipoDia(c) === 'derma' && !SKIP_FIJOS.has(c) && !PROTEGIDOS.has(c)) o.push(c); c = addDays(c, 1); }
   return o;
 }
 /** Lunes ISO de la semana de una fecha (clave de "1 G+ por semana"). */
@@ -86,7 +93,7 @@ const START = FECHA_ARG || addDays(FIN_C1, 1);
 const FECHAS = slots(START, N);
 for (const f of FECHAS) {
   if (tipoDia(f) !== 'derma') throw new Error('no es día Derma: ' + f);
-  if (SKIP_FIJOS.has(f)) throw new Error('feriado: ' + f);
+  if (SKIP_FIJOS.has(f) || PROTEGIDOS.has(f)) throw new Error('feriado/día de examen: ' + f);
   if (RES.has(f)) throw new Error('SOLAPE con Research: ' + f);
   if (FECHAS_C1.includes(f)) throw new Error('solape con el ciclo 1: ' + f);
 }

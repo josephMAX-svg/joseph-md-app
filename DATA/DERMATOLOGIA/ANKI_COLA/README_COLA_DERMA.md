@@ -6,7 +6,7 @@ sistema FSRS con Step 1: las tarjetas Derma se distinguen por **deck + tag**, no
 ## Estructura en Anki (nombres exactos — `src/lib/ankiLinks.ts`)
 | Qué | Nombre | Estado |
 |---|---|---|
-| Raíz | `APEX::DERMA` | A VERIFICAR (05-sep): crear en Anki escritorio antes del d1 (mié 7-oct, v5.19; v5.18: lun 5-oct · v5.17: jue 1-oct · v5.16: mar 29-sep) |
+| Raíz | `APEX::DERMA` | A VERIFICAR (05-sep): crear en Anki escritorio antes del d1 (mié 7-oct, v5.20 = v5.19 —Derma no se movió; ese día es también el D1 del Step 1 y el UWSA1—; v5.18: lun 5-oct · v5.17: jue 1-oct) |
 | Sub-decks (10) | `APEX::DERMA::A` … `::B ::C ::D ::E ::F ::G ::H ::Z ::X` | A VERIFICAR (05-sep): crear los 10 (o `createDeck` vía AnkiConnect) |
 | Nota de mecanismo | `Palmerton-Mecanismo` — se importa como **Basic** (Front/Back) | el reverso lleva 3 líneas: `POR QUÉ · CCSN · FUENTE` |
 | Oclusión de imagen | notetype nativo **Image Occlusion** (Anki ≥ 23.10) | se crea desde *Añadir → Image Occlusion*, NO por TSV |

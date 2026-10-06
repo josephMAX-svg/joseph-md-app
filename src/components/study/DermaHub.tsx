@@ -506,7 +506,7 @@ function CerebroView({ hoyD, onJump, onGoDebilidades }: { hoyD: number; onJump: 
             </TouchableOpacity>
           );
         })}
-        <Text style={fst.note}>Regla PLAN_ELITE §13: ningún átomo CRIT nuevo a ±3 días hábiles de un examen mayor. El taper ENCAPS se activa solo cuando DERMA_TAPER_ENCAPS_FECHA tenga la fecha real del examen 2027-I ({DERMA_TAPER_ENCAPS_FECHA ? `fijada: ${fmtFecha(DERMA_TAPER_ENCAPS_FECHA)}` : 'hoy null · A VERIFICAR (13-sep)'}).</Text>
+        <Text style={fst.note}>Regla PLAN_ELITE §13: ningún átomo CRIT nuevo a ±3 días hábiles de un examen mayor. El taper ENCAPS se activa solo cuando DERMA_TAPER_ENCAPS_FECHA tenga la fecha real del examen 2027-I ({DERMA_TAPER_ENCAPS_FECHA ? `fijada: ${fmtFecha(DERMA_TAPER_ENCAPS_FECHA)}` : 'hoy null · examen FIJADO mié 10-mar-2027 (v5.20), constante sin activar'}).</Text>
       </GlassPanel>
 
       {/* CICLO REAL DE LA SESIÓN · DERMA_FRANJAS (sustituye al micro-horario v1 de 60′) */}

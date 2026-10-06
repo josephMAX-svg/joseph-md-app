@@ -35,8 +35,8 @@ import DermaAnkiCola from '../derma/DermaAnkiCola';
 import { useDermaLedger, dermaHoyISO, dermaCopiar, dermaDescargar, dermaEsViernes, DERMA_AREA_LABEL, DERMA_AREA_COLOR } from '../derma/dermaLedgerBus';
 
 /**
- * DermaTodayPlan — Plan Derma día-a-día PLAN ÉLITE v3 (ciclo 1 = 73 sesiones: mié 7-oct-2026 → jue 29-abr-2027 en v5.19; ciclo 2 =
- * d74-d103 en dermaCiclo2.ts, lun 3-may → jue 22-jul-2027 en v5.19 · v5.18: lun 5-oct → mar 27-abr y jue 29-abr → mar 20-jul · v5.17: jue 1-oct → vie 23-abr y mar 27-abr → vie 16-jul), mismo motor que Usmle/Mir/ResearchTodayPlan: nav ◄► por
+ * DermaTodayPlan — Plan Derma día-a-día PLAN ÉLITE v3 (ciclo 1 = 73 sesiones: mié 7-oct-2026 → mié 5-may-2027 en v5.20, saltando los días protegidos lun 22-feb y mié 10-mar; ciclo 2 =
+ * d74-d103 en dermaCiclo2.ts, vie 7-may → mié 28-jul-2027 en v5.20 · v5.19: mié 7-oct → jue 29-abr y lun 3-may → jue 22-jul · v5.18: lun 5-oct → mar 27-abr y jue 29-abr → mar 20-jul · v5.17: jue 1-oct → vie 23-abr y mar 27-abr → vie 16-jul), mismo motor que Usmle/Mir/ResearchTodayPlan: nav ◄► por
  * DERMA_DIAS_TODOS (numeración continua, la fecha de hoy cae en el ciclo 2 automáticamente cuando pasa del último átomo
  * del ciclo 1), sub-pestañas HOY/Horario/7d/Temario, progreso REAL marcable (localStorage 'derma'), interdiario con
  * Research. Cada sesión (ciclo único de 45′) = casos CIEGOS fijos (casoIds, permutación de los 200 de "Cases for Board
@@ -193,7 +193,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, tone }: { dia: DiaDerma;
   const esDrill = !!dia.drillHDPH;        // derivado del contenido (d19 · d20 · d52 · d73 · d94 · d103), no de una lista fija
   const esCheckpoint = !!dia.checkpoint;  // cp1 d51 · cp2 d52 · repaso1 d72 · repaso2 d73 (+ d85 · d94 · d103 del ciclo 2)
   const ciclo = dermaCicloDe(dia.d) ?? 1;
-  const taper = dermaTaperEfectivo(dia);  // d44-d49 (Step 1) · ENCAPS por fecha cuando Joseph fije el examen 2027-I
+  const taper = dermaTaperEfectivo(dia);  // d44-d49 (Step 1) · ENCAPS por fecha (DERMA_TAPER_ENCAPS_FECHA; examen 2027-I FIJADO mié 10-mar en v5.20, la constante sigue en null)
   const gplus = dermaGplusDe(dia);        // ciclo 2: módulo G+ en el slot de lectura
   const nCasos = dia.casoIds.length;
   const promirLista = ciclo === 2 ? DERMA_CICLO2_PROMIR_DIAS : DERMA_PROMIR_DIAS;

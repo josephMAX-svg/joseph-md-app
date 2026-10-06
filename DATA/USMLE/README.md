@@ -1,64 +1,68 @@
-# DATA · USMLE Step 1 — Doc maestro v5.19 (reestructuración 27-ago · corrimientos RÍGIDOS 22-sep, 26-sep, 30-sep, 3-oct y 5-oct-2026 · niveles Palmerton)
+# DATA · USMLE Step 1 — Doc maestro v5.20 (reestructuración 27-ago · corrimientos RÍGIDOS 22-sep, 26-sep, 30-sep, 3-oct, 5-oct y 6-oct-2026 — DEFINITIVO · niveles Palmerton)
 
 **Step 1 es el bloque PRINCIPAL** (heredó las franjas ENCAPS de la mañana): 6h15/día L-V.
-**D1 = MAR 6-oct-2026 → D95 = JUE 18-feb-2027 (95 días; del 31-ago al 5-oct no se estudió: 26 hábiles perdidos) ·
-EXAMEN: D95 = jue 18-feb = ÚLTIMO DÍA DEL PLAN y D-1 REAL (sesión mínima AM + ritual de test-day) → target VIE 19-FEB-2027,
-al día siguiente, SIN fin de semana en medio; D94 = mié 17-feb = última sesión de banco (D-2); el sáb 13 y el dom 14-feb son
-un finde normal (libre) dentro del plan, entre el D91 (vie 12-feb) y el D92 (lun 15-feb).**
-Sábados y domingos LIBRES. Skip extra: 25-dic, 31-dic, 1-ene.
-Fuente de verdad (código): [`src/lib/usmleStep1Daily.ts`](../../src/lib/usmleStep1Daily.ts) **v5.19**
-(`DAILY_META.totalDias = 95`, `inicio = '2026-10-06'`, `fin = '2027-02-18'`, `examenVentana = '2027-01-25 → 2027-01-29
-(superada desde v5.12; v5.19: D95 = jue 18-feb)'`, `examenTarget = '2027-02-19'`, `descansoD1 = '2027-02-18'`).
-*(v5.18: D1 lun 5-oct → D95 mié 17-feb, examen jue 18-feb · v5.17: D1 jue 1-oct → D95 lun 15-feb, examen mar 16-feb.)*
+**D1 = MIÉ 7-oct-2026 → D95 = VIE 19-feb-2027 (95 días; del 31-ago al 6-oct no se estudió: 27 hábiles perdidos) ·
+EXAMEN: D94 = jue 18-feb = última sesión de banco · D95 = vie 19-feb = ÚLTIMO DÍA DEL PLAN / D-1 hábil (sesión mínima AM +
+ritual de test-day ADELANTADO a la tarde) → sáb 20 libre → dom 21-feb = D-1 REAL, sin estudio → target LUN 22-FEB-2027, con
+el finde en medio; el sáb 13 y el dom 14-feb son un finde normal (libre) dentro del plan, entre el D90 (vie 12-feb) y el D91
+(lun 15-feb). Al día siguiente del examen (mar 23-feb) arranca la intensiva ENCAPS (examen ENCAPS FIJADO mié 10-mar-2027).**
+Sábados y domingos LIBRES. Skip extra: 25-dic, 31-dic, 1-ene. Días de examen PROTEGIDOS (sin Research / Derma / AURUM / MIR):
+lun 22-feb (examen Step 1) · mar 9-mar (D-1 ENCAPS) · mié 10-mar (examen ENCAPS).
+Fuente de verdad (código): [`src/lib/usmleStep1Daily.ts`](../../src/lib/usmleStep1Daily.ts) **v5.20**
+(`DAILY_META.totalDias = 95`, `inicio = '2026-10-07'`, `fin = '2027-02-19'`, `examenVentana = '2027-01-25 → 2027-01-29
+(superada desde v5.12; v5.20: D95 = vie 19-feb)'`, `examenTarget = '2027-02-22'`, `descansoD1 = '2027-02-21'`).
+*(v5.19: D1 mar 6-oct → D95 jue 18-feb = D-1 real, examen vie 19-feb · v5.18: D1 lun 5-oct → D95 mié 17-feb, examen jue 18-feb.)*
 
-> **Corrimiento v5.18 → v5.19 (5-oct-2026) · RÍGIDO (5.º).** Tampoco se estudió el lun 5 de octubre, así que D1 pasó de
-> lun 5-oct a **mar 6-oct** (regla del sistema: cada día sin estudiar = +1 día hábil). Es el **decimoctavo corrimiento**
-> desde el 31-ago (31-ago→5-oct sin estudiar = 26 días hábiles perdidos).
-> **Misma regla de Joseph que en la v5.15-v5.18**, con una cláusula explícita nueva («Todo inicia a partir del 6 … corre nomás
-> las fechas … y alarga un día más la fecha de término. No elimines exámenes, evaluaciones que ya habías programado»): **el
-> corrimiento es RÍGIDO.** Se desplaza el plan ENTERO — contenido **y** los 12 hitos — en bloque (+1 hábil): **no se toca
-> ningún tema**, donde un plan tenía un final clavado **se AMPLÍAN días** en vez de perder sesiones, y **ninguna evaluación ya
-> programada se borra: se RE-FECHA**. Sigue vigente la **REGLA PERMANENTE (v5.8): no se fusiona ni se recorta NADA**: el
-> temario sale 1:1 y el desfase se absorbe **alargando el final del plan**, nunca comprimiendo días. D95 pasa de mié 17-feb a
-> **jue 18-feb-2027**. Las metas, las franjas horarias y el temario no cambian.
+> **Corrimiento v5.19 → v5.20 (6-oct-2026) · RÍGIDO (6.º) · DEFINITIVO.** Tampoco se estudió el mar 6 de octubre, así que
+> D1 pasó de mar 6-oct a **mié 7-oct** (regla del sistema: cada día sin estudiar = +1 día hábil). Es el **decimonoveno
+> corrimiento** desde el 31-ago (31-ago→6-oct sin estudiar = 27 días hábiles perdidos).
+> **Misma regla de Joseph que en la v5.15-v5.19**, declarada ahora DEFINITIVA («Todo inicia el día 7 de octubre … tan solamente
+> corre las fechas … la fase intensiva del serum inicia cuando ya damos el examen de Estados Unidos … el examen del serum será el
+> 10 de marzo … ese ya es el definitivo»): **el corrimiento es RÍGIDO.** Se desplaza el plan ENTERO — contenido **y** los 12
+> hitos — en bloque (+1 hábil): **no se toca ningún tema**, donde un plan tenía un final clavado **se AMPLÍAN días** en vez de
+> perder sesiones, y **ninguna evaluación ya programada se borra: se RE-FECHA**. Sigue vigente la **REGLA PERMANENTE (v5.8): no
+> se fusiona ni se recorta NADA**: el temario sale 1:1 y el desfase se absorbe **alargando el final del plan**, nunca
+> comprimiendo días. D95 pasa de jue 18-feb a **vie 19-feb-2027**. Las metas, las franjas horarias y el temario no cambian.
 >
 > 🆕 **Los 12 hitos NBME/UWSA conservan su D# exacto y corren con el plan (+1 hábil)** — regla estrenada en la v5.15 y que
-> aquí se aplica por quinta vez: ningún NBME pierde días de contenido por delante. Con el D1 en **martes**, **8 de los 12
-> hitos caen en LUNES** (NBME 25, 26, 27, 28 y 30, UWSA2, NBME 31 y Free 120); el UWSA1 (D1) y el NBME 32 (mar 2-feb) caen en
-> martes, y el NBME 29 (jue 7-ene, por los saltos del 25-dic, 31-dic y 1-ene) y el NBME 33 (jue 4-feb) en jueves. **Ningún
-> viernes es hito**, así que los 15 viernes hábiles de la Fase A se reparten en **7 N3 + 7 N1 + 1 N4** (§4b; v5.18: 6 viernes
-> de hito + 5 N3 + 3 N1 + 0 N4).
+> aquí se aplica por sexta vez: ningún NBME pierde días de contenido por delante. Con el D1 en **miércoles**, **8 de los 12
+> hitos caen en MARTES** (NBME 25, 26, 27, 28 y 30, UWSA2, NBME 31 y Free 120); el UWSA1 (D1) y el NBME 32 (mié 3-feb) caen
+> en miércoles, y el NBME 29 (vie 8-ene, por los saltos del 25-dic, 31-dic y 1-ene) y el NBME 33 (vie 5-feb) en viernes. De
+> los 15 viernes hábiles de la Fase A, **1 es hito (D65) y 14 son de contenido: 5 N3 + 2 N4 + 7 N1** (§4b; v5.19: ningún
+> viernes de hito, 7 N3 + 1 N4 + 7 N1).
 >
-> **El UWSA1 vuelve a cambiar de fecha** (lun 5-oct, ya pasado sin estudiar → **mar 6-oct, sigue siendo el D1**: baseline el
-> primer día, como prescribe Palmerton). El primer día de CONTENIDO (Fundamentos, Pathoma 1-2) es el **mié 7-oct = D2**;
-> Inmunología va el vie 9 y el lun 12-oct (D4-D5) y Cardio arranca el mar 13-oct (D6). Las 20 semanas del plan en Home y en la
-> revisión semanal siguen siendo **semanas L-V de calendario**: **S1 = lun 5 → vie 9-oct (sesiones mar 6 → vie 9 = D1-D4,
-> semana corta)** … S19 = 8-12 feb (D87-D91) · **S20 = 15-19 feb (D92-D95, 4 días) + examen vie 19-feb** →
-> `STEP1_SEMANAS = 20` (sin cambio). (`semanaDe` del TS y el flag de viernes N4 de `gen_usmle_v5.js` cuentan bloques de 7 días
-> desde el D1, mar → lun.)
+> **El UWSA1 vuelve a cambiar de fecha** (mar 6-oct, ya pasado sin estudiar → **mié 7-oct, sigue siendo el D1**: baseline el
+> primer día, como prescribe Palmerton). El primer día de CONTENIDO (Fundamentos, Pathoma 1-2) es el **jue 8-oct = D2**;
+> Inmunología va el lun 12 y el mar 13-oct (D4-D5) y Cardio arranca el mié 14-oct (D6). Las 20 semanas del plan en Home y en
+> la revisión semanal siguen siendo **semanas L-V de calendario**: **S1 = lun 5 → vie 9-oct (sesiones mié 7 → vie 9 = D1-D3,
+> semana corta)** … S19 = 8-12 feb (D86-D90) · **S20 = 15-19 feb (D91-D95, 5 días)** → finde libre → examen lun 22-feb ·
+> `STEP1_SEMANAS = 20` (sin cambio). (`semanaDe` del TS y el flag de viernes N4 de `gen_usmle_v5.js` cuentan bloques de 7
+> días desde el D1, mié → mar.)
 >
-> 🔴 **Herencia de la v5.14 que el corrimiento rígido conserva: el contenido cierra el vie 29-ene (D81) y el NBME 31 GO/NO-GO
-> cae el PRIMER HÁBIL SIGUIENTE (lun 1-feb = D82), con el finde 30-31 ene en medio y sin días de banco de consolidación
-> delante.** Los dos random timed siguen detrás de él en **D84 (mié 3-feb) y D86 (vie 5-feb)**, intercalados con NBME 32 (D83,
-> mar 2-feb) y NBME 33 (D85, jue 4-feb): la **Fase B** es **D82-D86 = lun 1 → vie 5-feb (NBME 31 → NBME 32 → banco → NBME 33 →
-> banco)**, una semana L-V completa, y la **Fase C** arranca con el **Free 120 (D87, lun 8-feb)**.
-> El examen se mueve al **VIE 19-FEB-2027**: el **D95 = jue 18-feb es el ÚLTIMO DÍA DEL PLAN y el D-1 REAL** (sesión mínima
-> solo por la mañana: Anki maduro/vencido + 20Q flagged con los mejores esquemas, ≤2 h; tarde de ritual de test-day: permiso
-> + 2 ID + Ziploc + ruta al Prometric; nada después de las 17:00 — `USMLE_TAPER.d95` = `USMLE_TAPER.dMenos1`), el **D94
-> (mié 17-feb) es la última sesión de banco (D-2)** y **el examen es al día siguiente del D95: en la v5.19, como en la v5.18,
-> NO hay fin de semana libre dentro del taper**: el sáb 13 y el dom 14-feb son un finde normal del plan, entre el D91 (vie
-> 12-feb) y el D92 (lun 15-feb).
-> **Target de examen: VIE 19-FEB-2027** (`DAILY_META.examenTarget = '2027-02-19'`,
-> `USMLE_TAPER.examen`). **Joseph debe agendar/reprogramar el Prometric para el vie 19-feb y confirmar que su eligibility
-> period cubre esa fecha** (si no: extenderlo). La alternativa es **recortar temario** para volver atrás — decisión suya,
-> registrada en [`PALMERTON_DIVERGENCIAS_PLAN.md`](PALMERTON_DIVERGENCIAS_PLAN.md) §E-5 (decisión del 5-oct: rendir el vie
-> 19-feb; sustituye a la del 3-oct: jue 18-feb).
-> ⚠ **Desde hoy, cada día no estudiado mueve el examen un día hábil más (o exige recortar temario).**
+> 🔴 **El contenido cierra el lun 1-feb (D81) y el NBME 31 GO/NO-GO cae AL DÍA SIGUIENTE (mar 2-feb = D82), sin finde en
+> medio y sin días de banco de consolidación delante** (el finde 30-31 ene queda ahora entre los dos días dobles de Bioquímica,
+> D80 vie 29-ene y D81 lun 1-feb). Los dos random timed siguen detrás de él en **D84 (jue 4-feb) y D86 (lun 8-feb)**,
+> intercalados con NBME 32 (D83, mié 3-feb) y NBME 33 (D85, vie 5-feb): la **Fase B** es **D82-D86 = mar 2 → lun 8-feb
+> (NBME 31 → NBME 32 → banco → NBME 33 → finde 6-7 feb → banco)** y la **Fase C** arranca con el **Free 120 (D87, mar 9-feb)**.
+> El examen se mueve al **LUN 22-FEB-2027**: el **D95 = vie 19-feb es el ÚLTIMO DÍA DEL PLAN / D-1 hábil** (sesión mínima
+> solo por la mañana: Anki maduro/vencido + 20Q flagged con los mejores esquemas, ≤2 h; **tarde = ritual de test-day
+> ADELANTADO** para no cargar el finde: permiso + 2 ID + Ziploc + ruta al Prometric; nada después de las 17:00 —
+> `USMLE_TAPER.d95`), el **D94 (jue 18-feb) es la última sesión de banco**, el sáb 20 es descanso total y el **dom 21-feb es
+> el D-1 REAL, SIN sesión del plan** (`USMLE_TAPER.dMenos1`: como mucho Anki vencido ≤30 min, cama temprano). Como en la v5.15
+> (y a diferencia de v5.16-v5.19), **hay finde libre entre el D95 y el examen**.
+> **Target de examen: LUN 22-FEB-2027** (`DAILY_META.examenTarget = '2027-02-22'`, `USMLE_TAPER.examen`). **Joseph debe
+> agendar/reprogramar el Prometric para el lun 22-feb y confirmar que su eligibility period cubre esa fecha** (si no:
+> extenderlo). La alternativa es **recortar temario** para volver atrás — decisión suya, registrada en
+> [`PALMERTON_DIVERGENCIAS_PLAN.md`](PALMERTON_DIVERGENCIAS_PLAN.md) §E-5 (decisión del 6-oct: rendir el lun 22-feb; sustituye
+> a la del 5-oct: vie 19-feb). **Al día siguiente del examen (mar 23-feb) arranca la intensiva ENCAPS** (días 97-107, ya
+> sembrada; examen ENCAPS FIJADO **mié 10-mar-2027**).
+> ⚠ **Desde hoy, cada día no estudiado mueve el examen un día hábil más (o exige recortar temario)** — y comprime la intensiva
+> ENCAPS, cuyo final (mar 9-mar) está clavado por el examen ENCAPS.
 >
 > Prueba dura del "nada se perdió": el multiconjunto de `(system, sub)` del nuevo `DIAS` es
-> **idéntico** al de la v5.18 (0 filas perdidas y 0 filas nuevas en las 95, y el mismo orden) y, al ser un corrimiento rígido,
-> el remapeo D#(v5.18) → D#(v5.19) es la **identidad**: los 95 días conservan su D# y solo cambia su fecha (+1 hábil); el
-> `nivelUW` cambia en 13 días de la Fase A solo por caer (o dejar de caer) en viernes, todos con `qDia` 40. El total de
+> **idéntico** al de la v5.19 (0 filas perdidas y 0 filas nuevas en las 95, y el mismo orden) y, al ser un corrimiento rígido,
+> el remapeo D#(v5.19) → D#(v5.20) es la **identidad**: los 95 días conservan su D# y solo cambia su fecha (+1 hábil); el
+> `nivelUW` cambia en 15 días de la Fase A solo por caer (o dejar de caer) en viernes, todos con `qDia` 40. El total de
 > **5560Q objetivo no se movió**.
 
 Plataforma de práctica: **Qbankly** (`qbankly.app`) — **abre SOLO en Microsoft Edge**
@@ -69,119 +73,120 @@ Plataforma de práctica: **Qbankly** (`qbankly.app`) — **abre SOLO en Microsof
 
 | Fase | Días | Fechas | Qué se hace | Niveles UWorld (Palmerton) |
 |------|------|--------|-------------|----------------------------|
-| **A · Contenido por sistemas** | D1-D81 | mar 6-oct → vie 29-ene | UWSA1 baseline (D1) + 1ª pasada completa del temario desde D2 + 30-40Q uWorld/día por nivel (= 1ª vuelta del banco entero) + 8 simulacros de hito (7 NBME/UWSA1 + **UWSA2 D77, que cae DENTRO de la Fase A**) · cierre de Bioquímica = D81 vie 29-ene | **1 → 3** (+ dosis diaria de 4 en la eval 18:00) · **viernes de nivel 4 desde S11** (regla del generador; en v5.19 UNO: **D54 vie 18-dic, Heme/Onc**; los demás viernes de S12+ son festivo —25-dic, 1-ene— o 1.º-2.º día de sistema —D66 vie 8-ene Repro, D71 vie 15-ene MSK, D76 vie 22-ene Psiquiatría, D81 vie 29-ene Bioquímica—; v5.18: ninguno · v5.17: 4) |
-| **B · Banco intensivo** | D82-D86 | lun 1-feb → vie 5-feb | **NBME 31 (D82, lun 1-feb, GO/NO-GO) la ABRE, el primer hábil tras el cierre de contenido (con el finde 30-31 ene en medio)** · NBME 32 (D83, mar 2-feb) · random timed 2×40Q + sistema débil #1 (D84 mié 3-feb) · NBME 33 (D85, jue 4-feb) · random timed 2×40Q + sistema débil #1 (D86 vie 5-feb) | **4 → 5** |
-| **C · Sprint final** | D87-D95 | lun 8-feb → jue 18-feb | Free 120 (D87) · banco alojado en el sprint (D88 y D89 random timed + sistema débil #2/Mehlman · D90 y D91 incorrects 2ª pasada · D92 AMBOSS 200 mitad 1 · D93 mitad 2; el sáb 13 y el dom 14-feb, libres, caen entre D91 y D92) · **taper explícito (D94 mié 17-feb = D-2, última sesión de banco, 20Q flagged + Anki maduro) → D95 jue 18-feb = ÚLTIMO DÍA y D-1 REAL (sesión mínima + ritual)** → **vie 19-feb examen, al día siguiente, sin finde en medio** (§3b) | **5** + NBME |
+| **A · Contenido por sistemas** | D1-D81 | mié 7-oct → lun 1-feb | UWSA1 baseline (D1) + 1ª pasada completa del temario desde D2 + 30-40Q uWorld/día por nivel (= 1ª vuelta del banco entero) + 8 simulacros de hito (7 NBME/UWSA1 + **UWSA2 D77, que cae DENTRO de la Fase A**) · cierre de Bioquímica = D81 lun 1-feb | **1 → 3** (+ dosis diaria de 4 en la eval 18:00) · **viernes de nivel 4 desde S11** (regla del generador; en v5.20 DOS: **D53 vie 18-dic, Heme/Onc** y **D70 vie 15-ene, Repro**; los demás viernes de S12+ son festivo —25-dic, 1-ene—, hito —D65 vie 8-ene, NBME 29— o 1.er día de sistema —D75 vie 22-ene Psiquiatría, D80 vie 29-ene Bioquímica—; v5.19: uno, D54 · v5.18: ninguno) |
+| **B · Banco intensivo** | D82-D86 | mar 2-feb → lun 8-feb | **NBME 31 (D82, mar 2-feb, GO/NO-GO) la ABRE, el día siguiente al cierre de contenido (sin finde en medio)** · NBME 32 (D83, mié 3-feb) · random timed 2×40Q + sistema débil #1 (D84 jue 4-feb) · NBME 33 (D85, vie 5-feb) · finde 6-7 feb · random timed 2×40Q + sistema débil #1 (D86 lun 8-feb) | **4 → 5** |
+| **C · Sprint final** | D87-D95 | mar 9-feb → vie 19-feb | Free 120 (D87) · banco alojado en el sprint (D88 y D89 random timed + sistema débil #2/Mehlman · D90 y D91 incorrects 2ª pasada · D92 AMBOSS 200 mitad 1 · D93 mitad 2; el sáb 13 y el dom 14-feb, libres, caen entre D90 y D91) · **taper explícito (D94 jue 18-feb = última sesión de banco, 20Q flagged + Anki maduro) → D95 vie 19-feb = ÚLTIMO DÍA del plan / D-1 hábil (sesión mínima + ritual adelantado)** → sáb 20 libre · **dom 21-feb = D-1 real, sin estudio** → **lun 22-feb examen** (§3b) | **5** + NBME |
 
 Días por fase (`faseDe` en el TS): **A = 81 · B = 5 · C = 9** (total 95). El corte A/B sigue en
-**D81** (el **UWSA2 (lun 25-ene) es D77 y queda dentro de la Fase A**; los dos días dobles de Bioquímica, D80 jue 28-ene y
-D81 vie 29-ene, cierran la fase íntegros y seguidos detrás del UWSA2). **Herencia de la v5.14 que el corrimiento rígido
-conserva: el NBME 31 (D82, lun 1-feb) cae el primer hábil tras el cierre de contenido (con el finde 30-31 ene en medio), sin
-días de banco de consolidación delante** — la Fase B es **D82-D86 (5 días, lun 1 → vie 5-feb: 3 NBME + 2 random timed)** y el
-corte B/C queda en **D87** (Free 120, lun 8-feb, abre la Fase C, de 9 días).
+**D81** (el **UWSA2 (mar 26-ene) es D77 y queda dentro de la Fase A**; los dos días dobles de Bioquímica, D80 vie 29-ene y
+D81 lun 1-feb, cierran la fase íntegros detrás del UWSA2, con el finde 30-31 ene entre ambos). **El NBME 31 (D82, mar 2-feb)
+cae el día siguiente al cierre de contenido, sin finde en medio y sin días de banco de consolidación delante** — la Fase B es
+**D82-D86 (5 días, mar 2 → lun 8-feb: 3 NBME + 2 random timed)** y el corte B/C queda en **D87** (Free 120, mar 9-feb, abre
+la Fase C, de 9 días).
 
 > 🆕 **Los cortes de fase no se recalculan en cada corrimiento**: como los hitos conservan su D#, la estructura D1-81 /
-> D82-86 / D87-95 es exactamente la misma que en la v5.14 → v5.18 y solo se desplazan las fechas.
+> D82-86 / D87-95 es exactamente la misma que en la v5.14 → v5.19 y solo se desplazan las fechas.
 
-## 2. Sistema → días → fechas (generado desde `DIAS` de `usmleStep1Daily.ts` v5.19)
+## 2. Sistema → días → fechas (generado desde `DIAS` de `usmleStep1Daily.ts` v5.20)
 
 | Sistema | Días | Fechas | Tier | Nº días |
 |---------|------|--------|------|---------|
-| Assessment | D1 · D10 · D25 · D40 · D55 · D65 · D72 · D77 · D82 | mar 6-oct → lun 1-feb | CORE | 9 |
-| Fundamentos | D2-D3 | mié 7-oct → jue 8-oct | CORE | 2 |
-| Immunology | D4-D5 | vie 9-oct → lun 12-oct | CORE | 2 |
-| Cardiovascular | D6-D9 · D11-D16 | mar 13-oct → mar 27-oct | CORE | 10 |
-| Respiratory | D17-D22 | mié 28-oct → mié 4-nov | CORE | 6 |
-| Renal | D23-D24 · D26-D29 | jue 5-nov → vie 13-nov | CORE | 6 |
-| Gastrointestinal | D30-D36 | lun 16-nov → mar 24-nov | CORE | 7 |
-| Endocrine | D37-D39 · D41-D42 | mié 25-nov → mié 2-dic | CORE | 5 |
-| Nervous System | D43-D50 | jue 3-dic → lun 14-dic | CORE | 8 |
-| Hematology & Oncology | D51-D54 · D56-D57 | mar 15-dic → mié 23-dic | HIGH | 6 |
-| Microbiology / ID | D58-D64 | jue 24-dic → mié 6-ene | HIGH | 7 |
-| Reproductive | D66-D70 | vie 8-ene → jue 14-ene | HIGH | 5 |
-| Musculoskeletal / Rheum | D71 · D73-D74 | vie 15-ene → mié 20-ene | HIGH | 3 |
-| Psychiatry & Behavioral | D75-D76 · D78-D79 | jue 21-ene → mié 27-ene | HIGH | 4 |
-| Biochemistry | D80-D81 | jue 28-ene → vie 29-ene | MED | 2 |
-| Sprint final | D83 · D85 · D87 · D94-D95 | mar 2-feb → jue 18-feb | CORE | 5 |
-| Banco intensivo | D84 · D86 · D88-D93 | mié 3-feb → mar 16-feb | CORE | 8 |
+| Assessment | D1 · D10 · D25 · D40 · D55 · D65 · D72 · D77 · D82 | mié 7-oct → mar 2-feb | CORE | 9 |
+| Fundamentos | D2-D3 | jue 8-oct → vie 9-oct | CORE | 2 |
+| Immunology | D4-D5 | lun 12-oct → mar 13-oct | CORE | 2 |
+| Cardiovascular | D6-D9 · D11-D16 | mié 14-oct → mié 28-oct | CORE | 10 |
+| Respiratory | D17-D22 | jue 29-oct → jue 5-nov | CORE | 6 |
+| Renal | D23-D24 · D26-D29 | vie 6-nov → lun 16-nov | CORE | 6 |
+| Gastrointestinal | D30-D36 | mar 17-nov → mié 25-nov | CORE | 7 |
+| Endocrine | D37-D39 · D41-D42 | jue 26-nov → jue 3-dic | CORE | 5 |
+| Nervous System | D43-D50 | vie 4-dic → mar 15-dic | CORE | 8 |
+| Hematology & Oncology | D51-D54 · D56-D57 | mié 16-dic → jue 24-dic | HIGH | 6 |
+| Microbiology / ID | D58-D64 | lun 28-dic → jue 7-ene | HIGH | 7 |
+| Reproductive | D66-D70 | lun 11-ene → vie 15-ene | HIGH | 5 |
+| Musculoskeletal / Rheum | D71 · D73-D74 | lun 18-ene → jue 21-ene | HIGH | 3 |
+| Psychiatry & Behavioral | D75-D76 · D78-D79 | vie 22-ene → jue 28-ene | HIGH | 4 |
+| Biochemistry | D80-D81 | vie 29-ene → lun 1-feb | MED | 2 |
+| Sprint final | D83 · D85 · D87 · D94-D95 | mié 3-feb → vie 19-feb | CORE | 5 |
+| Banco intensivo | D84 · D86 · D88-D93 | jue 4-feb → mié 17-feb | CORE | 8 |
 
-> **El D1 (mar 6-oct) es Assessment, no contenido**: el UWSA1 se movió a ese día (su fecha anterior,
-> lun 5-oct, ya pasó) y el baseline ocupa el primer día del plan (exactamente lo que prescribe
-> Palmerton); **Fundamentos empieza el mié 7-oct = D2**.
+> **El D1 (mié 7-oct) es Assessment, no contenido**: el UWSA1 se movió a ese día (su fecha anterior,
+> mar 6-oct, ya pasó) y el baseline ocupa el primer día del plan (exactamente lo que prescribe
+> Palmerton); **Fundamentos empieza el jue 8-oct = D2**.
 > Los demás huecos dentro de un sistema (D10, D25, D40, D55, D65, D72, D77, D82) son los otros
-> **días de Assessment** (hitos, §3). Reparto (idéntico al de la v5.14 → v5.18, porque el corrimiento rígido no cambia ningún D#): el NBME 25 (D10) sigue **partiendo
+> **días de Assessment** (hitos, §3). Reparto (idéntico al de la v5.14 → v5.19, porque el corrimiento rígido no cambia ningún D#): el NBME 25 (D10) sigue **partiendo
 > Cardio** (D6-D9 delante: anatomía/fisiología, hemodinámica, curvas PV/Wiggers D8 y electrofisiología D9; **D11-D16** detrás:
-> taquiarritmias, antiarrítmicos, aterosclerosis D13, SCA D14, IC + shock D15 y valvulopatías D16 mar 27-oct); el NBME 26 (D25)
+> taquiarritmias, antiarrítmicos, aterosclerosis D13, SCA D14, IC + shock D15 y valvulopatías D16 mié 28-oct); el NBME 26 (D25)
 > sigue **partiendo Renal** (nefrona D23 y transporte tubular D24 delante; electrolitos D26, ácido-base D27, glomerulares D28 y
 > AKI/ERC/litiasis D29 detrás) y deja GI (D30-D36) íntegro detrás; el NBME 27 (D40) ahora **parte Endo** (ejes, tiroides y
 > suprarrenal D37-D39 delante; DM D41 y calcio/PTH/MEN D42 detrás) y deja Neuro (D43-D50) íntegro detrás; el NBME 28 (D55)
 > ahora **parte Heme/Onc** (anemias, hemólisis y plaquetas D51-D54 delante; leucemias D56 y linfomas/mieloma D57 detrás) y deja
-> Micro (D58-D64) íntegro detrás; el NBME 29 (D65) ya **no parte Repro** (Micro íntegro delante —jue 24-dic → mié 6-ene, partido
+> Micro (D58-D64) íntegro detrás; el NBME 29 (D65) ya **no parte Repro** (Micro íntegro delante —lun 28-dic → jue 7-ene, partido
 > por el fin de año—; Repro D66-D70 íntegro detrás);
 > el NBME 30 (D72) **parte MSK** (artritis D71 delante; LES/vasculitis D73 y hueso/anatomía D74 detrás; todo MSK ya en 2027); el UWSA2
 > (D77) **parte Psiquiatría** (ánimo/psicóticos D75 y ansiedad/personalidad D76 delante; psicofármacos D78 y bioestadística D79
-> detrás); y **los dos días dobles de Bioquímica (D80 jue 28-ene · D81 vie 29-ene) van íntegros detrás del UWSA2** y cierran
-> la Fase A. En Fase B, D82/D83/D85 son NBME 31/32/33 (`system = 'Assessment'` / `'Sprint final'`) y **D84 (mié 3-feb) y D86
-> (vie 5-feb) son `system = 'Banco intensivo'`** (random timed 2×40Q + sistema débil #1); en Fase C, D87 es el Free 120 y **D88
-> (mar 9-feb), D89 (mié 10-feb), D90 (jue 11-feb), D91 (vie 12-feb), D92 (lun 15-feb) y D93 (mar 16-feb) siguen siendo `system
+> detrás); y **los dos días dobles de Bioquímica (D80 vie 29-ene · D81 lun 1-feb) van íntegros detrás del UWSA2** y cierran
+> la Fase A. En Fase B, D82/D83/D85 son NBME 31/32/33 (`system = 'Assessment'` / `'Sprint final'`) y **D84 (jue 4-feb) y D86
+> (lun 8-feb) son `system = 'Banco intensivo'`** (random timed 2×40Q + sistema débil #1); en Fase C, D87 es el Free 120 y **D88
+> (mié 10-feb), D89 (jue 11-feb), D90 (vie 12-feb), D91 (lun 15-feb), D92 (mar 16-feb) y D93 (mié 17-feb) siguen siendo `system
 > = 'Banco intensivo'`** (random timed + sistema débil #2 / Mehlman · incorrects 2ª pasada · AMBOSS 200 mitades 1 y 2)
 > alojados dentro del sprint. Cada día trae: `sub`, `bbCh`/`bbVid` (Boards & Beyond), `uw` (subtema uWorld), `mat`/`matType`
 > (material primario), `palm` (vídeo Palmerton al abrir sistema), `nivelUW` (1-5) y `qDia` (§4b).
 
-### Qué se movió y qué NO en el corrimiento v5.19 (RÍGIDO)
+### Qué se movió y qué NO en el corrimiento v5.20 (RÍGIDO · DEFINITIVO)
 
 **Nada se fusionó ni se recortó, y tampoco se tocó el reparto contenido↔hitos.** El desfase de 1 día hábil se
 pagó **por la cola del plan**: el plan entero (contenido + hitos) se desplazó en bloque y el examen corrió un hábil más.
 
-| | v5.18 (D1 = lun 5-oct) | v5.19 (D1 = mar 6-oct) |
+| | v5.19 (D1 = mar 6-oct) | v5.20 (D1 = mié 7-oct) |
 |---|---|---|
 | Días del plan | 95 | **95** (mismo temario, 1:1) |
-| Primer día | lun 5-oct-2026 = UWSA1; contenido en D2, mar 6-oct | **mar 6-oct-2026 = UWSA1** (movido otra vez: su fecha ya había pasado); contenido en D2, **mié 7-oct** |
-| Último día | mié 17-feb-2027 = D95 = último día y D-1 real; D94 mar 16-feb última sesión de banco | **jue 18-feb-2027 = D95 = ÚLTIMO DÍA del plan y D-1 REAL** (sesión mínima AM + ritual); D94 mié 17-feb = última sesión de banco (D-2) |
-| Target de examen | JUE 18-FEB-2027, al día siguiente del D95, sin finde en medio | **VIE 19-FEB-2027, al día siguiente del D95, sin finde en medio** (el sáb 13 y el dom 14-feb caen entre D91 y D92; `examenTarget = '2027-02-19'` / `descansoD1 = '2027-02-18'`) |
-| Semanas del plan (Home / revisión semanal, L-V de calendario) | S1 = 5-9 oct (5 días, D1-D5) … S19 = 8-12 feb (D88-D92) · S20 = 15-19 feb (D93-D95 + examen jue 18-feb) → 20 | **S1 = 5-9 oct (4 días: mar 6 → vie 9, D1-D4)** … S19 = 8-12 feb (D87-D91) · **S20 = 15-19 feb (D92-D95 + examen vie 19-feb)** → `STEP1_SEMANAS = 20` (sin cambio) |
-| Días de contenido | +2 días hábiles cada uno | **+1 día hábil cada uno** |
-| 12 hitos NBME/UWSA | D# intacto, fecha +2 hábiles | **igual: D# INTACTO, fecha +1 hábil** |
+| Primer día | mar 6-oct-2026 = UWSA1; contenido en D2, mié 7-oct | **mié 7-oct-2026 = UWSA1** (movido otra vez: su fecha ya había pasado); contenido en D2, **jue 8-oct** |
+| Último día | jue 18-feb-2027 = D95 = último día y D-1 real; D94 mié 17-feb última sesión de banco | **vie 19-feb-2027 = D95 = ÚLTIMO DÍA del plan / D-1 hábil** (sesión mínima AM + ritual ADELANTADO); D94 jue 18-feb = última sesión de banco |
+| Target de examen | VIE 19-FEB-2027, al día siguiente del D95, sin finde en medio | **LUN 22-FEB-2027, con el finde 20-21 en medio** (sáb 20 libre · dom 21 = D-1 real sin estudio; `examenTarget = '2027-02-22'` / `descansoD1 = '2027-02-21'`) |
+| Semanas del plan (Home / revisión semanal, L-V de calendario) | S1 = 5-9 oct (4 días: mar 6 → vie 9, D1-D4) … S19 = 8-12 feb (D87-D91) · S20 = 15-19 feb (D92-D95 + examen vie 19-feb) → 20 | **S1 = 5-9 oct (3 días: mié 7 → vie 9, D1-D3)** … S19 = 8-12 feb (D86-D90) · **S20 = 15-19 feb (D91-D95, 5 días)** → examen lun 22-feb tras el finde · `STEP1_SEMANAS = 20` (sin cambio) |
+| Días de contenido | +1 día hábil cada uno | **+1 día hábil cada uno** |
+| 12 hitos NBME/UWSA | D# intacto, fecha +1 hábil | **igual: D# INTACTO, fecha +1 hábil** |
 | Preparación por delante de cada NBME | congelada desde la v5.15 | **sigue congelada**: ningún NBME pierde días de contenido |
-| Día de la semana de los hitos | 8 en viernes (NBME 25-28, NBME 30, UWSA2, NBME 31, Free 120) · 2 en lunes (UWSA1, NBME 32) · 2 en miércoles (NBME 29, NBME 33) | **8 en lunes** (NBME 25-28, NBME 30, UWSA2, NBME 31, Free 120) · 2 en martes (UWSA1, NBME 32) · 2 en jueves (NBME 29, NBME 33) · **0 en viernes** |
-| Cierre de contenido vs NBME 31 | Biochem D80-D81 (mié 27 · jue 28-ene) → NBME 31 D82 vie 29-ene AL DÍA SIGUIENTE | **igual, corrido**: Biochem D80-D81 (jue 28 · vie 29-ene) → NBME 31 D82 **lun 1-feb**, primer hábil siguiente (finde 30-31 ene en medio) y sin banco delante |
+| Día de la semana de los hitos | 8 en lunes (NBME 25-28, NBME 30, UWSA2, NBME 31, Free 120) · 2 en martes (UWSA1, NBME 32) · 2 en jueves (NBME 29, NBME 33) · 0 en viernes | **8 en martes** (NBME 25-28, NBME 30, UWSA2, NBME 31, Free 120) · 2 en miércoles (UWSA1, NBME 32) · **2 en viernes** (NBME 29, NBME 33) |
+| Cierre de contenido vs NBME 31 | Biochem D80-D81 (jue 28 · vie 29-ene) → NBME 31 D82 lun 1-feb, primer hábil siguiente (finde 30-31 ene en medio) | **Biochem D80-D81 (vie 29-ene · lun 1-feb, con el finde 30-31 ene entre ambos) → NBME 31 D82 mar 2-feb, AL DÍA SIGUIENTE** (sin finde en medio) y sin banco delante |
 | Cortes de fase | A D1-81 · B D82-86 · C D87-95 | **idénticos** (los D# no se mueven) |
 | Reparto Cardio/Renal/Endo/Heme/MSK/Psiquiatría vs hitos | partidos tal cual | **sin cambio alguno** (misma partición, otras fechas) |
-| Viernes de nivel 3 | 5 (D15 Cardio · D20 Resp · D35 GI · D45 y D50 Neuro) | **7** (D9 y D14 Cardio · D19 Resp · D29 Renal · D34 GI · D39 Endo · D49 Neuro) |
-| Viernes de nivel 4 | 0 | **1** (D54 vie 18-dic, Heme/Onc, S11) |
-| Viernes N1 (1.º-2.º día de sistema) | 3 (D5 Inmuno · D30 GI · D67 Repro) | **7** (D4 Inmuno · D24 Renal · D44 Neuro · D66 Repro · D71 MSK · D76 Psiquiatría · D81 Bioquímica) |
+| Viernes de nivel 3 | 7 (D9 y D14 Cardio · D19 Resp · D29 Renal · D34 GI · D39 Endo · D49 Neuro) | **5** (D8 y D13 Cardio · D28 Renal · D33 GI · D48 Neuro) |
+| Viernes de nivel 4 | 1 (D54 vie 18-dic, Heme/Onc) | **2** (D53 vie 18-dic, Heme/Onc, S11 · D70 vie 15-ene, Repro, S15) |
+| Viernes N1 (1.º-2.º día de sistema) | 7 (D4 Inmuno · D24 Renal · D44 Neuro · D66 Repro · D71 MSK · D76 Psiquiatría · D81 Bioquímica) | **7** (D3 Fundamentos · D18 Resp · D23 Renal · D38 Endo · D43 Neuro · D75 Psiquiatría · D80 Bioquímica) |
+| Viernes de hito | 0 | **2** (D65 NBME 29 en Fase A · D85 NBME 33 en Fase B) |
 | Q objetivo totales | 5560 | **5560** (idéntico: la prueba aritmética de que no se recortó nada) |
 
 Desde la v5.15 los 12 hitos **ya no están anclados por fecha** en el mapa `SIMS` del generador: se anclan a su **D#** y
 corren con el plan, de modo que cada NBME conserva íntegros los días de contenido que lo preceden. Los días no-hito
 se siguen consumiendo desde el array `POST_A` en los huecos libres. La clasificación de `nivelUW`/`qDia` depende del
 **origen de la fila** (`bbCh` = `Banco` / `Sprint`), no de umbrales de fecha, así que la regla queda idéntica aunque
-el contenido se derrame hasta el 29-ene.
+el contenido se derrame hasta el 1-feb.
 
-## 3. Hitos NBME/UWSA (12) — v5.19: los 12 corren CON el plan · D# intacto · fechas +1 hábil
+## 3. Hitos NBME/UWSA (12) — v5.20: los 12 corren CON el plan · D# intacto · fechas +1 hábil
 
 | # | Hito | Día | Fecha | Q | Rol |
 |---|------|-----|-------|---|-----|
-| 1 | **UWSA1** | **D1** | **mar 6-oct-2026** | 160Q | **Baseline en el PRIMER día del plan** (esperar bajo, no asustarse). Movido desde el lun 5-oct (fecha ya pasada): sigue al D1 en cada corrimiento |
-| 2 | **NBME 25** | D10 | lun 19-oct-2026 | 200Q | 1ª calibración real · parte el bloque Cardio (D11 taquiarritmias, D12 antiarrítmicos, D13 aterosclerosis, D14 SCA, D15 IC y D16 valvulopatías quedan detrás) |
-| 3 | **NBME 26** | D25 | lun 9-nov-2026 | 200Q | Tendencia · parte Renal (D26 electrolitos, D27 ácido-base, D28 glomerulares y D29 AKI/ERC detrás); GI (D30-D36) va íntegro detrás · semana deload del lun 16-nov detrás |
-| 4 | **NBME 27** | D40 | lun 30-nov-2026 | 200Q | Tendencia · parte Endo (D37-D39 delante; D41 DM y D42 calcio/PTH/MEN detrás); Neuro (D43-D50) íntegro detrás |
-| 5 | **NBME 28** | D55 | lun 21-dic-2026 | 200Q | Tendencia · parte Heme/Onc (D51-D54 delante; D56 leucemias y D57 linfomas/mieloma detrás); Micro (D58-D64) íntegro detrás · semana deload del lun 28-dic detrás |
-| 6 | **NBME 29** | D65 | jue 7-ene-2027 | 200Q | **Primer hito de 2027** · Micro (D58-D64, jue 24-dic → mié 6-ene, partido por el fin de año) íntegro delante; Repro (D66-D70) íntegro detrás |
-| 7 | **NBME 30** | D72 | lun 18-ene-2027 | 200Q | Parte MSK (D71 artritis, vie 15-ene, delante; D73 LES/vasculitis y D74 hueso/anatomía detrás); Repro (D66-D70) va delante y Psiquiatría (D75-D76 · D78-D79), Biostats (D79) y los 2 días dobles de Biochem (D80-D81) van detrás |
-| 8 | **UWSA2** | D77 | lun 25-ene-2027 | 160Q | Predictor de resistencia (la fecha la deciden los NBME) · **cae DENTRO de la Fase A** (parte Psiquiatría: D75-D76 delante, psicofármacos D78 y Biostats D79 detrás; los 2 días dobles de Bioquímica D80-D81 cierran la fase) |
-| 9 | **NBME 31** | D82 | lun 1-feb-2027 | 200Q | **GO/NO-GO** · **abre la Fase B el primer hábil tras el cierre de contenido (D81 vie 29-ene; finde 30-31 ene en medio): sin banco de consolidación delante** (herencia de la v5.14 que el corrimiento rígido conserva) |
-| 10 | **NBME 32** | D83 | mar 2-feb-2027 | 200Q | Fase B (random timed D84 detrás) |
-| 11 | **NBME 33** | D85 | jue 4-feb-2027 | 200Q | Fase B (random timed D86 detrás; cierra la fase) |
-| 12 | **FREE 120 oficial** | D87 | lun 8-feb-2027 | 120Q | Abre la Fase C · idealmente en el Prometric real · D-11 del examen (vie 19-feb) |
+| 1 | **UWSA1** | **D1** | **mié 7-oct-2026** | 160Q | **Baseline en el PRIMER día del plan** (esperar bajo, no asustarse). Movido desde el mar 6-oct (fecha ya pasada): sigue al D1 en cada corrimiento |
+| 2 | **NBME 25** | D10 | mar 20-oct-2026 | 200Q | 1ª calibración real · parte el bloque Cardio (D11 taquiarritmias, D12 antiarrítmicos, D13 aterosclerosis, D14 SCA, D15 IC y D16 valvulopatías quedan detrás) |
+| 3 | **NBME 26** | D25 | mar 10-nov-2026 | 200Q | Tendencia · parte Renal (D26 electrolitos, D27 ácido-base, D28 glomerulares y D29 AKI/ERC detrás); GI (D30-D36) va íntegro detrás · semana deload del lun 16-nov detrás |
+| 4 | **NBME 27** | D40 | mar 1-dic-2026 | 200Q | Tendencia · parte Endo (D37-D39 delante; D41 DM y D42 calcio/PTH/MEN detrás); Neuro (D43-D50) íntegro detrás |
+| 5 | **NBME 28** | D55 | mar 22-dic-2026 | 200Q | Tendencia · parte Heme/Onc (D51-D54 delante; D56 leucemias y D57 linfomas/mieloma detrás); Micro (D58-D64) íntegro detrás · semana deload del lun 28-dic detrás |
+| 6 | **NBME 29** | D65 | vie 8-ene-2027 | 200Q | **Primer hito de 2027** (y el único de la Fase A en viernes) · Micro (D58-D64, lun 28-dic → jue 7-ene, partido por el fin de año) íntegro delante; Repro (D66-D70) íntegro detrás |
+| 7 | **NBME 30** | D72 | mar 19-ene-2027 | 200Q | Parte MSK (D71 artritis, lun 18-ene, delante; D73 LES/vasculitis y D74 hueso/anatomía detrás); Repro (D66-D70) va delante y Psiquiatría (D75-D76 · D78-D79), Biostats (D79) y los 2 días dobles de Biochem (D80-D81) van detrás |
+| 8 | **UWSA2** | D77 | mar 26-ene-2027 | 160Q | Predictor de resistencia (la fecha la deciden los NBME) · **cae DENTRO de la Fase A** (parte Psiquiatría: D75-D76 delante, psicofármacos D78 y Biostats D79 detrás; los 2 días dobles de Bioquímica D80-D81 cierran la fase) |
+| 9 | **NBME 31** | D82 | mar 2-feb-2027 | 200Q | **GO/NO-GO** · **abre la Fase B el día siguiente al cierre de contenido (D81 lun 1-feb): sin finde en medio y sin banco de consolidación delante** |
+| 10 | **NBME 32** | D83 | mié 3-feb-2027 | 200Q | Fase B (random timed D84 detrás) |
+| 11 | **NBME 33** | D85 | vie 5-feb-2027 | 200Q | Fase B (random timed D86, lun 8-feb, detrás del finde; cierra la fase) |
+| 12 | **FREE 120 oficial** | D87 | mar 9-feb-2027 | 120Q | Abre la Fase C · idealmente en el Prometric real · D-13 del examen (lun 22-feb) |
 
-Los 12 hitos suman **2240Q** de simulacro. Con el D1 en martes (v5.19) **8 de los 12 caen en lunes** (NBME 25, 26, 27, 28 y
-30, UWSA2, NBME 31 y Free 120); 2 caen en martes (UWSA1 = D1; NBME 32, mar 2-feb) y 2 en jueves (NBME 29, jue 7-ene, por los
-saltos del 25-dic, 31-dic y 1-ene; NBME 33, jue 4-feb); **ninguno en viernes**. (v5.18: 8 en viernes.) **Las 12 fechas
-cambiaron con la v5.19 (+1 hábil) y los 12 D# quedaron intactos** (misma regla que en la v5.15-v5.18: es exactamente lo
-contrario de lo que pasaba hasta la v5.14, fecha fija y D# a la baja). El **UWSA1** sigue re-anclado al D1 (lun 21-sep → mié
-23-sep → lun 28-sep → jue 1-oct → lun 5-oct → mar 6-oct). Con los hitos en lunes, el Day-After Protocol cae casi siempre en
-martes y el cierre semanal del viernes ya no comparte día con ningún NBME.
+Los 12 hitos suman **2240Q** de simulacro. Con el D1 en miércoles (v5.20) **8 de los 12 caen en martes** (NBME 25, 26, 27,
+28 y 30, UWSA2, NBME 31 y Free 120); 2 caen en miércoles (UWSA1 = D1; NBME 32, mié 3-feb) y 2 en viernes (NBME 29, vie
+8-ene, por los saltos del 25-dic, 31-dic y 1-ene; NBME 33, vie 5-feb). (v5.19: 8 en lunes y ninguno en viernes.) **Las 12
+fechas cambiaron con la v5.20 (+1 hábil) y los 12 D# quedaron intactos** (misma regla que en la v5.15-v5.19: es exactamente
+lo contrario de lo que pasaba hasta la v5.14, fecha fija y D# a la baja). El **UWSA1** sigue re-anclado al D1 (lun 21-sep →
+mié 23-sep → lun 28-sep → jue 1-oct → lun 5-oct → mar 6-oct → mié 7-oct). Con los hitos en martes, el Day-After Protocol
+cae casi siempre en miércoles; el cierre semanal del viernes comparte día con el NBME 29 (vie 8-ene) y el NBME 33 (vie 5-feb).
 
 **Criterio GO (Step 1 es pass/fail): 2 NBME consecutivos ≥68% + UWSA2 "low risk" → confirmar
 fecha.** (Palmerton: ≥65% ≈ 95% de probabilidad de aprobar; ≥70% ≈ 99% — el 68% doble queda en
@@ -191,56 +196,63 @@ examen dentro del mismo eligibility period (feb-mar 2027) sin drama — un fail 
 SIEMPRE en el transcript ECFMG (~1/3 de PDs nunca consideran un aplicante con fail en Step 1).
 Detalle de gates y logística ECFMG/Prometric: [`CALENDARIO_5_MESES.md`](CALENDARIO_5_MESES.md).
 
-> ⚠ **Consecuencia del decimoctavo corrimiento sobre la semana del examen.** Con D95 = **jue 18-feb**, el
-> D-1 sigue **dentro del plan** (fuera de la ventana 25-29 ene desde la v5.12) y **el examen es al día siguiente**: el target
-> pasa al **VIE 19-FEB-2027** (`DAILY_META.examenTarget = '2027-02-19'`); el D94 (mié 17-feb) es la **última sesión de banco
-> (D-2)** y el D95 (jue 18-feb, `descansoD1 = '2027-02-18'`) es la **sesión mínima del D-1 REAL** (§3b; `USMLE_TAPER.d94/.d95/
-> .dMenos1/.examen` en el TS). **En la v5.19, como en la v5.18, no hay finde libre dentro del taper** (D94, D95 y examen son
-> mié-jue-vie seguidos; el sáb 13 y el dom 14-feb caen entre D91 y D92). **Prometric: agendar/reprogramar para el vie 19-feb y
-> confirmar que el eligibility period cubre esa fecha (si no, extenderlo)**; la única otra opción es **recortar temario** —
-> decisión de Joseph. **Y desde aquí cada día perdido mueve el examen un día hábil más.**
-> Segunda consecuencia (heredada, no nueva): **el NBME 31 GO/NO-GO (D82, lun 1-feb) cae el primer hábil tras el cierre de
-> contenido (D81, vie 29-ene)**, con el finde 30-31 ene en medio y los 2 días de random timed detrás de él (D84 y D86).
-> Tercera (v5.19): la **víspera (jue 18-feb = D95)** comparte día con el pitch v5 de AURUM, el Tier C de MIR (Oncología, modo
-> reducido) y el átomo d48 de Derma (opcional, corto, antes de las 17:00), y el **día del examen (vie 19-feb)** coincide con el
-> hito X-3 de Research y el D96 de AURUM → decisiones de Joseph (`DATA/REESTRUCTURACION_31AGO_2026.md` §22.6 ·
-> `DATA/PENDIENTES_JOSEPH.md`).
+> ⚠ **Consecuencia del decimonoveno corrimiento sobre la semana del examen.** Con D95 = **vie 19-feb** (último día del
+> plan / D-1 hábil), el target pasa al **LUN 22-FEB-2027** (`DAILY_META.examenTarget = '2027-02-22'`), fuera de la ventana
+> 25-29 ene (desde la v5.12) y **con el finde 20-21 feb en medio**: el D94 (jue 18-feb) es la **última sesión de banco**, el
+> D95 (vie 19-feb) la **sesión mínima AM + ritual de test-day ADELANTADO a la tarde**, el sáb 20 descanso total y el **dom
+> 21-feb el D-1 REAL, sin estudio** (`descansoD1 = '2027-02-21'`; §3b; `USMLE_TAPER.d94/.d95/.dMenos1/.examen` en el TS).
+> Como en la v5.15 (y a diferencia de v5.16-v5.19), **hay finde libre entre el D95 y el examen**. **Prometric:
+> agendar/reprogramar para el lun 22-feb y confirmar que el eligibility period cubre esa fecha (si no, extenderlo)**; la única
+> otra opción es **recortar temario** — decisión de Joseph. **Y desde aquí cada día perdido mueve el examen un día hábil más.**
+> Segunda consecuencia: **el NBME 31 GO/NO-GO (D82, mar 2-feb) cae el día siguiente al cierre de contenido (D81, lun 1-feb)**,
+> sin finde en medio y con los 2 días de random timed detrás de él (D84 jue 4-feb y D86 lun 8-feb).
+> Tercera (v5.20): **se resuelven los conflictos de la v5.19** — el D95 (vie 19-feb) ya no es la víspera, así que el pitch v5
+> de AURUM y el átomo R8 de Research de ese día caen en la tarde de un día de plan (antes de las 17:00, con el ritual
+> adelantado); el d48 de Derma va el D94 (jue 18-feb); el Tier C de MIR ya no cae en la víspera; Research X-3 pasa al mar
+> 23-feb y el D96 de AURUM también. Y entran los **DÍAS DE EXAMEN PROTEGIDOS**: el **lun 22-feb** (examen Step 1), el **mar
+> 9-mar** (D-1 ENCAPS) y el **mié 10-mar** (examen ENCAPS) no llevan sesiones de Research / Derma / AURUM / MIR (esos planes
+> corren una ranura; nada se recorta). Al día siguiente del examen (**mar 23-feb**) arranca la **intensiva ENCAPS** (días
+> 97-107, mar 23-feb → mar 9-mar, ya sembrada en Supabase; **examen ENCAPS FIJADO mié 10-mar-2027**) →
+> `DATA/REESTRUCTURACION_31AGO_2026.md` §23.6 · `DATA/PENDIENTES_JOSEPH.md`.
 
-## 3b. Semana de examen: taper D94 · D95 = D-1 real · test day vie 19-feb, sin finde en medio · protocolo de burnout (REGLA)
+## 3b. Semana de examen: taper D94 · D95 = último día del plan · finde libre (dom 21 = D-1 real) · test day lun 22-feb · protocolo de burnout (REGLA)
 
 *(12-sep-2026, tarde — divergencias Palmerton #22 y #29 implementadas sin tocar horario, temario ni fechas; remapeadas el
-26-sep a la v5.16, el 30-sep a la v5.17, el 3-oct a la v5.18 y el 5-oct a la v5.19. Fuente de cada paso: [`PALMERTON_METODO_COMPLETO.md`](PALMERTON_METODO_COMPLETO.md) §8.3-§8.4 y §9.12; código:
+26-sep a la v5.16, el 30-sep a la v5.17, el 3-oct a la v5.18, el 5-oct a la v5.19 y el 6-oct a la v5.20. Fuente de cada paso: [`PALMERTON_METODO_COMPLETO.md`](PALMERTON_METODO_COMPLETO.md) §8.3-§8.4 y §9.12; código:
 `USMLE_TAPER` y `DAILY_META.examenTarget / descansoD1` en `usmleStep1Daily.ts`, `BURNOUT_PROTOCOLO` + `gateHito` en `usmleScores.ts`.)*
 
 | Día | Fecha | Qué se hace | Q | Franjas |
 |-----|-------|-------------|---|---------|
-| desde **D82** (NBME 31) | lun 1-feb | **Cese de lo nuevo**: cero preguntas nuevas y cero tarjetas nuevas (Palmerton: 1-2 semanas antes); solo incorrects/flagged + AMBOSS 200 como repaso de conceptos ya vistos; no repetir NBME ya hechos | — | sin cambio |
-| **sáb 13 · dom 14** | sáb 13 · dom 14-feb | Finde normal del plan (entre D91 vie 12-feb y D92 lun 15-feb): sin banco; solo Anki vencido. ⚠ En v5.19 (como en v5.18) **no** es el finde previo al examen: el D-1 real es el D95 (jue 18-feb) | — | — |
-| **D94 · D-2 (última sesión de banco)** | **mié 17-feb** | Solo Anki **maduro** + 20Q flagged/incorrects ya vistos (sin bloque timed, sin AMBOSS) · repaso First Aid de esquemas (sistemas 6-10) · dormir ≥7 h ya desde hoy · mañana = D-1, sin finde en medio (`USMLE_TAPER.d94`) | **20** | 05:00 · 07:15 · 11:00 |
-| **D95 · D-1 REAL (último día del plan)** | **jue 18-feb** | **Sesión MÍNIMA solo por la mañana (≤2 h)**: Anki maduro/vencido + 20Q flagged con los mejores esquemas e imágenes · rapid review FA · cero preguntas nuevas, cero tarjetas nuevas, ningún bloque timed, no abrir First Aid "para ver cuánto sé" · **tarde: permiso impreso + digital, 2 ID con el nombre EXACTO del permiso, bolsas Ziploc numeradas (Break #1-#4), ruta al Prometric** · nada de estudio después de las 17:00 (journaling, ejercicio suave, visualización, cena con proteína) · somnífero **nunca por primera vez** esta noche · dormir ≥7-8 h, alarma y ruta comprobadas (`USMLE_TAPER.d95` = `.dMenos1`) | **20** | 05:00 · 07:15 (mínimo) |
-| **EXAMEN** | **vie 19-feb** | Desayuno proteína + grasa, sin carbohidratos simples; el café de siempre · tutorial: comprobar auriculares y terminar (+15 min de descanso = 60) · bloques **1-2 seguidos → 10 min · 3-4 → 10 min · 5 → almuerzo 20-30 min · 6 → 10 min · 7** · entre bloques las 40Q dejan de existir; nunca revisar ni abrir FA en el casillero · nunca salir a mitad de bloque · post-test: premiarse | 280 | — |
+| desde **D82** (NBME 31) | mar 2-feb | **Cese de lo nuevo**: cero preguntas nuevas y cero tarjetas nuevas (Palmerton: 1-2 semanas antes); solo incorrects/flagged + AMBOSS 200 como repaso de conceptos ya vistos; no repetir NBME ya hechos | — | sin cambio |
+| **sáb 13 · dom 14** | sáb 13 · dom 14-feb | Finde normal del plan (entre D90 vie 12-feb y D91 lun 15-feb): sin banco; solo Anki vencido | — | — |
+| **D94 · D-2 hábil (última sesión de banco)** | **jue 18-feb** | Solo Anki **maduro** + 20Q flagged/incorrects ya vistos (sin bloque timed, sin AMBOSS) · repaso First Aid de esquemas (sistemas 6-10) · dormir ≥7 h ya desde hoy · mañana = D95, último día del plan (`USMLE_TAPER.d94`) | **20** | 05:00 · 07:15 · 11:00 |
+| **D95 · último día del plan (D-1 hábil)** | **vie 19-feb** | **Sesión MÍNIMA solo por la mañana (≤2 h)**: Anki maduro/vencido + 20Q flagged con los mejores esquemas e imágenes · rapid review FA · cero preguntas nuevas, cero tarjetas nuevas, ningún bloque timed, no abrir First Aid "para ver cuánto sé" · **tarde = ritual de test-day ADELANTADO (para no cargar el finde): permiso impreso + digital, 2 ID con el nombre EXACTO del permiso, bolsas Ziploc numeradas (Break #1-#4), ruta al Prometric** · nada de estudio después de las 17:00 (`USMLE_TAPER.d95`) | **20** | 05:00 · 07:15 (mínimo) |
+| **sáb 20** | sáb 20-feb | Descanso total, sin estudio | — | — |
+| **D-1 REAL (sin sesión del plan)** | **dom 21-feb** | Sin estudio: como mucho Anki vencido ≤30 min por la mañana (cero tarjetas y cero preguntas nuevas) · revisar lo empacado el viernes · nada después de las 17:00 (journaling, ejercicio suave, visualización, cena con proteína) · somnífero **nunca por primera vez** esta noche · dormir ≥7-8 h, alarma y ruta comprobadas (`USMLE_TAPER.dMenos1`, `descansoD1 = '2027-02-21'`) | — | — |
+| **EXAMEN** | **lun 22-feb** | Desayuno proteína + grasa, sin carbohidratos simples; el café de siempre · tutorial: comprobar auriculares y terminar (+15 min de descanso = 60) · bloques **1-2 seguidos → 10 min · 3-4 → 10 min · 5 → almuerzo 20-30 min · 6 → 10 min · 7** · entre bloques las 40Q dejan de existir; nunca revisar ni abrir FA en el casillero · nunca salir a mitad de bloque · post-test: premiarse | 280 | — |
 
-El **D95 en Cola de hoy** muestra el D-1 y el test day (bloques `USMLE_TAPER.d95` / `.dMenos1` / `.examen`); Readiness los
-repite en la tarjeta **Taper y semana de examen**. Los D94/D95 llevan chip **TAPER** y su nota de franja en
-`DIAS[].franjaNota` (el `sub` no cambia: regla de no recortar contenido). **v5.19**: el taper es **mié 17 + jue 18-feb**,
-seguidos, y el examen es el **vie 19-feb**, al día siguiente del D95 — no hay finde entre el taper y el examen (v5.18: taper
-mar 16 + mié 17-feb, examen jue 18-feb, también seguidos; v5.17: taper vie 12 + lun 15-feb con el finde en medio); volver a
-la ventana 25-29 ene exige recortar temario.
+El **D95 en Cola de hoy** muestra el último día del plan, el D-1 real y el test day (bloques `USMLE_TAPER.d95` / `.dMenos1` /
+`.examen`); Readiness los repite en la tarjeta **Taper y semana de examen**. Los D94/D95 llevan chip **TAPER** y su nota de
+franja en `DIAS[].franjaNota` (el `sub` no cambia: regla de no recortar contenido). **v5.20**: el taper es **jue 18 + vie
+19-feb**, el finde 20-21 queda libre (dom 21 = D-1 real, sin estudio) y el examen es el **lun 22-feb** (v5.19: taper mié 17
++ jue 18-feb = D-1 real, examen vie 19-feb, sin finde en medio; v5.15: el mismo esquema que ahora — D95 vie 5-feb, finde 6-7
+libre, examen lun 8-feb); volver a la ventana 25-29 ene exige recortar temario.
 
 **Protocolo de burnout — REGLA (§E-7, ya no propuesta).** Si **2 hitos consecutivos con mínimo** (UWSA1/UWSA2 no
 cuentan: no tienen mínimo) quedan **bajo su mínimo on-track** **y** hay síntomas (releer el mismo párrafo sin
 comprender, irritabilidad extrema, indiferencia por el examen, descansos de 5 min que se vuelven de 1 h) →
 **3-5 días con SOLO Anki AM (30-45 min de tarjetas viejas) + sueño**: frenar QBank, parar toda adquisición (vídeos,
 temas, tarjetas nuevas), descanso activo (correr, journaling, meditación, cenas). **Cada día parado = +1 día hábil
-en el plan** (`remap_inicio.js`): no se recorta ni se fusiona temario — y en v5.19 eso ya implica **mover el examen un
-hábil más allá del vie 19-feb** (o recortar). Se reanuda **por el gate del 80%**, no por la fecha; si el siguiente hito vuelve
+en el plan** (`remap_inicio.js`): no se recorta ni se fusiona temario — y en v5.20 eso ya implica **mover el examen un
+hábil más allá del lun 22-feb** (o recortar) y comprimir la intensiva ENCAPS, que arranca el día siguiente al examen y
+termina fija el mar 9-mar (examen ENCAPS mié 10-mar). Se reanuda **por el gate del 80%**, no por la fecha; si el siguiente hito vuelve
 a quedar bajo mínimo → plan B de fecha (feb-mar 2027, mismo eligibility period). En la app: `usmleScores.gateHito(scores)`
 devuelve `'ALERTA BURNOUT'` y `UsmleHub` pinta el banner con los 7 pasos en todas las pestañas (y la tarjeta **Gate de
 hitos** en Readiness); 📏 Medición lo repite el día del segundo hito.
 
 ## 4. Franjas horarias (Google Calendar v5.2 · L-V · 6h15/día · `FRANJAS` en el TS)
 
-**Las HORAS no cambiaron con el corrimiento v5.19** (ni con ninguno de los anteriores).
+**Las HORAS no cambiaron con el corrimiento v5.20** (ni con ninguno de los anteriores).
 
 | Hora | Segmento | Nivel UW | Gate |
 |------|----------|----------|------|
@@ -249,22 +261,23 @@ hitos** en Readiness); 📏 Medición lo repite el día del segundo hito.
 | 08:15–09:00 | PRE-TEST: 10Q uWorld ciegas del tema NUEVO (tutor · SIN tiempo) + free recall 90s = UWorld primero para DIAGNOSTICAR, First Aid después para tratar | 1 | sin gate: es diagnóstico (40-60% es normal) · cada duda, incluso en aciertos, va a la shopping list |
 | 09:00–11:00 | DEEP PRIME: vídeo B&B/Pathoma/Sketchy + First Aid active reading (Whole Page Rule: la página completa, no el dato fallado) + tarjetas Anki de MECANISMO (≤10, patogenia→presentación, en voz alta antes de escribir) | — | — |
 | 11:00–12:00 | CONSOLIDACIÓN por nivel del día (`DIAS[].nivelUW`): nivel 1 = 20Q en bloques 5Q tutor del subtema (días 1-2 del sistema) · nivel 2 = 30Q en bloques 5Q timed de subtemas validados (incluye 5Q del subtema de ayer = 2ª mitad del gate) · nivel 3 (viernes sin hito hasta S10) = 20Q sistema completo timed + 10Q tutor · nivel 4 (viernes sin hito desde S11) = 20-30Q timed mixtos de sistemas dominados + 10Q tutor · taper D94-D95 = 20Q flagged, nada nuevo · revisión = Educational Objective + shopping list + log de errores (knowledge / transfer / proceso) | 1→4 (nivelUW del día) | ≥80% → mañana sube de nivel · <80% → repetir 5Q del subtema fallado, NO avanzar (registrar en 📏 Medición) |
-| 18:00–18:45 | EVALUACIÓN ACUMULATIVA modo examen: 10Q mixta timed (90 s/Q · tope 2 min · cover-the-options · juez, no abogado) + corrección + APEX · Fase A = dosis diaria de nivel 4 · día de hito: registrar aquí el % del NBME/UWSA/Free 120 | 4 (Fase A) · 5 (B-C) | ≥80% sostenido = listo para mezclar sistemas · hitos: comparar con el mínimo on-track del hito (`usmleScores.HITOS_ONTRACK`; v5.19: casi todos en lunes · v5.18: en viernes) |
+| 18:00–18:45 | EVALUACIÓN ACUMULATIVA modo examen: 10Q mixta timed (90 s/Q · tope 2 min · cover-the-options · juez, no abogado) + corrección + APEX · Fase A = dosis diaria de nivel 4 · día de hito: registrar aquí el % del NBME/UWSA/Free 120 | 4 (Fase A) · 5 (B-C) | ≥80% sostenido = listo para mezclar sistemas · hitos: comparar con el mínimo on-track del hito (`usmleScores.HITOS_ONTRACK`; v5.20: casi todos en martes · v5.19: en lunes) |
 
 
 Resto del día (sin tocar): IA vibecoding 04:15-05:00 · RESEARCH↔DERMA alterna 13:30-14:15 ·
 AURUM 14:15-15:15 · MIR 15:15-16:15 · **ENCAPS 16:15-17:15 (1h/día de banqueo puro hasta el
-lun 15-feb — en v5.19 se AMPLIÓ el fin otra vez (v5.14 vie 29-ene → v5.15 mar 2-feb → v5.16 vie 5-feb → v5.17 mié 10-feb →
-v5.18 vie 12-feb → v5.19 lun 15-feb; 92 días mar 6-oct → lun 15-feb, `MANTENIMIENTO_2027-1 v6.17`): se amplían días, no se
-pierden sesiones; feb-mar 2027 vuelve a principal — examen fines de marzo 2027)** · **LIVIANO Academia
-17:15-18:00**. Las HORAS no cambian con los niveles: cambia el formato del bloque de las 11:00.
+mar 16-feb — en v5.20 se AMPLIÓ el fin otra vez (v5.14 vie 29-ene → v5.15 mar 2-feb → v5.16 vie 5-feb → v5.17 mié 10-feb →
+v5.18 vie 12-feb → v5.19 lun 15-feb → v5.20 mar 16-feb; 92 días mié 7-oct → mar 16-feb, `MANTENIMIENTO_2027-1 v6.18`): se
+amplían días, no se pierden sesiones; desde el mar 23-feb, día siguiente al examen Step 1, la FASE INTENSIVA ENCAPS (días
+97-107, mar 23-feb → mar 9-mar, ya sembrada) → **examen ENCAPS FIJADO mié 10-mar-2027** (v5.19: «fines de marzo»))** ·
+**LIVIANO Academia 17:15-18:00** (termina el vie 12-feb). Las HORAS no cambian con los niveles: cambia el formato del bloque de las 11:00.
 
-Matemática de horas v5.19: 95 días × 6h15 ≈ **594h** (bloque de mañana 5h30 ≈ 523h +
-eval de 18:00 ≈ 71h). **No bajó respecto de la v5.18**: como esta vez tampoco se recortó contenido sino
+Matemática de horas v5.20: 95 días × 6h15 ≈ **594h** (bloque de mañana 5h30 ≈ 523h +
+eval de 18:00 ≈ 71h). **No bajó respecto de la v5.19**: como esta vez tampoco se recortó contenido sino
 que se alargó el plan, los 95 días siguen siendo 95 (D94-D95 son de sesión ligera/mínima por diseño del taper, no
 por recorte). La referencia IMG-base-cero es 600-1.000h: el plan queda algo por debajo del punto medio —
 proteger las franjas es lo que sostiene febrero. Esta vez **no se consumió nada del plan**: el corrimiento rígido solo
-desplazó las fechas y el examen pasa al **vie 19-feb** (v5.18: jue 18-feb).
+desplazó las fechas y el examen pasa al **lun 22-feb** (v5.19: vie 19-feb).
 
 ## 4b. 5 niveles UWorld por fase (Palmerton v3)
 
@@ -278,49 +291,50 @@ bloques de 5Q del subtema fallado y auditar recursos → comprensión → aplica
 |-------|--------|---------|-------|-------------------|----------------------|------|
 | **1** | Subtema · tutor sin tiempo | Bloques de 5Q de UN solo subtema · modo tutor · sin reloj (aprender a leer: CCSN + SAQ + cover-the-options) | Palmerton 20-30Q/día → plan: 30Q (10 pre-test + 20 consolidación) | 80% en 10Q consecutivas del subtema, ≤24-48 h tras estudiarlo | 08:15 PRE-TEST del tema nuevo (siempre) · 11:00 los 2 primeros días de cada sistema | A |
 | **2** | Subtema · timed | Bloques de 5Q del subtema · cronometrado (90 s/Q · tope 2 min: adivinar, marcar, avanzar) | Volumen creciente → plan: 40Q (10 + 30) | 80% en ≥3 subtemas distintos, ≥1 validado en <48 h | 11:00 CONSOLIDACIÓN desde el 3er día de cada sistema (subtemas ya validados) · 07:15: 5Q timed del subtema de AYER (1ª mitad del gate de 10Q) | A |
-| **3** | Sistema completo · timed | Bloques de 10-20Q de TODO el sistema · timed (sin la "ventaja injusta" de saber el subtema) | Palmerton 40-50Q/día → plan: 40Q (10 pre-test + 20Q sistema + 10 tutor) | 80% en 20Q timed consecutivas del sistema | VIERNES sin NBME/UWSA a las 11:00 **hasta S10** (v5.19: D9 vie 16-oct y D14 vie 23-oct Cardio · D19 vie 30-oct Resp · D29 vie 13-nov Renal · D34 vie 20-nov GI · D39 vie 27-nov Endo · D49 vie 11-dic Neuro; los viernes D4 Inmuno, D24 Renal y D44 Neuro caen en 1.º-2.º día de sistema y quedan en nivel 1 · v5.18: D15/D20/D35/D45/D50): 20Q del sistema en curso, o del anterior si el sistema lleva <3 días · desde S11 el viernes pasa a nivel 4 | A |
-| **4** | Sistemas mixtos · timed | Bloques de 20-30Q mezclando ≥3 sistemas dominados + el nuevo (saltar entre especialidades bajo presión) | Palmerton 50-70Q/día → plan: viernes N4 = 40Q (10 pre-test + 30Q mixtos timed) · Fase B: 2×40Q (80Q) | 80% en bloques mixtos de 20Q timed de ≥3 sistemas | 18:00 EVAL (10Q mixta timed) toda la Fase A como dosis diaria · **VIERNES sin hito desde S11 = 20-30Q mixtos timed a las 11:00 en vez de sistema único: en v5.19 hay UNO, el D54 vie 18-dic (Heme/Onc, S11; texto en `DIAS[].franjaNota`)** (vie 25-dic y vie 1-ene festivos · S14 vie 8-ene = D66, 1.er día de Repro → N1 · S15 vie 15-ene = D71, 1.er día de MSK → N1 · S16 vie 22-ene = D76, 2.º día de Psiquiatría → N1 · S17 vie 29-ene = D81, 2.º día doble de Bioquímica → N1; v5.18: ninguno · v5.17: 4, D57/D69/D74/D79) — el flag `VIERNES_N4_DESDE_SEMANA = 11` sigue como regla, no como lista (cuenta bloques de 7 días desde el D1, mar → lun: S11 = mar 15 → lun 21-dic) · **Fase B D84 · D86 + Fase C D88 y D89** (random timed 2×40Q + sistema débil; D88 y D89 son banco alojado en el sprint) | A (dosis diaria + viernes desde S11) → B |
+| **3** | Sistema completo · timed | Bloques de 10-20Q de TODO el sistema · timed (sin la "ventaja injusta" de saber el subtema) | Palmerton 40-50Q/día → plan: 40Q (10 pre-test + 20Q sistema + 10 tutor) | 80% en 20Q timed consecutivas del sistema | VIERNES sin NBME/UWSA a las 11:00 **hasta S10** (v5.20: D8 vie 16-oct y D13 vie 23-oct Cardio · D28 vie 13-nov Renal · D33 vie 20-nov GI · D48 vie 11-dic Neuro; los viernes D3 Fundamentos, D18 Resp, D23 Renal, D38 Endo y D43 Neuro caen en 1.º-2.º día de sistema y quedan en nivel 1 · v5.19: D9/D14/D19/D29/D34/D39/D49): 20Q del sistema en curso, o del anterior si el sistema lleva <3 días · desde S11 el viernes pasa a nivel 4 | A |
+| **4** | Sistemas mixtos · timed | Bloques de 20-30Q mezclando ≥3 sistemas dominados + el nuevo (saltar entre especialidades bajo presión) | Palmerton 50-70Q/día → plan: viernes N4 = 40Q (10 pre-test + 30Q mixtos timed) · Fase B: 2×40Q (80Q) | 80% en bloques mixtos de 20Q timed de ≥3 sistemas | 18:00 EVAL (10Q mixta timed) toda la Fase A como dosis diaria · **VIERNES sin hito desde S11 = 20-30Q mixtos timed a las 11:00 en vez de sistema único: en v5.20 hay DOS, el D53 vie 18-dic (Heme/Onc, S11) y el D70 vie 15-ene (Repro, S15); texto en `DIAS[].franjaNota`** (S12 vie 25-dic y S13 vie 1-ene festivos · S14 vie 8-ene = D65, NBME 29 (hito) · S16 vie 22-ene = D75, 1.er día de Psiquiatría → N1 · S17 vie 29-ene = D80, 1.er día doble de Bioquímica → N1; v5.19: uno, D54 · v5.18: ninguno · v5.17: 4, D57/D69/D74/D79) — el flag `VIERNES_N4_DESDE_SEMANA = 11` sigue como regla, no como lista (cuenta bloques de 7 días desde el D1, mié → mar: S11 = mié 16 → mar 22-dic) · **Fase B D84 · D86 + Fase C D88 y D89** (random timed 2×40Q + sistema débil; D88 y D89 son banco alojado en el sprint) | A (dosis diaria + viernes desde S11) → B |
 | **5** | Mixto completo 40Q · timed | Bloques de 40Q random · timed 60 min (90 s/Q) = simulación exacta del examen | Palmerton 80-100Q/día (máx. 2 bloques de 40) · hitos: UWSA 160Q · NBME 200Q · Free 120 | 80% sostenido (90% para 260+) · pase seguro = NBME ≥65% (≈95%) / ≥70% (≈99%) | 05:00 STRESS SET 10Q/12min (Fases B-C) · **UWSA2 (D77, dentro de la Fase A) + NBME 31 (D82, abre la Fase B) + NBME 32/33 (D83, D85)** y **D90 · D91 · D92 · D93** (incorrects 2ª pasada + AMBOSS 200 mitades 1-2, alojados en el sprint) · Fase C (Free 120 D87 + taper D94-D95) · todos los hitos = formato nivel 5 como MEDICIÓN, no como progresión | B → C (+ todos los hitos) |
 
 **Regla determinista del generador** (no toca fechas, sistemas, hitos ni el total de 95 días):
 - Fase A: posición del día dentro de su sistema (sin contar Assessment) → **1º-2º día = nivel 1** (30Q = 10 pre-test + 20 consolidación en bloques 5Q tutor) · **viernes sin hito y ≥3º día = nivel 3 hasta S10** (40Q = 10 + 20 sistema completo timed + 10 tutor) · **viernes sin hito y ≥3º día desde S11 = nivel 4** (40Q = 10 pre-test + 20-30Q timed mixtos de sistemas dominados + 10 tutor; flag `VIERNES_N4_DESDE_SEMANA = 11` en `gen_usmle_v5.js`, 12-sep tarde) · **resto = nivel 2** (40Q = 10 + 30 en bloques 5Q timed).
 - Hitos (🎯): formato **nivel 5 como MEDICIÓN** (UWSA 160Q · NBME 200Q · Free 120 = 120Q), no como progresión.
-- Fase A cierra con **D77 = UWSA2** (nivel 5, lun 25-ene), los dos últimos días de Psiquiatría **D78** (nivel 2, mar 26-ene) y **D79** (nivel 2, mié 27-ene) y los dos días dobles de Bioquímica **D80 (jue 28-ene) y D81 (vie 29-ene)** (nivel 1; el D81 es viernes pero 2.º día del sistema).
-- Fase B (D82-D86): **D82 = NBME 31** (nivel 5, lun 1-feb, la abre el primer hábil tras el cierre de contenido) · **D83 = NBME 32** (mar 2-feb) y **D85 = NBME 33** (jue 4-feb) (nivel 5) · **D84 (mié 3-feb) y D86 (vie 5-feb) nivel 4** (2×40Q mixtos timed = 80Q, sistema débil #1).
-- Fase C (D87-D95): **nivel 5** salvo **D88 (mar 9-feb) y D89 (mié 10-feb), nivel 4** (random timed 2×40Q + sistema débil #2 / Mehlman HY del sistema); **D90 (jue 11-feb), D91 (vie 12-feb), D92 (lun 15-feb) y D93 (mar 16-feb)** siguen siendo días de banco (incorrects 2ª pasada · AMBOSS 200 mitades 1 y 2, 80Q cada uno) y los días sin simulacro son **taper** (`TAPER_ACTIVO`): solo flagged/incorrects ya vistos + Anki maduro, cero preguntas y cero tarjetas nuevas (**D94 mié 17-feb = 20Q · D95 jue 18-feb = 20Q**; ver §3b).
-- La eval de las 18:00 (10Q mixta timed) es la **dosis diaria de nivel 4** durante toda la Fase A; los stress sets 10Q/12min (nivel 5) solo en Fases B-C a las 05:00 (desde D82, lun 1-feb).
-- Los días con `franjaNota` llevan el texto de la franja 11:00 en el propio `DIAS[]`: en la v5.19 son **tres (D54 viernes N4 + D94 · D95 taper)** (v5.18: dos, D94 · D95; v5.17: seis); **el `sub` de esos días no cambia** (multiconjunto de contenido idéntico a la v5.18, verificado transpilando los `.ts` por `(system, sub)`: dif 0).
+- Fase A cierra con **D77 = UWSA2** (nivel 5, mar 26-ene), los dos últimos días de Psiquiatría **D78** (nivel 2, mié 27-ene) y **D79** (nivel 2, jue 28-ene) y los dos días dobles de Bioquímica **D80 (vie 29-ene) y D81 (lun 1-feb)** (nivel 1; el D80 es viernes pero 1.er día del sistema).
+- Fase B (D82-D86): **D82 = NBME 31** (nivel 5, mar 2-feb, la abre el día siguiente al cierre de contenido) · **D83 = NBME 32** (mié 3-feb) y **D85 = NBME 33** (vie 5-feb) (nivel 5) · **D84 (jue 4-feb) y D86 (lun 8-feb) nivel 4** (2×40Q mixtos timed = 80Q, sistema débil #1).
+- Fase C (D87-D95): **nivel 5** salvo **D88 (mié 10-feb) y D89 (jue 11-feb), nivel 4** (random timed 2×40Q + sistema débil #2 / Mehlman HY del sistema); **D90 (vie 12-feb), D91 (lun 15-feb), D92 (mar 16-feb) y D93 (mié 17-feb)** siguen siendo días de banco (incorrects 2ª pasada · AMBOSS 200 mitades 1 y 2, 80Q cada uno) y los días sin simulacro son **taper** (`TAPER_ACTIVO`): solo flagged/incorrects ya vistos + Anki maduro, cero preguntas y cero tarjetas nuevas (**D94 jue 18-feb = 20Q · D95 vie 19-feb = 20Q**; ver §3b).
+- La eval de las 18:00 (10Q mixta timed) es la **dosis diaria de nivel 4** durante toda la Fase A; los stress sets 10Q/12min (nivel 5) solo en Fases B-C a las 05:00 (desde D82, mar 2-feb).
+- Los días con `franjaNota` llevan el texto de la franja 11:00 en el propio `DIAS[]`: en la v5.20 son **cuatro (D53 y D70 viernes N4 + D94 · D95 taper)** (v5.19: tres, D54 + D94 · D95; v5.18: dos, D94 · D95); **el `sub` de esos días no cambia** (multiconjunto de contenido idéntico a la v5.19, verificado transpilando los `.ts` por `(system, sub)`: dif 0).
 
-### Distribución real recontada desde `DIAS` (v5.19 · 95 días)
+### Distribución real recontada desde `DIAS` (v5.20 · 95 días)
 
 | Fase | Días | Niveles | Q objetivo (`qDia`) |
 |------|------|---------|------------------------|
-| **A** · D1-D81 | 81 | N1×28 · N2×37 · N3×7 · N4×1 · N5×8 | 4160 |
+| **A** · D1-D81 | 81 | N1×28 · N2×38 · N3×5 · N4×2 · N5×8 | 4160 |
 | **B** · D82-D86 | 5 | N4×2 · N5×3 | 760 |
 | **C** · D87-D95 | 9 | N4×2 · N5×7 | 640 |
-| **Total** | **95** | **N1×28 · N2×37 · N3×7 · N4×5 · N5×18** | **5560** |
+| **Total** | **95** | **N1×28 · N2×38 · N3×5 · N4×6 · N5×18** | **5560** |
 
-> Respecto de la v5.18 cambian los **viernes** (el contenido no): con el D1 en martes **ningún hito cae en viernes** (8 caen
-> en lunes), así que los 15 viernes hábiles de la Fase A quedan libres de hito; las semanas del 25-dic y del 1-ene siguen sin
-> viernes hábil. Cambian de nivel **13 días**, todos con `qDia` 40: **D15 · D20 · D35 · D45 · D50** (viernes en v5.18, ya no)
-> **N3 → N2**; **D9 · D14 · D19 · D29 · D34 · D39 · D49** (viernes ahora, hasta S10) **N2 → N3**; **D54** (vie 18-dic, S11)
-> **N2 → N4**. Totales: **N2×40 → N2×37**, **N3×5 → N3×7**, **N4×4 → N4×5** (D54 en Fase A + D84/D86 de Fase B + D88/D89 de
-> Fase C), N1×28 y N5×18 sin cambio. El total sigue en **5560Q** — el multiconjunto (sistema, subtema) es idéntico (dif 0).
+> Respecto de la v5.19 cambian los **viernes** (el contenido no): con el D1 en miércoles 8 hitos caen en martes y uno de la
+> Fase A en viernes (D65, NBME 29, vie 8-ene); las semanas del 25-dic y del 1-ene siguen sin viernes hábil. Cambian de nivel
+> **15 días**, todos con `qDia` 40: **D9 · D14 · D19 · D29 · D34 · D39 · D49** (viernes en v5.19, ya no) **N3 → N2**; **D8 ·
+> D13 · D28 · D33 · D48** (viernes ahora, hasta S10) **N2 → N3**; **D54** (viernes N4 en v5.19, ahora lun 21-dic) **N4 → N2**;
+> **D53** (vie 18-dic, S11) y **D70** (vie 15-ene, S15) **N2 → N4**. Totales: **N2×37 → N2×38**, **N3×7 → N3×5**, **N4×5 →
+> N4×6** (D53 y D70 en Fase A + D84/D86 de Fase B + D88/D89 de Fase C), N1×28 y N5×18 sin cambio. El total sigue en
+> **5560Q** — el multiconjunto (sistema, subtema) es idéntico (dif 0).
 
 Desglose del total: **3320Q de trabajo diario** (83 días de plan) + **2240Q de simulacros**
 (12 hitos = 9×200Q NBME + 2×160Q UWSA + 1×120Q Free 120).
 
-**Viernes** (17 en el plan; **ninguno es hito**: con el D1 en martes los hitos caen en lunes, martes o jueves). Los **15
-viernes de Fase A**: D4 (9-oct) Inmuno **N1** · **D9 (16-oct) Cardio N3** · **D14 (23-oct) Cardio N3** · **D19 (30-oct) Resp
-N3** · D24 (6-nov) Renal **N1** · **D29 (13-nov) Renal N3** · **D34 (20-nov) GI N3** · **D39 (27-nov) Endo N3** · D44 (4-dic)
-Neuro **N1** · **D49 (11-dic) Neuro N3** · **D54 (18-dic) Heme/Onc N4** · D66 (8-ene) Repro **N1** · D71 (15-ene) MSK **N1** ·
-D76 (22-ene) Psiquiatría **N1** · D81 (29-ene) Bioquímica **N1** (cierre de contenido). Fuera de Fase A: D86 (vie 5-feb) =
-random timed **N4** (Fase B) y D91 (vie 12-feb) = incorrects 2ª pasada **N5** (Fase C).
+**Viernes** (18 en el plan; **2 son hito**: D65 NBME 29 y D85 NBME 33). Los **15 viernes de Fase A**: D3 (9-oct)
+Fundamentos **N1** · **D8 (16-oct) Cardio N3** · **D13 (23-oct) Cardio N3** · D18 (30-oct) Resp **N1** · D23 (6-nov) Renal
+**N1** · **D28 (13-nov) Renal N3** · **D33 (20-nov) GI N3** · D38 (27-nov) Endo **N1** · D43 (4-dic) Neuro **N1** · **D48
+(11-dic) Neuro N3** · **D53 (18-dic) Heme/Onc N4** · D65 (8-ene) **NBME 29 (hito)** · **D70 (15-ene) Repro N4** · D75 (22-ene)
+Psiquiatría **N1** · D80 (29-ene) Bioquímica **N1** (1.er día doble). Fuera de Fase A: D85 (vie 5-feb) = **NBME 33** (Fase B),
+D90 (vie 12-feb) = incorrects 2ª pasada **N5** y D95 (vie 19-feb) = último día del plan, taper **N5** (Fase C).
 Los que quedan en **N1** lo hacen porque su sistema lleva <3 días: ese día el bloque de
 sistema completo timed se hace del sistema **anterior**. Los viernes 25-dic y 1-ene son skip; **desde S11 el viernes sin hito es
-de nivel 4** — en v5.19 cae uno, el **D54** (S11; texto en `DIAS[].franjaNota`); los de S14-S17 son 1.º-2.º día de sistema
-(D66 Repro, D71 MSK, D76 Psiquiatría, D81 Bioquímica) y quedan en N1 (v5.18: ninguno · v5.17: D57, D69, D74, D79): el flag es
-regla, no lista.
+de nivel 4** — en v5.20 caen dos, el **D53** (S11) y el **D70** (S15) (texto en `DIAS[].franjaNota`); los de S16-S17 son el
+1.er día de su sistema (D75 Psiquiatría, D80 Bioquímica) y quedan en N1 (v5.19: uno, D54 · v5.18: ninguno · v5.17: D57, D69,
+D74, D79): el flag es regla, no lista.
 
 ### Medición (Palmerton: "se mide por % ciego, no por horas")
 
@@ -340,7 +354,7 @@ Código: [`src/lib/usmleScores.ts`](../../src/lib/usmleScores.ts) → localStora
 - **Readiness** de la barra: se ancla al último hito registrado. **Export JSON** desde la tarjeta (portapapeles en web / Share en móvil).
 - Regla de lectura: el % de UWorld es **gate de proceso**, no predicción — solo los NBME predicen (≥65% ≈ 95% de pase, ≥70% ≈ 99%).
 
-Divergencias técnica Palmerton ↔ plan v5.19 (resueltas y pendientes de decisión):
+Divergencias técnica Palmerton ↔ plan v5.20 (resueltas y pendientes de decisión):
 [`PALMERTON_DIVERGENCIAS_PLAN.md`](PALMERTON_DIVERGENCIAS_PLAN.md).
 
 ## 5. Jerarquía de material por `matType`
@@ -379,32 +393,32 @@ Guía por materia + método completo: [`PALMERTON_POR_MATERIA.md`](PALMERTON_POR
 
 | Fichero | Rol |
 |---------|-----|
-| [`src/lib/usmleStep1Daily.ts`](../../src/lib/usmleStep1Daily.ts) | **v5.19 = FUENTE DE VERDAD**: DIAS (95, con `nivelUW`/`qDia`/`franjaNota`), FRANJAS (6, con nivel/gate), DAILY_META (+`metodo`, `examenVentana` superada, `examenTarget = '2027-02-19'`, `descansoD1 = '2027-02-18'`, `viernesN4DesdeSemana`), USMLE_NIVELES, USMLE_GATE, **USMLE_TAPER** (D94 mié 17-feb D-2 última sesión de banco · D95 jue 18-feb D-1 real, sin finde en medio · examen vie 19-feb · burnout), helpers (`faseDe` 81/86, `nivelInfo`, `esHito`, `hitosDelPlan`, `semanaDe` (bloques de 7 días desde el D1: mar → lun en v5.19), `esViernesNivel4`, `esDiaTaper`, `esDiaDermaStep1`). Generado por `gen_usmle_v5.js` → `assemble_usmle_ts.js` (`DATA/_scripts/usmle/`; flags `VIERNES_N4_DESDE_SEMANA`, `TAPER_ACTIVO`) |
+| [`src/lib/usmleStep1Daily.ts`](../../src/lib/usmleStep1Daily.ts) | **v5.20 = FUENTE DE VERDAD**: DIAS (95, con `nivelUW`/`qDia`/`franjaNota`), FRANJAS (6, con nivel/gate), DAILY_META (+`metodo`, `examenVentana` superada, `examenTarget = '2027-02-22'`, `descansoD1 = '2027-02-21'`, `viernesN4DesdeSemana`), USMLE_NIVELES, USMLE_GATE, **USMLE_TAPER** (D94 jue 18-feb última sesión de banco · D95 vie 19-feb último día del plan / D-1 hábil · dom 21-feb D-1 real sin estudio · examen lun 22-feb · burnout), helpers (`faseDe` 81/86, `nivelInfo`, `esHito`, `hitosDelPlan`, `semanaDe` (bloques de 7 días desde el D1: mié → mar en v5.20), `esViernesNivel4`, `esDiaTaper`, `esDiaDermaStep1`). Generado por `gen_usmle_v5.js` → `assemble_usmle_ts.js` (`DATA/_scripts/usmle/`; flags `VIERNES_N4_DESDE_SEMANA`, `TAPER_ACTIVO`) |
 | [`src/lib/ankiLinks.ts`](../../src/lib/ankiLinks.ts) | Decks Anki por examen + **`sysTag(system)` = tag compartido `sys::<sistema>`** (USMLE ↔ MIR ↔ Derma, 12-sep) · `MIR_DECK` con Epidemiología / Bioética / Dermatología (A VERIFICAR con AnkiConnect) · `DERMA_STEP1_TAG/QUERY` + `dermaAnkiTags` añade `step1 sys::Dermatology` |
 | [`src/lib/mirUsmleBridge.ts`](../../src/lib/mirUsmleBridge.ts) | Puente de solo lectura MIR ↔ Step 1: `usmleMirParalelo(fecha)` (chip HOY) · en `UsmleTodayPlan` el repaso anclado 07:15 añade "MIR precedió esta semana: <asignatura>" (semana anterior + homólogo MIR del sistema de hoy) |
-| [`src/lib/usmleStep1Plan.ts`](../../src/lib/usmleStep1Plan.ts) | Plan macro (SISTEMAS con `diaInicio` alineado a DIAS, PLAN_META; `inicio = '2026-10-06'`, v5.19) |
+| [`src/lib/usmleStep1Plan.ts`](../../src/lib/usmleStep1Plan.ts) | Plan macro (SISTEMAS con `diaInicio` alineado a DIAS, PLAN_META; `inicio = '2026-10-07'`, v5.20) |
 | [`src/lib/usmlePalmertonData.ts`](../../src/lib/usmlePalmertonData.ts) | Vídeos Palmerton (serie High Yield, IDs + duraciones reales) |
 | [`src/lib/usmleQbanklyData.ts`](../../src/lib/usmleQbanklyData.ts) | Árbol Qbankly + deep-links (`library?e=<epub>&doc=<docId>`) |
 | [`src/lib/usmleData.ts`](../../src/lib/usmleData.ts) | KPIs, sistemas, disciplinas, ROI, recursos, reglas del Qbank (5 niveles) |
 | [`src/lib/usmleScores.ts`](../../src/lib/usmleScores.ts) | **Medición diaria** (localStorage `jmd-usmle-scores` + Supabase `usmle_daily_scores`): gate 80%, media 7d, mínimos on-track por hito, export JSON · **`gateHito` / `alertaBurnout` + `BURNOUT_PROTOCOLO`** (REGLA §E-7: 2 hitos consecutivos bajo mínimo → 'ALERTA BURNOUT') |
 | [`src/lib/obsidianMap.ts`](../../src/lib/obsidianMap.ts) | `USMLE_OBS_DAY`: D# → nota madre uWorld en el vault |
-| UI | `src/components/study/UsmleHub.tsx` (barra: media 7d + Δ hito; **banner ALERTA BURNOUT**; Readiness: niveles + serie de hitos + **Gate de hitos** + **Taper y semana de examen**) + `UsmleTodayPlan.tsx` (chip nivel · chip MIR en paralelo · chips **Viernes N4 / TAPER / cuenta doble Derma** · nota de franja 11:00 · D-1 y test day en D95 · bloque "cuenta doble" el D74 (mié 20-ene en v5.19; v5.18: mar 19-ene) · "MIR precedió esta semana" en el repaso anclado · 📏 Medición) + `ReadinessBar.tsx` · Home: `TodayMission.tsx` |
+| UI | `src/components/study/UsmleHub.tsx` (barra: media 7d + Δ hito; **banner ALERTA BURNOUT**; Readiness: niveles + serie de hitos + **Gate de hitos** + **Taper y semana de examen**) + `UsmleTodayPlan.tsx` (chip nivel · chip MIR en paralelo · chips **Viernes N4 / TAPER / cuenta doble Derma** · nota de franja 11:00 · D-1 y test day en D95 · bloque "cuenta doble" el D74 (jue 21-ene en v5.20; v5.19: mié 20-ene) · "MIR precedió esta semana" en el repaso anclado · 📏 Medición) + `ReadinessBar.tsx` · Home: `TodayMission.tsx` |
 
 
 ## 8. Docs de esta carpeta
 
 - [`PALMERTON_POR_MATERIA.md`](PALMERTON_POR_MATERIA.md) — **v3 catálogo completo**:
-  por materia + 5 niveles UWorld + Anki fino + test-taking/test-day + planificación NBME (D# y fechas v5.19).
-- [`CALENDARIO_5_MESES.md`](CALENDARIO_5_MESES.md) — semana a semana S1-S20 (v5.19) + día a día D1-D95 + reglas de reprogramación + gates ECFMG (agendar el vie 19-feb y confirmar el eligibility period).
+  por materia + 5 niveles UWorld + Anki fino + test-taking/test-day + planificación NBME (D# y fechas v5.20).
+- [`CALENDARIO_5_MESES.md`](CALENDARIO_5_MESES.md) — semana a semana S1-S20 (v5.20) + día a día D1-D95 + reglas de reprogramación + gates ECFMG (agendar el lun 22-feb y confirmar el eligibility period).
 - [`RECURSOS_META_2026.md`](RECURSOS_META_2026.md) — rol de cada recurso, fase, horas, qué NO usar.
-- [`PALMERTON_DIVERGENCIAS_PLAN.md`](PALMERTON_DIVERGENCIAS_PLAN.md) — **técnica Palmerton → qué hace el plan v5.19 →
-  divergencia → resolución aplicada / propuesta para decisión de Joseph** (incluye la decisión del 5-oct: D95 = D-1 real →
-  examen vie 19-feb, con la alternativa de recortar temario; sustituye a la del 3-oct sobre el jue 18-feb; y la regla
-  del corrimiento RÍGIDO: los hitos corren con el plan y conservan su D#).
-  **§E con estado al 5-oct**: implementadas #2 viernes de nivel 4 (regla activa; en v5.19 cae uno, D54 vie 18-dic —v5.18: ninguno—), #5 taper + D-1 real y #7 burnout (REGLA);
+- [`PALMERTON_DIVERGENCIAS_PLAN.md`](PALMERTON_DIVERGENCIAS_PLAN.md) — **técnica Palmerton → qué hace el plan v5.20 →
+  divergencia → resolución aplicada / propuesta para decisión de Joseph** (incluye la decisión del 6-oct: D95 vie 19-feb =
+  último día del plan, finde libre con el D-1 real el dom 21-feb → examen lun 22-feb, con la alternativa de recortar temario;
+  sustituye a la del 5-oct sobre el vie 19-feb; y la regla del corrimiento RÍGIDO: los hitos corren con el plan y conservan su D#).
+  **§E con estado al 6-oct**: implementadas #2 viernes de nivel 4 (regla activa; en v5.20 caen dos, D53 vie 18-dic y D70 vie 15-ene —v5.19: uno, D54—), #5 taper + D-1 real y #7 burnout (REGLA);
   siguen siendo DECISIÓN de Joseph #1 (20Q permanente), #3 (GO sin UWSA2), #4 (Free 120 en Prometric + maratón), #6 (eval a las
-  12:00), #8 (arranque a 20Q si el UWSA1 <40%) y la de #5 (rendir el vie 19-feb vs recortar temario).
-- [`PALMERTON_METODO_COMPLETO.md`](PALMERTON_METODO_COMPLETO.md) — el método de la A a la Z; §12 = mapeo al plan v5.19 (D# y fechas).
+  12:00), #8 (arranque a 20Q si el UWSA1 <40%) y la de #5 (rendir el lun 22-feb vs recortar temario).
+- [`PALMERTON_METODO_COMPLETO.md`](PALMERTON_METODO_COMPLETO.md) — el método de la A a la Z; §12 = mapeo al plan v5.20 (D# y fechas).
 - [`PALMERTON_INDICE_FUENTES.md`](PALMERTON_INDICE_FUENTES.md) — índice de fuentes del cuaderno (lo mantiene otro flujo; no cita D#).
 - `_palmerton_v3_extractos/` — extractos crudos v3 del cuaderno (uworld-preguntas, metodo-global, planificacion-nbme-img…).
 - Cuaderno NotebookLM **"STEP 1 · Palmerton Engine"** — **~140 fuentes**:
@@ -448,13 +462,20 @@ Guía por materia + método completo: [`PALMERTON_POR_MATERIA.md`](PALMERTON_POR
 > evaluación ya programada se borra: se re-fecha; con el D1 en martes 8 de los 12 hitos caen en lunes y ninguno en viernes (7
 > viernes N3 y 1 viernes N4, el D54); **D94 = mié 17-feb (última sesión de banco), D95 = jue 18-feb = último día del plan y
 > D-1 REAL, sin finde en medio, y el examen pasa al vie 19-feb-2027**; semanas de calendario S1 = 5-9 oct con 4 días de plan
-> (mar 6 → vie 9) … S20 = 15-19 feb).
-> **Punto de inflexión en la v5.8, confirmado en v5.9 → v5.19**: de la v5.3 a la v5.7 el desfase
+> (mar 6 → vie 9) … S20 = 15-19 feb) → **v5.20** 6-oct (**D1 = mié 7-oct → D95 = vie 19-feb, 95 días**: tampoco se estudió el
+> mar 6-oct (31-ago→6-oct = 27 hábiles perdidos); **sexto corrimiento RÍGIDO (+1 hábil), declarado DEFINITIVO, los 12 hitos con
+> su D#**; con el D1 en miércoles 8 de los 12 hitos caen en martes y 2 en viernes (NBME 29 y 33; 5 viernes N3 y 2 viernes N4,
+> D53 y D70); **D94 = jue 18-feb (última sesión de banco), D95 = vie 19-feb = último día del plan / D-1 hábil, finde 20-21
+> libre con el D-1 real el dom 21-feb, y el examen pasa al lun 22-feb-2027**; el examen ENCAPS queda FIJADO el mié 10-mar-2027
+> con la intensiva sembrada mar 23-feb → mar 9-mar y los días de examen protegidos; semanas de calendario S1 = 5-9 oct con 3
+> días de plan (mié 7 → vie 9) … S20 = 15-19 feb).
+> **Punto de inflexión en la v5.8, confirmado en v5.9 → v5.20**: de la v5.3 a la v5.7 el desfase
 > se pagaba **comprimiendo contenido** (97 → 95 días con fusiones); desde la v5.8 rige la regla de
 > Joseph — **no se fusiona ni se recorta nada** y el desfase se paga **alargando el plan por la cola**.
 > **Segundo punto de inflexión en la v5.15**: hasta la v5.14 los hitos estaban anclados por fecha y cada corrimiento les
 > robaba preparación; desde la v5.15 el corrimiento es **rígido** (corren con el plan, conservan su D#) y, donde un plan
 > tenía un fin clavado, **se amplían días** en vez de perder sesiones (la v5.16 aplica la misma regla por segunda vez, la
-> v5.17 por tercera, la v5.18 por cuarta y la v5.19 por quinta, ya con la cláusula explícita de no borrar evaluaciones).
-> El examen ya **no** está en la ventana 25-29 ene (target vie 19-feb; v5.18: jue 18-feb): **cada día perdido desde hoy mueve el examen un
+> v5.17 por tercera, la v5.18 por cuarta, la v5.19 por quinta, ya con la cláusula explícita de no borrar evaluaciones, y la v5.20
+> por sexta, declarada DEFINITIVA).
+> El examen ya **no** está en la ventana 25-29 ene (target lun 22-feb; v5.19: vie 19-feb): **cada día perdido desde hoy mueve el examen un
 > día hábil más, o exige recortar temario** — decisión de Joseph en el momento en que ocurra.

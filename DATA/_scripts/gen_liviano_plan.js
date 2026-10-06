@@ -9,10 +9,13 @@
 // NO editar los .ts generados a mano: editar el JSON y regenerar.
 //
 // Reglas de calendario (idénticas a remap_inicio.js / gen_aurum_plan.js):
-//  · INICIO = argv[2] (YYYY-MM-DD; default = inicioDefault del JSON = lun 2026-09-07, v5.6).
+//  · INICIO = argv[2] (YYYY-MM-DD; default = inicioDefault del JSON = lun 2026-09-07, v5.6; el pipeline pasa siempre la fecha:
+//    v5.20 = mié 2026-10-07 → 90 días hasta el vie 12-feb-2027).
 //  · 90 días HÁBILES L-V consecutivos; salta SÁB/DOM y los feriados fijos del JSON (25-dic · 31-dic · 1-ene).
 //  · Los 16 CASOS caen en VIERNES reales (invariante que antes garantizaba liviano_reslot_viernes.js).
-//    Si hay más viernes que casos, se saltan los PRIMEROS viernes (semana parcial de arranque).
+//    Si hay más viernes que casos (v5.20: 17 viernes), los casos van en los PRIMEROS viernes con ≥2 días de contenido delante y el
+//    viernes sobrante es el ÚLTIMO (vie 12-feb, contenido) → caso 16 = vie 5-feb, antes del capstone (jue 11-feb). Hasta v5.19 se
+//    saltaban los PRIMEROS viernes (semana parcial de arranque).
 //  · pretest:true en cada LUNES con semana previa (pre-test ciego 5Q sobre D-7, dentro de los 25' de estudio).
 //  · drill:true en los temas marcados en el JSON (drill de cifras ancla ciego cada ~20 días).
 //  · casoId en las filas de viernes; el detalle clínico + rúbrica vive en livianoCasos.ts.
@@ -22,7 +25,7 @@
 //    "casoId"?:n,"pretest"?:true,"drill"?:true}
 // LIV_META mantiene EXACTAMENTE  inicio: 'YYYY-MM-DD', fin: 'YYYY-MM-DD', totalDias: 90  (regex del remap).
 //
-// Determinista (sin Date.now()/Math.random). Regenerar:  node DATA/_scripts/gen_liviano_plan.js 2026-09-07
+// Determinista (sin Date.now()/Math.random). Regenerar:  node DATA/_scripts/gen_liviano_plan.js 2026-10-07   (v5.20; v5.6: 2026-09-07)
 const fs = require('fs');
 const path = require('path');
 
@@ -57,9 +60,16 @@ for (const m of CUR.modulos) {
 }
 const casos = CUR.casos.slice().sort((a, b) => a.id - b.id);
 const viernes = fechas.filter((f) => dow(f) === 5);
-const skipFirst = Math.max(0, viernes.length - casos.length);
 if (viernes.length < casos.length) throw new Error(`viernes disponibles ${viernes.length} < casos ${casos.length}`);
-const viernesConCaso = new Set(viernes.slice(skipFirst));
+// v5.20 (6-oct-2026): los casos van en los PRIMEROS viernes que tengan ≥2 días de contenido delante (antes: se saltaban los
+// primeros viernes sobrantes). Con D1 en miércoles hay 17 viernes y el salto del primero mandaba el CASO 16 (integral) al
+// vie 12-feb, DESPUÉS del capstone y de la revisión trimestral II; así el viernes que sobra es el ÚLTIMO (contenido) y el
+// caso 16 queda el vie 5-feb, antes del capstone, como en v5.19.
+const viernesOk = viernes.filter((f) => fechas.indexOf(f) >= 2);
+const viernesUsables = viernesOk.length >= casos.length ? viernesOk : viernes;
+const viernesConCaso = new Set(viernesUsables.slice(0, casos.length));
+const viernesSinCaso = viernes.filter((f) => !viernesConCaso.has(f));
+const skipFirst = viernesSinCaso.length;
 const esperadoContenido = TOTAL - casos.length;
 if (contenido.length !== esperadoContenido) throw new Error(`contenido ${contenido.length} ≠ ${esperadoContenido} (= ${TOTAL} − ${casos.length} casos)`);
 
@@ -267,7 +277,7 @@ fs.writeFileSync(OUT_CSV, csvLines.join('\n') + '\n', 'utf8');
 const porModulo = {};
 for (const r of rows) porModulo[r.modulo] = (porModulo[r.modulo] || 0) + 1;
 console.log(`LIVIANO gen ✓ ${rows.length} filas · ${rows[0].fecha} (${rows[0].wd}) → ${finISO} (${rows[rows.length - 1].wd})`);
-console.log(`  casos en viernes: ${rows.filter((r) => r.casoId && r.wd === 'Vie').length}/${casos.length} · viernes sin caso: ${skipFirst} (${viernes.slice(0, skipFirst).join(', ') || '—'})`);
+console.log(`  casos en viernes: ${rows.filter((r) => r.casoId && r.wd === 'Vie').length}/${casos.length} · viernes sin caso: ${skipFirst} (${viernesSinCaso.join(', ') || '—'})`);
 console.log(`  pre-tests (lunes): ${rows.filter((r) => r.pretest).length} · drills: ${drillsPorD.map((x) => 'D' + x.d).join(', ')} · revisión trimestral: ${rows.filter((r) => /REVISIÓN TRIMESTRAL/.test(r.tema)).map((r) => 'D' + r.d + ' ' + r.fecha).join(', ')}`);
 console.log(`  filas por módulo (incl. casos): ${Object.entries(porModulo).map(([k, v]) => k + ' ' + v).join(' · ')}`);
 console.log(`  síntesis→protocolo: ${rows.filter((r) => /Síntesis módulo|Capstone/.test(r.tema)).map((r) => 'D' + r.d).join(', ')}`);

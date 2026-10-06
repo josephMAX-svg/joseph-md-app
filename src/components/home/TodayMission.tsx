@@ -22,7 +22,7 @@ import {
  *    paso del día + docs ↗; el ✓ diario vive en SYNAPSE → ⚡ run (PlanKey 'vibecoding').
  *  · selector de MODO del día (VERDE / ÁMBAR / ROJO, localStorage 'jmd-modo', default VERDE) según
  *    DATA/PROTOCOLO_MODO_MINIMO.md: cada bloque muestra su mínimo cuando el nivel no es VERDE.
- *  · chip "S N/20" (semana del Step 1 = STEP1_SEMANAS; v5.19: S N/20 · v5.18: S N/20 · v5.17: S N/21) y "DELOAD" en las semanas post-NBME 26 / post-NBME 28.
+ *  · chip "S N/20" (semana del Step 1 = STEP1_SEMANAS; v5.20: S N/20 · v5.19: S N/20 · v5.18: S N/20 · v5.17: S N/21) y "DELOAD" en las semanas post-NBME 26 / post-NBME 28.
  * v5.10-b (12-sep-2026, gaps_v3b_synapse 2/4/5):
  *  · FRENO 04:55: cuenta atrás en la tarjeta 04:15 (solo mientras la hora está dentro del bloque): "commit-or-stash en
  *    m:ss" y, desde las 04:55, "COMMIT OR STASH · Anki 05:00 en m:ss". Regla: si el día se recorta pierde el proyecto, nunca el Anki.
@@ -50,9 +50,10 @@ export function todayISO(): string {
 export function faseActual(iso: string): string {
   if (iso < '2026-06-01') return 'FASE 4';
   if (iso < '2026-08-10') return 'FASE 5 · ENCAPS';
-  if (iso < '2026-10-06') return 'FASE 6 · transición';
-  if (iso < '2027-02-20') return 'FASE 7 · STEP 1 PRINCIPAL'; // v5.19: D95 jue 18-feb = D-1 · examen vie 19-feb · intensiva ENCAPS propuesta desde el lun 22-feb (v5.18: D-1 mié 17 · examen jue 18-feb)
-  return 'FASE 8 · ENCAPS FINAL';
+  if (iso < '2026-10-07') return 'FASE 6 · transición';
+  if (iso < '2027-02-23') return 'FASE 7 · STEP 1 PRINCIPAL'; // v5.20: D95 vie 19-feb · finde libre · examen lun 22-feb · intensiva ENCAPS mar 23-feb → examen mié 10-mar · v5.19: D95 jue 18-feb = D-1 · examen vie 19-feb · intensiva ENCAPS propuesta desde el lun 22-feb (v5.18: D-1 mié 17 · examen jue 18-feb)
+  if (iso <= '2027-03-10') return 'FASE 8 · ENCAPS INTENSIVA'; // v5.20: mar 23-feb → mar 9-mar (días 97-107) · examen ENCAPS/SERUMS mié 10-mar-2027
+  return 'FASE 9 · post-ENCAPS (MIR · Derma · Research)';
 }
 function nowMin(): number { try { const d = new Date(); return d.getHours() * 60 + d.getMinutes(); } catch { return 0; } }
 const hm = (s: string) => { const [h, m] = s.split(':').map(Number); return h * 60 + m; };
@@ -178,7 +179,7 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
     {
       flag: '🇺🇸', nombre: 'USMLE · BLOQUE PRINCIPAL (Anki → Pre-test → Deep Prime → 30Q)', ini: '07:15', fin: '12:00', color: GREEN, frente: 'usmle-principal',
       tema: us ? `D${us.d}/${DIAS.length} · ${us.system} — ${us.sub}` : 'fuera del rango del plan',
-      sub: us ? `${us.bbCh}: ${us.bbVid} · ${us.mat} · todo en inglés` : `Step 1 · v5.19 desde ${USMLE_META.inicio}`,
+      sub: us ? `${us.bbCh}: ${us.bbVid} · ${us.mat} · todo en inglés` : `Step 1 · v5.20 desde ${USMLE_META.inicio}`,
       acciones: us ? [
         { lbl: '◆ Edge', color: EDGE, url: 'microsoft-edge:' + QBQ, fill: true },
         ...(usmleObsUrl(us.d) ? [{ lbl: '◆ Obsidian', color: OBS, url: usmleObsUrl(us.d)! }] : []),
@@ -196,7 +197,7 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
     {
       flag: '🇵🇪', nombre: 'ENCAPS · 1h banqueo (mantenimiento 2027-I)', ini: '16:15', fin: '17:15', color: TEAL, frente: 'encaps',
       tema: 'Banco del día según pronóstico v3 (rotación II·I·V·III·IV) · viernes = mini-simulacro 25Q',
-      sub: 'registro de errores en TRACKING_ERRORES · feb-mar 2027 vuelve a principal',
+      sub: 'registro de errores en TRACKING_ERRORES · intensiva mar 23-feb → mar 9-mar (vuelve a principal) · examen mié 10-mar-2027',
       acciones: [{ lbl: '◆ Obsidian', color: OBS, url: encapsObsUrl('salud_publica') || OBS_MAPA_URL }],
     },
     {

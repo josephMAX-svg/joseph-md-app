@@ -21,7 +21,7 @@
  *   node DATA/_scripts/gen_research_plan.js --ciclo 1 2026-09-10   # solo ciclo 1
  *
  * Calendario: días-Research = paridad de días hábiles desde el ancla 2026-06-10 (researchData.ts#diaEstudioTipo,
- * misma función que remap_inicio.js) · L-V · salta 25-dic/31-dic/1-ene · PAUSA 15-ene→10-feb-2027 (0 átomos · Step 1; v5.19: sin cambio —Research no corre en v5.19— · v5.18: corre con el plan · v5.17: 13-ene→8-feb; v5.16: 7-ene→3-feb).
+ * misma función que remap_inicio.js) · L-V · salta 25-dic/31-dic/1-ene · PAUSA 15-ene→10-feb-2027 (0 átomos · Step 1; v5.20: sin cambio —el ciclo sí corre una ranura: el mar 6-oct perdido era día-Research → d1 = jue 8-oct— · v5.19: sin cambio —Research no corre en v5.19— · v5.18: corre con el plan · v5.17: 13-ene→8-feb; v5.16: 7-ene→3-feb).
  * Si el D1 se corre y el ciclo 1 no cabe antes de la pausa, se recortan átomos `recortable` (los de prep de SR-1
  * que ya reaparecen en el ciclo 2) y se avisa por consola.
  *
@@ -54,7 +54,12 @@ const fromISO = (s) => new Date(s + 'T12:00:00Z');
 const addDays = (s, n) => { const d = fromISO(s); d.setUTCDate(d.getUTCDate() + n); return iso(d); };
 const wdOf = (s) => WD[fromISO(s).getUTCDay()];
 const SKIP_FIJOS = new Set(['2026-12-25', '2026-12-31', '2027-01-01']);
-const PAUSA = { desde: '2027-01-15', hasta: '2027-02-10' }; // v5.19: sin cambio (Research no corre: el lun 5-oct perdido era día de Derma) · v5.18: +2 hábiles (v5.17: 13-ene → 8-feb) // Step 1 · 0 átomos · v5.17: la pausa corre con el plan (v5.16: 7-ene→3-feb · v5.15: 4→29-ene); el inicio va +4 hábiles (13-ene, no 12) porque con D1 en jueves la paridad Research↔Derma se invierte y con 12-ene cabían 34 átomos antes de la pausa en vez de los 35 de v5.16 (R3 se derramaba): con 13-ene el orden de los 42 átomos es IDÉNTICO al de v5.16; si no, los 34 átomos del núcleo no caben antes de ella
+// v5.20 (6-oct-2026) · DÍAS DE EXAMEN PROTEGIDOS: lun 22-feb-2027 (examen USMLE Step 1) · mar 9-mar (D-1 del ENCAPS) · mié 10-mar
+// (examen ENCAPS 2027-I). Sin sesiones de planes secundarios (Research · Derma · AURUM · MIR mantenimiento): esas fechas se SALTAN como
+// un feriado y el plan corre una ranura (nada se recorta). MISMA lista en gen_research_plan · gen_derma_ciclo2 · remap_inicio (Derma) ·
+// gen_aurum_plan · gen_mir_mantenimiento.
+const PROTEGIDOS = new Set(['2027-02-22', '2027-03-09', '2027-03-10']);
+const PAUSA = { desde: '2027-01-15', hasta: '2027-02-10' }; // v5.20: sin cambio (el ciclo 1 corre una ranura: el mar 6-oct perdido era día-Research → d1 = jue 8-oct; R3 ya no cabe antes de la pausa y se desplaza tras ella) · v5.19: sin cambio (Research no corre: el lun 5-oct perdido era día de Derma) · v5.18: +2 hábiles (v5.17: 13-ene → 8-feb) // Step 1 · 0 átomos · v5.17: la pausa corre con el plan (v5.16: 7-ene→3-feb · v5.15: 4→29-ene); el inicio va +4 hábiles (13-ene, no 12) porque con D1 en jueves la paridad Research↔Derma se invierte y con 12-ene cabían 34 átomos antes de la pausa en vez de los 35 de v5.16 (R3 se derramaba): con 13-ene el orden de los 42 átomos es IDÉNTICO al de v5.16; si no, los 34 átomos del núcleo no caben antes de ella
 const enPausa = (s) => s >= PAUSA.desde && s <= PAUSA.hasta;
 function tipoDia(s) {
   const d = fromISO(s), dow = d.getUTCDay();
@@ -66,7 +71,7 @@ function tipoDia(s) {
 /** n días-Research desde start (inclusive), saltando feriados fijos y la pausa. */
 function slots(start, n) {
   const o = []; let c = start;
-  while (o.length < n) { if (tipoDia(c) === 'research' && !SKIP_FIJOS.has(c) && !enPausa(c)) o.push(c); c = addDays(c, 1); }
+  while (o.length < n) { if (tipoDia(c) === 'research' && !SKIP_FIJOS.has(c) && !PROTEGIDOS.has(c) && !enPausa(c)) o.push(c); c = addDays(c, 1); }
   return o;
 }
 const q = (s) => "'" + String(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'") + "'";
@@ -208,7 +213,7 @@ const C1 = [
   a('CR-1', 'CR', 'CR', 'CRITICA', 'CASE REPORT #1 — decidir la FUENTE del caso antes del 31-oct: (a) Dr. Ciro: 1-2 casos de su consulta (ideal complicación de inyectable = L4, o caso raro con buenas fotos) con él como senior author; (b) plan B: dermatólogo de la Sociedad Peruana de Dermatología',
     'Tabla de casos candidatos (diagnóstico · por qué es publicable · fotos disponibles · senior author · estado) + 1 caso ELEGIDO',
     'DATA/RESEARCH/CASE_REPORT_1/caso_candidatos.md + Mesa editorial: senior author del case report',
-    'Dr. Ciro · SPD', ['CARE', 'DOJ', 'JAADCR'], { chips: ['⚠ v5.18: este átomo cae el vie 13-nov (y CR-2 el mar 17-nov), ya DESPUÉS del 31-oct. La regla "sin caso antes del 31-oct el entregable de feb-2027 no ocurre" sigue viva: el caso y el senior author hay que cerrarlos FUERA del bloque de 45 min, antes de que llegue este día'],
+    'Dr. Ciro · SPD', ['CARE', 'DOJ', 'JAADCR'], { chips: ['⚠ v5.20: este átomo cae el mar 17-nov (y CR-2 el jue 19-nov), ya DESPUÉS del 31-oct (v5.18-v5.19: vie 13-nov / mar 17-nov). La regla "sin caso antes del 31-oct el entregable de feb-2027 no ocurre" sigue viva: el caso y el senior author hay que cerrarlos FUERA del bloque de 45 min, antes de que llegue este día'],
       chipsDyn: ({ f, fmt }) => [`si el Dr. Ciro no dio caso el ${fmt(f('C-3'))}, la fuente B ya debe estar activada (MENTORES fila 6)`], apex: { id: 'cr-caso', t: 'Caso + senior author' }, hito: 'cr-caso' }),
   a('CR-2', 'CR', 'CR', 'CRITICA', 'Consentimiento de PUBLICACIÓN (distinto del asistencial): plantilla bilingüe ES/EN según lo que exigen DOJ y CARE, con fotos y datos clínicos; firmado por el paciente (o tutor)',
     'Consentimiento firmado y escaneado (sin él no hay case report)',
@@ -278,10 +283,11 @@ const C1 = [
     'Manuscrito formateado + refs verified + figuras + consentimiento + cover letter',
     'CASE_REPORT_1/case_report_final.docx + refs_verified.json + cover_letter.md',
     'citation_verifier.py · eScholarship', ['DOJ', 'CROSSREF', 'CARE']),
-  a('CR-8', 'CR', 'CR', 'CRITICA', 'Paquete de envío CONGELADO (manuscrito + fotos + consentimiento + CARE + cover) — el SUBMIT se ejecuta el jue 11-feb-2027 (CR-9 = d36 del ciclo 1, primer día-Research tras la pausa · = D90 del Step 1 en v5.19, antes del examen del vie 19-feb)',
+  a('CR-8', 'CR', 'CR', 'CRITICA', 'Paquete de envío CONGELADO (manuscrito + fotos + consentimiento + CARE + cover) — el SUBMIT se ejecuta el jue 11-feb-2027 (CR-9 = d35 del ciclo 1 en v5.20 —d36 en v5.18-v5.19—, primer día-Research tras la pausa · = D89 del Step 1 en v5.20, antes del examen del lun 22-feb · v5.19: D90, examen vie 19-feb)',
     'Paquete completo y revisado; nada pendiente para febrero · estado → revision-mentor',
     'CASE_REPORT_1/_PAQUETE_ENVIO/ (todo lo que se sube) + Mesa editorial: fecha objetivo jue 11-feb-2027',
     '—', ['CARE', 'DOJ'], { apex: { id: 'cr-paquete', t: 'Case report listo para enviar' }, hito: 'cr-paquete' }),
+  // v5.20: R3 (recortable) ya no cabe antes de la pausa → se desplaza tras ella (regla de recortables): d37 = mié 17-feb-2027 = D93 del Step 1.
   a('R3', 'R0', 'R', 'ALTA', 'Ver una SR de punta a punta (8 fases) + des-riesgar el meta-análisis: instalar R + metafor y reproducir 1 forest plot del libro "Doing Meta-Analysis in R" (para que R29-R33 del ciclo 2 no sean la primera vez)',
     'Esquema de las 8 fases con su herramienta + script R que reproduce un forest plot de ejemplo',
     'Vault SR-1/_hoja_de_ruta (8 fases) + 05_manuscrito/ejemplo_metafor.R',
@@ -289,7 +295,7 @@ const C1 = [
   a('R8', 'R1', 'R', 'ALTA', 'Protocolo PRISMA-P de SR-1: borrador de secciones (pregunta, elegibilidad, fuentes, estrategia, selección con 2 revisores, extracción doble, sesgo, síntesis) — se congela en el ciclo 2',
     'Borrador de protocolo (secciones PRISMA-P) con huecos marcados [PROTOCOL GAP]',
     'Vault SR-1/01_protocolo_PICO/protocolo_PRISMA-P_v0.md',
-    '—', ['PRISMA', 'COCHB'], { recortable: true, chips: ['⚠ v5.19: este átomo (d38) cae el mié 17-feb-2027 = D94 del Step 1 (última sesión de banco; ya NO es la víspera: el D-1 es el jue 18-feb) → recortable si ese día aprieta. El choque v5.19 lo tiene X-3 (d39) = vie 19-feb = DÍA DEL EXAMEN (ver su aviso) · v5.18: este átomo caía en el D95 = D-1'] }),
+    '—', ['PRISMA', 'COCHB'], { recortable: true, chips: ['⚠ v5.20: este átomo (d38) cae el vie 19-feb-2027 = D95 del Step 1 (último día del plan, D-1 hábil: sesión mínima AM + ritual de test-day) → recortable si ese día aprieta; ningún átomo cae ya el día del examen (lun 22-feb, día PROTEGIDO) · v5.19: d38 caía el mié 17-feb = D94 y el choque lo tenía X-3 (d39) = vie 19-feb = día del examen · v5.18: este átomo caía en el D95 = D-1'] }),
   // (12-sep-2026) R2 pasa de d8 a d35 (el hueco que deja R9): cimientos sin deadline externo; las checklists STROBE y CARE ya están en DATA/RESEARCH desde el 05-sep
   a('R2', 'R0', 'R', 'ALTA', 'Diseños de estudio y niveles de evidencia + regla EQUATOR: elegir la guía de reporte ANTES de escribir (carta = sin guía · tesis = STROBE transversal · case report = CARE · SR = PRISMA 2020)',
     'Mapa de 1 página: diseño → nivel → sesgos típicos → guía de reporte que exige el journal',
@@ -298,7 +304,7 @@ const C1 = [
   a('X-3', 'X', 'R', 'MEDIA', 'Corpus SR-1 YA descubierto: inventariar los 200 registros de research_papers (pending_human desde 11-jun-2026; 151 OA sin PDF resuelto) — contar, exportar CSV (título, autores, año, DOI, abstract) y NO re-correr discovery hasta tener la query PRISMA-S final (ciclo 2 · R12)',
     'CSV del corpus + nota de estado (n, OA, duplicados por DOI)',
     'Vault SR-1/02_busqueda/corpus_2026-06_inventario.csv + nota',
-    'Supabase (consola) · Sheets', ['RAY', 'UNPAY'], { recortable: true, chips: ['⚠ v5.19: este átomo (d39) cae el vie 19-feb-2027 = DÍA DEL EXAMEN Step 1 → no hacerlo ese día: moverlo exige correr la cola del ciclo 1 un slot o recortarlo — decisión de Joseph (DATA/PENDIENTES_JOSEPH.md)'] }),
+    'Supabase (consola) · Sheets', ['RAY', 'UNPAY'], { recortable: true, chips: ['⚠ v5.20: este átomo (d39) cae el mar 23-feb-2027 = día 1 de la INTENSIVA ENCAPS (día siguiente al examen Step 1 del lun 22-feb, que es día PROTEGIDO) → recortable si la intensiva aprieta; ya no choca con el examen · v5.19: caía el vie 19-feb = DÍA DEL EXAMEN Step 1 (decisión pendiente en DATA/PENDIENTES_JOSEPH.md, resuelta por el corrimiento v5.20)'] }),
   a('X-4', 'X', 'B', 'MEDIA', 'Congresos con abstract alcanzable (AAD · CILAD · RADLA): verificar en la web oficial la fecha límite de abstracts 2027 y el formato; elegir 1 al que llegue la tesis o la SR-1 preliminar',
     '1 congreso elegido con deadline VERIFICADO (URL + fecha) o marcado "A VERIFICAR"',
     'DATA/RESEARCH/MENTORES.md §Congresos con la fecha verificada',
@@ -311,7 +317,7 @@ const C1 = [
     'Mesa editorial con los 3 estados reales + presupuesto escrito + 3 lecciones del ciclo',
     'Mesa editorial (app) + RUTA_PUBLICACION_2027.md §3 presupuesto',
     'Mesa editorial', ['COPE', 'ICMJE'], { recortable: true }),
-  a('X-7', 'X', 'X', 'CRITICA', 'CIERRE ANTES DE LA PAUSA (15-ene→10-feb = 0 átomos · Step 1): nada que venza en enero — rebuttals respondidos o programados, PROSPERO aún NO registrado, revisor #2 confirmado, paquete del case report congelado; la cola del ciclo 1 (CR-9, d36) arranca el jue 11-feb-2027 con el SUBMIT del case report; el ciclo 2 sigue tras d42',
+  a('X-7', 'X', 'X', 'CRITICA', 'CIERRE ANTES DE LA PAUSA (15-ene→10-feb = 0 átomos · Step 1): nada que venza en enero — rebuttals respondidos o programados, PROSPERO aún NO registrado, revisor #2 confirmado, paquete del case report congelado; la cola del ciclo 1 (CR-9, d35 en v5.20 —d36 en v5.18-v5.19—) arranca el jue 11-feb-2027 con el SUBMIT del case report; el ciclo 2 sigue tras d42',
     'Checklist de pausa 100 % + primer átomo del ciclo 2 leído',
     'Mesa editorial: cada entregable con estado y próxima fecha · Vault Dashboard_Research',
     'Mesa editorial', ['ICMJE'], { apex: { id: 'cierre-c1', t: 'Ciclo 1 cerrado · pausa Step 1' } }),
@@ -324,12 +330,12 @@ const DUAL = 'por DOS revisores humanos independientes en ciego (Joseph + reviso
 // corpus de 666-1.500 registros a 1-2 registros/min (nivel 1); se recalibran con el n real en R16/R21. No se toca el Calendar.
 const H = (h, txt) => `sesión ≈ ${txt} fuera del bloque 13:30 por revisor (estimación · recalibrar con el n real)`;
 const HORAS_NOTA = 'las horas salen de la agenda post-Step 1 (feb-2027 →), no del bloque de 45 min; el revisor #2 las aceptó por escrito en X-1';
-// Cola del ciclo 1 (TAIL1; v5.18: d36-d37 = jue 11-feb y lun 15-feb-2027, seguidos de los recortables desplazados d38-d42 · v5.17: mar 9-feb y jue 11-feb): los 2 primeros días-Research TRAS la pausa. Fijan el total en 42 (lo que remap_inicio.js exige).
+// Cola del ciclo 1 (TAIL1; v5.20: d35-d36 = jue 11-feb y lun 15-feb-2027, seguidos de los recortables desplazados d37-d42 = R3 mié 17-feb · R8 vie 19-feb · X-3 mar 23-feb · X-4 jue 25-feb · X-5 lun 1-mar · X-6 mié 3-mar · v5.18-v5.19: d36-d37 = jue 11-feb y lun 15-feb-2027, seguidos de los recortables desplazados d38-d42 · v5.17: mar 9-feb y jue 11-feb): los 2 primeros días-Research TRAS la pausa. Fijan el total en 42 (lo que remap_inicio.js exige).
 const TAIL1 = [
-  a('CR-9', 'CR', 'CR', 'CRITICA', 'SUBMIT case report #1 a Dermatology Online Journal (paquete congelado en CR-8) + registrar el nº de manuscrito — primer día-Research tras la pausa (jue 11-feb-2027 = D90 del Step 1 en v5.19; el examen es el vie 19-feb)',
+  a('CR-9', 'CR', 'CR', 'CRITICA', 'SUBMIT case report #1 a Dermatology Online Journal (paquete congelado en CR-8) + registrar el nº de manuscrito — primer día-Research tras la pausa (jue 11-feb-2027 = D89 del Step 1 en v5.20; el examen es el lun 22-feb · v5.19: D90, examen vie 19-feb)',
     'Case report ENVIADO ✅ · estado case-report-1 → enviado', 'Mesa editorial: case-report-1 = enviado (fecha)', 'eScholarship', ['DOJ', 'CARE'],
     { apex: { id: 'cr-submit', t: 'Case report #1 enviado' }, hito: 'case-report-1' }),
-  a('X-8', 'X', 'X', 'ALTA', 'Re-arranque tras la pausa (lun 15-feb-2027 = D92 del Step 1 en v5.19; el examen Step 1 es el vie 19-feb): repasar las 8 fases de una SR + estado de carta / tesis / case report en la Mesa editorial (decisiones recibidas, rebuttals pendientes) + revisar que las 10 cuentas de la infra siguen activas',
+  a('X-8', 'X', 'X', 'ALTA', 'Re-arranque tras la pausa (lun 15-feb-2027 = D91 del Step 1 en v5.20; el examen Step 1 es el lun 22-feb · v5.19: D92, examen vie 19-feb): repasar las 8 fases de una SR + estado de carta / tesis / case report en la Mesa editorial (decisiones recibidas, rebuttals pendientes) + revisar que las 10 cuentas de la infra siguen activas',
     'Mesa editorial al día + lista de pendientes editoriales', 'Mesa editorial + Dashboard_Research', 'Mesa editorial', ['STEPSR', 'REBUTTAL']),
 ];
 const C2 = [
@@ -603,7 +609,7 @@ const TOTAL_C1 = 42; // invariante que remap_inicio.js comprueba (RES!=42) — N
  *  de prep de SR-1) se desplaza a después de la pausa, detrás de la cola TAIL1 (submit case report + re-arranque). */
 function fecharCiclo1(start) {
   const core = C1.slice(); const spill = [];
-  let nBefore = 0; for (let c = start; c <= ULTIMO_ANTES_PAUSA; c = addDays(c, 1)) if (tipoDia(c) === 'research' && !SKIP_FIJOS.has(c)) nBefore++;
+  let nBefore = 0; for (let c = start; c <= ULTIMO_ANTES_PAUSA; c = addDays(c, 1)) if (tipoDia(c) === 'research' && !SKIP_FIJOS.has(c) && !PROTEGIDOS.has(c)) nBefore++;
   while (core.length > nBefore) {
     const i = core.map((x, j) => (x.recortable ? j : -1)).filter((j) => j >= 0).pop();
     if (i == null || i < 0) throw new Error(`ciclo 1: ${core.length} átomos no caben en ${nBefore} días-Research antes de la pausa y no quedan átomos recortables`);
@@ -653,7 +659,7 @@ for (const x of TODOS) {
   for (const r of x.recs) if (!REC_KEYS.has(r)) throw new Error(`rec ${r} no existe en REC (${x.code})`);
   const dow = fromISO(x.fecha).getUTCDay();
   if (dow === 0 || dow === 6) throw new Error('fin de semana: ' + x.fecha);
-  if (SKIP_FIJOS.has(x.fecha) || enPausa(x.fecha)) throw new Error('feriado/pausa: ' + x.fecha);
+  if (SKIP_FIJOS.has(x.fecha) || PROTEGIDOS.has(x.fecha) || enPausa(x.fecha)) throw new Error('feriado/pausa/día de examen: ' + x.fecha);
   if (tipoDia(x.fecha) !== 'research') throw new Error('no es día-Research: ' + x.fecha);
 }
 if (new Set(TODOS.map((x) => x.d)).size !== TODOS.length) throw new Error('d duplicado');
@@ -684,11 +690,11 @@ const TS1 = `/**
  * ${genLine}
  *
  * ${D1.length} átomos · D1 = ${wdOf(D1[0].fecha)} ${D1[0].fecha} → D${D1.length} = ${wdOf(D1[D1.length - 1].fecha)} ${D1[D1.length - 1].fecha} · 1 átomo por DÍA-RESEARCH
- * (interdiario con Derma: researchData.ts → diaEstudioTipo · sáb+dom libres · salta 25-dic/31-dic/1-ene ·
+ * (interdiario con Derma: researchData.ts → diaEstudioTipo · sáb+dom libres · salta 25-dic/31-dic/1-ene y los DÍAS PROTEGIDOS v5.20 lun 22-feb / mar 9-mar / mié 10-mar ·
  * PAUSA ${PAUSA.desde} → ${PAUSA.hasta} = 0 átomos, Step 1). d1-d${N_CORE} caben antes de la pausa (último: ${D1[N_CORE - 1].fecha});
  * d${N_CORE + 1}-d${D1.length} van tras la pausa (CR-9 SUBMIT del case report · X-8 re-arranque${D1.length - N_CORE > TAIL1.length ? ' · ' + D1.slice(N_CORE + TAIL1.length).map((x) => x.code).join(' / ') + ' desplazados por no caber antes' : ''}) — el total 42 es
  * el invariante que remap_inicio.js comprueba. El bloque del Calendar 13:30–14:15 NO se toca.
- * v5.10b (12-sep-2026): gates — T-1 solicitud CEI presentada el día del átomo (d7; v5.18: jue 22-oct, el gap pedía ≤30-sep) · R9 antes de R6 · CR-1/CR-2 (d15/d16; v5.18: vie 13-nov y mar 17-nov, ya tras el 31-oct — ver chip) · T-7/T-8 no se envían
+ * v5.10b (12-sep-2026): gates — T-1 solicitud CEI presentada el día del átomo (d7; v5.20: lun 26-oct · v5.18-v5.19: jue 22-oct; el gap pedía ≤30-sep) · R9 antes de R6 · CR-1/CR-2 (d15/d16; v5.20: mar 17-nov y jue 19-nov · v5.18-v5.19: vie 13-nov y mar 17-nov; ya tras el 31-oct — ver chip) · T-7/T-8 no se envían
  * sin nº de CEI ni inglés revisado · chips con fechas se recalculan en cada corrimiento (chipsDyn del generador).
  *
  * Pistas del ciclo 1: R0 infra + cimientos (PICO · diseños · PICO de SR-1) · M1-M3 mentores (Ciro · Rising Scholars ·
@@ -761,10 +767,11 @@ const TS2 = `/**
  * ${genLine} (\`--ciclo 2 YYYY-MM-DD\` para re-fechar solo este ciclo)
  *
  * ${D2.length} átomos · d${D2[0].d}-d${D2[D2.length - 1].d} (numeración continúa la del ciclo 1 → una sola clave de progreso 'research') ·
- * D1 = ${wdOf(D2[0].fecha)} ${D2[0].fecha} → fin ${wdOf(D2[D2.length - 1].fecha)} ${D2[D2.length - 1].fecha} · interdiario con Derma · sáb+dom libres.
+ * D1 = ${wdOf(D2[0].fecha)} ${D2[0].fecha} → fin ${wdOf(D2[D2.length - 1].fecha)} ${D2[D2.length - 1].fecha} · interdiario con Derma · sáb+dom libres ·
+ * salta los DÍAS PROTEGIDOS v5.20 (mar 9-mar D-1 ENCAPS · mié 10-mar examen ENCAPS 2027-I: R8b → jue 11-mar).
  * Arranca tras el Step 1 (RUTA §6: M6-7 protocolo + PROSPERO · M8-10 ejecutar SR · M11-12 someter + balance).
  * R18 (cribado), R20 (κ) y R24 (extracción) EXIGEN revisor humano #2 con cuenta Rayyan y κ real; el equipo de
- * revisión (L4 §9) se copia a PROSPERO en R10. (CR-9 = submit del case report #1 y X-8 son d36-d37 del CICLO 1 en v5.18 —jue 11-feb y lun 15-feb-2027—, los dos
+ * revisión (L4 §9) se copia a PROSPERO en R10. (CR-9 = submit del case report #1 y X-8 son d35-d36 del CICLO 1 en v5.20 —jue 11-feb y lun 15-feb-2027; d36-d37 en v5.18-v5.19—, los dos
  * primeros días-Research tras la pausa.) Incluye campaña K1-K2, case report #2,
  * bibliométrico B1-B5 y apertura de SR-2 (L5). Fuente única: DATA/_scripts/gen_research_plan.js.
  */
@@ -874,17 +881,17 @@ const MD = `# Plan DÍA-A-DÍA de Research — 3 pistas alineadas con la RUTA de
 > 2-oct y SUBMIT el 29-dic) contradecía [\`RUTA_PUBLICACION_2027.md\`](RUTA_PUBLICACION_2027.md) (carta oct-nov · case report
 > feb-mar · PROSPERO mar-abr · SR sometida jul-sep) y no contenía ni un átomo de los dos primeros entregables ni de la tesis.
 > Ahora: **ciclo 1 (oct-2026 → los días-Research de feb-2027 tras la pausa; 42 átomos)** = infra académica + cimientos + mentores +
-> carta al editor + tesis L0 (research letter) + case report #1 (paquete congelado el mié 6-ene; SUBMIT = d36 en v5.18 = jue 11-feb-2027, primer día tras la pausa) +
+> carta al editor + tesis L0 (research letter) + case report #1 (paquete congelado el vie 8-ene en v5.20 —CR-8 = d32; v5.19: mié 6-ene—; SUBMIT = d35 en v5.20 —d36 en v5.18-v5.19— = jue 11-feb-2027, primer día tras la pausa) +
 > preparación de SR-1 con **revisor humano #2** nombrado antes de PROSPERO;
 > **ciclo 2 (feb→ago 2027)** = SR-1 completa (PROSPERO → submit) con cribado y extracción DUALES, campaña de colaboradores,
-> case report #2, bibliométrico y apertura de SR-2. **Pausa vie 15-ene → mié 10-feb-2027 = 0 átomos (Step 1; v5.18 = v5.19 · v5.17: mié 13-ene → lun 8-feb).**
+> case report #2, bibliométrico y apertura de SR-2. **Pausa vie 15-ene → mié 10-feb-2027 = 0 átomos (Step 1; v5.18 = v5.19 = v5.20 · v5.17: mié 13-ene → lun 8-feb).**
 
 > **Qué cambió el 12-sep-2026 (v5.10b · gaps_v3b_research puntos 1-3, 10 y 12 · mismos 42 átomos, solo cambia el orden).**
 > **T-1** (ética/CEI) pasa de d14 a **d7** con la acción "solicitud CEI expedita PRESENTADA hoy" (la aprobación tarda semanas y M3
 > necesita la versión del CADI que sale de los mismos documentos → **M3** a d8); los consentimientos ya constan (censo con
 > consentimiento parental + asentimiento: 291 excluidas, portada de \`datos_tesis_acne.xlsx\`). **R9** (¿ya existe la SR? AMSTAR-2
 > rápido de las 5 SR/MA que solapan + decisión escrita a/b/c en L4 §6) pasa de d35 a **d9, ANTES de R6** (PICO, d9 → d14); **R2**
-> (diseños) ocupa d35. **CR-1** (caso) y **CR-2** (consentimiento) pasan a **d15/d16** (⚠ v5.18: con el corrimiento caen el vie 13-nov y el mar 17-nov, es decir YA DESPUÉS del 31-oct — ver el chip de CR-1;
+> (diseños) ocupa d35. **CR-1** (caso) y **CR-2** (consentimiento) pasan a **d15/d16** (⚠ v5.20: con el corrimiento caen el mar 17-nov y el jue 19-nov —v5.18-v5.19: vie 13-nov y mar 17-nov—, es decir YA DESPUÉS del 31-oct — ver el chip de CR-1;
 > T-2 → d19 y R7 → d21, sin deadline externo). Gates: T-7/T-8 no se envían sin nº de CEI o exención (T-8 pasaría a feb-2027) ni sin
 > inglés revisado (mentor de Rising Scholars o editor); d8/d10 hacen seguimiento del caso con el Dr. Ciro (sin caso a las 3 semanas
 > de M1 → fuente B); M2 fija la fecha de decisión del plan B (4 semanas); X-2 comprueba que el mentor revisa también el case report.

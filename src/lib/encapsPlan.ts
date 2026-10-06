@@ -9,6 +9,9 @@
 // v5.14 (19-sep) · cableado en esta pasada: useEncapsPlan → regimenDe() (hoyDia/total vivos + `regimen` expuesto), rama INTENSIVO en
 // itemsForDay (loop de 8 segmentos · senales · repaso_final · medio_dia · sims /100), simDays + simIntensivoDe()/encapsSim100Zone()
 // y tipoRondaDe() para el CIERRE DE SESIÓN. ⚠ Horas del loop intensivo = extra.nota_horas (heredadas, A CONFIRMAR en febrero).
+// v5.20 (6-oct): la INTENSIVA YA ESTÁ SEMBRADA (días 97-107 = mar 23-feb → mar 9-mar-2027, backup study_schedule_bk_intensivo_1006) →
+// el total vivo pasa a max(dia) = 107; examen ENCAPS 2027-I FIJADO = mié 10-mar-2027 (study_metrics.extra.exam_date). Las franjas del
+// Calendar de la intensiva (v5.20) son 05:00 Anki cifras · 07:15-12:15 loop · 17:15-18:45 anclaje + eval; extra.nota_horas sigue diciendo «heredadas».
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { supabase } from './supabase';
 import { ENCAPS_FICHAS_POR_TEMA, ENCAPS_VIDEO_DRIVE, ENCAPS_THEOMED_AREA, ENCAPS_THEOMED_VIDEOS, ENCAPS_COMPENDIO, ENCAPS_AREA_PREFIJO, ENCAPS_THEOMED_TEMA_SESION } from './encapsFuentes';
@@ -22,7 +25,7 @@ import { loadCierres, onCierresChange, cierreARow, fallosDeErrores, sumTipo, typ
 // v5.14 (19-sep): SOLO FALLBACK. El valor vivo es study_metrics.extra.d1 (lo escribe gen_encaps_mantenimiento_2027.js en cada
 // corrimiento); la app lo lee en useEncapsPlan → regimenDe(). Si Supabase no responde, se usa esta constante.
 export const STUDY_D1: Record<string, string> = {
-  ENCAPS: '2026-10-06',   // v6.17 MANTENIMIENTO 2027-I (D1=mar 6-oct; 31-ago→5-oct no estudiados): examen 2026-II rendido el 9-ago (Joseph NO lo dio; análisis real en DATA/ENCAPS/ANALISIS_EXAMEN_2026-2_REAL.md). Meta: ENCAPS 2027-I fines de MARZO 2027. 1h/día (16:15-17:15 L-V): banqueo puro guiado por el PRONÓSTICO v3 (II 30 · I 27 · V 21 · III 13 · IV 9 · 8 críticos: I-3 V-2 II-3 III-5 I-4 II-5 II-4 IV-1/2). Feb-mar 2027: vuelve a bloque principal (fase intensiva, se re-siembra entonces). Ciclo sembrado por gen_encaps_mantenimiento_2027.js (05-sep: sub-ejes por instancia + cola larga como secundario + receta del mini-sim en extra) · backup study_schedule_bk_1005 (v5.19 · régimen v6.17; v5.18: bk_1003 · v6.16 · v5.17: bk_0930 · v6.15).
+  ENCAPS: '2026-10-07',   // v6.18 MANTENIMIENTO 2027-I (D1=mié 7-oct; 31-ago→6-oct no estudiados; examen ENCAPS mié 10-mar-2027, intensiva mar 23-feb → mar 9-mar): examen 2026-II rendido el 9-ago (Joseph NO lo dio; análisis real en DATA/ENCAPS/ANALISIS_EXAMEN_2026-2_REAL.md). Meta: examen ENCAPS 2027-I = MIÉ 10-MAR-2027 (FIJADO por Joseph el 6-oct; antes «fines de marzo»). 1h/día (16:15-17:15 L-V): banqueo puro guiado por el PRONÓSTICO v3 (II 30 · I 27 · V 21 · III 13 · IV 9 · 8 críticos: I-3 V-2 II-3 III-5 I-4 II-5 II-4 IV-1/2). Feb-mar 2027: vuelve a bloque principal (fase intensiva mar 23-feb → mar 9-mar, días 97-107, YA sembrada el 6-oct; se regenera con --pretest tras el pre-test del vie 26-feb). Ciclo sembrado por gen_encaps_mantenimiento_2027.js (05-sep: sub-ejes por instancia + cola larga como secundario + receta del mini-sim en extra) · backup study_schedule_bk_1006 (v5.20 · régimen v6.18; v5.19: bk_1005 · v6.17 · v5.18: bk_1003 · v6.16 · v5.17: bk_0930 · v6.15).
   // MIR / USMLE se agregan cuando se construyan sus cronogramas.
 };
 // Fechas SIN actividad (bloqueadas por Joseph) — no cuentan como día de plan.
@@ -31,10 +34,10 @@ export const STUDY_SKIP_DATES: Record<string, string[]> = {
 };
 // v6 (27-ago): SÁBADOS Y DOMINGOS LIBRES en el régimen de mantenimiento — no cuentan como día de plan.
 export const STUDY_SKIP_WEEKENDS: Record<string, boolean> = { ENCAPS: true };
-// v5.14 (19-sep): SOLO FALLBACK (antes fijo: 102 → 95 → 94 → 92). El valor vivo es study_metrics.extra.dias_ciclo (92 = mar 6-oct-2026
-// → lun 15-feb-2027 en v5.19; v5.18: lun 5-oct → vie 12-feb · v5.17: jue 1-oct → mié 10-feb; desde v5.15 el corrimiento es RÍGIDO: el fin del ciclo SÍ se mueve y se amplía por detrás para no perder sesiones) y
-// crece solo con max(dia) de study_schedule cuando se siembre la FASE INTENSIVA (modo='INTENSIVO' · gen_encaps_intensivo_2027.js).
-export const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 92 }; // v5.19: siguen 92 (el fin se alargó al lun 15-feb para NO perder sesiones; v5.18: vie 12-feb · v5.17: mié 10-feb · v5.16: vie 5-feb)
+// v5.14 (19-sep): SOLO FALLBACK (antes fijo: 102 → 95 → 94 → 92). El valor vivo es study_metrics.extra.dias_ciclo (92 = mié 7-oct-2026
+// → mar 16-feb-2027 en v5.20; v5.19: mar 6-oct → lun 15-feb · v5.18: lun 5-oct → vie 12-feb · v5.17: jue 1-oct → mié 10-feb; desde v5.15 el corrimiento es RÍGIDO: el fin del ciclo SÍ se mueve y se amplía por detrás para no perder sesiones) y
+// crece solo con max(dia) de study_schedule cuando se siembre la FASE INTENSIVA (modo='INTENSIVO' · gen_encaps_intensivo_2027.js; v5.20: ya sembrada → max(dia) = 107).
+export const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 92 }; // v5.20: siguen 92 de mantenimiento (el fin se alargó al mar 16-feb para NO perder sesiones; con la intensiva sembrada el total vivo es 107) · v5.19: lun 15-feb · v5.18: vie 12-feb · v5.17: mié 10-feb · v5.16: vie 5-feb)
 // Régimen vigente resuelto en runtime: study_metrics.extra.d1 / dias_ciclo → fila dia=1 de study_schedule → constantes.
 export interface StudyRegimen { d1: string; total: number; origenD1: 'study_metrics' | 'study_schedule' | 'fallback'; origenTotal: 'study_metrics' | 'study_schedule' | 'fallback' }
 const ISO_RE = /^20\d\d-\d\d-\d\d$/;
@@ -132,7 +135,7 @@ export function miniSimSerie(days: StudyScheduleDay[], simScores: Record<number,
     return { dia: d.dia, fecha: d.fecha, simN, nota: nota == null ? null : Number(nota), semana: i + 1 };
   });
 }
-// ── FASE INTENSIVA 2027-I (modo='INTENSIVO', dia 93+ · sembrada por gen_encaps_intensivo_2027.js; v5.14 19-sep) ──
+// ── FASE INTENSIVA 2027-I (modo='INTENSIVO', dia 97+ en v5.20 —días 93-96 = mié 17 → lun 22-feb, cierre + examen Step 1, sin fila— · sembrada por gen_encaps_intensivo_2027.js; v5.14 19-sep) ──
 // Tipos de día que emite el generador: senales · loop (lun-jue, extra.loop = 8 segmentos) · pretest · sim100 · dress_rehearsal ·
 // repaso_final · medio_dia. Los 3 tipos de simulacro son días-sim con escala /100 y sim_n = dia (study_sim_scores), igual que el mini_sim /25.
 export const ENCAPS_INTENSIVO_SIM_TIPOS = ['pretest', 'sim100', 'dress_rehearsal'] as const;
@@ -540,6 +543,16 @@ function todayLimaISO(): string {
   const lima = new Date(now.getTime() - 5 * 60 * 60 * 1000);
   return lima.toISOString().slice(0, 10);
 }
+/**
+ * v5.20 (6-oct-2026): días que faltan al examen, VIVOS. study_metrics.dias_a_examen es un número estático (se escribe a mano y
+ * no baja solo); si study_metrics.extra.exam_date existe (2027-03-10 = examen ENCAPS 2027-I fijado por Joseph), se calcula
+ * contra hoy (Lima). Sin exam_date → el valor estático. Nunca negativo.
+ */
+export function diasAExamenDe(metrics: StudyMetrics | null | undefined): number | null {
+  const f = (metrics?.extra as Record<string, unknown> | undefined)?.exam_date;
+  if (typeof f === 'string' && ISO_RE.test(f)) return Math.max(0, Math.round((Date.parse(f) - Date.parse(todayLimaISO())) / 86_400_000));
+  return metrics?.dias_a_examen ?? null;
+}
 // v5.14: `d1Override` / `totalOverride` vienen de regimenDe() (study_metrics.extra); sin ellos, las constantes de fallback.
 export function diaActual(examen: string, d1Override?: string, totalOverride?: number): number {
   const d1 = d1Override || STUDY_D1[examen];
@@ -714,9 +727,9 @@ export function itemsForDay(day: StudyScheduleDay, focusByCode: Record<string, n
     return items;
   }
 
-  // ── v6 · RÉGIMEN MANTENIMIENTO 2027-I (31-ago-2026 → fines de enero): 1h/día 16:15-17:15 ──
+  // ── v6 · RÉGIMEN MANTENIMIENTO 2027-I (v5.20: mié 7-oct-2026 → mar 16-feb-2027, 92 días): 1h/día 16:15-17:15 ──
   // Cola COMPACTA de banqueo puro; nada de videos/theomed/fichas largas. El deep work de la
-  // mañana ahora es del USMLE Step 1. Feb-mar 2027: fase intensiva (se re-siembra el ciclo).
+  // mañana ahora es del USMLE Step 1. Feb-mar 2027: fase intensiva (v5.20: mar 23-feb → mar 9-mar, ya sembrada; examen mié 10-mar).
   if (day.modo === 'MANTENIMIENTO') {
     const area = ENCAPS_AREA_PREFIJO[((day.codigo || '').match(/^[IVX]+/) || [''])[0]];
     if (day.tipo === 'mini_sim') {
@@ -1204,7 +1217,7 @@ export function useEncapsPlan(examen: string = 'ENCAPS'): UseEncapsPlan {
   const [cierres, setCierres] = useState<CierreSesion[]>(() => loadCierres());
   useEffect(() => onCierresChange(setCierres), []);
 
-  // v5.14 (19-sep): D1 y total VIVOS — study_metrics.extra.d1 / dias_ciclo (hoy 2026-10-06 / 92, v5.19; v5.18: 2026-10-05) → fila dia=1 y max(dia) de
+  // v5.14 (19-sep): D1 y total VIVOS — study_metrics.extra.d1 / dias_ciclo (hoy 2026-10-07 / 92, v5.20; v5.19: 2026-10-06 · v5.18: 2026-10-05) → fila dia=1 y max(dia) de
   // study_schedule (la INTENSIVA feb-mar extiende el total sin tocar código) → constantes STUDY_D1 / STUDY_TOTAL_DAYS como fallback.
   const regimen = useMemo(() => regimenDe(examen, metrics, days), [examen, metrics, days]);
   const hoyDia = diaActual(examen, regimen.d1 || undefined, regimen.total);

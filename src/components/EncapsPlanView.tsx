@@ -11,6 +11,7 @@ import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline, Motion, L
 import {
   useEncapsPlan, itemsForDay, vueltaLabel, repasoKey, vueltasHechasDe, subEjeDe, miniSimRecetaDe, miniSimRecetaTexto,
   simIntensivoDe, encapsSim100Zone, tipoRondaDe,  // v5.14 (19-sep): sims de la FASE INTENSIVA (/100) + tipo de ronda del cierre
+  loopDe, diasAExamenDe,                           // v5.20 (6-oct): Horario de la INTENSIVA desde el loop de la fila · cuenta atrás viva desde extra.exam_date
   type PlanItem, type StudyScheduleDay, type StudyMetrics, type ProximoVideo, type MiniSimPunto, type CiegoSemana,
   type CiegoCodigo, type TemaCaliente, type TendenciaCiego, type EvalAnclada,
 } from '../lib/encapsPlan';
@@ -219,7 +220,7 @@ export default function EncapsPlanView() {
     <View>
       {/* HUD Cockpit — cuenta regresiva 20-ago + fase + altímetro Go/No-Go (reemplaza header genérico) */}
       <CountdownCockpit
-        diasAExamen={plan.metrics?.dias_a_examen}
+        diasAExamen={diasAExamenDe(plan.metrics)}
         tipo={plan.today?.tipo}
         promSim={plan.metrics?.prom_sim}
         coberturaPct={plan.metrics?.cobertura_pct}
@@ -388,7 +389,7 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
           {!!subEje && <Pill text={`sub-eje ${subEje.n}/${subEje.total} · sesión ${subEje.instancia}/${subEje.de}`} color={Colors.teal} />}
           {!!receta && <Pill text={`mini-sim #${receta.simN} · /25`} color={Colors.gold} />}
           {metrics?.qx_pct != null && <Pill text={`QX ${metrics.qx_pct}%`} color={Colors.blue} />}
-          {metrics?.dias_a_examen != null && <Pill text={`examen ${metrics.dias_a_examen}d`} color={Colors.muted} />}
+          {diasAExamenDe(metrics) != null && <Pill text={`examen ${diasAExamenDe(metrics)}d`} color={Colors.muted} />}
           <TouchableOpacity activeOpacity={0.8}
             onPress={() => Linking.openURL(encapsObsByTitle(today.subtema || tema, today.codigo || undefined)).catch(() => {})}
             style={{ borderWidth: 1, borderColor: Colors.purple + '99', backgroundColor: Colors.purple + '1F', borderRadius: 999, paddingVertical: 2, paddingHorizontal: 10 }}>
@@ -622,7 +623,7 @@ function MetaView({ metrics, simScores, simDays, miniSims, ciego, tendencia, por
     { label: 'Cobertura plan', value: metrics?.cobertura_pct != null ? `${metrics.cobertura_pct}%` : 's/d', color: Colors.blue },
     { label: 'Ritmo', value: metrics?.ritmo_min_dia != null ? `${metrics.ritmo_min_dia}min` : 's/d', color: Colors.gold },
     { label: 'Accionable', value: metrics?.accionable_videos != null ? `${metrics.accionable_videos} vids` : 's/d', color: Colors.green },
-    { label: 'Examen en', value: metrics?.dias_a_examen != null ? `${metrics.dias_a_examen}d` : 's/d', color: Colors.gold },
+    { label: 'Examen en', value: diasAExamenDe(metrics) != null ? `${diasAExamenDe(metrics)}d` : 's/d', color: Colors.gold },
     { label: 'Pendiente', value: metrics?.pendiente_h != null ? `${metrics.pendiente_h}h` : 's/d', color: Colors.muted },
   ];
 
@@ -702,7 +703,7 @@ function SimView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
       <View style={styles.simHeaderBox}>
         <Text style={styles.simHeaderTitle}>▲ MODO SIMULACRO · {rows.length} sims{nMini ? ` (${nMini} mini-sims /25)` : ''}{nCien ? ` (${nCien} sims /100 intensiva)` : ''} · {conNota} con nota · meta ≥17/20</Text>
         <Text style={styles.simHeaderHint}>
-          Régimen mantenimiento 2027-I: mini-simulacro de 25Q mixtas CADA VIERNES 16:15 ({ENCAPS_MINISIM_META.segPorQ}s/Q, receta v3 II {ENCAPS_MINISIM_META.receta.II} · I {ENCAPS_MINISIM_META.receta.I} · V {ENCAPS_MINISIM_META.receta.V} · III {ENCAPS_MINISIM_META.receta.III} · IV {ENCAPS_MINISIM_META.receta.IV}). Primer viernes: {simDays[0]?.fecha?.slice(5) || '—'}; examen ENCAPS 2027-I fines de marzo 2027 (fase intensiva feb-mar).
+          Régimen mantenimiento 2027-I: mini-simulacro de 25Q mixtas CADA VIERNES 16:15 ({ENCAPS_MINISIM_META.segPorQ}s/Q, receta v3 II {ENCAPS_MINISIM_META.receta.II} · I {ENCAPS_MINISIM_META.receta.I} · V {ENCAPS_MINISIM_META.receta.V} · III {ENCAPS_MINISIM_META.receta.III} · IV {ENCAPS_MINISIM_META.receta.IV}). Primer viernes: {simDays[0]?.fecha?.slice(5) || '—'}; examen ENCAPS 2027-I mié 10-mar-2027 (fase intensiva mar 23-feb → mar 9-mar, ya sembrada).
           Cargá la nota /25 al terminar cada uno (se guarda en study_sim_scores con sim_n = día y alimenta el gráfico de «17/20»). Umbral ≥{ENCAPS_MINISIM_META.umbral}/25 · alerta &lt;{ENCAPS_MINISIM_META.alerta}/25 dos viernes.
         </Text>
       </View>
@@ -909,6 +910,40 @@ function HorarioBlockRow({ b, tema, evalHoy }: { b: HorarioBlock; tema?: string;
   );
 }
 
+// v5.20 (6-oct): bloques del Horario en la FASE INTENSIVA, leídos de la fila que siembra gen_encaps_intensivo_2027.js
+// (el simulacro va a las 08:00 por defecto: la hora real del examen la fija la convocatoria SERUMS 2027-I).
+const hhmmMas = (h: string, min: number) => {
+  const [a, b] = h.split(':').map(n => parseInt(n, 10) || 0);
+  const t = a * 60 + b + min;
+  return `${String(Math.floor(t / 60) % 24).padStart(2, '0')}:${String(t % 60).padStart(2, '0')}`;
+};
+function bloquesIntensivo(day: StudyScheduleDay | null | undefined): HorarioBlock[] {
+  if (!day) return [];
+  const sim = simIntensivoDe(day);
+  if (sim) {
+    const dur = Math.round(sim.n * sim.segPorQ / 60);
+    return [
+      { hora: `08:00-${hhmmMas('08:00', dur)}`, titulo: `🔥 ${sim.label} · ${sim.n}Q · ${sim.segPorQ} s/Q`, apex: true },
+      { hora: `${hhmmMas('08:00', dur + 15)}-${hhmmMas('08:00', dur + 75)}`, titulo: `📊 Corrección por código v3 + cierre (umbral ≥${sim.umbral}/100)` },
+    ];
+  }
+  const loop = loopDe(day);
+  if (loop.length) return loop.map(s => ({ hora: `${s.h}-${hhmmMas(s.h, s.min)}`, titulo: s.seg, apex: /DEEP PRIME/i.test(s.seg) }));
+  if (day.tipo === 'senales') return [
+    { hora: '09:00-11:00', titulo: `📡 ${day.subtema || 'RE-SCAN DE SEÑALES 2027-I'}`, apex: true },
+    { hora: '11:00-11:15', titulo: '📝 Cierre: pesos v3 revisados + RM/NTS nuevas → Anki ENCAPS::Cifras' },
+  ];
+  if (day.tipo === 'medio_dia') return [
+    { hora: '09:00-09:30', titulo: '🧠 D-1 · 30 min de cifras (Anki ENCAPS::Cifras + CIFRAS_CRITICAS_2027-I.md)' },
+    { hora: '09:30-10:00', titulo: '📋 Hoja de errores del dress rehearsal (solo lectura) · logística del examen · dormir 7 h' },
+  ];
+  if (day.tipo === 'repaso_final') return [
+    { hora: '09:00-10:30', titulo: '🔁 REPASO FINAL · errores del registro rehechos con otro enfoque', apex: true },
+    { hora: '10:30-11:00', titulo: '🧠 Drill de cifras de los 8 críticos' },
+  ];
+  return [];
+}
+
 function HorarioView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   const { today, metrics } = plan;
   const horarios = (metrics?.extra as Record<string, unknown> | undefined)?.horarios as
@@ -918,9 +953,11 @@ function HorarioView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   // MANTENIMIENTO, tipo='mini_sim') → weekend/sim; si no → plantilla lun-jue (eval anclada + banco).
   const dow = today?.fecha ? new Date(`${today.fecha}T12:00:00`).getDay() : 1;
   const isWeekendDay = dow === 0 || dow === 6;
-  const esIntensivo = today?.modo === 'INTENSIVO';   // v5.14: fase intensiva feb-mar 2027 (horas del loop A CONFIRMAR en febrero)
+  const esIntensivo = today?.modo === 'INTENSIVO';   // v5.14: fase intensiva feb-mar 2027 · v5.20: mar 23-feb → mar 9-mar (días 97-107), horas = las del loop sembrado en la fila
   const useSimTemplate = !!today?.simulacro || today?.tipo === 'mini_sim' || !!simIntensivoDe(today);
-  const blocks = (useSimTemplate ? horarios?.weekend : horarios?.weekday) ?? [];
+  // v5.20 (6-oct): study_metrics.extra.horarios es la plantilla del MANTENIMIENTO (16:15-17:15). En la INTENSIVA (mar 23-feb →
+  // mar 9-mar) los bloques salen de la propia fila: loop de 8 segmentos (extra.loop), simulacro 100Q (extra.sim) o día especial.
+  const blocks = esIntensivo ? bloquesIntensivo(today) : (useSimTemplate ? horarios?.weekend : horarios?.weekday) ?? [];
 
   const tema = today ? `${today.codigo || ''} ${today.subtema || ''}`.trim() : '';
 
@@ -944,7 +981,7 @@ function HorarioView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
     <View>
       <Text style={styles.horarioHint}>
         {esIntensivo
-          ? (useSimTemplate ? '▲ Fase intensiva: simulacro 100Q (72s/Q) + corrección por código v3' : '● Fase intensiva (lun-jue): loop de 8 segmentos · horas heredadas del loop USMLE, A CONFIRMAR en la reestructuración de febrero')
+          ? (useSimTemplate ? '▲ Fase intensiva: simulacro 100Q (72s/Q) + corrección por código v3' : '● Fase intensiva (mar 23-feb → mar 9-mar · examen mié 10-mar): bloques sembrados en la fila del día — loop de 8 segmentos (extra.loop, horas del propio loop) o día especial (señales / D-1 medio día)')
           : useSimTemplate ? '▲ Viernes: mini-simulacro 25Q mixtas (72s/Q) + corrección' : '● Mantenimiento 2027-I (lun-jue): eval anclada 5Q → banco 20-25Q → registro'}
       </Text>
       {isWeekendDay && !useSimTemplate && (

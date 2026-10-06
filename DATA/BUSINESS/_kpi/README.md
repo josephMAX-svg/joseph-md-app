@@ -11,7 +11,7 @@
   `src/lib/empresaData.ts` → `LIVIANO_KPI_SEMANAL`: `leads` · `consultas` · `altas` · `mrr` · `churn` · `cogs`.
 - **Nombre del fichero**: `liviano_kpi_<AAAA>-W<SS>.json` (semana ISO del día en que se exporta, p. ej.
   `liviano_kpi_2026-W39.json` para la semana del lun 21-sep-2026 — en v5.15 era la semana de arranque de la Academia; en v5.16-v5.17 la Academia arrancaba en la W40
-  (lun 28-sep → dom 4-oct) y desde **v5.18 arranca en la W41** (lun 5 → dom 11-oct): en **v5.19 (D1 = mar 6-oct-2026)** sigue siendo la W41 (v5.18: lun 5-oct · v5.17: jue 1-oct · v5.16: lun 28-sep)). Si el navegador bloquea la descarga, el JSON se
+  (lun 28-sep → dom 4-oct) y desde **v5.18 arranca en la W41** (lun 5 → dom 11-oct): en **v5.20 (D1 = mié 7-oct-2026)** sigue siendo la W41 (v5.19: mar 6-oct · v5.18: lun 5-oct · v5.17: jue 1-oct)). Si el navegador bloquea la descarga, el JSON se
   copia al portapapeles: pegarlo aquí con ese mismo nombre.
 - **Forma del JSON** (una exportación = TODO el log, no solo la semana actual; el fichero más reciente contiene a los anteriores):
 

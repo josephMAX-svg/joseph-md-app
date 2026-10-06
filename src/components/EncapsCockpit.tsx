@@ -54,7 +54,7 @@ export function CountdownCockpit({
       <View style={styles.hudTop}>
         <Text style={styles.hudEyebrow}>ENCAPS · MANTENIMIENTO 2027-I</Text>
         <View style={styles.hudObjChip}>
-          <Text style={styles.hudObjChipText}>EXAMEN FIN-MAR 2027</Text>
+          <Text style={styles.hudObjChipText}>EXAMEN MIÉ 10-MAR-2027</Text>
         </View>
       </View>
 

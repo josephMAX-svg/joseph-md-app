@@ -32,16 +32,16 @@ export interface UsmleCheckpoint {
   when: string; predictor: string; band: string; url: string; gated: boolean;
 }
 export const USMLE_CHECKPOINTS: UsmleCheckpoint[] = [
-  { form: 'NBME CBSSA Forms 25–33', kind: 'NBME', when: 'plan v5.19: 7 in Phase A (every ~3 weeks) · NBME 31 (D82, lun 1-feb, el primer hábil tras el cierre de contenido D81 vie 29-ene) = GO/NO-GO · 32/33 final week (mar 2-feb / jue 4-feb) · v5.18: NBME 31 vie 29-ene (32/33 lun 1 / mié 3-feb) · v5.17: NBME 31 mié 27-ene', predictor: 'Best single predictor of a Step 1 pass (Palmerton: the ONLY one — UWorld % is a vanity metric)', band: '≥65% ≈ 95% pass · ≥70% ≈ 99% · plan GO = 2 consecutive ≥68% · on-track minimums per milestone in usmleScores.HITOS_ONTRACK', url: 'https://www.nbme.org/examinees/self-assessments', gated: true },
-  { form: 'USMLE Free 120', kind: 'FREE120', when: '1–2 weeks pre-exam (plan v5.19: D87, lun 8-feb; D94 mié 17-feb última sesión de banco · D95 jue 18-feb = D-1 real (sin finde entre D94 y D95) · target exam vie 19-feb-2027 · v5.18: Free 120 vie 5-feb, examen jue 18-feb · v5.17: mar 16-feb) — ideally at the real Prometric', predictor: 'Current NBME item wording · no official explanations → audit the PROCESS, not theory', band: '≥70% heuristic (community, not Palmerton) · 3 blocks of 40, timed', url: 'https://www.usmle.org/prepare-your-exam', gated: false },
-  { form: 'UWorld Self-Assessment 1–2', kind: 'UWSA', when: 'UWSA1 = day-1 baseline (D1, mar 6-oct) · UWSA2 = D77 (lun 25-ene) · v5.19 (v5.18: lun 5-oct / vie 22-ene)', predictor: 'Systematically OVER-predicts (Palmerton, same authors as the bank) — endurance only, never a date decision', band: 'trend > absolute number · the date is decided by NBMEs', url: 'https://www.uworld.com/', gated: true },
+  { form: 'NBME CBSSA Forms 25–33', kind: 'NBME', when: 'plan v5.20: 7 in Phase A (every ~3 weeks) · NBME 31 (D82, mar 2-feb, el primer hábil tras el cierre de contenido D81 lun 1-feb) = GO/NO-GO · 32/33 final week (mié 3-feb / vie 5-feb) · v5.19: NBME 31 lun 1-feb (32/33 mar 2 / jue 4-feb) · v5.18: NBME 31 vie 29-ene (32/33 lun 1 / mié 3-feb) · v5.17: NBME 31 mié 27-ene', predictor: 'Best single predictor of a Step 1 pass (Palmerton: the ONLY one — UWorld % is a vanity metric)', band: '≥65% ≈ 95% pass · ≥70% ≈ 99% · plan GO = 2 consecutive ≥68% · on-track minimums per milestone in usmleScores.HITOS_ONTRACK', url: 'https://www.nbme.org/examinees/self-assessments', gated: true },
+  { form: 'USMLE Free 120', kind: 'FREE120', when: '1–2 weeks pre-exam (plan v5.20: D87, mar 9-feb; D94 jue 18-feb última sesión de banco · D95 vie 19-feb = último día del plan · finde libre (dom 21 = D-1 real) · target exam lun 22-feb-2027 · v5.19: Free 120 lun 8-feb, D95 jue 18-feb = D-1, examen vie 19-feb · v5.18: Free 120 vie 5-feb, examen jue 18-feb · v5.17: mar 16-feb) — ideally at the real Prometric', predictor: 'Current NBME item wording · no official explanations → audit the PROCESS, not theory', band: '≥70% heuristic (community, not Palmerton) · 3 blocks of 40, timed', url: 'https://www.usmle.org/prepare-your-exam', gated: false },
+  { form: 'UWorld Self-Assessment 1–2', kind: 'UWSA', when: 'UWSA1 = day-1 baseline (D1, mié 7-oct) · UWSA2 = D77 (mar 26-ene) · v5.20 (v5.19: mar 6-oct / lun 25-ene · v5.18: lun 5-oct / vie 22-ene)', predictor: 'Systematically OVER-predicts (Palmerton, same authors as the bank) — endurance only, never a date decision', band: 'trend > absolute number · the date is decided by NBMEs', url: 'https://www.uworld.com/', gated: true },
   { form: 'AMBOSS Score Predictor', kind: 'AMBOSS', when: 'from your Qbank %', predictor: 'Predicted range ±7–10 pts from Qbank performance', band: 'confirm with an NBME', url: 'https://www.amboss.com/us/usmle/score-predictor', gated: true },
 ];
 // Readiness derived from the checkpoint layer (replaces the hardcoded 4).
 export const USMLE_READINESS = {
   pct: 4, // pre-first-NBME baseline · rises only when a checkpoint is logged
   status: 'Baseline · no NBME logged yet',
-  next: 'UWSA1 mar 6-oct (D1, baseline) → luego NBME 25/26/27/28/29 cada ~3 semanas (plan v5.19: los hitos corren con el plan conservando su D#, no están clavados a una fecha; con D1 en martes caen casi todos en lunes — NBME 29 jue 7-ene, 32 mar 2-feb y 33 jue 4-feb; v5.18: casi todos en viernes · v5.17: en miércoles). Registra el % de cada hito en 📏 Medición (Cola de hoy): el gauge se ancla al último hito y muestra la distancia al mínimo on-track.',
+  next: 'UWSA1 mié 7-oct (D1, baseline) → luego NBME 25/26/27/28/29 cada ~3 semanas (plan v5.20: los hitos corren con el plan conservando su D#, no están clavados a una fecha; con D1 en miércoles caen casi todos en martes — NBME 29 vie 8-ene, 32 mié 3-feb y 33 vie 5-feb; v5.19: casi todos en lunes · v5.18: casi todos en viernes · v5.17: en miércoles). Registra el % de cada hito en 📏 Medición (Cola de hoy): el gauge se ancla al último hito y muestra la distancia al mínimo on-track.',
 };
 
 // Organ systems ordered by official exam weight (order of attack)
@@ -84,7 +84,7 @@ export const PALMERTON_METHOD = [
   { name: 'Pharm: forward + reverse, ~6/drug', desc: 'Mechanism / use / toxicity, each forward AND reverse ≈ 6 cards per drug. Class-level card for shared properties. "More but shorter cards."', verified: true },
   { name: 'Daily card-creation limit', desc: 'Cap new cards/day — "the more cards you make, the more you review." Permission to NOT remember everything.', verified: true },
   { name: 'Slow is fast', desc: 'Spend real time understanding the miss instead of grinding volume. A Qbank raises scores when each question teaches a decision rule, not by volume.', verified: true },
-  { name: 'Sequencing: biochem first', desc: 'Do biochemistry videos first to build a foundation, then fill gaps via questions, making cards from what you miss. ⚠ DIVERGENCIA CONSCIENTE del plan v5.19 (#19): Biochemistry cierra la Fase A en D80-D81 (jue 28 / vie 29-ene-2027; v5.18: mié 27 / jue 28-ene · v5.17: lun 25 / mar 26-ene); el orden por sistemas sigue el peso del examen y Pathoma 1-3 abre en D2-D3 (Fundamentos). No se cambia: el temario no se fusiona ni se reordena.', verified: true },
+  { name: 'Sequencing: biochem first', desc: 'Do biochemistry videos first to build a foundation, then fill gaps via questions, making cards from what you miss. ⚠ DIVERGENCIA CONSCIENTE del plan v5.20 (#19): Biochemistry cierra la Fase A en D80-D81 (vie 29-ene / lun 1-feb-2027; v5.19: jue 28 / vie 29-ene · v5.18: mié 27 / jue 28-ene · v5.17: lun 25 / mar 26-ene); el orden por sistemas sigue el peso del examen y Pathoma 1-3 abre en D2-D3 (Fundamentos). No se cambia: el temario no se fusiona ni se reordena.', verified: true },
 ];
 
 // Per-system mini-methods (reconstructed in Palmerton's spirit)
@@ -104,7 +104,7 @@ export const PALMERTON_SYSTEMS: SystemMethod[] = [
 ];
 
 // ── LEGACY (pre-v5, #19): la rampa de 1 h/día y "la hora" son del plan de julio-2026; el plan vigente es usmleStep1Daily.ts
-// (6h15/día L-V, 95 días, D1 = mar 6-oct-2026 · v5.19; v5.18: lun 5-oct · v5.17: jue 1-oct). Se conservan como histórico; RoiPlan ya no los pinta cuando USMLE_RAMP_LEGACY = true.
+// (6h15/día L-V, 95 días, D1 = mié 7-oct-2026 · v5.20; v5.19: mar 6-oct · v5.18: lun 5-oct · v5.17: jue 1-oct). Se conservan como histórico; RoiPlan ya no los pinta cuando USMLE_RAMP_LEGACY = true.
 export const USMLE_RAMP_LEGACY = true;
 export const USMLE_LEGACY_NOTA = 'Rampa de principiante (1 h/día) y "la hora" = plan pre-v5 (julio-2026), sustituidos por el bloque principal de 6h15/día (usmleStep1Daily.ts · DAILY_META.bloque). Se conservan solo como histórico (usmleData.USMLE_RAMP / USMLE_HOUR, legacy).';
 // Beginner ramp (English + content), 1h/day Mon–Fri — LEGACY

@@ -265,9 +265,9 @@ export const HITOS_ONTRACK_FUENTE = 'DATA/USMLE/PALMERTON_POR_MATERIA.md · Part
 export interface HitoTramo { desde?: number; hasta?: number; label: string; accion: string }
 export interface HitoOnTrack { clave: string; match: RegExp; min: number | null; nota: string; tramos?: HitoTramo[] }
 export const HITOS_ONTRACK: HitoOnTrack[] = [
-  { clave: 'UWSA1', match: /Self-Assessment 1|UWSA1/i, min: null, nota: 'baseline (D1, mar 6-oct · v5.19; v5.18: lun 5-oct): no es gate, se LEE por tramos — <40 % protocolo Jay · 40-48 % justo · ≥48 % on-track (Parte V-A · §12.4 · §12.6-8)', tramos: [
-    { hasta: 39, label: '<40 % · PROTOCOLO JAY', accion: 'S1-S2 (semanas del 5-oct y del 12-oct = D1-D9, hasta el NBME 25 = D10 lun 19-oct; v5.19: con el D1 en martes la S1 tiene 4 sesiones, mar 6 → vie 9-oct · v5.18: D1-D10, S1 completa) a 20 Q/día untimed estilo Jay/Melody (§12.6-8, divergencia #2: se decide el mismo mar 6-oct con el % real); tarjetas propias del porqué, todos los due reviews a primera hora, CCSN. El temario NO se toca.' },
-    { desde: 40, hasta: 47, label: '40-48 % · JUSTO', accion: 'Trayectoria posible pero sin margen: con la regla del 5 %/mes un baseline <45-48 % hace difícil el 70 % (§12.4 "Goldilocks check"). Volumen del plan sin subir; auditar el método cada viernes (checklist §11.5); el NBME 25 (D10, lun 19-oct · v5.19; v5.18: vie 16-oct) decide si se aplica Jay.' },
+  { clave: 'UWSA1', match: /Self-Assessment 1|UWSA1/i, min: null, nota: 'baseline (D1, mié 7-oct · v5.20; v5.19: mar 6-oct · v5.18: lun 5-oct): no es gate, se LEE por tramos — <40 % protocolo Jay · 40-48 % justo · ≥48 % on-track (Parte V-A · §12.4 · §12.6-8)', tramos: [
+    { hasta: 39, label: '<40 % · PROTOCOLO JAY', accion: 'S1-S2 + el lun 19-oct (semanas del 5-oct y del 12-oct = D1-D8, más el D9 lun 19-oct = D1-D9, hasta el NBME 25 = D10 mar 20-oct; v5.20: con el D1 en miércoles la S1 tiene 3 sesiones, mié 7 → vie 9-oct · v5.19: D1-D9 con S1 de 4 sesiones, mar 6 → vie 9-oct, NBME 25 lun 19-oct · v5.18: D1-D10, S1 completa) a 20 Q/día untimed estilo Jay/Melody (§12.6-8, divergencia #2: se decide el mismo mié 7-oct con el % real); tarjetas propias del porqué, todos los due reviews a primera hora, CCSN. El temario NO se toca.' },
+    { desde: 40, hasta: 47, label: '40-48 % · JUSTO', accion: 'Trayectoria posible pero sin margen: con la regla del 5 %/mes un baseline <45-48 % hace difícil el 70 % (§12.4 "Goldilocks check"). Volumen del plan sin subir; auditar el método cada viernes (checklist §11.5); el NBME 25 (D10, mar 20-oct · v5.20; v5.19: lun 19-oct · v5.18: vie 16-oct) decide si se aplica Jay.' },
     { desde: 48, label: '≥48 % · ON-TRACK', accion: 'Trayectoria de GO (Parte V: ~48 % ya es trayectoria de GO); seguir el plan tal cual y no leer el UWSA como predicción (sobreestima 10-15 puntos).' },
   ] },
   { clave: 'NBME 25', match: /NBME (CBS Form )?25\b/i, min: 51, nota: '' },
@@ -486,7 +486,7 @@ export function checklist115(scores: UsmleScore[], hasta: string): AlarmaCheckli
 export function exportScoresJSON(): string {
   const scores = leer();
   return JSON.stringify({
-    exportado: new Date().toISOString(), plan: 'USMLE Step 1 v5.19 (D1 = 2026-10-06 · 95 días · examen vie 19-feb-2027)', clave: KEY, tabla: TABLA,
+    exportado: new Date().toISOString(), plan: 'USMLE Step 1 v5.20 (D1 = 2026-10-07 · 95 días · examen lun 22-feb-2027)', clave: KEY, tabla: TABLA,
     gate: USMLE_GATE, minimosOnTrack: { fuente: HITOS_ONTRACK_FUENTE, hitos: HITOS_ONTRACK.map((h) => ({ clave: h.clave, min: h.min, nota: h.nota })) },
     gateHitos: (({ estado, label }) => ({ estado, label }))(gateHito(scores)),
     pisoAmbar: { consol: PISO_AMBAR.consol, eval: PISO_AMBAR.eval },
