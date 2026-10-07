@@ -80,7 +80,7 @@ Meta: **399 h de Step 1 desde el reinicio** (mínimo 275 h). Colchón al D-1 del
 
 ### (d) Estado técnico (6-oct-2026)
 
-Código v6.00 commit **`ba8e42c`** → **deploy verificado** (bundle `index-ed169ab1…`: `examenTarget:'2027-09-27'`, `version:'v6.00'`) · **Supabase ENCAPS sembrado y
+Código v6.00 commit **`ba8e42c`** → **deploy verificado** (bundle `index-ed169ab1…`: `examenTarget:'2027-09-27'`, `version:'v6.00'`) · cierre commit **`5bfbaaf`** (Supabase + Calendar + docs + ROJO F2 + umbral MIR) → **deploy verificado** (bundle `index-69eaa428…`: `examenTarget:'2027-09-27'` ×1, 0 × `'2027-02-22'`, ROJO F2 y «fase principal (desde oct-2027» presentes) · **Supabase ENCAPS sembrado y
 verificado**: 60 filas MANTENIMIENTO (`dia` 1-60, mié 7-oct → mié 30-dic; hash Postgres intacto `9d1f5a19affb5673b9405c7744ade962`) + 50 filas INTENSIVO (`dia`
 61-110, lun 4-ene → vie 12-mar; 26 carril B + 6 mini-sims absorbidos + 13 reposición; pre-test vie 8-ene; 8 SIM 100Q); `study_metrics.extra.exam_date =
 '2027-03-14'`, `dias_ciclo = 60` · backups `study_schedule_bk_v600_20261006`, `study_metrics_bk_v600_20261006`, `study_schedule_bk_v600_int_20261006` · tabla
