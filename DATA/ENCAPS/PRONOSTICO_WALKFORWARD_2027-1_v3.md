@@ -1,9 +1,10 @@
 # 📈 ENCAPS 2027-I · Walk-forward v3 (Fable 5 · 27-ago-2026)
+> ✅ **v6.00 (6-oct-2026):** examen objetivo 2027-I = **dom 14-mar-2027 PROVISIONAL** (se fija con la convocatoria) · intensiva lun 4-ene → vie 12-mar (pre-test 2026-II vie 8-ene · 32 slots de barrido · 8 SIM 100Q · `FASE_INTENSIVA_2027-I.md`, bloque v6.00). **El vector v3 y los 8 críticos no cambian.** Lo que abajo cite el mié 10-mar, la intensiva 23-feb → 9-mar o el pre-test del 26-feb es v5.20 (SUPERSEDIDO).
 
 > ⚠️ **VECTOR CANÓNICO v3: II 30 · I 27 · V 21 · III 13 · IV 9** (bandas abajo).
 > **CRÍTICOS canónicos v3 = OCHO: I-3 · V-2 · II-3 · III-5 · I-4 · II-5 · II-4 · IV-1+IV-2** (este último condicional al comité — ver §4).
 > Construido con los **7 exámenes reales** (2024-II A/B, 2025-I A/B, 2025-II, 2026-I, **2026-II clasificado pregunta a pregunta**). Supersede a `PRONOSTICO_WALKFORWARD_2026-2_v2.md`.
-> Data: `_examen_2026-2_clasificado.json` + `ANALISIS_EXAMEN_2026-2_REAL.md` + `_qx_tendencias.json`. Examen objetivo: **2027-I — v5.20 (6-oct-2026): mié 10-mar-2027, FIJADO por Joseph** (⚠ los ENCAPS fueron siempre en domingo: confirmar día/hora/sede en la convocatoria SERUMS 2027-I, `SENALES_2027-I.md`) · al escribir el v3 (27-ago): fines de marzo 2027.
+> Data: `_examen_2026-2_clasificado.json` + `ANALISIS_EXAMEN_2026-2_REAL.md` + `_qx_tendencias.json`. Examen objetivo: **2027-I — v6.00: dom 14-mar-2027 PROVISIONAL** · ⏸ *(SUPERSEDIDO)* **v5.20 (6-oct-2026): mié 10-mar-2027, FIJADO por Joseph** (⚠ los ENCAPS fueron siempre en domingo: confirmar día/hora/sede en la convocatoria SERUMS 2027-I, `SENALES_2027-I.md`) · al escribir el v3 (27-ago): fines de marzo 2027.
 
 ---
 
@@ -115,7 +116,7 @@ Ponderación por recencia (pesos 1..5 por proceso) da: I 26.6 · II 29.5 · III 
 
 ---
 
-## 6) 🗓️ Implicaciones de plan para 2027-I (examen v5.20: mié 10-mar-2027 · diseño del 27-ago: fines de marzo 2027)
+## 6) 🗓️ Implicaciones de plan para 2027-I (examen **v6.00: dom 14-mar-2027 PROVISIONAL** · ⏸ v5.20: mié 10-mar-2027 · diseño del 27-ago: fines de marzo 2027)
 
 ### Fase A — 1h/día de preguntas (sep-2026 → ene-2027, ~20 semanas)
 Presupuesto semanal ≈ 105-125 preguntas (régimen v5.4: lun-jue 20-25Q del tema de la rotación + 5Q eval anclada, viernes mini-simulacro 25Q; sábado y domingo LIBRES — ver PROTOCOLO_HORA_MANTENIMIENTO.md). Mezcla del ciclo de 4 semanas proporcional al v3:
@@ -139,9 +140,9 @@ Reglas de la fase A:
 3. Fin de enero: **checkpoint** — % ciego por área contra el vector v3; redistribuir la mezcla hacia las áreas con brecha.
 
 ### Fase B — intensiva (feb → mar-2027, ~7 semanas en el diseño)
-> ⚠ **v5.20 (6-oct-2026, SEMBRADA):** la intensiva real va del **mar 23-feb al mar 9-mar-2027 = 11 hábiles** (días 97-107; examen ENCAPS mié 10-mar): mar 23 re-scan · mié 24 / jue 25 calentamiento I-3 / V-2 · vie 26 pre-test 2026-II · lun 1 → jue 4-mar barrido (**solo 4 slots** para los 8 críticos; el `--pretest` elige cuáles) · vie 5-mar SIM 100Q (2025-II) · lun 8-mar D-2 dress rehearsal · mar 9-mar D-1. Los puntos 3-4 de abajo (semanas 2-5 y 6-7) **no caben**: la cobertura de los 8 críticos descansa en la Fase A (mantenimiento) — `FASE_INTENSIVA_2027-I.md`, bloque v5.20.
+> ✅ **v6.00:** la intensiva va del **lun 4-ene al vie 12-mar-2027** (50 hábiles, `dia` 61-110: S1 señales + calentamiento + pre-test vie 8-ene · núcleo 32 slots + 8 SIM · cola) — ⏸ *(SUPERSEDIDO:)* ⚠ **v5.20 (6-oct-2026, SEMBRADA):** la intensiva real va del **mar 23-feb al mar 9-mar-2027 = 11 hábiles** (días 97-107; examen ENCAPS mié 10-mar): mar 23 re-scan · mié 24 / jue 25 calentamiento I-3 / V-2 · vie 26 pre-test 2026-II · lun 1 → jue 4-mar barrido (**solo 4 slots** para los 8 críticos; el `--pretest` elige cuáles) · vie 5-mar SIM 100Q (2025-II) · lun 8-mar D-2 dress rehearsal · mar 9-mar D-1. Los puntos 3-4 de abajo (semanas 2-5 y 6-7) **no caben**: la cobertura de los 8 críticos descansa en la Fase A (mantenimiento) — `FASE_INTENSIVA_2027-I.md`, bloque v5.20.
 
-1. **Re-scan de señales** (semana 1 de feb en el diseño original; v5.20: semana 1 de la intensiva, fila `senales` el **mar 23-feb** = D1 de la intensiva (día 97, día siguiente al examen Step 1) — `SENALES_2027-I.md` §2; v5.19: lun 22-feb · v5.18: lun 22-feb con D1 = vie 19-feb o lun 22-feb): QX Tendencias actualizado, materiales/lives nuevos, boletín DGE (coyuntura), RM/NTS publicadas desde sep-2026 → ajustar pesos y el condicional de IV.
+1. **Re-scan de señales** (**v6.00: lun 4-ene-2027 = dia 61**, fila `senales`; semana 1 de feb en el diseño original; ⏸ v5.20: semana 1 de la intensiva, fila `senales` el **mar 23-feb** = D1 de la intensiva (día 97, día siguiente al examen Step 1) — `SENALES_2027-I.md` §2; v5.19: lun 22-feb · v5.18: lun 22-feb con D1 = vie 19-feb o lun 22-feb): QX Tendencias actualizado, materiales/lives nuevos, boletín DGE (coyuntura), RM/NTS publicadas desde sep-2026 → ajustar pesos y el condicional de IV.
 2. **Simulacros completos 100Q/72s** cada VIERNES por la mañana (sábados y domingos libres; formato mixto 50/50 viñeta-directa), con análisis de errores por código. El primero = el examen 2026-II real (reservado).
 3. Semanas 2-5: barrido de los 8 críticos al 100% + drills de números críticos diarios (10 min).
 4. Semanas 6-7: watch-list + rebotes (II-1/II-11/II-8) + repaso multi-temporal de todo el registro de errores; última semana solo repaso, sin material nuevo.

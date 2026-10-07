@@ -354,7 +354,7 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
         <View style={st.faseChip}><Text style={st.faseTxt}>{faseActual(iso)}</Text></View>
         {(!sem.fueraDeRango || sem.pausa || sem.examen) && ( /* v6.00: la semana del examen (fuera de rango, n = 42) muestra el chip «examen» */
           <View style={[st.faseChip, (sem.deload || sem.pausa) && { borderColor: Colors.amber + '66', backgroundColor: Colors.amber + '1A' }]}>
-            <Text style={[st.faseTxt, (sem.deload || sem.pausa) && { color: Colors.amber }]}>{semanaLabel(sem)}{sem.hito ? ` · ${sem.hito}` : ''}{sem.deload ? ' · DELOAD secundarios 50%' : ''}</Text>
+            <Text style={[st.faseTxt, (sem.deload || sem.pausa) && { color: Colors.amber }]}>{semanaLabel(sem)}{sem.hito ? ` · ${sem.hito}` : ''}{sem.deload ? " · DELOAD secundarios −50 % (piso 30' · MIR 1 h)" : ''}</Text>
           </View>
         )}
         <Text style={st.fecha}>{iso}</Text>

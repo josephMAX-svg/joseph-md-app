@@ -48,3 +48,6 @@ DATA/BUSINESS/_upload/
 DATA/MIR/pool/raw/*.pdf
 DATA/MIR/pool/raw/*.txt
 DATA/_scripts/usmle/usmle_dias_v5.txt
+
+# v6.00: respaldos JSON del Google Calendar (datos personales; el repo es PÚBLICO) — solo en disco
+DATA/_v600/cal/cal_bk/

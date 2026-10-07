@@ -7,7 +7,7 @@
   "colorId": "6",
   "availability": "FREE/transparent",
   "regla": "tras cada corrimiento: node gen_research_plan.js <D1> → node gen_research_calendar.js → update_event (o delete+create) de los `recrear` con su payload → --set hito=eventId",
-  "actualizado": "2026-10-06",
+  "actualizado": "2026-10-07",
   "nHitos": 12
  },
  "overlays": {
@@ -146,9 +146,9 @@
   "revisor2": {
    "eventId": "9hhe6q10da1ltbpk23h171gf9c",
    "fechaCreada": "2026-12-23",
-   "hash": "4b73b6b306c6",
+   "hash": "4cb1047825f1",
    "summary": "🔬 RESEARCH · X-1 Revisor humano #2 de SR-1 nombrado",
-   "registrado": "2026-10-06",
+   "registrado": "2026-10-07",
    "accionPendiente": null,
    "payload": {
     "code": "X-1",
@@ -161,16 +161,16 @@
     "timeZone": "America/Lima",
     "colorId": "6",
     "availability": "AVAILABILITY_FREE",
-    "description": "HITO RESEARCH · X-1 · d28 del ciclo 1 · bloque 13:30-14:15 (día-Research; alterna con Derma)\n\nOBJETIVO: SR-1 · EQUIPO DE REVISIÓN: nombrar al revisor humano #2 ANTES de PROSPERO (opciones: Dr. Ciro · egresado UNCP con interés en investigación · colaborador IMG de la campaña); ofrecer coautoría por 2º cribado + extracción; cuenta Rayyan (gratis ≤3 revisiones). La invitación declara la CARGA REAL por revisor, fuera del bloque 13:30 (agenda post-Step 1): cribado título/abstract ≈ 6-12 h · texto completo ≈ 10-16 h · extracción doble ≈ 15-25 h · riesgo de sesgo ≈ 8-14 h entre mar y may-2027 (campo horas de researchDailyPlan2027.ts)\nENTREGABLE: Revisor #2 propuesto (nombre, afiliación, ORCID, conflicto) + invitación enviada con la carga horaria escrita\nARTEFACTO: lines/L4-complicaciones.md §9 \"Equipo de revisión\" rellenado + MENTORES.md\nAVISOS: PRISMA 2020 ítem 8 y Cochrane exigen ≥2 revisores independientes; 2 pases de la misma persona NO son cribado dual · sin aceptación escrita de las horas (≈40-70 h en 3 meses) no hay revisor #2 ni PROSPERO\nFECHA LÍMITE EXTERNA: antes de PROSPERO (sin revisor #2 humano no hay registro · PRISMA 2020 ítem 8)\n\nOverlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se\nregenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel\n→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.",
-    "hash": "4b73b6b306c6"
+    "description": "HITO RESEARCH · X-1 · d28 del ciclo 1 · bloque 13:30-14:15 (día-Research; alterna con Derma)\n\nOBJETIVO: SR-1 · EQUIPO DE REVISIÓN: nombrar al revisor humano #2 ANTES de PROSPERO (opciones: Dr. Ciro · egresado UNCP con interés en investigación · colaborador IMG de la campaña); ofrecer coautoría por 2º cribado + extracción; cuenta Rayyan (gratis ≤3 revisiones). La invitación declara la CARGA REAL por revisor, fuera del bloque 13:30 (v6.00: el Step 1 sigue hasta sep-2027): cribado título/abstract ≈ 6-12 h · texto completo ≈ 10-16 h · extracción doble ≈ 15-25 h · riesgo de sesgo ≈ 8-14 h entre mar y may-2027 (campo horas de researchDailyPlan2027.ts)\nENTREGABLE: Revisor #2 propuesto (nombre, afiliación, ORCID, conflicto) + invitación enviada con la carga horaria escrita\nARTEFACTO: lines/L4-complicaciones.md §9 \"Equipo de revisión\" rellenado + MENTORES.md\nAVISOS: PRISMA 2020 ítem 8 y Cochrane exigen ≥2 revisores independientes; 2 pases de la misma persona NO son cribado dual · sin aceptación escrita de las horas (≈40-70 h en 3 meses) no hay revisor #2 ni PROSPERO\nFECHA LÍMITE EXTERNA: antes de PROSPERO (sin revisor #2 humano no hay registro · PRISMA 2020 ítem 8)\n\nOverlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se\nregenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel\n→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.",
+    "hash": "4cb1047825f1"
    }
   },
   "cr-paquete": {
    "eventId": "f2mn20ok30kl5k2t1s6tci7n7c",
    "fechaCreada": "2027-01-08",
-   "hash": "34372f0db586",
+   "hash": "6a71f28365ab",
    "summary": "🔬 RESEARCH · CR-8 Paquete del case report #1 CONGELADO",
-   "registrado": "2026-10-06",
+   "registrado": "2026-10-07",
    "accionPendiente": null,
    "payload": {
     "code": "CR-8",
@@ -183,16 +183,16 @@
     "timeZone": "America/Lima",
     "colorId": "6",
     "availability": "AVAILABILITY_FREE",
-    "description": "HITO RESEARCH · CR-8 · d32 del ciclo 1 · bloque 13:30-14:15 (día-Research; alterna con Derma)\n\nOBJETIVO: Paquete de envío CONGELADO (manuscrito + fotos + consentimiento + CARE + cover) — el SUBMIT se ejecuta el jue 11-feb-2027 (CR-9 = d35 del ciclo 1 en v5.20 —d36 en v5.18-v5.19—, primer día-Research tras la pausa · = D89 del Step 1 en v5.20, antes del examen del lun 22-feb · v5.19: D90, examen vie 19-feb)\nENTREGABLE: Paquete completo y revisado; nada pendiente para febrero · estado → revision-mentor\nARTEFACTO: CASE_REPORT_1/_PAQUETE_ENVIO/ (todo lo que se sube) + Mesa editorial: fecha objetivo jue 11-feb-2027\nFECHA LÍMITE EXTERNA: antes del submit CR-9 (jue 11-feb-2027 = D89 del Step 1, primer día-Research tras la pausa): paquete congelado ANTES de la pausa Research por el Step 1 (vie 15-ene → mié 10-feb-2027; Fases B-C mar 2 → vie 19-feb; examen lun 22-feb · v5.20; v5.19: D90, Fases B-C lun 1 → jue 18-feb, examen vie 19-feb)\n\nOverlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se\nregenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel\n→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.",
-    "hash": "34372f0db586"
+    "description": "HITO RESEARCH · CR-8 · d32 del ciclo 1 · bloque 13:30-14:15 (día-Research; alterna con Derma)\n\nOBJETIVO: Paquete de envío CONGELADO (manuscrito + fotos + consentimiento + CARE + cover) — el SUBMIT se ejecuta el jue 11-feb-2027 (CR-9 = d35 del ciclo 1 —d36 en v5.18-v5.19—, primer día-Research tras la pausa · v6.00: en la intensiva ENCAPS, con el Step 1 en pausa hasta el mar 16-mar · v5.20: era el D89 del Step 1)\nENTREGABLE: Paquete completo y revisado; nada pendiente para febrero · estado → revision-mentor\nARTEFACTO: CASE_REPORT_1/_PAQUETE_ENVIO/ (todo lo que se sube) + Mesa editorial: fecha objetivo jue 11-feb-2027\nFECHA LÍMITE EXTERNA: antes del submit CR-9 (jue 11-feb-2027, primer día-Research tras la pausa): paquete congelado ANTES de la pausa de átomos (vie 15-ene → mié 10-feb-2027 = núcleo de la intensiva ENCAPS; v6.00: el Step 1 está en pausa del 31-dic al 15-mar · v5.20: la pausa era por las Fases B-C del Step 1)\n\nOverlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se\nregenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel\n→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.",
+    "hash": "6a71f28365ab"
    }
   },
   "case-report-1": {
    "eventId": "t136recadd6vnv0iebrmmqiv48",
    "fechaCreada": "2027-02-11",
-   "hash": "6e903b439b3c",
+   "hash": "9c071a327cbb",
    "summary": "🔬 RESEARCH · CR-9 SUBMIT case report #1",
-   "registrado": "2026-10-06",
+   "registrado": "2026-10-07",
    "accionPendiente": null,
    "payload": {
     "code": "CR-9",
@@ -205,30 +205,30 @@
     "timeZone": "America/Lima",
     "colorId": "6",
     "availability": "AVAILABILITY_FREE",
-    "description": "HITO RESEARCH · CR-9 · d35 del ciclo 1 · bloque 13:30-14:15 (día-Research; alterna con Derma)\n\nOBJETIVO: SUBMIT case report #1 a Dermatology Online Journal (paquete congelado en CR-8) + registrar el nº de manuscrito — primer día-Research tras la pausa (jue 11-feb-2027 = D89 del Step 1 en v5.20; el examen es el lun 22-feb · v5.19: D90, examen vie 19-feb)\nENTREGABLE: Case report ENVIADO ✅ · estado case-report-1 → enviado\nARTEFACTO: Mesa editorial: case-report-1 = enviado (fecha)\nFECHA LÍMITE EXTERNA: ≤ 28-feb-2027 (Dermatology Online Journal → JAAD CR → Case Reports in Dermatology)\n\nOverlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se\nregenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel\n→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.",
-    "hash": "6e903b439b3c"
+    "description": "HITO RESEARCH · CR-9 · d35 del ciclo 1 · bloque 13:30-14:15 (día-Research; alterna con Derma)\n\nOBJETIVO: SUBMIT case report #1 a Dermatology Online Journal (paquete congelado en CR-8) + registrar el nº de manuscrito — primer día-Research tras la pausa (jue 11-feb-2027; v6.00: intensiva ENCAPS, Step 1 en pausa · v5.20: D89 del Step 1)\nENTREGABLE: Case report ENVIADO ✅ · estado case-report-1 → enviado\nARTEFACTO: Mesa editorial: case-report-1 = enviado (fecha)\nFECHA LÍMITE EXTERNA: ≤ 28-feb-2027 (Dermatology Online Journal → JAAD CR → Case Reports in Dermatology)\n\nOverlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se\nregenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel\n→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.",
+    "hash": "9c071a327cbb"
    }
   },
   "equipo": {
    "eventId": "nibrfidt3qhct59qhtrvqpqqi0",
-   "fechaCreada": "2027-03-15",
-   "hash": "bca815cdd72d",
+   "fechaCreada": "2027-03-11",
+   "hash": "235eb56bab17",
    "summary": "🔬 RESEARCH · X-9 Equipo de revisión SR-1 confirmado",
-   "registrado": "2026-10-06",
+   "registrado": "2026-10-07",
    "accionPendiente": null,
    "payload": {
     "code": "X-9",
     "d": 45,
     "ciclo": 2,
-    "fecha": "2027-03-15",
+    "fecha": "2027-03-11",
     "summary": "🔬 RESEARCH · X-9 Equipo de revisión SR-1 confirmado",
-    "startTime": "2027-03-15T13:30:00-05:00",
-    "endTime": "2027-03-15T14:15:00-05:00",
+    "startTime": "2027-03-11T13:30:00-05:00",
+    "endTime": "2027-03-11T14:15:00-05:00",
     "timeZone": "America/Lima",
     "colorId": "6",
     "availability": "AVAILABILITY_FREE",
-    "description": "HITO RESEARCH · X-9 · d45 del ciclo 2 · bloque 13:30-14:15 (día-Research; alterna con Derma)\n\nOBJETIVO: EQUIPO DE REVISIÓN confirmado para PROSPERO: revisor #2 con cuenta Rayyan, ORCID de todos, afiliaciones, roles (garante, contacto, cribadores, extractores, estadístico), conflictos de interés, fechas previstas\nENTREGABLE: L4 §9 completo — se copia tal cual a PROSPERO\nARTEFACTO: lines/L4-complicaciones.md §9 + MENTORES.md\nFECHA LÍMITE EXTERNA: antes del registro R10 (vie 19-mar-2027 en v5.20; X-9 = lun 15-mar)\n\nOverlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se\nregenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel\n→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.",
-    "hash": "bca815cdd72d"
+    "description": "HITO RESEARCH · X-9 · d45 del ciclo 2 · bloque 13:30-14:15 (día-Research; alterna con Derma)\n\nOBJETIVO: EQUIPO DE REVISIÓN confirmado para PROSPERO: revisor #2 con cuenta Rayyan, ORCID de todos, afiliaciones, roles (garante, contacto, cribadores, extractores, estadístico), conflictos de interés, fechas previstas\nENTREGABLE: L4 §9 completo — se copia tal cual a PROSPERO\nARTEFACTO: lines/L4-complicaciones.md §9 + MENTORES.md\nFECHA LÍMITE EXTERNA: antes del registro R10 (vie 19-mar-2027; X-9 = jue 11-mar en v6.00 · v5.20: lun 15-mar)\n\nOverlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se\nregenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel\n→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.",
+    "hash": "235eb56bab17"
    }
   },
   "PROSPERO-SR1": {
@@ -255,24 +255,25 @@
   },
   "SR-1": {
    "eventId": "94mmg6li8egq2kh9401nti1pkg",
-   "fechaCreada": "2027-07-29",
-   "hash": "77dfdb93b2da",
+   "fechaCreada": "2027-07-17",
+   "hash": "40b02687e872",
    "summary": "🔬 RESEARCH · R43 SUBMIT SR-1 (Dermatologic Surgery)",
-   "registrado": "2026-10-06",
+   "registrado": "2026-10-07",
    "accionPendiente": null,
    "payload": {
     "code": "R43",
     "d": 94,
     "ciclo": 2,
-    "fecha": "2027-07-29",
+    "fecha": "2027-07-17",
     "summary": "🔬 RESEARCH · R43 SUBMIT SR-1 (Dermatologic Surgery)",
-    "startTime": "2027-07-29T13:30:00-05:00",
-    "endTime": "2027-07-29T14:15:00-05:00",
+    "allDay": true,
+    "startTime": "2027-07-17T00:00:00-05:00",
+    "endTime": "2027-07-18T00:00:00-05:00",
     "timeZone": "America/Lima",
     "colorId": "6",
     "availability": "AVAILABILITY_FREE",
-    "description": "HITO RESEARCH · R43 · d94 del ciclo 2 · bloque 13:30-14:15 (día-Research; alterna con Derma)\n\nOBJETIVO: SUBMIT SR-1 ✅ + registrar en la Mesa editorial y CTI Vitae + actualizar el estado en PROSPERO\nENTREGABLE: SR-1 ENVIADA · estado SR-1 → enviado\nARTEFACTO: Mesa editorial + PROSPERO actualizado\nFECHA LÍMITE EXTERNA: ≤ 31-ago-2027 (Dermatologic Surgery → JAAD → JCD → Anais/Actas)\n\nOverlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se\nregenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel\n→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.",
-    "hash": "77dfdb93b2da"
+    "description": "HITO RESEARCH · R43 · d94 del ciclo 2 · F4 (SERUMS): 30' en tiempo muerto de la posta — la hora la pone el turno del día (día-Research: mar · jue · sáb)\n\nOBJETIVO: SUBMIT SR-1 ✅ + registrar en la Mesa editorial y CTI Vitae + actualizar el estado en PROSPERO\nENTREGABLE: SR-1 ENVIADA · estado SR-1 → enviado\nARTEFACTO: Mesa editorial + PROSPERO actualizado\nFECHA LÍMITE EXTERNA: ≤ 31-ago-2027 (Dermatologic Surgery → JAAD → JCD → Anais/Actas)\n\nOverlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se\nregenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel\n→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.",
+    "hash": "40b02687e872"
    }
   }
  }

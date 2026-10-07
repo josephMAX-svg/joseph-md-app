@@ -1,12 +1,19 @@
 # 📋 REVISIÓN SEMANAL — sábado 07:15-07:35 (20') · v5.20 · re-fechado 6-oct-2026
 
+> **⏸ v6.00 (6-oct-2026): este ritual SIGUE (sáb 07:15-07:45, serie `k8iaefnjq0mnrlvkilhcarrik8` hasta el sáb 1-may; en F4 «📋 Revisión semanal 20'» dentro del Step 1 del sábado, serie `69tr6hqitr5fnanc2af5kvugnk` 8-may → 18-sep), pero las FECHAS y el régimen de abajo son v5.20.** Régimen vigente: DATA/_v600/V6_ESPEC.md (F1 7-oct → 30-dic · F2 ENCAPS 4-ene → 12-mar, examen dom 14-mar PROVISIONAL · F3 16-mar → 30-abr · F4 SERUMS L-S · examen Step 1 lun 27-sep-2027). Un día perdido ya no corre el plan: se descuenta del colchón (métrica nueva: horas de colchón restantes).
+
 > Ritual único que revisa los 9 frentes del régimen v5.20 (DEFINITIVO: D1 = mié 7-oct-2026, Step 1 = principal; D94 = jue 18-feb = última sesión de banco; D95 = vie 19-feb = último día del plan, D-1 hábil; finde libre, dom 21-feb = D-1 REAL sin estudio; examen target **lun 22-feb-2027**; examen ENCAPS/SERUMS 2027-I fijado el mié 10-mar-2027) con
 > **10 métricas** y una sola pregunta: *¿el sistema va on-track o hay que corregir ESTA semana?*
 > Palmerton revisa el checklist G "en cada hito NBME" (~3 semanas): demasiado grueso para un plan donde
 > 1 día perdido = +1 hábil. Aquí la cadencia es semanal y el trabajo de recopilar lo hace un script.
 >
-> **Franja**: sábado 07:15-07:35 (hueco libre tras el desayuno; no toca las franjas L-V). El evento **📋 REVISIÓN SEMANAL ya existe en el
-> Google Calendar** (id **`6iog066kra2e07ue1d0f2osuvs`**, sáb 07:15-07:35 desde el **sáb 10-oct-2026**, **`UNTIL=20270221T045959Z`** — la serie se RECREÓ el sáb 3-oct (v5.18)
+> **📌 v6.00 (6-oct-2026):** la serie vigente del Calendar es **`k8iaefnjq0mnrlvkilhcarrik8`** (sáb **07:15-07:45**, sáb 10-oct-2026 → sáb 1-may-2027,
+> `UNTIL=20270502T045959Z`, EXDATE sáb 13-mar = D-1 ENCAPS; cubre F1, F2 —antes del STEP 1 VIVO de las 07:45— y F3); en F4 la sustituye la serie de todo el
+> día «📋 Revisión semanal 20'» `69tr6hqitr5fnanc2af5kvugnk` (sáb 8-may → sáb 18-sep-2027, PROVISIONAL). Ids vigentes: `DATA/_v600/cal/CAL_V6.md` §3. Lo que
+> sigue (franja 07:15-07:35, S20 = sáb 20-feb, examen lun 22-feb) es ⏸ v5.20.
+>
+> **Franja** (⏸ v5.20): sábado 07:15-07:35 (hueco libre tras el desayuno; no toca las franjas L-V). El evento **📋 REVISIÓN SEMANAL existía en el
+> Google Calendar** (⏸ v5.20: id **`6iog066kra2e07ue1d0f2osuvs`**, borrado el 6-oct con v6.00; sáb 07:15-07:35 desde el **sáb 10-oct-2026**, **`UNTIL=20270221T045959Z`** — la serie se RECREÓ el sáb 3-oct (v5.18)
 > porque `recurrenceData` no se puede actualizar por MCP y la serie tenía que arrancar una semana más tarde; **en v5.19 (lun 5-oct) y en v5.20 (mar 6-oct) conserva id y fechas y solo cambió su descripción**; el id v5.17 `th5utf73brht5g0lkt87hd4940` (arrancaba el sáb 3-oct) y los anteriores `0r2rmn0f4vea40dls47lg60t44` (v5.15) y `21fbiohc1i47r4lqmaa3eb76l4` (v5.14) ya no existen). La serie llega al **sáb 20-feb-2027**, que en v5.20 es la
 > **S20 = CIERRE D91-D95, la última revisión ANTES del examen** (el Step 1 es el **lun 22-feb**, dos días DESPUÉS de esa revisión; el dom 21-feb es el D-1 real, sin estudio; el post-mortem va tras el examen, semana `examen` del script, fuera de la serie; la elección sáb/dom sigue siendo decisión de Joseph). **Semana 1 = sáb 10-oct-2026** = semana **lun 5 → vie 9-oct (con el D1 en MIÉRCOLES la S1 tiene 3 sesiones, D1-D3 = mié 7 → vie 9; lun 5 y mar 6-oct sin sesión)**. Las semanas se numeran desde la semana L-V de `DAILY_META.inicio` (7-oct → su lunes, 5-oct) — misma regla que `semanaStep1()` del cockpit (`STEP1_SEMANAS = 20`) y que
 > `gen_revision_semanal.js` (lee el `inicio` del `.ts`; `TOTAL_SEM = 20`); el plan ocupa **20 semanas de calendario**: la S19 (lun 8 → vie 12-feb) contiene **D86-D90** y la S20 (lun 15 → vie 19-feb) contiene **D91 (lun 15), D92 (mar 16), D93 (mié 17), D94 (jue 18-feb, última sesión de banco) y D95 (vie 19-feb = último día del plan, D-1 hábil)**; el examen (lun 22-feb) cae en la semana siguiente (label `examen`) —

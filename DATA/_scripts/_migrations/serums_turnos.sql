@@ -13,7 +13,7 @@
 -- RLS + policy: copia del patrón de plan_checks (y study_sim_scores): policy "Allow all", PERMISSIVE, roles {public}, cmd ALL,
 --   qual true, with_check true.
 --
--- ESTADO: PENDIENTE — se aplica en el Lote 4 (después de la siembra ENCAPS), NO antes. Crear la tabla vacía no afecta a nada y el
+-- ESTADO: APLICADA el 6-oct-2026 (Lote 4, tras la siembra ENCAPS) como migración Supabase «serums_turnos_v600». Crear la tabla vacía no afecta a nada y el
 --   cliente (serumsTurnos.ts) es tolerante a que no exista: no hace lectura/escritura remota para fechas < serums.inicio y, si
 --   PostgREST responde «relation does not exist» / schema cache, desactiva el espejo en esa sesión. Idempotente: re-ejecutarla no
 --   rompe nada.

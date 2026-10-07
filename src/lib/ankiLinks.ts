@@ -74,7 +74,7 @@ export const mirAnkiDeck = (asignatura: string): string =>
  * quirúrgicamente lo que no aplique).
  *  · Lo llevan las tarjetas de APEX::USMLE (sistema del día = DIAS[].system), de APEX::MIR (usmleSystem del día MIR,
  *    mirDailyPlan) y de APEX::DERMA cuando el átomo cruza con Step 1 (sys::Dermatology + step1).
- *  · Handoff jue 22-abr-2027 (fase principal MIR desde el vie 23-abr; v5.20 · v5.19: 15-abr · v5.18: 14-abr · v5.17: 13-abr · v5.16: 7-abr): un filtered deck por sistema = `tag:sys::Cardiovascular` reúne el
+ *  · Handoff vie 24-sep-2027 (v6.00: fase principal MIR desde oct-2027, tras el Step 1; antes: jue 22-abr-2027 en v5.20 · v5.19: 15-abr · v5.18: 14-abr · v5.17: 13-abr · v5.16: 7-abr): un filtered deck por sistema = `tag:sys::Cardiovascular` reúne el
  *    mecanismo (USMLE) + la clínica (MIR) sin crear ni resetear nada — receta en DATA/SYNC_ANKI_OBSIDIAN_APP.md.
  *  · Formato: Anki separa tags por espacio → sin espacios ni símbolos ('Hematology & Oncology' → Hematology_Oncology).
  * ────────────────────────────────────────────────────────────────────────── */

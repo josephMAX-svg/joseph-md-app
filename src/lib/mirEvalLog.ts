@@ -26,7 +26,7 @@
  * retención = los 4 ajustes de Palmerton). Ningún minuto nuevo.
  *
  * Neto MIR = A − F/3 (4 opciones, −1/3 por fallo, en blanco = 0). netoPct = neto / total × 100.
- * Umbrales de cierre POR FASE (gap 5): 70/55 hasta el jue 22-abr-2027 (último día del mantenimiento = handoff, v5.20; v5.19: jue 15-abr · v5.18: mié 14-abr · v5.17: mar 13-abr) → 75/60 desde el vie 23-abr-2027 (v5.20; v5.19: vie 16-abr) (mirCierreUmbral).
+ * Umbrales de cierre POR FASE (gap 5): v6.00 → 70/55 hasta el vie 24-sep-2027 (fin de la extensión = handoff, MIR_MANT_META.fin) → 75/60 desde oct-2027 (fase principal tras el Step 1). Historial: 70/55 hasta el jue 22-abr-2027 (último día del mantenimiento = handoff, v5.20; v5.19: jue 15-abr · v5.18: mié 14-abr · v5.17: mar 13-abr) → 75/60 desde el vie 23-abr-2027 (v5.20; v5.19: vie 16-abr) (mirCierreUmbral).
  * Táctica −1/3 (gap 6): campos opcionales blancosAcertables / fallosEntreDos / cambiadas / cambiadasAFallo →
  * mirStatsPorAsignatura calcula la EV de la política de blanco y emite consejo por asignatura.
  * Un fallo en el ancla D-7 reprograma el tema a la COLA D+14 (no hay "repaso finde": sáb+dom libres).
@@ -190,8 +190,8 @@ export function mirNeto(aciertos: number, total: number, blancos: number) {
 /** Umbrales del test de cierre POR FASE (gap 5: 'consolidada al 70 %' está 10 pts por debajo de lo que Top 50 exige). */
 export interface MirUmbralFase { fase: string; hasta: string; consolidada: number; anclasD7: number; }
 export const MIR_CIERRE_UMBRAL_FASES: MirUmbralFase[] = [
-  { fase: '1ª vuelta + banqueo (hasta 22-abr-2027)', hasta: '2027-04-22', consolidada: 70, anclasD7: 55 },
-  { fase: 'fase principal (desde el vie 23-abr-2027)', hasta: '9999-12-31', consolidada: 75, anclasD7: 60 },
+  { fase: '1ª vuelta + banqueo + extensión (hasta el vie 24-sep-2027)', hasta: '2027-09-24', consolidada: 70, anclasD7: 55 },
+  { fase: 'fase principal (desde oct-2027, tras el Step 1)', hasta: '9999-12-31', consolidada: 75, anclasD7: 60 },
 ];
 export function mirCierreUmbral(fechaISO: string = hoyISO()): MirUmbralFase {
   return MIR_CIERRE_UMBRAL_FASES.find((f) => fechaISO <= f.hasta) || MIR_CIERRE_UMBRAL_FASES[MIR_CIERRE_UMBRAL_FASES.length - 1];

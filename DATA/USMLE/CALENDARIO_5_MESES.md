@@ -1,5 +1,7 @@
 # CALENDARIO 5 MESES — USMLE Step 1 v5.20 (S1 semana del 5-oct-2026 → S20 semana del 15-feb-2027 · examen LUN 22-FEB-2027)
 
+> **⏸ v5.20 — SIN ACTUALIZAR A v6.00.** El plan vigente (6-oct-2026) es v6.00: Step 1 en dos tramos (D1-D60 mié 7-oct → mié 30-dic · pausa por el ENCAPS 31-dic → 15-mar · tramo 2 T1-T158 desde el mar 16-mar) → examen **lun 27-sep-2027**; semana a semana en `src/lib/usmleStep1Daily.ts` (DIAS_TODOS) y DATA/_v600/V6_ESPEC.md (Anexo A). Este fichero queda como referencia del temario y de la evidencia, no de las fechas.
+
 Plan semana a semana derivado de [`src/lib/usmleStep1Daily.ts`](../../src/lib/usmleStep1Daily.ts) **v5.20**
 (fuente de verdad: **D1 = MIÉ 7-OCT-2026 → D95 = VIE 19-FEB-2027, 95 días**; del 31-ago al 6-oct
 no se estudió: 27 hábiles perdidos) + evidencia del agente macro:calendario-5-meses (USMLE Bulletin 2026-27, NBME,
@@ -404,6 +406,8 @@ Las franjas del Calendar no cambian en D94 (05:00 Anki · 07:15 · 11:00 siguen 
 ritual adelantado) van seguidos; después vienen el sáb 20 (libre) y el **dom 21-feb (D-1 real, sin estudio)**, y el examen es el
 lun 22-feb: en la v5.20, como en la v5.15, hay finde entre el taper y el examen (en la v5.18-v5.19 no lo había; el sáb 13 y el
 dom 14-feb caen antes, entre el D90 y el D91).
+⏸ **v5.20 — SUPERSEDIDO el mismo 6-oct por v6.00:** las series USMLE principales, las 6 extensiones D81-D93, la intensiva v5.20 y la REVISIÓN SEMANAL
+`6iog…` que cita este párrafo se borraron o re-fecharon; ids vigentes en `DATA/_v600/cal/CAL_V6.md` §3 y `DATA/ENCAPS/CALENDAR_SEGMENTOS_V5_6.md` §23.6.
 ✅ **Google Calendar (RE-FECHADO el 6-oct a la v5.20)**: las 6 series USMLE L-V principales siguen terminando el vie 29-ene
 (UNTIL 20270130), que en la v5.20 es el **D80** (1.er día doble de Bioquímica), y las 6 series de EXTENSIÓN v5.20 (RECREADAS el
 6-oct; las de la v5.19 `45cmcfrf…`/`f413f0cl…`/`tsmqfh3a…`/`knmf0o14…`/`s4t9ct7t…`/`64lck9n9…` y la de ENCAPS `m00blqfa…` ya

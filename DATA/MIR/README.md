@@ -1,4 +1,4 @@
-# DATA · MIR — España
+# DATA · MIR — España (régimen v6.00 · 6-oct-2026)
 
 Toda la data REAL del plan MIR. Fuente canónica (código): `src/lib/*.ts`. Plataforma:
 **ProMIR** (`promir.medicapanamericana.com`) — SPA por WebSocket; deep-link `/capitulo/<id>`.
@@ -6,11 +6,39 @@ Abre bien en Chrome (no necesita Edge). Cruzado con **rabi_94** (Google Drive, 1
 Método de referencia: **Palmerton** (comprensión > memorización · preguntas ciegas primero ·
 Anki de mecanismo FSRS · medir por % ciego). Meta: Top 50 MIR 2030.
 
+> ## ✅ v6.00 VIGENTE (REESTRUCTURACIÓN ANUAL, decidida el mar 6-oct-2026 · arranca el mié 7-oct-2026) — manda sobre los bloques v5.x de abajo
+> **DJ-4 (decisión de Joseph): MIR mantiene su horario — 1 h/día en TODAS las fases**; el resto de secundarios baja como mucho a 30'. Fuente única de fechas:
+> `DATA/_scripts/_fechas_v6.json`; plan generado: `src/lib/mirMantenimiento.ts` (por `gen_mir_mantenimiento.js` v6, que lee `skip`, `protegidos` y `serums.inicio`).
+>
+> | Bloque | Fechas | Días | Franja | Contenido |
+> |---|---|---|---|---|
+> | Diario (1.ª vuelta) | mié 7-oct-2026 → mié 27-ene-2027 | **78** (intacto: 76 temas + D77 mini-MIR mar 26-ene + D78 corrección mié 27-ene) | 15:15-16:15 | sin cambio (`mirDailyPlan.ts`) |
+> | Mantenimiento | jue 28-ene → **jue 22-abr-2027** | **57** (47 lun-jue + 10 viernes) | 15:15-16:15 | banqueo por peso + viernes = 30Q de la asignatura peor del log + 12 Tier C |
+> | **Extensión (nueva)** | **vie 23-abr → vie 24-sep-2027** (último día con estudio antes del Step 1) | **131** (88 lun-jue · 23 viernes · **20 sábados**, el primero sáb 8-may) | F3 15:15-16:15 · F4 por turno: **M 16:00-17:00 · T 10:35-11:35 · L 15:15-16:15 · día de hito 04:05-05:05 · guardia: 1 h en tiempo muerto** | igual que el mantenimiento + **sábado = 30Q mixtas de las 14 asignaturas (mini-simulacro, 77 s/Q) + corrección**; Tier C express repitiendo el ciclo de las 12 con preguntas no usadas |
+> | Fase principal | desde oct-2027 (tras el Step 1 del lun 27-sep) | — | — | `MIR_MANT_META.handoff` (vie 24-sep → fase principal) |
+>
+> - `MIR_MANT_DIAS` = **188** filas (`d` 1-57 `fase:'mantenimiento'` · 58-188 `fase:'extension'`); `MIR_MANT_META.totalDias = 188` (lo usa la navegación de
+>   `MirTodayPlan`). Adelanto (examen 31-ago): extensión 107 filas → vie 27-ago · plan B (25-oct): 155 → vie 22-oct.
+> - **Modo REDUCIDO ELIMINADO** (`REDUCIDO_HASTA = null`): su motivo era el sprint del Step 1 de febrero, que ya no existe; las 17 filas 28-ene → 19-feb pasan
+>   de 10Q a 25Q/30Q (más contenido, nada se quita). Reversible con una constante si Joseph prefiere aliviar la F2 (decisión abierta).
+> - **Tier C del mantenimiento (12):** jue 28-ene Traumatología · jue 4-feb Traumatología · jue 11-feb Radiología-Urgencias · jue 18-feb Oncología Médica · jue
+>   25-feb Geriatría · jue 4-mar ORL · jue 18-mar Cuidados Paliativos · **mié 24-mar** Urología · jue 1-abr Oftalmología · jue 8-abr Genética · jue 15-abr
+>   Inmunología · jue 22-abr Planificación y Gestión Sanitaria (+ 22 en la extensión).
+> - **Días sin fila MIR:** SKIP 25-dic · 31-dic · 1-ene · 25-mar · 26-mar y protegidos v6 **vie 12-mar** (D-1 hábil del ENCAPS; decisión abierta: si Joseph
+>   quiere su hora MIR esa tarde, se quita del set y se regenera, +1 fila) · sáb 13 · dom 14 · lun 15-mar · sáb 25 · dom 26 · lun 27-sep. Los protegidos v5.20
+>   (22-feb, 9-mar, 10-mar) vuelven a ser días de plan. Sábados solo desde el inicio del SERUMS (~lun 3-may [S]).
+> - Retención FSRS `APEX::MIR` **0,85 hasta el Step 1**; 0,90 al empezar la fase principal (oct-2027). En el SERUMS la franja la da la plantilla del turno
+>   (`mirFranjaPorTurno`); lo que no se termine en una guardia se suma al día de plan siguiente (nunca se pierde).
+> - ⏸ Los bloques «v5.20 (6-oct-2026, VIGENTE …)» y anteriores de abajo, §3 (franja única 15:15), **§4.2 (handoff 22-abr, umbral 70/55 → 75/60 desde el
+>   23-abr)**, **§5 (FSRS 0,85 → 0,90 desde el 23-abr, handoff 22-abr)** y §6 (58 días, reducido, handoff 22-abr) quedan **SUPERSEDIDOS** donde contradigan
+>   este bloque (v6.00: handoff **vie 24-sep-2027**, ≥ 60 · umbral de cierre **70/55 hasta el vie 24-sep-2027 y 75/60 desde oct-2027** · FSRS **0,85 hasta el
+>   Step 1 → 0,90 desde oct-2027**); se conservan como historial.
+
 > v3 "cero puntos ciegos" (5-sep-2026): selección por Peso MIR + núcleo rabi_94, Epi/Bioética
 > en D1-D4, bloques alineados al Step 1, eval multi-temporal, registro de mediciones, test de
 > cierre, mini-MIR D77, modo banqueo ene-mar 2027. El Calendar (15:15-16:15 L-V) NO cambia.
 >
-> **v5.20 (6-oct-2026, VIGENTE · corrimiento DEFINITIVO): D1 = MIÉ 7-OCT-2026.** El mar 6-oct tampoco se estudió → +1 día hábil
+> ⏸ *(SUPERSEDIDO por v6.00 en el mantenimiento; el plan diario de 78 días sigue igual)* **v5.20 (6-oct-2026, VIGENTE · corrimiento DEFINITIVO): D1 = MIÉ 7-OCT-2026.** El mar 6-oct tampoco se estudió → +1 día hábil
 > sobre v5.19. Es el **decimonoveno corrimiento** (31-ago → 7-oct; 27 días hábiles perdidos) y Joseph lo fijó como el definitivo (6-oct). Sigue la **regla RÍGIDA** (solo corren los
 > días: ni un tema ni un subtema se toca, los hitos NBME/UWSA corren con el plan **conservando su D#** — con D1 en miércoles caen casi todos
 > en MARTES — y donde había un fin clavado se **AMPLÍAN días** en vez de perder sesiones; **no se fusiona ni se recorta nada** y no se borra ninguna evaluación).
@@ -85,6 +113,13 @@ de `DELTA_CAPIDS` existen y sus filas llevan `delta:true`.
 
 **Orden de bloques = cada asignatura PRECEDE ~1 semana a su sistema Step 1** (clínica en español
 como prime → mecanismo en inglés 7 días después = re-exposición espaciada del mismo sistema).
+
+> ✅ **Nota v6.00 (leído de `DIAS` / `DIAS_T2` de `usmleStep1Daily.ts` con node el 6-oct):** el prime MIR → Step 1 **solo vale para los sistemas de F1
+> (D1-D57, mié 7-oct → jue 24-dic)**: Cardio, Neumo, Nefro, Gastro, Endo, Neuro y Hemato conservan su homólogo y su lag; Epidemiología y Bioética caen
+> ahora sobre el **D58 lun 28-dic** (bioestadística + epidemiología + ética, ex-D79). **Infecto, Gine, Reuma y Psiq NO tienen su sistema Step 1 detrás en
+> F1**: Micro / ID, Reproductive, Musculoskeletal / Rheum, Psychiatry y Biochemistry quedan en el **tramo 2 (F3)** — Micro jue 18 → mar 30-mar-2027 · Repro
+> mié 31-mar → mar 6-abr · MSK mié 7 → vie 9-abr · Psiq lun 12 → mié 14-abr · Bioq jue 15 → vie 16-abr —, 3-4 meses después del bloque MIR (dic-ene): ahí ya
+> no es «prime + re-exposición a 7 días» sino repaso a largo plazo. La columna «Homólogo Step 1 / Lag» de la tabla es v5.20: sigue valiendo en las filas 3-9 (D# y fechas de F1 intactos) y queda SUPERSEDIDA en las filas 1-2 (Epi/Bioética → D58 lun 28-dic) y 10-14 (Infecto, Gine, Reuma, Psiq → tramo 2).
 Homólogo Step 1 = rangos reales de `usmleStep1Daily.ts` **v5.20** (95 días, D1 = mié 7-oct-2026 → D95 = vie 19-feb-2027; examen lun 22-feb),
 leídos del array `DIAS` — no estimados.
 
@@ -210,7 +245,7 @@ Las 14 asignaturas del plan suman **80,7 %** del peso ProMIR (`MIR_MANT_PESOS`, 
 - Verificados con vídeos+duraciones: `mirCardiologiaData.ts`, `mirDigestivoData.ts`.
 - Dato corregido en `mirData.ts` (Tier S): **Epidemiología ~10 Q/año (~5 % del MIR; 3 capítulos = 70 %) · Estadística inferencial 0 Q en 5 años (ProMIR) · Bioética ~1,2 % (Principios = 40 % del bloque)**. La nota antigua "Estadística 6-10 Q" era falsa.
 
-## 3. Bloque diario 15:15–16:15 (Google Calendar — verificado, NO modificar; solo se rebalancea el interior)
+## 3. Bloque diario 15:15–16:15 (Google Calendar — verificado, NO modificar; solo se rebalancea el interior) — v6.00: vale para F1-F3; en el SERUMS (F4) la franja va por turno (M 16:00 · T 10:35 · L 15:15 · hito 04:05 · guardia en tiempo muerto)
 `MIR_FRANJAS` en `mirDailyPlan.ts`. Tiempo real por pregunta MIR = **77 s** (210Q / 270 min), no 90-100 s.
 **17-19 Q/día** (antes 7) con −40 % de lectura. Fuente de preguntas = **test del capítulo ProMIR**
 (verificado, logueado) o cuadernillos oficiales (examenesmir.com). "AMIR Test" no está verificado → no se prescribe.
@@ -226,7 +261,7 @@ Las 14 asignaturas del plan suman **80,7 %** del peso ProMIR (`MIR_MANT_PESOS`, 
 | 16:05–16:15 | ≤4 APEX desde el Shopping List (plantilla APEX-MIR, §5) — **creados DIRECTAMENTE en Anki** (§5, regla v3b) |
 
 - **1er día de cada bloque:** 15:15–15:30 = **TEST DE CIERRE** 10Q reales de la asignatura recién
-  cerrada (13 min · 77 s/Q · en blanco permitido) → neto = A − F/3 · umbral **por fase** (`mirCierreUmbral`): hasta el
+  cerrada (13 min · 77 s/Q · en blanco permitido) → neto = A − F/3 · umbral **por fase** (`mirCierreUmbral`): **v6.00: hasta el vie 24-sep-2027 70/55; desde oct-2027 75/60** · ⏸ v5.20: hasta el
   22-abr-2027 (último día del mantenimiento) **≥70 % consolidada · 55-69 % intermedia · <55 % anclas D-7**; desde el vie 23-abr-2027 **75 / 60** (v5.20; v5.19: 15-abr → vie 16-abr). El **agregado de la
   asignatura** (cierre + ancladas + quiz, **n ≥ 20 Q**, `mirAgregadoAsignatura`) manda sobre el cierre de 10Q (±10 pp por pregunta)
   para decidir la rotación D-7 (`mirAsignaturasEnAnclasD7`).
@@ -261,12 +296,12 @@ ocupa cada ancla** (`mirTemaEstado`, `mirEstadosTemas`, `mirAnclasDinamicas`, `M
   ajuste → tras 2 anclas ✓ seguidas sale de caliente; la cola D+14 apunta al D# real del slot.
 
 ### 4.2 Métricas calibradas a Top 50 (gap 5) — `mirData.ts`
-- **`MIR_HITOS`** (mínimo on-track por hito, % neto ciego): mini-MIR D77 (mar 26-ene-2027 en v5.20; v5.19: lun 25-ene; `mirData.ts` la lee de `mirDiaN(77)`, así que sigue al plan en cada corrimiento) **≥ 50** · handoff 22-abr-2027 (v5.20: = último día del mantenimiento; v5.19: 15-abr; v5.18: 14-abr) **≥ 60** ·
+- **`MIR_HITOS`** (mínimo on-track por hito, % neto ciego): mini-MIR D77 (mar 26-ene-2027 en v5.20; v5.19: lun 25-ene; `mirData.ts` la lee de `mirDiaN(77)`, así que sigue al plan en cada corrimiento) **≥ 50** · handoff **vie 24-sep-2027 (v6.00: último día de la extensión, día de plan anterior al ritual del Step 1) ≥ 60** (⏸ v5.20: 22-abr-2027 = último día del mantenimiento; v5.19: 15-abr; v5.18: 14-abr) ·
   fin 1ª vuelta completa dic-2027 **≥ 68** · simulacros 2028 **≥ 75** · simulacros 2029 **≥ 82** (banda Top 50) · examen MIR 2030 ≥ 82
   (fecha exacta de la convocatoria **A VERIFICAR (12-sep)**; cota 31-ene-2030). `mirDistanciaOnTrack(fecha)` = readiness derivado
   (mini-MIR > media de cierres > ancladas) − mínimo del próximo hito; MirHub lo muestra en la barra como `Δ MINI-MIR +X` (como el USMLE)
   y la pestaña Simulacros lista la trayectoria con el próximo hito resaltado.
-- **`MIR_CIERRE_UMBRAL_FASES`**: 70/55 hasta el 22-abr-2027 → **75/60 desde el vie 23-abr-2027** (v5.20; v5.19: 15-abr → vie 16-abr; v5.18: 14-abr → jue 15-abr) (`mirCierreUmbral(fecha)`, `mirEstadoCierre(pct, fecha)`).
+- **`MIR_CIERRE_UMBRAL_FASES`**: **v6.00: 70/55 hasta el vie 24-sep-2027 → 75/60 desde oct-2027** (fase principal, tras el Step 1) · ⏸ (70/55 hasta el 22-abr-2027 → 75/60 desde el vie 23-abr-2027: v5.20; v5.19: 15-abr → vie 16-abr; v5.18: 14-abr → jue 15-abr) (`mirCierreUmbral(fecha)`, `mirEstadoCierre(pct, fecha)`).
 - **Bandas de `MIR_SIMULACROS`** en netas/200: **≥150 (75 %) = banda Top 50 · ≥138 = Derma 2025 (última plaza 137,8) · ≥120 = solo
   zona plaza (~puesto 1.500)**.
 - **Fuente de las netas** (`MIR_HITOS_FUENTE`): MIR 2026 nº1 = 188 netas/200 · MIR 2025 Derma última plaza 137,8 (puesto 233) ·
@@ -322,7 +357,7 @@ ocupa cada ancla** (`mirTemaEstado`, `mirEstadosTemas`, `mirAnclasDinamicas`, `M
   disco SIN redesplegar → las tarjetas podrían llegar truncadas o no llegar). La cola de HOY, el bloque APEX y el mantenimiento lo repiten.
   La nota madre Obsidian sigue siendo el sitio de la lectura / Shopping List, no el canal de las tarjetas.
 - Deck raíz `APEX::MIR::<asignatura>` (`ankiLinks.mirAnkiDeck`; se crean lazy, hoy solo existe `cardiologia`).
-- **Preset FSRS "APEX::MIR"** (separado del USMLE): desired retention **0,85 hasta el 22-abr-2027** (→ 0,90 desde el vie 23-abr-2027, al
+- **Preset FSRS "APEX::MIR"** (separado del USMLE): desired retention **0,85 hasta el Step 1 → 0,90 desde oct-2027** (v6.00, al entrar en la fase principal) · ⏸ (0,85 hasta el 22-abr-2027 → 0,90 desde el vie 23-abr-2027, al
   entrar en la fase principal; v5.20; v5.19: 15-abr → vie 16-abr; v5.18: 14-abr → jue 15-abr) · solo Good/Again · nuevas ≤4/día · límite de repasos sin capar (la franja de
   5 min soporta ~40-60 reviews; si el deck marca >60 vencidas dos días seguidos → bajar nuevas a 2 esa semana).
   Configurarlo es manual en Anki escritorio (A VERIFICAR 05-sep: no hay acceso AnkiConnect desde la app).
@@ -334,9 +369,11 @@ ocupa cada ancla** (`mirTemaEstado`, `mirEstadosTemas`, `mirAnclasDinamicas`, `M
   (año-nº cuando exista el pool; la UI lo rellena con los `qIds` del quiz).
 - **Cuota 1 de cada 4 APEX = tarjeta drill con imagen real** del capítulo ProMIR (ECG, Rx, analítica, derma):
   formato "Cardio — ECG: ¿qué muestra y qué haces?". El MIR trae ~25 preguntas con imagen.
-- **Handoff 22-abr-2027** (v5.20; último día del mantenimiento; v5.19: 15-abr; v5.18: 14-abr): export de stats FSRS del deck (retención real, intervalos medios) como criterio de entrada a la fase principal.
+- **Handoff vie 24-sep-2027** (v6.00: último día de la extensión; ⏸ v5.20: 22-abr-2027, último día del mantenimiento; v5.19: 15-abr; v5.18: 14-abr): export de stats FSRS del deck (retención real, intervalos medios) como criterio de entrada a la fase principal.
 
 ## 6. Mantenimiento ene-abr 2027 (banqueo puro) — [`src/lib/mirMantenimiento.ts`](../../src/lib/mirMantenimiento.ts)
+> **v6.00 (vigente):** mantenimiento **57 días jue 28-ene → jue 22-abr-2027** (47 lun-jue + 10 viernes, sin modo reducido) + **extensión 131 días vie 23-abr → vie 24-sep-2027** (con 20 sábados en el SERUMS) = 188 filas; handoff vie 24-sep → fase principal oct-2027; Tier C y franjas por turno en el bloque v6.00 del principio. Lo de abajo (58 días, reducido 28-ene → 19-feb, días protegidos 22-feb / 9-mar / 10-mar, handoff jue 22-abr) es **v5.20, SUPERSEDIDO**.
+
 Generado por [`DATA/_scripts/gen_mir_mantenimiento.js`](../../DATA/_scripts/gen_mir_mantenimiento.js) `[inicio] [fin]`
 (default v5.20: **jue 28-ene → jue 22-abr-2027; 58 días L-V** = 46 slots lun-jue + 12 viernes, salta sáb/dom y los DÍAS PROTEGIDOS lun 22-feb / mar 9-mar / mié 10-mar (`PROTEGIDOS` en el generador); el inicio sigue al D78 de la 1ª vuelta para no solapar: v5.19 27-ene/57 días, v5.18 26-ene/57 días, v5.17 22-ene/58 días, v5.16 19-ene/57, v5.15 14-ene/57, v5.14 12-ene/57, v5.13 8-ene/59, v5.12 7-ene/60, v5.11 6-ene/61, v5.10 5-ene/62, v5.9 4-ene/63; el Tier C ocupa el último slot lun-jue de cada semana del `.ts` con lun-jue — semanas 1-12; la semana 1 = jue 28 → vie 29-ene; el generador abre semana con cada lunes del plan, así que con el lun 22-feb protegido 15-19 y 23-26 feb son una sola semana 4 — → en v5.20 los 12 caen en JUEVES, del jue 28-ene al jue 22-abr = D58, último día del plan). Sin contenido nuevo. **v5.20 (corrimiento RÍGIDO DEFINITIVO): inicio jue 28-ene (sigue al D78 mié 27-ene) y fin jue 22-abr → 58 días con los MISMOS 46 lun-jue + 12 vie, 0 sesiones perdidas y cuotas por peso idénticas.** ✅ `MIR_HITOS.handoff`, `MIR_CIERRE_UMBRAL_FASES`, la retención FSRS (0,85 → 0,90) y `MIR_MANT_META.handoff` ya llevan el **22-abr-2027** en el código: el handoff coincide con el último día del mantenimiento y la fase principal arranca el **vie 23-abr-2027**. *(v5.19: inicio mié 27-ene (D78 mar 26-ene) y fin jue 15-abr → 57 días = 46 lun-jue + 11 vie; Tier C en 12 jueves (28-ene → 15-abr); handoff 15-abr y fase principal desde el vie 16-abr. v5.18: inicio mar 26-ene (D78 lun 25-ene) y fin mié 14-abr → 57 días = 46 lun-jue + 11 vie; Tier C en 11 jueves + el mié 14-abr (su semana solo tenía lun-mié); handoff 14-abr y fase principal desde el jue 15-abr. v5.17: el fin se amplió del mié 7-abr al mar 13-abr — 58 días = 46 lun-jue + 12 vie, arranque en viernes —, handoff 13-abr y fase principal desde el mié 14-abr. v5.16: el fin se amplió del vie 2-abr al mié 7-abr — 57 días = 46 lun-jue + 11 vie, Neurología 5 recuperada —, handoff 7-abr y fase principal desde el jue 8-abr; la decisión de Joseph del 22-sep (handoff 31-mar vs fin del mantenimiento) quedó resuelta en v5.16.)*
 - **normal:** 15:15–15:30 Anki APEX::MIR · 15:30–16:02 25Q reales MIR (15Q asignatura foco + 10Q interleaving · 77 s/Q = 32 min) · 16:02–16:15 corrección (13 min).
@@ -352,7 +389,7 @@ Generado por [`DATA/_scripts/gen_mir_mantenimiento.js`](../../DATA/_scripts/gen_
 
 ## 7. Ficheros canónicos y pipeline
 - `src/lib/mirDailyPlan.ts` — plan 78 días (MIR_DIAS con `delta?`, MIR_FRANJAS, MIR_COBERTURA, helpers). GENERADO entre marcadores.
-- `src/lib/mirMantenimiento.ts` — 58 días ene-abr 2027, jue 28-ene → jue 22-abr (GENERADO, v5.20; v5.19: 57 días mié 27-ene → jue 15-abr). `src/lib/mirEvalLog.ts` — registro/neto/gate/anclas dinámicas/táctica/readiness.
+- `src/lib/mirMantenimiento.ts` — **v6.00: 188 filas** (mantenimiento 57 jue 28-ene → jue 22-abr + extensión 131 vie 23-abr → vie 24-sep-2027; GENERADO por `gen_mir_mantenimiento.js` v6) · ⏸ 58 días ene-abr 2027, jue 28-ene → jue 22-abr (GENERADO, v5.20; v5.19: 57 días mié 27-ene → jue 15-abr). `src/lib/mirEvalLog.ts` — registro/neto/gate/anclas dinámicas/táctica/readiness.
 - `src/lib/mirEvalSync.ts` — espejo Supabase (`mir_eval_log`). `DATA/_scripts/_migrations/mir_eval_log.sql` — DDL canónico.
 - `src/lib/mirData.ts` — MIR_HITOS / on-track / bandas / táctica / fases. `src/lib/mirUsmleBridge.ts` — puente Step 1 (lectura).
 - `src/lib/mirPreguntasOficiales.ts` — pool oficial (lo rellena el pipeline de `DATA/MIR/pool/`; la UI consume `preguntasSinUsar` + `qIds`).

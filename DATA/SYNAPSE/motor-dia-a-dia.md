@@ -120,6 +120,10 @@ existentes tocados):
 | 🧠 SYNAPSE — PC sábado (2h) | Sáb 15:00–17:00, desde 13-jun-2026 | `hv2lk04orquvivthtkfhilb1ps` |
 | 🧠 SYNAPSE — repaso + PC domingo (2h) | Dom 15:00–17:00, **desde 28-jun-2026** | `s7r8tiu66286t156l0odpv5nvo` |
 
+> ⏸ **Ids del 10-jun (historial): ya no existen.** El 6-oct-2026 (v6.00) las tres series se RECREARON con su DTSTART original y fin en el plan:
+> misión 12:30 → **`f1imvu9cnmhrcsi5ag6m3k8jdk`** (→ lun 15-feb-2027) · PC sábado → **`goknd2mvbkpqastc6n3rrhon5g`** (→ sáb 13-feb-2027) · repaso + PC
+> domingo → **`frsvkuk585gmcte6bufo6dkfto`** (→ dom 14-feb-2027). Ids vigentes: `DATA/_v600/cal/CAL_V6.md` §3.
+
 Los domingos **14 y 21-jun-2026 quedan LIBRES** (otras actividades de Joseph): la serie de
 domingos arranca el 28-jun a propósito (exclusión estructural, sin EXDATE). El plan refleja
 esos 2 días como "Domingo LIBRE" (`DOMINGOS_LIBRES` en el generador). Instancias verificadas

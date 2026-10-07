@@ -191,7 +191,8 @@ export const MINIMO_DJ4 = "30' (mínimo DJ-4)";
  * Qué queda de cada frente según el nivel (null = intacto). Orden de degradación del PROTOCOLO_MODO_MINIMO.
  * v6.00 (6-oct-2026 · DJ-4 · V6_ESPEC §F): ÁMBAR = research-derma, aurum, liviano, synapse y vibecoding a 30' (mínimo DJ-4, nunca 0) ·
  * MIR = Anki + 25Q (1 h, DJ-4) · ENCAPS en F2 (intensiva) = loop mínimo (pre-test 10Q + 30Q + eval 20Q); fuera de F2, 10Q ciegas.
- * ROJO sin cambio (enfermedad = omitido). `iso` (opcional) decide la fase del ENCAPS.
+ * ROJO (enfermedad): secundarios omitidos; el bloque PRINCIPAL de la fase conserva su mínimo — F1/F3/F4 = Step 1 (Anki + pre-test 10Q);
+ * F2 = ENCAPS (Anki cifras + pre-test 10Q del sub-eje) y el Step 1 en mantenimiento queda en Anki vencido ≤15'. `iso` (opcional) decide la fase.
  */
 export function minimoPorFrente(frente: Frente, nivel: ModoNivel, iso?: string): string | null {
   if (nivel === 'VERDE') return null;
@@ -202,7 +203,15 @@ export function minimoPorFrente(frente: Frente, nivel: ModoNivel, iso?: string):
     mir: 'Anki + 25Q (1 h, DJ-4)',
     encaps: f2 ? 'loop: pre-test 10Q + 30Q + eval 20Q' : "10Q ciegas (20') con registro; sin tutoría larga.",
   };
-  const ROJO: Record<Frente, string | null> = {
+  const ROJO: Record<Frente, string | null> = f2 ? {
+    // v6.00 · F2: el principal es el ENCAPS (intensiva); el Step 1 está en mantenimiento.
+    'usmle-anki': "Anki vencido ≤15' (Step 1 en mantenimiento).",
+    'usmle-principal': 'Omitido hoy (F2: Step 1 en mantenimiento).',
+    'usmle-eval': 'Omitida hoy.',
+    vibecoding: 'Omitido hoy.', synapse: 'Omitido hoy.', 'research-derma': 'Omitido hoy.', aurum: 'Omitido hoy.',
+    mir: 'Omitido hoy.', liviano: 'Omitido hoy.',
+    encaps: 'Solo Anki cifras + pre-test 10Q del sub-eje (08:15). El resto del bloque = dormir/recuperar.',
+  } : {
     'usmle-anki': 'Anki AM completo (innegociable).',
     'usmle-principal': 'Solo el pre-test 10Q (08:15) + Anki restante. El resto del bloque = dormir/recuperar.',
     'usmle-eval': 'Omitida hoy.',
