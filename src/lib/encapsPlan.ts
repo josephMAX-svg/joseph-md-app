@@ -12,8 +12,16 @@
 // v5.20 (6-oct): la INTENSIVA YA ESTÁ SEMBRADA (días 97-107 = mar 23-feb → mar 9-mar-2027, backup study_schedule_bk_intensivo_1006) →
 // el total vivo pasa a max(dia) = 107; examen ENCAPS 2027-I FIJADO = mié 10-mar-2027 (study_metrics.extra.exam_date). Las franjas del
 // Calendar de la intensiva (v5.20) son 05:00 Anki cifras · 07:15-12:15 loop · 17:15-18:45 anclaje + eval; extra.nota_horas sigue diciendo «heredadas».
+// v6.00 (6-oct-2026, V6_ESPEC §C2-§C3/§F): MANTENIMIENTO = dia 1-60 (mié 7-oct → mié 30-dic-2026, sin cambio en Supabase) + INTENSIVA
+// dia 61-110 (lun 4-ene → vie 12-mar-2027, núcleo + cola anclada; examen ENCAPS dom 14-mar PROVISIONAL en study_metrics.extra.exam_date)
+// → regimenDe() da { d1:'2026-10-07', total: max(60, 110) = 110 } sin tocar código. Cambios: STUDY_SKIP_DATES.ENCAPS = SKIP_V6 (+ Jueves y
+// Viernes Santo 2027: sin eso diaActual iría +2 tras Semana Santa en los escenarios ≥ 4-abr) · STUDY_TOTAL_DAYS = 60 (fallback) ·
+// repasoIntensivoDe lee las claves de extra.repaso en su orden (D-1 / D-7 / D-21) · la fila ya no trae extra.dias_a_examen: itemsForDay
+// lo calcula con diasAExamenDe(metrics, fecha) · CARRIL B 16:15 (extra.carril_b = fila MANTENIMIENTO 61-92 de v5.20 o reposición) como
+// ENVOLTORIO de itemsForDay (claves D{dia}:b_*, TipoRonda 'carril_b') · extra.sim.hora (07:15 / 11:00) en simIntensivoDe.
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { supabase } from './supabase';
+import { SKIP_V6 } from './fechasV6';
 import { ENCAPS_FICHAS_POR_TEMA, ENCAPS_VIDEO_DRIVE, ENCAPS_THEOMED_AREA, ENCAPS_THEOMED_VIDEOS, ENCAPS_COMPENDIO, ENCAPS_AREA_PREFIJO, ENCAPS_THEOMED_TEMA_SESION } from './encapsFuentes';
 import { ENCAPS_VIDEOS_POR_TEMA } from './encapsVideosPorTema';
 import { ENCAPS_THEOMED_RESUMENES, ENCAPS_BANCOS, ENCAPS_MAPAS_PDF, ENCAPS_POSTESTS, ENCAPS_BIBLIOTECA_QX, ENCAPS_MANUALES_THEOMED } from './encapsResumenes';
@@ -25,19 +33,21 @@ import { loadCierres, onCierresChange, cierreARow, fallosDeErrores, sumTipo, typ
 // v5.14 (19-sep): SOLO FALLBACK. El valor vivo es study_metrics.extra.d1 (lo escribe gen_encaps_mantenimiento_2027.js en cada
 // corrimiento); la app lo lee en useEncapsPlan → regimenDe(). Si Supabase no responde, se usa esta constante.
 export const STUDY_D1: Record<string, string> = {
-  ENCAPS: '2026-10-07',   // v6.18 MANTENIMIENTO 2027-I (D1=mié 7-oct; 31-ago→6-oct no estudiados; examen ENCAPS mié 10-mar-2027, intensiva mar 23-feb → mar 9-mar): examen 2026-II rendido el 9-ago (Joseph NO lo dio; análisis real en DATA/ENCAPS/ANALISIS_EXAMEN_2026-2_REAL.md). Meta: examen ENCAPS 2027-I = MIÉ 10-MAR-2027 (FIJADO por Joseph el 6-oct; antes «fines de marzo»). 1h/día (16:15-17:15 L-V): banqueo puro guiado por el PRONÓSTICO v3 (II 30 · I 27 · V 21 · III 13 · IV 9 · 8 críticos: I-3 V-2 II-3 III-5 I-4 II-5 II-4 IV-1/2). Feb-mar 2027: vuelve a bloque principal (fase intensiva mar 23-feb → mar 9-mar, días 97-107, YA sembrada el 6-oct; se regenera con --pretest tras el pre-test del vie 26-feb). Ciclo sembrado por gen_encaps_mantenimiento_2027.js (05-sep: sub-ejes por instancia + cola larga como secundario + receta del mini-sim en extra) · backup study_schedule_bk_1006 (v5.20 · régimen v6.18; v5.19: bk_1005 · v6.17 · v5.18: bk_1003 · v6.16 · v5.17: bk_0930 · v6.15).
+  ENCAPS: '2026-10-07',   // v6.00 (6-oct): D1 sin cambio (mié 7-oct); MANTENIMIENTO 1-60 → mié 30-dic + INTENSIVA 61-110 lun 4-ene → vie 12-mar · examen dom 14-mar-2027 PROVISIONAL · (histórico) v6.18 MANTENIMIENTO 2027-I (D1=mié 7-oct; 31-ago→6-oct no estudiados; examen ENCAPS mié 10-mar-2027, intensiva mar 23-feb → mar 9-mar): examen 2026-II rendido el 9-ago (Joseph NO lo dio; análisis real en DATA/ENCAPS/ANALISIS_EXAMEN_2026-2_REAL.md). Meta: examen ENCAPS 2027-I = MIÉ 10-MAR-2027 (FIJADO por Joseph el 6-oct; antes «fines de marzo»). 1h/día (16:15-17:15 L-V): banqueo puro guiado por el PRONÓSTICO v3 (II 30 · I 27 · V 21 · III 13 · IV 9 · 8 críticos: I-3 V-2 II-3 III-5 I-4 II-5 II-4 IV-1/2). Feb-mar 2027: vuelve a bloque principal (fase intensiva mar 23-feb → mar 9-mar, días 97-107, YA sembrada el 6-oct; se regenera con --pretest tras el pre-test del vie 26-feb). Ciclo sembrado por gen_encaps_mantenimiento_2027.js (05-sep: sub-ejes por instancia + cola larga como secundario + receta del mini-sim en extra) · backup study_schedule_bk_1006 (v5.20 · régimen v6.18; v5.19: bk_1005 · v6.17 · v5.18: bk_1003 · v6.16 · v5.17: bk_0930 · v6.15).
   // MIR / USMLE se agregan cuando se construyan sus cronogramas.
 };
 // Fechas SIN actividad (bloqueadas por Joseph) — no cuentan como día de plan.
 export const STUDY_SKIP_DATES: Record<string, string[]> = {
-  ENCAPS: ['2026-12-25', '2026-12-31', '2027-01-01'],  // feriados; los fines de semana se saltan por STUDY_SKIP_WEEKENDS
+  // v6.00: = SKIP_V6 de fechasV6 (_fechas_v6.json): 25-dic, 31-dic, 1-ene + Jueves/Viernes Santo 2027-03-25/26 (v5.20: solo los tres primeros).
+  // Los fines de semana se saltan por STUDY_SKIP_WEEKENDS.
+  ENCAPS: [...SKIP_V6].sort(),
 };
 // v6 (27-ago): SÁBADOS Y DOMINGOS LIBRES en el régimen de mantenimiento — no cuentan como día de plan.
 export const STUDY_SKIP_WEEKENDS: Record<string, boolean> = { ENCAPS: true };
 // v5.14 (19-sep): SOLO FALLBACK (antes fijo: 102 → 95 → 94 → 92). El valor vivo es study_metrics.extra.dias_ciclo (92 = mié 7-oct-2026
 // → mar 16-feb-2027 en v5.20; v5.19: mar 6-oct → lun 15-feb · v5.18: lun 5-oct → vie 12-feb · v5.17: jue 1-oct → mié 10-feb; desde v5.15 el corrimiento es RÍGIDO: el fin del ciclo SÍ se mueve y se amplía por detrás para no perder sesiones) y
 // crece solo con max(dia) de study_schedule cuando se siembre la FASE INTENSIVA (modo='INTENSIVO' · gen_encaps_intensivo_2027.js; v5.20: ya sembrada → max(dia) = 107).
-export const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 92 }; // v5.20: siguen 92 de mantenimiento (el fin se alargó al mar 16-feb para NO perder sesiones; con la intensiva sembrada el total vivo es 107) · v5.19: lun 15-feb · v5.18: vie 12-feb · v5.17: mié 10-feb · v5.16: vie 5-feb)
+export const STUDY_TOTAL_DAYS: Record<string, number> = { ENCAPS: 60 }; // v6.00: 60 = D1-D60 del mantenimiento F1 (fallback; con la intensiva sembrada el total vivo es max(dia) = 110 en el escenario 14-mar) · v5.20: siguen 92 de mantenimiento (el fin se alargó al mar 16-feb para NO perder sesiones; con la intensiva sembrada el total vivo es 107) · v5.19: lun 15-feb · v5.18: vie 12-feb · v5.17: mié 10-feb · v5.16: vie 5-feb)
 // Régimen vigente resuelto en runtime: study_metrics.extra.d1 / dias_ciclo → fila dia=1 de study_schedule → constantes.
 export interface StudyRegimen { d1: string; total: number; origenD1: 'study_metrics' | 'study_schedule' | 'fallback'; origenTotal: 'study_metrics' | 'study_schedule' | 'fallback' }
 const ISO_RE = /^20\d\d-\d\d-\d\d$/;
@@ -135,8 +145,9 @@ export function miniSimSerie(days: StudyScheduleDay[], simScores: Record<number,
     return { dia: d.dia, fecha: d.fecha, simN, nota: nota == null ? null : Number(nota), semana: i + 1 };
   });
 }
-// ── FASE INTENSIVA 2027-I (modo='INTENSIVO', dia 97+ en v5.20 —días 93-96 = mié 17 → lun 22-feb, cierre + examen Step 1, sin fila— · sembrada por gen_encaps_intensivo_2027.js; v5.14 19-sep) ──
-// Tipos de día que emite el generador: senales · loop (lun-jue, extra.loop = 8 segmentos) · pretest · sim100 · dress_rehearsal ·
+// ── FASE INTENSIVA 2027-I (modo='INTENSIVO'; v6.00: dia 61-110 = lun 4-ene → vie 12-mar-2027 sin huecos, núcleo + cola anclada al examen dom 14-mar
+// PROVISIONAL; módulos de extensión si la convocatoria lo retrasa · histórico: dia 97+ en v5.20 —días 93-96 = mié 17 → lun 22-feb, cierre + examen Step 1, sin fila— · sembrada por gen_encaps_intensivo_2027.js; v5.14 19-sep) ──
+// Tipos de día que emite el generador: senales · loop (lun-jue, extra.loop = 7 segmentos v6; 8 hasta v5.20) · pretest · sim100 · dress_rehearsal ·
 // repaso_final · medio_dia. Los 3 tipos de simulacro son días-sim con escala /100 y sim_n = dia (study_sim_scores), igual que el mini_sim /25.
 export const ENCAPS_INTENSIVO_SIM_TIPOS = ['pretest', 'sim100', 'dress_rehearsal'] as const;
 export type IntensivoSimTipo = typeof ENCAPS_INTENSIVO_SIM_TIPOS[number];
@@ -148,6 +159,7 @@ export function esSimIntensivo(day: StudyScheduleDay | null | undefined): boolea
 export interface SimIntensivo {
   tipo: IntensivoSimTipo; simN: number; n: number; segPorQ: number; label: string; fuente: string; clave: string;
   url?: string; doc?: string; registro?: string; correccion?: string; umbral: number; alerta: number;
+  hora: string;   // v6.00: extra.sim.hora — '07:15' (07:15-09:15) salvo SIM #7, #8 y el dress rehearsal = '11:00' (hora del 2026-I)
 }
 export function simIntensivoDe(day: StudyScheduleDay | null | undefined): SimIntensivo | null {
   if (!day || !esSimIntensivo(day)) return null;
@@ -161,6 +173,7 @@ export function simIntensivoDe(day: StudyScheduleDay | null | undefined): SimInt
     label: str('label') || day.subtema || labelDef, fuente: str('fuente') || '', clave: str('clave') || (tipo === 'pretest' ? 'oficial' : ''),
     url: str('url'), doc: str('doc'), registro: str('registro'), correccion: str('correccion'),
     umbral: Number(s.umbral ?? (tipo === 'pretest' ? 70 : ENCAPS_SIM100_META.umbral)), alerta: Number(s.alerta ?? ENCAPS_SIM100_META.alerta),
+    hora: /^\d{1,2}:\d{2}$/.test(String(s.hora ?? '')) ? String(s.hora) : (tipo === 'dress_rehearsal' ? '11:00' : '07:15'),
   };
 }
 // nota /100 → zona: verde ≥85 (umbral del runner) · ámbar 70-84 · rojo <70 (alerta). `umbral` opcional por fila (pre-test = 70).
@@ -179,14 +192,61 @@ export function loopDe(day: StudyScheduleDay | null | undefined): LoopSegmento[]
     return { h: String(o.h || ''), seg: String(o.seg || ''), min: Number(o.min || 0) };
   });
 }
-// Repaso multi-temporal de la fila (extra.repaso = { 'D-1': código, 'D-3': código, 'D-7': código }) → lista corta.
+// Repaso multi-temporal de la fila (extra.repaso = { 'D-1': código, 'D-7': código, 'D-21': código } en v6.00; v5.x: D-1/D-3/D-7) → lista
+// corta. v6.00: lee TODAS las claves en el orden en que vienen (antes filtraba ['D-1','D-3','D-7'] y con D-21 lo perdía; jsonb las devuelve
+// por longitud y orden → D-1, D-7, D-21).
 export function repasoIntensivoDe(day: StudyScheduleDay | null | undefined): { key: string; codigo: string }[] {
   const ex = (day?.extra || {}) as Record<string, unknown>;
   const r = (ex.repaso && typeof ex.repaso === 'object' ? ex.repaso : {}) as Record<string, unknown>;
-  return ['D-1', 'D-3', 'D-7'].filter(k => typeof r[k] === 'string' && r[k]).map(k => ({ key: k, codigo: String(r[k]) }));
+  return Object.keys(r).filter(k => typeof r[k] === 'string' && r[k]).map(k => ({ key: k, codigo: String(r[k]) }));
+}
+// ── v6.00 · CARRIL B 16:15 de la intensiva (V6_ESPEC §C2): la fila MANTENIMIENTO 61-92 de v5.20 vive EMBEBIDA en la fila INTENSIVO de su
+// misma fecha (PK (examen, dia)): extra.carril_b = { origen, dia_mant, fecha, tipo:'banqueo1h', codigo, subtema, prioridad, nts,
+// temas_secundarios, extra } · lun-jue del mié 17-feb al D-3 de la cola: extra.carril_b = { tipo:'reposicion', regla } · viernes:
+// extra.minisim_absorbido = { dia_mant, subtema, extra } (receta del mini-sim que absorbe el SIM 100Q; solo nota).
+export interface CarrilB {
+  tipo: 'banqueo1h' | 'reposicion'; diaMant: number | null; codigo: string | null; subtema: string; prioridad: string;
+  subEje: string | null; subEjeLabel: string | null; regla: string | null; raw: Record<string, unknown>;
+}
+export function carrilBDe(day: StudyScheduleDay | null | undefined): CarrilB | null {
+  if (!day || day.modo !== 'INTENSIVO') return null;
+  const cb = (day.extra as Record<string, unknown> | undefined)?.carril_b;
+  if (!cb || typeof cb !== 'object') return null;
+  const o = cb as Record<string, unknown>;
+  const tipo = o.tipo === 'reposicion' ? 'reposicion' : o.tipo === 'banqueo1h' ? 'banqueo1h' : null;
+  if (!tipo) return null;
+  const ex = (o.extra && typeof o.extra === 'object' ? o.extra : {}) as Record<string, unknown>;
+  return {
+    tipo, diaMant: o.dia_mant == null ? null : Number(o.dia_mant), codigo: typeof o.codigo === 'string' ? o.codigo : null,
+    subtema: String(o.subtema || (tipo === 'reposicion' ? 'reposición: instancias 61-92 pendientes → lista de vigilancia' : '')),
+    prioridad: String(o.prioridad || 'MEDIA'), subEje: typeof ex.sub_eje === 'string' ? ex.sub_eje : null,
+    subEjeLabel: typeof ex.sub_eje_label === 'string' ? ex.sub_eje_label : null, regla: typeof o.regla === 'string' ? o.regla : null, raw: o,
+  };
+}
+// Pseudo-fila MANTENIMIENTO del carril B ({ ...extra.carril_b, dia: day.dia, modo:'MANTENIMIENTO' }) para reutilizar la rama del 16:15.
+export function pseudoCarrilB(day: StudyScheduleDay | null | undefined): StudyScheduleDay | null {
+  const cb = carrilBDe(day);
+  if (!day || !cb || cb.tipo !== 'banqueo1h') return null;
+  return {
+    ...(cb.raw as Partial<StudyScheduleDay>), examen: day.examen, dia: day.dia, fecha: day.fecha, weekday: day.weekday, tipo: 'banqueo1h', modo: 'MANTENIMIENTO',
+    codigo: cb.codigo || undefined, subtema: cb.subtema, prioridad: cb.prioridad, videos: [], theomed: [], material_comp: [],
+    temas_secundarios: Array.isArray(cb.raw.temas_secundarios) ? cb.raw.temas_secundarios as StudyScheduleDay['temas_secundarios'] : [],
+    extra: (cb.raw.extra && typeof cb.raw.extra === 'object' ? cb.raw.extra : {}) as Record<string, unknown>,
+  };
+}
+export interface MiniSimAbsorbido { diaMant: number | null; subtema: string; receta: MiniSimReceta | null }
+export function minisimAbsorbidoDe(day: StudyScheduleDay | null | undefined): MiniSimAbsorbido | null {
+  const m = (day?.extra as Record<string, unknown> | undefined)?.minisim_absorbido;
+  if (!day || !m || typeof m !== 'object') return null;
+  const o = m as Record<string, unknown>;
+  const ex = (o.extra && typeof o.extra === 'object' ? o.extra : {}) as Record<string, unknown>;
+  const receta = miniSimRecetaDe({ ...day, tipo: 'mini_sim', extra: ex, temas_secundarios: [] });
+  return { diaMant: o.dia_mant == null ? null : Number(o.dia_mant), subtema: String(o.subtema || ''), receta };
 }
 // Tipo de ronda del CIERRE DE SESIÓN según el tipo de día (MANTENIMIENTO + INTENSIVO) — lo usa el formulario al final de la cola.
-export function tipoRondaDe(day: StudyScheduleDay | null | undefined): TipoRonda {
+// v6.00: `carrilB = true` → 'carril_b' (cierre de la hora 16:15 de la intensiva; id APP_CARRIL_B_<fecha>_<codigo>).
+export function tipoRondaDe(day: StudyScheduleDay | null | undefined, carrilB = false): TipoRonda {
+  if (carrilB) return 'carril_b';
   const t = String(day?.tipo || '');
   if (t === 'mini_sim') return 'mini_sim';
   if (t === 'pretest') return 'pretest';
@@ -545,20 +605,43 @@ function todayLimaISO(): string {
 }
 /**
  * v5.20 (6-oct-2026): días que faltan al examen, VIVOS. study_metrics.dias_a_examen es un número estático (se escribe a mano y
- * no baja solo); si study_metrics.extra.exam_date existe (2027-03-10 = examen ENCAPS 2027-I fijado por Joseph), se calcula
+ * no baja solo); si study_metrics.extra.exam_date existe (v6.00: 2027-03-14 PROVISIONAL, de DATA/_scripts/_fechas_v6.json; v5.20 decía 2027-03-10), se calcula
  * contra hoy (Lima). Sin exam_date → el valor estático. Nunca negativo.
  */
-export function diasAExamenDe(metrics: StudyMetrics | null | undefined): number | null {
-  const f = (metrics?.extra as Record<string, unknown> | undefined)?.exam_date;
-  if (typeof f === 'string' && ISO_RE.test(f)) return Math.max(0, Math.round((Date.parse(f) - Date.parse(todayLimaISO())) / 86_400_000));
+export function diasAExamenDe(metrics: StudyMetrics | null | undefined, desde?: string): number | null {
+  // v6.00: `desde` opcional (fecha de la fila que se mira; por defecto hoy en Lima) → la fila ya no trae extra.dias_a_examen.
+  const f = examDateDe(metrics);
+  if (f) return Math.max(0, Math.round((Date.parse(f) - Date.parse(desde && ISO_RE.test(desde.slice(0, 10)) ? desde.slice(0, 10) : todayLimaISO())) / 86_400_000));
   return metrics?.dias_a_examen ?? null;
 }
+// v6.00: fecha del examen (study_metrics.extra.exam_date; 2027-03-14 PROVISIONAL), si es PROVISIONAL (examen_target lo dice), si ya se rindió
+// (hoy > exam_date → la vista muestra «examen rendido») y el bloque extra.intensiva que escribe gen_encaps_intensivo_2027.js.
+export function examDateDe(metrics: StudyMetrics | null | undefined): string | null {
+  const f = (metrics?.extra as Record<string, unknown> | undefined)?.exam_date;
+  return typeof f === 'string' && ISO_RE.test(f) ? f : null;
+}
+export function examenProvisionalDe(metrics: StudyMetrics | null | undefined): boolean {
+  const t = (metrics?.extra as Record<string, unknown> | undefined)?.examen_target;
+  return typeof t === 'string' && /PROVISIONAL/i.test(t);
+}
+export function examenRendidoDe(metrics: StudyMetrics | null | undefined, hoy: string = todayLimaISO()): boolean {
+  const f = examDateDe(metrics);
+  return !!f && hoy > f;
+}
+export interface IntensivaMeta { desde: string | null; hasta: string | null; dias: string | null; pretest: string | null; colaDesde: string | null; carrilBHasta: string | null; reposicion: string | null }
+export function intensivaMetaDe(metrics: StudyMetrics | null | undefined): IntensivaMeta {
+  const it = ((metrics?.extra as Record<string, unknown> | undefined)?.intensiva || {}) as Record<string, unknown>;
+  const s = (v: unknown) => (typeof v === 'string' && v ? v : null);
+  const cola = (it.cola || {}) as Record<string, unknown>, cb = (it.carril_b || {}) as Record<string, unknown>;
+  return { desde: s(it.desde), hasta: s(it.hasta), dias: s(it.dias), pretest: s(it.pretest), colaDesde: s(cola.desde), carrilBHasta: s(cb.hasta), reposicion: s(cb.reposicion) };
+}
 // v5.14: `d1Override` / `totalOverride` vienen de regimenDe() (study_metrics.extra); sin ellos, las constantes de fallback.
-export function diaActual(examen: string, d1Override?: string, totalOverride?: number): number {
+// v6.00: `hoyOverride` (ISO) solo para verificar escenarios (p.ej. 2027-03-29 con Semana Santa); por defecto hoy en Lima.
+export function diaActual(examen: string, d1Override?: string, totalOverride?: number, hoyOverride?: string): number {
   const d1 = d1Override || STUDY_D1[examen];
   const total = totalOverride ?? (STUDY_TOTAL_DAYS[examen] ?? 71);
   if (!d1) return 1;
-  const hoy = todayLimaISO();
+  const hoy = hoyOverride && ISO_RE.test(hoyOverride) ? hoyOverride : todayLimaISO();
   let diff = Math.floor((Date.parse(hoy) - Date.parse(d1)) / 86_400_000) + 1;
   // Las fechas libres no son días de plan: réstalas si ya pasaron.
   for (const s of STUDY_SKIP_DATES[examen] ?? []) {
@@ -574,9 +657,71 @@ export function diaActual(examen: string, d1Override?: string, totalOverride?: n
   return Math.max(1, Math.min(total, diff));
 }
 
+// v6.00: rama MANTENIMIENTO (16:15-17:15) extraída de itemsForDay para reutilizarla en el CARRIL B de la intensiva (pseudo-fila).
+function itemsMantenimiento(day: StudyScheduleDay, prev: StudyScheduleDay | null): PlanItem[] {
+  const N = day.dia;
+  const items: PlanItem[] = [];
+  const area = ENCAPS_AREA_PREFIJO[((day.codigo || '').match(/^[IVX]+/) || [''])[0]];
+  if (day.tipo === 'mini_sim') {
+    const rec = miniSimRecetaDe(day);
+    items.push({
+      key: `D${N}:msim`, kind: 'sim',
+      label: `🔥 MINI-SIMULACRO SEMANAL: 25Q mixtas cronometradas (${rec?.segPorQ ?? 72}s/Q)`,
+      detail: rec ? `Receta v3: ${miniSimRecetaTexto(rec)} · modo examen estricto, sin pausa` : 'Mezcla de las 5 áreas ponderada por el pronóstico v3 · modo examen estricto, sin pausa',
+      url: ENCAPS_BANCOS[0]?.url, source: ENCAPS_BANCOS[0]?.fuente || 'Banco', dur: 30, hora: '16:15–16:45',
+    });
+    items.push({
+      key: `D${N}:msim_corr`, kind: 'eval',
+      label: '📊 Corrección + CIERRE DE SESIÓN tipo mini_sim (nota /25 → study_sim_scores + % ciego → study_progress)',
+      detail: `Cada fallo: ¿área? ¿tipo knowledge/transfer/proceso (CONCEPTO·OLVIDO·CRONOLOGIA / CCSN·CONTEXTO / CAMBIO·TIEMPO·LECTURA)? → formulario al final de la cola (o gen_encaps_semana.js --cerrar) → override de la semana siguiente${rec ? ` · umbral ${rec.umbral}/25 · alerta <${rec.alerta}/25 dos viernes` : ''}`,
+      dur: 30, hora: '16:45–17:15',
+    });
+    return items;
+  }
+  const se = subEjeDe(day);
+  const secCL = (day.temas_secundarios || []).find(s => (s as { rol?: string }).rol === 'cola_larga') || (day.temas_secundarios || [])[0];
+  const ev = evalAncladaDe(day, prev);
+  items.push({
+    key: `D${N}:m_eval`, kind: 'eval',
+    label: ev.label,
+    detail: ev.detail,
+    code: ev.codigo !== 'MIX' ? ev.codigo : undefined,
+    dur: 15, hora: '16:15–16:30',
+  });
+  items.push({
+    key: `D${N}:m_banco`, kind: 'theomed',
+    label: `🎯 BANCO DEL DÍA: ${day.codigo} — ${day.subtema || ''} (${secCL ? '16-20Q' : '20-25Q'} ciegas)`,
+    detail: `Prioridad ${day.prioridad || 'MEDIA'}${se ? ` · sub-eje ${se.n}/${se.total} (sesión ${se.instancia}/${se.de} del código)` : ''} · ~50% viñeta / 50% recall de cifras · pregunta-por-pregunta con corrección inmediata · pronóstico v3`,
+    url: ENCAPS_BANCOS[0]?.url, source: ENCAPS_BANCOS[0]?.fuente || 'Banco', code: day.codigo, dur: secCL ? 32 : 40, hora: secCL ? '16:30–17:02' : '16:30–17:10',
+  });
+  if (secCL) {
+    items.push({
+      key: `D${N}:m_sec`, kind: 'theomed',
+      label: `▶ SECUNDARIO (cola larga): ${secCL.codigo} — ${secCL.subtema} (${(secCL as { q?: string }).q || '4-5Q'})`,
+      detail: 'Código fuera de la rotación principal (≈30 pp del vector v3 repartidos en 17 códigos) · 4-5Q ciegas dentro de la misma hora',
+      url: ENCAPS_BANCOS[0]?.url, source: ENCAPS_BANCOS[0]?.fuente || 'Banco', code: secCL.codigo, dur: 8, hora: '17:02–17:10',
+    });
+  }
+  (area ? (ENCAPS_POSTESTS[area] || []).slice(0, 1) : []).forEach((q, i) => {
+    items.push({
+      key: `D${N}:m_postest:${i}`, kind: 'theomed',
+      label: `🎯 Postest alternativo: ${q.label}`,
+      detail: 'Si el banco principal se agota para este tema',
+      url: q.url, source: q.fuente, code: day.codigo,
+    });
+  });
+  items.push({
+    key: `D${N}:m_log`, kind: 'material',
+    label: '📝 CIERRE DE SESIÓN (formulario al final de la cola → study_progress) + 1-3 APEX de errores de conocimiento',
+    detail: `n · seguras · dudosas · fallos por subtipo · t medio → % ciego = seguras/n (fuente app:cierre) · equivale a ENCAPS|banco_dia|${day.fecha}|${day.codigo}|n=..|seg=..|dud=..|CONCEPTO:..|t=.. · los APEX caen en Obsidian ENCAPS`,
+    dur: 5, hora: '17:10–17:15',
+  });
+  return items;
+}
+
 // ── Enumera los items chequeables de un día (debe coincidir con el daemon) ──
 // `prev` = sesión anterior del plan (dia − 1): define la EVAL ANCLADA del día (código de ayer / fallos del mini-sim / arranque).
-export function itemsForDay(day: StudyScheduleDay, focusByCode: Record<string, number> = {}, prev: StudyScheduleDay | null = null): PlanItem[] {
+function itemsBase(day: StudyScheduleDay, focusByCode: Record<string, number>, prev: StudyScheduleDay | null, metrics: StudyMetrics | null): PlanItem[] {
   const N = day.dia;
   const items: PlanItem[] = [];
   const pad = (n: number) => String(n).padStart(2, '0');
@@ -590,8 +735,9 @@ export function itemsForDay(day: StudyScheduleDay, focusByCode: Record<string, n
     const sim = simIntensivoDe(day);
     const rep = repasoIntensivoDe(day);
     const repTxt = rep.length ? rep.map(r => `${r.key} ${r.codigo}`).join(' · ') : 'sin códigos previos aún';
-    const diasAExamen = Number(ex.dias_a_examen);
-    const sufijo = Number.isFinite(diasAExamen) ? ` · faltan ${diasAExamen} d` : '';
+    // v6.00: la fila ya no trae extra.dias_a_examen (era estático): se calcula contra study_metrics.extra.exam_date desde la fecha de la fila
+    const diasAExamen = metrics ? diasAExamenDe(metrics, day.fecha) : (Number.isFinite(Number(ex.dias_a_examen)) ? Number(ex.dias_a_examen) : null);
+    const sufijo = diasAExamen != null ? ` · faltan ${diasAExamen} d` : '';
     const banco = ENCAPS_BANCOS[0];
     if (sim) {
       const titulo = sim.tipo === 'pretest' ? '🔥 PRE-TEST 2026-II' : sim.tipo === 'dress_rehearsal' ? '🔥 DRESS REHEARSAL (D-2)' : '🔥 SIMULACRO COMPLETO';
@@ -624,7 +770,7 @@ export function itemsForDay(day: StudyScheduleDay, focusByCode: Record<string, n
       items.push({
         key: `D${N}:i_log`, kind: 'eval',
         label: '📝 CIERRE: pesos v3 revisados + lista de RM/NTS nuevas → Anki ENCAPS::Cifras',
-        detail: 'Sin banco nuevo hoy; las señales alimentan las semanas 2-5 (barrido de críticos por índice de brecha)', dur: 15,
+        detail: 'Sin banco nuevo hoy; las señales alimentan el núcleo S2-S9 (barrido de críticos; tras el pre-test, por índice de brecha)', dur: 15, // v6.00: S2-S9 (antes semanas 2-5)
       });
       return items;
     }
@@ -729,65 +875,9 @@ export function itemsForDay(day: StudyScheduleDay, focusByCode: Record<string, n
 
   // ── v6 · RÉGIMEN MANTENIMIENTO 2027-I (v5.20: mié 7-oct-2026 → mar 16-feb-2027, 92 días): 1h/día 16:15-17:15 ──
   // Cola COMPACTA de banqueo puro; nada de videos/theomed/fichas largas. El deep work de la
-  // mañana ahora es del USMLE Step 1. Feb-mar 2027: fase intensiva (v5.20: mar 23-feb → mar 9-mar, ya sembrada; examen mié 10-mar).
-  if (day.modo === 'MANTENIMIENTO') {
-    const area = ENCAPS_AREA_PREFIJO[((day.codigo || '').match(/^[IVX]+/) || [''])[0]];
-    if (day.tipo === 'mini_sim') {
-      const rec = miniSimRecetaDe(day);
-      items.push({
-        key: `D${N}:msim`, kind: 'sim',
-        label: `🔥 MINI-SIMULACRO SEMANAL: 25Q mixtas cronometradas (${rec?.segPorQ ?? 72}s/Q)`,
-        detail: rec ? `Receta v3: ${miniSimRecetaTexto(rec)} · modo examen estricto, sin pausa` : 'Mezcla de las 5 áreas ponderada por el pronóstico v3 · modo examen estricto, sin pausa',
-        url: ENCAPS_BANCOS[0]?.url, source: ENCAPS_BANCOS[0]?.fuente || 'Banco', dur: 30, hora: '16:15–16:45',
-      });
-      items.push({
-        key: `D${N}:msim_corr`, kind: 'eval',
-        label: '📊 Corrección + CIERRE DE SESIÓN tipo mini_sim (nota /25 → study_sim_scores + % ciego → study_progress)',
-        detail: `Cada fallo: ¿área? ¿tipo knowledge/transfer/proceso (CONCEPTO·OLVIDO·CRONOLOGIA / CCSN·CONTEXTO / CAMBIO·TIEMPO·LECTURA)? → formulario al final de la cola (o gen_encaps_semana.js --cerrar) → override de la semana siguiente${rec ? ` · umbral ${rec.umbral}/25 · alerta <${rec.alerta}/25 dos viernes` : ''}`,
-        dur: 30, hora: '16:45–17:15',
-      });
-      return items;
-    }
-    const se = subEjeDe(day);
-    const secCL = (day.temas_secundarios || []).find(s => (s as { rol?: string }).rol === 'cola_larga') || (day.temas_secundarios || [])[0];
-    const ev = evalAncladaDe(day, prev);
-    items.push({
-      key: `D${N}:m_eval`, kind: 'eval',
-      label: ev.label,
-      detail: ev.detail,
-      code: ev.codigo !== 'MIX' ? ev.codigo : undefined,
-      dur: 15, hora: '16:15–16:30',
-    });
-    items.push({
-      key: `D${N}:m_banco`, kind: 'theomed',
-      label: `🎯 BANCO DEL DÍA: ${day.codigo} — ${day.subtema || ''} (${secCL ? '16-20Q' : '20-25Q'} ciegas)`,
-      detail: `Prioridad ${day.prioridad || 'MEDIA'}${se ? ` · sub-eje ${se.n}/${se.total} (sesión ${se.instancia}/${se.de} del código)` : ''} · ~50% viñeta / 50% recall de cifras · pregunta-por-pregunta con corrección inmediata · pronóstico v3`,
-      url: ENCAPS_BANCOS[0]?.url, source: ENCAPS_BANCOS[0]?.fuente || 'Banco', code: day.codigo, dur: secCL ? 32 : 40, hora: secCL ? '16:30–17:02' : '16:30–17:10',
-    });
-    if (secCL) {
-      items.push({
-        key: `D${N}:m_sec`, kind: 'theomed',
-        label: `▶ SECUNDARIO (cola larga): ${secCL.codigo} — ${secCL.subtema} (${(secCL as { q?: string }).q || '4-5Q'})`,
-        detail: 'Código fuera de la rotación principal (≈30 pp del vector v3 repartidos en 17 códigos) · 4-5Q ciegas dentro de la misma hora',
-        url: ENCAPS_BANCOS[0]?.url, source: ENCAPS_BANCOS[0]?.fuente || 'Banco', code: secCL.codigo, dur: 8, hora: '17:02–17:10',
-      });
-    }
-    (area ? (ENCAPS_POSTESTS[area] || []).slice(0, 1) : []).forEach((q, i) => {
-      items.push({
-        key: `D${N}:m_postest:${i}`, kind: 'theomed',
-        label: `🎯 Postest alternativo: ${q.label}`,
-        detail: 'Si el banco principal se agota para este tema',
-        url: q.url, source: q.fuente, code: day.codigo,
-      });
-    });
-    items.push({
-      key: `D${N}:m_log`, kind: 'material',
-      label: '📝 CIERRE DE SESIÓN (formulario al final de la cola → study_progress) + 1-3 APEX de errores de conocimiento',
-      detail: `n · seguras · dudosas · fallos por subtipo · t medio → % ciego = seguras/n (fuente app:cierre) · equivale a ENCAPS|banco_dia|${day.fecha}|${day.codigo}|n=..|seg=..|dud=..|CONCEPTO:..|t=.. · los APEX caen en Obsidian ENCAPS`,
-      dur: 5, hora: '17:10–17:15',
-    });
-    return items;
-  }
+  // mañana ahora es del USMLE Step 1. v6.00: el mantenimiento termina el mié 30-dic (dia 60); del lun 4-ene la intensiva lleva estas filas
+  // 61-92 (v5.20) en su CARRIL B 16:15 (itemsCarrilB reutiliza esta rama). Histórico v5.20: intensiva mar 23-feb → mar 9-mar, examen mié 10-mar.
+  if (day.modo === 'MANTENIMIENTO') return itemsMantenimiento(day, prev); // v6.00: rama extraída (la reutiliza el carril B 16:15)
 
   let ph = 9, pm = 0; // NÚCLEO DEEP PRIME arranca 09:00 (los videos se reparten ahí)
   (day.videos || []).forEach((v, i) => {
@@ -1108,6 +1198,53 @@ export function itemsForDay(day: StudyScheduleDay, focusByCode: Record<string, n
   return items;
 }
 
+// ── v6.00 · CARRIL B 16:15 de la intensiva (V6_ESPEC §C2/§F): ENVOLTORIO de itemsForDay, porque las ramas sim / senales / medio_dia /
+// repaso_final de itemsBase hacen `return` antes de tiempo. Sale en cualquier día INTENSIVO que traiga extra.carril_b (el generador no lo
+// pone en sim100, dress_rehearsal ni medio_dia):
+//   · banqueo1h → la rama MANTENIMIENTO sobre la pseudo-fila { ...extra.carril_b, dia, modo:'MANTENIMIENTO' }; claves D{dia}:b_<resto>
+//     (D61:b_eval, D61:b_banco…; study_checks PK (examen,item_key) → sin colisión con el loop) y etiqueta «16:15 CARRIL B · ».
+//     Eval anclada: sobre el carril B del día de plan anterior (o la fila MANTENIMIENTO D60 el lun 4-ene); si el día anterior fue el
+//     SIM 100Q / PRE-TEST del viernes (lunes) → «5Q rehechas de los fallos del SIM 100Q del viernes» (el mini-sim absorbido no se hizo).
+//   · reposicion → 1 ítem D{dia}:b_repo.
+//   · extra.minisim_absorbido NO genera ítem (solo nota en la vista).
+function itemsCarrilB(day: StudyScheduleDay, prev: StudyScheduleDay | null): PlanItem[] {
+  const cb = carrilBDe(day);
+  if (!cb) return [];
+  const N = day.dia;
+  const banco = ENCAPS_BANCOS[0];
+  if (cb.tipo === 'reposicion') {
+    return [{
+      key: `D${N}:b_repo`, kind: 'theomed',
+      label: '16:15 CARRIL B · reposición: instancias 61-92 pendientes → lista de vigilancia',
+      detail: `${cb.regla || '1) instancias de 61-92 no hechas (study_checks sin ✓), en orden; 2) si no hay: lista de vigilancia = temas calientes del día'} · cierre tipo «Carril B 16:15»`,
+      url: banco?.url, source: banco?.fuente || 'Banco', dur: 60, hora: '16:15–17:15',
+    }];
+  }
+  const pseudo = pseudoCarrilB(day);
+  if (!pseudo) return [];
+  const prevEsSim = !!prev && esSimIntensivo(prev);
+  const prevPseudo = !prev || prevEsSim ? null : prev.modo === 'MANTENIMIENTO' ? prev : pseudoCarrilB(prev);
+  return itemsMantenimiento(pseudo, prevPseudo).map((it) => {
+    let { label, detail, code } = it;
+    if (/:m_eval$/.test(it.key) && prevEsSim && prev) {
+      const que = prev.tipo === 'pretest' ? 'PRE-TEST 2026-II' : 'SIM 100Q';
+      label = `🎯 EVAL ANCLADA (lunes): 5Q REHECHAS con otro enfoque de los fallos del ${que} del ${String(prev.weekday || 'viernes').toLowerCase()} (D${prev.dia})`;
+      detail = `El mini-sim de ese viernes quedó absorbido por el ${que} (no se hizo) → mismo concepto, otro escenario, nunca la misma pregunta · de memoria, sin material · ${EVAL_ANCLADA_REGLA}`;
+      code = undefined;
+    }
+    if (/:m_log$/.test(it.key)) {
+      label = '📝 CIERRE DE SESIÓN tipo «Carril B 16:15» (formulario al final de la cola → study_progress) + 1-3 APEX de errores de conocimiento';
+      detail = (detail || '').replace('ENCAPS|banco_dia|', 'ENCAPS|carril_b|');
+    }
+    return { ...it, key: it.key.replace(/^D(\d+):m_/, 'D$1:b_'), label: `16:15 CARRIL B · ${label}`, detail, code };
+  });
+}
+// Enumera los items chequeables de un día (debe coincidir con el daemon): base del día + carril B 16:15 (v6.00).
+// `metrics` (v6.00, opcional) → «faltan N d» calculado con study_metrics.extra.exam_date desde la fecha de la fila.
+export function itemsForDay(day: StudyScheduleDay, focusByCode: Record<string, number> = {}, prev: StudyScheduleDay | null = null, metrics: StudyMetrics | null = null): PlanItem[] {
+  return [...itemsBase(day, focusByCode, prev, metrics), ...itemsCarrilB(day, prev)];
+}
+
 // ── Queries Supabase ──
 async function fetchSchedule(examen: string): Promise<StudyScheduleDay[]> {
   const { data, error } = await supabase
@@ -1271,7 +1408,7 @@ export function useEncapsPlan(examen: string = 'ENCAPS'): UseEncapsPlan {
   const prevDay = useMemo(() => days.find(d => d.dia === dia - 1) ?? null, [days, dia]);
   const evalHoy = useMemo(() => (today && today.modo === 'MANTENIMIENTO' ? evalAncladaDe(today, prevDay) : null), [today, prevDay]);
   const focusByCode = useMemo(() => focusDayByCode(days), [days]);
-  const todayItems = useMemo(() => (today ? itemsForDay(today, focusByCode, prevDay) : []), [today, focusByCode, prevDay]);
+  const todayItems = useMemo(() => (today ? itemsForDay(today, focusByCode, prevDay, metrics) : []), [today, focusByCode, prevDay, metrics]); // v6.00: + metrics (días al examen) · + carril B
   const repasos = useMemo(() => repasosDeHoy(days, dia), [days, dia]);
   const proximos = useMemo(() => proximosVideos(days, todayLimaISO()), [days]);
   const totalToday = todayItems.length;

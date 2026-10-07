@@ -3,10 +3,16 @@
  * + 10_MIR_promir_detalle.md. Estructura ENCAPS (prioridad/vueltas) + táctica de examen.
  * v3b (12-sep-2026): métricas calibradas a Top 50 (MIR_HITOS con mínimo on-track por hito, bandas de
  * simulacro en netas, fases reales del calendario) + táctica −1/3 con las reglas de Palmerton.
+ * v6.00 (6-oct-2026 · V6_ESPEC §D · DJ-4): MIR 1 h/día en TODAS las fases → mantenimiento jue 28-ene → jue 22-abr (57 filas, sin modo
+ *   reducido) + EXTENSIÓN vie 23-abr → vie 24-sep (131 filas; L-S desde el SERUMS) · protegidos v6 (vie 12-mar · sáb 13 · dom 14-mar ENCAPS
+ *   · lun 15-mar · sáb 25 / dom 26 / lun 27-sep Step 1) + Semana Santa (25-26-mar) sin sesión; los v5.20 (22-feb · 9-mar · 10-mar) ya
+ *   no existen · el handoff a la fase principal pasa al vie 24-sep-2027 (MIR_MANT_META.handoff; fase principal desde oct-2027).
  */
 import { Prioridad, PRIORIDAD_COLOR, VUELTAS } from './researchData';
 import { mirReadinessDerivado, MirReadiness, mirEvalLogLoad, MirEvalEntry } from './mirEvalLog';
 import { mirDiaN } from './mirDailyPlan';
+import { MIR_MANT_META } from './mirMantenimiento';
+import { FECHAS_V6 } from './fechasV6';
 export { PRIORIDAD_COLOR, VUELTAS };
 export type { Prioridad };
 
@@ -30,7 +36,8 @@ export const MIR_KPIS = { asignaturasTierS: 3, vueltasCritica: 6, simulacrosMeta
 export interface MirHito { clave: string; nombre: string; fecha: string; min: number; fase: string; nota: string; }
 export const MIR_HITOS: MirHito[] = [
   { clave: 'mini-MIR', nombre: 'mini-MIR 40Q mixto (D77)', fecha: mirDiaN(77)?.fecha || '2027-01-26', min: 50, fase: '1ª vuelta', nota: 'baseline honesto tras 76 temas; 40Q ⇒ ±2,5 pp por pregunta' },
-  { clave: 'handoff', nombre: 'Handoff 22-abr-2027 (entrada a la fase principal)', fecha: '2027-04-22', min: 60, fase: 'banqueo', nota: 'tabla de neto por asignatura (cierres + mini-MIR + mantenimiento) + stats FSRS del deck' },
+  // v6.00: handoff = último día de la extensión del banqueo (vie 24-sep-2027, día de plan anterior al ritual del Step 1); v5.20: jue 22-abr.
+  { clave: 'handoff', nombre: 'Handoff vie 24-sep-2027 (entrada a la fase principal, oct-2027)', fecha: MIR_MANT_META.fin, min: 60, fase: 'banqueo', nota: 'tabla de neto por asignatura (cierres + mini-MIR + mantenimiento + extensión) + stats FSRS del deck (retention 0,85 → 0,90)' },
   { clave: '1ª vuelta', nombre: 'Fin de la 1ª vuelta completa (dic-2027)', fecha: '2027-12-31', min: 68, fase: 'principal', nota: 'simulacro 200Q oficial cronometrado (examenesmir.com)' },
   { clave: 'sims 2028', nombre: 'Simulacros 2028', fecha: '2028-12-31', min: 75, fase: 'principal', nota: '≈150 netas: borde inferior de la banda Top 50' },
   { clave: 'sims 2029', nombre: 'Simulacros 2029', fecha: '2029-12-31', min: 82, fase: 'competición', nota: '≈165 netas: banda Top 50 en un año difícil' },
@@ -138,9 +145,9 @@ export const MIR_HORA = [
 
 // Fases REALES del calendario MIR (v3b; antes describía las "Fase 0-4 por meses" del plan de junio)
 export const MIR_CALENDARIO = [
-  { fase: '1ª vuelta · oct-2026→ene-2027', foco: '78 días (7-oct→27-ene, v5.20; v5.19: 6-oct→26-ene · v5.18: 5-oct→25-ene): 76 temas top-N por Peso MIR + núcleo rabi_94, Epi/Bioética D1-D4, cada bloque precede ~1 semana a su sistema Step 1. mini-MIR D77 ≥ 50 % neto.' },
-  { fase: 'Banqueo · ene→abr-2027', foco: 'Sin contenido nuevo: Anki + 25Q/día reales (viernes 30Q de la asignatura peor del log). Modo reducido jue 28-ene → vie 19-feb (= D95 del Step 1; el lun 22-feb —examen Step 1— y el mar 9 / mié 10-mar —D-1 y examen ENCAPS— son DÍAS PROTEGIDOS sin sesión MIR; normal desde el mar 23-feb). Mantenimiento jue 28-ene → jue 22-abr (58 días). Handoff jue 22-abr ≥ 60 % (v5.20; v5.19: reducido hasta el vie 19-feb, examen incluido · mant. mié 27-ene → jue 15-abr · v5.18: reducido hasta jue 18-feb · mant. mar 26-ene → mié 14-abr · v5.17: reducido hasta mar 16-feb · mant. vie 22-ene → mar 13-abr).' },
-  { fase: 'Principal · abr-2027→dic-2027', foco: 'MIR pasa a bloque principal: 1ª vuelta COMPLETA (30 asignaturas, Tier C incluido), umbrales de cierre 75/60, retention FSRS 0,90. Fin de vuelta ≥ 68 %.' },
+  { fase: '1ª vuelta · oct-2026→ene-2027', foco: '78 días (mié 7-oct → mié 27-ene, intacto en v6.00): 76 temas top-N por Peso MIR + núcleo rabi_94, Epi/Bioética D1-D4, cada bloque precede ~1 semana a su sistema Step 1. mini-MIR D77 ≥ 50 % neto.' },
+  { fase: 'Banqueo · ene→sep-2027 (v6.00)', foco: `Sin contenido nuevo: Anki + 25Q/día reales (viernes 30Q de la asignatura peor del log). Mantenimiento ${MIR_MANT_META.mant.inicio.slice(8)}-ene → ${MIR_MANT_META.mant.fin.slice(8)}-abr (${MIR_MANT_META.mant.totalDias} días, sin modo reducido: DJ-4 = 1 h/día en todas las fases) + EXTENSIÓN vie ${MIR_MANT_META.ext.inicio.slice(8)}-abr → vie ${MIR_MANT_META.ext.fin.slice(8)}-sep (${MIR_MANT_META.ext.totalDias} días; desde el SERUMS ${FECHAS_V6.serums.inicio.slice(8)}-may también el SÁBADO = mini-simulacro 30Q mixtas; franja según el turno: M 16:00 · T 10:35 · L 15:15 · hito 04:05 · guardia en tiempo muerto). DÍAS PROTEGIDOS sin sesión MIR: ${FECHAS_V6.protegidos.map((p) => p.fecha.slice(5)).join(' · ')} (ENCAPS y Step 1) + Semana Santa 25-26-mar. Handoff vie 24-sep ≥ 60 %.` },
+  { fase: 'Principal · oct-2027→', foco: 'MIR pasa a bloque principal tras el Step 1 (F5): 1ª vuelta COMPLETA (30 asignaturas, Tier C incluido), umbrales de cierre 75/60, retention FSRS 0,90. Fin de vuelta ≥ 68 %.' },
   { fase: 'Vueltas + simulacros · 2028→2029', foco: 'Vueltas numéricas (motor ENCAPS) + simulacros 200Q cronometrados con plantilla idéntica. 2028 ≥ 75 % · 2029 ≥ 82 % (banda Top 50 = 150-165 netas).' },
   { fase: 'Competición · ene-2030', foco: 'Solo simulacros + cuaderno de errores + taper. Examen MIR 2030 → Top 50 → Dermatología (Clínic).' },
 ];

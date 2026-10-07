@@ -5,14 +5,13 @@
  * subtema), Librerías, Flashcards, Video Library (B&B Step 1/2 + Sketchy) y la
  * biblioteca High-Yield de Palmerton + lo que Palmerton dice de cada sistema.
  *
- * v5.20 (6-oct-2026, DEFINITIVA): D1 = MIÉ 7-oct-2026 → D95 = vie 19-feb-2027 · Step 1 = BLOQUE PRINCIPAL (6h15/día L-V):
- *  05:00 ANKI AM · 07:15 repaso anclado · 08:15 PRE-TEST 10Q · 09:00-11:00 DEEP PRIME · 11:00 30Q · 18:00 eval examen.
- *  Sáb y dom LIBRES (skip 25-dic, 31-dic, 1-ene). Examen target lun 22-feb-2027 (v5.20; v5.19: vie 19-feb · v5.18: jue 18-feb · v5.17: mar 16-feb · v5.16: jue 11-feb; ventana original 25-29 ene superada). Los diaInicio apuntan
- *  al plan de 95 días de usmleStep1Daily.ts (fuente de verdad): Fase A D1-81 · B D82-86 · C D87-95.
- *  El D1 (mié 7-oct) es el UWSA1 baseline (vie 11 → lun 14 → mar 15 → mié 16 → jue 17 → lun 21 → mié 23 → lun 28-sep → jue 1-oct → lun 5-oct → mar 6-oct → mié 7-oct); el contenido arranca el jue 8-oct (D2).
- *  v5.20 (misma regla que v5.15-v5.19; +1 hábil; 27 hábiles perdidos desde el 31-ago): CORRIMIENTO RÍGIDO — los 12 hitos corren con el plan y conservan su D#, así ningún NBME pierde días de contenido.
- *  Examen: D94 = jue 18-feb = última sesión de banco · D95 = vie 19-feb = último día del plan (D-1 hábil; ritual de test-day adelantado a la tarde) · sáb 20 y dom 21 libres (dom 21 = D-1 REAL, sin estudio) → target LUN 22-FEB-2027; Prometric por agendar/reprogramar.
- *  (v5.19: D94 mié 17-feb · D95 jue 18-feb = D-1 real, sin finde · examen vie 19-feb. v5.18: D94 mar 16-feb · D95 mié 17-feb · examen jue 18-feb. v5.17: D94 vie 12-feb · sáb 13/dom 14 libres · D95 lun 15-feb · examen mar 16-feb.)
+ * v6.00 (6-oct-2026): REESTRUCTURACIÓN ANUAL (V6_ESPEC §B) — el plan día a día (usmleStep1Daily.ts, fuente de verdad) tiene DOS TRAMOS:
+ *  F1 = D1-D60 mié 7-oct → mié 30-dic-2026 (L-V, 6h15/día: 05:00 ANKI AM · 07:15 repaso anclado · 08:15 PRE-TEST 10Q · 09:00-11:00
+ *  DEEP PRIME · 11:00 30Q · 18:00 eval) · PAUSA 31-dic → 15-mar (ENCAPS) · tramo 2 = T1-T158 (d 101-258) mar 16-mar → sáb 25-sep-2027
+ *  (F3 L-V 7h15 + F4 L-S con el SERUMS) · examen target lun 27-sep-2027 PROVISIONAL (ventana DJ-1: 31-ago / 27-sep / 25-oct).
+ *  Los diaInicio = d de la 1.ª fila de cada sistema en DIAS_TODOS (F1: 1-60 · tramo 2: 101-258; Micro, Repro, MSK y Bioq solo
+ *  existen en el tramo 2); los regenera update_diainicio.js. D1 (mié 7-oct) = UWSA1 baseline; el contenido arranca el jue 8-oct (D2).
+ *  v5.20: plan de 95 días L-V (D1 mié 7-oct, corrimiento rígido +1 hábil por día no estudiado, examen en febrero) — sustituido.
  *
  * Prioridad: Step 1. Sistemas ordenados por peso real (preguntas uWorld) +
  * la serie High-Yield de Palmerton.
@@ -26,10 +25,10 @@ export const QB = {
 };
 
 export const PLAN_META = {
-  inicio: '2026-10-07', // v5.20 (6-oct): D1=mié 7-oct (UWSA1 baseline) · Step 1 = bloque PRINCIPAL (6h15/día L-V) · sáb y dom libres · examen target lun 22-feb-2027 (D95 vie 19-feb = último día del plan · dom 21 = D-1 real) · v5.19: D1 mar 6-oct · examen vie 19-feb · v5.18: D1 lun 5-oct · examen jue 18-feb · v5.17: D1 jue 1-oct · examen mar 16-feb
-  bloque: '05:00 ANKI AM · 07:15 repaso anclado · 08:15 PRE-TEST 10Q · 09:00 DEEP PRIME 2h · 11:00 30Q consolidación · 18:00 eval modo examen (6h15/día)',
+  inicio: '2026-10-07', // v6.00 (6-oct): D1 = mié 7-oct (UWSA1 baseline) · F1 D1-D60 → 30-dic · PAUSA → 15-mar · tramo 2 mar 16-mar → sáb 25-sep · examen lun 27-sep-2027 PROVISIONAL
+  bloque: '05:00 ANKI AM · 07:15 repaso anclado · 08:15 PRE-TEST 10Q · 09:00 DEEP PRIME 2h · 11:00 30Q consolidación · 18:00 eval modo examen (6h15/día; F3 + 16:15 REENTRADA · F4 plantilla por turno del SERUMS)',
   metodo: 'Palmerton: ver vídeo High-Yield del sistema → leer (Library/First Aid) → Anki (FSRS) → preguntas en modo tutor → log de errores → APEX.',
-  nota: 'Prioridad Step 1 (v5.20 · corrimiento rígido: los hitos corren con el plan). D1 = mié 7-oct = UWSA1 baseline (movido del mar 6-oct · v5.19) · D2 jue 8-oct Fundamentos/Pathoma · D6 Cardiovascular (mié 14-oct). Fase A contenido D1-81 · Fase B banco D82-86 · Fase C sprint D87-95 (D95 = vie 19-feb-2027 = último día del plan · finde libre · examen target lun 22-feb; v5.19: D95 jue 18-feb = D-1 real · examen vie 19-feb · v5.18: D95 mié 17-feb · examen jue 18-feb).',
+  nota: 'Prioridad Step 1 (v6.00 · fin del corrimiento diario: un día perdido se paga con filas COLCHÓN). D1 = mié 7-oct = UWSA1 baseline · D2 jue 8-oct Fundamentos/Pathoma · D6 Cardiovascular (mié 14-oct) · F1 D1-D60 hasta el mié 30-dic (D58 bioestadística, D59-D60 colchón) · PAUSA ENCAPS 31-dic → 15-mar · tramo 2 T1-T158 mar 16-mar → sáb 25-sep (Micro, Repro, MSK, Psiq, Bioq + reactivación + banco + taper) · examen target lun 27-sep-2027 PROVISIONAL.',
 };
 
 export interface SistemaUSMLE {
@@ -37,7 +36,7 @@ export interface SistemaUSMLE {
   /** preguntas uWorld del sistema (peso real) */
   uworldQ: number;
   tier: 'CORE' | 'HIGH' | 'MED';
-  diaInicio: number; // día del plan en que empieza (Día 1 = mié 7-oct-2026 = UWSA1 · v5.20; v5.19: mar 6-oct · v5.18: lun 5-oct; lo regenera update_diainicio.js desde usmleStep1Daily.ts)
+  diaInicio: number; // d de la 1.ª fila del sistema en DIAS_TODOS (v6.00: F1 1-60 · tramo 2 101-258; D1 = mié 7-oct-2026 = UWSA1; lo regenera update_diainicio.js desde usmleStep1Daily.ts)
   /** subtemas uWorld top del sistema (nombre · nº preguntas) */
   uworldSubtemas: [string, number][];
   /** capítulo B&B Step 1 (nombre · nº vídeos · minutos) */
@@ -115,7 +114,7 @@ export const SISTEMAS: SistemaUSMLE[] = [
     lib: { subject: 'Hematology & Oncology', doc: 0 }, flashDeck: 'Hematology & Oncology',
   },
   {
-    sistema: 'Reproductive', uworldQ: 169, tier: 'HIGH', diaInicio: 66,
+    sistema: 'Reproductive', uworldQ: 169, tier: 'HIGH', diaInicio: 110,
     uworldSubtemas: [['Male reproductive disorders', 48], ['Female genital tract tumors', 26], ['Pregnancy & childbirth disorders', 44], ['Reproductive endocrinology', 21], ['GU infections', 13]],
     bb1: { ch: 'Reproductive', n: 37, min: 440 }, bb2: { ch: 'Obstetrics and Gynecology', n: 34, min: 569 },
     palmerton: [{ titulo: 'High Yield OB/GYN Review', id: '4D7MO0TR2fY', min: 104 }, { titulo: 'High Yield OB/GYN Review Part 2', id: 'nYtSNyXh_Ww', min: 91 }],
@@ -123,7 +122,7 @@ export const SISTEMAS: SistemaUSMLE[] = [
     lib: { subject: 'Gynecology', doc: 0 }, flashDeck: 'Reproductive',
   },
   {
-    sistema: 'Musculoskeletal / Rheum', uworldQ: 163, tier: 'HIGH', diaInicio: 71,
+    sistema: 'Musculoskeletal / Rheum', uworldQ: 163, tier: 'HIGH', diaInicio: 115,
     uworldSubtemas: [['Arthritis & spondyloarthropathies', 38], ['Bone/joint injuries & infections', 34], ['Normal structure & function', 31], ['Autoimmune & vasculitides', 25], ['Metabolic bone disorders', 14]],
     bb1: { ch: 'Musculoskeletal', n: 20, min: 369 }, bb2: { ch: 'Musculoskeletal', n: 9, min: 165 },
     palmerton: [],
@@ -131,7 +130,7 @@ export const SISTEMAS: SistemaUSMLE[] = [
     lib: { subject: 'Rheumatology/Orthopedics', doc: 0 }, flashDeck: 'Rheumatology/Orthopedics',
   },
   {
-    sistema: 'Psychiatry & Behavioral', uworldQ: 179, tier: 'HIGH', diaInicio: 75,
+    sistema: 'Psychiatry & Behavioral', uworldQ: 179, tier: 'HIGH', diaInicio: 58,
     uworldSubtemas: [['Mood disorders', 33], ['Psychotic disorders', 26], ['Substance use disorders', 25], ['Anxiety/trauma-related', 25], ['Personality/Somatoform', 9]],
     bb1: { ch: 'Psychiatry', n: 21, min: 271 }, bb2: { ch: 'Psychiatry', n: 14, min: 198 },
     palmerton: [],
@@ -148,7 +147,7 @@ export const SISTEMAS: SistemaUSMLE[] = [
     flashDeck: 'Immunology',
   },
   {
-    sistema: 'Infectious Disease / Micro', uworldQ: 271, tier: 'HIGH', diaInicio: 58,
+    sistema: 'Infectious Disease / Micro', uworldQ: 271, tier: 'HIGH', diaInicio: 103,
     uworldSubtemas: [['Bacterial infections', 112], ['Viral infections', 43], ['HIV & STIs', 42], ['Parasitic & helminthic', 26], ['Antimicrobial drugs', 23], ['Fungal infections', 12]],
     bb1: { ch: 'Infectious Disease', n: 36, min: 699 }, bb2: { ch: 'Infectious Disease', n: 16, min: 306 },
     sketchy: { ch: 'Microbiology', n: 44 },
@@ -157,7 +156,7 @@ export const SISTEMAS: SistemaUSMLE[] = [
     lib: { subject: 'Infectious Diseases', doc: 0 }, flashDeck: 'Microbiology',
   },
   {
-    sistema: 'Biochemistry', uworldQ: 159, tier: 'MED', diaInicio: 80,
+    sistema: 'Biochemistry', uworldQ: 159, tier: 'MED', diaInicio: 121,
     uworldSubtemas: [['Bioenergetics & carbohydrate metabolism', 21], ['Amino acids/proteins/enzymes', 20], ['Cell & molecular biology', 17], ['Lipid metabolism', 3]],
     bb1: { ch: 'Biochemistry', n: 28, min: 549 },
     sketchy: { ch: 'Biochemistry', n: 86 },
@@ -166,7 +165,7 @@ export const SISTEMAS: SistemaUSMLE[] = [
     flashDeck: 'Biochemistry',
   },
   {
-    sistema: 'Pharmacology (transversal)', uworldQ: 550, tier: 'HIGH', diaInicio: 80,
+    sistema: 'Pharmacology (transversal)', uworldQ: 550, tier: 'HIGH', diaInicio: 121,
     uworldSubtemas: [['Pharmacodynamics & receptors', 5], ['Pharmacokinetics', 14], ['Drug metabolism & toxicity', 18], ['(se estudia integrada en cada sistema)', 0]],
     bb1: { ch: 'Basic Pharmacology', n: 5, min: 86 },
     sketchy: { ch: 'Pharmacology', n: 130 },

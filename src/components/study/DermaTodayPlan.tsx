@@ -33,6 +33,9 @@ import { mirPoolDisponible } from '../../lib/mirPreguntasOficiales';
 import { MirPoolLista, MirPoolEvalCompacta, poolConFallback } from './MirPoolEval';
 import DermaAnkiCola from '../derma/DermaAnkiCola';
 import { useDermaLedger, dermaHoyISO, dermaCopiar, dermaDescargar, dermaEsViernes, DERMA_AREA_LABEL, DERMA_AREA_COLOR } from '../derma/dermaLedgerBus';
+import { FECHAS_V6, motivoProtegido } from '../../lib/fechasV6';
+/** v6.00: ¿la fecha cae en el SERUMS (F4)? → 30' en tiempo muerto de la posta, franja sin hora (§E). */
+const enF4 = (iso: string): boolean => iso >= FECHAS_V6.serums.inicio;
 
 /**
  * DermaTodayPlan — Plan Derma día-a-día PLAN ÉLITE v3 (ciclo 1 = 73 sesiones: mié 7-oct-2026 → mié 5-may-2027 en v5.20, saltando los días protegidos lun 22-feb y mié 10-mar; ciclo 2 =
@@ -53,6 +56,11 @@ import { useDermaLedger, dermaHoyISO, dermaCopiar, dermaDescargar, dermaEsVierne
  * "alimenta SR-1/SR-2" y "Nítida" · "retoma en Q#" (dermaBancoCursor) en el review · CURA OBLIGATORIA (DD Challenge)
  * cuando la última sesión registró un fallo CCSN (dermaCuraPendiente) · ANKI → APEX::DERMA::<bloque> + cola TSV ·
  * ◆ Obsidian (rama 10_DERMATOLOGIA) · export del ledger.
+ * v6.00 (6-oct-2026 · V6_ESPEC §E · §F · DJ-4): ciclo 1 mié 7-oct-2026 → mié 5-may-2027 (73) · ciclo 2 vie 7-may → mié 14-jul-2027 (30) ·
+ * días protegidos v6 (12/13/14/15-mar · 25/26/27-sep) + Semana Santa · la ventana d44-d49 pasa a «ALIVIO F2 (antes taper Step 1)»
+ * (lun 8-feb → lun 22-feb, dentro de la intensiva ENCAPS; mismo contenido) · en F4 (SERUMS, desde el lun 3-may) el bloque es «30' en
+ * tiempo muerto (posta)», sin hora fija: núcleo = casos ciegos + imagen; los ~10Q y la lectura 10' pasan a opcionales · desde el
+ * SERUMS el sábado es día de plan (Derma lun · mié · vie) y solo el domingo es descanso.
  */
 const PURPLE = DermaAtlas.amethyst; // #9A7BC8 amatista (antes #8B5CF6 fosforescente)
 const TEAL = DermaAtlas.jade;        // #5FA88C jade (antes #0FD4A0 neón)
@@ -193,7 +201,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, tone }: { dia: DiaDerma;
   const esDrill = !!dia.drillHDPH;        // derivado del contenido (d19 · d20 · d52 · d73 · d94 · d103), no de una lista fija
   const esCheckpoint = !!dia.checkpoint;  // cp1 d51 · cp2 d52 · repaso1 d72 · repaso2 d73 (+ d85 · d94 · d103 del ciclo 2)
   const ciclo = dermaCicloDe(dia.d) ?? 1;
-  const taper = dermaTaperEfectivo(dia);  // d44-d49 (Step 1) · ENCAPS por fecha (DERMA_TAPER_ENCAPS_FECHA; examen 2027-I FIJADO mié 10-mar en v5.20, la constante sigue en null)
+  const taper = dermaTaperEfectivo(dia);  // d44-d49 (v6.00: ALIVIO F2, modo 'step1') · ENCAPS por fecha (DERMA_TAPER_ENCAPS_FECHA; v6.00: examen dom 14-mar PROVISIONAL, la constante sigue en null hasta la convocatoria · v5.20: mié 10-mar)
   const gplus = dermaGplusDe(dia);        // ciclo 2: módulo G+ en el slot de lectura
   const nCasos = dia.casoIds.length;
   const promirLista = ciclo === 2 ? DERMA_CICLO2_PROMIR_DIAS : DERMA_PROMIR_DIAS;
@@ -235,7 +243,8 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, tone }: { dia: DiaDerma;
             {dia.puenteResearch && <ChipBtn label={`alimenta ${dia.puenteResearch.sr} (${dia.puenteResearch.linea})`} color={TEAL} on={showPuente} onPress={() => setShowPuente((s) => !s)} />}
             {dia.nitida && <ChipBtn label="Nítida · protocolo" color={DermaAtlas.champagne} on={showNitida} onPress={() => setShowNitida((s) => !s)} />}
             {dia.promir && <Chip label="MIR 10Q hoy" color={MIR_AMBER} small />}
-            {taper && <ChipBtn label={`TAPER ${taper.modo === 'step1' ? 'Step 1' : 'ENCAPS'} · semana de examen: solo FSRS + 1 caso`} color={DermaAtlas.crit} on={showTaper} onPress={() => setShowTaper((s) => !s)} />}
+            {/* v6.00: la ventana d44-d49 (modo 'step1') es el ALIVIO de la intensiva ENCAPS, ya no la semana del examen Step 1 */}
+            {taper && <ChipBtn label={taper.modo === 'step1' ? 'ALIVIO F2 (antes taper Step 1) · solo FSRS + 1 caso' : 'TAPER ENCAPS · semana de examen: solo FSRS + 1 caso'} color={DermaAtlas.crit} on={showTaper} onPress={() => setShowTaper((s) => !s)} />}
             {dia.step1 && (dia.anclajeStep1
               ? <ChipBtn label="cuenta doble Step 1" color={DermaAtlas.periwinkle} on={showStep1} onPress={() => setShowStep1((s) => !s)} />
               : <Chip label="cuenta doble Step 1" color={DermaAtlas.periwinkle} small />)}
@@ -278,7 +287,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, tone }: { dia: DiaDerma;
 
           {/* Los 2 casos CIEGOS fijos de la sesión (ids reales de la permutación) → registro en el ledger */}
           <View style={st.casosRow}>
-            <Text style={st.casosLbl}>{nCasos ? `CASOS CIEGOS DE HOY · Board Review · ${nCasos}${taper ? ' (taper: 1 caso)' : nCasos >= 3 ? ' (post-Step 1: 3/sesión)' : ''}` : 'SIN CASOS NUEVOS · segunda pasada FSRS de los fallos del ledger'}</Text>
+            <Text style={st.casosLbl}>{nCasos ? `CASOS CIEGOS DE HOY · Board Review · ${nCasos}${taper ? ' (taper: 1 caso)' : nCasos >= 3 ? ' (desde d50: 3/sesión)' : ''}` : 'SIN CASOS NUEVOS · segunda pasada FSRS de los fallos del ledger'}</Text>
             {dia.casoIds.map((id) => {
               const a = dermaCasoArea(id); const c = DERMA_AREA_COLOR[a]; const e = dermaCasoEstado(id, entries);
               const estado = e ? `${e.acierto ? '✓' : '✗'} ${e.evalAcierto}${e.fecha === hoy ? ' · hoy' : ' · ' + e.fecha}` : '○ registrar';
@@ -361,7 +370,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, tone }: { dia: DiaDerma;
       {prev && (
         <FadeUp delay={80}>
           <View style={st.anchor}>
-            <Text style={st.anchorLbl}>13:30 · Repaso FSRS (sesión ANTERIOR)</Text>
+            <Text style={st.anchorLbl}>{enF4(dia.fecha) ? 'Inicio · Repaso FSRS (sesión ANTERIOR)' : '13:30 · Repaso FSRS (sesión ANTERIOR)'}</Text>
             <Text style={st.anchorVal}>D{prev.d} · {prev.sub}</Text>
             <Text style={st.anchorSub}>Tarjetas de MECANISMO + oclusiones de los casos {casosTxt(prev)} · fallo repetido → 2ª pasada FSRS (repaso 1 = d{DERMA_CHECKPOINTS.repaso1}) · cada fallo ya lleva su módulo CORE en el ledger</Text>
           </View>
@@ -369,7 +378,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, tone }: { dia: DiaDerma;
       )}
 
       {/* Cola de materiales reales de hoy (caso ciego → review → lectura) */}
-      <Text style={st.secLbl}>Materiales de la sesión · 13:33–14:13 · links REALES (en orden)</Text>
+      <Text style={st.secLbl}>{enF4(dia.fecha) ? "Materiales de la sesión · 30' en tiempo muerto (posta) · links REALES (núcleo primero)" : 'Materiales de la sesión · 13:33–14:13 · links REALES (en orden)'}</Text>
 
       {/* CURA PENDIENTE del ledger: fallo CCSN en la última sesión → DD Challenge OBLIGATORIO antes del primer caso (otros tipos: recomendada) */}
       {curaHoy && (
@@ -477,7 +486,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, tone }: { dia: DiaDerma;
         <View style={[st.cola, { borderLeftColor: GOLD, alignItems: 'flex-start' }]}>
           <View style={st.colaIconBox}><DermaLineIcon name="histoDrop" size={18} color={GOLD} /></View>
           <View style={{ flex: 1 }}>
-            <Text style={st.colaLbl}>CIERRE · 14:13–14:15</Text>
+            <Text style={st.colaLbl}>{enF4(dia.fecha) ? 'CIERRE (2′)' : 'CIERRE · 14:13–14:15'}</Text>
             <Text style={st.colaVal}>Free recall {nCasos ? `de los ${nCasos} casos` : 'de los fallos repasados'} en voz alta → 1-2 tarjetas de MECANISMO + 1 oclusión (cola Anki de arriba) → registrar en el ledger lo que falte{taper ? ' · TAPER: 0 tarjetas nuevas salvo del caso fallado' : ''}</Text>
             <Text style={st.colaSub}>NotebookLM "DERMA · Élite Engine" = motor de verificación de la tarjeta (no sustituye la fuente) · {viernes ? 'VIERNES: exporta el ledger' : 'exporta el ledger cada viernes'} (localStorage es el único depósito del % ciego)</Text>
             <View style={st.cierreRow}>
@@ -511,13 +520,13 @@ function HorarioView({ dia }: { dia: DiaDerma }) {
   };
   return (
     <View>
-      <Text style={st.secLbl}>Bloque Derma · Día {dia.d} ({fmtFecha(dia.fecha)}) · hora Lima</Text>
+      <Text style={st.secLbl}>{enF4(dia.fecha) ? `Bloque Derma · Día ${dia.d} (${fmtFecha(dia.fecha)}) · 30' en tiempo muerto (posta) · sin hora fija · núcleo = casos ciegos + imagen (review ~10Q y lectura 10' opcionales)` : `Bloque Derma · Día ${dia.d} (${fmtFecha(dia.fecha)}) · hora Lima`}</Text>
       {DERMA_FRANJAS.map((f, i) => {
         const det = detalle(f.tipo);
         return (
           <FadeUp key={i} delay={i * 25}>
             <View style={st.franja}>
-              <View style={st.franjaHora}><Text style={st.franjaHoraTxt}>{f.hora}</Text></View>
+              <View style={st.franjaHora}><Text style={st.franjaHoraTxt}>{enF4(dia.fecha) ? `paso ${i + 1}` : f.hora}</Text></View>
               <View style={{ flex: 1 }}>
                 <Text style={st.franjaFase}>{f.fase}</Text>
                 {det ? <Text style={st.franjaDet}>↳ {det}</Text> : null}
@@ -526,7 +535,7 @@ function HorarioView({ dia }: { dia: DiaDerma }) {
           </FadeUp>
         );
       })}
-      <Text style={st.note}>Interdiario con Research: el bloque 13:30–14:15 del Calendar alterna Research↔Derma por día hábil. Avanzas 1 átomo por día-Derma. 1 de cada 3 sesiones (d ≡ 0 mod 3) el review son 10Q MIR del capítulo ProMIR. No se modifica el Calendar.</Text>
+      <Text style={st.note}>Interdiario con Research: el bloque 13:30–14:15 del Calendar alterna Research↔Derma por día hábil (en el SERUMS: 30' en tiempo muerto de la posta, L-S · Derma lun · mié · vie). Avanzas 1 átomo por día-Derma. 1 de cada 3 sesiones (d ≡ 0 mod 3) el review son 10Q MIR del capítulo ProMIR. No se modifica el Calendar.</Text>
     </View>
   );
 }
@@ -644,6 +653,7 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
 export default function DermaTodayPlan({ tone, jump }: { tone?: SkinTone; jump?: { d: number; k: number } }) {
   const iso = todayISO();
   const tipoHoy = diaEstudioTipo(new Date());
+  const protegidoHoy = motivoProtegido(iso); // v6.00: día protegido = sin sesión Derma (§A3)
   // Fallback al CICLO 2: cuando la fecha pasa del último átomo del ciclo 1 (d73), planHoyD cae en dermaCiclo2.ts.
   const hoyD = planHoyD(DERMA_DIAS_TODOS, iso);
   const [sel, setSel] = useState<number>(hoyD);
@@ -679,12 +689,22 @@ export default function DermaTodayPlan({ tone, jump }: { tone?: SkinTone; jump?:
           <Text style={st.interSub}>{tipoHoy === 'research' ? 'HOY te toca →' : 'día alterno'}</Text>
         </View>
         <View style={[st.interBtn, tipoHoy === 'descanso' ? st.interOn : st.interOff, { flex: 0.7 }]}>
-          <Text style={[st.interBig, { color: tipoHoy === 'descanso' ? GOLD : Colors.muted, letterSpacing: 0 }]}>finde</Text>
+          <Text style={[st.interBig, { color: tipoHoy === 'descanso' ? GOLD : Colors.muted, letterSpacing: 0 }]}>{enF4(iso) ? 'dom' : 'finde'}</Text>
           <Text style={st.interSub}>descanso</Text>
         </View>
       </View>
+      {protegidoHoy && (
+        <View style={[st.artefactoBar, { borderLeftColor: Colors.coral }]}>
+          <Text style={[st.artefactoTxt, { color: Colors.coral }]}>🛡 DÍA PROTEGIDO · {protegidoHoy}: sin sesión Derma ni Research (§A3).</Text>
+        </View>
+      )}
+      {enF4(iso) && !protegidoHoy && tipoHoy === 'derma' && (
+        <View style={st.artefactoBar}>
+          <Text style={st.artefactoTxt}>🏥 SERUMS (F4): Derma = 30' en tiempo muerto de la posta (DJ-4) · núcleo = casos ciegos + imagen; review ~10Q y lectura 10' opcionales.</Text>
+        </View>
+      )}
       <View style={st.artefactoBar}>
-        <Text style={st.artefactoTxt}>PLAN ÉLITE v3: casos CIEGOS fijos por sesión (permutación de los 200 Board Review: 2 · 1 en el TAPER d44-d49 · 3 desde d50 post-Step 1) + imagen dermatoscópica ciega + ~10Q review retomando en el Q# del cursor (1 de cada 3 sesiones = 10Q MIR ProMIR) + micro-track DermNet CME + ledger por caso (% ciego real, fallos por módulo CORE, cura CCSN → DD Challenge) → DERMATOLOGÍA ESTÉTICA (seguridad de fillers d19-20 → anatomía → toxina → fillers → peelings → láser → cosmecéutica) · ciclo 2 (d74-d103): 36 casos restantes + 2ª pasada FSRS + módulos G+ · {DERMA_DAILY_META.bloque}</Text>
+        <Text style={st.artefactoTxt}>PLAN ÉLITE v3: casos CIEGOS fijos por sesión (permutación de los 200 Board Review: 2 · 1 en el ALIVIO F2 d44-d49 (antes taper Step 1) · 3 desde d50) + imagen dermatoscópica ciega + ~10Q review retomando en el Q# del cursor (1 de cada 3 sesiones = 10Q MIR ProMIR) + micro-track DermNet CME + ledger por caso (% ciego real, fallos por módulo CORE, cura CCSN → DD Challenge) → DERMATOLOGÍA ESTÉTICA (seguridad de fillers d19-20 → anatomía → toxina → fillers → peelings → láser → cosmecéutica) · ciclo 2 (d74-d103): 36 casos restantes + 2ª pasada FSRS + módulos G+ · {DERMA_DAILY_META.bloque}</Text>
       </View>
 
       {/* Anillos de progreso REAL (global · críticos · board · estética · % ciego del ledger) */}

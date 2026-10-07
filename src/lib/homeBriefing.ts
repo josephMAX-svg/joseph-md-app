@@ -11,7 +11,10 @@
  * · notion.com/templates/life-command-center-529 · culturedcode.com/things
  * NO editar cronogramas: esto es contenido/encuadre, no reprogramación.
  */
-import { DAILY_META } from './usmleStep1Daily';
+import { DAILY_META, hitosDelPlan, esFilaT2 } from './usmleStep1Daily';
+import { FECHAS_V6, STEP1_SEMANAS, semanaStep1 as semanaStep1V6, faseV6 } from './fechasV6';
+import type { SemanaStep1 } from './fechasV6';
+import { HITOS_ONTRACK, hitoOnTrackDe, minimoTexto } from './usmleScores';
 
 // ── Núcleo "no negociable" de la Biblioteca (canon del operador) ──
 // Referencia por n de ESTUDIO_LIBROS / BIBLIOTECA_LIBROS. Marca el núcleo (lo
@@ -93,77 +96,54 @@ export function componerBriefing(inp: BriefingInput): string {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// v5.7 (5-sep-2026) — Semana N/20 del Step 1 (v5.20: N/20 · v5.19: N/20 · v5.18: N/20 · v5.17: N/21) · revisión semanal · modo mínimo · KPI Anki
-// Todo se deriva de datos ya presentes (DAILY_META del USMLE + localStorage con prefijo jmd-).
+// v5.7 (5-sep-2026) — Semana N/STEP1_SEMANAS del Step 1 · revisión semanal · modo mínimo · KPI Anki
+// v6.00 (6-oct-2026): STEP1_SEMANAS y semanaStep1 se DEFINEN en fechasV6 (módulo hoja; corta el ciclo usmleStep1Daily ↔ homeBriefing,
+//   V6_ESPEC §F r2 · I7) y aquí se re-exportan (compatibilidad de imports): 41 = 13 (F1) + semanas(lun 15-mar → lun 27-sep) · la PAUSA
+//   (lun 4-ene → semana del ENCAPS) → { pausa: true } y etiqueta 'PAUSA · ENCAPS' · la semana del examen → 'examen'.
+//   HITOS_STEP1 (constante) → hitosStep1() PEREZOSA (hitosDelPlan() de los 2 tramos + GO/NO-GO; mínimo desde usmleScores.HITOS_ONTRACK).
 // Doctrina: DATA/REVISION_SEMANAL.md · DATA/PROTOCOLO_MODO_MINIMO.md · DATA/SYNC_ANKI_OBSIDIAN_APP.md
 // ═══════════════════════════════════════════════════════════════════════════
 
-/** D1 del Step 1 (v5.20 = mié 7-oct-2026 · v5.19: mar 6-oct · v5.18: lun 5-oct · v5.17: jue 1-oct) — misma fuente que usmleStep1Daily.DAILY_META.inicio. */
-export const STEP1_INICIO = DAILY_META.inicio;
-export const STEP1_SEMANAS = 20; // v5.20: S1 = semana L-V del D1 (lun 5 → vie 9-oct; sesiones mié 7 → vie 9 = D1-D3) → S20 = 15-19 feb (D91 lun 15 · D92 mar 16 · D93 mié 17 · D94 jue 18 = última sesión de banco · D95 vie 19-feb = último día del plan) · finde libre (dom 21 = D-1 real) · examen target lun 22-feb (cae en la semana 21 → etiqueta "examen") · v5.19: 20 (sesiones mar 6 → vie 9 = D1-D4 · D95 jue 18-feb = D-1 · examen vie 19-feb) · v5.18: 20 (D95 mié 17 · examen jue 18-feb) · v5.17: 21 · v5.16: 20
+/** D1 del Step 1 (v6.00 = v5.20: mié 7-oct-2026) — misma fuente que usmleStep1Daily.DAILY_META.inicio (fechasV6 → _fechas_v6.json). */
+export const STEP1_INICIO = FECHAS_V6.f1.inicio;
+export { STEP1_SEMANAS };
+export type { SemanaStep1 };
 
-/** Hitos del plan con su mínimo on-track (PALMERTON_POR_MATERIA Parte V, regla 5%/mes).
- * v5.20 (6-oct): 6.º CORRIMIENTO RÍGIDO DEFINITIVO (+1 hábil; misma regla que v5.15-v5.19) — los hitos corren con el plan y conservan
- * su D#, así ningún NBME pierde días de contenido por delante. Con D1 en MIÉRCOLES caen casi todos en MARTES (salvo UWSA1 mié 7-oct,
- * NBME 29 vie 8-ene, NBME 32 mié 3-feb y NBME 33 vie 5-feb). v5.19 (5-oct, D1 mar 6-oct): casi todos en lunes (NBME 29 jue 7-ene,
- * 32 mar 2-feb, 33 jue 4-feb). v5.18 (3-oct, D1 lun 5-oct): casi todos en viernes (NBME 29 mié 6-ene,
- * 32 lun 1-feb, 33 mié 3-feb). v5.17 (30-sep, D1 jue 1-oct): casi todos en miércoles. */
-export const HITOS_STEP1: { fecha: string; nombre: string; minimo: string }[] = [
-  { fecha: '2026-10-07', nombre: 'UWSA1', minimo: 'baseline (cualquier valor)' }, // v5.20: D1 (mié 7-oct)
-  { fecha: '2026-10-20', nombre: 'NBME 25', minimo: '≥51%' },   // D10 (mar)
-  { fecha: '2026-11-10', nombre: 'NBME 26', minimo: '≥54%' },   // D25 (mar)
-  { fecha: '2026-12-01', nombre: 'NBME 27', minimo: '≥57%' },   // D40 (mar)
-  { fecha: '2026-12-22', nombre: 'NBME 28', minimo: '≥61%' },   // D55 (mar)
-  { fecha: '2027-01-08', nombre: 'NBME 29', minimo: '≥63%' },   // D65 (vie, por los saltos de 25-dic/31-dic/1-ene)
-  { fecha: '2027-01-19', nombre: 'NBME 30', minimo: '≥65%' },   // D72 (mar)
-  { fecha: '2027-01-26', nombre: 'UWSA2', minimo: 'low risk' }, // D77 (mar)
-  { fecha: '2027-02-02', nombre: 'NBME 31 · GO/NO-GO', minimo: '≥68%' }, // D82 (mar)
-  { fecha: '2027-02-03', nombre: 'NBME 32', minimo: '≥68%' },   // D83 (mié)
-  { fecha: '2027-02-05', nombre: 'NBME 33', minimo: '≥68%' },   // D85 (vie)
-  { fecha: '2027-02-09', nombre: 'Free 120', minimo: '≥70%' },  // D87 (mar)
-];
-/** Semanas DELOAD de los frentes SECUNDARIOS (50% de carga, fechas intactas): la posterior a NBME 26 y a NBME 28. */
+/** Hito del Home (chip de la semana · Cockpit): fecha, nombre y mínimo on-track en texto. */
+export interface HitoStep1 { fecha: string; nombre: string; minimo: string }
+/**
+ * Hitos del Step 1 (v6.00, §B5): los de los 2 tramos (hitosDelPlan(): UWSA1 + NBME 25-28 en F1 · NBME 29-33, UWSA3 (opc.), UWSA2 y
+ * Free 120 en el tramo 2) + la DECISIÓN GO/NO-GO (E-49, DAILY_META.gonogo). PEREZOSA: se evalúa al llamarla, no al cargar el módulo.
+ * El mínimo sale de usmleScores.HITOS_ONTRACK (no escrito a mano).
+ */
+export function hitosStep1(): HitoStep1[] {
+  const hs: HitoStep1[] = hitosDelPlan().map((x) => {
+    const h = hitoOnTrackDe(x.uw);
+    const nombre = esFilaT2(x) && x.nombre ? x.nombre : (h?.clave ?? x.uw);
+    return { fecha: x.fecha, nombre, minimo: h ? minimoTexto(h) : '—' };
+  });
+  const g = HITOS_ONTRACK.find((h) => h.clave === 'GO/NO-GO');
+  hs.push({ fecha: DAILY_META.gonogo, nombre: 'GO/NO-GO', minimo: g ? minimoTexto(g) : 'B4.5' });
+  return hs.sort((a, b) => (a.fecha < b.fecha ? -1 : a.fecha > b.fecha ? 1 : 0));
+}
+/** Semanas DELOAD de los frentes SECUNDARIOS (50% de carga, fechas intactas): la posterior a NBME 26 y a NBME 28 (F1, sin cambio en v6.00). */
 export const DELOAD_SEMANAS: { lunes: string; motivo: string }[] = [
-  { lunes: '2026-11-16', motivo: 'post-NBME 26 (mar 10-nov · v5.20)' },
-  { lunes: '2026-12-28', motivo: 'post-NBME 28 (mar 22-dic · v5.20)' },
+  { lunes: '2026-11-16', motivo: 'post-NBME 26 (mar 10-nov)' },
+  { lunes: '2026-12-28', motivo: 'post-NBME 28 (mar 22-dic)' },
 ];
 
-export interface SemanaStep1 {
-  n: number;            // 1..20 (0 = antes del D1; >20 = después de la semana del examen) · v5.17: 1..21
-  total: number;        // 20 (v5.20 = STEP1_SEMANAS · v5.19: 20 · v5.18: 20 · v5.17: 21)
-  lunes: string; viernes: string; sabado: string;
-  deload: boolean; deloadMotivo?: string;
-  hito?: string;        // hito que cae en esta semana (v5.20: casi siempre martes · v5.19: lunes · v5.18: viernes · v5.17: miércoles · v5.16: viernes)
-  fueraDeRango: boolean;
-}
-const addDaysISO = (iso: string, n: number): string => {
-  try { const d = new Date(iso + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); } catch { return iso; }
-};
-/** Semana N/20 del Step 1 (v5.20; N/STEP1_SEMANAS · v5.19: N/20 · v5.18: N/20 · v5.17: N/21) para una fecha (lunes→domingo). Determinista, sin reloj. */
+/** Semana del Step 1 para una fecha (lunes→domingo; determinista, sin reloj) = fechasV6.semanaStep1 con los hitos y deloads del plan. */
 export function semanaStep1(iso: string): SemanaStep1 {
-  let n = 0, lunes = STEP1_INICIO;
-  try {
-    const d = new Date(iso + 'T12:00:00Z');
-    const dow = d.getUTCDay();                       // 0=Dom
-    const offToMon = dow === 0 ? -6 : 1 - dow;       // lunes de la semana de `iso`
-    lunes = addDaysISO(iso, offToMon);
-    // v5.13: S1 = semana L-V del D1 aunque el D1 no sea lunes (D1 en jueves → el lunes de esa semana ya es S1, no 'pre-D1')
-    const d1 = new Date(STEP1_INICIO + 'T12:00:00Z');
-    const dowD1 = d1.getUTCDay();
-    const lunesD1 = addDaysISO(STEP1_INICIO, dowD1 === 0 ? -6 : 1 - dowD1);
-    const diff = Math.round((new Date(lunes + 'T12:00:00Z').getTime() - new Date(lunesD1 + 'T12:00:00Z').getTime()) / 86400000);
-    n = Math.floor(diff / 7) + 1;
-    if (iso < STEP1_INICIO) n = 0;                    // los días de la semana 1 anteriores al D1 siguen siendo pre-D1
-  } catch { /* fuera de rango */ }
-  const viernes = addDaysISO(lunes, 4), sabado = addDaysISO(lunes, 5);
-  const deload = DELOAD_SEMANAS.find((x) => x.lunes === lunes);
-  const hito = HITOS_STEP1.filter((h) => h.fecha >= lunes && h.fecha <= addDaysISO(lunes, 6)).map((h) => h.nombre).join(' + ') || undefined;
-  return { n, total: STEP1_SEMANAS, lunes, viernes, sabado, deload: !!deload, deloadMotivo: deload?.motivo, hito, fueraDeRango: n < 1 || n > STEP1_SEMANAS };
+  let hitos: { fecha: string; nombre: string }[] = [];
+  try { hitos = hitosStep1(); } catch { hitos = []; }
+  return semanaStep1V6(iso, { hitos, deloads: DELOAD_SEMANAS });
 }
-/** Etiqueta corta para el instrumento del cockpit: "S3/20" (o "pre-D1" / "examen"). */
+/** Etiqueta corta para el instrumento del cockpit: "S3/41" · "PAUSA · ENCAPS" · "pre-D1" · "examen" · "post-Step 1". */
 export function semanaLabel(s: SemanaStep1): string {
+  if (s.pausa) return 'PAUSA · ENCAPS';
+  if (s.examen) return 'examen';
   if (s.n < 1) return 'pre-D1';
-  if (s.n > s.total) return 'examen';
+  if (s.n > s.total) return 'post-Step 1';
   return `S${s.n}/${s.total}`;
 }
 
@@ -174,7 +154,8 @@ export const MODO_LOG_KEY = 'jmd-modo-log';  // { [fecha]: nivel } — lo lee ge
 export const MODO_INFO: Record<ModoNivel, { label: string; resumen: string; disparador: string }> = {
   VERDE: { label: 'VERDE', resumen: 'Todo el plan.', disparador: 'por defecto' },
   AMBAR: { label: 'ÁMBAR', resumen: 'USMLE intacto · secundarios a su mínimo.', disparador: 'sueño <6h · eval <60% 2 días · 1 día perdido' },
-  ROJO: { label: 'ROJO', resumen: 'Solo Anki + 10Q + dormir · remap.', disparador: '≥2 días perdidos o enfermedad' },
+  // v6.00: «remap» → fin del corrimiento diario (V6_ESPEC §B7.1): el día perdido se hace en la próxima fila COLCHÓN (F3/F4) o en C1/C2 (F1).
+  ROJO: { label: 'ROJO', resumen: 'Solo Anki + 10Q + dormir · la fila no hecha va al COLCHÓN.', disparador: '≥2 días perdidos o enfermedad' },
 };
 function lsGet(key: string): string | null {
   try { const ls = (globalThis as any).localStorage; return ls ? ls.getItem(key) : null; } catch { return null; }
@@ -204,18 +185,22 @@ export function guardarModo(iso: string, nivel: ModoNivel): void {
   } catch { /* ignore */ }
 }
 export type Frente = 'vibecoding' | 'usmle-anki' | 'usmle-principal' | 'synapse' | 'research-derma' | 'aurum' | 'mir' | 'encaps' | 'liviano' | 'usmle-eval';
-/** Qué queda de cada frente según el nivel (null = intacto). Orden de degradación del PROTOCOLO_MODO_MINIMO. */
-export function minimoPorFrente(frente: Frente, nivel: ModoNivel): string | null {
+/** Mínimo DJ-4 de los secundarios (Joseph, 6-oct-2026): nunca 0 — 30' en ÁMBAR y en la regla de carga (§B7.4). */
+export const MINIMO_DJ4 = "30' (mínimo DJ-4)";
+/**
+ * Qué queda de cada frente según el nivel (null = intacto). Orden de degradación del PROTOCOLO_MODO_MINIMO.
+ * v6.00 (6-oct-2026 · DJ-4 · V6_ESPEC §F): ÁMBAR = research-derma, aurum, liviano, synapse y vibecoding a 30' (mínimo DJ-4, nunca 0) ·
+ * MIR = Anki + 25Q (1 h, DJ-4) · ENCAPS en F2 (intensiva) = loop mínimo (pre-test 10Q + 30Q + eval 20Q); fuera de F2, 10Q ciegas.
+ * ROJO sin cambio (enfermedad = omitido). `iso` (opcional) decide la fase del ENCAPS.
+ */
+export function minimoPorFrente(frente: Frente, nivel: ModoNivel, iso?: string): string | null {
   if (nivel === 'VERDE') return null;
+  const f2 = !!iso && faseV6(iso) === 'F2';
   const AMBAR: Record<Frente, string | null> = {
     'usmle-anki': null, 'usmle-principal': null, 'usmle-eval': null,                        // USMLE intacto
-    vibecoding: "15': commit de lo que haya + 1 línea en synapse-journal. Sin construir nuevo.",
-    synapse: "Solo audio B (10') — sin A ni C.",
-    'research-derma': "1 ítem de 5' (leer el abstract/átomo del día y marcar ✓).",
-    aurum: "1 ítem de 5' (el drill del día, sin vídeo).",
-    mir: "Solo eval D-1 (15', 15:15-15:30). Sin deep work.",
-    encaps: "10Q ciegas (20') con registro; sin tutoría larga.",
-    liviano: "1 ítem de 5' (releer el módulo del día, sin aplicación).",
+    vibecoding: MINIMO_DJ4, synapse: MINIMO_DJ4, 'research-derma': MINIMO_DJ4, aurum: MINIMO_DJ4, liviano: MINIMO_DJ4,
+    mir: 'Anki + 25Q (1 h, DJ-4)',
+    encaps: f2 ? 'loop: pre-test 10Q + 30Q + eval 20Q' : "10Q ciegas (20') con registro; sin tutoría larga.",
   };
   const ROJO: Record<Frente, string | null> = {
     'usmle-anki': 'Anki AM completo (innegociable).',

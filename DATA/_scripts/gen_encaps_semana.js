@@ -7,7 +7,8 @@
  *  1) CIERRE DE SESIÓN (1 línea, 17:10-17:15 lun-jue · 16:45-17:15 vie):
  *     node DATA/_scripts/gen_encaps_semana.js --cerrar "ENCAPS|banco_dia|2026-09-14|II-3|n=22|seg=15|dud=3|CONCEPTO:1,OLVIDO:2,CCSN:1|t=68|sub=esquema_intervalos"
  *        formato: EXAMEN|tipoRonda|fecha|codigo|n=NN|seg=NN|dud=NN|<fallos SUBTIPO:k,…>|t=SS[|sub=…][|tema=…][|delta=±x][|nota=NN]
- *        EXAMEN = ENCAPS | USMLE | MIR | DERMA · tipoRonda = banco_dia | eval_anclada | mini_sim | pretest | simulacro | repaso | warmup
+ *        EXAMEN = ENCAPS | USMLE | MIR | DERMA · tipoRonda = banco_dia | eval_anclada | mini_sim | pretest | simulacro | repaso | warmup | carril_b
+ *        (v6.00: carril_b = la hora 16:15 de la intensiva F2 con la fila MANTENIMIENTO 61-92 de v5.20; id de la app APP_CARRIL_B_<fecha>_<codigo>)
  *        subtipos: knowledge CONCEPTO OLVIDO CRONOLOGIA · transfer CCSN CONTEXTO · proceso CAMBIO TIEMPO LECTURA
  *     → apenda la ronda v3 a DATA/ENCAPS/TRACKING_ERRORES/_registro_resoluciones.json (append-only)
  *     → recalcula resumen_por_subtema y regenera PERFIL_CONOCIMIENTO.md
@@ -45,6 +46,10 @@
  *  La nota /25 del mini-sim y el % ciego semanal se calculan sobre la ronda entera (no se cuenta dos veces).
  *
  * Sin dependencias externas. No ESCRIBE Supabase (regla: la app y el MCP escriben Supabase, no los scripts); --pull solo LEE por REST.
+ * v6.00 (6-oct-2026, V6_ESPEC §C1-§C3): el mantenimiento queda en F1 = dia 1-60 (mié 7-oct → mié 30-dic); del lun 4-ene al D-1 del ENCAPS
+ *   (dom 14-mar PROVISIONAL) va la INTENSIVA con el CARRIL B 16:15 (filas 61-92 de v5.20 embebidas, tipoRonda carril_b). La línea de
+ *   override que imprime el cierre semanal lleva --hasta <f1.fin> (2026-12-30) y avisa si la semana siguiente ya es F2 (no hay
+ *   mantenimiento que sobrescribir: el carril B está congelado y el barrido de la intensiva se re-ordena con --pretest).
  * v5.20 (6-oct, DEFINITIVA): D1 = mié 7-oct-2026 · 92 días → mar 16-feb-2027 (el fin se amplió +1 hábil, no se perdieron sesiones; régimen v6.18, backup study_schedule_bk_1006) · pre-test de arranque mié 7 + jue 8-oct · examen ENCAPS 2027-I FIJADO mié 10-mar-2027 (intensiva mar 23-feb → mar 9-mar, días 97-107, ya sembrada).
  * v5.19 (5-oct): D1 = mar 6-oct-2026 · 92 días → lun 15-feb-2027 (el fin se amplió +1 hábil, no se perdieron sesiones; régimen v6.17, backup study_schedule_bk_1005) · pre-test de arranque mar 6 + mié 7-oct.
  * v5.18 (3-oct): D1 = lun 5-oct-2026 · 92 días → vie 12-feb-2027 (el fin se amplió otra vez, no se perdieron sesiones; régimen v6.16, backup study_schedule_bk_1003) · pre-test de arranque lun 5 + mar 6-oct.
@@ -71,7 +76,8 @@ const SUBTIPOS = {
 };
 const TIPO_DE = {}; for (const [t, arr] of Object.entries(SUBTIPOS)) for (const s of arr) TIPO_DE[s] = t;
 const EXAMENES = ['ENCAPS', 'USMLE', 'MIR', 'DERMA'];
-const TIPOS_RONDA = ['banco_dia', 'eval_anclada', 'mini_sim', 'pretest', 'simulacro', 'repaso', 'warmup'];
+const TIPOS_RONDA = ['banco_dia', 'eval_anclada', 'mini_sim', 'pretest', 'simulacro', 'repaso', 'warmup', 'carril_b']; // v6.00: + carril_b (16:15 de la intensiva F2)
+const F1_FIN = require('./gen_fechas_v6').cargarFechasV6().f1.fin; // v6.00: fin del mantenimiento (2026-12-30) para la línea de override
 // código del pool/registro (taxonomía v3 del banco) → código del CICLO sembrado (columna codigo de study_schedule)
 const CICLO_CODE = { 'IV-1+IV-2': 'IV-1', 'IV-2': 'IV-1', 'IV-6+IV-7': 'IV-6', 'IV-7': 'IV-6', 'V-MED': 'V-7', 'V-7+V-10': 'V-7', 'V-10': 'V-7' };
 const cicloCodeDe = (c) => CICLO_CODE[c] || c;
@@ -541,7 +547,8 @@ L.push(`- Regla: máximo 2 sustituciones/semana · I-3 y V-2 nunca se ceden · u
 L.push('');
 L.push('## Cómo aplicar');
 L.push('```');
-L.push(`node DATA/_scripts/gen_encaps_mantenimiento_2027.js ${D1} --override DATA/ENCAPS/TRACKING_ERRORES/SEMANAS/override_${lunesSig}.json`);
+if (lunesSig > F1_FIN) L.push(`# ⚠ v6.00: la semana del ${lunesSig} ya es F2 (intensiva + carril B congelado): este override NO cambia ninguna fila del mantenimiento (termina el ${F1_FIN}); el barrido se re-ordena con gen_encaps_intensivo_2027.js --pretest`);
+L.push(`node DATA/_scripts/gen_encaps_mantenimiento_2027.js ${D1} --hasta ${F1_FIN} --override DATA/ENCAPS/TRACKING_ERRORES/SEMANAS/override_${lunesSig}.json`); // v6.00: --hasta explícito (§C3; antes sin él re-insertaba 61-92)
 L.push('# → el generador lee SEMANAS/overrides_acumulado.json (todas las semanas anteriores) y AÑADE esta; revisar');
 L.push('#   DATA/_scripts/_encaps_mantenimiento_2027.sql y aplicarlo por MCP execute_sql (proyecto qacynpqdrorpuegsmtcy);');
 L.push('#   backup por defecto study_schedule_bk_<YYYYMMDD> (aborta si ya existe) · el DELETE solo toca modo=MANTENIMIENTO.');

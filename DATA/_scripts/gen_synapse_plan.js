@@ -18,14 +18,16 @@
 // ("auditar con Joseph: ✓ si ya hecho") porque F0 y la minifase corrieron jun-ago (progreso solo en localStorage).
 //
 // v5.10-b (12-sep-2026, vacío 5 de gaps_v3b_synapse.json — "semanas 13-20 sin misión"): el plan deja de terminar en
-// la sem 12 y cubre hasta el VIE 22-ENE-2027 (fin del Step 1 menos el taper de la semana del examen; v5.20: hasta el lun 15-feb-2027 = D91 (+1 día hábil; con D1 en miércoles las 110 A-units Lun-Sáb terminan aquí) · v5.19: hasta el sáb 13-feb-2027 = +1 día, el último hábil con SYNAPSE es el vie 12-feb = D91; v5.18: hasta el vie 12-feb-2027 = D92; v5.17: mar 9-feb-2027 = D91; v5.16: vie 5-feb-2027 = D92):
+// la sem 12 y cubre hasta el VIE 22-ENE-2027 (v6.00, 6-oct-2026: las FECHAS no cambian —fin lun 15-feb-2027— pero el Step 1 ya NO es en
+// febrero: examen objetivo lun 27-sep-2027, pausa del 31-dic al 15-mar por la intensiva ENCAPS → F2 = «taper por el ENCAPS» (solo texto);
+// hasta v5.20: fin del Step 1 menos el taper de la semana del examen; v5.20: hasta el lun 15-feb-2027 = D91 (+1 día hábil; con D1 en miércoles las 110 A-units Lun-Sáb terminan aquí) · v5.19: hasta el sáb 13-feb-2027 = +1 día, el último hábil con SYNAPSE es el vie 12-feb = D91; v5.18: hasta el vie 12-feb-2027 = D92; v5.17: mar 9-feb-2027 = D91; v5.16: vie 5-feb-2027 = D92):
 //   · sem 12 gana vie 4-dic, sáb 5-dic (PC = SHIP S12, antes fuera del plan) y dom 6-dic (2 A-units de cierre F1; v5.20: mar 29 y mié 30-dic —ambas ya
 //     en la sem 13 por fecha; SHIP S12 = sáb 2-ene, sin cambio—; v5.19: lun 28 y mar 29-dic —ambas ya en la sem 13 por fecha; SHIP S12 = sáb 2-ene—; v5.18: sáb 26-dic y lun 28-dic —la 2.ª ya cae en la sem 13 por fecha; SHIP S12 = sáb 2-ene—; v5.17: mar 22 y mié 23-dic, SHIP S12 sáb 26-dic; v5.16: vie 18, sáb 19 y dom 20-dic);
 //   · F2 · sem 13-19 (lun 28-dic → lun 15-feb, v5.20 — el lun 15-feb cuenta como sem 19 (SEM_MAX); v5.19: → sáb 13-feb; v5.18: → vie 12-feb; v5.17: lun 21-dic → mar 9-feb; v5.16: → vie 5-feb) = ANTHROPIC ACADEMY RESTANTE + prep CCA-F a 30': Building with the
 //     Claude API (12 módulos) · MCP restante + MCP Advanced Topics · agent skills/subagentes restantes · Claude Code in
 //     Action restante · AI Capabilities and Limitations · Claude Cowork · los 3 ensayos de context engineering · repaso
 //     por los 5 dominios del CCA-F · simulacro (quizzes) · cierre. Temarios en curricula/_extracted.json (5-sep + 12-sep).
-//   · sem 17-19 (Fases B-C del Step 1) llevan `deload:true` (si el Step 1 aprieta: solo A o solo B, PROTOCOLO_MODO_MINIMO);
+//   · sem 17-19 (v6.00: núcleo de la intensiva ENCAPS; hasta v5.20: Fases B-C del Step 1) llevan `deload:true` (si la intensiva aprieta: solo A o solo B, PROTOCOLO_MODO_MINIMO);
 //   · feriados 25-dic / 31-dic / 1-ene = día libre (bloque R, sin A-unit), como los domingos;
 //   · sáb de sem 13-16 = PC opcional 30' (sensores: verify_vibecoding.js --sensores + retro); sem 17-19 = PC opcional/no.
 //   Los días 1-81 son IDÉNTICOS a v5.10 (0 lecciones perdidas; nunca se renumera el pasado).
@@ -38,8 +40,8 @@ const VCAT = JSON.parse(fs.readFileSync(path.join(ROOT, 'DATA/SYNAPSE/vibecoding
 const VIBE = VCAT.proyectos;
 const TAPER = VCAT.taper || []; // S13-S20 (v5.10-b): mantenimiento/deload; el PC del sábado los referencia
 if (VIBE.length !== 12) throw new Error('vibecoding_proyectos.json debe tener 12 proyectos');
-const FIN_PLAN = '2027-02-15'; // v5.20 (6-oct-2026, DEFINITIVA): lun 15-feb-2027 (= D91 del Step 1; con D1 mié 7-oct las 110 A-units Lun-Sáb terminan aquí) · v5.19 (5-oct-2026): sáb 13-feb-2027 (+1 día: con D1 mar 6-oct las 110 A-units Lun-Sáb terminan aquí) · v5.18 (3-oct-2026): vie 12-feb-2027 (= D92 del Step 1; con D1 lun 5-oct las 110 A-units Lun-Sáb terminan aquí) · v5.17 (30-sep-2026): mar 9-feb · mar 9-feb-2027 (= D91 del Step 1; con D1 en jueves las 110 A-units — que también usan los sábados — terminan un hábil antes que el +3 exacto: nada se recorta). v5.16: vie 5-feb. Con D1 = lun 28-sep las 110 A-units corren +3 hábiles más (nada se fusiona; el domingo no cuenta): 30' de lectura, sin PC. v5.15: lun 1-feb. v5.14: vie 29-ene · v5.13: mar 26-ene · v5.12: lun 25-ene. Se comprueba al final.
-const SKIP_FIJOS = new Set(['2026-12-25', '2026-12-31', '2027-01-01']); // feriados libres (misma regla que remap_inicio.js)
+const FIN_PLAN = '2027-02-15'; // v6.00 (6-oct-2026): sin cambio de fecha (lun 15-feb-2027, dentro de la intensiva ENCAPS) · v5.20 (6-oct-2026, DEFINITIVA): lun 15-feb-2027 (= D91 del Step 1; con D1 mié 7-oct las 110 A-units Lun-Sáb terminan aquí) · v5.19 (5-oct-2026): sáb 13-feb-2027 (+1 día: con D1 mar 6-oct las 110 A-units Lun-Sáb terminan aquí) · v5.18 (3-oct-2026): vie 12-feb-2027 (= D92 del Step 1; con D1 lun 5-oct las 110 A-units Lun-Sáb terminan aquí) · v5.17 (30-sep-2026): mar 9-feb · mar 9-feb-2027 (= D91 del Step 1; con D1 en jueves las 110 A-units — que también usan los sábados — terminan un hábil antes que el +3 exacto: nada se recorta). v5.16: vie 5-feb. Con D1 = lun 28-sep las 110 A-units corren +3 hábiles más (nada se fusiona; el domingo no cuenta): 30' de lectura, sin PC. v5.15: lun 1-feb. v5.14: vie 29-ene · v5.13: mar 26-ene · v5.12: lun 25-ene. Se comprueba al final.
+const SKIP_FIJOS = new Set(require('./gen_fechas_v6').cargarFechasV6().skip); // v6.00: SKIP de _fechas_v6.json (feriados libres; jue 25 / vie 26-mar quedan fuera del rango) · v5.20: 25-dic/31-dic/1-ene
 // v5.20: último SÁBADO del plan (≤ FIN_PLAN). Si la sem 1 no tiene martes (START en miércoles o después), la pieza del carril del
 // martes que se cae (B Latent Space · C Willison) va a ese sábado; así el carril del martes conserva sus 19 piezas.
 const ULT_SAB = (() => { const d = new Date(FIN_PLAN + 'T12:00:00Z'); while (d.getUTCDay() !== 6) d.setUTCDate(d.getUTCDate() - 1); return d.toISOString().slice(0, 10); })();
@@ -235,7 +237,7 @@ function buildAUnits() {
   push('Claude Code docs — ' + ccDoc(4).modulo, ccDoc(4).titulo + '. Repaso antes del taper: qué hook automatiza cada sensor (SessionEnd → telemetría Anki; PostToolUse → verificar_planes). SHIP S12 en el PC del sábado (v5.20: sáb 2-ene, igual que v5.18-v5.19 · v5.17: sáb 26-dic).', ccDoc(4).url);
   if (A.length !== 72) throw new Error('Total A-units F0+F1 (+cierre sem 12) debe ser 72, hay ' + A.length);
 
-  // F2 · ANTHROPIC ACADEMY RESTANTE + PREP CCA-F (sem 13-19 · v5.20: lun 28-dic → lun 15-feb; v5.19: lun 28-dic → sáb 13-feb; v5.18: lun 28-dic → vie 12-feb; v5.17: lun 21-dic → mar 9-feb; v5.16: → vie 5-feb · 38 A-units · 30'/día · taper del Step 1)
+  // F2 · ANTHROPIC ACADEMY RESTANTE + PREP CCA-F (sem 13-19 · v6.00 = v5.20 en fechas, taper por el ENCAPS · v5.20: lun 28-dic → lun 15-feb; v5.19: lun 28-dic → sáb 13-feb; v5.18: lun 28-dic → vie 12-feb; v5.17: lun 21-dic → mar 9-feb; v5.16: → vie 5-feb · 38 A-units · 30'/día · taper del Step 1)
   // Temarios reales: academy-claude-api (12 módulos, 5-sep) · academy-mcp 7-13 · academy-mcp-advanced (12-sep) ·
   // academy-agent-skills 3-6 · academy-subagents 4 · academy-cc-in-action 10-13 · academy-ai-capabilities (12-sep) ·
   // academy-cowork (12-sep) · 3 ensayos de Anthropic Engineering · repaso por dominio del CCA-F (pesos según CALIDAD/Synapse.md:
@@ -293,7 +295,7 @@ function buildAUnits() {
   push('Prep CCA-F · dominios 3-4 (repaso)', 'Tool Design & MCP (18%) = quickstart MCP + tu servidor de S9 · Prompt Engineering (20%) = Prompt Engineering Interactive Tutorial (caps 1-3, repaso rápido).', U.promptTut);
   push('Prep CCA-F · dominio 5 (repaso) + Claude Code docs — ' + ccDoc(14).modulo, `Context Management (15%) = memoria (CLAUDE.md, /compact) + el ensayo de context engineering · ${ccDoc(14).modulo} + ${ccDoc(15).modulo} (páginas reales, contenido por leer).`, ccDoc(14).url);
   push('Prep CCA-F · simulacro', `Repite en modo examen (sin apuntes) el "${api(11).modulo}" de Building with the Claude API y el "${acad('academy-cc-in-action', 14).titulo}" de Claude Code in Action; anota % por dominio en el journal.`, apiU);
-  push('Prep CCA-F · cierre F2', 'Página oficial de la certificación CCA-F: A VERIFICAR (12-sep-2026 no aparece enlazada en academy.claude.com ni en anthropic.skilljar.com) → buscarla en la Academy, anotar formato/precio/fecha y decidir fecha post-Step 1 (feb-2027). CIERRE F2 (último día del motor, lun 15-feb en v5.20; sáb 13-feb en v5.19 · v5.18: vie 12-feb): relee el journal S13-S19 y escribe 3 líneas para la reestructuración de febrero (IA vs ENCAPS intensivo). Desde mañana: solo Step 1.', U.academy, { real: false });
+  push('Prep CCA-F · cierre F2', 'Página oficial de la certificación CCA-F: A VERIFICAR (12-sep-2026 no aparece enlazada en academy.claude.com ni en anthropic.skilljar.com) → buscarla en la Academy, anotar formato/precio/fecha y decidir fecha post-Step 1 (oct-2027 en v6.00; el Step 1 es el lun 27-sep-2027). CIERRE F2 (último día del motor, lun 15-feb; sáb 13-feb en v5.19 · v5.18: vie 12-feb): relee el journal S13-S19 y escribe 3 líneas para la fase post-ENCAPS (qué vuelve a la franja 12:30 tras el ENCAPS). Desde mañana: la franja 12:30 queda para la intensiva ENCAPS.', U.academy, { real: false });
   if (A.length !== 110) throw new Error('Total A-units (F0 46 + F1 26 + F2 38) debe ser 110, hay ' + A.length);
   return A;
 }
@@ -404,7 +406,7 @@ function bloquePC(semana, fecha) {
     return {
       tag: 'PC', min: mant ? 30 : 0, formato: 'pc',
       material: `PC opcional · taper S${tp.s} · ${tp.nombre}`,
-      leccion: `${tp.ship} Sensores: ${(tp.sensores || []).join(' · ') || 'ninguno (deload total)'}. Sin proyecto nuevo: el Step 1 manda.`,
+      leccion: `${tp.ship} Sensores: ${(tp.sensores || []).join(' · ') || 'ninguno (deload total)'}. Sin proyecto nuevo: la intensiva ENCAPS manda (v6.00).`,
       url: assertUrl(ccDoc(13).url), real: true,
     };
   }
@@ -471,8 +473,8 @@ for (let d = 1; d <= TOTAL; d++) {
   const wd = WD[date.getDay()];
   const semana = d <= FIRST_WEEK_LEN ? 1 : Math.min(2 + Math.floor((d - FIRST_WEEK_LEN - 1) / 7), SEM_MAX); // v6: sem 1 = mar→dom; sem 2+ = lun→dom. 12 miércoles → Lex caps 1-12 (sin offset)
   const faseId = semana <= 8 ? 'f0' : semana <= 12 ? 'f1' : 'f2';
-  const fase = faseId === 'f0' ? 'F0 · La Escuela de Anthropic (auditar ✓)' : faseId === 'f1' ? 'F1 · Stack del vibecoding: Claude Code · Supabase · n8n' : 'F2 · Academy restante + prep CCA-F (taper del Step 1)';
-  const deload = semana >= 17; // Fases B-C del Step 1: si aprieta, solo A o solo B (PROTOCOLO_MODO_MINIMO)
+  const fase = faseId === 'f0' ? 'F0 · La Escuela de Anthropic (auditar ✓)' : faseId === 'f1' ? 'F1 · Stack del vibecoding: Claude Code · Supabase · n8n' : 'F2 · Academy restante + prep CCA-F (taper por el ENCAPS)'; // v6.00: antes «(taper del Step 1)»
+  const deload = semana >= 17; // v6.00: núcleo de la intensiva ENCAPS (hasta v5.20: Fases B-C del Step 1): si aprieta, solo A o solo B (PROTOCOLO_MODO_MINIMO)
   const bloques = [];
   if (SKIP_FIJOS.has(fecha)) {
     // v5.10-b: feriado libre (25-dic · 31-dic · 1-ene), como el domingo: sin A/B/C, no consume A-unit
@@ -492,7 +494,7 @@ for (let d = 1; d <= TOTAL; d++) {
   dias.push({ d, fecha, wd, semana, faseId, fase, deload, bloques });
 }
 if (aIdx !== aUnits.length) throw new Error(`A-units sin asignar: usadas ${aIdx}/${aUnits.length}`);
-if (dias[TOTAL - 1].fecha !== FIN_PLAN) throw new Error(`El plan debe terminar el ${FIN_PLAN} (lun 15-feb en v5.20 = D91; v5.19: sáb 13-feb); termina el ${dias[TOTAL - 1].fecha}: ajusta las A-units de F2`);
+if (dias[TOTAL - 1].fecha !== FIN_PLAN) throw new Error(`El plan debe terminar el ${FIN_PLAN} (lun 15-feb en v6.00 = v5.20; v5.19: sáb 13-feb); termina el ${dias[TOTAL - 1].fecha}: ajusta las A-units de F2`);
 
 // ─── Emitir TypeScript ───
 const esc = (s) => String(s).replace(/\\/g, '\\\\').replace(/"/g, '\\"');
@@ -513,7 +515,7 @@ const ts = `/**
  * Arranque ${dias[0].wd} ${dias[0].fecha} (START parametrizado) · sem 1 = ${dias[0].wd}→dom · domingos = Feynman del proyecto (10', opcional; día libre) ·
  * sáb = A/B/C + PC (bloque personal, sí va en finde) · feriados 25-dic/31-dic/1-ene = libres (bloque R).
  * v5.10-b (12-sep-2026): + F2 · sem 13-19 (${nF2} días, ${dias.find(x => x.semana === 13).wd.toLowerCase()} ${dias.find(x => x.semana === 13).fecha} → ${FIN_PLAN}) = Anthropic Academy restante + prep CCA-F
- * (taper del Step 1; sem 17-19 con deload:true). Los días 1-81 son idénticos a v5.10.
+ * (v6.00: taper por el ENCAPS —hasta v5.20, taper del Step 1—; sem 17-19 con deload:true). Los días 1-81 son idénticos a v5.10.
  * GENERADO por DATA/_scripts/gen_synapse_plan.js desde DATA/SYNAPSE/curricula/_extracted.json
  * (temarios REALES extraídos con WebFetch/oEmbed + verificación adversarial, 10-jun-2026).
  * NO editar a mano — regenerar: node DATA/_scripts/gen_synapse_plan.js YYYY-MM-DD
@@ -531,7 +533,8 @@ const ts = `/**
  * + F2 (sem 13-19): Building with the Claude API · MCP restante + MCP Advanced Topics · agent skills/subagentes ·
  * Claude Code in Action restante · AI Capabilities and Limitations · Claude Cowork · 3 ensayos de context engineering ·
  * repaso por los 5 dominios del CCA-F · simulacro · cierre (curricula/_extracted.json, extraído 5-sep y 12-sep-2026).
- * Después del ${FIN_PLAN} (lun 15-feb-2027 en v5.20; v5.19: sáb 13-feb · v5.18: vie 12-feb · v5.17: mar 9-feb) no hay SYNAPSE: el resto = solo Step 1 (D92 mar 16-feb · D93 mié 17-feb · D94 jue 18-feb · D95 vie 19-feb · finde libre · examen lun 22-feb) y, desde el mar 23-feb, la intensiva ENCAPS.
+ * Después del ${FIN_PLAN} (lun 15-feb-2027; v5.19: sáb 13-feb · v5.18: vie 12-feb · v5.17: mar 9-feb) no hay SYNAPSE. v6.00 (6-oct-2026): sigue la intensiva
+ * ENCAPS (examen dom 14-mar-2027 PROVISIONAL) y el Step 1 vuelve el mar 16-mar (tramo 2; examen objetivo lun 27-sep-2027).
  */
 export type SynFormato = 'pantalla' | 'audio' | 'lectura' | 'pc' | 'repaso';
 export interface SynBloque {
@@ -548,14 +551,14 @@ export interface SynBloque {
 export interface DiaSynapse {
   d: number; fecha: string; wd: string; semana: number;
   faseId: 'f0' | 'f1' | 'f2'; fase: string;
-  deload?: boolean; // sem 17-19 (Fases B-C del Step 1): si aprieta, solo A o solo B (PROTOCOLO_MODO_MINIMO)
+  deload?: boolean; // sem 17-19 (v6.00: núcleo de la intensiva ENCAPS): si aprieta, solo A o solo B (PROTOCOLO_MODO_MINIMO)
   bloques: SynBloque[];
 }
 
 export const SYN_PLAN_META = {
   inicio: '${dias[0].fecha}', fin: '${dias[TOTAL - 1].fecha}', totalDias: ${TOTAL}, semanas: ${SEM_MAX},
   bloque: "A 15' pantalla · B 10' audio · C 5' lectura · sáb PC 2h = SHIP del proyecto (S13-S16: PC opcional 30') · dom Feynman 10' opcional",
-  fases: { f0: 'F0 · La Escuela de Anthropic (sem 1-8, auditar ✓ si ya hecho)', f1: 'F1 · Stack del vibecoding: Claude Code · Supabase · n8n (sem 9-12)', f2: 'F2 · Academy restante + prep CCA-F (sem 13-19, taper del Step 1; 17-19 deload)' },
+  fases: { f0: 'F0 · La Escuela de Anthropic (sem 1-8, auditar ✓ si ya hecho)', f1: 'F1 · Stack del vibecoding: Claude Code · Supabase · n8n (sem 9-12)', f2: 'F2 · Academy restante + prep CCA-F (sem 13-19, taper por el ENCAPS; 17-19 deload)' },
   deloadDesde: 17,
 } as const;
 

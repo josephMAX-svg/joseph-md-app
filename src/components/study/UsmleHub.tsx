@@ -10,7 +10,8 @@ import {
   USMLE_STEP2_RESOURCES, USMLE_CHECKPOINTS, USMLE_READINESS, FIRST_AID_INDEX, SKETCHY_SYMBOLS,
   PRIORIDAD_COLOR, VUELTAS, ANKI_CONFIG_PALMERTON, USMLE_RAMP_LEGACY, USMLE_LEGACY_NOTA,
 } from '../../lib/usmleData';
-import { DIAS, USMLE_NIVELES, USMLE_GATE, USMLE_TAPER, DAILY_META, PROTOCOLO_BLOQUE, DAY_AFTER } from '../../lib/usmleStep1Daily';
+import { DIAS, DIAS_TODOS, USMLE_NIVELES, USMLE_GATE, USMLE_TAPER, DAILY_META, PROTOCOLO_BLOQUE, DAY_AFTER, enPausaStep1 } from '../../lib/usmleStep1Daily';
+import { FECHAS_V6, reservaStep1 } from '../../lib/fechasV6';
 import { planHoyD, progresoGlobal, loadDone } from '../../lib/studyProgress';
 import {
   UsmleScore, loadScores, pullScores, onScoresChange, mediaMovil7d, distanciaOnTrack, readinessDesdeHitos,
@@ -31,6 +32,10 @@ import UsmleTodayPlan from './UsmleTodayPlan';
  * 2.ª capa Palmerton (19-sep-2026): MEDIA 7D con semáforo verde/ámbar/rojo (gate 80 · pisos 65/60, #21) · serie de hitos con la
  * lectura por tramos del UWSA1 (#12) y el freno del backlog (#16) · Readiness: plan B "worst case" (#26), checklist §11.5 pre-marcado
  * (#30) + regla del tercio (#8), Day-After (#5) · ROI sin la rampa legacy (#19) · Palmerton: configuración Anki §4.2 (#15).
+ * v6.00 (6-oct-2026 · V6_ESPEC §F): progreso sobre DIAS_TODOS (2 tramos: D1-D60 + T1-T158; «Día» = posición en el plan, no el d) ·
+ * PAUSA del Step 1 (jue 31-dic → lun 15-mar) sin «hoy» · cuenta atrás al examen (PROVISIONAL) y al GO/NO-GO · serie de hitos con
+ * mínimos v6 (relativos al NBME 25/28, tramos del NBME 28, decisión GO/NO-GO) · taper/ritual/D-1/examen generados desde USMLE_TAPER
+ * (adiós al texto fijo «D94 jue 18-feb … finde libre»).
  */
 const JADE = USMLE_META.accent;         // #5FA88C — muted jade (US console)
 const FLAG_GREEN = '#5FB98C';           // verde bandera armonizado (core/pathology)
@@ -54,8 +59,11 @@ export default function UsmleHub() {
   // Command-bar readiness metrics (derived, no data mutation).
   const done = loadDone('usmle');
   const iso = todayISO();
-  const hoyD = planHoyD(DIAS, iso);
-  const glob = progresoGlobal(DIAS, new Set(done));
+  // v6.00: 2 tramos · en PAUSA no hay fila «hoy» (se muestra la posición del último día de F1)
+  const pausa = enPausaStep1(iso);
+  const hoyD = pausa ? DIAS[DIAS.length - 1]!.d : planHoyD(DIAS_TODOS, iso);
+  const posHoy = Math.max(1, DIAS_TODOS.findIndex((x) => x.d === hoyD) + 1);
+  const glob = progresoGlobal(DIAS_TODOS, new Set(done));
   // Medición Palmerton (usmleScores): local al instante, Supabase al montar, y refresco cuando UsmleTodayPlan guarda.
   const [scores, setScores] = useState<UsmleScore[]>(() => loadScores());
   useEffect(() => {
@@ -78,13 +86,15 @@ export default function UsmleHub() {
         flag={USMLE_META.flag} title={USMLE_META.title}
         subtitle="US knowledge-bank terminal · Pathology + Physiology = the exam"
         accent={JADE}
-        dia={hoyD} total={glob.total} temarioPct={glob.pct}
+        dia={posHoy} total={glob.total} temarioPct={glob.pct}
         racha={`${done.length} temas`}
         readinessPct={rd ? rd.pct : USMLE_READINESS.pct} readinessLabel={rd ? rd.label : USMLE_READINESS.status}
         extraStat={{ label: 'PATH', value: `${USMLE_KPIS.pathologyPct}%`, hint: 'del examen', accent: Colors.coral }}
         media7d={media && mediaVal != null ? (() => { const sem = semaforoPct(mediaVal, media.evalPct != null ? 'eval' : 'consol'); return { label: 'MEDIA 7D', value: `${mediaVal}%`, hint: `${media.evalPct != null ? 'eval timed' : 'consolidación'} · ${media.n} días · ${sem === 'verde' ? '≥ gate 80' : sem === 'ambar' ? `ámbar ≥${media.evalPct != null ? PISO_AMBAR.eval : PISO_AMBAR.consol}` : 'ROJO < piso'}`, accent: sem === 'verde' ? Colors.green : sem === 'ambar' ? Colors.gold : Colors.coral }; })() : null}
         onTrack={dist ? { label: `Δ ${dist.hito.clave.toUpperCase()}`, value: `${dist.delta >= 0 ? '+' : ''}${dist.delta}`, hint: `mín ${dist.hito.min}% · ${dist.referencia}`, accent: dist.delta >= 0 ? Colors.green : Colors.coral } : null}
       />
+
+      <CuentaAtras iso={iso} pausa={pausa} />
 
       <ConsoleTabs tabs={TABS} active={sub} accent={JADE} onSelect={setSub} />
 
@@ -95,6 +105,23 @@ export default function UsmleHub() {
         : sub === 'roi' ? <RoiPlan />
         : <PalmertonBrain />}
     </View>
+  );
+}
+
+// ── v6.00 · cuenta atrás al examen (PROVISIONAL) y al GO/NO-GO (E-49) ──
+const diasEntre = (a: string, b: string): number => Math.round((new Date(b + 'T12:00:00Z').getTime() - new Date(a + 'T12:00:00Z').getTime()) / 86400000);
+function CuentaAtras({ iso, pausa }: { iso: string; pausa: boolean }) {
+  const dEx = diasEntre(iso, DAILY_META.examenTarget), dGo = diasEntre(iso, DAILY_META.gonogo);
+  const reserva = reservaStep1();
+  return (
+    <GlassPanel accent={JADE} style={{ marginBottom: Spacing.md, padding: Spacing.md }}>
+      <Text style={st.body}>
+        <Text style={{ color: JADE, fontWeight: '800' }}>⏳ Examen {DAILY_META.examenTarget}{FECHAS_V6.step1.provisional ? ' PROVISIONAL' : ''}</Text>
+        {dEx >= 0 ? ` · faltan ${dEx} días` : ' · rendido'} · <Text style={{ color: Colors.gold, fontWeight: '800' }}>GO/NO-GO {DAILY_META.gonogo}</Text>{dGo >= 0 ? ` · faltan ${dGo} días` : ' · decidido'}
+        {pausa ? ` · Step 1 en PAUSA hasta el ${DAILY_META.pausa.hasta} (reinicio ${FECHAS_V6.step1.reinicio})` : ''}
+      </Text>
+      <Text style={st.smallNote}>{DAILY_META.examenVentana} · fecha a RESERVAR con el ENCAPS vigente ({FECHAS_V6.encaps.examen}{FECHAS_V6.encaps.provisional ? ', provisional' : ''}): {reserva} (DJ-1; se aplica al salir la convocatoria).</Text>
+    </GlassPanel>
   );
 }
 
@@ -129,25 +156,25 @@ function HitosSerie({ scores }: { scores: UsmleScore[] }) {
   return (
     <GlassPanel accent={Colors.gold} style={{ marginBottom: Spacing.xl, padding: Spacing.lg }}>
       <Text style={st.h3}>🎯 Serie de hitos · mínimo on-track vs registrado</Text>
-      <Text style={[st.smallNote, { marginBottom: Spacing.sm }]}>Mínimos: {HITOS_ONTRACK_FUENTE}. El % se registra el día del hito en 📏 Medición (Cola de hoy → campo eval). GO = 2 NBME consecutivos ≥68% + UWSA2 low risk.</Text>
+      <Text style={[st.smallNote, { marginBottom: Spacing.sm }]}>Mínimos: {HITOS_ONTRACK_FUENTE}. El % se registra el día del hito en 📏 Medición (Cola de hoy → campo eval). GO (E-49) = horas reales ≥ umbral (B4.5) + NBME 31 y 32 ≥ 68 % con uno ≥ 70 %.</Text>
       {hs.map((h) => (
-        <View key={h.d} style={st.hitoRow}>
-          <Text style={[st.hitoD, tabular]}>D{h.d}</Text>
+        <View key={`${h.tipo}-${h.d}`} style={st.hitoRow}>
+          <Text style={[st.hitoD, tabular]}>{h.etiqueta}</Text>
           <Text style={[st.hitoFecha, tabular]}>{h.fecha.slice(5)}</Text>
           <View style={{ flex: 1, minWidth: 0 }}>
             <Text style={st.hitoClave} numberOfLines={1}>{h.clave}{h.tramo ? ` · ${h.tramo}` : ''}</Text>
             {h.nota ? <Text style={st.hitoNota} numberOfLines={3}>{h.nota}</Text> : null}
           </View>
-          <Text style={[st.hitoMin, tabular]}>{h.min != null ? `≥${h.min}%` : 'baseline'}</Text>
+          <Text style={[st.hitoMin, tabular]}>{h.min != null ? `≥${h.min}%` : h.tipo === 'decision' ? 'decisión' : h.minTexto}</Text>
           <Text style={[st.hitoVal, tabular, { color: color(h.estado) }]}>{h.valor != null ? `${Math.round(h.valor)}%` : '—'}</Text>
           <Text style={[st.hitoEstado, { color: color(h.estado) }]}>{h.estado === 'on-track' ? '✓' : h.estado === 'bajo' ? '✗' : h.estado === 'registrado' ? '●' : '○'}</Text>
         </View>
       ))}
-      <Text style={[st.smallNote, { marginTop: Spacing.sm }]}>Un hito &gt;5 puntos bajo su mínimo → auditar el MÉTODO esa semana (checklist §G), no sumar horas; dos hitos seguidos bajo mínimo → ⚠ ALERTA BURNOUT (REGLA §E-7: 3-5 días solo Anki AM + sueño) y plan B de fecha (feb-mar, mismo eligibility period).</Text>
+      <Text style={[st.smallNote, { marginTop: Spacing.sm }]}>Un hito &gt;5 puntos bajo su mínimo → auditar el MÉTODO esa semana (checklist §G), no sumar horas; dos hitos seguidos bajo mínimo → ⚠ ALERTA BURNOUT (REGLA §E-7: 3-5 días solo Anki AM + sueño); la fecha la decide el GO/NO-GO (ventana DJ-1: 31-ago → 27-sep → 25-oct, gratis antes del E-46).</Text>
       {/* #12 · lectura del UWSA1 por tramos (no es gate) */}
-      {(HITOS_ONTRACK.find((h) => h.clave === 'UWSA1')?.tramos || []).map((t, i) => (
-        <Text key={i} style={[st.smallNote, { marginTop: 4 }]}><Text style={{ color: i === 0 ? Colors.coral : i === 1 ? Colors.gold : Colors.green, fontWeight: '800' }}>UWSA1 {t.label}</Text> → {t.accion}</Text>
-      ))}
+      {(['UWSA1', 'NBME 28'] as const).flatMap((clave) => (HITOS_ONTRACK.find((h) => h.clave === clave)?.tramos || []).map((t, i) => (
+        <Text key={`${clave}-${i}`} style={[st.smallNote, { marginTop: 4 }]}><Text style={{ color: i === 0 ? Colors.coral : i === 1 ? Colors.gold : Colors.green, fontWeight: '800' }}>{clave} {t.label}</Text> → {t.accion}</Text>
+      )))}
       {/* #16 · freno del backlog ligado al hito (§4.10) */}
       <Text style={[st.smallNote, { marginTop: Spacing.sm, color: Colors.onSurfaceVariant }]}>🃏 {REGLA_BACKLOG_HITO}</Text>
     </GlassPanel>
@@ -165,7 +192,7 @@ function WorstCaseCard() {
       <Text style={[st.smallNote, { marginBottom: Spacing.sm }]}>{PROTOCOLO_BLOQUE.worstCase}</Text>
       <TextInput
         style={st.worstInput} multiline value={txt} onChangeText={(t) => { setTxt(t); setGuardado(false); }}
-        placeholder={'Peor escenario, en detalle: "fallo el UWSA1 con __ %" / "el NBME 31 sale <68 %" → qué hago exactamente: plan B de fecha (feb-mar 2027, mismo eligibility period), protocolo Jay, modo mínimo, a quién llamo, qué NO hago (no añadir recursos, no sumar horas). ¿Sería el fin del mundo? No: ...'}
+        placeholder={'Peor escenario, en detalle: "fallo el UWSA1 con __ %" / "el NBME 31 sale <68 %" → qué hago exactamente: GO/NO-GO → fecha siguiente de la ventana DJ-1 (31-ago → 27-sep → 25-oct), protocolo Jay, modo mínimo, a quién llamo, qué NO hago (no añadir recursos, no sumar horas). ¿Sería el fin del mundo? No: ...'}
         placeholderTextColor={Colors.muted}
       />
       <View style={{ flexDirection: 'row', gap: 8, alignItems: 'center', marginTop: Spacing.sm, flexWrap: 'wrap' }}>
@@ -254,30 +281,31 @@ function HitoGateCard({ gh }: { gh: GateHito }) {
 }
 
 // ── TAPER · D-1 · TEST DAY (Palmerton §8.3-§8.4 · DIVERGENCIAS §E-5 implementada 12-sep-2026) ──
+// v6.00: todo desde USMLE_TAPER (§B6) — semana previa (taper ≤2 h) · D94 · D95 · ritual (sin estudio) · D-1 viaje · examen · regreso.
 function TaperCard() {
   const t = USMLE_TAPER;
+  const filas: { k: string; rol: string; fecha: string; color: string; txt: string | string[] }[] = [
+    { k: 'd94', rol: `D94 (T${t.d94.t}) · ${t.d94.rol}`, fecha: t.d94.fecha, color: Colors.gold, txt: t.d94.resumen },
+    { k: 'd95', rol: `D95 (T${t.d95.t}) · ${t.d95.rol}`, fecha: t.d95.fecha, color: Colors.gold, txt: t.d95.resumen },
+    { k: 'rit', rol: `RITUAL (T${t.ritual.t}) · protegido`, fecha: t.ritual.fecha, color: Colors.coral, txt: t.ritual.rol },
+    { k: 'd1', rol: `D-1 · ${t.dMenos1.rol}`, fecha: t.dMenos1.fecha, color: Colors.coral, txt: t.dMenos1.pasos },
+    { k: 'ex', rol: `EXAMEN · ${t.examen.rol}`, fecha: t.examen.fecha, color: Colors.green, txt: t.examen.pasos },
+    { k: 'reg', rol: 'REGRESO', fecha: t.regreso.fecha, color: Colors.muted, txt: t.regreso.rol },
+  ];
   return (
     <GlassPanel accent={Colors.coral} style={{ marginBottom: Spacing.xl, padding: Spacing.lg }}>
-      <Text style={st.h3}>🧘 Taper y semana de examen · D94 jue 18-feb última sesión de banco · D95 vie 19-feb = último día del plan · finde libre (dom 21-feb = D-1 real, sin estudio) · examen {DAILY_META.examenTarget}</Text>
+      <Text style={st.h3}>🧘 Taper y semana de examen · {t.taperSemana} · examen {DAILY_META.examenTarget}{FECHAS_V6.step1.provisional ? ' (PROVISIONAL)' : ''}</Text>
       <Text style={[st.smallNote, { marginBottom: Spacing.sm }]}>{t.cierre}</Text>
-      {[t.d94, t.d95].map((d) => (
-        <View key={d.d} style={st.taperRow}>
-          <Text style={[st.taperRol, tabular, { color: Colors.gold }]}>D{d.d} · {d.rol}</Text>
-          <Text style={[st.taperFecha, tabular]}>{d.fecha.slice(5)}</Text>
-          <Text style={[st.body, { flex: 1 }]}>{d.resumen}</Text>
+      {filas.map((f) => (
+        <View key={f.k} style={st.taperRow}>
+          <Text style={[st.taperRol, tabular, { color: f.color }]}>{f.rol}</Text>
+          <Text style={[st.taperFecha, tabular]}>{f.fecha.slice(5)}</Text>
+          {Array.isArray(f.txt)
+            ? <View style={{ flex: 1 }}>{f.txt.map((p, i) => <Text key={i} style={st.body}>• {p}</Text>)}</View>
+            : <Text style={[st.body, { flex: 1 }]}>{f.txt}</Text>}
         </View>
       ))}
-      <View style={st.taperRow}>
-        <Text style={[st.taperRol, tabular, { color: Colors.coral }]}>D-1 REAL · dom, sin sesión (v5.20)</Text>
-        <Text style={[st.taperFecha, tabular]}>{t.dMenos1.fecha.slice(5)}</Text>
-        <View style={{ flex: 1 }}>{t.dMenos1.pasos.map((p, i) => <Text key={i} style={st.body}>• {p}</Text>)}</View>
-      </View>
-      <View style={st.taperRow}>
-        <Text style={[st.taperRol, tabular, { color: Colors.green }]}>EXAMEN</Text>
-        <Text style={[st.taperFecha, tabular]}>{t.examen.fecha.slice(5)}</Text>
-        <View style={{ flex: 1 }}>{t.examen.pasos.map((p, i) => <Text key={i} style={st.body}>• {p}</Text>)}</View>
-      </View>
-      <Text style={[st.smallNote, { marginTop: Spacing.sm }]}>Fuente: {t.fuente}. Las franjas horarias no cambian; solo el volumen (20Q) y el contenido (nada nuevo).</Text>
+      <Text style={[st.smallNote, { marginTop: Spacing.sm }]}>{t.permiso}. Fuente: {t.fuente}. En la semana de taper solo el bloque A (≤2 h; D95 ≤1 h); MIR sigue 1 h.</Text>
     </GlassPanel>
   );
 }

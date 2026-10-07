@@ -20,7 +20,7 @@ const OBS = '#A78BFA'; // mismo morado ◆ que el resto de planes
 
 /**
  * SynapseTodayPlan — motor día-a-día SYNAPSE (SYN_PLAN_META.totalDias · SYN_PLAN_META.semanas semanas; v5.10-b: F0-F1 +
- * F2 sem 13-19 = Academy restante + prep CCA-F, taper del Step 1), RE-SKIN como
+ * F2 sem 13-19 = Academy restante + prep CCA-F, taper del Step 1 · v6.00 (6-oct-2026): «taper por el ENCAPS», solo texto), RE-SKIN como
  * CONSOLA NEURAL: cada día es un "run", cada bloque un "job" (RunBlock estilo Warp
  * con barra-de-status lateral + header mono + exit-status ○/▷/✓). Mismo molde que
  * ENCAPS/Business (HOY / 7 días / 12 semanas) con PROGRESO REAL marcable (empieza 0%,
@@ -306,10 +306,10 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
           <Text style={[st.globPct, { color: INDIGO }]}>{glob.pct}%</Text>
         </View>
         <ProgressBar pct={glob.pct} color={INDIGO} />
-        <Text style={st.globSub}>{glob.hechos}/{glob.total} runs passed · F0 sem 1-8 (auditar ✓ lo ya cursado) · F1 sem 9-12 = stack del vibecoding · F2 sem 13-{SYN_PLAN_META.semanas} = Academy restante + prep CCA-F (taper del Step 1; sem {SYN_PLAN_META.deloadDesde}+ deload) · sáb PC = SHIP · empieza en 0% (avance manual real)</Text>
+        <Text style={st.globSub}>{glob.hechos}/{glob.total} runs passed · F0 sem 1-8 (auditar ✓ lo ya cursado) · F1 sem 9-12 = stack del vibecoding · F2 sem 13-{SYN_PLAN_META.semanas} = Academy restante + prep CCA-F (taper por el ENCAPS; sem {SYN_PLAN_META.deloadDesde}+ deload) · sáb PC = SHIP · empieza en 0% (avance manual real)</Text>
       </View>
       {grupos.map((g) => <SemanaCard key={g.clave} g={g} hoyD={hoyD} onPick={onPick} done={done} onToggle={onToggle} />)}
-      <Text style={st.note}>☑ marca un run como passed (se guarda en este dispositivo). ▶ = run de hoy. El plan termina el {SYN_PLAN_META.fin} (fin del Step 1 menos la semana del examen); feriados 25-dic/31-dic/1-ene = libres (node DATA/_scripts/gen_synapse_plan.js).</Text>
+      <Text style={st.note}>☑ marca un run como passed (se guarda en este dispositivo). ▶ = run de hoy. El plan termina el {SYN_PLAN_META.fin} (v6.00: en la intensiva ENCAPS; la fecha no cambia · v5.20: fin del Step 1 menos la semana del examen); feriados 25-dic/31-dic/1-ene = libres (node DATA/_scripts/gen_synapse_plan.js).</Text>
     </View>
   );
 }

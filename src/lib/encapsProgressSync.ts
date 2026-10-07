@@ -1,5 +1,6 @@
 /**
- * encapsProgressSync.ts — CIERRE DE SESIÓN ENCAPS desde la app (régimen MANTENIMIENTO 2027-I · v5.20, D1 = mié 7-oct-2026 → D92 = mar 16-feb-2027 + INTENSIVA días 97-107 mar 23-feb → mar 9-mar · examen ENCAPS mié 10-mar-2027; v5.19: mar 6-oct → lun 15-feb · v5.18: lun 5-oct → vie 12-feb · v5.17: jue 1-oct → mié 10-feb).
+ * encapsProgressSync.ts — CIERRE DE SESIÓN ENCAPS desde la app (régimen v6.00: MANTENIMIENTO D1-D60 mié 7-oct → mié 30-dic-2026 +
+ * INTENSIVA dia 61-110 lun 4-ene → vie 12-mar-2027 con carril B 16:15 · examen ENCAPS dom 14-mar-2027 PROVISIONAL · v5.20, D1 = mié 7-oct-2026 → D92 = mar 16-feb-2027 + INTENSIVA días 97-107 mar 23-feb → mar 9-mar · examen ENCAPS mié 10-mar-2027; v5.19: mar 6-oct → lun 15-feb · v5.18: lun 5-oct → vie 12-feb · v5.17: jue 1-oct → mié 10-feb).
  *
  * Cierra el circuito del % CIEGO REAL sin pasar por una sesión de Claude: el formulario de cierre de EncapsPlanView
  * (final de la cola del día) llama a `cerrarSesion()` y esta capa:
@@ -14,6 +15,11 @@
  *  5) produce la LÍNEA de cierre (`--cerrar`) y un JSON con la forma del export del runner gen_encaps_minisim.js
  *     (`--registrar <json> --append` lo apenda a _registro_resoluciones.json), para que registro y Supabase converjan.
  *
+ * v6.00 (6-oct-2026, V6_ESPEC §C2/§F): régimen MANTENIMIENTO F1 = D1-D60 (mié 7-oct → mié 30-dic-2026) + INTENSIVA dia 61-110 (lun 4-ene →
+ * vie 12-mar-2027; examen ENCAPS dom 14-mar PROVISIONAL). Nuevo TipoRonda 'carril_b' = la hora 16:15 de la intensiva con la fila
+ * MANTENIMIENTO 61-92 de v5.20 (extra.carril_b): su cierreId es APP_CARRIL_B_<fecha>_<codigo>, distinto del cierre del loop del mismo
+ * día (antes chocaban si compartían código y el segundo cierre pisaba al primero; el orden del barrido ya evita el mismo código).
+ *
  * Métrica que manda (README_SISTEMA_TRACKING.md): % CIEGO = correctas SEGURAS / total; las dudosas/adivinadas NO cuentan.
  * Taxonomía v3 (Palmerton): knowledge CONCEPTO·OLVIDO·CRONOLOGIA · transfer CCSN·CONTEXTO · proceso CAMBIO·TIEMPO·LECTURA.
  * Regla #11: la app solo lee/escribe Supabase (nunca Claude); si Supabase falla, la ronda queda local y se reintenta.
@@ -21,11 +27,12 @@
 import { supabase } from './supabase';
 
 // ── Tipos v3 (espejo del esquema de ronda del README) ──
-export type TipoRonda = 'banco_dia' | 'eval_anclada' | 'mini_sim' | 'pretest' | 'simulacro' | 'repaso' | 'warmup';
-export const TIPOS_RONDA: TipoRonda[] = ['banco_dia', 'eval_anclada', 'mini_sim', 'pretest', 'simulacro', 'repaso', 'warmup'];
+// v6.00: + 'carril_b' (16:15 de la intensiva F2 → cierreId APP_CARRIL_B_<fecha>_<codigo>; también lo acepta gen_encaps_semana.js --cerrar/--pull)
+export type TipoRonda = 'banco_dia' | 'eval_anclada' | 'mini_sim' | 'pretest' | 'simulacro' | 'repaso' | 'warmup' | 'carril_b';
+export const TIPOS_RONDA: TipoRonda[] = ['banco_dia', 'eval_anclada', 'mini_sim', 'pretest', 'simulacro', 'repaso', 'warmup', 'carril_b'];
 export const TIPO_RONDA_LABEL: Record<TipoRonda, string> = {
   banco_dia: 'Banco del día', eval_anclada: 'Eval anclada', mini_sim: 'Mini-sim /25', pretest: 'Pre-test',
-  simulacro: 'Simulacro', repaso: 'Repaso', warmup: 'Warm-up',
+  simulacro: 'Simulacro', repaso: 'Repaso', warmup: 'Warm-up', carril_b: 'Carril B 16:15',
 };
 export type TipoFallo = 'knowledge' | 'transfer' | 'proceso';
 export type SubtipoFallo = 'CONCEPTO' | 'OLVIDO' | 'CRONOLOGIA' | 'CCSN' | 'CONTEXTO' | 'CAMBIO' | 'TIEMPO' | 'LECTURA';
@@ -137,6 +144,7 @@ export function fallosDeErrores(err: unknown): FallosPorTipo | null {
   return alguno ? fallosDesdePlano(plano) : null;
 }
 
+/** v6.00: con tipoRonda 'carril_b' → APP_CARRIL_B_<fecha>_<codigo> (no colisiona con el APP_BANCO_DIA_… del loop del mismo día). */
 export function cierreId(tipoRonda: TipoRonda, fecha: string, codigo: string): string {
   return `APP_${tipoRonda.toUpperCase()}_${fecha}_${(codigo || 'MIX').replace(/[^A-Za-z0-9+/-]/g, '')}`;
 }

@@ -11,7 +11,7 @@
 - **Definition of done** = los 4 criterios de aceptación del proyecto verificados por `verify_vibecoding.js` (commit hash / test verde / URL o tabla viva / fichero de salida). Sin eso, el sábado PC se usa para cerrar; nada se arrastra a la semana siguiente.
 - **Rotación** (repite subiendo nivel): `yocpmd` = Automatización YoCPMD (sensores, sync, generadores, skills, hooks) · `preguntas` = Pipeline de preguntas ENCAPS/USMLE/MIR · `bots` = Bots CRM Pulso / LIVIANO · `contenido` = Contenido IA para las marcas
 - **Deload**: Semanas DELOAD de los frentes secundarios (PROTOCOLO_MODO_MINIMO §4, fechas intactas, carga 50%; v5.20 = la semana del lunes posterior a cada NBME, las mismas que en v5.19): post-NBME 26 (mar 10-nov) = lun 16 → vie 20-nov-2026 y post-NBME 28 (mar 22-dic) = lun 28 → mié 30-dic-2026 (31-dic y 1-ene feriados). Con el orden v5.10-b el proyecto con `deload: true` es S7 (motor de preguntas ENCAPS), que en la v5.20 corre mié 18 → mar 24-nov: 3 de sus 5 pasos (mié 18, jue 19 y vie 20-nov) caen en la semana deload post-NBME 26 (lun 16 → vie 20-nov); los otros 2 días de esa semana (lun 16 y mar 17-nov) son los 2 últimos pasos de S6 (proyecto normal) — desalineamiento PARCIAL, sin tocar el flag ni el orden por riesgo (en la v5.19 eran 4 de 5 ✅). La semana post-NBME 28 (lun 28 → mié 30-dic) = los 3 últimos pasos de S12 (lun 28, mar 29 y mié 30-dic, capstone, proyecto normal); el taper S13 arranca el lun 4-ene, tras los feriados. (v5.19: S7 mar 17 → lun 23-nov, 4 de 5 pasos en la deload; post-NBME 28 = los 2 últimos pasos de S12 + el 1.er paso de S13, mié 30-dic · v5.18: deloads lun 9 → vie 13-nov = S6 exacta, con el flag en S7 lun 16 → vie 20-nov, y lun 21 → jue 24-dic = S12; S13 desde el mar 29-dic · v5.17: S7 jue 12 → mié 18-nov, deload repartida entre S6 y S7, S13 desde el jue 24-dic · v5.16: deloads 2-6 nov = S6 exacta y 14-18 dic = S12 completa.)
-- **Taper S13-S20**: S13-S16 (lun 4-ene → mar 26-ene, bloques secuenciales): MANTENIMIENTO ≤15'/día con flag deload (sensores verdes: node DATA/_scripts/verify_vibecoding.js --sensores · 1 mejora pequeña · retro) y el resto del bloque 04:15 = journal + lectura de docs (sin teclado pesado). S17-S20 (mié 27-ene → vie 19-feb, cierre de Fase A + Fases B-C del Step 1): DELOAD TOTAL del vibecoding = journal 5' + audio (bloque B del SYNAPSE); PC sáb/dom OPCIONAL (30' máx, solo en día VERDE). S20 = cierre del plan: mié 17 → vie 19-feb (D93-D95; jue 18-feb = D94 última sesión de banco, vie 19-feb = D95 = último día del plan, D-1 hábil); sáb 20 y dom 21 libres (dom 21 = D-1 real), lun 22-feb EXAMEN (v5.20; v5.19: mar 16 → jue 18-feb, examen vie 19-feb, sin finde en medio; v5.18: lun 15 → mié 17-feb, examen jue 18-feb; v5.17: jue 11 → lun 15-feb, examen mar 16-feb; v5.16: lun 8 → mié 10-feb, examen jue 11-feb). Ningún proyecto nuevo después de S12; la decisión de febrero (IA vs ENCAPS intensivo) sigue intacta — v5.20: la intensiva ENCAPS (mar 23-feb → mar 9-mar, examen mié 10-mar) ya está fijada y la franja 04:15 le queda subordinada hasta ese examen.
+- **Taper S13-S20**: v6.00 (6-oct-2026): S13-S20 = TAPER POR EL ENCAPS (intensiva lun 4-ene → dom 14-mar-2027 PROVISIONAL; el Step 1 está en pausa del 31-dic al 15-mar y vuelve el mar 16-mar): S13-S16 (lun 4-ene → mar 26-ene) MANTENIMIENTO ≤15'/día con flag deload (sensores verdes · 1 mejora pequeña · retro; resto del bloque 04:15 = journal + lectura de docs) · S17-S20 (mié 27-ene → vie 19-feb) DELOAD TOTAL = journal 5' + audio (bloque B del SYNAPSE); PC sáb/dom OPCIONAL (30' máx, solo en día VERDE). S20 = cierre del plan mié 17 → vie 19-feb (último día del vibecoding); después la franja 04:15 queda subordinada a la intensiva ENCAPS y qué vuelve a ella se decide tras el ENCAPS (reinicio del Step 1 mar 16-mar). Ningún proyecto nuevo después de S12. — Histórico v5.20: S13-S16 (lun 4-ene → mar 26-ene, bloques secuenciales): MANTENIMIENTO ≤15'/día con flag deload (sensores verdes: node DATA/_scripts/verify_vibecoding.js --sensores · 1 mejora pequeña · retro) y el resto del bloque 04:15 = journal + lectura de docs (sin teclado pesado). S17-S20 (mié 27-ene → vie 19-feb, cierre de Fase A + Fases B-C del Step 1): DELOAD TOTAL del vibecoding = journal 5' + audio (bloque B del SYNAPSE); PC sáb/dom OPCIONAL (30' máx, solo en día VERDE). S20 = cierre del plan: mié 17 → vie 19-feb (D93-D95; jue 18-feb = D94 última sesión de banco, vie 19-feb = D95 = último día del plan, D-1 hábil); sáb 20 y dom 21 libres (dom 21 = D-1 real), lun 22-feb EXAMEN (v5.20; v5.19: mar 16 → jue 18-feb, examen vie 19-feb, sin finde en medio; v5.18: lun 15 → mié 17-feb, examen jue 18-feb; v5.17: jue 11 → lun 15-feb, examen mar 16-feb; v5.16: lun 8 → mié 10-feb, examen jue 11-feb). Ningún proyecto nuevo después de S12; la decisión de febrero (IA vs ENCAPS intensivo) sigue intacta — v5.20: la intensiva ENCAPS (mar 23-feb → mar 9-mar, examen mié 10-mar) ya está fijada y la franja 04:15 le queda subordinada hasta ese examen.
 - **Cero inventos**: Todas las URLs de 'docs' respondieron 200 el 5-sep-2026 (check_links.js) y su contenido se extrajo con WebFetch a curricula/_extracted.json; las que se reutilizan aquí son exactamente esas (cero inventos, ninguna URL nueva el 12-sep). Lo que exija credenciales o decisión de Joseph está marcado "A VERIFICAR".
 - Cada día cierra con la entrada del journal (`node DATA/_scripts/journal_hoy.js` → `D:/synapse-journal/journal/<semana ISO>.md`: objetivo · qué construí · commit/URL · qué aprendí · % del código que entiendo · bloqueo). El sábado de SHIP se corre `verify` ANTES de marcar el proyecto como shipped.
 
@@ -33,12 +33,12 @@
 | S12 | Capstone: README del sistema YoCPMD + demo 5' + retro de 12 semanas | yocpmd | mié 23-dic → mié 30-dic | sáb 02-ene | — |
 | S13 | Mantenimiento 1: sensores verdes tras la semana deload post-NBME 28 | taper · mantenimiento | lun 04-ene → vie 08-ene (15'/día) | sáb 09-ene (opcional 30') | **sí (mantenimiento)** |
 | S14 | Mantenimiento 2: revisión semanal automática y export | taper · mantenimiento | lun 11-ene → vie 15-ene (15'/día) | sáb 16-ene (opcional 30') | **sí (mantenimiento)** |
-| S15 | Mantenimiento 3: mediados de enero (4 hábiles · NBME 30) | taper · mantenimiento | lun 18-ene → jue 21-ene (15'/día) | sáb 23-ene (opcional 30') | **sí (mantenimiento)** |
-| S16 | Mantenimiento 4: sensores verdes antes del UWSA2 y del cierre de Fase A | taper · mantenimiento | vie 22-ene → mar 26-ene (15'/día) | sáb 30-ene (opcional 30') | **sí (mantenimiento)** |
-| S17 | Deload total 1: journal 5' + audio (cierre de Fase A → GO/NO-GO) | taper · deload | mié 27-ene → mar 02-feb (5'/día) | opcional / no | **sí (deload)** |
-| S18 | Deload total 2: journal 5' + audio (semana NBME 32/33 + Free 120) | taper · deload | mié 03-feb → mar 09-feb (5'/día) | opcional / no | **sí (deload)** |
-| S19 | Deload total 3: journal 5' + audio (Fase C, última semana con SYNAPSE) | taper · deload | mié 10-feb → mar 16-feb (5'/día) | opcional / no | **sí (deload)** |
-| S20 | Cierre del plan: journal 5' (mié 17, jue 18 y vie 19-feb), lun 22-feb EXAMEN | taper · deload | mié 17-feb → vie 19-feb (5'/día) | opcional / no | **sí (deload)** |
+| S15 | Mantenimiento 3: mediados de enero (4 hábiles · barrido ENCAPS) | taper · mantenimiento | lun 18-ene → jue 21-ene (15'/día) | sáb 23-ene (opcional 30') | **sí (mantenimiento)** |
+| S16 | Mantenimiento 4: sensores verdes a mitad del núcleo ENCAPS (SIM #2) | taper · mantenimiento | vie 22-ene → mar 26-ene (15'/día) | sáb 30-ene (opcional 30') | **sí (mantenimiento)** |
+| S17 | Deload total 1: journal 5' + audio (núcleo ENCAPS · SIM #3) | taper · deload | mié 27-ene → mar 02-feb (5'/día) | opcional / no | **sí (deload)** |
+| S18 | Deload total 2: journal 5' + audio (semana del SIM #4 = 2024-II oficial) | taper · deload | mié 03-feb → mar 09-feb (5'/día) | opcional / no | **sí (deload)** |
+| S19 | Deload total 3: journal 5' + audio (semana del SIM #5, última semana con SYNAPSE) | taper · deload | mié 10-feb → mar 16-feb (5'/día) | opcional / no | **sí (deload)** |
+| S20 | Cierre del plan: journal 5' (mié 17, jue 18 y vie 19-feb) · fin del vibecoding | taper · deload | mié 17-feb → vie 19-feb (5'/día) | opcional / no | **sí (deload)** |
 
 ## S1 · APEX end-to-end: redeploy n8n + 1 APEX USMLE íntegro en Anki y vault + ruteo por subtema
 
@@ -253,7 +253,7 @@
 ## S11 · Pipeline de contenido de marcas (brief → 3 guiones + títulos + thumbnail) con la API de Claude
 
 - **Semana**: mié 16-dic → mar 22-dic · **SHIP**: sábado sáb 26-dic (PC SYNAPSE 15:00-17:00) · rotación `contenido` · commits `[S11] …` en `D:/joseph-md-app`
-- **A quién sirve**: Marcas (LIVIANO primero; CURVA/DENSA arrancan en febrero) — hoy el contenido se improvisa; la academia LIVIANO (curriculum.json + gen_liviano_plan.js) produce conocimiento que no se convierte en piezas.
+- **A quién sirve**: Marcas (LIVIANO primero; CURVA/DENSA arrancan tras el Step 1 (oct-2027, v6.00)) — hoy el contenido se improvisa; la academia LIVIANO (curriculum.json + gen_liviano_plan.js) produce conocimiento que no se convierte en piezas.
 - **Objetivo**: Un script que, dado marca + tema, produzca 3 guiones de 45 s (hook-cuerpo-CTA), 5 títulos, marcadores de corte y un prompt de thumbnail; 1 pieza publicada.
 - **Entregable verificable**: DATA/_scripts/gen_contenido.js <marca> <tema> → DATA/BUSINESS/CONTENIDO/<marca>/<fecha>/ + 1 pieza publicada con alcance a 48 h anotado + commit [S11].
 - **Dónde**: DATA/_scripts/gen_contenido.js (nuevo) · DATA/BUSINESS/CONTENIDO/ (nuevo) · academia LIVIANO (DATA/BUSINESS/LIVIANO/curriculum.json + src/lib/livianoStudyPlan.ts como banco de temas)
@@ -288,17 +288,17 @@
   - **Mié 23-12 · 5' objetivo → spec del día**: README_SISTEMA.md: inventario de DATA/_scripts (generadores, remap, telemetría, revisión, verify), hooks y skills; orden del pipeline de corrimiento. Objetivo del día: índice completo, sin prosa.
   - **Jue 24-12 · construir con Claude Code**: Demo 5': grabar (OBS/Loom) Home → Estudio → revisión semanal; subir y enlazar desde el README.
   - **Lun 28-12 · construir con Claude Code**: Retro: correr node DATA/_scripts/verify_vibecoding.js para S1-S11 y rellenar la tabla de VIBECODING_12_PROYECTOS.md con estado + 1 lección cada uno; qué se automatiza en el taper.
-  - **Mar 29-12 · verificar en vivo (test/URL/dato)**: Decisión CCA-F: revisar los 5 dominios (Agentic Architecture 27% · Claude Code 20% · Tool Design & MCP 18% · Prompt Engineering 20% · Context Management 15%, según CALIDAD/Synapse.md) contra lo hecho; fijar fecha post-Step 1 (feb-2027) o no.
+  - **Mar 29-12 · verificar en vivo (test/URL/dato)**: Decisión CCA-F: revisar los 5 dominios (Agentic Architecture 27% · Claude Code 20% · Tool Design & MCP 18% · Prompt Engineering 20% · Context Management 15%, según CALIDAD/Synapse.md) contra lo hecho; fijar fecha post-Step 1 (oct-2027 en v6.00; v5.20: feb-2027) o no.
   - **Mié 30-12 · doc + commit + preparar SHIP**: Commit final [S12] + tag vibecoding-s12 + node DATA/_scripts/verify_vibecoding.js 12 + journal (cierre).
 - **SHIP**: SHIP S12: README + demo + retro desde verify + decisión CCA-F publicados (verify 12 → 4/4).
 
-## Semanas 13-20 · TAPER (mantenimiento → deload total → examen)
+## Semanas 13-20 · TAPER por el ENCAPS (mantenimiento → deload total → cierre) · v6.00
 
-> S13-S16 (lun 4-ene → mar 26-ene, bloques secuenciales): MANTENIMIENTO ≤15'/día con flag deload (sensores verdes: node DATA/_scripts/verify_vibecoding.js --sensores · 1 mejora pequeña · retro) y el resto del bloque 04:15 = journal + lectura de docs (sin teclado pesado). S17-S20 (mié 27-ene → vie 19-feb, cierre de Fase A + Fases B-C del Step 1): DELOAD TOTAL del vibecoding = journal 5' + audio (bloque B del SYNAPSE); PC sáb/dom OPCIONAL (30' máx, solo en día VERDE). S20 = cierre del plan: mié 17 → vie 19-feb (D93-D95; jue 18-feb = D94 última sesión de banco, vie 19-feb = D95 = último día del plan, D-1 hábil); sáb 20 y dom 21 libres (dom 21 = D-1 real), lun 22-feb EXAMEN (v5.20; v5.19: mar 16 → jue 18-feb, examen vie 19-feb, sin finde en medio; v5.18: lun 15 → mié 17-feb, examen jue 18-feb; v5.17: jue 11 → lun 15-feb, examen mar 16-feb; v5.16: lun 8 → mié 10-feb, examen jue 11-feb). Ningún proyecto nuevo después de S12; la decisión de febrero (IA vs ENCAPS intensivo) sigue intacta — v5.20: la intensiva ENCAPS (mar 23-feb → mar 9-mar, examen mié 10-mar) ya está fijada y la franja 04:15 le queda subordinada hasta ese examen.
+> v6.00 (6-oct-2026): S13-S20 = TAPER POR EL ENCAPS (intensiva lun 4-ene → dom 14-mar-2027 PROVISIONAL; el Step 1 está en pausa del 31-dic al 15-mar y vuelve el mar 16-mar): S13-S16 (lun 4-ene → mar 26-ene) MANTENIMIENTO ≤15'/día con flag deload (sensores verdes · 1 mejora pequeña · retro; resto del bloque 04:15 = journal + lectura de docs) · S17-S20 (mié 27-ene → vie 19-feb) DELOAD TOTAL = journal 5' + audio (bloque B del SYNAPSE); PC sáb/dom OPCIONAL (30' máx, solo en día VERDE). S20 = cierre del plan mié 17 → vie 19-feb (último día del vibecoding); después la franja 04:15 queda subordinada a la intensiva ENCAPS y qué vuelve a ella se decide tras el ENCAPS (reinicio del Step 1 mar 16-mar). Ningún proyecto nuevo después de S12. — Histórico v5.20: S13-S16 (lun 4-ene → mar 26-ene, bloques secuenciales): MANTENIMIENTO ≤15'/día con flag deload (sensores verdes: node DATA/_scripts/verify_vibecoding.js --sensores · 1 mejora pequeña · retro) y el resto del bloque 04:15 = journal + lectura de docs (sin teclado pesado). S17-S20 (mié 27-ene → vie 19-feb, cierre de Fase A + Fases B-C del Step 1): DELOAD TOTAL del vibecoding = journal 5' + audio (bloque B del SYNAPSE); PC sáb/dom OPCIONAL (30' máx, solo en día VERDE). S20 = cierre del plan: mié 17 → vie 19-feb (D93-D95; jue 18-feb = D94 última sesión de banco, vie 19-feb = D95 = último día del plan, D-1 hábil); sáb 20 y dom 21 libres (dom 21 = D-1 real), lun 22-feb EXAMEN (v5.20; v5.19: mar 16 → jue 18-feb, examen vie 19-feb, sin finde en medio; v5.18: lun 15 → mié 17-feb, examen jue 18-feb; v5.17: jue 11 → lun 15-feb, examen mar 16-feb; v5.16: lun 8 → mié 10-feb, examen jue 11-feb). Ningún proyecto nuevo después de S12; la decisión de febrero (IA vs ENCAPS intensivo) sigue intacta — v5.20: la intensiva ENCAPS (mar 23-feb → mar 9-mar, examen mié 10-mar) ya está fijada y la franja 04:15 le queda subordinada hasta ese examen.
 
 ### S13 · Mantenimiento 1: sensores verdes tras la semana deload post-NBME 28 · MANTENIMIENTO (15'/día)
 
-- **Semana**: lun 04-ene → vie 08-ene (5 días hábiles) · Step 1: S13 · lun 4 → vie 8-ene (v5.20; 31-dic y 1-ene libres, antes del bloque; el NBME 29 cae el vie 8-ene = D65, último paso del bloque; la deload post-NBME 28 —lun 28 → mié 30-dic— cae entera en los 3 últimos pasos de S12) · v5.19: mié 30-dic → jue 7-ene · v5.18: mar 29-dic → mié 6-ene
+- **Semana**: lun 04-ene → vie 08-ene (5 días hábiles) · contexto (v6.00: intensiva ENCAPS): S13 · lun 4 → vie 8-ene (v6.00: semana 1 de la intensiva ENCAPS —lun 4 señales · mar 5 → jue 7 calentamiento · vie 8-ene PRE-TEST 2026-II 100Q—; Step 1 en PAUSA desde el jue 31-dic; 31-dic y 1-ene libres, antes del bloque · v5.20: el NBME 29 del Step 1 caía el vie 8-ene) · v5.19: mié 30-dic → jue 7-ene · v5.18: mar 29-dic → mié 6-ene
 - **Objetivo**: Que telemetría Anki, verify, revisión semanal y plan_checks sigan verdes sin construir nada nuevo; el resto del bloque 04:15 = journal + lectura de docs.
 - **Sensores**: `node DATA/_scripts/verify_vibecoding.js --sensores` · `node DATA/_scripts/anki_telemetria.js` · `node DATA/_scripts/gen_revision_semanal.js`
 - **Días**:
@@ -311,7 +311,7 @@
 
 ### S14 · Mantenimiento 2: revisión semanal automática y export · MANTENIMIENTO (15'/día)
 
-- **Semana**: lun 11-ene → vie 15-ene (5 días hábiles) · Step 1: S14 · lun 11 → vie 15-ene (v5.20; 5 hábiles, sin feriados) · v5.19: vie 8 → jue 14-ene · v5.18: jue 7 → mié 13-ene
+- **Semana**: lun 11-ene → vie 15-ene (5 días hábiles) · contexto (v6.00: intensiva ENCAPS): S14 · lun 11 → vie 15-ene (v6.00: núcleo S2 de la intensiva ENCAPS · vie 15-ene SIM #1 = 2025-II oficial; 5 hábiles, sin feriados) · v5.19: vie 8 → jue 14-ene · v5.18: jue 7 → mié 13-ene
 - **Objetivo**: Que la revisión del sábado se pre-genere sola (viernes 21:00) y que el export de progreso no dependa del navegador.
 - **Sensores**: `node DATA/_scripts/verify_vibecoding.js --sensores` · `node DATA/_scripts/gen_revision_semanal.js`
 - **Días**:
@@ -322,74 +322,74 @@
   - **Vie 15-01 · doc + commit + preparar SHIP**: Commit [S14] + journal + verify --sensores.
 - **Sábado/domingo**: Sábado PC (opcional, 30'): verify --sensores + retro.
 
-### S15 · Mantenimiento 3: mediados de enero (4 hábiles · NBME 30) · MANTENIMIENTO (15'/día)
+### S15 · Mantenimiento 3: mediados de enero (4 hábiles · barrido ENCAPS) · MANTENIMIENTO (15'/día)
 
-- **Semana**: lun 18-ene → jue 21-ene (4 días hábiles) · Step 1: S15 · lun 18 → jue 21-ene (v5.20; 4 hábiles; el NBME 30 cae el mar 19-ene = D72) · v5.19: vie 15 → mié 20-ene · v5.18: jue 14 → mar 19-ene
+- **Semana**: lun 18-ene → jue 21-ene (4 días hábiles) · contexto (v6.00: intensiva ENCAPS): S15 · lun 18 → jue 21-ene (v6.00: núcleo S3 de la intensiva ENCAPS, 4 hábiles; el vie 22-ene —SIM #2— ya es de S16 · v5.20: el NBME 30 del Step 1 caía el mar 19-ene) · v5.19: vie 15 → mié 20-ene · v5.18: jue 14 → mar 19-ene
 - **Objetivo**: Sensores verdes con 4 días hábiles (lun 18, mar 19, mié 20 y jue 21-ene); los feriados 31-dic y 1-ene cayeron entre S12 y S13 (el 25-dic, en S12).
 - **Sensores**: `node DATA/_scripts/verify_vibecoding.js --sensores`
 - **Días**:
   - **Lun 18-01 · sensores verdes (≤15')**: Sensores (≤15'): verify --sensores; journal 5'.
   - **Mar 19-01 · 1 mejora pequeña (≤15')**: 1 mejora pequeña (≤15') o ninguna; commit [S15].
   - **Mié 20-01 · journal + lectura de docs**: Journal 5' + lectura de docs (15').
-  - **Jue 21-01 · retro semanal**: Retro semanal (≤15') + commit [S15] + verify --sensores (el bloque S15 = lun 18, mar 19, mié 20 y jue 21-ene; NBME 30 el mar 19-ene: el journal solo anota sueño y modo).
+  - **Jue 21-01 · retro semanal**: Retro semanal (≤15') + commit [S15] + verify --sensores (el bloque S15 = lun 18, mar 19, mié 20 y jue 21-ene; semana de barrido de la intensiva ENCAPS: el journal solo anota sueño y modo).
 - **Sábado/domingo**: Sábado 23-ene PC (opcional, 30'): verify --sensores + retro; si descansas, marca ✓ igual (S15 termina el jue 21-ene: su PC es el sábado siguiente; el de S16 es el sáb 30-ene).
 
-### S16 · Mantenimiento 4: sensores verdes antes del UWSA2 y del cierre de Fase A · MANTENIMIENTO (15'/día)
+### S16 · Mantenimiento 4: sensores verdes a mitad del núcleo ENCAPS (SIM #2) · MANTENIMIENTO (15'/día)
 
-- **Semana**: vie 22-ene → mar 26-ene (3 días hábiles) · Step 1: S16 · vie 22 → mar 26-ene (v5.20) · UWSA2 mar 26-ene (D77) · Fase A sigue hasta el lun 1-feb (D81) · v5.19: jue 21 → lun 25-ene · v5.18: mié 20 → vie 22-ene
-- **Objetivo**: Llegar al UWSA2 (mar 26-ene, último paso de este bloque) y al cierre de Fase A (lun 1-feb) con todos los sensores verdes y el journal al día; 3 días hábiles (vie 22, lun 25 y mar 26-ene).
+- **Semana**: vie 22-ene → mar 26-ene (3 días hábiles) · contexto (v6.00: intensiva ENCAPS): S16 · vie 22 → mar 26-ene (v6.00: vie 22-ene SIM #2 de la intensiva ENCAPS · lun 25 y mar 26-ene barrido S4; 3 hábiles · v5.20: UWSA2 del Step 1 el mar 26-ene) · v5.19: jue 21 → lun 25-ene · v5.18: mié 20 → vie 22-ene
+- **Objetivo**: Llegar a la mitad del núcleo de la intensiva ENCAPS (mar 26-ene, último paso de este bloque) con todos los sensores verdes y el journal al día; 3 días hábiles (vie 22, lun 25 y mar 26-ene).
 - **Sensores**: `node DATA/_scripts/verify_vibecoding.js --sensores` · `node DATA/_scripts/anki_telemetria.js`
 - **Días**:
-  - **Vie 22-01 · sensores verdes (≤15')**: Sensores (≤15'): verify --sensores + telemetría Anki (backlog = 0 antes del UWSA2 y la Fase B); journal 5'.
+  - **Vie 22-01 · sensores verdes (≤15')**: Sensores (≤15'): verify --sensores + telemetría Anki (backlog = 0 antes del deload total de S17); journal 5'.
   - **Lun 25-01 · 1 mejora pequeña (≤15')**: 1 mejora pequeña (≤15') o ninguna; commit [S16].
-  - **Mar 26-01 · retro semanal**: Retro de S13-S16 (≤15') en el journal (UWSA2 hoy, mar 26-ene: el journal anota solo cómo dormiste): qué se mantiene en deload total, qué se apaga hasta febrero. Commit [S16] + verify --sensores.
+  - **Mar 26-01 · retro semanal**: Retro de S13-S16 (≤15') en el journal (mar 26-ene, intensiva ENCAPS: el journal anota solo cómo dormiste): qué se mantiene en deload total, qué se apaga hasta el fin del vibecoding (vie 19-feb). Commit [S16] + verify --sensores.
 - **Sábado/domingo**: Sábado 30-ene PC (opcional, 30'): verify --sensores + retro de S13-S16; el deload total ya arrancó el mié 27-ene (S17).
 
-### S17 · Deload total 1: journal 5' + audio (cierre de Fase A → GO/NO-GO) · DELOAD (5'/día)
+### S17 · Deload total 1: journal 5' + audio (núcleo ENCAPS · SIM #3) · DELOAD (5'/día)
 
-- **Semana**: mié 27-ene → mar 02-feb (5 días hábiles) · Step 1: S17 · mié 27-ene → mar 2-feb (v5.20) · cierre de contenido lun 1-feb (D81) · NBME 31 mar 2-feb (D82, GO/NO-GO) abre la Fase B · v5.19: mar 26-ene → lun 1-feb · v5.18: lun 25 → vie 29-ene
+- **Semana**: mié 27-ene → mar 02-feb (5 días hábiles) · contexto (v6.00: intensiva ENCAPS): S17 · mié 27-ene → mar 2-feb (v6.00: barrido de la intensiva ENCAPS + vie 29-ene SIM #3 · v5.20: cierre de la Fase A y NBME 31 del Step 1) · v5.19: mar 26-ene → lun 1-feb · v5.18: lun 25 → vie 29-ene
 - **Objetivo**: El 04:15 se reduce a 5' de journal + el audio B del SYNAPSE; el resto de la franja es dormir o Anki si hay backlog. Ningún teclado.
 - **Días**:
-  - **Mié 27-01 · journal 5' + audio (deload total)**: Journal 5' (objetivo del día del Step 1 · sueño · modo) + audio B (mié 27-ene: post-UWSA2 del mar 26, sin juicios). Nada más.
-  - **Jue 28-01 · journal 5' + audio (deload total)**: Journal 5' + audio B (jue 28-ene: D79, bioestadística + ética).
-  - **Vie 29-01 · journal 5' + audio (deload total)**: Journal 5' + audio B (vie 29-ene: Bioquímica, 1.er día doble, D80).
-  - **Lun 01-02 · journal 5' + audio (deload total)**: Journal 5' + audio B (lun 1-feb: cierre de contenido / Fase A, D81).
-  - **Mar 02-02 · journal 5' + audio (deload total)**: Journal 5' + audio B (NBME 31 hoy, mar 2-feb: GO/NO-GO; el journal solo registra sueño y modo, sin juicios).
+  - **Mié 27-01 · journal 5' + audio (deload total)**: Journal 5' (objetivo del día de la intensiva ENCAPS · sueño · modo) + audio B (mié 27-ene). Nada más.
+  - **Jue 28-01 · journal 5' + audio (deload total)**: Journal 5' + audio B (jue 28-ene: barrido ENCAPS).
+  - **Vie 29-01 · journal 5' + audio (deload total)**: Journal 5' + audio B (vie 29-ene: SIM 100Q #3 de la intensiva ENCAPS).
+  - **Lun 01-02 · journal 5' + audio (deload total)**: Journal 5' + audio B (lun 1-feb: barrido ENCAPS S6).
+  - **Mar 02-02 · journal 5' + audio (deload total)**: Journal 5' + audio B (mar 2-feb: barrido ENCAPS; el journal solo registra sueño y modo, sin juicios).
 - **Sábado/domingo**: PC sáb/dom OPCIONAL (30' máx, solo en día VERDE): verify --sensores; si no, nada.
 
-### S18 · Deload total 2: journal 5' + audio (semana NBME 32/33 + Free 120) · DELOAD (5'/día)
+### S18 · Deload total 2: journal 5' + audio (semana del SIM #4 = 2024-II oficial) · DELOAD (5'/día)
 
-- **Semana**: mié 03-feb → mar 09-feb (5 días hábiles) · Step 1: S18 · mié 3 → mar 9-feb (v5.20) · NBME 32 mié 3-feb (D83) · NBME 33 vie 5-feb (D85) · Free 120 mar 9-feb (D87) · v5.19: mar 2 → lun 8-feb · v5.18: lun 1 → vie 5-feb
-- **Objetivo**: Igual que S17. Tres hitos en cinco días (NBME 32, NBME 33 y Free 120): el journal solo registra sueño y modo, sin juicios.
+- **Semana**: mié 03-feb → mar 09-feb (5 días hábiles) · contexto (v6.00: intensiva ENCAPS): S18 · mié 3 → mar 9-feb (v6.00: barrido de la intensiva ENCAPS + vie 5-feb SIM #4 = 2024-II oficial · v5.20: NBME 32, NBME 33 y Free 120 del Step 1) · v5.19: mar 2 → lun 8-feb · v5.18: lun 1 → vie 5-feb
+- **Objetivo**: Igual que S17. Semana del SIM oficial 2024-II (vie 5-feb): el journal solo registra sueño y modo, sin juicios.
 - **Días**:
-  - **Mié 03-02 · journal 5' + audio (deload total)**: Journal 5' + audio B (NBME 32 hoy, mié 3-feb).
-  - **Jue 04-02 · journal 5' + audio (deload total)**: Journal 5' + audio B (jue 4-feb: random timed, D84).
-  - **Vie 05-02 · journal 5' + audio (deload total)**: Journal 5' + audio B (NBME 33 hoy, vie 5-feb).
-  - **Lun 08-02 · journal 5' + audio (deload total)**: Journal 5' + audio B (lun 8-feb: random timed, D86).
-  - **Mar 09-02 · journal 5' + audio (deload total)**: Journal 5' + audio B (Free 120 hoy, mar 9-feb).
+  - **Mié 03-02 · journal 5' + audio (deload total)**: Journal 5' + audio B (mié 3-feb: barrido ENCAPS).
+  - **Jue 04-02 · journal 5' + audio (deload total)**: Journal 5' + audio B (jue 4-feb: barrido ENCAPS).
+  - **Vie 05-02 · journal 5' + audio (deload total)**: Journal 5' + audio B (SIM #4 = 2024-II oficial hoy, vie 5-feb).
+  - **Lun 08-02 · journal 5' + audio (deload total)**: Journal 5' + audio B (lun 8-feb: barrido ENCAPS).
+  - **Mar 09-02 · journal 5' + audio (deload total)**: Journal 5' + audio B (mar 9-feb: barrido ENCAPS).
 - **Sábado/domingo**: PC sáb/dom OPCIONAL (30' máx, solo en día VERDE).
 
-### S19 · Deload total 3: journal 5' + audio (Fase C, última semana con SYNAPSE) · DELOAD (5'/día)
+### S19 · Deload total 3: journal 5' + audio (semana del SIM #5, última semana con SYNAPSE) · DELOAD (5'/día)
 
-- **Semana**: mié 10-feb → mar 16-feb (5 días hábiles) · Step 1: S19 · Fase C (mié 10 → mar 16-feb, v5.20) · banco dentro del sprint D88-D92 · última A-unit del SYNAPSE lun 15-feb (cierre F2 = D91; el sáb 13-feb lleva la A-unit del simulacro CCA-F) · v5.19: mar 9 → lun 15-feb (SYNAPSE hasta el sáb 13-feb) · v5.18: lun 8 → vie 12-feb
-- **Objetivo**: Igual que S17-S18. El SYNAPSE de las 12:30 cierra el lun 15-feb (F2 · CCA-F prep, última A-unit; v5.19: sáb 13-feb · v5.18: vie 12-feb); desde el mar 16-feb solo Step 1.
+- **Semana**: mié 10-feb → mar 16-feb (5 días hábiles) · contexto (v6.00: intensiva ENCAPS): S19 · mié 10 → mar 16-feb (v6.00: barrido de la intensiva ENCAPS + vie 12-feb SIM #5 · LIVIANO cierra el vie 12-feb · última A-unit del SYNAPSE lun 15-feb = cierre F2; el sáb 13-feb lleva la A-unit del simulacro CCA-F · v5.20: Fase C del Step 1) · v5.19: mar 9 → lun 15-feb (SYNAPSE hasta el sáb 13-feb) · v5.18: lun 8 → vie 12-feb
+- **Objetivo**: Igual que S17-S18. El SYNAPSE de las 12:30 cierra el lun 15-feb (F2 · CCA-F prep, última A-unit; v5.19: sáb 13-feb · v5.18: vie 12-feb); desde el mar 16-feb esa franja queda libre para la intensiva ENCAPS (v5.20: «solo Step 1»).
 - **Días**:
   - **Mié 10-02 · journal 5' + audio (deload total)**: Journal 5' + audio B (mié 10-feb).
   - **Jue 11-02 · journal 5' + audio (deload total)**: Journal 5' + audio B (jue 11-feb).
   - **Vie 12-02 · journal 5' + audio (deload total)**: Journal 5' + audio B (vie 12-feb).
   - **Lun 15-02 · journal 5' + audio (deload total)**: Journal 5' + audio B (lun 15-feb: último día con SYNAPSE —cierre F2—).
-  - **Mar 16-02 · journal 5' + audio (deload total)**: Journal 5' + audio B (mar 16-feb: primer día solo Step 1; el SYNAPSE cerró el lun 15-feb) · cierre del journal S13-S19: 3 líneas para la reestructuración de febrero (IA vs ENCAPS intensivo).
-- **Sábado/domingo**: Sáb 13 / dom 14-feb (finde dentro de S19, entre D90 vie 12 y D91 lun 15): sin vibecoding — el sáb 13-feb solo la A-unit del SYNAPSE de ese día (simulacro CCA-F); el cierre F2 es el lun 15-feb. Penúltimo finde antes del examen: el último es el sáb 20 / dom 21-feb, entre el D95 y el examen del lun 22-feb. PC = no.
+  - **Mar 16-02 · journal 5' + audio (deload total)**: Journal 5' + audio B (mar 16-feb: el SYNAPSE cerró el lun 15-feb; sigue la intensiva ENCAPS) · cierre del journal S13-S19: 3 líneas para la fase post-ENCAPS (qué vuelve a la franja 04:15 desde el reinicio del Step 1, mar 16-mar).
+- **Sábado/domingo**: Sáb 13 / dom 14-feb (finde dentro de S19): sin vibecoding — el sáb 13-feb solo la A-unit del SYNAPSE de ese día (simulacro CCA-F) y el STEP 1 VIVO de las 07:45; el cierre F2 es el lun 15-feb. PC = no.
 
-### S20 · Cierre del plan: journal 5' (mié 17, jue 18 y vie 19-feb), lun 22-feb EXAMEN · DELOAD (5'/día)
+### S20 · Cierre del plan: journal 5' (mié 17, jue 18 y vie 19-feb) · fin del vibecoding · DELOAD (5'/día)
 
-- **Semana**: mié 17-feb → vie 19-feb (3 días hábiles) · Step 1: S20 · cierre del plan: mié 17 → vie 19-feb (v5.20; D93-D95; jue 18-feb = D94 última sesión de banco · vie 19-feb = D95, último día del plan, D-1 hábil; sáb 20 y dom 21 libres, dom 21 = D-1 real) · lun 22-feb EXAMEN · v5.19: mar 16 → jue 18-feb, examen vie 19-feb (sin finde) · v5.18: lun 15 → mié 17-feb, examen jue 18-feb
-- **Objetivo**: Solo 5' de journal a las 04:15 los tres últimos días del plan (mié 17, jue 18 y vie 19-feb = D95, D-1 hábil); sáb 20 y dom 21 libres (dom 21 = D-1 real); el lun 22-feb es el Step 1. Cero IA.
+- **Semana**: mié 17-feb → vie 19-feb (3 días hábiles) · contexto (v6.00: intensiva ENCAPS): S20 · cierre del plan: mié 17 → vie 19-feb (v6.00: barrido de la intensiva ENCAPS + vie 19-feb SIM #6; último día del vibecoding = vie 19-feb; después la franja 04:15 queda subordinada a la intensiva hasta el ENCAPS dom 14-mar PROVISIONAL; el Step 1 vuelve el mar 16-mar · v5.20: era la semana del examen Step 1) · v5.19: mar 16 → jue 18-feb · v5.18: lun 15 → mié 17-feb
+- **Objetivo**: Solo 5' de journal a las 04:15 los tres últimos días del plan (mié 17, jue 18 y vie 19-feb); sáb 20 y dom 21 libres (salvo el STEP 1 VIVO del sábado 07:45). Cero IA.
 - **Días**:
   - **Mié 17-02 · journal 5' + audio (deload total)**: Journal 5' (sueño · modo · 1 frase de identidad). Nada más.
   - **Jue 18-02 · journal 5' + audio (deload total)**: Journal 5'.
-  - **Vie 19-02 · journal 5' + audio (deload total)**: Journal 5' (D95 = vie 19-feb, último día del plan, D-1 hábil): cierre del journal del ciclo · nada de IA · ritual de test-day adelantado a la tarde · finde 20-21 libre (dom 21 = D-1 real: dormir temprano) · lunes 22-feb = EXAMEN.
-- **Sábado/domingo**: Sin PC: el sáb 20 / dom 21-feb caen entre el D95 (vie 19) y el examen del lun 22-feb → descanso total (dom 21 = D-1 real, sin estudio). Desde el mar 23-feb arranca la intensiva ENCAPS (examen mié 10-mar) y la franja 04:15 le queda subordinada; la decisión de febrero decide qué vuelve a la franja 04:15 después.
+  - **Vie 19-02 · journal 5' + audio (deload total)**: Journal 5' (vie 19-feb, último día del plan; SIM #6 de la intensiva ENCAPS): cierre del journal del ciclo · nada de IA · qué vuelve a la franja 04:15 se decide tras el ENCAPS (reinicio del Step 1 mar 16-mar).
+- **Sábado/domingo**: Sin PC: el sáb 20 / dom 21-feb son descanso (salvo el STEP 1 VIVO del sáb 07:45). Desde el lunes siguiente la franja 04:15 queda subordinada a la intensiva ENCAPS (examen dom 14-mar PROVISIONAL); qué vuelve a la franja 04:15 se decide tras el ENCAPS.
 
 ## Retro (rellenar en S12 desde `DATA/SYNAPSE/_vibecoding_ship.json`)
 

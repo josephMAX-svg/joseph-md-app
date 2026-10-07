@@ -13,6 +13,7 @@ import { agruparProgreso, progresoGlobal, GrupoProgreso, loadDone, saveDone } fr
 import { diaEstudioTipo, PRIORIDAD_COLOR } from '../../lib/researchData';
 import { researchObsUrlDay } from '../../lib/obsidianResearchMap';
 import { serifTitle, InkColors, OBSIDIAN } from './researchTheme';
+import { FECHAS_V6, motivoProtegido } from '../../lib/fechasV6';
 
 /**
  * ResearchTodayPlan — Plan de research día-a-día (3 pistas: carta al editor · tesis · case report + SR-1),
@@ -24,7 +25,14 @@ import { serifTitle, InkColors, OBSIDIAN } from './researchTheme';
  * (05-sep-2026) Muestra PISTA (C/T/CR/R/M/K/B/X), ARTEFACTO y chips de dependencia (p. ej. "requiere Derma d19-20").
  * (12-sep-2026) Chips-gate ("GATE 1/2" en T-7/T-8, seguimiento del caso, plan B de inglés) y CARGA REAL (`horas`) de los átomos
  * R17-R26 del ciclo 2: horas por revisor FUERA del bloque 13:30 (el átomo de 45 min coordina y cierra; no toca el Calendar).
+ * v6.00 (6-oct-2026 · V6_ESPEC §E · §F · DJ-4): ciclo 1 jue 8-oct → mié 3-mar (igual) · ciclo 2 vie 5-mar → sáb 21-ago-2027 · los días
+ * protegidos son los v6 (12/13/14/15-mar ENCAPS · 25/26/27-sep Step 1) + Semana Santa; los v5.20 (22-feb · 9-mar · 10-mar) ya no
+ * existen · en un día-Research de la PAUSA de átomos (15-ene → 10-feb, intensiva ENCAPS) → tarjeta «Research mínimo 30' (DJ-4)»
+ * (no es fila del plan ni mueve átomos) · en F4 (SERUMS, desde el lun 3-may) el bloque es «30' en tiempo muerto (posta)», sin hora
+ * fija: núcleo del átomo (el entregable atómico); lo demás pasa a opcional. Desde el SERUMS el sábado también es día de plan.
  */
+/** v6.00: ¿la fecha cae en el SERUMS (F4)? → 30' en tiempo muerto de la posta, franja sin hora. */
+const enF4 = (iso: string): boolean => iso >= FECHAS_V6.serums.inicio;
 const TEAL = InkColors.teal;      // #6BB8B0
 const GOLD = InkColors.gold;      // #C8A96A — estatus (artefacto/entregable hecho)
 const PURPLE = InkColors.amethyst; // #9A7BC8
@@ -66,6 +74,7 @@ function ColaItem({ icon, lbl, val, sub, color, url }: { icon: string; lbl: stri
 
 function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaResearch; onOpenTemario: () => void; hecho: boolean; onToggle: (d: number) => void }) {
   const prev = diaPrevio(dia, TODOS);
+  const f4 = enF4(dia.fecha); // v6.00: 30' en tiempo muerto (posta), sin hora
   const fc = faseColor(dia.fase);
   const fi = FASE_INFO[dia.fase];
   const pista = PISTA_INFO[dia.pista];
@@ -111,7 +120,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaResearch; on
           {typeof dia.horas === 'number' && dia.horas > 0 && (
             <View style={[st.artefBox, { borderColor: ANCLA + '55' }]}>
               <Text style={[st.entregLbl, { color: ANCLA }]}>⏱ CARGA REAL · ≈ {dia.horas} h por revisor FUERA del bloque 13:30</Text>
-              <Text style={st.entregTxt}>El átomo de 45 min coordina y cierra; el cribado/extracción se hace en la agenda que el Step 1 libera desde feb-2027. Las fechas para PROSPERO se copian de L4 §9.4 (con margen), no de este átomo.</Text>
+              <Text style={st.entregTxt}>El átomo de 45 min coordina y cierra; el cribado/extracción va FUERA del bloque (v6.00: el Step 1 ya no libera agenda en feb-2027 —sigue hasta el examen de {fmtFecha(FECHAS_V6.step1.examen)}— y en el SERUMS el bloque es de 30' en tiempo muerto: esas horas se coordinan con el revisor #2; antes, «la agenda que el Step 1 libera desde feb-2027»). Las fechas para PROSPERO se copian de L4 §9.4 (con margen), no de este átomo.</Text>
             </View>
           )}
           <TouchableOpacity activeOpacity={0.85} onPress={() => onToggle(dia.d)} style={[st.doneBtn, hecho ? st.doneBtnOn : st.doneBtnOff]}>
@@ -124,7 +133,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaResearch; on
       {prev && (
         <FadeUp delay={40}>
           <View style={st.anchor}>
-            <Text style={st.anchorLbl}>13:30 · Eval anclada (sesión anterior)</Text>
+            <Text style={st.anchorLbl}>{f4 ? "Inicio de los 30' (tiempo muerto) · Eval anclada (sesión anterior) — opcional en F4" : '13:30 · Eval anclada (sesión anterior)'}</Text>
             <Text style={st.anchorVal}>{prev.code} · {prev.objetivo}</Text>
             <Text style={st.anchorSub}>2Q de auto-test del método + ¿existe el artefacto de la sesión anterior? ({prev.artefacto}) · APEX-método AGAIN/GOOD</Text>
           </View>
@@ -132,7 +141,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaResearch; on
       )}
 
       {/* Cola de recursos reales de hoy */}
-      <Text style={st.secLbl}>📋 Deep work · 13:40–14:05 · recursos reales (en orden)</Text>
+      <Text style={st.secLbl}>{f4 ? "📋 30' en tiempo muerto (posta) · NÚCLEO del átomo = el entregable · recursos reales (en orden)" : '📋 Deep work · 13:40–14:05 · recursos reales (en orden)'}</Text>
       {dia.recs.map((k, i) => {
         const r = REC[k];
         if (!r) return null;
@@ -154,7 +163,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaResearch; on
         <View style={[st.cola, { borderLeftColor: GOLD }]}>
           <Text style={st.colaIcon}>◆</Text>
           <View style={{ flex: 1 }}>
-            <Text style={st.colaLbl}>APEX-método · 14:10–14:15</Text>
+            <Text style={st.colaLbl}>{f4 ? 'APEX-método · cierre (opcional en F4)' : 'APEX-método · 14:10–14:15'}</Text>
             <Text style={st.colaVal}>{dia.apex ? `Crea ≤3 APEX — hito: ${dia.apex.t}` : 'Crea ≤3 APEX-método (Palmerton)'}</Text>
             <Text style={st.colaSub}>Free recall a papel antes · guarda el artefacto (Mesa editorial / PROSPERO / Rayyan / .docx)</Text>
           </View>
@@ -176,13 +185,13 @@ function HorarioView({ dia }: { dia: DiaResearch }) {
   };
   return (
     <View>
-      <Text style={st.secLbl}>🕓 Bloque Research · {diaLabel(dia)} ({fmtFecha(dia.fecha)}) · hora Lima</Text>
+      <Text style={st.secLbl}>{enF4(dia.fecha) ? `🕓 Bloque Research · ${diaLabel(dia)} (${fmtFecha(dia.fecha)}) · 30' en tiempo muerto (posta) · sin hora fija` : `🕓 Bloque Research · ${diaLabel(dia)} (${fmtFecha(dia.fecha)}) · hora Lima`}</Text>
       {FRANJAS.map((f, i) => {
         const det = detalle(f.tipo);
         return (
           <FadeUp key={i} delay={i * 25}>
             <View style={st.franja}>
-              <View style={st.franjaHora}><Text style={st.franjaHoraTxt}>{f.hora}</Text></View>
+              <View style={st.franjaHora}><Text style={st.franjaHoraTxt}>{enF4(dia.fecha) ? `paso ${i + 1}` : f.hora}</Text></View>
               <View style={{ flex: 1 }}>
                 <Text style={st.franjaFase}>{f.fase}</Text>
                 {det ? <Text style={st.franjaDet}>↳ {det}</Text> : null}
@@ -191,7 +200,7 @@ function HorarioView({ dia }: { dia: DiaResearch }) {
           </FadeUp>
         );
       })}
-      <Text style={st.note}>Interdiario con Derma: el bloque 13:30–14:15 del Calendar alterna Research↔Derma. Avanzas 1 átomo por día-Research. No se modifica el Calendar. {PAUSA ? `Pausa Step 1: ${PAUSA.desde} → ${PAUSA.hasta} (0 átomos).` : ''}</Text>
+      <Text style={st.note}>Interdiario con Derma: el bloque 13:30–14:15 del Calendar alterna Research↔Derma (en el SERUMS: 30' en tiempo muerto de la posta, L-S; Research mar · jue · sáb). Avanzas 1 átomo por día-Research. No se modifica el Calendar. {PAUSA ? `Pausa de átomos (intensiva ENCAPS): ${PAUSA.desde} → ${PAUSA.hasta} → días-Research = 30' «Research mínimo» (DJ-4).` : ''}</Text>
     </View>
   );
 }
@@ -305,7 +314,7 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
         </View>
       </View>
       {grupos.map((g) => <FaseCard key={g.clave} g={g} hoyD={hoyD} onPick={onPick} done={done} onToggle={onToggle} />)}
-      <Text style={st.note}>Progreso REAL: empezamos en 0%. ☑ marca un átomo como hecho (se guarda en este dispositivo). ▶ = átomo de hoy. Toca el objetivo para ir a ese día. El ciclo 2 (SR-1 con revisor humano #2) arranca tras el Step 1.</Text>
+      <Text style={st.note}>Progreso REAL: empezamos en 0%. ☑ marca un átomo como hecho (se guarda en este dispositivo). ▶ = átomo de hoy. Toca el objetivo para ir a ese día. El ciclo 2 (SR-1 con revisor humano #2) arranca el {fmtFecha(DIAS_2027[0]?.fecha ?? DAILY_META_2027.inicio)}-{(DIAS_2027[0]?.fecha ?? DAILY_META_2027.inicio).slice(0, 4)} (v6.00: en plena intensiva ENCAPS; v5.20: «tras el Step 1»).</Text>
     </View>
   );
 }
@@ -321,6 +330,7 @@ export default function ResearchTodayPlan() {
   const dia = TODOS.find((x) => x.d === sel) || TODOS[0];
   const esHoy = dia.fecha === iso;
   const enPausa = !!PAUSA && iso >= PAUSA.desde && iso <= PAUSA.hasta;
+  const protegidoHoy = motivoProtegido(iso); // v6.00: día protegido = sin sesión Research
   const pickDay = (d: number) => { setSel(d); setView('hoy'); };
   const toggleDone = (d: number) => setDone((prev) => {
     const n = new Set(prev);
@@ -336,7 +346,7 @@ export default function ResearchTodayPlan() {
       <View style={st.interRow}>
         <View style={[st.interBtn, tipoHoy === 'research' && !enPausa ? st.interOn : st.interOff]}>
           <Text style={[st.interBig, { color: tipoHoy === 'research' && !enPausa ? TEAL : Colors.muted }]}>🔬 RESEARCH</Text>
-          <Text style={st.interSub}>{enPausa ? 'pausa Step 1' : tipoHoy === 'research' ? 'HOY te toca' : 'no es hoy'}</Text>
+          <Text style={st.interSub}>{enPausa ? (tipoHoy === 'research' ? "HOY · 30' mínimo (DJ-4)" : 'pausa de átomos') : tipoHoy === 'research' ? (enF4(iso) ? "HOY · 30' tiempo muerto" : 'HOY te toca') : 'no es hoy'}</Text>
         </View>
         <View style={[st.interBtn, tipoHoy === 'derma' ? { backgroundColor: PURPLE + '1A', borderColor: PURPLE + '88' } : st.interOff]}>
           <Text style={[st.interBig, { color: tipoHoy === 'derma' ? PURPLE : Colors.muted }]}>💎 DERMA</Text>
@@ -344,12 +354,28 @@ export default function ResearchTodayPlan() {
         </View>
         <View style={[st.interBtn, tipoHoy === 'descanso' ? st.interOn : st.interOff, { flex: 0.7 }]}>
           <Text style={[st.interBig, { color: tipoHoy === 'descanso' ? Colors.amber : Colors.muted }]}>😴</Text>
-          <Text style={st.interSub}>finde</Text>
+          <Text style={st.interSub}>{enF4(iso) ? 'domingo' : 'finde'}</Text>
         </View>
       </View>
       {enPausa && PAUSA && (
         <View style={[st.artefactoBar, { borderLeftColor: Colors.coral }]}>
-          <Text style={[st.artefactoTxt, { color: Colors.coral }]}>⏸ PAUSA TOTAL {PAUSA.desde} → {PAUSA.hasta}: 0 átomos de research (examen Step 1). El siguiente átomo es {TODOS.find((x) => x.fecha > PAUSA.hasta)?.code ?? '—'} el {TODOS.find((x) => x.fecha > PAUSA.hasta)?.fecha ?? '—'}.</Text>
+          <Text style={[st.artefactoTxt, { color: Colors.coral }]}>⏸ PAUSA DE ÁTOMOS {PAUSA.desde} → {PAUSA.hasta} (núcleo de la intensiva ENCAPS): 0 átomos nuevos. El siguiente átomo es {TODOS.find((x) => x.fecha > PAUSA.hasta)?.code ?? '—'} el {TODOS.find((x) => x.fecha > PAUSA.hasta)?.fecha ?? '—'}.</Text>
+        </View>
+      )}
+      {/* v6.00 · DJ-4: los días-Research de la pausa NO son 0 → 30' «Research mínimo» (no es fila del plan ni re-fecha átomos, §E) */}
+      {enPausa && tipoHoy === 'research' && !protegidoHoy && (
+        <View style={[st.artefactoBar, { borderLeftColor: TEAL }]}>
+          <Text style={[st.artefactoTxt, { color: TEAL }]}>🔬 RESEARCH MÍNIMO 30' (DJ-4) · 13:30-14:00 · sin átomo nuevo: (1) inbox de revisores / editorial · (2) 1 lectura de la cola del ciclo 2 · (3) repaso del paquete congelado del case report (CR-8 → SUBMIT CR-9 tras la pausa).</Text>
+        </View>
+      )}
+      {protegidoHoy && (
+        <View style={[st.artefactoBar, { borderLeftColor: Colors.coral }]}>
+          <Text style={[st.artefactoTxt, { color: Colors.coral }]}>🛡 DÍA PROTEGIDO · {protegidoHoy}: sin sesión Research ni Derma (§A3).</Text>
+        </View>
+      )}
+      {enF4(iso) && !protegidoHoy && (tipoHoy === 'research' || tipoHoy === 'derma') && (
+        <View style={st.artefactoBar}>
+          <Text style={st.artefactoTxt}>🏥 SERUMS (F4): Research ↔ Derma = 30' en tiempo muerto de la posta (DJ-4) · núcleo del átomo; lo demás opcional · Derma lun · mié · vie · Research mar · jue · sáb · domingo libre.</Text>
         </View>
       )}
       <View style={st.artefactoBar}>

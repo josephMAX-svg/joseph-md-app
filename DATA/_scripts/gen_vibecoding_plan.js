@@ -16,7 +16,12 @@
 // Ship log: si existe DATA/SYNAPSE/_vibecoding_ship.json (escrito por verify_vibecoding.js) se hornea en el TS
 // (VIBE_SHIP_LOG) para que la app muestre el último verify aunque no haya localStorage.
 //
-// Uso:  node DATA/_scripts/gen_vibecoding_plan.js 2026-10-07   (v5.20; v5.19: 2026-10-06 · v5.18: 2026-10-05)
+// v6.00 (6-oct-2026 · V6_ESPEC §E): el Step 1 ya NO es en febrero (examen objetivo lun 27-sep-2027; pausa del 31-dic al 15-mar por la
+// intensiva ENCAPS). Las FECHAS del vibecoding no cambian (S1-S12 mié 7-oct → mié 30-dic + taper S13-S20 lun 4-ene → vie 19-feb): el
+// fin del taper sigue siendo el 95.º hábil desde START (= vie 19-feb-2027; en v5.20 coincidía con el D95 del Step 1). Solo cambian los
+// TEXTOS: taper S13-S20 «por el ENCAPS» (DATA/SYNAPSE/vibecoding_proyectos.json) y esta cabecera. SKIP desde _fechas_v6.json
+// (jue 25 / vie 26-mar quedan fuera del rango, así que las fechas son idénticas).
+// Uso:  node DATA/_scripts/gen_vibecoding_plan.js 2026-10-07   (v6.00 = v5.20; v5.19: 2026-10-06 · v5.18: 2026-10-05)
 // Pipeline de corrimiento: tras remap_inicio.js <fecha>, correr también este script con la misma fecha
 // (igual que gen_synapse_plan.js / gen_aurum_plan.js). Determinista: sin Date.now() ni aleatoriedad.
 const fs = require('fs');
@@ -25,9 +30,9 @@ const path = require('path');
 const ROOT = path.join(__dirname, '..', '..');
 const START = process.argv[2] || '2026-10-07'; // v5.20 (v5.19: 2026-10-06 · v5.18: 2026-10-05 · v5.17: 2026-10-01)
 if (!/^20\d\d-\d\d-\d\d$/.test(START)) throw new Error('START inválido (YYYY-MM-DD): ' + START);
-// Último día del taper = D95 del Step 1 (vie 19-feb-2027 con START=2026-10-07 · v5.19: jue 18-feb con START=2026-10-06 · v5.18: mié 17-feb con START=2026-10-05; v5.17: lun 15-feb con START=2026-10-01). Se calcula, no se fija a mano:
+// v6.00: último día del taper = 95.º hábil desde START (vie 19-feb-2027 con START=2026-10-07); hasta v5.20 era el D95 del Step 1 (vie 19-feb-2027 con START=2026-10-07 · v5.19: jue 18-feb con START=2026-10-06 · v5.18: mié 17-feb con START=2026-10-05; v5.17: lun 15-feb con START=2026-10-01). Se calcula, no se fija a mano:
 // 95 días hábiles desde START con la misma regla de feriados.
-const DIAS_STEP1 = 95;
+const DIAS_STEP1 = 95; // v6.00: nombre histórico — nº de hábiles del vibecoding (95), ya no coincide con el Step 1 (tramo 1 D1-D60 + tramo 2 T1-T158)
 
 const CAT = JSON.parse(fs.readFileSync(path.join(ROOT, 'DATA/SYNAPSE/vibecoding_proyectos.json'), 'utf8'));
 const P = CAT.proyectos;
@@ -56,9 +61,9 @@ const iso = (d) => d.toISOString().slice(0, 10);
 const fromISO = (s) => new Date(s + 'T12:00:00Z');
 const addDays = (s, n) => { const d = fromISO(s); d.setUTCDate(d.getUTCDate() + n); return iso(d); };
 const dow = (s) => fromISO(s).getUTCDay();
-const SKIP_FIJOS = new Set(['2026-12-25', '2026-12-31', '2027-01-01']);
+const SKIP_FIJOS = new Set(require('./gen_fechas_v6').cargarFechasV6().skip); // v6.00: SKIP de _fechas_v6.json (v5.20: 25-dic/31-dic/1-ene)
 const isHabil = (s) => dow(s) !== 0 && dow(s) !== 6 && !SKIP_FIJOS.has(s);
-// D95 del Step 1 (misma regla de hábiles): último día del taper
+// 95.º hábil desde START (misma regla de hábiles): último día del taper (v5.20: = D95 del Step 1)
 const finStep1 = (() => { let c = START, n = 0; while (true) { if (isHabil(c)) { n++; if (n === DIAS_STEP1) return c; } c = addDays(c, 1); } })();
 
 // v5.17 (30-sep-2026): el tipo va con el PASO (k), no con el día de la semana — con el D1 en jueves los bloques de 5 hábiles
@@ -105,7 +110,7 @@ const semanas = P.map((p) => {
 // v5.11 (14-sep-2026): antes eran semanas de calendario (lun→vie); con D1 en martes las semanas de proyecto ya no
 // coinciden con las de calendario, así que el taper sigue la misma regla que S1-S12: cada entrada del catálogo ocupa
 // tantos hábiles consecutivos como pasos trae (5·5·4·3·5·5·5·3 = 35 = hábiles que quedan hasta D95). Nada se fusiona:
-// todos los pasos corren +1 hábil respecto a la v5.10 y el último cae en D95 (= último día del plan; v5.20: vie 19-feb = D-1 hábil, examen lun 22-feb tras el finde).
+// todos los pasos corren +1 hábil respecto a la v5.10 y el último cae en el 95.º hábil (= último día del plan, vie 19-feb; v6.00: dentro de la intensiva ENCAPS).
 let curT = addDays(finS12, 1);
 const taperSemanas = [];
 for (const t of T) {
@@ -118,8 +123,8 @@ for (const t of T) {
   });
   taperSemanas.push({ s: t.s, id: t.id, ini: ds[0], fin: ds[ds.length - 1], ship: sabadoShip(ds[ds.length - 1]) });
 }
-if (dias.length !== DIAS_STEP1) throw new Error(`Deben salir ${DIAS_STEP1} días en total (= D# del Step 1), salieron ${dias.length}`);
-if (dias[dias.length - 1].fecha !== finStep1) throw new Error('El último día del taper debe ser el D95 del Step 1: ' + finStep1);
+if (dias.length !== DIAS_STEP1) throw new Error(`Deben salir ${DIAS_STEP1} días en total, salieron ${dias.length}`);
+if (dias[dias.length - 1].fecha !== finStep1) throw new Error('El último día del taper debe ser el 95.º hábil desde START: ' + finStep1);
 
 // ─── ship log (verify_vibecoding.js) → horneado en el TS ───
 let SHIP_LOG = [];
@@ -148,8 +153,10 @@ const nP = dias.filter((x) => x.semana <= 12).length;
 const ts = `/**
  * vibecodingPlan.ts — Motor día-a-día del VIBECODING 04:15-05:00 (L-V) · 12 proyectos S1-S12 (${nP} días hábiles,
  * ${dias[0].fecha} → ${finS12}; sáb PC SYNAPSE = SHIP) + taper S13-S20 (${dias[nP].fecha} → ${dias[dias.length - 1].fecha}:
- * S13-S16 mantenimiento ≤15'/día con flag deload · S17-S20 deload total = journal 5' + audio · S20 = semana del examen).
- * ${dias.length} días en total = los ${DIAS_STEP1} días del Step 1 (mismo D#: d del vibecoding == D del Step 1).
+ * S13-S16 mantenimiento ≤15'/día con flag deload · S17-S20 deload total = journal 5' + audio · S20 = cierre del plan).
+ * ${dias.length} días hábiles en total. v6.00 (6-oct-2026): el taper S13-S20 es «por el ENCAPS» (intensiva lun 4-ene → dom 14-mar-2027
+ * PROVISIONAL; el Step 1 está en pausa del 31-dic al 15-mar y su examen es el lun 27-sep-2027) — solo texto, mismas fechas. Hasta v5.20
+ * los 95 días coincidían con el D# del Step 1; desde la v6 el d del vibecoding ya NO es el D del Step 1.
  * GENERADO por DATA/_scripts/gen_vibecoding_plan.js desde DATA/SYNAPSE/vibecoding_proyectos.json.
  * NO editar a mano — regenerar: node DATA/_scripts/gen_vibecoding_plan.js YYYY-MM-DD
  *
@@ -327,7 +334,7 @@ for (const p of P) {
   md.push(`- **SHIP**: ${p.ship}`);
   md.push('');
 }
-md.push('## Semanas 13-20 · TAPER (mantenimiento → deload total → examen)');
+md.push('## Semanas 13-20 · TAPER por el ENCAPS (mantenimiento → deload total → cierre) · v6.00');
 md.push('');
 md.push(`> ${CAT._meta.taper_regla}`);
 md.push('');
@@ -336,7 +343,7 @@ for (const t of T) {
   const ds = dias.filter((x) => x.semana === t.s);
   md.push(`### S${t.s} · ${t.nombre} · ${t.tipo.toUpperCase()} (${t.minDia}'/día)`);
   md.push('');
-  md.push(`- **Semana**: ${fmt(w.ini)} → ${fmt(w.fin)} (${ds.length} días hábiles) · Step 1: ${t.semana_step1}`);
+  md.push(`- **Semana**: ${fmt(w.ini)} → ${fmt(w.fin)} (${ds.length} días hábiles) · contexto (v6.00: intensiva ENCAPS): ${t.semana_step1}`);
   md.push(`- **Objetivo**: ${t.objetivo}`);
   if (t.sensores && t.sensores.length) md.push('- **Sensores**: ' + t.sensores.map((s) => `\`${s}\``).join(' · '));
   md.push('- **Días**:');

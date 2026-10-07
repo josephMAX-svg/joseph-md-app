@@ -12,6 +12,7 @@ import {
   useEncapsPlan, itemsForDay, vueltaLabel, repasoKey, vueltasHechasDe, subEjeDe, miniSimRecetaDe, miniSimRecetaTexto,
   simIntensivoDe, encapsSim100Zone, tipoRondaDe,  // v5.14 (19-sep): sims de la FASE INTENSIVA (/100) + tipo de ronda del cierre
   loopDe, diasAExamenDe,                           // v5.20 (6-oct): Horario de la INTENSIVA desde el loop de la fila · cuenta atrás viva desde extra.exam_date
+  carrilBDe, minisimAbsorbidoDe, examDateDe, examenProvisionalDe, examenRendidoDe, intensivaMetaDe, // v6.00: carril B 16:15 + examen PROVISIONAL / rendido
   type PlanItem, type StudyScheduleDay, type StudyMetrics, type ProximoVideo, type MiniSimPunto, type CiegoSemana,
   type CiegoCodigo, type TemaCaliente, type TendenciaCiego, type EvalAnclada,
 } from '../lib/encapsPlan';
@@ -219,8 +220,13 @@ export default function EncapsPlanView() {
   return (
     <View>
       {/* HUD Cockpit — cuenta regresiva 20-ago + fase + altímetro Go/No-Go (reemplaza header genérico) */}
+      {/* v6.00: chip del examen desde study_metrics.extra.exam_date (dom 14-mar PROVISIONAL) + rendido / modo del día */}
       <CountdownCockpit
         diasAExamen={diasAExamenDe(plan.metrics)}
+        examDate={examDateDe(plan.metrics)}
+        provisional={examenProvisionalDe(plan.metrics)}
+        rendido={examenRendidoDe(plan.metrics)}
+        modo={plan.today?.modo}
         tipo={plan.today?.tipo}
         promSim={plan.metrics?.prom_sim}
         coberturaPct={plan.metrics?.cobertura_pct}
@@ -251,14 +257,14 @@ export default function EncapsPlanView() {
         )}
       </View>
 
-      {/* Selector de día directo — saltar a cualquier día (1..71) */}
+      {/* Selector de día directo — saltar a cualquier día (v6.00: 1..110, 3 cifras) */}
       {jumpOpen && (
         <View style={styles.jumpRow}>
           <Text style={styles.jumpLabel}>Ir al día:</Text>
           <TextInput
             style={styles.jumpInput} value={jumpVal} onChangeText={setJumpVal}
             keyboardType="number-pad" placeholder={`1–${plan.total}`} placeholderTextColor={Colors.muted}
-            onSubmitEditing={() => doJump(jumpVal)} autoFocus maxLength={2} returnKeyType="go"
+            onSubmitEditing={() => doJump(jumpVal)} autoFocus maxLength={3} returnKeyType="go"
           />
           <TouchableOpacity style={styles.jumpGo} onPress={() => doJump(jumpVal)} activeOpacity={0.7}>
             <Text style={styles.jumpGoText}>Ir ›</Text>
@@ -376,6 +382,9 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   const subEje = subEjeDe(today);
   const receta = miniSimRecetaDe(today);
   const esMant = today.modo === 'MANTENIMIENTO';
+  // v6.00: carril B 16:15 de la intensiva (fila MANTENIMIENTO 61-92 de v5.20 embebida / reposición) + mini-sim absorbido por el SIM 100Q
+  const carrilB = carrilBDe(today);
+  const absorbido = minisimAbsorbidoDe(today);
 
   return (
     <View>
@@ -441,6 +450,19 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
         {/* Lun-jue de MANTENIMIENTO: el sub-eje concreto de esta sesión (para no repetir POI/PEI/FODA 11 veces) */}
         {!!subEje && (
           <Text style={styles.subEjeLine}>◈ Sub-eje de hoy ({subEje.n}/{subEje.total}): {subEje.label}</Text>
+        )}
+        {/* v6.00: CARRIL B 16:15-17:15 (sus ítems van en la checklist con claves D{dia}:b_*; cierre tipo «Carril B 16:15») */}
+        {!!carrilB && (
+          <Text style={styles.subEjeLine}>
+            ◈ 16:15 CARRIL B · {carrilB.tipo === 'banqueo1h'
+              ? `${carrilB.codigo || ''} ${carrilB.subtema}${carrilB.diaMant ? ` (fila mant. ${carrilB.diaMant} de v5.20)` : ''}`
+              : 'reposición: instancias 61-92 pendientes → lista de vigilancia'}
+          </Text>
+        )}
+        {!!absorbido && (
+          <Text style={styles.secLine}>
+            ▲ Mini-sim del viernes (fila mant. {absorbido.diaMant ?? '—'}) ABSORBIDO por el {today.tipo === 'pretest' ? 'PRE-TEST' : 'SIM 100Q'} de hoy: no se hace; 16:15 libre.{absorbido.receta ? ` Receta guardada: ${miniSimRecetaTexto(absorbido.receta)}` : ''}
+          </Text>
         )}
         {!!today.primer_finde_estudio && (
           <Text style={styles.findeStudyLine}>◆ Fin de semana de ESTUDIO (aún no hay examen — tu 1er examen es el 2º finde)</Text>
@@ -512,7 +534,8 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
       )}
 
       {/* CIERRE DE SESIÓN al final de la cola (MANTENIMIENTO): % ciego real → study_progress (+ study_sim_scores el viernes) */}
-      {esMant && <CierreSesionCard plan={plan} />}
+      {/* v6.00: también en INTENSIVO (cierre del loop / SIM y, con el chip «Carril B 16:15», el del carril B → APP_CARRIL_B_…) */}
+      {(esMant || today.modo === 'INTENSIVO') && <CierreSesionCard plan={plan} />}
 
       {/* NTS Tier-1 — qué normas y dónde estudiarlas */}
       {!!today.nts && (
@@ -660,6 +683,8 @@ function MetaView({ metrics, simScores, simDays, miniSims, ciego, tendencia, por
 // ─── Simulacros ───
 function SimView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   const { simDays, simScores, saveSim } = plan;
+  // v6.00: fecha del examen e intensiva leídas de study_metrics.extra (exam_date / examen_target / intensiva), no escritas a mano
+  const exFecha = examDateDe(plan.metrics), exProv = examenProvisionalDe(plan.metrics), exRendido = examenRendidoDe(plan.metrics), intM = intensivaMetaDe(plan.metrics);
   if (simDays.length === 0) return <Text style={styles.empty}>Sin simulacros en el cronograma.</Text>;
   // Cada día-sim agrupa 2-9 sub-simulacros REALES en extra.sims (n global 1..35, fuente QX/Theomed).
   // Iteramos las sub-sims (no los días) para que Joseph pueda cargar la nota de los 35, no solo de 10.
@@ -703,7 +728,7 @@ function SimView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
       <View style={styles.simHeaderBox}>
         <Text style={styles.simHeaderTitle}>▲ MODO SIMULACRO · {rows.length} sims{nMini ? ` (${nMini} mini-sims /25)` : ''}{nCien ? ` (${nCien} sims /100 intensiva)` : ''} · {conNota} con nota · meta ≥17/20</Text>
         <Text style={styles.simHeaderHint}>
-          Régimen mantenimiento 2027-I: mini-simulacro de 25Q mixtas CADA VIERNES 16:15 ({ENCAPS_MINISIM_META.segPorQ}s/Q, receta v3 II {ENCAPS_MINISIM_META.receta.II} · I {ENCAPS_MINISIM_META.receta.I} · V {ENCAPS_MINISIM_META.receta.V} · III {ENCAPS_MINISIM_META.receta.III} · IV {ENCAPS_MINISIM_META.receta.IV}). Primer viernes: {simDays[0]?.fecha?.slice(5) || '—'}; examen ENCAPS 2027-I mié 10-mar-2027 (fase intensiva mar 23-feb → mar 9-mar, ya sembrada).
+          Régimen mantenimiento 2027-I: mini-simulacro de 25Q mixtas CADA VIERNES 16:15 ({ENCAPS_MINISIM_META.segPorQ}s/Q, receta v3 II {ENCAPS_MINISIM_META.receta.II} · I {ENCAPS_MINISIM_META.receta.I} · V {ENCAPS_MINISIM_META.receta.V} · III {ENCAPS_MINISIM_META.receta.III} · IV {ENCAPS_MINISIM_META.receta.IV}). Primer viernes: {simDays[0]?.fecha?.slice(5) || '—'}; examen ENCAPS 2027-I {exFecha ? fechaCorta(exFecha) : 'por confirmar'}{exProv ? ' PROVISIONAL' : ''}{exRendido ? ' · examen rendido' : ''}{intM.desde ? ` (fase intensiva ${fechaCorta(intM.desde)} → ${fechaCorta(intM.hasta)}: viernes = SIM 100Q, el mini-sim queda absorbido)` : ''}.
           Cargá la nota /25 al terminar cada uno (se guarda en study_sim_scores con sim_n = día y alimenta el gráfico de «17/20»). Umbral ≥{ENCAPS_MINISIM_META.umbral}/25 · alerta &lt;{ENCAPS_MINISIM_META.alerta}/25 dos viernes.
         </Text>
       </View>
@@ -912,6 +937,14 @@ function HorarioBlockRow({ b, tema, evalHoy }: { b: HorarioBlock; tema?: string;
 
 // v5.20 (6-oct): bloques del Horario en la FASE INTENSIVA, leídos de la fila que siembra gen_encaps_intensivo_2027.js
 // (el simulacro va a las 08:00 por defecto: la hora real del examen la fija la convocatoria SERUMS 2027-I).
+// v6.00 (6-oct): el SIM / pre-test / dress rehearsal empiezan a extra.sim.hora (07:15 por defecto; 11:00 en SIM #7, #8 y el D-2) y, si la
+// fila trae extra.carril_b, se añade el bloque 16:15-17:15 «CARRIL B» (NO va dentro de extra.loop: saldría duplicado).
+// v6.00: «dom 14-mar-2027» para los textos que antes llevaban la fecha escrita a mano (mié 10-mar / mar 23-feb → mar 9-mar)
+const fechaCorta = (iso: string | null | undefined): string => {
+  if (!iso || !/^\d{4}-\d{2}-\d{2}$/.test(iso)) return '—';
+  const d = new Date(`${iso}T12:00:00Z`);
+  return `${['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'][d.getUTCDay()]} ${d.getUTCDate()}-${['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'][d.getUTCMonth()]}-${iso.slice(0, 4)}`;
+};
 const hhmmMas = (h: string, min: number) => {
   const [a, b] = h.split(':').map(n => parseInt(n, 10) || 0);
   const t = a * 60 + b + min;
@@ -919,12 +952,30 @@ const hhmmMas = (h: string, min: number) => {
 };
 function bloquesIntensivo(day: StudyScheduleDay | null | undefined): HorarioBlock[] {
   if (!day) return [];
+  const base = bloquesIntensivoBase(day);
+  const cb = carrilBDe(day);
+  if (!cb) return base;
+  const bloqueCB: HorarioBlock = {
+    hora: '16:15-17:15',
+    titulo: cb.tipo === 'banqueo1h'
+      ? `◈ CARRIL B · ${cb.codigo || ''} ${cb.subtema}`.replace(/\s+/g, ' ')
+      : '◈ CARRIL B · reposición: instancias 61-92 pendientes → lista de vigilancia',
+    pasos: cb.tipo === 'banqueo1h'
+      ? [{ t: '16:15', d: 'Eval anclada 5Q (código del carril B de ayer; lunes: fallos del SIM 100Q del viernes)' }, { t: '16:30', d: `Banco del día ${cb.codigo || ''} 16-25Q ciegas + secundario de cola larga` }, { t: '17:10', d: 'Cierre tipo «Carril B 16:15» → study_progress' }]
+      : [{ t: '16:15', d: cb.regla || 'instancias de 61-92 no hechas → si no hay, temas calientes del día' }],
+  };
+  // en orden de hora: el 16:15 va antes de los bloques que empiezan después (18:00 EVAL)
+  const i = base.findIndex(b => b.hora.slice(0, 5) > '16:15');
+  return i < 0 ? [...base, bloqueCB] : [...base.slice(0, i), bloqueCB, ...base.slice(i)];
+}
+function bloquesIntensivoBase(day: StudyScheduleDay): HorarioBlock[] {
   const sim = simIntensivoDe(day);
   if (sim) {
     const dur = Math.round(sim.n * sim.segPorQ / 60);
+    const h0 = sim.hora; // v6.00: extra.sim.hora (antes 08:00 fijo)
     return [
-      { hora: `08:00-${hhmmMas('08:00', dur)}`, titulo: `🔥 ${sim.label} · ${sim.n}Q · ${sim.segPorQ} s/Q`, apex: true },
-      { hora: `${hhmmMas('08:00', dur + 15)}-${hhmmMas('08:00', dur + 75)}`, titulo: `📊 Corrección por código v3 + cierre (umbral ≥${sim.umbral}/100)` },
+      { hora: `${h0}-${hhmmMas(h0, dur)}`, titulo: `🔥 ${sim.label} · ${sim.n}Q · ${sim.segPorQ} s/Q`, apex: true },
+      { hora: `${hhmmMas(h0, dur + 15)}-${hhmmMas(h0, dur + 75)}`, titulo: `📊 Corrección por código v3 + cierre (umbral ≥${sim.umbral}/100)` },
     ];
   }
   const loop = loopDe(day);
@@ -953,11 +1004,13 @@ function HorarioView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   // MANTENIMIENTO, tipo='mini_sim') → weekend/sim; si no → plantilla lun-jue (eval anclada + banco).
   const dow = today?.fecha ? new Date(`${today.fecha}T12:00:00`).getDay() : 1;
   const isWeekendDay = dow === 0 || dow === 6;
-  const esIntensivo = today?.modo === 'INTENSIVO';   // v5.14: fase intensiva feb-mar 2027 · v5.20: mar 23-feb → mar 9-mar (días 97-107), horas = las del loop sembrado en la fila
+  const esIntensivo = today?.modo === 'INTENSIVO';   // v5.14: fase intensiva feb-mar 2027 · v6.00: lun 4-ene → vie 12-mar (dia 61-110, examen dom 14-mar PROVISIONAL) · v5.20: mar 23-feb → mar 9-mar (días 97-107), horas = las del loop sembrado en la fila
   const useSimTemplate = !!today?.simulacro || today?.tipo === 'mini_sim' || !!simIntensivoDe(today);
   // v5.20 (6-oct): study_metrics.extra.horarios es la plantilla del MANTENIMIENTO (16:15-17:15). En la INTENSIVA (mar 23-feb →
   // mar 9-mar) los bloques salen de la propia fila: loop de 8 segmentos (extra.loop), simulacro 100Q (extra.sim) o día especial.
   const blocks = esIntensivo ? bloquesIntensivo(today) : (useSimTemplate ? horarios?.weekend : horarios?.weekday) ?? [];
+  // v6.00: fechas del texto de cabecera leídas de study_metrics.extra (exam_date PROVISIONAL / intensiva), no escritas a mano
+  const exFecha = examDateDe(metrics), exProv = examenProvisionalDe(metrics), exRendido = examenRendidoDe(metrics), intM = intensivaMetaDe(metrics);
 
   const tema = today ? `${today.codigo || ''} ${today.subtema || ''}`.trim() : '';
 
@@ -981,9 +1034,10 @@ function HorarioView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
     <View>
       <Text style={styles.horarioHint}>
         {esIntensivo
-          ? (useSimTemplate ? '▲ Fase intensiva: simulacro 100Q (72s/Q) + corrección por código v3' : '● Fase intensiva (mar 23-feb → mar 9-mar · examen mié 10-mar): bloques sembrados en la fila del día — loop de 8 segmentos (extra.loop, horas del propio loop) o día especial (señales / D-1 medio día)')
+          ? (useSimTemplate ? `▲ Fase intensiva: simulacro 100Q (72s/Q) desde las ${simIntensivoDe(today)?.hora || '07:15'} + corrección por código v3` : `● Fase intensiva (${intM.desde ? `${fechaCorta(intM.desde)} → ${fechaCorta(intM.hasta)}` : 'feb-mar 2027'} · examen ${exFecha ? fechaCorta(exFecha) : 'por confirmar'}${exProv ? ' PROVISIONAL' : ''}): bloques sembrados en la fila del día — loop v6 (extra.loop, horas definitivas F2) o día especial (señales / D-1 medio día) + CARRIL B 16:15 si la fila lo trae`)
           : useSimTemplate ? '▲ Viernes: mini-simulacro 25Q mixtas (72s/Q) + corrección' : '● Mantenimiento 2027-I (lun-jue): eval anclada 5Q → banco 20-25Q → registro'}
       </Text>
+      {exRendido && <Text style={styles.horarioWarn}>▪ Examen ENCAPS rendido ({fechaCorta(exFecha)}): el plan queda en su último día.</Text>}
       {isWeekendDay && !useSimTemplate && (
         <Text style={styles.horarioWarn}>
           ▪ Fin de semana LIBRE (régimen v5.4). La cola muestra el próximo día hábil del ciclo.
@@ -1075,6 +1129,8 @@ function CierreSesionCard({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) 
     if (tp === 'mini_sim') { setN('25'); setCodigo('MIX'); setSubEje(''); setTema(today?.subtema || 'mini-sim v3'); }
     else if (tp === 'eval_anclada') { setN('5'); setCodigo(evalHoy?.codigo || 'MIX'); setSubEje(evalHoy?.modo === 'ayer' && sePrev ? sePrev.key : ''); setTema(evalHoy ? evalHoy.label.replace(/^🎯 /, '') : 'eval anclada'); }
     else if (tp === 'pretest' || tp === 'simulacro') { const si = simIntensivoDe(today); setN(si ? String(si.n) : ''); setCodigo('MIX'); setSubEje(''); setTema(si ? si.label : ''); }
+    // v6.00: cierre del CARRIL B 16:15 (fila MANTENIMIENTO 61-92 de v5.20 embebida) → id APP_CARRIL_B_<fecha>_<codigo>
+    else if (tp === 'carril_b') { const cb = carrilBDe(today); setN(''); setCodigo(cb?.codigo || 'MIX'); setSubEje(cb?.subEje || ''); setTema(cb ? (cb.subEjeLabel || cb.subtema) : 'carril B'); }
     else { setN(''); setCodigo(today?.codigo || 'MIX'); setSubEje(se?.key || ''); setTema(se?.label || today?.subtema || ''); }
     setNota('');
   };

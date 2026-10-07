@@ -19,6 +19,8 @@ import { researchObsUrlEntregable } from '../../lib/obsidianResearchMap';
 import { getResearchEngineState } from '../../lib/supabase';
 import { ResearchFonts, ensureResearchFonts, serifTitle, InkColors } from './researchTheme';
 import ResearchTodayPlan from './ResearchTodayPlan';
+import { FECHAS_V6, motivoProtegido } from '../../lib/fechasV6';
+import { esResearchMinimo } from '../../lib/plantillasV6';
 import ResearchAgenticSystem from './ResearchAgenticSystem';
 import ResearchLinesExplorer from './ResearchLinesExplorer';
 import AIFirstPanel from './AIFirstPanel';
@@ -34,9 +36,21 @@ import AIFirstPanel from './AIFirstPanel';
  * updated_at e histórico de decisiones editoriales — researchEntregablesSync.ts, 12-sep-2026), checklist INFRA
  * ACADÉMICA (10 cuentas, PlanKey 'research-infra'), KPIs derivados de ambos, fases, journals, maestría transversal.
  * (05-sep-2026) Sustituye a "Timeline 0→primer paper" y "Micro-horario": eran calendarios contradictorios.
+ * v6.00 (6-oct-2026 · V6_ESPEC §E · §F · DJ-4): el chip HOY del masthead dice la duración v6 — 45' (F1-F3) · «30' mínimo (DJ-4)» en
+ * los días-Research de la pausa de átomos (15-ene → 10-feb) · «30' en tiempo muerto (posta)» en F4 (SERUMS, L-S) · «protegido» en los
+ * días protegidos v6 (fechasV6). El sábado es día de plan desde el SERUMS (researchData.diaEstudioTipo).
  */
+/** v6.00: nota de duración del bloque Research ↔ Derma de una fecha (para el chip HOY). */
+function notaRDDe(iso: string, hoy: 'research' | 'derma' | 'descanso'): string {
+  if (motivoProtegido(iso)) return 'DÍA PROTEGIDO · sin sesión';
+  if (hoy === 'descanso') return iso >= FECHAS_V6.serums.inicio ? 'domingo libre' : 'finde libre';
+  if (iso >= FECHAS_V6.serums.inicio) return "30' en tiempo muerto (posta)";
+  if (hoy === 'research' && esResearchMinimo(iso)) return "30' mínimo (DJ-4) · pausa de átomos";
+  return "45' · 13:30-14:15";
+}
 type SyncEstado = { estado: 'cargando' | 'ok' | 'error'; detalle: string };
 function hhmm(): string { const d = new Date(); return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`; }
+function isoHoy(): string { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; }
 const TEAL = RESEARCH_META.accent;   // #6BB8B0 (token)
 const GOLD = InkColors.gold;         // #C8A96A — capa de estatus (manuscrito/PIP/sellos)
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
@@ -75,7 +89,7 @@ function VueltasDots({ prioridad }: { prioridad: Prioridad }) {
 }
 
 /** MASTHEAD editorial — masthead de revista: título serif + status del motor + PIP counter en oro. */
-function EditorialMasthead({ hoy, kpis }: { hoy: 'research' | 'derma' | 'descanso'; kpis: ResearchKpis }) {
+function EditorialMasthead({ hoy, kpis, nota }: { hoy: 'research' | 'derma' | 'descanso'; kpis: ResearchKpis; nota?: string }) {
   const [run, setRun] = useState<string>('idle');
   const [papersToday, setPapersToday] = useState<number | null>(null);
   useEffect(() => {
@@ -144,6 +158,7 @@ function EditorialMasthead({ hoy, kpis }: { hoy: 'research' | 'derma' | 'descans
             <Text style={[mh.dayVal, { color: hoy === 'research' ? TEAL : hoy === 'derma' ? Colors.purple : Colors.muted }]}>
               {hoy === 'research' ? 'RESEARCH' : hoy === 'derma' ? 'DERMA →' : 'Descanso'}
             </Text>
+            {nota ? <Text style={mh.dayLbl}>{nota}</Text> : null}
           </View>
         </View>
       </View>
@@ -623,7 +638,7 @@ export default function ResearchHub({ variant = 'mobile' }: { variant?: 'mobile'
         <CommandBackdrop />
 
         {/* MASTHEAD EDITORIAL (reemplaza el GradientHero compartido) */}
-        <EditorialMasthead hoy={hoy} kpis={kpis} />
+        <EditorialMasthead hoy={hoy} kpis={kpis} nota={notaRDDe(isoHoy(), hoy)} />
 
         <AIFirstPanel segmento="research" accent={TEAL} />
 

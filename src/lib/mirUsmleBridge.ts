@@ -9,8 +9,10 @@
  *    + el rango completo del sistema homólogo de la asignatura MIR del día.
  *  · usmleMirParalelo(fecha) → para la UI USMLE: "MIR en paralelo: Cardiología (D5-D11)".
  * No escribe nada. Otro agente lo integra en UsmleTodayPlan.
+ * v6.00 (6-oct-2026 · V6_ESPEC §F r2 · I12): lee los 2 tramos (DIAS → DIAS_TODOS: D1-D60 + T1-T158); los rangos del tramo 2 se
+ *   etiquetan «T<n>» (d = 100 + t) y los hitos se detectan con esHito (en el tramo 2 hay hitos con system 'Sprint final').
  */
-import { DIAS, DiaUSMLE } from './usmleStep1Daily';
+import { DIAS_TODOS, DiaUSMLE, esHito } from './usmleStep1Daily';
 import { MIR_DIAS, DiaMIR, mirDiaDe, mirBloques, MIR_TEMAS_TOTAL } from './mirDailyPlan';
 
 export interface SistemaSemana { system: string; dIni: number; dFin: number; fechaIni: string; fechaFin: string; }
@@ -41,11 +43,11 @@ function lunesDe(iso: string): string {
 function addDias(iso: string, n: number): string {
   try { const d = new Date(iso + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); } catch { return iso; }
 }
-/** Agrupa días USMLE consecutivos por sistema. */
+/** Agrupa días USMLE consecutivos por sistema (sin los hitos). */
 function agrupar(dias: DiaUSMLE[]): SistemaSemana[] {
   const out: SistemaSemana[] = [];
   for (const x of dias) {
-    if (x.system === 'Assessment') continue;
+    if (x.system === 'Assessment' || esHito(x)) continue;
     const last = out[out.length - 1];
     if (last && last.system === x.system) { last.dFin = x.d; last.fechaFin = x.fecha; }
     else out.push({ system: x.system, dIni: x.d, dFin: x.d, fechaIni: x.fecha, fechaFin: x.fecha });
@@ -55,17 +57,20 @@ function agrupar(dias: DiaUSMLE[]): SistemaSemana[] {
 /** Rango completo (primer→último día) de un sistema Step 1; acepta `system` o `bbCh` (p. ej. 'Biostats/Epi'). */
 export function usmleRangoSistema(system: string): RangoSistema | null {
   if (!system || system === '—') return null;
-  const ds = DIAS.filter((x) => x.system === system || x.bbCh === system);
+  const ds = DIAS_TODOS.filter((x) => x.system === system || x.bbCh === system);
   if (!ds.length) return null;
   return { system, dIni: ds[0].d, dFin: ds[ds.length - 1].d, fechaIni: ds[0].fecha, fechaFin: ds[ds.length - 1].fecha };
 }
-const rangoTxt = (r: { dIni: number; dFin: number }) => (r.dIni === r.dFin ? `D${r.dIni}` : `D${r.dIni}-D${r.dFin}`);
+/** v6.00: etiqueta del día del plan (F1 «D<d>» · tramo 2 «T<t>», t = d − 100). */
+const etD = (d: number): string => (d > 100 ? `T${d - 100}` : `D${d}`);
+const rangoTxt = (r: { dIni: number; dFin: number }) => (r.dIni === r.dFin ? etD(r.dIni) : `${etD(r.dIni)}-${etD(r.dFin)}`);
 
 export function mirUsmleBridge(fecha: string): MirUsmleBridge {
   const lunes = lunesDe(fecha), viernes = addDias(lunes, 4);
-  const semanaDias = DIAS.filter((x) => x.fecha >= lunes && x.fecha <= viernes);
+  const sabado = addDias(lunes, 5); // v6.00: en el SERUMS el sábado también es día de plan
+  const semanaDias = DIAS_TODOS.filter((x) => x.fecha >= lunes && x.fecha <= sabado);
   const sistemas = agrupar(semanaDias);
-  const hitos = semanaDias.filter((x) => x.system === 'Assessment').map((x) => `${x.uw} (${fmtCorto(x.fecha)})`);
+  const hitos = semanaDias.filter((x) => esHito(x)).map((x) => `${x.uw} (${fmtCorto(x.fecha)})`);
   const dia: DiaMIR | undefined = mirDiaDe(fecha);
   const bloque = dia && dia.d <= MIR_TEMAS_TOTAL ? mirBloques().find((b) => b.num === dia.num && dia.d >= b.dIni && dia.d <= b.dFin) : undefined;
   const mir = dia && bloque ? { asignatura: dia.asignatura, d: dia.d, dIni: bloque.dIni, dFin: bloque.dFin, usmleSystem: dia.usmleSystem } : null;

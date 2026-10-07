@@ -1,72 +1,119 @@
-// Ensambla src/lib/usmleStep1Daily.ts v5 a partir de usmle_dias_v5.txt
+/**
+ * assemble_usmle_ts.js — ensambla src/lib/usmleStep1Daily.ts (GENERADO) a partir de la salida de gen_usmle_v5.js.
+ *
+ * v6.00 (6-oct-2026): REESTRUCTURACIÓN ANUAL (V6_ESPEC §B · §F). Lee usmle_dias_v6.json (DIAS = tramo 1 · DIAS_T2 = tramo 2) y
+ *   comprueba que coincide con usmle_dias_v5.txt (misma serialización, misma corrida); las fechas de cabecera, DAILY_META, USMLE_TAPER
+ *   y los textos con fecha salen de las filas generadas y de _fechas_v6.json (validado por ../gen_fechas_v6.js) — ninguna fecha a mano.
+ *   Emite: DIAS (60) · DIAS_T2 (158) · DIAS_TODOS · DAILY_META v6 (version 'v6.00', examenTarget, tramos, pausa, gonogo…) ·
+ *   USMLE_TAPER nuevo (§B6) · FRANJAS (F1/F3, horas sin cambio) + FRANJA_F3_REENTRADA · FRANJAS_F4 por turno M/T/L/G + H + H-sáb
+ *   (§B4.1) · faseDe / semanaDe / esDiaTaper / esViernesNivel4 / diaDe / diaAnterior / diaPrevio / ventana7d / hitosDelPlan sobre los
+ *   2 tramos (navegación por ÍNDICE en DIAS_TODOS: los d no son contiguos, 1-60 y 101-258) · semanaDe = semanaStep1(iso).n de
+ *   fechasV6 (módulo hoja: usmleStep1Daily NO importa homeBriefing, r2 · I7).
+ *   Textos visibles sin fechas de la v5.20 (control de textos del Lote 3).
+ * v5.x: leía usmle_dias_v5.txt (solo DIAS, 95 días) y pegaba cabecera/pie fijos con las fechas del último corrimiento escritas a mano.
+ */
+'use strict';
 const fs = require('fs');
-const dias = fs.readFileSync(__dirname + '/usmle_dias_v5.txt', 'utf8').trim();
+const path = require('path');
+const V6 = require('../gen_fechas_v6');
+const { add, wd, f, fy } = V6;
+
+const ROOT = path.join(__dirname, '..', '..', '..');
+const OUT = path.join(ROOT, 'src', 'lib', 'usmleStep1Daily.ts');
+const aborta = (m) => { console.error('✗ ' + m + ' — ABORTO, no se escribe src/lib/usmleStep1Daily.ts'); process.exit(1); };
+
+let FV6;
+try { FV6 = V6.cargarFechasV6(); } catch (e) { aborta(e.message); }
+const J = JSON.parse(fs.readFileSync(path.join(__dirname, 'usmle_dias_v6.json'), 'utf8'));
+const txt = fs.readFileSync(path.join(__dirname, 'usmle_dias_v5.txt'), 'utf8').trim();
+// misma serialización que gen_usmle_v5.js (claves sin comillas)
+const aTS = (x) => JSON.stringify(x).replace(/"([a-zA-Z][a-zA-Z0-9]*)":/g, '$1:');
+if (txt !== 'export const DIAS: DiaUSMLE[] = ' + aTS(J.DIAS) + ';\nexport const DIAS_T2: DiaUSMLE_T2[] = ' + aTS(J.DIAS_T2) + ';') aborta('usmle_dias_v5.txt ≠ usmle_dias_v6.json (¿corridas distintas de gen_usmle_v5.js?)');
+const DIAS = J.DIAS, T2 = J.DIAS_T2, ESC = J.escenario;
+if (J.version !== FV6.version) aborta(`usmle_dias_v6.json es ${J.version} y _fechas_v6.json ${FV6.version}`);
+if (ESC.encaps !== FV6.encaps.examen || ESC.examen !== FV6.step1.examen || ESC.serums !== FV6.serums.inicio) aborta('el escenario de usmle_dias_v6.json no es el de _fechas_v6.json (¿se corrió gen_usmle_v5.js con --seco?)');
+if (DIAS.length !== FV6.f1.dias || !T2.length) aborta(`filas inesperadas: DIAS ${DIAS.length} · DIAS_T2 ${T2.length}`);
+
+// ── datos derivados (todo de las filas y del JSON) ──
+const ultimo = (a) => a[a.length - 1];
+const fT = (x) => `T${x.t} ${f(x.fecha)}`;
+const porTipo = (t) => T2.filter((x) => x.tipo === t);
+const hitoT2 = (re) => T2.find((x) => x.tipo === 'hito' && re.test(x.nombre || ''));
+const D94 = T2.find((x) => x.tipo === 'taper' && x.dOrig === 94);
+const D95 = T2.find((x) => x.tipo === 'taper' && x.dOrig === 95);
+const RITUAL = ultimo(T2);
+if (!D94 || !D95 || RITUAL.tipo !== 'ritual') aborta('el tramo 2 no termina en D94 → D95 → ritual');
+const FREE120 = hitoT2(/Free 120/);
+const NBME29 = hitoT2(/NBME 29/);
+const GATE = T2.find((x) => x.gate);
+const E = FV6.step1.examen, VIAJE = FV6.step1.viaje_d1, REINICIO = FV6.step1.reinicio, GONOGO = FV6.step1.gonogo;
+const REGRESO = add(E, 1);
+const TAPER_SEM = porTipo('taper').filter((x) => x.dOrig === null);
+const PAUSA = { desde: add(FV6.f1.fin, 1), hasta: add(REINICIO, -1) };
+const BASE_DJ1 = V6.DJ1[1].examen;
+const MESES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+const eligibilityTxt = (() => { // '2027-08..2027-10' → 'ago-sep-oct 2027'
+  const m = /^(\d{4})-(\d{2})\.\.(\d{4})-(\d{2})$/.exec(FV6.step1.eligibility);
+  if (!m || m[1] !== m[3]) return FV6.step1.eligibility;
+  const o = []; for (let k = +m[2]; k <= +m[4]; k++) o.push(MESES[k - 1]);
+  return o.join('-') + ' ' + m[1];
+})();
+const CORTO = { Cardiovascular: 'Cardio', Respiratory: 'Resp', Renal: 'Renal', Gastrointestinal: 'GI', Endocrine: 'Endocrino', 'Nervous System': 'Neuro', 'Hematology & Oncology': 'Heme/Onco',
+  Fundamentos: 'Fundamentos', Immunology: 'Inmuno', 'Microbiology / ID': 'Micro', Reproductive: 'Repro', 'Musculoskeletal / Rheum': 'MSK', 'Psychiatry & Behavioral': 'Psiq', Biochemistry: 'Bioq' };
+const corto = (s) => CORTO[s] || s;
+const esHito = (x) => /🎯/.test(x.sub);
+const vie = (x) => wd(x.fecha) === 5;
+const f1N3 = DIAS.filter((x) => x.nivelUW === 3).map((x) => `D${x.d} ${f(x.fecha)} ${corto(x.system)}`);
+const f1AbreViernes = DIAS.filter((x) => vie(x) && x.nivelUW === 1 && !esHito(x)).map((x) => `D${x.d} ${corto(x.system)}`);
+const f1N4 = DIAS.filter((x) => x.nivelUW === 4 && x.bbCh !== 'Colchón').map((x) => `D${x.d} ${f(x.fecha)} ${corto(x.system)}`);
+const t2N4Vie = T2.filter((x) => x.tipo === 'contenido' && !x.parte && x.nivelUW === 4).map((x) => `${fT(x)} ${corto(x.system)}`);
+const REACT = porTipo('reactivacion'), RANDOM = porTipo('uw_random'), INCORR = porTipo('incorrectas'), CONSOL = porTipo('consolidacion'), COLCHON = porTipo('colchon');
+const rangoT = (a) => (a.length ? `T${a[0].t}-T${ultimo(a).t}` : '—');
+const hitosF1 = DIAS.filter(esHito), hitosT2 = porTipo('hito');
+const nombreHito = (x) => x.nombre || (/UWSA1/.test(x.sub) ? 'UWSA1' : (/NBME \d+/.exec(x.sub) || [x.system])[0]);
+const listaHitos = [...hitosF1.map((x) => `${nombreHito(x)} D${x.d} ${f(x.fecha)}`), ...hitosT2.map((x) => `${x.nombre} T${x.t} ${f(x.fecha)}`)];
+const listaHitosLineas = listaHitos.reduce((acc, h, i) => { if (i % 4 === 0) acc.push([]); acc[acc.length - 1].push(h); return acc; }, []).map((g, i, all) => ' *   ' + g.join(' · ') + (i === all.length - 1 ? '.' : ' ·')).join('\n');
+const preguntasFrescas = DIAS.filter((x) => !esHito(x) && x.bbCh !== 'Colchón').reduce((a, x) => a + x.qDia, 0)
+  + T2.filter((x) => ['contenido', 'refuerzo', 'uw_random'].includes(x.tipo)).reduce((a, x) => a + x.qDia, 0);
+const colchonH = COLCHON.reduce((a, x) => a + x.h, 0);
+const q = (s) => "'" + String(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'") + "'";
+const L = (x) => JSON.stringify(x);
+
+// ── textos con fecha (generados) ──
+const BLOQUE = `F1/F3: 05:00 ANKI AM · 07:15 repaso anclado · 08:15 PRE-TEST 10Q · 09:00 DEEP PRIME 2h · 11:00 30Q consolidación · 18:00 eval modo examen (6h15/día; F3 + 16:15 REENTRADA = 7h15) · PAUSA ${f(PAUSA.desde)} → ${f(PAUSA.hasta)}: Anki 30' L-V + sáb 07:45 STEP 1 VIVO 20Q · F4 (SERUMS, L-S): plantilla por turno M/T/L/G (FRANJAS_F4)`;
+const METODO = `Palmerton · 5 niveles UWorld: NO se sube de nivel sin ≥80% en 10Q consecutivas del nivel actual (validación ≤24-48 h). Nivel 1-2 = subtema (5Q tutor → 5Q timed) · nivel 3 = sistema completo timed (viernes sin hito hasta S10 + REACTIVACIÓN del tramo 2) · nivel 4 = mixto de sistemas dominados (eval 18:00 diaria + viernes sin hito desde S11 + reentrada + uw_random + colchón) · nivel 5 = 40Q random timed (incorrectas, consolidación, taper + hitos). Si <80%: repetir bloques de 5Q del subtema fallado y auditar recursos/comprensión/aplicación/memoria; nunca avanzar de tema. Taper ${f(D94.fecha)} (D94, última sesión de banco) + ${f(D95.fecha)} (D95, sesión mínima ≤1 h) · ${f(RITUAL.fecha)} ritual sin estudio · ${f(VIAJE)} viaje (D-1) · examen ${fy(E)} (${FV6.version}; ${FV6.step1.provisional ? 'PROVISIONAL: ' : ''}fecha a reservar según DJ-1 al salir la convocatoria ENCAPS).`;
+const VENTANA = `eligibility ${eligibilityTxt} · adelanto ${FV6.step1.adelanto} · base ${BASE_DJ1} · plan B ${FV6.step1.planB}`;
 
 const header = `/**
- * usmleStep1Daily.ts — Plan DÍA A DÍA USMLE Step 1 · v5 MAESTRO (reestructuración 27-ago-2026).
- * D1 = MIÉ 2026-10-07 → D95 = VIE 2027-02-19 (v5.20: 31-ago→6-oct no estudiados = 27 hábiles perdidos).
- * EXAMEN: target LUN 22-FEB-2027 (fuera de la ventana original 25-29 ene desde la v5.12). D94 jue 18-feb = última sesión
- * de banco; D95 vie 19-feb = último día del plan (D-1 HÁBIL: sesión mínima AM + ritual de test-day adelantado); sáb 20 y dom 21
- * libres (dom 21 = D-1 real, sin estudio) → examen el lun 22-feb. Tras el examen arranca la INTENSIVA ENCAPS (mar 23-feb → SERUMS mié 10-mar-2027).
- * v5.20 (6-oct-2026) · 6.º CORRIMIENTO RÍGIDO — DEFINITIVO (+1 hábil; Joseph: «todo inicia el día 7 de octubre … tan solamente corre las
- *   fechas»): con D1 en MIÉRCOLES los hitos caen casi todos en MARTES (UWSA1 mié 7-oct · NBME 25 mar 20-oct · 26 mar 10-nov · 27 mar 1-dic ·
- *   28 mar 22-dic · 29 vie 8-ene · 30 mar 19-ene · UWSA2 mar 26-ene · NBME 31 mar 2-feb · 32 mié 3-feb · 33 vie 5-feb · Free 120 mar 9-feb);
- *   contenido cierra el lun 1-feb (D81).
- * v5.19 (5-oct-2026) · 5.º CORRIMIENTO RÍGIDO (+1 hábil; Joseph: «todo inicia el día de mañana 6 … solo corre las fechas y alarga un día
- *   más la fecha de término; no elimines exámenes ni evaluaciones»): con D1 en MARTES los hitos caen casi todos en LUNES
- *   (UWSA1 mar 6-oct · NBME 25 lun 19-oct · 26 lun 9-nov · 27 lun 30-nov · 28 lun 21-dic · 29 jue 7-ene · 30 lun 18-ene · UWSA2 lun 25-ene ·
- *   NBME 31 lun 1-feb · 32 mar 2-feb · 33 jue 4-feb · Free 120 lun 8-feb); contenido cierra el vie 29-ene (D81).
- * v5.18 (3-oct-2026) · 4.º CORRIMIENTO RÍGIDO (+2 hábiles; Joseph: «todo inicia el 5»): hitos de nuevo casi todos en viernes.
- * Joseph debe agendar/reprogramar el Prometric y confirmar el eligibility period; cada día no estudiado mueve el examen un hábil más (o exige recortar).
- * v5.17 (30-sep-2026) · 3.er CORRIMIENTO RÍGIDO (misma regla de v5.15/v5.16, pedida por Joseph: «todo inicia desde mañana … solo corre
- * los días en todos los aspectos»): el plan ENTERO (contenido + los 12 hitos) se desplaza en bloque +3 días hábiles, así que **cada
- * NBME/UWSA conserva su D# y sus días de contenido por delante**. El UWSA1 sigue siendo el D1 (… → mié 23 → lun 28-sep → jue 1-oct).
- * El contenido arranca el vie 2-oct (D2). NADA se fusionó ni se recortó: el temario sale 1:1 (multiset vs v5.16 = dif 0) y el desfase
- * se absorbe por la cola. Con D1 en JUEVES los hitos caen casi todos en MIÉRCOLES (D10, D25, D40, D55, D72, D77, D82, D87), salvo
- * NBME 29 (lun 4-ene, por los saltos de 25-dic/31-dic/1-ene), NBME 32 (jue 28-ene) y NBME 33 (lun 1-feb).
- * Step 1 es AHORA el bloque PRINCIPAL: 6h15/día L-V (05:00 Anki AM + mañana 07:15-12:00 + eval 18:00).
- * Sábados y domingos LIBRES. Skip extra: 25-dic, 31-dic, 1-ene.
+ * usmleStep1Daily.ts — Plan DÍA A DÍA USMLE Step 1 · ${FV6.version} (reestructuración anual decidida por Joseph el ${fy(FV6.decidido)}).
+ * GENERADO por DATA/_scripts/usmle/assemble_usmle_ts.js (datos: gen_usmle_v5.js + gen_tramo2.js · fechas: _fechas_v6.json / fechasV6.ts).
+ * NO editar a mano: node gen_usmle_v5.js && node assemble_usmle_ts.js && node update_diainicio.js && node remap_obsidian_usmle.js
+ * && node verificar_v6.js (en DATA/_scripts/usmle/). Fin del corrimiento diario (V6_ESPEC §B7): un día perdido NO mueve el examen.
  *
- * FASES (v5.20, recalculadas sobre las fechas reales): A · Contenido por sistemas D1-D81 (mié 7-oct→lun 1-feb, ~40Q
- *            uWorld/día = 1ª vuelta del banco completo; el temario sale 1:1, NADA se fusionó ni se recortó en este
- *            corrimiento — los 2 días dobles de Bioquímica vienen de la v5.7 y siguen conservando todos sus temas)
- *            (el UWSA2 mar 26-ene = D77 cae DENTRO de la Fase A y el cierre de Bioquímica es el lun 1-feb = D81)
- *        B · Banco intensivo D82-D86 (mar 2-feb→lun 8-feb: el NBME 31 GO/NO-GO abre la fase el día siguiente al cierre de contenido,
- *            random timed 2×40Q + sistema débil D84 jue 4-feb y D86 lun 8-feb, NBME 32 mié 3-feb y NBME 33 vie 5-feb dentro; finde 6-7 feb entre D85 y D86)
- *        C · Sprint final D87-D95 (mar 9-feb→vie 19-feb, Free 120 + banco + taper; D88 mié 10-feb y D89 jue 11-feb random timed, D90 vie 12-feb y
- *            D91 lun 15-feb incorrects 2ª pasada, D92 mar 16-feb y D93 mié 17-feb AMBOSS 200 mitades 1 y 2 — alojados dentro del sprint;
- *            D94 jue 18-feb y D95 vie 19-feb taper; el finde 13-14 feb cae entre D90 y D91 y el finde 20-21 feb entre el D95 y el examen)
- *        (v5.19: A mar 6-oct→vie 29-ene · B lun 1-feb→vie 5-feb · C lun 8-feb→jue 18-feb, sin finde entre D95 y el examen del vie 19-feb)
- *        (v5.18: A lun 5-oct→jue 28-ene · B vie 29-ene→jue 4-feb · C vie 5-feb→mié 17-feb, finde 13-14 feb entre D92 y D93 ·
- *         v5.17: A 1-oct→mar 26-ene · B 27-ene→2-feb · C 3-feb→lun 15-feb, con el finde 13-14 feb entre D94 y D95)
- * HITOS (v5.20: todos corren con el plan y conservan su D#; con D1 en MIÉRCOLES caen casi todos en MARTES): UWSA1 mié 7-oct
- *        (baseline, D1) · NBME 25 mar 20-oct · 26 mar 10-nov · 27 mar 1-dic · 28 mar 22-dic · 29 vie 8-ene · NBME 30 mar 19-ene ·
- *        UWSA2 mar 26-ene · NBME 31 mar 2-feb (GO/NO-GO) · NBME 32 mié 3-feb / NBME 33 vie 5-feb / Free 120 mar 9-feb.
- *        (v5.19: UWSA1 mar 6-oct · NBME 25 lun 19-oct … NBME 31 lun 1-feb · Free 120 lun 8-feb.)
- *        (v5.18: UWSA1 lun 5-oct · NBME 25 vie 16-oct … NBME 31 vie 29-ene · Free 120 vie 5-feb · v5.17: UWSA1 jue 1-oct ·
- *        NBME 25 mié 14-oct … NBME 31 mié 27-ene · Free 120 mié 3-feb.)
- * GO/NO-GO (Step 1 es pass/fail): 2 NBME consecutivos ≥68% + UWSA2 "low risk" → confirmar fecha.
+ * TRAMO 1 = F1 · DIAS (D1-D${DIAS.length}) · ${fy(DIAS[0].fecha)} → ${fy(ultimo(DIAS).fecha)} · L-V · 6h15/día (05:00 · 07:15-12:00 · 18:00).
+ *   D1-D57 idénticos a la v5.20 (contenido, nivelUW, qDia, franjaNota; los NBME 25-28 pasan a 07:00-12:30) · D58 ${f(DIAS[57].fecha)} =
+ *   bioestadística + epidemiología + ética (ex-D79 v5.20) · D59-D60 = C1/C2 COLCHÓN F1 (absorben los 2 primeros días perdidos).
+ * PAUSA (estado PAUSA en la app, sin fila «hoy») · ${f(PAUSA.desde)} → ${fy(PAUSA.hasta)}: transición + ENCAPS intensiva (examen
+ *   ${fy(FV6.encaps.examen)}${FV6.encaps.provisional ? ' PROVISIONAL' : ''}) + lunes libre · Step 1 en mantenimiento: Anki 30' L-V + sáb 07:45 «STEP 1 VIVO» 20Q (§B2).
+ * TRAMO 2 · DIAS_T2 (T1-T${T2.length}, d ${T2[0].d}-${ultimo(T2).d}) · ${fy(T2[0].fecha)} → ${fy(RITUAL.fecha)}${FV6.step1.provisional ? ' (PROVISIONAL)' : ''}:
+ *   F3 ${T2.filter((x) => x.fase === 'F3').length} filas L-V (7h15: F1 + 16:15 REENTRADA) · F4 ${T2.filter((x) => x.fase === 'F4').length} filas L-S con el SERUMS (desde ${fy(FV6.serums.inicio)}${FV6.serums.supuesto ? ' [supuesto]' : ''};
+ *   domingo libre; plantilla por turno M/T/L/G, FRANJAS_F4). Cola: reentrada → contenido v5.20 (Micro, Repro, MSK, Psiq, Bioq) →
+ *   refuerzo → reactivación ← uw_random ← incorrectas ← consolidación ← taper; ${COLCHON.length} filas COLCHÓN (≈${Math.round(colchonH)} h al piso) absorben
+ *   los días perdidos («atrasada: hazla hoy»). Cada fila con dOrig conserva el contenido v5.20 (subV520) → multiset = 0 (V1).
+ * HITOS (hitosDelPlan()):
+${listaHitosLineas}
+ *   GO/NO-GO ${fy(GONOGO)} (E-49, fila T${GATE ? GATE.t : '—'}) · D94 ${f(D94.fecha)} última sesión de banco · D95 ${f(D95.fecha)} sesión mínima ·
+ *   ritual ${f(RITUAL.fecha)} (sin estudio) · viaje ${f(VIAJE)} (D-1) · EXAMEN ${fy(E)} · regreso ${f(REGRESO)} (USMLE_TAPER).
+ * Ventana DJ-1: ${VENTANA}.
+ * Presupuesto uWorld FRESCO planificado: ${preguntasFrescas} Q (F1 sin hitos ni C1/C2 + contenido + refuerzo + uw_random; banco 3.659).
+ * v5.20: plan de 95 días L-V con corrimiento rígido (+1 hábil por día no estudiado) y examen en febrero — SUSTITUIDO por esta v6.00.
  * Jerarquía de material: Path→Pathoma · Micro/Pharm→Sketchy · Physio/Biochem/Anat→AMBOSS+B&B · Behav/Biostats→First Aid.
- * Método Palmerton: comprensión fisiológica > memorización · tarjetas Anki de MECANISMO (FSRS) ·
- * pre-test ciego → active reading → free recall → preguntas → log de errores.
- * v5.10-Palmerton (12-sep-2026, vigente en v5.20): cada día lleva nivelUW (1-5 = los 5 niveles de maestría UWorld) y qDia (Q objetivo);
- * el gate de progresión (80% en 10Q) vive en USMLE_GATE y se mide en usmleScores.ts (localStorage + Supabase usmle_daily_scores).
- * Fase A = niveles 1→3 (+ dosis de 4 en la eval 18:00) · Fase B = 4→5 · Fase C = 5 + NBME/Free 120.
- * 12-sep-2026 (tarde) · divergencias Palmerton implementadas SIN tocar horario, temario ni fechas:
- *  · VIERNES DE NIVEL 4 (#6): desde S11 los viernes sin hito de Fase A que serían nivel 3 pasan a nivel 4 (v5.20: DOS — D53 vie 18-dic
- *    Heme/Onco y D70 vie 15-ene Repro; los demás viernes desde S11 son hito (D65 NBME 29 vie 8-ene), festivo (25-dic, 1-ene) o abren
- *    sistema (D75 vie 22-ene Psiquiatría, D80 vie 29-ene Bioquímica) · v5.19: UNO — D54 vie 18-dic
- *    Heme/Onco; los demás viernes desde S11 son festivo (25-dic, 1-ene) o abren sistema (D66 vie 8-ene Repro, D71 vie 15-ene MSK,
- *    D76 vie 22-ene Psiquiatría, D81 vie 29-ene Bioquímica) · v5.18: NINGUNO — con D1 en lunes los viernes desde S11 eran hito (D55 18-dic,
- *    D72 15-ene, D77 22-ene), festivo o abrían sistema (D67 vie 8-ene Repro) · v5.17: D57 vie 18-dic Heme/Onco · D69 vie 8-ene Repro ·
- *    D74 vie 15-ene MSK · D79 vie 22-ene Psiquiatría)
- *    (20-30Q timed mixtos de sistemas dominados + 10Q tutor); flag VIERNES_N4_DESDE_SEMANA en gen_usmle_v5.js. El texto vive
- *    en DIAS[].franjaNota; el subtema no cambia.
- *  · TAPER (#22): D94 (jue 18-feb, D-2 hábil = última sesión de banco) y D95 (vie 19-feb, D-1 hábil = último día del plan) = 20Q flagged + Anki maduro, cero contenido nuevo (franjaNota);
- *    v5.20: D95 = sesión mínima AM + ritual de test-day adelantado → USMLE_TAPER; sáb 20 libre y dom 21 = D-1 real SIN estudio;
- *    examen target LUN 22-FEB-2027 (fuera de la ventana 25-29 ene desde la v5.12). v5.19: D94 mié 17-feb · D95 jue 18-feb · examen vie 19-feb (sin finde). v5.18: D94 mar 16-feb · D95 mié 17-feb · examen jue 18-feb. v5.17: D94 vie 12-feb · finde 13-14 feb libre · D95 lun 15-feb · examen mar 16-feb.
- *  · BURNOUT (#29): regla en usmleScores.gateHito → 'ALERTA BURNOUT' cuando 2 hitos consecutivos quedan bajo su mínimo.
+ * Método Palmerton: comprensión fisiológica > memorización · tarjetas Anki de MECANISMO (FSRS) · pre-test ciego → active reading →
+ * free recall → preguntas → log de errores. Cada día lleva nivelUW (1-5) y qDia; el gate (80% en 10Q) vive en USMLE_GATE / usmleScores.ts.
  */
+import { semanaStep1, enPausaStep1 } from './fechasV6';
+import type { Turno } from './fechasV6';
+
 export const QBV = 'https://qbankly.app/videos';
 export const QBQ = 'https://qbankly.app/qbanks';
 export const QBF = 'https://qbankly.app/flashcards';
@@ -74,18 +121,28 @@ export const QBL = 'https://qbankly.app/library';
 export const yt = (id: string) => 'https://www.youtube.com/watch?v=' + id;
 
 export const DAILY_META = {
-  step: 1, inicio: '2026-10-07', fin: '2027-02-19', totalDias: 95, // v5.20 (6-oct, DEFINITIVA): 6.º corrimiento RÍGIDO (+1 hábil; los hitos también corren) · D95 = vie 19-feb = D-1 hábil · finde libre · examen target lun 22-feb-2027 · v5.19: 6-oct → 18-feb, examen 19-feb · v5.18: 5-oct → 17-feb, examen 18-feb (v5.17: 1-oct → 15-feb, examen 16-feb)
-  bloque: '05:00 ANKI AM · 07:15 repaso anclado · 08:15 PRE-TEST 10Q · 09:00 DEEP PRIME 2h · 11:00 30Q consolidación · 18:00 eval modo examen (6h15/día)',
-  /** Ventana original (25-29 ene), superada desde la v5.12; v5.20: el plan termina el vie 19-feb. */
-  examenVentana: '2027-01-25 → 2027-01-29 (superada desde v5.12; v5.20: D95 = vie 19-feb)',
-  /** Target de examen v5.20 (6-oct, DEFINITIVA): lun 22-feb-2027, primer hábil tras el D95 (vie 19-feb; finde 20-21 libre · v5.19: vie 19-feb · v5.18: jue 18-feb). Agendar/reprogramar Prometric y confirmar eligibility period (decisión de Joseph: o esto, o recortar). */
-  examenTarget: '2027-02-22',
-  /** D-1 REAL = dom 21-feb (finde libre: SIN estudio; USMLE_TAPER.dMenos1). El último día del plan es el D95 vie 19-feb (sesión mínima AM + ritual adelantado). v5.19: jue 18-feb = D95. */
-  descansoD1: '2027-02-21',
+  step: 1, version: ${q(FV6.version)}, inicio: ${q(DIAS[0].fecha)}, fin: ${q(RITUAL.fecha)},
+  /** Nº de filas (${DIAS.length} + ${T2.length}): SOLO informativo. Los d NO son contiguos (1-${DIAS.length} y ${T2[0].d}-${ultimo(T2).d}): nadie navega ni detecta el último día con él (usar DIAS_TODOS). */
+  totalDias: ${DIAS.length + T2.length},
+  tramos: [
+    { n: 1, inicio: ${q(DIAS[0].fecha)}, fin: ${q(ultimo(DIAS).fecha)}, dias: ${DIAS.length} },
+    { n: 2, inicio: ${q(T2[0].fecha)}, fin: ${q(RITUAL.fecha)}, dias: ${T2.length}, provisional: ${FV6.step1.provisional || FV6.encaps.provisional || FV6.serums.supuesto} },
+  ],
+  /** Step 1 en PAUSA (fechasV6.enPausaStep1): sin fila «hoy»; solo mantenimiento (§B2). */
+  pausa: { desde: ${q(PAUSA.desde)}, hasta: ${q(PAUSA.hasta)}, motivo: 'ENCAPS intensiva + lunes libre' },
+  /** Examen Step 1 (${FV6.version}; ${FV6.step1.provisional ? 'PROVISIONAL: ' : ''}base de planificación DJ-1). La fecha a RESERVAR depende del ENCAPS (fechasV6.reservaStep1). */
+  examenTarget: ${q(E)},
+  examenVentana: ${q(VENTANA)},
+  /** GO/NO-GO = E-49 (horas acumuladas §B4.5 + NBME 31/32 ≥ 68 % con uno ≥ 70 %). */
+  gonogo: ${q(GONOGO)},
+  /** D-1 = viaje a Lima (sin estudio; USMLE_TAPER.dMenos1). El último día de plan es el ritual (${f(RITUAL.fecha)}). */
+  descansoD1: ${q(VIAJE)},
+  serumsInicio: ${q(FV6.serums.inicio)},
   /** Viernes de nivel 4 desde esta semana del plan (S1 = semana del D1) — flag VIERNES_N4_DESDE_SEMANA de gen_usmle_v5.js. 0 = desactivado. */
   viernesN4DesdeSemana: 11,
-  // Palmerton v3 (5-sep-2026): la regla que gobierna el volumen. Nivel del día = DIAS[].nivelUW; gate = USMLE_GATE.
-  metodo: 'Palmerton · 5 niveles UWorld: NO se sube de nivel sin ≥80% en 10Q consecutivas del nivel actual (validación ≤24-48 h). Nivel 1-2 = subtema (5Q tutor → 5Q timed) · nivel 3 = sistema completo timed (viernes sin hito hasta S10) · nivel 4 = mixto de sistemas dominados (eval 18:00 diaria + viernes sin hito desde S11 + Fase B) · nivel 5 = 40Q random timed (Fases B-C + hitos). Si <80%: repetir bloques de 5Q del subtema fallado y auditar recursos/comprensión/aplicación/memoria; nunca avanzar de tema. Taper D94 jue 18-feb (última sesión de banco) + D95 vie 19-feb (último día del plan, D-1 hábil: sesión mínima AM + ritual adelantado a la tarde) · finde 20-21 libre (dom 21 = D-1 real, sin estudio) · examen lun 22-feb (v5.20; v5.19: vie 19-feb · v5.18: jue 18-feb).',
+  bloque: ${q(BLOQUE)},
+  // Palmerton v3 (5-sep-2026): la regla que gobierna el volumen. Nivel del día = DIAS_TODOS[].nivelUW; gate = USMLE_GATE.
+  metodo: ${q(METODO)},
 };
 
 /** Gate de progresión Palmerton (UWorld Complete Guide · 80% Mastery Method). */
@@ -98,100 +155,285 @@ export const USMLE_GATE = {
 
 export type NivelUW = 1 | 2 | 3 | 4 | 5;
 export interface NivelUWInfo { nivel: NivelUW; nombre: string; formato: string; qDia: string; umbral: string; dondeVive: string; fase: string; color: string }
-/** Los 5 niveles de maestría UWorld (Palmerton, "UWorld Complete Guide: The Five Levels of Mastery to 260+") mapeados a las fases A/B/C del plan v5.20. */
+/** Los 5 niveles de maestría UWorld (Palmerton, "UWorld Complete Guide: The Five Levels of Mastery to 260+") mapeados a las fases A/B/C del plan ${FV6.version} (tramo 1 + tramo 2). */
 export const USMLE_NIVELES: NivelUWInfo[] = [
-  { nivel: 1, nombre: 'Subtema · tutor sin tiempo', fase: 'A', formato: 'Bloques de 5Q de UN solo subtema · modo tutor · sin reloj (aprender a leer: CCSN + SAQ + cover-the-options)', qDia: 'Palmerton 20-30Q/día → plan: 30Q (10 pre-test + 20 consolidación)', umbral: '80% en 10Q consecutivas del subtema, ≤24-48 h tras estudiarlo', dondeVive: '08:15 PRE-TEST del tema nuevo (siempre) · 11:00 los 2 primeros días de cada sistema', color: '#7C8496' },
-  { nivel: 2, nombre: 'Subtema · timed', fase: 'A', formato: 'Bloques de 5Q del subtema · cronometrado (90 s/Q · tope 2 min: adivinar, marcar, avanzar)', qDia: 'Volumen creciente → plan: 40Q (10 + 30)', umbral: '80% en ≥3 subtemas distintos, ≥1 validado en <48 h', dondeVive: '11:00 CONSOLIDACIÓN desde el 3er día de cada sistema (subtemas ya validados) · 07:15: 5Q timed del subtema de AYER (1ª mitad del gate de 10Q)', color: '#4F7DD6' },
-  { nivel: 3, nombre: 'Sistema completo · timed', fase: 'A', formato: 'Bloques de 10-20Q de TODO el sistema · timed (sin la "ventaja injusta" de saber el subtema)', qDia: 'Palmerton 40-50Q/día → plan: 40Q (10 pre-test + 20Q sistema + 10 tutor)', umbral: '80% en 20Q timed consecutivas del sistema', dondeVive: 'VIERNES sin NBME/UWSA a las 11:00 hasta S10 (v5.20: D8 vie 16-oct Cardio · D13 vie 23-oct Cardio · D28 vie 13-nov Renal · D33 vie 20-nov GI · D48 vie 11-dic Neuro; los viernes que abren sistema —D3 Fundamentos, D18 Resp, D23 Renal, D38 Endocrino, D43 Neuro— quedan en nivel 1 · v5.19: D9 vie 16-oct Cardio · D14 vie 23-oct Cardio · D19 vie 30-oct Resp · D29 vie 13-nov Renal · D34 vie 20-nov GI · D39 vie 27-nov Endocrino · D49 vie 11-dic Neuro; los viernes que abren sistema —D4 Inmuno, D24 Renal, D44 Neuro— quedan en nivel 1 · v5.18: D15/D20/D35/D45/D50): 20Q del sistema en curso, o del anterior si el sistema lleva <3 días · desde S11 el viernes pasa a nivel 4', color: '#6BB8B0' },
-  { nivel: 4, nombre: 'Sistemas mixtos · timed', fase: 'A (dosis diaria + viernes desde S11) → B', formato: 'Bloques de 20-30Q mezclando ≥3 sistemas dominados + el nuevo (saltar entre especialidades bajo presión)', qDia: 'Palmerton 50-70Q/día → plan: viernes N4 = 40Q (10 pre-test + 30Q mixtos timed) · Fase B: 2×40Q (80Q)', umbral: '80% en bloques mixtos de 20Q timed de ≥3 sistemas', dondeVive: '18:00 EVAL (10Q mixta timed) toda la Fase A como dosis diaria · VIERNES sin hito desde S11 (v5.20: dos — D53 vie 18-dic Heme/Onco y D70 vie 15-ene Repro; los demás son hito (D65 NBME 29 vie 8-ene), festivo o abren sistema (D75 Psiq, D80 Bioq) · v5.19: uno — D54 vie 18-dic Heme/Onco; los demás son festivo o abren sistema (D66 Repro, D71 MSK, D76 Psiq, D81 Bioq) · v5.18: ninguno · v5.17 había cuatro: D57, D69, D74, D79) = 20-30Q mixtos timed a las 11:00 en vez de sistema único (DIAS[].franjaNota) · Fase B D84 y D86 + Fase C D88 y D89 (random timed 2×40Q + sistema débil)', color: '#C8A96A' },
-  { nivel: 5, nombre: 'Mixto completo 40Q · timed', fase: 'B → C (+ todos los hitos)', formato: 'Bloques de 40Q random · timed 60 min (90 s/Q) = simulación exacta del examen', qDia: 'Palmerton 80-100Q/día (máx. 2 bloques de 40) · hitos: UWSA 160Q · NBME 200Q · Free 120', umbral: '80% sostenido (90% para 260+) · pase seguro = NBME ≥65% (≈95%) / ≥70% (≈99%)', dondeVive: '05:00 STRESS SET 10Q/12min (Fases B-C) · NBME 31 D82 (GO/NO-GO, día siguiente al cierre de contenido: mar 2-feb) · D90 y D91 (incorrects 2ª pasada + sistema débil #3), D92 y D93 (AMBOSS 200 mitades 1-2, banco dentro del sprint; v5.20: mar 16 y mié 17-feb · v5.19: lun 15 y mar 16-feb · v5.18: vie 12 y lun 15-feb · v5.17: mié 10 y jue 11-feb) · Fase C (NBME 32/33 + Free 120 + taper D94-D95) · hitos = formato nivel 5 como MEDICIÓN, no como progresión', color: '#C56A5A' },
+  { nivel: 1, nombre: 'Subtema · tutor sin tiempo', fase: 'A', formato: 'Bloques de 5Q de UN solo subtema · modo tutor · sin reloj (aprender a leer: CCSN + SAQ + cover-the-options)', qDia: 'Palmerton 20-30Q/día → plan: 30Q (10 pre-test + 20 consolidación)', umbral: '80% en 10Q consecutivas del subtema, ≤24-48 h tras estudiarlo', dondeVive: ${q("08:15 PRE-TEST del tema nuevo (siempre) · 11:00 los 2 primeros días de cada sistema · F4: «PARTE 1» de cada contenido partido (10Q tutor + deep prime)")}, color: '#7C8496' },
+  { nivel: 2, nombre: 'Subtema · timed', fase: 'A', formato: 'Bloques de 5Q del subtema · cronometrado (90 s/Q · tope 2 min: adivinar, marcar, avanzar)', qDia: 'Volumen creciente → plan: 40Q (10 + 30)', umbral: '80% en ≥3 subtemas distintos, ≥1 validado en <48 h', dondeVive: ${q("11:00 CONSOLIDACIÓN desde el 3er día de cada sistema (subtemas ya validados) · 07:15: 5Q timed del subtema de AYER (1ª mitad del gate de 10Q) · tramo 2: REFUERZO (ética + bioestadística 2.ª vuelta) y «PARTE 2» de cada contenido partido en F4")}, color: '#4F7DD6' },
+  { nivel: 3, nombre: 'Sistema completo · timed', fase: 'A', formato: 'Bloques de 10-20Q de TODO el sistema · timed (sin la "ventaja injusta" de saber el subtema)', qDia: 'Palmerton 40-50Q/día → plan: 40Q (10 pre-test + 20Q sistema + 10 tutor)', umbral: '80% en 20Q timed consecutivas del sistema', dondeVive: ${q(`VIERNES sin NBME/UWSA a las 11:00 hasta S10 (F1: ${f1N3.join(' · ')}; los viernes que abren sistema —${f1AbreViernes.join(', ')}— quedan en nivel 1): 20Q del sistema en curso, o del anterior si el sistema lleva <3 días · desde S11 el viernes pasa a nivel 4 · tramo 2: REACTIVACIÓN de los sistemas de F1 (${REACT.length} filas, ${rangoT(REACT)}: incorrectas/flagged uWorld + AMBOSS, sin uWorld fresco) · F3: 16:15 REENTRADA (20Q timed del sistema de la rotación)`)}, color: '#6BB8B0' },
+  { nivel: 4, nombre: 'Sistemas mixtos · timed', fase: 'A (dosis diaria + viernes desde S11) → B', formato: 'Bloques de 20-30Q mezclando ≥3 sistemas dominados + el nuevo (saltar entre especialidades bajo presión)', qDia: 'Palmerton 50-70Q/día → plan: viernes N4 = 40Q (10 pre-test + 30Q mixtos timed) · Fase B: 2×40Q (80Q)', umbral: '80% en bloques mixtos de 20Q timed de ≥3 sistemas', dondeVive: ${q(`18:00 EVAL (10Q mixta timed) en F1 y F3 como dosis diaria · VIERNES sin hito desde S11 (F1: ${f1N4.join(' · ') || '—'} · tramo 2: ${t2N4Vie.join(' · ') || '—'}) = 20-30Q mixtos timed a las 11:00 en vez de sistema único (franjaNota) · T1 REENTRADA (${f(T2[0].fecha)}) · C1/C2 COLCHÓN F1 (D59-D60) · uw_random (D84/D86/D88/D89 + 3 nuevas = UWorld FRESCO reservado, ${rangoT(RANDOM)}) · COLCHÓN antes del Free 120 (40Q timed del sistema débil)`)}, color: '#C8A96A' },
+  { nivel: 5, nombre: 'Mixto completo 40Q · timed', fase: 'B → C (+ todos los hitos)', formato: 'Bloques de 40Q random · timed 60 min (90 s/Q) = simulación exacta del examen', qDia: 'Palmerton 80-100Q/día (máx. 2 bloques de 40) · hitos: UWSA 160Q · NBME 200Q · Free 120', umbral: '80% sostenido (90% para 260+) · pase seguro = NBME ≥65% (≈95%) / ≥70% (≈99%)', dondeVive: ${q(`05:00 STRESS SET 10Q/12min (Fases B-C) · hitos = formato nivel 5 como MEDICIÓN, no como progresión (F1: UWSA1 + NBME 25-28 · tramo 2: ${NBME29 ? 'NBME 29 T' + NBME29.t : ''} → ${FREE120 ? 'Free 120 T' + FREE120.t : ''}) · DAY-AFTER de cada hito de F4 · incorrectas 2.ª pasada (D90/D91 + 7 nuevas, ${rangoT(INCORR)}) · consolidación (D92/D93 AMBOSS 200 + Pathoma/First Aid rapid review, ${rangoT(CONSOL)}) · taper (D94 ${f(D94.fecha)} · D95 ${f(D95.fecha)}) · colchón posterior al Free 120 (solo incorrectas/flagged)`)}, color: '#C56A5A' },
 ];
 
-/** Franjas horarias fijas del bloque USMLE (Google Calendar v5.2 · L-V) · nivel UWorld y gate por franja (Palmerton v3). Las HORAS no cambian. */
+/** Franjas horarias fijas del bloque USMLE en F1 y F3 (L-V) · nivel UWorld y gate por franja (Palmerton v3). Las HORAS no cambian (${FV6.version}). */
 export const FRANJAS = [
   { hora: '05:00–05:45', fase: 'ANKI AM (madrugada fresca · pasada principal FSRS · Good ≈90% / Again solo olvido real · ≤50 nuevas/día) · Fases B-C: + STRESS SET 10Q/12min (primer instinto, sin cambiar respuestas)', tipo: 'anki', nivel: 'B-C: 5', gate: '—' },
   { hora: '07:15–08:15', fase: 'Repaso anclado multi-temporal D-1/D-3/D-7 + free recall (Anki restante) · VALIDACIÓN 24-48 h: 5Q timed del subtema de AYER (1ª mitad del gate de 10Q)', tipo: 'anki', nivel: '2', gate: 'subtema de ayer ≥80% en las 10Q (5 aquí + 5 en la consolidación) → validado · <80% → 5Q más del subtema antes de pasar a otro' },
   { hora: '08:15–09:00', fase: 'PRE-TEST: 10Q uWorld ciegas del tema NUEVO (tutor · SIN tiempo) + free recall 90s = UWorld primero para DIAGNOSTICAR, First Aid después para tratar', tipo: 'pretest', nivel: '1', gate: 'sin gate: es diagnóstico (40-60% es normal) · cada duda, incluso en aciertos, va a la shopping list' },
   { hora: '09:00–11:00', fase: 'DEEP PRIME: vídeo B&B/Pathoma/Sketchy + First Aid active reading (Whole Page Rule: la página completa, no el dato fallado) + tarjetas Anki de MECANISMO (≤10, patogenia→presentación, en voz alta antes de escribir)', tipo: 'read', nivel: '—', gate: '—' },
-  { hora: '11:00–12:00', fase: 'CONSOLIDACIÓN por nivel del día (DIAS[].nivelUW): nivel 1 = 20Q en bloques 5Q tutor del subtema (días 1-2 del sistema) · nivel 2 = 30Q en bloques 5Q timed de subtemas validados (incluye 5Q del subtema de ayer = 2ª mitad del gate) · nivel 3 (viernes sin hito hasta S10) = 20Q sistema completo timed + 10Q tutor · nivel 4 (viernes sin hito desde S11) = 20-30Q timed MIXTOS de sistemas dominados + 10Q tutor del subtema · taper D94-D95 = 20Q flagged, nada nuevo · revisión = Educational Objective + shopping list + log de errores (knowledge / transfer / proceso)', tipo: 'eval', nivel: '1→4 (nivelUW del día)', gate: '≥80% → mañana sube de nivel · <80% → repetir 5Q del subtema fallado, NO avanzar (registrar en 📏 Medición)' },
-  { hora: '18:00–18:45', fase: 'EVALUACIÓN ACUMULATIVA modo examen: 10Q mixta timed (90 s/Q · tope 2 min · cover-the-options · juez, no abogado) + corrección + APEX · Fase A = dosis diaria de nivel 4 · día de hito: registrar aquí el % del NBME/UWSA/Free 120', tipo: 'exam', nivel: '4 (Fase A) · 5 (B-C)', gate: '≥80% sostenido = listo para mezclar sistemas · hitos: comparar con el mínimo on-track del hito (usmleScores.HITOS_ONTRACK; v5.20: casi todos en martes · v5.19: lunes · v5.18: viernes)' },
+  { hora: '11:00–12:00', fase: 'CONSOLIDACIÓN por nivel del día (nivelUW): nivel 1 = 20Q en bloques 5Q tutor del subtema (días 1-2 del sistema) · nivel 2 = 30Q en bloques 5Q timed de subtemas validados (incluye 5Q del subtema de ayer = 2ª mitad del gate) · nivel 3 (viernes sin hito hasta S10 · reactivación) = 20Q sistema completo timed + 10Q tutor · nivel 4 (viernes sin hito desde S11 · reentrada · colchón) = 20-30Q timed MIXTOS de sistemas dominados + 10Q tutor del subtema · taper D94-D95 = 20Q flagged, nada nuevo · revisión = Educational Objective + shopping list + log de errores (knowledge / transfer / proceso)', tipo: 'eval', nivel: '1→4 (nivelUW del día)', gate: '≥80% → mañana sube de nivel · <80% → repetir 5Q del subtema fallado, NO avanzar (registrar en 📏 Medición)' },
+  { hora: '18:00–18:45', fase: 'EVALUACIÓN ACUMULATIVA modo examen: 10Q mixta timed (90 s/Q · tope 2 min · cover-the-options · juez, no abogado) + corrección + APEX · Fase A = dosis diaria de nivel 4 · día de hito: registrar aquí el % del NBME/UWSA/Free 120', tipo: 'exam', nivel: '4 (Fase A) · 5 (B-C)', gate: '≥80% sostenido = listo para mezclar sistemas · hitos: comparar con el mínimo on-track del hito (usmleScores.HITOS_ONTRACK · ${FV6.version}: F1 en martes; 2027 por ventana semanal + preferente, §B5)' },
+];
+/** F3 (${f(T2[0].fecha)} → ${f(ultimo(T2.filter((x) => x.fase === 'F3')).fecha)}): F1 + este bloque (7h15/día). La fila del día dice el sistema de la rotación en su franjaNota («16:15 REENTRADA: …»). */
+export const FRANJA_F3_REENTRADA = { hora: '16:15–17:15', fase: 'REENTRADA (solo F3): 20Q timed del sistema de la rotación (Cardio → Resp → Renal → GI → Endo → Neuro → Heme → Fundamentos → Inmuno; ver franjaNota de la fila) + revisión', tipo: 'eval', nivel: '3', gate: '≥80% → el sistema sigue «vivo» · <80% → al COLCHÓN más próximo (sistema débil)' };
+
+/**
+ * F4 (SERUMS ${f(FV6.serums.inicio)} → ${f(RITUAL.fecha)}, L-S; domingo LIBRE) — plantillas por turno de la posta (V6_ESPEC §B4.1; el turno se marca cada día
+ * en la app: serumsTurnos.leerTurno). M mañana 07-13 · T tarde 13-19 · L feriado/sin turno · G guardia · H día de hito (turno T o
+ * feriado sin turno: el hito ES el Step 1 del día) · H-sáb fallback del hito (semana sin ningún día T/L, «condición degradada»).
+ * Preguntas del día: qDia con turno M/L/G · qDiaT (= qDia + 40, bloque B 07:40-10:10, AMBOSS/incorrectas) con turno T.
+ * MIR siempre 1 h y R↔D siempre ≥ 30' (DJ-4).
+ */
+export type PlantillaF4 = Turno | 'H' | 'H-sáb';
+export type FrenteF4 = 'step1' | 'hito' | 'mir' | 'research-derma' | 'serums' | 'gimnasio' | 'vida';
+export interface FranjaF4 { hora: string; fase: string; frente: FrenteF4 }
+export const FRANJAS_F4: Record<PlantillaF4, FranjaF4[]> = {
+  M: [
+    { hora: '04:00', fase: 'Despertar', frente: 'vida' },
+    { hora: '04:05–05:55', fase: 'STEP 1 · BLOQUE A (1h50): preguntas nuevas timed / contenido nuevo (la fila del día, qDia)', frente: 'step1' },
+    { hora: '05:55–06:20', fase: 'Ducha + desayuno', frente: 'vida' },
+    { hora: '06:20–07:00', fase: 'Traslado a la posta', frente: 'vida' },
+    { hora: '07:00–13:00', fase: 'SERUMS · turno MAÑANA', frente: 'serums' },
+    { hora: '07:00–13:00 (tiempo muerto)', fase: "Research ↔ Derma 30' en tiempo muerto de la posta (DJ-4)", frente: 'research-derma' },
+    { hora: '13:00–13:40', fase: "Traslado · Anki USMLE 25' en el móvil (si marea, audio)", frente: 'step1' },
+    { hora: '13:40–14:30', fase: "Almuerzo (siesta ≤20')", frente: 'vida' },
+    { hora: '14:30–16:00', fase: 'STEP 1 · BLOQUE B (1h30, solo carga baja: incorrectas, FA/Pathoma, Anki)', frente: 'step1' },
+    { hora: '16:00–17:00', fase: 'MIR 1 h (DJ-4)', frente: 'mir' },
+    { hora: '18:00', fase: 'Cena', frente: 'vida' },
+    { hora: '19:00–20:30', fase: 'Gimnasio (sin cambio)', frente: 'gimnasio' },
+    { hora: '21:00', fase: 'Dormir', frente: 'vida' },
+  ],
+  T: [
+    { hora: '04:00', fase: 'Despertar', frente: 'vida' },
+    { hora: '04:05–06:05', fase: 'STEP 1 · BLOQUE A (2 h): contenido nuevo (la fila del día)', frente: 'step1' },
+    { hora: '06:10–07:00', fase: 'Gimnasio', frente: 'gimnasio' },
+    { hora: '07:00–07:40', fase: 'Ducha + desayuno', frente: 'vida' },
+    { hora: '07:40–10:10', fase: "STEP 1 · BLOQUE B (2h20 netas, pausa 10'): 40Q timed + revisión (qDiaT = qDia + 40: AMBOSS / incorrectas uWorld, nunca uWorld fresco)", frente: 'step1' },
+    { hora: '10:10–10:35', fase: 'Anki USMLE', frente: 'step1' },
+    { hora: '10:35–11:35', fase: 'MIR 1 h (DJ-4)', frente: 'mir' },
+    { hora: '11:35–12:15', fase: 'Almuerzo · salida 12:20', frente: 'vida' },
+    { hora: '13:00–19:00', fase: 'SERUMS · turno TARDE', frente: 'serums' },
+    { hora: '13:00–19:00 (tiempo muerto)', fase: "Research ↔ Derma 30' en tiempo muerto de la posta (DJ-4)", frente: 'research-derma' },
+    { hora: '19:40', fase: 'Cena', frente: 'vida' },
+    { hora: '21:00', fase: 'Dormir', frente: 'vida' },
+  ],
+  L: [
+    { hora: '04:00', fase: 'Despertar', frente: 'vida' },
+    { hora: '04:05–06:05', fase: 'STEP 1 · BLOQUE A (2 h)', frente: 'step1' },
+    { hora: '07:00–07:30', fase: 'Desayuno', frente: 'vida' },
+    { hora: '07:30–12:30', fase: 'STEP 1 · BLOQUE LARGO (los hitos van aquí) — feriado sin turno = día doble', frente: 'step1' },
+    { hora: '12:30–12:55', fase: 'Anki USMLE', frente: 'step1' },
+    { hora: '15:15–16:15', fase: 'MIR 1 h (su franja establecida)', frente: 'mir' },
+    { hora: '16:20–16:50', fase: "Research ↔ Derma 30' (DJ-4)", frente: 'research-derma' },
+    { hora: '19:00–20:30', fase: 'Gimnasio', frente: 'gimnasio' },
+    { hora: '21:00', fase: 'Dormir', frente: 'vida' },
+  ],
+  G: [
+    { hora: 'guardia', fase: 'SERUMS · GUARDIA', frente: 'serums' },
+    { hora: 'tiempo muerto', fase: "MIR 1 h en tiempo muerto de la guardia (Anki MIR 15' + 25Q en el móvil); lo que no se termine se SUMA al día de plan siguiente (nunca se pierde)", frente: 'mir' },
+    { hora: 'tiempo muerto', fase: "Research ↔ Derma 30' en tiempo muerto de la guardia (DJ-4)", frente: 'research-derma' },
+    { hora: 'cuando se pueda', fase: "Anki USMLE 25'", frente: 'step1' },
+  ],
+  H: [
+    { hora: '04:00', fase: 'Despertar', frente: 'vida' },
+    { hora: '04:05–05:05', fase: 'MIR 1 h (DJ-4)', frente: 'mir' },
+    { hora: '05:10–06:00', fase: 'Gimnasio', frente: 'gimnasio' },
+    { hora: '06:00–06:45', fase: 'Ducha + desayuno', frente: 'vida' },
+    { hora: '07:00', fase: 'HITO (sustituye a los bloques A y B): NBME 07:00–12:15 · UWSA 07:00–11:15 · Free 120 07:00–10:15 · ensayo 7 bloques 07:00–16:30 (solo en día sin turno)', frente: 'hito' },
+    { hora: '12:20–19:00 (turno T)', fase: 'Almuerzo rápido y salida 12:20 → posta 13:00–19:00 (SERUMS · turno TARDE)', frente: 'serums' },
+    { hora: '12:30–13:15 (día L)', fase: "Almuerzo · siesta ≤20'", frente: 'vida' },
+    { hora: 'tiempo muerto (T) · 16:20–16:50 (L)', fase: "Research ↔ Derma 30' (DJ-4)", frente: 'research-derma' },
+    { hora: 'tiempo muerto (T) · tarde (L)', fase: "Anki USMLE 25'", frente: 'step1' },
+    { hora: '19:40', fase: 'Cena', frente: 'vida' },
+    { hora: '21:00', fase: 'Dormir', frente: 'vida' },
+  ],
+  'H-sáb': [
+    { hora: '04:00', fase: 'Despertar', frente: 'vida' },
+    { hora: '04:05–05:05', fase: 'MIR 1 h (DJ-4)', frente: 'mir' },
+    { hora: '05:05–05:50', fase: 'Gimnasio', frente: 'gimnasio' },
+    { hora: '05:50–06:20', fase: 'Ducha + desayuno', frente: 'vida' },
+    { hora: '06:20–07:00', fase: 'Traslado a la posta', frente: 'vida' },
+    { hora: '07:00–13:00', fase: 'SERUMS · turno MAÑANA', frente: 'serums' },
+    { hora: '07:00–13:00 (tiempo muerto)', fase: "Research ↔ Derma 30' en tiempo muerto de la posta (DJ-4)", frente: 'research-derma' },
+    { hora: '13:00–13:40', fase: "Traslado · Anki USMLE 25'", frente: 'step1' },
+    { hora: '13:40–14:10', fase: 'Almuerzo', frente: 'vida' },
+    { hora: '14:15–19:30', fase: 'HITO por la tarde — CONDICIÓN DEGRADADA (semana sin ningún día T/L; NBME 31/32 nunca después del sábado de su ventana)', frente: 'hito' },
+    { hora: '19:40', fase: 'Cena', frente: 'vida' },
+    { hora: '21:00', fase: 'Dormir', frente: 'vida' },
+  ],
+};
+/** Horas de Step 1 por plantilla (§B4.1-B4.2; PISO = todo turno M con el bloque B al 25 %). */
+export const FRANJAS_F4_HORAS: Record<PlantillaF4, string> = {
+  M: 'Step 1 bruto 3,75 h / efectivo 3,00 (bloque B al 50 %) · 2,63 al PISO (bloque B al 25 %)',
+  T: 'Step 1 bruto 4,75 h / efectivo 4,51 (×0,95)',
+  L: 'Step 1 ≈7,4 h (modelo: día del perfil +2 h)',
+  G: 'Step 1 ≈0,4 h (Anki)',
+  H: 'el hito ES el Step 1 del día (NBME 5,25 h · UWSA 4,25 h · Free 120 3,2 h · ensayo 8,5 h)',
+  'H-sáb': 'el hito ES el Step 1 del día (por la tarde, tras el turno M)',
+};
+export const FRANJAS_F4_NOTAS: string[] = [
+  'Semana (6 días de plan): PISO 15,75 h · M 18,0 · MIX (50 % M / 50 % T) 22,5 · T 27,1 h efectivas · inducción (2 primeras semanas del SERUMS) al 50 %.',
+  "Variantes T: turno 12:00-18:00 → bloque B 07:00-09:30, Anki 09:30, MIR 09:55-10:55, salida 11:20, gimnasio 19:00-20:00 · turno 14:00-20:00 → todo +30' y dormir 21:30-04:30.",
+  "Domingo: LIBRE (Anki ≤15' opcional, no se registra). Revisión semanal: sábado, 20' dentro del bloque de Step 1 del día.",
+  'Día de hito: plantilla H si ese día hay turno T o es feriado sin turno; si la semana no tiene ningún día T/L → H-sáb (condición degradada). El day-after va al día de plan siguiente al hito real.',
 ];
 
 export interface DiaUSMLE {
   d: number; fecha: string; system: string; tier: 'CORE'|'HIGH'|'MED';
   sub: string; bbCh: string; bbVid: string; uw: string; mat: string; matType: string;
   palm: { id: string; t: string } | null;
-  /** Nivel de maestría UWorld del día (1-5, Palmerton) — ver USMLE_NIVELES · generado por gen_usmle_v5.js */
+  /** Nivel de maestría UWorld del día (1-5, Palmerton) — ver USMLE_NIVELES · generado por gen_usmle_v5.js / gen_tramo2.js */
   nivelUW: NivelUW;
-  /** Q uWorld objetivo del día (pre-test + consolidación; hitos = Q del simulacro; Fases B-C = bloques timed) */
+  /** Q uWorld objetivo del día (pre-test + consolidación; hitos = Q del simulacro; banco = bloques timed). En F4 = turno M/L/G. */
   qDia: number;
-  /** Texto extra de la franja 11:00 (viernes de nivel 4 desde S11 · taper D94-D95). NO es contenido: el subtema es \`sub\`. */
+  /** Texto extra de franja (viernes de nivel 4 · F3 «16:15 REENTRADA: …» · taper). NO es contenido: el subtema es \`sub\`. */
   franjaNota?: string;
 }
+/** Tipo de fila del tramo 2 (V6_ESPEC §B3). Las filas de F1 (DIAS) no llevan \`tipo\`. */
+export type TipoFilaT2 = 'reentrada' | 'hito' | 'day_after' | 'contenido' | 'refuerzo' | 'reactivacion' | 'uw_random' | 'incorrectas' | 'consolidacion' | 'taper' | 'ritual' | 'colchon';
+/** Fila del tramo 2 (${f(T2[0].fecha)} → ${f(RITUAL.fecha)}): todos los campos de DiaUSMLE + los del modelo de §B3. */
+export interface DiaUSMLE_T2 extends DiaUSMLE {
+  /** nº de fila del tramo 2 (1…n) · d = 100 + t (clave de plan_checks('usmle', d); estable: una regeneración nunca cambia un d ya pasado) */
+  t: number;
+  tipo: TipoFilaT2;
+  /** D de la v5.20 cuyo contenido lleva la fila (null = fila nueva) */
+  dOrig: number | null;
+  /** unidad de cola (C58…, REF0/1, RX-<sistema>-<k>, UR84/URn1…, IN90/INn1…, CO92/COpathoma…, F1-<d>); la usa la regeneración con congelado */
+  uid?: string;
+  /** 'k/n' si una unidad ocupa varias filas (F4: 2 filas; inducción: 4) */
+  parte: string | null;
+  fase: 'F3' | 'F4';
+  faseUW: 'A' | 'B' | 'C';
+  /** horas-plan al PISO */
+  h: number;
+  /** preguntas con turno T (= qDia + 40: bloque B 07:40-10:10, AMBOSS/incorrectas); solo filas F4 no ancladas y anteriores al Free 120 */
+  qDiaT?: number;
+  /** texto v5.20 literal (filas con dOrig): el sub visible lo contiene */
+  subV520?: string;
+  /** inducción del SERUMS (capacidad 0,25 u/fila) */
+  adapt?: true;
+  /** hitos de F4: ventana lun-sáb [ini, fin] (NBME 29 en F3: null) */
+  ventana?: [string, string] | null;
+  nombre?: string;
+  forma?: number | 'UWSA3';
+  gate?: 'GO/NO-GO (E-49)' | 'GO/NO-GO #2 (E-49)';
+  /** recuperación de una fila F1 no hecha (cierre de F1, --pendientes-f1) */
+  dF1?: number;
+  /** unidad de una fila congelada sin ✓ que vuelve entera a la cola (--pendientes) */
+  pendiente?: true;
+}
+/** Fila de cualquiera de los dos tramos. */
+export type DiaUSMLEPlan = DiaUSMLE | DiaUSMLE_T2;
 `;
 
 const footer = `
 
-export function diaDe(fechaISO: string): DiaUSMLE | undefined { return DIAS.find(x => x.fecha === fechaISO); }
-/** Día anterior LITERAL del plan (D-1, puede ser un hito 🎯). Para el repaso anclado usar diaPrevio / ultimoDiaContenido. */
-export function diaAnterior(d: DiaUSMLE): DiaUSMLE | undefined { return DIAS.find(x => x.d === d.d - 1); }
+/** Los dos tramos en orden (${DIAS.length} + ${T2.length} filas). Navegar y buscar SIEMPRE aquí, por índice o por fecha (los d no son contiguos). */
+export const DIAS_TODOS: DiaUSMLEPlan[] = [...DIAS, ...DIAS_T2];
+
+/** ¿Fila del tramo 2? (las de F1 no llevan \`tipo\`). */
+export function esFilaT2(x: DiaUSMLE): x is DiaUSMLE_T2 { return typeof (x as Partial<DiaUSMLE_T2>).tipo === 'string'; }
+export function diaDe(fechaISO: string): DiaUSMLEPlan | undefined { return DIAS_TODOS.find((x) => x.fecha === fechaISO); }
+export function diaPorD(d: number): DiaUSMLEPlan | undefined { return DIAS_TODOS.find((x) => x.d === d); }
+/** Índice de la fila en DIAS_TODOS (-1 si no está). */
+export function indiceDe(x: DiaUSMLE): number { return DIAS_TODOS.findIndex((y) => y.d === x.d); }
 /**
- * Día previo de CONTENIDO: salta los hitos 🎯 (fix #6 de la 2.ª capa, 19-sep-2026). En v5.20 (mismos D# que v5.14-v5.19: corrimiento rígido) los días post-hito son
- * D2, D11, D26, D41, D56, D66, D73, D78, D83, D84, D86 y D88: la tarjeta 07:15 valida el último SUBTEMA, no el NBME.
- * D2 (tras el UWSA1) no tiene día previo de contenido → undefined.
+ * Estado del Step 1 en una fecha (§B2 · §F): 'PAUSA' entre el ${f(PAUSA.desde)} y el ${f(PAUSA.hasta)} (enPausaStep1 de fechasV6: sin fila «hoy»;
+ * T1 NO es «hoy» durante la pausa) · 'PLAN' con la fila de esa fecha (exacto) o la siguiente del plan (fin de semana, SKIP, protegido) ·
+ * 'FIN' después de la última fila (viaje, examen, post-examen).
  */
-export function diaPrevio(d: DiaUSMLE): DiaUSMLE | undefined {
-  for (let k = d.d - 1; k >= 1; k--) { const x = DIAS.find(y => y.d === k); if (x && !esHito(x)) return x; }
+export type EstadoUSMLE = { estado: 'PLAN'; dia: DiaUSMLEPlan; exacto: boolean } | { estado: 'PAUSA'; desde: string; hasta: string; reinicio: string } | { estado: 'FIN'; ultimo: DiaUSMLEPlan };
+export function estadoUSMLE(fechaISO: string): EstadoUSMLE {
+  if (enPausaStep1(fechaISO)) return { estado: 'PAUSA', desde: DAILY_META.pausa.desde, hasta: DAILY_META.pausa.hasta, reinicio: DIAS_T2[0]?.fecha ?? DAILY_META.pausa.hasta };
+  const exacto = diaDe(fechaISO);
+  if (exacto) return { estado: 'PLAN', dia: exacto, exacto: true };
+  const sig = DIAS_TODOS.find((x) => x.fecha > fechaISO);
+  if (sig) return { estado: 'PLAN', dia: sig, exacto: false };
+  return { estado: 'FIN', ultimo: DIAS_TODOS[DIAS_TODOS.length - 1] as DiaUSMLEPlan };
+}
+export { enPausaStep1 };
+/** Fila anterior LITERAL del plan (puede ser un hito 🎯; T1 → D${DIAS.length}). Para el repaso anclado usar diaPrevio / ultimoDiaContenido. */
+export function diaAnterior(d: DiaUSMLE): DiaUSMLEPlan | undefined { const i = indiceDe(d); return i > 0 ? DIAS_TODOS[i - 1] : undefined; }
+/**
+ * Fila previa de CONTENIDO: salta los hitos 🎯 (fix #6 de la 2.ª capa, 19-sep-2026), recorriendo los 2 tramos por índice
+ * (${FV6.version}: T1 → D${DIAS.length}). D2 (tras el UWSA1) no tiene fila previa de contenido → undefined.
+ */
+export function diaPrevio(d: DiaUSMLE): DiaUSMLEPlan | undefined {
+  for (let i = indiceDe(d) - 1; i >= 0; i--) { const x = DIAS_TODOS[i]; if (x && !esHito(x)) return x; }
   return undefined;
 }
 /** Alias con el nombre que propuso el crítico de completitud (#6). */
 export const ultimoDiaContenido = diaPrevio;
-export function ventana7d(fromD: number): DiaUSMLE[] { return DIAS.filter(x => x.d >= fromD && x.d < fromD + 7); }
+/** 7 filas desde la primera con d ≥ fromD (por índice: cruza de D${DIAS.length} a T1). */
+export function ventana7d(fromD: number): DiaUSMLEPlan[] { const i = DIAS_TODOS.findIndex((x) => x.d >= fromD); return i < 0 ? [] : DIAS_TODOS.slice(i, i + 7); }
 export const TIER_INFO: Record<string,{c:string;t:string}> = { CORE:{c:'#E5484D',t:'Core'}, HIGH:{c:'#F5A623',t:'Alto'}, MED:{c:'#3FB984',t:'Medio'} };
-/** Fase del plan por número de día (v5.20, mismos D# que v5.14-v5.19: el corrimiento fue rígido): A contenido D1-81 (7-oct→1-feb; UWSA2 D77 dentro) · B banco D82-86 (2-feb→8-feb: NBME 31 abre, random timed D84/D86, NBME 32/33 dentro) · C sprint D87-95 (9-feb→19-feb). */
-export function faseDe(d: number): 'A' | 'B' | 'C' { return d <= 81 ? 'A' : d <= 86 ? 'B' : 'C'; }
+/** Etiqueta de navegación: «Día {d}/${DIAS.length}» en F1 y «T{t}/${T2.length}» en el tramo 2. */
+export function etiquetaDiaUSMLE(x: DiaUSMLE): string { return esFilaT2(x) ? 'T' + x.t + '/' + DIAS_T2.length : 'Día ' + x.d + '/' + DIAS.length; }
+/** Etiqueta corta del tipo de fila del tramo 2 (chips). */
+export const TIPO_FILA_T2_LABEL: Record<TipoFilaT2, string> = {
+  reentrada: 'REENTRADA', hito: 'HITO', day_after: 'DAY-AFTER', contenido: 'CONTENIDO', refuerzo: 'REFUERZO', reactivacion: 'REACTIVACIÓN',
+  uw_random: 'UWORLD RANDOM', incorrectas: 'INCORRECTAS', consolidacion: 'CONSOLIDACIÓN', taper: 'TAPER', ritual: 'RITUAL', colchon: 'COLCHÓN',
+};
+/**
+ * Fase UWorld de una fila por su d (${FV6.version}): F1 (d ≤ ${DIAS.length}) = 'A' · 61-100 no existen (guarda: 'A', nunca undefined) ·
+ * tramo 2 (d ≥ 101) = su faseUW (A hasta el primer uw_random ${RANDOM.length ? 'T' + RANDOM[0].t : ''} · B hasta la primera consolidación/taper ${CONSOL.length ? 'T' + CONSOL[0].t : ''} · C después).
+ */
+export function faseDe(d: number): 'A' | 'B' | 'C' {
+  if (d <= 100) return 'A';
+  return DIAS_T2.find((x) => x.d === d)?.faseUW ?? 'A';
+}
 /** Ficha del nivel UWorld (1-5); fuera de rango → nivel 1. */
-export function nivelInfo(n: number): NivelUWInfo { return USMLE_NIVELES[Math.min(5, Math.max(1, Math.round(n || 1))) - 1]; }
+export function nivelInfo(n: number): NivelUWInfo { return USMLE_NIVELES[Math.min(5, Math.max(1, Math.round(n || 1))) - 1] as NivelUWInfo; }
 /** Día de hito (UWSA / NBME / Free 120): el subtema empieza con 🎯. */
 export function esHito(x: DiaUSMLE): boolean { return /🎯/.test(x.sub); }
-/** Días de hito del plan en orden. */
-export function hitosDelPlan(): DiaUSMLE[] { return DIAS.filter(esHito); }
-/** Semana del plan: bloques de 7 días desde DAILY_META.inicio (v5.20: D1 = mié 7-oct-2026, así que S1 = mié 7 → mar 13-oct y las semanas del plan son bloques mié→mar; v5.19: mar→lun; v5.18: lun→dom, coincidían con las de calendario). Fuera de rango → 0. */
+/** Días de hito del plan en orden (los 2 tramos: ${hitosF1.length} + ${hitosT2.length}). */
+export function hitosDelPlan(): DiaUSMLEPlan[] { return DIAS_TODOS.filter(esHito); }
+const DIAS_SEMANA = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'] as const;
+/** Día de la semana de una fecha AAAA-MM-DD (UTC-noon, sin zonas horarias). */
+export function diaSemana(fechaISO: string): (typeof DIAS_SEMANA)[number] { return DIAS_SEMANA[new Date(fechaISO + 'T12:00:00Z').getUTCDay()] ?? 'dom'; }
+/** Semana del Step 1 = semanaStep1(iso).n de fechasV6 (definición única, §F): S1-S13 = F1 · 13 durante la PAUSA · 14+ = tramo 2 · 0 antes del D1. */
 export function semanaDe(fechaISO: string): number {
-  try { const d = new Date(fechaISO + 'T12:00:00Z'); const s1 = new Date(DAILY_META.inicio + 'T12:00:00Z'); const n = Math.floor((d.getTime() - s1.getTime()) / (7 * 864e5)) + 1; return n > 0 ? n : 0; } catch { return 0; }
+  try { return semanaStep1(fechaISO).n; } catch { return 0; }
 }
-/** Viernes de nivel 4 (Fase A, desde S11): el bloque de las 11:00 es mixto de sistemas dominados, no de sistema único. */
-export function esViernesNivel4(x: DiaUSMLE): boolean { return x.nivelUW === 4 && faseDe(x.d) === 'A' && !esHito(x); }
-/** Día de taper (D94-D95): 20Q flagged + Anki maduro, cero contenido nuevo (franjaNota empieza por TAPER). */
-export function esDiaTaper(x: DiaUSMLE): boolean { return !!x.franjaNota && /^TAPER/.test(x.franjaNota); }
+/** Viernes de nivel 4 (contenido de Fase A en viernes desde S11): el bloque de las 11:00 es mixto de sistemas dominados. Nunca en la reentrada, el colchón ni las filas de banco. */
+export function esViernesNivel4(x: DiaUSMLE): boolean {
+  const tipo = esFilaT2(x) ? x.tipo : undefined;
+  return (!tipo || tipo === 'contenido') && diaSemana(x.fecha) === 'vie' && x.nivelUW === 4 && faseDe(x.d) === 'A' && !esHito(x);
+}
+/** Día de taper (semana previa al examen: lun-mié taper · jue D94 · vie D95): 20Q flagged + Anki maduro, cero contenido nuevo. */
+export function esDiaTaper(x: DiaUSMLE): boolean { return (esFilaT2(x) && x.tipo === 'taper') || /^TAPER/.test(x.franjaNota ?? ''); }
+/** Ritual de test-day (última fila del plan, sin estudio): aquí va el bloque D-1/EXAMEN (USMLE_TAPER.dMenos1 / .examen). */
+export function esDiaRitual(x: DiaUSMLE): boolean { return (esFilaT2(x) && x.tipo === 'ritual') || x.d === DIAS_TODOS[DIAS_TODOS.length - 1]?.d; }
 /** El día de "dermato Step 1" (B&B Dermatology, dentro de MSK): cuenta doble con los átomos Derma ya estudiados (puente Derma ↔ Step 1). */
 export function esDiaDermaStep1(x: DiaUSMLE): boolean { return /dermato Step 1/i.test(x.sub) || /Dermatology/i.test(x.bbVid); }
 /**
- * TAPER y D-1 (Palmerton §8.3 · DIVERGENCIAS §E-5, implementada 12-sep-2026 · v5.20 6-oct: D94 jue 18-feb = última sesión de banco,
- * D95 vie 19-feb = último día del plan (sesión mínima AM + ritual de test-day ADELANTADO a la tarde del viernes); sáb 20 libre; dom 21 = D-1 REAL
- * sin estudio (solo logística); examen target LUN 22-FEB-2027 · v5.19: D94 mié 17-feb · D95 jue 18-feb = D-1 real · examen vie 19-feb, sin finde ·
- * v5.18: D94 mar 16-feb · D95 mié 17-feb · examen jue 18-feb).
- * Cada día más sin estudiar mueve el examen un hábil (o exige recortar temario: decisión de Joseph).
+ * TAPER y D-1 (Palmerton §8.3-§8.4 · V6_ESPEC §B6). ${FV6.version}: D94 ${f(D94.fecha)} = última sesión de banco (solo bloque A) · D95 ${f(D95.fecha)} =
+ * sesión mínima ≤1 h · ritual ${f(RITUAL.fecha)} SIN estudio (protegido) · ${f(VIAJE)} viaje a Lima (D-1) · ${fy(E)} EXAMEN · ${f(REGRESO)} regreso.
+ * Un día perdido ya no mueve el examen: se paga con filas COLCHÓN; agotadas, decide el GO/NO-GO (§B7).
  * Todo lo de aquí sale de PALMERTON_METODO_COMPLETO.md §8.3-§8.4 (nada estimado): las cifras marcadas A VERIFICAR siguen así.
  */
 export const USMLE_TAPER = {
-  fuente: 'DATA/USMLE/PALMERTON_METODO_COMPLETO.md §8.3 (cierre D-14→D-1) y §8.4 (test day) · PALMERTON_DIVERGENCIAS_PLAN.md #22/§E-5',
-  cierre: 'Desde NBME 31 (D82, mar 2-feb): cero preguntas nuevas y cero tarjetas nuevas (Palmerton: cesar 1-2 semanas antes); solo incorrects/flagged + AMBOSS 200 como repaso de conceptos ya vistos · no repetir NBME ya hechos.',
-  d94: { d: 94, fecha: '2027-02-18', rol: 'D-2 hábil · última sesión de banco (jue 18-feb; mañana vie 19-feb = D95 = último día del plan)', resumen: 'Solo Anki MADURO + 20Q flagged/incorrects ya vistos · repaso First Aid de esquemas (sistemas 6-10) · dormir ≥7 h ya desde hoy' },
-  d95: { d: 95, fecha: '2027-02-19', rol: 'D-1 hábil · vie 19-feb (último día del plan · v5.20: después vienen el sáb 20 y el dom 21 libres y el examen el lun 22-feb)', resumen: 'Sesión MÍNIMA solo por la mañana (≤2 h): Anki maduro/vencido + 20Q flagged con los mejores esquemas e imágenes · rapid review FA · tarde (ritual ADELANTADO, para no cargar el finde): permiso impreso + digital, 2 ID con el nombre EXACTO del permiso, bolsas Ziploc numeradas, ruta al Prometric · nada después de las 17:00' },
+  fuente: 'PALMERTON_METODO_COMPLETO.md §8.3-§8.4 · ${FV6.version}',
+  cierre: ${q(`Desde el Free 120 (${f(FREE120 ? FREE120.fecha : '')}): 0 tarjetas nuevas y 0 preguntas nuevas salvo filas ya planificadas (o atrasadas); colchón = solo incorrectas/flagged + Anki maduro; sin +40Q de turno T; rapid review`)},
+  /** Semana previa al examen: taper ≤2 h (solo bloque A; MIR sigue 1 h). */
+  taperSemana: ${q(`${TAPER_SEM.map((x) => f(x.fecha)).join(' · ')} = taper (≤2 h, solo bloque A; MIR sigue 1 h) · ${f(D94.fecha)} D94 · ${f(D95.fecha)} D95 · ${f(RITUAL.fecha)} ritual`)},
+  /** Permiso de examen en la posta: pedirlo con ≥4 semanas como día justificado. */
+  permiso: ${q(`Permiso de examen: pedirlo con ≥4 semanas (${f(add(E, -28))} a más tardar) como día justificado, nunca falta injustificada`)},
+  d94: { t: ${D94.t}, d: ${D94.d}, fecha: ${q(D94.fecha)}, rol: ${q(`ÚLTIMA SESIÓN DE BANCO (${f(D94.fecha)} · solo bloque A 04:05-06:05)`)}, resumen: 'Solo Anki MADURO + 20Q flagged/incorrectas ya vistas · First Aid de esquemas, no de detalle · dormir ≥7 h ya desde hoy' },
+  d95: { t: ${D95.t}, d: ${D95.d}, fecha: ${q(D95.fecha)}, rol: ${q(`sesión MÍNIMA ≤1 h (${f(D95.fecha)} · bloque A 04:05-05:05)`)}, resumen: 'Anki maduro/vencido + 20Q flagged con los mejores esquemas e imágenes (≤1 h) · cero preguntas nuevas, cero tarjetas nuevas · nada de estudio después de las 17:00 · mañana ritual (sin estudio) y empaque' },
+  ritual: { t: ${RITUAL.t}, d: ${RITUAL.d}, fecha: ${q(RITUAL.fecha)}, rol: 'SIN ESTUDIO · turno de la posta · empacar: permiso impreso + digital, 2 ID idénticas, Ziploc por break, pasaje' },
   dMenos1: {
-    fecha: '2027-02-21', rol: 'D-1 REAL · dom 21-feb (finde libre, SIN sesión del plan · v5.20: el D95 fue el vie 19-feb y el sáb 20 es descanso total)',
+    fecha: ${q(VIAJE)}, rol: 'D-1 · viaje Huancayo → Lima · sin estudio · dormir ≥7 h',
     pasos: [
-      'Sin estudio: la sesión mínima (Anki maduro + 20Q flagged) y el empaque ya se hicieron el vie 19-feb (D95); como mucho Anki vencido ≤30 min por la mañana, cero tarjetas nuevas, cero preguntas nuevas',
+      ${q(`Sin estudio: la última sesión de banco fue el ${f(D94.fecha)} (D94), la sesión mínima el ${f(D95.fecha)} (D95) y el empaque el ${f(RITUAL.fecha)} (ritual); como mucho Anki vencido ≤30 min en el viaje, cero tarjetas nuevas, cero preguntas nuevas`)},
       'PROHIBIDO: bloques de preguntas, temas densos, abrir First Aid "para ver cuánto sé" (anécdota de Alec: cerró el libro — "the knowledge that I have is the knowledge that I have")',
-      'Nada de estudio después de las 17:00: journaling, ejercicio suave, visualización/meditación, cena con proteína',
-      'Revisar lo empacado el viernes: permiso impreso + digital · 2 identificaciones con foto que coincidan EXACTAMENTE con el permiso · snacks en bolsas Ziploc etiquetadas Break #1-#4 (proteína > carbohidratos simples) · granos de espresso con chocolate si los usaste en los simulacros',
+      'Viaje Huancayo → Lima con margen (salir temprano, llegar de día) · nada de estudio después de las 17:00: journaling, paseo suave, visualización/meditación, cena con proteína',
+      'Revisar antes de salir lo empacado en el ritual: permiso impreso + digital · 2 identificaciones con foto que coincidan EXACTAMENTE con el permiso · snacks en bolsas Ziploc etiquetadas Break #1-#4 (proteína > carbohidratos simples) · granos de espresso con chocolate si los usaste en los simulacros · pasaje de regreso',
       'Somnífero: NUNCA por primera vez esta noche (si se usa, ya probado semanas antes en una noche de simulacro)',
-      'Dormir temprano (≥7-8 h); alarma y ruta al Prometric comprobadas la noche anterior',
+      'Dormir temprano (≥7-8 h) cerca del centro Prometric; alarma y ruta al Prometric comprobadas la noche anterior',
     ],
   },
   examen: {
-    fecha: '2027-02-22', rol: 'EXAMEN · lun 22-feb-2027 (target v5.20: fuera de la ventana 25-29 ene → agendar/reprogramar Prometric y confirmar eligibility period; al día siguiente, mar 23-feb, arranca la INTENSIVA ENCAPS)',
+    fecha: ${q(E)}, rol: 'EXAMEN · Prometric (centro a confirmar: Lima o extranjero, §I)',
     pasos: [
       'Desayuno alto en proteína y grasa (huevos, aguacate, nueces), sin carbohidratos simples; el café de siempre (no cambiar hábitos hoy)',
       'Tutorial: comprobar auriculares en la pestaña media y terminar → los 15 min pasan al descanso (60 min en vez de 45)',
@@ -201,8 +443,9 @@ export const USMLE_TAPER = {
       'Post-test: premiarte para cerrar el ciclo',
     ],
   },
+  regreso: { fecha: ${q(REGRESO)}, rol: ${q(`regreso · permiso 1 día (2 si el ${f(REGRESO)} tiene turno M)`)} },
   /** Regla escrita (DIVERGENCIAS #29 → REGLA §E-7): la señal la da usmleScores.gateHito ('ALERTA BURNOUT'). */
-  burnout: 'Si 2 hitos consecutivos quedan bajo su mínimo on-track Y hay síntomas (releer sin comprender, irritabilidad, indiferencia, descansos de 5 min que se vuelven de 1 h): 3-5 días con SOLO Anki AM (30-45 min de tarjetas viejas) + sueño; frenar QBank y contenido nuevo; el corrimiento determinista (+1 día hábil por día no estudiado) absorbe la pausa; se reanuda por el gate del 80%, no por la fecha.',
+  burnout: 'Si 2 hitos consecutivos quedan bajo su mínimo on-track Y hay síntomas (releer sin comprender, irritabilidad, indiferencia, descansos de 5 min que se vuelven de 1 h): 3-5 días con SOLO Anki AM (30-45 min de tarjetas viejas) + sueño; frenar QBank y contenido nuevo; la pausa se paga con filas COLCHÓN; agotadas, decide el GO/NO-GO; se reanuda por el gate del 80%, no por la fecha.',
 };
 
 /**
@@ -220,18 +463,18 @@ export const PROTOCOLO_BLOQUE = {
     'Pregunta difícil = "game on": es difícil para todos y vale un punto; desconfiar y acertar es lo peor (matriz de confianza 2×2)',
     'Entre bloques (sit-in break): "Oh F#@& to OK" en 10-15 s (nombrar la emoción · soltar con respiraciones nasales · recentrar · validar · reengancharse); al pulsar finalizar, esas 40Q dejan de existir',
   ],
-  worstCase: 'Worst-Case Scenario Planning (§7.6-1): ANTES del primer bloque del primer hito, escribir en detalle el peor escenario y exactamente qué harías (plan B de fecha feb-mar 2027 dentro del eligibility period, sin recortar temario; "would it be the end of the world? No"). Vive en Readiness → "Plan B / peor escenario" (localStorage jmd-usmle-worstcase).',
+  worstCase: ${q(`Worst-Case Scenario Planning (§7.6-1): ANTES del primer bloque del primer hito, escribir en detalle el peor escenario y exactamente qué harías (plan B de fecha dentro de la ventana DJ-1 —adelanto ${fy(FV6.step1.adelanto)} → base ${fy(BASE_DJ1)} → plan B ${fy(FV6.step1.planB)}—, sin recortar temario; "would it be the end of the world? No"). Vive en Readiness → "Plan B / peor escenario" (localStorage jmd-usmle-worstcase).`)},
   fuente: 'DATA/USMLE/PALMERTON_METODO_COMPLETO.md §7.1 (2 min) · §5.5 (juez vs abogado) · §5.6 (rule-in) · §7.4 (cambiar respuestas) · §7.6 (Panic Trap: worst-case, drill, AVP) · §8.4 (test day)',
 };
 
 /**
- * DAY-AFTER PROTOCOL (2.ª capa #5 + §12.6-9, 19-sep-2026): ~4 h el día siguiente a cada hito, alojadas en el deep prime
- * (09:00-11:00 + resto de la mañana). El subtema de ese día NO cambia (regla de no fusionar): se anota en la app, no en DIAS.
- * Texto de PALMERTON_METODO_COMPLETO.md §9.1-§9.2 y §12.5; nada estimado.
+ * DAY-AFTER PROTOCOL (2.ª capa #5 + §12.6-9, 19-sep-2026): ~4 h el día siguiente a cada hito. En F1/F3 se aloja en el deep prime
+ * (09:00-11:00 + resto de la mañana) y el subtema de ese día NO cambia (regla de no fusionar); en F4 (${FV6.version}) es una FILA propia del
+ * tramo 2 (tipo 'day_after', bloques A + B). Texto de PALMERTON_METODO_COMPLETO.md §9.1-§9.2 y §12.5; nada estimado.
  */
 export const DAY_AFTER = {
   titulo: 'Day-After Protocol (Palmerton §9.2 · ~4 h · el día siguiente al hito)',
-  cuando: 'El hito se rinde por la mañana; la auditoría cabe en el deep prime del día siguiente (09:00-11:00 + resto de la mañana). El subtema de ese día sigue en pie (regla de no fusionar).',
+  cuando: 'El hito se rinde por la mañana. F1/F3: la auditoría cabe en el deep prime del día siguiente (09:00-11:00 + resto de la mañana) y el subtema de ese día sigue en pie (regla de no fusionar). F4: el day-after es una fila propia del tramo 2 (bloques A + B, sin preguntas nuevas) el día de plan siguiente al hito real.',
   pasos: [
     'Trayectoria (15 min): curva del % frente a los hitos previos; ¿subieron los sistemas estudiados en las últimas 2 semanas?',
     'Auditoría de honestidad (15 min, POR ESCRITO): "si sigo haciendo lo mismo que las últimas 2 semanas durante 6 meses, ¿qué resultado tendría?"',
@@ -251,7 +494,7 @@ export const DAY_AFTER = {
 export const FRANJAS_REGLAS: Record<number, string[]> = {
   0: [
     'BACKLOG (§4.10): reviews first, nuevas después; si falta tiempo, nuevas = 0. Vencidas acumuladas → nuevas = 0 y cap de reviews 200 (número psicológico; 300 si sobra energía y volver a 200 antes de dormir) hasta la pantalla verde; NUNCA "Forget" en bloque ni resetear el mazo.',
-    'FRENO POR HITO (§4.10): % del banco / NBME estancado o en declive → nuevas = 0 y días dedicados a limpiar el backlog con honestidad; desde el NBME 31 (D82, mar 2-feb) nuevas = 0.',
+    ${q(`FRENO POR HITO (§4.10): % del banco / NBME estancado o en declive → nuevas = 0 y días dedicados a limpiar el backlog con honestidad · nuevas = 0 durante la PAUSA (${f(PAUSA.desde)} → ${f(PAUSA.hasta)}; FSRS 0,85 desde el ${f(FV6.encaps.intensiva_desde)} y 0,90 otra vez el día del reinicio, ${f(REINICIO)}) y desde el Free 120 (${f(FREE120 ? FREE120.fecha : '')}).`)},
     'Pharm = mazo aparte (§4.2): 20 nuevas/día dentro del cap de 50; máximo 3 mazos.',
   ],
   3: [
@@ -265,5 +508,10 @@ export const FRANJAS_REGLAS: Record<number, string[]> = {
 };
 `;
 
-fs.writeFileSync('D:/joseph-md-app/src/lib/usmleStep1Daily.ts', header + dias + footer, 'utf8');
-console.log('OK — escrito src/lib/usmleStep1Daily.ts ·', (header + dias + footer).length, 'chars');
+const ts = header + txt + footer;
+// guardas del control de textos del Lote 3: ninguna fecha de la v5.20 fuera de comentarios de bitácora «v5.xx:»
+const sinBitacora = ts.split('\n').filter((l) => !/v5\.\d\d:/.test(l)).join('\n');
+const restos = [/examen lun 22-feb/, /22-feb/, /D9[0-5][^\n]{0,60}\bfeb\b/].filter((re) => re.test(sinBitacora));
+if (restos.length) aborta('quedan textos de la v5.20 en el .ts: ' + restos.join(' · '));
+fs.writeFileSync(OUT, ts, 'utf8');
+console.log(`OK — escrito ${path.relative(ROOT, OUT)} · ${ts.length} chars · DIAS ${DIAS.length} · DIAS_T2 ${T2.length} · examen ${E} · gonogo ${GONOGO} · D94 ${D94.fecha} · D95 ${D95.fecha} · ritual ${RITUAL.fecha}`);

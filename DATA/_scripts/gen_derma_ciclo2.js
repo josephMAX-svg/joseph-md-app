@@ -15,6 +15,9 @@
  * Calendario: días-Derma = paridad de días hábiles desde el ancla 2026-06-10 (researchData.ts#diaEstudioTipo, la misma
  * función de remap_inicio.js), L-V, salta 25-dic/31-dic/1-ene y los DÍAS PROTEGIDOS v5.20 (lun 22-feb examen Step 1 · mar 9-mar D-1
  * ENCAPS · mié 10-mar examen ENCAPS). v5.20: ciclo 1 hasta el mié 5-may-2027 (d73) → ciclo 2 d74 vie 7-may → d103 mié 28-jul-2027.
+ * v6.00 (6-oct-2026 · V6_ESPEC §E): SKIP, DÍAS PROTEGIDOS e inicio del SERUMS desde DATA/_scripts/_fechas_v6.json (gen_fechas_v6.js) y
+ * PARIDAD F4: desde serums.inicio (lun 3-may-2027 [S]) se cuentan L-S → Derma lun · mié · vie, Research mar · jue · sáb (30′ en tiempo
+ * muerto de la posta); domingo descanso. Ciclo 1 sin cambio de fin (mié 5-may) → ciclo 2 d74 vie 7-may → d103 mié 14-jul-2027.
  * Verifica 0 solapes con researchDailyPlan.ts y
  * researchDailyPlan2027.ts antes de escribir.
  *
@@ -41,17 +44,21 @@ const iso = (d) => d.toISOString().slice(0, 10);
 const fromISO = (s) => new Date(s + 'T12:00:00Z');
 const addDays = (s, n) => { const d = fromISO(s); d.setUTCDate(d.getUTCDate() + n); return iso(d); };
 const wdOf = (s) => WD[fromISO(s).getUTCDay()];
-const SKIP_FIJOS = new Set(['2026-12-25', '2026-12-31', '2027-01-01']);
-// v5.20 (6-oct-2026) · DÍAS DE EXAMEN PROTEGIDOS: lun 22-feb-2027 (examen USMLE Step 1) · mar 9-mar (D-1 del ENCAPS) · mié 10-mar
-// (examen ENCAPS 2027-I). Sin sesiones de planes secundarios (Research · Derma · AURUM · MIR mantenimiento): esas fechas se SALTAN como
-// un feriado y el plan corre una ranura (nada se recorta). MISMA lista en gen_research_plan · gen_derma_ciclo2 · remap_inicio (Derma) ·
-// gen_aurum_plan · gen_mir_mantenimiento.
-const PROTEGIDOS = new Set(['2027-02-22', '2027-03-09', '2027-03-10']);
+// v6.00 (6-oct-2026): SKIP, DÍAS PROTEGIDOS e inicio del SERUMS desde DATA/_scripts/_fechas_v6.json (fuente única; se eliminan los
+// protegidos v5.20 lun 22-feb · mar 9-mar · mié 10-mar). Sin sesiones de planes secundarios (Research · Derma · AURUM · MIR mantenimiento)
+// en esas fechas: se SALTAN como un feriado y el plan corre una ranura (nada se recorta). MISMA fuente en gen_research_plan ·
+// gen_derma_ciclo2 · remap_inicio (Derma) · gen_aurum_plan · gen_mir_mantenimiento.
+const V6 = require('./gen_fechas_v6');
+const F6 = V6.cargarFechasV6();
+const SKIP_FIJOS = new Set(F6.skip);
+const PROTEGIDOS = new Set(F6.protegidos.map((p) => p.fecha));
+const SERUMS_INICIO = F6.serums.inicio;
+// v6.00: paridad L-V antes del SERUMS y L-S desde serums.inicio (= researchData.ts#diaEstudioTipo); domingo siempre descanso.
 function tipoDia(s) {
   const d = fromISO(s), dow = d.getUTCDay();
-  if (dow === 0 || dow === 6) return 'descanso';
+  if (dow === 0 || (dow === 6 && s < SERUMS_INICIO)) return 'descanso';
   let cnt = 0; const cur = fromISO('2026-06-10');
-  while (cur < d) { const wd = cur.getUTCDay(); if (wd !== 0 && wd !== 6) cnt++; cur.setUTCDate(cur.getUTCDate() + 1); }
+  while (cur < d) { const wd = cur.getUTCDay(); if ((wd >= 1 && wd <= 5) || (wd === 6 && iso(cur) >= SERUMS_INICIO)) cnt++; cur.setUTCDate(cur.getUTCDate() + 1); }
   return cnt % 2 === 0 ? 'research' : 'derma';
 }
 function slots(start, n) {
@@ -94,6 +101,7 @@ const FECHAS = slots(START, N);
 for (const f of FECHAS) {
   if (tipoDia(f) !== 'derma') throw new Error('no es día Derma: ' + f);
   if (SKIP_FIJOS.has(f) || PROTEGIDOS.has(f)) throw new Error('feriado/día de examen: ' + f);
+  if (!V6.esDiaPlan(f, 'derma', F6)) throw new Error('no es día de plan según gen_fechas_v6.esDiaPlan: ' + f); // v6.00
   if (RES.has(f)) throw new Error('SOLAPE con Research: ' + f);
   if (FECHAS_C1.includes(f)) throw new Error('solape con el ciclo 1: ' + f);
 }
@@ -189,7 +197,7 @@ const TS = `/**
  *   \`node DATA/_scripts/gen_derma_ciclo2.js [YYYY-MM-DD]\` (sin fecha: primer día-Derma tras DERMA_DAILY_META.fin).
  *
  * Qué es: la continuación del PLAN ÉLITE tras el cierre del ciclo 1 (d${D_OFFSET}, ${FIN_C1}), en la MISMA franja
- * 13:30-14:15 interdiaria con Research (paridad researchData.ts#diaEstudioTipo; verificado 0 solapes con
+ * 13:30-14:15 (v6.00: en F4/SERUMS, 30′ en tiempo muerto de la posta, L-S con paridad lun · mié · vie para Derma) interdiaria con Research (paridad researchData.ts#diaEstudioTipo; verificado 0 solapes con
  * researchDailyPlan.ts y researchDailyPlan2027.ts al generar) y con la MISMA clave de progreso 'derma' (numeración continua).
  *   · d${D_OFFSET + 1}-d${D_OFFSET + 12}: los ${RESTANTES.length} casos restantes de DERMA_CASO_ORDEN (posiciones ${PRIMERA}-199) a 3/sesión → primera pasada de los 200 completa.
  *   · d${D_OFFSET + 13}+: SEGUNDA PASADA FSRS — solo fallos del ledger (dermaCasosParaSegundaPasada), 0 casos nuevos.
@@ -213,7 +221,7 @@ export interface DiaDermaCiclo2 extends DiaDerma {
 }
 
 export const DERMA_CICLO2_META = {
-  inicio: '${FECHAS[0]}', fin: '${FECHAS[N - 1]}', totalDias: ${N}, // ciclo 2 · D${D_OFFSET + 1}=${wdOf(FECHAS[0])} ${FECHAS[0]} · alterna con Research · sáb+dom libres · generado ${HOY}
+  inicio: '${FECHAS[0]}', fin: '${FECHAS[N - 1]}', totalDias: ${N}, // ciclo 2 · D${D_OFFSET + 1}=${wdOf(FECHAS[0])} ${FECHAS[0]} · alterna con Research · v6.00: desde el SERUMS (${SERUMS_INICIO}) Derma = lun · mié · vie, 30′ en tiempo muerto de la posta; domingo libre · generado ${HOY}
   ciclo: 2 as const,
   dOffset: ${D_OFFSET},
   casosRestantes: ${RESTANTES.length}, sesionesConCasos: 12, casosPorSesion: 3,

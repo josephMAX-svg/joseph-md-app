@@ -41,6 +41,11 @@
 //    D115, D130): ahí se aplica AURUM_RUBRICA_PITCH (src/lib/aurumData.ts). → AURUM_PITCH_DIAS.
 //  · SKIP_FIJOS (25-dic, 31-dic, 1-ene) se saltan igual que en el resto de planes v5.6.
 //
+// v6.00 (6-oct-2026 · V6_ESPEC §E): SKIP y DÍAS PROTEGIDOS desde DATA/_scripts/_fechas_v6.json (se eliminan los v5.20 22-feb / 9-mar /
+//    10-mar; entran vie 12-mar, lun 15-mar y la Semana Santa jue 25 / vie 26-mar) → 130 hábiles mié 7-oct-2026 → JUE 15-ABR-2027
+//    (D96 lun 22-feb · pitch v5 D95 vie 19-feb = · v6 D115 mar 23-mar · v7 D130 jue 15-abr). DJ-4: desde la F2 (encaps.intensiva_desde =
+//    lun 4-ene-2027) AURUM va a 30' (14:15-14:45) = el `min` núcleo de la fila; los bloques extra quedan opcionales → campo por fila
+//    `min30: fecha >= intensiva_desde` (la UI muestra 30'). Nada se recorta: mismas 130 lecciones, mismo orden.
 // Determinista: sin Date.now()/Math.random aleatorio. Regenerar: node DATA/_scripts/gen_aurum_plan.js YYYY-MM-DD
 const fs = require('fs');
 const path = require('path');
@@ -64,12 +69,16 @@ if (lecciones.length !== 130) throw new Error('Se esperaban 130 lecciones, hay '
 const WD = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
 const START_ISO = process.argv[2] || '2026-10-07'; // default = D1 v5.20 (v5.19: 2026-10-06 · v5.18: 2026-10-05 · v5.17: 2026-10-01; antes 2026-09-07, v5.6); el pipeline pasa siempre la fecha if(!/^20\d\d-\d\d-\d\d$/.test(START_ISO)) throw new Error('START inválido: '+START_ISO); // v5.6: D1 = lun 7-sep-2026
 const START = new Date(START_ISO + 'T12:00:00'); // START parametrizado: node <script> YYYY-MM-DD
-const SKIP_FIJOS = new Set(['2026-12-25', '2026-12-31', '2027-01-01']); // v5.4: feriados libres en todos los planes
-// v5.20 (6-oct-2026) · DÍAS DE EXAMEN PROTEGIDOS: lun 22-feb-2027 (examen USMLE Step 1) · mar 9-mar (D-1 del ENCAPS) · mié 10-mar
-// (examen ENCAPS 2027-I). Sin sesiones de planes secundarios (Research · Derma · AURUM · MIR mantenimiento): esas fechas se SALTAN como
-// un feriado y el plan corre una ranura (nada se recorta). MISMA lista en gen_research_plan · gen_derma_ciclo2 · remap_inicio (Derma) ·
-// gen_aurum_plan · gen_mir_mantenimiento.
-const PROTEGIDOS = new Set(['2027-02-22', '2027-03-09', '2027-03-10']);
+// v6.00 (6-oct-2026): SKIP y DÍAS PROTEGIDOS desde DATA/_scripts/_fechas_v6.json (gen_fechas_v6.js aborta si no cuadra con sus derivaciones).
+// SKIP v6 = 25-dic · 31-dic · 1-ene · jue 25 / vie 26-mar-2027 · PROTEGIDOS v6 = vie 12-mar · sáb 13 · dom 14-mar · lun 15-mar · sáb 25-sep ·
+// dom 26-sep · lun 27-sep (los v5.20 lun 22-feb · mar 9-mar · mié 10-mar desaparecen). Sin sesiones de planes secundarios (Research · Derma ·
+// AURUM · MIR mantenimiento) en esas fechas: se SALTAN como un feriado y el plan corre una ranura (nada se recorta). MISMA fuente en
+// gen_research_plan · gen_derma_ciclo2 · remap_inicio (Derma) · gen_aurum_plan · gen_mir_mantenimiento.
+const F6 = require('./gen_fechas_v6').cargarFechasV6();
+const SKIP_FIJOS = new Set(F6.skip);
+const PROTEGIDOS = new Set(F6.protegidos.map((x) => x.fecha));
+/** v6.00 (DJ-4): desde la F2 (lun 4-ene-2027) AURUM = 30' (14:15-14:45) = `min` núcleo; el resto, opcional. */
+const MIN30_DESDE = F6.encaps.intensiva_desde;
 const isoOf = (d) => new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
 function nextBusinessDay(date) {
   const d = new Date(date);
@@ -144,6 +153,7 @@ for (let i = 0; i < lecciones.length; i++) {
     titulo: L.titulo,
     obs: L.obsidian_nota || undefined,
     min: L.min_core,                     // núcleo (ver + practica) = min_core (30-60)
+    min30: fechaISO >= MIN30_DESDE,      // v6.00: F2/F3 (desde el lun 4-ene-2027) → 30' (la UI muestra 30' = núcleo; bloques extra opcionales)
     bloques,
     liviano: lv ? { texto: lv.texto, min: lv.min || 0, pitch: lv.pitch || undefined } : undefined,
     pitch: ultimoDeFase ? L.fase : undefined,
@@ -181,7 +191,7 @@ const blkTs = (b) => {
 const diaTs = (x) => {
   let o = `{d:${x.d},fecha:"${x.fecha}",wd:"${x.wd}",semana:${x.semana},faseId:"${x.faseId}",fase:"${esc(x.fase)}",titulo:"${esc(x.titulo)}"`;
   if (x.obs) o += `,obs:"${esc(x.obs)}"`;
-  o += `,min:${x.min},bloques:[${x.bloques.map(blkTs).join(',')}]`;
+  o += `,min:${x.min},min30:${x.min30 ? 'true' : 'false'},bloques:[${x.bloques.map(blkTs).join(',')}]`;
   if (x.liviano) {
     o += `,liviano:{texto:"${esc(x.liviano.texto)}",min:${x.liviano.min}`;
     if (x.liviano.pitch) o += `,pitch:"${esc(x.liviano.pitch)}"`;
@@ -212,7 +222,9 @@ const ts = `/**
  * aurumDailyPlan.ts — Motor día-a-día AURUM v2 (${SEMANAS} semanas · ${TOTAL} días · ${dias[0].fecha} → ${finISO}).
  * AURUM = programa de 6 meses para volverse un closer de ventas de élite.
  * GENERADO por DATA/_scripts/gen_aurum_plan.js desde DATA/AURUM/curricula/_curriculum_v2.json.
- * NO editar a mano — regenerar: node DATA/_scripts/gen_aurum_plan.js YYYY-MM-DD (v5.20: 2026-10-07 · v5.19: 2026-10-06 · v5.18: 2026-10-05)
+ * NO editar a mano — regenerar: node DATA/_scripts/gen_aurum_plan.js YYYY-MM-DD (v6.00 = v5.20: 2026-10-07 · v5.19: 2026-10-06 · v5.18: 2026-10-05)
+ * v6.00 (6-oct-2026 · V6_ESPEC §E): SKIP / DÍAS PROTEGIDOS de DATA/_scripts/_fechas_v6.json → fin ${finISO}; desde ${MIN30_DESDE} (F2, DJ-4)
+ * AURUM = 30' 14:15-14:45 (campo min30 = true: la UI muestra 30' = núcleo; bloques extra opcionales). Mismas 130 lecciones.
  *
  * Calendario: las ${TOTAL} lecciones se asignan a días HÁBILES consecutivos Lunes→Viernes
  * (salta sábados y domingos). Ventana fija en Google Calendar: 14:15-15:15.
@@ -248,6 +260,8 @@ export interface DiaAurum {
   d: number; fecha: string; wd: string; semana: number;
   faseId: ${faseIdUnion}; fase: string; titulo: string; obs?: string;
   min: number; // núcleo (ver + practica) = min_core
+  /** v6.00 (DJ-4): true desde la F2 (lun 4-ene-2027) → la sesión es 30' (14:15-14:45) = núcleo; lo demás opcional. */
+  min30: boolean;
   bloques: AurumBloque[];
   liviano?: AurumLiviano; // 5º día de cada semana de F3-F6 (1 de cada 5 drills)
   pitch?: number;         // 1..7 = día de cierre de fase → grabar PITCH vN y puntuar con AURUM_RUBRICA_PITCH
@@ -255,7 +269,8 @@ export interface DiaAurum {
 
 export const AURUM_PLAN_META = {
   inicio: '${dias[0].fecha}', fin: '${finISO}', totalDias: ${TOTAL}, semanas: ${SEMANAS},
-  ventana: '14:15–15:15',
+  ventana: '14:15–15:15', // v6.00: 14:15–14:45 (30') desde min30Desde
+  min30Desde: '${MIN30_DESDE}', diasMin30: ${dias.filter((x) => x.min30).length},
   bloque: "Nucleo 30-60 min (ver+practicar) en 14:15-15:15 · lectura/audiolibro en huecos de viaje",
   fases: { ${fasesMetaTs} },
 } as const;
@@ -264,7 +279,7 @@ export const AURUM_DIAS: DiaAurum[] = [
 ${dias.map(diaTs).join(',\n')}
 ];
 
-/** Los 7 días de cierre de fase (PITCH v1→v7; 5º día de la semana del plan: v5.20 = mar D15/D35/D55, vie D75/D95 y mié D115/D130 · D95 vie 19-feb = último día del plan Step 1; el examen (lun 22-feb) y la víspera/día del ENCAPS (9-10 mar) son DÍAS PROTEGIDOS, sin AURUM · v5.19 = lun D15/D35/D55 y jue D75/D95/D115/D130 (⚠ D95 jue 18-feb = D-1 del Step 1 y D96 vie 19-feb = día del examen) · v5.18: vie D15-D55 y mié D75-D130). \`liviano\` = ese PITCH tiene versión LIVIANO. */
+/** Los 7 días de cierre de fase (PITCH v1→v7; 5º día de la semana del plan: v6.00 = mar D15/D35/D55, vie D75/D95, mar D115 (23-mar) y jue D130 (15-abr) · D96 lun 22-feb (ya no es día protegido); vie 12-mar y lun 15-mar (D-1 hábil y lunes post-ENCAPS) y la Semana Santa (25-26 mar) no llevan AURUM · v5.20 = mar D15/D35/D55, vie D75/D95 y mié D115/D130 · D95 vie 19-feb = último día del plan Step 1; el examen (lun 22-feb) y la víspera/día del ENCAPS (9-10 mar) eran DÍAS PROTEGIDOS · v5.19 = lun D15/D35/D55 y jue D75/D95/D115/D130 (⚠ D95 jue 18-feb = D-1 del Step 1 y D96 vie 19-feb = día del examen) · v5.18: vie D15-D55 y mié D75-D130). \`liviano\` = ese PITCH tiene versión LIVIANO. */
 export const AURUM_PITCH_DIAS: { pitch: number; d: number; fecha: string; faseId: DiaAurum['faseId']; liviano: boolean }[] = [
   ${pitchDias.join(',\n  ')}
 ];
@@ -319,7 +334,7 @@ console.log('  cierres de fase / PITCH:', pitchD.join(' · '));
 // (v5.17: jue 1-oct) no cae en viernes nunca; v5.20 (D1 mié 7-oct, con los DÍAS PROTEGIDOS 22-feb / 9-10 mar saltados): martes hasta el D55, mié 30-dic el D60, viernes D65-D95, lunes D100-D105 y miércoles D110-D115 · v5.19 (D1 mar 6-oct): lunes hasta el D55, mar 29-dic el D60 y jueves desde el D65 (ninguna en viernes) · v5.18 (D1 lun 5-oct): viernes hasta el D55, lun 28-dic el D60 y miércoles desde el D65. El invariante que se exige es "1 de cada 5 drills" (d=5 del JSON),
 // no el día de la semana.
 const livNoViernes = livDias.filter((x) => x.wd !== 'Vie').length;
-if (livNoViernes) console.log('  ⚠ variantes LIVIANO fuera de viernes por la deriva post-feriado o el D1 fuera de lunes:', livNoViernes, '(esperado: en v5.20, con D1 en miércoles, 9 —mar hasta D55, mié D60, lun D100-D105, mié D110-D115; D65-D95 sí caen en viernes—; en v5.19, con D1 en martes, todas —lun hasta D55, mar D60, jue D65-D115—; en v5.18 D60 lun + D65-D115 mié; con D1 en jueves, todas)');
+if (livNoViernes) console.log('  ⚠ variantes LIVIANO fuera de viernes por la deriva post-feriado o el D1 fuera de lunes:', livNoViernes, '(esperado: en v6.00, con D1 en miércoles, 7 —mar D40-D55, mié D60, mar D110-D115; D65-D105 caen en viernes—; en v5.20, 9 —mar hasta D55, mié D60, lun D100-D105, mié D110-D115; D65-D95 sí caen en viernes—; en v5.19, con D1 en martes, todas —lun hasta D55, mar D60, jue D65-D115—; en v5.18 D60 lun + D65-D115 mié; con D1 en jueves, todas)');
 if (TOTAL !== 130) throw new Error('Se esperaban 130 días, hay ' + TOTAL);
 if (finSemana.length) throw new Error('Hay días en sábado/domingo');
 if (enFeriado.length) throw new Error('Hay días en feriado fijo');

@@ -22,7 +22,12 @@ import { AurumChip, AurumLabel, AurumPanel, AurumProgressBar, AurumButton, Aurum
  * closer), lectura distinta para huecos, completar satisfactorio y vistas 7 días /
  * 26 semanas elegantes. Todo el look sale de src/theme/aurumTheme.ts. Data/wiring
  * intactos: PlanKey 'aurum', AURUM_* y studyProgress sin tocar.
+ * v6.00 (6-oct-2026 · V6_ESPEC §E · DJ-4): desde el lun 4-ene-2027 (AURUM_PLAN_META.min30Desde, campo `min30` de la fila) la sesión es
+ * 30' (14:15-14:45) = núcleo; los bloques extra quedan opcionales · fin jue 15-abr-2027 (130 lecciones, sin recortar).
  */
+/** v6.00: ventana y duración de la sesión de una fila (min30 → 30' núcleo, 14:15-14:45). */
+export function aurumVentanaDe(dia: { min30?: boolean }): string { return dia.min30 ? '14:15–14:45' : AURUM_PLAN_META.ventana; }
+export function aurumMinTxt(dia: { min: number; min30?: boolean }): string { return dia.min30 ? "30' (núcleo)" : `${dia.min} min`; }
 const isWeb = Platform.OS === 'web';
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
 export function aurumTodayISO(): string {
@@ -164,7 +169,7 @@ function HoyView({ dia, hoyD, done, onToggle, onGoBiblioteca, rubrica, onSaveRub
             ) : null}
           </View>
           <View style={[st.timeBadge, hecho ? { borderColor: withAlpha(C.success, 0.5), backgroundColor: withAlpha(C.success, 0.12) } : null]}>
-            <Text style={[st.timeBadgeTxt, hecho && { color: C.success }]}>⏱️ {dia.min} min · {AURUM_PLAN_META.ventana}</Text>
+            <Text style={[st.timeBadgeTxt, hecho && { color: C.success }]}>⏱️ {aurumMinTxt(dia)} · {aurumVentanaDe(dia)}</Text>
           </View>
           <Text style={st.misionKicker}>Misión del día {dia.d}</Text>
           <Text style={st.misionTitle}>{dia.titulo}</Text>
@@ -189,7 +194,7 @@ function HoyView({ dia, hoyD, done, onToggle, onGoBiblioteca, rubrica, onSaveRub
       </AurumRise>
 
       {/* NÚCLEO */}
-      <AurumLabel style={{ marginTop: S.lg }}>Núcleo de hoy · {dia.min} min en {AURUM_PLAN_META.ventana} (ver + practicar tu pitch)</AurumLabel>
+      <AurumLabel style={{ marginTop: S.lg }}>Núcleo de hoy · {aurumMinTxt(dia)} en {aurumVentanaDe(dia)} (ver + practicar tu pitch){dia.min30 ? ' · lo que exceda los 30\' es opcional (DJ-4)' : ''}</AurumLabel>
       {coreBloques.map((b, i) => <AurumRise key={`c${i}`} delay={40 + i * 30}><BloqueRow b={b} obsNota={dia.obs} /></AurumRise>)}
 
       {/* VARIANTE LIVIANO (viernes de F3-F6 · 1 de cada 5 drills) */}

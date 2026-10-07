@@ -1,0 +1,1192 @@
+{
+ "_meta": {
+  "origen": "v5.20 · DATA/_scripts/_encaps_mantenimiento_2027.sql (sembrado el 6-oct-2026; hash de filas = Supabase 9290ce30…)",
+  "exportado": "2026-10-06",
+  "uso": "v6.00 §C2: carril B ENCAPS 16:15 en F2 (misma fecha) — gen_encaps_intensivo_2027.js --carril-b",
+  "n": 32,
+  "banqueo1h": 26,
+  "mini_sim": 6,
+  "desde": "2027-01-04",
+  "hasta": "2027-02-16"
+ },
+ "filas": [
+  {
+   "examen": "ENCAPS",
+   "dia": 61,
+   "fecha": "2027-01-04",
+   "weekday": "Lun",
+   "tipo": "banqueo1h",
+   "codigo": "I-3",
+   "subtema": "Vigilancia epidemiológica · Variables tiempo-lugar-persona y mediciones (razón/proporción/tasa, incidencia/prevalencia, letalidad)",
+   "prioridad": "CRITICA",
+   "modo": "MANTENIMIENTO",
+   "videos": [],
+   "theomed": [],
+   "material_comp": [],
+   "temas_secundarios": [
+    {
+     "codigo": "II-7",
+     "subtema": "VACAM (dónde: I-2/I-3/I-4) y las 4 valoraciones del adulto mayor",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 7,
+    "de": 10,
+    "sub_eje": "tlp",
+    "sub_eje_label": "Variables tiempo-lugar-persona y mediciones (razón/proporción/tasa, incidencia/prevalencia, letalidad)",
+    "sub_eje_n": 7,
+    "sub_ejes_total": 8,
+    "secundario": "II-7"
+   }
+  },
+  {
+   "examen": "ENCAPS",
+   "dia": 62,
+   "fecha": "2027-01-05",
+   "weekday": "Mar",
+   "tipo": "banqueo1h",
+   "codigo": "V-2",
+   "subtema": "Gestión/planeamiento · Planeamiento estratégico: PEI/POI/FODA, objetivos estratégicos, ciclo CEPLAN",
+   "prioridad": "CRITICA",
+   "modo": "MANTENIMIENTO",
+   "videos": [],
+   "theomed": [],
+   "material_comp": [],
+   "temas_secundarios": [
+    {
+     "codigo": "I-1",
+     "subtema": "Promoción de la salud / entornos saludables + FESP (I-2, solo repaso)",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 7,
+    "de": 10,
+    "sub_eje": "planeamiento",
+    "sub_eje_label": "Planeamiento estratégico: PEI/POI/FODA, objetivos estratégicos, ciclo CEPLAN",
+    "sub_eje_n": 1,
+    "sub_ejes_total": 3,
+    "secundario": "I-1"
+   }
+  },
+  {
+   "examen": "ENCAPS",
+   "dia": 63,
+   "fecha": "2027-01-06",
+   "weekday": "Mié",
+   "tipo": "banqueo1h",
+   "codigo": "III-5",
+   "subtema": "Interculturalidad · Pertinencia cultural y barreras culturales en la atención",
+   "prioridad": "CRITICA",
+   "modo": "MANTENIMIENTO",
+   "videos": [],
+   "theomed": [],
+   "material_comp": [],
+   "temas_secundarios": [
+    {
+     "codigo": "II-2",
+     "subtema": "AIEPI/IRA (bronquiolitis, referencia) + clínica de inmunoprevenibles (sarampión: vitamina A, PEES)",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 4,
+    "de": 5,
+    "sub_eje": "pertinencia_barreras",
+    "sub_eje_label": "Pertinencia cultural y barreras culturales en la atención",
+    "sub_eje_n": 1,
+    "sub_ejes_total": 3,
+    "secundario": "II-2"
+   }
+  },
+  {
+   "examen": "ENCAPS",
+   "dia": 64,
+   "fecha": "2027-01-07",
+   "weekday": "Jue",
+   "tipo": "banqueo1h",
+   "codigo": "II-5",
+   "subtema": "APS/adolescente (MCI) · Modelo de Cuidado Integral por curso de vida: objetivo, indicadores, paquetes de atención",
+   "prioridad": "CRITICA",
+   "modo": "MANTENIMIENTO",
+   "videos": [],
+   "theomed": [],
+   "material_comp": [],
+   "temas_secundarios": [
+    {
+     "codigo": "I-10",
+     "subtema": "APS: definición y ATRIBUTOS (primer contacto, accesibilidad, continuidad, integralidad, coordinación)",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 4,
+    "de": 5,
+    "sub_eje": "mci_curso_vida",
+    "sub_eje_label": "Modelo de Cuidado Integral por curso de vida: objetivo, indicadores, paquetes de atención",
+    "sub_eje_n": 2,
+    "sub_ejes_total": 2,
+    "secundario": "I-10"
+   }
+  },
+  {
+   "examen": "ENCAPS",
+   "dia": 65,
+   "fecha": "2027-01-08",
+   "weekday": "Vie",
+   "tipo": "mini_sim",
+   "codigo": null,
+   "subtema": "Mini-simulacro semanal 25Q mixto (vector v3) · cola larga: I-5+I-6 + II-EMG",
+   "prioridad": "CRITICA",
+   "modo": "MANTENIMIENTO",
+   "videos": [],
+   "theomed": [],
+   "material_comp": [],
+   "temas_secundarios": [
+    {
+     "codigo": "I-5+I-6",
+     "subtema": "Determinantes, demografía/fuentes de datos (hechos vitales), transición epidemiológica, bioestadística mínima",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "5-6"
+    },
+    {
+     "codigo": "II-EMG",
+     "subtema": "Emergencia/triaje: prioridades de atención P-I inmediato · P-II ≤10 min · P-III ≤30 min (RM jul-2026)",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "5-6"
+    }
+   ],
+   "extra": {
+    "tipo": "mini_sim",
+    "sim_n": 65,
+    "semana": "2027-01-04",
+    "receta": {
+     "II": 8,
+     "I": 7,
+     "V": 5,
+     "III": 3,
+     "IV": 2
+    },
+    "vineta_pct": 50,
+    "criticos_min": 10,
+    "fallos_previos_min": 5,
+    "cola_larga_q": "5-6",
+    "seg_por_q": 72,
+    "umbral_25": 18,
+    "alerta_25": 15,
+    "cola_larga": [
+     "I-5+I-6",
+     "II-EMG"
+    ]
+   }
+  },
+  {
+   "examen": "ENCAPS",
+   "dia": 66,
+   "fecha": "2027-01-11",
+   "weekday": "Lun",
+   "tipo": "banqueo1h",
+   "codigo": "I-4",
+   "subtema": "Transmisibles/brotes · Malaria y zoonosis (leptospirosis, peste, Chagas, Carrión): vigilancia y control",
+   "prioridad": "CRITICA",
+   "modo": "MANTENIMIENTO",
+   "videos": [],
+   "theomed": [],
+   "material_comp": [],
+   "temas_secundarios": [
+    {
+     "codigo": "V-6",
+     "subtema": "Ley 30421 telesalud: teleconsulta / teleinterconsulta / telemonitoreo / teleorientación (definiciones textuales)",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 4,
+    "de": 5,
+    "sub_eje": "malaria_zoonosis",
+    "sub_eje_label": "Malaria y zoonosis (leptospirosis, peste, Chagas, Carrión): vigilancia y control",
+    "sub_eje_n": 4,
+    "sub_ejes_total": 4,
+    "secundario": "V-6"
+   }
+  },
+  {
+   "examen": "ENCAPS",
+   "dia": 67,
+   "fecha": "2027-01-12",
+   "weekday": "Mar",
+   "tipo": "banqueo1h",
+   "codigo": "IV-1",
+   "subtema": "Investigación (IV-1+IV-2) · Instrumentos de recolección (encuesta, entrevista, observación), validez y confiabilidad",
+   "prioridad": "CRITICA",
+   "modo": "MANTENIMIENTO",
+   "videos": [],
+   "theomed": [],
+   "material_comp": [],
+   "temas_secundarios": [
+    {
+     "codigo": "IV-2",
+     "subtema": "Conceptos básicos de investigación",
+     "prioridad": "MEDIA",
+     "rol": "paraguas",
+     "q": "incluido"
+    },
+    {
+     "codigo": "II-6",
+     "subtema": "TB: definiciones de caso y derechos laborales (licencia con goce)",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 4,
+    "de": 5,
+    "sub_eje": "instrumentos",
+    "sub_eje_label": "Instrumentos de recolección (encuesta, entrevista, observación), validez y confiabilidad",
+    "sub_eje_n": 4,
+    "sub_ejes_total": 4,
+    "secundario": "II-6"
+   }
+  },
+  {
+   "examen": "ENCAPS",
+   "dia": 68,
+   "fecha": "2027-01-13",
+   "weekday": "Mié",
+   "tipo": "banqueo1h",
+   "codigo": "II-4",
+   "subtema": "Anemia/CRED · Suplementación por grupo con CIFRAS: MEF 60 mg + 400 µg 2×/sem × 3 m, escolar 60 mg diario × 3 m, lactante",
+   "prioridad": "CRITICA",
+   "modo": "MANTENIMIENTO",
+   "videos": [],
+   "theomed": [],
+   "material_comp": [],
+   "temas_secundarios": [
+    {
+     "codigo": "II-10",
+     "subtema": "Cáncer: tamizaje de mama (mamografía por edad, rol del I-2) y signos de alarma de cáncer infantil",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 4,
+    "de": 5,
+    "sub_eje": "suplementacion_cifras",
+    "sub_eje_label": "Suplementación por grupo con CIFRAS: MEF 60 mg + 400 µg 2×/sem × 3 m, escolar 60 mg diario × 3 m, lactante",
+    "sub_eje_n": 1,
+    "sub_ejes_total": 3,
+    "secundario": "II-10"
+   }
+  },
+  {
+   "examen": "ENCAPS",
+   "dia": 69,
+   "fecha": "2027-01-14",
+   "weekday": "Jue",
+   "tipo": "banqueo1h",
+   "codigo": "II-1",
+   "subtema": "Gestante · Parto, puerperio y lactancia materna (ojo: la gestante ahora cae vía vacunas/ITS)",
+   "prioridad": "ALTA",
+   "modo": "MANTENIMIENTO",
+   "videos": [],
+   "theomed": [],
+   "material_comp": [],
+   "temas_secundarios": [
+    {
+     "codigo": "I-5+I-6",
+     "subtema": "Determinantes, demografía/fuentes de datos (hechos vitales), transición epidemiológica, bioestadística mínima",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 4,
+    "de": 5,
+    "sub_eje": "parto_lactancia",
+    "sub_eje_label": "Parto, puerperio y lactancia materna (ojo: la gestante ahora cae vía vacunas/ITS)",
+    "sub_eje_n": 2,
+    "sub_ejes_total": 2,
+    "secundario": "I-5+I-6"
+   }
+  },
+  {
+   "examen": "ENCAPS",
+   "dia": 70,
+   "fecha": "2027-01-15",
+   "weekday": "Vie",
+   "tipo": "mini_sim",
+   "codigo": null,
+   "subtema": "Mini-simulacro semanal 25Q mixto (vector v3) · cola larga: I-OCC + III-3",
+   "prioridad": "CRITICA",
+   "modo": "MANTENIMIENTO",
+   "videos": [],
+   "theomed": [],
+   "material_comp": [],
+   "temas_secundarios": [
+    {
+     "codigo": "I-OCC",
+     "subtema": "Salud ocupacional: riesgo profesional (vínculo laboral), factores físico / biológico / ergonómico / psicosocial",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "5-6"
+    },
+    {
+     "codigo": "III-3",
+     "subtema": "Consentimiento: retiro voluntario (contenido del formato) y negativa/rechazo en emergencia → ministerio público",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "5-6"
+    }
+   ],
+   "extra": {
+    "tipo": "mini_sim",
+    "sim_n": 70,
+    "semana": "2027-01-11",
+    "receta": {
+     "II": 8,
+     "I": 7,
+     "V": 5,
+     "III": 3,
+     "IV": 2
+    },
+    "vineta_pct": 50,
+    "criticos_min": 10,
+    "fallos_previos_min": 5,
+    "cola_larga_q": "5-6",
+    "seg_por_q": 72,
+    "umbral_25": 18,
+    "alerta_25": 15,
+    "cola_larga": [
+     "I-OCC",
+     "III-3"
+    ]
+   }
+  },
+  {
+   "examen": "ENCAPS",
+   "dia": 71,
+   "fecha": "2027-01-18",
+   "weekday": "Lun",
+   "tipo": "banqueo1h",
+   "codigo": "I-3",
+   "subtema": "Vigilancia epidemiológica · Gestión del riesgo en emergencias y desastres (EDAN, vigilancia post-desastre)",
+   "prioridad": "CRITICA",
+   "modo": "MANTENIMIENTO",
+   "videos": [],
+   "theomed": [],
+   "material_comp": [],
+   "temas_secundarios": [
+    {
+     "codigo": "II-EMG",
+     "subtema": "Emergencia/triaje: prioridades de atención P-I inmediato · P-II ≤10 min · P-III ≤30 min (RM jul-2026)",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 8,
+    "de": 10,
+    "sub_eje": "desastres",
+    "sub_eje_label": "Gestión del riesgo en emergencias y desastres (EDAN, vigilancia post-desastre)",
+    "sub_eje_n": 8,
+    "sub_ejes_total": 8,
+    "secundario": "II-EMG"
+   }
+  },
+  {
+   "examen": "ENCAPS",
+   "dia": 72,
+   "fecha": "2027-01-19",
+   "weekday": "Mar",
+   "tipo": "banqueo1h",
+   "codigo": "V-2",
+   "subtema": "Gestión/planeamiento · Clima organizacional (definición SERVIR, dimensiones, gestión en 3 fases) + gestión de la calidad",
+   "prioridad": "CRITICA",
+   "modo": "MANTENIMIENTO",
+   "videos": [],
+   "theomed": [],
+   "material_comp": [],
+   "temas_secundarios": [
+    {
+     "codigo": "I-OCC",
+     "subtema": "Salud ocupacional: riesgo profesional (vínculo laboral), factores físico / biológico / ergonómico / psicosocial",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 8,
+    "de": 10,
+    "sub_eje": "clima_calidad",
+    "sub_eje_label": "Clima organizacional (definición SERVIR, dimensiones, gestión en 3 fases) + gestión de la calidad",
+    "sub_eje_n": 2,
+    "sub_ejes_total": 3,
+    "secundario": "I-OCC"
+   }
+  },
+  {
+   "examen": "ENCAPS",
+   "dia": 73,
+   "fecha": "2027-01-20",
+   "weekday": "Mié",
+   "tipo": "banqueo1h",
+   "codigo": "III-8",
+   "subtema": "Ética en función pública · Historia clínica: archivo activo 5 años, acceso, custodia; función pública",
+   "prioridad": "MEDIA",
+   "modo": "MANTENIMIENTO",
+   "videos": [],
+   "theomed": [],
+   "material_comp": [],
+   "temas_secundarios": [
+    {
+     "codigo": "III-3",
+     "subtema": "Consentimiento: retiro voluntario (contenido del formato) y negativa/rechazo en emergencia → ministerio público",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 4,
+    "de": 4,
+    "sub_eje": "historia_clinica",
+    "sub_eje_label": "Historia clínica: archivo activo 5 años, acceso, custodia; función pública",
+    "sub_eje_n": 2,
+    "sub_ejes_total": 2,
+    "secundario": "III-3"
+   }
+  },
+  {
+   "examen": "ENCAPS",
+   "dia": 74,
+   "fecha": "2027-01-21",
+   "weekday": "Jue",
+   "tipo": "banqueo1h",
+   "codigo": "II-11",
+   "subtema": "ITS/VIH · Sífilis gestacional (PGB 2.4 M UI) y manejo sindrómico de ITS",
+   "prioridad": "ALTA",
+   "modo": "MANTENIMIENTO",
+   "videos": [],
+   "theomed": [],
+   "material_comp": [],
+   "temas_secundarios": [
+    {
+     "codigo": "I-11+I-12",
+     "subtema": "Plan local de salud (autoridad local), alianzas estratégicas e intersectorialidad",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 4,
+    "de": 4,
+    "sub_eje": "sifilis_sindromico",
+    "sub_eje_label": "Sífilis gestacional (PGB 2.4 M UI) y manejo sindrómico de ITS",
+    "sub_eje_n": 2,
+    "sub_ejes_total": 2,
+    "secundario": "I-11+I-12"
+   }
+  },
+  {
+   "examen": "ENCAPS",
+   "dia": 75,
+   "fecha": "2027-01-22",
+   "weekday": "Vie",
+   "tipo": "mini_sim",
+   "codigo": null,
+   "subtema": "Mini-simulacro semanal 25Q mixto (vector v3) · cola larga: I-11+I-12 + V-1",
+   "prioridad": "CRITICA",
+   "modo": "MANTENIMIENTO",
+   "videos": [],
+   "theomed": [],
+   "material_comp": [],
+   "temas_secundarios": [
+    {
+     "codigo": "I-11+I-12",
+     "subtema": "Plan local de salud (autoridad local), alianzas estratégicas e intersectorialidad",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "5-6"
+    },
+    {
+     "codigo": "V-1",
+     "subtema": "Categorías de EESS y RRHH por categoría (I-3 = odontología + laboratorio), UPSS",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "5-6"
+    }
+   ],
+   "extra": {
+    "tipo": "mini_sim",
+    "sim_n": 75,
+    "semana": "2027-01-18",
+    "receta": {
+     "II": 8,
+     "I": 7,
+     "V": 5,
+     "III": 3,
+     "IV": 2
+    },
+    "vineta_pct": 50,
+    "criticos_min": 10,
+    "fallos_previos_min": 5,
+    "cola_larga_q": "5-6",
+    "seg_por_q": 72,
+    "umbral_25": 18,
+    "alerta_25": 15,
+    "cola_larga": [
+     "I-11+I-12",
+     "V-1"
+    ]
+   }
+  },
+  {
+   "examen": "ENCAPS",
+   "dia": 76,
+   "fecha": "2027-01-25",
+   "weekday": "Lun",
+   "tipo": "banqueo1h",
+   "codigo": "IV-6",
+   "subtema": "Publicación/estadística (IV-6+IV-7) · Estructura IMRyD: resumen, marco teórico, discusión",
+   "prioridad": "MEDIA",
+   "modo": "MANTENIMIENTO",
+   "videos": [],
+   "theomed": [],
+   "material_comp": [],
+   "temas_secundarios": [
+    {
+     "codigo": "IV-7",
+     "subtema": "Instrumentos de recolección: cuantitativos",
+     "prioridad": "MEDIA",
+     "rol": "paraguas",
+     "q": "incluido"
+    },
+    {
+     "codigo": "V-1",
+     "subtema": "Categorías de EESS y RRHH por categoría (I-3 = odontología + laboratorio), UPSS",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 4,
+    "de": 4,
+    "sub_eje": "imryd",
+    "sub_eje_label": "Estructura IMRyD: resumen, marco teórico, discusión",
+    "sub_eje_n": 1,
+    "sub_ejes_total": 3,
+    "secundario": "V-1"
+   }
+  },
+  {
+   "examen": "ENCAPS",
+   "dia": 77,
+   "fecha": "2027-01-26",
+   "weekday": "Mar",
+   "tipo": "banqueo1h",
+   "codigo": "V-7",
+   "subtema": "Gestión de medicamentos (V-MED) · Farmacovigilancia (notificación espontánea) y uso racional de medicamentos",
+   "prioridad": "ALTA",
+   "modo": "MANTENIMIENTO",
+   "videos": [],
+   "theomed": [],
+   "material_comp": [],
+   "temas_secundarios": [
+    {
+     "codigo": "V-10",
+     "subtema": "Gestión de RRHH: SERVIR rige el SAGRH; 7 SUBSISTEMAS y 23 procesos",
+     "prioridad": "MEDIA",
+     "rol": "paraguas",
+     "q": "incluido"
+    },
+    {
+     "codigo": "V-3",
+     "subtema": "RIS: 4 dimensiones (prestación = puerta de entrada) y gestión de RRHH",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 4,
+    "de": 4,
+    "sub_eje": "farmacovigilancia_urm",
+    "sub_eje_label": "Farmacovigilancia (notificación espontánea) y uso racional de medicamentos",
+    "sub_eje_n": 1,
+    "sub_ejes_total": 3,
+    "secundario": "V-3"
+   }
+  },
+  {
+   "examen": "ENCAPS",
+   "dia": 78,
+   "fecha": "2027-01-27",
+   "weekday": "Mié",
+   "tipo": "banqueo1h",
+   "codigo": "II-8",
+   "subtema": "ENT/diabetes · HTA/DM2: metas (HbA1c), 150 min/sem OMS, referencia",
+   "prioridad": "ALTA",
+   "modo": "MANTENIMIENTO",
+   "videos": [],
+   "theomed": [],
+   "material_comp": [],
+   "temas_secundarios": [
+    {
+     "codigo": "III-1",
+     "subtema": "Ética en salud pública (justicia/racionamiento) + deontología CMP (III-2: relaciones entre colegas)",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 4,
+    "de": 4,
+    "sub_eje": "metas_hta_dm",
+    "sub_eje_label": "HTA/DM2: metas (HbA1c), 150 min/sem OMS, referencia",
+    "sub_eje_n": 2,
+    "sub_ejes_total": 2,
+    "secundario": "III-1"
+   }
+  },
+  {
+   "examen": "ENCAPS",
+   "dia": 79,
+   "fecha": "2027-01-28",
+   "weekday": "Jue",
+   "tipo": "banqueo1h",
+   "codigo": "II-3",
+   "subtema": "Inmunizaciones · Esquema nacional: vacunas por edad, dosis, vías e intervalos mínimos",
+   "prioridad": "CRITICA",
+   "modo": "MANTENIMIENTO",
+   "videos": [],
+   "theomed": [],
+   "material_comp": [],
+   "temas_secundarios": [
+    {
+     "codigo": "III-9",
+     "subtema": "Ley 29414 por CATEGORÍAS de derecho (segunda opinión = acceso a servicios)",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 5,
+    "de": 5,
+    "sub_eje": "esquema_intervalos",
+    "sub_eje_label": "Esquema nacional: vacunas por edad, dosis, vías e intervalos mínimos",
+    "sub_eje_n": 1,
+    "sub_ejes_total": 4,
+    "secundario": "III-9"
+   }
+  },
+  {
+   "examen": "ENCAPS",
+   "dia": 80,
+   "fecha": "2027-01-29",
+   "weekday": "Vie",
+   "tipo": "mini_sim",
+   "codigo": null,
+   "subtema": "Mini-simulacro semanal 25Q mixto (vector v3) · cola larga: V-3 + III-1",
+   "prioridad": "CRITICA",
+   "modo": "MANTENIMIENTO",
+   "videos": [],
+   "theomed": [],
+   "material_comp": [],
+   "temas_secundarios": [
+    {
+     "codigo": "V-3",
+     "subtema": "RIS: 4 dimensiones (prestación = puerta de entrada) y gestión de RRHH",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "5-6"
+    },
+    {
+     "codigo": "III-1",
+     "subtema": "Ética en salud pública (justicia/racionamiento) + deontología CMP (III-2: relaciones entre colegas)",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "5-6"
+    }
+   ],
+   "extra": {
+    "tipo": "mini_sim",
+    "sim_n": 80,
+    "semana": "2027-01-25",
+    "receta": {
+     "II": 8,
+     "I": 7,
+     "V": 5,
+     "III": 3,
+     "IV": 2
+    },
+    "vineta_pct": 50,
+    "criticos_min": 10,
+    "fallos_previos_min": 5,
+    "cola_larga_q": "5-6",
+    "seg_por_q": 72,
+    "umbral_25": 18,
+    "alerta_25": 15,
+    "cola_larga": [
+     "V-3",
+     "III-1"
+    ]
+   }
+  },
+  {
+   "examen": "ENCAPS",
+   "dia": 81,
+   "fecha": "2027-02-01",
+   "weekday": "Lun",
+   "tipo": "banqueo1h",
+   "codigo": "I-3",
+   "subtema": "Vigilancia epidemiológica · Tipos de vigilancia (activa / pasiva / centinela / sindrómica / comunitaria) y definiciones de caso",
+   "prioridad": "CRITICA",
+   "modo": "MANTENIMIENTO",
+   "videos": [],
+   "theomed": [],
+   "material_comp": [],
+   "temas_secundarios": [
+    {
+     "codigo": "II-9",
+     "subtema": "Salud mental comunitaria: modelo, CSMC, continuidad de cuidados",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 9,
+    "de": 10,
+    "sub_eje": "tipos_vigilancia",
+    "sub_eje_label": "Tipos de vigilancia (activa / pasiva / centinela / sindrómica / comunitaria) y definiciones de caso",
+    "sub_eje_n": 1,
+    "sub_ejes_total": 8,
+    "secundario": "II-9"
+   }
+  },
+  {
+   "examen": "ENCAPS",
+   "dia": 82,
+   "fecha": "2027-02-02",
+   "weekday": "Mar",
+   "tipo": "banqueo1h",
+   "codigo": "V-2",
+   "subtema": "Gestión/planeamiento · Residuos sólidos hospitalarios y bioseguridad: colores de bolsa, punzocortantes (llenado 3/4), etapas del manejo",
+   "prioridad": "CRITICA",
+   "modo": "MANTENIMIENTO",
+   "videos": [],
+   "theomed": [],
+   "material_comp": [],
+   "temas_secundarios": [
+    {
+     "codigo": "II-7",
+     "subtema": "VACAM (dónde: I-2/I-3/I-4) y las 4 valoraciones del adulto mayor",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 9,
+    "de": 10,
+    "sub_eje": "residuos_bioseguridad",
+    "sub_eje_label": "Residuos sólidos hospitalarios y bioseguridad: colores de bolsa, punzocortantes (llenado 3/4), etapas del manejo",
+    "sub_eje_n": 3,
+    "sub_ejes_total": 3,
+    "secundario": "II-7"
+   }
+  },
+  {
+   "examen": "ENCAPS",
+   "dia": 83,
+   "fecha": "2027-02-03",
+   "weekday": "Mié",
+   "tipo": "banqueo1h",
+   "codigo": "III-5",
+   "subtema": "Interculturalidad · Medicina tradicional/complementaria y pertenencia étnica (autoidentificación)",
+   "prioridad": "CRITICA",
+   "modo": "MANTENIMIENTO",
+   "videos": [],
+   "theomed": [],
+   "material_comp": [],
+   "temas_secundarios": [
+    {
+     "codigo": "I-1",
+     "subtema": "Promoción de la salud / entornos saludables + FESP (I-2, solo repaso)",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 5,
+    "de": 5,
+    "sub_eje": "medicina_tradicional",
+    "sub_eje_label": "Medicina tradicional/complementaria y pertenencia étnica (autoidentificación)",
+    "sub_eje_n": 2,
+    "sub_ejes_total": 3,
+    "secundario": "I-1"
+   }
+  },
+  {
+   "examen": "ENCAPS",
+   "dia": 84,
+   "fecha": "2027-02-04",
+   "weekday": "Jue",
+   "tipo": "banqueo1h",
+   "codigo": "II-5",
+   "subtema": "APS/adolescente (MCI) · NTS cuidado integral del adolescente: áreas de riesgo, factores protectores, consejería, continuidad IE→EESS",
+   "prioridad": "CRITICA",
+   "modo": "MANTENIMIENTO",
+   "videos": [],
+   "theomed": [],
+   "material_comp": [],
+   "temas_secundarios": [
+    {
+     "codigo": "II-2",
+     "subtema": "AIEPI/IRA (bronquiolitis, referencia) + clínica de inmunoprevenibles (sarampión: vitamina A, PEES)",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 5,
+    "de": 5,
+    "sub_eje": "nts_adolescente",
+    "sub_eje_label": "NTS cuidado integral del adolescente: áreas de riesgo, factores protectores, consejería, continuidad IE→EESS",
+    "sub_eje_n": 1,
+    "sub_ejes_total": 2,
+    "secundario": "II-2"
+   }
+  },
+  {
+   "examen": "ENCAPS",
+   "dia": 85,
+   "fecha": "2027-02-05",
+   "weekday": "Vie",
+   "tipo": "mini_sim",
+   "codigo": null,
+   "subtema": "Mini-simulacro semanal 25Q mixto (vector v3) · cola larga: III-9 + II-9",
+   "prioridad": "CRITICA",
+   "modo": "MANTENIMIENTO",
+   "videos": [],
+   "theomed": [],
+   "material_comp": [],
+   "temas_secundarios": [
+    {
+     "codigo": "III-9",
+     "subtema": "Ley 29414 por CATEGORÍAS de derecho (segunda opinión = acceso a servicios)",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "5-6"
+    },
+    {
+     "codigo": "II-9",
+     "subtema": "Salud mental comunitaria: modelo, CSMC, continuidad de cuidados",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "5-6"
+    }
+   ],
+   "extra": {
+    "tipo": "mini_sim",
+    "sim_n": 85,
+    "semana": "2027-02-01",
+    "receta": {
+     "II": 8,
+     "I": 7,
+     "V": 5,
+     "III": 3,
+     "IV": 2
+    },
+    "vineta_pct": 50,
+    "criticos_min": 10,
+    "fallos_previos_min": 5,
+    "cola_larga_q": "5-6",
+    "seg_por_q": 72,
+    "umbral_25": 18,
+    "alerta_25": 15,
+    "cola_larga": [
+     "III-9",
+     "II-9"
+    ]
+   }
+  },
+  {
+   "examen": "ENCAPS",
+   "dia": 86,
+   "fecha": "2027-02-08",
+   "weekday": "Lun",
+   "tipo": "banqueo1h",
+   "codigo": "I-4",
+   "subtema": "Transmisibles/brotes · Dengue completo: escenarios I/II/III, índice aédico, control larvario y adulticida, necropsia 24 h",
+   "prioridad": "CRITICA",
+   "modo": "MANTENIMIENTO",
+   "videos": [],
+   "theomed": [],
+   "material_comp": [],
+   "temas_secundarios": [
+    {
+     "codigo": "I-10",
+     "subtema": "APS: definición y ATRIBUTOS (primer contacto, accesibilidad, continuidad, integralidad, coordinación)",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 5,
+    "de": 5,
+    "sub_eje": "dengue",
+    "sub_eje_label": "Dengue completo: escenarios I/II/III, índice aédico, control larvario y adulticida, necropsia 24 h",
+    "sub_eje_n": 1,
+    "sub_ejes_total": 4,
+    "secundario": "I-10"
+   }
+  },
+  {
+   "examen": "ENCAPS",
+   "dia": 87,
+   "fecha": "2027-02-09",
+   "weekday": "Mar",
+   "tipo": "banqueo1h",
+   "codigo": "IV-1",
+   "subtema": "Investigación (IV-1+IV-2) · Método científico: definiciones textuales (problema, hipótesis, variables, objetivos)",
+   "prioridad": "CRITICA",
+   "modo": "MANTENIMIENTO",
+   "videos": [],
+   "theomed": [],
+   "material_comp": [],
+   "temas_secundarios": [
+    {
+     "codigo": "IV-2",
+     "subtema": "Conceptos básicos de investigación",
+     "prioridad": "MEDIA",
+     "rol": "paraguas",
+     "q": "incluido"
+    },
+    {
+     "codigo": "V-6",
+     "subtema": "Ley 30421 telesalud: teleconsulta / teleinterconsulta / telemonitoreo / teleorientación (definiciones textuales)",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 5,
+    "de": 5,
+    "sub_eje": "metodo_cientifico",
+    "sub_eje_label": "Método científico: definiciones textuales (problema, hipótesis, variables, objetivos)",
+    "sub_eje_n": 1,
+    "sub_ejes_total": 4,
+    "secundario": "V-6"
+   }
+  },
+  {
+   "examen": "ENCAPS",
+   "dia": 88,
+   "fecha": "2027-02-10",
+   "weekday": "Mié",
+   "tipo": "banqueo1h",
+   "codigo": "II-4",
+   "subtema": "Anemia/CRED · Anemia: diagnóstico (puntos de corte de Hb y ajuste por altitud) y tratamiento",
+   "prioridad": "CRITICA",
+   "modo": "MANTENIMIENTO",
+   "videos": [],
+   "theomed": [],
+   "material_comp": [],
+   "temas_secundarios": [
+    {
+     "codigo": "II-6",
+     "subtema": "TB: definiciones de caso y derechos laborales (licencia con goce)",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 5,
+    "de": 5,
+    "sub_eje": "anemia_dx_tto",
+    "sub_eje_label": "Anemia: diagnóstico (puntos de corte de Hb y ajuste por altitud) y tratamiento",
+    "sub_eje_n": 2,
+    "sub_ejes_total": 3,
+    "secundario": "II-6"
+   }
+  },
+  {
+   "examen": "ENCAPS",
+   "dia": 89,
+   "fecha": "2027-02-11",
+   "weekday": "Jue",
+   "tipo": "banqueo1h",
+   "codigo": "II-1",
+   "subtema": "Gestante · Control prenatal + emergencias obstétricas (claves roja/azul/amarilla)",
+   "prioridad": "ALTA",
+   "modo": "MANTENIMIENTO",
+   "videos": [],
+   "theomed": [],
+   "material_comp": [],
+   "temas_secundarios": [
+    {
+     "codigo": "II-10",
+     "subtema": "Cáncer: tamizaje de mama (mamografía por edad, rol del I-2) y signos de alarma de cáncer infantil",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 5,
+    "de": 5,
+    "sub_eje": "prenatal_emergencias",
+    "sub_eje_label": "Control prenatal + emergencias obstétricas (claves roja/azul/amarilla)",
+    "sub_eje_n": 1,
+    "sub_ejes_total": 2,
+    "secundario": "II-10"
+   }
+  },
+  {
+   "examen": "ENCAPS",
+   "dia": 90,
+   "fecha": "2027-02-12",
+   "weekday": "Vie",
+   "tipo": "mini_sim",
+   "codigo": null,
+   "subtema": "Mini-simulacro semanal 25Q mixto (vector v3) · cola larga: II-7 + I-1",
+   "prioridad": "CRITICA",
+   "modo": "MANTENIMIENTO",
+   "videos": [],
+   "theomed": [],
+   "material_comp": [],
+   "temas_secundarios": [
+    {
+     "codigo": "II-7",
+     "subtema": "VACAM (dónde: I-2/I-3/I-4) y las 4 valoraciones del adulto mayor",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "5-6"
+    },
+    {
+     "codigo": "I-1",
+     "subtema": "Promoción de la salud / entornos saludables + FESP (I-2, solo repaso)",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "5-6"
+    }
+   ],
+   "extra": {
+    "tipo": "mini_sim",
+    "sim_n": 90,
+    "semana": "2027-02-08",
+    "receta": {
+     "II": 8,
+     "I": 7,
+     "V": 5,
+     "III": 3,
+     "IV": 2
+    },
+    "vineta_pct": 50,
+    "criticos_min": 10,
+    "fallos_previos_min": 5,
+    "cola_larga_q": "5-6",
+    "seg_por_q": 72,
+    "umbral_25": 18,
+    "alerta_25": 15,
+    "cola_larga": [
+     "II-7",
+     "I-1"
+    ]
+   }
+  },
+  {
+   "examen": "ENCAPS",
+   "dia": 91,
+   "fecha": "2027-02-15",
+   "weekday": "Lun",
+   "tipo": "banqueo1h",
+   "codigo": "I-3",
+   "subtema": "Vigilancia epidemiológica · Notificación inmediata vs semanal, ficha clínico-epidemiológica, flujo RENACE (Dir. 341-2023)",
+   "prioridad": "CRITICA",
+   "modo": "MANTENIMIENTO",
+   "videos": [],
+   "theomed": [],
+   "material_comp": [],
+   "temas_secundarios": [
+    {
+     "codigo": "I-5+I-6",
+     "subtema": "Determinantes, demografía/fuentes de datos (hechos vitales), transición epidemiológica, bioestadística mínima",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 10,
+    "de": 10,
+    "sub_eje": "notificacion",
+    "sub_eje_label": "Notificación inmediata vs semanal, ficha clínico-epidemiológica, flujo RENACE (Dir. 341-2023)",
+    "sub_eje_n": 2,
+    "sub_ejes_total": 8,
+    "secundario": "I-5+I-6"
+   }
+  },
+  {
+   "examen": "ENCAPS",
+   "dia": 92,
+   "fecha": "2027-02-16",
+   "weekday": "Mar",
+   "tipo": "banqueo1h",
+   "codigo": "V-2",
+   "subtema": "Gestión/planeamiento · Planeamiento estratégico: PEI/POI/FODA, objetivos estratégicos, ciclo CEPLAN",
+   "prioridad": "CRITICA",
+   "modo": "MANTENIMIENTO",
+   "videos": [],
+   "theomed": [],
+   "material_comp": [],
+   "temas_secundarios": [
+    {
+     "codigo": "II-EMG",
+     "subtema": "Emergencia/triaje: prioridades de atención P-I inmediato · P-II ≤10 min · P-III ≤30 min (RM jul-2026)",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 10,
+    "de": 10,
+    "sub_eje": "planeamiento",
+    "sub_eje_label": "Planeamiento estratégico: PEI/POI/FODA, objetivos estratégicos, ciclo CEPLAN",
+    "sub_eje_n": 1,
+    "sub_ejes_total": 3,
+    "secundario": "II-EMG"
+   }
+  }
+ ]
+}

@@ -12,7 +12,7 @@ import { AURUM_PLAN_META, AURUM_PITCH_DIAS, AURUM_LIVIANO_DIAS } from '../../lib
 import { AURUM_BIBLIOTECA_NIVELES, AurumBibLibro } from '../../lib/aurumBiblioteca';
 import { loadDone, saveDone, planHoyD, progresoGlobal } from '../../lib/studyProgress';
 import { AURUM_DIAS } from '../../lib/aurumDailyPlan';
-import AurumTodayPlan, { aurumTodayISO } from './AurumTodayPlan';
+import AurumTodayPlan, { aurumTodayISO, aurumVentanaDe } from './AurumTodayPlan';
 import {
   AurumColors as C, AurumRadius as R, AurumSpacing as S, AurumType as T,
   AURUM_AUTHORITIES, withAlpha,
@@ -28,6 +28,8 @@ import {
  * Rediseño PREMIUM (estética Hormozi / acquisition.com): navy profundo + oro, alto
  * contraste, jerarquía de autoridad. TODO el look sale de src/theme/aurumTheme.ts.
  * NO toca data/wiring: PlanKey 'aurum', AURUM_* y la navegación quedan intactos.
+ * v6.00 (6-oct-2026 · V6_ESPEC §E · DJ-4): sello HOY y protocolo con la duración v6 — 60' (14:15-15:15) en F1 · 30' núcleo (14:15-14:45)
+ * desde el lun 4-ene-2027 (`min30`) · fin jue 15-abr-2027 (AURUM_PLAN_META.fin).
  */
 const isWeb = Platform.OS === 'web';
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
@@ -253,7 +255,7 @@ function BibliotecaView({ isDesktop }: { isDesktop: boolean }) {
 function ProtocoloView() {
   return (
     <View>
-      <AurumLabel>Protocolo · núcleo en {AURUM_PLAN_META.ventana} (L-V) + lectura en tus huecos · sáb/dom libres</AurumLabel>
+      <AurumLabel>Protocolo · núcleo en {AURUM_PLAN_META.ventana} (L-V; desde el {AURUM_PLAN_META.min30Desde} = 30' núcleo 14:15-14:45, DJ-4) + lectura en tus huecos · sáb/dom libres · fin {AURUM_PLAN_META.fin}</AurumLabel>
       <AurumPanel accent={C.gold} glow style={{ marginBottom: S['2xl'] }}>
         {AURUM_PROTOCOLO.map((h, i) => {
           const audio = h.formato.includes('audio');
@@ -461,7 +463,7 @@ export default function AurumHub({ onBack, variant = 'mobile' }: { onBack?: () =
             <Text style={st.heroTagline}>El arte de convertir conversaciones en oro</Text>
             <Text style={st.heroTesis}>
               Método de los REALES — los que vendieron y construyeron antes de enseñar — aplicado a
-              ALLPA (terrenos) y Qori Golden. 26 semanas, ventana {AURUM_PLAN_META.ventana} L-V: ver + practicar tu pitch.
+              ALLPA (terrenos) y Qori Golden. 26 semanas ({AURUM_PLAN_META.inicio} → {AURUM_PLAN_META.fin}), ventana {AURUM_PLAN_META.ventana} L-V (30' núcleo desde el {AURUM_PLAN_META.min30Desde}): ver + practicar tu pitch.
             </Text>
             {/* chips de autoridad — referentes reales */}
             <View style={st.authRow}>
@@ -475,8 +477,8 @@ export default function AurumHub({ onBack, variant = 'mobile' }: { onBack?: () =
           </View>
           {/* sello HOY */}
           <View style={[st.todaySeal, isDesktop ? { marginLeft: S.xl } : { marginTop: S.lg }]}>
-            <Text style={st.todayLabel}>HOY · {AURUM_PLAN_META.ventana}</Text>
-            <Text style={st.todayValue}>{diaHoy.min}'</Text>
+            <Text style={st.todayLabel}>HOY · {aurumVentanaDe(diaHoy)}</Text>
+            <Text style={st.todayValue}>{diaHoy.min30 ? "30'" : `${diaHoy.min}'`}</Text>
             <Text style={st.todaySub}>núcleo · ver + practicar</Text>
           </View>
         </View>

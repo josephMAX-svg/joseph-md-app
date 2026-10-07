@@ -31,6 +31,7 @@ import DermaMorphologyFilter, { DermaFilters } from '../derma/DermaMorphologyFil
 import DermaDermoscopyKey from '../derma/DermaDermoscopyKey';
 import DermaLineIcon from '../derma/DermaLineIcons';
 import { HeroBackdrop } from '../HeroBackdrop';
+import { FECHAS_V6, motivoProtegido } from '../../lib/fechasV6';
 import {
   DERMA_LIBROS_ESTETICA, DERMA_VIDEOS, DERMA_QBANKS_ACCESS, DERMA_CASES_ACCESS,
   DERMA_QBANKLY_RESUMEN, srcBook, srcCap, srcMm, srcQa, srcCases,
@@ -47,6 +48,9 @@ import {
  * mapa del SPEC A–G como ÍNDICE hacia las fichas de 7 pasos (dermaCerebro.ts) y hacia el día del plan (salto a HOY).
  * DERMA_FASES / DERMA_HORARIO (junio, v1) y el RingStat «12 semanas» ya no se muestran como verdad: quedan en un bloque
  * plegado «histórico v1» que no alimenta ningún cálculo. Interdiario con Research. Reutilizado mobile y desktop.
+ * v6.00 (6-oct-2026 · V6_ESPEC §E · §F · DJ-4): la ventana d44-d49 es «ALIVIO F2 (antes taper Step 1)» (lun 8-feb → lun 22-feb, dentro de
+ * la intensiva ENCAPS; ya no hay examen Step 1 en febrero) · ciclo 2 vie 7-may → mié 14-jul-2027 · en F4 (SERUMS) el chip HOY dice
+ * «30' en tiempo muerto (posta)» y el sábado es día de plan (Derma lun · mié · vie) · días protegidos v6 (fechasV6) sin sesión.
  */
 
 const PURPLE = DERMA_META.accent; // amatista #9A7BC8
@@ -415,8 +419,9 @@ function CerebroView({ hoyD, onJump, onGoDebilidades }: { hoyD: number; onJump: 
       items.push({ d: primero, fecha: fechaDeD(primero), t: `Cuenta doble Step 1 · ${DERMA_STEP1_DIAS.length} átomos (${DERMA_STEP1_DIAS.map((d) => `d${d}`).join(' ')})`, sub: `${fmtFecha(fechaDeD(primero))} → ${fmtFecha(fechaDeD(ultimo))} · mismo mazo FSRS, tag step1 · anclaje al día "dermato" del plan USMLE en d12/d24`, color: DermaAtlas.periwinkle });
     }
     for (const d of DERMA_DRILL_DIAS_V3) if (!DERMA_CHECKPOINT_DIAS_V3.includes(d)) items.push({ d, fecha: fechaDeD(d), t: `Drill HDPH · oclusión vascular 90 s · d${d}`, sub: 'DermaEmergencyDrill cronometrado → ledger (fuente drill) · prompt HDPH del NotebookLM', color: DermaAtlas.crit });
-    items.push({ d: t.desdeD, fecha: t.desde, t: `TAPER Step 1 · d${t.desdeD}-d${t.hastaD} (${DERMA_TAPER_DIAS.length} sesiones)`, sub: `${fmtFecha(t.desde)} → ${fmtFecha(t.hasta)} · 1 caso ciego + FSRS de fallos + 0 preguntas y 0 lectura nuevas · el ${fmtFecha(t.hasta)} es el día del examen (sesión opcional)`, color: DermaAtlas.crit });
-    items.push({ d: DERMA_DAILY_META.postStep1D1, fecha: fechaDeD(DERMA_DAILY_META.postStep1D1), t: `Post-Step 1 · d${DERMA_DAILY_META.postStep1D1}: 3 casos ciegos por sesión`, sub: 'primera sesión tras el examen · los 10Q del banco pasan a variable de ajuste', color: DermaAtlas.jade });
+    // v6.00: la ventana d44-d49 ya no es la semana del examen Step 1 (que pasa a sep-2027): es el ALIVIO de la intensiva ENCAPS (mismo contenido)
+    items.push({ d: t.desdeD, fecha: t.desde, t: `ALIVIO F2 (antes taper Step 1) · d${t.desdeD}-d${t.hastaD} (${DERMA_TAPER_DIAS.length} sesiones)`, sub: `${fmtFecha(t.desde)} → ${fmtFecha(t.hasta)} · 1 caso ciego + FSRS de fallos + 0 preguntas y 0 lectura nuevas · ${t.motivo}`, color: DermaAtlas.crit });
+    items.push({ d: DERMA_DAILY_META.postStep1D1, fecha: fechaDeD(DERMA_DAILY_META.postStep1D1), t: `Carga completa · d${DERMA_DAILY_META.postStep1D1}: 3 casos ciegos por sesión`, sub: 'primera sesión tras la ventana de alivio (nombre histórico «postStep1») · los 10Q del banco pasan a variable de ajuste', color: DermaAtlas.jade });
     const CP_T: Record<string, string> = { cp1: 'Checkpoint 1 · mapa de fallos por módulo CORE', cp2: 'Checkpoint 2 · re-drill + DD Challenge + drill HDPH', repaso1: 'Repaso 1 · 2ª pasada FSRS solo de fallados', repaso2: 'Repaso 2 · mapa final de debilidades' };
     for (const [k, d] of Object.entries(DERMA_CHECKPOINTS)) items.push({ d, fecha: fechaDeD(d), t: `${CP_T[k] ?? k} · d${d}`, sub: 'lee el ledger (DermaCheckpointPanel) · prompt 2 del NotebookLM «qué no sé del módulo X»', color: PURPLE });
     items.push({ d: DERMA_CICLO2_META.dOffset + 1, fecha: DERMA_CICLO2_META.inicio, t: `CICLO 2 · d${DERMA_CICLO2_META.dOffset + 1}-d${DERMA_CICLO2_META.dOffset + DERMA_CICLO2_META.totalDias}`, sub: `${fmtFecha(DERMA_CICLO2_META.inicio)} → ${fmtFecha(DERMA_CICLO2_META.fin)} · ${DERMA_CICLO2_META.casosRestantes} casos restantes a ${DERMA_CICLO2_META.casosPorSesion}/sesión + 2ª pasada FSRS + módulos G+1…G+9 en el slot de lectura`, color: GOLD });
@@ -506,7 +511,7 @@ function CerebroView({ hoyD, onJump, onGoDebilidades }: { hoyD: number; onJump: 
             </TouchableOpacity>
           );
         })}
-        <Text style={fst.note}>Regla PLAN_ELITE §13: ningún átomo CRIT nuevo a ±3 días hábiles de un examen mayor. El taper ENCAPS se activa solo cuando DERMA_TAPER_ENCAPS_FECHA tenga la fecha real del examen 2027-I ({DERMA_TAPER_ENCAPS_FECHA ? `fijada: ${fmtFecha(DERMA_TAPER_ENCAPS_FECHA)}` : 'hoy null · examen FIJADO mié 10-mar-2027 (v5.20), constante sin activar'}).</Text>
+        <Text style={fst.note}>Regla PLAN_ELITE §13: ningún átomo CRIT nuevo a ±3 días hábiles de un examen mayor. El taper ENCAPS se activa solo cuando DERMA_TAPER_ENCAPS_FECHA tenga la fecha real del examen 2027-I ({DERMA_TAPER_ENCAPS_FECHA ? `fijada: ${fmtFecha(DERMA_TAPER_ENCAPS_FECHA)}` : `hoy null · examen ${fmtFecha(FECHAS_V6.encaps.examen)}${FECHAS_V6.encaps.provisional ? ' PROVISIONAL (se fija con la convocatoria)' : ''}, constante sin activar`}).</Text>{/* v6.00 (6-oct-2026): fecha del ENCAPS desde fechasV6 (antes «examen FIJADO mié 10-mar-2027 (v5.20)» escrito a mano) */}
       </GlassPanel>
 
       {/* CICLO REAL DE LA SESIÓN · DERMA_FRANJAS (sustituye al micro-horario v1 de 60′) */}
@@ -709,7 +714,11 @@ export default function DermaHub({ variant = 'mobile' }: { variant?: 'mobile' | 
   const { entries: ledger } = useDermaLedger();
   const ciego = dermaPctCiego(ledger);
   const hoyColor = hoy === 'derma' ? PURPLE : hoy === 'research' ? DermaAtlas.jade : Colors.muted;
-  const hoyLabel = hoy === 'derma' ? 'DERMA · hoy te toca' : hoy === 'research' ? 'RESEARCH · día alterno →' : 'Descanso · finde';
+  // v6.00: protegidos v6 sin sesión · F4 (SERUMS) = 30' en tiempo muerto de la posta, L-S (solo el domingo es descanso)
+  const isoHoy = todayISO();
+  const f4 = isoHoy >= FECHAS_V6.serums.inicio;
+  const protegidoHoy = motivoProtegido(isoHoy);
+  const hoyLabel = protegidoHoy ? `DÍA PROTEGIDO · ${protegidoHoy}` : hoy === 'derma' ? (f4 ? "DERMA · hoy · 30' en tiempo muerto (posta)" : 'DERMA · hoy te toca') : hoy === 'research' ? 'RESEARCH · día alterno →' : (f4 ? 'Descanso · domingo' : 'Descanso · finde');
 
   // Día de HOY en la numeración continua (ciclo 1 → ciclo 2 cuando la fecha pasa del d73).
   const hoyD = planHoyD(DERMA_DIAS_TODOS, todayISO());

@@ -8,8 +8,12 @@
  * consciente en "biochem first" (v5.14: Bioquímica cierra la Fase A en D80-D81); ANKI_CONFIG_PALMERTON (§4.2) para la pestaña
  * Palmerton; regla del frente (§4.12) en USMLE_QBANK_RULES. A VERIFICAR (19-sep): USMLE_META.thesis "75–95 %" y los pesos de
  * USMLE_DISCIPLINES no son cifras Palmerton → contrastar con el USMLE Content Outline oficial (pendiente de Joseph).
+ * v6.00 (6-oct-2026 · V6_ESPEC §F): los textos con fechas de hitos / examen ya no se escriben a mano: se componen al cargar con
+ *   DAILY_META (usmleStep1Daily) y hitosStep1() (homeBriefing: los 2 tramos + GO/NO-GO) → nada de «feb-2027» que quede desfasado.
  */
 import { Prioridad, PRIORIDAD_COLOR, VUELTAS } from './researchData';
+import { DAILY_META, DIAS_TODOS, USMLE_TAPER, esFilaT2 } from './usmleStep1Daily';
+import { hitosStep1 } from './homeBriefing';
 export { PRIORIDAD_COLOR, VUELTAS };
 export type { Prioridad };
 
@@ -24,6 +28,14 @@ export const USMLE_META = {
 
 export const USMLE_KPIS = { systems: 11, pathologyPct: 50, beginnerWeeks: 8, readiness: 4 };
 
+// ── v6.00: fechas de hitos para los textos (leídas del plan, no escritas a mano) ──
+const _DOW = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
+const _MES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+const fmtCorta = (iso: string): string => { const d = new Date(iso + 'T12:00:00Z'); return `${_DOW[d.getUTCDay()]} ${d.getUTCDate()}-${_MES[d.getUTCMonth()]}`; };
+const hitoTxt = (nombre: string): string => { const h = hitosStep1().find((x) => x.nombre === nombre || x.nombre.startsWith(nombre + ' ')); return h ? fmtCorta(h.fecha) : '—'; };
+const _BIOQ = DIAS_TODOS.filter((x) => esFilaT2(x) && (x.dOrig === 80 || x.dOrig === 81));
+const _BIOQ_TXT = _BIOQ.length ? `${fmtCorta(_BIOQ[0]!.fecha)} → ${fmtCorta(_BIOQ[_BIOQ.length - 1]!.fecha)}-${_BIOQ[_BIOQ.length - 1]!.fecha.slice(0, 4)}` : '—';
+
 // ── READINESS · NBME / UWSA / Free 120 checkpoints (score-prediction layer) ──
 // The "bank" honesty layer: a readiness gauge is only meaningful once anchored to a
 // real self-assessment. Bands are the published predictive ranges (AMBOSS ±7-10 pts).
@@ -32,16 +44,16 @@ export interface UsmleCheckpoint {
   when: string; predictor: string; band: string; url: string; gated: boolean;
 }
 export const USMLE_CHECKPOINTS: UsmleCheckpoint[] = [
-  { form: 'NBME CBSSA Forms 25–33', kind: 'NBME', when: 'plan v5.20: 7 in Phase A (every ~3 weeks) · NBME 31 (D82, mar 2-feb, el primer hábil tras el cierre de contenido D81 lun 1-feb) = GO/NO-GO · 32/33 final week (mié 3-feb / vie 5-feb) · v5.19: NBME 31 lun 1-feb (32/33 mar 2 / jue 4-feb) · v5.18: NBME 31 vie 29-ene (32/33 lun 1 / mié 3-feb) · v5.17: NBME 31 mié 27-ene', predictor: 'Best single predictor of a Step 1 pass (Palmerton: the ONLY one — UWorld % is a vanity metric)', band: '≥65% ≈ 95% pass · ≥70% ≈ 99% · plan GO = 2 consecutive ≥68% · on-track minimums per milestone in usmleScores.HITOS_ONTRACK', url: 'https://www.nbme.org/examinees/self-assessments', gated: true },
-  { form: 'USMLE Free 120', kind: 'FREE120', when: '1–2 weeks pre-exam (plan v5.20: D87, mar 9-feb; D94 jue 18-feb última sesión de banco · D95 vie 19-feb = último día del plan · finde libre (dom 21 = D-1 real) · target exam lun 22-feb-2027 · v5.19: Free 120 lun 8-feb, D95 jue 18-feb = D-1, examen vie 19-feb · v5.18: Free 120 vie 5-feb, examen jue 18-feb · v5.17: mar 16-feb) — ideally at the real Prometric', predictor: 'Current NBME item wording · no official explanations → audit the PROCESS, not theory', band: '≥70% heuristic (community, not Palmerton) · 3 blocks of 40, timed', url: 'https://www.usmle.org/prepare-your-exam', gated: false },
-  { form: 'UWorld Self-Assessment 1–2', kind: 'UWSA', when: 'UWSA1 = day-1 baseline (D1, mié 7-oct) · UWSA2 = D77 (mar 26-ene) · v5.20 (v5.19: mar 6-oct / lun 25-ene · v5.18: lun 5-oct / vie 22-ene)', predictor: 'Systematically OVER-predicts (Palmerton, same authors as the bank) — endurance only, never a date decision', band: 'trend > absolute number · the date is decided by NBMEs', url: 'https://www.uworld.com/', gated: true },
+  { form: 'NBME CBSSA Forms 25–33', kind: 'NBME', when: `plan ${DAILY_META.version}: F1 NBME 25-28 (${hitoTxt('NBME 25')} · ${hitoTxt('NBME 26')} · ${hitoTxt('NBME 27')} · ${hitoTxt('NBME 28')} = checkpoint de fecha) · tramo 2: NBME 29 ${hitoTxt('NBME 29')} (línea base tras la pausa ENCAPS) · 30 ${hitoTxt('NBME 30')} · 31 ${hitoTxt('NBME 31')} · 32 ${hitoTxt('NBME 32')} → GO/NO-GO ${fmtCorta(DAILY_META.gonogo)} (E-49) · 33 + 3 bloques ${hitoTxt('NBME 33')} (ensayo 7 bloques) · F4: cada hito tiene ventana lun-sáb y va a un día con turno T o feriado sin turno`, predictor: 'Best single predictor of a Step 1 pass (Palmerton: the ONLY one — UWorld % is a vanity metric)', band: '≥65% ≈ 95% pass · ≥70% ≈ 99% · plan GO = 2 consecutive ≥68% · on-track minimums per milestone in usmleScores.HITOS_ONTRACK', url: 'https://www.nbme.org/examinees/self-assessments', gated: true },
+  { form: 'USMLE Free 120', kind: 'FREE120', when: `2 weeks pre-exam (plan ${DAILY_META.version}: ${hitoTxt('Free 120')} = E-14; D94 ${fmtCorta(USMLE_TAPER.d94.fecha)} última sesión de banco · D95 sesión mínima · ritual sáb · viaje ${fmtCorta(DAILY_META.descansoD1)} · target exam ${fmtCorta(DAILY_META.examenTarget)}-${DAILY_META.examenTarget.slice(0, 4)} PROVISIONAL) — ideally at the real Prometric`, predictor: 'Current NBME item wording · no official explanations → audit the PROCESS, not theory', band: '≥70% heuristic (community, not Palmerton) · 3 blocks of 40, timed', url: 'https://www.usmle.org/prepare-your-exam', gated: false },
+  { form: 'UWorld Self-Assessment 1–3', kind: 'UWSA', when: `UWSA1 = day-1 baseline (D1, ${hitoTxt('UWSA1')}) · UWSA3 (opcional, formativa) ${hitoTxt('UWSA3')} · UWSA2 = ${hitoTxt('UWSA2')} (día siguiente al GO/NO-GO) · plan ${DAILY_META.version}`, predictor: 'Systematically OVER-predicts (Palmerton, same authors as the bank) — endurance only, never a date decision', band: 'trend > absolute number · the date is decided by NBMEs', url: 'https://www.uworld.com/', gated: true },
   { form: 'AMBOSS Score Predictor', kind: 'AMBOSS', when: 'from your Qbank %', predictor: 'Predicted range ±7–10 pts from Qbank performance', band: 'confirm with an NBME', url: 'https://www.amboss.com/us/usmle/score-predictor', gated: true },
 ];
 // Readiness derived from the checkpoint layer (replaces the hardcoded 4).
 export const USMLE_READINESS = {
   pct: 4, // pre-first-NBME baseline · rises only when a checkpoint is logged
   status: 'Baseline · no NBME logged yet',
-  next: 'UWSA1 mié 7-oct (D1, baseline) → luego NBME 25/26/27/28/29 cada ~3 semanas (plan v5.20: los hitos corren con el plan conservando su D#, no están clavados a una fecha; con D1 en miércoles caen casi todos en martes — NBME 29 vie 8-ene, 32 mié 3-feb y 33 vie 5-feb; v5.19: casi todos en lunes · v5.18: casi todos en viernes · v5.17: en miércoles). Registra el % de cada hito en 📏 Medición (Cola de hoy): el gauge se ancla al último hito y muestra la distancia al mínimo on-track.',
+  next: `UWSA1 ${hitoTxt('UWSA1')} (D1, baseline) → NBME 25/26/27/28 cada ~3 semanas en F1 (NBME 28 ${hitoTxt('NBME 28')} = checkpoint de fecha) · PAUSA del Step 1 ${fmtCorta(DAILY_META.pausa.desde)} → ${fmtCorta(DAILY_META.pausa.hasta)} (ENCAPS) · NBME 29 ${hitoTxt('NBME 29')} al reiniciar · GO/NO-GO ${fmtCorta(DAILY_META.gonogo)} · examen ${fmtCorta(DAILY_META.examenTarget)}-${DAILY_META.examenTarget.slice(0, 4)} PROVISIONAL (plan ${DAILY_META.version}: un día perdido ya no mueve los hitos; lo absorbe el colchón). Registra el % de cada hito en 📏 Medición (Cola de hoy): el gauge se ancla al último hito y muestra la distancia al mínimo on-track.`,
 };
 
 // Organ systems ordered by official exam weight (order of attack)
@@ -84,7 +96,7 @@ export const PALMERTON_METHOD = [
   { name: 'Pharm: forward + reverse, ~6/drug', desc: 'Mechanism / use / toxicity, each forward AND reverse ≈ 6 cards per drug. Class-level card for shared properties. "More but shorter cards."', verified: true },
   { name: 'Daily card-creation limit', desc: 'Cap new cards/day — "the more cards you make, the more you review." Permission to NOT remember everything.', verified: true },
   { name: 'Slow is fast', desc: 'Spend real time understanding the miss instead of grinding volume. A Qbank raises scores when each question teaches a decision rule, not by volume.', verified: true },
-  { name: 'Sequencing: biochem first', desc: 'Do biochemistry videos first to build a foundation, then fill gaps via questions, making cards from what you miss. ⚠ DIVERGENCIA CONSCIENTE del plan v5.20 (#19): Biochemistry cierra la Fase A en D80-D81 (vie 29-ene / lun 1-feb-2027; v5.19: jue 28 / vie 29-ene · v5.18: mié 27 / jue 28-ene · v5.17: lun 25 / mar 26-ene); el orden por sistemas sigue el peso del examen y Pathoma 1-3 abre en D2-D3 (Fundamentos). No se cambia: el temario no se fusiona ni se reordena.', verified: true },
+  { name: 'Sequencing: biochem first', desc: `Do biochemistry videos first to build a foundation, then fill gaps via questions, making cards from what you miss. ⚠ DIVERGENCIA CONSCIENTE del plan (#19): Biochemistry cierra el contenido de la Fase A en el tramo 2 (filas ex-D80-D81 de la v5.20, ${_BIOQ_TXT} en ${DAILY_META.version}); el orden por sistemas sigue el peso del examen y Pathoma 1-3 abre en D2-D3 (Fundamentos). No se cambia: el temario no se fusiona ni se reordena.`, verified: true },
 ];
 
 // Per-system mini-methods (reconstructed in Palmerton's spirit)
@@ -104,7 +116,7 @@ export const PALMERTON_SYSTEMS: SystemMethod[] = [
 ];
 
 // ── LEGACY (pre-v5, #19): la rampa de 1 h/día y "la hora" son del plan de julio-2026; el plan vigente es usmleStep1Daily.ts
-// (6h15/día L-V, 95 días, D1 = mié 7-oct-2026 · v5.20; v5.19: mar 6-oct · v5.18: lun 5-oct · v5.17: jue 1-oct). Se conservan como histórico; RoiPlan ya no los pinta cuando USMLE_RAMP_LEGACY = true.
+// (v6.00: 2 tramos — F1 D1-D60 mié 7-oct → mié 30-dic-2026 y tramo 2 T1-T158 mar 16-mar → sáb 25-sep-2027). Se conservan como histórico; RoiPlan ya no los pinta cuando USMLE_RAMP_LEGACY = true.
 export const USMLE_RAMP_LEGACY = true;
 export const USMLE_LEGACY_NOTA = 'Rampa de principiante (1 h/día) y "la hora" = plan pre-v5 (julio-2026), sustituidos por el bloque principal de 6h15/día (usmleStep1Daily.ts · DAILY_META.bloque). Se conservan solo como histórico (usmleData.USMLE_RAMP / USMLE_HOUR, legacy).';
 // Beginner ramp (English + content), 1h/day Mon–Fri — LEGACY

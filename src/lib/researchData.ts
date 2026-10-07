@@ -5,7 +5,10 @@
  * Alternancia Research↔Derma — ANCLA de paridad: 2026-06-10 (no mover: define qué día
  * hábil es Research [par] y cuál Derma [impar]). El estudio REAL arranca el 11-jun-2026:
  * Derma D1 = jue 11-jun, Research D1 = vie 12-jun (el 10-jun no se estudió).
+ * v6.00 (6-oct-2026): diaEstudioTipo cuenta L-S desde el inicio del SERUMS (fechasV6, módulo hoja: sin ciclos de importación).
+ *   Texto `atomos` del case report #1 (lo pinta ResearchHub) sin el examen Step 1 del lun 22-feb como vigente (verificación v6.00).
  */
+import { FECHAS_V6 } from './fechasV6';
 
 export type Prioridad = 'CRITICA' | 'ALTA' | 'MEDIA' | 'BAJA';
 
@@ -24,19 +27,27 @@ export const PRIORIDAD_COLOR: Record<Prioridad, string> = {
 // ── Alternancia Research ↔ Derma (ancla de paridad: mié 10-jun-2026) ──
 // Cuenta días hábiles (L–V) desde el 10-jun: par → research, impar → derma.
 // El 10-jun no se estudió (solo fija la paridad): Derma=11-jun, Research=12-jun.
+// v6.00 (6-oct-2026 · V6_ESPEC §E, DJ-3): desde el inicio del SERUMS (FECHAS_V6.serums.inicio, lun 3-may-2027 [S]) el SÁBADO
+// también es día de plan y CUENTA en la paridad (L-S); el domingo sigue siendo descanso. Con 6 días/semana la paridad queda fija:
+// Derma lun · mié · vie y Research mar · jue · sáb (30' en tiempo muerto de la posta). Antes del SERUMS, igual que siempre (L-V).
+// Misma regla en gen_research_plan.js · gen_derma_ciclo2.js · remap_inicio.js (bloque Derma). SKIP/protegidos los saltan los generadores.
+const _isoLocal = (x: Date): string => `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, '0')}-${String(x.getDate()).padStart(2, '0')}`;
 export function diaEstudioTipo(date: Date): 'research' | 'derma' | 'descanso' {
   const dow = date.getDay(); // 0 dom .. 6 sáb
-  if (dow === 0 || dow === 6) return 'descanso';
+  const serums = FECHAS_V6.serums.inicio;
+  if (dow === 0) return 'descanso';
+  if (dow === 6 && _isoLocal(date) < serums) return 'descanso'; // sábado libre antes del SERUMS
   const start = new Date(2026, 5, 10); // 10 jun 2026 (mes 0-index)
   start.setHours(0, 0, 0, 0);
   const d = new Date(date); d.setHours(0, 0, 0, 0);
   if (d < start) return 'research'; // antes de arrancar, default research
-  // contar días hábiles entre start y d (inclusive de start, exclusive de d)
+  // contar días de plan entre start y d (inclusive de start, exclusive de d): L-V; + sábados desde el inicio del SERUMS (v6.00)
   let count = 0;
   const cur = new Date(start);
   while (cur < d) {
     const wd = cur.getDay();
-    if (wd !== 0 && wd !== 6) count++;
+    if (wd >= 1 && wd <= 5) count++;
+    else if (wd === 6 && _isoLocal(cur) >= serums) count++;
     cur.setDate(cur.getDate() + 1);
   }
   return count % 2 === 0 ? 'research' : 'derma';
@@ -106,7 +117,7 @@ export const RESEARCH_ENTREGABLES: Entregable[] = [
   { id: 'case-report-1', n: 2, titulo: 'Case report #1 (CARE)', tipo: 'Case report · CARE 13 ítems · fotos estandarizadas · consentimiento de publicación', pista: 'CR', guia: 'CARE (13 ítems + timeline + perspectiva del paciente)',
     journalCascade: ['Dermatology Online Journal (eScholarship)', 'JAAD Case Reports (solo si es el MEJOR caso)', 'Case Reports in Dermatology (Karger)'],
     seniorAuthor: 'Fuente A: Dr. Ciro (caso de su consulta) · plan B: dermatólogo/a SPD — se decide en CR-1 (mar 17-nov en v5.20 — Research corrió una ranura: el mar 6-oct perdido era día-Research; v5.19 y v5.18: vie 13-nov · v5.17: mié 11-nov; ⚠ el plazo del caso sigue siendo el 31-oct, ver nota)', fechaObjetivo: '2027-02', fechaEnvio: null, estado: 'idea',
-    coste: 'DOJ US$300 (DOAJ 1-sep-2026 · RUTA §3.1; sin waiver) · JAAD CR US$850 → ≈ $425 con Grupo B (solo para el MEJOR caso)', doi: null, atomos: 'CR-1 → CR-8 (nov-2026 → ene-2027, paquete congelado) · CR-9 SUBMIT (jue 11-feb-2027 = 1er día-Research tras la pausa del Step 1; D89, antes del examen del lun 22-feb · v5.20, misma fecha que v5.19 (allí D90, examen vie 19-feb) y v5.18 (D91, examen jue 18-feb); v5.17: mar 9-feb)', esPIP: true,
+    coste: 'DOJ US$300 (DOAJ 1-sep-2026 · RUTA §3.1; sin waiver) · JAAD CR US$850 → ≈ $425 con Grupo B (solo para el MEJOR caso)', doi: null, atomos: 'CR-1 → CR-8 (nov-2026 → ene-2027, paquete congelado) · CR-9 SUBMIT (jue 11-feb-2027 = 1er día-Research tras la pausa de átomos 15-ene → 10-feb · v6.00: en la intensiva ENCAPS, con el Step 1 en pausa hasta el mar 16-mar · v5.20: D89, antes del examen Step 1 del lun 22-feb, misma fecha que v5.19 (allí D90, examen vie 19-feb) y v5.18 (D91, examen jue 18-feb); v5.17: mar 9-feb)', esPIP: true,
     nota: 'Hoy NO hay caso (DATA/RESEARCH/CASE_REPORT_1/caso_candidatos.md). Sin caso + consentimiento + senior author antes del 31-oct, el entregable de feb-2027 no ocurre. Regla v5.10b: seguimiento con el Dr. Ciro en d8/d10 (3 semanas desde M1); sin caso → fuente B (colega SPD, mensaje único de caso_candidatos.md §2); CR-1/CR-2 van el mar 17 y el jue 19-nov (v5.20; ⚠ CR-2 queda fuera del deadline interno del 31-oct, como ya pasaba en v5.19 · v5.19 y v5.18: vie 13 y mar 17-nov · v5.17: mié 11 y vie 13-nov).' },
   { id: 'PROSPERO-SR1', n: 3, titulo: 'Registro PROSPERO de SR-1', tipo: 'Registro de protocolo (PRISMA-P) con equipo de revisión', pista: 'R', guia: 'PRISMA-P (17 ítems) · L4 §9 Equipo de revisión',
     journalCascade: ['PROSPERO (CRD York)', 'OSF Registries (plan B si no encaja)'],

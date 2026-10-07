@@ -31,8 +31,19 @@ export function encapsFase(tipo: string | undefined, diasAExamen: number | null 
 // ─────────────────────────────────────────────────────────────────────────────
 // HUD de cuenta regresiva (Countdown Cockpit) — banda superior táctica.
 // ─────────────────────────────────────────────────────────────────────────────
+// v6.00 (6-oct-2026): la fecha del examen ya no va escrita a mano («EXAMEN MIÉ 10-MAR-2027» en v5.20): llega por props desde
+// study_metrics.extra.exam_date (dom 14-mar-2027 PROVISIONAL) con su etiqueta PROVISIONAL / RENDIDO; el eyebrow sigue al modo del día.
+const DOW_UP = ['DOM', 'LUN', 'MAR', 'MIÉ', 'JUE', 'VIE', 'SÁB'];
+const MES_UP = ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC'];
+function examenChipTexto(examDate: string | null | undefined, provisional?: boolean, rendido?: boolean): string {
+  if (!examDate || !/^\d{4}-\d{2}-\d{2}$/.test(examDate)) return 'EXAMEN 2027-I · FECHA POR CONFIRMAR';
+  const d = new Date(`${examDate}T12:00:00Z`);
+  const txt = `EXAMEN ${DOW_UP[d.getUTCDay()]} ${d.getUTCDate()}-${MES_UP[d.getUTCMonth()]}-${examDate.slice(0, 4)}`;
+  return rendido ? `${txt} · RENDIDO` : provisional ? `${txt} · PROVISIONAL` : txt;
+}
+
 export function CountdownCockpit({
-  diasAExamen, tipo, promSim, coberturaPct, qxPct, notasCount, compact,
+  diasAExamen, tipo, promSim, coberturaPct, qxPct, notasCount, compact, examDate, provisional, rendido, modo,
 }: {
   diasAExamen: number | null | undefined;
   tipo: string | undefined;
@@ -41,8 +52,12 @@ export function CountdownCockpit({
   qxPct: number | null | undefined;
   notasCount: number;
   compact?: boolean;
+  examDate?: string | null;      // v6.00: study_metrics.extra.exam_date
+  provisional?: boolean;         // v6.00: examen_target dice PROVISIONAL
+  rendido?: boolean;             // v6.00: hoy > exam_date
+  modo?: string;                 // v6.00: modo del día visible (MANTENIMIENTO | INTENSIVO)
 }) {
-  const fase = encapsFase(tipo, diasAExamen);
+  const fase = rendido ? { label: 'EXAMEN RENDIDO', sub: 'registrar resultado y cerrar el ciclo' } : encapsFase(tipo, diasAExamen);
   const zone = encapsGoZone(promSim);
   const goColor = encapsGoColor(zone);
   const dd = diasAExamen != null ? String(diasAExamen) : '––';
@@ -52,9 +67,9 @@ export function CountdownCockpit({
       {/* líneas de escaneo tenues (grid de telemetría) */}
       <View style={styles.scanline} pointerEvents="none" />
       <View style={styles.hudTop}>
-        <Text style={styles.hudEyebrow}>ENCAPS · MANTENIMIENTO 2027-I</Text>
+        <Text style={styles.hudEyebrow}>{modo === 'INTENSIVO' ? 'ENCAPS · INTENSIVA 2027-I' : 'ENCAPS · MANTENIMIENTO 2027-I'}</Text>
         <View style={styles.hudObjChip}>
-          <Text style={styles.hudObjChipText}>EXAMEN MIÉ 10-MAR-2027</Text>
+          <Text style={styles.hudObjChipText}>{examenChipTexto(examDate, provisional, rendido)}</Text>
         </View>
       </View>
 

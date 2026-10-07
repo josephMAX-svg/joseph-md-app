@@ -23,7 +23,8 @@
  *
  * Uso:
  *   node DATA/_scripts/gen_encaps_mantenimiento_2027.js [D1=2026-10-07] [--bk study_schedule_bk_YYYYMMDD]
- *        [--override <json|ruta.json>] [--sin-acumulado] [--bk-reemplazar] [--hasta 2027-02-16] [--out <ruta.sql>]   (defaults v5.20)
+ *        [--override <json|ruta.json>] [--sin-acumulado] [--bk-reemplazar] [--hasta 2026-12-30] [--de-hasta 2027-02-16] [--out <ruta.sql>]
+ *        (defaults v6.00: --hasta = _fechas_v6.json f1.fin; v5.20: --hasta 2027-02-16 y sin --de-hasta)
  *
  *   --override: {"semanas":{"<lunes ISO>":{"principal":["I-3","V-2","II-5","IV-1"],"secundarios":["II-2","I-10","V-6","II-6"],"motivo":"…"}}}
  *               (lo emite gen_encaps_semana.js como SEMANAS/override_<lunes>.json; sustituye SOLO esa semana).
@@ -40,11 +41,26 @@
  * Emite DATA/_scripts/_encaps_mantenimiento_2027.sql (guarda de backup → backup → delete filtrado → insert) y al final
  * imprime la VERIFICACIÓN esperada (select modo,tipo,count(*)) para pegarla tras execute_sql. Aplicar por MCP execute_sql.
  * Pipeline de corrimiento (cada día sin estudiar = +1): node … <nueva fecha> → execute_sql.
+ *
+ * v6.00 (6-oct-2026, V6_ESPEC §C1/§C3): el mantenimiento queda en F1 = dia 1-60 (mié 7-oct → mié 30-dic-2026, 49 banqueo1h + 11 mini_sim)
+ *   y esas 60 filas vivas NO se regeneran en la siembra v6 (se conservan tal cual en Supabase). Las 32 filas 61-92 de v5.20 pasan al
+ *   CARRIL B de la intensiva (extra.carril_b de las filas INTENSIVO, gen_encaps_intensivo_2027.js). Cambios para que un uso futuro
+ *   (p.ej. el override semanal que imprime gen_encaps_semana.js) no rompa nada:
+ *   · HASTA por defecto = _fechas_v6.json f1.fin (2026-12-30) → sin --hasta ya no re-inserta MANTENIMIENTO 61-92 sobre las INTENSIVO 61-92.
+ *   · --de-hasta 2027-02-16 (default): extra.de (nº de instancias del código) se cuenta sobre el rango de v5.20 (D1 → 16-feb), así las
+ *     filas 1-60 regeneradas son IDÉNTICAS a las vivas (con --hasta 2026-12-30 a secas cambiarían 49 de 60: p.ej. dia 2 de 10 → 6). En esa
+ *     pasada previa los overrides de semanas posteriores a HASTA NO cuentan (las filas 61-92 viven congeladas en el carril B).
+ *   · guarda SQL al principio: aborta si hay filas no MANTENIMIENTO (INTENSIVO) con dia ≤ última fila emitida.
+ *   · días de plan sin SKIP_V6 (_fechas_v6.json: incluye Jueves y Viernes Santo 2027).
+ *   · el SQL versionado _encaps_mantenimiento_2027.sql sigue siendo la siembra v5.20 (92 filas): gen_encaps_minisim.js lee de él el banco
+ *     y la eval de las fechas 61-92 (= carril B). No se regenera en v6 (regenerarlo con HASTA 30-dic quitaría esas filas al runner).
  */
 const fs = require('fs');
 const path = require('path');
 const ROOT = path.join(__dirname, '..', '..');
 const { CICLO, SUB_EJES, COLA_LARGA, RECETA_MINISIM, WD, fechas, lunesDe } = require('./_encaps_ciclo_v3');
+const F6 = require('./gen_fechas_v6').cargarFechasV6(); // v6.00: fuente única de fechas (aborta si guardado ≠ derivado)
+const SKIP_V6 = new Set(F6.skip);
 const ACUMULADO = path.join(ROOT, 'DATA', 'ENCAPS', 'TRACKING_ERRORES', 'SEMANAS', 'overrides_acumulado.json');
 
 // ── argumentos ──
@@ -52,12 +68,14 @@ const argv = process.argv.slice(2);
 const D1 = argv.find((a) => /^20\d\d-\d\d-\d\d$/.test(a)) || '2026-10-07'; // v5.20: mié 7-oct (v5.19: mar 6-oct · v5.18: lun 5-oct · v5.17: jue 1-oct)
 const opt = (k, def) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] ? argv[i + 1] : def; };
 const has = (k) => argv.includes(k);
-const HASTA = opt('--hasta', '2027-02-16'); // v5.20 (6-oct, DEFINITIVA): mar 16-feb (+1 hábil; 92 días intactos; = D92 del Step 1) · v5.19 (5-oct): lun 15-feb (+1 hábil; 92 días intactos) · v5.18 (3-oct): vie 12-feb (+2 hábiles; 92 días intactos) · v5.17 (30-sep): mié 10-feb · el fin se ALARGA 3 hábiles más (v5.16: 5-feb · v5.15: 2-feb · v5.14: 29-ene) para conservar los 92 días del mantenimiento — "no perder sesiones" (Joseph); sigue antes del examen Step 1 (v5.20: lun 22-feb-2027; v5.19: vie 19-feb; v5.18: jue 18-feb; v5.17: mar 16-feb; v5.16: jue 11-feb)
+const HASTA = opt('--hasta', F6.f1.fin); // v6.00 (6-oct): f1.fin = mié 30-dic-2026 (dia 60; las filas 61-92 de v5.20 viven en el carril B de la intensiva) · v5.20 (6-oct, DEFINITIVA): mar 16-feb (+1 hábil; 92 días intactos; = D92 del Step 1) · v5.19 (5-oct): lun 15-feb (+1 hábil; 92 días intactos) · v5.18 (3-oct): vie 12-feb (+2 hábiles; 92 días intactos) · v5.17 (30-sep): mié 10-feb · el fin se ALARGA 3 hábiles más (v5.16: 5-feb · v5.15: 2-feb · v5.14: 29-ene) para conservar los 92 días del mantenimiento — "no perder sesiones" (Joseph); sigue antes del examen Step 1 (v5.20: lun 22-feb-2027; v5.19: vie 19-feb; v5.18: jue 18-feb; v5.17: mar 16-feb; v5.16: jue 11-feb)
 const hoyLima = () => new Date(Date.now() - 5 * 3600 * 1000).toISOString().slice(0, 10);
 const BK = opt('--bk', `study_schedule_bk_${hoyLima().replace(/-/g, '')}`);
 const BK_REEMPLAZAR = has('--bk-reemplazar');
+const DE_HASTA = opt('--de-hasta', '2027-02-16'); // v6.00: rango de v5.20 para extra.de (las filas 1-60 no cambian; §C1)
 const OUT = opt('--out', path.join(__dirname, '_encaps_mantenimiento_2027.sql'));
 if (!/^[a-z_][a-z0-9_]*$/.test(BK)) throw new Error('--bk inválido: ' + BK);
+if (!/^20\d\d-\d\d-\d\d$/.test(HASTA) || !/^20\d\d-\d\d-\d\d$/.test(DE_HASTA)) throw new Error('--hasta / --de-hasta inválido');
 
 // ── overrides: acumulado (por defecto) + el de la línea de comandos (se añade, no sustituye) ──
 let OVERRIDE = { semanas: {} };
@@ -120,13 +138,15 @@ const subCount = {};       // instancias por código (para rotar sub-ejes)
 const totalPorCodigo = {}; // total de instancias (para extra.de) — se calcula en una pasada previa
 let dia = 0, slot = 0, sec = 0, secVie = 0, f0 = '', f1 = '', overridesAplicados = [];
 const semanasConOverride = new Set();
-const plan = [...fechas(D1, HASTA)];
+const plan = [...fechas(D1, HASTA)].filter((p) => !SKIP_V6.has(p.fecha)); // v6.00: + SKIP_V6
 // pasada previa: cuántas veces cae cada código (con overrides)
+// v6.00: cubre D1 → max(HASTA, --de-hasta) (rango v5.20) y solo aplica overrides de semanas que empiezan ≤ HASTA
 {
   let s = 0;
-  for (const { fecha, dow } of plan) {
+  const finDe = HASTA > DE_HASTA ? HASTA : DE_HASTA;
+  for (const { fecha, dow } of [...fechas(D1, finDe)].filter((p) => !SKIP_V6.has(p.fecha))) {
     if (dow === 5) continue;
-    const ov = (OVERRIDE.semanas || {})[lunesDe(fecha)];
+    const ov = lunesDe(fecha) <= HASTA ? (OVERRIDE.semanas || {})[lunesDe(fecha)] : null;
     let code = CICLO[s % CICLO.length][0]; s++;
     if (ov && Array.isArray(ov.principal) && ov.principal[dow - 1]) code = ov.principal[dow - 1];
     totalPorCodigo[code] = (totalPorCodigo[code] || 0) + 1;
@@ -184,6 +204,8 @@ for (const { fecha, dow } of plan) {
 }
 
 const nBanco = rows.filter((r) => r.includes(`'banqueo1h'`)).length, nSim = rows.length - nBanco;
+// v6.00: guarda al principio de la transacción: nunca re-insertar MANTENIMIENTO sobre filas INTENSIVO (choque de PK (examen, dia))
+const guardaIntensivo = `DO $$ BEGIN IF EXISTS (SELECT 1 FROM study_schedule WHERE examen='ENCAPS' AND modo <> 'MANTENIMIENTO' AND dia <= ${dia}) THEN RAISE EXCEPTION 'hay filas INTENSIVO en el rango del mantenimiento'; END IF; END $$;`;
 const guardaBk = BK_REEMPLAZAR
   ? `DROP TABLE IF EXISTS ${BK};`
   : `DO $$ BEGIN IF to_regclass('public.${BK}') IS NOT NULL THEN RAISE EXCEPTION 'el backup ${BK} YA EXISTE: no se pisa. Regenera con --bk ${BK}b (o --bk-reemplazar si de verdad quieres sobrescribirlo)'; END IF; END $$;`;
@@ -191,9 +213,11 @@ const verificacion = `select modo, tipo, count(*) from study_schedule where exam
 const esperado = `MANTENIMIENTO | banqueo1h | ${nBanco} · MANTENIMIENTO | mini_sim | ${nSim} (= ${rows.length} filas ${f0} → ${f1}); las filas INTENSIVO, si existen, deben seguir con su conteo anterior`;
 const sql = `-- ENCAPS MANTENIMIENTO 2027-I · generado por gen_encaps_mantenimiento_2027.js (${hoyLima()})
 -- ${rows.length} días L-V · ${f0} → ${f1} · rotación v3 4 semanas con sub-ejes + cola larga · vie = mini-sim 25Q (receta fija) · backup ${BK}
--- seguridad: (1) aborta si el backup ya existe${BK_REEMPLAZAR ? ' [DESACTIVADA con --bk-reemplazar]' : ''} · (2) DELETE filtrado por modo = 'MANTENIMIENTO' (no toca filas INTENSIVO)
+-- seguridad: (1) aborta si el backup ya existe${BK_REEMPLAZAR ? ' [DESACTIVADA con --bk-reemplazar]' : ''} · (2) DELETE filtrado por modo = 'MANTENIMIENTO' (no toca filas INTENSIVO) · (3) v6.00: aborta si hay filas INTENSIVO con dia ≤ ${dia}
+-- v6.00: extra.de contado sobre ${D1} → ${HASTA > DE_HASTA ? HASTA : DE_HASTA} (--de-hasta, rango v5.20; overrides solo de semanas ≤ ${HASTA})
 -- overrides: acumulado ${acumuladoLeido} semana(s) leídas de SEMANAS/overrides_acumulado.json${ovNuevo ? ` + --override ${Object.keys(ovNuevo).join(', ')}` : ''}${overridesAplicados.length ? ` · filas cambiadas: ${overridesAplicados.join(' · ')}` : ' · sin filas cambiadas respecto a la rotación base'}
 BEGIN;
+${guardaIntensivo}
 ${guardaBk}
 CREATE TABLE ${BK} AS SELECT * FROM study_schedule;
 DELETE FROM study_schedule WHERE examen = 'ENCAPS' AND modo = 'MANTENIMIENTO';

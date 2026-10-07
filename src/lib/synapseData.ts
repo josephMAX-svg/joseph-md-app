@@ -10,6 +10,9 @@
  *
  * El motor día-a-día (misiones estilo ENCAPS/Business + Calendar 30 min) lo
  * construye el chat SYNAPSE: DATA/SYNAPSE/PROMPT_CHAT_SYNAPSE.md.
+ *
+ * v6.00 (6-oct-2026): solo textos — las sem 13-19 son el taper «por el ENCAPS» (ya no del Step 1 de febrero) y la F2 de datos arranca
+ * después del Step 1 (F5, oct-2027). Las fechas del motor (mié 7-oct → lun 15-feb, 132 días) no cambian.
  */
 
 export type SynapseNivel = 'base' | 'intermedio' | 'avanzado';
@@ -247,7 +250,7 @@ export const SYNAPSE_META = {
   subtitulo: 'MIND · AI-ENGINEERED — médico → especialista en IA nivel Anthropic',
   tesis: 'La sinapsis entre tu cerebro médico y las máquinas. Python, datos, deep learning, agentes, ciberseguridad y post-training — SOLO con los referentes (Anthropic, Stanford, MIT, Harvard, creadores de las herramientas), cero youtubers del momento. 30 min/día en espacios muertos, proyecto público por fase.',
   accent: '#7C83D6', // periwinkle — color canónico de la consola (alineado con SidebarAccents.Synapse)
-  nota: 'Motor ACTIVO (pestaña ⚡ run): 19 semanas día a día hasta el lun 15-feb-2027 (v5.20, mié 7-oct → lun 15-feb, 132 días; el lun 15-feb cuenta como sem 19 · v5.19: mar 6-oct → sáb 13-feb · v5.18: vie 12-feb · v5.17: mar 9-feb) — F0 (sem 1-8, auditar ✓ lo ya cursado en jun-ago) + F1 = STACK DEL VIBECODING (sem 9-12: Claude Code docs · Academy skills/subagentes/MCP/Claude Code in Action · Supabase RLS/select/triggers/Edge Functions · n8n) + F2 (sem 13-19, taper del Step 1) = ANTHROPIC ACADEMY RESTANTE + PREP CCA-F (Building with the Claude API · MCP restante + MCP Advanced Topics · AI Capabilities and Limitations · Claude Cowork · 3 ensayos de context engineering · repaso por los 5 dominios · simulacro; sem 17-19 deload) — con lecciones EXACTAS de temarios reales (DATA/SYNAPSE/curricula/, extraídos 10-jun, 5-sep y 12-sep-2026). Bloques A 15\' pantalla · B 10\' audio · C 5\' lectura · sábado PC 2h = SHIP del proyecto de la semana del vibecoding 04:15 (12 proyectos S1-S12 + taper S13-S20, DATA/SYNAPSE/VIBECODING_12_PROYECTOS.md; shipped = verify_vibecoding.js) · domingo Feynman 10\' opcional. Progreso manual real (empieza 0%). Regenerar: node DATA/_scripts/gen_synapse_plan.js YYYY-MM-DD.',
+  nota: 'Motor ACTIVO (pestaña ⚡ run): 19 semanas día a día hasta el lun 15-feb-2027 (v5.20, mié 7-oct → lun 15-feb, 132 días; el lun 15-feb cuenta como sem 19 · v5.19: mar 6-oct → sáb 13-feb · v5.18: vie 12-feb · v5.17: mar 9-feb) — F0 (sem 1-8, auditar ✓ lo ya cursado en jun-ago) + F1 = STACK DEL VIBECODING (sem 9-12: Claude Code docs · Academy skills/subagentes/MCP/Claude Code in Action · Supabase RLS/select/triggers/Edge Functions · n8n) + F2 (sem 13-19, taper por el ENCAPS · v6.00; v5.20: taper del Step 1) = ANTHROPIC ACADEMY RESTANTE + PREP CCA-F (Building with the Claude API · MCP restante + MCP Advanced Topics · AI Capabilities and Limitations · Claude Cowork · 3 ensayos de context engineering · repaso por los 5 dominios · simulacro; sem 17-19 deload) — con lecciones EXACTAS de temarios reales (DATA/SYNAPSE/curricula/, extraídos 10-jun, 5-sep y 12-sep-2026). Bloques A 15\' pantalla · B 10\' audio · C 5\' lectura · sábado PC 2h = SHIP del proyecto de la semana del vibecoding 04:15 (12 proyectos S1-S12 + taper S13-S20, DATA/SYNAPSE/VIBECODING_12_PROYECTOS.md; shipped = verify_vibecoding.js) · domingo Feynman 10\' opcional. Progreso manual real (empieza 0%). Regenerar: node DATA/_scripts/gen_synapse_plan.js YYYY-MM-DD.',
 } as const;
 
 // ─── Fases ───
@@ -265,8 +268,8 @@ export const SYNAPSE_FASES: SynapseFase[] = [
     materiales: [M.claudeCodeDocs, M.claudeCodeBest, M.agentSkills, M.mcpIntro, M.claudeCodeAction, M.agentSdk, M.n8nLevelOne, M.proGit, M.pyTutorial, M.cs50p, M.automate, M.missingSemester],
   },
   {
-    id: 'f2', fase: 'F2', titulo: 'Datos: pandas + SQL + probabilidad', duracion: 'feb-2027+ (post-Step 1)', estado: 'pendiente',
-    desc: 'Data science por los CREADORES de las herramientas (McKinney = pandas) + la probabilidad de Harvard que todo el ML asume. ⚠ v5.10-b (12-sep-2026): las sem 13-19 del motor (v5.20: lun 28-dic-2026 → lun 15-feb-2027; v5.19: lun 28-dic → sáb 13-feb · v5.18: lun 28-dic → vie 12-feb · v5.17: lun 21-dic → mar 9-feb) NO son esta fase sino el taper del Step 1 = Anthropic Academy restante + prep CCA-F a 30\' (pestaña ⚡ run); esta F2 de datos arranca en la reestructuración de febrero.',
+    id: 'f2', fase: 'F2', titulo: 'Datos: pandas + SQL + probabilidad', duracion: 'oct-2027+ (post-Step 1, F5 · v6.00; v5.20: feb-2027+)', estado: 'pendiente',
+    desc: 'Data science por los CREADORES de las herramientas (McKinney = pandas) + la probabilidad de Harvard que todo el ML asume. ⚠ v5.10-b (12-sep-2026): las sem 13-19 del motor (v5.20: lun 28-dic-2026 → lun 15-feb-2027; v5.19: lun 28-dic → sáb 13-feb · v5.18: lun 28-dic → vie 12-feb · v5.17: lun 21-dic → mar 9-feb) NO son esta fase sino el taper (v6.00: por el ENCAPS; v5.20: del Step 1) = Anthropic Academy restante + prep CCA-F a 30\' (pestaña ⚡ run); esta F2 de datos arranca después del Step 1 (F5, oct-2027 · v6.00; v5.20: en la reestructuración de febrero).',
     entregable: 'Análisis pandas de un dataset real (Pulso/LIVIANO) publicado en GitHub',
     materiales: [M.kaggle, M.mckinney, M.vanderplas, M.sqlbolt, M.widom, M.stat110],
   },

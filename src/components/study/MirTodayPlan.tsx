@@ -8,7 +8,10 @@ import {
   MIR_DAILY_META, MIR_DIAS, DiaMIR, mirDiaDe, mirDiaN, mir7d, MIR_RENT, capUrl,
   mirCierreDe, mirFranjasDe, mirSesionDe, MIR_SEG_POR_Q, mirMinutos, MIR_TEMAS_TOTAL,
 } from '../../lib/mirDailyPlan';
-import { DiaMIRMant, MIR_MANT_META, MIR_MANT_DIAS, mirMantFranjas, mirMantFoco, mirMant7d, mirMantProximoTierC } from '../../lib/mirMantenimiento';
+import { DiaMIRMant, MIR_MANT_META, MIR_MANT_DIAS, MIR_MANT_PESOS, MIR_INICIO_HITO, mirMantFranjas, mirFranjaPorTurno, mirMantFoco, mirMant7d, mirMantProximoTierC } from '../../lib/mirMantenimiento';
+import { FECHAS_V6, motivoProtegido } from '../../lib/fechasV6';
+import { infoTurno, onTurnosChange, TURNO_INFO } from '../../lib/serumsTurnos';
+import { plantillaDelDia } from '../../lib/plantillasV6';
 import {
   mirEvalLogAppend, mirEvalLogExportJSON, mirEvalLogLoad, mirEvalLogPull, mirEntradaDe, mirNeto, MIR_TIPO_ERROR, MirTipoError, MirEvalKind,
   mirCierreDeAsignatura, mirEstadoCierreTxt, mirCierreUmbral, mirPeorAsignatura, mirColaD14, mirBaselineTabla, mirAsignaturasEnAnclasD7,
@@ -37,7 +40,12 @@ import { mirAnkiDeck, ANKIWEB } from '../../lib/ankiLinks';
  *  · Espejo Supabase: al montar, mirEvalLogPull() fusiona por id en ambos sentidos (fallback silencioso).
  *  · Chip "Step 1 esta semana: <sistema> D#-D#" (mirUsmleBridge, lectura de usmleStep1Daily).
  *  · Test de cierre 10Q el 1er día de cada bloque · D77 mini-MIR 40Q · D78 tabla de neto (baseline).
- *  · Fallback a mirMantenimiento (28-ene→22-abr-2027, v5.20: 58 días, sin sesión los días protegidos 22-feb · 9-mar · 10-mar; v5.19: 27-ene→15-abr · v5.18: 26-ene→14-abr · v5.17: 22-ene→13-abr · v5.16: 19-ene→7-abr) cuando no hay DiaMIR. sáb+dom libres → cola D+14.
+ *  · Fallback a mirMantenimiento cuando no hay DiaMIR (v6.00: mantenimiento jue 28-ene → jue 22-abr-2027 = 57 días + EXTENSIÓN
+ *    vie 23-abr → vie 24-sep = 131 días, L-S desde el SERUMS; 188 en total · protegidos v6 12/13/14/15-mar y 25/26/27-sep + Semana Santa
+ *    sin sesión · v5.20: 28-ene → 22-abr, 58 días, protegidos 22-feb · 9-mar · 10-mar). Domingo libre → cola D+14.
+ *  · v6.00 (6-oct-2026 · V6_ESPEC §D · §F): navegación del banqueo hasta MIR_MANT_DIAS.length (188) · franja por TURNO en F4
+ *    (mirFranjaPorTurno con el turno marcado: M 16:00 · T 10:35 · L 15:15 · día de hito 04:05 · G 1 h en tiempo muerto) ·
+ *    sábado (tipo 'sabado') = mini-simulacro 30Q mixtas de las 14 · banner de día protegido · handoff vie 24-sep (fase principal oct-2027).
  *  · Regla v3b (gap 11): los APEX MIR se crean DIRECTAMENTE en Anki hasta que el redeploy de n8n esté verificado.
  *  · Pool oficial (19-sep-2026, DATA/MIR/POOL_USO.md §2-§5): anclada 4Q · pre-test 5Q · quiz 8-10Q · cierre 10Q · mini-MIR 40Q
  *    reservan `qIds` en orden horario del día (cada segmento excluye las usadas del log + las reservadas antes ese día; si el
@@ -716,13 +724,18 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
   );
 }
 
-/** Modo MANTENIMIENTO (28-ene→22-abr-2027, v5.20; modo reducido hasta el vie 19-feb = D95 · v5.19: 27-ene→15-abr · v5.18: 26-ene→14-abr · v5.17: 22-ene→13-abr): banqueo puro sin contenido nuevo. */
+/** Modo MANTENIMIENTO + EXTENSIÓN (v6.00: jue 28-ene → vie 24-sep-2027, 188 días; sin modo reducido; v5.20: 28-ene→22-abr con reducido hasta el vie 19-feb): banqueo puro sin contenido nuevo. */
 function MantenimientoView({ dia, onPick, bump, sync }: { dia: DiaMIRMant; onPick: (d: number) => void; bump: () => void; sync: SyncInfo }) {
   const entries = mirEvalLogLoad();
   const peor = mirPeorAsignatura(entries);
   const foco = mirMantFoco(dia, peor);
-  const franjas = mirMantFranjas(dia);
-  const color = dia.tipo === 'viernes' ? CORAL : dia.modo === 'reducido' ? Colors.muted : AMBER;
+  // v6.00: en el SERUMS la hora depende del turno del día (y del hito: plantilla H → 04:05); antes, la franja base 15:15-16:15
+  const enSerums = dia.fecha >= FECHAS_V6.serums.inicio;
+  const turno = enSerums ? infoTurno(dia.fecha) : null;
+  const plDia = enSerums ? plantillaDelDia(dia.fecha) : null;
+  const diaHito = !!plDia && (plDia.plantilla === 'H' || plDia.plantilla === 'H-sáb');
+  const franjas = turno ? (diaHito ? mirFranjaPorTurno(dia, turno.turno, MIR_INICIO_HITO) : mirFranjaPorTurno(dia, turno.turno)) : mirMantFranjas(dia);
+  const color = dia.tipo === 'viernes' ? CORAL : dia.tipo === 'sabado' ? BLUE : dia.modo === 'reducido' ? Colors.muted : AMBER;
   const tierC = dia.tierC;
   // Tier C express (jueves): sus 10Q salen de foco.nQ (reducido 10Q → hoy todo es Tier C, sin EvalForm foco; normal 25Q → 15Q foco + 10Q Tier C).
   const focoNQ = tierC ? Math.max(0, foco.nQ - tierC.nQ) : foco.nQ;
@@ -741,6 +754,7 @@ function MantenimientoView({ dia, onPick, bump, sync }: { dia: DiaMIRMant; onPic
     else if (focoNQ > 0) {
       const asig: number | string = foco.num ?? foco.asignatura;
       if (dia.tipo === 'viernes') focoIds = preguntasSinUsarDeAsignatura(asig, excl).slice(0, focoNQ).map((q) => q.id);
+      else if (dia.tipo === 'sabado') focoIds = preguntasMixtasSinUsar(focoNQ, excl, dia.fecha, { nums: MIR_MANT_PESOS.map((x) => x.num) }).map((q) => q.id); // v6.00: mini-simulacro mixto de las 14
       else if (dia.modo === 'reducido') focoIds = preguntasMixtasSinUsar(focoNQ, excl, dia.fecha, { nums: [dia.num, dia.num2].filter((x): x is number => x != null) }).map((q) => q.id);
       else {
         const nInter = !tierC && dia.num2 != null ? Math.min(10, focoNQ) : 0;
@@ -763,8 +777,9 @@ function MantenimientoView({ dia, onPick, bump, sync }: { dia: DiaMIRMant; onPic
       <FadeUp>
         <View style={[st.temaCard, { borderColor: color + '66' }]}>
           <View style={st.temaTop}>
-            <Chip label={dia.modo === 'reducido' ? 'REDUCIDO · Fase B/C Step 1' : 'BANQUEO'} color={color} small />
-            <Chip label={dia.tipo === 'viernes' ? 'viernes · asignatura peor del log' : `rotación ponderada · sem ${dia.semana}`} color={BLUE} small />
+            <Chip label={dia.modo === 'reducido' ? 'REDUCIDO · Fase B/C Step 1' : dia.fase === 'extension' ? 'BANQUEO · EXTENSIÓN' : 'BANQUEO'} color={color} small />
+            <Chip label={dia.tipo === 'viernes' ? 'viernes · asignatura peor del log' : dia.tipo === 'sabado' ? 'SÁBADO · mini-simulacro 30Q mixtas (14 asignaturas)' : `rotación ponderada · sem ${dia.semana}`} color={BLUE} small />
+            {turno && <Chip label={turno.marcado ? `turno ${turno.turno} · ${TURNO_INFO[turno.turno].label}${diaHito ? ' · día de HITO → 04:05' : ''}` : 'turno sin marcar (→ M · 16:00)'} color={turno.marcado ? GREEN : Colors.muted} small />}
             <Chip label={`${foco.nQ}Q · ${dia.minQ} min · ${MIR_SEG_POR_Q} s/Q`} color={GREEN} small />
             {tierC ? <Chip label={`TIER C EXPRESS · ${tierC.asignatura} › ${tierC.capitulo} (${tierC.nQ}Q · ${tierC.pesoCap} % de la asignatura)`} color={CORAL} small /> : null}
             {proximoTierC ? <Chip label={`próximo Tier C: ${proximoTierC.asignatura} · ${proximoTierC.capitulo} · ${fmtFecha(proximoTierC.fecha)} (M${proximoTierC.d})`} color={Colors.muted} small /> : null}
@@ -775,7 +790,7 @@ function MantenimientoView({ dia, onPick, bump, sync }: { dia: DiaMIRMant; onPic
         </View>
       </FadeUp>
       <BridgeChip fecha={dia.fecha} />
-      <Text style={st.secLbl}>🕓 Franjas · {fmtFecha(dia.fecha)}</Text>
+      <Text style={st.secLbl}>🕓 Franjas · {fmtFecha(dia.fecha)}{turno ? ` · ${turno.turno === 'G' ? 'guardia: 1 h en tiempo muerto (lo que no se termine se suma al día de plan siguiente)' : `según el turno ${turno.turno}${turno.marcado ? '' : ' (sin marcar)'}`}` : ''}</Text>
       {franjas.map((f, i) => (
         <FadeUp key={i} delay={i * 25}>
           <View style={st.franja}>
@@ -784,12 +799,12 @@ function MantenimientoView({ dia, onPick, bump, sync }: { dia: DiaMIRMant; onPic
           </View>
         </FadeUp>
       ))}
-      <FadeUp delay={100}><ColaItem icon="🃏" lbl="ANKI · APEX::MIR (todas las asignaturas)" val={mirAnkiDeck(foco.asignatura)} sub={`AnkiWeb ↗ · preset FSRS retention 0,85 hasta 22-abr (→ 0,90 en fase principal, desde el 23-abr) · ${APEX_DIRECTO_ANKI}`} color={Colors.teal} url={ANKIWEB} /></FadeUp>
-      <FadeUp delay={120}><ColaItem icon="🧪" lbl={`${foco.nQ}Q reales MIR · cronometradas`} val={`${foco.asignatura}${dia.asignatura2 ? ` (+ ${dia.asignatura2} interleaving)` : ''}`} sub="cuadernillos oficiales gratis (examenesmir) o test por asignatura ProMIR · en blanco permitido" color={AMBER} url="https://www.examenesmir.com/examenes-mir" /></FadeUp>
+      <FadeUp delay={100}><ColaItem icon="🃏" lbl="ANKI · APEX::MIR (todas las asignaturas)" val={mirAnkiDeck(foco.asignatura)} sub={`AnkiWeb ↗ · preset FSRS retention 0,85 hasta el Step 1 (→ 0,90 en la fase principal, oct-2027) · ${APEX_DIRECTO_ANKI}`} color={Colors.teal} url={ANKIWEB} /></FadeUp>
+      <FadeUp delay={120}><ColaItem icon="🧪" lbl={`${foco.nQ}Q reales MIR · cronometradas`} val={dia.tipo === 'sabado' ? 'MIXTAS de las 14 asignaturas (mini-simulacro)' : `${foco.asignatura}${dia.asignatura2 ? ` (+ ${dia.asignatura2} interleaving)` : ''}`} sub="cuadernillos oficiales gratis (examenesmir) o test por asignatura ProMIR · en blanco permitido" color={AMBER} url="https://www.examenesmir.com/examenes-mir" /></FadeUp>
       <TimerQ color={color} presets={[foco.nQ, 10, 25, 40].filter((v, i, a) => a.indexOf(v) === i)} />
       {focoNQ > 0 && (
         <>
-          {poolOK && <MirPoolLista qIds={pool.foco} color={color} titulo={`Pool oficial · ${foco.asignatura}${!tierC && dia.modo === 'normal' && dia.asignatura2 ? ` + ${dia.asignatura2} (10Q interleaving)` : ''}`} pedidas={focoNQ} fallback="test por asignatura ProMIR / cuadernillos examenesmir" />}
+          {poolOK && <MirPoolLista qIds={pool.foco} color={color} titulo={dia.tipo === 'sabado' ? 'Pool oficial · MIXTAS de las 14 asignaturas' : `Pool oficial · ${foco.asignatura}${!tierC && dia.modo === 'normal' && dia.asignatura2 ? ` + ${dia.asignatura2} (10Q interleaving)` : ''}`} pedidas={focoNQ} fallback="test por asignatura ProMIR / cuadernillos examenesmir" />}
           <EvalForm dia={{ d: dia.d, fecha: dia.fecha, num: foco.num ?? undefined }} kind="mantenimiento" total={focoNQ} asignatura={foco.asignatura} tema={`Mantenimiento ${dia.tipo} ${focoNQ}Q`} color={color} titulo={`Registrar ${focoNQ}Q (${dia.minCorr} min corrección)`} tactica qIds={pool.foco} onSaved={bump} />
         </>
       )}
@@ -797,7 +812,7 @@ function MantenimientoView({ dia, onPick, bump, sync }: { dia: DiaMIRMant; onPic
         <FadeUp delay={130}>
           <View style={[st.temaCard, { borderColor: CORAL + '66' }]}>
             <Text style={[st.formTitle, { color: CORAL }]}>🎯 TIER C EXPRESS · {tierC.asignatura} › {tierC.capitulo} · {tierC.nQ}Q</Text>
-            <Text style={st.temaSub}>Capítulo top-1 de una asignatura fuera del plan ({tierC.pesoCap} % de su peso; semana {dia.semana}). Entrada PROPIA en el log con asignatura {tierC.asignatura} (no se mezcla con la foco: así entra en las estadísticas por asignatura y en el handoff 22-abr).{tierC.nota ? ` · ${tierC.nota}` : ''}</Text>
+            <Text style={st.temaSub}>Capítulo top-1 de una asignatura fuera del plan ({tierC.pesoCap} % de su peso; semana {dia.semana}). Entrada PROPIA en el log con asignatura {tierC.asignatura} (no se mezcla con la foco: así entra en las estadísticas por asignatura y en el handoff del vie 24-sep).{tierC.nota ? ` · ${tierC.nota}` : ''}</Text>
             {poolOK && <Text style={st.formHint}>{pool.tierCDelCap < 0 ? 'ids ya registradas hoy' : `${pool.tierCDelCap} del capítulo + ${pool.tierC.length - pool.tierCDelCap} de la asignatura`}{pool.tierC.length < tierC.nQ ? ` · faltan ${tierC.nQ - pool.tierC.length} → test del capítulo ProMIR` : ''}</Text>}
             <TouchableOpacity activeOpacity={0.8} onPress={() => openUrl(capUrl(tierC.capId))} style={[st.dChip, { borderColor: CORAL + '66', alignSelf: 'flex-start', marginTop: 6 }]}><Text style={[st.dChipTxt, { color: CORAL }]}>capítulo ProMIR ↗</Text></TouchableOpacity>
             {poolOK && <MirPoolLista qIds={pool.tierC} color={CORAL} titulo={`Pool oficial · ${tierC.asignatura}`} pedidas={tierC.nQ} />}
@@ -809,12 +824,12 @@ function MantenimientoView({ dia, onPick, bump, sync }: { dia: DiaMIRMant; onPic
       <Text style={st.secLbl}>📆 Próximos 7 días</Text>
       {mirMant7d(dia.d).map((x, i) => (
         <FadeUp key={x.d} delay={i * 25}>
-          <TouchableOpacity activeOpacity={0.8} onPress={() => onPick(x.d)} style={[st.d7, { borderLeftColor: x.tipo === 'viernes' ? CORAL : AMBER }]}>
-            <Text style={[st.d7day, { color: x.tipo === 'viernes' ? CORAL : AMBER }]}>M{x.d}</Text>
+          <TouchableOpacity activeOpacity={0.8} onPress={() => onPick(x.d)} style={[st.d7, { borderLeftColor: x.tipo === 'viernes' ? CORAL : x.tipo === 'sabado' ? BLUE : AMBER }]}>
+            <Text style={[st.d7day, { color: x.tipo === 'viernes' ? CORAL : x.tipo === 'sabado' ? BLUE : AMBER }]}>M{x.d}</Text>
             <Text style={st.d7fecha}>{fmtFecha(x.fecha)}</Text>
             <View style={{ flex: 1 }}>
               <Text style={st.d7sub} numberOfLines={1}>{x.asignatura}{x.asignatura2 ? ` + ${x.asignatura2}` : ''}</Text>
-              <Text style={st.d7sys}>{x.modo} · {x.tipo} · {x.nQ}Q</Text>
+              <Text style={st.d7sys}>{x.fase === 'extension' ? 'extensión' : 'mantenimiento'} · {x.tipo} · {x.nQ}Q</Text>
             </View>
             <Text style={st.d7go}>→</Text>
           </TouchableOpacity>
@@ -837,6 +852,8 @@ export default function MirTodayPlan() {
   const [view, setView] = useState<'hoy' | 'horario' | '7d' | 'temario'>('hoy');
   const [done, setDone] = useState<Set<number>>(() => new Set(loadDone('mir')));
   const [, setTick] = useState(0);
+  useEffect(() => onTurnosChange(() => setTick((t) => t + 1)), []); // v6.00: el turno mueve la franja MIR en el SERUMS
+  const protegidoHoy = motivoProtegido(iso);                       // v6.00: día protegido = sin sesión MIR (§A3)
   const [sync, setSync] = useState<SyncInfo>(null);
   // bump = re-render tras guardar; el contador del espejo sube 1 (el push va en segundo plano)
   const bump = () => { setTick((t) => t + 1); setSync((s) => (s && s.ok ? { ...s, remotas: s.remotas + 1 } : s)); };
@@ -867,20 +884,26 @@ export default function MirTodayPlan() {
         </TouchableOpacity>
         <TouchableOpacity activeOpacity={0.85} onPress={() => setModo('mant')} style={[st.ctxBtn, modo === 'mant' ? st.ctxActive : st.ctxSoon]}>
           <Text style={[st.ctxBig, modo !== 'mant' && { color: Colors.muted }]}>Banqueo</Text>
-          <Text style={st.ctxSub}>ene→abr 2027 · {MIR_MANT_META.totalDias} d · 25Q/día</Text>
+          <Text style={st.ctxSub}>ene→sep 2027 · {MIR_MANT_DIAS.length} d ({MIR_MANT_META.mant.totalDias} mant. + {MIR_MANT_META.ext.totalDias} ext.) · 25Q/día · sáb 30Q</Text>
         </TouchableOpacity>
-        <View style={[st.ctxBtn, st.ctxSoon]}><Text style={[st.ctxBig, { color: Colors.muted }]}>2ª vuelta</Text><Text style={st.ctxSub}>abr-2027 (fase principal)</Text></View>
+        <View style={[st.ctxBtn, st.ctxSoon]}><Text style={[st.ctxBig, { color: Colors.muted }]}>2ª vuelta</Text><Text style={st.ctxSub}>oct-2027 (fase principal)</Text></View>
       </View>
+      {protegidoHoy && (
+        <View style={[st.temaCard, { borderColor: CORAL + '88' }]}>
+          <Text style={[st.formTitle, { color: CORAL }]}>🛡 DÍA PROTEGIDO · {protegidoHoy} — hoy no hay sesión MIR (§A3)</Text>
+          <Text style={st.temaSub}>Los días protegidos v6 (ENCAPS y Step 1) no llevan fila de MIR; la siguiente sesión es el próximo día de plan.</Text>
+        </View>
+      )}
 
       {modo === 'mant' && diaM ? (
         <>
           <View style={st.navRow}>
             <TouchableOpacity activeOpacity={0.7} onPress={() => setSelM((s) => Math.max(1, s - 1))} style={st.navArrow}><Text style={st.navArrowTxt}>◄</Text></TouchableOpacity>
             <View style={{ flex: 1, alignItems: 'center' }}>
-              <Text style={st.navDay}>Mantenimiento {diaM.d}/{MIR_MANT_META.totalDias}{diaM.fecha === iso ? ' · HOY' : ''}</Text>
+              <Text style={st.navDay}>{diaM.fase === 'extension' ? 'Extensión' : 'Mantenimiento'} {diaM.d}/{MIR_MANT_DIAS.length}{diaM.fecha === iso ? ' · HOY' : ''}</Text>
               <Text style={st.navFecha}>{fmtFecha(diaM.fecha)} · {diaM.fecha}</Text>
             </View>
-            <TouchableOpacity activeOpacity={0.7} onPress={() => setSelM((s) => Math.min(MIR_MANT_META.totalDias, s + 1))} style={st.navArrow}><Text style={st.navArrowTxt}>►</Text></TouchableOpacity>
+            <TouchableOpacity activeOpacity={0.7} onPress={() => setSelM((s) => Math.min(MIR_MANT_DIAS.length, s + 1))} style={st.navArrow}><Text style={st.navArrowTxt}>►</Text></TouchableOpacity>
           </View>
           <GlassPanel style={{ marginBottom: Spacing.xl, padding: Spacing.md }}>
             <MantenimientoView dia={diaM} onPick={(d) => setSelM(d)} bump={bump} sync={sync} />

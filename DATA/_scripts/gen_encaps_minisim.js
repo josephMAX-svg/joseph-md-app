@@ -41,7 +41,10 @@
  *        demanda por código v3: sets, reales etiquetados, banco_items_v1, claves.json, QX/Theomed, resueltas, déficit).
  *   node DATA/_scripts/gen_encaps_minisim.js 2026-09-18 --dry          → solo informe (no escribe)
  *   node DATA/_scripts/gen_encaps_minisim.js --pretest                 → BANCO_PROPIO/pretest_2026-II.html (100Q, examen real
- *                                                                        2026-II, PRETEST_2026-II.md). Generarlo el jue 18-feb-2027 (D94, última sesión de banco del Step 1) o antes (v5.19: mié 17-feb · v5.18: mar 16-feb · v5.17: vie 12-feb); se rinde el vie 26-feb (v5.20: default de fecha 2027-02-26 = primer viernes de la intensiva —día 100—, que arranca el mar 23-feb, día siguiente al examen Step 1 del lun 22-feb → ALINEADO con gen_encaps_intensivo_2027.js · v5.19: mismo vie 26-feb, con la intensiva desde el lun 22-feb tras el examen del vie 19-feb · v5.18: default vie 19-feb, día siguiente al examen del jue 18-feb).
+ *                                                                        2026-II, PRETEST_2026-II.md). v6.00 (6-oct-2026): se rinde el VIE 8-ENE-2027
+ *                                                                        (default = _fechas_v6.json encaps.pretest = viernes de la semana 1 de la intensiva
+ *                                                                        lun 4-ene → ALINEADO con gen_encaps_intensivo_2027.js); generarlo antes del lun 4-ene.
+ *                                                                        Hasta v5.20: generarlo el jue 18-feb-2027 (D94, última sesión de banco del Step 1) o antes (v5.19: mié 17-feb · v5.18: mar 16-feb · v5.17: vie 12-feb); se rinde el vie 26-feb (v5.20: default de fecha 2027-02-26 = primer viernes de la intensiva —día 100—, que arranca el mar 23-feb, día siguiente al examen Step 1 del lun 22-feb → ALINEADO con gen_encaps_intensivo_2027.js · v5.19: mismo vie 26-feb, con la intensiva desde el lun 22-feb tras el examen del vie 19-feb · v5.18: default vie 19-feb, día siguiente al examen del jue 18-feb).
  *   node DATA/_scripts/gen_encaps_minisim.js --sim100 2025-2 [fecha]   → simulacro 100Q con un examen real con CLAVE OFICIAL
  *                                                                        (2024-2A · 2025-1A · 2025-2; 2026-1 no tiene clave → se rechaza)
  *   node DATA/_scripts/gen_encaps_minisim.js --sim100 propio <fecha>   → 100Q desde el banco propio (vector v3 ×4)
@@ -88,6 +91,7 @@ const BANCO = path.join(ENCAPS, 'BANCO_PROPIO');
 const REG = path.join(ENCAPS, 'TRACKING_ERRORES', '_registro_resoluciones.json');
 const RONDAS = path.join(ENCAPS, 'TRACKING_ERRORES', 'RONDAS');
 const SQL_MANT = path.join(__dirname, '_encaps_mantenimiento_2027.sql');
+const PRETEST_DEF = require('./gen_fechas_v6').cargarFechasV6().encaps.pretest; // v6.00: vie 8-ene-2027 (antes 2027-02-26)
 const { RECETA_MINISIM, COLA_LARGA, CRITICOS_V3, REBOTE_V3, VECTOR_V3, CICLO, SUB_EJES, areaDe } = require('./_encaps_ciclo_v3');
 
 // ── argumentos ──
@@ -588,7 +592,7 @@ function borrarSalida(base) { for (const ext of ['.json', '.html']) { const p = 
 function modoPretest() {
   const src = readJSON(path.join(ENCAPS, '_examen_2026-2_items.json'));
   const items = src.items.map((it) => ({ n: it.numero, id: `2026-II-Q${it.numero}`, codigo: it.codigo, area: areaDe(it.codigo), formato: it.tipo, formato_pretest: it.formato_pretest, subangulo: it.subtema, enunciado: it.enunciado, opciones: it.opciones, clave: it.clave, respuesta: it.respuesta, fuente: 'ENCAPS/SERUMS 2026-II (clave oficial verificada 100/100)', verificado_contra: 'CLAVE OFICIAL 2026-II (resaltados del PDF, 27-ago-2026)' }));
-  const doc = { id: 'PRETEST_2026-II', titulo: 'PRE-TEST DIAGNÓSTICO · examen real ENCAPS 2026-II (100Q)', tipoRonda: 'pretest', fecha: fechaArg || '2027-02-26', codigo: 'MIX', tema: 'pre-test 2026-II · arranque fase intensiva', fuente_preguntas: 'DATA/ENCAPS/_examen_2026-2_items.json (examen real 2026-II · clave oficial 100/100 · LISTA NEGRA levantada al cerrar esta ronda)', n: 100, seg_por_q: 72, umbral: 70, alerta: 60, mostrar_codigo: false, instrucciones: 'Examen real 2026-II en orden original, 100 preguntas, 72 s/Q = 120 min sin pausa. Sin material. Umbral de arranque ≥70/100. Protocolo: DATA/ENCAPS/PRETEST_2026-II.md.', items };
+  const doc = { id: 'PRETEST_2026-II', titulo: 'PRE-TEST DIAGNÓSTICO · examen real ENCAPS 2026-II (100Q)', tipoRonda: 'pretest', fecha: fechaArg || PRETEST_DEF, codigo: 'MIX', tema: 'pre-test 2026-II · arranque fase intensiva', fuente_preguntas: 'DATA/ENCAPS/_examen_2026-2_items.json (examen real 2026-II · clave oficial 100/100 · LISTA NEGRA levantada al cerrar esta ronda)', n: 100, seg_por_q: 72, umbral: 70, alerta: 60, mostrar_codigo: false, instrucciones: 'Examen real 2026-II en orden original, 100 preguntas, 72 s/Q = 120 min sin pausa. Sin material. Umbral de arranque ≥70/100. Protocolo: DATA/ENCAPS/PRETEST_2026-II.md.', items };
   escribir('pretest_2026-II', doc);
 }
 function modoSim100(proceso) {

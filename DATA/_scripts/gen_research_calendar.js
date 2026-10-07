@@ -26,6 +26,11 @@
  *
  * No toca el Calendar por sí mismo (no hay API key en el repo): quien crea/actualiza/borra es el MCP de Google Calendar
  * desde Claude Code, con availability FREE y verificando con get_event. NO edita ningún .ts ni el plan.
+ *
+ * v6.00 (6-oct-2026 · V6_ESPEC §E/§G3): en F4 (fecha ≥ serums.inicio de DATA/_scripts/_fechas_v6.json, lun 3-may-2027 [S]) el overlay es
+ * de TODO EL DÍA (allDay: true · startTime/endTime a medianoche): Research va 30' en tiempo muerto de la posta y la hora la pone el
+ * turno. Textos de DEADLINE sin el Step 1 de febrero (cr-paquete, equipo). Re-fechados por v6: X-9 lun 15-mar → jue 11-mar · R43 jue
+ * 29-jul → sáb 17-jul (todo el día).
  */
 const fs = require('fs');
 const path = require('path');
@@ -40,6 +45,9 @@ const TZ = 'America/Lima';
 const OFFSET = '-05:00';           // Lima no tiene horario de verano
 const HORA = ['13:30:00', '14:15:00'];
 const COLOR_ID = '6';              // naranja (mismo que los overlays NBME)
+// v6.00: inicio del SERUMS (F4) desde la fuente única de fechas → overlays de todo el día desde esa fecha
+const SERUMS_INICIO = require('./gen_fechas_v6').cargarFechasV6().serums.inicio;
+const sigDia = (f) => { const d = new Date(f + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + 1); return d.toISOString().slice(0, 10); };
 
 const argv = process.argv.slice(2);
 const PRINT = argv.includes('--print');
@@ -69,9 +77,9 @@ const DEADLINE = {
   'cr-caso': '31-oct-2026 (caso + consentimiento + senior author · si el mar 3-nov (C-3 en v5.20, ~3 semanas desde M1 mié 14-oct; antes vie 30-oct) no hay caso → plan B, colega SPD · ⚠ v5.20: CR-1 cae el mar 17-nov y CR-2 el jue 19-nov, ya después del 31-oct · v5.18-v5.19: vie 13-nov / mar 17-nov)',
   'tesis-L0': '≤ 15-feb-2027 (JAAD International → IJD → Actas → Anais)',
   'revisor2': 'antes de PROSPERO (sin revisor #2 humano no hay registro · PRISMA 2020 ítem 8)',
-  'cr-paquete': 'antes del submit CR-9 (jue 11-feb-2027 = D89 del Step 1, primer día-Research tras la pausa): paquete congelado ANTES de la pausa Research por el Step 1 (vie 15-ene → mié 10-feb-2027; Fases B-C mar 2 → vie 19-feb; examen lun 22-feb · v5.20; v5.19: D90, Fases B-C lun 1 → jue 18-feb, examen vie 19-feb)',
+  'cr-paquete': 'antes del submit CR-9 (jue 11-feb-2027, primer día-Research tras la pausa): paquete congelado ANTES de la pausa de átomos (vie 15-ene → mié 10-feb-2027 = núcleo de la intensiva ENCAPS; v6.00: el Step 1 está en pausa del 31-dic al 15-mar · v5.20: la pausa era por las Fases B-C del Step 1)',
   'case-report-1': '≤ 28-feb-2027 (Dermatology Online Journal → JAAD CR → Case Reports in Dermatology)',
-  'equipo': 'antes del registro R10 (vie 19-mar-2027 en v5.20; X-9 = lun 15-mar)',
+  'equipo': 'antes del registro R10 (vie 19-mar-2027; X-9 = jue 11-mar en v6.00 · v5.20: lun 15-mar)',
   'PROSPERO-SR1': '≤ 31-mar-2027',
   'SR-1': '≤ 31-ago-2027 (Dermatologic Surgery → JAAD → JCD → Anais/Actas)',
 };
@@ -114,8 +122,10 @@ const porCodigo = (ciclo, code, fecha) => DIAS.find((x) => x.ciclo === ciclo && 
 function payload(hito, h) {
   const atomo = porCodigo(h.ciclo, h.code, h.fecha) || {};
   const label = LABEL[hito] || String(atomo.entregable || hito).slice(0, 60);
+  const f4 = h.fecha >= SERUMS_INICIO; // v6.00: F4 (SERUMS) → overlay de todo el día
   const lineas = [
-    `HITO RESEARCH · ${h.code} · d${h.d} del ciclo ${h.ciclo} · bloque 13:30-14:15 (día-Research; alterna con Derma)`,
+    f4 ? `HITO RESEARCH · ${h.code} · d${h.d} del ciclo ${h.ciclo} · F4 (SERUMS): 30' en tiempo muerto de la posta — la hora la pone el turno del día (día-Research: mar · jue · sáb)`
+      : `HITO RESEARCH · ${h.code} · d${h.d} del ciclo ${h.ciclo} · bloque 13:30-14:15 (día-Research; alterna con Derma)`,
     '',
     `OBJETIVO: ${atomo.objetivo || '(ver researchDailyPlan.ts)'}`,
     `ENTREGABLE: ${atomo.entregable || '—'}`,
@@ -130,8 +140,9 @@ function payload(hito, h) {
     hito, code: h.code, d: h.d, ciclo: h.ciclo, fecha: h.fecha,
     calendarId: CAL,
     summary: `🔬 RESEARCH · ${h.code} ${label}`,
-    startTime: `${h.fecha}T${HORA[0]}${OFFSET}`,
-    endTime: `${h.fecha}T${HORA[1]}${OFFSET}`,
+    ...(f4 ? { allDay: true } : {}),
+    startTime: f4 ? `${h.fecha}T00:00:00${OFFSET}` : `${h.fecha}T${HORA[0]}${OFFSET}`,
+    endTime: f4 ? `${sigDia(h.fecha)}T00:00:00${OFFSET}` : `${h.fecha}T${HORA[1]}${OFFSET}`,
     timeZone: TZ,
     colorId: COLOR_ID,
     availability: 'AVAILABILITY_FREE',   // = transparency 'transparent' (no bloquea el bloque)
@@ -196,7 +207,7 @@ for (const p of plan) {
     eventId: p.eventId, fechaCreada: p.fechaCreada, hash: p.hashCreado, summary: prev.overlays[p.hito]?.summary || null,
     registrado: prev.overlays[p.hito]?.registrado || null,
     accionPendiente: p.accion === 'nada' ? null : p.accion,
-    payload: { code: p.code, d: p.d, ciclo: p.ciclo, fecha: p.fecha, summary: p.summary, startTime: p.startTime, endTime: p.endTime, timeZone: p.timeZone, colorId: p.colorId, availability: p.availability, description: p.description, hash: p.hash },
+    payload: { code: p.code, d: p.d, ciclo: p.ciclo, fecha: p.fecha, summary: p.summary, ...(p.allDay ? { allDay: true } : {}), startTime: p.startTime, endTime: p.endTime, timeZone: p.timeZone, colorId: p.colorId, availability: p.availability, description: p.description, hash: p.hash },
   };
 }
 fs.writeFileSync(OUT, JSON.stringify(salida, null, 1) + '\n', 'utf8');

@@ -17,9 +17,16 @@
  *    del hito + plantilla por sistema (#27), fixes de tarjeta por tipo de error (#18), checklist §11.5 pre-marcado (#30), día parcial
  *    (§12.6-10) y plan B "worst case" (#26). Los campos nuevos viajan a Supabase en la columna JSONB `extra` (si no existe,
  *    el upsert reintenta sin ella: nunca rompe la UI; DDL pendiente en DATA/_scripts/_migrations).
+ *  · v6.00 (6-oct-2026 · V6_ESPEC §B5 · §B4.5 · §F): los 2 tramos (DIAS → DIAS_TODOS en hitosPlan, subtemasValidados, plantillaPorSistema
+ *    y checklist115: si no, proximoHito / gateHito / readiness / distanciaOnTrack no ven NBME 29-33, UWSA3, Free 120 ni el GO/NO-GO) ·
+ *    HITOS_ONTRACK v6 (NBME 25 sin mínimo · 26/27 relativos a NBME 25 con `minRel` · NBME 28 por tramos 58/50 = checkpoint de fecha ·
+ *    NBME 29 ≥ NBME 28 − 5 + alerta de caída > 8 · NBME 30 ≥ NBME 28 · 31 ≥ 65 · 32/33 ≥ 68 · Free 120 ≥ 70 · UWSA3 formativa ·
+ *    GO/NO-GO) · campo diario `horas` (horas netas de Step 1, en `extra.horas`; sin migración: la columna JSONB ya existe) ·
+ *    horasDesde() y evaluarGoNoGo() = GO/NO-GO por horas (B4.5) + NBME 31/32 (o el criterio del GO/NO-GO #2).
  */
 import { supabase } from './supabase';
-import { DIAS, DiaUSMLE, USMLE_GATE, esHito, faseDe } from './usmleStep1Daily';
+import { DIAS_TODOS, DiaUSMLE, DAILY_META, USMLE_GATE, esHito, faseDe, esFilaT2 } from './usmleStep1Daily';
+import { FECHAS_V6 } from './fechasV6';
 
 export type TipoErrorUW = 'knowledge' | 'transfer' | 'proceso';
 /** Fix por categoría (§6.1) + QUÉ TARJETA se hace (§4.4 · §6.2 · §6.5; 2.ª capa #18, 19-sep-2026): la tarjeta apunta al motivo exacto del fallo, nunca al dato aislado. */
@@ -56,6 +63,8 @@ export interface UsmleScore {
   nConocidos?: number | null;
   /** #27 §8.5/§9.1: % por bloque del hito (B1-B4: UWSA 4×40 · NBME 4×50 · Free 120 3×40) */
   bloquesPct?: (number | null)[] | null;
+  /** v6.00 (§B4.5): horas NETAS de Step 1 del día (0-16), registradas en el cierre · suman para el GO/NO-GO por horas (extra.horas) */
+  horas?: number | null;
 }
 /** Claves localStorage de la 2.ª capa (try/catch; sin storage no pasa nada). */
 const KEY_PARCIAL = 'jmd-usmle-parcial';
@@ -102,11 +111,12 @@ function normalizar(s: UsmleScore): UsmleScore {
     cambiadas: clamp(s.cambiadas, 200), relecturas: clamp(s.relecturas, 200),
     nFallos: clamp(s.nFallos, 400), nConocidos: clamp(s.nConocidos, 400),
     bloquesPct: Array.isArray(s.bloquesPct) && s.bloquesPct.some((v) => v != null) ? s.bloquesPct.slice(0, 8).map((v) => clamp(v, 100)) : null,
+    horas: clamp(s.horas, 16),
   };
 }
 /** ¿Trae algún campo de la 2.ª capa? (decide si se envía la columna `extra`) */
 function tieneExtra(s: UsmleScore): boolean {
-  return s.cambiadas != null || s.relecturas != null || s.nFallos != null || s.nConocidos != null || !!(s.bloquesPct && s.bloquesPct.length);
+  return s.cambiadas != null || s.relecturas != null || s.nFallos != null || s.nConocidos != null || !!(s.bloquesPct && s.bloquesPct.length) || s.horas != null;
 }
 function lsGet(key: string): string | null { try { const ls = (globalThis as any).localStorage; return ls ? ls.getItem(key) : null; } catch { return null; } }
 function lsSet(key: string, val: string): void { try { const ls = (globalThis as any).localStorage; if (ls) ls.setItem(key, val); } catch { /* sin storage */ } }
@@ -151,7 +161,8 @@ function aFila(s: UsmleScore, conExtra: boolean) {
     tipo_error: s.tipoError, nivel_uw: s.nivelUW, notas: s.notas || null, updated_at: s.updatedAt,
   };
   // 2.ª capa: JSONB `extra` (DDL: ALTER TABLE usmle_daily_scores ADD COLUMN IF NOT EXISTS extra JSONB). Si la columna no existe, upsertScore reintenta sin ella.
-  if (conExtra && tieneExtra(s)) base.extra = { cambiadas: s.cambiadas ?? null, relecturas: s.relecturas ?? null, nFallos: s.nFallos ?? null, nConocidos: s.nConocidos ?? null, bloquesPct: s.bloquesPct ?? null };
+  // v6.00: + horas (GO/NO-GO por horas, §B4.5) — antes `extra` se sobrescribía con 5 claves fijas y las horas nunca se guardaban.
+  if (conExtra && tieneExtra(s)) base.extra = { cambiadas: s.cambiadas ?? null, relecturas: s.relecturas ?? null, nFallos: s.nFallos ?? null, nConocidos: s.nConocidos ?? null, bloquesPct: s.bloquesPct ?? null, horas: s.horas ?? null };
   return base;
 }
 function deFila(r: any): UsmleScore | null {
@@ -160,7 +171,7 @@ function deFila(r: any): UsmleScore | null {
   return normalizar({
     fecha: r.fecha.slice(0, 10), d: r.d, pretest10: r.pretest10, consol30pct: r.consol30_pct, evalPct: r.eval_pct,
     tipoError: r.tipo_error, nivelUW: r.nivel_uw, notas: r.notas || '', updatedAt: r.updated_at || new Date().toISOString(),
-    cambiadas: ex.cambiadas, relecturas: ex.relecturas, nFallos: ex.nFallos, nConocidos: ex.nConocidos, bloquesPct: ex.bloquesPct,
+    cambiadas: ex.cambiadas, relecturas: ex.relecturas, nFallos: ex.nFallos, nConocidos: ex.nConocidos, bloquesPct: ex.bloquesPct, horas: ex.horas,
   });
 }
 /** Guarda local + Supabase. `supabase` = true si el espejo remoto respondió sin error. */
@@ -206,25 +217,30 @@ export async function pullScores(): Promise<UsmleScore[]> {
 export interface GateDia { estado: 'sube' | 'repite' | 'sin-dato' | 'lectura'; pct: number | null; minimo: number; metrica: string; label: string; detalle: string }
 export function gateDelDia(s: UsmleScore | null | undefined, dia: DiaUSMLE): GateDia {
   if (esHito(dia)) {
-    const h = HITOS_ONTRACK.find((t) => t.match.test(dia.uw));
+    const h = hitoOnTrackDe(dia.uw);
     const pct = s?.evalPct ?? null;
-    const minimo = h?.min ?? USMLE_GATE.pct;
-    if (pct == null) return { estado: 'sin-dato', pct, minimo, metrica: `% del ${h?.clave || dia.uw}`, label: '— sin registrar', detalle: h?.min != null ? `mínimo on-track ${h.min}%` : (h?.nota || 'baseline: se lee por tramos, no es gate') };
-    if (h?.min == null) {
+    // v6.00: mínimo RESUELTO (minRel → % registrado del hito de referencia + delta)
+    const local = leer().filter((x) => !s || x.fecha !== s.fecha).concat(s ? [normalizar({ ...s, updatedAt: s.updatedAt || new Date().toISOString() })] : []);
+    const minRes = h ? minimoResuelto(h, local) : null;
+    const minimo = minRes ?? USMLE_GATE.pct;
+    if (pct == null) return { estado: 'sin-dato', pct, minimo, metrica: `% del ${h?.clave || dia.uw}`, label: '— sin registrar', detalle: minRes != null ? `mínimo on-track ${minRes}% (${h ? minimoTexto(h) : ''})` : h ? minimoTexto(h) + (h.nota ? ` · ${h.nota}` : '') : 'baseline: se lee por tramos, no es gate' };
+    const caida = h ? alertaCaidaDe(h, pct, local) : null;
+    if (minRes == null) {
       // #12: hitos sin mínimo (UWSA1 baseline, UWSA2 low-risk) se LEEN por tramos; no son gate
       const tr = h ? lecturaHito(h, pct) : null;
       return tr
         ? { estado: 'lectura', pct, minimo, metrica: `% del ${h!.clave}`, label: `● ${pct}% · ${tr.label}`, detalle: tr.accion }
-        : { estado: 'sube', pct, minimo, metrica: `% del ${h?.clave || dia.uw}`, label: `✓ ${pct}% registrado`, detalle: h?.nota || 'baseline' };
+        : { estado: 'sube', pct, minimo, metrica: `% del ${h?.clave || dia.uw}`, label: `✓ ${pct}% registrado`, detalle: (h?.minRel ? `${minimoTexto(h)}: sin % del ${h.minRel.ref} registrado · ` : '') + (h?.nota || 'baseline') };
     }
-    const ok = pct >= h.min;
+    if (caida) return { estado: 'repite', pct, minimo: minRes, metrica: `% del ${h!.clave}`, label: caida.label, detalle: caida.accion };
+    const ok = pct >= minRes;
     if (!ok && s) {
       // REGLA §E-7: si el hito con mínimo anterior también quedó bajo mínimo → ALERTA BURNOUT (gateHito sobre local + este registro)
       const merged = leer().filter((x) => x.fecha !== s.fecha).concat([normalizar({ ...s, updatedAt: s.updatedAt || new Date().toISOString() })]);
       const gh = gateHito(merged, dia.fecha);
-      if (gh.estado === 'ALERTA BURNOUT') return { estado: 'repite', pct, minimo: h.min, metrica: `% del ${h.clave}`, label: gh.label, detalle: gh.detalle };
+      if (gh.estado === 'ALERTA BURNOUT') return { estado: 'repite', pct, minimo: minRes, metrica: `% del ${h!.clave}`, label: gh.label, detalle: gh.detalle };
     }
-    return { estado: ok ? 'sube' : 'repite', pct, minimo: h.min, metrica: `% del ${h.clave}`, label: ok ? `✓ ON-TRACK · ${pct}% ≥ ${h.min}%` : `✗ BAJO MÍNIMO · ${pct}% < ${h.min}%`, detalle: ok ? 'trayectoria de GO intacta' : 'auditar el MÉTODO esta semana (checklist §G), no sumar horas · un segundo hito bajo mínimo dispara ALERTA BURNOUT (§E-7)' };
+    return { estado: ok ? 'sube' : 'repite', pct, minimo: minRes, metrica: `% del ${h!.clave}`, label: ok ? `✓ ON-TRACK · ${pct}% ≥ ${minRes}%` : `✗ BAJO MÍNIMO · ${pct}% < ${minRes}%`, detalle: ok ? 'trayectoria de GO intacta' : 'auditar el MÉTODO esta semana (checklist §G), no sumar horas · un segundo hito bajo mínimo dispara ALERTA BURNOUT (§E-7)' };
   }
   const fase = faseDe(dia.d);
   const pct = fase === 'A' ? (s?.consol30pct ?? null) : (s?.consol30pct ?? s?.evalPct ?? null);
@@ -260,45 +276,116 @@ export function mediaMovil7d(scores: UsmleScore[], hasta: string): Media7d | nul
 export function serieReciente(scores: UsmleScore[], n = 14): UsmleScore[] { return scores.filter(tieneDatos).slice(-n); }
 
 // ── Hitos y mínimos on-track ──
-export const HITOS_ONTRACK_FUENTE = 'DATA/USMLE/PALMERTON_POR_MATERIA.md · Parte V-A (regla Palmerton del +5%/mes aplicada hacia atrás desde 68% en NBME 31; 65% ≈ 95% de pase, 70% ≈ 99%)';
+export const HITOS_ONTRACK_FUENTE = 'V6_ESPEC §B5 (v6.00, 6-oct-2026: mínimos F1 relativos a la línea base real del NBME 25 · NBME 28 = checkpoint de fecha · tramo 2 relativo al NBME 28 y GO/NO-GO por horas + NBME 31/32) sobre DATA/USMLE/PALMERTON_POR_MATERIA.md · Parte V-A (65% ≈ 95% de pase, 70% ≈ 99%)';
 /** #12: tramo de LECTURA de un hito sin mínimo (no es gate): [desde, hasta] inclusivos en %. */
 export interface HitoTramo { desde?: number; hasta?: number; label: string; accion: string }
-export interface HitoOnTrack { clave: string; match: RegExp; min: number | null; nota: string; tramos?: HitoTramo[] }
+export interface HitoOnTrack {
+  clave: string; match: RegExp;
+  /** mínimo ABSOLUTO (%) · null = sin mínimo absoluto (baseline, lectura por tramos, relativo o decisión) */
+  min: number | null;
+  nota: string; tramos?: HitoTramo[];
+  /** v6.00: mínimo RELATIVO al % registrado de otro hito (p. ej. NBME 26 ≥ NBME 25 + 3); sin ese % → sin mínimo todavía */
+  minRel?: { ref: string; delta: number };
+  /** v6.00: alerta de caída frente a otro hito (NBME 29: caída > 8 frente al NBME 28 → +2 semanas de reactivación) */
+  alertaCaida?: { ref: string; delta: number; accion: string };
+}
 export const HITOS_ONTRACK: HitoOnTrack[] = [
-  { clave: 'UWSA1', match: /Self-Assessment 1|UWSA1/i, min: null, nota: 'baseline (D1, mié 7-oct · v5.20; v5.19: mar 6-oct · v5.18: lun 5-oct): no es gate, se LEE por tramos — <40 % protocolo Jay · 40-48 % justo · ≥48 % on-track (Parte V-A · §12.4 · §12.6-8)', tramos: [
-    { hasta: 39, label: '<40 % · PROTOCOLO JAY', accion: 'S1-S2 + el lun 19-oct (semanas del 5-oct y del 12-oct = D1-D8, más el D9 lun 19-oct = D1-D9, hasta el NBME 25 = D10 mar 20-oct; v5.20: con el D1 en miércoles la S1 tiene 3 sesiones, mié 7 → vie 9-oct · v5.19: D1-D9 con S1 de 4 sesiones, mar 6 → vie 9-oct, NBME 25 lun 19-oct · v5.18: D1-D10, S1 completa) a 20 Q/día untimed estilo Jay/Melody (§12.6-8, divergencia #2: se decide el mismo mié 7-oct con el % real); tarjetas propias del porqué, todos los due reviews a primera hora, CCSN. El temario NO se toca.' },
-    { desde: 40, hasta: 47, label: '40-48 % · JUSTO', accion: 'Trayectoria posible pero sin margen: con la regla del 5 %/mes un baseline <45-48 % hace difícil el 70 % (§12.4 "Goldilocks check"). Volumen del plan sin subir; auditar el método cada viernes (checklist §11.5); el NBME 25 (D10, mar 20-oct · v5.20; v5.19: lun 19-oct · v5.18: vie 16-oct) decide si se aplica Jay.' },
+  { clave: 'UWSA1', match: /Self-Assessment 1|UWSA1/i, min: null, nota: 'baseline (D1, mié 7-oct): no es gate, se LEE por tramos — <40 % protocolo Jay · 40-48 % justo · ≥48 % on-track (Parte V-A · §12.4 · §12.6-8)', tramos: [
+    { hasta: 39, label: '<40 % · PROTOCOLO JAY', accion: 'D1-D9 (mié 7-oct → lun 19-oct, hasta el NBME 25 = D10 mar 20-oct) a 20 Q/día untimed estilo Jay/Melody (§12.6-8, divergencia #2: se decide el mismo mié 7-oct con el % real); tarjetas propias del porqué, todos los due reviews a primera hora, CCSN. El temario NO se toca.' },
+    { desde: 40, hasta: 47, label: '40-48 % · JUSTO', accion: 'Trayectoria posible pero sin margen: con la regla del 5 %/mes un baseline <45-48 % hace difícil el 70 % (§12.4 "Goldilocks check"). Volumen del plan sin subir; auditar el método cada viernes (checklist §11.5); el NBME 25 (D10, mar 20-oct) decide si se aplica Jay.' },
     { desde: 48, label: '≥48 % · ON-TRACK', accion: 'Trayectoria de GO (Parte V: ~48 % ya es trayectoria de GO); seguir el plan tal cual y no leer el UWSA como predicción (sobreestima 10-15 puntos).' },
   ] },
-  { clave: 'NBME 25', match: /NBME (CBS Form )?25\b/i, min: 51, nota: '' },
-  { clave: 'NBME 26', match: /NBME (CBS Form )?26\b/i, min: 54, nota: '' },
-  { clave: 'NBME 27', match: /NBME (CBS Form )?27\b/i, min: 57, nota: 'gate 1 ECFMG pide ≥55%' },
-  { clave: 'NBME 28', match: /NBME (CBS Form )?28\b/i, min: 61, nota: '' },
-  { clave: 'NBME 29', match: /NBME (CBS Form )?29\b/i, min: 63, nota: 'gate 2 pide ≥60%' },
-  { clave: 'NBME 30', match: /NBME (CBS Form )?30\b/i, min: 65, nota: 'umbral de seguridad Palmerton (≈95% de pase)' },
-  { clave: 'UWSA2', match: /UWSA2|Self-Assessment 2/i, min: null, nota: '"low risk" · el UWSA sobreestima: solo resistencia, la fecha la decide el NBME' },
-  { clave: 'NBME 31', match: /NBME (CBS Form )?31\b/i, min: 68, nota: 'GO/NO-GO: 2 NBME consecutivos ≥68% + UWSA2 low risk' },
-  { clave: 'NBME 32', match: /NBME (CBS Form )?32\b/i, min: 68, nota: 'confirma el GO (mismo 68%; no figura en Parte V)' },
-  { clave: 'NBME 33', match: /NBME (CBS Form )?33\b/i, min: 68, nota: 'confirma el GO (mismo 68%; no figura en Parte V)' },
-  { clave: 'Free 120', match: /Free 120/i, min: 70, nota: '≥70% = heurística comunitaria (CALENDARIO_5_MESES), no cifra Palmerton · rendirlo en el Prometric real' },
+  { clave: 'NBME 25', match: /NBME (CBS Form )?25\b/i, min: null, nota: 'línea base REAL del NBME (sin mínimo): los mínimos de NBME 26 y 27 se calculan sobre este %' },
+  { clave: 'NBME 26', match: /NBME (CBS Form )?26\b/i, min: null, minRel: { ref: 'NBME 25', delta: 3 }, nota: '≥ NBME 25 + 3' },
+  { clave: 'NBME 27', match: /NBME (CBS Form )?27\b/i, min: null, minRel: { ref: 'NBME 25', delta: 6 }, nota: '≥ NBME 25 + 6 · gate 1 ECFMG pide ≥55%' },
+  { clave: 'NBME 28', match: /NBME (CBS Form )?28\b/i, min: null, nota: 'CHECKPOINT DE FECHA (mar 22-dic, §B5): se lee por tramos', tramos: [
+    { hasta: 49, label: '<50 % · BASE → 25-oct', accion: 'La base pasa al lun 25-oct-2027: se regenera el tramo 2 con E = 2027-10-25 al salir la convocatoria (§B5 · §B7.2c).' },
+    { desde: 50, hasta: 57, label: '50-57 % · 27-sep con GATE ESTRICTO', accion: 'Base 27-sep con gate estricto: el GO/NO-GO exige además NBME 30 ≥ NBME 28 + 5.' },
+    { desde: 58, label: '≥58 % · EN RUTA 27-sep', accion: 'Base lun 27-sep en ruta: seguir el plan; reservar la fecha de la tabla DJ-1 al salir la convocatoria.' },
+  ] },
+  { clave: 'NBME 29', match: /NBME (CBS Form )?29\b/i, min: null, minRel: { ref: 'NBME 28', delta: -5 }, alertaCaida: { ref: 'NBME 28', delta: 8, accion: 'CAÍDA > 8 puntos frente al NBME 28 tras la pausa → +2 semanas de REACTIVACIÓN (las paga el colchón, §B5)' }, nota: 'NUEVA LÍNEA BASE tras la pausa ENCAPS: ≥ NBME 28 − 5' },
+  { clave: 'NBME 30', match: /NBME (CBS Form )?30\b/i, min: null, minRel: { ref: 'NBME 28', delta: 0 }, nota: '≥ NBME 28 · ritmo medido ≥ 18 h/sem (§B4.5) · con NBME 28 en 50-57 % el GO/NO-GO exige NBME 30 ≥ NBME 28 + 5' },
+  { clave: 'UWSA3', match: /UWSA3|Self-Assessment 3/i, min: null, nota: 'formativa (opcional, sin mínimo)' },
+  { clave: 'NBME 31', match: /NBME (CBS Form )?31\b/i, min: 65, nota: 'GO/NO-GO: NBME 31 y 32 ≥ 68 % con uno ≥ 70 % + horas (§B4.5)' },
+  { clave: 'NBME 32', match: /NBME (CBS Form )?32\b/i, min: 68, nota: '31 y 32 ≥ 68 %, uno ≥ 70 % (GO/NO-GO del lunes siguiente)' },
+  { clave: 'UWSA2', match: /UWSA2|Self-Assessment 2/i, min: null, nota: '"low risk" (señal secundaria) · el UWSA sobreestima: la fecha la deciden los NBME y las horas' },
+  { clave: 'NBME 33', match: /NBME (CBS Form )?33\b/i, min: 68, nota: 'ensayo de 7 bloques (NBME 33 + 3 bloques) · < 65 % → 25-oct pagando recargo' },
+  { clave: 'Free 120', match: /Free 120/i, min: 70, nota: '≥70% = heurística comunitaria, no cifra Palmerton · desde aquí 0 preguntas y 0 tarjetas nuevas (cierre §B6)' },
+  { clave: 'GO/NO-GO', match: /GO\/NO-GO/i, min: null, nota: 'DECISIÓN (E-49): horas reales ≥ umbral (B4.5: 294 h al 27-sep) y NBME 31 y 32 ≥ 68 % con uno ≥ 70 % → GO; si no, NO-GO = la fecha siguiente (gratis antes del E-46)' },
 ];
-/** #12: tramo que corresponde a un % en un hito con `tramos` (UWSA1); null si el hito no se lee por tramos. */
+/** Ficha on-track de un hito por su `uw` (o nombre). */
+export function hitoOnTrackDe(uw: string): HitoOnTrack | undefined { return HITOS_ONTRACK.find((t) => t.match.test(uw)); }
+/** Mínimo en texto (para el Home / hitosStep1): «≥65%» · «≥ NBME 25 +3» · «lectura por tramos» · nota. */
+export function minimoTexto(h: HitoOnTrack): string {
+  if (h.min != null) return `≥${h.min}%`;
+  if (h.minRel) return h.minRel.delta === 0 ? `≥ ${h.minRel.ref}` : `≥ ${h.minRel.ref} ${h.minRel.delta > 0 ? '+' : '−'}${Math.abs(h.minRel.delta)}`;
+  if (h.clave === 'GO/NO-GO') return 'horas ≥ umbral B4.5 + NBME 31/32 ≥68% (uno ≥70%)';
+  if (h.tramos?.length) return 'lectura por tramos';
+  return h.nota.split(' (')[0]?.split(':')[0] || 'sin mínimo';
+}
+/** % registrado (evalPct del día del hito) de un hito por su clave · null si no está registrado. */
+export function valorHito(scores: UsmleScore[], clave: string): number | null {
+  for (const x of DIAS_TODOS) {
+    if (!esHito(x)) continue;
+    const h = hitoOnTrackDe(x.uw);
+    if (h?.clave !== clave) continue;
+    const v = scoreDe(scores, x.fecha)?.evalPct;
+    if (v != null) return v;
+  }
+  return null;
+}
+/** Mínimo efectivo de un hito: absoluto, o relativo resuelto con el % registrado del hito de referencia (null si aún no se puede). */
+export function minimoResuelto(h: HitoOnTrack, scores: UsmleScore[]): number | null {
+  if (h.min != null) return h.min;
+  if (h.minRel) { const ref = valorHito(scores, h.minRel.ref); return ref == null ? null : Math.round(ref + h.minRel.delta); }
+  return null;
+}
+/** Alerta de caída (NBME 29 vs NBME 28): null si no aplica o no hay datos. */
+export function alertaCaidaDe(h: HitoOnTrack, pct: number, scores: UsmleScore[]): { label: string; accion: string } | null {
+  if (!h.alertaCaida) return null;
+  const ref = valorHito(scores, h.alertaCaida.ref);
+  if (ref == null || ref - pct <= h.alertaCaida.delta) return null;
+  return { label: `⚠ CAÍDA ${Math.round(ref - pct)} pts · ${h.clave} ${pct}% vs ${h.alertaCaida.ref} ${ref}%`, accion: h.alertaCaida.accion };
+}
+/** #12: tramo que corresponde a un % en un hito con `tramos` (UWSA1, NBME 28); null si el hito no se lee por tramos. */
 export function lecturaHito(h: HitoOnTrack, pct: number): HitoTramo | null {
   if (!h.tramos || !h.tramos.length) return null;
   return h.tramos.find((t) => (t.desde == null || pct >= t.desde) && (t.hasta == null || pct <= t.hasta)) || null;
 }
-export interface HitoPlan { d: number; fecha: string; uw: string; sub: string; clave: string; min: number | null; nota: string; valor: number | null; estado: 'pendiente' | 'registrado' | 'on-track' | 'bajo'; /** #12: etiqueta del tramo cuando el hito se lee por tramos */ tramo?: string }
-/** Serie de hitos del plan (DIAS con 🎯) cruzada con la tabla de mínimos y el % registrado en usmleScores. */
+export interface HitoPlan {
+  d: number; fecha: string; uw: string; sub: string; clave: string; min: number | null; nota: string; valor: number | null;
+  estado: 'pendiente' | 'registrado' | 'on-track' | 'bajo';
+  /** #12: etiqueta del tramo cuando el hito se lee por tramos */ tramo?: string;
+  /** v6.00: 'decision' = el GO/NO-GO (fila con `gate`; sin % propio: se evalúa con evaluarGoNoGo) */
+  tipo: 'hito' | 'decision';
+  /** v6.00: etiqueta del día del plan («D10» en F1 · «T51» en el tramo 2) */
+  etiqueta: string;
+  /** v6.00: mínimo en texto (relativo, tramos o absoluto) */
+  minTexto: string;
+}
+const etiquetaD = (x: DiaUSMLE): string => (esFilaT2(x) ? `T${x.t}` : `D${x.d}`);
+/** Serie de hitos del plan (DIAS_TODOS con 🎯 + la decisión GO/NO-GO) cruzada con la tabla de mínimos y el % registrado. */
 export function hitosPlan(scores: UsmleScore[]): HitoPlan[] {
-  return DIAS.filter(esHito).map((x) => {
-    const h = HITOS_ONTRACK.find((t) => t.match.test(x.uw));
-    const s = scoreDe(scores, x.fecha);
-    const valor = s?.evalPct ?? null;
-    const min = h?.min ?? null;
-    const estado: HitoPlan['estado'] = valor == null ? 'pendiente' : min == null ? 'registrado' : valor >= min ? 'on-track' : 'bajo';
-    const tr = h && valor != null ? lecturaHito(h, valor) : null;
-    return { d: x.d, fecha: x.fecha, uw: x.uw, sub: x.sub, clave: h?.clave || x.uw, min, nota: h?.nota || '', valor, estado, tramo: tr?.label };
-  });
+  const out: HitoPlan[] = [];
+  for (const x of DIAS_TODOS) {
+    if (esHito(x)) {
+      const h = hitoOnTrackDe(x.uw);
+      const s = scoreDe(scores, x.fecha);
+      const valor = s?.evalPct ?? null;
+      const min = h ? minimoResuelto(h, scores) : null;
+      const estado: HitoPlan['estado'] = valor == null ? 'pendiente' : min == null ? 'registrado' : valor >= min ? 'on-track' : 'bajo';
+      const tr = h && valor != null ? lecturaHito(h, valor) : null;
+      const nombre = esFilaT2(x) && x.nombre ? x.nombre : (h?.clave || x.uw);
+      out.push({ d: x.d, fecha: x.fecha, uw: x.uw, sub: x.sub, clave: h?.clave || nombre, min, nota: h?.nota || '', valor, estado, tramo: tr?.label, tipo: 'hito', etiqueta: etiquetaD(x), minTexto: h ? minimoTexto(h) : '—' });
+    }
+    if (esFilaT2(x) && x.gate) {
+      const g = HITOS_ONTRACK.find((h) => h.clave === 'GO/NO-GO');
+      const ev = evaluarGoNoGo(scores, x.fecha, x.gate);
+      out.push({ d: x.d, fecha: x.fecha, uw: x.gate, sub: x.gate, clave: x.gate.startsWith('GO/NO-GO #2') ? 'GO/NO-GO #2' : 'GO/NO-GO', min: null, nota: g?.nota || '', valor: null,
+        estado: ev.estado === 'pendiente' ? 'pendiente' : ev.estado === 'GO' ? 'on-track' : 'bajo', tipo: 'decision', etiqueta: etiquetaD(x), minTexto: g ? minimoTexto(g) : 'B4.5' });
+    }
+  }
+  return out;
 }
 export function proximoHito(scores: UsmleScore[], fecha: string): HitoPlan | null {
   return hitosPlan(scores).find((h) => h.fecha >= fecha) || null;
@@ -340,14 +427,15 @@ export function readinessDesdeHitos(scores: UsmleScore[]): { pct: number; label:
  * La señal la calcula `gateHito`; los síntomas los pone Joseph. Texto de PALMERTON_METODO_COMPLETO.md §9.12; nada estimado.
  */
 export const BURNOUT_PROTOCOLO = {
-  regla: '2 hitos consecutivos bajo su mínimo on-track + síntomas de burnout (releer el mismo párrafo sin comprender, irritabilidad extrema, indiferencia por el examen, descansos de 5 min que se vuelven de 1 h) → 3-5 días con SOLO Anki AM (30-45 min de tarjetas viejas) + sueño. Frenar QBank y contenido nuevo. El corrimiento determinista (+1 día hábil por día no estudiado) absorbe la pausa: no se recorta ni se fusiona temario. Se reanuda por el gate del 80%, no por la fecha.',
+  // v6.00 (§B7.1): ya no hay corrimiento diario → la pausa la pagan las filas COLCHÓN; agotadas, decide el GO/NO-GO.
+  regla: '2 hitos consecutivos bajo su mínimo on-track + síntomas de burnout (releer el mismo párrafo sin comprender, irritabilidad extrema, indiferencia por el examen, descansos de 5 min que se vuelven de 1 h) → 3-5 días con SOLO Anki AM (30-45 min de tarjetas viejas) + sueño. Frenar QBank y contenido nuevo. La pausa se paga con filas COLCHÓN (en F1, C1/C2): no se recorta ni se fusiona temario; agotado el colchón, decide el GO/NO-GO. Se reanuda por el gate del 80%, no por la fecha.',
   pasos: [
     'Frenar el QBank: seguir haciendo preguntas consolida malos hábitos de lectura bajo estrés',
     'Parar la adquisición: sin vídeos, sin temas nuevos, sin tarjetas nuevas',
     'Mantenimiento mínimo: 30-45 min/día de Anki viejo (la franja de las 05:00) y nada más',
     'Recuperación con flow: 3-5 días de descanso activo (correr, journaling, meditación, cenas familiares); Palmerton da 3-7',
-    'Cada día parado = +1 día hábil en el plan (remap_inicio.js): el temario no se toca',
-    'Reanudar por el gate (80% en 10Q del último subtema validado); si el siguiente hito vuelve a quedar bajo mínimo → plan B de fecha (feb-mar 2027, mismo eligibility period)',
+    'Cada día parado = una fila atrasada que se hace en la próxima fila COLCHÓN (F1: C1/C2): el temario no se toca y el examen no se mueve por un día perdido (§B7.1)',
+    'Reanudar por el gate (80% en 10Q del último subtema validado); si el siguiente hito vuelve a quedar bajo mínimo → lo decide el GO/NO-GO (E-49): fecha siguiente de la ventana DJ-1 (31-ago → 27-sep → 25-oct), gratis antes del E-46',
     'Burnout ≠ depresión (Palmerton): si el deseo cumplido lo disolvería es burnout; si no, buscar ayuda profesional (sábado, nunca sacrificando sueño)',
   ],
   fuente: 'DATA/USMLE/PALMERTON_METODO_COMPLETO.md §9.12 · PALMERTON_DIVERGENCIAS_PLAN.md #29 y §E-7 · README §3b',
@@ -404,7 +492,7 @@ export function semaforoPct(pct: number | null | undefined, metrica: 'consol' | 
 
 /** #13: subtemas del MISMO sistema ya validados (consol ≥80 % en días de nivel 1-2 anteriores) → "x/3" del umbral de nivel 2 (≥3 subtemas). */
 export function subtemasValidados(scores: UsmleScore[], dia: DiaUSMLE): { n: number; objetivo: number; dias: number[]; total: number } {
-  const previos = DIAS.filter((x) => x.system === dia.system && x.d < dia.d && !esHito(x) && (x.nivelUW === 1 || x.nivelUW === 2));
+  const previos = DIAS_TODOS.filter((x) => x.system === dia.system && x.d < dia.d && !esHito(x) && (x.nivelUW === 1 || x.nivelUW === 2));
   const dias = previos.filter((x) => { const s = scoreDe(scores, x.fecha); return s?.consol30pct != null && s.consol30pct >= USMLE_GATE.pct; }).map((x) => x.d);
   return { n: dias.length, objetivo: 3, dias, total: previos.length };
 }
@@ -433,7 +521,7 @@ export function alarmaRelectura(s: UsmleScore | null | undefined): boolean { ret
 /** #16 §4.10 (HitosSerie): freno del backlog ligado al hito. */
 export const REGLA_BACKLOG_HITO = 'Hito bajo su mínimo + backlog Anki > 0 → nuevas = 0 hasta limpiar (cap 200/día, nunca Forget en bloque); % estancado o en declive = misma regla. Métrica semanal: días con backlog > 0 (regla del 100 %). Fuente: PALMERTON_METODO_COMPLETO.md §4.10.';
 
-/** §12.6-10 · día PARCIAL (modo ROJO de PROTOCOLO_MODO_MINIMO: solo Anki AM + 10Q pre-test). Cuenta como día perdido para el corrimiento (+1 hábil), pero cumple el mínimo no-zero-day. */
+/** §12.6-10 · día PARCIAL (modo ROJO de PROTOCOLO_MODO_MINIMO: solo Anki AM + 10Q pre-test). Cuenta como día perdido (v6.00: la fila va al COLCHÓN; ya no hay corrimiento), pero cumple el mínimo no-zero-day. */
 export function diasParciales(): string[] {
   try { const arr = JSON.parse(lsGet(KEY_PARCIAL) || '[]'); return Array.isArray(arr) ? arr.filter((x: any) => typeof x === 'string').sort() : []; } catch { return []; }
 }
@@ -449,10 +537,10 @@ export function marcarParcial(fecha: string, on: boolean): string[] {
 export function loadWorstCase(): string { return lsGet(KEY_WORSTCASE) || ''; }
 export function saveWorstCase(texto: string): void { lsSet(KEY_WORSTCASE, String(texto || '').slice(0, 4000)); }
 
-/** #27 · plantilla del reporte POR SISTEMA del hito (sistemas ya estudiados hasta ese día, derivados de DIAS) para pegar en notas. */
+/** #27 · plantilla del reporte POR SISTEMA del hito (sistemas ya estudiados hasta ese día, derivados de DIAS_TODOS) para pegar en notas. */
 export function plantillaPorSistema(dia: DiaUSMLE): string {
   const vistos: string[] = [];
-  for (const x of DIAS) { if (x.d >= dia.d) break; if (esHito(x) || /Assessment|Sprint|Banco/i.test(x.system)) continue; if (!vistos.includes(x.system)) vistos.push(x.system); }
+  for (const x of DIAS_TODOS) { if (x.d >= dia.d) break; if (esHito(x) || /Assessment|Sprint|Banco|Colchón|Reentrada/i.test(x.system)) continue; if (!vistos.includes(x.system)) vistos.push(x.system); }
   const cab = `Reporte por sistema · ${dia.uw} (≥80 % en lo YA estudiado, §9.1; pocos ítems por materia → leer con cautela):`;
   if (!vistos.length) return `${cab}\n(baseline: ningún sistema estudiado aún → anotar los 3 sistemas más bajos para priorizar la shopping list)`;
   return `${cab}\n${vistos.map((v) => `· ${v}: __ % (n=__)`).join('\n')}\n· sistemas NO estudiados aún: __ % (informativo)\n· ítems experimentales/gráficos separados: __`;
@@ -463,7 +551,7 @@ export interface AlarmaChecklist { clave: string; texto: string; marcada: boolea
 export function checklist115(scores: UsmleScore[], hasta: string): AlarmaChecklist[] {
   const desde = addDias(hasta, -6);
   const win = scores.filter((s) => s.fecha >= desde && s.fecha <= hasta && tieneDatos(s));
-  const gatesFallidos = win.filter((s) => { const d = DIAS.find((x) => x.fecha === s.fecha); return !!d && !esHito(d) && s.consol30pct != null && s.consol30pct < USMLE_GATE.pct; });
+  const gatesFallidos = win.filter((s) => { const d = DIAS_TODOS.find((x) => x.fecha === s.fecha); return !!d && !esHito(d) && s.consol30pct != null && s.consol30pct < USMLE_GATE.pct; });
   const conCamb = win.filter((s) => s.cambiadas != null); const camb = conCamb.filter((s) => alarmaAbogado(s));
   const conRel = win.filter((s) => s.relecturas != null); const rel = conRel.filter((s) => alarmaRelectura(s));
   const tercio = reglaDelTercio(scores, hasta);
@@ -476,21 +564,80 @@ export function checklist115(scores: UsmleScore[], hasta: string): AlarmaCheckli
     { clave: 'abogado', texto: 'Cambio respuestas por sensación de duda (abogado) — ≥2 cambiadas/día', marcada: conCamb.length ? camb.length > 0 : null, evidencia: camb.length ? `≥2 cambiadas: ${f(camb)}` : conCamb.length ? 'sin días con ≥2 cambiadas' : 'campo "cambiadas" sin registrar' },
     { clave: 'relectura', texto: 'Lectura circular (3-4 relecturas) / paso >2 min de forma habitual', marcada: conRel.length ? rel.length > 0 : null, evidencia: rel.length ? `≥3 relecturas: ${f(rel)}` : conRel.length ? 'sin lectura circular' : 'campo "relecturas" sin registrar' },
     { clave: 'evalPiso', texto: `Eval 18:00 bajo el piso ámbar (${PISO_AMBAR.eval} %) — dos días seguidos = ÁMBAR (modo mínimo)`, marcada: win.some((s) => s.evalPct != null) ? evalBajo.length >= 2 : null, evidencia: evalBajo.length ? `<${PISO_AMBAR.eval} %: ${f(evalBajo)}` : 'eval ≥ piso toda la semana' },
-    { clave: 'parcial', texto: 'Días PARCIALES (ROJO: solo Anki + 10Q) esta semana → cuentan como perdidos para el corrimiento (+1 hábil cada uno)', marcada: parciales.length > 0, evidencia: parciales.length ? parciales.map((x) => x.slice(5)).join(', ') : 'ninguno' },
+    { clave: 'parcial', texto: 'Días PARCIALES (ROJO: solo Anki + 10Q) esta semana → cuentan como perdidos: su fila va a la próxima fila COLCHÓN (v6.00)', marcada: parciales.length > 0, evidencia: parciales.length ? parciales.map((x) => x.slice(5)).join(', ') : 'ninguno' },
     { clave: 'hardEasy', texto: 'Uso Hard/Easy con frecuencia o pulso Good sin poder explicar el mecanismo (AnkiConnect rated:1:2 / rated:1:4)', marcada: null, evidencia: 'lo mide anki_telemetria.js (fuera de la app · pendiente #30)' },
     { clave: 'backlog', texto: 'Revisiones vencidas acumuladas → nuevas = 0, cap 200, protocolo de backlog', marcada: null, evidencia: 'DATA/USMLE/_anki_telemetria.json (fuera de la app)' },
   ];
+}
+
+// ── v6.00 (6-oct-2026 · V6_ESPEC §B4.5): GO/NO-GO por HORAS (además del criterio NBME de §B5) ──
+/** Umbral de horas reales acumuladas desde el reinicio (usmle_daily_scores.extra.horas) por fecha de examen, y checkpoints de ritmo. */
+export interface UmbralGoNoGo { examen: string; gonogo: string; quedanPiso: number; umbral: number; checkpoints: { fecha: string; requerido: number }[] }
+export const GONOGO_HORAS: UmbralGoNoGo[] = [
+  { examen: '2027-08-31', gonogo: '2027-07-13', quedanPiso: 109, umbral: 290, checkpoints: [{ fecha: '2027-05-31', requerido: 192 }, { fecha: '2027-06-30', requerido: 264 }] },
+  { examen: '2027-09-27', gonogo: '2027-08-09', quedanPiso: 106, umbral: 294, checkpoints: [{ fecha: '2027-05-31', requerido: 127 }, { fecha: '2027-06-30', requerido: 199 }, { fecha: '2027-07-31', requerido: 276 }] },
+  { examen: '2027-10-25', gonogo: '2027-09-06', quedanPiso: 106, umbral: 294, checkpoints: [{ fecha: '2027-05-31', requerido: 62 }, { fecha: '2027-06-30', requerido: 134 }, { fecha: '2027-07-31', requerido: 211 }] },
+];
+/** Horas netas de Step 1 registradas (extra.horas) en [desde, hasta] (por defecto desde el reinicio del tramo 2). */
+export function horasDesde(scores: UsmleScore[], desde: string = FECHAS_V6.step1.reinicio, hasta?: string): number {
+  return Math.round(scores.filter((s) => s.fecha >= desde && (!hasta || s.fecha <= hasta) && s.horas != null).reduce((a, s) => a + (s.horas as number), 0) * 100) / 100;
+}
+export interface EvalGoNoGo {
+  estado: 'GO' | 'NO-GO' | 'pendiente';
+  tipo: 'GO/NO-GO (E-49)' | 'GO/NO-GO #2 (E-49)';
+  examen: string; gonogo: string; umbral: number; horas: number; horasOk: boolean;
+  /** criterio de hitos: NBME 31/32 (#1) o UWSA2/UWSA3 · NBME 33 (#2) */
+  criterios: { texto: string; ok: boolean | null }[];
+  checkpoints: { fecha: string; requerido: number; real: number | null; ok: boolean | null }[];
+  texto: string;
+}
+/**
+ * GO/NO-GO (§B4.5 + §B5): GO = horas reales acumuladas desde el reinicio ≥ umbral de la fecha **y** NBME 31 y 32 ≥ 68 % con uno ≥ 70 %
+ * (con NBME 28 en 50-57 %: además NBME 30 ≥ NBME 28 + 5). #2 (tras un NO-GO): horas ≥ umbral y, al 27-sep, UWSA2 + UWSA3 «low risk»
+ * (≥ 70 % predicho) · al 25-oct, NBME 33 ≥ 68 % + UWSA2 «low risk». Un checkpoint mensual incumplido no replanifica: solo avisa.
+ */
+export function evaluarGoNoGo(scores: UsmleScore[], hoy?: string, tipo: EvalGoNoGo['tipo'] = 'GO/NO-GO (E-49)', examen: string = DAILY_META.examenTarget): EvalGoNoGo {
+  const u = GONOGO_HORAS.find((x) => x.examen === examen) ?? (GONOGO_HORAS[1] as UmbralGoNoGo);
+  const corte = hoy && hoy < u.gonogo ? hoy : u.gonogo;
+  const horas = horasDesde(scores, FECHAS_V6.step1.reinicio, corte);
+  const horasOk = horas >= u.umbral;
+  const v = (c: string) => valorHito(scores, c);
+  const criterios: EvalGoNoGo['criterios'] = [];
+  if (tipo === 'GO/NO-GO (E-49)') {
+    const a = v('NBME 31'), b = v('NBME 32');
+    criterios.push({ texto: `NBME 31 y 32 ≥ 68 % con uno ≥ 70 % (${a ?? '—'} % · ${b ?? '—'} %)`, ok: a == null || b == null ? null : a >= 68 && b >= 68 && Math.max(a, b) >= 70 });
+    const n28 = v('NBME 28');
+    if (n28 != null && n28 >= 50 && n28 <= 57) { const n30 = v('NBME 30'); criterios.push({ texto: `gate estricto (NBME 28 = ${n28} %): NBME 30 ≥ NBME 28 + 5 (${n30 ?? '—'} %)`, ok: n30 == null ? null : n30 >= n28 + 5 }); }
+  } else if (examen === '2027-10-25') {
+    const n33 = v('NBME 33'), w2 = v('UWSA2');
+    criterios.push({ texto: `NBME 33 ≥ 68 % (${n33 ?? '—'} %) + UWSA2 «low risk» (${w2 ?? '—'} %)`, ok: n33 == null || w2 == null ? null : n33 >= 68 && w2 >= 70 });
+  } else {
+    const w2 = v('UWSA2'), w3 = v('UWSA3');
+    criterios.push({ texto: `UWSA2 + UWSA3 «low risk» (≥ 70 % predicho: ${w2 ?? '—'} % · ${w3 ?? '—'} %)`, ok: w2 == null || w3 == null ? null : w2 >= 70 && w3 >= 70 });
+  }
+  const checkpoints = u.checkpoints.map((c) => {
+    const llegado = !!hoy && hoy >= c.fecha;
+    const real = llegado ? horasDesde(scores, FECHAS_V6.step1.reinicio, c.fecha) : null;
+    return { fecha: c.fecha, requerido: c.requerido, real, ok: real == null ? null : real >= c.requerido };
+  });
+  const decidible = !hoy || hoy >= u.gonogo;
+  const hitosOk = criterios.every((c) => c.ok === true);
+  const algunNo = criterios.some((c) => c.ok === false);
+  const estado: EvalGoNoGo['estado'] = !decidible ? 'pendiente' : !horasOk || algunNo ? 'NO-GO' : hitosOk ? 'GO' : 'pendiente';
+  const texto = `${tipo} ${u.gonogo} (examen ${examen}): horas ${horas}/${u.umbral} ${horasOk ? '✓' : '✗'} · ${criterios.map((c) => `${c.texto} ${c.ok == null ? '·' : c.ok ? '✓' : '✗'}`).join(' · ')} → ${estado}`;
+  return { estado, tipo, examen, gonogo: u.gonogo, umbral: u.umbral, horas, horasOk, criterios, checkpoints, texto };
 }
 
 // ── Export ──
 export function exportScoresJSON(): string {
   const scores = leer();
   return JSON.stringify({
-    exportado: new Date().toISOString(), plan: 'USMLE Step 1 v5.20 (D1 = 2026-10-07 · 95 días · examen lun 22-feb-2027)', clave: KEY, tabla: TABLA,
+    exportado: new Date().toISOString(), plan: `USMLE Step 1 ${DAILY_META.version} (D1 = ${DAILY_META.inicio} · ${DIAS_TODOS.length} filas en 2 tramos · examen ${DAILY_META.examenTarget} PROVISIONAL · GO/NO-GO ${DAILY_META.gonogo})`, clave: KEY, tabla: TABLA,
     gate: USMLE_GATE, minimosOnTrack: { fuente: HITOS_ONTRACK_FUENTE, hitos: HITOS_ONTRACK.map((h) => ({ clave: h.clave, min: h.min, nota: h.nota })) },
     gateHitos: (({ estado, label }) => ({ estado, label }))(gateHito(scores)),
     pisoAmbar: { consol: PISO_AMBAR.consol, eval: PISO_AMBAR.eval },
-    reglaDelTercio: (({ estado, label }) => ({ estado, label }))(reglaDelTercio(scores, scores.length ? scores[scores.length - 1].fecha : DIAS[0].fecha)),
+    reglaDelTercio: (({ estado, label }) => ({ estado, label }))(reglaDelTercio(scores, scores.length ? scores[scores.length - 1].fecha : DAILY_META.inicio)),
+    horas: { desdeReinicio: horasDesde(scores), goNoGo: (({ estado, texto }) => ({ estado, texto }))(evaluarGoNoGo(scores)) },
     diasParciales: diasParciales(),
     worstCase: loadWorstCase(),
     scores,

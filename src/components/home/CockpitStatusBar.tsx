@@ -20,7 +20,7 @@ import {
  * orquestador, countdown MIR, dot Online/Offline, racha discreta y campana de reports.
  * La racha vive AQUÍ (Things 3: nada de card 🔥 gigante — dato discreto de estado).
  *
- * v5.7 (5-sep-2026): + instrumento SEMANA "S N/20" del Step 1 (v5.20: "S N/20" · v5.19: "S N/20" · v5.18: "S N/20" · v5.17: "S N/21"; revisión semanal, deload) y
+ * v5.7 (5-sep-2026): + instrumento SEMANA "S N/STEP1_SEMANAS" del Step 1 (revisión semanal, deload) y
  * + instrumento ANKI "due · backlog · retención" leído de localStorage 'jmd-anki-telemetria'
  * (lo escribe DATA/_scripts/anki_telemetria.js; opcionalmente /anki_telemetria.json en web).
  * Ambos son opcionales: si el Home no los pasa, se calculan aquí sin pedir data nueva.
@@ -28,6 +28,10 @@ import {
  * v5.10 (12-sep-2026): + instrumento PROGRESO "N ✓ · ☁ ok/offline" (espejo Supabase `plan_checks`,
  * src/lib/studyProgressSync.ts). Tocar = panel con "Exportar / Importar progreso" (JSON al portapapeles y
  * pegar) + "Sincronizar ahora". Vacío 9 de gaps_v3b_synapse.json: el progreso ya no vive solo en un navegador.
+ *
+ * v6.00 (6-oct-2026 · V6_ESPEC §F): SEMANA = semanaLabel nuevo de homeBriefing (S n/41 · «PAUSA · ENCAPS» entre el lun 4-ene y la
+ * semana del ENCAPS · «examen» · «post-Step 1»); total = STEP1_SEMANAS (fechasV6, re-exportado por homeBriefing). La PAUSA se pinta
+ * en ámbar (no es fuera de rango). La fase la pasa el Home desde TodayMission.faseActual (= fechasV6.faseV6).
  */
 
 const MONO = Platform.OS === 'web' ? "'JetBrains Mono', 'SF Mono', monospace" : undefined;
@@ -65,7 +69,7 @@ export interface CockpitStatusBarProps {
   unread: number;           // reports sin leer
   onBell?: () => void;      // abre modal de reports (mobile); undefined = sin campana táctil
   compact?: boolean;        // mobile
-  semana?: SemanaStep1 | null;   // v5.7 opcional: semana N/20 del Step 1 (v5.20; N/STEP1_SEMANAS · si no, se calcula aquí)
+  semana?: SemanaStep1 | null;   // v5.7 opcional: semana N/STEP1_SEMANAS del Step 1 (v6.00: 41 · PAUSA en F2) · si no, se calcula aquí
   anki?: AnkiKpi | null;         // v5.7 opcional: KPI Anki (si no, localStorage 'jmd-anki-telemetria')
 }
 
@@ -196,7 +200,7 @@ export default function CockpitStatusBar({
   const kpi = useAnkiKpi(anki);
   const alarma = ankiAlarma(kpi);
   const pr = primeraReviewDe(kpi);                                         // v5.14: 1ª review del día (verde ≤05:10 · ámbar · rojo)
-  const semColor = sem.fueraDeRango ? Colors.muted : sem.deload ? Colors.amber : Colors.teal;
+  const semColor = sem.pausa ? Colors.amber : sem.fueraDeRango ? Colors.muted : sem.deload ? Colors.amber : Colors.teal; // v6.00: PAUSA en ámbar
   const [exportado, setExportado] = useState<'ok' | 'no' | null>(null); // feedback del export jmd-* (revisión semanal)
   const prog = useProgresoSync();                                         // v5.10 · espejo plan_checks
   const [panel, setPanel] = useState(false);                              // panel Exportar / Importar progreso
@@ -231,10 +235,10 @@ export default function CockpitStatusBar({
         <View style={st.vDiv} />
         <Instrument label="PHASE" value={phase} color={Colors.teal} mono={false} />
         <View style={st.vDiv} />
-        {/* v5.7 · Semana N/20 del Step 1 (v5.20 = STEP1_SEMANAS · sáb 07:15 revisión semanal · deload secundarios). Tocar = copiar export jmd-* (web) */}
+        {/* v5.7 · Semana N/STEP1_SEMANAS del Step 1 (v6.00: 41 · PAUSA · ENCAPS en F2 · sáb 07:15 revisión semanal · deload secundarios). Tocar = copiar export jmd-* (web) */}
         <TouchableOpacity activeOpacity={0.7} onPress={() => setExportado(exportarLocalStorageJmd() ? 'ok' : 'no')} hitSlop={{ top: 6, bottom: 6, left: 4, right: 4 }}>
           <Instrument
-            label={exportado === 'ok' ? 'SEMANA · export ✓' : exportado === 'no' ? 'SEMANA · sin clipboard' : sem.deload ? 'SEMANA · DELOAD' : sem.hito ? `SEMANA · ${sem.hito}` : 'SEMANA'}
+            label={exportado === 'ok' ? 'SEMANA · export ✓' : exportado === 'no' ? 'SEMANA · sin clipboard' : sem.pausa ? 'SEMANA · Step 1 en PAUSA' : sem.deload ? 'SEMANA · DELOAD' : sem.hito ? `SEMANA · ${sem.hito}` : 'SEMANA'}
             value={semanaLabel(sem)}
             color={semColor}
           />
