@@ -4,6 +4,8 @@
 //   (F1: 1-60 · tramo 2: 101-258), la misma clave que usan plan_checks('usmle', d) y usmleObsUrl(d). Alias nuevo: 'Pharmacology
 //   (transversal)' → 'Biochemistry' (la farmacología general transversal va en la fila de Bioquímica dOrig 81; en la v5.x el alias
 //   apuntaba a un sistema inexistente y el 80 = 1.ª fila de Bioquímica estaba fijado a mano). Aborta si algún sistema no resuelve.
+// v6.01 (10-oct-2026): sin cambio de lógica. F1 = D1-D57 (lun 12-oct → mié 30-dic) y la bioestadística (v5.20 D79) vive en el tramo 2,
+//   así que 'Psychiatry & Behavioral' empieza en su fila T (d 103) en vez del D58 de la v6.00; el resto sale igual por d.
 'use strict';
 const fs = require('fs');
 const path = require('path');

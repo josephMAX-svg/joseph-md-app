@@ -46,6 +46,8 @@ import { usmleAnkiDeck, ANKIWEB, sysTag, DERMA_STEP1_QUERY } from '../../lib/ank
  * plantilla H / H-sáb según ordenSemana); colchón = lista de filas atrasadas «hazla hoy»; hitos = ventana + día real; fila con gate →
  * tarjeta GO/NO-GO (horas acumuladas vs umbral B4.5 + NBME 31/32). Medición: + horas netas del día (extra.horas). Progreso por
  * clave `tramo:system` (no fusiona Psiquiatría ni Colchón de F1 con los del tramo 2). TIER_INFO con fallback CORE.
+ * v6.01 (10-oct-2026): corrimiento del D1 al lun 12-oct → F1 = D1-D57 («Día d/57», D57 → T1), sin C1/C2; la bioestadística (v5.20 D79)
+ * es una fila del tramo 2 (T3) con chip «DE F1 → tramo 2». El tramo de una fila sale de esFilaT2 (no de «d ≤ 60»).
  */
 /** Ficha de tier con fallback (las filas nuevas del tramo 2 traen tier, pero nunca romper la UI). */
 const tierDe = (t: string) => TIER_INFO[t] ?? (TIER_INFO.CORE as { c: string; t: string });
@@ -168,6 +170,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, done, onPick, hoy }: { d
             {t2 && <Chip label={`${TIPO_FILA_T2_LABEL[t2.tipo]}${t2.parte ? ` · parte ${t2.parte}` : ''}`} color={t2.tipo === 'colchon' ? Colors.gold : t2.tipo === 'hito' ? Colors.gold : Colors.muted} small />}
             {t2 && t2.dOrig != null && <Chip label={`= D${t2.dOrig} v5.20`} color={Colors.muted} small />}
             {t2 && t2.dF1 != null && <Chip label={`RECUPERACIÓN F1 · D${t2.dF1}`} color={RED} small />}
+            {t2 && t2.dF1 == null && /^DE F1 → TRAMO 2/.test(t2.sub) && <Chip label="DE F1 → tramo 2 (corrimiento)" color={Colors.gold} small />}
             {t2 && t2.adapt && <Chip label="inducción SERUMS (50 %)" color={Colors.muted} small />}
             <Chip label={`Fase ${faseDe(dia.d)}`} color={Colors.muted} small />
             <Chip label={`Nivel UW ${dia.nivelUW} · ${qHoy}Q${t2 && t2.qDiaT != null ? ` (M/L/G ${t2.qDia} · T ${t2.qDiaT})` : ''}`} color={niv.color} small />
@@ -709,7 +712,8 @@ function SistemaCard({ g, hoyD, onPick, done, onToggle }: { g: GrupoProgreso<Dia
 
 function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (d: number) => void; done: Set<number>; onToggle: (d: number) => void }) {
   // v6.00: clave `tramo:system` (no fusiona Psiquiatría D58 + T ni el Colchón C1/C2 + T en un grupo «en curso» todo el año)
-  const grupos = agruparProgreso(DIAS_TODOS, (x) => (x.d <= 60 ? 'F1' : 'T2') + ':' + x.system, hoyD, done);
+  // v6.01: el tramo sale de esFilaT2 (F1 = D1-D57; antes «d ≤ 60»)
+  const grupos = agruparProgreso(DIAS_TODOS, (x) => (esFilaT2(x) ? 'T2' : 'F1') + ':' + x.system, hoyD, done);
   const glob = progresoGlobal(DIAS_TODOS, done);
   const hoyRow = DIAS_TODOS.find((x) => x.d === hoyD);
   return (

@@ -4,11 +4,13 @@
  * `node DATA/_scripts/gen_fechas_v6.js` (aborta si un valor guardado ≠ derivado) y después los generadores de cada plan.
  *
  * v6.00 (decidido mar 6-oct-2026): reestructuración anual (DJ-1…DJ-5) — sustituye a v5.20 (Step 1 lun 22-feb · ENCAPS mié 10-mar).
+ * v6.01 (sáb 10-oct-2026): corrimiento rígido del D1 mié 7-oct-2026 → lun 12-oct-2026 (perdidos: mié 7-oct · jue 8-oct · vie 9-oct).
+ * Versión vigente del JSON: v6.01.
  * Módulo HOJA: no importa nada de src/ (r2 · I7: corta el ciclo usmleStep1Daily ↔ homeBriefing; STEP1_SEMANAS, semanaStep1 y
  * Turno viven aquí y homeBriefing los re-exporta).
  *
  * Fases (tabla A1 resuelta):
- *   F1                mié 7-oct-2026 → mié 30-dic-2026 · 60 días de plan L-V (último mié 30-dic)
+ *   F1                lun 12-oct-2026 → mié 30-dic-2026 · 57 días de plan L-V (último mié 30-dic)
  *   TRANSICION        jue 31-dic-2026 → dom 3-ene-2027
  *   F2                lun 4-ene-2027 → dom 14-mar-2027 · 50 días de plan L-V (último vie 12-mar) · PROVISIONAL
  *   LIBRE_POST_ENCAPS lun 15-mar-2027 → lun 15-mar-2027 · PROVISIONAL
@@ -18,7 +20,7 @@
  *   F5                mar 28-sep-2027 → abierta · PROVISIONAL
  * ENCAPS dom 14-mar-2027 PROVISIONAL (sin convocatoria al mié 17-feb → descartado) · reinicio Step 1 mar 16-mar-2027
  * SERUMS lun 3-may-2027 [supuesto] (inducción → dom 16-may) · GO/NO-GO lun 9-ago-2027 (E-49) · ritual sáb 25-sep · viaje dom 26-sep
- * EXAMEN Step 1 lun 27-sep-2027 PROVISIONAL · fecha a RESERVAR con ENCAPS dom 14-mar = mar 31-ago-2027 (DJ-1) · STEP1_SEMANAS = 41
+ * EXAMEN Step 1 lun 27-sep-2027 PROVISIONAL · fecha a RESERVAR con ENCAPS dom 14-mar = mar 31-ago-2027 (DJ-1) · STEP1_SEMANAS = 40
  * Protegidos: vie 12-mar (D-1 hábil ENCAPS) · sáb 13-mar (D-1 ENCAPS) · dom 14-mar (ENCAPS (provisional)) · lun 15-mar (lunes libre post-ENCAPS) · sáb 25-sep (ritual test-day) · dom 26-sep (viaje D-1) · lun 27-sep (EXAMEN Step 1) · la adjudicación SERUMS se añadirá al conocerse (motivo «adjudicación …»).
  * SKIP (sin sesión de ningún plan): vie 25-dic · jue 31-dic · vie 1-ene · jue 25-mar · vie 26-mar.
  */
@@ -38,14 +40,16 @@ export interface FechasV6 {
   skip: string[];
   protegidos: ProtegidoV6[];
   feriados: string[];
+  /** v6.01: bitácora de corrimientos del D1 (informativa) */
+  corrimientos: { fecha: string; version: string; d1_previo: string; d1: string; perdidos: string[]; regla: string }[];
 }
 export const FECHAS_V6: FechasV6 = {
-  "version": "v6.00",
+  "version": "v6.01",
   "decidido": "2026-10-06",
   "f1": {
-    "inicio": "2026-10-07",
+    "inicio": "2026-10-12",
     "fin": "2026-12-30",
-    "dias": 60
+    "dias": 57
   },
   "transicion": {
     "desde": "2026-12-31",
@@ -148,6 +152,20 @@ export const FECHAS_V6: FechasV6 = {
     "2027-08-06",
     "2027-08-30",
     "2027-10-08"
+  ],
+  "corrimientos": [
+    {
+      "fecha": "2026-10-10",
+      "version": "v6.01",
+      "d1_previo": "2026-10-07",
+      "d1": "2026-10-12",
+      "perdidos": [
+        "2026-10-07",
+        "2026-10-08",
+        "2026-10-09"
+      ],
+      "regla": "F1 no se alarga (la intensiva ENCAPS empieza el 4-ene): D1-D57 corren rígidos con su D#, C1/C2 consumidos, D58 (bioestadística) pasa al tramo 2 con --pendientes-f1; examen Step 1 sin cambio"
+    }
   ]
 };
 
@@ -172,9 +190,9 @@ export const DERIVADOS_V6 = {
   convocatoriaTope: "2027-02-17",
   /** fecha a RESERVAR (FSMB/Prometric) con el ENCAPS vigente — DJ-1 */
   reserva: "2027-08-31",
-  semanasF1: 13,
-  step1Semanas: 41,
-  diasF1: 60, diasF2: 50, diasF3: 32, diasF4: 126,
+  semanasF1: 12,
+  step1Semanas: 40,
+  diasF1: 57, diasF2: 50, diasF3: 32, diasF4: 126,
 } as const;
 
 // ── fases (tabla A1 resuelta) ──
@@ -195,7 +213,7 @@ export interface FaseV6Info {
   provisional: boolean;
 }
 export const FASES_V6: FaseV6Info[] = [
-  {"id":"F1","nombre":"Step 1 tramo 1 (6h15: 05:00 · 07:15-12:00 · 18:00) + ENCAPS lento 1 h (16:15)","etiqueta":"F1 · STEP 1 TRAMO 1 (D1-D60)","desde":"2026-10-07","hasta":"2026-12-30","ultimoDiaPlan":"2026-12-30","diasPlan":60,"diasSemana":"L-V","provisional":false},
+  {"id":"F1","nombre":"Step 1 tramo 1 (6h15: 05:00 · 07:15-12:00 · 18:00) + ENCAPS lento 1 h (16:15)","etiqueta":"F1 · STEP 1 TRAMO 1 (D1-D57)","desde":"2026-10-12","hasta":"2026-12-30","ultimoDiaPlan":"2026-12-30","diasPlan":57,"diasSemana":"L-V","provisional":false},
   {"id":"TRANSICION","nombre":"Transición sin sesión (Anki opcional)","etiqueta":"TRANSICIÓN","desde":"2026-12-31","hasta":"2027-01-03","ultimoDiaPlan":null,"diasPlan":0,"diasSemana":null,"provisional":false},
   {"id":"F2","nombre":"ENCAPS intensiva (≈32 h/sem) + Step 1 en mantenimiento (Anki 30' L-V + sáb 07:45 20Q)","etiqueta":"F2 · ENCAPS INTENSIVA (examen dom 14-mar PROVISIONAL)","desde":"2027-01-04","hasta":"2027-03-14","ultimoDiaPlan":"2027-03-12","diasPlan":50,"diasSemana":"L-V","provisional":true},
   {"id":"LIBRE_POST_ENCAPS","nombre":"Lunes libre post-ENCAPS (protegido, DJ-2)","etiqueta":"LIBRE post-ENCAPS","desde":"2027-03-15","hasta":"2027-03-15","ultimoDiaPlan":null,"diasPlan":0,"diasSemana":null,"provisional":true},
@@ -295,7 +313,7 @@ export function reservaDJ1(encaps: string = FECHAS_V6.encaps.examen): string {
 }
 /** Fecha a RESERVAR guardada en el JSON (validada = DJ-1, o la regla de cálculo si fue más tardía) o, si el escenario no está, DJ-1. */
 export function reservaStep1(encaps: string = FECHAS_V6.encaps.examen): string { return FECHAS_V6.step1.reserva_por_encaps[encaps] ?? reservaDJ1(encaps); }
-/** STEP1_SEMANAS de un escenario = 13 (F1) + semanas(lunes del reinicio → lunes del examen). */
+/** STEP1_SEMANAS de un escenario = SEMANAS_F1 (12, derivado de f1.inicio → f1.fin; v6.00: 13) + semanas(lunes del reinicio → lunes del examen). */
 export function step1SemanasDe(reinicio: string = FECHAS_V6.step1.reinicio, examen: string = FECHAS_V6.step1.examen): number {
   return SEMANAS_F1 + _diff(_lunesDe(reinicio), _lunesDe(examen)) / 7;
 }
@@ -325,7 +343,7 @@ export function esDiaPlan(iso: string, plan?: PlanV6): boolean {
   if (plan === 'encaps') return iso < FECHAS_V6.encaps.examen;
   return true;
 }
-/** Fase v6 de una fecha. Antes del D1 (≤ mar 6-oct-2026) devuelve 'F1' (la app ya muestra F1 la víspera). */
+/** Fase v6 de una fecha. Antes del D1 (≤ dom 11-oct-2026) devuelve 'F1' (la app ya muestra F1 la víspera). */
 export function faseV6(iso: string): FaseV6 {
   if (iso < FECHAS_V6.f1.inicio) return 'F1';
   for (const x of FASES_V6) if (iso >= x.desde && (x.hasta === null || iso <= x.hasta)) return x.id;
@@ -334,12 +352,12 @@ export function faseV6(iso: string): FaseV6 {
 export function faseV6Info(iso: string): FaseV6Info { const id = faseV6(iso); return FASES_V6.find((x) => x.id === id) ?? (FASES_V6[0] as FaseV6Info); }
 
 // ── semana del Step 1 (definición única; antes en homeBriefing — §F, r2 · I7) ──
-/** Semanas de F1 (S1 = semana del lun 5-oct → S13 = semana del lun 28-dic). */
-export const SEMANAS_F1 = 13;
-/** 41 = 13 (F1) + semanas(lunes del reinicio lun 15-mar → lunes del examen lun 27-sep); la semana del examen queda fuera (etiqueta 'examen'). */
-export const STEP1_SEMANAS = 41;
+/** Semanas de F1 (S1 = semana del lun 12-oct → S12 = semana del lun 28-dic). */
+export const SEMANAS_F1 = 12;
+/** 40 = 12 (F1) + semanas(lunes del reinicio lun 15-mar → lunes del examen lun 27-sep); la semana del examen queda fuera (etiqueta 'examen'). */
+export const STEP1_SEMANAS = 40;
 export interface SemanaStep1 {
-  /** 0 = antes del D1 · 1-13 = F1 · 13 durante la PAUSA (no avanza) · 14-STEP1_SEMANAS = tramo 2 · STEP1_SEMANAS + 1 = semana del examen */
+  /** 0 = antes del D1 · 1-12 = F1 · 12 durante la PAUSA (no avanza) · 13-STEP1_SEMANAS = tramo 2 · STEP1_SEMANAS + 1 = semana del examen */
   n: number;
   /** STEP1_SEMANAS */
   total: number;
@@ -360,8 +378,8 @@ export interface SemanaStep1Extras {
   deloads?: { lunes: string; motivo: string }[];
 }
 /**
- * Semana del Step 1 (lunes→domingo; determinista, sin reloj): S1-S13 = F1 · pausa (lun 4-ene → semana del ENCAPS) →
- * { pausa: true } · desde la semana del reinicio 13 + k · semana del examen → { examen: true }.
+ * Semana del Step 1 (lunes→domingo; determinista, sin reloj): S1-S12 = F1 · pausa (lun 4-ene → semana del ENCAPS) →
+ * { pausa: true } · desde la semana del reinicio 12 + k · semana del examen → { examen: true }.
  */
 export function semanaStep1(iso: string, extras: SemanaStep1Extras = {}): SemanaStep1 {
   const lunes = _lunesDe(iso), lunRein = _lunesDe(FECHAS_V6.step1.reinicio);

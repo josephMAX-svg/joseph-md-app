@@ -13,6 +13,7 @@
  *
  *   Uso:  node DATA/_scripts/remap_inicio.js 2026-07-02
  *         node DATA/_scripts/remap_inicio.js            (usa START por defecto abajo)
+ *         node DATA/_scripts/remap_inicio.js 2026-10-12 --usmle-aparte   (v6.01: todos los bloques; la aserción USMLE avisa en vez de abortar)
  *         node DATA/_scripts/remap_inicio.js 2026-10-07 --bloques derma[,research,mir,business,liviano]   (v6.00: solo esos bloques;
  *                                                       sin --bloques corre todos los que quedan, como antes)
  *
@@ -23,6 +24,13 @@
  * 9-mar / 10-mar). PARIDAD F4 (DJ-3): Research↔Derma cuenta L-V hasta el día anterior a serums.inicio y L-S desde entonces → Derma lun ·
  * mié · vie, Research mar · jue · sáb; domingo descanso. El bloque Derma re-fecha d1-d73 y fija DERMA_DAILY_META.taperStep1 (d44-d49)
  * = «alivio F2 (antes taper Step 1)» con las fechas que salgan; después corre gen_derma_ciclo2.js (bloque 5b, mismas reglas).
+ *
+ * v6.01 (10-oct-2026 · corrimiento D1 = lun 12-oct, Joseph: «todo empieza el lunes 12»; no se estudió mié 7, jue 8 ni vie 9-oct):
+ * el pipeline corre con START = 2026-10-12 y TODOS los bloques (mir · research · derma · business · liviano). Nueva opción
+ * --usmle-aparte: el USMLE lo regenera OTRO lote en paralelo (gen_usmle_v5.js / gen_tramo2.js --pendientes-f1), así que la aserción de
+ * solo lectura DIAS[0].fecha === START pasa a AVISO (sin la opción sigue abortando, como en v6.00); al cerrar ambos lotes se vuelve a
+ * correr sin ella para comprobarla. Paridad Research↔Derma con D1 lunes: el lun 12-oct es día-Research (d1 Research lun 12-oct · d1
+ * Derma mar 13-oct): Research pierde 1 ranura (jue 8-oct) y Derma 2 (mié 7 y vie 9-oct); nada se recorta, todo corre y el fin se amplía.
  *
  * Qué hace: solo corre fechas (domingos LIBRES, parámetros intactos). Regex AÑO-AGNÓSTICO
  * (20\d\d-\d\d-\d\d) porque Derma son 70 slots ≈ 6.5 meses → cruza a 2027.
@@ -39,6 +47,8 @@ const BLOQUES_VALIDOS = ['derma', 'research', 'mir', 'business', 'liviano'];
 const BLOQUES = iBloques >= 0 ? new Set(String(ARGS[iBloques + 1] || '').split(',').map((x) => x.trim()).filter(Boolean)) : null; // null = todos
 if (BLOQUES) { if (!BLOQUES.size) throw new Error('--bloques sin valor (' + BLOQUES_VALIDOS.join(',') + ')'); for (const b of BLOQUES) if (!BLOQUES_VALIDOS.includes(b)) throw new Error('bloque desconocido: ' + b + ' (válidos: ' + BLOQUES_VALIDOS.join(', ') + ')'); }
 const corre = (b) => !BLOQUES || BLOQUES.has(b);
+// v6.01: --usmle-aparte → la aserción USMLE (solo lectura) avisa en vez de abortar (lote USMLE en paralelo; ver cabecera)
+const USMLE_APARTE = ARGS.includes('--usmle-aparte');
 const POS = ARGS.filter((a, i) => !a.startsWith('--') && !(iBloques >= 0 && i === iBloques + 1));
 const START = POS[0] || '2026-07-02';           // ← única fuente de la fecha de arranque
 if (!/^20\d\d-\d\d-\d\d$/.test(START)) throw new Error('START inválido (YYYY-MM-DD): ' + START);
@@ -75,13 +85,14 @@ function setMeta(file,metaMarker,inicio,fin){const p=path.join(ROOT,file);let s=
 {const f='src/lib/usmleStep1Daily.ts';let src='';try{src=fs.readFileSync(path.join(ROOT,f),'utf8');}catch{}
  const m=src.match(/export const DIAS\b[^=\n]*=\s*\[[\s\S]*?fecha:\s*["'](20\d\d-\d\d-\d\d)["']/);
  if(!m)console.warn('⚠ USMLE: no encuentro DIAS[0].fecha en '+f+' (aserción de solo lectura omitida)');
- else if(m[1]!==START)throw new Error('USMLE: DIAS[0].fecha = '+m[1]+' ≠ START '+START+' → el USMLE se regenera con gen_usmle_v5.js (v6: remap ya no lo re-fecha)');
+ else if(m[1]!==START){const msg='USMLE: DIAS[0].fecha = '+m[1]+' ≠ START '+START+' → el USMLE se regenera con gen_usmle_v5.js (v6: remap ya no lo re-fecha)';
+  if(USMLE_APARTE)console.warn('⚠ '+msg+' · v6.01 --usmle-aparte: el lote USMLE corre en paralelo → re-correr remap sin la opción al cerrarlo');else throw new Error(msg);}
  else console.log('USMLE (solo lectura) ✓ DIAS[0].fecha = '+START+' · el USMLE NO se re-fecha aquí desde la v6.00');}
 // 2) MIR (78)
 if(corre('mir')){const f='src/lib/mirDailyPlan.ts';if(countFechas(f,'export const MIR_DIAS').length!==78)throw new Error('MIR!=78');const nd=calNoWeekend(START,78);replaceFechas(f,'export const MIR_DIAS',nd);setMeta(f,'export const MIR_DAILY_META',START,nd[77]);console.log('MIR ✓ '+nd[0]+'→'+nd[77]);
  // v5.10b: el mantenimiento (mirMantenimiento.ts, generado) arranca el día hábil siguiente a D78; si D78 lo pisa, regenerar con otra fecha de inicio.
  try{const mm=fs.readFileSync(path.join(ROOT,'src/lib/mirMantenimiento.ts'),'utf8');const ini=(mm.match(/gen_mir_mantenimiento\.js (20\d\d-\d\d-\d\d) (20\d\d-\d\d-\d\d)/)||[])[1];
-  if(ini&&nd[77]>=ini)console.warn('⚠ MIR: D78 ('+nd[77]+') pisa el mantenimiento (inicio '+ini+') → node DATA/_scripts/gen_mir_mantenimiento.js <primer hábil > D78> 2027-04-22 (fin fijo v6.00 = v5.20; la extensión va con --ext-hasta, default del _fechas_v6.json)');}catch{}}
+  if(ini&&nd[77]>=ini)console.warn('⚠ MIR: D78 ('+nd[77]+') pisa el mantenimiento (inicio '+ini+') → node DATA/_scripts/gen_mir_mantenimiento.js <primer hábil > D78> <57.º día de plan desde ese inicio> (v6.01: el mantenimiento CONSERVA sus 57 filas —2027-02-02 → 2027-04-27— y la extensión, --ext-hasta = default del _fechas_v6.json, absorbe la diferencia; v6.00: fin fijo 2027-04-22)');}catch{}}
 // 3) USMLE plan UNIDADES — v6.00: ELIMINADO (usmleStep1Plan.ts lo regenera update_diainicio.js en el lote USMLE; ningún fichero de src/ lo importa).
 // 4) Research (42) — v5.10b: el re-fechado lo hace gen_research_plan.js (conoce la pausa 15-ene→10-feb en v5.18-v5.20 —v5.17: 13-ene→8-feb—, RESEARCH_HITOS, DAILY_META.finNucleo/pausa,
 //    los chips con fecha —chipsDyn— y el ciclo 2 researchDailyPlan2027.ts; slots() NO sabe de la pausa). remap solo comprueba el invariante antes y después.
@@ -108,7 +119,7 @@ if(corre('derma')){const f='src/lib/dermaDailyPlan.ts';if(countFechas(f,'DERMA_D
 if(corre('derma')){try{require('child_process').execSync('node '+JSON.stringify(path.join(__dirname,'gen_derma_ciclo2.js')),{stdio:'inherit'});}
 catch{console.warn('⚠ gen_derma_ciclo2.js falló (paridad/feriados/solape con Research): dermaCiclo2.ts puede estar DESFASADO → revisar y correr a mano node DATA/_scripts/gen_derma_ciclo2.js');}}
 // 6) Business — v5.10b (13-sep): delega en gen_business_plan.py <START> (fuente única DATA/BUSINESS/plan_pulso_v3_L.json; sáb/dom Y feriados fijos como DESCANSO
-//    → 84 trabajo + 37 descansos = 121 con START=2026-09-14 (v5.12: START=2026-09-16 · v5.13: 2026-09-17 · v5.14: 2026-09-21 · v5.15: 2026-09-23 · v5.16: 2026-09-28 · v5.17: 2026-10-01 · v5.18: 2026-10-05 · v5.19: 2026-10-06 · v5.20: 2026-10-07); antes el remap reconstruía SIN SKIP_FIJOS y dejaba 116 filas ≠ generador). Fallback JS alineado si no hay python.
+//    → 84 trabajo + 37 descansos = 121 con START=2026-09-14 (v5.12: START=2026-09-16 · v5.13: 2026-09-17 · v5.14: 2026-09-21 · v5.15: 2026-09-23 · v5.16: 2026-09-28 · v5.17: 2026-10-01 · v5.18: 2026-10-05 · v5.19: 2026-10-06 · v5.20 = v6.00: 2026-10-07 · v6.01: 2026-10-12 → mar 9-feb-2027); antes el remap reconstruía SIN SKIP_FIJOS y dejaba 116 filas ≠ generador). Fallback JS alineado si no hay python.
 if(corre('business')){const f='src/lib/businessStudyPlan.ts';const p=path.join(ROOT,f);let viaPy=false;
  for(const py of ['python','py -3','python3']){try{require('child_process').execSync(py+' '+JSON.stringify(path.join(__dirname,'gen_business_plan.py'))+' '+START,{stdio:'inherit'});viaPy=true;break;}catch{}}
  if(!viaPy){console.warn('⚠ Business: python no disponible → reconstrucción JS alineada con gen_business_plan.py (feriados SKIP_FIJOS como DESCANSO, modo:"DESCANSO")');

@@ -36,6 +36,7 @@ import UsmleTodayPlan from './UsmleTodayPlan';
  * PAUSA del Step 1 (jue 31-dic → lun 15-mar) sin «hoy» · cuenta atrás al examen (PROVISIONAL) y al GO/NO-GO · serie de hitos con
  * mínimos v6 (relativos al NBME 25/28, tramos del NBME 28, decisión GO/NO-GO) · taper/ritual/D-1/examen generados desde USMLE_TAPER
  * (adiós al texto fijo «D94 jue 18-feb … finde libre»).
+ * v6.01 (10-oct-2026): sin cambio de lógica (todo sale de DIAS_TODOS / DAILY_META): F1 = D1-D57 desde el lun 12-oct (215 filas en total).
  */
 const JADE = USMLE_META.accent;         // #5FA88C — muted jade (US console)
 const FLAG_GREEN = '#5FB98C';           // verde bandera armonizado (core/pathology)

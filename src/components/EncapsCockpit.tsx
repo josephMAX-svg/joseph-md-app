@@ -205,9 +205,10 @@ export function RentabilidadStrip({ compact }: { compact?: boolean }) {
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Serie de MINI-SIMS de viernes (25Q · 72 s/Q) contra la línea 18/25 (umbral) y 15/25 (alerta).
+// v6.01: incluye el mini-sim F1 REPUESTO en el carril B de la intensiva (lun 22-feb = dia 93, reposicion: true; regla de Joseph: nada se descarta).
 // Recibe la serie ya derivada (encapsPlan.miniSimSerie): {semana, fecha, nota|null}.
 // ─────────────────────────────────────────────────────────────────────────────
-export interface MiniSimPuntoView { semana: number; fecha: string; nota: number | null; dia?: number }
+export interface MiniSimPuntoView { semana: number; fecha: string; nota: number | null; dia?: number; reposicion?: boolean }
 export function MiniSimTrend({ serie, compact }: { serie: MiniSimPuntoView[]; compact?: boolean }) {
   const H = 72;
   const total = ENCAPS_MINISIM_META.totalQ;
@@ -226,7 +227,7 @@ export function MiniSimTrend({ serie, compact }: { serie: MiniSimPuntoView[]; co
   return (
     <View style={styles.telBox}>
       <View style={styles.telHeader}>
-        <Text style={styles.telTitle}>■ MINI-SIMS DE VIERNES · /{total}</Text>
+        <Text style={styles.telTitle}>■ MINI-SIMS DE VIERNES{serie.some(s => s.reposicion) ? ' + REPOSICIÓN F1' : ''} · /{total}</Text>
         <Text style={[styles.telEst, { color: zoneColor, borderColor: zoneColor + '55' }]}>
           {ult != null ? `ÚLT ${ult}/${total}` : 'SIN NOTA'}
         </Text>

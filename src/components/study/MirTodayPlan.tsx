@@ -40,6 +40,8 @@ import { mirAnkiDeck, ANKIWEB } from '../../lib/ankiLinks';
  *  · Espejo Supabase: al montar, mirEvalLogPull() fusiona por id en ambos sentidos (fallback silencioso).
  *  · Chip "Step 1 esta semana: <sistema> D#-D#" (mirUsmleBridge, lectura de usmleStep1Daily).
  *  · Test de cierre 10Q el 1er día de cada bloque · D77 mini-MIR 40Q · D78 tabla de neto (baseline).
+ *  · v6.01 (10-oct-2026 · corrimiento D1 = lun 12-oct): 1.ª vuelta lun 12-oct → lun 1-feb (78) · mantenimiento mar 2-feb → mar 27-abr
+ *    (57, mismas filas) + EXTENSIÓN mié 28-abr → vie 24-sep (128: la extensión absorbe los 3 días) = 185 en total (MIR_MANT_DIAS.length).
  *  · Fallback a mirMantenimiento cuando no hay DiaMIR (v6.00: mantenimiento jue 28-ene → jue 22-abr-2027 = 57 días + EXTENSIÓN
  *    vie 23-abr → vie 24-sep = 131 días, L-S desde el SERUMS; 188 en total · protegidos v6 12/13/14/15-mar y 25/26/27-sep + Semana Santa
  *    sin sesión · v5.20: 28-ene → 22-abr, 58 días, protegidos 22-feb · 9-mar · 10-mar). Domingo libre → cola D+14.
@@ -563,7 +565,7 @@ function BaselineView() {
             <Text style={st.baseSub}>{s.aciertos}/{s.total} · bl {s.blancos} · 🇪🇸 {s.deltaEs}</Text>
           </View>
         ))}
-        <Text style={st.formHint}>Corrección Whole-Page de cada fallo + Shopping List → APEX (directos en Anki). &lt;{u.anclasD7} % → anclas D-7 / viernes del mantenimiento. Handoff 22-abr: mínimo on-track 60 % neto · 🇪🇸 = fallos delta (objetivo 0 repetidos).</Text>
+        <Text style={st.formHint}>Corrección Whole-Page de cada fallo + Shopping List → APEX (directos en Anki). &lt;{u.anclasD7} % → anclas D-7 / viernes del mantenimiento. Handoff vie 24-sep (fin de la extensión; v5.20: 22-abr): mínimo on-track 60 % neto · 🇪🇸 = fallos delta (objetivo 0 repetidos).</Text>
       </View>
     </FadeUp>
   );
@@ -724,7 +726,7 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
   );
 }
 
-/** Modo MANTENIMIENTO + EXTENSIÓN (v6.00: jue 28-ene → vie 24-sep-2027, 188 días; sin modo reducido; v5.20: 28-ene→22-abr con reducido hasta el vie 19-feb): banqueo puro sin contenido nuevo. */
+/** Modo MANTENIMIENTO + EXTENSIÓN (v6.01: mar 2-feb → vie 24-sep-2027, 185 días · v6.00: jue 28-ene → vie 24-sep-2027, 188 días; sin modo reducido; v5.20: 28-ene→22-abr con reducido hasta el vie 19-feb): banqueo puro sin contenido nuevo. */
 function MantenimientoView({ dia, onPick, bump, sync }: { dia: DiaMIRMant; onPick: (d: number) => void; bump: () => void; sync: SyncInfo }) {
   const entries = mirEvalLogLoad();
   const peor = mirPeorAsignatura(entries);
@@ -884,7 +886,7 @@ export default function MirTodayPlan() {
         </TouchableOpacity>
         <TouchableOpacity activeOpacity={0.85} onPress={() => setModo('mant')} style={[st.ctxBtn, modo === 'mant' ? st.ctxActive : st.ctxSoon]}>
           <Text style={[st.ctxBig, modo !== 'mant' && { color: Colors.muted }]}>Banqueo</Text>
-          <Text style={st.ctxSub}>ene→sep 2027 · {MIR_MANT_DIAS.length} d ({MIR_MANT_META.mant.totalDias} mant. + {MIR_MANT_META.ext.totalDias} ext.) · 25Q/día · sáb 30Q</Text>
+          <Text style={st.ctxSub}>{MIR_MANT_META.inicio.slice(5)}→{MIR_MANT_META.fin.slice(5)} 2027 · {MIR_MANT_DIAS.length} d ({MIR_MANT_META.mant.totalDias} mant. + {MIR_MANT_META.ext.totalDias} ext.) · 25Q/día · sáb 30Q</Text>
         </TouchableOpacity>
         <View style={[st.ctxBtn, st.ctxSoon]}><Text style={[st.ctxBig, { color: Colors.muted }]}>2ª vuelta</Text><Text style={st.ctxSub}>oct-2027 (fase principal)</Text></View>
       </View>

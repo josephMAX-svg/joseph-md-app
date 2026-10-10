@@ -1,6 +1,7 @@
 /**
- * encapsProgressSync.ts — CIERRE DE SESIÓN ENCAPS desde la app (régimen v6.00: MANTENIMIENTO D1-D60 mié 7-oct → mié 30-dic-2026 +
- * INTENSIVA dia 61-110 lun 4-ene → vie 12-mar-2027 con carril B 16:15 · examen ENCAPS dom 14-mar-2027 PROVISIONAL · v5.20, D1 = mié 7-oct-2026 → D92 = mar 16-feb-2027 + INTENSIVA días 97-107 mar 23-feb → mar 9-mar · examen ENCAPS mié 10-mar-2027; v5.19: mar 6-oct → lun 15-feb · v5.18: lun 5-oct → vie 12-feb · v5.17: jue 1-oct → mié 10-feb).
+ * encapsProgressSync.ts — CIERRE DE SESIÓN ENCAPS desde la app (régimen v6.01: MANTENIMIENTO D1-D57 lun 12-oct → mié 30-dic-2026 +
+ * INTENSIVA dia 58-107 lun 4-ene → vie 12-mar-2027 con carril B 16:15 · examen ENCAPS dom 14-mar-2027 PROVISIONAL · v6.00: D1-D60 mié 7-oct →
+ * mié 30-dic + INTENSIVA dia 61-110 (mismas fechas) · v5.20, D1 = mié 7-oct-2026 → D92 = mar 16-feb-2027 + INTENSIVA días 97-107 mar 23-feb → mar 9-mar · examen ENCAPS mié 10-mar-2027; v5.19: mar 6-oct → lun 15-feb · v5.18: lun 5-oct → vie 12-feb · v5.17: jue 1-oct → mié 10-feb).
  *
  * Cierra el circuito del % CIEGO REAL sin pasar por una sesión de Claude: el formulario de cierre de EncapsPlanView
  * (final de la cola del día) llama a `cerrarSesion()` y esta capa:
@@ -19,6 +20,9 @@
  * vie 12-mar-2027; examen ENCAPS dom 14-mar PROVISIONAL). Nuevo TipoRonda 'carril_b' = la hora 16:15 de la intensiva con la fila
  * MANTENIMIENTO 61-92 de v5.20 (extra.carril_b): su cierreId es APP_CARRIL_B_<fecha>_<codigo>, distinto del cierre del loop del mismo
  * día (antes chocaban si compartían código y el segundo cierre pisaba al primero; el orden del barrido ya evita el mismo código).
+ * v6.01 (10-oct-2026): corrimiento rígido a D1 = lun 12-oct → F1 D1-D57 + INTENSIVA dia 58-107 (mismas fechas). Sin cambio de código: el
+ * cierreId va por fecha+código y sim_n = dia de la fila (pre-test sim_n 62 · SIM 100Q 67-102 · dress 106; en v6.00 eran 65 · 70-105 · 109; no había notas guardadas).
+ * La reposición F1 del carril B (mié 17 / jue 18-feb, extra.carril_b.pendiente_f1) cierra como 'carril_b' con el código del pendiente.
  *
  * Métrica que manda (README_SISTEMA_TRACKING.md): % CIEGO = correctas SEGURAS / total; las dudosas/adivinadas NO cuentan.
  * Taxonomía v3 (Palmerton): knowledge CONCEPTO·OLVIDO·CRONOLOGIA · transfer CCSN·CONTEXTO · proceso CAMBIO·TIEMPO·LECTURA.

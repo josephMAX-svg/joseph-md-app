@@ -101,10 +101,13 @@ export function componerBriefing(inp: BriefingInput): string {
 //   V6_ESPEC §F r2 · I7) y aquí se re-exportan (compatibilidad de imports): 41 = 13 (F1) + semanas(lun 15-mar → lun 27-sep) · la PAUSA
 //   (lun 4-ene → semana del ENCAPS) → { pausa: true } y etiqueta 'PAUSA · ENCAPS' · la semana del examen → 'examen'.
 //   HITOS_STEP1 (constante) → hitosStep1() PEREZOSA (hitosDelPlan() de los 2 tramos + GO/NO-GO; mínimo desde usmleScores.HITOS_ONTRACK).
+// v6.01 (10-oct-2026): corrimiento del D1 mié 7-oct → lun 12-oct: STEP1_SEMANAS = 40 = 12 (F1: S1 lun 12-oct → S12 lun 28-dic) +
+//   semanas(lun 15-mar → lun 27-sep) · DELOAD_SEMANAS: mismos lunes (16-nov y 28-dic) con los hitos re-fechados (NBME 26 vie 13-nov ·
+//   NBME 28 lun 28-dic, que cae DENTRO de la segunda semana deload).
 // Doctrina: DATA/REVISION_SEMANAL.md · DATA/PROTOCOLO_MODO_MINIMO.md · DATA/SYNC_ANKI_OBSIDIAN_APP.md
 // ═══════════════════════════════════════════════════════════════════════════
 
-/** D1 del Step 1 (v6.00 = v5.20: mié 7-oct-2026) — misma fuente que usmleStep1Daily.DAILY_META.inicio (fechasV6 → _fechas_v6.json). */
+/** D1 del Step 1 (v6.01: lun 12-oct-2026; v6.00 = v5.20: mié 7-oct) — misma fuente que usmleStep1Daily.DAILY_META.inicio (fechasV6 → _fechas_v6.json). */
 export const STEP1_INICIO = FECHAS_V6.f1.inicio;
 export { STEP1_SEMANAS };
 export type { SemanaStep1 };
@@ -126,10 +129,11 @@ export function hitosStep1(): HitoStep1[] {
   hs.push({ fecha: DAILY_META.gonogo, nombre: 'GO/NO-GO', minimo: g ? minimoTexto(g) : 'B4.5' });
   return hs.sort((a, b) => (a.fecha < b.fecha ? -1 : a.fecha > b.fecha ? 1 : 0));
 }
-/** Semanas DELOAD de los frentes SECUNDARIOS (50% de carga, fechas intactas): la posterior a NBME 26 y a NBME 28 (F1, sin cambio en v6.00). */
+/** Semanas DELOAD de los frentes SECUNDARIOS (50% de carga, fechas intactas): la posterior al NBME 26 y la del NBME 28 (F1; v6.01: mismos lunes
+ *  que en la v6.00 — el NBME 26 pasa al vie 13-nov y el NBME 28 al lun 28-dic, primer día de su semana deload, antes de la pausa). */
 export const DELOAD_SEMANAS: { lunes: string; motivo: string }[] = [
-  { lunes: '2026-11-16', motivo: 'post-NBME 26 (mar 10-nov)' },
-  { lunes: '2026-12-28', motivo: 'post-NBME 28 (mar 22-dic)' },
+  { lunes: '2026-11-16', motivo: 'post-NBME 26 (vie 13-nov)' },
+  { lunes: '2026-12-28', motivo: 'semana del NBME 28 (lun 28-dic)' },
 ];
 
 /** Semana del Step 1 para una fecha (lunes→domingo; determinista, sin reloj) = fechasV6.semanaStep1 con los hitos y deloads del plan. */
@@ -138,7 +142,7 @@ export function semanaStep1(iso: string): SemanaStep1 {
   try { hitos = hitosStep1(); } catch { hitos = []; }
   return semanaStep1V6(iso, { hitos, deloads: DELOAD_SEMANAS });
 }
-/** Etiqueta corta para el instrumento del cockpit: "S3/41" · "PAUSA · ENCAPS" · "pre-D1" · "examen" · "post-Step 1". */
+/** Etiqueta corta para el instrumento del cockpit: "S3/40" (v6.01; v6.00: /41) · "PAUSA · ENCAPS" · "pre-D1" · "examen" · "post-Step 1". */
 export function semanaLabel(s: SemanaStep1): string {
   if (s.pausa) return 'PAUSA · ENCAPS';
   if (s.examen) return 'examen';
@@ -155,6 +159,8 @@ export const MODO_INFO: Record<ModoNivel, { label: string; resumen: string; disp
   VERDE: { label: 'VERDE', resumen: 'Todo el plan.', disparador: 'por defecto' },
   AMBAR: { label: 'ÁMBAR', resumen: 'USMLE intacto · secundarios a su mínimo.', disparador: 'sueño <6h · eval <60% 2 días · 1 día perdido' },
   // v6.00: «remap» → fin del corrimiento diario (V6_ESPEC §B7.1): el día perdido se hace en la próxima fila COLCHÓN (F3/F4) o en C1/C2 (F1).
+  // v6.01: F1 ya no tiene C1/C2 (consumidos por el corrimiento al lun 12-oct) → un día perdido de F1 pasa al tramo 2 el jue 31-dic
+  //   (disparador (f), --pendientes-f1) y allí lo absorbe el COLCHÓN.
   ROJO: { label: 'ROJO', resumen: 'Solo Anki + 10Q + dormir · la fila no hecha va al COLCHÓN.', disparador: '≥2 días perdidos o enfermedad' },
 };
 function lsGet(key: string): string | null {

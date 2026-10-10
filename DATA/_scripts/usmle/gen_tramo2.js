@@ -9,10 +9,24 @@
  *     node gen_tramo2.js [ENCAPS] [EXAMEN] [SERUMS] [--json f] [--md f]
  *        [--proteg a,b,…]            protegidos extra (adjudicación, inducción…): no son días de plan
  *        [--permitir-deficit]        solo para explorar escenarios: sin él, un déficit ABORTA (exit 2) — R1: nunca se recorta
- *        [--pendientes-f1 d1,d2,…]   disparador (f) cierre de F1 (jue 31-dic): filas F1 (d ≤ 58, no hitos) sin ✓ tras C1/C2
+ *        [--pendientes-f1 p1,p2,…]   disparador (f) cierre de F1 (jue 31-dic, tras el último día de F1 = mié 30-dic): POSICIONES de
+ *                                    temario de F1 (1-58: 1-57 = D1-D57 · 58 = v5.20 D79; sin hitos) sin ✓. v6.01: F1 = D1-D57 SIN
+ *                                    colchón (C1/C2 consumidos por el corrimiento) → solo se recuperan las ≤ --f1-filas (57), a la
+ *                                    cabeza de la cola; la 58 ya va en el tramo 2 como desplazada (T3 jue 18-mar) y se ignora (no se
+ *                                    duplica) · v6.00: d ≤ 58 sin ✓ tras C1/C2
+ *        [--f1-filas N]              v6.01: filas de TEMARIO de F1 que caben antes de la pausa (por defecto min(f1.dias, 58) del JSON;
+ *                                    v6.00 = 58 · v6.01 = 57). Las posiciones > N (hoy la 58 = v5.20 D79) son DESPLAZADAS: van
+ *                                    SIEMPRE a la cabeza de la cola-adelante como contenido con su dOrig (entran en V1)
  *        [--congelar-hasta AAAA-MM-DD --previo previo.json [--examen-previo AAAA-MM-DD] [--pendientes uid1,uid2]]
  *     Sin posicionales, ENCAPS / EXAMEN / SERUMS salen de DATA/_scripts/_fechas_v6.json (encaps.examen · step1.examen · serums.inicio).
  *
+ * v6.01 (10-oct-2026): corrimiento D1 mié 7-oct → lun 12-oct (no se estudió el 7, 8 ni 9-oct). F1 NO se alarga (la intensiva ENCAPS
+ *   empieza el lun 4-ene): de las filas de F1 en orden (D1-D57 · D79 · C1 · C2) caben 57; C1/C2 se consumen y la fila v5.20 D79
+ *   (bioestadística; D58 en la v6.00) es DESPLAZADA al tramo 2: unidad de contenido 'C79' con dOrig 79 a la cabeza de la
+ *   cola-adelante (forma parte de la cola desde el principio: el congelado la consume como a las demás), sub con prefijo «DE F1 →
+ *   TRAMO 2 …», nivel por la regla de F1 (1.ª-2.ª fila del sistema ENTRE LAS DESPLAZADAS → N1 · 30Q; las 20 de CONT conservan su
+ *   posición). --pendientes-f1 con una posición desplazada (p. ej. 58) no duplica: la fila ya está. Las recuperaciones (posición
+ *   ≤ f1Filas) siguen igual: dF1, sin dOrig. Misma regla en ref_v6/gen_tramo2_ref.js (V2 en todas las claves).
  * v6.00 (6-oct-2026): port 1:1 de la referencia r2 (misma salida en TODAS las claves, V2). Lo único que cambia es de dónde salen
  *   las fechas: SKIP, reinicio (primer martes > ENCAPS), GO/NO-GO (E-49), fin de la inducción (S+13), protegidos A3 (con la
  *   adjudicación del JSON) y el ritual vienen de gen_fechas_v6.js / _fechas_v6.json en vez de cal.js. Los protegidos A3 del ENCAPS
@@ -87,7 +101,12 @@ const REACT = [['Cardiovascular', 1, 3], ['Respiratory', 1, 2], ['Renal', 1, 2],
 const RANDOM = [84, 86, 88, 89, 'n1', 'n2', 'n3'];
 const INCORR = [90, 91, 'n1', 'n2', 'n3', 'n4', 'n5', 'n6', 'n7'];
 const CONSOL = [92, 93, 'pathoma', 'fa15', 'fa1114'];
-/** dOrig de v5.20 que el tramo 2 debe cubrir (20 contenido + 7 hitos + 10 banco/sprint); D79 vive en F1 (D58). */
+/** v6.01: filas de TEMARIO de F1 en su orden (posición p = 1…58 → D# v5.20): D1-D57 + D79 (bioestadística). C1/C2 (colchón F1) van
+ *  detrás y no tienen temario. F1 coloca las primeras f1Filas; las posiciones > f1Filas son DESPLAZADAS al tramo 2. */
+const ORIGEN_F1_TEMARIO = [...Array.from({ length: 57 }, (_, i) => i + 1), 79];
+const F1_FILAS_V600 = ORIGEN_F1_TEMARIO.length; // 58 (v6.00: todo el temario de F1 cabía; D58 = D79)
+/** dOrig de v5.20 que el tramo 2 debe cubrir (20 contenido + 7 hitos + 10 banco/sprint) con F1 completa (v6.00: D79 vive en F1 = D58).
+ *  v6.01: + las desplazadas de F1 (generarTramo2 → `esperados`). */
 const DORIG_ESPERADOS = [...CONT, 65, 72, 77, 82, 83, 85, 87, 84, 86, 88, 89, 90, 91, 92, 93, 94, 95];
 const sistemaRot = ['Cardiovascular', 'Respiratory', 'Renal', 'Gastrointestinal', 'Endocrine', 'Nervous System', 'Hematology & Oncology', 'Fundamentos', 'Immunology'];
 // valores por defecto de los campos de DiaUSMLE en filas SIN dOrig (§B3, tabla de defaults)
@@ -111,8 +130,8 @@ const NOTA_V6 = { 72: 'v6: punto de control de la reactivación (ya no cierra la
  * Genera el tramo 2 (misma regla determinista que la referencia r2, §B3.1-8).
  * @param {object} o encaps, examen, serums (AAAA-MM-DD) · skip: Set · adjudicacion: [{fecha, motivo}] (protegidos de entrada del JSON)
  *   · protegExtra: [fecha] (--proteg) · examenPrevio · congelarHasta · previo: filas (DIAS_T2 vigente) · pendientes: [uid] · pendientesF1: [d]
- *   · byD: filas v5.20 por D (por defecto el dias_v520.json congelado)
- * @returns {{ out: object[], deficitFwd: number, deficitBwd: number, R: string, GONOGO: string, ritual: string, frozen: number, claveNogo: string|null, log: string[], faltan: number[] }}
+ *   · f1Filas: filas de temario que caben en F1 (v6.01; por defecto 58 = v6.00) · byD: filas v5.20 por D (por defecto el dias_v520.json congelado)
+ * @returns {{ out: object[], deficitFwd: number, deficitBwd: number, R: string, GONOGO: string, ritual: string, frozen: number, claveNogo: string|null, log: string[], faltan: number[], f1Filas: number, desplazadasF1: number[], esperados: number[] }}
  */
 function generarTramo2(o) {
   const ENCAPS = o.encaps, E = o.examen, S = o.serums;
@@ -122,6 +141,12 @@ function generarTramo2(o) {
   const E_PREV = o.examenPrevio || E;
   const PENDIENTES = o.pendientes || [];
   const PEND_F1 = o.pendientesF1 || [];
+  // v6.01: filas de temario de F1 que NO caben (posición > f1Filas) → desplazadas al tramo 2 con su dOrig (D# v5.20)
+  const F1FILAS = o.f1Filas == null ? F1_FILAS_V600 : Number(o.f1Filas);
+  if (!(Number.isInteger(F1FILAS) && F1FILAS >= 1 && F1FILAS <= F1_FILAS_V600)) throw new Error('f1Filas inválido (1-' + F1_FILAS_V600 + '): ' + o.f1Filas);
+  const DESPL = ORIGEN_F1_TEMARIO.slice(F1FILAS); // D# v5.20 (v6.01: [79])
+  for (const dv of DESPL) if (/^🎯/.test(byD[dv].sub)) throw new Error(`fila desplazada de F1 que es un hito (D${dv} v5.20): un hito F1 no se desplaza (decisión de Joseph)`);
+  const posF1 = (dv) => ORIGEN_F1_TEMARIO.indexOf(dv) + 1; // posición en F1 (v6.01: D79 → 58)
   const R = V6.reinicioDe(ENCAPS);         // DJ-2: martes siguiente al ENCAPS (el lunes libre); vale para examen en sáb o dom
   const claveNogo = `${E_PREV}>${E}`;
   const TABLA = CONG && E_PREV !== E ? HITOS_NOGO[claveNogo] : HITOS[E];
@@ -151,6 +176,7 @@ function generarTramo2(o) {
   // ── colas ──
   const mk = (u) => ({ ...u, rest: 1 });
   const FWD_ALL = [], BWD_ALL = [];
+  DESPL.forEach((d) => FWD_ALL.push(mk({ tipo: 'contenido', dOrig: d, uid: 'C' + d, desdeF1: posF1(d) }))); // v6.01: cabeza de la cola
   CONT.forEach((d) => FWD_ALL.push(mk({ tipo: 'contenido', dOrig: d, uid: 'C' + d })));
   REFUERZO.forEach((r, i) => FWD_ALL.push(mk({ tipo: 'refuerzo', ref: i, uid: 'REF' + i, ...r })));
   REACT.forEach(([sys, k, n]) => FWD_ALL.push(mk({ tipo: 'reactivacion', sistema: sys, k, n, uid: `RX-${sys}-${k}` })));
@@ -171,10 +197,12 @@ function generarTramo2(o) {
       fwd.unshift({ ...base, rest: 1, pendiente: true });
     }
   }
-  // (f) cierre de F1: recuperaciones de F1 (D58 de v6 = D79 de v5.20) delante de todo; no llevan dOrig (no entran en V1), sí dF1
+  // (f) cierre de F1: recuperaciones de F1 (posición 58 = D79 de v5.20) delante de todo; no llevan dOrig (no entran en V1), sí dF1.
+  // v6.01: una posición > f1Filas no es recuperación (nunca estuvo en F1): ya va en la cola como desplazada → no se duplica.
   for (const d of [...PEND_F1].reverse()) {
-    const dv = d === 58 ? 79 : d;
+    const dv = ORIGEN_F1_TEMARIO[d - 1];
     if (!(d >= 1 && d <= 58) || /^🎯/.test(byD[dv].sub)) throw new Error('pendiente F1 inválido (1-58, sin hitos): ' + d);
+    if (d > F1FILAS) continue;
     fwd.unshift(mk({ tipo: 'contenido', dF1: d, uid: 'F1-' + d }));
   }
   // ── 1) filas ancladas ──
@@ -254,15 +282,17 @@ function generarTramo2(o) {
       }
       case 'day_after': Object.assign(fila, DEF.day_after, { sub: `DAY-AFTER del ${a.de} (Palmerton §9.2): trayectoria + auditoría de honestidad + triaje de errores + drill de cronología (10 PC cards) + lectura por sistema — en bloque A + B`, qDia: 0, nivelUW: 5, h: F4row ? 2.625 : 5.5 }); break;
       case 'contenido': {
-        if (a.dF1) { const w1 = byD[a.dF1 === 58 ? 79 : a.dF1]; CAMPOS_V520.forEach((k) => { fila[k] = w1[k]; }); Object.assign(fila, { dF1: a.dF1, sub: `RECUPERACIÓN F1 (D${a.dF1} no hecho) · ` + (a.parte ? `parte ${a.parte} · ` : '') + w1.sub, qDia: a.parte ? 20 : 40, nivelUW: 2, h: a.parte ? (s <= ADAPT_FIN ? 1.3125 : 2.625) : 5.5 }); break; }
-        const pos = CONT.filter((x) => byD[x].system === v.system).indexOf(a.dOrig) + 1;
+        if (a.dF1) { const w1 = byD[ORIGEN_F1_TEMARIO[a.dF1 - 1]]; CAMPOS_V520.forEach((k) => { fila[k] = w1[k]; }); Object.assign(fila, { dF1: a.dF1, sub: `RECUPERACIÓN F1 (D${a.dF1} no hecho) · ` + (a.parte ? `parte ${a.parte} · ` : '') + w1.sub, qDia: a.parte ? 20 : 40, nivelUW: 2, h: a.parte ? (s <= ADAPT_FIN ? 1.3125 : 2.625) : 5.5 }); break; }
+        // v6.01: las desplazadas de F1 cuentan su posición entre las desplazadas (regla de F1); las de CONT, entre CONT (sin cambio)
+        const pos = (a.desdeF1 ? DESPL : CONT).filter((x) => byD[x].system === v.system).indexOf(a.dOrig) + 1;
         const viernes = wd(s) === 5;
         let nivel = pos <= 2 ? 1 : viernes ? 4 : 2; let q = pos <= 2 ? 30 : 40;
+        const preF1 = a.desdeF1 ? `DE F1 → TRAMO 2 (no cupo en F1 antes de la pausa ENCAPS; era la fila ${a.desdeF1} de F1) · ` : '';
         if (a.parte) { // F4: contenido partido
           const p1 = a.parte.startsWith('1');
-          fila.sub = (p1 ? 'PARTE 1 · PRE-TEST 10Q tutor + DEEP PRIME (vídeo + First Aid) · ' : 'PARTE 2 · CONSOLIDACIÓN 20Q timed del subtema + Anki de mecanismo · ') + v.sub;
+          fila.sub = preF1 + (p1 ? 'PARTE 1 · PRE-TEST 10Q tutor + DEEP PRIME (vídeo + First Aid) · ' : 'PARTE 2 · CONSOLIDACIÓN 20Q timed del subtema + Anki de mecanismo · ') + v.sub;
           q = p1 ? 10 : 20; nivel = p1 ? 1 : nivel;
-        } else fila.sub = v.sub;
+        } else fila.sub = preF1 + v.sub;
         CAMPOS_V520.forEach((k) => { fila[k] = v[k]; });
         Object.assign(fila, { qDia: q, nivelUW: nivel, h: a.parte ? (s <= ADAPT_FIN ? 1.3125 : 2.625) : 5.5 });
         if (nivel === 4 && !a.parte) fila.franjaNota = 'VIERNES NIVEL 4: 11:00 = 20-30Q timed MIXTOS de los sistemas ya dominados + 10Q tutor del subtema';
@@ -299,16 +329,17 @@ function generarTramo2(o) {
   const cnt = {}; out.forEach((x) => { cnt[x.tipo] = (cnt[x.tipo] || 0) + 1; });
   const horas = out.reduce((acc, x) => acc + (x.h || 0), 0);
   const dSet = new Set(out.filter((x) => x.dOrig && typeof x.dOrig === 'number').map((x) => x.dOrig));
-  const faltan = DORIG_ESPERADOS.filter((d) => !dSet.has(d));
+  const esperados = [...DESPL, ...DORIG_ESPERADOS];
+  const faltan = esperados.filter((d) => !dSet.has(d));
   const qT = (pred) => out.filter(pred).reduce((acc, x) => acc + (x.qDia || 0), 0);
   const log = [
     `TRAMO 2 · ENCAPS ${fy(ENCAPS)} → reinicio ${fy(R)} · SERUMS ${fy(S)} · examen ${fy(E)} · GO/NO-GO ${f(GONOGO)}${CONG ? ` · CONGELADO ≤ ${f(CONG)} (${frozen.length} filas)${E_PREV !== E ? ' · cola NO-GO ' + claveNogo : ''}` : ''}`,
     `filas ${out.length} (F3 ${out.filter((x) => x.fase === 'F3').length} · F4 ${out.filter((x) => x.fase === 'F4').length}) · d ${out.length ? out[0].d : '—'}-${out.length ? out[out.length - 1].d : '—'} · tipos ${JSON.stringify(cnt)}`,
     `déficit cola-adelante ${deficitFwd} u · déficit cola-atrás ${deficitBwd} u · horas-plan (piso) ${horas.toFixed(0)} · colchón ${cnt.colchon || 0} filas ≈ ${out.filter((x) => x.tipo === 'colchon').reduce((acc, x) => acc + x.h, 0).toFixed(0)} h`,
-    'dOrig cubiertos ' + dSet.size + ' / esperados ' + DORIG_ESPERADOS.length + ' ' + (faltan.length ? 'FALTAN ' + faltan.join(',') : '✓ (+ D79 en F1 D58)'),
+    'dOrig cubiertos ' + dSet.size + ' / esperados ' + esperados.length + ' ' + (faltan.length ? 'FALTAN ' + faltan.join(',') : DESPL.length ? `✓ (incl. ${DESPL.map((d) => 'D' + d).join(', ')} desplazada${DESPL.length > 1 ? 's' : ''} de F1: caben ${F1FILAS} filas de temario en F1)` : '✓ (+ D79 en F1 D58)'),
     `preguntas (piso): contenido ${qT((x) => x.tipo === 'contenido')} · refuerzo ${qT((x) => x.tipo === 'refuerzo')} · reactivación ${qT((x) => x.tipo === 'reactivacion')} · uw_random ${qT((x) => x.tipo === 'uw_random')} · incorrectas ${qT((x) => x.tipo === 'incorrectas')} · colchón ${qT((x) => x.tipo === 'colchon')} → uWorld FRESCO = contenido + refuerzo + uw_random = ${qT((x) => ['contenido', 'refuerzo', 'uw_random'].includes(x.tipo))}`,
   ];
-  return { out, deficitFwd, deficitBwd, R, GONOGO, ritual: ritualA3, frozen: frozen.length, claveNogo: CONG && E_PREV !== E ? claveNogo : null, log, faltan };
+  return { out, deficitFwd, deficitBwd, R, GONOGO, ritual: ritualA3, frozen: frozen.length, claveNogo: CONG && E_PREV !== E ? claveNogo : null, log, faltan, f1Filas: F1FILAS, desplazadasF1: DESPL, esperados };
 }
 
 /** Tabla markdown del tramo 2 (mismo formato que la referencia: Anexo A de la espec). */
@@ -320,6 +351,7 @@ function mdTramo2(out) {
 /**
  * Opciones del tramo 2 desde la línea de comandos (las mismas que la referencia r2). Sin posicionales, ENCAPS / EXAMEN / SERUMS
  * salen del JSON validado (`F` = V6.cargarFechasV6()). `escenarioJSON` = true si las tres coinciden con el JSON.
+ * v6.01: f1Filas = --f1-filas o, sin él, min(f1.dias, 58) del JSON (las filas de F1 se colocan en orden D1-D57 · D79 · C1 · C2).
  */
 function opcionesTramo2(argv, F = V6.cargarFechasV6()) {
   const opt = (k) => { const i = argv.indexOf(k); return i >= 0 ? argv[i + 1] : null; };
@@ -341,12 +373,13 @@ function opcionesTramo2(argv, F = V6.cargarFechasV6()) {
     previo: previoFile ? JSON.parse(fs.readFileSync(path.resolve(previoFile), 'utf8')) : null,
     pendientes: lista('--pendientes'),
     pendientesF1: lista('--pendientes-f1').map(Number),
+    f1Filas: opt('--f1-filas') != null ? Number(opt('--f1-filas')) : Math.min(F.f1.dias, F1_FILAS_V600),
     permitirDeficit: argv.includes('--permitir-deficit'),
     json: opt('--json'), md: opt('--md'),
   };
 }
 
-module.exports = { generarTramo2, opcionesTramo2, mdTramo2, cargarV520, HITOS, HITOS_NOGO, CONT, DORIG_ESPERADOS, DEF, CAMPOS_V520, V520_FILE };
+module.exports = { generarTramo2, opcionesTramo2, mdTramo2, cargarV520, HITOS, HITOS_NOGO, CONT, DORIG_ESPERADOS, ORIGEN_F1_TEMARIO, F1_FILAS_V600, DEF, CAMPOS_V520, V520_FILE };
 
 if (require.main === module) {
   const o = opcionesTramo2(process.argv.slice(2));

@@ -1,8 +1,8 @@
 {
- "id": "PRETEST_ARRANQUE_2026-10-07",
- "titulo": "Pre-test de arranque ENCAPS · Mié 2026-10-07 · parte 1 · críticos de la semana A del ciclo",
+ "id": "PRETEST_ARRANQUE_2026-10-12",
+ "titulo": "Pre-test de arranque ENCAPS · Lun 2026-10-12 · parte 1 · críticos de la semana A del ciclo",
  "tipoRonda": "pretest",
- "fecha": "2026-10-07",
+ "fecha": "2026-10-12",
  "codigo": "MIX",
  "tema": "pre-test de arranque · 5Q × 4 críticos (II-3 · I-3 · V-2 · III-5) · parte 1 · críticos de la semana A del ciclo",
  "fuente_preguntas": "ítems reales ENCAPS/SERUMS 2024-2A · 2025-1A · 2025-2 con clave oficial (BANCO_PROPIO: set) · el examen de agosto de 2026 queda fuera (lista negra hasta el pre-test de febrero)",
@@ -25,7 +25,7 @@
   ],
   "q_por_codigo": 5,
   "sustituye": {
-   "fichero": "banco_2026-10-07",
+   "fichero": "banco_2026-10-12",
    "dia": 1,
    "codigo": "II-3",
    "sub_eje": "esquema_intervalos",
@@ -144,6 +144,12 @@
     "a": "2026-10-07",
     "el": "2026-10-06",
     "motivo": "corrimiento v5.20 (D1 = 2026-10-07, régimen DEFINITIVO): la sesión pasa del mar 2026-10-06 al mié 2026-10-07; ítems intactos, sin regenerar"
+   },
+   {
+    "de": "2026-10-07",
+    "a": "2026-10-12",
+    "el": "2026-10-10",
+    "motivo": "corrimiento v6.01 (D1 = 2026-10-12, «todo empieza el lunes 12»; no se estudió mié 7, jue 8 ni vie 9-oct): la sesión «banqueo 1 (D1)» pasa del miércoles 2026-10-07 al lunes 2026-10-12; ítems intactos, sin regenerar. Sigue sustituyendo el contenido del banco del D1 (banco_2026-10-12)"
    }
   ]
  },

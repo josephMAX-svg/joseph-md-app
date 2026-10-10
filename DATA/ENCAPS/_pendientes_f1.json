@@ -1,0 +1,151 @@
+{
+ "_meta": {
+  "descripcion": "PENDIENTES F1 del ENCAPS MANTENIMIENTO: filas (banqueo1h y mini_sim) que un corrimiento RÍGIDO dejó fuera de la F1 (la F1 no se alarga: el lun 4-ene empieza la intensiva). Copia literal de la fila vieja (el mini-sim con su receta íntegra en extra). NADA se descarta ni se absorbe (regla de Joseph, 10-oct-2026). gen_encaps_intensivo_2027.js (--pendientes-f1, default este fichero) las REPONE EXPLÍCITAS en los primeros días de REPOSICIÓN del carril B 16:15 (extra.carril_b = {tipo:'reposicion', regla, pendiente_f1: <esta fila, idéntica>}), antes de la regla genérica: primero las banqueo1h por dia_mant y después los mini-sims; al colocarlas escribe aquí `destino` y `reposicion` {dia, fecha, carril}. Lo escribe gen_encaps_mantenimiento_2027.js --pendientes-de <SQL de la F1 anterior>.",
+  "actualizado": "2026-10-10",
+  "corrimientos": [
+   {
+    "version": "v6.01",
+    "fecha": "2026-10-10",
+    "d1_previo": "2026-10-07",
+    "d1": "2026-10-12",
+    "f1_hasta": "2026-12-30",
+    "fuente": "git show regimen-v6.00:DATA/_scripts/_encaps_mantenimiento_2027.sql (filas MANTENIMIENTO con fecha ≤ 2026-12-30)",
+    "filas_previas": 60,
+    "banqueo_previas": 49,
+    "minisims_previos": 11,
+    "filas_nuevas": 57,
+    "banqueo_nuevas": 47,
+    "minisims_nuevos": 10,
+    "pendientes": 3,
+    "pendientes_banqueo": 2,
+    "pendientes_minisim": 1,
+    "minisims_absorbidos": 0
+   }
+  ]
+ },
+ "filas": [
+  {
+   "origen": "mantenimiento_v6.00",
+   "corrimiento": "v6.01",
+   "dia_mant": 59,
+   "fecha_original": "2026-12-29",
+   "tipo": "banqueo1h",
+   "codigo": "II-8",
+   "subtema": "ENT/diabetes · Paquete básico/completo ENT y tamizaje (HEARTS)",
+   "prioridad": "ALTA",
+   "temas_secundarios": [
+    {
+     "codigo": "III-9",
+     "subtema": "Ley 29414 por CATEGORÍAS de derecho (segunda opinión = acceso a servicios)",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 3,
+    "de": 4,
+    "sub_eje": "paquetes_tamizaje",
+    "sub_eje_label": "Paquete básico/completo ENT y tamizaje (HEARTS)",
+    "sub_eje_n": 1,
+    "sub_ejes_total": 2,
+    "secundario": "III-9"
+   },
+   "destino": "REPUESTO dia 90 (mié 17-feb-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
+   "reposicion": {
+    "dia": 90,
+    "fecha": "2027-02-17",
+    "carril": "B 16:15"
+   }
+  },
+  {
+   "origen": "mantenimiento_v6.00",
+   "corrimiento": "v6.01",
+   "dia_mant": 60,
+   "fecha_original": "2026-12-30",
+   "tipo": "banqueo1h",
+   "codigo": "II-3",
+   "subtema": "Inmunizaciones · Cadena de frío: rangos 2-8 °C, termos/data-loggers, ruptura de cadena y conducta",
+   "prioridad": "CRITICA",
+   "temas_secundarios": [
+    {
+     "codigo": "II-9",
+     "subtema": "Salud mental comunitaria: modelo, CSMC, continuidad de cuidados",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 4,
+    "de": 5,
+    "sub_eje": "cadena_frio",
+    "sub_eje_label": "Cadena de frío: rangos 2-8 °C, termos/data-loggers, ruptura de cadena y conducta",
+    "sub_eje_n": 4,
+    "sub_ejes_total": 4,
+    "secundario": "II-9"
+   },
+   "destino": "REPUESTO dia 91 (jue 18-feb-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
+   "reposicion": {
+    "dia": 91,
+    "fecha": "2027-02-18",
+    "carril": "B 16:15"
+   }
+  },
+  {
+   "origen": "mantenimiento_v6.00",
+   "corrimiento": "v6.01",
+   "dia_mant": 53,
+   "fecha_original": "2026-12-18",
+   "tipo": "mini_sim",
+   "codigo": null,
+   "subtema": "Mini-simulacro semanal 25Q mixto (vector v3) · cola larga: II-6 + II-10",
+   "prioridad": "CRITICA",
+   "temas_secundarios": [
+    {
+     "codigo": "II-6",
+     "subtema": "TB: definiciones de caso y derechos laborales (licencia con goce)",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "5-6"
+    },
+    {
+     "codigo": "II-10",
+     "subtema": "Cáncer: tamizaje de mama (mamografía por edad, rol del I-2) y signos de alarma de cáncer infantil",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "5-6"
+    }
+   ],
+   "extra": {
+    "tipo": "mini_sim",
+    "sim_n": 53,
+    "semana": "2026-12-14",
+    "receta": {
+     "II": 8,
+     "I": 7,
+     "V": 5,
+     "III": 3,
+     "IV": 2
+    },
+    "vineta_pct": 50,
+    "criticos_min": 10,
+    "fallos_previos_min": 5,
+    "cola_larga_q": "5-6",
+    "seg_por_q": 72,
+    "umbral_25": 18,
+    "alerta_25": 15,
+    "cola_larga": [
+     "II-6",
+     "II-10"
+    ]
+   },
+   "destino": "REPUESTO dia 93 (lun 22-feb-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1) · mini-simulacro 25Q cronometrado (72 s/Q) + corrección, receta íntegra en extra",
+   "reposicion": {
+    "dia": 93,
+    "fecha": "2027-02-22",
+    "carril": "B 16:15"
+   }
+  }
+ ]
+}

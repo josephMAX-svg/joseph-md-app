@@ -13,6 +13,7 @@ import {
   simIntensivoDe, encapsSim100Zone, tipoRondaDe,  // v5.14 (19-sep): sims de la FASE INTENSIVA (/100) + tipo de ronda del cierre
   loopDe, diasAExamenDe,                           // v5.20 (6-oct): Horario de la INTENSIVA desde el loop de la fila · cuenta atrás viva desde extra.exam_date
   carrilBDe, minisimAbsorbidoDe, examDateDe, examenProvisionalDe, examenRendidoDe, intensivaMetaDe, // v6.00: carril B 16:15 + examen PROVISIONAL / rendido
+  pseudoCarrilB, esMiniSimRepuesto, CARRIL_B_REPOSICION_LABEL, CARRIL_B_REPOSICION_REGLA, // v6.01: mini-sim F1 repuesto en el carril B + regla de reposición desambiguada
   type PlanItem, type StudyScheduleDay, type StudyMetrics, type ProximoVideo, type MiniSimPunto, type CiegoSemana,
   type CiegoCodigo, type TemaCaliente, type TendenciaCiego, type EvalAnclada,
 } from '../lib/encapsPlan';
@@ -257,7 +258,7 @@ export default function EncapsPlanView() {
         )}
       </View>
 
-      {/* Selector de día directo — saltar a cualquier día (v6.00: 1..110, 3 cifras) */}
+      {/* Selector de día directo — saltar a cualquier día (v6.01: 1..107 · v6.00: 1..110, 3 cifras) */}
       {jumpOpen && (
         <View style={styles.jumpRow}>
           <Text style={styles.jumpLabel}>Ir al día:</Text>
@@ -385,6 +386,8 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   // v6.00: carril B 16:15 de la intensiva (fila MANTENIMIENTO 61-92 de v5.20 embebida / reposición) + mini-sim absorbido por el SIM 100Q
   const carrilB = carrilBDe(today);
   const absorbido = minisimAbsorbidoDe(today);
+  // v6.01: mini-sim F1 REPUESTO en el carril B (pendiente_f1 tipo 'mini_sim', lun 22-feb = dia 93) → su receta desde la pseudo-fila
+  const recetaCB = carrilB?.tipo === 'mini_sim' ? miniSimRecetaDe(pseudoCarrilB(today)) : null;
 
   return (
     <View>
@@ -451,12 +454,18 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
         {!!subEje && (
           <Text style={styles.subEjeLine}>◈ Sub-eje de hoy ({subEje.n}/{subEje.total}): {subEje.label}</Text>
         )}
-        {/* v6.00: CARRIL B 16:15-17:15 (sus ítems van en la checklist con claves D{dia}:b_*; cierre tipo «Carril B 16:15») */}
+        {/* v6.00: CARRIL B 16:15-17:15 (sus ítems van en la checklist con claves D{dia}:b_*; cierre tipo «Carril B 16:15»)
+            v6.01: reposición con pendiente F1 (fila de la F1 v6.00 que no cupo tras el corrimiento) → se pinta como banqueo «REPOSICIÓN F1»;
+            si el pendiente es un mini-sim (lun 22-feb = dia 93) → MINI-SIMULACRO 25Q a las 16:15 con su receta y su corrección (cierre tipo mini_sim) */}
         {!!carrilB && (
           <Text style={styles.subEjeLine}>
-            ◈ 16:15 CARRIL B · {carrilB.tipo === 'banqueo1h'
-              ? `${carrilB.codigo || ''} ${carrilB.subtema}${carrilB.diaMant ? ` (fila mant. ${carrilB.diaMant} de v5.20)` : ''}`
-              : 'reposición: instancias 61-92 pendientes → lista de vigilancia'}
+            ◈ 16:15 CARRIL B · {carrilB.tipo === 'mini_sim'
+              ? `REPOSICIÓN F1 · 🔥 MINI-SIMULACRO 25Q · cola larga ${carrilB.colaLarga.join(' + ')}${carrilB.diaMant ? ` (fila mant. ${carrilB.diaMant} de la F1 ${(carrilB.origen || '').replace('mantenimiento_', '') || 'anterior'}${carrilB.fechaOriginal ? `, ${fechaCorta(carrilB.fechaOriginal)}` : ''}: no cupo tras el corrimiento → se REPONE hoy)` : ''}${recetaCB ? ` · receta ${miniSimRecetaTexto(recetaCB)} · 16:15-16:45 mini-sim + 16:45-17:15 corrección → CIERRE tipo mini_sim (nota /25 → study_sim_scores sim_n = ${recetaCB.simN})` : ''}`
+              : carrilB.tipo === 'banqueo1h'
+              ? carrilB.reposicionF1
+                ? `REPOSICIÓN F1 · ${carrilB.codigo || ''} ${carrilB.subtema}${carrilB.diaMant ? ` (fila mant. ${carrilB.diaMant} de la F1 ${(carrilB.origen || '').replace('mantenimiento_', '') || 'anterior'}: no cupo tras el corrimiento)` : ''}`
+                : `${carrilB.codigo || ''} ${carrilB.subtema}${carrilB.diaMant ? ` (fila mant. ${carrilB.diaMant} de v5.20)` : ''}`
+              : CARRIL_B_REPOSICION_LABEL}
           </Text>
         )}
         {!!absorbido && (
@@ -700,7 +709,7 @@ function SimView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
       const semana = simDays.filter(x => x.tipo === 'mini_sim' && x.dia <= d.dia).length;
       return [{
         d, simN: rec?.simN ?? d.dia,
-        clave: `Mini-sim #${semana} · 25Q · cola larga ${rec ? rec.colaLarga.join(' + ') : ''}`,
+        clave: `Mini-sim #${semana} · 25Q · cola larga ${rec ? rec.colaLarga.join(' + ') : ''}${esMiniSimRepuesto(d) ? ' · REPOSICIÓN F1 (carril B 16:15)' : ''}`, // v6.01: mini-sim F1 repuesto
         duracion: rec ? `${rec.segPorQ}s/Q · II ${rec.receta.II} I ${rec.receta.I} V ${rec.receta.V} III ${rec.receta.III} IV ${rec.receta.IV}` : '72s/Q',
         url: undefined as string | undefined, escala: 25 as 20 | 25 | 100,
       }];
@@ -955,14 +964,20 @@ function bloquesIntensivo(day: StudyScheduleDay | null | undefined): HorarioBloc
   const base = bloquesIntensivoBase(day);
   const cb = carrilBDe(day);
   if (!cb) return base;
+  // v6.01: mini-sim F1 repuesto (pendiente_f1 tipo 'mini_sim', lun 22-feb = dia 93) → bloque de mini-simulacro 25Q + corrección
+  const recCB = cb.tipo === 'mini_sim' ? miniSimRecetaDe(pseudoCarrilB(day)) : null;
   const bloqueCB: HorarioBlock = {
     hora: '16:15-17:15',
-    titulo: cb.tipo === 'banqueo1h'
-      ? `◈ CARRIL B · ${cb.codigo || ''} ${cb.subtema}`.replace(/\s+/g, ' ')
-      : '◈ CARRIL B · reposición: instancias 61-92 pendientes → lista de vigilancia',
-    pasos: cb.tipo === 'banqueo1h'
+    titulo: cb.tipo === 'mini_sim'
+      ? `◈ CARRIL B · REPOSICIÓN F1 · 🔥 MINI-SIMULACRO 25Q (${recCB?.segPorQ ?? 72} s/Q) · cola larga ${cb.colaLarga.join(' + ')}${cb.diaMant ? ` · fila mant. ${cb.diaMant} de la F1 ${(cb.origen || '').replace('mantenimiento_', '') || 'anterior'}` : ''}`
+      : cb.tipo === 'banqueo1h'
+      ? `◈ CARRIL B · ${cb.reposicionF1 ? 'REPOSICIÓN F1 · ' : ''}${cb.codigo || ''} ${cb.subtema}`.replace(/\s+/g, ' ') // v6.01: + reposición F1
+      : `◈ CARRIL B · ${CARRIL_B_REPOSICION_LABEL}`,
+    pasos: cb.tipo === 'mini_sim'
+      ? [{ t: '16:15', d: `Mini-simulacro 25Q mixto cronometrado, modo examen sin pausa${recCB ? ` · receta ${miniSimRecetaTexto(recCB)}` : ''}` }, { t: '16:45', d: `Corrección (área · tipo de fallo) + CIERRE tipo mini_sim → nota /25 en study_sim_scores (sim_n = ${recCB?.simN ?? day.dia}) + % ciego en study_progress` }]
+      : cb.tipo === 'banqueo1h'
       ? [{ t: '16:15', d: 'Eval anclada 5Q (código del carril B de ayer; lunes: fallos del SIM 100Q del viernes)' }, { t: '16:30', d: `Banco del día ${cb.codigo || ''} 16-25Q ciegas + secundario de cola larga` }, { t: '17:10', d: 'Cierre tipo «Carril B 16:15» → study_progress' }]
-      : [{ t: '16:15', d: cb.regla || 'instancias de 61-92 no hechas → si no hay, temas calientes del día' }],
+      : [{ t: '16:15', d: cb.regla || CARRIL_B_REPOSICION_REGLA }],
   };
   // en orden de hora: el 16:15 va antes de los bloques que empiezan después (18:00 EVAL)
   const i = base.findIndex(b => b.hora.slice(0, 5) > '16:15');
@@ -1004,7 +1019,7 @@ function HorarioView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   // MANTENIMIENTO, tipo='mini_sim') → weekend/sim; si no → plantilla lun-jue (eval anclada + banco).
   const dow = today?.fecha ? new Date(`${today.fecha}T12:00:00`).getDay() : 1;
   const isWeekendDay = dow === 0 || dow === 6;
-  const esIntensivo = today?.modo === 'INTENSIVO';   // v5.14: fase intensiva feb-mar 2027 · v6.00: lun 4-ene → vie 12-mar (dia 61-110, examen dom 14-mar PROVISIONAL) · v5.20: mar 23-feb → mar 9-mar (días 97-107), horas = las del loop sembrado en la fila
+  const esIntensivo = today?.modo === 'INTENSIVO';   // v5.14: fase intensiva feb-mar 2027 · v6.01: lun 4-ene → vie 12-mar = dia 58-107 (v6.00: dia 61-110), examen dom 14-mar PROVISIONAL · v5.20: mar 23-feb → mar 9-mar (días 97-107), horas = las del loop sembrado en la fila
   const useSimTemplate = !!today?.simulacro || today?.tipo === 'mini_sim' || !!simIntensivoDe(today);
   // v5.20 (6-oct): study_metrics.extra.horarios es la plantilla del MANTENIMIENTO (16:15-17:15). En la INTENSIVA (mar 23-feb →
   // mar 9-mar) los bloques salen de la propia fila: loop de 8 segmentos (extra.loop), simulacro 100Q (extra.sim) o día especial.
@@ -1126,7 +1141,7 @@ function CierreSesionCard({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) 
   const prefill = (tp: TipoRonda) => {
     const se = today ? subEjeDe(today) : null;
     const sePrev = prevDay ? subEjeDe(prevDay) : null;
-    if (tp === 'mini_sim') { setN('25'); setCodigo('MIX'); setSubEje(''); setTema(today?.subtema || 'mini-sim v3'); }
+    if (tp === 'mini_sim') { const cbm = carrilBDe(today); setN('25'); setCodigo('MIX'); setSubEje(''); setTema(cbm?.tipo === 'mini_sim' ? `REPOSICIÓN F1 · ${cbm.subtema}` : today?.subtema || 'mini-sim v3'); } // v6.01: mini-sim F1 repuesto en el carril B
     else if (tp === 'eval_anclada') { setN('5'); setCodigo(evalHoy?.codigo || 'MIX'); setSubEje(evalHoy?.modo === 'ayer' && sePrev ? sePrev.key : ''); setTema(evalHoy ? evalHoy.label.replace(/^🎯 /, '') : 'eval anclada'); }
     else if (tp === 'pretest' || tp === 'simulacro') { const si = simIntensivoDe(today); setN(si ? String(si.n) : ''); setCodigo('MIX'); setSubEje(''); setTema(si ? si.label : ''); }
     // v6.00: cierre del CARRIL B 16:15 (fila MANTENIMIENTO 61-92 de v5.20 embebida) → id APP_CARRIL_B_<fecha>_<codigo>

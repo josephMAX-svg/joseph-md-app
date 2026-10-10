@@ -30,6 +30,8 @@ import {
  * NO toca data/wiring: PlanKey 'aurum', AURUM_* y la navegación quedan intactos.
  * v6.00 (6-oct-2026 · V6_ESPEC §E · DJ-4): sello HOY y protocolo con la duración v6 — 60' (14:15-15:15) en F1 · 30' núcleo (14:15-14:45)
  * desde el lun 4-ene-2027 (`min30`) · fin jue 15-abr-2027 (AURUM_PLAN_META.fin).
+ * v6.01 (10-oct-2026 · corrimiento D1 = lun 12-oct): lun 12-oct → mar 20-abr-2027 (130 lecciones, mismo orden; pitch v5 D95 mié 24-feb ·
+ * v6 D115 mar 30-mar · v7 D130 mar 20-abr); las fechas visibles salen de AURUM_PLAN_META / AURUM_PITCH_DIAS (generados).
  */
 const isWeb = Platform.OS === 'web';
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }

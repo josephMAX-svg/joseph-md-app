@@ -3,6 +3,14 @@
 //        [--proteg a,b,…]            protegidos extra (adjudicación, inducción…): no son días de plan
 //        [--permitir-deficit]        solo para explorar escenarios: sin él, un déficit ABORTA (exit 2) — R1: nunca se recorta
 //        [--pendientes-f1 d1,d2,…]   disparador (f) cierre de F1 (jue 31-dic): filas F1 (d ≤ 58, no hitos) sin ✓ tras C1/C2 → cabeza de la cola-adelante
+//        [--f1-filas N=57]           v6.01: filas de TEMARIO de F1 (orden D1-D57 · D79) que caben antes de la pausa (v6.00: 58). Las posiciones
+//                                    > N (v6.01: la 58 = v5.20 D79) son DESPLAZADAS: unidad de contenido 'C<D>' con dOrig a la cabeza de la
+//                                    cola-adelante (forma parte de la cola: el congelado la consume) · sub «DE F1 → TRAMO 2 …» + texto v5.20 ·
+//                                    nivel por posición entre las desplazadas (D79 → N1 · 30Q); CONT conserva su posición. Una posición
+//                                    desplazada en --pendientes-f1 no se duplica. `node gen_tramo2_ref.js --f1-filas 58` = salida v6.00.
+// v6.01 (10-oct-2026): corrimiento D1 mié 7-oct → lun 12-oct (F1 = 57 hábiles, C1/C2 consumidos, D79 al tramo 2). Referencia del
+//   escenario base v6.01: tramo2_14mar_27sep_v601.json (= node gen_tramo2_ref.js --pendientes-f1 58 --f1-filas 57); la de v6.00
+//   (tramo2_14mar_27sep.json) se conserva y se reproduce con --f1-filas 58.
 //        [--congelar-hasta AAAA-MM-DD --previo previo.json [--examen-previo AAAA-MM-DD] [--pendientes uid1,uid2]]
 //            regeneración a mitad de camino (§B7.5): las filas ≤ fecha se copian TAL CUAL (mismos t/d/contenido) y solo se
 //            replanifica lo futuro con las unidades no consumidas; si cambia el examen se usa la tabla HITOS_NOGO.
@@ -25,6 +33,11 @@ const PREVIO = opt('--previo');
 const E_PREV = opt('--examen-previo') || E;
 const PENDIENTES = (opt('--pendientes') || '').split(',').filter(Boolean);
 const PEND_F1 = (opt('--pendientes-f1') || '').split(',').filter(Boolean).map(Number);
+// v6.01: orden del temario de F1 (posición → D# v5.20) y filas que caben en F1
+const ORIGEN_F1_TEMARIO = [...Array.from({ length: 57 }, (_, i) => i + 1), 79];
+const F1FILAS = opt('--f1-filas') != null ? Number(opt('--f1-filas')) : 57;
+if (!(Number.isInteger(F1FILAS) && F1FILAS >= 1 && F1FILAS <= 58)) throw new Error('--f1-filas inválido (1-58): ' + opt('--f1-filas'));
+const DESPL = ORIGEN_F1_TEMARIO.slice(F1FILAS);
 const primerMartesTras = (s) => { let x = add(s, 1); while (wd(x) !== 2) x = add(x, 1); return x; };
 const R = primerMartesTras(ENCAPS);         // DJ-2: martes siguiente al ENCAPS (el lunes libre); vale para examen en sáb o dom
 // ── hitos 2027 por examen (ventana L-S + preferente) · [nombre, forma(dOrig|'UWSA3'), vIni, vFin, preferente] ──
@@ -107,6 +120,8 @@ const INCORR = [90, 91, 'n1', 'n2', 'n3', 'n4', 'n5', 'n6', 'n7'];
 const CONSOL = [92, 93, 'pathoma', 'fa15', 'fa1114'];
 const mk = (o) => ({ ...o, rest: 1 });
 const FWD_ALL = [], BWD_ALL = [];
+for (const d of DESPL) if (/^🎯/.test(byD[d].sub)) throw new Error('fila desplazada de F1 que es un hito: D' + d);
+DESPL.forEach((d) => FWD_ALL.push(mk({ tipo: 'contenido', dOrig: d, uid: 'C' + d, desdeF1: ORIGEN_F1_TEMARIO.indexOf(d) + 1 })));
 CONT.forEach((d) => FWD_ALL.push(mk({ tipo: 'contenido', dOrig: d, uid: 'C' + d })));
 REFUERZO.forEach((r, i) => FWD_ALL.push(mk({ tipo: 'refuerzo', ref: i, uid: 'REF' + i, ...r })));
 REACT.forEach(([sys, k, n]) => FWD_ALL.push(mk({ tipo: 'reactivacion', sistema: sys, k, n, uid: `RX-${sys}-${k}` })));
@@ -129,8 +144,9 @@ if (CONG) { // consumo de unidades por las filas congeladas (parte k/n = 1/n de 
 }
 // (f) cierre de F1: recuperaciones de F1 (D58 de v6 = D79 de v5.20) delante de todo; no llevan dOrig (no entran en V1), sí dF1
 for (const d of [...PEND_F1].reverse()) {
-  const dv = d === 58 ? 79 : d;
+  const dv = ORIGEN_F1_TEMARIO[d - 1];
   if (!(d >= 1 && d <= 58) || /^🎯/.test(byD[dv].sub)) throw new Error('pendiente F1 inválido (1-58, sin hitos): ' + d);
+  if (d > F1FILAS) continue; // v6.01: desplazada (ya está en la cola con su dOrig)
   fwd.unshift(mk({ tipo: 'contenido', dF1: d, uid: 'F1-' + d }));
 }
 // ── 1) filas ancladas ──
@@ -226,15 +242,16 @@ for (const s of PLAN) {
     }
     case 'day_after': Object.assign(fila, DEF.day_after, { sub: `DAY-AFTER del ${o.de} (Palmerton §9.2): trayectoria + auditoría de honestidad + triaje de errores + drill de cronología (10 PC cards) + lectura por sistema — en bloque A + B`, qDia: 0, nivelUW: 5, h: F4row ? 2.625 : 5.5 }); break;
     case 'contenido': {
-      if (o.dF1) { const w1 = byD[o.dF1 === 58 ? 79 : o.dF1]; CAMPOS_V520.forEach((k) => { fila[k] = w1[k]; }); Object.assign(fila, { dF1: o.dF1, sub: `RECUPERACIÓN F1 (D${o.dF1} no hecho) · ` + (o.parte ? `parte ${o.parte} · ` : '') + w1.sub, qDia: o.parte ? 20 : 40, nivelUW: 2, h: o.parte ? (s <= ADAPT_FIN ? 1.3125 : 2.625) : 5.5 }); break; }
-      const pos = CONT.filter((x) => byD[x].system === v.system).indexOf(o.dOrig) + 1;
+      if (o.dF1) { const w1 = byD[ORIGEN_F1_TEMARIO[o.dF1 - 1]]; CAMPOS_V520.forEach((k) => { fila[k] = w1[k]; }); Object.assign(fila, { dF1: o.dF1, sub: `RECUPERACIÓN F1 (D${o.dF1} no hecho) · ` + (o.parte ? `parte ${o.parte} · ` : '') + w1.sub, qDia: o.parte ? 20 : 40, nivelUW: 2, h: o.parte ? (s <= ADAPT_FIN ? 1.3125 : 2.625) : 5.5 }); break; }
+      const pos = (o.desdeF1 ? DESPL : CONT).filter((x) => byD[x].system === v.system).indexOf(o.dOrig) + 1;
       const viernes = wd(s) === 5;
       let nivel = pos <= 2 ? 1 : viernes ? 4 : 2; let q = pos <= 2 ? 30 : 40;
+      const preF1 = o.desdeF1 ? `DE F1 → TRAMO 2 (no cupo en F1 antes de la pausa ENCAPS; era la fila ${o.desdeF1} de F1) · ` : '';
       if (o.parte) { // F4: contenido partido
         const p1 = o.parte.startsWith('1');
-        fila.sub = (p1 ? 'PARTE 1 · PRE-TEST 10Q tutor + DEEP PRIME (vídeo + First Aid) · ' : 'PARTE 2 · CONSOLIDACIÓN 20Q timed del subtema + Anki de mecanismo · ') + v.sub;
+        fila.sub = preF1 + (p1 ? 'PARTE 1 · PRE-TEST 10Q tutor + DEEP PRIME (vídeo + First Aid) · ' : 'PARTE 2 · CONSOLIDACIÓN 20Q timed del subtema + Anki de mecanismo · ') + v.sub;
         q = p1 ? 10 : 20; nivel = p1 ? 1 : nivel;
-      } else fila.sub = v.sub;
+      } else fila.sub = preF1 + v.sub;
       CAMPOS_V520.forEach((k) => { fila[k] = v[k]; });
       Object.assign(fila, { qDia: q, nivelUW: nivel, h: o.parte ? (s <= ADAPT_FIN ? 1.3125 : 2.625) : 5.5 });
       if (nivel === 4 && !o.parte) fila.franjaNota = 'VIERNES NIVEL 4: 11:00 = 20-30Q timed MIXTOS de los sistemas ya dominados + 10Q tutor del subtema';
@@ -273,10 +290,10 @@ console.log(`TRAMO 2 · ENCAPS ${fy(ENCAPS)} → reinicio ${fy(R)} · SERUMS ${f
 console.log(`filas ${out.length} (F3 ${out.filter((x) => x.fase === 'F3').length} · F4 ${out.filter((x) => x.fase === 'F4').length}) · d ${out[0].d}-${out.at(-1).d} · tipos ${JSON.stringify(cnt)}`);
 console.log(`déficit cola-adelante ${deficitFwd} u · déficit cola-atrás ${deficitBwd} u · horas-plan (piso) ${horas.toFixed(0)} · colchón ${cnt.colchon || 0} filas ≈ ${out.filter((x) => x.tipo === 'colchon').reduce((a, x) => a + x.h, 0).toFixed(0)} h`);
 // multiset dOrig
-const esperados = [...CONT, 65, 72, 77, 82, 83, 85, 87, 84, 86, 88, 89, 90, 91, 92, 93, 94, 95];
+const esperados = [...DESPL, ...CONT, 65, 72, 77, 82, 83, 85, 87, 84, 86, 88, 89, 90, 91, 92, 93, 94, 95];
 const dSet = new Set(out.filter((x) => x.dOrig && typeof x.dOrig === 'number').map((x) => x.dOrig));
 const faltan = esperados.filter((d) => !dSet.has(d));
-console.log('dOrig cubiertos', dSet.size, '/ esperados', esperados.length, faltan.length ? 'FALTAN ' + faltan.join(',') : '✓ (+ D79 en F1 D58)');
+console.log('dOrig cubiertos', dSet.size, '/ esperados', esperados.length, faltan.length ? 'FALTAN ' + faltan.join(',') : DESPL.length ? `✓ (incl. ${DESPL.map((d) => 'D' + d).join(', ')} desplazada(s) de F1: caben ${F1FILAS} filas de temario en F1)` : '✓ (+ D79 en F1 D58)');
 // preguntas planificadas por fuente (§B3 · presupuesto uWorld)
 const qT = (pred) => out.filter(pred).reduce((a, x) => a + (x.qDia || 0), 0);
 console.log(`preguntas (piso): contenido ${qT((x) => x.tipo === 'contenido')} · refuerzo ${qT((x) => x.tipo === 'refuerzo')} · reactivación ${qT((x) => x.tipo === 'reactivacion')} · uw_random ${qT((x) => x.tipo === 'uw_random')} · incorrectas ${qT((x) => x.tipo === 'incorrectas')} · colchón ${qT((x) => x.tipo === 'colchon')} → uWorld FRESCO = contenido + refuerzo + uw_random = ${qT((x) => ['contenido', 'refuerzo', 'uw_random'].includes(x.tipo))}`);

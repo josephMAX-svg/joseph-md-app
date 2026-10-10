@@ -1,6 +1,14 @@
 # SYNAPSE — Motor día-a-día (diseño y operación)
 
 > Construido el 10-jun-2026 por el chat SYNAPSE (PROMPT_CHAT_SYNAPSE.md).
+> **v6.01 · CORRIMIENTO D1 = LUN 12-OCT-2026 (10-oct-2026)**: no se estudió mié 7 → vie 9-oct → `node DATA/_scripts/gen_synapse_plan.js 2026-10-12` (después de
+> `gen_vibecoding_plan.js 2026-10-12`) → **131 días · 19 semanas · lun 12-oct-2026 → vie 19-feb-2027** (FIN_PLAN 2027-02-19; las mismas **110 A-units**, nada se recorta;
+> sem 1 completa lun 12 → dom 18-oct → `OFF_WD` = 0, ninguna serie B/C corre ni manda piezas al último sábado; 185 piezas B/C reales = v6.00). F0 sem 1-8 (lun 12-oct →
+> dom 6-dic, 48 A) · F1 sem 9-12 (lun 7-dic → dom 3-ene, 21 A) · F2 sem 13-19 (lun 4-ene → vie 19-feb, 41 A, 47 días). Vibecoding lun → vie: **18 PC** del sáb 17-oct
+> (SHIP S1) al sáb 13-feb — SHIP S1-S10 sáb 17-oct … 19-dic · sáb 26-dic = avance S11 · SHIP S11 sáb 2-ene · **SHIP S12 sáb 9-ene** · taper S13 16-ene · S14 23-ene ·
+> **S15 + S16 sáb 30-ene** (cierran la misma semana: un PC con los dos) · S17 6-feb · S18 13-feb. **Último sábado con SYNAPSE: sáb 13-feb · último domingo: dom 14-feb**
+> (= v6.00). La última A-unit (d131, cierre F2 + CCA-F) cae el **vie 19-feb** (día del SIM #6 de la intensiva ENCAPS).
+>
 > **v5.20 · CORRIMIENTO RÍGIDO DEFINITIVO (6-oct-2026)**: D1 = **mié 7-oct-2026** (tampoco se estudió el mar 6-oct; decimonoveno corrimiento 31-ago→7-oct, **27 hábiles perdidos**; **no se toca ningún contenido: solo corren los días y el fin se AMPLÍA**) →
 > `node DATA/_scripts/gen_synapse_plan.js 2026-10-07` → **132 días · 19 semanas · mié 7-oct-2026 → lun 15-feb-2027** (FIN_PLAN 2027-02-15 = D91 del Step 1; 110 A-units
 > intactas; **sem 1 corta = mié 7 → dom 11-oct, 5 días**; sem 2-18 lun-dom; **sem 19 = lun 8 → lun 15-feb, 8 días** —el lun 15-feb cuenta como sem 19—). Contado el 6-oct con node: F0 sem 1-8 (mié 7-oct → dom 29-nov, 46 A) ·

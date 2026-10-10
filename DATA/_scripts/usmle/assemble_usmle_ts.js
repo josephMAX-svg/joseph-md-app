@@ -10,6 +10,9 @@
  *   2 tramos (navegación por ÍNDICE en DIAS_TODOS: los d no son contiguos, 1-60 y 101-258) · semanaDe = semanaStep1(iso).n de
  *   fechasV6 (módulo hoja: usmleStep1Daily NO importa homeBriefing, r2 · I7).
  *   Textos visibles sin fechas de la v5.20 (control de textos del Lote 3).
+ * v6.01 (10-oct-2026): corrimiento D1 mié 7-oct → lun 12-oct. Los textos de F1 salen de las filas y de escenario.desplazadasF1 /
+ *   colchonF1Consumido (gen_usmle_v5.js): F1 = D1-D57 sin C1/C2 (consumidos) y la bioestadística (v5.20 D79) en el tramo 2; la línea de
+ *   bitácora del corrimiento sale de _fechas_v6.json «corrimientos». Nada de «D58»/«D59-D60»/«mié 7-oct» escrito a mano.
  * v5.x: leía usmle_dias_v5.txt (solo DIAS, 95 días) y pegaba cabecera/pie fijos con las fechas del último corrimiento escritas a mano.
  */
 'use strict';
@@ -76,6 +79,29 @@ const listaHitosLineas = listaHitos.reduce((acc, h, i) => { if (i % 4 === 0) acc
 const preguntasFrescas = DIAS.filter((x) => !esHito(x) && x.bbCh !== 'Colchón').reduce((a, x) => a + x.qDia, 0)
   + T2.filter((x) => ['contenido', 'refuerzo', 'uw_random'].includes(x.tipo)).reduce((a, x) => a + x.qDia, 0);
 const colchonH = COLCHON.reduce((a, x) => a + x.h, 0);
+// v6.01: F1 variable (colchón F1 consumido · filas de temario desplazadas al tramo 2)
+const COLCHON_F1 = DIAS.filter((x) => x.bbCh === 'Colchón');
+const DESPL = ESC.desplazadasF1 || [];
+const DESPL_T2 = T2.filter((x) => x.tipo === 'contenido' && x.dOrig != null && DESPL.includes(x.dOrig));
+const BIOEST_F1 = DIAS.find((x) => x.bbCh === 'Biostats/Epi');
+const CORR = (FV6.corrimientos || []).filter((c) => c.version === FV6.version);
+const SEM_F1 = V6.semanasF1De(FV6.f1.inicio, FV6.f1.fin);
+const rangoD = (a) => (a.length ? (a.length === 1 ? `D${a[0].d}` : `D${a[0].d}-D${ultimo(a).d}`) : '—');
+const lineasF1 = [
+  `D1-D${BIOEST_F1 ? BIOEST_F1.d - 1 : DIAS.length - COLCHON_F1.length} = contenido v5.20 D1-D${BIOEST_F1 ? BIOEST_F1.d - 1 : DIAS.length - COLCHON_F1.length} (los NBME 25-28 pasan a 07:00-12:30; nivelUW/qDia por la regla del día de la semana)`
+    + (BIOEST_F1 ? ` · D${BIOEST_F1.d} ${f(BIOEST_F1.fecha)} = bioestadística + epidemiología + ética (ex-D79 v5.20)` : ''),
+  COLCHON_F1.length ? `${rangoD(COLCHON_F1)} = ${COLCHON_F1.map((x) => x.sub.split(' ')[0]).join('/')} COLCHÓN F1 (absorben los primeros días perdidos)` : `sin colchón F1 (${(ESC.colchonF1Consumido || []).join('/') || 'C1/C2'} consumidos por el corrimiento): un día perdido de F1 pasa al tramo 2 el ${f(PAUSA.desde)} (disparador (f), --pendientes-f1)`,
+  ...DESPL_T2.map((x) => `v5.20 D${x.dOrig} (${x.system === 'Psychiatry & Behavioral' && /Bioestad/.test(x.subV520 || '') ? 'bioestadística' : corto(x.system)}) DESPLAZADA al tramo 2: T${x.t} ${f(x.fecha)} (d ${x.d})`),
+];
+const trocear = (txt, pre1, pre) => { // líneas de comentario de ≤ ~130 caracteres
+  const out = []; let cur = '';
+  for (const p of txt.split(' ')) { if ((cur + ' ' + p).length > 126) { out.push(cur); cur = p; } else cur = cur ? cur + ' ' + p : p; }
+  if (cur) out.push(cur);
+  return out.map((l, i) => (i === 0 ? pre1 : pre) + l).join('\n');
+};
+const lineasF1Txt = trocear(lineasF1.join(' · '), ' *   ', ' *   ');
+const corrTxt = CORR.map((c) => trocear(`${c.version} (${fy(c.fecha)}): corrimiento rígido del D1 ${fy(c.d1_previo)} → ${fy(c.d1)} (sin estudio: ${c.perdidos.map(f).join(', ')}) · ${c.regla}.`, ' * ', ' *   ')).join('\n');
+const colchonF1Nivel4 = COLCHON_F1.length ? ` · ${COLCHON_F1.map((x) => x.sub.split(' ')[0]).join('/')} COLCHÓN F1 (${rangoD(COLCHON_F1)})` : '';
 const q = (s) => "'" + String(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'") + "'";
 const L = (x) => JSON.stringify(x);
 
@@ -91,13 +117,12 @@ const header = `/**
  * && node verificar_v6.js (en DATA/_scripts/usmle/). Fin del corrimiento diario (V6_ESPEC §B7): un día perdido NO mueve el examen.
  *
  * TRAMO 1 = F1 · DIAS (D1-D${DIAS.length}) · ${fy(DIAS[0].fecha)} → ${fy(ultimo(DIAS).fecha)} · L-V · 6h15/día (05:00 · 07:15-12:00 · 18:00).
- *   D1-D57 idénticos a la v5.20 (contenido, nivelUW, qDia, franjaNota; los NBME 25-28 pasan a 07:00-12:30) · D58 ${f(DIAS[57].fecha)} =
- *   bioestadística + epidemiología + ética (ex-D79 v5.20) · D59-D60 = C1/C2 COLCHÓN F1 (absorben los 2 primeros días perdidos).
- * PAUSA (estado PAUSA en la app, sin fila «hoy») · ${f(PAUSA.desde)} → ${fy(PAUSA.hasta)}: transición + ENCAPS intensiva (examen
+${lineasF1Txt}
+${corrTxt ? corrTxt + '\n' : ''} * PAUSA (estado PAUSA en la app, sin fila «hoy») · ${f(PAUSA.desde)} → ${fy(PAUSA.hasta)}: transición + ENCAPS intensiva (examen
  *   ${fy(FV6.encaps.examen)}${FV6.encaps.provisional ? ' PROVISIONAL' : ''}) + lunes libre · Step 1 en mantenimiento: Anki 30' L-V + sáb 07:45 «STEP 1 VIVO» 20Q (§B2).
  * TRAMO 2 · DIAS_T2 (T1-T${T2.length}, d ${T2[0].d}-${ultimo(T2).d}) · ${fy(T2[0].fecha)} → ${fy(RITUAL.fecha)}${FV6.step1.provisional ? ' (PROVISIONAL)' : ''}:
  *   F3 ${T2.filter((x) => x.fase === 'F3').length} filas L-V (7h15: F1 + 16:15 REENTRADA) · F4 ${T2.filter((x) => x.fase === 'F4').length} filas L-S con el SERUMS (desde ${fy(FV6.serums.inicio)}${FV6.serums.supuesto ? ' [supuesto]' : ''};
- *   domingo libre; plantilla por turno M/T/L/G, FRANJAS_F4). Cola: reentrada → contenido v5.20 (Micro, Repro, MSK, Psiq, Bioq) →
+ *   domingo libre; plantilla por turno M/T/L/G, FRANJAS_F4). Cola: reentrada → contenido v5.20 (${DESPL_T2.length ? DESPL_T2.map((x) => 'D' + x.dOrig).join('/') + ' de F1, ' : ''}Micro, Repro, MSK, Psiq, Bioq) →
  *   refuerzo → reactivación ← uw_random ← incorrectas ← consolidación ← taper; ${COLCHON.length} filas COLCHÓN (≈${Math.round(colchonH)} h al piso) absorben
  *   los días perdidos («atrasada: hazla hoy»). Cada fila con dOrig conserva el contenido v5.20 (subV520) → multiset = 0 (V1).
  * HITOS (hitosDelPlan()):
@@ -105,8 +130,8 @@ ${listaHitosLineas}
  *   GO/NO-GO ${fy(GONOGO)} (E-49, fila T${GATE ? GATE.t : '—'}) · D94 ${f(D94.fecha)} última sesión de banco · D95 ${f(D95.fecha)} sesión mínima ·
  *   ritual ${f(RITUAL.fecha)} (sin estudio) · viaje ${f(VIAJE)} (D-1) · EXAMEN ${fy(E)} · regreso ${f(REGRESO)} (USMLE_TAPER).
  * Ventana DJ-1: ${VENTANA}.
- * Presupuesto uWorld FRESCO planificado: ${preguntasFrescas} Q (F1 sin hitos ni C1/C2 + contenido + refuerzo + uw_random; banco 3.659).
- * v5.20: plan de 95 días L-V con corrimiento rígido (+1 hábil por día no estudiado) y examen en febrero — SUSTITUIDO por esta v6.00.
+ * Presupuesto uWorld FRESCO planificado: ${preguntasFrescas} Q (F1 sin hitos${COLCHON_F1.length ? ' ni C1/C2' : ''} + contenido + refuerzo + uw_random; banco 3.659).
+ * v5.20: plan de 95 días L-V con corrimiento rígido (+1 hábil por día no estudiado) y examen en febrero — SUSTITUIDO por la v6.00${FV6.version !== 'v6.00' ? ` (vigente: ${FV6.version})` : ''}.
  * Jerarquía de material: Path→Pathoma · Micro/Pharm→Sketchy · Physio/Biochem/Anat→AMBOSS+B&B · Behav/Biostats→First Aid.
  * Método Palmerton: comprensión fisiológica > memorización · tarjetas Anki de MECANISMO (FSRS) · pre-test ciego → active reading →
  * free recall → preguntas → log de errores. Cada día lleva nivelUW (1-5) y qDia; el gate (80% en 10Q) vive en USMLE_GATE / usmleScores.ts.
@@ -160,7 +185,7 @@ export const USMLE_NIVELES: NivelUWInfo[] = [
   { nivel: 1, nombre: 'Subtema · tutor sin tiempo', fase: 'A', formato: 'Bloques de 5Q de UN solo subtema · modo tutor · sin reloj (aprender a leer: CCSN + SAQ + cover-the-options)', qDia: 'Palmerton 20-30Q/día → plan: 30Q (10 pre-test + 20 consolidación)', umbral: '80% en 10Q consecutivas del subtema, ≤24-48 h tras estudiarlo', dondeVive: ${q("08:15 PRE-TEST del tema nuevo (siempre) · 11:00 los 2 primeros días de cada sistema · F4: «PARTE 1» de cada contenido partido (10Q tutor + deep prime)")}, color: '#7C8496' },
   { nivel: 2, nombre: 'Subtema · timed', fase: 'A', formato: 'Bloques de 5Q del subtema · cronometrado (90 s/Q · tope 2 min: adivinar, marcar, avanzar)', qDia: 'Volumen creciente → plan: 40Q (10 + 30)', umbral: '80% en ≥3 subtemas distintos, ≥1 validado en <48 h', dondeVive: ${q("11:00 CONSOLIDACIÓN desde el 3er día de cada sistema (subtemas ya validados) · 07:15: 5Q timed del subtema de AYER (1ª mitad del gate de 10Q) · tramo 2: REFUERZO (ética + bioestadística 2.ª vuelta) y «PARTE 2» de cada contenido partido en F4")}, color: '#4F7DD6' },
   { nivel: 3, nombre: 'Sistema completo · timed', fase: 'A', formato: 'Bloques de 10-20Q de TODO el sistema · timed (sin la "ventaja injusta" de saber el subtema)', qDia: 'Palmerton 40-50Q/día → plan: 40Q (10 pre-test + 20Q sistema + 10 tutor)', umbral: '80% en 20Q timed consecutivas del sistema', dondeVive: ${q(`VIERNES sin NBME/UWSA a las 11:00 hasta S10 (F1: ${f1N3.join(' · ')}; los viernes que abren sistema —${f1AbreViernes.join(', ')}— quedan en nivel 1): 20Q del sistema en curso, o del anterior si el sistema lleva <3 días · desde S11 el viernes pasa a nivel 4 · tramo 2: REACTIVACIÓN de los sistemas de F1 (${REACT.length} filas, ${rangoT(REACT)}: incorrectas/flagged uWorld + AMBOSS, sin uWorld fresco) · F3: 16:15 REENTRADA (20Q timed del sistema de la rotación)`)}, color: '#6BB8B0' },
-  { nivel: 4, nombre: 'Sistemas mixtos · timed', fase: 'A (dosis diaria + viernes desde S11) → B', formato: 'Bloques de 20-30Q mezclando ≥3 sistemas dominados + el nuevo (saltar entre especialidades bajo presión)', qDia: 'Palmerton 50-70Q/día → plan: viernes N4 = 40Q (10 pre-test + 30Q mixtos timed) · Fase B: 2×40Q (80Q)', umbral: '80% en bloques mixtos de 20Q timed de ≥3 sistemas', dondeVive: ${q(`18:00 EVAL (10Q mixta timed) en F1 y F3 como dosis diaria · VIERNES sin hito desde S11 (F1: ${f1N4.join(' · ') || '—'} · tramo 2: ${t2N4Vie.join(' · ') || '—'}) = 20-30Q mixtos timed a las 11:00 en vez de sistema único (franjaNota) · T1 REENTRADA (${f(T2[0].fecha)}) · C1/C2 COLCHÓN F1 (D59-D60) · uw_random (D84/D86/D88/D89 + 3 nuevas = UWorld FRESCO reservado, ${rangoT(RANDOM)}) · COLCHÓN antes del Free 120 (40Q timed del sistema débil)`)}, color: '#C8A96A' },
+  { nivel: 4, nombre: 'Sistemas mixtos · timed', fase: 'A (dosis diaria + viernes desde S11) → B', formato: 'Bloques de 20-30Q mezclando ≥3 sistemas dominados + el nuevo (saltar entre especialidades bajo presión)', qDia: 'Palmerton 50-70Q/día → plan: viernes N4 = 40Q (10 pre-test + 30Q mixtos timed) · Fase B: 2×40Q (80Q)', umbral: '80% en bloques mixtos de 20Q timed de ≥3 sistemas', dondeVive: ${q(`18:00 EVAL (10Q mixta timed) en F1 y F3 como dosis diaria · VIERNES sin hito desde S11 (F1: ${f1N4.join(' · ') || '—'} · tramo 2: ${t2N4Vie.join(' · ') || '—'}) = 20-30Q mixtos timed a las 11:00 en vez de sistema único (franjaNota) · T1 REENTRADA (${f(T2[0].fecha)})${colchonF1Nivel4} · uw_random (D84/D86/D88/D89 + 3 nuevas = UWorld FRESCO reservado, ${rangoT(RANDOM)}) · COLCHÓN antes del Free 120 (40Q timed del sistema débil)`)}, color: '#C8A96A' },
   { nivel: 5, nombre: 'Mixto completo 40Q · timed', fase: 'B → C (+ todos los hitos)', formato: 'Bloques de 40Q random · timed 60 min (90 s/Q) = simulación exacta del examen', qDia: 'Palmerton 80-100Q/día (máx. 2 bloques de 40) · hitos: UWSA 160Q · NBME 200Q · Free 120', umbral: '80% sostenido (90% para 260+) · pase seguro = NBME ≥65% (≈95%) / ≥70% (≈99%)', dondeVive: ${q(`05:00 STRESS SET 10Q/12min (Fases B-C) · hitos = formato nivel 5 como MEDICIÓN, no como progresión (F1: UWSA1 + NBME 25-28 · tramo 2: ${NBME29 ? 'NBME 29 T' + NBME29.t : ''} → ${FREE120 ? 'Free 120 T' + FREE120.t : ''}) · DAY-AFTER de cada hito de F4 · incorrectas 2.ª pasada (D90/D91 + 7 nuevas, ${rangoT(INCORR)}) · consolidación (D92/D93 AMBOSS 200 + Pathoma/First Aid rapid review, ${rangoT(CONSOL)}) · taper (D94 ${f(D94.fecha)} · D95 ${f(D95.fecha)}) · colchón posterior al Free 120 (solo incorrectas/flagged)`)}, color: '#C56A5A' },
 ];
 
@@ -171,7 +196,7 @@ export const FRANJAS = [
   { hora: '08:15–09:00', fase: 'PRE-TEST: 10Q uWorld ciegas del tema NUEVO (tutor · SIN tiempo) + free recall 90s = UWorld primero para DIAGNOSTICAR, First Aid después para tratar', tipo: 'pretest', nivel: '1', gate: 'sin gate: es diagnóstico (40-60% es normal) · cada duda, incluso en aciertos, va a la shopping list' },
   { hora: '09:00–11:00', fase: 'DEEP PRIME: vídeo B&B/Pathoma/Sketchy + First Aid active reading (Whole Page Rule: la página completa, no el dato fallado) + tarjetas Anki de MECANISMO (≤10, patogenia→presentación, en voz alta antes de escribir)', tipo: 'read', nivel: '—', gate: '—' },
   { hora: '11:00–12:00', fase: 'CONSOLIDACIÓN por nivel del día (nivelUW): nivel 1 = 20Q en bloques 5Q tutor del subtema (días 1-2 del sistema) · nivel 2 = 30Q en bloques 5Q timed de subtemas validados (incluye 5Q del subtema de ayer = 2ª mitad del gate) · nivel 3 (viernes sin hito hasta S10 · reactivación) = 20Q sistema completo timed + 10Q tutor · nivel 4 (viernes sin hito desde S11 · reentrada · colchón) = 20-30Q timed MIXTOS de sistemas dominados + 10Q tutor del subtema · taper D94-D95 = 20Q flagged, nada nuevo · revisión = Educational Objective + shopping list + log de errores (knowledge / transfer / proceso)', tipo: 'eval', nivel: '1→4 (nivelUW del día)', gate: '≥80% → mañana sube de nivel · <80% → repetir 5Q del subtema fallado, NO avanzar (registrar en 📏 Medición)' },
-  { hora: '18:00–18:45', fase: 'EVALUACIÓN ACUMULATIVA modo examen: 10Q mixta timed (90 s/Q · tope 2 min · cover-the-options · juez, no abogado) + corrección + APEX · Fase A = dosis diaria de nivel 4 · día de hito: registrar aquí el % del NBME/UWSA/Free 120', tipo: 'exam', nivel: '4 (Fase A) · 5 (B-C)', gate: '≥80% sostenido = listo para mezclar sistemas · hitos: comparar con el mínimo on-track del hito (usmleScores.HITOS_ONTRACK · ${FV6.version}: F1 en martes; 2027 por ventana semanal + preferente, §B5)' },
+  { hora: '18:00–18:45', fase: 'EVALUACIÓN ACUMULATIVA modo examen: 10Q mixta timed (90 s/Q · tope 2 min · cover-the-options · juez, no abogado) + corrección + APEX · Fase A = dosis diaria de nivel 4 · día de hito: registrar aquí el % del NBME/UWSA/Free 120', tipo: 'exam', nivel: '4 (Fase A) · 5 (B-C)', gate: '≥80% sostenido = listo para mezclar sistemas · hitos: comparar con el mínimo on-track del hito (usmleScores.HITOS_ONTRACK · ${FV6.version}: F1 por D# (${hitosF1.map((x) => `D${x.d} ${f(x.fecha)}`).join(' · ')}); 2027 por ventana semanal + preferente, §B5)' },
 ];
 /** F3 (${f(T2[0].fecha)} → ${f(ultimo(T2.filter((x) => x.fase === 'F3')).fecha)}): F1 + este bloque (7h15/día). La fila del día dice el sistema de la rotación en su franjaNota («16:15 REENTRADA: …»). */
 export const FRANJA_F3_REENTRADA = { hora: '16:15–17:15', fase: 'REENTRADA (solo F3): 20Q timed del sistema de la rotación (Cardio → Resp → Renal → GI → Endo → Neuro → Heme → Fundamentos → Inmuno; ver franjaNota de la fila) + revisión', tipo: 'eval', nivel: '3', gate: '≥80% → el sistema sigue «vivo» · <80% → al COLCHÓN más próximo (sistema débil)' };
@@ -297,7 +322,7 @@ export interface DiaUSMLE_T2 extends DiaUSMLE {
   tipo: TipoFilaT2;
   /** D de la v5.20 cuyo contenido lleva la fila (null = fila nueva) */
   dOrig: number | null;
-  /** unidad de cola (C58…, REF0/1, RX-<sistema>-<k>, UR84/URn1…, IN90/INn1…, CO92/COpathoma…, F1-<d>); la usa la regeneración con congelado */
+  /** unidad de cola (C58…, REF0/1, RX-<sistema>-<k>, UR84/URn1…, IN90/INn1…, CO92/COpathoma…, F1-<d>; ${FV6.version}: C79 = fila de F1 desplazada); la usa la regeneración con congelado */
   uid?: string;
   /** 'k/n' si una unidad ocupa varias filas (F4: 2 filas; inducción: 4) */
   parte: string | null;
@@ -316,7 +341,7 @@ export interface DiaUSMLE_T2 extends DiaUSMLE {
   nombre?: string;
   forma?: number | 'UWSA3';
   gate?: 'GO/NO-GO (E-49)' | 'GO/NO-GO #2 (E-49)';
-  /** recuperación de una fila F1 no hecha (cierre de F1, --pendientes-f1) */
+  /** recuperación de una fila F1 no hecha (cierre de F1, --pendientes-f1; las filas de F1 DESPLAZADAS por un corrimiento no lo llevan: van con dOrig) */
   dF1?: number;
   /** unidad de una fila congelada sin ✓ que vuelve entera a la cola (--pendientes) */
   pendiente?: true;
@@ -374,7 +399,7 @@ export const TIPO_FILA_T2_LABEL: Record<TipoFilaT2, string> = {
   uw_random: 'UWORLD RANDOM', incorrectas: 'INCORRECTAS', consolidacion: 'CONSOLIDACIÓN', taper: 'TAPER', ritual: 'RITUAL', colchon: 'COLCHÓN',
 };
 /**
- * Fase UWorld de una fila por su d (${FV6.version}): F1 (d ≤ ${DIAS.length}) = 'A' · 61-100 no existen (guarda: 'A', nunca undefined) ·
+ * Fase UWorld de una fila por su d (${FV6.version}): F1 (d ≤ ${DIAS.length}) = 'A' · ${DIAS.length + 1}-100 no existen (guarda: 'A', nunca undefined) ·
  * tramo 2 (d ≥ 101) = su faseUW (A hasta el primer uw_random ${RANDOM.length ? 'T' + RANDOM[0].t : ''} · B hasta la primera consolidación/taper ${CONSOL.length ? 'T' + CONSOL[0].t : ''} · C después).
  */
 export function faseDe(d: number): 'A' | 'B' | 'C' {
@@ -390,7 +415,7 @@ export function hitosDelPlan(): DiaUSMLEPlan[] { return DIAS_TODOS.filter(esHito
 const DIAS_SEMANA = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'] as const;
 /** Día de la semana de una fecha AAAA-MM-DD (UTC-noon, sin zonas horarias). */
 export function diaSemana(fechaISO: string): (typeof DIAS_SEMANA)[number] { return DIAS_SEMANA[new Date(fechaISO + 'T12:00:00Z').getUTCDay()] ?? 'dom'; }
-/** Semana del Step 1 = semanaStep1(iso).n de fechasV6 (definición única, §F): S1-S13 = F1 · 13 durante la PAUSA · 14+ = tramo 2 · 0 antes del D1. */
+/** Semana del Step 1 = semanaStep1(iso).n de fechasV6 (definición única, §F): S1-S${SEM_F1} = F1 · ${SEM_F1} durante la PAUSA · ${SEM_F1 + 1}+ = tramo 2 · 0 antes del D1. */
 export function semanaDe(fechaISO: string): number {
   try { return semanaStep1(fechaISO).n; } catch { return 0; }
 }

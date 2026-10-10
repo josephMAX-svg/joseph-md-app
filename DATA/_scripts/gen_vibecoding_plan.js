@@ -6,8 +6,8 @@
 //   · taper:     8 semanas S13-S20 (v5.10-b, 12-sep-2026): S13-S16 mantenimiento ≤15'/día (flag deload) ·
 //                S17-S20 deload total (journal 5' + audio) · S20 = semana del examen (v5.20: mié 17 → vie 19-feb, D93-D95; finde libre y examen lun 22-feb · v5.19: mar 16 → jue 18-feb, D93-D95; examen vie 19-feb · v5.18: lun 15 → mié 17-feb · v5.17: jue 11 → lun 15-feb; v5.16: lun-mié).
 //   · _meta:     freno 04:55 · convención de commit [S<n>] · verificación mecánica (verify_vibecoding.js).
-// Calendario: START = argv[2] (YYYY-MM-DD, default 2026-10-07 = D1 v5.20; v5.19: 2026-10-06 · v5.18: 2026-10-05 · v5.17: 2026-10-01) · días HÁBILES L-V (salta sáb/dom y los
-// feriados fijos 25-dic/31-dic/1-ene, misma regla que remap_inicio.js).
+// Calendario: START = argv[2] (YYYY-MM-DD, default 2026-10-12 = D1 v6.01; v6.00 = v5.20: 2026-10-07 · v5.19: 2026-10-06 · v5.18: 2026-10-05 · v5.17: 2026-10-01) · días HÁBILES L-V
+// (salta sáb/dom y los SKIP de _fechas_v6.json: 25-dic/31-dic/1-ene en el rango, misma regla que remap_inicio.js).
 //   · S1-S12: 5 días hábiles por proyecto (paso 1 definir · 2-3 construir · 4 verificar · 5 doc+commit; v5.20: bloques mié → mar, S12 mié 23 → mié 30-dic por el festivo del vie 25-dic; v5.19: bloques mar → lun, S12 mar 22 → mar 29-dic; v5.18: lun → vie, S12 lun 21 → lun 28-dic; v5.17: jue → mié) →
 //     60 días · sábado PC (SYNAPSE 15:00-17:00) = SHIP del proyecto (sábado siguiente al 5º día) · domingo = Feynman.
 //   · S13-S20: (hasta v5.10) semanas de CALENDARIO (lun→vie) desde el lunes siguiente al fin de S12, con los feriados fuera
@@ -21,16 +21,29 @@
 // fin del taper sigue siendo el 95.º hábil desde START (= vie 19-feb-2027; en v5.20 coincidía con el D95 del Step 1). Solo cambian los
 // TEXTOS: taper S13-S20 «por el ENCAPS» (DATA/SYNAPSE/vibecoding_proyectos.json) y esta cabecera. SKIP desde _fechas_v6.json
 // (jue 25 / vie 26-mar quedan fuera del rango, así que las fechas son idénticas).
-// Uso:  node DATA/_scripts/gen_vibecoding_plan.js 2026-10-07   (v6.00 = v5.20; v5.19: 2026-10-06 · v5.18: 2026-10-05)
+// v6.01 (10-oct-2026 · corrimiento D1 = lun 12-oct; no se estudió mié 7 → vie 9-oct): START = 2026-10-12 → S1-S12 lun 12-oct → mié 6-ene-2027
+// (bloques lun → vie; S11 lun 21 → lun 28-dic por el feriado del vie 25-dic; S12 mar 29-dic → mié 6-ene) · taper S13-S20 jue 7-ene → MIÉ
+// 24-FEB-2027 (= 95.º hábil desde START: el fin se AMPLÍA +3 hábiles, nada se recorta). SHIP S1 sáb 17-oct … S11 sáb 2-ene · S12 sáb 9-ene;
+// S15 y S16 cierran la misma semana (SHIP sáb 30-ene): el PC opcional de S15 va ese sábado y el de S16, PROPIO, el sáb 6-feb (gen_synapse_plan.js,
+// PC_DESPLAZADOS; aquí `pcSab`, al principio solo para el .md y desde el ajuste de abajo también en el .ts · nada se fusiona). Textos con fecha del catálogo (taper y _meta) re-escritos a v6.01 en
+// DATA/SYNAPSE/vibecoding_proyectos.json; `semanaStep1` del taper sin el prefijo «S<n> · …» duplicado (semanaStep1Txt).
+// v6.01 (10-oct-2026 · card del vibecoding = bloque PC del SYNAPSE): `pcSab` (sábado del PC en el SYNAPSE) se EMITE en el .ts para proyectos
+// (= ship) y taper (S16 → sáb 6-feb; `ship` NO cambia: sigue siendo el sábado tras su último hábil y marca la ventana de cada entrada) +
+// vibePCSabado(fecha) = los bloques PC del SYNAPSE de ese sábado con el MISMO orden y la MISMA regla que gen_synapse_plan.js (desplazados del
+// taper → la entrada que hace SHIP ese sábado → si ninguna, la que está en curso = «avance»). vibeProyectoEnFecha / vibeTaperEnFecha la usan en
+// sábado y, en L-V, devuelven la entrada del DÍA (los bloques del taper ya no son lun → vie y las ventanas ini → ship+1 se solapaban: el jue
+// 14-ene la card decía S13 con el paso de S14). Corrige la card frente al SYNAPSE en sáb 26-dic (avance S11, no SHIP), sáb 2-ene (SHIP S11, no
+// S12), sáb 9-ene (SHIP S12, no taper S13) y sáb 6-feb (PC propio de S16 + PC de S17). gen_synapse_plan.js comprueba que su PC = pcSab.
+// Uso:  node DATA/_scripts/gen_vibecoding_plan.js 2026-10-12   (v6.01; v6.00 = v5.20: 2026-10-07; v5.19: 2026-10-06 · v5.18: 2026-10-05)
 // Pipeline de corrimiento: tras remap_inicio.js <fecha>, correr también este script con la misma fecha
 // (igual que gen_synapse_plan.js / gen_aurum_plan.js). Determinista: sin Date.now() ni aleatoriedad.
 const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..', '..');
-const START = process.argv[2] || '2026-10-07'; // v5.20 (v5.19: 2026-10-06 · v5.18: 2026-10-05 · v5.17: 2026-10-01)
+const START = process.argv[2] || '2026-10-12'; // v6.01 (v6.00 = v5.20: 2026-10-07 · v5.19: 2026-10-06 · v5.18: 2026-10-05 · v5.17: 2026-10-01)
 if (!/^20\d\d-\d\d-\d\d$/.test(START)) throw new Error('START inválido (YYYY-MM-DD): ' + START);
-// v6.00: último día del taper = 95.º hábil desde START (vie 19-feb-2027 con START=2026-10-07); hasta v5.20 era el D95 del Step 1 (vie 19-feb-2027 con START=2026-10-07 · v5.19: jue 18-feb con START=2026-10-06 · v5.18: mié 17-feb con START=2026-10-05; v5.17: lun 15-feb con START=2026-10-01). Se calcula, no se fija a mano:
+// v6.00: último día del taper = 95.º hábil desde START (v6.01: mié 24-feb-2027 con START=2026-10-12 · v6.00: vie 19-feb-2027 con START=2026-10-07); hasta v5.20 era el D95 del Step 1 (vie 19-feb-2027 con START=2026-10-07 · v5.19: jue 18-feb con START=2026-10-06 · v5.18: mié 17-feb con START=2026-10-05; v5.17: lun 15-feb con START=2026-10-01). Se calcula, no se fija a mano:
 // 95 días hábiles desde START con la misma regla de feriados.
 const DIAS_STEP1 = 95; // v6.00: nombre histórico — nº de hábiles del vibecoding (95), ya no coincide con el Step 1 (tramo 1 D1-D60 + tramo 2 T1-T158)
 
@@ -126,6 +139,44 @@ for (const t of T) {
 if (dias.length !== DIAS_STEP1) throw new Error(`Deben salir ${DIAS_STEP1} días en total, salieron ${dias.length}`);
 if (dias[dias.length - 1].fecha !== finStep1) throw new Error('El último día del taper debe ser el 95.º hábil desde START: ' + finStep1);
 
+// v6.01 (10-oct-2026): sábado del PC opcional de cada semana del taper en el SYNAPSE (gen_synapse_plan.js, PC_DESPLAZADOS): el de su SHIP,
+// salvo que la entrada anterior cierre el MISMO sábado (v6.01: S15 mar 26-ene y S16 vie 29-ene → SHIP sáb 30-ene) → la 2.ª lleva su PC propio
+// el sábado siguiente (S16 → sáb 6-feb). El campo `ship` del .ts NO cambia (vibeTaperEnFecha lo usa para la ventana L-V + finde de cada semana).
+// v6.01 (10-oct): `pcSab` se emite también en el .ts (VibeProyecto/VibeTaper) y lo leen vibePCSabado() y la guarda de gen_synapse_plan.js.
+// Proyectos S1-S12: pcSab = ship (dos proyectos no pueden compartir sábado de SHIP: solo el taper se desplaza, igual que en gen_synapse_plan.js).
+semanas.forEach((w, i) => {
+  if (i && semanas[i - 1].ship === w.ship) throw new Error(`S${w.s} comparte sábado de SHIP (${w.ship}) con S${semanas[i - 1].s}: solo el taper se desplaza`);
+  w.pcSab = w.ship;
+});
+taperSemanas.forEach((w, i) => {
+  const prev = i ? taperSemanas[i - 1] : semanas[semanas.length - 1];
+  w.pcSab = prev && prev.ship === w.ship ? addDays(w.ship, 7) : w.ship;
+  w.pcCon = prev && prev.ship === w.ship ? prev.s : null;
+});
+
+// v6.01: `semana_step1` del taper → `semanaStep1` del .ts. Cada corrimiento antepone «S<n> · <rango nuevo> (vX.YY: …)» al texto anterior,
+// que ya empezaba por «S<n> · …» → el .ts salía con el prefijo duplicado («S13 · jue 7 → mié 13-ene (v6.01: …) · S13 · lun 4 → vie 8-ene
+// (v6.00: …)»). Aquí el prefijo S<n> queda UNA vez (el vigente) y los anteriores pasan a historial «vX.YY: <rango> (…)», como v5.19/v5.18.
+// Guarda: el rango vigente del texto debe ser el calculado (ini → fin); si no, el catálogo está desfasado y se aborta.
+const MES_TXT = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+const rangoTxt = (a, b) => {
+  const f = (s, conMes) => `${WD[dow(s)].toLowerCase()} ${Number(s.slice(8, 10))}${conMes ? '-' + MES_TXT[Number(s.slice(5, 7)) - 1] : ''}`;
+  return `${f(a, a.slice(5, 7) !== b.slice(5, 7))} → ${f(b, true)}`;
+};
+const semanaStep1Txt = (t) => {
+  const w = taperSemanas.find((x) => x.s === t.s);
+  const pre = `S${t.s} · `;
+  let txt = String(t.semana_step1 || '');
+  if (!txt.startsWith(pre)) throw new Error(`taper S${t.s}: semana_step1 debe empezar por «${pre}»`);
+  const vigente = rangoTxt(w.ini, w.fin);
+  if (!txt.slice(pre.length).replace(/^cierre del plan: /, '').startsWith(vigente)) {
+    throw new Error(`taper S${t.s}: semana_step1 dice «${txt.slice(0, 60)}…» pero el bloque calculado es ${vigente} (actualizar vibecoding_proyectos.json)`);
+  }
+  txt = txt.replace(new RegExp(` · S${t.s} · (?:cierre del plan: )?([^()]*?) \\((v\\d+\\.\\d+): `, 'g'), ' · $2: $1 (');
+  if (txt.split(pre).length !== 2) throw new Error(`taper S${t.s}: prefijo «${pre}» repetido en semana_step1 con un formato no reconocido`);
+  return txt;
+};
+
 // ─── ship log (verify_vibecoding.js) → horneado en el TS ───
 let SHIP_LOG = [];
 try {
@@ -140,11 +191,11 @@ const docsTs = (docs) => '[' + docs.map((x) => `{label:"${esc(x.label)}",url:"${
 const verTs = (v) => '[' + v.map((x) => `{tipo:"${x.tipo}",resumen:"${esc(x.tipo === 'git' ? `commit ${x.grep} en ${x.repo}` : x.tipo === 'test' ? `${x.cmd}${x.expect ? ' → ' + x.expect : ''}` : x.tipo === 'url' ? x.url : x.tipo === 'supabase' ? `tabla ${x.tabla}${x.min_filas ? ' ≥' + x.min_filas + ' filas' : ''}` : x.tipo === 'fichero' ? x.path : x.como || 'manual')}"}`).join(',') + ']';
 const proyTs = (p) => {
   const w = semanas.find((x) => x.s === p.s);
-  return `{s:${p.s},id:"${esc(p.id)}",nombre:"${esc(p.nombre)}",rotacion:"${p.rotacion}",deload:${!!p.deload},ini:"${w.ini}",fin:"${w.fin}",ship:"${w.ship}",sirveA:"${esc(p.sirveA)}",objetivo:"${esc(p.objetivo)}",entregable:"${esc(p.entregable)}",aceptacion:${arrTs(p.aceptacion)},verificacion:${verTs(p.verificacion)},repo:"${esc(p.repo)}",repoGit:"${esc(p.repo_git)}",docs:${docsTs(p.docs)},pasos:${arrTs(p.pasos)},shipTxt:"${esc(p.ship)}"}`;
+  return `{s:${p.s},id:"${esc(p.id)}",nombre:"${esc(p.nombre)}",rotacion:"${p.rotacion}",deload:${!!p.deload},ini:"${w.ini}",fin:"${w.fin}",ship:"${w.ship}",pcSab:"${w.pcSab}",sirveA:"${esc(p.sirveA)}",objetivo:"${esc(p.objetivo)}",entregable:"${esc(p.entregable)}",aceptacion:${arrTs(p.aceptacion)},verificacion:${verTs(p.verificacion)},repo:"${esc(p.repo)}",repoGit:"${esc(p.repo_git)}",docs:${docsTs(p.docs)},pasos:${arrTs(p.pasos)},shipTxt:"${esc(p.ship)}"}`;
 };
 const taperTs = (t) => {
   const w = taperSemanas.find((x) => x.s === t.s);
-  return `{s:${t.s},id:"${esc(t.id)}",nombre:"${esc(t.nombre)}",tipo:"${t.tipo}",ini:"${w.ini}",fin:"${w.fin}",ship:"${w.ship}",minDia:${t.minDia},semanaStep1:"${esc(t.semana_step1)}",objetivo:"${esc(t.objetivo)}",sensores:${arrTs(t.sensores || [])},pasos:${arrTs(t.pasos)},shipTxt:"${esc(t.ship)}"}`;
+  return `{s:${t.s},id:"${esc(t.id)}",nombre:"${esc(t.nombre)}",tipo:"${t.tipo}",ini:"${w.ini}",fin:"${w.fin}",ship:"${w.ship}",pcSab:"${w.pcSab}",minDia:${t.minDia},semanaStep1:"${esc(semanaStep1Txt(t))}",objetivo:"${esc(t.objetivo)}",sensores:${arrTs(t.sensores || [])},pasos:${arrTs(t.pasos)},shipTxt:"${esc(t.ship)}"}`;
 };
 const diaTs = (x) => `{d:${x.d},fecha:"${x.fecha}",wd:"${x.wd}",semana:${x.semana},proyecto:"${x.proyecto}",k:${x.k},tipo:"${x.tipo}",min:${x.min},deload:${x.deload},paso:"${esc(x.paso)}"}`;
 const shipTs = (e) => `{s:${e.s},id:"${esc(e.id)}",fecha:"${e.fecha}",hora:"${esc(e.hora)}",criterios_ok:${e.criterios_ok},total:${e.total},shipped:${e.shipped},resumen:"${esc(e.resumen)}"}`;
@@ -157,6 +208,8 @@ const ts = `/**
  * ${dias.length} días hábiles en total. v6.00 (6-oct-2026): el taper S13-S20 es «por el ENCAPS» (intensiva lun 4-ene → dom 14-mar-2027
  * PROVISIONAL; el Step 1 está en pausa del 31-dic al 15-mar y su examen es el lun 27-sep-2027) — solo texto, mismas fechas. Hasta v5.20
  * los 95 días coincidían con el D# del Step 1; desde la v6 el d del vibecoding ya NO es el D del Step 1.
+ * v6.01 (10-oct-2026): pcSab = sábado del PC en el SYNAPSE (= ship; S16 → sáb 6-feb) y vibePCSabado() = bloques PC del SYNAPSE de ese
+ * sábado (SHIP · avance · taper, mismo orden): la card del vibecoding resuelve el sábado con ella y el L-V con la entrada del día.
  * GENERADO por DATA/_scripts/gen_vibecoding_plan.js desde DATA/SYNAPSE/vibecoding_proyectos.json.
  * NO editar a mano — regenerar: node DATA/_scripts/gen_vibecoding_plan.js YYYY-MM-DD
  *
@@ -176,6 +229,7 @@ export interface VibeVerificacion { tipo: VibeVerifTipo; resumen: string }
 export interface VibeProyecto {
   s: number; id: string; nombre: string; rotacion: VibeRotacion; deload: boolean;
   ini: string; fin: string; ship: string;            // L-V del proyecto + sábado de SHIP (PC SYNAPSE)
+  pcSab: string;                                      // v6.01: sábado de su PC en el SYNAPSE (= ship en S1-S12)
   sirveA: string; objetivo: string; entregable: string; aceptacion: string[]; verificacion: VibeVerificacion[];
   repo: string; repoGit: string; docs: VibeDoc[]; pasos: string[]; shipTxt: string;
 }
@@ -183,7 +237,10 @@ export interface VibeTaper {
   s: number; id: string; nombre: string; tipo: 'mantenimiento' | 'deload';
   ini: string; fin: string; ship: string; minDia: number; semanaStep1: string; objetivo: string;
   sensores: string[]; pasos: string[]; shipTxt: string;
+  pcSab: string;                                      // v6.01: sábado de su PC opcional en el SYNAPSE (= ship, o el siguiente si la anterior cierra el mismo: S16 → sáb 6-feb)
 }
+/** v6.01: un bloque PC del SYNAPSE en sábado (vibePCSabado). 'ship' = SHIP del proyecto · 'avance' = el proyecto aún no terminó · 'taper' = PC opcional. */
+export interface VibePCSabado { tipo: 'ship' | 'avance' | 'taper'; s: number; proyecto?: VibeProyecto; taper?: VibeTaper }
 export interface DiaVibe {
   d: number; fecha: string; wd: string; semana: number; proyecto: string; k: number;
   tipo: VibeTipo; min: number; deload: boolean; paso: string;
@@ -226,13 +283,42 @@ export const VIBE_ROTACION_ICON: Record<VibeRotacion, string> = { yocpmd: '⚙�
 export function vibeDiaDe(fechaISO: string): DiaVibe | undefined { return VIBE_DIAS.find((x) => x.fecha === fechaISO); }
 export function vibeProyectoDe(s: number): VibeProyecto | undefined { return VIBE_PROYECTOS.find((x) => x.s === s); }
 export function vibeTaperDe(s: number): VibeTaper | undefined { return VIBE_TAPER.find((x) => x.s === s); }
-/** Semana del taper vigente para una fecha (L-V, su sábado de PC opcional y su domingo). undefined fuera del taper. */
+/** v6.01 (10-oct-2026): bloque(s) PC del SYNAPSE de un sábado, con el MISMO orden y la MISMA regla que gen_synapse_plan.js
+ *  (PC_DESPLAZADOS + bloquePC): 1.º las entradas del taper cuyo PC propio se desplazó a ese sábado (pcSab ≠ ship: S16 → sáb 6-feb, porque
+ *  S15 y S16 cierran la misma semana), luego la entrada que hace SHIP ese sábado (proyecto → 'ship' · taper → 'taper') y, si ninguna cierra
+ *  ese sábado, la que está en curso (proyecto → 'avance': aún no terminó; sáb 26-dic = avance de S11, que termina el lun 28-dic y hace SHIP
+ *  el sáb 2-ene). El ÚLTIMO elemento es el principal (cabecera de la card). [] si no es sábado o cae fuera del plan. */
+export function vibePCSabado(fechaISO: string): VibePCSabado[] {
+  if (diaSemanaISO(fechaISO) !== 6) return [];
+  const out: VibePCSabado[] = VIBE_TAPER.filter((t) => t.pcSab === fechaISO && t.pcSab !== t.ship).map((t) => ({ tipo: 'taper' as const, s: t.s, taper: t }));
+  const todos: Array<VibeProyecto | VibeTaper> = [...VIBE_PROYECTOS, ...VIBE_TAPER];
+  const cierra = todos.find((x) => x.ship === fechaISO);
+  const m = cierra || todos.find((x) => x.ini <= fechaISO && fechaISO <= x.ship);
+  if (m) {
+    const tp = vibeTaperDe(m.s);
+    out.push(tp ? { tipo: 'taper', s: m.s, taper: tp } : { tipo: cierra ? 'ship' : 'avance', s: m.s, proyecto: vibeProyectoDe(m.s) });
+  }
+  return out;
+}
+/** Entrada del taper vigente para una fecha. v6.01 (10-oct-2026): L-V = la del DÍA (los bloques del taper ya no son lun → vie y las ventanas
+ *  ini → ship+1 se solapan: el jue 14-ene es S14, no S13) · sábado = la del PC del SYNAPSE (vibePCSabado; undefined si ese sábado es el SHIP
+ *  de un proyecto: S12 el sáb 9-ene) · domingo/feriado = la del último hábil anterior, hasta el domingo tras su SHIP. undefined fuera del taper. */
 export function vibeTaperEnFecha(fechaISO: string): VibeTaper | undefined {
-  return VIBE_TAPER.find((t) => t.ini <= fechaISO && fechaISO <= addDiasISO(t.ship, 1));
+  const pc = vibePCSabado(fechaISO);
+  if (pc.length) return pc[pc.length - 1].taper;
+  const dia = vibeDiaDe(fechaISO);
+  if (dia) return vibeTaperDe(dia.semana);
+  const prev = [...VIBE_DIAS].reverse().find((x) => x.fecha < fechaISO);
+  const t = prev ? vibeTaperDe(prev.semana) : undefined;
+  return t && fechaISO <= addDiasISO(t.ship, 1) ? t : undefined;
 }
 /** Proyecto vigente para una fecha: el de su semana L-V, o (sáb/dom) el de la semana que acaba de cerrar.
- *  A partir del taper (S13+) devuelve undefined: usar vibeTaperEnFecha. */
+ *  A partir del taper (S13+) devuelve undefined: usar vibeTaperEnFecha.
+ *  v6.01 (10-oct-2026): en sábado manda el PC del SYNAPSE (vibePCSabado): el proyecto que hace SHIP o AVANZA ese día (sáb 2-ene = S11,
+ *  sáb 9-ene = SHIP de S12 aunque el taper ya empezó el jue 7-ene); undefined si ese sábado el PC es del taper. */
 export function vibeProyectoEnFecha(fechaISO: string): VibeProyecto | undefined {
+  const pc = vibePCSabado(fechaISO);
+  if (pc.length) return pc[pc.length - 1].proyecto;
   if (VIBE_TAPER.length && fechaISO >= VIBE_TAPER[0].ini) return undefined;
   const dia = vibeDiaDe(fechaISO);
   if (dia && dia.semana <= 12) return vibeProyectoDe(dia.semana);
@@ -282,6 +368,8 @@ export function vibeJournalUrl(fechaISO: string): string { return 'vscode://file
 function addDiasISO(fechaISO: string, n: number): string {
   try { const d = new Date(fechaISO + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); } catch { return fechaISO; }
 }
+/** 0 = domingo … 6 = sábado (UTC a mediodía, igual que addDiasISO); NaN si la fecha no es válida. */
+function diaSemanaISO(fechaISO: string): number { return new Date(fechaISO + 'T12:00:00Z').getUTCDay(); }
 `;
 fs.writeFileSync(path.join(ROOT, 'src/lib/vibecodingPlan.ts'), ts, 'utf8');
 console.log('OK src/lib/vibecodingPlan.ts ·', dias.length, 'días ·', dias[0].fecha, '→', finS12, '(S1-S12) + taper', dias[nP].fecha, '→', dias[dias.length - 1].fecha, '· ship log', SHIP_LOG.length, 'entradas');
@@ -312,7 +400,7 @@ md.push('');
 md.push('| S | Proyecto | Rotación | L-V | SHIP (sáb PC) | Deload |');
 md.push('|---|---|---|---|---|---|');
 for (const p of P) { const w = semanas.find((x) => x.s === p.s); md.push(`| S${p.s} | ${p.nombre} | ${p.rotacion} | ${fmt(w.ini)} → ${fmt(w.fin)} | ${fmt(w.ship)} | ${p.deload ? '**sí (50%)**' : '—'} |`); }
-for (const t of T) { const w = taperSemanas.find((x) => x.s === t.s); md.push(`| S${t.s} | ${t.nombre} | taper · ${t.tipo} | ${fmt(w.ini)} → ${fmt(w.fin)} (${t.minDia}'/día) | ${t.tipo === 'mantenimiento' ? fmt(w.ship) + ' (opcional 30\')' : 'opcional / no'} | **sí (${t.tipo})** |`); }
+for (const t of T) { const w = taperSemanas.find((x) => x.s === t.s); md.push(`| S${t.s} | ${t.nombre} | taper · ${t.tipo} | ${fmt(w.ini)} → ${fmt(w.fin)} (${t.minDia}'/día) | ${t.tipo === 'mantenimiento' ? fmt(w.pcSab) + ' (opcional 30\')' + (w.pcCon ? ` — cierra la misma semana que S${w.pcCon} (SHIP ${fmt(w.ship)}): su PC propio va el sábado siguiente` : '') : 'opcional / no'} | **sí (${t.tipo})** |`); }
 md.push('');
 for (const p of P) {
   const w = semanas.find((x) => x.s === p.s);
@@ -343,7 +431,7 @@ for (const t of T) {
   const ds = dias.filter((x) => x.semana === t.s);
   md.push(`### S${t.s} · ${t.nombre} · ${t.tipo.toUpperCase()} (${t.minDia}'/día)`);
   md.push('');
-  md.push(`- **Semana**: ${fmt(w.ini)} → ${fmt(w.fin)} (${ds.length} días hábiles) · contexto (v6.00: intensiva ENCAPS): ${t.semana_step1}`);
+  md.push(`- **Semana**: ${fmt(w.ini)} → ${fmt(w.fin)} (${ds.length} días hábiles) · contexto (intensiva ENCAPS): ${semanaStep1Txt(t)}`);
   md.push(`- **Objetivo**: ${t.objetivo}`);
   if (t.sensores && t.sensores.length) md.push('- **Sensores**: ' + t.sensores.map((s) => `\`${s}\``).join(' · '));
   md.push('- **Días**:');

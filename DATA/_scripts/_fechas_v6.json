@@ -1,10 +1,10 @@
 {
-  "version": "v6.00",
+  "version": "v6.01",
   "decidido": "2026-10-06",
   "f1": {
-    "inicio": "2026-10-07",
+    "inicio": "2026-10-12",
     "fin": "2026-12-30",
-    "dias": 60
+    "dias": 57
   },
   "transicion": {
     "desde": "2026-12-31",
@@ -107,5 +107,19 @@
     "2027-08-06",
     "2027-08-30",
     "2027-10-08"
+  ],
+  "corrimientos": [
+    {
+      "fecha": "2026-10-10",
+      "version": "v6.01",
+      "d1_previo": "2026-10-07",
+      "d1": "2026-10-12",
+      "perdidos": [
+        "2026-10-07",
+        "2026-10-08",
+        "2026-10-09"
+      ],
+      "regla": "F1 no se alarga (la intensiva ENCAPS empieza el 4-ene): D1-D57 corren rígidos con su D#, C1/C2 consumidos, D58 (bioestadística) pasa al tramo 2 con --pendientes-f1; examen Step 1 sin cambio"
+    }
   ]
 }

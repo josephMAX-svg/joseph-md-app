@@ -51,6 +51,8 @@ import { synDiaDe } from '../../lib/synapseDailyPlan';
  *    con serumsTurnos.guardarTurno, + vista semanal (L-S) para pre-cargar el rol del mes.
  *  · banner 🛡 DÍA PROTEGIDO (fechasV6.esProtegido) · en F2 tarjeta «Step 1 en PAUSA» · chip semanaLabel (S n/41 · PAUSA · ENCAPS).
  *  · modo ÁMBAR: secundarios a 30' (mínimo DJ-4), MIR Anki + 25Q (1 h) · ROJO: la fila no hecha va al COLCHÓN (ya no hay remap).
+ * v6.01 (10-oct-2026): corrimiento del D1 al lun 12-oct (F1 = D1-D57; STEP1_SEMANAS = 40 → chip S n/40): F1 ya no tiene C1/C2, así que
+ *  el texto ROJO dice que el día perdido de F1 pasa al tramo 2 el 31-dic (disparador (f)); faseActual: antes del D1 = ≤ dom 11-oct.
  *
  * Colores por-segmento en JOYA APAGADA (mapeo cognitivo NASA), tokens v4:
  * ENCAPS→teal · MIR→gold(amber) · USMLE→jade(green) · Obsidian→amethyst(purple) · Edge→sapphire(blue)
@@ -85,7 +87,7 @@ export function todayISO(): string {
  * v6.00: etiqueta de fechasV6.faseV6 — antes FASE 4…9 del orquestador (v5.20: FASE 7 = Step 1 principal hasta el 22-feb).
  */
 export function faseActual(iso: string): string {
-  return faseV6Info(iso).etiqueta; // antes del D1 (≤ 6-oct) faseV6 ya devuelve F1
+  return faseV6Info(iso).etiqueta; // antes del D1 (≤ dom 11-oct; v6.00: ≤ 6-oct) faseV6 ya devuelve F1
 }
 function nowMin(): number { try { const d = new Date(); return d.getHours() * 60 + d.getMinutes(); } catch { return 0; } }
 const hm = (s: string) => { const [h, m] = s.split(':').map(Number); return (h as number) * 60 + (m as number); };
@@ -262,7 +264,7 @@ function contenidoBloque(b: BloqueV6, p: PlantillaDia, iso: string): { tema: str
       const tema = vibeP
         ? (vibeDia
           ? `S${vibeP.s} · ${vibeP.nombre} — hoy (${VIBE_TIPO_LABEL[vibeDia.tipo]}${vibeDia.min !== 45 ? ` ${vibeDia.min}'` : ''}): ${vibeDia.paso}`
-          : `S${vibeP.s} · ${vibeP.nombre} — sáb PC 15:00 = SHIP (node DATA/_scripts/verify_vibecoding.js ${vibeP.s}) · dom = Feynman (fuera de L-V)`)
+          : `S${vibeP.s} · ${vibeP.nombre} — fuera de L-V · SHIP sáb ${vibeP.ship.slice(8)}-${vibeP.ship.slice(5, 7)} (PC 15:00 · node DATA/_scripts/verify_vibecoding.js ${vibeP.s}) · dom = Feynman`) // v6.01 (10-oct): la fecha real del SHIP (sáb 26-dic = avance de S11, su SHIP es el sáb 2-ene; ver vibePCSabado)
         : vibeT
           ? (vibeDia ? `S${vibeT.s} · ${vibeT.nombre} — hoy (${VIBE_TIPO_LABEL[vibeDia.tipo]} ${vibeDia.min}'): ${vibeDia.paso}` : `S${vibeT.s} · ${vibeT.nombre} — ${vibeT.shipTxt}`)
           : `fuera del rango del plan (${VIBE_META.inicio.slice(8)}-${VIBE_META.inicio.slice(5, 7)} → ${VIBE_META.finTaper.slice(8)}-${VIBE_META.finTaper.slice(5, 7)})`;
@@ -382,7 +384,7 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
         <Text style={st.modoInfo}>
           {modo === 'VERDE'
             ? `VERDE · ${MODO_INFO.VERDE.resumen} Pasa a ÁMBAR si: ${MODO_INFO.AMBAR.disparador}. ROJO si: ${MODO_INFO.ROJO.disparador}.`
-            : `${MODO_INFO[modo].label} · ${MODO_INFO[modo].resumen} (disparador: ${MODO_INFO[modo].disparador})${modo === 'ROJO' ? ' · el día perdido NO mueve el examen: su fila se hace en la próxima fila COLCHÓN (F1: C1/C2)' : ''}`}
+            : `${MODO_INFO[modo].label} · ${MODO_INFO[modo].resumen} (disparador: ${MODO_INFO[modo].disparador})${modo === 'ROJO' ? ' · el día perdido NO mueve el examen: su fila se hace en la próxima fila COLCHÓN (F1: sin colchón → pasa al tramo 2 el jue 31-dic)' : ''}`}
         </Text>
       </View>
       {p.notas.length > 0 && (

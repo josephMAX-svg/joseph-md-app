@@ -8,7 +8,8 @@
  *   · desde d86: SEGUNDA PASADA FSRS = solo casos y preguntas fallados del ledger (0 casos nuevos);
  *   · review: Pictorial 3e (relevo, 363Q) alternando con Barnhill restante (403Q), QOTW/CORE restantes en los 3 checkpoints;
  *   · 1 módulo G+ (DERMA_GAP_MODULOS de dermaData.ts: G+1…G+9) por semana en el slot de lectura de 10′, en la
- *     primera sesión Derma de cada semana (9 semanas);
+ *     primera sesión Derma de cada semana (9 semanas; v6.01: la primera sesión NO-checkpoint de la semana — con el c2 del mié 12-may
+ *     los checkpoints cp1/cp2 caen en LUNES, primera sesión de su semana, y antes esa semana se quedaba sin G+ → solo cabían 8);
  *   · 10Q ProMIR-Derma en d ≡ 0 mod 3 (10 slots = los 10 capítulos, uno cada uno, por peso MIR);
  *   · 3 checkpoints: cp1 (d85, fin de la primera pasada) · cp2 (d94, re-drill + drill HDPH) · repaso2 (d103, mapa final + drill).
  *
@@ -18,6 +19,9 @@
  * v6.00 (6-oct-2026 · V6_ESPEC §E): SKIP, DÍAS PROTEGIDOS e inicio del SERUMS desde DATA/_scripts/_fechas_v6.json (gen_fechas_v6.js) y
  * PARIDAD F4: desde serums.inicio (lun 3-may-2027 [S]) se cuentan L-S → Derma lun · mié · vie, Research mar · jue · sáb (30′ en tiempo
  * muerto de la posta); domingo descanso. Ciclo 1 sin cambio de fin (mié 5-may) → ciclo 2 d74 vie 7-may → d103 mié 14-jul-2027.
+ * v6.01 (10-oct-2026 · corrimiento D1 = lun 12-oct): ciclo 1 mar 13-oct → lun 10-may-2027 (+2 ranuras Derma) → ciclo 2 d74 mié 12-may → d103
+ * lun 19-jul-2027 (mismas 30 sesiones: 36 casos, 9 G+, 3 checkpoints, 10 ProMIR). cp1 y cp2 caen en LUNES (1.ª sesión de su semana) → el G+ de
+ * esa semana va a la siguiente sesión NO-checkpoint (antes la semana se perdía y solo cabían 8 G+).
  * Verifica 0 solapes con researchDailyPlan.ts y
  * researchDailyPlan2027.ts antes de escribir.
  *
@@ -129,7 +133,9 @@ for (let k = 1; k <= N; k++) {
   const lunes = lunesDe(fecha);
   let gplus = null;
   if (!semanaVista.has(lunes) && gI < GPLUS.length && !cp) { gplus = GPLUS[gI++]; }
-  semanaVista.add(lunes);
+  // v6.01 (10-oct-2026): un checkpoint NO consume la semana — su G+ va a la siguiente sesión de esa misma semana (con el c2 desde el
+  // mié 12-may, cp1 lun 7-jun y cp2 lun 5-jul son la 1.ª sesión de su semana y se perdía 1 G+). Sin efecto en v6.00 (sus cp nunca abrían semana).
+  if (!cp) semanaVista.add(lunes);
   const tipo = cp ? 'checkpoint' : conCasos ? 'casos' : 'fsrs';
   const bKey = cp ? 'H' : gplus ? GPLUS_BKEY[gplus.id] : 'Z';
   const tier = cp || gplus ? 'ALTA' : 'MED';
@@ -261,7 +267,7 @@ ${rows.map((r) => r.txt).join('\n')}
 ];
 
 // ── helpers ──
-/** Módulo G+ de la sesión (slot de lectura de la primera sesión Derma de cada semana). */
+/** Módulo G+ de la sesión (slot de lectura de la primera sesión Derma —no checkpoint, v6.01— de cada semana). */
 export function dermaGplusDe(dia: Pick<DiaDermaCiclo2, 'gplus'> | DiaDerma): DermaGapModulo | undefined {
   const id = (dia as DiaDermaCiclo2).gplus; return id ? DERMA_GAP_MODULOS.find((g) => g.id === id) : undefined;
 }

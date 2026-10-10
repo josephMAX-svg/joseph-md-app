@@ -108,7 +108,8 @@ const DJ1 = [
   { encapsHasta: null, examen: '2027-10-25' },         // 18 o 25-abr (o después) → lun 25-oct (plan B)
 ];
 const reservaDJ1 = (encaps) => DJ1.find((x) => x.encapsHasta === null || encaps <= x.encapsHasta).examen;
-/** Nº de semanas del Step 1: 13 de F1 + semanas(lunes del reinicio → lunes del examen) (§F; base 41, tabla A5). */
+/** Nº de semanas del Step 1: semanas de F1 (semanasF1De = lunes del f1.inicio → lunes del f1.fin, DERIVADO: v6.01 = 12 · v6.00 = 13)
+ *  + semanas(lunes del reinicio → lunes del examen) (§F; tabla A5: base 41 en v6.00 · 40 en v6.01). */
 const semanasF1De = (f1Inicio, f1Fin) => 1 + diff(lunesDe(f1Inicio), lunesDe(f1Fin)) / 7;
 const step1SemanasDe = (reinicio, examen, f1Inicio, f1Fin) => semanasF1De(f1Inicio, f1Fin) + diff(lunesDe(reinicio), lunesDe(examen)) / 7;
 
@@ -151,7 +152,7 @@ function reservaCalculo(encaps, ctx) {
 
 // ── carga, derivación y validación del JSON ──
 const CLAVES = {
-  '': ['version', 'decidido', 'f1', 'transicion', 'encaps', 'step1', 'serums', 'skip', 'protegidos', 'feriados'],
+  '': ['version', 'decidido', 'f1', 'transicion', 'encaps', 'step1', 'serums', 'skip', 'protegidos', 'feriados', 'corrimientos'], // v6.01: + corrimientos (bitácora)
   f1: ['inicio', 'fin', 'dias'],
   transicion: ['desde', 'hasta'],
   encaps: ['examen', 'provisional', 'intensiva_desde', 'pretest', 'nucleo_hasta', 'convocatoria_tope', 'escenarios'],
@@ -177,6 +178,8 @@ function comprobarForma(F) {
   if (!Array.isArray(F.protegidos) || !F.protegidos.every((p) => p && esISO(p.fecha) && typeof p.motivo === 'string' && Object.keys(p).length === 2)) err.push('«protegidos» debe ser una lista de { fecha, motivo }');
   for (const [k, v] of Object.entries(F.step1.reserva_por_encaps || {})) if (!esISO(k) || !esISO(v)) err.push(`«step1.reserva_por_encaps» ${k} → ${v}: fechas inválidas`);
   if (typeof F.f1.dias !== 'number') err.push('«f1.dias» debe ser un número');
+  // v6.01 (10-oct-2026): bitácora de corrimientos del D1 (solo informativa; no deriva nada).
+  if (!Array.isArray(F.corrimientos) || !F.corrimientos.every((c) => c && esISO(c.fecha) && esISO(c.d1_previo) && esISO(c.d1) && Array.isArray(c.perdidos) && c.perdidos.every(esISO))) err.push('«corrimientos» debe ser una lista de { fecha, version, d1_previo, d1, perdidos[], regla }');
   for (const p of ['encaps.provisional', 'step1.provisional', 'serums.supuesto']) if (typeof get(F, p) !== 'boolean') err.push(`«${p}» debe ser true/false`);
   return err;
 }
@@ -291,7 +294,7 @@ function comprobarFases(fases) {
 }
 const _cacheFases = new WeakMap();
 const fasesDe = (F) => { if (!_cacheFases.has(F)) _cacheFases.set(F, fasesV6(F)); return _cacheFases.get(F); };
-/** Fase v6 de una fecha. Antes del D1 (≤ mar 6-oct-2026) devuelve 'F1' (la app ya muestra F1 la víspera). */
+/** Fase v6 de una fecha. Antes del D1 (s < f1.inicio: v6.01 ≤ dom 11-oct-2026 · v6.00 ≤ mar 6-oct) devuelve 'F1' (la app ya muestra F1 la víspera). */
 function faseV6(s, F = fechasPorDefecto()) {
   const fases = fasesDe(F);
   if (s < fases[0].desde) return 'F1';
@@ -318,8 +321,9 @@ function esDiaPlan(s, plan, F = fechasPorDefecto()) {
   return true;
 }
 /**
- * Semana del Step 1 (§F): S1-S13 = semanas de F1 (lun 5-oct → lun 28-dic) · semanas de la pausa (lun 4-ene → semana del
- * ENCAPS) → pausa:true (n se queda en 13) · desde la semana del reinicio 13 + k (k = 1…) · semana del examen → examen:true
+ * Semana del Step 1 (§F): S1-S<sF1> = semanas de F1 (sF1 = semanasF1De, DERIVADO: v6.01 S1-S12 = lun 12-oct → lun 28-dic ·
+ * v6.00: S1-S13 = lun 5-oct → lun 28-dic) · semanas de la pausa (lun 4-ene → semana del ENCAPS) → pausa:true (n se queda en sF1:
+ * 12 en v6.01, 13 en v6.00) · desde la semana del reinicio sF1 + k (k = 1…) · semana del examen → examen:true
  * (n = total + 1). Días anteriores al D1 → n = 0 (pre-D1). `extras` = hitos/deloads del plan (homeBriefing) para `hito`/`deload`.
  */
 function semanaStep1(s, extras = {}, F = fechasPorDefecto()) {
@@ -349,7 +353,11 @@ function emitirTS(F, d) {
     ' * — NO editar a mano (V6_ESPEC §A4/§F). Para mover una fecha: editar el JSON (disparadores de §I) y volver a correr',
     ' * `node DATA/_scripts/gen_fechas_v6.js` (aborta si un valor guardado ≠ derivado) y después los generadores de cada plan.',
     ' *',
-    ` * ${F.version} (decidido ${fy(F.decidido)}): reestructuración anual (DJ-1…DJ-5) — sustituye a v5.20 (Step 1 lun 22-feb · ENCAPS mié 10-mar).`,
+    // v6.01 (10-oct-2026): antes `${F.version} (decidido …): reestructuración anual` → con el JSON en v6.01 salía «v6.01 (decidido mar 6-oct)»,
+    // una bitácora v6.00 con la etiqueta v6.01. Ahora: v6.00 literal + una línea por corrimiento de `corrimientos` (sus propios literales).
+    ` * v6.00 (decidido ${fy(F.decidido)}): reestructuración anual (DJ-1…DJ-5) — sustituye a v5.20 (Step 1 lun 22-feb · ENCAPS mié 10-mar).`,
+    ...(F.corrimientos || []).map((c) => ` * ${c.version} (${fy(c.fecha)}): corrimiento rígido del D1 ${fy(c.d1_previo)} → ${fy(c.d1)} (perdidos: ${c.perdidos.map(f).join(' · ')}).`),
+    ` * Versión vigente del JSON: ${F.version}.`,
     ' * Módulo HOJA: no importa nada de src/ (r2 · I7: corta el ciclo usmleStep1Daily ↔ homeBriefing; STEP1_SEMANAS, semanaStep1 y',
     ' * Turno viven aquí y homeBriefing los re-exporta).',
     ' *',
@@ -379,6 +387,8 @@ export interface FechasV6 {
   skip: string[];
   protegidos: ProtegidoV6[];
   feriados: string[];
+  /** v6.01: bitácora de corrimientos del D1 (informativa) */
+  corrimientos: { fecha: string; version: string; d1_previo: string; d1: string; perdidos: string[]; regla: string }[];
 }
 export const FECHAS_V6: FechasV6 = ${JSON.stringify(F, null, 2)};
 
@@ -519,7 +529,7 @@ export function reservaDJ1(encaps: string = FECHAS_V6.encaps.examen): string {
 }
 /** Fecha a RESERVAR guardada en el JSON (validada = DJ-1, o la regla de cálculo si fue más tardía) o, si el escenario no está, DJ-1. */
 export function reservaStep1(encaps: string = FECHAS_V6.encaps.examen): string { return FECHAS_V6.step1.reserva_por_encaps[encaps] ?? reservaDJ1(encaps); }
-/** STEP1_SEMANAS de un escenario = 13 (F1) + semanas(lunes del reinicio → lunes del examen). */
+/** STEP1_SEMANAS de un escenario = SEMANAS_F1 (${d.semanasF1}, derivado de f1.inicio → f1.fin; v6.00: 13) + semanas(lunes del reinicio → lunes del examen). */
 export function step1SemanasDe(reinicio: string = FECHAS_V6.step1.reinicio, examen: string = FECHAS_V6.step1.examen): number {
   return SEMANAS_F1 + _diff(_lunesDe(reinicio), _lunesDe(examen)) / 7;
 }
@@ -549,7 +559,7 @@ export function esDiaPlan(iso: string, plan?: PlanV6): boolean {
   if (plan === 'encaps') return iso < FECHAS_V6.encaps.examen;
   return true;
 }
-/** Fase v6 de una fecha. Antes del D1 (≤ mar 6-oct-2026) devuelve 'F1' (la app ya muestra F1 la víspera). */
+/** Fase v6 de una fecha. Antes del D1 (≤ ${fy(add(F.f1.inicio, -1))}) devuelve 'F1' (la app ya muestra F1 la víspera). */
 export function faseV6(iso: string): FaseV6 {
   if (iso < FECHAS_V6.f1.inicio) return 'F1';
   for (const x of FASES_V6) if (iso >= x.desde && (x.hasta === null || iso <= x.hasta)) return x.id;

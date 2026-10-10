@@ -10,7 +10,7 @@
 //
 // Reglas de calendario (idénticas a remap_inicio.js / gen_aurum_plan.js):
 //  · INICIO = argv[2] (YYYY-MM-DD; default = inicioDefault del JSON = lun 2026-09-07, v5.6; el pipeline pasa siempre la fecha:
-//    v5.20 = mié 2026-10-07 → 90 días hasta el vie 12-feb-2027).
+//    v5.20 = v6.00 = mié 2026-10-07 → 90 días hasta el vie 12-feb-2027 · v6.01 = lun 2026-10-12 → mié 17-feb-2027).
 //  · 90 días HÁBILES L-V consecutivos; salta SÁB/DOM y los feriados fijos del JSON (25-dic · 31-dic · 1-ene).
 //  · Los 16 CASOS caen en VIERNES reales (invariante que antes garantizaba liviano_reslot_viernes.js).
 //    Si hay más viernes que casos (v5.20: 17 viernes), los casos van en los PRIMEROS viernes con ≥2 días de contenido delante y el
@@ -25,7 +25,12 @@
 //    "casoId"?:n,"pretest"?:true,"drill"?:true}
 // LIV_META mantiene EXACTAMENTE  inicio: 'YYYY-MM-DD', fin: 'YYYY-MM-DD', totalDias: 90  (regex del remap).
 //
-// Determinista (sin Date.now()/Math.random). Regenerar:  node DATA/_scripts/gen_liviano_plan.js 2026-10-07   (v5.20; v5.6: 2026-09-07)
+// v6.01 (10-oct-2026 · corrimiento D1 = lun 12-oct): 90 hábiles lun 12-oct → mié 17-feb-2027 (+3 hábiles; el fin se AMPLÍA, nada se recorta).
+//    Con D1 en lunes hay EXACTAMENTE 16 viernes → los 16 casos van uno por viernes (vie 16-oct … caso 16 = vie 12-feb, D87) y ningún viernes
+//    sobra; el caso 16 sigue ANTES del capstone (D89 mar 16-feb) y la revisión trimestral II + cierre es el D90 mié 17-feb. Revisión
+//    trimestral I = D46 lun 14-dic. Módulo 7 (Acceso en Perú) = D39 + D41-D44 (jue 3 → jue 10-dic) con el caso 8 el D40 vie 4-dic y el caso 9
+//    el D45 vie 11-dic → src/lib/empresaData.ts (planDia / planDias / fechaPlan) re-sincronizado a mano con estas filas.
+// Determinista (sin Date.now()/Math.random). Regenerar:  node DATA/_scripts/gen_liviano_plan.js 2026-10-12   (v6.01; v6.00 = v5.20: 2026-10-07; v5.6: 2026-09-07)
 const fs = require('fs');
 const path = require('path');
 

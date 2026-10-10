@@ -32,7 +32,8 @@
  *        lleva eval: el mini-sim ocupa las 16:15) + mini-sim del viernes si no existe. Con --dry solo informa. Es DETERMINISTA: las
  *        salidas banco_/eval_ de esa misma semana que ya existan se sobrescriben y sus ids viejos no cuentan como «usados» hasta
  *        que cada una se regenera (da lo mismo que existan o no de una corrida anterior).
- *   node DATA/_scripts/gen_encaps_minisim.js --realinear [--dry]       → tras un CORRIMIENTO del régimen (SQL regenerado con otro D1): cada
+ *   node DATA/_scripts/gen_encaps_minisim.js --realinear [--dry]       → tras un CORRIMIENTO del régimen (SQL regenerado con otro D1; v6.01: los 3 mini-sims
+ *        ya armados se re-fecharon a mano por sesión —9/16/23 → 16/23/30-oct—, mismo resultado que este modo): cada
  *        minisim_<viernes>.json ya armado cuya cola larga ya no coincide con la fila mini_sim de su fecha se MUEVE al primer viernes
  *        ≥ su fecha con la misma cola larga y sin mini-sim (ítems intactos: no se regenera ni se pierde contenido; queda
  *        _meta.realineado y los reservado_para del pool se re-fechan). Si no encaja en ninguno: se borra (fecha sin sesión) o se
@@ -52,13 +53,13 @@
  *        → PRE-TEST DE ARRANQUE (línea base ciega por crítico, gaps_v3b_encaps punto 8): 40Q = 5Q × 8 críticos v3 tomadas de los
  *          ítems REALES con clave oficial 2024-2A · 2025-1A · 2025-2 (nunca el examen de agosto-2026: lista negra), repartidas en
  *          BANCO_PROPIO/pretest_arranque_<D1>.{json,html} (parte 1: II-3 · I-3 · V-2 · III-5) y pretest_arranque_<siguiente banqueo1h>.{json,html}
- *          (parte 2: II-5 · I-4 · IV-1+IV-2 · II-4; v5.20: mié 7 + jue 8-oct · v5.19: mar 6 + mié 7-oct · v5.18: lun 5 + mar 6-oct · v5.17: jue 1-oct + lun 5-oct, el vie 2-oct = D2 era mini-sim). Modo examen (72 s/Q, solución al final), confianza 1-3 obligatoria, orden barajado.
+ *          (parte 2: II-5 · I-4 · IV-1+IV-2 · II-4; v6.01: lun 12 + mar 13-oct · v5.20: mié 7 + jue 8-oct · v5.19: mar 6 + mié 7-oct · v5.18: lun 5 + mar 6-oct · v5.17: jue 1-oct + lun 5-oct, el vie 2-oct = D2 era mini-sim). Modo examen (72 s/Q, solución al final), confianza 1-3 obligatoria, orden barajado.
  *          SUSTITUYEN EL CONTENIDO de los dos primeros bancos del día de la semana A (banco_<lunes> y banco_<martes> quedan marcados
  *          `_meta.sustituido_por` y su HTML muestra el aviso; el horario 16:15-17:15 no cambia). Regla de ids: no se reutiliza ningún id
  *          consumido por eval_/minisim_/banco_ vigentes; los ids que SOLO estaban en los dos bancos sustituidos vuelven a estar
  *          disponibles (esas sesiones no se resuelven) y se prefieren los reales libres → reales del banco sustituido → nuevos.
  *          Export del runner → `--registrar <export.json> --append`: ronda `pretest` con preguntas[] por código (gen_encaps_semana.js
- *          la reparte por código → n = 5 por crítico → el override de la semana siguiente al arranque —v5.20 (igual que v5.17-v5.19): la del lun 12-oct— ya se calcula con n ≥ 5).
+ *          la reparte por código → n = 5 por crítico → el override de la semana siguiente al arranque —v6.01: la del lun 19-oct (cierre del vie 16-oct) · v5.20 (igual que v5.17-v5.19): la del lun 12-oct— ya se calcula con n ≥ 5).
  *   node DATA/_scripts/gen_encaps_minisim.js --registrar <export.json> [--append]
  *        → guarda TRACKING_ERRORES/RONDAS/<id>.json y muestra la línea para `gen_encaps_semana.js --cerrar`;
  *          con --append apenda la ronda (con preguntas[]) a _registro_resoluciones.json (append-only).
@@ -72,6 +73,19 @@
  *    cadena solo corre por debajo del mínimo) y la regla «un ítem se usa una sola vez» sigue vigente para los sets nuevos: el re-test
  *    es la excepción explícita hasta que Joseph reponga stock (PENDIENTES: V-2 · I-3 · III-5).
  * Sin dependencias externas. No toca Supabase ni el Calendar.
+ * v6.01 (10-oct-2026, corrimiento RÍGIDO «todo empieza el lunes 12»): D1 = LUN 12-OCT-2026 · F1 = dia 1-57 → mié 30-dic (47 banqueo1h + 10 mini-sims
+ *   vie 16-oct … vie 18-dic, el último = CHECKPOINT DEL AÑO) · pre-test de arranque lun 12 + mar 13-oct (= D1 + D2) · INTENSIVA dia 58-107 con las
+ *   mismas fechas (lun 4-ene → vie 12-mar). Ficheros BANCO_PROPIO re-fechados POR SESIÓN (sesión k vieja → sesión k nueva; viernes k → viernes k;
+ *   ítems intactos, _meta.realineado v6.01; reservado_para del pool re-fechados): pretest_arranque 7/8 → 12/13-oct · eval 7/8/12/13 → 12/13/14/15 ·
+ *   banco 12/13 → 14/15 (fila_sql.dia 4/5 → 3/4) · minisim 9/16/23 → 16/23/30-oct. FUENTES DEL RUNNER: _encaps_mantenimiento_2027.sql es ya la F1
+ *   v6.01 (57 filas) y las fechas del CARRIL B (filas 61-92 de v5.20 y las 2 reposiciones con pendiente F1 del mié 17 / jue 18-feb) se leen de
+ *   _encaps_intensivo_2027.sql (filasRunner(): extra.carril_b / pendiente_f1; mini-sims absorbidos → 'mini_sim_absorbido', sin salida). El
+ *   inventario cuenta la demanda F1 + carril B (sin los mini-sims absorbidos).
+ *   · v6.01 (regla de Joseph: nada se descarta): el 11.º mini-sim de la F1 v6.00 (fila mant. 53, vie 18-dic, cola larga II-6 + II-10) ya NO
+ *     se absorbe: es un PENDIENTE F1 tipo 'mini_sim' en la reposición del carril B del LUN 22-FEB-2027 (dia 93, extra.carril_b.pendiente_f1
+ *     con la receta íntegra) → filasRunner() lo da como fila 'mini_sim' (no es viernes) → --semana 2027-02-22 arma minisim_2027-02-22 con
+ *     esa cola larga, y cuenta como demanda en --inventario. Las 6 filas 'mini_sim_absorbido' del carril B (viernes 61-92 de v5.20 que
+ *     absorbe el SIM 100Q, V6_ESPEC §C2) siguen igual. Reposición genérica: «filas del carril B dia 58-89 (dia_mant 61-92) sin ✓».
  * v5.20 (6-oct, DEFINITIVA): D1 = mié 7-oct-2026 · 92 días → mar 16-feb-2027 (régimen v6.18, backup study_schedule_bk_1006) · pre-test de arranque mié 7 + jue 8-oct ·
  *   mini-sims en los MISMOS 17 viernes vie 9-oct → vie 12-feb · ficheros BANCO_PROPIO re-fechados (ítems intactos, _meta.realineado v5.20) · pre-test 2026-II vie 26-feb
  *   (= día 100, primer viernes de la intensiva mar 23-feb → mar 9-mar) · EXAMEN ENCAPS 2027-I FIJADO mié 10-mar-2027.
@@ -166,11 +180,8 @@ function usadosPrevios(base, ignorar = new Set()) {
   }
   return usados;
 }
-// fila de study_schedule (SQL de mantenimiento) para una fecha → {tipo, codigo, subtema, secundarios[], extra}
-function filaSQL(fecha) {
-  let sql; try { sql = fs.readFileSync(SQL_MANT, 'utf8'); } catch (e) { return null; }
-  const line = sql.split('\n').find((l) => l.startsWith(`('ENCAPS',`) && l.includes(`'${fecha}'`));
-  if (!line) return null;
+// una línea de INSERT de study_schedule → {dia, fecha, weekday, tipo, codigo, subtema, secundarios[], extra}
+function parseFilaSQL(line) {
   const m = line.match(/^\('ENCAPS',(\d+),'([\d-]+)','([^']+)','([^']+)',(NULL|'[^']*'),'((?:[^']|'')*)'/);
   if (!m) return null;
   const jsons = [...line.matchAll(/'((?:[^']|'')*)'::jsonb/g)].map((x) => { try { return JSON.parse(x[1].replace(/''/g, "'")); } catch (e) { return null; } });
@@ -178,15 +189,44 @@ function filaSQL(fecha) {
   const secs = jsons.length >= 2 && Array.isArray(jsons[jsons.length - 2]) ? jsons[jsons.length - 2] : [];
   return { dia: +m[1], fecha: m[2], weekday: m[3], tipo: m[4], codigo: m[5] === 'NULL' ? null : m[5].replace(/'/g, ''), subtema: m[6].replace(/''/g, "'"), secundarios: secs, extra: extra || {} };
 }
-// rango sembrado en el SQL de mantenimiento vigente (D1 y cierre reales, sin fechas hardcodeadas)
+// v6.01: filas que ve el runner (fecha → fila), en dos fuentes:
+//   1) _encaps_mantenimiento_2027.sql = F1 (MANTENIMIENTO dia 1-57, lun 12-oct → mié 30-dic en v6.01);
+//   2) _encaps_intensivo_2027.sql = CARRIL B 16:15 de la intensiva: extra.carril_b banqueo1h (filas 61-92 de v5.20 en su fecha) y
+//      reposición con extra.carril_b.pendiente_f1 (filas que el corrimiento v6.01 dejó fuera de la F1) → fila banqueo1h normal, o fila
+//      'mini_sim' si el pendiente es un mini-sim (v6.01: lun 22-feb, cola larga II-6 + II-10; extra = su receta íntegra)
+//      (dia = dia de la intensiva; carril_b = {origen, dia_mant}); mini-sim absorbido por el SIM 100Q → tipo 'mini_sim_absorbido' (sin
+//      salida: no se hace); el resto de días de la intensiva (reposición genérica, SIM, pre-test, cola) → tipo 'reposicion' /
+//      'sin_carril_b' con codigo null (la eval del día siguiente cae en «fallos previos»).
+//   Hasta v6.00 el runner leía SOLO el SQL de mantenimiento, que guardaba las 92 filas de v5.20 (61-92 = fechas del carril B).
+const SQL_INT = path.join(__dirname, '_encaps_intensivo_2027.sql');
+let _filasRunner = null;
+function filasRunner() {
+  if (_filasRunner) return _filasRunner;
+  const map = new Map();
+  const lineas = (p) => { try { return fs.readFileSync(p, 'utf8').split('\n').filter((l) => l.startsWith(`('ENCAPS',`)); } catch (e) { return []; } };
+  for (const l of lineas(SQL_MANT)) { const f = parseFilaSQL(l); if (f) map.set(f.fecha, { ...f, origen: '_encaps_mantenimiento_2027.sql' }); }
+  for (const l of lineas(SQL_INT)) {
+    const r = parseFilaSQL(l); if (!r || map.has(r.fecha)) continue;
+    const cb = r.extra.carril_b || null; const p = cb && cb.tipo === 'reposicion' ? cb.pendiente_f1 : null;
+    const base = { dia: r.dia, fecha: r.fecha, weekday: r.weekday, origen: '_encaps_intensivo_2027.sql (carril B 16:15)' };
+    if (cb && cb.tipo === 'banqueo1h') map.set(r.fecha, { ...base, tipo: 'banqueo1h', codigo: cb.codigo, subtema: cb.subtema, secundarios: cb.temas_secundarios || [], extra: cb.extra || {}, carril_b: { origen: cb.origen, dia_mant: cb.dia_mant } });
+    else if (p && p.tipo === 'mini_sim') map.set(r.fecha, { ...base, tipo: 'mini_sim', codigo: null, subtema: p.subtema, secundarios: p.temas_secundarios || [], extra: p.extra || {}, carril_b: { origen: p.origen, dia_mant: p.dia_mant, pendiente_f1: p.corrimiento } }); // v6.01: mini-sim F1 repuesto
+    else if (p) map.set(r.fecha, { ...base, tipo: 'banqueo1h', codigo: p.codigo, subtema: p.subtema, secundarios: p.temas_secundarios || [], extra: p.extra || {}, carril_b: { origen: p.origen, dia_mant: p.dia_mant, pendiente_f1: p.corrimiento } });
+    else if (r.extra.minisim_absorbido) { const m = r.extra.minisim_absorbido; map.set(r.fecha, { ...base, tipo: 'mini_sim_absorbido', codigo: null, subtema: m.subtema || '', secundarios: [], extra: m.extra || {} }); }
+    else map.set(r.fecha, { ...base, tipo: cb ? 'reposicion' : 'sin_carril_b', codigo: null, subtema: cb ? 'carril B · reposición genérica' : `sin carril B (${r.tipo})`, secundarios: [], extra: {} });
+  }
+  return (_filasRunner = map);
+}
+// fila del runner para una fecha → {tipo, codigo, subtema, secundarios[], extra} (v6.01: F1 + carril B; antes solo el SQL de mantenimiento)
+function filaSQL(fecha) { return filasRunner().get(fecha) || null; }
+// rango sembrado (D1 y cierre reales, sin fechas hardcodeadas): v6.01 = D1 de la F1 → último día de la intensiva
 function rangoSQL() {
-  let sql; try { sql = fs.readFileSync(SQL_MANT, 'utf8'); } catch (e) { return { d1: null, cierre: null, fechas: [] }; }
-  const fechas = [...sql.matchAll(/^\('ENCAPS',\d+,'([\d-]+)'/gm)].map((m) => m[1]).sort();
+  const fechas = [...filasRunner().keys()].sort();
   return { d1: fechas[0] || null, cierre: fechas[fechas.length - 1] || null, fechas };
 }
 function colaLargaDe(fecha) {
   const fila = filaSQL(fecha);
-  if (fila && fila.extra && Array.isArray(fila.extra.cola_larga) && fila.extra.cola_larga.length) return { codigos: fila.extra.cola_larga, origen: '_encaps_mantenimiento_2027.sql' };
+  if (fila && fila.extra && Array.isArray(fila.extra.cola_larga) && fila.extra.cola_larga.length) return { codigos: fila.extra.cola_larga, origen: fila.carril_b ? `_encaps_intensivo_2027.sql (carril B · pendiente F1, fila mant. ${fila.carril_b.dia_mant})` : '_encaps_mantenimiento_2027.sql' };
   // fallback: rota COLA_LARGA por índice de viernes desde el D1 del régimen
   const d1 = new Date((rangoSQL().d1 || fecha) + 'T12:00:00Z'), d = new Date(fecha + 'T12:00:00Z');
   const k = Math.max(0, Math.floor((d - d1) / (7 * 864e5)));
@@ -348,7 +388,9 @@ if(state.done){$('#intro').classList.add('hidden');corregir();}
 
 // ── modos ──
 function modoMinisim(fecha) {
-  if (dowDe(fecha) !== 5) console.warn(`⚠ ${fecha} no es viernes (${WD[dowDe(fecha)]})`);
+  const filaM = filaSQL(fecha);
+  const repuesto = !!(filaM && filaM.tipo === 'mini_sim' && filaM.carril_b); // v6.01: mini-sim F1 repuesto en el carril B 16:15 (no es viernes)
+  if (dowDe(fecha) !== 5 && !repuesto) console.warn(`⚠ ${fecha} no es viernes (${WD[dowDe(fecha)]})`);
   const { fallos, debiles, pretestHecho } = leerRegistro();
   const { pool, rechazados } = cargarPool(pretestHecho);
   const usados = usadosPrevios(`minisim_${fecha}`);
@@ -356,7 +398,7 @@ function modoMinisim(fecha) {
   const { items, conteos, avisos } = armarSet(fecha, pool, usados, cola, fallos, debiles);
   const id = `MINISIM_${fecha}`;
   const doc = {
-    id, titulo: `Mini-simulacro ENCAPS · viernes ${fecha}`, tipoRonda: 'mini_sim', fecha, codigo: 'MIX', tema: `mini-sim v3 · cola larga ${cola.codigos.join('+')}`,
+    id, titulo: repuesto ? `Mini-simulacro ENCAPS · ${WD[dowDe(fecha)]} ${fecha} · REPOSICIÓN F1 (carril B 16:15 · fila mant. ${filaM.carril_b.dia_mant} de la F1 ${String(filaM.carril_b.origen || '').replace('mantenimiento_', '')})` : `Mini-simulacro ENCAPS · viernes ${fecha}`, tipoRonda: 'mini_sim', fecha, codigo: 'MIX', tema: `mini-sim v3 · cola larga ${cola.codigos.join('+')}`,
     fuente_preguntas: `BANCO_PROPIO (${[...new Set(items.map((x) => x._file))].join(', ')}) · moldes 2024-2A→2026-1 · claves verificadas por ítem`,
     n: items.length, seg_por_q: RECETA_MINISIM.seg_por_q, umbral: RECETA_MINISIM.umbral_25, alerta: RECETA_MINISIM.alerta_25, mostrar_codigo: false,
     instrucciones: `25 preguntas mixtas (8 II · 7 I · 5 V · 3 III · 2 IV), 72 s por pregunta = 30 min. Cola larga de hoy: ${cola.codigos.join(' + ')}. Sin material, sin pausa; la corrección aparece solo al terminar.`,
@@ -403,7 +445,7 @@ function completarConFallback(items, objetivo, { pool, usados, codigoPool, area,
 const textoCadena = (c) => (c.length ? c.map((x) => `paso ${x.paso} ${x.fuente} (${x.n}Q)`).join(' · ') : 'sin ítems en toda la cadena');
 function modoBanco(fecha, ignorar) {
   const fila = filaSQL(fecha);
-  if (!fila) throw new Error(`no hay fila en _encaps_mantenimiento_2027.sql para ${fecha} (¿fin de semana/feriado o SQL no regenerado?)`);
+  if (!fila) throw new Error(`no hay fila para ${fecha} ni en _encaps_mantenimiento_2027.sql (F1) ni en el carril B de _encaps_intensivo_2027.sql (¿fin de semana/feriado o SQL no regenerado?)`);
   if (fila.tipo !== 'banqueo1h') throw new Error(`${fecha} es '${fila.tipo}', no banqueo1h (para viernes usar el mini-sim)`);
   const pa = pretestArranqueDe(fecha);
   if (pa && !has('--forzar')) throw new Error(`${fecha}: el contenido de esta sesión lo ocupa el PRE-TEST DE ARRANQUE (${pa}.html); banco_${fecha} queda sustituido y no se regenera (--forzar para ignorarlo)`);
@@ -451,7 +493,7 @@ function modoBanco(fecha, ignorar) {
     tema: fila.subtema, fuente_preguntas: `BANCO_PROPIO (${[...new Set(items.map((x) => x._file))].join(', ')})`,
     n: items.length, seg_por_q: 90, umbral: 75, alerta: 60, mostrar_codigo: true, correccion_inmediata: true,
     instrucciones: `${principal.length}Q CIEGAS de ${fila.codigo}${subEje ? ' (sub-eje: ' + subEje + ')' : ''} + ${sec.length}Q del secundario de cola larga ${secundario || ''}. Corrección INMEDIATA al marcar respuesta + confianza (Palmerton: intenta primero, luego lee la clave y recalibra). Meta crucero ≥75 % ciego. Al terminar: exporta el JSON → línea de cierre → gen_encaps_semana.js --cerrar.`,
-    _meta: { generado: new Date().toISOString().slice(0, 10), fila_sql: { dia: fila.dia, tipo: fila.tipo, codigo: fila.codigo, sub_eje: subEje, secundario, instancia: fila.extra.instancia, de: fila.extra.de }, conteos, avisos, lista_negra_2026_II: pretestHecho ? 'levantada' : 'VIGENTE', rechazados: rechazados.slice(0, 10), pool_disponible_codigo: delCodigo.length - principal.length , ...(fallback ? { fallback } : {}) },
+    _meta: { generado: new Date().toISOString().slice(0, 10), fila_sql: { dia: fila.dia, tipo: fila.tipo, codigo: fila.codigo, sub_eje: subEje, secundario, instancia: fila.extra.instancia, de: fila.extra.de, ...(fila.carril_b ? { carril_b: fila.carril_b } : {}) }, conteos, avisos, lista_negra_2026_II: pretestHecho ? 'levantada' : 'VIGENTE', rechazados: rechazados.slice(0, 10), pool_disponible_codigo: delCodigo.length - principal.length , ...(fallback ? { fallback } : {}) },
     items: items.map(({ _file, ...it }) => it),
   };
   console.log(`BANCO ${fecha} (${WD[dowDe(fecha)]}) · ${fila.codigo}${subEje ? ' · ' + subEje : ''} · ${principal.length}Q principal (${conteos.recall_directo_pct}% recall directo; sub-ejes ${JSON.stringify(conteos.por_sub_eje)}) + ${sec.length}Q secundario ${secundario || '—'} · reales ${conteos.reales}/${items.length} · quedan ${Math.max(0, delCodigo.length - principal.filter((x) => !x.fallback).length)}Q de ${codigoPool} en el pool`);
@@ -462,7 +504,7 @@ function modoBanco(fecha, ignorar) {
 // EVAL ANCLADA (mar-vie 16:15): 5Q del código de AYER = 3 cifras + 2 viñetas, solución al final; lunes = 5Q de fallos previos
 function modoEval(fecha, ignorar) {
   const fila = filaSQL(fecha);
-  if (!fila) throw new Error(`no hay fila en _encaps_mantenimiento_2027.sql para ${fecha}`);
+  if (!fila) throw new Error(`no hay fila para ${fecha} (F1 en _encaps_mantenimiento_2027.sql · carril B en _encaps_intensivo_2027.sql)`);
   let ayer = addDays(fecha, -1), filaAyer = filaSQL(ayer), back = 1;
   while (!filaAyer && back < 6) { back++; ayer = addDays(fecha, -back); filaAyer = filaSQL(ayer); }
   // D1 del régimen: no hay sesión anterior en el SQL → la eval anclada arranca en modo «fallos previos»
@@ -477,7 +519,9 @@ function modoEval(fecha, ignorar) {
   if (filaAyer.tipo === 'mini_sim' || !filaAyer.codigo) {
     modo = filaAyer.tipo === 'inicio_regimen'
       ? 'D1 del régimen (sin sesión anterior): 5Q de fallos previos del registro, críticos primero'
-      : 'lunes: 5Q de fallos previos del registro (otro enfoque), críticos primero';
+      : filaAyer.tipo === 'mini_sim' || filaAyer.tipo === 'mini_sim_absorbido' || filaAyer.tipo === 'sin_carril_b'
+        ? 'lunes: 5Q de fallos previos del registro (otro enfoque), críticos primero'
+        : `sin código fijo ayer (${filaAyer.tipo}): 5Q de fallos previos del registro (otro enfoque), críticos primero`; // v6.01: reposición genérica del carril B
     const fp = cand.filter(esFalloPrevio).sort((a, b) => (CRITICOS_V3.includes(b.codigo) - CRITICOS_V3.includes(a.codigo)));
     items = fp.slice(0, 5);
     if (items.length < 5) items = items.concat(cand.filter((x) => CRITICOS_V3.includes(x.codigo) && !items.includes(x)).slice(0, 5 - items.length));
@@ -536,6 +580,8 @@ function modoSemana(lunes) {
       pendientes.delete(`banco_${f}.json`);
     }
     else if (fila.tipo === 'mini_sim') { if (fs.existsSync(path.join(OUT_DIR, `minisim_${f}.json`))) console.log(`— ${f}: minisim ya existe`); else modoMinisim(f); }
+    // v6.01: días de la intensiva sin banco del carril B (el SIM 100Q absorbe el mini-sim; la reposición genérica depende de los ✓ del día)
+    else console.log(`— ${f}: ${fila.tipo === 'mini_sim_absorbido' ? 'mini-sim ABSORBIDO por el SIM 100Q / pre-test (no se genera)' : fila.tipo === 'reposicion' ? 'carril B · reposición genérica (filas del carril B dia 58-89 / dia_mant 61-92 sin ✓ en D{dia}:b_* → temas calientes): no se pre-genera' : fila.subtema}`);
   }
 }
 // REALINEAR (tras un corrimiento del régimen): los mini-sims ya armados NO se regeneran ni se pierden. Cada minisim_<viernes>.json
@@ -647,18 +693,19 @@ function modoInventario() {
   const { pretestHecho, reg } = leerRegistro();
   const { pool } = cargarPool(pretestHecho);
   const usados = usadosPrevios('__ninguno__');
-  // demanda desde el SQL de mantenimiento
+  // demanda desde las filas del runner (v6.01: F1 + carril B de la intensiva)
   const demanda = {}; const D = (c, k, v = 1) => { const cc = poolCode(c); demanda[cc] = demanda[cc] || { sesiones_principal: 0, slots_secundario: 0, viernes_cola_larga: 0 }; demanda[cc][k] += v; };
   let filas = 0, minisims = 0; const fechasSQL = [];
   try {
-    for (const l of fs.readFileSync(SQL_MANT, 'utf8').split('\n')) {
-      if (!l.startsWith(`('ENCAPS',`)) continue;
-      const m = l.match(/^\('ENCAPS',\d+,'([\d-]+)'/); if (!m) continue;
-      const f = filaSQL(m[1]); if (!f) continue; filas++; fechasSQL.push(f.fecha);
+    // v6.01: F1 (SQL de mantenimiento) + carril B de la intensiva (filas 61-92 de v5.20 + pendientes F1); los mini-sims ABSORBIDOS por el
+    // SIM 100Q y los días sin banco no cuentan como demanda (antes: las 92 filas v5.20 del SQL de mantenimiento, con 17 mini-sims)
+    for (const f of [...filasRunner().values()].sort((a, b) => (a.fecha < b.fecha ? -1 : 1))) {
+      if (f.tipo !== 'banqueo1h' && f.tipo !== 'mini_sim') continue;
+      filas++; fechasSQL.push(f.fecha);
       if (f.tipo === 'banqueo1h') { D(f.codigo, 'sesiones_principal'); for (const s of f.secundarios) if (s.rol === 'cola_larga') D(s.codigo, 'slots_secundario'); for (const s of f.secundarios) if (s.rol === 'paraguas') D(s.codigo, 'sesiones_principal', 0); }
       if (f.tipo === 'mini_sim') { minisims++; for (const c of f.extra.cola_larga || []) D(c, 'viernes_cola_larga'); }
     }
-  } catch (e) { console.warn('⚠ SQL de mantenimiento no legible:', e.message); }
+  } catch (e) { console.warn('⚠ filas del runner ilegibles (SQL de mantenimiento / intensiva):', e.message); }
   // oferta: pool por código y fichero
   const codigos = new Set([...Object.keys(demanda), ...pool.map((x) => poolCode(x.codigo)), ...CRITICOS_V3, ...REBOTE_V3, ...COLA_LARGA.map((c) => c.codigo)]);
   let etq = null; try { etq = readJSON(path.join(BANCO, '_etiquetas_examenes_reales_v3.json')); } catch (e) { /* */ }
@@ -702,7 +749,7 @@ function modoInventario() {
   const D1_SQL = fechasSQL[0] || '—', DFIN_SQL = fechasSQL[fechasSQL.length - 1] || '—';
   const rotacionTxt = Object.entries(demanda).filter(([, v]) => v.sesiones_principal > 0).sort((a, b) => b[1].sesiones_principal - a[1].sesiones_principal || (a[0] < b[0] ? -1 : 1)).map(([c, v]) => `${c} ${v.sesiones_principal}`).join(' · ');
   const totales = { pool_total: pool.length, pool_disponible: pool.filter((x) => !usados.has(x.id)).length, filas_sql: filas, minisims_sembrados: minisims, dias_sembrados: filas, d1: D1_SQL, cierre: DFIN_SQL, demanda_total_q: Object.values(inv).reduce((s, x) => s + x.demanda_sembrada.q_estimadas_regimen, 0), deficit_codigos: Object.entries(inv).filter(([, v]) => v.deficit_vs_demanda > 0).map(([k, v]) => `${k}:${v.deficit_vs_demanda}`) };
-  const out = { _meta: { descripcion: `Inventario de preguntas por CÓDIGO v3: oferta (BANCO_PROPIO: sets + banco_items_v1 + set_reales_otros; exámenes reales etiquetados; claves.json de julio; QX/Theomed por área) vs demanda sembrada en study_schedule (los días de mantenimiento que haya en _encaps_mantenimiento_2027.sql; hoy ${filas} días, D1 = ${D1_SQL}, cierre = ${DFIN_SQL}) y déficit. Regenerar: node DATA/_scripts/gen_encaps_minisim.js --inventario`, generado: new Date().toISOString().slice(0, 10), rotacion: `${rotacionTxt} (sesiones banqueo1h por código en el SQL vigente · CICLO de _encaps_ciclo_v3.js · siembra de ${filas} días desde el ${D1_SQL})`, lista_negra: '2026-II excluido de toda oferta hasta el pre-test', totales }, por_codigo: inv };
+  const out = { _meta: { descripcion: `Inventario de preguntas por CÓDIGO v3: oferta (BANCO_PROPIO: sets + banco_items_v1 + set_reales_otros; exámenes reales etiquetados; claves.json de julio; QX/Theomed por área) vs demanda sembrada en study_schedule (v6.01: días con banco — banqueo1h o mini-sim — de la F1 en _encaps_mantenimiento_2027.sql + carril B 16:15 de _encaps_intensivo_2027.sql (filas 61-92 de v5.20 + pendientes F1; sin los mini-sims absorbidos); hoy ${filas} días, D1 = ${D1_SQL}, cierre = ${DFIN_SQL}) y déficit. Regenerar: node DATA/_scripts/gen_encaps_minisim.js --inventario`, generado: new Date().toISOString().slice(0, 10), rotacion: `${rotacionTxt} (sesiones banqueo1h por código en el SQL vigente · CICLO de _encaps_ciclo_v3.js · siembra de ${filas} días desde el ${D1_SQL})`, lista_negra: '2026-II excluido de toda oferta hasta el pre-test', totales }, por_codigo: inv };
   fs.writeFileSync(path.join(BANCO, '_inventario_banco_por_codigo.json'), JSON.stringify(out, null, 1) + '\n', 'utf8');
   console.log('OK → _inventario_banco_por_codigo.json ·', JSON.stringify(totales));
   for (const [k, v] of Object.entries(inv)) console.log(`${k.padEnd(10)} demanda ${String(v.demanda_sembrada.q_estimadas_regimen).padStart(4)} · pool ${String(v.oferta.banco_propio_pool.disponibles_no_usados).padStart(3)} disp (${v.oferta.banco_propio_pool.total} tot) · reales ${String(v.oferta.examenes_reales_etiquetados.total).padStart(2)} · déficit ${String(v.deficit_vs_demanda).padStart(4)} · ${v.estado}`);

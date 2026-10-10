@@ -31,6 +31,10 @@
  * de TODO EL DÍA (allDay: true · startTime/endTime a medianoche): Research va 30' en tiempo muerto de la posta y la hora la pone el
  * turno. Textos de DEADLINE sin el Step 1 de febrero (cr-paquete, equipo). Re-fechados por v6: X-9 lun 15-mar → jue 11-mar · R43 jue
  * 29-jul → sáb 17-jul (todo el día).
+ * v6.01 (10-oct-2026 · corrimiento D1 = lun 12-oct): Research corre 1 ranura → los 12 overlays cambian de fecha salvo CR-9 (jue 11-feb, cambia
+ * su texto: d34): M1 vie 16-oct · C-2 lun 26-oct · T-1 mié 28-oct · C-6 vie 13-nov · CR-1 jue 19-nov · T-8 lun 21-dic · X-1 mar 29-dic · CR-8
+ * mar 12-ene · X-9 mié 17-mar · R10 mar 23-mar · R43 mar 20-jul (todo el día, F4). Solo --print/--check en este lote: el Calendar lo toca el
+ * orquestador (update_event / delete+create y luego --set hito=eventId).
  */
 const fs = require('fs');
 const path = require('path');
@@ -74,7 +78,7 @@ const DEADLINE = {
   'carta-diana': 'ventana de letters del journal diana (típ. 4-12 semanas tras la publicación · se fija en C-2)',
   'carta-1': '≤ 15-oct-2026 (límite interno de la carta; RUTA §9.1 marca −1 día: enviar ANTES del bloque si se puede)',
   'tesis-etica': 'oct-2026 (solicitud CEI expedita ≤ 30-sep según gap 1 de Palmerton v3b · sin nº de CEI NO se envía T-8)',
-  'cr-caso': '31-oct-2026 (caso + consentimiento + senior author · si el mar 3-nov (C-3 en v5.20, ~3 semanas desde M1 mié 14-oct; antes vie 30-oct) no hay caso → plan B, colega SPD · ⚠ v5.20: CR-1 cae el mar 17-nov y CR-2 el jue 19-nov, ya después del 31-oct · v5.18-v5.19: vie 13-nov / mar 17-nov)',
+  'cr-caso': '31-oct-2026 (caso + consentimiento + senior author · si el jue 5-nov (C-3 en v6.01, ~3 semanas desde M1 vie 16-oct; v6.00 = v5.20: mar 3-nov, M1 mié 14-oct; antes vie 30-oct) no hay caso → plan B, colega SPD · ⚠ v6.01: CR-1 cae el jue 19-nov y CR-2 el lun 23-nov, ya después del 31-oct · v6.00 = v5.20: mar 17-nov / jue 19-nov · v5.18-v5.19: vie 13-nov / mar 17-nov)',
   'tesis-L0': '≤ 15-feb-2027 (JAAD International → IJD → Actas → Anais)',
   'revisor2': 'antes de PROSPERO (sin revisor #2 humano no hay registro · PRISMA 2020 ítem 8)',
   'cr-paquete': 'antes del submit CR-9 (jue 11-feb-2027, primer día-Research tras la pausa): paquete congelado ANTES de la pausa de átomos (vie 15-ene → mié 10-feb-2027 = núcleo de la intensiva ENCAPS; v6.00: el Step 1 está en pausa del 31-dic al 15-mar · v5.20: la pausa era por las Fases B-C del Step 1)',

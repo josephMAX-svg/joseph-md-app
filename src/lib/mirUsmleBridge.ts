@@ -11,6 +11,7 @@
  * No escribe nada. Otro agente lo integra en UsmleTodayPlan.
  * v6.00 (6-oct-2026 · V6_ESPEC §F r2 · I12): lee los 2 tramos (DIAS → DIAS_TODOS: D1-D60 + T1-T158); los rangos del tramo 2 se
  *   etiquetan «T<n>» (d = 100 + t) y los hitos se detectan con esHito (en el tramo 2 hay hitos con system 'Sprint final').
+ * v6.01 (10-oct-2026): sin cambio de lógica (lee DIAS_TODOS): F1 = D1-D57 desde el lun 12-oct; la bioestadística (Psiq) vive en el tramo 2.
  */
 import { DIAS_TODOS, DiaUSMLE, esHito } from './usmleStep1Daily';
 import { MIR_DIAS, DiaMIR, mirDiaDe, mirBloques, MIR_TEMAS_TOTAL } from './mirDailyPlan';
@@ -27,7 +28,7 @@ export interface MirUsmleBridge {
   homologo: RangoSistema | null;
   /** chip HOY: "Step 1 esta semana: Cardiovascular D6-D10" */
   texto: string;
-  /** "Homólogo Step 1 de Cardiología: Cardiovascular D6-D16 (14-oct→28-oct)" (v5.20; v5.19: 13-oct→27-oct · v5.18: 12-oct→26-oct) */
+  /** "Homólogo Step 1 de Cardiología: Cardiovascular D6-D16 (19-oct→2-nov)" (v6.01; v6.00 y v5.20: 14-oct→28-oct · v5.19: 13-oct→27-oct · v5.18: 12-oct→26-oct) */
   textoHomologo: string;
   /** para UsmleTodayPlan: "MIR en paralelo: Cardiología (D5-D11)" */
   textoUsmle: string;

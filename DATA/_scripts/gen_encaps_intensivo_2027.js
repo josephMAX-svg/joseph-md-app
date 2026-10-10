@@ -33,16 +33,46 @@
  *
  * Uso:
  *   node DATA/_scripts/gen_encaps_intensivo_2027.js [D1=2027-01-04] [EXAMEN=_fechas_v6.encaps.examen (2027-03-14)]
- *        [--base 2026-10-07] [--carril-b DATA/ENCAPS/_carril_b_v520_61-92.json] [--desde AAAA-MM-DD] [--sin-tx] [--out ruta.sql]
+ *        [--base 2026-10-12 (= f1.inicio, ya por defecto; v6.00: 2026-10-07)] [--carril-b DATA/ENCAPS/_carril_b_v520_61-92.json] [--desde AAAA-MM-DD] [--sin-tx] [--out ruta.sql]
  *        [--nucleo-hasta 2027-03-05] [--slots-barrido 32] [--reparto json|ruta] [--orden-base json|ruta] [--pretest export.json]
- *        [--sims ruta.json] [--bk study_schedule_bk_v600_int_AAAAMMDD] [--bk-base study_schedule_bk_v600_20261006]
- *   · Siembra v6 (Lote 4): … 2027-01-04 2027-03-14 --base 2026-10-07 --carril-b DATA/ENCAPS/_carril_b_v520_61-92.json --sin-tx
+ *        [--sims ruta.json] [--bk study_schedule_bk_v601_int_AAAAMMDD] [--bk-base study_schedule_bk_v601_20261010]
+ *        [--pendientes-f1 DATA/ENCAPS/_pendientes_f1.json | --sin-pendientes-f1]   (v6.01; v6.00: bk _v600_int_ / _v600_20261006)
+ *   · Siembra v6.01 (10-oct): … 2027-01-04 2027-03-14 --carril-b DATA/ENCAPS/_carril_b_v520_61-92.json --sin-tx   (sin --base: default = f1.inicio
+ *     = 2026-10-12; pasar otra --base exige --out) · v6.00: Siembra v6 (Lote 4): … 2027-01-04 2027-03-14 --base 2026-10-07 --carril-b … --sin-tx
  *   · Tras el PRE-TEST (vie 8-ene): --pretest <export.json> --desde 2027-01-11 (re-ordena los 32 slots por ÍNDICE DE BRECHA conservando
  *     32 slots, cada crítico ≥ 1 y la restricción «código del slot ≠ código del carril B de ese día»).
  *   · Tras la convocatoria: editar _fechas_v6.json (encaps.examen) y regenerar con --desde <primer hábil > nucleo_hasta> (módulos + cola).
  *   · Un escenario distinto del de _fechas_v6.json (D1 / EXAMEN / --base por argv) exige --out (prueba en seco: nunca pisa el SQL versionado).
  *   · --reparto {"I-3":7,…} (suma = slots) re-ordena por intercalado + restricción · --orden-base {"<lunes>":[c1,c2,c3,c4],…} sustituye la
  *     tabla S2-S9 (aborta si choca con el carril B) · --sims [{label, fuente, clave?, hora?}] sustituye la lista de SIM del núcleo.
+ *
+ * v6.01 (10-oct-2026, corrimiento RÍGIDO «todo empieza el lunes 12»: no se estudió mié 7, jue 8 ni vie 9-oct): D1 del mantenimiento
+ *   = LUN 12-OCT-2026 (--base = _fechas_v6.json f1.inicio, ya por defecto) → la F1 son 57 hábiles (dia 1-57) y la intensiva se RENUMERA
+ *   dia 58-107 con las MISMAS FECHAS (lun 4-ene → vie 12-mar), porque la app calcula el dia como índice de hábiles desde el d1
+ *   (encapsPlan.ts diaActual). Nada más cambia: S1 / núcleo / 8 SIM 100Q / pre-test vie 8-ene / cola, y el CARRIL B sigue con las filas
+ *   61-92 de v5.20 en su MISMA FECHA (extra.carril_b.dia_mant = etiqueta de ORIGEN, se queda 61-92). Cambios de código:
+ *   · la guarda «dia del carril B = dia de la intensiva» pasa a «desfase constante = Σ hábiles perdidos de _fechas_v6.json corrimientos»
+ *     (v6.01: 61 − 58 = 3) y la fila del carril B se sigue casando POR FECHA.
+ *   · PENDIENTES F1 (--pendientes-f1, default DATA/ENCAPS/_pendientes_f1.json si existe; --sin-pendientes-f1 lo ignora): las filas que el
+ *     corrimiento dejó fuera de la F1 van EXPLÍCITAS a los primeros días de REPOSICIÓN del carril B, en este orden: primero las banqueo1h por
+ *     dia_mant (v6.01: fila mant. 59 II-8 paquetes_tamizaje #3 → mié 17-feb = dia 90 · fila mant. 60 II-3 cadena_frio #4 → jue 18-feb =
+ *     dia 91) y después los mini-sims (v6.01: el 11.º mini-sim de v6.00, fila mant. 53, vie 18-dic, cola larga II-6 + II-10 → primer día de
+ *     reposición libre = LUN 22-FEB-2027 = dia 93; el vie 19-feb es SIM 100Q). NADA se descarta ni se absorbe (regla de Joseph, 10-oct):
+ *     aborta si _pendientes_f1.json trae `minisims_absorbidos`. extra.carril_b = { tipo:'reposicion', regla, pendiente_f1: <la fila del JSON,
+ *     IDÉNTICA: origen, corrimiento, dia_mant, fecha_original, tipo ('banqueo1h' | 'mini_sim'), codigo, subtema, prioridad, temas_secundarios,
+ *     extra, destino, reposicion> }; el mini-sim lleva su receta íntegra en extra (25Q · 72 s/Q · II 8 · I 7 · V 5 · III 3 · IV 2 · cola larga
+ *     II-6 + II-10). Al colocarlas, este generador ESCRIBE en _pendientes_f1.json `destino` («REPUESTO dia N …») y `reposicion` {dia, fecha,
+ *     carril} (solo en la siembra versionada: no con --out ni --no-persistir), así el JSON y la copia embebida son idénticos. La app
+ *     (encapsPlan.ts carrilBDe) pinta la banqueo1h como un banqueo del carril B y el mini_sim como el MINI-SIMULACRO 25Q de las 16:15 con su
+ *     corrección (rama mini_sim de itemsMantenimiento). Aborta si no caben.
+ *   · Regla de la reposición genérica (desambiguada tras la renumeración): «1) filas del carril B dia 58-89 (dia_mant 61-92) sin ✓ en
+ *     D{dia}:b_*, en orden; 2) si no hay: lista de vigilancia = temasCalientes() del día» — el rango se DERIVA de las filas con
+ *     extra.carril_b.tipo 'banqueo1h' (antes: «instancias de 61-92 no hechas (study_checks sin ✓)», ambiguo con dia 58-107).
+ *   · study_metrics.extra: d1 2026-10-12 · dias_ciclo 57 · regimen «MANTENIMIENTO_2027-1 v6.20 (57 d) + INTENSIVA v6.01 …» · intensiva.dias
+ *     '58-107' · backup study_schedule_bk_v601_20261010 (--bk-base) · bloque `corrimiento` (de _fechas_v6.json + pendientes F1 con su
+ *     reposición) · intensiva.carril_b.pendientes_f1 · intensiva.backup = --bk (study_schedule_bk_v601_int_<fecha>): con --sin-tx este
+ *     generador NO crea esa tabla; la crea el orquestador en la transacción de siembra (como en v6.00).
+ *   Siembra v6.01: node DATA/_scripts/gen_encaps_intensivo_2027.js --sin-tx (todo por defecto) → el orquestador lo combina con la F1.
  *
  * Histórico (antes de v6.00):
  * v5.20 (6-oct-2026, DEFINITIVA): Joseph FIJA el examen ENCAPS 2027-I = MIÉ 10-MAR-2027 y la intensiva arranca el día siguiente al examen
@@ -66,7 +96,7 @@ const F6 = V6.cargarFechasV6(); // v6.00: fuente única de fechas (aborta si un 
 //    se habría leído como D1) ──
 const argv = process.argv.slice(2);
 const OPCIONES_CON_VALOR = new Set(['--base', '--bk', '--bk-base', '--pretest', '--sims', '--out', '--desde', '--nucleo-hasta', '--slots-barrido',
-  '--reparto', '--carril-b', '--orden-base']);
+  '--reparto', '--carril-b', '--orden-base', '--pendientes-f1']); // v6.01: + --pendientes-f1
 const ISO_RE = /^20\d\d-\d\d-\d\d$/;
 const fechasArg = argv.filter((a, i) => ISO_RE.test(a) && !OPCIONES_CON_VALOR.has(argv[i - 1]));
 const opt = (k, def) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] ? argv[i + 1] : def; };
@@ -74,11 +104,16 @@ const has = (k) => argv.includes(k);
 const hoyLima = () => new Date(Date.now() - 5 * 3600 * 1000).toISOString().slice(0, 10);
 const D1 = fechasArg[0] || F6.encaps.intensiva_desde;            // v6.00: lun 4-ene-2027 (dia 61)
 const EXAMEN = fechasArg[1] || F6.encaps.examen;                  // v6.00: dom 14-mar-2027 PROVISIONAL (se fija con la convocatoria)
-const BASE = opt('--base', F6.f1.inicio);                          // v6.00: D1 del mantenimiento = mié 7-oct-2026 (numeración `dia`)
+const BASE = opt('--base', F6.f1.inicio);                          // v6.01: D1 del mantenimiento = lun 12-oct-2026 (numeración `dia`) · v6.00: mié 7-oct
 const NUCLEO_HASTA = opt('--nucleo-hasta', F6.encaps.nucleo_hasta); // v6.00: vie 5-mar-2027 (fin del núcleo S2-S9)
 const SLOTS = Number(opt('--slots-barrido', '32'));                // v6.00: sustituye al .slice(0, 16) fijo
-const BK = opt('--bk', `study_schedule_bk_v600_int_${hoyLima().replace(/-/g, '')}`);
-const BK_BASE = opt('--bk-base', 'study_schedule_bk_v600_20261006'); // backup completo del Lote 0 (study_metrics.extra.backup)
+const BK = opt('--bk', `study_schedule_bk_v601_int_${hoyLima().replace(/-/g, '')}`); // v6.01 (v6.00: study_schedule_bk_v600_int_<fecha>)
+const BK_BASE = opt('--bk-base', 'study_schedule_bk_v601_20261010'); // backup completo previo (study_metrics.extra.backup) · v6.01 (v6.00: study_schedule_bk_v600_20261006)
+// v6.01: pendientes F1 (instancias banqueo1h que el corrimiento dejó fuera de la F1) → primeros días de reposición del carril B
+const PENDIENTES_F1_DEF = path.join(ROOT, 'DATA', 'ENCAPS', '_pendientes_f1.json');
+const PENDIENTES_F1 = has('--sin-pendientes-f1') ? null : (opt('--pendientes-f1', null) ? path.resolve(opt('--pendientes-f1')) : (fs.existsSync(PENDIENTES_F1_DEF) ? PENDIENTES_F1_DEF : null));
+const CORRIMIENTOS = F6.corrimientos || [];
+const PERDIDOS = CORRIMIENTOS.reduce((n, c) => n + (c.perdidos || []).length, 0); // v6.01: 3 (mié 7, jue 8, vie 9-oct)
 const PRETEST = opt('--pretest', null);
 const SIMS_ARG = opt('--sims', null);
 const REPARTO_ARG = opt('--reparto', null);
@@ -121,7 +156,7 @@ const fDia = (s) => fCorta(s).split(' ')[1]; // «4-ene»
 const plan = habiles(D1, addDays(EXAMEN, -1));
 if (plan.length < 10) throw new Error('la intensiva necesita ≥ 10 hábiles entre D1 y D-1 (S1 + cola)');
 const N = plan.length;
-const offset = habiles(BASE, addDays(D1, -1)).length; // días L-V ya numerados por el mantenimiento (v6.00: 60 = D1-D60 de F1)
+const offset = habiles(BASE, addDays(D1, -1)).length; // días L-V ya numerados por el mantenimiento (v6.01: 57 = D1-D57 de F1 · v6.00: 60 = D1-D60)
 if (ESCENARIO_JSON && offset !== F6.f1.dias) throw new Error(`offset ${offset} ≠ f1.dias ${F6.f1.dias}: la intensiva debe empezar en el dia ${F6.f1.dias + 1}`);
 if (plan[N - 1].fecha !== V6.ultimoHabilAntes(EXAMEN, SKIP_INT)) throw new Error('el último hábil del plan no es el D-1 hábil del examen');
 {
@@ -192,7 +227,30 @@ for (const r of cbFilas) {
   cbPorFecha[r.fecha] = r;
 }
 const cbUltima = cbFilas.map((r) => r.fecha).sort().at(-1);
-const cbCodigoDe = (fecha) => { const r = cbPorFecha[fecha]; return r && r.tipo === 'banqueo1h' ? r.codigo : null; };
+let cbCodigoDe = (fecha) => { const r = cbPorFecha[fecha]; return r && r.tipo === 'banqueo1h' ? r.codigo : null; }; // v6.01: let (se amplía con los pendientes F1)
+// v6.01: desfase entre la etiqueta de origen (dia_mant 61-92 de v5.20) y el dia de la intensiva = Σ hábiles perdidos por corrimientos
+// (v6.00: 0 → dia_mant = dia · v6.01: 3 → dia_mant 61 = dia 58). La fila se casa por FECHA; el desfase solo se comprueba.
+const DESFASE_CB = ESCENARIO_JSON ? PERDIDOS : null;
+
+// ── v6.01: pendientes F1 (_pendientes_f1.json, lo escribe gen_encaps_mantenimiento_2027.js --pendientes-de) ──
+// filas tipo 'banqueo1h' (instancia del ciclo) o 'mini_sim' (mini-sim 25Q con su receta en extra). NADA se descarta: ningún «absorbido».
+let pendF1 = [], pendF1Meta = [], pendF1Doc = null;
+if (PENDIENTES_F1) {
+  pendF1Doc = JSON.parse(fs.readFileSync(PENDIENTES_F1, 'utf8'));
+  pendF1 = (pendF1Doc.filas || []).slice();
+  pendF1Meta = (pendF1Doc._meta && pendF1Doc._meta.corrimientos) || [];
+  if ((pendF1Doc.minisims_absorbidos || []).length) throw new Error(`--pendientes-f1: ${pendF1Doc.minisims_absorbidos.length} mini-sim(s) en minisims_absorbidos: PROHIBIDO descartar (regla de Joseph, 10-oct) → regenera _pendientes_f1.json con gen_encaps_mantenimiento_2027.js --pendientes-de (el mini-sim va a filas con tipo 'mini_sim')`);
+  for (const r of pendF1) {
+    if (r.tipo === 'banqueo1h') { if (!r.codigo || !r.extra || r.extra.instancia == null) throw new Error(`--pendientes-f1: fila banqueo1h inválida (dia_mant ${r.dia_mant})`); }
+    else if (r.tipo === 'mini_sim') { const e = r.extra || {}; if (r.codigo || e.tipo !== 'mini_sim' || !e.receta || !e.seg_por_q || !Array.isArray(e.cola_larga) || !e.cola_larga.length) throw new Error(`--pendientes-f1: mini-sim sin su receta íntegra (dia_mant ${r.dia_mant}: extra.receta / seg_por_q / cola_larga)`); }
+    else throw new Error(`--pendientes-f1: tipo desconocido ${r.tipo} (dia_mant ${r.dia_mant})`);
+  }
+  // orden: por corrimiento; dentro, primero las banqueo1h y después los mini-sims (un mini-sim no desplaza a las instancias ya colocadas);
+  // y por el dia de origen (lo más temprano se repone primero)
+  const rangoTipo = (t) => (t === 'banqueo1h' ? 0 : 1);
+  pendF1.sort((a, b) => String(a.corrimiento).localeCompare(String(b.corrimiento)) || rangoTipo(a.tipo) - rangoTipo(b.tipo) || a.dia_mant - b.dia_mant);
+}
+const pendF1Cola = pendF1.slice(); // se consumen en los primeros días de reposición
 
 // ── estructura por fecha: S1 · núcleo · módulos · cola ──
 const COLA = plan.slice(-5).map((p) => p.fecha);                         // D-5 … D-1
@@ -210,6 +268,31 @@ if (SLOTS_BARRIDO.length !== SLOTS) throw new Error(`el núcleo (${NUCLEO[0]} �
 const MODULOS = plan.filter((p) => p.fecha > NUCLEO_HASTA && !COLA.includes(p.fecha)).map((p) => p.fecha);
 const MOD_ROLES = ['profunda1', 'profunda2', 'rebote', 'vigilancia'];       // orden de llenado del módulo (parcial: el último hábil = sim100)
 const semanasModulo = [...new Set(MODULOS.map(lunesDe))];
+// v6.01: días de REPOSICIÓN del carril B (misma regla que el bucle de siembra: lun-jue tras la última fila 61-92 hasta el D-3, sin SIM /
+// pre-test / dress / medio día) → los primeros reciben los PENDIENTES F1, en orden. Se calcula ANTES del orden del barrido para que la
+// restricción «código del slot ≠ código del carril B» también vea el código del pendiente.
+const esSimFecha = (f) => SIM_NUCLEO.includes(f) || (MODULOS.includes(f) && f === ultimoHabilSemana(f, MODULOS));
+const REPO_FECHAS = plan.filter((p) => p.fecha > cbUltima && p.fecha <= COLA[2] && p.dow >= 1 && p.dow <= 4 && !cbPorFecha[p.fecha]
+  && !esSimFecha(p.fecha) && p.fecha !== PRETEST_FECHA && !COLA.slice(3).includes(p.fecha)).map((p) => p.fecha);
+if (pendF1Cola.length > REPO_FECHAS.length) throw new Error(`--pendientes-f1: ${pendF1Cola.length} pendientes F1 y solo ${REPO_FECHAS.length} días de reposición en el carril B`);
+const PEND_POR_FECHA = Object.fromEntries(pendF1Cola.map((p, k) => [REPO_FECHAS[k], p]));
+{ const cbCod0 = cbCodigoDe; cbCodigoDe = (fecha) => cbCod0(fecha) || (PEND_POR_FECHA[fecha] ? PEND_POR_FECHA[fecha].codigo : null); }
+const diaDeFecha = (fecha) => { const k = plan.findIndex((p) => p.fecha === fecha); return k < 0 ? null : offset + 1 + k; };
+// v6.01: la fila del JSON queda marcada con dónde se repuso (destino + reposicion) y se embebe IDÉNTICA en extra.carril_b.pendiente_f1
+const descPend = (p) => (p.tipo === 'mini_sim'
+  ? `mini-sim 25Q (fila mant. ${p.dia_mant}, ${p.fecha_original}, cola larga ${(p.extra.cola_larga || []).join(' + ')})`
+  : `${p.codigo} ${p.extra.sub_eje || ''} #${p.extra.instancia} (fila mant. ${p.dia_mant}, ${p.fecha_original})`.replace(/\s+#/, ' #'));
+for (const [fecha, p] of Object.entries(PEND_POR_FECHA)) {
+  const d = diaDeFecha(fecha);
+  p.destino = `REPUESTO dia ${d} (${fCorta(fecha)}-${fecha.slice(0, 4)}) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)${p.tipo === 'mini_sim' ? ' · mini-simulacro 25Q cronometrado (72 s/Q) + corrección, receta íntegra en extra' : ''}`;
+  p.reposicion = { dia: d, fecha, carril: 'B 16:15' };
+}
+// v6.01: regla de la reposición genérica, sin ambigüedad tras la renumeración (dia de la intensiva + dia_mant de origen), DERIVADA de
+// las filas del carril B banqueo1h (antes: «instancias de 61-92 no hechas (study_checks sin ✓)», ambiguo con dia 58-107)
+const cbBanqueoDias = cbFilas.filter((r) => r.tipo === 'banqueo1h').map((r) => ({ dia: diaDeFecha(r.fecha), mant: r.dia })).filter((x) => x.dia != null);
+const REGLA_REPO = cbBanqueoDias.length
+  ? `1) filas del carril B dia ${Math.min(...cbBanqueoDias.map((x) => x.dia))}-${Math.max(...cbBanqueoDias.map((x) => x.dia))} (dia_mant ${Math.min(...cbBanqueoDias.map((x) => x.mant))}-${Math.max(...cbBanqueoDias.map((x) => x.mant))}, extra.carril_b.tipo 'banqueo1h') sin ✓ en D{dia}:b_*, en orden; 2) si no hay: lista de vigilancia = temasCalientes() del día`
+  : '1) filas del carril B (extra.carril_b.tipo \'banqueo1h\') sin ✓ en D{dia}:b_*, en orden; 2) si no hay: lista de vigilancia = temasCalientes() del día';
 
 // ── reparto y orden del barrido (núcleo) ──
 const REPARTO_DEF = { 'I-3': 7, 'V-2': 5, 'IV-1+IV-2': 4, 'I-4': 4, 'II-3': 4, 'III-5': 3, 'II-4': 3, 'II-5': 2 };
@@ -362,7 +445,8 @@ plan.forEach(({ fecha, dow }, i) => {
   // ── carril B (16:15): fila MANTENIMIENTO v5.20 de la misma fecha · mini-sim absorbido · reposición ──
   const cb = cbPorFecha[fecha];
   if (cb) {
-    if (cb.dia !== dia) throw new Error(`carril B: la fila mant. ${cb.dia} (${fecha}) cae en el dia ${dia} de la intensiva: la numeración no coincide`);
+    // v6.00: exigía cb.dia === dia · v6.01: desfase constante = Σ hábiles perdidos (dia_mant es la etiqueta de origen 61-92)
+    if (DESFASE_CB != null && cb.dia - dia !== DESFASE_CB) throw new Error(`carril B: la fila mant. ${cb.dia} (${fecha}) cae en el dia ${dia} de la intensiva: desfase ${cb.dia - dia} ≠ ${DESFASE_CB} (Σ hábiles perdidos en _fechas_v6.json corrimientos)`);
     if (cb.tipo === 'banqueo1h') {
       if (['sim100', 'pretest', 'dress_rehearsal', 'medio_dia'].includes(tipo)) throw new Error(`carril B banqueo1h en un día ${tipo} (${fecha})`);
       extra.carril_b = { origen: 'mantenimiento_v5.20', dia_mant: cb.dia, fecha: cb.fecha, tipo: 'banqueo1h', codigo: cb.codigo, subtema: cb.subtema,
@@ -372,7 +456,17 @@ plan.forEach(({ fecha, dow }, i) => {
       extra.minisim_absorbido = { dia_mant: cb.dia, subtema: cb.subtema, extra: cb.extra };
     } else throw new Error(`carril B: tipo desconocido ${cb.tipo} (${fecha})`);
   } else if (fecha > cbUltima && fecha <= COLA[2] && dow >= 1 && dow <= 4 && !['sim100', 'pretest', 'dress_rehearsal', 'medio_dia'].includes(tipo)) {
-    extra.carril_b = { tipo: 'reposicion', regla: '1) instancias de 61-92 no hechas (study_checks sin ✓), en orden; 2) si no hay: lista de vigilancia = temasCalientes() del día' };
+    extra.carril_b = { tipo: 'reposicion', regla: REGLA_REPO };
+    // v6.01: los PENDIENTES F1 (filas que el corrimiento dejó fuera de la F1: banqueo1h y mini-sims) van EXPLÍCITOS en los primeros días de
+    // reposición; la copia embebida es la fila del JSON tal cual (con destino / reposicion), sin claves añadidas
+    if (PEND_POR_FECHA[fecha]) {
+      const p = PEND_POR_FECHA[fecha];
+      extra.carril_b.pendiente_f1 = JSON.parse(JSON.stringify(p));
+      const deF1 = `fila mant. ${p.dia_mant} de la F1 ${String(p.origen || '').replace('mantenimiento_', '')} (${p.fecha_original}) que no cupo en la F1 tras el corrimiento`;
+      extra.carril_b.regla = p.tipo === 'mini_sim'
+        ? `PENDIENTE F1 (${p.corrimiento}) · MINI-SIMULACRO: ${deF1} → se hace HOY a las 16:15 como mini-simulacro 25Q mixto cronometrado (${p.extra.seg_por_q} s/Q, receta íntegra en pendiente_f1.extra, cola larga ${(p.extra.cola_larga || []).join(' + ')}) + corrección y cierre tipo mini_sim; después, la regla general: ${REGLA_REPO}`
+        : `PENDIENTE F1 (${p.corrimiento}): ${deF1} → se hace HOY a las 16:15; después, la regla general: ${REGLA_REPO}`;
+    }
   }
   filas.push({ dia, fecha, dow, tipo, codigo, subtema, prio, secs, extra });
 });
@@ -396,8 +490,18 @@ ok(cbFilas.every((r) => filas.some((x) => x.fecha === r.fecha)), 'hay filas del 
 ok(filas.every((r) => r.tipo !== 'sim100' || !r.extra.carril_b), 'carril B en un día de SIM');
 for (const lun of semanasModulo) { const sem = MODULOS.filter((x) => lunesDe(x) === lun); const r = filas.find((x) => x.fecha === sem.at(-1)); ok(r && r.tipo === 'sim100', `módulo ${lun}: el último hábil no es el sim100`); }
 ok(filas.filter((r) => r.tipo === 'pretest').length === 1 && filas.find((r) => r.tipo === 'pretest').fecha === PRETEST_FECHA, 'pre-test');
-const choquesFinal = filas.filter((r) => r.extra.critico_v3 && r.extra.carril_b && choca(r.extra.critico_v3, r.extra.carril_b.codigo)).map((r) => r.fecha);
+const cbCodigoFila = (r) => (r.extra.carril_b ? r.extra.carril_b.codigo || (r.extra.carril_b.pendiente_f1 || {}).codigo || null : null); // v6.01: + pendiente F1
+const choquesFinal = filas.filter((r) => r.extra.critico_v3 && r.extra.carril_b && choca(r.extra.critico_v3, cbCodigoFila(r))).map((r) => r.fecha);
 ok(!choquesFinal.length, `choques barrido = carril B: ${choquesFinal.join(', ')}`);
+// v6.01: cada pendiente F1 está en un día de reposición, en orden, una sola vez
+const nPendF1 = filas.filter((r) => r.extra.carril_b && r.extra.carril_b.pendiente_f1).length;
+ok(nPendF1 === pendF1.length, `pendientes F1 sembrados ${nPendF1} ≠ ${pendF1.length} del JSON`);
+ok(filas.filter((r) => r.extra.carril_b && r.extra.carril_b.pendiente_f1).every((r, k) => r.fecha === REPO_FECHAS[k] && r.extra.carril_b.tipo === 'reposicion'), 'pendientes F1 fuera de los primeros días de reposición');
+// v6.01: copia embebida = fila del JSON (idéntica, incl. destino/reposicion) · el mini-sim pendiente cae en lun-jue sin SIM y conserva su receta
+ok(filas.filter((r) => r.extra.carril_b && r.extra.carril_b.pendiente_f1).every((r) => { const p = PEND_POR_FECHA[r.fecha]; return p && JSON.stringify(r.extra.carril_b.pendiente_f1) === JSON.stringify(p) && p.reposicion.dia === r.dia && p.reposicion.fecha === r.fecha; }), 'pendiente_f1 embebido ≠ fila de _pendientes_f1.json');
+ok(filas.filter((r) => r.extra.carril_b && r.extra.carril_b.pendiente_f1 && r.extra.carril_b.pendiente_f1.tipo === 'mini_sim').every((r) => r.dow >= 1 && r.dow <= 4 && !['sim100', 'pretest', 'dress_rehearsal', 'medio_dia'].includes(r.tipo) && r.extra.carril_b.pendiente_f1.extra.seg_por_q === 72), 'mini-sim pendiente F1 en un día de SIM / viernes o sin su receta');
+ok(pendF1.filter((p) => p.tipo === 'banqueo1h').every((p, k, a) => k === 0 || p.reposicion.fecha > a[k - 1].reposicion.fecha) && pendF1.filter((p) => p.tipo === 'mini_sim').every((s) => pendF1.filter((p) => p.tipo === 'banqueo1h' && p.corrimiento === s.corrimiento).every((p) => p.reposicion.fecha < s.reposicion.fecha)), 'orden de reposición: banqueo1h (por dia_mant) y después mini-sims');
+if (ESCENARIO_JSON) ok(filas[0].dia === F6.f1.dias + 1, `la intensiva empieza en el dia ${filas[0].dia} y debe ser f1.dias + 1 = ${F6.f1.dias + 1}`);
 if (fallos.length) { console.error('⛔ verificación:\n  · ' + fallos.join('\n  · ')); process.exit(1); }
 
 // ── SQL ──
@@ -416,24 +520,47 @@ const examenTarget = EXAMEN === '2027-03-14' && provisional
     ? `${EXAMEN} (${fCorta(EXAMEN).split(' ')[0]} · PROVISIONAL v6.00: escenario de §A5; se fija con la convocatoria; regla convocatoria = examen − 25 d → sin convocatoria al ${fCorta(tope)} se descarta el ${fDia(EXAMEN)} y se pasa al escenario siguiente)`
     : `${EXAMEN} (${fCorta(EXAMEN).split(' ')[0]} · CONFIRMADO por la convocatoria SERUMS 2027-I · v6.00)`;
 const nucleoDesde = NUCLEO[0], trasNucleo = plan.find((p) => p.fecha > NUCLEO_HASTA).fecha;
+// v6.01: versión del régimen = la del último corrimiento de _fechas_v6.json (v6.00 sin corrimientos); el MANTENIMIENTO sube un número por régimen
+const VERSION_V6 = (CORRIMIENTOS.at(-1) || {}).version || F6.version || 'v6.00';
+const MANT_V = CORRIMIENTOS.length ? `v6.${19 + CORRIMIENTOS.length}` : 'v6.19'; // v6.00: v6.19 · v6.01: v6.20
+const ultCorr = CORRIMIENTOS.at(-1) || null;
 const metricsExtra = {
   d1: BASE, dias_ciclo: offset,
-  regimen: `MANTENIMIENTO_2027-1 v6.19 (${offset} d) + INTENSIVA v6.00 (núcleo ${fDia(D1)} → ${fDia(NUCLEO_HASTA)} + cola anclada)`,
+  regimen: `MANTENIMIENTO_2027-1 ${MANT_V} (${offset} d) + INTENSIVA ${VERSION_V6} (núcleo ${fDia(D1)} → ${fDia(NUCLEO_HASTA)} + cola anclada)`,
   exam_date: EXAMEN, examen_target: examenTarget, backup: BK_BASE,
+  // v6.01: la nota estática de días al examen decía «2027-03-10 (v5.20)»: la app y el daemon ya lo calculan con exam_date
+  dias_a_examen_nota: `vivo: la app (diasAExamenDe) y el daemon calculan exam_date − hoy (Lima); study_metrics.dias_a_examen es solo el fallback estático. ${VERSION_V6} (${hoyLima()}): exam_date = ${EXAMEN}${provisional ? ' PROVISIONAL' : ''}.`,
+  ...(ultCorr ? { corrimiento: {
+    version: ultCorr.version, fecha: ultCorr.fecha, d1_previo: ultCorr.d1_previo, d1: ultCorr.d1, perdidos: ultCorr.perdidos, regla_fechas_v6: ultCorr.regla,
+    regla_encaps: `F1 ENCAPS rígida por slots (dia 1-${offset}); ${pendF1.length} pendiente(s) F1 que no caben (${pendF1.filter((p) => p.tipo === 'banqueo1h').length} banqueo1h + ${pendF1.filter((p) => p.tipo === 'mini_sim').length} mini-sim) → reposición EXPLÍCITA en el carril B 16:15; nada se descarta ni se absorbe (0 mini-sims F1 absorbidos); intensiva renumerada con las mismas fechas`,
+    f1: `dia 1-${offset} (${BASE} → ${F6.f1.fin}); la F1 no se alarga`, intensiva_renumerada: `dia ${offset + 1}-${offset + N} (mismas fechas ${plan[0].fecha} → ${plan[N - 1].fecha})`,
+    carril_b_dia_mant: 'etiqueta de ORIGEN 61-92 (v5.20), sin cambio', historial: CORRIMIENTOS.map((c) => `${c.version} ${c.fecha}: D1 ${c.d1_previo} → ${c.d1}`),
+    pendientes_f1: pendF1.map((p) => ({ tipo: p.tipo, dia_mant: p.dia_mant, fecha_original: p.fecha_original, codigo: p.codigo || null,
+      ...(p.tipo === 'mini_sim' ? { cola_larga: p.extra.cola_larga, n: 25, seg_por_q: p.extra.seg_por_q } : { sub_eje: p.extra.sub_eje || null, instancia: p.extra.instancia }),
+      reposicion: p.reposicion ? p.reposicion.fecha : null, dia: p.reposicion ? p.reposicion.dia : null })),
+    regla_reposicion: REGLA_REPO,
+    fuente_pendientes: PENDIENTES_F1 ? path.relative(ROOT, PENDIENTES_F1).replace(/\\/g, '/') : null,
+  } } : {}),
   intensiva: {
     desde: plan[0].fecha, hasta: plan[N - 1].fecha, dias: `${offset + 1}-${offset + N}`, pretest: PRETEST_FECHA,
     nucleo: { desde: nucleoDesde, hasta: NUCLEO_HASTA, slots_barrido: SLOTS, sims: nSimNucleo },
     cola: { desde: COLA[0], hasta: COLA[4], regla: 'D-5…D-1 anclada al examen' },
     modulos: Math.round((MODULOS.length / 5) * 10) / 10, modulos_dias: MODULOS.length,
     carril_b: { desde: cbFilas.map((r) => r.fecha).sort()[0], hasta: cbUltima, filas_mant: `${Math.min(...cbFilas.map((r) => r.dia))}-${Math.max(...cbFilas.map((r) => r.dia))}`, campo: 'extra.carril_b',
-      reposicion: repoFechas.length ? `${repoFechas[0]} → ${repoFechas.at(-1)}` : null },
+      reposicion: repoFechas.length ? `${repoFechas[0]} → ${repoFechas.at(-1)}` : null,
+      pendientes_f1: pendF1.length ? Object.entries(PEND_POR_FECHA).map(([f, p]) => `${f} (dia ${p.reposicion.dia}): ${descPend(p)}`) : [] },
     backup: BK,
     regenerar: `tras el PRE-TEST (${fCorta(PRETEST_FECHA)}): gen_encaps_intensivo_2027.js --pretest <export.json> --desde ${nucleoDesde}; tras la convocatoria: con la fecha real --desde ${trasNucleo} (filas > ${NUCLEO_HASTA}); --carril-b siempre`,
   },
 };
-const sqlMetrics = `UPDATE study_metrics SET extra = jsonb_set(COALESCE(extra, '{}'::jsonb) || ${J(metricsExtra)}, '{horarios}', COALESCE(extra->'horarios', '{}'::jsonb) || ${J({ intensiva: LOOP })}, true) WHERE examen = 'ENCAPS';`;
-const cabecera = `-- ENCAPS FASE INTENSIVA 2027-I · v6.00 · generado por gen_encaps_intensivo_2027.js (${hoyLima()})
--- ${filas.length} días L-V · ${plan[0].fecha} → ${plan[N - 1].fecha} · dia ${offset + 1}-${offset + N} (continúa la cuenta del mantenimiento desde ${BASE})${DESDE ? ` · --desde ${DESDE}: se emiten ${emitidas.length} filas (dia ${emitidas[0].dia}-${emitidas.at(-1).dia})` : ''}
+// v6.01: horarios._nota (texto de la hora 16:15 del mantenimiento) se reescribe con las fechas vigentes (decía «v5.20 … D1 = mié 7-oct …»)
+const f1Hab = habiles(BASE, F6.f1.fin), f1Vie = f1Hab.filter((p) => p.dow === 5).map((p) => p.fecha), f1LJ = f1Hab.filter((p) => p.dow !== 5).map((p) => p.fecha);
+const notaHorarios = `${VERSION_V6} (${hoyLima()}; D1 = ${fCorta(BASE)}; F1 = ${offset} días hasta el ${fCorta(F6.f1.fin)}; pre-test de arranque ${fCorta(f1LJ[0])} + ${fCorta(f1LJ[1])} = D1 + D2; mini-sims todos los viernes ${fDia(f1Vie[0])} … ${fDia(f1Vie.at(-1))} (el último = CHECKPOINT DEL AÑO); INTENSIVA ${fCorta(plan[0].fecha)} → ${fCorta(plan[N - 1].fecha)} = dia ${offset + 1}-${offset + N} con CARRIL B 16:15 (filas 61-92 de v5.20 + reposición${pendF1.length ? ` con ${pendF1.length} pendiente(s) F1: ${Object.entries(PEND_POR_FECHA).map(([f, p]) => `${fCorta(f)} ${p.tipo === 'mini_sim' ? 'mini-sim 25Q' : p.codigo}`).join(', ')}` : ''}); examen ENCAPS ${fCorta(EXAMEN)}${provisional ? ' PROVISIONAL' : ''}): 1h/día 16:15-17:15 L-V según DATA/ENCAPS/PROTOCOLO_HORA_MANTENIMIENTO.md · weekday = lun-jue · weekend = plantilla del VIERNES mini-sim (la app la usa solo si today.simulacro está seteado) · sáb/dom libres · el horario deep-prime anterior quedó en horarios_legacy_deep_prime · regla REAL de la eval anclada (gen_encaps_semana.js): fallos ≥2 → código CALIENTE para el override del viernes (semana siguiente); NO desplaza al tema del día siguiente · semana 1 (${fCorta(f1LJ[0])} y ${fCorta(f1LJ[1])}): PRE-TEST DE ARRANQUE 40Q (5Q × 8 críticos, ítems reales 2024-2A→2025-2) sustituye el CONTENIDO del banco del día, no el horario`;
+const sqlMetrics = `UPDATE study_metrics SET extra = jsonb_set(COALESCE(extra, '{}'::jsonb) || ${J(metricsExtra)}, '{horarios}', COALESCE(extra->'horarios', '{}'::jsonb) || ${J({ intensiva: LOOP, _nota: notaHorarios })}, true) WHERE examen = 'ENCAPS';`;
+const cabecera = `-- ENCAPS FASE INTENSIVA 2027-I · ${VERSION_V6} · generado por gen_encaps_intensivo_2027.js (${hoyLima()})
+-- ${filas.length} días L-V · ${plan[0].fecha} → ${plan[N - 1].fecha} · dia ${offset + 1}-${offset + N} (continúa la cuenta del mantenimiento desde ${BASE})${DESDE ? ` · --desde ${DESDE}: se emiten ${emitidas.length} filas (dia ${emitidas[0].dia}-${emitidas.at(-1).dia})` : ''}${ultCorr ? `
+-- ${ultCorr.version}: corrimiento D1 ${ultCorr.d1_previo} → ${ultCorr.d1} (Σ perdidos ${PERDIDOS}) → intensiva renumerada, MISMAS fechas; carril B dia_mant 61-92 = etiqueta de origen (desfase ${DESFASE_CB})` : ''}${pendF1.length ? `
+-- pendientes F1 (${path.relative(ROOT, PENDIENTES_F1).replace(/\\/g, '/')}): ${Object.entries(PEND_POR_FECHA).map(([f, p]) => `${f} (dia ${p.reposicion.dia}) ← ${descPend(p)}`).join(' · ')} · 0 mini-sims absorbidos (nada se descarta)` : ''}
 -- EXAMEN ${EXAMEN} (${WD[dowDe(EXAMEN)]}${provisional ? ' · PROVISIONAL' : ''}) · núcleo ${nucleoDesde} → ${NUCLEO_HASTA} (${SLOTS} slots + ${nSimNucleo} SIM) · módulos ${MODULOS.length} d · cola ${COLA[0]} → ${COLA[4]} · SKIP dentro: ${[...SKIP_INT].filter((f) => f >= D1 && f <= plan[N - 1].fecha).join(', ') || 'ninguno'}
 -- barrido: ${notaBrecha}
 -- carril B (16:15) = ${path.relative(ROOT, CARRIL_B).replace(/\\/g, '/')}: ${nCbB} banqueo1h + ${nCbM} mini-sims absorbidos + ${nRepo} reposición · 0 choques de código con el barrido
@@ -458,14 +585,21 @@ COMMIT;
 `;
 fs.mkdirSync(path.dirname(OUT), { recursive: true });
 fs.writeFileSync(OUT, sql, 'utf8');
-if (SIN_TX) fs.writeFileSync(OUT_METRICS, `-- study_metrics.extra (ENCAPS) · v6.00 · gen_encaps_intensivo_2027.js (${hoyLima()}) · examen ${EXAMEN} · va DESPUÉS del INSERT de ${path.basename(OUT)} (Lote 4, misma transacción)\n${sqlMetrics}\n`, 'utf8');
+if (SIN_TX) fs.writeFileSync(OUT_METRICS, `-- study_metrics.extra (ENCAPS) · ${VERSION_V6} · gen_encaps_intensivo_2027.js (${hoyLima()}) · examen ${EXAMEN} · va DESPUÉS del INSERT de ${path.basename(OUT)} (Lote 4, misma transacción)\n-- intensiva.backup = ${BK}: con --sin-tx este SQL NO crea esa tabla; la CREA el orquestador en la transacción de siembra (CREATE TABLE ${BK} AS SELECT * FROM study_schedule WHERE examen = 'ENCAPS', antes del DELETE), como en v6.00\n${sqlMetrics}\n`, 'utf8');
+// v6.01: _pendientes_f1.json registra dónde quedó repuesta cada fila (destino + reposicion), idéntico a la copia embebida en el SQL.
+// Solo en la siembra versionada (escenario de _fechas_v6.json, sin --out): una prueba en seco no reescribe el JSON.
+if (pendF1Doc && ESCENARIO_JSON && !OUT_ARG && !has('--no-persistir')) {
+  const antes = fs.readFileSync(PENDIENTES_F1, 'utf8');
+  const despues = JSON.stringify(pendF1Doc, null, 1) + '\n';
+  if (antes !== despues) { fs.writeFileSync(PENDIENTES_F1, despues, 'utf8'); console.log('pendientes F1 (destino / reposicion) →', path.relative(ROOT, PENDIENTES_F1).replace(/\\/g, '/')); }
+}
 
 // ── informe ──
 const tipos = {};
 for (const r of filas) tipos[r.tipo] = (tipos[r.tipo] || 0) + 1;
 console.log('OK →', OUT, SIN_TX ? `(+ ${OUT_METRICS})` : '', '·', emitidas.length, 'filas emitidas ·', plan[0].fecha, '→', plan[N - 1].fecha, '· dia', offset + 1, '-', offset + N, '· examen', EXAMEN);
 console.log('tipos:', JSON.stringify(tipos), '· sim100 núcleo', nSimNucleo, '· sim100 módulo', filas.filter((r) => r.tipo === 'sim100' && r.extra.modulo).length, '· módulos', MODULOS.length, 'd');
-console.log('carril B: banqueo1h', nCbB, '· mini-sim absorbido', nCbM, '· reposición', nRepo, repoFechas.length ? `(${repoFechas[0]} → ${repoFechas.at(-1)})` : '', '· choques', choquesFinal.length);
+console.log('carril B: banqueo1h', nCbB, '· mini-sim absorbido', nCbM, '· reposición', nRepo, repoFechas.length ? `(${repoFechas[0]} → ${repoFechas.at(-1)})` : '', '· choques', choquesFinal.length, '· pendientes F1', nPendF1, nPendF1 ? `(${Object.keys(PEND_POR_FECHA).join(', ')})` : '');
 console.log('barrido (' + SLOTS + ' slots):', ordenSlots.map((c) => (c === 'IV-1+IV-2' ? 'IV' : c)).join(' · '));
 console.log('SIM:', filas.filter((r) => r.tipo === 'sim100').map((r) => `${r.fecha} #${r.extra.sim.num} ${r.extra.sim.hora}`).join(' · '));
 console.log('cola:', filas.slice(-5).map((r) => `${r.fecha} ${r.tipo}`).join(' · '));

@@ -3,7 +3,9 @@
 #
 #   v3 L (5-sep-2026, Palmerton cero puntos ciegos · vacío 6):
 #     python DATA/_scripts/gen_business_plan.py [YYYY-MM-DD]        (default 2026-09-07 = D1 v5.6; remap_inicio.js pasa siempre la fecha:
-#                                                                    v5.20 = 2026-10-07 → 121 filas mié 7-oct → jue 4-feb-2027)
+#                                                                    v5.20 = v6.00 = 2026-10-07 → 121 filas mié 7-oct → jue 4-feb-2027 ·
+#                                                                    v6.01 (10-oct-2026, corrimiento) = 2026-10-12 → 121 filas lun 12-oct → mar 9-feb-2027:
+#                                                                    84 de trabajo + 37 DESCANSO; el fin se amplía +3 hábiles, nada se recorta)
 #     Fuente: DATA/BUSINESS/plan_pulso_v3_L.json — 84 filas de trabajo en formato "L"
 #     (20-25 min/día en huecos, L-J) + OUTPUT el viernes. Se colocan en días HÁBILES L-V
 #     saltando sáb/dom y los feriados fijos (25-dic, 31-dic, 1-ene); sáb/dom y feriados se

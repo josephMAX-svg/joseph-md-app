@@ -28,6 +28,9 @@
  * src/lib/obsidianDermaMap.ts traduce d(v3) → d(v2.1) en dermaObsUrlDay() con DERMA_OBS_DAY_V3_A_V21 (editado a mano
  * el 19-sep; si se vuelve a ejecutar este script con --write, la plantilla de la sección 9 debe emitir esa misma
  * traducción, o bien crearse las carpetas con el d v3 — decisión de Joseph, ver PENDIENTES).
+ * v6.00 (6-oct-2026): d1 sin cambio (mié 7-oct-2026, = v5.20) · d73 mié 5-may-2027.
+ * v6.01 (10-oct-2026 · corrimiento D1 = lun 12-oct): d1 = MAR 13-OCT-2026 (el lun 12-oct es día-Research) → d73 lun 10-may-2027
+ * (dermaDailyPlan.ts DERMA_PLAN_META inicio/fin; nada se recorta). Las fechas NO cambian la traducción d(v3) → d(v2.1) de arriba.
  *
  * Uso:  node build_vault_derma.js                 (dry-run: solo reporta)
  *       node build_vault_derma.js --write         (crea carpetas/notas + emite el .ts)

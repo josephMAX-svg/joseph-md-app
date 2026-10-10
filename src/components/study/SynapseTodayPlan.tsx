@@ -12,7 +12,7 @@ import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, loadDone, sav
 import { synObsUrl } from '../../lib/obsidianVaultMap';
 import { PERIWINKLE, statusGlyph, tagBar, PromptGlyph } from './synapseConsole';
 import {
-  VIBE_META, VIBE_DIAS, vibeDiaDe, vibeProyectoEnFecha, vibeTaperEnFecha, vibeShipped, vibeShippedVerificado, vibeUltimoVerify, vibeJournalUrl,
+  VIBE_META, VIBE_DIAS, vibeDiaDe, vibeProyectoEnFecha, vibeTaperEnFecha, vibePCSabado, vibeShipped, vibeShippedVerificado, vibeUltimoVerify, vibeJournalUrl,
   VIBE_TIPO_LABEL, VIBE_ROTACION_ICON,
 } from '../../lib/vibecodingPlan';
 
@@ -88,10 +88,18 @@ function BloqueRow({ b }: { b: SynBloque }) {
 /** VibeCard — proyecto de la semana del VIBECODING 04:15 (src/lib/vibecodingPlan.ts) para la fecha del run
  *  seleccionado: paso del día (L-V) con ✓ propio (PlanKey 'vibecoding'), o SHIP (sáb) / Feynman (dom).
  *  v5.10-b: el ✓ manual solo cuenta días; SHIPPED lo dice el último verify (node DATA/_scripts/verify_vibecoding.js <s> →
- *  VIBE_SHIP_LOG horneado + localStorage 'jmd-vibe-ship'). S13-S20 (taper) se pintan desde VIBE_TAPER. Botón 📓 journal. */
+ *  VIBE_SHIP_LOG horneado + localStorage 'jmd-vibe-ship'). S13-S20 (taper) se pintan desde VIBE_TAPER. Botón 📓 journal.
+ *  v6.01 (10-oct-2026): el sábado se pinta con vibePCSabado = los mismos bloques PC que el SYNAPSE de ese día (SHIP · AVANCE si el proyecto
+ *  aún no terminó · taper; + el PC propio desplazado de S16 el sáb 6-feb). Antes: sáb 26-dic decía SHIP S11, sáb 2-ene SHIP S12, sáb 9-ene
+ *  taper S13 y sáb 6-feb solo S17. */
 function VibeCard({ fecha, vibeDone, onToggleVibe }: { fecha: string; vibeDone: Set<number>; onToggleVibe: (d: number) => void }) {
   const p = vibeProyectoEnFecha(fecha);
   const t = vibeTaperEnFecha(fecha);
+  const pcSab = vibePCSabado(fecha);
+  const pcMain = pcSab.length ? pcSab[pcSab.length - 1] : undefined;
+  const pcExtra = pcSab.slice(0, -1).map((x) => x.taper ? (
+    <Text key={'pc' + x.s} style={st.vibeStep}>› + PC propio de S{x.s} · {x.taper.nombre} ({x.taper.tipo === 'mantenimiento' ? "30' opcional" : "0'"}): {x.taper.shipTxt}</Text>
+  ) : null);
   const vd = vibeDiaDe(fecha);
   const hecho = vd ? vibeDone.has(vd.d) : false;
   const shipped = vibeShipped(vibeDone);
@@ -128,6 +136,7 @@ function VibeCard({ fecha, vibeDone, onToggleVibe }: { fecha: string; vibeDone: 
         ) : (
           <Text style={st.vibeStep}>› DOMINGO libre: {t.shipTxt}</Text>
         )}
+        {pcExtra}
         <Text style={st.vibeSub} numberOfLines={2}>{t.semanaStep1} · {t.objetivo}</Text>
         <Text style={[st.vibeSub, { color: Colors.amber }]} numberOfLines={1}>{VIBE_META.freno}</Text>
         <View style={{ flexDirection: 'row', gap: 6, marginTop: 8, flexWrap: 'wrap' }}>
@@ -154,11 +163,16 @@ function VibeCard({ fecha, vibeDone, onToggleVibe }: { fecha: string; vibeDone: 
       <Text style={st.vibeTitle}>{p.nombre}</Text>
       {vd ? (
         <Text style={st.vibeStep}>› {vd.wd} · {VIBE_TIPO_LABEL[vd.tipo]}{vd.min !== 45 ? ` (${vd.min}')` : ''}: {vd.paso}</Text>
+      ) : wd === 6 && pcMain?.tipo === 'avance' ? (
+        <Text style={st.vibeStep}>› SÁBADO PC 15:00-17:00 = AVANCE (el proyecto aún no termina: último día {fmtFecha(p.fin)} · SHIP {fmtFecha(p.ship)}): avanza los pasos que faltan; sin verify hoy.</Text>
+      ) : wd === 6 && !pcMain ? (
+        <Text style={st.vibeStep}>› SÁBADO: sin PC del vibecoding (S{p.s} arranca el {fmtFecha(p.ini)} · SHIP {fmtFecha(p.ship)}).</Text>
       ) : wd === 6 ? (
         <Text style={st.vibeStep}>› SÁBADO PC 15:00-17:00 = SHIP: {p.shipTxt} Antes de marcar: node DATA/_scripts/verify_vibecoding.js {p.s}</Text>
       ) : (
         <Text style={st.vibeStep}>› DOMINGO (opcional): Feynman del proyecto — explica en voz alta qué construiste y cómo funciona.</Text>
       )}
+      {pcExtra}
       <Text style={st.vibeSub} numberOfLines={2}>entregable: {p.entregable}</Text>
       <Text style={[st.vibeSub, { color: verifyColor }]} numberOfLines={2}>
         {verify
@@ -309,7 +323,7 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
         <Text style={st.globSub}>{glob.hechos}/{glob.total} runs passed · F0 sem 1-8 (auditar ✓ lo ya cursado) · F1 sem 9-12 = stack del vibecoding · F2 sem 13-{SYN_PLAN_META.semanas} = Academy restante + prep CCA-F (taper por el ENCAPS; sem {SYN_PLAN_META.deloadDesde}+ deload) · sáb PC = SHIP · empieza en 0% (avance manual real)</Text>
       </View>
       {grupos.map((g) => <SemanaCard key={g.clave} g={g} hoyD={hoyD} onPick={onPick} done={done} onToggle={onToggle} />)}
-      <Text style={st.note}>☑ marca un run como passed (se guarda en este dispositivo). ▶ = run de hoy. El plan termina el {SYN_PLAN_META.fin} (v6.00: en la intensiva ENCAPS; la fecha no cambia · v5.20: fin del Step 1 menos la semana del examen); feriados 25-dic/31-dic/1-ene = libres (node DATA/_scripts/gen_synapse_plan.js).</Text>
+      <Text style={st.note}>☑ marca un run como passed (se guarda en este dispositivo). ▶ = run de hoy. El plan termina el {SYN_PLAN_META.fin} (v6.01: +4 días de plan por el corrimiento del D1 al lun 12-oct, dentro de la intensiva ENCAPS · v6.00: lun 15-feb · v5.20: fin del Step 1 menos la semana del examen); feriados 25-dic/31-dic/1-ene = libres (node DATA/_scripts/gen_synapse_plan.js).</Text>
     </View>
   );
 }

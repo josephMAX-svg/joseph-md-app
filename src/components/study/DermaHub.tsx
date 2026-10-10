@@ -48,6 +48,8 @@ import {
  * mapa del SPEC A–G como ÍNDICE hacia las fichas de 7 pasos (dermaCerebro.ts) y hacia el día del plan (salto a HOY).
  * DERMA_FASES / DERMA_HORARIO (junio, v1) y el RingStat «12 semanas» ya no se muestran como verdad: quedan en un bloque
  * plegado «histórico v1» que no alimenta ningún cálculo. Interdiario con Research. Reutilizado mobile y desktop.
+ * v6.01 (10-oct-2026 · corrimiento D1 = lun 12-oct): ciclo 1 mar 13-oct → lun 10-may-2027 · ALIVIO F2 d44-d49 vie 12-feb → vie 26-feb ·
+ * ciclo 2 mié 12-may → lun 19-jul-2027 (las fechas visibles salen de DERMA_DAILY_META / DERMA_CICLO2_META, generadas).
  * v6.00 (6-oct-2026 · V6_ESPEC §E · §F · DJ-4): la ventana d44-d49 es «ALIVIO F2 (antes taper Step 1)» (lun 8-feb → lun 22-feb, dentro de
  * la intensiva ENCAPS; ya no hay examen Step 1 en febrero) · ciclo 2 vie 7-may → mié 14-jul-2027 · en F4 (SERUMS) el chip HOY dice
  * «30' en tiempo muerto (posta)» y el sábado es día de plan (Derma lun · mié · vie) · días protegidos v6 (fechasV6) sin sesión.

@@ -1,8 +1,8 @@
 {
- "id": "BANCO_2026-10-13",
- "titulo": "Banco del día ENCAPS · Mar 2026-10-13 · III-5 · pertinencia_barreras",
+ "id": "BANCO_2026-10-15",
+ "titulo": "Banco del día ENCAPS · Jue 2026-10-15 · III-5 · pertinencia_barreras",
  "tipoRonda": "banco_dia",
- "fecha": "2026-10-13",
+ "fecha": "2026-10-15",
  "codigo": "III-5",
  "sub_eje": "pertinencia_barreras",
  "tema": "Interculturalidad · Pertinencia cultural y barreras culturales en la atención",
@@ -17,7 +17,7 @@
  "_meta": {
   "generado": "2026-10-03",
   "fila_sql": {
-   "dia": 5,
+   "dia": 4,
    "tipo": "banqueo1h",
    "codigo": "III-5",
    "sub_eje": "pertinencia_barreras",
@@ -52,6 +52,12 @@
     "a": "2026-10-13",
     "el": "2026-10-06",
     "motivo": "corrimiento v5.20 (D1 = 2026-10-07, régimen DEFINITIVO): la sesión pasa del lun 2026-10-12 al mar 2026-10-13; ítems intactos, sin regenerar"
+   },
+   {
+    "de": "2026-10-13",
+    "a": "2026-10-15",
+    "el": "2026-10-10",
+    "motivo": "corrimiento v6.01 (D1 = 2026-10-12, «todo empieza el lunes 12»; no se estudió mié 7, jue 8 ni vie 9-oct): la sesión «banqueo 4 (D4)» pasa del martes 2026-10-13 al jueves 2026-10-15; ítems intactos, sin regenerar · fila_sql.dia 5 → 4 (F1 v6.01)"
    }
   ]
  },

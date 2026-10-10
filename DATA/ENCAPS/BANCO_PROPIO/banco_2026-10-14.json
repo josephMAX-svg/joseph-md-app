@@ -1,8 +1,8 @@
 {
- "id": "BANCO_2026-10-12",
- "titulo": "Banco del día ENCAPS · Lun 2026-10-12 · V-2 · planeamiento",
+ "id": "BANCO_2026-10-14",
+ "titulo": "Banco del día ENCAPS · Mié 2026-10-14 · V-2 · planeamiento",
  "tipoRonda": "banco_dia",
- "fecha": "2026-10-12",
+ "fecha": "2026-10-14",
  "codigo": "V-2",
  "sub_eje": "planeamiento",
  "tema": "Gestión/planeamiento · Planeamiento estratégico: PEI/POI/FODA, objetivos estratégicos, ciclo CEPLAN",
@@ -17,7 +17,7 @@
  "_meta": {
   "generado": "2026-10-03",
   "fila_sql": {
-   "dia": 4,
+   "dia": 3,
    "tipo": "banqueo1h",
    "codigo": "V-2",
    "sub_eje": "planeamiento",
@@ -51,6 +51,12 @@
     "a": "2026-10-12",
     "el": "2026-10-06",
     "motivo": "corrimiento v5.20 (D1 = 2026-10-07, régimen DEFINITIVO): la sesión pasa del jue 2026-10-08 al lun 2026-10-12; ítems intactos, sin regenerar"
+   },
+   {
+    "de": "2026-10-12",
+    "a": "2026-10-14",
+    "el": "2026-10-10",
+    "motivo": "corrimiento v6.01 (D1 = 2026-10-12, «todo empieza el lunes 12»; no se estudió mié 7, jue 8 ni vie 9-oct): la sesión «banqueo 3 (D3)» pasa del lunes 2026-10-12 al miércoles 2026-10-14; ítems intactos, sin regenerar · fila_sql.dia 4 → 3 (F1 v6.01)"
    }
   ]
  },

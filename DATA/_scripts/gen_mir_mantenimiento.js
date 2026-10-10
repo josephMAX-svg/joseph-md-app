@@ -5,7 +5,7 @@
  *         (default 2027-01-28 → 2027-04-22 = v5.20; v5.19: 2027-01-27 → 2027-04-15; v5.18: 2027-01-26 → 2027-04-14; v5.17: 2027-01-22 → 2027-04-13; L-V; salta sáb/dom, SKIP_FIJOS: 25-dic/31-dic/1-ene
  *          y los DÍAS PROTEGIDOS v5.20: lun 22-feb examen Step 1 · mar 9-mar D-1 ENCAPS · mié 10-mar examen ENCAPS)
  *
- * Contexto (v5.20: 58 días jue 28-ene → jue 22-abr-2027, sin sesión los 3 días protegidos · v5.19: mié 27-ene → jue 15-abr; v5.18: mar 26-ene → mié 14-abr; v5.17: vie 22-ene → mar 13-abr; v5.16: lun 18-ene / mar 19-ene → mié 7-abr; en v5.6 era 23-dic → 4-ene/31-mar): el plan MIR de 78 días termina el mié 27-ene-2027 (v5.20); del jue 28-ene al jue 22-abr-2027 el
+ * Contexto (v6.01: 57 días mar 2-feb → mar 27-abr-2027 + extensión mié 28-abr → vie 24-sep (128) · v6.00: 57 días jue 28-ene → jue 22-abr + extensión 131 · v5.20: 58 días jue 28-ene → jue 22-abr-2027, sin sesión los 3 días protegidos · v5.19: mié 27-ene → jue 15-abr; v5.18: mar 26-ene → mié 14-abr; v5.17: vie 22-ene → mar 13-abr; v5.16: lun 18-ene / mar 19-ene → mié 7-abr; en v5.6 era 23-dic → 4-ene/31-mar): el plan MIR de 78 días termina el mié 27-ene-2027 (v5.20); del jue 28-ene al jue 22-abr-2027 el
  * bloque 15:15-16:15 sigue en el Calendar pero MIR_DIAS no tiene contenido (ROADMAP mantiene
  * "MIR 1h" en fase 1 y 2). Este fichero llena ese hueco SIN contenido nuevo: solo retrieval.
  *
@@ -49,6 +49,10 @@
  *     la extensión) · viernes = 30Q de la asignatura peor del log · SÁBADO (tipo 'sabado', nuevo) = mini-simulacro 30Q MIXTAS de las
  *     14 asignaturas (77 s/Q) + corrección · Tier C express = último lun-jue de cada semana repitiendo el ciclo de las 12 con
  *     preguntas no usadas (preguntasSinUsar). `semana` continua. FSRS 0,85 hasta el Step 1 → 0,90 en la fase principal (oct-2027).
+ *   · v6.01 (10-oct-2026 · corrimiento D1 = lun 12-oct): la 1ª vuelta (gen_mir_daily.js 2026-10-12) termina el lun 1-feb → mantenimiento
+ *     mar 2-feb → mar 27-abr = las MISMAS 57 filas (47 lun-jue · 10 viernes · 12 Tier C; cuotas idénticas), re-fechadas; extensión
+ *     mié 28-abr → vie 24-sep (tope SIN cambio: día de plan anterior al ritual) = 128 filas (antes 131): la extensión absorbe los 3 días.
+ *     Uso: node DATA/_scripts/gen_mir_mantenimiento.js 2027-02-02 2027-04-27   (los defaults ya son estos).
  *   · Franja por turno en F4 (mirFranjaPorTurno): M 16:00-17:00 · T 10:35-11:35 · L 15:15-16:15 · día de hito 04:05-05:05
  *     (plantilla H) · G 1 h en tiempo muerto de la guardia (lo que no se termine se suma al día de plan siguiente).
  */
@@ -63,8 +67,8 @@ const ARGS = process.argv.slice(2);
 const iExt = ARGS.indexOf('--ext-hasta');
 const EXT_HASTA = iExt >= 0 ? ARGS[iExt + 1] : V6.derivar(F6).ultimoDiaEstudio; // v6.00: día de plan anterior al ritual (vie 24-sep-2027)
 const POS = ARGS.filter((a, i) => !a.startsWith('--') && !(iExt >= 0 && i === iExt + 1));
-const INICIO = POS[0] || '2027-01-28'; // v5.20: la 1ª vuelta MIR termina el mié 27-ene (D78) → el mantenimiento arranca el jue 28-ene · v5.19: la 1ª vuelta MIR termina el mar 26-ene (D78) → el mantenimiento arranca el mié 27-ene · v5.18: la 1ª vuelta MIR termina el lun 25-ene (D78) → el mantenimiento arranca el mar 26-ene · v5.17: la 1ª vuelta MIR termina el jue 21-ene (D78 = corrección del mini-MIR) → el mantenimiento arranca el vie 22-ene para no solapar (v5.16: 19-ene (v5.15: 14-ene (v5.14: 12-ene · v5.13: 8-ene)
-const FIN = POS[1] || '2027-04-22'; // v6.00: FIN FIJO jue 22-abr (57 filas con los protegidos v6; la extensión va aparte desde el vie 23-abr) · v5.20: jue 22-abr (58 hábiles: se AMPLÍA para conservar los 46 slots lun-jue y las 12 Tier C — al arrancar en jueves se pierde el mié 27-ene y los 3 días protegidos lun 22-feb · mar 9 · mié 10-mar son lun-jue) · v5.19: jue 15-abr (+1 día, mismos 46 slots lun-jue y 12 Tier C) · v5.18: mié 14-abr = 57 días con los MISMOS 46 slots lun-jue y las 12 Tier C (arranque en martes, como v5.16) · v5.17: el fin se ALARGA 4 hábiles (v5.16: 7-abr · v5.15: 2-abr · v5.14: 31-mar) → 58 días: con +3 exactos (12-abr, 57 días) el arranque en viernes dejaba 45 slots lun-jue en vez de 46 y se perdía 1 de Neurología; con 58 quedan las MISMAS 46 cuotas lun-jue que v5.16 (+1 viernes extra de repaso) para conservar los 57 días del mantenimiento — "no perder contenido" (Joseph)
+const INICIO = POS[0] || '2027-02-02'; // v6.01 (10-oct-2026): D1 lun 12-oct → la 1ª vuelta MIR termina el lun 1-feb (D78) → el mantenimiento arranca el mar 2-feb · v6.00 = v5.20: '2027-01-28' · v5.20: la 1ª vuelta MIR termina el mié 27-ene (D78) → el mantenimiento arranca el jue 28-ene · v5.19: la 1ª vuelta MIR termina el mar 26-ene (D78) → el mantenimiento arranca el mié 27-ene · v5.18: la 1ª vuelta MIR termina el lun 25-ene (D78) → el mantenimiento arranca el mar 26-ene · v5.17: la 1ª vuelta MIR termina el jue 21-ene (D78 = corrección del mini-MIR) → el mantenimiento arranca el vie 22-ene para no solapar (v5.16: 19-ene (v5.15: 14-ene (v5.14: 12-ene · v5.13: 8-ene)
+const FIN = POS[1] || '2027-04-27'; // v6.01 (10-oct-2026): el mantenimiento CONSERVA sus 57 filas (47 lun-jue · 10 viernes · 12 Tier C: mismas cuotas) desde el mar 2-feb → FIN mar 27-abr (+3 hábiles; antes jue 22-abr); la EXTENSIÓN sigue terminando el vie 24-sep (--ext-hasta) y ABSORBE la diferencia (131 → 128 filas) · v6.00: FIN FIJO jue 22-abr (57 filas con los protegidos v6; la extensión va aparte desde el vie 23-abr) · v5.20: jue 22-abr (58 hábiles: se AMPLÍA para conservar los 46 slots lun-jue y las 12 Tier C — al arrancar en jueves se pierde el mié 27-ene y los 3 días protegidos lun 22-feb · mar 9 · mié 10-mar son lun-jue) · v5.19: jue 15-abr (+1 día, mismos 46 slots lun-jue y 12 Tier C) · v5.18: mié 14-abr = 57 días con los MISMOS 46 slots lun-jue y las 12 Tier C (arranque en martes, como v5.16) · v5.17: el fin se ALARGA 4 hábiles (v5.16: 7-abr · v5.15: 2-abr · v5.14: 31-mar) → 58 días: con +3 exactos (12-abr, 57 días) el arranque en viernes dejaba 45 slots lun-jue en vez de 46 y se perdía 1 de Neurología; con 58 quedan las MISMAS 46 cuotas lun-jue que v5.16 (+1 viernes extra de repaso) para conservar los 57 días del mantenimiento — "no perder contenido" (Joseph)
 for (const s of [INICIO, FIN, EXT_HASTA]) if (!/^20\d\d-\d\d-\d\d$/.test(s)) throw new Error('fecha inválida: ' + s);
 if (EXT_HASTA <= FIN) throw new Error(`--ext-hasta (${EXT_HASTA}) debe ser posterior al fin del mantenimiento (${FIN})`);
 /** hasta esta fecha (incl.) el bloque va en modo reducido (Fase B/C Step 1 hasta el D95 vie 19-feb-2027; examen lun 22-feb = día protegido, sin sesión · v5.20; v5.19: examen vie 19-feb; v5.18: jue 18-feb; v5.17: mar 16-feb) */
@@ -320,6 +324,8 @@ const out = `/**
  * mirMantenimiento.ts — MIR modo BANQUEO PURO (mantenimiento ene→abr 2027 + EXTENSIÓN abr→sep 2027) · GENERADO por
  * DATA/_scripts/gen_mir_mantenimiento.js ${INICIO} ${FIN} --ext-hasta ${EXT_HASTA} — NO editar a mano.
  *
+ * v6.01 (10-oct-2026 · corrimiento D1 = lun 12-oct): la 1.ª vuelta termina el lun 1-feb → el mantenimiento CONSERVA sus 57 filas (mismas cuotas,
+ * misma secuencia y los mismos 12 Tier C) re-fechadas desde el mar 2-feb; la extensión mantiene su tope (vie 24-sep) y absorbe los 3 días (131 → 128).
  * v6.00 (6-oct-2026 · V6_ESPEC §D · DJ-4: MIR 1 h/día en TODAS las fases): ${ROWS.length} días =
  *  · MANTENIMIENTO ${MANT.length} (d${MANT[0].d}-d${MANT[MANT.length - 1].d} · ${MANT[0].fecha} → ${MANT[MANT.length - 1].fecha} · L-V: ${cuenta(MANT, (r) => r.tipo === 'banco')} lun-jue · ${cuenta(MANT, (r) => r.tipo === 'viernes')} viernes)
  *  · EXTENSIÓN ${EXT.length} (d${EXT[0].d}-d${EXT[EXT.length - 1].d} · ${EXT[0].fecha} → ${EXT[EXT.length - 1].fecha} · L-V hasta el SERUMS y L-S desde el ${SERUMS_INICIO}: ${cuenta(EXT, (r) => r.tipo === 'banco')} lun-jue · ${cuenta(EXT, (r) => r.tipo === 'viernes')} viernes · ${cuenta(EXT, (r) => r.tipo === 'sabado')} sábados; domingo libre).
