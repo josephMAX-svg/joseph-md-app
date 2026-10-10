@@ -1,4 +1,17 @@
-# v6.00 · Reestructuración anual definitiva (6-oct-2026)
+# v6.00 · Reestructuración anual definitiva (6-oct-2026) · + ADDENDUM v6.01 (10-oct-2026)
+
+> ## ✅ ADDENDUM v6.01 (sáb 10-oct-2026) — corrimiento al LUN 12-OCT-2026; manda sobre las cifras de F1/ENCAPS/secundarios de la receta v6.00
+> El 7, 8 y 9-oct no se estudiaron → D1 = **lun 12-oct-2026**. Se aplicó la regla de colchón de F1 de la espec (§B1/§B7.1), sin alargar la F1:
+> - **F1 = 57 hábiles, D1-D57, lun 12-oct → mié 30-dic** (v6.00: 60, D1-D60). **C1/C2 consumidos**; la fila 58 (bioestadística, ex-D79) **pasa al tramo 2: T3
+>   jue 18-mar-2027** (`--f1-filas 57`, `escenario.pendientesF1 = [58]`). Hitos F1: UWSA1 lun 12-oct · NBME 25 vie 23-oct · 26 vie 13-nov · 27 vie 4-dic · 28
+>   lun 28-dic · gates D18 mié 4-nov / D38 mié 2-dic. Tramo 2: mismas 158 filas y fechas; **colchón 38 filas (≈ 100 h)**.
+> - **ENCAPS:** F1 `dia` 1-57 (47 banqueo + 10 mini-sims; checkpoint = mini-sim 50, vie 18-dic) · intensiva **`dia` 58-107** (mismas fechas; pre-test vie 8-ene =
+>   dia 62) · 3 pendientes F1 repuestos en el carril B (17-feb, 18-feb, lun 22-feb mini-sim 25Q).
+> - **MIR extensión 128** (v6.00: 131) · secundarios +3 hábiles (tabla en `DATA/REESTRUCTURACION_31AGO_2026.md` §25 y `DATA/PENDIENTES_JOSEPH.md`, bloque v6.01).
+> - **Examen Step 1, ENCAPS, reinicio, SERUMS, GO/NO-GO e hitos 2027: SIN cambio.**
+> - Referencia de verificación del tramo 2 v6.01: `DATA/_scripts/usmle/ref_v6/tramo2_14mar_27sep_v601.json` (`gen_tramo2_ref.js --pendientes-f1 58 --f1-filas 57`);
+>   la v6.00 (`tramo2_14mar_27sep.json`, `--f1-filas 58`) se conserva y la matriz de compatibilidad de `verificar_v6.js` la sigue comprobando.
+> - Calendar v6.01: `cal/CAL_V6.md` §9. Detalle de la espec: ADDENDUM v6.01 al principio de `V6_ESPEC.md` (las cifras v6.00 del cuerpo quedan marcadas «⏸ v6.00»).
 
 Receta completa del régimen v6.00 (D1 = mié 7-oct-2026 · Step 1 hasta el 30-dic · ENCAPS intensiva 4-ene → 12-mar con examen dom 14-mar PROVISIONAL · reinicio del Step 1 mar 16-mar · SERUMS ~lun 3-may con turno variable · examen Step 1 lun 27-sep-2027).
 

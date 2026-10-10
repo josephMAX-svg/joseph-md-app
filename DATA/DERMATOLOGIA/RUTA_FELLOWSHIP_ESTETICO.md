@@ -107,6 +107,13 @@
 
 ## 3. Qué produce cada fase del plan actual (2026-27) para cada ruta
 
+> **✅ v6.01 (sáb 10-oct-2026) — las fechas de esta tabla son v5.20 (⏸).** Régimen vigente: **USMLE Step 1** F1 lun 12-oct → mié 30-dic-2026 (D1-D57) + tramo 2
+> mar 16-mar → sáb 25-sep-2027 → **examen lun 27-sep-2027** (PROVISIONAL; GO/NO-GO lun 9-ago) · **ENCAPS** 1 h de mantenimiento lun 12-oct → mié 30-dic +
+> intensiva lun 4-ene → vie 12-mar → **examen dom 14-mar-2027 PROVISIONAL** (meta ≥ 17/20) · **MIR** 1.ª vuelta lun 12-oct → lun 1-feb + mantenimiento mar 2-feb →
+> mar 27-abr + extensión mié 28-abr → vie 24-sep-2027 · **Derma** 73 átomos mar 13-oct-2026 → lun 10-may-2027 + ciclo 2 mié 12-may → lun 19-jul-2027 · **Research
+> L4 · SR-1**: PICO R6 mar 17-nov-2026 · PROSPERO R10 mar 23-mar-2027 · extracción R22-R25 mar 11-may → sáb 22-may · **SUBMIT R43 mar 20-jul-2027** · L5 · SR-2
+> protocolo R45 sáb 14-ago-2027. Detalle: `DATA/REESTRUCTURACION_31AGO_2026.md` §24-§25.
+
 | Fase del plan (v5.20, 6-oct-2026) | Ruta A (EE.UU.) | Ruta B (Perú/España + estética internacional) |
 |---|---|---|
 | **USMLE Step 1** (D1 mié 7-oct-2026 = UWSA1 → D95 vie 19-feb-2027 = último día del plan / D-1 hábil, v5.20; D94 jue 18-feb = última sesión de banco; sáb 20 y dom 21-feb libres —dom 21 = D-1 real, sin estudio— → examen target **lun 22-feb-2027**, Prometric/eligibility a confirmar por Joseph; GO/NO-GO mar 2-feb (NBME 31, D82) con 2 NBME ≥68 % + UWSA2 low-risk; v5.19: 6-oct → 18-feb, examen vie 19-feb, GO/NO-GO lun 1-feb; v5.18: 5-oct → 17-feb, examen jue 18-feb) | Requisito ECFMG y de la visa J-1 (Steps 1+2). Sin él no hay Fase C. | Opcional, pero mantiene abierta A y es la base de Step 2 CK. |

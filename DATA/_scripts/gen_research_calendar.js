@@ -35,6 +35,10 @@
  * su texto: d34): M1 vie 16-oct · C-2 lun 26-oct · T-1 mié 28-oct · C-6 vie 13-nov · CR-1 jue 19-nov · T-8 lun 21-dic · X-1 mar 29-dic · CR-8
  * mar 12-ene · X-9 mié 17-mar · R10 mar 23-mar · R43 mar 20-jul (todo el día, F4). Solo --print/--check en este lote: el Calendar lo toca el
  * orquestador (update_event / delete+create y luego --set hito=eventId).
+ * v6.01b (10-oct-2026 · cierre): los DEADLINE de carta-1 (C-6), tesis-etica (T-1) y equipo (X-9) pasan a ser funciones que leen las fechas
+ * de RESEARCH_HITOS: X-9 citaba el R10 de v6.00 (vie 19-mar → mar 23-mar) y C-6/T-1 presentaban como vigente un límite interno ya VENCIDO
+ * (≤ 15-oct / ≤ 30-sep) que contradecía su propio átomo; ahora lo marcan ⏸ VENCIDO con los días de retraso calculados. Overlays actualizados
+ * con update_event (solo descripción) + --set (CAL_V6.md §10).
  */
 const fs = require('fs');
 const path = require('path');
@@ -73,17 +77,26 @@ const LABEL = {
   'PROSPERO-SR1': 'REGISTRO PROSPERO de SR-1',
   'SR-1': 'SUBMIT SR-1 (Dermatologic Surgery)',
 };
+// ─── Fechas legibles para los textos de DEADLINE que dependen del plan (v6.01b: ya no se escriben a mano → no se pudren en cada corrimiento) ───
+const DOW_ES = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
+const MES_ES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+const fmtF = (f) => { const d = new Date(f + 'T12:00:00Z'); return `${DOW_ES[d.getUTCDay()]} ${d.getUTCDate()}-${MES_ES[d.getUTCMonth()]}-${d.getUTCFullYear()}`; };
+const diasEntre = (a, b) => Math.round((new Date(b + 'T12:00:00Z') - new Date(a + 'T12:00:00Z')) / 864e5);
+
 // ─── Fecha límite EXTERNA por hito (tal como consta en RUTA_PUBLICACION_2027.md §9 / §9.1 · v5.10) ───
+// Un valor función recibe HITOS (fechas del plan) y devuelve el texto: así la fecha que cita sale del .ts, no de un literal.
+// v6.01b (10-oct-2026): carta-1 y tesis-etica dejaban como límite vigente un ≤ interno ya VENCIDO (15-oct / 30-sep) que contradecía su propio
+// átomo (C-6 vie 13-nov / T-1 mié 28-oct); equipo citaba el R10 de v6.00 (vie 19-mar) → los tres derivan ahora sus fechas del plan.
 const DEADLINE = {
   'carta-diana': 'ventana de letters del journal diana (típ. 4-12 semanas tras la publicación · se fija en C-2)',
-  'carta-1': '≤ 15-oct-2026 (límite interno de la carta; RUTA §9.1 marca −1 día: enviar ANTES del bloque si se puede)',
-  'tesis-etica': 'oct-2026 (solicitud CEI expedita ≤ 30-sep según gap 1 de Palmerton v3b · sin nº de CEI NO se envía T-8)',
+  'carta-1': (H) => `la ventana de letters del artículo diana que se fija en C-2 (${fmtF(H['carta-diana'].fecha)}): el SUBMIT de C-6 (${fmtF(H['carta-1'].fecha)}) va ANTES de ese deadline · ⏸ límite interno ≤ 15-oct-2026 (RUTA §9.1) VENCIDO: C-6 cae ${diasEntre('2026-10-15', H['carta-1'].fecha)} días después → hacer C-1…C-5 fuera del átomo o elegir en C-2 una diana con ventana más larga`,
+  'tesis-etica': (H) => `oct-2026 (solicitud CEI expedita PRESENTADA a más tardar en T-1, ${fmtF(H['tesis-etica'].fecha)} · sin nº de CEI NO se envía T-8, ${fmtF(H['tesis-L0'].fecha)} · ⏸ límite interno ≤ 30-sep según gap 1 de Palmerton v3b VENCIDO: T-1 cae ${diasEntre('2026-09-30', H['tesis-etica'].fecha)} días después)`,
   'cr-caso': '31-oct-2026 (caso + consentimiento + senior author · si el jue 5-nov (C-3 en v6.01, ~3 semanas desde M1 vie 16-oct; v6.00 = v5.20: mar 3-nov, M1 mié 14-oct; antes vie 30-oct) no hay caso → plan B, colega SPD · ⚠ v6.01: CR-1 cae el jue 19-nov y CR-2 el lun 23-nov, ya después del 31-oct · v6.00 = v5.20: mar 17-nov / jue 19-nov · v5.18-v5.19: vie 13-nov / mar 17-nov)',
   'tesis-L0': '≤ 15-feb-2027 (JAAD International → IJD → Actas → Anais)',
   'revisor2': 'antes de PROSPERO (sin revisor #2 humano no hay registro · PRISMA 2020 ítem 8)',
   'cr-paquete': 'antes del submit CR-9 (jue 11-feb-2027, primer día-Research tras la pausa): paquete congelado ANTES de la pausa de átomos (vie 15-ene → mié 10-feb-2027 = núcleo de la intensiva ENCAPS; v6.00: el Step 1 está en pausa del 31-dic al 15-mar · v5.20: la pausa era por las Fases B-C del Step 1)',
   'case-report-1': '≤ 28-feb-2027 (Dermatology Online Journal → JAAD CR → Case Reports in Dermatology)',
-  'equipo': 'antes del registro R10 (vie 19-mar-2027; X-9 = jue 11-mar en v6.00 · v5.20: lun 15-mar)',
+  'equipo': (H) => `antes del registro R10 (${fmtF(H['PROSPERO-SR1'].fecha)}; X-9 = ${fmtF(H['equipo'].fecha)} → ${diasEntre(H['equipo'].fecha, H['PROSPERO-SR1'].fecha)} días de margen · ⏸ v6.00: X-9 jue 11-mar / R10 vie 19-mar · v5.20: X-9 lun 15-mar / R10 vie 19-mar)`,
   'PROSPERO-SR1': '≤ 31-mar-2027',
   'SR-1': '≤ 31-ago-2027 (Dermatologic Surgery → JAAD → JCD → Anais/Actas)',
 };
@@ -136,7 +149,7 @@ function payload(hito, h) {
     `ARTEFACTO: ${atomo.artefacto || '—'}`,
   ];
   if (atomo.chips && atomo.chips.length) lineas.push(`AVISOS: ${atomo.chips.join(' · ')}`);
-  if (DEADLINE[hito]) lineas.push(`FECHA LÍMITE EXTERNA: ${DEADLINE[hito]}`);
+  if (DEADLINE[hito]) lineas.push(`FECHA LÍMITE EXTERNA: ${typeof DEADLINE[hito] === 'function' ? DEADLINE[hito](HITOS) : DEADLINE[hito]}`);
   lineas.push('', 'Overlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se',
     'regenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel',
     '→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.');

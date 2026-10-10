@@ -1,8 +1,20 @@
 # 🧪 PRE-TEST DIAGNÓSTICO 2026-II — arranque de la fase intensiva ENCAPS 2027-I
 
-> ## ✅ v6.00 VIGENTE (REESTRUCTURACIÓN ANUAL, 6-oct-2026) — manda sobre las fechas y el comando de abajo
-> - **Cuándo:** **vie 8-ene-2027, 07:15-09:15** = **dia 65** de la cuenta ENCAPS = viernes de la S1 de la intensiva (lun 4-ene → vie 12-mar; examen ENCAPS
->   **dom 14-mar-2027 PROVISIONAL**). Fila `pretest` ya sembrada en Supabase (6-oct, `dia` 61-110) · default de `gen_encaps_minisim.js --pretest` =
+> ## ✅ v6.01 VIGENTE (corrimiento al lun 12-oct-2026, sáb 10-oct) — misma fecha, nueva numeración
+> - **Cuándo: vie 8-ene-2027, 07:15-09:15 = `dia` 62** de la cuenta ENCAPS (v6.01: el mantenimiento F1 es `dia` 1-57 desde el lun 12-oct y la intensiva se
+>   renumeró `dia` 58-107 con las MISMAS fechas). Fila `pretest` re-sembrada en Supabase el 10-oct (huella v2 107 · `1795d281…`); default de
+>   `gen_encaps_minisim.js --pretest` = `encaps.pretest` (`2027-01-08`) y Calendar `27bs58ee0ke180ht2rh6mgvft0` → ✅ ALINEADOS. La nota del PRE-TEST se guarda
+>   con `sim_n` = 62 (`study_sim_scores`).
+> - **Comando de regeneración tras el pre-test (v6.01):** `node DATA/_scripts/gen_encaps_intensivo_2027.js 2027-01-04 2027-03-14 --carril-b
+>   DATA/ENCAPS/_carril_b_v520_61-92.json --pretest DATA/ENCAPS/TRACKING_ERRORES/RONDAS/PRETEST_2026-II.json --desde 2027-01-11` (sin `--base`: el default ya es
+>   2026-10-12; backup por defecto `study_schedule_bk_v601_int_<AAAAMMDD de ese día>`; `--pendientes-f1` por defecto = `DATA/ENCAPS/_pendientes_f1.json`, que
+>   conserva la reposición F1 del 17/18/22-feb) → revisar → `execute_sql`. Re-ordena los 32 slots de barrido (lun 11-ene → jue 4-mar, `dia` 63-101).
+> - Lo demás del bloque v6.00 (generar el HTML antes del lun 4-ene, LISTA NEGRA hasta el 8-ene, tutoría sáb 9 / dom 10-ene o lun 11-ene antes de las 07:15,
+>   lectura del resultado) sigue igual.
+
+> ## ⏸ v6.00 (REESTRUCTURACIÓN ANUAL, 6-oct-2026) — vigente salvo el `dia` y el comando, que corrige el bloque v6.01 de arriba
+> - **Cuándo:** **vie 8-ene-2027, 07:15-09:15** = **dia 65** de la cuenta ENCAPS *(⏸ v6.00 · v6.01: dia 62)* = viernes de la S1 de la intensiva (lun 4-ene → vie 12-mar; examen ENCAPS
+>   **dom 14-mar-2027 PROVISIONAL**). Fila `pretest` ya sembrada en Supabase (6-oct, `dia` 61-110) *(⏸ v6.00 · v6.01: re-sembrada el 10-oct, `dia` 58-107)* · default de `gen_encaps_minisim.js --pretest` =
 >   `_fechas_v6.json → encaps.pretest` (`2027-01-08`) · Calendar `27bs58ee0ke180ht2rh6mgvft0` (vie 8-ene 07:15-09:15) → ✅ ALINEADOS. Corrección por código + registro
 >   el mismo viernes, tras el SIM (como los viernes del núcleo: 09:30-11:00 corrección · 11:00-12:00 dos códigos peores).
 > - **Generar el HTML** (`node DATA/_scripts/gen_encaps_minisim.js --pretest` → `BANCO_PROPIO/pretest_2026-II.html`) **antes del lun 4-ene** (en F1 o en la
@@ -11,7 +23,7 @@
 >   de revisión semanal + STEP 1 VIVO) o, como tarde, el **lun 11-ene antes del loop de las 07:15** (primer slot de barrido del núcleo). Comando (cabecera de
 >   `gen_encaps_intensivo_2027.js` y bloque v6.00 de `FASE_INTENSIVA_2027-I.md`; `--carril-b` es obligatorio en TODAS las ejecuciones):
 >   `node DATA/_scripts/gen_encaps_intensivo_2027.js 2027-01-04 2027-03-14 --base 2026-10-07 --carril-b DATA/ENCAPS/_carril_b_v520_61-92.json --pretest
->   DATA/ENCAPS/TRACKING_ERRORES/RONDAS/PRETEST_2026-II.json --desde 2027-01-11` (backup por defecto `study_schedule_bk_v600_int_<AAAAMMDD de ese día>`; `--bk`
+>   DATA/ENCAPS/TRACKING_ERRORES/RONDAS/PRETEST_2026-II.json --desde 2027-01-11` (backup por defecto `study_schedule_bk_v600_int_<AAAAMMDD de ese día>`; *(⏸ v6.00 · v6.01: sin `--base`; backup `study_schedule_bk_v601_int_<AAAAMMDD>`)* `--bk`
 >   aborta si la tabla ya existe) → revisar → `execute_sql`. Re-ordena los **32 slots de barrido** (lun 11-ene → jue 4-mar) por índice de brecha conservando 32
 >   slots, cada crítico ≥ 1 y «código del slot ≠ código del carril B de ese día»; las filas ≤ vie 8-ene no se tocan.
 > - **Lectura del resultado (§4) en v6:** ya no hay «solo 4 slots»: el veredicto reparte los 32 slots del núcleo; tras el pre-test quedan **8 SIM 100Q** (vie
@@ -163,7 +175,7 @@ Reglas fijas independientes del puntaje:
 1. Todo fallo tipo **OLVIDO** o de formato cifra → tarjeta en `TRACKING_ERRORES/ANKI_COLA/ENCAPS_Cifras_2027-I.csv` **esa misma tarde** (regla de `CIFRAS_CRITICAS_2027-I.md`).
 2. Todo fallo **CCSN** → ficha de 1 página del par confundido (ruta OBSIDIAN) antes del banco de ese código en las semanas 2-5.
 3. Los códigos con **100 % seguro** no reciben slot extra: solo repaso multi-temporal D-7 / D-14.
-4. El generador de la intensiva lee el JSON de la ronda y **re-ordena solo** el barrido. **v6.00:** `node DATA/_scripts/gen_encaps_intensivo_2027.js 2027-01-04 2027-03-14 --base 2026-10-07 --carril-b DATA/ENCAPS/_carril_b_v520_61-92.json --pretest DATA/ENCAPS/TRACKING_ERRORES/RONDAS/PRETEST_2026-II.json --desde 2027-01-11` → revisar → `execute_sql` el sáb 9 / dom 10-ene o el lun 11-ene antes de las 07:15 (32 slots, lun 11-ene → jue 4-mar). ⏸ *(Comando v5.20, SUPERSEDIDO:)* `node DATA/_scripts/gen_encaps_intensivo_2027.js 2027-02-23 2027-03-10 --pretest DATA/ENCAPS/TRACKING_ERRORES/RONDAS/PRETEST_2026-II.json --bk study_schedule_bk_intensivo_<AAAAMMDD>` → revisar → `execute_sql` **antes del lun 1-mar** (v5.20: `2027-02-23` = mar 23-feb, día siguiente al examen Step 1 del lun 22-feb, y `2027-03-10` = examen ENCAPS FIJADO, ambos defaults del script; el barrido son 4 slots lun 1 → jue 4-mar; el `--bk` debe ser nuevo, porque el SQL hace `DROP TABLE IF EXISTS` del backup y con el mismo nombre pisaría el `study_schedule_bk_intensivo_1006`; si la convocatoria SERUMS 2027-I mueve la fecha, poner la real, `SENALES_2027-I.md`. v5.19: `2027-02-22 <fecha-examen>`, barrido desde el lun 1-mar, fecha sin fijar · v5.18: `2027-02-19` o `2027-02-22` · v5.17: `2027-02-17` o `2027-02-22` · v5.15: `2027-02-09` o `2027-02-15`).
+4. El generador de la intensiva lee el JSON de la ronda y **re-ordena solo** el barrido. *(⏸ v6.00 · v6.01: sin `--base` (el default es f1.inicio = 2026-10-12) y backup `study_schedule_bk_v601_int_<AAAAMMDD>`; usar el comando del bloque v6.01 de arriba)* **v6.00:** `node DATA/_scripts/gen_encaps_intensivo_2027.js 2027-01-04 2027-03-14 --base 2026-10-07 --carril-b DATA/ENCAPS/_carril_b_v520_61-92.json --pretest DATA/ENCAPS/TRACKING_ERRORES/RONDAS/PRETEST_2026-II.json --desde 2027-01-11` → revisar → `execute_sql` el sáb 9 / dom 10-ene o el lun 11-ene antes de las 07:15 (32 slots, lun 11-ene → jue 4-mar). ⏸ *(Comando v5.20, SUPERSEDIDO:)* `node DATA/_scripts/gen_encaps_intensivo_2027.js 2027-02-23 2027-03-10 --pretest DATA/ENCAPS/TRACKING_ERRORES/RONDAS/PRETEST_2026-II.json --bk study_schedule_bk_intensivo_<AAAAMMDD>` → revisar → `execute_sql` **antes del lun 1-mar** (v5.20: `2027-02-23` = mar 23-feb, día siguiente al examen Step 1 del lun 22-feb, y `2027-03-10` = examen ENCAPS FIJADO, ambos defaults del script; el barrido son 4 slots lun 1 → jue 4-mar; el `--bk` debe ser nuevo, porque el SQL hace `DROP TABLE IF EXISTS` del backup y con el mismo nombre pisaría el `study_schedule_bk_intensivo_1006`; si la convocatoria SERUMS 2027-I mueve la fecha, poner la real, `SENALES_2027-I.md`. v5.19: `2027-02-22 <fecha-examen>`, barrido desde el lun 1-mar, fecha sin fijar · v5.18: `2027-02-19` o `2027-02-22` · v5.17: `2027-02-17` o `2027-02-22` · v5.15: `2027-02-09` o `2027-02-15`).
 
 ## 5) Registro: ronda `PRETEST_2026-II` en `_registro_resoluciones.json` (append, no reescribir)
 

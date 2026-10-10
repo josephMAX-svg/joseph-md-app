@@ -7,6 +7,14 @@
 > y redactar en nov-dic con el CARE). Este fichero es la tabla que se rellena en el átomo CR-1 y el punto de
 > partida de la conversación con el Dr. Ciro (ver `../MENTORES.md`, mensaje 1).
 >
+> **✅ v6.01 (sáb 10-oct-2026 · D1 del régimen lun 12-oct; Research ciclo 1 lun 12-oct → vie 5-mar): M1 (petición al Dr. Ciro) = vie 16-oct** · seguimiento
+> = **vie 30-oct (d8, M3) = último hábil antes del 31-oct** · plazo de 3 semanas desde M1 = vie 6-nov (d10 = C-3 jue 5-nov) · **sin caso → fuente B** (§2) ·
+> **CR-1 (caso elegido) = jue 19-nov — 🔴 19 días DESPUÉS del 31-oct** · **CR-2 (consentimiento firmado) = lun 23-nov — 🔴 23 días DESPUÉS del 31-oct**. Ningún
+> átomo llega al plazo interno (desde v5.15). **Recomendación** (decisión (e) de `DATA/PENDIENTES_JOSEPH.md`, bloque v6.01): cerrar caso + consentimiento
+> FUERA del átomo — pedir el caso en M1 (vie 16-oct) y, si no hay respuesta, activar la fuente B en el seguimiento M3 (vie 30-oct) y pedir que el senior author
+> obtenga el consentimiento en consulta; si no se llega, el case report de feb-mar 2027 se retrasa (no se recorta nada). CR-8 paquete mar 12-ene · CR-9 SUBMIT
+> jue 11-feb (sin cambio). *(⏸ v5.20 = v6.00: M1 mié 14-oct · seguimiento mié 28-oct / mar 3-nov · CR-1 mar 17-nov · CR-2 jue 19-nov.)*
+>
 > **Plan v5.10b (12-sep-2026 · gap 2) re-fechado a v5.20 (6-oct-2026, corrimiento RÍGIDO DEFINITIVO: el D1 del régimen pasa al mié 7-oct, día Derma, y el mar 6-oct perdido era día-Research → el ciclo 1 de Research corre UNA ranura, mismo orden y mismos átomos; examen Step 1 lun 22-feb-2027):** M1 (petición al Dr. Ciro) = **mié 14-oct** · **seguimiento** = mié 28-oct (d8, M3) y **mar 3-nov**
 > (d10, C-3, 3 semanas desde M1; ⚠ ya después del 31-oct) · **sin caso el 3-nov → fuente B** con el mensaje único de §2 · **CR-1 (caso elegido) = mar 17-nov** — 🔴 **17 días DESPUÉS del 31-oct** ·
 > **CR-2 (consentimiento firmado) = jue 19-nov** — 🔴 **19 días DESPUÉS del 31-oct**. En v5.14 CR-1 aún alcanzaba el vie 30-oct; desde v5.15 **ningún átomo llega al plazo interno** (v5.19 = v5.18: vie 13 / mar 17-nov, seguimiento lun 26 / vie 30-oct; v5.17: mié 11 / vie 13-nov; v5.16: jue 5 / lun 9-nov; v5.15: mar 3 / jue 5-nov; en v5.13 caían mié 28 / vie 30-oct con margen 3 y 1 día; en v5.11/v5.12 lun 26 / mié 28-oct; en v5.9 el 3-nov y el 9-nov; en v5.10b jue 22 / lun 26-oct). ⚠ Esto contradice el chip "sin caso antes del 31-oct el entregable de feb-2027 no ocurre". Regla práctica: cerrar caso + consentimiento **fuera del átomo** (el vie 30-oct, día de R9, es el último hábil antes del plazo; en v5.20 el plazo de 3 semanas del Dr. Ciro vence después, el mar 3-nov) o aceptar el retraso — **decisión de Joseph**.

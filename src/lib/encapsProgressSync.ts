@@ -22,7 +22,9 @@
  * día (antes chocaban si compartían código y el segundo cierre pisaba al primero; el orden del barrido ya evita el mismo código).
  * v6.01 (10-oct-2026): corrimiento rígido a D1 = lun 12-oct → F1 D1-D57 + INTENSIVA dia 58-107 (mismas fechas). Sin cambio de código: el
  * cierreId va por fecha+código y sim_n = dia de la fila (pre-test sim_n 62 · SIM 100Q 67-102 · dress 106; en v6.00 eran 65 · 70-105 · 109; no había notas guardadas).
- * La reposición F1 del carril B (mié 17 / jue 18-feb, extra.carril_b.pendiente_f1) cierra como 'carril_b' con el código del pendiente.
+ * Reposición F1 del carril B (extra.carril_b.pendiente_f1, DATA/ENCAPS/_pendientes_f1.json): mié 17-feb (dia 90, II-8) y jue 18-feb (dia 91, II-3) cierran
+ * como 'carril_b' con el código del pendiente; el lun 22-feb (dia 93) es el MINI-SIM 25Q repuesto (fila 53 de la F1 v6.00, cola larga II-6 + II-10, sin
+ * código) y cierra como 'mini_sim' con sim_n 93 (= dia del plan; origen sim_n 53 en la pseudo-fila) → su nota /25 va a study_sim_scores como cualquier mini-sim.
  *
  * Métrica que manda (README_SISTEMA_TRACKING.md): % CIEGO = correctas SEGURAS / total; las dudosas/adivinadas NO cuentan.
  * Taxonomía v3 (Palmerton): knowledge CONCEPTO·OLVIDO·CRONOLOGIA · transfer CCSN·CONTEXTO · proceso CAMBIO·TIEMPO·LECTURA.

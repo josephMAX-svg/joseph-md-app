@@ -164,7 +164,7 @@ export const FECHAS_V6: FechasV6 = {
         "2026-10-08",
         "2026-10-09"
       ],
-      "regla": "F1 no se alarga (la intensiva ENCAPS empieza el 4-ene): D1-D57 corren rígidos con su D#, C1/C2 consumidos, D58 (bioestadística) pasa al tramo 2 con --pendientes-f1; examen Step 1 sin cambio"
+      "regla": "F1 no se alarga (la intensiva ENCAPS empieza el 4-ene): D1-D57 corren rígidos con su D#, C1/C2 consumidos, D58 (bioestadística, ex-D79) pasa al tramo 2 como fila desplazada (uid C79, dOrig 79, T3 jue 18-mar) vía --f1-filas 57 (no como recuperación --pendientes-f1); examen Step 1 sin cambio"
     }
   ]
 };

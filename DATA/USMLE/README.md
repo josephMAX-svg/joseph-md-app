@@ -1,8 +1,27 @@
-# DATA · USMLE Step 1 — Doc maestro v6.00 (REESTRUCTURACIÓN ANUAL 6-oct-2026 · tramo 1 oct-dic + tramo 2 mar-sep · examen lun 27-sep-2027 · niveles Palmerton) · historial v5.20 abajo
+# DATA · USMLE Step 1 — Doc maestro v6.01 (corrimiento al lun 12-oct-2026 sobre la REESTRUCTURACIÓN ANUAL v6.00 · tramo 1 oct-dic + tramo 2 mar-sep · examen lun 27-sep-2027 · niveles Palmerton) · historial v6.00 y v5.20 abajo
 
-> ## ✅ v6.00 VIGENTE (decidida el mar 6-oct-2026 · arranca el mié 7-oct-2026) — manda sobre todo lo de abajo
+> ## ✅ v6.01 VIGENTE (sáb 10-oct-2026 · arranca el LUN 12-OCT-2026) — corrige la F1 y el colchón del bloque v6.00
+> `src/lib/usmleStep1Daily.ts` **v6.01** (commit `8e9be7e`): `DIAS` = **57 filas** (F1, D1-D57) + `DIAS_T2` = 158 filas → `DIAS_TODOS`; `DAILY_META` =
+> `{ version:'v6.01', inicio:'2026-10-12', fin:'2027-09-25', totalDias:215, examenTarget:'2027-09-27', … }` · `STEP1_SEMANAS` = **40** (S1 = semana del lun
+> 12-oct; F1 = S1-S12). Fuente: `DATA/_scripts/_fechas_v6.json` v6.01. El 7, 8 y 9-oct no se estudiaron (3 hábiles; 30 desde el 31-ago); la F1 no se alarga
+> (V6_ESPEC §B1): los D# corren rígidos, **C1/C2 consumidos**, la bioestadística sale de la F1.
+>
+> | Qué | **v6.01** | ⏸ v6.00 |
+> |---|---|---|
+> | F1 · tramo 1 | **lun 12-oct → mié 30-dic-2026 · 57 sesiones L-V (D1-D57)**; contenido v5.20 por D#; `nivelUW`/`qDia` re-derivados (11 filas cambian; 0 viernes N4) · ≈ 356 h brutas | mié 7-oct → mié 30-dic · 60 (D58 bioestadística · D59/D60 C1/C2) · 375 h |
+> | Hitos F1 (07:00-12:30; UWSA1 09:00-13:00) | UWSA1 **D1 lun 12-oct** · NBME 25 **D10 vie 23-oct** · 26 **D25 vie 13-nov** · 27 **D40 vie 4-dic** · 28 **D55 lun 28-dic** (checkpoint de fecha) | mié 7-oct · mar 20-oct · mar 10-nov · mar 1-dic · mar 22-dic |
+> | Gates de núcleo F1 ≥ 85 % | **D18 mié 4-nov · D38 mié 2-dic** | vie 30-oct · vie 27-nov |
+> | Bioestadística + epidemiología + ética (ex-D79) | **tramo 2 T3 jue 18-mar-2027** (N1 · 30Q; chip «DE F1 → tramo 2»; Micro empieza en T4 vie 19-mar) | D58 lun 28-dic |
+> | Tramo 2 | 158 filas, mismas fechas (mar 16-mar → sáb 25-sep); 38 `dOrig`; **colchón 38 filas ≈ 100 h al piso**; última reactivación T63 lun 7-jun; uWorld FRESCO 1.900 + 1.370 = 3.270 (margen 389); Psiquiatría `diaInicio` 103 | colchón 40 ≈ 105 h; 37 `dOrig` |
+> | Deload de secundarios | lun 16-nov · semana del lun 28-dic | = |
+> | Un día perdido | F1 **sin colchón**: pasa al tramo 2 en el cierre de F1 (jue 31-dic, `--pendientes-f1`, filas `d ≤ 57`) · F3/F4 → próxima fila COLCHÓN | F1 → C1/C2 primero |
+>
+> Hitos 2027, PAUSA, F3/F4, horas, GO/NO-GO y examen: **sin cambio** (bloque v6.00). Revisión semanal: fichero `S<NN>` por semanas de calendario desde la del
+> D1 (sáb 17-oct = `S01_2026-10-17.md`), etiqueta `S n/40` · `PAUSA · ENCAPS` (`DATA/REVISION_SEMANAL.md`, bloque v6.01).
+
+> ## ⏸ v6.00 (decidida el mar 6-oct-2026 · arrancaba el mié 7-oct-2026) — vigente salvo la F1, los hitos F1 y el colchón, que corrige el bloque v6.01 de arriba
 > Fuente de verdad (código): [`src/lib/usmleStep1Daily.ts`](../../src/lib/usmleStep1Daily.ts) **v6.00** (GENERADO por `DATA/_scripts/usmle/gen_usmle_v5.js` +
-> `assemble_usmle_ts.js`): `DIAS` = 60 filas (F1) + **`DIAS_T2` = 158 filas** (tramo 2, `d` 101-258) → `DIAS_TODOS`; `DAILY_META` = `{ version:'v6.00',
+> `assemble_usmle_ts.js`): `DIAS` = 60 filas (F1) *(⏸ v6.00 · v6.01: 57 filas, D1-D57)* + **`DIAS_T2` = 158 filas** (tramo 2, `d` 101-258) → `DIAS_TODOS`; `DAILY_META` = `{ version:'v6.00',
 > inicio:'2026-10-07', fin:'2027-09-25', examenTarget:'2027-09-27', gonogo:'2027-08-09', descansoD1:'2027-09-26', serumsInicio:'2027-05-03',
 > pausa:{ desde:'2026-12-31', hasta:'2027-03-15' } }` (`totalDias` 218 = solo informativo: los `d` no son contiguos). Fechas: `DATA/_scripts/_fechas_v6.json`.
 >
@@ -13,21 +32,21 @@
 >
 > | Tramo / fase | Fechas | Contenido |
 > |---|---|---|
-> | **F1 · tramo 1** | **mié 7-oct → mié 30-dic-2026** · 60 sesiones L-V (D1-D60) | 6h15/día (franjas de §4, sin cambio). **D1-D57 = v5.20 idénticos** (fecha, contenido, nivel, qDia). **D58 lun 28-dic** = Bioestadística + epidemiología + ética/comunicación (fila v5.20 D79 copiada tal cual) · **D59 mar 29 y D60 mié 30-dic = C1/C2 COLCHÓN F1** (nivel 4 · 40Q: un día perdido de D1-D58 o 2.ª pasada de incorrectas de los 9 sistemas). Hitos: UWSA1 mié 7-oct 09:00-13:00 · NBME 25 mar 20-oct · 26 mar 10-nov · 27 mar 1-dic · 28 mar 22-dic (**07:00-12:30**; NBME 28 = checkpoint de fecha: ≥ 58 % 27-sep en ruta · 50-57 % gate estricto · < 50 % → 25-oct). Gates de núcleo ≥ 85 %: vie 30-oct (D18) y vie 27-nov (D38). Deload lun 16-nov y lun 28-dic |
+> | **F1 · tramo 1** | **mié 7-oct → mié 30-dic-2026** · 60 sesiones L-V (D1-D60) *(⏸ v6.00 · v6.01: lun 12-oct → mié 30-dic · 57 sesiones D1-D57, C1/C2 consumidos, bioestadística → T3)* | 6h15/día (franjas de §4, sin cambio). **D1-D57 = v5.20 idénticos** (fecha, contenido, nivel, qDia). **D58 lun 28-dic** = Bioestadística + epidemiología + ética/comunicación (fila v5.20 D79 copiada tal cual) · **D59 mar 29 y D60 mié 30-dic = C1/C2 COLCHÓN F1** (nivel 4 · 40Q: un día perdido de D1-D58 o 2.ª pasada de incorrectas de los 9 sistemas). Hitos: UWSA1 mié 7-oct 09:00-13:00 · NBME 25 mar 20-oct · 26 mar 10-nov · 27 mar 1-dic · 28 mar 22-dic (**07:00-12:30**; NBME 28 = checkpoint de fecha: ≥ 58 % 27-sep en ruta · 50-57 % gate estricto · < 50 % → 25-oct). Gates de núcleo ≥ 85 %: vie 30-oct (D18) y vie 27-nov (D38). Deload lun 16-nov y lun 28-dic |
 > | PAUSA (F2) | jue 31-dic → lun 15-mar-2027 | Step 1 en mantenimiento mientras la ENCAPS es el rey: **Anki USMLE 05:15-05:45 L-V** (0 nuevas desde el 31-dic; FSRS 0,85 desde el 4-ene → 0,90 al reinicio) + **sáb 07:45-09:15 «STEP 1 VIVO»** 20Q timed mezcladas (10 incorrectas UWorld + 10 AMBOSS), sáb 9-ene → sáb 6-mar. Sin NBME/UWSA. 38,5 h (no cuentan para las 399 h). La app muestra estado PAUSA |
 > | **F3 · tramo 2** | **mar 16-mar → vie 30-abr** · 32 hábiles (T1-T32) | tiempo completo 7h15 (F1 + **16:15 REENTRADA** 20Q timed rotando sistemas). T1 reentrada mar 16-mar · **T2 NBME 29 mié 17-mar** 07:00-12:30 (nueva línea base; caída > 8 → +2 semanas de reactivación) · T3-T22 = los 20 días de contenido que pasan de v5.20 (Micro ex-D58-D64 · Repro D66-D70 · MSK D71, D73, D74 · Psiq D75, D76, D78 · Bioq D80, D81) · T23-T24 refuerzos (ética + bioestadística 2.ª vuelta) · reactivación por sistemas. Semana Santa jue 25 / vie 26-mar sin sesión |
 > | **F4 · tramo 2** | **lun 3-may [S] → sáb 25-sep** · 126 días L-S (T33-T158) | SERUMS + Step 1 por plantilla de turno (M · T · L · G; `FRANJAS_F4`): bloque A 04:05; bloque B 14:30 (M) o 07:40 (T); preguntas `qDia` (M/L/G) o `qDiaT` = `qDia` + 40 (T). Hitos con ventana lun-sáb + preferente: **NBME 30 lun 24-may** · UWSA3 (opc.) mar 29-jun · **NBME 31 mié 28-jul** · **NBME 32 vie 6-ago** · **GO/NO-GO lun 9-ago** · UWSA2 mar 10-ago · **NBME 33 + 3 bloques lun 30-ago** · **Free 120 lun 13-sep** · taper lun 20 → mié 22-sep · **D94 jue 23-sep** (última sesión de banco) · **D95 vie 24-sep** (≤ 1 h) · **ritual sáb 25-sep** (sin estudio) · viaje dom 26-sep · **EXAMEN lun 27-sep** |
 >
 > **Tramo 2 por tipo** (158 filas): reentrada 1 · hitos 8 · day_after 7 · contenido 20 · refuerzo 2 · reactivación 32 · uw_random 14 · incorrectas 18 ·
-> consolidación 10 · taper 5 · ritual 1 · **colchón 40 (≈105 h al piso)**; 37/37 `dOrig` de v5.20 cubiertos (multiset V1 = 0). En F4 una unidad de F3 se
-> parte en 2 filas (4 en la inducción) con `parte k/n`. **Presupuesto UWorld FRESCO** ≈ 3.270 Q ≤ 3.659 (F1 ≈ 1.930 + contenido 700 + refuerzo 80 + uw_random 560);
+> consolidación 10 · taper 5 · ritual 1 · **colchón 40 (≈105 h al piso)**; 37/37 `dOrig` de v5.20 cubiertos *(⏸ v6.00 · v6.01: colchón 38 ≈ 100 h; 38/38 `dOrig`)* (multiset V1 = 0). En F4 una unidad de F3 se
+> parte en 2 filas (4 en la inducción) con `parte k/n`. **Presupuesto UWorld FRESCO** ≈ 3.270 Q ≤ 3.659 (F1 ≈ 1.930 + contenido 700 + refuerzo 80 + uw_random 560) *(⏸ v6.00 · v6.01: F1 1.900 + tramo 2 1.370 = 3.270)*;
 > reactivación, colchón, reentrada, `qDiaT` y sábados de la PAUSA usan incorrectas/flagged + AMBOSS.
 > **Horas:** F1 31,25 h/sem brutas · F3 27,5 h/sem productivas · F4 efectivas PISO 15,75 · M 18,0 · MIX 22,5 · T 27,1 h/sem. Meta 399 h desde el reinicio (mín.
 > 275 h); colchón al D-1 del 27-sep: PISO +99 · M +142 · MIX +228 · T +314. **GO/NO-GO (27-sep):** ≥ 294 h reales acumuladas desde el reinicio (checkpoints
 > 31-may ≥ 127 · 30-jun ≥ 199 · 31-jul ≥ 276; `usmle_daily_scores.extra.horas`) **y** NBME 31 y 32 ≥ 68 % con uno ≥ 70 %. NO-GO → siguiente fecha (gratis),
 > regenerando el tramo 2 con las filas ya vividas congeladas. Mínimos v6 (`usmleScores.HITOS_ONTRACK`): NBME 25 línea base · 26 ≥ NBME 25 + 3 · 27 ≥ NBME 25 + 6
 > · 28 por tramos · 29 ≥ NBME 28 − 5 · 30 ≥ NBME 28 · 31 ≥ 65 · 32 ≥ 68 (uno ≥ 70) · 33 ≥ 68 · Free 120 ≥ 70 · UWSA3 sin mínimo.
-> **Un día perdido ya no mueve el examen:** F1 → C1/C2 y después al tramo 2 (cierre de F1 jue 31-dic, `--pendientes-f1`) · F3/F4 → próxima fila COLCHÓN.
+> **Un día perdido ya no mueve el examen:** F1 → C1/C2 y después al tramo 2 *(⏸ v6.00 · v6.01: C1/C2 ya consumidos: F1 → tramo 2 directamente)* (cierre de F1 jue 31-dic, `--pendientes-f1`) · F3/F4 → próxima fila COLCHÓN.
 >
 > ⏸ **Todo lo que sigue (cabecera v5.20, §1-§3b y los conteos de §4b) es HISTORIAL v5.20, SUPERSEDIDO por este bloque** salvo lo que el bloque declara
 > igual (D1-D57, franjas de §4 en F1/F3, método Palmerton, material, inventario).
@@ -121,7 +140,32 @@ la Fase C, de 9 días).
 > 🆕 **Los cortes de fase no se recalculan en cada corrimiento**: como los hitos conservan su D#, la estructura D1-81 /
 > D82-86 / D87-95 es exactamente la misma que en la v5.14 → v5.19 y solo se desplazan las fechas.
 
-## 2. Sistema → días → fechas (generado desde `DIAS` de `usmleStep1Daily.ts` v5.20) — ⏸ SUPERSEDIDO desde D58 (v6.00: D58 bioestadística · D59-D60 colchón · resto en `DIAS_T2`)
+## 2. Sistema → días → fechas — ⏸ la tabla v5.20 de abajo está SUPERSEDIDA ENTERA (también D1-D57: en v6.01 todas las fechas de F1 se corrieron) · valores v6.01 aquí
+
+> **✅ v6.01 (generado con node desde `DIAS` + `DIAS_T2` de `usmleStep1Daily.ts` v6.01, 10-oct):** F1 = **D1-D57, lun 12-oct → mié 30-dic-2026**.
+>
+> | Sistema | Días | Fechas v6.01 | Tier | Nº |
+> |---|---|---|---|---|
+> | Assessment (F1) | D1 · D10 · D25 · D40 · D55 | lun 12-oct (UWSA1) · vie 23-oct · vie 13-nov · vie 4-dic · lun 28-dic | CORE | 5 |
+> | Fundamentos | D2-D3 | mar 13-oct → mié 14-oct | CORE | 2 |
+> | Immunology | D4-D5 | jue 15-oct → vie 16-oct | CORE | 2 |
+> | Cardiovascular | D6-D9 · D11-D16 | lun 19-oct → lun 2-nov | CORE | 10 |
+> | Respiratory | D17-D22 | mar 3-nov → mar 10-nov | CORE | 6 |
+> | Renal | D23-D24 · D26-D29 | mié 11-nov → jue 19-nov | CORE | 6 |
+> | Gastrointestinal | D30-D36 | vie 20-nov → lun 30-nov | CORE | 7 |
+> | Endocrine | D37-D39 · D41-D42 | mar 1-dic → mar 8-dic | CORE | 5 |
+> | Nervous System | D43-D50 | mié 9-dic → vie 18-dic | CORE | 8 |
+> | Hematology & Oncology | D51-D54 · D56-D57 | lun 21-dic → mié 30-dic | HIGH | 6 |
+> | Bioestadística + epidemiología + ética (ex-D79) | T3 (`d` 103) | **jue 18-mar-2027** (tramo 2; ⏸ v6.00: D58 lun 28-dic) | — | 1 |
+> | Microbiology / ID (ex-D58-D64) | T4-T10 | vie 19-mar → mié 31-mar (25-26-mar SKIP) | HIGH | 7 |
+> | Reproductive (ex-D66-D70) | T11-T15 | jue 1-abr → mié 7-abr | HIGH | 5 |
+> | Musculoskeletal / Rheum (ex-D71 · D73-D74) | T16-T18 | jue 8-abr → lun 12-abr | HIGH | 3 |
+> | Psychiatry & Behavioral (ex-D75-D76 · D78) | T19-T21 (+ T3) | mar 13-abr → jue 15-abr | HIGH | 3 (+1) |
+> | Biochemistry (ex-D80-D81) | T22-T23 | vie 16-abr → lun 19-abr | MED | 2 |
+>
+> Hitos 2027, reactivación, F4 y sprint final: `DIAS_T2` (bloque v6.00 de arriba, sin cambio). *(⏸ v6.00: Fundamentos jue 8-oct · Hemato → jue 24-dic · D58 bioestadística lun 28-dic · D59-D60 colchón · Micro T3 jue 18 → mar 30-mar · Repro mié 31-mar → mar 6-abr · MSK mié 7 → vie 9-abr · Psiq lun 12 → mié 14-abr · Bioq jue 15 → vie 16-abr.)*
+
+⏸ *(v5.20, SUPERSEDIDO ENTERO — generado desde `DIAS` de `usmleStep1Daily.ts` v5.20):*
 
 | Sistema | Días | Fechas | Tier | Nº días |
 |---------|------|--------|------|---------|
@@ -197,7 +241,30 @@ se siguen consumiendo desde el array `POST_A` en los huecos libres. La clasifica
 **origen de la fila** (`bbCh` = `Banco` / `Sprint`), no de umbrales de fecha, así que la regla queda idéntica aunque
 el contenido se derrame hasta el 1-feb.
 
-## 3. Hitos NBME/UWSA (12) — v5.20: los 12 corren CON el plan · D# intacto · fechas +1 hábil — ⏸ SUPERSEDIDO desde el NBME 29 (fechas v6.00 en el bloque de arriba)
+## 3. Hitos NBME/UWSA — ⏸ la tabla v5.20 de abajo está SUPERSEDIDA ENTERA (también los 5 hitos de F1) · valores v6.01 aquí
+
+> **✅ v6.01 (leído con node de `DIAS`/`DIAS_T2` de `usmleStep1Daily.ts` v6.01, 10-oct):**
+>
+> | # | Hito | Fila | Fecha v6.01 | ⏸ v6.00 |
+> |---|---|---|---|---|
+> | 1 | **UWSA1** (baseline, 09:00-13:00) | D1 | **lun 12-oct-2026** | mié 7-oct |
+> | 2 | **NBME 25** (07:00-12:30) | D10 | **vie 23-oct-2026** | mar 20-oct |
+> | 3 | **NBME 26** | D25 | **vie 13-nov-2026** | mar 10-nov |
+> | 4 | **NBME 27** | D40 | **vie 4-dic-2026** | mar 1-dic |
+> | 5 | **NBME 28** (checkpoint de fecha) | D55 | **lun 28-dic-2026** | mar 22-dic |
+> | — | Gates de núcleo F1 ≥ 85 % | D18 · D38 | **mié 4-nov · mié 2-dic** | vie 30-oct · vie 27-nov |
+> | 6 | **NBME 29** (nueva línea base) | T2 | mié 17-mar-2027 | = |
+> | 7 | **NBME 30** | T51 | lun 24-may-2027 | = |
+> | — | UWSA3 (opcional) | T82 | mar 29-jun-2027 | = |
+> | 8 | **NBME 31** (+ GO/NO-GO de fecha) | T107 | mié 28-jul-2027 | = |
+> | 9 | **NBME 32** | T115 | vie 6-ago-2027 | = |
+> | 10 | **UWSA2** | T118 | mar 10-ago-2027 | = |
+> | 11 | **NBME 33** (+ 3 bloques = ensayo 7 bloques) | T135 | lun 30-ago-2027 | = |
+> | 12 | **FREE 120 oficial** | T147 | lun 13-sep-2027 | = |
+>
+> GO/NO-GO formal lun 9-ago-2027 (E-49) · examen **lun 27-sep-2027** (sin cambio). Los «parte Cardio/Renal/Endo/Heme» de la tabla v5.20 siguen valiendo por D# en F1; las fechas no.
+
+⏸ *(v5.20, SUPERSEDIDO ENTERO — los 12 corrían CON el plan · D# intacto · fechas +1 hábil):*
 
 | # | Hito | Día | Fecha | Q | Rol |
 |---|------|-----|-------|---|-----|
@@ -286,7 +353,7 @@ hitos** en Readiness); 📏 Medición lo repite el día del segundo hito.
 
 > ✅ **Regla de burnout v6.00 (vigente; `USMLE_TAPER.burnout` y `BURNOUT_PROTOCOLO` ya la llevan):** mismo disparador (2 hitos consecutivos bajo su mínimo
 > on-track + síntomas) y misma pausa (3-5 días con SOLO Anki AM + sueño; frenar QBank y adquisición), pero **la pausa ya no corre el plan**: se paga con
-> las **filas COLCHÓN** (F1: C1/C2 del mar 29 / mié 30-dic y, desde el 3.er día, el contenido pasa al tramo 2 · F3/F4: 40 filas ≈ 105 h en el base);
+> las **filas COLCHÓN** (F1: C1/C2 del mar 29 / mié 30-dic y, desde el 3.er día, el contenido pasa al tramo 2 · F3/F4: 40 filas ≈ 105 h en el base) *(⏸ v6.00 · v6.01: C1/C2 consumidos el 10-oct; F3/F4 38 filas ≈ 100 h)*;
 > **agotadas, decide el GO/NO-GO** (lun 9-ago-2027; NO-GO → lun 25-oct sin recargo, congelando lo vivido). **Sin `remap_inicio.js`** (en v6 ya no re-fecha el
 > Step 1). Se reanuda por el gate del 80 %, no por la fecha. ⏸ La frase «Cada día parado = +1 día hábil en el plan (`remap_inicio.js`) … lun 22-feb … mar
 > 9-mar … plan B feb-mar 2027» del párrafo de arriba es v5.20 (SUPERSEDIDA).
@@ -305,13 +372,13 @@ hitos** en Readiness); 📏 Medición lo repite el día del segundo hito.
 | 18:00–18:45 | EVALUACIÓN ACUMULATIVA modo examen: 10Q mixta timed (90 s/Q · tope 2 min · cover-the-options · juez, no abogado) + corrección + APEX · Fase A = dosis diaria de nivel 4 · día de hito: registrar aquí el % del NBME/UWSA/Free 120 | 4 (Fase A) · 5 (B-C) | ≥80% sostenido = listo para mezclar sistemas · hitos: comparar con el mínimo on-track del hito (`usmleScores.HITOS_ONTRACK`; v5.20: casi todos en martes · v5.19: en lunes) |
 
 
-> ✅ **v6.00 (valores vigentes, V6_ESPEC §0 · §A1 · §B4):** **ENCAPS 16:15-17:15 = filas Supabase 1-60, mié 7-oct → mié 30-dic-2026** (mantenimiento F1; las
+> ✅ **v6.00 (valores vigentes, V6_ESPEC §0 · §A1 · §B4):** **ENCAPS 16:15-17:15 = filas Supabase 1-60, mié 7-oct → mié 30-dic-2026** *(⏸ v6.00 · v6.01: filas 1-57, lun 12-oct → mié 30-dic)* (mantenimiento F1; las
 > filas 61-92 de v5.20 pasan a ser el carril B 16:15 de la F2, lun 4-ene → mar 16-feb; reposición mié 17-feb → mié 10-mar; examen ENCAPS dom 14-mar-2027
-> PROVISIONAL) · **F1 = 60 sesiones L-V** (D1-D60, mié 7-oct → mié 30-dic; 6h15/día ≈ **375 h brutas**) · F2 = Step 1 en mantenimiento (Anki 30' L-V + sáb
+> PROVISIONAL) · **F1 = 60 sesiones L-V** (D1-D60, mié 7-oct → mié 30-dic; 6h15/día ≈ **375 h brutas**) *(⏸ v6.00 · v6.01: 57 sesiones D1-D57, lun 12-oct → mié 30-dic, ≈ 356 h)* · F2 = Step 1 en mantenimiento (Anki 30' L-V + sáb
 > 07:45-09:15 STEP 1 VIVO ≈ 38,5 h; no cuentan para la meta) · **F3 = 32 hábiles mar 16-mar → vie 30-abr ≈ 176 h productivas** (5,5 h/día; franjas de F1 +
 > 16:15 REENTRADA) · F4 por turno (`FRANJAS_F4`: PISO 15,75 · M 18,0 · MIX 22,5 · T 27,1 h/sem efectivas) · **meta 399 h de Step 1 desde el reinicio**
-> (mínimo 275 h; colchón al D-1 del 27-sep: PISO +99 h) · **AURUM 30' (14:15-14:45) en F2 y F3** (→ jue 15-abr; 60' solo en F1) · MIR 1 h en todas las fases
-> (DJ-4) · LIVIANO 17:15 → vie 12-feb. ⏸ El párrafo «Resto del día» y la «Matemática de horas v5.20» de abajo son historial (SUPERSEDIDOS).
+> (mínimo 275 h; colchón al D-1 del 27-sep: PISO +99 h) · **AURUM 30' (14:15-14:45) en F2 y F3** (→ **mar 20-abr** *(⏸ v6.00: jue 15-abr)*; 60' solo en F1) · MIR 1 h en todas las fases
+> (DJ-4) · LIVIANO 17:15 → **mié 17-feb** *(⏸ v6.00: vie 12-feb)*. ⏸ El párrafo «Resto del día» y la «Matemática de horas v5.20» de abajo son historial (SUPERSEDIDOS).
 
 ⏸ *(v5.20, SUPERSEDIDO)* Resto del día (sin tocar): IA vibecoding 04:15-05:00 · RESEARCH↔DERMA alterna 13:30-14:15 ·
 AURUM 14:15-15:15 · MIR 15:15-16:15 · **ENCAPS 16:15-17:15 (1h/día de banqueo puro hasta el
@@ -442,10 +509,10 @@ Guía por materia + método completo: [`PALMERTON_POR_MATERIA.md`](PALMERTON_POR
 
 | Fichero | Rol |
 |---------|-----|
-| [`src/lib/usmleStep1Daily.ts`](../../src/lib/usmleStep1Daily.ts) | **v6.00 = FUENTE DE VERDAD**: `DIAS` (**60** filas F1, D1-D60 mié 7-oct → mié 30-dic) + `DIAS_T2` (**158** filas del tramo 2, T1-T158, `d` 101-258, mar 16-mar → sáb 25-sep-2027) → **`DIAS_TODOS`** · `DAILY_META` v6 (`version:'v6.00'`, `inicio:'2026-10-07'`, `fin:'2027-09-25'`, **`examenTarget:'2027-09-27'`**, `descansoD1:'2027-09-26'`) · **`USMLE_TAPER`** v6 (D94 jue 23-sep · D95 vie 24-sep · ritual sáb 25-sep · D-1 dom 26-sep viaje · examen lun 27-sep · regreso mar 28-sep · burnout por colchón) · `FRANJAS` (F1/F3) + `FRANJA_F3_REENTRADA` + **`FRANJAS_F4`** (plantillas M · T · L · G · H · H-sáb) · helpers sobre `DIAS_TODOS` (`diaDe`, `diaPorD`, `estadoUSMLE` con PAUSA, `faseDe`, `semanaDe`, `esDiaTaper`, `esDiaRitual`, `esViernesNivel4`, `hitosDelPlan`). Generado por `gen_usmle_v5.js` → `assemble_usmle_ts.js` (`DATA/_scripts/usmle/`; referencia de verificación en `ref_v6/`). ⏸ *(v5.20, SUPERSEDIDO:)* DIAS (95, con `nivelUW`/`qDia`/`franjaNota`), FRANJAS (6, con nivel/gate), DAILY_META (+`metodo`, `examenVentana` superada, `examenTarget = '2027-02-22'`, `descansoD1 = '2027-02-21'`, `viernesN4DesdeSemana`), USMLE_NIVELES, USMLE_GATE, **USMLE_TAPER** (D94 jue 18-feb última sesión de banco · D95 vie 19-feb último día del plan / D-1 hábil · dom 21-feb D-1 real sin estudio · examen lun 22-feb · burnout), helpers (`faseDe` 81/86, `nivelInfo`, `esHito`, `hitosDelPlan`, `semanaDe` (bloques de 7 días desde el D1: mié → mar en v5.20), `esViernesNivel4`, `esDiaTaper`, `esDiaDermaStep1`). Generado por `gen_usmle_v5.js` → `assemble_usmle_ts.js` (`DATA/_scripts/usmle/`; flags `VIERNES_N4_DESDE_SEMANA`, `TAPER_ACTIVO`) |
+| [`src/lib/usmleStep1Daily.ts`](../../src/lib/usmleStep1Daily.ts) | **v6.01 = FUENTE DE VERDAD**: `DIAS` (**57** filas F1, D1-D57 lun 12-oct → mié 30-dic) *(⏸ v6.00: 60 filas, D1-D60 mié 7-oct → mié 30-dic)* + `DIAS_T2` (**158** filas del tramo 2, T1-T158, `d` 101-258, mar 16-mar → sáb 25-sep-2027) → **`DIAS_TODOS`** · `DAILY_META` v6 (`version:'v6.01'`, `inicio:'2026-10-12'`, `totalDias` 215 *(⏸ v6.00: 'v6.00' · '2026-10-07' · 218)*, `fin:'2027-09-25'`, **`examenTarget:'2027-09-27'`**, `descansoD1:'2027-09-26'`) · **`USMLE_TAPER`** v6 (D94 jue 23-sep · D95 vie 24-sep · ritual sáb 25-sep · D-1 dom 26-sep viaje · examen lun 27-sep · regreso mar 28-sep · burnout por colchón) · `FRANJAS` (F1/F3) + `FRANJA_F3_REENTRADA` + **`FRANJAS_F4`** (plantillas M · T · L · G · H · H-sáb) · helpers sobre `DIAS_TODOS` (`diaDe`, `diaPorD`, `estadoUSMLE` con PAUSA, `faseDe`, `semanaDe`, `esDiaTaper`, `esDiaRitual`, `esViernesNivel4`, `hitosDelPlan`). Generado por `gen_usmle_v5.js` → `assemble_usmle_ts.js` (`DATA/_scripts/usmle/`; referencia de verificación en `ref_v6/`). ⏸ *(v5.20, SUPERSEDIDO:)* DIAS (95, con `nivelUW`/`qDia`/`franjaNota`), FRANJAS (6, con nivel/gate), DAILY_META (+`metodo`, `examenVentana` superada, `examenTarget = '2027-02-22'`, `descansoD1 = '2027-02-21'`, `viernesN4DesdeSemana`), USMLE_NIVELES, USMLE_GATE, **USMLE_TAPER** (D94 jue 18-feb última sesión de banco · D95 vie 19-feb último día del plan / D-1 hábil · dom 21-feb D-1 real sin estudio · examen lun 22-feb · burnout), helpers (`faseDe` 81/86, `nivelInfo`, `esHito`, `hitosDelPlan`, `semanaDe` (bloques de 7 días desde el D1: mié → mar en v5.20), `esViernesNivel4`, `esDiaTaper`, `esDiaDermaStep1`). Generado por `gen_usmle_v5.js` → `assemble_usmle_ts.js` (`DATA/_scripts/usmle/`; flags `VIERNES_N4_DESDE_SEMANA`, `TAPER_ACTIVO`) |
 | [`src/lib/ankiLinks.ts`](../../src/lib/ankiLinks.ts) | Decks Anki por examen + **`sysTag(system)` = tag compartido `sys::<sistema>`** (USMLE ↔ MIR ↔ Derma, 12-sep) · `MIR_DECK` con Epidemiología / Bioética / Dermatología (A VERIFICAR con AnkiConnect) · `DERMA_STEP1_TAG/QUERY` + `dermaAnkiTags` añade `step1 sys::Dermatology` |
 | [`src/lib/mirUsmleBridge.ts`](../../src/lib/mirUsmleBridge.ts) | Puente de solo lectura MIR ↔ Step 1: `usmleMirParalelo(fecha)` (chip HOY) · en `UsmleTodayPlan` el repaso anclado 07:15 añade "MIR precedió esta semana: <asignatura>" (semana anterior + homólogo MIR del sistema de hoy) |
-| [`src/lib/usmleStep1Plan.ts`](../../src/lib/usmleStep1Plan.ts) | Plan macro (SISTEMAS con `diaInicio` alineado a DIAS, PLAN_META; `inicio = '2026-10-07'`, v5.20) |
+| [`src/lib/usmleStep1Plan.ts`](../../src/lib/usmleStep1Plan.ts) | Plan macro (SISTEMAS con `diaInicio` alineado a DIAS, PLAN_META; `inicio = '2026-10-12'`, v6.01 *(⏸ v6.00/v5.20: '2026-10-07')*) |
 | [`src/lib/usmlePalmertonData.ts`](../../src/lib/usmlePalmertonData.ts) | Vídeos Palmerton (serie High Yield, IDs + duraciones reales) |
 | [`src/lib/usmleQbanklyData.ts`](../../src/lib/usmleQbanklyData.ts) | Árbol Qbankly + deep-links (`library?e=<epub>&doc=<docId>`) |
 | [`src/lib/usmleData.ts`](../../src/lib/usmleData.ts) | KPIs, sistemas, disciplinas, ROI, recursos, reglas del Qbank (5 niveles) |

@@ -1,19 +1,25 @@
-# 🚦 PROTOCOLO DE MODO MÍNIMO — VERDE · ÁMBAR · ROJO (v6.00 · 6-oct-2026; historial v5.20 abajo)
+# 🚦 PROTOCOLO DE MODO MÍNIMO — VERDE · ÁMBAR · ROJO (v6.00 · 6-oct-2026, fechas v6.01 · 10-oct-2026; historial v5.20 abajo)
 
-> ## ✅ v6.00 VIGENTE (REESTRUCTURACIÓN ANUAL, mar 6-oct-2026) — manda sobre lo de abajo
+> **v6.01 (sáb 10-oct-2026):** las reglas de este protocolo no cambian; cambian las fechas de F1 (lun 12-oct → mié 30-dic, D1-D57). **Ojo: C1/C2 (el colchón
+> de F1) se CONSUMIERON con el corrimiento** (7-9 oct sin estudio): desde el lun 12-oct, un día ROJO/perdido de F1 ya no tiene colchón propio → su fila pasa al
+> tramo 2 en el cierre de F1 (jue 31-dic) y gasta una de las **38 filas COLCHÓN** (≈ 100 h) del tramo 2. Deload de F1: lun 16-nov y semana del lun 28-dic
+> (⚠ en v6.01 esa semana es la MISMA del NBME 28 —lun 28-dic—, ya no la posterior: decisión **(f)** abierta en `DATA/PENDIENTES_JOSEPH.md`).
+> **Gates de F1 v6.01: mié 4-nov (D18) y mié 2-dic (D38)** — núcleo < 85 % → secundarios salvo MIR a 30' (*⏸ v6.00: vie 30-oct / vie 27-nov*).
+
+> ## ⏸ v6.00 (REESTRUCTURACIÓN ANUAL, mar 6-oct-2026) — vigente salvo las fechas de F1 (D1-D57, gates, C1/C2), que corrige la nota v6.01 de arriba
 > - **DJ-4 (decisión de Joseph): MIR mantiene su horario (1 h/día en todas las fases); todos los demás secundarios se reducen hasta un MÍNIMO DE 30' —
 >   nunca desaparecen.** En ÁMBAR cada secundario queda en **30' (mínimo DJ-4)**, MIR en **Anki + 25Q (1 h)** y el núcleo (Step 1; ENCAPS en la F2) no se
 >   degrada. Es lo que pinta la app (`minimoPorFrente` en `src/lib/homeBriefing.ts`, constante `MINIMO_DJ4`). Tabla completa en **§2-bis**.
 > - **Disparador semanal (V6_ESPEC §B7.4):** si el núcleo queda **< 80 % dos semanas seguidas**, todos los secundarios salvo MIR bajan a 30' hasta 2 semanas
->   ≥ 90 % (ya no se suspenden). **Gates de F1:** vie 30-oct (D18) y vie 27-nov (D38) — núcleo < 85 % → mismo efecto.
-> - **Fin del corrimiento diario:** un día perdido ya NO mueve el examen ni dispara `remap_inicio.js`. Se paga con colchón: F1 → C1/C2 (mar 29 / mié 30-dic) y,
+>   ≥ 90 % (ya no se suspenden). **Gates de F1:** mié 4-nov (D18) y mié 2-dic (D38) *(⏸ v6.00: vie 30-oct / vie 27-nov)* — núcleo < 85 % → mismo efecto.
+> - **Fin del corrimiento diario:** un día perdido ya NO mueve el examen ni dispara `remap_inicio.js`. Se paga con colchón: F1 → C1/C2 (mar 29 / mié 30-dic) *(⏸ v6.00 · v6.01: C1/C2 consumidos el 10-oct: F1 → tramo 2 directamente)* y,
 >   desde el 3.er día perdido, el contenido pasa al tramo 2 · F2 → se pierde el slot ENCAPS de menor brecha · F3/F4 → la fila no hecha se hace en la próxima
 >   fila COLCHÓN. Replan solo por la regla anti-replan (`DATA/REESTRUCTURACION_31AGO_2026.md` §24.4). Por eso §0.2, §0.4 y §3.4 de abajo quedan SUPERSEDIDOS.
 > - **ROJO (enfermedad):** secundarios omitidos (sin cambio) — **decisión abierta de Joseph** si también el ROJO debe respetar el mínimo de 30' (V6_ESPEC §I).
 >   **En la F2** (lun 4-ene → vie 12-mar) el ROJO protege el núcleo ENCAPS: la app pinta ENCAPS «Solo Anki cifras + pre-test 10Q del sub-eje (08:15)», Step 1
 >   «Anki vencido ≤15' (Step 1 en mantenimiento)» y omite el bloque principal y la eval del Step 1; fuera de la F2, igual que antes (§2-bis).
 > - Sueño 21:00 → 04:00 y gimnasio siguen siendo innegociables en todas las fases (en el SERUMS con turno tarde el gimnasio va a las 06:10).
-> - Fases v6: F1 Step 1 mié 7-oct → mié 30-dic · F2 ENCAPS intensiva lun 4-ene → vie 12-mar (examen dom 14-mar PROVISIONAL) · F3 Step 1 mar 16-mar → vie 30-abr ·
+> - Fases v6: F1 Step 1 mié 7-oct → mié 30-dic *(⏸ v6.00 · v6.01: lun 12-oct → mié 30-dic)* · F2 ENCAPS intensiva lun 4-ene → vie 12-mar (examen dom 14-mar PROVISIONAL) · F3 Step 1 mar 16-mar → vie 30-abr ·
 >   F4 Step 1 + SERUMS ~lun 3-may → sáb 25-sep (L-S) · examen Step 1 lun 27-sep-2027.
 >
 > ⏸ *(Historial v5.20, SUPERSEDIDO por el bloque v6.00:)*
@@ -84,7 +90,7 @@ ENCAPS es el último porque su hora ya es de mantenimiento (1 h) y el examen 202
 | 🇪🇸 MIR | 1 h | **Anki + 25Q (1 h, DJ-4)** | omitido |
 | 🔬/🩺 Research ↔ Derma | 45' (F4: 30' en tiempo muerto) | **30' (mínimo DJ-4)** | omitido |
 | 💰 AURUM | 60' (desde el 4-ene: 30') | **30' (mínimo DJ-4)** | omitido |
-| 🧠 SYNAPSE · 🛠 vibecoding · ⚖️ LIVIANO (hasta que terminan: 15-feb · 19-feb · 12-feb) | 30' · 45' · 45' | **30' (mínimo DJ-4)** | omitido |
+| 🧠 SYNAPSE · 🛠 vibecoding · ⚖️ LIVIANO (hasta que terminan: vie 19-feb · mié 24-feb · mié 17-feb — v6.01; ⏸ v6.00: 15-feb · 19-feb · 12-feb) | 30' · 45' · 45' | **30' (mínimo DJ-4)** | omitido |
 
 Notas: (1) fuera de la F2 la columna ROJO de los secundarios es la de v5.20 sin cambios — decisión abierta (DJ-4 dice «nunca desaparecen»); en la F2 el ROJO
 es el de las dos filas F2 de arriba (`minimoPorFrente(frente, 'ROJO', iso)` con `faseV6(iso) === 'F2'`). (2) La siesta OPCIONAL 13:15-13:30 y la higiene
@@ -104,7 +110,7 @@ al aire libre es la señal de luz matinal: no se pasa a indoor ni en ÁMBAR (se 
 1. 05:00 Anki AM (todo el due; si el due es > 150, hasta 45' y el resto el día siguiente — **nunca capar**).
 2. 08:15 pre-test 10Q del tema del día (tutor, sin cronómetro). Se registra el resultado.
 3. Dormir/recuperar. Sin pantallas de estudio. Sin "aprovechar" para vídeos.
-4. ⏸ *v6.00: SUPERSEDIDO — ya no hay corrimiento: el bloque principal no hecho queda como fila atrasada y se hace en el próximo colchón (C1/C2 en F1; fila COLCHÓN en F3/F4); en F2 se pierde el slot de menor brecha.* *(Texto v5.20:)* **Decisión de corrimiento** (al cierre del día o a la mañana siguiente): si NO se hizo el bloque principal, el
+4. ⏸ *v6.00: SUPERSEDIDO — ya no hay corrimiento: el bloque principal no hecho queda como fila atrasada y se hace en el próximo colchón (C1/C2 en F1; fila COLCHÓN en F3/F4) *(⏸ v6.00 · v6.01: F1 ya sin C1/C2 → tramo 2)*; en F2 se pierde el slot de menor brecha.* *(Texto v5.20:)* **Decisión de corrimiento** (al cierre del día o a la mañana siguiente): si NO se hizo el bloque principal, el
    día cuenta como perdido → `node DATA/_scripts/remap_inicio.js <mañana>` + `gen_encaps_mantenimiento_2027.js <mañana>`
    (→ execute_sql con backup) + `gen_synapse_plan.js <mañana>` + `gen_aurum_plan.js <mañana>` +
    `gen_vibecoding_plan.js <mañana>` + regenerar USMLE (`gen_usmle_v5.js`; desde v5.8 NO recorta contenido: alarga el final) + docs.
@@ -136,7 +142,7 @@ pospone); el Anki de sáb/dom sigue dimensionándose por `due × 20 s`; si la se
 - **Sueño**: quick-log de VITALS a las 07:00 (20 s, `mv_wellness_logs` tipo `sueno`, user `joseph`). Mientras no
   haya registro reciente (último dato: jun-2026), el disparador se evalúa por autoreporte al elegir el modo.
   Proyecto **S5** del vibecoding (`vitals-puente`, mié 4 → mar 10-nov, SHIP sáb 14-nov · bloque mié→mar, v5.20; v5.19: mar 3 → lun 9-nov, SHIP sáb 14-nov) lleva el dato al Home y sugiere ÁMBAR automáticamente.
-- **Eval 18:00 y pre-test**: proyecto **S3** (mié 21 → mar 27-oct, SHIP sáb 31-oct · bloque mié→mar, v5.20; v5.19: mar 20 → lun 26-oct, SHIP sáb 31-oct) crea `jmd-usmle-scores` → Supabase. Hasta entonces se anota
+- **Eval 18:00 y pre-test**: proyecto **S3** (mié 21 → mar 27-oct, SHIP sáb 31-oct · bloque mié→mar, v5.20; *(⏸ v6.00 · v6.01: S3 lun 26 → vie 30-oct, SHIP sáb 31-oct)* v5.19: mar 20 → lun 26-oct, SHIP sáb 31-oct) crea `jmd-usmle-scores` → Supabase. Hasta entonces se anota
   a mano en la revisión semanal.
 - **Anki backlog/retención**: `node DATA/_scripts/anki_telemetria.js` (Anki abierto) → KPI del cockpit + alarma G.
 - **Días perdidos / niveles**: `jmd-modo-log` (la app) → export de localStorage → `gen_revision_semanal.js`
