@@ -45,6 +45,9 @@
 // v6.02; la deload post-NBME 26 = lun 23 → vie 27-nov = S6). Ahora dice la verdad y sale del cálculo: el flag `deload` sigue en S7 por el
 // orden v5.10-b, sin mover contenido ni minutos (precedente v6.01), con el rango de S7 de este START; las semanas deload del Step 1 las fija
 // homeBriefing.DELOAD_SEMANAS (v6.02: lun 23-nov y lun 28-dic). Solo cambia ese comentario: datos idénticos.
+// v6.02 (17-oct, verificación final): la cabecera del .md decía «S1-S12 · lun 19-oct → mié 13-ene 2026» (el año salía de la PRIMERA fecha:
+// S12 cierra en 2027) y conservaba el texto v5.10-b «N días = los mismos 95 del Step 1 (d == D#)», falso desde v6.00 (el d del vibecoding es
+// su propio día L-V; ya no es el D del Step 1). Ahora cada extremo lleva su año y el texto dice la regla vigente. Solo cambia el .md: datos idénticos.
 // Uso:  node DATA/_scripts/gen_vibecoding_plan.js 2026-10-19   (v6.02; v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07; v5.19: 2026-10-06 · v5.18: 2026-10-05)
 // Pipeline de corrimiento: tras remap_inicio.js <fecha>, correr también este script con la misma fecha
 // (igual que gen_synapse_plan.js / gen_aurum_plan.js). Determinista: sin Date.now() ni aleatoriedad.
@@ -391,9 +394,9 @@ console.log('OK src/lib/vibecodingPlan.ts ·', dias.length, 'días ·', dias[0].
 const MES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
 const fmt = (s) => `${WD[dow(s)].toLowerCase()} ${s.slice(8, 10)}-${MES[Number(s.slice(5, 7)) - 1]}`;
 const md = [];
-md.push(`# 🧠 VIBECODING — 12 proyectos semanales (S1-S12 · ${fmt(dias[0].fecha)} → ${fmt(finS12)} ${dias[0].fecha.slice(0, 4)}) + taper S13-S20 (${fmt(dias[nP].fecha)} → ${fmt(dias[dias.length - 1].fecha)} ${dias[dias.length - 1].fecha.slice(0, 4)})`);
+md.push(`# 🧠 VIBECODING — 12 proyectos semanales (S1-S12 · ${fmt(dias[0].fecha)}${dias[0].fecha.slice(0, 4) !== finS12.slice(0, 4) ? ' ' + dias[0].fecha.slice(0, 4) : ''} → ${fmt(finS12)} ${finS12.slice(0, 4)}) + taper S13-S20 (${fmt(dias[nP].fecha)} → ${fmt(dias[dias.length - 1].fecha)} ${dias[dias.length - 1].fecha.slice(0, 4)})`);
 md.push('');
-md.push(`> GENERADO por \`DATA/_scripts/gen_vibecoding_plan.js ${START}\` desde \`DATA/SYNAPSE/vibecoding_proyectos.json\` (editar el JSON, no este .md). Franja **04:15–05:00 L-V (45')** · sábado **PC SYNAPSE 15:00-17:00 = SHIP** del proyecto · domingo = Feynman del proyecto (10', opcional). Progreso real en la app: pestaña ⚡ run de SYNAPSE (PlanKey \`vibecoding\`, ✓ por día) y bloque 04:15 de MISIÓN DE HOY. **v5.10-b (12-sep-2026)**: catálogo RE-SECUENCIADO por riesgo para el Step 1 con lo ya construido por agentes (parser APEX v2.5.1 + test, usmleScores.ts, anki_telemetria.js v1, gen_revision_semanal.js v1, plan_checks.sql, verify_vibecoding.js, journal_hoy.js): cada proyecto COMPLETA o pone en producción algo real. ${dias.length} días = los mismos ${DIAS_STEP1} del Step 1 (d == D#).`);
+md.push(`> GENERADO por \`DATA/_scripts/gen_vibecoding_plan.js ${START}\` desde \`DATA/SYNAPSE/vibecoding_proyectos.json\` (editar el JSON, no este .md). Franja **04:15–05:00 L-V (45')** · sábado **PC SYNAPSE 15:00-17:00 = SHIP** del proyecto · domingo = Feynman del proyecto (10', opcional). Progreso real en la app: pestaña ⚡ run de SYNAPSE (PlanKey \`vibecoding\`, ✓ por día) y bloque 04:15 de MISIÓN DE HOY. **v5.10-b (12-sep-2026)**: catálogo RE-SECUENCIADO por riesgo para el Step 1 con lo ya construido por agentes (parser APEX v2.5.1 + test, usmleScores.ts, anki_telemetria.js v1, gen_revision_semanal.js v1, plan_checks.sql, verify_vibecoding.js, journal_hoy.js): cada proyecto COMPLETA o pone en producción algo real. ${dias.length} días L-V propios del plan (desde v6.00 el d del vibecoding YA NO es el D del Step 1; ⏸ v5.10-b: los mismos ${DIAS_STEP1} del Step 1, d == D#).`);
 md.push('');
 md.push('## Reglas (Palmerton aplicado a construir)');
 md.push('');

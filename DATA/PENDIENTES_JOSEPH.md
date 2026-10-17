@@ -98,7 +98,7 @@
       u) · dom 25-abr → **ninguna ≤ 25-oct** (déficit 2 u). No cambian 14-mar → 31-ago, 4-abr → 27-sep ni 18-abr → 25-oct, ni el escenario base (ENCAPS
       14-mar, examen 27-sep, colchón 28). El JSON NO se tocó (sigue la tabla v6.00). **Opción:** actualizar `reserva_por_encaps` + `gen_fechas_v6.js` →
       `fechasV6.ts` (solo con tu OK). **Recomendación:** actualizarla antes del mié 17-feb (regla de los 25 días), que es cuando se decide el escenario.
-      Detalle y regla operativa: `DATA/_v600/V6_ESPEC.md` §0 (fila «Ventana DJ-1»), §B4.4 («Comprobación de cálculo») y §I disparador (1): mientras el JSON
+      Detalle y regla operativa: `DATA/_v600/V6_ESPEC.md` §0 (fila «Ventana DJ-1»), §B4.4 («Comprobación de cálculo») y §I, fila «Convocatoria» (= disparador (a) de §B7.2): mientras el JSON
       conserve la tabla literal, al salir la convocatoria se corre `node DATA/_scripts/gen_fechas_v6.js --check --calculo` y manda la más tardía de las dos
       (comprobado el 17-oct: hoy sale con exit 1 y lista las 2 diferencias, 21-mar → 27-sep y 11-abr → 25-oct; el 25-abr cae al 25-oct = literal).
 

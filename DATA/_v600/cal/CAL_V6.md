@@ -297,7 +297,7 @@ Ya no existen (borrados en la ronda 2; respaldo en `cal_bk/<id>_r2.json`): `hv2l
 
 Joseph (chat del 6-oct-2026): "Corre … todo lo que tengas que correr. Reestructura…" y "ahora sí es una reestructuración definitiva que empezamos mañana 7 de octubre"; el orquestador delegó la lista §G1-§G2 y la ronda 2; respaldos en cal_bk/.
 
-## 9. Corrimiento v6.01 (10-oct)
+## 9. Corrimiento v6.01 (10-oct) · ⏸ historial — ids vigentes en §11.2
 
 Ejecutado el sáb 10-oct-2026 (≈14:45-15:20 Lima). Motivo: 7, 8 y 9-oct sin estudio → **D1 = lun 12-oct-2026** (código en el commit `8e9be7e`; Supabase ENCAPS 57 MANTENIMIENTO + 50 INTENSIVO, huella 107 · 1795d281…). Orden de Joseph: «todo empieza el lunes 12, corre todo los días que tengas que correr»; el orquestador delegó exactamente los pasos 1-5 de abajo. Estado anterior = tag git `regimen-v6.00` + §1-§8 de este fichero.
 
@@ -336,7 +336,7 @@ Todas las descripciones tocadas terminan con «(v6.01 · 10-oct-2026: D1 = lun 1
 
 ### 9.2 IDs vigentes que cambian respecto de §3 / §7
 
-| Serie / evento | Id vigente (v6.01) | Rango / fecha |
+| Serie / evento | Id ⏸ v6.01 (historial; vigentes en §11.2) | Rango / fecha |
 |---|---|---|
 | 🧠 VIBECODING 04:15-05:00 | `9jp7pkabng1bq2tll1ffrrncpc` | DTSTART lun 31-ago-2026 · MO-FR · UNTIL 20270225T045959Z (último mié 24-feb) · EXDATE 25-dic, 31-dic, 1-ene |
 | 🧠 SYNAPSE misión 12:30-13:00 | `7nd90n5s3ueinen4q13dohcaq4` | DTSTART jue 11-jun-2026 · MO-FR · UNTIL 20270220T045959Z (último vie 19-feb) · EXDATE 25-dic, 31-dic, 1-ene |
@@ -395,7 +395,7 @@ Ejecutado el sáb 17-oct-2026 (≈14:35-15:10 Lima). Motivo: del lun 12 al vie 1
 
 Protocolo (igual que §9): `get_event` + respaldo JSON en `cal_bk/<id>_v602.json` ANTES de cada cambio (83 eventos + la instancia borrada `qcsv3…_20270302T211500Z` + `cal_bk/_calendar_overlays.before_set_v602.json` = 85 ficheros, solo en disco; `cal_bk/` está en `.gitignore`) · `notificationLevel: NONE` en todo create/update/delete · recrear = `create_event` (DTSTART original + mismos campos + UNTIL nuevo + EXDATE vigentes) → `get_event` → `delete_event` de la vieja · antes de cada recreación, `list_events` de TODO el rango DTSTART → UNTIL de la vieja comparado con la RRULE por script (`scratchpad/v602/cal/w/inst.js`): **0 instancias canceladas, movidas o editadas** en las 6 series (vibecoding 125/125 · SYNAPSE 179/179 · LIVIANO 120/120 · AURUM 30' 73/73 · SYNAPSE PC sáb 36/36 · dom 34/34), sin EXDATE extra. En los respaldos de la barrida (paso 5) `description`/`summary` salen del volcado `list_events` del 17-oct (mismo master, `updated` ≤ 10-oct) y el resto de campos de `get_event`. Textos nuevos generados por script desde la fuente (`build.js`/`build2.js`, cada reemplazo con aserción «exactamente una vez»).
 
-### 11.1 Operaciones (91 escrituras en el Calendar + 1 script)
+### 11.1 Operaciones (91 escrituras en el Calendar + 1 script · + ronda FX-CAL v6.02b, filas 87-93: 6 escrituras + 1 script · + rondas v6.02c/v6.02d del orquestador, fila 94: 2 update_event, solo descripción = 99 escrituras y 2 pasadas de script)
 
 77 `update_event` · 7 `create_event` (6 series recreadas + 1 overlay) · 7 `delete_event` (6 series viejas + 1 instancia) · 1 `gen_research_calendar.js --set`. **Ronda FX-CAL (sáb 17-oct, ≈15:35-15:45 Lima, filas 87-93): +6 `update_event` (solo `description` o solo `summary`; `notificationLevel: NONE`) + 1 `--set`**, respaldos `cal_bk/<id>_v602b.json` (6) + `cal_bk/_calendar_overlays.before_set_v602b.json`; volcados de instancias de las 6 series recreadas (los `list_events` previos a la recreación, de `scratchpad/v602/cal/w/inst/`, + el comparador `inst.js`) copiados a `cal_bk/inst_v602/` (ignorado por git, `.gitignore:53`).
 
@@ -446,7 +446,7 @@ Protocolo (igual que §9): `get_event` + respaldo JSON en `cal_bk/<id>_v602.json
 | 91 | UPDATE-DESCR | nibrfidt3qhct59qhtrvqpqqi0 | = | 🔬 RESEARCH · X-9 (lun 29-mar, =) | payload exacto: historial «⏸ v6.01: X-9 mié 17-mar / R10 mar 23-mar · v6.00: X-9 jue 11-mar / R10 vie 19-mar · v5.20: …» | cal_bk/nibrfidt3qhct59qhtrvqpqqi0_v602b.json |
 | 92 | UPDATE-DESCR | 2k9idr3f3th6hj1e4r8ugj4iqk | = | 🔬 RESEARCH · R10 (vie 2-abr 13:30-14:15, =) | payload exacto: «FECHA LÍMITE EXTERNA: ≤ 31-mar-2027» (falso) ⇒ «OBJETIVO RUTA ≤ 31-mar-2027 · v6.02: el átomo cae vie 2-abr (+2 d; decisión (iii) de Joseph en PENDIENTES) · no es plazo externo: PROSPERO solo exige registrar ANTES del cribado (R18, vie 30-abr-2027)» | cal_bk/2k9idr3f3th6hj1e4r8ugj4iqk_v602b.json |
 | 93 | SCRIPT | DATA/RESEARCH/_calendar_overlays.json | - | `gen_research_calendar.js` (código: `cr-caso` pasa a función que lee C-3/CR-2/M1 del plan · `equipo` con historial v6.01 · `PROSPERO-SR1` sale de `DEADLINE` y pasa al mapa nuevo `OBJETIVO_RUTA`) | `--check` exit 1 (3 «recrear»: CR-1, X-9, R10, solo texto) → `--print` → update ×3 → `--set` de los 12 hitos con sus ids actuales → `--check` **exit 0 · 12/12 «nada»** · md5 35dcf32d… ⇒ 9b618889… · `researchDailyPlan*.ts`, `daily-plan.md` y `obsidianResearchMap.ts` sin cambios (los textos viven en `gen_research_calendar.js`, no en `gen_research_plan.js`: no hubo que regenerar el plan) | cal_bk/_calendar_overlays.before_set_v602b.json |
-| 94 | UPDATE-DESCR | 3i88pp1gj84vc0r6tuherhsc0o | = | 🚦 GO/NO-GO Step 1 (E-49) · … · v6.00 (título intacto) | lun 9-ago-2027 (=), ronda v6.02c del orquestador: cláusula del adelanto «Con el adelanto (ENCAPS ≤ 21-mar → examen mar 31-ago)…» ⇒ «Con el adelanto (v6.02: solo con ENCAPS dom 14-mar → examen mar 31-ago; con 21-mar la regla de cálculo ya pide 27-sep, ver V6_ESPEC §I(1) y gen_fechas_v6.js --calculo · ⏸ v6.00 · v6.01: ENCAPS ≤ 21-mar)…»; resto intacto | cal_bk/3i88pp1gj84vc0r6tuherhsc0o_v602c.json |
+| 94 | UPDATE-DESCR | 3i88pp1gj84vc0r6tuherhsc0o | = | 🚦 GO/NO-GO Step 1 (E-49) · … · v6.00 (título intacto) | lun 9-ago-2027 (=), ronda v6.02c del orquestador: cláusula del adelanto «Con el adelanto (ENCAPS ≤ 21-mar → examen mar 31-ago)…» ⇒ «Con el adelanto (v6.02: solo con ENCAPS dom 14-mar → examen mar 31-ago; con 21-mar la regla de cálculo ya pide 27-sep, ver V6_ESPEC §I, fila «Convocatoria», y gen_fechas_v6.js --calculo · ⏸ v6.00 · v6.01: ENCAPS ≤ 21-mar)…»; resto intacto · ronda v6.02d (2.º update, misma tarde): solo la remisión «§I(1)» ⇒ «§I, fila «Convocatoria»» | cal_bk/3i88pp1gj84vc0r6tuherhsc0o_v602c.json · _v602d.json |
 
 Todas las descripciones tocadas terminan con «(v6.02 · 17-oct-2026: D1 = lun 19-oct)» (72/72 comprobadas en vivo; los 12 overlays 🔬 llevan el payload exacto del script, sin pie). Títulos: llevan «· v6.02» los hitos re-fechados, las 4 series recreadas que ya llevaban versión (vibecoding, SYNAPSE 12:30, LIVIANO, AURUM 30'), los overlays ENCAPS (`mgv06…`, `ddfms…`), el banner y los eventos F2, las 6 USMLE F1, MIR ×2, R↔D, AURUM F1 y REVISIÓN SEMANAL; SYNAPSE PC sáb/dom, ANKI y las 20 rutinas no llevan versión en el título y lo conservan.
 
@@ -468,7 +468,7 @@ Ya no existen (borrados el 17-oct; respaldo en `cal_bk/<id>_v602.json`): `9jp7pk
 ### 11.3 Research 🔬 — `gen_research_calendar.js`
 - `--check` inicial: exit 1 · 12 «recrear» (10 por fecha + CR-8 y CR-9 solo por texto).
 - `--print` → `update_event` de los 12 con el payload exacto (M1 lun 26-oct · C-2 mar 3-nov · T-1 jue 5-nov · C-6 lun 23-nov · CR-1 mié 25-nov · T-8 mié 23-dic · CR-8 mar 12-ene · CR-9 jue 11-feb · X-1 mar 23-feb-2027 · X-9 lun 29-mar · R10 vie 2-abr 13:30-14:15 · R43 mar 27-jul todo el día) → `--set mentor=… carta-diana=… tesis-etica=… carta-1=… cr-caso=… tesis-L0=… cr-paquete=… case-report-1=… revisor2=… equipo=… PROSPERO-SR1=… SR-1=…` (mismos 12 ids).
-- **`--check` final: exit 0 · 12/12 «nada» · 0 discrepancias.** El script reescribió `DATA/RESEARCH/_calendar_overlays.json` (md5 e4531c36… → 35dcf32d…; pendiente de commit).
+- **`--check` final: exit 0 · 12/12 «nada» · 0 discrepancias.** El script reescribió `DATA/RESEARCH/_calendar_overlays.json` (md5 e4531c36… → 35dcf32d… → **9b618889…** tras la ronda FX-CAL, fila 93; commit `b694d8d`).
 
 ### 11.4 Verificación (list_events, 17-oct)
 22 volcados guardados (2.031 eventos únicos) + 4 días leídos en línea; comparación por script (`scratchpad/v602/cal/w/ver.js`, `stale.js`) contra los textos generados y el payload Research.

@@ -3808,7 +3808,7 @@ T-1 +36 d sobre sus plazos internos (decisión (e) de v6.01) y R7 vie 19-feb (SI
 absolutos v5 (NBME 28 ≥ 61 % frente al checkpoint v6 ≥ 58 %) · (vi) tabla de escenarios DJ-1 recalculada con la F1 de 52 (21-mar → 27-sep · 11-abr → 25-oct ·
 25-abr → ninguna). Las decisiones (a)-(g) de v6.01 siguen abiertas con su estado actualizado en el mismo bloque.
 
-### 26.8 Docs actualizados en esta pasada (17-oct · sin commit)
+### 26.8 Docs actualizados en esta pasada (17-oct · commit `b694d8d`)
 
 `DATA/PENDIENTES_JOSEPH.md` (bloque v6.02: fechas, coste, decisiones (i)-(vi), estado de (a)-(g) de v6.01, checklist F1) · este §26 + cabecera · `DATA/_v600/README.md`
 y `V6_ESPEC.md` (ADDENDUM v6.02 + marcas «⏸ v6.01» en el cuerpo) · `DATA/ENCAPS/`: `FASE_INTENSIVA_2027-I.md`, `PROTOCOLO_HORA_MANTENIMIENTO.md`,

@@ -1885,13 +1885,13 @@ REVISIÓN SEMANAL · 20 rutinas personales.
 
 **Overlays 🔬 Research (12, mismos ids; `gen_research_calendar.js --print` → `update_event` → `--set` → `--check` = 0, 12/12 «nada»):** M1 ⇒ lun 26-oct · C-2 ⇒
 mar 3-nov · T-1 ⇒ jue 5-nov · C-6 ⇒ lun 23-nov · CR-1 ⇒ mié 25-nov · T-8 ⇒ mié 23-dic · CR-8 mar 12-ene (=) · CR-9 jue 11-feb (=) · X-1 ⇒ mar 23-feb-2027 · X-9 ⇒
-lun 29-mar · R10 ⇒ vie 2-abr 13:30-14:15 · R43 ⇒ **mar 27-jul** (todo el día). `DATA/RESEARCH/_calendar_overlays.json` reescrito por el script (pendiente de commit).
+lun 29-mar · R10 ⇒ vie 2-abr 13:30-14:15 · R43 ⇒ **mar 27-jul** (todo el día). `DATA/RESEARCH/_calendar_overlays.json` reescrito por el script (commit `b694d8d`).
 
 **Verificación (`list_events`, America/Lima; 22 volcados, 2.031 eventos únicos; CAL_V6 §11.4):** 72/72 títulos y descripciones = texto generado · 25/25 hitos
 y eventos sueltos en su fecha (una instancia cada uno) · 12/12 overlays 🔬 = payload · 6/6 series recreadas con su último día presente y 0 instancias
 posteriores · 0 instancias de las 6 series borradas · 0 instancias `qcsv3…` el 2-mar · 0 duplicados.
 
-**Ronda v6.02b (FX-CAL, CAL_V6 §11.1 filas 87-93):** descripción del GO/NO-GO `3i88pp1gj84vc0r6tuherhsc0o` (checkpoint NBME 28 = mié 30-dic) y del NBME 29
+**Ronda v6.02b (FX-CAL, CAL_V6 §11.1 filas 87-93) + v6.02c (orquestador, fila 94: descripción del GO/NO-GO, cláusula del adelanto con el aviso DJ-1 v6.02):** descripción del GO/NO-GO `3i88pp1gj84vc0r6tuherhsc0o` (checkpoint NBME 28 = mié 30-dic) y del NBME 29
 `ae93qv0nqqs36h439hid1jcq8o` (T3-T8 tras el NBME 29) · título de la Revisión semanal F4 `69tr6hqitr5fnanc2af5kvugnk` → «· v6.02» · overlays 🔬 CR-1, X-9 y R10 con
 los textos nuevos de `gen_research_calendar.js` (R10 = OBJETIVO RUTA, no plazo externo) · `--set` → `--check` = exit 0, 12/12 «nada».
 
