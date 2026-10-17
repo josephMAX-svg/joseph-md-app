@@ -10,7 +10,7 @@
 //
 // Reglas de calendario (idénticas a remap_inicio.js / gen_aurum_plan.js):
 //  · INICIO = argv[2] (YYYY-MM-DD; default = inicioDefault del JSON = lun 2026-09-07, v5.6; el pipeline pasa siempre la fecha:
-//    v5.20 = v6.00 = mié 2026-10-07 → 90 días hasta el vie 12-feb-2027 · v6.01 = lun 2026-10-12 → mié 17-feb-2027).
+//    v5.20 = v6.00 = mié 2026-10-07 → 90 días hasta el vie 12-feb-2027 · v6.01 = lun 2026-10-12 → mié 17-feb-2027 · v6.02 = lun 2026-10-19 → mié 24-feb-2027).
 //  · 90 días HÁBILES L-V consecutivos; salta SÁB/DOM y los feriados fijos del JSON (25-dic · 31-dic · 1-ene).
 //  · Los 16 CASOS caen en VIERNES reales (invariante que antes garantizaba liviano_reslot_viernes.js).
 //    Si hay más viernes que casos (v5.20: 17 viernes), los casos van en los PRIMEROS viernes con ≥2 días de contenido delante y el
@@ -30,7 +30,13 @@
 //    sobra; el caso 16 sigue ANTES del capstone (D89 mar 16-feb) y la revisión trimestral II + cierre es el D90 mié 17-feb. Revisión
 //    trimestral I = D46 lun 14-dic. Módulo 7 (Acceso en Perú) = D39 + D41-D44 (jue 3 → jue 10-dic) con el caso 8 el D40 vie 4-dic y el caso 9
 //    el D45 vie 11-dic → src/lib/empresaData.ts (planDia / planDias / fechaPlan) re-sincronizado a mano con estas filas.
-// Determinista (sin Date.now()/Math.random). Regenerar:  node DATA/_scripts/gen_liviano_plan.js 2026-10-12   (v6.01; v6.00 = v5.20: 2026-10-07; v5.6: 2026-09-07)
+// v6.02 (17-oct-2026 · corrimiento D1 = lun 19-oct): 90 hábiles lun 19-oct → mié 24-feb-2027 (+5 hábiles; el fin se AMPLÍA, nada se recorta).
+//    Siguen saliendo EXACTAMENTE 16 viernes (9 hasta el vie 18-dic + 7 desde el vie 8-ene; los vie 25-dic y 1-ene son SKIP) → un caso por viernes;
+//    D1-D49 conservan su D# (una semana después); el caso 10 pasa del D50 vie 18-dic (v6.01) al D57 vie 8-ene y la síntesis M3 + drill del D57 al
+//    D56 jue 7-ene (drills D37 · D56 · D75 · D88 = mar 8-dic · jue 7-ene · mié 3-feb · lun 22-feb). Caso 16 = D87 vie 19-feb, capstone D89 mar
+//    23-feb, revisión trimestral I D46 lun 21-dic · II D90 mié 24-feb. Módulo 7 = D39 + D41-D44 (jue 10 → jue 17-dic), caso 8 D40 vie 11-dic,
+//    caso 9 D45 vie 18-dic → src/lib/empresaData.ts re-sincronizado (fechas, revisiones D46/D90 y planDias de la síntesis M3: [56, 66]).
+// Determinista (sin Date.now()/Math.random). Regenerar:  node DATA/_scripts/gen_liviano_plan.js 2026-10-19   (v6.02; v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07; v5.6: 2026-09-07)
 const fs = require('fs');
 const path = require('path');
 

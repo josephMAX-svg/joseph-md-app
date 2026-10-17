@@ -11,12 +11,15 @@
 //   (gen_tramo2.ORIGEN_F1_TEMARIO: posición p → D# v5.20; las filas 'Colchón' no tienen origen), no de «D58 = 79» escrito a mano; las
 //   recuperaciones (dF1) usan el mismo orden. Los dos comentarios del mapa se reescriben con los rangos reales (regex de línea completa:
 //   idempotente, sirve sobre el texto v5.x, v6.00 o v6.01).
+// v6.02 (17-oct-2026): el origen de cada d de F1 sale de la COLOCACIÓN (gen_tramo2.colocarF1(DIAS.length): hitos anclados en F1) en vez
+//   de la posición: d 1-51 = v5.20 D1-D51 · d 52 = v5.20 D55 (NBME 28, sin nota como todo hito). Las recuperaciones (dF1 = slot de F1) usan
+//   la misma colocación. Las desplazadas (D52-D54, D56, D57, D79) heredan la nota de su dOrig en el tramo 2 (T3-T8).
 // v5.x: matcheaba (system, uw) contra el plan viejo de git HEAD (fallback: 1.er path del sistema).
 'use strict';
 const fs = require('fs');
 const path = require('path');
 const { ROOT, cargarUsmleDaily } = require('./cargar_ts');
-const { ORIGEN_F1_TEMARIO } = require('./gen_tramo2');
+const { ORIGEN_F1_TEMARIO, colocarF1 } = require('./gen_tramo2');
 
 const OLD = JSON.parse(fs.readFileSync(path.join(__dirname, 'obs_day_v520.json'), 'utf8')).USMLE_OBS_DAY;
 const V520 = JSON.parse(fs.readFileSync(path.join(__dirname, 'ref_v6', 'dias_v520.json'), 'utf8'));
@@ -29,8 +32,9 @@ let obsTs = fs.readFileSync(OBS, 'utf8');
 const mObs = obsTs.match(/export const USMLE_OBS_DAY: Record<number, string> = (\{.*?\});/s);
 if (!mObs) { console.error('✗ no encuentro USMLE_OBS_DAY en obsidianMap.ts'); process.exit(1); }
 
-/** fila de F1 → D# v5.20 de su contenido (posición en el orden de F1; las filas 'Colchón' no tienen origen) */
-const origenF1 = (x) => (x.bbCh === 'Colchón' ? null : ORIGEN_F1_TEMARIO[x.d - 1] ?? null);
+/** fila de F1 → D# v5.20 de su contenido (v6.02: colocación de F1 con hitos anclados; las filas 'Colchón' no tienen origen) */
+const COL = colocarF1(DIAS.length, byD).enF1;
+const origenF1 = (x) => (typeof COL[x.d - 1] === 'number' ? COL[x.d - 1] : null);
 const mismo = (a, b) => ['system', 'sub', 'uw'].every((k) => a[k] === b[k]);
 const newMap = {};
 let f1 = 0, t2 = 0, sin = 0;
@@ -41,7 +45,7 @@ for (const x of DIAS) {
   if (dv && OLD[dv]) { newMap[x.d] = OLD[dv]; f1++; } else sin++;
 }
 for (const x of DIAS_T2) {
-  const dv = x.dOrig != null ? x.dOrig : x.dF1 != null ? ORIGEN_F1_TEMARIO[x.dF1 - 1] : null;
+  const dv = x.dOrig != null ? x.dOrig : x.dF1 != null ? COL[x.dF1 - 1] : null;
   if (dv && OLD[dv]) { newMap[x.d] = OLD[dv]; t2++; } else sin++;
 }
 if (err.length) { console.error('✗ filas F1 que ya no son las de la v5.20: ' + err.join(', ')); process.exit(1); }

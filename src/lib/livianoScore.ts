@@ -2,8 +2,8 @@
  * livianoScore.ts — SCORE real de LIVIANO Academia (Palmerton: "se mide por % ciego, no por ✓").
  *
  * Lo que mide LivianoTodayPlan (src/components/empresa/LivianoTodayPlan.tsx):
- *   · PRE-TEST ciego 5Q de los lunes (18 en LIV_META.pretests, v6.01 = v6.00 = v5.20 = v5.19 = v5.18) → pretests[d]   = { ok, total, fecha }
- *   · DRILL de cifras ancla (v6.01, D1 lun 12-oct: D37 · D57 · D75 · D88 = mar 1-dic · mié 30-dic · mié 27-ene · lun 15-feb; v6.00 = v5.20: D37 · D58 · D76 · D88 =
+ *   · PRE-TEST ciego 5Q de los lunes (18 en LIV_META.pretests, v6.02 = v6.01 = v6.00 = v5.20 = v5.19 = v5.18) → pretests[d]   = { ok, total, fecha }
+ *   · DRILL de cifras ancla (v6.02, D1 lun 19-oct: D37 · D56 · D75 · D88 = mar 8-dic · jue 7-ene · mié 3-feb · lun 22-feb · v6.01, D1 lun 12-oct: D37 · D57 · D75 · D88 = mar 1-dic · mié 30-dic · mié 27-ene · lun 15-feb; v6.00 = v5.20: D37 · D58 · D76 · D88 =
  *     jue 26-nov · lun 28-dic · lun 25-ene · mié 10-feb; v5.19 = v5.18: D37 · D58 · D75 · D88) → drills[d]     = { ok, total, fecha }
  *   · CASO del viernes con rúbrica 0-2 × 4 (16 casos)            → rubricas[casoId] = { items[4], fecha }
  *

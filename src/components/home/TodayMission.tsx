@@ -53,6 +53,8 @@ import { synDiaDe } from '../../lib/synapseDailyPlan';
  *  · modo ÁMBAR: secundarios a 30' (mínimo DJ-4), MIR Anki + 25Q (1 h) · ROJO: la fila no hecha va al COLCHÓN (ya no hay remap).
  * v6.01 (10-oct-2026): corrimiento del D1 al lun 12-oct (F1 = D1-D57; STEP1_SEMANAS = 40 → chip S n/40): F1 ya no tiene C1/C2, así que
  *  el texto ROJO dice que el día perdido de F1 pasa al tramo 2 el 31-dic (disparador (f)); faseActual: antes del D1 = ≤ dom 11-oct.
+ * v6.02 (17-oct-2026): corrimiento del D1 al lun 19-oct (F1 = D1-D52, D52 = NBME 28 mié 30-dic; STEP1_SEMANAS = 39 → chip S n/39): sin
+ *  cambio de lógica (todo sale de fechasV6 / usmleStep1Daily); faseActual: antes del D1 = ≤ dom 18-oct.
  *
  * Colores por-segmento en JOYA APAGADA (mapeo cognitivo NASA), tokens v4:
  * ENCAPS→teal · MIR→gold(amber) · USMLE→jade(green) · Obsidian→amethyst(purple) · Edge→sapphire(blue)
@@ -87,7 +89,7 @@ export function todayISO(): string {
  * v6.00: etiqueta de fechasV6.faseV6 — antes FASE 4…9 del orquestador (v5.20: FASE 7 = Step 1 principal hasta el 22-feb).
  */
 export function faseActual(iso: string): string {
-  return faseV6Info(iso).etiqueta; // antes del D1 (≤ dom 11-oct; v6.00: ≤ 6-oct) faseV6 ya devuelve F1
+  return faseV6Info(iso).etiqueta; // antes del D1 (v6.02: ≤ dom 18-oct · v6.01: ≤ 11-oct · v6.00: ≤ 6-oct) faseV6 ya devuelve F1
 }
 function nowMin(): number { try { const d = new Date(); return d.getHours() * 60 + d.getMinutes(); } catch { return 0; } }
 const hm = (s: string) => { const [h, m] = s.split(':').map(Number); return (h as number) * 60 + (m as number); };

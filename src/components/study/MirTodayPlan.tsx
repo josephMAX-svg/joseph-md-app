@@ -40,6 +40,8 @@ import { mirAnkiDeck, ANKIWEB } from '../../lib/ankiLinks';
  *  · Espejo Supabase: al montar, mirEvalLogPull() fusiona por id en ambos sentidos (fallback silencioso).
  *  · Chip "Step 1 esta semana: <sistema> D#-D#" (mirUsmleBridge, lectura de usmleStep1Daily).
  *  · Test de cierre 10Q el 1er día de cada bloque · D77 mini-MIR 40Q · D78 tabla de neto (baseline).
+ *  · v6.02 (17-oct-2026 · corrimiento D1 = lun 19-oct): 1.ª vuelta lun 19-oct → lun 8-feb (78) · mantenimiento mar 9-feb → mar 4-may (57;
+ *    lun 3 y mar 4-may ya en el SERUMS: la franja sale del turno por fecha, enSerums) · extensión mié 5-may → vie 24-sep (123).
  *  · v6.01 (10-oct-2026 · corrimiento D1 = lun 12-oct): 1.ª vuelta lun 12-oct → lun 1-feb (78) · mantenimiento mar 2-feb → mar 27-abr
  *    (57, mismas filas) + EXTENSIÓN mié 28-abr → vie 24-sep (128: la extensión absorbe los 3 días) = 185 en total (MIR_MANT_DIAS.length).
  *  · Fallback a mirMantenimiento cuando no hay DiaMIR (v6.00: mantenimiento jue 28-ene → jue 22-abr-2027 = 57 días + EXTENSIÓN
@@ -726,7 +728,7 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
   );
 }
 
-/** Modo MANTENIMIENTO + EXTENSIÓN (v6.01: mar 2-feb → vie 24-sep-2027, 185 días · v6.00: jue 28-ene → vie 24-sep-2027, 188 días; sin modo reducido; v5.20: 28-ene→22-abr con reducido hasta el vie 19-feb): banqueo puro sin contenido nuevo. */
+/** Modo MANTENIMIENTO + EXTENSIÓN (v6.02: mar 9-feb → vie 24-sep-2027, 180 días · v6.01: mar 2-feb → vie 24-sep-2027, 185 días · v6.00: jue 28-ene → vie 24-sep-2027, 188 días; sin modo reducido; v5.20: 28-ene→22-abr con reducido hasta el vie 19-feb): banqueo puro sin contenido nuevo. */
 function MantenimientoView({ dia, onPick, bump, sync }: { dia: DiaMIRMant; onPick: (d: number) => void; bump: () => void; sync: SyncInfo }) {
   const entries = mirEvalLogLoad();
   const peor = mirPeorAsignatura(entries);

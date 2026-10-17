@@ -6,6 +6,9 @@
 //   apuntaba a un sistema inexistente y el 80 = 1.ª fila de Bioquímica estaba fijado a mano). Aborta si algún sistema no resuelve.
 // v6.01 (10-oct-2026): sin cambio de lógica. F1 = D1-D57 (lun 12-oct → mié 30-dic) y la bioestadística (v5.20 D79) vive en el tramo 2,
 //   así que 'Psychiatry & Behavioral' empieza en su fila T (d 103) en vez del D58 de la v6.00; el resto sale igual por d.
+// v6.02 (17-oct-2026): sin cambio de lógica. F1 = D1-D52 (lun 19-oct → mié 30-dic; D52 = NBME 28) y las desplazadas D52-D54, D56, D57
+//   (Heme/Onco) + D79 van a T3-T8: Heme/Onco sigue empezando en D51 (su 1.ª fila, en F1); Psiquiatría pasa a la bioestadística T8
+//   (d 108) y Micro/Repro/MSK/Bioq corren 5 filas en el tramo 2 (lo imprime la corrida).
 'use strict';
 const fs = require('fs');
 const path = require('path');

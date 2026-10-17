@@ -91,7 +91,8 @@ function BloqueRow({ b }: { b: SynBloque }) {
  *  VIBE_SHIP_LOG horneado + localStorage 'jmd-vibe-ship'). S13-S20 (taper) se pintan desde VIBE_TAPER. Botón 📓 journal.
  *  v6.01 (10-oct-2026): el sábado se pinta con vibePCSabado = los mismos bloques PC que el SYNAPSE de ese día (SHIP · AVANCE si el proyecto
  *  aún no terminó · taper; + el PC propio desplazado de S16 el sáb 6-feb). Antes: sáb 26-dic decía SHIP S11, sáb 2-ene SHIP S12, sáb 9-ene
- *  taper S13 y sáb 6-feb solo S17. */
+ *  taper S13 y sáb 6-feb solo S17. v6.02 (17-oct-2026, D1 lun 19-oct): sáb 26-dic = avance S10 · sáb 2-ene SHIP S10 · sáb 9-ene SHIP S11 ·
+ *  sáb 16-ene SHIP S12 · sáb 13-feb = PC propio de S16 + PC 0' de S17 (comprobado sábado a sábado contra synapseDailyPlan.ts). */
 function VibeCard({ fecha, vibeDone, onToggleVibe }: { fecha: string; vibeDone: Set<number>; onToggleVibe: (d: number) => void }) {
   const p = vibeProyectoEnFecha(fecha);
   const t = vibeTaperEnFecha(fecha);
@@ -323,7 +324,7 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
         <Text style={st.globSub}>{glob.hechos}/{glob.total} runs passed · F0 sem 1-8 (auditar ✓ lo ya cursado) · F1 sem 9-12 = stack del vibecoding · F2 sem 13-{SYN_PLAN_META.semanas} = Academy restante + prep CCA-F (taper por el ENCAPS; sem {SYN_PLAN_META.deloadDesde}+ deload) · sáb PC = SHIP · empieza en 0% (avance manual real)</Text>
       </View>
       {grupos.map((g) => <SemanaCard key={g.clave} g={g} hoyD={hoyD} onPick={onPick} done={done} onToggle={onToggle} />)}
-      <Text style={st.note}>☑ marca un run como passed (se guarda en este dispositivo). ▶ = run de hoy. El plan termina el {SYN_PLAN_META.fin} (v6.01: +4 días de plan por el corrimiento del D1 al lun 12-oct, dentro de la intensiva ENCAPS · v6.00: lun 15-feb · v5.20: fin del Step 1 menos la semana del examen); feriados 25-dic/31-dic/1-ene = libres (node DATA/_scripts/gen_synapse_plan.js).</Text>
+      <Text style={st.note}>☑ marca un run como passed (se guarda en este dispositivo). ▶ = run de hoy. El plan termina el {SYN_PLAN_META.fin} (v6.02: +6 días de plan por el corrimiento del D1 al lun 19-oct, dentro de la intensiva ENCAPS · v6.01: +4 días, D1 lun 12-oct → vie 19-feb · v6.00: lun 15-feb · v5.20: fin del Step 1 menos la semana del examen); feriados 25-dic/31-dic/1-ene = libres (node DATA/_scripts/gen_synapse_plan.js).</Text>
     </View>
   );
 }

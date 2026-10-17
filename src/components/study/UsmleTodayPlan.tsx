@@ -48,6 +48,8 @@ import { usmleAnkiDeck, ANKIWEB, sysTag, DERMA_STEP1_QUERY } from '../../lib/ank
  * clave `tramo:system` (no fusiona Psiquiatría ni Colchón de F1 con los del tramo 2). TIER_INFO con fallback CORE.
  * v6.01 (10-oct-2026): corrimiento del D1 al lun 12-oct → F1 = D1-D57 («Día d/57», D57 → T1), sin C1/C2; la bioestadística (v5.20 D79)
  * es una fila del tramo 2 (T3) con chip «DE F1 → tramo 2». El tramo de una fila sale de esFilaT2 (no de «d ≤ 60»).
+ * v6.02 (17-oct-2026): corrimiento del D1 al lun 19-oct → F1 = D1-D52 («Día d/52», D52 = NBME 28 mié 30-dic → T1). Sin cambio de lógica:
+ * las 6 desplazadas (v5.20 D52-D54, D56, D57 Heme/Onco + D79) son T3-T8 y llevan el mismo chip «DE F1 → tramo 2» (sub «DE F1 → TRAMO 2…»).
  */
 /** Ficha de tier con fallback (las filas nuevas del tramo 2 traen tier, pero nunca romper la UI). */
 const tierDe = (t: string) => TIER_INFO[t] ?? (TIER_INFO.CORE as { c: string; t: string });
@@ -712,7 +714,7 @@ function SistemaCard({ g, hoyD, onPick, done, onToggle }: { g: GrupoProgreso<Dia
 
 function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (d: number) => void; done: Set<number>; onToggle: (d: number) => void }) {
   // v6.00: clave `tramo:system` (no fusiona Psiquiatría D58 + T ni el Colchón C1/C2 + T en un grupo «en curso» todo el año)
-  // v6.01: el tramo sale de esFilaT2 (F1 = D1-D57; antes «d ≤ 60»)
+  // v6.01: el tramo sale de esFilaT2 (v6.02: F1 = D1-D52 · v6.01: D1-D57; antes «d ≤ 60»)
   const grupos = agruparProgreso(DIAS_TODOS, (x) => (esFilaT2(x) ? 'T2' : 'F1') + ':' + x.system, hoyD, done);
   const glob = progresoGlobal(DIAS_TODOS, done);
   const hoyRow = DIAS_TODOS.find((x) => x.d === hoyD);

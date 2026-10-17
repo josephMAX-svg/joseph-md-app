@@ -25,6 +25,8 @@ import { FECHAS_V6, motivoProtegido } from '../../lib/fechasV6';
  * (05-sep-2026) Muestra PISTA (C/T/CR/R/M/K/B/X), ARTEFACTO y chips de dependencia (p. ej. "requiere Derma d19-20").
  * (12-sep-2026) Chips-gate ("GATE 1/2" en T-7/T-8, seguimiento del caso, plan B de inglés) y CARGA REAL (`horas`) de los átomos
  * R17-R26 del ciclo 2: horas por revisor FUERA del bloque 13:30 (el átomo de 45 min coordina y cierra; no toca el Calendar).
+ * v6.02 (17-oct-2026 · corrimiento D1 = lun 19-oct): ciclo 1 mar 20-oct → mié 17-mar · ciclo 2 vie 19-mar → mar 31-ago-2027 (fechas desde
+ * DAILY_META / DAILY_META_2027, generadas; nada se recorta: R6, R7 y X-1 pasan tras la pausa con los desplazables).
  * v6.01 (10-oct-2026 · corrimiento D1 = lun 12-oct): ciclo 1 lun 12-oct → vie 5-mar · ciclo 2 mar 9-mar → mar 24-ago-2027 (fechas desde
  * DAILY_META / DAILY_META_2027, generadas; nada se recorta: R2 pasa tras la pausa con los recortables).
  * v6.00 (6-oct-2026 · V6_ESPEC §E · §F · DJ-4): ciclo 1 jue 8-oct → mié 3-mar (igual) · ciclo 2 vie 5-mar → sáb 21-ago-2027 · los días

@@ -16,7 +16,7 @@
  *     (las rondas con preguntas[] —export del runner gen_encaps_minisim.js— se apendan con `gen_encaps_minisim.js --registrar <export> --append`)
  *
  *  2) CIERRE SEMANAL (viernes):
- *     node DATA/_scripts/gen_encaps_semana.js [--semana 2026-09-14] [--sql] [--d1 2026-10-12 (default: _fechas_v6.json f1.inicio)]
+ *     node DATA/_scripts/gen_encaps_semana.js [--semana 2026-09-14] [--sql] [--d1 2026-10-19 (default: _fechas_v6.json f1.inicio; v6.01: 2026-10-12)]
  *     → % ciego semanal por área/código vs vector v3, tabla de brecha, temas calientes (últimas 2 semanas),
  *       alerta de mini-sims (<15/25 dos viernes) y PROPUESTA DE OVERRIDE del CICLO para la semana siguiente:
  *       DATA/ENCAPS/TRACKING_ERRORES/SEMANAS/override_<lunes siguiente>.json
@@ -29,8 +29,8 @@
  *     → regenera DATA/ENCAPS/TRACKING_ERRORES/PERFIL_CONOCIMIENTO.md desde resumen_por_subtema + rondas (GENERADO, no editar a mano).
  *       También se regenera solo tras cada --cerrar y en cada cierre semanal.
  *
- *  4) PULL DESDE LA APP (v5.14, 19-sep): node DATA/_scripts/gen_encaps_semana.js --pull [--dry] [--desde 2026-10-12] [--hasta 2027-03-14]
- *     (v6.01, 10-oct: ejemplo con el D1 lun 12-oct y el examen ENCAPS dom 14-mar PROVISIONAL · v6.00: el ejemplo seguía con
+ *  4) PULL DESDE LA APP (v5.14, 19-sep): node DATA/_scripts/gen_encaps_semana.js --pull [--dry] [--desde 2026-10-19] [--hasta 2027-03-14]
+ *     (v6.02, 17-oct: ejemplo con el D1 lun 19-oct · v6.01, 10-oct: --desde 2026-10-12 y el examen ENCAPS dom 14-mar PROVISIONAL · v6.00: el ejemplo seguía con
  *      --desde 2026-10-07 --hasta 2027-03-10 = D1 y examen ENCAPS de v5.20)
  *     → lee study_progress (examen='ENCAPS', fuente='app:cierre') por REST de Supabase con la MISMA anon key que usa la app
  *       (se parsea de src/lib/supabase.ts; override con SUPABASE_URL / SUPABASE_ANON_KEY en el entorno; solo lectura, RLS anon),
@@ -48,6 +48,9 @@
  *  La nota /25 del mini-sim y el % ciego semanal se calculan sobre la ronda entera (no se cuenta dos veces).
  *
  * Sin dependencias externas. No ESCRIBE Supabase (regla: la app y el MCP escriben Supabase, no los scripts); --pull solo LEE por REST.
+ * v6.02 (17-oct-2026, corrimiento RÍGIDO «todo corre a partir del 19»): D1 por defecto = f1.inicio = LUN 19-OCT-2026 · F1 = dia 1-52 → mié 30-dic ·
+ *   pre-test de arranque lun 19 + mar 20-oct (D1 + D2) → primer override con n ≥ 5 en los 8 críticos = semana del 26-oct (cierre del vie 23-oct) ·
+ *   INTENSIVA dia 53-102 (mismas fechas). El PERFIL ya no lleva esas fechas escritas a mano: ARRANQUE las deriva del D1 (pretest_arranque_<D1/D2>).
  * v6.01 (10-oct-2026, corrimiento RÍGIDO «todo empieza el lunes 12»): D1 por defecto = _fechas_v6.json f1.inicio = LUN 12-OCT-2026 (antes la
  *   constante 2026-10-07) · F1 = dia 1-57 → mié 30-dic · pre-test de arranque lun 12 + mar 13-oct (D1 + D2) → primer override con n ≥ 5 en los
  *   8 críticos = semana del 19-oct (cierre del vie 16-oct) · INTENSIVA dia 58-107 (mismas fechas) · la línea de override sigue con --hasta f1.fin
@@ -94,9 +97,22 @@ const esCritico = (c) => CRITICOS_V3.includes(c) || c === 'IV-1' || c === 'IV-2'
 const argv = process.argv.slice(2);
 const opt = (k, def) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] != null ? argv[i + 1] : def; };
 const has = (k) => argv.includes(k);
-const D1 = opt('--d1', F6S.f1.inicio); // v6.01: lun 12-oct (_fechas_v6.json f1.inicio) · v6.00/v5.20: 2026-10-07 (v5.19: 2026-10-06 · v5.18: 2026-10-05 · v5.17: 2026-10-01)
+const D1 = opt('--d1', F6S.f1.inicio); // v6.02: lun 19-oct (_fechas_v6.json f1.inicio) · v6.01: lun 12-oct · v6.00/v5.20: 2026-10-07 (v5.19: 2026-10-06 · v5.18: 2026-10-05 · v5.17: 2026-10-01)
 const hoyISO = () => new Date(Date.now() - 5 * 3600 * 1000).toISOString().slice(0, 10); // Lima
 const addDays = (iso, n) => { const d = new Date(iso + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
+// v6.02: fechas del PRE-TEST DE ARRANQUE y del primer override DERIVADAS del D1 (antes texto fijo «lun 12-oct = D1 + mar 13-oct = D2», v6.01):
+// parte 1 = D1 · parte 2 = siguiente lun-jue de plan · primer cierre semanal = primer viernes de plan ≥ D1 · su override = el lunes siguiente
+const ARRANQUE = (() => {
+  const SK = new Set(F6S.skip || []), dw = (x) => new Date(x + 'T12:00:00Z').getUTCDay();
+  const lj = []; let vie = null;
+  for (let x = D1; (lj.length < 2 || !vie) && x <= addDays(D1, 40); x = addDays(x, 1)) {
+    if (SK.has(x)) continue;
+    if (dw(x) >= 1 && dw(x) <= 4 && lj.length < 2) lj.push(x);
+    if (dw(x) === 5 && !vie && lj.length === 2) vie = x; // primer viernes con las 2 partes ya hechas
+  }
+  const corta = (x) => `${['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'][dw(x)]} ${+x.slice(8)}-${['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'][+x.slice(5, 7) - 1]}`;
+  return { p1: lj[0], p2: lj[1], vie, lunesOverride: vie ? addDays(vie, 3) : null, corta };
+})();
 
 // ── registro ──
 function loadReg() { return JSON.parse(fs.readFileSync(REG, 'utf8')); }
@@ -238,7 +254,7 @@ function generarPerfil(j) {
   L.push(`- Rondas ENCAPS registradas: **${enc.length}** (${Object.entries(enc.reduce((a, r) => ((a[r.tipoRonda] = (a[r.tipoRonda] || 0) + 1), a), {})).map(([k, v]) => `${k} ${v}`).join(' · ') || '—'}) · última: ${ultima}.`);
   L.push(`- Preguntas resueltas: **${totN}** · seguras ${totSeg} · **% ciego global ${pct(totSeg, totN)} %**.`);
   L.push(`- Códigos con medición ciega: **${Object.keys(res).length}** de ${CICLO.length} del ciclo + ${COLA_LARGA.length} de cola larga · críticos v3 medidos: ${CRITICOS_V3.filter((c) => res[c] || res[cicloCodeDe(c)]).length}/8 · con n ≥ ${N_MIN} (cuentan para el override): ${Object.entries(res).filter(([, v]) => v.resueltas >= N_MIN).length}.`);
-  L.push(`- Regla del override semanal (gen_encaps_semana.js): un código solo entra en «calientes» con **n ≥ ${N_MIN}**. El **pre-test de arranque** (lun 12-oct-2026 = D1 + mar 13-oct = D2, 5Q × 8 críticos, ítems reales 2024-2A→2025-2; v6.01) es la línea base ciega por crítico: el **primer override calculado con n ≥ ${N_MIN} en los 8 críticos es el de la semana del 19-oct-2026** (cierre semanal del vie 16-oct).`);
+  L.push(`- Regla del override semanal (gen_encaps_semana.js): un código solo entra en «calientes» con **n ≥ ${N_MIN}**. El **pre-test de arranque** (${ARRANQUE.corta(ARRANQUE.p1)}-${ARRANQUE.p1.slice(0, 4)} = D1 + ${ARRANQUE.corta(ARRANQUE.p2)} = D2, 5Q × 8 críticos, ítems reales 2024-2A→2025-2; D1 = ${D1}) es la línea base ciega por crítico: el **primer override calculado con n ≥ ${N_MIN} en los 8 críticos es el de la semana del ${ARRANQUE.corta(ARRANQUE.lunesOverride).split(' ')[1]}-${ARRANQUE.lunesOverride.slice(0, 4)}** (cierre semanal del ${ARRANQUE.corta(ARRANQUE.vie)}).`); // v6.02: fechas derivadas del D1
   L.push('');
   L.push('## Mapa de dominio por código (resumen_por_subtema)');
   L.push('| Código | Rol v3 | Rondas | Q | Seguras | Dudosas | Fallos | % ciego | Estado | k / t / p | Última | Nota |');
@@ -261,7 +277,7 @@ function generarPerfil(j) {
     L.push('|---|---|---|---|---|---|---|---|');
     for (const r of pre.sort((a, b) => (esCritico(b.codigo) - esCritico(a.codigo)) || a.pct_ciego - b.pct_ciego)) L.push(`| ${r.codigo}${esCritico(r.codigo) ? ' ★' : ''} | ${r.n} | ${r.correctas_seguras} | ${r.correctas_dudosas} | ${r.n - r.correctas_seguras - r.correctas_dudosas} | **${r.pct_ciego} %** | ${fmtF(r.fallos_por_tipo)} | ${r.fecha} |`);
   } else {
-    L.push('- Pendiente: resolver `BANCO_PROPIO/pretest_arranque_2026-10-12.html` (lun 12-oct = D1, parte 1: II-3 · I-3 · V-2 · III-5) y `pretest_arranque_2026-10-13.html` (mar 13-oct = D2, parte 2: II-5 · I-4 · IV-1+IV-2 · II-4), exportar el JSON y apendar con `node DATA/_scripts/gen_encaps_minisim.js --registrar <export.json> --append`. Esta tabla se llena sola.');
+    L.push('- Pendiente: resolver `BANCO_PROPIO/pretest_arranque_' + ARRANQUE.p1 + '.html` (' + ARRANQUE.corta(ARRANQUE.p1) + ' = D1, parte 1: II-3 · I-3 · V-2 · III-5) y `pretest_arranque_' + ARRANQUE.p2 + '.html` (' + ARRANQUE.corta(ARRANQUE.p2) + ' = D2, parte 2: II-5 · I-4 · IV-1+IV-2 · II-4), exportar el JSON y apendar con `node DATA/_scripts/gen_encaps_minisim.js --registrar <export.json> --append`. Esta tabla se llena sola.'); // v6.02: ficheros y fechas derivados del D1
   }
   L.push('');
   // mapa por sub-ángulo desde preguntas[]

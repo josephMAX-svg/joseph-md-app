@@ -2,7 +2,7 @@
  * plantillasV6.ts — BLOQUES DEL DÍA por fase v6.00 (V6_ESPEC §A1 · §B2 · §B4.1 · §B5 · §C3 · §E · §F). Lo pinta el Home (TodayMission).
  *
  * v6.00 (6-oct-2026): nuevo. `bloquesDelDia(iso, turno?)` / `plantillaDelDia(iso, turno?)` devuelven la línea de tiempo del día:
- *  · F1 (lun 12-oct → mié 30-dic en v6.01; v6.00: mié 7-oct → mié 30-dic) = los bloques de hoy (v5.20): 04:15 vibecoding · 05:00 Anki USMLE · 07:15-12:00 Step 1 ·
+ *  · F1 (lun 19-oct → mié 30-dic en v6.02; v6.01: lun 12-oct → mié 30-dic · v6.00: mié 7-oct → mié 30-dic) = los bloques de hoy (v5.20): 04:15 vibecoding · 05:00 Anki USMLE · 07:15-12:00 Step 1 ·
  *    12:30 SYNAPSE · 13:30 R↔D 45' · 14:15 AURUM 60' · 15:15 MIR · 16:15 ENCAPS 1 h · 17:15 LIVIANO · 18:00 eval; sábado 07:15 revisión.
  *  · F2 (lun 4-ene → D-1 hábil del ENCAPS) = intensiva ENCAPS + Step 1 en PAUSA (mantenimiento): 05:00-05:45 Anki ENCAPS+USMLE ·
  *    07:15-12:00 loop · 13:30 R↔D (30' «Research mínimo» en los días-Research de la pausa de átomos) · 14:15-14:45 AURUM 30' ·
@@ -16,6 +16,8 @@
  * Cada bloque lleva `frente` (para homeBriefing.minimoPorFrente) y `min` (minutos planificados). MIR siempre 1 h y R↔D siempre
  * ≥ 30' en toda plantilla de día de plan (DJ-4). Determinista salvo el turno (caché local de serumsTurnos).
  *
+ * v6.02 (17-oct-2026 · corrimiento D1 = lun 19-oct): F1 = LUN 19-OCT → MIÉ 30-DIC (52 hábiles); F2, F3, F4 y el examen sin cambio. Fines de
+ *  cada frente (de sus metas): LIVIANO → mié 24-feb · AURUM → mar 27-abr · SYNAPSE → vie 26-feb · vibecoding → mié 3-mar · MIR 1.ª vuelta → lun 8-feb.
  * v6.01 (10-oct-2026 · corrimiento D1 = lun 12-oct): F1 = LUN 12-OCT → MIÉ 30-DIC (57 hábiles; v6.00: mié 7-oct → mié 30-dic); F2, F3,
  *  F4 y el examen sin cambio. Las fechas de fin de cada frente salen de sus metas (no de este texto): LIVIANO → mié 17-feb (LIV_META.fin;
  *  v6.00: vie 12-feb) · AURUM → mar 20-abr (AURUM_PLAN_META.fin; v6.00: jue 15-abr) · SYNAPSE → vie 19-feb · vibecoding → mié 24-feb.

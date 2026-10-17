@@ -1,6 +1,18 @@
 # LIVIANO ACADEMIA — Currículo de medicina de la obesidad
 
-> ## ✅ v6.01 VIGENTE (sáb 10-oct-2026) — **Franja 17:15-18:00 L-V · D1 = LUN 12-OCT-2026 → D90 = MIÉ 17-FEB-2027**
+> ## ✅ v6.02 VIGENTE (sáb 17-oct-2026) — **Franja 17:15-18:00 L-V · D1 = LUN 19-OCT-2026 → D90 = MIÉ 24-FEB-2027**
+> Lun 12 → vie 16-oct sin estudio → `node DATA/_scripts/gen_liviano_plan.js 2026-10-19` (vía `remap_inicio.js 2026-10-19`). Corrimiento RÍGIDO +5 hábiles:
+> **90 días, 16 casos, 4 drills, 18 pre-tests**, currículo intacto (multiset = v6.01; orden del contenido idéntico). Siguen saliendo **16 viernes = 16 casos**
+> (9 hasta el vie 18-dic + 7 desde el vie 8-ene; vie 25-dic y vie 1-ene son SKIP): caso 1 **vie 23-oct (D5)** … caso 8 vie 11-dic (D40) · caso 9 vie 18-dic (D45) ·
+> **caso 10 vie 8-ene (D57; v6.01: D50 vie 18-dic)** … caso 15 vie 12-feb (D82) · **caso 16 integral vie 19-feb (D87)**, ANTES del repaso integral (D88 lun
+> 22-feb), del **capstone (D89 mar 23-feb)** y de la **REVISIÓN TRIMESTRAL II + cierre (D90 mié 24-feb)**. **Importar el CSV de Anki: D16 lun 9-nov-2026.**
+> Drills (`livianoScore.ts`): **D37 mar 8-dic · D56 jue 7-ene · D75 mié 3-feb · D88 lun 22-feb** (v6.01: D57). Síntesis M1 D19 jue 12-nov · M2 D38 mié 9-dic ·
+> M3 **D56 jue 7-ene** (v6.01: D57) · M4 D66 jue 21-ene · M6 D75 mié 3-feb · M5 D86 jue 18-feb. Acceso en Perú D39 jue 10-dic + D41-D44 lun 14 → jue 17-dic ·
+> REVISIÓN TRIMESTRAL I **D46 lun 21-dic**. Bloques: Fisiología lun 19-oct → jue 12-nov · GLP-1 lun 16-nov → mié 9-dic · Nutrición mar 22-dic → jue 7-ene ·
+> Ejercicio lun 11 → jue 21-ene · Fármaco+QX lun 25-ene → mié 3-feb · Conducta jue 4 → jue 18-feb. `empresaData.ts` re-sincronizado (planDias síntesis M3 [56, 66]).
+> Calendar: serie LIVIANO 17:15 → mié 24-feb (lo aplica el orquestador).
+>
+> ⏸ **v6.01 (historial; sáb 10-oct-2026) — Franja 17:15-18:00 L-V · D1 = LUN 12-OCT-2026 → D90 = MIÉ 17-FEB-2027**
 > El 7, 8 y 9-oct no se estudiaron (3 hábiles; 30 desde el 31-ago) → el plan se regeneró con `node DATA/_scripts/gen_liviano_plan.js 2026-10-12` (vía
 > `remap_inicio.js 2026-10-12`). Corrimiento RÍGIDO: **90 días, 16 casos, 4 drills y 18 pre-tests** (`LIV_META`), currículo intacto (multiset = v6.00); salta
 > 25-dic, 31-dic y 1-ene. Con D1 en lunes el plan tiene **exactamente 16 viernes = 16 casos** (ninguno se salta): caso 1 **vie 16-oct (D5)** … caso 8 vie 4-dic

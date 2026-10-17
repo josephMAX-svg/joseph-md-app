@@ -1,10 +1,10 @@
 {
-  "version": "v6.01",
+  "version": "v6.02",
   "decidido": "2026-10-06",
   "f1": {
-    "inicio": "2026-10-12",
+    "inicio": "2026-10-19",
     "fin": "2026-12-30",
-    "dias": 57
+    "dias": 52
   },
   "transicion": {
     "desde": "2026-12-31",
@@ -120,6 +120,20 @@
         "2026-10-09"
       ],
       "regla": "F1 no se alarga (la intensiva ENCAPS empieza el 4-ene): D1-D57 corren rígidos con su D#, C1/C2 consumidos, D58 (bioestadística, ex-D79) pasa al tramo 2 como fila desplazada (uid C79, dOrig 79, T3 jue 18-mar) vía --f1-filas 57 (no como recuperación --pendientes-f1); examen Step 1 sin cambio"
+    },
+    {
+      "fecha": "2026-10-17",
+      "version": "v6.02",
+      "d1_previo": "2026-10-12",
+      "d1": "2026-10-19",
+      "perdidos": [
+        "2026-10-12",
+        "2026-10-13",
+        "2026-10-14",
+        "2026-10-15",
+        "2026-10-16"
+      ],
+      "regla": "F1 anclada (la intensiva ENCAPS empieza el 4-ene): 52 hábiles; los hitos F1 NO se desplazan (UWSA1 D1 · NBME 25 D10 · 26 D25 · 27 D40 · NBME 28 = última sesión de F1, mié 30-dic); las 6 filas de temario que no caben (v5.20 D52-D54, D56, D57 Heme/Onco + D79 bioestadística) pasan al tramo 2 como filas desplazadas con su dOrig; examen Step 1 sin cambio"
     }
   ]
 }

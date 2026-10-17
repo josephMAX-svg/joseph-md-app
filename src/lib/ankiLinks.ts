@@ -92,7 +92,7 @@ const sysSlug = (system: string): string =>
   || 'General';
 /** Tag compartido USMLE ↔ MIR ↔ Derma: 'sys::<usmleSystem>'. MIR pasa `dia.usmleSystem`; '—' / vacío → 'sys::General'. */
 export const sysTag = (system: string): string => `sys::${!system || system === '—' ? 'General' : sysSlug(system)}`;
-/** Búsqueda Anki (Browse / filtered deck) que reúne USMLE + MIR de un sistema — la receta del handoff (v6.00-v6.01: vie 24-sep-2027; v5.20: 22-abr · v5.19: 15-abr · v5.18: 14-abr). */
+/** Búsqueda Anki (Browse / filtered deck) que reúne USMLE + MIR de un sistema — la receta del handoff (v6.00-v6.02: vie 24-sep-2027; v5.20: 22-abr · v5.19: 15-abr · v5.18: 14-abr). */
 export const sysFilteredQuery = (system: string): string => `${sysTag(system).replace(/^/, 'tag:')} (deck:APEX::USMLE OR deck:APEX::MIR)`;
 /** Los 14 sistemas del plan Step 1 con su tag (para el checklist de arranque y la tabla de SYNC_ANKI). */
 export const SYS_TAGS: { system: string; tag: string }[] = Object.keys(SYS_TAG_SLUG).map((system) => ({ system, tag: sysTag(system) }));
@@ -108,7 +108,7 @@ export const encapsAnkiDeck = (blockId: string, subtemaId: string): string =>
  *    LIV_ANKI_DECK / livAnkiDeck — aquí se RE-EXPORTA para que ankiLinks.ts siga siendo el catálogo único).
  *  · 216 tarjetas en DATA/BUSINESS/ANKI_COLA/LIVIANO_mecanismo.csv (#deck column:3 · tags `liviano::<modulo> dNN mecanismo`).
  *    ⚠ A VERIFICAR (19-sep): los 8 sub-decks NO están creados en Anki (Anki cerrado; sin AnkiConnect). Se crean solos al
- *    importar el CSV (D16 lun 2-nov-2026 en v6.01 — el día de las 10 tarjetas de MECANISMO; v6.00 = v5.20: D16 mié 28-oct; v5.19: D16 mar 27-oct · v5.18: D16 lun 26-oct · v5.17: D15 mié 21-oct · v5.16: D16 lun 19-oct; ver LIVIANO_ACADEMIA.md) o antes con createDeck.
+ *    importar el CSV (D16 lun 9-nov-2026 en v6.02 · lun 2-nov en v6.01 — el día de las 10 tarjetas de MECANISMO; v6.00 = v5.20: D16 mié 28-oct; v5.19: D16 mar 27-oct · v5.18: D16 lun 26-oct · v5.17: D15 mié 21-oct · v5.16: D16 lun 19-oct; ver LIVIANO_ACADEMIA.md) o antes con createDeck.
  *  · Mismo motor FSRS que el resto del sistema APEX; sin deck de pago.
  * ───────────────────────────────────────────────────────────────── */
 export { LIV_ANKI_DECK_ROOT as LIVIANO_ANKI_ROOT, LIV_ANKI_DECK as LIVIANO_DECK_POR_MODULO, livAnkiDeck as livianoAnkiDeck } from './livianoCasos';
@@ -173,7 +173,7 @@ export interface DermaTarjetaMecanismo {
   /** 12-sep-2026 (puente Derma ↔ Step 1, gaps v3b derma #6): el átomo cruza con "dermato Step 1" (DiaDerma.step1 / DERMA_STEP1_DIAS) → tag `step1`. */
   step1?: boolean;
 }
-/** Tag de cuenta doble Derma ↔ Step 1: las tarjetas con este tag son el repaso anclado del día "dermato Step 1" (D74 = T18 lun 12-abr-2027 en v6.01, tramo 2 · T17 vie 9-abr en v6.00 · jue 21-ene-2027 en v5.20; v5.19: mié 20-ene · v5.18: mar 19-ene: hueso + anatomía MSK + dermato Step 1). */
+/** Tag de cuenta doble Derma ↔ Step 1: las tarjetas con este tag son el repaso anclado del día "dermato Step 1" (D74 = T23 lun 19-abr-2027 en v6.02, tramo 2 · T18 lun 12-abr en v6.01 · T17 vie 9-abr en v6.00 · jue 21-ene-2027 en v5.20; v5.19: mié 20-ene · v5.18: mar 19-ene: hueso + anatomía MSK + dermato Step 1). */
 export const DERMA_STEP1_TAG = 'step1';
 /** Búsqueda Anki del repaso anclado / pre-test del día "dermato Step 1" (texto de UI; el contenido USMLE no cambia). */
 export const DERMA_STEP1_QUERY = `deck:${DERMA_ANKI_ROOT} tag:${DERMA_STEP1_TAG}`;

@@ -5,6 +5,11 @@
  * subtema), Librerías, Flashcards, Video Library (B&B Step 1/2 + Sketchy) y la
  * biblioteca High-Yield de Palmerton + lo que Palmerton dice de cada sistema.
  *
+ * v6.02 (17-oct-2026): corrimiento rígido del D1 lun 12-oct → lun 19-oct (no se estudió del lun 12 al vie 16-oct). F1 = D1-D52 lun
+ *  19-oct → mié 30-dic-2026 (52 hábiles) con los HITOS ANCLADOS en F1: UWSA1 D1 lun 19-oct · NBME 25 D10 vie 30-oct · 26 D25 vie 20-nov ·
+ *  27 D40 vie 11-dic · NBME 28 = D52 mié 30-dic (última sesión antes de la pausa; v5.20 D55). Van al tramo 2 las últimas filas de temario:
+ *  Heme/Onco v5.20 D52-D54, D56, D57 (T3-T7, jue 18 → mié 24-mar) y la bioestadística D79 (T8 lun 29-mar, d 108 → diaInicio de
+ *  Psiquiatría = 108). D1 (lun 19-oct) = UWSA1 baseline; el contenido arranca el mar 20-oct (D2).
  * v6.01 (10-oct-2026): corrimiento rígido del D1 mié 7-oct → lun 12-oct (no se estudió el 7, 8 ni 9-oct). F1 = D1-D57 lun 12-oct →
  *  mié 30-dic-2026 (57 hábiles; C1/C2 consumidos; la bioestadística —ex-D79 v5.20, el D58 de la v6.00— pasa al tramo 2: T3 jue
  *  18-mar, d 103 → diaInicio de Psiquiatría = 103). D1 (lun 12-oct) = UWSA1 baseline; el contenido arranca el mar 13-oct (D2).
@@ -29,10 +34,10 @@ export const QB = {
 };
 
 export const PLAN_META = {
-  inicio: '2026-10-12', // v6.01 (10-oct): D1 = lun 12-oct (UWSA1 baseline) · F1 D1-D57 → 30-dic · PAUSA → 15-mar · tramo 2 mar 16-mar → sáb 25-sep · examen lun 27-sep-2027 PROVISIONAL (v6.00: D1 = 7-oct, D1-D60)
+  inicio: '2026-10-19', // v6.02 (17-oct): D1 = lun 19-oct (UWSA1 baseline) · F1 D1-D52 → mié 30-dic (D52 = NBME 28) · PAUSA → 15-mar · tramo 2 mar 16-mar → sáb 25-sep · examen lun 27-sep-2027 PROVISIONAL (v6.01: D1 = 12-oct, D1-D57 · v6.00: D1 = 7-oct, D1-D60)
   bloque: '05:00 ANKI AM · 07:15 repaso anclado · 08:15 PRE-TEST 10Q · 09:00 DEEP PRIME 2h · 11:00 30Q consolidación · 18:00 eval modo examen (6h15/día; F3 + 16:15 REENTRADA · F4 plantilla por turno del SERUMS)',
   metodo: 'Palmerton: ver vídeo High-Yield del sistema → leer (Library/First Aid) → Anki (FSRS) → preguntas en modo tutor → log de errores → APEX.',
-  nota: 'Prioridad Step 1 (v6.01 · fin del corrimiento diario: un día perdido se paga con filas COLCHÓN). D1 = lun 12-oct = UWSA1 baseline · D2 mar 13-oct Fundamentos/Pathoma · D6 Cardiovascular (lun 19-oct) · F1 D1-D57 hasta el mié 30-dic (sin colchón F1: un día perdido pasa al tramo 2 el 31-dic; la bioestadística va al tramo 2, jue 18-mar) · PAUSA ENCAPS 31-dic → 15-mar · tramo 2 T1-T158 mar 16-mar → sáb 25-sep (Micro, Repro, MSK, Psiq, Bioq + reactivación + banco + taper) · examen target lun 27-sep-2027 PROVISIONAL.',
+  nota: 'Prioridad Step 1 (v6.02 · fin del corrimiento diario: un día perdido se paga con filas COLCHÓN). D1 = lun 19-oct = UWSA1 baseline · D2 mar 20-oct Fundamentos/Pathoma · D6 Cardiovascular (lun 26-oct) · F1 D1-D52 hasta el mié 30-dic = NBME 28 (los 5 hitos de F1 se quedan en F1; sin colchón F1: un día perdido pasa al tramo 2 el 31-dic) · Heme/Onco arranca el D51 (mar 29-dic) y su resto (5 filas) + la bioestadística van al tramo 2, jue 18 → lun 29-mar · PAUSA ENCAPS 31-dic → 15-mar · tramo 2 T1-T158 mar 16-mar → sáb 25-sep (Heme/Onco, bioestadística, Micro, Repro, MSK, Psiq, Bioq + reactivación + banco + taper) · examen target lun 27-sep-2027 PROVISIONAL.',
 };
 
 export interface SistemaUSMLE {
@@ -40,7 +45,7 @@ export interface SistemaUSMLE {
   /** preguntas uWorld del sistema (peso real) */
   uworldQ: number;
   tier: 'CORE' | 'HIGH' | 'MED';
-  diaInicio: number; // d de la 1.ª fila del sistema en DIAS_TODOS (v6.01: F1 1-57 · tramo 2 101-258; D1 = lun 12-oct-2026 = UWSA1; lo regenera update_diainicio.js desde usmleStep1Daily.ts)
+  diaInicio: number; // d de la 1.ª fila del sistema en DIAS_TODOS (v6.02: F1 1-52 · tramo 2 101-258; D1 = lun 19-oct-2026 = UWSA1; lo regenera update_diainicio.js desde usmleStep1Daily.ts)
   /** subtemas uWorld top del sistema (nombre · nº preguntas) */
   uworldSubtemas: [string, number][];
   /** capítulo B&B Step 1 (nombre · nº vídeos · minutos) */
@@ -118,7 +123,7 @@ export const SISTEMAS: SistemaUSMLE[] = [
     lib: { subject: 'Hematology & Oncology', doc: 0 }, flashDeck: 'Hematology & Oncology',
   },
   {
-    sistema: 'Reproductive', uworldQ: 169, tier: 'HIGH', diaInicio: 111,
+    sistema: 'Reproductive', uworldQ: 169, tier: 'HIGH', diaInicio: 116,
     uworldSubtemas: [['Male reproductive disorders', 48], ['Female genital tract tumors', 26], ['Pregnancy & childbirth disorders', 44], ['Reproductive endocrinology', 21], ['GU infections', 13]],
     bb1: { ch: 'Reproductive', n: 37, min: 440 }, bb2: { ch: 'Obstetrics and Gynecology', n: 34, min: 569 },
     palmerton: [{ titulo: 'High Yield OB/GYN Review', id: '4D7MO0TR2fY', min: 104 }, { titulo: 'High Yield OB/GYN Review Part 2', id: 'nYtSNyXh_Ww', min: 91 }],
@@ -126,7 +131,7 @@ export const SISTEMAS: SistemaUSMLE[] = [
     lib: { subject: 'Gynecology', doc: 0 }, flashDeck: 'Reproductive',
   },
   {
-    sistema: 'Musculoskeletal / Rheum', uworldQ: 163, tier: 'HIGH', diaInicio: 116,
+    sistema: 'Musculoskeletal / Rheum', uworldQ: 163, tier: 'HIGH', diaInicio: 121,
     uworldSubtemas: [['Arthritis & spondyloarthropathies', 38], ['Bone/joint injuries & infections', 34], ['Normal structure & function', 31], ['Autoimmune & vasculitides', 25], ['Metabolic bone disorders', 14]],
     bb1: { ch: 'Musculoskeletal', n: 20, min: 369 }, bb2: { ch: 'Musculoskeletal', n: 9, min: 165 },
     palmerton: [],
@@ -134,7 +139,7 @@ export const SISTEMAS: SistemaUSMLE[] = [
     lib: { subject: 'Rheumatology/Orthopedics', doc: 0 }, flashDeck: 'Rheumatology/Orthopedics',
   },
   {
-    sistema: 'Psychiatry & Behavioral', uworldQ: 179, tier: 'HIGH', diaInicio: 103,
+    sistema: 'Psychiatry & Behavioral', uworldQ: 179, tier: 'HIGH', diaInicio: 108,
     uworldSubtemas: [['Mood disorders', 33], ['Psychotic disorders', 26], ['Substance use disorders', 25], ['Anxiety/trauma-related', 25], ['Personality/Somatoform', 9]],
     bb1: { ch: 'Psychiatry', n: 21, min: 271 }, bb2: { ch: 'Psychiatry', n: 14, min: 198 },
     palmerton: [],
@@ -151,7 +156,7 @@ export const SISTEMAS: SistemaUSMLE[] = [
     flashDeck: 'Immunology',
   },
   {
-    sistema: 'Infectious Disease / Micro', uworldQ: 271, tier: 'HIGH', diaInicio: 104,
+    sistema: 'Infectious Disease / Micro', uworldQ: 271, tier: 'HIGH', diaInicio: 109,
     uworldSubtemas: [['Bacterial infections', 112], ['Viral infections', 43], ['HIV & STIs', 42], ['Parasitic & helminthic', 26], ['Antimicrobial drugs', 23], ['Fungal infections', 12]],
     bb1: { ch: 'Infectious Disease', n: 36, min: 699 }, bb2: { ch: 'Infectious Disease', n: 16, min: 306 },
     sketchy: { ch: 'Microbiology', n: 44 },
@@ -160,7 +165,7 @@ export const SISTEMAS: SistemaUSMLE[] = [
     lib: { subject: 'Infectious Diseases', doc: 0 }, flashDeck: 'Microbiology',
   },
   {
-    sistema: 'Biochemistry', uworldQ: 159, tier: 'MED', diaInicio: 122,
+    sistema: 'Biochemistry', uworldQ: 159, tier: 'MED', diaInicio: 127,
     uworldSubtemas: [['Bioenergetics & carbohydrate metabolism', 21], ['Amino acids/proteins/enzymes', 20], ['Cell & molecular biology', 17], ['Lipid metabolism', 3]],
     bb1: { ch: 'Biochemistry', n: 28, min: 549 },
     sketchy: { ch: 'Biochemistry', n: 86 },
@@ -169,7 +174,7 @@ export const SISTEMAS: SistemaUSMLE[] = [
     flashDeck: 'Biochemistry',
   },
   {
-    sistema: 'Pharmacology (transversal)', uworldQ: 550, tier: 'HIGH', diaInicio: 122,
+    sistema: 'Pharmacology (transversal)', uworldQ: 550, tier: 'HIGH', diaInicio: 127,
     uworldSubtemas: [['Pharmacodynamics & receptors', 5], ['Pharmacokinetics', 14], ['Drug metabolism & toxicity', 18], ['(se estudia integrada en cada sistema)', 0]],
     bb1: { ch: 'Basic Pharmacology', n: 5, min: 86 },
     sketchy: { ch: 'Pharmacology', n: 130 },

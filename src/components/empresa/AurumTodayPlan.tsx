@@ -24,6 +24,7 @@ import { AurumChip, AurumLabel, AurumPanel, AurumProgressBar, AurumButton, Aurum
  * intactos: PlanKey 'aurum', AURUM_* y studyProgress sin tocar.
  * v6.00 (6-oct-2026 · V6_ESPEC §E · DJ-4): desde el lun 4-ene-2027 (AURUM_PLAN_META.min30Desde, campo `min30` de la fila) la sesión es
  * 30' (14:15-14:45) = núcleo; los bloques extra quedan opcionales · fin jue 15-abr-2027 (130 lecciones, sin recortar).
+ * v6.02 (17-oct-2026 · D1 = lun 19-oct): fin mar 27-abr-2027 (AURUM_PLAN_META.fin), mismas 130 lecciones; min30 sigue desde el lun 4-ene.
  * v6.01 (10-oct-2026 · D1 = lun 12-oct): fin mar 20-abr-2027 (AURUM_PLAN_META.fin), mismas 130 lecciones; min30 sigue desde el lun 4-ene.
  */
 /** v6.00: ventana y duración de la sesión de una fila (min30 → 30' núcleo, 14:15-14:45). */

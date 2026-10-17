@@ -7,7 +7,11 @@
 > y redactar en nov-dic con el CARE). Este fichero es la tabla que se rellena en el átomo CR-1 y el punto de
 > partida de la conversación con el Dr. Ciro (ver `../MENTORES.md`, mensaje 1).
 >
-> **✅ v6.01 (sáb 10-oct-2026 · D1 del régimen lun 12-oct; Research ciclo 1 lun 12-oct → vie 5-mar): M1 (petición al Dr. Ciro) = vie 16-oct** · seguimiento
+> **✅ v6.02 (sáb 17-oct-2026 · D1 del régimen lun 19-oct; Research ciclo 1 mar 20-oct → mié 17-mar): M1 (petición al Dr. Ciro) = lun 26-oct** · último
+> día-Research antes del 31-oct = **vie 30-oct (M2)** · seguimiento = lun 9-nov (d8, M3) · plazo de 3 semanas desde M1 = lun 16-nov (d10 = C-3 vie 13-nov) · **sin
+> caso → fuente B** (§2) · **CR-1 (caso elegido) = mié 25-nov — 🔴 25 días DESPUÉS del 31-oct** · **CR-2 (consentimiento firmado) = vie 27-nov — 🔴 27 días DESPUÉS
+> del 31-oct** · CR-8 paquete mar 12-ene · CR-9 SUBMIT jue 11-feb (sin cambio). Misma recomendación que v6.01: cerrar caso + consentimiento FUERA del átomo.
+> **⏸ v6.01 (historial; sáb 10-oct-2026 · D1 del régimen lun 12-oct; Research ciclo 1 lun 12-oct → vie 5-mar): M1 (petición al Dr. Ciro) = vie 16-oct** · seguimiento
 > = **vie 30-oct (d8, M3) = último hábil antes del 31-oct** · plazo de 3 semanas desde M1 = vie 6-nov (d10 = C-3 jue 5-nov) · **sin caso → fuente B** (§2) ·
 > **CR-1 (caso elegido) = jue 19-nov — 🔴 19 días DESPUÉS del 31-oct** · **CR-2 (consentimiento firmado) = lun 23-nov — 🔴 23 días DESPUÉS del 31-oct**. Ningún
 > átomo llega al plazo interno (desde v5.15). **Recomendación** (decisión (e) de `DATA/PENDIENTES_JOSEPH.md`, bloque v6.01): cerrar caso + consentimiento

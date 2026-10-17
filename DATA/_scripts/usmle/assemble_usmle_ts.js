@@ -13,6 +13,10 @@
  * v6.01 (10-oct-2026): corrimiento D1 mié 7-oct → lun 12-oct. Los textos de F1 salen de las filas y de escenario.desplazadasF1 /
  *   colchonF1Consumido (gen_usmle_v5.js): F1 = D1-D57 sin C1/C2 (consumidos) y la bioestadística (v5.20 D79) en el tramo 2; la línea de
  *   bitácora del corrimiento sale de _fechas_v6.json «corrimientos». Nada de «D58»/«D59-D60»/«mié 7-oct» escrito a mano.
+ * v6.02 (17-oct-2026): corrimiento D1 lun 12-oct → lun 19-oct (F1 = 52 hábiles, hitos anclados en F1). Las líneas de F1 salen de
+ *   escenario.origenF1 (D# v5.20 de cada d de F1; gen_tramo2.colocarF1): tramos «D1-D51 = mismo D#» + cada d con otro origen (D52 = NBME 28,
+ *   v5.20 D55) + la lista de DESPLAZADAS (D52-D54, D56, D57, D79 → T3-T8). La bitácora del header lleva TODOS los corrimientos del JSON
+ *   (v6.01 y v6.02), no solo el vigente. El doc de `uid` lista las unidades C<D> desplazadas reales (ya no «C79» fijo).
  * v5.x: leía usmle_dias_v5.txt (solo DIAS, 95 días) y pegaba cabecera/pie fijos con las fechas del último corrimiento escritas a mano.
  */
 'use strict';
@@ -84,14 +88,29 @@ const COLCHON_F1 = DIAS.filter((x) => x.bbCh === 'Colchón');
 const DESPL = ESC.desplazadasF1 || [];
 const DESPL_T2 = T2.filter((x) => x.tipo === 'contenido' && x.dOrig != null && DESPL.includes(x.dOrig));
 const BIOEST_F1 = DIAS.find((x) => x.bbCh === 'Biostats/Epi');
-const CORR = (FV6.corrimientos || []).filter((c) => c.version === FV6.version);
+const CORR = FV6.corrimientos || []; // v6.02: toda la bitácora de corrimientos v6 (v6.01, v6.02…), en orden
 const SEM_F1 = V6.semanasF1De(FV6.f1.inicio, FV6.f1.fin);
 const rangoD = (a) => (a.length ? (a.length === 1 ? `D${a[0].d}` : `D${a[0].d}-D${ultimo(a).d}`) : '—');
+// v6.02: origen v5.20 de cada d de F1 (escenario.origenF1 = colocarF1; sin él, d = D# salvo el colchón y la bioestadística de la v6.00)
+const ORIGEN_F1 = ESC.origenF1 || DIAS.map((x) => (x.bbCh === 'Colchón' ? x.sub.split(' ')[0] : x === BIOEST_F1 ? 79 : x.d));
+if (ORIGEN_F1.length !== DIAS.length) aborta(`escenario.origenF1 tiene ${ORIGEN_F1.length} filas y DIAS ${DIAS.length}`);
+const tramosId = DIAS.reduce((acc, x, i) => { // tramos contiguos de d con origen = su mismo D#
+  if (ORIGEN_F1[i] !== x.d) return acc;
+  const u = acc[acc.length - 1];
+  if (u && u.b === x.d - 1) u.b = x.d; else acc.push({ a: x.d, b: x.d });
+  return acc;
+}, []);
+const filasNoId = DIAS.filter((x, i) => typeof ORIGEN_F1[i] === 'number' && ORIGEN_F1[i] !== x.d);
+const descNoId = (x) => { const o = ORIGEN_F1[x.d - 1];
+  if (esHito(x)) return `D${x.d} ${f(x.fecha)} = ${nombreHito(x)} (v5.20 D${o}; un hito de F1 no sale de F1: no cabe por su D# → último slot de F1${/NBME 28/.test(x.sub) ? ', sigue siendo el checkpoint de fecha' : ''})`;
+  if (x === BIOEST_F1) return `D${x.d} ${f(x.fecha)} = bioestadística + epidemiología + ética (ex-D79 v5.20)`;
+  return `D${x.d} ${f(x.fecha)} = ${corto(x.system)} (v5.20 D${o})`; };
 const lineasF1 = [
-  `D1-D${BIOEST_F1 ? BIOEST_F1.d - 1 : DIAS.length - COLCHON_F1.length} = contenido v5.20 D1-D${BIOEST_F1 ? BIOEST_F1.d - 1 : DIAS.length - COLCHON_F1.length} (los NBME 25-28 pasan a 07:00-12:30; nivelUW/qDia por la regla del día de la semana)`
-    + (BIOEST_F1 ? ` · D${BIOEST_F1.d} ${f(BIOEST_F1.fecha)} = bioestadística + epidemiología + ética (ex-D79 v5.20)` : ''),
+  `${tramosId.map((r) => (r.a === r.b ? `D${r.a}` : `D${r.a}-D${r.b}`)).join(' + ')} = contenido v5.20 de su mismo D# (los NBME 25-28 pasan a 07:00-12:30; nivelUW/qDia por la regla del día de la semana)`,
+  ...filasNoId.map(descNoId),
   COLCHON_F1.length ? `${rangoD(COLCHON_F1)} = ${COLCHON_F1.map((x) => x.sub.split(' ')[0]).join('/')} COLCHÓN F1 (absorben los primeros días perdidos)` : `sin colchón F1 (${(ESC.colchonF1Consumido || []).join('/') || 'C1/C2'} consumidos por el corrimiento): un día perdido de F1 pasa al tramo 2 el ${f(PAUSA.desde)} (disparador (f), --pendientes-f1)`,
-  ...DESPL_T2.map((x) => `v5.20 D${x.dOrig} (${x.system === 'Psychiatry & Behavioral' && /Bioestad/.test(x.subV520 || '') ? 'bioestadística' : corto(x.system)}) DESPLAZADA al tramo 2: T${x.t} ${f(x.fecha)} (d ${x.d})`),
+  ...(DESPL_T2.length ? [`DESPLAZADA${DESPL_T2.length > 1 ? 'S' : ''} al tramo 2 (las últimas filas de temario no-hito, en orden v5.20, a la cabeza de la cola): `
+    + DESPL_T2.map((x) => `v5.20 D${x.dOrig} ${x.system === 'Psychiatry & Behavioral' && /Bioestad/.test(x.subV520 || '') ? 'bioestadística' : corto(x.system)} → T${x.t} ${f(x.fecha)} (d ${x.d})`).join(' · ')] : []),
 ];
 const trocear = (txt, pre1, pre) => { // líneas de comentario de ≤ ~130 caracteres
   const out = []; let cur = '';
@@ -322,7 +341,7 @@ export interface DiaUSMLE_T2 extends DiaUSMLE {
   tipo: TipoFilaT2;
   /** D de la v5.20 cuyo contenido lleva la fila (null = fila nueva) */
   dOrig: number | null;
-  /** unidad de cola (C58…, REF0/1, RX-<sistema>-<k>, UR84/URn1…, IN90/INn1…, CO92/COpathoma…, F1-<d>; ${FV6.version}: C79 = fila de F1 desplazada); la usa la regeneración con congelado */
+  /** unidad de cola (C58…, REF0/1, RX-<sistema>-<k>, UR84/URn1…, IN90/INn1…, CO92/COpathoma…, F1-<d>${DESPL.length ? `; ${FV6.version}: ${DESPL.map((d) => 'C' + d).join('/')} = filas de F1 desplazadas` : ''}); la usa la regeneración con congelado */
   uid?: string;
   /** 'k/n' si una unidad ocupa varias filas (F4: 2 filas; inducción: 4) */
   parte: string | null;
@@ -380,7 +399,7 @@ export { enPausaStep1 };
 export function diaAnterior(d: DiaUSMLE): DiaUSMLEPlan | undefined { const i = indiceDe(d); return i > 0 ? DIAS_TODOS[i - 1] : undefined; }
 /**
  * Fila previa de CONTENIDO: salta los hitos 🎯 (fix #6 de la 2.ª capa, 19-sep-2026), recorriendo los 2 tramos por índice
- * (${FV6.version}: T1 → D${DIAS.length}). D2 (tras el UWSA1) no tiene fila previa de contenido → undefined.
+ * (${FV6.version}: T1 → D${[...DIAS].reverse().find((x) => !esHito(x)).d}${esHito(ultimo(DIAS)) ? `, salta el ${nombreHito(ultimo(DIAS))} del D${ultimo(DIAS).d}` : ''}). D2 (tras el UWSA1) no tiene fila previa de contenido → undefined.
  */
 export function diaPrevio(d: DiaUSMLE): DiaUSMLEPlan | undefined {
   for (let i = indiceDe(d) - 1; i >= 0; i--) { const x = DIAS_TODOS[i]; if (x && !esHito(x)) return x; }

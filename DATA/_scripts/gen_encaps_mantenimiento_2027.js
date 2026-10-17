@@ -22,10 +22,10 @@
  * viven en _encaps_ciclo_v3.js (compartido con gen_encaps_semana.js).
  *
  * Uso:
- *   node DATA/_scripts/gen_encaps_mantenimiento_2027.js [D1=_fechas_v6.json f1.inicio (v6.01: 2026-10-12)] [--bk study_schedule_bk_YYYYMMDD]
- *        [--override <json|ruta.json>] [--sin-acumulado] [--bk-reemplazar] [--hasta 2026-12-30] [--de-hasta 2027-02-18] [--out <ruta.sql>]
+ *   node DATA/_scripts/gen_encaps_mantenimiento_2027.js [D1=_fechas_v6.json f1.inicio (v6.02: 2026-10-19 · v6.01: 2026-10-12)] [--bk study_schedule_bk_YYYYMMDD]
+ *        [--override <json|ruta.json>] [--sin-acumulado] [--bk-reemplazar] [--hasta 2026-12-30] [--de-hasta <slot lun-jue nº 75 desde el D1>] [--out <ruta.sql>]
  *        [--pendientes-de <ruta.sql | git:<rev>:<ruta>>] [--no-persistir]
- *        (defaults v6.01: D1 = f1.inicio, --de-hasta 2027-02-18; v6.00: --hasta = _fechas_v6.json f1.fin, --de-hasta 2027-02-16; v5.20: --hasta 2027-02-16 y sin --de-hasta)
+ *        (defaults v6.02: D1 = f1.inicio, --de-hasta DERIVADO = 2027-02-25 con D1 2026-10-19; v6.01: --de-hasta 2027-02-18 fijo; v6.00: --hasta = _fechas_v6.json f1.fin, --de-hasta 2027-02-16; v5.20: --hasta 2027-02-16 y sin --de-hasta)
  *
  *   --override: {"semanas":{"<lunes ISO>":{"principal":["I-3","V-2","II-5","IV-1"],"secundarios":["II-2","I-10","V-6","II-6"],"motivo":"…"}}}
  *               (lo emite gen_encaps_semana.js como SEMANAS/override_<lunes>.json; sustituye SOLO esa semana).
@@ -84,6 +84,26 @@
  *   Siembra v6.01: node DATA/_scripts/gen_encaps_mantenimiento_2027.js --bk study_schedule_bk_v601_mant_20261010
  *     --pendientes-de git:regimen-v6.00:DATA/_scripts/_encaps_mantenimiento_2027.sql   (acepta también la ruta de un .sql)
  *   (el orquestador aplica el SQL combinado DELETE ENCAPS + 57 + 50 sin BEGIN/COMMIT; backup completo previo study_schedule_bk_v601_20261010).
+ *
+ * v6.02 (17-oct-2026, corrimiento RÍGIDO de Joseph «todo corre a partir del 19»): no se estudió lun 12 → vie 16-oct (0 checks) → D1 = LUN
+ *   19-OCT-2026 (= _fechas_v6.json f1.inicio, `corrimientos[1]`). La F1 sigue anclada (lun 4-ene = intensiva) → F1 = dia 1-52 (lun 19-oct →
+ *   mié 30-dic) = 43 banqueo1h + 9 mini_sim (vie 23-oct … vie 18-dic; el del vie 18-dic = CHECKPOINT DEL AÑO). Rígido por slots, como v6.01.
+ *   · --de-hasta por defecto DERIVADO (antes la constante 2027-02-18): fecha del slot lun-jue nº 75 desde el D1 (sin SKIP_V6) = jue 25-feb-2027
+ *     con D1 lun 19-oct → extra.de sigue contándose sobre los 75 slots de v5.20 (idéntico a v6.00/v6.01 y al carril B).
+ *   · PENDIENTES F1 v6.02 (--pendientes-de git:regimen-v6.01:…_encaps_mantenimiento_2027.sql, F1 v6.01 de 57 filas) = 4 banqueo1h (fila mant.
+ *     54 III-8 · 55 II-11 · 56 IV-6 · 57 V-7 de la F1 v6.01) + 1 mini-sim (fila mant. 50, vie 18-dic de v6.01, cola larga I-10 + V-6). Se AÑADEN a
+ *     los 3 pendientes v6.01 que ya había en _pendientes_f1.json (II-8 #3 · II-3 #4 · mini-sim II-6 + II-10), que se CONSERVAN: el JSON queda
+ *     con 8 filas (6 banqueo1h + 2 mini-sims) en orden de origen (v6.01 y después v6.02); nada se descarta ni se absorbe.
+ *   · el mini-sim pendiente que era el CHECKPOINT DEL AÑO de la F1 anterior (extra.checkpoint + sufijo « · CHECKPOINT DEL AÑO» en el subtema)
+ *     pierde ese RÓTULO POSICIONAL en su copia (el checkpoint es «el último mini-sim de la F1» y en v6.02 lo lleva el vie 18-dic nuevo): receta,
+ *     cola larga, sim_n y semana de origen quedan literales; la fila pendiente lo deja escrito en `rotulo_retirado`.
+ *   · v6.02 (17-oct): _meta.descripcion de _pendientes_f1.json corregida. Decía que la intensiva repone «primero las banqueo1h por dia_mant y
+ *     después los mini-sims», pero el orden real (gen_encaps_intensivo_2027.js, sort de pendF1) es corrimiento → tipo → dia_mant: por
+ *     corrimiento (el más antiguo primero, que conserva sus fechas de reposición); dentro de cada corrimiento, banqueo1h antes que mini-sim y
+ *     por dia_mant. Solo cambia el texto: las filas y el orden del JSON siguen igual.
+ *   Siembra v6.02: node DATA/_scripts/gen_encaps_mantenimiento_2027.js --bk study_schedule_bk_v602_mant_20261017
+ *     --pendientes-de git:regimen-v6.01:DATA/_scripts/_encaps_mantenimiento_2027.sql
+ *   (el orquestador aplica el SQL combinado DELETE ENCAPS + 52 + 50 sin BEGIN/COMMIT; backup completo previo study_schedule_bk_v602_20261017).
  */
 const fs = require('fs');
 const path = require('path');
@@ -107,8 +127,14 @@ const BK = opt('--bk', `study_schedule_bk_${hoyLima().replace(/-/g, '')}`);
 const BK_REEMPLAZAR = has('--bk-reemplazar');
 // v6.01: 2027-02-18 = los mismos 75 slots lun-jue de v5.20 (mié 7-oct → mar 16-feb) corridos +3 hábiles → extra.de idéntico a v6.00 y al
 //   del carril B · v6.00: '2027-02-16' (rango de v5.20 para extra.de; las filas 1-60 no cambiaban; §C1)
-const DE_HASTA_DEF = '2027-02-18';
-const SLOTS_V520 = 75; // banqueo1h del rango v5.20 = 49 F1 v6.00 + 26 carril B (47 F1 v6.01 + 2 pendientes F1 + 26 carril B)
+// v6.02: DERIVADO = fecha del slot lun-jue nº SLOTS_V520 desde el D1 (sin viernes ni SKIP_V6): con D1 lun 19-oct = jue 25-feb-2027
+//   (= 2027-02-18 corrido +4 slots lun-jue: lun 12 → jue 15-oct ya no son de plan); así ningún corrimiento vuelve a tocar esta constante
+const SLOTS_V520 = 75; // banqueo1h del rango v5.20 = 49 F1 v6.00 + 26 carril B (47 F1 v6.01 + 2 pendientes F1 + 26 carril B · 43 F1 v6.02 + 6 pendientes F1 + 26 carril B)
+const DE_HASTA_DEF = (() => {
+  let n = 0;
+  for (const { fecha, dow } of fechas(D1, '2028-12-31')) { if (dow === 5 || SKIP_V6.has(fecha)) continue; if (++n === SLOTS_V520) return fecha; }
+  throw new Error(`DE_HASTA_DEF: no hay ${SLOTS_V520} slots lun-jue desde ${D1}`);
+})();
 const DE_HASTA = opt('--de-hasta', DE_HASTA_DEF);
 const PENDIENTES_DE = opt('--pendientes-de', null); // v6.01: SQL de la F1 ANTERIOR (formato de este generador) → overflow a _pendientes_f1.json
 const PENDIENTES_JSON = path.join(ROOT, 'DATA', 'ENCAPS', '_pendientes_f1.json');
@@ -302,10 +328,20 @@ if (PENDIENTES_DE) {
   const previa = (r) => (pj.filas || []).find((x) => x.corrimiento === corr && x.tipo === r.tipo && x.dia_mant === r.dia && x.reposicion);
   // copia LITERAL de la fila vieja (tipo 'banqueo1h' o 'mini_sim': subtema, prioridad, temas_secundarios y extra tal cual; el mini-sim lleva su
   // receta íntegra en extra: 25Q · 72 s/Q · cola larga) + destino / reposicion
+  // v6.02: el mini-sim que era el CHECKPOINT DEL AÑO de la F1 anterior (último viernes) pierde ese rótulo POSICIONAL en la copia (extra.checkpoint
+  // + sufijo del subtema): en la F1 nueva el checkpoint es su último viernes. Receta, cola larga, sim_n y semana de origen quedan literales.
+  const SUFIJO_CHECKPOINT = ' · CHECKPOINT DEL AÑO';
   const filaPendiente = (r) => {
     const p = previa(r);
+    let subtema = r.subtema, extra = r.extra, rotulo = null;
+    if (r.tipo === 'mini_sim' && extra && extra.checkpoint) {
+      const ck = filasObj.find((x) => x.tipo === 'mini_sim' && x.extra && x.extra.checkpoint);
+      rotulo = `CHECKPOINT DEL AÑO retirado de la copia: era el último mini-sim de la F1 ${versionPrev} (fila ${r.dia}, ${r.fecha}); en la F1 ${corr} el checkpoint es ${ck ? `la fila ${ck.dia} (${ck.fecha}, cola larga ${(ck.extra.cola_larga || []).join(' + ')})` : 'el último viernes de la F1'} · receta, cola larga, sim_n y semana de esta copia intactas`;
+      extra = { ...extra }; delete extra.checkpoint;
+      if (subtema.endsWith(SUFIJO_CHECKPOINT)) subtema = subtema.slice(0, -SUFIJO_CHECKPOINT.length);
+    }
     return { origen: `mantenimiento_${versionPrev}`, corrimiento: corr, dia_mant: r.dia, fecha_original: r.fecha, tipo: r.tipo, codigo: r.codigo,
-      subtema: r.subtema, prioridad: r.prioridad, temas_secundarios: r.temas_secundarios, extra: r.extra,
+      subtema, prioridad: r.prioridad, temas_secundarios: r.temas_secundarios, extra, ...(rotulo ? { rotulo_retirado: rotulo } : {}),
       destino: p ? p.destino : DESTINO_PEND, ...(p ? { reposicion: p.reposicion } : {}) };
   };
   const filasP = resta(vB, nB, claveInst).map(filaPendiente);
@@ -322,7 +358,7 @@ if (PENDIENTES_DE) {
     filas_nuevas: filasObj.length, banqueo_nuevas: nB.length, minisims_nuevos: nS.length, pendientes: filasP.length + simsP.length,
     pendientes_banqueo: filasP.length, pendientes_minisim: simsP.length, minisims_absorbidos: 0 });
   pj = {
-    _meta: { descripcion: 'PENDIENTES F1 del ENCAPS MANTENIMIENTO: filas (banqueo1h y mini_sim) que un corrimiento RÍGIDO dejó fuera de la F1 (la F1 no se alarga: el lun 4-ene empieza la intensiva). Copia literal de la fila vieja (el mini-sim con su receta íntegra en extra). NADA se descarta ni se absorbe (regla de Joseph, 10-oct-2026). gen_encaps_intensivo_2027.js (--pendientes-f1, default este fichero) las REPONE EXPLÍCITAS en los primeros días de REPOSICIÓN del carril B 16:15 (extra.carril_b = {tipo:\'reposicion\', regla, pendiente_f1: <esta fila, idéntica>}), antes de la regla genérica: primero las banqueo1h por dia_mant y después los mini-sims; al colocarlas escribe aquí `destino` y `reposicion` {dia, fecha, carril}. Lo escribe gen_encaps_mantenimiento_2027.js --pendientes-de <SQL de la F1 anterior>.',
+    _meta: { descripcion: 'PENDIENTES F1 del ENCAPS MANTENIMIENTO: filas (banqueo1h y mini_sim) que un corrimiento RÍGIDO dejó fuera de la F1 (la F1 no se alarga: el lun 4-ene empieza la intensiva). Copia literal de la fila vieja (el mini-sim con su receta íntegra en extra). NADA se descarta ni se absorbe (regla de Joseph, 10-oct-2026). gen_encaps_intensivo_2027.js (--pendientes-f1, default este fichero) las REPONE EXPLÍCITAS en los primeros días de REPOSICIÓN del carril B 16:15 (extra.carril_b = {tipo:\'reposicion\', regla, pendiente_f1: <esta fila, idéntica>}), antes de la regla genérica, por corrimiento (el más antiguo primero; conserva sus fechas de reposición); dentro de cada corrimiento, banqueo1h antes que mini-sim y por dia_mant; al colocarlas escribe aquí `destino` y `reposicion` {dia, fecha, carril}. Lo escribe gen_encaps_mantenimiento_2027.js --pendientes-de <SQL de la F1 anterior>.',
       actualizado: hoyLima(), corrimientos: corrs },
     filas: [...(pj.filas || []).filter((r) => r.corrimiento !== corr), ...filasP, ...simsP],
   };

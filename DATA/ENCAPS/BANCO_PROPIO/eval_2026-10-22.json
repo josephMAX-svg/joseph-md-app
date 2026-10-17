@@ -1,8 +1,8 @@
 {
- "id": "EVAL_2026-10-15",
- "titulo": "Eval anclada ENCAPS · Jue 2026-10-15 · V-2",
+ "id": "EVAL_2026-10-22",
+ "titulo": "Eval anclada ENCAPS · Jue 2026-10-22 · V-2",
  "tipoRonda": "eval_anclada",
- "fecha": "2026-10-15",
+ "fecha": "2026-10-22",
  "codigo": "V-2",
  "sub_eje": "planeamiento",
  "tema": "eval anclada · código de ayer V-2: 3 cifras + 2 viñetas",
@@ -16,7 +16,7 @@
  "_meta": {
   "generado": "2026-10-03",
   "sesion_anterior": {
-   "fecha": "2026-10-14",
+   "fecha": "2026-10-21",
    "tipo": "banqueo1h",
    "codigo": "V-2",
    "sub_eje": "planeamiento"
@@ -41,6 +41,12 @@
     "a": "2026-10-15",
     "el": "2026-10-10",
     "motivo": "corrimiento v6.01 (D1 = 2026-10-12, «todo empieza el lunes 12»; no se estudió mié 7, jue 8 ni vie 9-oct): la sesión «banqueo 4 (D4)» pasa del martes 2026-10-13 al jueves 2026-10-15; ítems intactos, sin regenerar"
+   },
+   {
+    "de": "2026-10-15",
+    "a": "2026-10-22",
+    "el": "2026-10-17",
+    "motivo": "corrimiento v6.02 (D1 = 2026-10-19, «todo corre a partir del 19»; no se estudió lun 12 → vie 16-oct): la sesión «banqueo 4 (D4)» pasa del jueves 2026-10-15 al jueves 2026-10-22 (+5 hábiles = +7 días, mismo día de la semana y mismo dia del plan); ítems intactos, sin regenerar"
    }
   ]
  },

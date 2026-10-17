@@ -1,7 +1,7 @@
 {
  "_meta": {
-  "descripcion": "PENDIENTES F1 del ENCAPS MANTENIMIENTO: filas (banqueo1h y mini_sim) que un corrimiento RÍGIDO dejó fuera de la F1 (la F1 no se alarga: el lun 4-ene empieza la intensiva). Copia literal de la fila vieja (el mini-sim con su receta íntegra en extra). NADA se descarta ni se absorbe (regla de Joseph, 10-oct-2026). gen_encaps_intensivo_2027.js (--pendientes-f1, default este fichero) las REPONE EXPLÍCITAS en los primeros días de REPOSICIÓN del carril B 16:15 (extra.carril_b = {tipo:'reposicion', regla, pendiente_f1: <esta fila, idéntica>}), antes de la regla genérica: primero las banqueo1h por dia_mant y después los mini-sims; al colocarlas escribe aquí `destino` y `reposicion` {dia, fecha, carril}. Lo escribe gen_encaps_mantenimiento_2027.js --pendientes-de <SQL de la F1 anterior>.",
-  "actualizado": "2026-10-10",
+  "descripcion": "PENDIENTES F1 del ENCAPS MANTENIMIENTO: filas (banqueo1h y mini_sim) que un corrimiento RÍGIDO dejó fuera de la F1 (la F1 no se alarga: el lun 4-ene empieza la intensiva). Copia literal de la fila vieja (el mini-sim con su receta íntegra en extra). NADA se descarta ni se absorbe (regla de Joseph, 10-oct-2026). gen_encaps_intensivo_2027.js (--pendientes-f1, default este fichero) las REPONE EXPLÍCITAS en los primeros días de REPOSICIÓN del carril B 16:15 (extra.carril_b = {tipo:'reposicion', regla, pendiente_f1: <esta fila, idéntica>}), antes de la regla genérica, por corrimiento (el más antiguo primero; conserva sus fechas de reposición); dentro de cada corrimiento, banqueo1h antes que mini-sim y por dia_mant; al colocarlas escribe aquí `destino` y `reposicion` {dia, fecha, carril}. Lo escribe gen_encaps_mantenimiento_2027.js --pendientes-de <SQL de la F1 anterior>.",
+  "actualizado": "2026-10-17",
   "corrimientos": [
    {
     "version": "v6.01",
@@ -18,6 +18,24 @@
     "minisims_nuevos": 10,
     "pendientes": 3,
     "pendientes_banqueo": 2,
+    "pendientes_minisim": 1,
+    "minisims_absorbidos": 0
+   },
+   {
+    "version": "v6.02",
+    "fecha": "2026-10-17",
+    "d1_previo": "2026-10-12",
+    "d1": "2026-10-19",
+    "f1_hasta": "2026-12-30",
+    "fuente": "git show regimen-v6.01:DATA/_scripts/_encaps_mantenimiento_2027.sql (filas MANTENIMIENTO con fecha ≤ 2026-12-30)",
+    "filas_previas": 57,
+    "banqueo_previas": 47,
+    "minisims_previos": 10,
+    "filas_nuevas": 52,
+    "banqueo_nuevas": 43,
+    "minisims_nuevos": 9,
+    "pendientes": 5,
+    "pendientes_banqueo": 4,
     "pendientes_minisim": 1,
     "minisims_absorbidos": 0
    }
@@ -51,9 +69,9 @@
     "sub_ejes_total": 2,
     "secundario": "III-9"
    },
-   "destino": "REPUESTO dia 90 (mié 17-feb-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
+   "destino": "REPUESTO dia 85 (mié 17-feb-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
    "reposicion": {
-    "dia": 90,
+    "dia": 85,
     "fecha": "2027-02-17",
     "carril": "B 16:15"
    }
@@ -85,9 +103,9 @@
     "sub_ejes_total": 4,
     "secundario": "II-9"
    },
-   "destino": "REPUESTO dia 91 (jue 18-feb-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
+   "destino": "REPUESTO dia 86 (jue 18-feb-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
    "reposicion": {
-    "dia": 91,
+    "dia": 86,
     "fecha": "2027-02-18",
     "carril": "B 16:15"
    }
@@ -140,10 +158,216 @@
      "II-10"
     ]
    },
-   "destino": "REPUESTO dia 93 (lun 22-feb-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1) · mini-simulacro 25Q cronometrado (72 s/Q) + corrección, receta íntegra en extra",
+   "destino": "REPUESTO dia 88 (lun 22-feb-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1) · mini-simulacro 25Q cronometrado (72 s/Q) + corrección, receta íntegra en extra",
+   "reposicion": {
+    "dia": 88,
+    "fecha": "2027-02-22",
+    "carril": "B 16:15"
+   }
+  },
+  {
+   "origen": "mantenimiento_v6.01",
+   "corrimiento": "v6.02",
+   "dia_mant": 54,
+   "fecha_original": "2026-12-24",
+   "tipo": "banqueo1h",
+   "codigo": "III-8",
+   "subtema": "Ética en función pública · Ley 27815: deberes vs prohibiciones vs principios (distinguirlos TEXTUALMENTE)",
+   "prioridad": "MEDIA",
+   "temas_secundarios": [
+    {
+     "codigo": "I-11+I-12",
+     "subtema": "Plan local de salud (autoridad local), alianzas estratégicas e intersectorialidad",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 3,
+    "de": 4,
+    "sub_eje": "ley_27815",
+    "sub_eje_label": "Ley 27815: deberes vs prohibiciones vs principios (distinguirlos TEXTUALMENTE)",
+    "sub_eje_n": 1,
+    "sub_ejes_total": 2,
+    "secundario": "I-11+I-12"
+   },
+   "destino": "REPUESTO dia 89 (mar 23-feb-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
+   "reposicion": {
+    "dia": 89,
+    "fecha": "2027-02-23",
+    "carril": "B 16:15"
+   }
+  },
+  {
+   "origen": "mantenimiento_v6.01",
+   "corrimiento": "v6.02",
+   "dia_mant": 55,
+   "fecha_original": "2026-12-28",
+   "tipo": "banqueo1h",
+   "codigo": "II-11",
+   "subtema": "ITS/VIH · PrEP, prueba dual VIH-sífilis y PTMI",
+   "prioridad": "ALTA",
+   "temas_secundarios": [
+    {
+     "codigo": "V-1",
+     "subtema": "Categorías de EESS y RRHH por categoría (I-3 = odontología + laboratorio), UPSS",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 3,
+    "de": 4,
+    "sub_eje": "prep_dual_ptmi",
+    "sub_eje_label": "PrEP, prueba dual VIH-sífilis y PTMI",
+    "sub_eje_n": 1,
+    "sub_ejes_total": 2,
+    "secundario": "V-1"
+   },
+   "destino": "REPUESTO dia 90 (mié 24-feb-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
+   "reposicion": {
+    "dia": 90,
+    "fecha": "2027-02-24",
+    "carril": "B 16:15"
+   }
+  },
+  {
+   "origen": "mantenimiento_v6.01",
+   "corrimiento": "v6.02",
+   "dia_mant": 56,
+   "fecha_original": "2026-12-29",
+   "tipo": "banqueo1h",
+   "codigo": "IV-6",
+   "subtema": "Publicación/estadística (IV-6+IV-7) · Estadística descriptiva básica: moda / mediana / media, dispersión",
+   "prioridad": "MEDIA",
+   "temas_secundarios": [
+    {
+     "codigo": "IV-7",
+     "subtema": "Instrumentos de recolección: cuantitativos",
+     "prioridad": "MEDIA",
+     "rol": "paraguas",
+     "q": "incluido"
+    },
+    {
+     "codigo": "V-3",
+     "subtema": "RIS: 4 dimensiones (prestación = puerta de entrada) y gestión de RRHH",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 3,
+    "de": 4,
+    "sub_eje": "estadistica_descriptiva",
+    "sub_eje_label": "Estadística descriptiva básica: moda / mediana / media, dispersión",
+    "sub_eje_n": 3,
+    "sub_ejes_total": 3,
+    "secundario": "V-3"
+   },
+   "destino": "REPUESTO dia 91 (jue 25-feb-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
+   "reposicion": {
+    "dia": 91,
+    "fecha": "2027-02-25",
+    "carril": "B 16:15"
+   }
+  },
+  {
+   "origen": "mantenimiento_v6.01",
+   "corrimiento": "v6.02",
+   "dia_mant": 57,
+   "fecha_original": "2026-12-30",
+   "tipo": "banqueo1h",
+   "codigo": "V-7",
+   "subtema": "Gestión de medicamentos (V-MED) · Contrataciones (área usuaria) y rol de DIGEMID",
+   "prioridad": "ALTA",
+   "temas_secundarios": [
+    {
+     "codigo": "V-10",
+     "subtema": "Gestión de RRHH: SERVIR rige el SAGRH; 7 SUBSISTEMAS y 23 procesos",
+     "prioridad": "MEDIA",
+     "rol": "paraguas",
+     "q": "incluido"
+    },
+    {
+     "codigo": "III-1",
+     "subtema": "Ética en salud pública (justicia/racionamiento) + deontología CMP (III-2: relaciones entre colegas)",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 3,
+    "de": 4,
+    "sub_eje": "contrataciones_digemid",
+    "sub_eje_label": "Contrataciones (área usuaria) y rol de DIGEMID",
+    "sub_eje_n": 3,
+    "sub_ejes_total": 3,
+    "secundario": "III-1"
+   },
+   "destino": "REPUESTO dia 93 (lun 1-mar-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
    "reposicion": {
     "dia": 93,
-    "fecha": "2027-02-22",
+    "fecha": "2027-03-01",
+    "carril": "B 16:15"
+   }
+  },
+  {
+   "origen": "mantenimiento_v6.01",
+   "corrimiento": "v6.02",
+   "dia_mant": 50,
+   "fecha_original": "2026-12-18",
+   "tipo": "mini_sim",
+   "codigo": null,
+   "subtema": "Mini-simulacro semanal 25Q mixto (vector v3) · cola larga: I-10 + V-6",
+   "prioridad": "CRITICA",
+   "temas_secundarios": [
+    {
+     "codigo": "I-10",
+     "subtema": "APS: definición y ATRIBUTOS (primer contacto, accesibilidad, continuidad, integralidad, coordinación)",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "5-6"
+    },
+    {
+     "codigo": "V-6",
+     "subtema": "Ley 30421 telesalud: teleconsulta / teleinterconsulta / telemonitoreo / teleorientación (definiciones textuales)",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "5-6"
+    }
+   ],
+   "extra": {
+    "tipo": "mini_sim",
+    "sim_n": 50,
+    "semana": "2026-12-14",
+    "receta": {
+     "II": 8,
+     "I": 7,
+     "V": 5,
+     "III": 3,
+     "IV": 2
+    },
+    "vineta_pct": 50,
+    "criticos_min": 10,
+    "fallos_previos_min": 5,
+    "cola_larga_q": "5-6",
+    "seg_por_q": 72,
+    "umbral_25": 18,
+    "alerta_25": 15,
+    "cola_larga": [
+     "I-10",
+     "V-6"
+    ]
+   },
+   "rotulo_retirado": "CHECKPOINT DEL AÑO retirado de la copia: era el último mini-sim de la F1 v6.01 (fila 50, 2026-12-18); en la F1 v6.02 el checkpoint es la fila 45 (2026-12-18, cola larga I-1 + II-2) · receta, cola larga, sim_n y semana de esta copia intactas",
+   "destino": "REPUESTO dia 94 (mar 2-mar-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1) · mini-simulacro 25Q cronometrado (72 s/Q) + corrección, receta íntegra en extra",
+   "reposicion": {
+    "dia": 94,
+    "fecha": "2027-03-02",
     "carril": "B 16:15"
    }
   }

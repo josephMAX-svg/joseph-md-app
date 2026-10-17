@@ -205,7 +205,8 @@ export function RentabilidadStrip({ compact }: { compact?: boolean }) {
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Serie de MINI-SIMS de viernes (25Q · 72 s/Q) contra la línea 18/25 (umbral) y 15/25 (alerta).
-// v6.01: incluye el mini-sim F1 REPUESTO en el carril B de la intensiva (lun 22-feb = dia 93, reposicion: true; regla de Joseph: nada se descarta).
+// v6.01: incluye el mini-sim F1 REPUESTO en el carril B de la intensiva (reposicion: true; regla de Joseph: nada se descarta) · v6.02: son DOS
+// (lun 22-feb = dia 88, II-6 + II-10 · mar 2-mar = dia 94, I-10 + V-6) → la serie tiene 9 viernes F1 + 2 repuestos = 11 puntos · v6.01: dia 93.
 // Recibe la serie ya derivada (encapsPlan.miniSimSerie): {semana, fecha, nota|null}.
 // ─────────────────────────────────────────────────────────────────────────────
 export interface MiniSimPuntoView { semana: number; fecha: string; nota: number | null; dia?: number; reposicion?: boolean }

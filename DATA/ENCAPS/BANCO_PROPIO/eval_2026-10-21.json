@@ -1,8 +1,8 @@
 {
- "id": "EVAL_2026-10-14",
- "titulo": "Eval anclada ENCAPS · Mié 2026-10-14 · I-3",
+ "id": "EVAL_2026-10-21",
+ "titulo": "Eval anclada ENCAPS · Mié 2026-10-21 · I-3",
  "tipoRonda": "eval_anclada",
- "fecha": "2026-10-14",
+ "fecha": "2026-10-21",
  "codigo": "I-3",
  "sub_eje": "tipos_vigilancia",
  "tema": "eval anclada · código de ayer I-3: 3 cifras + 2 viñetas",
@@ -16,7 +16,7 @@
  "_meta": {
   "generado": "2026-10-03",
   "sesion_anterior": {
-   "fecha": "2026-10-13",
+   "fecha": "2026-10-20",
    "tipo": "banqueo1h",
    "codigo": "I-3",
    "sub_eje": "tipos_vigilancia"
@@ -41,6 +41,12 @@
     "a": "2026-10-14",
     "el": "2026-10-10",
     "motivo": "corrimiento v6.01 (D1 = 2026-10-12, «todo empieza el lunes 12»; no se estudió mié 7, jue 8 ni vie 9-oct): la sesión «banqueo 3 (D3)» pasa del lunes 2026-10-12 al miércoles 2026-10-14; ítems intactos, sin regenerar. En v6.01 el I-3 es el mar 13-oct (D2) y esta eval es la sesión SIGUIENTE (mié 14-oct, D3): ya no hay mini-sim en medio (la nota de v5.20 sobre el vie 9 queda solo como historial)"
+   },
+   {
+    "de": "2026-10-14",
+    "a": "2026-10-21",
+    "el": "2026-10-17",
+    "motivo": "corrimiento v6.02 (D1 = 2026-10-19, «todo corre a partir del 19»; no se estudió lun 12 → vie 16-oct): la sesión «banqueo 3 (D3)» pasa del miércoles 2026-10-14 al miércoles 2026-10-21 (+5 hábiles = +7 días, mismo día de la semana y mismo dia del plan); ítems intactos, sin regenerar"
    }
   ]
  },

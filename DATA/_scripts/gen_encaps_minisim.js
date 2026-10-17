@@ -53,13 +53,13 @@
  *        → PRE-TEST DE ARRANQUE (línea base ciega por crítico, gaps_v3b_encaps punto 8): 40Q = 5Q × 8 críticos v3 tomadas de los
  *          ítems REALES con clave oficial 2024-2A · 2025-1A · 2025-2 (nunca el examen de agosto-2026: lista negra), repartidas en
  *          BANCO_PROPIO/pretest_arranque_<D1>.{json,html} (parte 1: II-3 · I-3 · V-2 · III-5) y pretest_arranque_<siguiente banqueo1h>.{json,html}
- *          (parte 2: II-5 · I-4 · IV-1+IV-2 · II-4; v6.01: lun 12 + mar 13-oct · v5.20: mié 7 + jue 8-oct · v5.19: mar 6 + mié 7-oct · v5.18: lun 5 + mar 6-oct · v5.17: jue 1-oct + lun 5-oct, el vie 2-oct = D2 era mini-sim). Modo examen (72 s/Q, solución al final), confianza 1-3 obligatoria, orden barajado.
+ *          (parte 2: II-5 · I-4 · IV-1+IV-2 · II-4; v6.02: lun 19 + mar 20-oct · v6.01: lun 12 + mar 13-oct · v5.20: mié 7 + jue 8-oct · v5.19: mar 6 + mié 7-oct · v5.18: lun 5 + mar 6-oct · v5.17: jue 1-oct + lun 5-oct, el vie 2-oct = D2 era mini-sim). Modo examen (72 s/Q, solución al final), confianza 1-3 obligatoria, orden barajado.
  *          SUSTITUYEN EL CONTENIDO de los dos primeros bancos del día de la semana A (banco_<lunes> y banco_<martes> quedan marcados
  *          `_meta.sustituido_por` y su HTML muestra el aviso; el horario 16:15-17:15 no cambia). Regla de ids: no se reutiliza ningún id
  *          consumido por eval_/minisim_/banco_ vigentes; los ids que SOLO estaban en los dos bancos sustituidos vuelven a estar
  *          disponibles (esas sesiones no se resuelven) y se prefieren los reales libres → reales del banco sustituido → nuevos.
  *          Export del runner → `--registrar <export.json> --append`: ronda `pretest` con preguntas[] por código (gen_encaps_semana.js
- *          la reparte por código → n = 5 por crítico → el override de la semana siguiente al arranque —v6.01: la del lun 19-oct (cierre del vie 16-oct) · v5.20 (igual que v5.17-v5.19): la del lun 12-oct— ya se calcula con n ≥ 5).
+ *          la reparte por código → n = 5 por crítico → el override de la semana siguiente al arranque —v6.02: la del lun 26-oct (cierre del vie 23-oct) · v6.01: la del lun 19-oct (cierre del vie 16-oct) · v5.20 (igual que v5.17-v5.19): la del lun 12-oct— ya se calcula con n ≥ 5).
  *   node DATA/_scripts/gen_encaps_minisim.js --registrar <export.json> [--append]
  *        → guarda TRACKING_ERRORES/RONDAS/<id>.json y muestra la línea para `gen_encaps_semana.js --cerrar`;
  *          con --append apenda la ronda (con preguntas[]) a _registro_resoluciones.json (append-only).
@@ -86,6 +86,16 @@
  *     con la receta íntegra) → filasRunner() lo da como fila 'mini_sim' (no es viernes) → --semana 2027-02-22 arma minisim_2027-02-22 con
  *     esa cola larga, y cuenta como demanda en --inventario. Las 6 filas 'mini_sim_absorbido' del carril B (viernes 61-92 de v5.20 que
  *     absorbe el SIM 100Q, V6_ESPEC §C2) siguen igual. Reposición genérica: «filas del carril B dia 58-89 (dia_mant 61-92) sin ✓».
+ * v6.02 (17-oct-2026, corrimiento RÍGIDO «todo corre a partir del 19»; no se estudió lun 12 → vie 16-oct): D1 = LUN 19-OCT-2026 · F1 = dia 1-52 →
+ *   mié 30-dic (43 banqueo1h + 9 mini-sims vie 23-oct … vie 18-dic, el último = CHECKPOINT DEL AÑO) · pre-test de arranque lun 19 + mar 20-oct
+ *   (= D1 + D2) · INTENSIVA dia 53-102 con las mismas fechas. Ficheros BANCO_PROPIO re-fechados POR SESIÓN, ítems intactos (_meta.realineado
+ *   v6.02): el corrimiento es de 5 hábiles = 1 semana exacta → cada sesión cae 7 días después y en el mismo día de la semana: pretest_arranque
+ *   12/13 → 19/20-oct · eval 12/13/14/15 → 19/20/21/22 · banco 14/15 → 21/22 (fila_sql.dia 3/4 sin cambio) · minisim 16/23/30-oct → 23/30-oct y
+ *   6-nov · reservado_para del pool 16/23 → 23/30-oct. CARRIL B: 8 pendientes F1 en la reposición (lun-jue): mié 17 / jue 18-feb banqueo (v6.01) ·
+ *   LUN 22-FEB MINI-SIM II-6 + II-10 (v6.01) · mar 23 / mié 24 / jue 25-feb / lun 1-mar banqueo III-8 · II-11 · IV-6 · V-7 (v6.02) · MAR 2-MAR
+ *   MINI-SIM 25Q I-10 + V-6 (v6.02; el ex-CHECKPOINT de la F1 v6.01, sin ese rótulo) → --semana 2027-02-22 arma minisim_2027-02-22 y
+ *   --semana 2027-03-01 arma minisim_2027-03-02 (filasRunner() los da como fila 'mini_sim' del carril B). La reposición genérica imprime la regla
+ *   del SQL de la intensiva («filas del carril B dia 53-84 (dia_mant 61-92) sin ✓»).
  * v5.20 (6-oct, DEFINITIVA): D1 = mié 7-oct-2026 · 92 días → mar 16-feb-2027 (régimen v6.18, backup study_schedule_bk_1006) · pre-test de arranque mié 7 + jue 8-oct ·
  *   mini-sims en los MISMOS 17 viernes vie 9-oct → vie 12-feb · ficheros BANCO_PROPIO re-fechados (ítems intactos, _meta.realineado v5.20) · pre-test 2026-II vie 26-feb
  *   (= día 100, primer viernes de la intensiva mar 23-feb → mar 9-mar) · EXAMEN ENCAPS 2027-I FIJADO mié 10-mar-2027.
@@ -190,10 +200,10 @@ function parseFilaSQL(line) {
   return { dia: +m[1], fecha: m[2], weekday: m[3], tipo: m[4], codigo: m[5] === 'NULL' ? null : m[5].replace(/'/g, ''), subtema: m[6].replace(/''/g, "'"), secundarios: secs, extra: extra || {} };
 }
 // v6.01: filas que ve el runner (fecha → fila), en dos fuentes:
-//   1) _encaps_mantenimiento_2027.sql = F1 (MANTENIMIENTO dia 1-57, lun 12-oct → mié 30-dic en v6.01);
+//   1) _encaps_mantenimiento_2027.sql = F1 (MANTENIMIENTO dia 1-52, lun 19-oct → mié 30-dic en v6.02; v6.01: dia 1-57 desde el lun 12-oct);
 //   2) _encaps_intensivo_2027.sql = CARRIL B 16:15 de la intensiva: extra.carril_b banqueo1h (filas 61-92 de v5.20 en su fecha) y
 //      reposición con extra.carril_b.pendiente_f1 (filas que el corrimiento v6.01 dejó fuera de la F1) → fila banqueo1h normal, o fila
-//      'mini_sim' si el pendiente es un mini-sim (v6.01: lun 22-feb, cola larga II-6 + II-10; extra = su receta íntegra)
+//      'mini_sim' si el pendiente es un mini-sim (v6.01: lun 22-feb, cola larga II-6 + II-10 · v6.02: + mar 2-mar, I-10 + V-6; extra = su receta íntegra)
 //      (dia = dia de la intensiva; carril_b = {origen, dia_mant}); mini-sim absorbido por el SIM 100Q → tipo 'mini_sim_absorbido' (sin
 //      salida: no se hace); el resto de días de la intensiva (reposición genérica, SIM, pre-test, cola) → tipo 'reposicion' /
 //      'sin_carril_b' con codigo null (la eval del día siguiente cae en «fallos previos»).
@@ -213,7 +223,7 @@ function filasRunner() {
     else if (p && p.tipo === 'mini_sim') map.set(r.fecha, { ...base, tipo: 'mini_sim', codigo: null, subtema: p.subtema, secundarios: p.temas_secundarios || [], extra: p.extra || {}, carril_b: { origen: p.origen, dia_mant: p.dia_mant, pendiente_f1: p.corrimiento } }); // v6.01: mini-sim F1 repuesto
     else if (p) map.set(r.fecha, { ...base, tipo: 'banqueo1h', codigo: p.codigo, subtema: p.subtema, secundarios: p.temas_secundarios || [], extra: p.extra || {}, carril_b: { origen: p.origen, dia_mant: p.dia_mant, pendiente_f1: p.corrimiento } });
     else if (r.extra.minisim_absorbido) { const m = r.extra.minisim_absorbido; map.set(r.fecha, { ...base, tipo: 'mini_sim_absorbido', codigo: null, subtema: m.subtema || '', secundarios: [], extra: m.extra || {} }); }
-    else map.set(r.fecha, { ...base, tipo: cb ? 'reposicion' : 'sin_carril_b', codigo: null, subtema: cb ? 'carril B · reposición genérica' : `sin carril B (${r.tipo})`, secundarios: [], extra: {} });
+    else map.set(r.fecha, { ...base, tipo: cb ? 'reposicion' : 'sin_carril_b', codigo: null, subtema: cb ? 'carril B · reposición genérica' : `sin carril B (${r.tipo})`, secundarios: [], extra: {}, regla: cb && typeof cb.regla === 'string' ? cb.regla : null }); // v6.02: + regla (la del SQL, derivada por la intensiva)
   }
   return (_filasRunner = map);
 }
@@ -581,7 +591,7 @@ function modoSemana(lunes) {
     }
     else if (fila.tipo === 'mini_sim') { if (fs.existsSync(path.join(OUT_DIR, `minisim_${f}.json`))) console.log(`— ${f}: minisim ya existe`); else modoMinisim(f); }
     // v6.01: días de la intensiva sin banco del carril B (el SIM 100Q absorbe el mini-sim; la reposición genérica depende de los ✓ del día)
-    else console.log(`— ${f}: ${fila.tipo === 'mini_sim_absorbido' ? 'mini-sim ABSORBIDO por el SIM 100Q / pre-test (no se genera)' : fila.tipo === 'reposicion' ? 'carril B · reposición genérica (filas del carril B dia 58-89 / dia_mant 61-92 sin ✓ en D{dia}:b_* → temas calientes): no se pre-genera' : fila.subtema}`);
+    else console.log(`— ${f}: ${fila.tipo === 'mini_sim_absorbido' ? 'mini-sim ABSORBIDO por el SIM 100Q / pre-test (no se genera)' : fila.tipo === 'reposicion' ? `carril B · reposición genérica (${fila.regla || 'filas del carril B sin ✓ en D{dia}:b_* → temas calientes'}): no se pre-genera` : fila.subtema}`); // v6.02: la regla sale del SQL de la intensiva (v6.02: dia 53-84 · v6.01: dia 58-89)
   }
 }
 // REALINEAR (tras un corrimiento del régimen): los mini-sims ya armados NO se regeneran ni se pierden. Cada minisim_<viernes>.json
@@ -749,7 +759,7 @@ function modoInventario() {
   const D1_SQL = fechasSQL[0] || '—', DFIN_SQL = fechasSQL[fechasSQL.length - 1] || '—';
   const rotacionTxt = Object.entries(demanda).filter(([, v]) => v.sesiones_principal > 0).sort((a, b) => b[1].sesiones_principal - a[1].sesiones_principal || (a[0] < b[0] ? -1 : 1)).map(([c, v]) => `${c} ${v.sesiones_principal}`).join(' · ');
   const totales = { pool_total: pool.length, pool_disponible: pool.filter((x) => !usados.has(x.id)).length, filas_sql: filas, minisims_sembrados: minisims, dias_sembrados: filas, d1: D1_SQL, cierre: DFIN_SQL, demanda_total_q: Object.values(inv).reduce((s, x) => s + x.demanda_sembrada.q_estimadas_regimen, 0), deficit_codigos: Object.entries(inv).filter(([, v]) => v.deficit_vs_demanda > 0).map(([k, v]) => `${k}:${v.deficit_vs_demanda}`) };
-  const out = { _meta: { descripcion: `Inventario de preguntas por CÓDIGO v3: oferta (BANCO_PROPIO: sets + banco_items_v1 + set_reales_otros; exámenes reales etiquetados; claves.json de julio; QX/Theomed por área) vs demanda sembrada en study_schedule (v6.01: días con banco — banqueo1h o mini-sim — de la F1 en _encaps_mantenimiento_2027.sql + carril B 16:15 de _encaps_intensivo_2027.sql (filas 61-92 de v5.20 + pendientes F1; sin los mini-sims absorbidos); hoy ${filas} días, D1 = ${D1_SQL}, cierre = ${DFIN_SQL}) y déficit. Regenerar: node DATA/_scripts/gen_encaps_minisim.js --inventario`, generado: new Date().toISOString().slice(0, 10), rotacion: `${rotacionTxt} (sesiones banqueo1h por código en el SQL vigente · CICLO de _encaps_ciclo_v3.js · siembra de ${filas} días desde el ${D1_SQL})`, lista_negra: '2026-II excluido de toda oferta hasta el pre-test', totales }, por_codigo: inv };
+  const out = { _meta: { descripcion: `Inventario de preguntas por CÓDIGO v3: oferta (BANCO_PROPIO: sets + banco_items_v1 + set_reales_otros; exámenes reales etiquetados; claves.json de julio; QX/Theomed por área) vs demanda sembrada en study_schedule (desde v6.01; vigente ${require('./gen_fechas_v6').cargarFechasV6().version}: días con banco — banqueo1h o mini-sim — de la F1 en _encaps_mantenimiento_2027.sql + carril B 16:15 de _encaps_intensivo_2027.sql (filas 61-92 de v5.20 + pendientes F1; sin los mini-sims absorbidos); hoy ${filas} días, D1 = ${D1_SQL}, cierre = ${DFIN_SQL}) y déficit. Regenerar: node DATA/_scripts/gen_encaps_minisim.js --inventario`, generado: new Date().toISOString().slice(0, 10), rotacion: `${rotacionTxt} (sesiones banqueo1h por código en el SQL vigente · CICLO de _encaps_ciclo_v3.js · siembra de ${filas} días desde el ${D1_SQL})`, lista_negra: '2026-II excluido de toda oferta hasta el pre-test', totales }, por_codigo: inv };
   fs.writeFileSync(path.join(BANCO, '_inventario_banco_por_codigo.json'), JSON.stringify(out, null, 1) + '\n', 'utf8');
   console.log('OK → _inventario_banco_por_codigo.json ·', JSON.stringify(totales));
   for (const [k, v] of Object.entries(inv)) console.log(`${k.padEnd(10)} demanda ${String(v.demanda_sembrada.q_estimadas_regimen).padStart(4)} · pool ${String(v.oferta.banco_propio_pool.disponibles_no_usados).padStart(3)} disp (${v.oferta.banco_propio_pool.total} tot) · reales ${String(v.oferta.examenes_reales_etiquetados.total).padStart(2)} · déficit ${String(v.deficit_vs_demanda).padStart(4)} · ${v.estado}`);

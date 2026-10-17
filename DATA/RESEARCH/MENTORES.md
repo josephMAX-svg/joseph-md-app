@@ -10,7 +10,13 @@
 > Regla de estilo (RUTA §5.2): mensajes **cortos, hiperpersonalizados y con una petición concreta y verificable**
 > (coautoría con reparto de trabajo, permiso de instrumento, revisión de un manuscrito) — nunca "quiero experiencia".
 
-> **✅ v6.01 (sáb 10-oct-2026 · D1 del régimen lun 12-oct; `researchDailyPlan.ts` regenerado con START 2026-10-12): fechas vigentes de los átomos de esta
+> **✅ v6.02 (sáb 17-oct-2026 · D1 del régimen lun 19-oct; `researchDailyPlan.ts` regenerado con START 2026-10-19, Research d1 mar 20-oct): fechas vigentes
+> de los átomos de esta tabla** — mandan sobre las de v6.01 y v5.20: **M1 (mensaje 1 al Dr. Ciro) lun 26-oct** · **M2 (Rising Scholars) vie 30-oct** = el
+> **último día-Research antes del plazo del 31-oct** · **T-1 (CEI) jue 5-nov** · **M3 (mensaje 3, CADI) lun 9-nov** = seguimiento del caso · C-3 (d10) vie 13-nov
+> (3 semanas desde M1 = lun 16-nov) → sin caso, **activar la fila 6 (fuente B)** — para llegar al plazo, ya el vie 30-oct · decisión del plan B de inglés (4
+> semanas desde M2) **vie 27-nov** = día de **CR-2** · CR-1 **mié 25-nov** · recordatorio de M3 a los 21 días **lun 30-nov** · X-1 (revisor #2 de SR-1) pasa a
+> **mar 23-feb-2027**, tras la pausa (antes de X-9 lun 29-mar y de PROSPERO vie 2-abr). CR-1 y CR-2 caen 25 y 27 días después del 31-oct.
+> **⏸ v6.01 (historial; sáb 10-oct-2026 · D1 del régimen lun 12-oct; `researchDailyPlan.ts` regenerado con START 2026-10-12): fechas vigentes de los átomos de esta
 > tabla** — manda sobre las fechas v5.20 escritas en las filas: **M1 (mensaje 1 al Dr. Ciro) vie 16-oct** · **M2 (Rising Scholars) jue 22-oct** · **T-1 (CEI)
 > mié 28-oct** · **M3 (mensaje 3, CADI) vie 30-oct** = también el seguimiento del caso y el **último hábil antes del plazo del 31-oct** · C-3 (d10) jue 5-nov (3
 > semanas desde M1 = vie 6-nov) → si no hay caso, **activar la fila 6 (fuente B)** — para llegar al plazo, activarla ya el vie 30-oct · decisión del plan B de

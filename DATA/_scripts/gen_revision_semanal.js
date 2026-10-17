@@ -21,7 +21,7 @@
 //   · AnkiConnect (localhost:8765) en vivo; si no responde → "Anki cerrado" y se usa DATA/USMLE/_anki_telemetria.json.
 //   · DATA/ENCAPS/TRACKING_ERRORES/_registro_resoluciones.json (rondas ENCAPS/USMLE/MIR de la semana).
 //   · Planes: src/lib/usmleStep1Daily.ts (días e hitos de los 2 tramos) · synapseDailyPlan.ts · vibecodingPlan.ts · mirDailyPlan.ts · mirMantenimiento.ts ·
-//       homeBriefing.ts (DELOAD_SEMANAS). D1, STEP1_SEMANAS y semana del Step 1 (pausa/examen): DATA/_scripts/gen_fechas_v6.js (v6.01).
+//       homeBriefing.ts (DELOAD_SEMANAS). D1, STEP1_SEMANAS y semana del Step 1 (pausa/examen): DATA/_scripts/gen_fechas_v6.js (v6.02).
 //   · Supabase `mir_eval_log` (v5.14 · 19-sep, gap MIR 7): el registro MIR que la app espeja (mirEvalSync.ts) → métrica 5
 //       = unión por id con el export jmd-mir-eval-log: % de QUIZ (kind quiz), pre-test, neto, temas CALIENTES (regla del gate:
 //       quiz < 60 % o acumulado pretest+quiz+anclada < 50 % en los últimos 14 días) y sesiones de MANTENIMIENTO (ene-abr 2027).
@@ -89,7 +89,7 @@ const usmleTs = readTs('usmleStep1Daily.ts');
 // fijo (v5.20: S20 = 15-19 feb, examen lun 22-feb), que en v6 etiquetaba como 'examen' todo lo posterior a la sem 20 (pausa ENCAPS y tramo 2).
 const V6 = require('./gen_fechas_v6');
 const F6 = V6.cargarFechasV6();
-const D1 = F6.f1.inicio; // v6.01: lun 12-oct-2026 (v6.00 = v5.20: mié 7-oct)
+const D1 = F6.f1.inicio; // v6.02: lun 19-oct-2026 (v6.01: lun 12-oct · v6.00 = v5.20: mié 7-oct)
 const D1ts = (usmleTs.match(/inicio:\s*'(\d{4}-\d{2}-\d{2})'/) || [])[1];
 if (D1ts && D1ts !== D1) console.error(`⚠ usmleStep1Daily.ts (inicio ${D1ts}) ≠ _fechas_v6.json (f1.inicio ${D1}): regenerar el plan USMLE`);
 // v5.17 (30-sep): S1 = semana L-V del D1 aunque el D1 no sea lunes, igual que fechasV6.semanaStep1. v6.01: D1 = lun 12-oct → S1 = lun 12 → vie 16-oct
@@ -98,10 +98,16 @@ if (D1ts && D1ts !== D1) console.error(`⚠ usmleStep1Daily.ts (inicio ${D1ts}) 
 // fichero y el orden alfabético = cronológico; S04_2026-11-07 · S05_2026-11-14 · S13_2027-01-09 = 1.er sábado de la pausa). La ETIQUETA
 // (LABEL, campo `semanaStep1`) es la semana del Step 1 de la app: S1-S12 en F1 · 'PAUSA · ENCAPS' (lun 4-ene → semana del ENCAPS) ·
 // S13-S40 en el tramo 2 (desde la semana del reinicio, mar 16-mar) · 'examen' (semana del lun 27-sep-2027) · 'post-Step 1'.
+// v6.02 (17-oct-2026): sin cambio de lógica — N y la etiqueta salen de f1.inicio = lun 19-oct: S1 = lun 19 → vie 23-oct (revisión del sáb
+// 24-oct = S01_2026-10-24.md) · S11 = lun 28 → mié 30-dic (último día de F1, NBME 28) · S12_2027-01-09 = 1.er sábado de la PAUSA · el
+// tramo 2 empieza en la etiqueta S12/39 (semana del mar 16-mar = fichero S22_2027-03-20) · STEP1_SEMANAS = 39 (11 de F1 + 28). El sáb
+// 17-oct (antes del D1) es 'pre-D1' (fichero S00). Ejemplos v6.01 de arriba: un número más que hoy (S04_2026-11-07 → S03).
 const LUNES_D1 = addDays(D1, dow(D1) === 0 ? -6 : 1 - dow(D1));
 const N = Math.floor((fromISO(LUNES) - fromISO(LUNES_D1)) / 86400000 / 7) + 1;
 const NN = String(Math.max(0, N)).padStart(2, '0');
-// DELOAD de los frentes secundarios: los lunes de homeBriefing.DELOAD_SEMANAS (se leen del .ts; respaldo = la pareja v6.01).
+// DELOAD de los frentes secundarios: los lunes de homeBriefing.DELOAD_SEMANAS (se leen del .ts; respaldo = la pareja v6.02).
+// v6.02: NBME 26 = vie 20-nov (D25) → semana deload lun 23-nov · NBME 28 = mié 30-dic (D52, último slot de F1: un hito de F1 no sale de F1)
+// → la deload es la semana DEL lun 28-dic.
 // v6.01: NBME 26 = vie 13-nov (D25) → semana deload lun 16-nov · NBME 28 = lun 28-dic (D55) → la deload es la semana DEL 28-dic (último
 // tramo de F1, antes de la pausa) — mismos lunes que en v6.00 = v5.20 (NBME 26 mar 10-nov / NBME 28 mar 22-dic) · v5.19: NBME 26 lun 9-nov /
 // NBME 28 lun 21-dic · v5.18: 9-nov / 21-dic (NBME vie 6-nov / vie 18-dic) · v5.17: mié 4-nov / mié 16-dic · v5.16: 2-nov / 14-dic.
@@ -109,10 +115,10 @@ const homeTs = readTs('homeBriefing.ts');
 const DELOAD_SEMANAS = (() => {
   const blk = (homeTs.match(/DELOAD_SEMANAS[^=]*=\s*\[([\s\S]*?)\];/) || [])[1] || '';
   const xs = [...blk.matchAll(/lunes:\s*'(\d{4}-\d{2}-\d{2})',\s*motivo:\s*'([^']*)'/g)].map((m) => ({ lunes: m[1], motivo: m[2] }));
-  return xs.length ? xs : [{ lunes: '2026-11-16', motivo: 'post-NBME 26 (vie 13-nov)' }, { lunes: '2026-12-28', motivo: 'semana del NBME 28 (lun 28-dic)' }];
+  return xs.length ? xs : [{ lunes: '2026-11-23', motivo: 'post-NBME 26 (vie 20-nov)' }, { lunes: '2026-12-28', motivo: 'semana del NBME 28 (mié 30-dic)' }];
 })();
 const SEM = V6.semanaStep1(SABADO, { deloads: DELOAD_SEMANAS }, F6);
-const TOTAL_SEM = SEM.total; // = STEP1_SEMANAS (v6.01: 40 = 12 de F1 + 28 del tramo 2) · v5.20: 20 fijo
+const TOTAL_SEM = SEM.total; // = STEP1_SEMANAS (v6.02: 39 = 11 de F1 + 28 del tramo 2 · v6.01: 40 = 12 + 28) · v5.20: 20 fijo
 const LABEL = SEM.pausa ? 'PAUSA · ENCAPS' : SEM.examen ? 'examen' : SEM.n < 1 ? 'pre-D1' : SEM.n > SEM.total ? 'post-Step 1' : `S${SEM.n}/${SEM.total}`; // = homeBriefing.semanaLabel
 const DELOAD = SEM.deload;
 const deloadSemanaQueEntra = V6.semanaStep1(addDays(SABADO, 7), { deloads: DELOAD_SEMANAS }, F6).deload;
@@ -138,8 +144,8 @@ const vibeSemana = VIBE_DIAS.filter((x) => enSemana(x.fecha, LUNES, VIERNES));
 const vibeP = vibeSemana.length ? VIBE_PROY.find((p) => p.s === vibeSemana[0].semana) : null;
 // v6.01: rangos del vibecoding derivados del plan (antes texto fijo v5.20): proyecto S3 (jmd-usmle-scores) y rango total S1-S20
 const vibeRango = (pred) => { const xs = VIBE_DIAS.filter(pred); return xs.length ? `${fmt(xs[0].fecha)} → ${fmt(xs[xs.length - 1].fecha)}-${xs[xs.length - 1].fecha.slice(0, 4)}` : null; };
-const VIBE_S3 = vibeRango((x) => x.semana === 3);           // v6.01: lun 26-oct → vie 30-oct-2026 (v6.00 = v5.20: mié 21 → mar 27-oct)
-const VIBE_TODO = vibeRango(() => true);                    // v6.01: lun 12-oct → mié 24-feb-2027 (S1-S12 + taper S13-S20)
+const VIBE_S3 = vibeRango((x) => x.semana === 3);           // v6.01: lun 26-oct → vie 30-oct-2026 (v6.00 = v5.20: mié 21 → mar 27-oct) · v6.02: lo que diga vibecodingPlan.ts (D1 19-oct)
+const VIBE_TODO = vibeRango(() => true);                    // v6.01: lun 12-oct → mié 24-feb-2027 (S1-S12 + taper S13-S20) · v6.02: derivado igual (lote de secundarios)
 
 const mirTs = readTs('mirDailyPlan.ts');
 const MIR_DIAS = [...mirTs.matchAll(/\{d:(\d+),fecha:"(\d{4}-\d{2}-\d{2})"/g)].map((m) => ({ d: +m[1], fecha: m[2] }));

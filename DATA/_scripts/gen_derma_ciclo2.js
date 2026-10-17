@@ -22,6 +22,9 @@
  * v6.01 (10-oct-2026 · corrimiento D1 = lun 12-oct): ciclo 1 mar 13-oct → lun 10-may-2027 (+2 ranuras Derma) → ciclo 2 d74 mié 12-may → d103
  * lun 19-jul-2027 (mismas 30 sesiones: 36 casos, 9 G+, 3 checkpoints, 10 ProMIR). cp1 y cp2 caen en LUNES (1.ª sesión de su semana) → el G+ de
  * esa semana va a la siguiente sesión NO-checkpoint (antes la semana se perdía y solo cabían 8 G+).
+ * v6.02 (17-oct-2026 · corrimiento D1 = lun 19-oct): ciclo 1 lun 19-oct → vie 14-may-2027 (+2 ranuras Derma) → ciclo 2 d74 lun 17-may → d103
+ * vie 23-jul-2027 (mismas 30 sesiones: 36 casos, 9 G+ —todos en lunes—, 3 checkpoints —cp1 d85 vie 11-jun · cp2 d94 vie 2-jul · repaso2 d103
+ * vie 23-jul—, 10 ProMIR). 0 solapes con Research (ciclo 2 de Research vie 19-mar → mar 31-ago).
  * Verifica 0 solapes con researchDailyPlan.ts y
  * researchDailyPlan2027.ts antes de escribir.
  *

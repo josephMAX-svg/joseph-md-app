@@ -33,10 +33,10 @@
  *
  * Uso:
  *   node DATA/_scripts/gen_encaps_intensivo_2027.js [D1=2027-01-04] [EXAMEN=_fechas_v6.encaps.examen (2027-03-14)]
- *        [--base 2026-10-12 (= f1.inicio, ya por defecto; v6.00: 2026-10-07)] [--carril-b DATA/ENCAPS/_carril_b_v520_61-92.json] [--desde AAAA-MM-DD] [--sin-tx] [--out ruta.sql]
+ *        [--base 2026-10-19 (= f1.inicio, ya por defecto; v6.01: 2026-10-12 · v6.00: 2026-10-07)] [--carril-b DATA/ENCAPS/_carril_b_v520_61-92.json] [--desde AAAA-MM-DD] [--sin-tx] [--out ruta.sql]
  *        [--nucleo-hasta 2027-03-05] [--slots-barrido 32] [--reparto json|ruta] [--orden-base json|ruta] [--pretest export.json]
- *        [--sims ruta.json] [--bk study_schedule_bk_v601_int_AAAAMMDD] [--bk-base study_schedule_bk_v601_20261010]
- *        [--pendientes-f1 DATA/ENCAPS/_pendientes_f1.json | --sin-pendientes-f1]   (v6.01; v6.00: bk _v600_int_ / _v600_20261006)
+ *        [--sims ruta.json] [--bk study_schedule_bk_v602_int_AAAAMMDD] [--bk-base study_schedule_bk_v602_20261017]
+ *        [--pendientes-f1 DATA/ENCAPS/_pendientes_f1.json | --sin-pendientes-f1]   (v6.02; v6.01: bk _v601_int_ / _v601_20261010 · v6.00: _v600_int_ / _v600_20261006)
  *   · Siembra v6.01 (10-oct): … 2027-01-04 2027-03-14 --carril-b DATA/ENCAPS/_carril_b_v520_61-92.json --sin-tx   (sin --base: default = f1.inicio
  *     = 2026-10-12; pasar otra --base exige --out) · v6.00: Siembra v6 (Lote 4): … 2027-01-04 2027-03-14 --base 2026-10-07 --carril-b … --sin-tx
  *   · Tras el PRE-TEST (vie 8-ene): --pretest <export.json> --desde 2027-01-11 (re-ordena los 32 slots por ÍNDICE DE BRECHA conservando
@@ -74,6 +74,28 @@
  *     generador NO crea esa tabla; la crea el orquestador en la transacción de siembra (como en v6.00).
  *   Siembra v6.01: node DATA/_scripts/gen_encaps_intensivo_2027.js --sin-tx (todo por defecto) → el orquestador lo combina con la F1.
  *
+ * v6.02 (17-oct-2026, corrimiento RÍGIDO «todo corre a partir del 19»: no se estudió lun 12 → vie 16-oct): D1 del mantenimiento = LUN 19-OCT-2026
+ *   (--base = f1.inicio por defecto) → F1 = 52 hábiles (dia 1-52) y la intensiva se RENUMERA dia 53-102 con las MISMAS FECHAS (lun 4-ene → vie
+ *   12-mar). Sin cambios de lógica: S1 / núcleo / 8 SIM 100Q / pre-test vie 8-ene / cola; CARRIL B = filas 61-92 de v5.20 en su misma fecha con
+ *   desfase constante Σ perdidos = 3 + 5 = 8 (dia_mant 61 = dia 53); 6 minisim_absorbido (receta guardada). PENDIENTES F1 = los 3 de v6.01
+ *   (se conservan) + los 5 de v6.02 (4 banqueo1h + 1 mini-sim) = 8 (6 banqueo1h + 2 mini-sims), TODOS EXPLÍCITOS en los primeros días de reposición del carril B (lun-jue;
+ *   viernes = SIM 100Q), en orden corrimiento → banqueo1h → mini-sim → dia_mant: mié 17-feb dia 85 II-8 #3 · jue 18-feb dia 86 II-3 #4 · lun
+ *   22-feb dia 88 MINI-SIM 25Q II-6 + II-10 (v6.01, mismas fechas que en v6.01) · mar 23-feb dia 89 III-8 · mié 24-feb dia 90 II-11 · jue 25-feb
+ *   dia 91 IV-6 · lun 1-mar dia 93 V-7 · mar 2-mar dia 94 MINI-SIM 25Q I-10 + V-6 (v6.02). Regla genérica derivada: «filas del carril B dia
+ *   53-84 (dia_mant 61-92) sin ✓». study_metrics.extra: d1 2026-10-19 · dias_ciclo 52 · regimen «MANTENIMIENTO_2027-1 v6.21 (52 d) + INTENSIVA
+ *   v6.02 …» · intensiva.dias '53-102' · examen_target «PROVISIONAL v6.00-v6.02» · backup study_schedule_bk_v602_20261017 · intensiva.backup =
+ *   study_schedule_bk_v602_int_<fecha> (--bk por defecto con la versión del último corrimiento; lo crea el orquestador en la transacción).
+ *   Siembra v6.02: node DATA/_scripts/gen_encaps_intensivo_2027.js --sin-tx (todo por defecto) → el orquestador lo combina con la F1.
+ *   · v6.02 (17-oct): el UPDATE de study_metrics reescribe también 3 textos de horarios que la app pinta desde el lun 19-oct (EncapsPlanView
+ *     HorarioView) y seguían con fechas de v6.00. Los reescribe POR RUTA (jsonb_set de pasos[0].d; el resto de cada objeto no se toca):
+ *     weekday[0] 16:15 EVAL ANCLADA (D1 mié 7-oct · eval_2026-10-07 · jue 8 · lun 12-oct), weekday[1] 16:30 BANCO DEL DÍA («Mié 7 y jue 8-oct:
+ *     PRE-TEST DE ARRANQUE …») y weekend[1] 16:45 corrección («gen_encaps_mantenimiento_2027.js 2026-10-07 --override …»). Los DERIVA de las
+ *     filas F1 de _encaps_mantenimiento_2027.sql (D1 = f1.inicio · D2 = eval del código de la fila dia 1 · D3 = eval del código de la fila
+ *     dia 2 · primer viernes = mini-sim) y del comando que imprime gen_encaps_semana.js («… <D1> --hasta <f1.fin> --override …»). El texto
+ *     fijo va literal (HORARIO_*). Una guarda DO aborta la transacción si el texto vivo no es esa plantilla (md5 del prefijo/sufijo +
+ *     hora/título). Avisa si faltan los ficheros BANCO_PROPIO eval_<D1|D2|D3> / pretest_arranque_<D1|D2> o si su código no cuadra con la
+ *     fila. Las filas no cambian: solo cambia <out>.metrics.sql.
+ *
  * Histórico (antes de v6.00):
  * v5.20 (6-oct-2026, DEFINITIVA): Joseph FIJA el examen ENCAPS 2027-I = MIÉ 10-MAR-2027 y la intensiva arranca el día siguiente al examen
  *   Step 1 (lun 22-feb) → D1 = mar 23-feb · 11 hábiles (días 97-107): mar 23 señales · mié 24 / jue 25 calentamiento · vie 26 PRE-TEST 2026-II ·
@@ -104,16 +126,18 @@ const has = (k) => argv.includes(k);
 const hoyLima = () => new Date(Date.now() - 5 * 3600 * 1000).toISOString().slice(0, 10);
 const D1 = fechasArg[0] || F6.encaps.intensiva_desde;            // v6.00: lun 4-ene-2027 (dia 61)
 const EXAMEN = fechasArg[1] || F6.encaps.examen;                  // v6.00: dom 14-mar-2027 PROVISIONAL (se fija con la convocatoria)
-const BASE = opt('--base', F6.f1.inicio);                          // v6.01: D1 del mantenimiento = lun 12-oct-2026 (numeración `dia`) · v6.00: mié 7-oct
+const BASE = opt('--base', F6.f1.inicio);                          // v6.02: D1 del mantenimiento = lun 19-oct-2026 (numeración `dia`) · v6.01: lun 12-oct · v6.00: mié 7-oct
 const NUCLEO_HASTA = opt('--nucleo-hasta', F6.encaps.nucleo_hasta); // v6.00: vie 5-mar-2027 (fin del núcleo S2-S9)
 const SLOTS = Number(opt('--slots-barrido', '32'));                // v6.00: sustituye al .slice(0, 16) fijo
-const BK = opt('--bk', `study_schedule_bk_v601_int_${hoyLima().replace(/-/g, '')}`); // v6.01 (v6.00: study_schedule_bk_v600_int_<fecha>)
-const BK_BASE = opt('--bk-base', 'study_schedule_bk_v601_20261010'); // backup completo previo (study_metrics.extra.backup) · v6.01 (v6.00: study_schedule_bk_v600_20261006)
+// v6.02: versión del régimen = la del último corrimiento de _fechas_v6.json (v6.00 sin corrimientos) → nombre del backup de la intensiva
+const VTAG = ((F6.corrimientos || []).at(-1) || {}).version || F6.version || 'v6.00';
+const BK = opt('--bk', `study_schedule_bk_${VTAG.replace('.', '')}_int_${hoyLima().replace(/-/g, '')}`); // v6.02: study_schedule_bk_v602_int_<fecha> (v6.01: _v601_int_ · v6.00: _v600_int_)
+const BK_BASE = opt('--bk-base', 'study_schedule_bk_v602_20261017'); // backup completo previo (study_metrics.extra.backup) · v6.02 (v6.01: study_schedule_bk_v601_20261010 · v6.00: study_schedule_bk_v600_20261006)
 // v6.01: pendientes F1 (instancias banqueo1h que el corrimiento dejó fuera de la F1) → primeros días de reposición del carril B
 const PENDIENTES_F1_DEF = path.join(ROOT, 'DATA', 'ENCAPS', '_pendientes_f1.json');
 const PENDIENTES_F1 = has('--sin-pendientes-f1') ? null : (opt('--pendientes-f1', null) ? path.resolve(opt('--pendientes-f1')) : (fs.existsSync(PENDIENTES_F1_DEF) ? PENDIENTES_F1_DEF : null));
 const CORRIMIENTOS = F6.corrimientos || [];
-const PERDIDOS = CORRIMIENTOS.reduce((n, c) => n + (c.perdidos || []).length, 0); // v6.01: 3 (mié 7, jue 8, vie 9-oct)
+const PERDIDOS = CORRIMIENTOS.reduce((n, c) => n + (c.perdidos || []).length, 0); // v6.01: 3 (mié 7, jue 8, vie 9-oct) · v6.02: 3 + 5 (lun 12 → vie 16-oct) = 8
 const PRETEST = opt('--pretest', null);
 const SIMS_ARG = opt('--sims', null);
 const REPARTO_ARG = opt('--reparto', null);
@@ -156,7 +180,7 @@ const fDia = (s) => fCorta(s).split(' ')[1]; // «4-ene»
 const plan = habiles(D1, addDays(EXAMEN, -1));
 if (plan.length < 10) throw new Error('la intensiva necesita ≥ 10 hábiles entre D1 y D-1 (S1 + cola)');
 const N = plan.length;
-const offset = habiles(BASE, addDays(D1, -1)).length; // días L-V ya numerados por el mantenimiento (v6.01: 57 = D1-D57 de F1 · v6.00: 60 = D1-D60)
+const offset = habiles(BASE, addDays(D1, -1)).length; // días L-V ya numerados por el mantenimiento (v6.02: 52 = D1-D52 de F1 · v6.01: 57 · v6.00: 60 = D1-D60)
 if (ESCENARIO_JSON && offset !== F6.f1.dias) throw new Error(`offset ${offset} ≠ f1.dias ${F6.f1.dias}: la intensiva debe empezar en el dia ${F6.f1.dias + 1}`);
 if (plan[N - 1].fecha !== V6.ultimoHabilAntes(EXAMEN, SKIP_INT)) throw new Error('el último hábil del plan no es el D-1 hábil del examen');
 {
@@ -229,7 +253,7 @@ for (const r of cbFilas) {
 const cbUltima = cbFilas.map((r) => r.fecha).sort().at(-1);
 let cbCodigoDe = (fecha) => { const r = cbPorFecha[fecha]; return r && r.tipo === 'banqueo1h' ? r.codigo : null; }; // v6.01: let (se amplía con los pendientes F1)
 // v6.01: desfase entre la etiqueta de origen (dia_mant 61-92 de v5.20) y el dia de la intensiva = Σ hábiles perdidos por corrimientos
-// (v6.00: 0 → dia_mant = dia · v6.01: 3 → dia_mant 61 = dia 58). La fila se casa por FECHA; el desfase solo se comprueba.
+// (v6.00: 0 → dia_mant = dia · v6.01: 3 → dia_mant 61 = dia 58 · v6.02: 8 → dia_mant 61 = dia 53). La fila se casa por FECHA; el desfase solo se comprueba.
 const DESFASE_CB = ESCENARIO_JSON ? PERDIDOS : null;
 
 // ── v6.01: pendientes F1 (_pendientes_f1.json, lo escribe gen_encaps_mantenimiento_2027.js --pendientes-de) ──
@@ -279,9 +303,11 @@ const PEND_POR_FECHA = Object.fromEntries(pendF1Cola.map((p, k) => [REPO_FECHAS[
 { const cbCod0 = cbCodigoDe; cbCodigoDe = (fecha) => cbCod0(fecha) || (PEND_POR_FECHA[fecha] ? PEND_POR_FECHA[fecha].codigo : null); }
 const diaDeFecha = (fecha) => { const k = plan.findIndex((p) => p.fecha === fecha); return k < 0 ? null : offset + 1 + k; };
 // v6.01: la fila del JSON queda marcada con dónde se repuso (destino + reposicion) y se embebe IDÉNTICA en extra.carril_b.pendiente_f1
+// v6.02: + la F1 de origen (con 2 corrimientos, «fila mant. N» sola es ambigua: la 59 es de la F1 v6.00 y la 54 de la F1 v6.01)
+const origenPend = (p) => String(p.origen || '').replace('mantenimiento_', 'F1 ');
 const descPend = (p) => (p.tipo === 'mini_sim'
-  ? `mini-sim 25Q (fila mant. ${p.dia_mant}, ${p.fecha_original}, cola larga ${(p.extra.cola_larga || []).join(' + ')})`
-  : `${p.codigo} ${p.extra.sub_eje || ''} #${p.extra.instancia} (fila mant. ${p.dia_mant}, ${p.fecha_original})`.replace(/\s+#/, ' #'));
+  ? `mini-sim 25Q (fila mant. ${p.dia_mant} de la ${origenPend(p)}, ${p.fecha_original}, cola larga ${(p.extra.cola_larga || []).join(' + ')})`
+  : `${p.codigo} ${p.extra.sub_eje || ''} #${p.extra.instancia} (fila mant. ${p.dia_mant} de la ${origenPend(p)}, ${p.fecha_original})`.replace(/\s+#/, ' #'));
 for (const [fecha, p] of Object.entries(PEND_POR_FECHA)) {
   const d = diaDeFecha(fecha);
   p.destino = `REPUESTO dia ${d} (${fCorta(fecha)}-${fecha.slice(0, 4)}) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)${p.tipo === 'mini_sim' ? ' · mini-simulacro 25Q cronometrado (72 s/Q) + corrección, receta íntegra en extra' : ''}`;
@@ -514,15 +540,17 @@ const nSimNucleo = filas.filter((r) => r.tipo === 'sim100' && !r.extra.modulo).l
 const repoFechas = filas.filter((r) => r.extra.carril_b && r.extra.carril_b.tipo === 'reposicion').map((r) => r.fecha);
 const tope = V6.convocatoriaTopeDe(EXAMEN);
 const provisional = ESCENARIO_JSON ? !!F6.encaps.provisional : true;
+// v6.02: la etiqueta PROVISIONAL lleva el rango de versiones que la sostienen (v6.00 → v6.02: «PROVISIONAL v6.00-v6.02»; v6.01 decía «v6.00»)
+const VRANGO = VTAG === 'v6.00' ? 'v6.00' : `v6.00-${VTAG}`;
 const examenTarget = EXAMEN === '2027-03-14' && provisional
-  ? '2027-03-14 (dom · PROVISIONAL v6.00: «más o menos el 14»; 6/6 ENCAPS previos en domingo; se fija con la convocatoria; regla convocatoria = examen − 25 d → sin convocatoria al mié 17-feb se descarta el 14-mar y se pasa al escenario siguiente)'
+  ? `2027-03-14 (dom · PROVISIONAL ${VRANGO}: «más o menos el 14»; 6/6 ENCAPS previos en domingo; se fija con la convocatoria; regla convocatoria = examen − 25 d → sin convocatoria al mié 17-feb se descarta el 14-mar y se pasa al escenario siguiente)`
   : provisional
-    ? `${EXAMEN} (${fCorta(EXAMEN).split(' ')[0]} · PROVISIONAL v6.00: escenario de §A5; se fija con la convocatoria; regla convocatoria = examen − 25 d → sin convocatoria al ${fCorta(tope)} se descarta el ${fDia(EXAMEN)} y se pasa al escenario siguiente)`
+    ? `${EXAMEN} (${fCorta(EXAMEN).split(' ')[0]} · PROVISIONAL ${VRANGO}: escenario de §A5; se fija con la convocatoria; regla convocatoria = examen − 25 d → sin convocatoria al ${fCorta(tope)} se descarta el ${fDia(EXAMEN)} y se pasa al escenario siguiente)`
     : `${EXAMEN} (${fCorta(EXAMEN).split(' ')[0]} · CONFIRMADO por la convocatoria SERUMS 2027-I · v6.00)`;
 const nucleoDesde = NUCLEO[0], trasNucleo = plan.find((p) => p.fecha > NUCLEO_HASTA).fecha;
 // v6.01: versión del régimen = la del último corrimiento de _fechas_v6.json (v6.00 sin corrimientos); el MANTENIMIENTO sube un número por régimen
-const VERSION_V6 = (CORRIMIENTOS.at(-1) || {}).version || F6.version || 'v6.00';
-const MANT_V = CORRIMIENTOS.length ? `v6.${19 + CORRIMIENTOS.length}` : 'v6.19'; // v6.00: v6.19 · v6.01: v6.20
+const VERSION_V6 = VTAG; // v6.02: = VTAG (definido arriba para el nombre del backup)
+const MANT_V = CORRIMIENTOS.length ? `v6.${19 + CORRIMIENTOS.length}` : 'v6.19'; // v6.00: v6.19 · v6.01: v6.20 · v6.02: v6.21
 const ultCorr = CORRIMIENTOS.at(-1) || null;
 const metricsExtra = {
   d1: BASE, dias_ciclo: offset,
@@ -532,10 +560,10 @@ const metricsExtra = {
   dias_a_examen_nota: `vivo: la app (diasAExamenDe) y el daemon calculan exam_date − hoy (Lima); study_metrics.dias_a_examen es solo el fallback estático. ${VERSION_V6} (${hoyLima()}): exam_date = ${EXAMEN}${provisional ? ' PROVISIONAL' : ''}.`,
   ...(ultCorr ? { corrimiento: {
     version: ultCorr.version, fecha: ultCorr.fecha, d1_previo: ultCorr.d1_previo, d1: ultCorr.d1, perdidos: ultCorr.perdidos, regla_fechas_v6: ultCorr.regla,
-    regla_encaps: `F1 ENCAPS rígida por slots (dia 1-${offset}); ${pendF1.length} pendiente(s) F1 que no caben (${pendF1.filter((p) => p.tipo === 'banqueo1h').length} banqueo1h + ${pendF1.filter((p) => p.tipo === 'mini_sim').length} mini-sim) → reposición EXPLÍCITA en el carril B 16:15; nada se descarta ni se absorbe (0 mini-sims F1 absorbidos); intensiva renumerada con las mismas fechas`,
+    regla_encaps: `F1 ENCAPS rígida por slots (dia 1-${offset}); ${pendF1.length} pendiente(s) F1 que no caben (${pendF1.filter((p) => p.tipo === 'banqueo1h').length} banqueo1h + ${pendF1.filter((p) => p.tipo === 'mini_sim').length} mini-sim${[...new Set(pendF1.map((p) => p.corrimiento))].length > 1 ? `; por corrimiento: ${[...new Set(pendF1.map((p) => p.corrimiento))].map((c) => `${c} ${pendF1.filter((p) => p.corrimiento === c).length}`).join(' + ')}` : ''}) → reposición EXPLÍCITA en el carril B 16:15; nada se descarta ni se absorbe (0 mini-sims F1 absorbidos); intensiva renumerada con las mismas fechas`,
     f1: `dia 1-${offset} (${BASE} → ${F6.f1.fin}); la F1 no se alarga`, intensiva_renumerada: `dia ${offset + 1}-${offset + N} (mismas fechas ${plan[0].fecha} → ${plan[N - 1].fecha})`,
     carril_b_dia_mant: 'etiqueta de ORIGEN 61-92 (v5.20), sin cambio', historial: CORRIMIENTOS.map((c) => `${c.version} ${c.fecha}: D1 ${c.d1_previo} → ${c.d1}`),
-    pendientes_f1: pendF1.map((p) => ({ tipo: p.tipo, dia_mant: p.dia_mant, fecha_original: p.fecha_original, codigo: p.codigo || null,
+    pendientes_f1: pendF1.map((p) => ({ corrimiento: p.corrimiento, tipo: p.tipo, dia_mant: p.dia_mant, fecha_original: p.fecha_original, codigo: p.codigo || null, // v6.02: + corrimiento (dia_mant es de la F1 de origen)
       ...(p.tipo === 'mini_sim' ? { cola_larga: p.extra.cola_larga, n: 25, seg_por_q: p.extra.seg_por_q } : { sub_eje: p.extra.sub_eje || null, instancia: p.extra.instancia }),
       reposicion: p.reposicion ? p.reposicion.fecha : null, dia: p.reposicion ? p.reposicion.dia : null })),
     regla_reposicion: REGLA_REPO,
@@ -556,7 +584,93 @@ const metricsExtra = {
 // v6.01: horarios._nota (texto de la hora 16:15 del mantenimiento) se reescribe con las fechas vigentes (decía «v5.20 … D1 = mié 7-oct …»)
 const f1Hab = habiles(BASE, F6.f1.fin), f1Vie = f1Hab.filter((p) => p.dow === 5).map((p) => p.fecha), f1LJ = f1Hab.filter((p) => p.dow !== 5).map((p) => p.fecha);
 const notaHorarios = `${VERSION_V6} (${hoyLima()}; D1 = ${fCorta(BASE)}; F1 = ${offset} días hasta el ${fCorta(F6.f1.fin)}; pre-test de arranque ${fCorta(f1LJ[0])} + ${fCorta(f1LJ[1])} = D1 + D2; mini-sims todos los viernes ${fDia(f1Vie[0])} … ${fDia(f1Vie.at(-1))} (el último = CHECKPOINT DEL AÑO); INTENSIVA ${fCorta(plan[0].fecha)} → ${fCorta(plan[N - 1].fecha)} = dia ${offset + 1}-${offset + N} con CARRIL B 16:15 (filas 61-92 de v5.20 + reposición${pendF1.length ? ` con ${pendF1.length} pendiente(s) F1: ${Object.entries(PEND_POR_FECHA).map(([f, p]) => `${fCorta(f)} ${p.tipo === 'mini_sim' ? 'mini-sim 25Q' : p.codigo}`).join(', ')}` : ''}); examen ENCAPS ${fCorta(EXAMEN)}${provisional ? ' PROVISIONAL' : ''}): 1h/día 16:15-17:15 L-V según DATA/ENCAPS/PROTOCOLO_HORA_MANTENIMIENTO.md · weekday = lun-jue · weekend = plantilla del VIERNES mini-sim (la app la usa solo si today.simulacro está seteado) · sáb/dom libres · el horario deep-prime anterior quedó en horarios_legacy_deep_prime · regla REAL de la eval anclada (gen_encaps_semana.js): fallos ≥2 → código CALIENTE para el override del viernes (semana siguiente); NO desplaza al tema del día siguiente · semana 1 (${fCorta(f1LJ[0])} y ${fCorta(f1LJ[1])}): PRE-TEST DE ARRANQUE 40Q (5Q × 8 críticos, ítems reales 2024-2A→2025-2) sustituye el CONTENIDO del banco del día, no el horario`;
-const sqlMetrics = `UPDATE study_metrics SET extra = jsonb_set(COALESCE(extra, '{}'::jsonb) || ${J(metricsExtra)}, '{horarios}', COALESCE(extra->'horarios', '{}'::jsonb) || ${J({ intensiva: LOOP, _nota: notaHorarios })}, true) WHERE examen = 'ENCAPS';`;
+// v6.02 (17-oct): 3 pasos de horarios que la app pinta (EncapsPlanView HorarioView) seguían con fechas de v6.00. Se reescriben POR RUTA
+// (jsonb_set de pasos[0].d; hora, título, fuente y apex del objeto no se tocan) y se DERIVAN de las filas F1 vigentes (_encaps_mantenimiento_2027.sql):
+//   · weekday[0] 16:15 EVAL ANCLADA: D1 = f1.inicio lleva eval_<D1> (5Q de fallos previos) antes de la parte 1 del pre-test · D2 = eval del
+//     código de AYER (fila dia 1) antes de la parte 2 · D3 = eval del código de la fila dia 2 · primer viernes = mini-sim
+//     (v6.00 decía mié 7 / jue 8 / lun 12-oct · eval_2026-10-07)
+//   · weekday[1] 16:30 BANCO DEL DÍA: «<D1> y <D2>: PRE-TEST DE ARRANQUE 20Q + 20Q …» (v6.00: «Mié 7 y jue 8-oct»)
+//   · weekend[1] 16:45 corrección del viernes: el comando que imprime gen_encaps_semana.js en «Cómo aplicar»:
+//     gen_encaps_mantenimiento_2027.js <D1> --hasta <f1.fin> --override DATA/ENCAPS/TRACKING_ERRORES/SEMANAS/override_<lunes>.json
+//     (v6.00: «… 2026-10-07 --override SEMANAS/override_<lunes>.json», sin --hasta)
+// El resto de cada texto va LITERAL en HORARIO_* (copiado del texto vivo el 17-oct). Una guarda DO va antes del UPDATE y ABORTA la transacción si
+// el texto vivo ya no tiene ese texto fijo (md5 del prefijo y del sufijo) o si el objeto de la ruta no es el de esa hora y título. Así nunca se pisa
+// un texto que el generador no conoce. Es idempotente: tras aplicarlo, el texto fijo sigue igual y la guarda vuelve a pasar.
+const HORARIO_EVAL_FIJO = '5Q del código de AYER, de memoria, sin material: 3 cifras + 2 viñetas, solución al final. Lunes = 5Q rehechas con OTRO enfoque de los fallos del mini-sim del viernes; martes = código del lunes; miércoles = código del martes; jueves = código del miércoles (el viernes no lleva eval: el mini-sim ocupa las 16:15). Si fallas ≥2 → el código queda CALIENTE para el override del viernes (gen_encaps_semana.js: máx. 2 sustituciones/semana, I-3 y V-2 intocables, un crítico solo se cede si ya está ≥85 % con n ≥ 5). NO desplaza al tema del día siguiente.';
+const HORARIO_BANCO_FIJO = '16-20Q del código ceñidas al sub-eje del día (◈ Sub-eje de hoy) + 4-5Q del secundario de cola larga, pregunta-por-pregunta con corrección inmediata (método Palmerton) y confianza 1-3 por ítem. Nivel ≥ examen real, distractor = concepto vecino. Orden de fuentes: BANCO_PROPIO (runner) → postests Theomed → banco QX (por área) → sets nuevos (motor 4 factores).';
+const HORARIO_CIERRE_VIE_PRE = 'Corrección 1×1 por código → nota /25 en ▲ SIM (study_sim_scores, sim_n = día) + cierre con tipoRonda=mini_sim y nota=NN (umbral ≥18/25 hacia diciembre; <15/25 dos viernes seguidos → override obligatorio). Luego node DATA/_scripts/gen_encaps_semana.js --sql: % ciego semanal, temas calientes (n ≥ 5 por código) y override de la semana siguiente, que se ACUMULA en SEMANAS/overrides_acumulado.json → ';
+const HORARIO_CIERRE_VIE_POST = ' → execute_sql (backup study_schedule_bk_<YYYYMMDD>, DELETE solo modo=MANTENIMIENTO).';
+const SQL_MANT_F1 = path.join(__dirname, '_encaps_mantenimiento_2027.sql');
+const filasF1 = (fs.existsSync(SQL_MANT_F1) ? fs.readFileSync(SQL_MANT_F1, 'utf8').split('\n') : [])
+  .map((l) => l.match(/^\('ENCAPS',(\d+),'(20\d\d-\d\d-\d\d)','[^']+','([^']+)',(NULL|'[^']*'),/)).filter(Boolean)
+  .map((m) => ({ dia: +m[1], fecha: m[2], tipo: m[3], codigo: m[4] === 'NULL' ? null : m[4].slice(1, -1) }));
+const horarioTextos = (() => {
+  const f1Dia = (n) => filasF1.find((r) => r.dia === n) || null;
+  const r1 = f1Dia(1), r2 = f1Dia(2), r3 = f1Dia(3), vie1 = filasF1.filter((r) => r.tipo === 'mini_sim').sort((a, b) => a.dia - b.dia)[0] || null;
+  const errs = [];
+  if (f1LJ[0] !== BASE) errs.push(`el D1 ${BASE} no es lun-jue`);
+  if (!r1 || r1.fecha !== BASE || r1.tipo !== 'banqueo1h' || !r1.codigo) errs.push(`fila dia 1 ≠ banqueo1h del D1 ${BASE} (${r1 ? `${r1.fecha} ${r1.tipo}` : 'no existe'})`);
+  if (!r2 || r2.fecha !== f1LJ[1] || r2.tipo !== 'banqueo1h' || !r2.codigo) errs.push(`fila dia 2 ≠ banqueo1h del ${f1LJ[1]} (parte 2 del pre-test)`);
+  if (!r3) errs.push('sin fila dia 3');
+  if (!vie1 || vie1.fecha !== f1Vie[0]) errs.push(`el primer mini-sim no es el primer viernes de la F1 (${f1Vie[0]})`);
+  if (errs.length) {
+    const msg = `horarios weekday/weekend: no se derivan de ${path.basename(SQL_MANT_F1)}: ${errs.join(' · ')}`;
+    if (ESCENARIO_JSON) throw new Error(`${msg} → regenera antes la F1 con gen_encaps_mantenimiento_2027.js`);
+    console.warn(`⚠ ${msg} (prueba en seco: el UPDATE no reescribe esos 3 textos)`);
+    return null;
+  }
+  const sinMes = (s) => fCorta(s).replace(/-[a-z]+$/, ''); // «mar 20»
+  const par = r1.fecha.slice(0, 7) === r2.fecha.slice(0, 7) ? `${sinMes(r1.fecha)} y ${fCorta(r2.fecha)}` : `${fCorta(r1.fecha)} y ${fCorta(r2.fecha)}`;
+  const tramoD3 = r3.tipo === 'mini_sim'
+    ? `el ${fCorta(r3.fecha)} (D${r3.dia}) es mini-sim.`
+    : `el ${fCorta(r3.fecha)} (D${r3.dia}) la eval es la de ${r2.codigo} (código del ${sinMes(r2.fecha)}); el ${fCorta(vie1.fecha)} (D${vie1.dia}) es mini-sim.`;
+  const cmdViernes = `node DATA/_scripts/gen_encaps_mantenimiento_2027.js ${BASE} --hasta ${F6.f1.fin} --override DATA/ENCAPS/TRACKING_ERRORES/SEMANAS/override_<lunes>.json`;
+  return { r1, r2, r3, vie1, cmdViernes, rutas: [
+    { ruta: ['weekday', 0], hora: '16:15-16:30', titulo: 'EVAL ANCLADA', ini: `${HORARIO_EVAL_FIJO} `, fin: '',
+      d: `${HORARIO_EVAL_FIJO} D1 (${fCorta(r1.fecha)}, sin sesión anterior en el SQL): SÍ lleva eval — eval_${r1.fecha} = 5Q de fallos previos del registro (críticos primero) antes de la parte 1 del pre-test; el ${fCorta(r2.fecha)} (D2) la eval es la del código de AYER (${r1.codigo}), antes de la parte 2; ${tramoD3}` },
+    { ruta: ['weekday', 1], hora: '16:30-17:10', titulo: 'BANCO DEL DÍA', ini: `${HORARIO_BANCO_FIJO} `, fin: '',
+      d: `${HORARIO_BANCO_FIJO} ${par.charAt(0).toUpperCase()}${par.slice(1)}: PRE-TEST DE ARRANQUE 20Q + 20Q (pretest_arranque_<fecha>.html, modo examen 72 s/Q, solución al final) en vez del banco del día.` },
+    { ruta: ['weekend', 1], hora: '16:45-17:15', titulo: 'Corrección', ini: HORARIO_CIERRE_VIE_PRE, fin: HORARIO_CIERRE_VIE_POST,
+      d: `${HORARIO_CIERRE_VIE_PRE}${cmdViernes}${HORARIO_CIERRE_VIE_POST}` },
+  ] };
+})();
+// runner: los ficheros que citan esos textos existen y su código cuadra con la fila (solo avisa: el texto sale de las filas, no de los ficheros)
+const avisosHorario = [];
+if (horarioTextos) {
+  const { r1, r2, r3 } = horarioTextos;
+  const BP = path.join(ROOT, 'DATA', 'ENCAPS', 'BANCO_PROPIO');
+  const leerBP = (b) => { try { return JSON.parse(fs.readFileSync(path.join(BP, `${b}.json`), 'utf8')); } catch (e) { return null; } };
+  const sust = (j) => (j._meta && j._meta.sustituye) || {};
+  const esperados = [
+    [`eval_${r1.fecha}`, (j) => j.codigo === 'MIX' && ((j._meta && j._meta.sesion_anterior) || {}).tipo === 'inicio_regimen', 'MIX · fallos previos (sin sesión anterior)'],
+    [`eval_${r2.fecha}`, (j) => j.codigo === r1.codigo, `código de la fila dia 1 = ${r1.codigo}`],
+    ...(r3.tipo === 'mini_sim' ? [] : [[`eval_${r3.fecha}`, (j) => j.codigo === r2.codigo, `código de la fila dia 2 = ${r2.codigo}`]]),
+    [`pretest_arranque_${r1.fecha}`, (j) => sust(j).dia === 1 && sust(j).codigo === r1.codigo, `parte 1 · sustituye la fila dia 1 (${r1.codigo})`],
+    [`pretest_arranque_${r2.fecha}`, (j) => sust(j).dia === 2 && sust(j).codigo === r2.codigo, `parte 2 · sustituye la fila dia 2 (${r2.codigo})`],
+  ];
+  for (const [b, cuadra, txt] of esperados) {
+    const j = leerBP(b);
+    if (!j || !fs.existsSync(path.join(BP, `${b}.html`))) avisosHorario.push(`falta BANCO_PROPIO/${b}.json o .html`);
+    else if (!cuadra(j)) avisosHorario.push(`BANCO_PROPIO/${b}.json no cuadra: se esperaba ${txt} y trae ${j.codigo}`);
+  }
+  // el comando del viernes es el de gen_encaps_semana.js («Cómo aplicar»): si esa plantilla cambia, cambia aquí también
+  const semSrc = fs.readFileSync(path.join(__dirname, 'gen_encaps_semana.js'), 'utf8');
+  if (!semSrc.includes('node DATA/_scripts/gen_encaps_mantenimiento_2027.js ${D1} --hasta ${F1_FIN} --override DATA/ENCAPS/TRACKING_ERRORES/SEMANAS/override_${lunesSig}.json')) avisosHorario.push('gen_encaps_semana.js ya no imprime «gen_encaps_mantenimiento_2027.js ${D1} --hasta ${F1_FIN} --override DATA/ENCAPS/TRACKING_ERRORES/SEMANAS/override_<lunes>.json»: revisa cmdViernes');
+  for (const a of avisosHorario) console.warn('⚠ horarios:', a);
+}
+const md5Hex = (s) => require('crypto').createHash('md5').update(s, 'utf8').digest('hex');
+const nChars = (s) => [...s].length; // left()/right() de Postgres cuentan caracteres
+const guardaHorarios = horarioTextos
+  ? `DO $$ DECLARE h jsonb; BEGIN SELECT extra->'horarios' INTO h FROM study_metrics WHERE examen = 'ENCAPS';${horarioTextos.rutas.map((x) => {
+    const o = `{${x.ruta.join(',')}`, p = `${o},pasos,0,d}`;
+    const conds = [`h#>>'${o},hora}' = '${x.hora}'`, `h#>>'${o},titulo}' LIKE '${esc(x.titulo)}%'`, `md5(left(h#>>'${p}', ${nChars(x.ini)})) = '${md5Hex(x.ini)}'`,
+      ...(x.fin ? [`md5(right(h#>>'${p}', ${nChars(x.fin)})) = '${md5Hex(x.fin)}'`] : [])];
+    return ` IF NOT COALESCE(${conds.join(' AND ')}, false) THEN RAISE EXCEPTION 'horarios.${x.ruta.join('[')}] (${x.hora}): hora, título o texto fijo de pasos[0].d distintos de la plantilla de gen_encaps_intensivo_2027.js (HORARIO_*): no se pisa; revisa la plantilla'; END IF;`;
+  }).join('')} END $$;`
+  : null;
+let extraExpr = `jsonb_set(COALESCE(extra, '{}'::jsonb) || ${J(metricsExtra)}, '{horarios}', COALESCE(extra->'horarios', '{}'::jsonb) || ${J({ intensiva: LOOP, _nota: notaHorarios })}, true)`;
+if (horarioTextos) for (const x of horarioTextos.rutas) extraExpr = `jsonb_set(${extraExpr}, '{horarios,${x.ruta.join(',')},pasos,0,d}', ${J(x.d)}, false)`;
+const sqlMetrics = `${guardaHorarios ? `${guardaHorarios}\n` : ''}UPDATE study_metrics SET extra = ${extraExpr} WHERE examen = 'ENCAPS';`;
 const cabecera = `-- ENCAPS FASE INTENSIVA 2027-I · ${VERSION_V6} · generado por gen_encaps_intensivo_2027.js (${hoyLima()})
 -- ${filas.length} días L-V · ${plan[0].fecha} → ${plan[N - 1].fecha} · dia ${offset + 1}-${offset + N} (continúa la cuenta del mantenimiento desde ${BASE})${DESDE ? ` · --desde ${DESDE}: se emiten ${emitidas.length} filas (dia ${emitidas[0].dia}-${emitidas.at(-1).dia})` : ''}${ultCorr ? `
 -- ${ultCorr.version}: corrimiento D1 ${ultCorr.d1_previo} → ${ultCorr.d1} (Σ perdidos ${PERDIDOS}) → intensiva renumerada, MISMAS fechas; carril B dia_mant 61-92 = etiqueta de origen (desfase ${DESFASE_CB})` : ''}${pendF1.length ? `
@@ -585,7 +699,7 @@ COMMIT;
 `;
 fs.mkdirSync(path.dirname(OUT), { recursive: true });
 fs.writeFileSync(OUT, sql, 'utf8');
-if (SIN_TX) fs.writeFileSync(OUT_METRICS, `-- study_metrics.extra (ENCAPS) · ${VERSION_V6} · gen_encaps_intensivo_2027.js (${hoyLima()}) · examen ${EXAMEN} · va DESPUÉS del INSERT de ${path.basename(OUT)} (Lote 4, misma transacción)\n-- intensiva.backup = ${BK}: con --sin-tx este SQL NO crea esa tabla; la CREA el orquestador en la transacción de siembra (CREATE TABLE ${BK} AS SELECT * FROM study_schedule WHERE examen = 'ENCAPS', antes del DELETE), como en v6.00\n${sqlMetrics}\n`, 'utf8');
+if (SIN_TX) fs.writeFileSync(OUT_METRICS, `-- study_metrics.extra (ENCAPS) · ${VERSION_V6} · gen_encaps_intensivo_2027.js (${hoyLima()}) · examen ${EXAMEN} · va DESPUÉS del INSERT de ${path.basename(OUT)} (Lote 4, misma transacción)\n-- intensiva.backup = ${BK}: con --sin-tx este SQL NO crea esa tabla; la CREA el orquestador en la transacción de siembra (CREATE TABLE ${BK} AS SELECT * FROM study_schedule WHERE examen = 'ENCAPS', antes del DELETE), como en v6.00\n${horarioTextos ? `-- v6.02: + horarios ${horarioTextos.rutas.map((x) => `${x.ruta[0]}[${x.ruta[1]}]`).join(' · ')} pasos[0].d reescritos por ruta desde las filas F1 (D1 ${horarioTextos.r1.fecha} · D2 ${horarioTextos.r2.fecha} · D3 ${horarioTextos.r3.fecha} · 1.er mini-sim ${horarioTextos.vie1.fecha}); la guarda DO de antes del UPDATE aborta si el texto fijo vivo no es la plantilla HORARIO_*\n` : ''}${sqlMetrics}\n`, 'utf8');
 // v6.01: _pendientes_f1.json registra dónde quedó repuesta cada fila (destino + reposicion), idéntico a la copia embebida en el SQL.
 // Solo en la siembra versionada (escenario de _fechas_v6.json, sin --out): una prueba en seco no reescribe el JSON.
 if (pendF1Doc && ESCENARIO_JSON && !OUT_ARG && !has('--no-persistir')) {
@@ -603,3 +717,4 @@ console.log('carril B: banqueo1h', nCbB, '· mini-sim absorbido', nCbM, '· repo
 console.log('barrido (' + SLOTS + ' slots):', ordenSlots.map((c) => (c === 'IV-1+IV-2' ? 'IV' : c)).join(' · '));
 console.log('SIM:', filas.filter((r) => r.tipo === 'sim100').map((r) => `${r.fecha} #${r.extra.sim.num} ${r.extra.sim.hora}`).join(' · '));
 console.log('cola:', filas.slice(-5).map((r) => `${r.fecha} ${r.tipo}`).join(' · '));
+if (horarioTextos) console.log('horarios (pasos[0].d por ruta):', horarioTextos.rutas.map((x) => `${x.ruta[0]}[${x.ruta[1]}] ${x.hora}`).join(' · '), `· D1 ${horarioTextos.r1.fecha} (${horarioTextos.r1.codigo}) · D2 ${horarioTextos.r2.fecha} (${horarioTextos.r2.codigo}) · D3 ${horarioTextos.r3.fecha} · 1.er mini-sim ${horarioTextos.vie1.fecha} · runner ${avisosHorario.length ? `${avisosHorario.length} aviso(s)` : 'OK'}`); // v6.02

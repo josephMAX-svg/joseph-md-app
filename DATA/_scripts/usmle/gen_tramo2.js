@@ -9,17 +9,41 @@
  *     node gen_tramo2.js [ENCAPS] [EXAMEN] [SERUMS] [--json f] [--md f]
  *        [--proteg a,b,…]            protegidos extra (adjudicación, inducción…): no son días de plan
  *        [--permitir-deficit]        solo para explorar escenarios: sin él, un déficit ABORTA (exit 2) — R1: nunca se recorta
- *        [--pendientes-f1 p1,p2,…]   disparador (f) cierre de F1 (jue 31-dic, tras el último día de F1 = mié 30-dic): POSICIONES de
- *                                    temario de F1 (1-58: 1-57 = D1-D57 · 58 = v5.20 D79; sin hitos) sin ✓. v6.01: F1 = D1-D57 SIN
- *                                    colchón (C1/C2 consumidos por el corrimiento) → solo se recuperan las ≤ --f1-filas (57), a la
- *                                    cabeza de la cola; la 58 ya va en el tramo 2 como desplazada (T3 jue 18-mar) y se ignora (no se
- *                                    duplica) · v6.00: d ≤ 58 sin ✓ tras C1/C2
- *        [--f1-filas N]              v6.01: filas de TEMARIO de F1 que caben antes de la pausa (por defecto min(f1.dias, 58) del JSON;
- *                                    v6.00 = 58 · v6.01 = 57). Las posiciones > N (hoy la 58 = v5.20 D79) son DESPLAZADAS: van
- *                                    SIEMPRE a la cabeza de la cola-adelante como contenido con su dOrig (entran en V1)
+ *        [--pendientes-f1 d1,d2,…]   disparador (f) cierre de F1 (jue 31-dic, tras el último día de F1 = mié 30-dic): d de F1 (el slot,
+ *                                    la clave de plan_checks('usmle', d); 1-f1Filas, sin hitos) sin ✓; su contenido = la COLOCACIÓN de F1
+ *                                    (colocarF1). v6.02: d 1-52 (d 1-51 = v5.20 D1-D51 · d 52 = NBME 28, hito: no se recupera) ·
+ *                                    v6.01: d 1-57 = D1-D57 · v6.00: d ≤ 58 sin ✓ tras C1/C2. Un d > --f1-filas (hasta 58) no es un slot
+ *                                    de F1 y se ignora (v6.01: la 58 = D79 ya va en el tramo 2 como desplazada; no se duplica)
+ *                                    NBME 28 (v6.02 d 52, mié 30-dic) — SIN day-after en F1 (jue 31-dic = SKIP, pausa): la revisión de
+ *                                    errores + Anki de gaps del propio NBME 28 va el mismo 30-dic (lo dice su sub: «+ revisión de errores +
+ *                                    Anki de gaps») y su auditoría (day-after Palmerton) va en la revisión semanal S11 del sáb 2-ene-2027.
+ *                                    Si se PIERDE el mié 30-dic, el NBME 28 NO se borra ni pasa al tramo 2 (es un hito: este disparador lo
+ *                                    rechaza): se rinde el sáb 2-ene-2027 07:00-12:30 (transición 31-dic → 3-ene, FUERA del plan diario: es
+ *                                    evaluación, no temario) y su auditoría va en esa misma revisión semanal S11 del sáb 2-ene, que en
+ *                                    ese caso pasa de las 07:15 a las 13:30 (después del examen). Solo documentación: ninguna fila cambia
+ *                                    (ni de F1 ni del tramo 2).
+ *        [--f1-filas N]              v6.01: filas (slots) de TEMARIO de F1 antes de la pausa (por defecto min(f1.dias, 58) del JSON;
+ *                                    v6.00 = 58 · v6.01 = 57 · v6.02 = 52). Lo que no cabe lo decide colocarF1 (abajo): las ÚLTIMAS
+ *                                    filas de temario NO-hito del orden D1-D57 · D79 son DESPLAZADAS: van SIEMPRE a la cabeza de la
+ *                                    cola-adelante como contenido con su dOrig, en orden v5.20 (entran en V1)
  *        [--congelar-hasta AAAA-MM-DD --previo previo.json [--examen-previo AAAA-MM-DD] [--pendientes uid1,uid2]]
  *     Sin posicionales, ENCAPS / EXAMEN / SERUMS salen de DATA/_scripts/_fechas_v6.json (encaps.examen · step1.examen · serums.inicio).
  *
+ * v6.02 (17-oct-2026): corrimiento D1 lun 12-oct → lun 19-oct (no se estudió del lun 12 al vie 16-oct). F1 = 52 hábiles y NUEVA REGLA
+ *   (Joseph: «un hito F1 no se desplaza»): los HITOS de F1 NUNCA salen de F1 → colocarF1(n): cada hito conserva su D# como slot
+ *   (UWSA1 1 · NBME 25 10 · 26 25 · 27 40) y el que no cabe por su D# pasa a los ÚLTIMOS slots de F1, en orden (NBME 28, v5.20 D55 →
+ *   slot 52 = mié 30-dic, última sesión antes de la pausa y checkpoint de fecha); el resto de slots se llena con el temario NO-hito en
+ *   orden v5.20 y lo que no cabe = las ÚLTIMAS filas de temario no-hito → DESPLAZADAS (v6.02: D52, D53, D54, D56, D57 Heme/Onco +
+ *   D79 bioestadística, en ese orden, a la cabeza de la cola: T3…T8 tras el NBME 29). --pendientes-f1 pasa a ser el d (slot) de F1
+ *   con su contenido de la colocación (idéntico a la posición en v6.00/v6.01). Matriz de compatibilidad: con --f1-filas 58 / 57 la
+ *   colocación es la de la v6.00 / v6.01 (hitos ya en su D#) y la salida es byte a byte la de sus referencias.
+ * v6.02 (17-oct): etiqueta de origen de las DESPLAZADAS. «era la fila N de F1» (N = posición SIN comprimir del orden D1-D57 · D79) era
+ *   ambigua con hitos anclados (T3-T7 decían «fila 52…57» y T8 «fila 58», pero el d 52 de F1 es ahora el NBME 28) → en el RÉGIMEN DE
+ *   HITOS ANCLADOS (algún hito de F1 fuera de su D#, p. ej. v6.02 con 52 slots) el sub dice el origen v5.20: «DE F1 → TRAMO 2 (no cupo en
+ *   F1 antes de la pausa ENCAPS; era v5.20 D52) · …» … «era v5.20 D79». Sin hitos re-ubicados (v6.00 58 · v6.01 57 slots) se CONSERVA la
+ *   etiqueta vieja → las referencias congeladas tramo2_14mar_27sep.json (v6.00) y tramo2_14mar_27sep_v601.json (v6.01, «era la fila 58 de
+ *   F1») se siguen reproduciendo byte a byte. Mensaje «pendiente F1 inválido» con el rango real (1-f1Filas) en vez de «1-58» fijo.
+ *   + documentado (sin cambiar filas) qué pasa si se pierde el NBME 28 del mié 30-dic (ver --pendientes-f1 arriba).
  * v6.01 (10-oct-2026): corrimiento D1 mié 7-oct → lun 12-oct (no se estudió el 7, 8 ni 9-oct). F1 NO se alarga (la intensiva ENCAPS
  *   empieza el lun 4-ene): de las filas de F1 en orden (D1-D57 · D79 · C1 · C2) caben 57; C1/C2 se consumen y la fila v5.20 D79
  *   (bioestadística; D58 en la v6.00) es DESPLAZADA al tramo 2: unidad de contenido 'C79' con dOrig 79 a la cabeza de la
@@ -105,6 +129,31 @@ const CONSOL = [92, 93, 'pathoma', 'fa15', 'fa1114'];
  *  detrás y no tienen temario. F1 coloca las primeras f1Filas; las posiciones > f1Filas son DESPLAZADAS al tramo 2. */
 const ORIGEN_F1_TEMARIO = [...Array.from({ length: 57 }, (_, i) => i + 1), 79];
 const F1_FILAS_V600 = ORIGEN_F1_TEMARIO.length; // 58 (v6.00: todo el temario de F1 cabía; D58 = D79)
+/** Filas de F1 en su orden: temario (D1-D57 · D79) + C1/C2 (colchón F1, sin temario). */
+const ORIGEN_F1 = [...ORIGEN_F1_TEMARIO, 'C1', 'C2'];
+/**
+ * v6.02 · COLOCACIÓN de F1 en n slots (regla de Joseph: un hito de F1 nunca sale de F1; las desplazadas = las ÚLTIMAS filas de
+ * temario no-hito). Hito k-ésimo (de H) → slot min(su posición en ORIGEN_F1_TEMARIO = su D#, n − (H − k)): conserva su D# si cabe y,
+ * si no, ocupa los últimos slots de F1 en orden. Los demás slots se llenan EN ORDEN con el temario no-hito y luego C1/C2; lo que sobra:
+ * C1/C2 = colchón consumido · temario = desplazadas (orden v5.20). Con n = 60 / 58 / 57 da exactamente la F1 de la v6.00 / v6.00 sin
+ * colchón / v6.01 (hitos ya en su D#); con n = 52 (v6.02): slots 1-51 = v5.20 D1-D51 · slot 52 = v5.20 D55 (NBME 28) ·
+ * desplazadas D52, D53, D54, D56, D57, D79.
+ * @param {number} n slots de F1 (gen_usmle_v5: f1.dias · generarTramo2: f1Filas ≤ 58)
+ * @param {object} [byD] filas v5.20 por D (por defecto el dias_v520.json congelado) — decide qué es hito (sub «🎯…»)
+ * @returns {{ enF1: (number|string)[], desplazadas: number[], consumido: string[], f1Filas: number, hitos: number[] }}
+ */
+function colocarF1(n, byD = Object.fromEntries(cargarV520().map((x) => [x.d, x]))) {
+  const esHito = (o) => typeof o === 'number' && /^🎯/.test(byD[o].sub);
+  const hitos = ORIGEN_F1_TEMARIO.filter(esHito);
+  if (!(Number.isInteger(n) && n >= hitos.length && n <= ORIGEN_F1.length)) throw new Error(`colocarF1: ${n} slots (válido ${hitos.length}-${ORIGEN_F1.length}: los ${hitos.length} hitos de F1 siempre caben)`);
+  const enF1 = new Array(n).fill(null);
+  hitos.forEach((d, k) => { enF1[Math.min(ORIGEN_F1_TEMARIO.indexOf(d) + 1, n - (hitos.length - 1 - k)) - 1] = d; });
+  const resto = ORIGEN_F1.filter((o) => !esHito(o));
+  let i = 0;
+  for (let s = 0; s < n; s++) if (enF1[s] === null) enF1[s] = resto[i++];
+  const sobran = resto.slice(i);
+  return { enF1, desplazadas: sobran.filter((o) => typeof o === 'number'), consumido: sobran.filter((o) => typeof o === 'string'), f1Filas: enF1.filter((o) => typeof o === 'number').length, hitos };
+}
 /** dOrig de v5.20 que el tramo 2 debe cubrir (20 contenido + 7 hitos + 10 banco/sprint) con F1 completa (v6.00: D79 vive en F1 = D58).
  *  v6.01: + las desplazadas de F1 (generarTramo2 → `esperados`). */
 const DORIG_ESPERADOS = [...CONT, 65, 72, 77, 82, 83, 85, 87, 84, 86, 88, 89, 90, 91, 92, 93, 94, 95];
@@ -131,7 +180,7 @@ const NOTA_V6 = { 72: 'v6: punto de control de la reactivación (ya no cierra la
  * @param {object} o encaps, examen, serums (AAAA-MM-DD) · skip: Set · adjudicacion: [{fecha, motivo}] (protegidos de entrada del JSON)
  *   · protegExtra: [fecha] (--proteg) · examenPrevio · congelarHasta · previo: filas (DIAS_T2 vigente) · pendientes: [uid] · pendientesF1: [d]
  *   · f1Filas: filas de temario que caben en F1 (v6.01; por defecto 58 = v6.00) · byD: filas v5.20 por D (por defecto el dias_v520.json congelado)
- * @returns {{ out: object[], deficitFwd: number, deficitBwd: number, R: string, GONOGO: string, ritual: string, frozen: number, claveNogo: string|null, log: string[], faltan: number[], f1Filas: number, desplazadasF1: number[], esperados: number[] }}
+ * @returns {{ out: object[], deficitFwd: number, deficitBwd: number, R: string, GONOGO: string, ritual: string, frozen: number, claveNogo: string|null, log: string[], faltan: number[], f1Filas: number, desplazadasF1: number[], origenF1: (number|string)[], esperados: number[] }}
  */
 function generarTramo2(o) {
   const ENCAPS = o.encaps, E = o.examen, S = o.serums;
@@ -141,12 +190,19 @@ function generarTramo2(o) {
   const E_PREV = o.examenPrevio || E;
   const PENDIENTES = o.pendientes || [];
   const PEND_F1 = o.pendientesF1 || [];
-  // v6.01: filas de temario de F1 que NO caben (posición > f1Filas) → desplazadas al tramo 2 con su dOrig (D# v5.20)
+  // v6.01: filas de temario de F1 que NO caben → desplazadas al tramo 2 con su dOrig (D# v5.20)
+  // v6.02: las decide colocarF1 (hitos anclados en F1; desplazadas = las últimas no-hito): v6.02 [52, 53, 54, 56, 57, 79] · v6.01 [79]
   const F1FILAS = o.f1Filas == null ? F1_FILAS_V600 : Number(o.f1Filas);
   if (!(Number.isInteger(F1FILAS) && F1FILAS >= 1 && F1FILAS <= F1_FILAS_V600)) throw new Error('f1Filas inválido (1-' + F1_FILAS_V600 + '): ' + o.f1Filas);
-  const DESPL = ORIGEN_F1_TEMARIO.slice(F1FILAS); // D# v5.20 (v6.01: [79])
+  const COL = colocarF1(F1FILAS, byD);
+  const DESPL = COL.desplazadas;
   for (const dv of DESPL) if (/^🎯/.test(byD[dv].sub)) throw new Error(`fila desplazada de F1 que es un hito (D${dv} v5.20): un hito F1 no se desplaza (decisión de Joseph)`);
-  const posF1 = (dv) => ORIGEN_F1_TEMARIO.indexOf(dv) + 1; // posición en F1 (v6.01: D79 → 58)
+  const posF1 = (dv) => ORIGEN_F1_TEMARIO.indexOf(dv) + 1; // fila de F1 sin comprimir = su D# (v6.01: D79 → 58 · v6.02: D52 → 52 …)
+  // v6.02 (17-oct): régimen de HITOS ANCLADOS = algún hito de F1 no está en su slot natural (su D#) → la etiqueta de la desplazada es su
+  // origen v5.20 («era v5.20 D52»); si todos los hitos siguen en su D# (v6.00/v6.01) se conserva «era la fila N de F1» (referencias congeladas)
+  const HITOS_ANCLADOS = COL.hitos.some((h) => COL.enF1[ORIGEN_F1_TEMARIO.indexOf(h)] !== h);
+  const origenDespl = (a) => (HITOS_ANCLADOS ? `era v5.20 D${a.dOrig}` : `era la fila ${a.desdeF1} de F1`);
+  const pendF1Invalido = (d) => `pendiente F1 inválido (1-${F1FILAS}, sin hitos${F1FILAS < F1_FILAS_V600 ? `; ${F1FILAS + 1 < F1_FILAS_V600 ? `${F1FILAS + 1}-${F1_FILAS_V600} no son slots` : `${F1_FILAS_V600} no es slot`} de F1 y se ignora${F1FILAS + 1 < F1_FILAS_V600 ? 'n' : ''}` : ''}): ${d}`;
   const R = V6.reinicioDe(ENCAPS);         // DJ-2: martes siguiente al ENCAPS (el lunes libre); vale para examen en sáb o dom
   const claveNogo = `${E_PREV}>${E}`;
   const TABLA = CONG && E_PREV !== E ? HITOS_NOGO[claveNogo] : HITOS[E];
@@ -197,12 +253,13 @@ function generarTramo2(o) {
       fwd.unshift({ ...base, rest: 1, pendiente: true });
     }
   }
-  // (f) cierre de F1: recuperaciones de F1 (posición 58 = D79 de v5.20) delante de todo; no llevan dOrig (no entran en V1), sí dF1.
-  // v6.01: una posición > f1Filas no es recuperación (nunca estuvo en F1): ya va en la cola como desplazada → no se duplica.
+  // (f) cierre de F1: recuperaciones de F1 delante de todo; no llevan dOrig (no entran en V1), sí dF1 (= el d/slot de F1).
+  // v6.01: un d > f1Filas no es recuperación (nunca estuvo en F1): si era una desplazada ya va en la cola → no se duplica.
+  // v6.02: el contenido del slot d sale de la colocación (COL.enF1[d-1]; en v6.00/v6.01 = la posición d del orden de F1).
   for (const d of [...PEND_F1].reverse()) {
-    const dv = ORIGEN_F1_TEMARIO[d - 1];
-    if (!(d >= 1 && d <= 58) || /^🎯/.test(byD[dv].sub)) throw new Error('pendiente F1 inválido (1-58, sin hitos): ' + d);
+    if (!(Number.isInteger(d) && d >= 1 && d <= F1_FILAS_V600)) throw new Error(pendF1Invalido(d));
     if (d > F1FILAS) continue;
+    if (/^🎯/.test(byD[COL.enF1[d - 1]].sub)) throw new Error(pendF1Invalido(d));
     fwd.unshift(mk({ tipo: 'contenido', dF1: d, uid: 'F1-' + d }));
   }
   // ── 1) filas ancladas ──
@@ -282,12 +339,12 @@ function generarTramo2(o) {
       }
       case 'day_after': Object.assign(fila, DEF.day_after, { sub: `DAY-AFTER del ${a.de} (Palmerton §9.2): trayectoria + auditoría de honestidad + triaje de errores + drill de cronología (10 PC cards) + lectura por sistema — en bloque A + B`, qDia: 0, nivelUW: 5, h: F4row ? 2.625 : 5.5 }); break;
       case 'contenido': {
-        if (a.dF1) { const w1 = byD[ORIGEN_F1_TEMARIO[a.dF1 - 1]]; CAMPOS_V520.forEach((k) => { fila[k] = w1[k]; }); Object.assign(fila, { dF1: a.dF1, sub: `RECUPERACIÓN F1 (D${a.dF1} no hecho) · ` + (a.parte ? `parte ${a.parte} · ` : '') + w1.sub, qDia: a.parte ? 20 : 40, nivelUW: 2, h: a.parte ? (s <= ADAPT_FIN ? 1.3125 : 2.625) : 5.5 }); break; }
+        if (a.dF1) { const w1 = byD[COL.enF1[a.dF1 - 1]]; CAMPOS_V520.forEach((k) => { fila[k] = w1[k]; }); Object.assign(fila, { dF1: a.dF1, sub: `RECUPERACIÓN F1 (D${a.dF1} no hecho) · ` + (a.parte ? `parte ${a.parte} · ` : '') + w1.sub, qDia: a.parte ? 20 : 40, nivelUW: 2, h: a.parte ? (s <= ADAPT_FIN ? 1.3125 : 2.625) : 5.5 }); break; }
         // v6.01: las desplazadas de F1 cuentan su posición entre las desplazadas (regla de F1); las de CONT, entre CONT (sin cambio)
         const pos = (a.desdeF1 ? DESPL : CONT).filter((x) => byD[x].system === v.system).indexOf(a.dOrig) + 1;
         const viernes = wd(s) === 5;
         let nivel = pos <= 2 ? 1 : viernes ? 4 : 2; let q = pos <= 2 ? 30 : 40;
-        const preF1 = a.desdeF1 ? `DE F1 → TRAMO 2 (no cupo en F1 antes de la pausa ENCAPS; era la fila ${a.desdeF1} de F1) · ` : '';
+        const preF1 = a.desdeF1 ? `DE F1 → TRAMO 2 (no cupo en F1 antes de la pausa ENCAPS; ${origenDespl(a)}) · ` : '';
         if (a.parte) { // F4: contenido partido
           const p1 = a.parte.startsWith('1');
           fila.sub = preF1 + (p1 ? 'PARTE 1 · PRE-TEST 10Q tutor + DEEP PRIME (vídeo + First Aid) · ' : 'PARTE 2 · CONSOLIDACIÓN 20Q timed del subtema + Anki de mecanismo · ') + v.sub;
@@ -339,7 +396,7 @@ function generarTramo2(o) {
     'dOrig cubiertos ' + dSet.size + ' / esperados ' + esperados.length + ' ' + (faltan.length ? 'FALTAN ' + faltan.join(',') : DESPL.length ? `✓ (incl. ${DESPL.map((d) => 'D' + d).join(', ')} desplazada${DESPL.length > 1 ? 's' : ''} de F1: caben ${F1FILAS} filas de temario en F1)` : '✓ (+ D79 en F1 D58)'),
     `preguntas (piso): contenido ${qT((x) => x.tipo === 'contenido')} · refuerzo ${qT((x) => x.tipo === 'refuerzo')} · reactivación ${qT((x) => x.tipo === 'reactivacion')} · uw_random ${qT((x) => x.tipo === 'uw_random')} · incorrectas ${qT((x) => x.tipo === 'incorrectas')} · colchón ${qT((x) => x.tipo === 'colchon')} → uWorld FRESCO = contenido + refuerzo + uw_random = ${qT((x) => ['contenido', 'refuerzo', 'uw_random'].includes(x.tipo))}`,
   ];
-  return { out, deficitFwd, deficitBwd, R, GONOGO, ritual: ritualA3, frozen: frozen.length, claveNogo: CONG && E_PREV !== E ? claveNogo : null, log, faltan, f1Filas: F1FILAS, desplazadasF1: DESPL, esperados };
+  return { out, deficitFwd, deficitBwd, R, GONOGO, ritual: ritualA3, frozen: frozen.length, claveNogo: CONG && E_PREV !== E ? claveNogo : null, log, faltan, f1Filas: F1FILAS, desplazadasF1: DESPL, origenF1: COL.enF1, esperados };
 }
 
 /** Tabla markdown del tramo 2 (mismo formato que la referencia: Anexo A de la espec). */
@@ -352,6 +409,7 @@ function mdTramo2(out) {
  * Opciones del tramo 2 desde la línea de comandos (las mismas que la referencia r2). Sin posicionales, ENCAPS / EXAMEN / SERUMS
  * salen del JSON validado (`F` = V6.cargarFechasV6()). `escenarioJSON` = true si las tres coinciden con el JSON.
  * v6.01: f1Filas = --f1-filas o, sin él, min(f1.dias, 58) del JSON (las filas de F1 se colocan en orden D1-D57 · D79 · C1 · C2).
+ * v6.02: misma opción (52 con el JSON v6.02); la colocación (hitos anclados, desplazadas = últimas no-hito) la hace colocarF1.
  */
 function opcionesTramo2(argv, F = V6.cargarFechasV6()) {
   const opt = (k) => { const i = argv.indexOf(k); return i >= 0 ? argv[i + 1] : null; };
@@ -379,7 +437,7 @@ function opcionesTramo2(argv, F = V6.cargarFechasV6()) {
   };
 }
 
-module.exports = { generarTramo2, opcionesTramo2, mdTramo2, cargarV520, HITOS, HITOS_NOGO, CONT, DORIG_ESPERADOS, ORIGEN_F1_TEMARIO, F1_FILAS_V600, DEF, CAMPOS_V520, V520_FILE };
+module.exports = { generarTramo2, opcionesTramo2, mdTramo2, cargarV520, colocarF1, HITOS, HITOS_NOGO, CONT, DORIG_ESPERADOS, ORIGEN_F1_TEMARIO, ORIGEN_F1, F1_FILAS_V600, DEF, CAMPOS_V520, V520_FILE };
 
 if (require.main === module) {
   const o = opcionesTramo2(process.argv.slice(2));

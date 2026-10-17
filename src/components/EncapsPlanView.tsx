@@ -258,7 +258,7 @@ export default function EncapsPlanView() {
         )}
       </View>
 
-      {/* Selector de día directo — saltar a cualquier día (v6.01: 1..107 · v6.00: 1..110, 3 cifras) */}
+      {/* Selector de día directo — saltar a cualquier día (v6.02: 1..102 · v6.01: 1..107 · v6.00: 1..110, 3 cifras) */}
       {jumpOpen && (
         <View style={styles.jumpRow}>
           <Text style={styles.jumpLabel}>Ir al día:</Text>
@@ -386,7 +386,7 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   // v6.00: carril B 16:15 de la intensiva (fila MANTENIMIENTO 61-92 de v5.20 embebida / reposición) + mini-sim absorbido por el SIM 100Q
   const carrilB = carrilBDe(today);
   const absorbido = minisimAbsorbidoDe(today);
-  // v6.01: mini-sim F1 REPUESTO en el carril B (pendiente_f1 tipo 'mini_sim', lun 22-feb = dia 93) → su receta desde la pseudo-fila
+  // v6.01: mini-sim F1 REPUESTO en el carril B (pendiente_f1 tipo 'mini_sim'; v6.02: lun 22-feb = dia 88 y mar 2-mar = dia 94 · v6.01: dia 93) → su receta desde la pseudo-fila
   const recetaCB = carrilB?.tipo === 'mini_sim' ? miniSimRecetaDe(pseudoCarrilB(today)) : null;
 
   return (
@@ -456,7 +456,8 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
         )}
         {/* v6.00: CARRIL B 16:15-17:15 (sus ítems van en la checklist con claves D{dia}:b_*; cierre tipo «Carril B 16:15»)
             v6.01: reposición con pendiente F1 (fila de la F1 v6.00 que no cupo tras el corrimiento) → se pinta como banqueo «REPOSICIÓN F1»;
-            si el pendiente es un mini-sim (lun 22-feb = dia 93) → MINI-SIMULACRO 25Q a las 16:15 con su receta y su corrección (cierre tipo mini_sim) */}
+            si el pendiente es un mini-sim (v6.02: lun 22-feb = dia 88 y mar 2-mar = dia 94 · v6.01: dia 93) → MINI-SIMULACRO 25Q a las 16:15 con su receta y su corrección (cierre tipo mini_sim)
+            v6.02: 8 pendientes F1 (3 de la F1 v6.00 + 5 de la F1 v6.01) en los 8 primeros días de reposición (17-feb → 2-mar) */}
         {!!carrilB && (
           <Text style={styles.subEjeLine}>
             ◈ 16:15 CARRIL B · {carrilB.tipo === 'mini_sim'
@@ -964,7 +965,7 @@ function bloquesIntensivo(day: StudyScheduleDay | null | undefined): HorarioBloc
   const base = bloquesIntensivoBase(day);
   const cb = carrilBDe(day);
   if (!cb) return base;
-  // v6.01: mini-sim F1 repuesto (pendiente_f1 tipo 'mini_sim', lun 22-feb = dia 93) → bloque de mini-simulacro 25Q + corrección
+  // v6.01: mini-sim F1 repuesto (pendiente_f1 tipo 'mini_sim'; v6.02: lun 22-feb = dia 88 y mar 2-mar = dia 94 · v6.01: dia 93) → bloque de mini-simulacro 25Q + corrección
   const recCB = cb.tipo === 'mini_sim' ? miniSimRecetaDe(pseudoCarrilB(day)) : null;
   const bloqueCB: HorarioBlock = {
     hora: '16:15-17:15',
@@ -1019,7 +1020,7 @@ function HorarioView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   // MANTENIMIENTO, tipo='mini_sim') → weekend/sim; si no → plantilla lun-jue (eval anclada + banco).
   const dow = today?.fecha ? new Date(`${today.fecha}T12:00:00`).getDay() : 1;
   const isWeekendDay = dow === 0 || dow === 6;
-  const esIntensivo = today?.modo === 'INTENSIVO';   // v5.14: fase intensiva feb-mar 2027 · v6.01: lun 4-ene → vie 12-mar = dia 58-107 (v6.00: dia 61-110), examen dom 14-mar PROVISIONAL · v5.20: mar 23-feb → mar 9-mar (días 97-107), horas = las del loop sembrado en la fila
+  const esIntensivo = today?.modo === 'INTENSIVO';   // v5.14: fase intensiva feb-mar 2027 · v6.02: lun 4-ene → vie 12-mar = dia 53-102 (v6.01: dia 58-107 · v6.00: dia 61-110), examen dom 14-mar PROVISIONAL · v5.20: mar 23-feb → mar 9-mar (días 97-107), horas = las del loop sembrado en la fila
   const useSimTemplate = !!today?.simulacro || today?.tipo === 'mini_sim' || !!simIntensivoDe(today);
   // v5.20 (6-oct): study_metrics.extra.horarios es la plantilla del MANTENIMIENTO (16:15-17:15). En la INTENSIVA (mar 23-feb →
   // mar 9-mar) los bloques salen de la propia fila: loop de 8 segmentos (extra.loop), simulacro 100Q (extra.sim) o día especial.
