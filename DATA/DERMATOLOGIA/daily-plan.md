@@ -1,6 +1,18 @@
 # DERMA · Plan tema-átomo/día (68 átomos · interdiario con Research)
 
-> **✅ v6.01 VIGENTE (sáb 10-oct-2026) — fechas de ciclo de Derma (manda sobre las fechas v5.20 de este documento):** el 7, 8 y 9-oct no se estudiaron y el D1
+> **✅ v6.02 VIGENTE (sáb 17-oct-2026) — fechas de ciclo de Derma (manda sobre las fechas v6.01 y v5.20 de este documento):** del lun 12 al vie 16-oct no se
+> estudió y el D1 del régimen pasa al **lun 19-oct-2026**, que por paridad es **día-Derma** (Research arranca el mar 20-oct) → **Derma ciclo 1 = 73 átomos, d1
+> lun 19-oct-2026 → d73 vie 14-may-2027** (mismos átomos, mismos `casoIds` por d; nada se recorta) · **ciclo 2 = 30 sesiones d74-d103, lun 17-may → vie
+> 23-jul-2027** (36 casos · 9 G+ · 3 checkpoints · 10 ProMIR). Fechas clave: d12 mié 18-nov · **d19 mar 8-dic (oclusión vascular + HDPH)** · **d20 jue 10-dic
+> (ceguera + kit; víspera del NBME 27 del vie 11-dic)** · d24 mar 22-dic · **alivio F2 d44-d49 jue 18-feb → jue 4-mar** (1 caso + FSRS + 0 lectura nueva; d45
+> lun 22-feb; **d47 vie 26-feb = día del SIM 100Q #7 → sesión de la tarde**) · **3 casos/sesión desde d50 lun 8-mar** · cp1 d51 mié 10-mar · cp2 d52 mar 16-mar ·
+> d53 jue 18-mar · d54 lun 22-mar · d55 mié 24-mar · d57 jue 1-abr · d58 lun 5-abr · d70 vie 7-may · d71 lun 10-may · repaso1 d72 mié 12-may · repaso2 d73 vie
+> 14-may · ciclo 2: cp1 d85 vie 11-jun (fin de la 1.ª pasada de los 200 casos) · cp2 d94 vie 2-jul · repaso final d103 vie 23-jul. «Dermato Step 1» (anclaje de
+> d12/d24) = **T23 lun 19-abr-2027**. Con el ENCAPS del 14-mar, el margen de ±3 hábiles cubre d51 y d52 (ALTA, ningún CRIT). Sin sesión en SKIP (25-dic · 31-dic ·
+> 1-ene · 25-26-mar) ni en los protegidos v6 (12 · 13 · 14 · 15-mar); desde el SERUMS (~lun 3-may) Derma va **lun · mié · vie**, 30' en tiempo muerto de la
+> posta. Fuente: `src/lib/dermaDailyPlan.ts` (`DERMA_DAILY_META`) y `src/lib/dermaCiclo2.ts` (regenerados el 17-oct).
+>
+> **⏸ v6.01 (sáb 10-oct-2026; historial, lo corrige el bloque v6.02 de arriba) — fechas de ciclo de Derma:** el 7, 8 y 9-oct no se estudiaron y el D1
 > del régimen pasa al **lun 12-oct-2026** (día-Research por paridad) → **Derma ciclo 1 = 73 átomos, d1 mar 13-oct-2026 → d73 lun 10-may-2027** (+2 ranuras;
 > mismos átomos, mismos `casoIds` por d; nada se recorta) · **ciclo 2 = 30 sesiones d74-d103, mié 12-may → lun 19-jul-2027** (36 casos · 9 G+ · 3 checkpoints
 > · 10 ProMIR). Fechas clave: d12 jue 12-nov · **d19 mié 2-dic (oclusión vascular + HDPH)** · **d20 vie 4-dic (ceguera + kit; día del NBME 27, sesión

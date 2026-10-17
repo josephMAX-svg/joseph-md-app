@@ -1,14 +1,25 @@
-# 📅 SEGMENTOS DEL CALENDAR — RÉGIMEN v6.01 (corrimiento al lun 12-oct-2026 sobre la REESTRUCTURACIÓN ANUAL v6.00 del 6-oct) · historial v5.20 y anteriores abajo
+# 📅 SEGMENTOS DEL CALENDAR — RÉGIMEN v6.02 (corrimiento al lun 19-oct-2026 con hitos F1 anclados · ⏸ v6.01: lun 12-oct · sobre la REESTRUCTURACIÓN ANUAL v6.00 del 6-oct) · historial v5.20 y anteriores abajo
 
-> **📌 v6.01 (sáb 10-oct-2026):** el 7, 8 y 9-oct no se estudiaron → **F1 = lun 12-oct → mié 30-dic-2026** (D1-D57, C1/C2 consumidos). Hitos F1: UWSA1 **lun
+> **📌 v6.02 (sáb 17-oct-2026, vigente):** lun 12 → vie 16-oct sin estudio → **F1 = lun 19-oct → mié 30-dic-2026** (52 sesiones; regla de HITOS F1 ANCLADOS:
+> d 1-51 = v5.20 D1-D51 · **d52 = NBME 28 mié 30-dic**; Heme/Onco D52-D54, D56, D57 + bioestadística → tramo 2 T3-T8, 18 → 29-mar). Hitos F1: UWSA1 **lun
+> 19-oct** 09:00-13:00 · NBME 25 **vie 30-oct** · 26 **vie 20-nov** · 27 **vie 11-dic** · 28 **mié 30-dic** (07:00-12:30; si se pierde → sáb 2-ene 07:00-12:30
+> y la revisión S11 a las 13:30) · gates **mié 11-nov / mié 9-dic** · checkpoint ENCAPS = **mini-sim 45, vie 18-dic** · carril B: mini-sims 25Q de reposición F1
+> el **lun 22-feb** (II-6 + II-10) y el **mar 2-mar** (I-10 + V-6), 16:15-17:15; banqueo F1 repuesto el 23, 24 y 25-feb y el 1-mar. Secundarios: vibecoding →
+> **mié 3-mar** · SYNAPSE → **vie 26-feb** (PC sábado: último con minutos sáb 13-feb, último con contenido sáb 20-feb) · LIVIANO → **mié 24-feb** · AURUM 30' →
+> **mar 27-abr** · MIR diario → lun 8-feb, mantenimiento mar 9-feb → mar 4-may (franja sin cambio) · Research c1 desde el mar 20-oct. F2-F4, examen ENCAPS (dom
+> 14-mar) y examen Step 1 (lun 27-sep-2027): **sin cambio**. Diseño v6.02 en §23.1 y §23.8; estado aplicado e ids: `DATA/_v600/cal/CAL_V6.md` §11 (resumen
+> e ids en **§23.8**).
+
+> **📌 ⏸ v6.01 (sáb 10-oct-2026) — historial: la corrige la nota v6.02 de arriba.**
+> El 7, 8 y 9-oct no se estudiaron → **F1 = lun 12-oct → mié 30-dic-2026** (D1-D57, C1/C2 consumidos). Hitos F1: UWSA1 **lun
 > 12-oct** 09:00-13:00 · NBME 25 **vie 23-oct** · 26 **vie 13-nov** · 27 **vie 4-dic** · 28 **lun 28-dic** (07:00-12:30) · gates **mié 4-nov / mié 2-dic** ·
 > checkpoint ENCAPS = **mini-sim 50, vie 18-dic** · carril B: mini-sim 25Q de reposición F1 el **lun 22-feb 16:15-17:15**. Secundarios: vibecoding → **mié
 > 24-feb** · SYNAPSE → **vie 19-feb** · LIVIANO → **mié 17-feb** · AURUM 30' → **mar 20-abr** · MIR diario → lun 1-feb (franja sin cambio). F2-F4, examen
 > ENCAPS (dom 14-mar) y examen Step 1 (lun 27-sep-2027): **sin cambio**. Diseño v6.01 en §23.1-§23.5; estado aplicado del Calendar v6.01 en **§23.7** (→
 > `DATA/_v600/cal/CAL_V6.md` §9).
 
-> **📌 ⏸ v6.00 (mar 6-oct-2026) — vigente salvo lo que corrige la nota v6.01 de arriba (F1, hitos F1, gates, C1/C2, checkpoint, fines de vibecoding / SYNAPSE /
-> LIVIANO / AURUM 30' e ids recreados); manda sobre todo lo de abajo; segmentos por fase en §23.** El año queda en fases con un solo rey: **F1** mié 7-oct *(⏸ v6.00 · v6.01: lun 12-oct)* →
+> **📌 ⏸ v6.00 (mar 6-oct-2026) — vigente salvo lo que corrigen las notas v6.02 y v6.01 de arriba (F1, hitos F1, gates, C1/C2, checkpoint, fines de vibecoding / SYNAPSE /
+> LIVIANO / AURUM 30' e ids recreados); manda sobre todo lo de abajo; segmentos por fase en §23.** El año queda en fases con un solo rey: **F1** mié 7-oct *(⏸ v6.00 · ⏸ v6.01: lun 12-oct · **v6.02:** lun 19-oct)* →
 > mié 30-dic-2026 (Step 1 tramo 1 + ENCAPS lento 1 h; franjas L-V = las de v5.20) · transición jue 31-dic → dom 3-ene · **F2** lun 4-ene → vie 12-mar-2027
 > (ENCAPS intensiva por la mañana + carril B 16:15 + Step 1 vivo) · **ENCAPS dom 14-mar PROVISIONAL** · lun 15-mar libre · **F3** mar 16-mar → vie 30-abr (Step 1
 > tiempo completo + 16:15 REENTRADA) · **F4** ~lun 3-may [S] → sáb 25-sep (Step 1 + SERUMS, L-S, turno variable M/T: el Calendar solo lleva lo invariante y la
@@ -143,16 +154,23 @@ Series recurrentes (`recurringEventId`). Color = `colorId` de Google. "desc" = l
 > mié 30-dic); la **F2** (lun 4-ene → vie 12-mar) usa las series F2 de §23.3/§23.6 y la F3/F4, las de §23.4/§23.5 (aún sin crear). Los títulos de las series
 > recreadas llevan además «v6.00» (CAL_V6 §6.7). UNTIL en UTC (`…T045959Z` = 23:59:59 Lima del día anterior).
 >
-> **v6.01 (sáb 10-oct-2026; CAL_V6 §9-§10):** la F1 va del **lun 12-oct** al mié 30-dic (D1-D57). Se RECREARON 4 series con id nuevo (los ids v6.00 dan 404):
+> **v6.02 (sáb 17-oct-2026):** la F1 va del **lun 19-oct** al mié 30-dic (52 sesiones, NBME 28 = d52); los fines de las series de secundarios vuelven a
+> cambiar (vibecoding → mié 3-mar · SYNAPSE → vie 26-feb · LIVIANO → mié 24-feb · AURUM 30' → mar 27-abr): ids vigentes en `DATA/_v600/cal/CAL_V6.md` §11
+> (§11.2; resumen en §23.8). Se RECREARON el 17-oct con id nuevo (los ids v6.01 se borraron) VIBECODING `ef7rfg1e2dpar1n6cb17j3cf44` · SYNAPSE 12:30
+> `e37h4fl8gd0v7eavt1f9fgob0o` · LIVIANO `tah7p61p2hvn4nktgp2msl2eno` · AURUM 30' F2-F3 `ig6qhqufphhbj5jllghorm23fs` (y, en §3/§4, SYNAPSE PC sáb
+> `bbj1ne6ken46pj25i5dt36idng` → sáb 20-feb y dom `c010a16rsl6h0lk4krr0a9r3rs` → dom 21-feb); el resto conserva id y RRULE (solo descripción v6.02). Las filas
+> de abajo llevan ya los ids y UNTIL v6.02 (⏸ v6.01 marcado en su fila).
+>
+> ⏸ **v6.01 (sáb 10-oct-2026; CAL_V6 §9-§10):** la F1 iba del **lun 12-oct** al mié 30-dic (D1-D57). Se RECREARON 4 series con id nuevo (los ids v6.00 dan 404):
 > VIBECODING `9jp7pkabng1bq2tll1ffrrncpc` (→ mié 24-feb) · SYNAPSE 12:30 `7nd90n5s3ueinen4q13dohcaq4` (→ vie 19-feb) · LIVIANO `ap0li4otjf20mpiqpdqu8uj2ps`
 > (→ mié 17-feb) · AURUM 30' F2-F3 `4eqm7ht2tbs537nuigit2e1u3k` (→ mar 20-abr); el resto conserva id y RRULE (solo descripción v6.01). Los títulos de las
-> series de estudio pasaron de «· v6.00» a «· v6.01» (solo `summary`, CAL_V6 §10). Las filas de abajo ya llevan los ids v6.01.
+> series de estudio pasaron de «· v6.00» a «· v6.01» (solo `summary`, CAL_V6 §10). ⏸ Las filas de abajo llevaban los ids v6.01 (hoy: v6.02, nota de arriba).
 
 | Hora | Bloque (título literal) | ID serie | RRULE | Color |
 |---|---|---|---|---|
 | 21:00-04:00 | 😴 DORMIR (7h exactas → 04:00) | `blkgb23e0es0phm2qee6cgqpp0` | diaria | 9 |
 | 04:00-04:15 | DECLARACIONES EKER - REPROGRAMA TU BLUEPRINT | `22bh9m5jhc7ro6aj3m4ffjad7g` | diaria (7 días) | — |
-| 04:15-05:00 | 🧠 IA — VIBECODING con Claude Code (construir, no programar desde cero) | `9jp7pkabng1bq2tll1ffrrncpc` *(⏸ v6.00: `easavkn12k189aorun9pou2nd0`, borrada el 10-oct)* | `WEEKLY;UNTIL=20270225T045959Z;BYDAY=MO-FR` (→ **mié 24-feb-2027**) *(⏸ v6.00: UNTIL `20270220T045959Z`, → vie 19-feb)* · EXDATE 25-dic, 31-dic, 1-ene | 9 |
+| 04:15-05:00 | 🧠 IA — VIBECODING con Claude Code (construir, no programar desde cero) | `ef7rfg1e2dpar1n6cb17j3cf44` (**v6.02**, recreada el 17-oct) *(⏸ v6.01: `9jp7pkabng1bq2tll1ffrrncpc`, borrada el 17-oct · ⏸ v6.00: `easavkn12k189aorun9pou2nd0`, borrada el 10-oct)* | `WEEKLY;UNTIL=20270304T045959Z;BYDAY=MO-FR` (→ **mié 3-mar-2027**) *(⏸ v6.01: UNTIL `20270225T045959Z`, → mié 24-feb · ⏸ v6.00: UNTIL `20270220T045959Z`, → vie 19-feb)* · EXDATE 25-dic, 31-dic, 1-ene | 9 |
 | 05:00-05:45 | 🇺🇸 USMLE — ANKI AM (madrugada fresca · FSRS) + Stress Set en Fases B-C | `9274q14djfvggeajhor64oshj8` | `WEEKLY;UNTIL=20261231T045959Z;BYDAY=MO-FR` (→ mié 30-dic-2026) · EXDATE 25-dic | 2 |
 | 05:45-06:00 | PREPARAR PARA CORRER | `40odesk58rnd2qhorsj15ule11` | diaria | — |
 | 06:00-06:30 | CORRER- SABADO Y DOMINGO SOLO CAMINATA | `5mrm4ru08go9k70408jm8vcjku` | diaria | — |
@@ -164,16 +182,16 @@ Series recurrentes (`recurringEventId`). Color = `colorId` de Google. "desc" = l
 | 09:00-11:00 | 🇺🇸 USMLE — NÚCLEO DEEP PRIME (B&B/Pathoma/Sketchy + First Aid + tarjetas de mecanismo) | `iuhj8busrh63ms7v4j5q8e9920` | `WEEKLY;UNTIL=20261231T045959Z;BYDAY=MO-FR` (→ mié 30-dic) · EXDATE 25-dic | 2 |
 | 11:00-12:00 | 🇺🇸 USMLE — 30 Preguntas Consolidación (uWorld tutor · temas vistos + APEX) | `q72kvc9pm1brlqvl6383ccr9vs` | `WEEKLY;UNTIL=20261231T045959Z;BYDAY=MO-FR` (→ mié 30-dic) · EXDATE 25-dic | 5 |
 | 12:00-12:30 | ALUMUERZO *(sic, título literal)* | `43dq3oib16esjcqj1dcd8osot2` | `WEEKLY;BYDAY=FR,MO,TH,TU,WE` | — |
-| 12:30-13:00 | 🧠 SYNAPSE — misión del día (30') | `7nd90n5s3ueinen4q13dohcaq4` *(⏸ v6.00: `f1imvu9cnmhrcsi5ag6m3k8jdk`, borrada el 10-oct)* | `WEEKLY;UNTIL=20270220T045959Z;BYDAY=MO-FR` (→ **vie 19-feb-2027**) *(⏸ v6.00: UNTIL `20270216T045959Z`, → lun 15-feb)* · EXDATE 25-dic, 31-dic, 1-ene | 9 |
+| 12:30-13:00 | 🧠 SYNAPSE — misión del día (30') | `e37h4fl8gd0v7eavt1f9fgob0o` (**v6.02**, recreada el 17-oct) *(⏸ v6.01: `7nd90n5s3ueinen4q13dohcaq4`, borrada el 17-oct · ⏸ v6.00: `f1imvu9cnmhrcsi5ag6m3k8jdk`, borrada el 10-oct)* | `WEEKLY;UNTIL=20270227T045959Z;BYDAY=MO-FR` (→ **vie 26-feb-2027**) *(⏸ v6.01: UNTIL `20270220T045959Z`, → vie 19-feb · ⏸ v6.00: UNTIL `20270216T045959Z`, → lun 15-feb)* · EXDATE 25-dic, 31-dic, 1-ene | 9 |
 | 13:00-13:15 | LECTURA DE LIBRO | `7jmf8p1l5b5q6jbtmj9uualiq8` | L-V | 8 |
 | 13:15-13:30 | *(hueco sin evento propio: **siesta OPCIONAL ≤ 20' = válvula ÁMBAR** del PROTOCOLO_MODO_MINIMO, anotada en la descripción de LECTURA DE LIBRO desde el 12-sep; en VERDE sigue siendo hueco)* | — | — | — |
 | 13:30-14:15 | 🔬 RESEARCH ↔ 💎 DERMA (alterna diario · ver app YoCPMD) | `6us7kkdcuk3g7tm1cjes38leh0` | `WEEKLY;UNTIL=20270501T045959Z;BYDAY=MO-FR` (→ vie 30-abr-2027, PROVISIONAL) · EXDATE 10/11/12/15/16/17-jun-2026 (históricas) + 25-dic, 31-dic, 1-ene, 12-mar, 15-mar, 25-mar, 26-mar | 1 |
 | 14:15-15:15 | 🪙 AURUM — Closer de ventas (30-60' · 14:15-15:15 · L-V) — 60' en F1 | `23t06e7foitmiqm24lpd0vo9jc` | `WEEKLY;UNTIL=20261231T045959Z;BYDAY=MO-FR` (→ mié 30-dic) · EXDATE 25-dic · popup 5' | 5 |
-| 14:15-14:45 | 🪙 AURUM 30' núcleo **F2-F3** (DJ-4; nombre según CAL_V6 §3) | `4eqm7ht2tbs537nuigit2e1u3k` *(⏸ v6.00: `ogb2qi4c57ee2fc2ojjsk9rmcg`, borrada el 10-oct)* | `WEEKLY;UNTIL=20270421T045959Z;BYDAY=MO-FR` (lun 4-ene → **mar 20-abr-2027**) *(⏸ v6.00: UNTIL `20270416T045959Z`, → jue 15-abr)* · EXDATE 12-mar, 15-mar, 25-mar, 26-mar · popup 5' | 5 |
+| 14:15-14:45 | 🪙 AURUM 30' núcleo **F2-F3** (DJ-4; nombre según CAL_V6 §3) | `ig6qhqufphhbj5jllghorm23fs` (**v6.02**, recreada el 17-oct) *(⏸ v6.01: `4eqm7ht2tbs537nuigit2e1u3k`, borrada el 17-oct · ⏸ v6.00: `ogb2qi4c57ee2fc2ojjsk9rmcg`, borrada el 10-oct)* | `WEEKLY;UNTIL=20270428T045959Z;BYDAY=MO-FR` (lun 4-ene → **mar 27-abr-2027**) *(⏸ v6.01: UNTIL `20270421T045959Z`, → mar 20-abr · ⏸ v6.00: UNTIL `20270416T045959Z`, → jue 15-abr)* · EXDATE 12-mar, 15-mar, 25-mar, 26-mar · popup 5' | 5 |
 | 15:15-15:30 | 🇪🇸 MIR — Evaluación Anclada D-1 (4Q + Anki SRS + Corrección) | `uiduvkfsgs43p1u1qk1vohih58` | `WEEKLY;UNTIL=20270501T045959Z;BYDAY=MO-FR` (→ vie 30-abr, PROVISIONAL) · EXDATE 25-dic, 31-dic, 1-ene, 12-mar, 15-mar, 25-mar, 26-mar | 1 |
 | 15:30-16:15 | 🇪🇸 MIR — Deep Work Mini (Pre-test + Lectura + Free Recall + APEX max 4) | `hos0tfhsr2hdfs6cgv1rmejhrs` | ídem MIR 15:15 | 1 |
-| 16:15-17:15 | 🇵🇪 ENCAPS — 1h Banqueo Mantenimiento (pronóstico v3 · rotación II·I·V·III·IV) | `papebi46etlo8glgfs5akd5mig` (NO recreada; v6.01: F1 mantenimiento filas 1-57, lun 12-oct → mié 30-dic *(⏸ v6.00: filas 1-60)* + F2 carril B; sigue `d8252hjo5ra2qlqb9bccd6vkjo` lun 1 → mar 16-feb y la reposición F2 (4) `qcsv3oe0e7rh2vkfq301ne68ko` mié 17-feb → mié 10-mar) | `WEEKLY;UNTIL=20270130T045959Z;BYDAY=MO-FR` (→ vie 29-ene) · instancias borradas: 25-dic, 31-dic, 1-ene (ronda 2) y los viernes F2 8/15/22/29-ene | 1 |
-| 17:15-18:00 | ⚖️ LIVIANO — Academia (obesidad · GLP-1 · nutrición · 25' estudio + 20' aplicación) | `ap0li4otjf20mpiqpdqu8uj2ps` *(⏸ v6.00: `skolg4n4far2p20md3vat06b8c`, borrada el 10-oct)* | `WEEKLY;UNTIL=20270218T045959Z;BYDAY=MO-FR` (→ **mié 17-feb-2027**) *(⏸ v6.00: UNTIL `20270213T045959Z`, → vie 12-feb)* · EXDATE 25-dic, 31-dic, 1-ene | 7 |
+| 16:15-17:15 | 🇵🇪 ENCAPS — 1h Banqueo Mantenimiento (pronóstico v3 · rotación II·I·V·III·IV) | `papebi46etlo8glgfs5akd5mig` (NO recreada; v6.02: F1 mantenimiento filas 1-52, lun 19-oct → mié 30-dic *(⏸ v6.01: filas 1-57, lun 12-oct · ⏸ v6.00: filas 1-60)* + F2 carril B; sigue `d8252hjo5ra2qlqb9bccd6vkjo` lun 1 → mar 16-feb y la reposición F2 (4) `qcsv3oe0e7rh2vkfq301ne68ko` mié 17-feb → mié 10-mar; mini-sims 25Q de reposición F1 16:15-17:15: lun 22-feb `mgv06ho1cphr78rsqf9nrkgd7o` y **mar 2-mar `ddfms7b6q2e3lhvvqqvr6el474`** (v6.02, nuevo; las 2 instancias de `qcsv3…` de esos días, borradas; §23.8)) | `WEEKLY;UNTIL=20270130T045959Z;BYDAY=MO-FR` (→ vie 29-ene) · instancias borradas: 25-dic, 31-dic, 1-ene (ronda 2) y los viernes F2 8/15/22/29-ene | 1 |
+| 17:15-18:00 | ⚖️ LIVIANO — Academia (obesidad · GLP-1 · nutrición · 25' estudio + 20' aplicación) | `tah7p61p2hvn4nktgp2msl2eno` (**v6.02**, recreada el 17-oct) *(⏸ v6.01: `ap0li4otjf20mpiqpdqu8uj2ps`, borrada el 17-oct · ⏸ v6.00: `skolg4n4far2p20md3vat06b8c`, borrada el 10-oct)* | `WEEKLY;UNTIL=20270225T045959Z;BYDAY=MO-FR` (→ **mié 24-feb-2027**) *(⏸ v6.01: UNTIL `20270218T045959Z`, → mié 17-feb · ⏸ v6.00: UNTIL `20270213T045959Z`, → vie 12-feb)* · EXDATE 25-dic, 31-dic, 1-ene | 7 |
 | 18:00-18:45 | 🇺🇸 USMLE — Evaluación Diaria Acumulativa (Modo Examen timed + Corrección) | `c5e77csne1bnfps1iq7nqel84s` | `WEEKLY;UNTIL=20261231T045959Z;BYDAY=MO-FR` (→ mié 30-dic) · EXDATE 25-dic | 11 |
 | 18:45-18:55 | ALISTARSE (L, X, J, V) | `75cpr6i88044kmkhsuvupam9c8` | L/X/J/V | — |
 | 18:55-19:15 | VIAJE (L, X, J, V) | `4j8repfcgl1i2p95l2i46vl7m3` | L/X/J/V | — |
@@ -207,7 +225,7 @@ Descripción común (añadida 05-sep a las 12 series): hidratación durante; **p
 | 07:15-07:45 | 📋 REVISIÓN SEMANAL (**v6.00: RECREADA el mar 6-oct-2026** — `WEEKLY;UNTIL=20270502T045959Z;BYDAY=SA` · EXDATE sáb 13-mar-2027 (D-1 ENCAPS, protegido) · DTSTART **sáb 10-oct-2026 → último sáb 1-may-2027**: cubre F1, F2 (antes del STEP 1 VIVO de las 07:45) y F3; en F4 la sustituye la serie de todo el día «📋 Revisión semanal 20'» `69tr6hqitr5fnanc2af5kvugnk` (sáb 8-may → sáb 18-sep-2027, PROVISIONAL); 10 métricas → `DATA/USMLE/REVISIONES/S<NN>_<sábado>.md`; default sábado, sáb/dom = decisión de Joseph. ⏸ **v5.20 (SUPERSEDIDO):** recreada el sáb 3-oct (v5.18), 07:15-07:35, `WEEKLY;UNTIL=20270221T045959Z;BYDAY=SA`: S1 = sáb 10-oct (cubre lun 5 → vie 9-oct, sesiones mié 7 → vie 9 = D1-D3) … S19 = sáb 13-feb (D86-D90) → S20 = sáb 20-feb = cierre D91-D95, la última revisión ANTES del examen del lun 22-feb; `gen_revision_semanal.js`, `TOTAL_SEM = 20`; semanas deload lun 16-nov y lun 28-dic; ese id v5.20 se borró el 6-oct (lista de borradas de §23.6) y los anteriores `21fbiohc1i47r4lqmaa3eb76l4` (19-sep), `0r2rmn0f4vea40dls47lg60t44` (22-sep) y `th5utf73brht5g0lkt87hd4940` (26-sep, re-descrita el 30-sep; arrancaba el sáb 3-oct) también están borrados) | `k8iaefnjq0mnrlvkilhcarrik8` | — |
 | 07:45-09:15 | 🇺🇸 STEP 1 VIVO 20Q mezcladas (10 incorrectas UWorld + 10 AMBOSS) — **solo F2** | `2fvbkunh0nfhvhbn1b6iqvpifs` (`WEEKLY;UNTIL=20270307T045959Z;BYDAY=SA`: sáb 9-ene → sáb 6-mar-2027) | 2 |
 | 07:15-15:00 | *(libre — sin banco de preguntas, salvo el STEP 1 VIVO de la F2; el Anki de la mañana NO existe en el Calendar del sábado: la única pasada es 19:00)* | — | — |
-| 15:00-17:00 | 🧠 SYNAPSE — PC sábado (2h) | `goknd2mvbkpqastc6n3rrhon5g` (recreada en la ronda 2 del 6-oct: DTSTART sáb 13-jun-2026 · `WEEKLY;UNTIL=20270214T045959Z;BYDAY=SA` → último sáb 13-feb-2027 = d130) | 9 |
+| 15:00-17:00 | 🧠 SYNAPSE — PC sábado (2h) | `bbj1ne6ken46pj25i5dt36idng` (**v6.02**, recreada el 17-oct: DTSTART sáb 13-jun-2026 · `WEEKLY;UNTIL=20270221T045959Z;BYDAY=SA` → último **sáb 20-feb-2027** = último sábado con contenido del motor; CAL_V6 §11.2) *(⏸ v6.00 · ⏸ v6.01: `goknd2mvbkpqastc6n3rrhon5g`, recreada en la ronda 2 del 6-oct, `UNTIL=20270214T045959Z` → último sáb 13-feb-2027 = d130; borrada el 17-oct)* | 9 |
 | 17:00-19:00 | CREACIÓN DE VIDEO YOUTUBE EMPRESA | `5tbl422agrtls8kc62skirc0pu` | 1 |
 | 19:00-19:30 | ANKI | `00929or8op5hj28s3nbf1eo09c` (recreada en la ronda 2: abierta, sin UNTIL · EXDATE sáb 13-mar y sáb 25-sep-2027) | 1 |
 | 19:30-19:45 | ALISTARSE | `45d24jvtli7vpg81r3vc0s5hhn` | — |
@@ -224,7 +242,7 @@ Descripción común (añadida 05-sep a las 12 series): hidratación durante; **p
 | 06:30-06:45 | DUCHA | `5vg0pmnc0eqo6akaoquj9ti87h` | — |
 | 06:45-07:15 | DESAYUNO | `2u9je70pif58hgf2f8t3vgu8b8` | — |
 | 07:15-15:00 | *(libre)* | — | — |
-| 15:00-17:00 | 🧠 SYNAPSE — repaso + PC domingo (2h) | `frsvkuk585gmcte6bufo6dkfto` (recreada en la ronda 2 del 6-oct: DTSTART dom 28-jun-2026 · `WEEKLY;UNTIL=20270215T045959Z;BYDAY=SU` → último dom 14-feb-2027 = d131) | 9 |
+| 15:00-17:00 | 🧠 SYNAPSE — repaso + PC domingo (2h) | `c010a16rsl6h0lk4krr0a9r3rs` (**v6.02**, recreada el 17-oct: DTSTART dom 28-jun-2026 · `WEEKLY;UNTIL=20270222T045959Z;BYDAY=SU` → último **dom 21-feb-2027**; CAL_V6 §11.2) *(⏸ v6.00 · ⏸ v6.01: `frsvkuk585gmcte6bufo6dkfto`, recreada en la ronda 2 del 6-oct, `UNTIL=20270215T045959Z` → último dom 14-feb-2027 = d131; borrada el 17-oct)* | 9 |
 | 17:00-17:15 | ANKI (15') | `0ar1fbrm3ts396kd96f8df753g` (recreada en la ronda 2: abierta, sin UNTIL · EXDATE dom 14-mar y dom 26-sep-2027) | 1 |
 | 17:15-17:30 | BAILE PRACTICA | `13m3tcqjjc34rt6iqfblla18q1` | 3 |
 | 17:30-17:45 | ALISTARSE | `1phlnin46a8o4gj3kf04m0lafh` | — |
@@ -1577,14 +1595,21 @@ ANKI AM `i8afj7uppkb3ntj8h9890dhecc` · repaso 07:15 `54lchqggik96dmljmmg3l88s54
 13. ~~**Tarea `ENCAPS_v9_daily_0400`**~~ **RESUELTA el 30-sep**: desactivada con permiso de Joseph (no reactivar).
 14. **Descripciones a v5.20** de los 15 overlays USMLE, la REVISIÓN SEMANAL y las 38 series (no es decisión de Joseph: tarea pendiente del orquestador / agente cal:hitos, §22.1 y §22.4).
 
-## 23 · v6.00 (6-oct-2026) · SEGMENTOS POR FASE — REESTRUCTURACIÓN ANUAL (manda sobre §0-§22) · fechas v6.01 (10-oct) marcadas abajo; Calendar v6.01 en §23.7
+## 23 · v6.00 (6-oct-2026) · SEGMENTOS POR FASE — REESTRUCTURACIÓN ANUAL (manda sobre §0-§22) · fechas v6.02 (17-oct) y ⏸ v6.01 (10-oct) marcadas abajo; Calendar v6.01 en §23.7, v6.02 en §23.8 (CAL_V6 §11)
 
 > Fuente: V6_ESPEC r2 §A1, §B2, §B4.1, §C3, §E y §G + `DATA/_scripts/_fechas_v6.json` + `src/lib/plantillasV6.ts` (la app pinta los bloques del día con
 > `bloquesDelDia(iso, turno)`; el Calendar es el espejo de lo invariante). Esta sección describe el **diseño** de segmentos por fase; el **estado aplicado** del
 > Calendar (ids creados/borrados, verificación V7) va en §23.6.
 
-### 23.1 · F1 — **v6.01: lun 12-oct → mié 30-dic-2026** (L-V; sáb y dom libres) · ⏸ v6.00: mié 7-oct → mié 30-dic-2026
-> **v6.01 (10-oct):** mismas franjas; **D1-D57** (57 sesiones, 25-dic SKIP; los feriados 8 y 9-dic son sesión). Hitos (mismos D# y horas): UWSA1 **D1 lun 12-oct
+### 23.1 · F1 — **v6.02: lun 19-oct → mié 30-dic-2026** (L-V; sáb y dom libres) · ⏸ v6.01: lun 12-oct · ⏸ v6.00: mié 7-oct → mié 30-dic-2026
+> **v6.02 (17-oct):** mismas franjas; **52 sesiones** (25-dic SKIP; los feriados 8 y 9-dic son sesión): d 1-51 = v5.20 D1-D51 y **d52 = NBME 28** (regla de
+> hitos anclados: un hito de F1 nunca sale de F1). Hitos: UWSA1 **D1 lun 19-oct 09:00-13:00** · NBME 25 **D10 vie 30-oct** · NBME 26 **D25 vie 20-nov** · NBME 27
+> **D40 vie 11-dic** · NBME 28 **d52 mié 30-dic** (07:00-12:30; checkpoint de fecha; sin day-after: auditoría en la revisión S11 del sáb 2-ene; si se pierde el
+> 30-dic → sáb 2-ene 07:00-12:30 y la S11 a las 13:30). Gates de núcleo ≥ 85 % **mié 11-nov (D18)** y **mié 9-dic (D38)**. C1/C2 siguen consumidos (mar 29-dic
+> = D51; mié 30-dic = NBME 28). ENCAPS 16:15 = filas `dia` 1-52 (pre-test de arranque lun 19 + mar 20-oct); **checkpoint del año = mini-sim 45, vie 18-dic**.
+> Las 6 series USMLE F1 siguen terminando el mié 30-dic. Deload de secundarios: **lun 23-nov** y semana del lun 28-dic (la del NBME 28). Revisión semanal: S00
+> sáb 17-oct · S01 sáb 24-oct … S11 sáb 2-ene. El texto de abajo es v6.01 / v6.00.
+> ⏸ **v6.01 (10-oct):** mismas franjas; **D1-D57** (57 sesiones, 25-dic SKIP; los feriados 8 y 9-dic son sesión). Hitos (mismos D# y horas): UWSA1 **D1 lun 12-oct
 > 09:00-13:00** · NBME 25 **D10 vie 23-oct** · NBME 26 **D25 vie 13-nov** · NBME 27 **D40 vie 4-dic** · NBME 28 **D55 lun 28-dic** (07:00-12:30; checkpoint de
 > fecha). Gates de núcleo ≥ 85 % **mié 4-nov (D18)** y **mié 2-dic (D38)**. **C1/C2 consumidos** (mar 29 / mié 30-dic = D56/D57, sesiones normales: los
 > eventos 🧯 C1/C2 ya no aplican). ENCAPS 16:15 = filas `dia` 1-57 (pre-test de arranque lun 12 + mar 13-oct); **checkpoint del año = mini-sim 50, vie
@@ -1605,15 +1630,15 @@ Sin sesión (Anki opcional). SKIP jue 31-dic y vie 1-ene.
 
 | Hora | L-J | Viernes | Sábado |
 |---|---|---|---|
-| 04:15-05:00 | vibecoding 45' (→ vie 19-feb; taper «por el ENCAPS») *(⏸ v6.00 · v6.01: → mié 24-feb; SHIP S12 sáb 9-ene; taper jue 7-ene → mié 24-feb)* | ídem | — |
+| 04:15-05:00 | vibecoding 45' (→ vie 19-feb; taper «por el ENCAPS») *(⏸ v6.00 · ⏸ v6.01: → mié 24-feb; SHIP S12 sáb 9-ene; taper jue 7-ene → mié 24-feb · **v6.02:** → mié 3-mar; SHIP S12 sáb 16-ene; taper jue 14-ene → mié 3-mar)* | ídem | — |
 | 05:00-05:45 | ANKI · ENCAPS::Cifras 15' + USMLE mantenimiento 30' (0 nuevas, FSRS 0,85) | ídem | Anki ≤15' opcional |
 | 07:15-12:00 | **ENCAPS LOOP**: 07:15 repaso D-1/D-7/D-21 · 08:15 PRE-TEST 10Q · 09:00 DEEP PRIME · 11:00 30Q + cierre · 12:00 registro | **SIM 100Q** 07:15-09:15 + corrección 09:30-11:00 + 2 códigos peores 11:00-12:00 (SIM #7 vie 26-feb y #8 vie 5-mar: **11:00-13:00**, hora del 2026-I → corrección + 2 códigos peores **por la tarde, tras el SIM**, como dice la descripción de sus eventos; vie 8-ene = PRE-TEST 2026-II 07:15-09:15) | 07:15-07:45 revisión semanal · **07:45-09:15 STEP 1 VIVO 20Q** mezcladas (10 incorrectas UWorld + 10 AMBOSS), sáb 9-ene → sáb 6-mar |
-| 12:30-13:00 | SYNAPSE 30' (→ lun 15-feb) *(⏸ v6.00 · v6.01: → vie 19-feb)* | ídem | — |
+| 12:30-13:00 | SYNAPSE 30' (→ lun 15-feb) *(⏸ v6.00 · ⏸ v6.01: → vie 19-feb · **v6.02:** → vie 26-feb)* | ídem | — |
 | 13:30-14:15 | Research↔Derma 45' | ídem | — |
 | 14:15-14:45 | **AURUM 30'** (núcleo, DJ-4) | ídem | — |
 | 15:15-16:15 | MIR 1 h | ídem | — |
-| 16:15-17:15 | **CARRIL B** (fila de mantenimiento 61-92 de v5.20 hasta el mar 16-feb · reposición mié 17-feb → mié 10-mar) *(⏸ v6.00 · v6.01: carril B en `dia` 58-89; reposición con los 3 pendientes F1 primero: mié 17-feb II-8 · jue 18-feb II-3 · **lun 22-feb MINI-SIM 25Q 16:15-17:15** (II-6 + II-10))* | libre (tras el SIM) | — |
-| 17:15-18:00 | LIVIANO 45' (→ vie 12-feb) *(⏸ v6.00 · v6.01: → mié 17-feb)* | ídem | — |
+| 16:15-17:15 | **CARRIL B** (fila de mantenimiento 61-92 de v5.20 hasta el mar 16-feb · reposición mié 17-feb → mié 10-mar) *(⏸ v6.00 · ⏸ v6.01: carril B en `dia` 58-89; 3 pendientes F1 · **v6.02:** carril B en `dia` 53-84; reposición con los 8 pendientes F1 primero: mié 17-feb II-8 · jue 18-feb II-3 · **lun 22-feb MINI-SIM 25Q 16:15-17:15** (II-6 + II-10) · mar 23-feb III-8 · mié 24-feb II-11 · jue 25-feb IV-6 · lun 1-mar V-7 · **mar 2-mar MINI-SIM 25Q 16:15-17:15** (I-10 + V-6))* | libre (tras el SIM) | — |
+| 17:15-18:00 | LIVIANO 45' (→ vie 12-feb) *(⏸ v6.00 · ⏸ v6.01: → mié 17-feb · **v6.02:** → mié 24-feb)* | ídem | — |
 | 18:00-18:45 | **EVAL 20Q a 72 s** (10 del sub-eje + 10 de hace 7-21 días) | EVAL + cierre semanal (`--pull`) | — |
 
 Cola: lun 8-mar profunda · mar 9 / mié 10 repaso final · **jue 11-mar DRESS REHEARSAL 11:00-13:00** (sin loop, sin eval, sin carril B) · **vie 12-mar medio día
@@ -1625,7 +1650,7 @@ UNTIL `20270311T045959Z` · (4) 16:15-17:15 reposición L-J del mié 17-feb, UNT
 de los eventos sueltos (DRESS, D-1, EXAMEN, «🛡 DÍA PROTEGIDO»).
 
 ### 23.4 · F3 — mar 16-mar → vie 30-abr-2027 (L-V; sáb y dom libres)
-05:00-05:45 Anki (FSRS 0,90 desde el reinicio) · 07:15-12:00 Step 1 (una serie) · 13:30 Research↔Derma 45' · 14:15-14:45 AURUM 30' (→ jue 15-abr) *(⏸ v6.00 · v6.01: → mar 20-abr)* · 15:15 MIR
+05:00-05:45 Anki (FSRS 0,90 desde el reinicio) · 07:15-12:00 Step 1 (una serie) · 13:30 Research↔Derma 45' · 14:15-14:45 AURUM 30' (→ jue 15-abr) *(⏸ v6.00 · ⏸ v6.01: → mar 20-abr · **v6.02:** → mar 27-abr)* · 15:15 MIR
 1 h · **16:15-17:15 REENTRADA** (20Q timed de un sistema de F1, rotando Cardio → Resp → Renal → GI → Endo → Neuro → Heme → Fundamentos → Inmuno) · 18:00-18:45
 eval. Sáb 07:15-07:45 revisión semanal. T1 REENTRADA mar 16-mar · **NBME 29 mié 17-mar 07:00-12:30** (`ae93qv0nqqs36h439hid1jcq8o`). SKIP jue 25 y vie 26-mar
 (Semana Santa). Series F3 (§G4): se crean al salir la convocatoria (DTSTART = reinicio, UNTIL = inicio real del SERUMS).
@@ -1656,7 +1681,7 @@ lun 13-sep 07:00-10:15 (`lh9jfjsmoif74ci6jcn8f1mq30`) · D94 jue 23-sep 04:05-06
 Rutinas personales que chocan con el turno (EKER, preparar correr, correr, calistenia, ducha, desayuno, almuerzo, lectura): **decisión de Joseph** antes del
 SERUMS; DORMIR, GYM, BAILE y los viajes de la noche se mantienen.
 
-### 23.6 · Estado aplicado del Calendar v6.00 *(⏸ estado del 6-oct; lo que cambia con v6.01 —eventos F1 re-fechados, C1/C2, checkpoint mini-sim 50, fines de vibecoding / SYNAPSE / LIVIANO / AURUM, reposición del 22-feb— va en §23.7)*
+### 23.6 · Estado aplicado del Calendar v6.00 *(⏸ estado del 6-oct; lo de v6.02 va en §23.8; lo que cambia con v6.01 —eventos F1 re-fechados, C1/C2, checkpoint mini-sim 50, fines de vibecoding / SYNAPSE / LIVIANO / AURUM, reposición del 22-feb— va en §23.7)*
 
 **Aplicado el mar 6-oct-2026 (≈21:10-21:50 Lima, Lote 5A; informe `DATA/_v600/cal/CAL_V6.md` y respaldo JSON de cada evento tocado en
 `DATA/_v600/cal/cal_bk/` (solo en disco, fuera de git: el repo es público) —62 ficheros del Lote 5A + 31 de la ronda 2—).** 95 operaciones: 14 RECREAR (crear → `get_event` → borrar la vieja; DTSTART original, hora, color, recordatorios y disponibilidad conservados) · 9
@@ -1665,7 +1690,7 @@ DELETE de serie · 6 DELETE de instancia · 33 CREATE · 25 UPDATE · 7 UPDATE s
 EXDATE). EXDATE en las series nuevas = días `SKIP_V6 ∪ protegidos` de su BYDAY y rango. Rutinas personales (EKER, CORRER, CALISTENIA, DUCHA, DESAYUNO, ALMUERZO,
 LECTURA, DORMIR, GYM, BAILE, ALISTARSE, VIAJE…) e IBKR/YOUTUBE **no se tocaron**.
 
-**Series vigentes v6.00** *(⏸ v6.00 · v6.01: VIBECODING, SYNAPSE 12:30, LIVIANO y AURUM 30' se RECREARON el 10-oct con id nuevo —marcado en su fila—; el resto
+**Series vigentes v6.00** *(⏸ v6.00 · **v6.02:** fines de serie nuevos e ids en §23.8 / `CAL_V6.md` §11 · ⏸ v6.01: VIBECODING, SYNAPSE 12:30, LIVIANO y AURUM 30' se RECREARON el 10-oct con id nuevo —marcado en su fila—; el resto
 conserva id y RRULE. Ids y rangos vigentes: §23.7)*
 
 | Serie | Id | Franja | Rango · EXDATE |
@@ -1683,22 +1708,22 @@ conserva id y RRULE. Ids y rangos vigentes: §23.7)*
 | F2 (3) ENCAPS EVAL 20Q (nueva) | `uvpo4pgrtiqp3d9p07ail1fni8` | 18:00-18:45 L-V | lun 4-ene → mié 10-mar (UNTIL `20270311T045959Z`) |
 | F2 (4) ENCAPS carril B · reposición (nueva) | `qcsv3oe0e7rh2vkfq301ne68ko` | 16:15-17:15 L-J | mié 17-feb → mié 10-mar (UNTIL `20270311T045959Z`) |
 | F2 (5) STEP 1 VIVO (nueva) | `2fvbkunh0nfhvhbn1b6iqvpifs` | sáb 07:45-09:15 | sáb 9-ene → sáb 6-mar (UNTIL `20270307T045959Z`) |
-| VIBECODING (recreada) | `easavkn12k189aorun9pou2nd0` *(⏸ BORRADA el 10-oct · v6.01: `9jp7pkabng1bq2tll1ffrrncpc` → mié 24-feb, UNTIL `20270225T045959Z`)* | 04:15-05:00 L-V | → vie 19-feb (UNTIL `20270220T045959Z`) · EXDATE 25-dic, 31-dic, 1-ene |
-| SYNAPSE misión 30' (recreada) | `f1imvu9cnmhrcsi5ag6m3k8jdk` *(⏸ BORRADA el 10-oct · v6.01: `7nd90n5s3ueinen4q13dohcaq4` → vie 19-feb, UNTIL `20270220T045959Z`)* | 12:30-13:00 L-V | → lun 15-feb (UNTIL `20270216T045959Z`) · ídem |
-| LIVIANO (recreada) | `skolg4n4far2p20md3vat06b8c` *(⏸ BORRADA el 10-oct · v6.01: `ap0li4otjf20mpiqpdqu8uj2ps` → mié 17-feb, UNTIL `20270218T045959Z`)* | 17:15-18:00 L-V | → vie 12-feb (UNTIL `20270213T045959Z`) · ídem |
+| VIBECODING (recreada) | `easavkn12k189aorun9pou2nd0` *(⏸ BORRADA el 10-oct · ⏸ v6.01: `9jp7pkabng1bq2tll1ffrrncpc` → mié 24-feb, UNTIL `20270225T045959Z`, borrada el 17-oct · **v6.02:** `ef7rfg1e2dpar1n6cb17j3cf44` → mié 3-mar, §23.8)* | 04:15-05:00 L-V | → vie 19-feb (UNTIL `20270220T045959Z`) · EXDATE 25-dic, 31-dic, 1-ene |
+| SYNAPSE misión 30' (recreada) | `f1imvu9cnmhrcsi5ag6m3k8jdk` *(⏸ BORRADA el 10-oct · ⏸ v6.01: `7nd90n5s3ueinen4q13dohcaq4` → vie 19-feb, UNTIL `20270220T045959Z`, borrada el 17-oct · **v6.02:** `e37h4fl8gd0v7eavt1f9fgob0o` → vie 26-feb, §23.8)* | 12:30-13:00 L-V | → lun 15-feb (UNTIL `20270216T045959Z`) · ídem |
+| LIVIANO (recreada) | `skolg4n4far2p20md3vat06b8c` *(⏸ BORRADA el 10-oct · ⏸ v6.01: `ap0li4otjf20mpiqpdqu8uj2ps` → mié 17-feb, UNTIL `20270218T045959Z`, borrada el 17-oct · **v6.02:** `tah7p61p2hvn4nktgp2msl2eno` → mié 24-feb, §23.8)* | 17:15-18:00 L-V | → vie 12-feb (UNTIL `20270213T045959Z`) · ídem |
 | AURUM F1 60' (recreada) | `23t06e7foitmiqm24lpd0vo9jc` | 14:15-15:15 L-V | → mié 30-dic (UNTIL `20261231T045959Z`) · EXDATE 25-dic |
-| AURUM 30' núcleo F2-F3 (nueva) | `ogb2qi4c57ee2fc2ojjsk9rmcg` *(⏸ BORRADA el 10-oct · v6.01: `4eqm7ht2tbs537nuigit2e1u3k` → mar 20-abr, UNTIL `20270421T045959Z`)* | 14:15-14:45 L-V | lun 4-ene → jue 15-abr (UNTIL `20270416T045959Z`) · EXDATE 12-mar, 15-mar, 25-mar, 26-mar |
+| AURUM 30' núcleo F2-F3 (nueva) | `ogb2qi4c57ee2fc2ojjsk9rmcg` *(⏸ BORRADA el 10-oct · ⏸ v6.01: `4eqm7ht2tbs537nuigit2e1u3k` → mar 20-abr, UNTIL `20270421T045959Z`, borrada el 17-oct · **v6.02:** `ig6qhqufphhbj5jllghorm23fs` → mar 27-abr, §23.8)* | 14:15-14:45 L-V | lun 4-ene → jue 15-abr (UNTIL `20270416T045959Z`) · EXDATE 12-mar, 15-mar, 25-mar, 26-mar |
 | RESEARCH ↔ DERMA (recreada) | `6us7kkdcuk3g7tm1cjes38leh0` | 13:30-14:15 L-V | → vie 30-abr PROVISIONAL (UNTIL `20270501T045959Z`) · EXDATE jun-2026 históricas + 25-dic, 31-dic, 1-ene, 12-mar, 15-mar, 25-mar, 26-mar |
 | MIR Eval anclada (recreada) | `uiduvkfsgs43p1u1qk1vohih58` | 15:15-15:30 L-V | → vie 30-abr PROVISIONAL · mismos 7 EXDATE |
 | MIR Deep Work Mini (recreada) | `hos0tfhsr2hdfs6cgv1rmejhrs` | 15:30-16:15 L-V | ídem |
 | 📋 REVISIÓN SEMANAL (recreada) | `k8iaefnjq0mnrlvkilhcarrik8` | sáb 07:15-07:45 | sáb 10-oct-2026 → sáb 1-may (UNTIL `20270502T045959Z`) · EXDATE sáb 13-mar |
 | 📋 Revisión semanal 20' F4 (nueva, todo el día) | `69tr6hqitr5fnanc2af5kvugnk` | todo el día | sáb 8-may → sáb 18-sep-2027 (20 sábados) · PROVISIONAL |
-| 🧠 SYNAPSE — PC sábado (recreada en la ronda 2) | `goknd2mvbkpqastc6n3rrhon5g` | sáb 15:00-17:00 | DTSTART sáb 13-jun-2026 → último sáb 13-feb-2027 = d130 (UNTIL `20270214T045959Z`) · sin EXDATE |
-| 🧠 SYNAPSE — repaso + PC domingo (recreada en la ronda 2) | `frsvkuk585gmcte6bufo6dkfto` | dom 15:00-17:00 | DTSTART dom 28-jun-2026 → último dom 14-feb-2027 = d131 (UNTIL `20270215T045959Z`) · sin EXDATE |
+| 🧠 SYNAPSE — PC sábado (recreada en la ronda 2) | `goknd2mvbkpqastc6n3rrhon5g` *(⏸ BORRADA el 17-oct · **v6.02:** `bbj1ne6ken46pj25i5dt36idng` → sáb 20-feb, §23.8)* | sáb 15:00-17:00 | DTSTART sáb 13-jun-2026 → último sáb 13-feb-2027 = d130 (UNTIL `20270214T045959Z`) · sin EXDATE |
+| 🧠 SYNAPSE — repaso + PC domingo (recreada en la ronda 2) | `frsvkuk585gmcte6bufo6dkfto` *(⏸ BORRADA el 17-oct · **v6.02:** `c010a16rsl6h0lk4krr0a9r3rs` → dom 21-feb, §23.8)* | dom 15:00-17:00 | DTSTART dom 28-jun-2026 → último dom 14-feb-2027 = d131 (UNTIL `20270215T045959Z`) · sin EXDATE |
 | ANKI sábado (recreada en la ronda 2) | `00929or8op5hj28s3nbf1eo09c` | sáb 19:00-19:30 | DTSTART sáb 28-mar-2026 · abierta (sin UNTIL) · EXDATE sáb 13-mar y sáb 25-sep-2027 |
 | ANKI domingo (recreada en la ronda 2) | `0ar1fbrm3ts396kd96f8df753g` | dom 17:00-17:15 | DTSTART dom 29-mar-2026 · abierta (sin UNTIL) · EXDATE dom 14-mar y dom 26-sep-2027 |
 
-**Eventos sueltos v6.00** *(⏸ v6.00 · v6.01: los hitos F1, gates, C1/C2, el checkpoint y los overlays 🔬 cambian de fecha o de texto CON EL MISMO id —ver §23.7—; F2, cola
+**Eventos sueltos v6.00** *(⏸ v6.00 · v6.02: hitos F1 re-fechados otra vez (UWSA1 lun 19-oct · NBME 25-28 vie 30-oct / vie 20-nov / vie 11-dic / mié 30-dic · gates mié 11-nov / mié 9-dic · checkpoint mini-sim 45), ver §23.8 · ⏸ v6.01: los hitos F1, gates, C1/C2, el checkpoint y los overlays 🔬 cambian de fecha o de texto CON EL MISMO id —ver §23.7—; F2, cola
 ENCAPS e hitos Step 1 2027 sin cambio)* — F1: UWSA1 `o1gla7846uae4tgngvc4q45osg` mié 7-oct 09:00-13:00 (solo descripción) · NBME 25 `4hjv5lkvluj06ahc2qndtsi6as` mar 20-oct · 26
 `lr7ktrbiffj4hrlke7lh7cv6h4` mar 10-nov · 27 `sm4baa2v453ifaub325h9v08mg` mar 1-dic · 28 `ecu784689p8osrhqabuct8d5jg` mar 22-dic (07:00-12:30) · 🚦 GATE F1
 `sfgp85kjua01v159rh1qrilr18` vie 30-oct / `vvi7lk2c0c9nih1fqbi19p681s` vie 27-nov · 🇵🇪 checkpoint del año `ti163p5s6t4odtqmhvkl3mamac` vie 18-dic · 🧯 C1
@@ -1751,7 +1776,7 @@ NBME manda: ese día no hay 30Q) · añadir «v6.00 · PROVISIONAL» al payload 
 sigue apareciendo el dom 14-mar y el dom 26-sep: decisión de Joseph · rutinas de horario fijo (EKER 04:00, correr, desayuno, almuerzo, lectura, GYM/BAILE)
 sin ajustar al turno M/T del SERUMS (§G5): decisión de Joseph.
 
-### 23.7 · Estado aplicado del Calendar v6.01 (sáb 10-oct-2026 · corrimiento al lun 12-oct) — fuente: `DATA/_v600/cal/CAL_V6.md` §9 + §10
+### 23.7 · Estado aplicado del Calendar v6.01 (sáb 10-oct-2026 · corrimiento al lun 12-oct) — fuente: `DATA/_v600/cal/CAL_V6.md` §9 + §10 · *(⏸ historial: lo de v6.02 va en §23.8)*
 
 **Aplicado el sáb 10-oct-2026 (≈14:45-15:20 Lima, 83 operaciones, CAL_V6 §9.1) + cierre del orquestador (≈22:45, CAL_V6 §10).** Protocolo: `get_event` +
 respaldo JSON en `DATA/_v600/cal/cal_bk/<id>_v601.json` (82 ficheros; los del cierre, `*_v601b.json`; solo en disco, fuera de git: el repo es público)
@@ -1807,3 +1832,68 @@ fecha).
 **Pendiente (sin cambio respecto de §23.6):** G4 (series F3 desde el reinicio) al salir la convocatoria ENCAPS · G5 (F4, bloque A + banda SERUMS) al inicio
 real del SERUMS · decisiones abiertas de Joseph v6.01 (a)-(g) en `DATA/PENDIENTES_JOSEPH.md` —la (f) es el deload del lun 28-dic, que ahora cae en la semana
 del NBME 28—.
+
+### 23.8 · Estado aplicado del Calendar v6.02 (sáb 17-oct-2026 · corrimiento al lun 19-oct) — fuente: `DATA/_v600/cal/CAL_V6.md` §11 · **vigente**
+
+**Aplicado el sáb 17-oct-2026 (≈14:35-15:10 Lima, CAL_V6 §11.1: 91 escrituras = 77 `update_event` · 7 `create_event` · 7 `delete_event`, + 1 script).**
+Protocolo (el de §23.7): `get_event` + respaldo JSON en `DATA/_v600/cal/cal_bk/<id>_v602.json` (85 ficheros; solo en disco, fuera de git: el repo es público)
+ANTES de cada cambio · `notificationLevel: NONE` en todo · recrear = `create_event` (DTSTART original + mismos campos + UNTIL nuevo + EXDATE vigentes) →
+`get_event` → `delete_event` de la vieja, tras comprobar con `list_events` de todo su rango **0 instancias canceladas, movidas o editadas** (vibecoding
+125/125 · SYNAPSE 179/179 · LIVIANO 120/120 · AURUM 30' 73/73 · SYNAPSE PC sáb 36/36 · dom 34/34). Estado anterior = §23.7 + tag git `regimen-v6.01`.
+Qué tenía que reflejar el Calendar (fuente: `_fechas_v6.json` v6.02 y los planes `src/lib`) — todo aplicado y verificado (CAL_V6 §11.4):
+- **Hitos F1 re-fechados:** 🎯 UWSA1 ⇒ **lun 19-oct 09:00-13:00** · NBME 25 ⇒ **vie 30-oct** · NBME 26 ⇒ **vie 20-nov** · NBME 27 ⇒ **vie 11-dic** · NBME 28 ⇒
+  **mié 30-dic** (07:00-12:30; descripción con la contingencia sáb 2-ene) · 🚦 GATE D18 ⇒ **mié 11-nov** · GATE D38 ⇒ **mié 9-dic** · 🧯 C1/C2 (mar 29 / mié
+  30-dic): siguen consumidos (mar 29 = D51; mié 30 = NBME 28) · 🇵🇪 checkpoint del año vie 18-dic: «mini-sim 50» ⇒ **«mini-sim 45 (dia 45)»**. Eventos 2027: sin
+  cambio.
+- **ENCAPS 16:15:** F1 mantenimiento `dia` 1-52 desde el lun 19-oct; carril B `dia` 53-84; reposición mié 17-feb → mié 10-mar con los **8 pendientes F1**
+  (MINI-SIM 25Q **lun 22-feb** y **mar 2-mar** 16:15-17:15; banqueo F1 repuesto el 17, 18, 23, 24 y 25-feb y el 1-mar).
+- **Secundarios (fin de serie):** vibecoding 04:15 → **mié 3-mar** · SYNAPSE 12:30 → **vie 26-feb** (PC sábado → sáb 20-feb; último con minutos sáb 13-feb) ·
+  LIVIANO 17:15 → **mié 24-feb** · AURUM 30' → **mar 27-abr** · MIR (franjas sin cambio; mantenimiento hasta el mar 4-may, ya en el SERUMS) · overlays 🔬
+  Research: 12 «recrear» (`gen_research_calendar.js --check`: M1 lun 26-oct … R43 mar 27-jul; tabla en `DATA/REESTRUCTURACION_31AGO_2026.md` §26.5).
+- **Revisión semanal:** S00 sáb 17-oct (pre-D1), S01 sáb 24-oct … S11 sáb 2-ene; la serie del sábado 07:15 no cambia de RRULE.
+
+**Eventos F1 re-fechados (MISMO id; hora, color y transparencia intactos):** 🎯 UWSA1 `o1gla7846uae4tgngvc4q45osg` lun 12-oct ⇒ **lun 19-oct 09:00-13:00** ·
+NBME 25 `4hjv5lkvluj06ahc2qndtsi6as` ⇒ **vie 30-oct** · NBME 26 `lr7ktrbiffj4hrlke7lh7cv6h4` ⇒ **vie 20-nov** · NBME 27 `sm4baa2v453ifaub325h9v08mg` ⇒ **vie 11-dic** ·
+NBME 28 `ecu784689p8osrhqabuct8d5jg` lun 28-dic ⇒ **mié 30-dic** (07:00-12:30; D52 = última sesión de F1; contingencia sáb 2-ene 07:00-12:30 y la S11 a las 13:30,
+solo en los textos: no hay evento de contingencia) · 🚦 GATE D18 `sfgp85kjua01v159rh1qrilr18` mié 4-nov ⇒ **mié 11-nov** · GATE D38 `vvi7lk2c0c9nih1fqbi19p681s`
+mié 2-dic ⇒ **mié 9-dic** (todo el día) · 🧯 C1 `oi557k66kql15oa6ptkjdipvis` mar 29-dic / C2 `ag335n3dhvui11593us2lm448s` mié 30-dic: misma fecha, título «Colchón
+F1 CONSUMIDO (v6.02) · hoy D51 normal» / «… · hoy NBME 28 (último día de F1)» · 🇵🇪 checkpoint del año `ti163p5s6t4odtqmhvkl3mamac` vie 18-dic (misma fecha):
+«mini-sim 50» ⇒ **«mini-sim 45 (dia 45)»**.
+
+**Series RECREADAS (id nuevo; los ids v6.01 se borraron el 17-oct):**
+
+| Serie | Id vigente v6.02 | Rango · EXDATE | ⏸ v6.01 (borrada el 17-oct) |
+|---|---|---|---|
+| 🧠 VIBECODING 04:15-05:00 L-V | `ef7rfg1e2dpar1n6cb17j3cf44` | DTSTART lun 31-ago-2026 → **mié 3-mar-2027** (UNTIL `20270304T045959Z`) · EXDATE 25-dic, 31-dic, 1-ene · color 9 | `9jp7pkabng1bq2tll1ffrrncpc` → mié 24-feb |
+| 🧠 SYNAPSE misión 12:30-13:00 L-V | `e37h4fl8gd0v7eavt1f9fgob0o` | DTSTART jue 11-jun-2026 → **vie 26-feb-2027** (UNTIL `20270227T045959Z`) · ídem · color 9 | `7nd90n5s3ueinen4q13dohcaq4` → vie 19-feb |
+| ⚖️ LIVIANO 17:15-18:00 L-V | `tah7p61p2hvn4nktgp2msl2eno` | DTSTART lun 31-ago-2026 → **mié 24-feb-2027** (UNTIL `20270225T045959Z`) · ídem · color 7 | `ap0li4otjf20mpiqpdqu8uj2ps` → mié 17-feb |
+| 🪙 AURUM 30' núcleo F2-F3 14:15-14:45 L-V | `ig6qhqufphhbj5jllghorm23fs` | lun 4-ene → **mar 27-abr-2027** (UNTIL `20270428T045959Z`) · EXDATE 12-mar, 15-mar, 25-mar, 26-mar · color 5 · popup 5' | `4eqm7ht2tbs537nuigit2e1u3k` → mar 20-abr |
+| 🧠 SYNAPSE — PC sábado (2h) 15:00-17:00 | `bbj1ne6ken46pj25i5dt36idng` | DTSTART sáb 13-jun-2026 → **sáb 20-feb-2027** (UNTIL `20270221T045959Z`; último sábado con contenido del motor) · sin EXDATE · color 9 | `goknd2mvbkpqastc6n3rrhon5g` → sáb 13-feb (v6.00; no se tocó en v6.01) |
+| 🧠 SYNAPSE — repaso + PC domingo (2h) 15:00-17:00 | `c010a16rsl6h0lk4krr0a9r3rs` | DTSTART dom 28-jun-2026 → **dom 21-feb-2027** (UNTIL `20270222T045959Z`) · sin EXDATE · color 9 | `frsvkuk585gmcte6bufo6dkfto` → dom 14-feb (v6.00; no se tocó en v6.01) |
+
+**Evento NUEVO:** 🇵🇪 ENCAPS carril B · REPOSICIÓN F1: mini-sim 25Q (I-10 + V-6) · v6.02 `ddfms7b6q2e3lhvvqqvr6el474` — **mar 2-mar-2027 16:15-17:15**, color 6,
+FREE (receta íntegra: II 8 · I 7 · V 5 · III 3 · IV 2 · 72 s/Q · umbral 18/25 · `sim_n` 94 = ex mini-sim 50 de la F1 v6.01). Se borró SOLO la instancia
+`qcsv3oe0e7rh2vkfq301ne68ko_20270302T211500Z` de la serie F2 (4) carril B · reposición (la serie sigue): ese día la franja es solo el mini-sim (misma regla que el
+22-feb en §23.7). El mini-sim del **lun 22-feb** `mgv06ho1cphr78rsqf9nrkgd7o` (II-6 + II-10) conserva id y fecha: descripción `dia` 88 / `sim_n` 88 *(⏸ v6.01: 93)*.
+
+**Solo descripción (mismo id y RRULE; pie «(v6.02 · 17-oct-2026: D1 = lun 19-oct)», 72/72 comprobadas):** F2 (4) carril B `qcsv3oe0e7rh2vkfq301ne68ko` (dias 85-100,
+los 8 pendientes F1 con su día) · banner F2 `4mfnu95lrhr3dmu87einr3jm5k` («días 53-102») · PRE-TEST `27bs58ee0ke180ht2rh6mgvft0` (dia 57) · SIM #1-#8 (dia 62-97) ·
+DRESS (101) · D-1 (102) · EXAMEN ENCAPS · 🛡 vie 12-mar (fechas y horas SIN cambio) · las 6 USMLE F1 (D1 lun 19-oct → d52 mié 30-dic; UNTIL `20261231` intacto) ·
+ENCAPS 16:15 `papebi46etlo8glgfs5akd5mig` + carril B `d8252hjo5ra2qlqb9bccd6vkjo` (`dia` 1-52, checkpoint mini-sim 45, stock V-2 < mié 4-nov · III-5 < jue 19-nov ·
+II-5 < lun 23-nov) · F2 Anki · LOOP · EVAL 20Q · STEP 1 VIVO · MIR ×2 (UNTIL vie 30-abr intacto) · R↔D · AURUM F1 `23t06e7foitmiqm24lpd0vo9jc` · ANKI sáb/dom ·
+REVISIÓN SEMANAL · 20 rutinas personales.
+
+**Overlays 🔬 Research (12, mismos ids; `gen_research_calendar.js --print` → `update_event` → `--set` → `--check` = 0, 12/12 «nada»):** M1 ⇒ lun 26-oct · C-2 ⇒
+mar 3-nov · T-1 ⇒ jue 5-nov · C-6 ⇒ lun 23-nov · CR-1 ⇒ mié 25-nov · T-8 ⇒ mié 23-dic · CR-8 mar 12-ene (=) · CR-9 jue 11-feb (=) · X-1 ⇒ mar 23-feb-2027 · X-9 ⇒
+lun 29-mar · R10 ⇒ vie 2-abr 13:30-14:15 · R43 ⇒ **mar 27-jul** (todo el día). `DATA/RESEARCH/_calendar_overlays.json` reescrito por el script (pendiente de commit).
+
+**Verificación (`list_events`, America/Lima; 22 volcados, 2.031 eventos únicos; CAL_V6 §11.4):** 72/72 títulos y descripciones = texto generado · 25/25 hitos
+y eventos sueltos en su fecha (una instancia cada uno) · 12/12 overlays 🔬 = payload · 6/6 series recreadas con su último día presente y 0 instancias
+posteriores · 0 instancias de las 6 series borradas · 0 instancias `qcsv3…` el 2-mar · 0 duplicados.
+
+**Ronda v6.02b (FX-CAL, CAL_V6 §11.1 filas 87-93):** descripción del GO/NO-GO `3i88pp1gj84vc0r6tuherhsc0o` (checkpoint NBME 28 = mié 30-dic) y del NBME 29
+`ae93qv0nqqs36h439hid1jcq8o` (T3-T8 tras el NBME 29) · título de la Revisión semanal F4 `69tr6hqitr5fnanc2af5kvugnk` → «· v6.02» · overlays 🔬 CR-1, X-9 y R10 con
+los textos nuevos de `gen_research_calendar.js` (R10 = OBJETIVO RUTA, no plazo externo) · `--set` → `--check` = exit 0, 12/12 «nada».
+
+**Pendiente (CAL_V6 §11.5):** G4 (series F3) al salir la convocatoria ENCAPS · G5 (F4) al inicio real del SERUMS · ✅ textos del script de Research y título F4
+(hechos en FX-CAL, filas 87-93) · decisiones abiertas de Joseph v6.02 (i)-(vi) en `DATA/PENDIENTES_JOSEPH.md`.

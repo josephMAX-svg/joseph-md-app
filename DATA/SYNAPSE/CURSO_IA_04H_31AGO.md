@@ -1,6 +1,26 @@
-# 🧠 FRANJA 04:15–05:45 (v5.2 · serie desde lun 31-ago-2026 · D1 efectivo LUN 12-OCT-2026, v6.01 · ⏸ v5.20/v6.00: mié 7-oct) — IA VIBECODING + ANKI AM
+# 🧠 FRANJA 04:15–05:45 (v5.2 · serie desde lun 31-ago-2026 · D1 efectivo LUN 19-OCT-2026, v6.02 · ⏸ v6.01: lun 12-oct · ⏸ v5.20/v6.00: mié 7-oct) — IA VIBECODING + ANKI AM
 
-> **✅ v6.01 VIGENTE (sáb 10-oct-2026) — D1 efectivo = LUN 12-OCT-2026** (mié 7, jue 8 y vie 9-oct sin estudio; 30 hábiles perdidos desde el 31-ago). Corrimiento
+> **✅ v6.02 VIGENTE (sáb 17-oct-2026) — D1 efectivo = LUN 19-OCT-2026** (lun 12 → vie 16-oct sin estudio; 35 hábiles perdidos desde el 31-ago). Corrimiento
+> rígido de los secundarios (+5 hábiles; contenido intacto; `node DATA/_scripts/gen_vibecoding_plan.js 2026-10-19` → `node DATA/_scripts/gen_synapse_plan.js 2026-10-19`):
+> - **Vibecoding (04:15, 45')**: **95 días lun 19-oct-2026 → mié 3-mar-2027**. **S1-S12 = bloques lun→vie** (S1 lun 19 → vie 23-oct … S9 lun 14 → vie 18-dic ·
+>   S10 lun 21 → lun 28-dic por el feriado del 25-dic · S11 mar 29-dic → mié 6-ene · S12 jue 7 → mié 13-ene) con **SHIP el sábado siguiente**: S1 sáb 24-oct …
+>   S9 sáb 19-dic · **sáb 26-dic = AVANCE de S10** (sin SHIP) · S10 sáb 2-ene · **S11 sáb 9-ene** (día siguiente al PRE-TEST 2026-II) · **S12 sáb 16-ene** (S11 y
+>   S12 caen dentro de la intensiva ENCAPS → decisión (c) de `DATA/PENDIENTES_JOSEPH.md`: SHIP en modo mínimo). **Taper S13-S20 jue 14-ene → mié 3-mar**: S13
+>   jue 14 → mié 20-ene · S14 jue 21 → mié 27-ene · S15 jue 28-ene → mar 2-feb · S16 mié 3 → vie 5-feb · S17 lun 8 → vie 12-feb · S18 lun 15 → vie 19-feb · S19
+>   lun 22 → vie 26-feb · S20 lun 1 → mié 3-mar; PC de sábado 23-ene (S13) · 30-ene (S14) · 6-feb (S15) · **13-feb (S16, PC propio 30', + S17 0')** · 20-feb
+>   (S18, 0', último); S19/S20 sin PC.
+> - **Flag `deload`** en S7 (lun 30-nov → vie 4-dic); la semana deload post-NBME 26 del Step 1 (lun 23 → vie 27-nov) es **S6** (RLS de `datos_tesis`), sin
+>   marca → decisión (ii) de `DATA/PENDIENTES_JOSEPH.md`, bloque v6.02 (recomendación: no mover el flag; S6 fuera del −50 % por seguridad).
+> - **SYNAPSE (12:30, 30')**: **131 días lun 19-oct-2026 → vie 26-feb-2027** (FIN_PLAN 2027-02-26; 110 A-units en el mismo ORDEN; B y C sin diferencias): F0
+>   sem 1-8 (lun 19-oct → dom 13-dic, 48 A) · F1 sem 9-12 (lun 14-dic → dom 10-ene, 21 A) · F2 sem 13-19 (lun 11-ene → vie 26-feb, 41 A; deload sem 17-19 desde
+>   el lun 8-feb). Último PC con minutos **sáb 13-feb**; último sábado con contenido **sáb 20-feb** (0'); último domingo **dom 21-feb**; 19 bloques PC en 18
+>   sábados (el sáb 13-feb lleva 2). La última A-unit (d131, cierre F2 + CCA-F) cae el vie 26-feb (día del SIM 100Q #7 de la intensiva ENCAPS).
+> - **ANKI AM 05:00** (USMLE): L-V **lun 19-oct → mié 30-dic** (F1, 52 sesiones; el mié 30-dic es el NBME 28); en la F2 (lun 4-ene → vie 12-mar) la franja
+>   05:00-05:45 = Anki ENCAPS::Cifras + USMLE de mantenimiento (0 nuevas, FSRS 0,85). El examen Step 1 sigue el **lun 27-sep-2027** y el ENCAPS el **dom
+>   14-mar-2027** (PROVISIONALES).
+> - Fuente: `src/lib/vibecodingPlan.ts` (`VIBE_META`, `pcSab`), `src/lib/synapseDailyPlan.ts`, `DATA/SYNAPSE/VIBECODING_12_PROYECTOS.md` (regenerados el 17-oct).
+
+> **⏸ v6.01 (sáb 10-oct-2026) — D1 efectivo = LUN 12-OCT-2026 · historial: lo corrige el bloque v6.02 de arriba.** (mié 7, jue 8 y vie 9-oct sin estudio; 30 hábiles perdidos desde el 31-ago). Corrimiento
 > rígido de los secundarios (+3 hábiles; contenido intacto; `gen_vibecoding_plan.js 2026-10-12` → `gen_synapse_plan.js 2026-10-12`):
 > - **Vibecoding (04:15, 45')**: **95 días lun 12-oct-2026 → mié 24-feb-2027**. **S1-S12 = bloques lun→vie** (S1 lun 12 → vie 16-oct … S10 lun 14 → vie 18-dic ·
 >   S11 lun 21 → lun 28-dic por el feriado del 25-dic · S12 mar 29-dic → mié 6-ene) con **SHIP el sábado siguiente**: S1 sáb 17-oct … S10 sáb 19-dic · **sáb 26-dic
@@ -60,7 +80,7 @@
   las 12:30 (30' · desde v5.7 su F1 = el stack que el vibecoding necesita: Claude Code docs, Academy,
   Supabase, n8n) · **sábado PC 15:00-17:00 = SHIP** del proyecto de la semana · domingo = Feynman 10' opcional.
 - **Currículo (v5.10-b, RE-SECUENCIADO el 12-sep con lo ya construido; re-fechado a v5.20 el 6-oct)**: `DATA/SYNAPSE/VIBECODING_12_PROYECTOS.md` — 12 proyectos S1-S12
-  (**mié 7-oct → mié 30-dic-2026**, 5 pasos hábiles cada uno = bloques mié→mar *(⏸ v5.20 = v6.00 · v6.01: lun 12-oct → mié 6-ene, bloques lun→vie; SHIP 17-oct … 19-dic, avance S11 26-dic, S11 2-ene, S12 9-ene)*, salvo S12 = mié 23 → mié 30-dic por el feriado del vie 25-dic (v5.19: mar 6-oct → mar 29-dic en bloques mar→lun; v5.18: lun 5-oct → lun 28-dic en semanas de calendario lun→vie); SHIP en los sábados **17-oct → 26-dic y el S12 el sáb 2-ene**; el sáb 10-oct es de avance de S1) ordenados por
+  (**mié 7-oct → mié 30-dic-2026**, 5 pasos hábiles cada uno = bloques mié→mar *(⏸ v5.20 = v6.00 · ⏸ v6.01: lun 12-oct → mié 6-ene, bloques lun→vie; SHIP 17-oct … 19-dic, avance S11 26-dic, S11 2-ene, S12 9-ene · **v6.02:** lun 19-oct → mié 13-ene, bloques lun→vie; SHIP 24-oct … 19-dic, avance S10 26-dic, S10 2-ene, S11 9-ene, S12 16-ene)*, salvo S12 = mié 23 → mié 30-dic por el feriado del vie 25-dic (v5.19: mar 6-oct → mar 29-dic en bloques mar→lun; v5.18: lun 5-oct → lun 28-dic en semanas de calendario lun→vie); SHIP en los sábados **17-oct → 26-dic y el S12 el sáb 2-ene**; el sáb 10-oct es de avance de S1) ordenados por
   **riesgo para el Step 1** y hechos SOLO de trabajo real pendiente (lo ya construido por agentes —parser APEX v2.5.1 +
   test 13/13, `usmleScores.ts`, `anki_telemetria.js` v1, `gen_revision_semanal.js` v1, `plan_checks.sql`,
   `verify_vibecoding.js`, `journal_hoy.js`— se da por hecho y cada proyecto lo COMPLETA o lo pone en producción):
@@ -73,7 +93,7 @@
   marcas · **S12** capstone + README. Fuente única `vibecoding_proyectos.json` → `node DATA/_scripts/gen_vibecoding_plan.js
   <fecha>` → `src/lib/vibecodingPlan.ts`. Cada proyecto lleva **4 criterios de aceptación mecánicos** (`verificacion[]`: git ·
   test · url · supabase · fichero · manual) y la convención de commit **`[S<n>] …`**.
-- **Taper S13-S20 (lun 4-ene → vie 19-feb-2027 *(⏸ v5.20 = v6.00 · v6.01: jue 7-ene → mié 24-feb-2027)*, 35 días = D61-D95; el día d del vibecoding = D# del Step 1, 95 en total; desde v5.11 son bloques SECUENCIALES de `pasos.length` hábiles, ningún paso perdido)**:
+- **Taper S13-S20 (lun 4-ene → vie 19-feb-2027 *(⏸ v5.20 = v6.00 · ⏸ v6.01: jue 7-ene → mié 24-feb-2027 · **v6.02:** jue 14-ene → mié 3-mar-2027)*, 35 días = D61-D95; el día d del vibecoding = D# del Step 1, 95 en total; desde v5.11 son bloques SECUENCIALES de `pasos.length` hábiles, ningún paso perdido)**:
   S13 lun 4 → vie 8-ene (5 pasos; NBME 29 vie 8-ene = D65; PC sáb 9-ene) · S14 lun 11 → vie 15-ene (5 pasos; PC sáb 16-ene) · S15 lun 18 → jue 21-ene (4 pasos; NBME 30 mar 19-ene = D72; PC sáb 23-ene) · S16 vie 22 → mar 26-ene (3 pasos; UWSA2 mar 26-ene = D77; PC sáb 30-ene) = **mantenimiento ≤15'/día** con flag deload (sensores verdes: `node DATA/_scripts/verify_vibecoding.js
   --sensores` · 1 mejora pequeña · retro) y el resto del bloque = journal + lectura de docs; S17 mié 27-ene → mar 2-feb (cierre de contenido lun 1-feb = D81; NBME 31 GO/NO-GO mar 2-feb = D82; PC sáb 6-feb) · S18 mié 3 → mar 9-feb (NBME 32 mié 3-feb · NBME 33 vie 5-feb · Free 120 mar 9-feb; PC sáb 13-feb) · S19 mié 10 → mar 16-feb (Fase C; el motor SYNAPSE cierra el lun 15-feb) · S20 mié 17 → vie 19-feb (3 pasos)
   = **deload total**: journal 5' + audio, PC sáb/dom opcional (30' máx, solo VERDE); S20 = cierre del plan (mié 17 · jue 18 · vie 19-feb = D93-D95,
@@ -97,11 +117,11 @@
   hooks) · `preguntas` pipeline de preguntas ENCAPS/USMLE/MIR · `bots` CRM Pulso / LIVIANO · `contenido` IA para las marcas.
 - **Stack a dominar por USO**: Claude Code (skills · MCP · subagentes · workflows · Agent SDK),
   Supabase, n8n, APIs. Fuente: docs.claude.com + los repos propios.
-- **SYNAPSE 12:30 sem 13-19 (lun 28-dic → lun 15-feb)** *(⏸ v5.20 = v6.00 · v6.01: SYNAPSE → vie 19-feb)*: Anthropic Academy restante + prep CCA-F (F2 del motor, 50 días, 41 A-units; sem 17-19
+- **SYNAPSE 12:30 sem 13-19 (lun 28-dic → lun 15-feb)** *(⏸ v5.20 = v6.00 · ⏸ v6.01: SYNAPSE → vie 19-feb · **v6.02:** sem 13-19 lun 11-ene → vie 26-feb)*: Anthropic Academy restante + prep CCA-F (F2 del motor, 50 días, 41 A-units; sem 17-19
   deload desde el lun 25-ene; la última A-unit cae el lun 15-feb = D91 del Step 1 — A DECIDIR si se adelanta; v5.19: lun 28-dic → sáb 13-feb, 48 días, 40 A, última A-unit sáb 13-feb (entre D91 y D92); v5.18: lun 28-dic → vie 12-feb, 47 días, 39 A, última A-unit vie 12-feb = D92; v5.17: lun 21-dic → mar 9-feb, 51 días, 41 A, deload desde el lun 18-ene). La página oficial del examen CCA-F no aparece enlazada en academy.claude.com ni en anthropic.skilljar.com
   (verificado 12-sep): **A VERIFICAR** antes de fijar fecha (post-Step 1, feb-2027).
 
-## 05:00–05:45 · 🇺🇸 USMLE — ANKI AM (L-V, hasta el vie 19-feb = D95 = último día del plan, D-1 hábil, sesión mínima; finde libre y examen lun 22-feb — v5.20; *(⏸ v5.20 = v6.00 · v6.01: F1 lun 12-oct → mié 30-dic; F2 Anki ENCAPS + USMLE 4-ene → 12-mar; examen Step 1 lun 27-sep-2027)* v5.19: hasta el jue 18-feb = D-1 real, examen vie 19-feb; v5.18: hasta el mié 17-feb, examen jue 18-feb)
+## 05:00–05:45 · 🇺🇸 USMLE — ANKI AM (L-V, hasta el vie 19-feb = D95 = último día del plan, D-1 hábil, sesión mínima; finde libre y examen lun 22-feb — v5.20; *(⏸ v5.20 = v6.00 · ⏸ v6.01: F1 lun 12-oct → mié 30-dic · **v6.02:** F1 lun 19-oct → mié 30-dic; F2 Anki ENCAPS + USMLE 4-ene → 12-mar; examen Step 1 lun 27-sep-2027)* v5.19: hasta el jue 18-feb = D-1 real, examen vie 19-feb; v5.18: hasta el mié 17-feb, examen jue 18-feb)
 
 - **Por qué**: Palmerton — "Anki a primera hora con mente fresca = el doble de tarjetas en menos
   tiempo". Para noviembre el mazo tendrá 2.000+ tarjetas y los 60' de las 07:15 no alcanzarían.

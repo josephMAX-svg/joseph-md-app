@@ -1,6 +1,27 @@
-# v6.00 · Reestructuración anual definitiva (6-oct-2026) · + ADDENDUM v6.01 (10-oct-2026)
+# v6.00 · Reestructuración anual definitiva (6-oct-2026) · + ADDENDUM v6.01 (10-oct-2026) · + ADDENDUM v6.02 (17-oct-2026)
 
-> ## ✅ ADDENDUM v6.01 (sáb 10-oct-2026) — corrimiento al LUN 12-OCT-2026; manda sobre las cifras de F1/ENCAPS/secundarios de la receta v6.00
+> ## ✅ ADDENDUM v6.02 (sáb 17-oct-2026) — corrimiento al LUN 19-OCT-2026 con HITOS F1 ANCLADOS; manda sobre el ADDENDUM v6.01 y sobre la receta v6.00
+> Del lun 12 al vie 16-oct no se estudió (5 hábiles; 35 desde el 31-ago) → D1 = **lun 19-oct-2026**. Misma regla que v6.01 (la F1 no se alarga) + **regla nueva:
+> un hito de F1 nunca sale de F1** (`gen_tramo2.colocarF1(n)`): los hitos conservan su D# si caben y, si no, ocupan los últimos slots de F1; lo que no cabe son
+> siempre las ÚLTIMAS filas de temario no-hito, que pasan al tramo 2 como filas desplazadas (con su `dOrig`).
+> - **F1 = 52 hábiles, lun 19-oct → mié 30-dic**: d 1-51 = v5.20 D1-D51 · **d 52 = NBME 28, mié 30-dic** (última sesión de F1; sin day-after: auditoría en la
+>   revisión S11 del sáb 2-ene; si se pierde el 30-dic → sáb 2-ene 07:00-12:30 y la S11 a las 13:30). Hitos: UWSA1 lun 19-oct · NBME 25 vie 30-oct · 26 vie
+>   20-nov · 27 vie 11-dic · 28 mié 30-dic · gates D18 mié 11-nov / D38 mié 9-dic. C1/C2 siguen consumidos.
+> - **6 desplazadas al tramo 2 = T3-T8, jue 18-mar → lun 29-mar-2027** (v5.20 D52, D53, D54, D56, D57 Heme/Onco + D79 bioestadística; sub «… era v5.20 D#»;
+>   `escenario.desplazadasF1`; `escenario.pendientesF1` ya solo lleva recuperaciones del disparador (f), con `--pendientes-f1 d` = slot d de F1). Tramo 2: mismas
+>   158 filas, fechas e hitos; **colchón 28 filas ≈ 73,5 h** (⏸ v6.01: 38 ≈ 100 h); uWorld FRESCO 3.260.
+> - **ENCAPS:** F1 `dia` 1-52 (43 banqueo + 9 mini-sims; checkpoint = **mini-sim 45, vie 18-dic**) · intensiva **`dia` 53-102** (mismas fechas; pre-test vie 8-ene =
+>   dia 57) · **8 pendientes F1** repuestos en el carril B (17-feb, 18-feb, lun 22-feb mini-sim 25Q, 23-feb, 24-feb, 25-feb, 1-mar, mar 2-mar mini-sim 25Q) · huella
+>   v2 102 · `60e16744…`.
+> - **MIR extensión 123** (⏸ v6.01: 128) · secundarios +5 hábiles (tabla en `DATA/REESTRUCTURACION_31AGO_2026.md` §26 y `DATA/PENDIENTES_JOSEPH.md`, bloque v6.02).
+> - **Examen Step 1, ENCAPS, reinicio, SERUMS, GO/NO-GO e hitos 2027: SIN cambio.** ⚠ La tabla de escenarios DJ-1 (`espec/a_tabla.js`) reproduce la v6.00; con la
+>   F1 de 52 cambian las reservas de 21-mar, 11-abr y 25-abr (ADDENDUM v6.02 de `V6_ESPEC.md`; decisión pendiente en PENDIENTES v6.02 (vi)).
+> - Referencia de verificación del tramo 2 v6.02: `DATA/_scripts/usmle/ref_v6/tramo2_14mar_27sep_v602.json` (`gen_tramo2_ref.js --f1-filas 52`, el valor por
+>   defecto); las de v6.00 (58) y v6.01 (57) se conservan y la matriz de compatibilidad de `verificar_v6.js` las sigue comprobando.
+> - Calendar v6.02: `cal/CAL_V6.md` §11 (resumen e ids en `DATA/ENCAPS/CALENDAR_SEGMENTOS_V5_6.md` §23.8). Detalle de la espec: ADDENDUM v6.02 al principio de `V6_ESPEC.md` (las cifras v6.01 quedan
+>   marcadas «⏸ v6.01»).
+
+> ## ⏸ ADDENDUM v6.01 (sáb 10-oct-2026) — corrimiento al LUN 12-OCT-2026; mandaba sobre las cifras de F1/ENCAPS/secundarios de la receta v6.00 · **historial: lo corrige el ADDENDUM v6.02 de arriba**
 > El 7, 8 y 9-oct no se estudiaron → D1 = **lun 12-oct-2026**. Se aplicó la regla de colchón de F1 de la espec (§B1/§B7.1), sin alargar la F1:
 > - **F1 = 57 hábiles, D1-D57, lun 12-oct → mié 30-dic** (v6.00: 60, D1-D60). **C1/C2 consumidos**; la fila 58 (bioestadística, ex-D79) **pasa al tramo 2: T3
 >   jue 18-mar-2027** (`--f1-filas 57`, `escenario.pendientesF1 = [58]`). Hitos F1: UWSA1 lun 12-oct · NBME 25 vie 23-oct · 26 vie 13-nov · 27 vie 4-dic · 28

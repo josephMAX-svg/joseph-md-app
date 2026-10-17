@@ -1,6 +1,12 @@
 # 📡 SEÑALES 2027-I — vigía de convocatoria, normas y coyuntura (log fechado + rutina quincenal)
 
-> ## ✅ v6.01 (10-oct-2026) — solo cambia la numeración: fechas y reglas de abajo intactas
+> ## ✅ v6.02 (17-oct-2026) — solo cambia la numeración: fechas y reglas de abajo intactas
+> El D1 del régimen pasa al **lun 19-oct-2026** (lun 12 → vie 16-oct sin estudio). El examen sigue siendo **dom 14-mar-2027 PROVISIONAL** y la convocatoria
+> tope el **mié 17-feb**. La intensiva conserva sus fechas (lun 4-ene → vie 12-mar) y se renumera **`dia` 53-102**: re-scan de señales **lun 4-ene = dia 53** ·
+> **PRE-TEST 2026-II vie 8-ene = dia 57** (desde ese día el 2026-II sale de la LISTA NEGRA). Si la convocatoria mueve el examen: misma regeneración única
+> (§24.5 de `DATA/REESTRUCTURACION_31AGO_2026.md`; comando v6.02 en `FASE_INTENSIVA_2027-I.md`).
+
+> ## ⏸ v6.01 (10-oct-2026) — historial (lo corrige el bloque v6.02 de arriba)
 > El D1 del régimen pasa al **lun 12-oct-2026** (7-9 oct sin estudio). El examen sigue siendo **dom 14-mar-2027 PROVISIONAL** y la convocatoria tope el **mié
 > 17-feb**. La intensiva conserva sus fechas (lun 4-ene → vie 12-mar) y se renumera **`dia` 58-107**: re-scan de señales **lun 4-ene = dia 58** · **PRE-TEST
 > 2026-II vie 8-ene = dia 62** (desde ese día el 2026-II sale de la LISTA NEGRA). Si la convocatoria mueve el examen: misma regeneración única (§24.5 de
@@ -12,8 +18,8 @@
 >   mié 10-mar «fijado» de v5.20 (SUPERSEDIDO).
 > - **Regla de la convocatoria = examen − 25 días** (`encaps.convocatoria_tope`): si al **mié 17-feb-2027** no hay convocatoria publicada, el 14-mar queda
 >   descartado y se pasa al **dom 21-mar** (tope mié 24-feb); después 4-abr (tope mié 10-mar), 11-abr (mié 17-mar), 18-abr (mié 24-mar), 25-abr (mié 31-mar).
-> - **La intensiva ya no espera al Step 1:** sembrada **lun 4-ene → vie 12-mar-2027** (`dia` 61-110) *(⏸ v6.00 · v6.01: `dia` 58-107)*; el **re-scan completo de señales es el lun 4-ene** (fila
->   `senales`, dia 61) *(⏸ v6.00 · v6.01: dia 58)* y el **PRE-TEST 2026-II el vie 8-ene** (dia 65) *(⏸ v6.00 · v6.01: dia 62)*: desde ese día el 2026-II deja la LISTA NEGRA.
+> - **La intensiva ya no espera al Step 1:** sembrada **lun 4-ene → vie 12-mar-2027** (`dia` 61-110) *(⏸ v6.00 · ⏸ v6.01: `dia` 58-107 · **v6.02:** `dia` 53-102)*; el **re-scan completo de señales es el lun 4-ene** (fila
+>   `senales`, dia 61) *(⏸ v6.00 · ⏸ v6.01: dia 58 · **v6.02:** dia 53)* y el **PRE-TEST 2026-II el vie 8-ene** (dia 65) *(⏸ v6.00 · ⏸ v6.01: dia 62 · **v6.02:** dia 57)*: desde ese día el 2026-II deja la LISTA NEGRA.
 > - **Si la convocatoria publica otra fecha:** se cambia `encaps.examen` en `_fechas_v6.json` y se regenera **una sola vez**: ENCAPS filas ≥ lun 8-mar
 >   (`gen_encaps_intensivo_2027.js --desde 2027-03-08 --carril-b …`: módulos de extensión + cola D-5…D-1) → protegidos → MIR/Research/Derma/AURUM → tramo 2
 >   del Step 1 (nuevo reinicio; fecha a reservar del Step 1 según la tabla DJ-1) → Calendar. Las filas ≤ vie 5-mar no se tocan
@@ -37,7 +43,7 @@
 
 ## 2) Rutina quincenal (desde el **jue 1-oct-2026**, 30 min, fuera de la hora ENCAPS)
 
-Fechas: 1-oct · 15-oct · 29-oct · 12-nov · 26-nov · 10-dic · 24-dic · 7-ene · 21-ene · **re-scan completo en la semana 1 de la intensiva** (fila `senales` — ✅ **v6.00: lun 4-ene-2027 = dia 61** *(⏸ v6.00 · v6.01: dia 58)*, primer día de la intensiva; y vigilancia de la convocatoria con tope mié 17-feb · ⏸ v5.20, SUPERSEDIDO: (6-oct): con el corrimiento RÍGIDO el lun 1-feb ya no sirve (es el D81 del Step 1, cierre de contenido, día doble); el mar 2-feb es el D82 (NBME 31 GO/NO-GO), el vie 12-feb el D90, el sáb 13 y el dom 14-feb un finde libre, el lun 15-feb el D91, el mar 16-feb el D92, el mié 17-feb el D93, el jue 18-feb el D94 (última sesión de banco), el vie 19-feb el D95 (último día del plan), sáb 20 / dom 21 libres (dom 21 = D-1 real) y el **lun 22-feb el examen Step 1**. La fase intensiva ENCAPS arranca DESPUÉS de ese examen → el re-scan es el **mar 23-feb-2027** = D1 de la intensiva (día 97, fila `senales` YA SEMBRADA, día ligero tras el examen; pre-test 2026-II el vie 26-feb, examen ENCAPS mié 10-mar, `FASE_INTENSIVA_2027-I.md` bloque v5.20); *v5.19: lun 22-feb, con el examen Step 1 el vie 19-feb · v5.18: lun 22-feb también, con el D1 de la intensiva vie 19-feb o lun 22-feb · v5.17: mié 17-feb o lun 22-feb · v5.16: vie 12-feb o lun 15-feb · v5.15: mar 9-feb*) · y semanal en feb-mar.
+Fechas: 1-oct · 15-oct · 29-oct · 12-nov · 26-nov · 10-dic · 24-dic · 7-ene · 21-ene · **re-scan completo en la semana 1 de la intensiva** (fila `senales` — ✅ **v6.00: lun 4-ene-2027 = dia 61** *(⏸ v6.00 · ⏸ v6.01: dia 58 · **v6.02:** dia 53)*, primer día de la intensiva; y vigilancia de la convocatoria con tope mié 17-feb · ⏸ v5.20, SUPERSEDIDO: (6-oct): con el corrimiento RÍGIDO el lun 1-feb ya no sirve (es el D81 del Step 1, cierre de contenido, día doble); el mar 2-feb es el D82 (NBME 31 GO/NO-GO), el vie 12-feb el D90, el sáb 13 y el dom 14-feb un finde libre, el lun 15-feb el D91, el mar 16-feb el D92, el mié 17-feb el D93, el jue 18-feb el D94 (última sesión de banco), el vie 19-feb el D95 (último día del plan), sáb 20 / dom 21 libres (dom 21 = D-1 real) y el **lun 22-feb el examen Step 1**. La fase intensiva ENCAPS arranca DESPUÉS de ese examen → el re-scan es el **mar 23-feb-2027** = D1 de la intensiva (día 97, fila `senales` YA SEMBRADA, día ligero tras el examen; pre-test 2026-II el vie 26-feb, examen ENCAPS mié 10-mar, `FASE_INTENSIVA_2027-I.md` bloque v5.20); *v5.19: lun 22-feb, con el examen Step 1 el vie 19-feb · v5.18: lun 22-feb también, con el D1 de la intensiva vie 19-feb o lun 22-feb · v5.17: mié 17-feb o lun 22-feb · v5.16: vie 12-feb o lun 15-feb · v5.15: mar 9-feb*) · y semanal en feb-mar.
 
 1. Canales 1-4 (canal 5 solo desde enero). Para cada uno: ¿hay algo nuevo desde la última fecha del log? Si no, se anota "sin novedad" (también es dato).
 2. Cada novedad → **una fila en el log de §4** con fecha, canal, señal (título + número/año de la norma o fecha del boletín), código v3, impacto (ALTO = entra al examen casi seguro / MEDIO / BAJO) y estado (VERIFICADA / A VERIFICAR).
@@ -81,7 +87,7 @@ Notas: `0 7 1,15 * *` = días 1 y 15 de cada mes a las 07:00 hora local (Lima) �
 
 ```
 Eres el vigía quincenal ENCAPS 2027-I de Joseph. Repositorio: D:\joseph-md-app. Hoy revisas señales para el examen ENCAPS/SERUMS 2027-I (Perú).
-1) Lee DATA/ENCAPS/SENALES_2027-I.md completo (§1 canales, §2 rutina, §3 estado con la "Última revisión", §4 log, §5 qué NO es señal) y DATA/ENCAPS/PROTOCOLO_HORA_MANTENIMIENTO.md §4 (LISTA NEGRA: el examen 2026-II no se usa para nada hasta el PRE-TEST del vie 8-ene-2027 (dia 62 de la intensiva v6.01; ⏸ v6.00: dia 65)).
+1) Lee DATA/ENCAPS/SENALES_2027-I.md completo (§1 canales, §2 rutina, §3 estado con la "Última revisión", §4 log, §5 qué NO es señal) y DATA/ENCAPS/PROTOCOLO_HORA_MANTENIMIENTO.md §4 (LISTA NEGRA: el examen 2026-II no se usa para nada hasta el PRE-TEST del vie 8-ene-2027 (dia 57 de la intensiva v6.02; ⏸ v6.01: dia 62 · ⏸ v6.00: dia 65)).
 2) Revisa con WebSearch/WebFetch, SOLO en dominios oficiales, qué hay nuevo desde la fecha de "Última revisión":
    canal 1 convocatoria y cronograma SERUMS 2027-I (gob.pe/minsa, DIGEP-SERUMS: fecha del examen ENCAPS, bases, inscripción, plazas);
    canal 2 normas MINSA (elperuano.pe Normas Legales/Salud y gob.pe/minsa/normas: RM, NTS, Directivas nuevas o modificatorias);
@@ -98,7 +104,7 @@ Eres el vigía quincenal ENCAPS 2027-I de Joseph. Repositorio: D:\joseph-md-app.
 ## 3) Estado
 
 - **Última revisión:** 05-sep-2026 (arranque del log; ninguna búsqueda en vivo hecha en esta sesión: las filas de §4 salen de los materiales ya extraídos y quedan **A VERIFICAR** contra la fuente primaria).
-- **Fecha del examen (v6.00, 6-oct-2026):** **dom 14-mar-2027 PROVISIONAL** (DJ-5, «más o menos el 14»; 6/6 ENCAPS previos en domingo) · `study_metrics.extra.exam_date = '2027-03-14'` · intensiva sembrada lun 4-ene → vie 12-mar (dia 61-110) *(⏸ v6.00 · v6.01: dia 58-107)* · tope de convocatoria **mié 17-feb-2027** (examen − 25 d). Falta: fecha oficial, hora y sede.
+- **Fecha del examen (v6.00, 6-oct-2026):** **dom 14-mar-2027 PROVISIONAL** (DJ-5, «más o menos el 14»; 6/6 ENCAPS previos en domingo) · `study_metrics.extra.exam_date = '2027-03-14'` · intensiva sembrada lun 4-ene → vie 12-mar (dia 61-110) *(⏸ v6.00 · ⏸ v6.01: dia 58-107 · **v6.02:** dia 53-102)* · tope de convocatoria **mié 17-feb-2027** (examen − 25 d). Falta: fecha oficial, hora y sede.
 - ⏸ *(SUPERSEDIDO por v6.00)* **Fecha del examen (v5.20, 6-oct-2026):** FIJADA por Joseph = **mié 10-mar-2027** (`study_metrics.extra.exam_date`; intensiva sembrada mar 23-feb → mar 9-mar). **Lo que falta confirmar en la convocatoria:** día (los ENCAPS fueron siempre en domingo; el 10-mar es miércoles), hora y sede. *(Hasta v5.19: desconocida; escenario de trabajo = CORTO, dom 14-mar-2027.)*
 - **Convocatoria SERUMS 2027-I:** NO publicada al 05-sep-2026; no se ha vuelto a consultar en vivo desde entonces (A VERIFICAR en la próxima revisión).
 - **Tarea programada quincenal:** NO creada al 12-sep-2026 (decisión y acción de Joseph: comando exacto en §2-bis, opción A `scheduled-tasks` con `cronExpression 0 7 1,15 * *` y el prompt de §2-ter; creada ahora, primera corrida jue 15-oct-2026 — la del jue 1-oct ya pasó; 3-oct).
@@ -122,4 +128,4 @@ Eres el vigía quincenal ENCAPS 2027-I de Joseph. Repositorio: D:\joseph-md-app.
 ## 5) Qué NO es señal
 
 - Materiales de academias sin número/año de norma ("dicen que ahora…"), posts en redes, resúmenes de terceros sin fuente. Se anotan como "rumor" solo si dos canales lo repiten, y nunca generan preguntas hasta verificarse.
-- El 2026-II en sí: no es señal, es el pre-test (LISTA NEGRA hasta que se rinda: **v6.01: vie 8-ene-2027 = dia 62** *(⏸ v6.00: dia 65)* (semana 1 de la intensiva, que arranca el lun 4-ene); ⏸ v5.20 (SUPERSEDIDO): primer viernes de la intensiva = vie 26-feb-2027 = día 100 (la intensiva arranca el mar 23-feb, tras el examen Step 1 del lun 22-feb); v5.19: mismo vie 26-feb, intensiva desde el lun 22-feb · v5.18: vie 19-feb o vie 26-feb; en el diseño original era el 5-feb).
+- El 2026-II en sí: no es señal, es el pre-test (LISTA NEGRA hasta que se rinda: **v6.02: vie 8-ene-2027 = dia 57** *(⏸ v6.01: dia 62 · ⏸ v6.00: dia 65)* (semana 1 de la intensiva, que arranca el lun 4-ene); ⏸ v5.20 (SUPERSEDIDO): primer viernes de la intensiva = vie 26-feb-2027 = día 100 (la intensiva arranca el mar 23-feb, tras el examen Step 1 del lun 22-feb); v5.19: mismo vie 26-feb, intensiva desde el lun 22-feb · v5.18: vie 19-feb o vie 26-feb; en el diseño original era el 5-feb).

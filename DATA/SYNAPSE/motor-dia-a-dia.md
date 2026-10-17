@@ -1,7 +1,16 @@
 # SYNAPSE — Motor día-a-día (diseño y operación)
 
 > Construido el 10-jun-2026 por el chat SYNAPSE (PROMPT_CHAT_SYNAPSE.md).
-> **v6.01 · CORRIMIENTO D1 = LUN 12-OCT-2026 (10-oct-2026)**: no se estudió mié 7 → vie 9-oct → `node DATA/_scripts/gen_synapse_plan.js 2026-10-12` (después de
+> **v6.02 · CORRIMIENTO D1 = LUN 19-OCT-2026 (17-oct-2026, vigente)**: no se estudió lun 12 → vie 16-oct → `node DATA/_scripts/gen_synapse_plan.js 2026-10-19`
+> (después de `gen_vibecoding_plan.js 2026-10-19`) → **131 días · 19 semanas · lun 19-oct-2026 → vie 26-feb-2027** (FIN_PLAN 2027-02-26; las mismas **110
+> A-units**, nada se recorta; START en lunes → `OFF_WD` = 0). F0 sem 1-8 (lun 19-oct → dom 13-dic, 48 A) · F1 sem 9-12 (lun 14-dic → dom 10-ene, 21 A) · F2 sem
+> 13-19 (lun 11-ene → vie 26-feb, 41 A, 47 días; deload sem 17-19 desde el lun 8-feb). Vibecoding lun → vie: **19 PC en 18 sábados** del sáb 24-oct (SHIP S1) al
+> sáb 20-feb — SHIP S1-S9 sáb 24-oct … 19-dic · sáb 26-dic = avance S10 · SHIP S10 sáb 2-ene · S11 sáb 9-ene · **SHIP S12 sáb 16-ene** · taper S13 23-ene · S14
+> 30-ene · S15 6-feb · **sáb 13-feb = PC propio de S16 (30') + S17 (0')** · S18 20-feb (0'). **Último sábado con SYNAPSE: sáb 20-feb · último domingo: dom
+> 21-feb**; último PC con minutos sáb 13-feb. La última A-unit (d131, cierre F2 + CCA-F) cae el **vie 26-feb** (día del SIM 100Q #7 de la intensiva ENCAPS).
+> `gen_synapse_plan.js` comprueba que el PC de cada sábado = `pcSab` de `vibecodingPlan.ts`.
+>
+> ⏸ **v6.01 · CORRIMIENTO D1 = LUN 12-OCT-2026 (10-oct-2026; historial)**: no se estudió mié 7 → vie 9-oct → `node DATA/_scripts/gen_synapse_plan.js 2026-10-12` (después de
 > `gen_vibecoding_plan.js 2026-10-12`) → **131 días · 19 semanas · lun 12-oct-2026 → vie 19-feb-2027** (FIN_PLAN 2027-02-19; las mismas **110 A-units**, nada se recorta;
 > sem 1 completa lun 12 → dom 18-oct → `OFF_WD` = 0, ninguna serie B/C corre ni manda piezas al último sábado; 185 piezas B/C reales = v6.00). F0 sem 1-8 (lun 12-oct →
 > dom 6-dic, 48 A) · F1 sem 9-12 (lun 7-dic → dom 3-ene, 21 A) · F2 sem 13-19 (lun 4-ene → vie 19-feb, 41 A, 47 días). Vibecoding lun → vie: **18 PC** del sáb 17-oct
@@ -130,7 +139,10 @@ existentes tocados):
 
 > ⏸ **Ids del 10-jun (historial): ya no existen.** El 6-oct-2026 (v6.00) las tres series se RECREARON con su DTSTART original y fin en el plan:
 > misión 12:30 → **`f1imvu9cnmhrcsi5ag6m3k8jdk`** (→ lun 15-feb-2027) · PC sábado → **`goknd2mvbkpqastc6n3rrhon5g`** (→ sáb 13-feb-2027) · repaso + PC
-> domingo → **`frsvkuk585gmcte6bufo6dkfto`** (→ dom 14-feb-2027). Ids vigentes: `DATA/_v600/cal/CAL_V6.md` §3.
+> domingo → **`frsvkuk585gmcte6bufo6dkfto`** (→ dom 14-feb-2027) *(⏸ ids v6.00, `DATA/_v600/cal/CAL_V6.md` §3 · ⏸ v6.01 (10-oct): misión 12:30 recreada como
+> `7nd90n5s3ueinen4q13dohcaq4` → vie 19-feb; PC sáb/dom sin cambio)*. **Ids vigentes v6.02 (17-oct; `DATA/_v600/cal/CAL_V6.md` §11.2):** misión 12:30
+> **`e37h4fl8gd0v7eavt1f9fgob0o`** (→ vie 26-feb-2027) · PC sábado **`bbj1ne6ken46pj25i5dt36idng`** (→ sáb 20-feb-2027) · repaso + PC domingo
+> **`c010a16rsl6h0lk4krr0a9r3rs`** (→ dom 21-feb-2027).
 
 Los domingos **14 y 21-jun-2026 quedan LIBRES** (otras actividades de Joseph): la serie de
 domingos arranca el 28-jun a propósito (exclusión estructural, sin EXDATE). El plan refleja

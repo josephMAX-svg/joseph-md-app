@@ -39,6 +39,14 @@
  * de RESEARCH_HITOS: X-9 citaba el R10 de v6.00 (vie 19-mar → mar 23-mar) y C-6/T-1 presentaban como vigente un límite interno ya VENCIDO
  * (≤ 15-oct / ≤ 30-sep) que contradecía su propio átomo; ahora lo marcan ⏸ VENCIDO con los días de retraso calculados. Overlays actualizados
  * con update_event (solo descripción) + --set (CAL_V6.md §10).
+ * v6.02 (17-oct-2026 · corrimiento D1 = lun 19-oct): Research corre 3 ranuras → M1 lun 26-oct · C-2 mar 3-nov · T-1 jue 5-nov · C-6 lun 23-nov
+ * · CR-1 mié 25-nov · T-8 mié 23-dic · CR-8 mar 12-ene (=) · CR-9 jue 11-feb (=) · X-1 mar 23-feb · X-9 lun 29-mar · R10 vie 2-abr · R43 mar 27-jul
+ * (CAL_V6.md §11).
+ * v6.02b (17-oct-2026 · FX-CAL): cr-caso (CR-1) pasa a función: el disparador C-3 (d10, vie 13-nov), M1 y las fechas de CR-1/CR-2 salen del plan;
+ * lo de v6.01 queda como historial ⏸ · equipo (X-9) añade al historial «v6.01: X-9 mié 17-mar / R10 mar 23-mar» · PROSPERO-SR1 (R10) deja de
+ * decir «FECHA LÍMITE EXTERNA: ≤ 31-mar-2027», que era falso: PROSPERO no tiene plazo externo (solo exige registrar antes del cribado) y el
+ * ≤ 31-mar-2027 es el objetivo propio de RUTA_PUBLICACION_2027.md → línea «OBJETIVO RUTA …» (mapa OBJETIVO_RUTA). Al próximo corrimiento: lo
+ * etiquetado «v6.02» en estos textos pasa a historial ⏸.
  */
 const fs = require('fs');
 const path = require('path');
@@ -82,6 +90,13 @@ const DOW_ES = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
 const MES_ES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
 const fmtF = (f) => { const d = new Date(f + 'T12:00:00Z'); return `${DOW_ES[d.getUTCDay()]} ${d.getUTCDate()}-${MES_ES[d.getUTCMonth()]}-${d.getUTCFullYear()}`; };
 const diasEntre = (a, b) => Math.round((new Date(b + 'T12:00:00Z') - new Date(a + 'T12:00:00Z')) / 864e5);
+const fmtC = (f) => { const d = new Date(f + 'T12:00:00Z'); return `${DOW_ES[d.getUTCDay()]} ${d.getUTCDate()}-${MES_ES[d.getUTCMonth()]}`; }; // v6.02b: sin año
+// v6.02b: átomo del plan por (ciclo, código); el código puede llevar sufijo de parte («R18 (1/3)») → se compara el prefijo. Lee DIAS en tiempo de llamada.
+const atomoDe = (ciclo, code) => {
+  const a = DIAS.find((x) => x.ciclo === ciclo && (x.code === code || String(x.code || '').startsWith(code + ' ')));
+  if (!a) throw new Error(`átomo ${code} (ciclo ${ciclo}) no encontrado en el plan`);
+  return a;
+};
 
 // ─── Fecha límite EXTERNA por hito (tal como consta en RUTA_PUBLICACION_2027.md §9 / §9.1 · v5.10) ───
 // Un valor función recibe HITOS (fechas del plan) y devuelve el texto: así la fecha que cita sale del .ts, no de un literal.
@@ -91,14 +106,29 @@ const DEADLINE = {
   'carta-diana': 'ventana de letters del journal diana (típ. 4-12 semanas tras la publicación · se fija en C-2)',
   'carta-1': (H) => `la ventana de letters del artículo diana que se fija en C-2 (${fmtF(H['carta-diana'].fecha)}): el SUBMIT de C-6 (${fmtF(H['carta-1'].fecha)}) va ANTES de ese deadline · ⏸ límite interno ≤ 15-oct-2026 (RUTA §9.1) VENCIDO: C-6 cae ${diasEntre('2026-10-15', H['carta-1'].fecha)} días después → hacer C-1…C-5 fuera del átomo o elegir en C-2 una diana con ventana más larga`,
   'tesis-etica': (H) => `oct-2026 (solicitud CEI expedita PRESENTADA a más tardar en T-1, ${fmtF(H['tesis-etica'].fecha)} · sin nº de CEI NO se envía T-8, ${fmtF(H['tesis-L0'].fecha)} · ⏸ límite interno ≤ 30-sep según gap 1 de Palmerton v3b VENCIDO: T-1 cae ${diasEntre('2026-09-30', H['tesis-etica'].fecha)} días después)`,
-  'cr-caso': '31-oct-2026 (caso + consentimiento + senior author · si el jue 5-nov (C-3 en v6.01, ~3 semanas desde M1 vie 16-oct; v6.00 = v5.20: mar 3-nov, M1 mié 14-oct; antes vie 30-oct) no hay caso → plan B, colega SPD · ⚠ v6.01: CR-1 cae el jue 19-nov y CR-2 el lun 23-nov, ya después del 31-oct · v6.00 = v5.20: mar 17-nov / jue 19-nov · v5.18-v5.19: vie 13-nov / mar 17-nov)',
+  // v6.02b: el disparador (C-3), M1 y CR-1/CR-2 salen del plan (antes era un literal con las fechas de v6.01 como vigentes).
+  'cr-caso': (H) => {
+    const c3 = atomoDe(1, 'C-3'); const cr2 = atomoDe(1, 'CR-2'); const cr1 = H['cr-caso'].fecha;
+    return `31-oct-2026 (caso + consentimiento + senior author · si el ${fmtC(c3.fecha)} (C-3 = d${c3.d} en v6.02, ~3 semanas desde M1 ${fmtC(H['mentor'].fecha)}; ⏸ v6.01: jue 5-nov / M1 vie 16-oct · v6.00 = v5.20: mar 3-nov, M1 mié 14-oct; antes vie 30-oct) no hay caso → plan B, colega SPD · ⚠ v6.02: CR-1 cae el ${fmtC(cr1)} y CR-2 el ${fmtC(cr2.fecha)}, ya después del 31-oct (+${diasEntre('2026-10-31', cr1)} / +${diasEntre('2026-10-31', cr2.fecha)} días) · ⏸ v6.01: CR-1 jue 19-nov / CR-2 lun 23-nov, ya después del 31-oct · v6.00 = v5.20: mar 17-nov / jue 19-nov · v5.18-v5.19: vie 13-nov / mar 17-nov)`;
+  },
   'tesis-L0': '≤ 15-feb-2027 (JAAD International → IJD → Actas → Anais)',
   'revisor2': 'antes de PROSPERO (sin revisor #2 humano no hay registro · PRISMA 2020 ítem 8)',
   'cr-paquete': 'antes del submit CR-9 (jue 11-feb-2027, primer día-Research tras la pausa): paquete congelado ANTES de la pausa de átomos (vie 15-ene → mié 10-feb-2027 = núcleo de la intensiva ENCAPS; v6.00: el Step 1 está en pausa del 31-dic al 15-mar · v5.20: la pausa era por las Fases B-C del Step 1)',
   'case-report-1': '≤ 28-feb-2027 (Dermatology Online Journal → JAAD CR → Case Reports in Dermatology)',
-  'equipo': (H) => `antes del registro R10 (${fmtF(H['PROSPERO-SR1'].fecha)}; X-9 = ${fmtF(H['equipo'].fecha)} → ${diasEntre(H['equipo'].fecha, H['PROSPERO-SR1'].fecha)} días de margen · ⏸ v6.00: X-9 jue 11-mar / R10 vie 19-mar · v5.20: X-9 lun 15-mar / R10 vie 19-mar)`,
-  'PROSPERO-SR1': '≤ 31-mar-2027',
+  'equipo': (H) => `antes del registro R10 (${fmtF(H['PROSPERO-SR1'].fecha)}; X-9 = ${fmtF(H['equipo'].fecha)} → ${diasEntre(H['equipo'].fecha, H['PROSPERO-SR1'].fecha)} días de margen · ⏸ v6.01: X-9 mié 17-mar / R10 mar 23-mar · v6.00: X-9 jue 11-mar / R10 vie 19-mar · v5.20: X-9 lun 15-mar / R10 vie 19-mar)`,
+  // v6.02b: 'PROSPERO-SR1' sale de aquí → OBJETIVO_RUTA (no hay fecha límite externa).
   'SR-1': '≤ 31-ago-2027 (Dermatologic Surgery → JAAD → JCD → Anais/Actas)',
+};
+
+// ─── v6.02b: OBJETIVO PROPIO de la RUTA (no es un plazo externo) ───
+// PROSPERO no tiene fecha límite externa: solo exige registrar ANTES de empezar el cribado. El «≤ 31-mar-2027» es el objetivo de
+// RUTA_PUBLICACION_2027.md (tabla de entregables) → la línea se rotula «OBJETIVO RUTA», nunca «FECHA LÍMITE EXTERNA».
+const OBJETIVO_RUTA = {
+  'PROSPERO-SR1': (H) => {
+    const f = H['PROSPERO-SR1'].fecha; const dd = diasEntre('2027-03-31', f); const cribado = atomoDe(2, 'R18');
+    const estado = dd > 0 ? `v6.02: el átomo cae ${fmtC(f)} (+${dd} d; decisión (iii) de Joseph en PENDIENTES)` : `R10 = ${fmtC(f)}, dentro del objetivo`;
+    return `OBJETIVO RUTA ≤ 31-mar-2027 · ${estado} · no es plazo externo: PROSPERO solo exige registrar ANTES del cribado (R18, ${fmtF(cribado.fecha)})`;
+  },
 };
 
 // ─── Parseo de los .ts GENERADOS (mismo enfoque por regex que remap_inicio.js; nunca se ejecuta TS) ───
@@ -150,6 +180,7 @@ function payload(hito, h) {
   ];
   if (atomo.chips && atomo.chips.length) lineas.push(`AVISOS: ${atomo.chips.join(' · ')}`);
   if (DEADLINE[hito]) lineas.push(`FECHA LÍMITE EXTERNA: ${typeof DEADLINE[hito] === 'function' ? DEADLINE[hito](HITOS) : DEADLINE[hito]}`);
+  if (OBJETIVO_RUTA[hito]) lineas.push(OBJETIVO_RUTA[hito](HITOS)); // v6.02b
   lineas.push('', 'Overlay informativo (FREE, no bloquea): la fecha la fija el plan día-a-día (gen_research_plan.js) y se',
     'regenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel',
     '→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.');

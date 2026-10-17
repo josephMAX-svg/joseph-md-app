@@ -7,7 +7,7 @@
 > (CEI/IRB) y (2) declaración de consentimiento parental + asentimiento. **Actualización 12-sep-2026:** el punto (2) YA
 > consta — la portada y la hoja "FLUJO PARTICIPANTES" de `D:\motor_apex\datos_tesis_acne.xlsx` registran un censo **solo con
 > consentimiento** (291 excluidas por no consentir: 271 padres + 20 alumnas) — ver 1.4-1.5 y §4. **Lo que sigue sin constar es
-> el nº y la fecha del CEI (1.1)**: por eso T-1 pasa a d7 (mié 30-sep-2026 en v5.10b; vie 2-oct-2026 en v5.11 y v5.12; mar 6-oct-2026 en v5.13; jue 8-oct-2026 en v5.14; lun 12-oct-2026 en v5.15; mié 14-oct-2026 en v5.16; mar 20-oct-2026 en v5.17; jue 22-oct-2026 en v5.18 y v5.19; **lun 26-oct-2026 en v5.20** — 🔴 26 días después del límite interno ≤ 30-sep) con la solicitud de revisión expedita presentada ese día
+> el nº y la fecha del CEI (1.1)**: por eso T-1 pasa a d7 (mié 30-sep-2026 en v5.10b; vie 2-oct-2026 en v5.11 y v5.12; mar 6-oct-2026 en v5.13; jue 8-oct-2026 en v5.14; lun 12-oct-2026 en v5.15; mié 14-oct-2026 en v5.16; mar 20-oct-2026 en v5.17; jue 22-oct-2026 en v5.18 y v5.19; lun 26-oct-2026 en v5.20 = v6.00; mié 28-oct-2026 en v6.01; **jue 5-nov-2026 en v6.02 (vigente)** — 🔴 36 días después del límite interno ≤ 30-sep) con la solicitud de revisión expedita presentada ese día
 > y T-7/T-8 llevan el gate "sin nº de CEI o exención NO se envía" (MD_MAESTRO L0 y MANUAL §10.1 solo dicen "envío a JAAD
 > International jun-jul 2026", que no ocurrió).
 > Todo lo marcado **A VERIFICAR (5-sep)** lo tiene que responder Joseph con el documento en la mano; no se
@@ -86,6 +86,13 @@ de salud de menores = datos sensibles → consentimiento del titular/representan
   por grado IGA, dominios del CADI) sale de la base de datos del punto 1.8, no de memoria.
 
 ## 5. Calendario mínimo (paralelo a la carta al editor; 45' interdiarios)
+
+> **✅ v6.02 (17-oct-2026, vigente; `researchDailyPlan.ts` regenerado con START 2026-10-19, Research d1 mar 20-oct):** M1 (Dr. Ciro: vía CEI + 10 documentos)
+> **lun 26-oct** · **T-1 jue 5-nov (d7)** · M3 (permiso CADI) lun 9-nov · T-3 mar 1-dic · T-4 jue 3-dic · T-2 STROBE lun 7-dic · T-5 mié 9-dic · T-6 revisión Dr.
+> Ciro vie 11-dic · T-7 formateo + gates jue 17-dic · **T-8 SUBMIT mié 23-dic** (solo con nº de CEI/exención e inglés revisado; si no, cascada a feb-2027) ·
+> PAUSA vie 15-ene → mié 10-feb. Las fechas de la tabla de abajo son v5.20 (⏸; v6.01: M1 vie 16-oct · T-1 mié 28-oct · T-8 lun 21-dic). Fuente:
+> `DATA/RESEARCH/RUTA_PUBLICACION_2027.md`, bloque v6.02.
+
 | Cuándo | Qué |
 |---|---|
 | mié 14-oct-2026 (M1 · v5.20; v5.19 = v5.18: lun 12-oct; v5.17: jue 8-oct) | Pedir al Dr. Ciro, en la misma reunión de las 3 coautorías, la vía CEI (2.1 expedita/retrospectiva o 2.2 exención) y reunir los 10 documentos de la tabla |
