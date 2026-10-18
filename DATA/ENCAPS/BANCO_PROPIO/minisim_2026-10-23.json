@@ -70,7 +70,7 @@
    "moldes_no_verificables": []
   },
   "avisos": [],
-  "lista_negra_2026_II": "VIGENTE: ítems con 2026-2/2026-II excluidos",
+  "lista_negra_pretest": "VIGENTE: ningún ítem deriva del examen reservado como pre-test",
   "rechazados": [],
   "pool_disponible": 50,
   "realineado": [
@@ -109,6 +109,18 @@
     "a": "2026-10-23",
     "el": "2026-10-17",
     "motivo": "corrimiento v6.02 (D1 = 2026-10-19, «todo corre a partir del 19»; no se estudió lun 12 → vie 16-oct): la sesión «mini-sim 1 (D5)» pasa del viernes 2026-10-16 al viernes 2026-10-23 (+5 hábiles = +7 días, mismo día de la semana y mismo dia del plan); ítems intactos, sin regenerar (misma cola larga II-2 + I-10 que la fila mini_sim v6.02 de esa fecha)"
+   }
+  ],
+  "refrescado": [
+   {
+    "el": "2026-10-18",
+    "cambios": [
+     "BP-0012.explicacion ← banco_items_v1.json",
+     "BP-0017.explicacion ← banco_items_v1.json",
+     "BP-0010.explicacion ← banco_items_v1.json",
+     "marca de lista negra → _meta.lista_negra_pretest («VIGENTE: ningún ítem deriva del examen reservado como pre-test»)"
+    ],
+    "motivo": "textos re-sincronizados desde la fuente del pool con gen_encaps_minisim.js --refrescar; ids, orden, claves y selección intactos"
    }
   ]
  },
@@ -289,7 +301,7 @@
    },
    "clave": "C",
    "respuesta": "14",
-   "explicacion": "EDA persistente = 14 días o más. Recall de cifra (formato 2026-II).",
+   "explicacion": "EDA persistente = cuadro que empieza como diarrea aguda infecciosa y se prolonga 14 días o más (≥ 14 d). Recall de cifra de la definición de caso.",
    "fuente": "Examen real 2024-2A Q56 · AIEPI/NTS EDA",
    "verificado_contra": "CLAVE OFICIAL 2024-2A Q56 (A: 14)",
    "molde": "2024-2A Q56",
@@ -523,7 +535,7 @@
    },
    "clave": "B",
    "respuesta": "Cultura organizacional",
-   "explicacion": "CULTURA = valores/normas/creencias compartidas, de carácter DURADERO. CLIMA = PERCEPCIÓN del trabajador sobre su ambiente laboral (cambiante, medible). Par CCSN que el comité 2026-II preguntó desde el otro lado.",
+   "explicacion": "CULTURA = valores/normas/creencias compartidas, de carácter DURADERO. CLIMA = PERCEPCIÓN del trabajador sobre su ambiente laboral (cambiante, medible). Par CCSN: valores y normas compartidos y estables → cultura; percepción del ambiente de trabajo → clima.",
    "fuente": "Compendio López Gestión 2026-I: 'Cultura organizacional: valores, normas y conductas compartidas por sus miembros. Clima organizacional: percepción del trabajador sobre su entorno laboral…'",
    "verificado_contra": "CLAVE OFICIAL 2025-1A Q51 (B: Cultura organizacional) + compendio López Gestión 2026-I (texto extraído)",
    "molde": "2025-1A Q51",
@@ -679,7 +691,7 @@
    },
    "clave": "B",
    "respuesta": "2",
-   "explicacion": "DOS mediciones de hemoglobina al año en el adolescente (tamizaje de anemia). Recall directo de cifra: formato 2026-II.",
+   "explicacion": "DOS mediciones de hemoglobina al año en el adolescente (tamizaje de anemia del paquete de atención integral). Recall directo de cifra: sin viñeta, la pregunta solo pide el número exacto.",
    "fuente": "Examen real 2025-1A Q14 · NTS cuidado integral del adolescente (paquete de atención)",
    "verificado_contra": "CLAVE OFICIAL 2025-1A Q14 (D: 2)",
    "molde": "2025-1A Q14",

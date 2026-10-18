@@ -15,6 +15,9 @@ import {
   VIBE_META, VIBE_DIAS, vibeDiaDe, vibeProyectoEnFecha, vibeTaperEnFecha, vibePCSabado, vibeShipped, vibeShippedVerificado, vibeUltimoVerify, vibeJournalUrl,
   VIBE_TIPO_LABEL, VIBE_ROTACION_ICON,
 } from '../../lib/vibecodingPlan';
+import GuiaBloqueCard from '../GuiaBloqueCard';
+// v6.02c (E5): guías «qué · cuánto · cómo» del 04:15 (vibecoding), del SYNAPSE de L-V, del sábado PC (SHIP + A/B/C) y del Feynman del domingo
+import { guiaVibeDe, guiaSynapseDe, guiaShipDe, guiaFeynmanDe } from '../../lib/rutinaGuia';
 
 const OBS = '#A78BFA'; // mismo morado ◆ que el resto de planes
 
@@ -231,6 +234,17 @@ function HoyView({ dia, hoyD, done, onToggle, vibeDone, onToggleVibe }: { dia: D
       </FadeUp>
 
       <FadeUp delay={30}><VibeCard fecha={dia.fecha} vibeDone={vibeDone} onToggleVibe={onToggleVibe} /></FadeUp>
+
+      {/* v6.02c (E5) · guías del día (formato común): 04:15 vibecoding · SYNAPSE de L-V · sábado PC (SHIP + A/B/C) · domingo Feynman */}
+      {(() => {
+        const gs = [guiaVibeDe(dia.fecha), guiaShipDe(dia.fecha), guiaFeynmanDe(dia.fecha), guiaSynapseDe(dia.fecha)].filter((g): g is NonNullable<typeof g> => !!g);
+        return gs.length ? (
+          <View>
+            <Text style={st.secLbl}>🧭 guía del día · qué · cuánto · cómo</Text>
+            {gs.map((g, i) => <FadeUp key={i} delay={35 + i * 20}><GuiaBloqueCard g={g} color={g.plan === 'synapse' ? INDIGO : OBS} /></FadeUp>)}
+          </View>
+        ) : null;
+      })()}
 
       <Text style={st.secLbl}>◈ jobs del run · en espacios muertos (no tocan tus bloques médicos)</Text>
       {dia.bloques.map((b, i) => <FadeUp key={i} delay={40 + i * 30}><BloqueRow b={b} /></FadeUp>)}

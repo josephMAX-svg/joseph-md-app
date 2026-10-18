@@ -194,7 +194,9 @@ export function guardarModo(iso: string, nivel: ModoNivel): void {
     lsSet(MODO_LOG_KEY, JSON.stringify(log));
   } catch { /* ignore */ }
 }
-export type Frente = 'vibecoding' | 'usmle-anki' | 'usmle-principal' | 'synapse' | 'research-derma' | 'aurum' | 'mir' | 'encaps' | 'liviano' | 'usmle-eval';
+// v6.02c (18-oct-2026, E5): + 'business' (Estudio Pulso, 13:00-13:25 L-V) y 'revision' (sáb 07:15) → el Home los pinta con guía y botón directo.
+export type Frente = 'vibecoding' | 'usmle-anki' | 'usmle-principal' | 'synapse' | 'research-derma' | 'aurum' | 'mir' | 'encaps' | 'liviano' | 'usmle-eval'
+  | 'business' | 'revision';
 /** Mínimo DJ-4 de los secundarios (Joseph, 6-oct-2026): nunca 0 — 30' en ÁMBAR y en la regla de carga (§B7.4). */
 export const MINIMO_DJ4 = "30' (mínimo DJ-4)";
 /**
@@ -212,6 +214,8 @@ export function minimoPorFrente(frente: Frente, nivel: ModoNivel, iso?: string):
     vibecoding: MINIMO_DJ4, synapse: MINIMO_DJ4, 'research-derma': MINIMO_DJ4, aurum: MINIMO_DJ4, liviano: MINIMO_DJ4,
     mir: 'Anki + 25Q (1 h, DJ-4)',
     encaps: f2 ? 'loop: pre-test 10Q + 30Q + eval 20Q' : "10Q ciegas (20') con registro; sin tutoría larga.",
+    business: "15': solo el tramo de audio/lectura (L-V 13:00-13:15; la siesta 13:15-13:30 manda) o la fila del tracker (sábado); la nota, mañana.",
+    revision: null,
   };
   const ROJO: Record<Frente, string | null> = f2 ? {
     // v6.00 · F2: el principal es el ENCAPS (intensiva); el Step 1 está en mantenimiento.
@@ -219,14 +223,16 @@ export function minimoPorFrente(frente: Frente, nivel: ModoNivel, iso?: string):
     'usmle-principal': 'Omitido hoy (F2: Step 1 en mantenimiento).',
     'usmle-eval': 'Omitida hoy.',
     vibecoding: 'Omitido hoy.', synapse: 'Omitido hoy.', 'research-derma': 'Omitido hoy.', aurum: 'Omitido hoy.',
-    mir: 'Omitido hoy.', liviano: 'Omitido hoy.',
+    mir: 'Omitido hoy.', liviano: 'Omitido hoy.', business: 'Omitido hoy.',
+    revision: "10': abre el fichero, marca el nivel de la semana y 1 corrección (el resto, mañana).",
     encaps: 'Solo Anki cifras + pre-test 10Q del sub-eje (08:15). El resto del bloque = dormir/recuperar.',
   } : {
     'usmle-anki': 'Anki AM completo (innegociable).',
     'usmle-principal': 'Solo el pre-test 10Q (08:15) + Anki restante. El resto del bloque = dormir/recuperar.',
     'usmle-eval': 'Omitida hoy.',
     vibecoding: 'Omitido hoy.', synapse: 'Omitido hoy.', 'research-derma': 'Omitido hoy.', aurum: 'Omitido hoy.',
-    mir: 'Omitido hoy.', encaps: 'Omitido hoy.', liviano: 'Omitido hoy.',
+    mir: 'Omitido hoy.', encaps: 'Omitido hoy.', liviano: 'Omitido hoy.', business: 'Omitido hoy.',
+    revision: "10': abre el fichero, marca el nivel de la semana y 1 corrección (el resto, mañana).",
   };
   return nivel === 'AMBAR' ? AMBAR[frente] : ROJO[frente];
 }

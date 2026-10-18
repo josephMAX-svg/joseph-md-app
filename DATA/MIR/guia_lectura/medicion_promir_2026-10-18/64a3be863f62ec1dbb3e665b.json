@@ -1,0 +1,168 @@
+{
+ "titulo": "12.- Principios de bioética y relación médico-paciente",
+ "url": "https://promir.medicapanamericana.com/capitulo/64a3be863f62ec1dbb3e665b",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "12 Principios de bioética y relación médico-paciente",
+   "palabras": 44,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Principios de bioética",
+   "palabras": 388,
+   "palabrasTabla": 0,
+   "citasMIR": 7,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2018-205",
+    "2016-222",
+    "2011-125",
+    "2005-213",
+    "2012-185",
+    "2014-136",
+    "2022-180"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Relación médico-paciente. Atención al paciente en situaciones especiales",
+   "palabras": 239,
+   "palabrasTabla": 0,
+   "citasMIR": 11,
+   "citasMIRdesde2015": 10,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2015-183",
+    "2024-177",
+    "2016-218",
+    "2016-223",
+    "2016-224",
+    "2015-179",
+    "2015-180",
+    "2015-181",
+    "2015-182",
+    "2015-187",
+    "2014-133"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Normativa en la investigación biomédica",
+   "palabras": 452,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2019-053"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Comités de ética asistencial",
+   "palabras": 271,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2019-053"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "5. Responsabilidad del médico residente en la atención en Urgencias",
+   "palabras": 475,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "6. Transfusiones de hemoderivados en situaciones especiales. Consentimientos prestados con limitaciones",
+   "palabras": 227,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2014-132"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "7. Rechazo de tratamiento o denegación de consentimiento",
+   "palabras": 697,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2022-182"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Psiquiatría forense",
+   "href": "64a3be663f62ec1dbb3e6658"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Competencia y capacidad. El menor maduro. Aborto. Donación y trasplante de órganos",
+   "href": "64a3bea13f62ec1dbb3e665d"
+  }
+ ],
+ "totPalabras": 2793,
+ "totPalabrasTabla": 0,
+ "totCitas": 22,
+ "totFigs": 0,
+ "totTablas": 0,
+ "totRecuerda": 1,
+ "medido": "2026-10-18 · chrome-devtools en el Chrome de Joseph (sesión ProMIR) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js"
+}

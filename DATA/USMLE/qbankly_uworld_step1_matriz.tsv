@@ -1,0 +1,649 @@
+# Qbankly · uWorld - USMLE Step 1 · Test Composer · MATRIZ Subject × System (campo r de /api/v2/qbanks?mode=current; dom 18-oct-2026, sesión de Joseph, leído en solo lectura) · subjectId|subject|systemId|system|nº preguntas (solo celdas > 0). Validada: cada Subject suma exactamente su total de qbankly_uworld_step1_filtros.tsv; en 18 Systems la suma de la columna difiere en ±1-2 del total del System (así lo devuelve la API: el composer cuenta por System) → para planificar usar el MENOR de los dos.
+107|Anatomy|1016|Cardiovascular System (Aortic and peripheral artery diseases)|6
+107|Anatomy|1017|Cardiovascular System (Cardiac arrhythmias)|2
+107|Anatomy|1019|Cardiovascular System (Congenital heart disease)|1
+107|Anatomy|1020|Cardiovascular System (Coronary heart disease)|6
+107|Anatomy|1023|Cardiovascular System (Miscellaneous)|2
+107|Anatomy|1024|Cardiovascular System (Myopericardial diseases)|1
+107|Anatomy|1025|Cardiovascular System (Normal structure and function of the cardiovascular system)|14
+107|Anatomy|1026|Cardiovascular System (Valvular heart diseases)|2
+107|Anatomy|1033|Ear, Nose & Throat (ENT) (Disorders of the ear, nose, and throat)|15
+107|Anatomy|1037|Endocrine, Diabetes & Metabolism (Endocrine tumors)|1
+107|Anatomy|1038|Endocrine, Diabetes & Metabolism (Hypothalamus and pituitary disorders)|1
+107|Anatomy|1044|Female Reproductive System & Breast (Breast disorders)|1
+107|Anatomy|1045|Female Reproductive System & Breast (Congenital and developmental anomalies)|1
+107|Anatomy|1046|Female Reproductive System & Breast (Genital tract tumors and tumor-like lesions)|2
+107|Anatomy|1049|Female Reproductive System & Breast (Miscellaneous)|4
+107|Anatomy|1050|Female Reproductive System & Breast (Normal structure and function of the female reproductive system and breast)|6
+107|Anatomy|1051|Gastrointestinal & Nutrition (Biliary tract disorders)|1
+107|Anatomy|1052|Gastrointestinal & Nutrition (Congenital and developmental anomalies)|1
+107|Anatomy|1054|Gastrointestinal & Nutrition (Gastroesophageal disorders)|4
+107|Anatomy|1055|Gastrointestinal & Nutrition (Hepatic disorders)|4
+107|Anatomy|1056|Gastrointestinal & Nutrition (Intestinal and colorectal disorders)|8
+107|Anatomy|1057|Gastrointestinal & Nutrition (Miscellaneous)|5
+107|Anatomy|1058|Gastrointestinal & Nutrition (Normal structure and function of the GI tract)|10
+107|Anatomy|1059|Gastrointestinal & Nutrition (Pancreatic disorders)|3
+107|Anatomy|1060|Gastrointestinal & Nutrition (Tumors of the GI tract)|2
+107|Anatomy|1084|Male Reproductive System (Disorders of the male reproductive system)|8
+107|Anatomy|1085|Male Reproductive System (Normal structure and function of the male reproductive system)|2
+107|Anatomy|1091|Miscellaneous (Multisystem) (Miscellaneous)|2
+107|Anatomy|1093|Nervous System (CNS infections)|2
+107|Anatomy|1094|Nervous System (Cerebrovascular disease)|33
+107|Anatomy|1095|Nervous System (Congenital and developmental anomalies)|1
+107|Anatomy|1096|Nervous System (Demyelinating diseases)|1
+107|Anatomy|1097|Nervous System (Disorders of peripheral nerves and muscles)|34
+107|Anatomy|1100|Nervous System (Miscellaneous)|4
+107|Anatomy|1101|Nervous System (Neurodegenerative disorders and dementias)|2
+107|Anatomy|1102|Nervous System (Normal structure and function of the nervous system)|32
+107|Anatomy|1105|Nervous System (Spinal cord disorders)|5
+107|Anatomy|1106|Nervous System (Traumatic brain injuries)|3
+107|Anatomy|1107|Nervous System (Tumors of the nervous system)|2
+107|Anatomy|1108|Ophthalmology (Disorders of the eye and associated structures)|5
+107|Anatomy|1119|Pregnancy, Childbirth & Puerperium (Disorders of pregnancy, childbirth, and puerperium)|3
+107|Anatomy|1128|Psychiatric/Behavioral & Substance Use Disorder (Psychotic disorders)|1
+107|Anatomy|1132|Pulmonary & Critical Care (Critical care medicine)|3
+107|Anatomy|1135|Pulmonary & Critical Care (Miscellaneous)|1
+107|Anatomy|1136|Pulmonary & Critical Care (Normal pulmonary structure and function)|2
+107|Anatomy|1137|Pulmonary & Critical Care (Obstructive lung disease)|1
+107|Anatomy|1138|Pulmonary & Critical Care (Pulmonary infections)|1
+107|Anatomy|1144|Renal, Urinary Systems & Electrolytes (Congenital and developmental anomalies)|2
+107|Anatomy|1149|Renal, Urinary Systems & Electrolytes (Miscellaneous)|1
+107|Anatomy|1152|Renal, Urinary Systems & Electrolytes (Normal structure and function of the kidneys and urinary system)|4
+107|Anatomy|1153|Renal, Urinary Systems & Electrolytes (Urinary incontinence)|2
+107|Anatomy|1154|Rheumatology/Orthopedics & Sports (Arthritis and spondyloarthropathies)|1
+107|Anatomy|1157|Rheumatology/Orthopedics & Sports (Bone/joint injuries and infections)|23
+107|Anatomy|1158|Rheumatology/Orthopedics & Sports (Congenital and developmental anomalies)|2
+107|Anatomy|1160|Rheumatology/Orthopedics & Sports (Miscellaneous)|1
+107|Anatomy|1161|Rheumatology/Orthopedics & Sports (Normal structure and function of the musculoskeletal system)|19
+107|Anatomy|1162|Rheumatology/Orthopedics & Sports (Spinal disorders and back pain)|3
+108|Behavioral science|1049|Female Reproductive System & Breast (Miscellaneous)|2
+108|Behavioral science|1053|Gastrointestinal & Nutrition (Disorders of nutrition)|1
+108|Behavioral science|1084|Male Reproductive System (Disorders of the male reproductive system)|3
+108|Behavioral science|1095|Nervous System (Congenital and developmental anomalies)|1
+108|Behavioral science|1100|Nervous System (Miscellaneous)|1
+108|Behavioral science|1121|Psychiatric/Behavioral & Substance Use Disorder (Anxiety and trauma-related disorders)|21
+108|Behavioral science|1122|Psychiatric/Behavioral & Substance Use Disorder (Eating disorders)|7
+108|Behavioral science|1123|Psychiatric/Behavioral & Substance Use Disorder (Miscellaneous)|13
+108|Behavioral science|1124|Psychiatric/Behavioral & Substance Use Disorder (Mood disorders)|23
+108|Behavioral science|1125|Psychiatric/Behavioral & Substance Use Disorder (Neurodevelopmental disorders)|17
+108|Behavioral science|1126|Psychiatric/Behavioral & Substance Use Disorder (Normal behavior and development)|18
+108|Behavioral science|1127|Psychiatric/Behavioral & Substance Use Disorder (Personality disorders)|7
+108|Behavioral science|1128|Psychiatric/Behavioral & Substance Use Disorder (Psychotic disorders)|17
+108|Behavioral science|1129|Psychiatric/Behavioral & Substance Use Disorder (Somatoform disorders)|2
+108|Behavioral science|1130|Psychiatric/Behavioral & Substance Use Disorder (Substance use disorders)|15
+108|Behavioral science|1163|Social Sciences (Ethics/Legal/Professional) (Communication and interpersonal skills)|61
+108|Behavioral science|1164|Social Sciences (Ethics/Legal/Professional) (Healthcare policy and economics)|9
+108|Behavioral science|1165|Social Sciences (Ethics/Legal/Professional) (Medical ethics and jurisprudence)|20
+108|Behavioral science|1166|Social Sciences (Ethics/Legal/Professional) (Miscellaneous)|3
+108|Behavioral science|1167|Social Sciences (Ethics/Legal/Professional) (Patient safety)|9
+108|Behavioral science|1168|Social Sciences (Ethics/Legal/Professional) (System based-practice and quality improvement)|4
+109|Biochemistry|1006|Biochemistry (General Principles) (Amino acids, proteins, and enzymes)|20
+109|Biochemistry|1007|Biochemistry (General Principles) (Bioenergetics and carbohydrate metabolism)|21
+109|Biochemistry|1008|Biochemistry (General Principles) (Cell and molecular biology)|17
+109|Biochemistry|1009|Biochemistry (General Principles) (Lipid metabolism)|3
+109|Biochemistry|1010|Biochemistry (General Principles) (Miscellaneous)|3
+109|Biochemistry|1022|Cardiovascular System (Hypertension)|1
+109|Biochemistry|1024|Cardiovascular System (Myopericardial diseases)|1
+109|Biochemistry|1029|Dermatology (Miscellaneous)|1
+109|Biochemistry|1035|Endocrine, Diabetes & Metabolism (Congenital and developmental anomalies)|8
+109|Biochemistry|1036|Endocrine, Diabetes & Metabolism (Diabetes mellitus)|9
+109|Biochemistry|1037|Endocrine, Diabetes & Metabolism (Endocrine tumors)|1
+109|Biochemistry|1040|Endocrine, Diabetes & Metabolism (Normal structure and function of endocrine glands)|2
+109|Biochemistry|1041|Endocrine, Diabetes & Metabolism (Obesity and dyslipidemia)|3
+109|Biochemistry|1053|Gastrointestinal & Nutrition (Disorders of nutrition)|6
+109|Biochemistry|1055|Gastrointestinal & Nutrition (Hepatic disorders)|4
+109|Biochemistry|1056|Gastrointestinal & Nutrition (Intestinal and colorectal disorders)|2
+109|Biochemistry|1058|Gastrointestinal & Nutrition (Normal structure and function of the GI tract)|2
+109|Biochemistry|1061|Genetics (General Principles) (Clinical genetics)|1
+109|Biochemistry|1062|Genetics (General Principles) (DNA structure, replication, and repair)|1
+109|Biochemistry|1064|Genetics (General Principles) (Miscellaneous)|1
+109|Biochemistry|1067|Hematology & Oncology (Hemostasis and thrombosis)|1
+109|Biochemistry|1068|Hematology & Oncology (Miscellaneous)|1
+109|Biochemistry|1069|Hematology & Oncology (Normal hematologic structure and function)|9
+109|Biochemistry|1071|Hematology & Oncology (Platelet disorders)|1
+109|Biochemistry|1072|Hematology & Oncology (Principles of oncology)|1
+109|Biochemistry|1073|Hematology & Oncology (Red blood cell disorders)|12
+109|Biochemistry|1075|Hematology & Oncology (White blood cell disorders)|1
+109|Biochemistry|1091|Miscellaneous (Multisystem) (Miscellaneous)|1
+109|Biochemistry|1095|Nervous System (Congenital and developmental anomalies)|5
+109|Biochemistry|1097|Nervous System (Disorders of peripheral nerves and muscles)|1
+109|Biochemistry|1098|Nervous System (Headache)|1
+109|Biochemistry|1101|Nervous System (Neurodegenerative disorders and dementias)|1
+109|Biochemistry|1102|Nervous System (Normal structure and function of the nervous system)|1
+109|Biochemistry|1117|Poisoning & Environmental Exposure (Environmental exposure)|1
+109|Biochemistry|1118|Poisoning & Environmental Exposure (Toxicology)|2
+109|Biochemistry|1130|Psychiatric/Behavioral & Substance Use Disorder (Substance use disorders)|1
+109|Biochemistry|1132|Pulmonary & Critical Care (Critical care medicine)|2
+109|Biochemistry|1136|Pulmonary & Critical Care (Normal pulmonary structure and function)|1
+109|Biochemistry|1137|Pulmonary & Critical Care (Obstructive lung disease)|1
+109|Biochemistry|1142|Renal, Urinary Systems & Electrolytes (Bone metabolism)|1
+109|Biochemistry|1147|Renal, Urinary Systems & Electrolytes (Fluid, electrolytes, and acid-base)|1
+109|Biochemistry|1154|Rheumatology/Orthopedics & Sports (Arthritis and spondyloarthropathies)|3
+109|Biochemistry|1155|Rheumatology/Orthopedics & Sports (Autoimmune disorders and vasculitides)|1
+109|Biochemistry|1158|Rheumatology/Orthopedics & Sports (Congenital and developmental anomalies)|1
+109|Biochemistry|1159|Rheumatology/Orthopedics & Sports (Metabolic bone disorders)|1
+110|Biostatistics|1011|Biostatistics & Epidemiology (Epidemiology and population health)|30
+110|Biostatistics|1012|Biostatistics & Epidemiology (Measures and distribution of data)|11
+110|Biostatistics|1014|Biostatistics & Epidemiology (Probability and principles of testing)|23
+110|Biostatistics|1015|Biostatistics & Epidemiology (Study design and interpretation)|54
+110|Biostatistics|1036|Endocrine, Diabetes & Metabolism (Diabetes mellitus)|1
+110|Biostatistics|1072|Hematology & Oncology (Principles of oncology)|1
+110|Biostatistics|1168|Social Sciences (Ethics/Legal/Professional) (System based-practice and quality improvement)|1
+111|Embryology|1019|Cardiovascular System (Congenital heart disease)|4
+111|Embryology|1025|Cardiovascular System (Normal structure and function of the cardiovascular system)|3
+111|Embryology|1032|Dermatology (Skin tumors and tumor-like lesions)|1
+111|Embryology|1033|Ear, Nose & Throat (ENT) (Disorders of the ear, nose, and throat)|5
+111|Embryology|1035|Endocrine, Diabetes & Metabolism (Congenital and developmental anomalies)|2
+111|Embryology|1037|Endocrine, Diabetes & Metabolism (Endocrine tumors)|1
+111|Embryology|1045|Female Reproductive System & Breast (Congenital and developmental anomalies)|2
+111|Embryology|1052|Gastrointestinal & Nutrition (Congenital and developmental anomalies)|13
+111|Embryology|1054|Gastrointestinal & Nutrition (Gastroesophageal disorders)|1
+111|Embryology|1056|Gastrointestinal & Nutrition (Intestinal and colorectal disorders)|1
+111|Embryology|1058|Gastrointestinal & Nutrition (Normal structure and function of the GI tract)|2
+111|Embryology|1059|Gastrointestinal & Nutrition (Pancreatic disorders)|1
+111|Embryology|1084|Male Reproductive System (Disorders of the male reproductive system)|4
+111|Embryology|1091|Miscellaneous (Multisystem) (Miscellaneous)|3
+111|Embryology|1095|Nervous System (Congenital and developmental anomalies)|8
+111|Embryology|1100|Nervous System (Miscellaneous)|1
+111|Embryology|1102|Nervous System (Normal structure and function of the nervous system)|1
+111|Embryology|1105|Nervous System (Spinal cord disorders)|2
+111|Embryology|1119|Pregnancy, Childbirth & Puerperium (Disorders of pregnancy, childbirth, and puerperium)|3
+111|Embryology|1120|Pregnancy, Childbirth & Puerperium (Normal pregnancy, childbirth, and puerperium)|3
+111|Embryology|1131|Pulmonary & Critical Care (Congenital and developmental anomalies)|1
+111|Embryology|1132|Pulmonary & Critical Care (Critical care medicine)|2
+111|Embryology|1144|Renal, Urinary Systems & Electrolytes (Congenital and developmental anomalies)|8
+111|Embryology|1145|Renal, Urinary Systems & Electrolytes (Cystic kidney diseases)|1
+111|Embryology|1151|Renal, Urinary Systems & Electrolytes (Nephrolithiasis and urinary tract obstruction)|1
+111|Embryology|1158|Rheumatology/Orthopedics & Sports (Congenital and developmental anomalies)|1
+112|Genetics|1010|Biochemistry (General Principles) (Miscellaneous)|1
+112|Genetics|1011|Biostatistics & Epidemiology (Epidemiology and population health)|1
+112|Genetics|1013|Biostatistics & Epidemiology (Miscellaneous)|1
+112|Genetics|1019|Cardiovascular System (Congenital heart disease)|2
+112|Genetics|1024|Cardiovascular System (Myopericardial diseases)|2
+112|Genetics|1027|Dermatology (Disorders of epidermal appendages)|1
+112|Genetics|1033|Ear, Nose & Throat (ENT) (Disorders of the ear, nose, and throat)|1
+112|Genetics|1043|Endocrine, Diabetes & Metabolism (Thyroid disorders)|1
+112|Genetics|1045|Female Reproductive System & Breast (Congenital and developmental anomalies)|7
+112|Genetics|1060|Gastrointestinal & Nutrition (Tumors of the GI tract)|1
+112|Genetics|1061|Genetics (General Principles) (Clinical genetics)|20
+112|Genetics|1062|Genetics (General Principles) (DNA structure, replication, and repair)|17
+112|Genetics|1063|Genetics (General Principles) (Gene expression and regulation)|7
+112|Genetics|1064|Genetics (General Principles) (Miscellaneous)|1
+112|Genetics|1065|Genetics (General Principles) (Protein synthesis)|1
+112|Genetics|1066|Genetics (General Principles) (RNA structure, synthesis, and processing)|13
+112|Genetics|1068|Hematology & Oncology (Miscellaneous)|1
+112|Genetics|1072|Hematology & Oncology (Principles of oncology)|1
+112|Genetics|1073|Hematology & Oncology (Red blood cell disorders)|5
+112|Genetics|1083|Infectious Diseases (Viral infections)|1
+112|Genetics|1084|Male Reproductive System (Disorders of the male reproductive system)|2
+112|Genetics|1091|Miscellaneous (Multisystem) (Miscellaneous)|4
+112|Genetics|1095|Nervous System (Congenital and developmental anomalies)|6
+112|Genetics|1100|Nervous System (Miscellaneous)|1
+112|Genetics|1101|Nervous System (Neurodegenerative disorders and dementias)|1
+112|Genetics|1103|Nervous System (Seizures and epilepsy)|1
+112|Genetics|1119|Pregnancy, Childbirth & Puerperium (Disorders of pregnancy, childbirth, and puerperium)|2
+112|Genetics|1120|Pregnancy, Childbirth & Puerperium (Normal pregnancy, childbirth, and puerperium)|1
+112|Genetics|1131|Pulmonary & Critical Care (Congenital and developmental anomalies)|2
+112|Genetics|1150|Renal, Urinary Systems & Electrolytes (Neoplasms of the kidneys and urinary tract)|1
+112|Genetics|1158|Rheumatology/Orthopedics & Sports (Congenital and developmental anomalies)|1
+113|Histology|1020|Cardiovascular System (Coronary heart disease)|1
+113|Histology|1024|Cardiovascular System (Myopericardial diseases)|1
+113|Histology|1028|Dermatology (Inflammatory dermatoses and bullous diseases)|1
+113|Histology|1030|Dermatology (Normal structure and function of skin)|2
+113|Histology|1031|Dermatology (Skin and soft tissue infections)|1
+113|Histology|1037|Endocrine, Diabetes & Metabolism (Endocrine tumors)|1
+113|Histology|1044|Female Reproductive System & Breast (Breast disorders)|2
+113|Histology|1046|Female Reproductive System & Breast (Genital tract tumors and tumor-like lesions)|1
+113|Histology|1050|Female Reproductive System & Breast (Normal structure and function of the female reproductive system and breast)|1
+113|Histology|1055|Gastrointestinal & Nutrition (Hepatic disorders)|1
+113|Histology|1056|Gastrointestinal & Nutrition (Intestinal and colorectal disorders)|1
+113|Histology|1058|Gastrointestinal & Nutrition (Normal structure and function of the GI tract)|1
+113|Histology|1079|Infectious Diseases (HIV and sexually transmitted infections)|1
+113|Histology|1085|Male Reproductive System (Normal structure and function of the male reproductive system)|1
+113|Histology|1097|Nervous System (Disorders of peripheral nerves and muscles)|1
+113|Histology|1101|Nervous System (Neurodegenerative disorders and dementias)|1
+113|Histology|1102|Nervous System (Normal structure and function of the nervous system)|2
+113|Histology|1119|Pregnancy, Childbirth & Puerperium (Disorders of pregnancy, childbirth, and puerperium)|1
+113|Histology|1136|Pulmonary & Critical Care (Normal pulmonary structure and function)|2
+113|Histology|1137|Pulmonary & Critical Care (Obstructive lung disease)|1
+113|Histology|1148|Renal, Urinary Systems & Electrolytes (Glomerular diseases)|3
+113|Histology|1161|Rheumatology/Orthopedics & Sports (Normal structure and function of the musculoskeletal system)|2
+114|Immunology|1000|Allergy & Immunology (Anaphylaxis and allergic reactions)|8
+114|Immunology|1001|Allergy & Immunology (Autoimmune diseases)|4
+114|Immunology|1002|Allergy & Immunology (Immune deficiencies)|16
+114|Immunology|1003|Allergy & Immunology (Miscellaneous)|20
+114|Immunology|1004|Allergy & Immunology (Principles of immunology)|25
+114|Immunology|1005|Allergy & Immunology (Transplant medicine)|6
+114|Immunology|1024|Cardiovascular System (Myopericardial diseases)|1
+114|Immunology|1028|Dermatology (Inflammatory dermatoses and bullous diseases)|3
+114|Immunology|1030|Dermatology (Normal structure and function of skin)|1
+114|Immunology|1032|Dermatology (Skin tumors and tumor-like lesions)|3
+114|Immunology|1033|Ear, Nose & Throat (ENT) (Disorders of the ear, nose, and throat)|1
+114|Immunology|1056|Gastrointestinal & Nutrition (Intestinal and colorectal disorders)|1
+114|Immunology|1068|Hematology & Oncology (Miscellaneous)|1
+114|Immunology|1072|Hematology & Oncology (Principles of oncology)|2
+114|Immunology|1073|Hematology & Oncology (Red blood cell disorders)|3
+114|Immunology|1074|Hematology & Oncology (Transfusion medicine)|1
+114|Immunology|1075|Hematology & Oncology (White blood cell disorders)|3
+114|Immunology|1077|Infectious Diseases (Bacterial infections)|6
+114|Immunology|1078|Infectious Diseases (Fungal infections)|1
+114|Immunology|1079|Infectious Diseases (HIV and sexually transmitted infections)|1
+114|Immunology|1081|Infectious Diseases (Miscellaneous)|2
+114|Immunology|1083|Infectious Diseases (Viral infections)|4
+114|Immunology|1091|Miscellaneous (Multisystem) (Miscellaneous)|1
+114|Immunology|1109|Ophthalmology (Normal structure and function of the eye and associated structures)|1
+114|Immunology|1110|Pathology (General Principles) (Cellular pathology)|1
+114|Immunology|1112|Pathology (General Principles) (Neoplasia)|1
+114|Immunology|1115|Pharmacology (General Principles) (Miscellaneous)|1
+114|Immunology|1132|Pulmonary & Critical Care (Critical care medicine)|2
+114|Immunology|1133|Pulmonary & Critical Care (Interstitial lung disease)|1
+114|Immunology|1137|Pulmonary & Critical Care (Obstructive lung disease)|1
+114|Immunology|1138|Pulmonary & Critical Care (Pulmonary infections)|3
+114|Immunology|1148|Renal, Urinary Systems & Electrolytes (Glomerular diseases)|2
+114|Immunology|1154|Rheumatology/Orthopedics & Sports (Arthritis and spondyloarthropathies)|3
+114|Immunology|1155|Rheumatology/Orthopedics & Sports (Autoimmune disorders and vasculitides)|1
+114|Immunology|1163|Social Sciences (Ethics/Legal/Professional) (Communication and interpersonal skills)|1
+115|Microbiology|1002|Allergy & Immunology (Immune deficiencies)|1
+115|Microbiology|1024|Cardiovascular System (Myopericardial diseases)|1
+115|Microbiology|1028|Dermatology (Inflammatory dermatoses and bullous diseases)|1
+115|Microbiology|1031|Dermatology (Skin and soft tissue infections)|12
+115|Microbiology|1033|Ear, Nose & Throat (ENT) (Disorders of the ear, nose, and throat)|4
+115|Microbiology|1047|Female Reproductive System & Breast (Genitourinary tract infections)|8
+115|Microbiology|1054|Gastrointestinal & Nutrition (Gastroesophageal disorders)|4
+115|Microbiology|1055|Gastrointestinal & Nutrition (Hepatic disorders)|6
+115|Microbiology|1056|Gastrointestinal & Nutrition (Intestinal and colorectal disorders)|7
+115|Microbiology|1057|Gastrointestinal & Nutrition (Miscellaneous)|1
+115|Microbiology|1073|Hematology & Oncology (Red blood cell disorders)|3
+115|Microbiology|1076|Infectious Diseases (Antimicrobial drugs)|4
+115|Microbiology|1077|Infectious Diseases (Bacterial infections)|90
+115|Microbiology|1078|Infectious Diseases (Fungal infections)|7
+115|Microbiology|1079|Infectious Diseases (HIV and sexually transmitted infections)|26
+115|Microbiology|1080|Infectious Diseases (Infection control)|5
+115|Microbiology|1081|Infectious Diseases (Miscellaneous)|3
+115|Microbiology|1082|Infectious Diseases (Parasitic and helminthic infections)|21
+115|Microbiology|1083|Infectious Diseases (Viral infections)|36
+115|Microbiology|1084|Male Reproductive System (Disorders of the male reproductive system)|2
+115|Microbiology|1086|Microbiology (General Principles) (Bacteriology)|15
+115|Microbiology|1087|Microbiology (General Principles) (Miscellaneous)|2
+115|Microbiology|1088|Microbiology (General Principles) (Mycology)|2
+115|Microbiology|1089|Microbiology (General Principles) (Parasitology)|1
+115|Microbiology|1090|Microbiology (General Principles) (Virology)|10
+115|Microbiology|1093|Nervous System (CNS infections)|20
+115|Microbiology|1097|Nervous System (Disorders of peripheral nerves and muscles)|4
+115|Microbiology|1105|Nervous System (Spinal cord disorders)|1
+115|Microbiology|1108|Ophthalmology (Disorders of the eye and associated structures)|3
+115|Microbiology|1119|Pregnancy, Childbirth & Puerperium (Disorders of pregnancy, childbirth, and puerperium)|3
+115|Microbiology|1137|Pulmonary & Critical Care (Obstructive lung disease)|1
+115|Microbiology|1138|Pulmonary & Critical Care (Pulmonary infections)|40
+115|Microbiology|1157|Rheumatology/Orthopedics & Sports (Bone/joint injuries and infections)|3
+115|Microbiology|1160|Rheumatology/Orthopedics & Sports (Miscellaneous)|1
+116|Pathology|1000|Allergy & Immunology (Anaphylaxis and allergic reactions)|2
+116|Pathology|1001|Allergy & Immunology (Autoimmune diseases)|3
+116|Pathology|1003|Allergy & Immunology (Miscellaneous)|1
+116|Pathology|1016|Cardiovascular System (Aortic and peripheral artery diseases)|21
+116|Pathology|1017|Cardiovascular System (Cardiac arrhythmias)|6
+116|Pathology|1019|Cardiovascular System (Congenital heart disease)|2
+116|Pathology|1020|Cardiovascular System (Coronary heart disease)|19
+116|Pathology|1021|Cardiovascular System (Heart failure and shock)|4
+116|Pathology|1022|Cardiovascular System (Hypertension)|4
+116|Pathology|1023|Cardiovascular System (Miscellaneous)|3
+116|Pathology|1024|Cardiovascular System (Myopericardial diseases)|22
+116|Pathology|1025|Cardiovascular System (Normal structure and function of the cardiovascular system)|1
+116|Pathology|1026|Cardiovascular System (Valvular heart diseases)|16
+116|Pathology|1027|Dermatology (Disorders of epidermal appendages)|7
+116|Pathology|1028|Dermatology (Inflammatory dermatoses and bullous diseases)|21
+116|Pathology|1030|Dermatology (Normal structure and function of skin)|1
+116|Pathology|1031|Dermatology (Skin and soft tissue infections)|2
+116|Pathology|1032|Dermatology (Skin tumors and tumor-like lesions)|26
+116|Pathology|1033|Ear, Nose & Throat (ENT) (Disorders of the ear, nose, and throat)|5
+116|Pathology|1034|Endocrine, Diabetes & Metabolism (Adrenal disorders)|2
+116|Pathology|1035|Endocrine, Diabetes & Metabolism (Congenital and developmental anomalies)|3
+116|Pathology|1036|Endocrine, Diabetes & Metabolism (Diabetes mellitus)|6
+116|Pathology|1037|Endocrine, Diabetes & Metabolism (Endocrine tumors)|8
+116|Pathology|1038|Endocrine, Diabetes & Metabolism (Hypothalamus and pituitary disorders)|3
+116|Pathology|1041|Endocrine, Diabetes & Metabolism (Obesity and dyslipidemia)|3
+116|Pathology|1042|Endocrine, Diabetes & Metabolism (Reproductive endocrinology)|3
+116|Pathology|1043|Endocrine, Diabetes & Metabolism (Thyroid disorders)|3
+116|Pathology|1044|Female Reproductive System & Breast (Breast disorders)|3
+116|Pathology|1046|Female Reproductive System & Breast (Genital tract tumors and tumor-like lesions)|14
+116|Pathology|1047|Female Reproductive System & Breast (Genitourinary tract infections)|3
+116|Pathology|1049|Female Reproductive System & Breast (Miscellaneous)|1
+116|Pathology|1051|Gastrointestinal & Nutrition (Biliary tract disorders)|11
+116|Pathology|1052|Gastrointestinal & Nutrition (Congenital and developmental anomalies)|5
+116|Pathology|1053|Gastrointestinal & Nutrition (Disorders of nutrition)|3
+116|Pathology|1054|Gastrointestinal & Nutrition (Gastroesophageal disorders)|20
+116|Pathology|1055|Gastrointestinal & Nutrition (Hepatic disorders)|25
+116|Pathology|1056|Gastrointestinal & Nutrition (Intestinal and colorectal disorders)|28
+116|Pathology|1057|Gastrointestinal & Nutrition (Miscellaneous)|3
+116|Pathology|1059|Gastrointestinal & Nutrition (Pancreatic disorders)|7
+116|Pathology|1060|Gastrointestinal & Nutrition (Tumors of the GI tract)|20
+116|Pathology|1067|Hematology & Oncology (Hemostasis and thrombosis)|12
+116|Pathology|1068|Hematology & Oncology (Miscellaneous)|2
+116|Pathology|1070|Hematology & Oncology (Plasma cell disorders)|1
+116|Pathology|1071|Hematology & Oncology (Platelet disorders)|4
+116|Pathology|1072|Hematology & Oncology (Principles of oncology)|1
+116|Pathology|1073|Hematology & Oncology (Red blood cell disorders)|33
+116|Pathology|1075|Hematology & Oncology (White blood cell disorders)|37
+116|Pathology|1077|Infectious Diseases (Bacterial infections)|4
+116|Pathology|1079|Infectious Diseases (HIV and sexually transmitted infections)|4
+116|Pathology|1081|Infectious Diseases (Miscellaneous)|1
+116|Pathology|1082|Infectious Diseases (Parasitic and helminthic infections)|1
+116|Pathology|1084|Male Reproductive System (Disorders of the male reproductive system)|12
+116|Pathology|1091|Miscellaneous (Multisystem) (Miscellaneous)|5
+116|Pathology|1093|Nervous System (CNS infections)|6
+116|Pathology|1094|Nervous System (Cerebrovascular disease)|24
+116|Pathology|1095|Nervous System (Congenital and developmental anomalies)|11
+116|Pathology|1096|Nervous System (Demyelinating diseases)|6
+116|Pathology|1097|Nervous System (Disorders of peripheral nerves and muscles)|13
+116|Pathology|1098|Nervous System (Headache)|4
+116|Pathology|1099|Nervous System (Hydrocephalus)|4
+116|Pathology|1100|Nervous System (Miscellaneous)|5
+116|Pathology|1101|Nervous System (Neurodegenerative disorders and dementias)|20
+116|Pathology|1102|Nervous System (Normal structure and function of the nervous system)|1
+116|Pathology|1103|Nervous System (Seizures and epilepsy)|2
+116|Pathology|1105|Nervous System (Spinal cord disorders)|3
+116|Pathology|1106|Nervous System (Traumatic brain injuries)|4
+116|Pathology|1107|Nervous System (Tumors of the nervous system)|15
+116|Pathology|1108|Ophthalmology (Disorders of the eye and associated structures)|5
+116|Pathology|1110|Pathology (General Principles) (Cellular pathology)|5
+116|Pathology|1111|Pathology (General Principles) (Inflammation and repair)|2
+116|Pathology|1112|Pathology (General Principles) (Neoplasia)|29
+116|Pathology|1117|Poisoning & Environmental Exposure (Environmental exposure)|2
+116|Pathology|1119|Pregnancy, Childbirth & Puerperium (Disorders of pregnancy, childbirth, and puerperium)|7
+116|Pathology|1131|Pulmonary & Critical Care (Congenital and developmental anomalies)|2
+116|Pathology|1132|Pulmonary & Critical Care (Critical care medicine)|6
+116|Pathology|1133|Pulmonary & Critical Care (Interstitial lung disease)|15
+116|Pathology|1134|Pulmonary & Critical Care (Lung cancer)|7
+116|Pathology|1135|Pulmonary & Critical Care (Miscellaneous)|5
+116|Pathology|1136|Pulmonary & Critical Care (Normal pulmonary structure and function)|1
+116|Pathology|1137|Pulmonary & Critical Care (Obstructive lung disease)|8
+116|Pathology|1138|Pulmonary & Critical Care (Pulmonary infections)|9
+116|Pathology|1139|Pulmonary & Critical Care (Pulmonary vascular disease)|7
+116|Pathology|1141|Renal, Urinary Systems & Electrolytes (Acute kidney injury)|16
+116|Pathology|1143|Renal, Urinary Systems & Electrolytes (Chronic kidney disease)|7
+116|Pathology|1144|Renal, Urinary Systems & Electrolytes (Congenital and developmental anomalies)|5
+116|Pathology|1145|Renal, Urinary Systems & Electrolytes (Cystic kidney diseases)|2
+116|Pathology|1147|Renal, Urinary Systems & Electrolytes (Fluid, electrolytes, and acid-base)|3
+116|Pathology|1148|Renal, Urinary Systems & Electrolytes (Glomerular diseases)|31
+116|Pathology|1149|Renal, Urinary Systems & Electrolytes (Miscellaneous)|2
+116|Pathology|1150|Renal, Urinary Systems & Electrolytes (Neoplasms of the kidneys and urinary tract)|9
+116|Pathology|1151|Renal, Urinary Systems & Electrolytes (Nephrolithiasis and urinary tract obstruction)|12
+116|Pathology|1154|Rheumatology/Orthopedics & Sports (Arthritis and spondyloarthropathies)|11
+116|Pathology|1155|Rheumatology/Orthopedics & Sports (Autoimmune disorders and vasculitides)|12
+116|Pathology|1156|Rheumatology/Orthopedics & Sports (Bone tumors and tumor-like lesions)|5
+116|Pathology|1157|Rheumatology/Orthopedics & Sports (Bone/joint injuries and infections)|6
+116|Pathology|1158|Rheumatology/Orthopedics & Sports (Congenital and developmental anomalies)|3
+116|Pathology|1159|Rheumatology/Orthopedics & Sports (Metabolic bone disorders)|5
+116|Pathology|1160|Rheumatology/Orthopedics & Sports (Miscellaneous)|2
+116|Pathology|1161|Rheumatology/Orthopedics & Sports (Normal structure and function of the musculoskeletal system)|2
+116|Pathology|1162|Rheumatology/Orthopedics & Sports (Spinal disorders and back pain)|1
+117|Pathophysiology|1000|Allergy & Immunology (Anaphylaxis and allergic reactions)|3
+117|Pathophysiology|1001|Allergy & Immunology (Autoimmune diseases)|2
+117|Pathophysiology|1002|Allergy & Immunology (Immune deficiencies)|6
+117|Pathophysiology|1016|Cardiovascular System (Aortic and peripheral artery diseases)|3
+117|Pathophysiology|1017|Cardiovascular System (Cardiac arrhythmias)|9
+117|Pathophysiology|1019|Cardiovascular System (Congenital heart disease)|18
+117|Pathophysiology|1020|Cardiovascular System (Coronary heart disease)|9
+117|Pathophysiology|1021|Cardiovascular System (Heart failure and shock)|16
+117|Pathophysiology|1022|Cardiovascular System (Hypertension)|3
+117|Pathophysiology|1023|Cardiovascular System (Miscellaneous)|2
+117|Pathophysiology|1024|Cardiovascular System (Myopericardial diseases)|16
+117|Pathophysiology|1025|Cardiovascular System (Normal structure and function of the cardiovascular system)|5
+117|Pathophysiology|1026|Cardiovascular System (Valvular heart diseases)|19
+117|Pathophysiology|1027|Dermatology (Disorders of epidermal appendages)|1
+117|Pathophysiology|1029|Dermatology (Miscellaneous)|3
+117|Pathophysiology|1030|Dermatology (Normal structure and function of skin)|2
+117|Pathophysiology|1031|Dermatology (Skin and soft tissue infections)|1
+117|Pathophysiology|1032|Dermatology (Skin tumors and tumor-like lesions)|2
+117|Pathophysiology|1033|Ear, Nose & Throat (ENT) (Disorders of the ear, nose, and throat)|6
+117|Pathophysiology|1034|Endocrine, Diabetes & Metabolism (Adrenal disorders)|8
+117|Pathophysiology|1035|Endocrine, Diabetes & Metabolism (Congenital and developmental anomalies)|5
+117|Pathophysiology|1036|Endocrine, Diabetes & Metabolism (Diabetes mellitus)|6
+117|Pathophysiology|1037|Endocrine, Diabetes & Metabolism (Endocrine tumors)|12
+117|Pathophysiology|1038|Endocrine, Diabetes & Metabolism (Hypothalamus and pituitary disorders)|6
+117|Pathophysiology|1039|Endocrine, Diabetes & Metabolism (Miscellaneous)|2
+117|Pathophysiology|1041|Endocrine, Diabetes & Metabolism (Obesity and dyslipidemia)|1
+117|Pathophysiology|1042|Endocrine, Diabetes & Metabolism (Reproductive endocrinology)|5
+117|Pathophysiology|1043|Endocrine, Diabetes & Metabolism (Thyroid disorders)|6
+117|Pathophysiology|1044|Female Reproductive System & Breast (Breast disorders)|1
+117|Pathophysiology|1046|Female Reproductive System & Breast (Genital tract tumors and tumor-like lesions)|7
+117|Pathophysiology|1047|Female Reproductive System & Breast (Genitourinary tract infections)|2
+117|Pathophysiology|1048|Female Reproductive System & Breast (Menstrual disorders and contraception)|1
+117|Pathophysiology|1051|Gastrointestinal & Nutrition (Biliary tract disorders)|3
+117|Pathophysiology|1052|Gastrointestinal & Nutrition (Congenital and developmental anomalies)|1
+117|Pathophysiology|1053|Gastrointestinal & Nutrition (Disorders of nutrition)|4
+117|Pathophysiology|1054|Gastrointestinal & Nutrition (Gastroesophageal disorders)|8
+117|Pathophysiology|1055|Gastrointestinal & Nutrition (Hepatic disorders)|10
+117|Pathophysiology|1056|Gastrointestinal & Nutrition (Intestinal and colorectal disorders)|8
+117|Pathophysiology|1057|Gastrointestinal & Nutrition (Miscellaneous)|2
+117|Pathophysiology|1058|Gastrointestinal & Nutrition (Normal structure and function of the GI tract)|1
+117|Pathophysiology|1059|Gastrointestinal & Nutrition (Pancreatic disorders)|5
+117|Pathophysiology|1060|Gastrointestinal & Nutrition (Tumors of the GI tract)|2
+117|Pathophysiology|1067|Hematology & Oncology (Hemostasis and thrombosis)|8
+117|Pathophysiology|1068|Hematology & Oncology (Miscellaneous)|1
+117|Pathophysiology|1069|Hematology & Oncology (Normal hematologic structure and function)|1
+117|Pathophysiology|1071|Hematology & Oncology (Platelet disorders)|7
+117|Pathophysiology|1072|Hematology & Oncology (Principles of oncology)|2
+117|Pathophysiology|1073|Hematology & Oncology (Red blood cell disorders)|18
+117|Pathophysiology|1074|Hematology & Oncology (Transfusion medicine)|1
+117|Pathophysiology|1075|Hematology & Oncology (White blood cell disorders)|4
+117|Pathophysiology|1077|Infectious Diseases (Bacterial infections)|2
+117|Pathophysiology|1078|Infectious Diseases (Fungal infections)|1
+117|Pathophysiology|1082|Infectious Diseases (Parasitic and helminthic infections)|1
+117|Pathophysiology|1084|Male Reproductive System (Disorders of the male reproductive system)|2
+117|Pathophysiology|1091|Miscellaneous (Multisystem) (Miscellaneous)|3
+117|Pathophysiology|1092|Nervous System (Anesthesia)|1
+117|Pathophysiology|1093|Nervous System (CNS infections)|1
+117|Pathophysiology|1094|Nervous System (Cerebrovascular disease)|3
+117|Pathophysiology|1095|Nervous System (Congenital and developmental anomalies)|3
+117|Pathophysiology|1096|Nervous System (Demyelinating diseases)|1
+117|Pathophysiology|1097|Nervous System (Disorders of peripheral nerves and muscles)|9
+117|Pathophysiology|1098|Nervous System (Headache)|2
+117|Pathophysiology|1099|Nervous System (Hydrocephalus)|1
+117|Pathophysiology|1100|Nervous System (Miscellaneous)|1
+117|Pathophysiology|1101|Nervous System (Neurodegenerative disorders and dementias)|4
+117|Pathophysiology|1102|Nervous System (Normal structure and function of the nervous system)|1
+117|Pathophysiology|1103|Nervous System (Seizures and epilepsy)|4
+117|Pathophysiology|1104|Nervous System (Sleep disorders)|5
+117|Pathophysiology|1105|Nervous System (Spinal cord disorders)|2
+117|Pathophysiology|1108|Ophthalmology (Disorders of the eye and associated structures)|7
+117|Pathophysiology|1112|Pathology (General Principles) (Neoplasia)|1
+117|Pathophysiology|1117|Poisoning & Environmental Exposure (Environmental exposure)|2
+117|Pathophysiology|1118|Poisoning & Environmental Exposure (Toxicology)|2
+117|Pathophysiology|1119|Pregnancy, Childbirth & Puerperium (Disorders of pregnancy, childbirth, and puerperium)|16
+117|Pathophysiology|1120|Pregnancy, Childbirth & Puerperium (Normal pregnancy, childbirth, and puerperium)|5
+117|Pathophysiology|1123|Psychiatric/Behavioral & Substance Use Disorder (Miscellaneous)|1
+117|Pathophysiology|1130|Psychiatric/Behavioral & Substance Use Disorder (Substance use disorders)|2
+117|Pathophysiology|1131|Pulmonary & Critical Care (Congenital and developmental anomalies)|3
+117|Pathophysiology|1132|Pulmonary & Critical Care (Critical care medicine)|18
+117|Pathophysiology|1133|Pulmonary & Critical Care (Interstitial lung disease)|7
+117|Pathophysiology|1134|Pulmonary & Critical Care (Lung cancer)|3
+117|Pathophysiology|1135|Pulmonary & Critical Care (Miscellaneous)|7
+117|Pathophysiology|1136|Pulmonary & Critical Care (Normal pulmonary structure and function)|2
+117|Pathophysiology|1137|Pulmonary & Critical Care (Obstructive lung disease)|22
+117|Pathophysiology|1138|Pulmonary & Critical Care (Pulmonary infections)|6
+117|Pathophysiology|1139|Pulmonary & Critical Care (Pulmonary vascular disease)|10
+117|Pathophysiology|1140|Pulmonary & Critical Care (Sleep disorders)|1
+117|Pathophysiology|1141|Renal, Urinary Systems & Electrolytes (Acute kidney injury)|6
+117|Pathophysiology|1142|Renal, Urinary Systems & Electrolytes (Bone metabolism)|5
+117|Pathophysiology|1143|Renal, Urinary Systems & Electrolytes (Chronic kidney disease)|1
+117|Pathophysiology|1144|Renal, Urinary Systems & Electrolytes (Congenital and developmental anomalies)|3
+117|Pathophysiology|1146|Renal, Urinary Systems & Electrolytes (Diabetes insipidus)|3
+117|Pathophysiology|1147|Renal, Urinary Systems & Electrolytes (Fluid, electrolytes, and acid-base)|4
+117|Pathophysiology|1148|Renal, Urinary Systems & Electrolytes (Glomerular diseases)|2
+117|Pathophysiology|1149|Renal, Urinary Systems & Electrolytes (Miscellaneous)|2
+117|Pathophysiology|1151|Renal, Urinary Systems & Electrolytes (Nephrolithiasis and urinary tract obstruction)|2
+117|Pathophysiology|1152|Renal, Urinary Systems & Electrolytes (Normal structure and function of the kidneys and urinary system)|1
+117|Pathophysiology|1153|Renal, Urinary Systems & Electrolytes (Urinary incontinence)|2
+117|Pathophysiology|1154|Rheumatology/Orthopedics & Sports (Arthritis and spondyloarthropathies)|7
+117|Pathophysiology|1155|Rheumatology/Orthopedics & Sports (Autoimmune disorders and vasculitides)|7
+117|Pathophysiology|1156|Rheumatology/Orthopedics & Sports (Bone tumors and tumor-like lesions)|1
+117|Pathophysiology|1157|Rheumatology/Orthopedics & Sports (Bone/joint injuries and infections)|1
+117|Pathophysiology|1158|Rheumatology/Orthopedics & Sports (Congenital and developmental anomalies)|1
+117|Pathophysiology|1159|Rheumatology/Orthopedics & Sports (Metabolic bone disorders)|1
+117|Pathophysiology|1160|Rheumatology/Orthopedics & Sports (Miscellaneous)|2
+118|Pharmacology|1000|Allergy & Immunology (Anaphylaxis and allergic reactions)|6
+118|Pharmacology|1001|Allergy & Immunology (Autoimmune diseases)|4
+118|Pharmacology|1005|Allergy & Immunology (Transplant medicine)|1
+118|Pharmacology|1016|Cardiovascular System (Aortic and peripheral artery diseases)|5
+118|Pharmacology|1017|Cardiovascular System (Cardiac arrhythmias)|23
+118|Pharmacology|1018|Cardiovascular System (Cardiovascular drugs)|15
+118|Pharmacology|1019|Cardiovascular System (Congenital heart disease)|1
+118|Pharmacology|1020|Cardiovascular System (Coronary heart disease)|11
+118|Pharmacology|1021|Cardiovascular System (Heart failure and shock)|13
+118|Pharmacology|1022|Cardiovascular System (Hypertension)|14
+118|Pharmacology|1023|Cardiovascular System (Miscellaneous)|4
+118|Pharmacology|1024|Cardiovascular System (Myopericardial diseases)|4
+118|Pharmacology|1025|Cardiovascular System (Normal structure and function of the cardiovascular system)|2
+118|Pharmacology|1026|Cardiovascular System (Valvular heart diseases)|1
+118|Pharmacology|1027|Dermatology (Disorders of epidermal appendages)|2
+118|Pharmacology|1028|Dermatology (Inflammatory dermatoses and bullous diseases)|2
+118|Pharmacology|1029|Dermatology (Miscellaneous)|1
+118|Pharmacology|1031|Dermatology (Skin and soft tissue infections)|2
+118|Pharmacology|1033|Ear, Nose & Throat (ENT) (Disorders of the ear, nose, and throat)|2
+118|Pharmacology|1036|Endocrine, Diabetes & Metabolism (Diabetes mellitus)|21
+118|Pharmacology|1037|Endocrine, Diabetes & Metabolism (Endocrine tumors)|2
+118|Pharmacology|1038|Endocrine, Diabetes & Metabolism (Hypothalamus and pituitary disorders)|2
+118|Pharmacology|1039|Endocrine, Diabetes & Metabolism (Miscellaneous)|4
+118|Pharmacology|1041|Endocrine, Diabetes & Metabolism (Obesity and dyslipidemia)|5
+118|Pharmacology|1042|Endocrine, Diabetes & Metabolism (Reproductive endocrinology)|7
+118|Pharmacology|1043|Endocrine, Diabetes & Metabolism (Thyroid disorders)|10
+118|Pharmacology|1046|Female Reproductive System & Breast (Genital tract tumors and tumor-like lesions)|1
+118|Pharmacology|1048|Female Reproductive System & Breast (Menstrual disorders and contraception)|2
+118|Pharmacology|1049|Female Reproductive System & Breast (Miscellaneous)|1
+118|Pharmacology|1051|Gastrointestinal & Nutrition (Biliary tract disorders)|1
+118|Pharmacology|1052|Gastrointestinal & Nutrition (Congenital and developmental anomalies)|1
+118|Pharmacology|1053|Gastrointestinal & Nutrition (Disorders of nutrition)|2
+118|Pharmacology|1054|Gastrointestinal & Nutrition (Gastroesophageal disorders)|8
+118|Pharmacology|1055|Gastrointestinal & Nutrition (Hepatic disorders)|6
+118|Pharmacology|1056|Gastrointestinal & Nutrition (Intestinal and colorectal disorders)|7
+118|Pharmacology|1057|Gastrointestinal & Nutrition (Miscellaneous)|2
+118|Pharmacology|1060|Gastrointestinal & Nutrition (Tumors of the GI tract)|1
+118|Pharmacology|1067|Hematology & Oncology (Hemostasis and thrombosis)|15
+118|Pharmacology|1068|Hematology & Oncology (Miscellaneous)|1
+118|Pharmacology|1070|Hematology & Oncology (Plasma cell disorders)|1
+118|Pharmacology|1071|Hematology & Oncology (Platelet disorders)|3
+118|Pharmacology|1072|Hematology & Oncology (Principles of oncology)|14
+118|Pharmacology|1073|Hematology & Oncology (Red blood cell disorders)|6
+118|Pharmacology|1075|Hematology & Oncology (White blood cell disorders)|3
+118|Pharmacology|1076|Infectious Diseases (Antimicrobial drugs)|19
+118|Pharmacology|1077|Infectious Diseases (Bacterial infections)|10
+118|Pharmacology|1078|Infectious Diseases (Fungal infections)|3
+118|Pharmacology|1079|Infectious Diseases (HIV and sexually transmitted infections)|10
+118|Pharmacology|1080|Infectious Diseases (Infection control)|1
+118|Pharmacology|1081|Infectious Diseases (Miscellaneous)|1
+118|Pharmacology|1082|Infectious Diseases (Parasitic and helminthic infections)|3
+118|Pharmacology|1083|Infectious Diseases (Viral infections)|3
+118|Pharmacology|1084|Male Reproductive System (Disorders of the male reproductive system)|9
+118|Pharmacology|1085|Male Reproductive System (Normal structure and function of the male reproductive system)|1
+118|Pharmacology|1091|Miscellaneous (Multisystem) (Miscellaneous)|2
+118|Pharmacology|1092|Nervous System (Anesthesia)|11
+118|Pharmacology|1093|Nervous System (CNS infections)|1
+118|Pharmacology|1094|Nervous System (Cerebrovascular disease)|2
+118|Pharmacology|1095|Nervous System (Congenital and developmental anomalies)|1
+118|Pharmacology|1097|Nervous System (Disorders of peripheral nerves and muscles)|7
+118|Pharmacology|1098|Nervous System (Headache)|5
+118|Pharmacology|1100|Nervous System (Miscellaneous)|4
+118|Pharmacology|1101|Nervous System (Neurodegenerative disorders and dementias)|6
+118|Pharmacology|1102|Nervous System (Normal structure and function of the nervous system)|3
+118|Pharmacology|1103|Nervous System (Seizures and epilepsy)|12
+118|Pharmacology|1104|Nervous System (Sleep disorders)|3
+118|Pharmacology|1108|Ophthalmology (Disorders of the eye and associated structures)|8
+118|Pharmacology|1109|Ophthalmology (Normal structure and function of the eye and associated structures)|1
+118|Pharmacology|1113|Pharmacology (General Principles) (Drug metabolism and toxicity)|18
+118|Pharmacology|1114|Pharmacology (General Principles) (Drug receptors and pharmacodynamics)|5
+118|Pharmacology|1115|Pharmacology (General Principles) (Miscellaneous)|7
+118|Pharmacology|1116|Pharmacology (General Principles) (Pharmacokinetics)|14
+118|Pharmacology|1117|Poisoning & Environmental Exposure (Environmental exposure)|1
+118|Pharmacology|1118|Poisoning & Environmental Exposure (Toxicology)|20
+118|Pharmacology|1119|Pregnancy, Childbirth & Puerperium (Disorders of pregnancy, childbirth, and puerperium)|7
+118|Pharmacology|1121|Psychiatric/Behavioral & Substance Use Disorder (Anxiety and trauma-related disorders)|4
+118|Pharmacology|1122|Psychiatric/Behavioral & Substance Use Disorder (Eating disorders)|1
+118|Pharmacology|1123|Psychiatric/Behavioral & Substance Use Disorder (Miscellaneous)|4
+118|Pharmacology|1124|Psychiatric/Behavioral & Substance Use Disorder (Mood disorders)|10
+118|Pharmacology|1128|Psychiatric/Behavioral & Substance Use Disorder (Psychotic disorders)|8
+118|Pharmacology|1130|Psychiatric/Behavioral & Substance Use Disorder (Substance use disorders)|8
+118|Pharmacology|1132|Pulmonary & Critical Care (Critical care medicine)|2
+118|Pharmacology|1133|Pulmonary & Critical Care (Interstitial lung disease)|1
+118|Pharmacology|1135|Pulmonary & Critical Care (Miscellaneous)|4
+118|Pharmacology|1137|Pulmonary & Critical Care (Obstructive lung disease)|10
+118|Pharmacology|1138|Pulmonary & Critical Care (Pulmonary infections)|2
+118|Pharmacology|1139|Pulmonary & Critical Care (Pulmonary vascular disease)|2
+118|Pharmacology|1143|Renal, Urinary Systems & Electrolytes (Chronic kidney disease)|2
+118|Pharmacology|1144|Renal, Urinary Systems & Electrolytes (Congenital and developmental anomalies)|2
+118|Pharmacology|1146|Renal, Urinary Systems & Electrolytes (Diabetes insipidus)|1
+118|Pharmacology|1147|Renal, Urinary Systems & Electrolytes (Fluid, electrolytes, and acid-base)|16
+118|Pharmacology|1148|Renal, Urinary Systems & Electrolytes (Glomerular diseases)|1
+118|Pharmacology|1149|Renal, Urinary Systems & Electrolytes (Miscellaneous)|9
+118|Pharmacology|1150|Renal, Urinary Systems & Electrolytes (Neoplasms of the kidneys and urinary tract)|1
+118|Pharmacology|1151|Renal, Urinary Systems & Electrolytes (Nephrolithiasis and urinary tract obstruction)|1
+118|Pharmacology|1152|Renal, Urinary Systems & Electrolytes (Normal structure and function of the kidneys and urinary system)|1
+118|Pharmacology|1153|Renal, Urinary Systems & Electrolytes (Urinary incontinence)|1
+118|Pharmacology|1154|Rheumatology/Orthopedics & Sports (Arthritis and spondyloarthropathies)|13
+118|Pharmacology|1155|Rheumatology/Orthopedics & Sports (Autoimmune disorders and vasculitides)|4
+118|Pharmacology|1159|Rheumatology/Orthopedics & Sports (Metabolic bone disorders)|5
+119|Physiology|1016|Cardiovascular System (Aortic and peripheral artery diseases)|2
+119|Physiology|1017|Cardiovascular System (Cardiac arrhythmias)|10
+119|Physiology|1018|Cardiovascular System (Cardiovascular drugs)|2
+119|Physiology|1019|Cardiovascular System (Congenital heart disease)|4
+119|Physiology|1020|Cardiovascular System (Coronary heart disease)|1
+119|Physiology|1021|Cardiovascular System (Heart failure and shock)|13
+119|Physiology|1022|Cardiovascular System (Hypertension)|2
+119|Physiology|1024|Cardiovascular System (Myopericardial diseases)|3
+119|Physiology|1025|Cardiovascular System (Normal structure and function of the cardiovascular system)|31
+119|Physiology|1026|Cardiovascular System (Valvular heart diseases)|8
+119|Physiology|1033|Ear, Nose & Throat (ENT) (Disorders of the ear, nose, and throat)|1
+119|Physiology|1034|Endocrine, Diabetes & Metabolism (Adrenal disorders)|1
+119|Physiology|1035|Endocrine, Diabetes & Metabolism (Congenital and developmental anomalies)|1
+119|Physiology|1036|Endocrine, Diabetes & Metabolism (Diabetes mellitus)|6
+119|Physiology|1038|Endocrine, Diabetes & Metabolism (Hypothalamus and pituitary disorders)|1
+119|Physiology|1039|Endocrine, Diabetes & Metabolism (Miscellaneous)|4
+119|Physiology|1040|Endocrine, Diabetes & Metabolism (Normal structure and function of endocrine glands)|1
+119|Physiology|1041|Endocrine, Diabetes & Metabolism (Obesity and dyslipidemia)|1
+119|Physiology|1042|Endocrine, Diabetes & Metabolism (Reproductive endocrinology)|6
+119|Physiology|1043|Endocrine, Diabetes & Metabolism (Thyroid disorders)|14
+119|Physiology|1046|Female Reproductive System & Breast (Genital tract tumors and tumor-like lesions)|1
+119|Physiology|1048|Female Reproductive System & Breast (Menstrual disorders and contraception)|1
+119|Physiology|1050|Female Reproductive System & Breast (Normal structure and function of the female reproductive system and breast)|4
+119|Physiology|1051|Gastrointestinal & Nutrition (Biliary tract disorders)|1
+119|Physiology|1053|Gastrointestinal & Nutrition (Disorders of nutrition)|2
+119|Physiology|1055|Gastrointestinal & Nutrition (Hepatic disorders)|3
+119|Physiology|1056|Gastrointestinal & Nutrition (Intestinal and colorectal disorders)|3
+119|Physiology|1057|Gastrointestinal & Nutrition (Miscellaneous)|1
+119|Physiology|1058|Gastrointestinal & Nutrition (Normal structure and function of the GI tract)|6
+119|Physiology|1059|Gastrointestinal & Nutrition (Pancreatic disorders)|1
+119|Physiology|1060|Gastrointestinal & Nutrition (Tumors of the GI tract)|1
+119|Physiology|1067|Hematology & Oncology (Hemostasis and thrombosis)|1
+119|Physiology|1072|Hematology & Oncology (Principles of oncology)|1
+119|Physiology|1073|Hematology & Oncology (Red blood cell disorders)|5
+119|Physiology|1074|Hematology & Oncology (Transfusion medicine)|2
+119|Physiology|1084|Male Reproductive System (Disorders of the male reproductive system)|6
+119|Physiology|1091|Miscellaneous (Multisystem) (Miscellaneous)|3
+119|Physiology|1096|Nervous System (Demyelinating diseases)|1
+119|Physiology|1100|Nervous System (Miscellaneous)|1
+119|Physiology|1102|Nervous System (Normal structure and function of the nervous system)|7
+119|Physiology|1105|Nervous System (Spinal cord disorders)|1
+119|Physiology|1106|Nervous System (Traumatic brain injuries)|1
+119|Physiology|1109|Ophthalmology (Normal structure and function of the eye and associated structures)|1
+119|Physiology|1117|Poisoning & Environmental Exposure (Environmental exposure)|1
+119|Physiology|1118|Poisoning & Environmental Exposure (Toxicology)|1
+119|Physiology|1119|Pregnancy, Childbirth & Puerperium (Disorders of pregnancy, childbirth, and puerperium)|2
+119|Physiology|1120|Pregnancy, Childbirth & Puerperium (Normal pregnancy, childbirth, and puerperium)|6
+119|Physiology|1131|Pulmonary & Critical Care (Congenital and developmental anomalies)|1
+119|Physiology|1132|Pulmonary & Critical Care (Critical care medicine)|5
+119|Physiology|1133|Pulmonary & Critical Care (Interstitial lung disease)|2
+119|Physiology|1135|Pulmonary & Critical Care (Miscellaneous)|4
+119|Physiology|1136|Pulmonary & Critical Care (Normal pulmonary structure and function)|17
+119|Physiology|1137|Pulmonary & Critical Care (Obstructive lung disease)|3
+119|Physiology|1139|Pulmonary & Critical Care (Pulmonary vascular disease)|4
+119|Physiology|1142|Renal, Urinary Systems & Electrolytes (Bone metabolism)|2
+119|Physiology|1143|Renal, Urinary Systems & Electrolytes (Chronic kidney disease)|4
+119|Physiology|1144|Renal, Urinary Systems & Electrolytes (Congenital and developmental anomalies)|1
+119|Physiology|1146|Renal, Urinary Systems & Electrolytes (Diabetes insipidus)|4
+119|Physiology|1147|Renal, Urinary Systems & Electrolytes (Fluid, electrolytes, and acid-base)|14
+119|Physiology|1149|Renal, Urinary Systems & Electrolytes (Miscellaneous)|1
+119|Physiology|1150|Renal, Urinary Systems & Electrolytes (Neoplasms of the kidneys and urinary tract)|1
+119|Physiology|1152|Renal, Urinary Systems & Electrolytes (Normal structure and function of the kidneys and urinary system)|18
+119|Physiology|1157|Rheumatology/Orthopedics & Sports (Bone/joint injuries and infections)|2
+119|Physiology|1159|Rheumatology/Orthopedics & Sports (Metabolic bone disorders)|2
+119|Physiology|1161|Rheumatology/Orthopedics & Sports (Normal structure and function of the musculoskeletal system)|8

@@ -38,6 +38,11 @@
  *        ≥ su fecha con la misma cola larga y sin mini-sim (ítems intactos: no se regenera ni se pierde contenido; queda
  *        _meta.realineado y los reservado_para del pool se re-fechan). Si no encaja en ninguno: se borra (fecha sin sesión) o se
  *        regenera (fecha que sigue siendo viernes de mini-sim).
+ *   node DATA/_scripts/gen_encaps_minisim.js --refrescar [--dry]       → (v6.02d) tras corregir el TEXTO de un ítem en su fuente (explicacion en
+ *        banco_items_v1.json / set_*.json): lo propaga a las salidas ya armadas que lo contienen SIN re-seleccionar (ids, orden y claves
+ *        intactos), migra la marca de lista negra a _meta.lista_negra_pretest (texto neutro: las salidas que ve Joseph no nombran el examen
+ *        reservado como pre-test), deja _meta.refrescado y re-emite el HTML con html(). Aborta sin escribir si un ítem cambió de enunciado/
+ *        opciones/clave/respuesta o si una salida VIGENTE sigue nombrando ese examen. Después: sync_encaps_bp_web.js + gen_encaps_guia.js.
  *   node DATA/_scripts/gen_encaps_minisim.js --inventario              → BANCO_PROPIO/_inventario_banco_por_codigo.json (oferta vs
  *        demanda por código v3: sets, reales etiquetados, banco_items_v1, claves.json, QX/Theomed, resueltas, déficit).
  *   node DATA/_scripts/gen_encaps_minisim.js 2026-09-18 --dry          → solo informe (no escribe)
@@ -96,6 +101,10 @@
  *   MINI-SIM 25Q I-10 + V-6 (v6.02; el ex-CHECKPOINT de la F1 v6.01, sin ese rótulo) → --semana 2027-02-22 arma minisim_2027-02-22 y
  *   --semana 2027-03-01 arma minisim_2027-03-02 (filasRunner() los da como fila 'mini_sim' del carril B). La reposición genérica imprime la regla
  *   del SQL de la intensiva («filas del carril B dia 53-84 (dia_mant 61-92) sin ✓»).
+ * v6.02d (18-oct-2026, F1 «semana 1 estructurada»): 3 explicaciones de banco_items_v1.json (BP-0010 · BP-0012 · BP-0017, mini-sim del vie 23-oct)
+ *   aludían al examen reservado como pre-test → corregidas en la FUENTE y propagadas con el modo nuevo --refrescar; la marca de lista negra de
+ *   las salidas pasa a `_meta.lista_negra_pretest` (texto neutro) y el motivo de rechazo / la cola de fuente_preguntas del pre-test de arranque
+ *   ya no nombran ese examen (LN_VIGENTE · FP_LN_ARRANQUE · LN_MENCION). La regla de exclusión (enListaNegra) NO cambia.
  * v5.20 (6-oct, DEFINITIVA): D1 = mié 7-oct-2026 · 92 días → mar 16-feb-2027 (régimen v6.18, backup study_schedule_bk_1006) · pre-test de arranque mié 7 + jue 8-oct ·
  *   mini-sims en los MISMOS 17 viernes vie 9-oct → vie 12-feb · ficheros BANCO_PROPIO re-fechados (ítems intactos, _meta.realineado v5.20) · pre-test 2026-II vie 26-feb
  *   (= día 100, primer viernes de la intensiva mar 23-feb → mar 9-mar) · EXAMEN ENCAPS 2027-I FIJADO mié 10-mar-2027.
@@ -163,6 +172,12 @@ function leerRegistro() {
   return { fallos, debiles, pretestHecho, reg };
 }
 const enListaNegra = (it) => /2026-2\b|2026-II/i.test([it.verificado_contra, it.molde, it.fuente].join(' '));
+// v6.02d (18-oct-2026, F1): lo que ve Joseph (runner HTML + su .json + public/encaps/bp) NO nombra el examen reservado como pre-test
+// (ni su proceso ni lo que preguntó ese comité): las marcas de lista negra de las salidas usan la clave `_meta.lista_negra_pretest`
+// (antes `lista_negra_2026_II`) con texto neutro, y --refrescar aborta si una salida conserva una mención mientras la lista negra sigue VIGENTE.
+const LN_VIGENTE = 'VIGENTE: ningún ítem deriva del examen reservado como pre-test';
+const FP_LN_ARRANQUE = 'el examen reservado como pre-test de la intensiva queda fuera (lista negra)'; // cola de fuente_preguntas del pre-test de arranque
+const LN_MENCION = /2026[-_ ]?II(?![A-Za-z])|2026-2(?!\d)|examen de agosto(?: de)?[ -]?2026|comit[eé] (?:del? )?2026/i; // misma regla que sync_encaps_bp_web.js
 
 // ── pool del banco propio ──
 function cargarPool(pretestHecho) {
@@ -173,7 +188,7 @@ function cargarPool(pretestHecho) {
     for (const it of j.items || []) {
       if (!it.id || !it.codigo || !it.enunciado || !it.opciones || !it.clave) { rechazados.push([f, it.id || '?', 'campos incompletos']); continue; }
       if (ids.has(it.id)) { rechazados.push([f, it.id, 'id duplicado']); continue; }
-      if (!pretestHecho && enListaNegra(it)) { rechazados.push([f, it.id, 'LISTA NEGRA 2026-II']); continue; }
+      if (!pretestHecho && enListaNegra(it)) { rechazados.push([f, it.id, 'LISTA NEGRA (examen reservado como pre-test)']); continue; }
       ids.add(it.id);
       pool.push({ ...it, area: it.area || areaDe(it.codigo), _file: f });
     }
@@ -412,7 +427,7 @@ function modoMinisim(fecha) {
     fuente_preguntas: `BANCO_PROPIO (${[...new Set(items.map((x) => x._file))].join(', ')}) · moldes 2024-2A→2026-1 · claves verificadas por ítem`,
     n: items.length, seg_por_q: RECETA_MINISIM.seg_por_q, umbral: RECETA_MINISIM.umbral_25, alerta: RECETA_MINISIM.alerta_25, mostrar_codigo: false,
     instrucciones: `25 preguntas mixtas (8 II · 7 I · 5 V · 3 III · 2 IV), 72 s por pregunta = 30 min. Cola larga de hoy: ${cola.codigos.join(' + ')}. Sin material, sin pausa; la corrección aparece solo al terminar.`,
-    _meta: { generado: new Date().toISOString().slice(0, 10), receta: RECETA_MINISIM, cola_larga: cola, conteos, avisos, lista_negra_2026_II: pretestHecho ? 'levantada (ronda PRETEST_2026-II encontrada)' : 'VIGENTE: ítems con 2026-2/2026-II excluidos', rechazados: rechazados.slice(0, 20), pool_disponible: pool.filter((x) => !usados.has(x.id)).length },
+    _meta: { generado: new Date().toISOString().slice(0, 10), receta: RECETA_MINISIM, cola_larga: cola, conteos, avisos, lista_negra_pretest: pretestHecho ? 'levantada (ronda del pre-test encontrada en el registro)' : LN_VIGENTE, rechazados: rechazados.slice(0, 20), pool_disponible: pool.filter((x) => !usados.has(x.id)).length },
     items: items.map(({ _file, _motivo, ...it }) => ({ ...it, motivo_seleccion: _motivo })),
   };
   console.log(`MINI-SIM ${fecha} · ${items.length}Q · áreas ${JSON.stringify(conteos.por_area)} · viñeta ${conteos.vinetas}/directa ${conteos.directas} · críticos ${conteos.criticos} · fallos previos ${conteos.fallos_previos} · cola larga ${conteos.cola_larga} (${cola.codigos.join('+')}, ${cola.origen}) · clave oficial ${conteos.verificados_clave_oficial}/${items.length}`);
@@ -503,7 +518,7 @@ function modoBanco(fecha, ignorar) {
     tema: fila.subtema, fuente_preguntas: `BANCO_PROPIO (${[...new Set(items.map((x) => x._file))].join(', ')})`,
     n: items.length, seg_por_q: 90, umbral: 75, alerta: 60, mostrar_codigo: true, correccion_inmediata: true,
     instrucciones: `${principal.length}Q CIEGAS de ${fila.codigo}${subEje ? ' (sub-eje: ' + subEje + ')' : ''} + ${sec.length}Q del secundario de cola larga ${secundario || ''}. Corrección INMEDIATA al marcar respuesta + confianza (Palmerton: intenta primero, luego lee la clave y recalibra). Meta crucero ≥75 % ciego. Al terminar: exporta el JSON → línea de cierre → gen_encaps_semana.js --cerrar.`,
-    _meta: { generado: new Date().toISOString().slice(0, 10), fila_sql: { dia: fila.dia, tipo: fila.tipo, codigo: fila.codigo, sub_eje: subEje, secundario, instancia: fila.extra.instancia, de: fila.extra.de, ...(fila.carril_b ? { carril_b: fila.carril_b } : {}) }, conteos, avisos, lista_negra_2026_II: pretestHecho ? 'levantada' : 'VIGENTE', rechazados: rechazados.slice(0, 10), pool_disponible_codigo: delCodigo.length - principal.length , ...(fallback ? { fallback } : {}) },
+    _meta: { generado: new Date().toISOString().slice(0, 10), fila_sql: { dia: fila.dia, tipo: fila.tipo, codigo: fila.codigo, sub_eje: subEje, secundario, instancia: fila.extra.instancia, de: fila.extra.de, ...(fila.carril_b ? { carril_b: fila.carril_b } : {}) }, conteos, avisos, lista_negra_pretest: pretestHecho ? 'levantada' : 'VIGENTE', rechazados: rechazados.slice(0, 10), pool_disponible_codigo: delCodigo.length - principal.length , ...(fallback ? { fallback } : {}) },
     items: items.map(({ _file, ...it }) => it),
   };
   console.log(`BANCO ${fecha} (${WD[dowDe(fecha)]}) · ${fila.codigo}${subEje ? ' · ' + subEje : ''} · ${principal.length}Q principal (${conteos.recall_directo_pct}% recall directo; sub-ejes ${JSON.stringify(conteos.por_sub_eje)}) + ${sec.length}Q secundario ${secundario || '—'} · reales ${conteos.reales}/${items.length} · quedan ${Math.max(0, delCodigo.length - principal.filter((x) => !x.fallback).length)}Q de ${codigoPool} en el pool`);
@@ -560,7 +575,7 @@ function modoEval(fecha, ignorar) {
     tema: `eval anclada · ${modo}`, fuente_preguntas: `BANCO_PROPIO (${[...new Set(items.map((x) => x._file))].join(', ')})`,
     n: items.length, seg_por_q: 72, umbral: 60, alerta: 60, mostrar_codigo: false,
     instrucciones: `5 preguntas del tema de AYER (${modo}), de memoria, sin material; solución al final. Si fallas ≥2 el código queda CALIENTE para el override del viernes (gen_encaps_semana.js).`,
-    _meta: { generado: new Date().toISOString().slice(0, 10), sesion_anterior: { fecha: ayer, tipo: filaAyer.tipo, codigo: filaAyer.codigo, sub_eje: filaAyer.extra.sub_eje || null }, modo, lista_negra_2026_II: pretestHecho ? 'levantada' : 'VIGENTE', ...(fallback ? { fallback } : {}) },
+    _meta: { generado: new Date().toISOString().slice(0, 10), sesion_anterior: { fecha: ayer, tipo: filaAyer.tipo, codigo: filaAyer.codigo, sub_eje: filaAyer.extra.sub_eje || null }, modo, lista_negra_pretest: pretestHecho ? 'levantada' : 'VIGENTE', ...(fallback ? { fallback } : {}) },
     items: items.map(({ _file, ...it }) => it),
   };
   console.log(`EVAL ${fecha} · ${modo} · ${items.length}Q (${items.filter(esCifra).length} cifra · ${items.filter((x) => esVineta(x) && !esCifra(x)).length} viñeta · ${items.filter((x) => !esVineta(x) && !esCifra(x)).length} directa)${fallback ? ` · ${fallback.n_fallback}Q por fallback (${items.filter((x) => x.retest).length} re-test)` : ''}`);
@@ -759,7 +774,7 @@ function modoInventario() {
   const D1_SQL = fechasSQL[0] || '—', DFIN_SQL = fechasSQL[fechasSQL.length - 1] || '—';
   const rotacionTxt = Object.entries(demanda).filter(([, v]) => v.sesiones_principal > 0).sort((a, b) => b[1].sesiones_principal - a[1].sesiones_principal || (a[0] < b[0] ? -1 : 1)).map(([c, v]) => `${c} ${v.sesiones_principal}`).join(' · ');
   const totales = { pool_total: pool.length, pool_disponible: pool.filter((x) => !usados.has(x.id)).length, filas_sql: filas, minisims_sembrados: minisims, dias_sembrados: filas, d1: D1_SQL, cierre: DFIN_SQL, demanda_total_q: Object.values(inv).reduce((s, x) => s + x.demanda_sembrada.q_estimadas_regimen, 0), deficit_codigos: Object.entries(inv).filter(([, v]) => v.deficit_vs_demanda > 0).map(([k, v]) => `${k}:${v.deficit_vs_demanda}`) };
-  const out = { _meta: { descripcion: `Inventario de preguntas por CÓDIGO v3: oferta (BANCO_PROPIO: sets + banco_items_v1 + set_reales_otros; exámenes reales etiquetados; claves.json de julio; QX/Theomed por área) vs demanda sembrada en study_schedule (desde v6.01; vigente ${require('./gen_fechas_v6').cargarFechasV6().version}: días con banco — banqueo1h o mini-sim — de la F1 en _encaps_mantenimiento_2027.sql + carril B 16:15 de _encaps_intensivo_2027.sql (filas 61-92 de v5.20 + pendientes F1; sin los mini-sims absorbidos); hoy ${filas} días, D1 = ${D1_SQL}, cierre = ${DFIN_SQL}) y déficit. Regenerar: node DATA/_scripts/gen_encaps_minisim.js --inventario`, generado: new Date().toISOString().slice(0, 10), rotacion: `${rotacionTxt} (sesiones banqueo1h por código en el SQL vigente · CICLO de _encaps_ciclo_v3.js · siembra de ${filas} días desde el ${D1_SQL})`, lista_negra: '2026-II excluido de toda oferta hasta el pre-test', totales }, por_codigo: inv };
+  const out = { _meta: { descripcion: `Inventario de preguntas por CÓDIGO v3: oferta (BANCO_PROPIO: sets + banco_items_v1 + set_reales_otros; exámenes reales etiquetados; claves.json de julio; QX/Theomed por área) vs demanda sembrada en study_schedule (desde v6.01; vigente ${require('./gen_fechas_v6').cargarFechasV6().version}: días con banco — banqueo1h o mini-sim — de la F1 en _encaps_mantenimiento_2027.sql + carril B 16:15 de _encaps_intensivo_2027.sql (filas 61-92 de v5.20 + pendientes F1; sin los mini-sims absorbidos); hoy ${filas} días, D1 = ${D1_SQL}, cierre = ${DFIN_SQL}) y déficit. Regenerar: node DATA/_scripts/gen_encaps_minisim.js --inventario`, generado: new Date().toISOString().slice(0, 10), rotacion: `${rotacionTxt} (sesiones banqueo1h por código en el SQL vigente · CICLO de _encaps_ciclo_v3.js · siembra de ${filas} días desde el ${D1_SQL})`, lista_negra: 'el examen reservado como pre-test queda fuera de toda oferta hasta que se rinda', totales }, por_codigo: inv };
   fs.writeFileSync(path.join(BANCO, '_inventario_banco_por_codigo.json'), JSON.stringify(out, null, 1) + '\n', 'utf8');
   console.log('OK → _inventario_banco_por_codigo.json ·', JSON.stringify(totales));
   for (const [k, v] of Object.entries(inv)) console.log(`${k.padEnd(10)} demanda ${String(v.demanda_sembrada.q_estimadas_regimen).padStart(4)} · pool ${String(v.oferta.banco_propio_pool.disponibles_no_usados).padStart(3)} disp (${v.oferta.banco_propio_pool.total} tot) · reales ${String(v.oferta.examenes_reales_etiquetados.total).padStart(2)} · déficit ${String(v.deficit_vs_demanda).padStart(4)} · ${v.estado}`);
@@ -836,14 +851,14 @@ function modoPretestArranque(lunesArg) {
     const doc = {
       id: `PRETEST_ARRANQUE_${fecha}`, titulo: `Pre-test de arranque ENCAPS · ${WD[dowDe(fecha)]} ${fecha} · ${parte.etiqueta}`, tipoRonda: 'pretest', fecha, codigo: 'MIX',
       tema: `pre-test de arranque · 5Q × 4 críticos (${parte.codigos.join(' · ')}) · ${parte.etiqueta}`,
-      fuente_preguntas: `ítems reales ENCAPS/SERUMS 2024-2A · 2025-1A · 2025-2 con clave oficial (BANCO_PROPIO: ${[...new Set(items.map((x) => x._file || 'set'))].join(', ')})${items.length - nReales ? ` + ${items.length - nReales} ítem(s) nuevos verificados contra compendio/norma` : ''} · el examen de agosto de 2026 queda fuera (lista negra hasta el pre-test de febrero)`,
+      fuente_preguntas: `ítems reales ENCAPS/SERUMS 2024-2A · 2025-1A · 2025-2 con clave oficial (BANCO_PROPIO: ${[...new Set(items.map((x) => x._file || 'set'))].join(', ')})${items.length - nReales ? ` + ${items.length - nReales} ítem(s) nuevos verificados contra compendio/norma` : ''} · ${FP_LN_ARRANQUE}`,
       n: items.length, seg_por_q: 72, umbral: 70, alerta: 60, mostrar_codigo: false, correccion_inmediata: false,
       instrucciones: `${items.length} preguntas CIEGAS (${Q_POR_CODIGO_ARRANQUE} por código: ${parte.codigos.join(' · ')}), 72 s/Q = ${Math.round(items.length * 72 / 60)} min, MODO EXAMEN: sin material, sin pausa, solución al final. Confianza 1-3 OBLIGATORIA en cada ítem: esta ronda es la LÍNEA BASE por crítico (% CIEGO = seguras/total). Sustituye el CONTENIDO del banco del día de hoy (${fila.codigo}${fila.extra.sub_eje ? ' · ' + fila.extra.sub_eje : ''}); el horario no cambia (16:15 eval anclada si toca · 16:30 pre-test · 17:10 cierre). Al terminar: «Generar JSON» → guardar → node DATA/_scripts/gen_encaps_minisim.js --registrar <export.json> --append (ronda 'pretest' repartida por código en el registro; NO usar la línea de 1 renglón: la dejaría como MIX).`,
       _meta: {
         generado: new Date().toISOString().slice(0, 10), parte: i + 1, de: PARTES_ARRANQUE.length, codigos: parte.codigos, q_por_codigo: Q_POR_CODIGO_ARRANQUE,
         sustituye: { fichero: `banco_${fecha}`, dia: fila.dia, codigo: fila.codigo, sub_eje: fila.extra.sub_eje || null, secundario: fila.extra.secundario || null, horario: 'sin cambio (16:15-17:15)' },
         regla_ids: 'no reutiliza ningún id de eval_/minisim_/banco_ vigentes de la semana; los ids que SOLO estaban en los dos bancos sustituidos vuelven a estar disponibles (esas sesiones no se resuelven) y se prefieren: real libre → real del banco sustituido → nuevo libre → nuevo del banco sustituido',
-        seleccion, conteos, avisos, lista_negra_2026_II: pretestHecho ? 'levantada' : 'VIGENTE: ningún ítem deriva del examen de agosto de 2026', rechazados: rechazados.slice(0, 10),
+        seleccion, conteos, avisos, lista_negra_pretest: pretestHecho ? 'levantada' : LN_VIGENTE, rechazados: rechazados.slice(0, 10),
         registro: "export → --registrar <json> --append → ronda tipo 'pretest' con preguntas[] (codigo MIX) que gen_encaps_semana.js reparte por código: n = 5 por crítico para el override de la semana siguiente al arranque",
       },
       items,
@@ -868,6 +883,60 @@ function modoPretestArranque(lunesArg) {
     console.log(`sustituido → ${f} (_meta.sustituido_por = pretest_arranque_${fecha}; sus ids ya no cuentan como usados)`);
   }
 }
+// REFRESCAR (v6.02d, 18-oct-2026, F1): las salidas ya armadas (minisim_/banco_/eval_/pretest_arranque_<fecha>.json) llevan una COPIA de cada
+// ítem del pool. Cuando se corrige el TEXTO de un ítem en su FUENTE (`explicacion` en banco_items_v1.json / set_*.json), este modo lo propaga
+// a las salidas que ya lo contienen SIN re-seleccionar nada (mismos ids, mismo orden, misma clave: solo cambia `explicacion`), migra la marca
+// de lista negra a `_meta.lista_negra_pretest` con texto neutro (y la cola de `fuente_preguntas` del pre-test de arranque), deja constancia en
+// `_meta.refrescado` y re-emite el HTML con html() — el mismo render de siempre (escribir()). ABORTA sin escribir nada si un ítem difiere del
+// pool en enunciado/opciones/clave/respuesta (eso no es un refresco de texto: regenerar a sabiendas) o si, tras refrescar, una salida con la
+// lista negra VIGENTE sigue nombrando el examen reservado como pre-test (LN_MENCION). Con --dry solo informa.
+// Después: node DATA/_scripts/sync_encaps_bp_web.js && node DATA/_scripts/gen_encaps_guia.js
+function modoRefrescar() {
+  const hoy = new Date().toISOString().slice(0, 10);
+  const { pool } = cargarPool(true); // índice por id de TODO el pool (solo se copian textos de ids que la salida ya contiene)
+  const porId = new Map(pool.map((it) => [it.id, it]));
+  const FP_VIEJA = /el examen de agosto de 2026 queda fuera \(lista negra hasta el pre-test de febrero\)/;
+  const plan = []; const errores = [];
+  for (const f of fs.readdirSync(OUT_DIR).filter((x) => USADOS_RE.test(x)).sort()) {
+    const base = f.replace(/\.json$/, '');
+    const doc = readJSON(path.join(OUT_DIR, f));
+    const cambios = [];
+    for (const it of doc.items || []) {
+      const src = porId.get(it.id);
+      if (!src) continue;
+      for (const k of ['enunciado', 'opciones', 'clave', 'respuesta']) {
+        if (JSON.stringify(src[k]) !== JSON.stringify(it[k])) errores.push(`${base} · ${it.id}: «${k}» difiere del pool (${src._file}) — no es un refresco de texto: regenerar esa salida a sabiendas`);
+      }
+      if ((src.explicacion ?? null) !== (it.explicacion ?? null)) { it.explicacion = src.explicacion ?? null; cambios.push(`${it.id}.explicacion ← ${src._file}`); }
+    }
+    let m = doc._meta || {};
+    if (Object.prototype.hasOwnProperty.call(m, 'lista_negra_2026_II')) {
+      const v = String(m.lista_negra_2026_II || '');
+      const nuevo = v === 'VIGENTE' ? 'VIGENTE' : /^VIGENTE/.test(v) ? LN_VIGENTE : /^levantada/.test(v) ? 'levantada' : v;
+      m = Object.fromEntries(Object.entries(m).map(([k, val]) => (k === 'lista_negra_2026_II' ? ['lista_negra_pretest', nuevo] : [k, val]))); // mismo orden de claves
+      cambios.push(`marca de lista negra → _meta.lista_negra_pretest («${nuevo}»)`);
+    }
+    if (Array.isArray(m.rechazados)) {
+      m.rechazados = m.rechazados.map((r) => (Array.isArray(r) && LN_MENCION.test(String(r[2] || '')) ? (cambios.push(`_meta.rechazados ${r[1]}: motivo neutro`), [r[0], r[1], 'LISTA NEGRA (examen reservado como pre-test)']) : r));
+    }
+    if (FP_VIEJA.test(doc.fuente_preguntas || '')) { doc.fuente_preguntas = doc.fuente_preguntas.replace(FP_VIEJA, FP_LN_ARRANQUE); cambios.push('fuente_preguntas: cola de lista negra con texto neutro'); }
+    if (cambios.length) m.refrescado = [...(m.refrescado || []), { el: hoy, cambios, motivo: 'textos re-sincronizados desde la fuente del pool con gen_encaps_minisim.js --refrescar; ids, orden, claves y selección intactos' }];
+    doc._meta = m;
+    const h = html(doc);
+    const hDisco = fs.existsSync(path.join(OUT_DIR, base + '.html')) ? fs.readFileSync(path.join(OUT_DIR, base + '.html'), 'utf8') : null;
+    if (!cambios.length && hDisco === h) { console.log(`— ${base}: al día`); continue; }
+    if (!cambios.length) cambios.push('html re-emitido desde su .json (estaba desfasado)');
+    const vigente = /^VIGENTE/.test(String(m.lista_negra_pretest || 'VIGENTE'));
+    const men = vigente && (JSON.stringify(doc).match(LN_MENCION) || h.match(LN_MENCION));
+    if (men) errores.push(`${base}: con la lista negra VIGENTE sigue nombrando el examen reservado («${men[0]}») — corregir el texto en su FUENTE (pool) y volver a correr`);
+    plan.push({ base, doc, cambios });
+  }
+  for (const p of plan) console.log(`${DRY ? '[dry] ' : ''}${p.base}: ${p.cambios.join(' · ')}`);
+  if (errores.length) { for (const e of errores) console.error('✗', e); throw new Error(`--refrescar: ${errores.length} problema(s); no se escribió nada`); }
+  if (DRY) { console.log(`[dry] ${plan.length} salida(s) por refrescar; nada escrito`); return; }
+  for (const p of plan) escribir(p.base, p.doc);
+  console.log(`OK — ${plan.length} salida(s) refrescadas. Siguiente: node DATA/_scripts/sync_encaps_bp_web.js && node DATA/_scripts/gen_encaps_guia.js`);
+}
 function escribir(base, doc) {
   fs.mkdirSync(OUT_DIR, { recursive: true });
   const j = path.join(OUT_DIR, base + '.json'), h = path.join(OUT_DIR, base + '.html');
@@ -884,9 +953,10 @@ try {
   else if (has('--sim100')) modoSim100(opt('--sim100'));
   else if (has('--inventario')) modoInventario();
   else if (has('--realinear')) modoRealinear();
+  else if (has('--refrescar')) modoRefrescar();
   else if (has('--banco')) modoBanco(opt('--banco'));
   else if (has('--eval')) modoEval(opt('--eval'));
   else if (has('--semana')) modoSemana(opt('--semana'));
   else if (fechaArg) modoMinisim(fechaArg);
-  else { console.log('uso: node gen_encaps_minisim.js <viernes YYYY-MM-DD> [--dry] | --banco <fecha> [--forzar] | --eval <fecha> | --semana <lunes> | --pretest-arranque [lunes] [--dry] | --realinear [--dry] | --inventario | --pretest | --sim100 <2024-2A|2025-1A|2025-2|propio> [fecha] | --registrar <export.json> [--append]'); process.exit(1); }
+  else { console.log('uso: node gen_encaps_minisim.js <viernes YYYY-MM-DD> [--dry] | --banco <fecha> [--forzar] | --eval <fecha> | --semana <lunes> | --pretest-arranque [lunes] [--dry] | --realinear [--dry] | --refrescar [--dry] | --inventario | --pretest | --sim100 <2024-2A|2025-1A|2025-2|propio> [fecha] | --registrar <export.json> [--append]'); process.exit(1); }
 } catch (e) { console.error('✗', e.message); process.exit(1); }

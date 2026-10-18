@@ -34,6 +34,8 @@ import { MirPoolLista, MirPoolEvalCompacta, poolConFallback } from './MirPoolEva
 import DermaAnkiCola from '../derma/DermaAnkiCola';
 import { useDermaLedger, dermaHoyISO, dermaCopiar, dermaDescargar, dermaEsViernes, DERMA_AREA_LABEL, DERMA_AREA_COLOR } from '../derma/dermaLedgerBus';
 import { FECHAS_V6, motivoProtegido } from '../../lib/fechasV6';
+import GuiaBloqueCard from '../GuiaBloqueCard';
+import { dermaGuiaPar, accessDermaOK, guardarAccessDermaOK, dermaCasoUrl, dermaCasoTitulo, DERMA_TEST_PROMIR_D3, moduloCMEDe } from '../../lib/dermaGuia';
 /** v6.00: ¿la fecha cae en el SERUMS (F4)? → 30' en tiempo muerto de la posta, franja sin hora (§E). */
 const enF4 = (iso: string): boolean => iso >= FECHAS_V6.serums.inicio;
 
@@ -65,6 +67,12 @@ const enF4 = (iso: string): boolean => iso >= FECHAS_V6.serums.inicio;
  * (lun 8-feb → lun 22-feb, dentro de la intensiva ENCAPS; mismo contenido) · en F4 (SERUMS, desde el lun 3-may) el bloque es «30' en
  * tiempo muerto (posta)», sin hora fija: núcleo = casos ciegos + imagen; los ~10Q y la lectura 10' pasan a opcionales · desde el
  * SERUMS el sábado es día de plan (Derma lun · mié · vie) y solo el domingo es descanso.
+ * v6.02c (18-oct-2026, E3 · «qué · cuánto · cómo»): HOY abre con «🧭 Guía de la sesión» (GuiaBloqueCard de dermaGuia: 45′ en pasos con
+ * minutos; d1-d5 curadas, el resto por regla) con el selector «AccessDerma caducado → PLAN B / renovado → plan A» (preferencia por visor,
+ * por defecto caducado: el 18-oct el acceso remoto estaba vencido) + aviso de renovación · los chips «Caso #n» abren el caso DIRECTO
+ * (CaseContent.aspx?gbosID=…, listado real: Path 1-30 · Med 31-140 · Peds 141-170 · Surg 171-200) · d3: preguntas del test ProMIR.
+ * v6.02c F2 (18-oct-2026, hallazgos E6): la LECTURA 10′ y el HORARIO usan el módulo CME efectivo (dermaGuia.moduloCMEDe): d12 lee el capítulo
+ * de su átomo (Color Atlas 9e · S23) y su módulo 4 del micro-track pasa a d42 (repaso del micro-track; los quizzes, si sobra) — igual que la guía.
  */
 const PURPLE = DermaAtlas.amethyst; // #9A7BC8 amatista (antes #8B5CF6 fosforescente)
 const TEAL = DermaAtlas.jade;        // #5FA88C jade (antes #0FD4A0 neón)
@@ -185,6 +193,50 @@ function DermaMirPool({ dia, accent }: { dia: DiaDerma; accent: string }) {
   );
 }
 
+/** v6.02c · guía de la sesión (plan A AccessDerma / PLAN B acceso caducado) + selector + aviso de renovación. */
+function DermaGuiaSeccion({ dia, accent }: { dia: DiaDerma; accent: string }) {
+  const [ok, setOk] = useState<boolean>(() => accessDermaOK());
+  const [verOtro, setVerOtro] = useState(false);
+  const par = useMemo(() => dermaGuiaPar(dia, enF4(dia.fecha) ? { ini: '12:00', minutos: 30 } : {}), [dia]);
+  const activa = ok ? par.planA : par.planB;
+  const otra = ok ? par.planB : par.planA;
+  const elegir = (v: boolean) => { setOk(v); guardarAccessDermaOK(v); };
+  return (
+    <View style={{ marginBottom: Spacing.sm }}>
+      <Text style={st.secLbl}>🧭 Guía de la sesión · qué · cuánto · cómo{par.curada ? ' · curada' : ' · por regla'}</Text>
+      <View style={[st.temaTop, { marginTop: 0, marginBottom: 6 }]}>
+        <ChipBtn label="AccessDerma caducado → PLAN B" color={DermaAtlas.crit} on={!ok} onPress={() => elegir(false)} />
+        <ChipBtn label="AccessDerma renovado → plan A" color={TEAL} on={ok} onPress={() => elegir(true)} />
+      </View>
+      {!ok && (
+        <View style={[st.infoBox, { borderColor: DermaAtlas.crit + '66', marginTop: 0, marginBottom: 6 }]}>
+          <Text style={[st.infoLbl, { color: DermaAtlas.crit }]}>⚠ ACCESSDERMA · ACCESO REMOTO CADUCADO</Text>
+          <Text style={st.infoTxt}>Renuévalo desde la red de tu institución (campus/VPN u OpenAthens/Shibboleth). Hoy manda el PLAN B; los casos del día quedan pendientes (no se recortan).</Text>
+          <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl('https://dermatology.mhmedical.com/')} style={[st.sysBadge, { alignSelf: 'flex-start', marginTop: 6, borderColor: DermaAtlas.crit + '77' }]}>
+            <Text style={[st.sysBadgeTxt, { color: DermaAtlas.crit }]}>AccessDerma ↗</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+      <GuiaBloqueCard g={activa} color={accent} />
+      {dia.d === 3 && dia.fecha === DERMA_GUIA_D3_FECHA && (
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 5, marginTop: 4 }}>
+          {DERMA_TEST_PROMIR_D3.preguntas.map((q, i) => (
+            <TouchableOpacity key={q.id} activeOpacity={0.8} onPress={() => openUrl(q.url)} style={[st.sysBadge, { borderColor: (i < DERMA_TEST_PROMIR_D3.nQ ? DermaAtlas.promir : Colors.muted) + '77' }]}>
+              <Text style={[st.sysBadgeTxt, { fontSize: 10, color: i < DERMA_TEST_PROMIR_D3.nQ ? DermaAtlas.promir : Colors.muted }]}>{q.id} ↗</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      )}
+      <TouchableOpacity activeOpacity={0.8} onPress={() => setVerOtro((v) => !v)} style={{ marginTop: 4 }}>
+        <Text style={[st.infoTxt, { color: Colors.muted }]}>{verOtro ? '▾' : '▸'} ver {ok ? 'el PLAN B (sin AccessDerma)' : 'el plan A (con AccessDerma)'}</Text>
+      </TouchableOpacity>
+      {verOtro && <GuiaBloqueCard g={otra} color={Colors.muted} compacto />}
+    </View>
+  );
+}
+/** Fecha del d3 curado (el chip de preguntas del test ProMIR solo se muestra en esa sesión). */
+const DERMA_GUIA_D3_FECHA = DERMA_DIAS.find((x) => x.d === 3)?.fecha ?? '';
+
 function HoyView({ dia, onOpenTemario, hecho, onToggle, tone }: { dia: DiaDerma; onOpenTemario: () => void; hecho: boolean; onToggle: (d: number) => void; tone: SkinTone }) {
   const prev = diaPrevioDe(dia);
   const fc = bc(dia);
@@ -220,7 +272,9 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, tone }: { dia: DiaDerma;
   const dscSelf = !!dia.dermatoscopiaImg && dia.dermatoscopiaImg.includes('bookid=2929');
   const dscHoy = useMemo(() => entries.find((e) => e.fuente === 'dermatoscopia' && e.d === dia.d), [entries, dia.d]);
   const viernes = dermaEsViernes(dia.fecha);
-  const modulo = dia.dermatoscopiaModulo;
+  // v6.02c F2 (E6): módulo CME efectivo (d12 → lectura del átomo · d42 → módulo 4 pendiente del d12), el mismo que la guía
+  const cme = moduloCMEDe(dia);
+  const modulo = cme?.modulo;
 
   const exportarLedger = () => {
     const json = dermaLedgerExportJSON();
@@ -233,6 +287,9 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, tone }: { dia: DiaDerma;
 
   return (
     <View>
+      {/* v6.02c · 🧭 guía qué · cuánto · cómo (plan A / PLAN B) */}
+      <FadeUp><DermaGuiaSeccion dia={dia} accent={fc} /></FadeUp>
+
       {/* CASO DEL DÍA — lámina clínica (imagen primero) que envuelve el átomo */}
       <FadeUp>
         <DermaClinicalPlate dia={dia} accent={fc} tone={tone}>
@@ -298,7 +355,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, tone }: { dia: DiaDerma;
               const abierto = reg?.fuente === 'caso' && reg.id === id;
               return (
                 <View key={id} style={[st.casoChip, { borderColor: c + '77', backgroundColor: c + '12' }]}>
-                  <TouchableOpacity activeOpacity={0.8} onPress={() => openUrl(dia.access.url)} style={Platform.OS === 'web' ? WEB_LINK : null}>
+                  <TouchableOpacity activeOpacity={0.8} onPress={() => openUrl(dermaCasoUrl(id) ?? dia.access.url)} style={Platform.OS === 'web' ? WEB_LINK : null} accessibilityLabel={dermaCasoTitulo(id)}>
                     <Text style={[st.casoTxt, { color: c }]}>Caso #{id} · {DERMA_AREA_LABEL[a]} ↗</Text>
                   </TouchableOpacity>
                   <TouchableOpacity activeOpacity={0.8} onPress={() => setReg(abierto ? null : { id, fuente: 'caso' })} style={[st.casoBtn, { borderColor: c + '66' }, abierto && { backgroundColor: c + '33' }, Platform.OS === 'web' ? WEB_LINK : null]}>
@@ -440,7 +497,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, tone }: { dia: DiaDerma;
       {/* LECTURA 10′: micro-track DermNet CME (pares d6-d44) · lectura dirigida del módulo · módulo G+ (ciclo 2) · 0 lectura nueva (taper) */}
       {modulo ? (
         <FadeUp delay={120}>
-          <ColaItem icon="dermatoscope" lbl={`LECTURA 10′ · MICRO-TRACK DERMATOSCOPIA (DermNet CME ${modulo.n <= 18 ? `módulo ${modulo.n}/18` : 'repaso'})`} val={modulo.t} sub="3 de 4 módulos CORE preguntan dermatoscopia transversalmente · el mayor diferenciador · la lectura del módulo queda para la sesión impar" color={DermaAtlas.teal} url={modulo.url} />
+          <ColaItem icon="dermatoscope" lbl={`LECTURA 10′ · MICRO-TRACK DERMATOSCOPIA (DermNet CME ${modulo.n <= 18 ? `módulo ${modulo.n}/18` : 'repaso'}${cme?.pendienteDe ? ` · pendiente del d${cme.pendienteDe}` : ''})`} val={modulo.t} sub={cme?.pendienteDe ? `el d${cme.pendienteDe} leyó el capítulo de su átomo y su módulo pasó a esta sesión de repaso del micro-track${cme.siSobra ? ` · si sobra: ${cme.siSobra.t}` : ''}` : '3 de 4 módulos CORE preguntan dermatoscopia transversalmente · el mayor diferenciador · la lectura del módulo queda para la sesión impar'} color={DermaAtlas.teal} url={modulo.url} />
           {dia.extra && <ColaItem icon="body" lbl="LECTURA DEL MÓDULO · pasa a la sesión impar (si sobra tiempo)" val={dia.extra.t} sub={dia.referente ? `fuente nº1 de ${dia.referente} · nunca lectura lineal` : 'lectura del módulo · nunca lineal'} color={DermaAtlas.periwinkle} url={dia.extra.url} dim />}
         </FadeUp>
       ) : dia.extra ? (
@@ -516,7 +573,7 @@ function HorarioView({ dia }: { dia: DiaDerma }) {
     if (tipo === 'pretest') return `casos ${casosTxt(dia)}${dermaTaperEfectivo(dia) ? ' · TAPER: 1 caso' : ''}${dia.dermatoscopiaImg ? ' · ①b imagen dermatoscópica ciega' : ''}`;
     if (tipo === 'read') return `${dia.access.t} · registrar acierto/fallo de cada caso en el ledger`;
     if (tipo === 'review') return dia.promir ? `MIR 10Q · ${dia.promir.t}` : dia.qbankly ? dia.qbankly.t : '— (hoy sin bloque de review)';
-    if (tipo === 'lectura') return dia.dermatoscopiaModulo ? `micro-track: ${dia.dermatoscopiaModulo.t}` : dia.extra ? dia.extra.t : '— (hoy sin lectura dirigida)';
+    if (tipo === 'lectura') { const cme = moduloCMEDe(dia); return cme ? `micro-track: ${cme.modulo.t}${cme.pendienteDe ? ` (pendiente del d${cme.pendienteDe})` : ''}` : dia.extra ? dia.extra.t : '— (hoy sin lectura dirigida)'; }
     if (tipo === 'promir') return dia.promir ? dia.promir.t : '— (hoy el review es del banco AccessDerma)';
     if (tipo === 'recall') return 'free recall del caso: morfología → ddx → dx → mecanismo';
     if (tipo === 'apex') return `tarjetas de mecanismo (cola Anki APEX::DERMA::${dia.bKey}) + registrar en el ledger + ${dermaEsViernes(dia.fecha) ? 'EXPORTAR ledger (viernes)' : 'marcar progreso'}`;

@@ -4,7 +4,11 @@ import { Colors, Spacing, FontSize, BorderRadius } from '../../theme/tokens';
 import { DesktopColors } from '../../theme/desktopStyles';
 import { MIR_DIAS, mirSesionDe, capUrl } from '../../lib/mirDailyPlan';
 import { MIR_MANT_META } from '../../lib/mirMantenimiento';
-import { QBQ, DIAS, DIAS_T2, estadoUSMLE, etiquetaDiaUSMLE, esFilaT2, TIPO_FILA_T2_LABEL } from '../../lib/usmleStep1Daily';
+import { QBQ, DIAS, DIAS_T2, estadoUSMLE, etiquetaDiaUSMLE, esFilaT2, TIPO_FILA_T2_LABEL, esHito } from '../../lib/usmleStep1Daily';
+import { guiaUsmleDe, guiaUsmleEnRango } from '../../lib/usmleGuia';
+import type { GuiaBloque } from '../../lib/guia';
+import { fmtMin, partesFranja, aMinutos } from '../../lib/guia';
+import GuiaBloqueCard from '../GuiaBloqueCard';
 import { mirObsUrl, usmleObsUrl, encapsObsUrl, OBS_MAPA_URL } from '../../lib/obsidianMap';
 import { vibeDiaDe, vibeProyectoEnFecha, vibeTaperEnFecha, vibeJournalUrl, VIBE_TIPO_LABEL, VIBE_ROTACION_ICON, VIBE_META } from '../../lib/vibecodingPlan';
 import {
@@ -21,9 +25,51 @@ import {
 import { DIAS as RESEARCH_DIAS } from '../../lib/researchDailyPlan';
 import { DIAS_2027 as RESEARCH_DIAS_2027 } from '../../lib/researchDailyPlan2027';
 import { dermaDiaDeConCiclo2 } from '../../lib/dermaCiclo2';
+import { mirGuiaDe } from '../../lib/mirGuia';
+import { dermaGuiaPar, accessDermaOK, dermaCasoUrl } from '../../lib/dermaGuia';
 import { aurumDiaDe } from '../../lib/aurumDailyPlan';
 import { livDiaDe } from '../../lib/livianoStudyPlan';
 import { synDiaDe } from '../../lib/synapseDailyPlan';
+// v6.02c (E4 · ENCAPS 16:15 + Research): guías «qué · cuánto · cómo» + botones directos (runner BANCO_PROPIO · recurso del átomo · Obsidian)
+import { guiaEncapsDe, sesionEncapsDe } from '../../lib/encapsGuia';
+import { guiaResearchDe, GUIA_RESEARCH_MINIMO } from '../../lib/researchGuia';
+import { REC as RESEARCH_REC } from '../../lib/researchDailyPlan';
+import { researchObsUrlDay } from '../../lib/obsidianResearchMap';
+// v6.02c (E5 · resto del día): guías «qué · cuánto · cómo» de vibecoding · SYNAPSE · Business · AURUM · LIVIANO · revisión · SHIP · Feynman
+import { guiaVibeDe, guiaSynapseDe, guiaShipDe, guiaFeynmanDe, guiaAurumDe, guiaLivianoDe, guiaBusinessDe, guiaRevisionDe, revisionFicheroDe } from '../../lib/rutinaGuia';
+import { aurumObsUrl } from '../../lib/aurumDailyPlan';
+import { bizDiaDe } from '../../lib/businessStudyPlan';
+/** v6.02c (E4): átomo de Research de una fecha ISO (ciclo 1 + ciclo 2), o undefined. */
+const researchAtomoDe = (iso: string) => [...RESEARCH_DIAS, ...RESEARCH_DIAS_2027].find((x) => x.fecha === iso);
+/** v6.02c (E5): 1.er enlace https de una guía (paso o recurso) — botón directo «al recurso de hoy». */
+const primerEnlace = (g: GuiaBloque | null | undefined, re: RegExp = /^https?:/): string | null =>
+  !g ? null : (g.pasos.find((p) => p.enlace && re.test(p.enlace.url))?.enlace?.url ?? g.recursos.find((r) => re.test(r.url))?.url ?? null);
+const ANKIWEB = 'https://ankiweb.net/decks';
+const vsRevision = (iso: string) => `vscode://file/D:/joseph-md-app/DATA/USMLE/REVISIONES/${revisionFicheroDe(iso)}`;
+/**
+ * v6.02c F2 (E6) · CABECERA de un bloque con guía = «la guía manda»: la franja real (unión de las franjas de la guía) y sus títulos, en vez
+ * del texto genérico de la plantilla, que la contradecía (lun 19-oct: 05:00 decía «pasada FSRS… stress set» el día que se CONFIGURA el mazo
+ * vacío; 07:15-12:00 decía «UWSA1 (160Q, 09:00-13:00)» con la guía empezando a las 08:50 y terminando a las 13:00; 18:00 decía «bloque timed
+ * mixto» el día del Day-After del UWSA1).
+ */
+function spanGuias(gs: GuiaBloque[]): { ini: string; fin: string } | null {
+  const ps = gs.map((g) => partesFranja(g.franja)).filter((x): x is { ini: string; fin: string } => !!x);
+  if (!ps.length) return null;
+  const ini = ps.reduce((a, x) => (aMinutos(x.ini) < aMinutos(a) ? x.ini : a), ps[0]!.ini);
+  const fin = ps.reduce((a, x) => (aMinutos(x.fin) > aMinutos(a) ? x.fin : a), ps[0]!.fin);
+  return { ini, fin };
+}
+/** Título de una guía sin el subtítulo (lo que va tras « — ») y sin el paréntesis final, recortado para la cabecera. */
+const tituloCorto = (t: string, n = 46): string => {
+  const x = (t.split(' — ')[0] ?? t).replace(/\s*\([^()]*\)\s*$/, '');
+  return x.length > n ? x.slice(0, n - 1).trimEnd() + '…' : x;
+};
+/** Nombre del bloque sin la descripción genérica de la plantilla: «USMLE · BLOQUE PRINCIPAL (Anki → Pre-test…)» → «USMLE». */
+const nombreBase = (n: string): string => {
+  const i = n.indexOf(' · ');
+  const base = (i > 0 ? n.slice(0, i) : n).replace(/\s*\([^()]*\)\s*$/, '') || n;
+  return base === 'IA' ? 'IA · VIBECODING' : base;
+};
 
 /**
  * TodayMission — "MISIÓN DE HOY" del cockpit (Home). Línea de tiempo REAL del Google
@@ -55,7 +101,30 @@ import { synDiaDe } from '../../lib/synapseDailyPlan';
  *  el texto ROJO dice que el día perdido de F1 pasa al tramo 2 el 31-dic (disparador (f)); faseActual: antes del D1 = ≤ dom 11-oct.
  * v6.02 (17-oct-2026): corrimiento del D1 al lun 19-oct (F1 = D1-D52, D52 = NBME 28 mié 30-dic; STEP1_SEMANAS = 39 → chip S n/39): sin
  *  cambio de lógica (todo sale de fechasV6 / usmleStep1Daily); faseActual: antes del D1 = ≤ dom 18-oct.
+ * v6.02c (18-oct-2026, E1 · SOLO USMLE + el hueco común): `contenidoBloque` puede devolver `guias: GuiaBloque[]` (formato común de
+ *  src/lib/guia.ts) y el render las pinta debajo del bloque con <GuiaBloqueCard compacto> — cada plan rellena las suyas en su `case`.
+ *  USMLE: 05:00 / 07:00-12:00 / 18:00 = usmleGuia.guiaUsmleEnRango; botón Qbankly en https (cualquier navegador: «UWSA1 ↗» el D1,
+ *  «NBME n ↗» los hitos, «uWorld ↗» el resto) con «◆ Edge» como alternativa; las franjas USMLE sin bloque en la plantilla del día
+ *  (Anki del sábado/domingo) salen al final como «🇺🇸 USMLE fuera de los bloques».
  *
+ * v6.02c (18-oct-2026, E3 · SOLO MIR + R↔D/Derma): MIR → `guias` = mirGuia.mirGuiaDe(iso, b.ini) (D1-D10 medidos · D11+ y banqueo por
+ *  regla; desplazada a la hora del turno en el SERUMS) + botón «Tier C ↗» / «MIR Q ↗» en el banqueo · Derma → `guias` = dermaGuia (plan A
+ *  AccessDerma o PLAN B con el acceso remoto caducado, según la preferencia «AccessDerma renovado» de Derma › HOY; por defecto plan B) +
+ *  botón directo «Caso #n ↗» (plan A) o «Plan B ↗» + «AccessDerma ↗» y el aviso de renovación en el sub.
+ * v6.02c (18-oct-2026, E4 · SOLO ENCAPS 16:15 + Research): ENCAPS F1 → sesión de encapsGuia (PRE-TEST DE ARRANQUE lun 19 / mar 20-oct ·
+ *  BANCO · MINI-SIM) con botones «Pre-test/Banco/Mini-sim ↗» (runner BANCO_PROPIO publicado en /encaps/bp) · «Eval ↗» · ◆ Obsidian del CÓDIGO
+ *  · «Claude ↗» (proyecto del área) + `guias` = guía de la hora · Research → `guias` = researchGuia.guiaResearchDe (átomo del día) + botón
+ *  al recurso 1 + ◆ Obsidian; en la pausa de átomos, la guía de 30′ «Research mínimo».
+ * v6.02c (18-oct-2026, E5 · RESTO del día + Home completo): cada bloque lleva su guía (src/lib/rutinaGuia.ts) y un botón directo:
+ *  vibecoding (docs ↗ · 📓 journal + guía del día; sáb = SHIP + SYNAPSE A/B/C con «SYNAPSE A ↗»; dom = Feynman opcional) · Anki (AnkiWeb ↗ +
+ *  el vídeo pendiente de la guía USMLE si lo hay) · SYNAPSE (A/B/C ↗; lun 19 = 07:25 por el UWSA1, NBME = 13:00) · Business NUEVO (13:00-13:25;
+ *  ▶ tramo del día · ◆ 01_PULSO) · AURUM (▶ vídeo CONCRETO · ◆ nota del día) · LIVIANO (lectura ↗ · ◆ concepto madre) · revisión del sábado
+ *  (abre S<NN>_<sábado>.md · método ↗). El sábado el Home muestra también el SHIP/PC 15:00, el Business del tracker y el Anki 19:00; el domingo,
+ *  el Feynman y el Anki opcionales (plantillasV6).
+ * v6.02c F2 (18-oct-2026, pulido de las guías · hallazgos E6): la CABECERA de un bloque con guía la manda la guía — hora = unión de sus
+ *  franjas (lun 19: USMLE 07:15 → 13:00), nombre sin la descripción genérica de la plantilla, tema = título(s) de la guía con su hora y la
+ *  línea «🧭 la guía manda» (AHORA/✓ por las franjas de la guía) · MIR D1: botón «5Q extra ↗» (1.ª de las 5 preguntas ciegas de las 15:23) ·
+ *  el SYNAPSE del lun 19 (07:25) sale una sola vez: la guía USMLE parte la preparación del UWSA1 en 07:15-07:25 y 07:55-08:50.
  * Colores por-segmento en JOYA APAGADA (mapeo cognitivo NASA), tokens v4:
  * ENCAPS→teal · MIR→gold(amber) · USMLE→jade(green) · Obsidian→amethyst(purple) · Edge→sapphire(blue)
  */
@@ -71,11 +140,11 @@ const MODO_COLOR: Record<ModoNivel, string> = { VERDE: Colors.green, AMBAR: Colo
 /** v6.00: color por plan del bloque (plantillasV6.PlanBloque). */
 const PLAN_COLOR: Record<PlanBloque, string> = {
   usmle: GREEN, encaps: TEAL, mir: AMBER, 'research-derma': EDGE, aurum: Colors.gold, liviano: AMBER, synapse: OBS, vibecoding: OBS,
-  serums: CORAL, gimnasio: Colors.muted, vida: Colors.muted, revision: Colors.champagne,
+  serums: CORAL, gimnasio: Colors.muted, vida: Colors.muted, revision: Colors.champagne, business: Colors.brass,
 };
 const PLAN_FLAG: Record<PlanBloque, string> = {
   usmle: '🇺🇸', encaps: '🇵🇪', mir: '🇪🇸', 'research-derma': '🔬', aurum: '🪙', liviano: '⚖️', synapse: '🧠', vibecoding: '🧠',
-  serums: '🏥', gimnasio: '🏋️', vida: '·', revision: '📋',
+  serums: '🏥', gimnasio: '🏋️', vida: '·', revision: '📋', business: '📈',
 };
 const TURNO_COLOR: Record<Turno, string> = { M: AMBER, T: EDGE, L: GREEN, G: CORAL };
 
@@ -93,6 +162,8 @@ export function faseActual(iso: string): string {
 }
 function nowMin(): number { try { const d = new Date(); return d.getHours() * 60 + d.getMinutes(); } catch { return 0; } }
 const hm = (s: string) => { const [h, m] = s.split(':').map(Number); return (h as number) * 60 + (m as number); };
+/** v6.02c · ¿la franja 'HH:MM–HH:MM' de una guía está en curso a `ahora` (minutos)? */
+const enFranja = (franja: string, ahora: number): boolean => { const m = /^(\d{2}:\d{2})–(\d{2}:\d{2})$/.exec(franja); return !!m && ahora >= hm(m[1] as string) && ahora < hm(m[2] as string); };
 
 /** Etiqueta corta MIR del día (para el briefing/status bar). null si no hay sesión MIR (v6.00: incluye mantenimiento y extensión). */
 export function mirLabelDe(iso: string): string | null {
@@ -257,8 +328,8 @@ function RolSemanal({ iso }: { iso: string }) {
   );
 }
 
-/** Tema / sub / acciones de un bloque de la plantilla (contenido del plan de cada frente para ESA fecha). */
-function contenidoBloque(b: BloqueV6, p: PlantillaDia, iso: string): { tema: string; sub: string; acciones: Accion[] } {
+/** Tema / sub / acciones de un bloque de la plantilla (contenido del plan de cada frente para ESA fecha) · `guias` = qué · cuánto · cómo (v6.02c). */
+function contenidoBloque(b: BloqueV6, p: PlantillaDia, iso: string): { tema: string; sub: string; acciones: Accion[]; guias?: GuiaBloque[] } {
   const us = p.usmle;
   switch (b.plan) {
     case 'vibecoding': {
@@ -274,66 +345,238 @@ function contenidoBloque(b: BloqueV6, p: PlantillaDia, iso: string): { tema: str
         ? `${VIBE_ROTACION_ICON[vibeP.rotacion]} ${vibeP.rotacion} · entregable: ${vibeP.entregable}${vibeP.deload ? ' · DELOAD 50%' : ''} · ✓ diario en SYNAPSE → ⚡ run · ${VIBE_META.freno}`
         : vibeT ? `taper · ${vibeT.tipo} · ${vibeT.semanaStep1} · ${VIBE_META.freno}` : `5' objetivo → 35' construir → 5' journal · ${VIBE_META.freno}`;
       const acciones: Accion[] = [...(vibeP && vibeP.docs[0] ? [{ lbl: 'docs ↗', color: OBS, url: vibeP.docs[0].url, fill: true }] : []), { lbl: '📓 journal', color: OBS, url: vibeJournalUrl(iso) }];
-      return { tema, sub, acciones };
+      // v6.02c (E5): guía del bloque — sáb 'pc' = SHIP/avance/taper + SYNAPSE A/B/C · dom 'feynman' (opcional) · L-V = paso del día con comandos
+      if (b.id === 'pc') {
+        const g = guiaShipDe(iso);
+        const synA = primerEnlace(g, /skilljar|academy|anthropic/);
+        return { tema: g ? g.titulo : tema, sub: `PC 15:00 · ${sub}`, acciones: [...acciones, ...(synA ? [{ lbl: 'SYNAPSE A ↗', color: OBS, url: synA }] : [])], ...(g ? { guias: [g] } : {}) };
+      }
+      if (b.id === 'feynman') {
+        const g = guiaFeynmanDe(iso);
+        return { tema: g ? g.titulo : 'Feynman del proyecto (opcional)', sub: 'domingo libre · 10′ opcionales', acciones: [{ lbl: '📓 journal', color: OBS, url: vibeJournalUrl(iso), fill: true }], ...(g ? { guias: [g] } : {}) };
+      }
+      const gV = guiaVibeDe(iso);
+      return { tema, sub, acciones, ...(gV ? { guias: [gV] } : {}) };
     }
     case 'usmle': {
-      if (b.frente === 'usmle-anki') return { tema: b.detalle ?? 'Pasada principal FSRS del deck USMLE · Fases B-C: + stress set 10Q/12min', sub: us ? `Step 1 · ${etiquetaDiaUSMLE(us)}` : 'Step 1', acciones: [] };
-      if (b.frente === 'usmle-eval') return { tema: b.nombre.includes('hito') ? 'Registra el % del hito en 📏 Medición (Cola de hoy)' : 'Bloque timed mixto de temas vistos + corrección + APEX', sub: 'termómetro diario del Step 1 · anchoring pre-sueño · registra las horas netas del día (GO/NO-GO por horas)', acciones: [{ lbl: '◆ Obsidian', color: OBS, url: OBS_MAPA_URL }] };
+      // v6.02c: guía qué · cuánto · cómo de las franjas que caen dentro del bloque (usmleGuia; F1 + fines de semana)
+      const guiasEn = (ini: string, fin: string): GuiaBloque[] => guiaUsmleEnRango(iso, ini, fin);
+      if (b.frente === 'usmle-anki') {
+        // v6.02c (E5): botón directo también en el Anki (AnkiWeb en cualquier navegador + el vídeo/recurso pendiente de la guía si lo hay)
+        const gA = guiasEn(b.ini ?? '05:00', b.fin ?? '05:45');
+        const vidA = gA.map((g) => primerEnlace(g, /youtube|qbankly/)).find(Boolean);
+        return { tema: b.detalle ?? 'Pasada principal FSRS del deck USMLE · Fases B-C: + stress set 10Q/12min', sub: us ? `Step 1 · ${etiquetaDiaUSMLE(us)}` : 'Step 1',
+          acciones: [{ lbl: 'AnkiWeb ↗', color: GREEN, url: ANKIWEB, fill: true }, ...(vidA ? [{ lbl: 'Vídeo ↗', color: EDGE, url: vidA }] : [])], guias: gA };
+      }
+      if (b.frente === 'usmle-eval') return { tema: b.nombre.includes('hito') ? 'Registra el % del hito en 📏 Medición (Cola de hoy)' : 'Bloque timed mixto de temas vistos + corrección + APEX', sub: 'termómetro diario del Step 1 · anchoring pre-sueño · registra las horas netas del día (GO/NO-GO por horas)', acciones: [{ lbl: '◆ Obsidian', color: OBS, url: OBS_MAPA_URL }], guias: guiasEn(b.ini ?? '18:00', b.fin ?? '18:45') };
       if (b.id === 'reentrada') return { tema: us?.franjaNota ?? 'REENTRADA: 20Q timed del sistema de la rotación', sub: 'F3 · 16:15 · ≥80 % → el sistema sigue vivo', acciones: [] };
       if (!us || b.frente == null) return { tema: b.detalle ?? '', sub: '', acciones: [] };
       const tipo = esFilaT2(us) ? ` · ${TIPO_FILA_T2_LABEL[us.tipo]}${us.parte ? ` ${us.parte}` : ''}` : '';
       const q = esFilaT2(us) && us.qDiaT != null && p.turno === 'T' ? `${us.qDiaT}Q (turno T)` : `${us.qDia}Q`;
+      // botón directo (https, cualquier navegador): el UWSA1 / el NBME del día / uWorld; «◆ Edge» queda como alternativa
+      const hoyHito = us.fecha === iso && esHito(us);
+      const lblQb = hoyHito ? (/Self-Assessment 1|UWSA1/.test(us.uw) ? 'UWSA1 ↗' : `${us.uw.replace('NBME CBS Form', 'NBME')} ↗`) : 'uWorld ↗';
+      const ruta = hoyHito && /Self-Assessment 1|UWSA1/.test(us.uw)
+        ? 'Qbankly › QBanks › USMLE High Yield › «uWorld - Step 1 Self Assessment Simulation 1» › Select QBank › New Test → Subject «Block - #1» · Timed'
+        : hoyHito ? `Qbankly › QBanks › NBME - Comprehensive Basic Science (Step 1) › «Self-Assessment - Form ${(/Form (\d+)/.exec(us.uw) || [])[1] ?? ''}» › Select QBank › New Test → «Block 1» · Timed`
+          : `${us.bbCh}: ${us.bbVid} · ${us.mat} · nivel UW ${us.nivelUW} · ${q} · todo en inglés`;
       return {
         tema: `${etiquetaDiaUSMLE(us)}${tipo} · ${us.system} — ${us.sub}`,
-        sub: `${us.bbCh}: ${us.bbVid} · ${us.mat} · nivel UW ${us.nivelUW} · ${q} · todo en inglés`,
+        sub: ruta,
         acciones: [
-          { lbl: '◆ Edge', color: EDGE, url: 'microsoft-edge:' + QBQ, fill: true },
+          { lbl: lblQb, color: EDGE, url: QBQ, fill: true },
           ...(usmleObsUrl(us.d) ? [{ lbl: '◆ Obsidian', color: OBS, url: usmleObsUrl(us.d) as string }] : []),
+          { lbl: '◆ Edge', color: EDGE, url: 'microsoft-edge:' + QBQ },
         ],
+        guias: guiasEn('07:00', b.fin ?? '12:00'),
       };
     }
     case 'mir': {
       const s = mirSesionDe(iso);
       if (!s) return { tema: p.protegido ? 'día protegido: sin MIR' : 'sin sesión MIR hoy', sub: '1 h/día (DJ-4)', acciones: [] };
+      // v6.02c (E3): guía qué · cuánto · cómo del bloque (D1-D10 medidos por E2 · D11+ y banqueo por regla) a la hora real del bloque
+      const gMir = mirGuiaDe(iso, b.ini);
+      const guiasMir = gMir ? [gMir] : undefined;
+      // v6.02c F2 (E6): D1 (lun 19) 15:23 «5Q CIEGAS extra» → botón directo a la 1.ª pregunta (las 5 están en la tarjeta de la guía)
+      const extraQ = gMir?.pasos.find((x) => /5Q CIEGAS extra/.test(x.que) && x.enlace)?.enlace;
       if (s.tipo === 'plan') {
         const mir = s.dia;
         return {
           tema: `D${mir.d}/${MIR_DIAS.length} · ${mir.asignatura} — ${mir.tema}`,
           sub: mir.peso != null ? `Peso MIR ${mir.peso}% · ${mir.vuelta}ª vuelta` : '1ª vuelta',
-          acciones: [{ lbl: 'ProMIR ↗', color: AMBER, url: capUrl(mir.capId), fill: true }, ...(mirObsUrl(mir.capId) ? [{ lbl: '◆ Obsidian', color: OBS, url: mirObsUrl(mir.capId) as string }] : [])],
+          acciones: [
+            { lbl: 'ProMIR ↗', color: AMBER, url: capUrl(mir.capId), fill: true },
+            ...(extraQ ? [{ lbl: '5Q extra ↗', color: AMBER, url: extraQ.url }] : []),
+            ...(mirObsUrl(mir.capId) ? [{ lbl: '◆ Obsidian', color: OBS, url: mirObsUrl(mir.capId) as string }] : []),
+          ],
+          guias: guiasMir,
         };
       }
       const m = s.dia;
-      return { tema: `M${m.d}/${MIR_MANT_META.totalDias} · ${m.tipo === 'sabado' ? 'SÁBADO · mini-simulacro 30Q mixtas' : m.tipo === 'viernes' ? 'viernes · asignatura peor del log' : m.asignatura} — ${m.nQ}Q`, sub: `${m.fase === 'extension' ? 'extensión' : 'mantenimiento'} · banqueo puro (Anki APEX::MIR + preguntas reales) · franja según el turno`, acciones: [] };
+      return {
+        tema: `M${m.d}/${MIR_MANT_META.totalDias} · ${m.tipo === 'sabado' ? 'SÁBADO · mini-simulacro 30Q mixtas' : m.tipo === 'viernes' ? 'viernes · asignatura peor del log' : m.asignatura} — ${m.nQ}Q`,
+        sub: `${m.repuesta ? `repuesta ${m.repuesta} · ` : ''}${m.fase === 'extension' ? 'extensión' : 'mantenimiento'} · banqueo puro (Anki APEX::MIR + preguntas reales) · franja según el turno`,
+        acciones: [m.tierC ? { lbl: 'Tier C ↗', color: AMBER, url: capUrl(m.tierC.capId), fill: true } : { lbl: 'MIR Q ↗', color: AMBER, url: 'https://www.examenesmir.com/examenes-mir', fill: true }],
+        guias: guiasMir,
+      };
     }
-    case 'encaps':
+    case 'encaps': {
+      // v6.02c (E4): F1 16:15 → sesión de encapsGuia (= SQL vigente = Supabase): PRE-TEST DE ARRANQUE (lun 19 / mar 20-oct) · BANCO · MINI-SIM,
+      // con el runner BANCO_PROPIO publicado (https), la eval, la nota Obsidian del CÓDIGO y el proyecto de Claude del área + la guía de la hora
+      const ses = b.ini === '16:15' ? sesionEncapsDe(iso) : null;
+      const gE = ses ? guiaEncapsDe(iso) : null;
+      if (ses && gE) {
+        const run = (r: { url: string | null; local: string } | null) => (r ? r.url || r.local : null);
+        const pri = run(ses.principal), ev = run(ses.eval);
+        const tema = ses.tipo === 'pretest' && ses.pretest
+          ? `D${ses.dia} · 🧪 PRE-TEST DE ARRANQUE ${ses.pretest.parte}/${ses.pretest.de} · ${ses.pretest.n}Q (${ses.pretest.codigos.join(' · ')}) · modo examen 72 s/Q`
+          : ses.tipo === 'minisim' ? `D${ses.dia} · 🔥 MINI-SIM 25Q · cola larga ${ses.secundarios.join(' + ')}` : `D${ses.dia} · 🎯 BANCO ${ses.codigo} · ${ses.subEje ?? ''}${ses.secundarios.length ? ` + ${ses.secundarios.join(' + ')}` : ''}`;
+        const sub = ses.tipo === 'pretest' ? 'eval 5Q → pre-test 24′ → corrección → --registrar --append (no el formulario) · NO es «banco del día»'
+          : ses.tipo === 'minisim' ? '72 s/Q · umbral 18/25 → corrección → nota /25 + cierre semanal' : `eval 5Q → banco ${ses.principal ? `${ses.principal.n}Q` : '(runner por generar)'} → material solo si ≥2 fallos → registro`;
+        return {
+          tema, sub,
+          acciones: [
+            ...(pri ? [{ lbl: ses.tipo === 'pretest' ? 'Pre-test ↗' : ses.tipo === 'minisim' ? 'Mini-sim ↗' : 'Banco ↗', color: TEAL, url: pri, fill: true }] : []),
+            ...(ev ? [{ lbl: 'Eval ↗', color: TEAL, url: ev }] : []),
+            ...(ses.obsidian ? [{ lbl: '◆ Obsidian', color: OBS, url: ses.obsidian }] : []),
+            { lbl: 'Claude ↗', color: EDGE, url: ses.proyecto.url },
+          ],
+          guias: [gE],
+        };
+      }
       return {
         tema: b.detalle ?? (faseV6(iso) === 'F1' ? 'Banco del día según pronóstico v3 (rotación II·I·V·III·IV) · viernes = mini-simulacro 25Q' : 'tipo del día en ENCAPS → Plan (Supabase)'),
         sub: `registro de errores en TRACKING_ERRORES · intensiva ${FECHAS_V6.encaps.intensiva_desde.slice(8)}-ene → D-1 · examen ${FECHAS_V6.encaps.examen}${FECHAS_V6.encaps.provisional ? ' PROVISIONAL' : ''}`,
         acciones: [{ lbl: '◆ Obsidian', color: OBS, url: encapsObsUrl('salud_publica') || OBS_MAPA_URL }],
       };
+    }
     case 'research-derma': {
-      if (b.detalle) return { tema: b.detalle, sub: "30' (DJ-4) · sin átomo nuevo", acciones: [] };
+      // v6.02c (E4 · Research): pausa de átomos → guía de 30′ «Research mínimo» con la franja real del bloque
+      if (b.detalle) return { tema: b.detalle, sub: "30' (DJ-4) · sin átomo nuevo", acciones: [], ...(/RESEARCH · mínimo/.test(b.nombre) && b.ini && b.fin && hm(b.fin) - hm(b.ini) === GUIA_RESEARCH_MINIMO.totalMin ? { guias: [{ ...GUIA_RESEARCH_MINIMO, franja: `${b.ini}–${b.fin}` }] } : {}) };
       const r = [...RESEARCH_DIAS, ...RESEARCH_DIAS_2027].find((x) => x.fecha === iso);
+      // v6.02c (E4 · Research): día-Research → guía del átomo (qué · cuánto · cómo) + botón al recurso 1 + ◆ Obsidian de la carpeta del entregable
+      const rG = researchAtomoDe(iso);
+      if (rG) {
+        const r0 = RESEARCH_REC[rG.recs[0] ?? ''];
+        const obsR = researchObsUrlDay(rG.d);
+        return {
+          tema: `Research ${rG.code} · ${rG.objetivo}`,
+          sub: `${faseV6(iso) === 'F4' ? "30' en tiempo muerto (posta): núcleo del átomo" : 'interdiario Research ↔ Derma'} · entregable: ${rG.entregable}`,
+          acciones: [...(r0 ? [{ lbl: `${rG.recs[0]} ↗`, color: EDGE, url: r0.url, fill: true }] : []), ...(obsR ? [{ lbl: '◆ Obsidian', color: OBS, url: obsR }] : [])],
+          guias: [guiaResearchDe(rG)],
+        };
+      }
       const d = dermaDiaDeConCiclo2(iso);
-      const tema = r ? `Research ${r.code} · ${r.objetivo}` : d ? `Derma d${d.d} · ${d.sub}` : 'sin átomo hoy (interdiario)';
-      return { tema, sub: faseV6(iso) === 'F4' ? "30' en tiempo muerto (posta): núcleo del átomo" : 'interdiario Research ↔ Derma', acciones: [] };
+      const tema = d ? `Derma d${d.d} · ${d.sub}` : 'sin átomo hoy (interdiario)';
+      const subRD = faseV6(iso) === 'F4' ? "30' en tiempo muerto (posta): núcleo del átomo" : 'interdiario Research ↔ Derma';
+      if (d) {
+        // v6.02c (E3): Derma = guía de 45′ (30′ en el SERUMS) · plan A (AccessDerma) o PLAN B (acceso remoto caducado; por defecto)
+        const ok = accessDermaOK();
+        const par = dermaGuiaPar(d, { ini: b.ini ?? '13:30', minutos: faseV6(iso) === 'F4' ? 30 : 45 });
+        const g = ok ? par.planA : par.planB;
+        const primerCaso = d.casoIds[0];
+        const directo = ok
+          ? (primerCaso ? { lbl: `Caso #${primerCaso} ↗`, color: EDGE, url: dermaCasoUrl(primerCaso) ?? d.access.url, fill: true } : { lbl: 'AccessDerma ↗', color: EDGE, url: d.access.url, fill: true })
+          : { lbl: 'Plan B ↗', color: EDGE, url: g.pasos.find((x) => x.enlace)?.enlace?.url ?? 'https://dermnetnz.org/', fill: true };
+        return {
+          tema, sub: ok ? subRD : `PLAN B (AccessDerma caducado: renuévalo desde la red de tu institución) · ${subRD}`,
+          acciones: [directo, ...(ok ? [] : [{ lbl: 'AccessDerma ↗', color: CORAL, url: 'https://dermatology.mhmedical.com/' }])],
+          guias: [g],
+        };
+      }
+      return { tema, sub: subRD, acciones: [] };
     }
     case 'aurum': {
       const a = aurumDiaDe(iso);
-      return { tema: a ? `D${a.d} · ${a.titulo}` : 'sin lección hoy', sub: a ? (a.min30 ? "30' (núcleo) · bloques extra opcionales" : `${a.min}' núcleo (ver + practicar)`) : '', acciones: [] };
+      // v6.02c (E5): vídeo CONCRETO (semana 1) o regla fija de elección + drill + lectura L en los minutos libres de la hora
+      const gAu = guiaAurumDe(iso);
+      const vid = primerEnlace(gAu, /youtube\.com\/(watch|@|user|c\/)/);
+      const obsA = a ? aurumObsUrl(a.obs) : null;
+      return {
+        tema: a ? `D${a.d} · ${a.titulo}` : 'sin lección hoy',
+        sub: a ? (a.min30 ? "30' (núcleo) · bloques extra opcionales" : `${a.min}' núcleo (ver + practicar)${a.pitch ? ` · 🎙 PITCH v${a.pitch}` : ''} + lectura L en los minutos libres`) : '',
+        acciones: [...(vid ? [{ lbl: /watch/.test(vid) ? '▶ Vídeo ↗' : 'Canal ↗', color: Colors.gold, url: vid, fill: true }] : []), ...(obsA ? [{ lbl: '◆ Obsidian', color: OBS, url: obsA }] : [])],
+        ...(gAu ? { guias: [gAu] } : {}),
+      };
     }
     case 'liviano': {
       const l = livDiaDe(iso);
-      return { tema: l ? `${l.modulo} — ${l.tema}` : 'Módulo del día — ver Business → LIVIANO → Academia', sub: '25 min estudio + 20 min aplicación (explicárselo a un paciente)', acciones: [] };
+      // v6.02c (E5): lectura con sección y nº de palabras (Schwartz 2017 en FISIOLOGÍA) · tarjetas del día · aplicación 20′ · viernes = caso + rúbrica
+      const gL = guiaLivianoDe(iso);
+      const lect = primerEnlace(gL);
+      const obsL = primerEnlace(gL, /^obsidian:/);
+      return {
+        tema: l ? `${l.modulo} — ${l.tema}` : 'Módulo del día — ver Business → LIVIANO → Academia',
+        sub: l?.casoId ? `VIERNES · caso ${l.casoId}/16 + rúbrica 0-2 × 4` : '25 min estudio + 20 min aplicación (explicárselo a un paciente)',
+        acciones: [...(lect ? [{ lbl: 'Lectura ↗', color: AMBER, url: lect, fill: true }] : []), ...(obsL ? [{ lbl: '◆ Obsidian', color: OBS, url: obsL }] : [])],
+        ...(gL ? { guias: [gL] } : {}),
+      };
     }
     case 'synapse': {
       const s = synDiaDe(iso);
-      return { tema: s ? `S${s.semana} · ${s.fase}` : 'SYNAPSE', sub: "A 15' pantalla · B 10' audio · C 5' lectura", acciones: [] };
+      // v6.02c (E5): A/B/C con qué y cuánto exactos; lun 19-oct (UWSA1) se hace a las 07:25 · días de NBME a las 13:00
+      const gS = guiaSynapseDe(iso);
+      const movida = gS && !gS.franja.startsWith(b.ini ?? '12:30') ? ` · HOY a las ${gS.franja.slice(0, 5)} (hito USMLE)` : '';
+      const tagUrl = (tag: string) => s?.bloques.find((x) => x.tag === tag && x.url)?.url;
+      const btn = (['A', 'B', 'C'] as const).map((tag) => ({ tag, url: gS?.pasos.find((p) => p.que.startsWith(`${tag} `))?.enlace?.url ?? tagUrl(tag) })).filter((x) => !!x.url);
+      return {
+        tema: s ? `S${s.semana} · ${s.fase}${movida}` : 'SYNAPSE',
+        sub: "A 15' pantalla · B 10' audio · C 5' lectura",
+        acciones: btn.map((x, i) => ({ lbl: `${x.tag} ↗`, color: OBS, url: x.url as string, fill: i === 0 })),
+        ...(gS ? { guias: [gS] } : {}),
+      };
+    }
+    case 'business': {
+      // v6.02c (E5): Estudio Pulso con franja propia (13:00-13:25 · NBME 12:30 · sábado = tracker del OUTPUT)
+      const r = bizDiaDe(iso);
+      const gB = guiaBusinessDe(iso);
+      const tramo = primerEnlace(gB, /youtube|spotify/);
+      const obsB = primerEnlace(gB, /^obsidian:/);
+      return {
+        tema: gB ? gB.titulo : r ? `${r.materia} · ${r.lectura}` : 'Business',
+        sub: r && r.accion ? `acción: ${r.accion}` : gB && /tracker/.test(gB.titulo) ? 'tracker semanal + cierre de la página del OUTPUT' : 'Estudio Pulso',
+        acciones: [...(tramo ? [{ lbl: '▶ Tramo ↗', color: Colors.brass, url: tramo, fill: true }] : []), ...(obsB ? [{ lbl: '◆ 01_PULSO', color: OBS, url: obsB, fill: !tramo }] : [])],
+        ...(gB ? { guias: [gB] } : {}),
+      };
+    }
+    case 'revision': {
+      // v6.02c (E5): la revisión del sábado con su fichero S<NN>_<sábado>.md (lo crea gen_revision_semanal.js) y los 30′ partidos
+      const gR = guiaRevisionDe(iso);
+      return {
+        tema: `${revisionFicheroDe(iso)} · 10 métricas + checklist G + 4 decisiones`,
+        sub: 'node DATA/_scripts/gen_revision_semanal.js → abre el fichero · método: DATA/REVISION_SEMANAL.md',
+        acciones: [{ lbl: `${revisionFicheroDe(iso).slice(0, 3)} ↗`, color: Colors.champagne, url: vsRevision(iso), fill: true }, { lbl: 'Método ↗', color: Colors.champagne, url: 'https://github.com/josephMAX-svg/joseph-md-app/blob/master/DATA/REVISION_SEMANAL.md' }],
+        ...(gR ? { guias: [gR] } : {}),
+      };
     }
     default:
       return { tema: b.detalle ?? '', sub: '', acciones: [] };
   }
+}
+
+/**
+ * v6.02c F2 (E6) · CABECERA de un bloque (hora · AHORA/✓ · nombre · tema · sub). Sin guía = la de la plantilla. Con guía = «la guía manda»:
+ * hora = unión de sus franjas, AHORA solo dentro de una franja de la guía (los huecos —p. ej. el SYNAPSE del lun 19 entre 07:25 y 07:55— no
+ * cuentan), nombre sin la descripción genérica, tema = título(s) de la guía con su hora, sub = «🧭 la guía manda» (+ el sub del plan si no es
+ * USMLE, cuyo sub genérico es el que contradecía).
+ */
+function cabeceraBloque(b: BloqueV6, c: { tema: string; sub: string; guias?: GuiaBloque[] }, ahora: number): {
+  ini?: string | null; fin?: string | null; enCurso: boolean; pasado: boolean; nombre: string; tema: string; sub: string; varias: boolean; conGuia: boolean;
+} {
+  const gs = c.guias ?? [];
+  const span = spanGuias(gs);
+  if (!span) {
+    return {
+      ini: b.ini, fin: b.fin, enCurso: !!b.ini && !!b.fin && ahora >= hm(b.ini) && ahora < hm(b.fin),
+      pasado: !!b.fin && ahora >= hm(b.fin) && b.ini !== b.fin, nombre: b.nombre, tema: c.tema, sub: c.sub, varias: false, conGuia: false,
+    };
+  }
+  const tema = gs.length === 1 ? (gs[0] as GuiaBloque).titulo : gs.map((g) => `${g.franja.slice(0, 5)} ${tituloCorto(g.titulo)}`).join(' → ');
+  const sub = `🧭 la guía manda · ${span.ini}–${span.fin} · ${fmtMin(gs.reduce((a, g) => a + g.totalMin, 0))}${gs.length > 1 ? ` en ${gs.length} franjas` : ''} · pasos en la tarjeta de abajo${b.plan !== 'usmle' && c.sub ? ` · ${c.sub}` : ''}`;
+  return {
+    ini: span.ini, fin: span.fin, enCurso: gs.some((g) => enFranja(g.franja, ahora)), pasado: ahora >= hm(span.fin),
+    nombre: nombreBase(b.nombre), tema, sub, varias: gs.length > 1, conGuia: true,
+  };
 }
 
 export default function TodayMission({ onGo }: { onGo?: (screen: string) => void }) {
@@ -349,6 +592,9 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
   const p = plantillaDelDia(iso);
   const fase = faseV6(iso);
   const enF4 = fase === 'F4' && aplicaTurno(iso);
+  // v6.02c · guía USMLE que no cae en ningún bloque USMLE de la plantilla (p. ej. Anki del sábado/domingo)
+  const cubiertasUsmle = new Set(p.bloques.filter((b) => b.plan === 'usmle').flatMap((b) => contenidoBloque(b, p, iso).guias ?? []).map((g) => g.franja));
+  const usmleFuera = guiaUsmleDe(iso).filter((g) => !cubiertasUsmle.has(g.franja));
 
   return (
     <View style={st.wrap}>
@@ -406,7 +652,7 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
         const color = PLAN_COLOR[b.plan];
         const enCurso = !!b.ini && !!b.fin && ahora >= hm(b.ini) && ahora < hm(b.fin);
         const pasado = !!b.fin && ahora >= hm(b.fin) && b.ini !== b.fin;
-        const minimo = b.frente ? minimoPorFrente(b.frente as Frente, modo, iso) : null;
+        const minimo = b.frente && !/^(feynman|anki-dom)$/.test(b.id) ? minimoPorFrente(b.frente as Frente, modo, iso) : null; // v6.02c (E5): los opcionales del domingo no tienen «mínimo»
         const omitido = !!minimo && /^Omitid/.test(minimo);
         if (!b.frente && b.plan !== 'usmle' && b.plan !== 'encaps') {
           // SERUMS · gimnasio · vida · revisión: fila compacta
@@ -419,22 +665,25 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
           );
         }
         const c = contenidoBloque(b, p, iso);
+        // v6.02c F2 (E6): con guía, la cabecera la manda la guía (franja real + títulos), no el texto genérico de la plantilla
+        const { ini, fin, enCurso: enCursoG, pasado: pasadoG, nombre: nombreH, tema: temaH, sub: subH, varias, conGuia } = cabeceraBloque(b, c, ahora);
         return (
-          <TouchableOpacity key={b.id} activeOpacity={onGo ? 0.8 : 1} onPress={() => onGo?.('Estudio')}
-            style={[st.bloque, { borderLeftColor: color }, enCurso && { backgroundColor: color + '14', borderColor: color + '66' }, (pasado || omitido) && { opacity: 0.5 }]}>
+          <React.Fragment key={b.id}>
+          <TouchableOpacity activeOpacity={onGo ? 0.8 : 1} onPress={() => onGo?.('Estudio')}
+            style={[st.bloque, { borderLeftColor: color }, enCursoG && { backgroundColor: color + '14', borderColor: color + '66' }, (pasadoG || omitido) && { opacity: 0.5 }]}>
             <View style={st.horaCol}>
-              <Text style={[st.hora, { color }]}>{b.ini ?? '—'}</Text>
-              <Text style={st.horaFin}>{b.ini && b.fin && b.ini !== b.fin ? b.fin : b.ini ? '' : b.hora}</Text>
-              {enCurso && <AhoraChip color={color} />}
-              {pasado && <Text style={st.checkTxt}>✓</Text>}
+              <Text style={[st.hora, { color }]}>{ini ?? '—'}</Text>
+              <Text style={st.horaFin}>{ini && fin && ini !== fin ? fin : ini ? '' : b.hora}</Text>
+              {enCursoG && <AhoraChip color={color} />}
+              {pasadoG && <Text style={st.checkTxt}>✓</Text>}
             </View>
             <View style={{ flex: 1, minWidth: 0 }}>
-              <Text style={st.bloqueNombre}>{PLAN_FLAG[b.plan]} {b.nombre}</Text>
+              <Text style={st.bloqueNombre}>{PLAN_FLAG[b.plan]} {nombreH}</Text>
               {minimo ? (
                 <Text style={[st.bloqueTema, { color: MODO_COLOR[modo] }]} numberOfLines={2}>{MODO_INFO[modo].label} → {minimo}</Text>
               ) : null}
-              {c.tema ? <Text style={st.bloqueTema} numberOfLines={2}>{c.tema}</Text> : null}
-              {c.sub ? <Text style={st.bloqueSub} numberOfLines={1}>{c.sub}</Text> : null}
+              {temaH ? <Text style={st.bloqueTema} numberOfLines={varias ? 3 : 2}>{temaH}</Text> : null}
+              {subH ? <Text style={st.bloqueSub} numberOfLines={conGuia ? 2 : 1}>{subH}</Text> : null}
               {b.plan === 'vibecoding' ? <Freno0455 /> : null}
             </View>
             <View style={st.btnCol}>
@@ -446,9 +695,23 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
               ))}
             </View>
           </TouchableOpacity>
+          {/* v6.02c · qué · cuánto · cómo de las franjas del bloque (formato común GuiaBloque; cada plan las da en su `case`) */}
+          {c.guias && c.guias.length > 0 ? (
+            <View style={st.guias}>
+              {c.guias.map((g, k) => <GuiaBloqueCard key={k} g={g} color={color} compacto ahora={enFranja(g.franja, ahora)} />)}
+            </View>
+          ) : null}
+          </React.Fragment>
         );
       })}
-      <Text style={st.nota}>Plantilla {p.plantilla} (plantillasV6 · V6_ESPEC §A1/§B4.1) · toca un bloque → abre Estudio · ◆ Obsidian = nota madre donde caen los APEX · 04:55 commit-or-stash → 05:00 Anki sin excepción · 📓 journal = D:/synapse-journal (node DATA/_scripts/journal_hoy.js) · sáb 07:15-07:45 = revisión semanal (DATA/REVISION_SEMANAL.md; en el SERUMS, 20' dentro del Step 1 del sábado) · Step 1: {DIAS.length} días en F1 + {DIAS_T2.length} en el tramo 2</Text>
+      {/* v6.02c · USMLE: franjas de la guía sin bloque en la plantilla de hoy (Anki del sábado 19:00 / domingo 17:00) */}
+      {usmleFuera.length > 0 && (
+        <View style={st.guias}>
+          <Text style={st.bloqueSub}>🇺🇸 USMLE · fuera de los bloques de hoy</Text>
+          {usmleFuera.map((g, k) => <GuiaBloqueCard key={k} g={g} color={GREEN} compacto={!enFranja(g.franja, ahora)} ahora={enFranja(g.franja, ahora)} />)}
+        </View>
+      )}
+      <Text style={st.nota}>Plantilla {p.plantilla} (plantillasV6 · V6_ESPEC §A1/§B4.1) · toca un bloque → abre Estudio · ◆ Obsidian = nota madre donde caen los APEX · 04:55 commit-or-stash → 05:00 Anki sin excepción · 📓 journal = D:/synapse-journal (node DATA/_scripts/journal_hoy.js) · sáb 07:15-07:45 = revisión semanal (DATA/REVISION_SEMANAL.md; en el SERUMS, 20' dentro del Step 1 del sábado) · 13:00-13:25 = Business (Estudio Pulso) · cada bloque trae su guía «qué · cuánto · cómo» (toca la tarjeta para ver los pasos) · Step 1: {DIAS.length} días en F1 + {DIAS_T2.length} en el tramo 2</Text>
     </View>
   );
 }
@@ -511,4 +774,5 @@ const st = StyleSheet.create({
   btn: { borderWidth: 1, borderRadius: BorderRadius.md, paddingVertical: 5, paddingHorizontal: 10, alignItems: 'center' },
   btnTxt: { fontSize: FontSize.labelSm, fontWeight: '800' },
   nota: { fontSize: 9, color: Colors.muted, marginTop: 4 },
+  guias: { marginLeft: 16, marginTop: -2, marginBottom: 6 },
 });

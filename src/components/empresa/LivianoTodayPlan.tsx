@@ -10,6 +10,8 @@ import {
   livCasoDe, livDrillDe, livCardsDeDia, livPretest, livAnkiDeck,
 } from '../../lib/livianoCasos';
 import { planHoyD, loadDone, saveDone } from '../../lib/studyProgress';
+import GuiaBloqueCard from '../GuiaBloqueCard';
+import { guiaLivianoDe } from '../../lib/rutinaGuia'; // v6.02c (E5): qué · cuánto · cómo de la sesión (lectura con sección y palabras, enlaces)
 import {
   LivianoScoreStore as ScoreStore, ScoreEntry, RubricaEntry, EntradaLiviano, LIVIANO_SCORE_KEY,
   loadLivianoScore, saveLivianoScore, espejarLivianoScore, pullLivianoScores, mergeLivianoScore,
@@ -328,6 +330,8 @@ export default function LivianoTodayPlan({ onIrALogistica }: { onIrALogistica?: 
             ) : null}
           </View>
         </FadeUp>
+        {/* v6.02c (E5) · guía de la sesión: qué leer (sección + nº de palabras + enlace), cuánto (minutos), cómo (aplicación / caso + rúbrica) */}
+        {(() => { const g = guiaLivianoDe(dia.fecha); return g ? <FadeUp delay={20}><GuiaBloqueCard g={g} color={c} /></FadeUp> : null; })()}
 
         {/* Pre-test del lunes */}
         {dia.pretest ? (

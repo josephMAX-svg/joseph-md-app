@@ -1,0 +1,10 @@
+# Qbankly · QBanks de los HITOS del Step 1 (UWSA y NBME CBSSA) — /api/v2/qbanks?mode=list&categoryId=13 (USMLE High Yield) y categoryId=8 (NBME - Comprehensive Basic Science (Step 1)), dom 18-oct-2026, sesión de Joseph, solo lectura (no se seleccionó ningún QBank ni se creó ningún test) · qbankId|nombre exacto|categoría|preguntas|Subjects (= BLOQUES del simulacro, con su nº de preguntas)|Systems · Cómo se arma: QBanks › <categoría> › <nombre> › Select QBank › New Test → Subject = el bloque → Status Unused → todas las preguntas del bloque → Timed → BEGIN TEST (un test por bloque).
+105|uWorld - Step 1 Self Assessment Simulation 1|USMLE High Yield|160|Block - #1 40 · Block - #2 40 · Block - #3 40 · Block - #4 40|All 160
+106|uWorld - Step 1 Self Assessment Simulation 2|USMLE High Yield|159|Block - #1 40 · Block - #2 40 · Block - #3 40 · Block - #4 39|All 160
+107|uWorld - Step 1 Self Assessment Simulation 3|USMLE High Yield|158|Block - #1 39 · Block - #2 40 · Block - #3 39 · Block - #4 40|All 160
+53|Self-Assessment - Form 25|NBME - Comprehensive Basic Science (Step 1)|200|Block 1 50 · Block 2 50 · Block 3 50 · Block 4 50|All Systems 200
+54|Self-Assessment - Form 26|NBME - Comprehensive Basic Science (Step 1)|200|Block 1 50 · Block 2 50 · Block 3 50 · Block 4 50|All Systems 200
+55|Self-Assessment - Form 27|NBME - Comprehensive Basic Science (Step 1)|198|Block 1 49 · Block 2 50 · Block 3 50 · Block 4 49|All Systems 198
+56|Self-Assessment - Form 28|NBME - Comprehensive Basic Science (Step 1)|200|Block 1 50 · Block 2 50 · Block 3 50 · Block 4 50|All Systems 200
+57|Self-Assessment - Form 29|NBME - Comprehensive Basic Science (Step 1)|199|Block 1 50 · Block 2 50 · Block 3 50 · Block 4 49|All Systems 199
+58|Self-Assessment - Form 30|NBME - Comprehensive Basic Science (Step 1)|200|Block 1 50 · Block 2 50 · Block 3 50 · Block 4 50|All Systems 200

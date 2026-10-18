@@ -11,7 +11,7 @@
    "2026-1": "SIN PDF de claves en disco → clave null (usar solo como molde de estilo; marcar 'no verificable')",
    "hechos_del_gate_reconfirmados": "2025-2 Q89=B (TTOG) · Q97=A (2.ª dosis influenza) · Q52=B (PEI) · 2025-1A Q76=A (participación ciudadana) · Q41=B (atenuar o eliminar) · Q98=A (estructural) · Q38=C (I-2) · Q88=D (MAPA) · 2025-1B Q13=C (participación ciudadana) · Q40=D (I-2)"
   },
-  "uso": "gen_encaps_minisim.js lee este fichero para (a) validar que cada ítem del BANCO_PROPIO con 'molde' cite un Q existente y (b) comprobar que la clave del molde coincide con la afirmación del ítem espejo. LISTA NEGRA: 2026-2 NO está aquí a propósito (ver _examen_2026-2_items.json).",
+  "uso": "gen_encaps_minisim.js lee este fichero para (a) validar que cada ítem del BANCO_PROPIO con 'molde' cite un Q existente y (b) comprobar que la clave del molde coincide con la afirmación del ítem espejo. LISTA NEGRA: el examen reservado como pre-test NO está aquí a propósito (fichero aparte en DATA/ENCAPS; ver README de BANCO_PROPIO, §LISTA NEGRA).",
   "opciones": "A-D (orden de maquetación del PDF A/C/B/D normalizado a A/B/C/D)"
  },
  "examenes": {

@@ -1,0 +1,527 @@
+{
+ "titulo": "4.- Insuficiencia cardíaca",
+ "url": "https://promir.medicapanamericana.com/capitulo/64588d5ef704295c924d9289",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "4 Insuficiencia cardíaca",
+   "palabras": 181,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Introducción",
+   "palabras": 142,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Definición universal de insuficiencia cardíaca",
+   "palabras": 154,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2018-065"
+   ],
+   "figs": 2,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "6486edc9c9ba5c0765cd451f.mp4",
+     "seg": 7448,
+     "leyenda": "Vídeo 4-1Masterclass: Diagnóstico y tratamiento de la insuficiencia cardíaca aguda y crónica."
+    }
+   ],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Evaluación diagnóstica inicial",
+   "palabras": 0,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.1. Historia clínica. Síntomas y signos de la insuficiencia cardíaca",
+   "palabras": 2473,
+   "palabrasTabla": 230,
+   "citasMIR": 7,
+   "citasMIRdesde2015": 4,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2003-252",
+    "2008-027",
+    "2015-064",
+    "2018-021",
+    "2005-253",
+    "2016-064",
+    "2024-183"
+   ],
+   "figs": 11,
+   "tablas": [
+    "Tabla 4-1. Manifestaciones clínicas de la insuficiencia cardíaca. Síntomas y signos Síntom",
+    "Tabla 4-2. Clasificación funcional de la disnea de la New York Heart Association (NYHA) y "
+   ],
+   "videos": [
+    {
+     "id": "58984f13b89214740aff83fc.mp4",
+     "seg": 13,
+     "leyenda": "Vídeo 4-2Impulso apical desplazado lateralmente."
+    },
+    {
+     "id": "64a2a9753f62ec1dbb3e6214.mp4",
+     "seg": 2,
+     "leyenda": "Vídeo 4-6Líneas B pulmonares visualizadas con la ecografía pulmonar a pie de cama. En estos vídeos, realizados con ecogr"
+    },
+    {
+     "id": "64a2a9743f62ec1dbb3e6211.mp4",
+     "seg": 2,
+     "leyenda": "Vídeo 4-3Líneas B pulmonares visualizadas con la ecografía pulmonar a pie de cama. En estos vídeos, realizados con ecogr"
+    },
+    {
+     "id": "64a2a9743f62ec1dbb3e620e.mp4",
+     "seg": 2,
+     "leyenda": "Vídeo 4-4Líneas B pulmonares visualizadas con la ecografía pulmonar a pie de cama. En estos vídeos, realizados con ecogr"
+    },
+    {
+     "id": "64a2a9753f62ec1dbb3e6217.mp4",
+     "seg": 2,
+     "leyenda": "Vídeo 4-5Líneas B pulmonares visualizadas con la ecografía pulmonar a pie de cama. En estos vídeos, realizados con ecogr"
+    }
+   ],
+   "recuerda": 2
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.2. Pruebas complementarias de primer nivel",
+   "palabras": 1042,
+   "palabrasTabla": 249,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2018-069"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 4-3. Signos característicos de la insuficiencia cardíaca según el mecanismo predomin",
+    "Tabla 4-4. Causas de elevación de los péptidos natriuréticos diferentes a la insuficiencia"
+   ],
+   "videos": [
+    {
+     "id": "64a29ecc3f62ec1dbb3e60eb.mp4",
+     "seg": 14,
+     "leyenda": "Vídeo 4-7Edemas blandos con fóvea en planos declives. Edema pretibial que deja fóvea a la palpación. Signo frecuente en "
+    },
+    {
+     "id": "64a2a9763f62ec1dbb3e621a.mp4",
+     "seg": 2,
+     "leyenda": "Vídeo 4-8Evaluación de la vena cava inferior. En esta imagen ecográfica se aprecia una vena cava inferior no dilatada co"
+    }
+   ],
+   "recuerda": 2
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.3. Pruebas complementarias dirigidas a conocer la causa de la insuficiencia cardíaca",
+   "palabras": 520,
+   "palabrasTabla": 51,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 3,
+   "tablas": [
+    "Tabla 4-5. Puntos de corte a partir de los cuales se considera que los péptidos natriuréti"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.4. Pruebas complementarias específicas",
+   "palabras": 287,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Clasificación de la insuficiencia cardíaca",
+   "palabras": 82,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.1. Clasificación de la insuficiencia cardíaca según la fracción de eyección del ventrículo izquierdo",
+   "palabras": 798,
+   "palabrasTabla": 0,
+   "citasMIR": 6,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2010-049",
+    "2014-054",
+    "2020-128",
+    "2017-182",
+    "2010-050",
+    "2008-025"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "59ccc72129d751bf6f38dace.mp4",
+     "seg": 39,
+     "leyenda": "Vídeo 4-9Fracción de eyección del ventrículo severamente deprimida."
+    },
+    {
+     "id": "64be7ffb0aa5ae300cdd453d.mp4",
+     "seg": 17,
+     "leyenda": "Vídeo 4-10Insuficiencia cardíaca con FEVI conservada."
+    }
+   ],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.2. Clasificación de la insuficiencia cardíaca según el estadio evolutivo de la enfermedad",
+   "palabras": 588,
+   "palabrasTabla": 269,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [
+    "Tabla 4-6. Criterios diagnósticos de insuficiencia cardíaca según la fracción de eyección ",
+    "Tabla 4-7. Factores de riesgo para desarrollar insuficiencia cardíaca y recomendaciones pa"
+   ],
+   "videos": [
+    {
+     "id": "64be7ffa0aa5ae300cdd453a.mp4",
+     "seg": 14,
+     "leyenda": "Vídeo 4-11Insuficiencia cardíaca con FEVI conservada."
+    }
+   ],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.3. Clasificación de la insuficiencia cardíaca según la cronología y la evolución de los síntomas",
+   "palabras": 328,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 2,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "5. Causas de la insuficiencia cardíaca. Factores de descompensación",
+   "palabras": 497,
+   "palabrasTabla": 80,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2007-033"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 4-8. Otras causas de insuficiencia cardíaca Quimioterapia (p. ej., antraciclinas) y "
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "6. Tratamiento de la insuficiencia cardíaca",
+   "palabras": 79,
+   "palabrasTabla": 95,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2010-049",
+    "2007-033",
+    "2006-252",
+    "2021-194"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 4-9. Factores precipitantes o desencadenantes de una descompensación Cardiovasculare"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.1. Insuficiencia cardíaca aguda",
+   "palabras": 4432,
+   "palabrasTabla": 112,
+   "citasMIR": 18,
+   "citasMIRdesde2015": 8,
+   "citasMIRdesde2020": 4,
+   "citas": [
+    "2003-252",
+    "2009-005",
+    "2021-200",
+    "2025-197",
+    "2005-035",
+    "2018-067",
+    "2010-007",
+    "2014-055",
+    "2015-059",
+    "2010-008",
+    "2009-006",
+    "2018-069",
+    "2012-083",
+    "2004-034",
+    "2015-057",
+    "2023-114",
+    "2025-010",
+    "2008-224"
+   ],
+   "figs": 8,
+   "tablas": [
+    "Tabla 4-10. Indicaciones, contraindicaciones y complicaciones del balón de contrapulsación"
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.2. Insuficiencia cardíaca estabilizada",
+   "palabras": 6085,
+   "palabrasTabla": 172,
+   "citasMIR": 40,
+   "citasMIRdesde2015": 21,
+   "citasMIRdesde2020": 12,
+   "citas": [
+    "2006-252",
+    "2024-183",
+    "2003-024",
+    "2005-024",
+    "2005-252",
+    "2007-027",
+    "2011-052",
+    "2013-071",
+    "2019-094",
+    "2020-137",
+    "2023-117",
+    "2012-082",
+    "2020-038",
+    "2009-043",
+    "2011-051",
+    "2013-042",
+    "2016-021",
+    "2019-179",
+    "2003-025",
+    "2021-128",
+    "2008-024",
+    "2022-192",
+    "2006-025",
+    "2016-063",
+    "2018-228",
+    "2017-014",
+    "2022-055",
+    "2017-071",
+    "2004-024",
+    "2020-126",
+    "2011-129",
+    "2007-225",
+    "2016-205",
+    "2024-099",
+    "2025-116",
+    "2012-091",
+    "2011-047",
+    "2024-104",
+    "2020-130",
+    "2015-060"
+   ],
+   "figs": 9,
+   "tablas": [
+    "Tabla 4-11. Aspectos que se han de tener en cuenta antes de iniciar o titular el tratamien"
+   ],
+   "videos": [],
+   "recuerda": 9
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.3. Insuficiencia cardíaca avanzada (estadio D)",
+   "palabras": 1811,
+   "palabrasTabla": 520,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2005-025",
+    "2021-194",
+    "2004-222",
+    "2008-222"
+   ],
+   "figs": 2,
+   "tablas": [
+    "Tabla 4-12. Alertas o datos de mal pronóstico en la insuficiencia cardíaca avanzada (acrón",
+    "Tabla 4-13. Diagnóstico de la insuficiencia cardíaca avanzada Cuando a pesar del tratamien",
+    "Tabla 4-14. Condiciones que aumentan la morbimortalidad del trasplante cardíaco Infección ",
+    "Tabla 4-15. Pacientes candidatos a cuidados paliativos Deterioro progresivo físico y menta"
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "7. Comorbilidades cardiovasculares",
+   "palabras": 75,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.1. Fibrilación auricular",
+   "palabras": 337,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.2. Síndrome coronario crónico",
+   "palabras": 194,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.3. Valvulopatías e insuficiencia cardíaca",
+   "palabras": 289,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.4. Ferropenia (con o sin anemia)",
+   "palabras": 99,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "8. Epidemiología",
+   "palabras": 1427,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2014-054"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  }
+ ],
+ "nav": [
+  {
+   "t": "Hipertensión arterial. Prevención, detección, diagnóstico y tratamiento",
+   "href": "570779c8f4d68bf008dbc6b4"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Cardiopatía isquémica",
+   "href": "570779c9f4d68bf008dbc731"
+  }
+ ],
+ "totPalabras": 21920,
+ "totPalabrasTabla": 1778,
+ "totCitas": 83,
+ "totFigs": 40,
+ "totTablas": 15,
+ "totRecuerda": 16,
+ "medido": "2026-10-18 · chrome-devtools en el Chrome de Joseph (sesión ProMIR) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js"
+}

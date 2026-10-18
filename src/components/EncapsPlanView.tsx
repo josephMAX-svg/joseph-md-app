@@ -1,4 +1,7 @@
 // EncapsPlanView — Opción B (nativa) del PROMPT_ULTRAMAESTRO_APP.
+// v6.02c (18-oct-2026, E4): HOY → «🧭 GUÍA DE LA HORA 16:15-17:15» (GuiaBloqueCard con encapsGuia.guiaEncapsDe: eval · banco/pre-test ·
+// secundario · material del Drive · registro · APEX, con minutos y enlace directo a los runners BANCO_PROPIO publicados) · ◆ Obsidian = nota
+// del CÓDIGO del día (encapsGuia) · aviso de registro por --registrar --append los días de PRE-TEST DE ARRANQUE (lun 19 / mar 20-oct).
 // v5.14 (19-sep): sims de la FASE INTENSIVA (pretest · sim100 · dress_rehearsal, escala /100) en ▲ Sim + tipo de ronda del cierre por tipo de día.
 // PE Perú → ENCAPS → "Plan diario": HOY · Camino a 17/20 · Simulacros · 7 días.
 // Lee study_schedule/metrics/checks/sim_scores de Supabase; los checks se
@@ -29,6 +32,10 @@ import { ENCAPS_FICHAS_MINSA, ENCAPS_FICHAS_POR_TEMA, ENCAPS_ACADEMIAS_RESPALDO,
 import { CountdownCockpit, RentabilidadStrip, RetrievalRadarLegend, GoNoGoAltimeter, MiniSimTrend, CiegoSemanalStrip, TemasCalientesStrip } from './EncapsCockpit';
 import { encapsGoZone, encapsGoColor, encapsMiniSimZone, encapsCiegoZone, ENCAPS_MINISIM_META } from '../lib/encapsRentabilidad';
 import { ENCAPS_COBERTURA, CoberturaTema } from '../lib/encapsCobertura';
+// v6.02c (18-oct-2026, E4): guía «qué · cuánto · cómo» de la hora 16:15 (formato común) + runners BANCO_PROPIO + nota Obsidian del CÓDIGO
+import GuiaBloqueCard from './GuiaBloqueCard';
+import { guiaEncapsDe } from '../lib/encapsGuia';
+import { sesionGuiaDe } from '../lib/encapsPlan';
 
 const TIER_COLOR: Record<string, string> = { 'CRÍTICA': Colors.coral, 'ALTA': Colors.gold, 'MEDIA': Colors.blue, 'BAJA': Colors.muted };
 const cvColor = (v: string) => (v === 'sí' ? Colors.green : v === 'parcial' ? Colors.gold : v === 'no' ? Colors.coral : Colors.muted);
@@ -388,6 +395,12 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   const absorbido = minisimAbsorbidoDe(today);
   // v6.01: mini-sim F1 REPUESTO en el carril B (pendiente_f1 tipo 'mini_sim'; v6.02: lun 22-feb = dia 88 y mar 2-mar = dia 94 · v6.01: dia 93) → su receta desde la pseudo-fila
   const recetaCB = carrilB?.tipo === 'mini_sim' ? miniSimRecetaDe(pseudoCarrilB(today)) : null;
+  // v6.02c: sesión de la guía (solo si la fila viva cuadra con encapsGuia.ts: mismo dia y código) → guía de la hora + nota Obsidian del código
+  const ses = sesionGuiaDe(today);
+  const guia = ses ? guiaEncapsDe(String(today.fecha)) : null;
+  const obsHref = ses?.obsidian || encapsObsByTitle(today.subtema || tema, today.codigo || undefined);
+  const ahoraMin = (() => { try { const d = new Date(); return d.getHours() * 60 + d.getMinutes(); } catch { return 0; } })();
+  const esHoyLima = (() => { try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}` === String(today.fecha).slice(0, 10); } catch { return false; } })();
 
   return (
     <View>
@@ -403,7 +416,7 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
           {metrics?.qx_pct != null && <Pill text={`QX ${metrics.qx_pct}%`} color={Colors.blue} />}
           {diasAExamenDe(metrics) != null && <Pill text={`examen ${diasAExamenDe(metrics)}d`} color={Colors.muted} />}
           <TouchableOpacity activeOpacity={0.8}
-            onPress={() => Linking.openURL(encapsObsByTitle(today.subtema || tema, today.codigo || undefined)).catch(() => {})}
+            onPress={() => Linking.openURL(obsHref).catch(() => {})}
             style={{ borderWidth: 1, borderColor: Colors.purple + '99', backgroundColor: Colors.purple + '1F', borderRadius: 999, paddingVertical: 2, paddingHorizontal: 10 }}>
             <Text style={{ fontSize: 11, fontWeight: '800', color: Colors.purple }}>◆ Obsidian</Text>
           </TouchableOpacity>
@@ -478,6 +491,18 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
           <Text style={styles.findeStudyLine}>◆ Fin de semana de ESTUDIO (aún no hay examen — tu 1er examen es el 2º finde)</Text>
         )}
       </View>
+
+      {/* v6.02c · 🧭 GUÍA DE LA HORA 16:15-17:15: qué · cuánto · cómo, paso a paso con minutos y enlace directo (runner BANCO_PROPIO,
+          material del Drive, nota Obsidian del código, proyecto de Claude del área); solo si la fila viva cuadra con la guía generada */}
+      {!!guia && (
+        <View style={{ marginBottom: Spacing.section }}>
+          <Text style={styles.groupHdr}>🧭 GUÍA DE LA HORA · {guia.franja}</Text>
+          <GuiaBloqueCard g={guia} color={Colors.teal} ahora={esHoyLima && ahoraMin >= 16 * 60 + 15 && ahoraMin < 17 * 60 + 15} />
+          {ses?.tipo === 'pretest' && (
+            <Text style={styles.groupHint}>Hoy el registro del pre-test es «Generar JSON» en el runner → node DATA/_scripts/gen_encaps_minisim.js --registrar &lt;export.json&gt; --append. El formulario CIERRE DE SESIÓN de abajo lo guardaría como una ronda MIX: no lo uses hoy.</Text>
+          )}
+        </View>
+      )}
 
       {/* Cobertura del tema: cuántos videos mirar + vueltas + gaps (barrido de compendios) */}
       {!!today.codigo && <CoberturaCard codigo={today.codigo} />}

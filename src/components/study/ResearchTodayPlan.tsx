@@ -14,6 +14,9 @@ import { diaEstudioTipo, PRIORIDAD_COLOR } from '../../lib/researchData';
 import { researchObsUrlDay } from '../../lib/obsidianResearchMap';
 import { serifTitle, InkColors, OBSIDIAN } from './researchTheme';
 import { FECHAS_V6, motivoProtegido } from '../../lib/fechasV6';
+// v6.02c (18-oct-2026, E4): guía «qué · cuánto · cómo» de cada átomo (GENERADA por gen_research_plan.js → researchGuia.ts) en el formato común
+import GuiaBloqueCard from '../GuiaBloqueCard';
+import { guiaResearchDe, GUIA_RESEARCH_MINIMO } from '../../lib/researchGuia';
 
 /**
  * ResearchTodayPlan — Plan de research día-a-día (3 pistas: carta al editor · tesis · case report + SR-1),
@@ -25,6 +28,8 @@ import { FECHAS_V6, motivoProtegido } from '../../lib/fechasV6';
  * (05-sep-2026) Muestra PISTA (C/T/CR/R/M/K/B/X), ARTEFACTO y chips de dependencia (p. ej. "requiere Derma d19-20").
  * (12-sep-2026) Chips-gate ("GATE 1/2" en T-7/T-8, seguimiento del caso, plan B de inglés) y CARGA REAL (`horas`) de los átomos
  * R17-R26 del ciclo 2: horas por revisor FUERA del bloque 13:30 (el átomo de 45 min coordina y cierra; no toca el Calendar).
+ * v6.02c (18-oct-2026, E4): HOY → «🧭 Guía del bloque» = GuiaBloqueCard con la guía del átomo (researchGuia.guiaResearchDe: paso a paso en
+ * R0 · R1 · M1 · C-1 · M2; el resto desde las 5 franjas · F4 30′) y la guía de 30′ en los días-Research de la pausa (GUIA_RESEARCH_MINIMO).
  * v6.02 (17-oct-2026 · corrimiento D1 = lun 19-oct): ciclo 1 mar 20-oct → mié 17-mar · ciclo 2 vie 19-mar → mar 31-ago-2027 (fechas desde
  * DAILY_META / DAILY_META_2027, generadas; nada se recorta: R6, R7 y X-1 pasan tras la pausa con los desplazables).
  * v6.01 (10-oct-2026 · corrimiento D1 = lun 12-oct): ciclo 1 lun 12-oct → vie 5-mar · ciclo 2 mar 9-mar → mar 24-ago-2027 (fechas desde
@@ -131,6 +136,13 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaResearch; on
             <Text style={[st.doneBtnTxt, { color: hecho ? '#1A1505' : GOLD }]}>{hecho ? '✓ Artefacto sellado' : '○ Sellar artefacto como hecho'}</Text>
           </TouchableOpacity>
         </View>
+      </FadeUp>
+
+      {/* v6.02c · 🧭 GUÍA DEL BLOQUE: qué · cuánto · cómo, paso a paso con minutos y enlace directo (formato común; la sección de abajo
+          queda como referencia del átomo) */}
+      <FadeUp delay={20}>
+        <Text style={st.secLbl}>🧭 Guía del bloque · {f4 ? "30' en tiempo muerto (posta)" : '13:30–14:15'} · paso a paso</Text>
+        <GuiaBloqueCard g={guiaResearchDe(dia)} color={TEAL} />
       </FadeUp>
 
       {/* Eval anclada (átomo previo) */}
@@ -372,6 +384,7 @@ export default function ResearchTodayPlan() {
           <Text style={[st.artefactoTxt, { color: TEAL }]}>🔬 RESEARCH MÍNIMO 30' (DJ-4) · 13:30-14:00 · sin átomo nuevo: (1) inbox de revisores / editorial · (2) 1 lectura de la cola del ciclo 2 · (3) repaso del paquete congelado del case report (CR-8 → SUBMIT CR-9 tras la pausa).</Text>
         </View>
       )}
+      {enPausa && tipoHoy === 'research' && !protegidoHoy && <GuiaBloqueCard g={GUIA_RESEARCH_MINIMO} color={TEAL} />}
       {protegidoHoy && (
         <View style={[st.artefactoBar, { borderLeftColor: Colors.coral }]}>
           <Text style={[st.artefactoTxt, { color: Colors.coral }]}>🛡 DÍA PROTEGIDO · {protegidoHoy}: sin sesión Research ni Derma (§A3).</Text>

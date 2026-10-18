@@ -1,0 +1,1731 @@
+{
+ "fuente": "AccessDermatologyDxRx · TOCs clínicos · dom 18-oct-2026 · chrome-devtools en el Chrome de Joseph (solo lectura; el TOC se ve sin acceso remoto, el contenido no) · extractor: expandir a.topLevelPart y leer a[href*=content.aspx]",
+ "deepLink": "https://dermatology.mhmedical.com/content.aspx?bookid=<bookid>&sectionid=<sid>",
+ "incompleto": "Fitzpatrick 9e: las partes 6 (Neutrophilic, Eosinophilic, and Mast Cell Disorders) y 19 (Skin Changes Across the Span of Life) pueden salir vacías o incompletas (carga bajo demanda): re-extraer si se necesitan.",
+ "libros": {
+  "2570": {
+   "bookid": 2570,
+   "bookTitle": "Fitzpatrick's Dermatology, 9e",
+   "front": [
+    {
+     "sid": "210413306",
+     "t": "Copyright"
+    },
+    {
+     "sid": "210413307",
+     "t": "Notice"
+    },
+    {
+     "sid": "210413309",
+     "t": "Editors"
+    },
+    {
+     "sid": "210413357",
+     "t": "Contributors"
+    },
+    {
+     "sid": "210414615",
+     "t": "Preface"
+    },
+    {
+     "sid": "210414623",
+     "t": "Acknowledgments"
+    },
+    {
+     "sid": "313132048",
+     "t": "New! ILDS Diagnosis Examples"
+    }
+   ],
+   "nParts": 31,
+   "total": 210,
+   "parts": [
+    {
+     "part": "PART 1: FOUNDATIONS OF CLINICAL DERMATOLOGY",
+     "chapters": [
+      {
+       "sid": "210414879",
+       "t": "Chapter 1: Fundamentals of Clinical Dermatology: Morphology and Special Clinical Considerations"
+      },
+      {
+       "sid": "210415075",
+       "t": "Chapter 2: Pathology of Skin Lesions"
+      },
+      {
+       "sid": "210415286",
+       "t": "Chapter 3: Epidemiology and Public Health in Dermatology"
+      }
+     ]
+    },
+    {
+     "part": "PART 2: STRUCTURE AND FUNCTION OF SKIN",
+     "chapters": [
+      {
+       "sid": "210415357",
+       "t": "Chapter 4: Developmental Biology of the Skin"
+      },
+      {
+       "sid": "210415435",
+       "t": "Chapter 5: Growth and Differentiation of the Epidermis"
+      },
+      {
+       "sid": "210415495",
+       "t": "Chapter 6: Skin Glands: Sebaceous, Eccrine, and Apocrine Glands"
+      },
+      {
+       "sid": "210415627",
+       "t": "Chapter 7: Biology of Hair Follicles"
+      },
+      {
+       "sid": "210415724",
+       "t": "Chapter 8: Nail"
+      },
+      {
+       "sid": "210415779",
+       "t": "Chapter 9: Cutaneous Vasculature"
+      },
+      {
+       "sid": "210415849",
+       "t": "Chapter 10: The Immunological Structure of the Skin"
+      },
+      {
+       "sid": "210415901",
+       "t": "Chapter 11: Cellular Components of the Cutaneous Immune System"
+      },
+      {
+       "sid": "210416005",
+       "t": "Chapter 12: Soluble Mediators of the Cutaneous Immune System"
+      },
+      {
+       "sid": "210416179",
+       "t": "Chapter 13: Basic Principles of Immunologic Diseases in Skin (Pathophysiology of Immunologic/Inflammatory Skin Diseases)"
+      },
+      {
+       "sid": "210416253",
+       "t": "Chapter 14: Skin Barrier"
+      },
+      {
+       "sid": "210416355",
+       "t": "Chapter 15: Epidermal and Dermal Adhesion"
+      },
+      {
+       "sid": "210416471",
+       "t": "Chapter 16: Microbiome of the Skin"
+      },
+      {
+       "sid": "210416520",
+       "t": "Chapter 17: Cutaneous Photobiology"
+      },
+      {
+       "sid": "210416645",
+       "t": "Chapter 18: Genetics in Relation to the Skin"
+      },
+      {
+       "sid": "210416747",
+       "t": "Chapter 19: Carcinogenesis and Skin"
+      },
+      {
+       "sid": "210416844",
+       "t": "Chapter 20: Pigmentation and Melanocyte Biology"
+      },
+      {
+       "sid": "210416963",
+       "t": "Chapter 21: Neurobiology of the Skin"
+      }
+     ]
+    },
+    {
+     "part": "PART 3: DERMATITIS",
+     "chapters": [
+      {
+       "sid": "210417027",
+       "t": "Chapter 22: Atopic Dermatitis"
+      },
+      {
+       "sid": "210417198",
+       "t": "Chapter 23: Nummular Eczema, Lichen Simplex Chronicus, and Prurigo Nodularis"
+      },
+      {
+       "sid": "210417275",
+       "t": "Chapter 24: Allergic Contact Dermatitis"
+      },
+      {
+       "sid": "210417410",
+       "t": "Chapter 25: Irritant Dermatitis"
+      },
+      {
+       "sid": "210417567",
+       "t": "Chapter 26: Seborrheic Dermatitis"
+      },
+      {
+       "sid": "210417622",
+       "t": "Chapter 27: Occupational Skin Diseases"
+      }
+     ]
+    },
+    {
+     "part": "PART 4: PSORIASIFORM DISORDERS",
+     "chapters": [
+      {
+       "sid": "210417798",
+       "t": "Chapter 28: Psoriasis"
+      },
+      {
+       "sid": "210418017",
+       "t": "Chapter 29: Pityriasis Rubra Pilaris"
+      },
+      {
+       "sid": "210418066",
+       "t": "Chapter 30: Parapsoriasis and Pityriasis Lichenoides"
+      },
+      {
+       "sid": "210422518",
+       "t": "Chapter 31: Pityriasis Rosea"
+      }
+     ]
+    },
+    {
+     "part": "PART 5: LICHENOID AND GRANULOMATOUS DISORDERS",
+     "chapters": [
+      {
+       "sid": "210422573",
+       "t": "Chapter 32: Lichen Planus"
+      },
+      {
+       "sid": "210422800",
+       "t": "Chapter 33: Lichen Nitidus and Lichen Striatus"
+      },
+      {
+       "sid": "210422857",
+       "t": "Chapter 34: Granuloma Annulare"
+      },
+      {
+       "sid": "210422938",
+       "t": "Chapter 35: Sarcoidosis"
+      }
+     ]
+    },
+    {
+     "part": "PART 6: NEUTROPHILIC, EOSINOPHILIC, AND MAST CELL DISORDERS",
+     "chapters": []
+    },
+    {
+     "part": "PART 7: REACTIVE ERYTHEMAS",
+     "chapters": [
+      {
+       "sid": "210424093",
+       "t": "Chapter 43: Erythema Multiforme"
+      },
+      {
+       "sid": "210424179",
+       "t": "Chapter 44: Epidermal Necrolysis (Stevens-Johnson Syndrome and Toxic Epidermal Necrolysis)"
+      },
+      {
+       "sid": "210424280",
+       "t": "Chapter 45: Cutaneous Reactions to Drugs"
+      },
+      {
+       "sid": "210424405",
+       "t": "Chapter 46: Erythema Annulare Centrifugum and Other Figurate Erythemas"
+      }
+     ]
+    },
+    {
+     "part": "PART 8: DISORDERS OF CORNIFICATION",
+     "chapters": [
+      {
+       "sid": "210424518",
+       "t": "Chapter 47: The Ichthyoses"
+      },
+      {
+       "sid": "210424743",
+       "t": "Chapter 48: Inherited Palmoplantar Keratodermas"
+      },
+      {
+       "sid": "210425086",
+       "t": "Chapter 49: Keratosis Pilaris and Other Follicular Keratotic Disorders"
+      },
+      {
+       "sid": "210425176",
+       "t": "Chapter 50: Acantholytic Disorders of the Skin"
+      },
+      {
+       "sid": "210425340",
+       "t": "Chapter 51: Porokeratosis"
+      }
+     ]
+    },
+    {
+     "part": "PART 9: VESICULOBULLOUS DISORDERS",
+     "chapters": [
+      {
+       "sid": "210425389",
+       "t": "Chapter 52: Pemphigus"
+      },
+      {
+       "sid": "210425528",
+       "t": "Chapter 53: Paraneoplastic Pemphigus"
+      },
+      {
+       "sid": "210425593",
+       "t": "Chapter 54: Bullous Pemphigoid"
+      },
+      {
+       "sid": "210425668",
+       "t": "Chapter 55: Mucous Membrane Pemphigoid"
+      },
+      {
+       "sid": "210425730",
+       "t": "Chapter 56: Epidermolysis Bullosa Acquisita"
+      },
+      {
+       "sid": "210425813",
+       "t": "Chapter 57: Intercellular Immunoglobulin (Ig) A Dermatosis (IgA Pemphigus)"
+      },
+      {
+       "sid": "210425918",
+       "t": "Chapter 58: Linear Immunoglobulin A Dermatosis and Chronic Bullous Disease of Childhood"
+      },
+      {
+       "sid": "210425968",
+       "t": "Chapter 59: Dermatitis Herpetiformis"
+      },
+      {
+       "sid": "210426029",
+       "t": "Chapter 60: Inherited Epidermolysis Bullosa"
+      }
+     ]
+    },
+    {
+     "part": "PART 10: AUTOIMMUNE CONNECTIVE TISSUE AND RHEUMATOLOGIC DISORDERS",
+     "chapters": [
+      {
+       "sid": "210426188",
+       "t": "Chapter 61: Lupus Erythematosus"
+      },
+      {
+       "sid": "210426360",
+       "t": "Chapter 62: Dermatomyositis"
+      },
+      {
+       "sid": "210426516",
+       "t": "Chapter 63: Systemic Sclerosis"
+      },
+      {
+       "sid": "210426650",
+       "t": "Chapter 64: Morphea and Lichen Sclerosus"
+      },
+      {
+       "sid": "210426794",
+       "t": "Chapter 65: Psoriatic Arthritis and Reactive Arthritis"
+      },
+      {
+       "sid": "210426944",
+       "t": "Chapter 66: Rheumatoid Arthritis, Juvenile Idiopathic Arthritis, Adult-Onset Still Disease, and Rheumatic Fever"
+      },
+      {
+       "sid": "210427111",
+       "t": "Chapter 67: Scleredema and Scleromyxedema"
+      },
+      {
+       "sid": "210427159",
+       "t": "Chapter 68: Sjögren Syndrome"
+      },
+      {
+       "sid": "210427288",
+       "t": "Chapter 69: Relapsing Polychondritis"
+      }
+     ]
+    },
+    {
+     "part": "PART 11: DERMAL CONNECTIVE TISSUE DISORDERS",
+     "chapters": [
+      {
+       "sid": "210427332",
+       "t": "Chapter 70: Anetoderma and Other Atrophic Disorders of the Skin"
+      },
+      {
+       "sid": "210418156",
+       "t": "Chapter 71: Acquired Perforating Disorders"
+      },
+      {
+       "sid": "210418201",
+       "t": "Chapter 72: Genetic Disorders Affecting Dermal Connective Tissue"
+      }
+     ]
+    },
+    {
+     "part": "PART 12: SUBCUTANEOUS TISSUE DISORDERS",
+     "chapters": [
+      {
+       "sid": "210418466",
+       "t": "Chapter 73: Panniculitis"
+      },
+      {
+       "sid": "210418743",
+       "t": "Chapter 74: Lipodystrophy"
+      }
+     ]
+    },
+    {
+     "part": "PART 13: MELANOCYTIC DISORDERS",
+     "chapters": [
+      {
+       "sid": "210418825",
+       "t": "Chapter 75: Albinism and Other Genetic Disorders of Pigmentation"
+      },
+      {
+       "sid": "210419032",
+       "t": "Chapter 76: Vitiligo"
+      },
+      {
+       "sid": "210419159",
+       "t": "Chapter 77: Hypermelanoses"
+      }
+     ]
+    },
+    {
+     "part": "PART 14: ACNEIFORM DISORDERS",
+     "chapters": [
+      {
+       "sid": "210419885",
+       "t": "Chapter 78: Acne Vulgaris"
+      },
+      {
+       "sid": "210420054",
+       "t": "Chapter 79: Rosacea"
+      },
+      {
+       "sid": "210420249",
+       "t": "Chapter 80: Acne Variants and Acneiform Eruptions"
+      }
+     ]
+    },
+    {
+     "part": "PART 15: DISORDERS OF ECCRINE AND APOCRINE SWEAT GLANDS",
+     "chapters": [
+      {
+       "sid": "210420321",
+       "t": "Chapter 81: Hyperhidrosis and Anhidrosis"
+      },
+      {
+       "sid": "210420406",
+       "t": "Chapter 82: Bromhidrosis and Chromhidrosis"
+      },
+      {
+       "sid": "210420467",
+       "t": "Chapter 83: Fox-Fordyce Disease"
+      },
+      {
+       "sid": "210420511",
+       "t": "Chapter 84: Hidradenitis Suppurativa"
+      }
+     ]
+    },
+    {
+     "part": "PART 16: DISORDERS OF THE HAIR AND NAILS",
+     "chapters": [
+      {
+       "sid": "210420621",
+       "t": "Chapter 85: Androgenetic Alopecia"
+      },
+      {
+       "sid": "210420738",
+       "t": "Chapter 86: Telogen Effluvium"
+      },
+      {
+       "sid": "210420857",
+       "t": "Chapter 87: Alopecia Areata"
+      },
+      {
+       "sid": "210420920",
+       "t": "Chapter 88: Cicatricial Alopecias"
+      },
+      {
+       "sid": "210421058",
+       "t": "Chapter 89: Hair Shaft Disorders"
+      },
+      {
+       "sid": "210421269",
+       "t": "Chapter 90: Hirsutism and Hypertrichosis"
+      },
+      {
+       "sid": "210421355",
+       "t": "Chapter 91: Nail Disorders"
+      }
+     ]
+    },
+    {
+     "part": "PART 17: DISORDERS DUE TO THE ENVIRONMENT",
+     "chapters": [
+      {
+       "sid": "210421806",
+       "t": "Chapter 92: Polymorphic Light Eruption"
+      },
+      {
+       "sid": "210421891",
+       "t": "Chapter 93: Actinic Prurigo"
+      },
+      {
+       "sid": "210421954",
+       "t": "Chapter 94: Hydroa Vacciniforme"
+      },
+      {
+       "sid": "210422008",
+       "t": "Chapter 95: Actinic Dermatitis"
+      },
+      {
+       "sid": "210422082",
+       "t": "Chapter 96: Solar Urticaria"
+      },
+      {
+       "sid": "210422143",
+       "t": "Chapter 97: Phototoxicity and Photoallergy"
+      },
+      {
+       "sid": "210422228",
+       "t": "Chapter 98: Cold Injuries"
+      },
+      {
+       "sid": "210422321",
+       "t": "Chapter 99: Burns"
+      }
+     ]
+    },
+    {
+     "part": "PART 18: PSYCHOSOCIAL SKIN DISEASE",
+     "chapters": [
+      {
+       "sid": "210422417",
+       "t": "Chapter 100: Delusional, Obsessive-Compulsive, and Factitious Skin Diseases"
+      },
+      {
+       "sid": "210432569",
+       "t": "Chapter 101: Drug Abuse"
+      },
+      {
+       "sid": "210432676",
+       "t": "Chapter 102: Physical Abuse"
+      }
+     ]
+    },
+    {
+     "part": "PART 19: SKIN CHANGES ACROSS THE SPAN OF LIFE",
+     "chapters": [
+      {
+       "sid": "210432782",
+       "t": "Chapter 103: Neonatal Dermatology"
+      },
+      {
+       "sid": "210433004",
+       "t": "Chapter 104: Pediatric and Adolescent Dermatology"
+      },
+      {
+       "sid": "210433140",
+       "t": "Chapter 105: Skin Changes and Diseases in Pregnancy"
+      },
+      {
+       "sid": "210433271",
+       "t": "Chapter 106: Skin Aging"
+      },
+      {
+       "sid": "210433364",
+       "t": "Chapter 107: Caring for LGBT Persons in Dermatology"
+      }
+     ]
+    },
+    {
+     "part": "PART 20: NEOPLASIA",
+     "chapters": [
+      {
+       "sid": "210433401",
+       "t": "Chapter 108: Benign Epithelial Tumors, Hamartomas, and Hyperplasias"
+      },
+      {
+       "sid": "210433668",
+       "t": "Chapter 109: Appendage Tumors of the Skin"
+      },
+      {
+       "sid": "210434201",
+       "t": "Chapter 110: Epithelial Precancerous Lesions"
+      },
+      {
+       "sid": "210434418",
+       "t": "Chapter 111: Basal Cell Carcinoma and Basal Cell Nevus Syndrome"
+      },
+      {
+       "sid": "210434544",
+       "t": "Chapter 112: Squamous Cell Carcinoma and Keratoacanthoma"
+      },
+      {
+       "sid": "210434715",
+       "t": "Chapter 113: Merkel Cell Carcinoma"
+      },
+      {
+       "sid": "210434830",
+       "t": "Chapter 114: Paget’s Disease"
+      },
+      {
+       "sid": "210434921",
+       "t": "Chapter 115: Melanocytic Nevi"
+      },
+      {
+       "sid": "210435350",
+       "t": "Chapter 116: Melanoma"
+      },
+      {
+       "sid": "210435587",
+       "t": "Chapter 117: Histiocytosis"
+      },
+      {
+       "sid": "210435813",
+       "t": "Chapter 118: Vascular Tumors"
+      },
+      {
+       "sid": "210435990",
+       "t": "Chapter 119: Cutaneous Lymphoma"
+      },
+      {
+       "sid": "210436341",
+       "t": "Chapter 120: Cutaneous Pseudolymphoma"
+      },
+      {
+       "sid": "210436548",
+       "t": "Chapter 121: Neoplasias and Hyperplasias of Muscular and Neural Origin"
+      },
+      {
+       "sid": "210436887",
+       "t": "Chapter 122: Lipogenic Neoplasms"
+      }
+     ]
+    },
+    {
+     "part": "PART 21: METABOLIC, GENETIC, AND SYSTEMIC DISEASES",
+     "chapters": [
+      {
+       "sid": "210437119",
+       "t": "Chapter 123: Cutaneous Changes in Nutritional Disease"
+      },
+      {
+       "sid": "210437506",
+       "t": "Chapter 124: The Porphyrias"
+      },
+      {
+       "sid": "210437658",
+       "t": "Chapter 125: Amyloidosis"
+      },
+      {
+       "sid": "210437757",
+       "t": "Chapter 126: Xanthomas and Lipoprotein Disorders"
+      },
+      {
+       "sid": "210437902",
+       "t": "Chapter 127: Fabry Disease"
+      },
+      {
+       "sid": "210437994",
+       "t": "Chapter 128: Calcium and Other Mineral Deposition Disorders"
+      },
+      {
+       "sid": "210438096",
+       "t": "Chapter 129: Graft-Versus-Host Disease"
+      },
+      {
+       "sid": "210438199",
+       "t": "Chapter 130: Hereditary Disorders of Genome Instability and DNA Repair"
+      },
+      {
+       "sid": "210427447",
+       "t": "Chapter 131: Ectodermal Dysplasias"
+      },
+      {
+       "sid": "210427672",
+       "t": "Chapter 132: Genetic Immunodeficiency Diseases"
+      },
+      {
+       "sid": "210427884",
+       "t": "Chapter 133: Skin Manifestations of Internal Organ Disorders"
+      },
+      {
+       "sid": "210428023",
+       "t": "Chapter 134: Cutaneous Paraneoplastic Syndromes"
+      },
+      {
+       "sid": "210428254",
+       "t": "Chapter 135: The Neurofibromatoses"
+      },
+      {
+       "sid": "210428370",
+       "t": "Chapter 136: Tuberous Sclerosis Complex"
+      },
+      {
+       "sid": "210428476",
+       "t": "Chapter 137: Diabetes and Other Endocrine Diseases"
+      }
+     ]
+    },
+    {
+     "part": "PART 22: VASCULAR DISEASES",
+     "chapters": [
+      {
+       "sid": "210428732",
+       "t": "Chapter 138: Cutaneous Necrotizing Venulitis"
+      },
+      {
+       "sid": "210428829",
+       "t": "Chapter 139: Systemic Necrotizing Arteritis"
+      },
+      {
+       "sid": "210429014",
+       "t": "Chapter 140: Erythema Elevatum Diutinum"
+      },
+      {
+       "sid": "210429058",
+       "t": "Chapter 141: Adamantiades–Behçet Disease"
+      },
+      {
+       "sid": "210429134",
+       "t": "Chapter 142: Kawasaki Disease"
+      },
+      {
+       "sid": "210429202",
+       "t": "Chapter 143: Pigmented Purpuric Dermatoses"
+      },
+      {
+       "sid": "210429273",
+       "t": "Chapter 144: Cryoglobulinemia and Cryofibrinogenemia"
+      },
+      {
+       "sid": "210429386",
+       "t": "Chapter 145: Raynaud Phenomenon"
+      },
+      {
+       "sid": "210429514",
+       "t": "Chapter 146: Malignant Atrophic Papulosis (Degos Disease)"
+      },
+      {
+       "sid": "210429564",
+       "t": "Chapter 147: Vascular Malformations"
+      },
+      {
+       "sid": "210429863",
+       "t": "Chapter 148: Cutaneous Changes in Arterial, Venous, and Lymphatic Dysfunction"
+      },
+      {
+       "sid": "210430166",
+       "t": "Chapter 149: Wound Healing"
+      }
+     ]
+    },
+    {
+     "part": "PART 23: BACTERIAL DISEASES",
+     "chapters": [
+      {
+       "sid": "210430286",
+       "t": "Chapter 150: Superficial Cutaneous Infections and Pyodermas"
+      },
+      {
+       "sid": "210430491",
+       "t": "Chapter 151: Cellulitis and Erysipelas"
+      },
+      {
+       "sid": "210430586",
+       "t": "Chapter 152: Gram-Positive Infections Associated with Toxin Production"
+      },
+      {
+       "sid": "210430678",
+       "t": "Chapter 153: Necrotizing Fasciitis, Necrotizing Cellulitis, and Myonecrosis"
+      },
+      {
+       "sid": "210430789",
+       "t": "Chapter 154: Gram-Negative Coccal and Bacillary Infections"
+      },
+      {
+       "sid": "210431096",
+       "t": "Chapter 155: The Skin in Infective Endocarditis, Sepsis, Septic Shock, and Disseminated Intravascular Coagulation"
+      },
+      {
+       "sid": "210431229",
+       "t": "Chapter 156: Miscellaneous Bacterial Infections with Cutaneous Manifestations"
+      },
+      {
+       "sid": "210431641",
+       "t": "Chapter 157: Tuberculosis and Infections with Atypical Mycobacteria"
+      },
+      {
+       "sid": "210431885",
+       "t": "Chapter 158: Actinomycosis, Nocardiosis, and Actinomycetoma"
+      },
+      {
+       "sid": "210432048",
+       "t": "Chapter 159: Leprosy"
+      }
+     ]
+    },
+    {
+     "part": "PART 24: FUNGAL DISEASES",
+     "chapters": [
+      {
+       "sid": "210432218",
+       "t": "Chapter 160: Superficial Fungal Infection"
+      },
+      {
+       "sid": "210438510",
+       "t": "Chapter 161: Yeast Infections"
+      },
+      {
+       "sid": "210438609",
+       "t": "Chapter 162: Deep Fungal Infections"
+      }
+     ]
+    },
+    {
+     "part": "PART 25: VIRAL DISEASES",
+     "chapters": [
+      {
+       "sid": "210438904",
+       "t": "Chapter 163: Exanthematous Viral Diseases"
+      },
+      {
+       "sid": "210439269",
+       "t": "Chapter 164: Herpes Simplex"
+      },
+      {
+       "sid": "210439369",
+       "t": "Chapter 165: Varicella and Herpes Zoster"
+      },
+      {
+       "sid": "210439549",
+       "t": "Chapter 166: Poxvirus Infections"
+      },
+      {
+       "sid": "210439884",
+       "t": "Chapter 167: Human Papillomavirus Infections"
+      },
+      {
+       "sid": "210439988",
+       "t": "Chapter 168: Cutaneous Manifestations of HIV and Human T-Lymphotropic Virus"
+      },
+      {
+       "sid": "210440197",
+       "t": "Chapter 169: Mosquito-Borne Viral Diseases"
+      }
+     ]
+    },
+    {
+     "part": "PART 26: SEXUALLY TRANSMITTED DISEASES",
+     "chapters": [
+      {
+       "sid": "210440328",
+       "t": "Chapter 170: Syphilis"
+      },
+      {
+       "sid": "210440524",
+       "t": "Chapter 171: Endemic (Nonvenereal) Treponematoses"
+      },
+      {
+       "sid": "210440672",
+       "t": "Chapter 172: Chancroid"
+      },
+      {
+       "sid": "210440715",
+       "t": "Chapter 173: Lymphogranuloma Venereum"
+      },
+      {
+       "sid": "210440778",
+       "t": "Chapter 174: Granuloma Inguinale"
+      },
+      {
+       "sid": "210440823",
+       "t": "Chapter 175: Gonorrhea, Mycoplasma, and Vaginosis"
+      }
+     ]
+    },
+    {
+     "part": "PART 27: INFESTATIONS, BITES, AND STINGS",
+     "chapters": [
+      {
+       "sid": "210440975",
+       "t": "Chapter 176: Leishmaniasis and Other Protozoan Infections"
+      },
+      {
+       "sid": "210441333",
+       "t": "Chapter 177: Helminthic Infections"
+      },
+      {
+       "sid": "210441553",
+       "t": "Chapter 178: Scabies, Other Mites, and Pediculosis"
+      },
+      {
+       "sid": "210441659",
+       "t": "Chapter 179: Lyme Borreliosis"
+      },
+      {
+       "sid": "210441791",
+       "t": "Chapter 180: The Rickettsioses, Ehrlichioses, and Anaplasmoses"
+      },
+      {
+       "sid": "210441917",
+       "t": "Chapter 181: Arthropod Bites and Stings"
+      },
+      {
+       "sid": "210442028",
+       "t": "Chapter 182: Bites and Stings of Terrestrial and Aquatic Life"
+      }
+     ]
+    },
+    {
+     "part": "PART 28: TOPICAL AND SYSTEMIC TREATMENTS",
+     "chapters": [
+      {
+       "sid": "210442255",
+       "t": "Chapter 183: Principles of Topical Therapy"
+      },
+      {
+       "sid": "210442435",
+       "t": "Chapter 184: Glucocorticoids"
+      },
+      {
+       "sid": "210442555",
+       "t": "Chapter 185: Retinoids"
+      },
+      {
+       "sid": "210442649",
+       "t": "Chapter 186: Systemic and Topical Antibiotics"
+      },
+      {
+       "sid": "210442814",
+       "t": "Chapter 187: Dapsone"
+      },
+      {
+       "sid": "210442893",
+       "t": "Chapter 188: Antifungals"
+      },
+      {
+       "sid": "210443139",
+       "t": "Chapter 189: Antihistamines"
+      },
+      {
+       "sid": "210443227",
+       "t": "Chapter 190: Cytotoxic and Antimetabolic Agents"
+      },
+      {
+       "sid": "210443571",
+       "t": "Chapter 191: Antiviral Drugs"
+      },
+      {
+       "sid": "210443840",
+       "t": "Chapter 192: Immunosuppressive and Immunomodulatory Drugs"
+      },
+      {
+       "sid": "210444001",
+       "t": "Chapter 193: Immunobiologics: Targeted Therapy Against Cytokines, Cytokine Receptors, and Growth Factors in Dermatology"
+      },
+      {
+       "sid": "210444152",
+       "t": "Chapter 194: Molecular Targeted Therapies"
+      },
+      {
+       "sid": "210444735",
+       "t": "Chapter 195: Antiangiogenic Agents"
+      },
+      {
+       "sid": "210444935",
+       "t": "Chapter 196: Other Topical Medications"
+      },
+      {
+       "sid": "210445087",
+       "t": "Chapter 197: Photoprotection"
+      }
+     ]
+    },
+    {
+     "part": "PART 29: PHYSICAL TREATMENTS",
+     "chapters": [
+      {
+       "sid": "210445207",
+       "t": "Chapter 198: Phototherapy"
+      },
+      {
+       "sid": "210445387",
+       "t": "Chapter 199: Photochemotherapy and Photodynamic Therapy"
+      },
+      {
+       "sid": "210445568",
+       "t": "Chapter 200: Radiotherapy"
+      }
+     ]
+    },
+    {
+     "part": "PART 30: DERMATOLOGIC SURGERY",
+     "chapters": [
+      {
+       "sid": "210445637",
+       "t": "Chapter 201: Cutaneous Surgical Anatomy"
+      },
+      {
+       "sid": "210445698",
+       "t": "Chapter 202: Perioperative Considerations in Dermatologic Surgery"
+      },
+      {
+       "sid": "210445887",
+       "t": "Chapter 203: Excisional Surgery and Repair, Flaps, and Grafts"
+      },
+      {
+       "sid": "210446129",
+       "t": "Chapter 204: Mohs Micrographic Surgery"
+      },
+      {
+       "sid": "210446183",
+       "t": "Chapter 205: Nail Surgery"
+      },
+      {
+       "sid": "210446346",
+       "t": "Chapter 206: Cryosurgery and Electrosurgery"
+      }
+     ]
+    },
+    {
+     "part": "PART 31: COSMETIC DERMATOLOGY",
+     "chapters": [
+      {
+       "sid": "210446505",
+       "t": "Chapter 207: Cosmeceuticals and Skin Care in Dermatology"
+      },
+      {
+       "sid": "210446633",
+       "t": "Chapter 208: Fundamentals of Laser and Light-Based Treatments"
+      },
+      {
+       "sid": "210446721",
+       "t": "Chapter 209: Laser Skin Resurfacing: Cosmetic and Medical Applications"
+      },
+      {
+       "sid": "210446830",
+       "t": "Chapter 210: Nonablative Laser and Light-Based Therapy: Cosmetic and Medical Indications"
+      },
+      {
+       "sid": "210446901",
+       "t": "Chapter 211: Noninvasive Body Contouring"
+      },
+      {
+       "sid": "210447008",
+       "t": "Chapter 212: Treatment of Varicose Veins and Telangiectatic Lower-Extremity Vessels"
+      },
+      {
+       "sid": "210447161",
+       "t": "Chapter 213: Chemical Peels and Dermabrasion"
+      },
+      {
+       "sid": "210447238",
+       "t": "Chapter 214: Liposuction Using Tumescent Local Anesthesia"
+      },
+      {
+       "sid": "210447284",
+       "t": "Chapter 215: Soft-Tissue Augmentation"
+      },
+      {
+       "sid": "210447387",
+       "t": "Chapter 216: Botulinum Toxin"
+      },
+      {
+       "sid": "210447464",
+       "t": "Chapter 217: Hair Transplantation"
+      }
+     ]
+    }
+   ]
+  },
+  "2929": {
+   "bookid": 2929,
+   "bookTitle": "Dermoscopy: An Illustrated Self-Assessment Guide, 2e",
+   "front": [
+    {
+     "sid": "245859281",
+     "t": "Copyright"
+    },
+    {
+     "sid": "245859282",
+     "t": "Notice"
+    },
+    {
+     "sid": "245859284",
+     "t": "Editors"
+    },
+    {
+     "sid": "245859299",
+     "t": "Foreword"
+    },
+    {
+     "sid": "245859308",
+     "t": "Preface"
+    },
+    {
+     "sid": "245859321",
+     "t": "Acknowledgments"
+    },
+    {
+     "sid": "245859332",
+     "t": "Contributors"
+    },
+    {
+     "sid": "245859873",
+     "t": "Chapter 1: Dermoscopy from A to Z"
+    },
+    {
+     "sid": "245860434",
+     "t": "Chapter 2: Head and Neck"
+    },
+    {
+     "sid": "245861155",
+     "t": "Chapter 3: Trunk and Extremities"
+    },
+    {
+     "sid": "245863196",
+     "t": "Chapter 4: Palms, Soles, Nails"
+    },
+    {
+     "sid": "245863673",
+     "t": "Chapter 5: Genitalia"
+    },
+    {
+     "sid": "245863970",
+     "t": "Chapter 6: Trichoscopy/Hair"
+    },
+    {
+     "sid": "245864152",
+     "t": "Chapter 7: Dermoscopy in General Dermatology"
+    },
+    {
+     "sid": "245864307",
+     "t": "Glossary"
+    }
+   ],
+   "nParts": 0,
+   "total": 0,
+   "parts": []
+  },
+  "2960": {
+   "bookid": 2960,
+   "bookTitle": "Guidebook to Dermatologic Diagnosis",
+   "front": [
+    {
+     "sid": "248574204",
+     "t": "Copyright"
+    },
+    {
+     "sid": "248574205",
+     "t": "Notice"
+    },
+    {
+     "sid": "248574208",
+     "t": "Editor"
+    },
+    {
+     "sid": "248574216",
+     "t": "Dedication"
+    },
+    {
+     "sid": "248574219",
+     "t": "Preface"
+    },
+    {
+     "sid": "248574225",
+     "t": "Introduction"
+    },
+    {
+     "sid": "248574234",
+     "t": "Acknowledgments"
+    },
+    {
+     "sid": "248574636",
+     "t": "Chapter 1: The Wheel of Diagnosis"
+    },
+    {
+     "sid": "248574793",
+     "t": "Chapter 2: An Approach to Primary Lesions"
+    },
+    {
+     "sid": "248574973",
+     "t": "Chapter 3: Diagnostic Clues from Secondary Lesions and Postinflammatory Pigmentary Change"
+    },
+    {
+     "sid": "248575068",
+     "t": "Chapter 4: Color as a Diagnostic Determinant"
+    },
+    {
+     "sid": "248575212",
+     "t": "Chapter 5: An Introduction to Reaction Patterns"
+    },
+    {
+     "sid": "248575241",
+     "t": "Chapter 6: The Papulosquamous Reaction Pattern"
+    },
+    {
+     "sid": "248575360",
+     "t": "Chapter 7: The Vesicobullous Reaction Pattern"
+    },
+    {
+     "sid": "248575465",
+     "t": "Chapter 8: The Eczematous Reaction Pattern"
+    },
+    {
+     "sid": "248575531",
+     "t": "Chapter 9: The Dermal Reaction Pattern"
+    },
+    {
+     "sid": "248575675",
+     "t": "Chapter 10: The Vascular Reaction Pattern"
+    },
+    {
+     "sid": "248575828",
+     "t": "Chapter 11: Shape, Configuration, and Grouping of Lesions"
+    },
+    {
+     "sid": "248575965",
+     "t": "Chapter 12: More on Distribution"
+    },
+    {
+     "sid": "248576179",
+     "t": "Chapter 13: Examining Scalp, Hair, Nails, Mucous Membranes, and Lymph Nodes"
+    },
+    {
+     "sid": "248576374",
+     "t": "Chapter 14: Bedside Diagnostic Maneuvers"
+    }
+   ],
+   "nParts": 0,
+   "total": 0,
+   "parts": []
+  },
+  "3309": {
+   "bookid": 3309,
+   "bookTitle": "Fitzpatrick's Color Atlas and Synopsis of Clinical Dermatology, 9e",
+   "front": [
+    {
+     "sid": "275940995",
+     "t": "How to Use this Book"
+    }
+   ],
+   "nota": "Solo el front matter (el TOC de secciones S1-S35 + apéndices ya está en accessderma_estructura.json → fitzpatrickColorAtlas9e_TOC). La 9e NO tiene un capítulo «Introduction/Approach to diagnosis»: solo «How to Use this Book»."
+  },
+  "3609": {
+   "bookid": 3609,
+   "bookTitle": "Taylor and Kelly's Dermatology for Skin of Color, 3rd Edition",
+   "front": [
+    {
+     "sid": "301531404",
+     "t": "Copyright"
+    },
+    {
+     "sid": "301531405",
+     "t": "Notice"
+    },
+    {
+     "sid": "301531408",
+     "t": "Editors"
+    },
+    {
+     "sid": "301531427",
+     "t": "Dedication"
+    },
+    {
+     "sid": "301531433",
+     "t": "Contributors"
+    },
+    {
+     "sid": "301532882",
+     "t": "Preface"
+    },
+    {
+     "sid": "301532888",
+     "t": "Acknowledgments"
+    },
+    {
+     "sid": "301532902",
+     "t": "Foreword"
+    },
+    {
+     "sid": "313586619",
+     "t": "New! ILDS Diagnosis Examples"
+    }
+   ],
+   "nParts": 14,
+   "total": 101,
+   "parts": [
+    {
+     "part": "Section 1: Definitions, Epidemiology, and Cultural Considerations",
+     "chapters": [
+      {
+       "sid": "301535746",
+       "t": "Chapter 1: Defining Skin of Color"
+      },
+      {
+       "sid": "301535800",
+       "t": "Chapter 2: Epidemiology of Cutaneous Diseases"
+      },
+      {
+       "sid": "301535859",
+       "t": "Chapter 3: Culturally Informed Dermatological Care"
+      },
+      {
+       "sid": "301535899",
+       "t": "Chapter 4: Historical and Sociocultural Influences on Healthcare Practices: An Overview"
+      },
+      {
+       "sid": "301535950",
+       "t": "Chapter 5: Historical and Sociocultural Influences on Black American Healthcare Practices"
+      },
+      {
+       "sid": "301535996",
+       "t": "Chapter 6: Historical and Sociocultural Influences on Asian American Healthcare Practices"
+      },
+      {
+       "sid": "301536057",
+       "t": "Chapter 7: Historical and Sociocultural Influences on Latine/Hispanic American Healthcare"
+      },
+      {
+       "sid": "301536099",
+       "t": "Chapter 8: Impact of Historical and Sociocultural Influences on American Indian Healthcare Practices"
+      },
+      {
+       "sid": "301536148",
+       "t": "Chapter 9: Historical and Sociocultural Influences on Middle Eastern and North African (MENA) Healthcare Practices"
+      },
+      {
+       "sid": "301536239",
+       "t": "Chapter 10: Psychiatric Aspects of Skin of Color"
+      },
+      {
+       "sid": "301536414",
+       "t": "Chapter 11: Social Determinants of Health and Health Disparities"
+      },
+      {
+       "sid": "301536471",
+       "t": "Chapter 12: Advancing Exellence in Dermatology"
+      }
+     ]
+    },
+    {
+     "part": "Section 2: International Dermatology for Skin of Color",
+     "chapters": [
+      {
+       "sid": "301536493",
+       "t": "Chapter 13: Global Perspectives and Insights on Dermatology for Skin of Color"
+      }
+     ]
+    },
+    {
+     "part": "Section 3: Structure, Function, and Biology",
+     "chapters": [
+      {
+       "sid": "301536548",
+       "t": "Chapter 14: Biology of Keratinocytes"
+      },
+      {
+       "sid": "301536589",
+       "t": "Chapter 15: Biology of Melanocytes"
+      },
+      {
+       "sid": "301536627",
+       "t": "Chapter 16: Dermis"
+      },
+      {
+       "sid": "301536660",
+       "t": "Chapter 17: Biology of Hair"
+      },
+      {
+       "sid": "301536700",
+       "t": "Chapter 18: Biology of Nails"
+      },
+      {
+       "sid": "301536750",
+       "t": "Chapter 19: Biology of Wounds and Wound Care"
+      },
+      {
+       "sid": "301536888",
+       "t": "Chapter 20: Biology of the Oral Mucosa"
+      },
+      {
+       "sid": "301536963",
+       "t": "Chapter 21: Photobiology: Acute and Chronic Effects"
+      },
+      {
+       "sid": "301537014",
+       "t": "Chapter 22: Genetics of Skin Diseases"
+      },
+      {
+       "sid": "301537069",
+       "t": "Chapter 23: Histology"
+      }
+     ]
+    },
+    {
+     "part": "Section 4: Cutaneous Disorders",
+     "chapters": [
+      {
+       "sid": "301537147",
+       "t": "Chapter 24: Nuances in Skin of Color"
+      },
+      {
+       "sid": "301537201",
+       "t": "Chapter 25: Dermoscopic Patterns of Dermatological Diseases in Skin of Color Individuals"
+      },
+      {
+       "sid": "301537346",
+       "t": "Chapter 26: Psoriasis"
+      },
+      {
+       "sid": "301537430",
+       "t": "Chapter 27: Pityriasis Rosea"
+      },
+      {
+       "sid": "301537483",
+       "t": "Chapter 28: Lichen Planus and Lichen Nitidus"
+      },
+      {
+       "sid": "301537542",
+       "t": "Chapter 29: Atopic Dermatitis and Other Eczemas"
+      },
+      {
+       "sid": "301537585",
+       "t": "Chapter 30: Allergic Contact Dermatitis"
+      },
+      {
+       "sid": "301537623",
+       "t": "Chapter 31: Photosensitivity"
+      },
+      {
+       "sid": "301537706",
+       "t": "Chapter 32: Amyloidosis"
+      },
+      {
+       "sid": "301537746",
+       "t": "Chapter 33: Keloids"
+      },
+      {
+       "sid": "301537927",
+       "t": "Chapter 34: Drug Eruptions"
+      },
+      {
+       "sid": "301538029",
+       "t": "Chapter 35: Cutaneous Sarcoidosis"
+      },
+      {
+       "sid": "301538090",
+       "t": "Chapter 36: Prurigo Nodularis"
+      },
+      {
+       "sid": "301538131",
+       "t": "Chapter 37: Collagen Vascular Diseases"
+      },
+      {
+       "sid": "301538230",
+       "t": "Chapter 38: Dermatoses in Africa"
+      }
+     ]
+    },
+    {
+     "part": "Section 5: Hair, Scalp, and Nail Disorders",
+     "chapters": [
+      {
+       "sid": "301538303",
+       "t": "Chapter 39: Hair Care Practices: Complications, Treatments, and Prevention"
+      },
+      {
+       "sid": "301538368",
+       "t": "Chapter 40: Clinical Assessment of Hair and Hair Loss"
+      },
+      {
+       "sid": "301538408",
+       "t": "Chapter 41: Aesthetic Assessment of Hair Loss and Aesthetic Treatments"
+      },
+      {
+       "sid": "301538435",
+       "t": "Chapter 42: Scarring Alopecia"
+      },
+      {
+       "sid": "301538524",
+       "t": "Chapter 43: Nonscarring Alopecias"
+      },
+      {
+       "sid": "301538609",
+       "t": "Chapter 44: Seborrheic Dermatitis"
+      },
+      {
+       "sid": "301538663",
+       "t": "Chapter 45: Pseudofolliculitis Barbae"
+      },
+      {
+       "sid": "301538731",
+       "t": "Chapter 46: Nail Disorders"
+      }
+     ]
+    },
+    {
+     "part": "Section 6: Follicular, Sebaceous, and Sweat Gland Disorders",
+     "chapters": []
+    },
+    {
+     "part": "Section 7: Neoplasms of the Skin",
+     "chapters": [
+      {
+       "sid": "301539080",
+       "t": "Chapter 51: Benign Skin Neoplasms"
+      },
+      {
+       "sid": "301539131",
+       "t": "Chapter 52: Melanomas"
+      },
+      {
+       "sid": "301539187",
+       "t": "Chapter 53: Squamous Cell Carcinoma"
+      },
+      {
+       "sid": "301539238",
+       "t": "Chapter 54: Basal Cell Carcinoma"
+      },
+      {
+       "sid": "301539278",
+       "t": "Chapter 55: Cutaneous T-Cell Lymphoma"
+      }
+     ]
+    },
+    {
+     "part": "Section 8: Pigmentary Disorders",
+     "chapters": [
+      {
+       "sid": "301539346",
+       "t": "Chapter 56: Disorders of Facial Hyperpigmentation"
+      },
+      {
+       "sid": "301539426",
+       "t": "Chapter 57: Disorders of Hyperpigmentation"
+      },
+      {
+       "sid": "301539486",
+       "t": "Chapter 58: Disorders of Hypopigmentation"
+      },
+      {
+       "sid": "301539676",
+       "t": "Chapter 59: Disorders of Depigmentation"
+      }
+     ]
+    },
+    {
+     "part": "Section 9: Mucosal Disorders",
+     "chapters": [
+      {
+       "sid": "301539800",
+       "t": "Chapter 60: Diseases of Oral Mucosa Part 1: Normal Anatomy, Benign, Premalignant, and Malignant Lesions"
+      },
+      {
+       "sid": "301539888",
+       "t": "Chapter 61: Diseases of the Oral Mucosa Part 2: Reactive Processes, Infections, and Other Miscellaneous Disorders"
+      },
+      {
+       "sid": "301539973",
+       "t": "Chapter 62: Genital Lesions in Men"
+      },
+      {
+       "sid": "301540287",
+       "t": "Chapter 63: Genital Lesions in Women"
+      }
+     ]
+    },
+    {
+     "part": "Section 10: Dermatologic Infections",
+     "chapters": [
+      {
+       "sid": "301540417",
+       "t": "Chapter 64: Cutaneous Manifestations of Human Immunodeficiency Virus"
+      },
+      {
+       "sid": "301540485",
+       "t": "Chapter 65: COVID-19 and Skin of Color"
+      },
+      {
+       "sid": "301540547",
+       "t": "Chapter 66: Mucocutaneous Viral Infections"
+      },
+      {
+       "sid": "301540669",
+       "t": "Chapter 67: MPox Virus and Skin of Color"
+      },
+      {
+       "sid": "301540712",
+       "t": "Chapter 68: Bacterial Infections"
+      },
+      {
+       "sid": "301540859",
+       "t": "Chapter 69: Fungal and Yeast Infections"
+      },
+      {
+       "sid": "301540985",
+       "t": "Chapter 70: Deep Fungal Infections"
+      },
+      {
+       "sid": "301541042",
+       "t": "Chapter 71: Parasitic Infections"
+      },
+      {
+       "sid": "301541207",
+       "t": "Chapter 72: Cutaneous Leishmaniasis"
+      },
+      {
+       "sid": "301541291",
+       "t": "Chapter 73: Leprosy"
+      },
+      {
+       "sid": "301541414",
+       "t": "Chapter 74: Onchocerciasis"
+      }
+     ]
+    },
+    {
+     "part": "Section 11: Cutaneous Manifestations of Systemic Diseases",
+     "chapters": [
+      {
+       "sid": "301541470",
+       "t": "Chapter 75: Cardiopulmonary"
+      },
+      {
+       "sid": "301541521",
+       "t": "Chapter 76: Cutaneous Manifestations of Endocrine Disorders"
+      },
+      {
+       "sid": "301541628",
+       "t": "Chapter 77: Gastroenterology"
+      },
+      {
+       "sid": "301541718",
+       "t": "Chapter 78: Hematology"
+      },
+      {
+       "sid": "301541855",
+       "t": "Chapter 79: Cutaneous Manifestations of Renal Disease"
+      },
+      {
+       "sid": "301541919",
+       "t": "Chapter 80: Paraneoplastic Dermatology"
+      }
+     ]
+    },
+    {
+     "part": "Section 12: Inpatient Dermatology",
+     "chapters": [
+      {
+       "sid": "301541986",
+       "t": "Chapter 81: Severe Cutaneous Adverse Reactions"
+      },
+      {
+       "sid": "301542061",
+       "t": "Chapter 82: Neutrophilic Dermatoses in Skin of Color"
+      },
+      {
+       "sid": "301542180",
+       "t": "Chapter 83: Purpuric Eruptions"
+      },
+      {
+       "sid": "301542242",
+       "t": "Chapter 84: Severe and Inpatient Presentations of Common Dermatoses"
+      },
+      {
+       "sid": "301542410",
+       "t": "Chapter 85: Nutritional Deficiencies"
+      },
+      {
+       "sid": "301542527",
+       "t": "Chapter 86: Calciphylaxis"
+      },
+      {
+       "sid": "301542606",
+       "t": "Chapter 87: Blistering Disorders"
+      },
+      {
+       "sid": "301542672",
+       "t": "Chapter 88: Oncodermatology"
+      }
+     ]
+    },
+    {
+     "part": "Section 13: Cosmetic and Procedural Dermatology",
+     "chapters": [
+      {
+       "sid": "301542729",
+       "t": "Chapter 89: Cultural Beauty Around the World"
+      },
+      {
+       "sid": "301542762",
+       "t": "Chapter 90: Photoaging in Skin of Color"
+      },
+      {
+       "sid": "301542822",
+       "t": "Chapter 91: Photoprotection"
+      },
+      {
+       "sid": "301542874",
+       "t": "Chapter 92: Cosmeceuticals in Skin of Color"
+      },
+      {
+       "sid": "301543053",
+       "t": "Chapter 93: Skin and Lip Typology"
+      },
+      {
+       "sid": "301543152",
+       "t": "Chapter 94: Skin Resurfacing—Lasers, Chemical Exfoliation, and Devices"
+      },
+      {
+       "sid": "301543373",
+       "t": "Chapter 95: Laser Treatments"
+      },
+      {
+       "sid": "301543465",
+       "t": "Chapter 96: Soft Tissue Augmentation and Neuromodulators"
+      },
+      {
+       "sid": "301543518",
+       "t": "Chapter 97: Liposuction"
+      },
+      {
+       "sid": "301543580",
+       "t": "Chapter 98: Tissue Tightening Treatments"
+      },
+      {
+       "sid": "301543617",
+       "t": "Chapter 99: Body Contouring"
+      },
+      {
+       "sid": "301543665",
+       "t": "Chapter 100: Platelet-Rich Plasma and Hair Transplantation as Novel Therapeutic Agents in the Treatment of Alopecia: Applications and Considerations for Skin of Color"
+      }
+     ]
+    },
+    {
+     "part": "Section 14: Populations with Unique Considerations",
+     "chapters": [
+      {
+       "sid": "301543792",
+       "t": "Chapter 101: Considerations in Sexual and Gender Diverse Dermatology"
+      },
+      {
+       "sid": "301543861",
+       "t": "Chapter 102: Pregnancy"
+      },
+      {
+       "sid": "301544011",
+       "t": "Chapter 103: Pediatrics"
+      },
+      {
+       "sid": "301544157",
+       "t": "Chapter 104: Adolescence"
+      },
+      {
+       "sid": "301544242",
+       "t": "Chapter 105: Geriatrics"
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

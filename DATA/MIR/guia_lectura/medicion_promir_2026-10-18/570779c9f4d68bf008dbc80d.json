@@ -1,0 +1,245 @@
+{
+ "titulo": "2.- Clasificación de los estudios de investigación",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc80d",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "2 Clasificación de los estudios de investigación",
+   "palabras": 207,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2017-225"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Estudios descriptivos",
+   "palabras": 12,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.1. Descripción de un caso o series de casos",
+   "palabras": 61,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2017-213"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.2. Estudios descriptivos de prevalencia",
+   "palabras": 83,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2014-197",
+    "2009-182",
+    "2008-218"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.3. Estudios ecológicos",
+   "palabras": 185,
+   "palabrasTabla": 0,
+   "citasMIR": 8,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2021-041",
+    "2020-045",
+    "2015-192",
+    "2012-183",
+    "2010-181",
+    "2006-195",
+    "2005-196",
+    "2004-194"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "671f77df84fee072d8b6d921.mp4",
+     "seg": 927,
+     "leyenda": "Vídeo 2-1Imperdible: Estudios epidemiológicos."
+    }
+   ],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Estudios analíticos: estudios observacionales",
+   "palabras": 12,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.1. Estudios de corte transversal o de prevalencia",
+   "palabras": 209,
+   "palabrasTabla": 0,
+   "citasMIR": 5,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2020-045",
+    "2016-131",
+    "2015-193",
+    "2012-178",
+    "2008-218"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.2. Estudios de casos y controles",
+   "palabras": 507,
+   "palabrasTabla": 0,
+   "citasMIR": 22,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2016-133",
+    "2016-120",
+    "2014-183",
+    "2011-180",
+    "2010-182",
+    "2009-183",
+    "2009-186",
+    "2008-213",
+    "2008-199",
+    "2007-200",
+    "2006-198",
+    "2006-199",
+    "2005-197",
+    "2004-193",
+    "2004-206",
+    "2003-205",
+    "2003-200",
+    "2017-224",
+    "2007-202",
+    "2004-196",
+    "2013-199",
+    "2011-184"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.3. Estudios de cohortes",
+   "palabras": 463,
+   "palabrasTabla": 0,
+   "citasMIR": 19,
+   "citasMIRdesde2015": 9,
+   "citasMIRdesde2020": 5,
+   "citas": [
+    "2023-047",
+    "2022-043",
+    "2021-048",
+    "2020-045",
+    "2019-030",
+    "2018-121",
+    "2017-211",
+    "2017-212",
+    "2014-182",
+    "2012-179",
+    "2011-179",
+    "2009-180",
+    "2007-199",
+    "2005-195",
+    "2005-200",
+    "2023-044",
+    "2009-185",
+    "2008-206",
+    "2012-186"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.4. Estudios de casos y controles anidados en una cohorte",
+   "palabras": 300,
+   "palabrasTabla": 0,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2018-120",
+    "2016-132",
+    "2012-184",
+    "2010-180"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Introducción a la Epidemiología. Causalidad",
+   "href": "570779c9f4d68bf008dbc7af"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Validez y fiabilidad de los estudios epidemiológicos",
+   "href": "570779c9f4d68bf008dbc847"
+  }
+ ],
+ "totPalabras": 2039,
+ "totPalabrasTabla": 0,
+ "totCitas": 63,
+ "totFigs": 5,
+ "totTablas": 0,
+ "totRecuerda": 0,
+ "medido": "2026-10-18 · chrome-devtools en el Chrome de Joseph (sesión ProMIR) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js"
+}

@@ -7,6 +7,8 @@ import { FadeUp } from './visuals';
 import { BIZ_META, BIZ_FRANJAS, BIZ_TRACKER, BIZ_DIAS, DiaBiz, bizDiaDe, biz7d, bizColor, bizModo } from '../../lib/businessStudyPlan';
 import { ESTUDIO_LIBROS } from '../../lib/estudioPulsoData';
 import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, loadDone, saveDone } from '../../lib/studyProgress';
+import GuiaBloqueCard from '../GuiaBloqueCard';
+import { guiaBusinessDe } from '../../lib/rutinaGuia'; // v6.02c (E5): franja propia (13:00-13:25) + tramo exacto + acción
 
 /**
  * PulsoTodayPlan — "Estudio Pulso" día a día en FORMATO L (v3, 5-sep-2026): SIN franja en el
@@ -70,6 +72,8 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle }: { dia: DiaBiz; onOpenT
           )}
         </View>
       </FadeUp>
+      {/* v6.02c (E5) · guía del día: dónde va (13:00-13:25 · NBME 12:30 · sábado = tracker del OUTPUT), qué escuchar/leer y cuánto, acción */}
+      {(() => { const g = guiaBusinessDe(dia.fecha); return g ? <FadeUp delay={20}><GuiaBloqueCard g={g} color={c} /></FadeUp> : null; })()}
 
       {descanso ? (
         <FadeUp delay={40}>

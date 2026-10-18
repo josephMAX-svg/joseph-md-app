@@ -1,0 +1,145 @@
+# Qbankly · «Mehlman - Step 1 QBank - 2026» (id 78, 7.278Q) · Test Composer · Systems con ≥5 preguntas de los órganos de F1 + Immunology + Pathology (General Principles) — /api/v2/qbanks?mode=list&categoryId=1, dom 18-oct-2026, sesión de Joseph, solo lectura (no se seleccionó el QBank ni se creó ningún test) · RESPALDO cuando el System de uWorld no alcanza · systemId|nombre exacto en el composer|nº preguntas
+215|Neurology (Hydrocephalus)|6
+247|Gastroenterology (Neurologic issues of the GI tract)|12
+268|Neurology (Congenital and developmental anomalies)|17
+2|Neurology (Strokes & Stroke-related stuff)|40
+3|Gastroenterology (Intestinal and colorectal disorders)|59
+5|Gastroenterology (Biliary tract disorders)|35
+7|Neurology (Nerve injuries)|23
+9|Gastroenterology (Congenital and developmental anomalies)|16
+19|Renal, Urinary Systems & Electrolytes (Nephrolithiasis and urinary tract obstruction)|27
+39|Renal, Urinary Systems & Electrolytes (Congenital and developmental anomalies)|5
+46|Pathology (General Principles) (Neoplasia)|34
+48|Pathology (General Principles) (Cellular pathology)|37
+49|Cardiovascular System (Vasculitis conditions (Vasculitides))|25
+50|Neurology (Demyelinating diseases)|17
+51|Hematology & Oncology (Leukemias)|29
+52|Hematology & Oncology (Transfusion medicine)|6
+53|Renal, Urinary Systems & Electrolytes (Hypertension)|5
+54|Hematology & Oncology (Disorders of RBCs and hemoglobin)|62
+57|Neurology (Seizures and epilepsy)|12
+59|Pathology (General Principles) (Cytokines and immunomediators)|9
+60|Immunology (General Cell function)|24
+61|Gastroenterology (Pancreatic disorders)|27
+62|Immunology (HY Antibody associations)|17
+63|Immunology (Cytokines and immunomediators)|25
+64|Renal, Urinary Systems & Electrolytes (Nephrotic & nephritic syndromes)|43
+65|Immunology (Humoral immunity and disorders)|17
+66|Immunology (Cell-mediated immunity and disorders)|19
+79|Hematology & Oncology (Principles of oncology)|15
+80|Hematology & Oncology (Bleeding disorders)|31
+81|Hematology & Oncology (Normal hematologic structure and function)|43
+82|Cardiovascular System (ECGs)|35
+83|Gastroenterology (Absorptive conditions)|19
+84|Pulmonary & Critical Care (Interstitial lung disease)|38
+85|Pulmonary & Critical Care (Pleural effusions / pneumothoraces)|24
+86|Pulmonary & Critical Care (Cor pulmonale)|10
+87|Endocrine, Diabetes & Metabolism (Endocrine tumors)|30
+88|Renal, Urinary Systems & Electrolytes (Normal structure and function of the kidneys and urinary system)|37
+89|Cardiovascular System (Murmurs)|32
+90|Renal, Urinary Systems & Electrolytes (Genitourinary tract infections)|14
+92|Gastroenterology (Hepatic disorders)|43
+93|Cardiovascular System (Structural heart disease)|24
+94|Gastroenterology (Gastroesophageal disorders)|40
+95|Neurology (Spinal cord disorders)|23
+96|Pulmonary & Critical Care (Normal pulmonary structure and function)|47
+97|Pulmonary & Critical Care (Obstructive lung disease)|40
+99|Endocrine, Diabetes & Metabolism (Adrenal disorders)|37
+100|Hematology & Oncology (Hemolytic disorders)|41
+102|Cardiovascular System (Myopericardial diseases)|18
+103|Pulmonary & Critical Care (Pulmonary hypertension)|13
+105|Renal, Urinary Systems & Electrolytes (Electrolytes + electrolyte disorders)|12
+106|Endocrine, Diabetes & Metabolism (Electrolytes + electrolyte disorders)|29
+107|Endocrine, Diabetes & Metabolism (PTH, Ca, PO4, ALP, Vit D stuff)|26
+111|Hematology & Oncology (Toxic drug effects)|5
+112|Hematology & Oncology (Hemostasis and thrombosis)|22
+115|Renal, Urinary Systems & Electrolytes (Acute kidney injury)|38
+119|Cardiovascular System (Aortic and peripheral artery diseases)|18
+120|Pulmonary & Critical Care (Pulmonary vascular disease)|13
+121|Cardiovascular System (Hypertension)|14
+122|Renal, Urinary Systems & Electrolytes (Fluid, electrolytes, and acid-base)|31
+123|Endocrine, Diabetes & Metabolism (Normal structure and function of endocrine glands)|21
+126|Gastroenterology (Normal structure and function of the GI tract)|52
+127|Cardiovascular System (Normal structure and function of the cardiovascular system)|29
+130|Endocrine, Diabetes & Metabolism (Tumors/Malignancy of the nervous system)|6
+131|Renal, Urinary Systems & Electrolytes (Chronic kidney disease)|31
+132|Endocrine, Diabetes & Metabolism (Autoimmune disorders)|6
+134|Pulmonary & Critical Care (Autoimmune-related disorders)|20
+136|Neurology (Traumatic brain injuries)|23
+138|Renal, Urinary Systems & Electrolytes (Urinary incontinence)|15
+143|Gastroenterology (Tumors/Malignancy of the GI tract)|31
+144|Renal, Urinary Systems & Electrolytes (Acid/base disorders)|6
+150|Neurology (Normal structure and function of the nervous system)|29
+153|Neurology (Lower limb nerves)|21
+157|Pulmonary & Critical Care (Critical care medicine)|24
+161|Neurology (Neurodegenerative disorders and dementias)|36
+163|Hematology & Oncology (WBC disorders (miscellaneous))|12
+176|Pathology (General Principles) (Hepatic disorders)|11
+181|Hematology & Oncology (Lymphomas)|24
+182|Neurology (Tumors/Malignancy of the nervous system)|12
+186|Immunology (Hypersensitivity responses)|31
+187|Pulmonary & Critical Care (Miscellaneous)|14
+188|Hematology & Oncology (Bone marrow disorders)|17
+191|Immunology (Lymphatics)|5
+204|Pathology (General Principles) (Inflammation and repair)|38
+209|Renal, Urinary Systems & Electrolytes (Glomerular diseases)|30
+211|Pathology (General Principles) (Tumors/Malignancy of the GI tract)|6
+212|Hematology & Oncology (Platelet disorders)|21
+214|Neurology (Disorders of peripheral nerves and muscles)|19
+217|Cardiovascular System (Valvular heart diseases)|34
+218|Cardiovascular System (Heart failure and shock)|28
+226|Endocrine, Diabetes & Metabolism (Hypothalamus and pituitary disorders)|27
+227|Pulmonary & Critical Care (Cardio-induced lung pathology)|13
+230|Cardiovascular System (Autoregulation)|47
+231|Cardiovascular System (Arrhythmias)|25
+233|Cardiovascular System (Congestive heart disease)|11
+235|Cardiovascular System (Ischemic heart disease)|30
+243|Endocrine, Diabetes & Metabolism (Thyroid gland & disorders)|41
+248|Neurology (Spinal disorders and back pain)|12
+254|Pathology (General Principles) (Cell and molecular biology)|5
+258|Immunology (Receptors & extracellular matrix molecules)|5
+260|Hematology & Oncology (Vitamins, cofactors, nutrients)|11
+274|Pathology (General Principles) (Lymphomas)|8
+280|Renal, Urinary Systems & Electrolytes (HY Adverse effects)|5
+286|Gastroenterology (Autoimmune disorders)|13
+287|Pulmonary & Critical Care (Infections)|19
+291|Cardiovascular System (Congenital heart disease)|21
+293|Cardiovascular System (Cardiovascular drugs)|9
+302|Neurology (Headache)|21
+332|Renal, Urinary Systems & Electrolytes (Neoplasms of the kidneys and urinary tract)|16
+333|Pathology (General Principles) (Tumor markers)|11
+336|Immunology (Immunodeficiency syndromes)|37
+346|Endocrine, Diabetes & Metabolism (Pancreatic disorders)|7
+362|Pulmonary & Critical Care (DVT/PE)|20
+364|Neurology (Upper limb nerves)|13
+379|Pulmonary & Critical Care (Lung cancer)|29
+383|Immunology (Graft/Tissue responses)|11
+393|Renal, Urinary Systems & Electrolytes (PTH, Ca, PO4, ALP, Vit D stuff)|6
+395|Cardiovascular System (Dyslipidemias)|14
+404|Endocrine, Diabetes & Metabolism (Cell signaling and mechanisms)|17
+406|Neurology (Autoimmune conditions)|12
+415|Endocrine, Diabetes & Metabolism (Diabetes mellitus)|33
+420|Pathology (General Principles) (Gene expression and regulation)|5
+430|Pathology (General Principles) (Pancreatic disorders)|6
+433|Pathology (General Principles) (Ischemic heart disease)|10
+457|Cardiovascular System (Infections / infection-related conditions)|9
+459|Renal, Urinary Systems & Electrolytes (Autoimmune processes)|17
+484|Renal, Urinary Systems & Electrolytes (Graft/Tissue responses)|7
+499|Endocrine, Diabetes & Metabolism (Fluid, electrolytes, and acid-base)|6
+502|Pulmonary & Critical Care (Acid/base)|17
+518|Pathology (General Principles) (Cellular enzymes)|5
+526|Pathology (General Principles) (Autoimmune-related disorders)|5
+566|Pathology (General Principles) (Stage and Grade)|13
+572|Pathology (General Principles) (Principles of oncology)|6
+578|Neurology (Drug effects / Toxic neuropathies)|9
+606|Neurology (Miscellaneous)|5
+610|Gastroenterology (HY Adverse effects)|5
+613|Neurology (Innervation of Other organ systems)|6
+614|Immunology (Autoimmune disorders)|13
+635|Endocrine, Diabetes & Metabolism (Reproductive endocrinology)|7
+645|Endocrine, Diabetes & Metabolism (HY Antibody associations)|8
+646|Hematology & Oncology (HY Antibody associations)|5
+671|Endocrine, Diabetes & Metabolism (HY use-cases)|5
+680|Neurology (Vitamins, cofactors, nutrients)|6
+698|Pathology (General Principles) (Tumors/Malignancy of the nervous system)|5
+700|Gastroenterology (Aortic and peripheral artery diseases)|5

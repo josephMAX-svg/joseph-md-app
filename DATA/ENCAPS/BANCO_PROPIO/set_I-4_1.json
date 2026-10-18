@@ -23,7 +23,7 @@
    "cifra": 4
   },
   "recall_directo_pct": 32,
-  "LISTA_NEGRA": "⛔ Ningún ítem deriva del 2026-II (enunciado, molde, fuente ni cifra-pregunta); verificado por regex al construir.",
+  "LISTA_NEGRA": "⛔ Ningún ítem deriva del examen reservado como pre-test (enunciado, molde, fuente ni cifra-pregunta); verificado por regex al construir.",
   "consumo": "gen_encaps_minisim.js --banco <fecha> (banco del día: 16-20Q del código/sub-eje del día + 4-5Q del secundario) · el pool de viernes (mini-sim) también puede tomar ítems de aquí; los ids usados quedan registrados en banco_*.json / minisim_*.json y no se repiten.",
   "verificacion_pendiente": "Los ítems N-* citan el texto del compendio/manual y la norma; si el compendio tuviera un error, manda la norma primaria (jerarquía §3-bis)."
  },

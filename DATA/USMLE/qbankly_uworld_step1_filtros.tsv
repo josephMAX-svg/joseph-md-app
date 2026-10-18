@@ -1,0 +1,183 @@
+# Qbankly · uWorld - USMLE Step 1 · Test Composer (API /api/v2/qbanks?mode=current, dom 18-oct-2026, sesión de Joseph) · tipo (S = Subject, Y = System)|id|nombre|nº preguntas
+S|110|Biostatistics|121
+S|113|Histology|29
+S|114|Immunology|132
+S|115|Microbiology|348
+S|107|Anatomy|309
+S|108|Behavioral science|254
+S|109|Biochemistry|159
+S|111|Embryology|75
+S|112|Genetics|107
+S|116|Pathology|819
+S|117|Pathophysiology|487
+S|118|Pharmacology|550
+S|119|Physiology|269
+Y|1000|Allergy & Immunology (Anaphylaxis and allergic reactions)|19
+Y|1001|Allergy & Immunology (Autoimmune diseases)|13
+Y|1002|Allergy & Immunology (Immune deficiencies)|23
+Y|1003|Allergy & Immunology (Miscellaneous)|21
+Y|1004|Allergy & Immunology (Principles of immunology)|25
+Y|1005|Allergy & Immunology (Transplant medicine)|7
+Y|1006|Biochemistry (General Principles) (Amino acids, proteins, and enzymes)|20
+Y|1007|Biochemistry (General Principles) (Bioenergetics and carbohydrate metabolism)|21
+Y|1008|Biochemistry (General Principles) (Cell and molecular biology)|17
+Y|1009|Biochemistry (General Principles) (Lipid metabolism)|3
+Y|1010|Biochemistry (General Principles) (Miscellaneous)|4
+Y|1011|Biostatistics & Epidemiology (Epidemiology and population health)|31
+Y|1012|Biostatistics & Epidemiology (Measures and distribution of data)|11
+Y|1013|Biostatistics & Epidemiology (Miscellaneous)|1
+Y|1014|Biostatistics & Epidemiology (Probability and principles of testing)|23
+Y|1015|Biostatistics & Epidemiology (Study design and interpretation)|54
+Y|1016|Cardiovascular System (Aortic and peripheral artery diseases)|37
+Y|1017|Cardiovascular System (Cardiac arrhythmias)|50
+Y|1018|Cardiovascular System (Cardiovascular drugs)|16
+Y|1019|Cardiovascular System (Congenital heart disease)|32
+Y|1020|Cardiovascular System (Coronary heart disease)|47
+Y|1021|Cardiovascular System (Heart failure and shock)|44
+Y|1022|Cardiovascular System (Hypertension)|24
+Y|1023|Cardiovascular System (Miscellaneous)|10
+Y|1024|Cardiovascular System (Myopericardial diseases)|52
+Y|1025|Cardiovascular System (Normal structure and function of the cardiovascular system)|55
+Y|1026|Cardiovascular System (Valvular heart diseases)|46
+Y|1027|Dermatology (Disorders of epidermal appendages)|11
+Y|1028|Dermatology (Inflammatory dermatoses and bullous diseases)|28
+Y|1029|Dermatology (Miscellaneous)|4
+Y|1030|Dermatology (Normal structure and function of skin)|6
+Y|1031|Dermatology (Skin and soft tissue infections)|18
+Y|1032|Dermatology (Skin tumors and tumor-like lesions)|32
+Y|1033|Ear, Nose & Throat (ENT) (Disorders of the ear, nose, and throat)|40
+Y|1034|Endocrine, Diabetes & Metabolism (Adrenal disorders)|11
+Y|1035|Endocrine, Diabetes & Metabolism (Congenital and developmental anomalies)|19
+Y|1036|Endocrine, Diabetes & Metabolism (Diabetes mellitus)|49
+Y|1037|Endocrine, Diabetes & Metabolism (Endocrine tumors)|26
+Y|1038|Endocrine, Diabetes & Metabolism (Hypothalamus and pituitary disorders)|13
+Y|1039|Endocrine, Diabetes & Metabolism (Miscellaneous)|10
+Y|1040|Endocrine, Diabetes & Metabolism (Normal structure and function of endocrine glands)|3
+Y|1041|Endocrine, Diabetes & Metabolism (Obesity and dyslipidemia)|13
+Y|1042|Endocrine, Diabetes & Metabolism (Reproductive endocrinology)|21
+Y|1043|Endocrine, Diabetes & Metabolism (Thyroid disorders)|34
+Y|1044|Female Reproductive System & Breast (Breast disorders)|7
+Y|1045|Female Reproductive System & Breast (Congenital and developmental anomalies)|10
+Y|1046|Female Reproductive System & Breast (Genital tract tumors and tumor-like lesions)|26
+Y|1047|Female Reproductive System & Breast (Genitourinary tract infections)|13
+Y|1048|Female Reproductive System & Breast (Menstrual disorders and contraception)|4
+Y|1049|Female Reproductive System & Breast (Miscellaneous)|8
+Y|1050|Female Reproductive System & Breast (Normal structure and function of the female reproductive system and breast)|11
+Y|1051|Gastrointestinal & Nutrition (Biliary tract disorders)|17
+Y|1052|Gastrointestinal & Nutrition (Congenital and developmental anomalies)|21
+Y|1053|Gastrointestinal & Nutrition (Disorders of nutrition)|18
+Y|1054|Gastrointestinal & Nutrition (Gastroesophageal disorders)|45
+Y|1055|Gastrointestinal & Nutrition (Hepatic disorders)|59
+Y|1056|Gastrointestinal & Nutrition (Intestinal and colorectal disorders)|66
+Y|1057|Gastrointestinal & Nutrition (Miscellaneous)|14
+Y|1058|Gastrointestinal & Nutrition (Normal structure and function of the GI tract)|22
+Y|1059|Gastrointestinal & Nutrition (Pancreatic disorders)|17
+Y|1060|Gastrointestinal & Nutrition (Tumors of the GI tract)|27
+Y|1061|Genetics (General Principles) (Clinical genetics)|20
+Y|1062|Genetics (General Principles) (DNA structure, replication, and repair)|18
+Y|1063|Genetics (General Principles) (Gene expression and regulation)|7
+Y|1064|Genetics (General Principles) (Miscellaneous)|2
+Y|1065|Genetics (General Principles) (Protein synthesis)|1
+Y|1066|Genetics (General Principles) (RNA structure, synthesis, and processing)|13
+Y|1067|Hematology & Oncology (Hemostasis and thrombosis)|36
+Y|1068|Hematology & Oncology (Miscellaneous)|7
+Y|1069|Hematology & Oncology (Normal hematologic structure and function)|10
+Y|1070|Hematology & Oncology (Plasma cell disorders)|2
+Y|1071|Hematology & Oncology (Platelet disorders)|15
+Y|1072|Hematology & Oncology (Principles of oncology)|22
+Y|1073|Hematology & Oncology (Red blood cell disorders)|85
+Y|1074|Hematology & Oncology (Transfusion medicine)|4
+Y|1075|Hematology & Oncology (White blood cell disorders)|48
+Y|1076|Infectious Diseases (Antimicrobial drugs)|23
+Y|1077|Infectious Diseases (Bacterial infections)|112
+Y|1078|Infectious Diseases (Fungal infections)|12
+Y|1079|Infectious Diseases (HIV and sexually transmitted infections)|42
+Y|1080|Infectious Diseases (Infection control)|6
+Y|1081|Infectious Diseases (Miscellaneous)|7
+Y|1082|Infectious Diseases (Parasitic and helminthic infections)|26
+Y|1083|Infectious Diseases (Viral infections)|43
+Y|1084|Male Reproductive System (Disorders of the male reproductive system)|48
+Y|1085|Male Reproductive System (Normal structure and function of the male reproductive system)|4
+Y|1086|Microbiology (General Principles) (Bacteriology)|15
+Y|1087|Microbiology (General Principles) (Miscellaneous)|2
+Y|1088|Microbiology (General Principles) (Mycology)|2
+Y|1089|Microbiology (General Principles) (Parasitology)|1
+Y|1090|Microbiology (General Principles) (Virology)|10
+Y|1091|Miscellaneous (Multisystem) (Miscellaneous)|24
+Y|1092|Nervous System (Anesthesia)|12
+Y|1093|Nervous System (CNS infections)|30
+Y|1094|Nervous System (Cerebrovascular disease)|62
+Y|1095|Nervous System (Congenital and developmental anomalies)|34
+Y|1096|Nervous System (Demyelinating diseases)|9
+Y|1097|Nervous System (Disorders of peripheral nerves and muscles)|69
+Y|1098|Nervous System (Headache)|12
+Y|1099|Nervous System (Hydrocephalus)|5
+Y|1100|Nervous System (Miscellaneous)|18
+Y|1101|Nervous System (Neurodegenerative disorders and dementias)|34
+Y|1102|Nervous System (Normal structure and function of the nervous system)|48
+Y|1103|Nervous System (Seizures and epilepsy)|19
+Y|1104|Nervous System (Sleep disorders)|8
+Y|1105|Nervous System (Spinal cord disorders)|14
+Y|1106|Nervous System (Traumatic brain injuries)|8
+Y|1107|Nervous System (Tumors of the nervous system)|17
+Y|1108|Ophthalmology (Disorders of the eye and associated structures)|27
+Y|1109|Ophthalmology (Normal structure and function of the eye and associated structures)|3
+Y|1110|Pathology (General Principles) (Cellular pathology)|6
+Y|1111|Pathology (General Principles) (Inflammation and repair)|2
+Y|1112|Pathology (General Principles) (Neoplasia)|31
+Y|1113|Pharmacology (General Principles) (Drug metabolism and toxicity)|18
+Y|1114|Pharmacology (General Principles) (Drug receptors and pharmacodynamics)|5
+Y|1115|Pharmacology (General Principles) (Miscellaneous)|8
+Y|1116|Pharmacology (General Principles) (Pharmacokinetics)|14
+Y|1117|Poisoning & Environmental Exposure (Environmental exposure)|7
+Y|1118|Poisoning & Environmental Exposure (Toxicology)|25
+Y|1119|Pregnancy, Childbirth & Puerperium (Disorders of pregnancy, childbirth, and puerperium)|44
+Y|1120|Pregnancy, Childbirth & Puerperium (Normal pregnancy, childbirth, and puerperium)|15
+Y|1121|Psychiatric/Behavioral & Substance Use Disorder (Anxiety and trauma-related disorders)|25
+Y|1122|Psychiatric/Behavioral & Substance Use Disorder (Eating disorders)|8
+Y|1123|Psychiatric/Behavioral & Substance Use Disorder (Miscellaneous)|18
+Y|1124|Psychiatric/Behavioral & Substance Use Disorder (Mood disorders)|33
+Y|1125|Psychiatric/Behavioral & Substance Use Disorder (Neurodevelopmental disorders)|17
+Y|1126|Psychiatric/Behavioral & Substance Use Disorder (Normal behavior and development)|18
+Y|1127|Psychiatric/Behavioral & Substance Use Disorder (Personality disorders)|7
+Y|1128|Psychiatric/Behavioral & Substance Use Disorder (Psychotic disorders)|26
+Y|1129|Psychiatric/Behavioral & Substance Use Disorder (Somatoform disorders)|2
+Y|1130|Psychiatric/Behavioral & Substance Use Disorder (Substance use disorders)|25
+Y|1131|Pulmonary & Critical Care (Congenital and developmental anomalies)|9
+Y|1132|Pulmonary & Critical Care (Critical care medicine)|40
+Y|1133|Pulmonary & Critical Care (Interstitial lung disease)|26
+Y|1134|Pulmonary & Critical Care (Lung cancer)|10
+Y|1135|Pulmonary & Critical Care (Miscellaneous)|21
+Y|1136|Pulmonary & Critical Care (Normal pulmonary structure and function)|25
+Y|1137|Pulmonary & Critical Care (Obstructive lung disease)|48
+Y|1138|Pulmonary & Critical Care (Pulmonary infections)|62
+Y|1139|Pulmonary & Critical Care (Pulmonary vascular disease)|23
+Y|1140|Pulmonary & Critical Care (Sleep disorders)|1
+Y|1141|Renal, Urinary Systems & Electrolytes (Acute kidney injury)|22
+Y|1142|Renal, Urinary Systems & Electrolytes (Bone metabolism)|8
+Y|1143|Renal, Urinary Systems & Electrolytes (Chronic kidney disease)|14
+Y|1144|Renal, Urinary Systems & Electrolytes (Congenital and developmental anomalies)|21
+Y|1145|Renal, Urinary Systems & Electrolytes (Cystic kidney diseases)|3
+Y|1146|Renal, Urinary Systems & Electrolytes (Diabetes insipidus)|8
+Y|1147|Renal, Urinary Systems & Electrolytes (Fluid, electrolytes, and acid-base)|38
+Y|1148|Renal, Urinary Systems & Electrolytes (Glomerular diseases)|39
+Y|1149|Renal, Urinary Systems & Electrolytes (Miscellaneous)|14
+Y|1150|Renal, Urinary Systems & Electrolytes (Neoplasms of the kidneys and urinary tract)|12
+Y|1151|Renal, Urinary Systems & Electrolytes (Nephrolithiasis and urinary tract obstruction)|16
+Y|1152|Renal, Urinary Systems & Electrolytes (Normal structure and function of the kidneys and urinary system)|24
+Y|1153|Renal, Urinary Systems & Electrolytes (Urinary incontinence)|5
+Y|1154|Rheumatology/Orthopedics & Sports (Arthritis and spondyloarthropathies)|38
+Y|1155|Rheumatology/Orthopedics & Sports (Autoimmune disorders and vasculitides)|25
+Y|1156|Rheumatology/Orthopedics & Sports (Bone tumors and tumor-like lesions)|5
+Y|1157|Rheumatology/Orthopedics & Sports (Bone/joint injuries and infections)|34
+Y|1158|Rheumatology/Orthopedics & Sports (Congenital and developmental anomalies)|9
+Y|1159|Rheumatology/Orthopedics & Sports (Metabolic bone disorders)|14
+Y|1160|Rheumatology/Orthopedics & Sports (Miscellaneous)|5
+Y|1161|Rheumatology/Orthopedics & Sports (Normal structure and function of the musculoskeletal system)|31
+Y|1162|Rheumatology/Orthopedics & Sports (Spinal disorders and back pain)|4
+Y|1163|Social Sciences (Ethics/Legal/Professional) (Communication and interpersonal skills)|62
+Y|1164|Social Sciences (Ethics/Legal/Professional) (Healthcare policy and economics)|9
+Y|1165|Social Sciences (Ethics/Legal/Professional) (Medical ethics and jurisprudence)|20
+Y|1166|Social Sciences (Ethics/Legal/Professional) (Miscellaneous)|3
+Y|1167|Social Sciences (Ethics/Legal/Professional) (Patient safety)|9
+Y|1168|Social Sciences (Ethics/Legal/Professional) (System based-practice and quality improvement)|5

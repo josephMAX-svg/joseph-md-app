@@ -40,6 +40,11 @@
 // miniSimSerie ya eran genéricos (sirven para N pendientes de cualquier F1 de origen: el texto dice «fila mant. N de la F1 <origen>»). La reposición
 // genérica pasa a «filas del carril B dia 53-84 (dia_mant 61-92) sin ✓» (CARRIL_B_REPOSICION_*). sim_n únicos: mini-sims F1 5…45 + 88 + 94;
 // intensiva 57 (pre-test) · 62 … 97 (SIM 100Q) · 101 (dress).
+// v6.02c (18-oct-2026, E4 · «qué · cuánto · cómo»): itemsMantenimiento lee la sesión de src/lib/encapsGuia.ts (GENERADO por
+// DATA/_scripts/gen_encaps_guia.js) cuando la fila viva cuadra (mismo dia y código): los ítems enlazan los RUNNERS de BANCO_PROPIO publicados
+// en la app (https://joseph-md-app.vercel.app/encaps/bp/…, sync_encaps_bp_web.js) en vez del banco genérico de QX (que queda de plan B), con las
+// horas de la guía; el lun 19 / mar 20-oct el ítem m_banco es el PRE-TEST DE ARRANQUE parte 1/2 · 2/2 (20Q, modo examen 72 s/Q; sin secundario
+// ni postest; registro por --registrar --append) y tipoRondaDe da 'pretest'. Claves D{dia}:m_* sin cambio.
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { supabase } from './supabase';
 import { SKIP_V6 } from './fechasV6';
@@ -49,6 +54,7 @@ import { ENCAPS_THEOMED_RESUMENES, ENCAPS_BANCOS, ENCAPS_MAPAS_PDF, ENCAPS_POSTE
 import { PRACTICA_DEEP_PRIME, PRACTICA_REPASO } from './encapsPracticaExtra';
 import { ENCAPS_AREA_FORECAST, ENCAPS_CRITICAL_TOPICS, ENCAPS_REBOTE_TOPICS, ENCAPS_CIEGO_META_PCT, ENCAPS_CIEGO_CRUCERO_PCT } from './encapsRentabilidad';
 import { loadCierres, onCierresChange, cierreARow, fallosDeErrores, sumTipo, type CierreSesion, type TipoRonda } from './encapsProgressSync';
+import { sesionEncapsDe, sesionEncapsCuadra, type EncapsSesionGuia, type EncapsRunnerRef } from './encapsGuia'; // v6.02c (18-oct): runners BANCO_PROPIO + pre-test de arranque
 
 // ── D1 por examen (para calcular el día actual) ──
 // v5.14 (19-sep): SOLO FALLBACK. El valor vivo es study_metrics.extra.d1 (lo escribe gen_encaps_mantenimiento_2027.js en cada
@@ -323,6 +329,7 @@ export function minisimAbsorbidoDe(day: StudyScheduleDay | null | undefined): Mi
 // v6.00: `carrilB = true` → 'carril_b' (cierre de la hora 16:15 de la intensiva; id APP_CARRIL_B_<fecha>_<codigo>).
 export function tipoRondaDe(day: StudyScheduleDay | null | undefined, carrilB = false): TipoRonda {
   if (carrilB) return 'carril_b';
+  if (sesionGuiaDe(day)?.tipo === 'pretest') return 'pretest'; // v6.02c: lun 19 / mar 20-oct = PRE-TEST DE ARRANQUE (ronda MIX), no «banco del día»
   const t = String(day?.tipo || '');
   if (t === 'mini_sim') return 'mini_sim';
   if (t === 'pretest') return 'pretest';
@@ -733,52 +740,79 @@ export function diaActual(examen: string, d1Override?: string, totalOverride?: n
   return Math.max(1, Math.min(total, diff));
 }
 
+// v6.02c (18-oct-2026, E4): sesión de la guía (encapsGuia.ts, GENERADO por gen_encaps_guia.js) SOLO si la fila viva cuadra con ella (mismo dia y
+// código) → runners de BANCO_PROPIO publicados en la app (public/encaps/bp) en vez del banco genérico de QX, y el PRE-TEST DE ARRANQUE del
+// lun 19 / mar 20-oct (sustituye el banco del día: el horario no cambia). Las claves D{dia}:m_* no cambian (el daemon solo cuenta D{dia}:*).
+export function sesionGuiaDe(day: StudyScheduleDay | null | undefined): EncapsSesionGuia | null {
+  if (!day || day.modo !== 'MANTENIMIENTO') return null;
+  const f = String(day.fecha || '').slice(0, 10);
+  return sesionEncapsCuadra(f, day.dia, day.codigo ?? null) ? sesionEncapsDe(f) : null;
+}
+const runnerUrl = (r: EncapsRunnerRef | null | undefined): string | null => (r ? r.url || r.local : null);
+
 // v6.00: rama MANTENIMIENTO (16:15-17:15) extraída de itemsForDay para reutilizarla en el CARRIL B de la intensiva (pseudo-fila).
 function itemsMantenimiento(day: StudyScheduleDay, prev: StudyScheduleDay | null): PlanItem[] {
   const N = day.dia;
   const items: PlanItem[] = [];
   const area = ENCAPS_AREA_PREFIJO[((day.codigo || '').match(/^[IVX]+/) || [''])[0]];
+  const ses = sesionGuiaDe(day); // v6.02c: runners del día (null fuera de F1 o si la fila no cuadra con la guía)
   if (day.tipo === 'mini_sim') {
     const rec = miniSimRecetaDe(day);
+    const run = runnerUrl(ses?.principal);
     items.push({
       key: `D${N}:msim`, kind: 'sim',
       label: `🔥 MINI-SIMULACRO SEMANAL: 25Q mixtas cronometradas (${rec?.segPorQ ?? 72}s/Q)`,
-      detail: rec ? `Receta v3: ${miniSimRecetaTexto(rec)} · modo examen estricto, sin pausa` : 'Mezcla de las 5 áreas ponderada por el pronóstico v3 · modo examen estricto, sin pausa',
-      url: ENCAPS_BANCOS[0]?.url, source: ENCAPS_BANCOS[0]?.fuente || 'Banco', dur: 30, hora: '16:15–16:45',
+      detail: `${rec ? `Receta v3: ${miniSimRecetaTexto(rec)} · modo examen estricto, sin pausa` : 'Mezcla de las 5 áreas ponderada por el pronóstico v3 · modo examen estricto, sin pausa'}${run ? ` · runner ${ses?.principal?.f} (BANCO_PROPIO, clave verificada)` : ''}`,
+      url: run ?? ENCAPS_BANCOS[0]?.url, source: run ? 'BANCO_PROPIO · runner' : (ENCAPS_BANCOS[0]?.fuente || 'Banco'), dur: 30, hora: ses ? '16:17–16:47' : '16:15–16:45',
     });
     items.push({
       key: `D${N}:msim_corr`, kind: 'eval',
       label: '📊 Corrección + CIERRE DE SESIÓN tipo mini_sim (nota /25 → study_sim_scores + % ciego → study_progress)',
       detail: `Cada fallo: ¿área? ¿tipo knowledge/transfer/proceso (CONCEPTO·OLVIDO·CRONOLOGIA / CCSN·CONTEXTO / CAMBIO·TIEMPO·LECTURA)? → formulario al final de la cola (o gen_encaps_semana.js --cerrar) → override de la semana siguiente${rec ? ` · umbral ${rec.umbral}/25 · alerta <${rec.alerta}/25 dos viernes` : ''}`,
-      dur: 30, hora: '16:45–17:15',
+      dur: ses ? 28 : 30, hora: ses ? '16:47–17:15' : '16:45–17:15',
     });
     return items;
   }
   const se = subEjeDe(day);
   const secCL = (day.temas_secundarios || []).find(s => (s as { rol?: string }).rol === 'cola_larga') || (day.temas_secundarios || [])[0];
   const ev = evalAncladaDe(day, prev);
+  const pre = ses?.tipo === 'pretest' ? ses.pretest : null;
+  const runEval = runnerUrl(ses?.eval);
   items.push({
     key: `D${N}:m_eval`, kind: 'eval',
     label: ev.label,
-    detail: ev.detail,
+    detail: `${ev.detail}${runEval ? ` · runner ${ses?.eval?.f} (5Q, 72 s/Q)` : ''}`,
     code: ev.codigo !== 'MIX' ? ev.codigo : undefined,
-    dur: 15, hora: '16:15–16:30',
+    ...(runEval ? { url: runEval, source: 'BANCO_PROPIO · runner' } : {}),
+    dur: ses ? (pre ? 10 : 8) : 15, hora: ses ? (pre ? '16:17–16:27' : '16:17–16:25') : '16:15–16:30',
   });
-  items.push({
-    key: `D${N}:m_banco`, kind: 'theomed',
-    label: `🎯 BANCO DEL DÍA: ${day.codigo} — ${day.subtema || ''} (${secCL ? '16-20Q' : '20-25Q'} ciegas)`,
-    detail: `Prioridad ${day.prioridad || 'MEDIA'}${se ? ` · sub-eje ${se.n}/${se.total} (sesión ${se.instancia}/${se.de} del código)` : ''} · ~50% viñeta / 50% recall de cifras · pregunta-por-pregunta con corrección inmediata · pronóstico v3`,
-    url: ENCAPS_BANCOS[0]?.url, source: ENCAPS_BANCOS[0]?.fuente || 'Banco', code: day.codigo, dur: secCL ? 32 : 40, hora: secCL ? '16:30–17:02' : '16:30–17:10',
-  });
-  if (secCL) {
+  if (pre && ses) {
+    // v6.02c: el pre-test de arranque SUSTITUYE el banco del día (y su secundario de cola larga, que entra en el mini-sim del viernes)
     items.push({
-      key: `D${N}:m_sec`, kind: 'theomed',
-      label: `▶ SECUNDARIO (cola larga): ${secCL.codigo} — ${secCL.subtema} (${(secCL as { q?: string }).q || '4-5Q'})`,
-      detail: 'Código fuera de la rotación principal (≈30 pp del vector v3 repartidos en 17 códigos) · 4-5Q ciegas dentro de la misma hora',
-      url: ENCAPS_BANCOS[0]?.url, source: ENCAPS_BANCOS[0]?.fuente || 'Banco', code: secCL.codigo, dur: 8, hora: '17:02–17:10',
+      key: `D${N}:m_banco`, kind: 'sim',
+      label: `🧪 PRE-TEST DE ARRANQUE parte ${pre.parte}/${pre.de}: ${pre.n}Q CIEGAS (${pre.codigos.join(' · ')}) · modo examen 72 s/Q`,
+      detail: `Sustituye el banco del día (${day.codigo} · ${se?.key || ''}); ítems REALES con clave oficial 2024-2A / 2025-1A / 2025-2 · sin material ni pausa · solución al final · confianza 1-3 obligatoria = LÍNEA BASE ciega por crítico · luego 15′ de corrección`,
+      url: runnerUrl(ses.principal), source: 'BANCO_PROPIO · pre-test de arranque', code: day.codigo, dur: 24, hora: '16:27–16:51',
     });
+  } else {
+    const runBanco = runnerUrl(ses?.principal);
+    items.push({
+      key: `D${N}:m_banco`, kind: 'theomed',
+      label: `🎯 BANCO DEL DÍA: ${day.codigo} — ${day.subtema || ''} (${ses?.principal ? `${ses.principal.n}Q con el secundario` : secCL ? '16-20Q' : '20-25Q'} ciegas)`,
+      detail: `Prioridad ${day.prioridad || 'MEDIA'}${se ? ` · sub-eje ${se.n}/${se.total} (sesión ${se.instancia}/${se.de} del código)` : ''} · ~50% viñeta / 50% recall de cifras · pregunta-por-pregunta con corrección inmediata · pronóstico v3${runBanco ? ` · runner ${ses?.principal?.f}` : ses ? ' · runner por generar (plan B: QX App Banqueo)' : ''}`,
+      url: runBanco ?? ENCAPS_BANCOS[0]?.url, source: runBanco ? 'BANCO_PROPIO · runner' : (ENCAPS_BANCOS[0]?.fuente || 'Banco'), code: day.codigo,
+      dur: ses ? 30 : (secCL ? 32 : 40), hora: ses ? '16:25–16:55' : (secCL ? '16:30–17:02' : '16:30–17:10'),
+    });
+    if (secCL) {
+      items.push({
+        key: `D${N}:m_sec`, kind: 'theomed',
+        label: `▶ SECUNDARIO (cola larga): ${secCL.codigo} — ${secCL.subtema} (${(secCL as { q?: string }).q || '4-5Q'})`,
+        detail: `Código fuera de la rotación principal (≈30 pp del vector v3 repartidos en 17 códigos) · 4-5Q ciegas dentro de la misma hora${runBanco ? ' · las últimas del mismo runner' : ''}`,
+        url: runBanco ?? ENCAPS_BANCOS[0]?.url, source: runBanco ? 'BANCO_PROPIO · runner' : (ENCAPS_BANCOS[0]?.fuente || 'Banco'), code: secCL.codigo, dur: 8, hora: ses ? '16:55–17:03' : '17:02–17:10',
+      });
+    }
   }
-  (area ? (ENCAPS_POSTESTS[area] || []).slice(0, 1) : []).forEach((q, i) => {
+  if (!pre) (area ? (ENCAPS_POSTESTS[area] || []).slice(0, 1) : []).forEach((q, i) => {
     items.push({
       key: `D${N}:m_postest:${i}`, kind: 'theomed',
       label: `🎯 Postest alternativo: ${q.label}`,
@@ -786,10 +820,15 @@ function itemsMantenimiento(day: StudyScheduleDay, prev: StudyScheduleDay | null
       url: q.url, source: q.fuente, code: day.codigo,
     });
   });
-  items.push({
+  items.push(pre ? {
+    key: `D${N}:m_log`, kind: 'material',
+    label: '📝 REGISTRO del pre-test: «Generar JSON» del runner → node DATA/_scripts/gen_encaps_minisim.js --registrar <export.json> --append + 1-3 APEX',
+    detail: 'La ronda «pretest» se reparte por código (n = 5 por crítico). Hoy NO uses el formulario CIERRE DE SESIÓN: guardaría las 20Q como MIX · los APEX caen en la nota Obsidian del código fallado',
+    dur: 9, hora: '17:06–17:15',
+  } : {
     key: `D${N}:m_log`, kind: 'material',
     label: '📝 CIERRE DE SESIÓN (formulario al final de la cola → study_progress) + 1-3 APEX de errores de conocimiento',
-    detail: `n · seguras · dudosas · fallos por subtipo · t medio → % ciego = seguras/n (fuente app:cierre) · equivale a ENCAPS|banco_dia|${day.fecha}|${day.codigo}|n=..|seg=..|dud=..|CONCEPTO:..|t=.. · los APEX caen en Obsidian ENCAPS`,
+    detail: `n · seguras · dudosas · fallos por subtipo · t medio → % ciego = seguras/n (fuente app:cierre) · equivale a ENCAPS|banco_dia|${day.fecha}|${day.codigo}|n=..|seg=..|dud=..|CONCEPTO:..|t=.. · los APEX caen en Obsidian ENCAPS${ses?.principal ? ' · o, en el PC, «Generar JSON» → --registrar <export.json> --append (UNA sola vía, nunca las dos)' : ''}`,
     dur: 5, hora: '17:10–17:15',
   });
   return items;

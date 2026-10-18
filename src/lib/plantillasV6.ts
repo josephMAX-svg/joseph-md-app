@@ -18,6 +18,11 @@
  *
  * v6.02 (17-oct-2026 · corrimiento D1 = lun 19-oct): F1 = LUN 19-OCT → MIÉ 30-DIC (52 hábiles); F2, F3, F4 y el examen sin cambio. Fines de
  *  cada frente (de sus metas): LIVIANO → mié 24-feb · AURUM → mar 27-abr · SYNAPSE → vie 26-feb · vibecoding → mié 3-mar · MIR 1.ª vuelta → lun 8-feb.
+ * v6.02c (18-oct-2026, E5 · «todo estructurado y definido»): + PlanBloque 'business' (Estudio Pulso, que no tenía franja ni salía en el Home):
+ *  L-V 13:00-13:25 en F1 y F2 hasta su fin (= «LECTURA DE LIBRO 13:00-13:15» del Calendar + 10′ del hueco 13:15-13:30; NBME → 12:30-12:55 en el
+ *  almuerzo; el OUTPUT del viernes sigue el sábado tras la revisión) · sábado: + PC 15:00 = SHIP del vibecoding + SYNAPSE A/B/C (F1/F2, mientras
+ *  haya PC o A/B/C) + Anki 19:00-19:30 (F1) · domingo (F1/F2): FEYNMAN 15:00-15:10 opcional + Anki 17:00-17:15 opcional (F1). La revisión del
+ *  sábado lleva frente 'revision' (el Home la pinta con guía y botón). Franjas y textos de cada bloque = src/lib/rutinaGuia.ts.
  * v6.01 (10-oct-2026 · corrimiento D1 = lun 12-oct): F1 = LUN 12-OCT → MIÉ 30-DIC (57 hábiles; v6.00: mié 7-oct → mié 30-dic); F2, F3,
  *  F4 y el examen sin cambio. Las fechas de fin de cada frente salen de sus metas (no de este texto): LIVIANO → mié 17-feb (LIV_META.fin;
  *  v6.00: vie 12-feb) · AURUM → mar 20-abr (AURUM_PLAN_META.fin; v6.00: jue 15-abr) · SYNAPSE → vie 19-feb · vibecoding → mié 24-feb.
@@ -35,9 +40,10 @@ import { LIV_META } from './livianoStudyPlan';
 import { SYN_PLAN_META } from './synapseDailyPlan';
 import { VIBE_META } from './vibecodingPlan';
 import type { Frente } from './homeBriefing';
+import { bizFranjaDe, guiaShipDe, guiaFeynmanDe, synFranjaDe } from './rutinaGuia'; // v6.02c (E5): Business en el día + PC del sábado + Feynman del domingo
 
 export type PlanBloque = 'usmle' | 'encaps' | 'mir' | 'research-derma' | 'aurum' | 'liviano' | 'synapse' | 'vibecoding'
-  | 'serums' | 'gimnasio' | 'vida' | 'revision';
+  | 'serums' | 'gimnasio' | 'vida' | 'revision' | 'business';
 export interface BloqueV6 {
   /** clave estable (React) */
   id: string;
@@ -113,7 +119,8 @@ function bloquesF1(iso: string): BloqueV6[] {
     bloque('vibe', '04:15', '05:00', 'IA · VIBECODING con Claude Code (1 proyecto real/semana)', 'vibecoding', 'vibecoding'),
     bloque('anki', '05:00', '05:45', 'USMLE · ANKI AM (madrugada fresca · Palmerton 2x)', 'usmle', 'usmle-anki'),
     bloque('usmle', '07:15', '12:00', 'USMLE · BLOQUE PRINCIPAL (Anki → Pre-test → Deep Prime → 30Q)', 'usmle', 'usmle-principal'),
-    bloque('syn', '12:30', '13:00', "SYNAPSE · 30' (A pantalla · B audio · C lectura)", 'synapse', 'synapse'),
+    // v6.02c (E5): en días de hito el SYNAPSE va donde lo pone la guía USMLE (UWSA1 lun 19-oct → 07:25 · NBME → 13:00); Calendar alineado el 18-oct (CAL_V6 §12)
+    (() => { const [si, sf] = synFranjaDe(iso).franja.split('–'); return bloque('syn', si ?? '12:30', sf ?? '13:00', "SYNAPSE · 30' (A pantalla · B audio · C lectura)", 'synapse', 'synapse'); })(),
     bloqueRD(iso, '13:30', 45),
     bloque('aurum', '14:15', '15:15', "AURUM · closer de ventas (60')", 'aurum', 'aurum'),
     bloque('mir', '15:15', '16:15', 'MIR · Eval D-1 + Deep Work (1 h)', 'mir', 'mir'),
@@ -121,7 +128,23 @@ function bloquesF1(iso: string): BloqueV6[] {
     bloque('liv', '17:15', '18:00', 'LIVIANO · Academia (obesidad/GLP-1/nutrición)', 'liviano', 'liviano'),
     bloque('eval', '18:00', '18:45', 'USMLE · Evaluación acumulativa (modo examen)', 'usmle', 'usmle-eval'),
   ];
+  const biz = bloqueBiz(iso);
+  if (biz) bs.push(biz);
   return bs;
+}
+/** v6.02c (E5): Business del día (null si hoy no toca) — franja de rutinaGuia.bizFranjaDe. */
+function bloqueBiz(iso: string): BloqueV6 | null {
+  const f = bizFranjaDe(iso);
+  if (!f) return null;
+  const nombre = f.sabado ? 'BUSINESS · tracker semanal + cierre del OUTPUT (Estudio Pulso)' : f.ini === '12:30' ? 'BUSINESS · Estudio Pulso (audio en el almuerzo: hoy hay NBME)' : 'BUSINESS · Estudio Pulso (1 tramo del libro + acción)';
+  return bloque('biz', f.ini, f.fin, nombre, 'business', 'business');
+}
+/** v6.02c (E5): PC del sábado (SHIP del vibecoding + SYNAPSE A/B/C) con la franja de rutinaGuia.guiaShipDe. */
+function bloquePCSabado(iso: string): BloqueV6 | null {
+  const g = guiaShipDe(iso);
+  const m = g ? /^(\d{2}:\d{2})–(\d{2}:\d{2})$/.exec(g.franja) : null;
+  if (!g || !m) return null;
+  return bloque('pc', m[1] as string, m[2] as string, `IA · ${g.titulo} (PC sábado)`, 'vibecoding', 'vibecoding');
 }
 /** D-2 del ENCAPS (jue antes del D-1 hábil): dress rehearsal 11:00-13:00, sin loop, sin eval, sin carril B (§C3). */
 const D2_ENCAPS = ultimoHabilAntes(DERIVADOS_V6.d1HabilEncaps);
@@ -138,6 +161,8 @@ function bloquesF2(iso: string): { id: PlantillaId; bs: BloqueV6[] } {
     if (enRango(iso, AURUM_PLAN_META.fin)) bs.push(bloque('aurum', '14:15', '14:45', "AURUM · 30' (núcleo · DJ-4)", 'aurum', 'aurum'));
     bs.push(bloque('mir', '15:15', '16:15', 'MIR · 1 h (DJ-4)', 'mir', 'mir'));
     if (enRango(iso, LIV_META.fin)) bs.push(bloque('liv', '17:15', '18:00', 'LIVIANO · Academia', 'liviano', 'liviano'));
+    const biz = bloqueBiz(iso); // v6.02c (E5): Business hasta su fin (mar 16-feb)
+    if (biz) bs.push(biz);
     return bs;
   };
   if (iso === D2_ENCAPS) {
@@ -181,7 +206,25 @@ function bloquesF3(iso: string, usmle: DiaUSMLEPlan | null): BloqueV6[] {
   bs.push(bloque('eval', '18:00', '18:45', hito ? 'USMLE · registrar el % del hito + corrección' : 'USMLE · Evaluación acumulativa (modo examen)', 'usmle', 'usmle-eval'));
   return bs;
 }
-const SABADO_REVISION = (): BloqueV6 => bloque('revision', '07:15', '07:45', 'REVISIÓN SEMANAL (DATA/REVISION_SEMANAL.md)', 'revision', null);
+const SABADO_REVISION = (): BloqueV6 => bloque('revision', '07:15', '07:45', 'REVISIÓN SEMANAL (DATA/REVISION_SEMANAL.md)', 'revision', 'revision');
+/** v6.02c (E5): extras del sábado (Business tras la revisión · PC 15:00 · Anki 19:00 en F1) y del domingo (Feynman · Anki opcional en F1). */
+function extrasSabado(iso: string, conAnki: boolean): BloqueV6[] {
+  const bs: BloqueV6[] = [];
+  const biz = bloqueBiz(iso); if (biz) bs.push(biz);
+  const pc = bloquePCSabado(iso); if (pc) bs.push(pc);
+  if (conAnki) bs.push(bloque('anki-sab', '19:00', '19:30', 'USMLE · ANKI del sábado (cola FSRS)', 'usmle', 'usmle-anki', 'Solo vencidas de APEX::USMLE (nuevas = 0 el sábado) · telemetría al terminar'));
+  return bs;
+}
+function extrasDomingo(iso: string): BloqueV6[] {
+  const fase = faseV6(iso);
+  if (fase !== 'F1' && fase !== 'F2' && fase !== 'TRANSICION') return [];
+  const bs: BloqueV6[] = [];
+  const g = guiaFeynmanDe(iso);
+  const m = g ? /^(\d{2}:\d{2})–(\d{2}:\d{2})$/.exec(g.franja) : null;
+  if (g && m) bs.push(bloque('feynman', m[1] as string, m[2] as string, 'IA · FEYNMAN del proyecto (opcional, 10′)', 'vibecoding', 'vibecoding'));
+  if (fase === 'F1') bs.push(bloque('anki-dom', '17:00', '17:15', "USMLE · ANKI del domingo (opcional, ≤15')", 'usmle', 'usmle-anki', 'Opcional y no se registra: solo vencidas (el lunes 05:00 lo absorbe)'));
+  return bs;
+}
 
 // ── F4 (SERUMS): FRANJAS_F4 por turno ──
 const FRENTE_F4: Record<string, PlanBloque> = { step1: 'usmle', hito: 'usmle', mir: 'mir', 'research-derma': 'research-derma', serums: 'serums', gimnasio: 'gimnasio', vida: 'vida' };
@@ -280,11 +323,12 @@ export function plantillaDelDia(iso: string, turno?: Turno): PlantillaDia {
   // 2) SKIP (sin sesión de ningún plan)
   if (SKIP_V6.has(iso)) return out('SKIP', 'Sin sesión (feriado / SKIP v6)', [], { notas: ['Ningún plan tiene sesión hoy (25-dic · 31-dic · 1-ene · Jueves y Viernes Santo).'] });
   // 3) domingo
-  if (w === 0) return out('DOMINGO', 'DOMINGO · libre', [], { notas: ["Anki ≤15' opcional (no se registra)."] });
+  if (w === 0) return out('DOMINGO', 'DOMINGO · libre', extrasDomingo(iso), { notas: ["Anki ≤15' opcional (no se registra)."] });
 
   switch (fase) {
     case 'TRANSICION':
-      return out('TRANSICION', 'TRANSICIÓN · sin sesión (Anki opcional)', [], { notas: ['Step 1 en PAUSA desde hoy: 0 tarjetas nuevas; la intensiva ENCAPS arranca el lun 4-ene.'] });
+      // v6.02c (E5): el sáb 2-ene sí tiene revisión semanal (S11) y PC (SHIP S10) en el Calendar y en los planes → se muestran
+      return out('TRANSICION', 'TRANSICIÓN · sin sesión (Anki opcional)', w === 6 ? [SABADO_REVISION(), ...extrasSabado(iso, false)] : [], { notas: ['Step 1 en PAUSA desde hoy: 0 tarjetas nuevas; la intensiva ENCAPS arranca el lun 4-ene.'] });
     case 'LIBRE_POST_ENCAPS':
       return out('PROTEGIDO', 'LIBRE post-ENCAPS', []);
     case 'EXAMEN':
@@ -293,11 +337,12 @@ export function plantillaDelDia(iso: string, turno?: Turno): PlantillaDia {
       return out('F5', 'F5 · post-Step 1 (esbozo)', [bloque('mir', '15:15', '16:15', 'MIR · fase principal (oct-2027)', 'mir', 'mir')],
         { notas: [iso === addDias(FECHAS_V6.step1.examen, 1) ? 'Regreso a la posta (permiso 1 día; 2 si hoy tienes turno M).' : 'F5 es un esbozo: MIR principal hasta el fin del SERUMS; CURVA/DENSA y Derma c2+ se planifican después del Step 1.'] });
     case 'F1':
-      if (w === 6) return out('F1-sáb', 'Sábado · libre (revisión semanal)', [SABADO_REVISION()]);
+      if (w === 6) return out('F1-sáb', 'Sábado · libre (revisión semanal)', [SABADO_REVISION(), ...extrasSabado(iso, true)]);
       return out('F1', 'F1 · Step 1 tramo 1 + ENCAPS lento', bloquesF1(iso));
     case 'F2': {
       if (w === 6) return out('F2-sáb', 'Sábado · revisión semanal + STEP 1 VIVO', [SABADO_REVISION(),
-        bloque('vivo', '07:45', '09:15', 'STEP 1 VIVO · 20Q timed MEZCLADAS (10 incorrectas UWorld + 10 nuevas AMBOSS) + revisión', 'usmle', 'usmle-principal', 'mantenimiento del Step 1 en PAUSA (§B2): no gastar uWorld fresco')]);
+        bloque('vivo', '07:45', '09:15', 'STEP 1 VIVO · 20Q timed MEZCLADAS (10 incorrectas UWorld + 10 nuevas AMBOSS) + revisión', 'usmle', 'usmle-principal', 'mantenimiento del Step 1 en PAUSA (§B2): no gastar uWorld fresco'),
+        ...extrasSabado(iso, false)]);
       const { id, bs } = bloquesF2(iso);
       return out(id, 'F2 · ENCAPS intensiva (Step 1 en PAUSA)', bs, { usmle: null });
     }

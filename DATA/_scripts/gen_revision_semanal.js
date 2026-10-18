@@ -1,4 +1,4 @@
-// gen_revision_semanal.js — pre-rellena la REVISIÓN SEMANAL (DATA/REVISION_SEMANAL.md, sábado 07:15-07:35)
+// gen_revision_semanal.js — pre-rellena la REVISIÓN SEMANAL (DATA/REVISION_SEMANAL.md, sábado 07:15-07:45 · 30′ desde v6.00)
 // con datos REALES y APPENDEA a DATA/USMLE/REVISIONES/_semanas.json (append-only; idempotente por semana).
 //
 // Fuentes (todas de solo lectura; lo que no se encuentra queda "sin dato", nunca se inventa):
@@ -98,6 +98,9 @@ if (D1ts && D1ts !== D1) console.error(`⚠ usmleStep1Daily.ts (inicio ${D1ts}) 
 // fichero y el orden alfabético = cronológico; S04_2026-11-07 · S05_2026-11-14 · S13_2027-01-09 = 1.er sábado de la pausa). La ETIQUETA
 // (LABEL, campo `semanaStep1`) es la semana del Step 1 de la app: S1-S12 en F1 · 'PAUSA · ENCAPS' (lun 4-ene → semana del ENCAPS) ·
 // S13-S40 en el tramo 2 (desde la semana del reinicio, mar 16-mar) · 'examen' (semana del lun 27-sep-2027) · 'post-Step 1'.
+// v6.02c (18-oct-2026, E5 · solo textos): cabecera 07:15-07:45 (30′) y, al pie del fichero, la línea «Los 30′» con el reparto de la guía del
+// Home (src/lib/rutinaGuia.ts → guiaRevisionDe: 3′ generar/abrir · 8′ «sin dato» · 5′ checklist G · 6′ decidir · 5′ preparar la semana · 3′ guardar).
+// Sin cambio de lógica ni de datos (_semanas.json, métricas y nombres de fichero idénticos).
 // v6.02 (17-oct-2026): sin cambio de lógica — N y la etiqueta salen de f1.inicio = lun 19-oct: S1 = lun 19 → vie 23-oct (revisión del sáb
 // 24-oct = S01_2026-10-24.md) · S11 = lun 28 → mié 30-dic (último día de F1, NBME 28) · S12_2027-01-09 = 1.er sábado de la PAUSA · el
 // tramo 2 empieza en la etiqueta S12/39 (semana del mar 16-mar = fichero S22_2027-03-20) · STEP1_SEMANAS = 39 (11 de F1 + 28). El sáb
@@ -506,6 +509,7 @@ function usmleScores() {
   L.push('- 1 cosa que se deja de hacer:');
   L.push(`- Anki sáb/dom: ${m3.minFinde != null ? `${m3.minFinde}' / ${m3.minFinde}'` : "__' / __'"} (= due × 20 s)`);
   L.push('');
+  L.push('_Los 30′ (sáb 07:15-07:45 · guía del Home): 3′ generar y abrir este fichero · 8′ rellenar las métricas «sin dato» (nunca se inventa) · 5′ checklist G + burnout · 6′ las 4 decisiones · 5′ preparar la semana siguiente · 3′ guardar._');
   L.push(`_Fuentes y método: DATA/REVISION_SEMANAL.md · script DATA/_scripts/gen_revision_semanal.js ${FECHA}${DRY ? ' --dry-run' : ''}_`);
   const md = L.join('\n') + '\n';
 

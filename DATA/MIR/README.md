@@ -1,10 +1,54 @@
-# DATA · MIR — España (régimen v6.02 · 17-oct-2026 · ⏸ v6.01 · 10-oct-2026 · ⏸ v6.00 · 6-oct-2026)
+# DATA · MIR — España (régimen v6.02c · 18-oct-2026 · v6.02 · 17-oct-2026 · ⏸ v6.01 · 10-oct-2026 · ⏸ v6.00 · 6-oct-2026)
 
 Toda la data REAL del plan MIR. Fuente canónica (código): `src/lib/*.ts`. Plataforma:
 **ProMIR** (`promir.medicapanamericana.com`) — SPA por WebSocket; deep-link `/capitulo/<id>`.
 Abre bien en Chrome (no necesita Edge). Cruzado con **rabi_94** (Google Drive, 1ª vuelta).
 Método de referencia: **Palmerton** (comprensión > memorización · preguntas ciegas primero ·
 Anki de mecanismo FSRS · medir por % ciego). Meta: Top 50 MIR 2030.
+
+> ## ✅ v6.02c (dom 18-oct-2026) — se REPONE lo recortado de la extensión + guía de lectura D1-D10 (sobre v6.02, que sigue vigente)
+> Joseph (18-oct): «si faltan temas o se recortó algo, alárgalo» y «QUÉ leer, CUÁNTO leer, CÓMO leer — no puede estar al azar».
+>
+> **1 · Reposición (decisión (i) de `PENDIENTES_JOSEPH.md`, bloque v6.02 → RESUELTA).** Los corrimientos v6.01/v6.02 comprimieron la extensión
+> (131 → 128 → 123 filas: −6 banco, −2 viernes y 2 Tier C de la vuelta 3, «Genética · Enfermedades genéticas v3» y «Oftalmología · Retina v3»).
+> `gen_mir_mantenimiento.js` (bitácora v6.02c) las re-fecha DESPUÉS de los protegidos del examen Step 1 (25-27-sep), en F5, cada sesión en un
+> día de su tipo y el Tier C en el último lun-jue de la semana: **+9 filas d181-d189, mar 28-sep → vie 8-oct-2027** —
+> mar 28 Cardiología · mié 29 Gastroenterología · **jue 30-sep Neurología + Tier C Oftalmología · Retina v3** · vie 1-oct viernes (peor del log) ·
+> lun 4 Enf. Infecciosas · mar 5 Endocrinología · mié 6 Neumología · **jue 7-oct Reumatología + Tier C Genética · Enfermedades genéticas v3** ·
+> vie 8-oct viernes; sáb 2-oct sin fila (no se perdió ningún sábado). Las 180 filas existentes son **byte-idénticas**; `MIR_MANT_DIAS` 180 → **189**
+> (v6.00 = 188: el +1 es el slot extra que el redondeo de v6.02 dio a Medicina Legal, que se conserva), `MIR_MANT_TIER_C` 32 → **34** (= v6.00),
+> 4.755 → **4.990 Q** (v6.00 = 4.965), todas las asignaturas con ≥ los slots lun-jue de v6.00. Filas repuestas: `fase:'extension'` + `repuesta:'v6.02c'`;
+> `MIR_MANT_META.ext` = 132 (`tope` vie 24-sep = 123 + `repuestas` 9). **Handoff → vie 8-oct-2027** (última sesión del banqueo; `MIR_HITOS` lo
+> deriva de `MIR_MANT_META.fin`). Sin cambio: umbral de cierre 70/55 hasta el vie 24-sep → 75/60 después (`mirEvalLog`), FSRS 0,85 → 0,90.
+> `--sin-reposicion` reproduce la salida v6.02 (180 filas).
+>
+> **2 · Guía de lectura D1-D10 (lun 19 → vie 30-oct) + Derma d1-d3** → [`guia_lectura_semana1-2.json`](guia_lectura_semana1-2.json), generada por
+> [`guia_lectura/gen_guia_lectura.js`](guia_lectura/gen_guia_lectura.js) (`--check`) desde la medición real de ProMIR del 18-oct
+> (`guia_lectura/medicion_promir_2026-10-18/<capId>.json`, `analiza_cap.js`, solo lectura). Cada día = un bloque 15:15–16:15 en formato GuiaBloque
+> (pasos de 60′ con qué/cómo/enlace + recursos + «hecho» + plan B) y la lista de preguntas de cada paso (pre-test, quiz, evals de los días
+> siguientes, cierres) sin repetir ninguna. Método: palabras deduplicadas (ProMIR repite el párrafo que cruza de columna), **180 palabras/min**
+> (tablas 90, figura 0,5′), peso de cada sección = sus preguntas MIR citadas en el propio capítulo (≥2020 ×3 · 2015-19 ×2 · <2015 ×1),
+> lectura dirigida 15′ = Orientación MIR 1′ + secciones por peso (la de más peso, PARCIAL si no cabe); lo demás → 2.ª vuelta (oct-2027).
+> El pool de la app (MIR 2022-2026) da 2-12Q por capítulo: 5 al pre-test (si hay menos, se completa con citadas ≥2015) y el resto abre el quiz; lo demás sale de las preguntas MIR **citadas en el capítulo**
+> (chips «MIR AAAA-AAAA, Pnnn» → `/pregunta/MIR/AAAA-nnn`; equivalencia pool `2024-050` = ProMIR `2023-050`, verificada).
+>
+> | Día | Capítulo | Texto medido | Citas MIR | Lectura 15′ (secciones) | Para la 2.ª vuelta | Pool app · quiz |
+> |---|---|---|---|---|---|---|
+> | D1 lun 19-oct | Epidemiología · Estudios experimentales: Ensayo clínico | 7411 + 343 tabla · ≈49,5′ | 97 | 2 · 3.2 · 3.4 · 4 · 6.1 · 6.2 · 8.4 (14,5′) | ≈36′ | 5Q · quiz 10 citadas |
+> | D2 mar 20-oct | Epidemiología · Clasificación de los estudios de investigación | 2039 + 0 tabla · ≈14,5′ | 63 | 1.1 · 1.2 · 1.3 · 2.1 · 2.2 · 2.3 · 2.4 (13,5′) | ≈2′ | 5Q · quiz 10 citadas |
+> | D3 mié 21-oct | Epidemiología · Evaluación de pruebas diagnósticas | 4904 + 94 tabla · ≈32′ | 44 | 3.2 · 3.3 (14′) | ≈19′ | 3Q · quiz 10 citadas |
+> | D4 jue 22-oct | Medicina Legal y Bioética · Principios de bioética y relación médico-paciente | 2793 + 0 tabla · ≈16′ | 22 | 1 · 2 · 3 · 4 · 6 · 7 (14′) | ≈3′ | 2Q · quiz 10 citadas |
+> | D5 vie 23-oct | Cardiología · Cardiología básica | 14.944 + 138 tabla · ≈96,5′ | 68 | 2.3 · 3.3 (15′) | ≈82,5′ | 4Q · quiz 10 citadas |
+> | D6 lun 26-oct | Cardiología · Trastornos del ritmo | 13.201 + 248 tabla · ≈103′ | 45 | 3.2 (parcial) (15′) | ≈89′ | 12Q · quiz 7 pool + 3 citadas |
+> | D7 mar 27-oct | Cardiología · Cardiopatía isquémica | 9721 + 312 tabla · ≈69′ | 49 | 3.6 (parcial) (15′) | ≈55′ | 6Q · quiz 1 pool + 9 citadas |
+> | D8 mié 28-oct | Cardiología · Insuficiencia cardíaca | 21.920 + 1778 tabla · ≈164,5′ | 83 | 6.2 (parcial) (15′) | ≈150,5′ | 9Q · quiz 4 pool + 6 citadas |
+> | D9 jue 29-oct | Cardiología · Valvulopatías | 8425 + 300 tabla · ≈61′ | 39 | 2.5 · 5.4 · 6.1 · 8 (15′) | ≈47′ | 10Q · quiz 5 pool + 5 citadas |
+> | D10 vie 30-oct | Cardiología · Riesgo cardiovascular. Prevención de las ECVA a través del control de los FRCV | 10.829 + 419 tabla · ≈75,5′ | 44 | 4.1 · 6.4 (14′) | ≈62,5′ | 5Q · quiz 10 citadas |
+>
+> Derma (bloque 13:30): d3 vie 23-oct, slot 13:52–14:03 = TEST ProMIR cap. 1 → **8Q** (11′ a 77 s/Q) de las **11** citadas en el capítulo (el pool
+> de la app tiene 0 de ese capítulo); plan B de la lectura 14:03–14:13 mientras AccessDermatology dé 403: d1 cap. 1 §2.1-2.2 (8,5′) · d2 §2.3 (6′) ·
+> d3 §1.1-1.3 + §3 (7,5′). No verificado: duración del audio «escuchar todo el tema» y nº de preguntas de «Entrenar» por capítulo (no se abrió el
+> creador de tests).
 
 > ## ✅ v6.02 VIGENTE (sáb 17-oct-2026 · D1 = LUN 19-OCT-2026) — corrige las fechas de los bloques v6.01 y v6.00; DJ-4 (1 h/día siempre) sin cambio
 > Del lun 12 al vie 16-oct no se estudió → todo corre +5 hábiles con el D1; el tope de la extensión (vie 24-sep, día de plan anterior al ritual del Step 1)
@@ -14,7 +58,7 @@ Anki de mecanismo FSRS · medir por % ciego). Meta: Top 50 MIR 2030.
 > |---|---|---|
 > | Diario (1.ª vuelta, 78) | **lun 19-oct-2026 → lun 8-feb-2027** (D77 mini-MIR **vie 5-feb** + D78 corrección **lun 8-feb**) · 15:15-16:15 | lun 12-oct → lun 1-feb (D77 vie 29-ene) |
 > | Mantenimiento (57) | **mar 9-feb → mar 4-may-2027** (47 lun-jue + 10 viernes; mismas cuotas; sus 2 últimas filas, lun 3 y mar 4-may, ya caen en el SERUMS: `MirTodayPlan` resuelve la franja por fecha) · Tier C (12, mismo orden): jue 11-feb · 18-feb · 25-feb · 4-mar · 18-mar · mié 24-mar · jue 1-abr · 8-abr · 15-abr · 22-abr · 29-abr · **mar 4-may** (Planificación) | mar 2-feb → mar 27-abr (Tier C desde jue 4-feb) |
-> | Extensión | **123** (82 lun-jue · 21 viernes · 20 sábados) **mié 5-may → vie 24-sep-2027** · Tier C ext **20** (vueltas 12 · 8: la 3.ª termina el jue 23-sep con Urología y deja fuera además **«Oftalmología · Retina v3»** → decisión (i) de `DATA/PENDIENTES_JOSEPH.md`, bloque v6.02; recomendación: aceptar) | 128 (86 · 22 · 20) mié 28-abr → vie 24-sep · Tier C ext 21 (sin Genética v3) |
+> | Extensión | **123** (82 lun-jue · 21 viernes · 20 sábados) **mié 5-may → vie 24-sep-2027** · Tier C ext **20** (vueltas 12 · 8: la 3.ª termina el jue 23-sep con Urología y deja fuera además **«Oftalmología · Retina v3»** → decisión (i) de `DATA/PENDIENTES_JOSEPH.md`, bloque v6.02 → **RESUELTA v6.02c: repuestas tras el Step 1, ver arriba**) | 128 (86 · 22 · 20) mié 28-abr → vie 24-sep · Tier C ext 21 (sin Genética v3) |
 > | `MIR_MANT_DIAS` / `MIR_MANT_META` | **180** filas (`d` 1-57 mantenimiento · 58-180 extensión); `mant` 2027-02-09 → 2027-05-04 · `ext` 2027-05-05 → 2027-09-24 · `MIR_MANT_TIER_C` 32 | 185 · Tier C 33 |
 >
 > Handoff (vie 24-sep → fase principal oct-2027), umbral de cierre 70/55 → 75/60 desde oct-2027, FSRS 0,85 → 0,90, franjas por turno en F4, protegidos/SKIP:
@@ -441,7 +485,8 @@ Generado por [`DATA/_scripts/gen_mir_mantenimiento.js`](../../DATA/_scripts/gen_
 
 ## 7. Ficheros canónicos y pipeline
 - `src/lib/mirDailyPlan.ts` — plan 78 días (MIR_DIAS con `delta?`, MIR_FRANJAS, MIR_COBERTURA, helpers). GENERADO entre marcadores.
-- `src/lib/mirMantenimiento.ts` — **v6.00: 188 filas** (mantenimiento 57 jue 28-ene → jue 22-abr + extensión 131 vie 23-abr → vie 24-sep-2027; *(⏸ v6.00 · ⏸ v6.01: 185: 57 mar 2-feb → mar 27-abr + 128 mié 28-abr → vie 24-sep · **v6.02:** 180: 57 mar 9-feb → mar 4-may + 123 mié 5-may → vie 24-sep)* GENERADO por `gen_mir_mantenimiento.js` v6) · ⏸ 58 días ene-abr 2027, jue 28-ene → jue 22-abr (GENERADO, v5.20; v5.19: 57 días mié 27-ene → jue 15-abr). `src/lib/mirEvalLog.ts` — registro/neto/gate/anclas dinámicas/táctica/readiness.
+- `src/lib/mirMantenimiento.ts` — **v6.02c: 189 filas** (180 de v6.02 byte-idénticas + 9 repuestas mar 28-sep → vie 8-oct-2027, campo `repuesta`) · **v6.00: 188 filas** (mantenimiento 57 jue 28-ene → jue 22-abr + extensión 131 vie 23-abr → vie 24-sep-2027; *(⏸ v6.00 · ⏸ v6.01: 185: 57 mar 2-feb → mar 27-abr + 128 mié 28-abr → vie 24-sep · **v6.02:** 180: 57 mar 9-feb → mar 4-may + 123 mié 5-may → vie 24-sep)* GENERADO por `gen_mir_mantenimiento.js` v6) · ⏸ 58 días ene-abr 2027, jue 28-ene → jue 22-abr (GENERADO, v5.20; v5.19: 57 días mié 27-ene → jue 15-abr). `src/lib/mirEvalLog.ts` — registro/neto/gate/anclas dinámicas/táctica/readiness.
+- `DATA/MIR/guia_lectura_semana1-2.json` — guía QUÉ/CUÁNTO/CÓMO leer D1-D10 + Derma d1-d3 (v6.02c), GENERADA por `DATA/MIR/guia_lectura/gen_guia_lectura.js` desde `guia_lectura/medicion_promir_2026-10-18/` (re-medir con `guia_lectura/analiza_cap.js` en DevTools, capítulo a capítulo, para ampliar a D11+).
 - `src/lib/mirEvalSync.ts` — espejo Supabase (`mir_eval_log`). `DATA/_scripts/_migrations/mir_eval_log.sql` — DDL canónico.
 - `src/lib/mirData.ts` — MIR_HITOS / on-track / bandas / táctica / fases. `src/lib/mirUsmleBridge.ts` — puente Step 1 (lectura).
 - `src/lib/mirPreguntasOficiales.ts` — pool oficial (lo rellena el pipeline de `DATA/MIR/pool/`; la UI consume `preguntasSinUsar` + `qIds`).

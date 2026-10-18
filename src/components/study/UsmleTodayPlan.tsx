@@ -24,11 +24,19 @@ import * as dermaPlan from '../../lib/dermaDailyPlan';
 import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, loadDone, saveDone } from '../../lib/studyProgress';
 import { usmleObsUrl } from '../../lib/obsidianMap';
 import { usmleAnkiDeck, ANKIWEB, sysTag, DERMA_STEP1_QUERY } from '../../lib/ankiLinks';
+import { guiaUsmleDe, GUIA_USMLE_META } from '../../lib/usmleGuia';
+/** semana 1 estructurada (18-oct): en días de hito la hora del texto de la fila (p. ej. «UWSA1 … 09:00-13:00») cede a la de la guía (08:50-13:00). */
+function subConGuia(sub: string, fecha: string): string {
+  const hito = guiaUsmleDe(fecha).find((g) => /HITO/.test(g.titulo));
+  if (!hito) return sub;
+  return sub.replace(/\d{2}:\d{2}-\d{2}:\d{2}/, `${hito.franja.replace('–', '-')} · la guía manda`);
+}
+import GuiaBloqueCard from '../GuiaBloqueCard';
 
 /**
  * UsmleTodayPlan — Plan Step 1 día-a-día, estilo Perú/ENCAPS pero mejor.
  * Botones Step 1/2/3 · navegación Día X/95 (◄►) · sub-pestañas HOY/Horario/7d/Temario.
- * Qbankly SOLO abre en Edge → cada link Qbankly ofrece botón "Edge" (microsoft-edge:)
+ * Qbankly: el enlace principal es https («Abrir ↗», cualquier navegador; v6.02c) y «◆ Edge» (microsoft-edge:) queda como alternativa.
  * además del de Chrome. 7 días y temario son clicables → saltan al día. El badge de
  * sistema lleva al Temario con el progreso real del plan por sistema.
  * Palmerton (5-sep-2026): chip de NIVEL UWorld del día (DIAS[].nivelUW) + chip "MIR en paralelo" +
@@ -50,6 +58,11 @@ import { usmleAnkiDeck, ANKIWEB, sysTag, DERMA_STEP1_QUERY } from '../../lib/ank
  * es una fila del tramo 2 (T3) con chip «DE F1 → tramo 2». El tramo de una fila sale de esFilaT2 (no de «d ≤ 60»).
  * v6.02 (17-oct-2026): corrimiento del D1 al lun 19-oct → F1 = D1-D52 («Día d/52», D52 = NBME 28 mié 30-dic → T1). Sin cambio de lógica:
  * las 6 desplazadas (v5.20 D52-D54, D56, D57 Heme/Onco + D79) son T3-T8 y llevan el mismo chip «DE F1 → tramo 2» (sub «DE F1 → TRAMO 2…»).
+ * v6.02c (18-oct-2026, E1): 🧭 GUÍA DEL DÍA en 📋 HOY = qué · cuánto · cómo de CADA franja (usmleGuia.ts, GENERADO por
+ *   DATA/_scripts/usmle/gen_usmle_guia.js; formato común GuiaBloque + GuiaBloqueCard): vídeos B&B exactos con minutos y su reparto,
+ *   filtros reales del Test Composer (System + nº de preguntas), Library con su doc, respaldo Mehlman y AVISO cuando el mapeo no es
+ *   exacto. Fin de semana (sin fila del plan): arriba, la guía de HOY (Anki del Calendar). Qbankly ya no depende de Edge:
+ *   «Abrir ↗» = https en cualquier navegador; «◆ Edge» queda como alternativa. Fechas, D#, niveles y contenido del plan: sin cambio.
  */
 /** Ficha de tier con fallback (las filas nuevas del tramo 2 traen tier, pero nunca romper la UI). */
 const tierDe = (t: string) => TIER_INFO[t] ?? (TIER_INFO.CORE as { c: string; t: string });
@@ -104,7 +117,7 @@ function dermaStep1Atomos(): { d: number; sub: string; fecha: string }[] {
   return ids.map((d) => { const x = dias.find((y) => y && y.d === d); return { d, sub: x ? String(x.sub) : `átomo d${d}`, fecha: x ? String(x.fecha) : '' }; });
 }
 
-/** Cola de hoy: ítem con link. `edge` añade el botón Microsoft Edge (para Qbankly). */
+/** Cola de hoy: ítem con link https («Abrir ↗», cualquier navegador). `edge` añade «◆ Edge» como alternativa (Qbankly). */
 function ColaItem({ icon, lbl, val, sub, color, url, edge }: { icon: string; lbl: string; val: string; sub: string; color: string; url: string; edge?: boolean }) {
   return (
     <View style={[st.cola, { borderLeftColor: color }]}>
@@ -115,14 +128,14 @@ function ColaItem({ icon, lbl, val, sub, color, url, edge }: { icon: string; lbl
         <Text style={st.colaSub}>{sub}</Text>
       </View>
       <View style={{ gap: 5, minWidth: 64 }}>
+        <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(url)} style={[st.verBtn, { borderColor: color + '88' }]}>
+          <Text style={[st.verTxt, { color }]}>{edge ? 'Abrir ↗' : 'ver ↗'}</Text>
+        </TouchableOpacity>
         {edge && (
           <TouchableOpacity activeOpacity={0.85} onPress={() => openEdge(url)} style={st.edgeBtn}>
             <Text style={st.edgeTxt}>◆ Edge</Text>
           </TouchableOpacity>
         )}
-        <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(url)} style={[st.verBtn, { borderColor: color + '88' }]}>
-          <Text style={[st.verTxt, { color }]}>{edge ? 'Chrome ↗' : 'ver ↗'}</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );
@@ -158,8 +171,23 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, done, onPick, hoy }: { d
   const derma = esDiaDermaStep1(dia);
   const atomos = derma ? dermaStep1Atomos() : [];
   const notaColor = taper ? RED : Colors.gold;
+  // v6.02c · 🧭 guía «qué · cuánto · cómo» de cada franja (usmleGuia.ts). Fin de semana: la de HOY (no hay fila del plan ese día).
+  const guia = guiaUsmleDe(dia.fecha);
+  const guiaHoyFuera = hoy !== dia.fecha && !DIAS_TODOS.some((x) => x.fecha === hoy) ? guiaUsmleDe(hoy) : [];
+  const ahoraMin = (() => { try { const d = new Date(); return d.getHours() * 60 + d.getMinutes(); } catch { return -1; } })();
+  const enCurso = (franja: string): boolean => {
+    const m = /^(\d{2}):(\d{2})–(\d{2}):(\d{2})$/.exec(franja); if (!m) return false;
+    const a = Number(m[1]) * 60 + Number(m[2]), b = Number(m[3]) * 60 + Number(m[4]); return ahoraMin >= a && ahoraMin < b;
+  };
   return (
     <View>
+      {/* v6.02c · fin de semana / día sin fila: la guía de HOY va primero (Anki del Calendar) */}
+      {guiaHoyFuera.length > 0 && (
+        <FadeUp>
+          <Text style={st.secLbl}>🧭 Hoy {fmtFecha(hoy)} · sin fila del plan · qué · cuánto · cómo</Text>
+          {guiaHoyFuera.map((g, i) => <GuiaBloqueCard key={`h${i}`} g={g} color={GREEN} ahora={enCurso(g.franja)} />)}
+        </FadeUp>
+      )}
       {/* Tema del día — el badge de sistema lleva al Temario */}
       <FadeUp>
         <View style={[st.temaCard, { borderColor: tier.c + '55' }]}>
@@ -190,7 +218,7 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, done, onPick, hoy }: { d
               </TouchableOpacity>
             )}
           </View>
-          <Text style={st.temaTitle}>{dia.sub}</Text>
+          <Text style={st.temaTitle}>{subConGuia(dia.sub, dia.fecha)}</Text>
           <Text style={st.temaSub}>{t2 ? `${etiquetaDiaUSMLE(dia)} · ${t2.fase} · fase UWorld ${t2.faseUW} · ${t2.h} h al piso · toca el sistema para ver el temario y tu avance ›` : 'Subtema atómico del día · 1/día · toca el sistema para ver todo el temario y tu avance ›'}</Text>
           <Text style={[st.temaSub, { color: niv.color }]}>Nivel {niv.nivel} · {niv.nombre} — {niv.formato}. Gate: {niv.umbral}.</Text>
           <TouchableOpacity activeOpacity={0.85} onPress={() => onToggle(dia.d)} style={[st.doneBtn, hecho ? st.doneBtnOn : st.doneBtnOff]}>
@@ -203,6 +231,14 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, done, onPick, hoy }: { d
         </View>
       </FadeUp>
 
+      {/* v6.02c · 🧭 GUÍA DEL DÍA: cada franja con qué · cuánto · cómo · enlace directo (la franja en curso, desplegada) */}
+      {guia.length > 0 && (
+        <FadeUp delay={6}>
+          <Text style={st.secLbl}>🧭 Guía del día · qué · cuánto · cómo · {guia.length} franjas · {guia.reduce((a, g) => a + g.totalMin, 0)}′ (toca una franja para ver sus pasos)</Text>
+          {guia.map((g, i) => <GuiaBloqueCard key={`${dia.fecha}-${g.franja}-${i}`} g={g} color={GREEN} compacto={!(dia.fecha === hoy && enCurso(g.franja))} ahora={dia.fecha === hoy && enCurso(g.franja)} />)}
+          <Text style={st.note}>Velocidad: {GUIA_USMLE_META.velocidad}. {GUIA_USMLE_META.reglaVideo}</Text>
+        </FadeUp>
+      )}
       {/* v6.00 · F4: plantilla del turno del día (bloques A/B, MIR por turno; día de hito → H / H-sáb) */}
       {pl && (
         <FadeUp delay={8}>
@@ -352,16 +388,16 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, done, onPick, hoy }: { d
               {postHito && ayer && ayer.d !== prev.d ? <Text style={[st.anchorSub, { color: Colors.gold }]}>{etq(ayer)} fue un hito ({ayer.uw}): el subtema que se valida hoy es el de {etq(prev)}; la auditoría del hito va en el Day-After de arriba</Text> : null}
             </View>
             <View style={{ flexDirection: 'row', gap: 6, marginTop: 8 }}>
-              <TouchableOpacity activeOpacity={0.85} onPress={() => openEdge(QBQ)} style={st.edgeBtnWide}><Text style={st.edgeTxt}>◆ Abrir en Edge</Text></TouchableOpacity>
-              <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(QBQ)} style={[st.verBtn, { borderColor: READ + '88' }]}><Text style={[st.verTxt, { color: READ }]}>Chrome ↗</Text></TouchableOpacity>
+              <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(QBQ)} style={[st.verBtn, { flex: 1, borderColor: READ + '88' }]}><Text style={[st.verTxt, { color: READ }]}>Abrir Qbankly › QBanks ↗</Text></TouchableOpacity>
+              <TouchableOpacity activeOpacity={0.85} onPress={() => openEdge(QBQ)} style={st.edgeBtn}><Text style={st.edgeTxt}>◆ Edge</Text></TouchableOpacity>
             </View>
           </View>
         </FadeUp>
       )}
 
       {/* Cola de materiales de hoy */}
-      <Text style={st.secLbl}>{enF4 ? `📋 Cola de hoy · F4 SERUMS · ${pl?.titulo ?? ''} (en orden) · Qbankly = botón Edge` : t2 ? '📋 Cola de hoy · F3 · 05:00 Anki AM · 07:15–12:00 + 16:15 REENTRADA + 18:00–18:45 (en orden) · Qbankly = botón Edge' : '📋 Cola de hoy · 05:00 Anki AM · 07:15–12:00 + 18:00–18:45 (en orden) · Qbankly = botón Edge'}</Text>
-      <FadeUp delay={60}><ColaItem icon="🅠" lbl={hitoHoy ? `HITO · ${dia.uw} (${dia.qDia}Q · nivel 5 · timed)` : "PRE-TEST 08:15 · uWorld (modo tutor · SIN tiempo · nivel 1)"} val={hitoHoy ? `${dia.sub} · protocolo test-day (Ziploc BREAK 1/2/3, sit-in breaks, sin cambiar respuestas)` : derma ? `${DERMA_STEP1_QUERY} + fallos del ledger derma → luego ${dia.uw} · 10 preguntas ciegas` : `${dia.system} → ${dia.uw} · 10 preguntas ciegas + free recall 90s`} sub={derma ? 'Cuenta doble Derma ↔ Step 1: 15 min de tarjetas step1 + casos fallados del ledger, después las 10Q ciegas de uWorld (Qbankly, Edge)' : 'Qbankly → QBanks → uWorld Step 1 · UWorld primero para diagnosticar, First Aid después'} color={GREEN} url={QBQ} edge /></FadeUp>
+      <Text style={st.secLbl}>{enF4 ? `📋 Cola de hoy · F4 SERUMS · ${pl?.titulo ?? ''} (en orden) · Qbankly: «Abrir ↗» en cualquier navegador (◆ Edge opcional)` : t2 ? '📋 Cola de hoy · F3 · 05:00 Anki AM · 07:15–12:00 + 16:15 REENTRADA + 18:00–18:45 (en orden) · Qbankly: «Abrir ↗» en cualquier navegador (◆ Edge opcional)' : '📋 Cola de hoy · 05:00 Anki AM · 07:15–12:00 + 18:00–18:45 (en orden) · Qbankly: «Abrir ↗» en cualquier navegador (◆ Edge opcional)'}</Text>
+      <FadeUp delay={60}><ColaItem icon="🅠" lbl={hitoHoy ? `HITO · ${dia.uw} (${dia.qDia}Q · nivel 5 · timed)` : "PRE-TEST 08:15 · uWorld (modo tutor · SIN tiempo · nivel 1)"} val={hitoHoy ? `${dia.sub} · protocolo test-day (Ziploc BREAK 1/2/3, sit-in breaks, sin cambiar respuestas)` : derma ? `${DERMA_STEP1_QUERY} + fallos del ledger derma → luego ${dia.uw} · 10 preguntas ciegas` : `${dia.system} → ${dia.uw} · 10 preguntas ciegas + free recall 90s`} sub={derma ? 'Cuenta doble Derma ↔ Step 1: 15 min de tarjetas step1 + casos fallados del ledger, después las 10Q ciegas de uWorld (Qbankly)' : 'Qbankly → QBanks → uWorld Step 1 · UWorld primero para diagnosticar, First Aid después'} color={GREEN} url={QBQ} edge /></FadeUp>
       <FadeUp delay={90}><ColaItem icon="🎬" lbl="VÍDEO · Boards & Beyond Step 1" val={`${dia.bbCh} → ${dia.bbVid}`} sub="Qbankly → Video Library → B&B Step 1" color={RED} url={QBV} edge /></FadeUp>
       <FadeUp delay={120}><ColaItem icon="📖" lbl="ACTIVE READING · material primario" val={dia.mat} sub="Qbankly → Library (uWorld/AMBOSS) · 25 min · 3-5 puntos high-yield" color={READ} url={QBL} edge /></FadeUp>
       <FadeUp delay={150}><ColaItem icon="🗂️" lbl="FLASHCARDS · uWorld Step 1" val={`Deck: ${dia.system}`} sub="Qbankly → Flashcards · Anki SRS" color={Colors.teal} url={QBF} edge /></FadeUp>
@@ -681,7 +717,7 @@ function SistemaCard({ g, hoyD, onPick, done, onToggle }: { g: GrupoProgreso<Dia
         </Text>
       </TouchableOpacity>
       <View style={{ flexDirection: 'row', gap: 6, marginTop: 8 }}>
-        <TouchableOpacity activeOpacity={0.85} onPress={() => openEdge(QBQ)} style={st.edgeBtnWide}><Text style={st.edgeTxt}>◆ Temario en Qbankly (Edge)</Text></TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(QBQ)} style={st.edgeBtnWide}><Text style={st.edgeTxt}>Temario en Qbankly ↗</Text></TouchableOpacity>
         <TouchableOpacity activeOpacity={0.85} onPress={() => openUrl(QBQ)} style={[st.verBtn, { borderColor: tier.c + '88' }]}><Text style={[st.verTxt, { color: tier.c }]}>Chrome ↗</Text></TouchableOpacity>
       </View>
       {open && (

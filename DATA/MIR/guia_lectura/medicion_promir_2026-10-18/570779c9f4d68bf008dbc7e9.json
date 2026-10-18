@@ -1,0 +1,442 @@
+{
+ "titulo": "1.- Cardiología básica",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc7e9",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "1 Cardiología básica",
+   "palabras": 82,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Anatomía",
+   "palabras": 57,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.1. Generalidades",
+   "palabras": 105,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2024-030"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.2. Cámaras cardíacas",
+   "palabras": 273,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2007-236",
+    "2023-030"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.3. Válvulas cardíacas",
+   "palabras": 252,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.4. Sistema de conducción",
+   "palabras": 392,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2011-211"
+   ],
+   "figs": 3,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.5. Arterias coronarias",
+   "palabras": 495,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2016-044"
+   ],
+   "figs": 2,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Fisiología",
+   "palabras": 67,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.1. Ciclo cardíaco",
+   "palabras": 1290,
+   "palabrasTabla": 0,
+   "citasMIR": 5,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2018-046",
+    "2025-067",
+    "2011-222",
+    "2005-248",
+    "2008-250"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.2. Potencial de acción",
+   "palabras": 2829,
+   "palabrasTabla": 0,
+   "citasMIR": 5,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 3,
+   "citas": [
+    "2003-250",
+    "2009-221",
+    "2025-068",
+    "2023-032",
+    "2022-055"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.3. Shock",
+   "palabras": 452,
+   "palabrasTabla": 0,
+   "citasMIR": 6,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2014-134",
+    "2018-071",
+    "2004-034",
+    "2005-034",
+    "2008-224",
+    "2003-037"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.4. Vasos sanguíneos y fisiología vascular",
+   "palabras": 569,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2013-047",
+    "2020-028",
+    "2022-030"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.5. Fisiología de la circulación coronaria",
+   "palabras": 2501,
+   "palabrasTabla": 138,
+   "citasMIR": 5,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2016-044",
+    "2016-007",
+    "2019-042",
+    "2004-246",
+    "2010-217"
+   ],
+   "figs": 3,
+   "tablas": [
+    "Tabla 1-1. Efecto de diferentes sustancias sobre el tono vasomotor coronario dependiendo d"
+   ],
+   "videos": [],
+   "recuerda": 3
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Semiología",
+   "palabras": 44,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2020-136"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.1. Pulso venoso yugular",
+   "palabras": 716,
+   "palabrasTabla": 0,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2005-023",
+    "2008-023",
+    "2017-072",
+    "2019-156"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "6830225e996f7b71a65fdd5e.mp4",
+     "seg": 9,
+     "leyenda": "Vídeo 1-3Aumento de la presión venosa yugular interna y externa."
+    },
+    {
+     "id": "68302262996f7b71a65fdd64.mp4",
+     "seg": 10,
+     "leyenda": "Vídeo 1-1Aumento de la presión venosa yugular interna y externa."
+    },
+    {
+     "id": "68302260996f7b71a65fdd61.mp4",
+     "seg": 10,
+     "leyenda": "Vídeo 1-2Aumento de la presión venosa yugular interna y externa."
+    }
+   ],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.2. Pulso arterial",
+   "palabras": 543,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2007-023"
+   ],
+   "figs": 2,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.3. Auscultación cardíaca",
+   "palabras": 1774,
+   "palabrasTabla": 0,
+   "citasMIR": 12,
+   "citasMIRdesde2015": 5,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2004-023",
+    "2005-248",
+    "2025-118",
+    "2018-070",
+    "2013-073",
+    "2006-023",
+    "2019-093",
+    "2021-122",
+    "2004-252",
+    "2019-156",
+    "2005-029",
+    "2006-140"
+   ],
+   "figs": 2,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "57f297508632262d0017c0a8.mp4",
+     "seg": 34,
+     "leyenda": "Vídeo 1-4Soplo sistólico eyectivo: estenosis aórtica."
+    }
+   ],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Fármacos",
+   "palabras": 47,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "57f297508632262d0017c0a5.mp4",
+     "seg": 34,
+     "leyenda": "Vídeo 1-5Soplo holosistólico: insuficiencia mitral."
+    }
+   ],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.1. Insuficiencia cardíaca",
+   "palabras": 736,
+   "palabrasTabla": 0,
+   "citasMIR": 10,
+   "citasMIRdesde2015": 5,
+   "citasMIRdesde2020": 3,
+   "citas": [
+    "2006-025",
+    "2011-051",
+    "2012-082",
+    "2020-038",
+    "2009-043",
+    "2019-179",
+    "2021-128",
+    "2006-094",
+    "2017-071",
+    "2022-055"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "57f297518632262d0017c0ab.mp4",
+     "seg": 37,
+     "leyenda": "Vídeo 1-6Soplo diastólico decreciente: insuficiencia aórtica."
+    }
+   ],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.2. Cardiopatía isquémica",
+   "palabras": 830,
+   "palabrasTabla": 0,
+   "citasMIR": 5,
+   "citasMIRdesde2015": 5,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2022-056",
+    "2018-040",
+    "2019-038",
+    "2018-007",
+    "2022-055"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.3. Trastornos del ritmo",
+   "palabras": 890,
+   "palabrasTabla": 0,
+   "citasMIR": 6,
+   "citasMIRdesde2015": 4,
+   "citasMIRdesde2020": 4,
+   "citas": [
+    "2025-117",
+    "2020-057",
+    "2007-225",
+    "2020-127",
+    "2021-125",
+    "2008-224"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  }
+ ],
+ "nav": [
+  {
+   "t": "Introducción a la asignatura de Cardiología",
+   "href": "628333a65d635c5aaf6a81a3"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Riesgo cardiovascular. Prevención de las ECVA a través del control de los FRCV",
+   "href": "570779c8f4d68bf008dbc658"
+  }
+ ],
+ "totPalabras": 14944,
+ "totPalabrasTabla": 138,
+ "totCitas": 68,
+ "totFigs": 19,
+ "totTablas": 1,
+ "totRecuerda": 7,
+ "medido": "2026-10-18 · chrome-devtools en el Chrome de Joseph (sesión ProMIR) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js"
+}

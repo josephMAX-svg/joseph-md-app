@@ -26,6 +26,9 @@ import { mirUsmleBridge } from '../../lib/mirUsmleBridge';
 import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, loadDone, saveDone } from '../../lib/studyProgress';
 import { mirObsUrl } from '../../lib/obsidianMap';
 import { mirAnkiDeck, ANKIWEB } from '../../lib/ankiLinks';
+import GuiaBloqueCard from '../GuiaBloqueCard';
+import { mirGuiaPlan, mirGuiaMant, mirGuiaPreguntas, type MirGuiaQ } from '../../lib/mirGuia';
+import { MIR_INICIO_POR_TURNO } from '../../lib/mirMantenimiento';
 
 /**
  * MirTodayPlan — Plan MIR día-a-día (ProMIR), estilo USMLE/Perú. v3 Palmerton (5-sep-2026) + v3b (12-sep-2026):
@@ -55,6 +58,10 @@ import { mirAnkiDeck, ANKIWEB } from '../../lib/ankiLinks';
  *    reservan `qIds` en orden horario del día (cada segmento excluye las usadas del log + las reservadas antes ese día; si el
  *    segmento ya se guardó, se muestran sus ids); banqueo: foco + 2.º EvalForm los jueves Tier C (`dia.tierC`, entrada propia);
  *    vista de pregunta con `preguntaPorId` (MirPoolEval.tsx). Fallback declarado: test del capítulo/asignatura ProMIR.
+ *  · v6.02c (18-oct-2026, E3 · «qué · cuánto · cómo»): 📋 HOY abre con «🧭 Guía del día» = GuiaBloqueCard de mirGuia.mirGuiaPlan (D1-D10
+ *    MEDIDOS por E2: secciones a leer con sus minutos, vídeos, preguntas exactas de cada paso con enlace ProMIR; D11-D78 por regla con
+ *    «sin medir») + chips de las preguntas de la guía · el banqueo abre con mirGuiaMant a la hora del turno · el banqueo tiene 189 sesiones
+ *    hasta el vie 8-oct-2027 (9 REPUESTAS v6.02c tras el examen Step 1, chip «repuesta»; los comentarios de 180/24-sep de arriba son históricos).
  */
 const AMBER = '#F5A623';       // ámbar España (acento oficial de la consola MIR)
 const BLUE = Colors.blue;      // sapphire
@@ -488,6 +495,13 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, onPick, hoyISO, bump, sy
 
       <BridgeChip fecha={dia.fecha} />
 
+      {/* v6.02c · 🧭 Guía del día (qué · cuánto · cómo): D1-D10 medidos por E2 · D11+ por regla */}
+      <FadeUp delay={20}>
+        <Text style={st.secLbl}>🧭 Guía del día · qué · cuánto · cómo · 15:15–16:15</Text>
+        <GuiaBloqueCard g={mirGuiaPlan(dia)} color={AMBER} ahora={dia.fecha === hoyISO} />
+        <MirGuiaPreguntasView d={dia.d} />
+      </FadeUp>
+
       {dia.d === 77 && (
         <FadeUp delay={30}>
           <View style={[st.temaCard, { borderColor: CORAL + '66' }]}>
@@ -548,6 +562,35 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, onPick, hoyISO, bump, sy
         </>
       )}
       <ExportRow sync={sync} />
+    </View>
+  );
+}
+
+/** v6.02c · chips de las preguntas EXACTAS de la guía medida (D1-D10, E2): cada chip abre la pregunta en ProMIR. */
+function MirGuiaPreguntasView({ d }: { d: number }) {
+  const p = mirGuiaPreguntas(d);
+  if (!p) return null;
+  const fila = (titulo: string, qs: MirGuiaQ[], color: string) => (qs.length ? (
+    <View style={{ marginTop: 6 }}>
+      <Text style={st.formHint}>{titulo}</Text>
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 5, marginTop: 3 }}>
+        {qs.map((q) => (
+          <TouchableOpacity key={titulo + q.id} activeOpacity={0.8} onPress={() => openUrl(q.url)} style={[st.dChip, { borderColor: color + '77' }]}
+            accessibilityRole="link" accessibilityLabel={`Pregunta MIR ${q.id}${q.seccion ? ' · ' + q.seccion : ''}`}>
+            <Text style={[st.dChipTxt, { color }]}>{q.id}{q.pool ? ' · pool' : ''} ↗</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+    </View>
+  ) : null);
+  return (
+    <View style={{ marginBottom: Spacing.sm }}>
+      {p.extra ? fila('15:23 · 5Q ciegas extra (D1: no hay anclas)', p.extra, BLUE) : null}
+      {p.eval ? p.eval.map((s) => <React.Fragment key={s.slot}>{fila(`15:15 · eval anclada ${s.slot} (D${s.d} ${s.tema})`, s.qs, BLUE)}</React.Fragment>) : null}
+      {p.cierre ? fila('15:15 · test de cierre 10Q (pool de la app: manda su lista si difiere)', p.cierre, CORAL) : null}
+      {fila('15:30 · pre-test 5Q (ciego · «pool» = pool oficial de la app)', p.pretest, GREEN)}
+      {fila('15:53 · quiz 8-10Q (en este orden; a las 16:05 paras)', p.quiz, AMBER)}
+      <Text style={st.formHint}>Ids de ProMIR (/pregunta/MIR/AAAA-NNN = «MIR AAAA-AAAA+1, Pnnn»). Las del pool también salen abajo en «Pool oficial» con su texto.</Text>
     </View>
   );
 }
@@ -744,6 +787,10 @@ function MantenimientoView({ dia, onPick, bump, sync }: { dia: DiaMIRMant; onPic
   // Tier C express (jueves): sus 10Q salen de foco.nQ (reducido 10Q → hoy todo es Tier C, sin EvalForm foco; normal 25Q → 15Q foco + 10Q Tier C).
   const focoNQ = tierC ? Math.max(0, foco.nQ - tierC.nQ) : foco.nQ;
   const proximoTierC = mirMantProximoTierC(dia.d + 1);
+  // v6.02c: guía de la sesión a la hora real (turno M 16:00 · T 10:35 · L 15:15 · hito 04:05 · G sin hora → base 15:15 + aviso)
+  const iniTurno = turno ? (diaHito ? MIR_INICIO_HITO : MIR_INICIO_POR_TURNO[turno.turno]) : '15:15';
+  const guiaBase = mirGuiaMant(dia, iniTurno ?? '15:15');
+  const guiaM = iniTurno == null ? { ...guiaBase, aviso: [guiaBase.aviso, 'Guardia: sin hora fija → mismo reparto en minutos, en tiempo muerto (DJ-4).'].filter(Boolean).join(' · ') } : guiaBase;
   const poolOK = mirPoolDisponible();
   // Pool oficial (POOL_USO §3): foco = asignatura (mezcla determinista por fecha) + 10Q interleaving de num2 en los días normales;
   // reducido = mixtas [num, num2]; viernes = asignatura peor del log; Tier C = capítulo → asignatura → test ProMIR (entrada propia).
@@ -786,6 +833,7 @@ function MantenimientoView({ dia, onPick, bump, sync }: { dia: DiaMIRMant; onPic
             {turno && <Chip label={turno.marcado ? `turno ${turno.turno} · ${TURNO_INFO[turno.turno].label}${diaHito ? ' · día de HITO → 04:05' : ''}` : 'turno sin marcar (→ M · 16:00)'} color={turno.marcado ? GREEN : Colors.muted} small />}
             <Chip label={`${foco.nQ}Q · ${dia.minQ} min · ${MIR_SEG_POR_Q} s/Q`} color={GREEN} small />
             {tierC ? <Chip label={`TIER C EXPRESS · ${tierC.asignatura} › ${tierC.capitulo} (${tierC.nQ}Q · ${tierC.pesoCap} % de la asignatura)`} color={CORAL} small /> : null}
+            {dia.repuesta ? <Chip label={`REPUESTA ${dia.repuesta} · la extensión la perdió con los corrimientos`} color={GREEN} small /> : null}
             {proximoTierC ? <Chip label={`próximo Tier C: ${proximoTierC.asignatura} · ${proximoTierC.capitulo} · ${fmtFecha(proximoTierC.fecha)} (M${proximoTierC.d})`} color={Colors.muted} small /> : null}
           </View>
           <Text style={st.temaTitle}>{foco.asignatura}{dia.asignatura2 ? ` + ${dia.asignatura2}` : ''}</Text>
@@ -794,6 +842,9 @@ function MantenimientoView({ dia, onPick, bump, sync }: { dia: DiaMIRMant; onPic
         </View>
       </FadeUp>
       <BridgeChip fecha={dia.fecha} />
+      {/* v6.02c · 🧭 guía qué · cuánto · cómo a la hora del turno (SERUMS) o 15:15 */}
+      <Text style={st.secLbl}>🧭 Guía de la sesión · qué · cuánto · cómo</Text>
+      <GuiaBloqueCard g={guiaM} color={color} />
       <Text style={st.secLbl}>🕓 Franjas · {fmtFecha(dia.fecha)}{turno ? ` · ${turno.turno === 'G' ? 'guardia: 1 h en tiempo muerto (lo que no se termine se suma al día de plan siguiente)' : `según el turno ${turno.turno}${turno.marcado ? '' : ' (sin marcar)'}`}` : ''}</Text>
       {franjas.map((f, i) => (
         <FadeUp key={i} delay={i * 25}>

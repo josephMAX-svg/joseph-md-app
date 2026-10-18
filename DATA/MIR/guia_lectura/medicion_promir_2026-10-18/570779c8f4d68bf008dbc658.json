@@ -1,0 +1,444 @@
+{
+ "titulo": "2.- Riesgo cardiovascular. Prevención de las ECVA a través del control de los FRCV",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc658",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "2 Riesgo cardiovascular. Prevención de las enfermedades cardiovasculares ateroscleróticas a través del control de los factores de riesgo cardiovascular",
+   "palabras": 211,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Introducción a las enfermedades cardiovasculares ateroscleróticas",
+   "palabras": 645,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Factores de riesgo cardiovascular",
+   "palabras": 595,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2008-076"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Cálculo de riesgo cardiovascular total",
+   "palabras": 470,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2025-110"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Categorías de riesgo cardiovascular y objetivos lipídicos",
+   "palabras": 0,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.1. Pacientes de muy alto riesgo cardiovascular",
+   "palabras": 201,
+   "palabrasTabla": 0,
+   "citasMIR": 5,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2025-140",
+    "2023-175",
+    "2015-084",
+    "2008-075",
+    "2006-075"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.2. Paciente de alto riesgo cardiovascular",
+   "palabras": 210,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "5. Manejo de los factores de riesgo cardiovascular más importantes",
+   "palabras": 0,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.1. Abandono del tabaco",
+   "palabras": 298,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 3,
+   "citas": [
+    "2021-127",
+    "2022-210",
+    "2022-050"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.2. Ejercicio",
+   "palabras": 230,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.3. Pérdida de peso en el paciente obeso",
+   "palabras": 50,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.4. Hipertensión arterial",
+   "palabras": 89,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "6. Diabetes mellitus",
+   "palabras": 49,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.1. Consecuencias clínicas de la diabetes mellitus",
+   "palabras": 475,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2008-254"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.2. Diagnóstico de la diabetes mellitus y sus estados prediabéticos",
+   "palabras": 141,
+   "palabrasTabla": 0,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2003-073",
+    "2004-073",
+    "2006-071",
+    "2021-168"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.3. Valoración del riesgo cardiovascular en el diabético",
+   "palabras": 512,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2011-088"
+   ],
+   "figs": 2,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.4. Prevención de la enfermedad cardiovascular en el diabético y prediabético",
+   "palabras": 1819,
+   "palabrasTabla": 0,
+   "citasMIR": 12,
+   "citasMIRdesde2015": 8,
+   "citasMIRdesde2020": 8,
+   "citas": [
+    "2003-077",
+    "2022-194",
+    "2008-071",
+    "2014-088",
+    "2003-071",
+    "2025-187",
+    "2021-050",
+    "2020-164",
+    "2023-190",
+    "2022-159",
+    "2020-165",
+    "2022-057"
+   ],
+   "figs": 4,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 2
+  },
+  {
+   "nivel": "H3",
+   "titulo": "7. Dislipemia",
+   "palabras": 346,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2004-078",
+    "2015-084"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.1. Lipoproteínas. Lípidos",
+   "palabras": 248,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2004-248"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.2. Mediciones de laboratorio. ¿Qué medir y cómo?",
+   "palabras": 419,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2024-167",
+    "2023-176"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 2
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.3. Tipos de intervención según el nivel de riesgo cardiovascular total y el valor de colesterol LDL",
+   "palabras": 24,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.4. Modificaciones en el estilo de vida para mejorar el perfil lipídico",
+   "palabras": 377,
+   "palabrasTabla": 62,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [
+    "Tabla 2-1. Intervenciones en el estilo de vida para reducir el colesterol y el colesterol "
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.5. Fármacos para el tratamiento de las dislipemias",
+   "palabras": 1266,
+   "palabrasTabla": 110,
+   "citasMIR": 5,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2007-075",
+    "2019-038",
+    "2003-221",
+    "2020-140",
+    "2022-006"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 2-2. Intervenciones en el estilo de vida para reducir los triglicéridos Reducir el a",
+    "Tabla 2-3. Intervenciones en el estilo de vida aumentar las lipoproteínas de alta densidad"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.6. Estrategias terapéuticas",
+   "palabras": 267,
+   "palabrasTabla": 116,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [
+    "Tabla 2-4. Hiperlipoproteinemias secundarias Patología Características clínicas Obesidad E"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.7. Dislipemia en poblaciones especiales",
+   "palabras": 1887,
+   "palabrasTabla": 131,
+   "citasMIR": 6,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 3,
+   "citas": [
+    "2011-089",
+    "2006-076",
+    "2012-230",
+    "2020-140",
+    "2022-006",
+    "2022-026"
+   ],
+   "figs": 3,
+   "tablas": [
+    "Tabla 2-5. Criterios Dutch Lipid Clinic Network para el diagnóstico clínico de la hipercol"
+   ],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Cardiología básica",
+   "href": "570779c9f4d68bf008dbc7e9"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Hipertensión arterial. Prevención, detección, diagnóstico y tratamiento",
+   "href": "570779c8f4d68bf008dbc6b4"
+  }
+ ],
+ "totPalabras": 10829,
+ "totPalabrasTabla": 419,
+ "totCitas": 44,
+ "totFigs": 16,
+ "totTablas": 5,
+ "totRecuerda": 8,
+ "medido": "2026-10-18 · chrome-devtools en el Chrome de Joseph (sesión ProMIR) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js"
+}

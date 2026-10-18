@@ -2,7 +2,7 @@
  "_meta": {
   "descripcion": "BANCO PROPIO ENCAPS 2027-I · pool de ítems con clave VERIFICADA para los mini-simulacros de viernes (gen_encaps_minisim.js) y los bancos del día. Cada ítem cita contra qué se verificó su clave (gate §3-bis del PROTOCOLO_GENERACION_PREGUNTAS.md): CLAVE OFICIAL de un examen real 2024-2A→2025-2 (resaltado amarillo, BANCO_PROPIO/_examenes_reales_2024-2A_2026-1.json), texto de compendio local extraído (López 2026-I / Theomed manual, pdftotext 05-sep-2026) o norma primaria leída. Los moldes de 2026-1 se marcan 'no verificable contra clave oficial'.",
   "generado": "2026-09-05 · 50 ítems (2 primeros viernes: 25 + 25) · autor Claude bajo PROTOCOLO_GENERACION_PREGUNTAS.md §5 (4 opciones, viñeta corta de campo, contexto peruano, distractor = concepto vecino)",
-  "LISTA_NEGRA": "⛔ Ningún ítem deriva del examen 2026-II (exams_txt/2026-2.txt · _examen_2026-2_items.json) — reservado como pre-test hasta el 5-feb-2027 (PRETEST_2026-II.md). El generador rechaza cualquier ítem cuyo verificado_contra/molde mencione 2026-2 o 2026-II mientras no exista la ronda PRETEST_2026-II en _registro_resoluciones.json.",
+  "LISTA_NEGRA": "⛔ Ningún ítem deriva del examen reservado como pre-test de la intensiva (vie 8-ene-2027; sus ficheros y su protocolo: README de BANCO_PROPIO, §LISTA NEGRA). El generador rechaza cualquier ítem cuyo verificado_contra/molde/fuente cite ese proceso mientras no exista la ronda del pre-test en _registro_resoluciones.json.",
   "campos": {
    "id": "único",
    "codigo": "código v3 (I-3, V-2, IV-1+IV-2, V-MED…)",
@@ -116,7 +116,7 @@
    "enunciado": "Dentro del paquete de atención integral del adolescente, ¿cuántas mediciones de hemoglobina al año se programan?",
    "opciones": { "A": "1", "B": "2", "C": "3", "D": "4" },
    "clave": "B", "respuesta": "2",
-   "explicacion": "DOS mediciones de hemoglobina al año en el adolescente (tamizaje de anemia). Recall directo de cifra: formato 2026-II.",
+   "explicacion": "DOS mediciones de hemoglobina al año en el adolescente (tamizaje de anemia del paquete de atención integral). Recall directo de cifra: sin viñeta, la pregunta solo pide el número exacto.",
    "fuente": "Examen real 2025-1A Q14 · NTS cuidado integral del adolescente (paquete de atención)",
    "verificado_contra": "CLAVE OFICIAL 2025-1A Q14 (D: 2)",
    "molde": "2025-1A Q14"
@@ -136,7 +136,7 @@
    "enunciado": "Según la definición de caso, la enfermedad diarreica persistente es aquella que inicia como diarrea aguda infecciosa pero se prolonga por ...... días o más.",
    "opciones": { "A": "7", "B": "10", "C": "14", "D": "21" },
    "clave": "C", "respuesta": "14",
-   "explicacion": "EDA persistente = 14 días o más. Recall de cifra (formato 2026-II).",
+   "explicacion": "EDA persistente = cuadro que empieza como diarrea aguda infecciosa y se prolonga 14 días o más (≥ 14 d). Recall de cifra de la definición de caso.",
    "fuente": "Examen real 2024-2A Q56 · AIEPI/NTS EDA",
    "verificado_contra": "CLAVE OFICIAL 2024-2A Q56 (A: 14)",
    "molde": "2024-2A Q56"
@@ -186,7 +186,7 @@
    "enunciado": "La forma característica de pensar y hacer las cosas en una entidad, basada en principios, valores, creencias, conductas y normas compartidas por sus miembros, se denomina:",
    "opciones": { "A": "Clima organizacional", "B": "Cultura organizacional", "C": "Valores institucionales", "D": "Identidad corporativa" },
    "clave": "B", "respuesta": "Cultura organizacional",
-   "explicacion": "CULTURA = valores/normas/creencias compartidas, de carácter DURADERO. CLIMA = PERCEPCIÓN del trabajador sobre su ambiente laboral (cambiante, medible). Par CCSN que el comité 2026-II preguntó desde el otro lado.",
+   "explicacion": "CULTURA = valores/normas/creencias compartidas, de carácter DURADERO. CLIMA = PERCEPCIÓN del trabajador sobre su ambiente laboral (cambiante, medible). Par CCSN: valores y normas compartidos y estables → cultura; percepción del ambiente de trabajo → clima.",
    "fuente": "Compendio López Gestión 2026-I: 'Cultura organizacional: valores, normas y conductas compartidas por sus miembros. Clima organizacional: percepción del trabajador sobre su entorno laboral…'",
    "verificado_contra": "CLAVE OFICIAL 2025-1A Q51 (B: Cultura organizacional) + compendio López Gestión 2026-I (texto extraído)",
    "molde": "2025-1A Q51"

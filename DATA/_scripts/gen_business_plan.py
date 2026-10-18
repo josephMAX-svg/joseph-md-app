@@ -8,6 +8,11 @@
 #                                                                    84 de trabajo + 37 DESCANSO; el fin se amplía +3 hábiles, nada se recorta ·
 #                                                                    v6.02 (17-oct-2026, corrimiento) = 2026-10-19 → 121 filas lun 19-oct → mar 16-feb-2027:
 #                                                                    84 de trabajo + 37 DESCANSO; +5 hábiles, outputs en viernes 15/15, nada se recorta)
+#   v6.02c (18-oct-2026, E5): YT_OVERRIDE — enlaces del plan comprobados el 18-oct que NO servían (vídeo caído = oEmbed 404,
+#     «no reproducible», subidas de 2 min «Full Audiobook Free») o que eran una BÚSQUEDA, sustituidos por una charla/entrevista
+#     del PROPIO AUTOR en un canal oficial (título, canal y duración leídos de YouTube ese día). Mismo libro y mismo contenido del
+#     plan: solo cambia el campo `yt` de esas filas (lectura/accion/fechas idénticas). La guía de cada día (src/lib/rutinaGuia.ts)
+#     fija el TRAMO exacto (minutos) de la semana 1. bibliotecaNiveles.ts (Biblioteca del Fundador) conserva sus enlaces: se avisa aparte.
 #     Fuente: DATA/BUSINESS/plan_pulso_v3_L.json — 84 filas de trabajo en formato "L"
 #     (20-25 min/día en huecos, L-J) + OUTPUT el viernes. Se colocan en días HÁBILES L-V
 #     saltando sáb/dom y los feriados fijos (25-dic, 31-dic, 1-ene); sáb/dom y feriados se
@@ -39,6 +44,22 @@ def ts_str(s): return json.dumps(s, ensure_ascii=False)
 
 def yt_search(q):
     return 'https://www.youtube.com/results?search_query=' + re.sub(r'\s+', '+', q.strip())
+
+# ─── v6.02c (18-oct-2026): sustitutos verificados (libroN → url) — ver la bitácora de arriba ───
+YT_OVERRIDE = {
+    143: 'https://www.youtube.com/watch?v=Bmc0ERKfjP0',  # Spark: era una búsqueda → Talks at Google «In Spark | Dr. John Ratey» (49:12)
+    4: 'https://www.youtube.com/watch?v=I-t-7lTw6mA',    # In Defense of Food: nHR8B8V2v9s CAÍDO → Talks at Google «In Defense of Food | Michael Pollan» (59:13)
+    1: 'https://www.youtube.com/watch?v=YpllomiDMX0',    # The Obesity Code: RzeLu23_XjE CAÍDO → Jason Fung «The Obesity Code Lecture (Why do we get Fat?) Part 1» (58:50)
+    2: 'https://www.youtube.com/watch?v=H8eBCOWQoio',    # Outlive: UbQvc8QrnJw CAÍDO → Talks at Google «Peter Attia | Outlive: The Science & Art of Longevity» (1:00:43)
+    7: 'https://www.youtube.com/watch?v=H8eBCOWQoio',    # Outlive (capítulo hormonal): mismo sustituto
+    9: 'https://www.youtube.com/watch?v=LJ9Ae_j_kjI',    # The Circadian Code: dhrQqaH_M6Q NO REPRODUCIBLE → Salk Institute «Satchin Panda – Circadian Theory of Health» (55:08)
+    10: 'https://www.youtube.com/watch?v=H1T5uMeYv9Q',   # The Feeling Good Handbook: 5Bgufm9VwfU CAÍDO → TEDxReno «Feeling good | David Burns» (17:57)
+    11: 'https://www.youtube.com/watch?v=MB5IX-np5fE',   # Lost Connections: hiDeEu9a_UA CAÍDO → TED «This could be why you're depressed or anxious | Johann Hari» (20:32)
+    12: 'https://www.youtube.com/watch?v=0gks6ceq4eQ',   # How Emotions Are Made: era una búsqueda → TED «You aren't at the mercy of your emotions | Lisa Feldman Barrett» (18:29)
+    16: 'https://www.youtube.com/watch?v=L-q-tSHo9Ho',   # Come As You Are: hd2oXclE15U CAÍDO → TED «The truth about unwanted arousal | Emily Nagoski» (15:17)
+    17: 'https://www.youtube.com/watch?v=sa0RUmGTCYY',   # Mating in Captivity: JM3yjVTmUoY (2:09 «Full Audiobook Free») → TED «The secret to desire in a long-term relationship | Esther Perel» (19:10)
+    18: 'https://www.youtube.com/watch?v=_Z88IZ6Vhl8',   # Attached: 3s65q2rTFRk (2:28 «Full Audiobook Free») → The Seekers Forum «How Attachment Works, With Amir Levine» (45:47)
+}
 
 # ─── audiolibros verificados de la Biblioteca del Fundador (n → url) ───
 def audio_por_n():
@@ -92,7 +113,7 @@ def gen_v3(start_iso):
             n = r.get('libroN')
             yt = None
             if n is not None:
-                yt = audio.get(n) or yt_search('%s %s resumen español' % (r.get('libro', ''), r.get('autor', '')))
+                yt = YT_OVERRIDE.get(n) or audio.get(n) or yt_search('%s %s resumen español' % (r.get('libro', ''), r.get('autor', '')))
             rows.append(fila(d, iso, wd, r['materia'], r['lectura'], r['accion'], MIN[r['modo']], n, yt, r['modo']))
         d += 1; cur += dt.timedelta(days=1)
     total = len(rows); fin = rows[-1].split('fecha:"')[1].split('"')[0]

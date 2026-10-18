@@ -50,6 +50,11 @@
  * sobreescribe el .ts con las fechas correctas). Lo ideal: que remap llame a este script (fichero fuera de este lote).
  * Regla anti-alucinación: toda URL nueva de REC fue verificada el 05-sep-2026 (WebFetch) o ya existía en el repo;
  * lo no verificable va marcado "A VERIFICAR".
+ * v6.02c (18-oct-2026, E4 · pedido de Joseph «qué leer, cuánto, cómo — nada al azar»): además escribe src/lib/researchGuia.ts = la GUÍA de cada
+ * átomo en el formato común GuiaBloque (src/lib/guia.ts; 45′ en 13:30–14:15, Σ pasos = 45; F4 = 30′ con franja nominal) desde
+ * DATA/_scripts/research_guia.js: paso a paso para R0 (7 cuentas con su URL y minutos; las 3 de portal por revista van a C-5 / CR-9) · R1
+ * (3 PICO + abstract Taylor 2009, PMID 19807760, verificado en PubMed el 18-oct) · M1 · C-1 · M2; el resto desde las 5 franjas del bloque.
+ * Solo se escribe con los dos ciclos en la misma corrida (sin --ciclo). No cambia fechas, átomos ni overlays (researchDailyPlan*.ts idénticos).
  */
 const fs = require('fs');
 const path = require('path');
@@ -1072,4 +1077,47 @@ if (SOLO_CICLO !== 2) w('src/lib/researchDailyPlan.ts', TS1);
 if (SOLO_CICLO !== 1) w('src/lib/researchDailyPlan2027.ts', TS2);
 w('src/lib/obsidianResearchMap.ts', MAP_TS);
 w('DATA/RESEARCH/daily-plan.md', MD);
+
+// ─── v6.02c (18-oct-2026, E4): GUÍA «qué · cuánto · cómo» de cada átomo (formato común GuiaBloque) → src/lib/researchGuia.ts ───
+// Claves = d (estable en un corrimiento: remap_inicio.js solo re-fecha `fecha:`); el detalle paso a paso vive en DATA/_scripts/research_guia.js.
+// Solo con los DOS ciclos en la misma corrida (con --ciclo N el otro ciclo se re-fecharía con su START por defecto).
+if (SOLO_CICLO === 0) {
+  const { construirGuiasResearch, TS_BUILDER } = require('./research_guia');
+  const GR = construirGuiasResearch({ TODOS: TODOS.map((x) => ({ ...x, objetivo: x.obj, entregable: x.ent, artefacto: x.art })), rec: recLabel, fechaDe, fmt: fmtCorto, addDays, obsDe, SERUMS_INICIO });
+  const GUIA_TS = `/**
+ * researchGuia.ts — GUÍA «qué · cuánto · cómo» de CADA átomo de Research (ciclo 1 + ciclo 2, d 1-${TODOS.length}) en el formato común
+ * \`GuiaBloque\` (src/lib/guia.ts): 45′ en 13:30–14:15 (Σ pasos = 45) · en F4 (desde el SERUMS ${SERUMS_INICIO}) 30′ con franja NOMINAL (sin hora fija).
+ * Paso a paso (semanas 1-2 de la v6.02): ${GR.conDetalle.join(' · ')}; el resto, desde las 5 franjas del bloque con el objetivo, el entregable, el
+ * artefacto, los recursos verificados (REC) y los chips de cada átomo. + GUIA_RESEARCH_MINIMO (pausa de átomos ${PAUSA.desde} → ${PAUSA.hasta}, DJ-4).
+ * ${genLine}
+ * Lo pintan ResearchTodayPlan (HOY → 🧭 Guía del bloque) y la tarjeta R↔D del Home.
+ * v6.02c (18-oct-2026, E4): nuevo.
+ */
+import type { GuiaBloque } from './guia';
+import { REC, DIAS, type DiaResearch } from './researchDailyPlan';
+import { DIAS_2027 } from './researchDailyPlan2027';
+import { researchObsUrlDay } from './obsidianResearchMap';
+import { FECHAS_V6 } from './fechasV6';
+
+/** Guías PASO A PASO (clave = d). */
+const G: Record<number, GuiaBloque> = ${JSON.stringify(GR.porD)};
+${TS_BUILDER}
+const TODOS: DiaResearch[] = [...DIAS, ...DIAS_2027];
+/** Guía del átomo (paso a paso si existe; si no, la genérica de las 5 franjas · F4 = 30′ nominal). */
+export function guiaResearchDe(x: DiaResearch): GuiaBloque {
+  if (G[x.d] && x.fecha < FECHAS_V6.serums.inicio) return G[x.d] as GuiaBloque;
+  return generica(x, TODOS.find((y) => y.d === x.d - 1) ?? null);
+}
+/** Guía del átomo de una fecha ISO (día-Research), o null. */
+export function guiaResearchFecha(fecha: string): GuiaBloque | null {
+  const x = TODOS.find((y) => y.fecha === fecha.slice(0, 10));
+  return x ? guiaResearchDe(x) : null;
+}
+/** Átomos con guía paso a paso (el resto: guía estructurada desde las franjas del bloque). */
+export const GUIA_RESEARCH_DETALLE: string[] = ${JSON.stringify(GR.conDetalle)};
+/** Día-Research de la pausa de átomos (intensiva ENCAPS): 30′ «Research mínimo» (DJ-4). */
+export const GUIA_RESEARCH_MINIMO: GuiaBloque = ${JSON.stringify(GR.minimo)};
+`;
+  w('src/lib/researchGuia.ts', GUIA_TS);
+} else console.warn('⚠ --ciclo ' + SOLO_CICLO + ': src/lib/researchGuia.ts NO se regenera (necesita los dos ciclos en la misma corrida)');
 console.log(`\nOK — ciclo 1: ${D1.length} átomos ${D1[0].fecha}→${D1[D1.length - 1].fecha} · ciclo 2: ${D2.length} átomos ${D2[0].fecha}→${D2[D2.length - 1].fecha} · hitos: ${Object.entries(HITOS).map(([k, h]) => k + '=' + h.fecha).join(' · ')}`);

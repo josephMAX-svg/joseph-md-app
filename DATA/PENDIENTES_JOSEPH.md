@@ -63,12 +63,19 @@
 
 ### (c) DECISIONES PENDIENTES DE JOSEPH (v6.02) — con recomendación
 
-- [ ] **(i) MIR extensión 128 → 123 filas.** El tope (vie 24-sep, día de plan anterior al ritual) no se mueve: lun-jue 86 → 82, viernes 22 → 21, sábados
+- [x] **(i) MIR extensión 128 → 123 filas.** ✅ **RESUELTA por Joseph (dom 18-oct-2026: «si faltan temas o se recortó algo, alárgalo») → v6.02c.** El tope (vie 24-sep, día de plan anterior al ritual) no se mueve: lun-jue 86 → 82, viernes 22 → 21, sábados
       20 = 20, Tier C express de la extensión 21 → 20 → la 3.ª vuelta (jueves) pasa de 9 a 8 entradas, termina el jue 23-sep con Urología y **deja fuera
       «Oftalmología · Retina v3»** (en v6.01 se cayó «Genética v3»). Las vueltas 1 y 2 (mantenimiento 12 + extensión 12) quedan intactas; `MIR_MANT_TIER_C`
       33 → 32. **Opción:** re-fechar «Oftalmología · Retina v3» a un sábado de F4 (los 20 sábados de la extensión son 30Q mixtas) en
       `gen_mir_mantenimiento.js` y regenerar (solo con tu OK). **Recomendación: ACEPTAR**, como (a) de v6.01: es la 3.ª vuelta de un Tier C fuera del plan
       principal, en la semana previa al taper del Step 1.
+      **Aplicado (v6.02c, 18-oct):** no se aceptó la pérdida ni se usó un sábado de F4: se REPONE TODO lo que la extensión perdió desde v6.00 (188 → 185 → 180
+      filas) DESPUÉS del bloque protegido del examen Step 1, en F5 — **+9 filas d181-d189, mar 28-sep → vie 8-oct-2027**: 7 banco (Cardiología · Gastroenterología ·
+      Neurología + **Tier C Oftalmología · Retina v3 jue 30-sep** · Enf. Infecciosas · Endocrinología · Neumología · Reumatología + **Tier C Genética ·
+      Enfermedades genéticas v3 jue 7-oct**) + 2 viernes (vie 1 y vie 8-oct); sáb 2-oct sin fila (no se perdió ningún sábado). Las 180 filas existentes NO
+      cambian (byte-idénticas); `MIR_MANT_TIER_C` 32 → 34 (= v6.00); sesiones 180 → 189 (v6.00 = 188: +1 = el slot extra que el redondeo de v6.02 dio a
+      Medicina Legal, que se conserva) · 4.755 → 4.990 Q (v6.00 = 4.965). El handoff pasa al **vie 8-oct-2027** (última sesión del banqueo). Detalle y
+      método: `DATA/_scripts/gen_mir_mantenimiento.js` (bitácora v6.02c) y `DATA/MIR/README.md` §«v6.02c».
 - [ ] **(ii) Deload del vibecoding desalineado con el del Step 1.** El deload post-NBME 26 del Step 1 es la semana del **lun 23 → vie 27-nov** = S6 del
       vibecoding exacta (RLS en `datos_tesis` y `kappa_piloto` + auditoría), sin marca deload. El flag `deload` sigue en **S7 (lun 30-nov → vie 4-dic**, motor
       de preguntas ENCAPS) → 0/5 días alineados, igual que en v6.01 (decisión (d)). **Opción:** mover solo el flag a S6 (contenido, fechas y minutos de S6/S7
@@ -102,7 +109,7 @@
       conserve la tabla literal, al salir la convocatoria se corre `node DATA/_scripts/gen_fechas_v6.js --check --calculo` y manda la más tardía de las dos
       (comprobado el 17-oct: hoy sale con exit 1 y lista las 2 diferencias, 21-mar → 27-sep y 11-abr → 25-oct; el 25-abr cae al 25-oct = literal).
 
-**Estado de las decisiones v6.01 (a)-(g) con las fechas v6.02:** (a) → sustituida por (i) · (b) 0 viernes N4 en F1, pero vuelve 1 en el tramo 2 (T12 vie
+**Estado de las decisiones v6.01 (a)-(g) con las fechas v6.02:** (a) → sustituida por (i), resuelta el 18-oct (v6.02c: «Genética v3» repuesta el jue 7-oct-2027) · (b) 0 viernes N4 en F1, pero vuelve 1 en el tramo 2 (T12 vie
 2-abr, Micro); la excepción que proponía (b) era el D50 vie 18-dic, y en v6.02 el vie 18-dic es el D45 (N3) y el D50 cae el lun 28-dic · (c) el SHIP S12 pasa
 al **sáb 16-ene** (sigue dentro de la intensiva) y el que cae el sábado del pre-test (sáb 9-ene) es ahora el **SHIP S11** → misma recomendación (modo mínimo,
 prioridad a la tutoría del pre-test) · (d) → sustituida por (ii) · (e) sigue abierta, ver (iii) · (f) deload del lun 28-dic = la semana del NBME 28 (ahora mié

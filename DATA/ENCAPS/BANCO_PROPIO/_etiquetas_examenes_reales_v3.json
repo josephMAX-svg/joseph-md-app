@@ -2,7 +2,7 @@
  "_meta": {
   "descripcion": "Etiquetado v3 de los 300 ítems reales CON CLAVE OFICIAL (2024-2A · 2025-1A · 2025-2; A/B son el mismo examen barajado, 2026-1 no tiene clave en disco) por código v3, sub_eje (claves de _encaps_ciclo_v3.js SUB_EJES para los códigos de la rotación) y formato_pretest. Hecho leyendo enunciado por enunciado el 05-sep-2026. Es la línea base real por código (vacío 1 y 8 de gaps_v3b_encaps.json). Fuente de los enunciados/claves: _examenes_reales_2024-2A_2026-1.json.",
   "formato": "viñeta | directa | cifra | viñeta+cifra (cifra = la respuesta es un número/plazo/dosis)",
-  "LISTA_NEGRA": "2026-II NO está aquí (reservado como pre-test, PRETEST_2026-II.md).",
+  "LISTA_NEGRA": "El examen reservado como pre-test NO está aquí (protocolo del pre-test: README de BANCO_PROPIO, §LISTA NEGRA).",
   "generado": "2026-09-05",
   "por_codigo": {
    "I-3": 25,

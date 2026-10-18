@@ -1,0 +1,1414 @@
+{
+ "fuente": "AccessDermatologyDxRx · Dermatology Cases for Board Review (cases.aspx?groupid=1546) · listado leído en solo lectura con chrome-devtools en el Chrome de Joseph · dom 18-oct-2026 (el acceso remoto está caducado: el LISTADO se ve, el contenido del caso no)",
+ "orden": "El listado real NO es Med→Path→Peds→Surg: es Dermatopathology 1-30 · Medical 31-140 · Pediatric 141-170 · Surgical 171-200 (pos = id 1-200 de dermaDailyPlan.DERMA_CASO_ORDEN). Los títulos son genéricos («<Área>. Case NN») y no revelan el diagnóstico.",
+ "deepLink": "https://dermatology.mhmedical.com/CaseContent.aspx?gbosID=<gbosID>&gbosContainerID=310&viewByNumber=false&groupid=1546",
+ "porArea": {
+  "Dermatopathology": 30,
+  "Medical Dermatology": 110,
+  "Pediatric Dermatology": 30,
+  "Surgical Dermatology": 30
+ },
+ "total": 200,
+ "casos": [
+  {
+   "pos": 1,
+   "area": "Dermatopathology",
+   "numero": "01",
+   "gbosID": 614455,
+   "titulo": "Dermatopathology. Case 01"
+  },
+  {
+   "pos": 2,
+   "area": "Dermatopathology",
+   "numero": "02",
+   "gbosID": 614454,
+   "titulo": "Dermatopathology. Case 02"
+  },
+  {
+   "pos": 3,
+   "area": "Dermatopathology",
+   "numero": "03",
+   "gbosID": 614453,
+   "titulo": "Dermatopathology. Case 03"
+  },
+  {
+   "pos": 4,
+   "area": "Dermatopathology",
+   "numero": "04",
+   "gbosID": 622627,
+   "titulo": "Dermatopathology. Case 04"
+  },
+  {
+   "pos": 5,
+   "area": "Dermatopathology",
+   "numero": "05",
+   "gbosID": 622626,
+   "titulo": "Dermatopathology. Case 05"
+  },
+  {
+   "pos": 6,
+   "area": "Dermatopathology",
+   "numero": "06",
+   "gbosID": 622625,
+   "titulo": "Dermatopathology. Case 06"
+  },
+  {
+   "pos": 7,
+   "area": "Dermatopathology",
+   "numero": "07",
+   "gbosID": 622624,
+   "titulo": "Dermatopathology. Case 07"
+  },
+  {
+   "pos": 8,
+   "area": "Dermatopathology",
+   "numero": "08",
+   "gbosID": 622623,
+   "titulo": "Dermatopathology. Case 08"
+  },
+  {
+   "pos": 9,
+   "area": "Dermatopathology",
+   "numero": "09",
+   "gbosID": 622622,
+   "titulo": "Dermatopathology. Case 09"
+  },
+  {
+   "pos": 10,
+   "area": "Dermatopathology",
+   "numero": "10",
+   "gbosID": 622621,
+   "titulo": "Dermatopathology. Case 10"
+  },
+  {
+   "pos": 11,
+   "area": "Dermatopathology",
+   "numero": "11",
+   "gbosID": 622620,
+   "titulo": "Dermatopathology. Case 11"
+  },
+  {
+   "pos": 12,
+   "area": "Dermatopathology",
+   "numero": "12",
+   "gbosID": 622619,
+   "titulo": "Dermatopathology. Case 12"
+  },
+  {
+   "pos": 13,
+   "area": "Dermatopathology",
+   "numero": "13",
+   "gbosID": 622618,
+   "titulo": "Dermatopathology. Case 13"
+  },
+  {
+   "pos": 14,
+   "area": "Dermatopathology",
+   "numero": "14",
+   "gbosID": 622617,
+   "titulo": "Dermatopathology. Case 14"
+  },
+  {
+   "pos": 15,
+   "area": "Dermatopathology",
+   "numero": "15",
+   "gbosID": 622616,
+   "titulo": "Dermatopathology. Case 15"
+  },
+  {
+   "pos": 16,
+   "area": "Dermatopathology",
+   "numero": "16",
+   "gbosID": 622615,
+   "titulo": "Dermatopathology. Case 16"
+  },
+  {
+   "pos": 17,
+   "area": "Dermatopathology",
+   "numero": "17",
+   "gbosID": 622614,
+   "titulo": "Dermatopathology. Case 17"
+  },
+  {
+   "pos": 18,
+   "area": "Dermatopathology",
+   "numero": "18",
+   "gbosID": 622613,
+   "titulo": "Dermatopathology. Case 18"
+  },
+  {
+   "pos": 19,
+   "area": "Dermatopathology",
+   "numero": "19",
+   "gbosID": 622612,
+   "titulo": "Dermatopathology. Case 19"
+  },
+  {
+   "pos": 20,
+   "area": "Dermatopathology",
+   "numero": "20",
+   "gbosID": 622611,
+   "titulo": "Dermatopathology. Case 20"
+  },
+  {
+   "pos": 21,
+   "area": "Dermatopathology",
+   "numero": "21",
+   "gbosID": 622610,
+   "titulo": "Dermatopathology. Case 21"
+  },
+  {
+   "pos": 22,
+   "area": "Dermatopathology",
+   "numero": "22",
+   "gbosID": 622609,
+   "titulo": "Dermatopathology. Case 22"
+  },
+  {
+   "pos": 23,
+   "area": "Dermatopathology",
+   "numero": "23",
+   "gbosID": 622608,
+   "titulo": "Dermatopathology. Case 23"
+  },
+  {
+   "pos": 24,
+   "area": "Dermatopathology",
+   "numero": "24",
+   "gbosID": 622607,
+   "titulo": "Dermatopathology. Case 24"
+  },
+  {
+   "pos": 25,
+   "area": "Dermatopathology",
+   "numero": "25",
+   "gbosID": 622606,
+   "titulo": "Dermatopathology. Case 25"
+  },
+  {
+   "pos": 26,
+   "area": "Dermatopathology",
+   "numero": "26",
+   "gbosID": 622605,
+   "titulo": "Dermatopathology. Case 26"
+  },
+  {
+   "pos": 27,
+   "area": "Dermatopathology",
+   "numero": "27",
+   "gbosID": 622604,
+   "titulo": "Dermatopathology. Case 27"
+  },
+  {
+   "pos": 28,
+   "area": "Dermatopathology",
+   "numero": "28",
+   "gbosID": 622603,
+   "titulo": "Dermatopathology. Case 28"
+  },
+  {
+   "pos": 29,
+   "area": "Dermatopathology",
+   "numero": "29",
+   "gbosID": 622602,
+   "titulo": "Dermatopathology. Case 29"
+  },
+  {
+   "pos": 30,
+   "area": "Dermatopathology",
+   "numero": "30",
+   "gbosID": 622601,
+   "titulo": "Dermatopathology. Case 30"
+  },
+  {
+   "pos": 31,
+   "area": "Medical Dermatology",
+   "numero": "001",
+   "gbosID": 614452,
+   "titulo": "Medical Dermatology. Case 001"
+  },
+  {
+   "pos": 32,
+   "area": "Medical Dermatology",
+   "numero": "002",
+   "gbosID": 614451,
+   "titulo": "Medical Dermatology. Case 002"
+  },
+  {
+   "pos": 33,
+   "area": "Medical Dermatology",
+   "numero": "003",
+   "gbosID": 614450,
+   "titulo": "Medical Dermatology. Case 003"
+  },
+  {
+   "pos": 34,
+   "area": "Medical Dermatology",
+   "numero": "004",
+   "gbosID": 622597,
+   "titulo": "Medical Dermatology. Case 004"
+  },
+  {
+   "pos": 35,
+   "area": "Medical Dermatology",
+   "numero": "005",
+   "gbosID": 622596,
+   "titulo": "Medical Dermatology. Case 005"
+  },
+  {
+   "pos": 36,
+   "area": "Medical Dermatology",
+   "numero": "006",
+   "gbosID": 622595,
+   "titulo": "Medical Dermatology. Case 006"
+  },
+  {
+   "pos": 37,
+   "area": "Medical Dermatology",
+   "numero": "007",
+   "gbosID": 622594,
+   "titulo": "Medical Dermatology. Case 007"
+  },
+  {
+   "pos": 38,
+   "area": "Medical Dermatology",
+   "numero": "008",
+   "gbosID": 622593,
+   "titulo": "Medical Dermatology. Case 008"
+  },
+  {
+   "pos": 39,
+   "area": "Medical Dermatology",
+   "numero": "009",
+   "gbosID": 622592,
+   "titulo": "Medical Dermatology. Case 009"
+  },
+  {
+   "pos": 40,
+   "area": "Medical Dermatology",
+   "numero": "010",
+   "gbosID": 622591,
+   "titulo": "Medical Dermatology. Case 010"
+  },
+  {
+   "pos": 41,
+   "area": "Medical Dermatology",
+   "numero": "011",
+   "gbosID": 622590,
+   "titulo": "Medical Dermatology. Case 011"
+  },
+  {
+   "pos": 42,
+   "area": "Medical Dermatology",
+   "numero": "012",
+   "gbosID": 622589,
+   "titulo": "Medical Dermatology. Case 012"
+  },
+  {
+   "pos": 43,
+   "area": "Medical Dermatology",
+   "numero": "013",
+   "gbosID": 622588,
+   "titulo": "Medical Dermatology. Case 013"
+  },
+  {
+   "pos": 44,
+   "area": "Medical Dermatology",
+   "numero": "014",
+   "gbosID": 622587,
+   "titulo": "Medical Dermatology. Case 014"
+  },
+  {
+   "pos": 45,
+   "area": "Medical Dermatology",
+   "numero": "015",
+   "gbosID": 622586,
+   "titulo": "Medical Dermatology. Case 015"
+  },
+  {
+   "pos": 46,
+   "area": "Medical Dermatology",
+   "numero": "016",
+   "gbosID": 622585,
+   "titulo": "Medical Dermatology. Case 016"
+  },
+  {
+   "pos": 47,
+   "area": "Medical Dermatology",
+   "numero": "017",
+   "gbosID": 622584,
+   "titulo": "Medical Dermatology. Case 017"
+  },
+  {
+   "pos": 48,
+   "area": "Medical Dermatology",
+   "numero": "018",
+   "gbosID": 622583,
+   "titulo": "Medical Dermatology. Case 018"
+  },
+  {
+   "pos": 49,
+   "area": "Medical Dermatology",
+   "numero": "019",
+   "gbosID": 622582,
+   "titulo": "Medical Dermatology. Case 019"
+  },
+  {
+   "pos": 50,
+   "area": "Medical Dermatology",
+   "numero": "020",
+   "gbosID": 622581,
+   "titulo": "Medical Dermatology. Case 020"
+  },
+  {
+   "pos": 51,
+   "area": "Medical Dermatology",
+   "numero": "021",
+   "gbosID": 622580,
+   "titulo": "Medical Dermatology. Case 021"
+  },
+  {
+   "pos": 52,
+   "area": "Medical Dermatology",
+   "numero": "022",
+   "gbosID": 622579,
+   "titulo": "Medical Dermatology. Case 022"
+  },
+  {
+   "pos": 53,
+   "area": "Medical Dermatology",
+   "numero": "023",
+   "gbosID": 622578,
+   "titulo": "Medical Dermatology. Case 023"
+  },
+  {
+   "pos": 54,
+   "area": "Medical Dermatology",
+   "numero": "024",
+   "gbosID": 622577,
+   "titulo": "Medical Dermatology. Case 024"
+  },
+  {
+   "pos": 55,
+   "area": "Medical Dermatology",
+   "numero": "025",
+   "gbosID": 622576,
+   "titulo": "Medical Dermatology. Case 025"
+  },
+  {
+   "pos": 56,
+   "area": "Medical Dermatology",
+   "numero": "026",
+   "gbosID": 622575,
+   "titulo": "Medical Dermatology. Case 026"
+  },
+  {
+   "pos": 57,
+   "area": "Medical Dermatology",
+   "numero": "027",
+   "gbosID": 622574,
+   "titulo": "Medical Dermatology. Case 027"
+  },
+  {
+   "pos": 58,
+   "area": "Medical Dermatology",
+   "numero": "028",
+   "gbosID": 622573,
+   "titulo": "Medical Dermatology. Case 028"
+  },
+  {
+   "pos": 59,
+   "area": "Medical Dermatology",
+   "numero": "029",
+   "gbosID": 622572,
+   "titulo": "Medical Dermatology. Case 029"
+  },
+  {
+   "pos": 60,
+   "area": "Medical Dermatology",
+   "numero": "030",
+   "gbosID": 622571,
+   "titulo": "Medical Dermatology. Case 030"
+  },
+  {
+   "pos": 61,
+   "area": "Medical Dermatology",
+   "numero": "031",
+   "gbosID": 622570,
+   "titulo": "Medical Dermatology. Case 031"
+  },
+  {
+   "pos": 62,
+   "area": "Medical Dermatology",
+   "numero": "032",
+   "gbosID": 622569,
+   "titulo": "Medical Dermatology. Case 032"
+  },
+  {
+   "pos": 63,
+   "area": "Medical Dermatology",
+   "numero": "033",
+   "gbosID": 622568,
+   "titulo": "Medical Dermatology. Case 033"
+  },
+  {
+   "pos": 64,
+   "area": "Medical Dermatology",
+   "numero": "034",
+   "gbosID": 622567,
+   "titulo": "Medical Dermatology. Case 034"
+  },
+  {
+   "pos": 65,
+   "area": "Medical Dermatology",
+   "numero": "035",
+   "gbosID": 622566,
+   "titulo": "Medical Dermatology. Case 035"
+  },
+  {
+   "pos": 66,
+   "area": "Medical Dermatology",
+   "numero": "036",
+   "gbosID": 622565,
+   "titulo": "Medical Dermatology. Case 036"
+  },
+  {
+   "pos": 67,
+   "area": "Medical Dermatology",
+   "numero": "037",
+   "gbosID": 622564,
+   "titulo": "Medical Dermatology. Case 037"
+  },
+  {
+   "pos": 68,
+   "area": "Medical Dermatology",
+   "numero": "038",
+   "gbosID": 622563,
+   "titulo": "Medical Dermatology. Case 038"
+  },
+  {
+   "pos": 69,
+   "area": "Medical Dermatology",
+   "numero": "039",
+   "gbosID": 622562,
+   "titulo": "Medical Dermatology. Case 039"
+  },
+  {
+   "pos": 70,
+   "area": "Medical Dermatology",
+   "numero": "040",
+   "gbosID": 622561,
+   "titulo": "Medical Dermatology. Case 040"
+  },
+  {
+   "pos": 71,
+   "area": "Medical Dermatology",
+   "numero": "041",
+   "gbosID": 622560,
+   "titulo": "Medical Dermatology. Case 041"
+  },
+  {
+   "pos": 72,
+   "area": "Medical Dermatology",
+   "numero": "042",
+   "gbosID": 622559,
+   "titulo": "Medical Dermatology. Case 042"
+  },
+  {
+   "pos": 73,
+   "area": "Medical Dermatology",
+   "numero": "043",
+   "gbosID": 622558,
+   "titulo": "Medical Dermatology. Case 043"
+  },
+  {
+   "pos": 74,
+   "area": "Medical Dermatology",
+   "numero": "044",
+   "gbosID": 622557,
+   "titulo": "Medical Dermatology. Case 044"
+  },
+  {
+   "pos": 75,
+   "area": "Medical Dermatology",
+   "numero": "045",
+   "gbosID": 622556,
+   "titulo": "Medical Dermatology. Case 045"
+  },
+  {
+   "pos": 76,
+   "area": "Medical Dermatology",
+   "numero": "046",
+   "gbosID": 622555,
+   "titulo": "Medical Dermatology. Case 046"
+  },
+  {
+   "pos": 77,
+   "area": "Medical Dermatology",
+   "numero": "047",
+   "gbosID": 622554,
+   "titulo": "Medical Dermatology. Case 047"
+  },
+  {
+   "pos": 78,
+   "area": "Medical Dermatology",
+   "numero": "048",
+   "gbosID": 622553,
+   "titulo": "Medical Dermatology. Case 048"
+  },
+  {
+   "pos": 79,
+   "area": "Medical Dermatology",
+   "numero": "049",
+   "gbosID": 622552,
+   "titulo": "Medical Dermatology. Case 049"
+  },
+  {
+   "pos": 80,
+   "area": "Medical Dermatology",
+   "numero": "050",
+   "gbosID": 622551,
+   "titulo": "Medical Dermatology. Case 050"
+  },
+  {
+   "pos": 81,
+   "area": "Medical Dermatology",
+   "numero": "051",
+   "gbosID": 622550,
+   "titulo": "Medical Dermatology. Case 051"
+  },
+  {
+   "pos": 82,
+   "area": "Medical Dermatology",
+   "numero": "052",
+   "gbosID": 622549,
+   "titulo": "Medical Dermatology. Case 052"
+  },
+  {
+   "pos": 83,
+   "area": "Medical Dermatology",
+   "numero": "053",
+   "gbosID": 622548,
+   "titulo": "Medical Dermatology. Case 053"
+  },
+  {
+   "pos": 84,
+   "area": "Medical Dermatology",
+   "numero": "054",
+   "gbosID": 622547,
+   "titulo": "Medical Dermatology. Case 054"
+  },
+  {
+   "pos": 85,
+   "area": "Medical Dermatology",
+   "numero": "055",
+   "gbosID": 622546,
+   "titulo": "Medical Dermatology. Case 055"
+  },
+  {
+   "pos": 86,
+   "area": "Medical Dermatology",
+   "numero": "056",
+   "gbosID": 622545,
+   "titulo": "Medical Dermatology. Case 056"
+  },
+  {
+   "pos": 87,
+   "area": "Medical Dermatology",
+   "numero": "057",
+   "gbosID": 622544,
+   "titulo": "Medical Dermatology. Case 057"
+  },
+  {
+   "pos": 88,
+   "area": "Medical Dermatology",
+   "numero": "058",
+   "gbosID": 622543,
+   "titulo": "Medical Dermatology. Case 058"
+  },
+  {
+   "pos": 89,
+   "area": "Medical Dermatology",
+   "numero": "059",
+   "gbosID": 622542,
+   "titulo": "Medical Dermatology. Case 059"
+  },
+  {
+   "pos": 90,
+   "area": "Medical Dermatology",
+   "numero": "060",
+   "gbosID": 622541,
+   "titulo": "Medical Dermatology. Case 060"
+  },
+  {
+   "pos": 91,
+   "area": "Medical Dermatology",
+   "numero": "061",
+   "gbosID": 622540,
+   "titulo": "Medical Dermatology. Case 061"
+  },
+  {
+   "pos": 92,
+   "area": "Medical Dermatology",
+   "numero": "062",
+   "gbosID": 622539,
+   "titulo": "Medical Dermatology. Case 062"
+  },
+  {
+   "pos": 93,
+   "area": "Medical Dermatology",
+   "numero": "063",
+   "gbosID": 622537,
+   "titulo": "Medical Dermatology. Case 063"
+  },
+  {
+   "pos": 94,
+   "area": "Medical Dermatology",
+   "numero": "064",
+   "gbosID": 622536,
+   "titulo": "Medical Dermatology. Case 064"
+  },
+  {
+   "pos": 95,
+   "area": "Medical Dermatology",
+   "numero": "065",
+   "gbosID": 622534,
+   "titulo": "Medical Dermatology. Case 065"
+  },
+  {
+   "pos": 96,
+   "area": "Medical Dermatology",
+   "numero": "066",
+   "gbosID": 622533,
+   "titulo": "Medical Dermatology. Case 066"
+  },
+  {
+   "pos": 97,
+   "area": "Medical Dermatology",
+   "numero": "067",
+   "gbosID": 622531,
+   "titulo": "Medical Dermatology. Case 067"
+  },
+  {
+   "pos": 98,
+   "area": "Medical Dermatology",
+   "numero": "068",
+   "gbosID": 622530,
+   "titulo": "Medical Dermatology. Case 068"
+  },
+  {
+   "pos": 99,
+   "area": "Medical Dermatology",
+   "numero": "069",
+   "gbosID": 622528,
+   "titulo": "Medical Dermatology. Case 069"
+  },
+  {
+   "pos": 100,
+   "area": "Medical Dermatology",
+   "numero": "070",
+   "gbosID": 622526,
+   "titulo": "Medical Dermatology. Case 070"
+  },
+  {
+   "pos": 101,
+   "area": "Medical Dermatology",
+   "numero": "071",
+   "gbosID": 622524,
+   "titulo": "Medical Dermatology. Case 071"
+  },
+  {
+   "pos": 102,
+   "area": "Medical Dermatology",
+   "numero": "072",
+   "gbosID": 622521,
+   "titulo": "Medical Dermatology. Case 072"
+  },
+  {
+   "pos": 103,
+   "area": "Medical Dermatology",
+   "numero": "073",
+   "gbosID": 622519,
+   "titulo": "Medical Dermatology. Case 073"
+  },
+  {
+   "pos": 104,
+   "area": "Medical Dermatology",
+   "numero": "074",
+   "gbosID": 622518,
+   "titulo": "Medical Dermatology. Case 074"
+  },
+  {
+   "pos": 105,
+   "area": "Medical Dermatology",
+   "numero": "075",
+   "gbosID": 622516,
+   "titulo": "Medical Dermatology. Case 075"
+  },
+  {
+   "pos": 106,
+   "area": "Medical Dermatology",
+   "numero": "076",
+   "gbosID": 622514,
+   "titulo": "Medical Dermatology. Case 076"
+  },
+  {
+   "pos": 107,
+   "area": "Medical Dermatology",
+   "numero": "077",
+   "gbosID": 622512,
+   "titulo": "Medical Dermatology. Case 077"
+  },
+  {
+   "pos": 108,
+   "area": "Medical Dermatology",
+   "numero": "078",
+   "gbosID": 622510,
+   "titulo": "Medical Dermatology. Case 078"
+  },
+  {
+   "pos": 109,
+   "area": "Medical Dermatology",
+   "numero": "079",
+   "gbosID": 622508,
+   "titulo": "Medical Dermatology. Case 079"
+  },
+  {
+   "pos": 110,
+   "area": "Medical Dermatology",
+   "numero": "080",
+   "gbosID": 622507,
+   "titulo": "Medical Dermatology. Case 080"
+  },
+  {
+   "pos": 111,
+   "area": "Medical Dermatology",
+   "numero": "081",
+   "gbosID": 622506,
+   "titulo": "Medical Dermatology. Case 081"
+  },
+  {
+   "pos": 112,
+   "area": "Medical Dermatology",
+   "numero": "082",
+   "gbosID": 622504,
+   "titulo": "Medical Dermatology. Case 082"
+  },
+  {
+   "pos": 113,
+   "area": "Medical Dermatology",
+   "numero": "083",
+   "gbosID": 622502,
+   "titulo": "Medical Dermatology. Case 083"
+  },
+  {
+   "pos": 114,
+   "area": "Medical Dermatology",
+   "numero": "084",
+   "gbosID": 622500,
+   "titulo": "Medical Dermatology. Case 084"
+  },
+  {
+   "pos": 115,
+   "area": "Medical Dermatology",
+   "numero": "085",
+   "gbosID": 622498,
+   "titulo": "Medical Dermatology. Case 085"
+  },
+  {
+   "pos": 116,
+   "area": "Medical Dermatology",
+   "numero": "086",
+   "gbosID": 622496,
+   "titulo": "Medical Dermatology. Case 086"
+  },
+  {
+   "pos": 117,
+   "area": "Medical Dermatology",
+   "numero": "087",
+   "gbosID": 622494,
+   "titulo": "Medical Dermatology. Case 087"
+  },
+  {
+   "pos": 118,
+   "area": "Medical Dermatology",
+   "numero": "088",
+   "gbosID": 622493,
+   "titulo": "Medical Dermatology. Case 088"
+  },
+  {
+   "pos": 119,
+   "area": "Medical Dermatology",
+   "numero": "089",
+   "gbosID": 622492,
+   "titulo": "Medical Dermatology. Case 089"
+  },
+  {
+   "pos": 120,
+   "area": "Medical Dermatology",
+   "numero": "090",
+   "gbosID": 622490,
+   "titulo": "Medical Dermatology. Case 090"
+  },
+  {
+   "pos": 121,
+   "area": "Medical Dermatology",
+   "numero": "091",
+   "gbosID": 622489,
+   "titulo": "Medical Dermatology. Case 091"
+  },
+  {
+   "pos": 122,
+   "area": "Medical Dermatology",
+   "numero": "092",
+   "gbosID": 622487,
+   "titulo": "Medical Dermatology. Case 092"
+  },
+  {
+   "pos": 123,
+   "area": "Medical Dermatology",
+   "numero": "093",
+   "gbosID": 622485,
+   "titulo": "Medical Dermatology. Case 093"
+  },
+  {
+   "pos": 124,
+   "area": "Medical Dermatology",
+   "numero": "094",
+   "gbosID": 622484,
+   "titulo": "Medical Dermatology. Case 094"
+  },
+  {
+   "pos": 125,
+   "area": "Medical Dermatology",
+   "numero": "095",
+   "gbosID": 622482,
+   "titulo": "Medical Dermatology. Case 095"
+  },
+  {
+   "pos": 126,
+   "area": "Medical Dermatology",
+   "numero": "096",
+   "gbosID": 622480,
+   "titulo": "Medical Dermatology. Case 096"
+  },
+  {
+   "pos": 127,
+   "area": "Medical Dermatology",
+   "numero": "097",
+   "gbosID": 622477,
+   "titulo": "Medical Dermatology. Case 097"
+  },
+  {
+   "pos": 128,
+   "area": "Medical Dermatology",
+   "numero": "098",
+   "gbosID": 622475,
+   "titulo": "Medical Dermatology. Case 098"
+  },
+  {
+   "pos": 129,
+   "area": "Medical Dermatology",
+   "numero": "099",
+   "gbosID": 622474,
+   "titulo": "Medical Dermatology. Case 099"
+  },
+  {
+   "pos": 130,
+   "area": "Medical Dermatology",
+   "numero": "100",
+   "gbosID": 622472,
+   "titulo": "Medical Dermatology. Case 100"
+  },
+  {
+   "pos": 131,
+   "area": "Medical Dermatology",
+   "numero": "101",
+   "gbosID": 622469,
+   "titulo": "Medical Dermatology. Case 101"
+  },
+  {
+   "pos": 132,
+   "area": "Medical Dermatology",
+   "numero": "102",
+   "gbosID": 622467,
+   "titulo": "Medical Dermatology. Case 102"
+  },
+  {
+   "pos": 133,
+   "area": "Medical Dermatology",
+   "numero": "103",
+   "gbosID": 622465,
+   "titulo": "Medical Dermatology. Case 103"
+  },
+  {
+   "pos": 134,
+   "area": "Medical Dermatology",
+   "numero": "104",
+   "gbosID": 622462,
+   "titulo": "Medical Dermatology. Case 104"
+  },
+  {
+   "pos": 135,
+   "area": "Medical Dermatology",
+   "numero": "105",
+   "gbosID": 622461,
+   "titulo": "Medical Dermatology. Case 105"
+  },
+  {
+   "pos": 136,
+   "area": "Medical Dermatology",
+   "numero": "106",
+   "gbosID": 622459,
+   "titulo": "Medical Dermatology. Case 106"
+  },
+  {
+   "pos": 137,
+   "area": "Medical Dermatology",
+   "numero": "107",
+   "gbosID": 622457,
+   "titulo": "Medical Dermatology. Case 107"
+  },
+  {
+   "pos": 138,
+   "area": "Medical Dermatology",
+   "numero": "108",
+   "gbosID": 622455,
+   "titulo": "Medical Dermatology. Case 108"
+  },
+  {
+   "pos": 139,
+   "area": "Medical Dermatology",
+   "numero": "109",
+   "gbosID": 622454,
+   "titulo": "Medical Dermatology. Case 109"
+  },
+  {
+   "pos": 140,
+   "area": "Medical Dermatology",
+   "numero": "110",
+   "gbosID": 622451,
+   "titulo": "Medical Dermatology. Case 110"
+  },
+  {
+   "pos": 141,
+   "area": "Pediatric Dermatology",
+   "numero": "01",
+   "gbosID": 614449,
+   "titulo": "Pediatric Dermatology. Case 01"
+  },
+  {
+   "pos": 142,
+   "area": "Pediatric Dermatology",
+   "numero": "02",
+   "gbosID": 614448,
+   "titulo": "Pediatric Dermatology. Case 02"
+  },
+  {
+   "pos": 143,
+   "area": "Pediatric Dermatology",
+   "numero": "03",
+   "gbosID": 614447,
+   "titulo": "Pediatric Dermatology. Case 03"
+  },
+  {
+   "pos": 144,
+   "area": "Pediatric Dermatology",
+   "numero": "04",
+   "gbosID": 622442,
+   "titulo": "Pediatric Dermatology. Case 04"
+  },
+  {
+   "pos": 145,
+   "area": "Pediatric Dermatology",
+   "numero": "05",
+   "gbosID": 622441,
+   "titulo": "Pediatric Dermatology. Case 05"
+  },
+  {
+   "pos": 146,
+   "area": "Pediatric Dermatology",
+   "numero": "06",
+   "gbosID": 622439,
+   "titulo": "Pediatric Dermatology. Case 06"
+  },
+  {
+   "pos": 147,
+   "area": "Pediatric Dermatology",
+   "numero": "07",
+   "gbosID": 622438,
+   "titulo": "Pediatric Dermatology. Case 07"
+  },
+  {
+   "pos": 148,
+   "area": "Pediatric Dermatology",
+   "numero": "08",
+   "gbosID": 622436,
+   "titulo": "Pediatric Dermatology. Case 08"
+  },
+  {
+   "pos": 149,
+   "area": "Pediatric Dermatology",
+   "numero": "09",
+   "gbosID": 622433,
+   "titulo": "Pediatric Dermatology. Case 09"
+  },
+  {
+   "pos": 150,
+   "area": "Pediatric Dermatology",
+   "numero": "10",
+   "gbosID": 622431,
+   "titulo": "Pediatric Dermatology. Case 10"
+  },
+  {
+   "pos": 151,
+   "area": "Pediatric Dermatology",
+   "numero": "11",
+   "gbosID": 622429,
+   "titulo": "Pediatric Dermatology. Case 11"
+  },
+  {
+   "pos": 152,
+   "area": "Pediatric Dermatology",
+   "numero": "12",
+   "gbosID": 622427,
+   "titulo": "Pediatric Dermatology. Case 12"
+  },
+  {
+   "pos": 153,
+   "area": "Pediatric Dermatology",
+   "numero": "13",
+   "gbosID": 622425,
+   "titulo": "Pediatric Dermatology. Case 13"
+  },
+  {
+   "pos": 154,
+   "area": "Pediatric Dermatology",
+   "numero": "14",
+   "gbosID": 622423,
+   "titulo": "Pediatric Dermatology. Case 14"
+  },
+  {
+   "pos": 155,
+   "area": "Pediatric Dermatology",
+   "numero": "15",
+   "gbosID": 622421,
+   "titulo": "Pediatric Dermatology. Case 15"
+  },
+  {
+   "pos": 156,
+   "area": "Pediatric Dermatology",
+   "numero": "16",
+   "gbosID": 622420,
+   "titulo": "Pediatric Dermatology. Case 16"
+  },
+  {
+   "pos": 157,
+   "area": "Pediatric Dermatology",
+   "numero": "17",
+   "gbosID": 622417,
+   "titulo": "Pediatric Dermatology. Case 17"
+  },
+  {
+   "pos": 158,
+   "area": "Pediatric Dermatology",
+   "numero": "18",
+   "gbosID": 622415,
+   "titulo": "Pediatric Dermatology. Case 18"
+  },
+  {
+   "pos": 159,
+   "area": "Pediatric Dermatology",
+   "numero": "19",
+   "gbosID": 622413,
+   "titulo": "Pediatric Dermatology. Case 19"
+  },
+  {
+   "pos": 160,
+   "area": "Pediatric Dermatology",
+   "numero": "20",
+   "gbosID": 622412,
+   "titulo": "Pediatric Dermatology. Case 20"
+  },
+  {
+   "pos": 161,
+   "area": "Pediatric Dermatology",
+   "numero": "21",
+   "gbosID": 622410,
+   "titulo": "Pediatric Dermatology. Case 21"
+  },
+  {
+   "pos": 162,
+   "area": "Pediatric Dermatology",
+   "numero": "22",
+   "gbosID": 622408,
+   "titulo": "Pediatric Dermatology. Case 22"
+  },
+  {
+   "pos": 163,
+   "area": "Pediatric Dermatology",
+   "numero": "23",
+   "gbosID": 622406,
+   "titulo": "Pediatric Dermatology. Case 23"
+  },
+  {
+   "pos": 164,
+   "area": "Pediatric Dermatology",
+   "numero": "24",
+   "gbosID": 622405,
+   "titulo": "Pediatric Dermatology. Case 24"
+  },
+  {
+   "pos": 165,
+   "area": "Pediatric Dermatology",
+   "numero": "25",
+   "gbosID": 622403,
+   "titulo": "Pediatric Dermatology. Case 25"
+  },
+  {
+   "pos": 166,
+   "area": "Pediatric Dermatology",
+   "numero": "26",
+   "gbosID": 622401,
+   "titulo": "Pediatric Dermatology. Case 26"
+  },
+  {
+   "pos": 167,
+   "area": "Pediatric Dermatology",
+   "numero": "27",
+   "gbosID": 622398,
+   "titulo": "Pediatric Dermatology. Case 27"
+  },
+  {
+   "pos": 168,
+   "area": "Pediatric Dermatology",
+   "numero": "28",
+   "gbosID": 622396,
+   "titulo": "Pediatric Dermatology. Case 28"
+  },
+  {
+   "pos": 169,
+   "area": "Pediatric Dermatology",
+   "numero": "29",
+   "gbosID": 622395,
+   "titulo": "Pediatric Dermatology. Case 29"
+  },
+  {
+   "pos": 170,
+   "area": "Pediatric Dermatology",
+   "numero": "30",
+   "gbosID": 622393,
+   "titulo": "Pediatric Dermatology. Case 30"
+  },
+  {
+   "pos": 171,
+   "area": "Surgical Dermatology",
+   "numero": "01",
+   "gbosID": 614446,
+   "titulo": "Surgical Dermatology. Case 01"
+  },
+  {
+   "pos": 172,
+   "area": "Surgical Dermatology",
+   "numero": "02",
+   "gbosID": 614445,
+   "titulo": "Surgical Dermatology. Case 02"
+  },
+  {
+   "pos": 173,
+   "area": "Surgical Dermatology",
+   "numero": "03",
+   "gbosID": 614444,
+   "titulo": "Surgical Dermatology. Case 03"
+  },
+  {
+   "pos": 174,
+   "area": "Surgical Dermatology",
+   "numero": "04",
+   "gbosID": 614443,
+   "titulo": "Surgical Dermatology. Case 04"
+  },
+  {
+   "pos": 175,
+   "area": "Surgical Dermatology",
+   "numero": "05",
+   "gbosID": 614442,
+   "titulo": "Surgical Dermatology. Case 05"
+  },
+  {
+   "pos": 176,
+   "area": "Surgical Dermatology",
+   "numero": "06",
+   "gbosID": 622383,
+   "titulo": "Surgical Dermatology. Case 06"
+  },
+  {
+   "pos": 177,
+   "area": "Surgical Dermatology",
+   "numero": "07",
+   "gbosID": 622382,
+   "titulo": "Surgical Dermatology. Case 07"
+  },
+  {
+   "pos": 178,
+   "area": "Surgical Dermatology",
+   "numero": "08",
+   "gbosID": 622380,
+   "titulo": "Surgical Dermatology. Case 08"
+  },
+  {
+   "pos": 179,
+   "area": "Surgical Dermatology",
+   "numero": "09",
+   "gbosID": 622378,
+   "titulo": "Surgical Dermatology. Case 09"
+  },
+  {
+   "pos": 180,
+   "area": "Surgical Dermatology",
+   "numero": "10",
+   "gbosID": 622377,
+   "titulo": "Surgical Dermatology. Case 10"
+  },
+  {
+   "pos": 181,
+   "area": "Surgical Dermatology",
+   "numero": "11",
+   "gbosID": 622374,
+   "titulo": "Surgical Dermatology. Case 11"
+  },
+  {
+   "pos": 182,
+   "area": "Surgical Dermatology",
+   "numero": "12",
+   "gbosID": 622373,
+   "titulo": "Surgical Dermatology. Case 12"
+  },
+  {
+   "pos": 183,
+   "area": "Surgical Dermatology",
+   "numero": "13",
+   "gbosID": 622371,
+   "titulo": "Surgical Dermatology. Case 13"
+  },
+  {
+   "pos": 184,
+   "area": "Surgical Dermatology",
+   "numero": "14",
+   "gbosID": 622370,
+   "titulo": "Surgical Dermatology. Case 14"
+  },
+  {
+   "pos": 185,
+   "area": "Surgical Dermatology",
+   "numero": "15",
+   "gbosID": 622368,
+   "titulo": "Surgical Dermatology. Case 15"
+  },
+  {
+   "pos": 186,
+   "area": "Surgical Dermatology",
+   "numero": "16",
+   "gbosID": 622367,
+   "titulo": "Surgical Dermatology. Case 16"
+  },
+  {
+   "pos": 187,
+   "area": "Surgical Dermatology",
+   "numero": "17",
+   "gbosID": 622366,
+   "titulo": "Surgical Dermatology. Case 17"
+  },
+  {
+   "pos": 188,
+   "area": "Surgical Dermatology",
+   "numero": "18",
+   "gbosID": 622363,
+   "titulo": "Surgical Dermatology. Case 18"
+  },
+  {
+   "pos": 189,
+   "area": "Surgical Dermatology",
+   "numero": "19",
+   "gbosID": 622361,
+   "titulo": "Surgical Dermatology. Case 19"
+  },
+  {
+   "pos": 190,
+   "area": "Surgical Dermatology",
+   "numero": "20",
+   "gbosID": 622359,
+   "titulo": "Surgical Dermatology. Case 20"
+  },
+  {
+   "pos": 191,
+   "area": "Surgical Dermatology",
+   "numero": "21",
+   "gbosID": 622357,
+   "titulo": "Surgical Dermatology. Case 21"
+  },
+  {
+   "pos": 192,
+   "area": "Surgical Dermatology",
+   "numero": "22",
+   "gbosID": 622355,
+   "titulo": "Surgical Dermatology. Case 22"
+  },
+  {
+   "pos": 193,
+   "area": "Surgical Dermatology",
+   "numero": "23",
+   "gbosID": 622354,
+   "titulo": "Surgical Dermatology. Case 23"
+  },
+  {
+   "pos": 194,
+   "area": "Surgical Dermatology",
+   "numero": "24",
+   "gbosID": 622352,
+   "titulo": "Surgical Dermatology. Case 24"
+  },
+  {
+   "pos": 195,
+   "area": "Surgical Dermatology",
+   "numero": "25",
+   "gbosID": 622351,
+   "titulo": "Surgical Dermatology. Case 25"
+  },
+  {
+   "pos": 196,
+   "area": "Surgical Dermatology",
+   "numero": "26",
+   "gbosID": 622350,
+   "titulo": "Surgical Dermatology. Case 26"
+  },
+  {
+   "pos": 197,
+   "area": "Surgical Dermatology",
+   "numero": "27",
+   "gbosID": 622348,
+   "titulo": "Surgical Dermatology. Case 27"
+  },
+  {
+   "pos": 198,
+   "area": "Surgical Dermatology",
+   "numero": "28",
+   "gbosID": 622347,
+   "titulo": "Surgical Dermatology. Case 28"
+  },
+  {
+   "pos": 199,
+   "area": "Surgical Dermatology",
+   "numero": "29",
+   "gbosID": 622345,
+   "titulo": "Surgical Dermatology. Case 29"
+  },
+  {
+   "pos": 200,
+   "area": "Surgical Dermatology",
+   "numero": "30",
+   "gbosID": 622343,
+   "titulo": "Surgical Dermatology. Case 30"
+  }
+ ]
+}

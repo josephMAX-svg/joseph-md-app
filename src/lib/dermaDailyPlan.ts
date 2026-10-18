@@ -60,6 +60,12 @@
  *   (ENCAPS 2027-I: aplicar `modo:'encaps'` vía DERMA_TAPER_ENCAPS_FECHA cuando Joseph fije la fecha — v5.20: FIJADA = mié 10-mar-2027,
  *   pero la constante sigue en null → el taper ENCAPS aún NO está activo; activarlo es decisión pendiente).
  *
+ * ⚠ v6.02c (18-oct-2026 · E3 · «qué · cuánto · cómo»): sin cambio de fechas, d, casoIds ni bancos. (1) dermaCasoArea() re-mapeado al
+ *   orden REAL del listado de casos (Path 1-30 · Med 31-140 · Peds 141-170 · Surg 171-200; ver el bloque CASOS). (2) La guía de cada sesión
+ *   (45′ en pasos con minutos, plan A AccessDerma / plan B con el acceso remoto caducado) vive en src/lib/dermaGuia.ts + dermaGuiaDatos.ts
+ *   (GENERADO por DATA/DERMATOLOGIA/guia/gen_derma_guia.js): d1-d5 curadas, el resto por regla desde estas filas.
+ *   (3) Lectura de d1-d4: de la PORTADA del libro al capítulo exacto (índices leídos el 18-oct, accessderma_clinica_tocs.json): d1 Guidebook
+ *   Ch 2 (el Color Atlas 9e no tiene capítulo de enfoque, solo «How to Use this Book») · d2 Guidebook Ch 11 · d3 Fitzpatrick 9e Ch 15 · d4 Taylor & Kelly 3e Ch 1.
  * ⚠ v6.02 (17-oct-2026 · corrimiento D1 = lun 19-oct: no se estudió lun 12 → vie 16-oct): el lun 19-oct es día-Derma por paridad → D1
  *   Derma = LUN 19-OCT-2026 (Derma pierde 2 ranuras, mar 13 y jue 15-oct; nada se recorta) → D73 = VIE 14-MAY-2027. ALIVIO F2 d44-d49 = jue 18-feb
  *   → jue 4-mar (d47 vie 26-feb = día del SIM 100Q #7, 11:00-13:00) · d50 lun 8-mar · d51 mié 10-mar · d52 mar 16-mar (reinicio del Step 1) ·
@@ -239,13 +245,15 @@ export function dermaBancoDeUrl(url: string | undefined | null): DermaBancoKey |
  * CASOS · "Dermatology Cases for Board Review" (AccessDerma groupid 1546)
  * id = posición 1-200 en el listado del banco; área según los 4 apartados reales
  * (Medical 110 · Dermatopathology 30 · Pediatric 30 · Surgical 30 — dermaSourcesData.ts).
- * ⚠ A VERIFICAR (5-sep): que el listado de cases.aspx?groupid=1546 esté ordenado por área en
- * ese orden (Med 1-110 · Path 111-140 · Peds 141-170 · Surg 171-200); si no, re-mapear
- * dermaCasoArea() sin tocar DERMA_CASO_ORDEN.
+ * ✓ VERIFICADO v6.02c (18-oct-2026, listado real leído con la sesión de Joseph → DATA/DERMATOLOGIA/_scrape/accessderma_cases1546.json):
+ * el listado NO va Med→Path→Peds→Surg (supuesto del 5-sep) sino Dermatopathology 1-30 · Medical 31-140 · Pediatric 141-170 ·
+ * Surgical 171-200 → dermaCasoArea() re-mapeado SIN tocar DERMA_CASO_ORDEN (las sesiones siguen con los mismos ids; solo cambia la
+ * etiqueta de área de los ids 1-30 y 111-140; los recuentos por área de la primera pasada y del ciclo 2 coinciden: 88/21/26/29 y
+ * 22/9/4/1). Cada id abre su caso directo con dermaGuia.dermaCasoUrl(id) (CaseContent.aspx?gbosID=…).
  * ────────────────────────────────────────────────────────────────────────── */
 export const DERMA_CASOS_META = { total: 200, med: 110, path: 30, peds: 30, surg: 30, groupid: 1546 } as const;
 export function dermaCasoArea(id: number): DermaAreaCORE {
-  return id <= 110 ? 'Med' : id <= 140 ? 'Path' : id <= 170 ? 'Peds' : 'Surg';
+  return id <= 30 ? 'Path' : id <= 140 ? 'Med' : id <= 170 ? 'Peds' : 'Surg'; // v6.02c: orden REAL del listado (antes Med 1-110 · Path 111-140)
 }
 export const DERMA_CASOS: DermaCaso[] = Array.from({ length: 200 }, (_, i) => ({ id: i + 1, area: dermaCasoArea(i + 1) }));
 /**
@@ -451,19 +459,19 @@ const PMD = (n: number): MatLink => {
 export const DERMA_DIAS: DiaDerma[] = [
   // ── MÓDULO A · Fundamentos / morfología (🔴 el idioma del caso ciego, semanas 1-3 del élite) ──
   { d: 1, fecha: '2026-10-19', bloque: B.A, bKey: 'A', tier: 'CRIT', sub: 'Lesiones elementales 1ª/2ª: el vocabulario del paso ① (describir ANTES de diagnosticar)', referente: null,
-    access: CASO, qbankly: rPIC, promir: null, extra: { t: "Fitzpatrick's Color Atlas 9e · approach al diagnóstico", url: book(3309) }, casoIds: [192, 43],
+    access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Guidebook to Dermatologic Diagnosis · Ch 2 An Approach to Primary Lesions (v6.02c: el Color Atlas 9e no tiene capítulo de enfoque)', url: `${MH}/content.aspx?bookid=2960&sectionid=248574793` }, casoIds: [192, 43],
     morfologia: 'Mácula → Tumor', sitio: 'Difuso', ddx: ['Mácula vs pápula', 'Placa vs nódulo', 'Vesícula vs pústula', 'Erosión vs úlcera'],
     atlasUrl: `${DN}/topics/terminology`, dermatoscopiaImg: DSA },
   { d: 2, fecha: '2026-10-21', bloque: B.A, bKey: 'A', tier: 'CRIT', sub: 'Color, distribución y configuración (anular, herpetiforme, lineal/Blaschko) — completa la descripción estándar', referente: null,
-    access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Guidebook to Dermatologic Diagnosis', url: book(2960) }, casoIds: [112, 166],
+    access: CASO, qbankly: rPIC, promir: null, extra: { t: 'Guidebook to Dermatologic Diagnosis · Ch 11 Shape, Configuration, and Grouping of Lesions', url: `${MH}/content.aspx?bookid=2960&sectionid=248575828` }, casoIds: [112, 166],
     morfologia: 'Mácula', sitio: 'Difuso', ddx: ['Anular: tiña vs granuloma anular vs eritema anular centrífugo', 'Herpetiforme: HSV vs dermatitis herpetiforme', 'Lineal/Blaschko: liquen estriado vs nevus epidérmico', 'Dermatomal: zóster'],
     atlasUrl: `${DN}/topics/terminology`, dermatoscopiaImg: DSP.red },
   { d: 3, fecha: '2026-10-23', bloque: B.A, bKey: 'A', tier: 'ALTA', sub: 'Estructura de la piel: epidermis → BMZ → dermis → anejos (la base de toda tarjeta de MECANISMO)', referente: null,
-    access: CASO, qbankly: rPIC, promir: PMD(1), extra: { t: "Fitzpatrick's Dermatology 9e · Structure & Function", url: book(2570) }, casoIds: [25, 165],
+    access: CASO, qbankly: rPIC, promir: PMD(1), extra: { t: "Fitzpatrick's Dermatology 9e · Ch 15 Epidermal and Dermal Adhesion (Part 2 Structure and Function)", url: `${MH}/content.aspx?bookid=2570&sectionid=210416355` }, casoIds: [25, 165],
     morfologia: 'Escama', sitio: 'Difuso', ddx: ['Epidermis: espongiosis (eccema) vs acantosis (psoriasis)', 'BMZ: ampolla subepidérmica (penfigoide)', 'Dermis: habón (urticaria) vs nódulo (paniculitis)', 'Anejos: acné vs hidradenitis'],
     atlasUrl: `${DN}/topics/the-structure-of-normal-skin`, histoUrl: 'https://www.dermpathatlas.com/', dermatoscopiaImg: DSA },
   { d: 4, fecha: '2026-10-27', bloque: B.A, bKey: 'A', tier: 'CRIT', sub: 'Fototipos I–VI + piel de color: cómo cambian los signos (eje Perú · conecta con L4/L5 de research)', referente: null,
-    access: CASO, qbankly: rPIC, promir: null, extra: { t: "Taylor & Kelly's Skin of Color 3e", url: book(3609) }, casoIds: [21, 194],
+    access: CASO, qbankly: rPIC, promir: null, extra: { t: "Taylor & Kelly's Skin of Color 3e · Ch 1 Defining Skin of Color", url: `${MH}/content.aspx?bookid=3609&sectionid=301535746` }, casoIds: [21, 194],
     morfologia: 'Mácula', sitio: 'Difuso', fototipo: 'Eje del atlas: I–VI · eritema, descriptores y PIH cambian en fototipos IV–VI',
     ddx: ['Eritema en fototipo V-VI: violáceo/gris, no rojo', 'PIH vs melasma vs liquen plano pigmentoso', 'Hipopigmentación: pitiriasis alba vs vitíligo vs versicolor', 'Queloide vs cicatriz hipertrófica'],
     atlasUrl: `${DN}/topics/skin-phototype`, dermatoscopiaImg: DSP.glob, puenteResearch: PR_L5(SR2_NOTA) },

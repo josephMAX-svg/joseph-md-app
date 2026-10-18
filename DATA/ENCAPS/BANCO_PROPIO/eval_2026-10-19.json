@@ -22,7 +22,7 @@
    "sub_eje": null
   },
   "modo": "D1 del régimen (sin sesión anterior): 5Q de fallos previos del registro, críticos primero",
-  "lista_negra_2026_II": "VIGENTE",
+  "lista_negra_pretest": "VIGENTE",
   "realineado": [
    {
     "de": "2026-10-05",
@@ -47,6 +47,15 @@
     "a": "2026-10-19",
     "el": "2026-10-17",
     "motivo": "corrimiento v6.02 (D1 = 2026-10-19, «todo corre a partir del 19»; no se estudió lun 12 → vie 16-oct): la sesión «banqueo 1 (D1)» pasa del lunes 2026-10-12 al lunes 2026-10-19 (+5 hábiles = +7 días, mismo día de la semana y mismo dia del plan); ítems intactos, sin regenerar. Sigue siendo la eval del D1 (sin sesión anterior → 5Q de fallos previos)"
+   }
+  ],
+  "refrescado": [
+   {
+    "el": "2026-10-18",
+    "cambios": [
+     "marca de lista negra → _meta.lista_negra_pretest («VIGENTE»)"
+    ],
+    "motivo": "textos re-sincronizados desde la fuente del pool con gen_encaps_minisim.js --refrescar; ids, orden, claves y selección intactos"
    }
   ]
  },

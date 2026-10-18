@@ -5,7 +5,7 @@
  "fecha": "2026-10-20",
  "codigo": "MIX",
  "tema": "pre-test de arranque · 5Q × 4 críticos (II-5 · I-4 · IV-1+IV-2 · II-4) · parte 2 · críticos de la semana B del ciclo",
- "fuente_preguntas": "ítems reales ENCAPS/SERUMS 2024-2A · 2025-1A · 2025-2 con clave oficial (BANCO_PROPIO: set) · el examen de agosto de 2026 queda fuera (lista negra hasta el pre-test de febrero)",
+ "fuente_preguntas": "ítems reales ENCAPS/SERUMS 2024-2A · 2025-1A · 2025-2 con clave oficial (BANCO_PROPIO: set) · el examen reservado como pre-test de la intensiva queda fuera (lista negra)",
  "n": 20,
  "seg_por_q": 72,
  "umbral": 70,
@@ -129,7 +129,7 @@
    "ids_del_banco_sustituido": 0
   },
   "avisos": [],
-  "lista_negra_2026_II": "VIGENTE: ningún ítem deriva del examen de agosto de 2026",
+  "lista_negra_pretest": "VIGENTE: ningún ítem deriva del examen reservado como pre-test",
   "rechazados": [],
   "registro": "export → --registrar <json> --append → ronda tipo 'pretest' con preguntas[] (codigo MIX) que gen_encaps_semana.js reparte por código: n = 5 por crítico para el override de la semana siguiente al arranque",
   "realineado": [
@@ -156,6 +156,16 @@
     "a": "2026-10-20",
     "el": "2026-10-17",
     "motivo": "corrimiento v6.02 (D1 = 2026-10-19, «todo corre a partir del 19»; no se estudió lun 12 → vie 16-oct): la sesión «banqueo 2 (D2)» pasa del martes 2026-10-13 al martes 2026-10-20 (+5 hábiles = +7 días, mismo día de la semana y mismo dia del plan); ítems intactos, sin regenerar. Sigue sustituyendo el contenido del banco del D2 (banco_2026-10-20)"
+   }
+  ],
+  "refrescado": [
+   {
+    "el": "2026-10-18",
+    "cambios": [
+     "marca de lista negra → _meta.lista_negra_pretest («VIGENTE: ningún ítem deriva del examen reservado como pre-test»)",
+     "fuente_preguntas: cola de lista negra con texto neutro"
+    ],
+    "motivo": "textos re-sincronizados desde la fuente del pool con gen_encaps_minisim.js --refrescar; ids, orden, claves y selección intactos"
    }
   ]
  },

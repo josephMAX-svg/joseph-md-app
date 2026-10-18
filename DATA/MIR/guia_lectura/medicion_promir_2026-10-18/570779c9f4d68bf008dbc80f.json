@@ -1,0 +1,250 @@
+{
+ "titulo": "7.- Evaluación de pruebas diagnósticas",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc80f",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "7 Evaluación de pruebas diagnósticas",
+   "palabras": 42,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Introducción",
+   "palabras": 394,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Diagnóstico y cribado",
+   "palabras": 418,
+   "palabrasTabla": 0,
+   "citasMIR": 5,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2023-043",
+    "2017-222",
+    "2012-197",
+    "2006-213",
+    "2014-194"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Evaluación de la exactitud diagnóstica",
+   "palabras": 56,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.1. Diseño básico de evaluación de la validez",
+   "palabras": 735,
+   "palabrasTabla": 61,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2018-130"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 7-1. Tabulación cruzada de los resultados dicotómicos de la prueba evaluada y del es"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.2. Índices de validez diagnóstica",
+   "palabras": 1670,
+   "palabrasTabla": 0,
+   "citasMIR": 34,
+   "citasMIRdesde2015": 9,
+   "citasMIRdesde2020": 4,
+   "citas": [
+    "2003-216",
+    "2007-217",
+    "2008-209",
+    "2008-197",
+    "2009-196",
+    "2010-190",
+    "2011-194",
+    "2012-198",
+    "2013-206",
+    "2013-207",
+    "2014-235",
+    "2015-206",
+    "2020-050",
+    "2021-044",
+    "2003-214",
+    "2003-215",
+    "2005-215",
+    "2006-214",
+    "2009-195",
+    "2010-191",
+    "2010-189",
+    "2011-191",
+    "2011-192",
+    "2011-193",
+    "2012-195",
+    "2014-195",
+    "2016-129",
+    "2018-129",
+    "2018-131",
+    "2022-045",
+    "2012-196",
+    "2019-177",
+    "2020-052",
+    "2014-131"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 2
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.3. Curvas ROC",
+   "palabras": 387,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2023-046",
+    "2007-217"
+   ],
+   "figs": 2,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Evaluación de la reproducibilidad de una prueba",
+   "palabras": 43,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.1. Diseño básico",
+   "palabras": 186,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.2. Índice kappa",
+   "palabras": 572,
+   "palabrasTabla": 33,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2012-176"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 7-2. Acuerdo observado y esperado Observador 2 Total Normal Anormal No Observador 1 "
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.3. Coeficiente de correlación intraclase",
+   "palabras": 155,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2010-175"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.4. Método de Bland-Altman",
+   "palabras": 246,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Estudios experimentales: Ensayo clínico",
+   "href": "570779c9f4d68bf008dbc7b1"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Medicina Basada en la Evidencia e Investigación de síntesis",
+   "href": "570779c9f4d68bf008dbc849"
+  }
+ ],
+ "totPalabras": 4904,
+ "totPalabrasTabla": 94,
+ "totCitas": 44,
+ "totFigs": 5,
+ "totTablas": 2,
+ "totRecuerda": 2,
+ "medido": "2026-10-18 · chrome-devtools en el Chrome de Joseph (sesión ProMIR) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js"
+}
