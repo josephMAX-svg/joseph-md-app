@@ -171,6 +171,20 @@ function leerRegistro() {
   const debiles = new Set(Object.entries(reg.resumen_por_subtema || {}).filter(([, v]) => /debil/i.test(v.estado || '')).map(([c]) => c));
   return { fallos, debiles, pretestHecho, reg };
 }
+// P2 (propuesta F1, 18-oct-2026): fallos RECIENTES por código y código:sub-eje (rondas con preguntas[] de los 7 días previos a `fecha`;
+// fallo = ok false o acierto NO ciego —confianza adivinada/dudosa—). Los exports del runner traen codigo + sub_eje por pregunta.
+function fallosRecientes(reg, fecha) {
+  const desde = addDays(fecha, -7); const porCod = new Map(), porSub = new Set();
+  for (const r of reg.rondas || []) {
+    for (const q of r.preguntas || []) {
+      const f = q.fecha || r.fecha; if (!f || f < desde || f >= fecha) continue;
+      if (!(q.ok === false || q.acierto_por_suerte === true)) continue;
+      const c = poolCode(q.codigo || ''); if (!c || c === 'MIX') continue;
+      porCod.set(c, (porCod.get(c) || 0) + 1); if (q.sub_eje) porSub.add(c + ':' + q.sub_eje);
+    }
+  }
+  return { porCod, porSub };
+}
 const enListaNegra = (it) => /2026-2\b|2026-II/i.test([it.verificado_contra, it.molde, it.fuente].join(' '));
 // v6.02d (18-oct-2026, F1): lo que ve Joseph (runner HTML + su .json + public/encaps/bp) NO nombra el examen reservado como pre-test
 // (ni su proceso ni lo que preguntó ese comité): las marcas de lista negra de las salidas usan la clave `_meta.lista_negra_pretest`
@@ -204,6 +218,17 @@ function usadosPrevios(base, ignorar = new Set()) {
     try { const doc = readJSON(path.join(BANCO, f)); if (estaSustituida(doc)) continue; for (const it of doc.items || []) usados.add(it.id); } catch (e) { /* ignorar */ }
   }
   return usados;
+}
+// P1 (propuesta F1, 18-oct-2026): ids de las salidas con fecha >= `fecha` (salvo `base` y las de `ignorar`): el fallback NO los re-testea
+// (serían spoiler del mini-sim / banco de los próximos días, ya armados).
+function idsDesde(fecha, base, ignorar = new Set()) {
+  const fut = new Set();
+  for (const f of fs.readdirSync(BANCO)) {
+    if (!USADOS_RE.test(f) || f === `${base}.json` || ignorar.has(f)) continue;
+    const fe = (f.match(/(\d{4}-\d\d-\d\d)\.json$/) || [])[1]; if (!fe || fe < fecha) continue;
+    try { const doc = readJSON(path.join(BANCO, f)); if (estaSustituida(doc)) continue; for (const it of doc.items || []) fut.add(it.id); } catch (e) { /* ignorar */ }
+  }
+  return fut;
 }
 // una línea de INSERT de study_schedule → {dia, fecha, weekday, tipo, codigo, subtema, secundarios[], extra}
 function parseFilaSQL(line) {
@@ -442,14 +467,14 @@ function modoMinisim(fecha) {
 // BANCO DEL DÍA (lun-jue 16:30-17:10): 16-20Q del código + sub-eje de la fila banqueo1h + 4-5Q del secundario
 // ── v5.14 (19-sep): CADENA DE FALLBACK — una eval NUNCA sale con 0Q (ver cabecera). Devuelve la cadena usada; muta `items`. ──
 const esReal = (it) => it.origen === 'examen_real' || /examen real/i.test(String(it.fuente || ''));
-function completarConFallback(items, objetivo, { pool, usados, codigoPool, area, subEje, r, excluir = new Set() }) {
+function completarConFallback(items, objetivo, { pool, usados, codigoPool, area, subEje, r, excluir = new Set(), futuro = new Set() }) {
   const cadena = [];
   const tiene = new Set(items.map((x) => x.id));
   const usado = (x) => usados.has(x.id), libre = (x) => !usados.has(x.id);
   const otroSub = (l) => shuffle(l, r).sort((a, b) => ((a.sub_eje === subEje) - (b.sub_eje === subEje))); // otros sub-ejes primero (sort estable)
   const toma = (paso, fuente, lista) => {
     if (items.length >= objetivo) return;
-    const l = lista.filter((x) => !tiene.has(x.id) && !excluir.has(x.id)).slice(0, objetivo - items.length);
+    const l = lista.filter((x) => !tiene.has(x.id) && !excluir.has(x.id) && !futuro.has(x.id)).slice(0, objetivo - items.length); // P1
     if (!l.length) return;
     for (const it of l) { items.push({ ...it, retest: usado(it) || undefined, fallback: paso }); tiene.add(it.id); }
     cadena.push({ paso, fuente, n: l.length });
@@ -502,7 +527,7 @@ function modoBanco(fecha, ignorar) {
   let fallback = null;
   if (principal.length < 16) {
     const n0 = principal.length;
-    const cadena = completarConFallback(principal, 16, { pool, usados, codigoPool, area: areaDe(fila.codigo), subEje, r });
+    const cadena = completarConFallback(principal, 16, { pool, usados, codigoPool, area: areaDe(fila.codigo), subEje, r, futuro: idsDesde(fecha, `banco_${fecha}`, ignorar) }); // P1
     fallback = { motivo: `pool libre de ${codigoPool}: ${n0}Q principal (mínimo 16)`, cadena, n_fallback: principal.length - n0 };
     avisos.push(`principal: solo ${n0}Q libres de ${codigoPool} en el pool (receta 16-20) → FALLBACK ${principal.length - n0}Q: ${textoCadena(cadena)}`);
   }
@@ -534,9 +559,10 @@ function modoEval(fecha, ignorar) {
   while (!filaAyer && back < 6) { back++; ayer = addDays(fecha, -back); filaAyer = filaSQL(ayer); }
   // D1 del régimen: no hay sesión anterior en el SQL → la eval anclada arranca en modo «fallos previos»
   if (!filaAyer) { ayer = null; filaAyer = { fecha: null, tipo: 'inicio_regimen', codigo: null, subtema: null, secundarios: [], extra: {} }; }
-  const { fallos, debiles, pretestHecho } = leerRegistro();
+  const { fallos, debiles, pretestHecho, reg } = leerRegistro();
   const { pool } = cargarPool(pretestHecho);
   const usados = usadosPrevios(`eval_${fecha}`, ignorar);
+  const rec = fallosRecientes(reg, fecha); // P2
   const r = rng(fecha + 'eval');
   const cand = shuffle(pool.filter((it) => !usados.has(it.id)), r);
   const esFalloPrevio = (it) => !!it.fallo_previo && (fallos.has(norm(it.fallo_previo)) || debiles.has(it.codigo));
@@ -549,6 +575,16 @@ function modoEval(fecha, ignorar) {
         : `sin código fijo ayer (${filaAyer.tipo}): 5Q de fallos previos del registro (otro enfoque), críticos primero`; // v6.01: reposición genérica del carril B
     const fp = cand.filter(esFalloPrevio).sort((a, b) => (CRITICOS_V3.includes(b.codigo) - CRITICOS_V3.includes(a.codigo)));
     items = fp.slice(0, 5);
+    // P2: después de los etiquetados, ítems libres del MISMO código + sub-eje que los fallos recientes, luego del mismo código
+    //     (más fallos primero, críticos primero); como mucho 2 por código para que la eval cubra varios focos
+    if (items.length < 5 && rec.porCod.size) {
+      const peso = (it) => (rec.porSub.has(poolCode(it.codigo) + ':' + it.sub_eje) ? 1000 : 0) + (rec.porCod.get(poolCode(it.codigo)) || 0) * 10 + (CRITICOS_V3.includes(it.codigo) ? 1 : 0);
+      const porCod = {}; for (const it of items) porCod[poolCode(it.codigo)] = (porCod[poolCode(it.codigo)] || 0) + 1;
+      for (const it of cand.filter((x) => rec.porCod.has(poolCode(x.codigo)) && !items.includes(x)).sort((a, b) => peso(b) - peso(a))) {
+        if (items.length >= 5) break; const c = poolCode(it.codigo); if ((porCod[c] || 0) >= 2) continue; items.push(it); porCod[c] = (porCod[c] || 0) + 1;
+      }
+      modo += ` · P2: ${[...rec.porCod.entries()].sort((a, b) => b[1] - a[1]).map(([c, n]) => c + '×' + n).join(' ')} fallados en los 7 días previos`;
+    }
     if (items.length < 5) items = items.concat(cand.filter((x) => CRITICOS_V3.includes(x.codigo) && !items.includes(x)).slice(0, 5 - items.length));
   } else {
     modo = `código de ayer ${filaAyer.codigo}: 3 cifras + 2 viñetas`;
@@ -564,7 +600,7 @@ function modoEval(fecha, ignorar) {
   let fallback = null;
   if (items.length < 5) {
     const n0 = items.length;
-    const cadena = completarConFallback(items, 5, { pool, usados, codigoPool: filaAyer.codigo ? poolCode(filaAyer.codigo) : null, area: filaAyer.codigo ? areaDe(filaAyer.codigo) : null, subEje: filaAyer.extra.sub_eje || null, r });
+    const cadena = completarConFallback(items, 5, { futuro: idsDesde(fecha, `eval_${fecha}`, ignorar), pool, usados, codigoPool: filaAyer.codigo ? poolCode(filaAyer.codigo) : null, area: filaAyer.codigo ? areaDe(filaAyer.codigo) : null, subEje: filaAyer.extra.sub_eje || null, r });
     fallback = { motivo: `pool libre de ${filaAyer.codigo || 'fallos previos'}: ${n0}Q (mínimo 5)`, cadena, n_fallback: items.length - n0 };
     console.warn(`⚠ eval ${fecha}: solo ${n0}Q libres de ${filaAyer.codigo || 'fallos previos'} → FALLBACK ${items.length - n0}Q: ${textoCadena(cadena)}`);
     if (!items.length) throw new Error(`eval ${fecha}: 0Q incluso tras la cadena de fallback (¿pool vacío?)`);
