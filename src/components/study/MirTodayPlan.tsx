@@ -896,7 +896,7 @@ function MantenimientoView({ dia, onPick, bump, sync }: { dia: DiaMIRMant; onPic
 }
 
 export default function MirTodayPlan() {
-  const iso = fechaPlanDe(todayISO()); // v6.02d: semana 1 corrida → fila de la fecha de plan
+  const iso = fechaPlanDe(todayISO(), 'mir'); // v6.02d: semana 1 corrida → fila de la fecha de plan
   const sesion = mirSesionDe(iso);
   const hoyD = planHoyD(MIR_DIAS, iso);
   const todayDia = mirDiaDe(iso) || MIR_DIAS.find((x) => x.d === hoyD) || MIR_DIAS[0];

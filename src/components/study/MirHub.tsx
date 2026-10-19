@@ -45,7 +45,7 @@ const TABS = [
 export default function MirHub() {
   const [sub, setSub] = useState('hoy');
   const done = loadDone('mir');
-  const hoyD = planHoyD(MIR_DIAS, fechaPlanDe(todayISO())); // v6.02d: semana 1 corrida → fila de la fecha de plan
+  const hoyD = planHoyD(MIR_DIAS, fechaPlanDe(todayISO(), 'mir')); // v6.02d: semana 1 corrida → fila de la fecha de plan
   const glob = progresoGlobal(MIR_DIAS, new Set(done));
   const readiness = mirReadiness(); // derivado del log de evals (mini-MIR > cierres > ancladas), no hardcodeado
   const iso = todayISO();

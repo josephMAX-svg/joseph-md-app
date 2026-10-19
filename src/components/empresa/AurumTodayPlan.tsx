@@ -40,7 +40,7 @@ function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
 /** «Hoy» para ELEGIR LA FILA del plan (AurumTodayPlan · AurumHub): la fecha de plan, no la del reloj. */
 export function aurumTodayISO(): string {
   // v6.02d: semana 1 corrida → fila de la fecha de plan
-  try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return fechaPlanDe(`${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`); }
+  try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return fechaPlanDe(`${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`, 'aurum'); }
   catch { return AURUM_PLAN_META.inicio; }
 }
 function fmtFecha(iso: string): string {

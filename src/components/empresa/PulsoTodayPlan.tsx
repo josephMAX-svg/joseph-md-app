@@ -237,7 +237,7 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
 }
 
 export default function PulsoTodayPlan() {
-  const iso = fechaPlanDe(todayISO()); // v6.02d: semana 1 corrida → fila de la fecha de plan
+  const iso = fechaPlanDe(todayISO(), 'business'); // v6.02d: semana 1 corrida → fila de la fecha de plan
   const hoyD = planHoyD(BIZ_DIAS, iso);
   const todayDia = bizDiaDe(iso) || BIZ_DIAS.find((x) => x.d === hoyD) || BIZ_DIAS[0];
   const [sel, setSel] = useState<number>(todayDia.d);

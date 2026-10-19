@@ -63,7 +63,7 @@ export default function UsmleHub() {
   const iso = todayISO();
   // v6.00: 2 tramos · en PAUSA no hay fila «hoy» (se muestra la posición del último día de F1)
   const pausa = enPausaStep1(iso);
-  const hoyD = pausa ? DIAS[DIAS.length - 1]!.d : planHoyD(DIAS_TODOS, fechaPlanDe(iso)); // v6.02d: semana 1 corrida → fila de la fecha de plan
+  const hoyD = pausa ? DIAS[DIAS.length - 1]!.d : planHoyD(DIAS_TODOS, fechaPlanDe(iso, 'usmle')); // v6.02d: semana 1 corrida → fila de la fecha de plan
   const posHoy = Math.max(1, DIAS_TODOS.findIndex((x) => x.d === hoyD) + 1);
   const glob = progresoGlobal(DIAS_TODOS, new Set(done));
   // Medición Palmerton (usmleScores): local al instante, Supabase al montar, y refresco cuando UsmleTodayPlan guarda.

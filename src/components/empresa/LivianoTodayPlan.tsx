@@ -233,7 +233,7 @@ function AnkiBlock({ cards, modulo, color }: { cards: LivAnkiCard[]; modulo: str
 }
 
 export default function LivianoTodayPlan({ onIrALogistica }: { onIrALogistica?: () => void } = {}) {
-  const iso = fechaPlanDe(todayISO()); // v6.02d: semana 1 corrida → fila de la fecha de plan (stamp() sigue con la fecha real)
+  const iso = fechaPlanDe(todayISO(), 'liviano'); // v6.02d: semana 1 corrida → fila de la fecha de plan (stamp() sigue con la fecha real)
   const hoyD = planHoyD(LIV_DIAS, iso);
   const todayDia = livDiaDe(iso) || LIV_DIAS.find((x) => x.d === hoyD) || LIV_DIAS[0];
   const [sel, setSel] = useState<number>(todayDia.d);

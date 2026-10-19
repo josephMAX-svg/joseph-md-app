@@ -225,8 +225,20 @@ function corridaS1De(s, F = fechasPorDefecto()) {
   const r = c.reparto[s];
   return r ? { tipo: 'reparto', de: r.de, partes: r.partes } : null;
 }
-/** Fecha de PLAN de un día real (gemelo node de fechaPlanDe del .ts). */
-const fechaPlanDe = (s, F = fechasPorDefecto()) => { const c = corridaS1De(s, F); return c && c.tipo !== 'sin_sesion' ? c.de : s; };
+/** Ids de bloque de plantillasV6 de cada frente (para elegir la parte del reparto que le toca a una vista). Mismo literal que el .ts. */
+const BLOQUES_POR_FRENTE = {
+  usmle: ['anki', 'usmle', 'eval', 'anki-sab', 'anki-dom'], mir: ['mir'], encaps: ['encaps'], 'research-derma': ['rd'], aurum: ['aurum'],
+  liviano: ['liv'], synapse: ['syn', 'pc', 'feynman'], vibecoding: ['vibe', 'pc', 'feynman'], business: ['biz'], revision: ['revision'],
+};
+/** Fecha de PLAN de un día real (gemelo node de fechaPlanDe del .ts). Con `frente`, en un día de reparto = la parte con un bloque de ese frente. */
+const fechaPlanDe = (s, F = fechasPorDefecto(), frente) => {
+  const c = corridaS1De(s, F);
+  if (!c || c.tipo === 'sin_sesion') return s;
+  if (c.tipo === 'alias' || !frente) return c.de;
+  const ids = BLOQUES_POR_FRENTE[frente] || [];
+  const parte = c.partes.find((p) => Object.keys(p.bloques).some((id) => ids.includes(id)));
+  return parte ? parte.de : c.de;
+};
 /** Contexto de derivación a partir del JSON. */
 function ctxDe(F) {
   return {
@@ -687,10 +699,23 @@ export function corridaS1De(iso: string): CorridaS1 | null {
   const r = c.reparto[iso];
   return r ? { tipo: 'reparto', de: r.de, partes: r.partes } : null;
 }
-/** Fecha de PLAN que toca un día real (vistas por frente): alias → el plan del día anterior · reparto (sáb/dom) → el día repartido · resto → la propia. */
-export function fechaPlanDe(iso: string): string {
+/** Ids de bloque de plantillasV6 de cada frente (en un día de reparto, la vista de un frente sigue a la parte que tiene su bloque). */
+export const BLOQUES_POR_FRENTE: Record<string, string[]> = {
+  usmle: ['anki', 'usmle', 'eval', 'anki-sab', 'anki-dom'], mir: ['mir'], encaps: ['encaps'], 'research-derma': ['rd'], aurum: ['aurum'],
+  liviano: ['liv'], synapse: ['syn', 'pc', 'feynman'], vibecoding: ['vibe', 'pc', 'feynman'], business: ['biz'], revision: ['revision'],
+};
+/**
+ * Fecha de PLAN que toca un día real (vistas por frente): alias → el plan del día anterior · reparto (sáb/dom) → con \`frente\`, la fecha
+ * de plan de la parte que lleva un bloque de ese frente ese día (p. ej. dom 25 USMLE → el Anki del propio domingo; sáb 24 USMLE → vie 23);
+ * si ese día no tiene bloque del frente, el día repartido (su sesión es el otro día del fin de semana) · resto → la propia.
+ */
+export function fechaPlanDe(iso: string, frente?: string): string {
   const c = corridaS1De(iso);
-  return c && c.tipo !== 'sin_sesion' ? c.de : iso;
+  if (!c || c.tipo === 'sin_sesion') return iso;
+  if (c.tipo === 'alias' || !frente) return c.de;
+  const ids = BLOQUES_POR_FRENTE[frente] ?? [];
+  const parte = c.partes.find((p) => Object.keys(p.bloques).some((id) => ids.includes(id)));
+  return parte ? parte.de : c.de;
 }
 `;
 }
@@ -712,6 +737,7 @@ function compararTS(T, F, d) {
   eq('STEP1_SEMANAS', T.STEP1_SEMANAS, d.step1Semanas);
   eq('SEMANAS_F1', T.SEMANAS_F1, d.semanasF1);
   eq('DIAS_PROTEGIDOS', [...T.DIAS_PROTEGIDOS], F.protegidos.map((p) => p.fecha));
+  eq('BLOQUES_POR_FRENTE', T.BLOQUES_POR_FRENTE, BLOQUES_POR_FRENTE);
   eq('reinicioStep1()', T.reinicioStep1(), d.reinicio);
   eq('protegidosDe()', T.protegidosDe(), d.protegidos);
   eq('ritualDe()', T.ritualDe(), d.ritual);
@@ -729,6 +755,7 @@ function compararTS(T, F, d) {
     eq('semanaStep1 ' + s, T.semanaStep1(s, extras), semanaStep1(s, extras, F));
     eq('corridaS1De ' + s, T.corridaS1De(s), corridaS1De(s, F));
     eq('fechaPlanDe ' + s, T.fechaPlanDe(s), fechaPlanDe(s, F));
+    for (const fr of [...Object.keys(BLOQUES_POR_FRENTE), 'otro']) eq(`fechaPlanDe ${s} ${fr}`, T.fechaPlanDe(s, fr), fechaPlanDe(s, F, fr));
     if (err.length > 20) break;
   }
   // derivaciones en los escenarios (A5) × los 3 exámenes de DJ-1 × SERUMS 3-may / 6-may (sensibilidad §B4.3) + un ENCAPS en sábado
@@ -812,7 +839,7 @@ module.exports = {
   // fases y predicados (F opcional = el JSON validado)
   fasesV6, faseV6, esProtegido, enPausaStep1, esDiaPlan, semanaStep1,
   // v6.02d: semana 1 corrida (alias en la consulta)
-  comprobarCorridaS1, corridaS1De, fechaPlanDe,
+  comprobarCorridaS1, corridaS1De, fechaPlanDe, BLOQUES_POR_FRENTE,
 };
 
 if (require.main === module) main();

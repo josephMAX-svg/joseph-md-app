@@ -14,7 +14,7 @@ import { vibeDiaDe, vibeProyectoEnFecha, vibeTaperEnFecha, vibeJournalUrl, VIBE_
 import {
   semanaStep1, semanaLabel, leerModo, guardarModo, minimoPorFrente, MODO_INFO, ModoNivel, Frente,
 } from '../../lib/homeBriefing';
-import { FECHAS_V6, faseV6, faseV6Info, fechaPlanDe } from '../../lib/fechasV6';
+import { FECHAS_V6, faseV6, faseV6Info, fechaPlanDe, corridaS1De } from '../../lib/fechasV6';
 import type { Turno } from '../../lib/fechasV6';
 import { plantillaDelDia } from '../../lib/plantillasV6';
 import type { BloqueV6, PlanBloque, PlantillaDia } from '../../lib/plantillasV6';
@@ -167,13 +167,15 @@ const enFranja = (franja: string, ahora: number): boolean => { const m = /^(\d{2
 
 /** Etiqueta corta MIR del día (para el briefing/status bar). null si no hay sesión MIR (v6.00: incluye mantenimiento y extensión). */
 export function mirLabelDe(iso: string): string | null {
-  const s = mirSesionDe(fechaPlanDe(iso)); // v6.02d: semana 1 corrida → la sesión de la fecha de plan
+  if (corridaS1De(iso)?.tipo === 'sin_sesion') return null; // v6.02d: día corrido (lun 19) → sin sesión
+  const s = mirSesionDe(fechaPlanDe(iso, 'mir')); // v6.02d: semana 1 corrida → la sesión de la fecha de plan
   if (!s) return null;
   return s.tipo === 'plan' ? `MIR D${s.dia.d} · ${s.dia.asignatura}` : `MIR M${s.dia.d}/${MIR_MANT_META.totalDias} · ${s.dia.asignatura}`;
 }
 /** Etiqueta corta USMLE del día (para el briefing/status bar). null si no hay fila hoy · v6.00: «PAUSA» entre el 31-dic y el reinicio. */
 export function usmleLabelDe(iso: string): string | null {
-  const e = estadoUSMLE(fechaPlanDe(iso)); // v6.02d: semana 1 corrida → la fila de la fecha de plan
+  if (corridaS1De(iso)?.tipo === 'sin_sesion') return null; // v6.02d: día corrido (lun 19) → sin sesión
+  const e = estadoUSMLE(fechaPlanDe(iso, 'usmle')); // v6.02d: semana 1 corrida → la fila de la fecha de plan
   if (e.estado === 'PAUSA') return 'USMLE · PAUSA (ENCAPS)';
   if (e.estado !== 'PLAN' || !e.exacto) return null;
   return `USMLE ${etiquetaDiaUSMLE(e.dia)} · ${e.dia.system}`;
@@ -343,7 +345,7 @@ function contenidoBloque(b: BloqueV6, p: PlantillaDia, iso: string): { tema: str
 }
 /** Contenido de un bloque en su fecha y hora de PLAN (lo que era contenidoBloque hasta v6.02c). */
 function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema: string; sub: string; acciones: Accion[]; guias?: GuiaBloque[] } {
-  const us = p.usmle;
+  const us = p.usmle && (p.corrida !== 'reparto' || p.usmle.fecha === iso) ? p.usmle : null; // v6.02d: en el reparto, el Anki sáb/dom no es del D5
   switch (b.plan) {
     case 'vibecoding': {
       const vibeDia = vibeDiaDe(iso), vibeP = vibeProyectoEnFecha(iso), vibeT = vibeTaperEnFecha(iso);

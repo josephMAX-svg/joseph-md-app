@@ -37,7 +37,7 @@ export default function BrandHorario({ brand }: { brand: 'pulso' | 'pirqa' | 'te
   if (!plan) return null;
   const A = plan.accent;
   // El 70% de LIVIANO = lectura del plan 96 días + aplicación directa (contenido)
-  const lecturaHoy = brand === 'pulso' ? bizDiaDe(fechaPlanDe(todayISO())) : undefined; // v6.02d: semana 1 corrida → fila de la fecha de plan
+  const lecturaHoy = brand === 'pulso' ? bizDiaDe(fechaPlanDe(todayISO(), 'business')) : undefined; // v6.02d: semana 1 corrida → fila de la fecha de plan
   const libroHoy = lecturaHoy && lecturaHoy.libroN != null ? ESTUDIO_LIBROS.find((l) => l.n === lecturaHoy.libroN) : undefined;
 
   return (

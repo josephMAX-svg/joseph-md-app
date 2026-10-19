@@ -27,7 +27,7 @@ import { usmleAnkiDeck, ANKIWEB, sysTag, DERMA_STEP1_QUERY } from '../../lib/ank
 import { guiaUsmleDe, GUIA_USMLE_META } from '../../lib/usmleGuia';
 /** semana 1 estructurada (18-oct): en días de hito la hora del texto de la fila (p. ej. «UWSA1 … 09:00-13:00») cede a la de la guía (08:50-13:00). */
 function subConGuia(sub: string, fecha: string): string {
-  const hito = guiaUsmleDe(fecha).find((g) => /HITO/.test(g.titulo));
+  const hito = guiaUsmleDe(fecha).find((g) => /^HITO ·/.test(g.titulo)); // el bloque del hito, no «PREPARACIÓN DEL HITO 1/2» (fix 19-oct)
   if (!hito) return sub;
   return sub.replace(/\d{2}:\d{2}-\d{2}:\d{2}/, `${hito.franja.replace('–', '-')} · la guía manda`);
 }
@@ -771,7 +771,7 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
 }
 
 export default function UsmleTodayPlan() {
-  const iso = fechaPlanDe(todayISO()); // v6.02d: semana 1 corrida → fila de la fecha de plan
+  const iso = fechaPlanDe(todayISO(), 'usmle'); // v6.02d: semana 1 corrida → fila de la fecha de plan
   // v6.00: PAUSA (jue 31-dic → lun 15-mar) → sin «hoy» (planHoyD mostraría T1); si no, planHoyD sobre los 2 tramos.
   const pausa = enPausaStep1(iso);
   const hoyD = pausa ? -1 : planHoyD(DIAS_TODOS, iso);

@@ -402,7 +402,7 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   const obsHref = ses?.obsidian || encapsObsByTitle(today.subtema || tema, today.codigo || undefined);
   const ahoraMin = (() => { try { const d = new Date(); return d.getHours() * 60 + d.getMinutes(); } catch { return 0; } })();
   // v6.02d: semana 1 corrida → fila de la fecha de plan
-  const esHoyLima = (() => { try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return fechaPlanDe(`${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`) === String(today.fecha).slice(0, 10); } catch { return false; } })();
+  const esHoyLima = (() => { try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return fechaPlanDe(`${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`, 'encaps') === String(today.fecha).slice(0, 10); } catch { return false; } })();
 
   return (
     <View>

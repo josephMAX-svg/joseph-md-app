@@ -725,7 +725,7 @@ export function diaActual(examen: string, d1Override?: string, totalOverride?: n
   const total = totalOverride ?? (STUDY_TOTAL_DAYS[examen] ?? 71);
   if (!d1) return 1;
   // v6.02d: semana 1 corrida → fila de la fecha de plan (también con hoyOverride)
-  const hoy = fechaPlanDe(hoyOverride && ISO_RE.test(hoyOverride) ? hoyOverride : todayLimaISO());
+  const hoy = fechaPlanDe(hoyOverride && ISO_RE.test(hoyOverride) ? hoyOverride : todayLimaISO(), 'encaps');
   let diff = Math.floor((Date.parse(hoy) - Date.parse(d1)) / 86_400_000) + 1;
   // Las fechas libres no son días de plan: réstalas si ya pasaron.
   for (const s of STUDY_SKIP_DATES[examen] ?? []) {

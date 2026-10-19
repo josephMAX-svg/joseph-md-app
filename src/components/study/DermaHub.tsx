@@ -392,7 +392,7 @@ interface BloquePlanStat { bKey: DermaBloqueKey; bloque: string; total: number; 
  */
 function CerebroView({ hoyD, onJump, onGoDebilidades }: { hoyD: number; onJump: (d: number) => void; onGoDebilidades: () => void }) {
   const { entries } = useDermaLedger();
-  const hoy = fechaPlanDe(todayISO()); // v6.02d: semana 1 corrida → fila de la fecha de plan (próximo hito / pasados)
+  const hoy = fechaPlanDe(todayISO(), 'research-derma'); // v6.02d: semana 1 corrida → fila de la fecha de plan (próximo hito / pasados)
   const done = useMemo(() => new Set(loadDone('derma')), []);
   const ciego = useMemo(() => dermaPctCiego(entries), [entries]);
   const porModulo = useMemo(() => {
@@ -708,7 +708,7 @@ const ATLAS_NAV: { k: Sub; label: string; icon: React.ComponentProps<typeof Derm
 
 export default function DermaHub({ variant = 'mobile' }: { variant?: 'mobile' | 'desktop' }) {
   const isDesktop = variant === 'desktop';
-  const isoHoy = fechaPlanDe(todayISO()); // v6.02d: semana 1 corrida → fila de la fecha de plan (tipo, protegido y átomo de hoy)
+  const isoHoy = fechaPlanDe(todayISO(), 'research-derma'); // v6.02d: semana 1 corrida → fila de la fecha de plan (tipo, protegido y átomo de hoy)
   const hoy = diaEstudioTipo(new Date(isoHoy + 'T12:00:00')); // v6.02d: semana 1 corrida → tipo (Derma/Research) de la fecha de plan
   const [sub, setSub] = useState<Sub>('hoy');
   /** Salto externo a un día del plan (Cerebro/Atlas → HOY); `k` = nonce para repetir el mismo d. Se limpia al cambiar de pestaña. */

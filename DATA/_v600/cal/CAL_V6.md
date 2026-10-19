@@ -574,3 +574,12 @@ Comparación por script de los 200 eventos previos: los 13 tocados = texto y hor
 - Las instancias de las series USMLE (07:15 · 08:15 · 09:00 · 11:00 · 18:00), ANKI AM, vibecoding, SYNAPSE, AURUM, MIR y BUSINESS del mar 20 → vie 23 conservan su título genérico: el contenido del día de plan lo da la app (`fechaPlanDe`). El mar 20 esas instancias se solapan con el UWSA1, igual que el lun 19 en §12.
 - Las instancias del lun 19 (SYNAPSE 07:25, ALMUERZO 13:00, etc.) quedan como estaban (día pasado, sin sesión).
 - Ninguna serie recreada; RRULE/EXDATE intactos. Sin commit.
+
+### 13.4 Retoque final (lun 19-oct ~16:05, tras la verificación cruzada app ↔ Calendar)
+Solo títulos de 4 instancias (descripción intacta; respaldo `cal_bk/semana1b/_retoque_19oct_v602d.json`; notificaciones NONE):
+| id | antes → después |
+|---|---|
+| `papebi46etlo8glgfs5akd5mig_20261019T211500Z` | ENCAPS 1h Banqueo → «⏭ SIN SESIÓN HOY (corrido al mar 20 16:15: PRE-TEST 1/2) · 🇵🇪 ENCAPS» |
+| `tah7p61p2hvn4nktgp2msl2eno_20261019T221500Z` | LIVIANO Academia → «⏭ SIN SESIÓN HOY (corrido al mar 20 17:15) · ⚖️ LIVIANO» |
+| `c5e77csne1bnfps1iq7nqel84s_20261019T230000Z` | USMLE Eval → «⏭ SIN SESIÓN HOY (corrido al mar 20 18:00: Day-After UWSA1 1/6) · 🇺🇸 USMLE Eval» |
+| `c010a16rsl6h0lk4krr0a9r3rs_20261025T200000Z` | SYNAPSE repaso + PC domingo → «… semana corrida: la revisión S01 ya fue a las 11:45 → aquí solo el Feynman 10′ (opcional)» |

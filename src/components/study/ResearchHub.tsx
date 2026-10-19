@@ -587,7 +587,7 @@ function PanelView({ reg, onChange, infra, onToggleInfra, kpis, sync }: {
 
 export default function ResearchHub({ variant = 'mobile' }: { variant?: 'mobile' | 'desktop' }) {
   const isDesktop = variant === 'desktop';
-  const isoPlan = fechaPlanDe(isoHoy()); // v6.02d: semana 1 corrida → fila de la fecha de plan
+  const isoPlan = fechaPlanDe(isoHoy(), 'research-derma'); // v6.02d: semana 1 corrida → fila de la fecha de plan
   const hoy = diaEstudioTipo(new Date(isoPlan + 'T12:00:00')); // v6.02d: semana 1 corrida → tipo (Research/Derma) de la fecha de plan
   const [sub, setSub] = useState<Sub>('hoy');
   // Estado real de la Mesa editorial: caché localStorage 'jmd-research-entregables' + espejo Supabase research_entregables

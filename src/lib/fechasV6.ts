@@ -509,8 +509,21 @@ export function corridaS1De(iso: string): CorridaS1 | null {
   const r = c.reparto[iso];
   return r ? { tipo: 'reparto', de: r.de, partes: r.partes } : null;
 }
-/** Fecha de PLAN que toca un día real (vistas por frente): alias → el plan del día anterior · reparto (sáb/dom) → el día repartido · resto → la propia. */
-export function fechaPlanDe(iso: string): string {
+/** Ids de bloque de plantillasV6 de cada frente (en un día de reparto, la vista de un frente sigue a la parte que tiene su bloque). */
+export const BLOQUES_POR_FRENTE: Record<string, string[]> = {
+  usmle: ['anki', 'usmle', 'eval', 'anki-sab', 'anki-dom'], mir: ['mir'], encaps: ['encaps'], 'research-derma': ['rd'], aurum: ['aurum'],
+  liviano: ['liv'], synapse: ['syn', 'pc', 'feynman'], vibecoding: ['vibe', 'pc', 'feynman'], business: ['biz'], revision: ['revision'],
+};
+/**
+ * Fecha de PLAN que toca un día real (vistas por frente): alias → el plan del día anterior · reparto (sáb/dom) → con `frente`, la fecha
+ * de plan de la parte que lleva un bloque de ese frente ese día (p. ej. dom 25 USMLE → el Anki del propio domingo; sáb 24 USMLE → vie 23);
+ * si ese día no tiene bloque del frente, el día repartido (su sesión es el otro día del fin de semana) · resto → la propia.
+ */
+export function fechaPlanDe(iso: string, frente?: string): string {
   const c = corridaS1De(iso);
-  return c && c.tipo !== 'sin_sesion' ? c.de : iso;
+  if (!c || c.tipo === 'sin_sesion') return iso;
+  if (c.tipo === 'alias' || !frente) return c.de;
+  const ids = BLOQUES_POR_FRENTE[frente] ?? [];
+  const parte = c.partes.find((p) => Object.keys(p.bloques).some((id) => ids.includes(id)));
+  return parte ? parte.de : c.de;
 }

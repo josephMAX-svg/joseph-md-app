@@ -336,7 +336,7 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
 }
 
 export default function ResearchTodayPlan() {
-  const iso = fechaPlanDe(todayISO()); // v6.02d: semana 1 corrida → fila de la fecha de plan
+  const iso = fechaPlanDe(todayISO(), 'research-derma'); // v6.02d: semana 1 corrida → fila de la fecha de plan
   const tipoHoy = diaEstudioTipo(new Date(iso + 'T12:00:00')); // v6.02d: semana 1 corrida → tipo (Research/Derma) de la fecha de plan
   const hoyD = proximoD(iso, TODOS);
   const todayDia = TODOS.find((x) => x.fecha === iso) || TODOS.find((x) => x.d === hoyD) || TODOS[0];
