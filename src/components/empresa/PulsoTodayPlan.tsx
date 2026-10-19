@@ -7,6 +7,7 @@ import { FadeUp } from './visuals';
 import { BIZ_META, BIZ_FRANJAS, BIZ_TRACKER, BIZ_DIAS, DiaBiz, bizDiaDe, biz7d, bizColor, bizModo } from '../../lib/businessStudyPlan';
 import { ESTUDIO_LIBROS } from '../../lib/estudioPulsoData';
 import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, loadDone, saveDone } from '../../lib/studyProgress';
+import { fechaPlanDe } from '../../lib/fechasV6';
 import GuiaBloqueCard from '../GuiaBloqueCard';
 import { guiaBusinessDe } from '../../lib/rutinaGuia'; // v6.02c (E5): franja propia (13:00-13:25) + tramo exacto + acción
 
@@ -236,7 +237,7 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
 }
 
 export default function PulsoTodayPlan() {
-  const iso = todayISO();
+  const iso = fechaPlanDe(todayISO()); // v6.02d: semana 1 corrida → fila de la fecha de plan
   const hoyD = planHoyD(BIZ_DIAS, iso);
   const todayDia = bizDiaDe(iso) || BIZ_DIAS.find((x) => x.d === hoyD) || BIZ_DIAS[0];
   const [sel, setSel] = useState<number>(todayDia.d);

@@ -19,7 +19,7 @@ import { researchObsUrlEntregable } from '../../lib/obsidianResearchMap';
 import { getResearchEngineState } from '../../lib/supabase';
 import { ResearchFonts, ensureResearchFonts, serifTitle, InkColors } from './researchTheme';
 import ResearchTodayPlan from './ResearchTodayPlan';
-import { FECHAS_V6, motivoProtegido } from '../../lib/fechasV6';
+import { FECHAS_V6, motivoProtegido, fechaPlanDe } from '../../lib/fechasV6';
 import { esResearchMinimo } from '../../lib/plantillasV6';
 import ResearchAgenticSystem from './ResearchAgenticSystem';
 import ResearchLinesExplorer from './ResearchLinesExplorer';
@@ -587,7 +587,8 @@ function PanelView({ reg, onChange, infra, onToggleInfra, kpis, sync }: {
 
 export default function ResearchHub({ variant = 'mobile' }: { variant?: 'mobile' | 'desktop' }) {
   const isDesktop = variant === 'desktop';
-  const hoy = diaEstudioTipo(new Date());
+  const isoPlan = fechaPlanDe(isoHoy()); // v6.02d: semana 1 corrida → fila de la fecha de plan
+  const hoy = diaEstudioTipo(new Date(isoPlan + 'T12:00:00')); // v6.02d: semana 1 corrida → tipo (Research/Derma) de la fecha de plan
   const [sub, setSub] = useState<Sub>('hoy');
   // Estado real de la Mesa editorial: caché localStorage 'jmd-research-entregables' + espejo Supabase research_entregables
   // (pull con merge por updated_at al montar; upsert en cada cambio; si Supabase falla, el cambio queda local y se reintenta
@@ -638,7 +639,7 @@ export default function ResearchHub({ variant = 'mobile' }: { variant?: 'mobile'
         <CommandBackdrop />
 
         {/* MASTHEAD EDITORIAL (reemplaza el GradientHero compartido) */}
-        <EditorialMasthead hoy={hoy} kpis={kpis} nota={notaRDDe(isoHoy(), hoy)} />
+        <EditorialMasthead hoy={hoy} kpis={kpis} nota={notaRDDe(isoPlan, hoy)} />{/* v6.02d: semana 1 corrida → nota de la fecha de plan */}
 
         <AIFirstPanel segmento="research" accent={TEAL} />
 

@@ -1,4 +1,6 @@
-> Copia en el repo del runbook del lote «semana 1 estructurada» (dom 18-oct-2026). Úsalo el vie 23 por la tarde / sáb 24 (revisión semanal) para generar los runners de la semana 2 (lun 26 → jue 29-oct) **después** del mini-sim del vie 23.
+> Copia en el repo del runbook del lote «semana 1 estructurada» (dom 18-oct-2026). Úsalo el **dom 25 tras el mini-sim** (v6.02d: el mini-sim del vie 23 se hace el dom 25 10:00-11:00) y, a más tardar, el lun 26 antes de las 16:15, para generar los runners de la semana 2 (lun 26 → jue 29-oct) **después** del mini-sim.
+>
+> ⚠ **v6.02d (lun 19-oct-2026 · semana 1 corrida, orden de Joseph):** el lun 19 no hubo estudio → mar 20 = plan del lun 19 … vie 23 = plan del jue 22 y el vie 23 se reparte (ENCAPS = dom 25 10:00). **Los runners conservan su nombre con la fecha de PLAN** (alias en la consulta, nada se renombró): `PRETEST_ARRANQUE_2026-10-19` / `EVAL_2026-10-19` = los del mar 20 · `…-20` = mié 21 · `BANCO/EVAL_2026-10-21` = jue 22 · `BANCO/EVAL_2026-10-22` = vie 23 · `MINISIM_2026-10-23` = dom 25. Los comandos de abajo valen tal cual. Desde el lun 26 nada cambia (la semana 2 es la misma).
 
 # RUNBOOK · ENCAPS semana 2 (lun 26 → jue 29-oct-2026): cómo generar los runners DESPUÉS del mini-sim del vie 23 + stock por código
 
@@ -23,7 +25,7 @@
    `_encaps_mantenimiento_2027.sql`, que es lo que leen el runner y la guía. Por eso los runners se generan **después** de esa decisión.
 4. Tampoco hay que correr `--semana 2026-10-19`: la semana 1 ya está entera y esa orden sobrescribiría `banco_2026-10-21/22` y `eval_2026-10-20/21/22`.
 
-## 1. Runbook exacto (vie 23 17:10 → dom 25-oct)
+## 1. Runbook exacto (dom 25 11:00, tras el mini-sim → lun 26 antes de las 16:15)
 
 **Paso 1 · Registrar la semana 1 con `preguntas[]` (PC).** Para cada runner resuelto: botón «Generar JSON», luego «Descargar .json», y después:
 ```

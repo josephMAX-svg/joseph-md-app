@@ -31,7 +31,7 @@ import DermaMorphologyFilter, { DermaFilters } from '../derma/DermaMorphologyFil
 import DermaDermoscopyKey from '../derma/DermaDermoscopyKey';
 import DermaLineIcon from '../derma/DermaLineIcons';
 import { HeroBackdrop } from '../HeroBackdrop';
-import { FECHAS_V6, motivoProtegido } from '../../lib/fechasV6';
+import { FECHAS_V6, motivoProtegido, fechaPlanDe } from '../../lib/fechasV6';
 import {
   DERMA_LIBROS_ESTETICA, DERMA_VIDEOS, DERMA_QBANKS_ACCESS, DERMA_CASES_ACCESS,
   DERMA_QBANKLY_RESUMEN, srcBook, srcCap, srcMm, srcQa, srcCases,
@@ -392,7 +392,7 @@ interface BloquePlanStat { bKey: DermaBloqueKey; bloque: string; total: number; 
  */
 function CerebroView({ hoyD, onJump, onGoDebilidades }: { hoyD: number; onJump: (d: number) => void; onGoDebilidades: () => void }) {
   const { entries } = useDermaLedger();
-  const hoy = todayISO();
+  const hoy = fechaPlanDe(todayISO()); // v6.02d: semana 1 corrida → fila de la fecha de plan (próximo hito / pasados)
   const done = useMemo(() => new Set(loadDone('derma')), []);
   const ciego = useMemo(() => dermaPctCiego(entries), [entries]);
   const porModulo = useMemo(() => {
@@ -708,7 +708,8 @@ const ATLAS_NAV: { k: Sub; label: string; icon: React.ComponentProps<typeof Derm
 
 export default function DermaHub({ variant = 'mobile' }: { variant?: 'mobile' | 'desktop' }) {
   const isDesktop = variant === 'desktop';
-  const hoy = diaEstudioTipo(new Date());
+  const isoHoy = fechaPlanDe(todayISO()); // v6.02d: semana 1 corrida → fila de la fecha de plan (tipo, protegido y átomo de hoy)
+  const hoy = diaEstudioTipo(new Date(isoHoy + 'T12:00:00')); // v6.02d: semana 1 corrida → tipo (Derma/Research) de la fecha de plan
   const [sub, setSub] = useState<Sub>('hoy');
   /** Salto externo a un día del plan (Cerebro/Atlas → HOY); `k` = nonce para repetir el mismo d. Se limpia al cambiar de pestaña. */
   const [jump, setJump] = useState<{ d: number; k: number } | undefined>(undefined);
@@ -719,13 +720,13 @@ export default function DermaHub({ variant = 'mobile' }: { variant?: 'mobile' | 
   const ciego = dermaPctCiego(ledger);
   const hoyColor = hoy === 'derma' ? PURPLE : hoy === 'research' ? DermaAtlas.jade : Colors.muted;
   // v6.00: protegidos v6 sin sesión · F4 (SERUMS) = 30' en tiempo muerto de la posta, L-S (solo el domingo es descanso)
-  const isoHoy = todayISO();
+  // (isoHoy = fecha de plan, arriba · v6.02d)
   const f4 = isoHoy >= FECHAS_V6.serums.inicio;
   const protegidoHoy = motivoProtegido(isoHoy);
   const hoyLabel = protegidoHoy ? `DÍA PROTEGIDO · ${protegidoHoy}` : hoy === 'derma' ? (f4 ? "DERMA · hoy · 30' en tiempo muerto (posta)" : 'DERMA · hoy te toca') : hoy === 'research' ? 'RESEARCH · día alterno →' : (f4 ? 'Descanso · domingo' : 'Descanso · finde');
 
   // Día de HOY en la numeración continua (ciclo 1 → ciclo 2 cuando la fecha pasa del d73).
-  const hoyD = planHoyD(DERMA_DIAS_TODOS, todayISO());
+  const hoyD = planHoyD(DERMA_DIAS_TODOS, isoHoy); // v6.02d: semana 1 corrida → fila de la fecha de plan
   // El BodyMap/MorphologyFilter filtran el ATLAS; tocar una lámina (o un hito/ficha del Cerebro) abre ESE día en "Caso de hoy".
   const goCase = (d: number) => { setJump({ d, k: Date.now() }); setSub('hoy'); };
   const pickSitio = (s: string | null) => { setFilters((f) => ({ ...f, sitio: s })); if (s) setSub('atlas'); };

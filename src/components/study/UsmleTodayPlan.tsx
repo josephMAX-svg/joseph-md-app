@@ -15,7 +15,7 @@ import {
   subtemasValidados, alarmaAbogado, alarmaRelectura, reglaDelTercio, plantillaPorSistema, esParcial, marcarParcial, PISO_AMBAR, semaforoPct,
   evaluarGoNoGo, horasDesde, GONOGO_HORAS,
 } from '../../lib/usmleScores';
-import { FECHAS_V6, faseV6 } from '../../lib/fechasV6';
+import { FECHAS_V6, faseV6, fechaPlanDe } from '../../lib/fechasV6';
 import { infoTurno, ordenSemanaDe, onTurnosChange, filaT2DelDia, dowCorto, guardarTurno, desmarcarTurno, TURNOS_V6, TURNO_INFO } from '../../lib/serumsTurnos';
 import { plantillaDelDia } from '../../lib/plantillasV6';
 import { usmleMirParalelo } from '../../lib/mirUsmleBridge';
@@ -771,7 +771,7 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
 }
 
 export default function UsmleTodayPlan() {
-  const iso = todayISO();
+  const iso = fechaPlanDe(todayISO()); // v6.02d: semana 1 corrida → fila de la fecha de plan
   // v6.00: PAUSA (jue 31-dic → lun 15-mar) → sin «hoy» (planHoyD mostraría T1); si no, planHoyD sobre los 2 tramos.
   const pausa = enPausaStep1(iso);
   const hoyD = pausa ? -1 : planHoyD(DIAS_TODOS, iso);

@@ -1,5 +1,21 @@
 # V6_ESPEC — Especificación ejecutable de la reestructuración anual v6.00
 
+> ## ✅ ADDENDUM v6.02d (lun 19-oct-2026) — SEMANA 1 CORRIDA solo en la consulta · desde el lun 26-oct NADA cambia
+> **Qué pasó:** el lun 19-oct (D1) no se estudió y Joseph ordenó: *«lo que no hicimos hoy, córrelo para mañana; lo del 20 para el 21 … lo del 23 para el 24 y 25,
+> repártelo; el 26 ya iniciamos siguiendo el mismo ritmo: no modifiques los demás días»*. **Regla aplicada: alias de fecha EN LA CONSULTA**, no re-fecha:
+> ningún plan, fila de Supabase, runner ni guía cambia de fecha (todos conservan su «fecha de plan»); la app traduce el día real → fecha de plan con
+> `fechasV6.corridaS1De(iso)` / `fechaPlanDe(iso)` (fuente: `_fechas_v6.json` → `corrida_s1`; `version` del JSON sigue **v6.02**, F1 sigue lun 19-oct → mié 30-dic, 52).
+> · **lun 19** = día corrido (plantilla `CORRIDO`, sin bloques) · **mar 20 → vie 23** = la plantilla del día anterior a sus mismas horas (UWSA1 mar 20 08:50-13:00,
+> SYNAPSE 07:25, DERMA d1, PRE-TEST ENCAPS 1/2) · **sáb 24** (plantilla `REPARTO`) = la MAÑANA del vie 23 (04:15 vibecoding S1 5/5 · 05:00 Anki · 07:15-12:00
+> USMLE D5 · 12:30 SYNAPSE · 13:00 Business OUTPUT) + su evaluación USMLE a las 13:30 (a las 18:00 está el YouTube) + lo del sábado (15:00 SHIP S1, 19:00 Anki) ·
+> **dom 25** (`REPARTO`) = la TARDE del vie 23 adelantada 6 h 15′ (07:15 DERMA d3 · 08:00 AURUM · 09:00 MIR D5 · 10:00 ENCAPS mini-sim · 11:00 LIVIANO caso 1)
+> + revisión semanal S01 11:45 y cierre del OUTPUT 12:15 (del sábado, +4 h 30′) + lo del domingo (15:00 Feynman, 17:00 Anki; el baile 17:15 intacto).
+> **Código:** `gen_fechas_v6.js` (clave `corrida_s1`, validación, gemelos node y comprobación TS = node día a día) · `plantillasV6.ts` (`plantillaDelDia` envuelve a
+> `plantillaBase`; bloques con `fechaPlan` / `desfaseMin`) · `guia.ts` (`moverGuia`) · `TodayMission.tsx` (contenido por `b.fechaPlan`, guías movidas a la hora real) ·
+> vistas de cada frente, `encapsPlan.diaActual` y `EncapsPlanView` con `fechaPlanDe` · daemon ENCAPS de Telegram (fuera del repo, `CORRIDA_S1_ENCAPS`).
+> **Probado:** simulación de la app día a día 17-oct-2026 → 31-oct-2027: solo cambian 19-25-oct; ≥ 26-oct idéntico byte a byte. Calendar: CAL_V6 §13.
+> Estado previo = tag git `regimen-v6.02c-semana1`. El runbook ENCAPS de la semana 2 se corre el dom 25 tras el mini-sim (`DATA/ENCAPS/RUNBOOK_SEMANA2_2026-10-26.md`).
+>
 > ## ✅ ADDENDUM v6.02 (sáb 17-oct-2026) — corrimiento al LUN 19-OCT-2026 con HITOS F1 ANCLADOS · manda sobre el ADDENDUM v6.01 y sobre las cifras marcadas «⏸ v6.00» / «⏸ v6.01» en el cuerpo
 > **Qué pasó:** del lun 12 al vie 16-oct no se estudió (5 hábiles; **35 desde el 31-ago**) y Joseph pidió (sáb 17-oct) *«todo corre a partir del 19, reestructura»*.
 > Segundo corrimiento bajo v6: la misma regla de v6.01 (§B1, §B7.1: **la F1 no se alarga**, porque la intensiva ENCAPS empieza el lun 4-ene) más una regla nueva,

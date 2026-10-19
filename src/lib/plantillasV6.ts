@@ -23,12 +23,16 @@
  *  almuerzo; el OUTPUT del viernes sigue el sábado tras la revisión) · sábado: + PC 15:00 = SHIP del vibecoding + SYNAPSE A/B/C (F1/F2, mientras
  *  haya PC o A/B/C) + Anki 19:00-19:30 (F1) · domingo (F1/F2): FEYNMAN 15:00-15:10 opcional + Anki 17:00-17:15 opcional (F1). La revisión del
  *  sábado lleva frente 'revision' (el Home la pinta con guía y botón). Franjas y textos de cada bloque = src/lib/rutinaGuia.ts.
+ * v6.02d (lun 19-oct-2026 · SEMANA 1 CORRIDA, orden de Joseph): `plantillaDelDia` envuelve a `plantillaBase` con fechasV6.corridaS1De:
+ *  lun 19 = CORRIDO (sin bloques) · mar 20 → vie 23 = la plantilla del día anterior a las mismas horas (cada bloque con `fechaPlan`) ·
+ *  sáb 24 / dom 25 = REPARTO del vie 23 (bloques elegidos por id, con `desfaseMin` y su `fechaPlan`) + lo propio del fin de semana. Desde el
+ *  lun 26 la salida es idéntica a la de antes (no hay corrida). Ningún plan cambia de fecha: el Home consulta cada frente con `fechaPlan`.
  * v6.01 (10-oct-2026 · corrimiento D1 = lun 12-oct): F1 = LUN 12-OCT → MIÉ 30-DIC (57 hábiles; v6.00: mié 7-oct → mié 30-dic); F2, F3,
  *  F4 y el examen sin cambio. Las fechas de fin de cada frente salen de sus metas (no de este texto): LIVIANO → mié 17-feb (LIV_META.fin;
  *  v6.00: vie 12-feb) · AURUM → mar 20-abr (AURUM_PLAN_META.fin; v6.00: jue 15-abr) · SYNAPSE → vie 19-feb · vibecoding → mié 24-feb.
  */
-import { FECHAS_V6, DERIVADOS_V6, SKIP_V6, faseV6, motivoProtegido, esFeriado, ultimoHabilAntes } from './fechasV6';
-import type { FaseV6, Turno } from './fechasV6';
+import { FECHAS_V6, DERIVADOS_V6, SKIP_V6, faseV6, motivoProtegido, esFeriado, ultimoHabilAntes, corridaS1De } from './fechasV6';
+import type { FaseV6, Turno, CorridaS1 } from './fechasV6';
 import { FRANJAS_F4, FRANJA_F3_REENTRADA, estadoUSMLE, esHito, esFilaT2 } from './usmleStep1Daily';
 import type { DiaUSMLEPlan, DiaUSMLE_T2, FranjaF4, PlantillaF4 } from './usmleStep1Daily';
 import { infoTurno, ordenSemanaDe, filaT2DelDia, filasEmpujadas, dowCorto } from './serumsTurnos';
@@ -58,9 +62,14 @@ export interface BloqueV6 {
   frente: Frente | null;
   /** minutos planificados (de ini/fin o declarados en los bloques de tiempo muerto) */
   min: number | null;
+  /** v6.02d (semana 1 corrida): fecha de PLAN cuyo contenido toca en este bloque · ausente = la del propio día */
+  fechaPlan?: string;
+  /** v6.02d: minutos que el bloque se movió respecto a su hora en la plantilla de su fecha de plan (sus guías se desplazan igual) */
+  desfaseMin?: number;
 }
 export type PlantillaId = 'F1' | 'F1-sáb' | 'TRANSICION' | 'F2' | 'F2-vie' | 'F2-sáb' | 'F2-D2' | 'F3' | 'F3-sáb'
-  | 'M' | 'T' | 'L' | 'G' | 'H' | 'H-sáb' | 'TAPER' | 'RITUAL' | 'VIAJE' | 'EXAMEN' | 'PROTEGIDO' | 'DOMINGO' | 'SKIP' | 'F5';
+  | 'M' | 'T' | 'L' | 'G' | 'H' | 'H-sáb' | 'TAPER' | 'RITUAL' | 'VIAJE' | 'EXAMEN' | 'PROTEGIDO' | 'DOMINGO' | 'SKIP' | 'F5'
+  | 'CORRIDO' | 'REPARTO'; // v6.02d: semana 1 corrida (lun 19 sin sesión · sáb 24 / dom 25 = reparto del vie 23)
 export interface PlantillaDia {
   fecha: string;
   fase: FaseV6;
@@ -80,6 +89,8 @@ export interface PlantillaDia {
   extra: DiaUSMLE_T2[];
   bloques: BloqueV6[];
   notas: string[];
+  /** v6.02d: tipo de día de la semana 1 corrida ('sin_sesion' · 'alias' · 'reparto'); ausente fuera de ella */
+  corrida?: CorridaS1['tipo'];
 }
 
 // ── utilidades de hora ──
@@ -282,8 +293,8 @@ function bloquesDePlantilla(p: PlantillaF4, turnoH: 'T' | 'L' | null): BloqueV6[
 }
 
 // ── API ──
-/** Plantilla completa del día (bloques + contexto). `turno` = el del selector; si falta, el marcado (o 'M' por defecto). */
-export function plantillaDelDia(iso: string, turno?: Turno): PlantillaDia {
+/** Plantilla del día SIN la semana corrida (= la de siempre). La usa `plantillaDelDia`, que aplica la corrida del 19 al 25-oct. */
+function plantillaBase(iso: string, turno?: Turno): PlantillaDia {
   const fase = faseV6(iso);
   const prot = motivoProtegido(iso);
   const feriado = esFeriado(iso);
@@ -397,6 +408,60 @@ export function plantillaDelDia(iso: string, turno?: Turno): PlantillaDia {
     }
   }
   return out('F1', 'F1', bloquesF1(iso));
+}
+
+// ── v6.02d · SEMANA 1 CORRIDA (lun 19-oct-2026, orden de Joseph) ──
+const MES_CORTO = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+const fCorta = (iso: string): string => `${dowCorto(iso)} ${Number(iso.slice(8))}-${MES_CORTO[Number(iso.slice(5, 7)) - 1] ?? ''}`;
+/** Bloque de la plantilla de `de` llevado a otro día: hora + `desfase` minutos, con su fecha de plan (las guías se mueven igual en el Home). */
+function bloqueCorrido(b: BloqueV6, de: string, desfase: number): BloqueV6 {
+  if (!desfase) return { ...b, fechaPlan: de };
+  return {
+    ...b, ini: desplazar(b.ini, desfase), fin: desplazar(b.fin, desfase), fechaPlan: de, desfaseMin: desfase,
+    hora: b.ini ? b.hora.replace(/\d{2}:\d{2}/g, (h) => aHHMM(aMin(h) + desfase)) : b.hora,
+  };
+}
+const NOTA_CORRIDA = 'SEMANA 1 CORRIDA (orden del lun 19-oct): cada día corre uno (mar 20 = plan del lun 19 … vie 23 = plan del jue 22) y el vie 23 se reparte entre el sáb 24 (mañana) y el dom 25 (tarde, desde las 07:15). Desde el lun 26 nada cambia.';
+/**
+ * Plantilla completa del día (bloques + contexto). `turno` = el del selector; si falta, el marcado (o 'M' por defecto).
+ * v6.02d: aplica la semana 1 corrida (fechasV6.corridaS1De): lun 19 sin sesión · mar 20 → vie 23 = plantilla del día anterior ·
+ * sáb 24 / dom 25 = reparto del vie 23 + lo propio del fin de semana. Fuera de esos días = plantillaBase (idéntica a la de antes).
+ */
+export function plantillaDelDia(iso: string, turno?: Turno): PlantillaDia {
+  const c = corridaS1De(iso);
+  if (!c) return plantillaBase(iso, turno);
+  const base = plantillaBase(iso, turno);
+  if (c.tipo === 'sin_sesion') {
+    const sig = Object.entries(FECHAS_V6.corrida_s1.alias).find(([, de]) => de === iso)?.[0];
+    return {
+      ...base, plantilla: 'CORRIDO', titulo: `Día corrido · tu plan de hoy se hace el ${sig ? fCorta(sig) : 'próximo día de plan'}`,
+      usmle: null, bloques: [], corrida: 'sin_sesion', notas: [NOTA_CORRIDA, 'Hoy sin sesión de ningún plan: no hay nada atrasado que recuperar.'],
+    };
+  }
+  if (c.tipo === 'alias') {
+    const p = plantillaBase(c.de, turno);
+    return {
+      ...p, fecha: iso, corrida: 'alias', bloques: p.bloques.map((b) => bloqueCorrido(b, c.de, 0)),
+      notas: [`Hoy toca el plan del ${fCorta(c.de)}, a sus mismas horas (las guías conservan el día del plan en sus textos).`, NOTA_CORRIDA, ...p.notas],
+    };
+  }
+  const bs: BloqueV6[] = [];
+  for (const parte of c.partes) {
+    for (const b of plantillaBase(parte.de).bloques) {
+      const d = parte.bloques[b.id];
+      if (d !== undefined) bs.push(bloqueCorrido(b, parte.de, d));
+    }
+  }
+  const pDe = plantillaBase(c.de, turno);
+  const sab = dow(iso) === 6;
+  return {
+    ...base, plantilla: 'REPARTO', usmle: pDe.usmle, corrida: 'reparto', bloques: ordenar(bs),
+    titulo: sab ? `Sábado · MAÑANA del ${fCorta(c.de)} (semana corrida)` : `Domingo · TARDE del ${fCorta(c.de)} desde las 07:15 (semana corrida)`,
+    notas: [sab
+      ? `Hoy: la mañana del ${fCorta(c.de)} a sus horas (04:15 · 05:00 · 07:15-12:00 · 12:30 · 13:00) + su evaluación USMLE a las 13:30 (a las 18:00 está el YouTube). Lo del sábado sigue igual (PC 15:00 · Anki 19:00); la revisión semanal pasa a mañana 11:45.`
+      : `Hoy: la tarde del ${fCorta(c.de)} adelantada 6 h 15′ (R↔D 07:15 · AURUM 08:00 · MIR 09:00 · ENCAPS 10:00 · LIVIANO 11:00) + la revisión semanal 11:45 y el cierre del OUTPUT 12:15 (del sábado). Lo del domingo sigue igual.`,
+    NOTA_CORRIDA],
+  };
 }
 /** Bloques del día (V6_ESPEC §F): F1 · F2 · F3 · F4 por turno M/T/L/G · H / H-sáb en día de hito. */
 export function bloquesDelDia(iso: string, turno?: Turno): BloqueV6[] { return plantillaDelDia(iso, turno).bloques; }

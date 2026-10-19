@@ -16,6 +16,7 @@ import { DIGESTIVO_META, DIGESTIVO_CAPITULOS, DIGESTIVO_PLAN, capUrl } from '../
 import { CARDIO_META, CARDIO_CAPITULOS, capUrl as cardioUrl } from '../../lib/mirCardiologiaData';
 import { MIR_DIAS } from '../../lib/mirDailyPlan';
 import { planHoyD, progresoGlobal, loadDone } from '../../lib/studyProgress';
+import { fechaPlanDe } from '../../lib/fechasV6';
 import ReadinessBar from './ReadinessBar';
 import { ConsoleTabs, CheckpointCard } from './ConsoleKit';
 import MirTemarioExplorer from './MirTemarioExplorer';
@@ -44,7 +45,7 @@ const TABS = [
 export default function MirHub() {
   const [sub, setSub] = useState('hoy');
   const done = loadDone('mir');
-  const hoyD = planHoyD(MIR_DIAS, todayISO());
+  const hoyD = planHoyD(MIR_DIAS, fechaPlanDe(todayISO())); // v6.02d: semana 1 corrida → fila de la fecha de plan
   const glob = progresoGlobal(MIR_DIAS, new Set(done));
   const readiness = mirReadiness(); // derivado del log de evals (mini-MIR > cierres > ancladas), no hardcodeado
   const iso = todayISO();

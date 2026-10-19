@@ -6,6 +6,7 @@
  * v6.00 (decidido mar 6-oct-2026): reestructuración anual (DJ-1…DJ-5) — sustituye a v5.20 (Step 1 lun 22-feb · ENCAPS mié 10-mar).
  * v6.01 (sáb 10-oct-2026): corrimiento rígido del D1 mié 7-oct-2026 → lun 12-oct-2026 (perdidos: mié 7-oct · jue 8-oct · vie 9-oct).
  * v6.02 (sáb 17-oct-2026): corrimiento rígido del D1 lun 12-oct-2026 → lun 19-oct-2026 (perdidos: lun 12-oct · mar 13-oct · mié 14-oct · jue 15-oct · vie 16-oct).
+ * v6.02d (lun 19-oct-2026): semana 1 corrida SOLO en la consulta (corridaS1De / fechaPlanDe) — sin sesión lun 19-oct · mar 20-oct = plan del lun 19-oct · mié 21-oct = plan del mar 20-oct · jue 22-oct = plan del mié 21-oct · vie 23-oct = plan del jue 22-oct · sáb 24-oct = parte del vie 23-oct · dom 25-oct = parte del vie 23-oct; ningún plan cambia de fecha.
  * Versión vigente del JSON: v6.02.
  * Módulo HOJA: no importa nada de src/ (r2 · I7: corta el ciclo usmleStep1Daily ↔ homeBriefing; STEP1_SEMANAS, semanaStep1 y
  * Turno viven aquí y homeBriefing los re-exporta).
@@ -43,6 +44,13 @@ export interface FechasV6 {
   feriados: string[];
   /** v6.01: bitácora de corrimientos del D1 (informativa) */
   corrimientos: { fecha: string; version: string; d1_previo: string; d1: string; perdidos: string[]; regla: string }[];
+  /** v6.02d: semana 1 corrida (alias en la consulta; ver corridaS1De / fechaPlanDe) */
+  corrida_s1: {
+    decidido: string; version: string; motivo: string;
+    sin_sesion: string[];
+    alias: Record<string, string>;
+    reparto: Record<string, { de: string; partes: { de: string; bloques: Record<string, number> }[] }>;
+  };
 }
 export const FECHAS_V6: FechasV6 = {
   "version": "v6.02",
@@ -181,7 +189,75 @@ export const FECHAS_V6: FechasV6 = {
       ],
       "regla": "F1 anclada (la intensiva ENCAPS empieza el 4-ene): 52 hábiles; los hitos F1 NO se desplazan (UWSA1 D1 · NBME 25 D10 · 26 D25 · 27 D40 · NBME 28 = última sesión de F1, mié 30-dic); las 6 filas de temario que no caben (v5.20 D52-D54, D56, D57 Heme/Onco + D79 bioestadística) pasan al tramo 2 como filas desplazadas con su dOrig; examen Step 1 sin cambio"
     }
-  ]
+  ],
+  "corrida_s1": {
+    "decidido": "2026-10-19",
+    "version": "v6.02d",
+    "motivo": "Orden de Joseph (lun 19-oct-2026, sin estudio ese día): «lo que no hicimos hoy, córrelo para mañana; lo del 20 para el 21, lo del 21 para el 22, lo del 22 para el 23, lo del 23 para el 24 y 25 (repártelo); el 26 ya iniciamos siguiendo el mismo ritmo: no modifiques los demás días». Alias en la CONSULTA (los planes, Supabase, runners y guías conservan su fecha de plan): sáb 24 = la mañana del vie 23 (04:15 · 05:00 · 07:15-12:00 · 12:30 · 13:00) + la eval USMLE a las 13:30 (18:00 choca con el YouTube del sábado); dom 25 = la tarde del vie 23 desde las 07:15 (13:30 → 17:15 corrido −6 h 15′; el baile del domingo 17:15 no se toca) + revisión semanal 11:45 y cierre del OUTPUT de Business 12:15 (del sáb 07:15/07:45, +4 h 30′). Desde el lun 26-oct nada cambia.",
+    "sin_sesion": [
+      "2026-10-19"
+    ],
+    "alias": {
+      "2026-10-20": "2026-10-19",
+      "2026-10-21": "2026-10-20",
+      "2026-10-22": "2026-10-21",
+      "2026-10-23": "2026-10-22"
+    },
+    "reparto": {
+      "2026-10-24": {
+        "de": "2026-10-23",
+        "partes": [
+          {
+            "de": "2026-10-23",
+            "bloques": {
+              "vibe": 0,
+              "anki": 0,
+              "usmle": 0,
+              "syn": 0,
+              "biz": 0,
+              "eval": -270
+            }
+          },
+          {
+            "de": "2026-10-24",
+            "bloques": {
+              "pc": 0,
+              "anki-sab": 0
+            }
+          }
+        ]
+      },
+      "2026-10-25": {
+        "de": "2026-10-23",
+        "partes": [
+          {
+            "de": "2026-10-23",
+            "bloques": {
+              "rd": -375,
+              "aurum": -375,
+              "mir": -375,
+              "encaps": -375,
+              "liv": -375
+            }
+          },
+          {
+            "de": "2026-10-24",
+            "bloques": {
+              "revision": 270,
+              "biz": 270
+            }
+          },
+          {
+            "de": "2026-10-25",
+            "bloques": {
+              "feynman": 0,
+              "anki-dom": 0
+            }
+          }
+        ]
+      }
+    }
+  }
 };
 
 /** Valores derivados por gen_fechas_v6.js (los mismos que dan las funciones de abajo con FECHAS_V6). */
@@ -411,4 +487,30 @@ export function semanaStep1(iso: string, extras: SemanaStep1Extras = {}): Semana
     n, total: STEP1_SEMANAS, lunes, viernes: _add(lunes, 4), sabado: _add(lunes, 5), pausa, examen,
     deload: !!dl, deloadMotivo: dl ? dl.motivo : undefined, hito, fueraDeRango: !pausa && (n < 1 || n > STEP1_SEMANAS),
   };
+}
+
+// ── v6.02d: semana 1 corrida (orden de Joseph del lun 19-oct-2026) ──
+/** Parte de un día de reparto: bloques de la plantilla de la fecha de plan «de» (id de bloque de plantillasV6 → desfase en minutos). */
+export interface ParteCorridaS1 { de: string; bloques: Record<string, number> }
+export type CorridaS1 =
+  | { tipo: 'sin_sesion' }
+  | { tipo: 'alias'; de: string }
+  | { tipo: 'reparto'; de: string; partes: ParteCorridaS1[] };
+/**
+ * Semana corrida: lun 19-oct sin sesión · mar 20-oct = plan del lun 19-oct · mié 21-oct = plan del mar 20-oct · jue 22-oct = plan del mié 21-oct · vie 23-oct = plan del jue 22-oct ·
+ * sáb 24-oct = vibe+anki+usmle+syn+biz+eval del vie 23-oct / pc+anki-sab del sáb 24-oct · dom 25-oct = rd+aurum+mir+encaps+liv del vie 23-oct / revision+biz del sáb 24-oct / feynman+anki-dom del dom 25-oct.
+ * null fuera de esos días: el resto del calendario es idéntico (los planes, Supabase, runners y guías conservan su fecha de plan).
+ */
+export function corridaS1De(iso: string): CorridaS1 | null {
+  const c = FECHAS_V6.corrida_s1;
+  if (c.sin_sesion.includes(iso)) return { tipo: 'sin_sesion' };
+  const a = c.alias[iso];
+  if (a) return { tipo: 'alias', de: a };
+  const r = c.reparto[iso];
+  return r ? { tipo: 'reparto', de: r.de, partes: r.partes } : null;
+}
+/** Fecha de PLAN que toca un día real (vistas por frente): alias → el plan del día anterior · reparto (sáb/dom) → el día repartido · resto → la propia. */
+export function fechaPlanDe(iso: string): string {
+  const c = corridaS1De(iso);
+  return c && c.tipo !== 'sin_sesion' ? c.de : iso;
 }

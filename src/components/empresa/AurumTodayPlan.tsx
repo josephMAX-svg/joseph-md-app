@@ -10,6 +10,7 @@ import {
   AurumRubricaStore, AurumRubricaScore, aurumRubricaKey, loadAurumRubrica, saveAurumRubrica,
 } from '../../lib/aurumData';
 import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso } from '../../lib/studyProgress';
+import { fechaPlanDe } from '../../lib/fechasV6';
 import {
   AurumColors as C, AurumRadius as R, AurumSpacing as S, AurumType as T, withAlpha,
 } from '../../theme/aurumTheme';
@@ -36,8 +37,10 @@ export function aurumVentanaDe(dia: { min30?: boolean }): string { return dia.mi
 export function aurumMinTxt(dia: { min: number; min30?: boolean }): string { return dia.min30 ? "30' (núcleo)" : `${dia.min} min`; }
 const isWeb = Platform.OS === 'web';
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
+/** «Hoy» para ELEGIR LA FILA del plan (AurumTodayPlan · AurumHub): la fecha de plan, no la del reloj. */
 export function aurumTodayISO(): string {
-  try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; }
+  // v6.02d: semana 1 corrida → fila de la fecha de plan
+  try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return fechaPlanDe(`${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`); }
   catch { return AURUM_PLAN_META.inicio; }
 }
 function fmtFecha(iso: string): string {

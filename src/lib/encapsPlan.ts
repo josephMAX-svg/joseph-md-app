@@ -47,7 +47,7 @@
 // ni postest; registro por --registrar --append) y tipoRondaDe da 'pretest'. Claves D{dia}:m_* sin cambio.
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { supabase } from './supabase';
-import { SKIP_V6 } from './fechasV6';
+import { SKIP_V6, fechaPlanDe } from './fechasV6';
 import { ENCAPS_FICHAS_POR_TEMA, ENCAPS_VIDEO_DRIVE, ENCAPS_THEOMED_AREA, ENCAPS_THEOMED_VIDEOS, ENCAPS_COMPENDIO, ENCAPS_AREA_PREFIJO, ENCAPS_THEOMED_TEMA_SESION } from './encapsFuentes';
 import { ENCAPS_VIDEOS_POR_TEMA } from './encapsVideosPorTema';
 import { ENCAPS_THEOMED_RESUMENES, ENCAPS_BANCOS, ENCAPS_MAPAS_PDF, ENCAPS_POSTESTS, ENCAPS_BIBLIOTECA_QX, ENCAPS_MANUALES_THEOMED } from './encapsResumenes';
@@ -724,7 +724,8 @@ export function diaActual(examen: string, d1Override?: string, totalOverride?: n
   const d1 = d1Override || STUDY_D1[examen];
   const total = totalOverride ?? (STUDY_TOTAL_DAYS[examen] ?? 71);
   if (!d1) return 1;
-  const hoy = hoyOverride && ISO_RE.test(hoyOverride) ? hoyOverride : todayLimaISO();
+  // v6.02d: semana 1 corrida → fila de la fecha de plan (también con hoyOverride)
+  const hoy = fechaPlanDe(hoyOverride && ISO_RE.test(hoyOverride) ? hoyOverride : todayLimaISO());
   let diff = Math.floor((Date.parse(hoy) - Date.parse(d1)) / 86_400_000) + 1;
   // Las fechas libres no son días de plan: réstalas si ya pasaron.
   for (const s of STUDY_SKIP_DATES[examen] ?? []) {

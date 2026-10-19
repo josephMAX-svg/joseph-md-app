@@ -9,7 +9,7 @@ import {
   mirCierreDe, mirFranjasDe, mirSesionDe, MIR_SEG_POR_Q, mirMinutos, MIR_TEMAS_TOTAL,
 } from '../../lib/mirDailyPlan';
 import { DiaMIRMant, MIR_MANT_META, MIR_MANT_DIAS, MIR_MANT_PESOS, MIR_INICIO_HITO, mirMantFranjas, mirFranjaPorTurno, mirMantFoco, mirMant7d, mirMantProximoTierC } from '../../lib/mirMantenimiento';
-import { FECHAS_V6, motivoProtegido } from '../../lib/fechasV6';
+import { FECHAS_V6, motivoProtegido, fechaPlanDe } from '../../lib/fechasV6';
 import { infoTurno, onTurnosChange, TURNO_INFO } from '../../lib/serumsTurnos';
 import { plantillaDelDia } from '../../lib/plantillasV6';
 import {
@@ -896,7 +896,7 @@ function MantenimientoView({ dia, onPick, bump, sync }: { dia: DiaMIRMant; onPic
 }
 
 export default function MirTodayPlan() {
-  const iso = todayISO();
+  const iso = fechaPlanDe(todayISO()); // v6.02d: semana 1 corrida → fila de la fecha de plan
   const sesion = mirSesionDe(iso);
   const hoyD = planHoyD(MIR_DIAS, iso);
   const todayDia = mirDiaDe(iso) || MIR_DIAS.find((x) => x.d === hoyD) || MIR_DIAS[0];

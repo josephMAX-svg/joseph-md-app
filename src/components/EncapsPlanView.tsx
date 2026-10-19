@@ -36,6 +36,7 @@ import { ENCAPS_COBERTURA, CoberturaTema } from '../lib/encapsCobertura';
 import GuiaBloqueCard from './GuiaBloqueCard';
 import { guiaEncapsDe } from '../lib/encapsGuia';
 import { sesionGuiaDe } from '../lib/encapsPlan';
+import { fechaPlanDe } from '../lib/fechasV6';
 
 const TIER_COLOR: Record<string, string> = { 'CRÍTICA': Colors.coral, 'ALTA': Colors.gold, 'MEDIA': Colors.blue, 'BAJA': Colors.muted };
 const cvColor = (v: string) => (v === 'sí' ? Colors.green : v === 'parcial' ? Colors.gold : v === 'no' ? Colors.coral : Colors.muted);
@@ -400,7 +401,8 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   const guia = ses ? guiaEncapsDe(String(today.fecha)) : null;
   const obsHref = ses?.obsidian || encapsObsByTitle(today.subtema || tema, today.codigo || undefined);
   const ahoraMin = (() => { try { const d = new Date(); return d.getHours() * 60 + d.getMinutes(); } catch { return 0; } })();
-  const esHoyLima = (() => { try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}` === String(today.fecha).slice(0, 10); } catch { return false; } })();
+  // v6.02d: semana 1 corrida → fila de la fecha de plan
+  const esHoyLima = (() => { try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return fechaPlanDe(`${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`) === String(today.fecha).slice(0, 10); } catch { return false; } })();
 
   return (
     <View>

@@ -11,7 +11,7 @@ import {
   PRIORIDAD_COLOR, VUELTAS, ANKI_CONFIG_PALMERTON, USMLE_RAMP_LEGACY, USMLE_LEGACY_NOTA,
 } from '../../lib/usmleData';
 import { DIAS, DIAS_TODOS, USMLE_NIVELES, USMLE_GATE, USMLE_TAPER, DAILY_META, PROTOCOLO_BLOQUE, DAY_AFTER, enPausaStep1 } from '../../lib/usmleStep1Daily';
-import { FECHAS_V6, reservaStep1 } from '../../lib/fechasV6';
+import { FECHAS_V6, reservaStep1, fechaPlanDe } from '../../lib/fechasV6';
 import { planHoyD, progresoGlobal, loadDone } from '../../lib/studyProgress';
 import {
   UsmleScore, loadScores, pullScores, onScoresChange, mediaMovil7d, distanciaOnTrack, readinessDesdeHitos,
@@ -63,7 +63,7 @@ export default function UsmleHub() {
   const iso = todayISO();
   // v6.00: 2 tramos · en PAUSA no hay fila «hoy» (se muestra la posición del último día de F1)
   const pausa = enPausaStep1(iso);
-  const hoyD = pausa ? DIAS[DIAS.length - 1]!.d : planHoyD(DIAS_TODOS, iso);
+  const hoyD = pausa ? DIAS[DIAS.length - 1]!.d : planHoyD(DIAS_TODOS, fechaPlanDe(iso)); // v6.02d: semana 1 corrida → fila de la fecha de plan
   const posHoy = Math.max(1, DIAS_TODOS.findIndex((x) => x.d === hoyD) + 1);
   const glob = progresoGlobal(DIAS_TODOS, new Set(done));
   // Medición Palmerton (usmleScores): local al instante, Supabase al montar, y refresco cuando UsmleTodayPlan guarda.

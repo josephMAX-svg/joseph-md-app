@@ -7,6 +7,7 @@ import { FadeUp } from './visuals';
 import { TIME_SPLIT, ESTANDARES, FLUJO_DICTADO, METRICAS, BRAND_PLANS } from '../../lib/brandContentPlan';
 import { HERRAMIENTAS, REFERENTES } from '../../lib/brandContentExtras';
 import { bizDiaDe, BIZ_DIAS } from '../../lib/businessStudyPlan';
+import { fechaPlanDe } from '../../lib/fechasV6';
 import { ESTUDIO_LIBROS } from '../../lib/estudioPulsoData';
 
 /**
@@ -36,7 +37,7 @@ export default function BrandHorario({ brand }: { brand: 'pulso' | 'pirqa' | 'te
   if (!plan) return null;
   const A = plan.accent;
   // El 70% de LIVIANO = lectura del plan 96 días + aplicación directa (contenido)
-  const lecturaHoy = brand === 'pulso' ? bizDiaDe(todayISO()) : undefined;
+  const lecturaHoy = brand === 'pulso' ? bizDiaDe(fechaPlanDe(todayISO())) : undefined; // v6.02d: semana 1 corrida → fila de la fecha de plan
   const libroHoy = lecturaHoy && lecturaHoy.libroN != null ? ESTUDIO_LIBROS.find((l) => l.n === lecturaHoy.libroN) : undefined;
 
   return (

@@ -125,3 +125,13 @@ export function franjaDentro(franja: string, ini: string, fin: string): boolean 
   const a = aMinutos(p.ini);
   return a >= aMinutos(ini) && a < aMinutos(fin);
 }
+/**
+ * v6.02d (semana 1 corrida): la misma guía `desfaseMin` minutos más tarde (o antes si es negativo). Solo cambia la franja: pasos,
+ * minutos y Σ pasos quedan intactos (validarGuia sigue cuadrando). 0 → la misma guía.
+ */
+export function moverGuia(g: GuiaBloque, desfaseMin: number): GuiaBloque {
+  const p = partesFranja(g.franja);
+  if (!desfaseMin || !p) return g;
+  const hhmm = (m: number): string => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
+  return { ...g, franja: `${hhmm(aMinutos(p.ini) + desfaseMin)}–${hhmm(aMinutos(p.fin) + desfaseMin)}` };
+}

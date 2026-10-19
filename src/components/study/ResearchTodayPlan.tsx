@@ -13,7 +13,7 @@ import { agruparProgreso, progresoGlobal, GrupoProgreso, loadDone, saveDone } fr
 import { diaEstudioTipo, PRIORIDAD_COLOR } from '../../lib/researchData';
 import { researchObsUrlDay } from '../../lib/obsidianResearchMap';
 import { serifTitle, InkColors, OBSIDIAN } from './researchTheme';
-import { FECHAS_V6, motivoProtegido } from '../../lib/fechasV6';
+import { FECHAS_V6, motivoProtegido, fechaPlanDe } from '../../lib/fechasV6';
 // v6.02c (18-oct-2026, E4): guía «qué · cuánto · cómo» de cada átomo (GENERADA por gen_research_plan.js → researchGuia.ts) en el formato común
 import GuiaBloqueCard from '../GuiaBloqueCard';
 import { guiaResearchDe, GUIA_RESEARCH_MINIMO } from '../../lib/researchGuia';
@@ -336,8 +336,8 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
 }
 
 export default function ResearchTodayPlan() {
-  const iso = todayISO();
-  const tipoHoy = diaEstudioTipo(new Date());
+  const iso = fechaPlanDe(todayISO()); // v6.02d: semana 1 corrida → fila de la fecha de plan
+  const tipoHoy = diaEstudioTipo(new Date(iso + 'T12:00:00')); // v6.02d: semana 1 corrida → tipo (Research/Derma) de la fecha de plan
   const hoyD = proximoD(iso, TODOS);
   const todayDia = TODOS.find((x) => x.fecha === iso) || TODOS.find((x) => x.d === hoyD) || TODOS[0];
   const [sel, setSel] = useState<number>(todayDia.d);

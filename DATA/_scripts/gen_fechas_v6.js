@@ -152,7 +152,7 @@ function reservaCalculo(encaps, ctx) {
 
 // ── carga, derivación y validación del JSON ──
 const CLAVES = {
-  '': ['version', 'decidido', 'f1', 'transicion', 'encaps', 'step1', 'serums', 'skip', 'protegidos', 'feriados', 'corrimientos'], // v6.01: + corrimientos (bitácora)
+  '': ['version', 'decidido', 'f1', 'transicion', 'encaps', 'step1', 'serums', 'skip', 'protegidos', 'feriados', 'corrimientos', 'corrida_s1'], // v6.01: + corrimientos (bitácora) · v6.02d: + corrida_s1 (semana 1 corrida)
   f1: ['inicio', 'fin', 'dias'],
   transicion: ['desde', 'hasta'],
   encaps: ['examen', 'provisional', 'intensiva_desde', 'pretest', 'nucleo_hasta', 'convocatoria_tope', 'escenarios'],
@@ -181,8 +181,52 @@ function comprobarForma(F) {
   // v6.01 (10-oct-2026): bitácora de corrimientos del D1 (solo informativa; no deriva nada).
   if (!Array.isArray(F.corrimientos) || !F.corrimientos.every((c) => c && esISO(c.fecha) && esISO(c.d1_previo) && esISO(c.d1) && Array.isArray(c.perdidos) && c.perdidos.every(esISO))) err.push('«corrimientos» debe ser una lista de { fecha, version, d1_previo, d1, perdidos[], regla }');
   for (const p of ['encaps.provisional', 'step1.provisional', 'serums.supuesto']) if (typeof get(F, p) !== 'boolean') err.push(`«${p}» debe ser true/false`);
+  err.push(...comprobarCorridaS1(F.corrida_s1));
   return err;
 }
+/**
+ * v6.02d (lun 19-oct-2026): forma de `corrida_s1` (semana 1 corrida por orden de Joseph). Alias EN LA CONSULTA: ningún plan cambia de fecha;
+ * la app traduce el día real a la fecha de plan. `sin_sesion` = día perdido · `alias` real → plan (siempre hacia atrás) · `reparto` = un día
+ * real que recibe bloques de la plantilla de otras fechas de plan con un desfase en minutos (id de bloque de plantillasV6 → desfase).
+ */
+function comprobarCorridaS1(c) {
+  const err = [];
+  if (!c || typeof c !== 'object') return ['falta «corrida_s1»'];
+  const ks = ['decidido', 'version', 'motivo', 'sin_sesion', 'alias', 'reparto'];
+  for (const k of ks) if (!(k in c)) err.push(`falta «corrida_s1.${k}»`);
+  for (const k of Object.keys(c)) if (!ks.includes(k)) err.push(`clave no prevista «corrida_s1.${k}»`);
+  if (err.length) return err;
+  if (!esISO(c.decidido) || typeof c.version !== 'string' || typeof c.motivo !== 'string') err.push('«corrida_s1»: decidido (fecha), version y motivo (texto)');
+  if (!Array.isArray(c.sin_sesion) || !c.sin_sesion.every(esISO)) err.push('«corrida_s1.sin_sesion» debe ser una lista de fechas');
+  const reales = new Set();
+  const nuevo = (s, que) => { if (reales.has(s)) err.push(`«corrida_s1»: ${s} aparece dos veces (${que})`); reales.add(s); };
+  (c.sin_sesion || []).forEach((s) => nuevo(s, 'sin_sesion'));
+  for (const [r, de] of Object.entries(c.alias || {})) {
+    nuevo(r, 'alias');
+    if (!esISO(r) || !esISO(de) || !(de < r)) err.push(`«corrida_s1.alias» ${r} → ${de}: fechas inválidas o no hacia atrás`);
+  }
+  for (const [r, x] of Object.entries(c.reparto || {})) {
+    nuevo(r, 'reparto');
+    if (!esISO(r) || !x || !esISO(x.de) || !(x.de < r) || !Array.isArray(x.partes) || !x.partes.length) { err.push(`«corrida_s1.reparto» ${r}: { de, partes[] } inválido`); continue; }
+    for (const pt of x.partes) {
+      if (!pt || !esISO(pt.de) || pt.de > r || !pt.bloques || typeof pt.bloques !== 'object') { err.push(`«corrida_s1.reparto» ${r}: parte inválida ${JSON.stringify(pt)}`); continue; }
+      for (const [id, m] of Object.entries(pt.bloques)) if (!/^[a-z][a-z0-9-]*$/.test(id) || !Number.isInteger(m) || m % 5 !== 0 || Math.abs(m) > 12 * 60) err.push(`«corrida_s1.reparto» ${r} ${pt.de}: bloque «${id}» con desfase ${m} (minutos enteros, múltiplo de 5, |·| ≤ 12 h)`);
+    }
+    if (!x.partes.some((pt) => pt.de === x.de)) err.push(`«corrida_s1.reparto» ${r}: ninguna parte es del día repartido ${x.de}`);
+  }
+  return err;
+}
+/** Semana corrida (gemelo node de corridaS1De del .ts): null fuera de ella. */
+function corridaS1De(s, F = fechasPorDefecto()) {
+  const c = F.corrida_s1;
+  if (!c) return null;
+  if (c.sin_sesion.includes(s)) return { tipo: 'sin_sesion' };
+  if (c.alias[s]) return { tipo: 'alias', de: c.alias[s] };
+  const r = c.reparto[s];
+  return r ? { tipo: 'reparto', de: r.de, partes: r.partes } : null;
+}
+/** Fecha de PLAN de un día real (gemelo node de fechaPlanDe del .ts). */
+const fechaPlanDe = (s, F = fechasPorDefecto()) => { const c = corridaS1De(s, F); return c && c.tipo !== 'sin_sesion' ? c.de : s; };
 /** Contexto de derivación a partir del JSON. */
 function ctxDe(F) {
   return {
@@ -357,6 +401,8 @@ function emitirTS(F, d) {
     // una bitácora v6.00 con la etiqueta v6.01. Ahora: v6.00 literal + una línea por corrimiento de `corrimientos` (sus propios literales).
     ` * v6.00 (decidido ${fy(F.decidido)}): reestructuración anual (DJ-1…DJ-5) — sustituye a v5.20 (Step 1 lun 22-feb · ENCAPS mié 10-mar).`,
     ...(F.corrimientos || []).map((c) => ` * ${c.version} (${fy(c.fecha)}): corrimiento rígido del D1 ${fy(c.d1_previo)} → ${fy(c.d1)} (perdidos: ${c.perdidos.map(f).join(' · ')}).`),
+    ` * ${F.corrida_s1.version} (${fy(F.corrida_s1.decidido)}): semana 1 corrida SOLO en la consulta (corridaS1De / fechaPlanDe) — sin sesión ${F.corrida_s1.sin_sesion.map(f).join(' · ')} · ` +
+      `${Object.entries(F.corrida_s1.alias).map(([r, de]) => `${f(r)} = plan del ${f(de)}`).join(' · ')} · ${Object.entries(F.corrida_s1.reparto).map(([r, x]) => `${f(r)} = parte del ${f(x.de)}`).join(' · ')}; ningún plan cambia de fecha.`,
     ` * Versión vigente del JSON: ${F.version}.`,
     ' * Módulo HOJA: no importa nada de src/ (r2 · I7: corta el ciclo usmleStep1Daily ↔ homeBriefing; STEP1_SEMANAS, semanaStep1 y',
     ' * Turno viven aquí y homeBriefing los re-exporta).',
@@ -389,6 +435,13 @@ export interface FechasV6 {
   feriados: string[];
   /** v6.01: bitácora de corrimientos del D1 (informativa) */
   corrimientos: { fecha: string; version: string; d1_previo: string; d1: string; perdidos: string[]; regla: string }[];
+  /** v6.02d: semana 1 corrida (alias en la consulta; ver corridaS1De / fechaPlanDe) */
+  corrida_s1: {
+    decidido: string; version: string; motivo: string;
+    sin_sesion: string[];
+    alias: Record<string, string>;
+    reparto: Record<string, { de: string; partes: { de: string; bloques: Record<string, number> }[] }>;
+  };
 }
 export const FECHAS_V6: FechasV6 = ${JSON.stringify(F, null, 2)};
 
@@ -613,6 +666,32 @@ export function semanaStep1(iso: string, extras: SemanaStep1Extras = {}): Semana
     deload: !!dl, deloadMotivo: dl ? dl.motivo : undefined, hito, fueraDeRango: !pausa && (n < 1 || n > STEP1_SEMANAS),
   };
 }
+
+// ── ${F.corrida_s1.version}: semana 1 corrida (orden de Joseph del ${fy(F.corrida_s1.decidido)}) ──
+/** Parte de un día de reparto: bloques de la plantilla de la fecha de plan «de» (id de bloque de plantillasV6 → desfase en minutos). */
+export interface ParteCorridaS1 { de: string; bloques: Record<string, number> }
+export type CorridaS1 =
+  | { tipo: 'sin_sesion' }
+  | { tipo: 'alias'; de: string }
+  | { tipo: 'reparto'; de: string; partes: ParteCorridaS1[] };
+/**
+ * Semana corrida: ${F.corrida_s1.sin_sesion.map(f).join(' · ')} sin sesión · ${Object.entries(F.corrida_s1.alias).map(([r, de]) => `${f(r)} = plan del ${f(de)}`).join(' · ')} ·
+ * ${Object.entries(F.corrida_s1.reparto).map(([r, x]) => `${f(r)} = ${x.partes.map((p) => `${Object.keys(p.bloques).join('+')} del ${f(p.de)}`).join(' / ')}`).join(' · ')}.
+ * null fuera de esos días: el resto del calendario es idéntico (los planes, Supabase, runners y guías conservan su fecha de plan).
+ */
+export function corridaS1De(iso: string): CorridaS1 | null {
+  const c = FECHAS_V6.corrida_s1;
+  if (c.sin_sesion.includes(iso)) return { tipo: 'sin_sesion' };
+  const a = c.alias[iso];
+  if (a) return { tipo: 'alias', de: a };
+  const r = c.reparto[iso];
+  return r ? { tipo: 'reparto', de: r.de, partes: r.partes } : null;
+}
+/** Fecha de PLAN que toca un día real (vistas por frente): alias → el plan del día anterior · reparto (sáb/dom) → el día repartido · resto → la propia. */
+export function fechaPlanDe(iso: string): string {
+  const c = corridaS1De(iso);
+  return c && c.tipo !== 'sin_sesion' ? c.de : iso;
+}
 `;
 }
 
@@ -648,6 +727,8 @@ function compararTS(T, F, d) {
     eq('enPausaStep1 ' + s, T.enPausaStep1(s), enPausaStep1(s, F));
     for (const p of [undefined, 'usmle', 'encaps', 'mir', 'research', 'derma', 'aurum']) eq(`esDiaPlan ${s} ${p}`, T.esDiaPlan(s, p), esDiaPlan(s, p, F));
     eq('semanaStep1 ' + s, T.semanaStep1(s, extras), semanaStep1(s, extras, F));
+    eq('corridaS1De ' + s, T.corridaS1De(s), corridaS1De(s, F));
+    eq('fechaPlanDe ' + s, T.fechaPlanDe(s), fechaPlanDe(s, F));
     if (err.length > 20) break;
   }
   // derivaciones en los escenarios (A5) × los 3 exámenes de DJ-1 × SERUMS 3-may / 6-may (sensibilidad §B4.3) + un ENCAPS en sábado
@@ -730,6 +811,8 @@ module.exports = {
   cargarFechasV6, validar, derivar, ctxDe, comprobarForma,
   // fases y predicados (F opcional = el JSON validado)
   fasesV6, faseV6, esProtegido, enPausaStep1, esDiaPlan, semanaStep1,
+  // v6.02d: semana 1 corrida (alias en la consulta)
+  comprobarCorridaS1, corridaS1De, fechaPlanDe,
 };
 
 if (require.main === module) main();

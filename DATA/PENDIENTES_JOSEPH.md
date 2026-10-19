@@ -1,5 +1,13 @@
 # PENDIENTES DE JOSEPH · régimen v6.02 (corrimiento al LUN 19-OCT-2026 con hitos F1 anclados sobre la REESTRUCTURACIÓN ANUAL v6.00 · ⏸ v6.01: lun 12-oct · ⏸ v6.00: mié 7-oct-2026)
 
+## ✅ v6.02d (lun 19-oct-2026) · SEMANA 1 CORRIDA — solo esta semana, desde el lun 26 nada cambia
+
+> Orden de Joseph (lun 19-oct, sin estudio ese día): mar 20 = plan del lun 19 · mié 21 = plan del mar 20 · jue 22 = plan del mié 21 · vie 23 = plan del jue 22 ·
+> **sáb 24** = mañana del vie 23 (04:15 · 05:00 · 07:15-12:00 USMLE D5 · 12:30 SYNAPSE · 13:00 Business) + eval USMLE 13:30 · **dom 25 desde las 07:15** = tarde del
+> vie 23 (07:15 DERMA d3 · 08:00 AURUM · 09:00 MIR · 10:00 **mini-sim ENCAPS** · 11:00 LIVIANO caso 1) + revisión semanal 11:45 + cierre Business 12:15.
+> Alias en la consulta (`_fechas_v6.json` → `corrida_s1`; ADDENDUM v6.02d de V6_ESPEC): ningún plan cambió de fecha. Sin decisiones nuevas para Joseph.
+> **Operativo:** el runbook ENCAPS de la semana 2 pasa al **dom 25 tras el mini-sim** (a más tardar lun 26 antes de las 16:15).
+
 ## ✅ v6.02 VIGENTE (sáb 17-oct-2026 · todo corre a partir del LUN 19-OCT-2026) — manda sobre las fechas de F1, ENCAPS y secundarios de los bloques v6.01 y v6.00
 
 > Instrucción de Joseph (sáb 17-oct): *«todo corre a partir del 19, reestructura»*.

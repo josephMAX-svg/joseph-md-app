@@ -9,6 +9,7 @@ import {
   SYN_FORMATO_ICON,
 } from '../../lib/synapseDailyPlan';
 import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, loadDone, saveDone } from '../../lib/studyProgress';
+import { fechaPlanDe } from '../../lib/fechasV6';
 import { synObsUrl } from '../../lib/obsidianVaultMap';
 import { PERIWINKLE, statusGlyph, tagBar, PromptGlyph } from './synapseConsole';
 import {
@@ -33,8 +34,10 @@ const OBS = '#A78BFA'; // mismo morado ◆ que el resto de planes
  */
 const INDIGO = PERIWINKLE; // periwinkle — color canónico de la consola (antes #818CF8)
 function openUrl(u: string) { Linking.openURL(u).catch(() => {}); }
+/** «Hoy» para ELEGIR LA FILA del plan (SynapseTodayPlan · SynapseHub · DesktopRightPanel): la fecha de plan, no la del reloj. */
 export function synTodayISO(): string {
-  try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; }
+  // v6.02d: semana 1 corrida → fila de la fecha de plan
+  try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return fechaPlanDe(`${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`); }
   catch { return SYN_PLAN_META.inicio; }
 }
 function fmtFecha(iso: string): string {

@@ -33,7 +33,7 @@ import { mirPoolDisponible } from '../../lib/mirPreguntasOficiales';
 import { MirPoolLista, MirPoolEvalCompacta, poolConFallback } from './MirPoolEval';
 import DermaAnkiCola from '../derma/DermaAnkiCola';
 import { useDermaLedger, dermaHoyISO, dermaCopiar, dermaDescargar, dermaEsViernes, DERMA_AREA_LABEL, DERMA_AREA_COLOR } from '../derma/dermaLedgerBus';
-import { FECHAS_V6, motivoProtegido } from '../../lib/fechasV6';
+import { FECHAS_V6, motivoProtegido, fechaPlanDe } from '../../lib/fechasV6';
 import GuiaBloqueCard from '../GuiaBloqueCard';
 import { dermaGuiaPar, accessDermaOK, guardarAccessDermaOK, dermaCasoUrl, dermaCasoTitulo, DERMA_TEST_PROMIR_D3, moduloCMEDe } from '../../lib/dermaGuia';
 /** v6.00: ¿la fecha cae en el SERUMS (F4)? → 30' en tiempo muerto de la posta, franja sin hora (§E). */
@@ -712,8 +712,8 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
  * pedirse dos veces seguidas.
  */
 export default function DermaTodayPlan({ tone, jump }: { tone?: SkinTone; jump?: { d: number; k: number } }) {
-  const iso = todayISO();
-  const tipoHoy = diaEstudioTipo(new Date());
+  const iso = fechaPlanDe(todayISO()); // v6.02d: semana 1 corrida → fila de la fecha de plan
+  const tipoHoy = diaEstudioTipo(new Date(iso + 'T12:00:00')); // v6.02d: semana 1 corrida → tipo (Derma/Research) de la fecha de plan
   const protegidoHoy = motivoProtegido(iso); // v6.00: día protegido = sin sesión Derma (§A3)
   // Fallback al CICLO 2: cuando la fecha pasa del último átomo del ciclo 1 (d73), planHoyD cae en dermaCiclo2.ts.
   const hoyD = planHoyD(DERMA_DIAS_TODOS, iso);

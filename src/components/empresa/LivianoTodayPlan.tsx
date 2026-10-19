@@ -10,6 +10,7 @@ import {
   livCasoDe, livDrillDe, livCardsDeDia, livPretest, livAnkiDeck,
 } from '../../lib/livianoCasos';
 import { planHoyD, loadDone, saveDone } from '../../lib/studyProgress';
+import { fechaPlanDe } from '../../lib/fechasV6';
 import GuiaBloqueCard from '../GuiaBloqueCard';
 import { guiaLivianoDe } from '../../lib/rutinaGuia'; // v6.02c (E5): qué · cuánto · cómo de la sesión (lectura con sección y palabras, enlaces)
 import {
@@ -232,7 +233,7 @@ function AnkiBlock({ cards, modulo, color }: { cards: LivAnkiCard[]; modulo: str
 }
 
 export default function LivianoTodayPlan({ onIrALogistica }: { onIrALogistica?: () => void } = {}) {
-  const iso = todayISO();
+  const iso = fechaPlanDe(todayISO()); // v6.02d: semana 1 corrida → fila de la fecha de plan (stamp() sigue con la fecha real)
   const hoyD = planHoyD(LIV_DIAS, iso);
   const todayDia = livDiaDe(iso) || LIV_DIAS.find((x) => x.d === hoyD) || LIV_DIAS[0];
   const [sel, setSel] = useState<number>(todayDia.d);
