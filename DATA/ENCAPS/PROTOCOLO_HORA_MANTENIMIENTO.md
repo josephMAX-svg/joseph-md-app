@@ -6,6 +6,10 @@
 >   `mini_sim`** (vie 23-oct … vie 18-dic; `sim_n` 3 … 43) · rígido por slots: el slot k de lun-jue = el slot k de v6.00-v6.02 y el mini-sim k = el viernes k
 >   (**los viernes no se movieron**; mismo contenido, mismo orden; nada se fusiona ni se recorta). Lun 19 y mar 20-oct sin sesión; sáb 24 y dom 25 libres (la
 >   corrida por alias v6.02d —mini-sim el dom 25— quedó sin efecto). Este protocolo (eval anclada · banco · secundario · mini-sim del viernes · cierre) rige tal cual.
+> - **Técnica de simulacro (v6.03b, 20-oct):** CÓMO se hace el mini-sim del viernes (§2), el pre-test de arranque y el SIM 100Q de la intensiva —reloj 72 s/Q,
+>   corrección, comparación, tarjetas y envío APEX (RaviMedTest adaptado al ENCAPS)— está en
+>   [`METODO_SIMULACRO_ENCAPS.md`](METODO_SIMULACRO_ENCAPS.md); va DENTRO de los pasos de la guía 🧭 de las 16:15 (`DATA/_scripts/encaps_guia_catalogo.js` ›
+>   `TECNICA_SIM` → `gen_encaps_guia.js` → `src/lib/encapsGuia.ts`) y no cambia franjas, minutos, recetas, umbrales ni la lista negra de este protocolo.
 > - **Pre-test de arranque 40Q = mié 21-oct (dia 1, parte 1: II-3 · V-2 · III-5 · I-3) + jue 22-oct (dia 2, parte 2: II-5 · I-4 · IV-1+IV-2 · II-4)**, runners
 >   `BANCO_PROPIO/pretest_arranque_2026-10-21/-22` (re-fechados sin regenerar: mismos 40 ítems reales); la 1.ª mini-sim es el **vie 23-oct = dia 3** (II-2 + I-10).
 >   Evals pre-generadas: `eval_2026-10-21` (D1, fallos previos) · `-10-22` (II-3) · `-10-26` (lun 26, I-3) · `-10-27` (mar 27, V-2); bancos lun 26 (V-2) y mar

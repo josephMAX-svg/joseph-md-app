@@ -188,7 +188,7 @@ export const DISCOVERY_SOURCES: DiscoverySource[] = [
   { nombre: 'OpenAlex', cobertura: '250M+ (CC0)', auth: 'API key gratis OBLIGATORIA (13-feb-2026) · freemium ~$1/día', rol: 'Troncal — máxima cobertura abierta + citation-chasing. 98% validado para SR (Stansfield 2025).', troncal: true, url: 'https://developers.openalex.org/api-reference/authentication' },
   { nombre: 'PubMed / MEDLINE', cobertura: '37M biomédicos', auth: 'E-utilities · sin key 3/s, con key 10/s', rol: 'Gold standard biomédico (MeSH).', url: 'https://www.ncbi.nlm.nih.gov/books/NBK25501/' },
   { nombre: 'Europe PMC', cobertura: '46M+ · 880k+ preprints', auth: 'sin key · cursorMark', rol: 'Cobertura europea + preprints + texto completo OA. (No indexa Embase.)', url: 'https://europepmc.org/RestfulWebService' },
-  { nombre: 'LILACS / BVS', cobertura: '~700 revistas · ~2.8M docs', auth: 'iAHx RSS/XML · DeCS · api.bvsalud.org (token)', rol: 'Ventaja diferencial peruana/LATAM (ES/PT).', url: 'https://lilacs.bvsalud.org/en/' },
+  { nombre: 'LILACS / BVS', cobertura: '~700 revistas · ~2.8M docs', auth: 'iAHx RSS/XML · DeCS · api.bvsalud.org (token)', rol: 'Ventaja diferencial peruana/LATAM (ES/PT).', url: 'https://lilacs.bvsalud.org/' },
   { nombre: 'Semantic Scholar', cobertura: '214M+ papers', auth: 'key gratis (x-api-key) · 1 req/s', rol: 'Complemento semántico + externalIds (dedup DOI) + TLDR.', url: 'https://api.semanticscholar.org/api-docs/graph' },
 ];
 

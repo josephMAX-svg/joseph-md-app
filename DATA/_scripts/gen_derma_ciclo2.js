@@ -259,7 +259,7 @@ const CASO_FALLOS2: MatLink = { t: 'Board Review · SOLO casos fallados del ledg
 const DSA2 = book(2929); // Dermoscopy: Illustrated Self-Assessment 2e (impares)
 const DS2 = 'https://dermoscopedia.org';
 const DSP2 = {
-  red: \`\${DS2}/Pigment_network\`, glob: \`\${DS2}/Globules\`, streaks: \`\${DS2}/Streaks\`, veil: \`\${DS2}/Blue-white_veil\`,
+  red: \`\${DS2}/Pigment_network\`, glob: \`\${DS2}/Globules\`, streaks: \`\${DS2}/Streaks\`, veil: \`\${DS2}/Blue_white_veil\`,
   vasos: \`\${DS2}/Vascular_structures\`, neg: \`\${DS2}/Negative_network\`, dots: \`\${DS2}/Dots\`, struct: \`\${DS2}/Structureless_areas\`,
   chaos: \`\${DS2}/Chaos_and_clues\`, twoStep: \`\${DS2}/Two-step_algorithm\`, three: \`\${DS2}/Three_point_checklist\`,
   seven: \`\${DS2}/Seven_Point_Checklist\`, menzies: \`\${DS2}/Menzies_Method\`, abcd: \`\${DS2}/ABCD_rule\`, pattern: \`\${DS2}/Pattern_analysis\`,

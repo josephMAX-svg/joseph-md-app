@@ -254,7 +254,7 @@ hialuronidasa se aprenden en el plan Derma antes de fijar desenlaces, extraer y 
 | `CT` | ClinicalTrials.gov | https://clinicaltrials.gov/ | repo (verificada jun-jul 2026) |
 | `ICTRP` | WHO ICTRP | https://www.who.int/clinical-trials-registry-platform | repo (verificada jun-jul 2026) |
 | `RAY` | Rayyan (cribado, free ≤3) | https://www.rayyan.com/ | repo (verificada jun-jul 2026) |
-| `RAYHC` | Rayyan · crear una SR (guía) | https://help.rayyan.ai/hc/en-us/articles/22088155760017-How-to-Create-a-Systematic-Review-in-Rayyan | repo (verificada jun-jul 2026) |
+| `RAYHC` | Rayyan · crear una SR (guía) | https://help.rayyan.ai/hc/en-us/articles/45541788688529-How-to-Create-a-Review-in-Rayyan | repo (verificada jun-jul 2026) |
 | `RAYYT` | Rayyan · canal oficial (hands-on) | https://www.youtube.com/@Rayyanapp | repo (verificada jun-jul 2026) |
 | `ELI` | Elicit (extracción asistida) | https://elicit.com/ | repo (verificada jun-jul 2026) |
 | `ROB2` | RoB 2 (sesgo en ECA) | https://www.riskofbias.info/welcome/rob-2-0-tool | repo (verificada jun-jul 2026) |
@@ -277,7 +277,7 @@ hialuronidasa se aprenden en el plan Derma antes de fijar desenlaces, extraer y 
 | `COPE` | COPE · guías de integridad de publicación | https://publicationethics.org/guidance/Guidelines | repo (verificada jun-jul 2026) |
 | `CREDIT` | CRediT · taxonomía de contribución (NISO) | https://credit.niso.org/ | repo (verificada jun-jul 2026) |
 | `SCIWRITE` | Writing in the Sciences · peer review & rebuttal (Sainani) | https://www.coursera.org/learn/sciwrite | repo (verificada jun-jul 2026) |
-| `REBUTTAL` | PLOS · How to write a persuasive rebuttal | https://plos.org/resource/how-to-write-a-persuasive-response-to-reviewers/ | repo (verificada jun-jul 2026) |
+| `REBUTTAL` | PLOS · Responding to peer review (respuesta punto por punto) | https://plos.org/resource/how-to-receive-and-respond-to-peer-review-feedback/ | repo (verificada jun-jul 2026) |
 | `PHRASE` | Academic Phrasebank (Manchester) · frases por sección | https://www.phrasebank.manchester.ac.uk/ | repo (verificada jun-jul 2026) |
 | `TURING` | The Turing Way · investigación reproducible | https://the-turing-way.netlify.app/ | repo (verificada jun-jul 2026) |
 | `FAIR` | FAIR data principles (GO FAIR) | https://www.go-fair.org/fair-principles/ | repo (verificada jun-jul 2026) |

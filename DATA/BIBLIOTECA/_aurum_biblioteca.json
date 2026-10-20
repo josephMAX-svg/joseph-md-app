@@ -244,8 +244,9 @@
       "divorciar el precio del coste"
      ],
      "audiolibro_youtube": {
-      "url": "https://www.youtube.com/watch?v=buKC5g5uK9c",
-      "confianza": "estable"
+      "url": "",
+      "confianza": "no_existe",
+      "nota": "el audiolibro subido a YouTube fue retirado («This video is unavailable», verificado el 20-oct-2026); queda el audio de Spotify"
      },
      "audiolibro_spotify": {
       "url": "https://open.spotify.com/search/100M%20Offers%20Alex%20Hormozi",
@@ -309,8 +310,9 @@
       "Black Swans (cisnes negros)"
      ],
      "audiolibro_youtube": {
-      "url": "https://www.youtube.com/watch?v=SlPGorMfSB4",
-      "confianza": "estable"
+      "url": "",
+      "confianza": "no_existe",
+      "nota": "el audiolibro subido a YouTube fue retirado («This video is unavailable», verificado el 20-oct-2026); queda el audio de Spotify"
      },
      "audiolibro_spotify": {
       "url": "https://open.spotify.com/search/Never%20Split%20the%20Difference%20Chris%20Voss%20audiobook",

@@ -10,7 +10,7 @@
    "nuevas": "nuevas disponibles", "suspendidas": "is:suspended", "revisadasHoy": "rated:1 del patrón", "revisadasHoyTotal": "getNumCardsReviewedToday (toda la colección)",
    "againHoy": "rated:1:1", "againHoyPct": "% Again hoy", "retencion30": "1 − Again/revisiones tipo review en 30 d (FSRS)", "retencionMetodo": "review-level o aprox card-level",
    "segPorTarjeta": 20, "minFinde": "due × seg ÷ 60", "alarma": "true si backlog > 100 o retencion30 < 0.85",
-   "config": { "preset": "nombre del preset", "nuevasPorDia": "esperado 10", "desiredRetention": "esperado 0.90", "fsrsParams": "nº de parámetros FSRS (null si no expuesto)" },
+   "config": { "preset": "nombre del preset del padre (esperado «APEX USMLE»; los sub-decks fuera de él van en fueraDePreset)", "nuevasPorDia": "esperado 20 (preset «APEX USMLE», METODO_ANKI_APEX_USMLE.md §3; 0 dentro del protocolo de backlog §7)", "desiredRetention": "esperado 0.90", "fsrsParams": "nº de parámetros FSRS (null si no expuesto)" },
    "avisos": ["texto"]
   },
   "creado": "2026-09-05",

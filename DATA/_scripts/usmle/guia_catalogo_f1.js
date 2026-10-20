@@ -25,21 +25,21 @@ const PATHOMA = {
   11: 'páncreas exocrino, vesícula e hígado', 12: 'riñón y vías urinarias', 15: 'patología endocrina', 17: 'sistema nervioso central',
 };
 
-/** Palmerton (YouTube): título actual y duración real (lengthSeconds leído el 18-oct-2026). */
+/** Palmerton (YouTube): título actual y duración real (lengthSeconds leído el 18-oct-2026; v6.03, 20-oct: los 4 «Part 2» con el título EXACTO de YouTube, verificado por oEmbed). */
 const PALM = {
   BOtQJeFE_rc: { t: 'The ONLY Video You Need to Pass the USMLE Step 1 in 2026', s: 2293 },
   Te5RnxeG_Gg: { t: 'Anki Almost Broke Me at Stanford Med. 8 Changes Fixed It. (en la app: «5X Your Anki Efficiency (FSRS)»)', s: 1847 },
   Nfp3hs490wM: { t: 'High Yield Immunology for Shelf Exams & Step 1 + Step 2 CK', s: 2486 },
   hOGhcie47nM: { t: 'High Yield Cardiology for Shelf Exam & Step 1 + Step 2 CK', s: 6719 },
-  nFfdaHLtxag: { t: 'High Yield Cardiology Part 2', s: 5043 },
+  nFfdaHLtxag: { t: 'High Yield Cardiology Part 2 | Shelf Exam, Step 1 & Step 2 CK', s: 5043 },
   HU3V0kftcqY: { t: 'High Yield Respiratory for Shelf Exams & Step 1 + Step 2 CK', s: 5455 },
   zeM8dMiRsJQ: { t: 'High Yield Renal for Shelf Exams & Step 1 + Step 2 CK', s: 5722 },
-  CIIMMIvrRso: { t: 'High Yield Renal (Part 2)', s: 6598 },
+  CIIMMIvrRso: { t: 'High Yield Renal for Shelf Exams & Step 1 + Step 2 CK (Part 2)', s: 6598 },
   '8gfhX1aR9-A': { t: 'High Yield GI for Shelf Exam & Step 1 + Step 2 CK', s: 9898 },
-  E2sE4E6s9B8: { t: 'High Yield GI (Part 2)', s: 6687 },
+  E2sE4E6s9B8: { t: 'High Yield GI for Shelf Exam & Step 1 + Step 2 CK (Part 2)', s: 6687 },
   oQ8PSvInTgM: { t: 'High Yield Endocrinology for Shelf Exams & Step 1 + Step 2 CK', s: 7519 },
   YIwfdc7E8TU: { t: 'High Yield Neuro for Shelf Exams & Step 1 + Step 2 CK', s: 4456 },
-  '52xHDZJy2sw': { t: 'High Yield Neuro Part 2', s: 5973 },
+  '52xHDZJy2sw': { t: 'High Yield Neuro Part 2 - Shelf Exams & Step 1 + Step 2 CK', s: 5973 },
   zFGfP4d_aOc: { t: 'High Yield Hematology for Shelf Exams & Step 1 + Step 2 CK', s: 2370 },
 };
 

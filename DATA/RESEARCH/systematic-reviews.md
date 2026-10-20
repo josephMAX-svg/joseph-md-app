@@ -166,7 +166,7 @@ Solo si los estudios son suficientemente homogéneos clínica y metodológicamen
 - **Rayyan — canal oficial de YouTube** (tutoriales hands-on de cribado, p. ej. *"Rayyan for Systematic
   Reviews: A Hands-On Intro"*). https://www.youtube.com/@Rayyanapp
 - **Rayyan — Help Center: "How to Create a Systematic Review in Rayyan"** (guía escrita paso a paso).
-  https://help.rayyan.ai/hc/en-us/articles/22088155760017-How-to-Create-a-Systematic-Review-in-Rayyan
+  https://help.rayyan.ai/hc/en-us/articles/45541788688529-How-to-Create-a-Review-in-Rayyan
 - **"Doing Meta-Analysis in R: A Hands-On Guide"** (Harrer, Cuijpers, Furukawa & Ebert) — **libro online
   gratuito**, el tutorial reproducible de referencia para la parte estadística (incluye `dmetar`, forest,
   heterogeneidad, funnel, subgrupos, meta-regresión). https://bookdown.org/MathiasHarrer/Doing_Meta_Analysis_in_R/

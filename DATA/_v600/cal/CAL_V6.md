@@ -807,3 +807,79 @@ Cómo se buscó: `list_events` con `fullText` «17-oct-2026» (el pie de todo lo
 4. Títulos de NBME 29 y GO/NO-GO siguen con «· v6.00» (fecha sin cambio; misma convención que FX-CAL v6.02). Descripciones ya v6.03.
 5. Lo de C1/C2 no se re-escribió (UWSA1, NBME 25-28, gates, 🧯, CHECKPOINT, ENCAPS 16:15, ALMUERZO, secundarios, REVISIÓN, Research): su texto ya es v6.03.
 6. Escrituras en el repo: solo este fichero. Respaldos, volcados antes/después, scripts y payloads en `DATA/_v600/cal/cal_bk/v603/_d/` (ignorado por git).
+
+### 14.4 Verificación final (fase F): rutinas personales y títulos del lun 19
+
+Encargo del orquestador (verificación total v6.03, parte técnica): las 18 rutinas personales que `CAL_V6.md` §14.3 dejó pendientes
+(«No tocado / pendientes», punto 1) seguían citando fechas v6.02 como vigentes (UWSA1 lun 19-oct, NBME 25-27 en viernes, gates en
+miércoles, D52 = NBME 28, víspera del D1 = dom 18-oct, «Régimen v6.02 (D1 = lun 19-oct-2026 …)»). Se cambian **solo esas frases del plan**
+a v6.03 en la descripción; horas, títulos, recurrencia, colores y recordatorios intactos. Además, el punto 2 de §14.3: los títulos de la
+Eval y del ENCAPS del lun 19-oct se uniforman con los del mar 20 («⏭ SIN SESIÓN (v6.03: arranca el mié 21) · …»).
+
+Ejecutado el mar 20-oct-2026, ≈14:02-14:05 Lima (`updated` 19:02:44Z → 19:05:13Z). `notificationLevel: NONE` en las 20 escrituras.
+
+## Protocolo
+
+- **Instancias con excepción**: `list_events` con `fullText` «Régimen v6.02 (D1 = lun 19-oct-2026» del sáb 17-oct-2026 al dom 31-oct-2027
+  (10 páginas, 2.331 instancias de las 18 series) + volcado completo del 19 → 25-oct. Por serie, agrupación por (título, hora, duración,
+  descripción, color) y `originalStartTime` ≠ `start`: **0 excepciones** (una sola variante por serie, ninguna instancia movida) y ninguna
+  instancia del 19-25 oct de estas series sin el texto v6.02. Al no haber excepciones, la actualización del master no pisa nada que haya que
+  reponer.
+- **Respaldo previo** (gitignored, `.gitignore:53`): `cal_bk/v603/_f/antes/<id>.json` = la instancia completa de `list_events` (mismo texto que
+  el master, 0 excepciones) de las 18 series + las 5 instancias de lun 19 / mar 20 citadas; volcados en `cal_bk/v603/_f/volcados/before/`.
+- **Textos** generados por script (`cal_bk/v603/_f/build.js`, cada reemplazo con aserción «exactamente 1 coincidencia»; payloads en
+  `cal_bk/v603/_f/payloads/`). Lo de v6.02 queda como historial «⏸ v6.02: …».
+
+## Reemplazos comunes (las 18)
+
+| Antes | Después |
+|---|---|
+| `Régimen v6.02 (D1 = lun 19-oct-2026; v6.01: lun 12-oct)` | `Régimen v6.03 (D1 = mié 21-oct-2026; v6.02: lun 19-oct · v6.01: lun 12-oct)` |
+| pie `… (v6.02 · 17-oct-2026: D1 = lun 19-oct)` | `… (v6.02 · 17-oct-2026: D1 = lun 19-oct) (v6.03 · 20-oct-2026: D1 = mié 21-oct)` |
+| `⚠ v6.02 (sin cambio):` (donde estaba) | `⚠ v6.03 (sin cambio):` (el contenido —examen lun 27-sep, D94/D95, ritual, viaje, ENCAPS dom 14-mar— sigue siendo cierto) |
+
+## Operaciones (18 `update_event` de descripción + 2 de título)
+
+| # | Id | Serie | Cambio específico (además de los comunes) |
+|---|---|---|---|
+| 1 | `22bh9m5jhc7ro6aj3m4ffjad7g` | DECLARACIONES EKER (diaria 04:00) | «6. IDENTIDAD DE EXAMEN (v6.02: … del lun 19-oct al mié 30-dic-2026» → «(v6.03: … del **mié 21-oct** al mié 30-dic-2026» |
+| 2 | `6740kavnfkdcvj5k149ouliauu` | GYM lunes | «4 hitos en LUNES: UWSA1 lun 19-oct · NBME 30 · 33 · Free 120 … NBME 25-27 (vie 30-oct · 20-nov · 11-dic) … serie GYM viernes» → «**3 hitos** en LUNES (NBME 30 · 33 · Free 120; GO/NO-GO lun 9-ago); el UWSA1 ya no cae en lunes (**mié 21-oct, 08:50-13:00** → serie BAILE miércoles; ⏸ v6.02: lun 19-oct). NBME 25-27 (**mar 3-nov · mar 24-nov · mar 15-dic**), UWSA3 y UWSA2 → serie GYM martes; NBME 32 → GYM viernes» |
+| 3 | `64lue1en3hk0cf8itml2rtlqi4` | BAILE lunes | «⚠ v6.02:» → «⚠ v6.03:» · hitos en lunes sin el UWSA1 («el UWSA1 pasó al mié 21-oct-2026 —⏸ v6.02: lun 19-oct—») |
+| 4 | `7sf8i7pe62pugfk4t6tcnbb9i4` | GYM viernes | «4 caen en viernes: NBME 25-27 + 32» → «**1** cae en viernes: NBME 32 vie 6-ago (⏸ v6.02: NBME 25-27 en viernes)» · LUNES sin UWSA1 · MARTES + NBME 25/26/27 (mar 3-nov · 24-nov · 15-dic) · MIÉRCOLES + UWSA1 mié 21-oct |
+| 5 | `5pd4jhmvl31hvbuh40vphpoc4q` | BAILE viernes | «⚠ v6.02:» → «⚠ v6.03:» · «Hitos en viernes (v6.02: NBME 25-27 + 32)» → «(v6.03: NBME 32 vie 6-ago; los NBME 25-27 pasaron a martes —mar 3-nov · 24-nov · 15-dic—; ⏸ v6.02: …)» |
+| 6 | `0dpes0ekv96a453e89m5osg06t` | GYM martes | «2 hitos en MARTES (UWSA3 · UWSA2) … los NBME 25-28 ya NO caen en martes (v6.02 …)» → «**5 hitos** en MARTES: NBME 25 mar 3-nov · 26 mar 24-nov · 27 mar 15-dic (07:00-12:30) · UWSA3 · UWSA2; NBME 28 mié 30-dic (serie BAILE miércoles); ⏸ v6.02: NBME 25-27 en viernes» |
+| 7 | `09me7atu516gb0k6u0rbfcj8q1` | BAILE martes | ídem 6 («serie del miércoles») |
+| 8 | `0tod56pc6pgecm5lf7g4e3ji9v` | BAILE miércoles | hitos en miércoles **+ UWSA1 mié 21-oct = D1 (08:50-13:00)**; «gates F1 mié 11-nov y mié 9-dic» → «los gates pasaron a viernes (**vie 13-nov · vie 11-dic**; ⏸ v6.02: …)»; «El UWSA1 ya no cae en miércoles (v6.02: lun 19-oct)» → «el UWSA1 vuelve a caer en miércoles (⏸ v6.02: lun 19-oct)»; «(D52 = NBME 28)» → «(**D50** = NBME 28; ⏸ v6.02: D52)» |
+| 9 | `7j6pucil43vuca70p082g5ub3d` | BAILE domingo | «Dom 18-oct-2026: víspera del D1 (lun 19-oct = UWSA1 09:00) → cama 21:00 sin excepción.» → «v6.03: la víspera del D1 (UWSA1 mié 21-oct, 08:50) es el mar 20-oct, no un domingo (⏸ v6.02: dom 18-oct …)» |
+| 10 | `5mrm4ru08go9k70408jm8vcjku` | CORRER | solo comunes |
+| 11 | `2lpvftrc3fp64e0om6qg0mcs34` | CALISTENIA | solo comunes |
+| 12 | `7agi60f2bp8qnh6cnqvfo22giv` | DESAYUNO L-V | solo comunes |
+| 13 | `2u9je70pif58hgf2f8t3vgu8b8` | DESAYUNO sáb/dom | solo comunes |
+| 14 | `4qvs34d84u82psvknpqhv3jc7a` | GYM jueves | solo comunes |
+| 15 | `3m8m4resu8akph4a7qfuf3h1qn` | BAILE jueves | solo comunes |
+| 16 | `3jkfb6097rtc1jbec19eg3sd57` | BAILE sábado | solo comunes |
+| 17 | `13m3tcqjjc34rt6iqfblla18q1` | BAILE PRÁCTICA (dom) | solo comunes |
+| 18 | `3l59kpei7sg0l6kq51343or383` | 🚗 VIAJE VUELTA | solo comunes |
+| 19 | `papebi46etlo8glgfs5akd5mig_20261019T211500Z` | ENCAPS lun 19-oct (instancia) | título «⏭ SIN SESIÓN HOY (corrido al mar 20 16:15: PRE-TEST 1/2) · 🇵🇪 ENCAPS» → «⏭ SIN SESIÓN (v6.03: arranca el mié 21) · 🇵🇪 ENCAPS — 1h Banqueo Mantenimiento (pronóstico v3 · rotación II·I·V·III·IV)» (= mar 20) |
+| 20 | `c5e77csne1bnfps1iq7nqel84s_20261019T230000Z` | USMLE Eval lun 19-oct (instancia) | título «⏭ SIN SESIÓN HOY (corrido al mar 20 18:00: Day-After UWSA1 1/6) · 🇺🇸 USMLE Eval» → «⏭ SIN SESIÓN (v6.03: arranca el mié 21) · 🇺🇸 USMLE — Evaluación Diaria Acumulativa (Modo Examen timed + Corrección) · v6.03» (= mar 20) |
+
+ALMUERZO (`43dq3oib16esjcqj1dcd8osot2`) no se tocó: su descripción ya es v6.03 (las coincidencias «v6.02 / lun 19-oct» son historial).
+
+## Verificación
+
+- `list_events` `fullText` «Régimen v6.02 (D1 = lun 19-oct-2026» del 17-oct-2026 al 31-oct-2027 **después**: **0 eventos** (antes: 2.331 instancias).
+- Volcado completo 19 → 25-oct antes/después (`cal_bk/v603/_f/volcados/{before,after}/todo_19-25oct.json`) comparado con `ver.js`:
+  171 = 171 eventos, **387 comprobaciones OK · 0 FAIL** (instancias de las 18 series = payload con su hora y título; las 2 instancias del
+  lun 19 con el título nuevo y la descripción intacta; el resto de eventos sin cambio de título, descripción, color ni hora).
+- Las respuestas de `update_event` devolvieron, en las 18 series, la misma RRULE/EXDATE, hora, color y recordatorios que antes.
+
+## No tocado / observaciones (para el orquestador)
+
+1. Lun 19 y mar 20-oct: las instancias de la mañana (vibecoding 04:15, Anki 05:00, repaso 07:15, pre-test 08:15, deep prime 09:00, 30Q 11:00)
+   y las de la tarde del lun 19 (SYNAPSE 12:30, Business, R↔D, AURUM, MIR) conservan el título genérico (días ya pasados; la app los
+   marca CORRIDO). Solo se uniformó lo pedido (Eval y ENCAPS del lun 19).
+2. Sábados de F1 07:45-08:00 (cierre del OUTPUT de Business, tracker semanal): la app tiene el bloque; el Calendar no tiene evento propio —lo
+   cubre la descripción de la serie Business (`mmi1e976ubgq9s3saarbjf8o74`: «Viernes de OUTPUT: 25′ ese día + 15′ el sábado tras la
+   revisión semanal»)—. Crear un evento queda a decisión de Joseph.
+3. Días de hito (UWSA1 mié 21 · NBME en martes): las series USMLE de la mañana siguen solapadas con el overlay 🎯 (convención de §12/§14:
+   manda la descripción del hito y la app).

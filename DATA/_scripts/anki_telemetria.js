@@ -62,6 +62,10 @@ const WD_HOY = now.getDay();                                   // 0 = dom … 6 
 const MEDIANOCHE = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
 const ANKI_INICIO = '05:00';                                   // franja USMLE · ANKI AM (L-V)
 const LIMITE_1A_REVIEW = '05:10';                              // freno 04:55: 1ª review > 05:10 = ámbar
+// v6.03 (20-oct-2026 · DATA/USMLE/METODO_ANKI_APEX_USMLE.md §3): UN preset «APEX USMLE» en el padre y en TODOS los submazos ·
+// New cards/day 20 (antes se esperaba 10, el valor v5.7) · Maximum reviews/day 9999 · desired retention 0,90 · Next day starts at 4.
+// Protocolo de backlog (§7, disparador ALARMA G): New cards/day 0 y Maximum reviews/day 200-300 hasta backlog < 20 → vuelta a 20 / 9999.
+const ESPERADO = { preset: 'APEX USMLE', nuevasPorDia: 20, revPorDia: 9999, retencion: 0.9, rollover: 4, salidaBacklog: 20 };
 
 // ─── AnkiConnect ───
 async function anki(action, params = {}, timeoutMs = 20000) {
@@ -176,14 +180,22 @@ async function configDeck(prefijo) {
     const names = await anki('deckNames');
     const decks = names.filter((n) => n === prefijo || n.startsWith(prefijo + '::'));
     if (!decks.length) return { decks: [], nuevasPorDia: null, desiredRetention: null, preset: null, nota: `ningún deck empieza por "${prefijo}"` };
-    const cfg = await anki('getDeckConfig', { deck: decks[0] });
+    // v6.03: la config que manda es la del PADRE (antes decks[0] a secas) y se revisa el preset de cada submazo: el motor APEX los
+    // crea con «Default» y hay que pasarles «APEX USMLE» (Deck Options del padre › Save ▾ › Save to All Subdecks).
+    const padre = decks.find((n) => n === prefijo) || decks[0];
+    const cfg = await anki('getDeckConfig', { deck: padre });
+    const fueraDePreset = [];
+    for (const d of decks) {
+      if (d === padre) continue;
+      try { const c = await anki('getDeckConfig', { deck: d }); if ((c && c.name) !== ESPERADO.preset) fueraDePreset.push(`${d} («${(c && c.name) || '?'}»)`); } catch { /* deck sin config legible: no se marca */ }
+    }
     const dr = cfg.desiredRetention ?? (cfg.fsrs && cfg.fsrs.desiredRetention) ?? null;
     return {
-      decks, preset: cfg.name || null,
+      decks, padre, preset: cfg.name || null, fueraDePreset,
       nuevasPorDia: cfg.new && typeof cfg.new.perDay === 'number' ? cfg.new.perDay : null,
       // v5.14 (19-sep, hallazgo #15 Palmerton §4.2): reviews/día ≥ 9999 (el default 100 oculta vencidas) y rollover 4 h (despierta a las 04:00)
       revPorDia: cfg.rev && typeof cfg.rev.perDay === 'number' ? cfg.rev.perDay : null,
-      alertaRevPorDia: cfg.rev && typeof cfg.rev.perDay === 'number' && cfg.rev.perDay < 9999 ? `rev.perDay=${cfg.rev.perDay} < 9999: Anki oculta vencidas (Palmerton §4.2 · SYNC_ANKI D3)` : null,
+      alertaRevPorDia: cfg.rev && typeof cfg.rev.perDay === 'number' && cfg.rev.perDay < ESPERADO.revPorDia ? `rev.perDay=${cfg.rev.perDay} < ${ESPERADO.revPorDia}: Anki oculta vencidas (Palmerton §4.2 · METODO_ANKI_APEX_USMLE.md §3; 200-300 solo dentro del protocolo de backlog §7)` : null,
       rollover: typeof cfg.rollover === 'number' ? cfg.rollover : null,
       alertaRollover: typeof cfg.rollover === 'number' && cfg.rollover !== 4 ? `rollover=${cfg.rollover} ≠ 4 h: las tarjetas de hoy no estarán listas a las 05:00` : null,
       desiredRetention: typeof dr === 'number' ? dr : null,
@@ -237,8 +249,17 @@ async function configDeck(prefijo) {
   const alarma = backlog > 100 || (ret.valor != null && ret.valor < 0.85);
   const avisos = [];
   if (alarma) avisos.push(`ALARMA G: backlog ${backlog} (>100) o retención ${ret.valor} (<0.85) → NO añadir nuevas hasta backlog < 20; nunca capar revisiones`);
-  if (cfg.nuevasPorDia != null && cfg.nuevasPorDia !== 10) avisos.push(`config: nuevas/día = ${cfg.nuevasPorDia} (esperado 10) → corregir en Anki (preset "${cfg.preset}")`);
-  if (cfg.desiredRetention != null && Math.abs(cfg.desiredRetention - 0.9) > 0.001) avisos.push(`config: desired retention = ${cfg.desiredRetention} (esperado 0.90) → corregir en Anki`);
+  // v6.03: esperado 20 nuevas/día (preset «APEX USMLE», METODO_ANKI_APEX_USMLE.md §3); 0 es correcto DENTRO del protocolo de backlog (§7)
+  const enProtocolo = alarma || (cfg.nuevasPorDia === 0 && backlog >= ESPERADO.salidaBacklog);
+  if (alarma && cfg.nuevasPorDia != null && cfg.nuevasPorDia > 0) avisos.push(`ALARMA G → protocolo de backlog (METODO_ANKI_APEX_USMLE.md §7): en el preset «${ESPERADO.preset}» New cards/day 0 y Maximum reviews/day 200 (300 si sobra energía; 200 antes de dormir) hasta backlog < ${ESPERADO.salidaBacklog}`);
+  else if (!alarma && cfg.nuevasPorDia === 0 && backlog >= ESPERADO.salidaBacklog) avisos.push(`protocolo de backlog en curso: nuevas/día 0 hasta backlog < ${ESPERADO.salidaBacklog} (hoy ${backlog})`);
+  else if (!alarma && cfg.nuevasPorDia === 0) avisos.push(`backlog ${backlog} < ${ESPERADO.salidaBacklog} → SALIDA del protocolo de backlog: New cards/day ${ESPERADO.nuevasPorDia} y Maximum reviews/day ${ESPERADO.revPorDia} en el preset «${ESPERADO.preset}»`);
+  else if (cfg.nuevasPorDia != null && cfg.nuevasPorDia !== ESPERADO.nuevasPorDia) avisos.push(`config: nuevas/día = ${cfg.nuevasPorDia} (esperado ${ESPERADO.nuevasPorDia}, preset «${ESPERADO.preset}» · METODO_ANKI_APEX_USMLE.md §3) → corregir en Anki (preset actual "${cfg.preset}")`);
+  if (cfg.alertaRevPorDia && !enProtocolo) avisos.push('config: ' + cfg.alertaRevPorDia);
+  if (cfg.alertaRollover) avisos.push('config: ' + cfg.alertaRollover);
+  if (cfg.preset && cfg.preset !== ESPERADO.preset) avisos.push(`config: el padre ${cfg.padre} usa el preset "${cfg.preset}" (esperado «${ESPERADO.preset}») → Deck Options › preset «${ESPERADO.preset}» › Save to All Subdecks`);
+  if (cfg.fueraDePreset && cfg.fueraDePreset.length) avisos.push(`config: ${cfg.fueraDePreset.length} submazo(s) sin el preset «${ESPERADO.preset}» (el motor APEX los crea con Default): ${cfg.fueraDePreset.join(', ')} → Deck Options del padre › Save ▾ › Save to All Subdecks`);
+  if (cfg.desiredRetention != null && Math.abs(cfg.desiredRetention - ESPERADO.retencion) > 0.001) avisos.push(`config: desired retention = ${cfg.desiredRetention} (esperado 0.90) → corregir en Anki`);
   if (cfg.nota) avisos.push('config: ' + cfg.nota);
   if (total === 0) avisos.push(`el patrón "${QUERY}" no devuelve tarjetas: ¿deck aún no creado (lazy) o nombre distinto? (deckNames: ${cfg.decks.join(', ') || 'ninguno con ese prefijo'})`);
   if (pr.estado === 'ambar') avisos.push(`FRENO 04:55: 1ª review de Anki a las ${pr.hora} (> ${LIMITE_1A_REVIEW}) → el bloque 04:15 se comió el Anki; mañana commit-or-stash a las 04:55`);
@@ -252,7 +273,7 @@ async function configDeck(prefijo) {
     retencion30: ret.valor, retencionMetodo: ret.metodo, revisiones30: ret.revisiones, again30: ret.again,
     primeraReview: pr.hora, primeraReviewEstado: pr.estado, primeraReviewMetodo: pr.metodo,
     segPorTarjeta: SEG, minFinde, alarma,
-    config: { preset: cfg.preset, nuevasPorDia: cfg.nuevasPorDia, desiredRetention: cfg.desiredRetention, fsrsParams: cfg.fsrsParams ?? null },
+    config: { preset: cfg.preset, nuevasPorDia: cfg.nuevasPorDia, revPorDia: cfg.revPorDia ?? null, rollover: cfg.rollover ?? null, desiredRetention: cfg.desiredRetention, fsrsParams: cfg.fsrsParams ?? null, fueraDePreset: cfg.fueraDePreset ?? [], esperado: ESPERADO },
     avisos,
   };
   const n = guardar(entrada);
@@ -262,7 +283,7 @@ async function configDeck(prefijo) {
   console.log(`  total ${total} · maduras ${maduras} · nuevas disp. ${nuevas} · suspendidas ${suspendidas}`);
   console.log(`  DUE hoy ${due} · BACKLOG (vencidas) ${backlog} · revisadas hoy ${revisadasHoy} (total colección ${revisadasHoyTotal}) · Again hoy ${againHoy}${againHoyPct != null ? ` (${againHoyPct}%)` : ''}`);
   console.log(`  retención 30 d: ${ret.valor != null ? Math.round(ret.valor * 100) + '%' : '—'} (${ret.metodo}; ${ret.revisiones} revisiones, ${ret.again} again)`);
-  console.log(`  config deck: preset "${cfg.preset}" · nuevas/día ${cfg.nuevasPorDia ?? '?'} · desired retention ${cfg.desiredRetention ?? '?'}`);
+  console.log(`  config deck: preset "${cfg.preset}" · nuevas/día ${cfg.nuevasPorDia ?? '?'} (esperado ${ESPERADO.nuevasPorDia}) · reviews/día ${cfg.revPorDia ?? '?'} · desired retention ${cfg.desiredRetention ?? '?'}`);
   console.log(`  Anki de finde recomendado = due × ${SEG} s = ${minFinde} min${alarma ? '   ⚠ ALARMA G (avalancha)' : ''}`);
   for (const a of avisos) console.log('  ⚠ ' + a);
   console.log(`  → _anki_telemetria.json (${n} entradas). KPI Home: pega en la consola del navegador:\n  ${oneLiner(entrada)}`);

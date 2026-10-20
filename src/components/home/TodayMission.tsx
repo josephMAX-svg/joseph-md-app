@@ -479,11 +479,17 @@ function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema:
       if (rG) {
         const r0 = RESEARCH_REC[rG.recs[0] ?? ''];
         const obsR = researchObsUrlDay(rG.d);
+        // v6.03 (verificación total, 20-oct): en F4 la guía trae la franja NOMINAL 13:30–14:00 (30′ en tiempo muerto); si el bloque del turno tiene
+        // hora (M 07:00–13:00 · L 16:20–16:50 · T 13:00–19:00) se mueve a su inicio, como la de Derma (dermaGuiaPar con ini = b.ini). Antes la guía
+        // quedaba fuera del bloque en los turnos M y L (106 bloques F4 en la simulación 3-may → 24-sep-2027). F1-F3 sin cambio.
+        const gR0 = guiaResearchDe(rG);
+        const pR = partesFranja(gR0.franja);
+        const gR = faseV6(iso) === 'F4' && b.ini && b.fin && pR && pR.ini !== b.ini ? moverGuia(gR0, hm(b.ini) - hm(pR.ini)) : gR0;
         return {
           tema: `Research ${rG.code} · ${rG.objetivo}`,
           sub: `${faseV6(iso) === 'F4' ? "30' en tiempo muerto (posta): núcleo del átomo" : 'interdiario Research ↔ Derma'} · entregable: ${rG.entregable}`,
           acciones: [...(r0 ? [{ lbl: `${rG.recs[0]} ↗`, color: EDGE, url: r0.url, fill: true }] : []), ...(obsR ? [{ lbl: '◆ Obsidian', color: OBS, url: obsR }] : [])],
-          guias: [guiaResearchDe(rG)],
+          guias: [gR],
         };
       }
       const d = dermaDiaDeConCiclo2(iso);

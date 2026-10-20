@@ -317,12 +317,16 @@ export const AURUM_TAG_LABEL: Record<AurumBloque['tag'], string> = {
 // ─── Obsidian: nota del día en el vault (carpeta 07_VENTAS_AURUM) ───
 const AURUM_VAULT = 'Vault_Medicina MIR_Joseph';
 /** Enlace obsidian:// a la nota del día. El currículo trae rutas tipo "VENTAS/Fase1/S01 - …";
- *  las reanclamos a la carpeta real 07_VENTAS_AURUM del vault. */
+ *  las reanclamos a la carpeta real 07_VENTAS_AURUM del vault.
+ *  v6.03 (verificación de contenido, 20-oct-2026): la carpeta es SOLO el primer segmento (FaseN) y el resto es el título de la lección,
+ *  que puede llevar «/» («asertiva / positiva / DJ», «70/30», «como/que», «alternativo/suposicion/invitacion»): antes se partía en cada
+ *  «/» y el enlace apuntaba a una nota inexistente. Mismo saneo que gen_aurum_obsidian.js (barra, dos puntos, * ? " < > | → -). */
 export function aurumObsUrl(nota?: string): string | null {
   if (!nota) return null;
-  const segs = String(nota).replace(/^VENTAS\\//, '').split('/');
-  segs[segs.length - 1] = segs[segs.length - 1].replace(/[\\\\/:*?"<>|]/g, '-').trim();
-  const file = '07_VENTAS_AURUM/' + segs.join('/');
+  const rel = String(nota).replace(/^VENTAS\\//, '');
+  const i = rel.indexOf('/');
+  const san = (s: string): string => s.replace(/[\\\\/:*?"<>|]/g, '-').trim();
+  const file = '07_VENTAS_AURUM/' + (i < 0 ? san(rel) : rel.slice(0, i) + '/' + san(rel.slice(i + 1)));
   return 'obsidian://open?vault=' + encodeURIComponent(AURUM_VAULT) + '&file=' + encodeURIComponent(file);
 }
 `;

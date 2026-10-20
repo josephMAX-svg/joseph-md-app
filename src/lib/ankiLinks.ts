@@ -29,19 +29,32 @@ const USMLE_DECK: Record<string, string> = {
   'Microbiology / ID': 'Microbiology',
   'Biochemistry': 'Biochemistry',
   // v5.7: sistemas del plan que no son de órgano — antes caían al deck de Cardiology por el fallback.
-  'Fundamentos': 'General',
+  // v6.03 (20-oct-2026): «General» NO es uno de los 44 tags del parser APEX (agente_estudio · subtema_mapping.json ›
+  // USMLE.tags_clinicos_a_crear) → el motor rechaza el bloque («USMLE especialidad invalida»). Los días que no son de órgano van a
+  // ::Pathology, el mismo submazo que usa la guía USMLE (gen_usmle_guia.js · espApex); en los hitos (UWSA1/NBME) cada tarjeta lleva la
+  // especialidad DE LA PREGUNTA (DATA/USMLE/METODO_ANKI_APEX_USMLE.md §2). Antes: 'General' en las cinco filas y en el fallback.
+  'Fundamentos': 'Pathology',
   'Pharmacology (transversal)': 'Pharmacology',
-  'Assessment': 'General',
-  'Banco intensivo': 'General',
-  'Sprint final': 'General',
+  'Assessment': 'Pathology',
+  'Banco intensivo': 'Pathology',
+  'Sprint final': 'Pathology',
+  'Colchón': 'Pathology',
+  'Reentrada': 'Pathology',
 };
+/** Los 44 tags USMLE que acepta el parser APEX (subtema_mapping.json › USMLE.tags_clinicos_a_crear, leído el 20-oct-2026). */
+export const APEX_USMLE_TAGS: readonly string[] = ['Aging', 'Anatomy', 'Anesthesiology', 'Behavioral_Science', 'Biochemistry', 'Biostatistics',
+  'Cardiology', 'Cell_Biology', 'Critical_Care', 'Dermatology', 'Embryology', 'Emergency_Medicine', 'Endocrinology', 'Environmental_Medicine',
+  'Ethics', 'Family_Medicine', 'Gastroenterology', 'Genetics', 'Geriatrics', 'Gynecology', 'Hematology_Oncology', 'Histology', 'Immunology',
+  'Infectious_Diseases', 'Laboratory_Medicine', 'Microbiology', 'Neonatology', 'Nephrology', 'Neurology', 'Obstetrics', 'Occupational_Medicine',
+  'Oncology', 'Orthopedics', 'Otolaryngology', 'Pain_Medicine', 'Pathology', 'Pathophysiology', 'Pediatrics', 'Pharmacology', 'Physiology',
+  'Psychiatry', 'Pulmonology', 'Rheumatology', 'Surgery'];
 /** Mazo de Farmacología TRANSVERSAL (Palmerton §3.5.F regla 5 · ANKI_CONFIG_PALMERTON en usmleData.ts: "pharm = mazo aparte,
  *  20 nuevas/día dentro del cap de 50"). v5.14: los días con `matType === 'pharm'` son D12 · D24 · D46 · D48 · D78 (leídos con node
  *  de usmleStep1Daily.ts el 19-sep). El deck del SISTEMA sigue existiendo para esos días: solo cambia el deck de las tarjetas nuevas. */
 export const USMLE_PHARM_DECK = 'APEX::USMLE::Pharmacology';
 /** Deck exacto del día USMLE. `matType` (DiaUSMLE.matType) opcional: 'pharm' → mazo transversal de Farmacología. */
 export const usmleAnkiDeck = (system: string, matType?: string): string =>
-  matType === 'pharm' ? USMLE_PHARM_DECK : `APEX::USMLE::${USMLE_DECK[system] || 'General'}`;
+  matType === 'pharm' ? USMLE_PHARM_DECK : `APEX::USMLE::${USMLE_DECK[system] || 'Pathology'}`; // v6.03: fallback 'Pathology' (antes 'General', que el parser rechaza)
 
 /** MIR — asignatura del plan → apex_lowercase (tags clínicos existentes en Anki) */
 const MIR_DECK: Record<string, string> = {

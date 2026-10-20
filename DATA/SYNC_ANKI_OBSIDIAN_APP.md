@@ -41,7 +41,7 @@
 
 > Vacío detectado (Palmerton v3): nada leía AnkiConnect aunque está disponible; la alarma G "capar u omitir
 > revisiones vencidas → avalancha" no tenía detector; el Anki de sáb (19:00, 30') y dom (17:00, 15') se
-> dimensionaba a reloj. Con ≤10 nuevas/día + tarjetas de gaps, para noviembre las due diarias rondarán
+> dimensionaba a reloj. Con ≤10 nuevas/día (v5.7; desde v6.03 son 20/día, METODO_ANKI_APEX_USMLE.md §3) + tarjetas de gaps, para noviembre las due diarias rondarán
 > 150-250: 15' el domingo garantiza backlog el lunes y rompe la "regla del 100 %" (revisar a diario, cero backlog).
 
 ### Script: `node DATA/_scripts/anki_telemetria.js`
@@ -117,11 +117,14 @@
 
 ---
 
-### Verificación D1-D3 (mié 7 / jue 8 / vie 9-oct-2026 · el D1 mié 7-oct es el UWSA1, D2-D3 = primeros días de contenido, setup FSRS en D3 = vie 9-oct · v5.20; v5.19: mar 6 / mié 7 / jue 8-oct) — A VERIFICAR (9-oct)
+### Verificación D1-D3 (v6.03: mié 21 / jue 22 / vie 23-oct-2026 · el D1 mié 21-oct es el UWSA1 y el preset «APEX USMLE» se configura ese día a las 05:00 — `DATA/USMLE/METODO_ANKI_APEX_USMLE.md` §3; v5.20: mié 7 / jue 8 / vie 9-oct con setup FSRS en D3) — A VERIFICAR (23-oct)
 1. Anki → Preferencias → Repaso → **FSRS activado** (colección completa).
-2. Preset del deck `APEX::USMLE` (y sub-decks): **desired retention 0.90** · **nuevas/día = 10** · sin límite artificial
-   de repasos/día (dejar 9999) · "Optimize" de parámetros FSRS solo cuando haya ≥ 1.000 revisiones (mediados de oct).
-3. Correr `node DATA/_scripts/anki_telemetria.js`: la sección `config` debe mostrar `nuevasPorDia 10` y
+2. Preset **«APEX USMLE»** en el padre `APEX::USMLE` y en todos los sub-decks (Save to All Subdecks; el motor APEX crea los nuevos con
+   Default): **desired retention 0.90** · **nuevas/día = 20** (v6.03; antes 10) · sin límite artificial de repasos/día (dejar 9999; 200-300
+   solo dentro del protocolo de backlog, METODO §7) · "Optimize" del preset el **sáb 21-nov** (4 semanas de datos propios; antes «≥ 1.000
+   revisiones, mediados de oct»).
+3. Correr `node DATA/_scripts/anki_telemetria.js`: la sección `config` debe mostrar `preset "APEX USMLE"`, `nuevasPorDia 20` (el script avisa
+   si ≠ 20 fuera del protocolo de backlog, y si algún sub-deck no tiene el preset), `revPorDia 9999` y
    `desiredRetention 0.9`; si la versión de AnkiConnect no expone *desiredRetention*, comprobarlo en la UI y anotarlo aquí.
 4. Contrastar `due/backlog/revisadasHoy` con la pantalla Stats de Anki (±5 %). Anotar la fecha de verificación en esta línea.
 5. Pegar el one-liner en la consola de la app y comprobar el instrumento ANKI del cockpit.

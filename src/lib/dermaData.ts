@@ -82,7 +82,7 @@ export const DERMOSCOPY_STRUCTS: DermoStruct[] = [
   { k: 'Retículo pigmentado', nota: 'red/network — melanocítica benigna vs atipia', url: 'https://dermoscopedia.org/Pigment_network' },
   { k: 'Glóbulos / puntos', nota: 'nidos de melanocitos — periferia = crecimiento', url: 'https://dermoscopedia.org/Globules' },
   { k: 'Líneas radiales / seudópodos', nota: 'proyección radial — melanoma / Spitz', url: 'https://dermoscopedia.org/Streaks' },
-  { k: 'Velo azul-blanco', nota: 'blue-white veil — regresión / melanoma', url: 'https://dermoscopedia.org/Blue-white_veil' },
+  { k: 'Velo azul-blanco', nota: 'blue-white veil — regresión / melanoma', url: 'https://dermoscopedia.org/Blue_white_veil' },
   { k: 'Chaos & Clues', nota: 'asimetría de patrón + pistas → biopsia', url: 'https://dermoscopedia.org/Chaos_and_clues' },
   { k: 'Vasos (patrón)', nota: 'arboriform=CBC · glomerular=Bowen · en corona', url: 'https://dermoscopedia.org/Vascular_structures' },
 ];
@@ -308,7 +308,7 @@ export const DERMA_GAP_MODULOS: DermaGapModulo[] = [
     fuente: 'Bolognia + AAD + StatPearls (NBK)', url: 'https://www.ncbi.nlm.nih.gov/books/NBK430685/' },
   { id: 'G+5', titulo: 'Enfermedad mucosa oral y genital', bloque: 'H · Medical amplio', sitio: 'Genital',
     porQue: 'Aparece en boards y consulta; casi ausente (aftas, liquen oral/genital, leucoplasia, EM mucoso).',
-    fuente: 'Bolognia §Oral/Genital + DermNet', url: 'https://dermnetnz.org/topics/oral-mucosal-disorders',
+    fuente: 'Bolognia §Oral/Genital + DermNet', url: 'https://dermnetnz.org/topics/mouth-problems',
     ddx: ['Liquen plano oral', 'Leucoplasia', 'Candidiasis', 'Pénfigo mucoso'] },
   { id: 'G+6', titulo: 'Anomalías vasculares pediátricas (ISSVA) + marcas de nacimiento', bloque: 'B · Genodermatosis/Pediátrica', morfologia: 'Mácula', sitio: 'Cara',
     porQue: 'Clasificación ISSVA y PHACE son alto-rinde pediátrico no presentes (hemangioma infantil vs malformación).',

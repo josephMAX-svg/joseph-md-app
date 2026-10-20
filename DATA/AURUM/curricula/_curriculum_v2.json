@@ -436,9 +436,9 @@
       "confianza": "alta"
      },
      {
-      "titulo": "$100M Offers (audiolibro completo en YouTube, uso educativo)",
-      "url": "https://www.youtube.com/watch?v=buKC5g5uK9c",
-      "tipo": "youtube",
+      "titulo": "$100M Offers (audiolibro gratuito oficial en Acquisition.com)",
+      "url": "https://www.acquisition.com/audiobooks",
+      "tipo": "web",
       "idioma": "en",
       "confianza": "media"
      },
@@ -831,8 +831,8 @@
       "idioma": "en"
      },
      {
-      "plataforma": "YouTube",
-      "url": "https://www.youtube.com/watch?v=buKC5g5uK9c",
+      "plataforma": "Acquisition.com (oficial)",
+      "url": "https://www.acquisition.com/audiobooks",
       "confianza": "estable",
       "idioma": "en"
      }
@@ -877,8 +877,8 @@
       "idioma": "en"
      },
      {
-      "plataforma": "YouTube",
-      "url": "https://www.youtube.com/watch?v=SlPGorMfSB4",
+      "plataforma": "YouTube · Talks at Google",
+      "url": "https://www.youtube.com/watch?v=guZa7mQV1l0",
       "confianza": "estable",
       "idioma": "en"
      }
@@ -1104,7 +1104,7 @@
   {
    "fase": 5,
    "libro": "Never Split the Difference — Chris Voss",
-   "audiolibro_url": "https://www.youtube.com/watch?v=SlPGorMfSB4"
+   "audiolibro_url": "https://www.youtube.com/watch?v=guZa7mQV1l0"
   },
   {
    "fase": 6,
@@ -1291,7 +1291,7 @@
    ],
    "recursos_destacados": [
     "Audiolibro $100M Offers (oficial Acquisition.com) https://www.acquisition.com/audiobooks",
-    "$100M Offers audiolibro completo (YouTube) https://www.youtube.com/watch?v=buKC5g5uK9c",
+    "$100M Offers · audiolibro gratuito oficial (Acquisition.com) https://www.acquisition.com/audiobooks",
     "NÚCLEO: VER Hormozi explicando la Value Equation + PRACTICAR puntuar tu oferta de terreno actual en las 4 variables"
    ]
   },
@@ -1349,7 +1349,7 @@
     "Chris Voss"
    ],
    "recursos_destacados": [
-    "Audiolibro Never Split the Difference (YouTube) https://www.youtube.com/watch?v=SlPGorMfSB4",
+    "Never Split the Difference · Chris Voss · Talks at Google (YouTube, 51′; el audiolibro de YouTube fue retirado) https://www.youtube.com/watch?v=guZa7mQV1l0",
     "Canal The Black Swan Group https://www.youtube.com/channel/UCk7jHqdlFFDBhC1QIFqi54w",
     "NÚCLEO: VER cómo Voss usa el 'No' + PRACTICAR convertir 3 objeciones de terreno en preguntas que inviten al 'no' seguro"
    ]
@@ -2534,8 +2534,8 @@
        "lectura": {
         "tipo": "audiolibro",
         "titulo": "Never Split the Difference — Chris Voss (labeling y tactical empathy: nombrar el miedo lo desactiva)",
-        "fuente": "YouTube",
-        "url": "https://www.youtube.com/watch?v=SlPGorMfSB4",
+        "fuente": "YouTube · Talks at Google (charla de Chris Voss sobre el libro, 51′; el audiolibro completo ya no está en YouTube)",
+        "url": "https://www.youtube.com/watch?v=guZa7mQV1l0",
         "min": 25
        },
        "obsidian_nota": "VENTAS/Fase3/S09 - Labeling de Voss aplicado a preguntas de Problema"
@@ -2659,8 +2659,8 @@
        "lectura": {
         "tipo": "audiolibro",
         "titulo": "$100M Offers — Alex Hormozi (Value Equation: el dolor del problema debe pesar mas que el precio de la solucion)",
-        "fuente": "YouTube",
-        "url": "https://www.youtube.com/watch?v=buKC5g5uK9c",
+        "fuente": "Acquisition.com · audiolibro gratuito oficial (el de YouTube fue retirado)",
+        "url": "https://www.acquisition.com/audiobooks",
         "min": 25
        },
        "obsidian_nota": "VENTAS/Fase3/S10 - Gap + costo de inaccion (caso Qori Golden)"
@@ -2830,8 +2830,8 @@
        "lectura": {
         "tipo": "audiolibro",
         "titulo": "Never Split the Difference — Chris Voss ('that's right': la senal de que el otro se siente entendido y baja la guardia)",
-        "fuente": "YouTube",
-        "url": "https://www.youtube.com/watch?v=SlPGorMfSB4",
+        "fuente": "YouTube · Talks at Google (charla de Chris Voss sobre el libro, 51′; el audiolibro completo ya no está en YouTube)",
+        "url": "https://www.youtube.com/watch?v=guZa7mQV1l0",
         "min": 25
        },
        "obsidian_nota": "VENTAS/Fase3/S11 - Diagnostico en vivo + caja negra (lead real)"
@@ -2902,9 +2902,9 @@
        "d": 2,
        "titulo": "Sueno (Dream Outcome): vender la transformacion, no la herramienta",
        "ver": {
-        "titulo": "$100M Offers - audiolibro completo (seccion Value Equation: Dream Outcome)",
-        "canal": "Alex Hormozi (audiolibro en YouTube)",
-        "url": "https://www.youtube.com/watch?v=buKC5g5uK9c",
+        "titulo": "Alex Hormozi · vídeos de su canal oficial sobre la Value Equation (Dream Outcome) — búsqueda «value equation»",
+        "canal": "Alex Hormozi (canal oficial)",
+        "url": "https://www.youtube.com/@AlexHormozi/search?query=value%20equation",
         "min": 25
        },
        "practica": {
@@ -3387,7 +3387,7 @@
        "ver": {
         "titulo": "Audiolibro Never Split the Difference (intro + cap. 1: las viejas reglas no sirven)",
         "canal": "Chris Voss / Random House (YouTube)",
-        "url": "https://www.youtube.com/watch?v=SlPGorMfSB4",
+        "url": "https://www.youtube.com/watch?v=guZa7mQV1l0",
         "min": 25
        },
        "practica": {
@@ -3399,7 +3399,7 @@
         "tipo": "audiolibro",
         "titulo": "Never Split the Difference (intro + cap. 1)",
         "fuente": "YouTube / Random House Audio",
-        "url": "https://www.youtube.com/watch?v=SlPGorMfSB4",
+        "url": "https://www.youtube.com/watch?v=guZa7mQV1l0",
         "min": 25
        },
        "obsidian_nota": "VENTAS/Fase5/S16 - El 'No' calibrado como apertura"
@@ -3422,7 +3422,7 @@
         "tipo": "audiolibro",
         "titulo": "Never Split the Difference (cap. 2: be a mirror)",
         "fuente": "YouTube / Random House Audio",
-        "url": "https://www.youtube.com/watch?v=SlPGorMfSB4",
+        "url": "https://www.youtube.com/watch?v=guZa7mQV1l0",
         "min": 25
        },
        "obsidian_nota": "VENTAS/Fase5/S16 - Objeciones como informacion (empatia tactica)"
@@ -3445,7 +3445,7 @@
         "tipo": "audiolibro",
         "titulo": "Never Split the Difference (cap. 3: don't feel their pain, label it)",
         "fuente": "YouTube / Random House Audio",
-        "url": "https://www.youtube.com/watch?v=SlPGorMfSB4",
+        "url": "https://www.youtube.com/watch?v=guZa7mQV1l0",
         "min": 25
        },
        "obsidian_nota": "VENTAS/Fase5/S16 - Mirroring y labeling del miedo"
@@ -3468,7 +3468,7 @@
         "tipo": "audiolibro",
         "titulo": "Never Split the Difference (cap. 7: el 'No' que crea seguridad)",
         "fuente": "YouTube / Random House Audio",
-        "url": "https://www.youtube.com/watch?v=SlPGorMfSB4",
+        "url": "https://www.youtube.com/watch?v=guZa7mQV1l0",
         "min": 25
        },
        "obsidian_nota": "VENTAS/Fase5/S16 - 3 objeciones de terreno -> preguntas al 'no'"
@@ -3491,7 +3491,7 @@
         "tipo": "audiolibro",
         "titulo": "Never Split the Difference (repaso cap. 1-3)",
         "fuente": "YouTube / Random House Audio",
-        "url": "https://www.youtube.com/watch?v=SlPGorMfSB4",
+        "url": "https://www.youtube.com/watch?v=guZa7mQV1l0",
         "min": 25
        },
        "obsidian_nota": "VENTAS/Fase5/S16 - Sintesis: la objecion abre la conversacion",
@@ -3547,7 +3547,7 @@
         "tipo": "audiolibro",
         "titulo": "Never Split the Difference (cap. 4-5: cuidado con el 'si', domina el 'no'; anclas)",
         "fuente": "YouTube / Random House Audio",
-        "url": "https://www.youtube.com/watch?v=SlPGorMfSB4",
+        "url": "https://www.youtube.com/watch?v=guZa7mQV1l0",
         "min": 25
        },
        "obsidian_nota": "VENTAS/Fase5/S17 - Anclaje de precio antes que el lead"
@@ -3570,7 +3570,7 @@
         "tipo": "audiolibro",
         "titulo": "Never Split the Difference (cap. 6: bend their reality)",
         "fuente": "YouTube / Random House Audio",
-        "url": "https://www.youtube.com/watch?v=SlPGorMfSB4",
+        "url": "https://www.youtube.com/watch?v=guZa7mQV1l0",
         "min": 25
        },
        "obsidian_nota": "VENTAS/Fase5/S17 - Labeling para desactivar 'esta caro'"
@@ -3616,7 +3616,7 @@
         "tipo": "audiolibro",
         "titulo": "Never Split the Difference (repaso cap. 4-6)",
         "fuente": "YouTube / Random House Audio",
-        "url": "https://www.youtube.com/watch?v=SlPGorMfSB4",
+        "url": "https://www.youtube.com/watch?v=guZa7mQV1l0",
         "min": 25
        },
        "obsidian_nota": "VENTAS/Fase5/S17 - Sintesis: precio aplicado a ALLPA y Qori Golden",
@@ -3649,7 +3649,7 @@
         "tipo": "audiolibro",
         "titulo": "Never Split the Difference (cap. 7-8: preguntas calibradas, ilusion de control)",
         "fuente": "YouTube / Random House Audio",
-        "url": "https://www.youtube.com/watch?v=SlPGorMfSB4",
+        "url": "https://www.youtube.com/watch?v=guZa7mQV1l0",
         "min": 25
        },
        "obsidian_nota": "VENTAS/Fase5/S18 - Preguntas calibradas para la confianza"
@@ -3672,7 +3672,7 @@
         "tipo": "audiolibro",
         "titulo": "Never Split the Difference (cap. 9: el regateo y el modelo Ackerman)",
         "fuente": "YouTube / Random House Audio",
-        "url": "https://www.youtube.com/watch?v=SlPGorMfSB4",
+        "url": "https://www.youtube.com/watch?v=guZa7mQV1l0",
         "min": 25
        },
        "obsidian_nota": "VENTAS/Fase5/S18 - '¿Es real?' kit de prueba dura"
@@ -3741,7 +3741,7 @@
         "tipo": "audiolibro",
         "titulo": "Never Split the Difference (repaso cap. 7-9)",
         "fuente": "YouTube / Random House Audio",
-        "url": "https://www.youtube.com/watch?v=SlPGorMfSB4",
+        "url": "https://www.youtube.com/watch?v=guZa7mQV1l0",
         "min": 25
        },
        "obsidian_nota": "VENTAS/Fase5/S18 - Sintesis: confianza + timing aplicado",
@@ -3774,7 +3774,7 @@
         "tipo": "audiolibro",
         "titulo": "Never Split the Difference (sintesis: 'That's right' y empatia tactica)",
         "fuente": "YouTube / Random House Audio",
-        "url": "https://www.youtube.com/watch?v=SlPGorMfSB4",
+        "url": "https://www.youtube.com/watch?v=guZa7mQV1l0",
         "min": 25
        },
        "obsidian_nota": "VENTAS/Fase5/S19 - El 'That's right' que valida el reencuadre"
@@ -3820,7 +3820,7 @@
         "tipo": "audiolibro",
         "titulo": "Never Split the Difference (sintesis final del metodo)",
         "fuente": "YouTube / Random House Audio",
-        "url": "https://www.youtube.com/watch?v=SlPGorMfSB4",
+        "url": "https://www.youtube.com/watch?v=guZa7mQV1l0",
         "min": 25
        },
        "obsidian_nota": "VENTAS/Fase5/S19 - Playbook de 12 objeciones ALLPA + Qori Golden"
@@ -3854,7 +3854,7 @@
        "ver": {
         "titulo": "Sintesis de Never Split the Difference (audiolibro, cierre)",
         "canal": "Chris Voss / Random House (YouTube)",
-        "url": "https://www.youtube.com/watch?v=SlPGorMfSB4",
+        "url": "https://www.youtube.com/watch?v=guZa7mQV1l0",
         "min": 18
        },
        "practica": {
@@ -3866,7 +3866,7 @@
         "tipo": "audiolibro",
         "titulo": "Never Split the Difference — repaso integral del metodo Voss",
         "fuente": "YouTube / Random House Audio",
-        "url": "https://www.youtube.com/watch?v=SlPGorMfSB4",
+        "url": "https://www.youtube.com/watch?v=guZa7mQV1l0",
         "min": 25
        },
        "obsidian_nota": "VENTAS/Fase5/S19 - Cierre Fase 5: PITCH v5 + Playbook 12 objeciones",

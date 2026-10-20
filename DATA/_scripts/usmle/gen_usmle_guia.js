@@ -88,7 +88,7 @@ if (F1.length !== FV6.f1.dias || F1[0].fecha !== FV6.f1.inicio || F1[F1.length -
   const mal = S1_ESP.map((re, i) => (F1[i] && re.test(F1[i].sub) ? null : `D${i + 1}`)).filter(Boolean);
   if (mal.length) aborta(`el guion de D1-D5 no corresponde a las filas ${mal.join(', ')} (UWSA1 · lesión celular · neoplasia · inmunidad · hipersensibilidad)`); }
 const ANKI = (() => { try { return cargarModuloTS(path.join('src', 'lib', 'ankiLinks.ts')); } catch { return null; } })();
-const deckDe = (row) => (ANKI ? ANKI.usmleAnkiDeck(row.system, row.matType) : 'APEX::USMLE::General');
+const deckDe = (row) => (ANKI ? ANKI.usmleAnkiDeck(row.system, row.matType) : 'APEX::USMLE::Pathology'); // v6.03: sin ankiLinks = Pathology (el parser APEX no acepta «General»)
 
 // ── v6.03b · MÉTODO ANKI · APEX (DATA/USMLE/METODO_ANKI_APEX_USMLE.md) ───────────────────────────────────────────────────────────
 // Ajustes y cuotas: Palmerton (NotebookLM «STEP 1 · Palmerton Engine», transcripción de «Give Me 30 Minutes and I'll 5X Your Anki

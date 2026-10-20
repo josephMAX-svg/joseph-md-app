@@ -95,8 +95,10 @@ SORT semana ASC, file.name ASC
   for (const sem of (det.semanas || [])) {
     for (const dia of (sem.dias || [])) {
       const raw = String(dia.obsidian_nota || `VENTAS/Fase${fn}/S${String(sem.sem).padStart(2, '0')} - ${dia.titulo}`);
-      const parts = raw.replace(/^VENTAS\//, '').split('/');
-      const fname = san(parts[parts.length - 1]) + '.md';
+      // v6.03 (20-oct-2026): el título puede llevar «/» → nombre = TODO lo que sigue a «FaseN/», saneado (antes: solo el trozo tras la
+      // última «/», p. ej. «DJ).md», y aurumObsUrl apuntaba a otra ruta). Igual que aurumObsUrl (gen_aurum_plan.js).
+      const rel = raw.replace(/^VENTAS\//, '');
+      const fname = san(rel.indexOf('/') < 0 ? rel : rel.slice(rel.indexOf('/') + 1)) + '.md';
       const V = dia.ver || {};                 // bloque A — vídeo a ver (núcleo)
       const P = dia.practica || {};            // bloque PRAC — drill del día (núcleo)
       const L = dia.lectura || {};             // bloque L — libro/audiolibro (huecos de viaje)

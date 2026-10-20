@@ -47,10 +47,11 @@
 | Farmacología | submazo propio `::Pharmacology` con su propio tope diario | [P] «Med School Anki: FAQ…» (mazo aparte, «like 20 cards a day») · [R] `ankiLinks.USMLE_PHARM_DECK` |
 | **Cómo se estudia** | **un solo clic en el padre** (`APEX::USMLE › Study Now`): Anki junta todos los submazos en una sesión | [PLAN] (ver la conciliación de abajo) |
 
-**«General» no existe en el motor.** `ankiLinks.usmleAnkiDeck` devuelve `APEX::USMLE::General` para los días «Fundamentos» y «Assessment»,
-pero el parser APEX **rechaza** `ESPECIALIDAD: General` («USMLE especialidad invalida»). Regla del método: patología general (D2-D3) →
-`Pathology`; tarjetas que salen de un hito (UWSA1/NBME) → la especialidad **de la pregunta** (`Cardiology`, `Microbiology`…). La guía lo
-dice en el paso (`la app muestra APEX::USMLE::General; el motor APEX no acepta «General»`). Arreglo de raíz: pendiente §12.
+**«General» no existe en el motor.** El parser APEX **rechaza** `ESPECIALIDAD: General` («USMLE especialidad invalida»). Regla del método:
+patología general (D2-D3) → `Pathology`; tarjetas que salen de un hito (UWSA1/NBME) → la especialidad **de la pregunta** (`Cardiology`,
+`Microbiology`…). Arreglado de raíz el 20-oct-2026 (§12): `ankiLinks.usmleAnkiDeck` ya no devuelve `APEX::USMLE::General` — los días
+«Fundamentos», «Assessment», «Banco intensivo», «Sprint final», «Colchón» y «Reentrada» (y cualquier sistema desconocido) muestran
+`APEX::USMLE::Pathology`, el mismo submazo que la guía; `ankiLinks.APEX_USMLE_TAGS` lleva los 44 tags del parser.
 
 **Conciliación con Palmerton (no se contradice: se explica).** Palmerton prefiere **2 mazos (farmacología y el resto), 3 como máximo**,
 porque muchos mazos obligan a entrar en cada uno a diario [R §4.2 · P «Med School Anki: FAQ…» preg. 13]; `ANKI_CONFIG_PALMERTON`
@@ -80,8 +81,8 @@ Un único preset, **«APEX USMLE»**, en el padre y en **todos** los submazos (D
 | **Submazos nuevos** | el motor los crea con el preset **Default** → cada sábado, `Save to All Subdecks` en el padre | [APEX] `createDeck` · [PLAN] |
 
 Telemetría tras configurar: `node DATA/_scripts/anki_telemetria.js` (con Anki abierto) debe leer retención 0,90 y no avisar de
-`rev.perDay < 9999`. El script todavía espera **10** nuevas/día (era el valor de la v5.7): su aviso «nuevas/día = 20 (esperado 10)» es
-conocido y está en pendientes (§12).
+`rev.perDay < 9999`. Desde el 20-oct-2026 el script espera **20** nuevas/día (antes 10, el valor de la v5.7), acepta 0 dentro del
+protocolo de backlog (§7) y avisa de los submazos que no tengan el preset «APEX USMLE».
 
 ---
 
@@ -354,9 +355,9 @@ de simulacros. **Lo que no:** First Aid solo al final y 80 preguntas/día en F1 
 
 ## 12. Pendientes fuera de este ámbito (para el orquestador)
 
-1. **`src/lib/ankiLinks.ts`**: mapear `Fundamentos` → `Pathology` y `Assessment` → (sin deck propio) para no mostrar `APEX::USMLE::General`, que el motor APEX no acepta.
-2. **`DATA/_scripts/anki_telemetria.js`**: el aviso `nuevasPorDia !== 10` → 20 (y el texto de `_meta.config.nuevasPorDia` «esperado 10» en `DATA/USMLE/_anki_telemetria.json` al regenerarse); añadir, si se quiere, el % de Hard/Easy.
-3. **`DATA/SYNC_ANKI_OBSIDIAN_APP.md`** (Verificación D1-D3): «nuevas/día = 10» → 20; «Optimize con ≥ 1.000 revisiones» → sáb 21-nov (4 semanas).
+1. ~~**`src/lib/ankiLinks.ts`**: mapear `Fundamentos` → `Pathology` y `Assessment` → (sin deck propio) para no mostrar `APEX::USMLE::General`, que el motor APEX no acepta.~~ **HECHO 20-oct**: todos los sistemas no de órgano (y el fallback) → `Pathology` = el submazo de la guía; 0 filas USMLE con deck fuera de los 44 tags.
+2. ~~**`DATA/_scripts/anki_telemetria.js`**: el aviso `nuevasPorDia !== 10` → 20 (y el texto de `_meta.config.nuevasPorDia` «esperado 10» en `DATA/USMLE/_anki_telemetria.json` al regenerarse)~~ **HECHO 20-oct** (+ protocolo §7, preset de los submazos, rev/día y rollover en los avisos); queda opcional el % de Hard/Easy.
+3. ~~**`DATA/SYNC_ANKI_OBSIDIAN_APP.md`** (Verificación D1-D3): «nuevas/día = 10» → 20; «Optimize con ≥ 1.000 revisiones» → sáb 21-nov (4 semanas).~~ **HECHO 20-oct**.
 4. **`src/lib/usmleData.ts` · `ANKI_CONFIG_PALMERTON`**: fila «Mazos» y su check «≤ 3» → la conciliación de §2 (submazos = organización, sesión única en el padre).
 5. **Motor APEX** (fuera del repo): aceptar la imagen en el frente (o un campo `IMAGEN_FRENTE`) para las tarjetas de imagen; ampliar la lista blanca de FUENTE (B&B, PassMedicine, Mehlman).
 

@@ -74,7 +74,9 @@ const cicloArgIdx = argv.indexOf('--ciclo');
 const SOLO_CICLO = cicloArgIdx >= 0 ? Number(argv[cicloArgIdx + 1]) : 0; // 0 = ambos
 const fechas = argv.filter((a) => /^20\d\d-\d\d-\d\d$/.test(a));
 if (SOLO_CICLO && ![1, 2].includes(SOLO_CICLO)) throw new Error('--ciclo debe ser 1 o 2');
-const START1 = SOLO_CICLO === 2 ? '2026-09-08' : (fechas[0] || '2026-09-08');
+// v6.03 (verificación total, 20-oct): sin fecha, el ciclo 1 arranca en el D1 vigente de _fechas_v6.json (f1.inicio) — antes caía al
+// '2026-09-08' de v5.x y, sin argumentos, el script abortaba («no es día de plan … 2026-09-08»). Con la fecha explícita no cambia nada.
+const START1 = SOLO_CICLO === 2 ? '2026-09-08' : (fechas[0] || require('./gen_fechas_v6').cargarFechasV6().f1.inicio);
 const START2 = SOLO_CICLO === 2 ? (fechas[0] || '2027-02-01') : (fechas[1] || '2027-02-01');
 const HOY = (() => { const d = new Date(); const z = (n) => String(n).padStart(2, '0'); return d.getFullYear() + '-' + z(d.getMonth() + 1) + '-' + z(d.getDate()); })(); // fecha LOCAL (Lima), no UTC
 
@@ -531,7 +533,7 @@ export const REC: Record<string, { label: string; url: string }> = {
   CT:     { label: 'ClinicalTrials.gov', url: 'https://clinicaltrials.gov/' },
   ICTRP:  { label: 'WHO ICTRP', url: 'https://www.who.int/clinical-trials-registry-platform' },
   RAY:    { label: 'Rayyan (cribado, free ≤3)', url: 'https://www.rayyan.com/' },
-  RAYHC:  { label: 'Rayyan · crear una SR (guía)', url: 'https://help.rayyan.ai/hc/en-us/articles/22088155760017-How-to-Create-a-Systematic-Review-in-Rayyan' },
+  RAYHC:  { label: 'Rayyan · crear una SR (guía)', url: 'https://help.rayyan.ai/hc/en-us/articles/45541788688529-How-to-Create-a-Review-in-Rayyan' },
   RAYYT:  { label: 'Rayyan · canal oficial (hands-on)', url: 'https://www.youtube.com/@Rayyanapp' },
   ELI:    { label: 'Elicit (extracción asistida)', url: 'https://elicit.com/' },
   ROB2:   { label: 'RoB 2 (sesgo en ECA)', url: 'https://www.riskofbias.info/welcome/rob-2-0-tool' },
@@ -555,7 +557,7 @@ export const REC: Record<string, { label: string; url: string }> = {
   COPE:   { label: 'COPE · guías de integridad de publicación', url: 'https://publicationethics.org/guidance/Guidelines' },
   CREDIT: { label: 'CRediT · taxonomía de contribución (NISO)', url: 'https://credit.niso.org/' },
   SCIWRITE:{ label: 'Writing in the Sciences · peer review & rebuttal (Sainani)', url: 'https://www.coursera.org/learn/sciwrite' },
-  REBUTTAL:{ label: 'PLOS · How to write a persuasive rebuttal', url: 'https://plos.org/resource/how-to-write-a-persuasive-response-to-reviewers/' },
+  REBUTTAL:{ label: 'PLOS · Responding to peer review (respuesta punto por punto)', url: 'https://plos.org/resource/how-to-receive-and-respond-to-peer-review-feedback/' },
   PHRASE: { label: 'Academic Phrasebank (Manchester) · frases por sección', url: 'https://www.phrasebank.manchester.ac.uk/' },
   TURING: { label: 'The Turing Way · investigación reproducible', url: 'https://the-turing-way.netlify.app/' },
   FAIR:   { label: 'FAIR data principles (GO FAIR)', url: 'https://www.go-fair.org/fair-principles/' },`;

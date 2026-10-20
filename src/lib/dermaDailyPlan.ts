@@ -356,7 +356,7 @@ const M = (n: number): DermatoscopiaModulo => DERMATOSCOPIA_CME[n - 1];
 const DSA = book(2929); // Dermoscopy: Illustrated Self-Assessment 2e (autoevaluación con imágenes)
 const DS = 'https://dermoscopedia.org';
 const DSP = {
-  red: `${DS}/Pigment_network`, glob: `${DS}/Globules`, streaks: `${DS}/Streaks`, veil: `${DS}/Blue-white_veil`,
+  red: `${DS}/Pigment_network`, glob: `${DS}/Globules`, streaks: `${DS}/Streaks`, veil: `${DS}/Blue_white_veil`,
   vasos: `${DS}/Vascular_structures`, neg: `${DS}/Negative_network`, dots: `${DS}/Dots`, struct: `${DS}/Structureless_areas`,
   chaos: `${DS}/Chaos_and_clues`, twoStep: `${DS}/Two-step_algorithm`, three: `${DS}/Three_point_checklist`,
   seven: `${DS}/Seven_Point_Checklist`, menzies: `${DS}/Menzies_Method`, abcd: `${DS}/ABCD_rule`, pattern: `${DS}/Pattern_analysis`,
@@ -366,7 +366,7 @@ const DSP = {
   scabies: `${DS}/Scabies`, warts: `${DS}/Correlation_of_warts`, mollusc: `${DS}/Correlation_of_molluscum_contagiosum`,
   pso: `${DS}/Psoriasis`, lp: `${DS}/Lichen_planus`, rosacea: `${DS}/Rosacea14`, dle: `${DS}/Discoid_lupus_erythematosus`,
   mf: `${DS}/Mycosis_fungoides`, bcl: `${DS}/Cutaneous_B-cell_lymphoma`, mel: `${DS}/Melanoma`, melano: `${DS}/Melanocytic_lesions`,
-  infl: `${DS}/Inflammatory_skin_diseases_(inflammoscopy_or_ID)`,
+  infl: `${DS}/Inflammoscopy`,
 } as const;
 const ANIM3D = mm(1457); // AccessDerma · Animations / 3D Modules (21 vídeos) — anatomía en capas
 const IMG_LIB = `${DN}/image-library`;

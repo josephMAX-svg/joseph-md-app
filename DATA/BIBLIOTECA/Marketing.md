@@ -15,7 +15,6 @@
 - **Por qué:** La pieza base de toda la categoria: convierte cada programa clinico (peso, hormonal, sueno) de consulta commodity en una oferta incomparable que saca del juego del precio. Hormozi lo explica deliberadamente simple, el escalon perfecto antes de subir a la profundidad. Es el primer libro que Joseph debe dominar. Audiolibro completo gratis y verificado: playlist oficial del propio Alex en Spotify y subida completa en YouTube.
 - **Terminología:** Grand Slam Offer · Value Equation (Dream Outcome x Perceived Likelihood / Time Delay x Effort & Sacrifice) · Starving Crowd · Trim & Stack · Enhancers (escasez, urgencia, bonos, garantias, naming) · commodity problem
 - 🎧 **Spotify:** https://open.spotify.com/playlist/41WB6RDgmRWPha2XvPA2H0
-- ▶ **YouTube:** https://www.youtube.com/watch?v=buKC5g5uK9c
 - 🛒 **Comprar** (Amazon): https://www.amazon.com/100M-Offers-People-Stupid-Saying/dp/B09BK52JFJ
 
 ### $100M Leads: How to Get Strangers to Want to Buy Your Stuff — Alex Hormozi
