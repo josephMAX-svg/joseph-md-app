@@ -8,6 +8,8 @@
  * `pool` = id del pool de la app (año del examen = ProMIR + 1) cuando la pregunta viene de ahí (manda la lista del pool de la app si difiere).
  * v6.02c (18-oct-2026, E3): nuevo.
  * v6.03 (20-oct-2026): los 76 capítulos del plan medidos → MIR_GUIA_MEDIDA = D1-D76 (una línea por día) + MIR_CAP_MEDIDO para el banqueo.
+ * v6.03b (20-oct-2026): + MIR_METODO (método RaviMedTest, DATA/MIR/metodo_ravimedtest.json · doc DATA/MIR/METODO_RAVIMEDTEST.md). MIR_GUIA_MEDIDA
+ *   sigue siendo la medición pura: mirGuia.metodoRavi mete el método en los pasos (Anki, APEX, repaso relacional) sin cambiar franjas ni los 60′.
  */
 import type { GuiaBloque } from './guia';
 
@@ -277,3 +279,161 @@ export const MIR_CAP_MEDIDO: Record<string, MirCapMedido> = {
 export const MIR_POOL_POR_CAP: Record<string, number> = {"570779c9f4d68bf008dbc7b1":5,"570779c9f4d68bf008dbc80d":5,"570779c9f4d68bf008dbc80f":3,"64a3be863f62ec1dbb3e665b":2,"570779c9f4d68bf008dbc7e9":4,"570779c9f4d68bf008dbc78d":12,"570779c9f4d68bf008dbc731":6,"64588d5ef704295c924d9289":9,"570779c8f4d68bf008dbc65a":10,"570779c8f4d68bf008dbc658":5,"570779c8f4d68bf008dbc6b6":7,"570779c9f4d68bf008dbc825":7,"570779c9f4d68bf008dbc861":3,"570779c9f4d68bf008dbc773":5,"570779c9f4d68bf008dbc883":7,"570779c9f4d68bf008dbc7cd":5,"570779c8f4d68bf008dbc608":12,"570779c8f4d68bf008dbc6b0":3,"570779c9f4d68bf008dbc789":4,"570779c8f4d68bf008dbc60a":3,"570779c9f4d68bf008dbc72d":6,"570779c8f4d68bf008dbc654":1,"570779c9f4d68bf008dbc723":10,"570779c8f4d68bf008dbc64c":14,"570779c8f4d68bf008dbc6a6":4,"570779c8f4d68bf008dbc64a":4,"570779c8f4d68bf008dbc6a8":17,"570779c8f4d68bf008dbc600":9,"570779c8f4d68bf008dbc5fe":10,"570779c9f4d68bf008dbc77f":8,"570779c9f4d68bf008dbc737":17,"570779c8f4d68bf008dbc65e":12,"570779c9f4d68bf008dbc7ef":2,"570779c8f4d68bf008dbc6ba":4,"570779c9f4d68bf008dbc793":5,"570779c9f4d68bf008dbc7f1":8,"570779c9f4d68bf008dbc871":7,"570779c9f4d68bf008dbc895":11,"570779c9f4d68bf008dbc8a9":8,"570779c9f4d68bf008dbc873":7,"570779c9f4d68bf008dbc7dd":5,"570779c9f4d68bf008dbc897":4,"570779c9f4d68bf008dbc8ab":7,"57ed1550e68c512d007426d1":14,"570779c8f4d68bf008dbc6e0":4,"570779c9f4d68bf008dbc7b3":3,"570779c9f4d68bf008dbc759":6,"570779c9f4d68bf008dbc7b5":2,"570779c8f4d68bf008dbc6ec":5,"570779c9f4d68bf008dbc7c1":5,"570779c9f4d68bf008dbc765":3,"570779c8f4d68bf008dbc6e8":2,"570779c8f4d68bf008dbc6e6":2,"570779c9f4d68bf008dbc81b":3,"570779c9f4d68bf008dbc81f":2,"570779c9f4d68bf008dbc763":6,"570779c9f4d68bf008dbc73f":1,"570779c8f4d68bf008dbc66a":2,"570779c9f4d68bf008dbc743":7,"570779c9f4d68bf008dbc745":1,"570779c8f4d68bf008dbc6c6":5,"570779c9f4d68bf008dbc741":2,"570779c9f4d68bf008dbc8af":10,"570779c9f4d68bf008dbc83f":6,"570779c9f4d68bf008dbc89d":11,"570779c9f4d68bf008dbc7e3":1,"570779c9f4d68bf008dbc89b":3,"570779c9f4d68bf008dbc879":3,"570779c8f4d68bf008dbc6e2":5,"570779c9f4d68bf008dbc815":7,"570779c9f4d68bf008dbc84f":3,"570779c9f4d68bf008dbc7b9":13,"570779c9f4d68bf008dbc817":3,"570779c9f4d68bf008dbc889":14,"570779c9f4d68bf008dbc865":4,"570779c9f4d68bf008dbc777":7};
 /** Nº de preguntas del pool oficial por asignatura (num) — tests de cierre. */
 export const MIR_POOL_POR_ASIG: Record<number, number> = {"3":83,"6":57,"7":66,"8":25,"11":76,"14":50,"15":34,"17":23,"18":38,"19":50,"20":61,"24":40,"26":40,"28":42};
+
+/** v6.03b: método RaviMedTest adaptado a la hora MIR (DATA/MIR/METODO_RAVIMEDTEST.md). `asignaturas` por num: días de inicio/fin del bloque en el plan,
+ *  nota madre del vault (sección del repaso relacional) y carpetas de relacionales de Ravi en el Drive compartido (solo nombres: repo público).
+ *  Los enlaces de Drive son búsquedas por nombre en el Drive de Joseph. Cuotas de nuevas = adaptación propia (Ravi no las da). */
+export interface MirMetodoAsig { asignatura: string; dIni: number; dFin: number; nota: string; ravi: string[] }
+export interface MirMetodo {
+  version: string; doc: string; mazoPersonal: string; mazoBase: string; mazoBaseBusca: string; presetBase: string;
+  nuevasBase1V: number; nuevasBaseBanqueo: number; umbralVencidas: number;
+  relMin: number; relMin1dia: number; raviCarpeta: string; raviBusca: string; seccionNota: string;
+  videos: Record<string, { t: string; url: string }>; asignaturas: Record<number, MirMetodoAsig>;
+}
+export const MIR_METODO: MirMetodo = {
+ "version": "v6.03b",
+ "doc": "DATA/MIR/METODO_RAVIMEDTEST.md",
+ "mazoPersonal": "APEX::MIR",
+ "mazoBase": "1ºVUELTA 2MIR21",
+ "mazoBaseBusca": "https://drive.google.com/drive/search?q=1%C2%BAVUELTA%202MIR21",
+ "presetBase": "RAVI-1V (FSRS · retention 0,85 · orden de repaso aleatorio)",
+ "nuevasBase1V": 3,
+ "nuevasBaseBanqueo": 10,
+ "umbralVencidas": 60,
+ "relMin": 3,
+ "relMin1dia": 2,
+ "raviCarpeta": "TARJETAS RELACIONALES",
+ "raviBusca": "https://drive.google.com/drive/search?q=TARJETAS%20RELACIONALES",
+ "seccionNota": "🔗 Relacional",
+ "videos": {
+  "simulacro": {
+   "t": "RaviMedTest · «Cómo hacer un simulacro #MIR de manera EFICIENTE» (YouTube)",
+   "url": "https://www.youtube.com/watch?v=FNIbWi9ST2M"
+  },
+  "percentiles": {
+   "t": "RaviMedTest · «Cómo gestionar los percentiles en la preparación del examen MIR» (YouTube)",
+   "url": "https://www.youtube.com/watch?v=trwFNlIU4Cs"
+  },
+  "percentil100": {
+   "t": "RaviMedTest · «Cómo responde preguntas MIR un opositor del percentil 100» (YouTube)",
+   "url": "https://www.youtube.com/watch?v=PFB1d-zqKvM"
+  }
+ },
+ "asignaturas": {
+  "3": {
+   "asignatura": "Cardiología",
+   "dIni": 5,
+   "dFin": 11,
+   "nota": "obsidian://open?vault=Vault_Medicina%20MIR_Joseph&file=03_MIR%2F01_Cardiologia%2F00_introduccion_a_la_asignatura%2F_concepto_madre",
+   "ravi": [
+    "CARDIOLOGÍA"
+   ]
+  },
+  "6": {
+   "asignatura": "Endocrinología y Nutrición",
+   "dIni": 31,
+   "dFin": 36,
+   "nota": "obsidian://open?vault=Vault_Medicina%20MIR_Joseph&file=03_MIR%2F06_Endocrinologia_y_Nutricion%2F00_introduccion_a_la_asignatura%2F_concepto_madre",
+   "ravi": []
+  },
+  "7": {
+   "asignatura": "Enfermedades Infecciosas",
+   "dIni": 49,
+   "dFin": 56,
+   "nota": "obsidian://open?vault=Vault_Medicina%20MIR_Joseph&file=03_MIR%2F07_Enfermedades_Infecciosas%2F00_introduccion_a_la_asignatura%2F_concepto_madre",
+   "ravi": [
+    "INFECCIOSAS"
+   ]
+  },
+  "8": {
+   "asignatura": "Epidemiología",
+   "dIni": 1,
+   "dFin": 3,
+   "nota": "obsidian://open?vault=Vault_Medicina%20MIR_Joseph&file=03_MIR%2F17_Epidemiologia%2F00_introduccion_a_la_asignatura%2F_concepto_madre",
+   "ravi": []
+  },
+  "11": {
+   "asignatura": "Gastroenterología",
+   "dIni": 23,
+   "dFin": 30,
+   "nota": "obsidian://open?vault=Vault_Medicina%20MIR_Joseph&file=03_MIR%2F03_Digestivo%2F00_introduccion_a_la_asignatura%2F_concepto_madre",
+   "ravi": [
+    "DIGESTIVO",
+    "CIRUGÍA"
+   ]
+  },
+  "14": {
+   "asignatura": "Ginecología y Obstetricia",
+   "dIni": 57,
+   "dFin": 62,
+   "nota": "obsidian://open?vault=Vault_Medicina%20MIR_Joseph&file=03_MIR%2F10_Ginecologia_y_Obstetricia%2F00_introduccion_a_la_asignatura%2F_concepto_madre",
+   "ravi": [
+    "GINECOLOGÍA"
+   ]
+  },
+  "15": {
+   "asignatura": "Hematología",
+   "dIni": 44,
+   "dFin": 48,
+   "nota": "obsidian://open?vault=Vault_Medicina%20MIR_Joseph&file=03_MIR%2F09_Hematologia%2F00_introduccion_a_la_asignatura%2F_concepto_madre",
+   "ravi": [
+    "HEMATOLOGÍA"
+   ]
+  },
+  "17": {
+   "asignatura": "Medicina Legal y Bioética",
+   "dIni": 4,
+   "dFin": 4,
+   "nota": "obsidian://open?vault=Vault_Medicina%20MIR_Joseph&file=03_MIR%2F23_Medicina_Legal_y_Bioetica%2F00_introduccion_a_la_asignatura%2F_concepto_madre",
+   "ravi": []
+  },
+  "18": {
+   "asignatura": "Nefrología",
+   "dIni": 17,
+   "dFin": 22,
+   "nota": "obsidian://open?vault=Vault_Medicina%20MIR_Joseph&file=03_MIR%2F04_Nefrologia%2F00_introduccion_a_la_asignatura%2F_concepto_madre",
+   "ravi": []
+  },
+  "19": {
+   "asignatura": "Neumología",
+   "dIni": 12,
+   "dFin": 16,
+   "nota": "obsidian://open?vault=Vault_Medicina%20MIR_Joseph&file=03_MIR%2F02_Neumologia%2F00_introduccion_a_la_asignatura%2F_concepto_madre",
+   "ravi": [
+    "NEUMOLOGÍA"
+   ]
+  },
+  "20": {
+   "asignatura": "Neurología",
+   "dIni": 37,
+   "dFin": 43,
+   "nota": "obsidian://open?vault=Vault_Medicina%20MIR_Joseph&file=03_MIR%2F05_Neurologia%2F00_introduccion_a_la_asignatura%2F_concepto_madre",
+   "ravi": [
+    "NEUROLOGÍA"
+   ]
+  },
+  "24": {
+   "asignatura": "Pediatría",
+   "dIni": 69,
+   "dFin": 73,
+   "nota": "obsidian://open?vault=Vault_Medicina%20MIR_Joseph&file=03_MIR%2F11_Pediatria%2F00_introduccion_a_la_asignatura%2F_concepto_madre",
+   "ravi": [
+    "PEDIATRÍA"
+   ]
+  },
+  "26": {
+   "asignatura": "Psiquiatría",
+   "dIni": 74,
+   "dFin": 76,
+   "nota": "obsidian://open?vault=Vault_Medicina%20MIR_Joseph&file=03_MIR%2F12_Psiquiatria%2F00_introduccion_a_la_asignatura%2F_concepto_madre",
+   "ravi": []
+  },
+  "28": {
+   "asignatura": "Reumatología",
+   "dIni": 63,
+   "dFin": 68,
+   "nota": "obsidian://open?vault=Vault_Medicina%20MIR_Joseph&file=03_MIR%2F08_Reumatologia%2F00_introduccion_a_la_asignatura%2F_concepto_madre",
+   "ravi": []
+  }
+ }
+};

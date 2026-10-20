@@ -24,6 +24,11 @@
  *   describe con su _meta.sesion_anterior («del código de AYER» solo si la sesión anterior fue ayer; el lun 26 es la de I-3 del jue 22, tras
  *   el mini-sim del vie 23) · el aviso «runners por generar» manda --semana SOLO si esa semana no tiene runners ya armados (si los tiene,
  *   --eval/--banco del día: --semana re-sortearía los bancos re-fechados) · override del arranque y cabecera del .ts derivados de las filas.
+ * v6.03b (20-oct-2026 · técnica de simulacro, DATA/ENCAPS/METODO_SIMULACRO_ENCAPS.md): los pasos del MINI-SIM (30′ · 18′ · 5′ · 5′) y el bloque
+ *   cronometrado del PRE-TEST DE ARRANQUE (24′) llevan la técnica de RaviMedTest adaptada a ENCAPS (catálogo: TECNICA_SIM): reloj del runner cada
+ *   10Q con los hitos de tiempo restante, orden 1→n con atención extra al arranque, una sola decisión por pregunta, revisión FORMAL final sin
+ *   cambiar contenido · corrección en el orden de Ravi (falsa certeza → fallos → aciertos no ciegos → forma) · la nota solo se compara con la
+ *   misma receta · tarjetas solo de fallos «tontos»/discriminativos. Mismos minutos, misma franja.
  */
 'use strict';
 const fs = require('fs');
@@ -176,14 +181,14 @@ for (const fila of FILAS) {
       pasos: [
         PASO_ARRANQUE([r]),
         { min: 30, que: `MINI-SIMULACRO 25Q mixtas (${recTxt}; ≥${e.criticos_min || 10} de los 8 críticos · ≥${e.fallos_previos_min || 5} de fallos previos · ${e.cola_larga_q || '5-6'}Q de ${cola.join(' + ')})${r ? ` — ${r.f}` : ' — runner POR GENERAR'}`,
-          como: `${e.seg_por_q || 72} s/Q = 30′ ESTRICTOS, sin pausa y sin material; la corrección aparece solo al terminar. Umbral ${e.umbral_25 || 18}/25; alerta si <${e.alerta_25 || 15}/25 dos viernes seguidos.`,
+          como: `${e.seg_por_q || 72} s/Q = 30′ ESTRICTOS, sin pausa y sin material; la corrección aparece solo al terminar. ${CAT.TECNICA_SIM.como(25, 30, 3, e.seg_por_q || 72)} Umbral ${e.umbral_25 || 18}/25; alerta si <${e.alerta_25 || 15}/25 dos viernes seguidos.`,
           ...(r ? { enlace: enlaceRunner(r, 'Mini-sim') } : {}) },
-        { min: 18, que: 'Corrección: cada fallo y cada «dudosa»', como: 'Por ítem: área → código → tipo de fallo (knowledge: CONCEPTO · OLVIDO · CRONOLOGIA / transfer: CCSN · CONTEXTO / proceso: CAMBIO · TIEMPO · LECTURA) → la regla correcta en 1 línea. Un código con ≥2 fallos queda CALIENTE: entra en el override de la semana siguiente (máx. 2 sustituciones; I-3 y V-2 nunca se ceden).' },
-        { min: 5, que: `Registro: nota /25 + cierre semanal`, como: `Nota /25 en ENCAPS → Plan → ▲ SIM (o CIERRE DE SESIÓN tipo mini_sim). ${REGISTRO_RUNNER(r, 'mini_sim').replace(/^Una sola vía \(nunca las dos\): /, 'Ronda: ')} Después, en el PC: node DATA/_scripts/gen_encaps_semana.js --semana ${lunesSem} → propuesta de override para ${siguiente ? corta(siguiente.fecha) : 'la semana siguiente'}.` },
-        { min: 5, que: '1-3 APEX de los errores de CONOCIMIENTO + material SOLO de los códigos calientes', como: 'Cada APEX a la nota Obsidian del código fallado (cola larga: enlaces abajo) y a Anki APEX::ENCAPS; si un código quedó caliente, abre su PDF (recursos) y copia la cifra exacta a la nota.', ...(obsCola[0] ? { enlace: obsCola[0] } : {}) },
+        { min: 18, que: 'Corrección: cada fallo y cada «dudosa» (orden de Ravi)', como: CAT.TECNICA_SIM.CORRECCION },
+        { min: 5, que: `Registro: nota /25 + cierre semanal`, como: `Nota /25 en ENCAPS → Plan → ▲ SIM (o CIERRE DE SESIÓN tipo mini_sim). ${REGISTRO_RUNNER(r, 'mini_sim').replace(/^Una sola vía \(nunca las dos\): /, 'Ronda: ')} Después, en el PC: node DATA/_scripts/gen_encaps_semana.js --semana ${lunesSem} → propuesta de override para ${siguiente ? corta(siguiente.fecha) : 'la semana siguiente'}. ${CAT.TECNICA_SIM.COMPARA}` },
+        { min: 5, que: '1-3 APEX de los errores de CONOCIMIENTO + material SOLO de los códigos calientes', como: `${CAT.TECNICA_SIM.TARJETAS} Cada APEX a la nota Obsidian del código fallado (cola larga: enlaces abajo) y a Anki APEX::ENCAPS; si un código quedó caliente, abre su PDF (recursos) y copia la cifra exacta a la nota. ${CAT.TECNICA_SIM.ENVIO}`, ...(obsCola[0] ? { enlace: obsCola[0] } : {}) },
       ],
       recursos: [...recursoRunner(r, `Runner ${r ? r.f : ''}`), ...matCola, ...obsCola, CAT.PROYECTO.LOPEZ],
-      hecho: `25/25 respondidas en ≤30′ · nota /25 registrada (▲ SIM o --registrar) · cierre semanal corrido (override de la semana siguiente) · 1-3 APEX creados.`,
+      hecho: `25/25 respondidas en ≤30′ con la revisión formal hecha · nota /25 registrada (▲ SIM o --registrar) · cierre semanal corrido (override de la semana siguiente) · 1-3 APEX creados.`,
       planB: r ? `Si el enlace web no abre: en el PC ${r.local} (es el mismo fichero). Sin runner: Theomed · SIMULACROS MEDICINA o QX · Simulacros Virtuales (25Q mixtas a 72 s/Q), anotando la nota como /25.` : 'Runner sin generar: node DATA/_scripts/gen_encaps_minisim.js ' + fila.fecha + ' → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy. Si no llega: QX · Simulacros Virtuales (25Q a 72 s/Q, nota /25).',
       ...(e.checkpoint || !r ? { aviso: [e.checkpoint, !r ? `runner minisim_${fila.fecha} por generar` : null].filter(Boolean).join(' · ') } : {}),
     };
@@ -210,7 +215,7 @@ for (const fila of FILAS) {
           PASO_ARRANQUE([rEval, rPre]),
           { min: 10, que: `EVAL ANCLADA · ${ePrev || '5Q'} — ${rEval ? rEval.f : 'sin runner'}`, como: 'De memoria y sin material: 72 s/Q (6′) → al final lee la solución de cada fallo (4′) y escribe la regla en 1 línea. Si fallas ≥2, ese código queda CALIENTE para el override del viernes (no cambia el tema de mañana).', ...(rEval ? { enlace: enlaceRunner(rEval, 'Eval 5Q') } : {}) },
           { min: 24, que: `PRE-TEST DE ARRANQUE parte ${pm.parte}/${pm.de} · ${rPre.n}Q CIEGAS (${cods.map((c) => `${rPre.porCod[c] || 5} × ${c}`).join(' · ')}) · ítems REALES con clave oficial 2024-2A / 2025-1A / 2025-2 — ${rPre.f}`,
-            como: 'MODO EXAMEN: 72 s/Q = 24′ sin pausa y sin material; la solución sale solo al final. Es tu LÍNEA BASE ciega por crítico: marca la confianza real (no «para quedar bien»).', enlace: enlaceRunner(rPre, 'Pre-test') },
+            como: `MODO EXAMEN: 72 s/Q = 24′ sin pausa y sin material; la solución sale solo al final. Es tu LÍNEA BASE ciega por crítico: marca la confianza real (no «para quedar bien»). ${CAT.TECNICA_SIM.como(rPre.n, 24, 2, rPre.seg || 72)}`, enlace: enlaceRunner(rPre, 'Pre-test') },
           { min: 15, que: 'Corrección del pre-test: cada fallo y cada «dudosa»', como: `Lee la explicación y la fuente del runner; clasifica (knowledge: CONCEPTO · OLVIDO · CRONOLOGIA / transfer: CCSN · CONTEXTO / proceso: CAMBIO · TIEMPO · LECTURA) y escribe la regla en 1 línea. Hoy NO abres material del Drive: cada código se trabaja en su propia sesión de banco (${prox.join(' · ')}).` },
           { min: 5, que: 'Registro del pre-test: «Generar JSON» → --registrar --append', como: `En el PC: node DATA/_scripts/gen_encaps_minisim.js --registrar <ruta del JSON descargado> --append → la ronda «pretest» se reparte por código (n = 5 por crítico para el override del ${LUNES_OVERRIDE}). Hoy NO uses el formulario CIERRE DE SESIÓN de la app: guardaría las 20Q como MIX.` },
           { min: 4, que: '1-3 APEX de los errores de CONOCIMIENTO (CONCEPTO / OLVIDO)', como: 'Cada APEX a la nota Obsidian del código fallado (las 4 notas en recursos) y a Anki APEX::ENCAPS: la regla corregida + la cifra exacta, en una frase.', ...(obsCods[0] ? { enlace: obsCods[0] } : {}) },
@@ -297,6 +302,7 @@ const META = {
   version: 'v6.03', generado: '2026-10-20', fuente: 'DATA/_scripts/gen_encaps_guia.js + encaps_guia_catalogo.js · ' + cabSql.slice(0, 120),
   sesiones: FILAS.length, conRunnerPublicado: conRunner, web: WEB,
   reparto: { pretest: '2 arranque · 10 eval 5Q · 24 pre-test 20Q · 15 corrección · 5 registro · 4 APEX', banco: '2 arranque · 8 eval 5Q · 30 banco principal · 8 secundario · 7 material (solo si ≥2 fallos) · 3 registro · 2 APEX', minisim: '2 arranque · 30 mini-sim 25Q · 18 corrección · 5 registro + cierre semanal · 5 APEX + material de los calientes' },
+  tecnicaSimulacro: CAT.TECNICA_SIM.doc,
 };
 // tabla de textos repetidos (≥24 caracteres y ≥2 apariciones) → el .ts pesa la mitad
 const _cnt = new Map();

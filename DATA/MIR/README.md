@@ -446,6 +446,10 @@ Las 14 asignaturas del plan suman **80,7 %** del peso ProMIR (`MIR_MANT_PESOS`, 
 
 ## 3. Bloque diario 15:15–16:15 (Google Calendar — verificado, NO modificar; solo se rebalancea el interior) — v6.00: vale para F1-F3; en el SERUMS (F4) la franja va por turno (M 16:00 · T 10:35 · L 15:15 · hito 04:05 · guardia en tiempo muerto)
 `MIR_FRANJAS` en `mirDailyPlan.ts`. Tiempo real por pregunta MIR = **77 s** (210Q / 270 min), no 90-100 s.
+> **v6.03b (20-oct-2026) · método RaviMedTest dentro de esta hora:** Anki de dos mazos (APEX::MIR primero, mazo de Ravi «1ºVUELTA 2MIR21»
+> suspendido y reactivado por asignatura, aleatorio) · APEX solo de fallos y nivel 3-4/5 · repaso relacional ANTES (día de inicio de
+> asignatura, 15:30–15:33) y AL TERMINAR (último día, 16:12–16:15), minutos tomados del APEX · técnica de simulacro en D77 y corrección
+> de Ravi en D78 y en el banqueo. Detalle, fuentes y calendario: [`METODO_RAVIMEDTEST.md`](METODO_RAVIMEDTEST.md).
 **17-19 Q/día** (antes 7) con −40 % de lectura. Fuente de preguntas = **test del capítulo ProMIR**
 (verificado, logueado) o cuadernillos oficiales (examenesmir.com). "AMIR Test" no está verificado → no se prescribe.
 
@@ -551,6 +555,9 @@ ocupa cada ancla** (`mirTemaEstado`, `mirEstadosTemas`, `mirAnclasDinamicas`, `M
 - D77 = mini-MIR 40Q (solo plantilla + neto) · D78 = corrección Whole-Page + `mirBaselineTabla()` (neto por asignatura = baseline honesto abr-2027).
 
 ## 5. Anki · preset FSRS `APEX::MIR` y plantilla APEX-MIR
+- **v6.03b:** segundo mazo = el de Ravi («1ºVUELTA 2MIR21», preset RAVI-1V: FSRS 0,85, ≤3 nuevas/día en 1.ª vuelta · ≤10 en el banqueo),
+  importado TODO SUSPENDIDO y reactivado por asignatura el día que empieza; orden aleatorio en los dos; el personal (APEX::MIR) primero.
+  [`METODO_RAVIMEDTEST.md`](METODO_RAVIMEDTEST.md) §4.
 - **Regla v3b (gap 11): los APEX MIR se crean DIRECTAMENTE en Anki escritorio** (Palmerton "as you learn": la tarjeta es la nota,
   sin intermediarios) **hasta que el redeploy de n8n esté verificado con un test multilínea real** (AUDITORIA §8: P0-2/P0-3 corregidos en
   disco SIN redesplegar → las tarjetas podrían llegar truncadas o no llegar). La cola de HOY, el bloque APEX y el mantenimiento lo repiten.

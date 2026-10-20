@@ -38,6 +38,14 @@
  *   medio: D3 vie 23 → D4 lun 26). El catálogo se lee por el ORIGEN v5.20 de cada d (colocarF1): las filas v5.20 D50 (Neuro) y D51
  *   (Heme/Onco) ya no son de F1 → sus recursos quedan en guia_catalogo_f1.js y se listan en META.bbDesplazadasTramo2 (T3/T4). Sáb 24 y
  *   dom 25-oct = solo lo nativo del fin de semana (Anki sáb 19:00 · dom 17:00 opcional).
+ * v6.03b (20-oct-2026): MÉTODO ANKI · APEX dentro de los pasos existentes (mismas franjas, mismos minutos por bloque), según
+ *   DATA/USMLE/METODO_ANKI_APEX_USMLE.md (Palmerton vía NotebookLM con citas + Tutorías MI + PALMERTON_*.md): D1 05:00 = configuración
+ *   EXACTA (preset «APEX USMLE» en el padre + «Save to All Subdecks»: FSRS 0,90 · 20 nuevas/día · 9999 repasos/día · repasos antes que
+ *   nuevas · steps por defecto · día nuevo a las 4 h; antes decía 200 repasos/día, que oculta vencidas) · Anki AM = vencidas primero sin
+ *   tope + Good/Again + nuevas solo con vencidas a 0 + telemetría (% Again) · tope de CREACIÓN 20 tarjetas/día repartido por bloque
+ *   (deep prime ≤10 · consolidación ≤4/3/2 según nivel · eval ≤5 · comprimida ≤3 · PC cards del Day-After primero) con la cabecera APEX
+ *   del día (ESPECIALIDAD/SUBTEMA/FUENTE/MODO válidos para el parser v2.3.2: «General» no existe en el motor → Pathology) · sábado =
+ *   vencidas + «Save to All Subdecks» (+ FSRS Optimize a las 4 semanas) + Stats · domingo opcional con la postura de Palmerton.
  */
 'use strict';
 const fs = require('fs');
@@ -81,6 +89,28 @@ if (F1.length !== FV6.f1.dias || F1[0].fecha !== FV6.f1.inicio || F1[F1.length -
   if (mal.length) aborta(`el guion de D1-D5 no corresponde a las filas ${mal.join(', ')} (UWSA1 · lesión celular · neoplasia · inmunidad · hipersensibilidad)`); }
 const ANKI = (() => { try { return cargarModuloTS(path.join('src', 'lib', 'ankiLinks.ts')); } catch { return null; } })();
 const deckDe = (row) => (ANKI ? ANKI.usmleAnkiDeck(row.system, row.matType) : 'APEX::USMLE::General');
+
+// ── v6.03b · MÉTODO ANKI · APEX (DATA/USMLE/METODO_ANKI_APEX_USMLE.md) ───────────────────────────────────────────────────────────
+// Ajustes y cuotas: Palmerton (NotebookLM «STEP 1 · Palmerton Engine», transcripción de «Give Me 30 Minutes and I'll 5X Your Anki
+// Efficiency»: ≤50 nuevas/día —30-40 al empezar—, 9.999 repasos/día, retención 0,90, Good ≈90 % / Again ≈10 %, sin Hard/Easy) ajustado a
+// la franja FIJA de 45′ del Anki AM (su calibración: ~1 h por 100 repasos y 1-2′ por tarjeta nueva) → tope de creación 20/día.
+const AK = {
+  nuevasDia: 20, maxRev: 9999, ret: '0,90', topeDia: 20,
+  deepPrime: 10, consol: { 1: 4, 2: 3, 3: 2 }, eval: 5, evalComp: 3, evalRed: 3, exp: 3,
+};
+const METODO_MD = 'DATA/USMLE/METODO_ANKI_APEX_USMLE.md';
+/** Los 44 tags USMLE que acepta el parser APEX v2.3.2 (agente_estudio · subtema_mapping.json › USMLE.tags_clinicos_a_crear, leído el
+ *  20-oct-2026). ESPECIALIDAD fuera de esta lista = el motor RECHAZA el bloque («USMLE especialidad invalida»): no existe «General». */
+const APEX_USMLE_TAGS = ['Aging', 'Anatomy', 'Anesthesiology', 'Behavioral_Science', 'Biochemistry', 'Biostatistics', 'Cardiology', 'Cell_Biology',
+  'Critical_Care', 'Dermatology', 'Embryology', 'Emergency_Medicine', 'Endocrinology', 'Environmental_Medicine', 'Ethics', 'Family_Medicine',
+  'Gastroenterology', 'Genetics', 'Geriatrics', 'Gynecology', 'Hematology_Oncology', 'Histology', 'Immunology', 'Infectious_Diseases',
+  'Laboratory_Medicine', 'Microbiology', 'Neonatology', 'Nephrology', 'Neurology', 'Obstetrics', 'Occupational_Medicine', 'Oncology',
+  'Orthopedics', 'Otolaryngology', 'Pain_Medicine', 'Pathology', 'Pathophysiology', 'Pediatrics', 'Pharmacology', 'Physiology', 'Psychiatry',
+  'Pulmonology', 'Rheumatology', 'Surgery'];
+/** ESPECIALIDAD APEX del día: el tag del deck de ankiLinks salvo «General» (Fundamentos = patología general → Pathology). */
+const espApex = (row) => { const t = deckDe(row).split('::').pop(); return t === 'General' ? 'Pathology' : t; };
+const deckApex = (row) => `APEX::USMLE::${espApex(row)}`;
+const nn = (d) => String(d).padStart(2, '0');
 
 // validación del catálogo contra los TSV/índices
 for (const [d, m] of Object.entries(MAPA)) {
@@ -142,6 +172,59 @@ for (const r of F1) {
 // v6.03: filas de F1 DESPLAZADAS al tramo 2 (sub «DE F1 → TRAMO 2 …»): destino de lo que no cabe en F1 y lista de sus vídeos
 const T2_DESPL = U.DIAS_T2.filter((x) => x.tipo === 'contenido' && /^DE F1 → TRAMO 2/.test(x.sub));
 const CORTO_T2 = { 'Nervous System': 'Neuro', 'Hematology & Oncology': 'Heme/Onco', 'Psychiatry & Behavioral': 'bioestadística' };
+// v6.03b · cabecera APEX del día (SUBTEMA = D# de 2 cifras + subtema uWorld en inglés; hitos: D# + forma) y presupuesto de tarjetas
+const slugUW = (id) => {
+  let s = (/\(([^()]*)\)\s*$/.exec(UWY.get(id).nombre) || [])[1] || UWY.get(id).nombre;
+  s = s.replace(/^Normal (pulmonary )?structure and function(?: of the)? ?/i, (x, p) => `normal ${p || ''}`);
+  return s.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '').slice(0, 40).replace(/_+$/, '');
+};
+const hitoSlug = (r) => (/UWSA1/.test(r.sub) ? 'uwsa1' : `nbme${(/NBME (\d+)/.exec(r.sub) || /Form (\d+)/.exec(r.uw || '') || [])[1]}`);
+const subApex = (r) => (esHito(r) ? `${nn(r.d)}_${hitoSlug(r)}` : `${nn(r.d)}_${slugUW(MF1[r.d].uw[0])}`);
+const fuenteHito = (h) => (/UWSA/.test(h.sub) ? 'UWorld' : 'NBME');
+const cabApex = (esp, sub, fuente, modo) => `EXAMEN: USMLE · ESPECIALIDAD: ${esp} · SUBTEMA: ${sub} · FUENTE: ${fuente} · MODO: ${modo} · IMAGEN: no`;
+const ESP_PREG = '<sistema de la pregunta: Cardiology, Nephrology, Microbiology…>';
+for (const r of F1) {
+  if (esHito(r)) { if (!/^\d{2}_(uwsa1|nbme\d+)$/.test(subApex(r))) aborta(`D${r.d}: SUBTEMA APEX del hito no derivable (${subApex(r)})`); continue; }
+  if (!APEX_USMLE_TAGS.includes(espApex(r))) aborta(`D${r.d}: ESPECIALIDAD APEX «${espApex(r)}» no está en los 44 tags del parser`);
+  if (!/^\d{2}_[a-z][a-z0-9_]*$/.test(subApex(r))) aborta(`D${r.d}: SUBTEMA APEX «${subApex(r)}» no cumple NN_lowercase`);
+}
+/** Reglas de redacción (Palmerton: frente «Subject - question», tuyo y exigente; resumen arriba si el reverso es largo; sin cloze). */
+const R_FRENTE = 'FRENTE en inglés «Subject - question», escrito por ti, exigente y sin pistas; REVERSO «Summary:» 1 frase con el porqué (+ ≤2 líneas); CCSN = con qué no confundirlo; 1 idea por tarjeta, sin cloze';
+const R_ENVIO = 'copia el BLOQUE APEX → Ctrl+Shift+A (o ⚡ APEX 1-TAP) → el toast ✓ = tarjeta en Anki + nota en Obsidian';
+/** Ruta de cada error (Palmerton: Educational Objective como filtro; PC card si fallaste el diagnóstico; los errores de lectura no son de tarjeta). */
+const R_ERROR = 'por cada incorrecta y cada acierto con duda, lee el Educational Objective y clasifica: K (no lo sabías) → 1 concept card del PRINCIPIO (abstraído: sin edad ni sexo del paciente) · no reconociste el diagnóstico → 1 PC card (cronología en presente, 4-6 pasos) · QI (lo sabías y leíste o interpretaste mal) → sin tarjeta: la micro-destreza al log de 📏 Medición. Filtro: «¿vale repasarlo a diario 6 meses?»; agotado el tope, el resto va a la shopping list';
+/** Presupuesto de tarjetas NUEVAS del día (tope 20): primero las PC cards / tarjetas de experimento del Day-After, luego deep prime ≤10,
+ *  luego consolidación (≤4/3/2 por nivel), luego la eval (≤5; comprimida ≤3; reducida del D4 ≤3). */
+function presupuesto(r) {
+  const d = r.d; const th = trasHito(r);
+  const b0715 = d === 2 ? AK.exp + 3 : th && th.n === 1 ? AK.exp : 0;
+  const da18 = d === 2 || d === 3 ? 3 : d === 4 ? 1 : th && th.n <= 4 ? DRILL[th.n].length : 0;
+  const dp = AK.deepPrime; let resto = AK.topeDia - b0715 - da18 - dp;
+  const nivel = S1(d) ? 1 : r.nivelUW;
+  const con = Math.max(0, Math.min(AK.consol[nivel] ?? 2, resto)); resto -= con;
+  const hayEval = d === 4 || d === 5 || (!S1(d) && !(th && th.n <= 3));
+  const nomEval = d === 4 ? AK.evalRed : th && th.n === 4 ? AK.evalComp : AK.eval;
+  const ev = hayEval ? Math.max(0, Math.min(nomEval, resto)) : 0;
+  return { b0715, da18, dp, con, ev, total: b0715 + da18 + dp + con + ev };
+}
+/** Textos de tarjeta por bloque (v6.03b): PC card y tarjeta de experimento del Day-After (h = fila del hito), revisión de la consolidación
+ *  y corrección de la eval (k = cuántas tarjetas caben hoy según `presupuesto`). Lo que cambia por día (la cabecera) va en el «qué»; el
+ *  «cómo» es fijo para que el .ts generado lo guarde una sola vez. */
+const cabCorta = (esp, sub, fuente, modo) => `ESPECIALIDAD ${esp} · SUBTEMA ${sub} · FUENTE ${fuente} · MODO ${modo}`;
+const pcCardTxt = (h) => `→ 1 PC card por pregunta, por APEX (${cabApex(ESP_PREG, subApex(h), fuenteHito(h), 'simulacro_step1')}): FRENTE «<diagnosis> - pathophysiologic chronology from the root cause to the presenting finding?» · REVERSO = la cadena en presente, 4-6 pasos unidos con «→» · ${R_ENVIO}.`;
+const expCardTxt = (h) => `por APEX (${cabApex(ESP_PREG, subApex(h), fuenteHito(h), 'simulacro_step1')}): FRENTE «<experiment or graph> - what was manipulated, what was measured and what does the result predict?» · REVERSO «Summary:» con el principio que lo explica · ${R_ENVIO}.`;
+const nTarj = (k) => `${k} tarjeta${k === 1 ? '' : 's'}`;
+const COMO_ERR = `${mayus(R_ERROR)}. ${mayus(R_FRENTE)} · ${R_ENVIO} (cabecera: EXAMEN: USMLE + los campos del título del paso + IMAGEN: no).`;
+function revCon(r, min, k, fuente) {
+  if (k <= 0) return P(min, `Revisión: Educational Objective + log de errores (hoy 0 tarjetas: el tope de ${AK.topeDia} ya lo cubren el Day-After y el deep prime)`, 'Cada fallo: knowledge / transfer / proceso → 📏 Medición (consolidación %); lo que merecería tarjeta va a la shopping list.');
+  return P(min, `Revisión: Educational Objective → ≤${nTarj(k)} APEX + log de errores (tope del día ${AK.topeDia}) · ${cabCorta(espApex(r), subApex(r), fuente, 'estudio')}`, `${COMO_ERR}${fuente === 'UWorld' ? ' Si la pregunta es de Mehlman: FUENTE mix_examen_usmle.' : ''} Consolidación % y tipo de error (knowledge / transfer / proceso) → 📏 Medición.`);
+}
+function corrEval(r, min, k) {
+  return P(min, `Corrección: Educational Objective + tipo de error + ≤${nTarj(k)} APEX · ${cabCorta('= sistema de la pregunta', `${nn(r.d)}_eval`, 'UWorld', 'estudio')}`, COMO_ERR);
+}
+/** Submazos APEX que usa el F1 (orden de aparición) y el sábado del «Optimize» FSRS del preset (1.er sábado ≥ 28 días tras el D1). */
+const F1_DECKS = [...new Set(F1.filter((r) => !esHito(r)).map(espApex))];
+const SAB_OPT = (() => { let t = new Date(F1[0].fecha + 'T12:00:00Z'); t = new Date(t.getTime() + 28 * 864e5); while (t.getUTCDay() !== 6) t = new Date(t.getTime() + 864e5); return t.toISOString().slice(0, 10); })();
 const TRAMO2_TXT = T2_DESPL.length ? `TRAMO 2 (T${T2_DESPL[0].t} ${fd(T2_DESPL[0].fecha)}, cuando siguen las filas desplazadas de F1: ${[...new Set(T2_DESPL.map((x) => CORTO_T2[x.system] || x.system))].join(' → ')})` : 'TRAMO 2';
 
 // ── 1) REPARTO DE VÍDEO (cola) ────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -315,21 +398,26 @@ const pathomaTxt = (d) => (MF1[d].pathoma ? ` · Pathoma ${MF1[d].pathoma.map((c
 // ANKI 05:00
 function anki0500(r) {
   const d = r.d; const f = r.fecha; const rep = REP[d];
+  const i = IDX.get(d); const prevPlan = i > 0 ? F1[i - 1] : null;
+  const creadas = prevPlan ? (antesTxt(prevPlan.fecha, f) === 'ayer' ? 'ayer' : `el ${fd(prevPlan.fecha)}`) : 'ayer';
   if (S1(d) && rep && rep.s0500.length) {
     const vids = pasosVideo(d, rep.s0500); const V = vids.reduce((a, p) => a + p.min, 0);
     const pr = contAtras(r, 1); const nuevasDe = pr && antesTxt(pr.fecha, f) !== 'ayer' ? `las del ${fd(pr.fecha)}` : 'las de ayer';
     return B(f, '05:00–05:45', 'ANKI AM (mazo casi vacío) + vídeo pendiente', [
-      P(10, 'Anki: TODAS las vencidas de APEX::USMLE (tarjetas de mecanismo y PC cards de los días anteriores)', `Sync → APEX::USMLE › Study Now · reviews first · Good ≈90 % / Again solo olvido real · sin Hard/Easy · nuevas: ${nuevasDe} (preset 20/día).`),
+      P(10, 'Anki: TODAS las vencidas de APEX::USMLE (mazo PADRE: junta todos los submazos) y después las nuevas', `Sync → APEX::USMLE › Study Now · vencidas primero · responde en voz alta antes de girar · Good ≈90 % (recordaste la lógica central) / Again solo si la olvidaste · nunca Hard/Easy · nuevas: ${nuevasDe} (preset ${AK.nuevasDia}/día).`),
       ...vids,
-      P(45 - 10 - V, 'Free recall de lo que acabas de ver + resto de Anki', 'Sin mirar: 90 s por vídeo, escribe la cadena causal; si quedan vencidas, termínalas.'),
+      P(45 - 10 - V, 'Free recall de lo que acabas de ver + resto de Anki', 'Sin mirar: 90 s por vídeo, escribe la cadena causal; si quedan vencidas, termínalas. Sync al cerrar.'),
     ], [...recVideo(rep.s0500), R_ANKI], '0 vencidas en APEX::USMLE + el vídeo pendiente visto y resumido', { planB: 'Si Anki pide más de 15′, el vídeo pasa a las 07:15 (Anki primero, siempre).' });
   }
-  return B(f, '05:00–05:45', 'ANKI AM · cola FSRS de APEX::USMLE', [
-    P(3, 'Sync + APEX::USMLE (mazo padre) › Study Now', 'Anki escritorio. Si hay > 200 vencidas: hoy nuevas = 0 (backlog, Palmerton §4.10).'),
-    P(37, 'TODAS las vencidas (reviews first) · tope 200', 'Responde en voz alta antes de girar · Good si recordaste (≈90 %) · Again solo si olvidaste de verdad · sin Hard/Easy.'),
-    P(4, 'Nuevas: las que creaste ayer (≤10 de mecanismo + PC cards; preset 20/día)', 'Solo si terminaste las vencidas; si no, nuevas = 0.'),
-    P(1, 'Telemetría', 'node DATA/_scripts/anki_telemetria.js (vencidas, backlog, retención).'),
-  ], [R_ANKI], '0 vencidas en APEX::USMLE (o tope de 200) y la telemetría registrada', { planB: 'Anki escritorio no abre → AnkiWeb/AnkiDroid solo para repasar; nunca «Forget» ni resetear el mazo.' });
+  const hito = esHito(r);
+  return B(f, '05:00–05:45', `ANKI AM · cola FSRS de APEX::USMLE${hito ? ' (antes del hito)' : ''}`, [
+    P(2, 'Sync + APEX::USMLE (mazo PADRE) › Study Now', `Anki escritorio · un solo clic en el padre: Anki junta todos los submazos (Pharm incluido). Si la telemetría de ayer dio ALARMA G (backlog > 100 o retención < 85 %) → hoy PROTOCOLO DE BACKLOG (${METODO_MD} §7): New cards/day 0 · Maximum reviews/day 200.`),
+    P(33, 'VENCIDAS primero (reviews first) · sin tope (Maximum reviews/day 9999)', 'Lee el frente, responde EN VOZ ALTA y gira: Good si recordaste la lógica central (≈90 %, no palabra por palabra) · Again solo si la olvidaste (≈10 %) · nunca Hard/Easy · lee primero la línea «Summary:» (20-30 s por tarjeta).'),
+    P(8, `NUEVAS: las APEX que creaste ${creadas} (preset ${AK.nuevasDia}/día)`, hito
+      ? 'Solo si las vencidas llegaron a 0; si no, nuevas = 0 hoy (esperan en la cola). Hoy NO se crean tarjetas: el NBME se corrige desde las 18:00 (Day-After).'
+      : 'Solo si las vencidas llegaron a 0. Si a las 05:37 aún quedan vencidas: nuevas = 0 hoy (esperan en la cola) y las vencidas que falten van al primer «Anki restante» (07:15) o mañana a las 05:00, siempre antes que nuevas.'),
+    P(2, 'Sync final + telemetría', 'Sync · node DATA/_scripts/anki_telemetria.js → due · backlog · retención 30 d · % Again (sano ≈10 %; > 20 % = tarjetas largas o perfeccionismo → divídelas; ≈0 % = no te estás examinando).'),
+  ], [R_ANKI], '0 vencidas en APEX::USMLE (las nuevas solo después) y la telemetría registrada', { planB: 'Anki escritorio no abre → AnkiWeb/AnkiDroid solo para repasar; nunca «Forget» ni resetear el mazo (borra el historial del algoritmo).' });
 }
 
 // REPASO 07:15 (genérico D6+)
@@ -365,14 +453,15 @@ function deepPrime(r) {
   const pasos = [
     ...vids,
     P(L, `Lectura activa: ${libTxt(d, nDocs)} + First Aid 2026 › ${m.fa}${pathomaTxt(d)}`, `Whole Page Rule: la sección completa, no solo el dato; 3-5 puntos high-yield a mano + 1 esquema.${m.lib.length > nDocs ? ` Si sobra tiempo: ${m.lib.slice(nDocs).map(([e, doc]) => libNom(e, doc)).join(' · ')}.` : ''}`, { t: libNom(m.lib[0][0], m.lib[0][1]).replace(/^[^·]*· /, ''), url: lib(m.lib[0][0], m.lib[0][1]) }),
-    P(20, `≤10 tarjetas de MECANISMO en ${deckDe(r)}`, 'REGLA DEL FRENTE: anverso tuyo, en inglés, sujeto primero, sin cloze ni pistas; reverso = patogenia → presentación. Dilo en voz alta antes de escribirla.'),
+    P(18, `≤${AK.deepPrime} tarjetas APEX de la sección que acabas de leer/ver → ${deckApex(r)} (Whole Page Rule: toda la sección, no solo el dato)`, `Antes de cada una, EN VOZ ALTA: patogenia → presentación → cómo se conectan. Tipos: concept («use the pathophysiology to explain…») · P-to-P · compare & contrast · transfer (dato o lab → estado fisiopatológico).${r.matType === 'pharm' ? ' Día Pharm: 1 tarjeta por CLASE con el mecanismo que explica uso y toxicidad (Palmerton agrupa los efectos adversos por mecanismo); la pregunta inversa (efecto → fármaco) solo si se evalúa, como 2.º bloque.' : ''} ${mayus(R_FRENTE)}.`),
+    P(2, `Envío APEX · cabecera: EXAMEN: USMLE · ${cabCorta(espApex(r), subApex(r), 'First_Aid', 'estudio')} · IMAGEN: no${deckDe(r) !== deckApex(r) ? ` (la app muestra ${deckDe(r)}; el motor APEX no acepta «General»)` : ''}`, `${mayus(R_ENVIO)}. Si el toast falla, el bloque queda en la cola de ⚡ APEX 1-TAP: nunca lo pases a mano a otro mazo. Las tarjetas de IMAGEN (ECG, histología, TC) no van por APEX (el motor pone la imagen en el reverso): créalas en Anki escritorio en el submazo del día, con la imagen en el frente.`),
     P(5, 'Free recall final (sin mirar)', 'Dibuja la cadena causal del día en 1 hoja; compárala con tus notas y corrige en rojo.'),
   ];
   const avisos = [];
   if (m.nota) avisos.push(m.nota);
   if (rep.desborde.length) avisos.push(`A ${vel(d).txt.split(' (')[0]} no cabe todo en 70′ de vídeo: ${rep.desborde.map((it) => `${it.tipo === 'bb' ? BB.get(it.id).nombre : PALM[it.id].t}${it.ini ? ` (desde ${mmss(it.ini)})` : ''} → ${destinoDe(it)}`).join(' · ')}. No se recorta: se ve en esas franjas.`);
   if (r.palm && d > 3) { const it = { tipo: 'palm', id: r.palm.id, ini: 0, fin: PALM[r.palm.id].s, dOrig: d }; avisos.push(`Palmerton «${PALM[r.palm.id].t}» (${hms(PALM[r.palm.id].s)}, visión del sistema) entra a la cola detrás de los B&B → ${destinoDe(it)}.`); }
-  return B(r.fecha, '09:00–11:00', `DEEP PRIME · ${corto(r.sub, 70)}`, pasos, [R_VID, ...recVideo(rep.s0900), ...recLib(d)], `vídeo(s) de arriba vistos, lectura con 3-5 puntos a mano y ≤10 tarjetas creadas en ${deckDe(r)}`, { planB: 'Qbankly caído → misma sección en First Aid (libro) y la lectura de la Library cuando vuelva. Pathoma: sin cuenta en el repo (pathoma.com: Free = 6 vídeos de prueba 1 mes; Pro desde US$84,95 con libro en papel, sin PDF) → la Library lo cubre.', aviso: avisos.join(' ') || undefined });
+  return B(r.fecha, '09:00–11:00', `DEEP PRIME · ${corto(r.sub, 70)}`, pasos, [R_VID, ...recVideo(rep.s0900), ...recLib(d)], `vídeo(s) de arriba vistos, lectura con 3-5 puntos a mano y ≤${AK.deepPrime} tarjetas APEX confirmadas (toast ✓) en ${deckApex(r)}`, { planB: 'Qbankly caído → misma sección en First Aid (libro) y la lectura de la Library cuando vuelva. Pathoma: sin cuenta en el repo (pathoma.com: Free = 6 vídeos de prueba 1 mes; Pro desde US$84,95 con libro en papel, sin PDF) → la Library lo cubre.', aviso: avisos.join(' ') || undefined });
 }
 
 // CONSOLIDACIÓN 11:00 por nivel (genérico D6+)
@@ -385,7 +474,7 @@ function consolidacion(r) {
     pasos = [
       P(2, 'Armar bloques de 5Q', tcUW(hoy, 5, TUTOR) + sub, L_UW),
       P(40, '4 bloques de 5Q en Tutor (20Q)', '≈2′ por pregunta + su explicación; corrige cada bloque antes del siguiente.'),
-      P(15, 'Revisión: Educational Objective + shopping list + log de errores', 'Cada fallo: knowledge / transfer / proceso → 📏 Medición (consolidación %).'),
+      revCon(r, 15, presupuesto(r).con, 'UWorld'),
       P(3, 'Gate del día', '≥80 % en 10 consecutivas → validado (mañana 07:15: 5Q timed) · <80 % → mañana a las 07:15 repites 5Q del subtema; NO avances de nivel.'),
     ];
   } else if (n === 2) {
@@ -394,7 +483,7 @@ function consolidacion(r) {
     pasos = [
       P(2, 'Armar bloques de 5Q TIMED', `${tcUW(sf, 5, TIMED)} · el 1.er bloque = 5Q de ayer (${uwDe(prev.d).map(uwNom).join(' + ')}) = 2.ª mitad del gate${sub}`, L_UW),
       P(45, '6 bloques de 5Q TIMED (30Q)', 'Cronómetro 2:00 por pregunta (si suena: adivina, flag, sigue) · cover-the-options · juez, no abogado.'),
-      P(11, 'Revisión de las incorrectas: Educational Objective + log', 'knowledge / transfer / proceso → 📏 Medición; las correctas con duda también.'),
+      revCon(r, 11, presupuesto(r).con, 'UWorld'),
       P(2, 'Gate del subtema (marca ✓/✗ en 📏 Medición)', '≥80 % → mañana sube el subtema · <80 % → mañana a las 07:15 repites 5Q del subtema fallado.'),
     ];
   } else {
@@ -404,7 +493,7 @@ function consolidacion(r) {
       P(2, 'Armar el test en el Test Composer', `20Q: QBanks › «uWorld - USMLE Step 1» › New Test → Systems: TODOS los de «${organoDe(hoy[0])}» (${org.length} Systems) · Subjects todos · Status Unused · 20 · Timed → BEGIN · luego 10Q: ${hoy.map(uwNom).join(' + ')} · Tutor`, L_UW),
       P(30, '20Q del sistema completo TIMED (sin saber el subtema)', 'Cronómetro 2:00 por pregunta; flag y sigue.'),
       P(20, '10Q Tutor del subtema de hoy', 'Con explicación; cada fallo a la shopping list.'),
-      P(6, 'Revisión de las incorrectas del bloque timed', 'Educational Objective + tipo de error en 📏 Medición.'),
+      revCon(r, 6, presupuesto(r).con, 'UWorld'),
       P(2, 'Gate N3', '≥80 % en las 20Q timed del sistema → el sistema queda «vivo» · <80 % → al colchón del tramo 2 (sistema débil).'),
     ];
   }
@@ -418,13 +507,13 @@ function pasosEval(r, comprimido) {
   if (comprimido) return [
     P(1, 'Armar 10Q mixtas TIMED', `QBanks › uWorld › New Test → Systems: ${txtSis} · Status Unused · 10 · Timed`, L_UW),
     P(15, '10Q TIMED (90 s/Q · tope 2 min)', 'Modo examen: cover-the-options · sin cambiar respuestas salvo error de lectura.'),
-    P(12, 'Corrección + 1 tarjeta APEX por error', 'Educational Objective · tipo de error.'),
+    corrEval(r, 12, presupuesto(r).ev),
     P(2, 'Registrar eval % + horas netas del día', '📏 Medición.'),
   ];
   return [
     P(2, 'Armar 10Q mixtas TIMED de lo ya visto', `QBanks › uWorld › New Test → Systems: ${txtSis} · Subjects todos · Status Unused · 10 · Timed`, L_UW),
     P(15, '10Q TIMED (90 s/Q · tope 2 min)', 'Modo examen: cover-the-options · juez, no abogado · cuenta las respuestas cambiadas y las relecturas.'),
-    P(23, 'Corrección: Educational Objective + tipo de error + 1 tarjeta APEX por error', 'knowledge / transfer / proceso; las de duda en aciertos también.'),
+    corrEval(r, 23, presupuesto(r).ev),
     P(5, 'Registrar en 📏 Medición', 'eval % · horas netas de Step 1 del día (GO/NO-GO por horas) · cambiadas · relecturas.'),
   ];
 }
@@ -438,7 +527,7 @@ const DRILL = { 1: [1, 2, 3], 2: [4, 5, 6], 3: [7, 8, 9], 4: [10] };
 const nomHito = (h) => h.uw.replace('NBME CBS Form', 'NBME');
 function dayAfter18(r, th) {
   const nom = nomHito(th.hito); const dr = DRILL[th.n];
-  const pasos = [P(dr.length * 15, `Drill de cronología del ${nom}: pregunta${dr.length > 1 ? 's' : ''} ${dr.join(', ')} de 10 (las falladas más largas y con más labs)`, '15′ cada una: reescribe A MANO el caso en orden cronológico estricto y en presente → 1 PC card por pregunta en APEX::USMLE.')];
+  const pasos = [P(dr.length * 15, `Drill de cronología del ${nom}: pregunta${dr.length > 1 ? 's' : ''} ${dr.join(', ')} de 10 (las falladas más largas y con más labs)`, `15′ cada una: reescribe A MANO el caso en orden cronológico estricto y en presente ${pcCardTxt(th.hito)}`)];
   if (th.n === 4) pasos.push(...pasosEval(r, true));
   return B(r.fecha, '18:00–18:45', `DAY-AFTER ${nom} · ${th.n + 2}/6 — drill de cronología${th.n === 4 ? ' + eval 10Q' : ''}`, pasos, [R_UW], th.n === 4 ? '10/10 PC cards del drill y la eval de 10Q registrada' : `${dr.length} PC cards más`, { aviso: th.n === 1 ? `Day-After del ${nom} (Palmerton §9.2, ~4 h) repartido: 18:00 del hito (registro + trayectoria + auditoría) · 07:15 de hoy (triaje + gráficos) · 18:00 de hoy y de los 3 días siguientes (10 drills). La eval de 10Q vuelve el 4.º día; el subtema de cada día NO cambia.` : undefined });
 }
@@ -446,7 +535,7 @@ function dayAfter0715(r, th) {
   const nom = nomHito(th.hito);
   return B(r.fecha, '07:15–08:15', `DAY-AFTER ${nom} · 2/6 — triaje + gráficos`, [
     P(45, `Triaje de las incorrectas del ${nom} (bloques 1-4 en orden)`, '1′ por pregunta: Educational Objective → K (no lo sabía) o QI (lo sabía y leí/interpreté mal). Lo que no entre en 45′ se queda sin triar: el NBME es un mapa (regla de oro).'),
-    P(15, 'Ítems experimentales / gráficos → 2-3 tarjetas de «diseño del experimento»', 'Qué se manipuló, qué se midió, qué predice el resultado.'),
+    P(15, `Ítems experimentales / gráficos → ${AK.exp - 1}-${AK.exp} tarjetas de «diseño del experimento»`, `Qué se manipuló, qué se midió, qué predice el resultado; ${expCardTxt(th.hito)}`),
   ], [R_UW], 'incorrectas etiquetadas K/QI y 2-3 tarjetas de experimento', { aviso: 'Hoy a las 07:15 no hay validación de 5Q ni vídeo pendiente (Day-After). El subtema de hoy sigue igual desde las 08:15.' });
 }
 
@@ -486,11 +575,12 @@ function semana1(r) {
     const pend = COLA_METODO_TRAS_D1.map((it) => `«${PALM[it.id].t.split(' (en la app')[0]}» de ${hms(it.ini)} a ${hms(it.fin)} → ${destinoDe(it)}`);
     const recPalm = (id) => ({ t: `Palmerton · ${id === 'Te5RnxeG_Gg' ? 'Anki + FSRS' : 'The ONLY video (Step 1 2026)'} (YouTube)`, url: yt(id), min: Math.round(PALM[id].s / 60) });
     return [
-    B(f, '05:00–05:45', 'ANKI · CONFIGURACIÓN (el mazo está vacío): mazos + FSRS', [
-      P(4, 'Crear/confirmar los mazos APEX::USMLE::General · APEX::USMLE::Immunology · APEX::USMLE::Pharmacology', 'Anki escritorio › Create Deck con esos nombres exactos (los de cada sistema se crean el día que empiezan) · Sync.'),
+    B(f, '05:00–05:45', 'ANKI · CONFIGURACIÓN (el mazo está vacío): mazos + preset «APEX USMLE» (FSRS)', [
+      P(4, `Mazos: confirma APEX::USMLE (padre) y los ${F1_DECKS.length} submazos del F1: ${F1_DECKS.map((t) => `::${t}`).join(' · ')}`, 'Anki escritorio › Create Deck con el nombre EXACTO de los que falten (el motor APEX también los crea al vuelo, pero sin tu preset). Lo de patología general va a ::Pathology: el motor no acepta «General». Pharm = submazo propio (::Pharmacology) con su propio tope diario, como pide Palmerton. Sync.'),
       ...v05,
-      P(45 - 4 - V05, 'Preset «APEX USMLE» aplicado a los 3 mazos (Deck Options)', `FSRS = ON · Desired retention 0,90 · learning steps por defecto (no tocar) · New cards/day 20 · Maximum reviews/day 200 · reviews antes que nuevas · Preferences › Next day starts at 4. Después: node DATA/_scripts/anki_telemetria.js (con Anki abierto).${resto05 ? ' El final del vídeo se ve a las 07:55: si cambia algo de esto, ajústalo mañana a las 05:00 (el mazo sigue vacío).' : ''}`),
-    ], [recPalm('Te5RnxeG_Gg'), { t: 'AnkiWeb', url: 'https://ankiweb.net/decks' }], 'preset FSRS 0,90 · 20 nuevas/día · 200 revisiones/día activo en los 3 mazos y la telemetría con 0 tarjetas registrada', { planB: 'Si Anki escritorio no abre: crea los mazos en AnkiWeb hoy y aplica el preset FSRS mañana a las 05:00 (el mazo sigue vacío).' }),
+      P(45 - 4 - V05 - 2, 'Preset «APEX USMLE» en Deck Options del PADRE → Save ▾ «Save to All Subdecks»', `FSRS: si ya está activado (vale para toda la colección), déjalo; si no, actívalo y pulsa «Optimize all presets» (ya tienes historial en tus mazos MIR/ENCAPS; Palmerton solo hace esperar ~1 mes con SM-2 a quien es nuevo en Anki) · Desired retention ${AK.ret} · New cards/day ${AK.nuevasDia} · Maximum reviews/day ${AK.maxRev} (nunca 200: oculta vencidas) · learning y relearning steps por defecto (no tocar) · Display order › New/review order: «Show after reviews» · Preferences › Review › Next day starts at 4. El «Optimize» propio de este preset va el ${fd(SAB_OPT)} (4 semanas de repasos).${resto05 ? ' El final del vídeo se ve a las 07:55: si cambia algo de esto, ajústalo mañana a las 05:00 (el mazo sigue vacío).' : ''}`),
+      P(2, 'Telemetría con 0 tarjetas', 'node DATA/_scripts/anki_telemetria.js con Anki abierto: debe leer retención 0,90 y ningún aviso «rev.perDay < 9999». El aviso «nuevas/día = 20 (esperado 10)» viene del script anterior a este método (pendiente de actualizar): ignóralo.'),
+    ], [recPalm('Te5RnxeG_Gg'), { t: 'AnkiWeb', url: 'https://ankiweb.net/decks' }], `preset «APEX USMLE» (FSRS ${AK.ret} · ${AK.nuevasDia} nuevas/día · ${AK.maxRev} repasos/día · repasos antes que nuevas) guardado en el padre y en todos los submazos, y la telemetría con 0 tarjetas registrada`, { planB: 'Si Anki escritorio no abre: crea los mazos en AnkiWeb hoy y aplica el preset mañana a las 05:00 (el mazo sigue vacío).', aviso: `Método completo (ajustes, tipos de tarjeta, cuotas, backlog, telemetría): ${METODO_MD}. Desde mañana cada tarjeta nace por APEX con la cabecera del día (ESPECIALIDAD · SUBTEMA · FUENTE · MODO) y un tope de ${AK.topeDia} tarjetas nuevas/día.` }),
     B(f, '07:15–07:25', 'PREPARACIÓN DEL HITO 1/2 · localizar el UWSA1 (hoy no hay tema nuevo ni «ayer»)', [
       P(10, 'Localizar el UWSA1 SIN empezarlo', 'Qbankly › QBanks › USMLE High Yield › «uWorld - Step 1 Self Assessment Simulation 1» (160Q · 4 h) › Details (Subjects: Block - #1 … Block - #4 = 40Q cada uno) › Select QBank (queda como ACTIVE QBANK). No pulses BEGIN.', L_UW),
     ], [R_UW], 'UWSA1 como ACTIVE QBANK (sin empezar)', { aviso: 'Hoy el bloque USMLE va de 07:15 a 13:00: el UWSA1 son 4 h netas (4 × 40Q × 90 s) y con la pausa no cabe en 09:00-13:00 → empieza a las 08:50. 07:25-07:55 = SYNAPSE (su propia tarjeta del Home; no se repite aquí) · 07:55-08:50 = 2/2 de la preparación · ALMUERZO 13:00-13:30 (en vez del libro + holgura) · Research ↔ Derma 13:30 sin cambio.' }),
@@ -523,8 +613,8 @@ function semana1(r) {
   else out.push(anki0500(r));
   // 07:15
   if (d === 2) out.push(B(f, '07:15–08:15', 'DAY-AFTER UWSA1 · 3/6 — gráficos + drill de cronología (1-3)', [
-    P(15, 'Ítems experimentales / gráficos del UWSA1 → 2-3 tarjetas de «diseño del experimento»', 'Separa esas preguntas; cada tarjeta: qué se manipuló, qué se midió, qué predice el resultado.'),
-    P(45, 'Drill de cronología: 3 incorrectas (las más largas y con más labs)', '15′ cada una: reescribe A MANO el caso en orden cronológico estricto y en presente → 1 PC card por pregunta en APEX::USMLE::General.'),
+    P(15, `Ítems experimentales / gráficos del UWSA1 → ${AK.exp - 1}-${AK.exp} tarjetas de «diseño del experimento»`, `Separa esas preguntas; cada tarjeta ${expCardTxt(filaD(1))}`),
+    P(45, 'Drill de cronología: 3 incorrectas (las más largas y con más labs)', `15′ cada una: reescribe A MANO el caso en orden cronológico estricto y en presente ${pcCardTxt(filaD(1))}`),
   ], [R_UW], '2-3 tarjetas de experimento + 3 PC cards', { aviso: `El plan ponía el Day-After (~4 h) en el deep prime de hoy: se reparte en 6 franjas (${fdc(DD(1))} 18:00 · ${fdc(DD(2))} 05:00 · ${fdc(DD(2))} 07:15 · ${fdc(DD(2))} 18:00 · ${fdc(DD(3))} 18:00 · ${fdc(DD(4))} 18:00 = 253′) para no apilar 4 h encima del primer tema. El subtema de hoy no cambia.` }));
   else {
     // v6.03: «ayer» / «24 h» solo si el día de contenido anterior es el día natural anterior (D4 lun 26 ← D3 vie 23 = 72 h, fin de semana)
@@ -552,25 +642,25 @@ function semana1(r) {
   out.push(deepPrime(r));
   // 11:00
   const con = {
-    2: ['CONSOLIDACIÓN · lesión y muerte celular — 10Q Tutor (Mehlman)', [P(3, 'Cambiar a Mehlman y armar', `QBanks › USMLE › «Mehlman - Step 1 QBank - 2026» › Select QBank › New Test → System ${mhNom(48)} · Status Unused · 5 · Tutor → BEGIN TEST`, L_UW), P(30, '2 bloques de 5Q en Tutor (10Q)', '≈3′ por pregunta con su explicación; corrige el 1.er bloque antes de armar el 2.º.'), P(15, 'Revisión: Educational Objective + shopping list + log de errores', 'knowledge / transfer / proceso → 📏 Medición (consolidación %).'), P(2, 'Gate del subtema (marca ✓/✗ en 📏 Medición)', `≥8/10 → validado (${despuesTxt(DD(2), DD(3))} 07:15: 5Q más) · <8/10 → el bloque extra de abajo.`), P(10, 'Bloque extra de 5Q SOLO si <8/10 · si ≥8/10: 1.ª pasada de las tarjetas de hoy', 'Mismo filtro. Tope del día: 30 preguntas nuevas.')], `Mehlman es el respaldo porque uWorld no tiene más preguntas de este subtema. ${mayus(despuesTxt(DD(2), DD(3)))} a las 08:15 vuelves a uWorld (Select QBank).`],
-    3: ['CONSOLIDACIÓN · inflamación + neoplasia — 10Q Tutor (Mehlman)', [P(3, 'Cambiar a Mehlman y armar', `QBanks › USMLE › «Mehlman - Step 1 QBank - 2026» › Select QBank › New Test → System ${mhNom(204)} · Status Unused · 5 · Tutor → BEGIN TEST`, L_UW), P(15, 'Bloque 1: 5Q de inflamación y reparación (Tutor)', 'Con explicación; corrige antes del bloque 2.'), P(15, 'Bloque 2: 5Q de neoplasia (Tutor)', `New Test → System ${mhNom(46)} · Status Unused · 5 · Tutor.`), P(15, 'Revisión + shopping list + log', 'knowledge / transfer / proceso → 📏 Medición.'), P(2, 'Gate del subtema (marca ✓/✗ en 📏 Medición)', `≥8/10 → validados (${despuesTxt(DD(3), DD(4))} 07:15: 5Q más) · <8/10 → bloque extra.`), P(10, 'Bloque extra de 5Q del subtema más flojo SOLO si <8/10 · si no: tarjetas de hoy', 'Tope del día: 30 nuevas.')], 'La neoplasia de uWorld (53Q: Neoplasia 31 + Principles of oncology 22) se reserva para el pre-test y la eval: la consolidación va con Mehlman para no gastarla.'],
-    4: ['CONSOLIDACIÓN · inmunidad básica — 10Q Tutor (uWorld)', [P(3, 'Armar el test en el Test Composer', tcUW([1004], 5, TUTOR), L_UW), P(30, '2 bloques de 5Q en Tutor (10Q)', '≈3′ por pregunta con explicación.'), P(15, 'Revisión + shopping list + log', '📏 Medición.'), P(2, 'Gate del subtema (marca ✓/✗ en 📏 Medición)', '≥8/10 → validado · <8/10 → bloque extra.'), P(10, `Bloque extra de 5Q SOLO si <8/10 (respaldo: Mehlman ${mhNom(66)})`, 'Si ≥8/10: tarjetas de hoy. Tope del día: 30 nuevas.')]],
-    5: ['CONSOLIDACIÓN · hipersensibilidad / inmunodeficiencias — 10Q Tutor (uWorld)', [P(3, 'Armar el test en el Test Composer', tcUW([1002, 1001, 1000, 1005], 5, TUTOR), L_UW), P(30, '2 bloques de 5Q en Tutor (10Q)', '≈3′ por pregunta con explicación.'), P(15, 'Revisión + shopping list + log', '📏 Medición.'), P(2, 'Gate del subtema (marca ✓/✗ en 📏 Medición)', `≥8/10 → validado (${despuesTxt(DD(5), DD(6))} 07:15: 5Q timed) · <8/10 → bloque extra.`), P(10, 'Bloque extra de 5Q SOLO si <8/10 · si no: tarjetas de hoy', 'Tope del día: 30 nuevas (si haces el extra, la eval de las 18:00 va solo con incorrectas).')]],
+    2: ['CONSOLIDACIÓN · lesión y muerte celular — 10Q Tutor (Mehlman)', [P(3, 'Cambiar a Mehlman y armar', `QBanks › USMLE › «Mehlman - Step 1 QBank - 2026» › Select QBank › New Test → System ${mhNom(48)} · Status Unused · 5 · Tutor → BEGIN TEST`, L_UW), P(30, '2 bloques de 5Q en Tutor (10Q)', '≈3′ por pregunta con su explicación; corrige el 1.er bloque antes de armar el 2.º.'), revCon(r, 15, presupuesto(r).con, 'mix_examen_usmle'), P(2, 'Gate del subtema (marca ✓/✗ en 📏 Medición)', `≥8/10 → validado (${despuesTxt(DD(2), DD(3))} 07:15: 5Q más) · <8/10 → el bloque extra de abajo.`), P(10, 'Bloque extra de 5Q SOLO si <8/10 · si ≥8/10: 1.ª pasada de las tarjetas de hoy', 'Mismo filtro. Tope del día: 30 preguntas nuevas.')], `Mehlman es el respaldo porque uWorld no tiene más preguntas de este subtema. ${mayus(despuesTxt(DD(2), DD(3)))} a las 08:15 vuelves a uWorld (Select QBank).`],
+    3: ['CONSOLIDACIÓN · inflamación + neoplasia — 10Q Tutor (Mehlman)', [P(3, 'Cambiar a Mehlman y armar', `QBanks › USMLE › «Mehlman - Step 1 QBank - 2026» › Select QBank › New Test → System ${mhNom(204)} · Status Unused · 5 · Tutor → BEGIN TEST`, L_UW), P(15, 'Bloque 1: 5Q de inflamación y reparación (Tutor)', 'Con explicación; corrige antes del bloque 2.'), P(15, 'Bloque 2: 5Q de neoplasia (Tutor)', `New Test → System ${mhNom(46)} · Status Unused · 5 · Tutor.`), revCon(r, 15, presupuesto(r).con, 'mix_examen_usmle'), P(2, 'Gate del subtema (marca ✓/✗ en 📏 Medición)', `≥8/10 → validados (${despuesTxt(DD(3), DD(4))} 07:15: 5Q más) · <8/10 → bloque extra.`), P(10, 'Bloque extra de 5Q del subtema más flojo SOLO si <8/10 · si no: tarjetas de hoy', 'Tope del día: 30 nuevas.')], 'La neoplasia de uWorld (53Q: Neoplasia 31 + Principles of oncology 22) se reserva para el pre-test y la eval: la consolidación va con Mehlman para no gastarla.'],
+    4: ['CONSOLIDACIÓN · inmunidad básica — 10Q Tutor (uWorld)', [P(3, 'Armar el test en el Test Composer', tcUW([1004], 5, TUTOR), L_UW), P(30, '2 bloques de 5Q en Tutor (10Q)', '≈3′ por pregunta con explicación.'), revCon(r, 15, presupuesto(r).con, 'UWorld'), P(2, 'Gate del subtema (marca ✓/✗ en 📏 Medición)', '≥8/10 → validado · <8/10 → bloque extra.'), P(10, `Bloque extra de 5Q SOLO si <8/10 (respaldo: Mehlman ${mhNom(66)})`, 'Si ≥8/10: tarjetas de hoy. Tope del día: 30 nuevas.')]],
+    5: ['CONSOLIDACIÓN · hipersensibilidad / inmunodeficiencias — 10Q Tutor (uWorld)', [P(3, 'Armar el test en el Test Composer', tcUW([1002, 1001, 1000, 1005], 5, TUTOR), L_UW), P(30, '2 bloques de 5Q en Tutor (10Q)', '≈3′ por pregunta con explicación.'), revCon(r, 15, presupuesto(r).con, 'UWorld'), P(2, 'Gate del subtema (marca ✓/✗ en 📏 Medición)', `≥8/10 → validado (${despuesTxt(DD(5), DD(6))} 07:15: 5Q timed) · <8/10 → bloque extra.`), P(10, 'Bloque extra de 5Q SOLO si <8/10 · si no: tarjetas de hoy', 'Tope del día: 30 nuevas (si haces el extra, la eval de las 18:00 va solo con incorrectas).')]],
   }[d];
   out.push(B(f, '11:00–12:00', con[0], con[1], [R_UW], '10Q (o 15) hechas, % en 📏 Medición y gate marcado ✓/✗', { aviso: con[2], planB: d >= 4 ? respaldo(d, 10) : undefined }));
   // 18:00
-  if (d === 2 || d === 3) out.push(B(f, '18:00–18:45', `DAY-AFTER UWSA1 · ${d === 2 ? '4/6 — drill de cronología (4-6)' : '5/6 — drill de cronología (7-9)'}`, [P(45, `Drill de cronología: 3 incorrectas más del UWSA1 (${d === 2 ? '4, 5 y 6' : '7, 8 y 9'} de 10)`, '15′ cada una: caso reescrito A MANO en orden cronológico y en presente → 1 PC card.')], [R_UW], `3 PC cards más (${d === 2 ? 6 : 9}/10)`));
+  if (d === 2 || d === 3) out.push(B(f, '18:00–18:45', `DAY-AFTER UWSA1 · ${d === 2 ? '4/6 — drill de cronología (4-6)' : '5/6 — drill de cronología (7-9)'}`, [P(45, `Drill de cronología: 3 incorrectas más del UWSA1 (${d === 2 ? '4, 5 y 6' : '7, 8 y 9'} de 10)`, `15′ cada una: caso reescrito A MANO en orden cronológico y en presente ${pcCardTxt(filaD(1))}`)], [R_UW], `3 PC cards más (${d === 2 ? 6 : 9}/10)`));
   else if (d === 4) out.push(B(f, '18:00–18:45', 'DAY-AFTER UWSA1 · 6/6 + EVAL reducida (5Q timed)', [
-    P(15, 'Drill de cronología: la 10.ª incorrecta del UWSA1', 'Reescrita a mano en orden cronológico → PC card. Day-After cerrado (≈4 h).'),
+    P(15, 'Drill de cronología: la 10.ª incorrecta del UWSA1', `Reescrita a mano en orden cronológico ${pcCardTxt(filaD(1))} Day-After cerrado (≈4 h).`),
     P(1, 'Armar 5Q TIMED de lo ya visto', `QBanks › uWorld › New Test → Systems ${uwNom(1112)} + ${uwNom(1072)} + ${uwNom(1004)} · Status Unused · 5 · Timed`, L_UW),
     P(8, '5Q TIMED (90 s/Q)', 'Modo examen: cover-the-options; sin cambiar respuestas.'),
-    P(16, 'Corrección + 1 tarjeta APEX por error', 'Educational Objective · tipo de error.'),
+    corrEval(r, 16, presupuesto(r).ev),
     P(5, 'Registrar eval % + horas netas', '📏 Medición.'),
   ], [R_UW], 'drill 10/10 y la eval de 5Q registrada', { aviso: 'Eval reducida a 5Q nuevas: el tope de la semana 1 (D1-D5) son 30 preguntas nuevas al día (5 + 10 + 10 + 5). Si hoy hiciste el bloque extra de las 11:00, cambia estas 5 por 5 de Status Incorrect.' }));
   else out.push(B(f, '18:00–18:45', 'EVAL de cierre de la semana 1 (D1-D5) · 5Q nuevas timed + 5 incorrectas', [
     P(2, 'Armar 2 tests de 5Q TIMED', `(a) QBanks › uWorld › New Test → Systems ${uwNom(1112)} + ${uwNom(1072)} + ${uwNom(1004)} + ${uwNom(1002)} · Status Unused · 5 · Timed · (b) mismo filtro con Status Incorrect · 5 · Timed`, L_UW),
     P(16, '10Q TIMED (5 nuevas + 5 re-test de incorrectas)', '90 s/Q; cover-the-options.'),
-    P(17, 'Corrección + tarjeta APEX por error', 'Educational Objective · tipo de error.'),
+    corrEval(r, 17, presupuesto(r).ev),
     P(10, `Registrar + resumen para la revisión semanal del ${fd(sabadoTras(f))}`, '📏 Medición (eval %, horas netas) + gates de D2-D5: lesión celular · inflamación · neoplasia · inmunidad básica · inmunidad clínica (✓/✗) + minutos de vídeo que quedan en la cola.'),
   ], [R_UW], 'eval registrada y el resumen de la semana escrito', { aviso: 'Tope de la semana 1 (D1-D5): 30 preguntas nuevas/día (5 + 10 + 10 + 5). Si hiciste el bloque extra de las 11:00, el test (a) también va con Status Incorrect.' }));
   return out;
@@ -586,12 +676,13 @@ function findes() {
   const franjasCola = trasSab.every((r) => S1(r.d)) ? '05:00, 07:15 y hueco del deep prime' : '07:15 y hueco del deep prime';
   for (let t = new Date(DD(1) + 'T12:00:00Z'); t <= new Date(F1[F1.length - 1].fecha + 'T12:00:00Z'); t = new Date(t.getTime() + 86400000)) {
     const iso = t.toISOString().slice(0, 10); const w = t.getUTCDay();
-    if (w === 6) out[iso] = [B(iso, '19:00–19:30', 'ANKI del sábado · cola FSRS', [
-      P(25, 'TODAS las vencidas de APEX::USMLE (reviews first)', 'Good ≈90 % / Again solo olvido real · nuevas = 0 (el sábado no se crean tarjetas).'),
-      P(5, 'Telemetría + backlog', 'node DATA/_scripts/anki_telemetria.js · si el backlog > 100: el lunes nuevas = 0.'),
-    ], [R_ANKI], '0 vencidas (o 25′ cumplidos) y telemetría registrada', { aviso: iso === SAB1 ? `Sábado sin vídeo ni preguntas (descanso). A la revisión semanal de las 07:15 lleva: % del UWSA1, gates de la semana (📏 Medición) y la cola de vídeo: ≈${q5.bbMin}′ de B&B + ${q5.palmMin}′ de Palmerton que se ven el ${trasSab.map((r) => fd(r.fecha)).join(' y el ')} (${franjasCola}).` : undefined })];
+    if (w === 6) out[iso] = [B(iso, '19:00–19:30', `ANKI del sábado · cola FSRS + preset${iso === SAB_OPT ? ' + FSRS Optimize' : ''} + Stats`, [
+      P(22, 'TODAS las vencidas de APEX::USMLE (padre › Study Now)', 'Solo vencidas · Good ≈90 % / Again solo olvido real · nunca Hard/Easy · cuando el contador de repasos llegue a 0, cierra: el sábado no se crean ni se estudian nuevas (las del viernes esperan al lunes).'),
+      P(3, iso === SAB_OPT ? 'Preset en los submazos nuevos + FSRS › Optimize del preset' : 'Preset en los submazos nuevos', `El motor APEX crea los submazos al vuelo con el preset Default (sin tus ajustes): Deck Options del padre APEX::USMLE › Save ▾ «Save to All Subdecks».${iso === SAB_OPT ? ` Hoy además, con 4 semanas de repasos del preset: FSRS › «Optimize» y deja Desired retention en ${AK.ret}.` : ''}`),
+      P(5, 'Telemetría + Stats de la semana', `node DATA/_scripts/anki_telemetria.js · Anki › Stats del padre: % Again (≈10 % sano; > 20 % → tarjetas largas o perfeccionismo: divídelas; ≈0 % → no te estás examinando) · ALARMA G (backlog > 100 o retención < 85 %) → el lunes, protocolo de backlog (${METODO_MD} §7).`),
+    ], [R_ANKI], '0 vencidas (o 22′ cumplidos), el preset al día en todos los submazos y la telemetría registrada', { aviso: iso === SAB1 ? `Sábado sin vídeo ni preguntas (descanso). A la revisión semanal de las 07:15 lleva: % del UWSA1, gates de la semana (📏 Medición) y la cola de vídeo: ≈${q5.bbMin}′ de B&B + ${q5.palmMin}′ de Palmerton que se ven el ${trasSab.map((r) => fd(r.fecha)).join(' y el ')} (${franjasCola}).` : undefined })];
     if (w === 0) out[iso] = [B(iso, '17:00–17:15', 'ANKI del domingo · OPCIONAL (≤15′)', [
-      P(15, 'Solo vencidas de APEX::USMLE (si hay)', 'Opcional y no se registra: si estás cansado, no lo hagas (el lunes a las 05:00 lo absorbe).'),
+      P(15, 'Solo vencidas de APEX::USMLE (si hay)', 'Opcional en el plan (domingo libre) y no se registra. Postura de Palmerton: repasos a cero TODOS los días (saltarse 1-2 días le costó caro) → si hay vencidas, hazlas y el lunes empieza limpio. Nuevas no.'),
     ], [R_ANKI], 'opcional: vencidas a 0 o descanso')];
   }
   return out;
@@ -606,6 +697,8 @@ for (const r of F1) {
   GUIA[r.fecha] = [anki0500(r), th && th.n === 1 ? dayAfter0715(r, th) : repaso0715(r), pretest(r), deepPrime(r), consolidacion(r), eval18(r)];
 }
 Object.assign(GUIA, findes());
+// v6.03b: el presupuesto de tarjetas nuevas de cada día de contenido no pasa del tope (Palmerton: la única palanca es crear menos)
+for (const r of F1) if (!esHito(r) && presupuesto(r).total > AK.topeDia) ERR.push(`D${r.d} ${r.fecha}: presupuesto de tarjetas ${presupuesto(r).total} > ${AK.topeDia}`);
 if (ERR.length) aborta('bloques que no cuadran:\n  ' + ERR.join('\n  '));
 const FECHAS = Object.keys(GUIA).sort();
 
@@ -645,6 +738,8 @@ const META = {
   reglaPreguntasS1: 'Semana 1 = D1-D5 (nivel 1, desde cero con el inglés): ≤30 preguntas NUEVAS/día sumando todas las franjas, todo en Tutor salvo el UWSA1 y la eval reducida; cada subtema 10Q el día que se estudia (2 bloques de 5) + 5Q a las 07:15 del día siguiente; gate ≥8/10 y ≥4/5; bloque extra de 5Q solo si falla. Desde el D6: nivelUW/qDia del plan ' + VER + '.',
   reglaRespaldo: 'System con menos preguntas de las pedidas → (1) todas las Unused del System, (2) los Systems hermanos del catálogo, (3) el mismo subtema en «Mehlman - Step 1 QBank - 2026»; nunca preguntas fuera del tema.',
   reglaVideo: 'El vídeo del tema nuevo solo después del pre-test ciego (deep prime, ≤70′ reales); lo que no cabe pasa a la cola y se ve, en orden y partido por minutos, en el «vídeo pendiente» de las 07:15 (≤30′; del D3 al D5 también a las 05:00) o en el hueco de un deep prime posterior. Palmerton High Yield entra a la cola detrás de los B&B; los 2 Palmerton de MÉTODO adelantados al D1 (' + fd(DD(1)) + ', día del UWSA1: FSRS · «The ONLY video») siguen la misma regla de minutos (× 1,2 a 1,0×) y lo que no cabe ese día va a la cabeza de la cola.',
+  reglaAnki: `Anki (método Palmerton + flujo APEX, ${METODO_MD}): preset «APEX USMLE» en APEX::USMLE y en todos sus submazos — FSRS ${AK.ret} · ${AK.nuevasDia} nuevas/día · ${AK.maxRev} repasos/día · repasos antes que nuevas · learning steps por defecto · día nuevo a las 4 h; Good ≈90 % / Again ≈10 %, sin Hard/Easy; tope de CREACIÓN ${AK.topeDia} tarjetas/día (deep prime ≤${AK.deepPrime} + errores de la consolidación y de la eval, o PC cards del Day-After) por APEX (Ctrl+Shift+A), frente «Subject - question» en inglés, «Summary:» con el porqué, sin cloze; ALARMA G (backlog > 100 o retención < 85 %) → 0 nuevas + 200 repasos/día hasta backlog < 20; «Optimize» FSRS del preset el ${fd(SAB_OPT)}.`,
+  tarjetasPorDia: Object.fromEntries(F1.filter((r) => !esHito(r)).map((r) => { const b = presupuesto(r); return [`D${r.d}`, `${b.total} (Day-After ${b.b0715 + b.da18} · deep prime ${b.dp} · consolidación ${b.con} · eval ${b.ev})`]; })),
   colaAlCierreF1: [...finalBB, ...finalPalm],
   escenario125: `Si la velocidad se queda en 1,25× desde el D16: al cierre de F1 quedarían ≈${ESC125.bbMin}′ de B&B + ${ESC125.palmMin}′ de Palmerton sin franja (con 1,5×: ${COLA_FINAL.bb.reduce((a, it) => a + Math.round((it.fin - it.ini) / 60), 0)}′ + ${COLA_FINAL.palm.reduce((a, it) => a + Math.round((it.fin - it.ini) / 60), 0)}′).`,
   diasConAviso: F1.filter((r) => MF1[r.d] && MF1[r.d].nota).map((r) => r.d),
@@ -673,6 +768,7 @@ const cab = `/**
  *   ${META.reglaPreguntasS1}
  *   ${META.reglaRespaldo}
  *   ${META.reglaVideo}
+ *   ${META.reglaAnki}
  * Avisos visibles (mapeo plan → catálogo no exacto): D${META.diasConAviso.join(', D')}.
  * v6.02c (18-oct-2026, E1): nuevo.
  * v6.02c F2 (18-oct-2026, hallazgos E6): lun 19 · los 2 Palmerton de método (FSRS · «The ONLY video») con la regla de minutos de la semana 1
@@ -680,6 +776,9 @@ const cab = `/**
  *   07:15-07:25 y 07:55-08:50 (el SYNAPSE de las 07:25 sale una sola vez, en su tarjeta) · capítulos B&B exactamente como en el catálogo (sin «(NEW)»).
  * v6.03 (20-oct-2026): D1 = mié 21-oct (lun 19 y mar 20 sin estudio) · F1 = 50 filas · mismo guion por D# con las fechas derivadas de las
  *   filas (D1 UWSA1 mié 21 · D2 jue 22 · D3 vie 23 · sáb 24 / dom 25 solo Anki · D4 lun 26 · D5 mar 27) · catálogo por el origen v5.20 de cada d.
+ * v6.03b (20-oct-2026): método Anki · APEX dentro de los pasos (mismas franjas y minutos): D1 05:00 con los ajustes exactos (9999 repasos/día,
+ *   no 200) · Anki AM con vencidas sin tope + Good/Again + telemetría · tope de creación ${AK.topeDia}/día repartido por bloque con la cabecera APEX
+ *   del día · sábado con «Save to All Subdecks» (+ Optimize FSRS el ${fd(SAB_OPT)}) · ${METODO_MD}.
  */
 import type { GuiaBloque } from './guia';
 import { franjaDentro } from './guia';

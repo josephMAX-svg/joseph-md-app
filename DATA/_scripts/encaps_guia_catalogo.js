@@ -269,4 +269,33 @@ const PREVISTO_SEMANA2 = {
   '2026-10-29': { principal: 16, secundario: 4, nota: 'tras este banco quedan 0Q libres de I-4 · la eval (II-5, código de ayer) sale 5/5 re-test: el banco del mié 28 consume todo el pool libre de II-5', eval: 'código de ayer II-5: 3 cifras + 2 viñetas (5Q re-test)' },
 };
 
-module.exports = { F, D, OBS_BASE, PROYECTO, AREA, PLAN_B_QX, POSTEST_DRLOPEZ, OBSIDIAN, ALIAS_FICHAS, DRIVE_POR_CODIGO, FICHA_SUBEJE, AVISO_CODIGO, PREVISTO_SEMANA2 };
+/**
+ * v6.03b (20-oct-2026) · TÉCNICA DE SIMULACRO (DATA/ENCAPS/METODO_SIMULACRO_ENCAPS.md): la de RaviMedTest («Cómo hacer un simulacro MIR de
+ * manera EFICIENTE» · «EL DÍA DEL EXAMEN MIR: MI EXPERIENCIA» · «Cómo gestionar los percentiles» · «Cómo responde preguntas MIR un opositor del
+ * percentil 100»; NotebookLM «MIR · RaviMedTest Engine», 20-oct) adaptada al formato ENCAPS del protocolo (72 s/Q, sin pausa, confianza 1-3,
+ * corrección al final). Redacción propia. Se mete DENTRO de los pasos del mini-sim (30′/18′/5′/5′) y del pre-test de arranque (24′): no cambia
+ * minutos ni franja. `reloj(n, min, formal)` = hitos del reloj del runner (cuenta atrás) cada 10 preguntas dejando `formal` minutos de revisión.
+ */
+const TECNICA_SIM = {
+  doc: 'DATA/ENCAPS/METODO_SIMULACRO_ENCAPS.md',
+  /** «Q10 con ≥19:00 restantes · Q20 con ≥8:00 · Q25 con ≥3:00» (pasada a ritmo uniforme en min − formal minutos; redondeo hacia abajo). */
+  reloj(n, min, formal) {
+    const pasada = min - formal;
+    const marcas = [...Array.from({ length: Math.floor(n / 10) }, (_, i) => (i + 1) * 10), ...(n % 10 ? [n] : [])];
+    return marcas.map((q, i) => `Q${q} con ≥${Math.floor(min - (pasada * q) / n)}:00${i === 0 ? ' restantes' : ''}`).join(' · ');
+  },
+  /** Cómo del bloque cronometrado (mini-sim 25Q o pre-test 20Q). */
+  como(n, min, formal, seg) {
+    return `Técnica de simulacro (${this.doc}; adaptada de RaviMedTest): ① reloj del runner cada 10 preguntas — ${this.reloj(n, min, formal)}; si vas tarde, recupera en las siguientes, no al final · ② en orden, de la 1 a la ${n}; las ${Math.max(3, Math.round(n / 5))} primeras con atención extra (los nervios del arranque dan los fallos tontos) · ③ una sola decisión por pregunta: si una pasa de ${2 * seg} s (el doble de su tiempo), marca la mejor opción con confianza «adivinada» y avanza; ninguna sin responder (el runner la cuenta como fallo) · ④ últimos ${formal}′: revisión FORMAL de la 1 a la ${n} — ¿la letra es la que querías?, ¿leíste bien «NO · EXCEPTO · incorrecta»?, ¿todas con confianza? — y NUNCA cambies una respuesta por dudar del contenido: solo se corrige la forma.`;
+  },
+  /** Corrección del mini-sim en el orden de Ravi, con la taxonomía del protocolo. */
+  CORRECCION: 'Orden (RaviMedTest adaptado): ① fallos que marcaste «segura» (falsa certeza: el error más caro) → ② resto de fallos → ③ aciertos NO ciegos («dudosa» o «adivinada»: un acierto por suerte se corrige como un fallo) → ④ fallos de forma (LECTURA · CAMBIO). Por ítem: área → código → tipo de fallo (knowledge: CONCEPTO · OLVIDO · CRONOLOGIA / transfer: CCSN · CONTEXTO / proceso: CAMBIO · TIEMPO · LECTURA) → la regla correcta en 1 línea + por qué es falso el distractor (suele ser el concepto vecino). Un código con ≥2 fallos queda CALIENTE: entra en el override de la semana siguiente (máx. 2 sustituciones; I-3 y V-2 nunca se ceden).',
+  /** Lectura de la nota (Ravi: percentiles y comparaciones solo dentro del mismo instrumento). */
+  COMPARA: 'La nota se compara SOLO con tus mini-sims anteriores (misma receta), nunca con notas de QX, Theomed u otro instrumento; una bajada aislada no dice nada: manda la regla de dos viernes seguidos.',
+  /** Qué genera tarjeta (Ravi: pocas tarjetas, solo fallos «tontos» y detalles discriminativos; nunca la norma entera). */
+  TARJETAS: 'Tarjeta solo de fallos «tontos» y de detalles discriminativos, en formato pregunta → respuesta breve (nunca un párrafo de la norma): OLVIDO de cifra/plazo → ENCAPS::Cifras (ANKI_COLA/ENCAPS_Cifras_2027-I.csv) · CONCEPTO/CCSN → el porqué a la nota Obsidian del código · fallos de proceso → regla de examen, sin tarjeta.',
+  /** Envío de los APEX (flujo vigente). */
+  ENVIO: 'Envío: ⚡ APEX 1-TAP (Ctrl+Shift+A) → n8n → Anki APEX::ENCAPS (subdeck del código) + nota del código en el vault; si el redeploy de n8n aún no está verificado, directo en Anki.',
+};
+
+module.exports = { F, D, OBS_BASE, PROYECTO, AREA, PLAN_B_QX, POSTEST_DRLOPEZ, OBSIDIAN, ALIAS_FICHAS, DRIVE_POR_CODIGO, FICHA_SUBEJE, AVISO_CODIGO, PREVISTO_SEMANA2, TECNICA_SIM };

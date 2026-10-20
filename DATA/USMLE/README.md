@@ -659,6 +659,10 @@ Guía por materia + método completo: [`PALMERTON_POR_MATERIA.md`](PALMERTON_POR
   siguen siendo DECISIÓN de Joseph #1 (20Q permanente), #3 (GO sin UWSA2), #4 (Free 120 en Prometric + maratón), #6 (eval a las
   12:00), #8 (arranque a 20Q si el UWSA1 <40%) y la de #5 (rendir el lun 22-feb vs recortar temario).
 - [`PALMERTON_METODO_COMPLETO.md`](PALMERTON_METODO_COMPLETO.md) — el método de la A a la Z; §12 = mapeo al plan v5.20 (D# y fechas).
+- [`METODO_ANKI_APEX_USMLE.md`](METODO_ANKI_APEX_USMLE.md) — 🆕 **v6.03b (20-oct-2026)**: el método Anki operativo del Step 1 con el flujo APEX
+  (mazos `APEX::USMLE::<especialidad>` + sesión única en el padre, preset exacto FSRS 0,90 · 20 nuevas/día · 9999 repasos/día, tipos de tarjeta,
+  bloque APEX con ESPECIALIDAD/SUBTEMA/FUENTE/MODO, presupuesto ≤ 20 tarjetas/día por bloque, protocolo de backlog, telemetría e informes APEX,
+  Tutorías Medicina Interna cruzado con Palmerton y las divergencias declaradas). Lo aplica la guía (`gen_usmle_guia.js` → `src/lib/usmleGuia.ts`).
 - [`PALMERTON_INDICE_FUENTES.md`](PALMERTON_INDICE_FUENTES.md) — índice de fuentes del cuaderno (lo mantiene otro flujo; no cita D#).
 - `_palmerton_v3_extractos/` — extractos crudos v3 del cuaderno (uworld-preguntas, metodo-global, planificacion-nbme-img…).
 - Cuaderno NotebookLM **"STEP 1 · Palmerton Engine"** — **~140 fuentes**:

@@ -1,0 +1,53 @@
+{
+  "_meta": {
+    "version": "v6.03b",
+    "generado": "2026-10-20",
+    "doc": "DATA/MIR/METODO_RAVIMEDTEST.md",
+    "que_es": "Datos del método RaviMedTest adaptado a la hora MIR (60′) que lee DATA/MIR/guia_lectura/gen_mir_guia.js y emite como MIR_METODO en src/lib/mirGuiaDatos.ts. La lógica que los mete en los pasos vive en src/lib/mirGuia.ts (metodoRavi). No cambia franjas, D#, fechas ni el total de 60′.",
+    "fuentes": [
+      "NotebookLM «MIR · RaviMedTest Engine (método + Anki + vueltas)» (vídeos de @ravimedtest) — consultas del 20-oct-2026, citas en el .md",
+      "Google Drive de Joseph: carpeta propia «RAVIMEDTEST» y «TARJETAS RELACIONALES RAVIMED» (.note, solo títulos) + material compartido por rabi_94 («MATERIAL ORIENTACIÓN 1V», «TARJETAS RELACIONALES», «Tarjetas 1ºV Ravi») — solo nombres: el repo es público y NO lleva ids ni enlaces de ficheros de terceros",
+      "Vault Obsidian: 03_MIR/<asignatura>/00_introduccion_a_la_asignatura/_concepto_madre.md (existe para las 14 asignaturas del plan, comprobado el 20-oct)"
+    ],
+    "privacidad": "Los enlaces a Drive son BÚSQUEDAS por nombre en el Drive de Joseph (solo abren con su sesión); los de Obsidian son locales."
+  },
+  "anki": {
+    "mazoPersonal": "APEX::MIR",
+    "mazoBase": "1ºVUELTA 2MIR21",
+    "mazoBaseBusca": "https://drive.google.com/drive/search?q=1%C2%BAVUELTA%202MIR21",
+    "presetBase": "RAVI-1V (FSRS · retention 0,85 · orden de repaso aleatorio)",
+    "nuevasBase1V": 3,
+    "nuevasBaseBanqueo": 10,
+    "umbralVencidas": 60,
+    "nota": "Cuotas PROPIAS (Ravi no da nuevas/día): la 1.ª vuelta solo tiene 5′ de Anki al día, frente a los 45-60′ de Ravi."
+  },
+  "relacional": {
+    "min": 3,
+    "min1dia": 2,
+    "raviCarpeta": "TARJETAS RELACIONALES",
+    "raviBusca": "https://drive.google.com/drive/search?q=TARJETAS%20RELACIONALES",
+    "seccionNota": "🔗 Relacional",
+    "vault": "Vault_Medicina MIR_Joseph"
+  },
+  "videos": {
+    "simulacro": { "t": "RaviMedTest · «Cómo hacer un simulacro #MIR de manera EFICIENTE» (YouTube)", "url": "https://www.youtube.com/watch?v=FNIbWi9ST2M" },
+    "percentiles": { "t": "RaviMedTest · «Cómo gestionar los percentiles en la preparación del examen MIR» (YouTube)", "url": "https://www.youtube.com/watch?v=trwFNlIU4Cs" },
+    "percentil100": { "t": "RaviMedTest · «Cómo responde preguntas MIR un opositor del percentil 100» (YouTube)", "url": "https://www.youtube.com/watch?v=PFB1d-zqKvM" }
+  },
+  "asignaturas": {
+    "8": { "asignatura": "Epidemiología", "vault": "17_Epidemiologia", "ravi": [] },
+    "17": { "asignatura": "Medicina Legal y Bioética", "vault": "23_Medicina_Legal_y_Bioetica", "ravi": [] },
+    "3": { "asignatura": "Cardiología", "vault": "01_Cardiologia", "ravi": ["CARDIOLOGÍA"] },
+    "19": { "asignatura": "Neumología", "vault": "02_Neumologia", "ravi": ["NEUMOLOGÍA"] },
+    "18": { "asignatura": "Nefrología", "vault": "04_Nefrologia", "ravi": [] },
+    "11": { "asignatura": "Gastroenterología", "vault": "03_Digestivo", "ravi": ["DIGESTIVO", "CIRUGÍA"] },
+    "6": { "asignatura": "Endocrinología y Nutrición", "vault": "06_Endocrinologia_y_Nutricion", "ravi": [] },
+    "20": { "asignatura": "Neurología", "vault": "05_Neurologia", "ravi": ["NEUROLOGÍA"] },
+    "15": { "asignatura": "Hematología", "vault": "09_Hematologia", "ravi": ["HEMATOLOGÍA"] },
+    "7": { "asignatura": "Enfermedades Infecciosas", "vault": "07_Enfermedades_Infecciosas", "ravi": ["INFECCIOSAS"] },
+    "14": { "asignatura": "Ginecología y Obstetricia", "vault": "10_Ginecologia_y_Obstetricia", "ravi": ["GINECOLOGÍA"] },
+    "28": { "asignatura": "Reumatología", "vault": "08_Reumatologia", "ravi": [] },
+    "24": { "asignatura": "Pediatría", "vault": "11_Pediatria", "ravi": ["PEDIATRÍA"] },
+    "26": { "asignatura": "Psiquiatría", "vault": "12_Psiquiatria", "ravi": [] }
+  }
+}
