@@ -1,0 +1,233 @@
+{
+ "titulo": "22.- Hemorragia en la gestación",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc66a",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "22 Hemorragia en la gestación",
+   "palabras": 24,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Primer trimestre",
+   "palabras": 2,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2019-009",
+    "2014-163"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.1. Aborto",
+   "palabras": 2300,
+   "palabrasTabla": 213,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2008-168",
+    "2013-184"
+   ],
+   "figs": 2,
+   "tablas": [
+    "Tabla 22-1. Criterios ecográficos diagnósticos de aborto Longitud cráneo-raquis ≥ 7 mm sin",
+    "Tabla 22-2. Criterios ecográficos sugestivos de aborto Longitud cráneo-raquis de 5-7 mm si",
+    "Tabla 22-3. Pruebas básicas en pacientes con abortos de repetición Cariotipo de la pareja "
+   ],
+   "videos": [
+    {
+     "id": "5e60b0a281e382134bfc3f35.mp4",
+     "seg": 1632,
+     "leyenda": "Vídeo 22-1Videoclase: Hemorragia de primer trimestre"
+    }
+   ],
+   "recuerda": 3
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.2. Embarazo ectópico",
+   "palabras": 912,
+   "palabrasTabla": 119,
+   "citasMIR": 7,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2016-167",
+    "2017-104",
+    "2006-165",
+    "2005-167",
+    "2007-259",
+    "2024-005",
+    "2011-150"
+   ],
+   "figs": 3,
+   "tablas": [
+    "Tabla 22-4. Pruebas diagnósticas y tratamientos en el aborto de repetición Pruebas diagnós"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.3. Enfermedad trofoblástica gestacional",
+   "palabras": 1473,
+   "palabrasTabla": 193,
+   "citasMIR": 8,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2015-158",
+    "2020-067",
+    "2012-156",
+    "2007-176",
+    "2010-231",
+    "2006-167",
+    "2016-233",
+    "2003-170"
+   ],
+   "figs": 3,
+   "tablas": [
+    "Tabla 22-5. Clasificación de la enfermedad trofoblástica gestacional Origen Tipo Del trofo",
+    "Tabla 22-6. Tipos de mola hidatiforme Completa Parcial Etiología Un óvulo vacío es fecunda",
+    "Tabla 22-7. Estadificación FIGO para la neoplasia gestacional Estadio Extensión I Enfermed"
+   ],
+   "videos": [],
+   "recuerda": 3
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Tercer trimestre",
+   "palabras": 45,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.1. Placenta previa",
+   "palabras": 423,
+   "palabrasTabla": 171,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2018-231",
+    "2023-071"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 22-8. Diagnóstico diferencial de las metrorragias del tercer trimestre Placenta prev"
+   ],
+   "videos": [
+    {
+     "id": "658ebd7db7c56c1af3eb9564.mp4",
+     "seg": 370,
+     "leyenda": "Vídeo 22-2Imperdible: Hemorragia en el tercer trimestre de la gestación."
+    },
+    {
+     "id": "5cebabf574642d1482781ab3.mp4",
+     "seg": 1422,
+     "leyenda": "Vídeo 22-3Videoclase: Hemorragia de tercer trimestre"
+    }
+   ],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.2. Desprendimiento de placenta normoinserta o abruptio",
+   "palabras": 434,
+   "palabrasTabla": 0,
+   "citasMIR": 5,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2007-174",
+    "2005-170",
+    "2012-152",
+    "2014-161",
+    "2005-169"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.3. Rotura uterina",
+   "palabras": 290,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2008-169"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.4. Rotura de vasa previa",
+   "palabras": 492,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2006-166"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Fisiología de la gestación",
+   "href": "570779c9f4d68bf008dbc7fb"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Control de la gestación",
+   "href": "570779c8f4d68bf008dbc6c6"
+  }
+ ],
+ "totPalabras": 6395,
+ "totPalabrasTabla": 696,
+ "totCitas": 28,
+ "totFigs": 11,
+ "totTablas": 8,
+ "totRecuerda": 6,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

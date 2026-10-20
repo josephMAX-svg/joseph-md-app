@@ -13,7 +13,8 @@
  *   sáb 15:00 SHIP + SYNAPSE (PC)     guiaShipDe          · 120′ = SHIP del proyecto 90′ + SYNAPSE A/B/C 30′ (taper: PC 30′/0′ + A/B/C)
  *   dom 15:00 FEYNMAN (opcional)      guiaFeynmanDe       · 10′
  * Hecho A MANO (no es un .ts generado): REGLAS para todos los días de cada plan (lee las filas de los .ts generados, que NO cambian) +
- * CURADURÍA de la semana 1 (lun 19 → dom 25-oct-2026) y de los recursos con URL verificada el dom 18-oct-2026 (YouTube: título, canal y
+ * CURADURÍA de la semana 1 (v6.02: lun 19 → dom 25-oct-2026; v6.03: la curaduría va por PASO / PIEZA / FILA del plan y no por fecha, así
+ * sigue al plan cuando corre — ver vibeS1(k), SYN_CUR_PIEZAS, BIZ_TRAMO y LIV_LECT) y de los recursos con URL verificada el dom 18-oct-2026 (YouTube: título, canal y
  * duración leídos de la página del vídeo · PubMed/PMC por E-utilities · secciones y nº de palabras de Schwartz 2017 leídos de PMC ·
  * Apple Podcasts lookup). Lo que no se pudo verificar se dice («sin medir», «A VERIFICAR»); no hay páginas inventadas.
  * Verificación: node DATA/_scripts/check_rutina_guia.js (Σ pasos = franja en TODOS los días de los 7 planes · URLs con esquema válido).
@@ -23,10 +24,10 @@
  *    descripción ya dice «el libro del nivel en curso — Biblioteca del Fundador», que es justo lo que lee Business) + 10′ del hueco 13:15-13:30
  *    (la siesta opcional ≤20′ sigue siendo la válvula ÁMBAR: en ÁMBAR Business baja a 13:00-13:15). El OUTPUT del viernes (40′) = 25′ el
  *    viernes + 15′ el sábado 07:45-08:00, tras la revisión semanal (el tracker semanal de sueño/ejercicio/comida se llena mejor con la semana
- *    cerrada). Días de hito USMLE: UWSA1 (lun 19-oct, almuerzo 13:00-13:30) = solo audio durante el almuerzo · NBME (almuerzo 12:30-13:00,
- *    SYNAPSE 13:00) = audio 12:30-12:55 y, si es viernes de OUTPUT, el OUTPUT entero pasa al sábado 07:45-08:25. (Calendar ya alineado el 18-oct, CAL_V6 §12) El Calendar seguía con
+ *    cerrada). Días de hito USMLE: UWSA1 (v6.03: mié 21-oct · v6.02: lun 19-oct; almuerzo 13:00-13:30) = solo audio durante el almuerzo · NBME (almuerzo 12:30-13:00,
+ *    SYNAPSE 13:00) = audio 12:30-12:55 y, si es viernes de OUTPUT, el OUTPUT entero pasa al sábado 07:45-08:25 (v6.03: los NBME de F1 caen en martes y miércoles: ningún viernes de OUTPUT coincide). (Calendar ya alineado el 18-oct, CAL_V6 §12) El Calendar seguía con
  *    «LECTURA DE LIBRO 13:00-13:15»: que lo amplíe a 13:25 lo decide el orquestador / Joseph.
- *  · SYNAPSE en días de hito: lun 19-oct (UWSA1) 07:25-07:55, entre las 2 partes de la preparación del hito (USMLE 07:15-07:25 y 07:55-08:50;
+ *  · SYNAPSE en días de hito: el día del UWSA1 (v6.03: mié 21-oct · v6.02: lun 19-oct) 07:25-07:55, entre las 2 partes de la preparación del hito (USMLE 07:15-07:25 y 07:55-08:50;
  *    v6.02c F2: una sola vez, en su tarjeta propia — la guía USMLE ya no lo repite) · NBME 13:00-13:30.
  *  · AURUM (60′ en F1): 1′ arranque + vídeo A + drill + la LECTURA L en los minutos que sobran de la hora (el plan la ponía «en huecos de
  *    viaje», que en la práctica no existen) + 2′ cierre; lo que de L no cabe queda como lectura de huecos (no es núcleo). Si sobra tiempo tras
@@ -37,17 +38,17 @@
 import type { GuiaBloque, GuiaPaso, GuiaRecurso } from './guia';
 import { minutosFranja } from './guia';
 import {
-  VIBE_META, vibeDiaDe, vibeProyectoDe, vibeTaperDe, vibePCSabado, vibeJournalPath, vibeJournalUrl, vibeSemanaISO, VIBE_TIPO_LABEL,
+  VIBE_META, VIBE_DIAS, vibeDiaDe, vibeProyectoDe, vibeTaperDe, vibePCSabado, vibeJournalPath, vibeJournalUrl, vibeSemanaISO, VIBE_TIPO_LABEL,
 } from './vibecodingPlan';
 import type { DiaVibe, VibeProyecto } from './vibecodingPlan';
-import { synDiaDe } from './synapseDailyPlan';
+import { SYN_DIAS, synDiaDe } from './synapseDailyPlan';
 import type { SynBloque } from './synapseDailyPlan';
 import { aurumDiaDe, aurumObsUrl } from './aurumDailyPlan';
 import type { DiaAurum } from './aurumDailyPlan';
-import { livDiaDe } from './livianoStudyPlan';
+import { LIV_DIAS, livDiaDe } from './livianoStudyPlan';
 import type { DiaLiviano } from './livianoStudyPlan';
 import { livCasoDeDia, livCardsDeDia, livCardsSemanaPrevia, livDrillDe, livAnkiDeck } from './livianoCasos';
-import { bizDiaDe, bizModo } from './businessStudyPlan';
+import { BIZ_DIAS, bizDiaDe, bizModo } from './businessStudyPlan';
 import type { DiaBiz } from './businessStudyPlan';
 import { DIAS as USMLE_DIAS, esHito } from './usmleStep1Daily';
 import { FECHAS_V6, faseV6 } from './fechasV6';
@@ -59,6 +60,10 @@ const aHHMM = (m: number): string => `${String(Math.floor(m / 60)).padStart(2, '
 const franjaDesde = (ini: string, min: number): string => `${ini}–${aHHMM(aMin(ini) + min)}`;
 const dow = (iso: string): number => new Date(iso + 'T12:00:00Z').getUTCDay();
 const addDias = (iso: string, n: number): string => { const d = new Date(iso + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
+const WD_C = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
+const MES_C = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+/** «mié 21-oct» (v6.03: los textos de la semana 1 citan días calculados del plan, no fijos). */
+const fCorta = (iso: string): string => `${WD_C[dow(iso)]} ${Number(iso.slice(8, 10))}-${MES_C[Number(iso.slice(5, 7)) - 1]}`;
 const yt = (id: string, seg?: number): string => `https://www.youtube.com/watch?v=${id}${seg ? `&t=${seg}s` : ''}`;
 const mmss = (s: number): string => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
 const minDe = (seg: number): number => Math.ceil(seg / 60);
@@ -93,36 +98,45 @@ function hitoDe(iso: string): { nbme: boolean; uwsa: boolean } | null {
 const DOC_N8N_CODE = 'https://docs.n8n.io/build/code-in-n8n/using-the-code-node';
 const DOC_BEST = 'https://code.claude.com/docs/en/best-practices';
 const JOURNAL_CMD = 'node DATA/_scripts/journal_hoy.js --abrir';
-/** Semana 1 (S1 · APEX end-to-end): los 35′ de «construir» de cada día, partidos en sub-pasos con comandos exactos (ficheros comprobados en disco el 18-oct). */
-const VIBE_S1: Record<string, GuiaPaso[]> = {
-  '2026-10-19': [
-    P(10, 'Test del parser: `node scripts\\test_parser_multilinea.js` en D:\\agente_estudio', 'Terminal: `cd /d D:\\agente_estudio` → `node scripts\\test_parser_multilinea.js` → debe terminar en «0 failed» (13/13). Si algo falla, NO lo arregles hoy: copia el nombre del test al journal.'),
-    P(15, 'Ubicar el nodo Code del parser: n8n_flow_4_destinos.json (12,7 KB) + n8n_nodos_nuevos.md (3,3 KB) en D:\\agente_estudio\\scripts', 'Abre Claude Code en D:\\agente_estudio y pídele: «en scripts/n8n_flow_4_destinos.json, ¿qué nodo Code ejecuta el parser y cuál de scripts/*.js es su código?». Anota en el journal: nombre del nodo + fichero (esperado: n8n_parser_v2_3.js). Nada de reescribir el parser.', { t: 'Claude Code · best practices', url: DOC_BEST }),
-    P(10, 'Hash de referencia del parser', '`certutil -hashfile D:\\agente_estudio\\scripts\\n8n_parser_v2_3.js SHA256` → copia el hash al journal (el jueves lo comparas con el del nodo de n8n).'),
-  ],
-  '2026-10-20': [
-    P(5, 'Abrir el workflow del parser en tu n8n → nodo Code anotado el lunes', 'n8n › Workflows › el flujo del parser › doble clic en el nodo Code. No toques otros nodos.', { t: 'n8n · Code node', url: DOC_N8N_CODE }),
-    P(15, 'Redeploy: pegar n8n_parser_v2_3.js ÍNTEGRO en el nodo Code', 'VS Code: abre D:\\agente_estudio\\scripts\\n8n_parser_v2_3.js → Ctrl+A, Ctrl+C → en n8n selecciona TODO el código del nodo y pega encima (no edites a mano en la UI) → Save → Activate.'),
-    P(10, '1 APEX de prueba de USMLE (is_test=true) y ejecución en verde', 'Atajo Ctrl+Shift+A con un APEX multilínea de USMLE marcado is_test=true → n8n › Executions: la última ejecución debe salir verde.'),
-    P(5, 'Si la ejecución sale roja: capturar el error (no arreglarlo hoy)', 'Abre la ejecución → el nodo en rojo → copia el mensaje al journal; mañana es día de ruteo y se corrige primero.'),
-  ],
-  '2026-10-21': [
-    P(10, 'Anki: ¿la tarjeta de prueba cayó en APEX::USMLE::<sistema>?', 'Anki › Browse → busca `deck:APEX::USMLE*` y ordena por «Created»: la tarjeta de ayer debe estar en un SUBDECK del sistema, no en el mazo raíz.'),
-    P(10, 'Vault: ¿la nota cayó en la carpeta correcta de 01_USMLE?', 'Obsidian › 01_USMLE: localiza la nota del APEX de prueba; si está en 99_INBOX, el ruteo falló.', { t: '◆ Obsidian · 01_USMLE', url: obs('01_USMLE') }),
-    P(15, 'Si cayó mal: corregir _mapping_slim.json (3,7 KB) y reenviar 1 APEX · si cayó bien: leer ensure_anki_subdecks.py (7,4 KB)', 'Claude Code en D:\\agente_estudio: «¿qué clave de _mapping_slim.json manda el subtema X al subdeck Y?» → corrige → reenvía 1 APEX y repite las 2 comprobaciones. Si el ruteo ya está bien, entiende cómo ensure_anki_subdecks.py crea los subdecks (anota 3 líneas).'),
-  ],
-  '2026-10-22': [
-    P(10, 'Anki: REVERSO, CASO_CLINICO y FISIO_EXPANDIDA completos en la tarjeta de prueba', 'Abre la tarjeta (Browse → Preview) → captura de pantalla → pégala en el journal (criterio 4 del SHIP).'),
-    P(5, 'Vault: secciones renderizadas en la nota', 'Abre la nota de 01_USMLE en modo lectura → captura.'),
-    P(5, 'Hash del parser = el que corre el nodo Code', 'Copia el código del nodo Code de n8n a un fichero temporal y pídele a Claude Code que lo compare con scripts/n8n_parser_v2_3.js ignorando saltos de línea; anota «idéntico» o la diferencia.'),
-    P(15, 'Escribir DATA/USMLE/_apex_e2e_prueba.json (evidencia)', 'Claude Code en D:\\joseph-md-app: crea el JSON con noteId (Anki › Browse › Card Info), subdeck, ruta de la nota en 01_USMLE, hash del parser (SHA256 del lunes) y fecha. Debe contener la clave "noteId" (la comprueba verify_vibecoding.js).'),
-  ],
-  '2026-10-23': [
-    P(10, 'Commit [S1] en joseph-md-app', '`cd /d D:\\joseph-md-app` → `git add DATA/USMLE/_apex_e2e_prueba.json` (+ la nota del redeploy si la escribiste) → `git commit -m "[S1] APEX end-to-end: redeploy parser v2.3 + evidencia"`. D:\\agente_estudio NO es repo git (init local = decisión tuya).'),
-    P(10, 'node DATA/_scripts/verify_vibecoding.js 1', 'Desde D:\\joseph-md-app. Esperado hoy: 3/4 (el 4.º es MANUAL: se acepta mañana con --ok-manual 4 tras mirarlo). Anota en el journal qué criterio falla.'),
-    P(15, 'Cerrar lo que el verify marque en rojo (no manual)', 'Test rojo → mira el nombre del caso; sin commit → repite el commit con [S1]; sin fichero → paso del jueves. Lo que no cierre hoy va al SHIP de mañana 15:00; nunca a S2.'),
-  ],
-};
+/** Semana 1 (S1 · APEX end-to-end): los 35′ de «construir» de cada PASO k (1-5) de S1, partidos en sub-pasos con comandos exactos (ficheros
+ *  comprobados en disco el 18-oct). v6.03 (20-oct-2026): la clave es el PASO del proyecto, no la fecha (antes '2026-10-19' … '2026-10-23'): con el
+ *  D1 en el mié 21-oct S1 va del mié 21 al mar 27-oct y hace SHIP el sáb 31-oct (el sáb 24 es AVANCE); los días que citan los textos («el día del
+ *  paso 1», el del SHIP) salen de VIBE_DIAS / VIBE_PROYECTOS, así siguen al plan si vuelve a correr. Mismo contenido, mismos minutos. */
+function vibeS1(k: number): GuiaPaso[] | undefined {
+  const dia = (kk: number): string => { const x = VIBE_DIAS.find((y) => y.semana === 1 && y.k === kk); return x ? fCorta(x.fecha) : `paso ${kk}`; };
+  const p1 = vibeProyectoDe(1);
+  const ship = p1 ? `el SHIP del sáb ${fCorta(p1.ship).replace(/^sáb /, '')}` : 'el SHIP del sábado';
+  switch (k) {
+    case 1: return [
+      P(10, 'Test del parser: `node scripts\\test_parser_multilinea.js` en D:\\agente_estudio', 'Terminal: `cd /d D:\\agente_estudio` → `node scripts\\test_parser_multilinea.js` → debe terminar en «0 failed» (13/13). Si algo falla, NO lo arregles hoy: copia el nombre del test al journal.'),
+      P(15, 'Ubicar el nodo Code del parser: n8n_flow_4_destinos.json (12,7 KB) + n8n_nodos_nuevos.md (3,3 KB) en D:\\agente_estudio\\scripts', 'Abre Claude Code en D:\\agente_estudio y pídele: «en scripts/n8n_flow_4_destinos.json, ¿qué nodo Code ejecuta el parser y cuál de scripts/*.js es su código?». Anota en el journal: nombre del nodo + fichero (esperado: n8n_parser_v2_3.js). Nada de reescribir el parser.', { t: 'Claude Code · best practices', url: DOC_BEST }),
+      P(10, 'Hash de referencia del parser', `\`certutil -hashfile D:\\agente_estudio\\scripts\\n8n_parser_v2_3.js SHA256\` → copia el hash al journal (el ${dia(4)}, paso 4, lo comparas con el del nodo de n8n).`),
+    ];
+    case 2: return [
+      P(5, `Abrir el workflow del parser en tu n8n → nodo Code anotado el ${dia(1)}`, 'n8n › Workflows › el flujo del parser › doble clic en el nodo Code. No toques otros nodos.', { t: 'n8n · Code node', url: DOC_N8N_CODE }),
+      P(15, 'Redeploy: pegar n8n_parser_v2_3.js ÍNTEGRO en el nodo Code', 'VS Code: abre D:\\agente_estudio\\scripts\\n8n_parser_v2_3.js → Ctrl+A, Ctrl+C → en n8n selecciona TODO el código del nodo y pega encima (no edites a mano en la UI) → Save → Activate.'),
+      P(10, '1 APEX de prueba de USMLE (is_test=true) y ejecución en verde', 'Atajo Ctrl+Shift+A con un APEX multilínea de USMLE marcado is_test=true → n8n › Executions: la última ejecución debe salir verde.'),
+      P(5, 'Si la ejecución sale roja: capturar el error (no arreglarlo hoy)', `Abre la ejecución → el nodo en rojo → copia el mensaje al journal; el ${dia(3)} (paso 3) es día de ruteo y se corrige primero.`),
+    ];
+    case 3: return [
+      P(10, 'Anki: ¿la tarjeta de prueba cayó en APEX::USMLE::<sistema>?', `Anki › Browse → busca \`deck:APEX::USMLE*\` y ordena por «Created»: la tarjeta de prueba del ${dia(2)} debe estar en un SUBDECK del sistema, no en el mazo raíz.`),
+      P(10, 'Vault: ¿la nota cayó en la carpeta correcta de 01_USMLE?', 'Obsidian › 01_USMLE: localiza la nota del APEX de prueba; si está en 99_INBOX, el ruteo falló.', { t: '◆ Obsidian · 01_USMLE', url: obs('01_USMLE') }),
+      P(15, 'Si cayó mal: corregir _mapping_slim.json (3,7 KB) y reenviar 1 APEX · si cayó bien: leer ensure_anki_subdecks.py (7,4 KB)', 'Claude Code en D:\\agente_estudio: «¿qué clave de _mapping_slim.json manda el subtema X al subdeck Y?» → corrige → reenvía 1 APEX y repite las 2 comprobaciones. Si el ruteo ya está bien, entiende cómo ensure_anki_subdecks.py crea los subdecks (anota 3 líneas).'),
+    ];
+    case 4: return [
+      P(10, 'Anki: REVERSO, CASO_CLINICO y FISIO_EXPANDIDA completos en la tarjeta de prueba', 'Abre la tarjeta (Browse → Preview) → captura de pantalla → pégala en el journal (criterio 4 del SHIP).'),
+      P(5, 'Vault: secciones renderizadas en la nota', 'Abre la nota de 01_USMLE en modo lectura → captura.'),
+      P(5, 'Hash del parser = el que corre el nodo Code', 'Copia el código del nodo Code de n8n a un fichero temporal y pídele a Claude Code que lo compare con scripts/n8n_parser_v2_3.js ignorando saltos de línea; anota «idéntico» o la diferencia.'),
+      P(15, 'Escribir DATA/USMLE/_apex_e2e_prueba.json (evidencia)', `Claude Code en D:\\joseph-md-app: crea el JSON con noteId (Anki › Browse › Card Info), subdeck, ruta de la nota en 01_USMLE, hash del parser (SHA256 del ${dia(1)}) y fecha. Debe contener la clave "noteId" (la comprueba verify_vibecoding.js).`),
+    ];
+    case 5: return [
+      P(10, 'Commit [S1] en joseph-md-app', '`cd /d D:\\joseph-md-app` → `git add DATA/USMLE/_apex_e2e_prueba.json` (+ la nota del redeploy si la escribiste) → `git commit -m "[S1] APEX end-to-end: redeploy parser v2.3 + evidencia"`. D:\\agente_estudio NO es repo git (init local = decisión tuya).'),
+      P(10, 'node DATA/_scripts/verify_vibecoding.js 1', `Desde D:\\joseph-md-app. Esperado hoy: 3/4 (el 4.º es MANUAL: se acepta en ${ship} con --ok-manual 4 tras mirarlo). Anota en el journal qué criterio falla.`),
+      P(15, 'Cerrar lo que el verify marque en rojo (no manual)', `Test rojo → mira el nombre del caso; sin commit → repite el commit con [S1]; sin fichero → paso 4 (${dia(4)}). Lo que no cierre hoy va a ${ship} 15:00; nunca a S2.`),
+    ];
+    default: return undefined;
+  }
+}
 const VIBE_COMO_TIPO: Record<string, string> = {
   definir: 'SPEC del día: abre Claude Code en el repo del proyecto y pídele que lea los ficheros citados y te devuelva QUÉ fichero tocar, QUÉ test/comando lo demuestra y el criterio de «hecho». Hoy no se escribe código salvo ese test.',
   construir: 'Construye con Claude Code: pega el paso como objetivo, pídele primero un plan de 3 pasos y un test que él pueda correr (best practices) y ejecútalo. A las 04:55 paras aunque falte.',
@@ -149,7 +163,7 @@ export function guiaVibeDe(iso: string): GuiaBloque | null {
     `\`${JOURNAL_CMD}\` (crea ${vibeJournalPath(iso)} con la sección de hoy si no existe y la abre) → escribe en 1 línea el objetivo = el paso de hoy.`, journal);
   let pasos: GuiaPaso[];
   if (dia.min >= 45) {
-    const cur = VIBE_S1[iso];
+    const cur = dia.semana === 1 ? vibeS1(dia.k) : undefined; // v6.03: por PASO de S1, no por fecha
     const construir = cur ? cur.map((x) => ({ ...x })) : [P(35, `CONSTRUIR · ${dia.paso}`, `${VIBE_COMO_TIPO[dia.tipo] ?? VIBE_COMO_TIPO.construir}${p ? ` Repo: ${p.repoGit}.` : ''}`, docs ? { t: 'docs ↗', url: docs.url } : undefined)];
     pasos = [objetivo, ...construir, P(5, 'CIERRE · 04:55 commit-or-stash + journal',
       `A las 04:55: \`git commit\` (con [S${p ? p.s : dia.semana}] en el mensaje) o \`git stash\` — nunca se deja a medias. Journal: qué construí · commit/URL · qué aprendí · % del código que entiendo · bloqueo. 05:00 = Anki sin excepción.`, journal)];
@@ -172,35 +186,65 @@ export function guiaVibeDe(iso: string): GuiaBloque | null {
 
 // ════════════════════════════════════════ 12:30 · SYNAPSE (L-V) ════════════════════════════════════════
 const ACADEMY = 'https://academy.claude.com/';
-/** Semana 1: concreción de los bloques «continúa / el más reciente» (real:false) y del CUÁNTO de las lecturas C (palabras medidas el 18-oct). */
-const SYN_CUR: Record<string, Partial<Record<'A' | 'B' | 'C', { que: string; como: string; url: string; t: string }>>> = {
-  '2026-10-19': {
-    A: { que: 'Anthropic Academy › «My courses»: auditoría F0 — anota qué certificados ya tienes (AI Fluency · Claude 101 · Claude Code 101 · Platform 101)', como: 'academy.claude.com (inicias sesión tú). Lista ✓/pendiente en el journal; la 1.ª pendiente es la lección A de mañana. Hoy no empiezas ninguna lección.', url: ACADEMY, t: 'Academy' },
-    B: { que: 'No Priors · «The Changing Physics of Cybersecurity and Drug Development with OpenAI President Greg Brockman» (15-oct-2026 · 39 min) → minutos 0:00-10:00', como: 'Auriculares, 1,0×. Para a los 10:00 y anota el minuto; los 29′ restantes van a los B comodín del sábado.', url: 'https://podcasts.apple.com/us/podcast/the-changing-physics-of-cybersecurity-and/id1668002688?i=1000796472163', t: 'Episodio (Apple Podcasts)' },
-    C: { que: 'Pro Git › 1.1 «About Version Control» (≈800 palabras) → las primeras ≈500', como: '5′ a 100 palabras/min. Marca dónde quedas: lo sigues en el próximo C libre.', url: 'https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control', t: 'Pro Git 1.1' },
-  },
-  '2026-10-20': {
-    B: { que: 'Dwarkesh · Dario Amodei (episodio de 1:58:43) → tramo 1/3 = minutos 0:00-10:00', como: 'Auriculares, 1,0×. Anota el minuto donde paras (el siguiente tramo de Dwarkesh empieza ahí).', url: 'https://www.dwarkesh.com/p/dario-amodei', t: 'Dwarkesh × Dario' },
-    C: { que: 'Simon Willison · «Prompt injection attacks against GPT-3» (12-sep-2022 · 1.457 palabras, 1.er artículo de la serie) → las primeras ≈500', como: '5′. El resto, en el C comodín del sábado.', url: 'https://simonwillison.net/2022/Sep/12/prompt-injection/', t: 'Willison · prompt injection' },
-  },
-  '2026-10-21': {
-    C: { que: 'The Python Tutorial › 1 «Whetting Your Appetite» (≈730 palabras) → las primeras ≈500', como: '5′. Objetivo: LEER el Python que escribe la IA, no memorizar sintaxis.', url: 'https://docs.python.org/3/tutorial/appetite.html', t: 'Python tutorial §1' },
-  },
-  '2026-10-22': {
-    B: { que: 'The Batch (Andrew Ng) · el número de esta semana (si aún no salió hoy, el más reciente): la carta de Ng + 2 noticias', como: '10′ y fuera; no abras enlaces internos.', url: 'https://www.deeplearning.ai/the-batch/', t: 'The Batch' },
-    C: { que: 'Automate the Boring Stuff 3e › cap. 0 «Introduction» (≈4.900 palabras) → las primeras ≈500', como: '5′. Marca dónde quedas (el capítulo da para ~10 C).', url: 'https://automatetheboringstuff.com/3e/chapter0.html', t: 'ATBS cap. 0' },
-  },
-  '2026-10-23': {
-    B: { que: 'Canal Anthropic · «AI prompt engineering: A deep dive» (1:16:42) → minutos 0:00-10:00', como: '1,0× con subtítulos en inglés; para a los 10:00 (tramo 1).', url: yt('T9aRN5JkmL8'), t: 'Prompt engineering deep dive' },
-    C: { que: 'Simon Willison · «The lethal trifecta for AI agents» (16-jun-2025 · ≈1.240 palabras) → las primeras ≈500', como: '5′. Es EL artículo de seguridad de agentes: termínalo en otro hueco.', url: 'https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/', t: 'Lethal trifecta' },
-  },
-  '2026-10-24': {
-    B: { que: 'Comodín de audio · No Priors (Greg Brockman) → minutos 10:00-20:00', como: 'Retoma donde paraste el lunes. Nada nuevo.', url: 'https://podcasts.apple.com/us/podcast/the-changing-physics-of-cybersecurity-and/id1668002688?i=1000796472163', t: 'Episodio (Apple Podcasts)' },
-    C: { que: 'Comodín de lectura · termina «Prompt injection attacks against GPT-3» (≈950 palabras que quedan → los próximos ≈500)', como: '5′. Nada nuevo.', url: 'https://simonwillison.net/2022/Sep/12/prompt-injection/', t: 'Willison · prompt injection' },
-  },
-};
+/** Semana 1: concreción de los bloques «continúa / el más reciente» (real:false) y del CUÁNTO de las lecturas C (palabras medidas el 18-oct).
+ *  v6.03 (20-oct-2026): la clave es la PIEZA del plan (carril + nº de aparición), no la fecha (antes '2026-10-19' … '2026-10-24'). Con el D1 en
+ *  el mié 21-oct los carriles del lunes (No Priors · Pro Git) y del martes (Dwarkesh · Willison) arrancan en la semana 2 (lun 26 / mar 27-oct:
+ *  gen_synapse_plan.js corre esas series una semana, OFF_WD) y la curaduría va con su pieza: mié 21 = auditoría F0 + Lex cap. 1 + Python §1 ·
+ *  jue 22 = The Batch + ATBS cap. 0 · vie 23 = deep dive + trifecta · sáb 24 = comodines (retoman lo que quedó a medias de ESA semana: el deep
+ *  dive y la trifecta) · lun 26 = No Priors + Pro Git · mar 27 = Dwarkesh + Willison · sáb 31 = comodines de la curaduría original (No Priors
+ *  10:00-20:00 y el resto de «Prompt injection…»). Mismos recursos, minutos y palabras medidos el 18-oct; nada se recorta. */
+type SynCur = { que: string; como: string; url: string; t: string };
+const NO_PRIORS_BROCKMAN = 'https://podcasts.apple.com/us/podcast/the-changing-physics-of-cybersecurity-and/id1668002688?i=1000796472163';
+const SYN_CUR_PIEZAS: Array<{ tag: 'A' | 'B' | 'C'; es: (b: SynBloque) => boolean; n?: number; cur: SynCur }> = [
+  { tag: 'A', es: (b) => b.material === 'Anthropic Academy' && /^AUDITORÍA F0/.test(b.leccion),
+    cur: { que: 'Anthropic Academy › «My courses»: auditoría F0 — anota qué certificados ya tienes (AI Fluency · Claude 101 · Claude Code 101 · Platform 101)', como: 'academy.claude.com (inicias sesión tú). Lista ✓/pendiente en el journal; la 1.ª pendiente es la lección A de mañana. Hoy no empiezas ninguna lección.', url: ACADEMY, t: 'Academy' } },
+  { tag: 'B', es: (b) => /^No Priors/.test(b.material),
+    cur: { que: 'No Priors · «The Changing Physics of Cybersecurity and Drug Development with OpenAI President Greg Brockman» (15-oct-2026 · 39 min) → minutos 0:00-10:00', como: 'Auriculares, 1,0×. Para a los 10:00 y anota el minuto; los 29′ restantes van a los B comodín del sábado.', url: NO_PRIORS_BROCKMAN, t: 'Episodio (Apple Podcasts)' } },
+  { tag: 'C', es: (b) => /^Pro Git/.test(b.material),
+    cur: { que: 'Pro Git › 1.1 «About Version Control» (≈800 palabras) → las primeras ≈500', como: '5′ a 100 palabras/min. Marca dónde quedas: lo sigues en el próximo C libre.', url: 'https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control', t: 'Pro Git 1.1' } },
+  { tag: 'B', es: (b) => /^Dwarkesh — Dario Amodei/.test(b.material) && /Tramo 1\/3/.test(b.leccion),
+    cur: { que: 'Dwarkesh · Dario Amodei (episodio de 1:58:43) → tramo 1/3 = minutos 0:00-10:00', como: 'Auriculares, 1,0×. Anota el minuto donde paras (el siguiente tramo de Dwarkesh empieza ahí).', url: 'https://www.dwarkesh.com/p/dario-amodei', t: 'Dwarkesh × Dario' } },
+  { tag: 'C', es: (b) => /^Simon Willison — serie Prompt injection/.test(b.material),
+    cur: { que: 'Simon Willison · «Prompt injection attacks against GPT-3» (12-sep-2022 · 1.457 palabras, 1.er artículo de la serie) → las primeras ≈500', como: '5′. El resto, en el C comodín del sábado.', url: 'https://simonwillison.net/2022/Sep/12/prompt-injection/', t: 'Willison · prompt injection' } },
+  { tag: 'C', es: (b) => /^The Python Tutorial/.test(b.material) && /Sección 1:/.test(b.leccion),
+    cur: { que: 'The Python Tutorial › 1 «Whetting Your Appetite» (≈730 palabras) → las primeras ≈500', como: '5′. Objetivo: LEER el Python que escribe la IA, no memorizar sintaxis.', url: 'https://docs.python.org/3/tutorial/appetite.html', t: 'Python tutorial §1' } },
+  { tag: 'B', es: (b) => /^The Batch/.test(b.material),
+    cur: { que: 'The Batch (Andrew Ng) · el número de esta semana (si aún no salió hoy, el más reciente): la carta de Ng + 2 noticias', como: '10′ y fuera; no abras enlaces internos.', url: 'https://www.deeplearning.ai/the-batch/', t: 'The Batch' } },
+  { tag: 'C', es: (b) => /^Automate the Boring Stuff/.test(b.material) && /cap\. 0:/.test(b.leccion),
+    cur: { que: 'Automate the Boring Stuff 3e › cap. 0 «Introduction» (≈4.900 palabras) → las primeras ≈500', como: '5′. Marca dónde quedas (el capítulo da para ~10 C).', url: 'https://automatetheboringstuff.com/3e/chapter0.html', t: 'ATBS cap. 0' } },
+  { tag: 'B', es: (b) => /^Canal Anthropic/.test(b.material) && /AI prompt engineering: A deep dive.*tramo 1\b/.test(b.leccion),
+    cur: { que: 'Canal Anthropic · «AI prompt engineering: A deep dive» (1:16:42) → minutos 0:00-10:00', como: '1,0× con subtítulos en inglés; para a los 10:00 (tramo 1).', url: yt('T9aRN5JkmL8'), t: 'Prompt engineering deep dive' } },
+  { tag: 'C', es: (b) => b.material === 'Simon Willison' && /lethal trifecta/i.test(b.leccion),
+    cur: { que: 'Simon Willison · «The lethal trifecta for AI agents» (16-jun-2025 · ≈1.240 palabras) → las primeras ≈500', como: '5′. Es EL artículo de seguridad de agentes: termínalo en otro hueco.', url: 'https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/', t: 'Lethal trifecta' } },
+  // 1.er sábado (v6.03: sáb 24-oct): retoma lo que quedó a medias de la semana del D1 (deep dive 10:00 de 1:16:42 · trifecta ≈500 de ≈1.240)
+  { tag: 'B', es: (b) => /^Comodín de audio/.test(b.material), n: 1,
+    cur: { que: 'Comodín de audio · «AI prompt engineering: A deep dive» (canal Anthropic) → minutos 10:00-20:00', como: 'Retoma donde paraste el viernes, 1,0× con subtítulos en inglés. Nada nuevo (el viernes siguiente lo terminas: «tramo 2»).', url: yt('T9aRN5JkmL8', 600), t: 'Prompt engineering deep dive' } },
+  { tag: 'C', es: (b) => /^Comodín de lectura/.test(b.material), n: 1,
+    cur: { que: 'Comodín de lectura · sigue «The lethal trifecta for AI agents» (≈740 palabras que quedan → los próximos ≈500)', como: '5′. Nada nuevo.', url: 'https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/', t: 'Lethal trifecta' } },
+  // 2.º sábado (v6.03: sáb 31-oct): los comodines de la curaduría original (No Priors del lunes · «Prompt injection…» del martes)
+  { tag: 'B', es: (b) => /^Comodín de audio/.test(b.material), n: 2,
+    cur: { que: 'Comodín de audio · No Priors (Greg Brockman) → minutos 10:00-20:00', como: 'Retoma donde paraste el lunes. Nada nuevo.', url: NO_PRIORS_BROCKMAN, t: 'Episodio (Apple Podcasts)' } },
+  { tag: 'C', es: (b) => /^Comodín de lectura/.test(b.material), n: 2,
+    cur: { que: 'Comodín de lectura · termina «Prompt injection attacks against GPT-3» (≈950 palabras que quedan → los próximos ≈500)', como: '5′. Nada nuevo.', url: 'https://simonwillison.net/2022/Sep/12/prompt-injection/', t: 'Willison · prompt injection' } },
+];
+let SYN_CUR_IDX: Map<string, SynCur> | null = null;
+/** Curaduría de un bloque A/B/C de una fecha: la n-ésima aparición de su pieza en SYN_DIAS (n = 1 si no se indica). */
+function synCurDe(iso: string, tag: string): SynCur | undefined {
+  if (!SYN_CUR_IDX) {
+    SYN_CUR_IDX = new Map();
+    const vistos = SYN_CUR_PIEZAS.map(() => 0);
+    for (const d of SYN_DIAS) for (const b of d.bloques) {
+      SYN_CUR_PIEZAS.forEach((p, i) => {
+        if (p.tag !== b.tag || !p.es(b)) return;
+        vistos[i] += 1;
+        if (vistos[i] === (p.n ?? 1) && !SYN_CUR_IDX!.has(`${d.fecha}|${b.tag}`)) SYN_CUR_IDX!.set(`${d.fecha}|${b.tag}`, p.cur);
+      });
+    }
+  }
+  return SYN_CUR_IDX.get(`${iso}|${tag}`);
+}
 function pasoSyn(b: SynBloque, iso: string): GuiaPaso {
-  const cur = SYN_CUR[iso]?.[b.tag as 'A' | 'B' | 'C'];
+  const cur = synCurDe(iso, b.tag);
   if (cur) return P(b.min, `${b.tag} · ${cur.que}`, cur.como, { t: cur.t, url: cur.url });
   const enl = b.url ? { t: `${b.tag} ↗`, url: b.url } : undefined;
   if (b.tag === 'A') return P(b.min, `A (pantalla) · ${b.material} › ${b.leccion}`,
@@ -311,14 +355,15 @@ export function guiaFeynmanDe(iso: string): GuiaBloque | null {
 // ════════════════════════════════════════ 14:15 · AURUM ════════════════════════════════════════
 interface Vid { id: string; t: string; canal: string; s: number }
 /** Semanas 1-2 (D1-D10): vídeos CONCRETOS (el plan enlaza el CANAL en 98 de sus 130 bloques A). Título, canal y duración leídos de YouTube el
- *  18-oct-2026. D11-D130 sin curar: la guía da una regla fija de elección y lo avisa (ampliar esta tabla = misma verificación). */
+ *  18-oct-2026. D11-D130 sin curar: la guía da una regla fija de elección y lo avisa (ampliar esta tabla = misma verificación). Clave = D del
+ *  plan AURUM (no la fecha): v6.03 D1-D5 = mié 21 → mar 27-oct · D6-D10 = mié 28-oct → mar 3-nov. */
 const AURUM_VID: Record<number, { vids: Vid[]; nota: string }> = {
   1: { vids: [{ id: 'PtPo5V-aBKI', t: 'Everything is Sales - Grant Cardone', canal: 'Grant Cardone', s: 129 }, { id: 'H7eevPm8WJo', t: 'Advice for Sales People - Grant Cardone', canal: 'Grant Cardone', s: 575 }], nota: 'Anota 3 frases textuales que le dirías a un lead de ALLPA/Qori.' },
   2: { vids: [{ id: 'urZVPdf3brs', t: 'I Trained Sales 2 Hours a Day for 5 Years', canal: 'Grant Cardone', s: 491 }, { id: 'NY9_i7TzXLQ', t: '3 Rules to Master Sales - Grant Cardone', canal: 'Grant Cardone', s: 120 }], nota: 'Anota la regla de actividad diaria que te llevas (1 línea).' },
   3: { vids: [{ id: 'YqT2Kb3jUIQ', t: "Believe In What You're Selling", canal: 'Grant Cardone', s: 115 }, { id: '-8W_BQai2aw', t: 'Sales - Best Sales Book Ever Sell or Be Sold', canal: 'Grant Cardone', s: 185 }, { id: 'NmGRMGDIOIU', t: 'The Two Things You Must Believe --Playbook to Millions', canal: 'Grant Cardone', s: 88 }, { id: 'Wxfq71FIrTQ', t: 'Why Product Knowledge is Important - Whatever it Takes Sneak Preview', canal: 'Grant Cardone', s: 115 }], nota: 'Los 3′ que sobran: escribe las 2 frases de Cardone sobre convicción que usarás en el drill.' },
   4: { vids: [{ id: '7NMH1oAkgLY', t: 'Giving Away Free Stuff Will Make You Rich', canal: 'Alex Hormozi', s: 741 }, { id: 'JfbtySq6_B4', t: 'Sell Anything To Anyone With This Unusual Method', canal: 'Alex Hormozi', s: 434 }], nota: 'Anota qué «regala» un operador en tu negocio (1 línea): es la base del PITCH v1.' },
   5: { vids: [{ id: '9hdptAKBUoI', t: 'THE 10X RULE (by Grant Cardone) Top 7 Lessons | Book Summary', canal: 'TopSevenLessons', s: 312 }, { id: 'u9OhOsyHYVI', t: 'How to 10X Your Life - Grant Cardone', canal: 'Grant Cardone', s: 146 }], nota: 'Los 4′ que sobran: las 7 lecciones, 1 línea cada una (sin mirar).' },
-  // semana 2 (lun 26 → vie 30-oct), mismo criterio
+  // semana 2 del plan (D6-D10; v6.03: mié 28-oct → mar 3-nov · v6.02: lun 26 → vie 30-oct), mismo criterio
   6: { vids: [{ id: 'JwdQw6jCJ0I', t: 'How to Handle Rejection - Grant Cardone', canal: 'Grant Cardone', s: 109 }, { id: 'jHa7B_Gc1p0', t: 'The Secret of How to Get Over Rejection - Grant Rant #182', canal: 'Grant Cardone', s: 140 }, { id: 'GpvI8Cnzzws', t: 'How to Handle Rejection in Sell or Be Sold Audio', canal: 'Grant Cardone', s: 72 }, { id: 'sBy4KCBpBkQ', t: 'How to Always Get a Yes - Grant Cardone', canal: 'Grant Cardone', s: 140 }], nota: 'Los 4′ que sobran: escribe tu frase para el próximo «no» de un lead (sin discutir).' },
   7: { vids: [{ id: 'NCH-iDdD9MU', t: 'How to Pitch Your Products with Enthusiasm', canal: 'Grant Cardone', s: 285 }, { id: 'iUEzMXQeT0k', t: 'How to Win in Anything--Grant Cardone', canal: 'Grant Cardone', s: 133 }, { id: 'cqwyIVmSM5A', t: 'What it Takes to be Successful', canal: 'Grant Cardone', s: 154 }], nota: 'Anota 1 gesto de energía GENUINA que copiarás en la toma de hoy.' },
   8: { vids: [{ id: 'SBF0nZ_Kfag', t: '5 Tips to Become the BEST Salesperson - Grant Cardone', canal: 'Grant Cardone', s: 855 }], nota: 'Anota los 5 tips en 5 líneas; marca el que más te cuesta.' },
@@ -425,23 +470,35 @@ export function guiaAurumDe(iso: string): GuiaBloque | null {
 const SCHWARTZ = 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5546881/';
 /** Módulo FISIOLOGÍA (D1-D20): secciones de Schwartz MW et al. «Obesity Pathogenesis: An Endocrine Society Scientific Statement»,
  *  Endocr Rev 2017;38(4):267-296 (PMID 28898979 · PMC5546881, acceso libre), con el nº de palabras de cada sección leído de PMC el 18-oct. */
-const LIV_LECT: Record<number, Array<[string, number]>> = {
-  1: [['Abstract', 278], ['Essential Points', 341], ['Essential Points › Definition', 258], ['Essential Points › Rationale for a scientific statement on obesity pathogenesis', 354]],
-  2: [['Energy Homeostasis… › General principles › Background', 698], ['Mechanisms of Obesity Pathogenesis › Other factors › Mechanisms for biological defense of elevated body-fat mass', 849]],
-  3: [['Neurobiology of energy homeostasis › Background', 217], ['General principles › Leptin and energy homeostasis', 438], ['Concluding Remarks › Lessons learned from the weight-reduced state', 242]],
-  4: [['General principles › Leptin and energy homeostasis (2.ª pasada: los párrafos de «leptin resistance» y del umbral)', 438], ['Concluding Remarks › The two distinct components of obesity pathogenesis', 213]],
-  5: [['Concluding Remarks › Lessons learned from the weight-reduced state (relectura para el caso)', 242]],
-  6: [['Neurobiology › Hypothalamic neurons controlling energy balance', 849]],
-  7: [['Neurobiology › Hypothalamic neurons controlling energy balance (2.ª pasada: POMC/α-MSH)', 849]],
-  8: [['Integrative physiology › Determinants of feeding behavior', 659], ['GI factors › Insights from bariatric surgery', 471]],
-  9: [['Neurobiology › Hindbrain circuits and the parabrachial nucleus', 510], ['Concluding Remarks › The gut–brain axis', 110]],
-  10: [['Integrative physiology › Determinants of feeding behavior (relectura para el caso)', 659]],
-  11: [['Concluding Remarks › The gut–brain axis', 110], ['Concluding Remarks › The two distinct components of obesity pathogenesis', 213]],
-  12: [['Integrative physiology › Determinants of energy expenditure', 514], ['Concluding Remarks › Lessons learned from the weight-reduced state', 242]],
-  13: [['Other factors › Mechanisms for biological defense of elevated body-fat mass (2.ª pasada)', 849]],
-  14: [['Concluding Remarks › The two distinct components', 213], ['› Developmental determinants of the biologically defended level of body-fat mass', 134], ['› Lessons learned from the weight-reduced state', 242], ['› Translating basic science into more effective pharmacotherapy', 97]],
-  15: [['Concluding Remarks › Lessons learned from the weight-reduced state (relectura para el caso)', 242]],
+const LIV_LECT: Record<string, Array<[string, number]>> = {
+  c1: [['Abstract', 278], ['Essential Points', 341], ['Essential Points › Definition', 258], ['Essential Points › Rationale for a scientific statement on obesity pathogenesis', 354]],
+  c2: [['Energy Homeostasis… › General principles › Background', 698], ['Mechanisms of Obesity Pathogenesis › Other factors › Mechanisms for biological defense of elevated body-fat mass', 849]],
+  c3: [['Neurobiology of energy homeostasis › Background', 217], ['General principles › Leptin and energy homeostasis', 438], ['Concluding Remarks › Lessons learned from the weight-reduced state', 242]],
+  c4: [['General principles › Leptin and energy homeostasis (2.ª pasada: los párrafos de «leptin resistance» y del umbral)', 438], ['Concluding Remarks › The two distinct components of obesity pathogenesis', 213]],
+  caso1: [['Concluding Remarks › Lessons learned from the weight-reduced state (relectura para el caso)', 242]],
+  c5: [['Neurobiology › Hypothalamic neurons controlling energy balance', 849]],
+  c6: [['Neurobiology › Hypothalamic neurons controlling energy balance (2.ª pasada: POMC/α-MSH)', 849]],
+  c7: [['Integrative physiology › Determinants of feeding behavior', 659], ['GI factors › Insights from bariatric surgery', 471]],
+  c8: [['Neurobiology › Hindbrain circuits and the parabrachial nucleus', 510], ['Concluding Remarks › The gut–brain axis', 110]],
+  caso2: [['Integrative physiology › Determinants of feeding behavior (relectura para el caso)', 659]],
+  c9: [['Concluding Remarks › The gut–brain axis', 110], ['Concluding Remarks › The two distinct components of obesity pathogenesis', 213]],
+  c10: [['Integrative physiology › Determinants of energy expenditure', 514], ['Concluding Remarks › Lessons learned from the weight-reduced state', 242]],
+  c11: [['Other factors › Mechanisms for biological defense of elevated body-fat mass (2.ª pasada)', 849]],
+  c12: [['Concluding Remarks › The two distinct components', 213], ['› Developmental determinants of the biologically defended level of body-fat mass', 134], ['› Lessons learned from the weight-reduced state', 242], ['› Translating basic science into more effective pharmacotherapy', 97]],
+  caso3: [['Concluding Remarks › Lessons learned from the weight-reduced state (relectura para el caso)', 242]],
 };
+/** v6.03 (20-oct-2026): LIV_LECT va por FILA del currículo — `c<n>` = n-ésimo tema de contenido · `caso<n>` = caso n —, no por D del plan
+ *  (antes 1-15 = D1-D15 de v6.02, con los casos en D5/D10/D15). Con el D1 en miércoles los casos caen D3/D8/D13 y el D# de cada tema cambia;
+ *  la lectura medida sigue a su tema. Ojo: con los casos antes, la «relectura para el caso» 1 llega antes de la 1.ª lectura de esa sección (c3). */
+function livLectDe(l: DiaLiviano): Array<[string, number]> | undefined {
+  if (l.casoId == null) return LIV_LECT[`c${LIV_DIAS.filter((x) => x.casoId == null && x.d <= l.d).length}`];
+  const xs = LIV_LECT[`caso${l.casoId}`];
+  if (!xs) return undefined;
+  // «relectura» solo si esa sección ya se leyó antes en el plan; si no (v6.03: casos 1 y 2), se dice que es la 1.ª lectura (mismo texto y palabras)
+  const base = (s: string): string => s.replace(/ \([^()]*\)$/, '');
+  const previas = new Set(LIV_DIAS.filter((x) => x.casoId == null && x.d < l.d).flatMap((x) => (livLectDe(x) ?? []).map(([s]) => base(s))));
+  return xs.map(([s, n]): [string, number] => [previas.has(base(s)) ? s : s.replace('(relectura para el caso)', '(para el caso: 1.ª lectura, en el plan va después)'), n]);
+}
 /** Fuentes del plan → URL verificada (18-oct-2026). `pago`/`verificar` = aviso visible. */
 const LIV_FUENTES: Array<{ re: RegExp; t: string; url: string; nota?: string }> = [
   { re: /Schwartz 2017/, t: 'Schwartz 2017 · Endocrine Society Statement (PMC, libre)', url: SCHWARTZ },
@@ -471,7 +528,7 @@ export function guiaLivianoDe(iso: string): GuiaBloque | null {
   const { recursos, notas } = livFuentesDe(l.fuente);
   const deck = livAnkiDeck(l.modulo);
   const cards = livCardsDeDia(l.d);
-  const lect = LIV_LECT[l.d];
+  const lect = livLectDe(l); // v6.03: por tema / caso, no por D
   const palabras = lect ? lect.reduce((a, x) => a + x[1], 0) : 0;
   const caso = l.casoId != null ? livCasoDeDia(l.d) : undefined;
   const drill = l.drill ? livDrillDe(l.d) : undefined;
@@ -515,13 +572,21 @@ export function guiaLivianoDe(iso: string): GuiaBloque | null {
 // ════════════════════════════════════════ 13:00 · BUSINESS (Estudio Pulso) ════════════════════════════════════════
 const PULSO_OBS = obs('02_EMPRESA FINANZAS/01_PULSO/_concepto_madre');
 /** Semana 1: tramos EXACTOS de charlas oficiales de los autores (capítulos de YouTube leídos el 18-oct). Sustituyen la búsqueda (Spark) y el
- *  audiolibro caído (In Defense of Food, nHR8B8V2v9s → «Video no disponible»): mismo libro, mismo autor, mismo contenido del plan. */
+ *  audiolibro caído (In Defense of Food, nHR8B8V2v9s → «Video no disponible»): mismo libro, mismo autor, mismo contenido del plan.
+ *  v6.03 (20-oct-2026): la clave es la FILA del plan — libro (libroN) + nº de lectura de ese libro —, no la fecha (antes '2026-10-19' …
+ *  '2026-10-22'): con el D1 en el mié 21-oct Spark cae mié 21 / jue 22 y Pollan lun 26 / mar 27-oct (el OUTPUT S1 del vie 23 va en medio). */
 const BIZ_TRAMO: Record<string, { id: string; ini: number; fin: number; t: string; caps: string }> = {
-  '2026-10-19': { id: 'Bmc0ERKfjP0', ini: 0, fin: 1262, t: 'Talks at Google · «In Spark | Dr. John Ratey» (49:12)', caps: 'Introduction → Evolutionary perspective → Brain function and schools (Naperville) → Exercise and productivity → Mental health benefits → Neurobiology of learning (BDNF) → Studies on fitness and IQ' },
-  '2026-10-20': { id: 'Bmc0ERKfjP0', ini: 1262, fin: 2148, t: 'Talks at Google · «In Spark | Dr. John Ratey» (49:12)', caps: 'Mechanisms of neuroplasticity → Body-brain communication → Clinical evidence in adults (estrés/ansiedad/ánimo) → Behavioral improvements (atención) → Cerebellum and balance' },
-  '2026-10-21': { id: 'I-t-7lTw6mA', ini: 82, fin: 1297, t: 'Talks at Google · «In Defense of Food | Michael Pollan» (59:13)', caps: 'The omnivore\'s dilemma → Defining nutritionism → Problems with nutritionism → Food for health vs. pleasure → Limitations of food science → The low-fat campaign failure (= partes 1-2 del libro)' },
-  '2026-10-22': { id: 'I-t-7lTw6mA', ini: 1297, fin: 2231, t: 'Talks at Google · «In Defense of Food | Michael Pollan» (59:13)', caps: 'Cultural wisdom and food → Rules for eating real food → Manners and eating habits → Taking back control of food (= parte 3: las reglas)' },
+  '143#1': { id: 'Bmc0ERKfjP0', ini: 0, fin: 1262, t: 'Talks at Google · «In Spark | Dr. John Ratey» (49:12)', caps: 'Introduction → Evolutionary perspective → Brain function and schools (Naperville) → Exercise and productivity → Mental health benefits → Neurobiology of learning (BDNF) → Studies on fitness and IQ' },
+  '143#2': { id: 'Bmc0ERKfjP0', ini: 1262, fin: 2148, t: 'Talks at Google · «In Spark | Dr. John Ratey» (49:12)', caps: 'Mechanisms of neuroplasticity → Body-brain communication → Clinical evidence in adults (estrés/ansiedad/ánimo) → Behavioral improvements (atención) → Cerebellum and balance' },
+  '4#1': { id: 'I-t-7lTw6mA', ini: 82, fin: 1297, t: 'Talks at Google · «In Defense of Food | Michael Pollan» (59:13)', caps: 'The omnivore\'s dilemma → Defining nutritionism → Problems with nutritionism → Food for health vs. pleasure → Limitations of food science → The low-fat campaign failure (= partes 1-2 del libro)' },
+  '4#2': { id: 'I-t-7lTw6mA', ini: 1297, fin: 2231, t: 'Talks at Google · «In Defense of Food | Michael Pollan» (59:13)', caps: 'Cultural wisdom and food → Rules for eating real food → Manners and eating habits → Taking back control of food (= parte 3: las reglas)' },
 };
+/** Clave de BIZ_TRAMO de una fila: «libroN#k» = k-ésima lectura (L/CRITICA) de ese libro en el plan. */
+function bizTramoDe(r: DiaBiz) {
+  if (r.libroN == null) return undefined;
+  const k = BIZ_DIAS.filter((x) => x.libroN === r.libroN && x.d <= r.d && (bizModo(x) === 'L' || bizModo(x) === 'CRITICA')).length;
+  return BIZ_TRAMO[`${r.libroN}#${k}`];
+}
 /** Enlaces del plan Business comprobados el 18-oct-2026 que NO sirven (caídos / no reproducibles / subidas de 2 min) y su sustituto
  *  (el generador gen_business_plan.py ya los reemplaza en businessStudyPlan.ts; esta tabla solo explica el aviso si una fila vieja los trae). */
 const BIZ_CAIDOS = new Set(['nHR8B8V2v9s', 'RzeLu23_XjE', 'UbQvc8QrnJw', '5Bgufm9VwfU', 'hiDeEu9a_UA', 'hd2oXclE15U', 'dhrQqaH_M6Q', 'JM3yjVTmUoY', '3s65q2rTFRk']);
@@ -588,7 +653,7 @@ export function guiaBusinessDe(iso: string): GuiaBloque | null {
     return bloque(franja, 'business', `BUSINESS D${r.d} · ${r.lectura.split(':')[0]} (1/2)`, pasos, recursos, 'página del OUTPUT escrita en 01_PULSO (borrador completo)',
       { aviso: [...avisos, `OUTPUT = 40′: 25′ hoy + 15′ el sábado ${faseV6(iso) === 'F2' ? '09:15' : '07:45'} (tracker + cierre).`].join(' ') });
   }
-  const tramo = BIZ_TRAMO[iso];
+  const tramo = bizTramoDe(r); // v6.03: por fila del plan (libro + nº de lectura), no por fecha
   const pasos: GuiaPaso[] = [P(1, `OBJETIVO · ${r.materia}${modo === 'CRITICA' ? ' (lectura CRÍTICA)' : ''}`, `Lee la lectura y la acción de hoy: ${r.accion}`)];
   if (tramo) {
     const m = minDe(tramo.fin - tramo.ini);
@@ -625,7 +690,8 @@ export function guiaRevisionDe(iso: string): GuiaBloque | null {
   if (dow(iso) !== 6 || iso < FECHAS_V6.f1.inicio) return null;
   const fichero = revisionFicheroDe(iso);
   const ruta = `${REPO}/DATA/USMLE/REVISIONES/${fichero}`;
-  const primera = iso === addDias(FECHAS_V6.f1.inicio, 5);
+  const d1 = FECHAS_V6.f1.inicio;
+  const primera = iso === addDias(d1, (6 - dow(d1) + 7) % 7); // v6.03: 1.er sábado desde el D1 (mié 21 → sáb 24-oct; antes D1 + 5, que solo valía con D1 en lunes)
   const prep = primera
     ? 'Semana 2: AccessDerma renovado (si no, Derma sigue en PLAN B: selector en Derma › HOY) · runners ENCAPS del lun 26 al jue 29 generados (eval + banco; E4) · velocidad de vídeo USMLE de la S2 = 1,25× solo si tu free recall recogió ≥ 3 ideas · el journal 2026-W44 lo crea el lunes journal_hoy.js.'
     : 'Lo que la semana que entra necesita listo: accesos (Qbankly, ProMIR, AccessDerma), runners ENCAPS de la semana, hito USMLE si lo hay (ver la línea «hito» del fichero).';

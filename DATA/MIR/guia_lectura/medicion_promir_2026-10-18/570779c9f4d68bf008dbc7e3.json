@@ -1,0 +1,342 @@
+{
+ "titulo": "4.- Artritis reumatoide",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc7e3",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "4 Artritis reumatoide",
+   "palabras": 52,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Introducción",
+   "palabras": 38,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Etiopatogenia y patología",
+   "palabras": 0,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.1. Etiopatogenia",
+   "palabras": 295,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2003-079",
+    "2005-243"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.2. Patología",
+   "palabras": 33,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2007-231"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Manifestaciones clínicas",
+   "palabras": 39,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.1. Manifestaciones articulares",
+   "palabras": 285,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2017-167",
+    "2007-077"
+   ],
+   "figs": 2,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.2. Manifestaciones extrarticulares",
+   "palabras": 486,
+   "palabrasTabla": 51,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2006-078",
+    "2020-113",
+    "2010-093",
+    "2018-192"
+   ],
+   "figs": 3,
+   "tablas": [
+    "Tabla 4-1. Manifestaciones extrarticulares en la artritis reumatoide Nódulos reumatoideos "
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Enfoque diagnóstico",
+   "palabras": 20,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.1. Analítica",
+   "palabras": 247,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2023-110",
+    "2012-101",
+    "2013-154"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.2. Radiología",
+   "palabras": 174,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2008-079",
+    "2014-015"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.3. Criterios diagnósticos",
+   "palabras": 107,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "5. Evolución y pronóstico",
+   "palabras": 132,
+   "palabrasTabla": 128,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [
+    "Tabla 4-2. Criterios diagnósticos de artritis reumatoide de la European League Against Rhe"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "6. Tratamiento",
+   "palabras": 70,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2006-077",
+    "2004-079",
+    "2020-117"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.1. Antiinflamatorios, analgésicos y corticosteroides",
+   "palabras": 156,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2017-022"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.2. Fármacos modificadores de la enfermedad (sintéticos)",
+   "palabras": 252,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2010-088",
+    "2005-079",
+    "2015-111"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "5a5cd26f52394c3000604fd5.mp4",
+     "seg": 500,
+     "leyenda": "Vídeo 4-1Videoclase. Tratamiento de la artritis reumatoide."
+    }
+   ],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.3. Terapia biológica",
+   "palabras": 170,
+   "palabrasTabla": 108,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2015-137",
+    "2012-228",
+    "2011-068"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 4-3. Terapias biológicas indicadas en la artritis reumatoide Fármaco Diana Estructur"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.4. Inhibidores de las quinasas",
+   "palabras": 69,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.5. Terapia no farmacológica",
+   "palabras": 212,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2009-079"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Vasculitis",
+   "href": "570779c9f4d68bf008dbc8af"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Espondiloartropatías",
+   "href": "570779c9f4d68bf008dbc83f"
+  }
+ ],
+ "totPalabras": 2837,
+ "totPalabrasTabla": 287,
+ "totCitas": 25,
+ "totFigs": 10,
+ "totTablas": 3,
+ "totRecuerda": 0,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

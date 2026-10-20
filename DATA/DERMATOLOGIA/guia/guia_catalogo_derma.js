@@ -11,7 +11,7 @@
  * Pictorial Review 4e (qa.aspx?resourceid=3626) · «Create Custom Quiz»: 34 temas, 381 preguntas (leído el 18-oct). La asignación por
  * sesión NO repite preguntas (el generador aborta si un tema se pasa de sus preguntas): solo las sesiones NO-ProMIR con banco Pictorial
  * consumen tema; en las sesiones ProMIR (d ≡ 0 mod 3) el slot es el test del capítulo.
- * v6.02c (18-oct-2026, E3): nuevo — d1-d5 (lun 19 · mié 21 · vie 23 · mar 27 · jue 29-oct) curadas con plan A (AccessDerma) y plan B
+ * v6.02c (18-oct-2026, E3): nuevo — d1-d5 (v6.03: mié 21 · vie 23 · mar 27 · jue 29-oct · lun 2-nov; v6.02: lun 19 · mié 21 · vie 23 · mar 27 · jue 29-oct) curadas con plan A (AccessDerma) y plan B
  *   (acceso remoto caducado); el resto de sesiones por regla en src/lib/dermaGuia.ts.
  * v6.02c F2 (18-oct-2026, hallazgos E6): CME_DESPLAZADO (d12 → lectura del átomo, módulo 4 al d42) · respaldo DermNet «Dermoscopy» en las
  *   imágenes de Dermoscopedia (d2 · d4) · el test del d3 ya no cita «el caso de 13:36» (lo corrige gen_guia_lectura.js).
@@ -142,7 +142,7 @@ function curadas(C) {
   const dia = (d) => C.dia(d);
   const out = {};
 
-  // ── d1 · lun 19-oct · Lesiones elementales 1ª/2ª ──────────────────────────────────────────────────────────────────────────────
+  // ── d1 · mié 21-oct (v6.03; v6.02: lun 19-oct) · Lesiones elementales 1ª/2ª ──────────────────────────────────────────────────────────────────────────────
   {
     const x = dia(1); const [c1, c2] = x.casoIds;
     const ch2 = C.cap(2960, '248574793'), ch3 = C.cap(2960, '248574973'), dsa1 = C.cap(2929, '245859873');
@@ -179,7 +179,7 @@ function curadas(C) {
     };
   }
 
-  // ── d2 · mié 21-oct · Color, distribución y configuración ─────────────────────────────────────────────────────────────────────
+  // ── d2 · vie 23-oct (v6.03; v6.02: mié 21-oct) · Color, distribución y configuración ─────────────────────────────────────────────────────────────────────
   {
     const x = dia(2); const [c1, c2] = x.casoIds;
     const ch11 = C.cap(2960, '248575828'), ch4 = C.cap(2960, '248575068'), ch12 = C.cap(2960, '248575965');
@@ -218,7 +218,7 @@ function curadas(C) {
     };
   }
 
-  // ── d3 · vie 23-oct · Estructura de la piel (día ProMIR: TEST cap. 1) ─────────────────────────────────────────────────────────
+  // ── d3 · mar 27-oct (v6.03; v6.02: vie 23-oct) · Estructura de la piel (día ProMIR: TEST cap. 1) ─────────────────────────────────────────────────────────
   {
     const x = dia(3); const [c1, c2] = x.casoIds;
     const ch15 = C.cap(2570, '210416355'), ch5 = C.cap(2570, '210415435'), dsa1 = C.cap(2929, '245859873');
@@ -261,7 +261,7 @@ function curadas(C) {
     };
   }
 
-  // ── d4 · mar 27-oct · Fototipos I-VI + piel de color ──────────────────────────────────────────────────────────────────────────
+  // ── d4 · jue 29-oct (v6.03; v6.02: mar 27-oct) · Fototipos I-VI + piel de color ──────────────────────────────────────────────────────────────────────────
   {
     const x = dia(4); const [c1, c2] = x.casoIds;
     const tk1 = C.cap(3609, '301535746');
@@ -300,7 +300,7 @@ function curadas(C) {
     };
   }
 
-  // ── d5 · jue 29-oct · Anatomía facial + DANGER ZONES ─────────────────────────────────────────────────────────────────────────
+  // ── d5 · lun 2-nov (v6.03; v6.02: jue 29-oct) · Anatomía facial + DANGER ZONES ─────────────────────────────────────────────────────────────────────────
   {
     const x = dia(5); const [c1, c2] = x.casoIds;
     const ds1 = C.cap(2811, '245216992'), dsa2 = C.cap(2929, '245860434');

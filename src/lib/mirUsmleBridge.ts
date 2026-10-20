@@ -14,6 +14,8 @@
  * v6.01 (10-oct-2026): sin cambio de lógica (lee DIAS_TODOS): F1 = D1-D57 desde el lun 12-oct; la bioestadística (Psiq) vive en el tramo 2.
  * v6.02 (17-oct-2026): sin cambio de lógica: F1 = D1-D52 desde el lun 19-oct (D52 = NBME 28); Heme/Onco arranca en el D51 (mar 29-dic) y
  *   sigue en el tramo 2 (T3-T7) con la bioestadística (T8): su rango sale de DIAS_TODOS como siempre (D51-T…).
+ * v6.03 (20-oct-2026): sin cambio de lógica: F1 = D1-D50 desde el mié 21-oct (D50 = NBME 28); Neuro va de D43 a T3 (su última fila,
+ *   EM + meningitis + UNM + tumores SNC, pasó al tramo 2) y Heme/Onco empieza en el tramo 2 (T4-T9): sus rangos salen de DIAS_TODOS.
  */
 import { DIAS_TODOS, DiaUSMLE, esHito } from './usmleStep1Daily';
 import { MIR_DIAS, DiaMIR, mirDiaDe, mirBloques, MIR_TEMAS_TOTAL } from './mirDailyPlan';
@@ -30,7 +32,7 @@ export interface MirUsmleBridge {
   homologo: RangoSistema | null;
   /** chip HOY: "Step 1 esta semana: Cardiovascular D6-D10" */
   texto: string;
-  /** "Homólogo Step 1 de Cardiología: Cardiovascular D6-D16 (26-oct→9-nov)" (v6.02; v6.01: 19-oct→2-nov · v6.00 y v5.20: 14-oct→28-oct · v5.19: 13-oct→27-oct · v5.18: 12-oct→26-oct) */
+  /** "Homólogo Step 1 de Cardiología: Cardiovascular D6-D16 (28-oct→11-nov)" (v6.03; v6.02: 26-oct→9-nov · v6.01: 19-oct→2-nov · v6.00 y v5.20: 14-oct→28-oct · v5.19: 13-oct→27-oct · v5.18: 12-oct→26-oct) */
   textoHomologo: string;
   /** para UsmleTodayPlan: "MIR en paralelo: Cardiología (D5-D11)" */
   textoUsmle: string;

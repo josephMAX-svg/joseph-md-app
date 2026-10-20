@@ -1,0 +1,353 @@
+{
+ "titulo": "3.- Enfermedades cerebrovasculares",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc8a9",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "3 Enfermedades cerebrovasculares",
+   "palabras": 69,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Introducción",
+   "palabras": 45,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Clasificación",
+   "palabras": 9,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Ictus isquémico",
+   "palabras": 6,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.1. Anatomía vascular cerebral",
+   "palabras": 264,
+   "palabrasTabla": 0,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2008-239",
+    "2017-037",
+    "2017-032",
+    "2016-002"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "6948f148b93587757323a12e.mp4",
+     "seg": 5616,
+     "leyenda": "Vídeo 3-1Masterclass: Patología cerebrovascular: ictus isquémico y hemorrágico."
+    },
+    {
+     "id": "615160ef348ac14432747eff.mp4",
+     "seg": 277,
+     "leyenda": "Vídeo 3-2Videoclase: Ictus isquémico."
+    }
+   ],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.2. Síndromes vasculares",
+   "palabras": 276,
+   "palabrasTabla": 0,
+   "citasMIR": 8,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2014-076",
+    "2011-077",
+    "2009-063",
+    "2003-054",
+    "2009-061",
+    "2023-008",
+    "2012-077",
+    "2005-053"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.3. Etiología",
+   "palabras": 84,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2012-061"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.4. Manejo del ictus agudo",
+   "palabras": 857,
+   "palabrasTabla": 79,
+   "citasMIR": 10,
+   "citasMIRdesde2015": 5,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2003-054",
+    "2017-155",
+    "2012-078",
+    "2010-063",
+    "2008-053",
+    "2007-053",
+    "2017-019",
+    "2022-101",
+    "2015-231",
+    "2024-084"
+   ],
+   "figs": 3,
+   "tablas": [
+    "Tabla 3-1. Principales síndromes lacunares (MIR 2003-2004, P054; MIR 2017-2018, P155) Clín"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.5. Manejo en fase estable",
+   "palabras": 714,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2007-117",
+    "2005-120"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Ictus hemorrágico",
+   "palabras": 14,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.1. Clasificación",
+   "palabras": 203,
+   "palabrasTabla": 0,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2013-152",
+    "2010-015",
+    "2003-053",
+    "2022-002"
+   ],
+   "figs": 3,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.2. Hemorragia intraparenquimatosa",
+   "palabras": 374,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2010-016"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.3. Hemorragia subaracnoidea",
+   "palabras": 517,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2024-006",
+    "2006-057"
+   ],
+   "figs": 3,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.4. Malformaciones vasculares",
+   "palabras": 71,
+   "palabrasTabla": 119,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2007-064"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 3-2. Complicaciones de la hemorragia subaracnoidea Complicación Causa Tiempo de apar"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "5. Trombosis venosa cerebral",
+   "palabras": 32,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.1. Factores de riesgo",
+   "palabras": 11,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.2. Manifestaciones clínicas",
+   "palabras": 13,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.3. Diagnóstico",
+   "palabras": 16,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.4. Tratamiento",
+   "palabras": 254,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2018-162"
+   ],
+   "figs": 2,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Neurocirugía",
+   "href": "570779c9f4d68bf008dbc895"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Epilepsia",
+   "href": "570779c9f4d68bf008dbc7dd"
+  }
+ ],
+ "totPalabras": 3829,
+ "totPalabrasTabla": 198,
+ "totCitas": 34,
+ "totFigs": 14,
+ "totTablas": 2,
+ "totRecuerda": 0,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

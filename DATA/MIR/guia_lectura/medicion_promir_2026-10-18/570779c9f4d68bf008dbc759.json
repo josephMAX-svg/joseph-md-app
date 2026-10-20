@@ -1,0 +1,204 @@
+{
+ "titulo": "2.- Anemias carenciales",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc759",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "2 Anemias carenciales",
+   "palabras": 100,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Anemia ferropénica",
+   "palabras": 24,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.1. Metabolismo del hierro",
+   "palabras": 773,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2006-248",
+    "2023-026"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "5dcc248b006a280a0a454e89.mp4",
+     "seg": 916,
+     "leyenda": "Vídeo 2-1Videoclase: Anemias microcíticas e hipocromas."
+    },
+    {
+     "id": "64871384c9ba5c0765cd45b3.mp4",
+     "seg": 8270,
+     "leyenda": "Vídeo 2-2Masterclass: Hematología en imágenes MIR."
+    },
+    {
+     "id": "5f631f8c260b53154885db29.mp4",
+     "seg": 901,
+     "leyenda": "Vídeo 2-3Videoclase: Fisiología y fisiopatología del metabolismo férrico."
+    }
+   ],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.2. Etiopatogenia",
+   "palabras": 165,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2008-108"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.3. Manifestaciones clínicas",
+   "palabras": 115,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.4. Diagnóstico",
+   "palabras": 523,
+   "palabrasTabla": 115,
+   "citasMIR": 5,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 3,
+   "citas": [
+    "2025-178",
+    "2011-093",
+    "2023-155",
+    "2013-104",
+    "2022-200"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 2-1. Parámetros analíticos en la anemia ferropénica, las talasemias y la anemia de t"
+   ],
+   "videos": [],
+   "recuerda": 2
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.5. Tratamiento",
+   "palabras": 239,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2008-108"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Anemias megaloblásticas",
+   "palabras": 24,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.1. Anemia por déficit de cobalamina (vitamina B12)",
+   "palabras": 798,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2022-149",
+    "2017-106"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.2. Anemia por déficit de folato",
+   "palabras": 622,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2012-092"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  }
+ ],
+ "nav": [
+  {
+   "t": "Introducción",
+   "href": "570779c8f4d68bf008dbc6dc"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Anemias hemolíticas",
+   "href": "570779c9f4d68bf008dbc7b3"
+  }
+ ],
+ "totPalabras": 3383,
+ "totPalabrasTabla": 115,
+ "totCitas": 12,
+ "totFigs": 3,
+ "totTablas": 1,
+ "totRecuerda": 4,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

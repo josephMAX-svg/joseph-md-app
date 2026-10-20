@@ -1,0 +1,271 @@
+{
+ "titulo": "6.- Nutrición y obesidad",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc793",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "6 Nutrición y obesidad",
+   "palabras": 35,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Requerimientos nutricionales: dieta equilibrada",
+   "palabras": 384,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2004-074"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Valoración nutricional",
+   "palabras": 162,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2005-074"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.1. Evaluación de los requerimientos",
+   "palabras": 59,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.2. Cribado nutricional",
+   "palabras": 119,
+   "palabrasTabla": 98,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2013-166"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 6-1. Déficits y excesos vitamínicos Vitamina Déficit Exceso Tiamina o vitamina B1 En"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.3. Desnutrición",
+   "palabras": 207,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2022-161"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Nutrición artificial",
+   "palabras": 44,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.1. Nutrición enteral",
+   "palabras": 333,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2017-094"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.2. Nutrición parenteral",
+   "palabras": 164,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2007-074"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.3. Síndrome de realimentación",
+   "palabras": 105,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2012-064",
+    "2019-083"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Obesidad",
+   "palabras": 159,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2005-184"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.1. Etiología",
+   "palabras": 144,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.2. Clasificación",
+   "palabras": 79,
+   "palabrasTabla": 56,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2004-077"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 6-2. Clasificación de la obesidad según el índice de masa corporal Tipo IMC Normopes"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.3. Síndrome metabólico",
+   "palabras": 70,
+   "palabrasTabla": 0,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2012-060",
+    "2007-076",
+    "2005-077",
+    "2022-190"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.4. Tratamiento de la obesidad",
+   "palabras": 943,
+   "palabrasTabla": 122,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2012-065",
+    "2009-076"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 6-3. Criterios del Adult Treatment Panel III (ATP-III) y de la International Diabete"
+   ],
+   "videos": [],
+   "recuerda": 1
+  }
+ ],
+ "nav": [
+  {
+   "t": "Diabetes mellitus",
+   "href": "570779c9f4d68bf008dbc737"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Alteraciones del metabolismo lipídico",
+   "href": "570779c9f4d68bf008dbc7f1"
+  }
+ ],
+ "totPalabras": 3007,
+ "totPalabrasTabla": 276,
+ "totCitas": 16,
+ "totFigs": 2,
+ "totTablas": 3,
+ "totRecuerda": 4,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

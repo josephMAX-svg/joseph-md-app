@@ -22,7 +22,7 @@
  * viven en _encaps_ciclo_v3.js (compartido con gen_encaps_semana.js).
  *
  * Uso:
- *   node DATA/_scripts/gen_encaps_mantenimiento_2027.js [D1=_fechas_v6.json f1.inicio (v6.02: 2026-10-19 · v6.01: 2026-10-12)] [--bk study_schedule_bk_YYYYMMDD]
+ *   node DATA/_scripts/gen_encaps_mantenimiento_2027.js [D1=_fechas_v6.json f1.inicio (v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12)] [--bk study_schedule_bk_YYYYMMDD]
  *        [--override <json|ruta.json>] [--sin-acumulado] [--bk-reemplazar] [--hasta 2026-12-30] [--de-hasta <slot lun-jue nº 75 desde el D1>] [--out <ruta.sql>]
  *        [--pendientes-de <ruta.sql | git:<rev>:<ruta>>] [--no-persistir]
  *        (defaults v6.02: D1 = f1.inicio, --de-hasta DERIVADO = 2027-02-25 con D1 2026-10-19; v6.01: --de-hasta 2027-02-18 fijo; v6.00: --hasta = _fechas_v6.json f1.fin, --de-hasta 2027-02-16; v5.20: --hasta 2027-02-16 y sin --de-hasta)
@@ -104,6 +104,18 @@
  *   Siembra v6.02: node DATA/_scripts/gen_encaps_mantenimiento_2027.js --bk study_schedule_bk_v602_mant_20261017
  *     --pendientes-de git:regimen-v6.01:DATA/_scripts/_encaps_mantenimiento_2027.sql
  *   (el orquestador aplica el SQL combinado DELETE ENCAPS + 52 + 50 sin BEGIN/COMMIT; backup completo previo study_schedule_bk_v602_20261017).
+ *
+ * v6.03 (20-oct-2026, corrimiento RÍGIDO de Joseph «todo comienza mañana miércoles 21, corre dos días»): no se estudió lun 19 ni mar 20-oct →
+ *   D1 = MIÉ 21-OCT-2026 (= _fechas_v6.json f1.inicio, `corrimientos[2]`; la capa de alias v6.02d queda inerte). F1 anclada → dia 1-50 (mié 21-oct
+ *   → mié 30-dic) = 41 banqueo1h + 9 mini_sim en los MISMOS viernes (vie 23-oct = D3 … vie 18-dic = dia 43 = CHECKPOINT DEL AÑO). Rígido por
+ *   slots: los 2 slots lun-jue perdidos son los 2 últimos de la F1 v6.02. --de-hasta DERIVADO = mar 2-mar-2027 (slot lun-jue nº 75 desde el mié
+ *   21-oct) → extra.de idéntico. Pre-test de arranque = mié 21 (parte 1, fila dia 1 II-3) + jue 22 (parte 2, fila dia 2 I-3).
+ *   · PENDIENTES F1 v6.03 (--pendientes-de git:regimen-v6.02d:…_encaps_mantenimiento_2027.sql, F1 v6.02 de 52 filas) = 2 banqueo1h (fila mant.
+ *     51 I-3 brote_bloqueo #6 · 52 V-2 residuos_bioseguridad #6 de la F1 v6.02) + 0 mini-sims → se AÑADEN a los 8 de v6.01/v6.02 (conservados):
+ *     _pendientes_f1.json = 10 filas (8 banqueo1h + 2 mini-sims); la intensiva los repone en el carril B (mié 3 / jue 4-mar para los de v6.03).
+ *   Siembra v6.03: node DATA/_scripts/gen_encaps_mantenimiento_2027.js --bk study_schedule_bk_v603_mant_20261020
+ *     --pendientes-de git:regimen-v6.02d:DATA/_scripts/_encaps_mantenimiento_2027.sql
+ *   (el orquestador aplica el SQL combinado DELETE ENCAPS + 50 + 50 sin BEGIN/COMMIT; backup completo previo study_schedule_bk_v603_20261020).
  */
 const fs = require('fs');
 const path = require('path');

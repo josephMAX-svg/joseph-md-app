@@ -1,0 +1,394 @@
+{
+ "titulo": "8.- Neoplasias mieloproliferativas crónicas",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc7b5",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "8 Neoplasias mieloproliferativas crónicas",
+   "palabras": 53,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Generalidades",
+   "palabras": 192,
+   "palabrasTabla": 39,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2008-233"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 8-1. Clasificación de las neoplasias mieloproliferativas crónicas Leucemia mileoide "
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Leucemia mieloide crónica",
+   "palabras": 35,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.1. Fisiopatología",
+   "palabras": 185,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2006-112",
+    "2005-115"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.2. Clínica y laboratorio",
+   "palabras": 275,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2007-113",
+    "2006-112",
+    "2003-116"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.3. Fases evolutivas",
+   "palabras": 92,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.4. Criterios diagnósticos y diagnóstico diferencial",
+   "palabras": 227,
+   "palabrasTabla": 85,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2003-116",
+    "2018-101"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 8-2. Criterios de las fases de la leucemia mieloide crónica Definición fase crónica "
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.5. Pronóstico y tratamiento",
+   "palabras": 277,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2004-116"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Policitemia vera y otras policitemias. Diagnóstico diferencial",
+   "palabras": 42,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.1. Fisiopatología",
+   "palabras": 76,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.2. Clínica y laboratorio",
+   "palabras": 338,
+   "palabrasTabla": 129,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2012-096",
+    "2013-031",
+    "2013-032",
+    "2008-111"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 8-3. Criterios de respuesta a tratamiento de primera línea con inhibidores de tirosi"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.3. Diagnóstico y diagnóstico diferencial (otras poliglobulias)",
+   "palabras": 105,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2003-256"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.4. Pronóstico y tratamiento",
+   "palabras": 297,
+   "palabrasTabla": 426,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [
+    "Tabla 8-4. Criterios diagnósticos de Policitemia vera (Organización Mundial de la Salud 20",
+    "Tabla 8-5. Clasificación de las eritrocitosis Pseudoeritrocitosis (falsas eritrocitosis) β"
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Trombocitemia esencial y otras trombocitosis. Diagnóstico diferencial",
+   "palabras": 30,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.1. Fisiopatología",
+   "palabras": 44,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.2. Clínica y laboratorio",
+   "palabras": 229,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2013-031"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.3. Diagnóstico y diagnóstico diferencial (otras trombocitosis)",
+   "palabras": 135,
+   "palabrasTabla": 128,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2003-109"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 8-6. Criterios diagnósticos de la trombocitosis esencial Criterios mayores 1. Trombo"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.4. Pronóstico y tratamiento",
+   "palabras": 179,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "5. Mielofibrosis primaria y otras mielofibrosis. Diagnóstico diferencial",
+   "palabras": 35,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2010-084"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.1. Fisiopatología",
+   "palabras": 74,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.2. Clínica y laboratorio",
+   "palabras": 202,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2025-024",
+    "2023-016"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.3. Diagnóstico y diagnóstico diferencial (otras causas de mielofibrosis)",
+   "palabras": 92,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.4. Pronóstico y tratamiento",
+   "palabras": 556,
+   "palabrasTabla": 189,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [
+    "Tabla 8-7. Criterios diagnósticos de la mielofibrosis Criterios mayores (se requieren todo",
+    "Tabla 8-8. Factores pronósticos adversos en mielofibrosis primaria (DIPSS-Plus) Factor pro"
+   ],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Leucemias agudas",
+   "href": "570779c9f4d68bf008dbc75b"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Síndromes linfoproliferativos crónicos",
+   "href": "570779c9f4d68bf008dbc813"
+  }
+ ],
+ "totPalabras": 3770,
+ "totPalabrasTabla": 996,
+ "totCitas": 19,
+ "totFigs": 2,
+ "totTablas": 8,
+ "totRecuerda": 2,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

@@ -9,7 +9,7 @@
  *      plan B = acceso remoto CADUCADO (comprobado el 18-oct): uWorld Step 1 › System de Dermatology afín (Tutor) · B&B Step 1 › Dermatology
  *               a la velocidad de la semana · ProMIR Dermatología · DermNet · proyecto Claude «AESTHETIC DERMATOLOGY»; los casos del día
  *               quedan PENDIENTES (nada se recorta: entran en el slot del Pictorial al recuperar el acceso).
- *  · d1-d5 (lun 19 · mié 21 · vie 23 · mar 27 · jue 29-oct) = CURADAS (DERMA_GUIA_CURADA, src/lib/dermaGuiaDatos.ts GENERADO por
+ *  · d1-d5 (v6.03: mié 21 · vie 23 · mar 27 · jue 29-oct · lun 2-nov; v6.02: lun 19 · mié 21 · vie 23 · mar 27 · jue 29-oct) = CURADAS (DERMA_GUIA_CURADA, src/lib/dermaGuiaDatos.ts GENERADO por
  *    DATA/DERMATOLOGIA/guia/gen_derma_guia.js); el resto = POR REGLA desde la fila del plan (dermaDailyPlan / dermaCiclo2) con aviso visible.
  *  · `accessDermaOK()` / `guardarAccessDermaOK()` — preferencia por visor (localStorage 'jmd-accessderma-ok'; por defecto CADUCADO): decide
  *    qué guía se muestra primero en el Home y en Derma › HOY.

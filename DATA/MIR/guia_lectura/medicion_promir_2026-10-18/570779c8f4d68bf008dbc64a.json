@@ -1,0 +1,549 @@
+{
+ "titulo": "2.- Enfermedades del estómago",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc64a",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "2 Enfermedades del estómago",
+   "palabras": 43,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Conceptos generales",
+   "palabras": 199,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2014-041"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Infección por Helicobacter pylori",
+   "palabras": 25,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.1. Epidemiología",
+   "palabras": 213,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2013-086",
+    "2009-226"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.2. Diagnóstico",
+   "palabras": 45,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2011-032",
+    "2004-251"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.3. Tratamiento",
+   "palabras": 402,
+   "palabrasTabla": 243,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2012-035",
+    "2007-004",
+    "2003-002"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 2-1. Técnicas de diagnóstico de la infección por Helicobacter pylori Técnicas Sensib",
+    "Tabla 2-2. Indicaciones de tratamiento de la infección por Helicobacter pylori Úlcera pépt"
+   ],
+   "videos": [
+    {
+     "id": "5eda1b76fcaa120c5f3433b3.mp4",
+     "seg": 402,
+     "leyenda": "Vídeo 2-1Videoclase: Helicobacter Pylori"
+    }
+   ],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.4. Linfoma MALT",
+   "palabras": 176,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2012-097",
+    "2010-032",
+    "2004-002"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Gastritis crónicas",
+   "palabras": 95,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2012-036",
+    "2015-072"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.1. Gastritis autoinmune",
+   "palabras": 170,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.2. Gastritis atrófica",
+   "palabras": 89,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Trastornos motores gástricos",
+   "palabras": 18,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.1. Gastroparesia",
+   "palabras": 210,
+   "palabrasTabla": 38,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2012-037",
+    "2017-081",
+    "2021-051"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 2-3. Causas de gastroparesia Gastroparesia diabética Trastornos neurológicos: enferm"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.2. Dumping",
+   "palabras": 210,
+   "palabrasTabla": 87,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2004-003",
+    "2013-078"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 2-4. Comparación entre síndrome de dumping precoz y tardío Dumping precoz Dumping ta"
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "5. Úlcera péptica",
+   "palabras": 140,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.1. Clínica",
+   "palabras": 60,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.2. Diagnóstico",
+   "palabras": 23,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.3. Etiología",
+   "palabras": 306,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2004-234",
+    "2004-008",
+    "2012-227"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.4. Tratamiento médico",
+   "palabras": 270,
+   "palabrasTabla": 124,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2003-002",
+    "2025-147",
+    "2013-046"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 2-5. Tratamiento de la úlcera péptica Úlcera gástrica Úlcera duodenal Helicobacter p"
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.5. Tratamiento quirúrgico",
+   "palabras": 30,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.6. Complicaciones de la úlcera péptica",
+   "palabras": 148,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 3,
+   "citas": [
+    "2025-023",
+    "2024-018",
+    "2021-017"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "6. Hemorragia digestiva alta no varicosa",
+   "palabras": 69,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.1. Características anatómicas y diagnóstico",
+   "palabras": 221,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2025-171",
+    "2005-251"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.2. Manejo clínico y pronóstico",
+   "palabras": 280,
+   "palabrasTabla": 210,
+   "citasMIR": 6,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2018-082",
+    "2013-088",
+    "2014-041",
+    "2007-005",
+    "2014-004",
+    "2021-054"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 2-6. Manejo de la hemorragia digestiva alta Reposición temprana de volumen intravasc",
+    "Tabla 2-7. Clasificación de Forrest postendoscópica (indica el riesgo de resangrado) Clasi"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.3. Tratamiento endoscópico",
+   "palabras": 299,
+   "palabrasTabla": 0,
+   "citasMIR": 5,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2008-004",
+    "2009-028",
+    "2010-034",
+    "2015-073",
+    "2014-003"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.4. Tratamiento quirúrgico",
+   "palabras": 898,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2015-065",
+    "2020-156"
+   ],
+   "figs": 3,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.5. Hemorragia digestiva de origen oscuro",
+   "palabras": 212,
+   "palabrasTabla": 0,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2013-087",
+    "2009-031",
+    "2004-008",
+    "2017-082"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "7. Tumores gástricos",
+   "palabras": 35,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.1. Tumores benignos",
+   "palabras": 788,
+   "palabrasTabla": 89,
+   "citasMIR": 7,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2007-233",
+    "2012-003",
+    "2019-182",
+    "2020-003",
+    "2012-004",
+    "2014-040",
+    "2018-081"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 2-8. Factores pronósticos de malignización de los tumores GIST Localización Tamaño M"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.2. Adenocarcinoma gástrico",
+   "palabras": 664,
+   "palabrasTabla": 140,
+   "citasMIR": 5,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2010-032",
+    "2008-003",
+    "2009-226",
+    "2006-134",
+    "2003-020"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 2-9. Características principales de los dos tipos histológicos de adenocarcinomas gá",
+    "Tabla 2-10. Clasificación TNM y estadificación del tumor gástrico N0 N1 (1-2) N2 (3-6) N3a"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "8. Vólvulo gástrico",
+   "palabras": 509,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2023-138"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Enfermedades del esófago",
+   "href": "570779c8f4d68bf008dbc5fe"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Enfermedades del intestino delgado",
+   "href": "570779c8f4d68bf008dbc6a6"
+  }
+ ],
+ "totPalabras": 6847,
+ "totPalabrasTabla": 931,
+ "totCitas": 59,
+ "totFigs": 10,
+ "totTablas": 10,
+ "totRecuerda": 7,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

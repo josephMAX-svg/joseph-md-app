@@ -1,0 +1,616 @@
+{
+ "titulo": "8.- Tuberculosis",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc765",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "8 Tuberculosis",
+   "palabras": 50,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Micobacterias. Generalidades",
+   "palabras": 132,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Mycobacterium Tuberculosis complex. Características",
+   "palabras": 302,
+   "palabrasTabla": 0,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2025-039",
+    "2015-039",
+    "2013-061",
+    "2017-063"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Vías de transmisión. Grupos de riesgo",
+   "palabras": 776,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2017-035"
+   ],
+   "figs": 2,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Diagnóstico microbiológico",
+   "palabras": 21,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.1. Tinciones. Cultivos. Técnicas de identificación molecular",
+   "palabras": 670,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.2. Estudio de sensibilidad. Concepto de resistencia",
+   "palabras": 378,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "5. Tuberculosis pulmonar",
+   "palabras": 14,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.1. Clínica",
+   "palabras": 348,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.2. Complicaciones",
+   "palabras": 294,
+   "palabrasTabla": 201,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [
+    "Tabla 8-1. Hallazgos radiológicos más frecuentes en la infección primaria por tuberculosis"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "6. Tuberculosis extrapulmonar",
+   "palabras": 279,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.1. Tuberculosis ganglionar",
+   "palabras": 114,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2006-233",
+    "2017-035"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.2. Tuberculosis pleural",
+   "palabras": 226,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.3. Tuberculosis genitourinaria",
+   "palabras": 273,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.4. Tuberculosis gastrointestinal",
+   "palabras": 199,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.5. Tuberculosis del sistema nervioso central",
+   "palabras": 493,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2005-133"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.6. Pericarditis tuberculosa",
+   "palabras": 544,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 2
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.7. Tuberculosis osteoarticular",
+   "palabras": 296,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2006-192"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.8. Tuberculosis diseminada",
+   "palabras": 232,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.9. Otras formas de tuberculosis extrapulmonar",
+   "palabras": 131,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "7. Tratamiento",
+   "palabras": 160,
+   "palabrasTabla": 0,
+   "citasMIR": 6,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2007-129",
+    "2007-045",
+    "2018-108",
+    "2014-126",
+    "2007-127",
+    "2017-120"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.1. Fármacos con actividad tuberculóstica",
+   "palabras": 492,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2021-175"
+   ],
+   "figs": 2,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "69eb4e8ce392381cc7d8d518.mp4",
+     "seg": 6506,
+     "leyenda": "Vídeo 8-1Masterclass: Enfermedades Infecciosas en el MIR."
+    }
+   ],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.2. Tratamiento inicial. Elección de la pauta",
+   "palabras": 318,
+   "palabrasTabla": 0,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2013-118",
+    "2014-126",
+    "2007-127",
+    "2017-120"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.3. Bases del tratamiento tuberculostático: inducción y consolidación",
+   "palabras": 378,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.4. Tratamiento de la tuberculosis multirresistente",
+   "palabras": 1228,
+   "palabrasTabla": 446,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2023-181"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 8-2. Recomendaciones de pautas y duración del tratamiento de los casos de tuberculos",
+    "Tabla 8-3. Opciones de esquema y factores que se deben considerar al seleccionar el tratam"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.5. Duración según la localización",
+   "palabras": 140,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.6. Tratamiento de la tuberculosis en el paciente VIH con tratamiento antirretroviral",
+   "palabras": 558,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2011-114"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.7. Efectos adversos más frecuentes de los tuberculostáticos",
+   "palabras": 344,
+   "palabrasTabla": 54,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [
+    "Tabla 8-4. Efectos adversos más frecuentes de los tuberculostáticos de primera línea Isoni"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.8. Tratamiento con corticosteroides. Indicaciones de uso",
+   "palabras": 209,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2003-133"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.9. Tuberculosis en la embarazada",
+   "palabras": 249,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "8. Estudio de contactos",
+   "palabras": 418,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "9. Estudio de infección latente tuberculosa",
+   "palabras": 51,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2003-132"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "9.1. Indicaciones de realización",
+   "palabras": 521,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2012-113"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "9.2. Protocolo de actuación. Prueba de la tuberculina y técnicas de gamma-interferón",
+   "palabras": 811,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2019-116"
+   ],
+   "figs": 2,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "9.3. Criterios de interpretación de la prueba de la tuberculina",
+   "palabras": 97,
+   "palabrasTabla": 0,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2003-132",
+    "2004-132",
+    "2012-113",
+    "2010-115"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "9.4. Evaluación de personas con infección latente tuberculosa. Manejo del paciente adulto",
+   "palabras": 214,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2021-175"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "9.5. Manejo del paciente pediátrico",
+   "palabras": 991,
+   "palabrasTabla": 841,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2010-152",
+    "2005-256"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 8-5. Interpretación de la prueba de la tuberculina (2019) Induración ≥ 5 mm Induraci",
+    "Tabla 8-6. Tabla de recomendaciones del tratamiento de la infección latente tuberculosa Pr",
+    "Tabla 8-7. Riesgo específico por edad de progresión a tuberculosis en niños inmunocompeten",
+    "Tabla 8-8. Indicaciones de realización de la prueba de tuberculina en el niño y adolescent",
+    "Tabla 8-9. Interpretación de los resultados de la prueba de la tuberculina en la edad pedi",
+    "Tabla 8-10. Recomendaciones para el uso de la prueba cutánea de tuberculina (PT) y los ens"
+   ],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Infecciones del tracto respiratorio inferior. Neumonía aguda",
+   "href": "570779c8f4d68bf008dbc6e8"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Infecciones de transmisión sexual",
+   "href": "570779c9f4d68bf008dbc7bf"
+  }
+ ],
+ "totPalabras": 12951,
+ "totPalabrasTabla": 1542,
+ "totCitas": 33,
+ "totFigs": 16,
+ "totTablas": 10,
+ "totRecuerda": 6,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

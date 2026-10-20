@@ -1,0 +1,486 @@
+{
+ "titulo": "17.- Infecciones tropicales",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc6ec",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "17 Infecciones tropicales",
+   "palabras": 61,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "635fd57f04fc8b729a32f51e.mp4",
+     "seg": 599,
+     "leyenda": "Vídeo 17-1Videoclase: Ébola, fiebre hemorrágica Crimea-Congo, MERS-CoV, viruela de los monos."
+    },
+    {
+     "id": "635fd5b804fc8b729a32f521.mp4",
+     "seg": 585,
+     "leyenda": "Vídeo 17-2Videoclase: Arbovirus: dengue, zika, fiebre amarilla, chikungunya."
+    }
+   ],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Parásitos: generalidades y clasificación",
+   "palabras": 47,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2007-120"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.1. Protozoos",
+   "palabras": 97,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.2. Helmintos",
+   "palabras": 96,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.3. Artrópodos",
+   "palabras": 22,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Protozoos",
+   "palabras": 11,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.1. Malaria",
+   "palabras": 1147,
+   "palabrasTabla": 172,
+   "citasMIR": 10,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2005-228",
+    "2011-117",
+    "2010-211",
+    "2003-128",
+    "2012-023",
+    "2006-122",
+    "2004-128",
+    "2007-122",
+    "2012-024",
+    "2017-116"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 17-1. Criterios de gravedad de la malaria Criterios Definición Clínicos Alteración d"
+   ],
+   "videos": [],
+   "recuerda": 3
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.2. Amebiasis",
+   "palabras": 896,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2004-230",
+    "2006-228"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.3. Giardiasis",
+   "palabras": 250,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2006-123"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.4. Leishmaniasis",
+   "palabras": 616,
+   "palabrasTabla": 0,
+   "citasMIR": 7,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2005-125",
+    "2008-123",
+    "2012-162",
+    "2013-113",
+    "2021-177",
+    "2018-018",
+    "2023-170"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.5. Tripanosomiasis americana (enfermedad de Chagas)",
+   "palabras": 685,
+   "palabrasTabla": 0,
+   "citasMIR": 5,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2011-118",
+    "2017-223",
+    "2021-178",
+    "2007-123",
+    "2024-164"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.6. Toxoplasmosis",
+   "palabras": 373,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 2
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Helmintos",
+   "palabras": 15,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.1. Cestodos",
+   "palabras": 849,
+   "palabrasTabla": 102,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2012-005",
+    "2012-006",
+    "2018-015"
+   ],
+   "figs": 2,
+   "tablas": [
+    "Tabla 17-2. Clasificación del quiste hidátidico en estadios Los quistes se pueden clasific"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.2. Nematodos",
+   "palabras": 2172,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2004-254",
+    "2005-128",
+    "2009-118"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 7
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.3. Trematodos: esquistosomiasis, fascioliasis y otros trematodos",
+   "palabras": 411,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2014-122"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Infecciones transmitidas por mosquitos",
+   "palabras": 12,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "5. Infecciones transmitidas por agua y alimentos",
+   "palabras": 6,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "6. Enfermedades emergentes: virus del dengue, Zika, chikungunya, Ébola, MERS-CoV",
+   "palabras": 81,
+   "palabrasTabla": 57,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [
+    "Tabla 17-3. Principales infecciones transmitidas por mosquitos Patógeno Principal vector V"
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.1. Virus del dengue",
+   "palabras": 236,
+   "palabrasTabla": 0,
+   "citasMIR": 5,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2003-122",
+    "2005-129",
+    "2009-117",
+    "2010-117",
+    "2013-112"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.2. Virus Zika",
+   "palabras": 268,
+   "palabrasTabla": 127,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [
+    "Tabla 17-4. Principales infecciones transmitidas por agua o alimentos Patógeno Transmisión"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.3. Virus chikungunya",
+   "palabras": 186,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2015-102"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.4. Virus del Ébola",
+   "palabras": 209,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2014-129"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.5. MERS-CoV",
+   "palabras": 186,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "7. Medicina del viajero",
+   "palabras": 17,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.1. Vacunas",
+   "palabras": 238,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2018-128"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.2. Manejo del viajero con fiebre, diarrea o eosinofilia",
+   "palabras": 1478,
+   "palabrasTabla": 176,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2004-128",
+    "2006-123",
+    "2014-122",
+    "2004-253"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 17-5. Causas de eosinofilia (MIR 2004-2005, P253) Enfermedades infecciosas Parasitar"
+   ],
+   "videos": [],
+   "recuerda": 1
+  }
+ ],
+ "nav": [
+  {
+   "t": "Infecciones en el paciente inmunodeprimido no VIH",
+   "href": "570779c9f4d68bf008dbc859"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Infecciones tracto digestivo. Diarrea aguda",
+   "href": "570779c9f4d68bf008dbc769"
+  }
+ ],
+ "totPalabras": 10665,
+ "totPalabrasTabla": 634,
+ "totCitas": 45,
+ "totFigs": 7,
+ "totTablas": 5,
+ "totRecuerda": 20,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

@@ -1,0 +1,386 @@
+{
+ "titulo": "3.- Fracaso renal agudo",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc6b0",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "3 Fracaso renal agudo",
+   "palabras": 43,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Definición",
+   "palabras": 116,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2007-095"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Clasificación",
+   "palabras": 7,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.1. Fisiopatológica",
+   "palabras": 344,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.2. Funcional",
+   "palabras": 184,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Etiología",
+   "palabras": 7,
+   "palabrasTabla": 93,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [
+    "Tabla 3-1. RIFLE Criterio/Grado Incremento de creatinina Descenso del FG Diuresis R (riesg"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.1. Causas prerrenales",
+   "palabras": 74,
+   "palabrasTabla": 154,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [
+    "Tabla 3-2. AKIN Grado Incremento de creatinina Diuresis 1 Cr x 1,5 o Cr ≥ 0,3 mg/dL < 0,5 ",
+    "Tabla 3-3. KDIGO Grado Incremento de creatinina Diuresis 1 1,5-1,9 veces la basal Cr ≥ 0,3"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.2. Causas parenquimatosas",
+   "palabras": 159,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2015-111"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.3. Causas obstructivas",
+   "palabras": 58,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Diagnóstico",
+   "palabras": 428,
+   "palabrasTabla": 287,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2025-195"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 3-4. Etiología del fracaso renal agudo prerrenal Hipovolemia verdadera 1. Depleción ",
+    "Tabla 3-5. Etiología del fracaso renal agudo parenquimatoso Vascular Glomerular Microangio"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.1. Análisis básico",
+   "palabras": 75,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2003-098",
+    "2010-099"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.2. Estudio de funcionalidad: índices urinarios",
+   "palabras": 311,
+   "palabrasTabla": 241,
+   "citasMIR": 6,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2025-137",
+    "2012-119",
+    "2009-091",
+    "2007-254",
+    "2006-095",
+    "2018-137"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 3-6. Metodología diagnóstica en el fracaso renal agudo Anamnesis Datos previos de fu",
+    "Tabla 3-7. Índices"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.3. Estudio de proteínas",
+   "palabras": 57,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.4. Pruebas inmunológicas",
+   "palabras": 185,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.5. Pruebas de imagen",
+   "palabras": 131,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.6. Indicaciones de la biopsia renal en el fracaso renal agudo",
+   "palabras": 125,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "5. Complicaciones en el fracaso renal agudo",
+   "palabras": 10,
+   "palabrasTabla": 56,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [
+    "Tabla 3-8. Complicaciones más frecuentes en la insuficiencia renal aguda Sobrecarga del vo"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "6. Patogenia",
+   "palabras": 20,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.1. Fracaso renal agudo prerrenal",
+   "palabras": 227,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 2,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.2. Necrosis tubular aguda de origen isquémico",
+   "palabras": 159,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "7. Tratamiento",
+   "palabras": 19,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.1. Tratamiento médico",
+   "palabras": 282,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2008-094",
+    "2022-054"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.2. Tratamiento renal sustitutivo: indicaciones absolutas",
+   "palabras": 383,
+   "palabrasTabla": 125,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2024-130"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 3-9. Tratamiento de las complicaciones del fracaso renal agudo Complicación Tratamie"
+   ],
+   "videos": [],
+   "recuerda": 1
+  }
+ ],
+ "nav": [
+  {
+   "t": "Síndromes clínicos en nefrología",
+   "href": "570779c8f4d68bf008dbc654"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Insuficiencia renal crónica",
+   "href": "570779c9f4d68bf008dbc72d"
+  }
+ ],
+ "totPalabras": 3404,
+ "totPalabrasTabla": 956,
+ "totCitas": 14,
+ "totFigs": 6,
+ "totTablas": 9,
+ "totRecuerda": 1,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

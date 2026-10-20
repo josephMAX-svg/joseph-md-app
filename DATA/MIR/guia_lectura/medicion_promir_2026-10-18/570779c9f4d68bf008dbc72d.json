@@ -1,0 +1,191 @@
+{
+ "titulo": "4.- Insuficiencia renal crónica",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc72d",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "4 Insuficiencia renal crónica",
+   "palabras": 77,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Definición",
+   "palabras": 112,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2013-125",
+    "2010-100"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Etiología",
+   "palabras": 181,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2025-191",
+    "2014-102"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "5f904310527dab2668d8a202.mp4",
+     "seg": 727,
+     "leyenda": "Vídeo 4-1Videoclase: Enfermedad renal crónica y proteinuria."
+    }
+   ],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Clasificación",
+   "palabras": 20,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2019-112",
+    "2021-195"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Síntomas y alteraciones metabólicas",
+   "palabras": 140,
+   "palabrasTabla": 33,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2021-148",
+    "2008-093"
+   ],
+   "figs": 2,
+   "tablas": [
+    "Tabla 4-1. Factores de progresión de la enfermedad renal crónica Proteinuria Hipertensión "
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "5. Tratamiento",
+   "palabras": 11,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.1. Tratamiento de soporte",
+   "palabras": 1324,
+   "palabrasTabla": 65,
+   "citasMIR": 6,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2012-120",
+    "2005-099",
+    "2009-092",
+    "2007-098",
+    "2011-103",
+    "2013-124"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 4-2. Síndrome urémico. Afectación por órganos y sistemas Aparato digestivo Náuseas y"
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.2. Tratamiento renal sustitutivo",
+   "palabras": 1339,
+   "palabrasTabla": 266,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2021-149",
+    "2015-115",
+    "2013-127",
+    "2010-202"
+   ],
+   "figs": 3,
+   "tablas": [
+    "Tabla 4-3. Toxicidad de los fármacos inmunosupresores Inmunosupresor Efectos tóxicos Corti",
+    "Tabla 4-4. Fármacos inhibidores e inductores del metabolismo de los anticalcineurínicos Di"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.3. Tratamiento conservador",
+   "palabras": 313,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Fracaso renal agudo",
+   "href": "570779c8f4d68bf008dbc6b0"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Glomerulonefritis primarias",
+   "href": "570779c9f4d68bf008dbc789"
+  }
+ ],
+ "totPalabras": 3517,
+ "totPalabrasTabla": 364,
+ "totCitas": 18,
+ "totFigs": 6,
+ "totTablas": 4,
+ "totRecuerda": 1,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

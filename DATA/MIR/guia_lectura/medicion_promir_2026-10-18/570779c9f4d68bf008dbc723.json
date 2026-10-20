@@ -1,0 +1,865 @@
+{
+ "titulo": "4.- Enfermedades del hígado",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc723",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "4 Enfermedades del hígado",
+   "palabras": 86,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "64871227c9ba5c0765cd45ad.mp4",
+     "seg": 6503,
+     "leyenda": "Vídeo 4-1Masterclass: Enfermedades hepáticas en el MIR: Diagnóstico diferencial de las hepatopatías y manejo del hepatoc"
+    }
+   ],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Anatomía y fisiología",
+   "palabras": 11,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.1. Anatomía",
+   "palabras": 469,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2017-036"
+   ],
+   "figs": 2,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.2. Fisiología",
+   "palabras": 177,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 3,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.3. Pruebas complementarias para el estudio del hígado",
+   "palabras": 884,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2003-011",
+    "2013-094"
+   ],
+   "figs": 5,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 2
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Ictericia, alteraciones del metabolismo de la bilirrubina y colestasis",
+   "palabras": 0,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.1. Ictericia",
+   "palabras": 54,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.2. Bilirrubina y su metabolismo",
+   "palabras": 832,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2013-091",
+    "2007-009",
+    "2003-010"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 2
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.3. Colestasis",
+   "palabras": 185,
+   "palabrasTabla": 110,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2023-132",
+    "2013-094"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 4-1. Causas de la hiperbilirrubinemia De predominio indirecto o no conjugada Ejemplo"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Hepatitis virales",
+   "palabras": 5,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.1. Generalidades",
+   "palabras": 401,
+   "palabrasTabla": 140,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2008-012",
+    "2012-040"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 4-2. Ictericias hereditarias Nombre Enzima defectuosa Tipo de ictericia Anatomía pat"
+   ],
+   "videos": [
+    {
+     "id": "6582906746dfa006b28061ad.mp4",
+     "seg": 419,
+     "leyenda": "Vídeo 4-2Imperdible: Ictericias hereditarias."
+    }
+   ],
+   "recuerda": 4
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.2. Virus de la hepatitis A",
+   "palabras": 589,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2025-031"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "658290f846dfa006b28061b7.mp4",
+     "seg": 1103,
+     "leyenda": "Vídeo 4-3Imperdible: Hepatitis virales."
+    }
+   ],
+   "recuerda": 4
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.3. Virus de la hepatitis B",
+   "palabras": 3677,
+   "palabrasTabla": 54,
+   "citasMIR": 7,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2010-039",
+    "2015-075",
+    "2013-039",
+    "2018-233",
+    "2007-010",
+    "2015-108",
+    "2008-011"
+   ],
+   "figs": 5,
+   "tablas": [
+    "Tabla 4-3. Marcadores serológicos del virus de la hepatitis B Situaciones HBs Ag (presenci"
+   ],
+   "videos": [
+    {
+     "id": "5afbe81e453ebd4044f7c161.mp4",
+     "seg": 385,
+     "leyenda": "Vídeo 4-4Videoclase: Hepatitis crónica por HVB: marcadores serológicos."
+    }
+   ],
+   "recuerda": 12
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.4. Virus de la hepatitis C",
+   "palabras": 987,
+   "palabrasTabla": 84,
+   "citasMIR": 11,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2005-009",
+    "2011-029",
+    "2017-122",
+    "2009-034",
+    "2005-005",
+    "2011-030",
+    "2015-212",
+    "2012-041",
+    "2011-207",
+    "2013-059",
+    "2015-108"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 4-4. Tratamiento de la hepatitis crónica por el virus de la hepatitis C Nombre comer"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.5. Virus de la hepatitis D",
+   "palabras": 376,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2015-054",
+    "2007-229"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.6. Virus de la hepatitis E",
+   "palabras": 192,
+   "palabrasTabla": 240,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2007-229"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 4-5. Formas clínicas de infección del virus de la hepatitis D Coinfección Sobreinfec"
+   ],
+   "videos": [],
+   "recuerda": 4
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Hígado y fármacos",
+   "palabras": 355,
+   "palabrasTabla": 0,
+   "citasMIR": 7,
+   "citasMIRdesde2015": 4,
+   "citasMIRdesde2020": 3,
+   "citas": [
+    "2011-201",
+    "2024-126",
+    "2023-132",
+    "2014-042",
+    "2018-078",
+    "2020-151",
+    "2009-033"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "5. Hepatitis aguda fulminante. Fallo hepático agudo",
+   "palabras": 209,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2012-040"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "6. Hepatopatía por alcohol",
+   "palabras": 830,
+   "palabrasTabla": 0,
+   "citasMIR": 5,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2021-027",
+    "2003-011",
+    "2025-013",
+    "2013-090",
+    "2004-011"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 2
+  },
+  {
+   "nivel": "H3",
+   "titulo": "7. Hepatitis autoinmune",
+   "palabras": 504,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2023-076",
+    "2004-012",
+    "2014-226"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "8. Hepatopatías colestásicas crónicas",
+   "palabras": 29,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "5eda20f85f6fd80d81676a17.mp4",
+     "seg": 431,
+     "leyenda": "Vídeo 4-5Videoclase: Colangitis biliar primaria vs colangitis esclerosante primaria."
+    }
+   ],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "8.1. Colangitis biliar primaria",
+   "palabras": 713,
+   "palabrasTabla": 47,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2010-232",
+    "2021-196"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 4-6. Estadios por biopsia de la colangitis biliar primaria Fase I Colangitis destruc"
+   ],
+   "videos": [
+    {
+     "id": "6582903046dfa006b28061aa.mp4",
+     "seg": 562,
+     "leyenda": "Vídeo 4-6Imperdible: Hepatopatías colestásicas."
+    }
+   ],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "8.2. Colangitis esclerosante primaria",
+   "palabras": 440,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2018-079",
+    "2006-005"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 3
+  },
+  {
+   "nivel": "H3",
+   "titulo": "9. Hepatopatías metabólicas",
+   "palabras": 32,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "9.1. Enfermedad hepática grasa no alcohólica",
+   "palabras": 557,
+   "palabrasTabla": 0,
+   "citasMIR": 6,
+   "citasMIRdesde2015": 4,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2021-004",
+    "2019-001",
+    "2005-011",
+    "2019-098",
+    "2010-205",
+    "2023-130"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "9.2. Hemocromatosis hereditaria",
+   "palabras": 787,
+   "palabrasTabla": 0,
+   "citasMIR": 6,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2016-092",
+    "2003-012",
+    "2018-051",
+    "2007-012",
+    "2011-037",
+    "2006-010"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 3
+  },
+  {
+   "nivel": "H4",
+   "titulo": "9.3. Enfermedad de Wilson",
+   "palabras": 762,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2017-150",
+    "2011-137"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 4
+  },
+  {
+   "nivel": "H4",
+   "titulo": "9.4. Déficit de α1-antitripsina",
+   "palabras": 321,
+   "palabrasTabla": 246,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2025-014",
+    "2015-076"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 4-7. Tratamiento de la enfermedad de Wilson Mecanismo de acción Fármaco Indicaciones",
+    "Tabla 4-8. Expresión fenotípica del déficit de α1-antitripsina Variante genética Nivel de "
+   ],
+   "videos": [],
+   "recuerda": 2
+  },
+  {
+   "nivel": "H4",
+   "titulo": "9.5. Hepatopatía de origen cardíaco",
+   "palabras": 261,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2013-072"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "9.6. Hepatitis hipóxico-isquémica",
+   "palabras": 174,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "9.7. Hepatopatías por depósito",
+   "palabras": 150,
+   "palabrasTabla": 277,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2020-006"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 4-9. Características principales de las distintas causas de hepatopatía para su iden"
+   ],
+   "videos": [
+    {
+     "id": "5af945fd453ebd4044f7ba06.mp4",
+     "seg": 421,
+     "leyenda": "Vídeo 4-7Videoclase: Repaso del cuadro típico de las hepatopatías."
+    }
+   ],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "9.8. Afectación digestiva en la fibrosis quística. Hepatopatía en la fibrosis quística",
+   "palabras": 191,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2020-079"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "9.9. Porfirias",
+   "palabras": 746,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2022-135"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "10. Cirrosis",
+   "palabras": 57,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "10.1. Semiología",
+   "palabras": 1573,
+   "palabrasTabla": 119,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2004-010",
+    "2019-097",
+    "2015-076",
+    "2008-009"
+   ],
+   "figs": 2,
+   "tablas": [
+    "Tabla 4-10. Clasificación de Child-Pugh-Turcotte Parámetros Puntos 1 2 3 Bilirrubina (mg/d",
+    "Tabla 4-11. Hemodinámica hepática HTP presinusoidal HTP sinusoidal HT postsinusoidal Presi"
+   ],
+   "videos": [
+    {
+     "id": "68fb34d0971e3138505019a7.mp4",
+     "seg": 904,
+     "leyenda": "Vídeo 4-8Videoclase: Complicaciones de la cirrosis."
+    }
+   ],
+   "recuerda": 2
+  },
+  {
+   "nivel": "H4",
+   "titulo": "10.2. Complicaciones de la hipertensión portal",
+   "palabras": 2257,
+   "palabrasTabla": 217,
+   "citasMIR": 18,
+   "citasMIRdesde2015": 7,
+   "citasMIRdesde2020": 3,
+   "citas": [
+    "2013-169",
+    "2015-012",
+    "2008-009",
+    "2013-235",
+    "2008-013",
+    "2007-011",
+    "2008-010",
+    "2009-035",
+    "2024-122",
+    "2005-008",
+    "2015-070",
+    "2005-010",
+    "2006-009",
+    "2015-074",
+    "2019-099",
+    "2014-043",
+    "2025-208",
+    "2023-133"
+   ],
+   "figs": 2,
+   "tablas": [
+    "Tabla 4-12. Clasificación de las causas de ascitis según el valor del gradiente de albúmin",
+    "Tabla 4-13. Diagnóstico diferencial de la peritonitis bacteriana espontánea y la peritonit",
+    "Tabla 4-14. Clasificación de la encefalopatía hepática en función del grado y síntomas (cl"
+   ],
+   "videos": [],
+   "recuerda": 5
+  },
+  {
+   "nivel": "H4",
+   "titulo": "10.3. Trastornos vasculares hepáticos",
+   "palabras": 430,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2003-009",
+    "2024-017"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "10.4. Trasplante hepático",
+   "palabras": 880,
+   "palabrasTabla": 463,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2018-077",
+    "2015-076",
+    "2014-005",
+    "2014-006"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 4-15. Indicaciones de trasplante hepático Enfermedad hepática con MELD ≥ 15 o Child ",
+    "Tabla 4-16. Contraindicaciones para el trasplante hepático (ejemplo) Contraindicaciones ge"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "11. Tumores hepatobiliares",
+   "palabras": 16,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "11.1. Tumores benignos hepáticos",
+   "palabras": 629,
+   "palabrasTabla": 272,
+   "citasMIR": 7,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2021-016",
+    "2007-013",
+    "2013-089",
+    "2005-012",
+    "2014-035",
+    "2013-084",
+    "2022-012"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 4-17. Comparación de los inmunosupresores Grupo terapéutico Fármaco Mecanismo de acc",
+    "Tabla 4-18. Diagnóstico diferencial de los tumores benignos hepáticos Hiperplasia nodular "
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "11.2. Hepatocarcinoma",
+   "palabras": 1104,
+   "palabrasTabla": 244,
+   "citasMIR": 14,
+   "citasMIRdesde2015": 4,
+   "citasMIRdesde2020": 3,
+   "citas": [
+    "2006-008",
+    "2010-038",
+    "2003-022",
+    "2006-012",
+    "2011-001",
+    "2021-016",
+    "2021-137",
+    "2004-022",
+    "2005-022",
+    "2011-002",
+    "2011-038",
+    "2012-039",
+    "2017-084",
+    "2022-131"
+   ],
+   "figs": 2,
+   "tablas": [
+    "Tabla 4-19. Técnicas de tratamiento del hepatocarcinoma Técnica de tratamiento Consideraci"
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "11.3. Metástasis hepáticas",
+   "palabras": 174,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2008-139"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "11.4. Tumores de la vía biliar intrahepática: colangiocarcinoma",
+   "palabras": 840,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2019-004"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  }
+ ],
+ "nav": [
+  {
+   "t": "Enfermedades del intestino delgado",
+   "href": "570779c8f4d68bf008dbc6a6"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Enfermedades de la vía biliar",
+   "href": "570779c9f4d68bf008dbc77f"
+  }
+ ],
+ "totPalabras": 23946,
+ "totPalabrasTabla": 2513,
+ "totCitas": 123,
+ "totFigs": 29,
+ "totTablas": 19,
+ "totRecuerda": 55,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

@@ -1,0 +1,285 @@
+{
+ "titulo": "5.- Espondiloartropatías",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc83f",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "5 Espondiloartropatías",
+   "palabras": 29,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Introducción",
+   "palabras": 164,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2007-079"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Espondilitis anquilosante",
+   "palabras": 0,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.1. Generalidades",
+   "palabras": 39,
+   "palabrasTabla": 61,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [
+    "Tabla 5-1. Características de las espondiloartropatías Afectación axial inflamatoria Entes",
+    "Tabla 5-2. Clasificación de las espondiloartropatías Espondilitis anquilosante (espondiloa"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.2. Manifestaciones clínicas",
+   "palabras": 470,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2008-078"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.3. Enfoque diagnóstico",
+   "palabras": 444,
+   "palabrasTabla": 0,
+   "citasMIR": 7,
+   "citasMIRdesde2015": 4,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2016-193",
+    "2017-232",
+    "2004-081",
+    "2013-009",
+    "2018-194",
+    "2023-109",
+    "2005-081"
+   ],
+   "figs": 5,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.4. Diagnóstico diferencial",
+   "palabras": 204,
+   "palabrasTabla": 62,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2017-170",
+    "2010-089",
+    "2011-069"
+   ],
+   "figs": 3,
+   "tablas": [
+    "Tabla 5-3. Criterios diagnósticos de Nueva York (1984) para espondilitis anquilosante Crit"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.5. Tratamiento",
+   "palabras": 460,
+   "palabrasTabla": 65,
+   "citasMIR": 5,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2024-094",
+    "2003-081",
+    "2025-039",
+    "2006-079",
+    "2013-010"
+   ],
+   "figs": 2,
+   "tablas": [
+    "Tabla 5-4. Diagnóstico diferencial de la afectación axial de la espondilitis anquilosante "
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Artritis reactiva",
+   "palabras": 0,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.1. Introducción",
+   "palabras": 167,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.2. Manifestaciones clínicas",
+   "palabras": 267,
+   "palabrasTabla": 0,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2014-111",
+    "2011-230",
+    "2015-213",
+    "2022-115"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.3. Diagnóstico",
+   "palabras": 148,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2009-023",
+    "2009-024",
+    "2009-025"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.4. Tratamiento",
+   "palabras": 111,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Espondiloartropatía asociada a la enfermedad inflamatoria intestinal",
+   "palabras": 123,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2019-100",
+    "2015-141"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "5. Artropatía psoriásica",
+   "palabras": 439,
+   "palabrasTabla": 81,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 3,
+   "citas": [
+    "2025-183",
+    "2022-205",
+    "2025-179"
+   ],
+   "figs": 2,
+   "tablas": [
+    "Tabla 5-5. Manifestaciones clínicas y epidemiología de las espondiloartropatías Espondilit"
+   ],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Artritis reumatoide",
+   "href": "570779c9f4d68bf008dbc7e3"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Lupus eritematoso sistémico. Síndrome antifosfolípido",
+   "href": "570779c9f4d68bf008dbc879"
+  }
+ ],
+ "totPalabras": 3065,
+ "totPalabrasTabla": 269,
+ "totCitas": 29,
+ "totFigs": 12,
+ "totTablas": 5,
+ "totRecuerda": 0,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

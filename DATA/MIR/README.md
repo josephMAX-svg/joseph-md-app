@@ -1,4 +1,4 @@
-# DATA · MIR — España (régimen v6.02c · 18-oct-2026 · v6.02 · 17-oct-2026 · ⏸ v6.01 · 10-oct-2026 · ⏸ v6.00 · 6-oct-2026)
+# DATA · MIR — España (régimen v6.03 · 20-oct-2026 · ⏸ v6.02c · 18-oct-2026 · ⏸ v6.02 · 17-oct-2026 · ⏸ v6.01 · 10-oct-2026 · ⏸ v6.00 · 6-oct-2026)
 
 Toda la data REAL del plan MIR. Fuente canónica (código): `src/lib/*.ts`. Plataforma:
 **ProMIR** (`promir.medicapanamericana.com`) — SPA por WebSocket; deep-link `/capitulo/<id>`.
@@ -6,7 +6,110 @@ Abre bien en Chrome (no necesita Edge). Cruzado con **rabi_94** (Google Drive, 1
 Método de referencia: **Palmerton** (comprensión > memorización · preguntas ciegas primero ·
 Anki de mecanismo FSRS · medir por % ciego). Meta: Top 50 MIR 2030.
 
-> ## ✅ v6.02c (dom 18-oct-2026) — se REPONE lo recortado de la extensión + guía de lectura D1-D10 (sobre v6.02, que sigue vigente)
+> ## ✅ v6.03 VIGENTE (mar 20-oct-2026 · D1 = MIÉ 21-OCT-2026) — corrimiento +2 hábiles + guía MEDIDA de los 76 días-tema
+> Joseph (20-oct): «lun 19 y mar 20 sin estudio → todo arranca el mié 21; simplemente corre, no modifiques ni comprimas temas ni exámenes, alarga las
+> fechas límite». Mismos 78 días y 189 sesiones de banqueo; nada se recorta (los bloques v6.02c y v6.02 de abajo quedan como historial).
+>
+> | Bloque | **v6.03** | ⏸ v6.02 / v6.02c |
+> |---|---|---|
+> | Diario (1.ª vuelta, 78) | **mié 21-oct-2026 → mié 10-feb-2027** (D77 mini-MIR **mar 9-feb** + D78 corrección **mié 10-feb**) · 15:15-16:15 | lun 19-oct → lun 8-feb (D77 vie 5-feb) |
+> | Mantenimiento (57) | **jue 11-feb → jue 6-may-2027** (47 lun-jue + 10 viernes; mismas cuotas y secuencia; sus 4 últimas filas, lun 3 → jue 6-may, ya en el SERUMS) · Tier C (12, mismo orden): jue 11-feb · 18-feb · 25-feb · 4-mar · 18-mar · mié 24-mar · jue 1-abr · 8-abr · 15-abr · 22-abr · 29-abr · 6-may | mar 9-feb → mar 4-may |
+> | Extensión hasta el tope | **121** (80 lun-jue · 21 viernes · 20 sábados) **vie 7-may → vie 24-sep-2027** (tope FIJO: día de plan anterior al ritual del Step 1) · Tier C ext 20 | 123 · mié 5-may → vie 24-sep |
+> | Repuestas tras el examen Step 1 (F5) | **11** (9 banco · 2 viernes · Tier C Oftalmología · Retina v3 jue 30-sep + Genética v3 jue 7-oct) **mar 28-sep → mar 12-oct-2027**, campo `repuesta:'v6.03'` (mismo mecanismo v6.02c, recalculado con un PISO por asignatura = máx(cuotas v6.00, cuotas publicadas v6.02): Medicina Legal conserva su slot extra) | 9 · mar 28-sep → vie 8-oct (`'v6.02c'`) |
+> | `MIR_MANT_DIAS` / `MIR_MANT_META` | **189** filas · 4.990 Q · `MIR_MANT_TIER_C` 34 (= v6.00) · `mant` 2027-02-11 → 2027-05-06 · `ext` 2027-05-07 → 2027-10-12 (`tope` 2027-09-24 = 121 + `repuestas` 11) · **handoff mar 12-oct-2027** | 189 · handoff vie 8-oct |
+>
+> Generado por `STUDY_HUB/_scrape/gen_mir_daily.js 2026-10-21` + `gen_mir_mantenimiento.js 2027-02-11 2027-05-06` (defaults nuevos, bitácora v6.03).
+> Sin cambio: umbral de cierre 70/55 → 75/60 en la fase principal, FSRS 0,85 → 0,90, franjas por turno en F4, protegidos/SKIP.
+>
+> **Guía MEDIDA D1-D76** (antes solo D1-D10): la medición ProMIR cubre los 76 capítulos del plan (10 el 18-oct + 66 el 20-oct, mismo `analiza_cap.js`,
+> solo lectura; el texto del recuadro «Orientación MIR» se retiró de los JSON al versionarlos: repo público). `guia_lectura/gen_guia_lectura.js` (bitácora
+> v6.03) → [`guia_lectura_semana1-2.json`](guia_lectura_semana1-2.json) (nombre histórico; 76 días + Derma d1-d5) → `gen_mir_guia.js` → `src/lib/mirGuiaDatos.ts`
+> (`MIR_GUIA_MEDIDA` D1-D76 + `MIR_CAP_MEDIDO` para la corrección Whole-Page del banqueo). Mismo método que v6.02c (180 palabras/min · tablas 90 · figura 0,5′ ·
+> peso por preguntas citadas ≥2020 ×3 · 2015-19 ×2 · <2015 ×1 · Σ pasos = 60′) con 5 reglas nuevas para capítulos pequeños: pool de los 76 capítulos
+> reservado antes de repartir · cierre = pool sin usar + citadas del bloque si no llega a 10 · quiz ≥8 cediendo hasta 4 citadas a las anclas · quiz corto →
+> repaso de capítulos ya leídos · lectura con ≥3′ libres → secciones de contexto sin citas. Las anclas de capítulos con muy pocas citadas (17 slots) dicen
+> «repite la que FALLASTE ese día». D77/D78 (mini-MIR y corrección) no leen capítulo: guía propia en `src/lib/mirGuia.ts`.
+>
+> | Día | Capítulo | Texto medido | Citas MIR | Lectura 15′ (secciones) | Para la 2.ª vuelta | Preguntas |
+> |---|---|---|---|---|---|---|
+> | D1 mié 21-oct | Epidemiología · Estudios experimentales: Ensayo clínico | 7411 + 343 tabla · ≈49,5′ | 97 | 2 · 3.2 · 3.4 · 4 · 6.1 · 6.2 · 8.4 (14,5′) | ≈36′ | pre 5 pool · quiz 10 |
+> | D2 jue 22-oct | Epidemiología · Clasificación de los estudios de investigación (Tipos de estudios epidemiológicos) | 2039 + 0 tabla · ≈14,5′ | 63 | 1.1 · 1.2 · 1.3 · 2.1 · 2.2 · 2.3 · 2.4 (13,5′) | ≈2′ | pre 5 pool · quiz 10 |
+> | D3 vie 23-oct | Epidemiología · Evaluación de pruebas diagnósticas | 4904 + 94 tabla · ≈32′ | 44 | 3.2 · 3.3 (14′) | ≈19′ | pre 3 pool · quiz 10 |
+> | D4 lun 26-oct | Medicina Legal y Bioética · Principios de bioética y relación médico-paciente | 2793 + 0 tabla · ≈16′ | 22 | 1 · 2 · 3 · 4 · 6 · 7 (14′) | ≈3′ | pre 2 pool · quiz 10 · cierre Epidemiología |
+> | D5 mar 27-oct | Cardiología · Cardiología básica | 14.944 + 138 tabla · ≈96,5′ | 68 | 2.3 · 3.3 (15′) | ≈82,5′ | pre 4 pool · quiz 10 · cierre Medicina Legal y Bioética |
+> | D6 mié 28-oct | Cardiología · Trastornos del ritmo | 13.201 + 248 tabla · ≈103′ | 45 | 3.2 (parcial) (15′) | ≈89′ | pre 5 pool · quiz 10 |
+> | D7 jue 29-oct | Cardiología · Cardiopatía isquémica | 9721 + 312 tabla · ≈69′ | 49 | 3.6 (parcial) (15′) | ≈55′ | pre 5 pool · quiz 10 |
+> | D8 vie 30-oct | Cardiología · Insuficiencia cardíaca | 21.920 + 1778 tabla · ≈164,5′ | 83 | 6.2 (parcial) (15′) | ≈150,5′ | pre 5 pool · quiz 10 |
+> | D9 lun 2-nov | Cardiología · Valvulopatías | 8425 + 300 tabla · ≈61′ | 39 | 2.5 · 5.4 · 6.1 · 8 (15′) | ≈47′ | pre 5 pool · quiz 10 |
+> | D10 mar 3-nov | Cardiología · Riesgo cardiovascular. Prevención de las ECVA a través del control de los FRCV | 10.829 + 419 tabla · ≈75,5′ | 44 | 4.1 · 6.4 (14′) | ≈62,5′ | pre 5 pool · quiz 10 |
+> | D11 mié 4-nov | Cardiología · Enfermedades del miocardio | 4306 + 133 tabla · ≈34′ | 27 | 3.3 · 3.5 · 5.3 · 5.4 · 7.2 (14,5′) | ≈20,5′ | pre 5 pool · quiz 10 |
+> | D12 jue 5-nov | Neumología · Fisiología y fisiopatología del aparato respiratorio | 4483 + 71 tabla · ≈28,5′ | 35 | 2 · 3 (14,5′) | ≈15′ | pre 5 pool · quiz 10 · cierre Cardiología |
+> | D13 vie 6-nov | Neumología · Cáncer de pulmón | 4966 + 346 tabla · ≈38,5′ | 45 | 2.4 · 2.7 (14,5′) | ≈25′ | pre 3 pool · quiz 10 |
+> | D14 lun 9-nov | Neumología · Enfermedades de la pleura, mediastino y diafragma | 4609 + 46 tabla · ≈32,5′ | 43 | 1.1 (parcial) (15′) | ≈18,5′ | pre 5 pool · quiz 10 |
+> | D15 mar 10-nov | Neumología · EPOC | 4960 + 470 tabla · ≈41,5′ | 45 | 7 · 8 (parcial) · 8.9 (15′) | ≈27,5′ | pre 5 pool · quiz 10 |
+> | D16 mié 11-nov | Neumología · Enfermedades intersticiales | 4126 + 502 tabla · ≈33,5′ | 41 | 2 · 7 (14,5′) | ≈20′ | pre 5 pool · quiz 10 |
+> | D17 jue 12-nov | Nefrología · Fisiología renal: función renal, alteraciones hidroelectrolíticas y equilibrio ácido-base | 13.599 + 598 tabla · ≈93′ | 40 | 1.2 · 3.1 (14,5′) | ≈79,5′ | pre 5 pool · quiz 10 · cierre Neumología |
+> | D18 vie 13-nov | Nefrología · Fracaso renal agudo | 3404 + 956 tabla · ≈34′ | 14 | 4 (parcial) · 4.2 · 7.2 (15′) | ≈20′ | pre 3 pool · quiz 8 |
+> | D19 lun 16-nov | Nefrología · Glomerulonefritis primarias | 6022 + 1251 tabla · ≈54′ | 22 | 1 (ctx) · 2 (ctx) · 4 · 7 (14′) | ≈41′ | pre 4 pool · quiz 10 |
+> | D20 mar 17-nov | Nefrología · Riñón y enfermedades sistémicas | 5177 + 979 tabla · ≈47,5′ | 23 | 1.1 (parcial) · 1.2 · 2 (15′) | ≈33,5′ | pre 3 pool · quiz 10 |
+> | D21 mié 18-nov | Nefrología · Insuficiencia renal crónica | 3517 + 364 tabla · ≈27′ | 18 | 2 · 3 · 5.2 (15′) | ≈13′ | pre 5 pool · quiz 10 |
+> | D22 jue 19-nov | Nefrología · Síndromes clínicos en nefrología | 2900 + 417 tabla · ≈24′ | 7 | 1 (ctx) · 1.1 (ctx) · 1.2 (ctx) · 1.3 (ctx) · 1.4 (ctx) · 1.5 (ctx) · 2.3 · 3.2 · 3.3 (14,5′) | ≈10,5′ | pre 1 pool · quiz 8 (7 repaso) |
+> | D23 vie 20-nov | Gastroenterología · Enfermedades del hígado | 23.946 + 2513 tabla · ≈215,5′ | 123 | 10.2 (parcial) (15′) | ≈201,5′ | pre 5 pool · quiz 10 · cierre Nefrología (1 citadas) |
+> | D24 lun 23-nov | Gastroenterología · Enfermedades del colon | 10.966 + 1130 tabla · ≈90′ | 98 | 3.3 · 4.3 (15′) | ≈76′ | pre 5 pool · quiz 10 |
+> | D25 mar 24-nov | Gastroenterología · Enfermedades del intestino delgado | 10.044 + 1426 tabla · ≈97,5′ | 80 | 2.1 (parcial) (15′) | ≈83,5′ | pre 4 pool · quiz 10 |
+> | D26 mié 25-nov | Gastroenterología · Enfermedades del estómago | 6847 + 931 tabla · ≈62′ | 59 | 4.1 · 5.4 · 5.6 · 6.3 · 7.1 (14,5′) | ≈48,5′ | pre 4 pool · quiz 10 |
+> | D27 jue 26-nov | Gastroenterología · Miscelánea de temas quirúrgicos | 4370 + 125 tabla · ≈34,5′ | 53 | 2.1 · 3 (15′) | ≈20,5′ | pre 5 pool · quiz 10 |
+> | D28 vie 27-nov | Gastroenterología · Enfermedades del páncreas | 6255 + 1369 tabla · ≈81,5′ | 56 | 2.1 · 2.3 · 3.1 (15′) | ≈67,5′ | pre 5 pool · quiz 10 |
+> | D29 lun 30-nov | Gastroenterología · Enfermedades del esófago | 5831 + 484 tabla · ≈68,5′ | 41 | 3.1 (parcial) (15′) | ≈54,5′ | pre 5 pool · quiz 10 |
+> | D30 mar 1-dic | Gastroenterología · Enfermedades de la vía biliar | 4246 + 385 tabla · ≈48′ | 28 | 4.3 (parcial) · 4.4 (15′) | ≈34′ | pre 5 pool · quiz 10 |
+> | D31 mié 2-dic | Endocrinología y Nutrición · Diabetes mellitus | 7427 + 1504 tabla · ≈84,5′ | 68 | 1 · 3 · 7.2 (15′) | ≈70,5′ | pre 5 pool · quiz 10 · cierre Gastroenterología (10 citadas) |
+> | D32 jue 3-dic | Endocrinología y Nutrición · Glándula tiroides | 8018 + 988 tabla · ≈67,5′ | 41 | 5.4 (parcial) · 6.1 · 8.2 (15′) | ≈53,5′ | pre 5 pool · quiz 10 |
+> | D33 vie 4-dic | Endocrinología y Nutrición · Hipotálamo e hipófisis | 6557 + 574 tabla · ≈50,5′ | 30 | 2.1 · 3.1 · 3.2 · 7.3 · 7.4 · 7.5 · 10.3 · 10.4 · 11.1 · 11.3 (15′) | ≈36,5′ | pre 2 pool · quiz 10 |
+> | D34 lun 7-dic | Endocrinología y Nutrición · Glándulas suprarrenales | 5981 + 619 tabla · ≈54,5′ | 38 | 2.3 · 3.1 · 3.2 · 6.3 · 8 (15′) | ≈40,5′ | pre 4 pool · quiz 10 |
+> | D35 mar 8-dic | Endocrinología y Nutrición · Nutrición y obesidad | 3007 + 276 tabla · ≈22′ | 16 | 2 · 2.3 · 3.1 · 3.2 · 3.3 · 4.3 · 4.4 (14,5′) | ≈8,5′ | pre 5 pool · quiz 10 |
+> | D36 mié 9-dic | Endocrinología y Nutrición · Alteraciones del metabolismo lipídico | 2695 + 827 tabla · ≈27′ | 20 | 1.1 · 2.1 · 2.2 · 3 · 4.3 (14,5′) | ≈13,5′ | pre 5 pool · quiz 10 |
+> | D37 jue 10-dic | Neurología · Semiología | 4704 + 840 tabla · ≈60,5′ | 36 | 2.2 · 7 · 10.3 (14,5′) | ≈47′ | pre 5 pool · quiz 10 · cierre Endocrinología y Nutrición (2 citadas) |
+> | D38 vie 11-dic | Neurología · Neurocirugía | 5535 + 743 tabla · ≈56,5′ | 52 | 1.3 · 2.4 (parcial) (15′) | ≈42,5′ | pre 5 pool · quiz 10 |
+> | D39 lun 14-dic | Neurología · Enfermedades cerebrovasculares | 3829 + 198 tabla · ≈37,5′ | 34 | 3.2 · 3.4 · 4.1 · 5.4 (15′) | ≈23,5′ | pre 5 pool · quiz 10 |
+> | D40 mar 15-dic | Neurología · Trastornos del movimiento | 3201 + 39 tabla · ≈22′ | 29 | 2.1 · 2.2 · 3.4 · 3.5 (14,5′) | ≈8,5′ | pre 5 pool · quiz 10 |
+> | D41 mié 16-dic | Neurología · Epilepsia | 2870 + 356 tabla · ≈23,5′ | 27 | 2.1 · 2.2 · 2.4 · 4.1 · 5.2 · 6 (15′) | ≈9,5′ | pre 5 pool · quiz 10 |
+> | D42 jue 17-dic | Neurología · Demencias | 2329 + 113 tabla · ≈14,5′ | 26 | 1 · 2 · 3 · 3.1 · 3.2 · 3.3 · 3.4 · 5.1 · 5.2 · 6 · 7 · 8 · 9 · 10 (14′) | ≈1,5′ | pre 4 pool · quiz 10 |
+> | D43 vie 18-dic | Neurología · Cefaleas | 2272 + 148 tabla · ≈17′ | 17 | 1 · 2 (ctx) · 2.1 · 2.3 · 3 (ctx) · 3.1 · 3.2 (13′) | ≈5′ | pre 5 pool · quiz 9 |
+> | D44 lun 21-dic | Hematología · Alteraciones de la coagulación sanguínea | 7724 + 1778 tabla · ≈72,5′ | 48 | 2.1 (parcial) (15′) | ≈58,5′ | pre 5 pool · quiz 10 · cierre Neurología |
+> | D45 mar 22-dic | Hematología · Linfomas | 4414 + 942 tabla · ≈36,5′ | 30 | 1.2 · 1.4 · 2.1 · 2.4 · 2.5 · 2.6 (13,5′) | ≈24′ | pre 4 pool · quiz 10 |
+> | D46 mié 23-dic | Hematología · Anemias hemolíticas | 4086 + 426 tabla · ≈28,5′ | 17 | 2.3 · 3.1 (13,5′) | ≈16′ | pre 3 pool · quiz 8 |
+> | D47 jue 24-dic | Hematología · Anemias carenciales | 3383 + 115 tabla · ≈22,5′ | 12 | 1.1 · 1.4 · 2.1 (15′) | ≈8,5′ | pre 5 pool · quiz 8 (1 repaso) |
+> | D48 lun 28-dic | Hematología · Neoplasias mieloproliferativas crónicas | 3770 + 996 tabla · ≈34,5′ | 19 | 1 · 2.1 · 2.2 · 2.4 · 2.5 · 3.2 · 3.3 · 5 · 5.2 (14′) | ≈21,5′ | pre 2 pool · quiz 8 |
+> | D49 mar 29-dic | Enfermedades Infecciosas · Infecciones tropicales | 10.665 + 634 tabla · ≈93′ | 45 | 2.1 (parcial) · 2.4 · 2.5 (15′) | ≈79′ | pre 5 pool · quiz 10 · cierre Hematología (6 citadas) |
+> | D50 mié 30-dic | Enfermedades Infecciosas · Infección por el virus de la inmunodeficiencia humana (VIH) | 7071 + 1514 tabla · ≈86′ | 44 | 7.4 (parcial) (15′) | ≈72′ | pre 5 pool · quiz 10 |
+> | D51 lun 4-ene | Enfermedades Infecciosas · Tuberculosis | 12.951 + 1542 tabla · ≈98′ | 33 | 2 · 7 · 7.1 · 7.4 (parcial) (15′) | ≈84′ | pre 3 pool · quiz 10 |
+> | D52 mar 5-ene | Enfermedades Infecciosas · Infecciones del tracto respiratorio inferior. Neumonía aguda | 9217 + 1077 tabla · ≈67,5′ | 34 | 2.1 (parcial) · 7.2 (15′) | ≈53,5′ | pre 2 pool · quiz 10 |
+> | D53 mié 6-ene | Enfermedades Infecciosas · Antibacterianos | 5892 + 1283 tabla · ≈53,5′ | 23 | 1 · 2 · 4.5 · 6.3 (14,5′) | ≈40′ | pre 2 pool · quiz 8 |
+> | D54 jue 7-ene | Enfermedades Infecciosas · Infecciones del sistema nervioso central. Meningitis | 6823 + 1267 tabla · ≈55′ | 30 | 1 · 2.3 · 6.1 · 7 · 9.2 (15′) | ≈41′ | pre 3 pool · quiz 10 |
+> | D55 vie 8-ene | Enfermedades Infecciosas · Infecciones por hongos. Antifúngicos | 3708 + 449 tabla · ≈30′ | 16 | 2.1 · 2.2 · 2.4 (14,5′) | ≈16,5′ | pre 2 pool · quiz 8 |
+> | D56 lun 11-ene | Enfermedades Infecciosas · Sepsis. Infecciones nosocomiales | 6216 + 528 tabla · ≈44,5′ | 16 | 1.1 · 1.6 (14,5′) | ≈31′ | pre 5 pool · quiz 8 |
+> | D57 mar 12-ene | Ginecología y Obstetricia · Patología maligna de la mama. Cáncer de mama | 7274 + 1367 tabla · ≈59,5′ | 66 | 7 · 8.1 (parcial) · 8.4 (15′) | ≈45,5′ | pre 1 pool · quiz 10 · cierre Enfermedades Infecciosas |
+> | D58 mié 13-ene | Ginecología y Obstetricia · Hemorragia en la gestación | 6395 + 696 tabla · ≈56′ | 28 | 1.2 · 1.3 (parcial) (15′) | ≈42′ | pre 2 pool · quiz 10 |
+> | D59 jue 14-ene | Ginecología y Obstetricia · Complicaciones maternas de la gestación | 10.473 + 694 tabla · ≈73,5′ | 19 | 1.2 · 2.7 (parcial) (15′) | ≈59,5′ | pre 5 pool · quiz 10 |
+> | D60 vie 15-ene | Ginecología y Obstetricia · Infecciones y embarazo | 9342 + 327 tabla · ≈61,5′ | 12 | 3 · 4 · 9 · 19.2 (15′) | ≈47,5′ | pre 1 pool · quiz 8 (2 repaso) |
+> | D61 lun 18-ene | Ginecología y Obstetricia · Control de la gestación | 3917 + 377 tabla · ≈35′ | 11 | 1.1 (13,5′) | ≈22,5′ | pre 5 pool · quiz 8 (2 repaso) |
+> | D62 mar 19-ene | Ginecología y Obstetricia · Masas anexiales. Patología maligna del ovario | 5153 + 574 tabla · ≈39,5′ | 14 | 2.1 · 5 (parcial) · 6 (15′) | ≈25,5′ | pre 2 pool · quiz 8 |
+> | D63 mié 20-ene | Reumatología · Vasculitis | 4331 + 252 tabla · ≈38′ | 42 | 2.1 (parcial) · 3.1 (15′) | ≈24′ | pre 5 pool · quiz 10 · cierre Ginecología y Obstetricia |
+> | D64 jue 21-ene | Reumatología · Espondiloartropatías | 3065 + 269 tabla · ≈28′ | 29 | 2.3 · 2.5 · 5 (15′) | ≈14′ | pre 5 pool · quiz 10 |
+> | D65 vie 22-ene | Reumatología · Otras conectivopatías | 3486 + 239 tabla · ≈28′ | 30 | 1.1 (parcial) (15′) | ≈14′ | pre 5 pool · quiz 10 |
+> | D66 lun 25-ene | Reumatología · Artritis reumatoide | 2837 + 287 tabla · ≈34′ | 25 | 2.2 · 3.1 · 3.2 · 4.1 · 4.2 · 6 · 6.3 (14,5′) | ≈20,5′ | pre 1 pool · quiz 10 |
+> | D67 mar 26-ene | Reumatología · Artropatias inducidas por cristales | 2250 + 199 tabla · ≈26′ | 19 | 1.1 · 1.2 (ctx) · 1.3 · 1.4 · 2.2 · 2.3 (14,5′) | ≈12,5′ | pre 3 pool · quiz 10 |
+> | D68 mié 27-ene | Reumatología · Lupus eritematoso sistémico. Síndrome antifosfolípido | 3543 + 581 tabla · ≈29′ | 20 | 1.3 · 1.7 · 2.2 · 2.3 (15′) | ≈15′ | pre 3 pool · quiz 10 |
+> | D69 jue 28-ene | Pediatría · Patología aparato digestivo | 10.093 + 667 tabla · ≈72′ | 45 | 1.4 (parcial) · 3.4 (15′) | ≈58′ | pre 5 pool · quiz 10 · cierre Reumatología (2 citadas) |
+> | D70 vie 29-ene | Pediatría · Neonatología | 18.244 + 906 tabla · ≈129,5′ | 32 | 1.2 · 2 · 5.2 (15′) | ≈115,5′ | pre 5 pool · quiz 10 |
+> | D71 lun 1-feb | Pediatría · Desarrollo y nutrición | 6775 + 533 tabla · ≈54′ | 27 | 2.2 · 2.3 · 2.5 · 3 (12,5′) | ≈42,5′ | pre 3 pool · quiz 10 |
+> | D72 mar 2-feb | Pediatría · Patología infecciosa | 5635 + 449 tabla · ≈47′ | 21 | 1.3 · 1.8 · 1.9 · 2 (14′) | ≈34′ | pre 5 pool · quiz 10 |
+> | D73 mié 3-feb | Pediatría · Vacunación infantil | 4201 + 128 tabla · ≈25′ | 36 | 2 · 5 · 5.1 (15′) | ≈11′ | pre 3 pool · quiz 10 |
+> | D74 jue 4-feb | Psiquiatría · Trastornos del estado de ánimo | 8437 + 438 tabla · ≈55′ | 53 | 5.3 · 7.2 (14,5′) | ≈41,5′ | pre 5 pool · quiz 10 · cierre Pediatría (3 citadas) |
+> | D75 vie 5-feb | Psiquiatría · Actualización de los trastornos neuróticos | 8245 + 421 tabla · ≈54′ | 36 | 1.1 · 2.1 (parcial) (15′) | ≈40′ | pre 4 pool · quiz 10 |
+> | D76 lun 8-feb | Psiquiatría · Trastornos psicóticos | 4390 + 241 tabla · ≈31,5′ | 27 | 2 · 2.1 · 2.2 · 2.5 · 2.7 · 3.1 · 4.2 · 5.1 (14,5′) | ≈18′ | pre 5 pool · quiz 10 |
+>
+> ## ✅ v6.02c (dom 18-oct-2026) — se REPONE lo recortado de la extensión + guía de lectura D1-D10 (⏸ historial: fechas y filas al día en el bloque v6.03 de arriba)
 > Joseph (18-oct): «si faltan temas o se recortó algo, alárgalo» y «QUÉ leer, CUÁNTO leer, CÓMO leer — no puede estar al azar».
 >
 > **1 · Reposición (decisión (i) de `PENDIENTES_JOSEPH.md`, bloque v6.02 → RESUELTA).** Los corrimientos v6.01/v6.02 comprimieron la extensión
@@ -50,7 +153,7 @@ Anki de mecanismo FSRS · medir por % ciego). Meta: Top 50 MIR 2030.
 > d3 §1.1-1.3 + §3 (7,5′). No verificado: duración del audio «escuchar todo el tema» y nº de preguntas de «Entrenar» por capítulo (no se abrió el
 > creador de tests).
 
-> ## ✅ v6.02 VIGENTE (sáb 17-oct-2026 · D1 = LUN 19-OCT-2026) — corrige las fechas de los bloques v6.01 y v6.00; DJ-4 (1 h/día siempre) sin cambio
+> ## ⏸ v6.02 (historial; sáb 17-oct-2026 · D1 = LUN 19-OCT-2026) — corrige las fechas de los bloques v6.01 y v6.00; DJ-4 (1 h/día siempre) sin cambio
 > Del lun 12 al vie 16-oct no se estudió → todo corre +5 hábiles con el D1; el tope de la extensión (vie 24-sep, día de plan anterior al ritual del Step 1)
 > es FIJO.
 >

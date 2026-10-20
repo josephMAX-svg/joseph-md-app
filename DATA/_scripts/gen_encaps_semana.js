@@ -97,7 +97,7 @@ const esCritico = (c) => CRITICOS_V3.includes(c) || c === 'IV-1' || c === 'IV-2'
 const argv = process.argv.slice(2);
 const opt = (k, def) => { const i = argv.indexOf(k); return i >= 0 && argv[i + 1] != null ? argv[i + 1] : def; };
 const has = (k) => argv.includes(k);
-const D1 = opt('--d1', F6S.f1.inicio); // v6.02: lun 19-oct (_fechas_v6.json f1.inicio) · v6.01: lun 12-oct · v6.00/v5.20: 2026-10-07 (v5.19: 2026-10-06 · v5.18: 2026-10-05 · v5.17: 2026-10-01)
+const D1 = opt('--d1', F6S.f1.inicio); // v6.03: mié 21-oct (_fechas_v6.json f1.inicio; pre-test mié 21 + jue 22, 1.er cierre vie 23, override lun 26) · v6.02: lun 19-oct · v6.01: lun 12-oct · v6.00/v5.20: 2026-10-07 (v5.19: 2026-10-06 · v5.18: 2026-10-05 · v5.17: 2026-10-01)
 const hoyISO = () => new Date(Date.now() - 5 * 3600 * 1000).toISOString().slice(0, 10); // Lima
 const addDays = (iso, n) => { const d = new Date(iso + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
 // v6.02: fechas del PRE-TEST DE ARRANQUE y del primer override DERIVADAS del D1 (antes texto fijo «lun 12-oct = D1 + mar 13-oct = D2», v6.01):

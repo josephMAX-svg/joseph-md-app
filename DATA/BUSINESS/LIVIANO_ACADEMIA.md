@@ -1,6 +1,19 @@
 # LIVIANO ACADEMIA — Currículo de medicina de la obesidad
 
-> ## ✅ v6.02 VIGENTE (sáb 17-oct-2026) — **Franja 17:15-18:00 L-V · D1 = LUN 19-OCT-2026 → D90 = MIÉ 24-FEB-2027**
+> ## ✅ v6.03 VIGENTE (mar 20-oct-2026) — **Franja 17:15-18:00 L-V · D1 = MIÉ 21-OCT-2026 → D90 = VIE 26-FEB-2027**
+> Lun 19 y mar 20-oct sin estudio (orden de Joseph: «simplemente corre, no comprimas») → `node DATA/_scripts/gen_liviano_plan.js 2026-10-21` (vía
+> `remap_inicio.js 2026-10-21 --bloques business,liviano`). Corrimiento +2 hábiles: **90 días, 16 casos, 4 drills, 18 pre-tests**, currículo intacto (mismo contenido
+> en el mismo orden). Con el D1 en miércoles hay **17 viernes**: los 16 casos van en los primeros viernes con ≥2 días de contenido delante y el viernes que sobra es el
+> ÚLTIMO (vie 26-feb = D90, revisión II + cierre) → los D# vuelven al patrón de v6.00 = v5.20: caso 1 **vie 23-oct (D3)** … caso 8 vie 11-dic (D38) · caso 9 vie 18-dic
+> (D43) · caso 10 vie 8-ene (D55) … caso 15 vie 12-feb (D80) · **caso 16 integral vie 19-feb (D85)**, ANTES del repaso integral (D88 mié 24-feb), del **capstone (D89 jue
+> 25-feb)** y de la **REVISIÓN TRIMESTRAL II + cierre (D90 vie 26-feb)**. **Importar el CSV de Anki: D16 mié 11-nov-2026.** Drills (`livianoScore.ts`): **D37 jue 10-dic ·
+> D57 mar 12-ene · D76 lun 8-feb · D88 mié 24-feb**. Síntesis M1 D20 mar 17-nov · M2 D39 lun 14-dic · M3 D57 mar 12-ene (+ drill) · M4 D67 mar 26-ene · M6 D76 lun 8-feb
+> (+ drill) · M5 D87 mar 23-feb. Acceso en Perú D40-D42 mar 15 → jue 17-dic + D44-D45 lun 21 → mar 22-dic (caso 9 = D43 vie 18-dic en medio) · REVISIÓN TRIMESTRAL I
+> **D46 mié 23-dic**. Bloques: Fisiología mié 21-oct → mar 17-nov · GLP-1 mié 18-nov → lun 14-dic · Nutrición jue 24-dic → mar 12-ene · Ejercicio mié 13 → mar 26-ene ·
+> Fármaco+QX mié 27-ene → lun 8-feb · Conducta mar 9 → mar 23-feb. `empresaData.ts` re-sincronizado (módulo 7 [40, 41, 42, 44, 45], revisiones D46/D90 y planDias de
+> las síntesis [20] · [39] · [57, 67] · [87] · [76]). Calendar: serie LIVIANO 17:15 → vie 26-feb (lo aplica el orquestador).
+>
+> ⏸ **v6.02 (historial; sáb 17-oct-2026) — Franja 17:15-18:00 L-V · D1 = LUN 19-OCT-2026 → D90 = MIÉ 24-FEB-2027**
 > Lun 12 → vie 16-oct sin estudio → `node DATA/_scripts/gen_liviano_plan.js 2026-10-19` (vía `remap_inicio.js 2026-10-19`). Corrimiento RÍGIDO +5 hábiles:
 > **90 días, 16 casos, 4 drills, 18 pre-tests**, currículo intacto (multiset = v6.01; orden del contenido idéntico). Siguen saliendo **16 viernes = 16 casos**
 > (9 hasta el vie 18-dic + 7 desde el vie 8-ene; vie 25-dic y vie 1-ene son SKIP): caso 1 **vie 23-oct (D5)** … caso 8 vie 11-dic (D40) · caso 9 vie 18-dic (D45) ·
@@ -402,12 +415,12 @@ Persistido en `jmd-liviano-kpi`; botón **Exportar JSON** (descarga `liviano_kpi
 Curso **"Fundamentals of Obesity Treatment"** (OMA, ~9.75 CME) → micro-credentials OMA →
 vía CME (60 créditos) hacia el examen **ABOM** ([abom.org](https://www.abom.org/) ·
 [blueprint](https://www.abom.org/content-outline-and-exam-blueprint/)). Posiciona a LIVIANO
-como referente con certificación internacional real. Se anota en el **capstone (D89 · jue 11-feb-2027, v5.20; v5.19: mié 10-feb)** *(⏸ v5.20 = v6.00 · ⏸ v6.01: D89 mar 16-feb-2027 · **v6.02:** D89 mar 23-feb-2027)*.
+como referente con certificación internacional real. Se anota en el **capstone (D89 · jue 11-feb-2027, v5.20; v5.19: mié 10-feb)** *(⏸ v5.20 = v6.00 · ⏸ v6.01: D89 mar 16-feb-2027 · ⏸ v6.02: D89 mar 23-feb-2027 · **v6.03:** D89 jue 25-feb-2027)*.
 
 ## Pipeline de regeneración y corrimiento (cada día sin estudiar = +1 hábil)
 
 1. Editar **solo** `DATA/BUSINESS/liviano_curriculum.json` (temas, tarjetas, casos, drills, colores).
-2. `node DATA/_scripts/gen_liviano_plan.js <YYYY-MM-DD>` (v5.20: `2026-10-07`; v5.19: `2026-10-06`) *(⏸ v5.20 = v6.00 · ⏸ v6.01: `2026-10-12` · **v6.02:** `2026-10-19`)* → reescribe `livianoStudyPlan.ts`, `livianoCasos.ts` y el CSV.
+2. `node DATA/_scripts/gen_liviano_plan.js <YYYY-MM-DD>` (v5.20: `2026-10-07`; v5.19: `2026-10-06`) *(⏸ v5.20 = v6.00 · ⏸ v6.01: `2026-10-12` · ⏸ v6.02: `2026-10-19` · **v6.03:** `2026-10-21`)* → reescribe `livianoStudyPlan.ts`, `livianoCasos.ts` y el CSV.
    Determinista; verifica 90 filas L-V, feriados fuera, 16 casos en viernes (v5.20: en los primeros viernes con ≥2 días de contenido delante; si sobran viernes, sobra el último), pre-tests en lunes.
 3. Corrimiento global: `node DATA/_scripts/remap_inicio.js <fecha>` re-fecha las 90 filas (bloque 7, regex
    `"fecha":"…","wd":"…"` y `inicio/fin/totalDias: 90` de `LIV_META` — formato conservado) y llama a
@@ -421,7 +434,7 @@ como referente con certificación internacional real. Se anota en el **capstone 
    ladrillo, GPS) — se ensayan en los 20' de aplicación y se puntúan en la rúbrica.
 2. Tarjetas de mecanismo (mismo formato Palmerton del resto del sistema de estudio); recall medido en ciego.
 3. Revisión **trimestral** de farmacoterapia (aprobaciones y precios se mueven rápido): filas fijas **D46
-   (mié 9-dic-2026)** y **D90 (vie 12-feb-2027)** *(⏸ v5.20 = v6.00 · ⏸ v6.01: D46 lun 14-dic-2026 · D90 mié 17-feb-2027 · **v6.02:** D46 lun 21-dic-2026 · D90 mié 24-feb-2027)* (v5.20; v5.19: D46 mar 8-dic · D90 jue 11-feb), luego cada trimestre (`LIVIANO_REVISION_TRIMESTRAL`).
+   (mié 9-dic-2026)** y **D90 (vie 12-feb-2027)** *(⏸ v5.20 = v6.00 · ⏸ v6.01: D46 lun 14-dic-2026 · D90 mié 17-feb-2027 · ⏸ v6.02: D46 lun 21-dic-2026 · D90 mié 24-feb-2027 · **v6.03:** D46 mié 23-dic-2026 · D90 vie 26-feb-2027)* (v5.20; v5.19: D46 mar 8-dic · D90 jue 11-feb), luego cada trimestre (`LIVIANO_REVISION_TRIMESTRAL`).
 4. Todo dato clínico, regulatorio o de precio que se publique en contenido LIVIANO se verifica contra la fuente
    primaria (misma regla anti-alucinación del motor de preguntas ENCAPS). Lo no verificado se escribe
    "A VERIFICAR (dd-mmm)".
@@ -430,7 +443,7 @@ como referente con certificación internacional real. Se anota en el **capstone 
 
 ---
 
-## Índice v5.20 (6-oct-2026) — D → fecha de los 90 días *(⏸ v5.20 = v6.00 · ⏸ v6.01: D1 lun 12-oct → D90 mié 17-feb · **v6.02:** índice v6.02 en el bloque de arriba (D1 lun 19-oct → D90 mié 24-feb))*
+## Índice v5.20 (6-oct-2026) — D → fecha de los 90 días *(⏸ v5.20 = v6.00 · ⏸ v6.01: D1 lun 12-oct → D90 mié 17-feb · ⏸ v6.02: D1 lun 19-oct → D90 mié 24-feb · **v6.03:** índice v6.03 en el bloque de arriba (D1 mié 21-oct → D90 vie 26-feb))*
 
 Leído de `src/lib/livianoStudyPlan.ts` → `LIV_DIAS` (parseado el 6-oct, no estimado). **D1 = mié 7-oct-2026 ·
 D90 = vie 12-feb-2027 · 90 días L-V · 25-dic, 31-dic y 1-ene fuera · franja 17:15-18:00 intacta ·
@@ -450,10 +463,10 @@ D90 = vie 12-feb-2027 · 90 días L-V · 25-dic, 31-dic y 1-ene fuera · franja 
 *(Los módulos se solapan en el calendario porque el generador coloca cada caso en su VIERNES real; por eso
 un día de un módulo puede caer dentro del rango de otro.)*
 
-**Hitos v5.7 → … → v5.15 → v5.16 → v5.17 → v5.18 → v5.19 → v5.20 (= v6.00) → v6.01** (⏸ las fechas vigentes, **v6.02** —D1 lun 19-oct → D90 mié 24-feb—, están en el bloque ✅ v6.02 del principio; columnas leídas de los `.ts` de cada versión; el Dn cambia porque el
+**Hitos v5.7 → … → v5.15 → v5.16 → v5.17 → v5.18 → v5.19 → v5.20 (= v6.00) → v6.01** (⏸ las fechas vigentes, **v6.03** —D1 mié 21-oct → D90 vie 26-feb—, están en el bloque ✅ v6.03 del principio; v6.02 —D1 lun 19-oct → D90 mié 24-feb— en su bloque ⏸; columnas leídas de los `.ts` de cada versión; el Dn cambia porque el
 generador re-sloteó los casos a viernes reales — **la fecha es lo estable, el D# no**)
 
-| Hito | v5.10 | v5.11 | v5.12 | v5.13 | v5.14 | v5.15 | v5.16 | v5.17 | v5.18 | v5.19 | v5.20 (= v6.00) | ⏸ **v6.01** (vigente: v6.02, bloque ✅ del principio) |
+| Hito | v5.10 | v5.11 | v5.12 | v5.13 | v5.14 | v5.15 | v5.16 | v5.17 | v5.18 | v5.19 | v5.20 (= v6.00) | ⏸ **v6.01** (vigente: v6.03, bloque ✅ del principio) |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
 | D1 · arranque | lun 14-sep-2026 (D1) | mar 15-sep-2026 (D1) | mié 16-sep-2026 (D1) | jue 17-sep-2026 (D1) | lun 21-sep-2026 (D1) | mié 23-sep-2026 (D1) | lun 28-sep-2026 (D1) | jue 1-oct-2026 (D1) | lun 5-oct-2026 (D1) | mar 6-oct-2026 (D1) | **mié 7-oct-2026** (D1) | **lun 12-oct-2026** (D1) |
 | Caso 1 | vie 18-sep-2026 (D5) | vie 18-sep-2026 (D4) *(fecha intacta)* | vie 25-sep-2026 (D8) *(⚠ +1 semana: el vie 18-sep queda sin caso)* | vie 25-sep-2026 (D7) *(fecha intacta)* | vie 25-sep-2026 (D5) *(fecha intacta; con D1 en lunes ya no se salta ningún viernes)* | vie 2-oct-2026 (D8) *(⚠ +1 semana: el vie 25-sep = D3 queda sin caso)* | vie 2-oct-2026 (D5) *(fecha intacta; con D1 en lunes ya no se salta ningún viernes)* | vie 9-oct-2026 (D7) *(⚠ +1 semana: el vie 2-oct = D2 queda sin caso)* | vie 9-oct-2026 (D5) *(fecha intacta; con D1 en lunes ya no se salta ningún viernes)* | vie 9-oct-2026 (D4) *(fecha intacta; con D1 en martes tampoco se salta ningún viernes)* | **vie 9-oct-2026** (D3) *(fecha intacta; 17 viernes, sobra el último por la regla nueva)* | **vie 16-oct-2026** (D5) *(16 viernes = 16 casos: no se salta ninguno)* |

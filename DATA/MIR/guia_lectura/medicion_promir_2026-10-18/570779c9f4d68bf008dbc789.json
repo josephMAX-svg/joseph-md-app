@@ -1,0 +1,236 @@
+{
+ "titulo": "5.- Glomerulonefritis primarias",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc789",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "5 Glomerulonefritis primarias",
+   "palabras": 46,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Definiciones",
+   "palabras": 304,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "6728e4e09caffb76ea3932f5.mp4",
+     "seg": 1359,
+     "leyenda": "Vídeo 5-1Imperdible: Glomerulonefritis primarias."
+    }
+   ],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Clasificación",
+   "palabras": 52,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Tratamiento. Generalidades",
+   "palabras": 466,
+   "palabrasTabla": 177,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2014-101"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 5-1. Clasificación de las glomerulonefritis según su curso evolutivo Agudas Inicio s",
+    "Tabla 5-2. Clasificación de las glomerulonefritis según la histología Nombre Localización ",
+    "Tabla 5-3. Clasificación de las glomerulonefritis según el tipo de agresión inmunológica S"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Nefropatía por cambios mínimos",
+   "palabras": 589,
+   "palabrasTabla": 191,
+   "citasMIR": 5,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2023-143",
+    "2020-166",
+    "2010-101",
+    "2006-093",
+    "2005-190"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 5-4. Clasificación de las glomerulonefritis según la clínica Alteraciones urinarias "
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "5. Glomeruloesclerosis segmentaria y focal",
+   "palabras": 660,
+   "palabrasTabla": 310,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2012-205",
+    "2012-229"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 5-5. Patrones de respuesta al tratamiento con corticoides en el síndrome nefrótico p",
+    "Tabla 5-6. Clasificación de la glomeruloesclerosis segmentaria y focal Formas primarias Id",
+    "Tabla 5-7. Diagnóstico diferencial entre GESF primarias y secundarias Primarias Secundaria"
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "6. Nefropatía membranosa",
+   "palabras": 868,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2009-096",
+    "2015-018",
+    "2019-113"
+   ],
+   "figs": 2,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "7. Nefropatía mesangial IgA",
+   "palabras": 499,
+   "palabrasTabla": 72,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2012-117",
+    "2013-122",
+    "2021-151",
+    "2024-133"
+   ],
+   "figs": 2,
+   "tablas": [
+    "Tabla 5-8. Clasificación de la nefropatía mesangial IgA Primarias Sin síntomas sistémicos:"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "8. Glomerulonefritis endocapilar aguda",
+   "palabras": 601,
+   "palabrasTabla": 0,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2005-124",
+    "2008-232",
+    "2008-097",
+    "2020-074"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "9. Glomerulonefritis mesangiocapilar o membranoproliferativa",
+   "palabras": 994,
+   "palabrasTabla": 113,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 2,
+   "tablas": [
+    "Tabla 5-9. Clasificación de las glomerulonefritis membranoproliferativas Primarias o Idiop"
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "10. Glomerulonefritis extracapilares",
+   "palabras": 943,
+   "palabrasTabla": 388,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2024-195",
+    "2011-021",
+    "2010-203"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 5-10. Clasificación de las glomerulonefritis extracapilares Tipo I (por anticuerpos ",
+    "Tabla 5-11. Características histológicas dependiendo del tipo de glomerulonefritis extraca",
+    "Tabla 5-12. Criterios diagnósticos y diagnóstico diferencial de la glomerulonefritis extra",
+    "Tabla 5-13. Diagnóstico diferencial de las glomerulonefritis primarias GN de cambios mínim"
+   ],
+   "videos": [],
+   "recuerda": 1
+  }
+ ],
+ "nav": [
+  {
+   "t": "Insuficiencia renal crónica",
+   "href": "570779c9f4d68bf008dbc72d"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Riñón y enfermedades sistémicas",
+   "href": "570779c8f4d68bf008dbc60a"
+  }
+ ],
+ "totPalabras": 6022,
+ "totPalabrasTabla": 1251,
+ "totCitas": 22,
+ "totFigs": 12,
+ "totTablas": 13,
+ "totRecuerda": 4,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

@@ -1,0 +1,350 @@
+{
+ "titulo": "6.- Enfermedades del páncreas",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc600",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "6 Enfermedades del páncreas",
+   "palabras": 59,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Pancreatitis aguda",
+   "palabras": 47,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.1. Etiología",
+   "palabras": 31,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.2. Diagnóstico",
+   "palabras": 618,
+   "palabrasTabla": 469,
+   "citasMIR": 11,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2019-168",
+    "2004-015",
+    "2003-014",
+    "2003-013",
+    "2011-040",
+    "2016-084",
+    "2017-039",
+    "2005-015",
+    "2006-014",
+    "2012-043",
+    "2009-037"
+   ],
+   "figs": 5,
+   "tablas": [
+    "Tabla 6-1. Causas de pancreatitis aguda Litiasis biliar (50 %): el cálculo se impacta al l",
+    "Tabla 6-2. Analítica de la pancreatitis aguda Datos de deshidratación: debido a la acumula"
+   ],
+   "videos": [
+    {
+     "id": "5eda210f5f6fd80d81676a1a.mp4",
+     "seg": 547,
+     "leyenda": "Vídeo 6-1Videoclase: Pancreatitis aguda"
+    }
+   ],
+   "recuerda": 3
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.3. Pronóstico",
+   "palabras": 600,
+   "palabrasTabla": 200,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2024-086",
+    "2011-039"
+   ],
+   "figs": 2,
+   "tablas": [
+    "Tabla 6-3. Clasificación de Atlanta de las pancreatitis agudas Grado Descripción Leve No h",
+    "Tabla 6-4. Criterios de Ransom La presencia de 3 o más criterios a las 48 horas indica gra"
+   ],
+   "videos": [],
+   "recuerda": 4
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.4. Tratamiento",
+   "palabras": 343,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2003-014",
+    "2004-014",
+    "2016-085"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.5. Complicaciones de la pancreatitis aguda",
+   "palabras": 1304,
+   "palabrasTabla": 162,
+   "citasMIR": 8,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2005-015",
+    "2012-044",
+    "2007-016",
+    "2025-152",
+    "2007-019",
+    "2008-016",
+    "2006-015",
+    "2015-014"
+   ],
+   "figs": 13,
+   "tablas": [
+    "Tabla 6-5. Complicaciones sistémicas de la pancreatitis aguda Pulmonares: derrame pleural ",
+    "Tabla 6-6. Complicaciones locales de la pancreatitis aguda < 4 semanas > 4 semanas Sin nec"
+   ],
+   "videos": [],
+   "recuerda": 4
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Pancreatitis crónica",
+   "palabras": 76,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.1. Etiología",
+   "palabras": 413,
+   "palabrasTabla": 141,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2012-042",
+    "2016-084",
+    "2017-039"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 6-7. Causas de pancreatitis crónica T Tóxica El alcohol es la causa más frecuente. E"
+   ],
+   "videos": [],
+   "recuerda": 2
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.2. Clínica",
+   "palabras": 281,
+   "palabrasTabla": 116,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2025-144",
+    "2007-015"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 6-8. Comparación entre la pancreatitis autoinmune tipo 1 y tipo 2 Pancreatitis autoi"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.3. Diagnóstico",
+   "palabras": 209,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 3,
+   "citas": [
+    "2022-022",
+    "2020-177",
+    "2025-144"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.4. Tratamiento",
+   "palabras": 428,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2003-021"
+   ],
+   "figs": 3,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Tumores del páncreas exocrino",
+   "palabras": 61,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.1. Tumores sólidos",
+   "palabras": 1203,
+   "palabrasTabla": 104,
+   "citasMIR": 18,
+   "citasMIRdesde2015": 11,
+   "citasMIRdesde2020": 7,
+   "citas": [
+    "2017-087",
+    "2013-040",
+    "2013-001",
+    "2008-015",
+    "2021-003",
+    "2024-126",
+    "2022-130",
+    "2023-132",
+    "2018-085",
+    "2008-140",
+    "2018-227",
+    "2006-257",
+    "2020-003",
+    "2017-075",
+    "2025-095",
+    "2010-042",
+    "2023-135",
+    "2013-002"
+   ],
+   "figs": 2,
+   "tablas": [
+    "Tabla 6-9. Repaso de los principales marcadores inmunohistoquímicos, que ayudan en el diag"
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.2. Tumores quísticos",
+   "palabras": 51,
+   "palabrasTabla": 38,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2014-046"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 6-10. Tratamiento del cáncer de páncreas Estadio Frecuencia Actitud Tratamiento Esta"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Tumores del páncreas endocrino",
+   "palabras": 531,
+   "palabrasTabla": 139,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 4,
+   "citasMIRdesde2020": 3,
+   "citas": [
+    "2021-146",
+    "2015-079",
+    "2020-148",
+    "2025-097"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 6-11. Diagnóstico diferencial de los tumores quísticos pancreáticos Cistoadenoma ser"
+   ],
+   "videos": [
+    {
+     "id": "658290b346dfa006b28061b4.mp4",
+     "seg": 452,
+     "leyenda": "Vídeo 6-2Imperdible: Tumores quísticos pancreáticos."
+    }
+   ],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Enfermedades de la vía biliar",
+   "href": "570779c9f4d68bf008dbc77f"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Enfermedades del colon",
+   "href": "570779c8f4d68bf008dbc64c"
+  }
+ ],
+ "totPalabras": 6255,
+ "totPalabrasTabla": 1369,
+ "totCitas": 56,
+ "totFigs": 27,
+ "totTablas": 11,
+ "totRecuerda": 15,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

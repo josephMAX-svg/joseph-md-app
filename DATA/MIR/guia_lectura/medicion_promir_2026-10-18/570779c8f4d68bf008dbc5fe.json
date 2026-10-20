@@ -1,0 +1,275 @@
+{
+ "titulo": "1.- Enfermedades del esófago",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc5fe",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "1 Enfermedades del esófago",
+   "palabras": 35,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Anatomía, histología y fisiología",
+   "palabras": 364,
+   "palabrasTabla": 107,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2007-237"
+   ],
+   "figs": 2,
+   "tablas": [
+    "Tabla 1-1. Regulación del esfínter esofágico inferior (EEI) Disminuyen la presión del EEI "
+   ],
+   "videos": [],
+   "recuerda": 3
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Disfagia y trastornos motores del esófago",
+   "palabras": 35,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.1. Acalasia esofágica",
+   "palabras": 1906,
+   "palabrasTabla": 0,
+   "citasMIR": 6,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2005-002",
+    "2006-001",
+    "2022-024",
+    "2018-080",
+    "2024-127",
+    "2008-002"
+   ],
+   "figs": 7,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.2. Otros trastornos motores esofágicos",
+   "palabras": 111,
+   "palabrasTabla": 168,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2021-138",
+    "2003-001"
+   ],
+   "figs": 2,
+   "tablas": [
+    "Tabla 1-2. Diagnóstico diferencial de los trastornos motores esofágicos Acalasia Esclerode"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Enfermedades inflamatorias esofágicas",
+   "palabras": 34,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.1. Enfermedad por reflujo gastroesofágico",
+   "palabras": 1357,
+   "palabrasTabla": 209,
+   "citasMIR": 17,
+   "citasMIRdesde2015": 9,
+   "citasMIRdesde2020": 6,
+   "citas": [
+    "2011-031",
+    "2005-001",
+    "2015-233",
+    "2025-149",
+    "2021-054",
+    "2006-224",
+    "2024-127",
+    "2014-039",
+    "2022-067",
+    "2017-040",
+    "2021-209",
+    "2016-012",
+    "2008-001",
+    "2007-001",
+    "2010-031",
+    "2004-001",
+    "2025-148"
+   ],
+   "figs": 11,
+   "tablas": [
+    "Tabla 1-3. Clasificación de Los Ángeles. Grados de la esofagitis péptica. Grado Descripció",
+    "Tabla 1-4. Manejo del esófago de Barrett Grado de displasia Seguimiento (está indicado per"
+   ],
+   "videos": [
+    {
+     "id": "65828ffc46dfa006b28061a7.mp4",
+     "seg": 450,
+     "leyenda": "Vídeo 1-1Imperdible: Trastornos motores esofágicos."
+    },
+    {
+     "id": "5a17e1965892e631000fc369.mp4",
+     "seg": 175,
+     "leyenda": "Vídeo 1-2Vídeoclase. ERGE. Evitando confusiones. Conceptos claros."
+    }
+   ],
+   "recuerda": 2
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.2. Esofagitis infecciosas",
+   "palabras": 110,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2018-014"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "5a17da225892e631000fc298.mp4",
+     "seg": 91,
+     "leyenda": "Vídeo 1-3Vídeoclase. Lo importante del esófago de Barrett."
+    }
+   ],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.3. Esofagitis por cáusticos",
+   "palabras": 215,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 2,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.4. Esofagitis eosinofílica",
+   "palabras": 557,
+   "palabrasTabla": 0,
+   "citasMIR": 6,
+   "citasMIRdesde2015": 5,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2015-071",
+    "2013-085",
+    "2017-005",
+    "2019-002",
+    "2021-209",
+    "2023-042"
+   ],
+   "figs": 2,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Otras enfermedades esofágicas",
+   "palabras": 632,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2025-100",
+    "2007-002",
+    "2024-121"
+   ],
+   "figs": 5,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "5a17e3e85892e631000fc3af.mp4",
+     "seg": 129,
+     "leyenda": "Vídeo 1-4Vídeoclase. Esofagitis eosinofilica. Conceptos claros."
+    }
+   ],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "5. Tumores del esófago",
+   "palabras": 475,
+   "palabrasTabla": 0,
+   "citasMIR": 5,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2020-155",
+    "2009-026",
+    "2006-002",
+    "2017-080",
+    "2019-129"
+   ],
+   "figs": 2,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  }
+ ],
+ "nav": [
+  {
+   "t": "Introducción a la asignatura de Gastroenterología",
+   "href": "627e3419522469540751b023"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Enfermedades del estómago",
+   "href": "570779c8f4d68bf008dbc64a"
+  }
+ ],
+ "totPalabras": 5831,
+ "totPalabrasTabla": 484,
+ "totCitas": 41,
+ "totFigs": 34,
+ "totTablas": 4,
+ "totRecuerda": 9,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

@@ -1,0 +1,244 @@
+{
+ "titulo": "6.- Lupus eritematoso sistémico. Síndrome antifosfolípido",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc879",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "6 Lupus eritematoso sistémico. Síndrome antifosfolipídico",
+   "palabras": 85,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Lupus eritematoso sistémico",
+   "palabras": 0,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.1. Introducción",
+   "palabras": 78,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.2. Etiopatogenia",
+   "palabras": 279,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.3. Manifestaciones clínicas",
+   "palabras": 1174,
+   "palabrasTabla": 0,
+   "citasMIR": 7,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2008-077",
+    "2010-096",
+    "2019-157",
+    "2011-071",
+    "2004-082",
+    "2010-090",
+    "2020-072"
+   ],
+   "figs": 2,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.4. Diagnóstico",
+   "palabras": 215,
+   "palabrasTabla": 211,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2006-144",
+    "2019-176"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 6-1. Nefritis lúpica Tipo Nefropatía lúpica M. óptica ME / IF Manifestaciones clínic",
+    "Tabla 6-2. Lesiones activas y crónicas en la nefropatía lúpica Activas Crónicas Glomérulo "
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.5. Tratamiento",
+   "palabras": 559,
+   "palabrasTabla": 295,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [
+    "Tabla 6-3. Criterios diagnósticos del lupus eritematoso sistémico. American College of Rhe",
+    "Tabla 6-4. Autoanticuerpos en el lupus eritematoso sistémico Anticuerpos Prevalencia Signi",
+    "Tabla 6-5. Tratamiento del lupus eritematoso sistémico Leves Cutáneas Graves Manifestación"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.6. Evolución y pronóstico",
+   "palabras": 130,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.7. Situaciones especiales en el lupus eritematoso sistémico",
+   "palabras": 325,
+   "palabrasTabla": 0,
+   "citasMIR": 5,
+   "citasMIRdesde2015": 5,
+   "citasMIRdesde2020": 4,
+   "citas": [
+    "2020-072",
+    "2024-036",
+    "2020-120",
+    "2017-168",
+    "2022-171"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Síndrome antifosfolipídico",
+   "palabras": 0,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.1. Concepto",
+   "palabras": 71,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.2. Diagnóstico",
+   "palabras": 348,
+   "palabrasTabla": 0,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2014-085",
+    "2009-111",
+    "2024-165",
+    "2008-255"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.3. Tratamiento",
+   "palabras": 279,
+   "palabrasTabla": 75,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2003-083",
+    "2022-073"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 6-6. Criterios diagnósticos del síndrome antifosfolipídico Criterio clínico Trombosi"
+   ],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Espondiloartropatías",
+   "href": "570779c9f4d68bf008dbc83f"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Otras conectivopatías",
+   "href": "570779c9f4d68bf008dbc89d"
+  }
+ ],
+ "totPalabras": 3543,
+ "totPalabrasTabla": 581,
+ "totCitas": 20,
+ "totFigs": 3,
+ "totTablas": 6,
+ "totRecuerda": 0,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

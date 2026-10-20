@@ -9,7 +9,7 @@
  *
  * ⚠ HISTÓRICO (19-sep-2026, v5.14): DERMA_OBS_DAY sigue keyed por el d de la v2.1 (5-sep, 70 átomos) y las carpetas
  * `dNN_*` del vault para d44-d70 son las de esa versión (NO se regenera el vault: el plan v3 tiene 73 sesiones, d1 = mié
- * lun 19-oct-2026 en v6.02 (el lun 19-oct es día-Derma; d73 = vie 14-may-2027) · mar 13-oct en v6.01 (el lun 12-oct es día-Research; d73 = lun 10-may-2027) · mié 7-oct en v6.00 = v5.20 = v5.19 (d73 = mié 5-may-2027 en v6.00 y v5.20) ·
+ * mié 21-oct-2026 en v6.03 (el mié 21-oct es día-Derma; d73 = lun 17-may-2027) · lun 19-oct-2026 en v6.02 (el lun 19-oct es día-Derma; d73 = vie 14-may-2027) · mar 13-oct en v6.01 (el lun 12-oct es día-Research; d73 = lun 10-may-2027) · mié 7-oct en v6.00 = v5.20 = v5.19 (d73 = mié 5-may-2027 en v6.00 y v5.20) ·
  * v5.18: lun 5-oct · v5.17: jue 1-oct · v5.16: mar 29-sep), y el taper del Step 1 desplazó 26 átomos: d44→d50 · d45→d51 · d46→d52 · d47-d56→d53-d62 · d57→d44 · d58→d45 ·
  * d59-d65→d63-d69 · d66→d46 · d67→d70 · d68→d71 · d69→d72 · d70→d73). `dermaObsUrlDay(dV3)` traduce con el mapa INVERSO
  * (DERMA_OBS_DAY_V3_A_V21) para que cada sesión v3 abra su nota real; las 3 sesiones nuevas del taper (d47-d49, segundas

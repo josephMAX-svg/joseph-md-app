@@ -1,0 +1,205 @@
+{
+ "titulo": "23.- Control de la gestación",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc6c6",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "23 Control de la gestación",
+   "palabras": 48,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "655f1b58d73efb7bdd786836.mp4",
+     "seg": 5088,
+     "leyenda": "Vídeo 23-1Masterclass: Control y seguimiento de la gestación."
+    }
+   ],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Primer trimestre",
+   "palabras": 0,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.1. Cribado combinado del primer trimestre",
+   "palabras": 1364,
+   "palabrasTabla": 140,
+   "citasMIR": 7,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2021-071",
+    "2003-166",
+    "2015-153",
+    "2011-153",
+    "2022-071",
+    "2006-168",
+    "2009-156"
+   ],
+   "figs": 6,
+   "tablas": [
+    "Tabla 23-1. Trisomías más frecuentes (MIR 2015-2016, P153) Aneuploidías β-HCG libre PAPP-A"
+   ],
+   "videos": [
+    {
+     "id": "574b25621858bc2c0012c211.mp4",
+     "seg": 5,
+     "leyenda": "Vídeo 23-2Biopsia corial transcervical."
+    },
+    {
+     "id": "574b25611858bc2c0012c20e.mp4",
+     "seg": 4,
+     "leyenda": "Vídeo 23-4Cordocentesis para transfusión intrauterina en un caso de anemia fetal por una isoinmunización."
+    }
+   ],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Segundo trimestre",
+   "palabras": 17,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.1. Ecografía morfológica",
+   "palabras": 245,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2005-165"
+   ],
+   "figs": 2,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.2. Cuádruple cribado",
+   "palabras": 114,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Tercer trimestre",
+   "palabras": 17,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.1. Ecografía de crecimiento fetal",
+   "palabras": 1167,
+   "palabrasTabla": 237,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 3,
+   "citas": [
+    "2024-058",
+    "2022-075",
+    "2023-072"
+   ],
+   "figs": 3,
+   "tablas": [
+    "Tabla 23-2. Clasificación del crecimiento intrauterino restringido (CIR) según edad gestac",
+    "Tabla 23-3. Clasificación del crecimiento intrauterino restringido según gravedad Estadio ",
+    "Tabla 23-4. Controles y finalización del crecimiento intrauterino restringido (MIR 2023-20"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.2. Pruebas de bienestar fetal anteparto",
+   "palabras": 471,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Esquema del control de la gestación de bajo riesgo",
+   "palabras": 474,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Hemorragia en la gestación",
+   "href": "570779c8f4d68bf008dbc66a"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Complicaciones maternas de la gestación",
+   "href": "570779c9f4d68bf008dbc743"
+  }
+ ],
+ "totPalabras": 3917,
+ "totPalabrasTabla": 377,
+ "totCitas": 11,
+ "totFigs": 15,
+ "totTablas": 4,
+ "totRecuerda": 2,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

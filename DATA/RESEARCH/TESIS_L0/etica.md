@@ -87,7 +87,11 @@ de salud de menores = datos sensibles → consentimiento del titular/representan
 
 ## 5. Calendario mínimo (paralelo a la carta al editor; 45' interdiarios)
 
-> **✅ v6.02 (17-oct-2026, vigente; `researchDailyPlan.ts` regenerado con START 2026-10-19, Research d1 mar 20-oct):** M1 (Dr. Ciro: vía CEI + 10 documentos)
+> **✅ v6.03 (20-oct-2026, vigente; `researchDailyPlan.ts` regenerado con START 2026-10-21, Research d1 jue 22-oct):** M1 (Dr. Ciro: vía CEI + 10 documentos)
+> **mié 28-oct** · **T-1 lun 9-nov (d7)** · M3 (permiso CADI) mié 11-nov · T-3 jue 3-dic · T-4 lun 7-dic · T-2 STROBE mié 9-dic · T-5 vie 11-dic · T-6 revisión
+> Dr. Ciro mar 15-dic · T-7 formateo + gates lun 21-dic · **T-8 SUBMIT mar 29-dic** (solo con nº de CEI/exención e inglés revisado; si no, cascada a
+> feb-2027) · PAUSA vie 15-ene → mié 10-feb. Fuente: `DATA/RESEARCH/RUTA_PUBLICACION_2027.md`, bloque v6.03.
+> **⏸ v6.02 (historial; 17-oct-2026; `researchDailyPlan.ts` regenerado con START 2026-10-19, Research d1 mar 20-oct):** M1 (Dr. Ciro: vía CEI + 10 documentos)
 > **lun 26-oct** · **T-1 jue 5-nov (d7)** · M3 (permiso CADI) lun 9-nov · T-3 mar 1-dic · T-4 jue 3-dic · T-2 STROBE lun 7-dic · T-5 mié 9-dic · T-6 revisión Dr.
 > Ciro vie 11-dic · T-7 formateo + gates jue 17-dic · **T-8 SUBMIT mié 23-dic** (solo con nº de CEI/exención e inglés revisado; si no, cascada a feb-2027) ·
 > PAUSA vie 15-ene → mié 10-feb. Las fechas de la tabla de abajo son v5.20 (⏸; v6.01: M1 vie 16-oct · T-1 mié 28-oct · T-8 lun 21-dic). Fuente:

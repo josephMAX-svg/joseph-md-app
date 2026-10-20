@@ -7,18 +7,20 @@
 // v6.02 (17-oct-2026): F1 = {D1-D51, D55} (52 hábiles; un hito de F1 no sale de F1: el NBME 28 = v5.20 D55 ocupa el último slot) y el tramo 2
 //   lleva D52, D53, D54, D56, D57, D79 → 43 dOrig. La regla general ya no es «prefijo»: las desplazadas deben ser las ÚLTIMAS filas de temario
 //   NO-hito del orden D1-D57 · D79 (en su orden) y ningún hito de F1 puede estar en el tramo 2 (v6.00: ninguna · v6.01: D79 · v6.02: 6).
-// Uso: node v1_check.js [tramo2.json]   (lee dias_v520.json CONGELADO, no git HEAD; por defecto la referencia v6.02)
+// v6.03 (20-oct-2026): F1 = {D1-D49, D55} (50 hábiles, mié 21-oct → mié 30-dic) y el tramo 2 lleva D50-D54, D56, D57, D79 → 45 dOrig.
+//   Misma regla (sin cambio de lógica); por defecto lee la referencia v6.03.
+// Uso: node v1_check.js [tramo2.json]   (lee dias_v520.json CONGELADO, no git HEAD; por defecto la referencia v6.03)
 const V = require('./dias_v520.json');
-const T2 = require(process.argv[2] ? require('path').resolve(process.argv[2]) : './tramo2_14mar_27sep_v602.json');
+const T2 = require(process.argv[2] ? require('path').resolve(process.argv[2]) : './tramo2_14mar_27sep_v603.json');
 const normSub = (s) => s.replace(/\d{2}:\d{2}-\d{2}:\d{2}/g, '');
 const key = (x, sub) => JSON.stringify([x.system, normSub(sub), x.bbCh, x.bbVid, x.uw, x.mat, x.matType, x.palm ? x.palm.id : null]);
 const A = {}, B = {}; const inc = (M, k) => { M[k] = (M[k] || 0) + 1; };
 V.forEach((x) => inc(A, key(x, x.sub)));
 const ORIGEN_F1_TEMARIO = [...Array.from({ length: 57 }, (_, i) => i + 1), 79];
 const enT2 = new Set(T2.filter((r) => r.dOrig).map((r) => r.dOrig));
-const F1 = ORIGEN_F1_TEMARIO.filter((d) => !enT2.has(d)); // v6.00: D1-D57 + D79 · v6.01: D1-D57 · v6.02: D1-D51 + D55
+const F1 = ORIGEN_F1_TEMARIO.filter((d) => !enT2.has(d)); // v6.00: D1-D57 + D79 · v6.01: D1-D57 · v6.02: D1-D51 + D55 · v6.03: D1-D49 + D55
 F1.forEach((d) => { const x = V.find((y) => y.d === d); inc(B, key(x, x.sub)); });
-const esperadoT = V.length - F1.length; // v6.00: 37 · v6.01: 38 · v6.02: 43
+const esperadoT = V.length - F1.length; // v6.00: 37 · v6.01: 38 · v6.02: 43 · v6.03: 45
 // v6.02: las desplazadas = las ÚLTIMAS filas de temario no-hito del orden de F1 (en su orden); los hitos de F1 nunca están en el tramo 2
 const esHito = (d) => /^🎯/.test(V.find((y) => y.d === d).sub);
 const noHito = ORIGEN_F1_TEMARIO.filter((d) => !esHito(d));

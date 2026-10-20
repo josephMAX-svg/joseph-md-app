@@ -1,0 +1,599 @@
+{
+ "titulo": "2.- Neurocirugía",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc895",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "2 Neurocirugía",
+   "palabras": 80,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Patología raquimedular",
+   "palabras": 20,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.1. Lumbalgia",
+   "palabras": 140,
+   "palabrasTabla": 0,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2018-200",
+    "2025-132",
+    "2023-107",
+    "2004-087"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.2. Hernias discales",
+   "palabras": 604,
+   "palabrasTabla": 98,
+   "citasMIR": 5,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2025-090",
+    "2022-117",
+    "2010-219",
+    "2017-175",
+    "2010-097"
+   ],
+   "figs": 3,
+   "tablas": [
+    "Tabla 2-1. Criterios de gravedad en la lumbalgia (MIR 2025-2026, P090; MIR 2022-2023, P117"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.3. Estenosis del canal lumbar",
+   "palabras": 135,
+   "palabrasTabla": 0,
+   "citasMIR": 9,
+   "citasMIRdesde2015": 4,
+   "citasMIRdesde2020": 4,
+   "citas": [
+    "2024-089",
+    "2022-097",
+    "2022-108",
+    "2003-087",
+    "2006-062",
+    "2008-057",
+    "2012-079",
+    "2013-160",
+    "2024-007"
+   ],
+   "figs": 3,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.4. Siringomielia",
+   "palabras": 123,
+   "palabrasTabla": 176,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [
+    "Tabla 2-2. Características clínicas de la claudicación neurógena y diagnóstico diferencial"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.5. Tumores raquimedulares",
+   "palabras": 323,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2011-011"
+   ],
+   "figs": 2,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Tumores cerebrales",
+   "palabras": 13,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.1. Epidemiología",
+   "palabras": 205,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.2. Manifestaciones clínicas",
+   "palabras": 65,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.3. Metástasis cerebrales",
+   "palabras": 235,
+   "palabrasTabla": 0,
+   "citasMIR": 5,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2011-124",
+    "2004-064",
+    "2009-070",
+    "2018-025",
+    "2025-078"
+   ],
+   "figs": 2,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.4. Tumores cerebrales primarios",
+   "palabras": 1727,
+   "palabrasTabla": 121,
+   "citasMIR": 10,
+   "citasMIRdesde2015": 4,
+   "citasMIRdesde2020": 3,
+   "citas": [
+    "2013-041",
+    "2022-145",
+    "2007-235",
+    "2025-079",
+    "2014-071",
+    "2003-064",
+    "2006-063",
+    "2023-094",
+    "2010-070",
+    "2017-151"
+   ],
+   "figs": 6,
+   "tablas": [
+    "Tabla 2-3. Características de los astrocitomas de grado II, III y IV de la Organización Mu"
+   ],
+   "videos": [],
+   "recuerda": 3
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Síndrome de hipertensión intracraneal",
+   "palabras": 135,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2015-002"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.1. Etiología",
+   "palabras": 24,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.2. Manifestaciones clínicas",
+   "palabras": 251,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2013-229",
+    "2017-148",
+    "2008-240"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.3. Diagnóstico",
+   "palabras": 13,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.4. Tratamiento",
+   "palabras": 70,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Hidrocefalia",
+   "palabras": 29,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.1. Clasificación",
+   "palabras": 148,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2005-064"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.2. Manifestaciones clínicas",
+   "palabras": 92,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.3. Tratamiento",
+   "palabras": 81,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "5. Hidrocefalia normotensiva a presión normal o crónica del adulto",
+   "palabras": 5,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2005-057"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "6. Seudotumor cerebri/Síndrome de hipertensión intracraneal «benigna» o idiopática",
+   "palabras": 3,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2012-069"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "7. Traumatismos craneoencefálicos",
+   "palabras": 73,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2005-094",
+    "2009-230"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.1. Fracturas craneales",
+   "palabras": 262,
+   "palabrasTabla": 82,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2025-101",
+    "2009-234",
+    "2008-064"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 2-4. Escala de Glasgow Apertura ocular Respuesta verbal Respuesta motora 4. Espontán"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.2. Conmoción cerebral",
+   "palabras": 61,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.3. Contusión cerebral",
+   "palabras": 47,
+   "palabrasTabla": 82,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2009-234"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 2-5. Fracturas de la base del cráneo Fosa anterior Fosa media Fosa posterior Hematom"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.4. Lesión axonal difusa",
+   "palabras": 32,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2006-064",
+    "2013-147"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.5. Hematoma subdural",
+   "palabras": 18,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2015-024"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.6. Hematoma epidural",
+   "palabras": 36,
+   "palabrasTabla": 184,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2018-026",
+    "2015-024"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 2-6. Tabla comparativa entre el hematoma subdural y el epidural Hematoma subdural He"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.7. Hemorragia subaracnoidea",
+   "palabras": 14,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "8. Malformaciones craneales",
+   "palabras": 16,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "8.1. Craneosinostosis",
+   "palabras": 57,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "8.2. Malformación de Chiari",
+   "palabras": 104,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "8.3. Disrafismos espinales",
+   "palabras": 294,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Semiología",
+   "href": "570779c9f4d68bf008dbc871"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Enfermedades cerebrovasculares",
+   "href": "570779c9f4d68bf008dbc8a9"
+  }
+ ],
+ "totPalabras": 5535,
+ "totPalabrasTabla": 743,
+ "totCitas": 52,
+ "totFigs": 24,
+ "totTablas": 6,
+ "totRecuerda": 7,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

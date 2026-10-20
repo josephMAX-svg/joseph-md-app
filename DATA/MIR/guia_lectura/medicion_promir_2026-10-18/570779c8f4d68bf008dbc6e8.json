@@ -1,0 +1,495 @@
+{
+ "titulo": "7.- Infecciones del tracto respiratorio inferior. Neumonía aguda",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc6e8",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "7 Infecciones del tracto respiratorio inferior. Neumonía aguda",
+   "palabras": 17,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Definiciones. Etiologías más frecuentes. Tratamiento empírico",
+   "palabras": 214,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2010-056"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.1. Patogenia",
+   "palabras": 370,
+   "palabrasTabla": 106,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2003-230"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 7-1. Manifestaciones extrapulmonares. Neumonías atípicas Neurológicas Cardiovascular"
+   ],
+   "videos": [
+    {
+     "id": "5c496bffd628691c3d27e04b.mp4",
+     "seg": 871,
+     "leyenda": "Vídeo 7-1Infecciones del tracto respiratorio inferior. Neumonía aguda."
+    }
+   ],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Tipos de neumonía",
+   "palabras": 27,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.1. Neumonía adquirida en la comunidad",
+   "palabras": 1639,
+   "palabrasTabla": 236,
+   "citasMIR": 6,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2017-121",
+    "2010-109",
+    "2013-114",
+    "2017-064",
+    "2005-126",
+    "2022-126"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 7-2. Agentes etiológicos de la neumonía adquirida en la comunidad en los distintos g",
+    "Tabla 7-3. Patógenos más frecuentes de neumonía adquirida en la comunidad en pacientes ped",
+    "Tabla 7-4. Criterios de gravedad de la neumonía adquirida en la comunidad: PSI (Pneumonia "
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.2. Neumonía asociada a cuidados sanitarios",
+   "palabras": 258,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.3. Neumonía nosocomial",
+   "palabras": 456,
+   "palabrasTabla": 38,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2006-125"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 7-5. Microorganismos relacionados con la ventilación mecánica Gram​negativos Grampos"
+   ],
+   "videos": [],
+   "recuerda": 2
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.4. Neumonía en el paciente inmunodeprimido, con comorbilidades y otros factores de riesgo",
+   "palabras": 471,
+   "palabrasTabla": 103,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [
+    "Tabla 7-6. Microorganismo de la neumonía adquirida en la comunidad en pacientes inmunodepr"
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Diagnóstico de la neumonía",
+   "palabras": 12,
+   "palabrasTabla": 126,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [
+    "Tabla 7-7. Microorganismo causal de la neumonía según comorbilidades y factores de riesgo "
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.1. Sospecha clínica",
+   "palabras": 114,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.2. Radiografía de tórax",
+   "palabras": 331,
+   "palabrasTabla": 97,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [
+    "Tabla 7-8. Diagnóstico diferencial: patrón radiológico y agente causal Patrón radiológico "
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.3. Analítica de sangre y gasometría arterial",
+   "palabras": 416,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.4. Estudio microbiológico",
+   "palabras": 490,
+   "palabrasTabla": 146,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2008-124",
+    "2006-230"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 7-9. Diagnóstico diferencial de la neumonía adquirida en el comunidad en el adulto i"
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Neumonía neumocócica",
+   "palabras": 67,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2013-114",
+    "2010-109"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.1. Diagnóstico microbiológico",
+   "palabras": 41,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.2. Grupos de riesgo",
+   "palabras": 254,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2024-035"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.3. Tratamiento dirigido",
+   "palabras": 186,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2014-124"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.4. Evolución. Complicaciones",
+   "palabras": 206,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2013-115",
+    "2012-057",
+    "2004-126"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "5. Neumonía por Legionella",
+   "palabras": 790,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2021-042",
+    "2005-126"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.1. Grupos de riesgo",
+   "palabras": 94,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.2. Diagnóstico microbiológico",
+   "palabras": 100,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.3. Tratamiento",
+   "palabras": 57,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2006-126"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "6. Tratamiento antibiótico empírico y dirigido de la neumonía",
+   "palabras": 19,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.1. Neumonía adquirida en la comunidad",
+   "palabras": 687,
+   "palabrasTabla": 165,
+   "citasMIR": 6,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2019-164",
+    "2007-126",
+    "2006-126",
+    "2003-126",
+    "2017-121",
+    "2005-126"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 7-10. Actualización de guías de tratamiento de la NAC. Tabla comparativa Guías 2019 "
+   ],
+   "videos": [],
+   "recuerda": 2
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.2. Neumonía nosocomial",
+   "palabras": 341,
+   "palabrasTabla": 60,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2011-204"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 7-11. Tratamiento antibiótico de la neumonía con factores de riesgo de P. aeruginosa"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "7. Complicaciones de la neumonía",
+   "palabras": 30,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.1. Empiema pleural",
+   "palabras": 940,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2013-115",
+    "2012-057",
+    "2004-126"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.2. Neumonía necrotizante. Absceso pulmonar",
+   "palabras": 590,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2017-016",
+    "2021-179",
+    "2009-011"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Infecciones del tracto respiratorio superior",
+   "href": "570779c9f4d68bf008dbc855"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Tuberculosis",
+   "href": "570779c9f4d68bf008dbc765"
+  }
+ ],
+ "totPalabras": 9217,
+ "totPalabrasTabla": 1077,
+ "totCitas": 34,
+ "totFigs": 5,
+ "totTablas": 11,
+ "totRecuerda": 14,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

@@ -10,7 +10,15 @@
 > Regla de estilo (RUTA §5.2): mensajes **cortos, hiperpersonalizados y con una petición concreta y verificable**
 > (coautoría con reparto de trabajo, permiso de instrumento, revisión de un manuscrito) — nunca "quiero experiencia".
 
-> **✅ v6.02 (sáb 17-oct-2026 · D1 del régimen lun 19-oct; `researchDailyPlan.ts` regenerado con START 2026-10-19, Research d1 mar 20-oct): fechas vigentes
+> **✅ v6.03 (mar 20-oct-2026 · D1 del régimen mié 21-oct; `researchDailyPlan.ts` regenerado con START 2026-10-21, Research d1 jue 22-oct): fechas vigentes
+> de los átomos de esta tabla** — mandan sobre las de v6.02, v6.01 y v5.20: **M1 (mensaje 1 al Dr. Ciro) mié 28-oct** · **C-1 vie 30-oct** = el **último
+> día-Research antes del plazo del 31-oct** (pedir el caso en M1 y activar la fila 6 —fuente B— ese viernes si no hay respuesta) · **M2 (Rising Scholars)
+> mar 3-nov** · **T-1 (CEI) lun 9-nov** · **M3 (mensaje 3, CADI) mié 11-nov** = seguimiento del caso (d8) · C-3 (d10) mar 17-nov (3 semanas desde M1 = mié
+> 18-nov) · decisión del plan B de inglés (4 semanas desde M2) **mar 1-dic** = día de **CR-2** · CR-1 **vie 27-nov** · recordatorio de M3 a los 21 días
+> **mié 2-dic** · X-1 (revisor #2 de SR-1) **mar 23-feb-2027** (=), tras la pausa (antes de X-9 mié 31-mar y de PROSPERO mar 6-abr) · X-2 (rebuttal de la
+> carta + confirmación del mentor de inglés) pasa tras la pausa (jue 25-feb): la confirmación del mentor (fila 2) se comprueba ANTES de CR-7 (vie 8-ene).
+> CR-1 y CR-2 caen 27 y 31 días después del 31-oct.
+> **⏸ v6.02 (historial; sáb 17-oct-2026 · D1 del régimen lun 19-oct; `researchDailyPlan.ts` regenerado con START 2026-10-19, Research d1 mar 20-oct): fechas vigentes
 > de los átomos de esta tabla** — mandan sobre las de v6.01 y v5.20: **M1 (mensaje 1 al Dr. Ciro) lun 26-oct** · **M2 (Rising Scholars) vie 30-oct** = el
 > **último día-Research antes del plazo del 31-oct** · **T-1 (CEI) jue 5-nov** · **M3 (mensaje 3, CADI) lun 9-nov** = seguimiento del caso · C-3 (d10) vie 13-nov
 > (3 semanas desde M1 = lun 16-nov) → sin caso, **activar la fila 6 (fuente B)** — para llegar al plazo, ya el vie 30-oct · decisión del plan B de inglés (4

@@ -1,0 +1,368 @@
+{
+ "titulo": "3.- Trastornos del estado de ánimo",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc889",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "3 Trastornos del estado de ánimo",
+   "palabras": 48,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "5f0ed4d8c21a8142b2946759.mp4",
+     "seg": 3154,
+     "leyenda": "Vídeo 3-1Videoclase: Trastornos del estado de ánimo."
+    }
+   ],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Síndromes depresivos",
+   "palabras": 25,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.1. Síntomas",
+   "palabras": 368,
+   "palabrasTabla": 0,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2021-099",
+    "2022-089",
+    "2003-161",
+    "2012-169"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.2. Entidades patológicas de los síndromes depresivos",
+   "palabras": 979,
+   "palabrasTabla": 0,
+   "citasMIR": 8,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2011-158",
+    "2022-090",
+    "2023-088",
+    "2005-162",
+    "2006-156",
+    "2004-160",
+    "2008-165",
+    "2004-163"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Síndromes maníacos",
+   "palabras": 27,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.1. Síntomas",
+   "palabras": 369,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2006-155",
+    "2003-159"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.2. Entidades patológicas de los síndromes maníacos",
+   "palabras": 828,
+   "palabrasTabla": 128,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2015-223",
+    "2020-086",
+    "2018-185",
+    "2009-235"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 3-1. Clasificación de los episodios maníacos en función de su intensidad y duración "
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Otros trastornos del estado de ánimo",
+   "palabras": 106,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Epidemiología",
+   "palabras": 280,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2009-147"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "5. Etiología",
+   "palabras": 9,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.1. Factores genéticos",
+   "palabras": 55,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.2. Factores bioquímicos",
+   "palabras": 105,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.3. Factores neuroendocrinos",
+   "palabras": 220,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2008-162",
+    "2022-090"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.4. Factores neuroanatómicos",
+   "palabras": 188,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.5. Factores psicosociales",
+   "palabras": 127,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "6. Suicidio",
+   "palabras": 417,
+   "palabrasTabla": 0,
+   "citasMIR": 5,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2024-075",
+    "2021-096",
+    "2006-159",
+    "2012-172",
+    "2007-158"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "7. Tratamiento",
+   "palabras": 16,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.1. Tratamiento de la depresión",
+   "palabras": 2387,
+   "palabrasTabla": 117,
+   "citasMIR": 14,
+   "citasMIRdesde2015": 6,
+   "citasMIRdesde2020": 3,
+   "citas": [
+    "2004-159",
+    "2018-188",
+    "2020-085",
+    "2022-088",
+    "2004-221",
+    "2007-221",
+    "2009-146",
+    "2010-147",
+    "2011-233",
+    "2007-223",
+    "2003-223",
+    "2019-088",
+    "2019-086",
+    "2021-098"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 3-2. Principales antidepresivos comercializados en España Antidepresivos clásicos Tr"
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.2. Tratamiento del trastorno bipolar",
+   "palabras": 1883,
+   "palabrasTabla": 193,
+   "citasMIR": 13,
+   "citasMIRdesde2015": 8,
+   "citasMIRdesde2020": 7,
+   "citas": [
+    "2023-082",
+    "2021-097",
+    "2022-087",
+    "2020-083",
+    "2025-058",
+    "2005-156",
+    "2022-053",
+    "2004-156",
+    "2011-161",
+    "2007-160",
+    "2014-150",
+    "2019-089",
+    "2024-076"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 3-3. Resumen de los principales fármacos antidepresivos Indicaciones Efectos adverso"
+   ],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Actualización de los trastornos neuróticos",
+   "href": "570779c9f4d68bf008dbc865"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Trastornos psicóticos",
+   "href": "570779c9f4d68bf008dbc777"
+  }
+ ],
+ "totPalabras": 8437,
+ "totPalabrasTabla": 438,
+ "totCitas": 53,
+ "totFigs": 4,
+ "totTablas": 3,
+ "totRecuerda": 1,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

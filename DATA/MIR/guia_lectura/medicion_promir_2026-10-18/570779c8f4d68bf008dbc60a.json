@@ -1,0 +1,350 @@
+{
+ "titulo": "6.- Riñón y enfermedades sistémicas",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc60a",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "6 Riñón y enfermedades sistémicas",
+   "palabras": 55,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Vasculitis sistémicas",
+   "palabras": 227,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.1. Vasculitis asociadas a ANCA",
+   "palabras": 874,
+   "palabrasTabla": 605,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2022-202",
+    "2024-195",
+    "2003-100",
+    "2004-100"
+   ],
+   "figs": 4,
+   "tablas": [
+    "Tabla 6-1. Nomenclatura de las vasculitis sistémicas en la Conferencia de Consenso de Chap",
+    "Tabla 6-2. Categorías de vasculitis propuestas por la Conferencia de Consenso de Chapel-Hi",
+    "Tabla 6-3. Principales vasculitis asociadas a ANCA y por inmunocomplejos Vasculitis asocia",
+    "Tabla 6-4. Afectación renal y subtipos de ANCA en los síndromes de vasculitis asociada a A"
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.2. Vasculitis asociadas a inmunocomplejos",
+   "palabras": 384,
+   "palabrasTabla": 0,
+   "citasMIR": 6,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2010-102",
+    "2007-096",
+    "2006-096",
+    "2008-082",
+    "2013-126",
+    "2022-136"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.3. Otras vasculitis: poliarteritis nodosa",
+   "palabras": 102,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Microangiopatías trombóticas: Síndrome hemolítico urémico y Púrpura trombótica trombocitopénica",
+   "palabras": 501,
+   "palabrasTabla": 0,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 3,
+   "citas": [
+    "2009-207",
+    "2024-166",
+    "2021-153",
+    "2023-145"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Amiloidosis",
+   "palabras": 408,
+   "palabrasTabla": 52,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2008-099",
+    "2012-122"
+   ],
+   "figs": 3,
+   "tablas": [
+    "Tabla 6-5. Principales diferencias entre el síndrome hemolítico urémico y la púrpura tromb"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Glomerulonefritis de depósito no amiloide",
+   "palabras": 122,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "5. Riñón y discrasia sanguínea",
+   "palabras": 461,
+   "palabrasTabla": 0,
+   "citasMIR": 5,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2011-104",
+    "2018-138",
+    "2022-139",
+    "2013-105",
+    "2009-095"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 2
+  },
+  {
+   "nivel": "H3",
+   "titulo": "6. Nefropatía lúpica",
+   "palabras": 721,
+   "palabrasTabla": 277,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2014-104",
+    "2007-097"
+   ],
+   "figs": 2,
+   "tablas": [
+    "Tabla 6-6. Indicaciones biopsia renal en la nefritis lúpica Primera biopsia renal Biopsias",
+    "Tabla 6-7. Índices",
+    "Tabla 6-8. Clasificación de la nefropatía lúpica según la Sociedad Internacional de Nefrol"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "7. Riñón y artritis reumatoide",
+   "palabras": 259,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "8. Riñón y esclerodermia",
+   "palabras": 15,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "8.1. Nefropatía aguda",
+   "palabras": 349,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 2,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "8.2. Nefropatía crónica",
+   "palabras": 99,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "9. Riñón y síndrome seco (síndrome de Sjögren)",
+   "palabras": 126,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "10. Riñón y sarcoidosis",
+   "palabras": 48,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "11. Afectación renal en las infecciones víricas",
+   "palabras": 34,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "11.1. Asociadas a infección por el virus de la inmunodeficiencia humana",
+   "palabras": 197,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "11.2. Asociadas a infección por el virus de la hepatitis C",
+   "palabras": 56,
+   "palabrasTabla": 45,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [
+    "Tabla 6-9. Afectación renal por el virus de la hepatitis C Más frecuente Menos frecuente C"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "11.3. Asociadas a infección por el virus de la hepatitis B",
+   "palabras": 139,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Glomerulonefritis primarias",
+   "href": "570779c9f4d68bf008dbc789"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Nefropatías intersticiales",
+   "href": "570779c8f4d68bf008dbc656"
+  }
+ ],
+ "totPalabras": 5177,
+ "totPalabrasTabla": 979,
+ "totCitas": 23,
+ "totFigs": 13,
+ "totTablas": 9,
+ "totRecuerda": 4,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

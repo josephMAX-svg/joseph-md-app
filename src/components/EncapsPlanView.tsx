@@ -1,7 +1,7 @@
 // EncapsPlanView — Opción B (nativa) del PROMPT_ULTRAMAESTRO_APP.
 // v6.02c (18-oct-2026, E4): HOY → «🧭 GUÍA DE LA HORA 16:15-17:15» (GuiaBloqueCard con encapsGuia.guiaEncapsDe: eval · banco/pre-test ·
 // secundario · material del Drive · registro · APEX, con minutos y enlace directo a los runners BANCO_PROPIO publicados) · ◆ Obsidian = nota
-// del CÓDIGO del día (encapsGuia) · aviso de registro por --registrar --append los días de PRE-TEST DE ARRANQUE (lun 19 / mar 20-oct).
+// del CÓDIGO del día (encapsGuia) · aviso de registro por --registrar --append los días de PRE-TEST DE ARRANQUE (D1 + D2: v6.03 mié 21 / jue 22-oct; v6.02 lun 19 / mar 20).
 // v5.14 (19-sep): sims de la FASE INTENSIVA (pretest · sim100 · dress_rehearsal, escala /100) en ▲ Sim + tipo de ronda del cierre por tipo de día.
 // PE Perú → ENCAPS → "Plan diario": HOY · Camino a 17/20 · Simulacros · 7 días.
 // Lee study_schedule/metrics/checks/sim_scores de Supabase; los checks se

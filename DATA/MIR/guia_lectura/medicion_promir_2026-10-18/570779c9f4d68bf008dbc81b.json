@@ -1,0 +1,464 @@
+{
+ "titulo": "5.- Infecciones del sistema nervioso central. Meningitis",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc81b",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "5 Infecciones del sistema nervioso central. Meningitis",
+   "palabras": 65,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Concepto, epidemiología y etiología",
+   "palabras": 711,
+   "palabrasTabla": 202,
+   "citasMIR": 6,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2008-056",
+    "2019-109",
+    "2022-167",
+    "2008-126",
+    "2004-124",
+    "2008-230"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 5-1. Etiología de la meningitis bacteriana (MIR 2022-2023, P167) Etiología Sitio de "
+   ],
+   "videos": [],
+   "recuerda": 3
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Aproximación diagnóstica",
+   "palabras": 27,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.1. Manifestaciones clínicas",
+   "palabras": 247,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.2. Datos de laboratorio",
+   "palabras": 177,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.3. Punción lumbar",
+   "palabras": 466,
+   "palabrasTabla": 165,
+   "citasMIR": 6,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2008-257",
+    "2004-052",
+    "2011-140",
+    "2005-122",
+    "2008-126",
+    "2018-059"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 5-2. Características del líquido cefalorraquídeo según la etiología Normal Meningiti"
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Tratamiento",
+   "palabras": 43,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.1. Tratamiento antibiótico",
+   "palabras": 220,
+   "palabrasTabla": 165,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2015-105",
+    "2022-167"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 5-3. Tratamiento de la meningitis según el agente causante (MIR 2022-2023, P167) Fac"
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.2. Tratamiento adyuvante",
+   "palabras": 96,
+   "palabrasTabla": 43,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [
+    "Tabla 5-4. Duración del tratamiento antibiótico en las infecciones del sistema nervioso ce"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Pronóstico: mortalidad según la etiología",
+   "palabras": 42,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "5. Complicaciones",
+   "palabras": 40,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2014-174"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "6. Quimioprofilaxis",
+   "palabras": 18,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.1. Quimioprofilaxis en las meningitis por meningococo",
+   "palabras": 131,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2023-093",
+    "2004-184"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.2. Profilaxis de H. Influenzae (tipo b)",
+   "palabras": 111,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "7. Vacunación. Indicaciones",
+   "palabras": 56,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2024-043"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "8. Meningitis con cultivos negativos",
+   "palabras": 650,
+   "palabrasTabla": 0,
+   "citasMIR": 5,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2012-116",
+    "2011-140",
+    "2005-133",
+    "2008-056",
+    "2006-185"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 5
+  },
+  {
+   "nivel": "H3",
+   "titulo": "9. Encefalitis viral",
+   "palabras": 117,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "9.1. Características clínicas de las encefalitis víricas",
+   "palabras": 380,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "9.2. Encefalitis herpética",
+   "palabras": 259,
+   "palabrasTabla": 0,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2009-062",
+    "2009-114",
+    "2009-208",
+    "2004-122"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "10. Absceso cerebral",
+   "palabras": 546,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 2,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "10.1. Etiología",
+   "palabras": 392,
+   "palabrasTabla": 79,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [
+    "Tabla 5-5. Patógenos más frecuentes de absceso cerebral en determinadas condiciones de inm"
+   ],
+   "videos": [],
+   "recuerda": 2
+  },
+  {
+   "nivel": "H4",
+   "titulo": "10.2. Diagnóstico",
+   "palabras": 300,
+   "palabrasTabla": 136,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2017-012",
+    "2008-257"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 5-6. Lesiones cerebrales en pacientes con infección por VIH/SIDA Toxoplasma gondii E"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "10.3. Tratamiento",
+   "palabras": 456,
+   "palabrasTabla": 96,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [
+    "Tabla 5-7. Tratamiento empírico antibiótico del absceso cerebral Etiología Tratamiento de "
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "10.4. Pronóstico",
+   "palabras": 38,
+   "palabrasTabla": 86,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [
+    "Tabla 5-8. Tratamiento del absceso dirigido por microorganismos específicos (elección de t"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "11. Tétanos",
+   "palabras": 451,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2008-121"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "12. Empiema subdural",
+   "palabras": 209,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "13. Absceso epidural",
+   "palabras": 575,
+   "palabrasTabla": 295,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [
+    "Tabla 5-9. Profilaxis antitetánica en función de los antecedentes de vacunación y el tipo "
+   ],
+   "videos": [],
+   "recuerda": 1
+  }
+ ],
+ "nav": [
+  {
+   "t": "Endocarditis",
+   "href": "570779c9f4d68bf008dbc7bd"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Infecciones del tracto respiratorio superior",
+   "href": "570779c9f4d68bf008dbc855"
+  }
+ ],
+ "totPalabras": 6823,
+ "totPalabrasTabla": 1267,
+ "totCitas": 30,
+ "totFigs": 6,
+ "totTablas": 9,
+ "totRecuerda": 17,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

@@ -4,7 +4,7 @@
 //        [--permitir-deficit]        solo para explorar escenarios: sin él, un déficit ABORTA (exit 2) — R1: nunca se recorta
 //        [--pendientes-f1 d1,d2,…]   disparador (f) cierre de F1 (jue 31-dic): d de F1 (slot 1-N, no hitos) sin ✓ (tras C1/C2 si existen) →
 //                                    cabeza de la cola-adelante; contenido = el de la colocación de F1 (abajo). Un d > N se ignora.
-//        [--f1-filas N=52]           v6.01: filas (slots) de TEMARIO de F1 antes de la pausa (v6.00: 58 · v6.01: 57 · v6.02: 52). v6.02: regla
+//        [--f1-filas N=50]           v6.01: filas (slots) de TEMARIO de F1 antes de la pausa (v6.00: 58 · v6.01: 57 · v6.02: 52 · v6.03: 50). v6.02: regla
 //                                    de COLOCACIÓN con hitos anclados — el hito k-ésimo de F1 (de H = 5: D1, D10, D25, D40, D55) va al slot
 //                                    min(D#, N − (H − k)) (conserva su D# o, si no cabe, ocupa los últimos slots de F1); el resto de slots =
 //                                    temario NO-hito en orden; lo que no cabe = las ÚLTIMAS no-hito → DESPLAZADAS: unidad de contenido 'C<D>'
@@ -14,6 +14,12 @@
 //                                    desplazadas del mismo sistema (1.ª-2.ª → N1 · 30Q); CONT conserva su posición.
 //                                    `--f1-filas 58` = salida v6.00 (tramo2_14mar_27sep.json) · `--pendientes-f1 58 --f1-filas 57` = v6.01
 //                                    (tramo2_14mar_27sep_v601.json) · `--f1-filas 52` = v6.02 (tramo2_14mar_27sep_v602.json).
+//                                    · `--f1-filas 50` = v6.03 (tramo2_14mar_27sep_v603.json).
+// v6.03 (20-oct-2026): corrimiento D1 lun 19-oct → mié 21-oct (lun 19 y mar 20 sin estudio; Joseph: «todo comienza mañana miércoles 21,
+//   corre dos días; no comprimas temas ni exámenes, alarga las fechas límite»). F1 = 50 hábiles con la MISMA regla de hitos anclados:
+//   F1 = v5.20 D1-D49 + D55 (NBME 28 en el slot 50, mié 30-dic) y van al tramo 2 D50 (Neuro: EM + meningitis + UNM + tumores SNC),
+//   D51-D54, D56, D57 (Heme/Onco) y D79 (bioestadística) = 8 desplazadas, T3-T10. Por defecto --f1-filas 50. Con 58 / 57 / 52 se
+//   reproducen byte a byte las referencias v6.00 / v6.01 / v6.02 (sin cambio de lógica: solo el valor por defecto).
 // v6.02 (17-oct-2026): corrimiento D1 lun 12-oct → lun 19-oct (F1 = 52 hábiles). Un hito F1 no se desplaza: F1 = v5.20 D1-D51 + D55
 //   (NBME 28 en el slot 52, mié 30-dic) y van al tramo 2 D52, D53, D54, D56, D57 (Heme/Onco) y D79 (bioestadística). Por defecto
 //   --f1-filas 52. Con 58 / 57 la colocación es la de siempre (hitos en su D#) → las referencias v6.00 / v6.01 se reproducen igual.
@@ -48,7 +54,7 @@ const PENDIENTES = (opt('--pendientes') || '').split(',').filter(Boolean);
 const PEND_F1 = (opt('--pendientes-f1') || '').split(',').filter(Boolean).map(Number);
 // v6.01: orden del temario de F1 (posición → D# v5.20) y filas que caben en F1
 const ORIGEN_F1_TEMARIO = [...Array.from({ length: 57 }, (_, i) => i + 1), 79];
-const F1FILAS = opt('--f1-filas') != null ? Number(opt('--f1-filas')) : 52;
+const F1FILAS = opt('--f1-filas') != null ? Number(opt('--f1-filas')) : 50; // v6.03 (v6.02: 52)
 if (!(Number.isInteger(F1FILAS) && F1FILAS >= 1 && F1FILAS <= 58)) throw new Error('--f1-filas inválido (1-58): ' + opt('--f1-filas'));
 // v6.02: colocación con hitos anclados (slot de cada D# del temario en F1; 0 = desplazada)
 const esHitoV520 = (d) => /^🎯/.test(byD[d].sub);
@@ -59,7 +65,7 @@ HITOS_F1.forEach((d, k) => { SLOT_F1[Math.min(ORIGEN_F1_TEMARIO.indexOf(d) + 1, 
 const NO_HITO = ORIGEN_F1_TEMARIO.filter((d) => !esHitoV520(d));
 const CABEN = F1FILAS - HITOS_F1.length;
 { let j = 0; for (let s = 0; s < F1FILAS; s++) if (SLOT_F1[s] === undefined) SLOT_F1[s] = NO_HITO[j++]; }
-const DESPL = NO_HITO.slice(CABEN); // las ÚLTIMAS filas de temario no-hito (v6.02: 52, 53, 54, 56, 57, 79 · v6.01: 79 · v6.00: —)
+const DESPL = NO_HITO.slice(CABEN); // las ÚLTIMAS filas de temario no-hito (v6.03: 50-54, 56, 57, 79 · v6.02: 52, 53, 54, 56, 57, 79 · v6.01: 79 · v6.00: —)
 // v6.02 (17-oct): ¿hitos anclados fuera de su D#? (v6.02 sí: NBME 28 en el slot 52) → etiqueta «era v5.20 D#»; si no, la de v6.00/v6.01
 const ANCLADO = HITOS_F1.some((d) => SLOT_F1[ORIGEN_F1_TEMARIO.indexOf(d)] !== d);
 const ETQ_DESPL = (o) => (ANCLADO ? 'era v5.20 D' + o.dOrig : 'era la fila ' + o.desdeF1 + ' de F1');

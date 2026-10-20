@@ -6,10 +6,14 @@
 //     URLs con esquema válido, «hecho» no vacío;
 //   · COBERTURA: cada fila de cada plan tiene su guía (vibecoding L-V · SYNAPSE L-V + sábados con PC/ABC · AURUM · LIVIANO · Business
 //     L-V con lectura/OUTPUT —el OUTPUT de un viernes de NBME aparece el sábado— · revisión de cada sábado de F1);
-//   · la franja de cada guía cae donde dice la decisión de carga (Business 13:00 o 12:30 en NBME · SYNAPSE 12:30 / 07:25 UWSA1 / 13:00 NBME).
+//   · la franja de cada guía cae donde dice la decisión de carga (Business 13:00 o 12:30 en NBME · SYNAPSE 12:30 / 07:25 UWSA1 / 13:00 NBME);
+//   · (v6.03) la curaduría de la semana 1 cae en su paso / pieza / fila del plan.
 // Uso:
 //   node DATA/_scripts/check_rutina_guia.js                         # verificación completa
-//   node DATA/_scripts/check_rutina_guia.js --informe 2026-10-19 2026-10-25   # además imprime la tabla día × franja (markdown)
+//   node DATA/_scripts/check_rutina_guia.js --informe 2026-10-21 2026-10-31   # además imprime la tabla día × franja (markdown)
+// v6.03 (20-oct-2026): las expectativas de franja ya no están cableadas a la semana del lun 19-oct: salen del plan (D1, UWSA1/NBME,
+//   1.er OUTPUT de Business, 1.er sábado ≥ D1) + comprobación de que la curaduría de la semana 1 (vibeS1 · SYN_CUR_PIEZAS · BIZ_TRAMO)
+//   aterriza en su paso / pieza / fila del plan corrido (v6.03: mié 21-oct → sáb 31-oct).
 // Sin dependencias nuevas (typescript del repo vía usmle/cargar_ts.js). Solo lectura: no escribe nada.
 'use strict';
 const path = require('path');
@@ -66,18 +70,62 @@ for (const x of B.BIZ_DIAS) {
   if (!hoy && !sab) falta('business', x.fecha, `D${x.d} ${m}`);
   if (m === 'OUTPUT' && !sab) falta('business', sabado, `cierre del OUTPUT D${x.d}`);
 }
-for (let iso = '2026-10-24'; iso <= '2026-12-26'; iso = addDias(iso, 7)) if (!RG.guiaRevisionDe(iso)) falta('revision', iso, 'sábado de F1');
+// v6.03 (20-oct-2026): las fechas de las expectativas SALEN DEL PLAN (D1 = f1.inicio, UWSA1/NBME de usmleStep1Daily, OUTPUT de Business,
+// 1.er sábado ≥ D1) en vez de estar cableadas a la semana del lun 19-oct (v6.02); así el checker sigue valiendo si el plan vuelve a correr.
+const FV = cargarModuloTS(path.join('src', 'lib', 'fechasV6.ts'), cache);
+const U = cargarModuloTS(path.join('src', 'lib', 'usmleStep1Daily.ts'), cache);
+const D1 = FV.FECHAS_V6.f1.inicio;
+const SAB1 = addDias(D1, (6 - dow(D1) + 7) % 7);           // 1.er sábado desde el D1 (v6.03: sáb 24-oct)
+const HITOS_F1 = U.DIAS.filter((x) => U.esHito(x));
+const UWSA1 = (HITOS_F1.find((x) => /Self-Assessment 1|UWSA1/.test(x.uw)) || {}).fecha;
+const NBMES = HITOS_F1.filter((x) => !/Self-Assessment|UWSA/.test(x.uw) && /NBME/.test(x.uw)).map((x) => x.fecha);
+const habilSig = (iso) => { let c = addDias(iso, 1); while (dow(c) === 0 || dow(c) === 6 || HITOS_F1.some((h) => h.fecha === c)) c = addDias(c, 1); return c; };
+const OUT1 = (B.BIZ_DIAS.find((x) => B.bizModo(x) === 'OUTPUT') || {}).fecha; // 1.er OUTPUT (v6.03: vie 23-oct)
+if (!UWSA1 || !NBMES.length || !OUT1) errores.push(`plan sin UWSA1 (${UWSA1}) / NBME (${NBMES.length}) / OUTPUT (${OUT1}): no se pueden derivar las expectativas`);
+for (let iso = SAB1; iso <= '2026-12-26'; iso = addDias(iso, 7)) if (!RG.guiaRevisionDe(iso)) falta('revision', iso, 'sábado de F1');
 
 // ── franjas de las decisiones de carga (semana 1 + hitos) ──
 const esperado = [
-  ['2026-10-19', RG.guiaSynapseDe, '07:25–07:55'], ['2026-10-20', RG.guiaSynapseDe, '12:30–13:00'], ['2026-10-30', RG.guiaSynapseDe, '13:00–13:30'],
-  ['2026-10-19', RG.guiaBusinessDe, '13:00–13:25'], ['2026-10-23', RG.guiaBusinessDe, '13:00–13:25'], ['2026-10-24', RG.guiaBusinessDe, '07:45–08:00'],
-  ['2026-10-31', RG.guiaBusinessDe, '07:45–08:25'], ['2026-10-24', RG.guiaShipDe, '15:00–17:00'], ['2026-10-25', RG.guiaFeynmanDe, '15:00–15:10'],
-  ['2026-10-24', RG.guiaRevisionDe, '07:15–07:45'], ['2026-10-19', RG.guiaAurumDe, '14:15–15:15'], ['2026-10-19', RG.guiaLivianoDe, '17:15–18:00'],
-  ['2026-10-19', RG.guiaVibeDe, '04:15–05:00'],
+  [UWSA1, RG.guiaSynapseDe, '07:25–07:55'], [habilSig(UWSA1), RG.guiaSynapseDe, '12:30–13:00'], [NBMES[0], RG.guiaSynapseDe, '13:00–13:30'],
+  [D1, RG.guiaBusinessDe, '13:00–13:25'], [OUT1, RG.guiaBusinessDe, '13:00–13:25'], [addDias(OUT1, 1), RG.guiaBusinessDe, '07:45–08:00'],
+  [SAB1, RG.guiaShipDe, '15:00–17:00'], [addDias(SAB1, 1), RG.guiaFeynmanDe, '15:00–15:10'],
+  [SAB1, RG.guiaRevisionDe, '07:15–07:45'], [D1, RG.guiaAurumDe, '14:15–15:15'], [D1, RG.guiaLivianoDe, '17:15–18:00'],
+  [D1, RG.guiaVibeDe, '04:15–05:00'],
 ];
+// Business en día de NBME (F1): lectura → audio 12:30-12:55 en el almuerzo · OUTPUT → entero el sábado 07:45-08:25 (v6.02: vie 30-oct)
+for (const n of NBMES) {
+  const r = B.bizDiaDe(n);
+  if (!r || B.bizModo(r) === 'DESCANSO') continue;
+  if (B.bizModo(r) === 'OUTPUT') esperado.push([addDias(n, 6 - dow(n)), RG.guiaBusinessDe, '07:45–08:25']);
+  else esperado.push([n, RG.guiaBusinessDe, '12:30–12:55']);
+}
 for (const [iso, f, fr] of esperado) { const g = f(iso); if (!g || g.franja !== fr) errores.push(`${iso} ${f.name}: franja ${g ? g.franja : 'null'} ≠ ${fr}`); }
-if (RG.revisionFicheroDe('2026-10-24') !== 'S01_2026-10-24.md') errores.push(`revisionFicheroDe(2026-10-24) = ${RG.revisionFicheroDe('2026-10-24')} ≠ S01_2026-10-24.md`);
+if (RG.revisionFicheroDe(SAB1) !== `S01_${SAB1}.md`) errores.push(`revisionFicheroDe(${SAB1}) = ${RG.revisionFicheroDe(SAB1)} ≠ S01_${SAB1}.md`);
+if (!/^Primera revisión/.test((RG.guiaRevisionDe(SAB1) || {}).aviso || '')) errores.push(`${SAB1} guiaRevisionDe: no la marca como la PRIMERA revisión`);
+
+// ── v6.03: la curaduría de la semana 1 va con su PASO / PIEZA / FILA del plan (no con la fecha) → comprobar que aterriza ──
+const conTexto = (g, re) => !!g && g.pasos.some((p) => re.test(p.que) || re.test(p.como));
+const vibeS1 = V.VIBE_DIAS.filter((x) => x.semana === 1);
+const curVibe = [/test_parser_multilinea/, /Redeploy: pegar n8n_parser_v2_3/, /APEX::USMLE::<sistema>/, /_apex_e2e_prueba\.json/, /Commit \[S1\]/];
+vibeS1.forEach((x) => { if (!conTexto(RG.guiaVibeDe(x.fecha), curVibe[x.k - 1])) errores.push(`${x.fecha} guiaVibeDe: falta la curaduría del paso ${x.k} de S1`); });
+const primeraSyn = (re, tag) => (S.SYN_DIAS.find((d) => d.bloques.some((b) => b.tag === tag && re.test(b.material + ' ' + b.leccion))) || {}).fecha;
+const curSyn = [
+  [primeraSyn(/^Anthropic Academy AUDITORÍA F0/, 'A'), /auditoría F0/], [primeraSyn(/^No Priors/, 'B'), /Greg Brockman/], [primeraSyn(/^Pro Git/, 'C'), /Pro Git › 1\.1/],
+  [primeraSyn(/^Dwarkesh — Dario Amodei Tramo 1\/3/, 'B'), /tramo 1\/3 = minutos 0:00-10:00/], [primeraSyn(/^Simon Willison — serie Prompt injection/, 'C'), /Prompt injection attacks against GPT-3/],
+  [primeraSyn(/^The Python Tutorial.*Sección 1:/, 'C'), /Whetting Your Appetite/], [primeraSyn(/^The Batch/, 'B'), /carta de Ng/], [primeraSyn(/^Automate the Boring Stuff.*cap\. 0:/, 'C'), /cap\. 0 «Introduction»/],
+  [primeraSyn(/^Canal Anthropic.*deep dive.*tramo 1\b/, 'B'), /minutos 0:00-10:00/], [primeraSyn(/^Simon Willison The lethal trifecta/i, 'C'), /lethal trifecta/],
+];
+for (const [iso, re] of curSyn) { const g = iso && (dow(iso) === 6 ? RG.guiaShipDe(iso) : RG.guiaSynapseDe(iso)); if (!conTexto(g, re)) errores.push(`${iso} SYNAPSE: falta la curaduría ${re}`); }
+if (!conTexto(RG.guiaShipDe(SAB1), /deep dive.*10:00-20:00/) || !conTexto(RG.guiaShipDe(SAB1), /lethal trifecta/)) errores.push(`${SAB1} guiaShipDe: faltan los comodines curados del 1.er sábado`);
+if (!conTexto(RG.guiaShipDe(addDias(SAB1, 7)), /Greg Brockman/) || !conTexto(RG.guiaShipDe(addDias(SAB1, 7)), /Prompt injection attacks/)) errores.push(`${addDias(SAB1, 7)} guiaShipDe: faltan los comodines curados del 2.º sábado`);
+const lect = B.BIZ_DIAS.filter((x) => B.bizModo(x) === 'L' || B.bizModo(x) === 'CRITICA').slice(0, 4);
+// LIVIANO: la lectura medida (LIV_LECT) va con su TEMA / CASO, no con el D (v6.03: los casos caen D3/D8/D13 en vez de D5/D10/D15)
+const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
+[[/^La obesidad como enfermedad/, /Essential Points › Definition/], [/^Leptina:/, /Neurobiology of energy homeostasis › Background/],
+ [/^Resistencia leptínica/, /leptin resistance/], [/^VIERNES CASO 1\/16/, /Lessons learned from the weight-reduced state/],
+ [/^Circuito arcuato II/, /2\.ª pasada: POMC/], [/^VIERNES CASO 2\/16/, /Determinants of feeding behavior/], [/^El argumento del tratamiento crónico/, /Developmental determinants/]]
+  .forEach(([rt, re]) => { const x = livTema(rt); if (!x || !conTexto(RG.guiaLivianoDe(x.fecha), re)) errores.push(`${x ? x.fecha + ' D' + x.d : rt} guiaLivianoDe: falta la lectura medida ${re}`); });
+[/In Spark/, /In Spark/, /In Defense of Food/, /In Defense of Food/].forEach((re, i) => { const x = lect[i]; if (!x || !conTexto(RG.guiaBusinessDe(x.fecha), re)) errores.push(`${x ? x.fecha : '?'} guiaBusinessDe: falta el tramo curado ${re} (lectura ${i + 1})`); });
 
 // ── salida ──
 if (INF) {

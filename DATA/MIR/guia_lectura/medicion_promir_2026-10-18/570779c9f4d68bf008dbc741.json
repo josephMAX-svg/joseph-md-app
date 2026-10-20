@@ -1,0 +1,298 @@
+{
+ "titulo": "19.- Masas anexiales. Patología maligna del ovario",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc741",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "19 Masas anexiales. Patología maligna del ovario",
+   "palabras": 23,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Epidemiología",
+   "palabras": 190,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2003-176"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Clasificación histológica de los tumores de ovario",
+   "palabras": 24,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.1. Tumores epiteliales",
+   "palabras": 528,
+   "palabrasTabla": 148,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2011-151",
+    "2023-197"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 19-1. Características diferenciales de los tumores epiteliales de ovario Seroso de a"
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.2. Tumores de los cordones sexuales-estroma",
+   "palabras": 385,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.3. Tumores de las células germinales (15-20 %)",
+   "palabras": 347,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2009-163",
+    "2015-031"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.4. Tumores metastásicos (10 %)",
+   "palabras": 190,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Cribado y cirugía de reducción de riesgo",
+   "palabras": 355,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2014-158"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Manifestaciones clínicas",
+   "palabras": 43,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2013-027"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "5. Enfoque diagnóstico de una tumoración anexial",
+   "palabras": 1125,
+   "palabrasTabla": 62,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2020-015",
+    "2018-027",
+    "2007-169"
+   ],
+   "figs": 3,
+   "tablas": [
+    "Tabla 19-2. Marcadores serológicos de los tumores no epiteliales de ovario AFP hCG LDH E2 "
+   ],
+   "videos": [],
+   "recuerda": 2
+  },
+  {
+   "nivel": "H3",
+   "titulo": "6. Estadificación",
+   "palabras": 88,
+   "palabrasTabla": 46,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2016-169",
+    "2024-062"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 19-3. Procedimientos quirúrgicos con criterio oncológico ante una tumoración anexial"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "7. Tratamiento de las neoplasias epiteliales malignas de ovario",
+   "palabras": 14,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2013-028"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.1. Cirugía",
+   "palabras": 804,
+   "palabrasTabla": 318,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2015-161"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 19-4. Estadificación posquirúrgica del cáncer de ovario, trompa y peritoneo (FIGO 20",
+    "Tabla 19-5. Procedimientos quirúrgicos para la correcta estadificación del cáncer de ovari"
+   ],
+   "videos": [],
+   "recuerda": 4
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.2. Quimioterapia",
+   "palabras": 187,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.3. Antiangiogénicos (bevacizumab)",
+   "palabras": 75,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.4. Inhibidores de PARP (olaparib, niraparib, rucaparib)",
+   "palabras": 75,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "8. Tumores ováricos y gestación",
+   "palabras": 700,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Patología maligna endometrial. Cáncer de endometrio",
+   "href": "570779c8f4d68bf008dbc6c4"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Patología de la vulva. Cáncer de vulva",
+   "href": "570779c9f4d68bf008dbc79d"
+  }
+ ],
+ "totPalabras": 5153,
+ "totPalabrasTabla": 574,
+ "totCitas": 14,
+ "totFigs": 6,
+ "totTablas": 5,
+ "totRecuerda": 11,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

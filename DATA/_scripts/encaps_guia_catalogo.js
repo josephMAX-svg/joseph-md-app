@@ -9,11 +9,13 @@
  *     Claude del área (enlaces privados de Joseph: solo abren con su sesión) para generar preguntas extra.
  *   · OBSIDIAN = nota «_concepto_madre» del CÓDIGO v3 en el vault (06_ENCAPS/ENCAPS_2026/02_TEMARIO/<área>/<tema>); el generador
  *     comprueba en disco que cada nota existe (si el vault no está montado, solo avisa).
- *   · PREVISTO_SEMANA2 = composición del `node DATA/_scripts/gen_encaps_minisim.js --semana 2026-10-26 --dry` del 18-oct (solo informe):
- *     los runners banco_/eval_ del 26 al 29-oct AÚN NO EXISTEN (hay que generarlos antes del lun 26).
+ *   · PREVISTO_SEMANA2 = composición simulada (20-oct, copia aislada, v6.03) de `--eval/--banco 2026-10-28` y `--eval/--banco 2026-10-29`
+ *     (solo informe): en v6.03 los runners del lun 26 (banco V-2 + eval I-3) y del mar 27 (banco III-5 + eval V-2) YA EXISTEN (re-fechados
+ *     desde el mié 21 / jue 22 de la v6.02); faltan los del mié 28 (II-5) y jue 29 (I-4) → RUNBOOK_SEMANA2_2026-10-26.md.
+ *     (v6.02: era el `--semana 2026-10-26 --dry` del 18-oct, con II-5 · I-4 · IV-1 · II-4 del lun 26 al jue 29.)
  * Lista negra: nada del examen ENCAPS 2026-II (reservado como pre-test del vie 8-ene-2027). THEOMED «Banqueo Final.mp4» (11-oct) NO se
  * enlaza: puede contener el 2026-II (S2 §7).
- * v6.02c (18-oct-2026, E4): nuevo.
+ * v6.02c (18-oct-2026, E4): nuevo. · v6.03 (20-oct-2026): PREVISTO_SEMANA2 re-simulado con la F1 corrida al mié 21-oct.
  */
 'use strict';
 
@@ -257,14 +259,14 @@ const AVISO_CODIGO = {
 };
 
 /**
- * Semana 2 (26-29 oct): composición del `--semana 2026-10-26 --dry` del 18-oct (los runners todavía no existen). El lunes no lleva eval
- * pre-generada por --semana (lunes = 5Q rehechas de los fallos del mini-sim del viernes: `--eval 2026-10-26`).
+ * Semana 2 (lun 26 → jue 29-oct, v6.03): lun 26 (D4) banco V-2 planeamiento + eval I-3 y mar 27 (D5) banco III-5 + eval V-2 YA ARMADOS (re-fechados
+ * desde la v6.02). Faltan mié 28 (D6, II-5) y jue 29 (D7, I-4): composición simulada el 20-oct en copia aislada con
+ * `--eval 2026-10-28` → `--banco 2026-10-28` → `--eval 2026-10-29` → `--banco 2026-10-29` (mismo orden que --semana; sin --semana, que
+ * re-sortearía los bancos ya armados del lun 26 y mar 27). Solo informe: la guía lo usa mientras el runner no exista.
  */
 const PREVISTO_SEMANA2 = {
-  '2026-10-26': { principal: 20, secundario: 2, nota: 'secundario II-10: solo 2Q en el pool (receta 4-5) · tras este banco quedan 0Q libres de II-5', eval: 'lunes: 5Q rehechas de los fallos del mini-sim del vie 23 (`--eval 2026-10-26`)' },
-  '2026-10-27': { principal: 16, secundario: 4, nota: 'tras este banco quedan 0Q libres de I-4', eval: 'código de ayer II-5: 3 cifras + 2 viñetas (5Q)' },
-  '2026-10-28': { principal: 18, secundario: 2, nota: 'secundario II-EMG: solo 2Q en el pool · tras este banco quedan 0Q libres de IV-1+IV-2', eval: 'código de ayer I-4: 3 cifras + 2 viñetas (5Q)' },
-  '2026-10-29': { principal: 16, secundario: 3, nota: 'II-4: 15Q libres + 1 re-test (fallback) · secundario I-OCC: solo 3Q · tras este banco quedan 0Q libres de II-4', eval: 'código de ayer IV-1: 3 cifras + 2 viñetas (5Q)' },
+  '2026-10-28': { principal: 20, secundario: 2, nota: 'secundario II-10: solo 2Q en el pool (receta 4-5) · tras este banco quedan 0Q libres de II-5 · la eval (III-5, código de ayer) sale 5/5 re-test: el pool libre de III-5 ya está a 0', eval: 'código de ayer III-5: 3 cifras + 2 viñetas (5Q re-test)' },
+  '2026-10-29': { principal: 16, secundario: 4, nota: 'tras este banco quedan 0Q libres de I-4 · la eval (II-5, código de ayer) sale 5/5 re-test: el banco del mié 28 consume todo el pool libre de II-5', eval: 'código de ayer II-5: 3 cifras + 2 viñetas (5Q re-test)' },
 };
 
 module.exports = { F, D, OBS_BASE, PROYECTO, AREA, PLAN_B_QX, POSTEST_DRLOPEZ, OBSIDIAN, ALIAS_FICHAS, DRIVE_POR_CODIGO, FICHA_SUBEJE, AVISO_CODIGO, PREVISTO_SEMANA2 };

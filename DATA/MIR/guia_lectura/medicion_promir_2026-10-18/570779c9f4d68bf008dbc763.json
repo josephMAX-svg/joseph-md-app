@@ -1,0 +1,335 @@
+{
+ "titulo": "3.- Sepsis. Infecciones nosocomiales",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc763",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "3 Sepsis. Infecciones nosocomiales",
+   "palabras": 78,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Sepsis y shock séptico",
+   "palabras": 0,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.1. Definición y generalidades",
+   "palabras": 428,
+   "palabrasTabla": 190,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2022-198"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 3-1. Escala SOFA. Valoración del fallo orgánico Puntuación 0 1 2 3 4 Respiración PaO",
+    "Tabla 3-2. Criterios de SIRS (Systemic Inflammatory Response Syndrome Criteria)* Temperatu"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.2. Epidemiología",
+   "palabras": 67,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.3. Fisiopatología",
+   "palabras": 60,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.4. Manifestaciones clínicas",
+   "palabras": 480,
+   "palabrasTabla": 77,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [
+    "Tabla 3-3. Escala NEWS (National Early Warning Score) Parámetros fisiológicos 3 2 1 0 1 2 "
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.5. Diagnóstico",
+   "palabras": 222,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.6. Tratamiento",
+   "palabras": 1309,
+   "palabrasTabla": 116,
+   "citasMIR": 5,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2008-119",
+    "2014-125",
+    "2019-171",
+    "2021-199",
+    "2025-037"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 3-4. Recomendaciones de la Surviving Sepsis Campaign para la resucitación inicial de"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Bacteriemias",
+   "palabras": 0,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.1. Definición",
+   "palabras": 49,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2009-232"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.2. Aproximación diagnóstica",
+   "palabras": 164,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2003-121"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.3. Tipos de bacteriemias, factores predisponentes y tratamiento dirigido",
+   "palabras": 752,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2012-218"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Infecciones nosocomiales",
+   "palabras": 0,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.1. Definición, epidemiología y factores predisponentes",
+   "palabras": 394,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2025-030"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.2. Infecciones nosocomiales del tracto urinario",
+   "palabras": 190,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2017-061"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "69f1ea184734921f1101b430.mp4",
+     "seg": 5074,
+     "leyenda": "Vídeo 3-1Masterclass: Infecciones nosocomiales: diagnóstico, tratamiento y prevención."
+    }
+   ],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.3. Infecciones de la herida quirúrgica",
+   "palabras": 245,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.4. Bacteriemias asociadas a catéter",
+   "palabras": 364,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2017-117"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.5. Neumonía nosocomial",
+   "palabras": 10,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.6. Infección por Clostridioides difficile",
+   "palabras": 1404,
+   "palabrasTabla": 145,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2007-255",
+    "2010-210",
+    "2014-044",
+    "2022-170"
+   ],
+   "figs": 2,
+   "tablas": [
+    "Tabla 3-5. Antibióticos e infección por C. difficile Riesgo alto Riesgo moderado Riesgo ba",
+    "Tabla 3-6. Métodos de diagnóstico de ICD con indicación de su especificidad, sensibilidad "
+   ],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Antibacterianos",
+   "href": "570779c8f4d68bf008dbc6e6"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Endocarditis",
+   "href": "570779c9f4d68bf008dbc7bd"
+  }
+ ],
+ "totPalabras": 6216,
+ "totPalabrasTabla": 528,
+ "totCitas": 16,
+ "totFigs": 4,
+ "totTablas": 6,
+ "totRecuerda": 0,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

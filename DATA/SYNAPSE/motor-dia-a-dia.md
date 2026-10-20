@@ -1,7 +1,15 @@
 # SYNAPSE — Motor día-a-día (diseño y operación)
 
 > Construido el 10-jun-2026 por el chat SYNAPSE (PROMPT_CHAT_SYNAPSE.md).
-> **v6.02 · CORRIMIENTO D1 = LUN 19-OCT-2026 (17-oct-2026, vigente)**: no se estudió lun 12 → vie 16-oct → `node DATA/_scripts/gen_synapse_plan.js 2026-10-19`
+> **v6.03 · CORRIMIENTO D1 = MIÉ 21-OCT-2026 (20-oct-2026, vigente)**: lun 19 y mar 20-oct sin estudio → `node DATA/_scripts/gen_synapse_plan.js 2026-10-21`
+> (después de `gen_vibecoding_plan.js 2026-10-21`) → **132 días · 19 semanas · mié 21-oct-2026 → lun 1-mar-2027** (FIN_PLAN 2027-03-01; las mismas **110
+> A-units**, nada se recorta; START en miércoles → `OFF_WD` Lun = Mar = 1, como v5.20). F0 sem 1-8 (mié 21-oct → dom 13-dic, 46 A) · F1 sem 9-12 (lun 14-dic →
+> dom 10-ene, 21 A) · F2 sem 13-19 (lun 11-ene → lun 1-mar, 43 A, 50 días; el lun 1-mar cuenta como sem 19 por SEM_MAX; deload sem 17-19 desde el lun 8-feb).
+> Vibecoding mié → mar: **19 PC en 19 sábados** — sáb 24-oct = AVANCE S1 · SHIP S1-S9 sáb 31-oct … 26-dic · S10 sáb 2-ene · S11 sáb 9-ene · **SHIP S12 sáb 16-ene** ·
+> taper S13 23-ene · S14 30-ene · S15 6-feb · S16 13-feb (30', último con minutos) · S17 20-feb (0') · S18 27-feb (0'). Ningún PC desplazado (S19/S20 cierran el sáb
+> 6-mar, fuera del SYNAPSE: `PC_DESPLAZADOS` ignora los SHIP > FIN_PLAN). **Último sábado con SYNAPSE: sáb 27-feb · último domingo: dom 28-feb**. La última
+> A-unit (d132, cierre F2 + CCA-F) cae el **lun 1-mar**.
+> ⏸ **v6.02 · CORRIMIENTO D1 = LUN 19-OCT-2026 (17-oct-2026, historial)**: no se estudió lun 12 → vie 16-oct → `node DATA/_scripts/gen_synapse_plan.js 2026-10-19`
 > (después de `gen_vibecoding_plan.js 2026-10-19`) → **131 días · 19 semanas · lun 19-oct-2026 → vie 26-feb-2027** (FIN_PLAN 2027-02-26; las mismas **110
 > A-units**, nada se recorta; START en lunes → `OFF_WD` = 0). F0 sem 1-8 (lun 19-oct → dom 13-dic, 48 A) · F1 sem 9-12 (lun 14-dic → dom 10-ene, 21 A) · F2 sem
 > 13-19 (lun 11-ene → vie 26-feb, 41 A, 47 días; deload sem 17-19 desde el lun 8-feb). Vibecoding lun → vie: **19 PC en 18 sábados** del sáb 24-oct (SHIP S1) al

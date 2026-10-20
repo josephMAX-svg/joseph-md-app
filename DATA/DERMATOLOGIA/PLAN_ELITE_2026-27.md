@@ -8,7 +8,22 @@ Del agente macro:derma-estetica-elite (27-ago-2026) + inventario AccessDermatolo
 > Fitzpatrick/Baumann del módulo (o módulo DermNet CME) + ledger de cada caso.** Módulos semanales orientados a
 > dermatología estética.
 >
-> **✅ v6.02 VIGENTE (sáb 17-oct-2026) — fechas de ciclo de Derma (manda sobre las fechas v6.01 y v5.20 de este documento):** del lun 12 al vie 16-oct no se
+> **✅ v6.03 VIGENTE (mar 20-oct-2026) — fechas de ciclo de Derma (manda sobre las fechas v6.02, v6.01 y v5.20 de este documento):** lun 19 y mar 20-oct
+> sin estudio; el D1 del régimen pasa al **mié 21-oct-2026**, que por paridad es **día-Derma** (Research arranca el jue 22-oct) → **Derma ciclo 1 = 73 átomos,
+> d1 mié 21-oct-2026 → d73 lun 17-may-2027** (Derma pierde 1 ranura —el lun 19-oct— = +2 hábiles; mismos átomos, mismos `casoIds` por d; nada se recorta) ·
+> **ciclo 2 = 30 sesiones d74-d103, mié 19-may → lun 26-jul-2027** (36 casos · 9 G+ · 3 checkpoints · 10 ProMIR). Fechas clave: d12 vie 20-nov ·
+> **d19 jue 10-dic (oclusión vascular + HDPH)** · **d20 lun 14-dic (ceguera + kit; víspera del NBME 27 del mar 15-dic)** · d24 jue 24-dic · **alivio F2 d44-d49
+> lun 22-feb → lun 8-mar** (1 caso + FSRS + 0 lectura nueva; **d46 vie 26-feb = día del SIM 100Q #7 → sesión de la tarde**; d49 lun 8-mar = semana de la cola
+> de la intensiva) · **3 casos/sesión desde d50 mié 10-mar** · cp1 d51 mar 16-mar · cp2 d52 jue 18-mar · d53 lun 22-mar · d54 mié 24-mar · d55 mar 30-mar ·
+> d57 lun 5-abr · d58 mié 7-abr · d70 lun 10-may · d71 mié 12-may · repaso1 d72 vie 14-may · repaso2 d73 lun 17-may · ciclo 2: cp1 d85 lun 14-jun (fin de la
+> 1.ª pasada de los 200 casos) · cp2 d94 lun 5-jul · repaso final d103 lun 26-jul. «Dermato Step 1» (anclaje de d12/d24) = **T25 mié 21-abr-2027**. Con el
+> ENCAPS del 14-mar, el margen de ±3 hábiles cubre d50 mié 10-mar (CRIT · cicatrización, cierre del módulo G) y d51 mar 16-mar (ALTA); `DERMA_TAPER_ENCAPS_FECHA`
+> sigue en null (decisión pendiente). Sin sesión en SKIP (25-dic · 31-dic · 1-ene · 25-26-mar) ni en los protegidos v6 (12 · 13 · 14 · 15-mar); desde el SERUMS
+> (~lun 3-may) Derma va **lun · mié · vie**, 30' en tiempo muerto de la posta. Guía qué/cuánto/cómo: d1-d5 curadas (mié 21 · vie 23 · mar 27 · jue 29-oct · lun
+> 2-nov), plan A AccessDerma / plan B mientras el acceso remoto siga caducado. Fuente: `src/lib/dermaDailyPlan.ts` (`DERMA_DAILY_META`) y
+> `src/lib/dermaCiclo2.ts` (regenerados el 20-oct: `remap_inicio.js 2026-10-21 --bloques research,derma`).
+>
+> **⏸ v6.02 (sáb 17-oct-2026; historial, lo corrige el bloque v6.03 de arriba) — fechas de ciclo de Derma:** del lun 12 al vie 16-oct no se
 > estudió y el D1 del régimen pasa al **lun 19-oct-2026**, que por paridad es **día-Derma** (Research arranca el mar 20-oct) → **Derma ciclo 1 = 73 átomos, d1
 > lun 19-oct-2026 → d73 vie 14-may-2027** (mismos átomos, mismos `casoIds` por d; nada se recorta) · **ciclo 2 = 30 sesiones d74-d103, lun 17-may → vie
 > 23-jul-2027** (36 casos · 9 G+ · 3 checkpoints · 10 ProMIR). Fechas clave: d12 mié 18-nov · **d19 mar 8-dic (oclusión vascular + HDPH)** · **d20 jue 10-dic

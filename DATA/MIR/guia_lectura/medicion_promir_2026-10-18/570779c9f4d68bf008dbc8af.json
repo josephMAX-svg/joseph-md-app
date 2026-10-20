@@ -1,0 +1,347 @@
+{
+ "titulo": "3.- Vasculitis",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc8af",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "3 Vasculitis",
+   "palabras": 53,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Concepto y clasificación",
+   "palabras": 138,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Vasculitis de grandes vasos",
+   "palabras": 0,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.1. Arteritis de la temporal",
+   "palabras": 779,
+   "palabrasTabla": 94,
+   "citasMIR": 11,
+   "citasMIRdesde2015": 4,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2011-070",
+    "2019-124",
+    "2024-174",
+    "2007-080",
+    "2015-139",
+    "2012-106",
+    "2010-227",
+    "2003-082",
+    "2013-157",
+    "2005-083",
+    "2020-122"
+   ],
+   "figs": 2,
+   "tablas": [
+    "Tabla 3-1. Clasificación de las vasculitis (Consenso de Chapel Hill) Vasculitis de vasos d"
+   ],
+   "videos": [
+    {
+     "id": "5a5f021152394c3000607976.mp4",
+     "seg": 382,
+     "leyenda": "Vídeo 3-1Arteritis celulas gigantes."
+    }
+   ],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.2. Arteritis de Takayasu",
+   "palabras": 314,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2023-179",
+    "2016-197",
+    "2006-080"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Vasculitis asociadas a anticuerpos anticitoplasma de los neutrófilos",
+   "palabras": 103,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2004-086"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.1. Granulomatosis con poliangitis (granulomatosis de Wegener)",
+   "palabras": 640,
+   "palabrasTabla": 0,
+   "citasMIR": 7,
+   "citasMIRdesde2015": 5,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2021-181",
+    "2019-025",
+    "2007-078",
+    "2018-196",
+    "2019-161",
+    "2005-086",
+    "2015-144"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.2. Poliangitis microscópica",
+   "palabras": 152,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2006-097",
+    "2014-229"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.3. Granulomatosis eosinofílica con poliangitis",
+   "palabras": 191,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2017-172",
+    "2025-184"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Vasculitis de vaso mediano",
+   "palabras": 0,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.1. Panarteritis nodosa​",
+   "palabras": 405,
+   "palabrasTabla": 0,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2023-204",
+    "2003-086",
+    "2007-081",
+    "2009-213"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.2. Enfermedad de Kawasaki",
+   "palabras": 247,
+   "palabrasTabla": 79,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [
+    "Tabla 3-2. Vasculitis necrosantes Poliarteritis microscópica Granulomatosis con poliangiti"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "5. Otras vasculitis",
+   "palabras": 0,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.1. Enfermedad de Behçet",
+   "palabras": 399,
+   "palabrasTabla": 32,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2016-192",
+    "2025-135",
+    "2004-148",
+    "2024-176"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 3-3. Frecuencia de las manifestaciones de la enfermedad de Behçet Manifestaciones Po"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.2. Vasculitis de pequeño vaso por inmunocomplejos",
+   "palabras": 199,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.3. Púrpura de Schoenlein-Henoch​",
+   "palabras": 201,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2006-255",
+    "2012-164",
+    "2004-186"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.4. Crioglobulinemia",
+   "palabras": 122,
+   "palabrasTabla": 47,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2010-021",
+    "2020-183",
+    "2010-022"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 3-4. Clasificación de las crioglobulinemias Inmunoglobulinas Tipo Asociación I Única"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.5. Otras vasculitis",
+   "palabras": 388,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2006-141",
+    "2020-139"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Artropatias inducidas por cristales",
+   "href": "570779c9f4d68bf008dbc89b"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Artritis reumatoide",
+   "href": "570779c9f4d68bf008dbc7e3"
+  }
+ ],
+ "totPalabras": 4331,
+ "totPalabrasTabla": 252,
+ "totCitas": 42,
+ "totFigs": 7,
+ "totTablas": 4,
+ "totRecuerda": 0,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

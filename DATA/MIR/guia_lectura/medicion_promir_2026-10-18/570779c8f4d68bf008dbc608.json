@@ -1,0 +1,449 @@
+{
+ "titulo": "1.- Fisiología renal: función renal, alteraciones hidroelectrolíticas y equilibrio ácido-base",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc608",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "1 Fisiología renal: Función renal, alteraciones hidroelectrolíticas y equilibrio ácido-base",
+   "palabras": 74,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Conceptos generales",
+   "palabras": 25,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.1. Anatomía macroscópica y microscópica",
+   "palabras": 405,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.2. El glomérulo",
+   "palabras": 1679,
+   "palabrasTabla": 0,
+   "citasMIR": 8,
+   "citasMIRdesde2015": 5,
+   "citasMIRdesde2020": 4,
+   "citas": [
+    "2020-029",
+    "2021-029",
+    "2014-213",
+    "2013-049",
+    "2023-028",
+    "2025-192",
+    "2012-206",
+    "2015-112"
+   ],
+   "figs": 4,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 2
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.3. Sistema tubular",
+   "palabras": 3317,
+   "palabrasTabla": 0,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2025-173",
+    "2012-207",
+    "2022-032",
+    "2011-223"
+   ],
+   "figs": 3,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.4. Regulación hormonal de la nefrona",
+   "palabras": 380,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Balance hidrosalino",
+   "palabras": 17,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.1. Introducción",
+   "palabras": 117,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2009-219"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.2. Hiponatremia",
+   "palabras": 871,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2019-103",
+    "2025-141"
+   ],
+   "figs": 2,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "5f87d469856c9b0ab41e73fd.mp4",
+     "seg": 1987,
+     "leyenda": "Vídeo 1-1Videoclase: Conceptos de los trastornos del sodio y potasio."
+    }
+   ],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.3. Hipernatremia",
+   "palabras": 381,
+   "palabrasTabla": 81,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2011-107"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 1-1. Diagnóstico diferencial entre diabetes insípida y secreción inadecuada de ADH T"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Trastornos del potasio",
+   "palabras": 18,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.1. Factores reguladores de la homeostasis del potasio",
+   "palabras": 321,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2022-031"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.2. Hipopotasemia",
+   "palabras": 368,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2012-118",
+    "2025-190",
+    "2013-100"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.3. Hiperpotasemia",
+   "palabras": 617,
+   "palabrasTabla": 0,
+   "citasMIR": 7,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2004-224",
+    "2009-093",
+    "2017-014",
+    "2019-076",
+    "2020-167",
+    "2012-123",
+    "2003-096"
+   ],
+   "figs": 2,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Metabolismo del calcio-fósforo y sus alteraciones",
+   "palabras": 22,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.1. Factores reguladores del metabolismo del calcio-fósforo",
+   "palabras": 225,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.2. Trastornos del calcio",
+   "palabras": 303,
+   "palabrasTabla": 70,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [
+    "Tabla 1-2. Acidosis Acidosis ← Calcio iónico ↔ Calcio unido a proteínas → Alcalosis",
+    "Tabla 1-3. Principales causas de hipercalcemia Aumento de la resorción ósea de calcio Para"
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.3. Trastornos del fósforo",
+   "palabras": 181,
+   "palabrasTabla": 26,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [
+    "Tabla 1-4. Principales causas de hipocalcemia Enfermedad renal crónica Cuadros malabsortiv"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "5. Homeostasis del magnesio y sus alteraciones",
+   "palabras": 54,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.1. Hipomagnesemia",
+   "palabras": 169,
+   "palabrasTabla": 98,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2013-100"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 1-5. Principales causas de hipofosfatemia POR PASO AL ESPACIO INTRACELULAR Aumento d"
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.2. Hipermagnesemia",
+   "palabras": 34,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "6. Equilibrio ácido-base",
+   "palabras": 19,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.1. Homeostasis del equilibrio ácido-base",
+   "palabras": 655,
+   "palabrasTabla": 68,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2014-098"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 1-6. Principales causas de hipomagnesemia Pérdidas renales Pérdidas cutáneas Disminu"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.2. Trastornos primarios",
+   "palabras": 2886,
+   "palabrasTabla": 255,
+   "citasMIR": 8,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2010-104",
+    "2013-124",
+    "2019-114",
+    "2023-141",
+    "2024-067",
+    "2004-096",
+    "2008-039",
+    "2009-094"
+   ],
+   "figs": 2,
+   "tablas": [
+    "Tabla 1-7. Trastornos primarios del equilibrio ácido base y respuesta fisiológica compensa"
+   ],
+   "videos": [],
+   "recuerda": 2
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.3. Trastornos mixtos",
+   "palabras": 461,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2009-167",
+    "2008-095",
+    "2020-031"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Introducción a la asignatura de Nefrología",
+   "href": "628371bfc0f8415ab9efb5f2"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Síndromes clínicos en nefrología",
+   "href": "570779c8f4d68bf008dbc654"
+  }
+ ],
+ "totPalabras": 13599,
+ "totPalabrasTabla": 598,
+ "totCitas": 40,
+ "totFigs": 14,
+ "totTablas": 7,
+ "totRecuerda": 7,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

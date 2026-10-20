@@ -1,0 +1,555 @@
+{
+ "titulo": "3.- Enfermedades del intestino delgado",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc6a6",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "3 Enfermedades del intestino delgado",
+   "palabras": 51,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Anatomía y fisiología",
+   "palabras": 232,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2018-004",
+    "2005-249",
+    "2021-030"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Diarrea y malabsorción",
+   "palabras": 338,
+   "palabrasTabla": 334,
+   "citasMIR": 6,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2003-006",
+    "2011-033",
+    "2018-084",
+    "2005-014",
+    "2008-006",
+    "2003-004"
+   ],
+   "figs": 2,
+   "tablas": [
+    "Tabla 3-1. Absorción de nutrientes Duodeno Hierro (Fe), Fólico, Calcio RECUERDA: Duodeno-F",
+    "Tabla 3-2. Etiología y características de la diarrea aguda infecciosa por bacterias Mecani",
+    "Tabla 3-3. Etiología y características de la diarrea aguda infecciosa por virus Etiología ",
+    "Tabla 3-4. Tipos fisiopatológicos de diarrea crónica Secretora: muy voluminosa, persiste a"
+   ],
+   "videos": [],
+   "recuerda": 5
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.1. Enfermedad celíaca",
+   "palabras": 2068,
+   "palabrasTabla": 381,
+   "citasMIR": 18,
+   "citasMIRdesde2015": 5,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2008-006",
+    "2003-004",
+    "2025-151",
+    "2015-047",
+    "2006-004",
+    "2004-235",
+    "2013-082",
+    "2007-006",
+    "2005-004",
+    "2004-004",
+    "2019-081",
+    "2014-033",
+    "2010-033",
+    "2008-260",
+    "2016-082",
+    "2014-034",
+    "2014-093",
+    "2017-085"
+   ],
+   "figs": 6,
+   "tablas": [
+    "Tabla 3-5. Biopsias patognomónicas en la diarrea crónica/malabsorción Enfermedad Descripci",
+    "Tabla 3-6. Pruebas respiratorias para el diagnóstico de algunas enfermedades malabsortivas",
+    "Tabla 3-7. Estudios en heces para la evaluación de diarrea crónica Calprotectina: indica i",
+    "Tabla 3-8. Clasificación de Marsh de la enfermedad celíaca GRAVEDAD + Marsh I Infiltrativa"
+   ],
+   "videos": [],
+   "recuerda": 6
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.2. Sobrecrecimiento bacteriano",
+   "palabras": 256,
+   "palabrasTabla": 0,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2015-065",
+    "2003-004",
+    "2008-006",
+    "2016-081"
+   ],
+   "figs": 2,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "5af945e5453ebd4044f7ba03.mp4",
+     "seg": 316,
+     "leyenda": "Vídeo 3-1Videoclase Enfermedad celíaca"
+    }
+   ],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.3. Enfermedad de Whipple",
+   "palabras": 230,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.4. Otros síndromes diarreicos malabsortivos",
+   "palabras": 1031,
+   "palabrasTabla": 0,
+   "citasMIR": 5,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2012-045",
+    "2003-185",
+    "2005-249",
+    "2004-250",
+    "2021-039"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Obstrucción intestinal",
+   "palabras": 29,
+   "palabrasTabla": 170,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [
+    "Tabla 3-9. Resumen de los principales síndromes malabsortivos Enfermedad Pista, clave, pec"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.1. Obstrucción intestinal mecánica",
+   "palabras": 1256,
+   "palabrasTabla": 0,
+   "citasMIR": 14,
+   "citasMIRdesde2015": 6,
+   "citasMIRdesde2020": 4,
+   "citas": [
+    "2021-139",
+    "2007-021",
+    "2005-017",
+    "2023-009",
+    "2005-020",
+    "2010-001",
+    "2009-003",
+    "2019-022",
+    "2012-047",
+    "2010-002",
+    "2016-072",
+    "2003-017",
+    "2020-154",
+    "2020-159"
+   ],
+   "figs": 9,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.2. Obstrucción intestinal funcional",
+   "palabras": 282,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2016-083",
+    "2015-013"
+   ],
+   "figs": 2,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Tumores del intestino delgado",
+   "palabras": 85,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.1. Tumores benignos",
+   "palabras": 46,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.2. Tumores malignos",
+   "palabras": 745,
+   "palabrasTabla": 93,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2024-124",
+    "2004-020"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 3-10. Comparación de los tipos de linfoma intestinal Linfoma primario o linfoma occi"
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "5. Patología del apéndice cecal",
+   "palabras": 86,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.1. Epidemiología",
+   "palabras": 65,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2003-018"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.2. Clínica",
+   "palabras": 94,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.3. Diagnóstico",
+   "palabras": 245,
+   "palabrasTabla": 115,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2008-017",
+    "2006-022",
+    "2013-076",
+    "2022-132"
+   ],
+   "figs": 2,
+   "tablas": [
+    "Tabla 3-11. Signos de irritación peritoneal presentes en la apendicitis aguda (aunque ines"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.4. Complicaciones de la apendicitis aguda",
+   "palabras": 114,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2021-141"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.5. Diagnóstico diferencial",
+   "palabras": 19,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2022-021"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.6. Tratamiento",
+   "palabras": 171,
+   "palabrasTabla": 119,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2008-021",
+    "2016-071"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 3-12. Diagnóstico diferencial del dolor en la fosa ilíaca derecha Apendicitis aguda "
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "6. Trastornos vasculares intestinales",
+   "palabras": 65,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.1. Generalidades. Conceptos anatómicos",
+   "palabras": 319,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2016-003",
+    "2014-203"
+   ],
+   "figs": 2,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "65828fec46dfa006b28061a4.mp4",
+     "seg": 292,
+     "leyenda": "Vídeo 3-2Imperdible: Trastornos vasculares intestinales."
+    }
+   ],
+   "recuerda": 2
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.2. Isquemia mesentérica aguda",
+   "palabras": 539,
+   "palabrasTabla": 0,
+   "citasMIR": 6,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2009-001",
+    "2017-076",
+    "2009-002",
+    "2004-021",
+    "2019-016",
+    "2006-017"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.3. Isquemia mesentérica crónica",
+   "palabras": 205,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2020-133"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.4. Colitis isquémica",
+   "palabras": 405,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2025-003",
+    "2006-016",
+    "2018-084"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 2
+  },
+  {
+   "nivel": "H3",
+   "titulo": "7. Síndrome del intestino irritable",
+   "palabras": 34,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2003-003"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.1. Definición y diagnóstico",
+   "palabras": 291,
+   "palabrasTabla": 58,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2011-033",
+    "2017-086",
+    "2021-147"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 3-13. Criterios diagnósticos Roma IV del síndrome de intestino irritable Dolor o mol"
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.2. Tratamiento",
+   "palabras": 743,
+   "palabrasTabla": 156,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2020-149"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 3-14. Datos de alarma en el síndrome de intestino irritable (MIR 2020-2021, P149) Co",
+    "Tabla 3-15. Diagnóstico diferencial del síndrome del intestino irritable* Trastornos diges"
+   ],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Enfermedades del estómago",
+   "href": "570779c8f4d68bf008dbc64a"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Enfermedades del hígado",
+   "href": "570779c9f4d68bf008dbc723"
+  }
+ ],
+ "totPalabras": 10044,
+ "totPalabrasTabla": 1426,
+ "totCitas": 80,
+ "totFigs": 29,
+ "totTablas": 15,
+ "totRecuerda": 18,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

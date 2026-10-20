@@ -7,7 +7,11 @@
 #                                                                    v6.01 (10-oct-2026, corrimiento) = 2026-10-12 → 121 filas lun 12-oct → mar 9-feb-2027:
 #                                                                    84 de trabajo + 37 DESCANSO; el fin se amplía +3 hábiles, nada se recorta ·
 #                                                                    v6.02 (17-oct-2026, corrimiento) = 2026-10-19 → 121 filas lun 19-oct → mar 16-feb-2027:
-#                                                                    84 de trabajo + 37 DESCANSO; +5 hábiles, outputs en viernes 15/15, nada se recorta)
+#                                                                    84 de trabajo + 37 DESCANSO; +5 hábiles, outputs en viernes 15/15, nada se recorta ·
+#                                                                    v6.03 (20-oct-2026, corrimiento) = 2026-10-21 → 121 filas mié 21-oct → jue 18-feb-2027:
+#                                                                    84 de trabajo + 37 DESCANSO; +2 hábiles, outputs en viernes 15/15 (+ S16 y «extra» al
+#                                                                    final, mié 17 / jue 18-feb), nada se recorta. Con D1 en miércoles el OUTPUT S1 cae el
+#                                                                    vie 23-oct tras 2 lecturas (Spark ×2) y las 2 de Pollan pasan al lun 26 / mar 27-oct)
 #   v6.02c (18-oct-2026, E5): YT_OVERRIDE — enlaces del plan comprobados el 18-oct que NO servían (vídeo caído = oEmbed 404,
 #     «no reproducible», subidas de 2 min «Full Audiobook Free») o que eran una BÚSQUEDA, sustituidos por una charla/entrevista
 #     del PROPIO AUTOR en un canal oficial (título, canal y duración leídos de YouTube ese día). Mismo libro y mismo contenido del

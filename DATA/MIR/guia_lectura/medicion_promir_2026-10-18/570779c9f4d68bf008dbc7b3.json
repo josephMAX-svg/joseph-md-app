@@ -1,0 +1,212 @@
+{
+ "titulo": "3.- Anemias hemolíticas",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc7b3",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "3 Anemias hemolíticas",
+   "palabras": 34,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Introducción",
+   "palabras": 489,
+   "palabrasTabla": 36,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2009-103",
+    "2011-092"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 3-1. Clasificación de las anemias hemolíticas Lugar de producción de la hemólisis Ca"
+   ],
+   "videos": [
+    {
+     "id": "69e9fdb42fa7751b445d10c5.mp4",
+     "seg": 1997,
+     "leyenda": "Vídeo 3-1Videoclase: Anemias hemolíticas."
+    },
+    {
+     "id": "64871384c9ba5c0765cd45b3.mp4",
+     "seg": 8270,
+     "leyenda": "Vídeo 3-2Masterclass: Hematología en imágenes MIR."
+    }
+   ],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Anemias hemolíticas congénitas",
+   "palabras": 33,
+   "palabrasTabla": 64,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [
+    "Tabla 3-2. Patogenia y manifestaciones de las anemias hemolíticas clasificadas en función "
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.1. Defectos de la membrana del hematíe: esferocitosis hereditaria o enfermedad de Minkowski-Chauffard",
+   "palabras": 422,
+   "palabrasTabla": 0,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2012-093",
+    "2018-096",
+    "2020-172",
+    "2014-077"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.2. Alteración del metabolismo eritrocitario (eritroenzimopatías)",
+   "palabras": 558,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.3. Alteraciones de la síntesis de hemoglobina",
+   "palabras": 1308,
+   "palabrasTabla": 124,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2007-109",
+    "2008-109",
+    "2022-010"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 3-3. Hemoglobinas encontradas de forma fisiológica en función de la etapa de desarro",
+    "Tabla 3-4. Características de las talasemias α Número de genes afectados​ Estudio de hemog"
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Anemias hemolíticas adquiridas",
+   "palabras": 15,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.1. Anemias hemolíticas inmunes",
+   "palabras": 764,
+   "palabrasTabla": 0,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 3,
+   "citas": [
+    "2011-094",
+    "2020-173",
+    "2021-180",
+    "2024-021"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.2. Anemias hemolíticas mecánicas",
+   "palabras": 72,
+   "palabrasTabla": 202,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2025-177",
+    "2017-010",
+    "2022-150"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 3-5. Mecanismos de producción de las anemias hemolíticas autoinmunes por fármacos en",
+    "Tabla 3-6. Anemias hemolíticas aloinmunes Postransfusional Enfermedad hemolítica del recié"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.3. Otras anemias hemolíticas adquiridas",
+   "palabras": 391,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2025-013"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Anemias carenciales",
+   "href": "570779c9f4d68bf008dbc759"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Otras anemias",
+   "href": "570779c9f4d68bf008dbc811"
+  }
+ ],
+ "totPalabras": 4086,
+ "totPalabrasTabla": 426,
+ "totCitas": 17,
+ "totFigs": 2,
+ "totTablas": 6,
+ "totRecuerda": 4,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

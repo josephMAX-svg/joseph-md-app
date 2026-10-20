@@ -1,0 +1,476 @@
+{
+ "titulo": "14.- Infección por el virus de la inmunodeficiencia humana",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc7c1",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "14 Infección por el virus de la inmunodeficiencia humana",
+   "palabras": 36,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Epidemiología",
+   "palabras": 158,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Vías de transmisión",
+   "palabras": 213,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2006-189"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Microbiología y patogenia",
+   "palabras": 319,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2003-226"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Historia natural",
+   "palabras": 227,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "5. Clasificación",
+   "palabras": 16,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "6. Diagnóstico",
+   "palabras": 406,
+   "palabrasTabla": 113,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2005-226",
+    "2013-119",
+    "2013-058"
+   ],
+   "figs": 3,
+   "tablas": [
+    "Tabla 14-1. Clasificación de la infección por VIH del CDC para adultos y adolescentes mayo"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "7. Manifestaciones clínicas",
+   "palabras": 20,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.1. Primoinfección e infección aguda o precoz",
+   "palabras": 131,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2013-119"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.2. Diagnóstico de infección aguda por VIH",
+   "palabras": 353,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.3. Infección crónica",
+   "palabras": 168,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2017-121"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.4. Síndrome de inmunodeficiencia adquirida",
+   "palabras": 2681,
+   "palabrasTabla": 665,
+   "citasMIR": 16,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2011-113",
+    "2021-019",
+    "2008-130",
+    "2004-131",
+    "2010-027",
+    "2005-130",
+    "2004-130",
+    "2015-107",
+    "2024-192",
+    "2006-130",
+    "2005-131",
+    "2003-131",
+    "2009-121",
+    "2005-132",
+    "2008-129",
+    "2007-228"
+   ],
+   "figs": 7,
+   "tablas": [
+    "Tabla 14-2. Enfermedades que obligan a descartar infección por el VIH Tipo de afectación C",
+    "Tabla 14-3. Enfermedades definitorias de SIDA Enfermedad Recuerdo etiológico Infecciones b",
+    "Tabla 14-4. Características diferenciales entre una toxoplasmosis cerebral y un linfoma ce",
+    "Tabla 14-5. Recomendaciones relacionadas con el inicio del tatamiento antirretroviral en e"
+   ],
+   "videos": [],
+   "recuerda": 3
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.5. Profilaxis y tratamiento de las infecciones asociadas al VIH más frecuentes",
+   "palabras": 31,
+   "palabrasTabla": 182,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2024-192",
+    "2005-131",
+    "2003-131"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 14-6. Profilaxis y tratamiento de las infecciones asociadas a VIH más frecuentes Age"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.6. Síndrome de reconstitución inmunológica",
+   "palabras": 220,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2012-112"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.7. Comorbilidades no definitorias de SIDA en el paciente en tratamiento antirretroviral",
+   "palabras": 140,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "8. Tratamiento antirretroviral",
+   "palabras": 35,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "8.1. Momento de inicio del tratamiento antirretroviral",
+   "palabras": 83,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2006-129",
+    "2024-172"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "8.2. Monitorización de la eficacia",
+   "palabras": 155,
+   "palabrasTabla": 0,
+   "citasMIR": 5,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2019-159",
+    "2009-122",
+    "2013-058",
+    "2014-127",
+    "2019-166"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "5b960f8c5509bf3d78444e28.mp4",
+     "seg": 551,
+     "leyenda": "Vídeo 14-1Tratamiento antirretroviral I."
+    }
+   ],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "8.3. Fármacos antirretrovirales",
+   "palabras": 11,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "8.4. Selección del régimen del tratamiento antirretroviral",
+   "palabras": 195,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "5b960f915509bf3d78444e2b.mp4",
+     "seg": 669,
+     "leyenda": "Vídeo 14-2Tratamiento antirretroviral II."
+    }
+   ],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "8.5. Biterapias",
+   "palabras": 38,
+   "palabrasTabla": 123,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [
+    "Tabla 14-7. Fármacos antirretrovirales Análogos de nucleósidos/nucleótidos inhibibidores d"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "8.6. Toxicidad del tratamiento antirretroviral",
+   "palabras": 259,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2004-129"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "9. Prevención",
+   "palabras": 11,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "9.1. Prevención de la transmisión vertical",
+   "palabras": 347,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2013-185",
+    "2010-116",
+    "2006-189"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "9.2. Vacunas",
+   "palabras": 74,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2013-189"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "9.3. Profilaxis postexposición y preexposición",
+   "palabras": 744,
+   "palabrasTabla": 431,
+   "citasMIR": 5,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2022-165",
+    "2012-115",
+    "2007-130",
+    "2003-129",
+    "2023-172"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 14-8. Indicaciones de colectivos de personas subsidiarias de profilaxis preexposició",
+    "Tabla 14-9. Recomendaciones de evaluación inicial y seguimiento en un programa de profilax"
+   ],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Infecciones por virus no VIH. Virus del grupo herpes",
+   "href": "570779c9f4d68bf008dbc767"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Infecciones por hongos. Antifúngicos",
+   "href": "570779c9f4d68bf008dbc81f"
+  }
+ ],
+ "totPalabras": 7071,
+ "totPalabrasTabla": 1514,
+ "totCitas": 44,
+ "totFigs": 14,
+ "totTablas": 9,
+ "totRecuerda": 6,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

@@ -11,10 +11,11 @@
  *        [--permitir-deficit]        solo para explorar escenarios: sin él, un déficit ABORTA (exit 2) — R1: nunca se recorta
  *        [--pendientes-f1 d1,d2,…]   disparador (f) cierre de F1 (jue 31-dic, tras el último día de F1 = mié 30-dic): d de F1 (el slot,
  *                                    la clave de plan_checks('usmle', d); 1-f1Filas, sin hitos) sin ✓; su contenido = la COLOCACIÓN de F1
- *                                    (colocarF1). v6.02: d 1-52 (d 1-51 = v5.20 D1-D51 · d 52 = NBME 28, hito: no se recupera) ·
+ *                                    (colocarF1). v6.03: d 1-50 (d 1-49 = v5.20 D1-D49 · d 50 = NBME 28, hito: no se recupera) ·
+ *                                    v6.02: d 1-52 (d 1-51 = v5.20 D1-D51 · d 52 = NBME 28, hito: no se recupera) ·
  *                                    v6.01: d 1-57 = D1-D57 · v6.00: d ≤ 58 sin ✓ tras C1/C2. Un d > --f1-filas (hasta 58) no es un slot
  *                                    de F1 y se ignora (v6.01: la 58 = D79 ya va en el tramo 2 como desplazada; no se duplica)
- *                                    NBME 28 (v6.02 d 52, mié 30-dic) — SIN day-after en F1 (jue 31-dic = SKIP, pausa): la revisión de
+ *                                    NBME 28 (v6.03 d 50 · v6.02 d 52, mié 30-dic) — SIN day-after en F1 (jue 31-dic = SKIP, pausa): la revisión de
  *                                    errores + Anki de gaps del propio NBME 28 va el mismo 30-dic (lo dice su sub: «+ revisión de errores +
  *                                    Anki de gaps») y su auditoría (day-after Palmerton) va en la revisión semanal S11 del sáb 2-ene-2027.
  *                                    Si se PIERDE el mié 30-dic, el NBME 28 NO se borra ni pasa al tramo 2 (es un hito: este disparador lo
@@ -23,12 +24,17 @@
  *                                    ese caso pasa de las 07:15 a las 13:30 (después del examen). Solo documentación: ninguna fila cambia
  *                                    (ni de F1 ni del tramo 2).
  *        [--f1-filas N]              v6.01: filas (slots) de TEMARIO de F1 antes de la pausa (por defecto min(f1.dias, 58) del JSON;
- *                                    v6.00 = 58 · v6.01 = 57 · v6.02 = 52). Lo que no cabe lo decide colocarF1 (abajo): las ÚLTIMAS
+ *                                    v6.00 = 58 · v6.01 = 57 · v6.02 = 52 · v6.03 = 50). Lo que no cabe lo decide colocarF1 (abajo): las ÚLTIMAS
  *                                    filas de temario NO-hito del orden D1-D57 · D79 son DESPLAZADAS: van SIEMPRE a la cabeza de la
  *                                    cola-adelante como contenido con su dOrig, en orden v5.20 (entran en V1)
  *        [--congelar-hasta AAAA-MM-DD --previo previo.json [--examen-previo AAAA-MM-DD] [--pendientes uid1,uid2]]
  *     Sin posicionales, ENCAPS / EXAMEN / SERUMS salen de DATA/_scripts/_fechas_v6.json (encaps.examen · step1.examen · serums.inicio).
  *
+ * v6.03 (20-oct-2026): corrimiento D1 lun 19-oct → mié 21-oct (lun 19 y mar 20 sin estudio; Joseph: «corre dos días, no comprimas temas
+ *   ni exámenes, alarga las fechas límite»). F1 = 50 hábiles con la MISMA regla (sin cambio de lógica): colocarF1(50) → slots 1-49 =
+ *   v5.20 D1-D49 · slot 50 = v5.20 D55 (NBME 28, mié 30-dic) · DESPLAZADAS 8 = D50 (Neuro: EM + meningitis + UNM + tumores SNC), D51-D54,
+ *   D56, D57 (Heme/Onco) y D79 (bioestadística), en ese orden, a la cabeza de la cola: T3 jue 18-mar … T10 mié 31-mar. Las fechas del
+ *   tramo 2 no cambian; la cola entera corre 2 filas y el COLCHÓN baja de 28 a 24 filas (≈ 63 h). Referencia: tramo2_14mar_27sep_v603.json.
  * v6.02 (17-oct-2026): corrimiento D1 lun 12-oct → lun 19-oct (no se estudió del lun 12 al vie 16-oct). F1 = 52 hábiles y NUEVA REGLA
  *   (Joseph: «un hito F1 no se desplaza»): los HITOS de F1 NUNCA salen de F1 → colocarF1(n): cada hito conserva su D# como slot
  *   (UWSA1 1 · NBME 25 10 · 26 25 · 27 40) y el que no cabe por su D# pasa a los ÚLTIMOS slots de F1, en orden (NBME 28, v5.20 D55 →
@@ -137,7 +143,8 @@ const ORIGEN_F1 = [...ORIGEN_F1_TEMARIO, 'C1', 'C2'];
  * si no, ocupa los últimos slots de F1 en orden. Los demás slots se llenan EN ORDEN con el temario no-hito y luego C1/C2; lo que sobra:
  * C1/C2 = colchón consumido · temario = desplazadas (orden v5.20). Con n = 60 / 58 / 57 da exactamente la F1 de la v6.00 / v6.00 sin
  * colchón / v6.01 (hitos ya en su D#); con n = 52 (v6.02): slots 1-51 = v5.20 D1-D51 · slot 52 = v5.20 D55 (NBME 28) ·
- * desplazadas D52, D53, D54, D56, D57, D79.
+ * desplazadas D52, D53, D54, D56, D57, D79; con n = 50 (v6.03): slots 1-49 = v5.20 D1-D49 · slot 50 = v5.20 D55 · desplazadas D50-D54,
+ * D56, D57, D79.
  * @param {number} n slots de F1 (gen_usmle_v5: f1.dias · generarTramo2: f1Filas ≤ 58)
  * @param {object} [byD] filas v5.20 por D (por defecto el dias_v520.json congelado) — decide qué es hito (sub «🎯…»)
  * @returns {{ enF1: (number|string)[], desplazadas: number[], consumido: string[], f1Filas: number, hitos: number[] }}
@@ -191,7 +198,7 @@ function generarTramo2(o) {
   const PENDIENTES = o.pendientes || [];
   const PEND_F1 = o.pendientesF1 || [];
   // v6.01: filas de temario de F1 que NO caben → desplazadas al tramo 2 con su dOrig (D# v5.20)
-  // v6.02: las decide colocarF1 (hitos anclados en F1; desplazadas = las últimas no-hito): v6.02 [52, 53, 54, 56, 57, 79] · v6.01 [79]
+  // v6.02: las decide colocarF1 (hitos anclados en F1; desplazadas = las últimas no-hito): v6.03 [50-54, 56, 57, 79] · v6.02 [52, 53, 54, 56, 57, 79] · v6.01 [79]
   const F1FILAS = o.f1Filas == null ? F1_FILAS_V600 : Number(o.f1Filas);
   if (!(Number.isInteger(F1FILAS) && F1FILAS >= 1 && F1FILAS <= F1_FILAS_V600)) throw new Error('f1Filas inválido (1-' + F1_FILAS_V600 + '): ' + o.f1Filas);
   const COL = colocarF1(F1FILAS, byD);
@@ -409,7 +416,7 @@ function mdTramo2(out) {
  * Opciones del tramo 2 desde la línea de comandos (las mismas que la referencia r2). Sin posicionales, ENCAPS / EXAMEN / SERUMS
  * salen del JSON validado (`F` = V6.cargarFechasV6()). `escenarioJSON` = true si las tres coinciden con el JSON.
  * v6.01: f1Filas = --f1-filas o, sin él, min(f1.dias, 58) del JSON (las filas de F1 se colocan en orden D1-D57 · D79 · C1 · C2).
- * v6.02: misma opción (52 con el JSON v6.02); la colocación (hitos anclados, desplazadas = últimas no-hito) la hace colocarF1.
+ * v6.02: misma opción (52 con el JSON v6.02 · 50 con el v6.03); la colocación (hitos anclados, desplazadas = últimas no-hito) la hace colocarF1.
  */
 function opcionesTramo2(argv, F = V6.cargarFechasV6()) {
   const opt = (k) => { const i = argv.indexOf(k); return i >= 0 ? argv[i + 1] : null; };

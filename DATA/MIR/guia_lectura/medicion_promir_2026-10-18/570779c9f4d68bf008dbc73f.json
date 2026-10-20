@@ -1,0 +1,519 @@
+{
+ "titulo": "13.- Patología maligna de la mama. Cáncer de mama",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc73f",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "13 Patología maligna de la mama. Cáncer de mama",
+   "palabras": 60,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Epidemiología",
+   "palabras": 46,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2025-050"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.1. Factores de riesgo en población general",
+   "palabras": 112,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2020-070",
+    "2005-178"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.2. Síndromes heredofamiliares asociados al cáncer de mama",
+   "palabras": 145,
+   "palabrasTabla": 158,
+   "citasMIR": 7,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2003-178",
+    "2007-133",
+    "2007-178",
+    "2009-165",
+    "2016-172",
+    "2018-171",
+    "2025-050"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 13-1. Criterios clínicos de sospecha de cáncer heredofamiliar (alto riesgo) Criterio"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Cribado del cáncer de mama",
+   "palabras": 138,
+   "palabrasTabla": 91,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [
+    "Tabla 13-2. Indicaciones y técnica de cribado Población Edad Indicación Técnica Población "
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.1. Cribado poblacional",
+   "palabras": 86,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.2. Cribado en población de riesgo",
+   "palabras": 133,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2018-171",
+    "2016-172"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Tipos histológicos",
+   "palabras": 23,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.1. Carcinomas in situ",
+   "palabras": 413,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.2. Carcinoma infiltrante",
+   "palabras": 192,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2025-050"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "5bed2e4c3e106059e548c07d.mp4",
+     "seg": 1257,
+     "leyenda": "Vídeo 13-1Videoclase: Carcinoma infiltrante de mama. Enfoque diagnóstico"
+    }
+   ],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.3. Carcinoma inflamatorio",
+   "palabras": 205,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2012-202"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "5bed2e513e106059e548c080.mp4",
+     "seg": 1406,
+     "leyenda": "Vídeo 13-2Videoclase: Carcinoma infiltrante de mama. Factores pronósticos y tratamiento."
+    }
+   ],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.4. Enfermedad de Paget de la mama",
+   "palabras": 157,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.5. Tumor phyllodes maligno",
+   "palabras": 195,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Manifestaciones clínicas",
+   "palabras": 94,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2010-167"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "5. Enfoque diagnóstico",
+   "palabras": 14,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2019-065",
+    "2021-076"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.1. Diagnóstico por imagen",
+   "palabras": 473,
+   "palabrasTabla": 272,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2025-052",
+    "2012-029",
+    "2011-146"
+   ],
+   "figs": 3,
+   "tablas": [
+    "Tabla 13-3. Tipo de prueba de imagen a solicitar en paciente sintomática según su edad y/o",
+    "Tabla 13-4. Clasificación BI-RADS de los hallazgos radiológicos de la mama Categoría Defin",
+    "Tabla 13-5. Criterios ecográficos de sospecha de nódulo de mama Sospecha de benignidad Sos"
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.2. Diagnóstico histológico. Técnicas",
+   "palabras": 402,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2012-204",
+    "2025-052",
+    "2012-030"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "6. Estadificación",
+   "palabras": 270,
+   "palabrasTabla": 205,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2009-225",
+    "2008-179"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 13-6. Clasificación TNM para el cáncer de mama T. Tumor TX No puede determinarse el ",
+    "Tabla 13-7. Estadios clínicos del cáncer de mama Estadio T N M 0 1s 0 0 I 1 0 0 IIA 0 1 2 "
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "7. Factores pronósticos del cáncer de mama",
+   "palabras": 312,
+   "palabrasTabla": 0,
+   "citasMIR": 11,
+   "citasMIRdesde2015": 5,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2004-179",
+    "2003-177",
+    "2005-177",
+    "2005-178",
+    "2006-178",
+    "2014-167",
+    "2016-171",
+    "2017-102",
+    "2018-213",
+    "2019-064",
+    "2024-139"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "8. Tratamiento del cáncer de mama",
+   "palabras": 116,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2014-166"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "8.1. Tratamiento quirúrgico",
+   "palabras": 1137,
+   "palabrasTabla": 423,
+   "citasMIR": 7,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2007-179",
+    "2007-132",
+    "2006-133",
+    "2008-178",
+    "2022-143",
+    "2010-168",
+    "2023-005"
+   ],
+   "figs": 2,
+   "tablas": [
+    "Tabla 13-8. Subtipos moleculares del cáncer de mama Subtipo Definición Características y t",
+    "Tabla 13-9. Tratamiento primario del cáncer de mama según subtipos moleculares Subtipo mol",
+    "Tabla 13-10. Tratamiento adyuvante según el tipo molecular Subtipo molecular Tratamiento L"
+   ],
+   "videos": [],
+   "recuerda": 2
+  },
+  {
+   "nivel": "H4",
+   "titulo": "8.2. Tratamiento quimioterápico",
+   "palabras": 422,
+   "palabrasTabla": 218,
+   "citasMIR": 6,
+   "citasMIRdesde2015": 5,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2016-171",
+    "2017-102",
+    "2018-213",
+    "2019-064",
+    "2021-144",
+    "2003-179"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 13-11. Indicación de la realización de linfadenectomía axilar según resultado de la "
+   ],
+   "videos": [],
+   "recuerda": 2
+  },
+  {
+   "nivel": "H4",
+   "titulo": "8.3. Hormonoterapia",
+   "palabras": 450,
+   "palabrasTabla": 0,
+   "citasMIR": 5,
+   "citasMIRdesde2015": 5,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2016-171",
+    "2017-102",
+    "2018-213",
+    "2019-064",
+    "2021-144"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "8.4. Tratamiento con radioterapia",
+   "palabras": 262,
+   "palabrasTabla": 0,
+   "citasMIR": 9,
+   "citasMIRdesde2015": 8,
+   "citasMIRdesde2020": 3,
+   "citas": [
+    "2016-171",
+    "2017-102",
+    "2018-213",
+    "2019-064",
+    "2019-073",
+    "2021-144",
+    "2023-150",
+    "2004-178",
+    "2022-146"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "8.5. Nuevas dianas terapéuticas: anticuerpos monoclonales",
+   "palabras": 138,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2004-177",
+    "2006-179"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "9. Cáncer de mama en el varón",
+   "palabras": 156,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "10. Cáncer de mama y embarazo",
+   "palabras": 1123,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Patología benigna de la mama",
+   "href": "570779c8f4d68bf008dbc6c2"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Patología benigna y lesiones preinvasivas del cuello del útero. Infección por el virus del papiloma humano",
+   "href": "570779c9f4d68bf008dbc79b"
+  }
+ ],
+ "totPalabras": 7274,
+ "totPalabrasTabla": 1367,
+ "totCitas": 66,
+ "totFigs": 6,
+ "totTablas": 11,
+ "totRecuerda": 14,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

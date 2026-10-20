@@ -14,6 +14,8 @@
 // v6.02 (17-oct-2026): el origen de cada d de F1 sale de la COLOCACIÓN (gen_tramo2.colocarF1(DIAS.length): hitos anclados en F1) en vez
 //   de la posición: d 1-51 = v5.20 D1-D51 · d 52 = v5.20 D55 (NBME 28, sin nota como todo hito). Las recuperaciones (dF1 = slot de F1) usan
 //   la misma colocación. Las desplazadas (D52-D54, D56, D57, D79) heredan la nota de su dOrig en el tramo 2 (T3-T8).
+// v6.03 (20-oct-2026): sin cambio de lógica. colocarF1(50): d 1-49 = v5.20 D1-D49 · d 50 = v5.20 D55 (NBME 28, sin nota). Las 8
+//   desplazadas (D50-D54, D56, D57, D79) heredan la nota de su dOrig en el tramo 2 (T3-T10, d 103-110).
 // v5.x: matcheaba (system, uw) contra el plan viejo de git HEAD (fallback: 1.er path del sistema).
 'use strict';
 const fs = require('fs');

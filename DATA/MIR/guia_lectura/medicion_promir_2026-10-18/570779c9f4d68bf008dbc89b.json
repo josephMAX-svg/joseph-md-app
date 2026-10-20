@@ -1,0 +1,218 @@
+{
+ "titulo": "2.- Artropatias inducidas por cristales",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc89b",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "2 Artropatías inducidas por cristales",
+   "palabras": 27,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "658ebd14b7c56c1af3eb955b.mp4",
+     "seg": 414,
+     "leyenda": "Vídeo 2-1Imperdible: Artropatías por cristales."
+    }
+   ],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Hiperuricemia y gota",
+   "palabras": 0,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.1. Etiopatogenia",
+   "palabras": 108,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2014-206"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.2. Manifestaciones clínicas",
+   "palabras": 422,
+   "palabrasTabla": 90,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 2,
+   "tablas": [
+    "Tabla 2-1. Clasificación de la hiperuricemia Aumento de la producción (5 %) Disminución de"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.3. Enfoque diagnóstico",
+   "palabras": 261,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2013-015"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.4. Tratamiento",
+   "palabras": 441,
+   "palabrasTabla": 0,
+   "citasMIR": 13,
+   "citasMIRdesde2015": 5,
+   "citasMIRdesde2020": 3,
+   "citas": [
+    "2020-183",
+    "2012-221",
+    "2013-016",
+    "2012-102",
+    "2016-194",
+    "2025-181",
+    "2020-115",
+    "2011-073",
+    "2011-091",
+    "2008-083",
+    "2006-082",
+    "2005-085",
+    "2017-171"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Enfermedad por depósito de pirofosfato",
+   "palabras": 71,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.1. Etiopatogenia",
+   "palabras": 65,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.2. Manifestaciones clínicas",
+   "palabras": 284,
+   "palabrasTabla": 32,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2007-082"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 2-2. Etiopatogenia de la enfermedad por depósito de pirofosfato Idiopático Asociado "
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.3. Diagnóstico y tratamiento",
+   "palabras": 229,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2003-080",
+    "2024-095",
+    "2015-142"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Enfermedad por depósito de hidroxiapatita",
+   "palabras": 342,
+   "palabrasTabla": 77,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [
+    "Tabla 2-3. Artropatías microcristalinas Ácido úrico Pirofosfato Hidroxiapatita Microscopia"
+   ],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Introducción",
+   "href": "570779c9f4d68bf008dbc877"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Vasculitis",
+   "href": "570779c9f4d68bf008dbc8af"
+  }
+ ],
+ "totPalabras": 2250,
+ "totPalabrasTabla": 199,
+ "totCitas": 19,
+ "totFigs": 6,
+ "totTablas": 3,
+ "totRecuerda": 0,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

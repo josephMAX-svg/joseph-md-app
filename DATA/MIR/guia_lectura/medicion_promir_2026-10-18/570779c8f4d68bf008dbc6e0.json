@@ -1,0 +1,287 @@
+{
+ "titulo": "10.- Linfomas",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc6e0",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "10 Linfomas",
+   "palabras": 294,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Linfoma de Hodgkin",
+   "palabras": 102,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.1. Anatomía patológica y clasificación",
+   "palabras": 676,
+   "palabrasTabla": 0,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2009-212",
+    "2009-231",
+    "2006-113",
+    "2003-115"
+   ],
+   "figs": 3,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.2. Estadificación",
+   "palabras": 43,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2008-112",
+    "2019-008"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.3. Clínica y exploración física",
+   "palabras": 263,
+   "palabrasTabla": 209,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2009-231",
+    "2006-113",
+    "2003-115",
+    "2007-112"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 10-1. Clasificación del linfoma de Hodgkin según la OMS y características Tipos y fe"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.4. Pruebas complementarias",
+   "palabras": 127,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2023-149"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.5. Pronóstico",
+   "palabras": 97,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.6. Tratamiento",
+   "palabras": 714,
+   "palabrasTabla": 98,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2003-119"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 10-2. International Prognostic Score (IPS) del linfoma de Hodgkin (también conocido "
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Linfoma no Hodgkin",
+   "palabras": 102,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.1. Etiología",
+   "palabras": 101,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2024-147"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.2. Clasificación",
+   "palabras": 188,
+   "palabrasTabla": 208,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [
+    "Tabla 10-3. Clasificación de las neoplasias de células B y células T según la OMS 2022 Neo"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.3. Clínica y alteraciones analíticas",
+   "palabras": 492,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.4. Estadificación y diagnóstico",
+   "palabras": 222,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2023-149"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.5. Factores pronósticos",
+   "palabras": 109,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2009-110"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.6. Tratamiento",
+   "palabras": 884,
+   "palabrasTabla": 427,
+   "citasMIR": 15,
+   "citasMIRdesde2015": 6,
+   "citasMIRdesde2020": 3,
+   "citas": [
+    "2006-114",
+    "2005-117",
+    "2004-114",
+    "2019-108",
+    "2008-114",
+    "2021-161",
+    "2024-144",
+    "2011-098",
+    "2007-114",
+    "2011-099",
+    "2015-176",
+    "2018-100",
+    "2009-110",
+    "2012-097",
+    "2022-204"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 10-4. Características importantes para el diagnóstico de algunos linfomas no Hodgkin",
+    "Tabla 10-5. Índice",
+    "Tabla 10-6. Tratamiento del linfoma folicular Estadio Tratamiento Estadio I/II (< 10 %) Ob"
+   ],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Síndromes linfoproliferativos crónicos",
+   "href": "570779c9f4d68bf008dbc813"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Gammapatías monoclonales",
+   "href": "570779c9f4d68bf008dbc84d"
+  }
+ ],
+ "totPalabras": 4414,
+ "totPalabrasTabla": 942,
+ "totCitas": 30,
+ "totFigs": 4,
+ "totTablas": 6,
+ "totRecuerda": 1,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

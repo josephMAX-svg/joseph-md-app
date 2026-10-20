@@ -1,5 +1,5 @@
 /**
- * encapsProgressSync.ts — CIERRE DE SESIÓN ENCAPS desde la app (régimen v6.02: MANTENIMIENTO D1-D52 lun 19-oct → mié 30-dic-2026 +
+ * encapsProgressSync.ts — CIERRE DE SESIÓN ENCAPS desde la app (régimen v6.03: MANTENIMIENTO D1-D50 mié 21-oct → mié 30-dic-2026 + INTENSIVA dia 51-100 · v6.02: D1-D52 lun 19-oct +
  * INTENSIVA dia 53-102 lun 4-ene → vie 12-mar-2027 con carril B 16:15 · examen ENCAPS dom 14-mar-2027 PROVISIONAL · v6.01: D1-D57 lun 12-oct →
  * mié 30-dic + INTENSIVA dia 58-107 (mismas fechas) · v6.00: D1-D60 mié 7-oct →
  * mié 30-dic + INTENSIVA dia 61-110 (mismas fechas) · v5.20, D1 = mié 7-oct-2026 → D92 = mar 16-feb-2027 + INTENSIVA días 97-107 mar 23-feb → mar 9-mar · examen ENCAPS mié 10-mar-2027; v5.19: mar 6-oct → lun 15-feb · v5.18: lun 5-oct → vie 12-feb · v5.17: jue 1-oct → mié 10-feb).
@@ -31,6 +31,10 @@
  * 'carril_b' con el código del pendiente) mié 17-feb dia 85 II-8 · jue 18-feb dia 86 II-3 · mar 23-feb dia 89 III-8 · mié 24-feb dia 90 II-11 · jue
  * 25-feb dia 91 IV-6 · lun 1-mar dia 93 V-7; MINI-SIM 25Q repuestos (cierre 'mini_sim', sin código, cierreId por fecha → no chocan) lun 22-feb sim_n
  * 88 (fila 53 de la F1 v6.00, II-6 + II-10) y mar 2-mar sim_n 94 (fila 50 de la F1 v6.01, I-10 + V-6).
+ * v6.03 (20-oct-2026): corrimiento rígido a D1 = mié 21-oct (lun 19 y mar 20-oct sin estudio) → F1 D1-D50 + INTENSIVA dia 51-100 (mismas fechas).
+ * Sin cambio de código: sim_n = dia de la fila (mini-sims F1 3…43 · pre-test 55 · SIM 100Q 60-95 · dress 99; no había notas guardadas). Reposición
+ * F1 = 10 pendientes con las mismas fechas que en v6.02 (dia − 2: 83, 84, 86 mini-sim sim_n 86, 87, 88, 89, 91, 92 mini-sim sim_n 92) + 2 de v6.03
+ * (cierre 'carril_b'): mié 3-mar dia 93 I-3 · jue 4-mar dia 94 V-2.
  *
  * Métrica que manda (README_SISTEMA_TRACKING.md): % CIEGO = correctas SEGURAS / total; las dudosas/adivinadas NO cuentan.
  * Taxonomía v3 (Palmerton): knowledge CONCEPTO·OLVIDO·CRONOLOGIA · transfer CCSN·CONTEXTO · proceso CAMBIO·TIEMPO·LECTURA.

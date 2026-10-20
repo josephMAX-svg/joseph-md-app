@@ -1,0 +1,558 @@
+{
+ "titulo": "5.- Diabetes mellitus",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc737",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "5 Diabetes mellitus",
+   "palabras": 114,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "5b976756c7079274b98e9f70.mp4",
+     "seg": 518,
+     "leyenda": "Vídeo 5-1Diagnóstico."
+    },
+    {
+     "id": "5b97675cc7079274b98e9f73.mp4",
+     "seg": 673,
+     "leyenda": "Vídeo 5-2Tratamiento."
+    }
+   ],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Metabolismo de los hidratos de carbono",
+   "palabras": 823,
+   "palabrasTabla": 0,
+   "citasMIR": 7,
+   "citasMIRdesde2015": 7,
+   "citasMIRdesde2020": 4,
+   "citas": [
+    "2023-027",
+    "2015-039",
+    "2021-028",
+    "2020-026",
+    "2022-027",
+    "2017-050",
+    "2018-226"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 2
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Epidemiología",
+   "palabras": 61,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2007-250"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Diagnóstico y cribado",
+   "palabras": 211,
+   "palabrasTabla": 68,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2003-073",
+    "2021-168",
+    "2006-071",
+    "2004-073"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 5-1. Criterios de la Academia Americana de Diabetes (2024) 1. Glucemia plasmática ≥ "
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Clasificación",
+   "palabras": 770,
+   "palabrasTabla": 315,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2015-152",
+    "2003-072",
+    "2016-087",
+    "2014-173"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 5-2. Criterios para el cribado de diabetes o prediabetes en adultos asintomáticos (A",
+    "Tabla 5-3. Clasificación de la diabetes mellitus (guías ADA 2024) 1) Diabetes mellitus tip"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "5. Patogenia",
+   "palabras": 11,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.1. Diabetes mellitus tipo 1",
+   "palabras": 333,
+   "palabrasTabla": 135,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2003-072"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 5-4. Características clínicas de los distintos subtipos de MODY MODY 1 MODY 2 MODY 3"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.2. Diabetes mellitus tipo 2",
+   "palabras": 206,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2003-072",
+    "2005-072"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "6. Manifestaciones clínicas",
+   "palabras": 164,
+   "palabrasTabla": 229,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2024-153"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 5-5. Autoantígenos principales contra la célula β Autoantígenos principales contra l",
+    "Tabla 5-6. Diferencias relevantes entre la diabetes mellitus tipo 1 y tipo 2 DM1 DM2 Edad "
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "7. Tratamiento y prevención",
+   "palabras": 68,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.1. Medidas higiénico-dietéticas",
+   "palabras": 293,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2015-152"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "64871702c9ba5c0765cd45c4.mp4",
+     "seg": 4294,
+     "leyenda": "Vídeo 5-3Masterclass: Tratamiento de la diabetes mellitus."
+    }
+   ],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.2. Fármacos no insulínicos",
+   "palabras": 1292,
+   "palabrasTabla": 0,
+   "citasMIR": 21,
+   "citasMIRdesde2015": 14,
+   "citasMIRdesde2020": 10,
+   "citas": [
+    "2009-075",
+    "2008-071",
+    "2007-070",
+    "2021-055",
+    "2014-087",
+    "2014-088",
+    "2003-071",
+    "2018-088",
+    "2004-071",
+    "2024-188",
+    "2020-165",
+    "2017-090",
+    "2023-188",
+    "2015-083",
+    "2025-112",
+    "2023-190",
+    "2022-159",
+    "2017-089",
+    "2020-164",
+    "2021-050",
+    "2025-189"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.3. Insulinoterapia",
+   "palabras": 664,
+   "palabrasTabla": 300,
+   "citasMIR": 8,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2014-087",
+    "2005-073",
+    "2013-096",
+    "2009-004",
+    "2018-088",
+    "2012-058",
+    "2022-194",
+    "2022-193"
+   ],
+   "figs": 2,
+   "tablas": [
+    "Tabla 5-7. Características de los diferentes antidiabéticos orales Biguanidas Tiazolidined",
+    "Tabla 5-8. Tipos de insulina Fast Aspart Aspart, lispro o glulisina Regular o cristalina N"
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.4. Escalón terapéutico del manejo de la diabetes mellitus tipo 2",
+   "palabras": 130,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2025-187",
+    "2024-184"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.5. Prevención de factores de riesgo cardiovascular",
+   "palabras": 104,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2011-087"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.6. Cribado de complicaciones microangiopáticas y macroangiopáticas",
+   "palabras": 85,
+   "palabrasTabla": 289,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2011-088"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 5-9. Recomendaciones del uso de estatinas en pacientes diabéticos (ADA 2024) Prevenc",
+    "Tabla 5-10. Recomendaciones tratamiento antiagregante (ADA 2024) Como prevención primaria "
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.7. Objetivos del control glucémico",
+   "palabras": 183,
+   "palabrasTabla": 114,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2019-163",
+    "2021-192",
+    "2022-163"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 5-11. Objetivos de control glucémico y metabólico Parámetro Objetivo Colesterol LDL "
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "8. Complicaciones agudas",
+   "palabras": 13,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "8.1. Cetoacidosis diabética",
+   "palabras": 324,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2010-074",
+    "2010-073",
+    "2012-059"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "8.2. Síndrome hiperglucémico hiperosmolar",
+   "palabras": 313,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2009-074",
+    "2011-086"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 2
+  },
+  {
+   "nivel": "H4",
+   "titulo": "8.3. Hipoglucemias",
+   "palabras": 171,
+   "palabrasTabla": 54,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2012-058",
+    "2004-072"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 5-12. Diferencias entre la cetoacidosis diabética y el síndrome hiperglucémico hiper"
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "9. Complicaciones crónicas",
+   "palabras": 12,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "9.1. Complicaciones vasculares macroangiopáticas",
+   "palabras": 101,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2008-254"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "9.2. Complicaciones vasculares microangiopáticas",
+   "palabras": 153,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2007-071",
+    "2015-082",
+    "2021-051"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "9.3. Pie diabético",
+   "palabras": 141,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 2
+  },
+  {
+   "nivel": "H3",
+   "titulo": "10. Diabetes y las nuevas tecnologías",
+   "palabras": 46,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "10.1. Bombas de infusión subcutánea continua de insulina",
+   "palabras": 142,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "10.2. Monitorización continua de glucosa",
+   "palabras": 174,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "10.3. Sistemas integrados: ISCI+MCG",
+   "palabras": 325,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Glándulas suprarrenales",
+   "href": "570779c8f4d68bf008dbc6ba"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Nutrición y obesidad",
+   "href": "570779c9f4d68bf008dbc793"
+  }
+ ],
+ "totPalabras": 7427,
+ "totPalabrasTabla": 1504,
+ "totCitas": 68,
+ "totFigs": 9,
+ "totTablas": 12,
+ "totRecuerda": 11,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

@@ -43,6 +43,9 @@ import { MIR_INICIO_POR_TURNO } from '../../lib/mirMantenimiento';
  *  · Espejo Supabase: al montar, mirEvalLogPull() fusiona por id en ambos sentidos (fallback silencioso).
  *  · Chip "Step 1 esta semana: <sistema> D#-D#" (mirUsmleBridge, lectura de usmleStep1Daily).
  *  · Test de cierre 10Q el 1er día de cada bloque · D77 mini-MIR 40Q · D78 tabla de neto (baseline).
+ *  · v6.03 (20-oct-2026 · corrimiento D1 = mié 21-oct): 1.ª vuelta mié 21-oct → mié 10-feb (78) · mantenimiento jue 11-feb → jue 6-may (57;
+ *    lun 3 → jue 6-may ya en el SERUMS) · extensión vie 7-may → vie 24-sep (121) + 11 repuestas mar 28-sep → mar 12-oct-2027 (189) · guía MEDIDA
+ *    D1-D76 (mirGuia: los 76 capítulos del plan medidos; el banqueo lleva el dato medido de los capítulos de su asignatura).
  *  · v6.02 (17-oct-2026 · corrimiento D1 = lun 19-oct): 1.ª vuelta lun 19-oct → lun 8-feb (78) · mantenimiento mar 9-feb → mar 4-may (57;
  *    lun 3 y mar 4-may ya en el SERUMS: la franja sale del turno por fecha, enSerums) · extensión mié 5-may → vie 24-sep (123).
  *  · v6.01 (10-oct-2026 · corrimiento D1 = lun 12-oct): 1.ª vuelta lun 12-oct → lun 1-feb (78) · mantenimiento mar 2-feb → mar 27-abr
@@ -611,7 +614,7 @@ function BaselineView() {
             <Text style={st.baseSub}>{s.aciertos}/{s.total} · bl {s.blancos} · 🇪🇸 {s.deltaEs}</Text>
           </View>
         ))}
-        <Text style={st.formHint}>Corrección Whole-Page de cada fallo + Shopping List → APEX (directos en Anki). &lt;{u.anclasD7} % → anclas D-7 / viernes del mantenimiento. Handoff vie 24-sep (fin de la extensión; v5.20: 22-abr): mínimo on-track 60 % neto · 🇪🇸 = fallos delta (objetivo 0 repetidos).</Text>
+        <Text style={st.formHint}>Corrección Whole-Page de cada fallo + Shopping List → APEX (directos en Anki). &lt;{u.anclasD7} % → anclas D-7 / viernes del mantenimiento. Handoff {MIR_MANT_META.handoff.split(' (')[0]} (última sesión del banqueo; v6.02: vie 24-sep · v5.20: 22-abr): mínimo on-track 60 % neto · 🇪🇸 = fallos delta (objetivo 0 repetidos).</Text>
       </View>
     </FadeUp>
   );

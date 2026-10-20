@@ -1,0 +1,187 @@
+{
+ "titulo": "8.- Cefaleas",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc8ab",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "8 Cefaleas",
+   "palabras": 49,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Introducción",
+   "palabras": 205,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2008-054"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Cefaleas primarias",
+   "palabras": 26,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.1. Cefalea tensional",
+   "palabras": 331,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2025-168",
+    "2011-080",
+    "2024-082"
+   ],
+   "figs": 2,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "671f779884fee072d8b6d918.mp4",
+     "seg": 750,
+     "leyenda": "Vídeo 8-1Imperdible: Cefaleas primarias."
+    }
+   ],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.2. Migraña",
+   "palabras": 628,
+   "palabrasTabla": 82,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2005-063",
+    "2014-068",
+    "2012-233"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 8-1. Diagnóstico diferencial entre la cefalea tensional y la migraña Cefalea tension"
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.3. Cefaleas trigémino-autonómicas",
+   "palabras": 428,
+   "palabrasTabla": 66,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2018-156",
+    "2013-143"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 8-2. Cefaleas trigémino-autonómicas Cefalea en racimos Hemicránea paroxística SUNCT "
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Otras cefaleas",
+   "palabras": 14,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.1. Neuralgia del trigémino",
+   "palabras": 239,
+   "palabrasTabla": 0,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2023-095",
+    "2022-103",
+    "2007-059",
+    "2006-059"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.2. Hipertensión intracraneal idiopática (seudotumor cerebri)",
+   "palabras": 352,
+   "palabrasTabla": 0,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2025-210",
+    "2012-069",
+    "2013-229",
+    "2023-006"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Demencias",
+   "href": "570779c9f4d68bf008dbc897"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Enfermedades metabólicas",
+   "href": "570779c9f4d68bf008dbc7df"
+  }
+ ],
+ "totPalabras": 2272,
+ "totPalabrasTabla": 148,
+ "totCitas": 17,
+ "totFigs": 3,
+ "totTablas": 2,
+ "totRecuerda": 1,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

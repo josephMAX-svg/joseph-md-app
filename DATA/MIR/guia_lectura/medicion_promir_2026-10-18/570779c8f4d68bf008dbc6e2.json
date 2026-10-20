@@ -1,0 +1,405 @@
+{
+ "titulo": "3.- Patología aparato digestivo",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc6e2",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "3 Patología del aparato digestivo",
+   "palabras": 84,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Diarrea. Intolerancia a la lactosa. Enfermedad celíaca",
+   "palabras": 12,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.1. Diarrea aguda. Gastroenteritis aguda",
+   "palabras": 312,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2022-080"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.2. Diarrea crónica",
+   "palabras": 572,
+   "palabrasTabla": 105,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2022-080",
+    "2005-183",
+    "2007-188"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 3-1. Causas de diarrea crónica por edad Neonatos 1 mes – 2 años > 2 años Diarreas y "
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.4. Enfermedad celíaca",
+   "palabras": 2403,
+   "palabrasTabla": 397,
+   "citasMIR": 13,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2007-006",
+    "2008-185",
+    "2008-260",
+    "2010-033",
+    "2005-241",
+    "2004-185",
+    "2006-004",
+    "2015-047",
+    "2004-004",
+    "2005-004",
+    "2014-093",
+    "2013-082",
+    "2015-078"
+   ],
+   "figs": 2,
+   "tablas": [
+    "Tabla 3-2. Signos y síntomas de alarma de diarrea crónica con sospecha de causa orgánica I",
+    "Tabla 3-3. Tabla comparativa entre diarrea osmótica y secretora Diarrea osmótica Diarrea s",
+    "Tabla 3-4. Síntomas y signos asociados a la enfermedad celíaca Intestinales y relacionados",
+    "Tabla 3-5. Grupos de riesgo de la enfermedad celíaca Realizar en primer lugar estudio del ",
+    "Tabla 3-6. Enfermedad celíaca silente, latente y potencial Cuando el algoritmo falla: enfe"
+   ],
+   "videos": [],
+   "recuerda": 3
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Reflujo gastroesofágico. Estenosis hipertrófica de píloro",
+   "palabras": 80,
+   "palabrasTabla": 99,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [
+    "Tabla 3-7. Diagnóstico diferencial de las entidades que cursan con vómitos en el lactante "
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.1. Reflujo gastroesofágico",
+   "palabras": 867,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.4. Estenosis hipertrófica de píloro",
+   "palabras": 345,
+   "palabrasTabla": 0,
+   "citasMIR": 7,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2022-082",
+    "2003-183",
+    "2014-172",
+    "2013-173",
+    "2010-151",
+    "2008-182",
+    "2017-158"
+   ],
+   "figs": 2,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "5. Alergia a proteínas de leche de vaca. Esofagitis eosinofílica",
+   "palabras": 29,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.2. Alergia a proteínas de leche de vaca",
+   "palabras": 1009,
+   "palabrasTabla": 66,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2015-156",
+    "2018-176",
+    "2013-180",
+    "2017-163"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 3-8. Criterios diagnósticos de la enterocolitis inducida por proteínas alimentarias "
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.4. Esofagitis eosinofílica",
+   "palabras": 572,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2015-071",
+    "2015-233"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "7. Estreñimiento. Enfermedad de Hirschsprung",
+   "palabras": 34,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.1. Estreñimiento funcional",
+   "palabras": 429,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2004-181"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.3. Enfermedad de Hirschsprung",
+   "palabras": 509,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2003-184",
+    "2017-156",
+    "2009-175"
+   ],
+   "figs": 2,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "9. Dolor abdominal: dolor abdominal funcional e invaginación intestinal",
+   "palabras": 52,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "9.2. Dolor abdominal funcional",
+   "palabras": 355,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "9.3. Intususcepción o invaginación intestinal",
+   "palabras": 568,
+   "palabrasTabla": 0,
+   "citasMIR": 5,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2024-070",
+    "2022-079",
+    "2005-192",
+    "2012-033",
+    "2012-034"
+   ],
+   "figs": 2,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "11. Malformaciones congénitas: atresia de esófago, hernia diafragmática y divertículo de Meckel",
+   "palabras": 14,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "11.2. Atresia de esófago",
+   "palabras": 591,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2014-170",
+    "2011-135",
+    "2005-191"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "11.4. Hernia diafragmática",
+   "palabras": 390,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2004-180",
+    "2017-161"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "11.5. Divertículo de Meckel",
+   "palabras": 190,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2021-007"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "12. Síndrome de Reye",
+   "palabras": 676,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Desarrollo y nutrición",
+   "href": "570779c9f4d68bf008dbc84f"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Patología del aparato respiratorio",
+   "href": "570779c9f4d68bf008dbc75f"
+  }
+ ],
+ "totPalabras": 10093,
+ "totPalabrasTabla": 667,
+ "totCitas": 45,
+ "totFigs": 12,
+ "totTablas": 8,
+ "totRecuerda": 5,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

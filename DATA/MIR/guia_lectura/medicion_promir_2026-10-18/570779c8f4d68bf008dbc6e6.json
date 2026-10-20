@@ -1,0 +1,396 @@
+{
+ "titulo": "2.- Antibacterianos",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc6e6",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "2 Antibacterianos",
+   "palabras": 81,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Clasificación. Mecanismos de acción y espectro",
+   "palabras": 147,
+   "palabrasTabla": 0,
+   "citasMIR": 10,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2003-222",
+    "2005-223",
+    "2005-225",
+    "2008-228",
+    "2009-116",
+    "2010-207",
+    "2012-220",
+    "2012-225",
+    "2017-061",
+    "2017-117"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Definiciones del tratamiento antibiótico",
+   "palabras": 464,
+   "palabrasTabla": 304,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 4,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2017-061",
+    "2017-117",
+    "2017-044",
+    "2018-061"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 2-1. Grupos de antibióticos y lugares de acción (MIR 2017-2018, P061) (v. también Fi",
+    "Tabla 2-2. Betalactámicos. Grupos (MIR 2017-2018, P044; MIR 2018-2019, P061) CLASIFICACIÓN"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Dosificación de los antibacterianos. Farmacocinética y farmacodinámica",
+   "palabras": 514,
+   "palabrasTabla": 104,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 2,
+   "tablas": [
+    "Tabla 2-3. Relaciones farmacocinéticas/farmacodinámicas para los antimicrobianos T > CMI A"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Mecanismos de resistencia más relevantes",
+   "palabras": 0,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2018-060"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.1. Introducción al concepto de resistencia a los antimicrobianos",
+   "palabras": 119,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.2. Definición de resistencia antibiótica",
+   "palabras": 682,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2018-060"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.3. Tipos de resistencias",
+   "palabras": 147,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.4. Bases bioquímicas de la resistencia a antimicrobianos",
+   "palabras": 327,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.5. Resistencias de los diferentes grupos antimicrobianos",
+   "palabras": 611,
+   "palabrasTabla": 207,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2009-203",
+    "2018-041",
+    "2022-164",
+    "2025-035"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 2-4. Mecanismos de resistencia más frecuentes en los antibacterianos FÁRMACOS MECANI"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "5. Características de nuevos antimicrobianos",
+   "palabras": 16,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.1. Antibióticos de larga duración (long-lasting)",
+   "palabras": 365,
+   "palabrasTabla": 86,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [
+    "Tabla 2-5. Características principales de las carbapenemasas Clase molecular A (Ser70) B ("
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.2. Betalactámicos",
+   "palabras": 1029,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2023-097"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "6. Algunos efectos adversos de los antibacterianos",
+   "palabras": 0,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.1. Linezolid",
+   "palabras": 150,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.2. Carbapenems",
+   "palabras": 35,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.3. Fluoroquinolonas",
+   "palabras": 121,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2021-056"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.4. Daptomicina",
+   "palabras": 36,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2018-041"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.5. Ceftriaxona",
+   "palabras": 40,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "7. Difusión de antimicrobianos a líquidos y tejidos",
+   "palabras": 0,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.1. Antibióticos en infecciones del sistema nervioso central. Difusión a líquido cefalorraquídeo",
+   "palabras": 631,
+   "palabrasTabla": 161,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [
+    "Tabla 2-6. Antibióticos en infecciones del sistema nervioso central* Tipo de antibiótico y"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.2. Pulmón",
+   "palabras": 74,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "8. Antibióticos antipseudomónicos",
+   "palabras": 303,
+   "palabrasTabla": 421,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [
+    "Tabla 2-7. Antibióticos a los que P. aeruginosa tiene resistencia intrínseca Penicilina, a",
+    "Tabla 2-8. Antibióticos recomendados para el tratamiento de la P. aeruginosa Antibiótico U",
+    "Tabla 2-9. Dosis antipseudomónicas Antibiótico Dosis antipseudomónicas Ciprofloxacino Vía "
+   ],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Bacterias. Generalidades",
+   "href": "570779c9f4d68bf008dbc853"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Sepsis. Infecciones nosocomiales",
+   "href": "570779c9f4d68bf008dbc763"
+  }
+ ],
+ "totPalabras": 5892,
+ "totPalabrasTabla": 1283,
+ "totCitas": 23,
+ "totFigs": 7,
+ "totTablas": 9,
+ "totRecuerda": 2,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

@@ -1,0 +1,200 @@
+{
+ "titulo": "6.- Vacunación infantil",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc817",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "6 Vacunación infantil",
+   "palabras": 57,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Conceptos",
+   "palabras": 285,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2015-202"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Clasificación",
+   "palabras": 654,
+   "palabrasTabla": 66,
+   "citasMIR": 11,
+   "citasMIRdesde2015": 5,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2015-198",
+    "2015-204",
+    "2010-197",
+    "2022-077",
+    "2007-219",
+    "2003-241",
+    "2022-051",
+    "2007-244",
+    "2006-243",
+    "2014-191",
+    "2015-200"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 6-1. Tipos de vacunas Agentes vivos atenuados Virus Triple vírica (sarampión, rubéol"
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Contraindicaciones",
+   "palabras": 472,
+   "palabrasTabla": 62,
+   "citasMIR": 8,
+   "citasMIRdesde2015": 4,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2014-192",
+    "2015-201",
+    "2013-234",
+    "2015-199",
+    "2015-204",
+    "2010-197",
+    "2013-189",
+    "2022-077"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 6-2. Diferencias entre vacunas polisacáridas y vacunas conjugadas Vacuna polisacárid"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Efectos adversos",
+   "palabras": 209,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "5. Calendarios vacunales sistemáticos",
+   "palabras": 356,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2022-084",
+    "2007-220"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.1. Calendario vacunal pediátrico, calendario sistemático infantil",
+   "palabras": 1278,
+   "palabrasTabla": 0,
+   "citasMIR": 9,
+   "citasMIRdesde2015": 4,
+   "citasMIRdesde2020": 3,
+   "citas": [
+    "2005-217",
+    "2024-035",
+    "2022-051",
+    "2006-243",
+    "2003-241",
+    "2024-043",
+    "2010-196",
+    "2018-127",
+    "2007-219"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.2. Calendario vacunal de adultos",
+   "palabras": 490,
+   "palabrasTabla": 0,
+   "citasMIR": 5,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2011-197",
+    "2018-233",
+    "2010-230",
+    "2007-220",
+    "2004-218"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.3. Vacunación en prematuros",
+   "palabras": 400,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  }
+ ],
+ "nav": [
+  {
+   "t": "Patología infecciosa",
+   "href": "570779c9f4d68bf008dbc7b9"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Patología nefrourológica infantil",
+   "href": "570779c9f4d68bf008dbc851"
+  }
+ ],
+ "totPalabras": 4201,
+ "totPalabrasTabla": 128,
+ "totCitas": 36,
+ "totFigs": 1,
+ "totTablas": 2,
+ "totRecuerda": 2,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

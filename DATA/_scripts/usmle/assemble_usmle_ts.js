@@ -17,6 +17,8 @@
  *   escenario.origenF1 (D# v5.20 de cada d de F1; gen_tramo2.colocarF1): tramos «D1-D51 = mismo D#» + cada d con otro origen (D52 = NBME 28,
  *   v5.20 D55) + la lista de DESPLAZADAS (D52-D54, D56, D57, D79 → T3-T8). La bitácora del header lleva TODOS los corrimientos del JSON
  *   (v6.01 y v6.02), no solo el vigente. El doc de `uid` lista las unidades C<D> desplazadas reales (ya no «C79» fijo).
+ * v6.03 (20-oct-2026): corrimiento D1 lun 19-oct → mié 21-oct (F1 = 50 hábiles; 8 desplazadas: v5.20 D50 Neuro, D51-D54, D56, D57
+ *   Heme/Onco, D79 → T3-T10). Sin cambio de lógica (todo sale de las filas y del JSON); la regla del corrimiento se cierra con un solo punto.
  * v5.x: leía usmle_dias_v5.txt (solo DIAS, 95 días) y pegaba cabecera/pie fijos con las fechas del último corrimiento escritas a mano.
  */
 'use strict';
@@ -119,7 +121,7 @@ const trocear = (txt, pre1, pre) => { // líneas de comentario de ≤ ~130 carac
   return out.map((l, i) => (i === 0 ? pre1 : pre) + l).join('\n');
 };
 const lineasF1Txt = trocear(lineasF1.join(' · '), ' *   ', ' *   ');
-const corrTxt = CORR.map((c) => trocear(`${c.version} (${fy(c.fecha)}): corrimiento rígido del D1 ${fy(c.d1_previo)} → ${fy(c.d1)} (sin estudio: ${c.perdidos.map(f).join(', ')}) · ${c.regla}.`, ' * ', ' *   ')).join('\n');
+const corrTxt = CORR.map((c) => trocear(`${c.version} (${fy(c.fecha)}): corrimiento rígido del D1 ${fy(c.d1_previo)} → ${fy(c.d1)} (sin estudio: ${c.perdidos.map(f).join(', ')}) · ${c.regla.replace(/\.$/, '')}.`, ' * ', ' *   ')).join('\n');
 const colchonF1Nivel4 = COLCHON_F1.length ? ` · ${COLCHON_F1.map((x) => x.sub.split(' ')[0]).join('/')} COLCHÓN F1 (${rangoD(COLCHON_F1)})` : '';
 const q = (s) => "'" + String(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'") + "'";
 const L = (x) => JSON.stringify(x);

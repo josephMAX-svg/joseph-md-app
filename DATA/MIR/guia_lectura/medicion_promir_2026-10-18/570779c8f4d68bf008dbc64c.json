@@ -1,0 +1,503 @@
+{
+ "titulo": "7.- Enfermedades del colon",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c8f4d68bf008dbc64c",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "7 Enfermedades del colon",
+   "palabras": 85,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Enfermedad inflamatoria intestinal",
+   "palabras": 68,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.1. Colitis ulcerosa",
+   "palabras": 2151,
+   "palabrasTabla": 98,
+   "citasMIR": 21,
+   "citasMIRdesde2015": 7,
+   "citasMIRdesde2020": 4,
+   "citas": [
+    "2021-147",
+    "2005-006",
+    "2022-014",
+    "2005-232",
+    "2008-251",
+    "2009-030",
+    "2024-120",
+    "2013-083",
+    "2013-093",
+    "2019-046",
+    "2012-001",
+    "2011-226",
+    "2010-035",
+    "2009-029",
+    "2017-079",
+    "2015-069",
+    "2025-155",
+    "2003-007",
+    "2005-007",
+    "2008-007",
+    "2014-038"
+   ],
+   "figs": 13,
+   "tablas": [
+    "Tabla 7-1. Gravedad de la colitis ulcerosa. Índice de TRUELOVE-WITTS* Variable 3 puntos 2 "
+   ],
+   "videos": [
+    {
+     "id": "6582907346dfa006b28061b0.mp4",
+     "seg": 991,
+     "leyenda": "Vídeo 7-1Imperdible: Enfermedad inflamatoria intestinal."
+    }
+   ],
+   "recuerda": 2
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.2. Enfermedad de Crohn",
+   "palabras": 855,
+   "palabrasTabla": 95,
+   "citasMIR": 7,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2007-007",
+    "2025-150",
+    "2007-017",
+    "2006-006",
+    "2015-011",
+    "2023-131",
+    "2010-036"
+   ],
+   "figs": 2,
+   "tablas": [
+    "Tabla 7-2. Clasificación de Montreal de la enfermedad de Crohn Edad al diagnóstico Localiz",
+    "Tabla 7-3. Riesgo de recurrencia posquirúrgica en la enfermedad de Crohn Alto riesgo de re"
+   ],
+   "videos": [],
+   "recuerda": 3
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.3. Manifestaciones extraintestinales en la enfermedad inflamatoria intestinal",
+   "palabras": 355,
+   "palabrasTabla": 89,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2011-034",
+    "2012-002",
+    "2018-079"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 7-4. Diferencias entre colitis ulcerosa y enfermedad de Crohn Colitis ulcerosa Enfer"
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Colitis microscópica",
+   "palabras": 205,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2004-235",
+    "2025-154",
+    "2020-152"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Pólipos de colon. Cáncer de colon",
+   "palabras": 45,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.1. Pólipos esporádicos",
+   "palabras": 354,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2007-008",
+    "2008-008",
+    "2015-226"
+   ],
+   "figs": 4,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.2. Poliposis colónicas",
+   "palabras": 2468,
+   "palabrasTabla": 695,
+   "citasMIR": 10,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 3,
+   "citas": [
+    "2024-209",
+    "2006-020",
+    "2013-081",
+    "2005-136",
+    "2007-246",
+    "2010-206",
+    "2011-212",
+    "2012-038",
+    "2024-001",
+    "2025-153"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 7-5. Poliposis colónicas Síndrome Cáncer Técnica de cribado Edad de inicio Periodici",
+    "Tabla 7-5. Poliposis colónicas (Cont.) Síndrome Cáncer Técnica de cribado Edad de inicio P",
+    "Tabla 7-5. Poliposis colónicas (Cont.) Poliposis hamartomatosas Síndrome de Peutz-Jeghers ",
+    "Tabla 7-6. Criterios de Ámsterdam (I y II) y criterios de Bethesda revisados para el diagn",
+    "Tabla 7-7. Seguimiento del síndrome de Lynch Tumor Prueba Edad de inicio Periodicidad CCR "
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.3. Cáncer colorrectal",
+   "palabras": 1649,
+   "palabrasTabla": 109,
+   "citasMIR": 26,
+   "citasMIRdesde2015": 8,
+   "citasMIRdesde2020": 6,
+   "citas": [
+    "2022-200",
+    "2006-018",
+    "2007-134",
+    "2010-001",
+    "2010-003",
+    "2011-036",
+    "2013-082",
+    "2003-234",
+    "2010-004",
+    "2025-206",
+    "2004-005",
+    "2009-233",
+    "2017-078",
+    "2008-022",
+    "2025-099",
+    "2017-186",
+    "2003-019",
+    "2023-203",
+    "2011-123",
+    "2009-126",
+    "2024-143",
+    "2003-251",
+    "2020-157",
+    "2009-038",
+    "2014-037",
+    "2008-018"
+   ],
+   "figs": 4,
+   "tablas": [
+    "Tabla 7-8. Clasificación TNM y estadios de cáncer colorrectal Clasificación TNM Tumor prim"
+   ],
+   "videos": [],
+   "recuerda": 2
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Divertículos",
+   "palabras": 32,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.1. Clínica",
+   "palabras": 327,
+   "palabrasTabla": 0,
+   "citasMIR": 5,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2024-019",
+    "2018-013",
+    "2020-150",
+    "2007-020",
+    "2008-138"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.2. Diagnóstico",
+   "palabras": 160,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2005-018",
+    "2003-016",
+    "2011-041"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.3. Tratamiento",
+   "palabras": 301,
+   "palabrasTabla": 0,
+   "citasMIR": 5,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2008-005",
+    "2007-022",
+    "2013-080",
+    "2018-013",
+    "2021-143"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "5. Patología perianal",
+   "palabras": 0,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.1. Anatomía y fisiología",
+   "palabras": 67,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2014-045"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.2. Evaluación funcional",
+   "palabras": 141,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2008-019"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.3. Incontinencia anal",
+   "palabras": 240,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2011-042"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.4. Estreñimiento",
+   "palabras": 134,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.5. Fisuras anales",
+   "palabras": 170,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2022-134",
+    "2023-018",
+    "2005-019"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.6. Fístulas y abscesos perianales",
+   "palabras": 252,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2023-137",
+    "2017-226",
+    "2008-020"
+   ],
+   "figs": 2,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 2
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.7. Hemorroides",
+   "palabras": 193,
+   "palabrasTabla": 44,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2006-019"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 7-9. Clasificación de las hemorroides Grado Descripción Grado 1 Hemorroides no prola"
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.8. Cáncer de ano",
+   "palabras": 87,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2008-238"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.9. Dolor anal",
+   "palabras": 627,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2024-118"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Enfermedades del páncreas",
+   "href": "570779c8f4d68bf008dbc600"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Miscelánea de temas quirúrgicos",
+   "href": "570779c8f4d68bf008dbc6a8"
+  }
+ ],
+ "totPalabras": 10966,
+ "totPalabrasTabla": 1130,
+ "totCitas": 98,
+ "totFigs": 29,
+ "totTablas": 11,
+ "totRecuerda": 13,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

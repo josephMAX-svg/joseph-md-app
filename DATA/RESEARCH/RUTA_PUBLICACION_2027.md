@@ -6,7 +6,25 @@ estándares CARE/PRISMA, y cómo se conecta con las líneas **L0-L8** de
 [`src/lib/researchProgram.ts`](../../src/lib/researchProgram.ts) — este doc NO reemplaza el
 programa de líneas: le pone el calendario editorial encima.
 
-> **✅ v6.02 VIGENTE (sáb 17-oct-2026) — D1 del régimen = LUN 19-OCT-2026 (lun 12 → vie 16-oct sin estudio): ciclo 1 = 42 átomos mar 20-oct-2026 →
+> **✅ v6.03 VIGENTE (mar 20-oct-2026) — D1 del régimen = MIÉ 21-OCT-2026 (lun 19 y mar 20-oct sin estudio; Joseph: «simplemente corre, alarga las fechas
+> límite»): ciclo 1 = 42 átomos jue 22-oct-2026 → vie 19-mar-2027 · ciclo 2 = 67 átomos mar 23-mar → jue 2-sep-2027** (mismos átomos;
+> `node DATA/_scripts/gen_research_plan.js 2026-10-21`). El mié 21-oct es día-DERMA por paridad → Research arranca el jue 22-oct (pierde 1 ranura: el
+> mar 20-oct) y quedan **29 días-Research antes de la pausa** (antes 30): **X-2 (post-submit de la carta: plantilla de rebuttal) pasa tras la pausa**
+> (prioridad MEDIA, sin deadline antes de la pausa; su comprobación del mentor de inglés del case report va como chip de CR-7). Ciclo 1: R0 jue 22-oct ·
+> R1 lun 26-oct · **M1 mié 28-oct** (d3) · C-1 vie 30-oct = **último día-Research antes del 31-oct** · M2 mar 3-nov · C-2 jue 5-nov · **T-1 lun 9-nov** (d7) ·
+> M3 mié 11-nov (d8, seguimiento) · R9 vie 13-nov · C-3 mar 17-nov · C-4 jue 19-nov · C-5 lun 23-nov · **C-6 mié 25-nov** · **CR-1 vie 27-nov** (d14) ·
+> **CR-2 mar 1-dic** · T-3 jue 3-dic · T-4 lun 7-dic · T-2 mié 9-dic · T-5 vie 11-dic · T-6 mar 15-dic · CR-3 jue 17-dic · T-7 lun 21-dic · CR-4 mié 23-dic ·
+> **T-8 mar 29-dic** · CR-5 lun 4-ene · CR-6 mié 6-ene · CR-7 vie 8-ene · **CR-8 mar 12-ene (=)** · X-7 jue 14-ene (=) · pausa 15-ene → 10-feb ·
+> **CR-9 SUBMIT jue 11-feb (d30, =)** · X-8 lun 15-feb · R6 mié 17-feb · R7 vie 19-feb · **X-1 mar 23-feb (=)** · X-2 jue 25-feb · R3 lun 1-mar · R8 mié 3-mar ·
+> R2 vie 5-mar · X-3 mar 9-mar · X-4 jue 11-mar · X-5 mié 17-mar · X-6 vie 19-mar (d42). Ciclo 2: R6b mar 23-mar · R8b lun 29-mar · **X-9 mié 31-mar** ·
+> R9b vie 2-abr · **R10 PROSPERO mar 6-abr** · K1 jue 8-abr · R22 jue 20-may → R25 mar 1-jun · **R43 SUBMIT SR-1 jue 29-jul** · R45 mar 24-ago · X-12 sáb
+> 28-ago · X-13 mar 31-ago · X-14 jue 2-sep. Overlays 🔬 del Calendar: 12 «recrear» (`gen_research_calendar.js --check`; los aplica la fase del Calendar).
+> **🔴 Consecuencia editorial (v6.03):** C-6 (carta) mié 25-nov = **41 días** después del deadline interno ≤ 15-oct · CR-1 vie 27-nov y CR-2 mar 1-dic = **27 y 31
+> días** después del 31-oct (el único día-Research antes del plazo tras M1 es C-1 vie 30-oct: pedir el caso en M1 y activar la fuente B ese viernes) · T-1 lun
+> 9-nov = **40 días** después de «CEI expedita ≤ 30-sep» · R10 PROSPERO mar 6-abr = +6 d sobre el objetivo ≤ 31-mar (no es plazo externo). Los deadlines no se
+> mueven, los átomos sí (misma decisión (e) de v6.01/v6.02).
+> ⏸ *El bloque v6.02 que sigue es historial.*
+> **⏸ v6.02 (historial; sáb 17-oct-2026) — D1 del régimen = LUN 19-OCT-2026 (lun 12 → vie 16-oct sin estudio): ciclo 1 = 42 átomos mar 20-oct-2026 →
 > mié 17-mar-2027 · ciclo 2 = 67 átomos vie 19-mar → mar 31-ago-2027** (mismos átomos; `node DATA/_scripts/gen_research_plan.js 2026-10-19`). El lun 19-oct es
 > día-DERMA por paridad → Research arranca el mar 20-oct (pierde 3 ranuras: lun 12, mié 14, vie 16-oct) y quedan **30 días-Research antes de la pausa**
 > (antes 33): **R6 (PICO), R7 (elegibilidad) y X-1 (revisor #2) pasan tras la pausa** con los desplazables (prep de SR-1 sin deadline antes de la pausa;

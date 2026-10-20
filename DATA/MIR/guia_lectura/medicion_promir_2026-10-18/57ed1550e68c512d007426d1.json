@@ -1,0 +1,348 @@
+{
+ "titulo": "13.- Alteraciones de la coagulación sanguínea",
+ "url": "https://promir.medicapanamericana.com/capitulo/57ed1550e68c512d007426d1",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "13 Alteraciones de la coagulación sanguínea",
+   "palabras": 43,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Fisiología de la coagulación",
+   "palabras": 58,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.1. Hemostasia primaria",
+   "palabras": 288,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2005-247",
+    "2008-249"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.2. Hemostasia secundaria o coagulación",
+   "palabras": 508,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 3,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.3. Mecanismos de control de la coagulación",
+   "palabras": 287,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.4. Estudio de la hemostasia",
+   "palabras": 558,
+   "palabrasTabla": 329,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2021-183"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 13-1. Aspectos diferenciales de los tipos de sangrado Tipo de sangrado Vascular Plaq",
+    "Tabla 13-2. Interpretación de las pruebas de hemostasia y coagulación más frecuentes Prueb"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Alteraciones plaquetarias",
+   "palabras": 34,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.1. Trombocitopenias",
+   "palabras": 1256,
+   "palabrasTabla": 348,
+   "citasMIR": 21,
+   "citasMIRdesde2015": 9,
+   "citasMIRdesde2020": 6,
+   "citas": [
+    "2017-112",
+    "2022-147",
+    "2019-107",
+    "2012-098",
+    "2010-082",
+    "2013-108",
+    "2007-111",
+    "2004-113",
+    "2011-217",
+    "2023-145",
+    "2021-160",
+    "2024-166",
+    "2009-207",
+    "2009-105",
+    "2013-106",
+    "2018-102",
+    "2021-153",
+    "2005-113",
+    "2024-146",
+    "2011-100",
+    "2006-117"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 13-3. Causas más frecuentes de trombocitopenia periférica TP Púrpura Inmunes Autoinm",
+    "Tabla 13-4. Principales diferencias entre la púrpura trombocitopénica trombótica y el sínd",
+    "Tabla 13-5. Diagnóstico diferencial de la púrpura trombocitopénica trombótica Preeclampsia",
+    "Tabla 13-6. Prueba diagnóstica de la trombocitopenia inducida por heparina 0 1 2 Trombocit"
+   ],
+   "videos": [
+    {
+     "id": "5c6c1979446aa60249933820.mp4",
+     "seg": 358,
+     "leyenda": "Vídeo 13-1Videoclase Púrpura trombocitopénica trombótica"
+    }
+   ],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.2. Trombocitopatías",
+   "palabras": 598,
+   "palabrasTabla": 216,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2008-116",
+    "2017-111",
+    "2025-138",
+    "2010-087"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 13-7. Causas de las trombocitopatías congénitas (MIR 2017-2018, P111) Trastornos de "
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.3. Púrpuras vasculares",
+   "palabras": 67,
+   "palabrasTabla": 150,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [
+    "Tabla 13-8. Variantes de la enfermedad de Von Willebrand Tipos Patogenia Herencia Ag FvW F"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Alteraciones de la coagulación sanguínea",
+   "palabras": 16,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.1. Hipocoagulabilidades",
+   "palabras": 1010,
+   "palabrasTabla": 342,
+   "citasMIR": 11,
+   "citasMIRdesde2015": 5,
+   "citasMIRdesde2020": 5,
+   "citas": [
+    "2010-019",
+    "2010-020",
+    "2007-096",
+    "2010-102",
+    "2022-148",
+    "2012-094",
+    "2009-106",
+    "2024-145",
+    "2025-176",
+    "2021-026",
+    "2022-150"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 13-9. Clasificación y características de las púrpuras vasculares Congénitas Enfermed",
+    "Tabla 13-10. Clasificación clínica de la hemofilia Clasificación clínica Niveles de factor",
+    "Tabla 13-11. Déficits congénitos de la coagulación Déficit Herencia Clínica Tratamiento Fi"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.2. Estados protrombóticos",
+   "palabras": 1692,
+   "palabrasTabla": 199,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2018-097"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 13-12. Factores predisponentes para la formación de trombosis intravasculares Factor",
+    "Tabla 13-13. Resumen de las trombofilias Trombofilias Frecuencia Riesgo de trombosis Gener"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Tratamiento antitrombótico",
+   "palabras": 16,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.1. Fármacos anticoagulantes",
+   "palabras": 740,
+   "palabrasTabla": 0,
+   "citasMIR": 8,
+   "citasMIRdesde2015": 5,
+   "citasMIRdesde2020": 3,
+   "citas": [
+    "2009-112",
+    "2021-159",
+    "2007-116",
+    "2017-107",
+    "2013-045",
+    "2022-121",
+    "2025-117",
+    "2018-098"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.2. Fármacos antiagregantes",
+   "palabras": 50,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.3. Tratamiento fibrinolítico",
+   "palabras": 503,
+   "palabrasTabla": 194,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [
+    "Tabla 13-14. Fármacos antiagregantes Inhibidores de la COX: aspirina y antiinflamatorios n"
+   ],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Terapia celular",
+   "href": "570779c9f4d68bf008dbc75d"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Terapia transfusional",
+   "href": "570779c9f4d68bf008dbc7b7"
+  }
+ ],
+ "totPalabras": 7724,
+ "totPalabrasTabla": 1778,
+ "totCitas": 48,
+ "totFigs": 4,
+ "totTablas": 14,
+ "totRecuerda": 2,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

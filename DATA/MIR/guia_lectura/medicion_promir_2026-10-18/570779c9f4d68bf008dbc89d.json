@@ -1,0 +1,224 @@
+{
+ "titulo": "7.- Otras conectivopatías",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc89d",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "7 Otras conectivopatías",
+   "palabras": 48,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Esclerodermia",
+   "palabras": 79,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.1. Esclerosis sistémica",
+   "palabras": 1724,
+   "palabrasTabla": 98,
+   "citasMIR": 14,
+   "citasMIRdesde2015": 9,
+   "citasMIRdesde2020": 7,
+   "citas": [
+    "2019-167",
+    "2013-012",
+    "2024-022",
+    "2013-011",
+    "2022-206",
+    "2020-118",
+    "2019-158",
+    "2023-173",
+    "2014-112",
+    "2020-119",
+    "2022-172",
+    "2004-084",
+    "2022-175",
+    "2005-082"
+   ],
+   "figs": 10,
+   "tablas": [
+    "Tabla 7-1. Causas del fenómeno de Raynaud secundario Reumatológicas Esclerosis sistémica E",
+    "Tabla 7-2. Esclerosis sistémica limitada frente a difusa Limitada Difusa Fenómeno de Rayna"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.2. Síndromes esclerodermiformes y esclerodermia localizada",
+   "palabras": 166,
+   "palabrasTabla": 120,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [
+    "Tabla 7-3. Tratamiento de la esclerosis sistémica* Afectación cutánea rápidamente progresi"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.3. Enfermedad mixta del tejido conjuntivo",
+   "palabras": 192,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Miopatías inflamatorias",
+   "palabras": 55,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2024-175"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.1. Clasificación",
+   "palabras": 434,
+   "palabrasTabla": 21,
+   "citasMIR": 8,
+   "citasMIRdesde2015": 7,
+   "citasMIRdesde2020": 6,
+   "citas": [
+    "2005-143",
+    "2021-021",
+    "2024-205",
+    "2023-025",
+    "2022-177",
+    "2021-009",
+    "2020-008",
+    "2019-003"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 7-4. Clasificación de las miopatías inflamatorias Dermatomiositis Miopatías necrotiz"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.2. Manifestaciones clínicas",
+   "palabras": 34,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.3. Enfoque diagnóstico",
+   "palabras": 211,
+   "palabrasTabla": 0,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2011-072",
+    "2013-014",
+    "2013-013",
+    "2009-065"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.4. Tratamiento",
+   "palabras": 86,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Síndrome de Sjögren",
+   "palabras": 457,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 3,
+   "citas": [
+    "2023-108",
+    "2022-176",
+    "2021-182"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Lupus eritematoso sistémico. Síndrome antifosfolípido",
+   "href": "570779c9f4d68bf008dbc879"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Enfermedad metabólica ósea",
+   "href": "570779c9f4d68bf008dbc8b1"
+  }
+ ],
+ "totPalabras": 3486,
+ "totPalabrasTabla": 239,
+ "totCitas": 30,
+ "totFigs": 11,
+ "totTablas": 4,
+ "totRecuerda": 0,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

@@ -1,0 +1,240 @@
+{
+ "titulo": "6.- Trastornos del movimiento",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc873",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "6 Trastornos del movimiento",
+   "palabras": 52,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Introducción",
+   "palabras": 74,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Trastornos del movimiento hipocinéticos: parkinsonismos",
+   "palabras": 46,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.1. Enfermedad de Parkinson idiopática",
+   "palabras": 1414,
+   "palabrasTabla": 0,
+   "citasMIR": 10,
+   "citasMIRdesde2015": 4,
+   "citasMIRdesde2020": 4,
+   "citas": [
+    "2024-023",
+    "2022-095",
+    "2003-058",
+    "2006-052",
+    "2010-123",
+    "2014-070",
+    "2022-098",
+    "2013-146",
+    "2009-069",
+    "2024-085"
+   ],
+   "figs": 3,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "6554b4d73c21e174350d5571.mp4",
+     "seg": 6535,
+     "leyenda": "Vídeo 6-1Neurología en el MIR: Revisión de los trastornos del movimiento."
+    }
+   ],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.2. Parkinsonismos atípicos",
+   "palabras": 267,
+   "palabrasTabla": 0,
+   "citasMIR": 6,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2025-169",
+    "2015-131",
+    "2012-072",
+    "2008-062",
+    "2004-058",
+    "2024-078"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.3. Parkinsonismos secundarios",
+   "palabras": 421,
+   "palabrasTabla": 0,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2007-062",
+    "2012-074",
+    "2017-150",
+    "2025-165"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Trastornos del movimiento hipercinéticos",
+   "palabras": 24,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.1. Temblor",
+   "palabras": 244,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2014-230",
+    "2003-057"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.2. Distonía",
+   "palabras": 198,
+   "palabrasTabla": 39,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2010-154"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 6-1. Diagnóstico diferencial entre temblor esencial y parkinsoniano Temblor esencial"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.3. Corea",
+   "palabras": 97,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.4. Tics",
+   "palabras": 87,
+   "palabrasTabla": 0,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2006-058",
+    "2011-078"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "3.5. Síndrome de piernas inquietas",
+   "palabras": 277,
+   "palabrasTabla": 0,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2012-075",
+    "2003-060",
+    "2017-184",
+    "2023-092"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Esclerosis múltiple y otras enfermedades desmielinizantes",
+   "href": "570779c9f4d68bf008dbc839"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Demencias",
+   "href": "570779c9f4d68bf008dbc897"
+  }
+ ],
+ "totPalabras": 3201,
+ "totPalabrasTabla": 39,
+ "totCitas": 29,
+ "totFigs": 6,
+ "totTablas": 1,
+ "totRecuerda": 1,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

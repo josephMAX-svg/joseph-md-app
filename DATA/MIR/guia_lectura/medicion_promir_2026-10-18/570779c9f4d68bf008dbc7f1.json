@@ -1,0 +1,321 @@
+{
+ "titulo": "7.- Alteraciones del metabolismo lipídico",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc7f1",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "7 Alteraciones del metabolismo lipídico",
+   "palabras": 62,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Metabolismo lipídico",
+   "palabras": 72,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2004-248"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.1. Vías del transporte de lípidos",
+   "palabras": 371,
+   "palabrasTabla": 89,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2007-248",
+    "2003-078",
+    "2013-048"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 7-1. Lipoproteínas principales y sus características Lipoproteínas Apolipoproteínas "
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "1.2. Lipoproteínas de alta densidad",
+   "palabras": 141,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 2,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Hiperlipoproteinemias primarias",
+   "palabras": 102,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.1. Hipercolesterolemia familiar primaria",
+   "palabras": 161,
+   "palabrasTabla": 157,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2011-089",
+    "2020-140",
+    "2006-076"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 7-2. Principales hiperlipoproteinemias primarias Tipo Herencia/mutación Colesterol/t"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.2. Hipercolesterolemia poligénica",
+   "palabras": 52,
+   "palabrasTabla": 134,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2003-078",
+    "2021-191"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 7-3. Criterios diagnósticos clínicos de la hipercolestorelomia familiar heterocigóti"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.3. Hipertrigliceridemia familiar",
+   "palabras": 98,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.4. Hiperlipidemia familiar combinada",
+   "palabras": 88,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.5. Disbetalipoproteinemia e hipobetalipoproteinemia familiar",
+   "palabras": 234,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Hiperlipoproteinemias secundarias",
+   "palabras": 84,
+   "palabrasTabla": 119,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2012-230",
+    "2023-207"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 7-4. Hiperlipoproteinemias secundarias Patología Características clínicas Obesidad E"
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Prevención primaria y secundaria",
+   "palabras": 57,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.1. Prevención primaria",
+   "palabras": 133,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2004-078"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.2. Prevención secundaria",
+   "palabras": 105,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2010-079"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.3. Categorización del riesgo cardiovascular según las guías europeas",
+   "palabras": 111,
+   "palabrasTabla": 284,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2023-175",
+    "2008-073",
+    "2006-070",
+    "2023-207"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 7-5. Prevención primaria y secundaria del riesgo cardiovascular (MIR 2008-2009, P073"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "5. Tratamiento",
+   "palabras": 52,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.1. Medidas higiénico-dietéticas",
+   "palabras": 40,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.2. Tratamiento farmacológico",
+   "palabras": 732,
+   "palabrasTabla": 44,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2007-075",
+    "2003-221",
+    "2005-078"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 7-6. Tipos de estatinas y su intensidad Rosuvastatina Atorvastatina Pitavastatina Si"
+   ],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Nutrición y obesidad",
+   "href": "570779c9f4d68bf008dbc793"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Parathormona y metabolismo del calcio",
+   "href": "570779c8f4d68bf008dbc660"
+  }
+ ],
+ "totPalabras": 2695,
+ "totPalabrasTabla": 827,
+ "totCitas": 20,
+ "totFigs": 3,
+ "totTablas": 6,
+ "totRecuerda": 3,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

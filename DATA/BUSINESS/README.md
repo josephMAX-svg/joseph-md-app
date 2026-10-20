@@ -5,6 +5,14 @@ Data del estudio del fundador y de las academias médicas de Pulso. **Desde el 5
 audiolibro/lectura en los huecos, L-J, + 1 output pequeño el viernes) y solo cubre lo que no cubren
 **AURUM** (marketing/ventas, 14:15-15:15) ni **LIVIANO Academia** (medicina de la obesidad, 17:15-18:00).
 
+> **✅ v6.03 VIGENTE (mar 20-oct-2026) — D1 = MIÉ 21-OCT-2026** (lun 19 y mar 20-oct sin estudio; «simplemente corre, no comprimas»; +2 hábiles sobre v6.02).
+> **Business (Estudio Pulso, 13:00-13:25 L-V)**: 121 filas **mié 21-oct-2026 → jue 18-feb-2027** (84 de trabajo + 37 DESCANSO; `python DATA/_scripts/gen_business_plan.py 2026-10-21`
+> vía `remap_inicio.js 2026-10-21 --bloques business,liviano`): 15 OUTPUT en viernes (S1 vie 23-oct tras 2 lecturas —Spark ×2—; las 2 de Pollan pasan al lun 26 /
+> mar 27-oct) + S16 mié 17-feb y el extra jue 18-feb. **LIVIANO Academia**: 90 días **mié 21-oct → vie 26-feb-2027** (caso 1 D3 vie 23-oct … caso 16 D85 vie 19-feb;
+> capstone D89 jue 25-feb; revisión II + cierre D90 vie 26-feb; detalle en LIVIANO_ACADEMIA.md). **AURUM**: 130 días **mié 21-oct → jue 29-abr-2027** (pitches mar
+> 10-nov · mar 8-dic · vie 8-ene · vie 5-feb · vie 5-mar · jue 8-abr · jue 29-abr; 30' desde el lun 4-ene). v6.00-v6.02 no se anotaron aquí (ver los .ts y
+> DATA/_v600/V6_ESPEC.md); lo de abajo es historial.
+>
 > **v5.20 (6-oct-2026) — corrimiento RÍGIDO DEFINITIVO.** El mar 6-oct tampoco se estudió → **D1 = mié 7-oct-2026**
 > (+1 día hábil sobre v5.19; decimonoveno corrimiento del ciclo 31-ago→7-oct, 27 hábiles perdidos; Joseph lo fijó como el definitivo). **Regla del corrimiento rígido: no se toca NINGÚN tema ni contenido — solo corren los días, y donde había un fin clavado se AMPLÍAN días en vez de perder sesiones**:
 > las 84 filas de trabajo son las mismas y el desfase se absorbe alargando el final. **Novedad v5.20 — DÍAS PROTEGIDOS:** lun 22-feb (examen Step 1) · mar 9-mar (D-1 ENCAPS) · mié 10-mar (examen ENCAPS/SERUMS 2027-I, FIJADO por Joseph): AURUM no tiene sesión esos días (tampoco Research, Derma ni MIR). Business: **121 filas ·

@@ -1,0 +1,455 @@
+{
+ "titulo": "1.- Semiología",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc871",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "1 Semiología",
+   "palabras": 62,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "5b7d188605ffd46c80776d19.mp4",
+     "seg": 382,
+     "leyenda": "Vídeo 1-1Videoclase: Lesiones corticales y troncoencefálicas."
+    },
+    {
+     "id": "5b7d189005ffd46c80776d1c.mp4",
+     "seg": 738,
+     "leyenda": "Vídeo 1-2Videoclase: Lesiones de pares craneales y medulares"
+    }
+   ],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Recuerdo anatómico del sistema nervioso",
+   "palabras": 122,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Alteraciones de las funciones superiores y síndromes topográficos",
+   "palabras": 68,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.1. Evaluación de las funciones superiores",
+   "palabras": 632,
+   "palabrasTabla": 65,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2012-076",
+    "2004-054"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 1-1. Diagnóstico de las afasias Nominación Fluencia Comprensión Repetición Motora - "
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "2.2. Síndromes corticales",
+   "palabras": 710,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2010-218",
+    "2023-090",
+    "2023-008"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "5. Diencéfalo",
+   "palabras": 117,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "6. Tronco del encéfalo y pares craneales",
+   "palabras": 22,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.2. Tronco del encéfalo y síndromes troncoencefálicos",
+   "palabras": 240,
+   "palabrasTabla": 0,
+   "citasMIR": 5,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2011-208",
+    "2005-054",
+    "2014-076",
+    "2009-063",
+    "2018-161"
+   ],
+   "figs": 2,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "6.3. Pares craneales",
+   "palabras": 142,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2015-133"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "7. Sistema motor",
+   "palabras": 194,
+   "palabrasTabla": 265,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2024-080",
+    "2015-133",
+    "2013-212"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 1-2. Pares craneales y sus funciones Par craneal Funciones y características I par: "
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.1. Vía piramidal",
+   "palabras": 474,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2009-224",
+    "2010-062",
+    "2025-209"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "6582914346dfa006b28061e2.mp4",
+     "seg": 602,
+     "leyenda": "Vídeo 1-3Imperdible: Parálisis facial: central vs. periférica."
+    }
+   ],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "7.2. Vía extrapiramidal",
+   "palabras": 54,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "8. Sistema sensitivo",
+   "palabras": 22,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "8.1. Sistema de cordones posteriores (lemnisco medial)",
+   "palabras": 131,
+   "palabrasTabla": 88,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 1,
+   "tablas": [
+    "Tabla 1-3. Diagnóstico diferencial entre las lesiones de la primera y la segunda motoneuro"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "8.2. Vía espinotalámica",
+   "palabras": 132,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2012-208"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "8.3. Alteraciones sensitivas",
+   "palabras": 25,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "9. Coordinación",
+   "palabras": 37,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2015-134"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "10. Neurooftalmología",
+   "palabras": 58,
+   "palabrasTabla": 151,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2015-134"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 1-4. Alteraciones de la sensibilidad Síntomas negativos Hipoestesia/anestesia: acorc",
+    "Tabla 1-5. Diagnóstico diferencial de las ataxias Sensitiva Cerebelosa (MIR 2015-2016, P13"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "10.1. Vía óptica",
+   "palabras": 204,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "10.2. Parálisis oculomotoras",
+   "palabras": 266,
+   "palabrasTabla": 271,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2009-222",
+    "2012-146",
+    "2006-072",
+    "2019-019"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 1-6. Parálisis oculomotoras: clínica y etiología Nervio afectado Clínica y etiología"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "10.3. Patología de la pupila",
+   "palabras": 701,
+   "palabrasTabla": 0,
+   "citasMIR": 8,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2007-052",
+    "2009-222",
+    "2012-146",
+    "2015-135",
+    "2012-200",
+    "2013-036",
+    "2008-063",
+    "2003-149"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 3
+  },
+  {
+   "nivel": "H3",
+   "titulo": "11. Síndromes medulares",
+   "palabras": 49,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "11.1. Dermatomas",
+   "palabras": 63,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2024-007"
+   ],
+   "figs": 3,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "11.2. Principales síndromes medulares",
+   "palabras": 6,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2023-020",
+    "2017-154",
+    "2011-076"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "12. Sistema nervioso autónomo",
+   "palabras": 173,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Introducción a la asignatura de Neurología",
+   "href": "628372b4c0f8415ab9efb5f8"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Neurocirugía",
+   "href": "570779c9f4d68bf008dbc895"
+  }
+ ],
+ "totPalabras": 4704,
+ "totPalabrasTabla": 840,
+ "totCitas": 36,
+ "totFigs": 14,
+ "totTablas": 6,
+ "totRecuerda": 6,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

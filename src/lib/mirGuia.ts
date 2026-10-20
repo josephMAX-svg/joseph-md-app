@@ -2,28 +2,32 @@
  * mirGuia.ts — GUÍA «qué · cuánto · cómo» del bloque MIR (1 h/día, DJ-4) en el formato común `GuiaBloque` (src/lib/guia.ts).
  * Pedido de Joseph (18-oct-2026): «QUÉ leer, CUÁNTO leer, CÓMO leer — no puede estar al azar … que todo esté estructurado y definido».
  *
- *  · D1-D10 (lun 19-oct → vie 30-oct-2026) = MEDIDOS: el bloque sale tal cual de DATA/MIR/guia_lectura_semana1-2.json (E2: medición
- *    real de cada capítulo ProMIR — palabras deduplicadas, secciones, figuras, clips, preguntas MIR citadas) vía src/lib/mirGuiaDatos.ts
- *    (GENERADO por DATA/MIR/guia_lectura/gen_mir_guia.js). Las preguntas exactas de cada paso: `mirGuiaPreguntas(d)`.
- *  · D11-D78 = POR REGLA (misma estructura de 7 pasos que D1-D10; se marca «sin medir» donde falta el dato): anclas fijas de
+ *  · D1-D76 (v6.03: mié 21-oct-2026 → lun 8-feb-2027; v6.02c: solo D1-D10) = MEDIDOS: el bloque sale tal cual de
+ *    DATA/MIR/guia_lectura_semana1-2.json (nombre histórico; E2: medición real de cada capítulo ProMIR — palabras deduplicadas, secciones,
+ *    figuras, clips, preguntas MIR citadas; 10 capítulos el 18-oct + 66 el 20-oct) vía src/lib/mirGuiaDatos.ts (GENERADO por
+ *    DATA/MIR/guia_lectura/gen_mir_guia.js). Las preguntas exactas de cada paso: `mirGuiaPreguntas(d)`.
+ *  · POR REGLA solo si un día-tema no tuviera medición (desde v6.03 no ocurre con el plan vigente; queda para cambios de plan): misma
+ *    estructura de 7 pasos, marcada «sin medir»: anclas fijas de
  *    mirDailyPlan.mirAnclas (D-1 2Q · D-3 1Q · D-7 1Q; la app puede cambiar un slot por un tema 🔥 caliente: manda la app) o TEST DE
  *    CIERRE el 1.er día de bloque · pre-test 5Q (pool oficial de la app → completar con preguntas MIR citadas ≥2015 del capítulo) ·
  *    lectura dirigida 15′ (Orientación MIR 1′ + secciones gap por chips MIR) · quiz 8-10Q (resto del pool + citadas) · ≤4 APEX.
- *    D77 mini-MIR 40Q · D78 corrección + tabla de neto.
- *  · Banqueo (mirMantenimiento: mantenimiento + extensión + 9 repuestas v6.02c) = POR REGLA desde las sub-franjas del día
- *    (Anki → 25Q/30Q cronometradas → corrección −1/3), desplazadas al inicio de la franja del turno en el SERUMS.
+ *    D77 mini-MIR 40Q · D78 corrección + tabla de neto (no leen capítulo: guía propia).
+ *  · Banqueo (mirMantenimiento: mantenimiento + extensión + repuestas tras el Step 1 —v6.03: 11, v6.02c: 9—) = POR REGLA desde las sub-franjas
+ *    del día (Anki → 25Q/30Q cronometradas → corrección −1/3), desplazadas al inicio de la franja del turno en el SERUMS; v6.03: la corrección
+ *    Whole-Page lleva el dato MEDIDO de los capítulos de la asignatura foco (MIR_CAP_MEDIDO: minutos de lectura completa + secciones de más peso).
  *  Regla de oro (guia.ts): Σ pasos = minutos de la franja. Lo comprueba `gen_mir_guia.js --check` en TODOS los días (plan + banqueo).
  * v6.02c (18-oct-2026, E3): nuevo.
+ * v6.03 (20-oct-2026): D1 = mié 21-oct; los 76 capítulos del plan medidos (D1-D76 medidos) + dato medido en el banqueo.
  */
 import type { GuiaBloque, GuiaPaso, GuiaRecurso } from './guia';
 import { aMinutos } from './guia';
 import { MIR_DIAS, mirDiaDe, mirDiaN, mirAnclas, mirCierreDe, capUrl, MIR_TEMAS_TOTAL, MIR_SEG_POR_Q, mirMinutos, type DiaMIR } from './mirDailyPlan';
 import { mirMantDiaDe, mirMantFranjas, MIR_MANT_META, type DiaMIRMant } from './mirMantenimiento';
 import { mirAnkiDeck } from './ankiLinks';
-import { MIR_GUIA_MEDIDA, MIR_POOL_POR_CAP, MIR_POOL_POR_ASIG, MIR_GUIA_DATOS_META, type MirGuiaPreguntas } from './mirGuiaDatos';
+import { MIR_GUIA_MEDIDA, MIR_POOL_POR_CAP, MIR_POOL_POR_ASIG, MIR_GUIA_DATOS_META, MIR_CAP_MEDIDO, type MirGuiaPreguntas } from './mirGuiaDatos';
 
-export type { MirGuiaPreguntas, MirGuiaQ, MirGuiaEvalSlot } from './mirGuiaDatos';
-export { MIR_GUIA_DATOS_META };
+export type { MirGuiaPreguntas, MirGuiaQ, MirGuiaEvalSlot, MirCapMedido } from './mirGuiaDatos';
+export { MIR_GUIA_DATOS_META, MIR_CAP_MEDIDO };
 
 const PROMIR = 'https://promir.medicapanamericana.com';
 const EXAMENESMIR = 'https://www.examenesmir.com/examenes-mir';
@@ -55,7 +59,7 @@ export function mirGuiaPlan(dia: DiaMIR, ini: string = FRANJA_BASE): GuiaBloque 
   return guiaPorRegla(dia, ini);
 }
 
-/** D11-D76: misma estructura que D1-D10 (E2), con «sin medir» donde falta la medición del capítulo. */
+/** Día-tema SIN medición (no ocurre con el plan v6.03: los 76 capítulos están medidos): misma estructura que los medidos, con «sin medir». */
 function guiaPorRegla(dia: DiaMIR, ini: string): GuiaBloque {
   const deck = mirAnkiDeck(dia.asignatura);
   const cierre = mirCierreDe(dia.d);
@@ -118,7 +122,7 @@ function guiaPorRegla(dia: DiaMIR, ini: string): GuiaBloque {
     recursos,
     hecho: `${cierre ? 'Test de cierre 10Q registrado' : 'Eval anclada registrada'} + pre-test 5Q registrado + lectura de las secciones gap + ≥8Q del quiz registradas + ≤4 APEX creados.`,
     planB: 'Si ProMIR no abre: pre-test y quiz con el pool oficial de la app (pestaña MIR) y lectura en la nota madre de Obsidian (◆ Obsidian). Día roto (modo mínimo): Anki a cero + 4Q ancladas (15′).',
-    aviso: `Capítulo sin medir (E2 midió D1-D10 el 18-oct): las secciones de la lectura se eligen por regla. Para fijarlas: DATA/MIR/guia_lectura/analiza_cap.js (DevTools) → medicion_promir_*/ → gen_guia_lectura.js → gen_mir_guia.js.`,
+    aviso: `Capítulo sin medir (la medición cubre los 76 capítulos del plan v6.03; este día no está en ella): las secciones de la lectura se eligen por regla. Para fijarlas: DATA/MIR/guia_lectura/analiza_cap.js (DevTools) → medicion_promir_*/ → gen_guia_lectura.js → gen_mir_guia.js.`,
   };
 }
 
@@ -146,9 +150,16 @@ function guiaCorreccion(dia: DiaMIR, ini: string): GuiaBloque {
   };
 }
 
-/** Guía de una sesión del BANQUEO (mantenimiento · extensión · repuestas v6.02c). `ini` = inicio de la franja del turno. */
+/** v6.03: capítulos MEDIDOS del plan de una asignatura (num), en el orden del plan → corrección Whole-Page del banqueo. */
+function capitulosMedidos(num: number): Array<{ capId: string; d: number; tema: string; min: number; top: string[] }> {
+  return Object.entries(MIR_CAP_MEDIDO).filter(([, c]) => c.num === num).map(([capId, c]) => ({ capId, d: c.d, tema: c.tema, min: c.min, top: c.top })).sort((a, b) => a.d - b.d);
+}
+
+/** Guía de una sesión del BANQUEO (mantenimiento · extensión · repuestas tras el Step 1). `ini` = inicio de la franja del turno. */
 export function mirGuiaMant(dia: DiaMIRMant, ini: string = FRANJA_BASE): GuiaBloque {
   const fr = mirMantFranjas(dia);
+  // v6.03: dato medido de los capítulos de la asignatura foco (banco) o de la de registro por defecto (viernes); el sábado es mixto (14 asignaturas)
+  const caps = dia.tipo === 'sabado' ? [] : capitulosMedidos(dia.num);
   const deck = 'APEX::MIR';
   const asigs = dia.tipo === 'sabado' ? 'MIXTAS de las 14 asignaturas del plan (mini-simulacro)' : dia.tipo === 'viernes' ? `la asignatura PEOR del log (fallback ${dia.asignatura})` : dia.tierC ? `${dia.nQ - dia.tierC.nQ}Q ${dia.asignatura} + ${dia.tierC.nQ}Q TIER C ${dia.tierC.asignatura} › ${dia.tierC.capitulo}` : `15Q ${dia.asignatura} + 10Q interleaving ${dia.asignatura2 ?? 'mixtas'}`;
   const pasos: GuiaPaso[] = fr.map((f) => {
@@ -160,11 +171,12 @@ export function mirGuiaMant(dia: DiaMIRMant, ini: string = FRANJA_BASE): GuiaBlo
       como: `${MIR_SEG_POR_Q} s/Q (${dia.minQ} min) · en blanco si no descartas 2 · preguntas: la lista «Pool oficial» de la app (sin usar) → si faltan, test por asignatura ProMIR o cuadernillos examenesmir${dia.tierC ? ` · las ${dia.tierC.nQ}Q Tier C se registran APARTE con su asignatura (${dia.tierC.asignatura})` : ''}.`,
       enlace: dia.tierC ? { t: `ProMIR · ${dia.tierC.capitulo}`, url: capUrl(dia.tierC.capId) } : { t: 'Cuadernillos MIR', url: EXAMENESMIR },
     };
-    if (f.tipo === 'log') return { min, que: 'Corrección −1/3 + log', como: 'Neto = A − F/3 · Whole-Page Rule de cada fallo (capítulo ProMIR) · registra en la app (kind mantenimiento) con la brecha knowledge / transfer / proceso · 🇪🇸 delta.' };
+    if (f.tipo === 'log') return { min, que: 'Corrección −1/3 + log', como: `Neto = A − F/3 · Whole-Page Rule de cada fallo (capítulo ProMIR: solo el APARTADO de la pregunta, 2-5′; ${caps.length ? `capítulos medidos de ${dia.asignatura} en los recursos, con su lectura completa y sus secciones de más peso` : 'busca el capítulo por el chip «MIR AAAA-AAAA, Pnnn»'}) · registra en la app (kind mantenimiento) con la brecha knowledge / transfer / proceso · 🇪🇸 delta.` };
     return { min, que: f.fase, como: 'Según la franja del día.' };
   });
   const recursos: GuiaRecurso[] = [{ t: 'Cuadernillos oficiales MIR (examenesmir)', url: EXAMENESMIR }, { t: 'ProMIR', url: PROMIR }];
   if (dia.tierC) recursos.unshift({ t: `ProMIR · Tier C ${dia.tierC.asignatura} › ${dia.tierC.capitulo}`, url: capUrl(dia.tierC.capId), cantidad: `${dia.tierC.nQ}Q` });
+  for (const c of caps) recursos.push({ t: `ProMIR · ${dia.asignatura} · D${c.d} ${c.tema} — más peso: ${c.top.join(' · ') || '—'}`, url: capUrl(c.capId), min: c.min, cantidad: `lectura completa ≈${c.min}′ (medida, 180 ppm)` });
   const fase = dia.fase === 'extension' ? 'extensión' : 'mantenimiento';
   return {
     franja: franjaDe(ini, pasos.reduce((s, p) => s + p.min, 0)), plan: 'mir',
@@ -174,7 +186,7 @@ export function mirGuiaMant(dia: DiaMIRMant, ini: string = FRANJA_BASE): GuiaBlo
     recursos,
     hecho: `${dia.nQ}Q respondidas en ${dia.minQ} min + neto registrado en la app (kind mantenimiento)${dia.tierC ? ' + entrada propia del Tier C' : ''} + Anki a cero.`,
     planB: 'Guardia o día roto: Anki a cero + 10Q en tiempo muerto; lo que no se termine se suma al día de plan siguiente (DJ-4).',
-    ...(dia.repuesta ? { aviso: `Sesión REPUESTA (${dia.repuesta}): la extensión la perdió con los corrimientos v6.01/v6.02 y se recoloca tras el examen Step 1 («si se recortó algo, alárgalo»).` } : {}),
+    ...(dia.repuesta ? { aviso: `Sesión REPUESTA (${dia.repuesta}): la extensión la perdió con los corrimientos v6.01/v6.02/v6.03 y se recoloca tras el examen Step 1 («si se recortó algo, alárgalo»).` } : {}),
   };
 }
 
@@ -188,13 +200,13 @@ export function mirGuiaDe(iso: string, ini?: string | null): GuiaBloque | null {
   if (g && ini === null) g = { ...g, aviso: [g.aviso, 'Guardia: sin hora fija → mismo reparto en minutos, en tiempo muerto (DJ-4).'].filter(Boolean).join(' · ') };
   return g;
 }
-/** Preguntas exactas de la guía medida (D1-D10); undefined en los días por regla (las da la app desde el pool). */
+/** Preguntas exactas de la guía medida (D1-D76 desde v6.03); undefined en los días por regla (las da la app desde el pool). */
 export function mirGuiaPreguntas(d: number): MirGuiaPreguntas | undefined {
   const m = MIR_GUIA_MEDIDA[d];
   const dia = mirDiaN(d);
   return m && dia && m.fecha === dia.fecha ? m.preguntas : undefined;
 }
-/** ¿El día está medido (D1-D10)? */
+/** ¿El día está medido (D1-D76 desde v6.03)? */
 export const mirGuiaMedido = (d: number): boolean => !!mirGuiaPreguntas(d);
 /** Nº de días del plan con guía medida y por regla (para el informe). */
 export const MIR_GUIA_RESUMEN = { medidos: Object.keys(MIR_GUIA_MEDIDA).length, porRegla: MIR_TEMAS_TOTAL - Object.keys(MIR_GUIA_MEDIDA).length, hitos: 2 } as const;

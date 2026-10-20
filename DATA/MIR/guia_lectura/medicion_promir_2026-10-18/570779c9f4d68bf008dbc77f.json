@@ -1,0 +1,260 @@
+{
+ "titulo": "5.- Enfermedades de la vía biliar",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc77f",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "5 Enfermedades de la vía biliar",
+   "palabras": 25,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Introducción a las enfermedades obstructivas de la vía biliar",
+   "palabras": 612,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2013-094"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 2
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Anatomía y fisiología",
+   "palabras": 186,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2004-238"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Colelitiasis o litiasis biliar",
+   "palabras": 290,
+   "palabrasTabla": 70,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2018-086",
+    "2005-013",
+    "2009-040"
+   ],
+   "figs": 2,
+   "tablas": [
+    "Tabla 5-1. Tipos de litiasis biliares (no es muy importante, sin trascendencia clínica, es"
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Complicaciones de la colelitiasis",
+   "palabras": 41,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.1. Cólico biliar",
+   "palabras": 108,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.2. Íleo biliar",
+   "palabras": 175,
+   "palabrasTabla": 196,
+   "citasMIR": 2,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2005-016",
+    "2019-022"
+   ],
+   "figs": 0,
+   "tablas": [
+    "Tabla 5-2. Complicaciones litiásicas* Concepto Clínica Analítica Diagnóstico Tratamiento C",
+    "Tabla 5-3. Esquema de las complicaciones la vía biliar Ictericia SÍ NO Fiebre SÍ Colangiti"
+   ],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.3. Colecistitis aguda",
+   "palabras": 760,
+   "palabrasTabla": 119,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 2,
+   "citas": [
+    "2024-116",
+    "2022-008",
+    "2016-013",
+    "2010-041"
+   ],
+   "figs": 12,
+   "tablas": [
+    "Tabla 5-4. Indicaciones de colecistectomía (MIR 2024-2025, P116) Cirugía programada, no ur"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.4. Coledocolitiasis",
+   "palabras": 543,
+   "palabrasTabla": 0,
+   "citasMIR": 6,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2011-003",
+    "2017-006",
+    "2022-133",
+    "2004-013",
+    "2011-004",
+    "2018-076"
+   ],
+   "figs": 5,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "4.5. Colangitis aguda",
+   "palabras": 237,
+   "palabrasTabla": 0,
+   "citasMIR": 4,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2009-039",
+    "2019-132",
+    "2006-013",
+    "2014-047"
+   ],
+   "figs": 3,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 1
+  },
+  {
+   "nivel": "H3",
+   "titulo": "5. Tumores de la vía biliar",
+   "palabras": 5,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.1. Benignos",
+   "palabras": 96,
+   "palabrasTabla": 0,
+   "citasMIR": 1,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2023-014"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H4",
+   "titulo": "5.2. Malignos",
+   "palabras": 1168,
+   "palabrasTabla": 0,
+   "citasMIR": 6,
+   "citasMIRdesde2015": 1,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2015-080",
+    "2007-014",
+    "2008-014",
+    "2005-135",
+    "2009-036",
+    "2004-020"
+   ],
+   "figs": 6,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "5a17cf825892e631000fc219.mp4",
+     "seg": 295,
+     "leyenda": "Vídeo 5-1Vídeo clase. Repaso de los síndromes de la vía biliar."
+    }
+   ],
+   "recuerda": 1
+  }
+ ],
+ "nav": [
+  {
+   "t": "Enfermedades del hígado",
+   "href": "570779c9f4d68bf008dbc723"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Enfermedades del páncreas",
+   "href": "570779c8f4d68bf008dbc600"
+  }
+ ],
+ "totPalabras": 4246,
+ "totPalabrasTabla": 385,
+ "totCitas": 28,
+ "totFigs": 28,
+ "totTablas": 4,
+ "totRecuerda": 7,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

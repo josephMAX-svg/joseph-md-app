@@ -118,7 +118,8 @@ export const PALMERTON_SYSTEMS: SystemMethod[] = [
 // ── LEGACY (pre-v5, #19): la rampa de 1 h/día y "la hora" son del plan de julio-2026; el plan vigente es usmleStep1Daily.ts
 // (v6.00: 2 tramos — F1 D1-D60 mié 7-oct → mié 30-dic-2026 y tramo 2 T1-T158 mar 16-mar → sáb 25-sep-2027 · v6.01 (10-oct): F1 D1-D57
 // lun 12-oct → mié 30-dic-2026, tramo 2 sin cambio · v6.02 (17-oct): F1 D1-D52 lun 19-oct → mié 30-dic-2026, D52 = NBME 28, 6 filas de
-// temario al tramo 2). Se conservan como histórico; RoiPlan ya no los pinta cuando USMLE_RAMP_LEGACY = true.
+// temario al tramo 2 · v6.03 (20-oct): F1 D1-D50 mié 21-oct → mié 30-dic-2026, D50 = NBME 28, 8 filas de temario al tramo 2). Se
+// conservan como histórico; RoiPlan ya no los pinta cuando USMLE_RAMP_LEGACY = true.
 export const USMLE_RAMP_LEGACY = true;
 export const USMLE_LEGACY_NOTA = 'Rampa de principiante (1 h/día) y "la hora" = plan pre-v5 (julio-2026), sustituidos por el bloque principal de 6h15/día (usmleStep1Daily.ts · DAILY_META.bloque). Se conservan solo como histórico (usmleData.USMLE_RAMP / USMLE_HOUR, legacy).';
 // Beginner ramp (English + content), 1h/day Mon–Fri — LEGACY

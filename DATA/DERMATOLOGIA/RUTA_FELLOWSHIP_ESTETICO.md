@@ -107,7 +107,14 @@
 
 ## 3. Qué produce cada fase del plan actual (2026-27) para cada ruta
 
-> **✅ v6.02 (sáb 17-oct-2026) — las fechas de esta tabla son v5.20 (⏸).** Régimen vigente: **USMLE Step 1** F1 lun 19-oct → mié 30-dic-2026 (52 sesiones; NBME
+> **✅ v6.03 (mar 20-oct-2026) — las fechas de esta tabla son v5.20 (⏸).** Régimen vigente: **USMLE Step 1** F1 mié 21-oct → mié 30-dic-2026 (50 sesiones;
+> NBME 28 = mié 30-dic) + tramo 2 mar 16-mar → **examen lun 27-sep-2027** (PROVISIONAL; GO/NO-GO lun 9-ago) · **ENCAPS** 1 h de mantenimiento mié 21-oct →
+> mié 30-dic + intensiva lun 4-ene → vie 12-mar → **examen dom 14-mar-2027 PROVISIONAL** · **MIR** 1.ª vuelta mié 21-oct → mié 10-feb + mantenimiento jue
+> 11-feb → jue 6-may + extensión vie 7-may → vie 24-sep-2027 + 11 repuestas mar 28-sep → mar 12-oct · **Derma** 73 átomos mié 21-oct-2026 → lun 17-may-2027 +
+> ciclo 2 mié 19-may → lun 26-jul-2027 · **Research L4 · SR-1**: PICO R6 mié 17-feb-2027 (tras la pausa) · PROSPERO R10 mar 6-abr-2027 · extracción R22-R25
+> jue 20-may → mar 1-jun · **SUBMIT R43 jue 29-jul-2027** · L5 · SR-2 protocolo R45 mar 24-ago-2027.
+>
+> ⏸ **v6.02 (sáb 17-oct-2026; historial):** Régimen de entonces: **USMLE Step 1** F1 lun 19-oct → mié 30-dic-2026 (52 sesiones; NBME
 > 28 = mié 30-dic) + tramo 2 mar 16-mar → sáb 25-sep-2027 → **examen lun 27-sep-2027** (PROVISIONAL; GO/NO-GO lun 9-ago) · **ENCAPS** 1 h de mantenimiento lun
 > 19-oct → mié 30-dic + intensiva lun 4-ene → vie 12-mar → **examen dom 14-mar-2027 PROVISIONAL** (meta ≥ 17/20) · **MIR** 1.ª vuelta lun 19-oct → lun 8-feb +
 > mantenimiento mar 9-feb → mar 4-may + extensión mié 5-may → vie 24-sep-2027 · **Derma** 73 átomos lun 19-oct-2026 → vie 14-may-2027 + ciclo 2 lun 17-may → vie

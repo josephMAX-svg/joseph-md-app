@@ -1,0 +1,174 @@
+{
+ "titulo": "3.- Fisiología y fisiopatología del aparato respiratorio",
+ "url": "https://promir.medicapanamericana.com/capitulo/570779c9f4d68bf008dbc825",
+ "audioTema": true,
+ "secciones": [
+  {
+   "nivel": "H2",
+   "titulo": "3 Fisiología y fisiopatología del aparato respiratorio",
+   "palabras": 76,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "1. Ventilación",
+   "palabras": 793,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 3,
+   "citas": [
+    "2022-029",
+    "2023-126",
+    "2024-031"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "2. Pruebas para el estudio de la función pulmonar",
+   "palabras": 1021,
+   "palabrasTabla": 71,
+   "citasMIR": 16,
+   "citasMIRdesde2015": 5,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2005-250",
+    "2015-121",
+    "2014-062",
+    "2005-039",
+    "2003-040",
+    "2005-040",
+    "2018-048",
+    "2012-055",
+    "2011-058",
+    "2006-039",
+    "2017-145",
+    "2007-038",
+    "2015-228",
+    "2013-140",
+    "2004-040",
+    "2016-024"
+   ],
+   "figs": 1,
+   "tablas": [
+    "Tabla 3-1. Mecanismos de producción de insuficiencia respiratoria y efecto de la oxigenote"
+   ],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "3. Circulación pulmonar",
+   "palabras": 989,
+   "palabrasTabla": 0,
+   "citasMIR": 7,
+   "citasMIRdesde2015": 3,
+   "citasMIRdesde2020": 3,
+   "citas": [
+    "2020-030",
+    "2004-260",
+    "2003-039",
+    "2012-050",
+    "2005-250",
+    "2023-031",
+    "2021-031"
+   ],
+   "figs": 2,
+   "tablas": [],
+   "videos": [
+    {
+     "id": "5f36873281363024195502e5.mp4",
+     "seg": 1435,
+     "leyenda": "Vídeo 3-1Videoclase: Pruebas diagnósticas en neumología."
+    }
+   ],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "4. Intercambio gaseoso",
+   "palabras": 108,
+   "palabrasTabla": 0,
+   "citasMIR": 0,
+   "citasMIRdesde2015": 0,
+   "citasMIRdesde2020": 0,
+   "citas": [],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "5. Transporte de oxígeno a los tejidos",
+   "palabras": 803,
+   "palabrasTabla": 0,
+   "citasMIR": 3,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 1,
+   "citas": [
+    "2014-211",
+    "2020-027",
+    "2019-043"
+   ],
+   "figs": 1,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  },
+  {
+   "nivel": "H3",
+   "titulo": "6. Equilibrio ácido-básico",
+   "palabras": 693,
+   "palabrasTabla": 0,
+   "citasMIR": 6,
+   "citasMIRdesde2015": 2,
+   "citasMIRdesde2020": 0,
+   "citas": [
+    "2013-137",
+    "2012-050",
+    "2011-059",
+    "2007-039",
+    "2018-151",
+    "2015-123"
+   ],
+   "figs": 0,
+   "tablas": [],
+   "videos": [],
+   "recuerda": 0
+  }
+ ],
+ "nav": [
+  {
+   "t": "Semiología del aparato respiratorio",
+   "href": "570779c9f4d68bf008dbc7c9"
+  },
+  {
+   "t": "Avanzar",
+   "href": "#"
+  },
+  {
+   "t": "Asma",
+   "href": "570779c9f4d68bf008dbc85f"
+  }
+ ],
+ "totPalabras": 4483,
+ "totPalabrasTabla": 71,
+ "totCitas": 35,
+ "totFigs": 5,
+ "totTablas": 1,
+ "totRecuerda": 0,
+ "medido": "2026-10-20 · sesión ProMIR de Joseph (Chrome) · solo lectura · DATA/MIR/guia_lectura/analiza_cap.js · «orientacionMIR» retirado al versionar (texto de ProMIR; repo público)"
+}

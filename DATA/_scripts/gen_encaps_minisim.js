@@ -105,6 +105,14 @@
  *   aludían al examen reservado como pre-test → corregidas en la FUENTE y propagadas con el modo nuevo --refrescar; la marca de lista negra de
  *   las salidas pasa a `_meta.lista_negra_pretest` (texto neutro) y el motivo de rechazo / la cola de fuente_preguntas del pre-test de arranque
  *   ya no nombran ese examen (LN_VIGENTE · FP_LN_ARRANQUE · LN_MENCION). La regla de exclusión (enListaNegra) NO cambia.
+ * v6.03 (20-oct-2026, corrimiento RÍGIDO «todo comienza mañana miércoles 21, corre dos días»; no se estudió lun 19 ni mar 20-oct): D1 = MIÉ
+ *   21-OCT-2026 · F1 = dia 1-50 → mié 30-dic (41 banqueo1h + 9 mini-sims en los MISMOS viernes vie 23-oct … vie 18-dic; el vie 23-oct es D3) · pre-test
+ *   de arranque mié 21 + jue 22-oct (= D1 + D2) · INTENSIVA dia 51-100 con las mismas fechas. Ficheros BANCO_PROPIO re-fechados POR SESIÓN lun-jue
+ *   (sesión k vieja → sesión k nueva; los viernes NO se mueven), ítems intactos, _meta.realineado v6.03: pretest_arranque 19/20 → 21/22-oct · eval
+ *   19/20/21/22 → 21/22/26/27 · banco 21/22 → 26/27 (fila_sql.dia 3/4 → 4/5) · minisim 23/30-oct y 6-nov SIN cambio (reservado_para intacto).
+ *   La eval del lun 26 es la de I-3 (código de la fila dia 2, jue 22): tras el mini-sim del vie 23 conserva su nota «regla de lunes» (como en
+ *   v5.20). CARRIL B: 10 pendientes F1 (los 8 de v6.02 con sus fechas + mié 3-mar I-3 #6 · jue 4-mar V-2 #6); regla genérica «filas del carril B
+ *   dia 51-82 (dia_mant 61-92) sin ✓».
  * v5.20 (6-oct, DEFINITIVA): D1 = mié 7-oct-2026 · 92 días → mar 16-feb-2027 (régimen v6.18, backup study_schedule_bk_1006) · pre-test de arranque mié 7 + jue 8-oct ·
  *   mini-sims en los MISMOS 17 viernes vie 9-oct → vie 12-feb · ficheros BANCO_PROPIO re-fechados (ítems intactos, _meta.realineado v5.20) · pre-test 2026-II vie 26-feb
  *   (= día 100, primer viernes de la intensiva mar 23-feb → mar 9-mar) · EXAMEN ENCAPS 2027-I FIJADO mié 10-mar-2027.
