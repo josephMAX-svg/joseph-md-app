@@ -9,7 +9,7 @@ import {
   mirCierreDe, mirFranjasDe, mirSesionDe, MIR_SEG_POR_Q, mirMinutos, MIR_TEMAS_TOTAL,
 } from '../../lib/mirDailyPlan';
 import { DiaMIRMant, MIR_MANT_META, MIR_MANT_DIAS, MIR_MANT_PESOS, MIR_INICIO_HITO, mirMantFranjas, mirFranjaPorTurno, mirMantFoco, mirMant7d, mirMantProximoTierC } from '../../lib/mirMantenimiento';
-import { FECHAS_V6, motivoProtegido, fechaPlanDe } from '../../lib/fechasV6';
+import { FECHAS_V6, motivoProtegido, fechaPlanDe, fechaRealDe } from '../../lib/fechasV6';
 import { infoTurno, onTurnosChange, TURNO_INFO } from '../../lib/serumsTurnos';
 import { plantillaDelDia } from '../../lib/plantillasV6';
 import {
@@ -405,7 +405,8 @@ function CierreCard({ dia, qIds, onSaved }: { dia: DiaMIR; qIds: string[]; onSav
             <TouchableOpacity key={id} activeOpacity={0.8} onPress={() => openUrl(capUrl(id))} style={[st.dChip, { borderColor: CORAL + '66' }]}><Text style={[st.dChipTxt, { color: CORAL }]}>cap {i + 1} ↗</Text></TouchableOpacity>
           ))}
         </View>
-        {prev && <Text style={[st.formHint, { marginTop: 8 }]}>Último cierre registrado: {prev.entry.fecha} · neto {prev.netoPct} % → {mirEstadoCierreTxt(prev.estado, dia.fecha)}</Text>}
+        {/* v6.02d: fecha real visible (semana corrida) */}
+        {prev && <Text style={[st.formHint, { marginTop: 8 }]}>Último cierre registrado: {fechaRealDe(prev.entry.fecha, 'mir')} · neto {prev.netoPct} % → {mirEstadoCierreTxt(prev.estado, dia.fecha)}</Text>}
         {agg.fuente === 'agregado' && <Text style={st.formHint}>Agregado de la asignatura (cierre + ancladas + quiz, {agg.total}Q): neto {agg.netoPct} % → {mirEstadoCierreTxt(agg.estado, dia.fecha)} (el agregado manda sobre el cierre de 10Q)</Text>}
         <TimerQ color={CORAL} presets={[10, 25, 40]} />
         {mirPoolDisponible() && <MirPoolLista qIds={qIds} color={CORAL} titulo={`Pool oficial · ${c.asignatura} (mezcla determinista por fecha)`} pedidas={10} fallback="test por asignatura ProMIR" />}
@@ -630,7 +631,8 @@ function HorarioView({ dia }: { dia: DiaMIR }) {
   };
   return (
     <View>
-      <Text style={st.secLbl}>🕓 Bloque MIR · Día {dia.d} ({fmtFecha(dia.fecha)}) · hora Lima · {MIR_SEG_POR_Q} s/Q real</Text>
+      {/* v6.02d: fecha real visible (semana corrida) */}
+      <Text style={st.secLbl}>🕓 Bloque MIR · Día {dia.d} ({fmtFecha(fechaRealDe(dia.fecha, 'mir'))}) · hora Lima · {MIR_SEG_POR_Q} s/Q real</Text>
       {franjas.map((f, i) => {
         const det = detalle(f.tipo);
         return (
@@ -662,7 +664,8 @@ function SieteView({ fromD, onPick }: { fromD: number; onPick: (d: number) => vo
           <FadeUp key={x.d} delay={i * 30}>
             <TouchableOpacity activeOpacity={0.8} onPress={() => onPick(x.d)} style={[st.d7, { borderLeftColor: tier.c }]}>
               <Text style={[st.d7day, { color: tier.c }]}>D{x.d}</Text>
-              <Text style={st.d7fecha}>{fmtFecha(x.fecha)}</Text>
+              {/* v6.02d: fecha real visible (semana corrida) */}
+              <Text style={st.d7fecha}>{fmtFecha(fechaRealDe(x.fecha, 'mir'))}</Text>
               <View style={{ flex: 1 }}>
                 <Text style={st.d7sub} numberOfLines={1}>{x.tema}</Text>
                 <Text style={st.d7sys}>{x.asignatura}{x.peso != null ? ` · ${x.peso}%` : ''} · {vueltaTxt(x.vuelta)}{cierre ? ` · 🏁 cierre ${cierre.asignatura}` : ''}{x.usmleSystem !== '—' ? ` · 🇺🇸 ${x.usmleSystem}` : ''}{x.delta ? ' · 🇪🇸 delta' : ''}</Text>
@@ -834,7 +837,8 @@ function MantenimientoView({ dia, onPick, bump, sync }: { dia: DiaMIRMant; onPic
             <Chip label={`${foco.nQ}Q · ${dia.minQ} min · ${MIR_SEG_POR_Q} s/Q`} color={GREEN} small />
             {tierC ? <Chip label={`TIER C EXPRESS · ${tierC.asignatura} › ${tierC.capitulo} (${tierC.nQ}Q · ${tierC.pesoCap} % de la asignatura)`} color={CORAL} small /> : null}
             {dia.repuesta ? <Chip label={`REPUESTA ${dia.repuesta} · la extensión la perdió con los corrimientos`} color={GREEN} small /> : null}
-            {proximoTierC ? <Chip label={`próximo Tier C: ${proximoTierC.asignatura} · ${proximoTierC.capitulo} · ${fmtFecha(proximoTierC.fecha)} (M${proximoTierC.d})`} color={Colors.muted} small /> : null}
+            {/* v6.02d: fecha real visible (semana corrida) */}
+            {proximoTierC ? <Chip label={`próximo Tier C: ${proximoTierC.asignatura} · ${proximoTierC.capitulo} · ${fmtFecha(fechaRealDe(proximoTierC.fecha, 'mir'))} (M${proximoTierC.d})`} color={Colors.muted} small /> : null}
           </View>
           <Text style={st.temaTitle}>{foco.asignatura}{dia.asignatura2 ? ` + ${dia.asignatura2}` : ''}</Text>
           <Text style={st.temaSub}>{dia.tema}</Text>
@@ -845,7 +849,8 @@ function MantenimientoView({ dia, onPick, bump, sync }: { dia: DiaMIRMant; onPic
       {/* v6.02c · 🧭 guía qué · cuánto · cómo a la hora del turno (SERUMS) o 15:15 */}
       <Text style={st.secLbl}>🧭 Guía de la sesión · qué · cuánto · cómo</Text>
       <GuiaBloqueCard g={guiaM} color={color} />
-      <Text style={st.secLbl}>🕓 Franjas · {fmtFecha(dia.fecha)}{turno ? ` · ${turno.turno === 'G' ? 'guardia: 1 h en tiempo muerto (lo que no se termine se suma al día de plan siguiente)' : `según el turno ${turno.turno}${turno.marcado ? '' : ' (sin marcar)'}`}` : ''}</Text>
+      {/* v6.02d: fecha real visible (semana corrida) */}
+      <Text style={st.secLbl}>🕓 Franjas · {fmtFecha(fechaRealDe(dia.fecha, 'mir'))}{turno ? ` · ${turno.turno === 'G' ? 'guardia: 1 h en tiempo muerto (lo que no se termine se suma al día de plan siguiente)' : `según el turno ${turno.turno}${turno.marcado ? '' : ' (sin marcar)'}`}` : ''}</Text>
       {franjas.map((f, i) => (
         <FadeUp key={i} delay={i * 25}>
           <View style={st.franja}>
@@ -881,7 +886,8 @@ function MantenimientoView({ dia, onPick, bump, sync }: { dia: DiaMIRMant; onPic
         <FadeUp key={x.d} delay={i * 25}>
           <TouchableOpacity activeOpacity={0.8} onPress={() => onPick(x.d)} style={[st.d7, { borderLeftColor: x.tipo === 'viernes' ? CORAL : x.tipo === 'sabado' ? BLUE : AMBER }]}>
             <Text style={[st.d7day, { color: x.tipo === 'viernes' ? CORAL : x.tipo === 'sabado' ? BLUE : AMBER }]}>M{x.d}</Text>
-            <Text style={st.d7fecha}>{fmtFecha(x.fecha)}</Text>
+            {/* v6.02d: fecha real visible (semana corrida) */}
+            <Text style={st.d7fecha}>{fmtFecha(fechaRealDe(x.fecha, 'mir'))}</Text>
             <View style={{ flex: 1 }}>
               <Text style={st.d7sub} numberOfLines={1}>{x.asignatura}{x.asignatura2 ? ` + ${x.asignatura2}` : ''}</Text>
               <Text style={st.d7sys}>{x.fase === 'extension' ? 'extensión' : 'mantenimiento'} · {x.tipo} · {x.nQ}Q</Text>
@@ -935,11 +941,13 @@ export default function MirTodayPlan() {
       <View style={st.ctxRow}>
         <TouchableOpacity activeOpacity={0.85} onPress={() => setModo('plan')} style={[st.ctxBtn, modo === 'plan' ? st.ctxActive : st.ctxSoon]}>
           <Text style={[st.ctxBig, modo !== 'plan' && { color: Colors.muted }]}>MIR 2030</Text>
-          <Text style={st.ctxSub}>{`1ª vuelta · ProMIR · ${MIR_DIAS.length} d (${MIR_DAILY_META.inicio.slice(5).replace('-', '-')}→${MIR_DAILY_META.fin.slice(5)})`}</Text>
+          {/* v6.02d: fecha real visible (semana corrida) */}
+          <Text style={st.ctxSub}>{`1ª vuelta · ProMIR · ${MIR_DIAS.length} d (${fechaRealDe(MIR_DAILY_META.inicio, 'mir').slice(5)}→${fechaRealDe(MIR_DAILY_META.fin, 'mir').slice(5)})`}</Text>
         </TouchableOpacity>
         <TouchableOpacity activeOpacity={0.85} onPress={() => setModo('mant')} style={[st.ctxBtn, modo === 'mant' ? st.ctxActive : st.ctxSoon]}>
           <Text style={[st.ctxBig, modo !== 'mant' && { color: Colors.muted }]}>Banqueo</Text>
-          <Text style={st.ctxSub}>{MIR_MANT_META.inicio.slice(5)}→{MIR_MANT_META.fin.slice(5)} 2027 · {MIR_MANT_DIAS.length} d ({MIR_MANT_META.mant.totalDias} mant. + {MIR_MANT_META.ext.totalDias} ext.) · 25Q/día · sáb 30Q</Text>
+          {/* v6.02d: fecha real visible (semana corrida) */}
+          <Text style={st.ctxSub}>{fechaRealDe(MIR_MANT_META.inicio, 'mir').slice(5)}→{fechaRealDe(MIR_MANT_META.fin, 'mir').slice(5)} 2027 · {MIR_MANT_DIAS.length} d ({MIR_MANT_META.mant.totalDias} mant. + {MIR_MANT_META.ext.totalDias} ext.) · 25Q/día · sáb 30Q</Text>
         </TouchableOpacity>
         <View style={[st.ctxBtn, st.ctxSoon]}><Text style={[st.ctxBig, { color: Colors.muted }]}>2ª vuelta</Text><Text style={st.ctxSub}>oct-2027 (fase principal)</Text></View>
       </View>
@@ -956,7 +964,8 @@ export default function MirTodayPlan() {
             <TouchableOpacity activeOpacity={0.7} onPress={() => setSelM((s) => Math.max(1, s - 1))} style={st.navArrow}><Text style={st.navArrowTxt}>◄</Text></TouchableOpacity>
             <View style={{ flex: 1, alignItems: 'center' }}>
               <Text style={st.navDay}>{diaM.fase === 'extension' ? 'Extensión' : 'Mantenimiento'} {diaM.d}/{MIR_MANT_DIAS.length}{diaM.fecha === iso ? ' · HOY' : ''}</Text>
-              <Text style={st.navFecha}>{fmtFecha(diaM.fecha)} · {diaM.fecha}</Text>
+              {/* v6.02d: fecha real visible (semana corrida) */}
+              <Text style={st.navFecha}>{fmtFecha(fechaRealDe(diaM.fecha, 'mir'))} · {fechaRealDe(diaM.fecha, 'mir')}</Text>
             </View>
             <TouchableOpacity activeOpacity={0.7} onPress={() => setSelM((s) => Math.min(MIR_MANT_DIAS.length, s + 1))} style={st.navArrow}><Text style={st.navArrowTxt}>►</Text></TouchableOpacity>
           </View>
@@ -970,7 +979,8 @@ export default function MirTodayPlan() {
             <TouchableOpacity activeOpacity={0.7} onPress={() => setSel((s) => Math.max(1, s - 1))} style={st.navArrow}><Text style={st.navArrowTxt}>◄</Text></TouchableOpacity>
             <View style={{ flex: 1, alignItems: 'center' }}>
               <Text style={st.navDay}>Día {dia.d}/{MIR_DAILY_META.totalDias}{esHoy ? ' · HOY' : ''}</Text>
-              <Text style={st.navFecha}>{fmtFecha(dia.fecha)} · {dia.fecha}</Text>
+              {/* v6.02d: fecha real visible (semana corrida) */}
+              <Text style={st.navFecha}>{fmtFecha(fechaRealDe(dia.fecha, 'mir'))} · {fechaRealDe(dia.fecha, 'mir')}</Text>
             </View>
             <TouchableOpacity activeOpacity={0.7} onPress={() => setSel((s) => Math.min(MIR_DAILY_META.totalDias, s + 1))} style={st.navArrow}><Text style={st.navArrowTxt}>►</Text></TouchableOpacity>
           </View>

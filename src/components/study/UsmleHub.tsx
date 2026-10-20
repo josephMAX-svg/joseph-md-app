@@ -11,7 +11,7 @@ import {
   PRIORIDAD_COLOR, VUELTAS, ANKI_CONFIG_PALMERTON, USMLE_RAMP_LEGACY, USMLE_LEGACY_NOTA,
 } from '../../lib/usmleData';
 import { DIAS, DIAS_TODOS, USMLE_NIVELES, USMLE_GATE, USMLE_TAPER, DAILY_META, PROTOCOLO_BLOQUE, DAY_AFTER, enPausaStep1 } from '../../lib/usmleStep1Daily';
-import { FECHAS_V6, reservaStep1, fechaPlanDe } from '../../lib/fechasV6';
+import { FECHAS_V6, reservaStep1, fechaPlanDe, fechaRealDe } from '../../lib/fechasV6';
 import { planHoyD, progresoGlobal, loadDone } from '../../lib/studyProgress';
 import {
   UsmleScore, loadScores, pullScores, onScoresChange, mediaMovil7d, distanciaOnTrack, readinessDesdeHitos,
@@ -162,7 +162,8 @@ function HitosSerie({ scores }: { scores: UsmleScore[] }) {
       {hs.map((h) => (
         <View key={`${h.tipo}-${h.d}`} style={st.hitoRow}>
           <Text style={[st.hitoD, tabular]}>{h.etiqueta}</Text>
-          <Text style={[st.hitoFecha, tabular]}>{h.fecha.slice(5)}</Text>
+          {/* v6.02d: fecha real visible (semana corrida) */}
+          <Text style={[st.hitoFecha, tabular]}>{fechaRealDe(h.fecha, 'usmle').slice(5)}</Text>
           <View style={{ flex: 1, minWidth: 0 }}>
             <Text style={st.hitoClave} numberOfLines={1}>{h.clave}{h.tramo ? ` · ${h.tramo}` : ''}</Text>
             {h.nota ? <Text style={st.hitoNota} numberOfLines={3}>{h.nota}</Text> : null}

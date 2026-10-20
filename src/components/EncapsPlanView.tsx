@@ -36,7 +36,15 @@ import { ENCAPS_COBERTURA, CoberturaTema } from '../lib/encapsCobertura';
 import GuiaBloqueCard from './GuiaBloqueCard';
 import { guiaEncapsDe } from '../lib/encapsGuia';
 import { sesionGuiaDe } from '../lib/encapsPlan';
-import { fechaPlanDe } from '../lib/fechasV6';
+import { fechaPlanDe, fechaRealDe } from '../lib/fechasV6';
+
+// v6.02d: fecha real visible (semana corrida) — día de la semana a MOSTRAR de una fila: el guardado (weekday) si su fecha real es la de
+// plan; si la fila se corrió, el de su fecha real. Recibe la fecha real ya calculada (fechaRealDe en la llamada).
+const WD_CORTO = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+function wdVisible(real: string, plan: string, wdPlan?: string | null): string {
+  if (real === plan) return wdPlan || '';
+  try { return WD_CORTO[new Date(`${real}T12:00:00`).getDay()] ?? ''; } catch { return ''; }
+}
 
 const TIER_COLOR: Record<string, string> = { 'CRÍTICA': Colors.coral, 'ALTA': Colors.gold, 'MEDIA': Colors.blue, 'BAJA': Colors.muted };
 const cvColor = (v: string) => (v === 'sí' ? Colors.green : v === 'parcial' ? Colors.gold : v === 'no' ? Colors.coral : Colors.muted);
@@ -252,9 +260,11 @@ export default function EncapsPlanView() {
           <Text style={styles.dayNavTitle}>
             Día {plan.dia}/{plan.total}{plan.dia === plan.hoyDia ? ' · HOY' : ''} {jumpOpen ? '▴' : '▾'}
           </Text>
-          {!!plan.today?.fecha && (
-            <Text style={styles.dayNavSub}>{plan.today.weekday || ''} {String(plan.today.fecha).slice(5)}</Text>
-          )}
+          {!!plan.today?.fecha && (() => {
+            // v6.02d: fecha real visible (semana corrida)
+            const fp = String(plan.today.fecha).slice(0, 10), fr = fechaRealDe(fp, 'encaps');
+            return <Text style={styles.dayNavSub}>{wdVisible(fr, fp, plan.today.weekday)} {fr.slice(5)}</Text>;
+          })()}
         </TouchableOpacity>
         <TouchableOpacity onPress={() => plan.setDia(plan.dia + 1)} disabled={plan.dia >= plan.total} style={styles.dayNavBtn}>
           <Text style={[styles.dayNavArrow, plan.dia >= plan.total && { opacity: 0.25 }]}>▶</Text>
@@ -404,10 +414,12 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   // v6.02d: semana 1 corrida → fila de la fecha de plan
   const esHoyLima = (() => { try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return fechaPlanDe(`${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`, 'encaps') === String(today.fecha).slice(0, 10); } catch { return false; } })();
 
+  const fPlanHoy = String(today.fecha).slice(0, 10), fRealHoy = fechaRealDe(fPlanHoy, 'encaps'); // v6.02d: fecha real visible (semana corrida)
+
   return (
     <View>
       <View style={styles.hoyHeader}>
-        <Text style={styles.hoyDay}>D{dia}/{total} · {today.weekday || ''} {String(today.fecha).slice(5)}</Text>
+        <Text style={styles.hoyDay}>D{dia}/{total} · {wdVisible(fRealHoy, fPlanHoy, today.weekday)} {fRealHoy.slice(5)}</Text>
         <Text style={styles.hoyTema}>{tema}</Text>
         <View style={styles.hoyMetaRow}>
           {!!today.prioridad && <Pill text={today.prioridad} color={today.prioridad.includes('CRÍT') ? Colors.gold : Colors.brass} />}
@@ -765,7 +777,7 @@ function SimView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
       <View style={styles.simHeaderBox}>
         <Text style={styles.simHeaderTitle}>▲ MODO SIMULACRO · {rows.length} sims{nMini ? ` (${nMini} mini-sims /25)` : ''}{nCien ? ` (${nCien} sims /100 intensiva)` : ''} · {conNota} con nota · meta ≥17/20</Text>
         <Text style={styles.simHeaderHint}>
-          Régimen mantenimiento 2027-I: mini-simulacro de 25Q mixtas CADA VIERNES 16:15 ({ENCAPS_MINISIM_META.segPorQ}s/Q, receta v3 II {ENCAPS_MINISIM_META.receta.II} · I {ENCAPS_MINISIM_META.receta.I} · V {ENCAPS_MINISIM_META.receta.V} · III {ENCAPS_MINISIM_META.receta.III} · IV {ENCAPS_MINISIM_META.receta.IV}). Primer viernes: {simDays[0]?.fecha?.slice(5) || '—'}; examen ENCAPS 2027-I {exFecha ? fechaCorta(exFecha) : 'por confirmar'}{exProv ? ' PROVISIONAL' : ''}{exRendido ? ' · examen rendido' : ''}{intM.desde ? ` (fase intensiva ${fechaCorta(intM.desde)} → ${fechaCorta(intM.hasta)}: viernes = SIM 100Q, el mini-sim queda absorbido)` : ''}.
+          Régimen mantenimiento 2027-I: mini-simulacro de 25Q mixtas CADA VIERNES 16:15 ({ENCAPS_MINISIM_META.segPorQ}s/Q, receta v3 II {ENCAPS_MINISIM_META.receta.II} · I {ENCAPS_MINISIM_META.receta.I} · V {ENCAPS_MINISIM_META.receta.V} · III {ENCAPS_MINISIM_META.receta.III} · IV {ENCAPS_MINISIM_META.receta.IV}). Primer viernes: {simDays[0]?.fecha ? fechaRealDe(String(simDays[0].fecha).slice(0, 10), 'encaps').slice(5) : '—'}{/* v6.02d: fecha real visible (semana corrida) */}; examen ENCAPS 2027-I {exFecha ? fechaCorta(exFecha) : 'por confirmar'}{exProv ? ' PROVISIONAL' : ''}{exRendido ? ' · examen rendido' : ''}{intM.desde ? ` (fase intensiva ${fechaCorta(intM.desde)} → ${fechaCorta(intM.hasta)}: viernes = SIM 100Q, el mini-sim queda absorbido)` : ''}.
           Cargá la nota /25 al terminar cada uno (se guarda en study_sim_scores con sim_n = día y alimenta el gráfico de «17/20»). Umbral ≥{ENCAPS_MINISIM_META.umbral}/25 · alerta &lt;{ENCAPS_MINISIM_META.alerta}/25 dos viernes.
         </Text>
       </View>
@@ -804,13 +816,14 @@ function SimRow({ dia, weekday, fecha, clave, duracion, url, nota, onSave, escal
   const zone = escala === 100 ? encapsSim100Zone(nota, umbral, alerta) : escala === 25 ? encapsMiniSimZone(nota) : encapsGoZone(nota);
   const zoneColor = encapsGoColor(zone);
   const passed = zone === 'go';
+  const fPlan = String(fecha).slice(0, 10), fReal = fechaRealDe(fPlan, 'encaps'); // v6.02d: fecha real visible (semana corrida)
   const goLabel = escala === 100 ? `✓ ≥${umbral ?? 85}/100` : escala === 25 ? `✓ ≥${ENCAPS_MINISIM_META.umbral}/25` : '✓ GO ≥17';
   const nogoLabel = escala === 100 ? `✕ <${alerta ?? 70} alerta` : escala === 25 ? `✕ <${ENCAPS_MINISIM_META.alerta} alerta` : '✕ NO-GO';
   return (
     <View style={[styles.simCard, { borderLeftColor: nota == null ? Colors.muted : zoneColor }]}>
       <View style={{ flex: 1 }}>
         <Text style={styles.simClave}>{clave}</Text>
-        <Text style={[styles.simMeta, NUM]}>D{dia} · {weekday || ''} {String(fecha).slice(5)}{duracion ? ` · ${duracion}` : ''}</Text>
+        <Text style={[styles.simMeta, NUM]}>D{dia} · {wdVisible(fReal, fPlan, weekday)} {fReal.slice(5)}{duracion ? ` · ${duracion}` : ''}</Text>
         {!!url && (
           <TouchableOpacity onPress={() => Linking.openURL(url).catch(() => {})}>
             <Text style={styles.simLink}>banco ↗</Text>
@@ -883,17 +896,18 @@ function SemView({ days, dia, proximos, metrics, onOpenDay }: { days: StudySched
       ) : next.map(d => {
         const isToday = d.dia === dia;
         const tema = `${d.codigo || ''} ${d.subtema || ''}`.trim() || (d.extra?.theme as string) || d.tipo || '—';
+        const fPlan = String(d.fecha).slice(0, 10), fReal = fechaRealDe(fPlan, 'encaps'); // v6.02d: fecha real visible (semana corrida)
         return (
           <TouchableOpacity key={d.dia} style={[styles.semRow, isToday && styles.semRowToday]}
             onPress={() => onOpenDay(d.dia)} activeOpacity={0.6}>
             <View style={styles.semDayBox}>
               <Text style={[styles.semDayNum, NUM, isToday && { color: Colors.gold }]}>D{d.dia}</Text>
-              <Text style={styles.semWeekday}>{(d.weekday || '').slice(0, 3)}</Text>
+              <Text style={styles.semWeekday}>{wdVisible(fReal, fPlan, d.weekday).slice(0, 3)}</Text>
             </View>
             <View style={{ flex: 1 }}>
               <Text style={styles.semTema} numberOfLines={1}>{tema}</Text>
               <Text style={[styles.semDetail, NUM]}>
-                {String(d.fecha).slice(5)}
+                {fReal.slice(5)}
                 {d.n_videos ? ` · ${d.n_videos} vids` : ''}
                 {d.simulacro ? ' · ▲ simulacro' : d.tipo === 'mini_sim' ? ' · ▲ mini-sim 25Q' : ''}
                 {(d.extra as Record<string, unknown> | undefined)?.sub_eje_n ? ` · sub-eje ${(d.extra as Record<string, unknown>).sub_eje_n}/${(d.extra as Record<string, unknown>).sub_ejes_total}` : ''}
@@ -1247,7 +1261,7 @@ function CierreSesionCard({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) 
   return (
     <View style={styles.cBox}>
       <TouchableOpacity onPress={() => setOpen(o => !o)} activeOpacity={0.8} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Text style={styles.cTitle}>■ CIERRE DE SESIÓN · {fechaISO.slice(5)} {open ? '▾' : '▸'}</Text>
+        <Text style={styles.cTitle}>■ CIERRE DE SESIÓN · {fechaRealDe(fechaISO, 'encaps').slice(5)} {open ? '▾' : '▸'}</Text>{/* v6.02d: fecha real visible (semana corrida) */}
         <Text style={[styles.cPct, NUM, { color: pctColor }]}>{nN ? `${draft.pct_ciego}%` : '––'}<Text style={styles.cPctSub}> ciego</Text></Text>
       </TouchableOpacity>
       <Text style={styles.cHint}>% CIEGO = correctas SEGURAS / n (las dudosas no cuentan). Se guarda en study_progress (fuente app:cierre) y alimenta el Cockpit «17/20»; si Supabase no responde queda en este dispositivo y se reintenta.</Text>

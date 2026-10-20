@@ -10,7 +10,7 @@ import {
   AurumRubricaStore, AurumRubricaScore, aurumRubricaKey, loadAurumRubrica, saveAurumRubrica,
 } from '../../lib/aurumData';
 import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso } from '../../lib/studyProgress';
-import { fechaPlanDe } from '../../lib/fechasV6';
+import { fechaPlanDe, fechaRealDe } from '../../lib/fechasV6';
 import {
   AurumColors as C, AurumRadius as R, AurumSpacing as S, AurumType as T, withAlpha,
 } from '../../theme/aurumTheme';
@@ -268,7 +268,7 @@ function SieteView({ fromD, hoyD, done, onPick }: { fromD: number; hoyD: number;
               <View style={[st.d7Day, { borderColor: withAlpha(acc, 0.5), backgroundColor: withAlpha(acc, 0.12) }]}>
                 <Text style={[st.d7DayTxt, { color: acc }]}>{hecho ? '✓' : `D${x.d}`}</Text>
               </View>
-              <Text style={st.d7fecha}>{fmtFecha(x.fecha)}</Text>
+              <Text style={st.d7fecha}>{fmtFecha(fechaRealDe(x.fecha, 'aurum'))}</Text>{/* v6.02d: fecha real visible (semana corrida) */}
               <View style={{ flex: 1 }}>
                 <Text style={st.d7sub} numberOfLines={1}>{x.titulo}</Text>
                 <Text style={st.d7sys} numberOfLines={1}>{a.material} — {a.leccion}</Text>
@@ -382,7 +382,8 @@ export default function AurumTodayPlan({ done, onToggle, isDesktop = false, rubr
         <TouchableOpacity activeOpacity={0.7} onPress={() => setSel((s) => Math.max(1, s - 1))} style={st.navArrow}><Text style={st.navArrowTxt}>◄</Text></TouchableOpacity>
         <View style={{ flex: 1, alignItems: 'center' }}>
           <Text style={st.navDay}>Día {dia.d}/{AURUM_PLAN_META.totalDias}{esHoy ? ' · HOY' : ''}</Text>
-          <Text style={st.navFecha}>{fmtFecha(dia.fecha)} · {dia.fecha}</Text>
+          {/* v6.02d: fecha real visible (semana corrida) */}
+          <Text style={st.navFecha}>{fmtFecha(fechaRealDe(dia.fecha, 'aurum'))} · {fechaRealDe(dia.fecha, 'aurum')}</Text>
         </View>
         <TouchableOpacity activeOpacity={0.7} onPress={() => setSel((s) => Math.min(AURUM_PLAN_META.totalDias, s + 1))} style={st.navArrow}><Text style={st.navArrowTxt}>►</Text></TouchableOpacity>
       </View>

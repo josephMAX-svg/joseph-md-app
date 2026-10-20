@@ -31,7 +31,7 @@ import DermaMorphologyFilter, { DermaFilters } from '../derma/DermaMorphologyFil
 import DermaDermoscopyKey from '../derma/DermaDermoscopyKey';
 import DermaLineIcon from '../derma/DermaLineIcons';
 import { HeroBackdrop } from '../HeroBackdrop';
-import { FECHAS_V6, motivoProtegido, fechaPlanDe } from '../../lib/fechasV6';
+import { FECHAS_V6, motivoProtegido, fechaPlanDe, fechaRealDe } from '../../lib/fechasV6';
 import {
   DERMA_LIBROS_ESTETICA, DERMA_VIDEOS, DERMA_QBANKS_ACCESS, DERMA_CASES_ACCESS,
   DERMA_QBANKLY_RESUMEN, srcBook, srcCap, srcMm, srcQa, srcCases,
@@ -86,7 +86,8 @@ type Sub = 'hoy' | 'atlas' | 'dermatoscopia' | 'fuentes' | 'debilidades' | 'cere
 /** Prompts de uso del cuaderno NotebookLM "DERMA · Élite Engine" (motor de verificación, NO fuente). */
 const NBLM_PROMPTS: Array<{ cuando: string; t: string; p: string }> = [
   { cuando: 'cierre 14:13 · cada sesión', t: 'Tarjeta de MECANISMO verificada', p: 'Con las fuentes del cuaderno, dame la tarjeta de MECANISMO verificada del caso de hoy [dx / átomo dNN]. Formato: FRENTE "¿por qué…?" → POR QUÉ (cascada tejido/fisiología) · CCSN (con qué se confunde + el rasgo discriminador) · FUENTE (cita exacta del cuaderno). Marca "A VERIFICAR" toda dosis, concentración o cifra que no esté literalmente en las fuentes.' },
-  { cuando: `checkpoints: cp1 d${DERMA_CHECKPOINTS.cp1} (${fmtFecha(fechaDeD(DERMA_CHECKPOINTS.cp1))}) · repaso1 d${DERMA_CHECKPOINTS.repaso1} (${fmtFecha(fechaDeD(DERMA_CHECKPOINTS.repaso1))}) · ciclo 2 d${DERMA_CICLO2_CHECKPOINTS.cp1}/d${DERMA_CICLO2_CHECKPOINTS.cp2}/d${DERMA_CICLO2_CHECKPOINTS.repaso2}`, t: 'Qué no sé del módulo X', p: 'Con las fuentes del cuaderno y esta lista de mis fallos del ledger [pegar export JSON: por_modulo + tipos de error], dime qué NO sé del módulo CORE [Med/Path/Peds/Surg]: los 10 conceptos/mecanismos con más probabilidad de fallo, cada uno con su rasgo discriminador y la fuente exacta. Sin adular; ordena por impacto en el examen CORE.' },
+  // v6.02d: fecha real visible (semana corrida)
+  { cuando: `checkpoints: cp1 d${DERMA_CHECKPOINTS.cp1} (${fmtFecha(fechaRealDe(fechaDeD(DERMA_CHECKPOINTS.cp1), 'research-derma'))}) · repaso1 d${DERMA_CHECKPOINTS.repaso1} (${fmtFecha(fechaRealDe(fechaDeD(DERMA_CHECKPOINTS.repaso1), 'research-derma'))}) · ciclo 2 d${DERMA_CICLO2_CHECKPOINTS.cp1}/d${DERMA_CICLO2_CHECKPOINTS.cp2}/d${DERMA_CICLO2_CHECKPOINTS.repaso2}`, t: 'Qué no sé del módulo X', p: 'Con las fuentes del cuaderno y esta lista de mis fallos del ledger [pegar export JSON: por_modulo + tipos de error], dime qué NO sé del módulo CORE [Med/Path/Peds/Surg]: los 10 conceptos/mecanismos con más probabilidad de fallo, cada uno con su rasgo discriminador y la fuente exacta. Sin adular; ordena por impacto en el examen CORE.' },
 ];
 
 /** Pestaña DEBILIDADES — el ledger (dermaLedger.ts) leído como mapa: % ciego, % fallo por módulo CORE y por bloque A-X, tipo de error, gate A, 2ª pasada, export JSON. */
@@ -362,7 +363,7 @@ function GapModulos({ onJump }: { onJump?: (d: number) => void }) {
                 </View>
                 {d2 ? (
                   <TouchableOpacity activeOpacity={0.85} onPress={() => (onJump ? onJump(d2) : openUrl(m.url))} style={[gmt.fechaChip, Platform.OS === 'web' ? WEB_LINK : null]}>
-                    <Text style={gmt.fechaTxt}>ciclo 2 · d{d2} · {fmtFecha(fechaDeD(d2))} {onJump ? '▶' : ''}</Text>
+                    <Text style={gmt.fechaTxt}>ciclo 2 · d{d2} · {fmtFecha(fechaRealDe(fechaDeD(d2), 'research-derma'))} {onJump ? '▶' : ''}</Text>{/* v6.02d: fecha real visible (semana corrida) */}
                   </TouchableOpacity>
                 ) : null}
                 <Text style={gmt.title}>{m.titulo} ↗</Text>
@@ -415,20 +416,21 @@ function CerebroView({ hoyD, onJump, onGoDebilidades }: { hoyD: number; onJump: 
   const [histOpen, setHistOpen] = useState(false);
 
   /** Hitos con fecha del plan vigente — todo leído del plan (taper, checkpoints, drills, ciclo 2), ordenado por fecha. */
+  // v6.02d: fecha real visible (semana corrida) en los `sub`; `fecha` (orden, pasado/próximo) sigue siendo la de plan
   const hitos = useMemo(() => {
     const t = DERMA_DAILY_META.taperStep1;
     const items: Array<{ d: number; fecha: string; t: string; sub: string; color: string }> = [];
     if (DERMA_STEP1_DIAS.length) {
       const primero = DERMA_STEP1_DIAS[0]; const ultimo = DERMA_STEP1_DIAS[DERMA_STEP1_DIAS.length - 1];
-      items.push({ d: primero, fecha: fechaDeD(primero), t: `Cuenta doble Step 1 · ${DERMA_STEP1_DIAS.length} átomos (${DERMA_STEP1_DIAS.map((d) => `d${d}`).join(' ')})`, sub: `${fmtFecha(fechaDeD(primero))} → ${fmtFecha(fechaDeD(ultimo))} · mismo mazo FSRS, tag step1 · anclaje al día "dermato" del plan USMLE en d12/d24`, color: DermaAtlas.periwinkle });
+      items.push({ d: primero, fecha: fechaDeD(primero), t: `Cuenta doble Step 1 · ${DERMA_STEP1_DIAS.length} átomos (${DERMA_STEP1_DIAS.map((d) => `d${d}`).join(' ')})`, sub: `${fmtFecha(fechaRealDe(fechaDeD(primero), 'research-derma'))} → ${fmtFecha(fechaRealDe(fechaDeD(ultimo), 'research-derma'))} · mismo mazo FSRS, tag step1 · anclaje al día "dermato" del plan USMLE en d12/d24`, color: DermaAtlas.periwinkle });
     }
     for (const d of DERMA_DRILL_DIAS_V3) if (!DERMA_CHECKPOINT_DIAS_V3.includes(d)) items.push({ d, fecha: fechaDeD(d), t: `Drill HDPH · oclusión vascular 90 s · d${d}`, sub: 'DermaEmergencyDrill cronometrado → ledger (fuente drill) · prompt HDPH del NotebookLM', color: DermaAtlas.crit });
     // v6.00: la ventana d44-d49 ya no es la semana del examen Step 1 (que pasa a sep-2027): es el ALIVIO de la intensiva ENCAPS (mismo contenido)
-    items.push({ d: t.desdeD, fecha: t.desde, t: `ALIVIO F2 (antes taper Step 1) · d${t.desdeD}-d${t.hastaD} (${DERMA_TAPER_DIAS.length} sesiones)`, sub: `${fmtFecha(t.desde)} → ${fmtFecha(t.hasta)} · 1 caso ciego + FSRS de fallos + 0 preguntas y 0 lectura nuevas · ${t.motivo}`, color: DermaAtlas.crit });
+    items.push({ d: t.desdeD, fecha: t.desde, t: `ALIVIO F2 (antes taper Step 1) · d${t.desdeD}-d${t.hastaD} (${DERMA_TAPER_DIAS.length} sesiones)`, sub: `${fmtFecha(fechaRealDe(t.desde, 'research-derma'))} → ${fmtFecha(fechaRealDe(t.hasta, 'research-derma'))} · 1 caso ciego + FSRS de fallos + 0 preguntas y 0 lectura nuevas · ${t.motivo}`, color: DermaAtlas.crit });
     items.push({ d: DERMA_DAILY_META.postStep1D1, fecha: fechaDeD(DERMA_DAILY_META.postStep1D1), t: `Carga completa · d${DERMA_DAILY_META.postStep1D1}: 3 casos ciegos por sesión`, sub: 'primera sesión tras la ventana de alivio (nombre histórico «postStep1») · los 10Q del banco pasan a variable de ajuste', color: DermaAtlas.jade });
     const CP_T: Record<string, string> = { cp1: 'Checkpoint 1 · mapa de fallos por módulo CORE', cp2: 'Checkpoint 2 · re-drill + DD Challenge + drill HDPH', repaso1: 'Repaso 1 · 2ª pasada FSRS solo de fallados', repaso2: 'Repaso 2 · mapa final de debilidades' };
     for (const [k, d] of Object.entries(DERMA_CHECKPOINTS)) items.push({ d, fecha: fechaDeD(d), t: `${CP_T[k] ?? k} · d${d}`, sub: 'lee el ledger (DermaCheckpointPanel) · prompt 2 del NotebookLM «qué no sé del módulo X»', color: PURPLE });
-    items.push({ d: DERMA_CICLO2_META.dOffset + 1, fecha: DERMA_CICLO2_META.inicio, t: `CICLO 2 · d${DERMA_CICLO2_META.dOffset + 1}-d${DERMA_CICLO2_META.dOffset + DERMA_CICLO2_META.totalDias}`, sub: `${fmtFecha(DERMA_CICLO2_META.inicio)} → ${fmtFecha(DERMA_CICLO2_META.fin)} · ${DERMA_CICLO2_META.casosRestantes} casos restantes a ${DERMA_CICLO2_META.casosPorSesion}/sesión + 2ª pasada FSRS + módulos G+1…G+9 en el slot de lectura`, color: GOLD });
+    items.push({ d: DERMA_CICLO2_META.dOffset + 1, fecha: DERMA_CICLO2_META.inicio, t: `CICLO 2 · d${DERMA_CICLO2_META.dOffset + 1}-d${DERMA_CICLO2_META.dOffset + DERMA_CICLO2_META.totalDias}`, sub: `${fmtFecha(fechaRealDe(DERMA_CICLO2_META.inicio, 'research-derma'))} → ${fmtFecha(fechaRealDe(DERMA_CICLO2_META.fin, 'research-derma'))} · ${DERMA_CICLO2_META.casosRestantes} casos restantes a ${DERMA_CICLO2_META.casosPorSesion}/sesión + 2ª pasada FSRS + módulos G+1…G+9 en el slot de lectura`, color: GOLD });
     for (const [k, d] of Object.entries(DERMA_CICLO2_CHECKPOINTS)) if (d) items.push({ d, fecha: fechaDeD(d), t: `${CP_T[k] ?? k} (ciclo 2) · d${d}`, sub: DERMA_CICLO2_DRILL_DIAS.includes(d) ? 'lee el ledger + drill HDPH cronometrado' : 'lee el ledger', color: PURPLE });
     return items.filter((i) => i.fecha).sort((a, b) => a.fecha.localeCompare(b.fecha) || a.d - b.d);
   }, []);
@@ -496,7 +498,7 @@ function CerebroView({ hoyD, onJump, onGoDebilidades }: { hoyD: number; onJump: 
             <Text style={cst.bloquePct}>{hechosC2}/{DERMA_CICLO2_META.totalDias} · {Math.round((hechosC2 / DERMA_CICLO2_META.totalDias) * 100)}%</Text>
           </View>
           <View style={cst.track}><View style={[cst.fill, { width: `${Math.round((hechosC2 / DERMA_CICLO2_META.totalDias) * 100)}%` as any, backgroundColor: GOLD }]} /></View>
-          <Text style={cst.bloqueMeta}>d{DERMA_CICLO2_META.dOffset + 1}–d{DERMA_CICLO2_META.dOffset + DERMA_CICLO2_META.totalDias} · {fmtFecha(DERMA_CICLO2_META.inicio)} → {fmtFecha(DERMA_CICLO2_META.fin)} · dermaCiclo2.ts (generado)</Text>
+          <Text style={cst.bloqueMeta}>d{DERMA_CICLO2_META.dOffset + 1}–d{DERMA_CICLO2_META.dOffset + DERMA_CICLO2_META.totalDias} · {fmtFecha(fechaRealDe(DERMA_CICLO2_META.inicio, 'research-derma'))} → {fmtFecha(fechaRealDe(DERMA_CICLO2_META.fin, 'research-derma'))} · dermaCiclo2.ts (generado)</Text>{/* v6.02d: fecha real visible (semana corrida) */}
         </TouchableOpacity>
       </View>
 
@@ -507,7 +509,7 @@ function CerebroView({ hoyD, onJump, onGoDebilidades }: { hoyD: number; onJump: 
           const pasado = h.fecha < hoy; const esProx = !!proximo && proximo.d === h.d && proximo.t === h.t;
           return (
             <TouchableOpacity key={`${h.d}-${i}`} activeOpacity={0.85} onPress={() => onJump(h.d)} style={[cst.hitoRow, i === 0 && { borderTopWidth: 0 }, pasado && { opacity: 0.45 }, Platform.OS === 'web' ? WEB_LINK : null]}>
-              <View style={[cst.hitoDate, { borderColor: h.color + '66', backgroundColor: h.color + (esProx ? '33' : '14') }]}><Text style={[cst.hitoDateTxt, { color: h.color }]}>{fmtFecha(h.fecha)}</Text></View>
+              <View style={[cst.hitoDate, { borderColor: h.color + '66', backgroundColor: h.color + (esProx ? '33' : '14') }]}><Text style={[cst.hitoDateTxt, { color: h.color }]}>{fmtFecha(fechaRealDe(h.fecha, 'research-derma'))}</Text></View>{/* v6.02d: fecha real visible (semana corrida) */}
               <View style={{ flex: 1 }}>
                 <Text style={cst.hitoT}>{h.t}{esProx ? '  ← próximo' : pasado ? '  · pasado' : ''}</Text>
                 <Text style={cst.hitoSub}>{h.sub}</Text>

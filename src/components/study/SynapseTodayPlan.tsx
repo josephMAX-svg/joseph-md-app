@@ -9,7 +9,7 @@ import {
   SYN_FORMATO_ICON,
 } from '../../lib/synapseDailyPlan';
 import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, loadDone, saveDone } from '../../lib/studyProgress';
-import { fechaPlanDe } from '../../lib/fechasV6';
+import { fechaPlanDe, fechaRealDe } from '../../lib/fechasV6';
 import { synObsUrl } from '../../lib/obsidianVaultMap';
 import { PERIWINKLE, statusGlyph, tagBar, PromptGlyph } from './synapseConsole';
 import {
@@ -43,6 +43,11 @@ export function synTodayISO(): string {
 function fmtFecha(iso: string): string {
   const dias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
   try { const d = new Date(iso + 'T12:00:00'); return `${dias[d.getDay()]} ${iso.slice(8, 10)}-${iso.slice(5, 7)}`; } catch { return iso; }
+}
+/** Día de la semana corto (Lun…Dom) de una fecha ISO — para etiquetas. */
+function wdDe(iso: string): string {
+  const dias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+  try { return dias[new Date(iso + 'T12:00:00').getDay()] ?? iso; } catch { return iso; }
 }
 /** Racha real: días consecutivos marcados ✓ terminando en hoy (o ayer si hoy aún no se marca). */
 function rachaReal(done: Set<number>, hoyD: number): number {
@@ -125,6 +130,8 @@ function VibeCard({ fecha, vibeDone, onToggleVibe }: { fecha: string; vibeDone: 
       <Text style={[st.verTxt, { color: accent }]} numberOfLines={1}>📓 journal</Text>
     </TouchableOpacity>
   );
+  // v6.02d: fecha real visible (semana corrida) — el día de la semana del paso y las fechas del proyecto (ini/fin/SHIP) se pintan con
+  // fechaRealDe; `fecha`, `wd === 6` y las búsquedas siguen con la fecha de plan.
   if (!p && t) {
     const semDias = VIBE_DIAS.filter((x) => x.semana === t.s);
     const semHechos = semDias.filter((x) => vibeDone.has(x.d)).length;
@@ -137,7 +144,7 @@ function VibeCard({ fecha, vibeDone, onToggleVibe }: { fecha: string; vibeDone: 
         </View>
         <Text style={st.vibeTitle}>{t.nombre}</Text>
         {vd ? (
-          <Text style={st.vibeStep}>› {vd.wd} · {VIBE_TIPO_LABEL[vd.tipo]} ({vd.min}'): {vd.paso}</Text>
+          <Text style={st.vibeStep}>› {wdDe(fechaRealDe(vd.fecha, 'vibecoding'))} · {VIBE_TIPO_LABEL[vd.tipo]} ({vd.min}'): {vd.paso}</Text>
         ) : wd === 6 ? (
           <Text style={st.vibeStep}>› SÁBADO: {t.shipTxt}</Text>
         ) : (
@@ -169,11 +176,11 @@ function VibeCard({ fecha, vibeDone, onToggleVibe }: { fecha: string; vibeDone: 
       </View>
       <Text style={st.vibeTitle}>{p.nombre}</Text>
       {vd ? (
-        <Text style={st.vibeStep}>› {vd.wd} · {VIBE_TIPO_LABEL[vd.tipo]}{vd.min !== 45 ? ` (${vd.min}')` : ''}: {vd.paso}</Text>
+        <Text style={st.vibeStep}>› {wdDe(fechaRealDe(vd.fecha, 'vibecoding'))} · {VIBE_TIPO_LABEL[vd.tipo]}{vd.min !== 45 ? ` (${vd.min}')` : ''}: {vd.paso}</Text>
       ) : wd === 6 && pcMain?.tipo === 'avance' ? (
-        <Text style={st.vibeStep}>› SÁBADO PC 15:00-17:00 = AVANCE (el proyecto aún no termina: último día {fmtFecha(p.fin)} · SHIP {fmtFecha(p.ship)}): avanza los pasos que faltan; sin verify hoy.</Text>
+        <Text style={st.vibeStep}>› SÁBADO PC 15:00-17:00 = AVANCE (el proyecto aún no termina: último día {fmtFecha(fechaRealDe(p.fin, 'vibecoding'))} · SHIP {fmtFecha(fechaRealDe(p.ship, 'vibecoding'))}): avanza los pasos que faltan; sin verify hoy.</Text>
       ) : wd === 6 && !pcMain ? (
-        <Text style={st.vibeStep}>› SÁBADO: sin PC del vibecoding (S{p.s} arranca el {fmtFecha(p.ini)} · SHIP {fmtFecha(p.ship)}).</Text>
+        <Text style={st.vibeStep}>› SÁBADO: sin PC del vibecoding (S{p.s} arranca el {fmtFecha(fechaRealDe(p.ini, 'vibecoding'))} · SHIP {fmtFecha(fechaRealDe(p.ship, 'vibecoding'))}).</Text>
       ) : wd === 6 ? (
         <Text style={st.vibeStep}>› SÁBADO PC 15:00-17:00 = SHIP: {p.shipTxt} Antes de marcar: node DATA/_scripts/verify_vibecoding.js {p.s}</Text>
       ) : (
@@ -267,7 +274,7 @@ function SieteView({ fromD, done, onPick }: { fromD: number; done: Set<number>; 
           <FadeUp key={x.d} delay={i * 30}>
             <TouchableOpacity activeOpacity={0.8} onPress={() => onPick(x.d)} style={[st.d7, { borderLeftColor: hecho ? Colors.green : INDIGO }]}>
               <Text style={[st.d7day, { color: hecho ? Colors.green : INDIGO }]}>{hecho ? '✓' : ''} D{x.d}</Text>
-              <Text style={st.d7fecha}>{fmtFecha(x.fecha)}</Text>
+              <Text style={st.d7fecha}>{fmtFecha(fechaRealDe(x.fecha, 'synapse'))}</Text>{/* v6.02d: fecha real visible (semana corrida) */}
               <View style={{ flex: 1 }}>
                 <Text style={st.d7sub} numberOfLines={1}>{a.material}</Text>
                 <Text style={st.d7sys} numberOfLines={1}>{a.leccion}</Text>
@@ -341,7 +348,7 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
         <Text style={st.globSub}>{glob.hechos}/{glob.total} runs passed · F0 sem 1-8 (auditar ✓ lo ya cursado) · F1 sem 9-12 = stack del vibecoding · F2 sem 13-{SYN_PLAN_META.semanas} = Academy restante + prep CCA-F (taper por el ENCAPS; sem {SYN_PLAN_META.deloadDesde}+ deload) · sáb PC = SHIP · empieza en 0% (avance manual real)</Text>
       </View>
       {grupos.map((g) => <SemanaCard key={g.clave} g={g} hoyD={hoyD} onPick={onPick} done={done} onToggle={onToggle} />)}
-      <Text style={st.note}>☑ marca un run como passed (se guarda en este dispositivo). ▶ = run de hoy. El plan termina el {SYN_PLAN_META.fin} (v6.02: +6 días de plan por el corrimiento del D1 al lun 19-oct, dentro de la intensiva ENCAPS · v6.01: +4 días, D1 lun 12-oct → vie 19-feb · v6.00: lun 15-feb · v5.20: fin del Step 1 menos la semana del examen); feriados 25-dic/31-dic/1-ene = libres (node DATA/_scripts/gen_synapse_plan.js).</Text>
+      <Text style={st.note}>☑ marca un run como passed (se guarda en este dispositivo). ▶ = run de hoy. El plan termina el {fechaRealDe(SYN_PLAN_META.fin, 'synapse')}{/* v6.02d: fecha real visible (semana corrida) */} (v6.02: +6 días de plan por el corrimiento del D1 al lun 19-oct, dentro de la intensiva ENCAPS · v6.01: +4 días, D1 lun 12-oct → vie 19-feb · v6.00: lun 15-feb · v5.20: fin del Step 1 menos la semana del examen); feriados 25-dic/31-dic/1-ene = libres (node DATA/_scripts/gen_synapse_plan.js).</Text>
     </View>
   );
 }
@@ -371,7 +378,8 @@ export default function SynapseTodayPlan({ done, onToggle, vibeDone: vibeDonePro
         <TouchableOpacity activeOpacity={0.7} onPress={() => setSel((s) => Math.max(1, s - 1))} style={st.navArrow}><Text style={st.navArrowTxt}>◄</Text></TouchableOpacity>
         <View style={{ flex: 1, alignItems: 'center' }}>
           <Text style={st.navDay}>run D{dia.d}/{SYN_PLAN_META.totalDias}{esHoy ? ' · LIVE' : ''}</Text>
-          <Text style={st.navFecha}>{fmtFecha(dia.fecha)} · {dia.fecha}</Text>
+          {/* v6.02d: fecha real visible (semana corrida) */}
+          <Text style={st.navFecha}>{fmtFecha(fechaRealDe(dia.fecha, 'synapse'))} · {fechaRealDe(dia.fecha, 'synapse')}</Text>
         </View>
         <TouchableOpacity activeOpacity={0.7} onPress={() => setSel((s) => Math.min(SYN_PLAN_META.totalDias, s + 1))} style={st.navArrow}><Text style={st.navArrowTxt}>►</Text></TouchableOpacity>
       </View>

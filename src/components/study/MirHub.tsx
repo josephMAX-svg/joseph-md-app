@@ -16,7 +16,8 @@ import { DIGESTIVO_META, DIGESTIVO_CAPITULOS, DIGESTIVO_PLAN, capUrl } from '../
 import { CARDIO_META, CARDIO_CAPITULOS, capUrl as cardioUrl } from '../../lib/mirCardiologiaData';
 import { MIR_DIAS } from '../../lib/mirDailyPlan';
 import { planHoyD, progresoGlobal, loadDone } from '../../lib/studyProgress';
-import { fechaPlanDe } from '../../lib/fechasV6';
+import { fechaPlanDe, fechaRealDe } from '../../lib/fechasV6';
+import { fechasRealesEnTexto } from '../../lib/corridaTexto';
 import ReadinessBar from './ReadinessBar';
 import { ConsoleTabs, CheckpointCard } from './ConsoleKit';
 import MirTemarioExplorer from './MirTemarioExplorer';
@@ -96,7 +97,8 @@ function SimulacrosView() {
           const pasado = h.fecha < iso;
           return (
             <View key={h.clave} style={[st.hitoRow, i === 0 && { borderTopWidth: 0 }, esProximo && { backgroundColor: AMBER + '12' }]}>
-              <Text style={[st.hitoFecha, { color: pasado ? Colors.muted : AMBER }]}>{h.fecha}</Text>
+              {/* v6.02d: fecha real visible (semana corrida) */}
+              <Text style={[st.hitoFecha, { color: pasado ? Colors.muted : AMBER }]}>{fechaRealDe(h.fecha, 'mir')}</Text>
               <View style={{ flex: 1 }}>
                 <Text style={[st.hitoNombre, pasado && { color: Colors.muted }]}>{esProximo ? '▶ ' : ''}{h.nombre}</Text>
                 <Text style={st.hitoNota}>{h.fase} · {h.nota}</Text>
@@ -177,7 +179,7 @@ function TacticaView() {
         {MIR_CALENDARIO.map((c, i) => (
           <View key={i} style={[st.calRow, i === 0 && { borderTopWidth: 0 }]}>
             <Text style={[st.calFase, { color: AMBER }]}>{c.fase}</Text>
-            <Text style={st.calFoco}>{c.foco}</Text>
+            <Text style={st.calFoco}>{fechasRealesEnTexto(c.foco, 'mir') /* v6.02d: fecha real visible (semana corrida) */}</Text>
           </View>
         ))}
       </GlassPanel>

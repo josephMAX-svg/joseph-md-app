@@ -33,7 +33,7 @@ import { mirPoolDisponible } from '../../lib/mirPreguntasOficiales';
 import { MirPoolLista, MirPoolEvalCompacta, poolConFallback } from './MirPoolEval';
 import DermaAnkiCola from '../derma/DermaAnkiCola';
 import { useDermaLedger, dermaHoyISO, dermaCopiar, dermaDescargar, dermaEsViernes, DERMA_AREA_LABEL, DERMA_AREA_COLOR } from '../derma/dermaLedgerBus';
-import { FECHAS_V6, motivoProtegido, fechaPlanDe } from '../../lib/fechasV6';
+import { FECHAS_V6, motivoProtegido, fechaPlanDe, fechaRealDe } from '../../lib/fechasV6';
 import GuiaBloqueCard from '../GuiaBloqueCard';
 import { dermaGuiaPar, accessDermaOK, guardarAccessDermaOK, dermaCasoUrl, dermaCasoTitulo, DERMA_TEST_PROMIR_D3, moduloCMEDe } from '../../lib/dermaGuia';
 /** v6.00: ¿la fecha cae en el SERUMS (F4)? → 30' en tiempo muerto de la posta, franja sin hora (§E). */
@@ -579,9 +579,10 @@ function HorarioView({ dia }: { dia: DiaDerma }) {
     if (tipo === 'apex') return `tarjetas de mecanismo (cola Anki APEX::DERMA::${dia.bKey}) + registrar en el ledger + ${dermaEsViernes(dia.fecha) ? 'EXPORTAR ledger (viernes)' : 'marcar progreso'}`;
     return '';
   };
+  const fReal = fechaRealDe(dia.fecha, 'research-derma'); // v6.02d: fecha real visible (semana corrida)
   return (
     <View>
-      <Text style={st.secLbl}>{enF4(dia.fecha) ? `Bloque Derma · Día ${dia.d} (${fmtFecha(dia.fecha)}) · 30' en tiempo muerto (posta) · sin hora fija · núcleo = casos ciegos + imagen (review ~10Q y lectura 10' opcionales)` : `Bloque Derma · Día ${dia.d} (${fmtFecha(dia.fecha)}) · hora Lima`}</Text>
+      <Text style={st.secLbl}>{enF4(dia.fecha) ? `Bloque Derma · Día ${dia.d} (${fmtFecha(fReal)}) · 30' en tiempo muerto (posta) · sin hora fija · núcleo = casos ciegos + imagen (review ~10Q y lectura 10' opcionales)` : `Bloque Derma · Día ${dia.d} (${fmtFecha(fReal)}) · hora Lima`}</Text>
       {DERMA_FRANJAS.map((f, i) => {
         const det = detalle(f.tipo);
         return (
@@ -613,7 +614,7 @@ function SieteView({ fromD, onPick }: { fromD: number; onPick: (d: number) => vo
           <FadeUp key={x.d} delay={i * 30}>
             <TouchableOpacity activeOpacity={0.8} onPress={() => onPick(x.d)} style={[st.d7, { borderLeftColor: fc }]}>
               <Text style={[st.d7day, { color: fc }]}>D{x.d}</Text>
-              <Text style={st.d7fecha}>{fmtFecha(x.fecha)}</Text>
+              <Text style={st.d7fecha}>{fmtFecha(fechaRealDe(x.fecha, 'research-derma'))}</Text>{/* v6.02d: fecha real visible (semana corrida) */}
               <View style={{ flex: 1 }}>
                 <Text style={st.d7sub} numberOfLines={1}>{x.sub}</Text>
                 <Text style={st.d7sys}>{x.bKey} · {x.bloque}{x.referente ? ` · ${x.referente}` : ''} · casos {casosTxt(x)}{tags.length ? ` · ${tags.join(' · ')}` : ''}</Text>
@@ -792,7 +793,8 @@ export default function DermaTodayPlan({ tone, jump }: { tone?: SkinTone; jump?:
         <TouchableOpacity activeOpacity={0.7} onPress={() => setSel((s) => Math.max(1, s - 1))} style={st.navArrow}><Text style={st.navArrowTxt}>◄</Text></TouchableOpacity>
         <View style={{ flex: 1, alignItems: 'center' }}>
           <Text style={st.navDay}>{esCiclo2 ? `D${dia.d} · CICLO 2 · sesión ${dia.d - DERMA_CICLO2_META.dOffset}/${DERMA_CICLO2_META.totalDias}` : `D${dia.d} · Día ${dia.d}/${DERMA_DAILY_META.totalDias}`}{esHoy ? ' · HOY' : ''}</Text>
-          <Text style={st.navFecha}>{fmtFecha(dia.fecha)} · {dia.fecha}</Text>
+          {/* v6.02d: fecha real visible (semana corrida) */}
+          <Text style={st.navFecha}>{fmtFecha(fechaRealDe(dia.fecha, 'research-derma'))} · {fechaRealDe(dia.fecha, 'research-derma')}</Text>
         </View>
         <TouchableOpacity activeOpacity={0.7} onPress={() => setSel((s) => Math.min(DERMA_TOTAL_DIAS_TODOS, s + 1))} style={st.navArrow}><Text style={st.navArrowTxt}>►</Text></TouchableOpacity>
       </View>

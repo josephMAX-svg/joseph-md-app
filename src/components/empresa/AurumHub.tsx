@@ -9,6 +9,7 @@ import {
   aurumSemanaISO, aurumSemanaPrev, aurumScoreSemaforo, AURUM_SCOREBOARD_METAS, AURUM_RUBRICA_PITCH,
 } from '../../lib/aurumData';
 import { AURUM_PLAN_META, AURUM_PITCH_DIAS, AURUM_LIVIANO_DIAS } from '../../lib/aurumDailyPlan';
+import { fechaRealDe } from '../../lib/fechasV6';
 import { AURUM_BIBLIOTECA_NIVELES, AurumBibLibro } from '../../lib/aurumBiblioteca';
 import { loadDone, saveDone, planHoyD, progresoGlobal } from '../../lib/studyProgress';
 import { AURUM_DIAS } from '../../lib/aurumDailyPlan';
@@ -259,7 +260,7 @@ function BibliotecaView({ isDesktop }: { isDesktop: boolean }) {
 function ProtocoloView() {
   return (
     <View>
-      <AurumLabel>Protocolo · núcleo en {AURUM_PLAN_META.ventana} (L-V; desde el {AURUM_PLAN_META.min30Desde} = 30' núcleo 14:15-14:45, DJ-4) + lectura en tus huecos · sáb/dom libres · fin {AURUM_PLAN_META.fin}</AurumLabel>
+      <AurumLabel>Protocolo · núcleo en {AURUM_PLAN_META.ventana} (L-V; desde el {fechaRealDe(AURUM_PLAN_META.min30Desde, 'aurum')} = 30' núcleo 14:15-14:45, DJ-4) + lectura en tus huecos · sáb/dom libres · fin {fechaRealDe(AURUM_PLAN_META.fin, 'aurum')}</AurumLabel>{/* v6.02d: fecha real visible (semana corrida) */}
       <AurumPanel accent={C.gold} glow style={{ marginBottom: S['2xl'] }}>
         {AURUM_PROTOCOLO.map((h, i) => {
           const audio = h.formato.includes('audio');
@@ -282,7 +283,7 @@ function ProtocoloView() {
       <AurumLabel>El nivel meta · los entregables (PITCH v1→v7) que demuestran que eres closer</AurumLabel>
       <AurumPanel accent={C.gold} style={{ marginBottom: S.lg }}>
         <Text style={[st.body, { color: C.text, fontWeight: T.weight.bold, marginBottom: 4 }]}>Rúbrica del PITCH · 6 ítems 0-2 (score /12) en los 7 viernes de cierre de fase</Text>
-        <Text style={st.body}>{AURUM_PITCH_DIAS.map((p) => `v${p.pitch}=D${p.d} (${p.fecha.slice(8, 10)}-${p.fecha.slice(5, 7)}${p.liviano ? ' +LIVIANO' : ''})`).join(' · ')}</Text>
+        <Text style={st.body}>{AURUM_PITCH_DIAS.map((p) => { const f = fechaRealDe(p.fecha, 'aurum'); return `v${p.pitch}=D${p.d} (${f.slice(8, 10)}-${f.slice(5, 7)}${p.liviano ? ' +LIVIANO' : ''})`; }).join(' · ')}</Text>{/* v6.02d: fecha real visible (semana corrida) */}
         {AURUM_RUBRICA_PITCH.map((it, i) => (
           <View key={it.key} style={st.warnRow}>
             <Text style={{ color: C.gold, fontWeight: T.weight.extrabold }}>{i + 1}</Text>
@@ -465,9 +466,10 @@ export default function AurumHub({ onBack, variant = 'mobile' }: { onBack?: () =
           <View style={{ flex: 1, minWidth: 260 }}>
             <AurumWordmark size={isDesktop ? T.size.mega : 42} />
             <Text style={st.heroTagline}>El arte de convertir conversaciones en oro</Text>
+            {/* v6.02d: fecha real visible (semana corrida) */}
             <Text style={st.heroTesis}>
               Método de los REALES — los que vendieron y construyeron antes de enseñar — aplicado a
-              ALLPA (terrenos) y Qori Golden. 26 semanas ({AURUM_PLAN_META.inicio} → {AURUM_PLAN_META.fin}), ventana {AURUM_PLAN_META.ventana} L-V (30' núcleo desde el {AURUM_PLAN_META.min30Desde}): ver + practicar tu pitch.
+              ALLPA (terrenos) y Qori Golden. 26 semanas ({fechaRealDe(AURUM_PLAN_META.inicio, 'aurum')} → {fechaRealDe(AURUM_PLAN_META.fin, 'aurum')}), ventana {AURUM_PLAN_META.ventana} L-V (30' núcleo desde el {fechaRealDe(AURUM_PLAN_META.min30Desde, 'aurum')}): ver + practicar tu pitch.
             </Text>
             {/* chips de autoridad — referentes reales */}
             <View style={st.authRow}>

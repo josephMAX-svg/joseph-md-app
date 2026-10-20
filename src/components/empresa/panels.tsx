@@ -17,6 +17,7 @@ import {
   LIVIANO_KPI_SEMANAL, LIVIANO_KPI_REGLA, kpiSemanalSemaforo, kpiSemanalAlertas,
 } from '../../lib/empresaData';
 import type { KpiSemanalKey } from '../../lib/empresaData';
+import { fechaRealDe } from '../../lib/fechasV6';
 
 /**
  * Paneles del Hub de Empresa. Presentacionales y data-driven (todo viene de
@@ -804,7 +805,7 @@ export function LivianoProtocoloSection() {
           <View style={{ flexDirection: 'row', gap: Spacing.sm, flexWrap: 'wrap', marginTop: Spacing.md }}>
             {rev.filas.map(f => (
               <View key={f.n} style={s.revCard}>
-                <Text style={[s.revDia, monoText]}>D{f.planDia} · {f.fechaPlan}</Text>
+                <Text style={[s.revDia, monoText]}>D{f.planDia} · {fechaRealDe(f.fechaPlan, 'liviano')}</Text>{/* v6.02d: fecha real visible (semana corrida) */}
                 <Text style={s.revTitulo}>{f.titulo}</Text>
               </View>
             ))}

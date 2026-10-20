@@ -19,7 +19,7 @@ import { researchObsUrlEntregable } from '../../lib/obsidianResearchMap';
 import { getResearchEngineState } from '../../lib/supabase';
 import { ResearchFonts, ensureResearchFonts, serifTitle, InkColors } from './researchTheme';
 import ResearchTodayPlan from './ResearchTodayPlan';
-import { FECHAS_V6, motivoProtegido, fechaPlanDe } from '../../lib/fechasV6';
+import { FECHAS_V6, motivoProtegido, fechaPlanDe, fechaRealDe } from '../../lib/fechasV6';
 import { esResearchMinimo } from '../../lib/plantillasV6';
 import ResearchAgenticSystem from './ResearchAgenticSystem';
 import ResearchLinesExplorer from './ResearchLinesExplorer';
@@ -260,7 +260,7 @@ function EntregableCard({ e, reg, onChange }: { e: Entregable; reg: EntregablesR
       <View style={st.entGrid}>
         <View style={st.entCell}>
           <Text style={st.entLbl}>HITO DEL PLAN</Text>
-          <Text style={[st.entVal, atrasado && { color: Colors.coral }]}>{hito ? `${hito.code} · ${fmtFecha(hito.fecha)} (ciclo ${hito.ciclo})` : '—'}</Text>
+          <Text style={[st.entVal, atrasado && { color: Colors.coral }]}>{hito ? `${hito.code} · ${fmtFecha(fechaRealDe(hito.fecha, 'research-derma'))} (ciclo ${hito.ciclo})` : '—'}</Text>{/* v6.02d: fecha real visible (semana corrida) */}
           <Text style={st.entSub}>mes RUTA: {fmtMes(e.fechaObjetivo)} · átomos {e.atomos}</Text>
         </View>
         <View style={st.entCell}>
@@ -398,7 +398,8 @@ function PanelView({ reg, onChange, infra, onToggleInfra, kpis, sync }: {
         Un solo calendario: el hito de cada tarjeta es la fecha del átomo que lo cierra en el plan día-a-día
         (se re-fecha con el pipeline; los hitos tienen overlay 🔬 naranja en el Calendar). El estado lo marcas tú; "enviado"
         registra la fecha automáticamente y cada cambio queda en el histórico editorial (visible en cualquier dispositivo).
-        {proximo ? ` Próximo hito pendiente: ${proximo.titulo} → ${RESEARCH_HITOS[proximo.id].code} ${fmtFecha(RESEARCH_HITOS[proximo.id].fecha)}.` : ' Todos los entregables están enviados.'}
+        {/* v6.02d: fecha real visible (semana corrida) */}
+        {proximo ? ` Próximo hito pendiente: ${proximo.titulo} → ${RESEARCH_HITOS[proximo.id].code} ${fmtFecha(fechaRealDe(RESEARCH_HITOS[proximo.id].fecha, 'research-derma'))}.` : ' Todos los entregables están enviados.'}
       </Text>
       <View style={{ marginBottom: Spacing.xl }}>
         {[...RESEARCH_ENTREGABLES].sort((a, b) => a.n - b.n).map((e, i) => (

@@ -9,6 +9,7 @@ import { guiaUsmleDe, guiaUsmleEnRango } from '../../lib/usmleGuia';
 import type { GuiaBloque } from '../../lib/guia';
 import { fmtMin, partesFranja, aMinutos, moverGuia } from '../../lib/guia';
 import GuiaBloqueCard from '../GuiaBloqueCard';
+import { fechasRealesEnTexto } from '../../lib/corridaTexto';
 import { mirObsUrl, usmleObsUrl, encapsObsUrl, OBS_MAPA_URL } from '../../lib/obsidianMap';
 import { vibeDiaDe, vibeProyectoEnFecha, vibeTaperEnFecha, vibeJournalUrl, VIBE_TIPO_LABEL, VIBE_ROTACION_ICON, VIBE_META } from '../../lib/vibecodingPlan';
 import {
@@ -586,7 +587,7 @@ function cabeceraBloque(b: BloqueV6, c: { tema: string; sub: string; guias?: Gui
       pasado: !!b.fin && ahora >= hm(b.fin) && b.ini !== b.fin, nombre: b.nombre, tema: c.tema, sub: c.sub, varias: false, conGuia: false,
     };
   }
-  const tema = gs.length === 1 ? (gs[0] as GuiaBloque).titulo : gs.map((g) => `${g.franja.slice(0, 5)} ${tituloCorto(g.titulo)}`).join(' → ');
+  const tema = fechasRealesEnTexto(gs.length === 1 ? (gs[0] as GuiaBloque).titulo : gs.map((g) => `${g.franja.slice(0, 5)} ${tituloCorto(g.titulo)}`).join(' → '), b.plan); // v6.02d: fechas reales visibles
   const sub = `🧭 la guía manda · ${span.ini}–${span.fin} · ${fmtMin(gs.reduce((a, g) => a + g.totalMin, 0))}${gs.length > 1 ? ` en ${gs.length} franjas` : ''} · pasos en la tarjeta de abajo${b.plan !== 'usmle' && c.sub ? ` · ${c.sub}` : ''}`;
   return {
     ini: span.ini, fin: span.fin, enCurso: gs.some((g) => enFranja(g.franja, ahora)), pasado: ahora >= hm(span.fin),

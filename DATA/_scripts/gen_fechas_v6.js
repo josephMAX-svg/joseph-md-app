@@ -239,6 +239,15 @@ const fechaPlanDe = (s, F = fechasPorDefecto(), frente) => {
   const parte = c.partes.find((p) => Object.keys(p.bloques).some((id) => ids.includes(id)));
   return parte ? parte.de : c.de;
 };
+/** Inversa para MOSTRAR (gemelo node de fechaRealDe del .ts): día real en que se hace la fila con fecha de plan `plan`. */
+const fechaRealDe = (plan, F = fechasPorDefecto(), frente) => {
+  const c = F.corrida_s1;
+  if (!c) return plan;
+  for (const [r, de] of Object.entries(c.alias)) if (de === plan) return r;
+  const ids = frente ? (BLOQUES_POR_FRENTE[frente] || []) : null;
+  for (const [r, x] of Object.entries(c.reparto)) for (const p of x.partes) if (p.de === plan && (!ids || Object.keys(p.bloques).some((id) => ids.includes(id)))) return r;
+  return plan;
+};
 /** Contexto de derivación a partir del JSON. */
 function ctxDe(F) {
   return {
@@ -717,6 +726,19 @@ export function fechaPlanDe(iso: string, frente?: string): string {
   const parte = c.partes.find((p) => Object.keys(p.bloques).some((id) => ids.includes(id)));
   return parte ? parte.de : c.de;
 }
+/**
+ * Inversa de fechaPlanDe para MOSTRAR fechas (mar 20-oct-2026, a pedido de Joseph: «dice que empieza el 19 y estamos empezando el 20»):
+ * día REAL en que se hace la fila cuya fecha de plan es \`plan\` (19 → mar 20 … 22 → vie 23; 23 → sáb 24 o dom 25 según el \`frente\`;
+ * sábado nativo 24 → sáb 24 o dom 25 según el frente). Fuera de la semana corrida = la propia. Solo para etiquetas: las filas, el
+ * progreso y Supabase siguen con la fecha de plan.
+ */
+export function fechaRealDe(plan: string, frente?: string): string {
+  const c = FECHAS_V6.corrida_s1;
+  for (const [r, de] of Object.entries(c.alias)) if (de === plan) return r;
+  const ids = frente ? (BLOQUES_POR_FRENTE[frente] ?? []) : null;
+  for (const [r, x] of Object.entries(c.reparto)) for (const p of x.partes) if (p.de === plan && (!ids || Object.keys(p.bloques).some((id) => ids.includes(id)))) return r;
+  return plan;
+}
 `;
 }
 
@@ -756,6 +778,8 @@ function compararTS(T, F, d) {
     eq('corridaS1De ' + s, T.corridaS1De(s), corridaS1De(s, F));
     eq('fechaPlanDe ' + s, T.fechaPlanDe(s), fechaPlanDe(s, F));
     for (const fr of [...Object.keys(BLOQUES_POR_FRENTE), 'otro']) eq(`fechaPlanDe ${s} ${fr}`, T.fechaPlanDe(s, fr), fechaPlanDe(s, F, fr));
+    eq('fechaRealDe ' + s, T.fechaRealDe(s), fechaRealDe(s, F));
+    for (const fr of [...Object.keys(BLOQUES_POR_FRENTE), 'otro']) eq(`fechaRealDe ${s} ${fr}`, T.fechaRealDe(s, fr), fechaRealDe(s, F, fr));
     if (err.length > 20) break;
   }
   // derivaciones en los escenarios (A5) × los 3 exámenes de DJ-1 × SERUMS 3-may / 6-may (sensibilidad §B4.3) + un ENCAPS en sábado
@@ -839,7 +863,7 @@ module.exports = {
   // fases y predicados (F opcional = el JSON validado)
   fasesV6, faseV6, esProtegido, enPausaStep1, esDiaPlan, semanaStep1,
   // v6.02d: semana 1 corrida (alias en la consulta)
-  comprobarCorridaS1, corridaS1De, fechaPlanDe, BLOQUES_POR_FRENTE,
+  comprobarCorridaS1, corridaS1De, fechaPlanDe, fechaRealDe, BLOQUES_POR_FRENTE,
 };
 
 if (require.main === module) main();

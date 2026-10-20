@@ -15,7 +15,7 @@ import {
   subtemasValidados, alarmaAbogado, alarmaRelectura, reglaDelTercio, plantillaPorSistema, esParcial, marcarParcial, PISO_AMBAR, semaforoPct,
   evaluarGoNoGo, horasDesde, GONOGO_HORAS,
 } from '../../lib/usmleScores';
-import { FECHAS_V6, faseV6, fechaPlanDe } from '../../lib/fechasV6';
+import { FECHAS_V6, faseV6, fechaPlanDe, fechaRealDe } from '../../lib/fechasV6';
 import { infoTurno, ordenSemanaDe, onTurnosChange, filaT2DelDia, dowCorto, guardarTurno, desmarcarTurno, TURNOS_V6, TURNO_INFO } from '../../lib/serumsTurnos';
 import { plantillaDelDia } from '../../lib/plantillasV6';
 import { usmleMirParalelo } from '../../lib/mirUsmleBridge';
@@ -32,6 +32,7 @@ function subConGuia(sub: string, fecha: string): string {
   return sub.replace(/\d{2}:\d{2}-\d{2}:\d{2}/, `${hito.franja.replace('–', '-')} · la guía manda`);
 }
 import GuiaBloqueCard from '../GuiaBloqueCard';
+import { fechasRealesEnTexto } from '../../lib/corridaTexto';
 
 /**
  * UsmleTodayPlan — Plan Step 1 día-a-día, estilo Perú/ENCAPS pero mejor.
@@ -184,7 +185,8 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, done, onPick, hoy }: { d
       {/* v6.02c · fin de semana / día sin fila: la guía de HOY va primero (Anki del Calendar) */}
       {guiaHoyFuera.length > 0 && (
         <FadeUp>
-          <Text style={st.secLbl}>🧭 Hoy {fmtFecha(hoy)} · sin fila del plan · qué · cuánto · cómo</Text>
+          {/* v6.02d: fecha real visible (semana corrida) */}
+          <Text style={st.secLbl}>🧭 Hoy {fmtFecha(fechaRealDe(hoy, 'usmle'))} · sin fila del plan · qué · cuánto · cómo</Text>
           {guiaHoyFuera.map((g, i) => <GuiaBloqueCard key={`h${i}`} g={g} color={GREEN} ahora={enCurso(g.franja)} />)}
         </FadeUp>
       )}
@@ -286,7 +288,8 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, done, onPick, hoy }: { d
             <Text style={[st.anchorLbl, { color: atrasadas.length ? RED : GREEN }]}>{atrasadas.length ? `🧷 COLCHÓN · ${atrasadas.length} fila(s) atrasada(s): haz HOY la más antigua` : '🧷 COLCHÓN · sin filas atrasadas → sistema más débil del último NBME (o, tras el Free 120, solo incorrectas/flagged + Anki maduro)'}</Text>
             {atrasadas.slice(0, 8).map((x) => (
               <TouchableOpacity key={x.d} activeOpacity={0.8} onPress={() => onPick(x.d)} style={st.atrasadaRow}>
-                <Text style={[st.anchorSub, { color: Colors.onSurface, flex: 1 }]}>T{x.t} · {fmtFecha(x.fecha)} · {TIPO_FILA_T2_LABEL[x.tipo]}{x.parte ? ` ${x.parte}` : ''} · {x.sub.slice(0, 90)}</Text>
+                {/* v6.02d: fecha real visible (semana corrida) */}
+                <Text style={[st.anchorSub, { color: Colors.onSurface, flex: 1 }]}>T{x.t} · {fmtFecha(fechaRealDe(x.fecha, 'usmle'))} · {TIPO_FILA_T2_LABEL[x.tipo]}{x.parte ? ` ${x.parte}` : ''} · {x.sub.slice(0, 90)}</Text>
                 <Text style={[st.verTxt, { color: RED }]}>hazla hoy →</Text>
               </TouchableOpacity>
             ))}
@@ -366,7 +369,8 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, done, onPick, hoy }: { d
             <Text style={[st.anchorLbl, { color: Colors.gold }]}>🧬 Cuenta doble Step 1 ↔ Derma · átomos Derma ya estudiados (oct-dic, v5.20)</Text>
             <Text style={st.anchorSub}>Hoy el pre-test 08:15 y el repaso anclado 07:15 apuntan a <Text style={{ color: Colors.onSurface, fontWeight: '700' }}>{DERMA_STEP1_QUERY}</Text> + fallos del ledger derma de estos {atomos.length} átomos (mismo motor FSRS; la derma de Step 1 no se estudia dos veces). El contenido USMLE del día no cambia.</Text>
             {atomos.map((a) => (
-              <Text key={a.d} style={st.anchorSub}>• d{a.d}{a.fecha ? ` · ${fmtFecha(a.fecha)}` : ''} · {a.sub}</Text>
+              // v6.02d: fecha real visible (semana corrida) · átomo Derma → frente research-derma
+              <Text key={a.d} style={st.anchorSub}>• d{a.d}{a.fecha ? ` · ${fmtFecha(fechaRealDe(a.fecha, 'research-derma'))}` : ''} · {a.sub}</Text>
             ))}
           </View>
         </FadeUp>
@@ -382,7 +386,8 @@ function HoyView({ dia, onOpenTemario, hecho, onToggle, done, onPick, hoy }: { d
             {mirPrev && <Text style={[st.anchorSub, { color: Colors.gold }]}>🇪🇸 {mirPrev.texto} · Anki: tag compartido {mirPrev.tag} (APEX::MIR + APEX::USMLE) para el D-7 en español</Text>}
             {/* #28 · shopping list arrastrada (§3.5.B / §6.5): las notas de ayer se leen ANTES de las 5Q de validación */}
             <View style={st.shopBox}>
-              <Text style={[st.anchorLbl, { color: APEX }]}>🛒 Shopping list de ayer · {etq(prev)} ({fmtFecha(prev.fecha)})</Text>
+              {/* v6.02d: fecha real visible (semana corrida) */}
+              <Text style={[st.anchorLbl, { color: APEX }]}>🛒 Shopping list de ayer · {etq(prev)} ({fmtFecha(fechaRealDe(prev.fecha, 'usmle'))})</Text>
               {sPrev?.notas ? <Text style={[st.anchorSub, { color: Colors.onSurfaceVariant }]}>{sPrev.notas}</Text> : <Text style={st.anchorSub}>sin notas registradas en {etq(prev)} → hoy anota en 📏 Medición cada duda (también en las correctas): es lo que se valida mañana a las 07:15</Text>}
               {sPrev && (sPrev.tipoError || sPrev.consol30pct != null) ? <Text style={st.anchorSub}>ayer: consolidación {sPrev.consol30pct != null ? `${sPrev.consol30pct}%` : '—'}{sPrev.tipoError ? ` · error dominante ${TIPO_ERROR_INFO[sPrev.tipoError].corto} → ${TIPO_ERROR_INFO[sPrev.tipoError].tarjeta.split(' · ')[0]}` : ''}</Text> : null}
               {postHito && ayer && ayer.d !== prev.d ? <Text style={[st.anchorSub, { color: Colors.gold }]}>{etq(ayer)} fue un hito ({ayer.uw}): el subtema que se valida hoy es el de {etq(prev)}; la auditoría del hito va en el Day-After de arriba</Text> : null}
@@ -605,7 +610,8 @@ function HorarioView({ dia }: { dia: DiaUSMLEPlan }) {
     const pl = plantillaDelDia(dia.fecha);
     return (
       <View>
-        <Text style={st.secLbl}>🕓 {pl.titulo} · {etiquetaDiaUSMLE(dia)} ({fmtFecha(dia.fecha)}) · hora Lima</Text>
+        {/* v6.02d: fecha real visible (semana corrida) */}
+        <Text style={st.secLbl}>🕓 {pl.titulo} · {etiquetaDiaUSMLE(dia)} ({fmtFecha(fechaRealDe(dia.fecha, 'usmle'))}) · hora Lima</Text>
         {pl.bloques.map((b, i) => (
           <FadeUp key={b.id} delay={i * 20}>
             <View style={st.franja}>
@@ -630,7 +636,8 @@ function HorarioView({ dia }: { dia: DiaUSMLEPlan }) {
   };
   return (
     <View>
-      <Text style={st.secLbl}>🕓 Bloque USMLE · {etiquetaDiaUSMLE(dia)} ({fmtFecha(dia.fecha)}) · hora Lima</Text>
+      {/* v6.02d: fecha real visible (semana corrida) */}
+      <Text style={st.secLbl}>🕓 Bloque USMLE · {etiquetaDiaUSMLE(dia)} ({fmtFecha(fechaRealDe(dia.fecha, 'usmle'))}) · hora Lima</Text>
       {FRANJAS.map((f, i) => {
         const det = detalle(f.tipo);
         return (
@@ -638,12 +645,12 @@ function HorarioView({ dia }: { dia: DiaUSMLEPlan }) {
             <View style={st.franja}>
               <View style={st.franjaHora}><Text style={st.franjaHoraTxt}>{f.hora}</Text></View>
               <View style={{ flex: 1 }}>
-                <Text style={st.franjaFase}>{f.fase}</Text>
-                {det ? <Text style={st.franjaDet}>↳ {det}</Text> : null}
+                <Text style={st.franjaFase}>{fechasRealesEnTexto(f.fase, 'usmle') /* v6.02d: fecha real visible (semana corrida) */}</Text>
+                {det ? <Text style={st.franjaDet}>↳ {fechasRealesEnTexto(det, 'usmle')}</Text> : null}
                 {f.nivel && f.nivel !== '—' ? <Text style={st.franjaNivel}>🎚️ nivel UW {f.nivel}{f.gate && f.gate !== '—' ? ` · gate: ${f.gate}` : ''}</Text> : null}
-                {f.hora.startsWith('11:00') && dia.franjaNota ? <Text style={[st.franjaDet, { color: esDiaTaper(dia) ? RED : Colors.gold }]}>↳ HOY: {dia.franjaNota}</Text> : null}
+                {f.hora.startsWith('11:00') && dia.franjaNota ? <Text style={[st.franjaDet, { color: esDiaTaper(dia) ? RED : Colors.gold }]}>↳ HOY: {fechasRealesEnTexto(dia.franjaNota, 'usmle')}</Text> : null}
                 {f.hora.startsWith('07:15') && esDiaDermaStep1(dia) ? <Text style={[st.franjaDet, { color: Colors.gold }]}>↳ HOY (cuenta doble Derma): {DERMA_STEP1_QUERY} + fallos del ledger derma</Text> : null}
-                {(FRANJAS_REGLAS[i] || []).map((r, k) => <Text key={k} style={st.franjaRegla}>⚙ {r}</Text>)}
+                {(FRANJAS_REGLAS[i] || []).map((r, k) => <Text key={k} style={st.franjaRegla}>⚙ {fechasRealesEnTexto(r, 'usmle')}</Text>)}
               </View>
             </View>
           </FadeUp>
@@ -654,7 +661,7 @@ function HorarioView({ dia }: { dia: DiaUSMLEPlan }) {
           <View style={st.franjaHora}><Text style={st.franjaHoraTxt}>{FRANJA_F3_REENTRADA.hora}</Text></View>
           <View style={{ flex: 1 }}>
             <Text style={st.franjaFase}>{FRANJA_F3_REENTRADA.fase}</Text>
-            {dia.franjaNota ? <Text style={st.franjaDet}>↳ HOY: {dia.franjaNota}</Text> : null}
+            {dia.franjaNota ? <Text style={st.franjaDet}>↳ HOY: {fechasRealesEnTexto(dia.franjaNota, 'usmle')}</Text> : null}
             <Text style={st.franjaNivel}>🎚️ nivel UW {FRANJA_F3_REENTRADA.nivel} · gate: {FRANJA_F3_REENTRADA.gate}</Text>
           </View>
         </View>
@@ -675,7 +682,8 @@ function SieteView({ fromD, onPick }: { fromD: number; onPick: (d: number) => vo
           <FadeUp key={x.d} delay={i * 30}>
             <TouchableOpacity activeOpacity={0.8} onPress={() => onPick(x.d)} style={[st.d7, { borderLeftColor: tier.c }]}>
               <Text style={[st.d7day, { color: tier.c }]}>{etq(x)}</Text>
-              <Text style={st.d7fecha}>{fmtFecha(x.fecha)}</Text>
+              {/* v6.02d: fecha real visible (semana corrida) */}
+              <Text style={st.d7fecha}>{fmtFecha(fechaRealDe(x.fecha, 'usmle'))}</Text>
               <View style={{ flex: 1 }}>
                 <Text style={st.d7sub} numberOfLines={1}>{x.sub}</Text>
                 <Text style={st.d7sys}>{x.system}{esFilaT2(x) ? ` · ${TIPO_FILA_T2_LABEL[x.tipo]}${x.parte ? ` ${x.parte}` : ''}` : ''}</Text>
@@ -786,6 +794,7 @@ export default function UsmleTodayPlan() {
   useEffect(() => onTurnosChange(() => setTick((t) => t + 1)), []); // el turno cambia la plantilla F4
   const dia = (DIAS_TODOS[sel] ?? DIAS_TODOS[0]) as DiaUSMLEPlan;
   const esHoy = !pausa && dia.d === todayDia.d && (dia.fecha === iso || dia === filaF4);
+  const fechaVis = fechaRealDe(dia.fecha, 'usmle'); // v6.02d: fecha real visible (semana corrida)
   const pickDay = (d: number) => { setSel(idxDe(d)); setView('hoy'); };
   const toggleDone = (d: number) => setDone((prev) => {
     const n = new Set(prev);
@@ -817,7 +826,8 @@ export default function UsmleTodayPlan() {
         <TouchableOpacity activeOpacity={0.7} onPress={() => setSel((s) => Math.max(0, s - 1))} style={st.navArrow}><Text style={st.navArrowTxt}>◄</Text></TouchableOpacity>
         <View style={{ flex: 1, alignItems: 'center' }}>
           <Text style={st.navDay}>{etiquetaDiaUSMLE(dia)}{esHoy ? ' · HOY' : ''}{pausa && dia.d === todayDia.d ? ' · próxima fila (reinicio)' : ''}</Text>
-          <Text style={st.navFecha}>{fmtFecha(dia.fecha)} · {dia.fecha}{esFilaT2(dia) ? ` · ${dia.fase}` : ' · F1'}{esHoy && dia.fecha !== iso ? ` · ↻ reordenada por el hito: se hace HOY (${fmtFecha(iso)})` : ''}</Text>
+          {/* v6.02d: fecha real visible (semana corrida) */}
+          <Text style={st.navFecha}>{fmtFecha(fechaVis)} · {fechaVis}{esFilaT2(dia) ? ` · ${dia.fase}` : ' · F1'}{esHoy && dia.fecha !== iso ? ` · ↻ reordenada por el hito: se hace HOY (${fmtFecha(fechaRealDe(iso, 'usmle'))})` : ''}</Text>
         </View>
         <TouchableOpacity activeOpacity={0.7} onPress={() => setSel((s) => Math.min(DIAS_TODOS.length - 1, s + 1))} style={st.navArrow}><Text style={st.navArrowTxt}>►</Text></TouchableOpacity>
       </View>

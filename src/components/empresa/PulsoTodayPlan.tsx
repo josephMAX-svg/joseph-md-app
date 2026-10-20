@@ -7,7 +7,7 @@ import { FadeUp } from './visuals';
 import { BIZ_META, BIZ_FRANJAS, BIZ_TRACKER, BIZ_DIAS, DiaBiz, bizDiaDe, biz7d, bizColor, bizModo } from '../../lib/businessStudyPlan';
 import { ESTUDIO_LIBROS } from '../../lib/estudioPulsoData';
 import { agruparProgreso, planHoyD, progresoGlobal, GrupoProgreso, loadDone, saveDone } from '../../lib/studyProgress';
-import { fechaPlanDe } from '../../lib/fechasV6';
+import { fechaPlanDe, fechaRealDe } from '../../lib/fechasV6';
 import GuiaBloqueCard from '../GuiaBloqueCard';
 import { guiaBusinessDe } from '../../lib/rutinaGuia'; // v6.02c (E5): franja propia (13:00-13:25) + tramo exacto + acción
 
@@ -154,7 +154,7 @@ function SieteView({ fromD, onPick }: { fromD: number; onPick: (d: number) => vo
           <FadeUp key={x.d} delay={i * 30}>
             <TouchableOpacity activeOpacity={0.8} onPress={() => onPick(x.d)} style={[st.d7, { borderLeftColor: c }]}>
               <Text style={[st.d7day, { color: c }]}>D{x.d}</Text>
-              <Text style={st.d7fecha}>{fmtFecha(x.fecha)}</Text>
+              <Text style={st.d7fecha}>{fmtFecha(fechaRealDe(x.fecha, 'business'))}</Text>{/* v6.02d: fecha real visible (semana corrida) */}
               <View style={{ flex: 1 }}>
                 <Text style={st.d7sub} numberOfLines={1}>{x.lectura}</Text>
                 <Text style={st.d7sys}>{x.materia}{x.min ? ` · ${x.min} min · ${MODO_LABEL[bizModo(x)]}` : ''}</Text>
@@ -259,7 +259,8 @@ export default function PulsoTodayPlan() {
         <TouchableOpacity activeOpacity={0.7} onPress={() => setSel((s) => Math.max(1, s - 1))} style={st.navArrow}><Text style={st.navArrowTxt}>◄</Text></TouchableOpacity>
         <View style={{ flex: 1, alignItems: 'center' }}>
           <Text style={st.navDay}>Día {dia.d}/{BIZ_META.totalDias}{esHoy ? ' · HOY' : ''}</Text>
-          <Text style={st.navFecha}>{fmtFecha(dia.fecha)} · {dia.fecha}</Text>
+          {/* v6.02d: fecha real visible (semana corrida) */}
+          <Text style={st.navFecha}>{fmtFecha(fechaRealDe(dia.fecha, 'business'))} · {fechaRealDe(dia.fecha, 'business')}</Text>
         </View>
         <TouchableOpacity activeOpacity={0.7} onPress={() => setSel((s) => Math.min(BIZ_META.totalDias, s + 1))} style={st.navArrow}><Text style={st.navArrowTxt}>►</Text></TouchableOpacity>
       </View>

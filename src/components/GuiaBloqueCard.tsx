@@ -4,6 +4,7 @@ import { Colors, Spacing, FontSize, BorderRadius, Hairline, LineHeight, Motion }
 import { DesktopColors } from '../theme/desktopStyles';
 import type { GuiaBloque } from '../lib/guia';
 import { fmtMin, sumaPasos } from '../lib/guia';
+import { guiaConFechasReales } from '../lib/corridaTexto';
 
 /**
  * GuiaBloqueCard — pinta un `GuiaBloque` (src/lib/guia.ts): franja · título · minutos → pasos (min · QUÉ · CÓMO · enlace directo)
@@ -13,7 +14,8 @@ import { fmtMin, sumaPasos } from '../lib/guia';
  *   <GuiaBloqueCard g={bloque} color={Colors.green} compacto />        → cabecera + aviso; pasos al tocar (Home)
  * Los enlaces abren la URL https tal cual (cualquier navegador): nunca un esquema de navegador concreto.
  */
-export default function GuiaBloqueCard({ g, color = Colors.gold, compacto = false, ahora = false }: { g: GuiaBloque; color?: string; compacto?: boolean; ahora?: boolean }) {
+export default function GuiaBloqueCard({ g: gPlan, color = Colors.gold, compacto = false, ahora = false }: { g: GuiaBloque; color?: string; compacto?: boolean; ahora?: boolean }) {
+  const g = guiaConFechasReales(gPlan); // v6.02d: las fechas de la semana corrida citadas en el texto se muestran con su día real (19-oct → mar 20…)
   const [abierto, setAbierto] = useState<boolean>(!compacto);
   const cuadra = sumaPasos(g) === g.totalMin;
   const abrir = (url: string) => { Linking.openURL(url).catch(() => {}); };

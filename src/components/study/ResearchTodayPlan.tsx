@@ -13,7 +13,7 @@ import { agruparProgreso, progresoGlobal, GrupoProgreso, loadDone, saveDone } fr
 import { diaEstudioTipo, PRIORIDAD_COLOR } from '../../lib/researchData';
 import { researchObsUrlDay } from '../../lib/obsidianResearchMap';
 import { serifTitle, InkColors, OBSIDIAN } from './researchTheme';
-import { FECHAS_V6, motivoProtegido, fechaPlanDe } from '../../lib/fechasV6';
+import { FECHAS_V6, motivoProtegido, fechaPlanDe, fechaRealDe } from '../../lib/fechasV6';
 // v6.02c (18-oct-2026, E4): guía «qué · cuánto · cómo» de cada átomo (GENERADA por gen_research_plan.js → researchGuia.ts) en el formato común
 import GuiaBloqueCard from '../GuiaBloqueCard';
 import { guiaResearchDe, GUIA_RESEARCH_MINIMO } from '../../lib/researchGuia';
@@ -201,7 +201,8 @@ function HorarioView({ dia }: { dia: DiaResearch }) {
   };
   return (
     <View>
-      <Text style={st.secLbl}>{enF4(dia.fecha) ? `🕓 Bloque Research · ${diaLabel(dia)} (${fmtFecha(dia.fecha)}) · 30' en tiempo muerto (posta) · sin hora fija` : `🕓 Bloque Research · ${diaLabel(dia)} (${fmtFecha(dia.fecha)}) · hora Lima`}</Text>
+      {/* v6.02d: fecha real visible (semana corrida) */}
+      <Text style={st.secLbl}>{enF4(dia.fecha) ? `🕓 Bloque Research · ${diaLabel(dia)} (${fmtFecha(fechaRealDe(dia.fecha, 'research-derma'))}) · 30' en tiempo muerto (posta) · sin hora fija` : `🕓 Bloque Research · ${diaLabel(dia)} (${fmtFecha(fechaRealDe(dia.fecha, 'research-derma'))}) · hora Lima`}</Text>
       {FRANJAS.map((f, i) => {
         const det = detalle(f.tipo);
         return (
@@ -233,7 +234,7 @@ function SieteView({ fromD, onPick }: { fromD: number; onPick: (d: number) => vo
           <FadeUp key={x.d} delay={i * 30}>
             <TouchableOpacity activeOpacity={0.8} onPress={() => onPick(x.d)} style={[st.d7, { borderLeftColor: fc }]}>
               <Text style={[st.d7day, { color: fc }]}>{x.code}</Text>
-              <Text style={st.d7fecha}>{fmtFecha(x.fecha)}</Text>
+              <Text style={st.d7fecha}>{fmtFecha(fechaRealDe(x.fecha, 'research-derma'))}</Text>{/* v6.02d: fecha real visible (semana corrida) */}
               <View style={{ flex: 1 }}>
                 <Text style={st.d7sub} numberOfLines={1}>{x.horas ? `⏱ ≈${x.horas} h · ` : ''}{x.objetivo}</Text>
                 <Text style={st.d7sys}><Text style={{ color: p.color, fontWeight: '800' }}>{x.pista}</Text> · {x.fase} · {FASE_INFO[x.fase].nombre} · {x.artefacto}</Text>
@@ -259,7 +260,7 @@ function FaseCard({ g, hoyD, onPick, done, onToggle }: { g: GrupoProgreso<DiaRes
   const [open, setOpen] = useState(g.estado === 'en-curso');
   const fase = g.dias[0].fase;
   const fc = faseColor(fase);
-  const estadoTxt = g.estado === 'completado' ? '✓ completado' : g.estado === 'en-curso' ? `en curso · ${g.pct}%` : `pendiente · empieza ${g.dias[0].code} (${fmtFecha(g.dias[0].fecha)})`;
+  const estadoTxt = g.estado === 'completado' ? '✓ completado' : g.estado === 'en-curso' ? `en curso · ${g.pct}%` : `pendiente · empieza ${g.dias[0].code} (${fmtFecha(fechaRealDe(g.dias[0].fecha, 'research-derma'))})`; // v6.02d: fecha real visible (semana corrida)
   const estadoColor = g.estado === 'completado' ? TEAL : g.estado === 'en-curso' ? fc : Colors.muted;
   return (
     <View style={[st.sysCard, { borderColor: fc + (g.estado === 'en-curso' ? '88' : '2E') }]}>
@@ -285,7 +286,7 @@ function FaseCard({ g, hoyD, onPick, done, onToggle }: { g: GrupoProgreso<DiaRes
                   <Text style={[st.temaRowD, { color: hecho ? TEAL : now ? fc : Colors.muted }]}>{now ? '▶' : ''} {x.code}</Text>
                   <View style={{ flex: 1 }}>
                     <Text style={st.temaRowTxt} numberOfLines={1}>{x.objetivo}</Text>
-                    <Text style={st.temaRowSub} numberOfLines={1}>{fmtFecha(x.fecha)} · {x.artefacto}</Text>
+                    <Text style={st.temaRowSub} numberOfLines={1}>{fmtFecha(fechaRealDe(x.fecha, 'research-derma'))} · {x.artefacto}</Text>{/* v6.02d: fecha real visible (semana corrida) */}
                   </View>
                   <Text style={st.temaRowGo}>→</Text>
                 </TouchableOpacity>
@@ -320,7 +321,7 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
           <Text style={[st.globPct, { color: TEAL }]}>{glob.pct}%</Text>
         </View>
         <ProgressBar pct={glob.pct} color={TEAL} />
-        <Text style={st.globSub}>{glob.hechos}/{glob.total} átomos · hoy = d{hoyD} · ciclo 1: {g1.hechos}/{g1.total} ({DAILY_META.inicio} → {DAILY_META.fin}) · ciclo 2: {g2.hechos}/{g2.total} ({DAILY_META_2027.inicio} → {DAILY_META_2027.fin})</Text>
+        <Text style={st.globSub}>{glob.hechos}/{glob.total} átomos · hoy = d{hoyD} · ciclo 1: {g1.hechos}/{g1.total} ({fechaRealDe(DAILY_META.inicio, 'research-derma')} → {fechaRealDe(DAILY_META.fin, 'research-derma')}) · ciclo 2: {g2.hechos}/{g2.total} ({fechaRealDe(DAILY_META_2027.inicio, 'research-derma')} → {fechaRealDe(DAILY_META_2027.fin, 'research-derma')})</Text>{/* v6.02d: fecha real visible (semana corrida) */}
         <View style={{ flexDirection: 'row', gap: 6, marginTop: 8 }}>
           {([['pista', 'por pista (C · T · CR · R · M …)'], ['fase', 'por fase del método']] as const).map(([k, lbl]) => (
             <TouchableOpacity key={k} activeOpacity={0.8} onPress={() => setModo(k)} style={[st.modoBtn, modo === k && st.modoBtnOn]}>
@@ -330,7 +331,7 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
         </View>
       </View>
       {grupos.map((g) => <FaseCard key={g.clave} g={g} hoyD={hoyD} onPick={onPick} done={done} onToggle={onToggle} />)}
-      <Text style={st.note}>Progreso REAL: empezamos en 0%. ☑ marca un átomo como hecho (se guarda en este dispositivo). ▶ = átomo de hoy. Toca el objetivo para ir a ese día. El ciclo 2 (SR-1 con revisor humano #2) arranca el {fmtFecha(DIAS_2027[0]?.fecha ?? DAILY_META_2027.inicio)}-{(DIAS_2027[0]?.fecha ?? DAILY_META_2027.inicio).slice(0, 4)} (v6.00: en plena intensiva ENCAPS; v5.20: «tras el Step 1»).</Text>
+      <Text style={st.note}>Progreso REAL: empezamos en 0%. ☑ marca un átomo como hecho (se guarda en este dispositivo). ▶ = átomo de hoy. Toca el objetivo para ir a ese día. El ciclo 2 (SR-1 con revisor humano #2) arranca el {fmtFecha(fechaRealDe(DIAS_2027[0]?.fecha ?? DAILY_META_2027.inicio, 'research-derma'))}-{fechaRealDe(DIAS_2027[0]?.fecha ?? DAILY_META_2027.inicio, 'research-derma').slice(0, 4)} (v6.00: en plena intensiva ENCAPS; v5.20: «tras el Step 1»).</Text>{/* v6.02d: fecha real visible (semana corrida) */}
     </View>
   );
 }
@@ -375,7 +376,7 @@ export default function ResearchTodayPlan() {
       </View>
       {enPausa && PAUSA && (
         <View style={[st.artefactoBar, { borderLeftColor: Colors.coral }]}>
-          <Text style={[st.artefactoTxt, { color: Colors.coral }]}>⏸ PAUSA DE ÁTOMOS {PAUSA.desde} → {PAUSA.hasta} (núcleo de la intensiva ENCAPS): 0 átomos nuevos. El siguiente átomo es {TODOS.find((x) => x.fecha > PAUSA.hasta)?.code ?? '—'} el {TODOS.find((x) => x.fecha > PAUSA.hasta)?.fecha ?? '—'}.</Text>
+          <Text style={[st.artefactoTxt, { color: Colors.coral }]}>⏸ PAUSA DE ÁTOMOS {PAUSA.desde} → {PAUSA.hasta} (núcleo de la intensiva ENCAPS): 0 átomos nuevos. El siguiente átomo es {TODOS.find((x) => x.fecha > PAUSA.hasta)?.code ?? '—'} el {fechaRealDe(TODOS.find((x) => x.fecha > PAUSA.hasta)?.fecha ?? '—', 'research-derma')}.</Text>{/* v6.02d: fecha real visible (semana corrida) */}
         </View>
       )}
       {/* v6.00 · DJ-4: los días-Research de la pausa NO son 0 → 30' «Research mínimo» (no es fila del plan ni re-fecha átomos, §E) */}
@@ -404,7 +405,8 @@ export default function ResearchTodayPlan() {
         <TouchableOpacity activeOpacity={0.7} onPress={() => setSel((s) => Math.max(1, s - 1))} style={st.navArrow}><Text style={st.navArrowTxt}>◄</Text></TouchableOpacity>
         <View style={{ flex: 1, alignItems: 'center' }}>
           <Text style={st.navDay}>{dia.code} · {diaLabel(dia)}{esHoy ? ' · HOY' : ''}</Text>
-          <Text style={st.navFecha}>{fmtFecha(dia.fecha)} · {dia.fecha} · pista {dia.pista}</Text>
+          {/* v6.02d: fecha real visible (semana corrida) */}
+          <Text style={st.navFecha}>{fmtFecha(fechaRealDe(dia.fecha, 'research-derma'))} · {fechaRealDe(dia.fecha, 'research-derma')} · pista {dia.pista}</Text>
         </View>
         <TouchableOpacity activeOpacity={0.7} onPress={() => setSel((s) => Math.min(TODOS.length, s + 1))} style={st.navArrow}><Text style={st.navArrowTxt}>►</Text></TouchableOpacity>
       </View>

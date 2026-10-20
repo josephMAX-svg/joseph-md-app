@@ -10,7 +10,7 @@ import {
   livCasoDe, livDrillDe, livCardsDeDia, livPretest, livAnkiDeck,
 } from '../../lib/livianoCasos';
 import { planHoyD, loadDone, saveDone } from '../../lib/studyProgress';
-import { fechaPlanDe } from '../../lib/fechasV6';
+import { fechaPlanDe, fechaRealDe } from '../../lib/fechasV6';
 import GuiaBloqueCard from '../GuiaBloqueCard';
 import { guiaLivianoDe } from '../../lib/rutinaGuia'; // v6.02c (E5): qué · cuánto · cómo de la sesión (lectura con sección y palabras, enlaces)
 import {
@@ -281,7 +281,8 @@ export default function LivianoTodayPlan({ onIrALogistica }: { onIrALogistica?: 
       {/* Cabecera */}
       <View style={st.head}>
         <Text style={st.headTitle}>⚖️ LIVIANO ACADEMIA · Día {dia.d}/{LIV_META.totalDias}{esHoy ? ' · HOY' : ''}</Text>
-        <Text style={st.headSub}>{fmtFecha(dia.fecha)} · {dia.fecha} · {LIV_META.franja}</Text>
+        {/* v6.02d: fecha real visible (semana corrida) */}
+        <Text style={st.headSub}>{fmtFecha(fechaRealDe(dia.fecha, 'liviano'))} · {fechaRealDe(dia.fecha, 'liviano')} · {LIV_META.franja}</Text>
         {/* SCORE real (sustituye al ✓ binario) */}
         <View style={st.scoreRow}>
           <View style={st.scoreCell}>
@@ -395,7 +396,7 @@ export default function LivianoTodayPlan({ onIrALogistica }: { onIrALogistica?: 
             <FadeUp key={x.d} delay={i * 30}>
               <TouchableOpacity activeOpacity={0.8} onPress={() => setSel(x.d)} style={[st.d5, { borderLeftColor: xc }]}>
                 <Text style={[st.d5day, { color: xc }]}>D{x.d}</Text>
-                <Text style={st.d5fecha}>{fmtFecha(x.fecha)}</Text>
+                <Text style={st.d5fecha}>{fmtFecha(fechaRealDe(x.fecha, 'liviano'))}</Text>{/* v6.02d: fecha real visible (semana corrida) */}
                 <View style={{ flex: 1 }}>
                   <Text style={st.d5sub} numberOfLines={1}>{x.tema}</Text>
                   <Text style={st.d5mod}>{x.modulo} · {x.min} min{x.casoId ? ' · 🩺 caso' : ''}{x.pretest ? ' · 📝 pre-test' : ''}{x.drill ? ' · 🎯 drill' : ''}</Text>
@@ -405,8 +406,9 @@ export default function LivianoTodayPlan({ onIrALogistica }: { onIrALogistica?: 
             </FadeUp>
           );
         })}
+        {/* v6.02d: fecha real visible (semana corrida) */}
         <Text style={st.note}>
-          {LIV_META.totalDias} días L-V ({LIV_META.inicio} → {LIV_META.fin}) · 7 módulos + síntesis (liviano_curriculum.json) · {LIV_META.casos} casos en viernes
+          {LIV_META.totalDias} días L-V ({fechaRealDe(LIV_META.inicio, 'liviano')} → {fechaRealDe(LIV_META.fin, 'liviano')}) · 7 módulos + síntesis (liviano_curriculum.json) · {LIV_META.casos} casos en viernes
           · {LIV_META.pretests} pre-tests · {LIV_META.drills} drills. Score local ('{SCORE_KEY}') + espejo Supabase study_progress (LIVIANO · app:liviano): {espejo === 'ok' ? 'sincronizado' : espejo === 'offline' ? 'sin conexión — queda local' : 'comprobando…'}.
         </Text>
       </GlassPanel>

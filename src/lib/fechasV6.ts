@@ -527,3 +527,16 @@ export function fechaPlanDe(iso: string, frente?: string): string {
   const parte = c.partes.find((p) => Object.keys(p.bloques).some((id) => ids.includes(id)));
   return parte ? parte.de : c.de;
 }
+/**
+ * Inversa de fechaPlanDe para MOSTRAR fechas (mar 20-oct-2026, a pedido de Joseph: «dice que empieza el 19 y estamos empezando el 20»):
+ * día REAL en que se hace la fila cuya fecha de plan es `plan` (19 → mar 20 … 22 → vie 23; 23 → sáb 24 o dom 25 según el `frente`;
+ * sábado nativo 24 → sáb 24 o dom 25 según el frente). Fuera de la semana corrida = la propia. Solo para etiquetas: las filas, el
+ * progreso y Supabase siguen con la fecha de plan.
+ */
+export function fechaRealDe(plan: string, frente?: string): string {
+  const c = FECHAS_V6.corrida_s1;
+  for (const [r, de] of Object.entries(c.alias)) if (de === plan) return r;
+  const ids = frente ? (BLOQUES_POR_FRENTE[frente] ?? []) : null;
+  for (const [r, x] of Object.entries(c.reparto)) for (const p of x.partes) if (p.de === plan && (!ids || Object.keys(p.bloques).some((id) => ids.includes(id)))) return r;
+  return plan;
+}

@@ -9,6 +9,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Platform } from 'react-native';
 import { Colors, Spacing, FontSize, BorderRadius, Elevation, Hairline } from '../theme/tokens';
+import { fechaRealDe } from '../lib/fechasV6';
 import {
   ENCAPS_AREA_FORECAST, ENCAPS_CRITICAL_TOPICS, ENCAPS_REBOTE_TOPICS, ENCAPS_VUELTAS_POR_PRIORIDAD,
   ENCAPS_META_NOTA, ENCAPS_META_PCT, encapsGoZone, encapsGoColor, ENCAPS_TELEMETRY_META,
@@ -252,7 +253,8 @@ export function MiniSimTrend({ serie, compact }: { serie: MiniSimPuntoView[]; co
       <View style={styles.msAxis}>
         {serie.map(s => (
           <Text key={s.semana} style={[styles.msAxisLabel, tabular]} numberOfLines={1}>
-            {compact ? '' : (s.semana % 2 === 1 ? String(s.fecha).slice(5).replace('-', '/') : '')}
+            {/* v6.02d: fecha real visible (semana corrida) */}
+            {compact ? '' : (s.semana % 2 === 1 ? fechaRealDe(String(s.fecha), 'encaps').slice(5).replace('-', '/') : '')}
           </Text>
         ))}
       </View>
