@@ -47,6 +47,11 @@
  * decir «FECHA LÍMITE EXTERNA: ≤ 31-mar-2027», que era falso: PROSPERO no tiene plazo externo (solo exige registrar antes del cribado) y el
  * ≤ 31-mar-2027 es el objetivo propio de RUTA_PUBLICACION_2027.md → línea «OBJETIVO RUTA …» (mapa OBJETIVO_RUTA). Al próximo corrimiento: lo
  * etiquetado «v6.02» en estos textos pasa a historial ⏸.
+ * v6.03 (20-oct-2026 · corrimiento D1 = mié 21-oct; d1 Research = jue 22-oct): M1 mié 28-oct · C-2 jue 5-nov · T-1 lun 9-nov · C-6 mié 25-nov
+ * · CR-1 vie 27-nov · T-8 mar 29-dic · CR-8 mar 12-ene (=, texto d28) · CR-9 jue 11-feb (=, texto d30) · X-1 mar 23-feb (=, texto) · X-9 mié
+ * 31-mar · R10 mar 6-abr · R43 jue 29-jul (todo el día). Lo rotulado «v6.02» como vigente en cr-caso / equipo / PROSPERO-SR1 pasa a «v6.03»
+ * y lo de v6.02 a historial ⏸ (C-3 vie 13-nov / M1 lun 26-oct · CR-1 mié 25-nov / CR-2 vie 27-nov · X-9 lun 29-mar / R10 vie 2-abr). Al
+ * próximo corrimiento: lo etiquetado «v6.03» en estos textos pasa a historial ⏸.
  */
 const fs = require('fs');
 const path = require('path');
@@ -109,13 +114,13 @@ const DEADLINE = {
   // v6.02b: el disparador (C-3), M1 y CR-1/CR-2 salen del plan (antes era un literal con las fechas de v6.01 como vigentes).
   'cr-caso': (H) => {
     const c3 = atomoDe(1, 'C-3'); const cr2 = atomoDe(1, 'CR-2'); const cr1 = H['cr-caso'].fecha;
-    return `31-oct-2026 (caso + consentimiento + senior author · si el ${fmtC(c3.fecha)} (C-3 = d${c3.d} en v6.02, ~3 semanas desde M1 ${fmtC(H['mentor'].fecha)}; ⏸ v6.01: jue 5-nov / M1 vie 16-oct · v6.00 = v5.20: mar 3-nov, M1 mié 14-oct; antes vie 30-oct) no hay caso → plan B, colega SPD · ⚠ v6.02: CR-1 cae el ${fmtC(cr1)} y CR-2 el ${fmtC(cr2.fecha)}, ya después del 31-oct (+${diasEntre('2026-10-31', cr1)} / +${diasEntre('2026-10-31', cr2.fecha)} días) · ⏸ v6.01: CR-1 jue 19-nov / CR-2 lun 23-nov, ya después del 31-oct · v6.00 = v5.20: mar 17-nov / jue 19-nov · v5.18-v5.19: vie 13-nov / mar 17-nov)`;
+    return `31-oct-2026 (caso + consentimiento + senior author · si el ${fmtC(c3.fecha)} (C-3 = d${c3.d} en v6.03, ~3 semanas desde M1 ${fmtC(H['mentor'].fecha)}; ⏸ v6.02: vie 13-nov / M1 lun 26-oct · v6.01: jue 5-nov / M1 vie 16-oct · v6.00 = v5.20: mar 3-nov, M1 mié 14-oct; antes vie 30-oct) no hay caso → plan B, colega SPD · ⚠ v6.03: CR-1 cae el ${fmtC(cr1)} y CR-2 el ${fmtC(cr2.fecha)}, ya después del 31-oct (+${diasEntre('2026-10-31', cr1)} / +${diasEntre('2026-10-31', cr2.fecha)} días) · ⏸ v6.02: CR-1 mié 25-nov / CR-2 vie 27-nov · v6.01: CR-1 jue 19-nov / CR-2 lun 23-nov, ya después del 31-oct · v6.00 = v5.20: mar 17-nov / jue 19-nov · v5.18-v5.19: vie 13-nov / mar 17-nov)`;
   },
   'tesis-L0': '≤ 15-feb-2027 (JAAD International → IJD → Actas → Anais)',
   'revisor2': 'antes de PROSPERO (sin revisor #2 humano no hay registro · PRISMA 2020 ítem 8)',
   'cr-paquete': 'antes del submit CR-9 (jue 11-feb-2027, primer día-Research tras la pausa): paquete congelado ANTES de la pausa de átomos (vie 15-ene → mié 10-feb-2027 = núcleo de la intensiva ENCAPS; v6.00: el Step 1 está en pausa del 31-dic al 15-mar · v5.20: la pausa era por las Fases B-C del Step 1)',
   'case-report-1': '≤ 28-feb-2027 (Dermatology Online Journal → JAAD CR → Case Reports in Dermatology)',
-  'equipo': (H) => `antes del registro R10 (${fmtF(H['PROSPERO-SR1'].fecha)}; X-9 = ${fmtF(H['equipo'].fecha)} → ${diasEntre(H['equipo'].fecha, H['PROSPERO-SR1'].fecha)} días de margen · ⏸ v6.01: X-9 mié 17-mar / R10 mar 23-mar · v6.00: X-9 jue 11-mar / R10 vie 19-mar · v5.20: X-9 lun 15-mar / R10 vie 19-mar)`,
+  'equipo': (H) => `antes del registro R10 (${fmtF(H['PROSPERO-SR1'].fecha)}; X-9 = ${fmtF(H['equipo'].fecha)} → ${diasEntre(H['equipo'].fecha, H['PROSPERO-SR1'].fecha)} días de margen · ⏸ v6.02: X-9 lun 29-mar / R10 vie 2-abr · v6.01: X-9 mié 17-mar / R10 mar 23-mar · v6.00: X-9 jue 11-mar / R10 vie 19-mar · v5.20: X-9 lun 15-mar / R10 vie 19-mar)`,
   // v6.02b: 'PROSPERO-SR1' sale de aquí → OBJETIVO_RUTA (no hay fecha límite externa).
   'SR-1': '≤ 31-ago-2027 (Dermatologic Surgery → JAAD → JCD → Anais/Actas)',
 };
@@ -126,7 +131,7 @@ const DEADLINE = {
 const OBJETIVO_RUTA = {
   'PROSPERO-SR1': (H) => {
     const f = H['PROSPERO-SR1'].fecha; const dd = diasEntre('2027-03-31', f); const cribado = atomoDe(2, 'R18');
-    const estado = dd > 0 ? `v6.02: el átomo cae ${fmtC(f)} (+${dd} d; decisión (iii) de Joseph en PENDIENTES)` : `R10 = ${fmtC(f)}, dentro del objetivo`;
+    const estado = dd > 0 ? `v6.03: el átomo cae ${fmtC(f)} (+${dd} d; decisión (iii) de Joseph en PENDIENTES · ⏸ v6.02: vie 2-abr, +2 d)` : `R10 = ${fmtC(f)}, dentro del objetivo`;
     return `OBJETIVO RUTA ≤ 31-mar-2027 · ${estado} · no es plazo externo: PROSPERO solo exige registrar ANTES del cribado (R18, ${fmtF(cribado.fecha)})`;
   },
 };
