@@ -37,6 +37,15 @@
  * día-DERMA (d1 Derma lun 19-oct · d1 Research mar 20-oct): Research pierde 3 ranuras (lun 12, mié 14, vie 16-oct) → con 30 días-Research antes de
  * la pausa R6, R7 y X-1 también se desplazan tras ella (gen_research_plan.js); Derma pierde 2 (mar 13, jue 15-oct). MIR D78 lun 8-feb → el
  * mantenimiento conserva sus 57 filas mar 9-feb → mar 4-may (cruza 2 días el inicio del SERUMS) y la extensión (tope vie 24-sep) absorbe: 123 filas.
+ *
+ * v6.03 (20-oct-2026 · corrimiento D1 = mié 21-oct, Joseph: «todo comienza mañana miércoles 21, corre dos días … no modifiques ni comprimas temas
+ * ni exámenes, alarga las fechas límite»; no se estudió lun 19 ni mar 20-oct): mismo pipeline con START = 2026-10-21, en dos pasadas por bloques
+ * (`remap_inicio.js 2026-10-21 --bloques research,derma` y `--bloques business,liviano`); MIR con sus generadores (STUDY_HUB/_scrape/gen_mir_daily.js
+ * 2026-10-21 + gen_mir_mantenimiento.js 2027-02-11 2027-05-06). Paridad Research↔Derma: el mié 21-oct es día-DERMA (d1 Derma mié 21-oct · d1 Research
+ * jue 22-oct): Research pierde 1 ranura (mar 20-oct) → con 29 días-Research antes de la pausa X-2 pasa tras ella (gen_research_plan.js); Derma pierde 1
+ * (lun 19-oct). MIR D78 mié 10-feb → el mantenimiento conserva sus 57 filas jue 11-feb → jue 6-may y la extensión (tope vie 24-sep) absorbe: 121 filas
+ * + 11 repuestas tras el examen Step 1 (→ mar 12-oct-2027). La capa de alias v6.02d (`_fechas_v6.json → corrida_s1`) queda inerte (solo los días sin
+ * sesión, 19 y 20-oct). Solo comentario: la lógica de este script no cambia.
  * Qué hace: solo corre fechas (domingos LIBRES, parámetros intactos). Regex AÑO-AGNÓSTICO
  * (20\d\d-\d\d-\d\d) porque Derma son 70 slots ≈ 6.5 meses → cruza a 2027.
  * ENCAPS va aparte (Supabase: gen_encaps_mantenimiento_2027.js <fecha> → execute_sql, backup fechado automático).

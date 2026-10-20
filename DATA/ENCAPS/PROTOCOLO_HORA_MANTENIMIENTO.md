@@ -1,6 +1,41 @@
-# 🇵🇪 PROTOCOLO DE LA HORA ENCAPS — MANTENIMIENTO 2027-I (16:15–17:15 L-V · **v6.02: filas 1-52, lun 19-oct → mié 30-dic-2026** · ⏸ v6.01: filas 1-57, lun 12-oct → mié 30-dic-2026 · ⏸ v6.00: filas 1-60, mié 7-oct → mié 30-dic-2026; filas 61-92 = carril B de la F2, lun 4-ene → mar 16-feb · ⏸ v5.20: D1 mié 7-oct-2026 → mar 16-feb-2027 · 92 días · v5.19: mar 6-oct → lun 15-feb)
+# 🇵🇪 PROTOCOLO DE LA HORA ENCAPS — MANTENIMIENTO 2027-I (16:15–17:15 L-V · **v6.03: filas 1-50, mié 21-oct → mié 30-dic-2026** · ⏸ v6.02: filas 1-52, lun 19-oct → mié 30-dic-2026 · ⏸ v6.01: filas 1-57, lun 12-oct → mié 30-dic-2026 · ⏸ v6.00: filas 1-60, mié 7-oct → mié 30-dic-2026; filas 61-92 = carril B de la F2, lun 4-ene → mar 16-feb · ⏸ v5.20: D1 mié 7-oct-2026 → mar 16-feb-2027 · 92 días · v5.19: mar 6-oct → lun 15-feb)
 
-> ## ✅ v6.02 VIGENTE (corrimiento al lun 19-oct-2026, sáb 17-oct) — manda sobre las fechas y la numeración de los bloques v6.01 y v6.00
+> ## ✅ v6.03 VIGENTE (corrimiento al mié 21-oct-2026, mar 20-oct) — manda sobre las fechas y la numeración de los bloques v6.02, v6.01 y v6.00
+> - **Mantenimiento F1 = filas `dia` 1-50** (modo `MANTENIMIENTO`, **re-sembradas el 20-oct** en una transacción con guardas; huella v2 de las 100 filas ENCAPS
+>   `2a0a9c1563279bb4d70f2729ea26e2e4`, huella de fila completa `53f686a3317660e80a99711409d3beef`) · **mié 21-oct → mié 30-dic-2026** · **41 `banqueo1h` + 9
+>   `mini_sim`** (vie 23-oct … vie 18-dic; `sim_n` 3 … 43) · rígido por slots: el slot k de lun-jue = el slot k de v6.00-v6.02 y el mini-sim k = el viernes k
+>   (**los viernes no se movieron**; mismo contenido, mismo orden; nada se fusiona ni se recorta). Lun 19 y mar 20-oct sin sesión; sáb 24 y dom 25 libres (la
+>   corrida por alias v6.02d —mini-sim el dom 25— quedó sin efecto). Este protocolo (eval anclada · banco · secundario · mini-sim del viernes · cierre) rige tal cual.
+> - **Pre-test de arranque 40Q = mié 21-oct (dia 1, parte 1: II-3 · V-2 · III-5 · I-3) + jue 22-oct (dia 2, parte 2: II-5 · I-4 · IV-1+IV-2 · II-4)**, runners
+>   `BANCO_PROPIO/pretest_arranque_2026-10-21/-22` (re-fechados sin regenerar: mismos 40 ítems reales); la 1.ª mini-sim es el **vie 23-oct = dia 3** (II-2 + I-10).
+>   Evals pre-generadas: `eval_2026-10-21` (D1, fallos previos) · `-10-22` (II-3) · `-10-26` (lun 26, I-3) · `-10-27` (mar 27, V-2); bancos lun 26 (V-2) y mar
+>   27-oct (III-5). El mié 28 (II-5) y el jue 29 (I-4) se generan día a día con `DATA/ENCAPS/RUNBOOK_SEMANA2_2026-10-26.md` (no correr `--semana 2026-10-19` ni
+>   `--semana 2026-10-26`).
+> - **CHECKPOINT DEL AÑO = mini-sim 43, vie 18-dic** (cola larga I-1 + II-2; `extra.checkpoint`; ⏸ v6.02: «mini-sim 45» · ⏸ v6.01: «mini-sim 50» · ⏸ v6.00:
+>   «mini-sim 53»). Último banqueo de la F1: mié 30-dic (dia 50, II-1).
+> - **PENDIENTES F1 = 10 (3 de v6.01 + 5 de v6.02 + 2 de v6.03) → REPOSICIÓN explícita en el carril B 16:15 de la intensiva** — nada se descarta: **mié 17-feb
+>   (dia 83) II-8** paquetes_tamizaje #3 · **jue 18-feb (84) II-3** cadena_frio #4 · **lun 22-feb (86) MINI-SIM 25Q** cola larga II-6 + II-10 · **mar 23-feb (87)
+>   III-8** ley_27815 #3 · **mié 24-feb (88) II-11** prep_dual_ptmi #3 · **jue 25-feb (89) IV-6** estadistica_descriptiva #3 · **lun 1-mar (91) V-7**
+>   contrataciones_digemid #3 · **mar 2-mar (92) MINI-SIM 25Q** cola larga I-10 + V-6 · **mié 3-mar (93) I-3** brote_bloqueo #6 (+ I-OCC) · **jue 4-mar (94)
+>   V-2** residuos_bioseguridad #6 (+ III-3) (los 2 nuevos = filas mant. 51-52 de la F1 v6.02). Cierres `mini_sim` con `sim_n` 86 / 92. Fuente:
+>   `DATA/ENCAPS/_pendientes_f1.json` (10 filas). Carril B de la F2: las filas 61-92 de v5.20 viven en `dia` **51-82** (`dia_mant` 61-92 = etiqueta de origen;
+>   desfase 10); reposición genérica solo en los dia 96, 97 y 98 (lun 8 → mié 10-mar) = filas del carril B `dia` 51-82 sin ✓ → lista de vigilancia.
+> - **Intensiva `dia` 51-100** (mismas fechas lun 4-ene → vie 12-mar; SIM 100Q dia 60 … 95; DRESS jue 11-mar = 99; medio día vie 12-mar = 100); **LISTA NEGRA del
+>   2026-II hasta el PRE-TEST del vie 8-ene-2027 = dia 55**.
+> - **Stock urgente (v6.03):** tras los bancos re-fechados del lun 26 (V-2) y del mar 27-oct (III-5), V-2 queda a 1/41 y III-5 a 0 → `set_V-2_2.json` **antes
+>   del lun 9-nov** (clima_calidad, dia 14) · `set_III-5_2.json` **antes del mar 24-nov** (medicina_tradicional, dia 25) · `set_II-5_2.json` **antes del mié
+>   25-nov** (mci_curso_vida, dia 26). ⚠ La simulación del runbook (§4) encuentra quiebres antes (secundario II-10 mié 28-oct · II-EMG lun 2-nov · I-OCC y II-4
+>   mar 3-nov · II-1 mié 4-nov · I-3 jue 5-nov) y, sin reponer, **ningún mini-sim desde el vie 13-nov llega a 25Q** (el generador aborta): tandas de reposición
+>   en el runbook §5 y decisión (8) de `DATA/PENDIENTES_JOSEPH.md`, bloque v6.03.
+> - **Estado Supabase v6.03:** 50 MANT (`dia` 1-50) + 50 INT (`dia` 51-100) · `study_metrics.extra`: `d1 = 2026-10-21`, `dias_ciclo = 50`, `exam_date =
+>   2027-03-14`, régimen `MANTENIMIENTO_2027-1 v6.22 (50 d) + INTENSIVA v6.03`, `intensiva.dias = 51-100`, `horarios` re-fechados (eval D1 mié 21-oct · D2 jue 22 ·
+>   D3 vie 23 = mini-sim, sin eval) · backups `study_schedule_bk_v603_20261020`, `study_schedule_bk_v603_int_20261020`, `study_metrics_bk_v603_20261020` (**no
+>   restaurar desde `*_bk_v602_*`, `*_bk_v601_*`, `*_bk_v600_*` ni `bk_1006`**). Regenerar la F1 (solo si hiciera falta): `node
+>   DATA/_scripts/gen_encaps_mantenimiento_2027.js --bk study_schedule_bk_v603_mant_<AAAAMMDD> --pendientes-de
+>   git:regimen-v6.02d:DATA/_scripts/_encaps_mantenimiento_2027.sql`. Override del viernes: `node DATA/_scripts/gen_encaps_mantenimiento_2027.js 2026-10-21
+>   --hasta 2026-12-30 --override DATA/ENCAPS/TRACKING_ERRORES/SEMANAS/override_<lunes>.json`.
+
+> ## ⏸ v6.02 (corrimiento al lun 19-oct-2026, sáb 17-oct) — mandaba sobre las fechas y la numeración de los bloques v6.01 y v6.00 · **historial: lo corrige el bloque v6.03 de arriba**
 > - **Mantenimiento F1 = filas `dia` 1-52** (modo `MANTENIMIENTO`, **re-sembradas el 17-oct**; huella v2 de las 102 filas ENCAPS
 >   `60e16744d0a798efe96f4b0b195708b6`) · **lun 19-oct → mié 30-dic-2026** · **43 `banqueo1h` + 9 `mini_sim`** (vie 23-oct … vie 18-dic; `sim_n` 5 … 45) ·
 >   rígido por slots: el slot k de lun-jue = el slot k de v6.00/v6.01 y el mini-sim k = el viernes k (mismo contenido, mismo orden; nada se fusiona ni se
@@ -48,26 +83,26 @@
 >   `study_metrics_bk_v601_20261010` (**no restaurar desde `*_bk_v600_*` ni `bk_1006`**). Regenerar la F1 (solo si hiciera falta):
 >   `node DATA/_scripts/gen_encaps_mantenimiento_2027.js --bk study_schedule_bk_v601_mant_<AAAAMMDD> --pendientes-de git:regimen-v6.00:DATA/_scripts/_encaps_mantenimiento_2027.sql`.
 
-> ## ⏸ v6.00 (REESTRUCTURACIÓN ANUAL, 6-oct-2026) — vigente salvo las fechas y la numeración que corrigen los bloques v6.02 y v6.01 de arriba
-> - **Mantenimiento F1 = filas `dia` 1-60** de Supabase *(⏸ v6.00 · ⏸ v6.01: `dia` 1-57 · **v6.02:** `dia` 1-52, re-sembradas)* (modo `MANTENIMIENTO`, **sin cambio** de contenido ni de fecha: hash Postgres intacto
->   `9d1f5a19affb5673b9405c7744ade962`) · **mié 7-oct → mié 30-dic-2026** · 49 `banqueo1h` + 11 `mini_sim` · último mini-sim **vie 18-dic (dia 53) = checkpoint *(⏸ v6.00 · ⏸ v6.01: dia 50 · **v6.02:** dia 45)*
+> ## ⏸ v6.00 (REESTRUCTURACIÓN ANUAL, 6-oct-2026) — vigente salvo las fechas y la numeración que corrigen los bloques v6.03, v6.02 y v6.01 de arriba
+> - **Mantenimiento F1 = filas `dia` 1-60** de Supabase *(⏸ v6.00 · ⏸ v6.01: `dia` 1-57 · ⏸ v6.02: `dia` 1-52 · **v6.03:** `dia` 1-50, re-sembradas)* (modo `MANTENIMIENTO`, **sin cambio** de contenido ni de fecha: hash Postgres intacto
+>   `9d1f5a19affb5673b9405c7744ade962`) · **mié 7-oct → mié 30-dic-2026** · 49 `banqueo1h` + 11 `mini_sim` · último mini-sim **vie 18-dic (dia 53) = checkpoint *(⏸ v6.00 · ⏸ v6.01: dia 50 · ⏸ v6.02: dia 45 · **v6.03:** dia 43)*
 >   del año** · último banqueo mié 30-dic (dia 60, II-3). Este protocolo (eval anclada · banco · secundario · mini-sim del viernes · cierre) rige tal cual.
 > - **Filas 61-92 de v5.20 (lun 4-ene → mar 16-feb) = CARRIL B 16:15-17:15 de la F2**: misma fecha y mismo contenido, embebido en `extra.carril_b` de la fila
 >   INTENSIVO del mismo `dia` (26 lun-jue; los 6 viernes 8, 15, 22, 29-ene, 5, 12-feb quedan como `extra.minisim_absorbido`: el SIM 100Q del viernes los
 >   absorbe y las 16:15 del viernes son libres). Claves de check `D<dia>:b_*`; cierre `APP_CARRIL_B_<fecha>_<código>`; eval anclada del lunes = 5Q rehechas de
 >   los fallos del SIM 100Q del viernes.
-> - **Reposición 16:15 lun-jue del mié 17-feb al mié 10-mar** (13 días): instancias 61-92 no hechas, en orden; *(⏸ v6.00 · ⏸ v6.01: los 3 primeros = pendientes F1 17/18/22-feb; después filas del carril B dia 58-89 sin ✓ · **v6.02:** los 8 primeros = pendientes F1 17-feb → mar 2-mar; después filas del carril B dia 53-84 sin ✓)* si no hay, lista de vigilancia (`temasCalientes()`).
+> - **Reposición 16:15 lun-jue del mié 17-feb al mié 10-mar** (13 días): instancias 61-92 no hechas, en orden; *(⏸ v6.00 · ⏸ v6.01: los 3 primeros = pendientes F1 17/18/22-feb; después filas del carril B dia 58-89 sin ✓ · ⏸ v6.02: los 8 primeros = pendientes F1 17-feb → mar 2-mar; después filas del carril B dia 53-84 sin ✓ · **v6.03:** los 10 primeros = pendientes F1 17-feb → jue 4-mar; después filas del carril B dia 51-82 sin ✓)* si no hay, lista de vigilancia (`temasCalientes()`).
 > - **Examen ENCAPS 2027-I: dom 14-mar-2027 PROVISIONAL** (se fija con la convocatoria; sin convocatoria al mié 17-feb → 21-mar). Intensiva lun 4-ene → vie
 >   12-mar (`FASE_INTENSIVA_2027-I.md`, bloque v6.00).
-> - **LISTA NEGRA del 2026-II hasta el PRE-TEST del vie 8-ene-2027** (dia 65, *(⏸ v6.00 · ⏸ v6.01: dia 62 · **v6.02:** dia 57)* 07:15-09:15; `PRETEST_2026-II.md`, bloque v6.00); desde ese día sale de la lista.
-> - Stock urgente (sin cambio): reponer V-2 antes del lun 26-oct y III-5 antes del mar 10-nov; *(⏸ v6.00 · ⏸ v6.01: mié 28-oct · jue 12-nov · II-5 lun 16-nov · **v6.02:** mié 4-nov · jue 19-nov · II-5 lun 23-nov)* etiquetado de las 2.052 de QX en oct-nov (V6_ESPEC §C1).
+> - **LISTA NEGRA del 2026-II hasta el PRE-TEST del vie 8-ene-2027** (dia 65, *(⏸ v6.00 · ⏸ v6.01: dia 62 · ⏸ v6.02: dia 57 · **v6.03:** dia 55)* 07:15-09:15; `PRETEST_2026-II.md`, bloque v6.00); desde ese día sale de la lista.
+> - Stock urgente (sin cambio): reponer V-2 antes del lun 26-oct y III-5 antes del mar 10-nov; *(⏸ v6.00 · ⏸ v6.01: mié 28-oct · jue 12-nov · II-5 lun 16-nov · ⏸ v6.02: mié 4-nov · jue 19-nov · II-5 lun 23-nov · **v6.03:** V-2 lun 9-nov · III-5 mar 24-nov · II-5 mié 25-nov)* etiquetado de las 2.052 de QX en oct-nov (V6_ESPEC §C1).
 > - ⏸ **SUPERSEDIDO (v5.20):** «92 días hasta el mar 16-feb», la semana S20 / día 92 como cierre del ciclo, los días 93-96 = cierre del Step 1 + examen del lun
 >   22-feb, la intensiva mar 23-feb → mar 9-mar, el examen mié 10-mar y el pre-test vie 26-feb (se conservan abajo como historial).
 
 > La hora tiene UNA sola misión: llegar a la F2 (**v6.00: lun 4-ene-2027**) con base sólida para que la fase intensiva
 > (⏸ v5.20, SUPERSEDIDO: **mar 23-feb → mar 9-mar-2027**, ya sembrada; ENCAPS vuelve a bloque principal tras el examen Step 1 del lun 22-feb) arranque desde **~70 % ciego** y no desde cero.
 > Meta final: **≥17/20 en ENCAPS 2027-I (v6.00: examen dom 14-mar-2027 PROVISIONAL · ⏸ v5.20: examen FIJADO por Joseph el mié 10-mar-2027 — ⚠ los ENCAPS fueron siempre en domingo: confirmar día/hora/sede en la convocatoria SERUMS 2027-I · hasta v5.19: «fines de marzo», sin fecha) · percentil 1 % (~2.000 plazas)**.
-> La cola vive en la app (Estudio → Perú → Supabase `study_schedule` examen `ENCAPS`). **Estado v6.00 (sembrado y verificado el 6-oct):** *(⏸ v6.00 · ⏸ v6.01: 57 + 50 filas, d1 2026-10-12, dias_ciclo 57 · **v6.02:** estado v6.02 en el bloque de arriba: 52 + 50 filas, d1 2026-10-19, dias_ciclo 52)* modo
+> La cola vive en la app (Estudio → Perú → Supabase `study_schedule` examen `ENCAPS`). **Estado v6.00 (sembrado y verificado el 6-oct):** *(⏸ v6.00 · ⏸ v6.01: 57 + 50 filas, d1 2026-10-12, dias_ciclo 57 · ⏸ v6.02: 52 + 50 filas, d1 2026-10-19, dias_ciclo 52 · **v6.03:** estado v6.03 en el bloque de arriba: 50 + 50 filas, d1 2026-10-21, dias_ciclo 50)* modo
 > `MANTENIMIENTO` = **60 filas `dia` 1-60** (mié 7-oct → mié 30-dic-2026; hash Postgres `9d1f5a19affb5673b9405c7744ade962`) + modo `INTENSIVO` = **50 filas `dia`
 > 61-110** (lun 4-ene → vie 12-mar-2027; las filas 61-92 de mantenimiento viven en su `extra.carril_b`) · `study_metrics.extra`: `d1 = 2026-10-07`,
 > `dias_ciclo = 60`, `exam_date = 2027-03-14`, `regimen = 'MANTENIMIENTO_2027-1 v6.19 (60 d) + INTENSIVA v6.00 (núcleo 4-ene → 5-mar + cola anclada)'` ·
@@ -102,7 +137,7 @@ Fuente única de pesos y críticos: `PRONOSTICO_WALKFORWARD_2027-1_v3.md` — ve
 
 Total del banco: 20-25Q (16-20 principal + 4-5 secundario). La franja 16:15–17:15 no cambia.
 
-### 1-bis) Semana 1 = PRE-TEST DE ARRANQUE (mié 7 y jue 8-oct-2026; v5.19: mar 6 y mié 7-oct): línea base ciega por crítico *(⏸ v6.00 · ⏸ v6.01: lun 12 y mar 13-oct-2026, `pretest_arranque_2026-10-12/-13` · **v6.02:** lun 19 y mar 20-oct-2026, `pretest_arranque_2026-10-19/-20`; la tabla de abajo es v6.00/v5.20)*
+### 1-bis) Semana 1 = PRE-TEST DE ARRANQUE (mié 7 y jue 8-oct-2026; v5.19: mar 6 y mié 7-oct): línea base ciega por crítico *(⏸ v6.00 · ⏸ v6.01: lun 12 y mar 13-oct-2026, `pretest_arranque_2026-10-12/-13` · ⏸ v6.02: lun 19 y mar 20-oct-2026, `pretest_arranque_2026-10-19/-20` · **v6.03:** mié 21 y jue 22-oct-2026, `pretest_arranque_2026-10-21/-22`; la tabla de abajo es v6.00/v5.20)*
 
 | Día | 16:15 | 16:30–17:10 | 17:10 |
 |---|---|---|---|
@@ -180,7 +215,7 @@ En 92 días cada código cae **6-7 veces** entre lun-jue (75 slots) y viernes (3
 
 ### 3.4 Calendario sembrado (semana · Lun-Jue = código · sub-eje (+secundario) · Vie = mini-sim nº y sus 2 códigos de cola larga)
 
-> **v6.00:** semanas 1-13 (hasta el mié 30-dic, `dia` 1-60) = mantenimiento F1 vigente tal cual · semanas 14-20 (lun 4-ene → mar 16-feb, `dia` 61-92) = **carril B 16:15 de la F2** *(⏸ v6.00 · ⏸ v6.01: semanas 1-12 (lun 12-oct → mié 30-dic, `dia` 1-57) · carril B en `dia` 58-89 · **v6.02:** semanas 1-11 (lun 19-oct → mié 30-dic, `dia` 1-52; las fechas de la tabla corren con el D1 en lunes) · carril B en `dia` 53-84)* (mismos códigos lun-jue; los «SIM #» de esos viernes quedan absorbidos por el SIM 100Q, sin sesión 16:15) · la fila S20 y los días 93-96 son v5.20 (SUPERSEDIDOS).
+> **v6.00:** semanas 1-13 (hasta el mié 30-dic, `dia` 1-60) = mantenimiento F1 vigente tal cual · semanas 14-20 (lun 4-ene → mar 16-feb, `dia` 61-92) = **carril B 16:15 de la F2** *(⏸ v6.00 · ⏸ v6.01: semanas 1-12 (lun 12-oct → mié 30-dic, `dia` 1-57) · carril B en `dia` 58-89 · ⏸ v6.02: semanas 1-11 (lun 19-oct → mié 30-dic, `dia` 1-52; las fechas de la tabla corren con el D1 en lunes) · carril B en `dia` 53-84 · **v6.03:** semanas 1-11 de calendario (S1 = la del lun 19-oct, con sesiones mié 21 → vie 23; `dia` 1-50; los lun-jue corren 2 slots, los viernes no se mueven) · carril B en `dia` 51-82)* (mismos códigos lun-jue; los «SIM #» de esos viernes quedan absorbidos por el SIM 100Q, sin sesión 16:15) · la fila S20 y los días 93-96 son v5.20 (SUPERSEDIDOS).
 
 | Sem | Lun | Mar | Mié | Jue | Vie (mini-sim · cola larga) |
 |---|---|---|---|---|---|
@@ -225,7 +260,7 @@ Esta tabla se ha releído del SQL sembrado el 6-oct (`DATA/_scripts/_encaps_mant
 4. **Sets nuevos generados por Claude** bajo el MOTOR DE PREGUNTAS (4 factores) + `PROTOCOLO_GENERACION_PREGUNTAS.md`: cada clave/NTS verificada contra fuente real. `GUIA_POR_TEMA*.md` tiene claves INVENTADAS — NO usar como fuente de claves.
 
 > ### ⛔ LISTA NEGRA: el examen 2026-II (09-ago-2026, 100Q + clave oficial)
-> Queda **RESERVADO ÍNTEGRAMENTE como pre-test diagnóstico** del arranque de la fase intensiva — **v6.00: vie 8-ene-2027 (dia 65, 07:15-09:15) *(⏸ v6.00 · ⏸ v6.01: dia 62 · **v6.02:** dia 57)*, runner generado antes del lun 4-ene; la lista negra rige hasta ese día** — (⏸ v5.20, SUPERSEDIDO: el primer viernes de la intensiva, que arranca el mar 23-feb (día 97) tras el examen Step 1 del lun 22-feb-2027 → **vie 26-feb-2027 = día 100** — default de `gen_encaps_minisim.js --pretest` (`2027-02-26`) y fila `pretest` ya sembrada por `gen_encaps_intensivo_2027.js`, ALINEADOS —; el runner se genera el jue 18-feb = D94 del Step 1 o antes. `PRETEST_2026-II.md`. *v5.19: mismo vie 26-feb con la intensiva desde el lun 22-feb (examen Step 1 vie 19-feb), generado el mié 17-feb · v5.18: examen jue 18-feb, pre-test vie 19-feb (D1 vie 19-feb) o vie 26-feb (D1 lun 22-feb), generado el mar 16-feb · v5.17: examen mar 16-feb, pre-test vie 19-feb o vie 26-feb, generado el vie 12-feb.*).
+> Queda **RESERVADO ÍNTEGRAMENTE como pre-test diagnóstico** del arranque de la fase intensiva — **v6.00: vie 8-ene-2027 (dia 65, 07:15-09:15) *(⏸ v6.00 · ⏸ v6.01: dia 62 · ⏸ v6.02: dia 57 · **v6.03:** dia 55)*, runner generado antes del lun 4-ene; la lista negra rige hasta ese día** — (⏸ v5.20, SUPERSEDIDO: el primer viernes de la intensiva, que arranca el mar 23-feb (día 97) tras el examen Step 1 del lun 22-feb-2027 → **vie 26-feb-2027 = día 100** — default de `gen_encaps_minisim.js --pretest` (`2027-02-26`) y fila `pretest` ya sembrada por `gen_encaps_intensivo_2027.js`, ALINEADOS —; el runner se genera el jue 18-feb = D94 del Step 1 o antes. `PRETEST_2026-II.md`. *v5.19: mismo vie 26-feb con la intensiva desde el lun 22-feb (examen Step 1 vie 19-feb), generado el mié 17-feb · v5.18: examen jue 18-feb, pre-test vie 19-feb (D1 vie 19-feb) o vie 26-feb (D1 lun 22-feb), generado el mar 16-feb · v5.17: examen mar 16-feb, pre-test vie 19-feb o vie 26-feb, generado el vie 12-feb.*).
 > Hasta ese día **no se usa para nada**: ni como viñeta espejo, ni como molde, ni como "pregunta parecida", ni como fuente de cifras para el banco del día, la eval anclada o el mini-sim.
 > Ficheros afectados: `_examen_2026-2_clasificado.json`, `_examen_2026-2_items.json`, `exams_txt/2026-2.txt`. Solo se leen para el pronóstico (ya hecho) y para el cierre de febrero.
 > (Corrige la versión anterior de este protocolo, que lo declaraba reservado y a la vez "cantera de viñetas espejo": esa contradicción contaminaba el pre-test.)
