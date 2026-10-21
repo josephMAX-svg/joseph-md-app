@@ -148,14 +148,71 @@
     }
   ],
   "corrida_s1": {
-    "decidido": "2026-10-20",
-    "version": "v6.03",
-    "motivo": "v6.03 (mar 20-oct-2026) sustituye a la corrida v6.02d por alias: el plan se re-fecha entero con D1 = mié 21-oct. Aquí solo quedan los dos días sin sesión (lun 19 y mar 20) para que el Home los muestre como «día corrido»; sin alias ni reparto.",
+    "decidido": "2026-10-21",
+    "version": "v6.04",
+    "motivo": "Orden de Joseph (mié 21-oct-2026, sin estudio ese día): «lo del 21 para el 22, lo del 22 para el 23, lo del 23 repártelo entre el 24 y el 25; del 26 en adelante se mantiene tal como está; no hagas tantas modificaciones». Alias en la CONSULTA sobre v6.03 (los planes, Supabase, runners y guías conservan su fecha de plan): lun 19, mar 20 y mié 21 sin sesión · jue 22 = plan del mié 21 (D1, UWSA1) · vie 23 = plan del jue 22 · sáb 24 = la mañana del vie 23 (04:15 · 05:00 · 07:15-12:00 · 12:30 · 13:00) + la eval USMLE a las 13:30 (18:00 choca con el YouTube) + lo del sábado (PC 15:00, Anki 19:00) · dom 25 = la tarde del vie 23 desde las 07:15 (13:30 → 17:15 adelantada 6 h 15′) + revisión semanal 11:45 y cierre del OUTPUT 12:15 (del sábado). Desde el lun 26-oct nada cambia.",
     "sin_sesion": [
       "2026-10-19",
-      "2026-10-20"
+      "2026-10-20",
+      "2026-10-21"
     ],
-    "alias": {},
-    "reparto": {}
+    "alias": {
+      "2026-10-22": "2026-10-21",
+      "2026-10-23": "2026-10-22"
+    },
+    "reparto": {
+      "2026-10-24": {
+        "de": "2026-10-23",
+        "partes": [
+          {
+            "de": "2026-10-23",
+            "bloques": {
+              "vibe": 0,
+              "anki": 0,
+              "usmle": 0,
+              "syn": 0,
+              "biz": 0,
+              "eval": -270
+            }
+          },
+          {
+            "de": "2026-10-24",
+            "bloques": {
+              "pc": 0,
+              "anki-sab": 0
+            }
+          }
+        ]
+      },
+      "2026-10-25": {
+        "de": "2026-10-23",
+        "partes": [
+          {
+            "de": "2026-10-23",
+            "bloques": {
+              "rd": -375,
+              "aurum": -375,
+              "mir": -375,
+              "encaps": -375,
+              "liv": -375
+            }
+          },
+          {
+            "de": "2026-10-24",
+            "bloques": {
+              "revision": 270,
+              "biz": 270
+            }
+          },
+          {
+            "de": "2026-10-25",
+            "bloques": {
+              "feynman": 0,
+              "anki-dom": 0
+            }
+          }
+        ]
+      }
+    }
   }
 }

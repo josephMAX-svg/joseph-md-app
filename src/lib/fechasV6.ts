@@ -7,7 +7,7 @@
  * v6.01 (sáb 10-oct-2026): corrimiento rígido del D1 mié 7-oct-2026 → lun 12-oct-2026 (perdidos: mié 7-oct · jue 8-oct · vie 9-oct).
  * v6.02 (sáb 17-oct-2026): corrimiento rígido del D1 lun 12-oct-2026 → lun 19-oct-2026 (perdidos: lun 12-oct · mar 13-oct · mié 14-oct · jue 15-oct · vie 16-oct).
  * v6.03 (mar 20-oct-2026): corrimiento rígido del D1 lun 19-oct-2026 → mié 21-oct-2026 (perdidos: lun 19-oct · mar 20-oct).
- * v6.03 (mar 20-oct-2026): semana 1 corrida SOLO en la consulta (corridaS1De / fechaPlanDe) — sin sesión lun 19-oct · mar 20-oct ·  · ; ningún plan cambia de fecha.
+ * v6.04 (mié 21-oct-2026): semana 1 corrida SOLO en la consulta (corridaS1De / fechaPlanDe) — sin sesión lun 19-oct · mar 20-oct · mié 21-oct · jue 22-oct = plan del mié 21-oct · vie 23-oct = plan del jue 22-oct · sáb 24-oct = parte del vie 23-oct · dom 25-oct = parte del vie 23-oct; ningún plan cambia de fecha.
  * Versión vigente del JSON: v6.03.
  * Módulo HOJA: no importa nada de src/ (r2 · I7: corta el ciclo usmleStep1Daily ↔ homeBriefing; STEP1_SEMANAS, semanaStep1 y
  * Turno viven aquí y homeBriefing los re-exporta).
@@ -203,15 +203,72 @@ export const FECHAS_V6: FechasV6 = {
     }
   ],
   "corrida_s1": {
-    "decidido": "2026-10-20",
-    "version": "v6.03",
-    "motivo": "v6.03 (mar 20-oct-2026) sustituye a la corrida v6.02d por alias: el plan se re-fecha entero con D1 = mié 21-oct. Aquí solo quedan los dos días sin sesión (lun 19 y mar 20) para que el Home los muestre como «día corrido»; sin alias ni reparto.",
+    "decidido": "2026-10-21",
+    "version": "v6.04",
+    "motivo": "Orden de Joseph (mié 21-oct-2026, sin estudio ese día): «lo del 21 para el 22, lo del 22 para el 23, lo del 23 repártelo entre el 24 y el 25; del 26 en adelante se mantiene tal como está; no hagas tantas modificaciones». Alias en la CONSULTA sobre v6.03 (los planes, Supabase, runners y guías conservan su fecha de plan): lun 19, mar 20 y mié 21 sin sesión · jue 22 = plan del mié 21 (D1, UWSA1) · vie 23 = plan del jue 22 · sáb 24 = la mañana del vie 23 (04:15 · 05:00 · 07:15-12:00 · 12:30 · 13:00) + la eval USMLE a las 13:30 (18:00 choca con el YouTube) + lo del sábado (PC 15:00, Anki 19:00) · dom 25 = la tarde del vie 23 desde las 07:15 (13:30 → 17:15 adelantada 6 h 15′) + revisión semanal 11:45 y cierre del OUTPUT 12:15 (del sábado). Desde el lun 26-oct nada cambia.",
     "sin_sesion": [
       "2026-10-19",
-      "2026-10-20"
+      "2026-10-20",
+      "2026-10-21"
     ],
-    "alias": {},
-    "reparto": {}
+    "alias": {
+      "2026-10-22": "2026-10-21",
+      "2026-10-23": "2026-10-22"
+    },
+    "reparto": {
+      "2026-10-24": {
+        "de": "2026-10-23",
+        "partes": [
+          {
+            "de": "2026-10-23",
+            "bloques": {
+              "vibe": 0,
+              "anki": 0,
+              "usmle": 0,
+              "syn": 0,
+              "biz": 0,
+              "eval": -270
+            }
+          },
+          {
+            "de": "2026-10-24",
+            "bloques": {
+              "pc": 0,
+              "anki-sab": 0
+            }
+          }
+        ]
+      },
+      "2026-10-25": {
+        "de": "2026-10-23",
+        "partes": [
+          {
+            "de": "2026-10-23",
+            "bloques": {
+              "rd": -375,
+              "aurum": -375,
+              "mir": -375,
+              "encaps": -375,
+              "liv": -375
+            }
+          },
+          {
+            "de": "2026-10-24",
+            "bloques": {
+              "revision": 270,
+              "biz": 270
+            }
+          },
+          {
+            "de": "2026-10-25",
+            "bloques": {
+              "feynman": 0,
+              "anki-dom": 0
+            }
+          }
+        ]
+      }
+    }
   }
 };
 
@@ -444,7 +501,7 @@ export function semanaStep1(iso: string, extras: SemanaStep1Extras = {}): Semana
   };
 }
 
-// ── v6.03: semana 1 corrida (orden de Joseph del mar 20-oct-2026) ──
+// ── v6.04: semana 1 corrida (orden de Joseph del mié 21-oct-2026) ──
 /** Parte de un día de reparto: bloques de la plantilla de la fecha de plan «de» (id de bloque de plantillasV6 → desfase en minutos). */
 export interface ParteCorridaS1 { de: string; bloques: Record<string, number> }
 export type CorridaS1 =
@@ -452,8 +509,8 @@ export type CorridaS1 =
   | { tipo: 'alias'; de: string }
   | { tipo: 'reparto'; de: string; partes: ParteCorridaS1[] };
 /**
- * Semana corrida: lun 19-oct · mar 20-oct sin sesión ·  ·
- * .
+ * Semana corrida: lun 19-oct · mar 20-oct · mié 21-oct sin sesión · jue 22-oct = plan del mié 21-oct · vie 23-oct = plan del jue 22-oct ·
+ * sáb 24-oct = vibe+anki+usmle+syn+biz+eval del vie 23-oct / pc+anki-sab del sáb 24-oct · dom 25-oct = rd+aurum+mir+encaps+liv del vie 23-oct / revision+biz del sáb 24-oct / feynman+anki-dom del dom 25-oct.
  * null fuera de esos días: el resto del calendario es idéntico (los planes, Supabase, runners y guías conservan su fecha de plan).
  */
 export function corridaS1De(iso: string): CorridaS1 | null {

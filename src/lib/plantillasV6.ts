@@ -35,7 +35,7 @@
  *  F4 y el examen sin cambio. Las fechas de fin de cada frente salen de sus metas (no de este texto): LIVIANO → mié 17-feb (LIV_META.fin;
  *  v6.00: vie 12-feb) · AURUM → mar 20-abr (AURUM_PLAN_META.fin; v6.00: jue 15-abr) · SYNAPSE → vie 19-feb · vibecoding → mié 24-feb.
  */
-import { FECHAS_V6, DERIVADOS_V6, SKIP_V6, faseV6, motivoProtegido, esFeriado, ultimoHabilAntes, corridaS1De } from './fechasV6';
+import { FECHAS_V6, DERIVADOS_V6, SKIP_V6, faseV6, motivoProtegido, esFeriado, ultimoHabilAntes, corridaS1De, fechaRealDe } from './fechasV6';
 import type { FaseV6, Turno, CorridaS1 } from './fechasV6';
 import { FRANJAS_F4, FRANJA_F3_REENTRADA, estadoUSMLE, esHito, esFilaT2 } from './usmleStep1Daily';
 import type { DiaUSMLEPlan, DiaUSMLE_T2, FranjaF4, PlantillaF4 } from './usmleStep1Daily';
@@ -426,7 +426,12 @@ function bloqueCorrido(b: BloqueV6, de: string, desfase: number): BloqueV6 {
   };
 }
 // v6.03 (mar 20-oct): la corrida ya no es por alias: el plan entero se re-fechó con D1 = mié 21-oct; corrida_s1 solo marca los días sin sesión.
-const NOTA_CORRIDA = `CORRIMIENTO v6.03 (orden del mar 20-oct): lun 19 y mar 20 sin estudio → TODO arranca el ${fCorta(FECHAS_V6.f1.inicio)} (D1 = UWSA1) y corre 2 días hábiles sin comprimir nada (las fechas de fin se alargan); sáb 24 y dom 25 libres.`;
+// v6.04 (mié 21-oct): la nota se arma con los datos de corrida_s1 (días sin sesión · alias · reparto); sin corrida activa no se muestra.
+const _C1 = FECHAS_V6.corrida_s1;
+const NOTA_CORRIDA = `SEMANA CORRIDA ${_C1.version} (orden del ${fCorta(_C1.decidido)}): ${_C1.sin_sesion.map(fCorta).join(', ')} sin estudio · `
+  + Object.entries(_C1.alias).map(([r, de]) => `${fCorta(r)} = plan del ${fCorta(de)}`).join(' · ')
+  + (Object.keys(_C1.reparto).length ? ` · el ${fCorta(Object.values(_C1.reparto)[0]?.de ?? '')} se reparte entre ${Object.keys(_C1.reparto).map(fCorta).join(' (mañana) y ')} (tarde, desde las 07:15)` : '')
+  + '. Lo demás, desde el lunes siguiente, no cambia.';
 /**
  * Plantilla completa del día (bloques + contexto). `turno` = el del selector; si falta, el marcado (o 'M' por defecto).
  * v6.02d: aplica la semana 1 corrida (fechasV6.corridaS1De): lun 19 sin sesión · mar 20 → vie 23 = plantilla del día anterior ·
@@ -437,7 +442,8 @@ export function plantillaDelDia(iso: string, turno?: Turno): PlantillaDia {
   if (!c) return plantillaBase(iso, turno);
   const base = plantillaBase(iso, turno);
   if (c.tipo === 'sin_sesion') {
-    const sig = Object.entries(FECHAS_V6.corrida_s1.alias).find(([, de]) => de === iso)?.[0] ?? (iso < FECHAS_V6.f1.inicio ? FECHAS_V6.f1.inicio : undefined);
+    const sig = Object.entries(FECHAS_V6.corrida_s1.alias).find(([, de]) => de === iso)?.[0]
+      ?? (iso <= FECHAS_V6.f1.inicio ? fechaRealDe(FECHAS_V6.f1.inicio) : undefined); // v6.04: el día real en que arranca el plan (D1 corrido)
     return {
       ...base, plantilla: 'CORRIDO', titulo: `Día corrido · tu plan de hoy se hace el ${sig ? fCorta(sig) : 'próximo día de plan'}`,
       usmle: null, bloques: [], corrida: 'sin_sesion', notas: [NOTA_CORRIDA, 'Hoy sin sesión de ningún plan: no hay nada atrasado que recuperar.'],
