@@ -1,6 +1,92 @@
-# PENDIENTES DE JOSEPH · régimen v6.03 (corrimiento al MIÉ 21-OCT-2026, mismo patrón de hitos F1 anclados, sobre la REESTRUCTURACIÓN ANUAL v6.00 · ⏸ v6.02: lun 19-oct · ⏸ v6.01: lun 12-oct · ⏸ v6.00: mié 7-oct-2026)
+# PENDIENTES DE JOSEPH · régimen v6.04 (21-oct-2026: semana corrida jue 22 = plan del mié 21 + EXAMEN STEP 1 LUN 25-OCT-2027) sobre v6.03 (corrimiento al MIÉ 21-OCT-2026, mismo patrón de hitos F1 anclados, sobre la REESTRUCTURACIÓN ANUAL v6.00 · ⏸ v6.02: lun 19-oct · ⏸ v6.01: lun 12-oct · ⏸ v6.00: mié 7-oct-2026)
 
-## ✅ v6.03 VIGENTE (mar 20-oct-2026 · todo arranca el MIÉ 21-OCT-2026) — manda sobre las fechas de F1, ENCAPS y secundarios de los bloques v6.02d, v6.02, v6.01 y v6.00
+## ✅ v6.04 VIGENTE (mié 21-oct-2026) — v6.04a SEMANA CORRIDA (alias en la consulta) + v6.04b EXAMEN STEP 1 → LUN 25-OCT-2027 · manda sobre el examen, el GO/NO-GO, el tramo 2, la DJ-1 y el MIR desde el 11-feb del bloque v6.03; las fechas de plan de F1, ENCAPS y secundarios del bloque v6.03 SIGUEN
+
+> Órdenes de Joseph (mié 21-oct, sin estudio ese día): **(a)** *«lo del 21 para el 22, lo del 22 para el 23, lo del 23 repártelo entre el 24 y el 25; del 26 en
+> adelante se mantiene tal como está; no hagas tantas modificaciones»* → **v6.04a**; **(b)** *«¿por qué solamente no alargas la fecha del examen del Step 1? …
+> si iba a ser septiembre, que sea octubre … simplemente en lo que nos falta, alargar las fechas»* → **v6.04b**. El mié 21 es el **38.º hábil sin estudio desde
+> el 31-ago**, pero no consume colchón: lo absorben el sáb 24 y el dom 25. Nada se borra ni se recorta. Fuente: `DATA/_scripts/_fechas_v6.json` **v6.04** →
+> `src/lib/fechasV6.ts` · commits `6de3f14` (v6.04a) y `e4340a5` (v6.04b) · detalle: `DATA/REESTRUCTURACION_31AGO_2026.md` **§28** · receta:
+> `DATA/_v600/V6_ESPEC.md` (ADDENDUM v6.04). Estado anterior = tag git `regimen-v6.03`. Supabase: sin tocar (estado v6.03). Calendar: semana corrida aplicada
+> (`DATA/_v600/cal/CAL_V6.md` §15); **lo de 2027 (examen 25-oct) sigue pendiente → (H)**.
+
+### (a) Fechas v6.04 (comprobadas con node el 21-oct: día de la semana y fecha)
+
+| Frente | **v6.04 (vigente)** | ⏸ v6.03 |
+|---|---|---|
+| **Semana 19-25 oct (v6.04a, alias)** | sin sesión lun 19 · mar 20 · mié 21 · **jue 22 = plan del mié 21** (UWSA1 08:50-13:00 · Derma d1 · ENCAPS pre-test 1/2 · MIR D1 · LIVIANO d1) · **vie 23 = plan del jue 22** (D2 Pathoma 1-2 · Research R0 · ENCAPS pre-test 2/2) · **sáb 24** = mañana del vie 23 (04:15 vibecoding · 05:00 Anki · 07:15-12:00 USMLE D3 · 12:30 SYNAPSE · 13:00 Business OUTPUT S1) + eval USMLE **13:30** + PC 15:00 / Anki 19:00 · **dom 25** desde las 07:15 = tarde del vie 23 (Derma d2 · AURUM D3 · MIR D3 · **ENCAPS mini-sim 10:00** · LIVIANO caso 1 11:00) + **revisión S01 11:45** + cierre OUTPUT 12:15 + Feynman 15:00 / Anki 17:00 · **desde el lun 26 nada cambia** | UWSA1 mié 21 · sáb 24 / dom 25 libres · revisión S01 sáb 24 07:15 |
+| F1 · ENCAPS · Research · Derma · AURUM · LIVIANO · SYNAPSE · vibecoding · Business | **las fechas de plan del bloque v6.03** (tabla (a) de abajo): F1 D1-D50 → mié 30-dic · NBME 25 mar 3-nov · 26 mar 24-nov · 27 mar 15-dic · 28 mié 30-dic · ENCAPS 1-50 + 51-100 + 10 pendientes · examen ENCAPS dom 14-mar (PROVISIONAL) | = |
+| **EXAMEN STEP 1** | **lun 25-oct-2027, 07:00-16:00** (PROVISIONAL) · elegibilidad prevista ago-sep-oct → **último mes** → **(A)** | lun 27-sep-2027 |
+| GO/NO-GO (E-49) | **lun 6-sep** · ≥ 294 h reales desde el reinicio · checkpoints de ritmo 31-may ≥ 62 · 30-jun ≥ 134 · 31-jul ≥ 211 · NBME 31 y 32 ≥ 68 % (uno ≥ 70 %) | lun 9-ago (127 · 199 · 276) |
+| Hitos 2027 | NBME 29 mié 17-mar · NBME 30 lun 24-may · UWSA3 (opc.) mar 29-jun (=) · **NBME 31 lun 23-ago** · **NBME 32 lun 30-ago (feriado)** · **UWSA2 mar 7-sep** · **NBME 33 lun 27-sep** (solo, 07:00-12:15) · **ensayo 7 bloques = Free 120 + 4 bloques vie 8-oct (feriado, 07:00-16:30)** | NBME 31 mié 28-jul · 32 vie 6-ago · UWSA2 mar 10-ago · NBME 33 + 3 bloques lun 30-ago · Free 120 lun 13-sep |
+| Taper y test-day | taper **lun 18 → mié 20-oct** · D94 **jue 21-oct** · D95 **vie 22-oct** · ritual **sáb 23-oct** · viaje **dom 24-oct** · examen **lun 25-oct** · regreso **mar 26-oct** · protegidos 23-25 oct | 20-22 sep · jue 23 · vie 24 · sáb 25 · dom 26 · lun 27 · mar 28-sep |
+| Permiso de examen en la posta | **a más tardar el lun 27-sep** (≥ 4 semanas; día justificado) → **(E)** | lun 30-ago |
+| Fases | F4 **lun 3-may → sáb 23-oct** (150 días de plan L-S) · EXAMEN dom 24 → lun 25-oct · **F5 desde mar 26-oct** · `STEP1_SEMANAS` **43** | F4 → sáb 25-sep (126) · F5 desde mar 28-sep · 39 |
+| Tramo 2 | **182 filas T1-T182** (mar 16-mar → sáb 23-oct; T1-T90 idénticas) · **colchón 48 filas ≈ 126 h al piso** (21 en sábados; bloque continuo jue 1-jul → jue 5-ago → **(G)**) · contenido, reactivación, banco y consolidación = v6.03 · uWorld FRESCO 3.260 Q | 158 filas · colchón 24 ≈ 63 h |
+| Revisiones semanales | S01 **dom 25-oct 11:45** (semana corrida) · … · S49 sáb 25-sep = S39/43 · **S53 sáb 23-oct = S43/43** | S01 sáb 24-oct 07:15 · S49 = S39/39 |
+| MIR | diario y mantenimiento (=) · **extensión 145 vie 7-may → vie 22-oct-2027** + **1 repuesta mar 26-oct** (Medicina Legal y Bioética) → **(F)** · **203 sesiones** · 5.370 Q · Tier C 36 · **handoff mar 26-oct-2027** | 121 + 11 repuestas → mar 12-oct · 189 |
+| DJ-1 (fecha a reservar) | **lun 25-oct para cualquier fecha del ENCAPS** (DJ-1 v6.04); `gen_fechas_v6.js --check --calculo` = exit 0; con ENCAPS 25-abr el cálculo no llega al 25-oct (déficit 4 u) → **(B)** | tabla 31-ago / 27-sep / 25-oct |
+
+### (b) Coste y ganancia
+
+- **mié 21-oct:** 0 sesiones perdidas y 0 filas de colchón: se pagó con el fin de semana del 24/25 (que v6.03 dejaba libre). El coste es el descanso: **el fin de
+  semana 24/25 deja de ser libre** (el dom 25 se trabaja desde las 07:15). Validación del D3 (hecho el sáb 24) el lun 26 a ~48 h (antes 72 h).
+- **Examen +4 semanas (28 días):** colchón del tramo 2 **24 → 48 filas (≈ 63 → ≈ 126 h al piso)**; colchón de horas al D-1 (modelo de 399 h) **PISO +99 → +164 h**.
+  Precio: el examen pasa al **último mes de la elegibilidad** (sin plan B gratuito: **(A)**, **(B)**), el SERUMS convive 4 semanas más con el Step 1 (F4 150 días
+  en vez de 126), y la fase principal MIR y todo lo post-Step 1 (F5) empiezan el mar 26-oct en vez del mar 28-sep. Los 38 hábiles perdidos desde el 31-ago no se
+  recuperan: se compran con calendario.
+
+### (c) DECISIONES Y RIESGOS NUEVOS (v6.04) — con recomendación
+
+- [ ] **(A) Ventana de elegibilidad e inscripción.** El plan suponía la elegibilidad **ago-sep-oct 2027** con inscripción dic-2026 / ene-2027 ($695 + $210;
+      checklist v6.00 (c)). Con el examen el **25-oct**, el examen queda en el **último mes** de la ventana. **Opción:** (a) mantener ago-sep-oct; (b) **inscribir
+      sep-oct-nov**. **Recomendación: (b)**: el 25-oct queda en el mes central y noviembre hace de plan B dentro de la misma elegibilidad (mover la cita en el E-49
+      sigue siendo gratis antes del E-46); agosto ya no sirve para nada (la DJ-1 v6.04 no tiene adelanto). ⚠ **Antes de pagar, verificar en el portal qué entidad
+      tramita tu inscripción** (la espec dice FSMB; para un graduado de una escuela fuera de EE. UU./Canadá el Step 1 lo tramita **ECFMG**) y el pasaporte con el
+      nombre idéntico. Reserva del 25-oct: abre ≈ 6 meses antes (≈ dom 25-abr).
+- [ ] **(B) NO-GO del lun 6-sep ya sin fecha posterior gratuita.** Con ago-sep-oct, un NO-GO (horas < 294 o NBME 31/32 bajo criterio), un **NBME 33 < 65 %** (lun
+      27-sep), un **NBME 28 < 50 %** (mié 30-dic; la app ya lo rotula «25-oct SIN MARGEN») o un **ENCAPS el dom 25-abr** (el cálculo no llega al 25-oct: déficit
+      4 u) solo dejan la **extensión contigua nov-dic-ene** (única permitida, con coste) o presentarse sin el criterio. **Recomendación:** resolverlo con **(A)**
+      (sep-oct-nov → noviembre gratis en el E-49) y mantener la regla: no presentarse sin los 2 NBME ≥ 68 %.
+- [ ] **(C) Ensayo de 7 bloques (Free 120 + 4 bloques, 07:00-16:30) en el feriado vie 8-oct.** Necesita un día SIN turno; si la posta programa turno ese feriado,
+      se parte: Free 120 en un día T de la ventana (lun 4 → sáb 9-oct) y los 4 bloques en el siguiente día T. **Recomendación:** pedir el vie 8-oct libre al
+      jefe de la posta en cuanto salga el rol de octubre (junto con el permiso de **(E)**); si no se puede, partirlo según la regla.
+- [ ] **(D) NBME 32 en el feriado lun 30-ago** (ventana 30-ago → sáb 4-sep; 07:00-12:15). Mismo riesgo que (C), con un tope duro: **nunca después del sáb 4-sep**
+      (debe preceder al GO/NO-GO del lun 6-sep; fallback H-sáb 14:15-19:30 tras el turno M, «condición degradada»). **Recomendación:** pedir también el lun
+      30-ago libre (o un día T en esa semana) al salir el rol de agosto.
+- [ ] **(E) Permiso de examen en la posta: a más tardar el lun 27-sep** (≥ 4 semanas antes, como día justificado, nunca falta injustificada) — cubre dom 24 (viaje),
+      lun 25 (examen) y el regreso del **mar 26-oct** (1 día; 2 si ese martes tienes turno M). El sáb 23-oct (ritual) es día de turno normal. **Recomendación:**
+      pedirlo por escrito en cuanto tengas la cita de Prometric (con la cita impresa) y no apurar el tope: el lun 27-sep es además el día del NBME 33.
+- [ ] **(F) Sesión MIR repuesta el día del regreso (mar 26-oct, d203: Medicina Legal y Bioética, 25Q).** Es la única de las 11 repuestas de v6.03 que la extensión
+      no absorbió y cae el día que vuelves de Lima. **Opción:** (a) hacerla ese día en modo flexible (1 h donde se pueda); (b) hacerla el mié 27-oct (es la última
+      sesión del banqueo: no empuja nada; regenerar solo con tu OK). **Recomendación: (a)**, y si el viaje no lo permite, (b) sin regenerar.
+- [ ] **(G) 31 filas seguidas de COLCHÓN, jue 1-jul → jue 5-ago (T84-T114).** Entre la última reactivación (vie 25-jun) y el banco intensivo de la Fase B (vie
+      6-ago). Cada fila tiene su regla («fila atrasada → hazla hoy; si no, sistema más débil del último NBME: 40Q timed de incorrectas/flagged uWorld + AMBOSS +
+      revisión + Anki»), pero 5 semanas así pueden derivar en relleno. **Recomendación:** aceptar (es el tramo de adaptación al turno del SERUMS, donde más filas se
+      atrasan) y fijar el sistema débil de cada semana en la revisión del sábado con los datos del NBME 30 / UWSA3; medir colchón quemado, no días corridos.
+- [ ] **(H) Calendar v6.04b pendiente.** Hitos y ventanas 2027, GO/NO-GO, D94/D95, ritual / viaje / regreso, EXAMEN, revisión semanal F4 (→ sáb 16-oct) y
+      EXDATE de ANKI sáb/dom siguen con las fechas del 27-sep (lista con ids en `DATA/REESTRUCTURACION_31AGO_2026.md` §28.6). Las rutinas personales que citan el
+      examen del 27-sep, **solo con tu OK**.
+
+**Estado de las decisiones v6.03 (1)-(14) con v6.04:** siguen abiertas, sin cambio de fechas, **(1)** Research · **(2)** vibecoding S11-S12 · **(4)** Business ·
+**(5)** AURUM PITCH · **(6)** flag deload · **(7)** NBME 28 sin Day-After · **(10)** NBME 25-27 en martes · **(12)** S1 del vibecoding (AVANCE sáb 24 · SHIP
+sáb 31) · **(14)** `MINIMOS` (ahora con `TOTAL_SEM` 43); **(3)** LIVIANO sigue abierta, con el caso 1 el **dom 25 11:00** (plan del vie 23); **(8)** stock
+ENCAPS sigue **urgente** (runbook de la semana 2 el **dom 25 tras el mini-sim**, a más tardar lun 26 antes de las 16:15); **resueltas o sustituidas:** **(9)**
+colchón → 48 filas (v6.04b) · **(11)** validación del D3: el D3 se hace el sáb 24 → lun 26 a ~48 h · **(13)** tabla DJ-1 → DJ-1 v6.04 (25-oct para todo
+ENCAPS; queda el escenario 25-abr dentro de **(B)**).
+
+### (d) Checklist inmediato (v6.04) — sustituye a los 4 primeros puntos de (d) del bloque v6.03
+
+- [ ] **Jue 22-oct: UWSA1 = test-day del D1** (08:50-13:00; protocolo del historial) · ENCAPS 16:15 = `eval_2026-10-21` + pre-test de arranque 1/2 · Day-After
+      1/6 a las 18:00.
+- [ ] **Vie 23:** D2 (plan del jue 22) · ENCAPS `eval_2026-10-22` + pre-test 2/2 · Research R0 · LIVIANO d2.
+- [ ] **Sáb 24:** mañana del vie 23 (D3 neoplasia 07:15-12:00) + eval 13:30 + AVANCE S1 del vibecoding (PC 15:00).
+- [ ] **Dom 25:** desde las 07:15 (Derma d2 · AURUM · MIR · **mini-sim ENCAPS 10:00** · LIVIANO caso 1 11:00) · **revisión S01 11:45** · cierre OUTPUT 12:15 ·
+      **runbook ENCAPS de la semana 2 tras el mini-sim** (`DATA/ENCAPS/RUNBOOK_SEMANA2_2026-10-26.md`).
+- [ ] **Antes del vie 30-oct (sin cambio):** Prometric Lima (¿toma el Step 1?) y vencimientos Qbankly / UWorld / AMBOSS — ahora **hasta el 25-oct-2027**.
+- [ ] **Dic-2026 / ene-2027:** inscripción según **(A)**.
+
+## ✅ v6.03 (mar 20-oct-2026 · todo arranca el MIÉ 21-OCT-2026) — **sus fechas de plan de F1, ENCAPS y secundarios SIGUEN VIGENTES** (la semana 19-25 oct la corre por alias el bloque v6.04; el examen 27-sep, el GO/NO-GO 9-ago, el tramo 2, el colchón 24, la DJ-1 y el MIR desde el 11-feb los corrige el bloque v6.04 de arriba; el estado de sus decisiones (1)-(14), en (c) del bloque v6.04) — manda sobre las fechas de F1, ENCAPS y secundarios de los bloques v6.02d, v6.02, v6.01 y v6.00
 
 > Instrucción de Joseph (mar 20-oct): *«todo comienza mañana miércoles 21, corre dos días; deja libres sábado y domingo; no modifiques ni comprimas temas ni
 > exámenes; alarga las fechas límite (también ENCAPS) en todos los segmentos»*.
@@ -466,7 +552,7 @@ Meta: **399 h de Step 1 desde el reinicio** (mínimo 275 h). Colchón al D-1 del
 
 - [ ] **Centro Médico Concepción (EsSalud, tel. 064-581119)**: confirmar horario de turnos y guardias (o con el serumista 2026-I) antes de la adjudicación → define las plantillas M/T y el traslado (40' [S]).
 - [ ] **Prometric Lima**: verificar en prometric.com que toma el USMLE Step 1 — **antes del vie 30-oct**. Si no (Bogotá / Santiago): +1-2 días protegidos de viaje y permiso de 2-3 días.
-- [ ] **Inscripción FSMB dic-2026 / ene-2027 ($695 + $210)** con eligibility ago-sep-oct 2027; la fecha se RESERVA con la tabla DJ-1 al salir la convocatoria (apertura ≈ 6 meses antes: lun 1-mar para el 31-ago · dom 28-mar para el 27-sep · dom 25-abr para el 25-oct). Moverse a una fecha posterior en el E-49 es gratis (antes del E-46).
+- [ ] **Inscripción FSMB dic-2026 / ene-2027 ($695 + $210)** *(⚠ **v6.04:** examen lun 25-oct = último mes de ago-sep-oct → recomendación de inscribir **sep-oct-nov** y verificar la entidad (ECFMG para graduados fuera de EE. UU./Canadá): decisión **(A)** del bloque v6.04)* con eligibility ago-sep-oct 2027; la fecha se RESERVA con la tabla DJ-1 al salir la convocatoria (apertura ≈ 6 meses antes: lun 1-mar para el 31-ago · dom 28-mar para el 27-sep · dom 25-abr para el 25-oct). Moverse a una fecha posterior en el E-49 es gratis (antes del E-46).
 - [ ] **Pasaporte** vigente con el nombre idéntico al de la inscripción; revisar si ya existe un USMLE/ECFMG ID o un eligibility period pagado — antes de inscribirte.
 - [ ] **Vencimientos de Qbankly / UWorld / AMBOSS** — revisarlos **antes del 30-oct** y renovar cubriendo hasta el examen.
 - [ ] **Convocatoria ENCAPS 2027-I · regla examen − 25 días**: sin convocatoria al **mié 17-feb** se descarta el 14-mar y se pasa al **21-mar** (al mié 24-feb → 4-abr; al mié 10-mar → 11-abr; …). Con la fecha real: `_fechas_v6.json → encaps.examen` y regeneración única (`REESTRUCTURACION_31AGO_2026.md` §24.5).

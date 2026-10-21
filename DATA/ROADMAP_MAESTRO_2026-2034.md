@@ -5,7 +5,20 @@
 > a la vez**. Sáb/dom libres en todas las fases (el descanso consolida — no es negociable) — **salvo en el SERUMS (v6.00): desde el inicio del SERUMS
 > (~lun 3-may-2027 [supuesto]) el sábado es día de plan y solo el domingo queda libre (DJ-3)** · **(F2: sáb 07:15-09:15 revisión + STEP 1 VIVO)**.
 >
-> ## ✅ v6.02 VIGENTE (sáb 17-oct-2026 · D1 = LUN 19-OCT-2026) — corrimiento sobre v6.01; manda sobre sus fechas de F1 y de secundarios
+> ## ✅ v6.04 VIGENTE (mié 21-oct-2026) — F1 de v6.03 (D1 mié 21-oct) corrida por alias una semana + **EXAMEN STEP 1 LUN 25-OCT-2027**; manda sobre los bloques de abajo
+> **v6.03 (mar 20-oct):** lun 19 y mar 20-oct sin estudio → **F1 Step 1 = mié 21-oct → mié 30-dic-2026 (50 sesiones; D50 = NBME 28)** · NBME 25 mar 3-nov · 26
+> mar 24-nov · 27 mar 15-dic · 28 mié 30-dic · 8 filas al tramo 2 (T3-T10) · ENCAPS F1 `dia` 1-50 + intensiva 51-100 · secundarios +2 hábiles (Research c1 → vie
+> 19-mar · Derma c1 → lun 17-may · AURUM → jue 29-abr · SYNAPSE → lun 1-mar · vibecoding → vie 5-mar · LIVIANO → vie 26-feb · Business → jue 18-feb) — detalle
+> en `DATA/REESTRUCTURACION_31AGO_2026.md` §27. **v6.04 (mié 21-oct, sin estudio ese día):** (a) semana corrida por alias (jue 22 = plan del mié 21 · vie 23 =
+> plan del jue 22 · el vie 23 se reparte en sáb 24 / dom 25 · desde el lun 26 nada cambia) y (b) por orden de Joseph *«si iba a ser septiembre, que sea
+> octubre»*: **EXAMEN STEP 1 LUN 25-OCT-2027** (PROVISIONAL; ⏸ lun 27-sep) · **GO/NO-GO lun 6-sep** (⏸ lun 9-ago) · F4 Step 1 + SERUMS ~lun 3-may → **sáb
+> 23-oct** · tramo 2 **182 filas** con **48 filas de colchón (≈ 126 h)** · **DJ-1 v6.04 = 25-oct para cualquier fecha del ENCAPS** · MIR banqueo → handoff
+> **mar 26-oct-2027** · **F5 (MIR principal) desde el mar 26-oct-2027**. ENCAPS (dom 14-mar PROVISIONAL), reinicio (mar 16-mar) y SERUMS (~lun 3-may): sin
+> cambio. ⚠ El 25-oct es el último mes de la elegibilidad ago-sep-oct → recomendación de inscribir sep-oct-nov (`DATA/PENDIENTES_JOSEPH.md`, bloque v6.04, que
+> trae además la tabla de fechas vigente por plan). Detalle: `DATA/REESTRUCTURACION_31AGO_2026.md` §28. Las fechas F1 / examen de los bloques v6.02-v6.00 y de
+> las tablas «Fechas v6.0x por plan» de abajo quedan ⏸ (historial).
+
+> ## ⏸ v6.02 (sáb 17-oct-2026 · D1 = LUN 19-OCT-2026) — corrimiento sobre v6.01 · **historial: su F1 la corrige v6.03 y su examen v6.04 (bloque de arriba)**
 > Del lun 12 al vie 16-oct no se estudió (5 hábiles; 35 desde el 31-ago). **F1 Step 1 = lun 19-oct → mié 30-dic-2026 (52 sesiones)** con la regla nueva de
 > **HITOS F1 ANCLADOS**: un hito de F1 nunca sale de F1 → el NBME 28 es la última sesión de F1 (d52, mié 30-dic) y las 5 últimas filas de Heme/Onco pasan al
 > tramo 2 (T3-T7), delante de la bioestadística (T8 lun 29-mar); colchón del tramo 2 38 → 28 filas (≈ 73,5 h). Hitos F1: UWSA1 lun 19-oct · NBME 25 vie 30-oct ·
@@ -64,7 +77,7 @@
 |---|---|---|---|---|
 | **1 · STEP 1 (F1 · tramo 1)** | **mié 7-oct → mié 30-dic-2026** (60 sesiones L-V) *(⏸ v6.00 · ⏸ v6.01: lun 12-oct → mié 30-dic · 57 sesiones; C1/C2 consumidos; bioestadística → T3 · **v6.02:** lun 19-oct → mié 30-dic · 52 sesiones; NBME 28 = d52; D52-D54, D56, D57 y D79 → T3-T8)* | 🇺🇸 Step 1 6h15/día (05:00 Anki · 07:15-12:00 · 18:00 eval): D1-D57 = v5.20 · D58 lun 28-dic bioestadística + ética · D59-D60 colchón C1/C2 · UWSA1 mié 7-oct · NBME 25 mar 20-oct · 26 mar 10-nov · 27 mar 1-dic · 28 mar 22-dic (checkpoint de fecha) | ENCAPS lento 1 h 16:15 (filas 1-60) · MIR 1 h · R↔D 45' · AURUM 60' · SYNAPSE 30' · LIVIANO 45' · vibecoding 45' | NBME 28 ≥ 58 % → examen 27-sep en ruta (< 50 % → 25-oct) |
 | **2 · ENCAPS (F2)** | **lun 4-ene → vie 12-mar-2027** (50 hábiles) · examen **dom 14-mar PROVISIONAL** | 🇵🇪 ENCAPS intensiva (≈32 h/sem): pre-test 2026-II vie 8-ene · 32 slots de barrido + 8 SIM 100Q (vie 15-ene → vie 5-mar) · cola lun 8 → vie 12-mar (dress rehearsal jue 11-mar) · carril B 16:15 | Step 1 VIVO (Anki 30' L-V + sáb 07:45 20Q) · MIR 1 h · R↔D 45' · AURUM 30' · SYNAPSE (→ 15-feb) · LIVIANO (→ 12-feb) · vibecoding (→ 19-feb) | **ENCAPS ≥ 17/20** (fecha real con la convocatoria) |
-| **3 · STEP 1 (F3 + F4 · tramo 2)** | **mar 16-mar → sáb 25-sep-2027** (F3 32 hábiles L-V; F4 SERUMS ~lun 3-may [S], 126 días L-S) | 🇺🇸 Step 1: F3 tiempo completo 7h15 · F4 por plantilla de turno M/T (PISO 15,75 · M 18 · MIX 22,5 · T 27,1 h/sem) · NBME 29 mié 17-mar · 30 lun 24-may · 31 mié 28-jul · 32 vie 6-ago · **GO/NO-GO lun 9-ago** · UWSA2 mar 10-ago · NBME 33 lun 30-ago · Free 120 lun 13-sep | SERUMS (6 h/día) · MIR 1 h (mantenimiento → jue 22-abr + extensión → vie 24-sep) · R↔D 45' (F3) / 30' en tiempo muerto (F4) · AURUM 30' (→ jue 15-abr) | **STEP 1 PASS · examen lun 27-sep-2027** (PROVISIONAL; fecha a reservar por la tabla DJ-1) |
+| **3 · STEP 1 (F3 + F4 · tramo 2)** | **mar 16-mar → sáb 25-sep-2027** (F3 32 hábiles L-V; F4 SERUMS ~lun 3-may [S], 126 días L-S) *(⏸ v6.00-v6.03 · **v6.04:** → **sáb 23-oct-2027**, F4 150 días L-S, examen **lun 25-oct**)* | 🇺🇸 Step 1: F3 tiempo completo 7h15 · F4 por plantilla de turno M/T (PISO 15,75 · M 18 · MIX 22,5 · T 27,1 h/sem) · NBME 29 mié 17-mar · 30 lun 24-may · 31 mié 28-jul · 32 vie 6-ago · **GO/NO-GO lun 9-ago** · UWSA2 mar 10-ago · NBME 33 lun 30-ago · Free 120 lun 13-sep | SERUMS (6 h/día) · MIR 1 h (mantenimiento → jue 22-abr + extensión → vie 24-sep) · R↔D 45' (F3) / 30' en tiempo muerto (F4) · AURUM 30' (→ jue 15-abr) | **STEP 1 PASS · examen lun 27-sep-2027** (PROVISIONAL; fecha a reservar por la tabla DJ-1) |
 | **4 · MIR (F5)** | oct-2027 → ene-2030 (con el resto del SERUMS) | 🇪🇸 MIR principal (CTO/AMIR/ProMIR, vueltas completas) | Step 2 CK secundario creciente · research a régimen · CURVA/DENSA desde oct-2027 | **MIR ene-2030 · Top 50** → Dermatología (Clínic) |
 | 5 · Residencia + Step 2 CK | 2030 → 2033 | (sin cambio) | — | Step 2 CK 250+ |
 | 6 · MAYO CLINIC | 2033-2034 | (sin cambio) | — | **Mayo Clinic ~2034** |
@@ -121,7 +134,7 @@ publicación (de `DATA/RESEARCH/RUTA_PUBLICACION_2027.md`, revistas y APCs verif
 1. La reestructuración de cada fase se hace la SEMANA PREVIA (la de Fase 2 → la semana D91-D95 del Step 1,
    lun 15 → vie 19-feb; el examen Step 1 es el lun 22-feb): el rey saliente libera la mañana, el entrante la hereda (desde el mar 23-feb; v5.20: la intensiva ENCAPS ya está sembrada en Supabase y en el Calendar — solo falta regenerarla con `--pretest` tras el pre-test del vie 26-feb); Calendar + app +
    Supabase + memoria se actualizan en bloque (como se hizo el 27-ago).
-2. Un examen NO se rinde sin su gate: Step 1 (NBMEs; **v6.00: GO/NO-GO lun 9-ago-2027** = ≥ 294 h reales desde el reinicio + NBME 31 y 32 ≥ 68 % con uno ≥ 70 %), ENCAPS (**v6.00, V6_ESPEC §C3, criterio de «listo» [supuesto]: último oficial ≥ 85 % (17/20) y los 2 últimos SIM 100Q ≥ 85 %**, medidos en los 8 SIM de viernes vie 15-ene → vie 5-mar + dress rehearsal jue 11-mar; ⏸ antes: «sims de viernes ≥18/25 en feb-mar»),
+2. Un examen NO se rinde sin su gate: Step 1 (NBMEs; **v6.00: GO/NO-GO lun 9-ago-2027** *(**v6.04:** lun 6-sep-2027, examen lun 25-oct)* = ≥ 294 h reales desde el reinicio + NBME 31 y 32 ≥ 68 % con uno ≥ 70 %), ENCAPS (**v6.00, V6_ESPEC §C3, criterio de «listo» [supuesto]: último oficial ≥ 85 % (17/20) y los 2 últimos SIM 100Q ≥ 85 %**, medidos en los 8 SIM de viernes vie 15-ene → vie 5-mar + dress rehearsal jue 11-mar; ⏸ antes: «sims de viernes ≥18/25 en feb-mar»),
    MIR (netas de simulacros al nivel Top 50 antes de inscribir).
 3. Cada fase cierra con post-mortem de datos (como el ANALISIS_EXAMEN_2026-2_REAL) → el modelo
    de pronóstico del siguiente examen SIEMPRE se re-entrena con el examen recién rendido.

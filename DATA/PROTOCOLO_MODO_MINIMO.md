@@ -1,6 +1,13 @@
-# 🚦 PROTOCOLO DE MODO MÍNIMO — VERDE · ÁMBAR · ROJO (v6.00 · 6-oct-2026, fechas v6.02 · 17-oct-2026 (⏸ v6.01 · 10-oct); historial v5.20 abajo)
+# 🚦 PROTOCOLO DE MODO MÍNIMO — VERDE · ÁMBAR · ROJO (v6.00 · 6-oct-2026, fechas v6.04 · 21-oct-2026 (⏸ v6.03 · 20-oct · ⏸ v6.02 · 17-oct · ⏸ v6.01 · 10-oct); historial v5.20 abajo)
 
-> **v6.02 (sáb 17-oct-2026, vigente):** las reglas de este protocolo no cambian; cambian las fechas de F1 (lun 19-oct → mié 30-dic, 52 sesiones; el NBME 28 es
+> **v6.04 (mié 21-oct-2026, vigente):** las reglas de este protocolo no cambian; cambian las fechas. **F1 = mié 21-oct → mié 30-dic** (v6.03: 50 sesiones; el
+> NBME 28 es la última, D50 mié 30-dic) y el mié 21 sin estudio se corrió por alias a la semana (jue 22 = plan del mié 21 · vie 23 = plan del jue 22 · el vie 23
+> repartido en sáb 24 / dom 25; desde el lun 26 nada cambia). Un día ROJO/perdido de F1 sigue sin colchón propio → su fila pasa al tramo 2 en el cierre de F1
+> (jue 31-dic, `--pendientes-f1 <slot>`) y gasta una de las **48 filas COLCHÓN** (≈ 126 h) del tramo 2. Excepción del NBME 28 (mié 30-dic): se rinde el sáb
+> 2-ene 07:00-12:30. Deload de F1: **lun 30-nov** y semana del lun 28-dic. **Gates de F1: vie 13-nov (D18) y vie 11-dic (D38)**. **Examen Step 1 lun 25-oct-2027**
+> (GO/NO-GO lun 6-sep; F4 → sáb 23-oct); ⏸ las menciones de abajo a «sáb 25-sep» / «lun 27-sep-2027» son v6.00-v6.03 (`DATA/REESTRUCTURACION_31AGO_2026.md` §27-§28).
+>
+> ⏸ **v6.02 (sáb 17-oct-2026; historial — la corrigen v6.03 y v6.04 de arriba):** las reglas de este protocolo no cambian; cambian las fechas de F1 (lun 19-oct → mié 30-dic, 52 sesiones; el NBME 28 es
 > la última, d52 mié 30-dic). Del lun 12 al vie 16-oct no se estudió (5 hábiles más): como la F1 ya no tenía colchón, el corrimiento sacó al tramo 2 las 5 últimas
 > filas de Heme/Onco (regla de hitos anclados: un hito de F1 nunca sale de F1). Desde el lun 19-oct, un día ROJO/perdido de F1 sigue sin colchón propio → su
 > fila pasa al tramo 2 en el cierre de F1 (jue 31-dic, `--pendientes-f1 <slot>`) y gasta una de las **28 filas COLCHÓN** (≈ 73,5 h) del tramo 2. **Excepción:

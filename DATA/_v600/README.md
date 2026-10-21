@@ -1,6 +1,15 @@
-# v6.00 · Reestructuración anual definitiva (6-oct-2026) · + ADDENDUM v6.01 (10-oct-2026) · + ADDENDUM v6.02 (17-oct-2026)
+# v6.00 · Reestructuración anual definitiva (6-oct-2026) · + ADDENDUM v6.01 (10-oct-2026) · + ADDENDUM v6.02 (17-oct-2026) · + v6.03 (20-oct) · + v6.04 (21-oct-2026)
 
-> ## ✅ ADDENDUM v6.02 (sáb 17-oct-2026) — corrimiento al LUN 19-OCT-2026 con HITOS F1 ANCLADOS; manda sobre el ADDENDUM v6.01 y sobre la receta v6.00
+> ## ✅ ESTADO VIGENTE = ADDENDUM v6.04 de `V6_ESPEC.md` (mié 21-oct-2026) sobre el ADDENDUM v6.03 (mar 20-oct-2026)
+> - **v6.03** (lun 19 y mar 20-oct sin estudio): F1 = **mié 21-oct → mié 30-dic** (50 sesiones; D50 = NBME 28; 8 filas al tramo 2, T3-T10) · ENCAPS F1 `dia` 1-50 +
+>   intensiva 51-100 + 10 pendientes F1 · secundarios +2 hábiles · Calendar `cal/CAL_V6.md` §14 — sus fechas de plan siguen siendo la base de F1.
+> - **v6.04a** (mié 21-oct sin estudio): semana corrida por alias en la consulta (jue 22 = plan del mié 21 · vie 23 = plan del jue 22 · el vie 23 repartido en
+>   sáb 24 / dom 25; desde el lun 26 nada cambia) · Calendar `cal/CAL_V6.md` §15.
+> - **v6.04b** (orden de Joseph «si iba a ser septiembre, que sea octubre»): **examen Step 1 lun 25-oct-2027** (⏸ lun 27-sep) · GO/NO-GO lun 6-sep · F4 → sáb
+>   23-oct · tramo 2 182 filas, colchón 48 (≈ 126 h) · MIR 203 sesiones (handoff mar 26-oct) · DJ-1 v6.04 = 25-oct para cualquier ENCAPS · Calendar 2027:
+>   pendiente. Detalle: `DATA/REESTRUCTURACION_31AGO_2026.md` §27-§28. Lo de abajo (ADDENDA v6.02 / v6.01 y receta v6.00) es historial donde lo contradiga.
+
+> ## ⏸ ADDENDUM v6.02 (sáb 17-oct-2026) — corrimiento al LUN 19-OCT-2026 con HITOS F1 ANCLADOS; mandaba sobre el ADDENDUM v6.01 y sobre la receta v6.00 · **historial: lo corrigen v6.03 y v6.04 (arriba); la regla de hitos F1 anclados sigue**
 > Del lun 12 al vie 16-oct no se estudió (5 hábiles; 35 desde el 31-ago) → D1 = **lun 19-oct-2026**. Misma regla que v6.01 (la F1 no se alarga) + **regla nueva:
 > un hito de F1 nunca sale de F1** (`gen_tramo2.colocarF1(n)`): los hitos conservan su D# si caben y, si no, ocupan los últimos slots de F1; lo que no cabe son
 > siempre las ÚLTIMAS filas de temario no-hito, que pasan al tramo 2 como filas desplazadas (con su `dOrig`).

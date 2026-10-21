@@ -1,6 +1,13 @@
-# 🧠 FRANJA 04:15–05:45 (v5.2 · serie desde lun 31-ago-2026 · D1 efectivo MIÉ 21-OCT-2026, v6.03 · ⏸ v6.02: lun 19-oct · ⏸ v6.01: lun 12-oct · ⏸ v5.20/v6.00: mié 7-oct) — IA VIBECODING + ANKI AM
+# 🧠 FRANJA 04:15–05:45 (v5.2 · serie desde lun 31-ago-2026 · D1 efectivo MIÉ 21-OCT-2026, v6.03 — corrido por alias al jue 22-oct, v6.04 · ⏸ v6.02: lun 19-oct · ⏸ v6.01: lun 12-oct · ⏸ v5.20/v6.00: mié 7-oct) — IA VIBECODING + ANKI AM
 
-> **✅ v6.03 VIGENTE (mar 20-oct-2026) — D1 efectivo = MIÉ 21-OCT-2026** (lun 19 y mar 20-oct sin estudio; orden de Joseph: «simplemente corre, no
+> **✅ v6.04 VIGENTE (mié 21-oct-2026) — las fechas de plan de abajo (v6.03) siguen; cambian la semana 1 y el examen Step 1.** El mié 21 tampoco hubo
+> estudio → **semana corrida por alias** (la app traduce el día real a la fecha de plan; nada se regenera): vibecoding S1 **1/5 jue 22 · 2/5 vie 23 · 3/5 sáb 24
+> 04:15** (plan del vie 23) · 4/5 lun 26 · 5/5 mar 27 (=) · AVANCE S1 sáb 24 (PC 15:00) y SHIP S1 sáb 31-oct (=) · ANKI AM 05:00 jue 22 (plan del mié 21), vie 23 y
+> **sáb 24** (plan del vie 23) · SYNAPSE jue 22 07:25 (día del UWSA1) · vie 23 12:30 · **sáb 24 12:30** (plan del vie 23) · desde el lun 26 nada cambia. Por orden
+> de Joseph el **examen Step 1 pasa al lun 25-oct-2027** (⏸ lun 27-sep; GO/NO-GO lun 6-sep): las menciones de abajo al «examen Step 1 lun 27-sep-2027» quedan ⏸.
+> ENCAPS (dom 14-mar-2027, PROVISIONAL) sin cambio. Detalle: `DATA/REESTRUCTURACION_31AGO_2026.md` §28.
+
+> **✅ v6.03 (mar 20-oct-2026; sus fechas de plan siguen vigentes) — D1 efectivo = MIÉ 21-OCT-2026** (lun 19 y mar 20-oct sin estudio; orden de Joseph: «simplemente corre, no
 > comprimas»). Secundarios +2 hábiles, contenido intacto (`node DATA/_scripts/gen_vibecoding_plan.js 2026-10-21` → `node DATA/_scripts/gen_synapse_plan.js 2026-10-21`):
 > - **Vibecoding (04:15, 45')**: **95 días mié 21-oct-2026 → vie 5-mar-2027**. **S1-S12 = bloques mié→mar** (S1 mié 21 → mar 27-oct … S9 mié 16 → mar 22-dic ·
 >   S10 mié 23 → mié 30-dic por el feriado del 25-dic · S11 lun 4 → vie 8-ene · S12 lun 11 → vie 15-ene) con **SHIP el sábado siguiente**: **sáb 24-oct = AVANCE

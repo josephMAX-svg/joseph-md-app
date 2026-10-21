@@ -1,6 +1,19 @@
-# REESTRUCTURACIÓN MASIVA · v6.03 = D1 MIÉRCOLES 21-OCT-2026 (corrimiento del 20-oct sobre v6.02, mismo patrón de hitos F1 anclados) · ⏸ v6.02 = D1 lun 19-oct-2026 (corrimiento del 17-oct sobre v6.01, hitos F1 anclados) · ⏸ v6.01 = D1 lun 12-oct-2026 (corrimiento del 10-oct) · v6.00 = REESTRUCTURACIÓN ANUAL (6-oct-2026; sustituye a v5.20) · ⏸ D1 v6.00/v5.20 = mié 7-oct-2026
+# REESTRUCTURACIÓN MASIVA · v6.04 (21-oct-2026) = SEMANA CORRIDA por alias (jue 22 = plan del mié 21) + EXAMEN STEP 1 LUN 25-OCT-2027 · v6.03 = D1 MIÉRCOLES 21-OCT-2026 (corrimiento del 20-oct sobre v6.02, mismo patrón de hitos F1 anclados; sus fechas de plan siguen siendo la base de F1) · ⏸ v6.02 = D1 lun 19-oct-2026 (corrimiento del 17-oct sobre v6.01, hitos F1 anclados) · ⏸ v6.01 = D1 lun 12-oct-2026 (corrimiento del 10-oct) · v6.00 = REESTRUCTURACIÓN ANUAL (6-oct-2026; sustituye a v5.20) · ⏸ D1 v6.00/v5.20 = mié 7-oct-2026
 
-> ## ✅ v6.03 VIGENTE (mar 20-oct-2026 · arranca el MIÉ 21-OCT-2026) — corrige las fechas de F1, ENCAPS y secundarios de v6.02 · sustituye a la corrida por alias v6.02d · detalle en **§27**
+> ## ✅ v6.04 VIGENTE (mié 21-oct-2026) — v6.04a SEMANA CORRIDA (alias en la consulta) + v6.04b EXAMEN STEP 1 → LUN 25-OCT-2027 · detalle en **§28**
+> El mié 21-oct (D1 de v6.03) tampoco se estudió (38 hábiles sin estudio desde el 31-ago; este no consume colchón: lo absorbe el fin de semana). **v6.04a**
+> (orden de Joseph: *«lo del 21 para el 22, lo del 22 para el 23, lo del 23 repártelo entre el 24 y el 25; del 26 en adelante se mantiene»*): alias en la
+> consulta sobre las fechas de plan v6.03 (ningún plan cambia de fecha) → jue 22 = plan del mié 21 (UWSA1) · vie 23 = plan del jue 22 · el vie 23 se reparte en
+> sáb 24 (mañana + eval 13:30) y dom 25 (tarde desde las 07:15: mini-sim ENCAPS 10:00 · revisión S01 11:45 · cierre Business 12:15) · desde el lun 26 nada cambia.
+> **v6.04b** (*«si iba a ser septiembre, que sea octubre; simplemente alarga las fechas en lo que nos falta»*): **EXAMEN STEP 1 LUN 25-OCT-2027** (⏸ lun 27-sep) ·
+> GO/NO-GO **lun 6-sep** · NBME 31 lun 23-ago · NBME 32 lun 30-ago · UWSA2 mar 7-sep · NBME 33 lun 27-sep · ensayo 7 bloques (Free 120 + 4 bloques) vie 8-oct ·
+> taper lun 18 → vie 22-oct · ritual sáb 23 · viaje dom 24 · regreso mar 26-oct · F4 → sáb 23-oct (150 días) · tramo 2 **182 filas** (T1-T90 = v6.03) · colchón
+> **24 → 48 filas (≈ 126 h)** · MIR extensión → vie 22-oct + 1 repuesta mar 26-oct (**203 sesiones**) · **DJ-1 v6.04 = 25-oct para cualquier ENCAPS**.
+> Nada cambia antes del mar 16-mar-2027 (F1, ENCAPS, Supabase y secundarios: los de v6.03). ⚠ Riesgo: el 25-oct es el último mes de la elegibilidad
+> ago-sep-oct → recomendación de inscribir **sep-oct-nov** (`DATA/PENDIENTES_JOSEPH.md`, bloque v6.04). Calendar: v6.04a aplicado (`DATA/_v600/cal/CAL_V6.md`
+> §15); v6.04b pendiente (§28.6).
+
+> ## ✅ v6.03 (mar 20-oct-2026 · arranca el MIÉ 21-OCT-2026) — **BASE DE F1: sus fechas de plan siguen vigentes**; el examen, el GO/NO-GO, el tramo 2, el colchón y el MIR desde el 11-feb los corrige v6.04 (arriba) · corrige las fechas de F1, ENCAPS y secundarios de v6.02 · sustituye a la corrida por alias v6.02d · detalle en **§27**
 > El lun 19 y el mar 20-oct no se estudió (2 hábiles; 37 desde el 31-ago). Orden de Joseph: *«todo comienza mañana miércoles 21, corre dos días; deja libres
 > sábado y domingo; no modifiques ni comprimas temas ni exámenes; alarga las fechas límite»*. **Patrón v6.02** (F1 anclada + HITOS F1 ANCLADOS, sin regla nueva)
 > → Step 1 **D1 mié 21-oct → D50 mié 30-dic** (50 sesiones: d 1-49 = v5.20 D1-D49 · **D50 = NBME 28 mié 30-dic**, sin day-after en F1: decisión de Joseph;
@@ -3431,7 +3444,7 @@ Este fichero (§23 + cabecera, §1-§5) · `DATA/ROADMAP_MAESTRO_2026-2034.md`. 
 bancos ENCAPS y el Calendar estructural (hitos, extensiones, eventos ENCAPS 2027-I, overlays Research) ya estaban en v5.20 antes de esta pasada documental; el
 resto de docs de estado vigente se barre a v5.20 en la misma pasada (working tree del 6-oct, sin commit).
 
-## 24 · REESTRUCTURACIÓN ANUAL v6.00 (6-oct-2026) — *(⏸ las fechas de F1, los `dia` ENCAPS y los secundarios de esta sección los corrigen §25, v6.01 (F1 lun 12-oct → mié 30-dic, D1-D57), y §26, v6.02 (F1 lun 19-oct → mié 30-dic, d 1-52 con el NBME 28 = d52), y §27, v6.03 (F1 mié 21-oct → mié 30-dic, D1-D50 con el NBME 28 = D50))* — **FIN DEL CORRIMIENTO DIARIO**: Step 1 tramo 1 mié 7-oct → mié 30-dic · ENCAPS intensiva lun 4-ene → vie 12-mar (examen **dom 14-mar-2027 PROVISIONAL**) · Step 1 tiempo completo desde el **mar 16-mar** · Step 1 + SERUMS (L-S) desde **~lun 3-may [S]** · **EXAMEN STEP 1 LUN 27-SEP-2027**
+## 24 · REESTRUCTURACIÓN ANUAL v6.00 (6-oct-2026) — *(⏸ las fechas de F1, los `dia` ENCAPS y los secundarios de esta sección los corrigen §25, v6.01 (F1 lun 12-oct → mié 30-dic, D1-D57), y §26, v6.02 (F1 lun 19-oct → mié 30-dic, d 1-52 con el NBME 28 = d52), y §27, v6.03 (F1 mié 21-oct → mié 30-dic, D1-D50 con el NBME 28 = D50))* — **FIN DEL CORRIMIENTO DIARIO**: Step 1 tramo 1 mié 7-oct → mié 30-dic · ENCAPS intensiva lun 4-ene → vie 12-mar (examen **dom 14-mar-2027 PROVISIONAL**) · Step 1 tiempo completo desde el **mar 16-mar** · Step 1 + SERUMS (L-S) desde **~lun 3-may [S]** · **EXAMEN STEP 1 LUN 27-SEP-2027** *(⏸ v6.04: **lun 25-oct-2027**, §28)*
 
 > **Fuente de verdad:** V6_ESPEC r2 (`DATA/_v600/V6_ESPEC.md`, especificación ejecutable del 6-oct, revisada tras dos críticas) + `DATA/_scripts/_fechas_v6.json`
 > (fuente ÚNICA de fechas; la leen todos los generadores y `gen_fechas_v6.js` emite `src/lib/fechasV6.ts`, que aborta si un valor guardado difiere del
@@ -3834,7 +3847,7 @@ respaldo `.bak_v602`). Ya venían al día del commit `1058299`: `DATA/ENCAPS/BAN
 `CASE_REPORT_1/caso_candidatos.md`, `DATA/BUSINESS/LIVIANO_ACADEMIA.md` (bloque v6.02) y los generados (`DATA/RESEARCH/daily-plan.md`,
 `DATA/SYNAPSE/VIBECODING_12_PROYECTOS.md`). `DATA/_v600/cal/CAL_V6.md` §11: lote del Calendar, aparte.
 
-## 27 · v6.03 — corrimiento al MIÉ 21-OCT-2026 (mar 20-oct-2026) — **tercer corrimiento bajo v6 · mismo patrón que v6.02 (F1 anclada + HITOS F1 ANCLADOS), sin regla nueva**: D1 lun 19-oct → **mié 21-oct** · F1 de 50 hábiles (d 1-49 = v5.20 D1-D49, **D50 = NBME 28 mié 30-dic**) · 8 filas de temario al tramo 2 (T3-T10: Neuro D50, Heme/Onco D51-D54, D56, D57 + bioestadística D79) · colchón 28 → 24 filas · ENCAPS F1 `dia` 1-50 + intensiva `dia` 51-100 (mismas fechas) + 10 pendientes F1 repuestos en el carril B · secundarios +2 hábiles · sáb 24 / dom 25-oct libres · **examen Step 1 SIN cambio (lun 27-sep-2027)** · sustituye a la corrida por alias v6.02d
+## 27 · v6.03 — corrimiento al MIÉ 21-OCT-2026 (mar 20-oct-2026) — **tercer corrimiento bajo v6 · mismo patrón que v6.02 (F1 anclada + HITOS F1 ANCLADOS), sin regla nueva**: D1 lun 19-oct → **mié 21-oct** · F1 de 50 hábiles (d 1-49 = v5.20 D1-D49, **D50 = NBME 28 mié 30-dic**) · 8 filas de temario al tramo 2 (T3-T10: Neuro D50, Heme/Onco D51-D54, D56, D57 + bioestadística D79) · colchón 28 → 24 filas · ENCAPS F1 `dia` 1-50 + intensiva `dia` 51-100 (mismas fechas) + 10 pendientes F1 repuestos en el carril B · secundarios +2 hábiles · sáb 24 / dom 25-oct libres · **examen Step 1 SIN cambio (lun 27-sep-2027)** · sustituye a la corrida por alias v6.02d *(sus fechas de plan siguen siendo la base de F1; ⏸ el examen, el GO/NO-GO, el tramo 2 y el colchón los corrige §28, v6.04; la semana 19-25-oct, la v6.04a)*
 
 > **Fuente de verdad:** `DATA/_scripts/_fechas_v6.json` **v6.03** (`f1: 2026-10-21 → 2026-12-30, dias 50` + `corrimientos[2]`; `corrida_s1` solo con `sin_sesion`
 > lun 19 y mar 20, sin `alias` ni `reparto`) → `src/lib/fechasV6.ts`; planes regenerados en `src/lib` (commit `6b8df7c`); SQL ENCAPS
@@ -3979,3 +3992,161 @@ vibecoding hasta el mar 27 con SHIP sáb 31-oct · tabla DJ-1 (4-abr también ca
 `DATA/BUSINESS/LIVIANO_ACADEMIA.md`, `DATA/DERMATOLOGIA/` (`daily-plan.md`, `PLAN_ELITE_2026-27.md`, `RUTA_FELLOWSHIP_ESTETICO.md`), `DATA/RESEARCH/`
 (`daily-plan.md`, `RUTA_PUBLICACION_2027.md`, `MENTORES.md`, `CASE_REPORT_1/caso_candidatos.md`, `TESIS_L0/etica.md`), `DATA/SYNAPSE/` (`CURSO_IA_04H_31AGO.md`,
 `motor-dia-a-dia.md`, `VIBECODING_12_PROYECTOS.md`), `DATA/ENCAPS/RUNBOOK_SEMANA2_2026-10-26.md` y el resto de `BANCO_PROPIO/README.md`.
+
+## 28 · v6.04 — SEMANA CORRIDA por alias (v6.04a) + EXAMEN STEP 1 → LUN 25-OCT-2027 (v6.04b) (mié 21-oct-2026) — **cuarto ajuste bajo v6 y el primero que mueve el examen**: el mié 21-oct (D1 de v6.03) sin estudio → jue 22 = plan del mié 21 · vie 23 = plan del jue 22 · el vie 23 se reparte en sáb 24 / dom 25 · desde el lun 26 nada cambia (v6.04a, sin re-fechar nada) · examen lun 27-sep → **lun 25-oct-2027** con el GO/NO-GO **lun 6-sep**, tramo 2 de **182 filas** (T1-T90 = v6.03) y colchón **24 → 48 filas (≈ 126 h)** · MIR **203 sesiones** (handoff mar 26-oct) · **DJ-1 v6.04 = 25-oct para cualquier ENCAPS** · F1, ENCAPS, Supabase y secundarios: los de v6.03
+
+> **Fuente de verdad:** `DATA/_scripts/_fechas_v6.json` **v6.04** (`corrida_s1` v6.04 con `sin_sesion` 19/20/21, `alias` 22 → 21 y 23 → 22, `reparto` del vie 23
+> en sáb 24 / dom 25 · `step1.examen` 2027-10-25 · `gonogo` 2027-09-06 · `ritual` 2027-10-23 · `viaje_d1` 2027-10-24 · `reserva_por_encaps` = 2027-10-25 en los
+> 6 escenarios · bitácora nueva `step1.cambios`) → `src/lib/fechasV6.ts`; commits **`6de3f14`** (v6.04a: `_fechas_v6.json`, `fechasV6.ts`, `plantillasV6.ts`,
+> `DATA/ENCAPS/RUNBOOK_SEMANA2_2026-10-26.md`) y **`e4340a5`** (v6.04b: 28 ficheros — generadores `gen_fechas_v6.js`, `gen_mir_mantenimiento.js`,
+> `usmle/gen_usmle_v5.js`, `gen_tramo2.js`, `assemble_usmle_ts.js`, `ref_v6/gen_tramo2_ref.js`, `verificar_v6.js`; planes `usmleStep1Daily.ts`,
+> `mirMantenimiento.ts`, `researchDailyPlan.ts`; textos de la app derivados de `FECHAS_V6`); referencia del tramo 2
+> `DATA/_scripts/usmle/ref_v6/tramo2_14mar_25oct_v604.json` (= `tramo2_vigente.json`). Calendar de la semana: `DATA/_v600/cal/CAL_V6.md` §15. Estado anterior =
+> tag git `regimen-v6.03` (commit `09409c0`). Cifras de esta sección comprobadas con node el 21-oct (día de la semana incluido) sobre los `.ts`
+> (`DATA/_scripts/usmle/cargar_ts.js`), la referencia v6.04, `DATA/_v600/espec/b_horas.js` + `b_gate.js` y `gen_fechas_v6.js --check --calculo`;
+> `verificar_v6.js` en verde.
+
+### 28.1 Por qué y qué pidió Joseph
+
+El mié 21-oct (D1 de v6.03, UWSA1) no se estudió: **38 hábiles sin estudio desde el 31-ago** (37 hasta el mar 20). Joseph dio dos órdenes ese día:
+- *«lo del 21 para el 22, lo del 22 para el 23, lo del 23 repártelo entre el 24 y el 25; del 26 en adelante se mantiene tal como está; no hagas tantas
+  modificaciones»* → **v6.04a**: el día se paga con el fin de semana que v6.03 dejaba libre (sáb 24 / dom 25), no con colchón ni con temario.
+- *«con respecto a los días que dices que llevo perdido 37 días hábiles, ¿por qué solamente no alargas la fecha del examen del Step 1? … si es que iba a ser en
+  agosto para septiembre, o si iba a ser septiembre para octubre … simplemente en lo que nos falta, alargar las fechas»* → **v6.04b**: examen **lun 27-sep →
+  lun 25-oct-2027** (la fecha que v6.00 ya tenía como «plan B»); lo que ya está planificado antes del reinicio (mar 16-mar) no se toca y las semanas extra van al
+  colchón del tramo 2.
+
+### 28.2 v6.04a — semana corrida por alias (commit `6de3f14`)
+
+- **Mecanismo:** la capa de alias de la v6.02d (V6_ESPEC, ADDENDUM v6.02d ⏸), reactivada sobre las fechas de plan de **v6.03**: `fechasV6.corridaS1De(iso)` /
+  `fechaPlanDe(iso, frente)` traducen el día real → fecha de plan y `fechaRealDe(plan, frente)` lo inverso; `plantillasV6.plantillaDelDia` envuelve a `plantillaBase`
+  (`CORRIDO` el 19, 20 y 21 · alias 22-23 · `REPARTO` 24/25 con `fechaPlan` / `desfaseMin`); la nota del Home se arma con los datos de `corrida_s1`. Ningún plan,
+  fila de Supabase, runner ni guía cambia de fecha.
+- **Tabla:** sin sesión **lun 19 · mar 20 · mié 21** · **jue 22 = plan del mié 21** (D1 = UWSA1 08:50-13:00 · Derma d1 · ENCAPS pre-test de arranque 1/2 · MIR
+  D1 · LIVIANO d1) · **vie 23 = plan del jue 22** (D2 Pathoma 1-2 · Research R0 · ENCAPS pre-test 2/2 · LIVIANO d2) · **sáb 24 = mañana del vie 23** (04:15
+  vibecoding S1 3/5 · 05:00 Anki AM · 07:15-12:00 USMLE D3 neoplasia · 12:30 SYNAPSE · 13:00 Business OUTPUT S1) + eval USMLE **13:30** (Day-After UWSA1 5/6; a
+  las 18:00 está el YouTube) + lo del sábado (PC 15:00, Anki 19:00) · **dom 25 = tarde del vie 23 desde las 07:15** (13:30 → 17:15 adelantada 6 h 15′: Derma d2 ·
+  AURUM D3 · MIR D3 · **ENCAPS mini-sim dia 3 10:00** · LIVIANO caso 1 11:00) + **revisión semanal S01 11:45** + cierre del OUTPUT S1 **12:15** (ambos del sábado,
+  +4 h 30′) + lo del domingo (Feynman 15:00, Anki 17:00; el baile 17:15 intacto).
+- **Efectos:** Day-After del UWSA1 jue 22 18:00 · vie 23 05:00 · 07:15 · 18:00 · sáb 24 13:30 · lun 26 18:00 (+ eval reducida) · el D3 (vie 23 en v6.03) se
+  hace el sáb 24 → su validación de 5Q del lun 26 07:15 queda a ~48 h (en v6.03, a 72 h) · runbook ENCAPS de la semana 2 el **dom 25 tras el mini-sim** (a más
+  tardar lun 26 antes de las 16:15; nota en `DATA/ENCAPS/RUNBOOK_SEMANA2_2026-10-26.md`) · los runners conservan su nombre (fecha de PLAN). **Desde el lun 26-oct
+  nada cambia** (simulación día a día: frente a v6.03 solo cambian 19-25-oct).
+- **Calendar:** `CAL_V6.md` §15 (mié 21-oct ≈ 11:41-11:44 Lima): 20 `update_event` por instancia + 13 `create_event` (sáb 24 / dom 25), masters sin tocar,
+  respaldos en `cal_bk/v604/` (fuera de git); verificación 80 OK + 151 eventos idénticos + 13 nuevos, 0 FAIL.
+
+### 28.3 v6.04b — la regla aplicada
+
+- `step1.examen` 2027-09-27 → **2027-10-25**; se derivan otra vez (y `gen_fechas_v6.js` aborta si el JSON difiere): **GO/NO-GO = E-49 = lun 6-sep** · **ritual =
+  último día de plan < E-1 = sáb 23-oct** · **viaje D-1 dom 24-oct** · protegidos del examen **sáb 23 · dom 24 · lun 25-oct** (los 25/26/27-sep dejan de ser
+  protegidos; el sáb 25 y el lun 27-sep vuelven a tener fila) · último día con estudio **vie 22-oct** · `STEP1_SEMANAS` **43** (11 de F1 + 32) · F4 **lun 3-may → sáb 23-oct, 150 días de plan L-S** · EXAMEN dom 24 →
+  lun 25-oct · **F5 desde mar 26-oct**.
+- **DJ-1 v6.04:** `reserva_por_encaps` = **lun 25-oct en los 6 escenarios ENCAPS** (sin adelanto; adelanto = base = plan B). La tabla de v6.00-v6.03 (14/21-mar →
+  31-ago · 4/11-abr → 27-sep · 18/25-abr → 25-oct) queda en `DJ1_V600` (historial y fechas de prueba de la comprobación TS = node). `node
+  DATA/_scripts/gen_fechas_v6.js --check --calculo` = **exit 0** (en v6.03, exit 1): la regla de cálculo de V6_ESPEC §B4.4 da 25-oct con piso al D-1 **14-mar
+  +164 h · 21-mar +137 · 4-abr +93 · 11-abr +65 · 18-abr +38** (déficit 0) y para **25-abr ninguna fecha ≤ 25-oct** (piso +10 h, **déficit 4 u**) → extensión,
+  avisar a Joseph → la decisión (13) de v6.03 queda resuelta salvo ese escenario.
+- **Nada antes del reinicio cambia:** F1 (D1-D50), ENCAPS (F1 `dia` 1-50, intensiva 51-100, carril B y 10 pendientes), Supabase (huella v6.03), Research,
+  Derma, AURUM, LIVIANO, SYNAPSE, vibecoding y Business. Único efecto visible antes del 16-mar: el contador «M n/203» del MIR desde el jue 11-feb.
+- **No se comprime nada:** el tramo 2 se regenera con `E = 2027-10-25`; las 24 filas de plan nuevas son colchón; ningún hito se adelanta (NBME 29, NBME 30 y
+  UWSA3 conservan su fecha).
+
+### 28.4 USMLE: tramo 2 de 182 filas y hitos 2027
+
+- **Tramo 2 = 182 filas T1-T182 (`d` 101-282)** = F3 32 + F4 150, mar 16-mar → sáb 23-oct · **T1-T90 idénticas a v6.03** (→ jue 8-jul) · tipos: contenido 28 ·
+  refuerzo 2 · reactivación 40 (la última, T79 vie 25-jun) · reentrada 1 · hitos 8 · day_after 7 · uw_random 14 · incorrectas 18 · consolidación 10 · taper 5 ·
+  ritual 1 (todos =) · **colchón 24 → 48 filas ≈ 126 h al piso** (21 en sábados de F4): T50 sáb 22-may · T56 · T62 · T68 · T74 · T80 sáb 26-jun · T81 lun 28-jun
+  · **bloque continuo T84-T114, jue 1-jul → jue 5-ago** (31 filas, entre la última reactivación y el banco intensivo de la Fase B, que empieza en T115 vie 6-ago)
+  · T116 sáb 7-ago · T122 · T128 · T134 · T140 · T146 · T152 · T158 sáb 25-sep · T164 sáb 2-oct · T176 sáb 16-oct (colchón de cierre: solo incorrectas/flagged +
+  Anki maduro) · déficit 0 · horas-plan al piso ≈ 567 h (⏸ v6.03 ≈ 502) · uWorld FRESCO 3.260 Q (F1 1.640 + tramo 2 1.620; margen 399, =) · 45/45 `dOrig` ·
+  `diaInicio` sin cambio (`update_diainicio.js`: 0 cambiados).
+- **Hitos 2027** (`hitosDelPlan()` = D1 D10 D25 D40 D50 T2 T51 T82 T129 T135 T142 T159 T169; ventana lun-sáb + preferente, plantilla H; es el «Plan B» de V6_ESPEC
+  §B5, ahora base):
+
+| Hito | T | **v6.04** | Ventana | E-n | Horario | ⏸ v6.03 |
+|---|---|---|---|---|---|---|
+| NBME 29 | T2 | mié 17-mar | — (F3) | E-222 | 07:00-12:30 | = |
+| NBME 30 | T51 | lun 24-may | 24-29 may | E-154 | 07:00-12:15 | = |
+| UWSA3 (opcional) | T82 | mar 29-jun (feriado) | 28-jun → 3-jul | E-118 | 07:00-11:15 | = |
+| NBME 31 | T129 | **lun 23-ago** | 23-28 ago | E-63 | 07:00-12:15 | mié 28-jul (T107) |
+| NBME 32 | T135 | **lun 30-ago (feriado)** | 30-ago → 4-sep | E-56 | 07:00-12:15 | vie 6-ago (T115) |
+| **GO/NO-GO** | — | **lun 6-sep** | — | E-49 | decisión | lun 9-ago |
+| UWSA2 | T142 | **mar 7-sep** | 6-11 sep | E-48 | 07:00-11:15 | mar 10-ago (T118) |
+| NBME 33 | T159 | **lun 27-sep (solo)** | 27-sep → 2-oct | E-28 | 07:00-12:15 | lun 30-ago + 3 bloques = ensayo (T135, 07:00-16:30) |
+| **Ensayo 7 bloques = Free 120 + 4 bloques** | T169 | **vie 8-oct (feriado)** | lun 4 → sáb 9-oct | E-17 | 07:00-16:30 | Free 120 solo lun 13-sep (T147, 07:00-10:15) |
+| Taper | T177-T179 | **lun 18 → mié 20-oct** (≤ 2 h, bloque A) | — | — | 04:05 | lun 20 → mié 22-sep |
+| D94 última sesión de banco | T180 | **jue 21-oct** | — | E-4 | 04:05-06:05 | jue 23-sep |
+| D95 sesión mínima | T181 | **vie 22-oct** | — | E-3 | ≤ 1 h | vie 24-sep |
+| Ritual (sin estudio, protegido) | T182 | **sáb 23-oct** | — | E-2 | — | sáb 25-sep |
+| Viaje a Lima (D-1, protegido) | — | **dom 24-oct** | — | E-1 | — | dom 26-sep |
+| **EXAMEN** | — | **lun 25-oct-2027** | — | 0 | 07:00-16:00 | lun 27-sep |
+| Regreso | — | **mar 26-oct** (permiso 1 día; 2 si hay turno M) | — | — | — | mar 28-sep |
+
+- Si hay turno en el feriado: NBME 32 al primer día T de su ventana (nunca después del sáb 4-sep, porque precede al GO/NO-GO); el ensayo se parte (Free 120 en un
+  día T y los 4 bloques en el siguiente día T de la ventana). Cierre «0 preguntas y 0 tarjetas nuevas» desde el Free 120 (vie 8-oct). **Permiso de examen en la
+  posta: pedirlo a más tardar el lun 27-sep** (≥ 4 semanas, como día justificado).
+- **GO/NO-GO por horas (V6_ESPEC §B4.5, fila 25-oct; `b_gate.js`):** umbral **≥ 294 h** reales acumuladas desde el reinicio al lun 6-sep (quedan 106 h PISO de
+  E-49 al D-1) · checkpoints de ritmo **31-may ≥ 62 · 30-jun ≥ 134 · 31-jul ≥ 211** (⏸ 27-sep: 127 · 199 · 276) · criterio de hitos sin cambio (NBME 31 y 32 ≥ 68
+  %, uno ≥ 70 %). Colchón de horas al D-1 (`b_horas.js`, meta 399 h): **PISO +164 · M +216 · MIX +320 · T +425** (⏸ 27-sep: +99 · +142 · +228 · +314).
+- **App:** `DAILY_META` `{ version:'v6.04', inicio:'2026-10-21', fin:'2027-10-23', totalDias:232, examenTarget:'2027-10-25', gonogo:'2027-09-06',
+  descansoD1:'2027-10-24', … }` · `STEP1_SEMANAS` 43 (la semana del lun 25-oct = «examen») · «T{n}/182» · `estadoUSMLE`: sáb 23-oct = T182, desde el dom 24-oct FIN ·
+  revisiones semanales S22 sáb 20-mar = S12/43 … S49 sáb 25-sep = S39/43 … **S53 sáb 23-oct = S43/43** · `usmleScores`: tramos del NBME 28 con «25-oct SIN
+  MARGEN» (< 50 % → decidir con Joseph: extensión) · NBME 33 < 65 % → mover pagando recargo / extensión · textos de hitos, GO/NO-GO y cuentas atrás (Home,
+  `UsmleHub`, `CockpitStatusBar`, `usmleGuia`, `homeBriefing`) derivados de `FECHAS_V6` · `serumsTurnos` F4 → sáb 23-oct.
+- **Verificación:** `verificar_v6.js` en verde (V1 0 diferencias · V2 = `ref_v6/tramo2_14mar_25oct_v604.json` · V2+ 21 escenarios con `--f1-filas 50` +
+  compatibilidad v6.00 (58), v6.01 (57), v6.02 (52) y v6.03 (50) byte a byte · V3 232 fechas, sábados 25 (todos ≥ 3-may), ritual = única fila en protegido ·
+  `USMLE_TAPER` D94 T180 / D95 T181 / ritual T182 · control «textos v6.04»: 0 restos de examen 27-sep, GO/NO-GO 9-ago, ritual 25-sep, viaje 26-sep, T158, colchón
+  «24 filas ≈ 63 h» ni «/39» fuera de bitácora).
+
+### 28.5 MIR y resto de frentes
+
+- **MIR** (`gen_mir_mantenimiento.js 2027-02-11 2027-05-06 --ext-hasta 2027-10-22`): diario (78, mié 21-oct → mié 10-feb) y mantenimiento (57, jue 11-feb → jue
+  6-may) sin cambio · **extensión 121 → 145 filas, vie 7-may → vie 22-oct-2027** (96 lun-jue · 25 viernes · 24 sábados; el tope sigue al último día con estudio,
+  `DERIVADOS_V6.ultimoDiaEstudio`) · la reposición v6.02c se recalcula: de las 11 repuestas de v6.03 (mar 28-sep → mar 12-oct) la extensión absorbe 10 y queda
+  **1 repuesta: d203 mar 26-oct** (Medicina Legal y Bioética, banco 25Q, `repuesta: 'v6.04'`; es el día del regreso del examen) · **`MIR_MANT_DIAS` 203** · 5.370 Q
+  (⏸ 4.990) · **`MIR_MANT_TIER_C` 36** (12 + 24; ⏸ 34) · **handoff mar 26-oct-2027** · umbral de cierre 70/55 hasta el **vie 22-oct** → 75/60 desde el examen
+  (`mirEvalLog`, derivado de `DERIVADOS_V6.ultimoDiaEstudio`) · FSRS 0,85 hasta el Step 1. Los sáb 25-sep y lun 27-sep vuelven a tener fila MIR (d179, d180);
+  sáb 23 / dom 24 / lun 25-oct sin fila (protegidos). Ninguna sesión se borra.
+- **Research · Derma · AURUM · LIVIANO · SYNAPSE · vibecoding · Business:** sin cambio de fechas (Research c2 termina el jue 2-sep y Derma c2 el lun 26-jul, antes
+  del examen); en `researchDailyPlan.ts` / `DATA/RESEARCH/daily-plan.md` solo cambia la lista de protegidos (23-25 oct).
+- **ENCAPS:** sin cambio (nada antes del 16-mar); el texto del EXAMEN ENCAPS del Calendar que cita la tabla DJ-1 literal queda desfasado (§28.6).
+
+### 28.6 Supabase, Calendar y lo que queda pendiente
+
+- **Supabase:** sin tocar (v6.04a es alias en la consulta; v6.04b no afecta al ENCAPS). Estado vigente = el de §27.6 (huella v2 100 ·
+  `2a0a9c1563279bb4d70f2729ea26e2e4`, fila completa `53f686a3317660e80a99711409d3beef`, backups `*_bk_v603_20261020`).
+- **Calendar v6.04a:** aplicado (CAL_V6 §15). **Calendar v6.04b: PENDIENTE al cerrar esta sección** (comprobar cada id con `get_event` antes de escribir; ids de
+  `CAL_V6.md` §3 «Eventos sueltos»): 🎯 NBME 31 `l771lvcfv0jcebt61do6svia18` + ventana `alb6i6bnjtgqm5ibv6muo5imcg` → lun 23-ago 07:00-12:15 · 23-28 ago ·
+  🎯 NBME 32 `h65e772pqsa4hgc5b6bh9n8h50` + `fepdb3cmgc0puj7tksm96ufhs4` → lun 30-ago · 30-ago → 4-sep · 🚦 GO/NO-GO `3i88pp1gj84vc0r6tuherhsc0o` → lun 6-sep ·
+  🎯 UWSA2 `2u7viv0elr6aedo0m9undfa5kg` + `tda895k00safeu1silkq53t1ps` → mar 7-sep · 6-11 sep · 🎯 NBME 33 `la5rsbuiqj1o35lb5adf93abuo` + `mpfd71n65pnf3su7ig712hcc1o`
+  → lun 27-sep **07:00-12:15 (sin los 3 bloques)** · 27-sep → 2-oct · 🎯 Free 120 `lh9jfjsmoif74ci6jcn8f1mq30` + `oupbht84p59h0oss75aehm9s4k` → **vie 8-oct
+  07:00-16:30 (+ 4 bloques = ensayo 7 bloques)** · 4-9 oct · 🏁 D94 `neboplchsaua4snj39nrl480nc` → jue 21-oct 04:05-06:05 · 🛌 D95 `n90bdqhohadu1eqbctv148dn28` → vie
+  22-oct 04:05-05:05 · 🛡 ritual `e3dqhtc4nr3lttiu39jgdtkues` → sáb 23-oct · 🚌 viaje `3ph93qla4c15sk8vjt3ibl0nm8` → dom 24-oct · 🚌 regreso
+  `c0g48p72o4441tgcecmlg8s8lo` → mar 26-oct · 🎯 EXAMEN `oinh139dsnbuma9r3kfu56dhkc` → lun 25-oct 07:00-16:00 · series: 📋 revisión semanal F4
+  `69tr6hqitr5fnanc2af5kvugnk` (UNTIL sáb 18-sep → sáb 16-oct; `recurrence` del MCP roto para UPDATE → recrear) · EXDATE de ANKI sábado `00929or8op5hj28s3nbf1eo09c`
+  (25-sep → 23-oct) y ANKI domingo `0ar1fbrm3ts396kd96f8df753g` (26-sep → 24-oct) · barrer los textos que citen el examen 27-sep, el GO/NO-GO 9-ago o la
+  extensión MIR → 24-sep + 11 repuestas (`list_events` con `fullText`; ya se sabe de las series MIR 15:15 `uiduvkfsgs43p1u1qk1vohih58` / 15:30
+  `hos0tfhsr2hdfs6cgv1rmejhrs` y del EXAMEN ENCAPS `8juk0mvl66tutdkbcei7umrs68`, que cita la tabla DJ-1 literal) · rutinas personales (GYM / BAILE con el examen del
+  27-sep, CAL_V6 §7 R2-13 … R2-23) **solo con OK de Joseph**.
+
+### 28.7 Decisiones abiertas y riesgos (detalle y recomendación en `DATA/PENDIENTES_JOSEPH.md`, bloque v6.04)
+
+Nuevas: **(A) elegibilidad** — el 25-oct es el último mes de ago-sep-oct → recomendación de inscribir **sep-oct-nov** (verificar la entidad: FSMB según la
+espec; para un graduado fuera de EE. UU./Canadá, ECFMG) · **(B) NO-GO del lun 6-sep** sin fecha posterior gratuita dentro de ago-sep-oct (y lo mismo para NBME
+33 < 65 %, NBME 28 < 50 % y un ENCAPS el 25-abr) · **(C) ensayo de 7 bloques en el feriado vie 8-oct** · **(D) NBME 32 en el feriado lun 30-ago** · **(E) permiso
+de examen en la posta hasta el lun 27-sep** (+ regreso mar 26-oct) · **(F) sesión MIR repuesta el día del regreso (mar 26-oct)** · **(G) 31 filas seguidas de
+colchón jul-ago** · **(H) Calendar v6.04b pendiente**. Siguen abiertas de v6.03: (1) Research · (2) vibecoding S11-S12 · (3) LIVIANO casos 1-2 (el caso 1 pasa
+al dom 25) · (4) Business · (5) AURUM PITCH · (6) flag deload · (7) NBME 28 sin Day-After · (8) stock ENCAPS · (10) NBME 25-27 en martes · (12) S1 del
+vibecoding · (14) `MINIMOS`; resueltas o sustituidas: (9) colchón 24 → 48 filas · (11) validación del D3 (ahora a ~48 h) · (13) tabla DJ-1 (DJ-1 v6.04).
+
+### 28.8 Docs actualizados en esta pasada (21-oct)
+
+`DATA/_v600/V6_ESPEC.md` (ADDENDUM v6.04 arriba; el v6.03 queda como base vigente de F1 y el v6.02d como histórico; marcas v6.04 en §0, §A1, §A3, §B4.4, §B5,
+§B6 y §I) · este §28 + cabecera (y marcas en los títulos de §24 y §27) · `DATA/PENDIENTES_JOSEPH.md` (bloque v6.04; estado de las decisiones v6.03) ·
+`DATA/ENCAPS/CALENDAR_SEGMENTOS_V5_6.md` (nota v6.04, marca en §23.5 y §23.10 nuevo) · `DATA/USMLE/README.md` (bloque v6.04) ·
+`DATA/USMLE/CALENDARIO_5_MESES.md` (aviso) · `DATA/MIR/README.md` (bloque v6.04) · notas v6.04 en `DATA/ROADMAP_MAESTRO_2026-2034.md`,
+`DATA/ENCAPS/RUTINA_EXTREMA_MILITARIZADA.md`, `DATA/ENCAPS/AUDITORIA_AGENTE_ESTUDIO_2026-07-02.md`, `DATA/ENCAPS/DOCTRINA_SPRINT_FINAL_EVIDENCIA.md`,
+`DATA/SYNAPSE/CURSO_IA_04H_31AGO.md`, `DATA/DERMATOLOGIA/RUTA_FELLOWSHIP_ESTETICO.md`, `DATA/PROTOCOLO_MODO_MINIMO.md`, `DATA/REVISION_SEMANAL.md` y
+`DATA/_v600/README.md`. `DATA/USMLE/PALMERTON_DIVERGENCIAS_PLAN.md` no cita el 27-sep (sigue en v5.20; su divergencia #21 —Free 120 + 4 bloques el mismo
+día— coincide ahora con el ensayo de 7 bloques del vie 8-oct). Ya venían al día de los commits: `DATA/ENCAPS/RUNBOOK_SEMANA2_2026-10-26.md` (`6de3f14`),
+`DATA/RESEARCH/daily-plan.md` y `DATA/_v600/cal/CAL_V6.md` §15 (`e4340a5`).

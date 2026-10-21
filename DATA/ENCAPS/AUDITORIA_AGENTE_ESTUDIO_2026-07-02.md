@@ -1,6 +1,17 @@
 # 🔍 AUDITORÍA CONSOLIDADA — APEX / agente_estudio
 
-> **📌 v6.02 VIGENTE (corrimiento al lun 19-oct-2026, sáb 17-oct) — criterio anti-pisada ACTUAL (manda sobre los de v6.01 y v6.00 de abajo).** Régimen: Step 1
+> **📌 v6.04 VIGENTE (mié 21-oct-2026) — criterio anti-pisada ACTUAL = el de v6.03 (v6.04 no tocó Supabase; manda sobre los de v6.02, v6.01 y v6.00 de abajo).**
+> Régimen: Step 1 F1 **mié 21-oct → mié 30-dic-2026** (50 sesiones; NBME 28 = D50 mié 30-dic; semana 1 corrida solo en la consulta: jue 22 = plan del mié 21 ·
+> vie 23 = plan del jue 22 · el vie 23 repartido en sáb 24 / dom 25 — **los runners y las filas conservan su fecha de PLAN**) · ENCAPS intensiva lun 4-ene → vie
+> 12-mar-2027 (examen **dom 14-mar-2027 PROVISIONAL**) · examen Step 1 **lun 25-oct-2027** (v6.04; ⏸ lun 27-sep). **Estado de Supabase que hay que proteger
+> (v6.03, 20-oct):** `study_schedule` ENCAPS = **50 filas `MANTENIMIENTO` `dia` 1-50** (mié 21-oct → mié 30-dic) **+ 50 filas `INTENSIVO` `dia` 51-100** (lun 4-ene →
+> vie 12-mar) = 100 filas, **huella v2 `100 · 2a0a9c1563279bb4d70f2729ea26e2e4`**, huella de fila completa **`53f686a3317660e80a99711409d3beef`** ·
+> `study_metrics.extra`: **`d1 = 2026-10-21`, `dias_ciclo = 50`, `exam_date = 2027-03-14`**, régimen `MANTENIMIENTO_2027-1 v6.22 (50 d) + INTENSIVA v6.03`,
+> `intensiva.dias = 51-100` · backups **`study_schedule_bk_v603_20261020`**, **`study_schedule_bk_v603_int_20261020`**, **`study_metrics_bk_v603_20261020`**.
+> **NO restaurar desde `*_bk_v602_*`, `*_bk_v601_*`, `*_bk_v600_*` ni `bk_1006`.** Una pisada se detecta si cambia la huella, si aparece `dia` 101+ o si
+> `d1 ≠ 2026-10-21` (fuente: `DATA/REESTRUCTURACION_31AGO_2026.md` §27.6 y §28.6).
+
+> **📌 ⏸ v6.02 (corrimiento al lun 19-oct-2026, sáb 17-oct) — criterio anti-pisada SUPERSEDIDO por el de v6.04 / v6.03 de arriba.** Régimen: Step 1
 > F1 **lun 19-oct → mié 30-dic-2026** (52 sesiones; NBME 28 = d52 mié 30-dic) · ENCAPS intensiva lun 4-ene → vie 12-mar-2027 (examen **dom 14-mar-2027
 > PROVISIONAL**) · examen Step 1 **lun 27-sep-2027** (sin cambio). **Estado de Supabase que hay que proteger:** `study_schedule` ENCAPS = **52 filas
 > `MANTENIMIENTO` `dia` 1-52** (lun 19-oct → mié 30-dic) **+ 50 filas `INTENSIVO` `dia` 53-102** (lun 4-ene → vie 12-mar) = 102 filas, **huella v2 `102 ·

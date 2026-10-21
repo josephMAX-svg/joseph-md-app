@@ -1,6 +1,18 @@
-# 🎖️ RUTINA EXTREMA MILITARIZADA — objetivo vigente **v6.02**: **STEP 1** (F1 lun 19-oct → mié 30-dic-2026 · ⏸ v6.01: lun 12-oct · ⏸ v6.00: mié 7-oct) → **ENCAPS ≥17/20** (F2, examen **dom 14-mar-2027 PROVISIONAL**) → **STEP 1** (F3/F4, examen **lun 27-sep-2027** · GO/NO-GO **lun 9-ago**)
+# 🎖️ RUTINA EXTREMA MILITARIZADA — objetivo vigente **v6.04**: **STEP 1** (F1 mié 21-oct → mié 30-dic-2026, semana 1 corrida: D1 jue 22-oct · ⏸ v6.02: lun 19-oct · ⏸ v6.01: lun 12-oct · ⏸ v6.00: mié 7-oct) → **ENCAPS ≥17/20** (F2, examen **dom 14-mar-2027 PROVISIONAL**) → **STEP 1** (F3/F4, examen **lun 25-oct-2027** · GO/NO-GO **lun 6-sep** · ⏸ v6.00-v6.03: lun 27-sep · lun 9-ago)
 
-> ## ✅ v6.02 VIGENTE (sáb 17-oct-2026 · arranca el LUN 19-OCT) — corrige la fila F1 de las tablas v6.01 y v6.00; la doctrina y el contrato no cambian
+> ## ✅ v6.04 VIGENTE (mié 21-oct-2026) — semana 1 corrida + EXAMEN STEP 1 LUN 25-OCT-2027; la doctrina y el contrato no cambian
+> **Lo que se perdió (cuantificado, sin adular):** lun 19, mar 20 (v6.03) y **mié 21-oct** sin estudio → **38 hábiles sin estudio desde el 31-ago**. El D1 lleva
+> **tres fechas** en una semana (lun 19 → mié 21 → jue 22). Precio de v6.03: 2 filas más fuera de F1 (Neuro D50 + Heme D51 → T3-T4) y el NBME 28 del 30-dic
+> llega con **0 de 6 filas de Heme/Onco**. Precio de v6.04: el mié 21 se paga con el **fin de semana 24/25** (deja de ser libre: el dom 25 se trabaja desde las
+> 07:15) y, por orden de Joseph, el **examen pasa al lun 25-oct-2027** (GO/NO-GO lun 6-sep). Eso **compra** colchón (24 → 48 filas ≈ 126 h; horas al D-1: piso
+> +99 → +164 h) pero **vende el plan B**: el 25-oct es el último mes de la elegibilidad ago-sep-oct → un NO-GO ya no tiene fecha gratis detrás (salvo inscribir
+> sep-oct-nov: `DATA/PENDIENTES_JOSEPH.md` bloque v6.04 (A)-(B)). **Regla del entrenador:** el colchón nuevo NO es permiso para perder más días de F1 — la F1
+> sigue sin colchón propio y cada día perdido hasta el 30-dic sigue sacando temario al tramo 2. Se mide **colchón quemado** (48 filas al reinicio), no días
+> corridos. F4 = lun 3-may → **sáb 23-oct** · NBME 31 lun 23-ago · 32 lun 30-ago · UWSA2 mar 7-sep · NBME 33 lun 27-sep · ensayo 7 bloques vie 8-oct · D94 jue
+> 21-oct · D95 vie 22-oct · ritual sáb 23 · viaje dom 24. Detalle: `DATA/REESTRUCTURACION_31AGO_2026.md` §27-§28. La tabla v6.02 de abajo: su fila F1 la corrige
+> v6.03 (mié 21-oct → mié 30-dic, 50 sesiones; NBME 25 mar 3-nov · 26 mar 24-nov · 27 mar 15-dic · gates vie 13-nov / vie 11-dic) y su fila F4 / examen, v6.04.
+
+> ## ⏸ v6.02 (sáb 17-oct-2026 · arrancaba el LUN 19-OCT) — historial: su F1 la corrige v6.03 y su examen / GO/NO-GO, v6.04 (bloque de arriba); la doctrina y el contrato no cambian
 > **Lo que se perdió (cuantificado, sin adular):** lun 12 → vie 16-oct sin estudio → **5 hábiles más (35 desde el 31-ago)**, y eso con la F1 ya SIN colchón.
 > Precio pagado: **5 filas de Heme/Onco expulsadas de la F1** (v5.20 D52-D54, D56, D57 → tramo 2, T3-T7 18 → 24-mar, delante de la bioestadística, ahora T8
 > lun 29-mar) + **colchón del tramo 2 38 → 28 filas (≈ 100 → ≈ 73,5 h): −10 filas por 5 días** (las 5 filas desplazadas empujan además 5 unidades de
@@ -59,7 +71,7 @@
 | **mar 23-feb → mié 10-mar-2027** (v5.20: fase intensiva SEMBRADA, días 97-107; **examen ENCAPS/SERUMS 2027-I FIJADO el mié 10-mar** — v5.19: «feb → fin-mar») | **ENCAPS 2027-I** vuelve a principal (loop completo: 05:00 Anki cifras · 07:15-12:15 loop · 17:15-18:45 anclaje + eval 20Q; pre-test 2026-II vie 26-feb · SIM 100Q vie 5-mar · dress rehearsal lun 8-mar · D-1 mar 9-mar) | MIR, Research↔Derma, AURUM y Business (CURVA/DENSA arrancan); LIVIANO / SYNAPSE / VIBECODING (planes ya terminados) subordinados al loop; mar 9 y mié 10-mar = días protegidos | **≥17/20** (percentil 1 %) · pre-test de arranque = examen 2026-II reservado (vie 26-feb) → regenerar el barrido con `--pretest` · ⚠ 11 hábiles = solo 4 slots de barrido para 8 críticos · ⚠ confirmar día/hora en la convocatoria (siempre fue domingo) |
 | siempre | — | MIR (enero 2030) es maratón: nunca se sacrifica el sueño por él | 800-1000 cards MIR sólidas a marzo 2028 |
 
-Un fail del Step 1 queda **para siempre** en ECFMG → **v6.00: GO/NO-GO lun 9-ago-2027 (E-49); un NO-GO pasa a la siguiente fecha (lun 25-oct) sin recargo, congelando las filas ya vividas** (V6_ESPEC §B4.5 · §B7.5). ⏸ *(v5.20, SUPERSEDIDO:)* si el mar 2-feb (NBME 31, v5.20) no hay GO, la fecha se mueve 2-4 semanas sin culpa (el eligibility period lo permite). ⚠ En v5.20 mover el Step 1 2-4 semanas lo haría chocar con la fase intensiva ENCAPS (mar 23-feb → mar 9-mar) y con el examen ENCAPS del mié 10-mar: esa colisión la decide Joseph con los datos del NBME. Eso no es debilidad: es Extreme Ownership con datos.
+Un fail del Step 1 queda **para siempre** en ECFMG → **v6.00: GO/NO-GO lun 9-ago-2027 (E-49); un NO-GO pasa a la siguiente fecha (lun 25-oct) sin recargo, congelando las filas ya vividas** *(⏸ v6.00-v6.03 · **v6.04:** GO/NO-GO **lun 6-sep-2027**; el examen YA es el 25-oct → un NO-GO pasa a la extensión de la elegibilidad (o a noviembre si se inscribe sep-oct-nov))* (V6_ESPEC §B4.5 · §B7.5). ⏸ *(v5.20, SUPERSEDIDO:)* si el mar 2-feb (NBME 31, v5.20) no hay GO, la fecha se mueve 2-4 semanas sin culpa (el eligibility period lo permite). ⚠ En v5.20 mover el Step 1 2-4 semanas lo haría chocar con la fase intensiva ENCAPS (mar 23-feb → mar 9-mar) y con el examen ENCAPS del mié 10-mar: esa colisión la decide Joseph con los datos del NBME. Eso no es debilidad: es Extreme Ownership con datos.
 
 ## ⚠️ LEY CERO (la que NO se negocia, respaldada por evidencia)
 **DORMIR 7h reales (21:00 → 04:00).** No es debilidad: es tu arma secreta.

@@ -960,3 +960,123 @@ Comparación por script (`cal_bk/v604/ver.js`) del volcado antes (171 eventos) y
 2. Instancias de la mañana del mié 21 (vibecoding 04:15, Anki 05:00, repaso 07:15, pre-test 08:15, deep prime 09:00, 30Q 11:00) con su título de serie (ya pasadas; la app marca el día CORRIDO). Las del jue 22 / vie 23 de las series USMLE, ANKI AM, vibecoding, SYNAPSE (vie 23), AURUM, MIR y Business conservan el título genérico: el contenido del día de plan lo da la app (`fechaPlanDe`). El jue 22 las series USMLE de la mañana se solapan con el UWSA1 (convención de §12/§13/§14).
 3. Hitos (NBME 25-28, gates, CHECKPOINT, deload), series y todo lo ≥ lun 26-oct: sin cambio (la orden fija del 26 en adelante). Sin commit.
 4. Escrituras en el repo: solo este fichero. Respaldos, volcados, payloads y scripts en `DATA/_v600/cal/cal_bk/v604/` (ignorado por git).
+
+## 16. Examen Step 1 lun 25-oct-2027 (v6.04b)
+Respaldos en `cal_bk/v604b/` (gitignored). Ids NUEVOS: revisión F4 `55474jts1urh7s9j1nrtdkvfdg` (antes 69tr6hqitr5fnanc2af5kvugnk) · ANKI sábado `r9eglu07f5lvltvpoue3v4ks6o` (antes 00929or8op5hj28s3nbf1eo09c) · ANKI domingo `5s64scagno3jo983gg6rfdo5qg` (antes 0ar1fbrm3ts396kd96f8df753g).
+
+
+Google Calendar principal · America/Lima. Orden de Joseph (21-oct): «si llevo tantos días perdidos, alarga la fecha del examen».
+Código ya desplegado en el commit `e4340a5` (`_fechas_v6.json` v6.04 · `fechasV6.ts` · `usmleStep1Daily.ts` DIAS_T2 T1-T182 ·
+`mirMantenimiento.ts` 203 sesiones). Este registro es solo el Calendar. Nada anterior al mar 16-mar-2027 cambió de fecha
+(lo de antes solo cambió de texto). La semana corrida de octubre-2026 (§15 de `CAL_V6.md`) no se tocó.
+
+Ejecutado el mié 21-oct-2026, ≈12:11-12:28 Lima (`updated` 17:11:53Z → 17:27:59Z). **47 escrituras**: 41 `update_event`,
+3 `create_event` y 3 `delete_event`. Todas con `notificationLevel: NONE`.
+
+## Fuentes de cada fecha
+
+- `src/lib/fechasV6.ts`: examen 2027-10-25 · GO/NO-GO 2027-09-06 (E-49) · ritual 2027-10-23 · viaje 2027-10-24 · protegidos 23/24/25-oct · F4 lun 3-may → sáb 23-oct · F5 desde mar 26-oct · DJ1_V6 = 25-oct para cualquier ENCAPS · STEP1_SEMANAS 43.
+- `src/lib/usmleStep1Daily.ts`: DIAS_T2 T129 NBME 31 lun 23-ago (ventana 23-28 ago) · T135 NBME 32 lun 30-ago (30-ago → 4-sep) · T141 GO/NO-GO (2.ª pasada de incorrectas) · T142 UWSA2 mar 7-sep (6-11 sep) · T159 NBME 33 lun 27-sep (27-sep → 2-oct) · T169 Free 120 + 4 bloques vie 8-oct 07:00-16:30 (4-9 oct) · colchón de cierre T176 sáb 16-oct · taper T177-T179 lun 18 → mié 20-oct · USMLE_TAPER (D94 jue 21-oct 04:05-06:05 · D95 vie 22-oct 04:05-05:05 · ritual · D-1 · examen · regreso mar 26-oct · permiso de examen a más tardar el lun 27-sep).
+- `src/lib/usmleScores.ts` (HITOS_ONTRACK v6.04): textos del GO/NO-GO, NBME 33 (< 65 % → extensión) y tramos del NBME 28.
+- `src/lib/mirMantenimiento.ts`: extensión 145 filas vie 7-may → vie 22-oct (96 lun-jue · 25 viernes · 24 sábados) + 1 repuesta mar 26-oct = 203 sesiones.
+
+## Protocolo
+
+- `get_event` antes de escribir cada hito y cada serie que se recreó. En las series que solo cambiaron de texto, el estado previo se tomó de un volcado `list_events` del mismo rato, con el mismo `updated` que el master. Respaldos en `DATA/_v600/cal/cal_bk/v604b/<id>.json` (44 ficheros, más los bundles `_bundle_A*.json` y los volcados previos en `volcados/`). `cal_bk/` está en `.gitignore:53`, comprobado con `git check-ignore`.
+- Para cambiar un UNTIL o un EXDATE, la serie se recreó: `create_event` con el mismo DTSTART, hora, color, recordatorios y descripción, más el UNTIL o EXDATE nuevo; después se comprobó la respuesta y se hizo `delete_event` de la vieja. Antes de recrear se compararon todas las instancias con su RRULE (`scripts/inst.js`): Revisión F4 20/20, ANKI sáb 90/90, ANKI dom 90/90, sin excepciones.
+- Los textos de la fase C salen de un script (`scripts/build_c.js`). Cada reemplazo lleva la aserción «exactamente 1 coincidencia» sobre el texto del volcado previo (0 fallos). Los payloads están en `payloads/<id>.txt`. Lo de v6.00-v6.03 queda como historial «⏸». El pie de todo lo escrito es «(v6.04 · 21-oct-2026: examen Step 1 lun 25-oct-2027)».
+- En los masters con excepciones (Eval 18:00, SYNAPSE, MIR ×2, REVISIÓN) solo se cambió la descripción, no el título. Las excepciones conservaron su título y su hora (ver Verificación).
+
+## A. Hitos 2027 (mismos ids, 22 `update_event`)
+
+| Id | Evento | Antes → después |
+|---|---|---|
+| `l771lvcfv0jcebt61do6svia18` | 🎯 NBME 31 | mié 28-jul 07:00-12:15 → **lun 23-ago 07:00-12:15** (T129, E-63) · título «· v6.04» · texto v6.04 (GO/NO-GO lun 6-sep · UWSA2 mar 7-sep · NO-GO → extensión de la elegibilidad nov-dic-ene) |
+| `alb6i6bnjtgqm5ibv6muo5imcg` | 🪟 Ventana NBME 31 | 26 → 31-jul → **lun 23 → sáb 28-ago** (todo el día) |
+| `h65e772pqsa4hgc5b6bh9n8h50` | 🎯 NBME 32 | vie 6-ago → **lun 30-ago 07:00-12:15** (feriado Santa Rosa; T135, E-56; day-after mar 31-ago) |
+| `fepdb3cmgc0puj7tksm96ufhs4` | 🪟 Ventana NBME 32 | 2 → 7-ago → **lun 30-ago → sáb 4-sep** |
+| `3i88pp1gj84vc0r6tuherhsc0o` | 🚦 GO/NO-GO (E-49) | lun 9-ago → **lun 6-sep** (todo el día) · T141 · 294 h al 25-oct · GO → cita del 25-oct + permiso ≤ lun 27-sep · NO-GO → extensión (sin adelanto en v6.04) |
+| `2u7viv0elr6aedo0m9undfa5kg` | 🎯 UWSA2 | mar 10-ago → **mar 7-sep 07:00-11:15** (T142, E-48; day-after mié 8-sep) |
+| `tda895k00safeu1silkq53t1ps` | 🪟 Ventana UWSA2 | 9 → 14-ago → **lun 6 → sáb 11-sep** |
+| `la5rsbuiqj1o35lb5adf93abuo` | 🎯 NBME 33 | lun 30-ago 07:00-16:30 «+ 3 bloques = ensayo 7 bloques» → **lun 27-sep 07:00-12:15, NBME 33 solo** (T159, E-28) · título «🎯 NBME 33 (200Q) + repaso FA 11-14 · PROVISIONAL · v6.04» · «permiso del examen: pedirlo como muy tarde HOY» |
+| `mpfd71n65pnf3su7ig712hcc1o` | 🪟 Ventana NBME 33 | 30-ago → 4-sep → **lun 27-sep → sáb 2-oct** · título sin «+ 3 bloques» |
+| `lh9jfjsmoif74ci6jcn8f1mq30` | 🎯 Free 120 | lun 13-sep 07:00-10:15 → **vie 8-oct 07:00-16:30 = Free 120 + 4 bloques (ensayo 7 bloques)** (feriado Combate de Angamos; T169, E-17) · título «🎯 FREE 120 oficial + 4 bloques = ENSAYO 7 BLOQUES + logística del examen · PROVISIONAL · v6.04» · cierre/taper/checklist con fechas v6.04 |
+| `oupbht84p59h0oss75aehm9s4k` | 🪟 Ventana Free 120 | 13 → 18-sep → **lun 4 → sáb 9-oct** · título «Ventana Free 120 + 4 bloques» |
+| `neboplchsaua4snj39nrl480nc` | 🏁 D94 | jue 23-sep 04:05-06:05 → **jue 21-oct 04:05-06:05** (T180) |
+| `n90bdqhohadu1eqbctv148dn28` | 🛌 D95 | vie 24-sep 04:05-05:05 → **vie 22-oct 04:05-05:05** (T181) |
+| `e3dqhtc4nr3lttiu39jgdtkues` | 🛡 RITUAL | sáb 25-sep → **sáb 23-oct** (todo el día; T182) |
+| `3ph93qla4c15sk8vjt3ibl0nm8` | 🚌 VIAJE A LIMA (D-1) | dom 26-sep → **dom 24-oct** |
+| `oinh139dsnbuma9r3kfu56dhkc` | 🎯 EXAMEN USMLE STEP 1 | lun 27-sep 07:00-16:00 → **lun 25-oct-2027 07:00-16:00** · título «EXAMEN lun 25-oct-2027 … · v6.04» · DJ-1 v6.04 · recta final v6.04 · colchón 48 filas ≈ 126 h · historial v6.00-v6.03 |
+| `c0g48p72o4441tgcecmlg8s8lo` | 🚌 REGRESO | mar 28-sep → **mar 26-oct** (arranque F5 + la sesión MIR repuesta d203) |
+| `ae93qv0nqqs36h439hid1jcq8o` | 🎯 NBME 29 | fecha sin cambio (mié 17-mar) · solo texto: examen 25-oct · GO/NO-GO 6-sep · colchón 48 filas (título «· v6.00» intacto, como en v6.02/v6.03) |
+| `mael3p9uhp036jbep45ql6v9oc` | 🎯 NBME 30 | fecha sin cambio (lun 24-may) · E-126 → **E-154**, examen 25-oct (título intacto) |
+| `3bdlibt00dp3lbkcd2l19cstfk` | 🪟 Ventana NBME 30 | sin cambio de fecha · examen 25-oct |
+| `p0pstc1topo0sc87bieudrvrbg` | 🎯 UWSA3 (opc.) | fecha sin cambio (mar 29-jun) · E-90 → **E-118**, examen 25-oct; «sin adelanto en v6.04 → el UWSA3 se mantiene» |
+| `meprb68otcauq9s07ldlibscu8` | 🪟 Ventana UWSA3 | sin cambio de fecha · examen 25-oct |
+
+## B. Series de 2027 recreadas (3 `create_event` + 3 `delete_event`)
+
+| Serie | Id viejo → id nuevo | Antes → después |
+|---|---|---|
+| 📋 Revisión semanal 20' F4 (todo el día, FREE) | `69tr6hqitr5fnanc2af5kvugnk` → **`55474jts1urh7s9j1nrtdkvfdg`** | DTSTART sáb 8-may-2027 = · `UNTIL=20270918` (20 sábados) → **`UNTIL=20271016`** (24 sábados: el sáb 23-oct es el ritual) · título «· v6.03» → «· v6.04» · hitos de la ventana v6.04 |
+| ANKI sábado 19:00-19:30 (color 1, abierta) | `00929or8op5hj28s3nbf1eo09c` → **`r9eglu07f5lvltvpoue3v4ks6o`** | DTSTART sáb 28-mar-2026 = · EXDATE 13-mar + **25-sep** → 13-mar + **23-oct-2027** (19:00) · texto v6.04 (el sáb 25-sep pasa a ser sábado normal de F4) |
+| ANKI domingo 17:00-17:15 (color 1, abierta) | `0ar1fbrm3ts396kd96f8df753g` → **`5s64scagno3jo983gg6rfdo5qg`** | DTSTART dom 29-mar-2026 = · EXDATE 14-mar + **26-sep** → 14-mar + **24-oct-2027** (17:00) · texto v6.04 |
+
+No hay más series de F4/SERUMS en el Calendar. §G5 de `V6_ESPEC.md` (bloque A 04:05-05:55 L-S, serie de turno, etc.) sigue sin ejecutarse: un volcado de las semanas 16-22 mar y 3-9 may-2027 y del sáb 25-sep-2027 lo confirma. Las series MIR, R↔D, AURUM 30' y REVISIÓN siguen terminando antes del SERUMS (30-abr / 29-abr / 1-may) y no se recrearon.
+
+## C. Barrido de textos (19 `update_event`, solo descripción; fecha, hora, título, RRULE, EXDATE, color y recordatorios intactos)
+
+El barrido se hizo con `list_events` y `fullText «27-sep»` del 21-oct-2026 al 16-mar-2027 (977 instancias en 4 páginas), más semanas tipo de mar y may-2027 y `fullText «Prometric»` de 2027. Las rutinas personales quedaron fuera.
+
+| Id | Evento | Cambio |
+|---|---|---|
+| `9274q14djfvggeajhor64oshj8` · `76dnlc30p3hnccenpvub2d9acg` · `c24k2n7k8qlhfimrrncf8rapgk` · `iuhj8busrh63ms7v4j5q8e9920` · `q72kvc9pm1brlqvl6383ccr9vs` · `c5e77csne1bnfps1iq7nqel84s` | 6 series USMLE F1 | «EXAMEN STEP 1 LUN 27-SEP-2027 (sin cambio · … ventana 31-ago / 27-sep / 25-oct … GO/NO-GO lun 9-ago)» → «LUN 25-OCT-2027 (v6.04 · DJ-1 v6.04 · GO/NO-GO lun 6-sep; ⏸ …)» · «colchón del tramo 2 = 24 filas ≈ 63 h» → «48 filas ≈ 126 h en v6.04; 24 filas ≈ 63 h en v6.03» |
+| `i4h2gu846t9t7b16q89hnao84s` | 🧠 VIBECODING | examen Step 1 lun 25-oct-2027 (⏸ 27-sep) |
+| `r9scujjpk93jn0fmh4rvahk68g` | 🧠 SYNAPSE 12:30 | ídem |
+| `k8iaefnjq0mnrlvkilhcarrik8` | 📋 REVISIÓN SEMANAL 07:15 | lectura del NBME 28 por tramos v6.04 · revisión F4 sáb 8-may → **sáb 16-oct** (serie `55474jts…`) · examen 25-oct · GO/NO-GO 6-sep |
+| `2fvbkunh0nfhvhbn1b6iqvpifs` | 🇺🇸 STEP 1 VIVO (F2) | examen lun 25-oct-2027 |
+| `uiduvkfsgs43p1u1qk1vohih58` · `hos0tfhsr2hdfs6cgv1rmejhrs` | 🇪🇸 MIR 15:15 / 15:30 | extensión 121 filas → vie 24-sep + 11 repuestas 28-sep → 12-oct ⇒ **145 filas vie 7-may → vie 22-oct (96 · 25 · 24 sáb) + 1 repuesta mar 26-oct = 203 sesiones** (handoff mar 26-oct) |
+| `o1gla7846uae4tgngvc4q45osg` | 🎯 UWSA1 (jue 22-oct) | línea «Plan»: examen lun 25-oct · GO/NO-GO lun 6-sep (resto intacto) |
+| `4hjv5lkvluj06ahc2qndtsi6as` · `lr7ktrbiffj4hrlke7lh7cv6h4` · `sm4baa2v453ifaub325h9v08mg` | 🎯 NBME 25 / 26 / 27 | examen 25-oct · «lo que se ensaya para el día real»: Free 120 + 4 bloques vie 8-oct · D94 jue 21-oct · D95 vie 22-oct · ritual sáb 23-oct · viaje dom 24-oct |
+| `ecu784689p8osrhqabuct8d5jg` | 🎯 NBME 28 (checkpoint) | ídem + CHECKPOINT por tramos v6.04 (≥ 58 % en ruta al 25-oct · 50-57 % gate estricto · < 50 % sin margen → decidir con Joseph / extensión) + colchón 48 filas |
+| `ag335n3dhvui11593us2lm448s` | 🧯 C2 (30-dic) | examen 25-oct |
+| `8juk0mvl66tutdkbcei7umrs68` | 🏁 EXAMEN ENCAPS (14-mar) | tabla «fecha a RESERVAR» → DJ-1 v6.04 = lun 25-oct para cualquier ENCAPS (⏸ tabla v6.00) · examen 25-oct |
+
+## Verificación (list_events después de los cambios)
+
+- Volcado `fullText` «21-oct-2026: examen Step 1 lun 25-oct-2027» del 19-oct-2026 al 31-dic-2027 (977 eventos, 4 páginas, `volcados/after/`), comprobado con `scripts/ver.js`: **1.987 comprobaciones OK · 0 FAIL**.
+  - Las 19 descripciones de la fase C coinciden con su payload en todas sus instancias (USMLE 52 cada una · vibecoding 97 · SYNAPSE 93 · REVISIÓN 27 · STEP 1 VIVO 9 · MIR 133 cada una · los singles 1).
+  - Las excepciones conservan título y hora. Eval: lun 19, mar 20 y mié 21 «⏭ SIN SESIÓN». SYNAPSE: mar 20 y mié 21 ⏭; jue 22 a las 07:25; 3-nov, 24-nov, 15-dic y 30-dic a las 13:00. MIR: mar 20 y mié 21 ⏭. REVISIÓN S01 del dom 25-oct 11:45.
+  - Las series tienen el mismo número de instancias que antes entre el 21-oct y el 16-mar.
+  - Los 22 hitos están en su fecha v6.04, con una sola instancia cada uno y título «· v6.04» (los 5 que no cambian de fecha conservan el suyo). Ninguno cita ya el 27-sep como vigente.
+- Revisión F4 `55474jts…`: 24 instancias, sáb 8-may → sáb 16-oct, ninguna el 23-oct. ANKI sáb `r9eglu07…`: no aparece el 13-mar ni el 23-oct; sí el 25-sep, el 16-oct y el 30-oct. ANKI dom `5s64scag…`: no aparece el 14-mar ni el 24-oct; sí el 26-sep, el 17-oct y el 31-oct. Los ids viejos `69tr6…`, `00929…` y `0ar1f…` ya no aparecen.
+- `fullText «Prometric»` de 2027: solo quedan los hitos (con las fechas viejas como historial «⏸») y BAILE domingo (rutina personal). No existe ningún evento suelto de «permiso de examen», «día protegido» ni «semana del examen» aparte de los hitos de arriba.
+
+## No tocado / pendientes para el orquestador
+
+1. **Rutinas personales con fechas v6.03 del examen** (no tocadas, por instrucción). Citan el lun 27-sep, D94/D95 del 23/24-sep, ritual 25-sep, viaje 26-sep y regreso 28-sep, y algunas también GO/NO-GO 9-ago, NBME 31 28-jul, NBME 32 6-ago, UWSA2 10-ago, Free 120 13-sep y NBME 33 30-ago:
+   - EKER `22bh9m5jhc7ro6aj3m4ffjad7g` («objetivo primario … al lun 27-sep-2027»).
+   - GYM: lun `6740kavnfkdcvj5k149ouliauu` · mar `0dpes0ekv96a453e89m5osg06t` · jue `4qvs34d84u82psvknpqhv3jc7a` · vie `7sf8i7pe62pugfk4t6tcnbb9i4`.
+   - BAILE: lun `64lue1en3hk0cf8itml2rtlqi4` · mar `09me7atu516gb0k6u0rbfcj8q1` · mié `0tod56pc6pgecm5lf7g4e3ji9v` · jue `3m8m4resu8akph4a7qfuf3h1qn` · vie `5pd4jhmvl31hvbuh40vphpoc4q` · sáb `3jkfb6097rtc1jbec19eg3sd57` · dom `7j6pucil43vuca70p082g5ub3d` · PRÁCTICA `13m3tcqjjc34rt6iqfblla18q1`.
+   - DESAYUNO sáb/dom `2u9je70pif58hgf2f8t3vgu8b8` («sin Anki … el sáb 25 / dom 26-sep»).
+   - ALMUERZO `43dq3oib16esjcqj1dcd8osot2` (UWSA2 10-ago · NBME 33 30-ago · Free 120 13-sep).
+
+   En v6.00, v6.02 y v6.03 se actualizaron con un OK explícito. Hacen falta la decisión y el OK de Joseph.
+2. **SYNAPSE PC domingo** `m8kfvq6440c6al6cq47oclnoj8`: cita «examen Step 1 lun 27-sep-2027 PROVISIONAL», pero solo dentro de su «Historial» (lo que fijó la v6.00). No se tocó para no pisar la excepción v6.04a del dom 25-oct, que tiene título propio.
+3. **Títulos** de NBME 29, NBME 30 y su ventana, y de UWSA3 y su ventana: siguen con «· v6.00» porque su fecha no cambia (misma convención que en v6.02 y v6.03). El texto ya es v6.04.
+4. **STEP 1 VIVO** `2fvbkunh…` sigue diciendo «paquete de 399 h del tramo 2», una cifra que no está en `src/` (V6_ESPEC §B3). No la cambié porque no forma parte del encargo. Conviene confirmar si cambia con las 48 filas de colchón.
+5. **§G5 (series de F4)** sigue pendiente de que se conozca el inicio real del SERUMS. Cuando se cree, el bloque A tiene que llegar hasta el vie 22-oct (D95) y llevar EXDATE 23-25-oct.
+6. **Docs**: falta añadir a `CAL_V6.md` una §16 con este registro y los 3 ids nuevos, y cambiar el `69tr6…` y el ANKI `00929…`/`0ar1f…` de §3/§7 por los nuevos. Lo mismo en el handoff y en `CALENDAR_SEGMENTOS_V5_6.md`. No los toqué: solo escribí este fichero.
+7. Overlays Research 🔬 (payload de `gen_research_calendar.js`): ninguno cita el examen (comprobado con grep en `DATA/RESEARCH/_calendar_overlays.json`). No se tocaron y `--check` no se ve afectado.
+
+## Ids vigentes que cambian
+
+| Serie | Id v6.04 | Rango |
+|---|---|---|
+| 📋 Revisión semanal 20' (dentro del Step 1 del sábado) · F4 PROVISIONAL · v6.04 | `55474jts1urh7s9j1nrtdkvfdg` | sáb 8-may → sáb 16-oct-2027 · SA · todo el día · FREE |
+| ANKI (sábado) | `r9eglu07f5lvltvpoue3v4ks6o` | desde sáb 28-mar-2026 · 19:00-19:30 · abierta · EXDATE 13-mar y 23-oct-2027 |
+| ANKI (domingo) | `5s64scagno3jo983gg6rfdo5qg` | desde dom 29-mar-2026 · 17:00-17:15 · abierta · EXDATE 14-mar y 24-oct-2027 |
+
+Ya no existen (respaldo en `cal_bk/v604b/<id>.json`): `69tr6hqitr5fnanc2af5kvugnk` · `00929or8op5hj28s3nbf1eo09c` · `0ar1fbrm3ts396kd96f8df753g`.
+
+Sin commit. Única escritura en el repo: este fichero. Los respaldos, volcados, payloads y scripts están en `DATA/_v600/cal/cal_bk/v604b/`, que git ignora.
