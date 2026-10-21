@@ -7,8 +7,9 @@
  * v6.01 (sáb 10-oct-2026): corrimiento rígido del D1 mié 7-oct-2026 → lun 12-oct-2026 (perdidos: mié 7-oct · jue 8-oct · vie 9-oct).
  * v6.02 (sáb 17-oct-2026): corrimiento rígido del D1 lun 12-oct-2026 → lun 19-oct-2026 (perdidos: lun 12-oct · mar 13-oct · mié 14-oct · jue 15-oct · vie 16-oct).
  * v6.03 (mar 20-oct-2026): corrimiento rígido del D1 lun 19-oct-2026 → mié 21-oct-2026 (perdidos: lun 19-oct · mar 20-oct).
+ * v6.04 (mié 21-oct-2026): examen Step 1 lun 27-sep-2027 → lun 25-oct-2027 (decisión de Joseph; step1.cambios).
  * v6.04 (mié 21-oct-2026): semana 1 corrida SOLO en la consulta (corridaS1De / fechaPlanDe) — sin sesión lun 19-oct · mar 20-oct · mié 21-oct · jue 22-oct = plan del mié 21-oct · vie 23-oct = plan del jue 22-oct · sáb 24-oct = parte del vie 23-oct · dom 25-oct = parte del vie 23-oct; ningún plan cambia de fecha.
- * Versión vigente del JSON: v6.03.
+ * Versión vigente del JSON: v6.04.
  * Módulo HOJA: no importa nada de src/ (r2 · I7: corta el ciclo usmleStep1Daily ↔ homeBriefing; STEP1_SEMANAS, semanaStep1 y
  * Turno viven aquí y homeBriefing los re-exporta).
  *
@@ -18,13 +19,13 @@
  *   F2                lun 4-ene-2027 → dom 14-mar-2027 · 50 días de plan L-V (último vie 12-mar) · PROVISIONAL
  *   LIBRE_POST_ENCAPS lun 15-mar-2027 → lun 15-mar-2027 · PROVISIONAL
  *   F3                mar 16-mar-2027 → dom 2-may-2027 · 32 días de plan L-V (último vie 30-abr) · PROVISIONAL
- *   F4                lun 3-may-2027 → sáb 25-sep-2027 · 126 días de plan L-S (último sáb 25-sep) · PROVISIONAL
- *   EXAMEN            dom 26-sep-2027 → lun 27-sep-2027 · PROVISIONAL
- *   F5                mar 28-sep-2027 → abierta · PROVISIONAL
+ *   F4                lun 3-may-2027 → sáb 23-oct-2027 · 150 días de plan L-S (último sáb 23-oct) · PROVISIONAL
+ *   EXAMEN            dom 24-oct-2027 → lun 25-oct-2027 · PROVISIONAL
+ *   F5                mar 26-oct-2027 → abierta · PROVISIONAL
  * ENCAPS dom 14-mar-2027 PROVISIONAL (sin convocatoria al mié 17-feb → descartado) · reinicio Step 1 mar 16-mar-2027
- * SERUMS lun 3-may-2027 [supuesto] (inducción → dom 16-may) · GO/NO-GO lun 9-ago-2027 (E-49) · ritual sáb 25-sep · viaje dom 26-sep
- * EXAMEN Step 1 lun 27-sep-2027 PROVISIONAL · fecha a RESERVAR con ENCAPS dom 14-mar = mar 31-ago-2027 (DJ-1) · STEP1_SEMANAS = 39
- * Protegidos: vie 12-mar (D-1 hábil ENCAPS) · sáb 13-mar (D-1 ENCAPS) · dom 14-mar (ENCAPS (provisional)) · lun 15-mar (lunes libre post-ENCAPS) · sáb 25-sep (ritual test-day) · dom 26-sep (viaje D-1) · lun 27-sep (EXAMEN Step 1) · la adjudicación SERUMS se añadirá al conocerse (motivo «adjudicación …»).
+ * SERUMS lun 3-may-2027 [supuesto] (inducción → dom 16-may) · GO/NO-GO lun 6-sep-2027 (E-49) · ritual sáb 23-oct · viaje dom 24-oct
+ * EXAMEN Step 1 lun 25-oct-2027 PROVISIONAL · fecha a RESERVAR con ENCAPS dom 14-mar = lun 25-oct-2027 (DJ-1) · STEP1_SEMANAS = 43
+ * Protegidos: vie 12-mar (D-1 hábil ENCAPS) · sáb 13-mar (D-1 ENCAPS) · dom 14-mar (ENCAPS (provisional)) · lun 15-mar (lunes libre post-ENCAPS) · sáb 23-oct (ritual test-day) · dom 24-oct (viaje D-1) · lun 25-oct (EXAMEN Step 1) · la adjudicación SERUMS se añadirá al conocerse (motivo «adjudicación …»).
  * SKIP (sin sesión de ningún plan): vie 25-dic · jue 31-dic · vie 1-ene · jue 25-mar · vie 26-mar.
  */
 
@@ -38,6 +39,8 @@ export interface FechasV6 {
   step1: {
     reinicio: string; examen: string; adelanto: string; planB: string; gonogo: string; eligibility: string;
     viaje_d1: string; ritual: string; provisional: boolean; reserva_por_encaps: Record<string, string>;
+    /** v6.04: bitácora de cambios de la fecha del examen (el último = examen vigente) */
+    cambios: { fecha: string; version: string; examen_previo: string; examen: string; motivo: string }[];
   };
   serums: { inicio: string; supuesto: boolean; dias_plan: string; domingo: string; adaptacion_hasta: string };
   skip: string[];
@@ -54,7 +57,7 @@ export interface FechasV6 {
   };
 }
 export const FECHAS_V6: FechasV6 = {
-  "version": "v6.03",
+  "version": "v6.04",
   "decidido": "2026-10-06",
   "f1": {
     "inicio": "2026-10-21",
@@ -83,22 +86,31 @@ export const FECHAS_V6: FechasV6 = {
   },
   "step1": {
     "reinicio": "2027-03-16",
-    "examen": "2027-09-27",
-    "adelanto": "2027-08-31",
+    "examen": "2027-10-25",
+    "adelanto": "2027-10-25",
     "planB": "2027-10-25",
-    "gonogo": "2027-08-09",
+    "gonogo": "2027-09-06",
     "eligibility": "2027-08..2027-10",
-    "viaje_d1": "2027-09-26",
-    "ritual": "2027-09-25",
+    "viaje_d1": "2027-10-24",
+    "ritual": "2027-10-23",
     "provisional": true,
     "reserva_por_encaps": {
-      "2027-03-14": "2027-08-31",
-      "2027-03-21": "2027-08-31",
-      "2027-04-04": "2027-09-27",
-      "2027-04-11": "2027-09-27",
+      "2027-03-14": "2027-10-25",
+      "2027-03-21": "2027-10-25",
+      "2027-04-04": "2027-10-25",
+      "2027-04-11": "2027-10-25",
       "2027-04-18": "2027-10-25",
       "2027-04-25": "2027-10-25"
-    }
+    },
+    "cambios": [
+      {
+        "fecha": "2026-10-21",
+        "version": "v6.04",
+        "examen_previo": "2027-09-27",
+        "examen": "2027-10-25",
+        "motivo": "Orden de Joseph (mié 21-oct-2026): «con respecto a los días que dices que llevo perdido 37 días hábiles, ¿por qué solamente no alargas la fecha del examen del Step 1? … si es que iba a ser en agosto para septiembre, o si iba a ser septiembre para octubre … simplemente en lo que nos falta, alargar las fechas». Examen lun 27-sep → LUN 25-OCT-2027 (dentro de la elegibilidad ago-sep-oct). Nada antes del reinicio (mar 16-mar-2027) cambia; el tramo 2 se regenera con E = 25-oct y las semanas extra van al COLCHÓN (no se comprime nada). DJ-1 v6.04: 25-oct en todos los escenarios ENCAPS (sin adelanto; el plan B coincide con la base: un NO-GO del lun 6-sep ya no tiene fecha posterior dentro de la elegibilidad → extensión, §B5)."
+      }
+    ]
   },
   "serums": {
     "inicio": "2027-05-03",
@@ -132,15 +144,15 @@ export const FECHAS_V6: FechasV6 = {
       "motivo": "lunes libre post-ENCAPS"
     },
     {
-      "fecha": "2027-09-25",
+      "fecha": "2027-10-23",
       "motivo": "ritual test-day"
     },
     {
-      "fecha": "2027-09-26",
+      "fecha": "2027-10-24",
       "motivo": "viaje D-1"
     },
     {
-      "fecha": "2027-09-27",
+      "fecha": "2027-10-25",
       "motivo": "EXAMEN Step 1"
     }
   ],
@@ -285,17 +297,17 @@ export const DERIVADOS_V6 = {
   /** fin de la inducción SERUMS (inicio + 13 d) */
   adaptacionHasta: "2027-05-16",
   /** último día con estudio (D95: sesión mínima) = día de plan anterior al ritual */
-  ultimoDiaEstudio: "2027-09-24",
+  ultimoDiaEstudio: "2027-10-22",
   /** ritual de test-day = último día de plan < E−1 */
-  ritual: "2027-09-25",
-  viajeD1: "2027-09-26",
-  gonogo: "2027-08-09",
+  ritual: "2027-10-23",
+  viajeD1: "2027-10-24",
+  gonogo: "2027-09-06",
   convocatoriaTope: "2027-02-17",
   /** fecha a RESERVAR (FSMB/Prometric) con el ENCAPS vigente — DJ-1 */
-  reserva: "2027-08-31",
+  reserva: "2027-10-25",
   semanasF1: 11,
-  step1Semanas: 39,
-  diasF1: 50, diasF2: 50, diasF3: 32, diasF4: 126,
+  step1Semanas: 43,
+  diasF1: 50, diasF2: 50, diasF3: 32, diasF4: 150,
 } as const;
 
 // ── fases (tabla A1 resuelta) ──
@@ -321,9 +333,9 @@ export const FASES_V6: FaseV6Info[] = [
   {"id":"F2","nombre":"ENCAPS intensiva (≈32 h/sem) + Step 1 en mantenimiento (Anki 30' L-V + sáb 07:45 20Q)","etiqueta":"F2 · ENCAPS INTENSIVA (examen dom 14-mar PROVISIONAL)","desde":"2027-01-04","hasta":"2027-03-14","ultimoDiaPlan":"2027-03-12","diasPlan":50,"diasSemana":"L-V","provisional":true},
   {"id":"LIBRE_POST_ENCAPS","nombre":"Lunes libre post-ENCAPS (protegido, DJ-2)","etiqueta":"LIBRE post-ENCAPS","desde":"2027-03-15","hasta":"2027-03-15","ultimoDiaPlan":null,"diasPlan":0,"diasSemana":null,"provisional":true},
   {"id":"F3","nombre":"Step 1 tiempo completo 7h15 (F1 + 16:15 REENTRADA)","etiqueta":"F3 · STEP 1 TIEMPO COMPLETO","desde":"2027-03-16","hasta":"2027-05-02","ultimoDiaPlan":"2027-04-30","diasPlan":32,"diasSemana":"L-V","provisional":true},
-  {"id":"F4","nombre":"SERUMS 6 h (turno M/T variable) + Step 1 por plantilla de turno · L-S, domingo libre","etiqueta":"F4 · STEP 1 + SERUMS","desde":"2027-05-03","hasta":"2027-09-25","ultimoDiaPlan":"2027-09-25","diasPlan":126,"diasSemana":"L-S","provisional":true},
-  {"id":"EXAMEN","nombre":"D-1 viaje a Lima + EXAMEN Step 1","etiqueta":"EXAMEN STEP 1","desde":"2027-09-26","hasta":"2027-09-27","ultimoDiaPlan":null,"diasPlan":0,"diasSemana":null,"provisional":true},
-  {"id":"F5","nombre":"Post-Step 1 (esbozo): MIR principal hasta el fin del SERUMS (~abr-2028)","etiqueta":"F5 · post-Step 1","desde":"2027-09-28","hasta":null,"ultimoDiaPlan":null,"diasPlan":0,"diasSemana":null,"provisional":true},
+  {"id":"F4","nombre":"SERUMS 6 h (turno M/T variable) + Step 1 por plantilla de turno · L-S, domingo libre","etiqueta":"F4 · STEP 1 + SERUMS","desde":"2027-05-03","hasta":"2027-10-23","ultimoDiaPlan":"2027-10-23","diasPlan":150,"diasSemana":"L-S","provisional":true},
+  {"id":"EXAMEN","nombre":"D-1 viaje a Lima + EXAMEN Step 1","etiqueta":"EXAMEN STEP 1","desde":"2027-10-24","hasta":"2027-10-25","ultimoDiaPlan":null,"diasPlan":0,"diasSemana":null,"provisional":true},
+  {"id":"F5","nombre":"Post-Step 1 (esbozo): MIR principal hasta el fin del SERUMS (~abr-2028)","etiqueta":"F5 · post-Step 1","desde":"2027-10-26","hasta":null,"ultimoDiaPlan":null,"diasPlan":0,"diasSemana":null,"provisional":true},
 ];
 
 // ── conjuntos de días ──
@@ -408,8 +420,8 @@ export function protegidosDe(p: { encaps?: string; encapsProvisional?: boolean; 
   const vistos = new Set<string>();
   return lista.filter((x) => !vistos.has(x.fecha) && !!vistos.add(x.fecha)).sort((a, b) => (a.fecha < b.fecha ? -1 : a.fecha > b.fecha ? 1 : 0));
 }
-/** DJ-1 (Joseph, 6-oct-2026): fecha a RESERVAR por fecha del ENCAPS — ≤ 21-mar → 31-ago · ≤ 11-abr → 27-sep · después → 25-oct. */
-export const DJ1_V6: { encapsHasta: string | null; examen: string }[] = [{"encapsHasta":"2027-03-21","examen":"2027-08-31"},{"encapsHasta":"2027-04-11","examen":"2027-09-27"},{"encapsHasta":null,"examen":"2027-10-25"}];
+/** DJ-1 (Joseph): fecha a RESERVAR por fecha del ENCAPS — todos los escenarios ENCAPS → lun 25-oct-2027 (DJ-1 v6.04: examen lun 25-oct por decisión de Joseph; v6.00-v6.03: ≤ 21-mar → mar 31-ago · ≤ 11-abr → lun 27-sep · después → lun 25-oct). */
+export const DJ1_V6: { encapsHasta: string | null; examen: string }[] = [{"encapsHasta":null,"examen":"2027-10-25"}];
 export function reservaDJ1(encaps: string = FECHAS_V6.encaps.examen): string {
   for (const x of DJ1_V6) if (x.encapsHasta === null || encaps <= x.encapsHasta) return x.examen;
   return FECHAS_V6.step1.planB; // inalcanzable: la última fila de DJ-1 no tiene tope
@@ -457,8 +469,8 @@ export function faseV6Info(iso: string): FaseV6Info { const id = faseV6(iso); re
 // ── semana del Step 1 (definición única; antes en homeBriefing — §F, r2 · I7) ──
 /** Semanas de F1 (S1 = semana del lun 19-oct → S11 = semana del lun 28-dic). */
 export const SEMANAS_F1 = 11;
-/** 39 = 11 (F1) + semanas(lunes del reinicio lun 15-mar → lunes del examen lun 27-sep); la semana del examen queda fuera (etiqueta 'examen'). */
-export const STEP1_SEMANAS = 39;
+/** 43 = 11 (F1) + semanas(lunes del reinicio lun 15-mar → lunes del examen lun 25-oct); la semana del examen queda fuera (etiqueta 'examen'). */
+export const STEP1_SEMANAS = 43;
 export interface SemanaStep1 {
   /** 0 = antes del D1 · 1-11 = F1 · 11 durante la PAUSA (no avanza) · 12-STEP1_SEMANAS = tramo 2 · STEP1_SEMANAS + 1 = semana del examen */
   n: number;

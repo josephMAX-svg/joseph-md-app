@@ -26,7 +26,7 @@
  * retención = los 4 ajustes de Palmerton). Ningún minuto nuevo.
  *
  * Neto MIR = A − F/3 (4 opciones, −1/3 por fallo, en blanco = 0). netoPct = neto / total × 100.
- * Umbrales de cierre POR FASE (gap 5): v6.00 → 70/55 hasta el vie 24-sep-2027 (fin de la extensión = handoff, MIR_MANT_META.fin) → 75/60 desde oct-2027 (fase principal tras el Step 1). Historial: 70/55 hasta el jue 22-abr-2027 (último día del mantenimiento = handoff, v5.20; v5.19: jue 15-abr · v5.18: mié 14-abr · v5.17: mar 13-abr) → 75/60 desde el vie 23-abr-2027 (v5.20; v5.19: vie 16-abr) (mirCierreUmbral).
+ * Umbrales de cierre POR FASE (gap 5): v6.04 → 70/55 hasta el vie 22-oct-2027 (último día con estudio antes del Step 1 = tope de la extensión; DERIVADOS_V6.ultimoDiaEstudio; v6.00-v6.03: vie 24-sep) → 75/60 desde el examen (fase principal tras el Step 1). Historial: 70/55 hasta el jue 22-abr-2027 (último día del mantenimiento = handoff, v5.20; v5.19: jue 15-abr · v5.18: mié 14-abr · v5.17: mar 13-abr) → 75/60 desde el vie 23-abr-2027 (v5.20; v5.19: vie 16-abr) (mirCierreUmbral).
  * Táctica −1/3 (gap 6): campos opcionales blancosAcertables / fallosEntreDos / cambiadas / cambiadasAFallo →
  * mirStatsPorAsignatura calcula la EV de la política de blanco y emite consejo por asignatura.
  * Un fallo en el ancla D-7 reprograma el tema a la COLA D+14 (no hay "repaso finde": sáb+dom libres).
@@ -36,6 +36,7 @@
  */
 import { mirAsignaturas, MIR_DIAS, MIR_TEMAS_TOTAL, mirDiaN, mirBloques, DiaMIR } from './mirDailyPlan';
 import { mirEvalSyncPush, mirEvalSyncPull } from './mirEvalSync';
+import { DERIVADOS_V6 } from './fechasV6';
 
 export const MIR_EVAL_LOG_KEY = 'jmd-mir-eval-log';
 export const MIR_EVAL_LOG_VERSION = 2;
@@ -189,8 +190,13 @@ export function mirNeto(aciertos: number, total: number, blancos: number) {
 }
 /** Umbrales del test de cierre POR FASE (gap 5: 'consolidada al 70 %' está 10 pts por debajo de lo que Top 50 exige). */
 export interface MirUmbralFase { fase: string; hasta: string; consolidada: number; anclasD7: number; }
+// v6.04 (21-oct-2026): la fase 1 termina el último día con estudio antes del Step 1 (= tope de la extensión MIR; DERIVADOS_V6.ultimoDiaEstudio):
+//   examen lun 25-oct → vie 22-oct-2027 (v6.00-v6.03: vie 24-sep-2027, examen 27-sep).
+const _FIN_F1_MIR = DERIVADOS_V6.ultimoDiaEstudio;
+const _MES_MIR = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+const _WD_MIR = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
 export const MIR_CIERRE_UMBRAL_FASES: MirUmbralFase[] = [
-  { fase: '1ª vuelta + banqueo + extensión (hasta el vie 24-sep-2027)', hasta: '2027-09-24', consolidada: 70, anclasD7: 55 },
+  { fase: `1ª vuelta + banqueo + extensión (hasta el ${_WD_MIR[new Date(_FIN_F1_MIR + 'T12:00:00Z').getUTCDay()]} ${+_FIN_F1_MIR.slice(8)}-${_MES_MIR[+_FIN_F1_MIR.slice(5, 7) - 1]}-${_FIN_F1_MIR.slice(0, 4)})`, hasta: _FIN_F1_MIR, consolidada: 70, anclasD7: 55 },
   { fase: 'fase principal (desde oct-2027, tras el Step 1)', hasta: '9999-12-31', consolidada: 75, anclasD7: 60 },
 ];
 export function mirCierreUmbral(fechaISO: string = hoyISO()): MirUmbralFase {

@@ -1,5 +1,5 @@
 /**
- * serumsTurnos.ts — TURNO de la posta SERUMS por día (F4: lun 3-may → sáb 25-sep-2027 [S]) · V6_ESPEC §B4.1 · §B5 · §F.
+ * serumsTurnos.ts — TURNO de la posta SERUMS por día (F4: lun 3-may → sáb 23-oct-2027 [S]; v6.03: → sáb 25-sep) · V6_ESPEC §B4.1 · §B5 · §F.
  *
  * v6.00 (6-oct-2026): nuevo. En el SERUMS el turno es VARIABLE (M mañana 07-13 · T tarde 13-19 · L feriado/sin turno · G guardia)
  * y Joseph lo marca cada día en la app (TodayMission: selector + vista semanal para pre-cargar el rol del mes). La plantilla del

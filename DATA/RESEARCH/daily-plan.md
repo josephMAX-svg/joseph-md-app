@@ -1,6 +1,6 @@
 # Plan DÍA-A-DÍA de Research — 3 pistas alineadas con la RUTA de publicación 2027
 
-> **GENERADO por DATA/_scripts/gen_research_plan.js (2026-10-20) — NO editar a mano: `node DATA/_scripts/gen_research_plan.js [YYYY-MM-DD]`.** Fuente de verdad = los `.ts` que emite el mismo script
+> **GENERADO por DATA/_scripts/gen_research_plan.js (2026-10-21) — NO editar a mano: `node DATA/_scripts/gen_research_plan.js [YYYY-MM-DD]`.** Fuente de verdad = los `.ts` que emite el mismo script
 > (`src/lib/researchDailyPlan.ts` ciclo 1 · `src/lib/researchDailyPlan2027.ts` ciclo 2 · `src/lib/obsidianResearchMap.ts`).
 > Este doc es la MISMA data en tablas. Se re-fecha con el pipeline de corrimiento (`gen_research_plan.js <fecha>`).
 
@@ -61,7 +61,7 @@
 - **Interdiario con Derma:** `researchData.ts → diaEstudioTipo` (paridad de días hábiles desde el ancla mié 10-jun-2026;
   par → Research, impar → Derma). Sáb y dom libres hasta el SERUMS; **v6.00: desde el 2027-05-03 se cuenta L-S → Derma lun · mié · vie y Research
   mar · jue · sáb (30′ en tiempo muerto de la posta)**; domingo siempre libre. Salta los SKIP (2026-12-25 · 2026-12-31 · 2027-01-01 · 2027-03-25 · 2027-03-26) y los DÍAS
-  PROTEGIDOS v6 (2027-03-12 · 2027-03-13 · 2027-03-14 · 2027-03-15 · 2027-09-25 · 2027-09-26 · 2027-09-27). **Pausa 2027-01-15 → 2027-02-10 (0 átomos; 30′ «Research mínimo» en sus días-Research).**
+  PROTEGIDOS v6 (2027-03-12 · 2027-03-13 · 2027-03-14 · 2027-03-15 · 2027-10-23 · 2027-10-24 · 2027-10-25). **Pausa 2027-01-15 → 2027-02-10 (0 átomos; 30′ «Research mínimo» en sus días-Research).**
 - **Bloque del Calendar:** 13:30–14:15 (45 min). En un día-Research se ejecuta **1 átomo**. No se crea ni edita ningún evento.
 - **Ciclo 1:** 42 átomos · Jue 2026-10-22 → Vie 2027-03-19 (2026-10: 4 · 2026-11: 10 · 2026-12: 10 · 2027-01: 5 · 2027-02: 6 · 2027-03: 7).
 - **Ciclo 2:** 67 átomos · d43-d109 · Mar 2027-03-23 → Jue 2027-09-02 (2027-03: 3 · 2027-04: 11 · 2027-05: 12 · 2027-06: 13 · 2027-07: 14 · 2027-08: 13 · 2027-09: 1).

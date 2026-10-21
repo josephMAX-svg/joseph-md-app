@@ -30,6 +30,9 @@
  *        [--congelar-hasta AAAA-MM-DD --previo previo.json [--examen-previo AAAA-MM-DD] [--pendientes uid1,uid2]]
  *     Sin posicionales, ENCAPS / EXAMEN / SERUMS salen de DATA/_scripts/_fechas_v6.json (encaps.examen · step1.examen · serums.inicio).
  *
+ * v6.04 (21-oct-2026): EXAMEN Step 1 lun 27-sep → lun 25-oct-2027 (decisión de Joseph). Sin cambio de lógica: sin posicionales el EXAMEN sale
+ *   de _fechas_v6.json (step1.examen = 2027-10-25 → HITOS['2027-10-25'], el plan B de §B5) → 182 filas (T1-T182, d 101-282), GO/NO-GO lun
+ *   6-sep, ritual sáb 23-oct; las 24 filas extra van al COLCHÓN (24 → 48 ≈ 126 h). Referencia: tramo2_14mar_25oct_v604.json.
  * v6.03 (20-oct-2026): corrimiento D1 lun 19-oct → mié 21-oct (lun 19 y mar 20 sin estudio; Joseph: «corre dos días, no comprimas temas
  *   ni exámenes, alarga las fechas límite»). F1 = 50 hábiles con la MISMA regla (sin cambio de lógica): colocarF1(50) → slots 1-49 =
  *   v5.20 D1-D49 · slot 50 = v5.20 D55 (NBME 28, mié 30-dic) · DESPLAZADAS 8 = D50 (Neuro: EM + meningitis + UNM + tumores SNC), D51-D54,

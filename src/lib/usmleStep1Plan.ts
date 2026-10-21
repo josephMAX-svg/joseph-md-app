@@ -5,6 +5,9 @@
  * subtema), Librerías, Flashcards, Video Library (B&B Step 1/2 + Sketchy) y la
  * biblioteca High-Yield de Palmerton + lo que Palmerton dice de cada sistema.
  *
+ * v6.04 (21-oct-2026): EXAMEN Step 1 lun 27-sep → LUN 25-OCT-2027 (Joseph: «si iba a ser septiembre, que sea octubre; alarga las fechas»).
+ *  F1 sin cambio; tramo 2 = T1-T182 (d 101-282) mar 16-mar → sáb 23-oct-2027: las 24 filas de plan extra van al COLCHÓN (48 filas ≈ 126 h);
+ *  GO/NO-GO lun 6-sep · ritual sáb 23-oct · viaje dom 24-oct. Los diaInicio no cambian (update_diainicio.js: 0 cambiados).
  * v6.03 (20-oct-2026): corrimiento rígido del D1 lun 19-oct → mié 21-oct (lun 19 y mar 20 sin estudio; Joseph: «corre dos días, no
  *  comprimas temas ni exámenes, alarga las fechas límite»). F1 = D1-D50 mié 21-oct → mié 30-dic-2026 (50 hábiles), misma regla de HITOS
  *  ANCLADOS: UWSA1 D1 mié 21-oct · NBME 25 D10 mar 3-nov · 26 D25 mar 24-nov · 27 D40 mar 15-dic · NBME 28 = D50 mié 30-dic (última
@@ -40,10 +43,10 @@ export const QB = {
 };
 
 export const PLAN_META = {
-  inicio: '2026-10-21', // v6.03 (20-oct): D1 = mié 21-oct (UWSA1 baseline) · F1 D1-D50 → mié 30-dic (D50 = NBME 28) · PAUSA → 15-mar · tramo 2 mar 16-mar → sáb 25-sep · examen lun 27-sep-2027 PROVISIONAL (v6.02: D1 = 19-oct, D1-D52 · v6.01: D1 = 12-oct, D1-D57 · v6.00: D1 = 7-oct, D1-D60)
+  inicio: '2026-10-21', // v6.04 (21-oct): D1 = mié 21-oct (UWSA1 baseline) · F1 D1-D50 → mié 30-dic (D50 = NBME 28) · PAUSA → 15-mar · tramo 2 mar 16-mar → sáb 23-oct · examen lun 25-oct-2027 PROVISIONAL (v6.03: examen 27-sep, tramo 2 → sáb 25-sep · v6.02: D1 = 19-oct, D1-D52 · v6.01: D1 = 12-oct, D1-D57 · v6.00: D1 = 7-oct, D1-D60)
   bloque: '05:00 ANKI AM · 07:15 repaso anclado · 08:15 PRE-TEST 10Q · 09:00 DEEP PRIME 2h · 11:00 30Q consolidación · 18:00 eval modo examen (6h15/día; F3 + 16:15 REENTRADA · F4 plantilla por turno del SERUMS)',
   metodo: 'Palmerton: ver vídeo High-Yield del sistema → leer (Library/First Aid) → Anki (FSRS) → preguntas en modo tutor → log de errores → APEX.',
-  nota: 'Prioridad Step 1 (v6.03 · fin del corrimiento diario: un día perdido se paga con filas COLCHÓN). D1 = mié 21-oct = UWSA1 baseline · D2 jue 22-oct Fundamentos/Pathoma · D6 Cardiovascular (mié 28-oct) · F1 D1-D50 hasta el mié 30-dic = NBME 28 (los 5 hitos de F1 se quedan en F1; sin colchón F1: un día perdido pasa al tramo 2 el 31-dic) · Neuro cierra en F1 el D49 (mar 29-dic) salvo su última fila (EM + meningitis + UNM + tumores SNC), que va al tramo 2 (T3 jue 18-mar) con Heme/Onco entera (6 filas, T4-T9) y la bioestadística (T10 mié 31-mar) · PAUSA ENCAPS 31-dic → 15-mar · tramo 2 T1-T158 mar 16-mar → sáb 25-sep (Neuro 1 fila, Heme/Onco, bioestadística, Micro, Repro, MSK, Psiq, Bioq + reactivación + banco + taper) · examen target lun 27-sep-2027 PROVISIONAL.',
+  nota: 'Prioridad Step 1 (v6.04 · fin del corrimiento diario: un día perdido se paga con filas COLCHÓN). D1 = mié 21-oct = UWSA1 baseline · D2 jue 22-oct Fundamentos/Pathoma · D6 Cardiovascular (mié 28-oct) · F1 D1-D50 hasta el mié 30-dic = NBME 28 (los 5 hitos de F1 se quedan en F1; sin colchón F1: un día perdido pasa al tramo 2 el 31-dic) · Neuro cierra en F1 el D49 (mar 29-dic) salvo su última fila (EM + meningitis + UNM + tumores SNC), que va al tramo 2 (T3 jue 18-mar) con Heme/Onco entera (6 filas, T4-T9) y la bioestadística (T10 mié 31-mar) · PAUSA ENCAPS 31-dic → 15-mar · tramo 2 T1-T182 mar 16-mar → sáb 23-oct (Neuro 1 fila, Heme/Onco, bioestadística, Micro, Repro, MSK, Psiq, Bioq + reactivación + banco + 48 filas COLCHÓN + taper) · examen target lun 25-oct-2027 PROVISIONAL (alargado desde el 27-sep por los días perdidos: no se comprime nada).',
 };
 
 export interface SistemaUSMLE {

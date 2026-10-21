@@ -111,6 +111,9 @@ export function componerBriefing(inp: BriefingInput): string {
 //   STEP1_SEMANAS = 39 = 11 (F1: S1 lun 19-oct → S11 lun 28-dic) + 28 · DELOAD_SEMANAS: lun 30-nov (post-NBME 26, mar 24-nov = D25; la
 //   semana del lun 23-nov contiene el propio NBME) y la semana del lun 28-dic (NBME 28 = D50 mié 30-dic, última sesión de F1). Gates F1 del
 //   núcleo: vie 13-nov · vie 11-dic. NBME 25 mar 3-nov · NBME 27 mar 15-dic.
+// v6.04 (21-oct-2026): examen Step 1 lun 27-sep → lun 25-oct-2027 (decisión de Joseph) → STEP1_SEMANAS = 43 = 11 (F1) + semanas(lun 15-mar →
+//   lun 25-oct), derivado en fechasV6; la semana del examen = la del lun 25-oct. DELOAD_SEMANAS (F1) y los hitos de F1 sin cambio; los del
+//   tramo 2 salen de hitosDelPlan() (NBME 31 lun 23-ago · 32 lun 30-ago · GO/NO-GO lun 6-sep · UWSA2 mar 7-sep · NBME 33 lun 27-sep · Free 120 vie 8-oct).
 // Doctrina: DATA/REVISION_SEMANAL.md · DATA/PROTOCOLO_MODO_MINIMO.md · DATA/SYNC_ANKI_OBSIDIAN_APP.md
 // ═══════════════════════════════════════════════════════════════════════════
 
@@ -150,7 +153,7 @@ export function semanaStep1(iso: string): SemanaStep1 {
   try { hitos = hitosStep1(); } catch { hitos = []; }
   return semanaStep1V6(iso, { hitos, deloads: DELOAD_SEMANAS });
 }
-/** Etiqueta corta para el instrumento del cockpit: "S3/39" (v6.03 = v6.02; v6.01: /40 · v6.00: /41) · "PAUSA · ENCAPS" · "pre-D1" · "examen" · "post-Step 1". */
+/** Etiqueta corta para el instrumento del cockpit: "S3/43" (v6.04; v6.03 = v6.02: /39 · v6.01: /40 · v6.00: /41) · "PAUSA · ENCAPS" · "pre-D1" · "examen" · "post-Step 1". */
 export function semanaLabel(s: SemanaStep1): string {
   if (s.pausa) return 'PAUSA · ENCAPS';
   if (s.examen) return 'examen';

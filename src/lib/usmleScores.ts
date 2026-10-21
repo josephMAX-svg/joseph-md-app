@@ -296,6 +296,14 @@ export interface HitoOnTrack {
   /** v6.00: alerta de caída frente a otro hito (NBME 29: caída > 8 frente al NBME 28 → +2 semanas de reactivación) */
   alertaCaida?: { ref: string; delta: number; accion: string };
 }
+// v6.04 (21-oct-2026): el examen pasó del lun 27-sep al LUN 25-OCT-2027 (DJ-1 v6.04, decisión de Joseph: misma fecha en todos los escenarios
+//   ENCAPS; es el último mes de la elegibilidad ago-sep-oct). Los textos de los tramos del NBME 28 y del GO/NO-GO salen de FECHAS_V6.
+const _MES_CORTO = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+const _DIA_CORTO = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
+/** «lun 25-oct» de una fecha ISO (UTC-noon, sin zonas horarias). */
+const fCorta = (iso: string): string => `${_DIA_CORTO[new Date(iso + 'T12:00:00Z').getUTCDay()]} ${+iso.slice(8)}-${_MES_CORTO[+iso.slice(5, 7) - 1]}`;
+const EXAMEN_V6 = fCorta(FECHAS_V6.step1.examen);   // lun 25-oct (v6.03: lun 27-sep)
+const GONOGO_V6 = fCorta(FECHAS_V6.step1.gonogo);   // lun 6-sep (E-49; v6.03: lun 9-ago)
 export const HITOS_ONTRACK: HitoOnTrack[] = [
   { clave: 'UWSA1', match: /Self-Assessment 1|UWSA1/i, min: null, nota: 'baseline (D1, mié 21-oct): no es gate, se LEE por tramos — <40 % protocolo Jay · 40-48 % justo · ≥48 % on-track (Parte V-A · §12.4 · §12.6-8)', tramos: [
     { hasta: 39, label: '<40 % · PROTOCOLO JAY', accion: 'D1-D9 (mié 21-oct → lun 2-nov, hasta el NBME 25 = D10 mar 3-nov) a 20 Q/día untimed estilo Jay/Melody (§12.6-8, divergencia #2: se decide el mismo mié 21-oct con el % real); tarjetas propias del porqué, todos los due reviews a primera hora, CCSN. El temario NO se toca.' },
@@ -306,9 +314,10 @@ export const HITOS_ONTRACK: HitoOnTrack[] = [
   { clave: 'NBME 26', match: /NBME (CBS Form )?26\b/i, min: null, minRel: { ref: 'NBME 25', delta: 3 }, nota: '≥ NBME 25 + 3' },
   { clave: 'NBME 27', match: /NBME (CBS Form )?27\b/i, min: null, minRel: { ref: 'NBME 25', delta: 6 }, nota: '≥ NBME 25 + 6 · gate 1 ECFMG pide ≥55%' },
   { clave: 'NBME 28', match: /NBME (CBS Form )?28\b/i, min: null, nota: 'CHECKPOINT DE FECHA (D50 mié 30-dic = última sesión de F1, §B5): se lee por tramos', tramos: [
-    { hasta: 49, label: '<50 % · BASE → 25-oct', accion: 'La base pasa al lun 25-oct-2027: se regenera el tramo 2 con E = 2027-10-25 al salir la convocatoria (§B5 · §B7.2c).' },
-    { desde: 50, hasta: 57, label: '50-57 % · 27-sep con GATE ESTRICTO', accion: 'Base 27-sep con gate estricto: el GO/NO-GO exige además NBME 30 ≥ NBME 28 + 5.' },
-    { desde: 58, label: '≥58 % · EN RUTA 27-sep', accion: 'Base lun 27-sep en ruta: seguir el plan; reservar la fecha de la tabla DJ-1 al salir la convocatoria.' },
+    // v6.04: la base YA es el último mes de la elegibilidad (v6.00-v6.03: <50 % movía la base del 27-sep al plan B 25-oct)
+    { hasta: 49, label: `<50 % · ${EXAMEN_V6} SIN MARGEN`, accion: `La base ya es el ${EXAMEN_V6}-${FECHAS_V6.step1.examen.slice(0, 4)} (DJ-1 v6.04, último mes de la elegibilidad): no hay fecha posterior dentro de la ventana → decidirlo con Joseph al registrar el NBME 28 (extensión de la elegibilidad nov-dic-ene, la única permitida, §B5); el temario no se toca.` },
+    { desde: 50, hasta: 57, label: `50-57 % · ${EXAMEN_V6} con GATE ESTRICTO`, accion: `Base ${EXAMEN_V6} con gate estricto: el GO/NO-GO exige además NBME 30 ≥ NBME 28 + 5.` },
+    { desde: 58, label: `≥58 % · EN RUTA ${EXAMEN_V6}`, accion: `Base ${EXAMEN_V6} en ruta: seguir el plan; reservar el ${EXAMEN_V6} (DJ-1) al salir la convocatoria.` },
   ] },
   { clave: 'NBME 29', match: /NBME (CBS Form )?29\b/i, min: null, minRel: { ref: 'NBME 28', delta: -5 }, alertaCaida: { ref: 'NBME 28', delta: 8, accion: 'CAÍDA > 8 puntos frente al NBME 28 tras la pausa → +2 semanas de REACTIVACIÓN (las paga el colchón, §B5)' }, nota: 'NUEVA LÍNEA BASE tras la pausa ENCAPS: ≥ NBME 28 − 5' },
   { clave: 'NBME 30', match: /NBME (CBS Form )?30\b/i, min: null, minRel: { ref: 'NBME 28', delta: 0 }, nota: '≥ NBME 28 · ritmo medido ≥ 18 h/sem (§B4.5) · con NBME 28 en 50-57 % el GO/NO-GO exige NBME 30 ≥ NBME 28 + 5' },
@@ -316,9 +325,11 @@ export const HITOS_ONTRACK: HitoOnTrack[] = [
   { clave: 'NBME 31', match: /NBME (CBS Form )?31\b/i, min: 65, nota: 'GO/NO-GO: NBME 31 y 32 ≥ 68 % con uno ≥ 70 % + horas (§B4.5)' },
   { clave: 'NBME 32', match: /NBME (CBS Form )?32\b/i, min: 68, nota: '31 y 32 ≥ 68 %, uno ≥ 70 % (GO/NO-GO del lunes siguiente)' },
   { clave: 'UWSA2', match: /UWSA2|Self-Assessment 2/i, min: null, nota: '"low risk" (señal secundaria) · el UWSA sobreestima: la fecha la deciden los NBME y las horas' },
-  { clave: 'NBME 33', match: /NBME (CBS Form )?33\b/i, min: 68, nota: 'ensayo de 7 bloques (NBME 33 + 3 bloques) · < 65 % → 25-oct pagando recargo' },
-  { clave: 'Free 120', match: /Free 120/i, min: 70, nota: '≥70% = heurística comunitaria, no cifra Palmerton · desde aquí 0 preguntas y 0 tarjetas nuevas (cierre §B6)' },
-  { clave: 'GO/NO-GO', match: /GO\/NO-GO/i, min: null, nota: 'DECISIÓN (E-49): horas reales ≥ umbral (B4.5: 294 h al 27-sep) y NBME 31 y 32 ≥ 68 % con uno ≥ 70 % → GO; si no, NO-GO = la fecha siguiente (gratis antes del E-46)' },
+  // v6.04: con el examen 25-oct el ensayo de 7 bloques es el Free 120 + 4 bloques (vie 8-oct, feriado) y el NBME 33 va solo (lun 27-sep, E-28);
+  //   v6.00-v6.03 (examen 27-sep): NBME 33 + 3 bloques (lun 30-ago) y < 65 % → 25-oct pagando recargo.
+  { clave: 'NBME 33', match: /NBME (CBS Form )?33\b/i, min: 68, nota: `E-28 (base ${EXAMEN_V6}) · < 65 % → mover la fecha pagando recargo (DJ-1 v6.04: ya no hay fecha posterior dentro de la elegibilidad → extensión, §B5)` },
+  { clave: 'Free 120', match: /Free 120/i, min: 70, nota: '≥70% = heurística comunitaria, no cifra Palmerton · v6.04: es el ensayo de 7 bloques (Free 120 + 4 bloques) · desde aquí 0 preguntas y 0 tarjetas nuevas (cierre §B6)' },
+  { clave: 'GO/NO-GO', match: /GO\/NO-GO/i, min: null, nota: `DECISIÓN (E-49, ${GONOGO_V6}): horas reales ≥ umbral (B4.5: 294 h al ${EXAMEN_V6}) y NBME 31 y 32 ≥ 68 % con uno ≥ 70 % → GO; si no, NO-GO = mover la fecha (gratis antes del E-46; con la DJ-1 v6.04 no queda fecha posterior dentro de la elegibilidad → extensión, §B5)` },
 ];
 /** Ficha on-track de un hito por su `uw` (o nombre). */
 export function hitoOnTrackDe(uw: string): HitoOnTrack | undefined { return HITOS_ONTRACK.find((t) => t.match.test(uw)); }
@@ -445,7 +456,7 @@ export const BURNOUT_PROTOCOLO = {
     'Mantenimiento mínimo: 30-45 min/día de Anki viejo (la franja de las 05:00) y nada más',
     'Recuperación con flow: 3-5 días de descanso activo (correr, journaling, meditación, cenas familiares); Palmerton da 3-7',
     'Cada día parado = una fila atrasada que se hace en la próxima fila COLCHÓN (F1: pasa al tramo 2 el jue 31-dic, disparador (f)): el temario no se toca y el examen no se mueve por un día perdido (§B7.1)',
-    'Reanudar por el gate (80% en 10Q del último subtema validado); si el siguiente hito vuelve a quedar bajo mínimo → lo decide el GO/NO-GO (E-49): fecha siguiente de la ventana DJ-1 (31-ago → 27-sep → 25-oct), gratis antes del E-46',
+    `Reanudar por el gate (80% en 10Q del último subtema validado); si el siguiente hito vuelve a quedar bajo mínimo → lo decide el GO/NO-GO (E-49, ${GONOGO_V6}): examen ${EXAMEN_V6} (DJ-1 v6.04) o, con NO-GO, extensión de la elegibilidad (nov-dic-ene, §B5); nunca se recorta temario`,
     'Burnout ≠ depresión (Palmerton): si el deseo cumplido lo disolvería es burnout; si no, buscar ayuda profesional (sábado, nunca sacrificando sueño)',
   ],
   fuente: 'DATA/USMLE/PALMERTON_METODO_COMPLETO.md §9.12 · PALMERTON_DIVERGENCIAS_PLAN.md #29 y §E-7 · README §3b',

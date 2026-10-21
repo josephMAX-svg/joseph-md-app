@@ -43,6 +43,12 @@
  *   con el lun 19 y el mar 20 (perdidos) → D1 mié 21 no exacta · ESPERADO v6.03 · textos: 0 restos de la F1 v6.02 («lun 19-oct», D1-D52,
  *   Día n/52, NBME 28 = D52, hitos en viernes vie 30-oct / vie 20-nov / vie 11-dic, gates mié 11-nov / mié 9-dic, deload lun 23-nov,
  *   colchón «28 filas ≈ 73,5 h») en los ficheros USMLE de src/lib (los de otros ámbitos —homeBriefing, componentes— solo AVISAN, ⚠).
+ * v6.04 (21-oct-2026): EXAMEN Step 1 lun 27-sep → lun 25-oct-2027 (decisión de Joseph; F1 sin cambio). La referencia del escenario base se
+ *   elige por (--f1-filas, examen): 50|2027-10-25 → tramo2_14mar_25oct_v604.json (= gen_tramo2_ref.js 2027-03-14 2027-10-25 --f1-filas 50) ·
+ *   la matriz usa el examen base vigente (EX) en los escenarios que congelan sobre la base y conserva 14-mar → 27-sep como escenario más ·
+ *   el NO-GO 27-sep → 25-oct congela sobre la base 27-sep de las mismas filas de F1 (v6.03) · COMPATIBILIDAD v6.03 (--f1-filas 50, examen
+ *   27-sep, base = tramo2_14mar_27sep_v603.json) · ESPERADO / USMLE_TAPER / estadoUSMLE v6.04 · textos v6.04: 0 restos del examen v6.03
+ *   (examen 27-sep, GO/NO-GO 9-ago, ritual sáb 25-sep, viaje dom 26-sep, T158, colchón 24 filas ≈ 63 h, ventana 31-ago → 27-sep).
  */
 'use strict';
 const fs = require('fs');
@@ -71,9 +77,13 @@ const byD = Object.fromEntries(V520.map((x) => [x.d, x]));
 const ESC = J.escenario;
 const F1F = ESC.f1Filas != null ? ESC.f1Filas : F1_FILAS_V600; // v6.01: filas de temario de F1 (57 · v6.02: 52 · v6.03: 50) → --f1-filas de la referencia
 const DESPL = ESC.desplazadasF1 || [];
-// referencia guardada del escenario base por nº de filas de temario de F1 (v6.00 58 · v6.01 57 · v6.02 52 · v6.03 50)
-const REFS_BASE = { 58: 'tramo2_14mar_27sep.json', 57: 'tramo2_14mar_27sep_v601.json', 52: 'tramo2_14mar_27sep_v602.json', 50: 'tramo2_14mar_27sep_v603.json' };
-const REF_BASE = REFS_BASE[F1F] || null;
+// referencia guardada del escenario base por (nº de filas de temario de F1 | examen) (v6.00 58 · v6.01 57 · v6.02 52 · v6.03 50 con examen
+// 27-sep · v6.04: 50 con examen 25-oct)
+const REFS_BASE = { '58|2027-09-27': 'tramo2_14mar_27sep.json', '57|2027-09-27': 'tramo2_14mar_27sep_v601.json', '52|2027-09-27': 'tramo2_14mar_27sep_v602.json',
+  '50|2027-09-27': 'tramo2_14mar_27sep_v603.json', '50|2027-10-25': 'tramo2_14mar_25oct_v604.json' };
+const REF_BASE = REFS_BASE[`${F1F}|${ESC.examen}`] || null;
+const EX = ESC.examen; // v6.04: examen del escenario base vigente (25-oct; v6.00-v6.03: 27-sep)
+const REF_BASE_27SEP = REFS_BASE[`${F1F}|2027-09-27`] || null; // base 27-sep con las mismas filas de F1 (previo del NO-GO 27-sep → 25-oct)
 const COLOC = colocarF1(DIAS.length, byD); // v6.02: colocación de F1 (hitos anclados) = la que usó gen_usmle_v5.js
 console.log(`USMLE ${U.DAILY_META.version} · DIAS ${DIAS.length} · DIAS_T2 ${DIAS_T2.length} · escenario ENCAPS ${ESC.encaps} · examen ${ESC.examen} · SERUMS ${ESC.serums}${ESC.congelarHasta ? ' · congelado ≤ ' + ESC.congelarHasta : ''}`);
 ok(eq(DIAS, J.DIAS) && eq(DIAS_T2, J.DIAS_T2), 'el .ts contiene exactamente la salida de gen_usmle_v5.js (usmle_dias_v6.json)');
@@ -119,20 +129,23 @@ function correr(script, args, tag) {
   const d = ref.out ? difFilas(DIAS_T2, ref.out) : ['la referencia no generó salida: ' + ref.stderr];
   ok(ref.status === 0 && d.length === 0, 'V2 · DIAS_T2 = ref_v6/gen_tramo2_ref.js con el mismo escenario, en todas las claves', d.length ? d.slice(0, 8).join(' · ') : `${DIAS_T2.length} filas · 0 diferencias`);
   // escenario base = sin congelado, sin recuperaciones F1 (v6.02: pendientesF1 = solo recuperaciones; un d > f1Filas se ignora), sin protegidos extra, fechas base
-  const base = !ESC.congelarHasta && ESC.pendientesF1.every((d) => d > F1F) && !ESC.protegExtra.length && ESC.encaps === '2027-03-14' && ESC.examen === '2027-09-27' && ESC.serums === '2027-05-03';
-  if (base && !REF_BASE) ok(false, `V2 · no hay referencia guardada para --f1-filas ${F1F} (REFS_BASE)`);
+  const base = !ESC.congelarHasta && ESC.pendientesF1.every((d) => d > F1F) && !ESC.protegExtra.length && ESC.encaps === '2027-03-14' && ESC.examen === F.step1.examen && ESC.serums === '2027-05-03';
+  if (base && !REF_BASE) ok(false, `V2 · no hay referencia guardada para --f1-filas ${F1F} y examen ${ESC.examen} (REFS_BASE)`);
   else if (base) {
     const d2 = difFilas(DIAS_T2, JSON.parse(fs.readFileSync(path.join(REF, REF_BASE), 'utf8')));
-    ok(d2.length === 0, `V2 · DIAS_T2 = ref_v6/${REF_BASE} (escenario base, --f1-filas ${F1F}) en todas las claves`, d2.length ? d2.slice(0, 8).join(' · ') : '0 diferencias');
+    ok(d2.length === 0, `V2 · DIAS_T2 = ref_v6/${REF_BASE} (escenario base, --f1-filas ${F1F}, examen ${ESC.examen}) en todas las claves`, d2.length ? d2.slice(0, 8).join(' · ') : '0 diferencias');
   } else console.log('⚠ V2: escenario no base (congelado / recuperaciones F1 / protegidos extra): solo se compara con la regeneración de la referencia');
 }
 
 // ── V2+ · matriz port vs referencia (§B3 «Otros escenarios» + pruebas de regen) ──
 if (!argv.includes('--sin-matriz')) {
-  const base = path.join(REF, REF_BASE || 'tramo2_14mar_27sep_v603.json');
+  const base = path.join(REF, REF_BASE || 'tramo2_14mar_25oct_v604.json');
+  const base27 = path.join(REF, REF_BASE_27SEP || 'tramo2_14mar_27sep_v603.json'); // v6.04: previo del NO-GO 27-sep → 25-oct
+  const fEX = V6.f(EX).slice(4); // «25-oct» (v6.00-v6.03: «27-sep»)
   const F1A = ['--f1-filas', String(F1F)]; // v6.01: todos los escenarios con las filas de F1 vigentes (port y referencia)
   const MATRIZ = [
-    ['14-mar → 27-sep (base)', ['2027-03-14', '2027-09-27']],
+    [`14-mar → ${fEX} (base)`, ['2027-03-14', EX]],
+    ...(EX !== '2027-09-27' ? [['14-mar → 27-sep', ['2027-03-14', '2027-09-27']]] : []), // v6.04: la base de v6.00-v6.03, como escenario más
     ['14-mar → 31-ago', ['2027-03-14', '2027-08-31']],
     ['21-mar → 31-ago', ['2027-03-21', '2027-08-31']],
     ['21-mar → 27-sep', ['2027-03-21', '2027-09-27']],
@@ -143,15 +156,15 @@ if (!argv.includes('--sin-matriz')) {
     ['18-abr → 25-oct', ['2027-04-18', '2027-10-25']],
     ['25-abr → 25-oct', ['2027-04-25', '2027-10-25']],
     ['25-abr → 27-sep (déficit 8 u)', ['2027-04-25', '2027-09-27']],
-    ['SERUMS jue 6-may (14-mar → 27-sep)', ['2027-03-14', '2027-09-27', '2027-05-06']],
-    ['--proteg 2027-05-10 (adjudicación)', ['2027-03-14', '2027-09-27', '--proteg', '2027-05-10']],
-    ['--pendientes-f1 17,58', ['2027-03-14', '2027-09-27', '--pendientes-f1', '17,58']],
-    ['--pendientes-f1 17,23 (recuperaciones + la desplazada)', ['2027-03-14', '2027-09-27', '--pendientes-f1', '17,23']],
+    [`SERUMS jue 6-may (14-mar → ${fEX})`, ['2027-03-14', EX, '2027-05-06']],
+    ['--proteg 2027-05-10 (adjudicación)', ['2027-03-14', EX, '--proteg', '2027-05-10']],
+    ['--pendientes-f1 17,58', ['2027-03-14', EX, '--pendientes-f1', '17,58']],
+    ['--pendientes-f1 17,23 (recuperaciones + la desplazada)', ['2027-03-14', EX, '--pendientes-f1', '17,23']],
     // v6.03: derivado de --f1-filas (v6.02: 51,53 · v6.03: 49,51): el último d de temario de F1 (el d F1F es el NBME 28) + un d fuera de F1
-    [`--pendientes-f1 ${F1F - 1},${F1F + 1} (último d de temario de F1 + un d fuera de F1, que se ignora)`, ['2027-03-14', '2027-09-27', '--pendientes-f1', `${F1F - 1},${F1F + 1}`]],
-    ['NO-GO base 27-sep → 25-oct (≤ 9-ago)', ['2027-03-14', '2027-10-25', '--congelar-hasta', '2027-08-09', '--previo', base, '--examen-previo', '2027-09-27']],
-    ['SERUMS 3 → 6-may con congelado ≤ 2-may', ['2027-03-14', '2027-09-27', '2027-05-06', '--congelar-hasta', '2027-05-02', '--previo', base]],
-    ['colchón agotado --pendientes UR84,C80 (≤ 11-ago)', ['2027-03-14', '2027-09-27', '--congelar-hasta', '2027-08-11', '--previo', base, '--pendientes', 'UR84,C80']],
+    [`--pendientes-f1 ${F1F - 1},${F1F + 1} (último d de temario de F1 + un d fuera de F1, que se ignora)`, ['2027-03-14', EX, '--pendientes-f1', `${F1F - 1},${F1F + 1}`]],
+    ['NO-GO base 27-sep → 25-oct (≤ 9-ago)', ['2027-03-14', '2027-10-25', '--congelar-hasta', '2027-08-09', '--previo', base27, '--examen-previo', '2027-09-27']],
+    ['SERUMS 3 → 6-may con congelado ≤ 2-may', ['2027-03-14', EX, '2027-05-06', '--congelar-hasta', '2027-05-02', '--previo', base]],
+    ['colchón agotado --pendientes UR84,C80 (≤ 11-ago)', ['2027-03-14', EX, '--congelar-hasta', '2027-08-11', '--previo', base, '--pendientes', 'UR84,C80']],
   ];
   const REGEN = { // salidas guardadas en v600/espec/regen (se comparan con --regen <dir>) para los casos que la espec probó
     '14-mar → 31-ago': 't2_0831.json', '--pendientes-f1 17,58': 't2_f1.json', 'NO-GO base 27-sep → 25-oct (≤ 9-ago)': 't2_nogo_0927_1025.json',
@@ -186,11 +199,15 @@ if (!argv.includes('--sin-matriz')) {
   //   vigente (ya la cubre la matriz de arriba).
   // v6.03 · + COMPATIBILIDAD v6.02 (--f1-filas 52): base = tramo2_14mar_27sep_v602.json (byte a byte desde gen_tramo2_ref.js --f1-filas 52)
   //   y colocación esperada DECLARADA (enF1: d 1-51 = v5.20 D1-D51 · d 52 = v5.20 D55), porque en la v6.02 ya había un hito fuera de su D#.
+  // v6.04 · + COMPATIBILIDAD v6.03 (--f1-filas 50 con examen 27-sep): base = tramo2_14mar_27sep_v603.json (byte a byte desde gen_tramo2_ref.js
+  //   --f1-filas 50, examen por defecto 27-sep) y colocación declarada (enF1: d 1-49 = v5.20 D1-D49 · d 50 = v5.20 D55). Se salta la versión
+  //   vigente por (f1, examen), no solo por f1 (la v6.04 tiene las mismas 50 filas de F1 que la v6.03).
   const COMPAT_VERS = [
-    { v: 'v6.00', f1: F1_FILAS_V600, baseFile: 'tramo2_14mar_27sep.json', refArgs: ['--f1-filas', '58'] },
-    { v: 'v6.01', f1: 57, baseFile: 'tramo2_14mar_27sep_v601.json', refArgs: ['--pendientes-f1', '58', '--f1-filas', '57'] },
-    { v: 'v6.02', f1: 52, baseFile: 'tramo2_14mar_27sep_v602.json', refArgs: ['--f1-filas', '52'], enF1: [...Array.from({ length: 51 }, (_, i) => i + 1), 55] },
-  ].filter((c) => c.f1 !== F1F);
+    { v: 'v6.00', f1: F1_FILAS_V600, examen: '2027-09-27', baseFile: 'tramo2_14mar_27sep.json', refArgs: ['--f1-filas', '58'] },
+    { v: 'v6.01', f1: 57, examen: '2027-09-27', baseFile: 'tramo2_14mar_27sep_v601.json', refArgs: ['--pendientes-f1', '58', '--f1-filas', '57'] },
+    { v: 'v6.02', f1: 52, examen: '2027-09-27', baseFile: 'tramo2_14mar_27sep_v602.json', refArgs: ['--f1-filas', '52'], enF1: [...Array.from({ length: 51 }, (_, i) => i + 1), 55] },
+    { v: 'v6.03', f1: 50, examen: '2027-09-27', baseFile: 'tramo2_14mar_27sep_v603.json', refArgs: ['--f1-filas', '50'], enF1: [...Array.from({ length: 49 }, (_, i) => i + 1), 55] },
+  ].filter((c) => !(c.f1 === F1F && c.examen === ESC.examen));
   for (const CV of COMPAT_VERS) {
     const VX = ['--f1-filas', String(CV.f1)], baseX = path.join(REF, CV.baseFile), tag = CV.v.replace('.', '');
     const COMPAT = [
@@ -315,7 +332,7 @@ if (!argv.includes('--sin-matriz')) {
   // hitos F1: TODOS en F1 (v6.02: un hito de F1 nunca sale de F1) · en su D# si cabe (UWSA1 D1 · NBME 25 D10 · 26 D25 · 27 D40) y el que no
   //   cabe en los últimos slots (v6.02: NBME 28 = v5.20 D55 → D52 mié 30-dic) · fechas del corrimiento vigente
   const hitosF1 = DIAS.filter((x) => /🎯/.test(x.sub)).map((x) => `D${x.d} ${x.fecha}`);
-  const HITOS_F1_ESP = F.version === 'v6.03' ? ['D1 2026-10-21', 'D10 2026-11-03', 'D25 2026-11-24', 'D40 2026-12-15', 'D50 2026-12-30']
+  const HITOS_F1_ESP = F.version === 'v6.03' || F.version === 'v6.04' ? ['D1 2026-10-21', 'D10 2026-11-03', 'D25 2026-11-24', 'D40 2026-12-15', 'D50 2026-12-30']
     : F.version === 'v6.02' ? ['D1 2026-10-19', 'D10 2026-10-30', 'D25 2026-11-20', 'D40 2026-12-11', 'D52 2026-12-30']
     : F.version === 'v6.01' ? ['D1 2026-10-12', 'D10 2026-10-23', 'D25 2026-11-13', 'D40 2026-12-04', 'D55 2026-12-28'] : hitosF1;
   const nombresF1 = DIAS.filter((x) => /🎯/.test(x.sub)).map((x) => (/UWSA1|NBME \d+/.exec(x.sub) || ['?'])[0]);
@@ -391,7 +408,9 @@ if (!argv.includes('--sin-matriz')) {
   const sigF1 = (iso) => DIAS.find((x) => x.fecha > iso);
   const casos = { '2026-10-06': 'PLAN:D1~', '2026-10-10': 'PLAN:D1~', '2026-10-12': DIAS[0].fecha === '2026-10-12' ? 'PLAN:D1' : 'PLAN:D1~', '2026-10-17': 'PLAN:D1~',
     '2026-10-19': DIAS[0].fecha === '2026-10-19' ? 'PLAN:D1' : 'PLAN:D1~', '2026-10-20': DIAS[0].fecha === '2026-10-20' ? 'PLAN:D1' : DIAS[0].fecha < '2026-10-20' ? 'PLAN:D2' : 'PLAN:D1~', [DIAS[0].fecha]: 'PLAN:D1',
-    '2026-12-25': `PLAN:D${sigF1('2026-12-25').d}~`, [F.f1.fin]: `PLAN:D${DIAS.length}`, '2026-12-31': 'PAUSA', '2027-02-10': 'PAUSA', '2027-03-15': 'PAUSA', '2027-03-16': 'PLAN:T1', '2027-05-09': 'PLAN:T39~', '2027-09-25': 'PLAN:T158', '2027-09-26': 'FIN', '2027-09-27': 'FIN' };
+    '2026-12-25': `PLAN:D${sigF1('2026-12-25').d}~`, [F.f1.fin]: `PLAN:D${DIAS.length}`, '2026-12-31': 'PAUSA', '2027-02-10': 'PAUSA', '2027-03-15': 'PAUSA', '2027-03-16': 'PLAN:T1', '2027-05-09': 'PLAN:T39~',
+    // v6.04: ritual / viaje / examen del JSON (v6.00-v6.03: sáb 25-sep = T158 · dom 26 · lun 27-sep) · el antiguo examen ya es un día de plan
+    [F.step1.ritual]: `PLAN:T${DIAS_T2.length}`, [F.step1.viaje_d1]: 'FIN', [F.step1.examen]: 'FIN', ...(F.step1.examen !== '2027-09-27' ? { '2027-09-27': 'PLAN:T159' } : {}) };
   const estMal = Object.entries(casos).filter(([iso, e]) => est(iso) !== e);
   const pausaSinFila = V6.rango('2026-12-31', '2027-03-15').every((iso) => U.estadoUSMLE(iso).estado === 'PAUSA' && U.diaDe(iso) === undefined);
   ok(estMal.length === 0 && pausaSinFila && U.enPausaStep1('2027-01-04') === true, 'API · estadoUSMLE: PAUSA 31-dic → 15-mar sin fila «hoy» · PLAN (exacta o la siguiente) · FIN tras el ritual', estMal.length ? estMal.map(([i, e]) => `${i}: ${est(i)} ≠ ${e}`).join(' · ') : Object.entries(casos).map(([i]) => `${i.slice(5)} ${est(i)}`).join(' · '));
@@ -402,14 +421,16 @@ if (!argv.includes('--sin-matriz')) {
   // v6.01 (10-oct-2026): D1 lun 12-oct · tramo 1 de 57 días · totalDias 57 + 158 = 215 (v6.00: 2026-10-07 · 60 · 218)
   // v6.02 (17-oct-2026): D1 lun 19-oct · tramo 1 de 52 días · totalDias 52 + 158 = 210
   // v6.03 (20-oct-2026): D1 mié 21-oct · tramo 1 de 50 días · totalDias 50 + 158 = 208
-  const ESPERADO = { step: 1, version: 'v6.03', inicio: '2026-10-21', fin: '2027-09-25', totalDias: 208, tramos: [{ n: 1, inicio: '2026-10-21', fin: '2026-12-30', dias: 50 }, { n: 2, inicio: '2027-03-16', fin: '2027-09-25', dias: 158, provisional: true }], pausa: { desde: '2026-12-31', hasta: '2027-03-15', motivo: 'ENCAPS intensiva + lunes libre' }, examenTarget: '2027-09-27', examenVentana: 'eligibility ago-sep-oct 2027 · adelanto 2027-08-31 · base 2027-09-27 · plan B 2027-10-25', gonogo: '2027-08-09', descansoD1: '2027-09-26', serumsInicio: '2027-05-03', viernesN4DesdeSemana: 11 };
+  // v6.04 (21-oct-2026): examen lun 25-oct · tramo 2 de 182 días (mar 16-mar → sáb 23-oct) · totalDias 50 + 182 = 232 · GO/NO-GO lun 6-sep
+  const ESPERADO = { step: 1, version: 'v6.04', inicio: '2026-10-21', fin: '2027-10-23', totalDias: 232, tramos: [{ n: 1, inicio: '2026-10-21', fin: '2026-12-30', dias: 50 }, { n: 2, inicio: '2027-03-16', fin: '2027-10-23', dias: 182, provisional: true }], pausa: { desde: '2026-12-31', hasta: '2027-03-15', motivo: 'ENCAPS intensiva + lunes libre' }, examenTarget: '2027-10-25', examenVentana: 'eligibility ago-sep-oct 2027 · examen 2027-10-25 en todos los escenarios ENCAPS (DJ-1 v6.04: sin adelanto; plan B = base → un NO-GO pasa a la extensión de la elegibilidad)', gonogo: '2027-09-06', descansoD1: '2027-10-24', serumsInicio: '2027-05-03', viernesN4DesdeSemana: 11 };
   const mMal = Object.keys(ESPERADO).filter((k) => !eq(M[k], ESPERADO[k]));
-  ok(mMal.length === 0 && typeof M.bloque === 'string' && typeof M.metodo === 'string', 'API · DAILY_META = literal de §F (escenario base, v6.03)', mMal.length ? 'distinto: ' + mMal.join(', ') : `version ${M.version} · inicio ${M.inicio} · tramo 1 ${M.tramos[0].dias} días · examenTarget ${M.examenTarget} · totalDias ${M.totalDias} (informativo)`);
+  ok(mMal.length === 0 && typeof M.bloque === 'string' && typeof M.metodo === 'string', 'API · DAILY_META = literal de §F (escenario base, v6.04)', mMal.length ? 'distinto: ' + mMal.join(', ') : `version ${M.version} · inicio ${M.inicio} · tramo 1 ${M.tramos[0].dias} días · examenTarget ${M.examenTarget} · totalDias ${M.totalDias} (informativo)`);
   // USMLE_TAPER (§B6)
   const TP = U.USMLE_TAPER;
-  const okTP = eq([TP.d94.t, TP.d94.d, TP.d94.fecha], [156, 256, '2027-09-23']) && eq([TP.d95.t, TP.d95.d, TP.d95.fecha], [157, 257, '2027-09-24']) && eq([TP.ritual.t, TP.ritual.d, TP.ritual.fecha], [158, 258, '2027-09-25'])
-    && TP.dMenos1.fecha === '2027-09-26' && TP.examen.fecha === '2027-09-27' && TP.regreso.fecha === '2027-09-28' && TP.dMenos1.pasos.length === 6 && TP.examen.pasos.length === 6
-    && TP.fuente === 'PALMERTON_METODO_COMPLETO.md §8.3-§8.4 · ' + F.version && /Free 120 \(lun 13-sep\)/.test(TP.cierre) && /COLCHÓN/.test(TP.burnout) && typeof TP.d94.resumen === 'string';
+  // v6.04: examen lun 25-oct → D94 T180 jue 21-oct · D95 T181 vie 22-oct · ritual T182 sáb 23-oct · viaje dom 24 · regreso mar 26-oct · Free 120 vie 8-oct
+  const okTP = eq([TP.d94.t, TP.d94.d, TP.d94.fecha], [180, 280, '2027-10-21']) && eq([TP.d95.t, TP.d95.d, TP.d95.fecha], [181, 281, '2027-10-22']) && eq([TP.ritual.t, TP.ritual.d, TP.ritual.fecha], [182, 282, '2027-10-23'])
+    && TP.dMenos1.fecha === '2027-10-24' && TP.examen.fecha === '2027-10-25' && TP.regreso.fecha === '2027-10-26' && TP.dMenos1.pasos.length === 6 && TP.examen.pasos.length === 6
+    && TP.fuente === 'PALMERTON_METODO_COMPLETO.md §8.3-§8.4 · ' + F.version && /Free 120 \(vie 8-oct\)/.test(TP.cierre) && /COLCHÓN/.test(TP.burnout) && typeof TP.d94.resumen === 'string';
   ok(okTP, 'API · USMLE_TAPER (§B6)', `D94 T${TP.d94.t} ${TP.d94.fecha} · D95 T${TP.d95.t} ${TP.d95.fecha} · ritual T${TP.ritual.t} · D-1 ${TP.dMenos1.fecha} · examen ${TP.examen.fecha} · regreso ${TP.regreso.fecha}`);
   // FRANJAS (horas sin cambio) + FRANJAS_F4
   ok(eq(U.FRANJAS.map((x) => x.hora), ['05:00–05:45', '07:15–08:15', '08:15–09:00', '09:00–11:00', '11:00–12:00', '18:00–18:45']) && U.FRANJA_F3_REENTRADA.hora === '16:15–17:15', 'API · FRANJAS F1/F3 con las horas de siempre + FRANJA_F3_REENTRADA 16:15-17:15');
@@ -515,6 +536,33 @@ if (!argv.includes('--sin-matriz')) {
     }
     ok(restos8.length === 0, 'textos v6.03 · 0 restos de la F1 v6.02 («lun 19-oct», D1-D52, Día n/52, NBME 28 = D52, NBME en viernes, gates mié 11-nov / mié 9-dic, deload lun 23-nov, colchón «28 filas ≈ 73,5 h») fuera de bitácora en los ficheros USMLE de src/lib', restos8.slice(0, 10).join(' · '));
     if (avisos8.length) console.log(`⚠ textos v6.03 · restos de la F1 v6.02 en ficheros de OTRO frente (no falla; avisar al orquestador): ${avisos8.join(' · ')}`);
+  }
+  // v6.04: 0 restos del EXAMEN v6.03 (lun 27-sep como examen, GO/NO-GO lun 9-ago, ritual sáb 25-sep, viaje dom 26-sep, T158/«/158», d 101-258,
+  //   colchón «24 filas ≈ 63 h», ventana «31-ago → 27-sep», «S n/39») fuera de bitácora; el lun 27-sep sigue siendo un día de plan (NBME 33) →
+  //   solo cuenta junto a «examen». Misma regla: FALLA en los ficheros USMLE de src/lib y AVISA (⚠) en homeBriefing y los componentes.
+  if (F.step1.examen !== '2027-09-27') {
+    // «examen» pegado a la fecha (el permiso de examen «lun 27-sep a más tardar» = E-28 de la v6.04 es legítimo) + textos del NBME 28 / GO/NO-GO
+    const RX_V603 = [/\bexamen( Step 1| USMLE)?( target| objetivo)?:? (el )?(lun )?27-sep|\b27-sep(-2027)?\)?[^\n]{0,4}\bexamen\b|EN RUTA 27-sep|27-sep con GATE|h al 27-sep/i,/GO\/NO-GO[^\n]{0,30}\b9-ago|\b9-ago[^\n]{0,15}GO\/NO-GO/, /ritual[^\n]{0,25}sáb 25-sep|sáb 25-sep[^\n]{0,25}ritual/,
+      /viaje[^\n]{0,25}dom 26-sep|dom 26-sep[^\n]{0,25}viaje/, /\bT1-T158\b|\bT158\b|\/158\b|d 101-258|101-258\b/, /\b24 filas (COLCHÓN|de colchón)|colchón[^\n]{0,12}\b24 filas|≈ ?63 h\b/,
+      /31-ago → 27-sep|adelanto 2027-08-31|base 2027-09-27/, /\bS\d+\/39\b|n\/39\b/];
+    const PROPIOS9 = new Set(['src/lib/usmleStep1Daily.ts', 'src/lib/usmleStep1Plan.ts', 'src/lib/obsidianMap.ts', 'src/lib/usmleScores.ts', 'src/lib/usmleData.ts', 'src/lib/mirUsmleBridge.ts', 'src/lib/usmleGuia.ts']);
+    const restos9 = [], avisos9 = [];
+    for (const rel of [...FICHEROS_TXT, 'src/lib/usmleGuia.ts']) {
+      const lineas = fs.readFileSync(path.join(ROOT, rel), 'utf8').split('\n');
+      const MARCA = /v5\.\d\d|v6\.0\d|corrimiento|bitácora|LEGADO/;
+      let enBitacora = false;
+      lineas.forEach((l0, i) => {
+        let l = l0.replace(/\r$/, '');
+        const comentario = /^\s*(\/\/|\*|\/\*\*|\{\/\*)/.test(l);
+        if (!comentario) { enBitacora = false; const m = l.match(/^(.*?)(\s\/\/\s.*)$/); if (m && MARCA.test(m[2])) l = m[1]; }
+        else if (MARCA.test(l)) enBitacora = true;
+        else if (/^\s*(\*|\/\/)\s*$/.test(l) || /^\s*\*\/|^\s*\/\*\*/.test(l)) enBitacora = false;
+        if ((comentario && enBitacora) || /^\s*\{ dia: \d/.test(l) || /^export const DIAS(_T2)?: /.test(l)) return;
+        for (const re of RX_V603) if (re.test(l)) { (PROPIOS9.has(rel) ? restos9 : avisos9).push(`${rel}:${i + 1} ${re}`); break; }
+      });
+    }
+    ok(restos9.length === 0, 'textos v6.04 · 0 restos del examen v6.03 (examen lun 27-sep, GO/NO-GO lun 9-ago, ritual sáb 25-sep, viaje dom 26-sep, T158, colchón «24 filas ≈ 63 h», ventana 31-ago → 27-sep, «/39») fuera de bitácora en los ficheros USMLE de src/lib', restos9.slice(0, 12).join(' · '));
+    if (avisos9.length) console.log(`⚠ textos v6.04 · restos del examen v6.03 en ficheros de OTRO frente (no falla; avisar al orquestador): ${avisos9.join(' · ')}`);
   }
 }
 

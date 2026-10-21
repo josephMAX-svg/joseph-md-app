@@ -1,5 +1,12 @@
-// Generador de los arrays DIAS (tramo 1 = F1) y DIAS_T2 (tramo 2) de usmleStep1Daily.ts — v6.03: D1-D50 = mié 21-oct → mié 30-dic-2026
-//   + T1…T158 (d 101-258) = mar 16-mar → sáb 25-sep-2027 · examen lun 27-sep-2027 (base de planificación DJ-1; PROVISIONAL).
+// Generador de los arrays DIAS (tramo 1 = F1) y DIAS_T2 (tramo 2) de usmleStep1Daily.ts — v6.04: D1-D50 = mié 21-oct → mié 30-dic-2026
+//   + T1…T182 (d 101-282) = mar 16-mar → sáb 23-oct-2027 · examen lun 25-oct-2027 (DJ-1 v6.04; PROVISIONAL).
+// v6.04 (21-oct-2026): EXAMEN STEP 1 lun 27-sep → LUN 25-OCT-2027 (Joseph: «llevo 37 días hábiles perdidos; ¿por qué no alargas la fecha del
+//   examen? si iba a ser septiembre, que sea octubre; simplemente alarga las fechas, en lo que nos falta»). Sin cambio de lógica: el tramo 2 se
+//   regenera con E = step1.examen del JSON (tabla de hitos HITOS['2027-10-25'] = el plan B de §B5): T1-T182 (d 101-282), GO/NO-GO lun 6-sep,
+//   taper lun 18 → vie 22-oct, ritual sáb 23-oct. F1 (D1-D50) y T1-T90 (mar 16-mar → jue 8-jul) salen IDÉNTICAS; desde el vie 9-jul la cola
+//   se reparte con el calendario de hitos del 25-oct (NBME 31 lun 23-ago · 32 lun 30-ago · UWSA2 mar 7-sep · NBME 33 lun 27-sep · Free 120
+//   + 4 bloques vie 8-oct) y las 24 filas de plan extra (F4 126 → 150 días) van TODAS al COLCHÓN (24 → 48 filas ≈ 63 → 126 h): ninguna fila
+//   de temario ni de hito se comprime. Referencia: ref_v6/tramo2_14mar_25oct_v604.json (= gen_tramo2_ref.js 2027-03-14 2027-10-25 --f1-filas 50).
 // v6.03 (20-oct-2026): CORRIMIENTO RÍGIDO de F1 — el lun 19 y el mar 20-oct no se estudiaron (la corrida v6.02d por alias queda inerte).
 //   Joseph: «todo comienza mañana, miércoles 21; corre dos días; deja libres sáb 24 y dom 25; no modifiques ni comprimas temas ni
 //   exámenes; alarga las fechas límite». D1 = MIÉ 21-OCT (_fechas_v6.json f1.inicio · f1.dias 50; bitácora en «corrimientos»). Misma regla

@@ -72,7 +72,7 @@ export interface CockpitStatusBarProps {
   unread: number;           // reports sin leer
   onBell?: () => void;      // abre modal de reports (mobile); undefined = sin campana táctil
   compact?: boolean;        // mobile
-  semana?: SemanaStep1 | null;   // v5.7 opcional: semana N/STEP1_SEMANAS del Step 1 (v6.00: 41 · v6.01: 40 · v6.02 = v6.03: 39 · PAUSA en F2) · si no, se calcula aquí
+  semana?: SemanaStep1 | null;   // v5.7 opcional: semana N/STEP1_SEMANAS del Step 1 (v6.00: 41 · v6.01: 40 · v6.02 = v6.03: 39 · v6.04: 43 · PAUSA en F2) · si no, se calcula aquí
   anki?: AnkiKpi | null;         // v5.7 opcional: KPI Anki (si no, localStorage 'jmd-anki-telemetria')
 }
 
@@ -238,7 +238,7 @@ export default function CockpitStatusBar({
         <View style={st.vDiv} />
         <Instrument label="PHASE" value={phase} color={Colors.teal} mono={false} />
         <View style={st.vDiv} />
-        {/* v5.7 · Semana N/STEP1_SEMANAS del Step 1 (v6.00: 41 · v6.01: 40 · v6.02 = v6.03: 39 · PAUSA · ENCAPS en F2 · sáb 07:15 revisión semanal · deload secundarios). Tocar = copiar export jmd-* (web) */}
+        {/* v5.7 · Semana N/STEP1_SEMANAS del Step 1 (v6.00: 41 · v6.01: 40 · v6.02 = v6.03: 39 · v6.04: 43 · PAUSA · ENCAPS en F2 · sáb 07:15 revisión semanal · deload secundarios). Tocar = copiar export jmd-* (web) */}
         <TouchableOpacity activeOpacity={0.7} onPress={() => setExportado(exportarLocalStorageJmd() ? 'ok' : 'no')} hitSlop={{ top: 6, bottom: 6, left: 4, right: 4 }}>
           <Instrument
             label={exportado === 'ok' ? 'SEMANA · export ✓' : exportado === 'no' ? 'SEMANA · sin clipboard' : sem.pausa ? 'SEMANA · Step 1 en PAUSA' : sem.deload ? 'SEMANA · DELOAD' : sem.hito ? `SEMANA · ${sem.hito}` : 'SEMANA'}

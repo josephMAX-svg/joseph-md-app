@@ -15,6 +15,11 @@
 //                                    `--f1-filas 58` = salida v6.00 (tramo2_14mar_27sep.json) · `--pendientes-f1 58 --f1-filas 57` = v6.01
 //                                    (tramo2_14mar_27sep_v601.json) · `--f1-filas 52` = v6.02 (tramo2_14mar_27sep_v602.json).
 //                                    · `--f1-filas 50` = v6.03 (tramo2_14mar_27sep_v603.json).
+//                                    · `2027-03-14 2027-10-25 --f1-filas 50` = v6.04 (tramo2_14mar_25oct_v604.json): examen lun 25-oct.
+// v6.04 (21-oct-2026): EXAMEN Step 1 lun 27-sep → lun 25-oct-2027 (decisión de Joseph: «si iba a ser septiembre, que sea octubre»). Sin
+//   cambio de lógica ni de valores por defecto (EXAMEN por defecto sigue siendo 2027-09-27: las referencias v6.00-v6.03 se reproducen con sus
+//   mismos argumentos); la del escenario vigente se genera con `2027-03-14 2027-10-25 --f1-filas 50` (HITOS['2027-10-25'] = plan B de §B5):
+//   182 filas, colchón 48 ≈ 126 h → tramo2_14mar_25oct_v604.json.
 // v6.03 (20-oct-2026): corrimiento D1 lun 19-oct → mié 21-oct (lun 19 y mar 20 sin estudio; Joseph: «todo comienza mañana miércoles 21,
 //   corre dos días; no comprimas temas ni exámenes, alarga las fechas límite»). F1 = 50 hábiles con la MISMA regla de hitos anclados:
 //   F1 = v5.20 D1-D49 + D55 (NBME 28 en el slot 50, mié 30-dic) y van al tramo 2 D50 (Neuro: EM + meningitis + UNM + tumores SNC),

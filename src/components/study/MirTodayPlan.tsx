@@ -614,7 +614,7 @@ function BaselineView() {
             <Text style={st.baseSub}>{s.aciertos}/{s.total} · bl {s.blancos} · 🇪🇸 {s.deltaEs}</Text>
           </View>
         ))}
-        <Text style={st.formHint}>Corrección Whole-Page de cada fallo + Shopping List → APEX (directos en Anki). &lt;{u.anclasD7} % → anclas D-7 / viernes del mantenimiento. Handoff {MIR_MANT_META.handoff.split(' (')[0]} (última sesión del banqueo; v6.02: vie 24-sep · v5.20: 22-abr): mínimo on-track 60 % neto · 🇪🇸 = fallos delta (objetivo 0 repetidos).</Text>
+        <Text style={st.formHint}>Corrección Whole-Page de cada fallo + Shopping List → APEX (directos en Anki). &lt;{u.anclasD7} % → anclas D-7 / viernes del mantenimiento. Handoff {MIR_MANT_META.handoff.split(' (')[0]} (última sesión del banqueo; v6.04 — v6.03: mar 12-oct · v6.02: vie 24-sep · v5.20: 22-abr): mínimo on-track 60 % neto · 🇪🇸 = fallos delta (objetivo 0 repetidos).</Text>
       </View>
     </FadeUp>
   );

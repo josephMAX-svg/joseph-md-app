@@ -27,6 +27,11 @@
  *   documentos se conservan tal cual (y no cuentan como días de plan para el ritual).
  *   Antes de escribir el .ts, el generador lo transpila en memoria (typescript del repo) y comprueba que sus funciones dan lo
  *   mismo que las de este fichero en todos los días 2026-09-01 → 2028-01-31 y en los 6 escenarios × 3 exámenes × 2 SERUMS.
+ * v6.04 (mié 21-oct-2026): EXAMEN STEP 1 → LUN 25-OCT-2027 por decisión de Joseph («llevo 37 días hábiles perdidos; ¿por qué no alargas la
+ *   fecha del examen? si iba a ser septiembre, que sea octubre; simplemente alarga las fechas, en lo que nos falta»). Nada antes del reinicio
+ *   (mar 16-mar-2027) cambia: se derivan otra vez gonogo (E-49 = lun 6-sep), viaje (dom 24-oct), ritual (sáb 23-oct) y los protegidos del
+ *   examen; la tabla DJ-1 pasa a «DJ-1 v6.04: examen 25-oct en todos los escenarios ENCAPS» (adelanto = base = plan B; la de v6.00-v6.03
+ *   queda en DJ1_V600, solo histórico y fechas de prueba). Bitácora nueva `step1.cambios` (fecha, versión, examen previo → nuevo, motivo).
  */
 const fs = require('fs');
 const path = require('path');
@@ -101,13 +106,28 @@ function protegidosDe({ encaps, encapsProvisional, examen, serumsInicio, skip, a
   const vistos = new Set();
   return lista.filter((p) => !vistos.has(p.fecha) && vistos.add(p.fecha)).sort(ordenFecha);
 }
-/** DJ-1 (Joseph, 6-oct-2026) — tabla literal de la fecha a RESERVAR por fecha del ENCAPS (§B4.4). */
+/**
+ * DJ-1 — tabla literal de la fecha a RESERVAR por fecha del ENCAPS (§B4.4).
+ * v6.04 (mié 21-oct-2026) · DJ-1 v6.04: examen lun 25-oct-2027 por decisión de Joseph («si iba a ser septiembre, que sea octubre; simplemente
+ * alarga las fechas»), la MISMA fecha en todos los escenarios del ENCAPS: sin adelanto (una fecha anterior volvería a comprimir lo que se
+ * alarga) y el plan B coincide con la base (25-oct es el último mes de la elegibilidad ago-sep-oct: un NO-GO ya no tiene fecha posterior
+ * gratuita → extensión de la elegibilidad, §B5). Las semanas extra van al COLCHÓN del tramo 2.
+ */
 const DJ1 = [
+  { encapsHasta: null, examen: '2027-10-25' }, // v6.04: cualquier ENCAPS → lun 25-oct (base = adelanto = plan B)
+];
+/** DJ-1 de Joseph del 6-oct-2026 (v6.00-v6.03), SUSTITUIDA por DJ-1 v6.04 · solo histórico y fechas de prueba de compararTS. */
+const DJ1_V600 = [
   { encapsHasta: '2027-03-21', examen: '2027-08-31' }, // ENCAPS 14 o 21-mar → mar 31-ago (adelanto)
   { encapsHasta: '2027-04-11', examen: '2027-09-27' }, // 4 u 11-abr → lun 27-sep (base)
   { encapsHasta: null, examen: '2027-10-25' },         // 18 o 25-abr (o después) → lun 25-oct (plan B)
 ];
 const reservaDJ1 = (encaps) => DJ1.find((x) => x.encapsHasta === null || encaps <= x.encapsHasta).examen;
+/** Exámenes de prueba de la comprobación TS = node (los de la DJ-1 vigente ∪ los de la v6.00, ordenados y sin repetir). */
+const EXAMENES_PRUEBA = [...new Set([...DJ1, ...DJ1_V600].map((x) => x.examen))].sort();
+/** Texto de una tabla DJ-1 («≤ 21-mar → mar 31-ago · … · después → lun 25-oct» o «todos los escenarios ENCAPS → lun 25-oct-2027»). */
+const dj1Texto = (tabla) => (tabla.length === 1 ? `todos los escenarios ENCAPS → ${fy(tabla[0].examen)}`
+  : tabla.map((x) => `${x.encapsHasta ? '≤ ' + f(x.encapsHasta).slice(4) : 'después'} → ${f(x.examen)}`).join(' · '));
 /** Nº de semanas del Step 1: semanas de F1 (semanasF1De = lunes del f1.inicio → lunes del f1.fin, DERIVADO: v6.01 = 12 · v6.00 = 13)
  *  + semanas(lunes del reinicio → lunes del examen) (§F; tabla A5: base 41 en v6.00 · 40 en v6.01). */
 const semanasF1De = (f1Inicio, f1Fin) => 1 + diff(lunesDe(f1Inicio), lunesDe(f1Fin)) / 7;
@@ -156,7 +176,7 @@ const CLAVES = {
   f1: ['inicio', 'fin', 'dias'],
   transicion: ['desde', 'hasta'],
   encaps: ['examen', 'provisional', 'intensiva_desde', 'pretest', 'nucleo_hasta', 'convocatoria_tope', 'escenarios'],
-  step1: ['reinicio', 'examen', 'adelanto', 'planB', 'gonogo', 'eligibility', 'viaje_d1', 'ritual', 'provisional', 'reserva_por_encaps'],
+  step1: ['reinicio', 'examen', 'adelanto', 'planB', 'gonogo', 'eligibility', 'viaje_d1', 'ritual', 'provisional', 'reserva_por_encaps', 'cambios'], // v6.04: + cambios (bitácora del examen)
   serums: ['inicio', 'supuesto', 'dias_plan', 'domingo', 'adaptacion_hasta'],
 };
 const FECHAS_SUELTAS = ['decidido', 'f1.inicio', 'f1.fin', 'transicion.desde', 'transicion.hasta', 'encaps.examen', 'encaps.intensiva_desde', 'encaps.pretest',
@@ -181,6 +201,10 @@ function comprobarForma(F) {
   // v6.01 (10-oct-2026): bitácora de corrimientos del D1 (solo informativa; no deriva nada).
   if (!Array.isArray(F.corrimientos) || !F.corrimientos.every((c) => c && esISO(c.fecha) && esISO(c.d1_previo) && esISO(c.d1) && Array.isArray(c.perdidos) && c.perdidos.every(esISO))) err.push('«corrimientos» debe ser una lista de { fecha, version, d1_previo, d1, perdidos[], regla }');
   for (const p of ['encaps.provisional', 'step1.provisional', 'serums.supuesto']) if (typeof get(F, p) !== 'boolean') err.push(`«${p}» debe ser true/false`);
+  // v6.04 (21-oct-2026): bitácora de cambios de la fecha del examen Step 1 (informativa; el último = step1.examen vigente).
+  const cam = F.step1.cambios;
+  if (!Array.isArray(cam) || !cam.every((c) => c && Object.keys(c).length === 5 && esISO(c.fecha) && typeof c.version === 'string' && esISO(c.examen_previo) && esISO(c.examen) && typeof c.motivo === 'string')) err.push('«step1.cambios» debe ser una lista de { fecha, version, examen_previo, examen, motivo }');
+  else if (cam.length && cam[cam.length - 1].examen !== F.step1.examen) err.push(`«step1.cambios»: el último cambio (${cam[cam.length - 1].examen}) ≠ step1.examen (${F.step1.examen})`);
   err.push(...comprobarCorridaS1(F.corrida_s1));
   return err;
 }
@@ -422,6 +446,8 @@ function emitirTS(F, d) {
     // una bitácora v6.00 con la etiqueta v6.01. Ahora: v6.00 literal + una línea por corrimiento de `corrimientos` (sus propios literales).
     ` * v6.00 (decidido ${fy(F.decidido)}): reestructuración anual (DJ-1…DJ-5) — sustituye a v5.20 (Step 1 lun 22-feb · ENCAPS mié 10-mar).`,
     ...(F.corrimientos || []).map((c) => ` * ${c.version} (${fy(c.fecha)}): corrimiento rígido del D1 ${fy(c.d1_previo)} → ${fy(c.d1)} (perdidos: ${c.perdidos.map(f).join(' · ')}).`),
+    // v6.04: una línea por cambio de la fecha del examen Step 1 (step1.cambios; el motivo completo está en el JSON)
+    ...(F.step1.cambios || []).map((c) => ` * ${c.version} (${fy(c.fecha)}): examen Step 1 ${fy(c.examen_previo)} → ${fy(c.examen)} (decisión de Joseph; step1.cambios).`),
     ` * ${F.corrida_s1.version} (${fy(F.corrida_s1.decidido)}): semana 1 corrida SOLO en la consulta (corridaS1De / fechaPlanDe) — sin sesión ${F.corrida_s1.sin_sesion.map(f).join(' · ')} · ` +
       `${Object.entries(F.corrida_s1.alias).map(([r, de]) => `${f(r)} = plan del ${f(de)}`).join(' · ')} · ${Object.entries(F.corrida_s1.reparto).map(([r, x]) => `${f(r)} = parte del ${f(x.de)}`).join(' · ')}; ningún plan cambia de fecha.`,
     ` * Versión vigente del JSON: ${F.version}.`,
@@ -449,6 +475,8 @@ export interface FechasV6 {
   step1: {
     reinicio: string; examen: string; adelanto: string; planB: string; gonogo: string; eligibility: string;
     viaje_d1: string; ritual: string; provisional: boolean; reserva_por_encaps: Record<string, string>;
+    /** v6.04: bitácora de cambios de la fecha del examen (el último = examen vigente) */
+    cambios: { fecha: string; version: string; examen_previo: string; examen: string; motivo: string }[];
   };
   serums: { inicio: string; supuesto: boolean; dias_plan: string; domingo: string; adaptacion_hasta: string };
   skip: string[];
@@ -595,7 +623,7 @@ export function protegidosDe(p: { encaps?: string; encapsProvisional?: boolean; 
   const vistos = new Set<string>();
   return lista.filter((x) => !vistos.has(x.fecha) && !!vistos.add(x.fecha)).sort((a, b) => (a.fecha < b.fecha ? -1 : a.fecha > b.fecha ? 1 : 0));
 }
-/** DJ-1 (Joseph, 6-oct-2026): fecha a RESERVAR por fecha del ENCAPS — ≤ 21-mar → 31-ago · ≤ 11-abr → 27-sep · después → 25-oct. */
+/** DJ-1 (Joseph): fecha a RESERVAR por fecha del ENCAPS — ${dj1Texto(DJ1)}${DJ1.length === 1 ? ` (DJ-1 v6.04: examen ${f(DJ1[0].examen)} por decisión de Joseph; v6.00-v6.03: ${dj1Texto(DJ1_V600)})` : ''}. */
 export const DJ1_V6: { encapsHasta: string | null; examen: string }[] = ${L(DJ1)};
 export function reservaDJ1(encaps: string = FECHAS_V6.encaps.examen): string {
   for (const x of DJ1_V6) if (x.encapsHasta === null || encaps <= x.encapsHasta) return x.examen;
@@ -782,11 +810,12 @@ function compararTS(T, F, d) {
     for (const fr of [...Object.keys(BLOQUES_POR_FRENTE), 'otro']) eq(`fechaRealDe ${s} ${fr}`, T.fechaRealDe(s, fr), fechaRealDe(s, F, fr));
     if (err.length > 20) break;
   }
-  // derivaciones en los escenarios (A5) × los 3 exámenes de DJ-1 × SERUMS 3-may / 6-may (sensibilidad §B4.3) + un ENCAPS en sábado
+  // derivaciones en los escenarios (A5) × los exámenes de prueba (DJ-1 vigente ∪ DJ-1 v6.00: 31-ago · 27-sep · 25-oct) × SERUMS 3-may / 6-may
+  // (sensibilidad §B4.3) + un ENCAPS en sábado
   const skip = new Set(F.skip);
   for (const enc of [...F.encaps.escenarios, '2027-03-13', '2027-03-28']) {
     for (const S of ['2027-05-03', '2027-05-06']) {
-      for (const { examen: E } of DJ1) {
+      for (const E of EXAMENES_PRUEBA) {
         const R = reinicioDe(enc), c = { encaps: enc, encapsProvisional: true, examen: E, serumsInicio: S, skip, adjudicacion: [] };
         eq(`reinicioDe ${enc}`, T.reinicioDe(enc), R);
         eq(`lunesLibreDe ${enc}`, T.lunesLibreDe(enc), lunesLibreDe(enc));
@@ -838,7 +867,7 @@ function main() {
   else {
     const err = compararTS(T, F, d);
     if (err.length) { console.error(`✗ fechasV6.ts ≠ gen_fechas_v6.js (${err.length}+ diferencias) — ABORTO, no se escribe:\n  ` + err.slice(0, 20).join('\n  ')); process.exit(1); }
-    console.log('✓ fechasV6.ts (transpilado en memoria) = gen_fechas_v6.js: 0 diferencias (2026-09-01 → 2028-01-31 · 8 ENCAPS × 2 SERUMS × 3 exámenes)');
+    console.log(`✓ fechasV6.ts (transpilado en memoria) = gen_fechas_v6.js: 0 diferencias (2026-09-01 → 2028-01-31 · ${F.encaps.escenarios.length + 2} ENCAPS × 2 SERUMS × ${EXAMENES_PRUEBA.length} exámenes)`);
   }
   if (soloCheck) {
     const actual = fs.existsSync(OUT) ? fs.readFileSync(OUT, 'utf8') : null;
@@ -857,7 +886,7 @@ module.exports = {
   add, wd, diff, lunesDe, rango, f, fy, esISO, esHabil, habLV, esDiaPlanBase,
   // derivaciones §A4
   reinicioDe, lunesLibreDe, ultimoHabilAntes, f3FinDe, adaptacionHastaDe, gonogoDe, convocatoriaTopeDe, viajeD1De, ritualDe, protegidosDe,
-  DJ1, reservaDJ1, reservaCalculo, colchonPiso, semanasF1De, step1SemanasDe, RX_ADJUDICACION,
+  DJ1, DJ1_V600, EXAMENES_PRUEBA, dj1Texto, reservaDJ1, reservaCalculo, colchonPiso, semanasF1De, step1SemanasDe, RX_ADJUDICACION,
   // JSON
   cargarFechasV6, validar, derivar, ctxDe, comprobarForma,
   // fases y predicados (F opcional = el JSON validado)

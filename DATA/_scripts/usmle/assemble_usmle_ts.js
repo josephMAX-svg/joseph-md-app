@@ -19,6 +19,8 @@
  *   (v6.01 y v6.02), no solo el vigente. El doc de `uid` lista las unidades C<D> desplazadas reales (ya no «C79» fijo).
  * v6.03 (20-oct-2026): corrimiento D1 lun 19-oct → mié 21-oct (F1 = 50 hábiles; 8 desplazadas: v5.20 D50 Neuro, D51-D54, D56, D57
  *   Heme/Onco, D79 → T3-T10). Sin cambio de lógica (todo sale de las filas y del JSON); la regla del corrimiento se cierra con un solo punto.
+ * v6.04 (21-oct-2026): examen Step 1 lun 27-sep → lun 25-oct-2027 (decisión de Joseph; _fechas_v6.json step1.cambios). Sin cambio de lógica en
+ *   las filas; DJ-1 v6.04 = una sola fecha → examenVentana / worstCase dicen «examen 25-oct en todos los escenarios ENCAPS» (DJ1_UNICA).
  * v5.x: leía usmle_dias_v5.txt (solo DIAS, 95 días) y pegaba cabecera/pie fijos con las fechas del último corrimiento escritas a mano.
  */
 'use strict';
@@ -59,7 +61,11 @@ const E = FV6.step1.examen, VIAJE = FV6.step1.viaje_d1, REINICIO = FV6.step1.rei
 const REGRESO = add(E, 1);
 const TAPER_SEM = porTipo('taper').filter((x) => x.dOrig === null);
 const PAUSA = { desde: add(FV6.f1.fin, 1), hasta: add(REINICIO, -1) };
-const BASE_DJ1 = V6.DJ1[1].examen;
+// v6.04 (21-oct-2026): DJ-1 v6.04 = UNA sola fecha (examen 25-oct en todos los escenarios ENCAPS; adelanto = base = plan B) → los textos de la
+//   ventana dicen eso en vez de «adelanto · base · plan B» (con la tabla de 3 filas de la v6.00-v6.03, el texto de siempre).
+const DJ1_UNICA = V6.DJ1.length === 1 || (FV6.step1.adelanto === FV6.step1.examen && FV6.step1.planB === FV6.step1.examen);
+const BASE_DJ1 = V6.DJ1.length >= 3 ? V6.DJ1[1].examen : FV6.step1.examen;
+const VER_DJ1 = ((FV6.step1.cambios || []).at(-1) || {}).version || FV6.version; // versión que fijó la DJ-1 vigente (v6.04)
 const MESES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
 const eligibilityTxt = (() => { // '2027-08..2027-10' → 'ago-sep-oct 2027'
   const m = /^(\d{4})-(\d{2})\.\.(\d{4})-(\d{2})$/.exec(FV6.step1.eligibility);
@@ -129,7 +135,9 @@ const L = (x) => JSON.stringify(x);
 // ── textos con fecha (generados) ──
 const BLOQUE = `F1/F3: 05:00 ANKI AM · 07:15 repaso anclado · 08:15 PRE-TEST 10Q · 09:00 DEEP PRIME 2h · 11:00 30Q consolidación · 18:00 eval modo examen (6h15/día; F3 + 16:15 REENTRADA = 7h15) · PAUSA ${f(PAUSA.desde)} → ${f(PAUSA.hasta)}: Anki 30' L-V + sáb 07:45 STEP 1 VIVO 20Q · F4 (SERUMS, L-S): plantilla por turno M/T/L/G (FRANJAS_F4)`;
 const METODO = `Palmerton · 5 niveles UWorld: NO se sube de nivel sin ≥80% en 10Q consecutivas del nivel actual (validación ≤24-48 h). Nivel 1-2 = subtema (5Q tutor → 5Q timed) · nivel 3 = sistema completo timed (viernes sin hito hasta S10 + REACTIVACIÓN del tramo 2) · nivel 4 = mixto de sistemas dominados (eval 18:00 diaria + viernes sin hito desde S11 + reentrada + uw_random + colchón) · nivel 5 = 40Q random timed (incorrectas, consolidación, taper + hitos). Si <80%: repetir bloques de 5Q del subtema fallado y auditar recursos/comprensión/aplicación/memoria; nunca avanzar de tema. Taper ${f(D94.fecha)} (D94, última sesión de banco) + ${f(D95.fecha)} (D95, sesión mínima ≤1 h) · ${f(RITUAL.fecha)} ritual sin estudio · ${f(VIAJE)} viaje (D-1) · examen ${fy(E)} (${FV6.version}; ${FV6.step1.provisional ? 'PROVISIONAL: ' : ''}fecha a reservar según DJ-1 al salir la convocatoria ENCAPS).`;
-const VENTANA = `eligibility ${eligibilityTxt} · adelanto ${FV6.step1.adelanto} · base ${BASE_DJ1} · plan B ${FV6.step1.planB}`;
+const VENTANA = DJ1_UNICA
+  ? `eligibility ${eligibilityTxt} · examen ${FV6.step1.examen} en todos los escenarios ENCAPS (DJ-1 ${VER_DJ1}: sin adelanto; plan B = base → un NO-GO pasa a la extensión de la elegibilidad)`
+  : `eligibility ${eligibilityTxt} · adelanto ${FV6.step1.adelanto} · base ${BASE_DJ1} · plan B ${FV6.step1.planB}`;
 
 const header = `/**
  * usmleStep1Daily.ts — Plan DÍA A DÍA USMLE Step 1 · ${FV6.version} (reestructuración anual decidida por Joseph el ${fy(FV6.decidido)}).
@@ -509,7 +517,7 @@ export const PROTOCOLO_BLOQUE = {
     'Pregunta difícil = "game on": es difícil para todos y vale un punto; desconfiar y acertar es lo peor (matriz de confianza 2×2)',
     'Entre bloques (sit-in break): "Oh F#@& to OK" en 10-15 s (nombrar la emoción · soltar con respiraciones nasales · recentrar · validar · reengancharse); al pulsar finalizar, esas 40Q dejan de existir',
   ],
-  worstCase: ${q(`Worst-Case Scenario Planning (§7.6-1): ANTES del primer bloque del primer hito, escribir en detalle el peor escenario y exactamente qué harías (plan B de fecha dentro de la ventana DJ-1 —adelanto ${fy(FV6.step1.adelanto)} → base ${fy(BASE_DJ1)} → plan B ${fy(FV6.step1.planB)}—, sin recortar temario; "would it be the end of the world? No"). Vive en Readiness → "Plan B / peor escenario" (localStorage jmd-usmle-worstcase).`)},
+  worstCase: ${q(`Worst-Case Scenario Planning (§7.6-1): ANTES del primer bloque del primer hito, escribir en detalle el peor escenario y exactamente qué harías (plan B de fecha${DJ1_UNICA ? `: el examen ya es el ${fy(E)} en todos los escenarios (DJ-1 ${VER_DJ1}) y un NO-GO del ${fy(GONOGO)} pasa a la extensión de la elegibilidad (nov-dic-ene, la única permitida)` : ` dentro de la ventana DJ-1 —adelanto ${fy(FV6.step1.adelanto)} → base ${fy(BASE_DJ1)} → plan B ${fy(FV6.step1.planB)}—`}, sin recortar temario; "would it be the end of the world? No"). Vive en Readiness → "Plan B / peor escenario" (localStorage jmd-usmle-worstcase).`)},
   fuente: 'DATA/USMLE/PALMERTON_METODO_COMPLETO.md §7.1 (2 min) · §5.5 (juez vs abogado) · §5.6 (rule-in) · §7.4 (cambiar respuestas) · §7.6 (Panic Trap: worst-case, drill, AVP) · §8.4 (test day)',
 };
 

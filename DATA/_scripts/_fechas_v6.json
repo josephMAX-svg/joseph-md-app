@@ -1,5 +1,5 @@
 {
-  "version": "v6.03",
+  "version": "v6.04",
   "decidido": "2026-10-06",
   "f1": {
     "inicio": "2026-10-21",
@@ -28,22 +28,31 @@
   },
   "step1": {
     "reinicio": "2027-03-16",
-    "examen": "2027-09-27",
-    "adelanto": "2027-08-31",
+    "examen": "2027-10-25",
+    "adelanto": "2027-10-25",
     "planB": "2027-10-25",
-    "gonogo": "2027-08-09",
+    "gonogo": "2027-09-06",
     "eligibility": "2027-08..2027-10",
-    "viaje_d1": "2027-09-26",
-    "ritual": "2027-09-25",
+    "viaje_d1": "2027-10-24",
+    "ritual": "2027-10-23",
     "provisional": true,
     "reserva_por_encaps": {
-      "2027-03-14": "2027-08-31",
-      "2027-03-21": "2027-08-31",
-      "2027-04-04": "2027-09-27",
-      "2027-04-11": "2027-09-27",
+      "2027-03-14": "2027-10-25",
+      "2027-03-21": "2027-10-25",
+      "2027-04-04": "2027-10-25",
+      "2027-04-11": "2027-10-25",
       "2027-04-18": "2027-10-25",
       "2027-04-25": "2027-10-25"
-    }
+    },
+    "cambios": [
+      {
+        "fecha": "2026-10-21",
+        "version": "v6.04",
+        "examen_previo": "2027-09-27",
+        "examen": "2027-10-25",
+        "motivo": "Orden de Joseph (mié 21-oct-2026): «con respecto a los días que dices que llevo perdido 37 días hábiles, ¿por qué solamente no alargas la fecha del examen del Step 1? … si es que iba a ser en agosto para septiembre, o si iba a ser septiembre para octubre … simplemente en lo que nos falta, alargar las fechas». Examen lun 27-sep → LUN 25-OCT-2027 (dentro de la elegibilidad ago-sep-oct). Nada antes del reinicio (mar 16-mar-2027) cambia; el tramo 2 se regenera con E = 25-oct y las semanas extra van al COLCHÓN (no se comprime nada). DJ-1 v6.04: 25-oct en todos los escenarios ENCAPS (sin adelanto; el plan B coincide con la base: un NO-GO del lun 6-sep ya no tiene fecha posterior dentro de la elegibilidad → extensión, §B5)."
+      }
+    ]
   },
   "serums": {
     "inicio": "2027-05-03",
@@ -77,15 +86,15 @@
       "motivo": "lunes libre post-ENCAPS"
     },
     {
-      "fecha": "2027-09-25",
+      "fecha": "2027-10-23",
       "motivo": "ritual test-day"
     },
     {
-      "fecha": "2027-09-26",
+      "fecha": "2027-10-24",
       "motivo": "viaje D-1"
     },
     {
-      "fecha": "2027-09-27",
+      "fecha": "2027-10-25",
       "motivo": "EXAMEN Step 1"
     }
   ],

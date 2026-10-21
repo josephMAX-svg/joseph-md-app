@@ -174,7 +174,7 @@ function HitosSerie({ scores }: { scores: UsmleScore[] }) {
           <Text style={[st.hitoEstado, { color: color(h.estado) }]}>{h.estado === 'on-track' ? '✓' : h.estado === 'bajo' ? '✗' : h.estado === 'registrado' ? '●' : '○'}</Text>
         </View>
       ))}
-      <Text style={[st.smallNote, { marginTop: Spacing.sm }]}>Un hito &gt;5 puntos bajo su mínimo → auditar el MÉTODO esa semana (checklist §G), no sumar horas; dos hitos seguidos bajo mínimo → ⚠ ALERTA BURNOUT (REGLA §E-7: 3-5 días solo Anki AM + sueño); la fecha la decide el GO/NO-GO (ventana DJ-1: 31-ago → 27-sep → 25-oct, gratis antes del E-46).</Text>
+      <Text style={[st.smallNote, { marginTop: Spacing.sm }]}>Un hito &gt;5 puntos bajo su mínimo → auditar el MÉTODO esa semana (checklist §G), no sumar horas; dos hitos seguidos bajo mínimo → ⚠ ALERTA BURNOUT (REGLA §E-7: 3-5 días solo Anki AM + sueño); la fecha la decide el GO/NO-GO ({DAILY_META.gonogo}: examen {DAILY_META.examenTarget}, DJ-1 v6.04; un NO-GO ya no tiene fecha posterior dentro de la elegibilidad → extensión, §B5).</Text>
       {/* #12 · lectura del UWSA1 por tramos (no es gate) */}
       {(['UWSA1', 'NBME 28'] as const).flatMap((clave) => (HITOS_ONTRACK.find((h) => h.clave === clave)?.tramos || []).map((t, i) => (
         <Text key={`${clave}-${i}`} style={[st.smallNote, { marginTop: 4 }]}><Text style={{ color: i === 0 ? Colors.coral : i === 1 ? Colors.gold : Colors.green, fontWeight: '800' }}>{clave} {t.label}</Text> → {t.accion}</Text>
@@ -196,7 +196,7 @@ function WorstCaseCard() {
       <Text style={[st.smallNote, { marginBottom: Spacing.sm }]}>{PROTOCOLO_BLOQUE.worstCase}</Text>
       <TextInput
         style={st.worstInput} multiline value={txt} onChangeText={(t) => { setTxt(t); setGuardado(false); }}
-        placeholder={'Peor escenario, en detalle: "fallo el UWSA1 con __ %" / "el NBME 31 sale <68 %" → qué hago exactamente: GO/NO-GO → fecha siguiente de la ventana DJ-1 (31-ago → 27-sep → 25-oct), protocolo Jay, modo mínimo, a quién llamo, qué NO hago (no añadir recursos, no sumar horas). ¿Sería el fin del mundo? No: ...'}
+        placeholder={`Peor escenario, en detalle: "fallo el UWSA1 con __ %" / "el NBME 31 sale <68 %" → qué hago exactamente: GO/NO-GO del ${DAILY_META.gonogo} → examen ${DAILY_META.examenTarget} o extensión de la elegibilidad (DJ-1 v6.04), protocolo Jay, modo mínimo, a quién llamo, qué NO hago (no añadir recursos, no sumar horas). ¿Sería el fin del mundo? No: ...`}
         placeholderTextColor={Colors.muted}
       />
       <View style={{ flexDirection: 'row', gap: 8, alignItems: 'center', marginTop: Spacing.sm, flexWrap: 'wrap' }}>
