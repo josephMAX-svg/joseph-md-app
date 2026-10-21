@@ -1080,3 +1080,115 @@ El barrido se hizo con `list_events` y `fullText «27-sep»` del 21-oct-2026 al 
 Ya no existen (respaldo en `cal_bk/v604b/<id>.json`): `69tr6hqitr5fnanc2af5kvugnk` · `00929or8op5hj28s3nbf1eo09c` · `0ar1fbrm3ts396kd96f8df753g`.
 
 Sin commit. Única escritura en el repo: este fichero. Los respaldos, volcados, payloads y scripts están en `DATA/_v600/cal/cal_bk/v604b/`, que git ignora.
+
+## 17. Rutinas personales al examen del 25-oct y al UWSA1 del jue 22 (v6.04c)
+Solo descripciones de 15 rutinas (+ reposición de la excepción del ALMUERZO del jue 22-oct). Respaldos en `cal_bk/v604c/` (gitignored).
+
+
+Google Calendar principal · America/Lima · mié 21-oct-2026, ≈12:43-12:46 Lima (`updated` 17:43:02Z → 17:45:52Z).
+Cierra el pendiente 1 de `CAL_V6.md` §16 («Rutinas personales con fechas v6.03 del examen»).
+
+**16 escrituras, todas con `notificationLevel: NONE`:** 15 `update_event` de master (solo `description`) y 1 `update_event` de
+instancia para reponer una excepción. Títulos, horas, RRULE, colores y recordatorios no cambian (se comprobó en cada respuesta).
+No hubo `create_event` ni `delete_event`. Sin commit.
+
+## Protocolo
+
+- `get_event` de los 15 masters antes de escribir → `cal_bk/v604c/<id>.json` (`cal_bk/` está en `.gitignore:53`).
+- Excepciones: `list_events` del 1-oct-2026 al 31-dic-2027 (`fullText` «ALUMUERZO», «DECLARACIONES EKER», «POST-ENTRENO Walker» para
+  GYM ×4, BAILE ×7 y PRÁCTICA, y «Anki de fin de semana DESAYUNO»). Volcados en `cal_bk/v604c/volcados/`. Para cada serie se
+  comparó con su RRULE (`scripts/inst.js`): estaban todas las fechas y no faltaba ninguna. Solo ALMUERZO tiene excepciones:
+  - lun 19-oct 13:00 · mar 3-nov, 24-nov, 15-dic y mié 30-dic 12:30: hora propia, texto de la serie.
+  - **jue 22-oct 13:00-13:30**: texto propio («🎯 HOY (jue 22-oct, UWSA1 …»). Respaldo en `cal_bk/v604c/excepciones/`.
+  - Las otras 14 series no tienen excepciones en ese rango.
+- Los textos los genera `scripts/build.js`: 49 reemplazos con la aserción «exactamente 1 coincidencia» (0 fallos). Los payloads
+  están en `payloads/<id>.txt`. `scripts/scan.js` comprueba que toda fecha v6.03 que quede está dentro de un «⏸ v6.03» (0 por revisar).
+- Pie: `(v6.03 · 20-oct-2026: D1 = mié 21-oct)` → `(v6.04 · 21-oct-2026: examen Step 1 lun 25-oct-2027)`. La línea
+  «Régimen v6.03 (D1 = mié 21-oct-2026 …)» se queda: la base de F1 sigue siendo v6.03.
+- ALMUERZO: después del update del master, `get_event` del jue 22-oct mostró que se había pisado su texto propio (la hora sí se
+  conservó). Se repuso con el texto guardado.
+
+## Operaciones
+
+| Id | Serie | Frases cambiadas (v6.03 → v6.04; lo anterior queda como «⏸ v6.03») |
+|---|---|---|
+| `22bh9m5jhc7ro6aj3m4ffjad7g` | EKER (diaria 04:00) | «6. IDENTIDAD DE EXAMEN (v6.04 …)»: objetivo primario hasta el **lun 25-oct-2027** (antes lun 27-sep) |
+| `6740kavnfkdcvj5k149ouliauu` | GYM lunes | hitos en lunes: NBME 30 lun 24-may · **NBME 31 lun 23-ago · NBME 32 lun 30-ago · NBME 33 lun 27-sep, solo** · GO/NO-GO **lun 6-sep** · UWSA2 **mar 7-sep** · ensayo de 7 bloques **vie 8-oct** (serie GYM viernes) · miércoles solo NBME 28/29 · examen **lun 25-oct** · viaje **dom 24-oct** · regreso **mar 26-oct** · D95 **vie 22-oct** · ritual **sáb 23-oct** · vísperas «sáb 13-mar y dom 24-oct» |
+| `0dpes0ekv96a453e89m5osg06t` | GYM martes | UWSA2 **mar 7-sep** (07:00-11:15) · GO/NO-GO **lun 6-sep** · examen lun 25-oct · D-1 dom 24-oct · D95 vie 22-oct · regreso **mar 26-oct** |
+| `4qvs34d84u82psvknpqhv3jc7a` | GYM jueves | D94 **jue 21-oct-2027** · D95 vie 22-oct · ritual sáb 23-oct · D-1 dom 24-oct · examen lun 25-oct |
+| `7sf8i7pe62pugfk4t6tcnbb9i4` | GYM viernes | el hito en viernes es ahora el **ensayo de 7 bloques = Free 120 + 4 bloques, vie 8-oct** (antes NBME 32 vie 6-ago) · lunes: NBME 30/31/32/33 + GO/NO-GO lun 6-sep · martes: UWSA2 mar 7-sep · miércoles sin NBME 31 · D95 **vie 22-oct** · ritual · D-1 · examen |
+| `64lue1en3hk0cf8itml2rtlqi4` | BAILE lunes | examen lun 25-oct · viaje dom 24-oct · regreso mar 26-oct · D95 · ritual · D-1 · hitos en lunes NBME 30/31/32/33 + GO/NO-GO lun 6-sep · vísperas «… dom 24-oct» |
+| `09me7atu516gb0k6u0rbfcj8q1` | BAILE martes | igual que GYM martes |
+| `0tod56pc6pgecm5lf7g4e3ji9v` | BAILE miércoles | último día del taper **mié 20-oct** (antes mié 22-sep) · NBME 31 fuera de los miércoles (pasa al lun 23-ago) · D94 jue 21-oct · D95 vie 22-oct · ritual sáb 23-oct · D-1 dom 24-oct · examen lun 25-oct |
+| `3m8m4resu8akph4a7qfuf3h1qn` | BAILE jueves | igual que GYM jueves |
+| `5pd4jhmvl31hvbuh40vphpoc4q` | BAILE viernes | D95 **vie 22-oct** · ritual · D-1 · examen · hito en viernes = ensayo de 7 bloques **vie 8-oct** (el NBME 32 pasa al lun 30-ago) |
+| `3jkfb6097rtc1jbec19eg3sd57` | BAILE sábado | examen lun 25-oct · D95 vie 22-oct · **sáb 23-oct = ritual** · D-1 dom 24-oct |
+| `7j6pucil43vuca70p082g5ub3d` | BAILE domingo | examen lun 25-oct · víspera real **dom 24-oct** · D95 vie 22-oct · ritual sáb 23-oct |
+| `13m3tcqjjc34rt6iqfblla18q1` | BAILE PRÁCTICA (dom) | igual que BAILE domingo |
+| `2u9je70pif58hgf2f8t3vgu8b8` | DESAYUNO sáb/dom | sin Anki el **sáb 23 / dom 24-oct-2027** (antes 25/26-sep; = EXDATE de las series ANKI `r9eglu07…` / `5s64scag…`) |
+| `43dq3oib16esjcqj1dcd8osot2` | ALMUERZO L-V | UWSA2 **mar 7-sep** · NBME 30-33 a las 07:00-12:15 (lun 24-may · lun 23-ago · lun 30-ago · lun 27-sep) · «NBME 33 + 3 bloques (lun 30-ago)» y «Free 120 (lun 13-sep)» → **ensayo de 7 bloques = Free 120 + 4 bloques (vie 8-oct, 07:00-16:30)**: Ziploc 2 tras el bloque 3 + snack + comida al terminar |
+| `43dq3oib16esjcqj1dcd8osot2_20261022T170000Z` | ALMUERZO jue 22-oct (instancia) | **texto propio repuesto** tal cual (no cita fechas de 2027); hora 13:00-13:30 y título conservados |
+
+## Verificación
+
+- 15 respuestas de `update_event` (`scripts/chk_update.js`): **180 comprobaciones OK, 0 FAIL**. La descripción es igual al payload.
+  `summary`, `start`, `end`, `recurrence`, `colorId`, recordatorios, transparencia y estado son iguales que antes. En todas
+  `notificationLevel` = NONE.
+- Volcados después (`volcados/after/`, 1.698 instancias de las 15 series entre el 1-oct-2026 y el 31-dic-2027), revisados con
+  `scripts/ver.js`: **6.829 comprobaciones OK, 0 FAIL**.
+  - Las instancias son las mismas que antes en todas las series.
+  - 1.697 instancias tienen la descripción del payload. La del jue 22-oct tiene su texto propio.
+  - Título, hora y color no cambian en ninguna instancia.
+  - Las 7 instancias de ALMUERZO con hora propia siguen igual: 19-oct 13:00, 21-oct 12:00, 22-oct 13:00, y 3-nov, 24-nov, 15-dic
+    y 30-dic a las 12:30.
+
+## No tocado / observaciones
+
+1. No se tocaron las frases de 2026. Varias rutinas siguen citando el **UWSA1 «mié 21-oct-2026»**: GYM lun, GYM vie, BAILE lun,
+   BAILE mié y el master de ALMUERZO. Con la semana corrida v6.04a se hace el jue 22-oct (alias en la app; la instancia del
+   ALMUERZO del jue 22 ya lo dice). Por eso GYM y BAILE jueves dicen «Ningún hito del Step 1 cae en jueves», que vale para 2027
+   pero no para mañana.
+2. En los textos nuevos, el NBME 32 (lun 30-ago, Santa Rosa) y el ensayo de 7 bloques (vie 8-oct, Combate de Angamos) se marcan
+   como feriado, igual que en los hitos de `CAL_V6.md` §16.
+3. Respaldos, volcados, payloads, respuestas y scripts están en `DATA/_v600/cal/cal_bk/v604c/`, que git ignora. Este fichero es la
+   única escritura en el repo.
+
+## Ronda 2 — UWSA1 de la semana corrida = jue 22-oct-2026 (orden del orquestador)
+
+Se ejecutó el mismo día, ≈12:50-12:52 Lima (`updated` 17:50:30Z → 17:51:31Z). Se resuelve la observación 1 de arriba.
+
+**8 escrituras, todas con `notificationLevel: NONE`:** 7 `update_event` de master (solo `description`) y 1 reposición de la
+excepción del ALMUERZO. Solo se cambiaron las frases de 2026 sobre el UWSA1. Nada más.
+
+Protocolo:
+- `get_event` de los 7 masters y de la excepción → `cal_bk/v604c/r2/<id>.json`. Los masters eran idénticos a los payloads de la
+  ronda 1.
+- `list_events` de antes (ALMUERZO y «POST-ENTRENO Walker», del 1-oct-2026 al 31-dic-2027; en `r2/volcados/before/`). Estaban
+  todas las fechas. Las excepciones eran las mismas: solo las de ALMUERZO, y solo la del jue 22-oct con texto propio.
+- Los textos los genera `scripts/build_r2.js`, con la aserción «exactamente 1 coincidencia» (0 fallos). Los payloads están en
+  `r2/payloads/`.
+- La actualización del master de ALMUERZO volvió a pisar el texto del jue 22-oct. Se repuso tal cual.
+
+| Id | Serie | Frase cambiada |
+|---|---|---|
+| `6740kavnfkdcvj5k149ouliauu` | GYM lunes | «el UWSA1 ya no cae en lunes (mié 21-oct-2026, 08:50-13:00 → serie BAILE miércoles …)» → «(**JUE 22-oct-2026, 08:50-13:00; semana corrida v6.04a: jue 22 = plan del mié 21 → serie GYM jueves**; ⏸ v6.03: mié 21-oct · ⏸ v6.02: lun 19-oct)» |
+| `7sf8i7pe62pugfk4t6tcnbb9i4` | GYM viernes | «… y MIÉRCOLES (UWSA1 mié 21-oct-2026 · NBME 28 · NBME 29)» → «…, MIÉRCOLES (NBME 28 · NBME 29) y **JUEVES (UWSA1 JUE 22-oct-2026, 08:50-13:00; semana corrida v6.04a …; ⏸ v6.03: mié 21-oct)**» |
+| `64lue1en3hk0cf8itml2rtlqi4` | BAILE lunes | «el UWSA1 pasó al mié 21-oct-2026» → «el UWSA1 pasó al **JUE 22-oct-2026, 08:50-13:00; semana corrida v6.04a …** (⏸ v6.03: mié 21-oct · ⏸ v6.02: lun 19-oct)». La frase se puso delante del «⏸ v6.03» de la ronda 1 para que no se lea como historial |
+| `0tod56pc6pgecm5lf7g4e3ji9v` | BAILE miércoles | se quita el UWSA1 de «hitos en miércoles» · «y el UWSA1 vuelve a caer en miércoles» → «y el UWSA1 (D1) **ya no cae en miércoles: es el JUE 22-oct-2026, 08:50-13:00; semana corrida v6.04a … → serie BAILE jueves** (⏸ v6.03: mié 21-oct · ⏸ v6.02: lun 19-oct)» |
+| `4qvs34d84u82psvknpqhv3jc7a` | GYM jueves | «Ningún hito del Step 1 cae en jueves.» → «Ningún hito del Step 1 **de 2027** cae en jueves; **el JUE 22-oct-2026 SÍ es día de hito: UWSA1 08:50-13:00** (semana corrida v6.04a …; ⏸ v6.03: mié 21-oct) → mismo entreno, misma hora.» |
+| `3m8m4resu8akph4a7qfuf3h1qn` | BAILE jueves | lo mismo («→ mismo baile, misma hora») |
+| `43dq3oib16esjcqj1dcd8osot2` | ALMUERZO (master) | «el UWSA1 (mié 21-oct, 08:50-13:00) pisa este almuerzo» → «el UWSA1 (**JUE 22-oct-2026, 08:50-13:00; semana corrida v6.04a: jue 22 = plan del mié 21**; ⏸ v6.03: mié 21-oct) pisa este almuerzo» |
+| `43dq3oib16esjcqj1dcd8osot2_20261022T170000Z` | ALMUERZO jue 22-oct | texto propio **repuesto** tal cual; 13:00-13:30 y título conservados |
+
+No se tocaron:
+- la línea «Régimen v6.03 (D1 = mié 21-oct-2026 …)», que es la fecha de plan del D1;
+- el historial «corrimientos del D1 (→ … → mié 21-oct)» del ALMUERZO.
+
+Verificación (0 fallos en total):
+- Respuestas de los 7 updates (`scripts/chk_update_r2.js`): **84 comprobaciones OK**. La descripción es igual al payload. Título,
+  hora, RRULE, color, recordatorios y estado no cambian.
+- Volcados después (`r2/volcados/after/`), revisados con `scripts/ver_r2.js`: **5.177 comprobaciones OK** sobre 1.111 instancias.
+  - Series tocadas: las mismas 720 instancias. 719 tienen el payload y ninguna cita ya el UWSA1 el «mié 21-oct-2026».
+  - La excepción del jue 22-oct tiene su texto propio, 13:00-13:30 y el título ALUMUERZO.
+  - Las otras excepciones del ALMUERZO conservan su hora.
+  - Las 6 series GYM/BAILE que no se tocaron (GYM mar, BAILE mar/vie/sáb/dom y PRÁCTICA, 391 instancias) no cambiaron.
