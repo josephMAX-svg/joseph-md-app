@@ -19,7 +19,7 @@ import {
 } from '../../lib/supabase';
 import type { TodayMetrics } from '../../lib/supabase';
 import GlassCard from '../../components/GlassCard';
-import TodayMission, { todayISO, faseActual, mirLabelDe } from '../../components/home/TodayMission';
+import TodayMission, { todayISO, faseActual, mirLabelDe, encapsLabelDe } from '../../components/home/TodayMission';
 import BibliotecaHome from '../../components/home/BibliotecaHome';
 import CockpitStatusBar, { limaHHMM } from '../../components/home/CockpitStatusBar';
 import FlightDeckGauges from '../../components/home/FlightDeckGauges';
@@ -145,7 +145,7 @@ export default function DesktopHomeContent({ onNavigate }: { onNavigate?: (scree
 
   // Briefing de 1 línea (Superhuman Morning Briefing) — compuesto de datos ya presentes.
   const briefing = componerBriefing({
-    encapsTema: 'ENCAPS · tema del cronograma',
+    encapsTema: encapsLabelDe(iso), // v6.05: la sesión real del día (null = sin sesión), no un texto fijo
     mirBloque: mirLabelDe(iso),
     unread: unreadReports?.length ?? 0,
     apexQueue: queueCount,

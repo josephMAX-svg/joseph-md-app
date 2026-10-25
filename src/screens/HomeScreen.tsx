@@ -26,7 +26,7 @@ import {
 import type { AgentReport, TodayMetrics } from '../lib/supabase';
 import ApexSubmitModal from '../components/ApexSubmitModal';
 import AgentReportViewer from '../components/AgentReportViewer';
-import TodayMission, { todayISO, faseActual, mirLabelDe } from '../components/home/TodayMission';
+import TodayMission, { todayISO, faseActual, mirLabelDe, encapsLabelDe } from '../components/home/TodayMission';
 import BibliotecaHome from '../components/home/BibliotecaHome';
 import CockpitStatusBar, { limaHHMM } from '../components/home/CockpitStatusBar';
 import FlightDeckGauges from '../components/home/FlightDeckGauges';
@@ -218,7 +218,7 @@ export default function HomeScreen({ navigation }: { navigation?: any }) {
   const accumProgress = Math.min((liveDeepWorkHours / 5) * 100, 100);
 
   const briefing = componerBriefing({
-    encapsTema: 'ENCAPS · tema del cronograma',
+    encapsTema: encapsLabelDe(iso), // v6.05: la sesión real del día (null = sin sesión), no un texto fijo
     mirBloque: mirLabelDe(iso),
     unread: unreadReports.length,
     apexQueue: queueCount,

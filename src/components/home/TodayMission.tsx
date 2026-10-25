@@ -182,6 +182,19 @@ export function mirLabelDe(iso: string): string | null {
   if (!s) return null;
   return s.tipo === 'plan' ? `MIR D${s.dia.d} · ${s.dia.asignatura}` : `MIR M${s.dia.d}/${MIR_MANT_META.totalDias} · ${s.dia.asignatura}`;
 }
+/**
+ * Etiqueta corta ENCAPS del día (para el briefing). F1 = la sesión de las 16:15 (encapsGuia) · F2 = la intensiva · null sin sesión.
+ * v6.05: antes el briefing ponía el texto fijo «ENCAPS · tema del cronograma» también los días sin sesión (sáb 24 / dom 25).
+ */
+export function encapsLabelDe(iso: string): string | null {
+  if (corridaS1De(iso)?.tipo === 'sin_sesion') return null;
+  const s = sesionEncapsDe(iso);
+  if (s) {
+    if (s.tipo === 'pretest') return `ENCAPS D${s.dia} · pre-test ${s.pretest?.parte ?? 1}/${s.pretest?.de ?? 2}`;
+    return s.tipo === 'minisim' ? `ENCAPS D${s.dia} · mini-sim 25Q` : `ENCAPS D${s.dia} · banco ${s.codigo ?? ''}`.trim();
+  }
+  return plantillaDelDia(iso).bloques.some((b) => b.plan === 'encaps') ? 'ENCAPS · intensiva (ver plan)' : null;
+}
 /** Etiqueta corta USMLE del día (para el briefing/status bar). null si no hay fila hoy · v6.00: «PAUSA» entre el 31-dic y el reinicio. */
 export function usmleLabelDe(iso: string): string | null {
   if (corridaS1De(iso)?.tipo === 'sin_sesion') return null; // v6.02d: día corrido (lun 19) → sin sesión
