@@ -1,12 +1,13 @@
 /**
- * gen_usmle_guia.js — genera src/lib/usmleGuia.ts: la GUÍA «qué · cuánto · cómo» de CADA franja del Step 1 en F1 (D1-D50 en la v6.03 + fines de
- * semana), en el formato común `GuiaBloque` de src/lib/guia.ts.
+ * gen_usmle_guia.js — genera src/lib/usmleGuia.ts: la GUÍA «qué · cuánto · cómo» de CADA franja del Step 1 en F1 (D1-D47 en la v6.05 + fines de
+ * semana) y, v6.05b, de las filas de F1 DESPLAZADAS al tramo 2 (T3-T13 + el NBME 29 de T2 y los días de cola de vídeo T14-T18, plantilla F3),
+ * en el formato común `GuiaBloque` de src/lib/guia.ts.
  *   node DATA/_scripts/usmle/gen_usmle_guia.js            → escribe src/lib/usmleGuia.ts (aborta si un bloque no cuadra)
  *   node DATA/_scripts/usmle/gen_usmle_guia.js --check    → regenera en memoria y compara con el fichero (exit 1 si difiere)
  *   node DATA/_scripts/usmle/gen_usmle_guia.js --informe <ruta.md>  → además escribe la tabla de la semana 1 + el reparto F1
  * Entradas (nada a mano en el .ts):
  *   · las filas REALES de F1 (src/lib/usmleStep1Daily.ts vía cargar_ts.js: fechas, D#, sub, nivelUW, qDia, palm) — este script NO
- *     cambia fechas, D#, hitos ni niveles (el plan vigente de _fechas_v6.json, hoy v6.03, intacto);
+ *     cambia fechas, D#, hitos ni niveles (el plan vigente de _fechas_v6.json, hoy v6.05, intacto);
  *   · catálogos verificados el 18-oct-2026: DATA/USMLE/qbankly_bb_step1_videos.tsv (491 vídeos B&B con duración) ·
  *     qbankly_uworld_step1_filtros.tsv (13 Subjects + 169 Systems con nº de preguntas) · qbankly_uworld_step1_matriz.tsv (Subject × System) ·
  *     qbankly_mehlman_step1_sistemas.tsv (respaldo) · qbankly_hitos_step1.tsv (UWSA/NBME: bloques reales) · STUDY_HUB/_scrape/qbankly_libs_full.json;
@@ -38,6 +39,24 @@
  *   medio: D3 vie 23 → D4 lun 26). El catálogo se lee por el ORIGEN v5.20 de cada d (colocarF1): las filas v5.20 D50 (Neuro) y D51
  *   (Heme/Onco) ya no son de F1 → sus recursos quedan en guia_catalogo_f1.js y se listan en META.bbDesplazadasTramo2 (T3/T4). Sáb 24 y
  *   dom 25-oct = solo lo nativo del fin de semana (Anki sáb 19:00 · dom 17:00 opcional).
+ * v6.05 (24-oct-2026): corrimiento del D1 mié 21-oct → lun 26-oct (la semana del 19 sin estudio; F1 = 47 filas, lun 26-oct → mié 30-dic).
+ *   Mismo guion por D# (sin cambio de bloques ni minutos): D1 lun 26 UWSA1 08:50-13:00 (07:15 localizar · 07:25 SYNAPSE · 07:55 vídeo de
+ *   método + peor escenario · Day-After 1/6 a las 18:00) · D2 mar 27 · D3 mié 28 · D4 jue 29 · D5 vie 30 (ya sin fin de semana en medio:
+ *   el aviso del Day-After lo dice solo si hay sábado/domingo entre el D1 y el D4) · sáb 31-oct / dom 1-nov = solo Anki. Las filas v5.20
+ *   D47-D50 (Neuro) y D51 (Heme/Onco) ya no son de F1 → META.bbDesplazadasTramo2 (T3-T7). Lo que no cabe en el último día de contenido
+ *   (D46: vídeos B&B de fármacos autonómicos + el resto del Palmerton Neuro Part 2) NO se recorta: queda en META.colaAlCierreF1 y su aviso
+ *   lo manda al tramo 2 (T3, con Neuro).
+ * v6.05b (24-oct-2026, verificación adversarial): (1) la cola al cierre de F1 (≈82′ de B&B de fármacos autonómicos del D46 + 61′ del Palmerton
+ *   Neuro Part 2 del D45) ya NO se queda sin día: el reparto sigue en el tramo 2 (SEQ = F1 + DIAS_T2 hasta la última desplazada) con las MISMAS
+ *   capacidades por franja (07:15 «vídeo pendiente» ≤30′ salvo el día siguiente a un hito · hueco del deep prime 09:00) → T4 vie 19-mar 07:15 +
+ *   09:00 · T5 lun 22-mar 07:15 + 09:00 · T6 mar 23-mar 07:15; lo que deja la última desplazada va al «vídeo pendiente» 07:15-07:45 de las
+ *   filas siguientes del tramo 2 (días de cola, F3) hasta vaciarla; si no se vacía, ABORTA (META.colaAlCierreTramo2 siempre []) y destinoDe()
+ *   sin franja es un error. (2) GUÍA de las 11 desplazadas (v5.20 D47-D54, D56, D57, D79) en su fecha T con el MISMO guion por D# (anki0500 ·
+ *   repaso0715/dayAfter0715 · pretest · deepPrime · consolidacion · eval18) + 16:15 REENTRADA (reentrada1615, F3) y la del NBME 29 (T2, hitoNBME:
+ *   su Day-After 1/6-6/6 cae en T2-T6 como en F1); franjas leídas de plantillasV6.ts › bloquesF3 + FRANJA_F3_REENTRADA (aborta si un bloque cae
+ *   fuera) · catálogo: guia_catalogo_f1.js + D52-D54, D56, D57, D79 (nuevos) · SUBTEMA APEX del tramo 2 con el D# v5.20 (47_…, 65_nbme29) · la
+ *   bioestadística a ::Biostatistics · consolidación de nivel 4 (viernes N4 del tramo 2; F1 no tiene). F1: solo cambian los avisos del D45/D46
+ *   (destino explícito T4-T6 en vez de «→ TRAMO 2»). Controles: verificar_v6.js «guía USMLE».
  * v6.03b (20-oct-2026): MÉTODO ANKI · APEX dentro de los pasos existentes (mismas franjas, mismos minutos por bloque), según
  *   DATA/USMLE/METODO_ANKI_APEX_USMLE.md (Palmerton vía NotebookLM con citas + Tutorías MI + PALMERTON_*.md): D1 05:00 = configuración
  *   EXACTA (preset «APEX USMLE» en el padre + «Save to All Subdecks»: FSRS 0,90 · 20 nuevas/día · 9999 repasos/día · repasos antes que
@@ -108,7 +127,7 @@ const APEX_USMLE_TAGS = ['Aging', 'Anatomy', 'Anesthesiology', 'Behavioral_Scien
   'Orthopedics', 'Otolaryngology', 'Pain_Medicine', 'Pathology', 'Pathophysiology', 'Pediatrics', 'Pharmacology', 'Physiology', 'Psychiatry',
   'Pulmonology', 'Rheumatology', 'Surgery'];
 /** ESPECIALIDAD APEX del día: el tag del deck de ankiLinks salvo «General» (Fundamentos = patología general → Pathology). */
-const espApex = (row) => { const t = deckDe(row).split('::').pop(); return t === 'General' ? 'Pathology' : t; };
+const espApex = (row) => { const t = deckDe(row).split('::').pop(); return t === 'General' ? 'Pathology' : /Biostatistics/i.test(row.uw || '') ? 'Biostatistics' : t; }; // v6.05: la bioestadística (v5.20 D79, T13) → ::Biostatistics (ankiLinks la manda a Psychiatry)
 const deckApex = (row) => `APEX::USMLE::${espApex(row)}`;
 const nn = (d) => String(d).padStart(2, '0');
 
@@ -142,12 +161,24 @@ const realMin = (s, d) => { const { v, f } = vel(d); return Math.ceil((s / 60 / 
 
 
 // ── índices de filas ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
-const IDX = new Map(F1.map((r, i) => [r.d, i]));
-const filaD = (d) => F1[IDX.get(d)];
-/** k-ésima fila de CONTENIDO anterior (salta hitos) · k = 1 → ayer de contenido */
-function contAtras(r, k) { let c = 0; for (let i = IDX.get(r.d) - 1; i >= 0; i--) { if (!esHito(F1[i])) { c++; if (c === k) return F1[i]; } } return null; }
-/** ¿r es el n-ésimo día de plan tras un hito NBME de F1 (n = 1..4)? */
-function trasHito(r) { for (let n = 1, i = IDX.get(r.d) - 1; i >= 0 && n <= 4; i--, n++) if (esHito(F1[i])) return F1[i].d === 1 ? null : { hito: F1[i], n }; return null; }
+// v6.05 (24-oct): las filas de F1 DESPLAZADAS al tramo 2 (sub «DE F1 → TRAMO 2 …») llevan la MISMA guía por D# en su fecha T (plantilla F3)
+//   → «ayer», D-3/D-7, el Day-After de un hito y el reparto de vídeo corren sobre SEQ = F1 + el tramo 2 hasta la última desplazada (con la
+//   reentrada T1 y el NBME 29 T2 en medio: la reentrada no es «día de contenido» y el NBME reparte su Day-After en las desplazadas).
+const T2_DESPL = U.DIAS_T2.filter((x) => x.tipo === 'contenido' && /^DE F1 → TRAMO 2/.test(x.sub));
+const SEQ = [...F1, ...(T2_DESPL.length ? U.DIAS_T2.filter((x) => x.t <= T2_DESPL[T2_DESPL.length - 1].t) : [])];
+const IDX = new Map(SEQ.map((r, i) => [r.d, i]));
+const filaD = (d) => SEQ[IDX.get(d)];
+/** v6.05: fila con guía de CONTENIDO (F1 no-hito · desplazada del tramo 2): la reentrada T1 no cuenta como «ayer» */
+const esCont = (r) => !!MF1[r.d];
+/** k-ésima fila de CONTENIDO anterior (salta hitos y, en el tramo 2, la reentrada) · k = 1 → ayer de contenido */
+function contAtras(r, k) { let c = 0; for (let i = IDX.get(r.d) - 1; i >= 0; i--) { if (esCont(SEQ[i])) { c++; if (c === k) return SEQ[i]; } } return null; }
+/** ¿r es el n-ésimo día de plan tras un hito NBME (de F1 o, v6.05, el NBME 29 antes de las desplazadas) (n = 1..4)? */
+function trasHito(r) { for (let n = 1, i = IDX.get(r.d) - 1; i >= 0 && n <= 4; i--, n++) if (esHito(SEQ[i])) return SEQ[i].d === 1 ? null : { hito: SEQ[i], n }; return null; }
+/** v6.05: etiqueta de una fila en los textos (F1 «D7» · tramo 2 «T4», d = 100 + t) */
+const etqD = (d) => (d > 100 ? `T${d - 100}` : `D${d}`);
+const etq = (r) => etqD(r.d);
+/** v6.05: texto del subtema sin el prefijo «DE F1 → TRAMO 2 (…) · » de las desplazadas (subV520 = texto v5.20 exacto) */
+const txtSub = (r) => r.subV520 || r.sub;
 const corto = (s, n = 70) => (s.length > n ? s.slice(0, n - 1).trimEnd() + '…' : s);
 const S1 = (d) => d <= 5;
 // v6.03 (20-oct): fechas DERIVADAS de las filas (D# → fecha) para los textos de la semana 1 y los avisos
@@ -169,8 +200,16 @@ for (const r of F1) {
   if (typeof o !== 'number' || !MAPA[o]) aborta(`D${r.d} (${r.fecha}): sin mapeo en guia_catalogo_f1.js (origen v5.20 ${o})`);
   MF1[r.d] = MAPA[o];
 }
-// v6.03: filas de F1 DESPLAZADAS al tramo 2 (sub «DE F1 → TRAMO 2 …»): destino de lo que no cabe en F1 y lista de sus vídeos
-const T2_DESPL = U.DIAS_T2.filter((x) => x.tipo === 'contenido' && /^DE F1 → TRAMO 2/.test(x.sub));
+// v6.03: filas de F1 DESPLAZADAS al tramo 2 (T2_DESPL, arriba) · v6.05: su catálogo por su dOrig (= D# v5.20) y su guía en su fecha T con
+//   la plantilla de F3 → solo F3 y sin partir (en F4 la plantilla es por turno): si no, aborta en vez de escribir una guía que no cuadra
+for (const r of T2_DESPL) {
+  if (!MAPA[r.dOrig]) aborta(`T${r.t} (${r.fecha}, v5.20 D${r.dOrig}): fila desplazada sin mapeo en guia_catalogo_f1.js`);
+  if (r.fase !== 'F3' || r.parte) aborta(`T${r.t} (${r.fecha}): fila desplazada en ${r.fase}${r.parte ? ' parte ' + r.parte : ''} — la guía del tramo 2 solo tiene la plantilla de F3`);
+  MF1[r.d] = MAPA[r.dOrig];
+}
+/** v6.05: filas del tramo 2 con guía = las desplazadas + el hito cuyo Day-After (Palmerton §9.2) cae en ellas (NBME 29, T2) */
+const TG = [...new Set([...T2_DESPL.map((r) => trasHito(r)).filter(Boolean).map((th) => th.hito), ...T2_DESPL])].sort((a, b) => a.t - b.t);
+for (const r of TG) if (esHito(r) && (r.fase !== 'F3' || !/\(07:00-12:30\)/.test(r.sub) || !/Form \d+/.test(r.uw))) aborta(`T${r.t} (${r.fecha}): hito con Day-After en las desplazadas fuera del formato NBME de F3 (07:00-12:30)`);
 const CORTO_T2 = { 'Nervous System': 'Neuro', 'Hematology & Oncology': 'Heme/Onco', 'Psychiatry & Behavioral': 'bioestadística' };
 // v6.03b · cabecera APEX del día (SUBTEMA = D# de 2 cifras + subtema uWorld en inglés; hitos: D# + forma) y presupuesto de tarjetas
 const slugUW = (id) => {
@@ -179,14 +218,16 @@ const slugUW = (id) => {
   return s.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '').slice(0, 40).replace(/_+$/, '');
 };
 const hitoSlug = (r) => (/UWSA1/.test(r.sub) ? 'uwsa1' : `nbme${(/NBME (\d+)/.exec(r.sub) || /Form (\d+)/.exec(r.uw || '') || [])[1]}`);
-const subApex = (r) => (esHito(r) ? `${nn(r.d)}_${hitoSlug(r)}` : `${nn(r.d)}_${slugUW(MF1[r.d].uw[0])}`);
+/** v6.05: número del SUBTEMA APEX = D# del plan en F1 · en el tramo 2, el D# v5.20 (dOrig: 47…79, NBME 29 = 65) — 2 cifras y único */
+const dApex = (r) => (r.t ? r.dOrig : r.d);
+const subApex = (r) => (esHito(r) ? `${nn(dApex(r))}_${hitoSlug(r)}` : `${nn(dApex(r))}_${slugUW(MF1[r.d].uw[0])}`);
 const fuenteHito = (h) => (/UWSA/.test(h.sub) ? 'UWorld' : 'NBME');
 const cabApex = (esp, sub, fuente, modo) => `EXAMEN: USMLE · ESPECIALIDAD: ${esp} · SUBTEMA: ${sub} · FUENTE: ${fuente} · MODO: ${modo} · IMAGEN: no`;
 const ESP_PREG = '<sistema de la pregunta: Cardiology, Nephrology, Microbiology…>';
-for (const r of F1) {
-  if (esHito(r)) { if (!/^\d{2}_(uwsa1|nbme\d+)$/.test(subApex(r))) aborta(`D${r.d}: SUBTEMA APEX del hito no derivable (${subApex(r)})`); continue; }
-  if (!APEX_USMLE_TAGS.includes(espApex(r))) aborta(`D${r.d}: ESPECIALIDAD APEX «${espApex(r)}» no está en los 44 tags del parser`);
-  if (!/^\d{2}_[a-z][a-z0-9_]*$/.test(subApex(r))) aborta(`D${r.d}: SUBTEMA APEX «${subApex(r)}» no cumple NN_lowercase`);
+for (const r of [...F1, ...TG]) {
+  if (esHito(r)) { if (!/^\d{2}_(uwsa1|nbme\d+)$/.test(subApex(r))) aborta(`${etq(r)}: SUBTEMA APEX del hito no derivable (${subApex(r)})`); continue; }
+  if (!APEX_USMLE_TAGS.includes(espApex(r))) aborta(`${etq(r)}: ESPECIALIDAD APEX «${espApex(r)}» no está en los 44 tags del parser`);
+  if (!/^\d{2}_[a-z][a-z0-9_]*$/.test(subApex(r))) aborta(`${etq(r)}: SUBTEMA APEX «${subApex(r)}» no cumple NN_lowercase`);
 }
 /** Reglas de redacción (Palmerton: frente «Subject - question», tuyo y exigente; resumen arriba si el reverso es largo; sin cloze). */
 const R_FRENTE = 'FRENTE en inglés «Subject - question», escrito por ti, exigente y sin pistas; REVERSO «Summary:» 1 frase con el porqué (+ ≤2 líneas); CCSN = con qué no confundirlo; 1 idea por tarjeta, sin cloze';
@@ -220,7 +261,7 @@ function revCon(r, min, k, fuente) {
   return P(min, `Revisión: Educational Objective → ≤${nTarj(k)} APEX + log de errores (tope del día ${AK.topeDia}) · ${cabCorta(espApex(r), subApex(r), fuente, 'estudio')}`, `${COMO_ERR}${fuente === 'UWorld' ? ' Si la pregunta es de Mehlman: FUENTE mix_examen_usmle.' : ''} Consolidación % y tipo de error (knowledge / transfer / proceso) → 📏 Medición.`);
 }
 function corrEval(r, min, k) {
-  return P(min, `Corrección: Educational Objective + tipo de error + ≤${nTarj(k)} APEX · ${cabCorta('= sistema de la pregunta', `${nn(r.d)}_eval`, 'UWorld', 'estudio')}`, COMO_ERR);
+  return P(min, `Corrección: Educational Objective + tipo de error + ≤${nTarj(k)} APEX · ${cabCorta('= sistema de la pregunta', `${nn(dApex(r))}_eval`, 'UWorld', 'estudio')}`, COMO_ERR);
 }
 /** Submazos APEX que usa el F1 (orden de aparición) y el sábado del «Optimize» FSRS del preset (1.er sábado ≥ 28 días tras el D1). */
 const F1_DECKS = [...new Set(F1.filter((r) => !esHito(r)).map(espApex))];
@@ -281,8 +322,8 @@ for (const k of ['s0500', 's0755']) {
 }
 const COLA_METODO_TRAS_D1 = colaMetodo.map((it) => ({ ...it }));
 const minCola = (c) => c.reduce((a, it) => a + Math.round((it.fin - it.ini) / 60), 0);
-for (const r of F1) {
-  if (r.d === 1 || esHito(r)) continue;
+/** Reparto de vídeo de un día de contenido (F1 o, v6.05, una desplazada del tramo 2: mismas capacidades por franja). */
+function repartoDia(r) {
   const d = r.d; const m = MF1[d]; const rep = { s0500: [], s0715: [], s0900: [], desborde: [] }; REP[d] = rep;
   if (CAP.s0500(d)) llenarDesdeCola(d, CAP.s0500(d), rep.s0500);
   if (CAP.s0715(d)) llenarDesdeCola(d, CAP.s0715(d), rep.s0715);
@@ -297,14 +338,49 @@ for (const r of F1) {
   if (libre >= MIN_TRAMO) llenarDesdeCola(d, libre, rep.s0900, d);
   rep.colaTras = { bbMin: minCola(colaBB), palmMin: minCola(colaMetodo) + minCola(colaPalm) };
 }
+for (const r of F1) if (r.d !== 1 && !esHito(r)) repartoDia(r);
+/** Cola de vídeo al cierre de F1 (META.colaAlCierreF1): v6.05 → se ve en el tramo 2 (abajo); su destino exacto sale de DONDE. */
+const COLA_F1 = { bb: colaBB.map((it) => ({ ...it })), palm: [...colaMetodo, ...colaPalm].map((it) => ({ ...it })) };
+// v6.05 (24-oct, verificación adversarial): la cola NO se queda sin día. Sigue, en orden y partida por minutos, en las desplazadas del tramo 2
+//   (07:15 «vídeo pendiente» ≤30′ salvo el día siguiente a un hito · hueco del deep prime 09:00), con su vídeo propio delante, como en F1…
+for (const r of SEQ.slice(F1.length)) if (esCont(r)) repartoDia(r);
+//   … y lo que quede tras la última desplazada, en el «vídeo pendiente» 07:15-07:45 de las filas siguientes del tramo 2 (F3; nunca el día de un
+//   hito ni el siguiente) hasta vaciarla. Si no se vacía en F3, ABORTA (nada se recorta ni se queda sin fecha).
+const CAP_COLA = 25; // minutos reales de vídeo en la franja 07:15-07:45 de un día de cola (+ ≥5′ de free recall)
+const COLA_DIAS = [];
+{
+  const quedan = () => colaMetodo.length + colaBB.length + colaPalm.length;
+  const ultT = SEQ.length > F1.length ? SEQ[SEQ.length - 1].t : 0;
+  for (const r of U.DIAS_T2.filter((x) => x.t > ultT)) {
+    if (!quedan()) break;
+    if (r.fase !== 'F3') aborta(`la cola de vídeo de las desplazadas no se vacía en F3 (quedan ${minCola(colaBB)}′ de B&B + ${minCola(colaMetodo) + minCola(colaPalm)}′ de Palmerton al llegar a T${r.t} ${r.fecha}, ${r.fase})`);
+    const prevT = U.DIAS_T2[r.t - 2];
+    if (r.tipo === 'hito' || r.tipo === 'day_after' || (prevT && prevT.tipo === 'hito')) continue;
+    const rep = { s0500: [], s0715: [], s0900: [], desborde: [], colaDia: true }; REP[r.d] = rep;
+    llenarDesdeCola(r.d, CAP_COLA, rep.s0715);
+    if (!rep.s0715.length) aborta(`T${r.t} ${r.fecha}: el día de cola no admite ni un tramo de vídeo`);
+    rep.colaTras = { bbMin: minCola(colaBB), palmMin: minCola(colaMetodo) + minCola(colaPalm) };
+    COLA_DIAS.push(r);
+  }
+  if (quedan()) aborta('la cola de vídeo no se vacía en el tramo 2');
+}
+/** Cola al cierre de la guía (F1 + desplazadas + días de cola): SIEMPRE vacía (si no, arriba se abortó). */
 const COLA_FINAL = { bb: colaBB.map((it) => ({ ...it })), palm: [...colaMetodo, ...colaPalm].map((it) => ({ ...it })) };
 /** Dónde cae cada tramo de vídeo (para avisar «pasa a …»). */
 const DONDE = []; // { d, slot, it }
 for (const [d, rep] of Object.entries(REP)) for (const slot of ['s0500', 's0715', 's0900']) for (const it of rep[slot]) DONDE.push({ d: Number(d), slot, it });
 const SLOT_TXT = { s0500: '05:00', s0715: '07:15', s0900: '09:00' };
+/** fecha de un d con reparto (F1, desplazada o día de cola del tramo 2) */
+const FECHA_D = (d) => (filaD(d) || U.DIAS_T2.find((x) => x.d === d)).fecha;
 function destinoDe(it) {
   const xs = DONDE.filter((x) => x.it.tipo === it.tipo && x.it.id === it.id && x.it.dOrig === it.dOrig && x.it.fin > it.ini && x.it.ini < it.fin);
-  return xs.length ? xs.map((x) => `D${x.d} ${fd(filaD(x.d).fecha)} ${SLOT_TXT[x.slot]}`).join(' + ') : TRAMO2_TXT; // v6.03: derivado del tramo 2 (antes «T3 jue 18-mar, cuando sigue Heme/Onco» fijo)
+  // v6.05: con la cola vaciada en el tramo 2 todo tramo tiene franja; si no, es un error del reparto (antes: «→ TRAMO 2 (…)» sin día)
+  if (!xs.length) { ERR.push(`vídeo sin franja: ${it.tipo === 'bb' ? bbRuta(it.id) : PALM[it.id].t} ${it.ini}-${it.fin}s (${etqD(it.dOrig)})`); return TRAMO2_TXT; }
+  // v6.05 (24-oct): si una parte del vídeo sigue en la cola al cierre de F1 (COLA_FINAL), el aviso lo dice con su tramo (antes solo se
+  //   nombraban las franjas donde SÍ cabía: con F1 = 47 el Palmerton Neuro Part 2 del D45 se ve 0:00-39:00 el D46 y el resto va al tramo 2)
+  const resto = [...COLA_FINAL.bb, ...COLA_FINAL.palm].find((x) => x.tipo === it.tipo && x.id === it.id && x.dOrig === it.dOrig && x.fin > it.ini && x.ini < it.fin);
+  const fmt = it.tipo === 'bb' ? mmss : hms;
+  return xs.map((x) => `${etqD(x.d)} ${fd(FECHA_D(x.d))} ${SLOT_TXT[x.slot]}`).join(' + ') + (resto ? ` + el resto (${fmt(resto.ini)}→${fmt(resto.fin)}) → ${TRAMO2_TXT}` : '');
 }
 
 // ── 2) PREGUNTAS uWorld (estimación: lo que este plan consume de cada System) ───────────────────────────────────────────────────────
@@ -319,11 +395,11 @@ const QS = {}; // d → { val, pre, con, ev, dispAntes, deficit }
 const uwDe = (d) => (MF1[d] ? MF1[d].uw : []);
 function sistemasSoFar(r) { // Systems del mismo sistema del plan hasta hoy (hoy primero, luego hacia atrás)
   const out = [...uwDe(r.d)];
-  for (let i = IDX.get(r.d) - 1; i >= 0; i--) { const x = F1[i]; if (esHito(x)) continue; if (x.system !== r.system) break; for (const id of uwDe(x.d)) if (!out.includes(id)) out.push(id); }
+  for (let i = IDX.get(r.d) - 1; i >= 0; i--) { const x = SEQ[i]; if (esHito(x)) continue; if (x.system !== r.system) break; for (const id of uwDe(x.d)) if (!out.includes(id)) out.push(id); }
   return out;
 }
-for (const r of F1) {
-  if (r.d === 1 || esHito(r)) continue;
+for (const r of SEQ) { // v6.05: F1 y después las desplazadas del tramo 2 (el pool de uWorld sigue gastándose en orden)
+  if (r.d === 1 || esHito(r) || !esCont(r)) continue;
   const d = r.d; const hoy = uwDe(d); const q = { val: 0, pre: 0, con: 0, ev: 0, dispAntes: disp(hoy), deficit: 0 };
   const th = trasHito(r); const prev = contAtras(r, 1);
   VISTOS_ANTES[d] = [...vistos];
@@ -333,11 +409,12 @@ for (const r of F1) {
   else if (d === 5) { q.val = tomar([1004], 5); q.pre = tomar(hoy, 10); q.con = tomar(hoy, 10); q.ev = tomar([...vistos].sort((a, b) => POOL.get(b) - POOL.get(a)), 5); }
   else {
     if (prev && !(th && th.n === 1)) q.val = tomar(uwDe(prev.d), 5);
-    const necesita = 10 + (r.nivelUW === 1 ? 20 : r.nivelUW === 3 ? 10 : 0);
+    const necesita = 10 + (r.nivelUW === 1 ? 20 : r.nivelUW === 3 || r.nivelUW === 4 ? 10 : 0);
     q.deficit = Math.max(0, necesita - q.dispAntes);
     q.pre = tomar(hoy, 10);
     if (r.nivelUW === 1) q.con = tomar(hoy, 20);
     else if (r.nivelUW === 2) q.con = tomar(prev ? uwDe(prev.d) : [], 5) + tomar(sistemasSoFar(r), 25);
+    else if (r.nivelUW === 4) q.con = tomar([...vistos].filter((x) => !hoy.includes(x)).sort((a, b) => POOL.get(b) - POOL.get(a)), 20) + tomar(hoy, 10); // v6.05: viernes N4 (mixtos)
     else q.con = tomar(sistemasOrgano(hoy[0]).filter((x) => !hoy.includes(x)).concat(hoy), 20) + tomar(hoy, 10);
     const evN = th && th.n <= 3 ? 0 : 10;
     if (evN) q.ev = tomar([...vistos, ...hoy.filter((x) => !vistos.includes(x))].sort((a, b) => POOL.get(b) - POOL.get(a)), evN);
@@ -378,16 +455,16 @@ function pasosVideo(d, arr) {
     if (it.tipo === 'bb') {
       const v = BB.get(it.id); const entero = it.ini === 0 && it.fin === v.s;
       const tramo = entero ? `(${mmss(v.s)})` : `de ${mmss(it.ini)} a ${mmss(it.fin)} (dura ${mmss(v.s)}; Qbankly guarda el minuto)`;
-      return P(it.min, `${bbRuta(it.id)} ${tramo}`, `${vv.txt}${it.dOrig !== d ? ` · PENDIENTE del D${it.dOrig}` : ''} · pausa y anota cada idea en 1 línea (patogenia → presentación)`, { t: 'Video Library (B&B Step 1)', url: QBV });
+      return P(it.min, `${bbRuta(it.id)} ${tramo}`, `${vv.txt}${it.dOrig !== d ? ` · PENDIENTE del ${etqD(it.dOrig)}` : ''} · pausa y anota cada idea en 1 línea (patogenia → presentación)`, { t: 'Video Library (B&B Step 1)', url: QBV });
     }
     const p = PALM[it.id];
     const entero = it.ini === 0 && it.fin === p.s;
     const tramo = entero ? `(${hms(p.s)})` : `de ${hms(it.ini)} a ${hms(it.fin)} (dura ${hms(p.s)})`;
     const coma = (x) => (Number.isInteger(x) ? `${x},0` : String(x).replace('.', ','));
     const minTxt = `${it.min}′ = ${Math.round((it.fin - it.ini) / 60)} min de vídeo ÷ ${coma(vv.v)} × ${coma(vv.f)} por las pausas`;
-    const sigue = it.ini ? (it.dOrig !== d ? ` · PENDIENTE del D${it.dOrig}: sigue desde el minuto ${hms(it.ini)}` : ` · sigue desde el minuto ${hms(it.ini)} (lo empezaste antes, hoy)`) : '';
+    const sigue = it.ini ? (it.dOrig !== d ? ` · PENDIENTE del ${etqD(it.dOrig)}: sigue desde el minuto ${hms(it.ini)}` : ` · sigue desde el minuto ${hms(it.ini)} (lo empezaste antes, hoy)`) : '';
     if (METODO[it.id]) return P(it.min, `Palmerton · «${p.t}» ${tramo}`, `YouTube · ${vv.txt}${sigue} · ${METODO[it.id].como} · ${minTxt}`, { t: it.ini ? 'YouTube (desde ese minuto)' : 'YouTube', url: yt(it.id, it.ini) });
-    return P(it.min, `Palmerton · «${p.t}» de ${hms(it.ini)} a ${hms(it.fin)} (dura ${hms(p.s)})`, `YouTube a ${String(vv.v).replace('.', ',')}× con subtítulos · visión del sistema (D${it.dOrig}): escucha y anota 3 ideas; sin tarjetas`, { t: 'YouTube (desde ese minuto)', url: yt(it.id, it.ini) });
+    return P(it.min, `Palmerton · «${p.t}» de ${hms(it.ini)} a ${hms(it.fin)} (dura ${hms(p.s)})`, `YouTube a ${String(vv.v).replace('.', ',')}× con subtítulos · visión del sistema (${etqD(it.dOrig)}): escucha y anota 3 ideas; sin tarjetas`, { t: 'YouTube (desde ese minuto)', url: yt(it.id, it.ini) });
   });
 }
 const recVideo = (arr) => arr.map((it) => (it.tipo === 'bb' ? { t: bbRuta(it.id), url: QBV, min: Math.round(BB.get(it.id).s / 60) } : { t: `Palmerton · ${PALM[it.id].t}`, url: yt(it.id, it.ini), min: Math.round(PALM[it.id].s / 60) }));
@@ -398,7 +475,7 @@ const pathomaTxt = (d) => (MF1[d].pathoma ? ` · Pathoma ${MF1[d].pathoma.map((c
 // ANKI 05:00
 function anki0500(r) {
   const d = r.d; const f = r.fecha; const rep = REP[d];
-  const i = IDX.get(d); const prevPlan = i > 0 ? F1[i - 1] : null;
+  const i = IDX.get(d); const prevPlan = i > 0 ? SEQ[i - 1] : null;
   const creadas = prevPlan ? (antesTxt(prevPlan.fecha, f) === 'ayer' ? 'ayer' : `el ${fd(prevPlan.fecha)}`) : 'ayer';
   if (S1(d) && rep && rep.s0500.length) {
     const vids = pasosVideo(d, rep.s0500); const V = vids.reduce((a, p) => a + p.min, 0);
@@ -424,21 +501,23 @@ function anki0500(r) {
 function repaso0715(r) {
   const d = r.d; const f = r.fecha; const prev = contAtras(r, 1); const rep = REP[d]; const d3 = contAtras(r, 3); const d7 = contAtras(r, 7);
   const vids = pasosVideo(d, rep.s0715); const V = vids.reduce((a, p) => a + p.min, 0);
+  // v6.05: en el tramo 2, «ayer» solo si la última sesión de contenido fue el día natural anterior (p. ej. Semana Santa: T7 mié 24 → T8 lun 29-mar)
+  const lejos = r.t && antesTxt(prev.fecha, f) !== 'ayer';
   const pasos = [
-    P(10, `Shopping list + free recall de AYER: «${corto(prev.sub, 80)}» (D${prev.d})`, 'Lee tus notas de 📏 Medición de ayer; después, SIN mirar, escribe en 90 s la cadena causal del subtema y marca lo que no salió.'),
-    P(10, '5Q TIMED del subtema de ayer (validación 24-48 h · 1.ª mitad del gate de 10Q)', tcUW(uwDe(prev.d), 5, TIMED), L_UW),
+    P(10, `Shopping list + free recall de ${lejos ? `la ÚLTIMA SESIÓN (${fd(prev.fecha)})` : 'AYER'}: «${corto(txtSub(prev), 80)}» (${etq(prev)})`, `Lee tus notas de 📏 Medición ${lejos ? `del ${fd(prev.fecha)}` : 'de ayer'}; después, SIN mirar, escribe en 90 s la cadena causal del subtema y marca lo que no salió.`),
+    P(10, lejos ? `5Q TIMED del subtema del ${fd(prev.fecha)} (validación a los ${diasEntre(prev.fecha, f)} días · 1.ª mitad del gate de 10Q)` : '5Q TIMED del subtema de ayer (validación 24-48 h · 1.ª mitad del gate de 10Q)', tcUW(uwDe(prev.d), 5, TIMED), L_UW),
     ...vids,
   ];
   const resto = 60 - 20 - V;
   const dd = [d3 && ['D-3', d3], d7 && ['D-7', d7]].filter(Boolean);
-  if (resto > 0) pasos.push(P(resto, `${dd.map((x) => x[0]).join(' / ')}: free recall de ${dd.map((x) => `«${corto(x[1].sub, 50)}» (D${x[1].d})`).join(' y ')} + Anki restante`, 'Sin mirar: 3 ideas de cada uno; lo que salga < 60 % → busca sus tarjetas y márcalas Again. Si quedaron vencidas a las 05:00, termínalas aquí.'));
-  return B(f, '07:15–08:15', `REPASO ANCLADO · validación del D${prev.d}${V ? ' + vídeo pendiente' : ''}`, pasos, [R_UW, ...recVideo(rep.s0715)], '5Q hechas (≥4/5 → subtema de ayer validado; <4/5 → 5Q más de ese System en la consolidación) y el free recall escrito', { planB: respaldo(prev.d, 5) });
+  if (resto > 0) pasos.push(P(resto, `${dd.map((x) => x[0]).join(' / ')}: free recall de ${dd.map((x) => `«${corto(txtSub(x[1]), 50)}» (${etq(x[1])})`).join(' y ')} + Anki restante`, 'Sin mirar: 3 ideas de cada uno; lo que salga < 60 % → busca sus tarjetas y márcalas Again. Si quedaron vencidas a las 05:00, termínalas aquí.'));
+  return B(f, '07:15–08:15', `REPASO ANCLADO · validación del ${etq(prev)}${V ? ' + vídeo pendiente' : ''}`, pasos, [R_UW, ...recVideo(rep.s0715)], '5Q hechas (≥4/5 → subtema de ayer validado; <4/5 → 5Q más de ese System en la consolidación) y el free recall escrito', { planB: respaldo(prev.d, 5) });
 }
 
 // PRE-TEST 08:15 (genérico D6+)
 function pretest(r) {
   const d = r.d; const q = QS[d]; const hoy = uwDe(d);
-  return B(r.fecha, '08:15–09:00', `PRE-TEST · 10Q ciegas · ${corto(r.sub, 60)}`, [
+  return B(r.fecha, '08:15–09:00', `PRE-TEST · 10Q ciegas · ${corto(txtSub(r), 60)}`, [
     P(3, `Armar: ${hoy.map(uwNom).join(' + ')}`, tcUW(hoy, 10, TUTOR), L_UW),
     P(30, '10Q ciegas del tema NUEVO (sin haber visto nada de hoy)', 'SAQ (pregunta autónoma) antes de mirar las opciones + CCSN; después lee la explicación entera (~3′ por pregunta).'),
     P(12, 'Free recall 90 s + shopping list', 'Escribe sin mirar lo que ya sabes del tema; cada duda, también en los aciertos, a la shopping list de 📏 Medición (pre-test /10).'),
@@ -454,14 +533,15 @@ function deepPrime(r) {
     ...vids,
     P(L, `Lectura activa: ${libTxt(d, nDocs)} + First Aid 2026 › ${m.fa}${pathomaTxt(d)}`, `Whole Page Rule: la sección completa, no solo el dato; 3-5 puntos high-yield a mano + 1 esquema.${m.lib.length > nDocs ? ` Si sobra tiempo: ${m.lib.slice(nDocs).map(([e, doc]) => libNom(e, doc)).join(' · ')}.` : ''}`, { t: libNom(m.lib[0][0], m.lib[0][1]).replace(/^[^·]*· /, ''), url: lib(m.lib[0][0], m.lib[0][1]) }),
     P(18, `≤${AK.deepPrime} tarjetas APEX de la sección que acabas de leer/ver → ${deckApex(r)} (Whole Page Rule: toda la sección, no solo el dato)`, `Antes de cada una, EN VOZ ALTA: patogenia → presentación → cómo se conectan. Tipos: concept («use the pathophysiology to explain…») · P-to-P · compare & contrast · transfer (dato o lab → estado fisiopatológico).${r.matType === 'pharm' ? ' Día Pharm: 1 tarjeta por CLASE con el mecanismo que explica uso y toxicidad (Palmerton agrupa los efectos adversos por mecanismo); la pregunta inversa (efecto → fármaco) solo si se evalúa, como 2.º bloque.' : ''} ${mayus(R_FRENTE)}.`),
-    P(2, `Envío APEX · cabecera: EXAMEN: USMLE · ${cabCorta(espApex(r), subApex(r), 'First_Aid', 'estudio')} · IMAGEN: no${deckDe(r) !== deckApex(r) ? ` (la app muestra ${deckDe(r)}; el motor APEX no acepta «General»)` : ''}`, `${mayus(R_ENVIO)}. Si el toast falla, el bloque queda en la cola de ⚡ APEX 1-TAP: nunca lo pases a mano a otro mazo. Las tarjetas de IMAGEN (ECG, histología, TC) no van por APEX (el motor pone la imagen en el reverso): créalas en Anki escritorio en el submazo del día, con la imagen en el frente.`),
+    P(2, `Envío APEX · cabecera: EXAMEN: USMLE · ${cabCorta(espApex(r), subApex(r), 'First_Aid', 'estudio')} · IMAGEN: no${deckDe(r) !== deckApex(r) ? ` (la app muestra ${deckDe(r)}; ${/::General$/.test(deckDe(r)) ? 'el motor APEX no acepta «General»' : `la bioestadística va a ::${espApex(r)}, su tag APEX`})` : ''}`, `${mayus(R_ENVIO)}. Si el toast falla, el bloque queda en la cola de ⚡ APEX 1-TAP: nunca lo pases a mano a otro mazo. Las tarjetas de IMAGEN (ECG, histología, TC) no van por APEX (el motor pone la imagen en el reverso): créalas en Anki escritorio en el submazo del día, con la imagen en el frente.`),
     P(5, 'Free recall final (sin mirar)', 'Dibuja la cadena causal del día en 1 hoja; compárala con tus notas y corrige en rojo.'),
   ];
   const avisos = [];
   if (m.nota) avisos.push(m.nota);
   if (rep.desborde.length) avisos.push(`A ${vel(d).txt.split(' (')[0]} no cabe todo en 70′ de vídeo: ${rep.desborde.map((it) => `${it.tipo === 'bb' ? BB.get(it.id).nombre : PALM[it.id].t}${it.ini ? ` (desde ${mmss(it.ini)})` : ''} → ${destinoDe(it)}`).join(' · ')}. No se recorta: se ve en esas franjas.`);
   if (r.palm && d > 3) { const it = { tipo: 'palm', id: r.palm.id, ini: 0, fin: PALM[r.palm.id].s, dOrig: d }; avisos.push(`Palmerton «${PALM[r.palm.id].t}» (${hms(PALM[r.palm.id].s)}, visión del sistema) entra a la cola detrás de los B&B → ${destinoDe(it)}.`); }
-  return B(r.fecha, '09:00–11:00', `DEEP PRIME · ${corto(r.sub, 70)}`, pasos, [R_VID, ...recVideo(rep.s0900), ...recLib(d)], `vídeo(s) de arriba vistos, lectura con 3-5 puntos a mano y ≤${AK.deepPrime} tarjetas APEX confirmadas (toast ✓) en ${deckApex(r)}`, { planB: 'Qbankly caído → misma sección en First Aid (libro) y la lectura de la Library cuando vuelva. Pathoma: sin cuenta en el repo (pathoma.com: Free = 6 vídeos de prueba 1 mes; Pro desde US$84,95 con libro en papel, sin PDF) → la Library lo cubre.', aviso: avisos.join(' ') || undefined });
+  if (r.t) avisos.unshift(`Fila DESPLAZADA de F1 (era v5.20 D${r.dOrig}): la misma guía que tenía en F1, con las franjas de F3 (07:15-12:00 · 16:15 REENTRADA · 18:00).`); // v6.05
+  return B(r.fecha, '09:00–11:00', `DEEP PRIME · ${corto(txtSub(r), 70)}`, pasos, [R_VID, ...recVideo(rep.s0900), ...recLib(d)], `vídeo(s) de arriba vistos, lectura con 3-5 puntos a mano y ≤${AK.deepPrime} tarjetas APEX confirmadas (toast ✓) en ${deckApex(r)}`, { planB: 'Qbankly caído → misma sección en First Aid (libro) y la lectura de la Library cuando vuelva. Pathoma: sin cuenta en el repo (pathoma.com: Free = 6 vídeos de prueba 1 mes; Pro desde US$84,95 con libro en papel, sin PDF) → la Library lo cubre.', aviso: avisos.join(' ') || undefined });
 }
 
 // CONSOLIDACIÓN 11:00 por nivel (genérico D6+)
@@ -486,6 +566,16 @@ function consolidacion(r) {
       revCon(r, 11, presupuesto(r).con, 'UWorld'),
       P(2, 'Gate del subtema (marca ✓/✗ en 📏 Medición)', '≥80 % → mañana sube el subtema · <80 % → mañana a las 07:15 repites 5Q del subtema fallado.'),
     ];
+  } else if (n === 4) { // v6.05: viernes N4 del tramo 2 (franjaNota «VIERNES NIVEL 4»; en F1 no hay: viernesN4DesdeSemana = 11)
+    titulo = 'CONSOLIDACIÓN · nivel 4 (viernes) · 20Q MIXTOS timed + 10Q Tutor del subtema';
+    const mix = (VISTOS_ANTES[d] || []).filter((x) => !hoy.includes(x));
+    pasos = [
+      P(2, 'Armar los 2 tests en el Test Composer', `20Q: QBanks › «uWorld - USMLE Step 1» › New Test → Systems: los ${mix.length} ya vistos de los sistemas dominados (no el de hoy) · Subjects todos · Status Unused · 20 · Timed → BEGIN · luego 10Q: ${hoy.map(uwNom).join(' + ')} · Tutor`, L_UW),
+      P(30, '20Q MIXTOS TIMED (≥3 sistemas ya dominados)', 'Cronómetro 2:00 por pregunta; saltar entre especialidades sin aviso (eso es el nivel 4); flag y sigue.'),
+      P(20, '10Q Tutor del subtema de hoy', 'Con explicación; cada fallo a la shopping list.'),
+      revCon(r, 6, presupuesto(r).con, 'UWorld'),
+      P(2, 'Gate N4', '≥80 % en los 20Q mixtos timed → listo para mezclar sistemas · <80 % → el sistema más flojo del bloque, al colchón más próximo.'),
+    ];
   } else {
     titulo = 'CONSOLIDACIÓN · nivel 3 · 20Q del SISTEMA timed + 10Q Tutor';
     const org = sistemasOrgano(hoy[0]);
@@ -497,13 +587,13 @@ function consolidacion(r) {
       P(2, 'Gate N3', '≥80 % en las 20Q timed del sistema → el sistema queda «vivo» · <80 % → al colchón del tramo 2 (sistema débil).'),
     ];
   }
-  return B(r.fecha, '11:00–12:00', titulo, pasos, [R_UW], `${n === 1 ? '20Q' : n === 2 ? '30Q timed' : '30Q (20 timed + 10 tutor)'} hechas, % y tipo de error en 📏 Medición y el gate marcado ✓/✗`, { planB: respaldo(d, n === 1 ? 20 : 30) });
+  return B(r.fecha, '11:00–12:00', titulo, pasos, [R_UW], `${n === 1 ? '20Q' : n === 2 ? '30Q timed' : n === 4 ? '30Q (20 mixtas timed + 10 tutor)' : '30Q (20 timed + 10 tutor)'} hechas, % y tipo de error en 📏 Medición y el gate marcado ✓/✗`, { planB: respaldo(d, n === 1 ? 20 : 30) });
 }
 
 // EVAL 18:00 (genérico)
 function pasosEval(r, comprimido) {
   const ids = [...(VISTOS_ANTES[r.d] || []), ...uwDe(r.d).filter((x) => !(VISTOS_ANTES[r.d] || []).includes(x))];
-  const txtSis = `los ${ids.length} Systems ya vistos (los de hoy: ${uwDe(r.d).map((id) => `«${UWY.get(id).nombre}»`).join(', ')}; más los de los días anteriores de F1)`;
+  const txtSis = `los ${ids.length} Systems ya vistos (los de hoy: ${uwDe(r.d).map((id) => `«${UWY.get(id).nombre}»`).join(', ')}; más los de ${r.t ? 'F1 y de las filas desplazadas anteriores' : 'los días anteriores de F1'})`;
   if (comprimido) return [
     P(1, 'Armar 10Q mixtas TIMED', `QBanks › uWorld › New Test → Systems: ${txtSis} · Status Unused · 10 · Timed`, L_UW),
     P(15, '10Q TIMED (90 s/Q · tope 2 min)', 'Modo examen: cover-the-options · sin cambiar respuestas salvo error de lectura.'),
@@ -554,7 +644,7 @@ function hitoNBME(r) {
       P(75, `Bloque 3 · ${bloques[2]}Q · 75′`, 'New Test «Block 3».'),
       P(15, 'Pausa fuera de la silla', 'Ziploc BREAK 2.'),
       P(75, `Bloque 4 · ${bloques[3]}Q · 75′`, 'New Test «Block 4». Al terminar: % total y por bloque.'),
-    ], [{ t: `Qbankly › QBanks › NBME › ${nom}`, url: QBQ, cantidad: `${bloques.reduce((a, b) => a + b, 0)}Q` }], '4 bloques terminados y el % total + por bloque en 📏 Medición', { aviso: `El NBME (plan ${VER}: 07:00-12:30) sustituye a las franjas 07:15 · 08:15 · 09:00 · 11:00 de hoy y pisa el almuerzo 12:00-12:30: almuerzo 12:30-13:00 y SYNAPSE 13:00-13:30 (en el hueco del libro + holgura).${r.d === F1[F1.length - 1].d ? ' Es la última sesión de F1: su Day-After (~4 h) no tiene franja en F1 (jue 31-dic = SKIP) → ⚠ DECISIÓN DE JOSEPH (propuesta: sáb 2-ene 07:00-11:00, o repartido en los «STEP 1 VIVO» de los sábados de enero).' : ''}`, planB: 'Qbankly caído: espera 10 min (un bloque no empezado no se pierde); si sigue, el NBME pasa a la tarde por bloques y lo decide Joseph (el hito no cambia de día sin su OK).' }),
+    ], [{ t: `Qbankly › QBanks › NBME › ${nom}`, url: QBQ, cantidad: `${bloques.reduce((a, b) => a + b, 0)}Q` }], '4 bloques terminados y el % total + por bloque en 📏 Medición', { aviso: `El NBME (plan ${VER}: 07:00-12:30) sustituye a las franjas 07:15 · 08:15 · 09:00 · 11:00 de hoy y pisa el almuerzo 12:00-12:30: ${r.fase === 'F3' ? 'almuerzo 12:30-13:00 (F3: no hay SYNAPSE; R↔D 13:30 sin cambio). Su Day-After (~4 h) se reparte como en F1: 18:00 de hoy (1/6) + las 4 filas siguientes (07:15 del día siguiente y 18:00).' : 'almuerzo 12:30-13:00 y SYNAPSE 13:00-13:30 (en el hueco del libro + holgura).'}${r.d === F1[F1.length - 1].d ? ' Es la última sesión de F1: su Day-After (~4 h) no tiene franja en F1 (jue 31-dic = SKIP) → ⚠ DECISIÓN DE JOSEPH (propuesta: sáb 2-ene 07:00-11:00, o repartido en los «STEP 1 VIVO» de los sábados de enero).' : ''}`, planB: 'Qbankly caído: espera 10 min (un bloque no empezado no se pierde); si sigue, el NBME pasa a la tarde por bloques y lo decide Joseph (el hito no cambia de día sin su OK).' }),
     B(f, '18:00–18:45', `DAY-AFTER NBME ${form} · 1/6 — registro + trayectoria + auditoría`, [
       P(5, 'Registrar en 📏 Medición: % total, % de los 4 bloques, horas netas', 'Step 1 → 📋 HOY → 📏 Medición.'),
       P(15, 'Trayectoria: curva del % frente a los hitos previos y al mínimo on-track', '¿Subieron los sistemas estudiados en las últimas 2 semanas?'),
@@ -563,7 +653,49 @@ function hitoNBME(r) {
     ], [R_UW], 'medición, trayectoria, auditoría e informe por sistema escritos')];
 }
 
-// ── S1 · semana 1 = D1-D5 (v6.03: mié 21 → mar 27-oct, con el fin de semana 24-25 en medio) a mano (vídeos: del reparto de arriba) ─────────────────────────────────────────────────────
+// ── v6.05 (24-oct) · TRAMO 2: 16:15 REENTRADA de las desplazadas, días de cola de vídeo y encaje en la plantilla F3 ─────────────────
+/** Sistema de la rotación de F3 (gen_tramo2 sistemaRot → franjaNota «16:15 REENTRADA: 20Q timed de X + revisión») → órgano de uWorld. */
+const ORGANO_ROT = { Cardiovascular: 'Cardiovascular System', Respiratory: 'Pulmonary & Critical Care', Renal: 'Renal, Urinary Systems & Electrolytes', Gastrointestinal: 'Gastrointestinal & Nutrition',
+  Endocrine: 'Endocrine, Diabetes & Metabolism', 'Nervous System': 'Nervous System', 'Hematology & Oncology': 'Hematology & Oncology', Fundamentos: 'Pathology (General Principles)', Immunology: 'Allergy & Immunology' };
+/** 16:15-17:15 REENTRADA (solo F3, FRANJA_F3_REENTRADA): 20Q timed del sistema de la rotación SIN uWorld fresco (V2b: la reentrada no lo gasta). */
+function reentrada1615(r) {
+  const m = /16:15 REENTRADA: 20Q timed de (.+?) \+ revisión/.exec(r.franjaNota || '');
+  const org = m && ORGANO_ROT[m[1]]; const ids = org ? [...UWY.keys()].filter((id) => organoDe(id) === org) : [];
+  if (!ids.length) { ERR.push(`${etq(r)} ${r.fecha}: 16:15 REENTRADA sin sistema de la rotación reconocible («${r.franjaNota || ''}»)`); return null; }
+  return B(r.fecha, U.FRANJA_F3_REENTRADA.hora, `16:15 REENTRADA · 20Q timed de ${m[1]} (rotación de F3)`, [
+    P(2, `Armar: los ${ids.length} Systems de «${org}»`, `QBanks › «uWorld - USMLE Step 1» › New Test → Systems: TODOS los de «${org}» (${ids.length}) · Subjects todos · Status Incorrect (NO Unused: el uWorld fresco se reserva para el contenido) · 20 · Timed → BEGIN TEST · si salen < 20, completa con AMBOSS (bloque timed del mismo sistema)`, L_UW),
+    P(30, '20Q TIMED del sistema (90 s/Q · tope 2 min)', 'Sin saber el subtema: cover-the-options · flag y sigue · cuenta las respuestas cambiadas.'),
+    P(25, 'Revisión: Educational Objective + log de errores (0 tarjetas nuevas: el tope del día ya lo reparten deep prime, consolidación y eval)', 'Cada fallo: knowledge / transfer / proceso → 📏 Medición; lo que merecería tarjeta va a la shopping list.'),
+    P(3, 'Gate de la reentrada (marca ✓/✗ en 📏 Medición)', U.FRANJA_F3_REENTRADA.gate),
+  ], [R_UW], '20Q timed del sistema de la rotación, % en 📏 Medición y el gate marcado', { planB: 'Sin incorrectas suficientes en uWorld: AMBOSS (bloque timed del mismo sistema); nunca uWorld Unused (fresco).' });
+}
+/** Día de COLA (tras la última desplazada): «vídeo pendiente» 07:15-07:45 con lo que no cupo en sus deep prime (regla de F1, ≤30′). */
+function colaVideo0715(r) {
+  const rep = REP[r.d]; const vids = pasosVideo(r.d, rep.s0715); const V = vids.reduce((a, p) => a + p.min, 0);
+  const origen = [...new Set(rep.s0715.map((it) => etqD(it.dOrig)))].join(' · ');
+  return B(r.fecha, '07:15–07:45', `VÍDEO PENDIENTE · cola de las filas desplazadas de F1 (${origen})`, [
+    ...vids,
+    P(30 - V, 'Free recall del vídeo (sin mirar)', '90 s por vídeo: la cadena causal en 3 ideas; lo que no salga, a la shopping list.'),
+  ], recVideo(rep.s0715), 'tramo(s) de vídeo vistos y resumidos', { aviso: `Nada se recorta: lo que no cupo en los deep prime de las filas desplazadas de F1 (${etq(T2_DESPL[0])}-${etq(T2_DESPL[T2_DESPL.length - 1])}) se ve en el «vídeo pendiente» de las 07:15 (≤30′), en orden y partido por minutos. El resto de la franja 07:15-08:15 (repaso anclado + validación de 5Q) y el día siguen como dice la fila ${etq(r)}.` });
+}
+/** Franjas USMLE de la plantilla F3 leídas de src/lib/plantillasV6.ts › bloquesF3 (anki · bloque principal · eval; en un hito, el de su sub)
+ *  + FRANJA_F3_REENTRADA: todo bloque de la guía del tramo 2 tiene que caer dentro de una (si no, aborta). */
+const F3_USMLE = (() => {
+  const src = fs.readFileSync(path.join(ROOT, 'src', 'lib', 'plantillasV6.ts'), 'utf8');
+  const cuerpo = (/function bloquesF3\([\s\S]*?\r?\n\}\r?\n/.exec(src) || [''])[0];
+  const fr = [...cuerpo.matchAll(/bloque\('([\w-]+)', '(\d\d:\d\d)', '(\d\d:\d\d)', [^\n]*?'usmle', 'usmle-[a-z]+'\)/g)].map((x) => ({ id: x[1], ini: x[2], fin: x[3] }));
+  const [ri, rf] = U.FRANJA_F3_REENTRADA.hora.split('–'); fr.push({ id: 'reentrada', ini: ri, fin: rf });
+  if (!['anki', 'usmle', 'eval'].every((id) => fr.some((x) => x.id === id))) aborta('plantillasV6.ts › bloquesF3: no encuentro las franjas USMLE de F3 (anki · usmle · eval) para encajar la guía del tramo 2');
+  return fr;
+})();
+function dentroF3(r, g) {
+  const m = /^(\d{2}:\d{2})–(\d{2}:\d{2})$/.exec(g.franja); if (!m) return false;
+  const h = esHito(r) ? /\((\d{2}:\d{2})-(\d{2}:\d{2})\)/.exec(r.sub) : null;
+  const fr = F3_USMLE.filter((x) => !(h && (x.id === 'usmle' || x.id === 'reentrada'))).concat(h ? [{ id: 'hito', ini: h[1], fin: h[2] }] : []);
+  return fr.some((x) => aMin(m[1]) >= aMin(x.ini) && aMin(m[2]) <= aMin(x.fin));
+}
+
+// ── S1 · semana 1 = D1-D5 (v6.05: lun 26 → vie 30-oct, sin fin de semana en medio · v6.03: mié 21 → mar 27-oct, con el 24-25 en medio) a mano (vídeos: del reparto de arriba) ─────────────────────────────────────────────────────
 function semana1(r) {
   const d = r.d; const f = r.fecha; const rep = REP[d];
   if (d === 1) {
@@ -601,7 +733,7 @@ function semana1(r) {
       P(15, 'Informe por sistema (Palmerton §9.1)', 'Qbankly › Test History / Reports del UWSA1: copia el % por sistema (si no hay informe, anota el Subject/System de cada incorrecta). Es el mapa de partida: no se exige 80 % en nada.'),
       P(15, 'Auditoría de honestidad por escrito', '«Si sigo haciendo lo mismo 6 meses, ¿qué resultado tendría?» + 3 decisiones para esta semana. (Trayectoria: no aplica, es el primer hito.)'),
       P(10, 'Triaje: 10 primeras incorrectas del bloque 1', '1′ cada una: solo el Educational Objective → K (no lo sabía) o QI (lo sabía y leí/interpreté mal).'),
-    ], [R_UW], '% en Medición, tabla por sistema, auditoría escrita y 10 incorrectas con K/QI', { aviso: `Del D1 al D4 la franja de las 18:00 es la revisión del UWSA1 (Day-After ~4 h repartido ${fdc(DD(1))} 18:00 → ${fdc(DD(4))} 18:00, con el fin de semana en medio): la eval de 10Q mixtas de nivel 4 no tiene sentido sin temas vistos. Vuelve reducida el ${fd(DD(4))} (D4) y el ${fd(DD(5))} (D5).` }),
+    ], [R_UW], '% en Medición, tabla por sistema, auditoría escrita y 10 incorrectas con K/QI', { aviso: `Del D1 al D4 la franja de las 18:00 es la revisión del UWSA1 (Day-After ~4 h repartido ${fdc(DD(1))} 18:00 → ${fdc(DD(4))} 18:00${diasEntre(DD(1), DD(4)) > 3 ? ', con el fin de semana en medio' : ''}): la eval de 10Q mixtas de nivel 4 no tiene sentido sin temas vistos. Vuelve reducida el ${fd(DD(4))} (D4) y el ${fd(DD(5))} (D5).` }),
     ];
   }
   const out = [];
@@ -697,8 +829,17 @@ for (const r of F1) {
   GUIA[r.fecha] = [anki0500(r), th && th.n === 1 ? dayAfter0715(r, th) : repaso0715(r), pretest(r), deepPrime(r), consolidacion(r), eval18(r)];
 }
 Object.assign(GUIA, findes());
+// v6.05 (24-oct): TRAMO 2 — las desplazadas con el guion de F1 por D# (07:15 · 08:15 · 09:00 · 11:00 · 16:15 REENTRADA · 18:00) + el hito cuyo
+//   Day-After cae en ellas (NBME 29: 05:00 · hito 07:00-12:30 · 18:00 Day-After 1/6) + los días de cola de vídeo (07:15-07:45); todo dentro
+//   de las franjas USMLE de la plantilla F3
+for (const r of TG) {
+  const th = trasHito(r);
+  GUIA[r.fecha] = esHito(r) ? hitoNBME(r) : [anki0500(r), th && th.n === 1 ? dayAfter0715(r, th) : repaso0715(r), pretest(r), deepPrime(r), consolidacion(r), reentrada1615(r), eval18(r)].filter(Boolean);
+}
+for (const r of COLA_DIAS) GUIA[r.fecha] = [colaVideo0715(r)];
+for (const r of [...TG, ...COLA_DIAS]) for (const g of GUIA[r.fecha]) if (!dentroF3(r, g)) ERR.push(`${etq(r)} ${r.fecha} ${g.franja} «${g.titulo}»: fuera de las franjas USMLE de la plantilla F3 (plantillasV6.ts › bloquesF3)`);
 // v6.03b: el presupuesto de tarjetas nuevas de cada día de contenido no pasa del tope (Palmerton: la única palanca es crear menos)
-for (const r of F1) if (!esHito(r) && presupuesto(r).total > AK.topeDia) ERR.push(`D${r.d} ${r.fecha}: presupuesto de tarjetas ${presupuesto(r).total} > ${AK.topeDia}`);
+for (const r of [...F1, ...TG]) if (!esHito(r) && presupuesto(r).total > AK.topeDia) ERR.push(`${etq(r)} ${r.fecha}: presupuesto de tarjetas ${presupuesto(r).total} > ${AK.topeDia}`);
 if (ERR.length) aborta('bloques que no cuadran:\n  ' + ERR.join('\n  '));
 const FECHAS = Object.keys(GUIA).sort();
 
@@ -725,27 +866,40 @@ function residuo(vmax) {
   return { bbMin: cB.reduce((a, it) => a + Math.round((it.fin - it.ini) / 60), 0), palmMin: [...cM, ...cP].reduce((a, it) => a + Math.round((it.fin - it.ini) / 60), 0) };
 }
 const ESC125 = residuo(1.25);
-const finalPalm = COLA_FINAL.palm.map((it) => `Palmerton «${PALM[it.id].t}» ${hms(it.ini)}→${hms(it.fin)} (D${it.dOrig})`);
-const finalBB = COLA_FINAL.bb.map((it) => `${bbRuta(it.id)} ${mmss(it.ini)}→${mmss(it.fin)} (D${it.dOrig})`);
+// v6.05: la cola al cierre de F1 (COLA_F1) y, para cada tramo, su destino en el tramo 2 (DONDE); la cola al cierre de la guía es siempre []
+const fmtIt = (it) => (it.tipo === 'bb' ? `${bbRuta(it.id)} ${mmss(it.ini)}→${mmss(it.fin)} (${etqD(it.dOrig)})` : `Palmerton «${PALM[it.id].t}» ${hms(it.ini)}→${hms(it.fin)} (${etqD(it.dOrig)})`);
+const finalPalm = COLA_F1.palm.map(fmtIt);
+const finalBB = COLA_F1.bb.map(fmtIt);
 
 const META = {
   version: VER,
-  generado: '2026-10-20',
+  generado: '2026-10-24',
   fuente: 'DATA/_scripts/usmle/gen_usmle_guia.js + guia_catalogo_f1.js · catálogos Qbankly del 18-oct-2026 (DATA/USMLE/qbankly_*.tsv)',
   dias: FECHAS.length,
   bloques: FECHAS.reduce((a, f) => a + GUIA[f].length, 0),
   velocidad: 'S1 (D1-D5) 1,0× con subtítulos EN · S2-S3 (D6-D15) 1,25× · desde S4 (D16) 1,5× si el free recall del último vídeo recoge ≥3 ideas (si no, 1,25×) · minutos reales = duración ÷ velocidad × 1,2 (S1) / 1,15',
   reglaPreguntasS1: 'Semana 1 = D1-D5 (nivel 1, desde cero con el inglés): ≤30 preguntas NUEVAS/día sumando todas las franjas, todo en Tutor salvo el UWSA1 y la eval reducida; cada subtema 10Q el día que se estudia (2 bloques de 5) + 5Q a las 07:15 del día siguiente; gate ≥8/10 y ≥4/5; bloque extra de 5Q solo si falla. Desde el D6: nivelUW/qDia del plan ' + VER + '.',
   reglaRespaldo: 'System con menos preguntas de las pedidas → (1) todas las Unused del System, (2) los Systems hermanos del catálogo, (3) el mismo subtema en «Mehlman - Step 1 QBank - 2026»; nunca preguntas fuera del tema.',
-  reglaVideo: 'El vídeo del tema nuevo solo después del pre-test ciego (deep prime, ≤70′ reales); lo que no cabe pasa a la cola y se ve, en orden y partido por minutos, en el «vídeo pendiente» de las 07:15 (≤30′; del D3 al D5 también a las 05:00) o en el hueco de un deep prime posterior. Palmerton High Yield entra a la cola detrás de los B&B; los 2 Palmerton de MÉTODO adelantados al D1 (' + fd(DD(1)) + ', día del UWSA1: FSRS · «The ONLY video») siguen la misma regla de minutos (× 1,2 a 1,0×) y lo que no cabe ese día va a la cabeza de la cola.',
+  reglaVideo: 'El vídeo del tema nuevo solo después del pre-test ciego (deep prime, ≤70′ reales); lo que no cabe pasa a la cola y se ve, en orden y partido por minutos, en el «vídeo pendiente» de las 07:15 (≤30′; del D3 al D5 también a las 05:00) o en el hueco de un deep prime posterior; lo que queda al cierre de F1 sigue en el tramo 2 (filas desplazadas y, si sobra, el «vídeo pendiente» 07:15-07:45 de las filas siguientes): nada se queda sin día. Palmerton High Yield entra a la cola detrás de los B&B; los 2 Palmerton de MÉTODO adelantados al D1 (' + fd(DD(1)) + ', día del UWSA1: FSRS · «The ONLY video») siguen la misma regla de minutos (× 1,2 a 1,0×) y lo que no cabe ese día va a la cabeza de la cola.',
   reglaAnki: `Anki (método Palmerton + flujo APEX, ${METODO_MD}): preset «APEX USMLE» en APEX::USMLE y en todos sus submazos — FSRS ${AK.ret} · ${AK.nuevasDia} nuevas/día · ${AK.maxRev} repasos/día · repasos antes que nuevas · learning steps por defecto · día nuevo a las 4 h; Good ≈90 % / Again ≈10 %, sin Hard/Easy; tope de CREACIÓN ${AK.topeDia} tarjetas/día (deep prime ≤${AK.deepPrime} + errores de la consolidación y de la eval, o PC cards del Day-After) por APEX (Ctrl+Shift+A), frente «Subject - question» en inglés, «Summary:» con el porqué, sin cloze; ALARMA G (backlog > 100 o retención < 85 %) → 0 nuevas + 200 repasos/día hasta backlog < 20; «Optimize» FSRS del preset el ${fd(SAB_OPT)}.`,
-  tarjetasPorDia: Object.fromEntries(F1.filter((r) => !esHito(r)).map((r) => { const b = presupuesto(r); return [`D${r.d}`, `${b.total} (Day-After ${b.b0715 + b.da18} · deep prime ${b.dp} · consolidación ${b.con} · eval ${b.ev})`]; })),
+  tarjetasPorDia: Object.fromEntries([...F1, ...TG].filter((r) => !esHito(r)).map((r) => { const b = presupuesto(r); return [etq(r), `${b.total} (Day-After ${b.b0715 + b.da18} · deep prime ${b.dp} · consolidación ${b.con} · eval ${b.ev})`]; })),
   colaAlCierreF1: [...finalBB, ...finalPalm],
-  escenario125: `Si la velocidad se queda en 1,25× desde el D16: al cierre de F1 quedarían ≈${ESC125.bbMin}′ de B&B + ${ESC125.palmMin}′ de Palmerton sin franja (con 1,5×: ${COLA_FINAL.bb.reduce((a, it) => a + Math.round((it.fin - it.ini) / 60), 0)}′ + ${COLA_FINAL.palm.reduce((a, it) => a + Math.round((it.fin - it.ini) / 60), 0)}′).`,
+  /** v6.05: destino EXPLÍCITO (fecha + franja) de cada tramo de colaAlCierreF1 en el tramo 2 (verificar_v6.js lo comprueba contra los pasos) */
+  colaAlCierreF1Destino: [...COLA_F1.bb, ...COLA_F1.palm].map((it) => `${fmtIt(it)} → ${destinoDe(it)}`),
+  /** v6.05: filas del tramo 2 con guía (desplazadas de F1 + el hito cuyo Day-After cae en ellas), plantilla F3 */
+  guiaTramo2: TG.map((r) => `${etq(r)} ${fd(r.fecha)}: ${esHito(r) ? `${nomHito(r)} + Day-After 1/6 (18:00)` : `v5.20 D${r.dOrig} · ${corto(txtSub(r), 60)}`} · ${GUIA[r.fecha].length} franjas`),
+  /** v6.05: días de cola tras la última desplazada (vídeo pendiente 07:15-07:45) */
+  colaTramo2: COLA_DIAS.map((r) => `${etq(r)} ${fd(r.fecha)} 07:15–07:45: ${REP[r.d].s0715.map(fmtIt).join(' + ')}`),
+  /** v6.05: lo que queda en la cola al cierre de la guía — SIEMPRE vacío (el generador aborta si no) */
+  colaAlCierreTramo2: [...COLA_FINAL.bb, ...COLA_FINAL.palm].map(fmtIt),
+  escenario125: `Si la velocidad se queda en 1,25× desde el D16: al cierre de F1 quedarían ≈${ESC125.bbMin}′ de B&B + ${ESC125.palmMin}′ de Palmerton en la cola (con 1,5×: ${COLA_F1.bb.reduce((a, it) => a + Math.round((it.fin - it.ini) / 60), 0)}′ + ${COLA_F1.palm.reduce((a, it) => a + Math.round((it.fin - it.ini) / 60), 0)}′), que se ven en el tramo 2: 07:15 y deep prime de las filas desplazadas y, si sobra, el «vídeo pendiente» 07:15-07:45 de las filas siguientes.`,
   diasConAviso: F1.filter((r) => MF1[r.d] && MF1[r.d].nota).map((r) => r.d),
+  diasConAvisoTramo2: TG.filter((r) => MF1[r.d] && MF1[r.d].nota).map(etq),
   bbSinDiaF1: SIN_DIA,
   bbDesplazadasTramo2: DESPL_BB,
 };
+if (ERR.length) aborta('destinos de vídeo que no cuadran:\n  ' + ERR.join('\n  ')); // v6.05: destinoDe() de colaAlCierreF1Destino
+if (META.colaAlCierreTramo2.length) aborta('la cola de vídeo no queda vacía: ' + META.colaAlCierreTramo2.join(' · '));
 
 // ── 5) SALIDA (cadenas internadas: cada texto repetido se guarda una vez en S[]; los bloques son tuplas de índices) ─────────────
 const S_ = []; const SIX = new Map();
@@ -757,7 +911,8 @@ const tupla = (g) => [si(g.franja), si(g.titulo), g.totalMin,
   si(g.hecho), si(g.planB), si(g.aviso)];
 const DATOS = FECHAS.map((f) => [f, GUIA[f].map(tupla)]);
 const cab = `/**
- * usmleGuia.ts — GUÍA «qué · cuánto · cómo» de CADA franja del Step 1 en F1 (${fd(DD(1))} → ${fd(F1[F1.length - 1].fecha)}-${F1[F1.length - 1].fecha.slice(0, 4)} + los fines de semana), en el
+ * usmleGuia.ts — GUÍA «qué · cuánto · cómo» de CADA franja del Step 1 en F1 (${fd(DD(1))} → ${fd(F1[F1.length - 1].fecha)}-${F1[F1.length - 1].fecha.slice(0, 4)} + los fines de semana) y de las
+ * filas de F1 desplazadas al tramo 2 (${TG.length ? `${etq(TG[0])} ${fd(TG[0].fecha)} → ${etq(TG[TG.length - 1])} ${fd(TG[TG.length - 1].fecha)}` : '—'}${COLA_DIAS.length ? ` + cola de vídeo ${etq(COLA_DIAS[0])}-${etq(COLA_DIAS[COLA_DIAS.length - 1])}` : ''}, plantilla F3), en el
  * formato común \`GuiaBloque\` (src/lib/guia.ts). Lo pintan UsmleTodayPlan (📋 HOY → 🧭 Guía del día) y la tarjeta USMLE del Home.
  * GENERADO por DATA/_scripts/usmle/gen_usmle_guia.js (mapeo: guia_catalogo_f1.js) — NO editar a mano:
  *   node DATA/_scripts/usmle/gen_usmle_guia.js            (escribe) · --check (compara) · --informe <ruta.md>
@@ -769,7 +924,7 @@ const cab = `/**
  *   ${META.reglaRespaldo}
  *   ${META.reglaVideo}
  *   ${META.reglaAnki}
- * Avisos visibles (mapeo plan → catálogo no exacto): D${META.diasConAviso.join(', D')}.
+ * Avisos visibles (mapeo plan → catálogo no exacto): D${META.diasConAviso.join(', D')}${META.diasConAvisoTramo2.length ? ` · tramo 2: ${META.diasConAvisoTramo2.join(', ')}` : ''}.
  * v6.02c (18-oct-2026, E1): nuevo.
  * v6.02c F2 (18-oct-2026, hallazgos E6): lun 19 · los 2 Palmerton de método (FSRS · «The ONLY video») con la regla de minutos de la semana 1
  *   (duración × 1,2 a 1,0×) y repartidos sin recortar (lo que no cabe → cabeza de la cola: D3 05:00) · la preparación del UWSA1 se parte en
@@ -779,6 +934,12 @@ const cab = `/**
  * v6.03b (20-oct-2026): método Anki · APEX dentro de los pasos (mismas franjas y minutos): D1 05:00 con los ajustes exactos (9999 repasos/día,
  *   no 200) · Anki AM con vencidas sin tope + Good/Again + telemetría · tope de creación ${AK.topeDia}/día repartido por bloque con la cabecera APEX
  *   del día · sábado con «Save to All Subdecks» (+ Optimize FSRS el ${fd(SAB_OPT)}) · ${METODO_MD}.
+ * v6.05 (24-oct-2026): D1 = lun 26-oct (la semana del 19 sin estudio) · F1 = 47 filas · mismo guion por D# (D1 UWSA1 lun 26 · D2 mar 27 ·
+ *   D3 mié 28 · D4 jue 29 · D5 vie 30 · sáb 31-oct / dom 1-nov solo Anki) · v5.20 D47-D51 → bbDesplazadasTramo2 · lo que no cabe en el D46
+ *   (último día de contenido) queda en colaAlCierreF1 y su aviso lo manda al tramo 2: nada se recorta.
+ * v6.05b (24-oct-2026): la cola al cierre de F1 con destino explícito en el tramo 2 (colaAlCierreF1Destino) · guía de las filas desplazadas de
+ *   F1 en su fecha T con el mismo guion por D# + 16:15 REENTRADA y el NBME 29 con su Day-After (guiaTramo2) · días de cola de vídeo 07:15-07:45
+ *   (colaTramo2) · colaAlCierreTramo2 = [] siempre.
  */
 import type { GuiaBloque } from './guia';
 import { franjaDentro } from './guia';

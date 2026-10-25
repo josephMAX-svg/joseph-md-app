@@ -1,8 +1,10 @@
 // EncapsPlanView — Opción B (nativa) del PROMPT_ULTRAMAESTRO_APP.
 // v6.02c (18-oct-2026, E4): HOY → «🧭 GUÍA DE LA HORA 16:15-17:15» (GuiaBloqueCard con encapsGuia.guiaEncapsDe: eval · banco/pre-test ·
 // secundario · material del Drive · registro · APEX, con minutos y enlace directo a los runners BANCO_PROPIO publicados) · ◆ Obsidian = nota
-// del CÓDIGO del día (encapsGuia) · aviso de registro por --registrar --append los días de PRE-TEST DE ARRANQUE (D1 + D2: v6.03 mié 21 / jue 22-oct; v6.02 lun 19 / mar 20).
+// del CÓDIGO del día (encapsGuia) · aviso de registro por --registrar --append los días de PRE-TEST DE ARRANQUE (D1 + D2: v6.05 lun 26 / mar 27-oct; v6.03 mié 21 / jue 22-oct; v6.02 lun 19 / mar 20).
 // v5.14 (19-sep): sims de la FASE INTENSIVA (pretest · sim100 · dress_rehearsal, escala /100) en ▲ Sim + tipo de ronda del cierre por tipo de día.
+// v6.05 (fix 24-oct): antes del D1 (sáb 24 / dom 25-oct) el Día 1 ya no sale «· HOY» sino «· empieza el lun 26-oct» (+ píldora en HOY y botón
+// «↺ D1»), coherente con el Home («sin sesión»): encapsPlan.antesDelD1 / plan.antesD1.
 // PE Perú → ENCAPS → "Plan diario": HOY · Camino a 17/20 · Simulacros · 7 días.
 // Lee study_schedule/metrics/checks/sim_scores de Supabase; los checks se
 // sincronizan a study_checks (dashboard ↔ app ↔ Supabase ↔ Telegram).
@@ -258,7 +260,8 @@ export default function EncapsPlanView() {
         </TouchableOpacity>
         <TouchableOpacity style={{ flex: 1, alignItems: 'center' }} onPress={() => setJumpOpen(o => !o)} activeOpacity={0.7}>
           <Text style={styles.dayNavTitle}>
-            Día {plan.dia}/{plan.total}{plan.dia === plan.hoyDia ? ' · HOY' : ''} {jumpOpen ? '▴' : '▾'}
+            {/* v6.05 (fix): antes del D1 (sáb 24 / dom 25-oct) el Día 1 no es «HOY» → «empieza el lun 26-oct» (el Home dice «sin sesión») */}
+            Día {plan.dia}/{plan.total}{plan.dia === plan.hoyDia ? (plan.antesD1 ? ` · empieza el ${fechaCorta(plan.antesD1).replace(/-\d{4}$/, '')}` : ' · HOY') : ''} {jumpOpen ? '▴' : '▾'}
           </Text>
           {!!plan.today?.fecha && (() => {
             // v6.02d: fecha real visible (semana corrida)
@@ -271,7 +274,7 @@ export default function EncapsPlanView() {
         </TouchableOpacity>
         {plan.dia !== plan.hoyDia && (
           <TouchableOpacity onPress={() => plan.setDia(plan.hoyDia)} style={styles.dayNavHoy}>
-            <Text style={styles.dayNavHoyText}>↺ Hoy</Text>
+            <Text style={styles.dayNavHoyText}>{plan.antesD1 ? '↺ D1' : '↺ Hoy'}</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -289,7 +292,7 @@ export default function EncapsPlanView() {
             <Text style={styles.jumpGoText}>Ir ›</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.jumpChip} onPress={() => doJump('1')}><Text style={styles.jumpChipText}>D1</Text></TouchableOpacity>
-          <TouchableOpacity style={styles.jumpChip} onPress={() => doJump(String(plan.hoyDia))}><Text style={styles.jumpChipText}>Hoy</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.jumpChip} onPress={() => doJump(String(plan.hoyDia))}><Text style={styles.jumpChipText}>{plan.antesD1 ? 'D1' : 'Hoy'}</Text></TouchableOpacity>
           <TouchableOpacity style={styles.jumpChip} onPress={() => doJump(String(plan.total))}><Text style={styles.jumpChipText}>D{plan.total}</Text></TouchableOpacity>
         </View>
       )}
@@ -422,6 +425,8 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
         <Text style={styles.hoyDay}>D{dia}/{total} · {wdVisible(fRealHoy, fPlanHoy, today.weekday)} {fRealHoy.slice(5)}</Text>
         <Text style={styles.hoyTema}>{tema}</Text>
         <View style={styles.hoyMetaRow}>
+          {/* v6.05 (fix): antes del D1 esta es la PRIMERA sesión, no la de hoy */}
+          {!!plan.antesD1 && <Pill text={`aún sin sesión · empieza el ${fechaCorta(plan.antesD1).replace(/-\d{4}$/, '')}`} color={Colors.gold} />}
           {!!today.prioridad && <Pill text={today.prioridad} color={today.prioridad.includes('CRÍT') ? Colors.gold : Colors.brass} />}
           {!!today.modo && <Pill text={`Modo ${today.modo}`} color={Colors.blue} />}
           {!!vueltas && <Pill text={`${vueltas} vueltas`} color={Colors.green} />}

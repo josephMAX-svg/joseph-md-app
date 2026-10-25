@@ -26,8 +26,8 @@ export const DERMA_GUIA_DATOS_META = {
   5
  ],
  "velocidad": {
-  "s1Hasta": "2026-10-27",
-  "s23Hasta": "2026-11-10",
+  "s1Hasta": "2026-10-30",
+  "s23Hasta": "2026-11-13",
   "regla": "hasta s1Hasta 1,0× (×1,2 pausas) · hasta s23Hasta 1,25× (×1,15) · después 1,5× (×1,15) — la misma regla que el Step 1 (E1)"
  },
  "pictorial": {
@@ -50,7 +50,7 @@ export const BB_DERM: Record<number, { nombre: string; s: number; ruta: string }
 /** uWorld Step 1 · Test Composer · Systems de Dermatology (nº reales de preguntas). */
 export const UW_DERM: Record<number, { nombre: string; q: number }> = {"1027":{"nombre":"Dermatology (Disorders of epidermal appendages)","q":11},"1028":{"nombre":"Dermatology (Inflammatory dermatoses and bullous diseases)","q":28},"1029":{"nombre":"Dermatology (Miscellaneous)","q":4},"1030":{"nombre":"Dermatology (Normal structure and function of skin)","q":6},"1031":{"nombre":"Dermatology (Skin and soft tissue infections)","q":18},"1032":{"nombre":"Dermatology (Skin tumors and tumor-like lesions)","q":32}};
 /** Cambios de velocidad de vídeo (fechas de D5 y D15 del Step 1). */
-export const DERMA_VELOCIDAD = {"s1Hasta":"2026-10-27","s23Hasta":"2026-11-10"};
+export const DERMA_VELOCIDAD = {"s1Hasta":"2026-10-30","s23Hasta":"2026-11-13"};
 
 /** ProMIR Dermatología cap. 1: test del d3 (preguntas MIR citadas en el capítulo, más recientes primero; E2). */
 export const DERMA_TEST_PROMIR_D3 = {"nQ":8,"citadas":11,"preguntas":[{"id":"2024-051","url":"https://promir.medicapanamericana.com/pregunta/MIR/2024-051","seccion":"4.3. Terapéutica física"},{"id":"2023-057","url":"https://promir.medicapanamericana.com/pregunta/MIR/2023-057","seccion":"4.3. Terapéutica física"},{"id":"2022-061","url":"https://promir.medicapanamericana.com/pregunta/MIR/2022-061","seccion":"4.3. Terapéutica física"},{"id":"2020-004","url":"https://promir.medicapanamericana.com/pregunta/MIR/2020-004","seccion":"3. Nociones de Anatomía Patológica. Alteraciones histológicas básicas"},{"id":"2017-041","url":"https://promir.medicapanamericana.com/pregunta/MIR/2017-041","seccion":"4.2. Terapéutica oral"},{"id":"2011-225","url":"https://promir.medicapanamericana.com/pregunta/MIR/2011-225","seccion":"1.2. Dermis"},{"id":"2010-019","url":"https://promir.medicapanamericana.com/pregunta/MIR/2010-019","seccion":"2.2. Lesiones secundarias"},{"id":"2009-016","url":"https://promir.medicapanamericana.com/pregunta/MIR/2009-016","seccion":"2.1. Lesiones primarias"},{"id":"2008-144","url":"https://promir.medicapanamericana.com/pregunta/MIR/2008-144","seccion":"4.2. Terapéutica oral"},{"id":"2005-144","url":"https://promir.medicapanamericana.com/pregunta/MIR/2005-144","seccion":"4.2. Terapéutica oral"},{"id":"2003-142","url":"https://promir.medicapanamericana.com/pregunta/MIR/2003-142","seccion":"2.1. Lesiones primarias"}]};
@@ -74,7 +74,7 @@ export const DERMNET_DERMOSCOPY = "https://dermnetnz.org/topics/dermoscopy";
 export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
  "1": {
   "d": 1,
-  "fecha": "2026-10-21",
+  "fecha": "2026-10-27",
   "casoIds": [
    192,
    43
@@ -248,7 +248,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
  },
  "2": {
   "d": 2,
-  "fecha": "2026-10-23",
+  "fecha": "2026-10-29",
   "casoIds": [
    112,
    166
@@ -457,7 +457,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
  },
  "3": {
   "d": 3,
-  "fecha": "2026-10-27",
+  "fecha": "2026-11-02",
   "casoIds": [
    25,
    165
@@ -585,16 +585,16 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
      }
     },
     {
-     "min": 18,
+     "min": 13,
      "que": "B&B Step 1 › Dermatology › «01 - Skin» (14:36) — capas de la piel (por título)",
-     "como": "Qbankly › Video Library › B&B Step 1 › Dermatology › General Topics › 01 - Skin · 1,0× con subtítulos en inglés (CC) · 18′ con pausas (regla de velocidad del Step 1) · al terminar, free recall de 60 s en el cuaderno.",
+     "como": "Qbankly › Video Library › B&B Step 1 › Dermatology › General Topics › 01 - Skin · 1,25× con subtítulos EN · 13′ con pausas (regla de velocidad del Step 1) · al terminar, free recall de 60 s en el cuaderno.",
      "enlace": {
       "t": "B&B · 01 - Skin",
       "url": "https://qbankly.app/videos"
      }
     },
     {
-     "min": 3,
+     "min": 8,
      "que": "PassMedicine (Library de Qbankly) › «Epidermis» — artículo corto (sin medir)",
      "como": "Léelo y escribe de memoria las 5 capas de la epidermis con 1 dato de cada una.",
      "enlace": {
@@ -617,7 +617,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
     {
      "t": "B&B · 01 - Skin",
      "url": "https://qbankly.app/videos",
-     "min": 18
+     "min": 13
     },
     {
      "t": "PassMedicine · Epidermis",
@@ -635,7 +635,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
  },
  "4": {
   "d": 4,
-  "fecha": "2026-10-29",
+  "fecha": "2026-11-04",
   "casoIds": [
    21,
    194
@@ -829,7 +829,7 @@ export const DERMA_GUIA_CURADA: Record<number, DermaGuiaCurada> = {
  },
  "5": {
   "d": 5,
-  "fecha": "2026-11-02",
+  "fecha": "2026-11-06",
   "casoIds": [
    36,
    84

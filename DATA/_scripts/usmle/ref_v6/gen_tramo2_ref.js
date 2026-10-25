@@ -4,7 +4,7 @@
 //        [--permitir-deficit]        solo para explorar escenarios: sin él, un déficit ABORTA (exit 2) — R1: nunca se recorta
 //        [--pendientes-f1 d1,d2,…]   disparador (f) cierre de F1 (jue 31-dic): d de F1 (slot 1-N, no hitos) sin ✓ (tras C1/C2 si existen) →
 //                                    cabeza de la cola-adelante; contenido = el de la colocación de F1 (abajo). Un d > N se ignora.
-//        [--f1-filas N=50]           v6.01: filas (slots) de TEMARIO de F1 antes de la pausa (v6.00: 58 · v6.01: 57 · v6.02: 52 · v6.03: 50). v6.02: regla
+//        [--f1-filas N=47]           v6.01: filas (slots) de TEMARIO de F1 antes de la pausa (v6.00: 58 · v6.01: 57 · v6.02: 52 · v6.03/v6.04: 50 · v6.05: 47). v6.02: regla
 //                                    de COLOCACIÓN con hitos anclados — el hito k-ésimo de F1 (de H = 5: D1, D10, D25, D40, D55) va al slot
 //                                    min(D#, N − (H − k)) (conserva su D# o, si no cabe, ocupa los últimos slots de F1); el resto de slots =
 //                                    temario NO-hito en orden; lo que no cabe = las ÚLTIMAS no-hito → DESPLAZADAS: unidad de contenido 'C<D>'
@@ -16,6 +16,18 @@
 //                                    (tramo2_14mar_27sep_v601.json) · `--f1-filas 52` = v6.02 (tramo2_14mar_27sep_v602.json).
 //                                    · `--f1-filas 50` = v6.03 (tramo2_14mar_27sep_v603.json).
 //                                    · `2027-03-14 2027-10-25 --f1-filas 50` = v6.04 (tramo2_14mar_25oct_v604.json): examen lun 25-oct.
+//                                    · `2027-03-14 2027-10-25 --f1-filas 47` = v6.05 (tramo2_14mar_25oct_v605.json): D1 lun 26-oct.
+// v6.05 (24-oct-2026): corrimiento D1 mié 21-oct → lun 26-oct (la semana del 19 no se estudió; Joseph: «todo inicia el lunes 26; corre los
+//   horarios, alarga los plazos, no quites temas»). F1 = 47 hábiles con la MISMA regla de hitos anclados (hito k → slot min(D#, 47 − (5 − k))):
+//   F1 = v5.20 D1-D46 + D55 (NBME 28 en el slot 47, mié 30-dic) y van al tramo 2 D47-D54, D56, D57, D79 = 11 desplazadas (3 más que en la
+//   v6.03/v6.04: D47, D48, D49 Neuro), T3-T13. Por defecto --f1-filas 47 (EXAMEN por defecto sigue siendo 2027-09-27: las referencias
+//   v6.00-v6.04 se reproducen con sus mismos argumentos; la v6.05 = `2027-03-14 2027-10-25 --f1-filas 47`).
+// v6.05b (24-oct-2026, verificación adversarial): INDUCCIÓN del SERUMS (¼ de unidad por fila) — (a) refuerzo / uw_random / incorrectas /
+//   consolidación partidos declaran 1,3125 h por parte en la inducción (antes 2,625: REF0/REF1 = 26,25 h en las 2 semanas «al 50 %»; ahora
+//   15,75 h) y uw_random / incorrectas 1×20Q por parte (antes 1×40Q en 79′); (b) un contenido partido en 4 = partes 1-2 «PRE-TEST + DEEP PRIME»
+//   (1.ª y 2.ª mitad) y 3-4 «CONSOLIDACIÓN», rótulo «PARTE k/4» (antes 1/4 pre-test + deep prime y 2/4-4/4 «PARTE 2 · CONSOLIDACIÓN»: el
+//   material nuevo quedaba en 79′ de 157,5′). En 2 partes, sin cambio. Las referencias v6.00-v6.04 salen byte a byte (en su inducción solo hay
+//   reactivación); tramo2_14mar_25oct_v605.json regenerado (T33-T44: C81 rótulos/qDia, REF0/REF1 h; colchón 42 ≈ 110 h y fechas sin cambio).
 // v6.04 (21-oct-2026): EXAMEN Step 1 lun 27-sep → lun 25-oct-2027 (decisión de Joseph: «si iba a ser septiembre, que sea octubre»). Sin
 //   cambio de lógica ni de valores por defecto (EXAMEN por defecto sigue siendo 2027-09-27: las referencias v6.00-v6.03 se reproducen con sus
 //   mismos argumentos); la del escenario vigente se genera con `2027-03-14 2027-10-25 --f1-filas 50` (HITOS['2027-10-25'] = plan B de §B5):
@@ -59,7 +71,7 @@ const PENDIENTES = (opt('--pendientes') || '').split(',').filter(Boolean);
 const PEND_F1 = (opt('--pendientes-f1') || '').split(',').filter(Boolean).map(Number);
 // v6.01: orden del temario de F1 (posición → D# v5.20) y filas que caben en F1
 const ORIGEN_F1_TEMARIO = [...Array.from({ length: 57 }, (_, i) => i + 1), 79];
-const F1FILAS = opt('--f1-filas') != null ? Number(opt('--f1-filas')) : 50; // v6.03 (v6.02: 52)
+const F1FILAS = opt('--f1-filas') != null ? Number(opt('--f1-filas')) : 47; // v6.05 (v6.03/v6.04: 50 · v6.02: 52)
 if (!(Number.isInteger(F1FILAS) && F1FILAS >= 1 && F1FILAS <= 58)) throw new Error('--f1-filas inválido (1-58): ' + opt('--f1-filas'));
 // v6.02: colocación con hitos anclados (slot de cada D# del temario en F1; 0 = desplazada)
 const esHitoV520 = (d) => /^🎯/.test(byD[d].sub);
@@ -70,7 +82,7 @@ HITOS_F1.forEach((d, k) => { SLOT_F1[Math.min(ORIGEN_F1_TEMARIO.indexOf(d) + 1, 
 const NO_HITO = ORIGEN_F1_TEMARIO.filter((d) => !esHitoV520(d));
 const CABEN = F1FILAS - HITOS_F1.length;
 { let j = 0; for (let s = 0; s < F1FILAS; s++) if (SLOT_F1[s] === undefined) SLOT_F1[s] = NO_HITO[j++]; }
-const DESPL = NO_HITO.slice(CABEN); // las ÚLTIMAS filas de temario no-hito (v6.03: 50-54, 56, 57, 79 · v6.02: 52, 53, 54, 56, 57, 79 · v6.01: 79 · v6.00: —)
+const DESPL = NO_HITO.slice(CABEN); // las ÚLTIMAS filas de temario no-hito (v6.05: 47-54, 56, 57, 79 · v6.03: 50-54, 56, 57, 79 · v6.02: 52, 53, 54, 56, 57, 79 · v6.01: 79 · v6.00: —)
 // v6.02 (17-oct): ¿hitos anclados fuera de su D#? (v6.02 sí: NBME 28 en el slot 52) → etiqueta «era v5.20 D#»; si no, la de v6.00/v6.01
 const ANCLADO = HITOS_F1.some((d) => SLOT_F1[ORIGEN_F1_TEMARIO.indexOf(d)] !== d);
 const ETQ_DESPL = (o) => (ANCLADO ? 'era v5.20 D' + o.dOrig : 'era la fila ' + o.desdeF1 + ' de F1');
@@ -255,6 +267,10 @@ const DEF = {
 };
 const CAMPOS_V520 = ['system', 'tier', 'bbCh', 'bbVid', 'uw', 'mat', 'matType', 'palm'];
 const NOTA_V6 = { 72: 'v6: punto de control de la reactivación (ya no cierra la Fase A)', 82: 'v6: la decisión GO/NO-GO es en E-49, tras el NBME 32' };
+// v6.05 (24-oct, verificación adversarial): horas de una fila PARTIDA = la fracción de unidad que cabe: ¼ en la inducción (1,3125 h) · ½ en el
+//   resto de F4 (2,625 h) — también refuerzo / uw_random / incorrectas / consolidación (antes 2,625 h en la inducción); uw_random e incorrectas
+//   en la inducción 1×20Q (antes 1×40Q en 79′). Las referencias v6.00-v6.04 no cambian (en su inducción solo hay reactivación).
+const hParte = (s) => (s <= ADAPT_FIN ? 1.3125 : 2.625);
 const out = frozen.map((x) => ({ ...x }));
 let n = out.length; let rot = frozen.filter((x) => x.fase === 'F3' && /16:15 REENTRADA/.test(x.franjaNota || '')).length;
 for (const s of PLAN) {
@@ -286,22 +302,28 @@ for (const s of PLAN) {
       let nivel = pos <= 2 ? 1 : viernes ? 4 : 2; let q = pos <= 2 ? 30 : 40;
       const preF1 = o.desdeF1 ? `DE F1 → TRAMO 2 (no cupo en F1 antes de la pausa ENCAPS; ${ETQ_DESPL(o)}) · ` : '';
       if (o.parte) { // F4: contenido partido
-        const p1 = o.parte.startsWith('1');
-        fila.sub = preF1 + (p1 ? 'PARTE 1 · PRE-TEST 10Q tutor + DEEP PRIME (vídeo + First Aid) · ' : 'PARTE 2 · CONSOLIDACIÓN 20Q timed del subtema + Anki de mecanismo · ') + v.sub;
-        q = p1 ? 10 : 20; nivel = p1 ? 1 : nivel;
+        const [k4, n4] = o.parte.split('/').map(Number);
+        if (n4 === 4) { // v6.05 · inducción (¼ de unidad por fila): partes 1-2 = la mitad «PARTE 1» (pre-test + deep prime), 3-4 = la «PARTE 2» (consolidación)
+          fila.sub = preF1 + (k4 === 1 ? 'PARTE 1/4 · PRE-TEST 10Q tutor + DEEP PRIME 1.ª mitad (vídeo + First Aid) · ' : k4 === 2 ? 'PARTE 2/4 · DEEP PRIME 2.ª mitad (vídeo + First Aid) + Anki de mecanismo · ' : `PARTE ${k4}/4 · CONSOLIDACIÓN 20Q timed del subtema + Anki de mecanismo · `) + v.sub;
+          q = k4 === 1 ? 10 : k4 === 2 ? 0 : 20; nivel = k4 <= 2 ? 1 : nivel;
+        } else {
+          const p1 = o.parte.startsWith('1');
+          fila.sub = preF1 + (p1 ? 'PARTE 1 · PRE-TEST 10Q tutor + DEEP PRIME (vídeo + First Aid) · ' : 'PARTE 2 · CONSOLIDACIÓN 20Q timed del subtema + Anki de mecanismo · ') + v.sub;
+          q = p1 ? 10 : 20; nivel = p1 ? 1 : nivel;
+        }
       } else fila.sub = preF1 + v.sub;
       CAMPOS_V520.forEach((k) => { fila[k] = v[k]; });
       Object.assign(fila, { qDia: q, nivelUW: nivel, h: o.parte ? (s <= ADAPT_FIN ? 1.3125 : 2.625) : 5.5 });
       if (nivel === 4 && !o.parte) fila.franjaNota = 'VIERNES NIVEL 4: 11:00 = 20-30Q timed MIXTOS de los sistemas ya dominados + 10Q tutor del subtema';
       break;
     }
-    case 'refuerzo': Object.assign(fila, DEF.refuerzo, { system: o.system, uw: o.uw, mat: o.mat, sub: o.sub + (o.parte ? ` · parte ${o.parte}` : ''), qDia: o.parte ? 20 : 40, nivelUW: 2, h: o.parte ? 2.625 : 5.5 }); break;
+    case 'refuerzo': Object.assign(fila, DEF.refuerzo, { system: o.system, uw: o.uw, mat: o.mat, sub: o.sub + (o.parte ? ` · parte ${o.parte}` : ''), qDia: o.parte ? 20 : 40, nivelUW: 2, h: o.parte ? hParte(s) : 5.5 }); break;
     case 'reactivacion': Object.assign(fila, DEF.reactivacion, { system: o.sistema, sub: `REACTIVACIÓN ${o.sistema} (${o.k}/${o.n}): bloques timed del sistema (incorrectas/flagged uWorld + AMBOSS) + revisión + relectura FA/Pathoma de los subtemas <70 % + Anki de fallos` + (o.parte ? ` · parte ${o.parte}` : ''), qDia: o.parte ? 20 : 40, nivelUW: 3, h: o.parte ? (s <= ADAPT_FIN ? 1.3125 : 2.625) : 5.5 }); break;
-    case 'uw_random': Object.assign(fila, DEF.uw_random, { sub: (v ? v.sub : 'UWorld FRESCO random timed 2×40Q + revisión profunda') + (o.parte ? ` · parte ${o.parte} (1×40Q + revisión)` : ''), qDia: o.parte ? 40 : 80, nivelUW: 4, h: o.parte ? 2.625 : 5.5 }); if (v) CAMPOS_V520.forEach((k) => { fila[k] = v[k]; }); break;
-    case 'incorrectas': Object.assign(fila, DEF.incorrectas, { sub: (v ? v.sub : '2.ª PASADA de incorrectas UWorld (bloques de 40Q timed rápidos) + sistema débil del último NBME') + (o.parte ? ` · parte ${o.parte}` : ''), qDia: o.parte ? 40 : 80, nivelUW: 5, h: o.parte ? 2.625 : 5.5 }); if (v) CAMPOS_V520.forEach((k) => { fila[k] = v[k]; }); break;
+    case 'uw_random': Object.assign(fila, DEF.uw_random, { sub: (v ? v.sub : 'UWorld FRESCO random timed 2×40Q + revisión profunda') + (o.parte ? ` · parte ${o.parte} (1×${s <= ADAPT_FIN ? 20 : 40}Q + revisión)` : ''), qDia: o.parte ? (s <= ADAPT_FIN ? 20 : 40) : 80, nivelUW: 4, h: o.parte ? hParte(s) : 5.5 }); if (v) CAMPOS_V520.forEach((k) => { fila[k] = v[k]; }); break;
+    case 'incorrectas': Object.assign(fila, DEF.incorrectas, { sub: (v ? v.sub : '2.ª PASADA de incorrectas UWorld (bloques de 40Q timed rápidos) + sistema débil del último NBME') + (o.parte ? ` · parte ${o.parte}` : ''), qDia: o.parte ? (s <= ADAPT_FIN ? 20 : 40) : 80, nivelUW: 5, h: o.parte ? hParte(s) : 5.5 }); if (v) CAMPOS_V520.forEach((k) => { fila[k] = v[k]; }); break;
     case 'consolidacion': {
       const txt = v ? v.sub : o.nuevo === 'pathoma' ? 'CONSOLIDACIÓN · Pathoma cap. 1-3 (lesión, inflamación, neoplasia) rapid review + Anki maduro' : o.nuevo === 'fa15' ? 'CONSOLIDACIÓN · First Aid rapid review sistemas 1-5 + Anki maduro + 20Q flagged' : 'CONSOLIDACIÓN · First Aid rapid review sistemas 11-14 + bioestadística/ética + 20Q flagged';
-      Object.assign(fila, DEF.consolidacion, { sub: txt + (o.parte ? ` · parte ${o.parte}` : ''), qDia: o.parte ? 20 : 40, nivelUW: 5, h: o.parte ? 2.625 : 5.5 }); if (v) CAMPOS_V520.forEach((k) => { fila[k] = v[k]; }); break;
+      Object.assign(fila, DEF.consolidacion, { sub: txt + (o.parte ? ` · parte ${o.parte}` : ''), qDia: o.parte ? 20 : 40, nivelUW: 5, h: o.parte ? hParte(s) : 5.5 }); if (v) CAMPOS_V520.forEach((k) => { fila[k] = v[k]; }); break;
     }
     case 'taper': Object.assign(fila, DEF.taper, { sub: v ? v.sub : 'TAPER: 20Q flagged/incorrectas ya vistas + Anki MADURO + First Aid de esquemas (≤2 h, solo bloque A)', qDia: 20, nivelUW: 5, h: o.dOrig === 95 ? 1 : 2, franjaNota: o.dOrig === 94 ? 'TAPER · ÚLTIMA SESIÓN DE BANCO' : o.dOrig === 95 ? 'TAPER · sesión MÍNIMA (≤1 h) · nada nuevo · empacar mañana' : 'TAPER · cero preguntas nuevas, cero tarjetas nuevas' }); if (v) CAMPOS_V520.forEach((k) => { fila[k] = v[k]; }); break;
     case 'ritual': Object.assign(fila, DEF.ritual, { sub: 'SIN ESTUDIO · ritual de test-day: permiso impreso + digital, 2 ID idénticas al permiso, bolsas Ziploc por break, ruta y pasaje a Lima, dormir ≥7 h (DÍA PROTEGIDO para todos los planes)', qDia: 0, nivelUW: 5, h: 0 }); break;

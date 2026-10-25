@@ -114,10 +114,15 @@ export function componerBriefing(inp: BriefingInput): string {
 // v6.04 (21-oct-2026): examen Step 1 lun 27-sep → lun 25-oct-2027 (decisión de Joseph) → STEP1_SEMANAS = 43 = 11 (F1) + semanas(lun 15-mar →
 //   lun 25-oct), derivado en fechasV6; la semana del examen = la del lun 25-oct. DELOAD_SEMANAS (F1) y los hitos de F1 sin cambio; los del
 //   tramo 2 salen de hitosDelPlan() (NBME 31 lun 23-ago · 32 lun 30-ago · GO/NO-GO lun 6-sep · UWSA2 mar 7-sep · NBME 33 lun 27-sep · Free 120 vie 8-oct).
+// v6.05 (24-oct-2026): del lun 19 al dom 25-oct sin estudio (la semana corrida por alias v6.04a queda sin efecto) → D1 = lun 26-oct (UWSA1) →
+//   STEP1_SEMANAS = 42 = 10 (F1: S1 lun 26-oct → S10 lun 28-dic) + semanas(lun 15-mar → lun 25-oct), derivado en fechasV6 (examen sin cambio,
+//   v6.04b). DELOAD_SEMANAS: lun 30-nov (post-NBME 26, vie 27-nov = D25; la semana del lun 23-nov contiene el propio NBME) y la semana del lun
+//   28-dic (NBME 28 = D47 mié 30-dic, última sesión de F1). Los NBME de F1 vuelven a caer en VIERNES: NBME 25 vie 6-nov · 26 vie 27-nov · 27 vie
+//   18-dic (07:00-12:30). Gates F1 del núcleo: D18 mié 18-nov · D38 mié 16-dic.
 // Doctrina: DATA/REVISION_SEMANAL.md · DATA/PROTOCOLO_MODO_MINIMO.md · DATA/SYNC_ANKI_OBSIDIAN_APP.md
 // ═══════════════════════════════════════════════════════════════════════════
 
-/** D1 del Step 1 (v6.03: mié 21-oct-2026; v6.02: lun 19-oct; v6.01: lun 12-oct; v6.00 = v5.20: mié 7-oct) — misma fuente que usmleStep1Daily.DAILY_META.inicio (fechasV6 → _fechas_v6.json). */
+/** D1 del Step 1 (v6.05: lun 26-oct-2026; v6.03: mié 21-oct; v6.02: lun 19-oct; v6.01: lun 12-oct; v6.00 = v5.20: mié 7-oct) — misma fuente que usmleStep1Daily.DAILY_META.inicio (fechasV6 → _fechas_v6.json). */
 export const STEP1_INICIO = FECHAS_V6.f1.inicio;
 export { STEP1_SEMANAS };
 export type { SemanaStep1 };
@@ -140,10 +145,10 @@ export function hitosStep1(): HitoStep1[] {
   return hs.sort((a, b) => (a.fecha < b.fecha ? -1 : a.fecha > b.fecha ? 1 : 0));
 }
 /** Semanas DELOAD de los frentes SECUNDARIOS (50% de carga, fechas intactas): la posterior al NBME 26 y la del NBME 28 (F1).
- *  v6.03: lun 30-nov (NBME 26 = D25 mar 24-nov → la semana SIGUIENTE) y lun 28-dic (NBME 28 = D50 mié 30-dic, última sesión de F1 antes de la pausa).
- *  (v6.02: lun 23-nov —NBME 26 vie 20-nov— y lun 28-dic · v6.01: lun 16-nov y lun 28-dic · v6.00: los mismos lunes con los NBME en martes.) */
+ *  v6.05: lun 30-nov (NBME 26 = D25 vie 27-nov → la semana SIGUIENTE) y lun 28-dic (NBME 28 = D47 mié 30-dic, última sesión de F1 antes de la pausa).
+ *  (v6.03: los mismos lunes —NBME 26 mar 24-nov, NBME 28 = D50— · v6.02: lun 23-nov —NBME 26 vie 20-nov— y lun 28-dic · v6.01: lun 16-nov y lun 28-dic · v6.00: los mismos lunes con los NBME en martes.) */
 export const DELOAD_SEMANAS: { lunes: string; motivo: string }[] = [
-  { lunes: '2026-11-30', motivo: 'post-NBME 26 (mar 24-nov)' },
+  { lunes: '2026-11-30', motivo: 'post-NBME 26 (vie 27-nov)' },
   { lunes: '2026-12-28', motivo: 'semana del NBME 28 (mié 30-dic)' },
 ];
 
@@ -153,7 +158,7 @@ export function semanaStep1(iso: string): SemanaStep1 {
   try { hitos = hitosStep1(); } catch { hitos = []; }
   return semanaStep1V6(iso, { hitos, deloads: DELOAD_SEMANAS });
 }
-/** Etiqueta corta para el instrumento del cockpit: "S3/43" (v6.04; v6.03 = v6.02: /39 · v6.01: /40 · v6.00: /41) · "PAUSA · ENCAPS" · "pre-D1" · "examen" · "post-Step 1". */
+/** Etiqueta corta para el instrumento del cockpit: "S3/42" (v6.05; v6.04: /43 · v6.03 = v6.02: /39 · v6.01: /40 · v6.00: /41) · "PAUSA · ENCAPS" · "pre-D1" · "examen" · "post-Step 1". */
 export function semanaLabel(s: SemanaStep1): string {
   if (s.pausa) return 'PAUSA · ENCAPS';
   if (s.examen) return 'examen';
@@ -172,7 +177,8 @@ export const MODO_INFO: Record<ModoNivel, { label: string; resumen: string; disp
   // v6.00: «remap» → fin del corrimiento diario (V6_ESPEC §B7.1): el día perdido se hace en la próxima fila COLCHÓN (F3/F4) o en C1/C2 (F1).
   // v6.01: F1 ya no tiene C1/C2 (consumidos por el corrimiento al lun 12-oct) → un día perdido de F1 pasa al tramo 2 el jue 31-dic
   //   (disparador (f), --pendientes-f1) y allí lo absorbe el COLCHÓN. v6.02 (D1 lun 19-oct): igual; el colchón del tramo 2 baja a 28 filas.
-  //   v6.03 (D1 mié 21-oct): igual; el colchón del tramo 2 baja a 24 filas.
+  //   v6.03 (D1 mié 21-oct): igual; el colchón del tramo 2 baja a 24 filas. v6.04b (examen → lun 25-oct-2027): sube a 48.
+  //   v6.05 (D1 lun 26-oct): igual; 11 filas de F1 pasan al tramo 2 (T3-T13) y el colchón queda en 42 filas.
   ROJO: { label: 'ROJO', resumen: 'Solo Anki + 10Q + dormir · la fila no hecha va al COLCHÓN.', disparador: '≥2 días perdidos o enfermedad' },
 };
 function lsGet(key: string): string | null {

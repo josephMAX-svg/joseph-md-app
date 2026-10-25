@@ -18,6 +18,8 @@
  *    además: (1) ningún paso de uWorld del PLAN B pide más Unused de las que quedan en su System (reparto en orden de fecha, peor caso =
  *    todas las sesiones por plan B) → al agotarse, relleno ProMIR con nº de preguntas; (2) el TEST ProMIR de las sesiones PMD tiene el mismo
  *    nº de preguntas y minutos en plan A y plan B.
+ *  · v6.05 (24-oct-2026 · corrimiento D1 = lun 26-oct; d1 Derma mar 27-oct): sin cambios de lógica; fechas de dermaDailyPlan (d1-d5 mar 27-oct → vie
+ *    6-nov) y velocidad de vídeo de usmleStep1Daily (D5 vie 30-oct · D15 vie 13-nov), ya regenerados.
  */
 'use strict';
 const fs = require('fs');

@@ -10,7 +10,15 @@
 > Regla de estilo (RUTA §5.2): mensajes **cortos, hiperpersonalizados y con una petición concreta y verificable**
 > (coautoría con reparto de trabajo, permiso de instrumento, revisión de un manuscrito) — nunca "quiero experiencia".
 
-> **✅ v6.03 (mar 20-oct-2026 · D1 del régimen mié 21-oct; `researchDailyPlan.ts` regenerado con START 2026-10-21, Research d1 jue 22-oct): fechas vigentes
+> **✅ v6.05 (sáb 24-oct-2026 · D1 del régimen lun 26-oct; `researchDailyPlan.ts` regenerado con START 2026-10-26, Research d1 lun 26-oct): fechas vigentes
+> de los átomos de esta tabla** — mandan sobre las de v6.03, v6.02, v6.01 y v5.20: **M1 (mensaje 1 al Dr. Ciro) vie 30-oct** = el **ÚLTIMO día-Research
+> antes del plazo del 31-oct** (pedir el caso en el propio M1; la fila 6 —fuente B— se activa en C-3 si no hay caso) · C-1 mar 3-nov · **M2 (Rising
+> Scholars) jue 5-nov** · **T-1 (CEI) mié 11-nov** · **M3 (mensaje 3, CADI) vie 13-nov** = seguimiento del caso (d8) · C-3 (d9) mar 17-nov (2,5 semanas desde
+> M1; 3 semanas = vie 20-nov) · decisión del plan B de inglés (4 semanas desde M2) **jue 3-dic** = día de **T-3** · CR-1 **vie 27-nov** · CR-2 **mar 1-dic** ·
+> recordatorio de M3 a los 21 días **vie 4-dic** · X-1 (revisor #2 de SR-1) **jue 25-feb-2027**, tras la pausa (antes de X-9 vie 2-abr y de PROSPERO jue 8-abr) ·
+> X-2 (rebuttal de la carta) lun 1-mar: la confirmación del mentor de inglés (fila 2) se comprueba ANTES de CR-7 (vie 8-ene) · R9 (AMSTAR-2) tras la pausa,
+> mié 17-feb. CR-1 y CR-2 caen 27 y 31 días después del 31-oct.
+> **⏸ v6.03 (historial; mar 20-oct-2026 · D1 del régimen mié 21-oct; `researchDailyPlan.ts` regenerado con START 2026-10-21, Research d1 jue 22-oct): fechas
 > de los átomos de esta tabla** — mandan sobre las de v6.02, v6.01 y v5.20: **M1 (mensaje 1 al Dr. Ciro) mié 28-oct** · **C-1 vie 30-oct** = el **último
 > día-Research antes del plazo del 31-oct** (pedir el caso en M1 y activar la fila 6 —fuente B— ese viernes si no hay respuesta) · **M2 (Rising Scholars)
 > mar 3-nov** · **T-1 (CEI) lun 9-nov** · **M3 (mensaje 3, CADI) mié 11-nov** = seguimiento del caso (d8) · C-3 (d10) mar 17-nov (3 semanas desde M1 = mié

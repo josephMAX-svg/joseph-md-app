@@ -13,21 +13,25 @@
  *   sáb 15:00 SHIP + SYNAPSE (PC)     guiaShipDe          · 120′ = SHIP del proyecto 90′ + SYNAPSE A/B/C 30′ (taper: PC 30′/0′ + A/B/C)
  *   dom 15:00 FEYNMAN (opcional)      guiaFeynmanDe       · 10′
  * Hecho A MANO (no es un .ts generado): REGLAS para todos los días de cada plan (lee las filas de los .ts generados, que NO cambian) +
- * CURADURÍA de la semana 1 (v6.02: lun 19 → dom 25-oct-2026; v6.03: la curaduría va por PASO / PIEZA / FILA del plan y no por fecha, así
+ * CURADURÍA de la semana 1 (v6.02: lun 19 → dom 25-oct-2026; v6.05: lun 26-oct → dom 1-nov; desde v6.03 la curaduría va por PASO / PIEZA / FILA del plan y no por fecha, así
  * sigue al plan cuando corre — ver vibeS1(k), SYN_CUR_PIEZAS, BIZ_TRAMO y LIV_LECT) y de los recursos con URL verificada el dom 18-oct-2026 (YouTube: título, canal y
  * duración leídos de la página del vídeo · PubMed/PMC por E-utilities · secciones y nº de palabras de Schwartz 2017 leídos de PMC ·
  * Apple Podcasts lookup). Lo que no se pudo verificar se dice («sin medir», «A VERIFICAR»); no hay páginas inventadas.
  * Verificación: node DATA/_scripts/check_rutina_guia.js (Σ pasos = franja en TODOS los días de los 7 planes · URLs con esquema válido).
+ * v6.05 (fix 24-oct, verificación adversarial): synFranjaDe → 13:00 los días con el ENCAPS 11:00-13:00 de F2 (SIM_F2_11 · D2_ENCAPS, exportados
+ * para plantillasV6) · guiaAurumDe(iso, ini?) en F4 = 30′ en el tiempo muerto del turno tras el R↔D (ventanaAurumF4; antes 14:15 fijo) ·
+ * guiaShipDe nombra TODAS las piezas PC del sábado (sáb 20-feb: S16 30′ + S17 0′) · comodines curados del SYNAPSE: si su 1.er sábado está
+ * ocupado, el siguiente libre (deep dive + trifecta → sáb 7-nov, retomando donde quedó cada pieza).
  *
  * Decisiones de carga (v6.02c, E5 — escritas también en los avisos de cada bloque):
  *  · BUSINESS no tenía franja ni aparecía en el Home: va a 13:00-13:25 (L-V), la franja «LECTURA DE LIBRO 13:00-13:15» del Calendar (cuya
  *    descripción ya dice «el libro del nivel en curso — Biblioteca del Fundador», que es justo lo que lee Business) + 10′ del hueco 13:15-13:30
  *    (la siesta opcional ≤20′ sigue siendo la válvula ÁMBAR: en ÁMBAR Business baja a 13:00-13:15). El OUTPUT del viernes (40′) = 25′ el
  *    viernes + 15′ el sábado 07:45-08:00, tras la revisión semanal (el tracker semanal de sueño/ejercicio/comida se llena mejor con la semana
- *    cerrada). Días de hito USMLE: UWSA1 (v6.03: mié 21-oct · v6.02: lun 19-oct; almuerzo 13:00-13:30) = solo audio durante el almuerzo · NBME (almuerzo 12:30-13:00,
- *    SYNAPSE 13:00) = audio 12:30-12:55 y, si es viernes de OUTPUT, el OUTPUT entero pasa al sábado 07:45-08:25 (v6.03: los NBME de F1 caen en martes y miércoles: ningún viernes de OUTPUT coincide). (Calendar ya alineado el 18-oct, CAL_V6 §12) El Calendar seguía con
+ *    cerrada). Días de hito USMLE: UWSA1 (v6.05: lun 26-oct · v6.03: mié 21-oct · v6.02: lun 19-oct; almuerzo 13:00-13:30) = solo audio durante el almuerzo · NBME (almuerzo 12:30-13:00,
+ *    SYNAPSE 13:00) = audio 12:30-12:55 y, si es viernes de OUTPUT, el OUTPUT entero pasa al sábado 07:45-08:25 (v6.05: los NBME 25-27 caen en VIERNES de OUTPUT —vie 6-nov · vie 27-nov · vie 18-dic— → esos 3 OUTPUT van enteros al sábado 07:45-08:25; v6.03: los NBME de F1 caían en martes y miércoles: ningún viernes de OUTPUT coincidía). (Calendar ya alineado el 18-oct, CAL_V6 §12) El Calendar seguía con
  *    «LECTURA DE LIBRO 13:00-13:15»: que lo amplíe a 13:25 lo decide el orquestador / Joseph.
- *  · SYNAPSE en días de hito: el día del UWSA1 (v6.03: mié 21-oct · v6.02: lun 19-oct) 07:25-07:55, entre las 2 partes de la preparación del hito (USMLE 07:15-07:25 y 07:55-08:50;
+ *  · SYNAPSE en días de hito: el día del UWSA1 (v6.05: lun 26-oct · v6.03: mié 21-oct · v6.02: lun 19-oct) 07:25-07:55, entre las 2 partes de la preparación del hito (USMLE 07:15-07:25 y 07:55-08:50;
  *    v6.02c F2: una sola vez, en su tarjeta propia — la guía USMLE ya no lo repite) · NBME 13:00-13:30.
  *  · AURUM (60′ en F1): 1′ arranque + vídeo A + drill + la LECTURA L en los minutos que sobran de la hora (el plan la ponía «en huecos de
  *    viaje», que en la práctica no existen) + 2′ cierre; lo que de L no cabe queda como lectura de huecos (no es núcleo). Si sobra tiempo tras
@@ -50,8 +54,8 @@ import type { DiaLiviano } from './livianoStudyPlan';
 import { livCasoDeDia, livCardsDeDia, livCardsSemanaPrevia, livDrillDe, livAnkiDeck } from './livianoCasos';
 import { BIZ_DIAS, bizDiaDe, bizModo } from './businessStudyPlan';
 import type { DiaBiz } from './businessStudyPlan';
-import { DIAS as USMLE_DIAS, esHito } from './usmleStep1Daily';
-import { FECHAS_V6, faseV6 } from './fechasV6';
+import { DIAS as USMLE_DIAS, esHito, FRANJAS_F4 } from './usmleStep1Daily';
+import { FECHAS_V6, DERIVADOS_V6, faseV6, ultimoHabilAntes } from './fechasV6';
 
 // ─────────────────────────────────────────── utilidades ───────────────────────────────────────────
 const PPM_EN = 100;                       // palabras/min leyendo en inglés (nivel de arranque)
@@ -64,6 +68,8 @@ const WD_C = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
 const MES_C = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
 /** «mié 21-oct» (v6.03: los textos de la semana 1 citan días calculados del plan, no fijos). */
 const fCorta = (iso: string): string => `${WD_C[dow(iso)]} ${Number(iso.slice(8, 10))}-${MES_C[Number(iso.slice(5, 7)) - 1]}`;
+/** Siguiente día de la semana `wd` (0 = dom … 6 = sáb) estrictamente posterior a `iso`. */
+const siguienteDow = (iso: string, wd: number): string => addDias(iso, ((wd - dow(iso) + 6) % 7) + 1);
 const yt = (id: string, seg?: number): string => `https://www.youtube.com/watch?v=${id}${seg ? `&t=${seg}s` : ''}`;
 const mmss = (s: number): string => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
 const minDe = (seg: number): number => Math.ceil(seg / 60);
@@ -101,7 +107,8 @@ const JOURNAL_CMD = 'node DATA/_scripts/journal_hoy.js --abrir';
 /** Semana 1 (S1 · APEX end-to-end): los 35′ de «construir» de cada PASO k (1-5) de S1, partidos en sub-pasos con comandos exactos (ficheros
  *  comprobados en disco el 18-oct). v6.03 (20-oct-2026): la clave es el PASO del proyecto, no la fecha (antes '2026-10-19' … '2026-10-23'): con el
  *  D1 en el mié 21-oct S1 va del mié 21 al mar 27-oct y hace SHIP el sáb 31-oct (el sáb 24 es AVANCE); los días que citan los textos («el día del
- *  paso 1», el del SHIP) salen de VIBE_DIAS / VIBE_PROYECTOS, así siguen al plan si vuelve a correr. Mismo contenido, mismos minutos. */
+ *  paso 1», el del SHIP) salen de VIBE_DIAS / VIBE_PROYECTOS, así siguen al plan si vuelve a correr. Mismo contenido, mismos minutos.
+ *  v6.05 (24-oct-2026): D1 = lun 26-oct → S1 = lun 26 → vie 30-oct entera en la semana del D1 y SHIP el sáb 31-oct (sin sábado de avance). */
 function vibeS1(k: number): GuiaPaso[] | undefined {
   const dia = (kk: number): string => { const x = VIBE_DIAS.find((y) => y.semana === 1 && y.k === kk); return x ? fCorta(x.fecha) : `paso ${kk}`; };
   const p1 = vibeProyectoDe(1);
@@ -192,19 +199,36 @@ const ACADEMY = 'https://academy.claude.com/';
  *  gen_synapse_plan.js corre esas series una semana, OFF_WD) y la curaduría va con su pieza: mié 21 = auditoría F0 + Lex cap. 1 + Python §1 ·
  *  jue 22 = The Batch + ATBS cap. 0 · vie 23 = deep dive + trifecta · sáb 24 = comodines (retoman lo que quedó a medias de ESA semana: el deep
  *  dive y la trifecta) · lun 26 = No Priors + Pro Git · mar 27 = Dwarkesh + Willison · sáb 31 = comodines de la curaduría original (No Priors
- *  10:00-20:00 y el resto de «Prompt injection…»). Mismos recursos, minutos y palabras medidos el 18-oct; nada se recorta. */
+ *  10:00-20:00 y el resto de «Prompt injection…»). Mismos recursos, minutos y palabras medidos el 18-oct; nada se recorta.
+ *  v6.05 (24-oct-2026): D1 = lun 26-oct → OFF_WD = 0 (como v6.02): lun 26 = auditoría F0 + No Priors + Pro Git · mar 27 = Dwarkesh + Willison ·
+ *  mié 28 = Lex cap. 1 + Python §1 · jue 29 = The Batch + ATBS cap. 0 · vie 30 = deep dive + trifecta. Los COMODINES del sábado ya no van por
+ *  nº de aparición sino por la regla «el comodín del 1.er sábado tras la pieza retoma lo que quedó a medias», con prioridad para la curaduría
+ *  original (No Priors del lunes · «Prompt injection…» del martes): sáb 31-oct = No Priors 10:00-20:00 + resto de «Prompt injection…» (como
+ *  v6.02 el sáb 24); el deep dive y la trifecta del vie 30 siguen por su carril (tramo 2 el vie 6-nov · «termínalo en otro hueco»). Con D1 en
+ *  miércoles (v6.03) la misma regla da sáb 24 = deep dive + trifecta y sáb 31 = No Priors + Willison.
+ *  v6.05 (fix 24-oct): el comodín cuyo 1.er sábado ya está ocupado pasa al SIGUIENTE sábado libre (≤ 3 semanas) en vez de quedarse sin curar:
+ *  sáb 7-nov = deep dive (minutos 20:00-30:00, tras el tramo 2 del vie 6-nov) + trifecta (≈740 palabras que quedan → los próximos ≈500). */
 type SynCur = { que: string; como: string; url: string; t: string };
+const ES_NO_PRIORS = (b: SynBloque): boolean => b.tag === 'B' && /^No Priors/.test(b.material);
+const ES_WILLISON_PI = (b: SynBloque): boolean => b.tag === 'C' && /^Simon Willison — serie Prompt injection/.test(b.material);
+const ES_DEEP_DIVE_1 = (b: SynBloque): boolean => b.tag === 'B' && /^Canal Anthropic/.test(b.material) && /AI prompt engineering: A deep dive.*tramo 1\b/.test(b.leccion);
+const ES_TRIFECTA = (b: SynBloque): boolean => b.tag === 'C' && b.material === 'Simon Willison' && /lethal trifecta/i.test(b.leccion);
 const NO_PRIORS_BROCKMAN = 'https://podcasts.apple.com/us/podcast/the-changing-physics-of-cybersecurity-and/id1668002688?i=1000796472163';
-const SYN_CUR_PIEZAS: Array<{ tag: 'A' | 'B' | 'C'; es: (b: SynBloque) => boolean; n?: number; cur: SynCur }> = [
+/** `tras` (solo comodines del sábado): el comodín va al 1.er sábado POSTERIOR a la 1.ª aparición de esa pieza cuyo comodín de su carril esté
+ *  LIBRE (v6.05 fix: si ese sábado ya lo ocupa otra curaduría, pasa al siguiente sábado libre en vez de quedarse sin curar); en la tabla van
+ *  primero los de la curaduría original (prioridad si dos caen el mismo sábado). `cur` puede depender del sábado donde cae (`previas` = nº de
+ *  apariciones L-V de la pieza antes de ese sábado: el comodín retoma donde quedó). */
+type SynCurFn = (ctx: { sab: string; previas: number }) => SynCur;
+const SYN_CUR_PIEZAS: Array<{ tag: 'A' | 'B' | 'C'; es: (b: SynBloque) => boolean; n?: number; tras?: (b: SynBloque) => boolean; cur: SynCur | SynCurFn }> = [
   { tag: 'A', es: (b) => b.material === 'Anthropic Academy' && /^AUDITORÍA F0/.test(b.leccion),
     cur: { que: 'Anthropic Academy › «My courses»: auditoría F0 — anota qué certificados ya tienes (AI Fluency · Claude 101 · Claude Code 101 · Platform 101)', como: 'academy.claude.com (inicias sesión tú). Lista ✓/pendiente en el journal; la 1.ª pendiente es la lección A de mañana. Hoy no empiezas ninguna lección.', url: ACADEMY, t: 'Academy' } },
-  { tag: 'B', es: (b) => /^No Priors/.test(b.material),
+  { tag: 'B', es: ES_NO_PRIORS,
     cur: { que: 'No Priors · «The Changing Physics of Cybersecurity and Drug Development with OpenAI President Greg Brockman» (15-oct-2026 · 39 min) → minutos 0:00-10:00', como: 'Auriculares, 1,0×. Para a los 10:00 y anota el minuto; los 29′ restantes van a los B comodín del sábado.', url: NO_PRIORS_BROCKMAN, t: 'Episodio (Apple Podcasts)' } },
   { tag: 'C', es: (b) => /^Pro Git/.test(b.material),
     cur: { que: 'Pro Git › 1.1 «About Version Control» (≈800 palabras) → las primeras ≈500', como: '5′ a 100 palabras/min. Marca dónde quedas: lo sigues en el próximo C libre.', url: 'https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control', t: 'Pro Git 1.1' } },
   { tag: 'B', es: (b) => /^Dwarkesh — Dario Amodei/.test(b.material) && /Tramo 1\/3/.test(b.leccion),
     cur: { que: 'Dwarkesh · Dario Amodei (episodio de 1:58:43) → tramo 1/3 = minutos 0:00-10:00', como: 'Auriculares, 1,0×. Anota el minuto donde paras (el siguiente tramo de Dwarkesh empieza ahí).', url: 'https://www.dwarkesh.com/p/dario-amodei', t: 'Dwarkesh × Dario' } },
-  { tag: 'C', es: (b) => /^Simon Willison — serie Prompt injection/.test(b.material),
+  { tag: 'C', es: ES_WILLISON_PI,
     cur: { que: 'Simon Willison · «Prompt injection attacks against GPT-3» (12-sep-2022 · 1.457 palabras, 1.er artículo de la serie) → las primeras ≈500', como: '5′. El resto, en el C comodín del sábado.', url: 'https://simonwillison.net/2022/Sep/12/prompt-injection/', t: 'Willison · prompt injection' } },
   { tag: 'C', es: (b) => /^The Python Tutorial/.test(b.material) && /Sección 1:/.test(b.leccion),
     cur: { que: 'The Python Tutorial › 1 «Whetting Your Appetite» (≈730 palabras) → las primeras ≈500', como: '5′. Objetivo: LEER el Python que escribe la IA, no memorizar sintaxis.', url: 'https://docs.python.org/3/tutorial/appetite.html', t: 'Python tutorial §1' } },
@@ -212,34 +236,66 @@ const SYN_CUR_PIEZAS: Array<{ tag: 'A' | 'B' | 'C'; es: (b: SynBloque) => boolea
     cur: { que: 'The Batch (Andrew Ng) · el número de esta semana (si aún no salió hoy, el más reciente): la carta de Ng + 2 noticias', como: '10′ y fuera; no abras enlaces internos.', url: 'https://www.deeplearning.ai/the-batch/', t: 'The Batch' } },
   { tag: 'C', es: (b) => /^Automate the Boring Stuff/.test(b.material) && /cap\. 0:/.test(b.leccion),
     cur: { que: 'Automate the Boring Stuff 3e › cap. 0 «Introduction» (≈4.900 palabras) → las primeras ≈500', como: '5′. Marca dónde quedas (el capítulo da para ~10 C).', url: 'https://automatetheboringstuff.com/3e/chapter0.html', t: 'ATBS cap. 0' } },
-  { tag: 'B', es: (b) => /^Canal Anthropic/.test(b.material) && /AI prompt engineering: A deep dive.*tramo 1\b/.test(b.leccion),
+  { tag: 'B', es: ES_DEEP_DIVE_1,
     cur: { que: 'Canal Anthropic · «AI prompt engineering: A deep dive» (1:16:42) → minutos 0:00-10:00', como: '1,0× con subtítulos en inglés; para a los 10:00 (tramo 1).', url: yt('T9aRN5JkmL8'), t: 'Prompt engineering deep dive' } },
-  { tag: 'C', es: (b) => b.material === 'Simon Willison' && /lethal trifecta/i.test(b.leccion),
+  { tag: 'C', es: ES_TRIFECTA,
     cur: { que: 'Simon Willison · «The lethal trifecta for AI agents» (16-jun-2025 · ≈1.240 palabras) → las primeras ≈500', como: '5′. Es EL artículo de seguridad de agentes: termínalo en otro hueco.', url: 'https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/', t: 'Lethal trifecta' } },
-  // 1.er sábado (v6.03: sáb 24-oct): retoma lo que quedó a medias de la semana del D1 (deep dive 10:00 de 1:16:42 · trifecta ≈500 de ≈1.240)
-  { tag: 'B', es: (b) => /^Comodín de audio/.test(b.material), n: 1,
-    cur: { que: 'Comodín de audio · «AI prompt engineering: A deep dive» (canal Anthropic) → minutos 10:00-20:00', como: 'Retoma donde paraste el viernes, 1,0× con subtítulos en inglés. Nada nuevo (el viernes siguiente lo terminas: «tramo 2»).', url: yt('T9aRN5JkmL8', 600), t: 'Prompt engineering deep dive' } },
-  { tag: 'C', es: (b) => /^Comodín de lectura/.test(b.material), n: 1,
-    cur: { que: 'Comodín de lectura · sigue «The lethal trifecta for AI agents» (≈740 palabras que quedan → los próximos ≈500)', como: '5′. Nada nuevo.', url: 'https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/', t: 'Lethal trifecta' } },
-  // 2.º sábado (v6.03: sáb 31-oct): los comodines de la curaduría original (No Priors del lunes · «Prompt injection…» del martes)
-  { tag: 'B', es: (b) => /^Comodín de audio/.test(b.material), n: 2,
+  // comodines de la curaduría original (No Priors del lunes · «Prompt injection…» del martes): el 1.er sábado tras su pieza
+  //   (v6.05 = v6.02: sáb 31-oct / sáb 24-oct, el 1.er sábado del plan · v6.03: sáb 31-oct, el 2.º)
+  { tag: 'B', es: (b) => /^Comodín de audio/.test(b.material), tras: ES_NO_PRIORS,
     cur: { que: 'Comodín de audio · No Priors (Greg Brockman) → minutos 10:00-20:00', como: 'Retoma donde paraste el lunes. Nada nuevo.', url: NO_PRIORS_BROCKMAN, t: 'Episodio (Apple Podcasts)' } },
-  { tag: 'C', es: (b) => /^Comodín de lectura/.test(b.material), n: 2,
+  { tag: 'C', es: (b) => /^Comodín de lectura/.test(b.material), tras: ES_WILLISON_PI,
     cur: { que: 'Comodín de lectura · termina «Prompt injection attacks against GPT-3» (≈950 palabras que quedan → los próximos ≈500)', como: '5′. Nada nuevo.', url: 'https://simonwillison.net/2022/Sep/12/prompt-injection/', t: 'Willison · prompt injection' } },
+  // comodines del deep dive y la trifecta del viernes: el 1.er sábado con su comodín LIBRE tras la pieza (v6.03: sáb 24-oct, con el D1 en
+  //   miércoles los carriles del lunes y del martes arrancaban en la semana 2 · v6.05: el sáb 31-oct ya lo ocupan No Priors y Willison → hasta
+  //   la v6.05 quedaban SIN curar; v6.05 fix: pasan al siguiente sábado libre, sáb 7-nov, y retoman donde quedó cada pieza)
+  { tag: 'B', es: (b) => /^Comodín de audio/.test(b.material), tras: ES_DEEP_DIVE_1,
+    cur: ({ previas }) => {
+      const m0 = 10 * Math.max(1, previas); // cada B del carril = 10′ del vídeo (tramo 1 = 0:00-10:00 · tramo 2 = 10:00-20:00 …)
+      const quedan = Math.max(0, 77 - m0 - 10); // 1:16:42 ≈ 77′
+      return { que: `Comodín de audio · «AI prompt engineering: A deep dive» (canal Anthropic) → minutos ${m0}:00-${m0 + 10}:00`,
+        como: `Retoma donde paraste el viernes (${previas > 1 ? `${previas} tramos de 10′ ya vistos` : 'tramo 1'}), 1,0× con subtítulos en inglés. Nada nuevo.${previas > 1 ? ` Quedan ≈${quedan}′ del vídeo: van a los próximos comodines de audio (marca el minuto).` : ' (el viernes siguiente lo terminas: «tramo 2»).'}`,
+        url: yt('T9aRN5JkmL8', m0 * 60), t: 'Prompt engineering deep dive' };
+    } },
+  { tag: 'C', es: (b) => /^Comodín de lectura/.test(b.material), tras: ES_TRIFECTA,
+    cur: ({ previas }) => {
+      const quedan = Math.max(0, 1240 - 500 * Math.max(1, previas)); // ≈1.240 palabras · 1 C = ≈500
+      return { que: `Comodín de lectura · sigue «The lethal trifecta for AI agents» (≈${quedan} palabras que quedan → los próximos ≈${Math.min(500, quedan)})`, como: '5′. Nada nuevo.', url: 'https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/', t: 'Lethal trifecta' };
+    } },
 ];
 let SYN_CUR_IDX: Map<string, SynCur> | null = null;
-/** Curaduría de un bloque A/B/C de una fecha: la n-ésima aparición de su pieza en SYN_DIAS (n = 1 si no se indica). */
+/** Curaduría de un bloque A/B/C de una fecha: la n-ésima aparición de su pieza en SYN_DIAS (n = 1 si no se indica); los comodines con
+ *  `tras` van al 1.er sábado posterior a la 1.ª aparición de esa pieza con su comodín LIBRE (v6.05; v6.05 fix: si ese sábado ya está curado
+ *  —sáb 31-oct = No Priors + Willison—, el siguiente sábado libre —sáb 7-nov— en vez de perder la curaduría), en el orden de la tabla. */
 function synCurDe(iso: string, tag: string): SynCur | undefined {
   if (!SYN_CUR_IDX) {
-    SYN_CUR_IDX = new Map();
+    const idx = new Map<string, SynCur>();
     const vistos = SYN_CUR_PIEZAS.map(() => 0);
     for (const d of SYN_DIAS) for (const b of d.bloques) {
       SYN_CUR_PIEZAS.forEach((p, i) => {
-        if (p.tag !== b.tag || !p.es(b)) return;
+        if (p.tras || p.tag !== b.tag || !p.es(b)) return;
         vistos[i] += 1;
-        if (vistos[i] === (p.n ?? 1) && !SYN_CUR_IDX!.has(`${d.fecha}|${b.tag}`)) SYN_CUR_IDX!.set(`${d.fecha}|${b.tag}`, p.cur);
+        if (vistos[i] === (p.n ?? 1) && !idx.has(`${d.fecha}|${b.tag}`)) idx.set(`${d.fecha}|${b.tag}`, typeof p.cur === 'function' ? p.cur({ sab: d.fecha, previas: 0 }) : p.cur);
       });
     }
+    const ultimo = SYN_DIAS.length ? SYN_DIAS[SYN_DIAS.length - 1]!.fecha : '';
+    for (const p of SYN_CUR_PIEZAS) {
+      if (!p.tras) continue;
+      const d0 = SYN_DIAS.find((d) => d.bloques.some((b) => p.tras!(b)));
+      if (!d0) continue;
+      // nº de apariciones L-V de la PIEZA (la misma serie: mismo material + misma lección sin el nº de tramo) antes de un sábado
+      const b0 = d0.bloques.find((b) => p.tras!(b))!;
+      const serie = (b: SynBloque) => b.tag === b0.tag && b.material === b0.material && b.leccion.replace(/\s*—\s*tramo.*$/i, '') === b0.leccion.replace(/\s*—\s*tramo.*$/i, '');
+      for (let sab = siguienteDow(d0.fecha, 6); sab <= ultimo && sab <= addDias(d0.fecha, 21); sab = addDias(sab, 7)) { // ≤ 3 semanas tras la pieza
+        const ds = SYN_DIAS.find((d) => d.fecha === sab);
+        const key = `${sab}|${p.tag}`;
+        if (!ds || !ds.bloques.some((b) => b.tag === p.tag && p.es(b)) || idx.has(key)) continue; // comodín ocupado → el sábado siguiente
+        const previas = SYN_DIAS.filter((d) => d.fecha >= d0.fecha && d.fecha < sab && dow(d.fecha) !== 6 && dow(d.fecha) !== 0).reduce((a, d) => a + d.bloques.filter(serie).length, 0);
+        idx.set(key, typeof p.cur === 'function' ? p.cur({ sab, previas }) : p.cur);
+        break;
+      }
+    }
+    SYN_CUR_IDX = idx;
   }
   return SYN_CUR_IDX.get(`${iso}|${tag}`);
 }
@@ -254,11 +310,21 @@ function pasoSyn(b: SynBloque, iso: string): GuiaPaso {
   return P(b.min, `C (lectura) · ${b.material} — ${b.leccion}`,
     `≈${b.min * PPM_EN} palabras (${b.min}′ a ${PPM_EN} palabras/min en inglés). Marca dónde quedas; el resto en el próximo C o en el comodín del sábado.`, enl);
 }
-/** Franja del SYNAPSE de L-V: 12:30 · UWSA1 07:25 (entre las 2 partes de la preparación del hito, guía de E1) · NBME 13:00 (almuerzo 12:30). */
+/** v6.05 (fix 24-oct): días de F2 con el ENCAPS a la hora real del examen, 11:00-13:00 — los SIM 100Q #7 y #8 (los 2 últimos viernes del
+ *  núcleo: v6.05 vie 26-feb y vie 5-mar-2027) y el D-2 dress rehearsal (jue antes del D-1 hábil). FUENTE ÚNICA: plantillasV6 la importa para
+ *  pintar el SIM a las 11:00 y para mover el SYNAPSE (antes cada fichero calculaba su SIM_11 y el SYNAPSE 12:30-13:00 se solapaba con el SIM). */
+export const SIM_F2_11 = new Set<string>([FECHAS_V6.encaps.nucleo_hasta, addDias(FECHAS_V6.encaps.nucleo_hasta, -7)]);
+/** D-2 del ENCAPS (jue antes del D-1 hábil): dress rehearsal 11:00-13:00 (§C3). */
+export const D2_ENCAPS = ultimoHabilAntes(DERIVADOS_V6.d1HabilEncaps);
+/** ¿Hoy el ENCAPS ocupa 11:00-13:00 (SIM 100Q #7/#8 o dress rehearsal)? → SYNAPSE 13:00-13:30, como en los NBME. */
+export const encapsOnceATrece = (iso: string): boolean => SIM_F2_11.has(iso) || iso === D2_ENCAPS;
+/** Franja del SYNAPSE de L-V: 12:30 · UWSA1 07:25 (entre las 2 partes de la preparación del hito, guía de E1) · NBME 13:00 (almuerzo 12:30) ·
+ *  v6.05 (fix): ENCAPS 11:00-13:00 de F2 (SIM #7/#8 · D-2) → 13:00 (antes 12:30, solapado 30′ con el SIM). */
 export function synFranjaDe(iso: string, min = 30): { franja: string; aviso?: string } {
   const h = hitoDe(iso);
   if (h?.uwsa) return { franja: franjaDesde('07:25', min), aviso: 'Hoy UWSA1 (08:50-13:00): el SYNAPSE se hace a las 07:25, entre las 2 partes de la preparación del hito (USMLE 07:15-07:25 y 07:55-08:50; esta es la única tarjeta SYNAPSE de hoy); a las 12:30 no hay SYNAPSE. El Calendar ya está en 07:25.' };
   if (h?.nbme) return { franja: franjaDesde('13:00', min), aviso: 'Día de NBME (07:00-12:30): almuerzo 12:30-13:00 y SYNAPSE 13:00-13:30 (guía USMLE del hito).' };
+  if (encapsOnceATrece(iso)) return { franja: franjaDesde('13:00', min), aviso: `Hoy el ENCAPS va a la hora real del examen (${iso === D2_ENCAPS ? 'D-2 · DRESS REHEARSAL' : 'SIM 100Q'} 11:00-13:00): SYNAPSE 13:00-13:30, al terminar (como en los días de NBME); a las 12:30 no hay SYNAPSE. El Calendar debe mostrarlo a las 13:00.` };
   return { franja: franjaDesde('12:30', min) };
 }
 export function guiaSynapseDe(iso: string): GuiaBloque | null {
@@ -320,16 +386,23 @@ export function guiaShipDe(iso: string): GuiaBloque | null {
     }
     if (pcMin && pcMin + abcMin > 120) aviso = `El plan suma ${pcMin + abcMin}′ (PC ${pcMin}′ + A/B/C ${abcMin}′) y el Calendar reserva 120′ (15:00-17:00): ${main.tipo === 'ship' ? 'SHIP' : 'avance'} ${shipMin}′ + SYNAPSE ${abcMin}′. Si el verify da verde antes, el resto es libre.`;
   } else if (pcs.length) {
-    // taper: PC opcional (30′ mantenimiento · 0′ deload) — pueden ser 2 (S16 desplazado + S17)
+    // taper: PC opcional (30′ mantenimiento · 0′ deload) — pueden ser 2 (S16 desplazado + S17).
+    // v6.05 (fix 24-oct): la guía nombra TODAS las piezas PC del sábado (sáb 20-feb-2027: S16 30′ + S17 0′); antes la de 0′ no aparecía en
+    //   ningún sitio (sin paso, sin título, sin aviso). Las de 0′ van en el título y en el aviso (un paso no puede durar 0′).
+    const piezas: string[] = []; const ceros: string[] = [];
     for (const x of pcs) {
       const t = x.taper;
       if (!t) continue;
       const m = t.tipo === 'mantenimiento' ? 30 : 0;
+      piezas.push(`S${t.s} ${m}′`);
       if (m) pasos.push(P(m, `PC opcional · taper S${t.s} · ${t.nombre}`, `node DATA/_scripts/verify_vibecoding.js --sensores → todo verde o 1 mejora pequeña al rojo; journal. ${t.shipTxt}`, journal));
+      else ceros.push(`S${t.s} · ${t.nombre} (deload total): PC de 0′ — ${t.shipTxt}`);
     }
     const hayPC = pasos.length > 0;
-    titulo = hayPC ? 'PC opcional del taper + SYNAPSE A/B/C' : 'SYNAPSE A/B/C del sábado (taper: PC de 0′)';
+    const lista = piezas.length > 1 ? ` (${piezas.join(' · ')})` : '';
+    titulo = hayPC ? `PC opcional del taper${lista} + SYNAPSE A/B/C` : `SYNAPSE A/B/C del sábado (taper: PC de 0′${lista})`;
     hecho = hayPC ? 'sensores en verde (o el rojo anotado) + SYNAPSE A/B/C' : 'SYNAPSE A/B/C del sábado';
+    if (ceros.length) aviso = `Además hoy: ${ceros.join(' · ')}`;
   }
   abc.forEach((b) => pasos.push(pasoSyn(b, iso)));
   abc.filter((b) => b.url).forEach((b) => recursos.push(R(`${b.tag} · ${b.material}`, b.url as string, { min: b.min })));
@@ -356,14 +429,14 @@ export function guiaFeynmanDe(iso: string): GuiaBloque | null {
 interface Vid { id: string; t: string; canal: string; s: number }
 /** Semanas 1-2 (D1-D10): vídeos CONCRETOS (el plan enlaza el CANAL en 98 de sus 130 bloques A). Título, canal y duración leídos de YouTube el
  *  18-oct-2026. D11-D130 sin curar: la guía da una regla fija de elección y lo avisa (ampliar esta tabla = misma verificación). Clave = D del
- *  plan AURUM (no la fecha): v6.03 D1-D5 = mié 21 → mar 27-oct · D6-D10 = mié 28-oct → mar 3-nov. */
+ *  plan AURUM (no la fecha): v6.05 D1-D5 = lun 26 → vie 30-oct · D6-D10 = lun 2 → vie 6-nov (v6.03: mié 21 → mar 27-oct · mié 28-oct → mar 3-nov). */
 const AURUM_VID: Record<number, { vids: Vid[]; nota: string }> = {
   1: { vids: [{ id: 'PtPo5V-aBKI', t: 'Everything is Sales - Grant Cardone', canal: 'Grant Cardone', s: 129 }, { id: 'H7eevPm8WJo', t: 'Advice for Sales People - Grant Cardone', canal: 'Grant Cardone', s: 575 }], nota: 'Anota 3 frases textuales que le dirías a un lead de ALLPA/Qori.' },
   2: { vids: [{ id: 'urZVPdf3brs', t: 'I Trained Sales 2 Hours a Day for 5 Years', canal: 'Grant Cardone', s: 491 }, { id: 'NY9_i7TzXLQ', t: '3 Rules to Master Sales - Grant Cardone', canal: 'Grant Cardone', s: 120 }], nota: 'Anota la regla de actividad diaria que te llevas (1 línea).' },
   3: { vids: [{ id: 'YqT2Kb3jUIQ', t: "Believe In What You're Selling", canal: 'Grant Cardone', s: 115 }, { id: '-8W_BQai2aw', t: 'Sales - Best Sales Book Ever Sell or Be Sold', canal: 'Grant Cardone', s: 185 }, { id: 'NmGRMGDIOIU', t: 'The Two Things You Must Believe --Playbook to Millions', canal: 'Grant Cardone', s: 88 }, { id: 'Wxfq71FIrTQ', t: 'Why Product Knowledge is Important - Whatever it Takes Sneak Preview', canal: 'Grant Cardone', s: 115 }], nota: 'Los 3′ que sobran: escribe las 2 frases de Cardone sobre convicción que usarás en el drill.' },
   4: { vids: [{ id: '7NMH1oAkgLY', t: 'Giving Away Free Stuff Will Make You Rich', canal: 'Alex Hormozi', s: 741 }, { id: 'JfbtySq6_B4', t: 'Sell Anything To Anyone With This Unusual Method', canal: 'Alex Hormozi', s: 434 }], nota: 'Anota qué «regala» un operador en tu negocio (1 línea): es la base del PITCH v1.' },
   5: { vids: [{ id: '9hdptAKBUoI', t: 'THE 10X RULE (by Grant Cardone) Top 7 Lessons | Book Summary', canal: 'TopSevenLessons', s: 312 }, { id: 'u9OhOsyHYVI', t: 'How to 10X Your Life - Grant Cardone', canal: 'Grant Cardone', s: 146 }], nota: 'Los 4′ que sobran: las 7 lecciones, 1 línea cada una (sin mirar).' },
-  // semana 2 del plan (D6-D10; v6.03: mié 28-oct → mar 3-nov · v6.02: lun 26 → vie 30-oct), mismo criterio
+  // semana 2 del plan (D6-D10; v6.05: lun 2 → vie 6-nov · v6.03: mié 28-oct → mar 3-nov · v6.02: lun 26 → vie 30-oct), mismo criterio
   6: { vids: [{ id: 'JwdQw6jCJ0I', t: 'How to Handle Rejection - Grant Cardone', canal: 'Grant Cardone', s: 109 }, { id: 'jHa7B_Gc1p0', t: 'The Secret of How to Get Over Rejection - Grant Rant #182', canal: 'Grant Cardone', s: 140 }, { id: 'GpvI8Cnzzws', t: 'How to Handle Rejection in Sell or Be Sold Audio', canal: 'Grant Cardone', s: 72 }, { id: 'sBy4KCBpBkQ', t: 'How to Always Get a Yes - Grant Cardone', canal: 'Grant Cardone', s: 140 }], nota: 'Los 4′ que sobran: escribe tu frase para el próximo «no» de un lead (sin discutir).' },
   7: { vids: [{ id: 'NCH-iDdD9MU', t: 'How to Pitch Your Products with Enthusiasm', canal: 'Grant Cardone', s: 285 }, { id: 'iUEzMXQeT0k', t: 'How to Win in Anything--Grant Cardone', canal: 'Grant Cardone', s: 133 }, { id: 'cqwyIVmSM5A', t: 'What it Takes to be Successful', canal: 'Grant Cardone', s: 154 }], nota: 'Anota 1 gesto de energía GENUINA que copiarás en la toma de hoy.' },
   8: { vids: [{ id: 'SBF0nZ_Kfag', t: '5 Tips to Become the BEST Salesperson - Grant Cardone', canal: 'Grant Cardone', s: 855 }], nota: 'Anota los 5 tips en 5 líneas; marca el que más te cuesta.' },
@@ -379,10 +452,26 @@ const AURUM_L_PLANB: Record<number, string> = {
   6: 'Sin préstamo de Archive.org: Wharton (20:28) desde donde lo dejaste — youtube.com/watch?v=J6EjBwrdHgE.',
   9: 'Sin préstamo de Archive.org: Wharton (20:28) desde donde lo dejaste — youtube.com/watch?v=J6EjBwrdHgE.',
 };
+/** v6.05 (fix 24-oct-2026): AURUM en F4 (SERUMS) = 30′ en el TIEMPO MUERTO del turno, justo DESPUÉS de los 30′ de R↔D (DJ-4), y no a la franja
+ *  nominal 14:15–14:45 de F2/F3 (en el turno M chocaba con el almuerzo 13:40-14:30 y con el bloque B del Step 1 14:30-16:00). `rd` = bloque R↔D
+ *  del día (plantillasV6): R↔D de tiempo muerto «07:00–13:00» (M) → ventana de AURUM 07:30–13:00 (guía 07:30–08:00) · T 13:00–19:00 → 13:30 ·
+ *  T 12:00 → 12:30 · T 14:00 → 14:00 · L (R↔D fijo 16:20–16:50) → 16:50–17:20 · G (guardia, sin hora) → null (tiempo muerto sin hora). */
+export function ventanaAurumF4(rd: { ini: string | null; fin: string | null; hora: string } | null | undefined): { ini: string; fin: string; tm: boolean } | null {
+  if (!rd || !rd.ini || !rd.fin) return null;
+  if (/tiempo muerto/i.test(rd.hora)) return { ini: aHHMM(aMin(rd.ini) + 30), fin: rd.fin, tm: true };
+  return { ini: rd.fin, fin: aHHMM(aMin(rd.fin) + 30), tm: false };
+}
+/** Inicio por defecto de la guía de AURUM en F4 (sin bloque: turno M sin marcar = PISO) — sale de FRANJAS_F4.M, no de una hora fija. */
+const AURUM_F4_INI = (() => {
+  const rd = (FRANJAS_F4.M ?? []).find((f) => f.frente === 'research-derma');
+  const m = rd ? /(\d{2}:\d{2})\s*[–-]\s*(\d{2}:\d{2})/.exec(rd.hora) : null;
+  return ventanaAurumF4(m ? { ini: m[1] as string, fin: m[2] as string, hora: rd!.hora } : null)?.ini ?? '07:30';
+})();
 function kwDe(leccion: string): string {
   return leccion.replace(/^.*?canal oficial:\s*/i, '').replace(/^(ver\s+)?(1\s+)?clip (corto\s+)?(sobre|de)\s+/i, '').replace(/\(.*?\)/g, '').trim().slice(0, 70);
 }
-export function guiaAurumDe(iso: string): GuiaBloque | null {
+/** `ini` (solo F4): inicio de la ventana de AURUM del bloque del día (plantillasV6 · ventanaAurumF4); sin él, el del turno M (PISO). */
+export function guiaAurumDe(iso: string, ini?: string | null): GuiaBloque | null {
   const a: DiaAurum | undefined = aurumDiaDe(iso);
   if (!a) return null;
   const A = a.bloques.find((b) => b.tag === 'A');
@@ -459,7 +548,14 @@ export function guiaAurumDe(iso: string): GuiaBloque | null {
     pasos.push(P(1, 'CIERRE · ✓ en Empresa › AURUM', 'Anota en la nota ◆ lo que quedó opcional.'));
     const fuera = [aMinPlan - aE > 0 ? `vídeo ${aMinPlan - aE}′` : '', PR && PR.min - prE > 0 ? `drill ${PR.min - prE}′` : '', pasoLV ? `variante LIVIANO ${pasoLV.min}′` : '', L ? `L ${L.min}′` : ''].filter(Boolean);
     if (fuera.length) avisos.push(`AURUM a 30′ (DJ-4): opcional fuera de la franja → ${fuera.join(' · ')}.`);
-    franja = '14:15–14:45';
+    // v6.05 (24-oct-2026): las 2 últimas sesiones (lun 3 / mar 4-may-2027) caen ya en el SERUMS → 30′ en tiempo muerto de la posta.
+    // v6.05 (fix): en F4 la franja ya NO es la nominal 14:15–14:45 (chocaba con el almuerzo y el bloque B del turno M): sigue al bloque de tiempo
+    //   muerto del turno, tras los 30′ de R↔D (ventanaAurumF4; `ini` lo pasa el Home con el bloque del día), como la guía de Research en F4.
+    if (faseV6(iso) === 'F4') {
+      const i0 = ini ?? AURUM_F4_INI;
+      franja = franjaDesde(i0, W);
+      avisos.push(`SERUMS (F4): 30′ en TIEMPO MUERTO de la posta, justo después de los 30′ de R↔D — hoy ${franja}${ini ? '' : ' (turno M sin marcar = PISO; con otro turno la franja sigue a su bloque de tiempo muerto: T 13:30 · T 12:00 → 12:30 · T 14:00 → 14:00 · L 16:50 tras el R↔D · guardia sin hora)'}. Si la posta no deja hueco, al volver (antes de la cena); el drill nunca se salta.`);
+    } else franja = '14:15–14:45';
   }
   return bloque(franja, 'aurum', `AURUM D${a.d} · ${a.titulo}`, pasos, recursos,
     a.pitch ? `PITCH v${a.pitch} grabado y puntuado con la rúbrica (/12) + nota ◆ del día` : 'vídeo visto con sus notas + drill hecho y guardado en la nota ◆ del día + ✓',
@@ -489,12 +585,13 @@ const LIV_LECT: Record<string, Array<[string, number]>> = {
 };
 /** v6.03 (20-oct-2026): LIV_LECT va por FILA del currículo — `c<n>` = n-ésimo tema de contenido · `caso<n>` = caso n —, no por D del plan
  *  (antes 1-15 = D1-D15 de v6.02, con los casos en D5/D10/D15). Con el D1 en miércoles los casos caen D3/D8/D13 y el D# de cada tema cambia;
- *  la lectura medida sigue a su tema. Ojo: con los casos antes, la «relectura para el caso» 1 llega antes de la 1.ª lectura de esa sección (c3). */
+ *  la lectura medida sigue a su tema. Ojo: con los casos antes, la «relectura para el caso» 1 llega antes de la 1.ª lectura de esa sección (c3).
+ *  v6.05 (24-oct-2026): D1 = lun 26-oct → los casos vuelven a caer D5/D10/D15 (como v6.02), DESPUÉS de su sección: todas las relecturas valen. */
 function livLectDe(l: DiaLiviano): Array<[string, number]> | undefined {
   if (l.casoId == null) return LIV_LECT[`c${LIV_DIAS.filter((x) => x.casoId == null && x.d <= l.d).length}`];
   const xs = LIV_LECT[`caso${l.casoId}`];
   if (!xs) return undefined;
-  // «relectura» solo si esa sección ya se leyó antes en el plan; si no (v6.03: casos 1 y 2), se dice que es la 1.ª lectura (mismo texto y palabras)
+  // «relectura» solo si esa sección ya se leyó antes en el plan; si no (v6.03: casos 1 y 2 · v6.05: ninguno), se dice que es la 1.ª lectura (mismo texto y palabras)
   const base = (s: string): string => s.replace(/ \([^()]*\)$/, '');
   const previas = new Set(LIV_DIAS.filter((x) => x.casoId == null && x.d < l.d).flatMap((x) => (livLectDe(x) ?? []).map(([s]) => base(s))));
   return xs.map(([s, n]): [string, number] => [previas.has(base(s)) ? s : s.replace('(relectura para el caso)', '(para el caso: 1.ª lectura, en el plan va después)'), n]);
@@ -574,7 +671,8 @@ const PULSO_OBS = obs('02_EMPRESA FINANZAS/01_PULSO/_concepto_madre');
 /** Semana 1: tramos EXACTOS de charlas oficiales de los autores (capítulos de YouTube leídos el 18-oct). Sustituyen la búsqueda (Spark) y el
  *  audiolibro caído (In Defense of Food, nHR8B8V2v9s → «Video no disponible»): mismo libro, mismo autor, mismo contenido del plan.
  *  v6.03 (20-oct-2026): la clave es la FILA del plan — libro (libroN) + nº de lectura de ese libro —, no la fecha (antes '2026-10-19' …
- *  '2026-10-22'): con el D1 en el mié 21-oct Spark cae mié 21 / jue 22 y Pollan lun 26 / mar 27-oct (el OUTPUT S1 del vie 23 va en medio). */
+ *  '2026-10-22'): con el D1 en el mié 21-oct Spark cae mié 21 / jue 22 y Pollan lun 26 / mar 27-oct (el OUTPUT S1 del vie 23 va en medio).
+ *  v6.05 (24-oct-2026): D1 = lun 26-oct → Spark lun 26 / mar 27 · Pollan mié 28 / jue 29-oct · OUTPUT S1 vie 30-oct (como v6.02, una semana después). */
 const BIZ_TRAMO: Record<string, { id: string; ini: number; fin: number; t: string; caps: string }> = {
   '143#1': { id: 'Bmc0ERKfjP0', ini: 0, fin: 1262, t: 'Talks at Google · «In Spark | Dr. John Ratey» (49:12)', caps: 'Introduction → Evolutionary perspective → Brain function and schools (Naperville) → Exercise and productivity → Mental health benefits → Neurobiology of learning (BDNF) → Studies on fitness and IQ' },
   '143#2': { id: 'Bmc0ERKfjP0', ini: 1262, fin: 2148, t: 'Talks at Google · «In Spark | Dr. John Ratey» (49:12)', caps: 'Mechanisms of neuroplasticity → Body-brain communication → Clinical evidence in adults (estrés/ansiedad/ánimo) → Behavioral improvements (atención) → Cerebellum and balance' },
@@ -691,9 +789,11 @@ export function guiaRevisionDe(iso: string): GuiaBloque | null {
   const fichero = revisionFicheroDe(iso);
   const ruta = `${REPO}/DATA/USMLE/REVISIONES/${fichero}`;
   const d1 = FECHAS_V6.f1.inicio;
-  const primera = iso === addDias(d1, (6 - dow(d1) + 7) % 7); // v6.03: 1.er sábado desde el D1 (mié 21 → sáb 24-oct; antes D1 + 5, que solo valía con D1 en lunes)
+  const primera = iso === addDias(d1, (6 - dow(d1) + 7) % 7); // v6.03: 1.er sábado desde el D1 (mié 21 → sáb 24-oct; antes D1 + 5, que solo valía con D1 en lunes) · v6.05: lun 26 → sáb 31-oct
+  // v6.05: la semana 2 (lunes → jueves de los runners ENCAPS y la semana ISO del journal) sale de la fecha, no de un texto fijo (v6.02c/v6.03: lun 26 → jue 29-oct, 2026-W44)
+  const lun2 = addDias(iso, 2);
   const prep = primera
-    ? 'Semana 2: AccessDerma renovado (si no, Derma sigue en PLAN B: selector en Derma › HOY) · runners ENCAPS del lun 26 al jue 29 generados (eval + banco; E4) · velocidad de vídeo USMLE de la S2 = 1,25× solo si tu free recall recogió ≥ 3 ideas · el journal 2026-W44 lo crea el lunes journal_hoy.js.'
+    ? `Semana 2: AccessDerma renovado (si no, Derma sigue en PLAN B: selector en Derma › HOY) · runners ENCAPS del ${fCorta(lun2)} al ${fCorta(addDias(lun2, 3))} generados (eval + banco; E4) · velocidad de vídeo USMLE de la S2 = 1,25× solo si tu free recall recogió ≥ 3 ideas · el journal ${vibeSemanaISO(lun2)} lo crea el lunes journal_hoy.js.`
     : 'Lo que la semana que entra necesita listo: accesos (Qbankly, ProMIR, AccessDerma), runners ENCAPS de la semana, hito USMLE si lo hay (ver la línea «hito» del fichero).';
   return bloque('07:15–07:45', 'revision', `REVISIÓN SEMANAL · ${fichero.replace('.md', '')}`, [
     P(3, `GENERAR y abrir ${fichero}`, `Home › PROGRESO → «Sincronizar ahora» (plan_checks) · luego en D:\\joseph-md-app: \`node DATA/_scripts/gen_revision_semanal.js\` → crea DATA/USMLE/REVISIONES/${fichero} y actualiza _semanas.json.`, { t: `abrir ${fichero}`, url: vsc(ruta) }),

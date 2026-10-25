@@ -113,6 +113,15 @@
  *   La eval del lun 26 es la de I-3 (código de la fila dia 2, jue 22): tras el mini-sim del vie 23 conserva su nota «regla de lunes» (como en
  *   v5.20). CARRIL B: 10 pendientes F1 (los 8 de v6.02 con sus fechas + mié 3-mar I-3 #6 · jue 4-mar V-2 #6); regla genérica «filas del carril B
  *   dia 51-82 (dia_mant 61-92) sin ✓».
+ * v6.05 (24-oct-2026, «todo inicia el lunes 26»; la semana del 19 no se estudió: ni el D1 del mié 21, ni su alias del jue 22, ni el mini-sim del
+ *   vie 23): D1 = LUN 26-OCT-2026 · F1 = dia 1-47 → mié 30-dic (39 banqueo1h + 8 mini-sims vie 30-oct … vie 18-dic, el último = CHECKPOINT DEL AÑO)
+ *   · pre-test de arranque lun 26 + mar 27-oct (= D1 + D2) · INTENSIVA dia 48-97 con las mismas fechas. Ficheros BANCO_PROPIO re-fechados POR SESIÓN
+ *   (sesión lun-jue k → sesión k; viernes k → viernes k; esta vez también se mueven los viernes: el vie 23 no se hizo), ítems intactos,
+ *   _meta.realineado v6.05: pretest_arranque 21/22 → 26/27-oct · eval 21/22/26/27 → 26/27/28/29 · banco 26/27 → 28/29 (fila_sql.dia 4/5 → 3/4)
+ *   · minisim 23/30-oct y 6-nov → 30-oct y 6/13-nov · reservado_para del pool 23/30-oct → 30-oct/6-nov (una sola pasada). La eval del mié 28 es la
+ *   de I-3 (código de la fila dia 2, mar 27): ya no hay mini-sim en medio (la nota «regla de lunes» de v6.03 queda como historial). HTML re-emitidos
+ *   con --refrescar (html desfasado). CARRIL B: 13 pendientes F1 (los 10 de v6.03 con sus fechas + lun 8-mar II-4 #3 · mar 9-mar II-1 #3 · MIÉ
+ *   10-MAR MINI-SIM 25Q I-1 + II-2 → --semana 2027-03-08 arma minisim_2027-03-10); regla genérica «filas del carril B dia 48-79 (dia_mant 61-92) sin ✓».
  * v5.20 (6-oct, DEFINITIVA): D1 = mié 7-oct-2026 · 92 días → mar 16-feb-2027 (régimen v6.18, backup study_schedule_bk_1006) · pre-test de arranque mié 7 + jue 8-oct ·
  *   mini-sims en los MISMOS 17 viernes vie 9-oct → vie 12-feb · ficheros BANCO_PROPIO re-fechados (ítems intactos, _meta.realineado v5.20) · pre-test 2026-II vie 26-feb
  *   (= día 100, primer viernes de la intensiva mar 23-feb → mar 9-mar) · EXAMEN ENCAPS 2027-I FIJADO mié 10-mar-2027.

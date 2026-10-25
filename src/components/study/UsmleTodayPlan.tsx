@@ -61,6 +61,10 @@ import { fechasRealesEnTexto } from '../../lib/corridaTexto';
  * las 6 desplazadas (v5.20 D52-D54, D56, D57 Heme/Onco + D79) son T3-T8 y llevan el mismo chip «DE F1 → tramo 2» (sub «DE F1 → TRAMO 2…»).
  * v6.03 (20-oct-2026): corrimiento del D1 al mié 21-oct → F1 = D1-D50 («Día d/50», D50 = NBME 28 mié 30-dic → T1). Sin cambio de lógica:
  * las filas desplazadas al tramo 2 siguen con el chip «DE F1 → tramo 2» (208 filas en total).
+ * v6.05 (24-oct-2026): corrimiento del D1 al lun 26-oct → F1 = D1-D47 («Día d/47», D47 = NBME 28 mié 30-dic → T1). Sin cambio de lógica:
+ * las 11 filas desplazadas (T3-T13) llevan el chip «DE F1 → tramo 2» (229 filas en total: 47 de F1 + T1-T182).
+ * v6.05b (24-oct-2026): sin cambio de código — la 🧭 Guía del día (guiaUsmleDe por fecha) cubre también las filas desplazadas T3-T13 (7 franjas
+ *   F3, con la 16:15 REENTRADA), el NBME 29 (T2, Day-After 1/6) y los días de cola de vídeo T14-T18 (07:15-07:45).
  * v6.02c (18-oct-2026, E1): 🧭 GUÍA DEL DÍA en 📋 HOY = qué · cuánto · cómo de CADA franja (usmleGuia.ts, GENERADO por
  *   DATA/_scripts/usmle/gen_usmle_guia.js; formato común GuiaBloque + GuiaBloqueCard): vídeos B&B exactos con minutos y su reparto,
  *   filtros reales del Test Composer (System + nº de preguntas), Library con su doc, respaldo Mehlman y AVISO cuando el mapeo no es
@@ -760,7 +764,7 @@ function SistemaCard({ g, hoyD, onPick, done, onToggle }: { g: GrupoProgreso<Dia
 
 function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (d: number) => void; done: Set<number>; onToggle: (d: number) => void }) {
   // v6.00: clave `tramo:system` (no fusiona Psiquiatría D58 + T ni el Colchón C1/C2 + T en un grupo «en curso» todo el año)
-  // v6.01: el tramo sale de esFilaT2 (v6.03: F1 = D1-D50 · v6.02: D1-D52 · v6.01: D1-D57; antes «d ≤ 60»)
+  // v6.01: el tramo sale de esFilaT2 (v6.05: F1 = D1-D47 · v6.03: D1-D50 · v6.02: D1-D52 · v6.01: D1-D57; antes «d ≤ 60»)
   const grupos = agruparProgreso(DIAS_TODOS, (x) => (esFilaT2(x) ? 'T2' : 'F1') + ':' + x.system, hoyD, done);
   const glob = progresoGlobal(DIAS_TODOS, done);
   const hoyRow = DIAS_TODOS.find((x) => x.d === hoyD);

@@ -22,7 +22,7 @@ import {
  * LivianoTodayPlan — "LIVIANO Academia" día a día (90 días L-V · medicina de la obesidad).
  * v2 (Palmerton v3): el ✓ binario pasa a SCORE medido:
  *   · LUNES  → pre-test ciego 5Q sobre la semana D-7 (tarjetas de mecanismo) → % ciego
- *   · DRILL  → cifras ancla en ciego (D37 · D57 · D76 · D88, v6.03 = jue 10-dic · mar 12-ene · lun 8-feb · mié 24-feb; v6.02: D37 · D56 · D75 · D88 = mar 8-dic · jue 7-ene · mié 3-feb · lun 22-feb; v6.01: D37 · D57 · D75 · D88 = mar 1-dic · mié 30-dic · mié 27-ene · lun 15-feb; v6.00 = v5.20: D37 · D58 · D76 · D88; v5.19 = v5.18: D37 · D58 · D75 · D88 · v5.17: D36 · D58 · D75 · D87) → % ciego
+ *   · DRILL  → cifras ancla en ciego (D37 · D56 · D75 · D88, v6.05 = mar 15-dic · jue 14-ene · mié 10-feb · lun 1-mar; v6.03: D37 · D57 · D76 · D88 = jue 10-dic · mar 12-ene · lun 8-feb · mié 24-feb; v6.02: D37 · D56 · D75 · D88 = mar 8-dic · jue 7-ene · mié 3-feb · lun 22-feb; v6.01: D37 · D57 · D75 · D88 = mar 1-dic · mié 30-dic · mié 27-ene · lun 15-feb; v6.00 = v5.20: D37 · D58 · D76 · D88; v5.19 = v5.18: D37 · D58 · D75 · D88 · v5.17: D36 · D58 · D75 · D87) → % ciego
  *   · VIERNES→ caso del banco LIV_CASOS con rúbrica 0-2 × 4 → rúbrica media
  * Persistencia (v5.14, 19-sep): localStorage 'jmd-liviano-score' + ESPEJO en Supabase `study_progress`
  * (examen 'LIVIANO' · fuente 'app:liviano', mismo patrón que ENCAPS) vía src/lib/livianoScore.ts; al montar se hace pull

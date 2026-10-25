@@ -2,7 +2,7 @@
 # gen_business_plan.py — genera src/lib/businessStudyPlan.ts (plan "Estudio Pulso").
 #
 #   v3 L (5-sep-2026, Palmerton cero puntos ciegos · vacío 6):
-#     python DATA/_scripts/gen_business_plan.py [YYYY-MM-DD]        (default 2026-09-07 = D1 v5.6; remap_inicio.js pasa siempre la fecha:
+#     python DATA/_scripts/gen_business_plan.py [YYYY-MM-DD]        (default 2026-10-26 = D1 v6.05 —hasta v6.03: 2026-09-07 = D1 v5.6—; remap_inicio.js pasa siempre la fecha:
 #                                                                    v5.20 = v6.00 = 2026-10-07 → 121 filas mié 7-oct → jue 4-feb-2027 ·
 #                                                                    v6.01 (10-oct-2026, corrimiento) = 2026-10-12 → 121 filas lun 12-oct → mar 9-feb-2027:
 #                                                                    84 de trabajo + 37 DESCANSO; el fin se amplía +3 hábiles, nada se recorta ·
@@ -11,7 +11,14 @@
 #                                                                    v6.03 (20-oct-2026, corrimiento) = 2026-10-21 → 121 filas mié 21-oct → jue 18-feb-2027:
 #                                                                    84 de trabajo + 37 DESCANSO; +2 hábiles, outputs en viernes 15/15 (+ S16 y «extra» al
 #                                                                    final, mié 17 / jue 18-feb), nada se recorta. Con D1 en miércoles el OUTPUT S1 cae el
-#                                                                    vie 23-oct tras 2 lecturas (Spark ×2) y las 2 de Pollan pasan al lun 26 / mar 27-oct)
+#                                                                    vie 23-oct tras 2 lecturas (Spark ×2) y las 2 de Pollan pasan al lun 26 / mar 27-oct ·
+#                                                                    v6.05 (24-oct-2026, corrimiento; del 19 al 25-oct sin estudio) = 2026-10-26 → 121 filas
+#                                                                    lun 26-oct → mar 23-feb-2027: 84 de trabajo + 37 DESCANSO; +3 hábiles sobre v6.03,
+#                                                                    nada se recorta. Con D1 en lunes vuelve el patrón de v6.02: OUTPUT S1 vie 30-oct tras
+#                                                                    las 4 lecturas de la semana (Spark ×2 lun 26 / mar 27 · Pollan ×2 mié 28 / jue 29-oct);
+#                                                                    15 OUTPUT en viernes (vie 30-oct … vie 19-feb) + S16 lun 22-feb y «extra» mar 23-feb.
+#                                                                    3 de esos viernes son día de NBME (vie 6-nov · vie 27-nov · vie 18-dic): la guía
+#                                                                    (rutinaGuia.bizFranjaDe) pasa ese OUTPUT entero al sábado 07:45-08:25)
 #   v6.02c (18-oct-2026, E5): YT_OVERRIDE — enlaces del plan comprobados el 18-oct que NO servían (vídeo caído = oEmbed 404,
 #     «no reproducible», subidas de 2 min «Full Audiobook Free») o que eran una BÚSQUEDA, sustituidos por una charla/entrevista
 #     del PROPIO AUTOR en un canal oficial (título, canal y duración leídos de YouTube ese día). Mismo libro y mismo contenido del
@@ -291,4 +298,4 @@ export const bizColor = (m: string) => BIZ_MATERIA_COLOR[m] || '#D9BE8A';
 if __name__ == '__main__':
     args = [a for a in sys.argv[1:]]
     if '--v2' in args: gen_v2()
-    else: gen_v3(next((a for a in args if re.match(r'^20\d\d-\d\d-\d\d$', a)), '2026-09-07'))
+    else: gen_v3(next((a for a in args if re.match(r'^20\d\d-\d\d-\d\d$', a)), '2026-10-26'))  # v6.05: default = D1 lun 26-oct (antes 2026-09-07, v5.6)

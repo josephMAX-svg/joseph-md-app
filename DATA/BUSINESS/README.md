@@ -5,7 +5,16 @@ Data del estudio del fundador y de las academias médicas de Pulso. **Desde el 5
 audiolibro/lectura en los huecos, L-J, + 1 output pequeño el viernes) y solo cubre lo que no cubren
 **AURUM** (marketing/ventas, 14:15-15:15) ni **LIVIANO Academia** (medicina de la obesidad, 17:15-18:00).
 
-> **✅ v6.03 VIGENTE (mar 20-oct-2026) — D1 = MIÉ 21-OCT-2026** (lun 19 y mar 20-oct sin estudio; «simplemente corre, no comprimas»; +2 hábiles sobre v6.02).
+> **✅ v6.05 VIGENTE (sáb 24-oct-2026) — D1 = LUN 26-OCT-2026** (del lun 19 al dom 25-oct sin estudio; «todo inicia el lunes 26 … no quites temas, solamente corre
+> lo que está faltando»; +3 hábiles sobre v6.03; la semana corrida por alias v6.04a queda sin efecto). **Business (Estudio Pulso, 13:00-13:25 L-V)**: 121 filas
+> **lun 26-oct-2026 → mar 23-feb-2027** (84 de trabajo + 37 DESCANSO; `python DATA/_scripts/gen_business_plan.py 2026-10-26` vía `remap_inicio.js 2026-10-26
+> --bloques business,liviano`): Spark lun 26 / mar 27 · Pollan mié 28 / jue 29-oct · 15 OUTPUT en viernes (S1 vie 30-oct … S15 vie 19-feb) + S16 lun 22-feb y el
+> extra mar 23-feb; los OUTPUT de los viernes de NBME (vie 6-nov · vie 27-nov · vie 18-dic) se hacen enteros el sábado 07:45-08:25. **LIVIANO Academia**: 90 días
+> **lun 26-oct → mié 3-mar-2027** (caso 1 D5 vie 30-oct … caso 16 D87 vie 26-feb; capstone D89 mar 2-mar; revisión II + cierre D90 mié 3-mar; detalle en
+> LIVIANO_ACADEMIA.md). **AURUM**: 130 días **lun 26-oct → mar 4-may-2027** (pitches vie 13-nov · vie 11-dic · mié 13-ene · mié 10-feb · mié 10-mar · mar 13-abr ·
+> mar 4-may; 30' desde el lun 4-ene; ⚠ D129-D130 = lun 3 / mar 4-may, los 2 primeros días del SERUMS supuesto).
+>
+> ⏸ **v6.03 (historial; mar 20-oct-2026) — D1 = MIÉ 21-OCT-2026** (lun 19 y mar 20-oct sin estudio; «simplemente corre, no comprimas»; +2 hábiles sobre v6.02).
 > **Business (Estudio Pulso, 13:00-13:25 L-V)**: 121 filas **mié 21-oct-2026 → jue 18-feb-2027** (84 de trabajo + 37 DESCANSO; `python DATA/_scripts/gen_business_plan.py 2026-10-21`
 > vía `remap_inicio.js 2026-10-21 --bloques business,liviano`): 15 OUTPUT en viernes (S1 vie 23-oct tras 2 lecturas —Spark ×2—; las 2 de Pollan pasan al lun 26 /
 > mar 27-oct) + S16 mié 17-feb y el extra jue 18-feb. **LIVIANO Academia**: 90 días **mié 21-oct → vie 26-feb-2027** (caso 1 D3 vie 23-oct … caso 16 D85 vie 19-feb;

@@ -5,7 +5,7 @@
  * (d5 danger zones · d7 psoriasis · d8 eccemas · d9 acné [plantilla canónica §3.2] · d10 ampollosas ·
  * d12 farmacodermias · d14 bacterianas · d16 virales · d18 parasitosis · d22 QA · d23 CBC/CEC · d24 melanoma ·
  * d50 cicatrización/complicaciones).
- * RE-ANCLAJE v3 (19-sep-2026; fechas al día en v6.03): `d` es el d del plan v3 (dermaDailyPlan.ts, d1 = mié 21-oct-2026 → d73 = lun 17-may-2027 —v6.02: lun 19-oct → vie 14-may · v6.01: mar 13-oct → lun 10-may—, saltando SKIP y
+ * RE-ANCLAJE v3 (19-sep-2026; fechas al día en v6.05): `d` es el d del plan v3 (dermaDailyPlan.ts, d1 = mar 27-oct-2026 → d73 = vie 21-may-2027 —v6.03: mié 21-oct → lun 17-may · v6.02: lun 19-oct → vie 14-may · v6.01: mar 13-oct → lun 10-may—, saltando SKIP y
  * los días protegidos v6 de _fechas_v6.json —vie 12 → lun 15-mar, ENCAPS—; v6.00: mié 7-oct → mié 5-may · v5.20: mié 7-oct → mié 5-may con los protegidos lun 22-feb
  * y mié 10-mar · v5.19: mié 7-oct → jue 29-abr · v5.18: lun 5-oct → mar 27-abr). El `d` no cambia con los corrimientos: solo su fecha;
  * las 21 fichas desplazadas por el taper del Step 1 (G-44 → d50 · X-47…X-56 → d53…d62 · X-59…X-65 → d63…d69 · X-66 → d46 ·

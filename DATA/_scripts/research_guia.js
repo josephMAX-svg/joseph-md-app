@@ -2,7 +2,7 @@
  * research_guia.js — construye la GUÍA «qué · cuánto · cómo» de cada átomo de Research (formato común GuiaBloque de src/lib/guia.ts).
  * Lo llama gen_research_plan.js (fuente única del plan) y el resultado se escribe en src/lib/researchGuia.ts (GENERADO).
  *   · 45′ en la franja 13:30–14:15 (bloque R↔D interdiario) · Σ pasos = 45 (aborta si no).
- *   · Átomos con guía PASO A PASO (semanas 1-2 del régimen; v6.03: jue 22-oct → mar 3-nov · v6.02: R0 · R1 · M1 · C-1 · M2): qué cuentas/qué abstract/qué plantilla, cuántos
+ *   · Átomos con guía PASO A PASO (semanas 1-2 del régimen; v6.05: lun 26-oct → jue 5-nov · v6.03: jue 22-oct → mar 3-nov · v6.02: R0 · R1 · M1 · C-1 · M2): qué cuentas/qué abstract/qué plantilla, cuántos
  *     minutos, cómo y con el enlace exacto (URLs ya verificadas en REC / MENTORES.md / candidatos.md; el abstract de R1 = PMID 19807760,
  *     verificado en PubMed E-utilities el 18-oct-2026).
  *   · El resto: guía estructurada desde las 5 franjas del bloque (eval anclada 5 · pre-test 5 · deep work 25 con el recurso 1 del átomo ·
@@ -14,6 +14,8 @@
  * v6.03 (20-oct-2026 · corrimiento D1 = mié 21-oct; Research d1 jue 22-oct): la ventana de la consulta Crossref de C-1 deja de estar cableada
  *   (29-ago → 28-oct = los 60 días previos a C-1 en v6.02) y se deriva de la fecha REAL de C-1 (60 días hacia atrás → C-1); los mensajes a
  *   mentores (M1/M2) dicen «con las fechas del plan vigente» en vez de «v6.02». Las fechas de cada paso ya salían de fechaDe() (sin cambio).
+ * v6.05 (24-oct-2026 · corrimiento D1 = lun 26-oct; Research d1 lun 26-oct): la versión que citan M1/M2 sale de _fechas_v6.json (antes «v6.03» escrito)
+ *   y la sección nueva de candidatos.md de C-1 lleva el mes REAL de C-1 (v6.05: mar 3-nov → «nov-2026»; antes «oct-2026» escrito).
  */
 'use strict';
 
@@ -24,6 +26,8 @@ const obsUrl = (file) => 'obsidian://open?vault=' + encodeURIComponent(OBS_VAULT
 const CROSSREF = (q, desde, hasta) => 'https://api.crossref.org/works?filter=issn:0190-9622,issn:2666-3287,issn:0011-9059,issn:1473-2130,issn:1076-0512,from-pub-date:' + desde + ',until-pub-date:' + hasta + '&query.bibliographic=' + encodeURIComponent(q) + '&rows=30&select=DOI,title,container-title,issued,published-online,type';
 const MES_LARGO = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
 const fmtDM = (iso) => `${Number(iso.slice(8, 10))}-${MES_LARGO[Number(iso.slice(5, 7)) - 1]}`;
+/** v6.05: versión del régimen vigente (para «las fechas del plan vigente (vX)» de M1/M2) — fuente única: _fechas_v6.json */
+const VERSION = require('./gen_fechas_v6').cargarFechasV6().version;
 
 /**
  * Código TS que se emite en src/lib/researchGuia.ts: guía GENÉRICA (5 franjas del bloque) y F4 (30′, franja nominal), construida en tiempo de
@@ -114,7 +118,7 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
       pasos: [
         { min: 5, que: `Eval anclada de ${prev.code}: ¿existe 01_PICO.md con 3 PICO? + 2Q: «terapia → ¿qué diseño?» · «Taylor 2009: ¿diseño y quién está ciego?»`, como: 'De memoria; si falta algo de R1, anótalo como deuda.' },
         { min: 5, que: 'Pre-test: de memoria, las 3 coautorías que le propones y qué le pides exactamente en cada una', como: 'Después compáralo con MENTORES.md §3 «Mensaje 1».' },
-        { min: 15, que: 'Personaliza el WhatsApp y la hoja-guion de MENTORES.md §3 «Mensaje 1 — Dr. Ciro» con las fechas del plan vigente (v6.03)', como: `Carta al editor: envío C-6 ${f('C-6')} · research letter: formateo T-7 ${f('T-7')} → envío T-8 ${f('T-8')} · case report: elegir el caso antes del 31-oct (CR-1 ${f('CR-1')}). En el punto 1(a) del guion deja la pregunta de la vía CEI (expedita / retrospectiva / exención). Petición concreta y verificable, nunca «quiero experiencia».`, enlace: { t: 'MENTORES.md §3', url: GH + 'DATA/RESEARCH/MENTORES.md' } },
+        { min: 15, que: 'Personaliza el WhatsApp y la hoja-guion de MENTORES.md §3 «Mensaje 1 — Dr. Ciro» con las fechas del plan vigente (' + VERSION + ')', como: `Carta al editor: envío C-6 ${f('C-6')} · research letter: formateo T-7 ${f('T-7')} → envío T-8 ${f('T-8')} · case report: elegir el caso antes del 31-oct (CR-1 ${f('CR-1')}). En el punto 1(a) del guion deja la pregunta de la vía CEI (expedita / retrospectiva / exención). Petición concreta y verificable, nunca «quiero experiencia».`, enlace: { t: 'MENTORES.md §3', url: GH + 'DATA/RESEARCH/MENTORES.md' } },
         { min: 5, que: 'ENVÍA el WhatsApp (lo envías tú)', como: 'Pide 20 minutos esta semana o la próxima, en persona o por llamada; adjunta nada todavía.' },
         { min: 5, que: `Antes de T-1 (${f('T-1')}): lista de los 10 documentos de etica.md §1 (tengo / falta)`, como: 'Marca cuáles tienes en PDF y cuáles hay que pedir; lo que falte se lo preguntas al Dr. Ciro en la reunión.', enlace: { t: 'etica.md §1', url: GH + 'DATA/RESEARCH/TESIS_L0/etica.md' } },
         { min: 5, que: 'Registro en MENTORES.md: fila 1 (fecha de contacto · estado 🟡 · siguiente paso = seguimiento a los 3-5 días) + 1 línea en §2', como: 'Si en 3 semanas no hay caso → fila 6 (fuente B del caso), como dice MENTORES.md.' },
@@ -130,7 +134,7 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
         { min: 5, que: `Eval anclada de ${prev.code}: ¿respondió el Dr. Ciro? (regístralo) + 2Q: los 4 criterios ICMJE de autoría · 1 rol CRediT`, como: 'De memoria; la respuesta va a MENTORES.md §2.' },
         { min: 5, que: 'Pre-test: qué hace a un artículo buen «diana» para una carta', como: 'Ventana ≤8 semanas desde la publicación online (regla de candidatos.md mientras la de cada revista esté «A VERIFICAR») + un ángulo con 1 dato verificable peruano/latino.' },
         { min: 15, que: 'Consulta Crossref A (filler · hyaluronic acid · complication) y B (skin of color · Fitzpatrick · laser · cosmetic), ' + fmtDM(C1D) + ' → ' + fmtDM(C1H) + '-' + C1H.slice(0, 4) + ', en las 5 revistas por ISSN', como: 'Abre las dos URLs (mismas consultas que candidatos.md, con fechas nuevas) y anota título · revista · fecha online · DOI de los que encajen con derma estética · fototipos IV-VI · complicaciones de rellenos.', enlace: { t: 'Crossref A', url: CROSSREF('filler hyaluronic acid complication', C1D, C1H) } }, // v6.03 (verificación de contenido, 20-oct): faltaban las fechas → «from-pub-date:undefined» (HTTP 400)
-        { min: 10, que: 'Tabla de 5 candidatos en DATA/RESEARCH/CARTA_1/candidatos.md (nueva sección «oct-2026»)', como: 'Por fila: journal · fecha online · DOI · ventana (URL de Author Guidelines) · límite de palabras/refs · coste · ángulo. Los candidatos del 5-sep publicados online en jul-ago ya pasan las 8 semanas: solo siguen si la guía de su revista admite una ventana mayor.', enlace: { t: 'candidatos.md', url: GH + 'DATA/RESEARCH/CARTA_1/candidatos.md' } },
+        { min: 10, que: 'Tabla de 5 candidatos en DATA/RESEARCH/CARTA_1/candidatos.md (nueva sección «' + MES_LARGO[Number(C1H.slice(5, 7)) - 1] + '-' + C1H.slice(0, 4) + '»)', como: 'Por fila: journal · fecha online · DOI · ventana (URL de Author Guidelines) · límite de palabras/refs · coste · ángulo. Los candidatos del 5-sep publicados online en jul-ago ya pasan las 8 semanas: solo siguen si la guía de su revista admite una ventana mayor.', enlace: { t: 'candidatos.md', url: GH + 'DATA/RESEARCH/CARTA_1/candidatos.md' } },
         { min: 5, que: 'Correo a la Editorial Office de IJD pidiendo su política de correspondencia (pendiente desde el 27-ago)', como: '5 líneas; lo envías tú. La dirección se toma de la web de la revista (no está verificada en el repo: A VERIFICAR).', enlace: R('IJD') },
         { min: 5, que: 'Free recall + ≤3 APEX-método + guarda candidatos.md', como: 'Cada DOI nuevo se verifica con DATA/RESEARCH/agentic/citation_verifier.py antes de C-2 (' + f('C-2') + ').' },
       ],
@@ -144,7 +148,7 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
         { min: 5, que: `Eval anclada de ${prev.code}: ¿5 candidatos con DOI en candidatos.md? + 2Q: la regla de la ventana · por qué un dato verificable`, como: 'De memoria.' },
         { min: 5, que: 'Pre-test: qué 3 cosas pides al mentor y en qué meses', como: 'Después compáralo con MENTORES.md §3 «Mensaje 2».' },
         { min: 10, que: 'Registro en Rising Scholars (red gratuita de INASP; la cuenta la creas tú)', como: 'País Perú · institución FMH-UNCP · disciplina dermatología / salud pública · nivel early-career · idiomas ES/EN.', enlace: { t: 'risingscholars.net/accounts/register', url: 'https://risingscholars.net/accounts/register/' } },
-        { min: 10, que: 'Solicitud de mentor en la sección Mentoring: pega el «Mensaje 2» de MENTORES.md con las fechas del plan vigente (v6.03)', como: `Cambia los meses del mensaje: carta al editor ≈ ${f('C-3')} → ${f('C-6')} · research letter ≈ ${f('T-7')} → ${f('T-8')} · case report: revisión en CR-6 (${f('CR-6')}). La mecánica exacta (buscar mentor vs publicar la solicitud) se confirma dentro de la plataforma (A VERIFICAR, 5-sep).`, enlace: { t: 'Mentoring', url: 'https://risingscholars.net/en/mentoring/' } },
+        { min: 10, que: 'Solicitud de mentor en la sección Mentoring: pega el «Mensaje 2» de MENTORES.md con las fechas del plan vigente (' + VERSION + ')', como: `Cambia los meses del mensaje: carta al editor ≈ ${f('C-3')} → ${f('C-6')} · research letter ≈ ${f('T-7')} → ${f('T-8')} · case report: revisión en CR-6 (${f('CR-6')}). La mecánica exacta (buscar mentor vs publicar la solicitud) se confirma dentro de la plataforma (A VERIFICAR, 5-sep).`, enlace: { t: 'Mentoring', url: 'https://risingscholars.net/en/mentoring/' } },
         { min: 5, que: `MENTORES.md fila 2: fecha de solicitud + «decisión del plan B de inglés: ${fmt(addDays(M2.fecha, 28))}» + 1 línea en §2`, como: 'Si a las 4 semanas no hay mentor asignado → plan B (editor profesional, RUTA §3.1).', enlace: { t: 'MENTORES.md', url: GH + 'DATA/RESEARCH/MENTORES.md' } },
         { min: 5, que: 'Plan B de inglés listo: inscríbete en «Writing in the Sciences» (Coursera; modo auditoría si está disponible)', como: 'Solo la inscripción; el curso se usa cuando toque redactar (C-3).', enlace: R('SCIWRITE') },
         { min: 5, que: 'Free recall + ≤3 APEX-método + sella el artefacto', como: 'APEX tipo «mentor de escritura: qué pedir · cuánto tiempo · con qué fecha».' },

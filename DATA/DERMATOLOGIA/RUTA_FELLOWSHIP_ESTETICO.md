@@ -107,12 +107,20 @@
 
 ## 3. Qué produce cada fase del plan actual (2026-27) para cada ruta
 
-> **✅ v6.04 (mié 21-oct-2026) — sobre el régimen v6.03 de abajo cambian solo el Step 1 y el MIR de 2027:** examen Step 1 **lun 25-oct-2027** (PROVISIONAL;
+> **✅ v6.05 VIGENTE (sáb 24-oct-2026) — todo arranca el LUN 26-OCT-2026 (del 19 al 25-oct sin estudio; la semana corrida por alias de la v6.04 queda sin
+> efecto):** **USMLE Step 1** F1 lun 26-oct → mié 30-dic-2026 (47 sesiones; UWSA1 lun 26-oct · NBME 25 vie 6-nov · 26 vie 27-nov · 27 vie 18-dic · 28 mié 30-dic)
+> + tramo 2 mar 16-mar → **examen lun 25-oct-2027** (sin cambio; GO/NO-GO lun 6-sep) · **ENCAPS** 1 h lun 26-oct → mié 30-dic + intensiva lun 4-ene → vie
+> 12-mar → examen dom 14-mar-2027 PROVISIONAL · **MIR** 1.ª vuelta lun 26-oct → lun 15-feb + mantenimiento mar 16-feb → mar 11-may + extensión mié 12-may → vie
+> 22-oct-2027 + 4 repuestas mar 26 → vie 29-oct (203 sesiones, = v6.04) · **Derma** 73 átomos mar 27-oct-2026 → vie 21-may-2027 + ciclo 2 lun 24-may → vie
+> 30-jul-2027 · **Research L4 · SR-1**: R9 (AMSTAR-2) mié 17-feb y PICO R6 vie 19-feb-2027 (tras la pausa) · PROSPERO R10 jue 8-abr-2027 · extracción R22-R25
+> sáb 22-may → jue 3-jun · **SUBMIT R43 sáb 31-jul-2027** · L5 · SR-2 protocolo R45 jue 26-ago-2027.
+>
+> **⏸ v6.04 (mié 21-oct-2026; historial, lo corrige el bloque v6.05 de arriba) — sobre el régimen v6.03 de abajo cambian solo el Step 1 y el MIR de 2027:** examen Step 1 **lun 25-oct-2027** (PROVISIONAL;
 > GO/NO-GO lun 6-sep; tramo 2 mar 16-mar → sáb 23-oct) · MIR extensión vie 7-may → **vie 22-oct-2027** + 1 repuesta mar 26-oct · semana 1 corrida por alias
 > (D1 del Step 1 = jue 22-oct; Derma d1 jue 22 13:30, d2 dom 25 07:15). **Derma** (c1 → lun 17-may, c2 → lun 26-jul) y **Research** (SR-1 SUBMIT R43 jue
 > 29-jul) **sin cambio**. Las menciones del «examen lun 27-sep-2027 (GO/NO-GO lun 9-ago)» de abajo quedan ⏸ (`DATA/REESTRUCTURACION_31AGO_2026.md` §28).
 >
-> **✅ v6.03 (mar 20-oct-2026; Derma, Research y ENCAPS siguen vigentes; Step 1 y MIR 2027 → v6.04 de arriba) — las fechas de esta tabla son v5.20 (⏸).** Régimen vigente: **USMLE Step 1** F1 mié 21-oct → mié 30-dic-2026 (50 sesiones;
+> **⏸ v6.03 (mar 20-oct-2026; historial, lo corrige el bloque ✅ v6.05 de arriba) — las fechas de esta tabla son v5.20 (⏸).** Régimen de entonces: **USMLE Step 1** F1 mié 21-oct → mié 30-dic-2026 (50 sesiones;
 > NBME 28 = mié 30-dic) + tramo 2 mar 16-mar → **examen lun 27-sep-2027** (PROVISIONAL; GO/NO-GO lun 9-ago) · **ENCAPS** 1 h de mantenimiento mié 21-oct →
 > mié 30-dic + intensiva lun 4-ene → vie 12-mar → **examen dom 14-mar-2027 PROVISIONAL** · **MIR** 1.ª vuelta mié 21-oct → mié 10-feb + mantenimiento jue
 > 11-feb → jue 6-may + extensión vie 7-may → vie 24-sep-2027 + 11 repuestas mar 28-sep → mar 12-oct · **Derma** 73 átomos mié 21-oct-2026 → lun 17-may-2027 +

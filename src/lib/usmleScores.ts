@@ -30,6 +30,9 @@
  *    de F1 no sale de F1; sigue siendo el checkpoint de fecha).
  *  · v6.03 (20-oct-2026): corrimiento del D1 al mié 21-oct (lun 19 y mar 20 sin estudio; sin lógica nueva): UWSA1 D1 mié 21-oct ·
  *    protocolo Jay D1-D9 mié 21-oct → lun 2-nov · NBME 25 D10 mar 3-nov · NBME 28 = D50 mié 30-dic (último slot de F1).
+ *  · v6.05 (24-oct-2026): corrimiento del D1 al lun 26-oct (la semana del 19 sin estudio; sin lógica nueva): UWSA1 D1 lun 26-oct ·
+ *    protocolo Jay D1-D9 lun 26-oct → jue 5-nov · NBME 25 D10 vie 6-nov · NBME 28 = D47 mié 30-dic (último slot de F1). Esas fechas ya
+ *    no se escriben a mano en HITOS_ONTRACK: salen de las filas de F1 (fF1 / NBME28_TXT), como el examen y el GO/NO-GO salen de FECHAS_V6.
  */
 import { supabase } from './supabase';
 import { DIAS_TODOS, DiaUSMLE, DAILY_META, USMLE_GATE, esHito, faseDe, esFilaT2 } from './usmleStep1Daily';
@@ -304,16 +307,22 @@ const _DIA_CORTO = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
 const fCorta = (iso: string): string => `${_DIA_CORTO[new Date(iso + 'T12:00:00Z').getUTCDay()]} ${+iso.slice(8)}-${_MES_CORTO[+iso.slice(5, 7) - 1]}`;
 const EXAMEN_V6 = fCorta(FECHAS_V6.step1.examen);   // lun 25-oct (v6.03: lun 27-sep)
 const GONOGO_V6 = fCorta(FECHAS_V6.step1.gonogo);   // lun 6-sep (E-49; v6.03: lun 9-ago)
+// v6.05 (24-oct-2026): fechas de F1 DERIVADAS de las filas (antes se reescribían a mano en cada corrimiento): D1 = UWSA1, D9 = fin del
+//   protocolo Jay, D10 = NBME 25 y el NBME 28 en el último slot de F1 (hitos anclados).
+const F1_FILAS = DIAS_TODOS.filter((x) => !esFilaT2(x));
+const fF1 = (d: number): string => { const x = F1_FILAS.find((y) => y.d === d); return x ? fCorta(x.fecha) : 'D' + d; };
+const NBME28_F1 = F1_FILAS.find((x) => /NBME 28/.test(x.sub));
+const NBME28_TXT = NBME28_F1 ? `D${NBME28_F1.d} ${fCorta(NBME28_F1.fecha)}` : 'último slot de F1';
 export const HITOS_ONTRACK: HitoOnTrack[] = [
-  { clave: 'UWSA1', match: /Self-Assessment 1|UWSA1/i, min: null, nota: 'baseline (D1, mié 21-oct): no es gate, se LEE por tramos — <40 % protocolo Jay · 40-48 % justo · ≥48 % on-track (Parte V-A · §12.4 · §12.6-8)', tramos: [
-    { hasta: 39, label: '<40 % · PROTOCOLO JAY', accion: 'D1-D9 (mié 21-oct → lun 2-nov, hasta el NBME 25 = D10 mar 3-nov) a 20 Q/día untimed estilo Jay/Melody (§12.6-8, divergencia #2: se decide el mismo mié 21-oct con el % real); tarjetas propias del porqué, todos los due reviews a primera hora, CCSN. El temario NO se toca.' },
-    { desde: 40, hasta: 47, label: '40-48 % · JUSTO', accion: 'Trayectoria posible pero sin margen: con la regla del 5 %/mes un baseline <45-48 % hace difícil el 70 % (§12.4 "Goldilocks check"). Volumen del plan sin subir; auditar el método cada viernes (checklist §11.5); el NBME 25 (D10, mar 3-nov) decide si se aplica Jay.' },
+  { clave: 'UWSA1', match: /Self-Assessment 1|UWSA1/i, min: null, nota: `baseline (D1, ${fF1(1)}): no es gate, se LEE por tramos — <40 % protocolo Jay · 40-48 % justo · ≥48 % on-track (Parte V-A · §12.4 · §12.6-8)`, tramos: [
+    { hasta: 39, label: '<40 % · PROTOCOLO JAY', accion: `D1-D9 (${fF1(1)} → ${fF1(9)}, hasta el NBME 25 = D10 ${fF1(10)}) a 20 Q/día untimed estilo Jay/Melody (§12.6-8, divergencia #2: se decide el mismo ${fF1(1)} con el % real); tarjetas propias del porqué, todos los due reviews a primera hora, CCSN. El temario NO se toca.` },
+    { desde: 40, hasta: 47, label: '40-48 % · JUSTO', accion: `Trayectoria posible pero sin margen: con la regla del 5 %/mes un baseline <45-48 % hace difícil el 70 % (§12.4 "Goldilocks check"). Volumen del plan sin subir; auditar el método cada viernes (checklist §11.5); el NBME 25 (D10, ${fF1(10)}) decide si se aplica Jay.` },
     { desde: 48, label: '≥48 % · ON-TRACK', accion: 'Trayectoria de GO (Parte V: ~48 % ya es trayectoria de GO); seguir el plan tal cual y no leer el UWSA como predicción (sobreestima 10-15 puntos).' },
   ] },
   { clave: 'NBME 25', match: /NBME (CBS Form )?25\b/i, min: null, nota: 'línea base REAL del NBME (sin mínimo): los mínimos de NBME 26 y 27 se calculan sobre este %' },
   { clave: 'NBME 26', match: /NBME (CBS Form )?26\b/i, min: null, minRel: { ref: 'NBME 25', delta: 3 }, nota: '≥ NBME 25 + 3' },
   { clave: 'NBME 27', match: /NBME (CBS Form )?27\b/i, min: null, minRel: { ref: 'NBME 25', delta: 6 }, nota: '≥ NBME 25 + 6 · gate 1 ECFMG pide ≥55%' },
-  { clave: 'NBME 28', match: /NBME (CBS Form )?28\b/i, min: null, nota: 'CHECKPOINT DE FECHA (D50 mié 30-dic = última sesión de F1, §B5): se lee por tramos', tramos: [
+  { clave: 'NBME 28', match: /NBME (CBS Form )?28\b/i, min: null, nota: `CHECKPOINT DE FECHA (${NBME28_TXT} = última sesión de F1, §B5): se lee por tramos`, tramos: [
     // v6.04: la base YA es el último mes de la elegibilidad (v6.00-v6.03: <50 % movía la base del 27-sep al plan B 25-oct)
     { hasta: 49, label: `<50 % · ${EXAMEN_V6} SIN MARGEN`, accion: `La base ya es el ${EXAMEN_V6}-${FECHAS_V6.step1.examen.slice(0, 4)} (DJ-1 v6.04, último mes de la elegibilidad): no hay fecha posterior dentro de la ventana → decidirlo con Joseph al registrar el NBME 28 (extensión de la elegibilidad nov-dic-ene, la única permitida, §B5); el temario no se toca.` },
     { desde: 50, hasta: 57, label: `50-57 % · ${EXAMEN_V6} con GATE ESTRICTO`, accion: `Base ${EXAMEN_V6} con gate estricto: el GO/NO-GO exige además NBME 30 ≥ NBME 28 + 5.` },
@@ -449,6 +458,7 @@ export const BURNOUT_PROTOCOLO = {
   // v6.01 (10-oct): F1 sin C1/C2 (consumidos por el corrimiento al lun 12-oct) → en F1 el día parado pasa al tramo 2 el jue 31-dic (disparador (f)).
   // v6.02 (17-oct): igual con D1 lun 19-oct (F1 D1-D52); el colchón del tramo 2 queda en 28 filas.
   // v6.03 (20-oct): igual con D1 mié 21-oct (F1 D1-D50); el colchón del tramo 2 baja a 24 filas (≈ 63 h al piso).
+  // v6.05 (24-oct): igual con D1 lun 26-oct (F1 D1-D47); con el examen del 25-oct el colchón del tramo 2 queda en 42 filas (≈ 110 h al piso).
   regla: '2 hitos consecutivos bajo su mínimo on-track + síntomas de burnout (releer el mismo párrafo sin comprender, irritabilidad extrema, indiferencia por el examen, descansos de 5 min que se vuelven de 1 h) → 3-5 días con SOLO Anki AM (30-45 min de tarjetas viejas) + sueño. Frenar QBank y contenido nuevo. La pausa se paga con filas COLCHÓN (en F1 no hay: el día pasa al tramo 2 el jue 31-dic y allí lo absorbe el colchón): no se recorta ni se fusiona temario; agotado el colchón, decide el GO/NO-GO. Se reanuda por el gate del 80%, no por la fecha.',
   pasos: [
     'Frenar el QBank: seguir haciendo preguntas consolida malos hábitos de lectura bajo estrés',

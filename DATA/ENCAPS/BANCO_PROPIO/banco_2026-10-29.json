@@ -1,8 +1,8 @@
 {
- "id": "BANCO_2026-10-27",
- "titulo": "Banco del día ENCAPS · Mar 2026-10-27 · III-5 · pertinencia_barreras",
+ "id": "BANCO_2026-10-29",
+ "titulo": "Banco del día ENCAPS · Jue 2026-10-29 · III-5 · pertinencia_barreras",
  "tipoRonda": "banco_dia",
- "fecha": "2026-10-27",
+ "fecha": "2026-10-29",
  "codigo": "III-5",
  "sub_eje": "pertinencia_barreras",
  "tema": "Interculturalidad · Pertinencia cultural y barreras culturales en la atención",
@@ -17,7 +17,7 @@
  "_meta": {
   "generado": "2026-10-03",
   "fila_sql": {
-   "dia": 5,
+   "dia": 4,
    "tipo": "banqueo1h",
    "codigo": "III-5",
    "sub_eje": "pertinencia_barreras",
@@ -79,6 +79,12 @@
     "a": "2026-10-27",
     "el": "2026-10-20",
     "motivo": "corrimiento v6.03 (D1 = 2026-10-21, «todo comienza mañana miércoles 21, corre dos días»; no se estudió lun 19 ni mar 20-oct): la sesión «banqueo 4» (lun-jue nº 4 de la F1) pasa del jueves 2026-10-22 (D4) al martes 2026-10-27 (D5; +2 hábiles lun-jue, los viernes de mini-sim no se mueven); ítems intactos, sin regenerar · fila_sql.dia 4 → 5 (F1 v6.03: el vie 23-oct es D3)"
+   },
+   {
+    "de": "2026-10-27",
+    "a": "2026-10-29",
+    "el": "2026-10-24",
+    "motivo": "corrimiento v6.05 (D1 = 2026-10-26, «todo inicia el lunes 26»; la semana del 19 no se estudió —ni el D1 del mié 21 ni su alias del jue 22, v6.04a sin efecto—): la sesión «banqueo 4» (lun-jue nº 4 de la F1) pasa del martes 2026-10-27 (D5) al jueves 2026-10-29 (D4); ítems intactos, sin regenerar · fila_sql.dia 5 → 4 (F1 v6.05: lun 26-oct = D1, el vie 30-oct es D5)"
    }
   ]
  },

@@ -15,13 +15,16 @@
  *     desde US$84,95 con libro en papel, sin PDF; verificado 18-oct) → sin cuenta, la lectura de la Library lo cubre.
  *   · nota = AVISO VISIBLE cuando el mapeo etiqueta-del-plan → catálogo NO es exacto (se explica qué se tomó y por qué).
  * v6.02c (18-oct-2026, E1): nuevo.
+ * v6.05 (24-oct-2026): + D52, D53, D54, D56, D57 (Heme/Onco) y D79 (bioestadística): las filas v5.20 desplazadas al tramo 2 que nunca
+ *   tuvieron mapeo (la guía del tramo 2 de gen_usmle_guia.js las necesita: las 11 desplazadas D47-D54, D56, D57, D79 llevan guía en su fecha T)
+ *   + Pathoma cap. 4 y 6. Ids verificados contra los TSV del 18-oct (el generador aborta si alguno no existe).
  */
 'use strict';
 
 /** Pathoma: nº de capítulo → tema (nombre corto en español; el título exacto es el del índice del libro). */
 const PATHOMA = {
   1: 'adaptaciones del crecimiento, lesión y muerte celular', 2: 'inflamación, trastornos inflamatorios y reparación', 3: 'principios de neoplasia',
-  5: 'trastornos de los hematíes', 7: 'patología vascular', 8: 'patología cardíaca', 9: 'patología respiratoria', 10: 'patología gastrointestinal',
+  4: 'hemostasia y trastornos relacionados', 5: 'trastornos de los hematíes', 6: 'trastornos de los leucocitos', 7: 'patología vascular', 8: 'patología cardíaca', 9: 'patología respiratoria', 10: 'patología gastrointestinal',
   11: 'páncreas exocrino, vesícula e hígado', 12: 'riñón y vías urinarias', 15: 'patología endocrina', 17: 'sistema nervioso central',
 };
 
@@ -43,7 +46,7 @@ const PALM = {
   zFGfP4d_aOc: { t: 'High Yield Hematology for Shelf Exams & Step 1 + Step 2 CK', s: 2370 },
 };
 
-/** Mapeo por D# (filas de contenido de F1; los hitos D1/D10/D25/D40/D52 no llevan mapeo). */
+/** Mapeo por D# v5.20 (filas de contenido de F1 y, v6.05, las desplazadas al tramo 2; los hitos D1/D10/D25/D40/D55 no llevan mapeo). */
 const MAPA = {
   2: { bb: [80, 81, 82, 83, 84, 85, 86, 87, 88, 89], uw: [1110, 1111], mh: [48, 204], lib: [[3, 275], [3, 988], [3, 32], [3, 309]], fa: 'Pathology › Cellular injury', pathoma: [1, 2],
     nota: '«Cell Injury + Inflammation» = Pathology › General Topics 01-10 (es un grupo, no un título). uWorld solo tiene 8Q de este subtema (Cellular pathology 6 + Inflammation and repair 2) → la consolidación va con Mehlman (respaldo).' },
@@ -117,6 +120,20 @@ const MAPA = {
   50: { bb: [123, 124, 131, 132, 140, 134, 135], uw: [1093, 1096, 1107, 1097], mh: [50, 182, 214], lib: [[1, 536], [1, 508], [1, 537], [1, 514]], fa: 'Neurology and Special Senses › Pathology (EM, meningitis, UNM, tumores)',
     nota: '«Other 01-02, 09-10, 18» + 12 Adult Brain Tumors y 13 Childhood Brain Tumors (el subtema pide tumores SNC). uWorld: CNS infections + Demyelinating + Tumors + Peripheral nerves/muscles (UNM).' },
   51: { bb: [381, 382], uw: [1073], mh: [54], lib: [[1, 311], [3, 731], [1, 307], [1, 313]], fa: 'Hematology and Oncology › Pathology (anemias microcíticas)', pathoma: [5] },
+  // v6.05 (24-oct-2026): filas v5.20 que nunca estuvieron en la guía de F1 (desplazadas al tramo 2 desde la v6.02/v6.03) → su guía va en su
+  //   fecha del tramo 2 (gen_usmle_guia.js). Mismas fuentes y reglas que arriba (ids leídos de los TSV y del índice de la Library).
+  52: { bb: [378, 379, 380, 383, 384], uw: [1073], mh: [100, 54], lib: [[3, 605], [3, 803], [1, 341], [3, 918], [3, 548], [1, 327], [3, 162]], fa: 'Hematology and Oncology › Pathology (anemias macro/normocíticas, hemolíticas, drepanocitosis)', pathoma: [5],
+    nota: '«Red Blood Cells 01-03, 06» + 07 Other Anemias (el subtema pide macro/normocíticas y ese vídeo no está en otro día). uWorld «Red blood cell disorders» se comparte con el día anterior (anemias microcíticas).' },
+  53: { bb: [371, 372], uw: [1067], mh: [80, 112], lib: [[3, 331], [1, 324], [1, 348], [3, 332], [3, 607], [3, 9]], fa: 'Hematology and Oncology › Physiology + Pathology (cascada de la coagulación, PT/PTT, hemofilias, vWD)', pathoma: [4],
+    nota: '«Hemostasis 01-02» del plan (01 Coagulation · 02 Platelet Activation); hemofilias y vWD van por la lectura (uWorld Medical Library «Hemophilia A and B» y «von Willebrand disease») y por 04 Coagulopathies, que el plan pone mañana.' },
+  54: { bb: [373, 374, 375], uw: [1071, 1067], mh: [212, 112], lib: [[1, 343], [1, 344], [1, 319], [3, 706], [1, 325], [3, 1305], [3, 437]], fa: 'Hematology and Oncology › Pathology (trastornos plaquetarios, hipercoagulabilidad, CID)', pathoma: [4],
+    nota: '«Hemostasis 03-04» del plan + 05 Platelet Disorders (el subtema pide PTI/PTT/SUH y ese vídeo no está en otro día). uWorld: Platelet disorders + Hemostasis and thrombosis.' },
+  56: { bb: [387, 388], uw: [1075], mh: [51, 188], lib: [[1, 306], [1, 305], [1, 317], [1, 316], [1, 332], [3, 46]], fa: 'Hematology and Oncology › Pathology (leucemias agudas y crónicas, mielodisplasia)', pathoma: [6],
+    nota: '«White Blood Cells 01-02» del plan; la mielodisplasia no tiene vídeo propio en B&B Step 1 → va por la lectura (uWorld Medical Library «Myelodysplastic syndromes»).' },
+  57: { bb: [389, 390, 391, 385, 394, 395, 396, 397, 398, 399], uw: [1075, 1070, 1074], uwSub: [118, [1072, 1075]], mh: [181, 52, 79, 111], lib: [[1, 335], [1, 331], [1, 328], [1, 345], [3, 400], [3, 208], [1, 330]], fa: 'Hematology and Oncology › Pathology + Pharmacology (linfomas, mieloma, transfusión, antineoplásicos)', pathoma: [6],
+    nota: '«White Blood Cells 03-05» del plan + Red Blood Cells › 08 Blood Groups (transfusión) + la sección Cancer Drugs 01-06 (fármacos onco): el subtema los pide y no están en otro día. Lo que no cabe en 70′ pasa a la cola (07:15 de los días siguientes). uWorld: WBC + Plasma cell + Transfusion; si se acaban, Subject Pharmacology ∩ Principles of oncology + WBC.' },
+  79: { bb: [213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224], uw: [1015, 1011, 1014, 1012, 1165, 1163], mh: [], lib: [[3, 1176], [3, 1243], [3, 190], [3, 1116], [3, 929], [3, 1203], [3, 710], [1, 802], [1, 803], [1, 805]], fa: 'Public Health Sciences › Epidemiology and biostatistics + Ethics + Communication skills',
+    nota: '«Biostatistics complete» = Biostats/Epi › Biostatistics 01-04 + Epidemiology 01-08 (12 vídeos ≈ 3 h 33′): lo que no cabe en 70′ pasa a la cola (07:15 de los días siguientes). «AMBOSS HY 155Q» del plan no está en Qbankly → las preguntas del día van con uWorld (Biostatistics & Epidemiology + Ethics/Communication); Mehlman no tiene bioestadística en el catálogo (respaldo = Status Incorrect).' },
 };
 
 /** Vídeos B&B de los capítulos de F1 que NO caen en ningún día de F1 (constancia; el tramo 2 los cubre o quedan como repaso). */

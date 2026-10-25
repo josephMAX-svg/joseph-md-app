@@ -445,11 +445,17 @@ function emitirTS(F, d) {
     // v6.01 (10-oct-2026): antes `${F.version} (decidido …): reestructuración anual` → con el JSON en v6.01 salía «v6.01 (decidido mar 6-oct)»,
     // una bitácora v6.00 con la etiqueta v6.01. Ahora: v6.00 literal + una línea por corrimiento de `corrimientos` (sus propios literales).
     ` * v6.00 (decidido ${fy(F.decidido)}): reestructuración anual (DJ-1…DJ-5) — sustituye a v5.20 (Step 1 lun 22-feb · ENCAPS mié 10-mar).`,
-    ...(F.corrimientos || []).map((c) => ` * ${c.version} (${fy(c.fecha)}): corrimiento rígido del D1 ${fy(c.d1_previo)} → ${fy(c.d1)} (perdidos: ${c.perdidos.map(f).join(' · ')}).`),
-    // v6.04: una línea por cambio de la fecha del examen Step 1 (step1.cambios; el motivo completo está en el JSON)
-    ...(F.step1.cambios || []).map((c) => ` * ${c.version} (${fy(c.fecha)}): examen Step 1 ${fy(c.examen_previo)} → ${fy(c.examen)} (decisión de Joseph; step1.cambios).`),
-    ` * ${F.corrida_s1.version} (${fy(F.corrida_s1.decidido)}): semana 1 corrida SOLO en la consulta (corridaS1De / fechaPlanDe) — sin sesión ${F.corrida_s1.sin_sesion.map(f).join(' · ')} · ` +
-      `${Object.entries(F.corrida_s1.alias).map(([r, de]) => `${f(r)} = plan del ${f(de)}`).join(' · ')} · ${Object.entries(F.corrida_s1.reparto).map(([r, x]) => `${f(r)} = parte del ${f(x.de)}`).join(' · ')}; ningún plan cambia de fecha.`,
+    // v6.04: + una línea por cambio de la fecha del examen Step 1 (step1.cambios; el motivo completo está en el JSON) · v6.05: todo por fecha
+    ...[
+      ...(F.corrimientos || []).map((c) => [c.fecha, ` * ${c.version} (${fy(c.fecha)}): corrimiento rígido del D1 ${fy(c.d1_previo)} → ${fy(c.d1)} (perdidos: ${c.perdidos.map(f).join(' · ')}).`]),
+      ...(F.step1.cambios || []).map((c) => [c.fecha, ` * ${c.version} (${fy(c.fecha)}): examen Step 1 ${fy(c.examen_previo)} → ${fy(c.examen)} (decisión de Joseph; step1.cambios).`]),
+    ].sort((a, b) => (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0)).map((x) => x[1]),
+    ` * ${F.corrida_s1.version} (${fy(F.corrida_s1.decidido)}): semana 1 corrida SOLO en la consulta (corridaS1De / fechaPlanDe) — ` +
+      [`sin sesión ${F.corrida_s1.sin_sesion.map(f).join(' · ')}`,
+        ...Object.entries(F.corrida_s1.alias).map(([r, de]) => `${f(r)} = plan del ${f(de)}`),
+        ...Object.entries(F.corrida_s1.reparto).map(([r, x]) => `${f(r)} = parte del ${f(x.de)}`)].join(' · ') +
+      (Object.keys(F.corrida_s1.alias).length || Object.keys(F.corrida_s1.reparto).length
+        ? '; ningún plan cambia de fecha.' : ' (solo días sin sesión: los planes ya están re-fechados por el corrimiento).'),
     ` * Versión vigente del JSON: ${F.version}.`,
     ' * Módulo HOJA: no importa nada de src/ (r2 · I7: corta el ciclo usmleStep1Daily ↔ homeBriefing; STEP1_SEMANAS, semanaStep1 y',
     ' * Turno viven aquí y homeBriefing los re-exporta).',
@@ -724,9 +730,12 @@ export type CorridaS1 =
   | { tipo: 'alias'; de: string }
   | { tipo: 'reparto'; de: string; partes: ParteCorridaS1[] };
 /**
- * Semana corrida: ${F.corrida_s1.sin_sesion.map(f).join(' · ')} sin sesión · ${Object.entries(F.corrida_s1.alias).map(([r, de]) => `${f(r)} = plan del ${f(de)}`).join(' · ')} ·
- * ${Object.entries(F.corrida_s1.reparto).map(([r, x]) => `${f(r)} = ${x.partes.map((p) => `${Object.keys(p.bloques).join('+')} del ${f(p.de)}`).join(' / ')}`).join(' · ')}.
- * null fuera de esos días: el resto del calendario es idéntico (los planes, Supabase, runners y guías conservan su fecha de plan).
+ * Semana corrida: ${[`${F.corrida_s1.sin_sesion.map(f).join(' · ')} sin sesión`,
+    ...Object.entries(F.corrida_s1.alias).map(([r, de]) => `${f(r)} = plan del ${f(de)}`),
+    ...Object.entries(F.corrida_s1.reparto).map(([r, x]) => `${f(r)} = ${x.partes.map((p) => `${Object.keys(p.bloques).join('+')} del ${f(p.de)}`).join(' / ')}`)].join(' · ')}.
+ * null fuera de esos días${Object.keys(F.corrida_s1.alias).length || Object.keys(F.corrida_s1.reparto).length
+    ? ': el resto del calendario es idéntico (los planes, Supabase, runners y guías conservan su fecha de plan).'
+    : ' (sin alias ni reparto: los planes, Supabase, runners y guías ya están re-fechados por el corrimiento).'}
  */
 export function corridaS1De(iso: string): CorridaS1 | null {
   const c = FECHAS_V6.corrida_s1;

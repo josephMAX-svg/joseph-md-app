@@ -1,4 +1,4 @@
-# DATA · MIR — España (régimen v6.04 · 21-oct-2026 · sobre v6.03 · 20-oct-2026 · ⏸ v6.02c · 18-oct-2026 · ⏸ v6.02 · 17-oct-2026 · ⏸ v6.01 · 10-oct-2026 · ⏸ v6.00 · 6-oct-2026)
+# DATA · MIR — España (régimen v6.05 · 24-oct-2026 · ⏸ v6.04 · 21-oct-2026 · ⏸ v6.03 · 20-oct-2026 · ⏸ v6.02c · 18-oct-2026 · ⏸ v6.02 · 17-oct-2026 · ⏸ v6.01 · 10-oct-2026 · ⏸ v6.00 · 6-oct-2026)
 
 Toda la data REAL del plan MIR. Fuente canónica (código): `src/lib/*.ts`. Plataforma:
 **ProMIR** (`promir.medicapanamericana.com`) — SPA por WebSocket; deep-link `/capitulo/<id>`.
@@ -6,7 +6,25 @@ Abre bien en Chrome (no necesita Edge). Cruzado con **rabi_94** (Google Drive, 1
 Método de referencia: **Palmerton** (comprensión > memorización · preguntas ciegas primero ·
 Anki de mecanismo FSRS · medir por % ciego). Meta: Top 50 MIR 2030.
 
-> ## ✅ v6.04 VIGENTE (mié 21-oct-2026) — semana corrida (alias) + examen Step 1 → lun 25-oct-2027: la EXTENSIÓN crece hasta el vie 22-oct y queda 1 sesión repuesta
+> ## ✅ v6.05 VIGENTE (sáb 24-oct-2026 · D1 = LUN 26-OCT-2026) — corrimiento +3 hábiles sobre la v6.03; la semana corrida por alias de la v6.04a queda sin efecto
+> Joseph (24-oct): *«Todo inicia el lunes 26. Puedes correr los horarios, alargar los plazos. Pero no quites temas, solamente corre lo que está faltando.»*
+> Del 19 al 25-oct no se estudió → mismos 78 días y las MISMAS **203** sesiones de banqueo de la v6.04 (por tipo y por asignatura); nada se recorta.
+>
+> | Bloque | **v6.05** | ⏸ v6.04 (= v6.03 en diario y mantenimiento) |
+> |---|---|---|
+> | Diario (1.ª vuelta, 78) | **lun 26-oct-2026 → lun 15-feb-2027** (D76 jue 11-feb · D77 mini-MIR **vie 12-feb** + D78 corrección **lun 15-feb**) · 15:15-16:15 | mié 21-oct → mié 10-feb (D77 mar 9-feb) |
+> | Mantenimiento | **58** = las mismas 47 lun-jue (cuotas y secuencia idénticas) + 10 viernes + **el sáb 8-may** (1.er sábado del SERUMS, día de plan MIR → mini-simulacro 30Q): **mar 16-feb → mar 11-may-2027** (con +3 hábiles exactos el fin sería el lun 10-may con 46 lun-jue → se alarga 1 día, como en v5.17) · Tier C (12, mismo orden): jue 18-feb · 25-feb · 4-mar · 18-mar · mié 24-mar · jue 1-abr · 8-abr · 15-abr · 22-abr · 29-abr · 6-may · mar 11-may | 57 · jue 11-feb → jue 6-may |
+> | Extensión hasta el tope | **141** (94 lun-jue · 24 viernes · 23 sábados) **mié 12-may → vie 22-oct-2027** (tope = día de plan anterior al ritual del sáb 23-oct) · Tier C ext 23 | 145 (96 · 25 · 24) · vie 7-may → vie 22-oct · Tier C 24 |
+> | Repuestas tras el examen Step 1 (F5) | **4** (`repuesta:'v6.05'`): **d200 mar 26-oct** Gastroenterología · **d201 mié 27-oct** Neurología · **d202 jue 28-oct** Medicina Legal y Bioética + Tier C Planificación y Gestión Sanitaria · Economía de la salud v3 · **d203 vie 29-oct** viernes (asignatura peor del log) — piso = lo PUBLICADO en la v6.04 (por asignatura foco: `PISO_PUBLICADO` + v6.04 sobre 96 slots; por tipo sobre todo el banqueo: `PUBLICADO_TOTAL` 203 filas · 144 lun-jue · 35 viernes · 24 sábados · 36 Tier C) | 1 · mar 26-oct (Medicina Legal) |
+> | `MIR_MANT_DIAS` / `MIR_MANT_META` | **203** filas · 5.370 Q · `MIR_MANT_TIER_C` 36 · `mant` 2027-02-16 → 2027-05-11 · `ext` 2027-05-12 → 2027-10-29 (`tope` 2027-10-22 = 141 + `repuestas` 4) · **handoff vie 29-oct-2027** | 203 · 5.370 Q · handoff mar 26-oct |
+> | Guía MEDIDA | D1-D76 **lun 26-oct-2026 → jue 11-feb-2027** (mismos 76 capítulos, mismos bloques y preguntas; solo cambian las fechas) | mié 21-oct → lun 8-feb |
+>
+> Generado por `STUDY_HUB/_scrape/gen_mir_daily.js 2026-10-26` + `gen_mir_mantenimiento.js 2027-02-16 2027-05-11` (defaults nuevos, bitácora v6.05) →
+> `guia_lectura/gen_guia_lectura.js` → `gen_mir_guia.js`. ⚠ Las 4 repuestas caen en la semana del regreso del examen (mar 26 → vie 29-oct): la decisión **(F)**
+> de `DATA/PENDIENTES_JOSEPH.md` (bloque v6.04: ¿sesión MIR el día del regreso?) sigue abierta y ahora cubre 4 días. Umbral de cierre 70/55 hasta el vie
+> 22-oct-2027 → 75/60 desde el examen (sin cambio).
+
+> ## ⏸ v6.04 (mié 21-oct-2026; historial, lo corrige el bloque v6.05 de arriba) — semana corrida (alias) + examen Step 1 → lun 25-oct-2027: la EXTENSIÓN crece hasta el vie 22-oct y queda 1 sesión repuesta
 > Joseph (21-oct): **v6.04a** *«lo del 21 para el 22, lo del 22 para el 23, lo del 23 repártelo entre el 24 y el 25»* → el MIR diario conserva sus fechas de
 > plan (v6.03) y la app las traduce: **jue 22 = D1** (plan del mié 21, 15:15) · **vie 23 = D2** · el D3 (plan del vie 23) va el **dom 25 09:00-10:00** (eval
 > 09:00 + deep 09:15) · desde el lun 26 sin cambio. **v6.04b** *«si iba a ser septiembre, que sea octubre»* → examen Step 1 **lun 25-oct-2027**: el tope de
@@ -25,7 +43,7 @@ Anki de mecanismo FSRS · medir por % ciego). Meta: Top 50 MIR 2030.
 > En F4 la franja sigue al turno (`mirFranjaPorTurno`: M 16:00 · T 10:35 · L 15:15 · día de hito 04:05 · guardia en tiempo muerto); en el taper (lun 18 → vie 22-oct)
 > el MIR sigue 1 h. Detalle: `DATA/REESTRUCTURACION_31AGO_2026.md` §28.5.
 
-> ## ✅ v6.03 (mar 20-oct-2026 · D1 = MIÉ 21-OCT-2026) — corrimiento +2 hábiles + guía MEDIDA de los 76 días-tema · **diario, mantenimiento y guía siguen vigentes; la extensión, las repuestas y el handoff los corrige el bloque v6.04 de arriba**
+> ## ⏸ v6.03 (mar 20-oct-2026 · D1 = MIÉ 21-OCT-2026; historial: fechas corregidas por el bloque v6.05) — corrimiento +2 hábiles + guía MEDIDA de los 76 días-tema
 > Joseph (20-oct): «lun 19 y mar 20 sin estudio → todo arranca el mié 21; simplemente corre, no modifiques ni comprimas temas ni exámenes, alarga las
 > fechas límite». Mismos 78 días y 189 sesiones de banqueo; nada se recorta (los bloques v6.02c y v6.02 de abajo quedan como historial).
 >

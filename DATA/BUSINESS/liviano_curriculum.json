@@ -2,7 +2,7 @@
   "version": "v1 · 2026-09-05 (Palmerton v3 · vacíos 1-5 y 9)",
   "fuenteDoc": "DATA/BUSINESS/LIVIANO_ACADEMIA.md",
   "generador": "DATA/_scripts/gen_liviano_plan.js <fechaInicio>  →  src/lib/livianoStudyPlan.ts + src/lib/livianoCasos.ts + DATA/BUSINESS/ANKI_COLA/LIVIANO_mecanismo.csv",
-  "inicioDefault": "2026-09-07",
+  "inicioDefault": "2026-10-26",
   "totalDias": 90,
   "skipFijos": ["2026-12-25", "2026-12-31", "2027-01-01"],
   "franja": "17:15–18:00 L-V · 45 min (25 estudio + 20 aplicación)",

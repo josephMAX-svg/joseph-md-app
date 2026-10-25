@@ -1,7 +1,7 @@
 {
  "_meta": {
   "descripcion": "PENDIENTES F1 del ENCAPS MANTENIMIENTO: filas (banqueo1h y mini_sim) que un corrimiento RÍGIDO dejó fuera de la F1 (la F1 no se alarga: el lun 4-ene empieza la intensiva). Copia literal de la fila vieja (el mini-sim con su receta íntegra en extra). NADA se descarta ni se absorbe (regla de Joseph, 10-oct-2026). gen_encaps_intensivo_2027.js (--pendientes-f1, default este fichero) las REPONE EXPLÍCITAS en los primeros días de REPOSICIÓN del carril B 16:15 (extra.carril_b = {tipo:'reposicion', regla, pendiente_f1: <esta fila, idéntica>}), antes de la regla genérica, por corrimiento (el más antiguo primero; conserva sus fechas de reposición); dentro de cada corrimiento, banqueo1h antes que mini-sim y por dia_mant; al colocarlas escribe aquí `destino` y `reposicion` {dia, fecha, carril}. Lo escribe gen_encaps_mantenimiento_2027.js --pendientes-de <SQL de la F1 anterior>.",
-  "actualizado": "2026-10-20",
+  "actualizado": "2026-10-24",
   "corrimientos": [
    {
     "version": "v6.01",
@@ -56,6 +56,24 @@
     "pendientes_banqueo": 2,
     "pendientes_minisim": 0,
     "minisims_absorbidos": 0
+   },
+   {
+    "version": "v6.05",
+    "fecha": "2026-10-24",
+    "d1_previo": "2026-10-21",
+    "d1": "2026-10-26",
+    "f1_hasta": "2026-12-30",
+    "fuente": "git show regimen-v6.04:DATA/_scripts/_encaps_mantenimiento_2027.sql (filas MANTENIMIENTO con fecha ≤ 2026-12-30)",
+    "filas_previas": 50,
+    "banqueo_previas": 41,
+    "minisims_previos": 9,
+    "filas_nuevas": 47,
+    "banqueo_nuevas": 39,
+    "minisims_nuevos": 8,
+    "pendientes": 3,
+    "pendientes_banqueo": 2,
+    "pendientes_minisim": 1,
+    "minisims_absorbidos": 0
    }
   ]
  },
@@ -87,9 +105,9 @@
     "sub_ejes_total": 2,
     "secundario": "III-9"
    },
-   "destino": "REPUESTO dia 83 (mié 17-feb-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
+   "destino": "REPUESTO dia 80 (mié 17-feb-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
    "reposicion": {
-    "dia": 83,
+    "dia": 80,
     "fecha": "2027-02-17",
     "carril": "B 16:15"
    }
@@ -121,9 +139,9 @@
     "sub_ejes_total": 4,
     "secundario": "II-9"
    },
-   "destino": "REPUESTO dia 84 (jue 18-feb-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
+   "destino": "REPUESTO dia 81 (jue 18-feb-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
    "reposicion": {
-    "dia": 84,
+    "dia": 81,
     "fecha": "2027-02-18",
     "carril": "B 16:15"
    }
@@ -176,9 +194,9 @@
      "II-10"
     ]
    },
-   "destino": "REPUESTO dia 86 (lun 22-feb-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1) · mini-simulacro 25Q cronometrado (72 s/Q) + corrección, receta íntegra en extra",
+   "destino": "REPUESTO dia 83 (lun 22-feb-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1) · mini-simulacro 25Q cronometrado (72 s/Q) + corrección, receta íntegra en extra",
    "reposicion": {
-    "dia": 86,
+    "dia": 83,
     "fecha": "2027-02-22",
     "carril": "B 16:15"
    }
@@ -210,9 +228,9 @@
     "sub_ejes_total": 2,
     "secundario": "I-11+I-12"
    },
-   "destino": "REPUESTO dia 87 (mar 23-feb-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
+   "destino": "REPUESTO dia 84 (mar 23-feb-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
    "reposicion": {
-    "dia": 87,
+    "dia": 84,
     "fecha": "2027-02-23",
     "carril": "B 16:15"
    }
@@ -244,9 +262,9 @@
     "sub_ejes_total": 2,
     "secundario": "V-1"
    },
-   "destino": "REPUESTO dia 88 (mié 24-feb-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
+   "destino": "REPUESTO dia 85 (mié 24-feb-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
    "reposicion": {
-    "dia": 88,
+    "dia": 85,
     "fecha": "2027-02-24",
     "carril": "B 16:15"
    }
@@ -285,9 +303,9 @@
     "sub_ejes_total": 3,
     "secundario": "V-3"
    },
-   "destino": "REPUESTO dia 89 (jue 25-feb-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
+   "destino": "REPUESTO dia 86 (jue 25-feb-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
    "reposicion": {
-    "dia": 89,
+    "dia": 86,
     "fecha": "2027-02-25",
     "carril": "B 16:15"
    }
@@ -326,9 +344,9 @@
     "sub_ejes_total": 3,
     "secundario": "III-1"
    },
-   "destino": "REPUESTO dia 91 (lun 1-mar-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
+   "destino": "REPUESTO dia 88 (lun 1-mar-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
    "reposicion": {
-    "dia": 91,
+    "dia": 88,
     "fecha": "2027-03-01",
     "carril": "B 16:15"
    }
@@ -382,9 +400,9 @@
     ]
    },
    "rotulo_retirado": "CHECKPOINT DEL AÑO retirado de la copia: era el último mini-sim de la F1 v6.01 (fila 50, 2026-12-18); en la F1 v6.02 el checkpoint es la fila 45 (2026-12-18, cola larga I-1 + II-2) · receta, cola larga, sim_n y semana de esta copia intactas",
-   "destino": "REPUESTO dia 92 (mar 2-mar-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1) · mini-simulacro 25Q cronometrado (72 s/Q) + corrección, receta íntegra en extra",
+   "destino": "REPUESTO dia 89 (mar 2-mar-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1) · mini-simulacro 25Q cronometrado (72 s/Q) + corrección, receta íntegra en extra",
    "reposicion": {
-    "dia": 92,
+    "dia": 89,
     "fecha": "2027-03-02",
     "carril": "B 16:15"
    }
@@ -416,9 +434,9 @@
     "sub_ejes_total": 8,
     "secundario": "I-OCC"
    },
-   "destino": "REPUESTO dia 93 (mié 3-mar-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
+   "destino": "REPUESTO dia 90 (mié 3-mar-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
    "reposicion": {
-    "dia": 93,
+    "dia": 90,
     "fecha": "2027-03-03",
     "carril": "B 16:15"
    }
@@ -450,10 +468,134 @@
     "sub_ejes_total": 3,
     "secundario": "III-3"
    },
-   "destino": "REPUESTO dia 94 (jue 4-mar-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
+   "destino": "REPUESTO dia 91 (jue 4-mar-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
+   "reposicion": {
+    "dia": 91,
+    "fecha": "2027-03-04",
+    "carril": "B 16:15"
+   }
+  },
+  {
+   "origen": "mantenimiento_v6.03",
+   "corrimiento": "v6.05",
+   "dia_mant": 49,
+   "fecha_original": "2026-12-29",
+   "tipo": "banqueo1h",
+   "codigo": "II-4",
+   "subtema": "Anemia/CRED · Plan multisectorial de anemia (intersectorial) + consejería nutricional OMS + CRED",
+   "prioridad": "CRITICA",
+   "temas_secundarios": [
+    {
+     "codigo": "I-5+I-6",
+     "subtema": "Determinantes, demografía/fuentes de datos (hechos vitales), transición epidemiológica, bioestadística mínima",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 3,
+    "de": 5,
+    "sub_eje": "plan_multisectorial",
+    "sub_eje_label": "Plan multisectorial de anemia (intersectorial) + consejería nutricional OMS + CRED",
+    "sub_eje_n": 3,
+    "sub_ejes_total": 3,
+    "secundario": "I-5+I-6"
+   },
+   "destino": "REPUESTO dia 93 (lun 8-mar-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
+   "reposicion": {
+    "dia": 93,
+    "fecha": "2027-03-08",
+    "carril": "B 16:15"
+   }
+  },
+  {
+   "origen": "mantenimiento_v6.03",
+   "corrimiento": "v6.05",
+   "dia_mant": 50,
+   "fecha_original": "2026-12-30",
+   "tipo": "banqueo1h",
+   "codigo": "II-1",
+   "subtema": "Gestante · Control prenatal + emergencias obstétricas (claves roja/azul/amarilla)",
+   "prioridad": "ALTA",
+   "temas_secundarios": [
+    {
+     "codigo": "II-EMG",
+     "subtema": "Emergencia/triaje: prioridades de atención P-I inmediato · P-II ≤10 min · P-III ≤30 min (RM jul-2026)",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "4-5Q"
+    }
+   ],
+   "extra": {
+    "instancia": 3,
+    "de": 5,
+    "sub_eje": "prenatal_emergencias",
+    "sub_eje_label": "Control prenatal + emergencias obstétricas (claves roja/azul/amarilla)",
+    "sub_eje_n": 1,
+    "sub_ejes_total": 2,
+    "secundario": "II-EMG"
+   },
+   "destino": "REPUESTO dia 94 (mar 9-mar-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1)",
    "reposicion": {
     "dia": 94,
-    "fecha": "2027-03-04",
+    "fecha": "2027-03-09",
+    "carril": "B 16:15"
+   }
+  },
+  {
+   "origen": "mantenimiento_v6.03",
+   "corrimiento": "v6.05",
+   "dia_mant": 43,
+   "fecha_original": "2026-12-18",
+   "tipo": "mini_sim",
+   "codigo": null,
+   "subtema": "Mini-simulacro semanal 25Q mixto (vector v3) · cola larga: I-1 + II-2",
+   "prioridad": "CRITICA",
+   "temas_secundarios": [
+    {
+     "codigo": "I-1",
+     "subtema": "Promoción de la salud / entornos saludables + FESP (I-2, solo repaso)",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "5-6"
+    },
+    {
+     "codigo": "II-2",
+     "subtema": "AIEPI/IRA (bronquiolitis, referencia) + clínica de inmunoprevenibles (sarampión: vitamina A, PEES)",
+     "prioridad": "MEDIA",
+     "rol": "cola_larga",
+     "q": "5-6"
+    }
+   ],
+   "extra": {
+    "tipo": "mini_sim",
+    "sim_n": 43,
+    "semana": "2026-12-14",
+    "receta": {
+     "II": 8,
+     "I": 7,
+     "V": 5,
+     "III": 3,
+     "IV": 2
+    },
+    "vineta_pct": 50,
+    "criticos_min": 10,
+    "fallos_previos_min": 5,
+    "cola_larga_q": "5-6",
+    "seg_por_q": 72,
+    "umbral_25": 18,
+    "alerta_25": 15,
+    "cola_larga": [
+     "I-1",
+     "II-2"
+    ]
+   },
+   "rotulo_retirado": "CHECKPOINT DEL AÑO retirado de la copia: era el último mini-sim de la F1 v6.03 (fila 43, 2026-12-18); en la F1 v6.05 el checkpoint es la fila 40 (2026-12-18, cola larga II-9 + II-7) · receta, cola larga, sim_n y semana de esta copia intactas",
+   "destino": "REPUESTO dia 95 (mié 10-mar-2027) · carril B 16:15 de la intensiva (extra.carril_b.pendiente_f1) · mini-simulacro 25Q cronometrado (72 s/Q) + corrección, receta íntegra en extra",
+   "reposicion": {
+    "dia": 95,
+    "fecha": "2027-03-10",
     "carril": "B 16:15"
    }
   }

@@ -109,6 +109,22 @@
  *   + parte 2) · D3 = vie 23-oct = mini-sim (rama r3.tipo === 'mini_sim' de horarioTextos: sin eval ese día).
  *   Siembra v6.03: node DATA/_scripts/gen_encaps_intensivo_2027.js --sin-tx (todo por defecto) → el orquestador lo combina con la F1.
  *
+ * v6.05 (24-oct-2026, orden de Joseph «todo inicia el lunes 26; corre lo que falta, alarga plazos, no quites temas»: la semana del 19 no se
+ *   estudió —ni el D1 del mié 21 ni su alias del jue 22 (la corrida por alias v6.04a queda sin efecto)—): D1 del mantenimiento = LUN 26-OCT-2026
+ *   (--base = f1.inicio por defecto) → F1 = 47 hábiles (dia 1-47) y la intensiva se RENUMERA dia 48-97 con las MISMAS FECHAS (lun 4-ene → vie
+ *   12-mar; pre-test 2026-II vie 8-ene = dia 52). Sin cambios de lógica. CARRIL B: desfase Σ perdidos = 3 + 5 + 2 + 3 = 13 (dia_mant 61 = dia 48).
+ *   PENDIENTES F1 = 10 de v6.01-v6.03 (CONSERVAN sus fechas de reposición; solo cambia su dia: 80, 81, 83 mini-sim, 84, 85, 86, 88, 89 mini-sim,
+ *   90, 91) + 3 de v6.05 (fila mant. 49 II-4 plan_multisectorial #3 · 50 II-1 prenatal_emergencias #3 · mini-sim de la fila mant. 43 —el
+ *   CHECKPOINT de la F1 v6.03, cola larga I-1 + II-2, sin ese rótulo—) = 13 = TODOS los días de reposición lun-jue del carril B (mié 17-feb →
+ *   mié 10-mar, el D-3): LUN 8-MAR dia 93 II-4 #3 · MAR 9-MAR dia 94 II-1 #3 · MIÉ 10-MAR dia 95 MINI-SIM 25Q I-1 + II-2. Caben exactos: la
+ *   reposición genérica («filas del carril B dia 48-79 (dia_mant 61-92) sin ✓») ya no tiene día libre propio — un pendiente sin ✓ solo se
+ *   recupera en la reposición de la tarde de un día con pendiente hecho o, si no, en la cola. study_metrics.extra: d1 2026-10-26 · dias_ciclo 47 ·
+ *   regimen «MANTENIMIENTO_2027-1 v6.23 (47 d) + INTENSIVA v6.05 …» · intensiva.dias '48-97' · examen_target «PROVISIONAL v6.00-v6.05» ·
+ *   backup study_schedule_bk_v605_20261024 (--bk-base por defecto) · intensiva.backup = study_schedule_bk_v605_int_<fecha>. Horarios por ruta:
+ *   D1 lun 26 (eval_2026-10-26 + parte 1) · D2 mar 27 (eval del código de la fila dia 1 + parte 2) · D3 mié 28 = eval del código de la fila
+ *   dia 2 · vie 30-oct (D5) = primer mini-sim.
+ *   Siembra v6.05: node DATA/_scripts/gen_encaps_intensivo_2027.js --sin-tx (todo por defecto) → se combina con la F1 en una transacción.
+ *
  * Histórico (antes de v6.00):
  * v5.20 (6-oct-2026, DEFINITIVA): Joseph FIJA el examen ENCAPS 2027-I = MIÉ 10-MAR-2027 y la intensiva arranca el día siguiente al examen
  *   Step 1 (lun 22-feb) → D1 = mar 23-feb · 11 hábiles (días 97-107): mar 23 señales · mié 24 / jue 25 calentamiento · vie 26 PRE-TEST 2026-II ·
@@ -145,12 +161,12 @@ const SLOTS = Number(opt('--slots-barrido', '32'));                // v6.00: sus
 // v6.02: versión del régimen = la del último corrimiento de _fechas_v6.json (v6.00 sin corrimientos) → nombre del backup de la intensiva
 const VTAG = ((F6.corrimientos || []).at(-1) || {}).version || F6.version || 'v6.00';
 const BK = opt('--bk', `study_schedule_bk_${VTAG.replace('.', '')}_int_${hoyLima().replace(/-/g, '')}`); // v6.02: study_schedule_bk_v602_int_<fecha> (v6.01: _v601_int_ · v6.00: _v600_int_)
-const BK_BASE = opt('--bk-base', 'study_schedule_bk_v603_20261020'); // backup completo previo (study_metrics.extra.backup) · v6.03 (v6.02: study_schedule_bk_v602_20261017 · v6.01: study_schedule_bk_v601_20261010 · v6.00: study_schedule_bk_v600_20261006)
+const BK_BASE = opt('--bk-base', 'study_schedule_bk_v605_20261024'); // backup completo previo (study_metrics.extra.backup) · v6.05 (v6.03: study_schedule_bk_v603_20261020 · v6.02: study_schedule_bk_v602_20261017 · v6.01: study_schedule_bk_v601_20261010 · v6.00: study_schedule_bk_v600_20261006)
 // v6.01: pendientes F1 (instancias banqueo1h que el corrimiento dejó fuera de la F1) → primeros días de reposición del carril B
 const PENDIENTES_F1_DEF = path.join(ROOT, 'DATA', 'ENCAPS', '_pendientes_f1.json');
 const PENDIENTES_F1 = has('--sin-pendientes-f1') ? null : (opt('--pendientes-f1', null) ? path.resolve(opt('--pendientes-f1')) : (fs.existsSync(PENDIENTES_F1_DEF) ? PENDIENTES_F1_DEF : null));
 const CORRIMIENTOS = F6.corrimientos || [];
-const PERDIDOS = CORRIMIENTOS.reduce((n, c) => n + (c.perdidos || []).length, 0); // v6.01: 3 (mié 7, jue 8, vie 9-oct) · v6.02: 3 + 5 (lun 12 → vie 16-oct) = 8 · v6.03: 8 + 2 (lun 19, mar 20-oct) = 10
+const PERDIDOS = CORRIMIENTOS.reduce((n, c) => n + (c.perdidos || []).length, 0); // v6.01: 3 (mié 7, jue 8, vie 9-oct) · v6.02: 3 + 5 (lun 12 → vie 16-oct) = 8 · v6.03: 8 + 2 (lun 19, mar 20-oct) = 10 · v6.05: 10 + 3 (mié 21, jue 22, vie 23-oct) = 13
 const PRETEST = opt('--pretest', null);
 const SIMS_ARG = opt('--sims', null);
 const REPARTO_ARG = opt('--reparto', null);
@@ -563,7 +579,7 @@ const examenTarget = EXAMEN === '2027-03-14' && provisional
 const nucleoDesde = NUCLEO[0], trasNucleo = plan.find((p) => p.fecha > NUCLEO_HASTA).fecha;
 // v6.01: versión del régimen = la del último corrimiento de _fechas_v6.json (v6.00 sin corrimientos); el MANTENIMIENTO sube un número por régimen
 const VERSION_V6 = VTAG; // v6.02: = VTAG (definido arriba para el nombre del backup)
-const MANT_V = CORRIMIENTOS.length ? `v6.${19 + CORRIMIENTOS.length}` : 'v6.19'; // v6.00: v6.19 · v6.01: v6.20 · v6.02: v6.21 · v6.03: v6.22
+const MANT_V = CORRIMIENTOS.length ? `v6.${19 + CORRIMIENTOS.length}` : 'v6.19'; // v6.00: v6.19 · v6.01: v6.20 · v6.02: v6.21 · v6.03: v6.22 · v6.05: v6.23 (la v6.04 no fue corrimiento)
 const ultCorr = CORRIMIENTOS.at(-1) || null;
 const metricsExtra = {
   d1: BASE, dias_ciclo: offset,

@@ -1,7 +1,17 @@
 # SYNAPSE — Motor día-a-día (diseño y operación)
 
 > Construido el 10-jun-2026 por el chat SYNAPSE (PROMPT_CHAT_SYNAPSE.md).
-> **v6.03 · CORRIMIENTO D1 = MIÉ 21-OCT-2026 (20-oct-2026, vigente)**: lun 19 y mar 20-oct sin estudio → `node DATA/_scripts/gen_synapse_plan.js 2026-10-21`
+> **v6.05 · CORRIMIENTO D1 = LUN 26-OCT-2026 (24-oct-2026, vigente)**: del lun 19 al dom 25-oct sin estudio (la semana corrida por alias v6.04a queda sin
+> efecto) → `node DATA/_scripts/gen_synapse_plan.js 2026-10-26` (después de `gen_vibecoding_plan.js 2026-10-26`) → **131 días · 19 semanas · lun 26-oct-2026 →
+> vie 5-mar-2027** (FIN_PLAN 2027-03-05: +4 días de plan sobre v6.03 —se pierden mié 21 → sáb 24-oct—; las mismas **110 A-units** y las mismas 330 piezas A/B/C,
+> nada se recorta; START en lunes → `OFF_WD` = 0, como v6.02). F0 sem 1-8 (lun 26-oct → dom 20-dic, 48 A) · F1 sem 9-12 (lun 21-dic → dom 17-ene, 21 A) ·
+> F2 sem 13-19 (lun 18-ene → vie 5-mar, 41 A, 47 días; deload sem 17-19 desde el lun 15-feb). Las 2 A-units de cierre de la sem 12 caen mar 19 + mié 20-ene.
+> Vibecoding lun → vie: **19 PC en 18 sábados** — SHIP S1 sáb 31-oct … S8 sáb 19-dic · sáb 26-dic = AVANCE S9 · S9 sáb 2-ene · S10 sáb 9-ene · S11 sáb 16-ene ·
+> **SHIP S12 sáb 23-ene** · taper S13 30-ene · S14 6-feb · S15 13-feb · **sáb 20-feb = PC propio de S16 (30') + PC 0' de S17** (S15 y S16 cierran la misma semana,
+> `PC_DESPLAZADOS`, como v6.02) · S18 27-feb (0'). S19 (SHIP sáb 6-mar) y S20 (sáb 13-mar, PROTEGIDO) cierran después del FIN_PLAN: sin PC. **Último sábado con
+> SYNAPSE: sáb 27-feb · último domingo: dom 28-feb**. La última A-unit (d131, cierre F2 + CCA-F) cae el **vie 5-mar**. Comodines curados del 1.er sábado (sáb 31-oct):
+> No Priors 10:00-20:00 + resto de «Prompt injection…» (rutinaGuia, regla «1.er sábado tras su pieza»).
+> ⏸ **v6.03 · CORRIMIENTO D1 = MIÉ 21-OCT-2026 (20-oct-2026, historial)**: lun 19 y mar 20-oct sin estudio → `node DATA/_scripts/gen_synapse_plan.js 2026-10-21`
 > (después de `gen_vibecoding_plan.js 2026-10-21`) → **132 días · 19 semanas · mié 21-oct-2026 → lun 1-mar-2027** (FIN_PLAN 2027-03-01; las mismas **110
 > A-units**, nada se recorta; START en miércoles → `OFF_WD` Lun = Mar = 1, como v5.20). F0 sem 1-8 (mié 21-oct → dom 13-dic, 46 A) · F1 sem 9-12 (lun 14-dic →
 > dom 10-ene, 21 A) · F2 sem 13-19 (lun 11-ene → lun 1-mar, 43 A, 50 días; el lun 1-mar cuenta como sem 19 por SEM_MAX; deload sem 17-19 desde el lun 8-feb).

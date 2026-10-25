@@ -94,6 +94,18 @@
  *     lo publicado (la extensión más larga cubre por sí sola las 11 sesiones que la v6.03 reponía tras el examen; si algún redondeo quedara por
  *     debajo, la repuesta va tras el examen, mar 26-oct+). Tier C de la extensión: ≥ la referencia v6.00 (vueltas 2-3 completas + lo que dé de
  *     la 4). Handoff = último día con estudio antes del Step 1 (vie 22-oct) si no hay repuestas.
+ *   · v6.05 (24-oct-2026 · corrimiento D1 = LUN 26-OCT; Joseph: «todo inicia el lunes 26 … puedes correr los horarios, alargar los plazos, pero no
+ *     quites temas, solamente corre lo que está faltando»; del 19 al 25-oct no se estudió → +3 hábiles sobre la v6.03): la 1.ª vuelta
+ *     (gen_mir_daily.js 2026-10-26) termina el LUN 15-FEB (D78; D77 mini-MIR vie 12-feb) → mantenimiento MAR 16-FEB → MAR 11-MAY-2027 = las
+ *     MISMAS 47 filas lun-jue (cuotas y secuencia idénticas: cuotasYSecuencia(47)) · 10 viernes · 12 Tier C, re-fechadas (+3 hábiles), MÁS el
+ *     sáb 8-may (1.er sábado del SERUMS, día de plan MIR desde la v6.00 → mini-simulacro 30Q mixtas): con +3 hábiles exactos el 57.º día de plan
+ *     sería el lun 10-may y el mantenimiento perdería 1 slot lun-jue (46 en vez de 47 → otra cuota); como en v5.17 el fin se alarga 1 día más
+ *     para conservar las 47 cuotas → 58 filas (47 lun-jue · 10 viernes · 1 sábado; nada se quita). La extensión conserva su tope (vie 22-oct,
+ *     día de plan anterior al ritual) → mié 12-may → vie 22-oct = 141 filas (antes 145). Lo que falta frente a lo PUBLICADO en la v6.04
+ *     (203 sesiones: 57 + 145 + 1 repuesta) se REPONE tras el examen Step 1 (mar 26-oct-2027+, F5) con el mismo mecanismo: PISO por asignatura
+ *     foco con la v6.04 (96 slots) en PISO_PUBLICADO y, nuevo, un PISO de sesiones por tipo sobre TODO el banqueo (PUBLICADO_TOTAL: lun-jue ·
+ *     viernes · sábados · Tier C · filas de la v6.04) → ninguna sesión, tipo ni asignatura baja de lo publicado. Campo `repuesta` = 'v6.05'.
+ *     Uso: node DATA/_scripts/gen_mir_mantenimiento.js 2027-02-16 2027-05-11   (los defaults ya son estos).
  *   · Franja por turno en F4 (mirFranjaPorTurno): M 16:00-17:00 · T 10:35-11:35 · L 15:15-16:15 · día de hito 04:05-05:05
  *     (plantilla H) · G 1 h en tiempo muerto de la guardia (lo que no se termine se suma al día de plan siguiente).
  */
@@ -108,8 +120,8 @@ const ARGS = process.argv.slice(2);
 const iExt = ARGS.indexOf('--ext-hasta');
 const EXT_HASTA = iExt >= 0 ? ARGS[iExt + 1] : V6.derivar(F6).ultimoDiaEstudio; // v6.00: día de plan anterior al ritual (v6.04: vie 22-oct-2027 · v6.00-v6.03: vie 24-sep)
 const POS = ARGS.filter((a, i) => !a.startsWith('--') && !(iExt >= 0 && i === iExt + 1));
-const INICIO = POS[0] || '2027-02-11'; // v6.03 (20-oct-2026): D1 mié 21-oct → la 1ª vuelta MIR termina el mié 10-feb (D78) → el mantenimiento arranca el jue 11-feb · v6.02 (17-oct-2026): '2027-02-09' · D1 lun 19-oct → la 1ª vuelta MIR termina el lun 8-feb (D78) → el mantenimiento arranca el mar 9-feb · v6.01 (10-oct-2026): '2027-02-02' · D1 lun 12-oct → la 1ª vuelta MIR termina el lun 1-feb (D78) → el mantenimiento arranca el mar 2-feb · v6.00 = v5.20: '2027-01-28' · v5.20: la 1ª vuelta MIR termina el mié 27-ene (D78) → el mantenimiento arranca el jue 28-ene · v5.19: la 1ª vuelta MIR termina el mar 26-ene (D78) → el mantenimiento arranca el mié 27-ene · v5.18: la 1ª vuelta MIR termina el lun 25-ene (D78) → el mantenimiento arranca el mar 26-ene · v5.17: la 1ª vuelta MIR termina el jue 21-ene (D78 = corrección del mini-MIR) → el mantenimiento arranca el vie 22-ene para no solapar (v5.16: 19-ene (v5.15: 14-ene (v5.14: 12-ene · v5.13: 8-ene)
-const FIN = POS[1] || '2027-05-06'; // v6.03 (20-oct-2026): mismas 57 filas desde el jue 11-feb → FIN jue 6-may (+2 hábiles; lun 3 → jue 6-may ya en el SERUMS); la EXTENSIÓN sigue terminando el vie 24-sep y absorbe (123 → 121; lo que pierde se repone tras el examen Step 1) · v6.02 (17-oct-2026): '2027-05-04' · mismas 57 filas desde el mar 9-feb → FIN mar 4-may (+5 hábiles; cruza el inicio del SERUMS lun 3-may: lun 3 y mar 4-may son filas lun-jue del mantenimiento); la EXTENSIÓN sigue terminando el vie 24-sep y absorbe (128 → 123) · v6.01 (10-oct-2026): '2027-04-27' — el mantenimiento CONSERVA sus 57 filas (47 lun-jue · 10 viernes · 12 Tier C: mismas cuotas) desde el mar 2-feb → FIN mar 27-abr (+3 hábiles; antes jue 22-abr); la EXTENSIÓN sigue terminando el vie 24-sep (--ext-hasta) y ABSORBE la diferencia (131 → 128 filas) · v6.00: FIN FIJO jue 22-abr (57 filas con los protegidos v6; la extensión va aparte desde el vie 23-abr) · v5.20: jue 22-abr (58 hábiles: se AMPLÍA para conservar los 46 slots lun-jue y las 12 Tier C — al arrancar en jueves se pierde el mié 27-ene y los 3 días protegidos lun 22-feb · mar 9 · mié 10-mar son lun-jue) · v5.19: jue 15-abr (+1 día, mismos 46 slots lun-jue y 12 Tier C) · v5.18: mié 14-abr = 57 días con los MISMOS 46 slots lun-jue y las 12 Tier C (arranque en martes, como v5.16) · v5.17: el fin se ALARGA 4 hábiles (v5.16: 7-abr · v5.15: 2-abr · v5.14: 31-mar) → 58 días: con +3 exactos (12-abr, 57 días) el arranque en viernes dejaba 45 slots lun-jue en vez de 46 y se perdía 1 de Neurología; con 58 quedan las MISMAS 46 cuotas lun-jue que v5.16 (+1 viernes extra de repaso) para conservar los 57 días del mantenimiento — "no perder contenido" (Joseph)
+const INICIO = POS[0] || '2027-02-16'; // v6.05 (24-oct-2026): D1 lun 26-oct → la 1ª vuelta MIR termina el lun 15-feb (D78) → el mantenimiento arranca el mar 16-feb · v6.03 (20-oct-2026): '2027-02-11' · D1 mié 21-oct → la 1ª vuelta MIR termina el mié 10-feb (D78) → el mantenimiento arranca el jue 11-feb · v6.02 (17-oct-2026): '2027-02-09' · D1 lun 19-oct → la 1ª vuelta MIR termina el lun 8-feb (D78) → el mantenimiento arranca el mar 9-feb · v6.01 (10-oct-2026): '2027-02-02' · D1 lun 12-oct → la 1ª vuelta MIR termina el lun 1-feb (D78) → el mantenimiento arranca el mar 2-feb · v6.00 = v5.20: '2027-01-28' · v5.20: la 1ª vuelta MIR termina el mié 27-ene (D78) → el mantenimiento arranca el jue 28-ene · v5.19: la 1ª vuelta MIR termina el mar 26-ene (D78) → el mantenimiento arranca el mié 27-ene · v5.18: la 1ª vuelta MIR termina el lun 25-ene (D78) → el mantenimiento arranca el mar 26-ene · v5.17: la 1ª vuelta MIR termina el jue 21-ene (D78 = corrección del mini-MIR) → el mantenimiento arranca el vie 22-ene para no solapar (v5.16: 19-ene (v5.15: 14-ene (v5.14: 12-ene · v5.13: 8-ene)
+const FIN = POS[1] || '2027-05-11'; // v6.05 (24-oct-2026): las MISMAS 47 filas lun-jue + 10 viernes desde el mar 16-feb → FIN mar 11-may (+3 hábiles y +1 día: el sáb 8-may, 1.er sábado del SERUMS, es día de plan MIR y entra como sábado; con FIN lun 10-may quedarían 46 lun-jue) · la EXTENSIÓN sigue terminando el vie 22-oct y absorbe (145 → 141; lo que falta frente a la v6.04 se repone tras el examen Step 1) · v6.03 (20-oct-2026): '2027-05-06' · mismas 57 filas desde el jue 11-feb → FIN jue 6-may (+2 hábiles; lun 3 → jue 6-may ya en el SERUMS); la EXTENSIÓN sigue terminando el vie 24-sep y absorbe (123 → 121; lo que pierde se repone tras el examen Step 1) · v6.02 (17-oct-2026): '2027-05-04' · mismas 57 filas desde el mar 9-feb → FIN mar 4-may (+5 hábiles; cruza el inicio del SERUMS lun 3-may: lun 3 y mar 4-may son filas lun-jue del mantenimiento); la EXTENSIÓN sigue terminando el vie 24-sep y absorbe (128 → 123) · v6.01 (10-oct-2026): '2027-04-27' — el mantenimiento CONSERVA sus 57 filas (47 lun-jue · 10 viernes · 12 Tier C: mismas cuotas) desde el mar 2-feb → FIN mar 27-abr (+3 hábiles; antes jue 22-abr); la EXTENSIÓN sigue terminando el vie 24-sep (--ext-hasta) y ABSORBE la diferencia (131 → 128 filas) · v6.00: FIN FIJO jue 22-abr (57 filas con los protegidos v6; la extensión va aparte desde el vie 23-abr) · v5.20: jue 22-abr (58 hábiles: se AMPLÍA para conservar los 46 slots lun-jue y las 12 Tier C — al arrancar en jueves se pierde el mié 27-ene y los 3 días protegidos lun 22-feb · mar 9 · mié 10-mar son lun-jue) · v5.19: jue 15-abr (+1 día, mismos 46 slots lun-jue y 12 Tier C) · v5.18: mié 14-abr = 57 días con los MISMOS 46 slots lun-jue y las 12 Tier C (arranque en martes, como v5.16) · v5.17: el fin se ALARGA 4 hábiles (v5.16: 7-abr · v5.15: 2-abr · v5.14: 31-mar) → 58 días: con +3 exactos (12-abr, 57 días) el arranque en viernes dejaba 45 slots lun-jue en vez de 46 y se perdía 1 de Neurología; con 58 quedan las MISMAS 46 cuotas lun-jue que v5.16 (+1 viernes extra de repaso) para conservar los 57 días del mantenimiento — "no perder contenido" (Joseph)
 for (const s of [INICIO, FIN, EXT_HASTA]) if (!/^20\d\d-\d\d-\d\d$/.test(s)) throw new Error('fecha inválida: ' + s);
 if (EXT_HASTA <= FIN) throw new Error(`--ext-hasta (${EXT_HASTA}) debe ser posterior al fin del mantenimiento (${FIN})`);
 /** hasta esta fecha (incl.) el bloque va en modo reducido (Fase B/C Step 1 hasta el D95 vie 19-feb-2027; examen lun 22-feb = día protegido, sin sesión · v5.20; v5.19: examen vie 19-feb; v5.18: jue 18-feb; v5.17: mar 16-feb) */
@@ -354,10 +366,15 @@ const REPONER = !ARGS.includes('--sin-reposicion');
 // v6.04: la referencia lleva su PROPIO tope (el de la v6.00: vie 24-sep-2027, día de plan anterior al ritual del examen 27-sep); antes se
 //   recalculaba hasta EXT_HASTA, que ya no es ese día (examen 25-oct → tope vie 22-oct).
 const REF_V600 = { extInicio: '2027-04-23', extHasta: '2027-09-24', filas: 131, banco: 88, viernes: 23, sabado: 20, tierC: 22 }; // MIR_MANT_META.ext / MIR_MANT_TIER_C de regimen-v6.00
-const REPUESTA = 'v6.04'; // v6.04 (21-oct-2026): mismo mecanismo recalculado con el examen 25-oct (v6.03: 'v6.03', 11 filas · v6.02c: 'v6.02c', 9 filas)
+const REPUESTA = 'v6.05'; // v6.05 (24-oct-2026): mismo mecanismo recalculado tras el corrimiento D1 = lun 26-oct (v6.04: 'v6.04', 1 fila · v6.03: 'v6.03', 11 filas · v6.02c: 'v6.02c', 9 filas)
 /** v6.03: PISO publicado por asignatura foco — slots lun-jue de la extensión de versiones ya PUBLICADAS cuyo sobrante de redondeo se conservó
  *  (v6.02: 82 slots → Medicina Legal 2 en vez de 1; v6.02c lo conservó). Ninguna asignatura baja de máx(cuota v6.00, cuotas publicadas). */
-const PISO_PUBLICADO = [{ version: 'v6.02', slotsExt: 82 }, { version: 'v6.03', slotsExt: 80 }]; // v6.04: + la v6.03 (80 slots + repuestas hasta el piso)
+const PISO_PUBLICADO = [{ version: 'v6.02', slotsExt: 82 }, { version: 'v6.03', slotsExt: 80 }, { version: 'v6.04', slotsExt: 96 }]; // v6.04: + la v6.03 (80 slots + repuestas hasta el piso) · v6.05: + la v6.04 (96 slots + 1 repuesta hasta el piso)
+/** v6.05: PISO de sesiones POR TIPO sobre TODO el banqueo (mantenimiento + extensión + repuestas) = lo PUBLICADO en cada versión anterior
+ *  (MIR_MANT_META / MIR_MANT_TIER_C del commit que la publicó). v6.04 (commit e4340a5): 203 filas = 57 mant. (47 lun-jue · 10 viernes · 12 Tier C)
+ *  + 145 ext. (96 lun-jue · 25 viernes · 24 sábados · 24 Tier C) + 1 repuesta (lun-jue). Un corrimiento que acorta la extensión (tope fijo)
+ *  repone tras el examen Step 1 lo que falte para no bajar de ninguno de estos totales (nada se quita). */
+const PUBLICADO_TOTAL = [{ version: 'v6.04', filas: 203, banco: 144, viernes: 35, sabado: 24, tierC: 36 }];
 const lunesDe = (s) => { const x = fromISO(s); x.setUTCDate(x.getUTCDate() - ((x.getUTCDay() + 6) % 7)); return iso(x); };
 const DIAS_REF = [...fechas(REF_V600.extInicio, REF_V600.extHasta)];
 const REF = {
@@ -372,11 +389,13 @@ const { cuotaDe: cuotaRef } = cuotasYSecuencia(REF.banco);
 const pisoDe = Object.fromEntries(ASIGS.map((a) => [a.num, Math.max(cuotaRef[a.num], ...PISO_PUBLICADO.map((x) => cuotasYSecuencia(x.slotsExt).cuotaDe[a.num]))]));
 const PISO_TOTAL = ASIGS.reduce((x, a) => x + pisoDe[a.num], 0);
 const EXT0 = ROWS.filter((r) => r.fase === 'extension');
+/** v6.05: déficit frente a lo PUBLICADO (totales de todo el banqueo, PUBLICADO_TOTAL) — ROWS aún sin repuestas */
+const faltaPub = (k, f) => Math.max(0, ...PUBLICADO_TOTAL.map((x) => x[k] - ROWS.filter(f).length));
 const DEF = {
-  banco: Object.fromEntries(ASIGS.map((a) => [a.num, Math.max(0, pisoDe[a.num] - cuotaDeExt[a.num])])), // v6.03: contra el PISO (≥ referencia v6.00)
-  viernes: Math.max(0, REF.viernes - EXT0.filter((r) => r.tipo === 'viernes').length),
-  sabado: Math.max(0, REF.sabado - EXT0.filter((r) => r.tipo === 'sabado').length),
-  tierC: Math.max(0, REF.tierC - EXT0.filter((r) => r.tierC).length), // v6.04: con la extensión al 22-oct hay MÁS Tier C que la referencia → 0
+  banco: Object.fromEntries(ASIGS.map((a) => [a.num, Math.max(0, pisoDe[a.num] - cuotaDeExt[a.num])])), // v6.03: contra el PISO (≥ referencia v6.00) · v6.05: el PISO incluye la v6.04
+  viernes: Math.max(0, REF.viernes - EXT0.filter((r) => r.tipo === 'viernes').length, faltaPub('viernes', (r) => r.tipo === 'viernes')), // v6.05: + piso publicado (todo el banqueo)
+  sabado: Math.max(0, REF.sabado - EXT0.filter((r) => r.tipo === 'sabado').length, faltaPub('sabado', (r) => r.tipo === 'sabado')),
+  tierC: Math.max(0, REF.tierC - EXT0.filter((r) => r.tierC).length, faltaPub('tierC', (r) => r.tierC)), // v6.04: con la extensión al 22-oct hay MÁS Tier C que la referencia → 0
 };
 /** asignaturas con MÁS slots que la referencia (redondeo por resto mayor sobre menos slots): se conservan, nada se borra */
 const SOBRANTE_BANCO = ASIGS.filter((a) => cuotaDeExt[a.num] > pisoDe[a.num]).map((a) => ({ num: a.num, asignatura: a.asignatura, n: cuotaDeExt[a.num] - pisoDe[a.num] }));
@@ -444,9 +463,9 @@ if (REPONER) {
   for (let j = 0; j < DEF.tierC; j++) {
     const k = k0 + j, t = TIER_C[k % TIER_C.length], vuelta = 2 + Math.floor(k / TIER_C.length);
     const slots = REPO0.filter((r) => r.semana === semanasRepo[j] && r.tipo === 'banco');
-    aplicarTierC(slots[slots.length - 1], t, `extensión v6 · vuelta ${vuelta} del ciclo Tier C: SOLO preguntas no usadas (preguntasSinUsar) · repuesta ${REPUESTA} (la perdieron los corrimientos v6.01/v6.02/v6.03)`);
+    aplicarTierC(slots[slots.length - 1], t, `extensión v6 · vuelta ${vuelta} del ciclo Tier C: SOLO preguntas no usadas (preguntasSinUsar) · repuesta ${REPUESTA} (la perdieron los corrimientos v6.01/v6.02/v6.03/v6.05)`);
   }
-  for (const r of REPO0) r.tema = `REPUESTA ${REPUESTA} (sesión que la extensión perdió con los corrimientos v6.01/v6.02/v6.03, re-fechada tras el examen Step 1) · ${r.tema}`;
+  for (const r of REPO0) r.tema = `REPUESTA ${REPUESTA} (sesión que la extensión perdió con los corrimientos v6.01/v6.02/v6.03/v6.05, re-fechada tras el examen Step 1) · ${r.tema}`;
 }
 
 // ── emitir ──
@@ -472,7 +491,7 @@ const vueltaDe = (r) => (r.fase === 'mantenimiento' ? 1 : +((r.tierC.nota || '')
 const HANDOFF = `${fmtLargo(ROWS[ROWS.length - 1].fecha)} (${REPO.length ? `última sesión del banqueo; cierra las ${REPO.length} sesiones repuestas tras el examen Step 1 · ${REPUESTA}` : 'último día con estudio antes del Step 1'}) → fase principal MIR desde oct-2027: export JSON del log (mirEvalLog) + tabla de neto por asignatura + stats FSRS del deck APEX::MIR (retention 0,85 → 0,90)`;
 const fmtCorto = (s) => `${WD[fromISO(s).getUTCDay()].toLowerCase()} ${+s.slice(8)}-${MESES[+s.slice(5, 7) - 1]}`;
 const TXT_REPO = REPO.length
-  ? `REPOSICIÓN de lo que la extensión perdió con los corrimientos v6.01/v6.02/v6.03 (v6.00 = ${MANT.length + REF.filas} filas: ${MANT.length} + ${REF.filas}; mecanismo v6.02c, recalculado en ${REPUESTA}):\n` +
+  ? `REPOSICIÓN de lo que la extensión perdió con los corrimientos v6.01/v6.02/v6.03/v6.05 (v6.00 = ${57 + REF.filas} filas: 57 + ${REF.filas}${PUBLICADO_TOTAL.map((x) => ` · ${x.version} publicada = ${x.filas} filas`).join('')}; mecanismo v6.02c, recalculado en ${REPUESTA} con el piso de lo publicado):\n` +
     ` * +${REPO.length} filas d${REPO[0].d}-d${REPO[REPO.length - 1].d} (${fmtCorto(REPO[0].fecha)} → ${fmtLargo(REPO[REPO.length - 1].fecha)}, tras los protegidos del examen Step 1 · F5) = ` +
     `${cuenta(REPO, (r) => r.tipo === 'banco')} banco (${REPO.filter((r) => r.tipo === 'banco').map((r) => r.asignatura).join(' · ')}) · ${cuenta(REPO, (r) => r.tipo === 'viernes')} viernes ·\n` +
     ` * ${cuenta(REPO, (r) => r.tipo === 'sabado')} sábados · Tier C ${REPO.filter((r) => r.tierC).map((r) => `${r.tierC.asignatura} · ${r.tierC.capitulo} v${vueltaDe(r)} (${fmtCorto(r.fecha)})`).join(' + ') || '—'}. Cada sesión va en un día de SU tipo\n` +
@@ -486,9 +505,13 @@ const out = `/**
  * mirMantenimiento.ts — MIR modo BANQUEO PURO (mantenimiento ene→abr 2027 + EXTENSIÓN abr→${MESES[+EXT_HASTA.slice(5, 7) - 1]} 2027) · GENERADO por
  * DATA/_scripts/gen_mir_mantenimiento.js ${INICIO} ${FIN} --ext-hasta ${EXT_HASTA} — NO editar a mano.
  *
- * ${REPUESTA === 'v6.02c' ? 'v6.02c (18-oct-2026 · Joseph: «si se recortó algo, alárgalo»)' : REPUESTA === 'v6.03' ? 'v6.03 (20-oct-2026 · corrimiento D1 = mié 21-oct; reposición v6.02c recalculada)' : 'v6.04 (21-oct-2026 · examen Step 1 → lun 25-oct; reposición recalculada)'}: ${TXT_REPO}
+ * ${REPUESTA === 'v6.02c' ? 'v6.02c (18-oct-2026 · Joseph: «si se recortó algo, alárgalo»)' : REPUESTA === 'v6.03' ? 'v6.03 (20-oct-2026 · corrimiento D1 = mié 21-oct; reposición v6.02c recalculada)' : REPUESTA === 'v6.04' ? 'v6.04 (21-oct-2026 · examen Step 1 → lun 25-oct; reposición recalculada)' : 'v6.05 (24-oct-2026 · corrimiento D1 = lun 26-oct; reposición recalculada contra lo publicado en la v6.04)'}: ${TXT_REPO}
+ * v6.05 (24-oct-2026 · corrimiento D1 = lun 26-oct; del 19 al 25-oct sin estudio · Joseph: «no quites temas, solamente corre lo que está faltando»): la 1.ª vuelta
+ * termina el lun 15-feb → el mantenimiento CONSERVA sus 47 lun-jue · 10 viernes · 12 Tier C re-fechados desde el mar 16-feb y suma el sáb 8-may (1.er sábado
+ * del SERUMS = día de plan MIR) → fin mar 11-may (${MANT.length} filas); la extensión mantiene su tope (${fmtLargo(EXT_HASTA)}) y absorbe (145 → ${EXT_BASE.length}); lo que falta
+ * frente a la v6.04 publicada (203 sesiones) se repone tras el examen Step 1 (v6.04: 1 repuesta, mar 26-oct → v6.05: las de arriba).
  * v6.04 (21-oct-2026 · examen Step 1 lun 27-sep → lun 25-oct-2027, decisión de Joseph): el tope de la extensión sigue al día de plan anterior al ritual →
- * vie 24-sep → ${fmtLargo(EXT_HASTA)}: la extensión crece (121 → ${EXT_BASE.length}) y sus cuotas lun-jue se reparten sobre ${nSlotsExt} slots; mantenimiento sin cambio.
+ * vie 24-sep → vie 22-oct-2027: la extensión crece (121 → 145) y sus cuotas lun-jue se reparten sobre 96 slots; mantenimiento sin cambio (v6.05: valores de la v6.04, congelados).
  * v6.03 (20-oct-2026 · corrimiento D1 = mié 21-oct; lun 19 y mar 20-oct sin estudio): la 1.ª vuelta termina el mié 10-feb → el mantenimiento CONSERVA sus 57 filas
  * re-fechadas desde el jue 11-feb (fin jue 6-may: sus 4 últimas filas, lun 3 → jue 6-may, caen ya en el SERUMS); la extensión mantiene su tope (vie 24-sep)
  * y absorbe (123 → 121); lo que pierde se repone tras el examen Step 1 (v6.02c: 9 repuestas hasta el vie 8-oct → v6.03: las de arriba).
@@ -497,7 +520,7 @@ const out = `/**
  * v6.01 (10-oct-2026 · corrimiento D1 = lun 12-oct): la 1.ª vuelta termina el lun 1-feb → el mantenimiento CONSERVA sus 57 filas (mismas cuotas,
  * misma secuencia y los mismos 12 Tier C) re-fechadas desde el mar 2-feb; la extensión mantiene su tope (vie 24-sep) y absorbe los 3 días (131 → 128).
  * v6.00 (6-oct-2026 · V6_ESPEC §D · DJ-4: MIR 1 h/día en TODAS las fases): ${ROWS.length} días =
- *  · MANTENIMIENTO ${MANT.length} (d${MANT[0].d}-d${MANT[MANT.length - 1].d} · ${MANT[0].fecha} → ${MANT[MANT.length - 1].fecha} · L-V: ${cuenta(MANT, (r) => r.tipo === 'banco')} lun-jue · ${cuenta(MANT, (r) => r.tipo === 'viernes')} viernes)
+ *  · MANTENIMIENTO ${MANT.length} (d${MANT[0].d}-d${MANT[MANT.length - 1].d} · ${MANT[0].fecha} → ${MANT[MANT.length - 1].fecha} · L-V: ${cuenta(MANT, (r) => r.tipo === 'banco')} lun-jue · ${cuenta(MANT, (r) => r.tipo === 'viernes')} viernes${cuenta(MANT, (r) => r.tipo === 'sabado') ? ` · ${cuenta(MANT, (r) => r.tipo === 'sabado')} sábado (v6.05: ya en el SERUMS)` : ''})
  *  · EXTENSIÓN ${EXT_BASE.length} (d${EXT_BASE[0].d}-d${EXT_BASE[EXT_BASE.length - 1].d} · ${EXT_BASE[0].fecha} → ${EXT_BASE[EXT_BASE.length - 1].fecha} · L-V hasta el SERUMS y L-S desde el ${SERUMS_INICIO}: ${cuenta(EXT_BASE, (r) => r.tipo === 'banco')} lun-jue · ${cuenta(EXT_BASE, (r) => r.tipo === 'viernes')} viernes · ${cuenta(EXT_BASE, (r) => r.tipo === 'sabado')} sábados; domingo libre)${REPO.length ? `
  *    ${REPO.length ? '+' : '·'} ${REPO.length} REPUESTAS ${REPUESTA} (d${REPO[0].d}-d${REPO[REPO.length - 1].d} · ${REPO[0].fecha} → ${REPO[REPO.length - 1].fecha} · fase 'extension' + campo repuesta: ${cuenta(REPO, (r) => r.tipo === 'banco')} lun-jue · ${cuenta(REPO, (r) => r.tipo === 'viernes')} viernes · ${cuenta(REPO, (r) => r.tipo === 'sabado')} sábados)` : ''}.
  * Salta SKIP (${[...SKIP_FIJOS].join(' · ')}) y los DÍAS PROTEGIDOS v6 (${[...PROTEGIDOS].join(' · ')}) — fuente única:
@@ -544,7 +567,7 @@ export interface DiaMIRMant {
   tema: string;
   /** TIER C EXPRESS: las 10Q interleaving/mixtas de este día son de este capítulo (se loguean con SU asignatura) */
   tierC?: MirMantTierC;
-  /** v6.02c/v6.03: sesión REPUESTA tras el examen Step 1 (la extensión la perdió con los corrimientos v6.01/v6.02/v6.03; valor = versión que la recalculó); ausente en el resto */
+  /** v6.02c/v6.03/v6.04/v6.05: sesión REPUESTA tras el examen Step 1 (la extensión la perdió con los corrimientos v6.01/v6.02/v6.03/v6.05; valor = versión que la recalculó); ausente en el resto */
   repuesta?: string;
 }
 export const MIR_MANT_META = {
@@ -553,7 +576,7 @@ export const MIR_MANT_META = {
   ext: { inicio: '${EXT[0].fecha}', fin: '${EXT[EXT.length - 1].fecha}', totalDias: ${EXT.length}, serumsDesde: '${SERUMS_INICIO}', sabados: ${cuenta(EXT, (r) => r.tipo === 'sabado')},
     /** v6.02c: último día de la extensión ANTES del Step 1 (EXT_HASTA) y filas hasta ahí; fin/totalDias incluyen las repuestas */
     tope: '${EXT_BASE[EXT_BASE.length - 1].fecha}', totalDiasHastaTope: ${EXT_BASE.length},
-    repuestas: ${REPO.length ? `{ desde: '${REPO[0].fecha}', hasta: '${REPO[REPO.length - 1].fecha}', totalDias: ${REPO.length}, banco: ${cuenta(REPO, (r) => r.tipo === 'banco')}, viernes: ${cuenta(REPO, (r) => r.tipo === 'viernes')}, sabados: ${cuenta(REPO, (r) => r.tipo === 'sabado')}, tierC: ${JSON.stringify(REPO.filter((r) => r.tierC).map((r) => `${r.tierC.asignatura} · ${r.tierC.capitulo} v${vueltaDe(r)}`))}, sinFila: ${JSON.stringify(REPO_SALTADOS)}, referencia: 'v6.00 = ${MANT.length + REF.filas} filas (${MANT.length} mant. + ${REF.filas} ext.: ${REF.banco} lun-jue · ${REF.viernes} viernes · ${REF.sabado} sábados · ${REF.tierC} Tier C)', nota: 'sesiones que la extensión perdió con los corrimientos v6.01/v6.02/v6.03 (Joseph 18-oct: «si se recortó algo, alárgalo» · 20-oct: «simplemente corre, alarga las fechas límite»), re-fechadas a los primeros días MIR válidos tras el examen Step 1, cada una en un día de su tipo; Tier C = último lun-jue de cada semana' }` : 'null'} as null | { desde: string; hasta: string; totalDias: number; banco: number; viernes: number; sabados: number; tierC: string[]; sinFila: string[]; referencia: string; nota: string },
+    repuestas: ${REPO.length ? `{ desde: '${REPO[0].fecha}', hasta: '${REPO[REPO.length - 1].fecha}', totalDias: ${REPO.length}, banco: ${cuenta(REPO, (r) => r.tipo === 'banco')}, viernes: ${cuenta(REPO, (r) => r.tipo === 'viernes')}, sabados: ${cuenta(REPO, (r) => r.tipo === 'sabado')}, tierC: ${JSON.stringify(REPO.filter((r) => r.tierC).map((r) => `${r.tierC.asignatura} · ${r.tierC.capitulo} v${vueltaDe(r)}`))}, sinFila: ${JSON.stringify(REPO_SALTADOS)}, referencia: 'v6.00 = ${57 + REF.filas} filas (57 mant. + ${REF.filas} ext.: ${REF.banco} lun-jue · ${REF.viernes} viernes · ${REF.sabado} sábados · ${REF.tierC} Tier C)', nota: 'sesiones que la extensión perdió con los corrimientos v6.01/v6.02/v6.03/v6.05 (Joseph 18-oct: «si se recortó algo, alárgalo» · 20-oct: «simplemente corre, alarga las fechas límite» · 24-oct: «no quites temas, solamente corre lo que está faltando»; piso = lo publicado en la v6.04), re-fechadas a los primeros días MIR válidos tras el examen Step 1, cada una en un día de su tipo; Tier C = último lun-jue de cada semana' }` : 'null'} as null | { desde: string; hasta: string; totalDias: number; banco: number; viernes: number; sabados: number; tierC: string[]; sinFila: string[]; referencia: string; nota: string },
   },
   modoReducidoHasta: ${REDUCIDO_HASTA ? `'${REDUCIDO_HASTA}'` : 'null'} as string | null, diasReducidos: ${nRed}, segPorQ: 77,
   bloque: '1 h/día (DJ-4) · 15:15–16:15 hasta el SERUMS; en F4 según el turno (M 16:00 · T 10:35 · L 15:15 · hito 04:05 · G tiempo muerto) · Anki APEX::MIR + 25Q reales MIR mixtas (77 s/Q) + corrección · viernes 30Q de la asignatura peor del log · sábado (SERUMS) 30Q mixtas de las 14 · 1 slot/semana Tier C express (10Q de una asignatura fuera del plan)',
@@ -679,7 +702,13 @@ if (REPONER) {
   if (nTipo(EXT, 'banco') !== PISO_TOTAL + sobr) errs.push(`reposición: banco ext ${nTipo(EXT, 'banco')} ≠ piso ${PISO_TOTAL} (referencia ${REF.banco} + publicado ${PISO_TOTAL - REF.banco}) + sobrante ${sobr}`);
   if (nTipo(EXT, 'viernes') < REF.viernes || nTipo(EXT, 'sabado') < REF.sabado) errs.push('reposición: viernes/sábados < referencia');
   if (cuenta(EXT, (r) => r.tierC) < REF.tierC) errs.push(`reposición: Tier C ext ${cuenta(EXT, (r) => r.tierC)} < referencia ${REF.tierC}`); // v6.04: ≥ (antes =)
-  if (ROWS.length < MANT.length + REF.filas) errs.push(`reposición: ${ROWS.length} sesiones < v6.00 ${MANT.length + REF.filas}`);
+  if (ROWS.length < 57 + REF.filas) errs.push(`reposición: ${ROWS.length} sesiones < v6.00 ${57 + REF.filas}`); // v6.05: 57 = filas del mantenimiento de la v6.00 (hoy 58: + el sáb 8-may)
+  // v6.05: ninguna versión publicada tiene más sesiones (totales y por tipo) que la salida actual — nada se quita
+  for (const x of PUBLICADO_TOTAL) {
+    const real = { filas: ROWS.length, banco: nTipo(ROWS, 'banco'), viernes: nTipo(ROWS, 'viernes'), sabado: nTipo(ROWS, 'sabado'), tierC: TIERC_ROWS.length };
+    for (const k of Object.keys(real)) if (real[k] < x[k]) errs.push(`reposición: ${k} ${real[k]} < publicado ${x.version} ${x[k]} (nada se quita)`);
+  }
+  if (cuenta(MANT, (r) => r.tipo === 'banco') !== 47 || cuenta(MANT, (r) => r.tipo === 'viernes') !== 10 || cuenta(MANT, (r) => r.tierC) !== 12) errs.push('mantenimiento: debe conservar 47 lun-jue · 10 viernes · 12 Tier C (v6.00)');
   const qRef = MANT.reduce((x, r) => x + r.nQ, 0) + REF.banco * 25 + (REF.viernes + REF.sabado) * 30;
   if (ROWS.reduce((x, r) => x + r.nQ, 0) < qRef) errs.push('reposición: preguntas < v6.00 ' + qRef);
   for (const a of ASIGS) {
@@ -704,6 +733,6 @@ console.log(`  Tier C extensión: ${nTierCExt} (primero ${EXT.find((r) => r.tier
 console.log('Cuotas lun-jue mantenimiento: ' + ASIGS.map((a) => `${a.asignatura} ${cuotaDe[a.num]}`).join(' · '));
 console.log('Cuotas lun-jue extensión: ' + ASIGS.map((a) => `${a.asignatura} ${cuotaDeExt[a.num]}`).join(' · '));
 if (REPO.length) {
-  console.log(`Reposición ${REPUESTA} (referencia v6.00: ${MANT.length + REF.filas} filas · ext ${REF.filas} = ${REF.banco} lun-jue · ${REF.viernes} viernes · ${REF.sabado} sábados · ${REF.tierC} Tier C): +${REPO.length} filas · sin fila: ${REPO_SALTADOS.join(', ') || '—'} · sobrante conservado: ${SOBRANTE_BANCO.map((x) => x.asignatura + ' +' + x.n).join(', ') || '—'}`);
+  console.log(`Reposición ${REPUESTA} (referencia v6.00: ${57 + REF.filas} filas · ext ${REF.filas} = ${REF.banco} lun-jue · ${REF.viernes} viernes · ${REF.sabado} sábados · ${REF.tierC} Tier C): +${REPO.length} filas · sin fila: ${REPO_SALTADOS.join(', ') || '—'} · sobrante conservado: ${SOBRANTE_BANCO.map((x) => x.asignatura + ' +' + x.n).join(', ') || '—'}`);
   for (const r of REPO) console.log(`  d${r.d} ${r.wd} ${r.fecha} S${r.semana} ${r.tipo} ${r.asignatura}${r.asignatura2 ? ' + ' + r.asignatura2 : ''} ${r.nQ}Q${r.tierC ? ' · TIER C ' + r.tierC.asignatura + ' · ' + r.tierC.capitulo + ' v' + vueltaDe(r) : ''}`);
 }

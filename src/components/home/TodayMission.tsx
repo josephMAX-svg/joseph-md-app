@@ -106,6 +106,11 @@ const nombreBase = (n: string): string => {
  *  STEP1_SEMANAS = 39 → chip S n/39, S1 = semana del lun 19-oct): sin cambio de lógica; faseActual: antes del D1 = ≤ mar 20-oct (lun 19 y
  *  mar 20 = CORRIDO por fechasV6.corridaS1De, sin alias ni reparto). Las guías del resto del día (rutinaGuia) siguen al plan: el SYNAPSE
  *  del día del UWSA1 (mié 21) va a las 07:25 y el de los NBME (martes) a las 13:00.
+ * v6.05 (24-oct-2026): del lun 19 al dom 25-oct sin estudio → D1 = lun 26-oct (UWSA1; F1 = D1-D47, D47 = NBME 28 mié 30-dic; STEP1_SEMANAS
+ *  = 42 → chip S n/42, S1 = semana del lun 26-oct): sin cambio de lógica; faseActual: antes del D1 = ≤ dom 25-oct (lun 19 → dom 25 = CORRIDO
+ *  por fechasV6.corridaS1De; la capa de alias/reparto v6.04a queda inerte, sin borrar). Las guías del resto del día (rutinaGuia) siguen al
+ *  plan: el SYNAPSE del día del UWSA1 (lun 26) va a las 07:25 y el de los NBME (vie 6-nov · vie 27-nov · vie 18-dic · mié 30-dic) a las
+ *  13:00; el OUTPUT de Business de esos viernes de NBME pasa entero al sábado 07:45-08:25.
  * v6.02c (18-oct-2026, E1 · SOLO USMLE + el hueco común): `contenidoBloque` puede devolver `guias: GuiaBloque[]` (formato común de
  *  src/lib/guia.ts) y el render las pinta debajo del bloque con <GuiaBloqueCard compacto> — cada plan rellena las suyas en su `case`.
  *  USMLE: 05:00 / 07:00-12:00 / 18:00 = usmleGuia.guiaUsmleEnRango; botón Qbankly en https (cualquier navegador: «UWSA1 ↗» el D1,
@@ -116,7 +121,7 @@ const nombreBase = (n: string): string => {
  *  regla; desplazada a la hora del turno en el SERUMS) + botón «Tier C ↗» / «MIR Q ↗» en el banqueo · Derma → `guias` = dermaGuia (plan A
  *  AccessDerma o PLAN B con el acceso remoto caducado, según la preferencia «AccessDerma renovado» de Derma › HOY; por defecto plan B) +
  *  botón directo «Caso #n ↗» (plan A) o «Plan B ↗» + «AccessDerma ↗» y el aviso de renovación en el sub.
- * v6.02c (18-oct-2026, E4 · SOLO ENCAPS 16:15 + Research): ENCAPS F1 → sesión de encapsGuia (PRE-TEST DE ARRANQUE mié 21 / jue 22-oct en v6.03, lun 19 / mar 20-oct en v6.02 ·
+ * v6.02c (18-oct-2026, E4 · SOLO ENCAPS 16:15 + Research): ENCAPS F1 → sesión de encapsGuia (PRE-TEST DE ARRANQUE lun 26 / mar 27-oct en v6.05, mié 21 / jue 22-oct en v6.03, lun 19 / mar 20-oct en v6.02 ·
  *  BANCO · MINI-SIM) con botones «Pre-test/Banco/Mini-sim ↗» (runner BANCO_PROPIO publicado en /encaps/bp) · «Eval ↗» · ◆ Obsidian del CÓDIGO
  *  · «Claude ↗» (proyecto del área) + `guias` = guía de la hora · Research → `guias` = researchGuia.guiaResearchDe (átomo del día) + botón
  *  al recurso 1 + ◆ Obsidian; en la pausa de átomos, la guía de 30′ «Research mínimo».
@@ -163,7 +168,7 @@ export function todayISO(): string {
  * v6.00: etiqueta de fechasV6.faseV6 — antes FASE 4…9 del orquestador (v5.20: FASE 7 = Step 1 principal hasta el 22-feb).
  */
 export function faseActual(iso: string): string {
-  return faseV6Info(iso).etiqueta; // antes del D1 (v6.03: ≤ mar 20-oct · v6.02: ≤ dom 18-oct · v6.01: ≤ 11-oct · v6.00: ≤ 6-oct) faseV6 ya devuelve F1
+  return faseV6Info(iso).etiqueta; // antes del D1 (v6.05: ≤ dom 25-oct · v6.03: ≤ mar 20-oct · v6.02: ≤ dom 18-oct · v6.01: ≤ 11-oct · v6.00: ≤ 6-oct) faseV6 ya devuelve F1
 }
 function nowMin(): number { try { const d = new Date(); return d.getHours() * 60 + d.getMinutes(); } catch { return 0; } }
 const hm = (s: string) => { const [h, m] = s.split(':').map(Number); return (h as number) * 60 + (m as number); };
@@ -379,7 +384,8 @@ function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema:
       return { tema, sub, acciones, ...(gV ? { guias: [gV] } : {}) };
     }
     case 'usmle': {
-      // v6.02c: guía qué · cuánto · cómo de las franjas que caen dentro del bloque (usmleGuia; F1 + fines de semana)
+      // v6.02c: guía qué · cuánto · cómo de las franjas que caen dentro del bloque (usmleGuia; F1 + fines de semana · v6.05: + las filas
+      //   desplazadas de F1 al tramo 2 con el NBME 29 y los días de cola de vídeo, mar 17-mar → lun 12-abr, plantilla F3)
       const guiasEn = (ini: string, fin: string): GuiaBloque[] => guiaUsmleEnRango(iso, ini, fin);
       if (b.frente === 'usmle-anki') {
         // v6.02c (E5): botón directo también en el Anki (AnkiWeb en cualquier navegador + el vídeo/recurso pendiente de la guía si lo hay)
@@ -389,7 +395,8 @@ function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema:
           acciones: [{ lbl: 'AnkiWeb ↗', color: GREEN, url: ANKIWEB, fill: true }, ...(vidA ? [{ lbl: 'Vídeo ↗', color: EDGE, url: vidA }] : [])], guias: gA };
       }
       if (b.frente === 'usmle-eval') return { tema: b.nombre.includes('hito') ? 'Registra el % del hito en 📏 Medición (Cola de hoy)' : 'Bloque timed mixto de temas vistos + corrección + APEX', sub: 'termómetro diario del Step 1 · anchoring pre-sueño · registra las horas netas del día (GO/NO-GO por horas)', acciones: [{ lbl: '◆ Obsidian', color: OBS, url: OBS_MAPA_URL }], guias: guiasEn(b.ini ?? '18:00', b.fin ?? '18:45') };
-      if (b.id === 'reentrada') return { tema: us?.franjaNota ?? 'REENTRADA: 20Q timed del sistema de la rotación', sub: 'F3 · 16:15 · ≥80 % → el sistema sigue vivo', acciones: [] };
+      // v6.05 (24-oct): las filas desplazadas de F1 al tramo 2 (T3-T13, F3) traen guía también de la 16:15 REENTRADA (usmleGuia)
+      if (b.id === 'reentrada') return { tema: us?.franjaNota ?? 'REENTRADA: 20Q timed del sistema de la rotación', sub: 'F3 · 16:15 · ≥80 % → el sistema sigue vivo', acciones: [], guias: guiasEn(b.ini ?? '16:15', b.fin ?? '17:15') };
       if (!us || b.frente == null) return { tema: b.detalle ?? '', sub: '', acciones: [] };
       const tipo = esFilaT2(us) ? ` · ${TIPO_FILA_T2_LABEL[us.tipo]}${us.parte ? ` ${us.parte}` : ''}` : '';
       const q = esFilaT2(us) && us.qDiaT != null && p.turno === 'T' ? `${us.qDiaT}Q (turno T)` : `${us.qDia}Q`;
@@ -515,12 +522,13 @@ function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema:
     case 'aurum': {
       const a = aurumDiaDe(iso);
       // v6.02c (E5): vídeo CONCRETO (semana 1) o regla fija de elección + drill + lectura L en los minutos libres de la hora
-      const gAu = guiaAurumDe(iso);
+      // v6.05 (fix): en F4 (SERUMS) la guía arranca en la ventana del bloque (tiempo muerto del turno tras el R↔D), no a las 14:15 nominales
+      const gAu = guiaAurumDe(iso, faseV6(iso) === 'F4' ? b.ini : undefined);
       const vid = primerEnlace(gAu, /youtube\.com\/(watch|@|user|c\/)/);
       const obsA = a ? aurumObsUrl(a.obs) : null;
       return {
         tema: a ? `D${a.d} · ${a.titulo}` : 'sin lección hoy',
-        sub: a ? (a.min30 ? "30' (núcleo) · bloques extra opcionales" : `${a.min}' núcleo (ver + practicar)${a.pitch ? ` · 🎙 PITCH v${a.pitch}` : ''} + lectura L en los minutos libres`) : '',
+        sub: a ? (a.min30 ? `30' (núcleo)${faseV6(iso) === 'F4' ? ' en tiempo muerto de la posta, tras el R↔D' : ''}${a.pitch ? ` · 🎙 PITCH v${a.pitch}` : ''} · bloques extra opcionales` : `${a.min}' núcleo (ver + practicar)${a.pitch ? ` · 🎙 PITCH v${a.pitch}` : ''} + lectura L en los minutos libres`) : '',
         acciones: [...(vid ? [{ lbl: /watch/.test(vid) ? '▶ Vídeo ↗' : 'Canal ↗', color: Colors.gold, url: vid, fill: true }] : []), ...(obsA ? [{ lbl: '◆ Obsidian', color: OBS, url: obsA }] : [])],
         ...(gAu ? { guias: [gAu] } : {}),
       };
@@ -540,7 +548,7 @@ function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema:
     }
     case 'synapse': {
       const s = synDiaDe(iso);
-      // v6.02c (E5): A/B/C con qué y cuánto exactos; el día del UWSA1 (v6.03: mié 21-oct · v6.02: lun 19-oct) se hace a las 07:25 · días de NBME a las 13:00
+      // v6.02c (E5): A/B/C con qué y cuánto exactos; el día del UWSA1 (v6.05: lun 26-oct · v6.03: mié 21-oct · v6.02: lun 19-oct) se hace a las 07:25 · días de NBME a las 13:00
       const gS = guiaSynapseDe(iso);
       const movida = gS && !gS.franja.startsWith(b.ini ?? '12:30') ? ` · HOY a las ${gS.franja.slice(0, 5)} (hito USMLE)` : '';
       const tagUrl = (tag: string) => s?.bloques.find((x) => x.tag === tag && x.url)?.url;

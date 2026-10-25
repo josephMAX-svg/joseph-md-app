@@ -31,6 +31,8 @@ import {
  * NO toca data/wiring: PlanKey 'aurum', AURUM_* y la navegación quedan intactos.
  * v6.00 (6-oct-2026 · V6_ESPEC §E · DJ-4): sello HOY y protocolo con la duración v6 — 60' (14:15-15:15) en F1 · 30' núcleo (14:15-14:45)
  * desde el lun 4-ene-2027 (`min30`) · fin jue 15-abr-2027 (AURUM_PLAN_META.fin).
+ * v6.05 (24-oct-2026 · corrimiento D1 = lun 26-oct): lun 26-oct → mar 4-may-2027 (130 lecciones, mismo orden; pitch v1 D15 vie 13-nov ·
+ * v5 D95 mié 10-mar · v6 D115 mar 13-abr · v7 D130 mar 4-may, 2.º día del SERUMS; min30 desde el lun 4-ene, 83 filas).
  * v6.03 (20-oct-2026 · corrimiento D1 = mié 21-oct): mié 21-oct → jue 29-abr-2027 (130 lecciones, mismo orden; pitch v1 D15 mar 10-nov ·
  * v5 D95 vie 5-mar · v6 D115 jue 8-abr · v7 D130 jue 29-abr; min30 desde el lun 4-ene, 80 filas).
  * v6.02 (17-oct-2026 · corrimiento D1 = lun 19-oct): lun 19-oct → mar 27-abr-2027 (130 lecciones, mismo orden; pitch v5 D95 mié 3-mar ·

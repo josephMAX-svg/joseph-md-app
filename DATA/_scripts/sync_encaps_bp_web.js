@@ -4,7 +4,7 @@
  * (antes solo abrían en el PC de Joseph con file:///D:/joseph-md-app/DATA/ENCAPS/BANCO_PROPIO/…). Copia byte a byte
  *   DATA/ENCAPS/BANCO_PROPIO/{eval,pretest_arranque,banco,minisim}_YYYY-MM-DD.html → public/encaps/bp/<mismo nombre>
  * y `npx expo export --platform web` copia public/ a dist/ (Vercel sirve el fichero antes de la regla SPA de vercel.json):
- *   https://joseph-md-app.vercel.app/encaps/bp/pretest_arranque_2026-10-21.html   (v6.03; v6.02: …_2026-10-19.html)
+ *   https://joseph-md-app.vercel.app/encaps/bp/pretest_arranque_2026-10-26.html   (v6.05; v6.03: …_2026-10-21.html · v6.02: …_2026-10-19.html)
  * Los runners son HTML autocontenidos (CSS + JS inline, sin fetch): el progreso vive en el localStorage de ese origen y el botón
  * «Generar JSON» descarga el export para `node DATA/_scripts/gen_encaps_minisim.js --registrar <export.json> --append`.
  *

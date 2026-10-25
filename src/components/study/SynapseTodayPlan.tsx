@@ -105,7 +105,10 @@ function BloqueRow({ b }: { b: SynBloque }) {
  *  taper S13 y sáb 6-feb solo S17. v6.02 (17-oct-2026, D1 lun 19-oct): sáb 26-dic = avance S10 · sáb 2-ene SHIP S10 · sáb 9-ene SHIP S11 ·
  *  sáb 16-ene SHIP S12 · sáb 13-feb = PC propio de S16 + PC 0' de S17 (comprobado sábado a sábado contra synapseDailyPlan.ts). v6.03 (20-oct-2026,
  *  D1 mié 21-oct): sáb 24-oct = AVANCE S1 (S1 mié 21 → mar 27-oct) · SHIP S1 sáb 31-oct … S9 sáb 26-dic · S10 sáb 2-ene · S11 sáb 9-ene · S12 sáb
- *  16-ene · taper S13-S18 sáb 23-ene → sáb 27-feb, uno por sábado (ningún PC desplazado; S19/S20 cierran el sáb 6-mar, después del SYNAPSE). */
+ *  16-ene · taper S13-S18 sáb 23-ene → sáb 27-feb, uno por sábado (ningún PC desplazado; S19/S20 cierran el sáb 6-mar, después del SYNAPSE). v6.05
+ *  (24-oct-2026, D1 lun 26-oct): SHIP S1 sáb 31-oct … S8 sáb 19-dic · sáb 26-dic = AVANCE S9 · S9 sáb 2-ene · S10 sáb 9-ene · S11 sáb 16-ene · S12
+ *  sáb 23-ene · taper S13 sáb 30-ene · S14 6-feb · S15 13-feb · sáb 20-feb = PC propio de S16 + PC 0' de S17 · S18 27-feb (S19 sáb 6-mar y S20
+ *  sáb 13-mar, PROTEGIDO, cierran después del SYNAPSE). */
 function VibeCard({ fecha, vibeDone, onToggleVibe }: { fecha: string; vibeDone: Set<number>; onToggleVibe: (d: number) => void }) {
   const p = vibeProyectoEnFecha(fecha);
   const t = vibeTaperEnFecha(fecha);
@@ -350,7 +353,7 @@ function TemarioView({ hoyD, onPick, done, onToggle }: { hoyD: number; onPick: (
         <Text style={st.globSub}>{glob.hechos}/{glob.total} runs passed · F0 sem 1-8 (auditar ✓ lo ya cursado) · F1 sem 9-12 = stack del vibecoding · F2 sem 13-{SYN_PLAN_META.semanas} = Academy restante + prep CCA-F (taper por el ENCAPS; sem {SYN_PLAN_META.deloadDesde}+ deload) · sáb PC = SHIP · empieza en 0% (avance manual real)</Text>
       </View>
       {grupos.map((g) => <SemanaCard key={g.clave} g={g} hoyD={hoyD} onPick={onPick} done={done} onToggle={onToggle} />)}
-      <Text style={st.note}>☑ marca un run como passed (se guarda en este dispositivo). ▶ = run de hoy. El plan termina el {fechaRealDe(SYN_PLAN_META.fin, 'synapse')}{/* v6.02d: fecha real visible (semana corrida) */} (v6.03: +2 días de plan por el corrimiento del D1 al mié 21-oct, dentro de la intensiva ENCAPS · v6.02: +6 días, D1 lun 19-oct → vie 26-feb · v6.01: +4 días, D1 lun 12-oct → vie 19-feb · v6.00: lun 15-feb · v5.20: fin del Step 1 menos la semana del examen); feriados 25-dic/31-dic/1-ene = libres (node DATA/_scripts/gen_synapse_plan.js).</Text>
+      <Text style={st.note}>☑ marca un run como passed (se guarda en este dispositivo). ▶ = run de hoy. El plan termina el {fechaRealDe(SYN_PLAN_META.fin, 'synapse')}{/* v6.02d: fecha real visible (semana corrida) */} (v6.05: por el corrimiento del D1 al lun 26-oct el FIN se corre del lun 1-mar al vie 5-mar, dentro de la intensiva ENCAPS, con las mismas 110 A-units en {SYN_PLAN_META.totalDias} días de plan —v6.03: 132— · v6.03: +2 días, D1 mié 21-oct → lun 1-mar · v6.02: +6 días, D1 lun 19-oct → vie 26-feb · v6.01: +4 días, D1 lun 12-oct → vie 19-feb · v6.00: lun 15-feb · v5.20: fin del Step 1 menos la semana del examen); feriados 25-dic/31-dic/1-ene = libres (node DATA/_scripts/gen_synapse_plan.js).</Text>
     </View>
   );
 }

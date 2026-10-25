@@ -1,6 +1,6 @@
 /**
  * gen_guia_lectura.js — genera DATA/MIR/guia_lectura_semana1-2.json (nombre histórico: desde v6.03 cubre D1-D76): QUÉ leer, CUÁNTO y CÓMO
- * en el bloque MIR 15:15–16:15 de los 76 días-tema del plan (v6.03: mié 21-oct-2026 → lun 8-feb-2027) y en el slot ProMIR de Derma (d3)
+ * en el bloque MIR 15:15–16:15 de los 76 días-tema del plan (v6.05: lun 26-oct-2026 → jue 11-feb-2027; v6.03: mié 21-oct → lun 8-feb) y en el slot ProMIR de Derma (d3)
  * + plan B de lectura Derma d1-d3, a partir de la
  * MEDICIÓN REAL de los capítulos ProMIR (medicion_promir_2026-10-18/<capId>.json, hecha con analiza_cap.js en el Chrome de Joseph,
  * solo lectura, sin iniciar tests) y de los planes de la app (mirDailyPlan · mirPreguntasOficiales · dermaDailyPlan · ankiLinks).
@@ -27,6 +27,8 @@
  *    capítulos YA leídos de la misma asignatura (interleaving del bloque), y si aun así no llega, del bloque anterior; (4) `enfasis`: los 11
  *    resúmenes propios se conservan y el resto se DERIVA de la medición (las 3 secciones con más preguntas citadas; ningún texto de ProMIR);
  *    (5) Derma: las sesiones de las semanas 1-2 se toman por d (d1-d5), no por fechas cableadas (19-30 oct). Fechas = mirDailyPlan (v6.03).
+ *  · v6.05 (24-oct-2026 · corrimiento D1 = lun 26-oct; del 19 al 25-oct sin estudio): solo cambian las FECHAS (mirDailyPlan D1 lun 26-oct → D76 jue
+ *    11-feb · dermaDailyPlan d1-d5 mar 27-oct → vie 6-nov); medición, reparto de preguntas y bloques idénticos (mismos 76 capítulos, mismo orden).
  */
 'use strict';
 const fs = require('fs');
@@ -360,7 +362,7 @@ const derma = DERMA_DIAS.map((x) => {
 
 const json = {
   _meta: {
-    version: 'v6.03', generado: '2026-10-20', generador: 'DATA/MIR/guia_lectura/gen_guia_lectura.js',
+    version: 'v6.05', generado: '2026-10-24', generador: 'DATA/MIR/guia_lectura/gen_guia_lectura.js',
     medicion: 'DATA/MIR/guia_lectura/medicion_promir_2026-10-18/<capId>.json (analiza_cap.js con la sesión ProMIR de Joseph · solo lectura: no se inició ni creó ningún test · dom 18-oct-2026: los 10 capítulos de D1-D10 v6.02 + Dermatología cap. 1 · mar 20-oct-2026: los 66 restantes del plan; carpeta con el nombre histórico del 18-oct · el texto del recuadro «Orientación MIR» no se versiona)',
     metodo: {
       palabras: 'Texto propio de cada sección (bloques p · li · div.ul-item · figcaption), sin guiones blandos (U+00AD) y DEDUPLICADO: la maquetación en columnas de ProMIR repite el párrafo entero cuando cruza de columna (medido en el cap. 6 Epidemiología: 10.134 palabras con duplicados y texto de las figuras SVG → 7.411 reales + 343 en tablas). Por eso las cifras son menores que un conteo bruto del innerText (≈9.950).',

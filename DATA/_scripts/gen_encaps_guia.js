@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 /**
  * gen_encaps_guia.js — genera src/lib/encapsGuia.ts: la GUÍA «qué · cuánto · cómo» de la hora ENCAPS 16:15-17:15 de CADA sesión del
- * mantenimiento F1 (v6.03: dia 1-50, mié 21-oct → mié 30-dic-2026; v6.02: dia 1-52 desde el lun 19-oct) en el formato común `GuiaBloque` (src/lib/guia.ts).
+ * mantenimiento F1 (v6.05: dia 1-47, lun 26-oct → mié 30-dic-2026; v6.03: dia 1-50 desde el mié 21-oct · v6.02: dia 1-52 desde el lun 19-oct) en el formato común `GuiaBloque` (src/lib/guia.ts).
  *   node DATA/_scripts/gen_encaps_guia.js                  → escribe src/lib/encapsGuia.ts (aborta si un bloque no cuadra)
  *   node DATA/_scripts/gen_encaps_guia.js --check          → regenera en memoria y compara con el fichero (exit 1 si difiere)
  *   node DATA/_scripts/gen_encaps_guia.js --informe <md>   → además escribe la tabla de las semanas 1-2
  * Entradas (nada a mano en el .ts):
- *   · las f1.dias filas (_fechas_v6.json; v6.03: 50) del SQL vigente DATA/_scripts/_encaps_mantenimiento_2027.sql (= Supabase study_schedule
+ *   · las f1.dias filas (_fechas_v6.json; v6.05: 47 · v6.03: 50) del SQL vigente DATA/_scripts/_encaps_mantenimiento_2027.sql (= Supabase study_schedule
  *     MANTENIMIENTO; NO cambia fechas, dia, códigos ni sub-ejes del régimen vigente);
  *   · los runners de DATA/ENCAPS/BANCO_PROPIO (eval_ · pretest_arranque_ · banco_ · minisim_ <fecha>.json/.html): nº de preguntas, códigos,
  *     sub-ejes y modo salen del propio .json; la URL web solo se pone si el runner ya está publicado en public/encaps/bp
@@ -14,7 +14,7 @@
  *   · encaps_guia_catalogo.js (material del Drive por código del 18-oct · compendio y videoclases por área · proyecto de Claude del área ·
  *     nota Obsidian del CÓDIGO) + ENCAPS_FICHAS_POR_TEMA de src/lib/encapsFuentes.ts (fichas MINSA, respaldo de los códigos sin inventario).
  * Reparto de los 60′ (decisión E4 del 18-oct; Σ pasos = 60 en todos, el script aborta si no):
- *   · PRE-TEST DE ARRANQUE (D1 + D2; v6.03: mié 21 + jue 22-oct): 2 arranque · 10 eval 5Q · 24 pre-test 20Q (72 s/Q, modo examen) · 15 corrección · 5 registro
+ *   · PRE-TEST DE ARRANQUE (D1 + D2; v6.05: lun 26 + mar 27-oct · v6.03: mié 21 + jue 22-oct): 2 arranque · 10 eval 5Q · 24 pre-test 20Q (72 s/Q, modo examen) · 15 corrección · 5 registro
  *     (--registrar --append; el formulario de la app NO: dejaría la ronda como MIX) · 4 APEX.
  *   · BANCO (lun-jue): 2 arranque · 8 eval 5Q (72 s/Q + solución) · 30 banco principal 20Q (≈90 s/Q con corrección inmediata) · 8 secundario de
  *     cola larga · 7 material del Drive SOLO si fallaste ≥2 del principal (si no: relee tus «dudosas») · 3 registro · 2 APEX.
@@ -29,6 +29,13 @@
  *   10Q con los hitos de tiempo restante, orden 1→n con atención extra al arranque, una sola decisión por pregunta, revisión FORMAL final sin
  *   cambiar contenido · corrección en el orden de Ravi (falsa certeza → fallos → aciertos no ciegos → forma) · la nota solo se compara con la
  *   misma receta · tarjetas solo de fallos «tontos»/discriminativos. Mismos minutos, misma franja.
+ * v6.05 (24-oct-2026, «todo inicia el lunes 26»): sin cambio de lógica. META.version / generado y la nota de corrimiento de la cabecera del .ts
+ *   salen del último corrimiento de _fechas_v6.json (antes texto fijo 'v6.03' / '2026-10-20') · el texto «previsto» de un banco sin runner cita
+ *   CAT.PREVISTO_ORIGEN (antes «--dry del 18-oct») · el --informe toma las semanas 1-2 desde el lunes del D1 (antes ≤ 2026-10-30 fijo).
+ * v6.05 (fix 24-oct, verificación adversarial): (1) el aviso «Runners por generar ANTES del lunes … (regla: el …)» cita el ÚLTIMO DÍA DE PLAN antes
+ *   del lunes (ultimoDiaPlanAntes: L-V sin SKIP ni protegidos) y no lunes − 3 (el lun 28-dic decía «el vie 25-dic», que es SKIP → jue 24-dic);
+ *   (2) ENCAPS_GUIA_META.version = _fechas_v6.json version y generado = fecha REAL de generación (Lima); --check y la escritura ignoran esa fecha
+ *   (regenerar sin cambios no reescribe). Controles: el script aborta si un aviso cita un día que no es de plan o si version ≠ la del JSON.
  */
 'use strict';
 const fs = require('fs');
@@ -71,7 +78,9 @@ const COLS = ['examen', 'dia', 'fecha', 'weekday', 'tipo', 'codigo', 'subtema', 
 const FILAS = fs.readFileSync(SQL, 'utf8').split(/\r?\n/).filter((l) => l.startsWith("('ENCAPS',")).map((l) => {
   const t = tupla(l); const o = {}; COLS.forEach((c, k) => { o[c] = t[k]; }); return o;
 });
-const F1_DIAS = require('./gen_fechas_v6').cargarFechasV6().f1.dias; // v6.03: 50 (v6.02: 52) — antes constante
+const F6 = require('./gen_fechas_v6').cargarFechasV6();
+const F1_DIAS = F6.f1.dias; // v6.05: 47 (v6.03: 50 · v6.02: 52) — antes constante
+const CORR = (F6.corrimientos || []).at(-1) || null; // v6.05: versión y fecha del régimen vigente (META, cabecera del .ts)
 if (FILAS.length !== F1_DIAS) aborta(`el SQL tiene ${FILAS.length} filas MANTENIMIENTO (se esperan f1.dias = ${F1_DIAS})`);
 const cabSql = (fs.readFileSync(SQL, 'utf8').split(/\r?\n/)[0] || '').replace(/^--\s*/, '');
 
@@ -83,6 +92,13 @@ const FICHAS = FUENTES.ENCAPS_FICHAS_POR_TEMA || {};
 const MES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
 const WD = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
 const corta = (iso) => { const d = new Date(iso + 'T12:00:00Z'); return `${WD[d.getUTCDay()]} ${Number(iso.slice(8, 10))}-${MES[Number(iso.slice(5, 7)) - 1]}`; };
+/** v6.05 (fix): último día de plan ESTRICTAMENTE anterior a `iso` (L-V, ni SKIP ni protegido de _fechas_v6.json): vie 25-dic (SKIP) → jue 24-dic. */
+const NO_PLAN = new Set([...(F6.skip || []), ...(F6.protegidos || []).map((x) => x.fecha)]);
+function ultimoDiaPlanAntes(iso) {
+  const d = new Date(iso + 'T12:00:00Z');
+  do d.setUTCDate(d.getUTCDate() - 1); while (d.getUTCDay() === 0 || d.getUTCDay() === 6 || NO_PLAN.has(d.toISOString().slice(0, 10)));
+  return d.toISOString().slice(0, 10);
+}
 const romano = (c) => ((c || '').match(/^[IVX]+/) || [''])[0];
 const obsUrl = (file) => 'obsidian://open?vault=' + encodeURIComponent(OBS_VAULT) + '&file=' + encodeURIComponent(file);
 let vaultMontado = fs.existsSync(VAULT_DIR);
@@ -244,7 +260,9 @@ for (const fila of FILAS) {
       const subTxt = Object.keys(porSub).length ? ` (${Object.entries(porSub).map(([k, v]) => `${v} ${k}`).join(' · ')})` : '';
       const pendiente = !rBan;
       const cmdSemana = (() => { const d = new Date(fila.fecha + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7)); return d.toISOString().slice(0, 10); })();
-      const vieAnt = (() => { const d = new Date(cmdSemana + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() - 3); return d.toISOString().slice(0, 10); })();
+      // v6.05 (fix 24-oct): el día de la regla = el ÚLTIMO DÍA DE PLAN antes del lunes (antes lunes − 3 fijo: para el lun 28-dic decía «el vie
+      //   25-dic», que es SKIP → ahora jue 24-dic)
+      const vieAnt = ultimoDiaPlanAntes(cmdSemana);
       g = {
         franja: FRANJA, plan: 'encaps',
         titulo: `D${fila.dia} · 🎯 BANCO ${codigo} · ${subLbl}${secCods.length ? ` + cola larga ${secCods.join(' + ')}` : ''}`,
@@ -252,7 +270,7 @@ for (const fila of FILAS) {
         pasos: [
           PASO_ARRANQUE([rEval, rBan]),
           { min: 8, que: `EVAL ANCLADA · ${evalTxt} — ${rEval ? rEval.f : 'runner POR GENERAR'}`, como: 'De memoria y sin material: 72 s/Q (6′) + 2′ para leer la solución de cada fallo. Si fallas ≥2, ese código queda CALIENTE para el override del viernes (no cambia el tema de mañana).', ...(rEval ? { enlace: enlaceRunner(rEval, 'Eval 5Q') } : {}) },
-          { min: 30, que: `BANCO DEL DÍA · ${qPri} CIEGAS de ${codigo} · sub-eje «${subLbl}»${subTxt} — ${rBan ? rBan.f : `banco_${fila.fecha} POR GENERAR${prev2 ? ' (previsto por el --dry del 18-oct)' : ''}`}`,
+          { min: 30, que: `BANCO DEL DÍA · ${qPri} CIEGAS de ${codigo} · sub-eje «${subLbl}»${subTxt} — ${rBan ? rBan.f : `banco_${fila.fecha} POR GENERAR${prev2 ? ` (previsto: ${CAT.PREVISTO_ORIGEN})` : ''}`}`,
             como: 'Pregunta a pregunta con corrección INMEDIATA (≈90 s/Q con la explicación): primero respondes y marcas confianza, después lees la clave y la fuente y recalibras (Palmerton). Meta crucero ≥75 % ciego.', ...(rBan ? { enlace: enlaceRunner(rBan, 'Banco') } : {}) },
           { min: 8, que: secCods.length ? `SECUNDARIO de cola larga · ${qSec} de ${secCods.join(' + ')} — ${sec.map((s) => s.subtema).join(' / ').slice(0, 160)}` : 'Sin secundario: 8′ más del banco principal (sub-ejes distintos)', como: secCods.length ? 'Las últimas preguntas del mismo runner, mismo método (corrección inmediata + confianza). Si el runner trae menos de 4, completa con el banco de respaldo (plan B) hasta 5.' : 'Mismo método.' },
           { min: 7, que: mat1 ? `MATERIAL — SOLO si fallaste ≥2 del principal: ${mat1.t}` : 'MATERIAL — solo si fallaste ≥2: compendio del área', como: 'Busca en el PDF SOLO la sección de tus fallos y copia la cifra o la definición exacta a la nota Obsidian del código. Si fallaste <2: usa estos 7′ para releer las explicaciones de tus «dudosas». Banco primero, material después (nunca al revés).', ...(mat1 ? { enlace: { t: `${mat1.tipo === 'mp4' ? 'Vídeo' : mat1.tipo === 'carpeta' ? 'Carpeta' : 'PDF'}`, url: mat1.url } } : {}) },
@@ -271,8 +289,8 @@ for (const fila of FILAS) {
             .some((f) => f !== fila.fecha && (fs.existsSync(path.join(BP, `banco_${f}.json`)) || fs.existsSync(path.join(BP, `eval_${f}.json`))));
           const cmdDia = [!rEval && !lunes ? `--eval ${fila.fecha}` : null, `--banco ${fila.fecha}`, !rEval && lunes ? `--eval ${fila.fecha}` : null].filter(Boolean).map((x) => `node DATA/_scripts/gen_encaps_minisim.js ${x}`).join(' → ');
           if (pendiente) av.push(semanaArmada
-            ? `Runners por generar ANTES del ${corta(cmdSemana)} (regla: el vie ${corta(vieAnt).replace(/^vie /, '')}, tras el mini-sim): ${cmdDia} → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy (NO --semana ${cmdSemana}: la semana ya tiene runners armados y los re-sortearía).`
-            : `Runners por generar ANTES del ${corta(cmdSemana)} (regla: el vie ${corta(vieAnt).replace(/^vie /, '')}, ≥5 sesiones de stock): node DATA/_scripts/gen_encaps_minisim.js --semana ${cmdSemana}${lunes ? ` + --eval ${fila.fecha}` : ''} → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy.`);
+            ? `Runners por generar ANTES del ${corta(cmdSemana)} (regla: el ${corta(vieAnt)}, tras el mini-sim): ${cmdDia} → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy (NO --semana ${cmdSemana}: la semana ya tiene runners armados y los re-sortearía).`
+            : `Runners por generar ANTES del ${corta(cmdSemana)} (regla: el ${corta(vieAnt)}, ≥5 sesiones de stock): node DATA/_scripts/gen_encaps_minisim.js --semana ${cmdSemana}${lunes ? ` + --eval ${fila.fecha}` : ''} → node DATA/_scripts/sync_encaps_bp_web.js → node DATA/_scripts/gen_encaps_guia.js → deploy.`);
           if (prev2 && prev2.nota) av.push(prev2.nota);
           if (rBan && (rBan.meta.avisos || []).length) av.push(...rBan.meta.avisos.map(String));
           for (const c of [codigo, ...secCods]) if (CAT.AVISO_CODIGO[c]) av.push(CAT.AVISO_CODIGO[c]);
@@ -298,8 +316,12 @@ function PREVISTO(fecha) { return CAT.PREVISTO_SEMANA2[fecha] || null; }
 
 // ── emisión ───────────────────────────────────────────────────────────────────────────────────────────────────
 const conRunner = Object.values(SES).filter((s) => s.principal && s.principal.url).length;
+// v6.05 (fix 24-oct): version = la del JSON de fechas (_fechas_v6.json · version) y generado = la fecha REAL de generación en Lima (UTC−5),
+//   no las del último corrimiento. El --check y la escritura comparan SIN esa fecha (como gen_research_plan.js): regenerar sin cambios de
+//   contenido no reescribe el fichero y conserva su fecha.
+const HOY_LIMA = new Date(Date.now() - 5 * 3600 * 1000).toISOString().slice(0, 10);
 const META = {
-  version: 'v6.03', generado: '2026-10-20', fuente: 'DATA/_scripts/gen_encaps_guia.js + encaps_guia_catalogo.js · ' + cabSql.slice(0, 120),
+  version: F6.version, generado: HOY_LIMA, fuente: 'DATA/_scripts/gen_encaps_guia.js + encaps_guia_catalogo.js · ' + cabSql.slice(0, 120),
   sesiones: FILAS.length, conRunnerPublicado: conRunner, web: WEB,
   reparto: { pretest: '2 arranque · 10 eval 5Q · 24 pre-test 20Q · 15 corrección · 5 registro · 4 APEX', banco: '2 arranque · 8 eval 5Q · 30 banco principal · 8 secundario · 7 material (solo si ≥2 fallos) · 3 registro · 2 APEX', minisim: '2 arranque · 30 mini-sim 25Q · 18 corrección · 5 registro + cierre semanal · 5 APEX + material de los calientes' },
   tecnicaSimulacro: CAT.TECNICA_SIM.doc,
@@ -321,7 +343,7 @@ const ts = `/**
  * Fuentes: filas del SQL vigente (_encaps_mantenimiento_2027.sql = Supabase; no cambia fechas, dia ni códigos del régimen ${META.version}) · runners de
  * DATA/ENCAPS/BANCO_PROPIO publicados en ${WEB} (public/encaps/bp) · material del Drive del 18-oct por código · nota Obsidian del CÓDIGO ·
  * proyecto de Claude del área. Una sesión cuya fila de Supabase no cuadre (dia/código) con la de aquí NO usa la guía (sesionEncapsCuadra).
- * v6.02c (18-oct-2026, E4): nuevo. · v6.03 (20-oct-2026): F1 dia 1-${FILAS.length} desde el ${corta(FILAS[0].fecha)} (corrimiento de 2 hábiles; runners re-fechados por sesión).
+ * v6.02c (18-oct-2026, E4): nuevo. · ${META.version} (generado ${META.generado}): F1 dia 1-${FILAS.length} desde el ${corta(FILAS[0].fecha)}${CORR ? ` (corrimiento D1 ${corta(CORR.d1_previo)} → ${corta(CORR.d1)}: ${CORR.perdidos.length} hábiles sin estudio; runners re-fechados por sesión)` : ''}.
  */
 import type { GuiaBloque } from './guia';
 
@@ -364,20 +386,35 @@ export function guiaEncapsDe(fecha: string): GuiaBloque | null { return G[fecha.
 export const GUIA_ENCAPS_FECHAS: string[] = Object.keys(G);
 `;
 
+// v6.05 (fix): controles nuevos — (1) ningún aviso de runners cita un día SKIP / protegido / fin de semana como «día de la regla»;
+//   (2) META.version = _fechas_v6.json version. Antes el aviso del lun 28-dic decía «el vie 25-dic» (SKIP).
+for (const [f, g] of Object.entries(GUIA)) {
+  for (const m of String(g.aviso || '').matchAll(/\(regla: el (\S+ \d+-\w+),/g)) {
+    const [, dm] = m[1].split(' '); const [dd, mm] = dm.split('-');
+    const y = Number(f.slice(0, 4)) - (MES.indexOf(mm) > Number(f.slice(5, 7)) - 1 ? 1 : 0); // la regla cae antes de la sesión (dic → ene)
+    const fecha = `${y}-${String(MES.indexOf(mm) + 1).padStart(2, '0')}-${String(dd).padStart(2, '0')}`;
+    if (corta(fecha) !== m[1]) aborta(`${f}: el aviso de runners cita «el ${m[1]}», que no cuadra con el calendario (${fecha})`);
+    if (NO_PLAN.has(fecha) || [0, 6].includes(new Date(fecha + 'T12:00:00Z').getUTCDay())) aborta(`${f}: el aviso de runners cita «el ${m[1]}» (${fecha}), que no es día de plan`);
+  }
+}
+if (META.version !== F6.version) aborta(`ENCAPS_GUIA_META.version ${META.version} ≠ _fechas_v6.json ${F6.version}`);
+const sinGen = (s) => s.replace(/("generado": ")20\d\d-\d\d-\d\d(")/g, '$1$2').replace(/(\(generado )20\d\d-\d\d-\d\d(\))/g, '$1$2');
 if (CHECK) {
   const old = fs.existsSync(OUT) ? fs.readFileSync(OUT, 'utf8') : '';
-  if (old !== ts) { console.error('✗ src/lib/encapsGuia.ts no coincide con lo que genera gen_encaps_guia.js'); process.exit(1); }
+  if (sinGen(old) !== sinGen(ts)) { console.error('✗ src/lib/encapsGuia.ts no coincide con lo que genera gen_encaps_guia.js'); process.exit(1); }
   console.log(`OK — src/lib/encapsGuia.ts al día (${FILAS.length} sesiones · ${conRunner} con runner publicado)`);
 } else {
-  fs.writeFileSync(OUT, ts);
-  console.log(`✓ src/lib/encapsGuia.ts (${FILAS.length} sesiones · ${conRunner} con runner publicado · ${Math.round(ts.length / 1024)} KB)`);
+  const old = fs.existsSync(OUT) ? fs.readFileSync(OUT, 'utf8') : '';
+  if (old && sinGen(old) === sinGen(ts)) console.log(`= src/lib/encapsGuia.ts (sin cambios de contenido; conserva su fecha de generación)`);
+  else { fs.writeFileSync(OUT, ts); console.log(`✓ src/lib/encapsGuia.ts (${FILAS.length} sesiones · ${conRunner} con runner publicado · ${Math.round(ts.length / 1024)} KB)`); }
 }
 if (avisos.length) console.warn([...new Set(avisos)].map((a) => '⚠ ' + a).join('\n'));
 if (!vaultMontado) console.warn('⚠ vault de Obsidian no montado: no se comprobó que las notas existan');
 
 if (INFORME) {
   const L = ['| Fecha | D | Tipo | Qué (principal) | Eval 16:15 | Runner(s) | Material del Drive / fichas | Obsidian | Proyecto Claude |', '|---|---|---|---|---|---|---|---|---|'];
-  for (const t of TABLA.filter((x) => x.fecha <= '2026-10-30')) L.push(`| ${corta(t.fecha)} | ${t.dia} | ${t.tipo} | ${t.principal} | ${t.eval} | ${t.runners} | ${t.material} | ${t.obs} | ${t.proyecto} |`);
+  const finSem2 = (() => { const d = new Date(FILAS[0].fecha + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7) + 11); return d.toISOString().slice(0, 10); })(); // v6.05: viernes de la semana 2
+  for (const t of TABLA.filter((x) => x.fecha <= finSem2)) L.push(`| ${corta(t.fecha)} | ${t.dia} | ${t.tipo} | ${t.principal} | ${t.eval} | ${t.runners} | ${t.material} | ${t.obs} | ${t.proyecto} |`);
   fs.writeFileSync(INFORME, L.join('\n') + '\n');
   console.log('✓ informe ' + INFORME);
 }

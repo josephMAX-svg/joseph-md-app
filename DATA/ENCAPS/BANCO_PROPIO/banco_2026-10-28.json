@@ -1,8 +1,8 @@
 {
- "id": "BANCO_2026-10-26",
- "titulo": "Banco del día ENCAPS · Lun 2026-10-26 · V-2 · planeamiento",
+ "id": "BANCO_2026-10-28",
+ "titulo": "Banco del día ENCAPS · Mié 2026-10-28 · V-2 · planeamiento",
  "tipoRonda": "banco_dia",
- "fecha": "2026-10-26",
+ "fecha": "2026-10-28",
  "codigo": "V-2",
  "sub_eje": "planeamiento",
  "tema": "Gestión/planeamiento · Planeamiento estratégico: PEI/POI/FODA, objetivos estratégicos, ciclo CEPLAN",
@@ -17,7 +17,7 @@
  "_meta": {
   "generado": "2026-10-03",
   "fila_sql": {
-   "dia": 4,
+   "dia": 3,
    "tipo": "banqueo1h",
    "codigo": "V-2",
    "sub_eje": "planeamiento",
@@ -78,6 +78,12 @@
     "a": "2026-10-26",
     "el": "2026-10-20",
     "motivo": "corrimiento v6.03 (D1 = 2026-10-21, «todo comienza mañana miércoles 21, corre dos días»; no se estudió lun 19 ni mar 20-oct): la sesión «banqueo 3» (lun-jue nº 3 de la F1) pasa del miércoles 2026-10-21 (D3) al lunes 2026-10-26 (D4; +2 hábiles lun-jue, los viernes de mini-sim no se mueven); ítems intactos, sin regenerar · fila_sql.dia 3 → 4 (F1 v6.03: el vie 23-oct es D3)"
+   },
+   {
+    "de": "2026-10-26",
+    "a": "2026-10-28",
+    "el": "2026-10-24",
+    "motivo": "corrimiento v6.05 (D1 = 2026-10-26, «todo inicia el lunes 26»; la semana del 19 no se estudió —ni el D1 del mié 21 ni su alias del jue 22, v6.04a sin efecto—): la sesión «banqueo 3» (lun-jue nº 3 de la F1) pasa del lunes 2026-10-26 (D4) al miércoles 2026-10-28 (D3); ítems intactos, sin regenerar · fila_sql.dia 4 → 3 (F1 v6.05: lun 26-oct = D1, el vie 30-oct es D5)"
    }
   ]
  },

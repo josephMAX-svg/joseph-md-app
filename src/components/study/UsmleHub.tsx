@@ -39,6 +39,8 @@ import UsmleTodayPlan from './UsmleTodayPlan';
  * v6.01 (10-oct-2026): sin cambio de lógica (todo sale de DIAS_TODOS / DAILY_META): F1 = D1-D57 desde el lun 12-oct (215 filas en total).
  * v6.02 (17-oct-2026): sin cambio de lógica: F1 = D1-D52 desde el lun 19-oct (D52 = NBME 28 mié 30-dic) · 210 filas en total.
  * v6.03 (20-oct-2026): sin cambio de lógica: F1 = D1-D50 desde el mié 21-oct (D1 = UWSA1 · D50 = NBME 28 mié 30-dic) · 208 filas en total.
+ * v6.05 (24-oct-2026): sin cambio de lógica: F1 = D1-D47 desde el lun 26-oct (D1 = UWSA1 · D47 = NBME 28 mié 30-dic) · 229 filas en total
+ *   (47 + T1-T182; examen lun 25-oct-2027 desde v6.04b).
  */
 const JADE = USMLE_META.accent;         // #5FA88C — muted jade (US console)
 const FLAG_GREEN = '#5FB98C';           // verde bandera armonizado (core/pathology)
