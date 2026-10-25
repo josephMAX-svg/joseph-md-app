@@ -46,6 +46,21 @@
  * (lun 19-oct). MIR D78 mié 10-feb → el mantenimiento conserva sus 57 filas jue 11-feb → jue 6-may y la extensión (tope vie 24-sep) absorbe: 121 filas
  * + 11 repuestas tras el examen Step 1 (→ mar 12-oct-2027). La capa de alias v6.02d (`_fechas_v6.json → corrida_s1`) queda inerte (solo los días sin
  * sesión, 19 y 20-oct). Solo comentario: la lógica de este script no cambia.
+ *
+ * v6.04 (21-oct-2026 · semana corrida por ALIAS en la consulta, corrida_s1 de _fechas_v6.json; examen Step 1 → lun 25-oct-2027): este script NO se
+ * corrió (ningún plan se re-fechó).
+ *
+ * v6.05 (24-oct-2026 · corrimiento D1 = lun 26-oct, Joseph: «todo inicia el lunes 26 … puedes correr los horarios, alargar los plazos, pero no quites
+ * temas, solamente corre lo que está faltando»; no se estudió del lun 19 al dom 25-oct y la semana corrida por alias de la v6.04a queda sin efecto):
+ * mismo pipeline con START = 2026-10-26, en dos pasadas por bloques (`remap_inicio.js 2026-10-26 --bloques research,derma` y
+ * `remap_inicio.js 2026-10-26 --bloques business,liviano`); MIR con sus generadores (STUDY_HUB/_scrape/gen_mir_daily.js 2026-10-26 +
+ * gen_mir_mantenimiento.js 2027-02-16 2027-05-11). Paridad Research↔Derma: el lun 26-oct es día-RESEARCH (d1 Research = R0 lun 26-oct · d1 Derma
+ * mar 27-oct): frente a la v6.03 Research pierde 1 ranura (jue 22-oct) → con 28 días-Research antes de la pausa M3 (email a Finlay, CADI) pasa tras
+ * ella, mié 17-feb-2027 = d31 (gen_research_plan.js; R9, CRÍTICO, se queda el vie 13-nov = d8); Derma pierde 2 (mié 21 y vie 23-oct). Research c1 →
+ * mar 23-mar, c2 lun 29-mar → sáb 4-sep · Derma c1 → vie 21-may, c2 lun 24-may → vie 30-jul. MIR D78 lun 15-feb → el mantenimiento pasa a 58 filas
+ * mar 16-feb → mar 11-may (las mismas 47 lun-jue + 10 viernes + el sáb 8-may) y la extensión (tope vie 22-oct-2027) absorbe: 141 filas + 4 repuestas
+ * tras el examen Step 1 (mar 26 → vie 29-oct-2027) = 203 sesiones. Business → mar 23-feb (121 filas) · LIVIANO → mié 3-mar (90 días). corrida_s1 queda
+ * solo con los días sin sesión 19-25-oct (sin alias ni reparto). Solo comentario: la lógica de este script no cambia.
  * Qué hace: solo corre fechas (domingos LIBRES, parámetros intactos). Regex AÑO-AGNÓSTICO
  * (20\d\d-\d\d-\d\d) porque Derma son 70 slots ≈ 6.5 meses → cruza a 2027.
  * ENCAPS va aparte (Supabase: gen_encaps_mantenimiento_2027.js <fecha> → execute_sql, backup fechado automático).

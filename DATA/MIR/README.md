@@ -146,7 +146,7 @@ Anki de mecanismo FSRS · medir por % ciego). Meta: Top 50 MIR 2030.
 > | D75 vie 5-feb | Psiquiatría · Actualización de los trastornos neuróticos | 8245 + 421 tabla · ≈54′ | 36 | 1.1 · 2.1 (parcial) (15′) | ≈40′ | pre 4 pool · quiz 10 |
 > | D76 lun 8-feb | Psiquiatría · Trastornos psicóticos | 4390 + 241 tabla · ≈31,5′ | 27 | 2 · 2.1 · 2.2 · 2.5 · 2.7 · 3.1 · 4.2 · 5.1 (14,5′) | ≈18′ | pre 5 pool · quiz 10 |
 >
-> ## ✅ v6.02c (dom 18-oct-2026) — se REPONE lo recortado de la extensión + guía de lectura D1-D10 (⏸ historial: fechas y filas al día en el bloque v6.03 de arriba)
+> ## ⏸ v6.02c (dom 18-oct-2026) — se REPONE lo recortado de la extensión + guía de lectura D1-D10 (historial: el MECANISMO de reposición sigue —ahora con el piso de lo publicado en la v6.04—; fechas y filas al día en el bloque v6.05 de arriba)
 > Joseph (18-oct): «si faltan temas o se recortó algo, alárgalo» y «QUÉ leer, CUÁNTO leer, CÓMO leer — no puede estar al azar».
 >
 > **1 · Reposición (decisión (i) de `PENDIENTES_JOSEPH.md`, bloque v6.02 → RESUELTA).** Los corrimientos v6.01/v6.02 comprimieron la extensión
@@ -217,7 +217,7 @@ Anki de mecanismo FSRS · medir por % ciego). Meta: Top 50 MIR 2030.
 > Handoff (vie 24-sep → fase principal oct-2027), umbral de cierre 70/55 → 75/60 desde oct-2027, FSRS 0,85 → 0,90, franjas por turno en F4, protegidos/SKIP:
 > **sin cambio**. Generado por `gen_mir_daily.js 2026-10-12` + `gen_mir_mantenimiento.js 2027-02-02 2027-04-27` (defaults nuevos).
 
-> ## ⏸ v6.00 (REESTRUCTURACIÓN ANUAL, decidida el mar 6-oct-2026 · arrancaba el mié 7-oct-2026) — vigente salvo las fechas y cifras que corrigen los bloques v6.02 y v6.01 de arriba
+> ## ⏸ v6.00 (REESTRUCTURACIÓN ANUAL, decidida el mar 6-oct-2026 · arrancaba el mié 7-oct-2026) — vale (DJ-4, franjas por turno, reglas) salvo las fechas y cifras que corrigen los bloques v6.05, v6.04, v6.03, v6.02 y v6.01 de arriba
 > **DJ-4 (decisión de Joseph): MIR mantiene su horario — 1 h/día en TODAS las fases**; el resto de secundarios baja como mucho a 30'. Fuente única de fechas:
 > `DATA/_scripts/_fechas_v6.json`; plan generado: `src/lib/mirMantenimiento.ts` (por `gen_mir_mantenimiento.js` v6, que lee `skip`, `protegidos` y `serums.inicio`).
 >
@@ -307,7 +307,7 @@ Anki de mecanismo FSRS · medir por % ciego). Meta: Top 50 MIR 2030.
 > "APEX directamente en Anki hasta verificar n8n" (§5). Fechas, franjas, metas y temario: sin cambios (verificado:
 > las 78 fechas y los 76 capIds del `.ts` regenerado son idénticos a HEAD).
 
-## 1. Plan día-a-día (78 días = 76 temas + D77 mini-MIR + D78 corrección · D1 mié 7-oct-2026 → D78 mié 27-ene-2027 · v5.20 — ⏸ v6.01: lun 12-oct → lun 1-feb · **v6.02: lun 19-oct → lun 8-feb**)
+## 1. Plan día-a-día (78 días = 76 temas + D77 mini-MIR + D78 corrección · D1 mié 7-oct-2026 → D78 mié 27-ene-2027 · v5.20 — ⏸ v6.01: lun 12-oct → lun 1-feb · ⏸ v6.02: lun 19-oct → lun 8-feb · ⏸ v6.03: mié 21-oct → mié 10-feb · **v6.05: lun 26-oct → lun 15-feb**)
 Fuente de verdad: [`src/lib/mirDailyPlan.ts`](../../src/lib/mirDailyPlan.ts) (bloque GENERADO por
 [`STUDY_HUB/_scrape/gen_mir_daily.js`](../../STUDY_HUB/_scrape/gen_mir_daily.js) `[YYYY-MM-DD]`).
 L-V, sáb+dom libres, skips = 25-dic, 31-dic y 1-ene (no son días hábiles del plan), hasta el mié 27-ene-2027 (D76 último tema lun 25-ene · D77 mini-MIR mar 26-ene · D78 corrección mié 27-ene; v5.19: vie 22 · lun 25 · mar 26-ene). 1 tema atómico/día, 1ª vuelta.
@@ -325,7 +325,23 @@ de `DELTA_CAPIDS` existen y sus filas llevan `delta:true`.
 **Orden de bloques = cada asignatura PRECEDE ~1 semana a su sistema Step 1** (clínica en español
 como prime → mecanismo en inglés 7 días después = re-exposición espaciada del mismo sistema).
 
-> ✅ **Nota v6.02 (leído con node de `MIR_DIAS` de `mirDailyPlan.ts` y de `DIAS` / `DIAS_T2` de `usmleStep1Daily.ts` v6.02, 17-oct):** el prime MIR → Step 1
+> ✅ **Nota v6.05 (VIGENTE; recalculada con node el dom 25-oct sobre `MIR_DIAS` de `mirDailyPlan.ts` y `DIAS` / `DIAS_T2` de `usmleStep1Daily.ts` v6.05):**
+> el prime MIR → Step 1 sigue valiendo **solo para los sistemas de F1 (lun 26-oct → mié 30-dic-2026)**; el lag (inicio del bloque MIR → inicio de su sistema
+> Step 1) queda en **Cardio +3 d** (MIR D5 **vie 30-oct** → Step 1 Cardiovascular D6 **lun 2-nov**; 1 hábil, el fin de semana en medio) · **Neumo +7** (MIR D12
+> mar 10-nov → Respiratory D17 mar 17-nov) · **Nefro +8** (MIR D17 mar 17-nov → Renal D23 mié 25-nov) · **Gastro +9** (MIR D23 mié 25-nov → GI D30 vie 4-dic) ·
+> **Endo +8** (MIR D31 lun 7-dic → Endocrine D37 mar 15-dic) · **Neuro +8** (MIR D37 mar 15-dic → Nervous System D43 mié 23-dic), pero **en F1 solo quedan
+> las 4 primeras filas de Neuro** (D43-D46: neuroanatomía, médula, tronco + pares, SNA); las clínicas —ictus, convulsiones, demencias + Parkinson, EM +
+> meningitis + NMJ + tumores (v5.20 D47-D50)— son ahora **T3-T6, jue 18 → mar 23-mar-2027**, ~3 meses después de sus capítulos MIR (ECV D39 jue 17-dic ·
+> Movimiento D40 vie 18-dic · Epilepsia D41 lun 21-dic · Demencias D42 mar 22-dic). **F1 ya sin Heme/Onco:** Hemato MIR D44-D48 (jue 24-dic → lun 4-ene) →
+> Hematology & Oncology **T7-T12 mié 24-mar → vie 2-abr** (+90 d). Epidemiología (MIR D1-D3 lun 26 → mié 28-oct) y Bioética (D4 jue 29-oct) caen sobre la fila
+> de **bioestadística + epidemiología + ética (ex-D79) = T13 lun 5-abr-2027** (+161 d). Infecto (MIR mar 5 → jue 14-ene) → **Micro T14-T20 mar 6 → mié
+> 14-abr** (+91 d) · Gine (vie 15 → vie 22-ene) → **Repro T21-T25 jue 15 → mié 21-abr** (+90 d) · Reuma (lun 25-ene → lun 1-feb) → **MSK T26-T28 jue 22 → lun
+> 26-abr** (+87 d) · Psiq (mar 9 → jue 11-feb) → **Psych T29-T31 mar 27 → jue 29-abr (+ T13)** (+77 d) · Bioq T32-T36 vie 30-abr → jue 6-may (sin homólogo MIR) ·
+> Pediatría (mar 2 → lun 8-feb) sin homólogo. Fuera de F1 no es «prime + re-exposición a 7 días» sino repaso a largo plazo. La columna «Homólogo Step 1 / Lag»
+> de la tabla de abajo es v5.20: en las filas 3-7 vale el **D#** (fechas, las de esta nota); fila 8 (Neuro) → D43-D46 en F1 + T3-T6; fila 9 (Hemato) → T7-T12;
+> filas 1-2 → T13 lun 5-abr; filas 10-12 y 14 → tramo 2 (fechas de esta nota).
+>
+> ⏸ **Nota v6.02 (historial; la corrige la nota v6.05 de arriba)** (leído con node de `MIR_DIAS` de `mirDailyPlan.ts` y de `DIAS` / `DIAS_T2` de `usmleStep1Daily.ts` v6.02, 17-oct): el prime MIR → Step 1
 > sigue valiendo **solo para los sistemas de F1 (lun 19-oct → mié 30-dic-2026)**: Cardio, Neumo, Nefro, Gastro, Endo y Neuro conservan su homólogo y su D#; el
 > lag (inicio MIR → inicio Step 1) queda en **Cardio +3 d** (MIR vie 23-oct → Step 1 lun 26-oct; 1 hábil) · **Neumo +7** (mar 3-nov → mar 10-nov) · **Nefro
 > +8** (mar 10-nov → mié 18-nov) · **Gastro +9** (mié 18-nov → vie 27-nov) · **Endo +8** (lun 30-nov → mar 8-dic) · **Neuro +8** (mar 8-dic → mié 16-dic) ·
@@ -338,7 +354,7 @@ como prime → mecanismo en inglés 7 días después = re-exposición espaciada 
 > en las filas 3-9 vale el **D#** (las fechas son las de esta nota; Hemato, solo D51 en F1); filas 1-2 → T8 lun 29-mar; filas 10-12 y 14 → tramo 2 (fechas de
 > esta nota).
 >
-> ⏸ **Nota v6.01 (historial; la corrige la nota v6.02 de arriba)** (leído con node de `MIR_DIAS` de `mirDailyPlan.ts` y de `DIAS` / `DIAS_T2` de `usmleStep1Daily.ts` v6.01, 10-oct): el prime MIR → Step 1
+> ⏸ **Nota v6.01 (historial; la corrigen las notas v6.02 y v6.05 de arriba)** (leído con node de `MIR_DIAS` de `mirDailyPlan.ts` y de `DIAS` / `DIAS_T2` de `usmleStep1Daily.ts` v6.01, 10-oct): el prime MIR → Step 1
 > sigue valiendo **solo para los sistemas de F1 (D1-D57, lun 12-oct → mié 30-dic-2026)**: Cardio, Neumo, Nefro, Gastro, Endo, Neuro y Hemato conservan su
 > homólogo y su D#; sus fechas Step 1 se mueven a las de v6.01 y el lag (inicio MIR → inicio Step 1) queda en **Cardio +3 d** (MIR vie 16-oct → Step 1 lun
 > 19-oct; 1 hábil) · **Neumo +7** (mar 27-oct → mar 3-nov) · **Nefro +8** (mar 3-nov → mié 11-nov) · **Gastro +9** (mié 11-nov → vie 20-nov) · **Endo +8**
@@ -350,7 +366,7 @@ como prime → mecanismo en inglés 7 días después = re-exposición espaciada 
 > La columna «Homólogo Step 1 / Lag» de la tabla de abajo es v5.20: en las filas 3-9 vale el **D#** (las fechas son las de v6.01 de esta nota); filas 1-2 →
 > T3 jue 18-mar; filas 10-12 y 14 → tramo 2 (fechas de esta nota).
 >
-> ⏸ **Nota v6.00 (leído de `DIAS` / `DIAS_T2` de `usmleStep1Daily.ts` con node el 6-oct; SUPERSEDIDA por las notas v6.02 y v6.01 de arriba):** el prime MIR → Step 1 **solo vale para los sistemas de F1
+> ⏸ **Nota v6.00 (leído de `DIAS` / `DIAS_T2` de `usmleStep1Daily.ts` con node el 6-oct; SUPERSEDIDA por las notas v6.05, v6.02 y v6.01 de arriba):** el prime MIR → Step 1 **solo vale para los sistemas de F1
 > (D1-D57, mié 7-oct → jue 24-dic)**: Cardio, Neumo, Nefro, Gastro, Endo, Neuro y Hemato conservan su homólogo y su lag; Epidemiología y Bioética caen
 > ahora sobre el **D58 lun 28-dic** (bioestadística + epidemiología + ética, ex-D79). **Infecto, Gine, Reuma y Psiq NO tienen su sistema Step 1 detrás en
 > F1**: Micro / ID, Reproductive, Musculoskeletal / Rheum, Psychiatry y Biochemistry quedan en el **tramo 2 (F3)** — Micro jue 18 → mar 30-mar-2027 · Repro

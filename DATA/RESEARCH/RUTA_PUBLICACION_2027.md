@@ -10,16 +10,19 @@ programa de líneas: le pone el calendario editorial encima.
 > los horarios, alargar los plazos, pero no quites temas, solamente corre lo que está faltando»): ciclo 1 = 42 átomos lun 26-oct-2026 → mar 23-mar-2027 ·
 > ciclo 2 = 67 átomos lun 29-mar → sáb 4-sep-2027** (mismos átomos; `node DATA/_scripts/gen_research_plan.js 2026-10-26`, vía `remap_inicio.js 2026-10-26
 > --bloques research,derma`). El lun 26-oct es día-RESEARCH por paridad (Derma arranca el mar 27-oct) → Research pierde 1 ranura frente a la v6.03 (el jue
-> 22-oct) y quedan **28 días-Research antes de la pausa** (antes 29): **R9 (¿existe la SR? AMSTAR-2 + decisión de ángulo) pasa tras la pausa** y encabeza la
-> cola de desplazados (prep de SR-1 sin deadline antes de la pausa; su gate R9 → R6 se conserva). Ciclo 1: **R0 lun 26-oct (= día del UWSA1)** · R1 mié 28-oct ·
-> **M1 vie 30-oct (d3) = el ÚLTIMO día-Research antes del 31-oct** · C-1 mar 3-nov · M2 jue 5-nov · C-2 lun 9-nov · **T-1 mié 11-nov** (d7) · M3 vie 13-nov
-> (d8, seguimiento) · C-3 mar 17-nov (=) · C-4 jue 19-nov · C-5 lun 23-nov · **C-6 mié 25-nov (=)** · **CR-1 vie 27-nov (d13, = NBME 26)** · **CR-2 mar 1-dic** ·
+> 22-oct) y quedan **28 días-Research antes de la pausa** (antes 29): **M3 (email al Prof. Finlay: permiso / versión española del CADI) pasa tras la pausa** (mié
+> 17-feb-2027, d31) y encabeza la cola de desplazados: es el átomo de menor prioridad (ALTA) sin deadline ni gate antes de la pausa; **R9 (¿existe la SR?
+> AMSTAR-2 + decisión de ángulo; CRÍTICO, gate de R6) se queda el vie 13-nov (d8)**, con el seguimiento del caso del Dr. Ciro (el primer borrador v6.05
+> desplazaba R9: regla corregida el mismo 24-oct, `researchDailyPlan.ts`). Ciclo 1: **R0 lun 26-oct (= día del UWSA1)** · R1 mié 28-oct ·
+> **M1 vie 30-oct (d3) = el ÚLTIMO día-Research antes del 31-oct** · C-1 mar 3-nov · M2 jue 5-nov · C-2 lun 9-nov · **T-1 mié 11-nov** (d7) · **R9 vie 13-nov**
+> (d8, + seguimiento del caso) · C-3 mar 17-nov (=) · C-4 jue 19-nov · C-5 lun 23-nov · **C-6 mié 25-nov (=)** · **CR-1 vie 27-nov (d13, = NBME 26)** · **CR-2 mar 1-dic** ·
 > T-3 jue 3-dic · T-4 lun 7-dic · T-2 mié 9-dic · T-5 vie 11-dic · T-6 mar 15-dic · CR-3 jue 17-dic · T-7 lun 21-dic · CR-4 mié 23-dic · **T-8 mar 29-dic** ·
 > CR-5 lun 4-ene · CR-6 mié 6-ene · CR-7 vie 8-ene · **CR-8 mar 12-ene (=)** · X-7 jue 14-ene (=) · pausa 15-ene → 10-feb · **CR-9 SUBMIT jue 11-feb (d29, =)** ·
-> X-8 lun 15-feb · **R9 mié 17-feb** · R6 vie 19-feb · R7 mar 23-feb · **X-1 jue 25-feb** · X-2 lun 1-mar · R3 mié 3-mar · R8 vie 5-mar · R2 mar 9-mar · X-3 jue
+> X-8 lun 15-feb · **M3 mié 17-feb** (d31; si la revista pide el permiso del CADI al formatear T-7, lun 21-dic, el email de 6 líneas se adelanta fuera del
+> bloque: decisión (c) de `DATA/PENDIENTES_JOSEPH.md`, bloque v6.05) · R6 vie 19-feb · R7 mar 23-feb · **X-1 jue 25-feb** · X-2 lun 1-mar · R3 mié 3-mar · R8 vie 5-mar · R2 mar 9-mar · X-3 jue
 > 11-mar · X-4 mié 17-mar · X-5 vie 19-mar · X-6 mar 23-mar (d42). Ciclo 2: R6b lun 29-mar · R8b mié 31-mar · **X-9 vie 2-abr** · R9b mar 6-abr · **R10
 > PROSPERO jue 8-abr** · K1 lun 12-abr · R18 (cribado) desde el jue 6-may · R22 sáb 22-may → R25 jue 3-jun · **R43 SUBMIT SR-1 sáb 31-jul** · R45 jue 26-ago ·
-> X-12 mar 31-ago · X-13 jue 2-sep · X-14 sáb 4-sep. Overlays 🔬 del Calendar: 12 «recrear» (`gen_research_calendar.js --check`; los aplica la fase del Calendar).
+> X-12 mar 31-ago · X-13 jue 2-sep · X-14 sáb 4-sep. Overlays 🔬 del Calendar: los 12 re-fechados con su id el dom 25-oct (`DATA/_v600/cal/CAL_V6.md` §18.2; `gen_research_calendar.js --check` = exit 0, 12/12 «nada»).
 > **🔴 Consecuencia editorial (v6.05):** C-6 (carta) mié 25-nov = **41 días** después del deadline interno ≤ 15-oct · CR-1 vie 27-nov y CR-2 mar 1-dic = **27 y 31
 > días** después del 31-oct · **el único día-Research antes del plazo es M1 (vie 30-oct): pedir el caso EN el mensaje al Dr. Ciro; no queda otro día-Research
 > antes del 31-oct para activar la fuente B** (se activa en C-3, mar 17-nov) · T-1 mié 11-nov = **42 días** después de «CEI expedita ≤ 30-sep» · R10 PROSPERO

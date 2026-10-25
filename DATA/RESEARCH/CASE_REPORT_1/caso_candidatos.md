@@ -8,7 +8,7 @@
 > partida de la conversación con el Dr. Ciro (ver `../MENTORES.md`, mensaje 1).
 >
 > **✅ v6.05 (sáb 24-oct-2026 · D1 del régimen lun 26-oct; Research ciclo 1 lun 26-oct → mar 23-mar): M1 (petición al Dr. Ciro) = vie 30-oct = el ÚLTIMO
-> día-Research antes del 31-oct** (no queda otro: pedir el caso en el propio M1) · seguimiento = vie 13-nov (d8, M3) · plazo de 3 semanas desde M1 = vie 20-nov
+> día-Research antes del 31-oct** (no queda otro: pedir el caso en el propio M1) · seguimiento = vie 13-nov (d8, día de R9; M3 —permiso del CADI— pasó al mié 17-feb-2027, tras la pausa) · plazo de 3 semanas desde M1 = vie 20-nov
 > (disparador: C-3, d9, mar 17-nov) · **sin caso → fuente B** (§2) · **CR-1 (caso elegido) = vie 27-nov (día del NBME 26) — 🔴 27 días DESPUÉS del 31-oct** ·
 > **CR-2 (consentimiento firmado) = mar 1-dic — 🔴 31 días DESPUÉS del 31-oct** · CR-8 paquete mar 12-ene · CR-9 SUBMIT jue 11-feb (sin cambio). Misma
 > recomendación: cerrar caso + consentimiento FUERA del átomo.

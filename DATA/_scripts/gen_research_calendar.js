@@ -52,7 +52,9 @@
  * 31-mar · R10 mar 6-abr · R43 jue 29-jul (todo el día). Lo rotulado «v6.02» como vigente en cr-caso / equipo / PROSPERO-SR1 pasa a «v6.03»
  * y lo de v6.02 a historial ⏸ (C-3 vie 13-nov / M1 lun 26-oct · CR-1 mié 25-nov / CR-2 vie 27-nov · X-9 lun 29-mar / R10 vie 2-abr). Al
  * próximo corrimiento: lo etiquetado «v6.03» en estos textos pasa a historial ⏸.
- * v6.05 (24-oct-2026 · corrimiento D1 = lun 26-oct; d1 Research = lun 26-oct; R9 pasa tras la pausa): M1 vie 30-oct · C-2 lun 9-nov · T-1 mié 11-nov ·
+ * v6.05 (24-oct-2026 · corrimiento D1 = lun 26-oct; d1 Research = lun 26-oct; M3 —email a Finlay, CADI— pasa tras la pausa, mié 17-feb-2027 = d31, y R9
+ *   —CRÍTICO, gate de R6— se queda el vie 13-nov = d8; el primer borrador decía «R9 pasa tras la pausa»; ninguno de los dos es overlay):
+ *   M1 vie 30-oct · C-2 lun 9-nov · T-1 mié 11-nov ·
  * C-6 mié 25-nov (=, texto) · CR-1 vie 27-nov (=, texto d13) · T-8 mar 29-dic (=, texto) · CR-8 mar 12-ene (=, texto d27) · CR-9 jue 11-feb (=, texto d29) ·
  * X-1 jue 25-feb · X-9 vie 2-abr · R10 jue 8-abr · R43 sáb 31-jul (todo el día). Lo rotulado «v6.03» como vigente en cr-caso / equipo / PROSPERO-SR1 pasa a
  * «v6.05» y lo de v6.03 a historial ⏸ (C-3 mar 17-nov / M1 mié 28-oct · CR-1 vie 27-nov / CR-2 mar 1-dic · X-9 mié 31-mar / R10 mar 6-abr). Las semanas

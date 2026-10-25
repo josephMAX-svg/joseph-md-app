@@ -7,7 +7,7 @@
 > (CEI/IRB) y (2) declaración de consentimiento parental + asentimiento. **Actualización 12-sep-2026:** el punto (2) YA
 > consta — la portada y la hoja "FLUJO PARTICIPANTES" de `D:\motor_apex\datos_tesis_acne.xlsx` registran un censo **solo con
 > consentimiento** (291 excluidas por no consentir: 271 padres + 20 alumnas) — ver 1.4-1.5 y §4. **Lo que sigue sin constar es
-> el nº y la fecha del CEI (1.1)**: por eso T-1 pasa a d7 (mié 30-sep-2026 en v5.10b; vie 2-oct-2026 en v5.11 y v5.12; mar 6-oct-2026 en v5.13; jue 8-oct-2026 en v5.14; lun 12-oct-2026 en v5.15; mié 14-oct-2026 en v5.16; mar 20-oct-2026 en v5.17; jue 22-oct-2026 en v5.18 y v5.19; lun 26-oct-2026 en v5.20 = v6.00; mié 28-oct-2026 en v6.01; **jue 5-nov-2026 en v6.02 (vigente)** — 🔴 36 días después del límite interno ≤ 30-sep) con la solicitud de revisión expedita presentada ese día
+> el nº y la fecha del CEI (1.1)**: por eso T-1 pasa a d7 (mié 30-sep-2026 en v5.10b; vie 2-oct-2026 en v5.11 y v5.12; mar 6-oct-2026 en v5.13; jue 8-oct-2026 en v5.14; lun 12-oct-2026 en v5.15; mié 14-oct-2026 en v5.16; mar 20-oct-2026 en v5.17; jue 22-oct-2026 en v5.18 y v5.19; lun 26-oct-2026 en v5.20 = v6.00; mié 28-oct-2026 en v6.01; jue 5-nov-2026 en v6.02; lun 9-nov-2026 en v6.03; **mié 11-nov-2026 en v6.05 (vigente)** — 🔴 42 días después del límite interno ≤ 30-sep) con la solicitud de revisión expedita presentada ese día
 > y T-7/T-8 llevan el gate "sin nº de CEI o exención NO se envía" (MD_MAESTRO L0 y MANUAL §10.1 solo dicen "envío a JAAD
 > International jun-jul 2026", que no ocurrió).
 > Todo lo marcado **A VERIFICAR (5-sep)** lo tiene que responder Joseph con el documento en la mano; no se
@@ -88,9 +88,11 @@ de salud de menores = datos sensibles → consentimiento del titular/representan
 ## 5. Calendario mínimo (paralelo a la carta al editor; 45' interdiarios)
 
 > **✅ v6.05 (24-oct-2026, vigente; `researchDailyPlan.ts` regenerado con START 2026-10-26, Research d1 lun 26-oct):** M1 (Dr. Ciro: vía CEI + 10 documentos)
-> **vie 30-oct** · **T-1 mié 11-nov (d7)** · M3 (permiso CADI) vie 13-nov · T-3 jue 3-dic · T-4 lun 7-dic · T-2 STROBE mié 9-dic · T-5 vie 11-dic · T-6 revisión
+> **vie 30-oct** · **T-1 mié 11-nov (d7)** · T-3 jue 3-dic · T-4 lun 7-dic · T-2 STROBE mié 9-dic · T-5 vie 11-dic · T-6 revisión
 > Dr. Ciro mar 15-dic · T-7 formateo + gates lun 21-dic · **T-8 SUBMIT mar 29-dic** (solo con nº de CEI/exención e inglés revisado; si no, cascada a
-> feb-2027) · PAUSA vie 15-ene → mié 10-feb. Fuente: `DATA/RESEARCH/RUTA_PUBLICACION_2027.md`, bloque v6.05.
+> feb-2027) · PAUSA vie 15-ene → mié 10-feb · M3 (permiso CADI) **mié 17-feb-2027** (d31, tras la pausa; si la revista lo pide al formatear T-7 —lun
+> 21-dic—, el email se adelanta fuera del bloque: decisión (c) de `DATA/PENDIENTES_JOSEPH.md`, bloque v6.05). Fuente: `DATA/RESEARCH/RUTA_PUBLICACION_2027.md`,
+> bloque v6.05.
 > **⏸ v6.03 (20-oct-2026, historial; `researchDailyPlan.ts` regenerado con START 2026-10-21, Research d1 jue 22-oct):** M1 (Dr. Ciro: vía CEI + 10 documentos)
 > **mié 28-oct** · **T-1 lun 9-nov (d7)** · M3 (permiso CADI) mié 11-nov · T-3 jue 3-dic · T-4 lun 7-dic · T-2 STROBE mié 9-dic · T-5 vie 11-dic · T-6 revisión
 > Dr. Ciro mar 15-dic · T-7 formateo + gates lun 21-dic · **T-8 SUBMIT mar 29-dic** (solo con nº de CEI/exención e inglés revisado; si no, cascada a
