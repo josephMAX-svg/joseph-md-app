@@ -1,6 +1,13 @@
-# 📋 REVISIÓN SEMANAL — sábado 07:15-07:45 · v6.04 (21-oct-2026: S01 el dom 25-oct 11:45 por la semana corrida · examen 25-oct → 43 semanas · ⏸ v6.03: D1 mié 21-oct · ⏸ v6.02: D1 lun 19-oct · ⏸ v6.01: lun 12-oct) · ⏸ cuerpo v5.20 re-fechado 6-oct-2026 (07:15-07:35)
+# 📋 REVISIÓN SEMANAL — sábado 07:15-07:45 · v6.05 (24-oct-2026: D1 lun 26-oct · S01 sáb 31-oct · 42 semanas · ⏸ v6.04: S01 dom 25-oct, 43 semanas · ⏸ v6.03: D1 mié 21-oct · ⏸ v6.02: D1 lun 19-oct · ⏸ v6.01: lun 12-oct) · ⏸ cuerpo v5.20 re-fechado 6-oct-2026 (07:15-07:35)
 
-> **📌 v6.04 (21-oct-2026, vigente):** el ritual y las métricas no cambian. **S01** (cubre jue 22 → dom 25, la semana corrida) va el **dom 25-oct 11:45-12:15**
+> **📌 v6.05 (24-oct-2026, vigente):** el ritual y las métricas no cambian. Del lun 19 al dom 25-oct no hubo estudio → **D1 = lun 26-oct** y la
+> **S01 es el sáb 31-oct 07:15** (`S01_2026-10-31.md`, S1/42, cubre lun 26 → vie 30-oct, hito UWSA1 lun 26). El **sáb 24 y el dom 25-oct no tienen revisión**
+> (`gen_revision_semanal.js` no escribe nada en un día de `corrida_s1.sin_sesion`; `--forzar` lo salta). `STEP1_SEMANAS` = **42**: S04 sáb 21-nov · S05 sáb 28-nov
+> (NBME 26 vie 27-nov) · **S06 sáb 5-dic = DELOAD** · **S10 sáb 2-ene = DELOAD + auditoría del NBME 28 (D47, mié 30-dic)** · S13 sáb 23-ene (PAUSA · ENCAPS) ·
+> S21 sáb 20-mar = S11/42 … **S52 sáb 23-oct-2027 = S42/42** (día del ritual). Gates mié 18-nov / mié 16-dic; NBME 25/26/27 vie 6-nov / 27-nov / 18-dic.
+> En F4 la serie «📋 Revisión semanal 20'» es `55474jts1urh7s9j1nrtdkvfdg` (sáb 8-may → sáb 16-oct-2027, `CAL_V6.md` §16).
+>
+> **⏸ v6.04 (21-oct-2026; historial, lo corrige el bloque v6.05):** el ritual y las métricas no cambian. **S01** (cubre jue 22 → dom 25, la semana corrida) va el **dom 25-oct 11:45-12:15**
 > (instancia movida en el Calendar, `DATA/_v600/cal/CAL_V6.md` §15); desde el sáb 31-oct, sáb 07:15 como siempre. Con el examen Step 1 el **lun 25-oct-2027**,
 > `STEP1_SEMANAS` = **43** (`gen_revision_semanal.js` lo lee de `fechasV6`): S22 sáb 20-mar = S12/43 … S49 sáb 25-sep = S39/43 … **S53 sáb 23-oct = S43/43**
 > (día del ritual). En F4 la serie «📋 Revisión semanal 20'» `69tr6hqitr5fnanc2af5kvugnk` termina aún el sáb 18-sep: alargarla al **sáb 16-oct** está pendiente
