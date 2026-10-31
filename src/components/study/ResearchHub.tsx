@@ -12,7 +12,9 @@ import {
   INFRA_ACADEMICA, loadEntregables, saveEntregables, estadoDe, calcResearchKpis,
   Entregable, EstadoEntregable, EntregablesRegistro, EntregableRegistro, ResearchKpis,
 } from '../../lib/researchData';
-import { RESEARCH_RECURSOS_TOP, RESEARCH_MAESTRIA, REC, RESEARCH_HITOS, PISTA_INFO, DAILY_META } from '../../lib/researchDailyPlan';
+import { RESEARCH_RECURSOS_TOP, RESEARCH_MAESTRIA, REC, RESEARCH_HITOS, PISTA_INFO, DAILY_META, DIAS } from '../../lib/researchDailyPlan';
+/** v6.06 (31-oct-2026): d del átomo R0 en el plan vigente (M1 pasó a d1 → R0 = d2); antes «D1 del plan» escrito. */
+const R0_DIA = DIAS.find((x) => x.code === 'R0');
 import { pullEntregables, pushEntregable, aplicarCambio, EntregableRegistroSync, TABLA_ENTREGABLES } from '../../lib/researchEntregablesSync';
 import { loadDone, saveDone } from '../../lib/studyProgress';
 import { researchObsUrlEntregable } from '../../lib/obsidianResearchMap';
@@ -330,7 +332,7 @@ function InfraChecklist({ done, onToggle }: { done: Set<number>; onToggle: (n: n
       </View>
       <ProgressBar pct={pct} color={pct === 100 ? InkColors.jade : TEAL} />
       <Text style={[st.smallNote, { marginTop: 6, marginBottom: 6 }]}>
-        Átomo R0 (D1 del plan). Cada cuenta son 10-15 min; se descubren faltantes el día del submit si no están.
+        Átomo R0 (d{R0_DIA ? R0_DIA.d : 1} del plan{R0_DIA ? ` · ${R0_DIA.fecha}` : ''}). Cada cuenta son 10-15 min; se descubren faltantes el día del submit si no están.
         Guarda los IDs (ORCID iD, CTI Vitae) en DATA/RESEARCH/MENTORES.md §Identificadores.
       </Text>
       {INFRA_ACADEMICA.map((it) => {

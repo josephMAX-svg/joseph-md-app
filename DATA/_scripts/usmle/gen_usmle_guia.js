@@ -1,13 +1,13 @@
 /**
- * gen_usmle_guia.js — genera src/lib/usmleGuia.ts: la GUÍA «qué · cuánto · cómo» de CADA franja del Step 1 en F1 (D1-D47 en la v6.05 + fines de
- * semana) y, v6.05b, de las filas de F1 DESPLAZADAS al tramo 2 (T3-T13 + el NBME 29 de T2 y los días de cola de vídeo T14-T18, plantilla F3),
+ * gen_usmle_guia.js — genera src/lib/usmleGuia.ts: la GUÍA «qué · cuánto · cómo» de CADA franja del Step 1 en F1 (D1-D42 en la v6.06 + fines de
+ * semana) y, v6.05b, de las filas de F1 DESPLAZADAS al tramo 2 (v6.06: T3-T18 + el NBME 29 de T2 y los días de cola de vídeo T19-T23, plantilla F3),
  * en el formato común `GuiaBloque` de src/lib/guia.ts.
  *   node DATA/_scripts/usmle/gen_usmle_guia.js            → escribe src/lib/usmleGuia.ts (aborta si un bloque no cuadra)
  *   node DATA/_scripts/usmle/gen_usmle_guia.js --check    → regenera en memoria y compara con el fichero (exit 1 si difiere)
  *   node DATA/_scripts/usmle/gen_usmle_guia.js --informe <ruta.md>  → además escribe la tabla de la semana 1 + el reparto F1
  * Entradas (nada a mano en el .ts):
  *   · las filas REALES de F1 (src/lib/usmleStep1Daily.ts vía cargar_ts.js: fechas, D#, sub, nivelUW, qDia, palm) — este script NO
- *     cambia fechas, D#, hitos ni niveles (el plan vigente de _fechas_v6.json, hoy v6.05, intacto);
+ *     cambia fechas, D#, hitos ni niveles (el plan vigente de _fechas_v6.json, hoy v6.06, intacto);
  *   · catálogos verificados el 18-oct-2026: DATA/USMLE/qbankly_bb_step1_videos.tsv (491 vídeos B&B con duración) ·
  *     qbankly_uworld_step1_filtros.tsv (13 Subjects + 169 Systems con nº de preguntas) · qbankly_uworld_step1_matriz.tsv (Subject × System) ·
  *     qbankly_mehlman_step1_sistemas.tsv (respaldo) · qbankly_hitos_step1.tsv (UWSA/NBME: bloques reales) · STUDY_HUB/_scrape/qbankly_libs_full.json;
@@ -57,6 +57,13 @@
  *   fuera) · catálogo: guia_catalogo_f1.js + D52-D54, D56, D57, D79 (nuevos) · SUBTEMA APEX del tramo 2 con el D# v5.20 (47_…, 65_nbme29) · la
  *   bioestadística a ::Biostatistics · consolidación de nivel 4 (viernes N4 del tramo 2; F1 no tiene). F1: solo cambian los avisos del D45/D46
  *   (destino explícito T4-T6 en vez de «→ TRAMO 2»). Controles: verificar_v6.js «guía USMLE».
+ * v6.06 (31-oct-2026): corrimiento del D1 lun 26-oct → lun 2-nov (la semana del 26-oct sin estudio; F1 = 42 filas, lun 2-nov → mié 30-dic).
+ *   Sin cambio de lógica: mismo guion por D# (D1 lun 2-nov UWSA1 08:50-13:00 · 07:15 localizar · 07:25 SYNAPSE · 07:55 vídeo de método +
+ *   peor escenario · Day-After 1/6 a las 18:00 · D2 mar 3 · D3 mié 4 · D4 jue 5 · D5 vie 6-nov · sáb 7 / dom 8-nov = solo Anki). El NBME 27
+ *   pasa al D35 vie 18-dic (gen_tramo2.slotsHitosF1: Day-After completo antes del NBME 28) y su Day-After 2/6-6/6 cae en D36-D39 (lun 21 → jue
+ *   24-dic) por la misma regla trasHito (n ≤ 4). Las 16 desplazadas (v5.20 D42 Endocrino, D43-D50 Neuro, D51-D54, D56, D57 Heme/Onco, D79)
+ *   llevan su guía en T3-T18; la cola al cierre de F1 (Endocrino del D38-D41: B&B suprarrenal/DM + Palmerton High Yield Endocrinology) se ve
+ *   en T4-T5 y lo que deja T18 en los días de cola T19-T23 (07:15-07:45). Nada a mano: todo sale de las filas y de colocarF1.
  * v6.03b (20-oct-2026): MÉTODO ANKI · APEX dentro de los pasos existentes (mismas franjas, mismos minutos por bloque), según
  *   DATA/USMLE/METODO_ANKI_APEX_USMLE.md (Palmerton vía NotebookLM con citas + Tutorías MI + PALMERTON_*.md): D1 05:00 = configuración
  *   EXACTA (preset «APEX USMLE» en el padre + «Save to All Subdecks»: FSRS 0,90 · 20 nuevas/día · 9999 repasos/día · repasos antes que
@@ -940,6 +947,9 @@ const cab = `/**
  * v6.05b (24-oct-2026): la cola al cierre de F1 con destino explícito en el tramo 2 (colaAlCierreF1Destino) · guía de las filas desplazadas de
  *   F1 en su fecha T con el mismo guion por D# + 16:15 REENTRADA y el NBME 29 con su Day-After (guiaTramo2) · días de cola de vídeo 07:15-07:45
  *   (colaTramo2) · colaAlCierreTramo2 = [] siempre.
+ * v6.06 (31-oct-2026): D1 = lun 2-nov (la semana del 26-oct sin estudio) · F1 = 42 filas · mismo guion por D# (D1 UWSA1 lun 2 · D2 mar 3 ·
+ *   D3 mié 4 · D4 jue 5 · D5 vie 6-nov · sáb 7 / dom 8-nov solo Anki) · NBME 27 = D35 vie 18-dic (Day-After D36-D39, antes del NBME 28) ·
+ *   16 desplazadas con guía en T3-T18 · cola de vídeo del cierre de F1 → T4-T5 · días de cola T19-T23 · nada se recorta.
  */
 import type { GuiaBloque } from './guia';
 import { franjaDentro } from './guia';

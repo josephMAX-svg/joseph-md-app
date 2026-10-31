@@ -30,6 +30,8 @@ import { guiaResearchDe, GUIA_RESEARCH_MINIMO } from '../../lib/researchGuia';
  * R17-R26 del ciclo 2: horas por revisor FUERA del bloque 13:30 (el átomo de 45 min coordina y cierra; no toca el Calendar).
  * v6.02c (18-oct-2026, E4): HOY → «🧭 Guía del bloque» = GuiaBloqueCard con la guía del átomo (researchGuia.guiaResearchDe: paso a paso en
  * R0 · R1 · M1 · C-1 · M2; el resto desde las 5 franjas · F4 30′) y la guía de 30′ en los días-Research de la pausa (GUIA_RESEARCH_MINIMO).
+ * v6.06 (31-oct-2026 · corrimiento D1 = lun 2-nov): ciclo 1 mar 3-nov → vie 2-abr · ciclo 2 mar 6-abr → sáb 11-sep-2027 (fechas desde DAILY_META /
+ * DAILY_META_2027, generadas; nada se recorta: M1 pasa a d1 —su plazo del 31-oct venció— y CR-6 → CR-8 van tras la pausa, delante del SUBMIT CR-9).
  * v6.05 (24-oct-2026 · corrimiento D1 = lun 26-oct): ciclo 1 lun 26-oct → mar 23-mar · ciclo 2 lun 29-mar → sáb 4-sep-2027 (fechas desde
  * DAILY_META / DAILY_META_2027, generadas; nada se recorta: R9 pasa tras la pausa, delante de R6).
  * v6.03 (20-oct-2026 · corrimiento D1 = mié 21-oct): ciclo 1 jue 22-oct → vie 19-mar · ciclo 2 mar 23-mar → jue 2-sep-2027 (fechas desde

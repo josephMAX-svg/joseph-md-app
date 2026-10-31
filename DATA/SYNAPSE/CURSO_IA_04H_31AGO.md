@@ -1,6 +1,19 @@
-# 🧠 FRANJA 04:15–05:45 (v5.2 · serie desde lun 31-ago-2026 · D1 efectivo LUN 26-OCT-2026, v6.05 · ⏸ v6.03: mié 21-oct (corrido por alias al jue 22-oct, v6.04) · ⏸ v6.02: lun 19-oct · ⏸ v6.01: lun 12-oct · ⏸ v5.20/v6.00: mié 7-oct) — IA VIBECODING + ANKI AM
+# 🧠 FRANJA 04:15–05:45 (v5.2 · serie desde lun 31-ago-2026 · D1 efectivo LUN 2-NOV-2026, v6.06 · ⏸ v6.05: lun 26-oct · ⏸ v6.03: mié 21-oct (corrido por alias al jue 22-oct, v6.04) · ⏸ v6.02: lun 19-oct · ⏸ v6.01: lun 12-oct · ⏸ v5.20/v6.00: mié 7-oct) — IA VIBECODING + ANKI AM
 
-> **✅ v6.05 VIGENTE (sáb 24-oct-2026) — D1 = LUN 26-OCT-2026.** Del lun 19 al dom 25-oct no hubo estudio; orden de Joseph: «todo inicia el lunes 26 … no quites
+> **✅ v6.06 VIGENTE (sáb 31-oct-2026) — D1 = LUN 2-NOV-2026.** La semana del lun 26-oct tampoco se estudió; orden de Joseph: «reestructura todo a partir del 2 de
+> noviembre … corre nada más, corre también las fechas límite … para no perder materias, tan solamente corre». Secundarios +5 hábiles sobre v6.05, contenido intacto
+> (`node DATA/_scripts/gen_vibecoding_plan.js 2026-11-02` → `node DATA/_scripts/gen_synapse_plan.js 2026-11-02`):
+> - **Vibecoding (04:15, 45')**: **95 días lun 2-nov-2026 → vie 19-mar-2027**. S1-S12 = bloques lun → vie (S1 lun 2 → vie 6-nov, **SHIP sáb 7-nov** … S7 lun 14 →
+>   vie 18-dic · S8 lun 21 → lun 28-dic por el feriado del 25-dic —sáb 26-dic = AVANCE S8— · S9 mar 29-dic → mié 6-ene · S10 jue 7 → mié 13-ene · S11 jue 14 → mié
+>   20-ene · S12 jue 21 → mié 27-ene, SHIP sáb 30-ene) + taper S13-S20 jue 28-ene → vie 19-mar (S15 y S16 cierran el sáb 20-feb → PC propio de S16 el sáb 27-feb).
+>   REGLA NUEVA: los PROTEGIDOS (vie 12 y lun 15-mar) no son hábiles del vibecoding → S19 = lun 8 → jue 11-mar + mar 16-mar y S20 = mié 17 → vie 19-mar, ya en F3
+>   (deload total, journal 5'; nada se comprime). S19 y S20 sin PC. Revisiones citadas por el catálogo: S04_2026-11-28 (SHIP S4) · S05_2026-12-05 (SHIP S5) ·
+>   S13_2027-01-30.
+> - **SYNAPSE (12:30, 30')**: 135 días lun 2-nov → **mar 16-mar-2027** (vie 12 → lun 15-mar PROTEGIDOS sin SYNAPSE; la última A-unit el mar 16-mar, F3); el día del
+>   UWSA1 (lun 2-nov) a las 07:25 y los días de NBME (vie 13-nov · vie 4-dic · vie 18-dic · mié 30-dic) y de SIM 100Q 11:00 (vie 26-feb · vie 5-mar) a las 13:00.
+> - **ANKI AM (05:00)**: desde el lun 2-nov; del lun 19-oct al dom 1-nov sin Anki ni revisión (días sin sesión). Examen Step 1 lun 25-oct-2027 (sin cambio).
+
+> ⏸ **v6.05 (historial; sáb 24-oct-2026) — D1 = LUN 26-OCT-2026.** Del lun 19 al dom 25-oct no hubo estudio; orden de Joseph: «todo inicia el lunes 26 … no quites
 > temas, solamente corre lo que está faltando». La semana corrida por alias v6.04a queda SIN EFECTO (corrida_s1 solo marca sin sesión 19 → 25-oct). Secundarios
 > +3 hábiles sobre v6.03, contenido intacto (`node DATA/_scripts/gen_vibecoding_plan.js 2026-10-26` → `node DATA/_scripts/gen_synapse_plan.js 2026-10-26`):
 > - **Vibecoding (04:15, 45')**: **95 días lun 26-oct-2026 → mié 10-mar-2027**. S1-S12 = bloques lun → vie (S1 lun 26 → vie 30-oct, **SHIP sáb 31-oct**, sin

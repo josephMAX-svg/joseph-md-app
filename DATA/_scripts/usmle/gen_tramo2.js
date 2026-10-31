@@ -11,12 +11,14 @@
  *        [--permitir-deficit]        solo para explorar escenarios: sin él, un déficit ABORTA (exit 2) — R1: nunca se recorta
  *        [--pendientes-f1 d1,d2,…]   disparador (f) cierre de F1 (jue 31-dic, tras el último día de F1 = mié 30-dic): d de F1 (el slot,
  *                                    la clave de plan_checks('usmle', d); 1-f1Filas, sin hitos) sin ✓; su contenido = la COLOCACIÓN de F1
- *                                    (colocarF1). v6.05: d 1-47 (d 1-46 = v5.20 D1-D46 · d 47 = NBME 28, hito: no se recupera) ·
+ *                                    (colocarF1). v6.06: d 1-42 (d 1-34 = v5.20 D1-D34 · d 35 = NBME 27, hito · d 36-40 = v5.20 D35-D39 ·
+ *                                    d 41 = v5.20 D41 · d 42 = NBME 28, hito: no se recuperan) ·
+ *                                    v6.05: d 1-47 (d 1-46 = v5.20 D1-D46 · d 47 = NBME 28, hito: no se recupera) ·
  *                                    v6.03/v6.04: d 1-50 (d 1-49 = v5.20 D1-D49 · d 50 = NBME 28, hito: no se recupera) ·
  *                                    v6.02: d 1-52 (d 1-51 = v5.20 D1-D51 · d 52 = NBME 28, hito: no se recupera) ·
  *                                    v6.01: d 1-57 = D1-D57 · v6.00: d ≤ 58 sin ✓ tras C1/C2. Un d > --f1-filas (hasta 58) no es un slot
  *                                    de F1 y se ignora (v6.01: la 58 = D79 ya va en el tramo 2 como desplazada; no se duplica)
- *                                    NBME 28 (v6.05 d 47 · v6.03 d 50 · v6.02 d 52, mié 30-dic) — SIN day-after en F1 (jue 31-dic = SKIP, pausa): la revisión de
+ *                                    NBME 28 (v6.06 d 42 · v6.05 d 47 · v6.03 d 50 · v6.02 d 52, mié 30-dic) — SIN day-after en F1 (jue 31-dic = SKIP, pausa): la revisión de
  *                                    errores + Anki de gaps del propio NBME 28 va el mismo 30-dic (lo dice su sub: «+ revisión de errores +
  *                                    Anki de gaps») y su auditoría (day-after Palmerton) va en la revisión semanal S11 del sáb 2-ene-2027.
  *                                    Si se PIERDE el mié 30-dic, el NBME 28 NO se borra ni pasa al tramo 2 (es un hito: este disparador lo
@@ -25,12 +27,33 @@
  *                                    ese caso pasa de las 07:15 a las 13:30 (después del examen). Solo documentación: ninguna fila cambia
  *                                    (ni de F1 ni del tramo 2).
  *        [--f1-filas N]              v6.01: filas (slots) de TEMARIO de F1 antes de la pausa (por defecto min(f1.dias, 58) del JSON;
- *                                    v6.00 = 58 · v6.01 = 57 · v6.02 = 52 · v6.03 = 50 · v6.05 = 47). Lo que no cabe lo decide colocarF1 (abajo): las ÚLTIMAS
+ *                                    v6.00 = 58 · v6.01 = 57 · v6.02 = 52 · v6.03 = 50 · v6.05 = 47 · v6.06 = 42). Lo que no cabe lo decide colocarF1 (abajo): las ÚLTIMAS
  *                                    filas de temario NO-hito del orden D1-D57 · D79 son DESPLAZADAS: van SIEMPRE a la cabeza de la
  *                                    cola-adelante como contenido con su dOrig, en orden v5.20 (entran en V1)
  *        [--congelar-hasta AAAA-MM-DD --previo previo.json [--examen-previo AAAA-MM-DD] [--pendientes uid1,uid2]]
+ *        [--rotacion-9]              v6.06 (fix): 16:15 REENTRADA con la rotación FIJA de los 9 sistemas (la de v6.00-v6.05). Solo para
+ *                                    reproducir byte a byte las referencias v6.03 / v6.04 / v6.05 (las v6.00-v6.02 salen iguales sin él:
+ *                                    su F1 tenía los 9 sistemas). gen_usmle_v5.js lo rechaza fuera de --seco.
  *     Sin posicionales, ENCAPS / EXAMEN / SERUMS salen de DATA/_scripts/_fechas_v6.json (encaps.examen · step1.examen · serums.inicio).
  *
+ * v6.06 (fix, 31-oct-2026): 16:15 REENTRADA de F3 con la ROTACIÓN REAL (sistemasRotacionF1 + sistemaRot(s) en el render). La rotación y el
+ *   texto de T1 suponían «los 9 sistemas de F1», pero la F1 v6.06 tiene 7 (sin Nervous System ni Hematology & Oncology, que van enteros al
+ *   tramo 2, T4-T11 y T12-T17) → T8 mar 29-mar rotaba a Nervous System y T9 mar 30-mar a «20Q timed de Hematology & Oncology» antes de
+ *   estudiarlos. Ahora la rotación (mismo orden SISTEMAS_ROT_16) solo usa los sistemas que F1 estudia y añade cada desplazado en la fila
+ *   siguiente a su ÚLTIMA fila T de contenido de F1 (v6.06: Nervous System tras T11 jue 1-abr → T15 mié 7-abr · Hematology & Oncology tras
+ *   T17 vie 9-abr → T24 mar 20-abr); T1 dice «de los 7 sistemas de F1» (sub y uw). Con los 9 sistemas en F1 (v6.00-v6.02) la salida no
+ *   cambia; v6.03-v6.05 (sin Heme/Onco en F1) se reproducen con --rotacion-9. Misma regla, con código propio, en ref_v6/gen_tramo2_ref.js;
+ *   control nuevo en verificar_v6.js («la 16:15 no rota a un sistema aún no estudiado»). Referencia: tramo2_14mar_25oct_v606.json regenerada.
+ * v6.06 (31-oct-2026): corrimiento D1 lun 26-oct → lun 2-nov (la semana del 26-oct no se estudió; Joseph: «corre nada más, con una
+ *   semana: lo que era la semana anterior, esta semana; no hay necesidad de reestructurar; para no perder materias, tan solamente corre»).
+ *   F1 = 42 hábiles y REGLA NUEVA en la colocación (slotsHitosF1, «DAY-AFTER COMPLETO»): con la regla v6.02 el NBME 27 quedaba en el slot
+ *   40 (lun 28-dic) y su Day-After (las 4 filas siguientes, 6 franjas) chocaba con el NBME 28 del slot 42 → se adelanta una semana de plan
+ *   (5 filas) al slot 35 = vie 18-dic (la misma fecha que en la v6.05; Day-After lun 21 → jue 24-dic). colocarF1(42) → d 1-34 = v5.20 D1-D34
+ *   · d 35 = NBME 27 · d 36-40 = v5.20 D35-D39 · d 41 = v5.20 D41 · d 42 = NBME 28 · DESPLAZADAS 16 = D42 (Endocrino), D43-D50 (Neuro),
+ *   D51-D54, D56, D57 (Heme/Onco) y D79, a la cabeza de la cola: T3 jue 18-mar … T18 lun 12-abr. Examen y fechas del tramo 2 sin cambio; la
+ *   cola-adelante corre 5 unidades (contenido hasta T53 mié 26-may, refuerzo T54-T58, reactivación T59-T101 mié 21-jul) y el COLCHÓN baja de
+ *   42 a 32 filas (≈ 110 → 84 h; 21 en sábados). Con N ≥ 45 la regla nueva no mueve nada: las referencias v6.00-v6.05 salen byte a byte.
+ *   Referencia: tramo2_14mar_25oct_v606.json (= ref_v6/gen_tramo2_ref.js 2027-03-14 2027-10-25 --f1-filas 42).
  * v6.05 (24-oct-2026): corrimiento D1 mié 21-oct → lun 26-oct (la semana del 19 no se estudió; Joseph: «todo inicia el lunes 26; puedes
  *   correr los horarios y alargar los plazos, pero no quites temas»). F1 = 47 hábiles con la MISMA regla (sin cambio de lógica):
  *   colocarF1(47) → slots 1-46 = v5.20 D1-D46 · slot 47 = v5.20 D55 (NBME 28, mié 30-dic) · DESPLAZADAS 11 = D47, D48, D49, D50 (Neuro),
@@ -156,6 +179,34 @@ const ORIGEN_F1_TEMARIO = [...Array.from({ length: 57 }, (_, i) => i + 1), 79];
 const F1_FILAS_V600 = ORIGEN_F1_TEMARIO.length; // 58 (v6.00: todo el temario de F1 cabía; D58 = D79)
 /** Filas de F1 en su orden: temario (D1-D57 · D79) + C1/C2 (colchón F1, sin temario). */
 const ORIGEN_F1 = [...ORIGEN_F1_TEMARIO, 'C1', 'C2'];
+/** v6.06 · filas de plan tras un hito NBME que ocupa su DAY-AFTER (Palmerton §9.2, 6 franjas: 1/6 las 18:00 del hito · 2/6 07:15 y 3/6
+ *  18:00 de la fila siguiente · 4/6-6/6 las 18:00 de las 3 siguientes = gen_usmle_guia.js trasHito, n ≤ 4). */
+const DAY_AFTER_FILAS = 4;
+/** v6.06 · filas de una semana de plan L-V: los hitos v5.20 de F1 (D10, D25, D40, D55) cierran una semana de plan (D# múltiplo de 5). */
+const SEMANA_PLAN = 5;
+/**
+ * v6.06 · SLOT de cada hito de F1 (regla de Joseph: un hito de F1 nunca sale de F1) en n slots — función ÚNICA (colocarF1 · gen_usmle_v5
+ * la comprueba · la referencia ref_v6/gen_tramo2_ref.js la reimplementa con código propio):
+ *   (1) base (v6.02): hito k-ésimo (de H) → min(su D#, n − (H − 1 − k)) — conserva su D# si cabe; si no, los últimos slots en orden;
+ *   (2) v6.06 · DAY-AFTER COMPLETO: de atrás adelante (k = H − 2 … 0), si el Day-After del hito k (sus DAY_AFTER_FILAS filas siguientes)
+ *       alcanzaría al hito k + 1, el hito k se ADELANTA semanas de plan enteras (SEMANA_PLAN filas: conserva su sitio en la semana, el
+ *       cierre de la semana de plan) hasta que su Day-After termine antes del hito k + 1. El último hito (NBME 28) no tiene Day-After en F1
+ *       (jue 31-dic = SKIP: su revisión va el mismo día y su auditoría en la revisión semanal del sáb 2-ene). Si un hito no cabe con su Day-After
+ *       completo (n demasiado pequeño), lanza: no se rompe un Day-After ni se recorta un hito.
+ *   Con n ≥ 45 (v6.00-v6.05) (2) no mueve nada · n = 42 (v6.06): base 1 · 10 · 25 · 40 · 42 → el NBME 27 (slot 40 = lun 28-dic) tendría su
+ *   Day-After en 41-44 y el NBME 28 está en el 42 → se adelanta al slot 35 (vie 18-dic; Day-After lun 21 → jue 24-dic, antes del NBME 28).
+ * @param {number} n slots de F1 · @param {number[]} hitos D# v5.20 de los hitos de F1, en orden (D1, D10, D25, D40, D55)
+ * @returns {number[]} slot (1-n) de cada hito, en el mismo orden
+ */
+function slotsHitosF1(n, hitos) {
+  const H = hitos.length;
+  const s = hitos.map((d, k) => Math.min(ORIGEN_F1_TEMARIO.indexOf(d) + 1, n - (H - 1 - k)));
+  for (let k = H - 2; k >= 0; k--) {
+    while (s[k] + DAY_AFTER_FILAS >= s[k + 1]) s[k] -= SEMANA_PLAN;
+    if (s[k] < 1 || (k > 0 && s[k] <= s[k - 1])) throw new Error(`colocarF1: con ${n} slots el hito v5.20 D${hitos[k]} no cabe con su Day-After (${DAY_AFTER_FILAS} filas) completo antes del D${hitos[k + 1]}`);
+  }
+  return s;
+}
 /**
  * v6.02 · COLOCACIÓN de F1 en n slots (regla de Joseph: un hito de F1 nunca sale de F1; las desplazadas = las ÚLTIMAS filas de
  * temario no-hito). Hito k-ésimo (de H) → slot min(su posición en ORIGEN_F1_TEMARIO = su D#, n − (H − k)): conserva su D# si cabe y,
@@ -164,6 +215,10 @@ const ORIGEN_F1 = [...ORIGEN_F1_TEMARIO, 'C1', 'C2'];
  * colchón / v6.01 (hitos ya en su D#); con n = 52 (v6.02): slots 1-51 = v5.20 D1-D51 · slot 52 = v5.20 D55 (NBME 28) ·
  * desplazadas D52, D53, D54, D56, D57, D79; con n = 50 (v6.03): slots 1-49 = v5.20 D1-D49 · slot 50 = v5.20 D55 · desplazadas D50-D54,
  * D56, D57, D79; con n = 47 (v6.05): slots 1-46 = v5.20 D1-D46 · slot 47 = v5.20 D55 · desplazadas D47-D54, D56, D57, D79.
+ * v6.06: el slot de cada hito lo da slotsHitosF1 (abajo: + regla del DAY-AFTER completo antes del siguiente hito). Con n = 42 (v6.06):
+ * slots 1-34 = v5.20 D1-D34 · slot 35 = v5.20 D40 (NBME 27, adelantado una semana de plan: en el slot 40 su Day-After chocaba con el
+ * NBME 28 del slot 42) · slots 36-40 = v5.20 D35-D39 · slot 41 = v5.20 D41 · slot 42 = v5.20 D55 (NBME 28) · desplazadas D42-D54, D56,
+ * D57, D79 (16). Con n ≥ 45 la regla nueva no mueve nada (v6.00-v6.05 salen idénticas).
  * @param {number} n slots de F1 (gen_usmle_v5: f1.dias · generarTramo2: f1Filas ≤ 58)
  * @param {object} [byD] filas v5.20 por D (por defecto el dias_v520.json congelado) — decide qué es hito (sub «🎯…»)
  * @returns {{ enF1: (number|string)[], desplazadas: number[], consumido: string[], f1Filas: number, hitos: number[] }}
@@ -173,7 +228,7 @@ function colocarF1(n, byD = Object.fromEntries(cargarV520().map((x) => [x.d, x])
   const hitos = ORIGEN_F1_TEMARIO.filter(esHito);
   if (!(Number.isInteger(n) && n >= hitos.length && n <= ORIGEN_F1.length)) throw new Error(`colocarF1: ${n} slots (válido ${hitos.length}-${ORIGEN_F1.length}: los ${hitos.length} hitos de F1 siempre caben)`);
   const enF1 = new Array(n).fill(null);
-  hitos.forEach((d, k) => { enF1[Math.min(ORIGEN_F1_TEMARIO.indexOf(d) + 1, n - (hitos.length - 1 - k)) - 1] = d; });
+  slotsHitosF1(n, hitos).forEach((s, k) => { enF1[s - 1] = hitos[k]; });
   const resto = ORIGEN_F1.filter((o) => !esHito(o));
   let i = 0;
   for (let s = 0; s < n; s++) if (enF1[s] === null) enF1[s] = resto[i++];
@@ -183,8 +238,12 @@ function colocarF1(n, byD = Object.fromEntries(cargarV520().map((x) => [x.d, x])
 /** dOrig de v5.20 que el tramo 2 debe cubrir (20 contenido + 7 hitos + 10 banco/sprint) con F1 completa (v6.00: D79 vive en F1 = D58).
  *  v6.01: + las desplazadas de F1 (generarTramo2 → `esperados`). */
 const DORIG_ESPERADOS = [...CONT, 65, 72, 77, 82, 83, 85, 87, 84, 86, 88, 89, 90, 91, 92, 93, 94, 95];
-const sistemaRot = ['Cardiovascular', 'Respiratory', 'Renal', 'Gastrointestinal', 'Endocrine', 'Nervous System', 'Hematology & Oncology', 'Fundamentos', 'Immunology'];
-// valores por defecto de los campos de DiaUSMLE en filas SIN dOrig (§B3, tabla de defaults)
+/** Sistemas de la 16:15 REENTRADA de F3, en su orden de rotación (§B3). v6.06 (fix): la rotación usa solo los que F1 tiene de verdad
+ *  (sistemasRotacionF1) y cada sistema desplazado entra DESPUÉS de su última fila T (rotacion16); con --rotacion-9, los 9 fijos de antes. */
+const SISTEMAS_ROT_16 = ['Cardiovascular', 'Respiratory', 'Renal', 'Gastrointestinal', 'Endocrine', 'Nervous System', 'Hematology & Oncology', 'Fundamentos', 'Immunology'];
+const RX_ROT_16 = /16:15 REENTRADA: 20Q timed de (.+?) \+ revisión/;
+// valores por defecto de los campos de DiaUSMLE en filas SIN dOrig (§B3, tabla de defaults) · v6.06 (fix): el nº de sistemas de la reentrada
+// (uw y sub de T1) lo pone el render con el número REAL de sistemas de F1 (nSisF1; «9» con --rotacion-9)
 const DEF = {
   reentrada: { system: 'Reentrada', tier: 'CORE', bbCh: 'Repaso mixto F1', bbVid: '—', uw: 'AMBOSS timed mixto (9 sistemas F1) + incorrectas uWorld', mat: 'AMBOSS + uWorld + Anki', matType: 'clin', palm: null },
   hitoUWSA3: { system: 'Assessment', tier: 'CORE', bbCh: 'Assessment', bbVid: '—', uw: 'uWorld Self-Assessment 3', mat: 'uWorld UWSA3', matType: 'clin', palm: null },
@@ -200,13 +259,25 @@ const DEF = {
 };
 const CAMPOS_V520 = ['system', 'tier', 'bbCh', 'bbVid', 'uw', 'mat', 'matType', 'palm'];
 const NOTA_V6 = { 72: 'v6: punto de control de la reactivación (ya no cierra la Fase A)', 82: 'v6: la decisión GO/NO-GO es en E-49, tras el NBME 32' };
+/**
+ * v6.06 (fix) · sistemas de la rotación 16:15 que F1 ESTUDIA de verdad: los de SISTEMAS_ROT_16 con al menos un slot de temario (no hito)
+ * en F1 que no esté pendiente (--pendientes-f1). v6.06: Cardiovascular · Respiratory · Renal · Gastrointestinal · Endocrine · Fundamentos ·
+ * Immunology (7: Nervous System y Hematology & Oncology van enteros al tramo 2) · v6.00-v6.02: los 9.
+ * @param {(number|string)[]} enF1 colocación de F1 (colocarF1().enF1) · @param {object} byD filas v5.20 por D · @param {number[]} [pendF1] d sin ✓
+ * @returns {Set<string>}
+ */
+function sistemasRotacionF1(enF1, byD, pendF1 = []) {
+  return new Set(enF1.map((o, i) => (typeof o === 'number' && !/^🎯/.test(byD[o].sub) && !pendF1.includes(i + 1) ? byD[o].system : null))
+    .filter((s) => SISTEMAS_ROT_16.includes(s)));
+}
 
 /**
  * Genera el tramo 2 (misma regla determinista que la referencia r2, §B3.1-8).
  * @param {object} o encaps, examen, serums (AAAA-MM-DD) · skip: Set · adjudicacion: [{fecha, motivo}] (protegidos de entrada del JSON)
  *   · protegExtra: [fecha] (--proteg) · examenPrevio · congelarHasta · previo: filas (DIAS_T2 vigente) · pendientes: [uid] · pendientesF1: [d]
  *   · f1Filas: filas de temario que caben en F1 (v6.01; por defecto 58 = v6.00) · byD: filas v5.20 por D (por defecto el dias_v520.json congelado)
- * @returns {{ out: object[], deficitFwd: number, deficitBwd: number, R: string, GONOGO: string, ritual: string, frozen: number, claveNogo: string|null, log: string[], faltan: number[], f1Filas: number, desplazadasF1: number[], origenF1: (number|string)[], esperados: number[] }}
+ *   · rotacion9: v6.06 (fix) — true = rotación 16:15 fija de los 9 sistemas (solo para reproducir las referencias v6.03-v6.05)
+ * @returns {{ out: object[], deficitFwd: number, deficitBwd: number, R: string, GONOGO: string, ritual: string, frozen: number, claveNogo: string|null, log: string[], faltan: number[], f1Filas: number, desplazadasF1: number[], origenF1: (number|string)[], esperados: number[], sistemasRot16F1: string[], rotacion9: boolean }}
  */
 function generarTramo2(o) {
   const ENCAPS = o.encaps, E = o.examen, S = o.serums;
@@ -217,7 +288,7 @@ function generarTramo2(o) {
   const PENDIENTES = o.pendientes || [];
   const PEND_F1 = o.pendientesF1 || [];
   // v6.01: filas de temario de F1 que NO caben → desplazadas al tramo 2 con su dOrig (D# v5.20)
-  // v6.02: las decide colocarF1 (hitos anclados en F1; desplazadas = las últimas no-hito): v6.05 [47-54, 56, 57, 79] · v6.03 [50-54, 56, 57, 79] · v6.02 [52, 53, 54, 56, 57, 79] · v6.01 [79]
+  // v6.02: las decide colocarF1 (hitos anclados en F1; desplazadas = las últimas no-hito): v6.06 [42-54, 56, 57, 79] · v6.05 [47-54, 56, 57, 79] · v6.03 [50-54, 56, 57, 79] · v6.02 [52, 53, 54, 56, 57, 79] · v6.01 [79]
   const F1FILAS = o.f1Filas == null ? F1_FILAS_V600 : Number(o.f1Filas);
   if (!(Number.isInteger(F1FILAS) && F1FILAS >= 1 && F1FILAS <= F1_FILAS_V600)) throw new Error('f1Filas inválido (1-' + F1_FILAS_V600 + '): ' + o.f1Filas);
   const COL = colocarF1(F1FILAS, byD);
@@ -345,8 +416,31 @@ function generarTramo2(o) {
   //   inducción (REF0/REF1 en las 2 semanas «al 50 %»: 26,25 h en vez de 15,75); uw_random e incorrectas, además, 1×40Q en un ¼ de día
   //   (79′) → 1×20Q (4 × 20 = los 80Q de la unidad). Las bases v6.00-v6.04 no cambian: en su inducción solo hay reactivación (ya a 1,3125 h).
   const hParte = (s) => (s <= ADAPT_FIN ? 1.3125 : 2.625);
+  // v6.06 (fix) · 16:15 REENTRADA con la ROTACIÓN REAL. Antes rotaba SIEMPRE por los 9 sistemas «de F1»; desde la v6.03 F1 ya no tiene
+  //   Hematology & Oncology (y en la v6.06 tampoco Nervous System) → la v6.06 programaba «20Q timed de Hematology & Oncology» el mar 30-mar
+  //   (T9), antes de estudiar hematología (T12-T17). Ahora: (1) entran los sistemas que F1 estudia (sistemasRotacionF1: slot de temario no
+  //   hito y no pendiente); (2) cada sistema DESPLAZADO entra en la fila siguiente a su ÚLTIMA fila T de contenido de F1 (desplazada o
+  //   recuperación, congeladas incluidas); (3) el orden sigue siendo el de SISTEMAS_ROT_16 (un puntero que salta los sistemas aún no
+  //   estudiados; con los 9 estudiados = la rotación de siempre). T1 dice el número real («de los 7 sistemas de F1»). --rotacion-9 (o.rotacion9)
+  //   conserva la rotación fija de antes: solo para reproducir byte a byte las referencias v6.03-v6.05 (v6.00-v6.02 salen iguales sin él).
+  const ROT9 = !!o.rotacion9;
+  const SIS_F1 = ROT9 ? new Set(SISTEMAS_ROT_16) : sistemasRotacionF1(COL.enF1, byD, PEND_F1.filter((d) => d <= F1FILAS));
+  const nSisF1 = SIS_F1.size;
+  const ultF1 = {}; // sistema → fecha de su última fila T de contenido de F1
+  const marcaF1 = (sis, s) => { if (!ultF1[sis] || s > ultF1[sis]) ultF1[sis] = s; };
+  frozen.forEach((x) => { if (x.tipo === 'contenido' && (x.dF1 != null || DESPL.includes(x.dOrig))) marcaF1(x.system, x.fecha); });
+  for (const [s, a] of filas) if (a.tipo === 'contenido' && (a.dF1 || a.desdeF1)) marcaF1(byD[a.dF1 ? COL.enF1[a.dF1 - 1] : a.dOrig].system, s);
+  const estudiado = (sis, s) => SIS_F1.has(sis) || (ultF1[sis] != null && s > ultF1[sis]);
+  let rot; // ROT9: nº de filas con rotación (como antes) · si no: índice en SISTEMAS_ROT_16 del siguiente candidato (tras la última congelada)
+  if (ROT9) rot = frozen.filter((x) => x.fase === 'F3' && /16:15 REENTRADA/.test(x.franjaNota || '')).length;
+  else { const u = [...frozen].reverse().find((x) => x.fase === 'F3' && RX_ROT_16.test(x.franjaNota || '')); rot = u ? (SISTEMAS_ROT_16.indexOf(RX_ROT_16.exec(u.franjaNota)[1]) + 1) % 9 : 0; }
+  const sistemaRot = (s) => {
+    if (ROT9) return SISTEMAS_ROT_16[rot++ % 9];
+    for (let k = 0; k < SISTEMAS_ROT_16.length; k++) { const sis = SISTEMAS_ROT_16[(rot + k) % 9]; if (estudiado(sis, s)) { rot = (rot + k + 1) % 9; return sis; } }
+    throw new Error(`16:15 REENTRADA del ${s}: ningún sistema de la rotación estudiado todavía (F1 sin temario)`);
+  };
   const out = frozen.map((x) => ({ ...x }));
-  let n = out.length; let rot = frozen.filter((x) => x.fase === 'F3' && /16:15 REENTRADA/.test(x.franjaNota || '')).length;
+  let n = out.length;
   for (const s of PLAN) {
     const a = filas.get(s); n++;
     const fila = { t: n, d: 100 + n, fecha: s, fase: esF4(s) ? 'F4' : 'F3', tipo: a.tipo, dOrig: typeof a.dOrig === 'number' ? a.dOrig : null, parte: a.parte || null };
@@ -355,7 +449,7 @@ function generarTramo2(o) {
     const F4row = esF4(s);
     const postFree = FREE120 && s > FREE120;
     switch (a.tipo) {
-      case 'reentrada': Object.assign(fila, DEF.reentrada, { sub: 'REENTRADA tras la pausa ENCAPS: 2×20Q timed MEZCLADAS de los 9 sistemas de F1 (AMBOSS + incorrectas uWorld) + revisión completa + Anki de choque (FSRS vuelve a 0,90 hoy)', qDia: 40, nivelUW: 4, h: 5.5 }); break;
+      case 'reentrada': Object.assign(fila, DEF.reentrada, { uw: `AMBOSS timed mixto (${nSisF1} sistemas F1) + incorrectas uWorld`, sub: `REENTRADA tras la pausa ENCAPS: 2×20Q timed MEZCLADAS de los ${nSisF1} sistemas de F1 (AMBOSS + incorrectas uWorld) + revisión completa + Anki de choque (FSRS vuelve a 0,90 hoy)`, qDia: 40, nivelUW: 4, h: 5.5 }); break;
       case 'hito': {
         const q = /UWSA/.test(a.nombre) ? 160 : /Free 120 \+ 4/.test(a.nombre) ? 280 : /Free 120/.test(a.nombre) ? 120 : /\+ 3 bloques/.test(a.nombre) ? 320 : 200;
         const hora = !F4row ? '07:00-12:30' : q >= 280 ? '07:00-16:30' : q === 200 ? '07:00-12:15' : q === 160 ? '07:00-11:15' : '07:00-10:15';
@@ -407,7 +501,7 @@ function generarTramo2(o) {
         : { sub: 'COLCHÓN: si hay una fila atrasada → hazla hoy (regla anti-replan); si no → sistema más débil del último NBME: 40Q timed (incorrectas/flagged uWorld + AMBOSS) + revisión + Anki de fallos', qDia: 40, nivelUW: 4, h: F4row ? (s <= ADAPT_FIN ? 1.3125 : 2.625) : 5.5 }); break;
       default: throw new Error('tipo de fila desconocido ' + a.tipo + ' en ' + s);
     }
-    if (!F4row && a.tipo !== 'hito' && a.tipo !== 'reentrada') { fila.franjaNota = (fila.franjaNota ? fila.franjaNota + ' · ' : '') + `16:15 REENTRADA: 20Q timed de ${sistemaRot[rot++ % 9]} + revisión`; }
+    if (!F4row && a.tipo !== 'hito' && a.tipo !== 'reentrada') { fila.franjaNota = (fila.franjaNota ? fila.franjaNota + ' · ' : '') + `16:15 REENTRADA: 20Q timed de ${sistemaRot(s)} + revisión`; }
     if (v) fila.subV520 = v.sub; // texto v5.20 exacto (verificación V1 del multiset)
     if (a.pendiente) fila.pendiente = true;
     // turno T: bloque B 07:40-10:10 = +40Q (AMBOSS / incorrectas, no uWorld fresco) · nunca en anclas ni tras el Free 120 (cierre)
@@ -432,8 +526,11 @@ function generarTramo2(o) {
     `déficit cola-adelante ${deficitFwd} u · déficit cola-atrás ${deficitBwd} u · horas-plan (piso) ${horas.toFixed(0)} · colchón ${cnt.colchon || 0} filas ≈ ${out.filter((x) => x.tipo === 'colchon').reduce((acc, x) => acc + x.h, 0).toFixed(0)} h`,
     'dOrig cubiertos ' + dSet.size + ' / esperados ' + esperados.length + ' ' + (faltan.length ? 'FALTAN ' + faltan.join(',') : DESPL.length ? `✓ (incl. ${DESPL.map((d) => 'D' + d).join(', ')} desplazada${DESPL.length > 1 ? 's' : ''} de F1: caben ${F1FILAS} filas de temario en F1)` : '✓ (+ D79 en F1 D58)'),
     `preguntas (piso): contenido ${qT((x) => x.tipo === 'contenido')} · refuerzo ${qT((x) => x.tipo === 'refuerzo')} · reactivación ${qT((x) => x.tipo === 'reactivacion')} · uw_random ${qT((x) => x.tipo === 'uw_random')} · incorrectas ${qT((x) => x.tipo === 'incorrectas')} · colchón ${qT((x) => x.tipo === 'colchon')} → uWorld FRESCO = contenido + refuerzo + uw_random = ${qT((x) => ['contenido', 'refuerzo', 'uw_random'].includes(x.tipo))}`,
+    // v6.06 (fix): rotación de la 16:15 REENTRADA (sistemas de F1 + cuándo entra cada desplazado)
+    ROT9 ? '16:15 REENTRADA: rotación fija de los 9 sistemas (--rotacion-9, referencias v6.03-v6.05)'
+      : `16:15 REENTRADA: rotación de los ${nSisF1} sistemas de F1 (${SISTEMAS_ROT_16.filter((x) => SIS_F1.has(x)).join(' · ')})${SISTEMAS_ROT_16.filter((x) => !SIS_F1.has(x)).map((x) => { const p = out.find((y) => y.fase === 'F3' && (y.franjaNota || '').includes(`timed de ${x} +`)); return ` · ${x} entra tras su última fila T (${ultF1[x] ? f(ultF1[x]) : 'sin filas'}) → ${p ? `T${p.t} ${f(p.fecha)}` : 'no entra en F3'}`; }).join('')}`,
   ];
-  return { out, deficitFwd, deficitBwd, R, GONOGO, ritual: ritualA3, frozen: frozen.length, claveNogo: CONG && E_PREV !== E ? claveNogo : null, log, faltan, f1Filas: F1FILAS, desplazadasF1: DESPL, origenF1: COL.enF1, esperados };
+  return { out, deficitFwd, deficitBwd, R, GONOGO, ritual: ritualA3, frozen: frozen.length, claveNogo: CONG && E_PREV !== E ? claveNogo : null, log, faltan, f1Filas: F1FILAS, desplazadasF1: DESPL, origenF1: COL.enF1, esperados, sistemasRot16F1: SISTEMAS_ROT_16.filter((x) => SIS_F1.has(x)), rotacion9: ROT9 };
 }
 
 /** Tabla markdown del tramo 2 (mismo formato que la referencia: Anexo A de la espec). */
@@ -446,7 +543,8 @@ function mdTramo2(out) {
  * Opciones del tramo 2 desde la línea de comandos (las mismas que la referencia r2). Sin posicionales, ENCAPS / EXAMEN / SERUMS
  * salen del JSON validado (`F` = V6.cargarFechasV6()). `escenarioJSON` = true si las tres coinciden con el JSON.
  * v6.01: f1Filas = --f1-filas o, sin él, min(f1.dias, 58) del JSON (las filas de F1 se colocan en orden D1-D57 · D79 · C1 · C2).
- * v6.02: misma opción (52 con el JSON v6.02 · 50 con el v6.03 · 47 con el v6.05); la colocación (hitos anclados, desplazadas = últimas no-hito) la hace colocarF1.
+ * v6.02: misma opción (52 con el JSON v6.02 · 50 con el v6.03 · 47 con el v6.05 · 42 con el v6.06); la colocación (hitos anclados + Day-After
+ * completo, desplazadas = últimas no-hito) la hace colocarF1.
  */
 function opcionesTramo2(argv, F = V6.cargarFechasV6()) {
   const opt = (k) => { const i = argv.indexOf(k); return i >= 0 ? argv[i + 1] : null; };
@@ -470,11 +568,12 @@ function opcionesTramo2(argv, F = V6.cargarFechasV6()) {
     pendientesF1: lista('--pendientes-f1').map(Number),
     f1Filas: opt('--f1-filas') != null ? Number(opt('--f1-filas')) : Math.min(F.f1.dias, F1_FILAS_V600),
     permitirDeficit: argv.includes('--permitir-deficit'),
+    rotacion9: argv.includes('--rotacion-9'), // v6.06 (fix): rotación 16:15 fija de antes (referencias v6.03-v6.05)
     json: opt('--json'), md: opt('--md'),
   };
 }
 
-module.exports = { generarTramo2, opcionesTramo2, mdTramo2, cargarV520, colocarF1, HITOS, HITOS_NOGO, CONT, DORIG_ESPERADOS, ORIGEN_F1_TEMARIO, ORIGEN_F1, F1_FILAS_V600, DEF, CAMPOS_V520, V520_FILE };
+module.exports = { generarTramo2, opcionesTramo2, mdTramo2, cargarV520, colocarF1, slotsHitosF1, DAY_AFTER_FILAS, SEMANA_PLAN, HITOS, HITOS_NOGO, CONT, DORIG_ESPERADOS, ORIGEN_F1_TEMARIO, ORIGEN_F1, F1_FILAS_V600, DEF, CAMPOS_V520, V520_FILE, SISTEMAS_ROT_16, RX_ROT_16, sistemasRotacionF1 };
 
 if (require.main === module) {
   const o = opcionesTramo2(process.argv.slice(2));

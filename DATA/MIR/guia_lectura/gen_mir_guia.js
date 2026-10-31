@@ -2,7 +2,7 @@
  * gen_mir_guia.js — genera src/lib/mirGuiaDatos.ts (DATOS de la guía MIR «qué · cuánto · cómo»; la LÓGICA vive en src/lib/mirGuia.ts).
  *   node DATA/MIR/guia_lectura/gen_mir_guia.js            → escribe src/lib/mirGuiaDatos.ts (aborta si un bloque no cuadra)
  *   node DATA/MIR/guia_lectura/gen_mir_guia.js --check    → regenera en memoria, compara con el fichero y valida la guía de TODOS los
- *                                                           días (D1-D78 del plan + TODAS las sesiones del banqueo —203 en v6.05—, también desplazadas
+ *                                                           días (D1-D78 del plan + TODAS las sesiones del banqueo —203 en v6.06 = v6.05—, también desplazadas
  *                                                           a los inicios de turno del SERUMS) con guia.validarGuia (exit 1 si falla)
  * Entradas (nada a mano en el .ts):
  *   · DATA/MIR/guia_lectura_semana1-2.json (E2, gen_guia_lectura.js: medición real ProMIR; v6.03: D1-D76) → MIR_GUIA_MEDIDA (bloque 60′ de
@@ -25,6 +25,8 @@
  *    Las notas madre del vault se comprueban en disco si el vault está montado (si no, solo avisa).
  *  · v6.05 (24-oct-2026 · corrimiento D1 = lun 26-oct): sin cambios de lógica; las fechas salen de mirDailyPlan (D1 lun 26-oct → D78 lun 15-feb) y del
  *    JSON regenerado; el banqueo pasa a 203 sesiones con otra composición (58 mant. con el sáb 8-may + 141 ext. + 4 repuestas mar 26 → vie 29-oct-2027).
+ *  · v6.06 (31-oct-2026 · corrimiento D1 = lun 2-nov): sin cambios de lógica; fechas de mirDailyPlan (D1 lun 2-nov → D78 lun 22-feb) y del JSON
+ *    regenerado; banqueo = 203 sesiones (59 mant. con los sáb 8 y 15-may + 135 ext. + 9 repuestas mar 26-oct → vie 5-nov-2027).
  */
 'use strict';
 const fs = require('fs');

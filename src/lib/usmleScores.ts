@@ -33,6 +33,9 @@
  *  · v6.05 (24-oct-2026): corrimiento del D1 al lun 26-oct (la semana del 19 sin estudio; sin lógica nueva): UWSA1 D1 lun 26-oct ·
  *    protocolo Jay D1-D9 lun 26-oct → jue 5-nov · NBME 25 D10 vie 6-nov · NBME 28 = D47 mié 30-dic (último slot de F1). Esas fechas ya
  *    no se escriben a mano en HITOS_ONTRACK: salen de las filas de F1 (fF1 / NBME28_TXT), como el examen y el GO/NO-GO salen de FECHAS_V6.
+ *  · v6.06 (31-oct-2026): corrimiento del D1 al lun 2-nov (la semana del 26-oct sin estudio; sin lógica nueva aquí): UWSA1 D1 lun 2-nov ·
+ *    protocolo Jay D1-D9 lun 2 → jue 12-nov · NBME 25 D10 vie 13-nov · NBME 26 D25 vie 4-dic · NBME 27 D35 vie 18-dic (adelantado por la
+ *    regla del Day-After completo de gen_tramo2.slotsHitosF1) · NBME 28 = D42 mié 30-dic. Todo sale de las filas (fF1 / NBME28_TXT).
  */
 import { supabase } from './supabase';
 import { DIAS_TODOS, DiaUSMLE, DAILY_META, USMLE_GATE, esHito, faseDe, esFilaT2 } from './usmleStep1Daily';
@@ -459,6 +462,7 @@ export const BURNOUT_PROTOCOLO = {
   // v6.02 (17-oct): igual con D1 lun 19-oct (F1 D1-D52); el colchón del tramo 2 queda en 28 filas.
   // v6.03 (20-oct): igual con D1 mié 21-oct (F1 D1-D50); el colchón del tramo 2 baja a 24 filas (≈ 63 h al piso).
   // v6.05 (24-oct): igual con D1 lun 26-oct (F1 D1-D47); con el examen del 25-oct el colchón del tramo 2 queda en 42 filas (≈ 110 h al piso).
+  // v6.06 (31-oct): igual con D1 lun 2-nov (F1 D1-D42); el colchón del tramo 2 baja a 32 filas (≈ 84 h al piso).
   regla: '2 hitos consecutivos bajo su mínimo on-track + síntomas de burnout (releer el mismo párrafo sin comprender, irritabilidad extrema, indiferencia por el examen, descansos de 5 min que se vuelven de 1 h) → 3-5 días con SOLO Anki AM (30-45 min de tarjetas viejas) + sueño. Frenar QBank y contenido nuevo. La pausa se paga con filas COLCHÓN (en F1 no hay: el día pasa al tramo 2 el jue 31-dic y allí lo absorbe el colchón): no se recorta ni se fusiona temario; agotado el colchón, decide el GO/NO-GO. Se reanuda por el gate del 80%, no por la fecha.',
   pasos: [
     'Frenar el QBank: seguir haciendo preguntas consolida malos hábitos de lectura bajo estrés',

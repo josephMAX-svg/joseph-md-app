@@ -1,8 +1,8 @@
 {
- "id": "EVAL_2026-10-29",
- "titulo": "Eval anclada ENCAPS · Jue 2026-10-29 · V-2",
+ "id": "EVAL_2026-11-05",
+ "titulo": "Eval anclada ENCAPS · Jue 2026-11-05 · V-2",
  "tipoRonda": "eval_anclada",
- "fecha": "2026-10-29",
+ "fecha": "2026-11-05",
  "codigo": "V-2",
  "sub_eje": "planeamiento",
  "tema": "eval anclada · código de ayer V-2: 3 cifras + 2 viñetas",
@@ -16,7 +16,7 @@
  "_meta": {
   "generado": "2026-10-03",
   "sesion_anterior": {
-   "fecha": "2026-10-28",
+   "fecha": "2026-11-04",
    "tipo": "banqueo1h",
    "codigo": "V-2",
    "sub_eje": "planeamiento"
@@ -68,6 +68,12 @@
     "a": "2026-10-29",
     "el": "2026-10-24",
     "motivo": "corrimiento v6.05 (D1 = 2026-10-26, «todo inicia el lunes 26»; la semana del 19 no se estudió —ni el D1 del mié 21 ni su alias del jue 22, v6.04a sin efecto—): la sesión «banqueo 4» (lun-jue nº 4 de la F1) pasa del martes 2026-10-27 (D5) al jueves 2026-10-29 (D4); ítems intactos, sin regenerar (sesión anterior = 2026-10-28, fila dia 3 V-2)"
+   },
+   {
+    "de": "2026-10-29",
+    "a": "2026-11-05",
+    "el": "2026-10-31",
+    "motivo": "corrimiento v6.06 (D1 = 2026-11-02, «reestructura todo a partir del 2 de noviembre … corre nada más, corre con una semana»; la semana del lun 26 al vie 30-oct no se estudió): la sesión «banqueo 4» (lun-jue nº 4 de la F1) pasa del jueves 2026-10-29 (D4) al jueves 2026-11-05 (D4); ítems intactos, sin regenerar (sesión anterior = 2026-11-04, fila dia 3 V-2)"
    }
   ]
  },

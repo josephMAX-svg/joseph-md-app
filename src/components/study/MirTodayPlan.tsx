@@ -43,6 +43,8 @@ import { MIR_INICIO_POR_TURNO } from '../../lib/mirMantenimiento';
  *  · Espejo Supabase: al montar, mirEvalLogPull() fusiona por id en ambos sentidos (fallback silencioso).
  *  · Chip "Step 1 esta semana: <sistema> D#-D#" (mirUsmleBridge, lectura de usmleStep1Daily).
  *  · Test de cierre 10Q el 1er día de cada bloque · D77 mini-MIR 40Q · D78 tabla de neto (baseline).
+ *  · v6.06 (31-oct-2026 · corrimiento D1 = lun 2-nov): 1.ª vuelta lun 2-nov → lun 22-feb (78) · mantenimiento mar 23-feb → mar 18-may (59: 47 lun-jue
+ *    + 10 viernes + sáb 8 y 15-may) · extensión mié 19-may → vie 22-oct (135) + 9 repuestas mar 26-oct → vie 5-nov-2027 (203, = v6.05) · guía MEDIDA D1-D76 sin cambio.
  *  · v6.05 (24-oct-2026 · corrimiento D1 = lun 26-oct): 1.ª vuelta lun 26-oct → lun 15-feb (78) · mantenimiento mar 16-feb → mar 11-may (58: 47 lun-jue
  *    + 10 viernes + sáb 8-may) · extensión mié 12-may → vie 22-oct (141) + 4 repuestas mar 26 → vie 29-oct-2027 (203, = v6.04) · guía MEDIDA D1-D76 sin cambio.
  *  · v6.03 (20-oct-2026 · corrimiento D1 = mié 21-oct): 1.ª vuelta mié 21-oct → mié 10-feb (78) · mantenimiento jue 11-feb → jue 6-may (57;
@@ -616,7 +618,7 @@ function BaselineView() {
             <Text style={st.baseSub}>{s.aciertos}/{s.total} · bl {s.blancos} · 🇪🇸 {s.deltaEs}</Text>
           </View>
         ))}
-        <Text style={st.formHint}>Corrección Whole-Page de cada fallo + Shopping List → APEX (directos en Anki). &lt;{u.anclasD7} % → anclas D-7 / viernes del mantenimiento. Handoff {MIR_MANT_META.handoff.split(' (')[0]} (última sesión del banqueo; v6.05 — v6.04: mar 26-oct · v6.03: mar 12-oct · v6.02: vie 24-sep · v5.20: 22-abr): mínimo on-track 60 % neto · 🇪🇸 = fallos delta (objetivo 0 repetidos).</Text>
+        <Text style={st.formHint}>Corrección Whole-Page de cada fallo + Shopping List → APEX (directos en Anki). &lt;{u.anclasD7} % → anclas D-7 / viernes del mantenimiento. Handoff {MIR_MANT_META.handoff.split(' (')[0]} (última sesión del banqueo; v6.06 — v6.05: vie 29-oct · v6.04: mar 26-oct · v6.03: mar 12-oct · v6.02: vie 24-sep · v5.20: 22-abr): mínimo on-track 60 % neto · 🇪🇸 = fallos delta (objetivo 0 repetidos).</Text>
       </View>
     </FadeUp>
   );

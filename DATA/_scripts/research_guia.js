@@ -2,7 +2,7 @@
  * research_guia.js — construye la GUÍA «qué · cuánto · cómo» de cada átomo de Research (formato común GuiaBloque de src/lib/guia.ts).
  * Lo llama gen_research_plan.js (fuente única del plan) y el resultado se escribe en src/lib/researchGuia.ts (GENERADO).
  *   · 45′ en la franja 13:30–14:15 (bloque R↔D interdiario) · Σ pasos = 45 (aborta si no).
- *   · Átomos con guía PASO A PASO (semanas 1-2 del régimen; v6.05: lun 26-oct → jue 5-nov · v6.03: jue 22-oct → mar 3-nov · v6.02: R0 · R1 · M1 · C-1 · M2): qué cuentas/qué abstract/qué plantilla, cuántos
+ *   · Átomos con guía PASO A PASO (semanas 1-2 del régimen; v6.06: mar 3 → vie 13-nov, orden M1 · R0 · R1 · C-1 · M2 · v6.05: lun 26-oct → jue 5-nov · v6.03: jue 22-oct → mar 3-nov · v6.02: R0 · R1 · M1 · C-1 · M2): qué cuentas/qué abstract/qué plantilla, cuántos
  *     minutos, cómo y con el enlace exacto (URLs ya verificadas en REC / MENTORES.md / candidatos.md; el abstract de R1 = PMID 19807760,
  *     verificado en PubMed E-utilities el 18-oct-2026).
  *   · El resto: guía estructurada desde las 5 franjas del bloque (eval anclada 5 · pre-test 5 · deep work 25 con el recurso 1 del átomo ·
@@ -16,6 +16,16 @@
  *   mentores (M1/M2) dicen «con las fechas del plan vigente» en vez de «v6.02». Las fechas de cada paso ya salían de fechaDe() (sin cambio).
  * v6.05 (24-oct-2026 · corrimiento D1 = lun 26-oct; Research d1 lun 26-oct): la versión que citan M1/M2 sale de _fechas_v6.json (antes «v6.03» escrito)
  *   y la sección nueva de candidatos.md de C-1 lleva el mes REAL de C-1 (v6.05: mar 3-nov → «nov-2026»; antes «oct-2026» escrito).
+ * v6.06 (31-oct-2026 · corrimiento D1 = lun 2-nov; Research d1 mar 3-nov): M1 pasa a la 1.ª sesión Research (su plazo interno del 31-oct venció sin
+ *   día-Research) → la «eval anclada» de cada guía paso a paso sale de evalAnclada(prev), según el átomo ANTERIOR real (antes cada guía asumía el
+ *   orden R0 → R1 → M1 → C-1 → M2 y M1 habría leído prev.code de null); M1 sin átomo previo abre con un «arranque». El texto del caso de M1 marca
+ *   el 31-oct como VENCIDO (sin plazo nuevo). GUIA_RESEARCH_MINIMO: si el paquete del case report (CR-8) ya no se congela antes de la pausa (v6.06:
+ *   nivel 2 de la regla de desplazamiento), el paso 3 repasa el borrador v1 (CR-5) en vez del paquete.
+ * v6.06 (fix, 31-oct-2026): al pasar M1 a d1 y R0 a d2 se perdían las 2Q de la eval anclada de M1 (ICMJE · CRediT): R0 abría con un «Arranque» fijo de
+ *   2′ y nunca llamaba a evalAnclada(prev). Ahora, si R0 tiene átomo previo, esos mismos 2′ llevan la eval anclada EXPRESS del previo (sus 2Q, tabla
+ *   Q2 = fuente única con las evals de 5′) + el arranque; minutos sin cambio (Σ 45). «¿Respondió el Dr. Ciro?» sigue en la eval de R1 (ciroPend).
+ *   CONTROL (aborta la generación): toda guía paso a paso con átomo previo abre con su eval anclada y cita sus 2Q · ningún átomo con 2Q queda seguido
+ *   de una guía genérica antes del SERUMS · alguna guía tras M1 pregunta por la respuesta del Dr. Ciro.
  */
 'use strict';
 
@@ -71,19 +81,51 @@ function generica(x: DiaResearch, prev: DiaResearch | null): GuiaBloque {
 }
 `;
 
-function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERUMS_INICIO }) {
+function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERUMS_INICIO, PAUSA }) {
   const R = (k) => { const r = rec(k); if (!r) throw new Error('research_guia: REC ' + k + ' no existe'); return { t: r.label, url: r.url }; };
   const f = (code) => fmt(fechaDe(code));
   const porCode = Object.fromEntries(TODOS.map((x) => [x.code, x]));
   const M2 = porCode.M2;
   const C1H = fechaDe('C-1'); const C1D = addDays(C1H, -60); // v6.03: ventana Crossref de C-1 = 60 días previos (v6.02: 2026-08-29 → 2026-10-28)
+  /** v6.06: eval anclada (5′) según el átomo ANTERIOR real — el orden de las semanas 1-2 puede cambiar con un corrimiento (v6.06: M1 · R0 · R1 · C-1 · M2). */
+  let ciroYa = false;
+  /** v6.06 (fix): las 2Q de auto-test de cada átomo paso a paso (fuente única: la eval anclada de 5′ y la «express» de 2′ de R0 las citan igual). */
+  const Q2 = {
+    R0: '«¿qué identificador pide PROSPERO a todo el equipo?» · «¿dónde NO se guarda una API key?»',
+    R1: '«terapia → ¿qué diseño?» · «Taylor 2009: ¿diseño y quién está ciego?»',
+    M1: 'los 4 criterios ICMJE de autoría · 1 rol CRediT',
+    'C-1': 'la regla de la ventana · por qué un dato verificable',
+  };
+  const evalAnclada = (prev, x) => {
+    if (!prev) return { min: 5, que: 'Arranque (1.ª sesión Research): abre MENTORES.md §3 «Mensaje 1 — Dr. Ciro» y TESIS_L0/etica.md §1', como: '⏸ El plazo interno del 31-oct-2026 (caso + consentimiento + senior author) venció sin día-Research (la semana lun 26 → vie 30-oct no se estudió): este mensaje va PRIMERO; no se inventa un plazo nuevo.' };
+    // la pregunta de seguimiento de M1 va SOLO en la primera eval anclada tras M1 (si su átomo previo no es M1, que ya la trae en su tabla)
+    const ciroPend = !ciroYa && prev.code !== 'M1' && porCode.M1 && porCode.M1.fecha < x.fecha ? ` · y ¿respondió el Dr. Ciro a M1 (${f('M1')})? (regístralo en MENTORES.md §2)` : '';
+    if (prev.code === 'M1' || ciroPend) ciroYa = true;
+    const T = {
+      R0: { que: `Eval anclada de R0: ¿checklist «Infra académica» en 7/10? + 2Q: ${Q2.R0}`, como: 'Responde de memoria; si alguna cuenta quedó «en trámite», ciérrala ahora.' },
+      R1: { que: `Eval anclada de R1: ¿existe 01_PICO.md con 3 PICO? + 2Q: ${Q2.R1}`, como: 'De memoria; si falta algo de R1, anótalo como deuda.' },
+      M1: { que: `Eval anclada de M1: ¿respondió el Dr. Ciro? (regístralo) + 2Q: ${Q2.M1}`, como: 'De memoria; la respuesta va a MENTORES.md §2.' },
+      'C-1': { que: `Eval anclada de C-1: ¿5 candidatos con DOI en candidatos.md? + 2Q: ${Q2['C-1']}`, como: 'De memoria.' },
+    }[prev.code] || { que: `Eval anclada de ${prev.code}: 2Q de auto-test del método + ¿existe su artefacto?`, como: 'De memoria; lo que falte va como deuda a la Mesa editorial.' };
+    return { min: 5, que: T.que + ciroPend, como: T.como };
+  };
+  /** v6.06 (fix): R0 abre con 2′ de arranque (sus 7 cuentas ocupan los otros 43′). Si R0 ya no es la 1.ª sesión (v6.06: M1 · R0 · …), esos 2′ llevan
+   *  además la eval anclada EXPRESS del átomo previo = sus 2Q de memoria (antes R0 nunca llamaba a evalAnclada y las 2Q de M1 —ICMJE · CRediT— se
+   *  perdían). La pregunta «¿respondió el Dr. Ciro?» NO va aquí: sigue en la próxima eval anclada de 5′ (ciroPend), a los 3-5 días del mensaje. */
+  const arranqueR0 = (prev) => {
+    const base = 'abre Estudio → Research → Desk → «Infra académica» (checklist 0/10) y tu gestor de contraseñas';
+    const cuentas = 'Cada cuenta la creas TÚ (Claude no crea cuentas ni escribe contraseñas). Una contraseña distinta por cuenta, guardada en el gestor.';
+    if (!prev) return { min: 2, que: `Arranque: ${base}`, como: cuentas };
+    return { min: 2, que: `Eval anclada express de ${prev.code} (2Q de memoria: ${Q2[prev.code] || 'las 2 ideas de método de esa sesión'}) + arranque: ${base}`,
+      como: `Las 2Q a papel, 1 línea cada una y sin mirar; lo que falle va como deuda a la Mesa editorial${prev.code === 'M1' ? ' (la respuesta del Dr. Ciro se pregunta en la próxima eval anclada)' : ''}. ${cuentas}` };
+  };
 
   /** Guías paso a paso (45′). `prev` = átomo anterior (eval anclada). */
   const DET = {
-    R0: (x) => ({
+    R0: (x, prev) => ({
       titulo: 'R0 · Infra académica: 7 cuentas hoy (ORCID · Scholar · CTI Vitae · PROSPERO · Rayyan · Zotero · keys NCBI + OpenAlex)',
       pasos: [
-        { min: 2, que: 'Arranque: abre Estudio → Research → Desk → «Infra académica» (checklist 0/10) y tu gestor de contraseñas', como: 'Cada cuenta la creas TÚ (Claude no crea cuentas ni escribe contraseñas). Una contraseña distinta por cuenta, guardada en el gestor.' },
+        arranqueR0(prev),
         { min: 8, que: '1 · ORCID iD (identidad de autor: la exige Editorial Manager al autor de correspondencia y PROSPERO a todo el equipo)', como: 'orcid.org → Register: el nombre tal como firmarás los artículos, correo personal + institucional, visibilidad pública; verifica el correo y copia el iD (0000-…).', enlace: R('ORCID') },
         { min: 5, que: '2 · Google Scholar · perfil público', como: 'Crea el perfil con el correo institucional y márcalo PÚBLICO; si aún no aparece ningún artículo tuyo, déjalo vacío (la tesis se añade cuando esté en el repositorio UNCP).', enlace: R('SCHOLAR') },
         { min: 8, que: '3 · CTI Vitae / RENACYT (CONCYTEC)', como: 'Registro con tu documento de identidad y vincula el ORCID; la tesis solo suma para RENACYT si está registrada aquí.', enlace: R('CTI') },
@@ -97,12 +139,13 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
       hecho: 'Checklist «Infra académica» 7/10 (ORCID · Scholar · CTI Vitae · PROSPERO · Rayyan · Zotero · keys NCBI + OpenAlex) + ORCID iD y CTI Vitae copiados en MENTORES.md «## Identificadores»; las keys solo en el gestor.',
       planB: 'Si una validación no llega hoy (correo de CTI Vitae u ORCID): márcala «en trámite» y sigue con la siguiente; se cierra en los 5′ de la eval anclada de R1 (' + f('R1') + ').',
       aviso: 'La checklist estima 10-15′ por cuenta: las 10 no caben en 45′. Hoy van 7; las 3 cuentas de portal son POR REVISTA y su URL está «A VERIFICAR»: Editorial Manager / ScholarOne se abren en C-5 (' + f('C-5') + ', formateo + cuenta activa en el portal del journal elegido) y eScholarship (Dermatology Online Journal) en CR-9 (' + f('CR-9') + ').',
-      recursos: [R('ORCID'), R('SCHOLAR'), R('CTI'), R('PROS'), R('RAY'), R('ZOT'), R('NCBIACC'), R('OPENALEX')],
+      // v6.06 (fix): con M1 justo antes, + ICMJE y CRediT para contrastar las 2Q de la eval express (los mismos recursos de M1)
+      recursos: [R('ORCID'), R('SCHOLAR'), R('CTI'), R('PROS'), R('RAY'), R('ZOT'), R('NCBIACC'), R('OPENALEX'), ...(prev && prev.code === 'M1' ? [R('ICMJE'), R('CREDIT')] : [])],
     }),
     R1: (x, prev) => ({
       titulo: 'R1 · 3 PICO (terapia · diagnóstico · pronóstico) + 1 abstract clasificado con Greenhalgh (Taylor 2009, PMID 19807760)',
       pasos: [
-        { min: 5, que: `Eval anclada de ${prev.code}: ¿checklist «Infra académica» en 7/10? + 2Q: «¿qué identificador pide PROSPERO a todo el equipo?» · «¿dónde NO se guarda una API key?»`, como: 'Responde de memoria; si alguna cuenta quedó «en trámite», ciérrala ahora.' },
+        evalAnclada(prev, x),
         { min: 5, que: 'Pre-test (free recall 60 s): qué es P · I · C · O y qué diseño responde mejor a terapia, a diagnóstico y a pronóstico', como: 'Escríbelo a papel sin mirar; lo compruebas en el paso 3.' },
         { min: 12, que: '3 PICO escritos en la nota nueva 01_PICO.md (vault: SR-1_complicaciones/01_protocolo_PICO) — una pregunta de cada tipo en el nicho rellenos · fototipos IV-VI', como: 'Plantilla por pregunta: P (pacientes) · I (intervención / exposición / prueba) · C (comparador) · O (desenlace medible) · tipo · diseño ideal (terapia → ECA · diagnóstico → transversal frente al patrón de oro · pronóstico → cohorte). Ejemplos de forma (no de contenido): terapia «relleno de ácido hialurónico en fototipo IV-VI vs otro producto → hiperpigmentación post-inflamatoria»; diagnóstico «ecografía Doppler vs diagnóstico clínico → oclusión vascular»; pronóstico «fototipo IV-VI tratado con relleno → PIH a 6 meses».', enlace: { t: '◆ 01_protocolo_PICO', url: obsUrl('04_INVESTIGACIÓN DERMATOLÓGICA/02_SR_EN_CURSO/SR-1_complicaciones/01_protocolo_PICO/_README') } },
         { min: 15, que: 'Abstract: Taylor SC, Burgess CM, Callender VD. «Safety of nonanimal stabilized hyaluronic acid dermal fillers in patients with skin of color: a randomized, evaluator-blinded comparative trial». Dermatol Surg 2009;35 Suppl 2:1653-60 (PMID 19807760)', como: 'Método Greenhalgh («getting your bearings»): ¿por qué se hizo? · ¿estudio primario o secundario? · ¿diseño (el título dice aleatorizado y con evaluador ciego)? · ¿población? · ¿intervención y comparador? · ¿desenlace principal? → escribe su PICO y su diseño en 01_PICO.md.', enlace: { t: 'PubMed 19807760', url: 'https://pubmed.ncbi.nlm.nih.gov/19807760/' } },
@@ -116,9 +159,9 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
     M1: (x, prev) => ({
       titulo: 'M1 · Dr. Ciro: WhatsApp con las 3 coautorías (tesis → research letter · carta · case report) + guion de 1 hoja',
       pasos: [
-        { min: 5, que: `Eval anclada de ${prev.code}: ¿existe 01_PICO.md con 3 PICO? + 2Q: «terapia → ¿qué diseño?» · «Taylor 2009: ¿diseño y quién está ciego?»`, como: 'De memoria; si falta algo de R1, anótalo como deuda.' },
+        evalAnclada(prev, x),
         { min: 5, que: 'Pre-test: de memoria, las 3 coautorías que le propones y qué le pides exactamente en cada una', como: 'Después compáralo con MENTORES.md §3 «Mensaje 1».' },
-        { min: 15, que: 'Personaliza el WhatsApp y la hoja-guion de MENTORES.md §3 «Mensaje 1 — Dr. Ciro» con las fechas del plan vigente (' + VERSION + ')', como: `Carta al editor: envío C-6 ${f('C-6')} · research letter: formateo T-7 ${f('T-7')} → envío T-8 ${f('T-8')} · case report: elegir el caso antes del 31-oct (CR-1 ${f('CR-1')}). En el punto 1(a) del guion deja la pregunta de la vía CEI (expedita / retrospectiva / exención). Petición concreta y verificable, nunca «quiero experiencia».`, enlace: { t: 'MENTORES.md §3', url: GH + 'DATA/RESEARCH/MENTORES.md' } },
+        { min: 15, que: 'Personaliza el WhatsApp y la hoja-guion de MENTORES.md §3 «Mensaje 1 — Dr. Ciro» con las fechas del plan vigente (' + VERSION + ')', como: `Carta al editor: envío C-6 ${f('C-6')} · research letter: formateo T-7 ${f('T-7')} → envío T-8 ${f('T-8')} · case report: pide el caso EN este mensaje (⏸ el plazo interno del 31-oct venció; CR-1 ${f('CR-1')} · CR-2 ${f('CR-2')}). En el punto 1(a) del guion deja la pregunta de la vía CEI (expedita / retrospectiva / exención). Petición concreta y verificable, nunca «quiero experiencia».`, enlace: { t: 'MENTORES.md §3', url: GH + 'DATA/RESEARCH/MENTORES.md' } },
         { min: 5, que: 'ENVÍA el WhatsApp (lo envías tú)', como: 'Pide 20 minutos esta semana o la próxima, en persona o por llamada; adjunta nada todavía.' },
         { min: 5, que: `Antes de T-1 (${f('T-1')}): lista de los 10 documentos de etica.md §1 (tengo / falta)`, como: 'Marca cuáles tienes en PDF y cuáles hay que pedir; lo que falte se lo preguntas al Dr. Ciro en la reunión.', enlace: { t: 'etica.md §1', url: GH + 'DATA/RESEARCH/TESIS_L0/etica.md' } },
         { min: 5, que: 'Registro en MENTORES.md: fila 1 (fecha de contacto · estado 🟡 · siguiente paso = seguimiento a los 3-5 días) + 1 línea en §2', como: 'Si en 3 semanas no hay caso → fila 6 (fuente B del caso), como dice MENTORES.md.' },
@@ -131,7 +174,7 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
     'C-1': (x, prev) => ({
       titulo: 'C-1 · Discovery: 5 artículos candidatos de los últimos 60 días (JAAD · JAAD Intl · IJD · JCD · Dermatol Surg) + correo a IJD',
       pasos: [
-        { min: 5, que: `Eval anclada de ${prev.code}: ¿respondió el Dr. Ciro? (regístralo) + 2Q: los 4 criterios ICMJE de autoría · 1 rol CRediT`, como: 'De memoria; la respuesta va a MENTORES.md §2.' },
+        evalAnclada(prev, x),
         { min: 5, que: 'Pre-test: qué hace a un artículo buen «diana» para una carta', como: 'Ventana ≤8 semanas desde la publicación online (regla de candidatos.md mientras la de cada revista esté «A VERIFICAR») + un ángulo con 1 dato verificable peruano/latino.' },
         { min: 15, que: 'Consulta Crossref A (filler · hyaluronic acid · complication) y B (skin of color · Fitzpatrick · laser · cosmetic), ' + fmtDM(C1D) + ' → ' + fmtDM(C1H) + '-' + C1H.slice(0, 4) + ', en las 5 revistas por ISSN', como: 'Abre las dos URLs (mismas consultas que candidatos.md, con fechas nuevas) y anota título · revista · fecha online · DOI de los que encajen con derma estética · fototipos IV-VI · complicaciones de rellenos.', enlace: { t: 'Crossref A', url: CROSSREF('filler hyaluronic acid complication', C1D, C1H) } }, // v6.03 (verificación de contenido, 20-oct): faltaban las fechas → «from-pub-date:undefined» (HTTP 400)
         { min: 10, que: 'Tabla de 5 candidatos en DATA/RESEARCH/CARTA_1/candidatos.md (nueva sección «' + MES_LARGO[Number(C1H.slice(5, 7)) - 1] + '-' + C1H.slice(0, 4) + '»)', como: 'Por fila: journal · fecha online · DOI · ventana (URL de Author Guidelines) · límite de palabras/refs · coste · ángulo. Los candidatos del 5-sep publicados online en jul-ago ya pasan las 8 semanas: solo siguen si la guía de su revista admite una ventana mayor.', enlace: { t: 'candidatos.md', url: GH + 'DATA/RESEARCH/CARTA_1/candidatos.md' } },
@@ -145,7 +188,7 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
     M2: (x, prev) => ({
       titulo: 'M2 · Rising Scholars: cuenta + solicitud de mentor 1-a-1 (inglés del primer manuscrito) + plan B de inglés',
       pasos: [
-        { min: 5, que: `Eval anclada de ${prev.code}: ¿5 candidatos con DOI en candidatos.md? + 2Q: la regla de la ventana · por qué un dato verificable`, como: 'De memoria.' },
+        evalAnclada(prev, x),
         { min: 5, que: 'Pre-test: qué 3 cosas pides al mentor y en qué meses', como: 'Después compáralo con MENTORES.md §3 «Mensaje 2».' },
         { min: 10, que: 'Registro en Rising Scholars (red gratuita de INASP; la cuenta la creas tú)', como: 'País Perú · institución FMH-UNCP · disciplina dermatología / salud pública · nivel early-career · idiomas ES/EN.', enlace: { t: 'risingscholars.net/accounts/register', url: 'https://risingscholars.net/accounts/register/' } },
         { min: 10, que: 'Solicitud de mentor en la sección Mentoring: pega el «Mensaje 2» de MENTORES.md con las fechas del plan vigente (' + VERSION + ')', como: `Cambia los meses del mensaje: carta al editor ≈ ${f('C-3')} → ${f('C-6')} · research letter ≈ ${f('T-7')} → ${f('T-8')} · case report: revisión en CR-6 (${f('CR-6')}). La mecánica exacta (buscar mentor vs publicar la solicitud) se confirma dentro de la plataforma (A VERIFICAR, 5-sep).`, enlace: { t: 'Mentoring', url: 'https://risingscholars.net/en/mentoring/' } },
@@ -176,19 +219,36 @@ function construirGuiasResearch({ TODOS, rec, fechaDe, fmt, addDays, obsDe, SERU
     const sum = g.pasos.reduce((a, p) => a + p.min, 0);
     if (sum !== g.totalMin) throw new Error(`research_guia: ${x.code} Σ pasos ${sum} ≠ ${g.totalMin}`);
     g.pasos.forEach((p, i) => { if (!p.que || !p.como || !Number.isInteger(p.min) || p.min < 1) throw new Error(`research_guia: ${x.code} paso ${i + 1} incompleto`); });
+    // v6.06 (fix) · CONTROL: con átomo previo, la guía abre con la eval anclada de ESE átomo (5′, o la express de 2′ de R0) y cita sus 2Q propias (Q2)
+    if (prev) {
+      const p0 = g.pasos[0].que;
+      if (!new RegExp(`^Eval anclada (express )?de ${prev.code.replace(/[-]/g, '\\-')}\\b`).test(p0)) throw new Error(`research_guia: ${x.code} (d${x.d}) no abre con la eval anclada de su átomo previo ${prev.code}: «${p0.slice(0, 80)}»`);
+      if (Q2[prev.code] && !p0.includes(Q2[prev.code])) throw new Error(`research_guia: ${x.code} (d${x.d}) pierde las 2Q de ${prev.code} (${Q2[prev.code]})`);
+    }
     const vistos = new Set();
     g.recursos = g.recursos.filter((r) => !vistos.has(r.url) && vistos.add(r.url));
     out[x.d] = g;
   }
+  // v6.06 (fix) · CONTROL: un átomo con 2Q propias seguido (antes del SERUMS) de uno SIN guía paso a paso las perdería (la genérica solo pide «2Q de
+  //   auto-test del método») · y la pregunta «¿respondió el Dr. Ciro?» sale en alguna guía tras M1 si M1 tiene sucesor paso a paso.
+  for (const x of TODOS) {
+    const prev = TODOS.find((y) => y.d === x.d - 1);
+    if (prev && Q2[prev.code] && x.fecha < SERUMS_INICIO && !out[x.d]) throw new Error(`research_guia: ${x.code} (d${x.d}) sigue a ${prev.code} sin guía paso a paso → la genérica perdería sus 2Q (${Q2[prev.code]})`);
+  }
+  const trasM1 = porCode.M1 && TODOS.find((y) => y.d === porCode.M1.d + 1);
+  if (trasM1 && out[trasM1.d] && !Object.values(out).some((g) => g.pasos.some((p) => /¿respondió el Dr\. Ciro/.test(p.que)))) throw new Error('research_guia: ninguna eval anclada tras M1 pregunta si respondió el Dr. Ciro');
+  const crAntes = !PAUSA || fechaDe('CR-8') < PAUSA.desde; // v6.06: el paquete del case report se congela antes de la pausa (v6.05) o tras ella (v6.06, nivel 2)
   const minimo = {
     franja: '13:30–14:00', plan: 'research-derma', titulo: "RESEARCH · mínimo 30′ (DJ-4) — pausa de átomos (intensiva ENCAPS)", totalMin: 30,
     pasos: [
       { min: 10, que: 'Inbox de revisores y editorial: estado de la carta y de la research letter en los portales', como: 'Responde lo que sea de 1 línea; lo que pida trabajo va a la cola de febrero (X-2 tiene la plantilla de rebuttal).' },
       { min: 15, que: '1 lectura de la cola del ciclo 2 (el recurso 1 del próximo átomo pendiente)', como: 'Lee con free recall al final; no produces artefacto nuevo.' },
-      { min: 5, que: 'Repaso del paquete congelado del case report (CR-8)', como: 'Solo comprobar que manuscrito + fotos + consentimiento + CARE + cover siguen completos para CR-9.' },
+      crAntes
+        ? { min: 5, que: 'Repaso del paquete congelado del case report (CR-8)', como: 'Solo comprobar que manuscrito + fotos + consentimiento + CARE + cover siguen completos para CR-9.' }
+        : { min: 5, que: `Case report: relee el borrador v1 (CR-5) y apunta las dudas para la revisión de CR-6 (${f('CR-6')})`, como: `Solo lectura + lista de dudas para el senior author y el mentor de inglés; el paquete (CR-8) se congela tras la pausa (${f('CR-8')}) y el SUBMIT CR-9 va el ${f('CR-9')}.` },
     ],
     recursos: [{ t: '◆ Obsidian · Dashboard Research', url: obsUrl('04_INVESTIGACIÓN DERMATOLÓGICA/00_DASHBOARD_RESEARCH/Dashboard_Research') }],
-    hecho: 'Inbox al día + 1 lectura con free recall + paquete del case report comprobado.',
+    hecho: crAntes ? 'Inbox al día + 1 lectura con free recall + paquete del case report comprobado.' : 'Inbox al día + 1 lectura con free recall + dudas del borrador del case report apuntadas para CR-6.',
   };
   return { porD: out, minimo, conDetalle };
 }

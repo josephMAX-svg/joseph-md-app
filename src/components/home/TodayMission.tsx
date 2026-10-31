@@ -32,7 +32,7 @@ import { aurumDiaDe } from '../../lib/aurumDailyPlan';
 import { livDiaDe } from '../../lib/livianoStudyPlan';
 import { synDiaDe } from '../../lib/synapseDailyPlan';
 // v6.02c (E4 · ENCAPS 16:15 + Research): guías «qué · cuánto · cómo» + botones directos (runner BANCO_PROPIO · recurso del átomo · Obsidian)
-import { guiaEncapsDe, sesionEncapsDe } from '../../lib/encapsGuia';
+import { guiaEncapsDe, sesionEncapsDe, encapsSabadoDe, guiaEncapsSabadoDe, sesionEncapsSabadoDe } from '../../lib/encapsGuia'; // v6.06: + carril SÁBADO de la intensiva · v6.06 (fix): + su guía y sus runners
 import { guiaResearchDe, GUIA_RESEARCH_MINIMO } from '../../lib/researchGuia';
 import { REC as RESEARCH_REC } from '../../lib/researchDailyPlan';
 import { researchObsUrlDay } from '../../lib/obsidianResearchMap';
@@ -111,6 +111,12 @@ const nombreBase = (n: string): string => {
  *  por fechasV6.corridaS1De; la capa de alias/reparto v6.04a queda inerte, sin borrar). Las guías del resto del día (rutinaGuia) siguen al
  *  plan: el SYNAPSE del día del UWSA1 (lun 26) va a las 07:25 y el de los NBME (vie 6-nov · vie 27-nov · vie 18-dic · mié 30-dic) a las
  *  13:00; el OUTPUT de Business de esos viernes de NBME pasa entero al sábado 07:45-08:25.
+ * v6.06 (31-oct-2026): la semana del lun 26-oct tampoco se estudió → D1 = lun 2-nov (UWSA1; F1 = D1-D42, D42 = NBME 28 mié 30-dic;
+ *  STEP1_SEMANAS = 41 → chip S n/41, S1 = semana del lun 2-nov): sin cambio de lógica en el ámbito de la rutina; faseActual: antes del D1 =
+ *  ≤ dom 1-nov (lun 19-oct → dom 1-nov = CORRIDO). Las guías del resto del día (rutinaGuia) siguen al plan: SYNAPSE del UWSA1 (lun 2-nov) a
+ *  las 07:25 y de los NBME (vie 13-nov · vie 4-dic · vie 18-dic · mié 30-dic) y del SIM 100Q #7/#8 (vie 26-feb / vie 5-mar) a las 13:00; el
+ *  OUTPUT de Business de un viernes de NBME o de SIM 11:00 pasa entero al sábado; SYNAPSE y vibecoding siguen en F3 tras el ENCAPS (mar 16 /
+ *  vie 19-mar) y AURUM cierra en el SERUMS (D124-D130 = lun 3 → mar 11-may, 30′ en tiempo muerto).
  * v6.02c (18-oct-2026, E1 · SOLO USMLE + el hueco común): `contenidoBloque` puede devolver `guias: GuiaBloque[]` (formato común de
  *  src/lib/guia.ts) y el render las pinta debajo del bloque con <GuiaBloqueCard compacto> — cada plan rellena las suyas en su `case`.
  *  USMLE: 05:00 / 07:00-12:00 / 18:00 = usmleGuia.guiaUsmleEnRango; botón Qbankly en https (cualquier navegador: «UWSA1 ↗» el D1,
@@ -168,7 +174,7 @@ export function todayISO(): string {
  * v6.00: etiqueta de fechasV6.faseV6 — antes FASE 4…9 del orquestador (v5.20: FASE 7 = Step 1 principal hasta el 22-feb).
  */
 export function faseActual(iso: string): string {
-  return faseV6Info(iso).etiqueta; // antes del D1 (v6.05: ≤ dom 25-oct · v6.03: ≤ mar 20-oct · v6.02: ≤ dom 18-oct · v6.01: ≤ 11-oct · v6.00: ≤ 6-oct) faseV6 ya devuelve F1
+  return faseV6Info(iso).etiqueta; // antes del D1 (v6.06: ≤ dom 1-nov · v6.05: ≤ dom 25-oct · v6.03: ≤ mar 20-oct · v6.02: ≤ dom 18-oct · v6.01: ≤ 11-oct · v6.00: ≤ 6-oct) faseV6 ya devuelve F1
 }
 function nowMin(): number { try { const d = new Date(); return d.getHours() * 60 + d.getMinutes(); } catch { return 0; } }
 const hm = (s: string) => { const [h, m] = s.split(':').map(Number); return (h as number) * 60 + (m as number); };
@@ -193,6 +199,9 @@ export function encapsLabelDe(iso: string): string | null {
     if (s.tipo === 'pretest') return `ENCAPS D${s.dia} · pre-test ${s.pretest?.parte ?? 1}/${s.pretest?.de ?? 2}`;
     return s.tipo === 'minisim' ? `ENCAPS D${s.dia} · mini-sim 25Q` : `ENCAPS D${s.dia} · banco ${s.codigo ?? ''}`.trim();
   }
+  // v6.06: carril SÁBADO de la intensiva (09:30, pendiente F1 que no cupo en el carril B lun-jue)
+  const sab = encapsSabadoDe(iso);
+  if (sab) return `ENCAPS · sáb ${sab.ini} · reposición F1 ${sab.tipo === 'mini_sim' ? 'mini-sim 25Q' : sab.codigo ?? ''}`.trim();
   return plantillaDelDia(iso).bloques.some((b) => b.plan === 'encaps') ? 'ENCAPS · intensiva (ver plan)' : null;
 }
 /** Etiqueta corta USMLE del día (para el briefing/status bar). null si no hay fila hoy · v6.00: «PAUSA» entre el 31-dic y el reinicio. */
@@ -461,6 +470,31 @@ function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema:
       };
     }
     case 'encaps': {
+      // v6.06 (fix): CARRIL SÁBADO de la intensiva (bloque encaps-sab de plantillasV6, sáb 9/16/23/30-ene y 6-feb 09:30) → guía «qué · cuánto ·
+      // cómo» de encapsGuia (guiaEncapsSabadoDe: la receta de 60′ de F1 + nota de reposición; movida a la hora real del bloque si Business lo
+      // empuja) + runners del sábado (sesionEncapsSabadoDe). Antes el bloque solo traía su detalle de texto (sin guía).
+      if (b.id === 'encaps-sab') {
+        const sab = encapsSabadoDe(iso);
+        const gS = guiaEncapsSabadoDe(iso);
+        if (sab && gS) {
+          const sS = sesionEncapsSabadoDe(iso);
+          const desf = b.ini ? hm(b.ini) - hm(sab.ini) : 0;
+          const run = (r: { url: string | null; local: string } | null | undefined) => (r ? r.url || r.local : null);
+          const pri = run(sS?.principal), ev = run(sS?.eval);
+          return {
+            tema: sab.tipo === 'mini_sim' ? `🔁 REPOSICIÓN F1 · 🔥 MINI-SIM 25Q · cola larga ${sab.colaLarga.join(' + ')} · sim_n ${sab.simN ?? sab.host.dia}`
+              : `🔁 REPOSICIÓN F1 · 🎯 BANCO ${sab.codigo ?? ''} · ${sab.subEje ?? ''}${sab.secundarios.length ? ` + ${sab.secundarios.join(' + ')}` : ''}`,
+            sub: `carril SÁBADO · fila mant. ${sab.diaMant} de la ${sab.origen} · ${sab.tipo === 'mini_sim' ? '72 s/Q → corrección → nota /25 (cierre mini_sim del sábado)' : `eval 5Q → banco ${sS?.principal ? `${sS.principal.n}Q` : '(runner por generar)'} → registro (cierre «Carril B» del sábado)`} · ítems D${sab.host.dia}:s_*`,
+            acciones: [
+              ...(pri ? [{ lbl: sab.tipo === 'mini_sim' ? 'Mini-sim ↗' : 'Banco ↗', color: TEAL, url: pri, fill: true }] : []),
+              ...(ev ? [{ lbl: 'Eval ↗', color: TEAL, url: ev }] : []),
+              ...(sS?.obsidian ? [{ lbl: '◆ Obsidian', color: OBS, url: sS.obsidian }] : []),
+              ...(sS ? [{ lbl: 'Claude ↗', color: EDGE, url: sS.proyecto.url }] : []),
+            ],
+            guias: [desf ? moverGuia(gS, desf) : gS],
+          };
+        }
+      }
       // v6.02c (E4): F1 16:15 → sesión de encapsGuia (= SQL vigente = Supabase): PRE-TEST DE ARRANQUE (lun 19 / mar 20-oct) · BANCO · MINI-SIM,
       // con el runner BANCO_PROPIO publicado (https), la eval, la nota Obsidian del CÓDIGO y el proyecto de Claude del área + la guía de la hora
       const ses = b.ini === '16:15' ? sesionEncapsDe(iso) : null;
@@ -561,7 +595,7 @@ function contenidoBloquePlan(b: BloqueV6, p: PlantillaDia, iso: string): { tema:
     }
     case 'synapse': {
       const s = synDiaDe(iso);
-      // v6.02c (E5): A/B/C con qué y cuánto exactos; el día del UWSA1 (v6.05: lun 26-oct · v6.03: mié 21-oct · v6.02: lun 19-oct) se hace a las 07:25 · días de NBME a las 13:00
+      // v6.02c (E5): A/B/C con qué y cuánto exactos; el día del UWSA1 (v6.06: lun 2-nov · v6.05: lun 26-oct · v6.03: mié 21-oct · v6.02: lun 19-oct) se hace a las 07:25 · días de NBME a las 13:00
       const gS = guiaSynapseDe(iso);
       const movida = gS && !gS.franja.startsWith(b.ini ?? '12:30') ? ` · HOY a las ${gS.franja.slice(0, 5)} (hito USMLE)` : '';
       const tagUrl = (tag: string) => s?.bloques.find((x) => x.tag === tag && x.url)?.url;

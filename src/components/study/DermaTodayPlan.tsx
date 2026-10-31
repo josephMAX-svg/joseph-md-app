@@ -58,6 +58,8 @@ const enF4 = (iso: string): boolean => iso >= FECHAS_V6.serums.inicio;
  * "alimenta SR-1/SR-2" y "Nítida" · "retoma en Q#" (dermaBancoCursor) en el review · CURA OBLIGATORIA (DD Challenge)
  * cuando la última sesión registró un fallo CCSN (dermaCuraPendiente) · ANKI → APEX::DERMA::<bloque> + cola TSV ·
  * ◆ Obsidian (rama 10_DERMATOLOGIA) · export del ledger.
+ * v6.06 (31-oct-2026 · corrimiento D1 = lun 2-nov): ciclo 1 lun 2-nov-2026 → mié 26-may-2027 (73; el lun 2-nov es día-Derma) · ciclo 2
+ * vie 28-may → mié 4-ago-2027 (30) · ALIVIO F2 d44-d49 = jue 4-mar → lun 22-mar (mismo contenido).
  * v6.05 (24-oct-2026 · corrimiento D1 = lun 26-oct): ciclo 1 mar 27-oct-2026 → vie 21-may-2027 (73; el lun 26-oct es día-Research) · ciclo 2
  * lun 24-may → vie 30-jul-2027 (30) · ALIVIO F2 d44-d49 = vie 26-feb → mar 16-mar (mismo contenido).
  * v6.03 (20-oct-2026 · corrimiento D1 = mié 21-oct): ciclo 1 mié 21-oct-2026 → lun 17-may-2027 (73; el mié 21-oct es día-Derma) · ciclo 2

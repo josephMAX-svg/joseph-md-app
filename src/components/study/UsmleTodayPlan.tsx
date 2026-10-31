@@ -15,6 +15,9 @@ import {
   subtemasValidados, alarmaAbogado, alarmaRelectura, reglaDelTercio, plantillaPorSistema, esParcial, marcarParcial, PISO_AMBAR, semaforoPct,
   evaluarGoNoGo, horasDesde, GONOGO_HORAS,
 } from '../../lib/usmleScores';
+
+/** v6.06: sistemas que F1 estudia de verdad (filas de contenido, sin Assessment) — el «STEP 1 VIVO» de F2 mezcla solo esos (antes el texto decía «9 sistemas + bioestadística»). */
+const SISTEMAS_F1: string[] = [...new Set(DIAS.filter((d) => d.system !== 'Assessment').map((d) => d.system))];
 import { FECHAS_V6, faseV6, fechaPlanDe, fechaRealDe } from '../../lib/fechasV6';
 import { infoTurno, ordenSemanaDe, onTurnosChange, filaT2DelDia, dowCorto, guardarTurno, desmarcarTurno, TURNOS_V6, TURNO_INFO } from '../../lib/serumsTurnos';
 import { plantillaDelDia } from '../../lib/plantillasV6';
@@ -65,6 +68,8 @@ import { fechasRealesEnTexto } from '../../lib/corridaTexto';
  * las 11 filas desplazadas (T3-T13) llevan el chip «DE F1 → tramo 2» (229 filas en total: 47 de F1 + T1-T182).
  * v6.05b (24-oct-2026): sin cambio de código — la 🧭 Guía del día (guiaUsmleDe por fecha) cubre también las filas desplazadas T3-T13 (7 franjas
  *   F3, con la 16:15 REENTRADA), el NBME 29 (T2, Day-After 1/6) y los días de cola de vídeo T14-T18 (07:15-07:45).
+ * v6.06 (31-oct-2026): corrimiento del D1 al lun 2-nov → F1 = D1-D42 («Día d/42», D35 = NBME 27 vie 18-dic · D42 = NBME 28 mié 30-dic → T1).
+ *   Sin cambio de código: las 16 filas desplazadas (T3-T18) llevan el chip «DE F1 → tramo 2» y su 🧭 Guía (cola de vídeo T19-T23); 224 filas.
  * v6.02c (18-oct-2026, E1): 🧭 GUÍA DEL DÍA en 📋 HOY = qué · cuánto · cómo de CADA franja (usmleGuia.ts, GENERADO por
  *   DATA/_scripts/usmle/gen_usmle_guia.js; formato común GuiaBloque + GuiaBloqueCard): vídeos B&B exactos con minutos y su reparto,
  *   filtros reales del Test Composer (System + nº de preguntas), Library con su doc, respaldo Mehlman y AVISO cuando el mapeo no es
@@ -842,7 +847,7 @@ export default function UsmleTodayPlan() {
       {pausa && (
         <View style={[st.anchor, { borderLeftColor: Colors.gold, marginBottom: Spacing.sm }]}>
           <Text style={[st.anchorLbl, { color: Colors.gold }]}>⏸ Step 1 en PAUSA · {fmtFecha(DAILY_META.pausa.desde)} → {fmtFecha(DAILY_META.pausa.hasta)} · {DAILY_META.pausa.motivo}</Text>
-          <Text style={st.anchorSub}>{faseV6(iso) === 'F2' ? 'Mantenimiento: Anki USMLE 05:15-05:45 L-V (0 tarjetas nuevas, FSRS 0,85) + sábado 07:45-09:15 «STEP 1 VIVO»: 20Q timed MEZCLADAS de los 9 sistemas de F1 + bioestadística (10 incorrectas UWorld + 10 nuevas AMBOSS) + revisión. Sin NBME/UWSA.' : 'Sin sesión (Anki opcional). Desde el lun 4-ene: Anki 30\' L-V + sábado 20Q mezcladas.'}</Text>
+          <Text style={st.anchorSub}>{faseV6(iso) === 'F2' ? `Mantenimiento: Anki USMLE 05:15-05:45 L-V (0 tarjetas nuevas, FSRS 0,85) + sábado 07:45-09:15 «STEP 1 VIVO»: 20Q timed MEZCLADAS de los ${SISTEMAS_F1.length} sistemas vistos en F1 (${SISTEMAS_F1.join(' · ')}; 10 incorrectas UWorld + 10 nuevas AMBOSS) + revisión. Sin NBME/UWSA.` : 'Sin sesión (Anki opcional). Desde el lun 4-ene: Anki 30\' L-V + sábado 20Q mezcladas.'}</Text>
           <Text style={st.anchorSub}>Reinicio: {fmtFecha(FECHAS_V6.step1.reinicio)} (T1 · REENTRADA) · NBME 29 al día siguiente · FSRS vuelve a 0,90 el día del reinicio. Abajo puedes navegar el plan; ninguna fila es «hoy» durante la pausa.</Text>
         </View>
       )}

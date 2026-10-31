@@ -10,7 +10,7 @@
 //   · (v6.03) la curaduría de la semana 1 cae en su paso / pieza / fila del plan.
 // Uso:
 //   node DATA/_scripts/check_rutina_guia.js                         # verificación completa
-//   node DATA/_scripts/check_rutina_guia.js --informe 2026-10-26 2026-11-07   # además imprime la tabla día × franja (markdown)
+//   node DATA/_scripts/check_rutina_guia.js --informe 2026-11-02 2026-11-14   # además imprime la tabla día × franja (markdown)
 // v6.03 (20-oct-2026): las expectativas de franja ya no están cableadas a la semana del lun 19-oct: salen del plan (D1, UWSA1/NBME,
 //   1.er OUTPUT de Business, 1.er sábado ≥ D1) + comprobación de que la curaduría de la semana 1 (vibeS1 · SYN_CUR_PIEZAS · BIZ_TRAMO)
 //   aterriza en su paso / pieza / fila del plan corrido (v6.03: mié 21-oct → sáb 31-oct).
@@ -25,6 +25,17 @@
 //   D1 · comodines del deep dive + trifecta en el 1.er sábado LIBRE (v6.05: sáb 7-nov) retomando en su minuto · guiaShipDe nombra todas las
 //   piezas PC del sábado · vibecoding: ship = pcSab y ningún PC en día protegido. plantillasV6/encapsPlan se cargan con stubs para los imports
 //   no relativos (react, supabase).
+// v6.06 (31-oct-2026, D1 = lun 2-nov): las expectativas siguen saliendo del plan (UWSA1 lun 2-nov 07:25 · NBME vie 13-nov / vie 4-dic / vie 18-dic /
+//   mié 30-dic 13:00 · 1.er OUTPUT vie 6-nov · comodines sáb 7-nov = No Priors + Willison y sáb 14-nov = deep dive + trifecta). Cambios: (1) un sábado
+//   del SYNAPSE que solo trae el bloque R de «día protegido» (sáb 13-mar-2027: SYNAPSE y vibecoding ya llegan a la semana del ENCAPS) no exige guía
+//   del sábado; (2) ningún plan de este checker tiene fila en un día PROTEGIDO (salvo ese bloque R de 0′) y lo que no cupo antes del ENCAPS (SYNAPSE
+//   mar 16-mar · vibecoding mar 16 → vie 19-mar) tiene bloque y guía en F3 (la simulación lo cubre); (3) un OUTPUT de Business en el viernes del
+//   SIM 100Q de las 11:00 de F2 (vie 26-feb) va entero al sábado 09:15-09:55, como el de un viernes de NBME.
+// v6.06 (fix 31-oct-2026): (1) la simulación del día llega hasta max(examen + 5, última fila de MIR_MANT_DIAS) — v6.06: vie 5-nov-2027, las 9 repuestas
+//   MIR tras el Step 1 (antes paraba el sáb 30-oct y no veía las del 1 al 5-nov); (2) toda sesión MIR (mirSesionDe) tiene su bloque MIR y en F5 la
+//   nota «el banqueo MIR … ya cerró» solo sale sin filas MIR posteriores; (3) ningún bloque nombra una fase del régimen distinta de la del día (salvo
+//   «REPOSICIÓN F1» de lo que se repone) — «SYNAPSE · 30' (cierre F2)» en F3; (4) AURUM en un día de hito USMLE (F1/F3) avisa del hito (por la mañana,
+//   AURUM a su hora tras él) y, si los hay, del PITCH y del CHECKPOINT ENCAPS de ese día (D35 = PITCH v2, vie 18-dic: NBME 27 + CHECKPOINT DEL AÑO).
 // Sin dependencias nuevas (typescript del repo vía usmle/cargar_ts.js). Solo lectura: no escribe nada.
 'use strict';
 const path = require('path');
@@ -70,7 +81,8 @@ for (const x of V.VIBE_DIAS) if (!RG.guiaVibeDe(x.fecha)) falta('vibecoding', x.
 for (const x of S.SYN_DIAS) {
   const w = dow(x.fecha);
   if (w >= 1 && w <= 5 && x.bloques.some((b) => /^[ABC]$/.test(b.tag)) && !RG.guiaSynapseDe(x.fecha)) falta('synapse', x.fecha, `d${x.d}`);
-  if (w === 6 && !RG.guiaShipDe(x.fecha)) falta('ship+synapse sáb', x.fecha, `d${x.d}`);
+  // v6.06: un sábado PROTEGIDO del SYNAPSE (solo el bloque R de 0′, sáb 13-mar-2027) no tiene guía del sábado (ni PC)
+  if (w === 6 && x.bloques.some((b) => b.tag !== 'R') && !RG.guiaShipDe(x.fecha)) falta('ship+synapse sáb', x.fecha, `d${x.d}`);
   if (w === 0 && x.bloques.some((b) => b.tag === 'R' && b.min >= 10 && /^Feynman/.test(b.material)) && !RG.guiaFeynmanDe(x.fecha)) falta('feynman dom', x.fecha, `d${x.d}`);
 }
 for (const x of A.AURUM_DIAS) if (!RG.guiaAurumDe(x.fecha)) falta('aurum', x.fecha, `D${x.d}`);
@@ -113,7 +125,35 @@ for (const n of NBMES) {
   if (B.bizModo(r) === 'OUTPUT') esperado.push([addDias(n, 6 - dow(n)), RG.guiaBusinessDe, '07:45–08:25']);
   else esperado.push([n, RG.guiaBusinessDe, '12:30–12:55']);
 }
+// v6.06: OUTPUT de Business en un viernes con el ENCAPS 11:00-13:00 de F2 (SIM #7, vie 26-feb) → entero el sábado 09:15-09:55 (F2) y nada ese viernes
+for (const x of B.BIZ_DIAS.filter((r) => B.bizModo(r) === 'OUTPUT' && RG.encapsOnceATrece(r.fecha))) {
+  esperado.push([addDias(x.fecha, 6 - dow(x.fecha)), RG.guiaBusinessDe, '09:15–09:55']);
+  if (RG.guiaBusinessDe(x.fecha)) errores.push(`${x.fecha} guiaBusinessDe: OUTPUT en día de SIM 100Q 11:00 → debe ir entero al sábado (hoy sin guía)`);
+}
+// v6.06: ningún plan de este checker en un día PROTEGIDO (el SYNAPSE solo con su bloque R de 0′)
+{
+  const PROT = new Set(FV.FECHAS_V6.protegidos.map((p) => p.fecha));
+  for (const [n, xs] of [['vibecoding', V.VIBE_DIAS], ['aurum', A.AURUM_DIAS], ['liviano', L.LIV_DIAS], ['business', B.BIZ_DIAS.filter((r) => B.bizModo(r) !== 'DESCANSO')]]) for (const x of xs) if (PROT.has(x.fecha)) errores.push(`${x.fecha} ${n}: fila en día PROTEGIDO`);
+  for (const x of S.SYN_DIAS) if (PROT.has(x.fecha) && x.bloques.some((b) => b.tag !== 'R' || b.min > 0)) errores.push(`${x.fecha} synapse: A/B/C/PC en día PROTEGIDO`);
+}
 for (const [iso, f, fr] of esperado) { const g = f(iso); if (!g || g.franja !== fr) errores.push(`${iso} ${f.name}: franja ${g ? g.franja : 'null'} ≠ ${fr}`); }
+// v6.06 (fix): AURUM en un día de HITO USMLE de F1/F3 (filas 🎯 de DIAS + DIAS_T2; en F4 el hito se reordena por turno) → la guía lo avisa en su 1.er
+//   aviso (hito por la mañana · AURUM a su hora, tras el hito) y nombra el PITCH y el CHECKPOINT ENCAPS de ese día si los hay (v6.06: D35 vie 18-dic)
+{
+  const EG = cargarModuloTS(path.join('src', 'lib', 'encapsGuia.ts'), cache);
+  let nHitoAurum = 0;
+  for (const h of [...U.DIAS, ...U.DIAS_T2].filter((x) => U.esHito(x) && FV.faseV6(x.fecha) !== 'F4')) {
+    const a = A.aurumDiaDe(h.fecha); if (!a) continue;
+    nHitoAurum++;
+    const g = RG.guiaAurumDe(h.fecha); const av = (g && g.aviso) || '';
+    const hu = RG.hitoUsmleDe(h.fecha);
+    if (!hu || !av.startsWith(`Hoy ${hu.nombre}`) || !/tras el hito/.test(av) || (hu.franja && !av.includes(hu.franja)) || (g && !av.includes(g.franja))) errores.push(`${h.fecha} guiaAurumDe D${a.d}: día de hito USMLE (${hu ? hu.nombre : h.sub.slice(0, 30)}) sin el aviso «hito por la mañana · AURUM ${g ? g.franja : ''} tras el hito»`);
+    if (a.pitch && !new RegExp(`PITCH v${a.pitch} HOY`).test(av)) errores.push(`${h.fecha} guiaAurumDe D${a.d}: PITCH v${a.pitch} en día de hito sin avisarlo`);
+    const enc = EG.guiaEncapsDe(h.fecha);
+    if (enc && /CHECKPOINT/.test(enc.titulo) && !/CHECKPOINT DEL AÑO de ENCAPS/.test(av)) errores.push(`${h.fecha} guiaAurumDe D${a.d}: CHECKPOINT ENCAPS ${enc.franja} el mismo día del hito sin avisarlo`);
+  }
+  console.log(`AURUM en día de hito USMLE (F1/F3): ${nHitoAurum} día(s) con el aviso comprobado`);
+}
 if (RG.revisionFicheroDe(SAB1) !== `S01_${SAB1}.md`) errores.push(`revisionFicheroDe(${SAB1}) = ${RG.revisionFicheroDe(SAB1)} ≠ S01_${SAB1}.md`);
 if (!/^Primera revisión/.test((RG.guiaRevisionDe(SAB1) || {}).aviso || '')) errores.push(`${SAB1} guiaRevisionDe: no la marca como la PRIMERA revisión`);
 
@@ -197,7 +237,7 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
   const LIB = (n) => cargarConStubs(path.join(__dirname, '..', '..', 'src', 'lib', n + '.ts'));
   const PL = LIB('plantillasV6'), RG2 = LIB('rutinaGuia'), G2 = LIB('guia'), MD2 = LIB('mirDailyPlan'), AU2 = LIB('aurumDailyPlan'), SY2 = LIB('synapseDailyPlan'),
     VB2 = LIB('vibecodingPlan'), LV2 = LIB('livianoStudyPlan'), F62 = LIB('fechasV6'), ST2 = LIB('serumsTurnos'), EP2 = LIB('encapsPlan'), EG2 = LIB('encapsGuia'),
-    RD2 = LIB('researchDailyPlan'), R272 = LIB('researchDailyPlan2027'), DC2 = LIB('dermaCiclo2');
+    RD2 = LIB('researchDailyPlan'), R272 = LIB('researchDailyPlan2027'), DC2 = LIB('dermaCiclo2'), MM2 = LIB('mirMantenimiento');
   const hm = (h) => { const [a, b] = h.split(':').map(Number); return a * 60 + b; };
   const tmB = (b) => /tiempo muerto|guardia|cuando se pueda|^tarde$|descansos del hito|todo el día/i.test(b.hora);
   const WDC = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
@@ -217,9 +257,13 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
     }
   };
   const examen = FV.FECHAS_V6.step1.examen;
-  const SIM_FIN = addDias(examen, 5);
+  // v6.06 (fix): hasta la ÚLTIMA fila del banqueo MIR si va más allá de examen + 5 (v6.06: repuestas hasta el vie 5-nov-2027; antes paraba el sáb 30-oct)
+  const MIR_FIN = MM2.MIR_MANT_DIAS.map((x) => x.fecha).sort().pop() || examen;
+  const SIM_FIN = [addDias(examen, 5), MIR_FIN].sort().pop();
+  const SIM_INI = '2026-10-24';
+  const FASE_N = (f) => (/^F[1-5]$/.test(f) ? f : null);
   let nSim = 0;
-  for (let iso = '2026-10-24'; iso <= SIM_FIN; iso = addDias(iso, 1)) {
+  for (let iso = SIM_INI; iso <= SIM_FIN; iso = addDias(iso, 1)) {
     const f4 = F62.faseV6(iso) === 'F4';
     for (const turno of f4 ? [undefined, 'T', 'L', 'G'] : [undefined]) {
       ST2 && global.localStorage.removeItem(ST2.TURNOS_KEY);
@@ -255,6 +299,15 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
         const s = bs.find((b) => b.plan === 'synapse'); const g = RG2.guiaSynapseDe(iso);
         if (s && (s.hora !== '13:00–13:30' || !g || g.franja !== '13:00–13:30')) errores.push(`${tag}: SYNAPSE ${s.hora} / guía ${g ? g.franja : '—'} ≠ 13:00–13:30 (ENCAPS 11:00-13:00)`);
       }
+      // v6.06 (fix) · toda sesión MIR tiene su bloque MIR (DJ-4) · F5: «el banqueo MIR … ya cerró» solo sin filas MIR posteriores (sáb 30-oct-2027)
+      if (MD2.mirSesionDe(iso) && !bs.some((b) => b.plan === 'mir')) errores.push(`${tag}: hay sesión MIR (mirSesionDe) y la plantilla no trae bloque MIR`);
+      if (p.notas.some((n) => /banqueo MIR.*ya cerró/.test(n)) && MM2.MIR_MANT_DIAS.some((x) => x.fecha > iso)) errores.push(`${tag}: nota «el banqueo MIR … ya cerró» con filas MIR posteriores (hasta ${MIR_FIN})`);
+      // v6.06 (fix) · ningún bloque nombra una FASE del régimen distinta de la del día (F3: «SYNAPSE · 30' (cierre F2)»); se permite «REPOSICIÓN F1»
+      //   (lo de la F1 que se repone en el carril sábado de F2)
+      for (const b of bs) {
+        const m = /\bF([1-5])\b/.exec(b.nombre.replace(/REPOSICIÓN F\d\b/g, ''));
+        if (m && `F${m[1]}` !== FASE_N(F62.faseV6(iso))) errores.push(`${tag}: el bloque «${b.nombre.slice(0, 60)}» nombra la fase F${m[1]} en un día de ${F62.faseV6(iso)}`);
+      }
     }
   }
   global.localStorage.removeItem(ST2.TURNOS_KEY);
@@ -265,7 +318,7 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
     if (iso < D1 && (a !== D1 || enc)) errores.push(`${iso} ENCAPS antes del D1: antesDelD1 = ${a} (≠ ${D1}) o el Home pinta un bloque ENCAPS`);
     if (iso === D1 && (a !== null || !enc)) errores.push(`${iso} ENCAPS el D1: antesDelD1 = ${a} (debe ser null) o el Home no pinta el bloque 16:15`);
   }
-  console.log(`simulación del día: ${nSim} día×turno (2026-10-24 → ${SIM_FIN}) · solapes, bloques sin contenido y guías fuera de su bloque`);
+  console.log(`simulación del día: ${nSim} día×turno (${SIM_INI} → ${SIM_FIN}; última fila MIR ${MIR_FIN}) · solapes, bloques sin contenido, guías fuera de su bloque, MIR y fases nombradas`);
   if (avisosSim.length) console.warn(`⚠ ${avisosSim.length} aviso(s) fuera de este ámbito:\n  ` + avisosSim.slice(0, 10).join('\n  '));
 }
 

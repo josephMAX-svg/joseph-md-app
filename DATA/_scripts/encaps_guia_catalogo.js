@@ -9,15 +9,18 @@
  *     Claude del área (enlaces privados de Joseph: solo abren con su sesión) para generar preguntas extra.
  *   · OBSIDIAN = nota «_concepto_madre» del CÓDIGO v3 en el vault (06_ENCAPS/ENCAPS_2026/02_TEMARIO/<área>/<tema>); el generador
  *     comprueba en disco que cada nota existe (si el vault no está montado, solo avisa).
- *   · PREVISTO_SEMANA2 = composición simulada (24-oct, copia aislada, v6.05) de `--semana 2026-11-02` + `--eval 2026-11-02` (solo informe):
- *     en v6.05 la semana 1 (lun 26 → vie 30-oct) está ENTERA armada (pre-test lun 26 / mar 27, eval + banco mié 28 V-2 y jue 29 III-5,
- *     mini-sim vie 30; re-fechados por sesión desde la v6.03) y la semana 2 (lun 2 → jue 5-nov: II-5 · I-4 · IV-1 · II-4) no tiene ningún
- *     runner → se genera entera con --semana tras el mini-sim del vie 30 → RUNBOOK_SEMANA2_2026-10-26.md (nombre histórico).
- *     (v6.03: --eval/--banco 2026-10-28 y 2026-10-29, II-5 · I-4, con el lun 26 / mar 27 ya armados · v6.02: `--semana 2026-10-26 --dry` del 18-oct.)
+ *   · PREVISTO_SEMANA2 = composición simulada (31-oct, copia aislada, v6.06) de `--semana 2026-11-09` + `--eval 2026-11-09` (solo informe):
+ *     en v6.06 la semana 1 (lun 2 → vie 6-nov) está ENTERA armada (pre-test lun 2 / mar 3, eval + banco mié 4 V-2 y jue 5 III-5, mini-sim
+ *     vie 6; re-fechados por sesión desde la v6.05) y la semana 2 (lun 9 → jue 12-nov: II-5 · I-4 · IV-1 · II-4) no tiene ningún runner → se
+ *     genera entera con --semana tras el mini-sim del vie 6 → RUNBOOK_SEMANA2_2026-10-26.md (nombre histórico).
+ *     (v6.05: --semana 2026-11-02 + --eval 2026-11-02, mismas cifras · v6.03: --eval/--banco 2026-10-28 y 2026-10-29, II-5 · I-4, con el lun 26 /
+ *     mar 27 ya armados · v6.02: `--semana 2026-10-26 --dry` del 18-oct.)
  * Lista negra: nada del examen ENCAPS 2026-II (reservado como pre-test del vie 8-ene-2027). THEOMED «Banqueo Final.mp4» (11-oct) NO se
  * enlaza: puede contener el 2026-II (S2 §7).
  * v6.02c (18-oct-2026, E4): nuevo. · v6.03 (20-oct-2026): PREVISTO_SEMANA2 re-simulado con la F1 corrida al mié 21-oct. · v6.05 (24-oct-2026):
  *   re-simulado con la F1 corrida al lun 26-oct (semana 2 = lun 2 → jue 5-nov) + PREVISTO_ORIGEN (texto de la guía, antes «--dry del 18-oct»).
+ *   · v6.06 (31-oct-2026): re-simulado con la F1 corrida al lun 2-nov (semana 2 = lun 9 → jue 12-nov): mismas cifras que en v6.05 (mismo pool,
+ *   sin rondas registradas; solo cambia la fecha).
  */
 'use strict';
 
@@ -261,18 +264,18 @@ const AVISO_CODIGO = {
 };
 
 /**
- * Semana 2 (lun 2 → jue 5-nov, v6.05): ningún runner armado (la semana 1, lun 26 → vie 30-oct, sí lo está entera). Composición simulada el
- * 24-oct en copia aislada con `--semana 2026-11-02` (lun banco · mar-jue eval → banco) + `--eval 2026-11-02` (la eval del lunes va aparte:
+ * Semana 2 (lun 9 → jue 12-nov, v6.06): ningún runner armado (la semana 1, lun 2 → vie 6-nov, sí lo está entera). Composición simulada el
+ * 31-oct en copia aislada con `--semana 2026-11-09` (lun banco · mar-jue eval → banco) + `--eval 2026-11-09` (la eval del lunes va aparte:
  * --semana no la arma) con el pool de hoy (434 · 249 libres) y el registro sin rondas de la semana 1. Solo informe: la guía lo usa mientras el
- * runner no exista. P1 comprobado: 0 ítems de minisim_2026-11-06 / minisim_2026-11-13 en las 8 salidas.
- * (v6.03: mié 28 II-5 20 + II-10 2 · jue 29 I-4 16 + I-5+I-6 4, con el lun 26 / mar 27 ya armados.)
+ * runner no exista. P1 comprobado: 0 ítems de minisim_2026-11-13 / minisim_2026-11-20 en las 8 salidas.
+ * (v6.05: lun 2 → jue 5-nov, mismas cifras · v6.03: mié 28 II-5 20 + II-10 2 · jue 29 I-4 16 + I-5+I-6 4, con el lun 26 / mar 27 ya armados.)
  */
-const PREVISTO_ORIGEN = 'simulación del 24-oct, v6.05';
+const PREVISTO_ORIGEN = 'simulación del 31-oct, v6.06';
 const PREVISTO_SEMANA2 = {
-  '2026-11-02': { principal: 20, secundario: 2, nota: 'secundario II-10: solo 2Q en el pool (receta 4-5) · tras este banco quedan 0Q libres de II-5 · la eval del lunes (5Q de fallos previos del registro, P2) se genera aparte con --eval 2026-11-02 después de --semana', eval: 'lunes: 5Q de fallos previos del registro (otro enfoque, P2), críticos primero' },
-  '2026-11-03': { principal: 16, secundario: 4, nota: 'tras este banco quedan 0Q libres de I-4 · la eval (II-5, código de ayer) sale 5/5 re-test: el banco del lun 2 consume todo el pool libre de II-5', eval: 'código de ayer II-5: 3 cifras + 2 viñetas (5Q re-test)' },
-  '2026-11-04': { principal: 18, secundario: 2, nota: 'secundario II-EMG: solo 2Q en el pool (receta 4-5) · tras este banco quedan 0Q libres de IV-1+IV-2 · la eval (I-4, código de ayer) sale 5/5 re-test', eval: 'código de ayer I-4: 3 cifras + 2 viñetas (5Q re-test)' },
-  '2026-11-05': { principal: 16, secundario: 3, nota: 'principal: 15Q libres de II-4 + 1Q re-test (fallback paso 1) · secundario I-OCC: solo 3Q en el pool (receta 4-5) · la eval (IV-1, código de ayer) sale 5/5 re-test', eval: 'código de ayer IV-1: 3 cifras + 2 viñetas (5Q re-test)' },
+  '2026-11-09': { principal: 20, secundario: 2, nota: 'secundario II-10: solo 2Q en el pool (receta 4-5) · tras este banco quedan 0Q libres de II-5 · la eval del lunes (5Q de fallos previos del registro, P2) se genera aparte con --eval 2026-11-09 después de --semana', eval: 'lunes: 5Q de fallos previos del registro (otro enfoque, P2), críticos primero' },
+  '2026-11-10': { principal: 16, secundario: 4, nota: 'tras este banco quedan 0Q libres de I-4 · la eval (II-5, código de ayer) sale 5/5 re-test: el banco del lun 9 consume todo el pool libre de II-5', eval: 'código de ayer II-5: 3 cifras + 2 viñetas (5Q re-test)' },
+  '2026-11-11': { principal: 18, secundario: 2, nota: 'secundario II-EMG: solo 2Q en el pool (receta 4-5) · tras este banco quedan 0Q libres de IV-1+IV-2 · la eval (I-4, código de ayer) sale 5/5 re-test', eval: 'código de ayer I-4: 3 cifras + 2 viñetas (5Q re-test)' },
+  '2026-11-12': { principal: 16, secundario: 3, nota: 'principal: 15Q libres de II-4 + 1Q re-test (fallback paso 1) · secundario I-OCC: solo 3Q en el pool (receta 4-5) · la eval (IV-1, código de ayer) sale 5/5 re-test', eval: 'código de ayer IV-1: 3 cifras + 2 viñetas (5Q re-test)' },
 };
 
 /**

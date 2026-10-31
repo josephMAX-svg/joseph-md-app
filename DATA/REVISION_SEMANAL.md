@@ -1,6 +1,15 @@
-# 📋 REVISIÓN SEMANAL — sábado 07:15-07:45 · v6.05 (24-oct-2026: D1 lun 26-oct · S01 sáb 31-oct · 42 semanas · ⏸ v6.04: S01 dom 25-oct, 43 semanas · ⏸ v6.03: D1 mié 21-oct · ⏸ v6.02: D1 lun 19-oct · ⏸ v6.01: lun 12-oct) · ⏸ cuerpo v5.20 re-fechado 6-oct-2026 (07:15-07:35)
+# 📋 REVISIÓN SEMANAL — sábado 07:15-07:45 · v6.06 (31-oct-2026: D1 lun 2-nov · S01 sáb 7-nov · 41 semanas · ⏸ v6.05: D1 lun 26-oct, S01 sáb 31-oct, 42 semanas · ⏸ v6.04: S01 dom 25-oct, 43 semanas · ⏸ v6.03: D1 mié 21-oct · ⏸ v6.02: D1 lun 19-oct · ⏸ v6.01: lun 12-oct) · ⏸ cuerpo v5.20 re-fechado 6-oct-2026 (07:15-07:35)
 
-> **📌 v6.05 (24-oct-2026, vigente):** el ritual y las métricas no cambian. Del lun 19 al dom 25-oct no hubo estudio → **D1 = lun 26-oct** y la
+> **📌 v6.06 (31-oct-2026, vigente):** el ritual y las métricas no cambian. La semana del lun 26-oct tampoco se estudió → **D1 = lun 2-nov** y la
+> **S01 es el sáb 7-nov 07:15** (`S01_2026-11-07.md`, S1/41, cubre lun 2 → vie 6-nov, hito UWSA1 lun 2-nov). **Del sáb 24-oct al dom 1-nov no hay revisión**
+> (`gen_revision_semanal.js` no escribe nada en un día de `corrida_s1.sin_sesion` —lun 19-oct → dom 1-nov—; `--forzar` lo salta). `STEP1_SEMANAS` = **41**
+> (9 de F1 + 32): S02 sáb 14-nov (NBME 25 vie 13-nov) · **S04 sáb 28-nov = SHIP S4** (`S04_2026-11-28.md`) · **S05 sáb 5-dic = SHIP S5** (`S05_2026-12-05.md`; NBME 26 vie
+> 4-dic) · **S06 sáb 12-dic = DELOAD** (semana del lun 7-dic) · S07 sáb 19-dic (NBME 27 vie 18-dic) · **S09 sáb 2-ene = DELOAD + auditoría del NBME 28 (D42, mié 30-dic)** ·
+> S10 sáb 9-ene = 1.er sábado de la PAUSA · ENCAPS · S13 sáb 30-ene (previo al taper S14 del vibecoding) · S19 sáb 13-mar = PROTEGIDO (D-1 ENCAPS: sin revisión en el
+> Home) · **S20 sáb 20-mar = S10/41** (1.ª semana del tramo 2; NBME 29 mié 17-mar) … **S51 sáb 23-oct-2027 = S41/41** (día del ritual) · S52 sáb 30-oct = semana del examen.
+> Gates mié 25-nov / mié 23-dic; NBME 25/26/27 vie 13-nov / 4-dic / 18-dic; NBME 28 mié 30-dic. Nombres comprobados con `gen_revision_semanal.js --dry-run` (31-oct).
+>
+> **⏸ v6.05 (24-oct-2026; historial, lo corrige el bloque v6.06):** el ritual y las métricas no cambian. Del lun 19 al dom 25-oct no hubo estudio → **D1 = lun 26-oct** y la
 > **S01 es el sáb 31-oct 07:15** (`S01_2026-10-31.md`, S1/42, cubre lun 26 → vie 30-oct, hito UWSA1 lun 26). El **sáb 24 y el dom 25-oct no tienen revisión**
 > (`gen_revision_semanal.js` no escribe nada en un día de `corrida_s1.sin_sesion`; `--forzar` lo salta). `STEP1_SEMANAS` = **42**: S04 sáb 21-nov · S05 sáb 28-nov
 > (NBME 26 vie 27-nov) · **S06 sáb 5-dic = DELOAD** · **S10 sáb 2-ene = DELOAD + auditoría del NBME 28 (D47, mié 30-dic)** · S13 sáb 23-ene (PAUSA · ENCAPS) ·

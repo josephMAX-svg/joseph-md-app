@@ -6,8 +6,9 @@
 //   · taper:     8 semanas S13-S20 (v5.10-b, 12-sep-2026): S13-S16 mantenimiento ≤15'/día (flag deload) ·
 //                S17-S20 deload total (journal 5' + audio) · S20 = semana del examen (v5.20: mié 17 → vie 19-feb, D93-D95; finde libre y examen lun 22-feb · v5.19: mar 16 → jue 18-feb, D93-D95; examen vie 19-feb · v5.18: lun 15 → mié 17-feb · v5.17: jue 11 → lun 15-feb; v5.16: lun-mié).
 //   · _meta:     freno 04:55 · convención de commit [S<n>] · verificación mecánica (verify_vibecoding.js).
-// Calendario: START = argv[2] (YYYY-MM-DD, default 2026-10-26 = D1 v6.05; v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07 · v5.19: 2026-10-06 · v5.18: 2026-10-05 · v5.17: 2026-10-01) · días HÁBILES L-V
-// (salta sáb/dom y los SKIP de _fechas_v6.json: 25-dic/31-dic/1-ene en el rango, misma regla que remap_inicio.js).
+// Calendario: START = argv[2] (YYYY-MM-DD, default 2026-11-02 = D1 v6.06; v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07 · v5.19: 2026-10-06 · v5.18: 2026-10-05 · v5.17: 2026-10-01) · días HÁBILES L-V
+// (salta sáb/dom y los SKIP de _fechas_v6.json: 25-dic/31-dic/1-ene en el rango, misma regla que remap_inicio.js; desde v6.06 también los
+// días PROTEGIDOS de _fechas_v6.json —vie 12 y lun 15-mar—: el taper ya los alcanza).
 //   · S1-S12: 5 días hábiles por proyecto (paso 1 definir · 2-3 construir · 4 verificar · 5 doc+commit; v5.20: bloques mié → mar, S12 mié 23 → mié 30-dic por el festivo del vie 25-dic; v5.19: bloques mar → lun, S12 mar 22 → mar 29-dic; v5.18: lun → vie, S12 lun 21 → lun 28-dic; v5.17: jue → mié) →
 //     60 días · sábado PC (SYNAPSE 15:00-17:00) = SHIP del proyecto (sábado siguiente al 5º día) · domingo = Feynman.
 //   · S13-S20: (hasta v5.10) semanas de CALENDARIO (lun→vie) desde el lunes siguiente al fin de S12, con los feriados fuera
@@ -75,16 +76,31 @@
 // CAE en un día protegido: S20 → pcSab '' = SIN PC (su sábado, 13-mar, es D-1 del ENCAPS; el sáb 6-mar es el PC de S19, anterior a S20). Mismos
 // pasos y días: nada se recorta. vibePCSabado() lee solo pcSab. Controles nuevos: pcSab = '' o sábado ≥ fin, no protegido y = ship.
 // gen_synapse_plan.js deriva su sábado nominal del `fin` (no del ship) y exige pcSab = su PC (o 0 PC si pcSab = '').
-// Uso:  node DATA/_scripts/gen_vibecoding_plan.js 2026-10-26   (v6.05; v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07; v5.19: 2026-10-06 · v5.18: 2026-10-05)
+// v6.06 (31-oct-2026 · corrimiento D1 = lun 2-nov; la semana del lun 26-oct tampoco se estudió; orden de Joseph «reestructura todo a partir
+// del 2 de noviembre … corre nada más, corre también las fechas límite … lo que era la semana anterior, esta semana; para no perder materias,
+// tan solamente corre»): START = 2026-11-02 (+5 hábiles sobre v6.05, una semana exacta) → S1-S12 lun 2-nov → mié 27-ene-2027 (bloques lun → vie
+// hasta S7; S8 lun 21 → lun 28-dic por el feriado del vie 25-dic —sáb 26-dic = AVANCE de S8—; S9 mar 29-dic → mié 6-ene; S10 jue 7 → mié 13-ene;
+// S11 jue 14 → mié 20-ene y S12 jue 21 → mié 27-ene, ya dentro de la intensiva ENCAPS). SHIP S1 sáb 7-nov … S7 sáb 19-dic · S8 sáb 2-ene · S9 sáb
+// 9-ene · S10 sáb 16-ene · S11 sáb 23-ene · S12 sáb 30-ene. REGLA NUEVA v6.06: el taper ya llega a la semana del ENCAPS → los días PROTEGIDOS
+// (vie 12-mar D-1 hábil · lun 15-mar libre post-ENCAPS) NO son hábiles del vibecoding (isHabil); lo que no cabe antes va DESPUÉS, desde el mar
+// 16-mar (F3), nunca comprimido ni en un día protegido. Taper S13-S20 jue 28-ene → VIE 19-MAR-2027 (= 95.º hábil sin protegidos: el fin se
+// AMPLÍA, nada se recorta): S13 jue 28-ene → mié 3-feb · S14 jue 4 → mié 10-feb · S15 jue 11 → mar 16-feb (4) · S16 mié 17 → vie 19-feb (3; S15
+// y S16 cierran la MISMA semana → PC de S15 el sáb 20-feb y el de S16, PROPIO, el sáb 27-feb, junto al PC 0' de S17) · S17 lun 22 → vie 26-feb ·
+// S18 lun 1 → vie 5-mar · S19 lun 8 → jue 11-mar + mar 16-mar (salta vie 12 y lun 15, PROTEGIDOS) · S20 mié 17 → vie 19-mar (F3: plantillasV6
+// pinta el 04:15 en F3 mientras dure el taper). S19 y S20 cierran la misma semana (sáb 20-mar) → S20 lleva su sábado propio (sáb 27-mar), pero
+// los dos van DESPUÉS del SYNAPSE (mar 16-mar) → «PC = no» en el catálogo, sin bloque PC en ningún plan. Textos con fecha del catálogo (_meta,
+// proyectos S4/S5/S9 y taper) re-escritos a v6.06 en DATA/SYNAPSE/vibecoding_proyectos.json (revisiones S04_2026-11-28 · S05_2026-12-05: S1 =
+// semana del lun 2-nov, mismo cálculo que gen_revision_semanal.js).
+// Uso:  node DATA/_scripts/gen_vibecoding_plan.js 2026-11-02   (v6.06; v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07; v5.19: 2026-10-06 · v5.18: 2026-10-05)
 // Pipeline de corrimiento: tras remap_inicio.js <fecha>, correr también este script con la misma fecha
 // (igual que gen_synapse_plan.js / gen_aurum_plan.js). Determinista: sin Date.now() ni aleatoriedad.
 const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..', '..');
-const START = process.argv[2] || '2026-10-26'; // v6.05 (v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07 · v5.19: 2026-10-06 · v5.18: 2026-10-05 · v5.17: 2026-10-01)
+const START = process.argv[2] || '2026-11-02'; // v6.06 (v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07 · v5.19: 2026-10-06 · v5.18: 2026-10-05 · v5.17: 2026-10-01)
 if (!/^20\d\d-\d\d-\d\d$/.test(START)) throw new Error('START inválido (YYYY-MM-DD): ' + START);
-// v6.00: último día del taper = 95.º hábil desde START (v6.05: mié 10-mar-2027 con START=2026-10-26 · v6.03: vie 5-mar-2027 con START=2026-10-21 · v6.02: mié 3-mar-2027 con START=2026-10-19 · v6.01: mié 24-feb-2027 con START=2026-10-12 · v6.00: vie 19-feb-2027 con START=2026-10-07); hasta v5.20 era el D95 del Step 1 (vie 19-feb-2027 con START=2026-10-07 · v5.19: jue 18-feb con START=2026-10-06 · v5.18: mié 17-feb con START=2026-10-05; v5.17: lun 15-feb con START=2026-10-01). Se calcula, no se fija a mano:
+// v6.00: último día del taper = 95.º hábil desde START (v6.06: vie 19-mar-2027 con START=2026-11-02, sin los PROTEGIDOS vie 12 / lun 15-mar · v6.05: mié 10-mar-2027 con START=2026-10-26 · v6.03: vie 5-mar-2027 con START=2026-10-21 · v6.02: mié 3-mar-2027 con START=2026-10-19 · v6.01: mié 24-feb-2027 con START=2026-10-12 · v6.00: vie 19-feb-2027 con START=2026-10-07); hasta v5.20 era el D95 del Step 1 (vie 19-feb-2027 con START=2026-10-07 · v5.19: jue 18-feb con START=2026-10-06 · v5.18: mié 17-feb con START=2026-10-05; v5.17: lun 15-feb con START=2026-10-01). Se calcula, no se fija a mano:
 // 95 días hábiles desde START con la misma regla de feriados.
 const DIAS_STEP1 = 95; // v6.00: nombre histórico — nº de hábiles del vibecoding (95), ya no coincide con el Step 1 (tramo 1 D1-D60 + tramo 2 T1-T158)
 
@@ -116,7 +132,11 @@ const fromISO = (s) => new Date(s + 'T12:00:00Z');
 const addDays = (s, n) => { const d = fromISO(s); d.setUTCDate(d.getUTCDate() + n); return iso(d); };
 const dow = (s) => fromISO(s).getUTCDay();
 const SKIP_FIJOS = new Set(require('./gen_fechas_v6').cargarFechasV6().skip); // v6.00: SKIP de _fechas_v6.json (v5.20: 25-dic/31-dic/1-ene)
-const isHabil = (s) => dow(s) !== 0 && dow(s) !== 6 && !SKIP_FIJOS.has(s);
+// v6.06 (31-oct-2026): los días PROTEGIDOS de _fechas_v6.json tampoco son hábiles del vibecoding (con START = 2-nov el taper alcanza la semana del
+//   ENCAPS: vie 12-mar = D-1 hábil y lun 15-mar = libre post-ENCAPS → lo que no cabe antes va al mar 16-mar y siguientes; antes no hacía falta: el
+//   95.º hábil caía antes del vie 12-mar con cualquier START ≤ 26-oct, así que las fechas de v6.00-v6.05 se reproducen igual).
+const PROT_HAB = new Set(require('./gen_fechas_v6').cargarFechasV6().protegidos.map((x) => x.fecha));
+const isHabil = (s) => dow(s) !== 0 && dow(s) !== 6 && !SKIP_FIJOS.has(s) && !PROT_HAB.has(s);
 // 95.º hábil desde START (misma regla de hábiles): último día del taper (v5.20: = D95 del Step 1)
 const finStep1 = (() => { let c = START, n = 0; while (true) { if (isHabil(c)) { n++; if (n === DIAS_STEP1) return c; } c = addDays(c, 1); } })();
 
@@ -271,7 +291,7 @@ const ts = `/**
  * ${dias.length} días hábiles en total. v6.00 (6-oct-2026): el taper S13-S20 es «por el ENCAPS» (intensiva lun 4-ene → dom 14-mar-2027
  * PROVISIONAL; el Step 1 está en pausa del 31-dic al 15-mar y su examen es el lun 27-sep-2027) — solo texto, mismas fechas. Hasta v5.20
  * los 95 días coincidían con el D# del Step 1; desde la v6 el d del vibecoding ya NO es el D del Step 1.
- * v6.01 (10-oct-2026): pcSab = sábado del PC en el SYNAPSE (= ship; en v6.05 S16 → sáb 20-feb (S15 y S16 cierran el sáb 13-feb; v6.05 fix: su ship también = sáb 20-feb, y S20 → pcSab '' = SIN PC: su sábado 13-mar es PROTEGIDO) · en v6.03 ninguno se desplaza —S20 no va al sáb 13-mar, PROTEGIDO— · S16 → sáb 13-feb en v6.02 · sáb 6-feb en v6.01) y vibePCSabado() = bloques PC del SYNAPSE de ese
+ * v6.01 (10-oct-2026): pcSab = sábado del PC en el SYNAPSE (= ship; en v6.06 S16 → sáb 27-feb (S15 y S16 cierran el sáb 20-feb; ship = pcSab), S19 sáb 20-mar y S20 sáb 27-mar —los dos después del SYNAPSE, sin PC— · en v6.05 S16 → sáb 20-feb (S15 y S16 cierran el sáb 13-feb; v6.05 fix: su ship también = sáb 20-feb, y S20 → pcSab '' = SIN PC: su sábado 13-mar es PROTEGIDO) · en v6.03 ninguno se desplaza —S20 no va al sáb 13-mar, PROTEGIDO— · S16 → sáb 13-feb en v6.02 · sáb 6-feb en v6.01) y vibePCSabado() = bloques PC del SYNAPSE de ese
  * sábado (SHIP · avance · taper, mismo orden): la card del vibecoding resuelve el sábado con ella y el L-V con la entrada del día.
  * GENERADO por DATA/_scripts/gen_vibecoding_plan.js desde DATA/SYNAPSE/vibecoding_proyectos.json.
  * NO editar a mano — regenerar: node DATA/_scripts/gen_vibecoding_plan.js YYYY-MM-DD
@@ -283,8 +303,8 @@ const ts = `/**
  * Ciclo diario: 5' objetivo → 35' construir → 5' commit + journal (D:/synapse-journal, node DATA/_scripts/journal_hoy.js).
  * FRENO 04:55: commit-or-stash obligatorio; 05:00 Anki sin excepción; si el día se recorta pierde el proyecto, nunca el Anki.
  * Semana DELOAD del vibecoding: flag \`deload\` en ${P.filter((p) => p.deload).map((p) => { const w = semanas.find((x) => x.s === p.s); return `S${p.s} (${rangoTxt(w.ini, w.fin)})`; }).join(' · ') || '—'}, carga 50% (2 días de 45' + 3 de 15'),
- * fechas intactas. El flag sigue en S7 por el orden v5.10-b, sin mover contenido ni minutos (precedente v6.01; en v6.05 la semana post-NBME 26 es
- * S6 EXACTA y S7 no la toca —v6.03: S7 solapaba 3 de sus 5 días—). Las semanas deload del Step 1 las fija homeBriefing.DELOAD_SEMANAS (v6.05 = v6.03: lun 30-nov y lun 28-dic).
+ * fechas intactas. El flag sigue en S7 por el orden v5.10-b, sin mover contenido ni minutos (precedente v6.01; en v6.06 —como en v6.05— la semana post-NBME 26 es
+ * S6 EXACTA y S7 no la toca —v6.03: S7 solapaba 3 de sus 5 días—). Las semanas deload del Step 1 las fija homeBriefing.DELOAD_SEMANAS (v6.06: lun 7-dic y lun 28-dic · v6.05 = v6.03: lun 30-nov y lun 28-dic).
  */
 export type VibeRotacion = 'yocpmd' | 'preguntas' | 'bots' | 'contenido';
 export type VibeTipo = 'definir' | 'construir' | 'verificar' | 'ship-prep' | 'sensores' | 'mejora' | 'lectura' | 'retro' | 'journal';
@@ -302,7 +322,7 @@ export interface VibeTaper {
   s: number; id: string; nombre: string; tipo: 'mantenimiento' | 'deload';
   ini: string; fin: string; ship: string; minDia: number; semanaStep1: string; objetivo: string;
   sensores: string[]; pasos: string[]; shipTxt: string;
-  pcSab: string;                                      // v6.01: sábado de su PC opcional en el SYNAPSE (= ship, o el siguiente si la anterior cierra el mismo y no es día protegido: v6.05 S16 → sáb 20-feb · v6.03 ninguno · S16 → sáb 13-feb en v6.02 · sáb 6-feb en v6.01) · v6.05 (fix): '' = SIN PC (su sábado es PROTEGIDO: S20 → sáb 13-mar) y ship = pcSab cuando se desplaza (S16)
+  pcSab: string;                                      // v6.01: sábado de su PC opcional en el SYNAPSE (= ship, o el siguiente si la anterior cierra el mismo y no es día protegido: v6.06 S16 → sáb 27-feb y S20 → sáb 27-mar (fuera del SYNAPSE) · v6.05 S16 → sáb 20-feb · v6.03 ninguno · S16 → sáb 13-feb en v6.02 · sáb 6-feb en v6.01) · v6.05 (fix): '' = SIN PC (su sábado es PROTEGIDO: S20 → sáb 13-mar) y ship = pcSab cuando se desplaza (S16)
 }
 /** v6.01: un bloque PC del SYNAPSE en sábado (vibePCSabado). 'ship' = SHIP del proyecto · 'avance' = el proyecto aún no terminó · 'taper' = PC opcional. */
 export interface VibePCSabado { tipo: 'ship' | 'avance' | 'taper'; s: number; proyecto?: VibeProyecto; taper?: VibeTaper }
@@ -349,15 +369,18 @@ export function vibeDiaDe(fechaISO: string): DiaVibe | undefined { return VIBE_D
 export function vibeProyectoDe(s: number): VibeProyecto | undefined { return VIBE_PROYECTOS.find((x) => x.s === s); }
 export function vibeTaperDe(s: number): VibeTaper | undefined { return VIBE_TAPER.find((x) => x.s === s); }
 /** v6.01 (10-oct-2026): bloque(s) PC del SYNAPSE de un sábado, con el MISMO orden y la MISMA regla que gen_synapse_plan.js
- *  (PC_DESPLAZADOS + bloquePC): 1.º las entradas del taper cuyo PC propio se desplazó a ese sábado (S16 → sáb 20-feb en v6.05 · ninguna en v6.03 · S16 → sáb 13-feb en v6.02 —sáb 6-feb en v6.01—, porque
+ *  (PC_DESPLAZADOS + bloquePC): 1.º las entradas del taper cuyo PC propio se desplazó a ese sábado (S16 → sáb 27-feb en v6.06 · S16 → sáb 20-feb en v6.05 · ninguna en v6.03 · S16 → sáb 13-feb en v6.02 —sáb 6-feb en v6.01—, porque
  *  S15 y S16 cierran la misma semana), luego la entrada que hace SHIP ese sábado (proyecto → 'ship' · taper → 'taper') y, si ninguna cierra
- *  ese sábado, la que está en curso (proyecto → 'avance': aún no terminó; v6.05: sáb 26-dic = avance de S9, que termina el lun 28-dic y hace SHIP el sáb 2-ene · v6.03: sáb 24-oct = avance de S1, que termina el mar 27-oct y hace SHIP el sáb 31-oct · sáb 26-dic = avance de S10 en v6.02 —S11 en v6.01—, que termina el lun 28-dic y hace SHIP
+ *  ese sábado, la que está en curso (proyecto → 'avance': aún no terminó; v6.06: sáb 26-dic = avance de S8, que termina el lun 28-dic y hace SHIP el sáb 2-ene · v6.05: sáb 26-dic = avance de S9, que termina el lun 28-dic y hace SHIP el sáb 2-ene · v6.03: sáb 24-oct = avance de S1, que termina el mar 27-oct y hace SHIP el sáb 31-oct · sáb 26-dic = avance de S10 en v6.02 —S11 en v6.01—, que termina el lun 28-dic y hace SHIP
  *  el sáb 2-ene). El ÚLTIMO elemento es el principal (cabecera de la card). [] si no es sábado o cae fuera del plan.
- *  v6.05 (fix 24-oct): la regla lee SOLO pcSab (= ship desde el fix: S16 ship = pcSab = sáb 20-feb) → el sábado lleva todas las entradas con
+ *  v6.06: igual (S16 ship = pcSab = sáb 27-feb). v6.05 (fix 24-oct): la regla lee SOLO pcSab (= ship desde el fix: S16 ship = pcSab = sáb 20-feb) → el sábado lleva todas las entradas con
  *  pcSab = ese sábado, en orden de S (las desplazadas antes que la que cierra); pcSab '' = SIN PC (S20: su sábado, 13-mar, es PROTEGIDO) y
  *  tampoco cuenta como «en curso». */
+/** v6.06 (31-oct-2026): días PROTEGIDOS de _fechas_v6.json — sin PC del sábado (vibePCSabado) aunque haya una entrada en curso. */
+const VIBE_PROTEGIDOS = new Set<string>(${JSON.stringify([...PROTEGIDOS].sort())});
 export function vibePCSabado(fechaISO: string): VibePCSabado[] {
-  if (diaSemanaISO(fechaISO) !== 6) return [];
+  // v6.06 (31-oct-2026): un sábado PROTEGIDO no tiene PC (ni la entrada «en curso»: con D1 lun 2-nov el sáb 13-mar cae dentro de S19)
+  if (diaSemanaISO(fechaISO) !== 6 || VIBE_PROTEGIDOS.has(fechaISO)) return [];
   const todos: Array<VibeProyecto | VibeTaper> = [...VIBE_PROYECTOS, ...VIBE_TAPER];
   const delSab = todos.filter((x) => x.pcSab === fechaISO);
   const enCurso = delSab.length ? undefined : todos.find((x) => x.pcSab !== '' && x.ini <= fechaISO && fechaISO <= x.ship);
@@ -367,8 +390,8 @@ export function vibePCSabado(fechaISO: string): VibePCSabado[] {
   });
 }
 /** Entrada del taper vigente para una fecha. v6.01 (10-oct-2026): L-V = la del DÍA (los bloques del taper ya no son lun → vie y las ventanas
- *  ini → ship+1 se solapan: el mié 10-feb es S16, no S15, en v6.05 · el jue 11-feb es S17, no S16, en v6.03 · el jue 21-ene es S14, no S13, en v6.02 —jue 14-ene en v6.01—) · sábado = la del PC del SYNAPSE (vibePCSabado; undefined si ese sábado es el SHIP
- *  de un proyecto: S12 el sáb 23-ene en v6.05 · sáb 16-ene en v6.03 y v6.02 —sáb 9-ene en v6.01—) · domingo/feriado = la del último hábil anterior, hasta el domingo tras su SHIP. undefined fuera del taper. */
+ *  ini → ship+1 se solapan: el mié 17-feb es S16, no S15, en v6.06 · el mié 10-feb es S16, no S15, en v6.05 · el jue 11-feb es S17, no S16, en v6.03 · el jue 21-ene es S14, no S13, en v6.02 —jue 14-ene en v6.01—) · sábado = la del PC del SYNAPSE (vibePCSabado; undefined si ese sábado es el SHIP
+ *  de un proyecto: S12 el sáb 30-ene en v6.06 · sáb 23-ene en v6.05 · sáb 16-ene en v6.03 y v6.02 —sáb 9-ene en v6.01—) · domingo/feriado = la del último hábil anterior, hasta el domingo tras su SHIP. undefined fuera del taper. */
 export function vibeTaperEnFecha(fechaISO: string): VibeTaper | undefined {
   const pc = vibePCSabado(fechaISO);
   if (pc.length) return pc[pc.length - 1].taper;
@@ -380,7 +403,7 @@ export function vibeTaperEnFecha(fechaISO: string): VibeTaper | undefined {
 }
 /** Proyecto vigente para una fecha: el de su semana L-V, o (sáb/dom) el de la semana que acaba de cerrar.
  *  A partir del taper (S13+) devuelve undefined: usar vibeTaperEnFecha.
- *  v6.01 (10-oct-2026): en sábado manda el PC del SYNAPSE (vibePCSabado): el proyecto que hace SHIP o AVANZA ese día (v6.05: sáb 26-dic = AVANCE de S9, sáb 2-ene = SHIP de S9, sáb 23-ene = SHIP de S12 con el taper desde el jue 21-ene · v6.03: sáb 24-oct = AVANCE de S1, sáb 2-ene = SHIP de S10, sáb 16-ene = SHIP de S12 con el taper desde el lun 18-ene · v6.02: sáb 2-ene = SHIP de S10,
+ *  v6.01 (10-oct-2026): en sábado manda el PC del SYNAPSE (vibePCSabado): el proyecto que hace SHIP o AVANZA ese día (v6.06: sáb 26-dic = AVANCE de S8, sáb 2-ene = SHIP de S8, sáb 30-ene = SHIP de S12 con el taper desde el jue 28-ene · v6.05: sáb 26-dic = AVANCE de S9, sáb 2-ene = SHIP de S9, sáb 23-ene = SHIP de S12 con el taper desde el jue 21-ene · v6.03: sáb 24-oct = AVANCE de S1, sáb 2-ene = SHIP de S10, sáb 16-ene = SHIP de S12 con el taper desde el lun 18-ene · v6.02: sáb 2-ene = SHIP de S10,
  *  sáb 16-ene = SHIP de S12 aunque el taper ya empezó el jue 14-ene · v6.01: sáb 2-ene = S11, sáb 9-ene = SHIP de S12 con el taper desde el jue 7-ene); undefined si ese sábado el PC es del taper. */
 export function vibeProyectoEnFecha(fechaISO: string): VibeProyecto | undefined {
   const pc = vibePCSabado(fechaISO);

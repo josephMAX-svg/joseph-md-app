@@ -23,6 +23,9 @@
  *   las filas; DJ-1 v6.04 = una sola fecha → examenVentana / worstCase dicen «examen 25-oct en todos los escenarios ENCAPS» (DJ1_UNICA).
  * v6.05 (24-oct-2026): corrimiento D1 mié 21-oct → lun 26-oct (F1 = 47 hábiles; 11 desplazadas: v5.20 D47-D50 Neuro, D51-D54, D56, D57
  *   Heme/Onco, D79 → T3-T13; examen lun 25-oct-2027 sin cambio). Sin cambio de lógica: todo sale de las filas y del JSON.
+ * v6.06 (31-oct-2026): corrimiento D1 lun 26-oct → lun 2-nov (F1 = 42 hábiles; 16 desplazadas: v5.20 D42 Endocrino, D43-D50 Neuro, D51-D54,
+ *   D56, D57 Heme/Onco, D79 → T3-T18; examen lun 25-oct-2027 sin cambio). Única novedad de texto: un hito de F1 ADELANTADO por la regla del
+ *   Day-After completo (gen_tramo2.slotsHitosF1: NBME 27 v5.20 D40 → D35 vie 18-dic) se describe como tal, no como «último slot de F1».
  * v5.x: leía usmle_dias_v5.txt (solo DIAS, 95 días) y pegaba cabecera/pie fijos con las fechas del último corrimiento escritas a mano.
  */
 'use strict';
@@ -112,6 +115,9 @@ const tramosId = DIAS.reduce((acc, x, i) => { // tramos contiguos de d con orige
 }, []);
 const filasNoId = DIAS.filter((x, i) => typeof ORIGEN_F1[i] === 'number' && ORIGEN_F1[i] !== x.d);
 const descNoId = (x) => { const o = ORIGEN_F1[x.d - 1];
+  // v6.06: un hito que NO es el último y quedó antes de su D# = adelantado por la regla del Day-After completo (gen_tramo2.slotsHitosF1)
+  if (esHito(x) && x.d < o && x.d < DIAS.length) { const sig = DIAS.find((y) => y.d > x.d && esHito(y));
+    return `D${x.d} ${f(x.fecha)} = ${nombreHito(x)} (v5.20 D${o}; adelantado semanas de plan enteras para que su Day-After de 6 franjas termine antes del ${sig ? nombreHito(sig) + ' (D' + sig.d + ')' : 'hito siguiente'}: un hito de F1 no sale de F1 ni pisa el Day-After de otro)`; }
   if (esHito(x)) return `D${x.d} ${f(x.fecha)} = ${nombreHito(x)} (v5.20 D${o}; un hito de F1 no sale de F1: no cabe por su D# → último slot de F1${/NBME 28/.test(x.sub) ? ', sigue siendo el checkpoint de fecha' : ''})`;
   if (x === BIOEST_F1) return `D${x.d} ${f(x.fecha)} = bioestadística + epidemiología + ética (ex-D79 v5.20)`;
   return `D${x.d} ${f(x.fecha)} = ${corto(x.system)} (v5.20 D${o})`; };

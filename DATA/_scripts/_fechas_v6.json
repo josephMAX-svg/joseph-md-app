@@ -1,10 +1,10 @@
 {
-  "version": "v6.05",
+  "version": "v6.06",
   "decidido": "2026-10-06",
   "f1": {
-    "inicio": "2026-10-26",
+    "inicio": "2026-11-02",
     "fin": "2026-12-30",
-    "dias": 47
+    "dias": 42
   },
   "transicion": {
     "desde": "2026-12-31",
@@ -166,12 +166,26 @@
         "2026-10-23"
       ],
       "regla": "Orden de Joseph (sáb 24-oct): «todo inicia el lunes 26; puedes correr los horarios y alargar los plazos, pero no quites temas especiales, solo corre lo que está faltando». La semana del 19 no se estudió (la corrida por alias v6.04a queda sin efecto). Patrón v6.02/v6.03: F1 anclada (47 hábiles lun 26-oct → mié 30-dic) con HITOS F1 anclados (UWSA1 D1 lun 26 · NBME 25/26/27 en su D# · NBME 28 = último slot); las filas de temario no-hito que ya no caben pasan al tramo 2 con su dOrig (nada se quita); ENCAPS: las filas F1 que no caben se reponen en el carril B; secundarios +3 hábiles con el contenido intacto. Examen Step 1 lun 25-oct-2027 sin cambio (v6.04b)."
+    },
+    {
+      "fecha": "2026-10-31",
+      "version": "v6.06",
+      "d1_previo": "2026-10-26",
+      "d1": "2026-11-02",
+      "perdidos": [
+        "2026-10-26",
+        "2026-10-27",
+        "2026-10-28",
+        "2026-10-29",
+        "2026-10-30"
+      ],
+      "regla": "Orden de Joseph (sáb 31-oct): «reestructura todo a partir del 2 de noviembre … corre nada más, corre también las fechas límite, corre con una semana nada más: lo que era la semana anterior, esta semana; para no perder materias, tan solamente corre». La semana del 26-oct no se estudió. Mismo patrón que v6.05: F1 anclada (42 hábiles lun 2-nov → mié 30-dic) con hitos F1 (UWSA1 D1 lun 2-nov · NBME 28 = último slot; NBME 25-27 en su D# salvo que el Day-After no quepa antes del siguiente hito); las filas de temario que no caben pasan al tramo 2 con fecha (nada se quita); ENCAPS: las filas F1 que no caben se reponen con fecha; secundarios +5 hábiles con el contenido intacto y sus fechas límite corridas. Examen Step 1 lun 25-oct-2027 y ENCAPS dom 14-mar-2027 sin cambio (fechas externas)."
     }
   ],
   "corrida_s1": {
-    "decidido": "2026-10-24",
-    "version": "v6.05",
-    "motivo": "v6.05 (sáb 24-oct-2026) sustituye a la semana corrida por alias v6.04a: el plan se re-fecha entero con D1 = lun 26-oct. Aquí solo quedan los días sin sesión del 19 al 25-oct para que el Home los muestre como «día corrido»; sin alias ni reparto.",
+    "decidido": "2026-10-31",
+    "version": "v6.06",
+    "motivo": "v6.06 (sáb 31-oct-2026): el plan se re-fecha entero con D1 = lun 2-nov (la semana del 26-oct tampoco se estudió). Aquí solo quedan los días sin sesión del lun 19-oct al dom 1-nov para que el Home los muestre como «día corrido»; sin alias ni reparto. (⏸ v6.05: sin sesión 19 → 25-oct, D1 lun 26-oct.)",
     "sin_sesion": [
       "2026-10-19",
       "2026-10-20",
@@ -179,7 +193,14 @@
       "2026-10-22",
       "2026-10-23",
       "2026-10-24",
-      "2026-10-25"
+      "2026-10-25",
+      "2026-10-26",
+      "2026-10-27",
+      "2026-10-28",
+      "2026-10-29",
+      "2026-10-30",
+      "2026-10-31",
+      "2026-11-01"
     ],
     "alias": {},
     "reparto": {}

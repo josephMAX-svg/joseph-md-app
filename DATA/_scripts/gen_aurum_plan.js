@@ -7,7 +7,7 @@
 // día-a-día (ver + practica + lectura, suma = min_core).
 //
 // Reglas de calendario (idénticas en espíritu a gen_synapse_plan.js):
-//  · INICIO = argv[2] (YYYY-MM-DD; v5.4 = jue 2026-09-03 · v5.17 = jue 2026-10-01 · v5.18 = lun 2026-10-05 · v5.19 = mar 2026-10-06 · v5.20 = v6.00 = mié 2026-10-07 · v6.01 = lun 2026-10-12 · v6.02 = lun 2026-10-19 · v6.03 = mié 2026-10-21 · v6.05 = lun 2026-10-26; salta además los DÍAS PROTEGIDOS 22-feb / 9-mar / 10-mar). Las 130 lecciones se asignan a días
+//  · INICIO = argv[2] (YYYY-MM-DD; v5.4 = jue 2026-09-03 · v5.17 = jue 2026-10-01 · v5.18 = lun 2026-10-05 · v5.19 = mar 2026-10-06 · v5.20 = v6.00 = mié 2026-10-07 · v6.01 = lun 2026-10-12 · v6.02 = lun 2026-10-19 · v6.03 = mié 2026-10-21 · v6.05 = lun 2026-10-26 · v6.06 = lun 2026-11-02; salta además los DÍAS PROTEGIDOS 22-feb / 9-mar / 10-mar). Las 130 lecciones se asignan a días
 //    HÁBILES consecutivos Lunes→Viernes (SALTA sábados y domingos; NO salta feriados).
 //    El NÚCLEO L-V es la ventana 14:15-15:15.
 //  · 130 hábiles ≈ 26 semanas. La fecha fin se calcula y se imprime.
@@ -66,6 +66,15 @@
 //    vie 19-mar; Semana Santa (jue 25 / vie 26-mar) → martes D105-D130. PITCH v1 D15 vie 13-nov · v2 D35 vie 11-dic · v3 D55 mié 13-ene · v4 D75
 //    mié 10-feb · v5 D95 mié 10-mar · v6 D115 mar 13-abr · v7 D130 mar 4-may. min30 (30') sigue desde el lun 4-ene-2027 (encaps.intensiva_desde,
 //    sin cambio): 83 filas (v6.03: 80). Variantes LIVIANO fuera de viernes: 14 (v6.03: 7).
+// v6.06 (31-oct-2026 · corrimiento D1 = lun 2-nov; la semana del lun 26-oct tampoco se estudió, orden de Joseph «reestructura todo a partir del
+//    2 de noviembre … corre nada más, corre también las fechas límite … para no perder materias, tan solamente corre»): 130 hábiles lun 2-nov-2026 →
+//    MAR 11-MAY-2027 (+5 hábiles sobre v6.05, una semana exacta; mismas 130 lecciones en el mismo orden; nada se recorta ni comprime). Los PROTEGIDOS
+//    vie 12 y lun 15-mar se saltan (D91 jue 11-mar → D92 mar 16-mar). ⚠ SERUMS (lun 3-may, supuesto): D124-D130 = lun 3 → mar 11-may (7 días; v6.05:
+//    2) van a 30′ (min30) en el TIEMPO MUERTO del turno, tras los 30′ de R↔D (plantillasV6.conAurumF4 + rutinaGuia.ventanaAurumF4: M → 07:30 · T 13:00
+//    → 13:30 · T 12:00 → 12:30 · T 14:00 → 14:00 · L → 16:50 · G → sin hora), la solución de v6.05 sin cambio. PITCH v1 D15 vie 20-nov · v2 D35 vie
+//    18-dic (día del NBME 27; AURUM 14:15 tras el hito) · v3 D55 mié 20-ene · v4 D75 mié 17-feb · v5 D95 vie 19-mar (F3, tras el ENCAPS) · v6 D115
+//    mar 20-abr · v7 D130 mar 11-may (7.º día del SERUMS, tiempo muerto). min30 (30') desde el lun 4-ene-2027 (sin cambio): 88 filas (v6.05: 83).
+//    Variantes LIVIANO fuera de viernes: 15 (lun D40 28-dic · mié D45-D90 · mar D100-D115; solo D95 cae en viernes).
 // v6.00 (6-oct-2026 · V6_ESPEC §E): SKIP y DÍAS PROTEGIDOS desde DATA/_scripts/_fechas_v6.json (se eliminan los v5.20 22-feb / 9-mar /
 //    10-mar; entran vie 12-mar, lun 15-mar y la Semana Santa jue 25 / vie 26-mar) → 130 hábiles mié 7-oct-2026 → JUE 15-ABR-2027
 //    (D96 lun 22-feb · pitch v5 D95 vie 19-feb = · v6 D115 mar 23-mar · v7 D130 jue 15-abr). DJ-4: desde la F2 (encaps.intensiva_desde =
@@ -92,7 +101,7 @@ if (lecciones.length !== 130) throw new Error('Se esperaban 130 lecciones, hay '
 
 // ─── Calendario: 130 días hábiles L-V consecutivos desde START (argv[2]) ───
 const WD = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-const START_ISO = process.argv[2] || '2026-10-26'; // default = D1 v6.05 (v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07 · v5.19: 2026-10-06 · v5.18: 2026-10-05 · v5.17: 2026-10-01; antes 2026-09-07, v5.6); el pipeline pasa siempre la fecha if(!/^20\d\d-\d\d-\d\d$/.test(START_ISO)) throw new Error('START inválido: '+START_ISO); // v5.6: D1 = lun 7-sep-2026
+const START_ISO = process.argv[2] || '2026-11-02'; // default = D1 v6.06 (v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07 · v5.19: 2026-10-06 · v5.18: 2026-10-05 · v5.17: 2026-10-01; antes 2026-09-07, v5.6); el pipeline pasa siempre la fecha if(!/^20\d\d-\d\d-\d\d$/.test(START_ISO)) throw new Error('START inválido: '+START_ISO); // v5.6: D1 = lun 7-sep-2026
 const START = new Date(START_ISO + 'T12:00:00'); // START parametrizado: node <script> YYYY-MM-DD
 // v6.00 (6-oct-2026): SKIP y DÍAS PROTEGIDOS desde DATA/_scripts/_fechas_v6.json (gen_fechas_v6.js aborta si no cuadra con sus derivaciones).
 // SKIP v6 = 25-dic · 31-dic · 1-ene · jue 25 / vie 26-mar-2027 · PROTEGIDOS v6 = vie 12-mar · sáb 13 · dom 14-mar · lun 15-mar · sáb 25-sep ·
@@ -247,7 +256,7 @@ const ts = `/**
  * aurumDailyPlan.ts — Motor día-a-día AURUM v2 (${SEMANAS} semanas · ${TOTAL} días · ${dias[0].fecha} → ${finISO}).
  * AURUM = programa de 6 meses para volverse un closer de ventas de élite.
  * GENERADO por DATA/_scripts/gen_aurum_plan.js desde DATA/AURUM/curricula/_curriculum_v2.json.
- * NO editar a mano — regenerar: node DATA/_scripts/gen_aurum_plan.js YYYY-MM-DD (v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07 · v5.19: 2026-10-06 · v5.18: 2026-10-05)
+ * NO editar a mano — regenerar: node DATA/_scripts/gen_aurum_plan.js YYYY-MM-DD (v6.06: 2026-11-02 · v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07 · v5.19: 2026-10-06 · v5.18: 2026-10-05)
  * v6.00 (6-oct-2026 · V6_ESPEC §E): SKIP / DÍAS PROTEGIDOS de DATA/_scripts/_fechas_v6.json → fin ${finISO}; desde ${MIN30_DESDE} (F2, DJ-4)
  * AURUM = 30' 14:15-14:45 (campo min30 = true: la UI muestra 30' = núcleo; bloques extra opcionales). Mismas 130 lecciones.
  *
@@ -304,7 +313,7 @@ export const AURUM_DIAS: DiaAurum[] = [
 ${dias.map(diaTs).join(',\n')}
 ];
 
-/** Los 7 días de cierre de fase (PITCH v1→v7; 5º día de la semana del plan: v6.05 = vie D15/D35 (13-nov · 11-dic), mié D55/D75/D95 (13-ene · 10-feb · 10-mar), mar D115 (13-abr) y mar D130 (4-may, ya en el SERUMS) · v6.03 = mar D15/D35 (10-nov · 8-dic), vie D55/D75/D95 (8-ene · 5-feb · 5-mar), jue D115 (8-abr) y jue D130 (29-abr) · v6.02 = vie D15/D35, mié D55 (6-ene)/D75/D95, mar D115 (6-abr) y mar D130 (27-abr) · v6.01 = vie D15/D35, lun D55 (28-dic), mié D75/D95, mar D115 (30-mar) y mar D130 (20-abr) · v6.00 = mar D15/D35/D55, vie D75/D95, mar D115 (23-mar) y jue D130 (15-abr) · D96 lun 22-feb (ya no es día protegido); vie 12-mar y lun 15-mar (D-1 hábil y lunes post-ENCAPS) y la Semana Santa (25-26 mar) no llevan AURUM · v5.20 = mar D15/D35/D55, vie D75/D95 y mié D115/D130 · D95 vie 19-feb = último día del plan Step 1; el examen (lun 22-feb) y la víspera/día del ENCAPS (9-10 mar) eran DÍAS PROTEGIDOS · v5.19 = lun D15/D35/D55 y jue D75/D95/D115/D130 (⚠ D95 jue 18-feb = D-1 del Step 1 y D96 vie 19-feb = día del examen) · v5.18: vie D15-D55 y mié D75-D130). \`liviano\` = ese PITCH tiene versión LIVIANO. */
+/** Los 7 días de cierre de fase (PITCH v1→v7; 5º día de la semana del plan: v6.06 = vie D15/D35 (20-nov · 18-dic, día del NBME 27), mié D55/D75 (20-ene · 17-feb), vie D95 (19-mar, F3), mar D115 (20-abr) y mar D130 (11-may, ya en el SERUMS) · v6.05 = vie D15/D35 (13-nov · 11-dic), mié D55/D75/D95 (13-ene · 10-feb · 10-mar), mar D115 (13-abr) y mar D130 (4-may, ya en el SERUMS) · v6.03 = mar D15/D35 (10-nov · 8-dic), vie D55/D75/D95 (8-ene · 5-feb · 5-mar), jue D115 (8-abr) y jue D130 (29-abr) · v6.02 = vie D15/D35, mié D55 (6-ene)/D75/D95, mar D115 (6-abr) y mar D130 (27-abr) · v6.01 = vie D15/D35, lun D55 (28-dic), mié D75/D95, mar D115 (30-mar) y mar D130 (20-abr) · v6.00 = mar D15/D35/D55, vie D75/D95, mar D115 (23-mar) y jue D130 (15-abr) · D96 lun 22-feb (ya no es día protegido); vie 12-mar y lun 15-mar (D-1 hábil y lunes post-ENCAPS) y la Semana Santa (25-26 mar) no llevan AURUM · v5.20 = mar D15/D35/D55, vie D75/D95 y mié D115/D130 · D95 vie 19-feb = último día del plan Step 1; el examen (lun 22-feb) y la víspera/día del ENCAPS (9-10 mar) eran DÍAS PROTEGIDOS · v5.19 = lun D15/D35/D55 y jue D75/D95/D115/D130 (⚠ D95 jue 18-feb = D-1 del Step 1 y D96 vie 19-feb = día del examen) · v5.18: vie D15-D55 y mié D75-D130). \`liviano\` = ese PITCH tiene versión LIVIANO. */
 export const AURUM_PITCH_DIAS: { pitch: number; d: number; fecha: string; faseId: DiaAurum['faseId']; liviano: boolean }[] = [
   ${pitchDias.join(',\n  ')}
 ];
@@ -363,7 +372,7 @@ console.log('  cierres de fase / PITCH:', pitchD.join(' · '));
 // (v5.17: jue 1-oct) no cae en viernes nunca; v5.20 (D1 mié 7-oct, con los DÍAS PROTEGIDOS 22-feb / 9-10 mar saltados): martes hasta el D55, mié 30-dic el D60, viernes D65-D95, lunes D100-D105 y miércoles D110-D115 · v5.19 (D1 mar 6-oct): lunes hasta el D55, mar 29-dic el D60 y jueves desde el D65 (ninguna en viernes) · v5.18 (D1 lun 5-oct): viernes hasta el D55, lun 28-dic el D60 y miércoles desde el D65. El invariante que se exige es "1 de cada 5 drills" (d=5 del JSON),
 // no el día de la semana.
 const livNoViernes = livDias.filter((x) => x.wd !== 'Vie').length;
-if (livNoViernes) console.log('  ⚠ variantes LIVIANO fuera de viernes por la deriva post-feriado o el D1 fuera de lunes:', livNoViernes, '(esperado: en v6.05, con D1 en lunes, 14 —lun D45 (28-dic), mié D50-D95, mar D105-D115; D40 y D100 caen en viernes—; en v6.03, con D1 en miércoles, 7 —mar D40-D45, mié D50 (30-dic), mar D100-D105, jue D110-D115; D55-D95 caen en viernes—; en v6.02, con D1 en lunes, 13 —lun D50, mié D55-D100, mar D110-D115; D40, D45 y D105 caen en viernes—; en v6.01, con D1 en lunes, 12 —lun D55, mié D60-D105, mar D115; D40-D50 y D110 caen en viernes—; en v6.00, con D1 en miércoles, 7 —mar D40-D55, mié D60, mar D110-D115; D65-D105 caen en viernes—; en v5.20, 9 —mar hasta D55, mié D60, lun D100-D105, mié D110-D115; D65-D95 sí caen en viernes—; en v5.19, con D1 en martes, todas —lun hasta D55, mar D60, jue D65-D115—; en v5.18 D60 lun + D65-D115 mié; con D1 en jueves, todas)');
+if (livNoViernes) console.log('  ⚠ variantes LIVIANO fuera de viernes por la deriva post-feriado o el D1 fuera de lunes:', livNoViernes, '(esperado: en v6.06, con D1 en lunes, 15 —lun D40 (28-dic), mié D45-D90, mar D100-D115; solo D95 (vie 19-mar) cae en viernes—; en v6.05, con D1 en lunes, 14 —lun D45 (28-dic), mié D50-D95, mar D105-D115; D40 y D100 caen en viernes—; en v6.03, con D1 en miércoles, 7 —mar D40-D45, mié D50 (30-dic), mar D100-D105, jue D110-D115; D55-D95 caen en viernes—; en v6.02, con D1 en lunes, 13 —lun D50, mié D55-D100, mar D110-D115; D40, D45 y D105 caen en viernes—; en v6.01, con D1 en lunes, 12 —lun D55, mié D60-D105, mar D115; D40-D50 y D110 caen en viernes—; en v6.00, con D1 en miércoles, 7 —mar D40-D55, mié D60, mar D110-D115; D65-D105 caen en viernes—; en v5.20, 9 —mar hasta D55, mié D60, lun D100-D105, mié D110-D115; D65-D95 sí caen en viernes—; en v5.19, con D1 en martes, todas —lun hasta D55, mar D60, jue D65-D115—; en v5.18 D60 lun + D65-D115 mié; con D1 en jueves, todas)');
 if (TOTAL !== 130) throw new Error('Se esperaban 130 días, hay ' + TOTAL);
 if (finSemana.length) throw new Error('Hay días en sábado/domingo');
 if (enFeriado.length) throw new Error('Hay días en feriado fijo');

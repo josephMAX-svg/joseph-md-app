@@ -10,7 +10,18 @@
 > Regla de estilo (RUTA §5.2): mensajes **cortos, hiperpersonalizados y con una petición concreta y verificable**
 > (coautoría con reparto de trabajo, permiso de instrumento, revisión de un manuscrito) — nunca "quiero experiencia".
 
-> **✅ v6.05 (sáb 24-oct-2026 · D1 del régimen lun 26-oct; `researchDailyPlan.ts` regenerado con START 2026-10-26, Research d1 lun 26-oct): fechas vigentes
+> **✅ v6.06 (sáb 31-oct-2026 · D1 del régimen lun 2-nov; `researchDailyPlan.ts` regenerado con START 2026-11-02, Research d1 mar 3-nov): fechas vigentes
+> de los átomos de esta tabla** — mandan sobre las de v6.05, v6.03, v6.02, v6.01 y v5.20: **M1 (mensaje 1 al Dr. Ciro) mar 3-nov = 1.ª sesión Research** (⏸ el
+> plazo interno del 31-oct —caso + consentimiento + senior author— VENCIÓ sin día-Research: no hay plazo nuevo; pedir el caso EN el propio M1; la fila 6 —fuente
+> B— se activa en C-3 si no hay caso) · R0 jue 5-nov · R1 lun 9-nov · C-1 mié 11-nov · **M2 (Rising Scholars) vie 13-nov** (día del NBME 25: sesión 13:30 tras
+> el NBME) · **T-1 (CEI) jue 19-nov** · seguimiento del caso **lun 23-nov** (d8, día de R9) · C-3 (d9) **mié 25-nov** (3 semanas desde M1) · decisión del plan B
+> de inglés (4 semanas desde M2) **vie 11-dic** = día de **T-3** · CR-1 **lun 7-dic** · CR-2 **mié 9-dic** · **M3 (mensaje 3, CADI) jue 25-feb-2027** (d31, tras la
+> pausa; si la revista pide el permiso del CADI al formatear T-7 —lun 4-ene—, el email se adelanta fuera del bloque: decisión (c) de `DATA/PENDIENTES_JOSEPH.md`,
+> bloque v6.05) · recordatorio de M3 a los 21 días **jue 18-mar-2027** · X-1 (revisor #2 de SR-1) **vie 5-mar-2027**, tras la pausa (antes de X-9 lun 12-abr y
+> de PROSPERO vie 16-abr) · X-2 (rebuttal de la carta) mar 9-mar · la confirmación del mentor de inglés (fila 2) se comprueba ANTES de CR-7, que en v6.06 va
+> tras la pausa (**lun 15-feb**; CR-6 —revisión del senior + inglés— jue 11-feb) · R9 (AMSTAR-2) **lun 23-nov** (d8), antes de la pausa. CR-1 y CR-2 caen 37 y 39
+> días después del 31-oct.
+> **⏸ v6.05 (historial; sáb 24-oct-2026 · D1 del régimen lun 26-oct; `researchDailyPlan.ts` regenerado con START 2026-10-26, Research d1 lun 26-oct): fechas vigentes
 > de los átomos de esta tabla** — mandan sobre las de v6.03, v6.02, v6.01 y v5.20: **M1 (mensaje 1 al Dr. Ciro) vie 30-oct** = el **ÚLTIMO día-Research
 > antes del plazo del 31-oct** (pedir el caso en el propio M1; la fila 6 —fuente B— se activa en C-3 si no hay caso) · C-1 mar 3-nov · **M2 (Rising
 > Scholars) jue 5-nov** · **T-1 (CEI) mié 11-nov** · seguimiento del caso **vie 13-nov** (d8, día de R9) · C-3 (d9) mar 17-nov (2,5 semanas desde

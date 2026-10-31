@@ -6,7 +6,34 @@ estándares CARE/PRISMA, y cómo se conecta con las líneas **L0-L8** de
 [`src/lib/researchProgram.ts`](../../src/lib/researchProgram.ts) — este doc NO reemplaza el
 programa de líneas: le pone el calendario editorial encima.
 
-> **✅ v6.05 VIGENTE (sáb 24-oct-2026) — D1 del régimen = LUN 26-OCT-2026 (del 19 al 25-oct sin estudio; Joseph: «todo inicia el lunes 26; puedes correr
+> **✅ v6.06 VIGENTE (sáb 31-oct-2026) — D1 del régimen = LUN 2-NOV-2026 (la semana lun 26 → vie 30-oct no se estudió; Joseph: «reestructura todo a partir
+> del 2 de noviembre … corre nada más, corre también las fechas límite … para no perder materias, tan solamente corre»): ciclo 1 = 42 átomos mar 3-nov-2026 →
+> vie 2-abr-2027 · ciclo 2 = 67 átomos mar 6-abr → sáb 11-sep-2027** (mismos átomos; `node DATA/_scripts/gen_research_plan.js 2026-11-02`, vía
+> `remap_inicio.js 2026-11-02 --bloques research,derma`). El lun 2-nov es día-DERMA por paridad → Research arranca el **mar 3-nov** y pierde 3 ranuras frente a
+> la v6.05 (lun 26, mié 28 y vie 30-oct): quedan **25 días-Research antes de la pausa** para 28 átomos del núcleo y NINGÚN átomo suelto es desplazable (los no
+> CRÍTICOS que quedaban preparan un envío con fecha límite antes de la pausa) → **regla de desplazamiento, NIVEL 2 (nuevo, 31-oct):** pasa tras la pausa la cola
+> de la cadena de envío con menos CRÍTICOS y sin plazo EXTERNO antes de ella — la del **case report: CR-6 (revisión del senior + inglés) jue 11-feb · CR-7
+> (formateo DOJ) lun 15-feb · CR-8 (paquete congelado) mié 17-feb · CR-9 SUBMIT vie 19-feb-2027** (≤ 28-feb, objetivo §9 del case report; «corre también las
+> fechas límite»: la meta interna «paquete antes de la pausa» se corre) —; la carta (C-6, ventana externa del journal) y la tesis (T-8, vie 8-ene) se quedan
+> antes de la pausa, y **R9 (AMSTAR-2, CRÍTICO) también: lun 23-nov (d8)**. **M1 pasa a la 1.ª sesión Research (mar 3-nov, d1)**: su plazo interno —caso +
+> consentimiento + senior author antes del 31-oct— **VENCIÓ sin día-Research (⏸, no se inventa otro)**; R0 y R1 corren a d2/d3. Ciclo 1: **M1 mar 3-nov** ·
+> R0 jue 5-nov · R1 lun 9-nov · C-1 mié 11-nov · **M2 vie 13-nov (= día del NBME 25: sesión 13:30 tras el NBME)** · C-2 mar 17-nov · **T-1 jue 19-nov (d7)** ·
+> **R9 lun 23-nov (d8, + seguimiento del caso)** · C-3 mié 25-nov (3 semanas desde M1; disparador de la fuente B) · C-4 vie 27-nov · C-5 mar 1-dic · **C-6 jue
+> 3-dic** · **CR-1 lun 7-dic (d13)** · **CR-2 mié 9-dic** · T-3 vie 11-dic · T-4 mar 15-dic · T-2 jue 17-dic · T-5 lun 21-dic · T-6 mié 23-dic · CR-3 mar 29-dic ·
+> T-7 lun 4-ene · CR-4 mié 6-ene · **T-8 SUBMIT vie 8-ene-2027 (= día del PRE-TEST 2026-II de la intensiva ENCAPS: sesión 13:30 tras el pre-test)** · CR-5
+> mar 12-ene · X-7 jue 14-ene · pausa vie 15-ene → mié 10-feb · **CR-6 jue 11-feb · CR-7 lun 15-feb · CR-8 mié 17-feb · CR-9 SUBMIT vie 19-feb (d29)** · X-8
+> mar 23-feb · **M3 jue 25-feb** (d31; si la revista pide el permiso del CADI al formatear T-7, lun 4-ene, el email se adelanta fuera del bloque: decisión (c)
+> de `DATA/PENDIENTES_JOSEPH.md`, bloque v6.05) · R6 lun 1-mar · R7 mié 3-mar · **X-1 vie 5-mar** (= SIM 100Q #8) · X-2 mar 9-mar · R3 jue 11-mar (= D-2 dress
+> rehearsal del ENCAPS) · R8 mié 17-mar (= NBME 29) · R2 vie 19-mar · X-3 mar 23-mar · X-4 lun 29-mar · X-5 mié 31-mar · X-6 vie 2-abr (d42). Ciclo 2: R6b mar
+> 6-abr · R8b jue 8-abr · **X-9 lun 12-abr** · R9b mié 14-abr · **R10 PROSPERO vie 16-abr** · K1 mar 20-abr · R17 mar 11-may · R18 (cribado) desde el jue 13-may ·
+> R22 sáb 29-may → R25 jue 10-jun · **R43 SUBMIT SR-1 sáb 7-ago-2027** · R45 jue 2-sep · X-12 mar 7-sep · X-13 jue 9-sep · X-14 sáb 11-sep. Overlays 🔬 del
+> Calendar: los 12 salen `recrear` (`gen_research_calendar.js --check`; los aplica la fase del Calendar).
+> **🔴 Consecuencia editorial (v6.06):** C-6 (carta) jue 3-dic = **49 días** después del deadline interno ≤ 15-oct · **el plazo del caso (31-oct) VENCIÓ sin
+> día-Research**: M1 pide el caso el mar 3-nov; CR-1 lun 7-dic y CR-2 mié 9-dic = **37 y 39 días** después del 31-oct · la fuente B se activa en C-3 (mié 25-nov)
+> si el Dr. Ciro no dio caso · T-1 jue 19-nov = **50 días** después de «CEI expedita ≤ 30-sep» · R10 PROSPERO vie 16-abr = +16 d sobre el objetivo ≤ 31-mar (no es
+> plazo externo) · case report: SUBMIT vie 19-feb (≤ 28-feb). Los deadlines externos no se mueven; los internos y los átomos sí (decisión (e) de v6.01-v6.05).
+> ⏸ *Los bloques v6.05 y v6.03 que siguen son historial.*
+> **⏸ v6.05 (historial; sáb 24-oct-2026) — D1 del régimen = LUN 26-OCT-2026 (del 19 al 25-oct sin estudio; Joseph: «todo inicia el lunes 26; puedes correr
 > los horarios, alargar los plazos, pero no quites temas, solamente corre lo que está faltando»): ciclo 1 = 42 átomos lun 26-oct-2026 → mar 23-mar-2027 ·
 > ciclo 2 = 67 átomos lun 29-mar → sáb 4-sep-2027** (mismos átomos; `node DATA/_scripts/gen_research_plan.js 2026-10-26`, vía `remap_inicio.js 2026-10-26
 > --bloques research,derma`). El lun 26-oct es día-RESEARCH por paridad (Derma arranca el mar 27-oct) → Research pierde 1 ranura frente a la v6.03 (el jue
@@ -27,7 +54,6 @@ programa de líneas: le pone el calendario editorial encima.
 > días** después del 31-oct · **el único día-Research antes del plazo es M1 (vie 30-oct): pedir el caso EN el mensaje al Dr. Ciro; no queda otro día-Research
 > antes del 31-oct para activar la fuente B** (se activa en C-3, mar 17-nov) · T-1 mié 11-nov = **42 días** después de «CEI expedita ≤ 30-sep» · R10 PROSPERO
 > jue 8-abr = +8 d sobre el objetivo ≤ 31-mar (no es plazo externo). Los deadlines no se mueven, los átomos sí (misma decisión (e) de v6.01-v6.03).
-> ⏸ *El bloque v6.03 que sigue es historial.*
 > **⏸ v6.03 (historial; mar 20-oct-2026) — D1 del régimen = MIÉ 21-OCT-2026 (lun 19 y mar 20-oct sin estudio; Joseph: «simplemente corre, alarga las fechas
 > límite»): ciclo 1 = 42 átomos jue 22-oct-2026 → vie 19-mar-2027 · ciclo 2 = 67 átomos mar 23-mar → jue 2-sep-2027** (mismos átomos;
 > `node DATA/_scripts/gen_research_plan.js 2026-10-21`). El mié 21-oct es día-DERMA por paridad → Research arranca el jue 22-oct (pierde 1 ranura: el

@@ -1,4 +1,4 @@
-# DATA · MIR — España (régimen v6.05 · 24-oct-2026 · ⏸ v6.04 · 21-oct-2026 · ⏸ v6.03 · 20-oct-2026 · ⏸ v6.02c · 18-oct-2026 · ⏸ v6.02 · 17-oct-2026 · ⏸ v6.01 · 10-oct-2026 · ⏸ v6.00 · 6-oct-2026)
+# DATA · MIR — España (régimen v6.06 · 31-oct-2026 · ⏸ v6.05 · 24-oct-2026 · ⏸ v6.04 · 21-oct-2026 · ⏸ v6.03 · 20-oct-2026 · ⏸ v6.02c · 18-oct-2026 · ⏸ v6.02 · 17-oct-2026 · ⏸ v6.01 · 10-oct-2026 · ⏸ v6.00 · 6-oct-2026)
 
 Toda la data REAL del plan MIR. Fuente canónica (código): `src/lib/*.ts`. Plataforma:
 **ProMIR** (`promir.medicapanamericana.com`) — SPA por WebSocket; deep-link `/capitulo/<id>`.
@@ -6,7 +6,28 @@ Abre bien en Chrome (no necesita Edge). Cruzado con **rabi_94** (Google Drive, 1
 Método de referencia: **Palmerton** (comprensión > memorización · preguntas ciegas primero ·
 Anki de mecanismo FSRS · medir por % ciego). Meta: Top 50 MIR 2030.
 
-> ## ✅ v6.05 VIGENTE (sáb 24-oct-2026 · D1 = LUN 26-OCT-2026) — corrimiento +3 hábiles sobre la v6.03; la semana corrida por alias de la v6.04a queda sin efecto
+> ## ✅ v6.06 VIGENTE (sáb 31-oct-2026 · D1 = LUN 2-NOV-2026) — corrimiento +5 hábiles sobre la v6.05 (la semana lun 26 → vie 30-oct no se estudió)
+> Joseph (31-oct): *«Reestructura todo a partir del 2 de noviembre … corre nada más, corre también las fechas límite … para no perder materias, tan solamente corre.»*
+> Mismos 78 días y las MISMAS **203** sesiones de banqueo de la v6.05 (por tipo, por asignatura foco y por Tier C); nada se recorta.
+>
+> | Bloque | **v6.06** | ⏸ v6.05 |
+> |---|---|---|
+> | Diario (1.ª vuelta, 78) | **lun 2-nov-2026 → lun 22-feb-2027** (D76 jue 18-feb · D77 mini-MIR **vie 19-feb** + D78 corrección **lun 22-feb**) · 15:15-16:15 | lun 26-oct → lun 15-feb (D77 vie 12-feb) |
+> | Mantenimiento | **59** = las mismas 47 lun-jue (cuotas y secuencia idénticas) + 10 viernes + **los sáb 8 y 15-may** (sábados del SERUMS, días de plan MIR → mini-simulacro 30Q): **mar 23-feb → mar 18-may-2027** (fin = día del 47.º lun-jue) · Tier C (12, mismo orden): jue 25-feb · 4-mar · 18-mar · mié 24-mar · jue 1-abr · 8-abr · 15-abr · 22-abr · 29-abr · 6-may · 13-may · mar 18-may | 58 · mar 16-feb → mar 11-may |
+> | Extensión hasta el tope | **135** (90 lun-jue · 23 viernes · 22 sábados) **mié 19-may → vie 22-oct-2027** (tope sin cambio = día de plan anterior al ritual del sáb 23-oct) · Tier C ext 22 | 141 (94 · 24 · 23) · mié 12-may → vie 22-oct · Tier C 23 |
+> | Repuestas tras el examen Step 1 (F5) | **9** (`repuesta:'v6.06'`): **d195 mar 26-oct** Cardiología · **d196 mié 27-oct** Gastroenterología · **d197 jue 28-oct** Neurología + Tier C Inmunología · Inmunología básica v3 · **d198 vie 29-oct** viernes · (sáb 30-oct sin fila: no falta ningún sábado) · **d199 lun 1-nov** Hematología · **d200 mar 2-nov** Pediatría · **d201 mié 3-nov** Ginecología y Obstetricia · **d202 jue 4-nov** Medicina Legal y Bioética + Tier C Planificación y Gestión Sanitaria · Economía de la salud v3 · **d203 vie 5-nov-2027** viernes — piso = lo PUBLICADO en la v6.05 (`PISO_PUBLICADO` + v6.05 sobre 94 slots; `PUBLICADO_TOTAL` + v6.05: 203 filas · 144 lun-jue · 35 viernes · 24 sábados · 36 Tier C) | 4 · mar 26 → vie 29-oct |
+> | `MIR_MANT_DIAS` / `MIR_MANT_META` | **203** filas · 5.370 Q · `MIR_MANT_TIER_C` 36 · `mant` 2027-02-23 → 2027-05-18 · `ext` 2027-05-19 → 2027-11-05 (`tope` 2027-10-22 = 135 + `repuestas` 9) · **handoff vie 5-nov-2027** (fase principal desde nov-2027; antes «oct-2027» escrito, ahora derivado) | 203 · 5.370 Q · handoff vie 29-oct |
+> | Guía MEDIDA | D1-D76 **lun 2-nov-2026 → jue 18-feb-2027** (mismos 76 capítulos, mismos bloques y preguntas; solo cambian las fechas) | lun 26-oct → jue 11-feb |
+>
+> Generado por `STUDY_HUB/_scrape/gen_mir_daily.js 2026-11-02` + `gen_mir_mantenimiento.js 2027-02-23 2027-05-18` (defaults nuevos, bitácora v6.06) →
+> `guia_lectura/gen_guia_lectura.js` → `gen_mir_guia.js`. Cada asignatura foco conserva sus slots lun-jue de todo el banqueo (Cardio 16 · Gastro 16 · Neuro 15 ·
+> Infecciosas 14 · Endocrino 12 · Neumo 10 · Reuma 10 · Epi 9 · Nefro 9 · Hemato 9 · Psiquiatría 8 · Pediatría 7 · Gine 6 · Medicina Legal 3) y el multiconjunto
+> Tier C (3 vueltas × 12). ⚠ Las repuestas ya ocupan **2 semanas** tras el examen (mar 26-oct → vie 5-nov-2027): la decisión **(F)** de `DATA/PENDIENTES_JOSEPH.md`
+> (¿sesión MIR el día del regreso?) sigue abierta y ahora cubre 9 días. ⚠ El lun 1-nov-2027 (Todos los Santos) es feriado en Perú y NO está en `skip` de
+> `_fechas_v6.json` (la lista de feriados termina en oct-2027): si Joseph no estudia ese día, la repuesta d199 pasa al siguiente lun-jue libre (regenerar).
+> Umbral de cierre 70/55 hasta el vie 22-oct-2027 → 75/60 desde el examen (sin cambio).
+>
+> ## ⏸ v6.05 (sáb 24-oct-2026 · D1 = LUN 26-OCT-2026; historial, lo corrige el bloque v6.06 de arriba) — corrimiento +3 hábiles sobre la v6.03; la semana corrida por alias de la v6.04a queda sin efecto
 > Joseph (24-oct): *«Todo inicia el lunes 26. Puedes correr los horarios, alargar los plazos. Pero no quites temas, solamente corre lo que está faltando.»*
 > Del 19 al 25-oct no se estudió → mismos 78 días y las MISMAS **203** sesiones de banqueo de la v6.04 (por tipo y por asignatura); nada se recorta.
 >
@@ -307,7 +328,7 @@ Anki de mecanismo FSRS · medir por % ciego). Meta: Top 50 MIR 2030.
 > "APEX directamente en Anki hasta verificar n8n" (§5). Fechas, franjas, metas y temario: sin cambios (verificado:
 > las 78 fechas y los 76 capIds del `.ts` regenerado son idénticos a HEAD).
 
-## 1. Plan día-a-día (78 días = 76 temas + D77 mini-MIR + D78 corrección · D1 mié 7-oct-2026 → D78 mié 27-ene-2027 · v5.20 — ⏸ v6.01: lun 12-oct → lun 1-feb · ⏸ v6.02: lun 19-oct → lun 8-feb · ⏸ v6.03: mié 21-oct → mié 10-feb · **v6.05: lun 26-oct → lun 15-feb**)
+## 1. Plan día-a-día (78 días = 76 temas + D77 mini-MIR + D78 corrección · D1 mié 7-oct-2026 → D78 mié 27-ene-2027 · v5.20 — ⏸ v6.01: lun 12-oct → lun 1-feb · ⏸ v6.02: lun 19-oct → lun 8-feb · ⏸ v6.03: mié 21-oct → mié 10-feb · ⏸ v6.05: lun 26-oct → lun 15-feb · **v6.06: lun 2-nov → lun 22-feb**)
 Fuente de verdad: [`src/lib/mirDailyPlan.ts`](../../src/lib/mirDailyPlan.ts) (bloque GENERADO por
 [`STUDY_HUB/_scrape/gen_mir_daily.js`](../../STUDY_HUB/_scrape/gen_mir_daily.js) `[YYYY-MM-DD]`).
 L-V, sáb+dom libres, skips = 25-dic, 31-dic y 1-ene (no son días hábiles del plan), hasta el mié 27-ene-2027 (D76 último tema lun 25-ene · D77 mini-MIR mar 26-ene · D78 corrección mié 27-ene; v5.19: vie 22 · lun 25 · mar 26-ene). 1 tema atómico/día, 1ª vuelta.

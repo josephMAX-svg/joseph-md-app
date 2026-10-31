@@ -18,6 +18,9 @@
 //   desplazadas (D50-D54, D56, D57, D79) heredan la nota de su dOrig en el tramo 2 (T3-T10, d 103-110).
 // v6.05 (24-oct-2026): sin cambio de lógica. colocarF1(47): d 1-46 = v5.20 D1-D46 · d 47 = v5.20 D55 (NBME 28, sin nota). Las 11
 //   desplazadas (D47-D54, D56, D57, D79) heredan la nota de su dOrig en el tramo 2 (T3-T13, d 103-113).
+// v6.06 (31-oct-2026): sin cambio de lógica. colocarF1(42) (hitos anclados + Day-After completo): d 1-34 = v5.20 D1-D34 · d 35 = v5.20 D40
+//   (NBME 27, sin nota) · d 36-40 = v5.20 D35-D39 · d 41 = v5.20 D41 · d 42 = v5.20 D55 (NBME 28, sin nota). Las 16 desplazadas (D42-D54,
+//   D56, D57, D79) heredan la nota de su dOrig en el tramo 2 (T3-T18, d 103-118).
 // v5.x: matcheaba (system, uw) contra el plan viejo de git HEAD (fallback: 1.er path del sistema).
 'use strict';
 const fs = require('fs');

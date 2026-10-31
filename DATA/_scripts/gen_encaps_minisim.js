@@ -122,6 +122,16 @@
  *   de I-3 (código de la fila dia 2, mar 27): ya no hay mini-sim en medio (la nota «regla de lunes» de v6.03 queda como historial). HTML re-emitidos
  *   con --refrescar (html desfasado). CARRIL B: 13 pendientes F1 (los 10 de v6.03 con sus fechas + lun 8-mar II-4 #3 · mar 9-mar II-1 #3 · MIÉ
  *   10-MAR MINI-SIM 25Q I-1 + II-2 → --semana 2027-03-08 arma minisim_2027-03-10); regla genérica «filas del carril B dia 48-79 (dia_mant 61-92) sin ✓».
+ * v6.06 (31-oct-2026, «reestructura todo a partir del 2 de noviembre … corre nada más»; la semana del lun 26 al vie 30-oct no se estudió): D1 = LUN
+ *   2-NOV-2026 · F1 = dia 1-42 → mié 30-dic (35 banqueo1h + 7 mini-sims vie 6-nov … vie 18-dic = CHECKPOINT DEL AÑO) · pre-test de arranque lun 2 +
+ *   mar 3-nov · INTENSIVA dia 43-92 con las mismas fechas. Runners re-fechados POR SESIÓN (+7 días; ítems intactos, _meta.realineado v6.06):
+ *   pretest_arranque 26/27-oct → 2/3-nov · eval 26/27/28/29-oct → 2/3/4/5-nov · banco 28/29-oct → 4/5-nov (fila_sql.dia 3/4 sin cambio) · minisim
+ *   30-oct / 6-nov / 13-nov → 6 / 13 / 20-nov · reservado_para del pool 30-oct / 6-nov → 6 / 13-nov (una sola pasada); HTML re-emitidos con
+ *   --refrescar. NUEVO · CARRIL SÁBADO: filasRunner() lee extra.carril_sabado de la fila del viernes host del SQL de la intensiva y da el pendiente
+ *   F1 como fila propia del SÁBADO (dia = el del viernes host, sabado {franja, host, sim_n}) → --semana <lunes> incluye el sábado de esa semana si
+ *   tiene fila (v6.06: --semana 2027-01-04 arma eval_/banco_2027-01-09 III-5 … --semana 2027-02-01 arma minisim_2027-02-06 II-9 + II-7, título
+ *   «REPOSICIÓN F1 (carril SÁBADO 09:30-10:30 …)») y --inventario lo cuenta como demanda (86 días: 42 F1 + 26 carril B + 13 reposición + 5 sábados).
+ *   CARRIL B: 13 pendientes F1 con sus mismas fechas (dia − 5); regla genérica «filas del carril B dia 43-74 (dia_mant 61-92) sin ✓».
  * v5.20 (6-oct, DEFINITIVA): D1 = mié 7-oct-2026 · 92 días → mar 16-feb-2027 (régimen v6.18, backup study_schedule_bk_1006) · pre-test de arranque mié 7 + jue 8-oct ·
  *   mini-sims en los MISMOS 17 viernes vie 9-oct → vie 12-feb · ficheros BANCO_PROPIO re-fechados (ítems intactos, _meta.realineado v5.20) · pre-test 2026-II vie 26-feb
  *   (= día 100, primer viernes de la intensiva mar 23-feb → mar 9-mar) · EXAMEN ENCAPS 2027-I FIJADO mié 10-mar-2027.
@@ -281,6 +291,15 @@ function filasRunner() {
     else if (p) map.set(r.fecha, { ...base, tipo: 'banqueo1h', codigo: p.codigo, subtema: p.subtema, secundarios: p.temas_secundarios || [], extra: p.extra || {}, carril_b: { origen: p.origen, dia_mant: p.dia_mant, pendiente_f1: p.corrimiento } });
     else if (r.extra.minisim_absorbido) { const m = r.extra.minisim_absorbido; map.set(r.fecha, { ...base, tipo: 'mini_sim_absorbido', codigo: null, subtema: m.subtema || '', secundarios: [], extra: m.extra || {} }); }
     else map.set(r.fecha, { ...base, tipo: cb ? 'reposicion' : 'sin_carril_b', codigo: null, subtema: cb ? 'carril B · reposición genérica' : `sin carril B (${r.tipo})`, secundarios: [], extra: {}, regla: cb && typeof cb.regla === 'string' ? cb.regla : null }); // v6.02: + regla (la del SQL, derivada por la intensiva)
+    // v6.06: CARRIL SÁBADO — el pendiente F1 del sábado viaja en la fila del viernes host (extra.carril_sabado): el runner lo ve como fila
+    // propia del SÁBADO (dia = el del viernes host; claves de la app D{dia}:s_*) → --semana <lunes> arma banco_/eval_/minisim_<sábado>
+    const cs = r.extra.carril_sabado || null; const ps = cs && cs.pendiente_f1 ? cs.pendiente_f1 : null;
+    if (ps && cs.fecha && !map.has(cs.fecha)) {
+      const baseS = { dia: r.dia, fecha: cs.fecha, weekday: 'Sáb', origen: `_encaps_intensivo_2027.sql (carril SÁBADO ${cs.franja || ''} · fila host ${r.fecha})`, sabado: { franja: cs.franja || null, host: r.fecha, sim_n: cs.sim_n ?? null } };
+      const cbS = { origen: ps.origen, dia_mant: ps.dia_mant, pendiente_f1: ps.corrimiento, carril: `SÁB ${cs.franja || ''}`.trim() };
+      if (ps.tipo === 'mini_sim') map.set(cs.fecha, { ...baseS, tipo: 'mini_sim', codigo: null, subtema: ps.subtema, secundarios: ps.temas_secundarios || [], extra: ps.extra || {}, carril_b: cbS });
+      else map.set(cs.fecha, { ...baseS, tipo: 'banqueo1h', codigo: ps.codigo, subtema: ps.subtema, secundarios: ps.temas_secundarios || [], extra: ps.extra || {}, carril_b: cbS });
+    }
   }
   return (_filasRunner = map);
 }
@@ -293,7 +312,7 @@ function rangoSQL() {
 }
 function colaLargaDe(fecha) {
   const fila = filaSQL(fecha);
-  if (fila && fila.extra && Array.isArray(fila.extra.cola_larga) && fila.extra.cola_larga.length) return { codigos: fila.extra.cola_larga, origen: fila.carril_b ? `_encaps_intensivo_2027.sql (carril B · pendiente F1, fila mant. ${fila.carril_b.dia_mant})` : '_encaps_mantenimiento_2027.sql' };
+  if (fila && fila.extra && Array.isArray(fila.extra.cola_larga) && fila.extra.cola_larga.length) return { codigos: fila.extra.cola_larga, origen: fila.carril_b ? `_encaps_intensivo_2027.sql (${fila.sabado ? 'carril SÁBADO' : 'carril B'} · pendiente F1, fila mant. ${fila.carril_b.dia_mant})` : '_encaps_mantenimiento_2027.sql' }; // v6.06: + carril SÁBADO
   // fallback: rota COLA_LARGA por índice de viernes desde el D1 del régimen
   const d1 = new Date((rangoSQL().d1 || fecha) + 'T12:00:00Z'), d = new Date(fecha + 'T12:00:00Z');
   const k = Math.max(0, Math.floor((d - d1) / (7 * 864e5)));
@@ -456,7 +475,7 @@ if(state.done){$('#intro').classList.add('hidden');corregir();}
 // ── modos ──
 function modoMinisim(fecha) {
   const filaM = filaSQL(fecha);
-  const repuesto = !!(filaM && filaM.tipo === 'mini_sim' && filaM.carril_b); // v6.01: mini-sim F1 repuesto en el carril B 16:15 (no es viernes)
+  const repuesto = !!(filaM && filaM.tipo === 'mini_sim' && filaM.carril_b); // v6.01: mini-sim F1 repuesto en el carril B 16:15 (no es viernes) · v6.06: o en el carril SÁBADO
   if (dowDe(fecha) !== 5 && !repuesto) console.warn(`⚠ ${fecha} no es viernes (${WD[dowDe(fecha)]})`);
   const { fallos, debiles, pretestHecho } = leerRegistro();
   const { pool, rechazados } = cargarPool(pretestHecho);
@@ -465,7 +484,7 @@ function modoMinisim(fecha) {
   const { items, conteos, avisos } = armarSet(fecha, pool, usados, cola, fallos, debiles);
   const id = `MINISIM_${fecha}`;
   const doc = {
-    id, titulo: repuesto ? `Mini-simulacro ENCAPS · ${WD[dowDe(fecha)]} ${fecha} · REPOSICIÓN F1 (carril B 16:15 · fila mant. ${filaM.carril_b.dia_mant} de la F1 ${String(filaM.carril_b.origen || '').replace('mantenimiento_', '')})` : `Mini-simulacro ENCAPS · viernes ${fecha}`, tipoRonda: 'mini_sim', fecha, codigo: 'MIX', tema: `mini-sim v3 · cola larga ${cola.codigos.join('+')}`,
+    id, titulo: repuesto ? `Mini-simulacro ENCAPS · ${WD[dowDe(fecha)]} ${fecha} · REPOSICIÓN F1 (${filaM.sabado ? `carril SÁBADO ${filaM.sabado.franja || ''}`.trim() : 'carril B 16:15'} · fila mant. ${filaM.carril_b.dia_mant} de la F1 ${String(filaM.carril_b.origen || '').replace('mantenimiento_', '')})` : `Mini-simulacro ENCAPS · viernes ${fecha}`, tipoRonda: 'mini_sim', fecha, codigo: 'MIX', tema: `mini-sim v3 · cola larga ${cola.codigos.join('+')}`,
     fuente_preguntas: `BANCO_PROPIO (${[...new Set(items.map((x) => x._file))].join(', ')}) · moldes 2024-2A→2026-1 · claves verificadas por ítem`,
     n: items.length, seg_por_q: RECETA_MINISIM.seg_por_q, umbral: RECETA_MINISIM.umbral_25, alerta: RECETA_MINISIM.alerta_25, mostrar_codigo: false,
     instrucciones: `25 preguntas mixtas (8 II · 7 I · 5 V · 3 III · 2 IV), 72 s por pregunta = 30 min. Cola larga de hoy: ${cola.codigos.join(' + ')}. Sin material, sin pausa; la corrección aparece solo al terminar.`,
@@ -646,8 +665,10 @@ function modoSemana(lunes) {
   // salidas banco_/eval_ de ESTA semana que se van a sobrescribir: sus ids viejos no cuentan como «usados» hasta que cada una
   // se regenera → --semana es determinista (misma salida exista o no una corrida anterior) y no encadena exclusiones espurias
   const pendientes = new Set();
-  for (let i = 0; i < 5; i++) { const f = addDays(lunes, i); const fila = filaSQL(f); if (fila && fila.tipo === 'banqueo1h') { pendientes.add(`banco_${f}.json`); if (i > 0) pendientes.add(`eval_${f}.json`); } }
-  for (let i = 0; i < 5; i++) {
+  // v6.06: + el SÁBADO (i = 5) solo si trae fila del carril SÁBADO (pendiente F1 de la intensiva); un sábado sin ella no se lista
+  const diasSemana = [0, 1, 2, 3, 4, ...(filaSQL(addDays(lunes, 5)) ? [5] : [])];
+  for (const i of diasSemana) { const f = addDays(lunes, i); const fila = filaSQL(f); if (fila && fila.tipo === 'banqueo1h') { pendientes.add(`banco_${f}.json`); if (i > 0) pendientes.add(`eval_${f}.json`); } }
+  for (const i of diasSemana) {
     const f = addDays(lunes, i); const fila = filaSQL(f);
     if (!fila) { console.log(`— ${f}: sin sesión (${motivoSinSesion(f)})`); continue; }
     if (fila.tipo === 'banqueo1h') { // eval anclada mar-jue (el lunes la pide el protocolo pero hoy NO hay stock del código: ver README); el viernes (mini_sim) no lleva: el mini-sim ocupa las 16:15
@@ -827,7 +848,7 @@ function modoInventario() {
   const D1_SQL = fechasSQL[0] || '—', DFIN_SQL = fechasSQL[fechasSQL.length - 1] || '—';
   const rotacionTxt = Object.entries(demanda).filter(([, v]) => v.sesiones_principal > 0).sort((a, b) => b[1].sesiones_principal - a[1].sesiones_principal || (a[0] < b[0] ? -1 : 1)).map(([c, v]) => `${c} ${v.sesiones_principal}`).join(' · ');
   const totales = { pool_total: pool.length, pool_disponible: pool.filter((x) => !usados.has(x.id)).length, filas_sql: filas, minisims_sembrados: minisims, dias_sembrados: filas, d1: D1_SQL, cierre: DFIN_SQL, demanda_total_q: Object.values(inv).reduce((s, x) => s + x.demanda_sembrada.q_estimadas_regimen, 0), deficit_codigos: Object.entries(inv).filter(([, v]) => v.deficit_vs_demanda > 0).map(([k, v]) => `${k}:${v.deficit_vs_demanda}`) };
-  const out = { _meta: { descripcion: `Inventario de preguntas por CÓDIGO v3: oferta (BANCO_PROPIO: sets + banco_items_v1 + set_reales_otros; exámenes reales etiquetados; claves.json de julio; QX/Theomed por área) vs demanda sembrada en study_schedule (desde v6.01; vigente ${require('./gen_fechas_v6').cargarFechasV6().version}: días con banco — banqueo1h o mini-sim — de la F1 en _encaps_mantenimiento_2027.sql + carril B 16:15 de _encaps_intensivo_2027.sql (filas 61-92 de v5.20 + pendientes F1; sin los mini-sims absorbidos); hoy ${filas} días, D1 = ${D1_SQL}, cierre = ${DFIN_SQL}) y déficit. Regenerar: node DATA/_scripts/gen_encaps_minisim.js --inventario`, generado: new Date().toISOString().slice(0, 10), rotacion: `${rotacionTxt} (sesiones banqueo1h por código en el SQL vigente · CICLO de _encaps_ciclo_v3.js · siembra de ${filas} días desde el ${D1_SQL})`, lista_negra: 'el examen reservado como pre-test queda fuera de toda oferta hasta que se rinda', totales }, por_codigo: inv };
+  const out = { _meta: { descripcion: `Inventario de preguntas por CÓDIGO v3: oferta (BANCO_PROPIO: sets + banco_items_v1 + set_reales_otros; exámenes reales etiquetados; claves.json de julio; QX/Theomed por área) vs demanda sembrada en study_schedule (desde v6.01; vigente ${require('./gen_fechas_v6').cargarFechasV6().version}: días con banco — banqueo1h o mini-sim — de la F1 en _encaps_mantenimiento_2027.sql + carril B 16:15 de _encaps_intensivo_2027.sql (filas 61-92 de v5.20 + pendientes F1; sin los mini-sims absorbidos) + carril SÁBADO 09:30 de la intensiva (pendientes F1 que no caben en el lun-jue, extra.carril_sabado; v6.06); hoy ${filas} días, D1 = ${D1_SQL}, cierre = ${DFIN_SQL}) y déficit. Regenerar: node DATA/_scripts/gen_encaps_minisim.js --inventario`, generado: new Date().toISOString().slice(0, 10), rotacion: `${rotacionTxt} (sesiones banqueo1h por código en el SQL vigente · CICLO de _encaps_ciclo_v3.js · siembra de ${filas} días desde el ${D1_SQL})`, lista_negra: 'el examen reservado como pre-test queda fuera de toda oferta hasta que se rinda', totales }, por_codigo: inv };
   fs.writeFileSync(path.join(BANCO, '_inventario_banco_por_codigo.json'), JSON.stringify(out, null, 1) + '\n', 'utf8');
   console.log('OK → _inventario_banco_por_codigo.json ·', JSON.stringify(totales));
   for (const [k, v] of Object.entries(inv)) console.log(`${k.padEnd(10)} demanda ${String(v.demanda_sembrada.q_estimadas_regimen).padStart(4)} · pool ${String(v.oferta.banco_propio_pool.disponibles_no_usados).padStart(3)} disp (${v.oferta.banco_propio_pool.total} tot) · reales ${String(v.oferta.examenes_reales_etiquetados.total).padStart(2)} · déficit ${String(v.deficit_vs_demanda).padStart(4)} · ${v.estado}`);

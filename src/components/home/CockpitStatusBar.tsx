@@ -37,6 +37,8 @@ import {
  * v6.03 (20-oct-2026): D1 = mié 21-oct → STEP1_SEMANAS = 39 (S1 sigue siendo la semana del lun 19-oct) · fallback de hoyISO = D1 (2026-10-21).
  * v6.05 (24-oct-2026): D1 = lun 26-oct → STEP1_SEMANAS = 42 (S n/42; S1 = semana del lun 26-oct, F1 = S1-S10; examen lun 25-oct-2027) ·
  *   fallback de hoyISO = D1 (2026-10-26).
+ * v6.06 (31-oct-2026): D1 = lun 2-nov → STEP1_SEMANAS = 41 (S n/41; S1 = semana del lun 2-nov, F1 = S1-S9; examen lun 25-oct-2027) ·
+ *   fallback de hoyISO = D1 (2026-11-02).
  */
 
 const MONO = Platform.OS === 'web' ? "'JetBrains Mono', 'SF Mono', monospace" : undefined;
@@ -55,7 +57,7 @@ export function limaHHMM(): string {
 }
 function hoyISO(): string {
   try { const d = new Date(); const z = (n: number) => String(n).padStart(2, '0'); return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}`; }
-  catch { return '2026-10-26'; } // v6.05: D1 lun 26-oct (v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00: 2026-10-07)
+  catch { return '2026-11-02'; } // v6.06: D1 lun 2-nov (v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00: 2026-10-07)
 }
 
 interface Item {
@@ -74,7 +76,7 @@ export interface CockpitStatusBarProps {
   unread: number;           // reports sin leer
   onBell?: () => void;      // abre modal de reports (mobile); undefined = sin campana táctil
   compact?: boolean;        // mobile
-  semana?: SemanaStep1 | null;   // v5.7 opcional: semana N/STEP1_SEMANAS del Step 1 (v6.00: 41 · v6.01: 40 · v6.02 = v6.03: 39 · v6.04: 43 · v6.05: 42 · PAUSA en F2) · si no, se calcula aquí
+  semana?: SemanaStep1 | null;   // v5.7 opcional: semana N/STEP1_SEMANAS del Step 1 (v6.00: 41 · v6.01: 40 · v6.02 = v6.03: 39 · v6.04: 43 · v6.05: 42 · v6.06: 41 · PAUSA en F2) · si no, se calcula aquí
   anki?: AnkiKpi | null;         // v5.7 opcional: KPI Anki (si no, localStorage 'jmd-anki-telemetria')
 }
 
@@ -240,7 +242,7 @@ export default function CockpitStatusBar({
         <View style={st.vDiv} />
         <Instrument label="PHASE" value={phase} color={Colors.teal} mono={false} />
         <View style={st.vDiv} />
-        {/* v5.7 · Semana N/STEP1_SEMANAS del Step 1 (v6.00: 41 · v6.01: 40 · v6.02 = v6.03: 39 · v6.04: 43 · v6.05: 42 · PAUSA · ENCAPS en F2 · sáb 07:15 revisión semanal · deload secundarios). Tocar = copiar export jmd-* (web) */}
+        {/* v5.7 · Semana N/STEP1_SEMANAS del Step 1 (v6.00: 41 · v6.01: 40 · v6.02 = v6.03: 39 · v6.04: 43 · v6.05: 42 · v6.06: 41 · PAUSA · ENCAPS en F2 · sáb 07:15 revisión semanal · deload secundarios). Tocar = copiar export jmd-* (web) */}
         <TouchableOpacity activeOpacity={0.7} onPress={() => setExportado(exportarLocalStorageJmd() ? 'ok' : 'no')} hitSlop={{ top: 6, bottom: 6, left: 4, right: 4 }}>
           <Instrument
             label={exportado === 'ok' ? 'SEMANA · export ✓' : exportado === 'no' ? 'SEMANA · sin clipboard' : sem.pausa ? 'SEMANA · Step 1 en PAUSA' : sem.deload ? 'SEMANA · DELOAD' : sem.hito ? `SEMANA · ${sem.hito}` : 'SEMANA'}

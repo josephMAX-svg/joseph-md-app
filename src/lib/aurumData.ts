@@ -431,8 +431,9 @@ export const AURUM_PRACTICA: AurumPractica = {
 
 // ─── v3 (5-sep-2026) · Rúbrica del PITCH (6 ítems 0-2) — Palmerton: medir por score, no por "grabé" ───
 // Se aplica en los 7 días de cierre de fase (AURUM_PITCH_DIAS en aurumDailyPlan.ts: D15, D35, D55,
-// D75, D95, D115, D130 — VIGENTE v6.05 (D1 lun 26-oct; las fechas salen de AURUM_PITCH_DIAS): vie 13-nov · vie 11-dic · mié 13-ene ·
-// mié 10-feb · mié 10-mar · mar 13-abr · mar 4-may-2027 (ya en el SERUMS) — histórico v6.03 (D1 mié 21-oct): mar 10-nov · mar 8-dic · vie 8-ene ·
+// D75, D95, D115, D130 — VIGENTE v6.06 (D1 lun 2-nov; las fechas salen de AURUM_PITCH_DIAS): vie 20-nov · vie 18-dic · mié 20-ene ·
+// mié 17-feb · vie 19-mar · mar 20-abr · mar 11-may-2027 (ya en el SERUMS, tiempo muerto) — histórico v6.05 (D1 lun 26-oct): vie 13-nov · vie 11-dic ·
+// mié 13-ene · mié 10-feb · mié 10-mar · mar 13-abr · mar 4-may-2027 · v6.03 (D1 mié 21-oct): mar 10-nov · mar 8-dic · vie 8-ene ·
 // vie 5-feb · vie 5-mar · jue 8-abr · jue 29-abr-2027 · v5.20: mar 27-oct · mar 24-nov · mar 22-dic · vie 22-ene · vie 19-feb (= D95 del Step 1, último
 // día del plan; finde libre y examen lun 22-feb = DÍA PROTEGIDO sin AURUM → AURUM D96 = mar 23-feb) · mié 24-mar · mié 14-abr;
 // con el D1 en miércoles los 3 primeros caen en martes · v5.19: lun 26-oct · lun 23-nov · lun 21-dic · jue 21-ene · jue 18-feb (⚠ D-1 real

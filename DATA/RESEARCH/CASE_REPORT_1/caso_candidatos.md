@@ -7,7 +7,14 @@
 > y redactar en nov-dic con el CARE). Este fichero es la tabla que se rellena en el átomo CR-1 y el punto de
 > partida de la conversación con el Dr. Ciro (ver `../MENTORES.md`, mensaje 1).
 >
-> **✅ v6.05 (sáb 24-oct-2026 · D1 del régimen lun 26-oct; Research ciclo 1 lun 26-oct → mar 23-mar): M1 (petición al Dr. Ciro) = vie 30-oct = el ÚLTIMO
+> **✅ v6.06 (sáb 31-oct-2026 · D1 del régimen lun 2-nov; Research ciclo 1 mar 3-nov → vie 2-abr): ⏸ el plazo interno del 31-oct (caso + consentimiento + senior
+> author) VENCIÓ sin día-Research** (la semana lun 26 → vie 30-oct no se estudió y M1 caía el vie 30-oct) → no se inventa otro: **M1 (petición al Dr. Ciro) = mar
+> 3-nov, la 1.ª sesión Research** (pedir el caso en el propio M1) · seguimiento = lun 23-nov (d8, día de R9) · plazo de 3 semanas desde M1 = **mié 25-nov** (= C-3,
+> d9: disparador de la fuente B, §2) · **CR-1 (caso elegido) = lun 7-dic — 🔴 37 días DESPUÉS del 31-oct** · **CR-2 (consentimiento firmado) = mié 9-dic — 🔴 39
+> días DESPUÉS del 31-oct** · CR-3 fotos mar 29-dic · CR-4 CARE mié 6-ene · CR-5 borrador mar 12-ene · pausa 15-ene → 10-feb · **CR-6 revisión jue 11-feb · CR-7
+> formateo lun 15-feb · CR-8 paquete mié 17-feb · CR-9 SUBMIT vie 19-feb-2027** (regla de desplazamiento, nivel 2: el paquete ya no se congela antes de la pausa;
+> el SUBMIT sigue ≤ 28-feb). Misma recomendación: cerrar caso + consentimiento FUERA del átomo, cuanto antes.
+> **⏸ v6.05 (historial; sáb 24-oct-2026 · D1 del régimen lun 26-oct; Research ciclo 1 lun 26-oct → mar 23-mar): M1 (petición al Dr. Ciro) = vie 30-oct = el ÚLTIMO
 > día-Research antes del 31-oct** (no queda otro: pedir el caso en el propio M1) · seguimiento = vie 13-nov (d8, día de R9; M3 —permiso del CADI— pasó al mié 17-feb-2027, tras la pausa) · plazo de 3 semanas desde M1 = vie 20-nov
 > (disparador: C-3, d9, mar 17-nov) · **sin caso → fuente B** (§2) · **CR-1 (caso elegido) = vie 27-nov (día del NBME 26) — 🔴 27 días DESPUÉS del 31-oct** ·
 > **CR-2 (consentimiento firmado) = mar 1-dic — 🔴 31 días DESPUÉS del 31-oct** · CR-8 paquete mar 12-ene · CR-9 SUBMIT jue 11-feb (sin cambio). Misma

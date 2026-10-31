@@ -13,7 +13,7 @@
  *   sáb 15:00 SHIP + SYNAPSE (PC)     guiaShipDe          · 120′ = SHIP del proyecto 90′ + SYNAPSE A/B/C 30′ (taper: PC 30′/0′ + A/B/C)
  *   dom 15:00 FEYNMAN (opcional)      guiaFeynmanDe       · 10′
  * Hecho A MANO (no es un .ts generado): REGLAS para todos los días de cada plan (lee las filas de los .ts generados, que NO cambian) +
- * CURADURÍA de la semana 1 (v6.02: lun 19 → dom 25-oct-2026; v6.05: lun 26-oct → dom 1-nov; desde v6.03 la curaduría va por PASO / PIEZA / FILA del plan y no por fecha, así
+ * CURADURÍA de la semana 1 (v6.02: lun 19 → dom 25-oct-2026; v6.05: lun 26-oct → dom 1-nov; v6.06: lun 2 → dom 8-nov; desde v6.03 la curaduría va por PASO / PIEZA / FILA del plan y no por fecha, así
  * sigue al plan cuando corre — ver vibeS1(k), SYN_CUR_PIEZAS, BIZ_TRAMO y LIV_LECT) y de los recursos con URL verificada el dom 18-oct-2026 (YouTube: título, canal y
  * duración leídos de la página del vídeo · PubMed/PMC por E-utilities · secciones y nº de palabras de Schwartz 2017 leídos de PMC ·
  * Apple Podcasts lookup). Lo que no se pudo verificar se dice («sin medir», «A VERIFICAR»); no hay páginas inventadas.
@@ -22,16 +22,25 @@
  * para plantillasV6) · guiaAurumDe(iso, ini?) en F4 = 30′ en el tiempo muerto del turno tras el R↔D (ventanaAurumF4; antes 14:15 fijo) ·
  * guiaShipDe nombra TODAS las piezas PC del sábado (sáb 20-feb: S16 30′ + S17 0′) · comodines curados del SYNAPSE: si su 1.er sábado está
  * ocupado, el siguiente libre (deep dive + trifecta → sáb 7-nov, retomando donde quedó cada pieza).
+ * v6.06 (31-oct-2026 · D1 = lun 2-nov): sin fechas nuevas en el código — todo sigue saliendo de los planes regenerados (+5 hábiles). Cambia: (1)
+ * bizFranjaDe trata el SIM 100Q de las 11:00 de F2 (SIM_F2_11) como un NBME de F1 para el OUTPUT del viernes: con el D1 en el lun 2-nov Business
+ * llega al mar 2-mar y el SIM #7 (vie 26-feb, 11:00-13:00 → SYNAPSE 13:00-13:30) cae en viernes de OUTPUT → el OUTPUT entero va al sábado
+ * 09:15-09:55 (F2; antes de la v6.06 Business terminaba antes del 1.er SIM de las 11:00); (2) UWSA1 lun 2-nov 07:25 · NBME vie 13-nov · vie 4-dic
+ * · vie 18-dic · mié 30-dic a las 13:00 · comodines: sáb 7-nov = No Priors + Willison, sáb 14-nov = deep dive + trifecta · AURUM D124-D130 (lun 3 →
+ * mar 11-may-2027) en el tiempo muerto del SERUMS · SYNAPSE (mar 16-mar) y vibecoding (mar 16 → vie 19-mar) siguen en F3 tras el ENCAPS.
+ * v6.06 (fix 31-oct-2026): guiaAurumDe avisa (1.er aviso) cuando AURUM cae en un día de HITO USMLE de F1/F3 (hitoUsmleDe: nombre y franja del `sub`
+ * de la fila 🎯): el hito es por la mañana y AURUM va a su hora, tras el hito — sin mover la fecha. Caso que lo motivó: D35 = PITCH v2 el vie 18-dic,
+ * día del NBME 27 (07:00-12:30) y del CHECKPOINT DEL AÑO de ENCAPS (16:15, encapsGuia), los tres nombrados. Control en check_rutina_guia.js.
  *
  * Decisiones de carga (v6.02c, E5 — escritas también en los avisos de cada bloque):
  *  · BUSINESS no tenía franja ni aparecía en el Home: va a 13:00-13:25 (L-V), la franja «LECTURA DE LIBRO 13:00-13:15» del Calendar (cuya
  *    descripción ya dice «el libro del nivel en curso — Biblioteca del Fundador», que es justo lo que lee Business) + 10′ del hueco 13:15-13:30
  *    (la siesta opcional ≤20′ sigue siendo la válvula ÁMBAR: en ÁMBAR Business baja a 13:00-13:15). El OUTPUT del viernes (40′) = 25′ el
  *    viernes + 15′ el sábado 07:45-08:00, tras la revisión semanal (el tracker semanal de sueño/ejercicio/comida se llena mejor con la semana
- *    cerrada). Días de hito USMLE: UWSA1 (v6.05: lun 26-oct · v6.03: mié 21-oct · v6.02: lun 19-oct; almuerzo 13:00-13:30) = solo audio durante el almuerzo · NBME (almuerzo 12:30-13:00,
- *    SYNAPSE 13:00) = audio 12:30-12:55 y, si es viernes de OUTPUT, el OUTPUT entero pasa al sábado 07:45-08:25 (v6.05: los NBME 25-27 caen en VIERNES de OUTPUT —vie 6-nov · vie 27-nov · vie 18-dic— → esos 3 OUTPUT van enteros al sábado 07:45-08:25; v6.03: los NBME de F1 caían en martes y miércoles: ningún viernes de OUTPUT coincidía). (Calendar ya alineado el 18-oct, CAL_V6 §12) El Calendar seguía con
+ *    cerrada). Días de hito USMLE: UWSA1 (v6.06: lun 2-nov · v6.05: lun 26-oct · v6.03: mié 21-oct · v6.02: lun 19-oct; almuerzo 13:00-13:30) = solo audio durante el almuerzo · NBME (almuerzo 12:30-13:00,
+ *    SYNAPSE 13:00) = audio 12:30-12:55 y, si es viernes de OUTPUT, el OUTPUT entero pasa al sábado 07:45-08:25 (v6.06: NBME 25-27 en VIERNES de OUTPUT —vie 13-nov · vie 4-dic · vie 18-dic— → esos 3 OUTPUT van enteros al sábado 07:45-08:25, y en F2 el del SIM #7 de las 11:00 —vie 26-feb— al sábado 09:15-09:55 · v6.05: los NBME 25-27 caen en VIERNES de OUTPUT —vie 6-nov · vie 27-nov · vie 18-dic— → esos 3 OUTPUT van enteros al sábado 07:45-08:25; v6.03: los NBME de F1 caían en martes y miércoles: ningún viernes de OUTPUT coincidía). (Calendar ya alineado el 18-oct, CAL_V6 §12) El Calendar seguía con
  *    «LECTURA DE LIBRO 13:00-13:15»: que lo amplíe a 13:25 lo decide el orquestador / Joseph.
- *  · SYNAPSE en días de hito: el día del UWSA1 (v6.05: lun 26-oct · v6.03: mié 21-oct · v6.02: lun 19-oct) 07:25-07:55, entre las 2 partes de la preparación del hito (USMLE 07:15-07:25 y 07:55-08:50;
+ *  · SYNAPSE en días de hito: el día del UWSA1 (v6.06: lun 2-nov · v6.05: lun 26-oct · v6.03: mié 21-oct · v6.02: lun 19-oct) 07:25-07:55, entre las 2 partes de la preparación del hito (USMLE 07:15-07:25 y 07:55-08:50;
  *    v6.02c F2: una sola vez, en su tarjeta propia — la guía USMLE ya no lo repite) · NBME 13:00-13:30.
  *  · AURUM (60′ en F1): 1′ arranque + vídeo A + drill + la LECTURA L en los minutos que sobran de la hora (el plan la ponía «en huecos de
  *    viaje», que en la práctica no existen) + 2′ cierre; lo que de L no cabe queda como lectura de huecos (no es núcleo). Si sobra tiempo tras
@@ -54,7 +63,8 @@ import type { DiaLiviano } from './livianoStudyPlan';
 import { livCasoDeDia, livCardsDeDia, livCardsSemanaPrevia, livDrillDe, livAnkiDeck } from './livianoCasos';
 import { BIZ_DIAS, bizDiaDe, bizModo } from './businessStudyPlan';
 import type { DiaBiz } from './businessStudyPlan';
-import { DIAS as USMLE_DIAS, esHito, FRANJAS_F4 } from './usmleStep1Daily';
+import { DIAS as USMLE_DIAS, DIAS_T2 as USMLE_DIAS_T2, esHito, FRANJAS_F4 } from './usmleStep1Daily';
+import { guiaEncapsDe } from './encapsGuia'; // v6.06 (fix): AURUM en día de hito USMLE avisa del CHECKPOINT ENCAPS de esa tarde
 import { FECHAS_V6, DERIVADOS_V6, faseV6, ultimoHabilAntes } from './fechasV6';
 
 // ─────────────────────────────────────────── utilidades ───────────────────────────────────────────
@@ -99,6 +109,15 @@ function hitoDe(iso: string): { nbme: boolean; uwsa: boolean } | null {
   const uwsa = /Self-Assessment 1|UWSA1/.test(h.uw);
   return { uwsa, nbme: !uwsa && /NBME/.test(h.uw) };
 }
+/** v6.06 (fix 31-oct-2026): hito USMLE del día en F1 o F3 (filas 🎯 de DIAS + DIAS_T2) con su nombre y su franja, leídos del `sub` de la fila
+ *  («🎯 NBME 27 (07:00-12:30) …» → NBME 27 · 07:00-12:30). En F4 el hito se reordena por turno (serumsTurnos): no se usa ahí. Lo usa guiaAurumDe. */
+export function hitoUsmleDe(iso: string): { nombre: string; franja: string | null } | null {
+  if (faseV6(iso) === 'F4') return null;
+  const h = [...USMLE_DIAS, ...USMLE_DIAS_T2].find((x) => x.fecha === iso && esHito(x));
+  if (!h) return null;
+  const m = /🎯\s*([^(—+]+?)\s*(?:—[^(]*)?\((?:[^)]*?)(\d{2}:\d{2})-(\d{2}:\d{2})\)/.exec(h.sub);
+  return { nombre: m ? (m[1] as string).trim() : h.uw, franja: m ? `${m[2]}-${m[3]}` : null };
+}
 
 // ════════════════════════════════════════ 04:15 · VIBECODING ════════════════════════════════════════
 const DOC_N8N_CODE = 'https://docs.n8n.io/build/code-in-n8n/using-the-code-node';
@@ -108,7 +127,8 @@ const JOURNAL_CMD = 'node DATA/_scripts/journal_hoy.js --abrir';
  *  comprobados en disco el 18-oct). v6.03 (20-oct-2026): la clave es el PASO del proyecto, no la fecha (antes '2026-10-19' … '2026-10-23'): con el
  *  D1 en el mié 21-oct S1 va del mié 21 al mar 27-oct y hace SHIP el sáb 31-oct (el sáb 24 es AVANCE); los días que citan los textos («el día del
  *  paso 1», el del SHIP) salen de VIBE_DIAS / VIBE_PROYECTOS, así siguen al plan si vuelve a correr. Mismo contenido, mismos minutos.
- *  v6.05 (24-oct-2026): D1 = lun 26-oct → S1 = lun 26 → vie 30-oct entera en la semana del D1 y SHIP el sáb 31-oct (sin sábado de avance). */
+ *  v6.05 (24-oct-2026): D1 = lun 26-oct → S1 = lun 26 → vie 30-oct entera en la semana del D1 y SHIP el sáb 31-oct (sin sábado de avance).
+ *  v6.06 (31-oct-2026): D1 = lun 2-nov → S1 = lun 2 → vie 6-nov y SHIP el sáb 7-nov (igual que v6.05, una semana después). */
 function vibeS1(k: number): GuiaPaso[] | undefined {
   const dia = (kk: number): string => { const x = VIBE_DIAS.find((y) => y.semana === 1 && y.k === kk); return x ? fCorta(x.fecha) : `paso ${kk}`; };
   const p1 = vibeProyectoDe(1);
@@ -207,7 +227,9 @@ const ACADEMY = 'https://academy.claude.com/';
  *  v6.02 el sáb 24); el deep dive y la trifecta del vie 30 siguen por su carril (tramo 2 el vie 6-nov · «termínalo en otro hueco»). Con D1 en
  *  miércoles (v6.03) la misma regla da sáb 24 = deep dive + trifecta y sáb 31 = No Priors + Willison.
  *  v6.05 (fix 24-oct): el comodín cuyo 1.er sábado ya está ocupado pasa al SIGUIENTE sábado libre (≤ 3 semanas) en vez de quedarse sin curar:
- *  sáb 7-nov = deep dive (minutos 20:00-30:00, tras el tramo 2 del vie 6-nov) + trifecta (≈740 palabras que quedan → los próximos ≈500). */
+ *  sáb 7-nov = deep dive (minutos 20:00-30:00, tras el tramo 2 del vie 6-nov) + trifecta (≈740 palabras que quedan → los próximos ≈500).
+ *  v6.06 (31-oct-2026): D1 = lun 2-nov → la misma regla una semana después: lun 2 = auditoría F0 + No Priors + Pro Git · … · vie 6-nov = deep dive
+ *  + trifecta · sáb 7-nov = No Priors + «Prompt injection…» · sáb 14-nov = deep dive (tras el tramo 2 del vie 13-nov) + trifecta. */
 type SynCur = { que: string; como: string; url: string; t: string };
 const ES_NO_PRIORS = (b: SynBloque): boolean => b.tag === 'B' && /^No Priors/.test(b.material);
 const ES_WILLISON_PI = (b: SynBloque): boolean => b.tag === 'C' && /^Simon Willison — serie Prompt injection/.test(b.material);
@@ -311,7 +333,7 @@ function pasoSyn(b: SynBloque, iso: string): GuiaPaso {
     `≈${b.min * PPM_EN} palabras (${b.min}′ a ${PPM_EN} palabras/min en inglés). Marca dónde quedas; el resto en el próximo C o en el comodín del sábado.`, enl);
 }
 /** v6.05 (fix 24-oct): días de F2 con el ENCAPS a la hora real del examen, 11:00-13:00 — los SIM 100Q #7 y #8 (los 2 últimos viernes del
- *  núcleo: v6.05 vie 26-feb y vie 5-mar-2027) y el D-2 dress rehearsal (jue antes del D-1 hábil). FUENTE ÚNICA: plantillasV6 la importa para
+ *  núcleo: v6.05 = v6.06 vie 26-feb y vie 5-mar-2027) y el D-2 dress rehearsal (jue antes del D-1 hábil). FUENTE ÚNICA: plantillasV6 la importa para
  *  pintar el SIM a las 11:00 y para mover el SYNAPSE (antes cada fichero calculaba su SIM_11 y el SYNAPSE 12:30-13:00 se solapaba con el SIM). */
 export const SIM_F2_11 = new Set<string>([FECHAS_V6.encaps.nucleo_hasta, addDias(FECHAS_V6.encaps.nucleo_hasta, -7)]);
 /** D-2 del ENCAPS (jue antes del D-1 hábil): dress rehearsal 11:00-13:00 (§C3). */
@@ -429,14 +451,14 @@ export function guiaFeynmanDe(iso: string): GuiaBloque | null {
 interface Vid { id: string; t: string; canal: string; s: number }
 /** Semanas 1-2 (D1-D10): vídeos CONCRETOS (el plan enlaza el CANAL en 98 de sus 130 bloques A). Título, canal y duración leídos de YouTube el
  *  18-oct-2026. D11-D130 sin curar: la guía da una regla fija de elección y lo avisa (ampliar esta tabla = misma verificación). Clave = D del
- *  plan AURUM (no la fecha): v6.05 D1-D5 = lun 26 → vie 30-oct · D6-D10 = lun 2 → vie 6-nov (v6.03: mié 21 → mar 27-oct · mié 28-oct → mar 3-nov). */
+ *  plan AURUM (no la fecha): v6.06 D1-D5 = lun 2 → vie 6-nov · D6-D10 = lun 9 → vie 13-nov (v6.05: lun 26 → vie 30-oct · lun 2 → vie 6-nov · v6.03: mié 21 → mar 27-oct · mié 28-oct → mar 3-nov). */
 const AURUM_VID: Record<number, { vids: Vid[]; nota: string }> = {
   1: { vids: [{ id: 'PtPo5V-aBKI', t: 'Everything is Sales - Grant Cardone', canal: 'Grant Cardone', s: 129 }, { id: 'H7eevPm8WJo', t: 'Advice for Sales People - Grant Cardone', canal: 'Grant Cardone', s: 575 }], nota: 'Anota 3 frases textuales que le dirías a un lead de ALLPA/Qori.' },
   2: { vids: [{ id: 'urZVPdf3brs', t: 'I Trained Sales 2 Hours a Day for 5 Years', canal: 'Grant Cardone', s: 491 }, { id: 'NY9_i7TzXLQ', t: '3 Rules to Master Sales - Grant Cardone', canal: 'Grant Cardone', s: 120 }], nota: 'Anota la regla de actividad diaria que te llevas (1 línea).' },
   3: { vids: [{ id: 'YqT2Kb3jUIQ', t: "Believe In What You're Selling", canal: 'Grant Cardone', s: 115 }, { id: '-8W_BQai2aw', t: 'Sales - Best Sales Book Ever Sell or Be Sold', canal: 'Grant Cardone', s: 185 }, { id: 'NmGRMGDIOIU', t: 'The Two Things You Must Believe --Playbook to Millions', canal: 'Grant Cardone', s: 88 }, { id: 'Wxfq71FIrTQ', t: 'Why Product Knowledge is Important - Whatever it Takes Sneak Preview', canal: 'Grant Cardone', s: 115 }], nota: 'Los 3′ que sobran: escribe las 2 frases de Cardone sobre convicción que usarás en el drill.' },
   4: { vids: [{ id: '7NMH1oAkgLY', t: 'Giving Away Free Stuff Will Make You Rich', canal: 'Alex Hormozi', s: 741 }, { id: 'JfbtySq6_B4', t: 'Sell Anything To Anyone With This Unusual Method', canal: 'Alex Hormozi', s: 434 }], nota: 'Anota qué «regala» un operador en tu negocio (1 línea): es la base del PITCH v1.' },
   5: { vids: [{ id: '9hdptAKBUoI', t: 'THE 10X RULE (by Grant Cardone) Top 7 Lessons | Book Summary', canal: 'TopSevenLessons', s: 312 }, { id: 'u9OhOsyHYVI', t: 'How to 10X Your Life - Grant Cardone', canal: 'Grant Cardone', s: 146 }], nota: 'Los 4′ que sobran: las 7 lecciones, 1 línea cada una (sin mirar).' },
-  // semana 2 del plan (D6-D10; v6.05: lun 2 → vie 6-nov · v6.03: mié 28-oct → mar 3-nov · v6.02: lun 26 → vie 30-oct), mismo criterio
+  // semana 2 del plan (D6-D10; v6.06: lun 9 → vie 13-nov · v6.05: lun 2 → vie 6-nov · v6.03: mié 28-oct → mar 3-nov · v6.02: lun 26 → vie 30-oct), mismo criterio
   6: { vids: [{ id: 'JwdQw6jCJ0I', t: 'How to Handle Rejection - Grant Cardone', canal: 'Grant Cardone', s: 109 }, { id: 'jHa7B_Gc1p0', t: 'The Secret of How to Get Over Rejection - Grant Rant #182', canal: 'Grant Cardone', s: 140 }, { id: 'GpvI8Cnzzws', t: 'How to Handle Rejection in Sell or Be Sold Audio', canal: 'Grant Cardone', s: 72 }, { id: 'sBy4KCBpBkQ', t: 'How to Always Get a Yes - Grant Cardone', canal: 'Grant Cardone', s: 140 }], nota: 'Los 4′ que sobran: escribe tu frase para el próximo «no» de un lead (sin discutir).' },
   7: { vids: [{ id: 'NCH-iDdD9MU', t: 'How to Pitch Your Products with Enthusiasm', canal: 'Grant Cardone', s: 285 }, { id: 'iUEzMXQeT0k', t: 'How to Win in Anything--Grant Cardone', canal: 'Grant Cardone', s: 133 }, { id: 'cqwyIVmSM5A', t: 'What it Takes to be Successful', canal: 'Grant Cardone', s: 154 }], nota: 'Anota 1 gesto de energía GENUINA que copiarás en la toma de hoy.' },
   8: { vids: [{ id: 'SBF0nZ_Kfag', t: '5 Tips to Become the BEST Salesperson - Grant Cardone', canal: 'Grant Cardone', s: 855 }], nota: 'Anota los 5 tips en 5 líneas; marca el que más te cuesta.' },
@@ -549,6 +571,7 @@ export function guiaAurumDe(iso: string, ini?: string | null): GuiaBloque | null
     const fuera = [aMinPlan - aE > 0 ? `vídeo ${aMinPlan - aE}′` : '', PR && PR.min - prE > 0 ? `drill ${PR.min - prE}′` : '', pasoLV ? `variante LIVIANO ${pasoLV.min}′` : '', L ? `L ${L.min}′` : ''].filter(Boolean);
     if (fuera.length) avisos.push(`AURUM a 30′ (DJ-4): opcional fuera de la franja → ${fuera.join(' · ')}.`);
     // v6.05 (24-oct-2026): las 2 últimas sesiones (lun 3 / mar 4-may-2027) caen ya en el SERUMS → 30′ en tiempo muerto de la posta.
+    // v6.06 (31-oct-2026): con el D1 en el lun 2-nov son las 7 últimas (D124-D130 = lun 3 → mar 11-may-2027, PITCH v7 incluido): misma regla.
     // v6.05 (fix): en F4 la franja ya NO es la nominal 14:15–14:45 (chocaba con el almuerzo y el bloque B del turno M): sigue al bloque de tiempo
     //   muerto del turno, tras los 30′ de R↔D (ventanaAurumF4; `ini` lo pasa el Home con el bloque del día), como la guía de Research en F4.
     if (faseV6(iso) === 'F4') {
@@ -556,6 +579,19 @@ export function guiaAurumDe(iso: string, ini?: string | null): GuiaBloque | null
       franja = franjaDesde(i0, W);
       avisos.push(`SERUMS (F4): 30′ en TIEMPO MUERTO de la posta, justo después de los 30′ de R↔D — hoy ${franja}${ini ? '' : ' (turno M sin marcar = PISO; con otro turno la franja sigue a su bloque de tiempo muerto: T 13:30 · T 12:00 → 12:30 · T 14:00 → 14:00 · L 16:50 tras el R↔D · guardia sin hora)'}. Si la posta no deja hueco, al volver (antes de la cena); el drill nunca se salta.`);
     } else franja = '14:15–14:45';
+  }
+  // v6.06 (fix 31-oct-2026): AURUM en un día de HITO USMLE (F1/F3) — v6.06: D35 = PITCH v2 el vie 18-dic, día del NBME 27 (07:00-12:30) y del
+  //   CHECKPOINT DEL AÑO de ENCAPS (16:15) — la guía lo avisa (primer aviso): el hito es por la mañana y AURUM va a su hora, tras el hito; la fecha no se
+  //   mueve (nada se corre). Control: check_rutina_guia.js (todo día de AURUM con hito USMLE lleva este aviso; con PITCH y CHECKPOINT, nombrados).
+  const hu = hitoUsmleDe(iso);
+  if (hu) {
+    const enc = guiaEncapsDe(iso);
+    const chk = enc && /CHECKPOINT/.test(enc.titulo) ? enc : null;
+    avisos.unshift([
+      `Hoy ${hu.nombre}${hu.franja ? ` (${hu.franja})` : ''} por la mañana: AURUM no se mueve, va a su hora (${franja}), tras el hito y el almuerzo.`,
+      a.pitch ? `Es el cierre de fase: PITCH v${a.pitch} HOY, con el hito ya terminado (la fecha no se corre; si llegas cansado, graba igual: vale el score de la rúbrica).` : '',
+      chk ? `A las ${chk.franja.split('–')[0]} sigue el CHECKPOINT DEL AÑO de ENCAPS (${chk.franja}): día de 3 evaluaciones (${hu.nombre} · ${a.pitch ? `PITCH v${a.pitch}` : 'AURUM'} · checkpoint); ninguna se mueve ni se recorta.` : '',
+    ].filter(Boolean).join(' '));
   }
   return bloque(franja, 'aurum', `AURUM D${a.d} · ${a.titulo}`, pasos, recursos,
     a.pitch ? `PITCH v${a.pitch} grabado y puntuado con la rúbrica (/12) + nota ◆ del día` : 'vídeo visto con sus notas + drill hecho y guardado en la nota ◆ del día + ✓',
@@ -586,7 +622,8 @@ const LIV_LECT: Record<string, Array<[string, number]>> = {
 /** v6.03 (20-oct-2026): LIV_LECT va por FILA del currículo — `c<n>` = n-ésimo tema de contenido · `caso<n>` = caso n —, no por D del plan
  *  (antes 1-15 = D1-D15 de v6.02, con los casos en D5/D10/D15). Con el D1 en miércoles los casos caen D3/D8/D13 y el D# de cada tema cambia;
  *  la lectura medida sigue a su tema. Ojo: con los casos antes, la «relectura para el caso» 1 llega antes de la 1.ª lectura de esa sección (c3).
- *  v6.05 (24-oct-2026): D1 = lun 26-oct → los casos vuelven a caer D5/D10/D15 (como v6.02), DESPUÉS de su sección: todas las relecturas valen. */
+ *  v6.05 (24-oct-2026): D1 = lun 26-oct → los casos vuelven a caer D5/D10/D15 (como v6.02), DESPUÉS de su sección: todas las relecturas valen.
+ *  v6.06 (31-oct-2026): D1 = lun 2-nov → igual (casos 1-3 = D5/D10/D15 = vie 6 · 13 · 20-nov). */
 function livLectDe(l: DiaLiviano): Array<[string, number]> | undefined {
   if (l.casoId == null) return LIV_LECT[`c${LIV_DIAS.filter((x) => x.casoId == null && x.d <= l.d).length}`];
   const xs = LIV_LECT[`caso${l.casoId}`];
@@ -672,7 +709,8 @@ const PULSO_OBS = obs('02_EMPRESA FINANZAS/01_PULSO/_concepto_madre');
  *  audiolibro caído (In Defense of Food, nHR8B8V2v9s → «Video no disponible»): mismo libro, mismo autor, mismo contenido del plan.
  *  v6.03 (20-oct-2026): la clave es la FILA del plan — libro (libroN) + nº de lectura de ese libro —, no la fecha (antes '2026-10-19' …
  *  '2026-10-22'): con el D1 en el mié 21-oct Spark cae mié 21 / jue 22 y Pollan lun 26 / mar 27-oct (el OUTPUT S1 del vie 23 va en medio).
- *  v6.05 (24-oct-2026): D1 = lun 26-oct → Spark lun 26 / mar 27 · Pollan mié 28 / jue 29-oct · OUTPUT S1 vie 30-oct (como v6.02, una semana después). */
+ *  v6.05 (24-oct-2026): D1 = lun 26-oct → Spark lun 26 / mar 27 · Pollan mié 28 / jue 29-oct · OUTPUT S1 vie 30-oct (como v6.02, una semana después).
+ *  v6.06 (31-oct-2026): D1 = lun 2-nov → Spark lun 2 / mar 3 · Pollan mié 4 / jue 5-nov · OUTPUT S1 vie 6-nov. */
 const BIZ_TRAMO: Record<string, { id: string; ini: number; fin: number; t: string; caps: string }> = {
   '143#1': { id: 'Bmc0ERKfjP0', ini: 0, fin: 1262, t: 'Talks at Google · «In Spark | Dr. John Ratey» (49:12)', caps: 'Introduction → Evolutionary perspective → Brain function and schools (Naperville) → Exercise and productivity → Mental health benefits → Neurobiology of learning (BDNF) → Studies on fitness and IQ' },
   '143#2': { id: 'Bmc0ERKfjP0', ini: 1262, fin: 2148, t: 'Talks at Google · «In Spark | Dr. John Ratey» (49:12)', caps: 'Mechanisms of neuroplasticity → Body-brain communication → Clinical evidence in adults (estrés/ansiedad/ánimo) → Behavioral improvements (atención) → Cerebellum and balance' },
@@ -695,7 +733,7 @@ function bizOutputsDeSemana(sabado: string): Array<{ r: DiaBiz; entero: boolean 
   for (let k = 5; k >= 1; k--) {
     const f = addDias(sabado, -k);
     const r = bizDiaDe(f);
-    if (r && bizModo(r) === 'OUTPUT') out.push({ r, entero: !!hitoDe(f)?.nbme });
+    if (r && bizModo(r) === 'OUTPUT') out.push({ r, entero: !!hitoDe(f)?.nbme || encapsOnceATrece(f) }); // v6.06: + SIM 100Q 11:00 de F2
   }
   return out;
 }
@@ -711,6 +749,9 @@ export function bizFranjaDe(iso: string): { ini: string; fin: string; sabado?: b
   if (!r || bizModo(r) === 'DESCANSO' || w === 0) return null;
   const h = hitoDe(iso);
   if (h?.nbme) return bizModo(r) === 'OUTPUT' ? null : { ini: '12:30', fin: '12:55' };
+  // v6.06 (31-oct-2026): el SIM 100Q de las 11:00 de F2 (SIM_F2_11) empuja el SYNAPSE a 13:00-13:30 → un OUTPUT ese viernes va ENTERO al
+  //   sábado (09:15 en F2), como el de un viernes de NBME (v6.06: vie 26-feb, SIM #7; antes Business terminaba antes del 1.er SIM de las 11:00).
+  if (encapsOnceATrece(iso) && bizModo(r) === 'OUTPUT') return null;
   return { ini: '13:00', fin: '13:25' };
 }
 export function guiaBusinessDe(iso: string): GuiaBloque | null {
@@ -722,7 +763,7 @@ export function guiaBusinessDe(iso: string): GuiaBloque | null {
     for (const { r, entero } of bizOutputsDeSemana(iso)) {
       const nom = r.lectura.split(':')[0];
       if (entero) pasos.push(
-        P(1, `${/^OUTPUT/.test(nom) ? nom : `OUTPUT · ${nom}`} (${r.wd} ${r.fecha.slice(8)})`, `El ${r.wd.toLowerCase()} fue día de NBME: el OUTPUT entero se hace hoy.`),
+        P(1, `${/^OUTPUT/.test(nom) ? nom : `OUTPUT · ${nom}`} (${r.wd} ${r.fecha.slice(8)})`, `El ${r.wd.toLowerCase()} fue día de ${hitoDe(r.fecha)?.nbme ? 'NBME' : 'SIM 100Q del ENCAPS a las 11:00 (SYNAPSE a las 13:00)'}: el OUTPUT entero se hace hoy.`),
         P(25, `Escribir el entregable: ${r.lectura}`, `1 página en Obsidian (01_PULSO): ${r.accion}. Con tus horarios reales (Calendar: dormir 21:00 → 04:00).`, { t: '◆ 01_PULSO', url: PULSO_OBS }),
         P(10, 'TRACKER semanal (1 fila): sueño 7-8 h ≥ 6/7 · ejercicio ≥ 5/7 · comida real ≥ 6/7 · lecturas L 4/4 · output 1', 'Con los datos de la semana que acaba de cerrar (los mismos de la revisión semanal de las 07:15).'),
         P(4, 'Cerrar: releer y marcar ✓', 'Empresa › Business (Estudio Pulso) › HOY.'),
@@ -733,7 +774,7 @@ export function guiaBusinessDe(iso: string): GuiaBloque | null {
       );
     }
     return bloque(franja, 'business', `BUSINESS · cierre del OUTPUT de la semana (tracker semanal)`, pasos, [R('◆ Pulso · concepto madre', PULSO_OBS)],
-      'fila del tracker semanal escrita + página del OUTPUT cerrada', { aviso: 'El OUTPUT (40′) no cabe en 13:00-13:25: 25′ el día del OUTPUT + 15′ el sábado tras la revisión semanal (o entero el sábado si ese día fue NBME).' });
+      'fila del tracker semanal escrita + página del OUTPUT cerrada', { aviso: 'El OUTPUT (40′) no cabe en 13:00-13:25: 25′ el día del OUTPUT + 15′ el sábado tras la revisión semanal (o entero el sábado si ese día fue NBME o SIM 100Q de las 11:00).' });
   }
   const r = bizDiaDe(iso) as DiaBiz;
   const modo = bizModo(r);

@@ -1,7 +1,18 @@
 # SYNAPSE — Motor día-a-día (diseño y operación)
 
 > Construido el 10-jun-2026 por el chat SYNAPSE (PROMPT_CHAT_SYNAPSE.md).
-> **v6.05 · CORRIMIENTO D1 = LUN 26-OCT-2026 (24-oct-2026, vigente)**: del lun 19 al dom 25-oct sin estudio (la semana corrida por alias v6.04a queda sin
+> **v6.06 · CORRIMIENTO D1 = LUN 2-NOV-2026 (31-oct-2026, vigente)**: la semana del lun 26-oct tampoco se estudió → `node DATA/_scripts/gen_synapse_plan.js
+> 2026-11-02` (después de `gen_vibecoding_plan.js 2026-11-02`) → **135 días · 19 semanas · lun 2-nov-2026 → mar 16-mar-2027** (FIN_PLAN 2027-03-16; las mismas
+> **110 A-units**, nada se recorta ni se comprime). REGLA NUEVA: los días PROTEGIDOS (vie 12 → lun 15-mar, semana del ENCAPS) son como un feriado (bloque R «🛡 Día
+> protegido», 0′, sin A-unit) → la última A-unit (cierre F2 + CCA-F) va al **mar 16-mar** (F3, reinicio del Step 1; el Home pinta el SYNAPSE 12:30 en F3 mientras dure
+> el plan) y la pieza B/C del vie 12-mar (sem 19) pasa a ese mar 16-mar. Regla nueva 2: si el VIERNES de una semana es feriado y su pieza B es propia (sem 1-8),
+> se oye el sábado en vez del comodín (sáb 26-dic = «termina los tramos pendientes» de la sem 8). F0 sem 1-8 (lun 2-nov → dom 27-dic) · F1 sem 9-12 (lun 28-dic →
+> dom 24-ene) · F2 sem 13-19 (lun 25-ene → mar 16-mar; deload sem 17-19 desde el lun 22-feb). Las 2 A-units de cierre de la sem 12 caen mar 26 + mié 27-ene.
+> Vibecoding lun → vie: **19 PC en 18 sábados** — SHIP S1 sáb 7-nov … S7 sáb 19-dic · sáb 26-dic = AVANCE S8 · S8 sáb 2-ene · S9 9-ene · S10 16-ene · S11 23-ene ·
+> **SHIP S12 sáb 30-ene** · taper S13 6-feb · S14 13-feb · S15 20-feb · **sáb 27-feb = PC propio de S16 (30') + PC 0' de S17** · S18 6-mar (0'). Sáb 13-mar PROTEGIDO
+> (sin PC); S19 (sáb 20-mar) y S20 (sáb 27-mar) cierran después del FIN_PLAN: sin PC. **Último sábado con SYNAPSE: sáb 6-mar · último domingo con Feynman: dom
+> 7-mar.** Comodines curados: sáb 7-nov = No Priors 10:00-20:00 + resto de «Prompt injection…» · sáb 14-nov = deep dive 20:00-30:00 + trifecta.
+> ⏸ **v6.05 · CORRIMIENTO D1 = LUN 26-OCT-2026 (24-oct-2026, historial)**: del lun 19 al dom 25-oct sin estudio (la semana corrida por alias v6.04a queda sin
 > efecto) → `node DATA/_scripts/gen_synapse_plan.js 2026-10-26` (después de `gen_vibecoding_plan.js 2026-10-26`) → **131 días · 19 semanas · lun 26-oct-2026 →
 > vie 5-mar-2027** (FIN_PLAN 2027-03-05: +4 días de plan sobre v6.03 —se pierden mié 21 → sáb 24-oct—; las mismas **110 A-units** y las mismas 330 piezas A/B/C,
 > nada se recorta; START en lunes → `OFF_WD` = 0, como v6.02). F0 sem 1-8 (lun 26-oct → dom 20-dic, 48 A) · F1 sem 9-12 (lun 21-dic → dom 17-ene, 21 A) ·

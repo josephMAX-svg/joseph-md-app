@@ -87,7 +87,13 @@ de salud de menores = datos sensibles → consentimiento del titular/representan
 
 ## 5. Calendario mínimo (paralelo a la carta al editor; 45' interdiarios)
 
-> **✅ v6.05 (24-oct-2026, vigente; `researchDailyPlan.ts` regenerado con START 2026-10-26, Research d1 lun 26-oct):** M1 (Dr. Ciro: vía CEI + 10 documentos)
+> **✅ v6.06 (31-oct-2026, vigente; `researchDailyPlan.ts` regenerado con START 2026-11-02, Research d1 mar 3-nov):** M1 (Dr. Ciro: vía CEI + 10 documentos)
+> **mar 3-nov = 1.ª sesión Research** · **T-1 jue 19-nov (d7)** · T-3 vie 11-dic · T-4 mar 15-dic · T-2 STROBE jue 17-dic · T-5 lun 21-dic · T-6 revisión
+> Dr. Ciro mié 23-dic · T-7 formateo + gates lun 4-ene · **T-8 SUBMIT vie 8-ene-2027** (día del pre-test 2026-II de la intensiva ENCAPS; solo con nº de
+> CEI/exención e inglés revisado; si no, cascada a feb-2027) · PAUSA vie 15-ene → mié 10-feb · M3 (permiso CADI) **jue 25-feb-2027** (d31, tras la pausa; si la
+> revista lo pide al formatear T-7 —lun 4-ene—, el email se adelanta fuera del bloque: decisión (c) de `DATA/PENDIENTES_JOSEPH.md`, bloque v6.05). Fuente:
+> `DATA/RESEARCH/RUTA_PUBLICACION_2027.md`, bloque v6.06.
+> **⏸ v6.05 (24-oct-2026, historial; `researchDailyPlan.ts` regenerado con START 2026-10-26, Research d1 lun 26-oct):** M1 (Dr. Ciro: vía CEI + 10 documentos)
 > **vie 30-oct** · **T-1 mié 11-nov (d7)** · T-3 jue 3-dic · T-4 lun 7-dic · T-2 STROBE mié 9-dic · T-5 vie 11-dic · T-6 revisión
 > Dr. Ciro mar 15-dic · T-7 formateo + gates lun 21-dic · **T-8 SUBMIT mar 29-dic** (solo con nº de CEI/exención e inglés revisado; si no, cascada a
 > feb-2027) · PAUSA vie 15-ene → mié 10-feb · M3 (permiso CADI) **mié 17-feb-2027** (d31, tras la pausa; si la revista lo pide al formatear T-7 —lun

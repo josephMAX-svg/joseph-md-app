@@ -61,6 +61,16 @@
  * mar 16-feb → mar 11-may (las mismas 47 lun-jue + 10 viernes + el sáb 8-may) y la extensión (tope vie 22-oct-2027) absorbe: 141 filas + 4 repuestas
  * tras el examen Step 1 (mar 26 → vie 29-oct-2027) = 203 sesiones. Business → mar 23-feb (121 filas) · LIVIANO → mié 3-mar (90 días). corrida_s1 queda
  * solo con los días sin sesión 19-25-oct (sin alias ni reparto). Solo comentario: la lógica de este script no cambia.
+ *
+ * v6.06 (31-oct-2026 · corrimiento D1 = lun 2-nov, Joseph: «reestructura todo a partir del 2 de noviembre … corre nada más, corre también las fechas
+ * límite … para no perder materias, tan solamente corre»; la semana lun 26 → vie 30-oct no se estudió → +5 hábiles sobre la v6.05): mismo pipeline con
+ * START = 2026-11-02 (`remap_inicio.js 2026-11-02 --bloques research,derma`; business/liviano los corre otro lote); MIR con sus generadores
+ * (STUDY_HUB/_scrape/gen_mir_daily.js 2026-11-02 + gen_mir_mantenimiento.js 2027-02-23 2027-05-18). Paridad Research↔Derma SIN cambio (diaEstudioTipo):
+ * el lun 2-nov es día-DERMA (d1 Derma lun 2-nov · d1 Research mar 3-nov): frente a la v6.05 Research pierde 3 ranuras (lun 26, mié 28 y vie 30-oct) y
+ * Derma 2 (mar 27 y jue 29-oct) → con 25 días-Research antes de la pausa de átomos, gen_research_plan.js aplica la regla de desplazamiento (nivel 1 +
+ * nivel 2 v6.06, ver su cabecera). MIR D78 lun 22-feb → mantenimiento mar 23-feb → mar 18-may (47 lun-jue + 10 viernes + sáb 8 y 15-may = 59) y la
+ * extensión (tope vie 22-oct-2027) absorbe; lo que falta frente a la v6.05 se repone tras el examen Step 1. corrida_s1 = solo los días sin sesión
+ * lun 19-oct → dom 1-nov (sin alias ni reparto). Solo comentario: la lógica de este script no cambia.
  * Qué hace: solo corre fechas (domingos LIBRES, parámetros intactos). Regex AÑO-AGNÓSTICO
  * (20\d\d-\d\d-\d\d) porque Derma son 70 slots ≈ 6.5 meses → cruza a 2027.
  * ENCAPS va aparte (Supabase: gen_encaps_mantenimiento_2027.js <fecha> → execute_sql, backup fechado automático).

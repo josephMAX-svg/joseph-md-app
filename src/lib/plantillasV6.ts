@@ -2,7 +2,7 @@
  * plantillasV6.ts — BLOQUES DEL DÍA por fase v6.00 (V6_ESPEC §A1 · §B2 · §B4.1 · §B5 · §C3 · §E · §F). Lo pinta el Home (TodayMission).
  *
  * v6.00 (6-oct-2026): nuevo. `bloquesDelDia(iso, turno?)` / `plantillaDelDia(iso, turno?)` devuelven la línea de tiempo del día:
- *  · F1 (lun 26-oct → mié 30-dic en v6.05; v6.03: mié 21-oct → mié 30-dic · v6.02: lun 19-oct → mié 30-dic · v6.01: lun 12-oct → mié 30-dic · v6.00: mié 7-oct → mié 30-dic) = los bloques de hoy (v5.20): 04:15 vibecoding · 05:00 Anki USMLE · 07:15-12:00 Step 1 ·
+ *  · F1 (lun 2-nov → mié 30-dic en v6.06; v6.05: lun 26-oct → mié 30-dic · v6.03: mié 21-oct → mié 30-dic · v6.02: lun 19-oct → mié 30-dic · v6.01: lun 12-oct → mié 30-dic · v6.00: mié 7-oct → mié 30-dic) = los bloques de hoy (v5.20): 04:15 vibecoding · 05:00 Anki USMLE · 07:15-12:00 Step 1 ·
  *    12:30 SYNAPSE · 13:30 R↔D 45' · 14:15 AURUM 60' · 15:15 MIR · 16:15 ENCAPS 1 h · 17:15 LIVIANO · 18:00 eval; sábado 07:15 revisión.
  *  · F2 (lun 4-ene → D-1 hábil del ENCAPS) = intensiva ENCAPS + Step 1 en PAUSA (mantenimiento): 05:00-05:45 Anki ENCAPS+USMLE ·
  *    07:15-12:00 loop · 13:30 R↔D (30' «Research mínimo» en los días-Research de la pausa de átomos) · 14:15-14:45 AURUM 30' ·
@@ -29,14 +29,29 @@
  *  v6.02d/v6.04a queda inerte, sin borrar) con la nota «… sin estudio · todo arranca el lun 26-oct» y el título que nombra el lun 26 como
  *  próximo día de plan. Desde el lun 26 = plantillaBase. Los NBME de F1 vuelven a caer en viernes (vie 6-nov · 27-nov · 18-dic): SYNAPSE 13:00
  *  y el OUTPUT de Business de ese viernes pasa entero al sábado 07:45-08:25 (rutinaGuia.bizFranjaDe).
+ * v6.06 (31-oct-2026 · corrimiento D1 = lun 2-nov; la semana del lun 26-oct tampoco se estudió): F1 = LUN 2-NOV → MIÉ 30-DIC (42 hábiles); F2, F3,
+ *  F4 y el examen (lun 25-oct-2027) sin cambio. Fines de los frentes de rutina/Business (de sus metas, +5 hábiles sobre v6.05): LIVIANO → mié 10-mar ·
+ *  AURUM → mar 11-may (D124-D130 = lun 3 → mar 11-may, ya en el SERUMS: 30′ en tiempo muerto, conAurumF4) · SYNAPSE → mar 16-mar · vibecoding →
+ *  vie 19-mar · Business → mar 2-mar. SYNAPSE y vibecoding ya no caben antes del ENCAPS ni en los PROTEGIDOS (vie 12 → lun 15-mar): lo que falta va
+ *  DESPUÉS, en F3 (bloquesF3 pinta 04:15 vibecoding y 12:30 SYNAPSE mientras duren sus planes; nada se comprime). `plantillaDelDia` marca CORRIDO
+ *  del lun 19-oct al dom 1-nov (corrida_s1 solo con sin_sesion; la capa de alias sigue inerte, sin borrar). NBME de F1 en viernes: vie 13-nov ·
+ *  vie 4-dic · vie 18-dic → SYNAPSE 13:00 y el OUTPUT de Business de ese viernes entero el sábado 07:45-08:25; en F2 el SIM 100Q #7 de las 11:00
+ *  (vie 26-feb) cae en viernes de OUTPUT → mismo trato: OUTPUT entero el sábado 09:15-09:55 (rutinaGuia.bizFranjaDe). Carril sábado ENCAPS
+ *  09:30-10:30 (sáb 9, 16, 23, 30-ene y 6-feb): tras el cierre Business 09:15-09:30 de esos sábados, sin solape.
  * v6.05 (fix 24-oct, verificación adversarial · control: DATA/_scripts/check_rutina_guia.js, «simulación del día»): (a) F2: el SYNAPSE sale de
  *  rutinaGuia.synFranjaDe también en F2 → los días con el ENCAPS 11:00-13:00 (SIM 100Q #7/#8, vie 26-feb y vie 5-mar-2027 · D-2) va a 13:00-13:30
  *  (antes 12:30, solapado con el SIM); SIM_11 / D2_ENCAPS = rutinaGuia.SIM_F2_11 / D2_ENCAPS (fuente única). (b) F4: AURUM (lun 3 / mar 4-may-2027)
  *  ya no es «tiempo muerto» sin hora con la guía a 14:15: va en la ventana de tiempo muerto del turno tras los 30′ de R↔D (conAurumF4 ·
  *  rutinaGuia.ventanaAurumF4), también en día de hito. (f) Hitos largos (Free 120 + 4 bloques, vie 8-oct-2027 07:00-16:30): el R↔D fijo del día L
  *  pasa a 10′ después del hito (16:40-17:10) y el almuerzo a sus descansos (trasHito). (g) F5: el MIR 15:15 solo con sesión (mirSesionDe; sin ella
- *  desde el sáb 30-oct-2027). + R↔D de F4 con su ciclo cerrado (Derma c2 → vie 30-jul · Research c2 → sáb 4-sep-2027) con contenido de
- *  mantenimiento definido en vez de vacío (rdCicloCerrado).
+ *  desde el sáb 6-nov-2027 en v6.06, tras la última repuesta del vie 5-nov · v6.05: desde el sáb 30-oct-2027). + R↔D de F4 con su ciclo cerrado
+ *  (v6.06: Derma c2 → mié 4-ago · Research c2 → sáb 11-sep-2027; v6.05: vie 30-jul · sáb 4-sep) con contenido de mantenimiento definido en vez de
+ *  vacío (rdCicloCerrado).
+ * v6.06 (fix 31-oct-2026 · control: check_rutina_guia.js, simulación del día hasta la última repuesta MIR): (1) F5 — la nota «el banqueo MIR … ya
+ *  cerró» solo si no quedan filas de MIR_MANT_DIAS después de hoy (el sáb 30-oct-2027, sin fila, la daba con 5 repuestas pendientes del 1 al 5-nov);
+ *  si quedan, dice cuándo sigue, y el bloque de una sesión repuesta se llama «MIR · banqueo 1 h (sesión repuesta…)», no «fase principal». (2) F3 —
+ *  «SYNAPSE · 30' (cierre F2)» (la F2 de su currículo, leída como la F2 del régimen) → «(cierre del plan, tras el ENCAPS)». (3) Fechas v6.06 en los
+ *  comentarios v6.05 de F4/F5 (Derma c2 · Research c2 · fin del MIR).
  * v6.02c (18-oct-2026, E5 · «todo estructurado y definido»): + PlanBloque 'business' (Estudio Pulso, que no tenía franja ni salía en el Home):
  *  L-V 13:00-13:25 en F1 y F2 hasta su fin (= «LECTURA DE LIBRO 13:00-13:15» del Calendar + 10′ del hueco 13:15-13:30; NBME → 12:30-12:55 en el
  *  almuerzo; el OUTPUT del viernes sigue el sábado tras la revisión) · sábado: + PC 15:00 = SHIP del vibecoding + SYNAPSE A/B/C (F1/F2, mientras
@@ -67,6 +82,8 @@ import { VIBE_META } from './vibecodingPlan';
 import type { Frente } from './homeBriefing';
 import { bizFranjaDe, guiaShipDe, guiaFeynmanDe, synFranjaDe, SIM_F2_11, D2_ENCAPS, ventanaAurumF4 } from './rutinaGuia'; // v6.02c (E5): Business en el día + PC del sábado + Feynman del domingo · v6.05 (fix): SIM 11:00 y AURUM en F4
 import { mirSesionDe } from './mirDailyPlan'; // v6.05 (fix): F5 solo pinta el MIR si hay sesión
+import { MIR_MANT_DIAS } from './mirMantenimiento'; // v6.06 (fix): F5 — «el banqueo ya cerró» solo sin filas posteriores (repuestas hasta el vie 5-nov-2027)
+import { encapsSabadoDe } from './encapsGuia'; // v6.06: carril SÁBADO 09:30 de la intensiva ENCAPS (pendientes F1 que no caben en el carril B lun-jue)
 
 export type PlanBloque = 'usmle' | 'encaps' | 'mir' | 'research-derma' | 'aurum' | 'liviano' | 'synapse' | 'vibecoding'
   | 'serums' | 'gimnasio' | 'vida' | 'revision' | 'business';
@@ -229,6 +246,13 @@ function bloquesF3(iso: string, usmle: DiaUSMLEPlan | null): BloqueV6[] {
   const r = /\((\d{2}:\d{2})-(\d{2}:\d{2})\)/.exec(usmle?.sub ?? '');
   const [ri, rf] = FRANJA_F3_REENTRADA.hora.split('–');
   const bs: BloqueV6[] = [
+    // v6.06 (31-oct-2026): con el D1 en el lun 2-nov el vibecoding (taper S19-S20, deload 5′) y el SYNAPSE (última A-unit) ya no caben antes del
+    //   ENCAPS ni en los PROTEGIDOS (vie 12 → lun 15-mar) → siguen en F3 hasta su fin (vibecoding vie 19-mar · SYNAPSE mar 16-mar), a su hora de F1
+    //   (04:15 · 12:30, entre el bloque principal y el R↔D); sin plan, la franja queda libre como antes.
+    // v6.06 (fix): el bloque se titulaba «SYNAPSE · 30' (cierre F2)» —la F2 de SU currículo— y en F3 se leía como la fase F2 del régimen (la intensiva
+    //   ENCAPS, ya cerrada) → «(cierre del plan, tras el ENCAPS)», como el vibecoding de al lado (check_rutina_guia: ningún bloque nombra otra fase)
+    ...(enRango(iso, VIBE_META.finTaper) ? [bloque('vibe', '04:15', '05:00', 'IA · VIBECODING (taper: cierre del plan)', 'vibecoding', 'vibecoding')] : []),
+    ...(enRango(iso, SYN_PLAN_META.fin) ? (() => { const [si, sf] = synFranjaDe(iso).franja.split('–'); return [bloque('syn', si ?? '12:30', sf ?? '13:00', "SYNAPSE · 30' (cierre del plan, tras el ENCAPS)", 'synapse', 'synapse')]; })() : []),
     bloque('anki', '05:00', '05:45', 'USMLE · ANKI AM', 'usmle', 'usmle-anki'),
     hito
       ? bloque('usmle', r ? (r[1] as string) : '07:00', r ? (r[2] as string) : '12:30', 'USMLE · HITO (sustituye al bloque de la mañana)', 'usmle', 'usmle-principal')
@@ -242,6 +266,23 @@ function bloquesF3(iso: string, usmle: DiaUSMLEPlan | null): BloqueV6[] {
   return bs;
 }
 const SABADO_REVISION = (): BloqueV6 => bloque('revision', '07:15', '07:45', 'REVISIÓN SEMANAL (DATA/REVISION_SEMANAL.md)', 'revision', 'revision');
+/**
+ * v6.06 (31-oct-2026): CARRIL SÁBADO de la intensiva ENCAPS (09:30-10:30, gen_encaps_intensivo_2027.js → encapsGuia.encapsSabadoDe): los
+ * pendientes F1 que ya no caben en los días de reposición lun-jue del carril B (v6.06: sáb 9, 16, 23, 30-ene y 6-feb). Va tras la revisión
+ * 07:15, el STEP 1 VIVO 07:45-09:15 y el cierre Business 09:15; si ese sábado Business termina más tarde, el bloque empieza al terminar Business
+ * (misma duración). Los ítems (claves D{dia del viernes}:s_*) los pinta ENCAPS → Plan desde la fila viva del viernes host.
+ */
+function bloqueEncapsSabado(iso: string): BloqueV6[] {
+  const s = encapsSabadoDe(iso);
+  if (!s) return [];
+  const biz = bizFranjaDe(iso);
+  const dur = aMin(s.fin) - aMin(s.ini);
+  const ini = biz && aMin(biz.fin) > aMin(s.ini) ? biz.fin : s.ini;
+  const que = s.tipo === 'mini_sim' ? `MINI-SIMULACRO 25Q (72 s/Q) + corrección · cola larga ${s.colaLarga.join(' + ')} · nota /25 sim_n ${s.simN ?? s.host.dia}`
+    : `banco ${s.codigo}${s.subEje ? ` · ${s.subEje}` : ''} (eval 5Q + 16-20Q + secundario ${s.secundarios.join(' + ') || '—'} + registro)`;
+  return [bloque('encaps-sab', ini, aHHMM(aMin(ini) + dur), `ENCAPS · CARRIL SÁBADO · REPOSICIÓN F1 (${s.tipo === 'mini_sim' ? 'mini-sim 25Q' : s.codigo})`, 'encaps', 'encaps',
+    `REPOSICIÓN F1 (${s.corrimiento}) · ${que} — fila mant. ${s.diaMant} de la ${s.origen} (${s.fechaOriginal}) que no cupo en la F1 ni en el carril B lun-jue · ítems en ENCAPS → Plan (D${s.host.dia}, claves s_*)`)];
+}
 /** v6.02c (E5): extras del sábado (Business tras la revisión · PC 15:00 · Anki 19:00 en F1) y del domingo (Feynman · Anki opcional en F1). */
 function extrasSabado(iso: string, conAnki: boolean): BloqueV6[] {
   const bs: BloqueV6[] = [];
@@ -315,7 +356,7 @@ function varianteT(bs: BloqueV6[], horaInicio: string | null): { bs: BloqueV6[];
 function bloquesDePlantilla(p: PlantillaF4, turnoH: 'T' | 'L' | null): BloqueV6[] {
   return (FRANJAS_F4[p] ?? []).map((f, i) => franjaABloque(f, i, turnoH)).filter((b): b is BloqueV6 => !!b);
 }
-/** v6.05 (fix 24-oct): AURUM en F4 (sus 2 últimas sesiones, lun 3 / mar 4-may-2027 con el D1 en el lun 26-oct) = 30′ en el tiempo muerto del
+/** v6.05 (fix 24-oct): AURUM en F4 (sus 2 últimas sesiones, lun 3 / mar 4-may-2027 con el D1 en el lun 26-oct; v6.06: las 7 últimas, D124-D130 = lun 3 → mar 11-may, con el D1 en el lun 2-nov) = 30′ en el tiempo muerto del
  *  turno tras los 30′ de R↔D (rutinaGuia.ventanaAurumF4): M → 07:30–13:00 (tiempo muerto) · T → 13:30–19:00 · L → 16:50–17:20 · G → sin hora.
  *  Solo si ese día hay sesión de AURUM (aurumDiaDe); también en los días de hito (plantilla H). Nada se recorta. */
 function conAurumF4(iso: string, bs: BloqueV6[], notas: string[]): BloqueV6[] {
@@ -325,11 +366,12 @@ function conAurumF4(iso: string, bs: BloqueV6[], notas: string[]): BloqueV6[] {
   const b = v
     ? { ...bloque('aurum', v.ini, v.fin, `AURUM · 30' ${v.tm ? 'en tiempo muerto de la posta, tras el R↔D' : 'tras el R↔D'} (cierre del plan · DJ-4)`, 'aurum', 'aurum', undefined, 30, v.tm ? `${v.ini}–${v.fin} (tiempo muerto)` : undefined), min: 30 }
     : bloque('aurum', null, null, "AURUM · 30' en tiempo muerto de la guardia (cierre del plan · DJ-4)", 'aurum', 'aurum', undefined, 30, 'tiempo muerto');
-  notas.push(`AURUM cierra el ${fCorta(AURUM_PLAN_META.fin)}: sus últimas sesiones van a 30′ ${v ? `desde las ${v.ini}` : 'en tiempo muerto'}, justo después del R↔D (corrimiento v6.05, nada se recorta).`);
+  notas.push(`AURUM cierra el ${fCorta(AURUM_PLAN_META.fin)}: sus últimas sesiones van a 30′ ${v ? `desde las ${v.ini}` : 'en tiempo muerto'}, justo después del R↔D (corrimientos v6.05-v6.06, nada se recorta).`);
   return [...bs, b];
 }
-/** v6.05 (fix 24-oct): R↔D de F4 en un día cuyo ciclo ya CERRÓ (Derma c2 → vie 30-jul-2027 · Research c2 → sáb 4-sep-2027; el examen pasó al lun
- *  25-oct en la v6.04b y F4 llega al 22-oct): antes el bloque salía vacío («sin átomo hoy») ~50 días-plan. Ahora lleva un contenido DEFINIDO de
+/** v6.05 (fix 24-oct): R↔D de F4 en un día cuyo ciclo ya CERRÓ (v6.06: Derma c2 → mié 4-ago-2027 · Research c2 → sáb 11-sep-2027; v6.05: vie 30-jul ·
+ *  sáb 4-sep; el examen pasó al lun 25-oct en la v6.04b y F4 llega al 22-oct; las fechas salen de DERMA_CICLO2_META / DAILY_META_2027, no de este
+ *  texto): antes el bloque salía vacío («sin átomo hoy») ~50 días-plan. Ahora lleva un contenido DEFINIDO de
  *  mantenimiento, sin material nuevo (DJ-4: R↔D ≥ 30′): Derma = la «segunda pasada FSRS de fallos» con la que cierra su ciclo 2 (APEX::DERMA);
  *  Research = inbox editorial de lo enviado (SR-1, carta, tesis, case report). El ciclo 3 se planifica tras el Step 1 (decisión de Joseph). */
 function rdCicloCerrado(iso: string, bs: BloqueV6[]): BloqueV6[] {
@@ -412,19 +454,29 @@ function plantillaBase(iso: string, turno?: Turno): PlantillaDia {
       return out('PROTEGIDO', 'LIBRE post-ENCAPS', []);
     case 'EXAMEN':
       return out('EXAMEN', 'EXAMEN Step 1', []);
-    case 'F5':
-      // v6.05 (fix 24-oct): el bloque MIR 15:15 solo si ese día hay sesión MIR (mirSesionDe); antes salía también sin sesión (desde el sáb 30-oct-2027,
-      //   fin de la extensión del mantenimiento) y el Home lo pintaba vacío
-      return out('F5', 'F5 · post-Step 1 (esbozo)', mirSesionDe(iso) ? [bloque('mir', '15:15', '16:15', 'MIR · fase principal (oct-2027)', 'mir', 'mir')] : [],
+    case 'F5': {
+      // v6.05 (fix 24-oct): el bloque MIR 15:15 solo si ese día hay sesión MIR (mirSesionDe); antes salía también sin sesión y el Home lo pintaba
+      //   vacío (v6.06: sin sesión desde el sáb 6-nov-2027, tras la última repuesta del vie 5-nov · v6.05: desde el sáb 30-oct-2027)
+      // v6.06 (fix 31-oct): la nota «el banqueo MIR … ya cerró» solo si NO quedan filas de MIR_MANT_DIAS después de hoy — el sáb 30-oct-2027 (sin fila)
+      //   la daba aunque quedaban 5 repuestas del lun 1 al vie 5-nov; ahora dice cuándo sigue. El bloque de una sesión del banqueo (repuestas 26-oct →
+      //   5-nov) se nombra como tal, no «fase principal» (que se planifica tras el handoff de mirMantenimiento).
+      const ses = mirSesionDe(iso);
+      const sigMir = ses ? null : (MIR_MANT_DIAS.map((x) => x.fecha).filter((f) => f > iso).sort()[0] ?? null);
+      const finMir = MIR_MANT_DIAS.map((x) => x.fecha).sort().pop() ?? iso;
+      const nomMir = ses?.tipo === 'mantenimiento' ? `MIR · banqueo 1 h (${ses.dia.repuesta ? 'sesión repuesta tras el Step 1' : 'mantenimiento'})` : 'MIR · fase principal (oct-2027)';
+      return out('F5', 'F5 · post-Step 1 (esbozo)', ses ? [bloque('mir', '15:15', '16:15', nomMir, 'mir', 'mir')] : [],
         { notas: [iso === addDias(FECHAS_V6.step1.examen, 1) ? 'Regreso a la posta (permiso 1 día; 2 si hoy tienes turno M).' : 'F5 es un esbozo: MIR principal hasta el fin del SERUMS; CURVA/DENSA y Derma c2+ se planifican después del Step 1.',
-          ...(mirSesionDe(iso) ? [] : ['Sin sesión MIR hoy: el banqueo MIR (mantenimiento + extensión + repuestas) ya cerró; la fase principal MIR se planifica tras el Step 1 (handoff de mirMantenimiento).'])] });
+          ...(ses ? [] : sigMir
+            ? [`Sin sesión MIR hoy (el banqueo no tiene fila este día): sigue el ${fCorta(sigMir)} y cierra el ${fCorta(finMir)} (sesiones repuestas tras el Step 1).`]
+            : ['Sin sesión MIR hoy: el banqueo MIR (mantenimiento + extensión + repuestas) ya cerró; la fase principal MIR se planifica tras el Step 1 (handoff de mirMantenimiento).'])] });
+    }
     case 'F1':
       if (w === 6) return out('F1-sáb', 'Sábado · libre (revisión semanal)', [SABADO_REVISION(), ...extrasSabado(iso, true)]);
       return out('F1', 'F1 · Step 1 tramo 1 + ENCAPS lento', bloquesF1(iso));
     case 'F2': {
       if (w === 6) return out('F2-sáb', 'Sábado · revisión semanal + STEP 1 VIVO', [SABADO_REVISION(),
         bloque('vivo', '07:45', '09:15', 'STEP 1 VIVO · 20Q timed MEZCLADAS (10 incorrectas UWorld + 10 nuevas AMBOSS) + revisión', 'usmle', 'usmle-principal', 'mantenimiento del Step 1 en PAUSA (§B2): no gastar uWorld fresco'),
-        ...extrasSabado(iso, false)]);
+        ...extrasSabado(iso, false), ...bloqueEncapsSabado(iso)]); // v6.06: + carril SÁBADO ENCAPS 09:30 (pendientes F1)
       const { id, bs } = bloquesF2(iso);
       return out(id, 'F2 · ENCAPS intensiva (Step 1 en PAUSA)', bs, { usmle: null });
     }
@@ -469,6 +521,8 @@ function plantillaBase(iso: string, turno?: Turno): PlantillaDia {
       if (t === 'T') { const v = varianteT(bs, it.horaInicio); bs = v.bs; if (v.nota) notas.push(v.nota); }
       // v6.05 (24-oct-2026): con el D1 en el lun 26-oct AURUM termina el mar 4-may-2027 → D129 (lun 3-may) y D130 (mar 4-may, PITCH v7) caen en los
       //   2 primeros días del SERUMS: nada se recorta → 30' en tiempo muerto de la posta (DJ-4, como el R↔D); la guía (rutinaGuia) da el contenido.
+      // v6.06 (31-oct-2026): con el D1 en el lun 2-nov AURUM termina el mar 11-may-2027 → D124-D130 (lun 3 → mar 11-may, PITCH v7 el mar 11) en el
+      //   SERUMS: la misma solución (30' en tiempo muerto tras el R↔D), sin cambio de código.
       // v6.05 (fix): el bloque ya no es «tiempo muerto» sin hora con la guía a 14:15 (chocaba con el almuerzo y el bloque B del turno M): lleva la
       //   ventana del tiempo muerto del turno tras los 30′ de R↔D (rutinaGuia.ventanaAurumF4) y su guía arranca ahí.
       bs = conAurumF4(iso, bs, notas);

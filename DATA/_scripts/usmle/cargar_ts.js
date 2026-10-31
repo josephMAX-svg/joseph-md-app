@@ -6,6 +6,9 @@
  *   const U = cargarUsmleDaily();   // U.DIAS_TODOS, U.faseDe(…), …
  * v6.00 (6-oct-2026): nuevo (lo usan update_diainicio.js, remap_obsidian_usmle.js y verificar_v6.js). Solo resuelve imports relativos
  *   entre ficheros de src/lib; cualquier otro import lanza (usmleStep1Daily.ts solo importa ./fechasV6, que es módulo hoja).
+ * v6.06 (fix, 31-oct-2026): tercer parámetro opcional `stubs` ({ especificador: exports }) para cargar módulos de la app que importan react /
+ *   ./supabase (p. ej. encapsPlan.ts en el control del carril SÁBADO de gen_encaps_guia.js): esos imports devuelven el stub en vez de lanzar.
+ *   Sin stubs, igual que antes.
  */
 'use strict';
 const fs = require('fs');
@@ -17,16 +20,17 @@ function transpilar(src) {
   try { ts = require(path.join(ROOT, 'node_modules', 'typescript')); } catch { throw new Error('typescript no disponible en node_modules (npm install)'); }
   return ts.transpileModule(src, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 } }).outputText;
 }
-/** Carga un .ts de src/ (ruta relativa a la raíz del repo) con sus imports relativos. */
-function cargarModuloTS(rel, cache = new Map()) {
+/** Carga un .ts de src/ (ruta relativa a la raíz del repo) con sus imports relativos · `stubs` (v6.06 fix): imports sustituidos por un objeto. */
+function cargarModuloTS(rel, cache = new Map(), stubs = {}) {
   const file = path.join(ROOT, rel);
   if (cache.has(file)) return cache.get(file).exports;
   const m = { exports: {} };
   cache.set(file, m);
   const req = (spec) => {
+    if (Object.prototype.hasOwnProperty.call(stubs, spec)) return stubs[spec];
     if (!spec.startsWith('./') && !spec.startsWith('../')) throw new Error(`${rel}: import no permitido en carga node «${spec}»`);
     const dest = path.relative(ROOT, path.resolve(path.dirname(file), spec)) + (spec.endsWith('.ts') ? '' : '.ts');
-    return cargarModuloTS(dest, cache);
+    return cargarModuloTS(dest, cache, stubs);
   };
   new Function('exports', 'module', 'require', transpilar(fs.readFileSync(file, 'utf8')))(m.exports, m, req);
   return m.exports;

@@ -20,6 +20,8 @@
  *    nº de preguntas y minutos en plan A y plan B.
  *  · v6.05 (24-oct-2026 · corrimiento D1 = lun 26-oct; d1 Derma mar 27-oct): sin cambios de lógica; fechas de dermaDailyPlan (d1-d5 mar 27-oct → vie
  *    6-nov) y velocidad de vídeo de usmleStep1Daily (D5 vie 30-oct · D15 vie 13-nov), ya regenerados.
+ *  · v6.06 (31-oct-2026 · corrimiento D1 = lun 2-nov; d1 Derma lun 2-nov = día del UWSA1): sin cambios de lógica; fechas de dermaDailyPlan (d1-d5 lun 2-nov →
+ *    jue 12-nov) y velocidad de vídeo de usmleStep1Daily (D5 vie 6-nov · D15 la que dé el plan USMLE v6.06), ya regenerados por sus lotes.
  */
 'use strict';
 const fs = require('fs');

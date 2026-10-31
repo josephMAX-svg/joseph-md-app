@@ -2,7 +2,7 @@
 # gen_business_plan.py — genera src/lib/businessStudyPlan.ts (plan "Estudio Pulso").
 #
 #   v3 L (5-sep-2026, Palmerton cero puntos ciegos · vacío 6):
-#     python DATA/_scripts/gen_business_plan.py [YYYY-MM-DD]        (default 2026-10-26 = D1 v6.05 —hasta v6.03: 2026-09-07 = D1 v5.6—; remap_inicio.js pasa siempre la fecha:
+#     python DATA/_scripts/gen_business_plan.py [YYYY-MM-DD]        (default 2026-11-02 = D1 v6.06 —v6.05: 2026-10-26 · hasta v6.03: 2026-09-07 = D1 v5.6—; remap_inicio.js pasa siempre la fecha:
 #                                                                    v5.20 = v6.00 = 2026-10-07 → 121 filas mié 7-oct → jue 4-feb-2027 ·
 #                                                                    v6.01 (10-oct-2026, corrimiento) = 2026-10-12 → 121 filas lun 12-oct → mar 9-feb-2027:
 #                                                                    84 de trabajo + 37 DESCANSO; el fin se amplía +3 hábiles, nada se recorta ·
@@ -18,7 +18,14 @@
 #                                                                    las 4 lecturas de la semana (Spark ×2 lun 26 / mar 27 · Pollan ×2 mié 28 / jue 29-oct);
 #                                                                    15 OUTPUT en viernes (vie 30-oct … vie 19-feb) + S16 lun 22-feb y «extra» mar 23-feb.
 #                                                                    3 de esos viernes son día de NBME (vie 6-nov · vie 27-nov · vie 18-dic): la guía
-#                                                                    (rutinaGuia.bizFranjaDe) pasa ese OUTPUT entero al sábado 07:45-08:25)
+#                                                                    (rutinaGuia.bizFranjaDe) pasa ese OUTPUT entero al sábado 07:45-08:25 ·
+#                                                                    v6.06 (31-oct-2026, corrimiento; la semana del 26-oct tampoco se estudió) = 2026-11-02
+#                                                                    → 121 filas lun 2-nov → mar 2-mar-2027: 84 de trabajo + 37 DESCANSO; +5 hábiles sobre
+#                                                                    v6.05, nada se recorta: Spark ×2 lun 2 / mar 3 · Pollan ×2 mié 4 / jue 5-nov · OUTPUT
+#                                                                    S1 vie 6-nov … 15 OUTPUT en viernes (vie 6-nov … vie 26-feb) + S16 lun 1-mar y «extra»
+#                                                                    mar 2-mar. OUTPUT enteros al sábado: los 3 viernes de NBME (vie 13-nov · vie 4-dic ·
+#                                                                    vie 18-dic → sáb 07:45-08:25) y el del SIM 100Q #7 de las 11:00 (vie 26-feb → sáb
+#                                                                    27-feb 09:15-09:55, F2; rutinaGuia.bizFranjaDe))
 #   v6.02c (18-oct-2026, E5): YT_OVERRIDE — enlaces del plan comprobados el 18-oct que NO servían (vídeo caído = oEmbed 404,
 #     «no reproducible», subidas de 2 min «Full Audiobook Free») o que eran una BÚSQUEDA, sustituidos por una charla/entrevista
 #     del PROPIO AUTOR en un canal oficial (título, canal y duración leídos de YouTube ese día). Mismo libro y mismo contenido del
@@ -298,4 +305,4 @@ export const bizColor = (m: string) => BIZ_MATERIA_COLOR[m] || '#D9BE8A';
 if __name__ == '__main__':
     args = [a for a in sys.argv[1:]]
     if '--v2' in args: gen_v2()
-    else: gen_v3(next((a for a in args if re.match(r'^20\d\d-\d\d-\d\d$', a)), '2026-10-26'))  # v6.05: default = D1 lun 26-oct (antes 2026-09-07, v5.6)
+    else: gen_v3(next((a for a in args if re.match(r'^20\d\d-\d\d-\d\d$', a)), '2026-11-02'))  # v6.06: default = D1 lun 2-nov (v6.05: 2026-10-26 · antes 2026-09-07, v5.6)

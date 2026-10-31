@@ -11,19 +11,21 @@
 //   Misma regla (sin cambio de lógica).
 // v6.04 (21-oct-2026): examen 25-oct (tramo2_14mar_25oct_v604.json): F1 y dOrig como la v6.03 (45).
 // v6.05 (24-oct-2026): F1 = {D1-D46, D55} (47 hábiles, lun 26-oct → mié 30-dic) y el tramo 2 lleva D47-D54, D56, D57, D79 → 48 dOrig.
-//   Misma regla (sin cambio de lógica); por defecto lee la referencia v6.05.
-// Uso: node v1_check.js [tramo2.json]   (lee dias_v520.json CONGELADO, no git HEAD; por defecto la referencia v6.05)
+//   Misma regla (sin cambio de lógica).
+// v6.06 (31-oct-2026): F1 = {D1-D41, D55} (42 hábiles, lun 2-nov → mié 30-dic; el NBME 27 = v5.20 D40 sigue en F1, adelantado al slot 35) y
+//   el tramo 2 lleva D42-D54, D56, D57, D79 → 53 dOrig. Misma regla; por defecto lee la referencia v6.06.
+// Uso: node v1_check.js [tramo2.json]   (lee dias_v520.json CONGELADO, no git HEAD; por defecto la referencia v6.06)
 const V = require('./dias_v520.json');
-const T2 = require(process.argv[2] ? require('path').resolve(process.argv[2]) : './tramo2_14mar_25oct_v605.json');
+const T2 = require(process.argv[2] ? require('path').resolve(process.argv[2]) : './tramo2_14mar_25oct_v606.json');
 const normSub = (s) => s.replace(/\d{2}:\d{2}-\d{2}:\d{2}/g, '');
 const key = (x, sub) => JSON.stringify([x.system, normSub(sub), x.bbCh, x.bbVid, x.uw, x.mat, x.matType, x.palm ? x.palm.id : null]);
 const A = {}, B = {}; const inc = (M, k) => { M[k] = (M[k] || 0) + 1; };
 V.forEach((x) => inc(A, key(x, x.sub)));
 const ORIGEN_F1_TEMARIO = [...Array.from({ length: 57 }, (_, i) => i + 1), 79];
 const enT2 = new Set(T2.filter((r) => r.dOrig).map((r) => r.dOrig));
-const F1 = ORIGEN_F1_TEMARIO.filter((d) => !enT2.has(d)); // v6.00: D1-D57 + D79 · v6.01: D1-D57 · v6.02: D1-D51 + D55 · v6.03: D1-D49 + D55 · v6.05: D1-D46 + D55
+const F1 = ORIGEN_F1_TEMARIO.filter((d) => !enT2.has(d)); // v6.00: D1-D57 + D79 · v6.01: D1-D57 · v6.02: D1-D51 + D55 · v6.03: D1-D49 + D55 · v6.05: D1-D46 + D55 · v6.06: D1-D41 + D55
 F1.forEach((d) => { const x = V.find((y) => y.d === d); inc(B, key(x, x.sub)); });
-const esperadoT = V.length - F1.length; // v6.00: 37 · v6.01: 38 · v6.02: 43 · v6.03: 45 · v6.05: 48
+const esperadoT = V.length - F1.length; // v6.00: 37 · v6.01: 38 · v6.02: 43 · v6.03: 45 · v6.05: 48 · v6.06: 53
 // v6.02: las desplazadas = las ÚLTIMAS filas de temario no-hito del orden de F1 (en su orden); los hitos de F1 nunca están en el tramo 2
 const esHito = (d) => /^🎯/.test(V.find((y) => y.d === d).sub);
 const noHito = ORIGEN_F1_TEMARIO.filter((d) => !esHito(d));

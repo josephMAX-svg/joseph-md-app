@@ -48,6 +48,8 @@ import {
  * mapa del SPEC A–G como ÍNDICE hacia las fichas de 7 pasos (dermaCerebro.ts) y hacia el día del plan (salto a HOY).
  * DERMA_FASES / DERMA_HORARIO (junio, v1) y el RingStat «12 semanas» ya no se muestran como verdad: quedan en un bloque
  * plegado «histórico v1» que no alimenta ningún cálculo. Interdiario con Research. Reutilizado mobile y desktop.
+ * v6.06 (31-oct-2026 · corrimiento D1 = lun 2-nov): ciclo 1 lun 2-nov → mié 26-may-2027 · ALIVIO F2 d44-d49 jue 4-mar → lun 22-mar ·
+ * ciclo 2 vie 28-may → mié 4-ago-2027 (fechas visibles desde DERMA_DAILY_META / DERMA_CICLO2_META, generadas).
  * v6.05 (24-oct-2026 · corrimiento D1 = lun 26-oct): ciclo 1 mar 27-oct → vie 21-may-2027 · ALIVIO F2 d44-d49 vie 26-feb → mar 16-mar ·
  * ciclo 2 lun 24-may → vie 30-jul-2027 (fechas visibles desde DERMA_DAILY_META / DERMA_CICLO2_META, generadas).
  * v6.03 (20-oct-2026 · corrimiento D1 = mié 21-oct): ciclo 1 mié 21-oct → lun 17-may-2027 · ALIVIO F2 d44-d49 lun 22-feb → lun 8-mar ·

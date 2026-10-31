@@ -28,6 +28,7 @@ import { guiaAurumDe } from '../../lib/rutinaGuia'; // v6.02c (E5): vídeo CONCR
  * v6.00 (6-oct-2026 · V6_ESPEC §E · DJ-4): desde el lun 4-ene-2027 (AURUM_PLAN_META.min30Desde, campo `min30` de la fila) la sesión es
  * 30' (14:15-14:45) = núcleo; los bloques extra quedan opcionales · fin jue 15-abr-2027 (130 lecciones, sin recortar).
  * v6.05 (24-oct-2026 · D1 = lun 26-oct): fin mar 4-may-2027 (AURUM_PLAN_META.fin; D129-D130 = lun 3 / mar 4-may, ya en el SERUMS), mismas 130 lecciones; min30 sigue desde el lun 4-ene.
+ * v6.06 (31-oct-2026 · D1 = lun 2-nov): fin mar 11-may-2027 (AURUM_PLAN_META.fin; D124-D130 = lun 3 → mar 11-may, ya en el SERUMS: 30′ en tiempo muerto tras el R↔D), mismas 130 lecciones; min30 sigue desde el lun 4-ene.
  * v6.03 (20-oct-2026 · D1 = mié 21-oct): fin jue 29-abr-2027 (AURUM_PLAN_META.fin), mismas 130 lecciones; min30 sigue desde el lun 4-ene.
  * v6.02 (17-oct-2026 · D1 = lun 19-oct): fin mar 27-abr-2027 (AURUM_PLAN_META.fin), mismas 130 lecciones; min30 sigue desde el lun 4-ene.
  * v6.02c (18-oct-2026, E5): «🧭 Guía de la hora» (src/lib/rutinaGuia.ts) bajo la misión: vídeo concreto (semana 1) o regla fija de elección,

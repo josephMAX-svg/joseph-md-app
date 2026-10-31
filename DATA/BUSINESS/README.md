@@ -5,7 +5,17 @@ Data del estudio del fundador y de las academias médicas de Pulso. **Desde el 5
 audiolibro/lectura en los huecos, L-J, + 1 output pequeño el viernes) y solo cubre lo que no cubren
 **AURUM** (marketing/ventas, 14:15-15:15) ni **LIVIANO Academia** (medicina de la obesidad, 17:15-18:00).
 
-> **✅ v6.05 VIGENTE (sáb 24-oct-2026) — D1 = LUN 26-OCT-2026** (del lun 19 al dom 25-oct sin estudio; «todo inicia el lunes 26 … no quites temas, solamente corre
+> **✅ v6.06 VIGENTE (sáb 31-oct-2026) — D1 = LUN 2-NOV-2026** (la semana del lun 26-oct tampoco se estudió; «reestructura todo a partir del 2 de noviembre … corre
+> nada más, corre también las fechas límite … tan solamente corre»; +5 hábiles sobre v6.05). **Business (Estudio Pulso, 13:00-13:25 L-V)**: 121 filas **lun 2-nov-2026 →
+> mar 2-mar-2027** (84 de trabajo + 37 DESCANSO; `python DATA/_scripts/gen_business_plan.py 2026-11-02` vía `remap_inicio.js 2026-11-02 --bloques business,liviano`):
+> Spark lun 2 / mar 3 · Pollan mié 4 / jue 5-nov · 15 OUTPUT en viernes (S1 vie 6-nov … S15 vie 26-feb) + S16 lun 1-mar y el extra mar 2-mar; los OUTPUT de los
+> viernes de NBME (vie 13-nov · vie 4-dic · vie 18-dic) se hacen enteros el sábado 07:45-08:25 y el del SIM 100Q #7 de las 11:00 (vie 26-feb) entero el sáb 27-feb
+> 09:15-09:55 (F2). **LIVIANO Academia**: 90 días **lun 2-nov → mié 10-mar-2027** (caso 1 D5 vie 6-nov … caso 16 D87 vie 5-mar; capstone D89 mar 9-mar; revisión
+> II + cierre D90 mié 10-mar; detalle en LIVIANO_ACADEMIA.md). **AURUM**: 130 días **lun 2-nov → mar 11-may-2027** (pitches vie 20-nov · vie 18-dic · mié 20-ene ·
+> mié 17-feb · vie 19-mar · mar 20-abr · mar 11-may; 30' desde el lun 4-ene; salta los PROTEGIDOS vie 12 y lun 15-mar; ⚠ D124-D130 = lun 3 → mar 11-may, 7 días ya
+> en el SERUMS supuesto: 30' en el tiempo muerto del turno, tras el R↔D).
+>
+> ⏸ **v6.05 (historial; sáb 24-oct-2026) — D1 = LUN 26-OCT-2026** (del lun 19 al dom 25-oct sin estudio; «todo inicia el lunes 26 … no quites temas, solamente corre
 > lo que está faltando»; +3 hábiles sobre v6.03; la semana corrida por alias v6.04a queda sin efecto). **Business (Estudio Pulso, 13:00-13:25 L-V)**: 121 filas
 > **lun 26-oct-2026 → mar 23-feb-2027** (84 de trabajo + 37 DESCANSO; `python DATA/_scripts/gen_business_plan.py 2026-10-26` vía `remap_inicio.js 2026-10-26
 > --bloques business,liviano`): Spark lun 26 / mar 27 · Pollan mié 28 / jue 29-oct · 15 OUTPUT en viernes (S1 vie 30-oct … S15 vie 19-feb) + S16 lun 22-feb y el

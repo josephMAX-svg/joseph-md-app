@@ -3,6 +3,9 @@
 // secundario · material del Drive · registro · APEX, con minutos y enlace directo a los runners BANCO_PROPIO publicados) · ◆ Obsidian = nota
 // del CÓDIGO del día (encapsGuia) · aviso de registro por --registrar --append los días de PRE-TEST DE ARRANQUE (D1 + D2: v6.05 lun 26 / mar 27-oct; v6.03 mié 21 / jue 22-oct; v6.02 lun 19 / mar 20).
 // v5.14 (19-sep): sims de la FASE INTENSIVA (pretest · sim100 · dress_rehearsal, escala /100) en ▲ Sim + tipo de ronda del cierre por tipo de día.
+// v6.06 (fix, 31-oct): CARRIL SÁBADO (fila del viernes host) → sus ítems D{dia}:s_* en un grupo propio «◈ CARRIL SÁBADO» con su contador aparte
+// (el CHECKLIST DE MISIÓN · HOY no los cuenta salvo el propio sábado: plan.doneSab/totalSab, encapsPlan.itemsDelTotal) + «🧭 GUÍA DEL CARRIL
+// SÁBADO 09:30–10:30» (encapsGuia.guiaEncapsSabadoDe, si la fila viva cuadra: sabadoEncapsCuadra).
 // v6.05 (fix 24-oct): antes del D1 (sáb 24 / dom 25-oct) el Día 1 ya no sale «· HOY» sino «· empieza el lun 26-oct» (+ píldora en HOY y botón
 // «↺ D1»), coherente con el Home («sin sesión»): encapsPlan.antesDelD1 / plan.antesD1.
 // PE Perú → ENCAPS → "Plan diario": HOY · Camino a 17/20 · Simulacros · 7 días.
@@ -19,6 +22,8 @@ import {
   loopDe, diasAExamenDe,                           // v5.20 (6-oct): Horario de la INTENSIVA desde el loop de la fila · cuenta atrás viva desde extra.exam_date
   carrilBDe, minisimAbsorbidoDe, examDateDe, examenProvisionalDe, examenRendidoDe, intensivaMetaDe, // v6.00: carril B 16:15 + examen PROVISIONAL / rendido
   pseudoCarrilB, esMiniSimRepuesto, CARRIL_B_REPOSICION_LABEL, CARRIL_B_REPOSICION_REGLA, // v6.01: mini-sim F1 repuesto en el carril B + regla de reposición desambiguada
+  carrilSabadoDe, // v6.06: carril SÁBADO 09:30 de la intensiva (pendientes F1 que no caben en el carril B lun-jue)
+  esClaveSabado,  // v6.06 (fix): sus ítems (D{dia}:s_*) van en su propio grupo y con su propio contador (no cuentan en el total del viernes)
   type PlanItem, type StudyScheduleDay, type StudyMetrics, type ProximoVideo, type MiniSimPunto, type CiegoSemana,
   type CiegoCodigo, type TemaCaliente, type TendenciaCiego, type EvalAnclada,
 } from '../lib/encapsPlan';
@@ -36,7 +41,7 @@ import { encapsGoZone, encapsGoColor, encapsMiniSimZone, encapsCiegoZone, ENCAPS
 import { ENCAPS_COBERTURA, CoberturaTema } from '../lib/encapsCobertura';
 // v6.02c (18-oct-2026, E4): guía «qué · cuánto · cómo» de la hora 16:15 (formato común) + runners BANCO_PROPIO + nota Obsidian del CÓDIGO
 import GuiaBloqueCard from './GuiaBloqueCard';
-import { guiaEncapsDe } from '../lib/encapsGuia';
+import { guiaEncapsDe, guiaEncapsSabadoDe, sabadoEncapsCuadra } from '../lib/encapsGuia'; // v6.06 (fix): + guía del carril SÁBADO
 import { sesionGuiaDe } from '../lib/encapsPlan';
 import { fechaPlanDe, fechaRealDe } from '../lib/fechasV6';
 
@@ -393,7 +398,7 @@ function MaterialView() {
 
 // ─── HOY ───
 function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
-  const { today, dia, total, metrics, todayItems, doneToday, totalToday, checks, toggleCheck, repasos } = plan;
+  const { today, dia, total, metrics, todayItems, doneToday, totalToday, doneSab, totalSab, checks, toggleCheck, repasos } = plan;
   if (!today) {
     return <Text style={styles.empty}>Sin datos del cronograma para hoy. Corré el sync (encaps_supabase_sync.py).</Text>;
   }
@@ -409,6 +414,11 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
   const absorbido = minisimAbsorbidoDe(today);
   // v6.01: mini-sim F1 REPUESTO en el carril B (pendiente_f1 tipo 'mini_sim'; v6.02: lun 22-feb = dia 88 y mar 2-mar = dia 94 · v6.01: dia 93) → su receta desde la pseudo-fila
   const recetaCB = carrilB?.tipo === 'mini_sim' ? miniSimRecetaDe(pseudoCarrilB(today)) : null;
+  const carrilSab = carrilSabadoDe(today); // v6.06: carril SÁBADO 09:30-10:30 (pendiente F1 del sábado siguiente, en la fila de este viernes)
+  // v6.06 (fix): su guía «qué · cuánto · cómo» (solo si la fila viva cuadra con la generada) · ¿hoy (Lima) es ese sábado? (entonces cuenta en el total)
+  const guiaSab = carrilSab && sabadoEncapsCuadra(carrilSab.fecha, today.dia, carrilSab.cb.codigo) ? guiaEncapsSabadoDe(carrilSab.fecha) : null;
+  const sabEsHoy = !!carrilSab && carrilSab.fecha === new Date(Date.now() - 5 * 3600 * 1000).toISOString().slice(0, 10);
+  const hhmmMin = (h: string) => Number(h.slice(0, 2)) * 60 + Number(h.slice(3, 5));
   // v6.02c: sesión de la guía (solo si la fila viva cuadra con encapsGuia.ts: mismo dia y código) → guía de la hora + nota Obsidian del código
   const ses = sesionGuiaDe(today);
   const guia = ses ? guiaEncapsDe(String(today.fecha)) : null;
@@ -506,6 +516,14 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
             ▲ Mini-sim del viernes (fila mant. {absorbido.diaMant ?? '—'}) ABSORBIDO por el {today.tipo === 'pretest' ? 'PRE-TEST' : 'SIM 100Q'} de hoy: no se hace; 16:15 libre.{absorbido.receta ? ` Receta guardada: ${miniSimRecetaTexto(absorbido.receta)}` : ''}
           </Text>
         )}
+        {/* v6.06: CARRIL SÁBADO (pendiente F1 que ya no cabía en el lun-jue del carril B) — viaja en la fila de este viernes; ítems D{dia}:s_* */}
+        {!!carrilSab && (
+          <Text style={styles.subEjeLine}>
+            ◈ SÁB {fechaCorta(carrilSab.fecha).replace(/-\d{4}$/, '')} {carrilSab.ini}-{carrilSab.fin} · CARRIL SÁBADO · REPOSICIÓN F1 · {carrilSab.cb.tipo === 'mini_sim'
+              ? `🔥 MINI-SIMULACRO 25Q · cola larga ${carrilSab.cb.colaLarga.join(' + ')} · nota /25 → study_sim_scores sim_n = ${carrilSab.simN ?? today.dia}`
+              : `${carrilSab.cb.codigo || ''} ${carrilSab.cb.subtema}`}{carrilSab.cb.diaMant ? ` (fila mant. ${carrilSab.cb.diaMant} de la F1 ${(carrilSab.cb.origen || '').replace('mantenimiento_', '') || 'anterior'}: no cupo en la F1 ni en el carril B lun-jue)` : ''}
+          </Text>
+        )}
         {!!today.primer_finde_estudio && (
           <Text style={styles.findeStudyLine}>◆ Fin de semana de ESTUDIO (aún no hay examen — tu 1er examen es el 2º finde)</Text>
         )}
@@ -538,6 +556,12 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
         <View style={styles.track}>
           <View style={[styles.fill, { width: `${pct}%`, backgroundColor: pct >= 80 ? Colors.green : Colors.gold }]} />
         </View>
+        {/* v6.06 (fix): el carril SÁBADO (ítems s_*) lleva su contador aparte; el viernes no cuenta en el total, el sábado sí */}
+        {!!carrilSab && totalSab > 0 && (
+          <Text style={styles.groupHint}>
+            ◈ Carril SÁBADO {fechaCorta(carrilSab.fecha).replace(/-\d{4}$/, '')} {carrilSab.ini}–{carrilSab.fin}: {doneSab}/{totalSab} · {sabEsHoy ? 'incluido en el total de hoy' : 'aparte: no cuenta en el total de este día'}
+          </Text>
+        )}
       </View>
 
       {/* Radar de repasos espaciados (Retrieval Radar) — vueltas por prioridad */}
@@ -565,23 +589,39 @@ function HoyView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
       )}
 
       {/* Aclaración tema vs cola */}
-      {todayItems.some(i => i.kind === 'video') && (
+      {todayItems.some(i => i.kind === 'video' && !esClaveSabado(i.key)) && (
         <>
           <Text style={styles.groupHdr}>▸ COLA QX DE HOY</Text>
           <Text style={styles.groupHint}>
             Videos que QX ya liberó, en orden de prioridad (no todos son del tema de hoy: cada video
             pertenece a su propio tema/día-foco). El “tema de hoy” para crear APEX es <Text style={{ color: Colors.gold, fontWeight: '700' }}>{tema}</Text>.
           </Text>
-          {todayItems.filter(i => i.kind === 'video').map(it => (
+          {todayItems.filter(i => i.kind === 'video' && !esClaveSabado(i.key)).map(it => (
             <CheckRow key={it.key} item={it} checked={!!checks[it.key]} onToggle={v => toggleCheck(it.key, v)} todayDia={dia} />
           ))}
         </>
       )}
 
-      {todayItems.some(i => i.kind !== 'video') && (
+      {todayItems.some(i => i.kind !== 'video' && !esClaveSabado(i.key)) && (
         <>
           <Text style={styles.groupHdr}>◆ MATERIAL DEL TEMA + PRÁCTICA</Text>
-          {todayItems.filter(i => i.kind !== 'video').map(it => (
+          {todayItems.filter(i => i.kind !== 'video' && !esClaveSabado(i.key)).map(it => (
+            <CheckRow key={it.key} item={it} checked={!!checks[it.key]} onToggle={v => toggleCheck(it.key, v)} todayDia={dia} />
+          ))}
+        </>
+      )}
+
+      {/* v6.06 (fix): CARRIL SÁBADO (fila del viernes host, ítems D{dia}:s_*) — grupo propio con su guía de la hora; su contador va aparte */}
+      {!!carrilSab && (todayItems.some(i => esClaveSabado(i.key)) || !!guiaSab) && (
+        <>
+          <Text style={styles.groupHdr}>◈ CARRIL SÁBADO · {fechaCorta(carrilSab.fecha).replace(/-\d{4}$/, '')} {carrilSab.ini}–{carrilSab.fin} · REPOSICIÓN F1 · {doneSab}/{totalSab}</Text>
+          {!!guiaSab && (
+            <View style={{ marginBottom: Spacing.sm }}>
+              <Text style={styles.groupHint}>🧭 GUÍA DEL CARRIL SÁBADO · {guiaSab.franja}</Text>
+              <GuiaBloqueCard g={guiaSab} color={Colors.teal} ahora={sabEsHoy && ahoraMin >= hhmmMin(carrilSab.ini) && ahoraMin < hhmmMin(carrilSab.fin)} />
+            </View>
+          )}
+          {todayItems.filter(i => esClaveSabado(i.key)).map(it => (
             <CheckRow key={it.key} item={it} checked={!!checks[it.key]} onToggle={v => toggleCheck(it.key, v)} todayDia={dia} />
           ))}
         </>
@@ -754,7 +794,7 @@ function SimView({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) {
       const semana = simDays.filter(x => x.tipo === 'mini_sim' && x.dia <= d.dia).length;
       return [{
         d, simN: rec?.simN ?? d.dia,
-        clave: `Mini-sim #${semana} · 25Q · cola larga ${rec ? rec.colaLarga.join(' + ') : ''}${esMiniSimRepuesto(d) ? ' · REPOSICIÓN F1 (carril B 16:15)' : ''}`, // v6.01: mini-sim F1 repuesto
+        clave: `Mini-sim #${semana} · 25Q · cola larga ${rec ? rec.colaLarga.join(' + ') : ''}${esMiniSimRepuesto(d) ? ((d.extra as any)?.carril_sabado ? ' · REPOSICIÓN F1 (carril SÁBADO 09:30)' : ' · REPOSICIÓN F1 (carril B 16:15)') : ''}`, // v6.01: mini-sim F1 repuesto · v6.06: o en el carril SÁBADO
         duracion: rec ? `${rec.segPorQ}s/Q · II ${rec.receta.II} I ${rec.receta.I} V ${rec.receta.V} III ${rec.receta.III} IV ${rec.receta.IV}` : '72s/Q',
         url: undefined as string | undefined, escala: 25 as 20 | 25 | 100,
       }];
@@ -1008,7 +1048,16 @@ const hhmmMas = (h: string, min: number) => {
 };
 function bloquesIntensivo(day: StudyScheduleDay | null | undefined): HorarioBlock[] {
   if (!day) return [];
-  const base = bloquesIntensivoBase(day);
+  // v6.06: el CARRIL SÁBADO (pendiente F1 del sábado siguiente, en la fila de este viernes) va al final, con su fecha y su franja
+  const sab = carrilSabadoDe(day);
+  const bloqueSab: HorarioBlock[] = sab ? [{
+    hora: `SÁB ${sab.ini}-${sab.fin}`,
+    titulo: `◈ ${fechaCorta(sab.fecha).replace(/-\d{4}$/, '')} · CARRIL SÁBADO · REPOSICIÓN F1 · ${sab.cb.tipo === 'mini_sim' ? `🔥 MINI-SIMULACRO 25Q · cola larga ${sab.cb.colaLarga.join(' + ')}` : `${sab.cb.codigo || ''} ${sab.cb.subtema}`}`.replace(/\s+/g, ' '),
+    pasos: sab.cb.tipo === 'mini_sim'
+      ? [{ t: sab.ini, d: 'Mini-simulacro 25Q mixto cronometrado (72 s/Q), modo examen sin pausa' }, { t: hhmmMas(sab.ini, 30), d: `Corrección + CIERRE tipo mini_sim → nota /25 en study_sim_scores (sim_n = ${sab.simN ?? day.dia})` }]
+      : [{ t: sab.ini, d: 'Eval 5Q (fallos del SIM 100Q / pre-test del viernes)' }, { t: hhmmMas(sab.ini, 15), d: `Banco ${sab.cb.codigo || ''} 16-20Q ciegas + secundario de cola larga` }, { t: hhmmMas(sab.ini, 55), d: 'Cierre tipo «Carril B 16:15» con la fecha del sábado + 1-3 APEX' }],
+  }] : [];
+  const base = [...bloquesIntensivoBase(day), ...bloqueSab];
   const cb = carrilBDe(day);
   if (!cb) return base;
   // v6.01: mini-sim F1 repuesto (pendiente_f1 tipo 'mini_sim'; v6.02: lun 22-feb = dia 88 y mar 2-mar = dia 94 · v6.01: dia 93) → bloque de mini-simulacro 25Q + corrección
@@ -1188,29 +1237,37 @@ function CierreSesionCard({ plan }: { plan: ReturnType<typeof useEncapsPlan> }) 
   const prefill = (tp: TipoRonda) => {
     const se = today ? subEjeDe(today) : null;
     const sePrev = prevDay ? subEjeDe(prevDay) : null;
-    if (tp === 'mini_sim') { const cbm = carrilBDe(today); setN('25'); setCodigo('MIX'); setSubEje(''); setTema(cbm?.tipo === 'mini_sim' ? `REPOSICIÓN F1 · ${cbm.subtema}` : today?.subtema || 'mini-sim v3'); } // v6.01: mini-sim F1 repuesto en el carril B
+    if (tp === 'mini_sim') { const cbm = carrilBDe(today) ?? (today?.tipo !== 'mini_sim' ? carrilSabadoDe(today)?.cb ?? null : null); setN('25'); setCodigo('MIX'); setSubEje(''); setTema(cbm?.tipo === 'mini_sim' ? `REPOSICIÓN F1 · ${cbm.subtema}` : today?.subtema || 'mini-sim v3'); } // v6.01: mini-sim F1 repuesto en el carril B
     else if (tp === 'eval_anclada') { setN('5'); setCodigo(evalHoy?.codigo || 'MIX'); setSubEje(evalHoy?.modo === 'ayer' && sePrev ? sePrev.key : ''); setTema(evalHoy ? evalHoy.label.replace(/^🎯 /, '') : 'eval anclada'); }
     else if (tp === 'pretest' || tp === 'simulacro') { const si = simIntensivoDe(today); setN(si ? String(si.n) : ''); setCodigo('MIX'); setSubEje(''); setTema(si ? si.label : ''); }
     // v6.00: cierre del CARRIL B 16:15 (fila MANTENIMIENTO 61-92 de v5.20 embebida) → id APP_CARRIL_B_<fecha>_<codigo>
-    else if (tp === 'carril_b') { const cb = carrilBDe(today); setN(''); setCodigo(cb?.codigo || 'MIX'); setSubEje(cb?.subEje || ''); setTema(cb ? (cb.subEjeLabel || cb.subtema) : 'carril B'); }
+    // v6.06: o el carril SÁBADO (fila del viernes host, sin carril B)
+    else if (tp === 'carril_b') { const cb = carrilBDe(today) ?? carrilSabadoDe(today)?.cb ?? null; setN(''); setCodigo(cb?.codigo || 'MIX'); setSubEje(cb?.subEje || ''); setTema(cb ? (cb.subEjeLabel || cb.subtema) : 'carril B'); }
     else { setN(''); setCodigo(today?.codigo || 'MIX'); setSubEje(se?.key || ''); setTema(se?.label || today?.subtema || ''); }
     setNota('');
   };
   const cambiarTipo = (tp: TipoRonda) => { setTipo(tp); prefill(tp); };
   useEffect(() => {
-    const tp: TipoRonda = tipoRondaDe(today);   // v5.14: mini_sim · pretest · simulacro (sim100/dress) · repaso · banco_dia
+    // v6.06: el SÁBADO del carril SÁBADO (la vista abre la fila del viernes host) el cierre por defecto es el del sábado: carril_b o mini_sim
+    const sabHoy = carrilSabadoDe(today);
+    const hoyLimaSab = new Date(Date.now() - 5 * 3600 * 1000).toISOString().slice(0, 10);
+    const tp: TipoRonda = sabHoy && sabHoy.fecha === hoyLimaSab ? (sabHoy.cb.tipo === 'mini_sim' ? 'mini_sim' : 'carril_b') : tipoRondaDe(today);   // v5.14: mini_sim · pretest · simulacro (sim100/dress) · repaso · banco_dia
     setTipo(tp); prefill(tp); setSeg(''); setDud(''); setT(''); setFallos(fallosVacios()); setEstado(null); setUltimo(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [today?.dia]);
 
   if (!today) return null;
-  const fechaISO = String(today.fecha).slice(0, 10);
+  // v6.06: cierre del CARRIL SÁBADO (fila del viernes host, sin carril B): fecha = el SÁBADO y, en el mini-sim, sim_n = 1000 + dia del viernes
+  // (si no, la nota /25 se espejaría en study_sim_scores con sim_n = dia y pisaría la del SIM 100Q del viernes)
+  const sabCierre = (tipo === 'carril_b' || tipo === 'mini_sim') && !carrilBDe(today) && today.tipo !== 'mini_sim' ? carrilSabadoDe(today) : null;
+  const fechaISO = sabCierre ? sabCierre.fecha : String(today.fecha).slice(0, 10);
   const nN = toInt(n), segN = toInt(seg), dudN = toInt(dud);
   const plano = Object.fromEntries(SUBTIPOS_PLANO.map(s => [s, toInt(fallos[s])])) as Record<SubtipoFallo, number>;
   const input = {
     tipoRonda: tipo, fecha: fechaISO, dia: today.dia, codigo: codigo.trim() || 'MIX', tema: tema.trim(), sub_eje: subEje.trim() || null,
     n: nN, correctas_seguras: segN, correctas_dudosas: dudN, fallos_por_tipo: fallosDesdePlano(plano),
     tiempo_medio_seg: t.trim() ? toInt(t) : null, nota: nota.trim() ? toInt(nota) : null,
+    ...(sabCierre && tipo === 'mini_sim' && sabCierre.simN != null ? { sim_n: sabCierre.simN } : {}), // v6.06: carril SÁBADO
   };
   const draft = normalizarCierre(input);
   const { errores, avisos } = validarCierre(draft);

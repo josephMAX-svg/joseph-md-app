@@ -22,7 +22,7 @@
  * viven en _encaps_ciclo_v3.js (compartido con gen_encaps_semana.js).
  *
  * Uso:
- *   node DATA/_scripts/gen_encaps_mantenimiento_2027.js [D1=_fechas_v6.json f1.inicio (v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12)] [--bk study_schedule_bk_YYYYMMDD]
+ *   node DATA/_scripts/gen_encaps_mantenimiento_2027.js [D1=_fechas_v6.json f1.inicio (v6.06: 2026-11-02 · v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12)] [--bk study_schedule_bk_YYYYMMDD]
  *        [--override <json|ruta.json>] [--sin-acumulado] [--bk-reemplazar] [--hasta 2026-12-30] [--de-hasta <slot lun-jue nº 75 desde el D1>] [--out <ruta.sql>]
  *        [--pendientes-de <ruta.sql | git:<rev>:<ruta>>] [--no-persistir]
  *        (defaults v6.02: D1 = f1.inicio, --de-hasta DERIVADO = 2027-02-25 con D1 2026-10-19; v6.01: --de-hasta 2027-02-18 fijo; v6.00: --hasta = _fechas_v6.json f1.fin, --de-hasta 2027-02-16; v5.20: --hasta 2027-02-16 y sin --de-hasta)
@@ -131,6 +131,21 @@
  *   Siembra v6.05: node DATA/_scripts/gen_encaps_mantenimiento_2027.js --bk study_schedule_bk_v605_mant_20261024
  *     --pendientes-de git:regimen-v6.04:DATA/_scripts/_encaps_mantenimiento_2027.sql
  *   (se aplica en UNA transacción combinada DELETE ENCAPS + 47 + 50 con guardas; backup completo previo study_schedule_bk_v605_20261024).
+ *
+ * v6.06 (31-oct-2026, orden de Joseph «reestructura todo a partir del 2 de noviembre … corre nada más, corre con una semana; para no perder
+ *   materias, tan solamente corre»): la semana del lun 26 al vie 30-oct no se estudió → D1 = LUN 2-NOV-2026 (= _fechas_v6.json f1.inicio,
+ *   `corrimientos[4]`). F1 anclada → dia 1-42 (lun 2-nov → mié 30-dic) = 35 banqueo1h + 7 mini_sim (vie 6-nov = D5 … vie 18-dic = dia 35 =
+ *   CHECKPOINT DEL AÑO; el vie 25-dic es SKIP). Rígido por slots, sin cambio de lógica: --de-hasta DERIVADO = jue 11-mar-2027 (slot lun-jue nº 75
+ *   desde el lun 2-nov) → extra.de idéntico. Pre-test de arranque = lun 2 (parte 1, fila dia 1 II-3) + mar 3 (parte 2, fila dia 2 I-3); mié 4 /
+ *   jue 5 = bancos V-2 / III-5.
+ *   · PENDIENTES F1 v6.06 (--pendientes-de git:regimen-v6.05:…_encaps_mantenimiento_2027.sql, F1 v6.05 de 47 filas) = 4 banqueo1h (fila mant.
+ *     44 III-5 inclusion_migrantes #3 · 45 II-5 nts_adolescente #3 · 46 I-4 epp_precauciones #3 · 47 IV-1 muestreo #3 de la F1 v6.05) + 1 mini-sim
+ *     (fila mant. 40, vie 18-dic de la v6.05 = su CHECKPOINT DEL AÑO, cola larga II-9 + II-7; la copia pierde solo ese rótulo) → se AÑADEN a los
+ *     13 de v6.01-v6.05 (conservados): _pendientes_f1.json = 18 filas (14 banqueo1h + 4 mini-sims). Como el carril B lun-jue ya no tiene días
+ *     libres, gen_encaps_intensivo_2027.js los repone en el NUEVO CARRIL SÁBADO 09:30-10:30 (sáb 9, 16, 23, 30-ene y 6-feb-2027).
+ *   Siembra v6.06: node DATA/_scripts/gen_encaps_mantenimiento_2027.js --bk study_schedule_bk_v606_mant_20261031
+ *     --pendientes-de git:regimen-v6.05:DATA/_scripts/_encaps_mantenimiento_2027.sql
+ *   (aplicada el 31-oct en UNA transacción con guardas DELETE ENCAPS + 42 + 50, vía staging; backup completo previo study_schedule_bk_v606_20261031).
  */
 const fs = require('fs');
 const path = require('path');
@@ -385,7 +400,7 @@ if (PENDIENTES_DE) {
     filas_nuevas: filasObj.length, banqueo_nuevas: nB.length, minisims_nuevos: nS.length, pendientes: filasP.length + simsP.length,
     pendientes_banqueo: filasP.length, pendientes_minisim: simsP.length, minisims_absorbidos: 0 });
   pj = {
-    _meta: { descripcion: 'PENDIENTES F1 del ENCAPS MANTENIMIENTO: filas (banqueo1h y mini_sim) que un corrimiento RÍGIDO dejó fuera de la F1 (la F1 no se alarga: el lun 4-ene empieza la intensiva). Copia literal de la fila vieja (el mini-sim con su receta íntegra en extra). NADA se descarta ni se absorbe (regla de Joseph, 10-oct-2026). gen_encaps_intensivo_2027.js (--pendientes-f1, default este fichero) las REPONE EXPLÍCITAS en los primeros días de REPOSICIÓN del carril B 16:15 (extra.carril_b = {tipo:\'reposicion\', regla, pendiente_f1: <esta fila, idéntica>}), antes de la regla genérica, por corrimiento (el más antiguo primero; conserva sus fechas de reposición); dentro de cada corrimiento, banqueo1h antes que mini-sim y por dia_mant; al colocarlas escribe aquí `destino` y `reposicion` {dia, fecha, carril}. Lo escribe gen_encaps_mantenimiento_2027.js --pendientes-de <SQL de la F1 anterior>.',
+    _meta: { descripcion: 'PENDIENTES F1 del ENCAPS MANTENIMIENTO: filas (banqueo1h y mini_sim) que un corrimiento RÍGIDO dejó fuera de la F1 (la F1 no se alarga: el lun 4-ene empieza la intensiva). Copia literal de la fila vieja (el mini-sim con su receta íntegra en extra). NADA se descarta, se comprime ni se absorbe (regla de Joseph, 10-oct-2026). gen_encaps_intensivo_2027.js (--pendientes-f1, default este fichero) las REPONE EXPLÍCITAS en los primeros días de REPOSICIÓN del carril B 16:15 (extra.carril_b = {tipo:\'reposicion\', regla, pendiente_f1: <esta fila, idéntica>}) y, cuando esos días lun-jue se acaban (v6.06), en el CARRIL SÁBADO 09:30-10:30 de la intensiva (extra.carril_sabado de la fila del viernes host; reposicion.carril \'SÁB 09:30-10:30\', reposicion.dia = el del viernes host), antes de la regla genérica, por corrimiento (el más antiguo primero; conserva sus fechas de reposición); dentro de cada corrimiento, banqueo1h antes que mini-sim y por dia_mant; al colocarlas escribe aquí `destino` y `reposicion` {dia, fecha, carril}. Lo escribe gen_encaps_mantenimiento_2027.js --pendientes-de <SQL de la F1 anterior>.',
       actualizado: hoyLima(), corrimientos: corrs },
     filas: [...(pj.filas || []).filter((r) => r.corrimiento !== corr), ...filasP, ...simsP],
   };

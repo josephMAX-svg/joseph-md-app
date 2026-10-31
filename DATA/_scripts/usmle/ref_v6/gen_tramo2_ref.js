@@ -4,7 +4,9 @@
 //        [--permitir-deficit]        solo para explorar escenarios: sin él, un déficit ABORTA (exit 2) — R1: nunca se recorta
 //        [--pendientes-f1 d1,d2,…]   disparador (f) cierre de F1 (jue 31-dic): d de F1 (slot 1-N, no hitos) sin ✓ (tras C1/C2 si existen) →
 //                                    cabeza de la cola-adelante; contenido = el de la colocación de F1 (abajo). Un d > N se ignora.
-//        [--f1-filas N=47]           v6.01: filas (slots) de TEMARIO de F1 antes de la pausa (v6.00: 58 · v6.01: 57 · v6.02: 52 · v6.03/v6.04: 50 · v6.05: 47). v6.02: regla
+//        [--rotacion-9]              v6.06 (fix): 16:15 REENTRADA con la rotación FIJA de los 9 sistemas (la de v6.00-v6.05): solo para
+//                                    reproducir las referencias v6.03 / v6.04 / v6.05 (v6.00-v6.02 salen iguales sin él).
+//        [--f1-filas N=42]           v6.01: filas (slots) de TEMARIO de F1 antes de la pausa (v6.00: 58 · v6.01: 57 · v6.02: 52 · v6.03/v6.04: 50 · v6.05: 47 · v6.06: 42). v6.02: regla
 //                                    de COLOCACIÓN con hitos anclados — el hito k-ésimo de F1 (de H = 5: D1, D10, D25, D40, D55) va al slot
 //                                    min(D#, N − (H − k)) (conserva su D# o, si no cabe, ocupa los últimos slots de F1); el resto de slots =
 //                                    temario NO-hito en orden; lo que no cabe = las ÚLTIMAS no-hito → DESPLAZADAS: unidad de contenido 'C<D>'
@@ -17,6 +19,21 @@
 //                                    · `--f1-filas 50` = v6.03 (tramo2_14mar_27sep_v603.json).
 //                                    · `2027-03-14 2027-10-25 --f1-filas 50` = v6.04 (tramo2_14mar_25oct_v604.json): examen lun 25-oct.
 //                                    · `2027-03-14 2027-10-25 --f1-filas 47` = v6.05 (tramo2_14mar_25oct_v605.json): D1 lun 26-oct.
+//                                    · `2027-03-14 2027-10-25 --f1-filas 42` = v6.06 (tramo2_14mar_25oct_v606.json): D1 lun 2-nov.
+//                                    v6.06 (fix): v6.03 / v6.04 / v6.05 = sus mismos argumentos + `--rotacion-9`.
+// v6.06 (fix, 31-oct-2026): 16:15 REENTRADA con la ROTACIÓN REAL (ALTA_ROT, abajo). La rotación fija de 9 sistemas «de F1» llevaba a T9
+//   (mar 30-mar) «20Q timed de Hematology & Oncology» antes de estudiar hematología (T12-T17) y a T8 Nervous System antes de cerrar neuro (T11):
+//   la F1 v6.06 solo tiene 7 sistemas. Ahora cada sistema de la rotación tiene una FECHA DE ALTA: '' si F1 lo estudia (algún slot de temario
+//   no hito y no pendiente) o la fecha de su última fila T de contenido de F1 (desplazada o recuperación; también congeladas) → entra en la
+//   fila siguiente; el orden es el de siempre y se saltan los que aún no tienen alta. T1 = «de los <n> sistemas de F1» (sub y uw). Con los 9
+//   en F1 (v6.00-v6.02) nada cambia; v6.03-v6.05 = sus argumentos + --rotacion-9. tramo2_14mar_25oct_v606.json regenerado.
+// v6.06 (31-oct-2026): corrimiento D1 lun 26-oct → lun 2-nov (la semana del 26-oct no se estudió; Joseph: «corre nada más, con una semana;
+//   lo que era la semana anterior, esta semana; para no perder materias, tan solamente corre»). F1 = 42 hábiles y REGLA NUEVA del DAY-AFTER
+//   COMPLETO en la colocación (SLOT_F1, abajo): con la regla v6.02 el NBME 27 quedaba en el slot 40 (lun 28-dic) y su Day-After (4 filas)
+//   chocaba con el NBME 28 del slot 42 → se adelanta una semana de plan (5 filas) al slot 35 (vie 18-dic). F1 = v5.20 D1-D34 · NBME 27 ·
+//   D35-D39 · D41 · NBME 28 (slot 42, mié 30-dic) y van al tramo 2 D42-D54, D56, D57, D79 = 16 desplazadas (5 más que en la v6.05). Por
+//   defecto --f1-filas 42 (EXAMEN por defecto sigue siendo 2027-09-27: las referencias v6.00-v6.05 se reproducen con sus mismos argumentos,
+//   la regla nueva no mueve nada con N ≥ 45; la v6.06 = `2027-03-14 2027-10-25 --f1-filas 42`).
 // v6.05 (24-oct-2026): corrimiento D1 mié 21-oct → lun 26-oct (la semana del 19 no se estudió; Joseph: «todo inicia el lunes 26; corre los
 //   horarios, alarga los plazos, no quites temas»). F1 = 47 hábiles con la MISMA regla de hitos anclados (hito k → slot min(D#, 47 − (5 − k))):
 //   F1 = v5.20 D1-D46 + D55 (NBME 28 en el slot 47, mié 30-dic) y van al tramo 2 D47-D54, D56, D57, D79 = 11 desplazadas (3 más que en la
@@ -71,18 +88,27 @@ const PENDIENTES = (opt('--pendientes') || '').split(',').filter(Boolean);
 const PEND_F1 = (opt('--pendientes-f1') || '').split(',').filter(Boolean).map(Number);
 // v6.01: orden del temario de F1 (posición → D# v5.20) y filas que caben en F1
 const ORIGEN_F1_TEMARIO = [...Array.from({ length: 57 }, (_, i) => i + 1), 79];
-const F1FILAS = opt('--f1-filas') != null ? Number(opt('--f1-filas')) : 47; // v6.05 (v6.03/v6.04: 50 · v6.02: 52)
+const F1FILAS = opt('--f1-filas') != null ? Number(opt('--f1-filas')) : 42; // v6.06 (v6.05: 47 · v6.03/v6.04: 50 · v6.02: 52)
 if (!(Number.isInteger(F1FILAS) && F1FILAS >= 1 && F1FILAS <= 58)) throw new Error('--f1-filas inválido (1-58): ' + opt('--f1-filas'));
 // v6.02: colocación con hitos anclados (slot de cada D# del temario en F1; 0 = desplazada)
 const esHitoV520 = (d) => /^🎯/.test(byD[d].sub);
 const HITOS_F1 = ORIGEN_F1_TEMARIO.filter(esHitoV520);
 if (F1FILAS < HITOS_F1.length) throw new Error(`--f1-filas ${F1FILAS} < ${HITOS_F1.length} hitos de F1 (un hito F1 no se desplaza)`);
 const SLOT_F1 = []; // SLOT_F1[s-1] = D# v5.20 del slot s de F1
-HITOS_F1.forEach((d, k) => { SLOT_F1[Math.min(ORIGEN_F1_TEMARIO.indexOf(d) + 1, F1FILAS - (HITOS_F1.length - 1 - k)) - 1] = d; });
+// v6.06: + DAY-AFTER COMPLETO — el Day-After de un hito NBME ocupa las 4 filas siguientes (18:00 del hito + 07:15/18:00 de la siguiente +
+//   18:00 de las 3 siguientes); si alcanzaría al hito siguiente, el hito se adelanta semanas de plan enteras (5 filas) hasta que quepa. Se
+//   recorre de la cola a la cabeza (el último hito, NBME 28, no tiene Day-After en F1). Con N ≥ 45 no mueve nada; N = 42: NBME 27 40 → 35.
+const POS_HITO = HITOS_F1.map((d, k) => Math.min(ORIGEN_F1_TEMARIO.indexOf(d) + 1, F1FILAS - (HITOS_F1.length - 1 - k)));
+for (let k = POS_HITO.length - 2; k >= 0; k--) {
+  const tope = POS_HITO[k + 1] - 4 - 1; // último slot con el Day-After entero antes del hito k+1
+  if (POS_HITO[k] > tope) POS_HITO[k] -= 5 * Math.ceil((POS_HITO[k] - tope) / 5);
+  if (POS_HITO[k] < 1 || (k > 0 && POS_HITO[k] <= POS_HITO[k - 1])) throw new Error(`--f1-filas ${F1FILAS}: el hito D${HITOS_F1[k]} no cabe en F1 con su Day-After completo`);
+}
+HITOS_F1.forEach((d, k) => { SLOT_F1[POS_HITO[k] - 1] = d; });
 const NO_HITO = ORIGEN_F1_TEMARIO.filter((d) => !esHitoV520(d));
 const CABEN = F1FILAS - HITOS_F1.length;
 { let j = 0; for (let s = 0; s < F1FILAS; s++) if (SLOT_F1[s] === undefined) SLOT_F1[s] = NO_HITO[j++]; }
-const DESPL = NO_HITO.slice(CABEN); // las ÚLTIMAS filas de temario no-hito (v6.05: 47-54, 56, 57, 79 · v6.03: 50-54, 56, 57, 79 · v6.02: 52, 53, 54, 56, 57, 79 · v6.01: 79 · v6.00: —)
+const DESPL = NO_HITO.slice(CABEN); // las ÚLTIMAS filas de temario no-hito (v6.06: 42-54, 56, 57, 79 · v6.05: 47-54, 56, 57, 79 · v6.03: 50-54, 56, 57, 79 · v6.02: 52, 53, 54, 56, 57, 79 · v6.01: 79 · v6.00: —)
 // v6.02 (17-oct): ¿hitos anclados fuera de su D#? (v6.02 sí: NBME 28 en el slot 52) → etiqueta «era v5.20 D#»; si no, la de v6.00/v6.01
 const ANCLADO = HITOS_F1.some((d) => SLOT_F1[ORIGEN_F1_TEMARIO.indexOf(d)] !== d);
 const ETQ_DESPL = (o) => (ANCLADO ? 'era v5.20 D' + o.dOrig : 'era la fila ' + o.desdeF1 + ' de F1');
@@ -273,6 +299,34 @@ const NOTA_V6 = { 72: 'v6: punto de control de la reactivación (ya no cierra la
 const hParte = (s) => (s <= ADAPT_FIN ? 1.3125 : 2.625);
 const out = frozen.map((x) => ({ ...x }));
 let n = out.length; let rot = frozen.filter((x) => x.fase === 'F3' && /16:15 REENTRADA/.test(x.franjaNota || '')).length;
+// v6.06 (fix) · ROTACIÓN REAL de la 16:15: fecha de ALTA de cada sistema ('' = F1 lo estudia · 'AAAA-MM-DD' = su última fila T de
+//   contenido de F1 → entra el día siguiente · ausente = sin alta) y puntero sobre sistemaRot que salta los que aún no tienen alta
+const ROT_FIJA = has('--rotacion-9');
+const ALTA_ROT = {};
+if (ROT_FIJA) sistemaRot.forEach((x) => { ALTA_ROT[x] = ''; });
+else {
+  const pend = new Set(PEND_F1.filter((d) => d <= F1FILAS));
+  SLOT_F1.forEach((dv, i) => { if (!esHitoV520(dv) && !pend.has(i + 1) && sistemaRot.includes(byD[dv].system)) ALTA_ROT[byD[dv].system] = ''; });
+  const altaTras = (sis, fecha) => { if (!sistemaRot.includes(sis) || ALTA_ROT[sis] === '') return; if (!(sis in ALTA_ROT) || fecha > ALTA_ROT[sis]) ALTA_ROT[sis] = fecha; };
+  for (const x of frozen) if (x.tipo === 'contenido' && ('dF1' in x || DESPL.includes(x.dOrig))) altaTras(x.system, x.fecha);
+  for (const s of PLAN) { const o = filas.get(s); if (o.tipo === 'contenido' && (o.dF1 || o.desdeF1)) altaTras(byD[o.dF1 ? SLOT_F1[o.dF1 - 1] : o.dOrig].system, s); }
+}
+const N_SIS_F1 = sistemaRot.filter((x) => ALTA_ROT[x] === '').length;
+let ptr = 0;
+if (!ROT_FIJA) {
+  const ult = frozen.filter((x) => x.fase === 'F3' && /16:15 REENTRADA: 20Q timed de .+? \+ revisión/.test(x.franjaNota || '')).pop();
+  if (ult) ptr = (sistemaRot.indexOf(/16:15 REENTRADA: 20Q timed de (.+?) \+ revisión/.exec(ult.franjaNota)[1]) + 1) % sistemaRot.length;
+}
+function rotacion16(s) {
+  if (ROT_FIJA) return sistemaRot[rot++ % 9];
+  let saltos = 0;
+  while (!(sistemaRot[ptr] in ALTA_ROT) || !(ALTA_ROT[sistemaRot[ptr]] === '' || s > ALTA_ROT[sistemaRot[ptr]])) {
+    ptr = (ptr + 1) % sistemaRot.length;
+    if (++saltos > sistemaRot.length) throw new Error(`16:15 REENTRADA del ${s}: ningún sistema de la rotación estudiado todavía (F1 sin temario)`);
+  }
+  const elegido = sistemaRot[ptr]; ptr = (ptr + 1) % sistemaRot.length;
+  return elegido;
+}
 for (const s of PLAN) {
   const o = filas.get(s); n++;
   const fila = { t: n, d: 100 + n, fecha: s, fase: esF4(s) ? 'F4' : 'F3', tipo: o.tipo, dOrig: typeof o.dOrig === 'number' ? o.dOrig : null, parte: o.parte || null };
@@ -281,7 +335,7 @@ for (const s of PLAN) {
   const F4row = esF4(s);
   const postFree = FREE120 && s > FREE120;
   switch (o.tipo) {
-    case 'reentrada': Object.assign(fila, DEF.reentrada, { sub: 'REENTRADA tras la pausa ENCAPS: 2×20Q timed MEZCLADAS de los 9 sistemas de F1 (AMBOSS + incorrectas uWorld) + revisión completa + Anki de choque (FSRS vuelve a 0,90 hoy)', qDia: 40, nivelUW: 4, h: 5.5 }); break;
+    case 'reentrada': Object.assign(fila, DEF.reentrada, { uw: DEF.reentrada.uw.replace('(9 sistemas F1)', `(${N_SIS_F1} sistemas F1)`), sub: `REENTRADA tras la pausa ENCAPS: 2×20Q timed MEZCLADAS de los ${N_SIS_F1} sistemas de F1 (AMBOSS + incorrectas uWorld) + revisión completa + Anki de choque (FSRS vuelve a 0,90 hoy)`, qDia: 40, nivelUW: 4, h: 5.5 }); break;
     case 'hito': {
       const q = /UWSA/.test(o.nombre) ? 160 : /Free 120 \+ 4/.test(o.nombre) ? 280 : /Free 120/.test(o.nombre) ? 120 : /\+ 3 bloques/.test(o.nombre) ? 320 : 200;
       const hora = !F4row ? '07:00-12:30' : q >= 280 ? '07:00-16:30' : q === 200 ? '07:00-12:15' : q === 160 ? '07:00-11:15' : '07:00-10:15';
@@ -331,7 +385,7 @@ for (const s of PLAN) {
       ? { sub: 'COLCHÓN (cierre, post-Free 120): si hay una fila atrasada → hazla hoy; si no → SOLO incorrectas/flagged ya vistas + Anki maduro (0 preguntas nuevas)', qDia: 20, nivelUW: 5, h: F4row ? 2.625 : 5.5 }
       : { sub: 'COLCHÓN: si hay una fila atrasada → hazla hoy (regla anti-replan); si no → sistema más débil del último NBME: 40Q timed (incorrectas/flagged uWorld + AMBOSS) + revisión + Anki de fallos', qDia: 40, nivelUW: 4, h: F4row ? (s <= ADAPT_FIN ? 1.3125 : 2.625) : 5.5 }); break;
   }
-  if (!F4row && o.tipo !== 'hito' && o.tipo !== 'reentrada') { fila.franjaNota = (fila.franjaNota ? fila.franjaNota + ' · ' : '') + `16:15 REENTRADA: 20Q timed de ${sistemaRot[rot++ % 9]} + revisión`; }
+  if (!F4row && o.tipo !== 'hito' && o.tipo !== 'reentrada') { fila.franjaNota = (fila.franjaNota ? fila.franjaNota + ' · ' : '') + `16:15 REENTRADA: 20Q timed de ${rotacion16(s)} + revisión`; }
   if (v) fila.subV520 = v.sub; // texto v5.20 exacto (verificación V1 del multiset)
   if (o.pendiente) fila.pendiente = true;
   // turno T: bloque B 07:40-10:10 = +40Q (AMBOSS / incorrectas, no uWorld fresco) · nunca en anclas ni tras el Free 120 (cierre)

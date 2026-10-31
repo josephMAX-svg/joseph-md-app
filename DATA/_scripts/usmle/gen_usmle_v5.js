@@ -1,5 +1,21 @@
-// Generador de los arrays DIAS (tramo 1 = F1) y DIAS_T2 (tramo 2) de usmleStep1Daily.ts — v6.05: D1-D47 = lun 26-oct → mié 30-dic-2026
+// Generador de los arrays DIAS (tramo 1 = F1) y DIAS_T2 (tramo 2) de usmleStep1Daily.ts — v6.06: D1-D42 = lun 2-nov → mié 30-dic-2026
 //   + T1…T182 (d 101-282) = mar 16-mar → sáb 23-oct-2027 · examen lun 25-oct-2027 (DJ-1 v6.04; PROVISIONAL).
+// v6.06 (fix, 31-oct-2026): la 16:15 REENTRADA de F3 rota solo por los sistemas que F1 estudia (7) y cada desplazado entra tras su última
+//   fila T (gen_tramo2.sistemasRotacionF1 / sistemaRot(s)): antes T9 mar 30-mar pedía «20Q timed de Hematology & Oncology» antes de estudiar
+//   hematología (T12-T17). T1 dice «de los 7 sistemas de F1». --rotacion-9 (rotación fija de antes, para las referencias v6.03-v6.05) solo
+//   con --seco: en producción aborta.
+// v6.06 (31-oct-2026): CORRIMIENTO RÍGIDO de F1 — la semana del lun 26 al vie 30-oct no se estudió (tampoco el UWSA1). Joseph (sáb 31-oct):
+//   «reestructura todo a partir del 2 de noviembre … corre nada más, corre también las fechas límite, corre con una semana nada más: lo que
+//   era la semana anterior, esta semana; no hay necesidad de reestructurar; para no perder materias, tan solamente corre». D1 = LUN 2-NOV
+//   (_fechas_v6.json f1.inicio · f1.dias 42; bitácora en «corrimientos»). Hitos anclados + REGLA NUEVA del DAY-AFTER COMPLETO
+//   (gen_tramo2.slotsHitosF1; aquí se comprueba): con 42 slots el NBME 27 (v5.20 D40) caía en el slot 40 = lun 28-dic y su Day-After (4 filas)
+//   pisaba el NBME 28 del slot 42 → se adelanta una semana de plan al D35 = VIE 18-DIC (la misma fecha que en la v6.05). Hitos F1: UWSA1 D1 lun
+//   2-nov (09:00-13:00; la guía lo pone 08:50-13:00 con SYNAPSE 07:25) · NBME 25 D10 vie 13-nov · 26 D25 vie 4-dic · 27 D35 vie 18-dic · NBME 28
+//   D42 mié 30-dic (07:00-12:30). Gates F1 D18 mié 25-nov · D38 mié 23-dic. DESPLAZADAS al tramo 2 (16; 5 más que en la v6.05): v5.20 D42
+//   (Endocrino: calcio/PTH + MEN + hipófisis), D43-D46 (Neuro: neuroanatomía, médula, tronco, SNA) + las 11 de la v6.05 → T3 jue 18-mar … T18
+//   lun 12-abr, con su dOrig y su texto v5.20. El examen (lun 25-oct-2027) y las fechas del tramo 2 NO cambian; la cola corre 5 unidades
+//   (contenido hasta T53 mié 26-may; en F4 cada unidad son 2 filas) y el COLCHÓN baja de 42 a 32 filas (≈ 110 → 84 h). Ningún tema se quita
+//   ni se comprime. Referencia: ref_v6/tramo2_14mar_25oct_v606.json (= gen_tramo2_ref.js 2027-03-14 2027-10-25 --f1-filas 42).
 // v6.05 (24-oct-2026): CORRIMIENTO RÍGIDO de F1 — la semana del 19 no se estudió (ni el D1 del mié 21 ni su alias del jue 22: la corrida
 //   v6.04a por alias queda sin efecto). Joseph (sáb 24-oct): «todo inicia el lunes 26; puedes correr los horarios, alargar los plazos, pero
 //   no quites temas especiales; solamente corre lo que está faltando». D1 = LUN 26-OCT (_fechas_v6.json f1.inicio · f1.dias 47; bitácora en
@@ -118,7 +134,7 @@
 const fs = require('fs');
 const path = require('path');
 const V6 = require('../gen_fechas_v6');
-const { generarTramo2, opcionesTramo2, mdTramo2, cargarV520, colocarF1, ORIGEN_F1_TEMARIO: ORIGEN_F1_TEMARIO_T2 } = require('./gen_tramo2');
+const { generarTramo2, opcionesTramo2, mdTramo2, cargarV520, colocarF1, DAY_AFTER_FILAS, SEMANA_PLAN, ORIGEN_F1_TEMARIO: ORIGEN_F1_TEMARIO_T2 } = require('./gen_tramo2');
 const ARGV = process.argv.slice(2);
 const SECO = ARGV.includes('--seco'); // explorar: no escribe usmle_dias_v5.txt / usmle_dias_v6.json / tramo2_vigente.json
 const aborta = (msg, code = 1) => { console.error('✗ ' + msg + ' — ABORTO, no se escribe nada'); process.exit(code); };
@@ -126,7 +142,7 @@ const aborta = (msg, code = 1) => { console.error('✗ ' + msg + ' — ABORTO, n
 let FV6;
 try { FV6 = V6.cargarFechasV6(); } catch (e) { aborta(e.message); }
 const SKIP = new Set(FV6.skip);
-const F = V6.habLV(FV6.f1.inicio, FV6.f1.fin, SKIP); // v6.05: lun 26-oct → mié 30-dic-2026 = 47 hábiles (D1-D47) · v6.03: mié 21-oct → mié 30-dic-2026 = 50 hábiles (D1-D50) · v6.02: lun 19-oct → 52 · v6.01: lun 12-oct → 57 · v6.00: mié 7-oct → 60 · v5.20: 7-oct → 19-feb = 95
+const F = V6.habLV(FV6.f1.inicio, FV6.f1.fin, SKIP); // v6.06: lun 2-nov → mié 30-dic-2026 = 42 hábiles (D1-D42) · v6.05: lun 26-oct → mié 30-dic-2026 = 47 hábiles (D1-D47) · v6.03: mié 21-oct → mié 30-dic-2026 = 50 hábiles (D1-D50) · v6.02: lun 19-oct → 52 · v6.01: lun 12-oct → 57 · v6.00: mié 7-oct → 60 · v5.20: 7-oct → 19-feb = 95
 if (F.length !== FV6.f1.dias) aborta(`F1 tiene ${F.length} hábiles y _fechas_v6.json dice f1.dias = ${FV6.f1.dias}`);
 console.log('// total dias F1:', F.length, '(' + F[0] + ' → ' + F[F.length - 1] + ')');
 
@@ -228,6 +244,8 @@ const CONTENT = [
 ];
 
 // Simulacros de hito — v6.00: indexados por D# (no por fecha; el D# es estable y el tramo 2 los re-fecha por ventana, §B5).
+//  v6.06 (D1 lun 2-nov): UWSA1 D1 lun 2-nov · NBME 25 D10 vie 13-nov · 26 D25 vie 4-dic · 27 (clave D40) ADELANTADO al D35 vie 18-dic (Day-After
+//    completo antes del NBME 28) · 28 (clave D55) en el último slot de F1 = D42 mié 30-dic.
 //  v6.05 (D1 lun 26-oct): UWSA1 D1 lun 26-oct · NBME 25 D10 vie 6-nov · 26 D25 vie 27-nov · 27 D40 vie 18-dic · 28 (clave D55) en el
 //    último slot de F1 = D47 mié 30-dic.
 //  v6.03 (D1 mié 21-oct): UWSA1 D1 mié 21-oct · NBME 25 D10 mar 3-nov · 26 D25 mar 24-nov · 27 D40 mar 15-dic · 28 (clave D55) en el
@@ -315,6 +333,8 @@ const V520 = cargarV520();
 //    temario no-hito DESPLAZADAS al tramo 2. v6.02 (52): d 1-51 = v5.20 D1-D51 · d 52 = v5.20 D55 (NBME 28) · desplazadas D52-D54, D56, D57, D79.
 //    v6.03 (50): d 1-49 = v5.20 D1-D49 · d 50 = v5.20 D55 (NBME 28) · desplazadas D50-D54, D56, D57, D79.
 //    v6.05 (47): d 1-46 = v5.20 D1-D46 · d 47 = v5.20 D55 (NBME 28) · desplazadas D47-D54, D56, D57, D79.
+//    v6.06 (42) + Day-After completo: d 1-34 = v5.20 D1-D34 · d 35 = v5.20 D40 (NBME 27) · d 36-40 = v5.20 D35-D39 · d 41 = v5.20 D41 ·
+//    d 42 = v5.20 D55 (NBME 28) · desplazadas D42-D54, D56, D57, D79.
 //    (F1 con más hábiles que filas de ORIGEN_F1 o con menos que hitos → colocarF1 lanza → aborta.)
 //    El NBME 28 (último slot, mié 30-dic) no tiene day-after en F1: si se pierde ese día NO se borra → sáb 2-ene-2027 07:00-12:30
 //    (transición, fuera del plan diario) + auditoría en la revisión semanal S11 del sáb 2-ene, movida a las 13:30 (bitácora v6.02 17-oct, arriba).
@@ -322,15 +342,24 @@ const ORIGEN_F1_TEMARIO = ORIGEN_F1_TEMARIO_T2; // [D1…D57, D79] (gen_tramo2.j
 let COL_F1;
 try { COL_F1 = colocarF1(F.length, Object.fromEntries(V520.map((x) => [x.d, x]))); } catch (e) { aborta(`F1 de ${F.length} hábiles: ${e.message}`); }
 const EN_F1 = COL_F1.enF1;                  // D# v5.20 (o 'C1'/'C2') de cada d de F1, en orden de d
-const F1_FILAS_TEMARIO = COL_F1.f1Filas;    // v6.00: 58 · v6.01: 57 · v6.02: 52 · v6.03: 50 · v6.05: 47
+const F1_FILAS_TEMARIO = COL_F1.f1Filas;    // v6.00: 58 · v6.01: 57 · v6.02: 52 · v6.03: 50 · v6.05: 47 · v6.06: 42
 const COLCHON_CONSUMIDO = COL_F1.consumido; // v6.01/v6.02: C1, C2
-const DESPLAZADAS_F1 = COL_F1.desplazadas;  // v6.01: [79] · v6.02: [52, 53, 54, 56, 57, 79] · v6.03: [50, 51, 52, 53, 54, 56, 57, 79] · v6.05: [47-54, 56, 57, 79] (D# v5.20)
+const DESPLAZADAS_F1 = COL_F1.desplazadas;  // v6.01: [79] · v6.02: [52, 53, 54, 56, 57, 79] · v6.03: [50, 51, 52, 53, 54, 56, 57, 79] · v6.05: [47-54, 56, 57, 79] · v6.06: [42-54, 56, 57, 79] (D# v5.20)
 for (const o of DESPLAZADAS_F1) if (/🎯/.test(SEQ_V520[o].sub)) aborta(`F1 de ${F.length} hábiles deja fuera el hito D${o} v5.20: un hito de F1 no se desplaza (decisión de Joseph)`);
 { // los 5 hitos de F1 (v5.20 D1/D10/D25/D40/D55) están TODOS en F1, en orden; el que cabe por su D# conserva su D#
+  // v6.06: salvo que su DAY-AFTER (DAY_AFTER_FILAS filas) alcanzara al hito siguiente → adelantado semanas de plan enteras (SEMANA_PLAN
+  //   filas) hasta que el Day-After quepa entero (gen_tramo2.slotsHitosF1). Aquí se comprueba la regla, no se copia el resultado.
   const hF1 = EN_F1.map((o, i) => [i + 1, o]).filter(([, o]) => typeof o === 'number' && /🎯/.test(SEQ_V520[o].sub));
   const H = COL_F1.hitos.length;
-  const mal = hF1.filter(([d, o], k) => d !== Math.min(o, F.length - (H - 1 - k)));
-  if (JSON.stringify(hF1.map(([, o]) => o)) !== JSON.stringify(COL_F1.hitos) || mal.length) aborta('hitos de F1 mal colocados: ' + JSON.stringify(hF1));
+  const mal = hF1.filter(([d, o], k) => {
+    const base = Math.min(o, F.length - (H - 1 - k));
+    if (k === H - 1) return d !== base; // el último (NBME 28) no tiene Day-After en F1: siempre en su base
+    const sig = hF1[k + 1] ? hF1[k + 1][0] : Infinity;
+    return d > base || (base - d) % SEMANA_PLAN !== 0 || d + DAY_AFTER_FILAS >= sig || (d < base && d + SEMANA_PLAN + DAY_AFTER_FILAS < sig);
+  });
+  if (JSON.stringify(hF1.map(([, o]) => o)) !== JSON.stringify(COL_F1.hitos) || mal.length) aborta('hitos de F1 mal colocados: ' + JSON.stringify(hF1) + (mal.length ? ' · fuera de regla: ' + JSON.stringify(mal) : ''));
+  const adel = hF1.filter(([d, o], k) => k < H - 1 && d < Math.min(o, F.length - (H - 1 - k)));
+  if (adel.length) console.log('// v6.06 · hitos F1 ADELANTADOS para que su Day-After (' + DAY_AFTER_FILAS + ' filas) quepa antes del hito siguiente: ' + adel.map(([d, o]) => `v5.20 D${o} → D${d} ${F[d - 1]}`).join(' · '));
 }
 const COLCHON_F1 = (n) => ({
   system: 'Colchón', tier: 'CORE',
@@ -364,6 +393,8 @@ console.log(`// F1: ${F.length} hábiles · temario D1-D${F1_FILAS_TEMARIO}${noI
 //  de los sistemas ya dominados (≥6 cerrados en S11) + 10Q tutor del subtema del día. Cambia SOLO nivelUW/qDia/franjaNota;
 //  el subtema, el sistema, el material y el orden NO se tocan (el multiconjunto de contenido es idéntico).
 //  Los viernes que abren sistema (pos ≤ 2) siguen en nivel 1: el subtema nuevo necesita su bloque tutor.
+//  v6.06 (D1 lun 2-nov → S1 = lun 2 → dom 8-nov; S8 = lun 21 → dom 27-dic, viernes 25-dic SKIP; S9 = lun 28 → mié 30-dic, sin viernes
+//    en F1): los viernes son D5, D10 … D35 (el vie 25-dic es SKIP); viernes N4 en F1: ninguno (la corrida imprime los N3).
 //  v6.05 (D1 lun 26-oct → S1 = lun 26-oct → dom 1-nov; S9 = lun 21 → dom 27-dic, viernes 25-dic SKIP; S10 = lun 28 → mié 30-dic, sin
 //    viernes en F1): los viernes vuelven a ser D5, D10, D15…; viernes N4 en F1: ninguno (la corrida imprime los N3).
 //  v6.03 (D1 mié 21-oct → bloques de 7 días mié→mar: S1 = mié 21 → mar 27-oct; S11 = mié 30-dic, sin viernes en F1): los viernes son
@@ -382,7 +413,7 @@ const VIERNES_N4_DESDE_SEMANA = 11;
 //  lun-mié de la semana previa = taper (20Q flagged, ≤2 h) · jue = D94 ÚLTIMA SESIÓN DE BANCO · vie = D95 sesión mínima (≤1 h) · sáb = ritual
 //  (sin estudio) · dom = viaje (D-1) · lun = examen. El flag TAPER_ACTIVO de la v5.x (franjaNota de D94/D95 en DIAS) desaparece con F1 = 60.
 //  v5.20: D94 jue 18 / D95 vie 19 de febrero con el finde en medio · v5.19 y v5.18: D95 = D-1 real · v5.17: finde entre D94 y D95.
-const SEMANA1 = new Date(F[0] + 'T12:00:00Z'); // bloques de 7 días desde el D1 · v6.05: D1 = lunes → lun→dom · v6.03: D1 = miércoles → mié→mar · v6.01/v6.02: D1 = lunes → lun→dom · v6.00/v5.20: mié→mar (v5.19: mar→lun · v5.18: lun→vie)
+const SEMANA1 = new Date(F[0] + 'T12:00:00Z'); // bloques de 7 días desde el D1 · v6.06: D1 = lunes → lun→dom · v6.05: D1 = lunes → lun→dom · v6.03: D1 = miércoles → mié→mar · v6.01/v6.02: D1 = lunes → lun→dom · v6.00/v5.20: mié→mar (v5.19: mar→lun · v5.18: lun→vie)
 const semanaDe = (fecha) => Math.floor((new Date(fecha + 'T12:00:00Z') - SEMANA1) / (7 * 864e5)) + 1;
 function qHito(sub) {
   if (/UWSA/.test(sub)) return 160;
@@ -451,6 +482,7 @@ OPT2.f1Filas = F1_FILAS_TEMARIO;
 OPT2.pendientesF1 = [...new Set(OPT2.pendientesF1)].sort((a, b) => a - b);
 if (!OPT2.escenarioJSON && !SECO) aborta(`ENCAPS/EXAMEN/SERUMS (${OPT2.encaps} · ${OPT2.examen} · ${OPT2.serums}) ≠ _fechas_v6.json: en producción mandan las fechas del JSON (edítalo con su disparador de §I y corre gen_fechas_v6.js); para explorar, --seco`);
 if (OPT2.permitirDeficit && !SECO) aborta('--permitir-deficit solo existe para explorar (--seco): un déficit nunca se publica (R1)');
+if (OPT2.rotacion9 && !SECO) aborta('--rotacion-9 solo reproduce las referencias v6.03-v6.05 (--seco): en producción la 16:15 rota por los sistemas que F1 estudia de verdad (v6.06 fix)');
 try { T2 = generarTramo2(OPT2); } catch (e) { aborta('tramo 2: ' + e.message); }
 T2.log.forEach((l) => console.log('// ' + l));
 if (OPT2.json) fs.writeFileSync(OPT2.json, JSON.stringify(T2.out, null, 1));

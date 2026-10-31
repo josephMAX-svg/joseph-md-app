@@ -2,7 +2,7 @@
  * mirGuia.ts — GUÍA «qué · cuánto · cómo» del bloque MIR (1 h/día, DJ-4) en el formato común `GuiaBloque` (src/lib/guia.ts).
  * Pedido de Joseph (18-oct-2026): «QUÉ leer, CUÁNTO leer, CÓMO leer — no puede estar al azar … que todo esté estructurado y definido».
  *
- *  · D1-D76 (v6.05: lun 26-oct-2026 → jue 11-feb-2027; v6.03: mié 21-oct → lun 8-feb; v6.02c: solo D1-D10) = MEDIDOS: el bloque sale tal cual de
+ *  · D1-D76 (v6.06: lun 2-nov-2026 → jue 18-feb-2027; v6.05: lun 26-oct → jue 11-feb; v6.03: mié 21-oct → lun 8-feb; v6.02c: solo D1-D10) = MEDIDOS: el bloque sale tal cual de
  *    DATA/MIR/guia_lectura_semana1-2.json (nombre histórico; E2: medición real de cada capítulo ProMIR — palabras deduplicadas, secciones,
  *    figuras, clips, preguntas MIR citadas; 10 capítulos el 18-oct + 66 el 20-oct) vía src/lib/mirGuiaDatos.ts (GENERADO por
  *    DATA/MIR/guia_lectura/gen_mir_guia.js). Las preguntas exactas de cada paso: `mirGuiaPreguntas(d)`.
@@ -12,12 +12,13 @@
  *    CIERRE el 1.er día de bloque · pre-test 5Q (pool oficial de la app → completar con preguntas MIR citadas ≥2015 del capítulo) ·
  *    lectura dirigida 15′ (Orientación MIR 1′ + secciones gap por chips MIR) · quiz 8-10Q (resto del pool + citadas) · ≤4 APEX.
  *    D77 mini-MIR 40Q · D78 corrección + tabla de neto (no leen capítulo: guía propia).
- *  · Banqueo (mirMantenimiento: mantenimiento + extensión + repuestas tras el Step 1 —v6.05: 4, mar 26 → vie 29-oct-2027 · v6.04: 1 · v6.03: 11 · v6.02c: 9—) = POR REGLA desde las sub-franjas
+ *  · Banqueo (mirMantenimiento: mantenimiento + extensión + repuestas tras el Step 1 —v6.06: 9, mar 26-oct → vie 5-nov-2027 · v6.05: 4, mar 26 → vie 29-oct · v6.04: 1 · v6.03: 11 · v6.02c: 9—) = POR REGLA desde las sub-franjas
  *    del día (Anki → 25Q/30Q cronometradas → corrección −1/3), desplazadas al inicio de la franja del turno en el SERUMS; v6.03: la corrección
  *    Whole-Page lleva el dato MEDIDO de los capítulos de la asignatura foco (MIR_CAP_MEDIDO: minutos de lectura completa + secciones de más peso).
  *  Regla de oro (guia.ts): Σ pasos = minutos de la franja. Lo comprueba `gen_mir_guia.js --check` en TODOS los días (plan + banqueo).
  * v6.02c (18-oct-2026, E3): nuevo.
  * v6.03 (20-oct-2026): D1 = mié 21-oct; los 76 capítulos del plan medidos (D1-D76 medidos) + dato medido en el banqueo.
+ * v6.06 (31-oct-2026): D1 = lun 2-nov (+5 hábiles; mismos 76 capítulos medidos, misma guía: solo cambian las fechas, que salen de mirDailyPlan).
  * v6.05 (24-oct-2026): D1 = lun 26-oct (+3 hábiles; mismos 76 capítulos medidos, misma guía: solo cambian las fechas, que salen de mirDailyPlan).
  * v6.03b (20-oct-2026 · Joseph: «estructura el método de estudio de cada examen con los referentes … RaviMedTest para el MIR»): `metodoRavi`
  *   mete el método RaviMedTest (DATA/MIR/METODO_RAVIMEDTEST.md · datos MIR_METODO) DENTRO de los pasos de cada día del plan, sin tocar la franja

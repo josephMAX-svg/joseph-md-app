@@ -15,6 +15,10 @@
 // v6.05 (24-oct-2026): sin cambio de lógica. F1 = D1-D47 (lun 26-oct → mié 30-dic; D47 = NBME 28) y 11 desplazadas (v5.20 D47-D50 Neuro,
 //   D51-D54, D56, D57 Heme/Onco, D79) → T3-T13: Neuro sigue empezando en D43; Heme/Onco empieza en T7 (d 107); Psiquiatría = bioestadística
 //   T13 (d 113) y Micro/Repro/MSK/Bioq corren 3 filas más (114 · 121 · 126 · 132; lo imprime la corrida).
+// v6.06 (31-oct-2026): sin cambio de lógica. F1 = D1-D42 (lun 2-nov → mié 30-dic; D35 = NBME 27 adelantado por el Day-After completo,
+//   D42 = NBME 28) y 16 desplazadas (v5.20 D42 Endocrino, D43-D50 Neuro, D51-D54, D56, D57 Heme/Onco, D79) → T3-T18: Endocrino empieza en D38
+//   (el NBME 27 ocupa el D35), Neuro en T4 (104), Heme/Onco en T12 (112), Psiquiatría = bioestadística T18 (118), Micro 119 · Repro 126 ·
+//   MSK 131 · Bioq/Pharm 147 (9 cambiados; lo imprime la corrida).
 'use strict';
 const fs = require('fs');
 const path = require('path');

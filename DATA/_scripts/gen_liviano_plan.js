@@ -9,8 +9,8 @@
 // NO editar los .ts generados a mano: editar el JSON y regenerar.
 //
 // Reglas de calendario (idénticas a remap_inicio.js / gen_aurum_plan.js):
-//  · INICIO = argv[2] (YYYY-MM-DD; default = inicioDefault del JSON = lun 2026-10-26 desde v6.05 —hasta v6.03: lun 2026-09-07, v5.6—; el pipeline pasa siempre la fecha:
-//    v5.20 = v6.00 = mié 2026-10-07 → 90 días hasta el vie 12-feb-2027 · v6.01 = lun 2026-10-12 → mié 17-feb-2027 · v6.02 = lun 2026-10-19 → mié 24-feb-2027 · v6.03 = mié 2026-10-21 → vie 26-feb-2027 · v6.05 = lun 2026-10-26 → mié 3-mar-2027).
+//  · INICIO = argv[2] (YYYY-MM-DD; default = inicioDefault del JSON = lun 2026-11-02 desde v6.06 —v6.05: lun 2026-10-26 · hasta v6.03: lun 2026-09-07, v5.6—; el pipeline pasa siempre la fecha:
+//    v5.20 = v6.00 = mié 2026-10-07 → 90 días hasta el vie 12-feb-2027 · v6.01 = lun 2026-10-12 → mié 17-feb-2027 · v6.02 = lun 2026-10-19 → mié 24-feb-2027 · v6.03 = mié 2026-10-21 → vie 26-feb-2027 · v6.05 = lun 2026-10-26 → mié 3-mar-2027 · v6.06 = lun 2026-11-02 → mié 10-mar-2027).
 //  · 90 días HÁBILES L-V consecutivos; salta SÁB/DOM y los feriados fijos del JSON (25-dic · 31-dic · 1-ene).
 //  · Los 16 CASOS caen en VIERNES reales (invariante que antes garantizaba liviano_reslot_viernes.js).
 //    Si hay más viernes que casos (v5.20: 17 viernes), los casos van en los PRIMEROS viernes con ≥2 días de contenido delante y el
@@ -55,7 +55,19 @@
 //    I = D45 lun 28-dic (v6.03: D46). Drills D37 · D56 · D75 · D88 = mar 15-dic · jue 14-ene · mié 10-feb · lun 1-mar. Síntesis M1 D19 · M2 D38 ·
 //    M3 D56 (+ drill) · M4 D66 · M6 D75 (+ drill) · M5 D86 → src/lib/empresaData.ts re-sincronizado a mano. CSV Anki: importar el D16 lun 16-nov-2026
 //    (10 tarjetas de MECANISMO del módulo 1).
-// Determinista (sin Date.now()/Math.random). Regenerar:  node DATA/_scripts/gen_liviano_plan.js 2026-10-26   (v6.05; v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07; v5.6: 2026-09-07)
+// v6.06 (31-oct-2026 · corrimiento D1 = lun 2-nov; la semana del lun 26-oct tampoco se estudió; orden de Joseph «reestructura todo a partir del
+//    2 de noviembre … corre nada más, corre también las fechas límite … para no perder materias, tan solamente corre»): 90 hábiles lun 2-nov →
+//    MIÉ 10-MAR-2027 (+5 hábiles sobre v6.05, una semana exacta; el fin se AMPLÍA, nada se recorta: mismo contenido en el mismo orden, mismos 16
+//    casos, 18 pre-tests y 4 drills; antes de los PROTEGIDOS vie 12 → lun 15-mar, así que no hace falta saltarlos). Con D1 en lunes hay EXACTAMENTE
+//    16 viernes (7 hasta el vie 18-dic + 9 desde el vie 8-ene; los vie 25-dic y 1-ene son SKIP) → un caso por viernes: caso 1 = D5 vie 6-nov …
+//    caso 7 D35 vie 18-dic · caso 8 D47 vie 8-ene (el 1.er viernes tras los feriados; v6.05: D40 vie 18-dic) · caso 9 (acceso) D52 vie 15-ene …
+//    caso 15 D82 vie 26-feb · caso 16 (integral) D87 vie 5-mar, ANTES del repaso integral D88 lun 8-mar y del capstone D89 mar 9-mar; revisión
+//    trimestral II + cierre D90 mié 10-mar (semana del ENCAPS: LIVIANO 17:15 en F2; el jue 11-mar, D-2, ya no hay LIVIANO). Módulo 7 (Acceso en
+//    Perú) = D39-D43 SEGUIDOS (jue 24-dic → lun 4-ene: registro jue 24 · condición lun 28 · precio mar 29 · magistral mié 30-dic · cadena de frío
+//    lun 4-ene; sin caso en medio); revisión trimestral I = D44 mar 5-ene (v6.05: D45 lun 28-dic). Drills D37 · D56 · D75 · D88 = mar 22-dic · jue
+//    21-ene · mié 17-feb · lun 8-mar. Síntesis M1 D19 · M2 D38 · M3 D56 (+ drill) · M4 D66 · M6 D75 (+ drill) · M5 D86 → src/lib/empresaData.ts
+//    re-sincronizado a mano. CSV Anki: importar el D16 lun 23-nov-2026 (10 tarjetas de MECANISMO del módulo 1).
+// Determinista (sin Date.now()/Math.random). Regenerar:  node DATA/_scripts/gen_liviano_plan.js 2026-11-02   (v6.06; v6.05: 2026-10-26 · v6.03: 2026-10-21 · v6.02: 2026-10-19 · v6.01: 2026-10-12 · v6.00 = v5.20: 2026-10-07; v5.6: 2026-09-07)
 const fs = require('fs');
 const path = require('path');
 
