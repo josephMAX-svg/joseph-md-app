@@ -116,7 +116,10 @@ export function hitoUsmleDe(iso: string): { nombre: string; franja: string | nul
   const h = [...USMLE_DIAS, ...USMLE_DIAS_T2].find((x) => x.fecha === iso && esHito(x));
   if (!h) return null;
   const m = /🎯\s*([^(—+]+?)\s*(?:—[^(]*)?\((?:[^)]*?)(\d{2}:\d{2})-(\d{2}:\d{2})\)/.exec(h.sub);
-  return { nombre: m ? (m[1] as string).trim() : h.uw, franja: m ? `${m[2]}-${m[3]}` : null };
+  // El `sub` del UWSA1 conserva el «09:00-13:00» de v5.20, pero la guía lo empieza a las 08:50 (4 × 40Q × 90 s + pausa no caben antes de las 13:00;
+  // gen_usmle_guia.js): el aviso usa la hora de la guía.
+  const franja = m ? (/UWSA1|Self-Assessment 1/.test(h.uw + h.sub) && m[2] === '09:00' ? `08:50-${m[3]}` : `${m[2]}-${m[3]}`) : null;
+  return { nombre: m ? (m[1] as string).trim() : h.uw, franja };
 }
 
 // ════════════════════════════════════════ 04:15 · VIBECODING ════════════════════════════════════════
