@@ -7,7 +7,7 @@
 > (CEI/IRB) y (2) declaración de consentimiento parental + asentimiento. **Actualización 12-sep-2026:** el punto (2) YA
 > consta — la portada y la hoja "FLUJO PARTICIPANTES" de `D:\motor_apex\datos_tesis_acne.xlsx` registran un censo **solo con
 > consentimiento** (291 excluidas por no consentir: 271 padres + 20 alumnas) — ver 1.4-1.5 y §4. **Lo que sigue sin constar es
-> el nº y la fecha del CEI (1.1)**: por eso T-1 pasa a d7 (mié 30-sep-2026 en v5.10b; vie 2-oct-2026 en v5.11 y v5.12; mar 6-oct-2026 en v5.13; jue 8-oct-2026 en v5.14; lun 12-oct-2026 en v5.15; mié 14-oct-2026 en v5.16; mar 20-oct-2026 en v5.17; jue 22-oct-2026 en v5.18 y v5.19; lun 26-oct-2026 en v5.20 = v6.00; mié 28-oct-2026 en v6.01; jue 5-nov-2026 en v6.02; lun 9-nov-2026 en v6.03; **mié 11-nov-2026 en v6.05 (vigente)** — 🔴 42 días después del límite interno ≤ 30-sep) con la solicitud de revisión expedita presentada ese día
+> el nº y la fecha del CEI (1.1)**: por eso T-1 pasa a d7 (mié 30-sep-2026 en v5.10b; vie 2-oct-2026 en v5.11 y v5.12; mar 6-oct-2026 en v5.13; jue 8-oct-2026 en v5.14; lun 12-oct-2026 en v5.15; mié 14-oct-2026 en v5.16; mar 20-oct-2026 en v5.17; jue 22-oct-2026 en v5.18 y v5.19; lun 26-oct-2026 en v5.20 = v6.00; mié 28-oct-2026 en v6.01; jue 5-nov-2026 en v6.02; lun 9-nov-2026 en v6.03; mié 11-nov-2026 en v6.05; **jue 19-nov-2026 en v6.06 (vigente)** — 🔴 50 días después del límite interno ≤ 30-sep) con la solicitud de revisión expedita presentada ese día
 > y T-7/T-8 llevan el gate "sin nº de CEI o exención NO se envía" (MD_MAESTRO L0 y MANUAL §10.1 solo dicen "envío a JAAD
 > International jun-jul 2026", que no ocurrió).
 > Todo lo marcado **A VERIFICAR (5-sep)** lo tiene que responder Joseph con el documento en la mano; no se

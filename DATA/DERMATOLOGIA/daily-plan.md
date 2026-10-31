@@ -74,7 +74,7 @@
 > `src/lib/dermaDailyPlan.ts` (`DERMA_DAILY_META`) y `src/lib/dermaCiclo2.ts` (regenerados el 10-oct). *(⏸ v6.00, 6-oct: d1 mié 7-oct → d73 mié 5-may ·
 > ciclo 2 vie 7-may → mié 14-jul · alivio lun 8 → lun 22-feb; v5.20: ciclo 2 → mié 28-jul y días protegidos 22-feb / 10-mar.)*
 >
-> ⚠ **DESACTUALIZADO — vigente D1 del régimen = mié 7-oct-2026 (v5.20, 6-oct-2026, corrimiento RÍGIDO DEFINITIVO; Derma NO mueve el arranque: el mié 7-oct ya era día Derma, así que d1 = D1 del régimen = día del UWSA1) + taper v3 (12-sep-2026); fuente de verdad = el `.ts`**
+> ⚠ **DESACTUALIZADO — ⏸ D1 del régimen v5.20 = mié 7-oct-2026 (hoy, v6.06: d1 lun 2-nov-2026, bloque ✅ de arriba; v5.20, 6-oct-2026, corrimiento RÍGIDO DEFINITIVO; Derma NO mueve el arranque: el mié 7-oct ya era día Derma, así que d1 = D1 del régimen = día del UWSA1) + taper v3 (12-sep-2026); fuente de verdad = el `.ts`**
 > (`src/lib/dermaDailyPlan.ts`: PLAN ÉLITE v3, **73 átomos, d1 mié 7-oct-2026 → d73 mié 5-may-2027**, interdiario
 > con Research, sáb+dom libres, salta 25-dic/31-dic/1-ene y los **DÍAS PROTEGIDOS lun 22-feb (examen Step 1) y mié 10-mar (examen ENCAPS 2027-I)**; y `src/lib/dermaCiclo2.ts`: **CICLO 2, d74-d103, vie 7-may →
 > mié 28-jul-2027**, regenerado el 6-oct por `DATA/_scripts/gen_derma_ciclo2.js`). La paridad Research↔Derma sigue anclada al

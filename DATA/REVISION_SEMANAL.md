@@ -5,7 +5,7 @@
 > (`gen_revision_semanal.js` no escribe nada en un día de `corrida_s1.sin_sesion` —lun 19-oct → dom 1-nov—; `--forzar` lo salta). `STEP1_SEMANAS` = **41**
 > (9 de F1 + 32): S02 sáb 14-nov (NBME 25 vie 13-nov) · **S04 sáb 28-nov = SHIP S4** (`S04_2026-11-28.md`) · **S05 sáb 5-dic = SHIP S5** (`S05_2026-12-05.md`; NBME 26 vie
 > 4-dic) · **S06 sáb 12-dic = DELOAD** (semana del lun 7-dic) · S07 sáb 19-dic (NBME 27 vie 18-dic) · **S09 sáb 2-ene = DELOAD + auditoría del NBME 28 (D42, mié 30-dic)** ·
-> S10 sáb 9-ene = 1.er sábado de la PAUSA · ENCAPS · S13 sáb 30-ene (previo al taper S14 del vibecoding) · S19 sáb 13-mar = PROTEGIDO (D-1 ENCAPS: sin revisión en el
+> S10 sáb 9-ene = 1.er sábado de la PAUSA · ENCAPS · S13 sáb 30-ene (1.ª semana del taper del vibecoding: S13 jue 28-ene → mié 3-feb) · S19 sáb 13-mar = PROTEGIDO (D-1 ENCAPS: sin revisión en el
 > Home) · **S20 sáb 20-mar = S10/41** (1.ª semana del tramo 2; NBME 29 mié 17-mar) … **S51 sáb 23-oct-2027 = S41/41** (día del ritual) · S52 sáb 30-oct = semana del examen.
 > Gates mié 25-nov / mié 23-dic; NBME 25/26/27 vie 13-nov / 4-dic / 18-dic; NBME 28 mié 30-dic. Nombres comprobados con `gen_revision_semanal.js --dry-run` (31-oct).
 >
@@ -42,7 +42,7 @@
 > ✅ en v5.20 **SÍ hay fin de semana entre el D95 y el examen** (sáb 20 + dom 21-feb; dom 21 = D-1 real), y el finde 13-14 feb queda entre el D90 (vie 12) y el D91 (lun 15), así que el sábado 13-feb es la revisión S19 (cierre de la semana del Free 120 + banco D86-D90) y el **sábado 20-feb** es la revisión S20 = cierre D91-D95 (último sábado de la serie), ANTES del examen.
 > 🆕 **En v5.20 los 12 hitos siguen corriendo con el plan y conservan su D#** (regla RÍGIDA de v5.15-v5.19); con el D1 en miércoles **caen casi todos en MARTES** (8 de los 12: D10 · D25 · D40 · D55 · D72 · D77 · D82 · D87), salvo **UWSA1 (mié 7-oct = D1), NBME 29 (vie 8-ene, por los saltos de 25-dic/31-dic/1-ene), NBME 32 (mié 3-feb) y NBME 33 (vie 5-feb)**;
 > los proyectos del vibecoding S1-S11 pasan a bloques de 5 hábiles **mié→mar** (S12 = mié 23 → mié 30-dic por los feriados del 25-dic) y su SHIP va el sábado siguiente al último martes (17-oct … 26-dic; S12 el sáb 2-ene; los sábados SHIP NO cambian frente a v5.19): **la revisión del sábado N (07:15) cae el mismo día que el SHIP del proyecto N-1 (PC 15:00)** (sáb 17-oct = revisión S2 + SHIP S1 … sáb 2-ene = revisión S13 + SHIP S12) — la métrica 7 se cierra con el `verify_vibecoding.js` de esa tarde o en la revisión siguiente; por eso los criterios de S4/S5 apuntan a `S05_2026-11-07.md` y `S06_2026-11-14.md` (sin cambio).
-> 🆕 **v6.02 (17-oct-2026 · D1 = lun 19-oct · vigente):** la 1.ª revisión con plan es el **sáb 24-oct = `S01_2026-10-24.md`** (hoy sáb 17-oct = `S00`, pre-D1);
+> ⏸ **v6.02 (17-oct-2026 · D1 = lun 19-oct; historial, lo corrigen los bloques v6.05 y v6.06 de arriba):** la 1.ª revisión con plan es el **sáb 24-oct = `S01_2026-10-24.md`** (hoy sáb 17-oct = `S00`, pre-D1);
 > `STEP1_SEMANAS` 39 (11 de F1 + 28) → etiqueta `S n/39`; **S11 = sáb 2-ene-2027** (deload; audita el NBME 28 del mié 30-dic, que no tiene day-after: si
 > el NBME 28 se pierde el 30-dic, se rinde el sáb 2-ene 07:00-12:30 y la S11 pasa a las 13:30); S12-S21 = `PAUSA · ENCAPS` (sáb 9-ene → sáb 13-mar); **sáb 20-mar
 > = `S22` con etiqueta S12/39** … sáb 25-sep = `S49` = S39/39; sáb 2-oct = `S50` (examen). Cada fichero lleva un número menos que en v6.01. Vibecoding: SHIP S1

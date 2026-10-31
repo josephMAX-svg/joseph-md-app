@@ -169,9 +169,12 @@ existentes tocados):
 > ⏸ **Ids del 10-jun (historial): ya no existen.** El 6-oct-2026 (v6.00) las tres series se RECREARON con su DTSTART original y fin en el plan:
 > misión 12:30 → **`f1imvu9cnmhrcsi5ag6m3k8jdk`** (→ lun 15-feb-2027) · PC sábado → **`goknd2mvbkpqastc6n3rrhon5g`** (→ sáb 13-feb-2027) · repaso + PC
 > domingo → **`frsvkuk585gmcte6bufo6dkfto`** (→ dom 14-feb-2027) *(⏸ ids v6.00, `DATA/_v600/cal/CAL_V6.md` §3 · ⏸ v6.01 (10-oct): misión 12:30 recreada como
-> `7nd90n5s3ueinen4q13dohcaq4` → vie 19-feb; PC sáb/dom sin cambio)*. **Ids vigentes v6.02 (17-oct; `DATA/_v600/cal/CAL_V6.md` §11.2):** misión 12:30
-> **`e37h4fl8gd0v7eavt1f9fgob0o`** (→ vie 26-feb-2027) · PC sábado **`bbj1ne6ken46pj25i5dt36idng`** (→ sáb 20-feb-2027) · repaso + PC domingo
-> **`c010a16rsl6h0lk4krr0a9r3rs`** (→ dom 21-feb-2027).
+> `7nd90n5s3ueinen4q13dohcaq4` → vie 19-feb; PC sáb/dom sin cambio)*. **Ids vigentes v6.06 (31-oct; `DATA/_v600/cal/CAL_V6.md` §19.2):** misión 12:30
+> **`n8641e63c3msrkbaq3mqdtbmj0`** (→ mar 16-mar-2027; EXDATE vie 12 y lun 15-mar) · PC sábado **`nsdnhm11ceicjmqvqc3qenin00`** (→ sáb 6-mar-2027) · repaso + PC
+> domingo **`fvbccognpru6jh6u4g8qhnud7g`** (→ dom 7-mar-2027) · vibecoding 04:15 **`b2qgtck9gai5cilr8qvbkd51t8`** (→ vie 19-mar-2027). *(⏸ v6.05 (24-oct, §18): misión
+> `tfihh2hsim6mll6h5nsjur1ti8` → vie 5-mar; PC sáb/dom sin cambio · ⏸ v6.03 (20-oct, §14.2): misión `r9scujjpk93jn0fmh4rvahk68g` → lun 1-mar · PC sábado
+> `jhsg92lo784vlr8tc5bnsag8uk` → sáb 27-feb · domingo `m8kfvq6440c6al6cq47oclnoj8` → dom 28-feb · ⏸ v6.02 (17-oct, §11.2): misión `e37h4fl8gd0v7eavt1f9fgob0o` →
+> vie 26-feb · PC sábado `bbj1ne6ken46pj25i5dt36idng` → sáb 20-feb · domingo `c010a16rsl6h0lk4krr0a9r3rs` → dom 21-feb.)*
 
 Los domingos **14 y 21-jun-2026 quedan LIBRES** (otras actividades de Joseph): la serie de
 domingos arranca el 28-jun a propósito (exclusión estructural, sin EXDATE). El plan refleja

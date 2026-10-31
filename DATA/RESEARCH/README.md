@@ -21,7 +21,7 @@ RESEARCH/
   systematic-reviews.md     ✅ playbook PRISMA/PROSPERO/GRADE + herramientas + walkthrough de referentes paso a paso
   discovery-engine.md       ✅ MOTOR verificado jun-2026: OpenAlex troncal + 5 fuentes, cascada texto completo, citas por IA (no Zotero), orquestación n8n/Supabase/Ollama
   agentic-system.md         ✅ sistema agéntico (orquestador + subagentes + QA citas/Turnitin + ensamblado .docx)
-  daily-plan.md             ✅ plan día-a-día interdiario con Derma (v6.03, 20-oct: 42 átomos ciclo 1 jue 22-oct-2026 → vie 19-mar-2027 (pausa 15-ene → 10-feb) + 67 ciclo 2 mar 23-mar → jue 2-sep-2027 · ⏸ v5.20: jue 8-oct → mié 3-mar + vie 5-mar → jue 9-sep; antes 40, mismo motor que USMLE/MIR · metodología OpenAlex/IA)
+  daily-plan.md             ✅ plan día-a-día interdiario con Derma (v6.06, 31-oct: 42 átomos ciclo 1 mar 3-nov-2026 → vie 2-abr-2027 (pausa vie 15-ene → mié 10-feb) + 67 ciclo 2 mar 6-abr → sáb 11-sep-2027 · ⏸ v6.05: lun 26-oct → mar 23-mar + lun 29-mar → sáb 4-sep · ⏸ v6.03: jue 22-oct → vie 19-mar + mar 23-mar → jue 2-sep · ⏸ v5.20: jue 8-oct → mié 3-mar + vie 5-mar → jue 9-sep; antes 40, mismo motor que USMLE/MIR · metodología OpenAlex/IA)
   lines/                    ✅ fichas de SR por línea (índice + L4 complicaciones=SR-1 + L5 fototipos=SR-2)
   RUTA_PUBLICACION_2027.md  ✅ calendario editorial 12 meses + §3.1 PRESUPUESTO 2026-27 (APC verificados 5-sep-2026) + §9 MESA EDITORIAL (5 entregables, estado vivo)
   MENTORES.md               ✅ mini-CRM de mentores/senior authors (Dr. Ciro · Rising Scholars/AuthorAID · Finlay · Cotofana · DIGA) + 3 mensajes de sep redactados (NO enviados)
@@ -41,7 +41,7 @@ RESEARCH/
 2. ✅ **Revistas top + dónde publicar gratis** (Diamond OA / 50% LMIC) y requisitos → [`journals.md`](journals.md);
    benchmarks Mayo honestos → [`benchmarks.md`](benchmarks.md).
 3. ✅ **Plan día-a-día** interdiario con Derma, mismo motor que USMLE/MIR, links/vídeos reales →
-   [`daily-plan.md`](daily-plan.md) (v6.03, 20-oct: 42 + 67 átomos —ciclo 1 jue 22-oct-2026 → vie 19-mar-2027, ciclo 2 mar 23-mar → jue 2-sep-2027, con R10 PROSPERO mar 6-abr y R43 SUBMIT SR-1 jue 29-jul— que ejecutan SR-1 de extremo a extremo; fechas por versión en el propio `daily-plan.md` · ⏸ v5.20: jue 8-oct → mié 3-mar · vie 5-mar → jue 9-sep; antes 40).
+   [`daily-plan.md`](daily-plan.md) (v6.06, 31-oct: 42 + 67 átomos —ciclo 1 mar 3-nov-2026 → vie 2-abr-2027 (M1 = 1.ª sesión, su plazo interno del 31-oct ya vencido), ciclo 2 mar 6-abr → sáb 11-sep-2027, con R10 PROSPERO vie 16-abr y R43 SUBMIT SR-1 sáb 7-ago— que ejecutan SR-1 de extremo a extremo; fechas por versión en el propio `daily-plan.md` · ⏸ v6.03: ciclo 1 jue 22-oct → vie 19-mar, ciclo 2 mar 23-mar → jue 2-sep, R10 mar 6-abr, R43 jue 29-jul · ⏸ v5.20: jue 8-oct → mié 3-mar · vie 5-mar → jue 9-sep; antes 40).
 4. ✅ **Sistema agéntico** (orchestrator-worker + HITL, subagentes por sección, QA de citas+Turnitin,
    ensamblado .docx runnable) → [`agentic-system.md`](agentic-system.md).
 5. ✅ MD maestro ampliado (§13) sin pisar el §12 verificado; fichas de SR por línea → [`lines/`](lines/).
