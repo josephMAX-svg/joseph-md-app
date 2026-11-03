@@ -270,7 +270,9 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
       const p = PL.plantillaDelDia(iso, turno); nSim++;
       const tag = `${iso} ${WDC[dow(iso)]} ${p.plantilla}${turno ? '/' + turno : ''}`;
       const bs = p.bloques;
-      const uwsa = (RG2.synFranjaDe(iso).franja || '').startsWith('07:25');
+      // v6.06a: en un día de alias (semana corrida) el contenido es el de la FECHA DE PLAN del bloque (b.fechaPlan), como en TodayMission.contenidoBloque
+      const fP = (p.corrida === 'alias' && bs[0] && bs[0].fechaPlan) || iso;
+      const uwsa = (RG2.synFranjaDe(fP).franja || '').startsWith('07:25');
       for (let i = 0; i < bs.length; i++) for (let j = i + 1; j < bs.length; j++) {
         const a = bs[i], c = bs[j];
         if (!a.ini || !a.fin || !c.ini || !c.fin || a.ini === a.fin || c.ini === c.fin || tmB(a) || tmB(c)) continue;
@@ -282,7 +284,13 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
         else errores.push(msg);
       }
       for (const b of bs) {
-        const gs = contenido(b, iso);
+        // v6.06a: réplica de TodayMission.contenidoBloque → se consulta en la fecha y hora de PLAN (b.fechaPlan, b.ini − b.desfaseMin) y la guía
+        //   se mueve a la hora real con moverGuia (sin corrida: f = iso y d = 0, como antes)
+        const f = b.fechaPlan || iso, d = b.desfaseMin || 0;
+        const hh = (m) => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
+        const bP = d && b.ini && b.fin ? { ...b, ini: hh(hm(b.ini) - d), fin: hh(hm(b.fin) - d) } : b;
+        const gs0 = contenido(bP, f);
+        const gs = gs0 && d ? gs0.map((g) => G2.moverGuia(g, d)) : gs0;
         if (gs === null) { errores.push(`${tag}: bloque ${b.hora} ${b.plan}/${b.id} SIN contenido (${b.nombre.slice(0, 50)})`); continue; }
         for (const g of gs) {
           const q = G2.partesFranja(g.franja); if (!q) continue;
@@ -295,12 +303,13 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
         }
       }
       // (a) días con el ENCAPS 11:00-13:00 → SYNAPSE 13:00-13:30 (bloque y guía)
-      if (RG2.encapsOnceATrece(iso) && SY2.synDiaDe(iso) && ![0, 6].includes(dow(iso))) {
+      if (!p.corrida && RG2.encapsOnceATrece(iso) && SY2.synDiaDe(iso) && ![0, 6].includes(dow(iso))) {
         const s = bs.find((b) => b.plan === 'synapse'); const g = RG2.guiaSynapseDe(iso);
         if (s && (s.hora !== '13:00–13:30' || !g || g.franja !== '13:00–13:30')) errores.push(`${tag}: SYNAPSE ${s.hora} / guía ${g ? g.franja : '—'} ≠ 13:00–13:30 (ENCAPS 11:00-13:00)`);
       }
       // v6.06 (fix) · toda sesión MIR tiene su bloque MIR (DJ-4) · F5: «el banqueo MIR … ya cerró» solo sin filas MIR posteriores (sáb 30-oct-2027)
-      if (MD2.mirSesionDe(iso) && !bs.some((b) => b.plan === 'mir')) errores.push(`${tag}: hay sesión MIR (mirSesionDe) y la plantilla no trae bloque MIR`);
+      // v6.06a: un día corrido (sin_sesion) no trae bloques; en un día de alias la sesión MIR es la de la fecha de plan
+      if (p.corrida !== 'sin_sesion' && p.corrida !== 'reparto' && MD2.mirSesionDe(fP) && !bs.some((b) => b.plan === 'mir')) errores.push(`${tag}: hay sesión MIR (mirSesionDe) y la plantilla no trae bloque MIR`);
       if (p.notas.some((n) => /banqueo MIR.*ya cerró/.test(n)) && MM2.MIR_MANT_DIAS.some((x) => x.fecha > iso)) errores.push(`${tag}: nota «el banqueo MIR … ya cerró» con filas MIR posteriores (hasta ${MIR_FIN})`);
       // v6.06 (fix) · ningún bloque nombra una FASE del régimen distinta de la del día (F3: «SYNAPSE · 30' (cierre F2)»); se permite «REPOSICIÓN F1»
       //   (lo de la F1 que se repone en el carril sábado de F2)
@@ -316,7 +325,10 @@ const livTema = (re) => L.LIV_DIAS.find((x) => re.test(x.tema));
     const a = EP2.antesDelD1('ENCAPS', D1, iso);
     const enc = PL.plantillaDelDia(iso).bloques.some((b) => b.plan === 'encaps');
     if (iso < D1 && (a !== D1 || enc)) errores.push(`${iso} ENCAPS antes del D1: antesDelD1 = ${a} (≠ ${D1}) o el Home pinta un bloque ENCAPS`);
-    if (iso === D1 && (a !== null || !enc)) errores.push(`${iso} ENCAPS el D1: antesDelD1 = ${a} (debe ser null) o el Home no pinta el bloque 16:15`);
+    // v6.06a: si el D1 cae en la semana corrida como día sin sesión, el bloque ENCAPS 16:15 lo pinta el día REAL del D1 (fechaRealDe)
+    const d1Real = FV.fechaRealDe(D1, 'encaps');
+    const encReal = PL.plantillaDelDia(d1Real).bloques.some((b) => b.plan === 'encaps');
+    if (iso === D1 && (a !== null || (d1Real === D1 ? !enc : !encReal))) errores.push(`${iso} ENCAPS el D1: antesDelD1 = ${a} (debe ser null) o el Home no pinta el bloque 16:15 (día real ${d1Real})`);
   }
   console.log(`simulación del día: ${nSim} día×turno (${SIM_INI} → ${SIM_FIN}; última fila MIR ${MIR_FIN}) · solapes, bloques sin contenido, guías fuera de su bloque, MIR y fases nombradas`);
   if (avisosSim.length) console.warn(`⚠ ${avisosSim.length} aviso(s) fuera de este ámbito:\n  ` + avisosSim.slice(0, 10).join('\n  '));

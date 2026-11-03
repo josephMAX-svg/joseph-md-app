@@ -218,7 +218,9 @@ function comprobarCorridaS1(c) {
   if (!c || typeof c !== 'object') return ['falta «corrida_s1»'];
   const ks = ['decidido', 'version', 'motivo', 'sin_sesion', 'alias', 'reparto'];
   for (const k of ks) if (!(k in c)) err.push(`falta «corrida_s1.${k}»`);
-  for (const k of Object.keys(c)) if (!ks.includes(k)) err.push(`clave no prevista «corrida_s1.${k}»`);
+  // v6.06a: «resumen» opcional (texto de la nota de la semana corrida; si falta, la arma plantillasV6 con los datos)
+  for (const k of Object.keys(c)) if (![...ks, 'resumen'].includes(k)) err.push(`clave no prevista «corrida_s1.${k}»`);
+  if ('resumen' in c && typeof c.resumen !== 'string') err.push('«corrida_s1.resumen» debe ser texto');
   if (err.length) return err;
   if (!esISO(c.decidido) || typeof c.version !== 'string' || typeof c.motivo !== 'string') err.push('«corrida_s1»: decidido (fecha), version y motivo (texto)');
   if (!Array.isArray(c.sin_sesion) || !c.sin_sesion.every(esISO)) err.push('«corrida_s1.sin_sesion» debe ser una lista de fechas');
@@ -237,6 +239,8 @@ function comprobarCorridaS1(c) {
       for (const [id, m] of Object.entries(pt.bloques)) if (!/^[a-z][a-z0-9-]*$/.test(id) || !Number.isInteger(m) || m % 5 !== 0 || Math.abs(m) > 12 * 60) err.push(`«corrida_s1.reparto» ${r} ${pt.de}: bloque «${id}» con desfase ${m} (minutos enteros, múltiplo de 5, |·| ≤ 12 h)`);
     }
     if (!x.partes.some((pt) => pt.de === x.de)) err.push(`«corrida_s1.reparto» ${r}: ninguna parte es del día repartido ${x.de}`);
+    // v6.06a: título y nota opcionales del día de reparto (si faltan, plantillasV6 usa los textos de la v6.04a)
+    for (const k of ['titulo', 'nota']) if (k in x && typeof x[k] !== 'string') err.push(`«corrida_s1.reparto» ${r}: «${k}» debe ser texto`);
   }
   return err;
 }
@@ -247,7 +251,7 @@ function corridaS1De(s, F = fechasPorDefecto()) {
   if (c.sin_sesion.includes(s)) return { tipo: 'sin_sesion' };
   if (c.alias[s]) return { tipo: 'alias', de: c.alias[s] };
   const r = c.reparto[s];
-  return r ? { tipo: 'reparto', de: r.de, partes: r.partes } : null;
+  return r ? { tipo: 'reparto', de: r.de, partes: r.partes, ...(r.titulo ? { titulo: r.titulo } : {}), ...(r.nota ? { nota: r.nota } : {}) } : null;
 }
 /** Ids de bloque de plantillasV6 de cada frente (para elegir la parte del reparto que le toca a una vista). Mismo literal que el .ts. */
 const BLOQUES_POR_FRENTE = {
@@ -495,7 +499,9 @@ export interface FechasV6 {
     decidido: string; version: string; motivo: string;
     sin_sesion: string[];
     alias: Record<string, string>;
-    reparto: Record<string, { de: string; partes: { de: string; bloques: Record<string, number> }[] }>;
+    reparto: Record<string, { de: string; partes: { de: string; bloques: Record<string, number> }[]; titulo?: string; nota?: string }>;
+    /** v6.06a: texto de la nota de la semana corrida (opcional; si falta, plantillasV6 la arma con los datos) */
+    resumen?: string;
   };
 }
 export const FECHAS_V6: FechasV6 = ${JSON.stringify(F, null, 2)};
@@ -728,7 +734,7 @@ export interface ParteCorridaS1 { de: string; bloques: Record<string, number> }
 export type CorridaS1 =
   | { tipo: 'sin_sesion' }
   | { tipo: 'alias'; de: string }
-  | { tipo: 'reparto'; de: string; partes: ParteCorridaS1[] };
+  | { tipo: 'reparto'; de: string; partes: ParteCorridaS1[]; titulo?: string; nota?: string };
 /**
  * Semana corrida: ${[`${F.corrida_s1.sin_sesion.map(f).join(' · ')} sin sesión`,
     ...Object.entries(F.corrida_s1.alias).map(([r, de]) => `${f(r)} = plan del ${f(de)}`),
@@ -743,7 +749,7 @@ export function corridaS1De(iso: string): CorridaS1 | null {
   const a = c.alias[iso];
   if (a) return { tipo: 'alias', de: a };
   const r = c.reparto[iso];
-  return r ? { tipo: 'reparto', de: r.de, partes: r.partes } : null;
+  return r ? { tipo: 'reparto', de: r.de, partes: r.partes, ...(r.titulo ? { titulo: r.titulo } : {}), ...(r.nota ? { nota: r.nota } : {}) } : null;
 }
 /** Ids de bloque de plantillasV6 de cada frente (en un día de reparto, la vista de un frente sigue a la parte que tiene su bloque). */
 export const BLOQUES_POR_FRENTE: Record<string, string[]> = {

@@ -565,7 +565,8 @@ const _C1_ALIAS = Object.entries(_C1.alias);
 const _C1_REPARTO = Object.keys(_C1.reparto);
 const _C1_SIN = [..._C1.sin_sesion].sort();
 const _C1_RACHA = _C1_SIN.length >= 3 && _C1_SIN.every((x, i) => i === 0 || addDias(_C1_SIN[i - 1], 1) === x);
-const NOTA_CORRIDA = _C1_ALIAS.length || _C1_REPARTO.length
+// v6.06a: si corrida_s1 trae «resumen», esa es la nota (la semana de martes a sábado no encaja en el texto armado de la v6.04a)
+const NOTA_CORRIDA = _C1.resumen ? _C1.resumen : _C1_ALIAS.length || _C1_REPARTO.length
   ? `SEMANA CORRIDA ${_C1.version} (orden del ${fCorta(_C1.decidido)}): ${_C1.sin_sesion.map(fCorta).join(', ')} sin estudio · `
     + _C1_ALIAS.map(([r, de]) => `${fCorta(r)} = plan del ${fCorta(de)}`).join(' · ')
     + (_C1_REPARTO.length ? ` · el ${fCorta(Object.values(_C1.reparto)[0]?.de ?? '')} se reparte entre ${_C1_REPARTO.map(fCorta).join(' (mañana) y ')} (tarde, desde las 07:15)` : '')
@@ -610,10 +611,10 @@ export function plantillaDelDia(iso: string, turno?: Turno): PlantillaDia {
   const sab = dow(iso) === 6;
   return {
     ...base, plantilla: 'REPARTO', usmle: pDe.usmle, corrida: 'reparto', bloques: ordenar(bs),
-    titulo: sab ? `Sábado · MAÑANA del ${fCorta(c.de)} (semana corrida)` : `Domingo · TARDE del ${fCorta(c.de)} desde las 07:15 (semana corrida)`,
-    notas: [sab
+    titulo: c.titulo ?? (sab ? `Sábado · MAÑANA del ${fCorta(c.de)} (semana corrida)` : `Domingo · TARDE del ${fCorta(c.de)} desde las 07:15 (semana corrida)`),
+    notas: [c.nota ?? (sab
       ? `Hoy: la mañana del ${fCorta(c.de)} a sus horas (04:15 · 05:00 · 07:15-12:00 · 12:30 · 13:00) + su evaluación USMLE a las 13:30 (a las 18:00 está el YouTube). Lo del sábado sigue igual (PC 15:00 · Anki 19:00); la revisión semanal pasa a mañana 11:45.`
-      : `Hoy: la tarde del ${fCorta(c.de)} adelantada 6 h 15′ (R↔D 07:15 · AURUM 08:00 · MIR 09:00 · ENCAPS 10:00 · LIVIANO 11:00) + la revisión semanal 11:45 y el cierre del OUTPUT 12:15 (del sábado). Lo del domingo sigue igual.`,
+      : `Hoy: la tarde del ${fCorta(c.de)} adelantada 6 h 15′ (R↔D 07:15 · AURUM 08:00 · MIR 09:00 · ENCAPS 10:00 · LIVIANO 11:00) + la revisión semanal 11:45 y el cierre del OUTPUT 12:15 (del sábado). Lo del domingo sigue igual.`),
     NOTA_CORRIDA],
   };
 }
