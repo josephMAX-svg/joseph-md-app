@@ -194,7 +194,7 @@ export function mirLabelDe(iso: string): string | null {
  */
 export function encapsLabelDe(iso: string): string | null {
   if (corridaS1De(iso)?.tipo === 'sin_sesion') return null;
-  const s = sesionEncapsDe(iso);
+  const s = sesionEncapsDe(fechaPlanDe(iso, 'encaps')); // v6.06a: semana corrida → la sesión de la fecha de plan (como mirLabelDe)
   if (s) {
     if (s.tipo === 'pretest') return `ENCAPS D${s.dia} · pre-test ${s.pretest?.parte ?? 1}/${s.pretest?.de ?? 2}`;
     return s.tipo === 'minisim' ? `ENCAPS D${s.dia} · mini-sim 25Q` : `ENCAPS D${s.dia} · banco ${s.codigo ?? ''}`.trim();
