@@ -65,6 +65,10 @@
  *   día). cr-caso marca el 31-oct-2026 como ⏸ VENCIDO (sin plazo nuevo: M1 pide el caso en la 1.ª sesión Research) · cr-paquete deriva su texto de las
  *   fechas del plan (antes «jue 11-feb … paquete congelado ANTES de la pausa» escrito) · lo rotulado «v6.05» como vigente pasa a «v6.06» (la versión sale
  *   de _fechas_v6.json) y lo de v6.05 a historial ⏸. Solo --print/--check en este lote: _calendar_overlays.json y el Calendar los toca el orquestador.
+ * v6.06a (3-nov-2026 · semana corrida por ALIAS, corrida_s1 de _fechas_v6.json: lun 2 sin sesión, mar 3 = plan del lun 2 … sáb 7 = plan del vie 6):
+ *   la FECHA ESPERADA de cada overlay es la REAL = fechaRealDe(fechaPlan, 'research-derma') del gemelo node de gen_fechas_v6.js (M1, plan del mar 3,
+ *   se hace el mié 4-nov 13:30). El átomo se sigue buscando por su fecha de PLAN (el .ts no se re-fecha) y la payload la conserva como `fechaPlan`
+ *   cuando difiere; título y descripción NO cambian (los textos de DEADLINE siguen citando fechas de plan). Fuera de la semana corrida real = plan.
  */
 const fs = require('fs');
 const path = require('path');
@@ -83,6 +87,9 @@ const COLOR_ID = '6';              // naranja (mismo que los overlays NBME)
 const SERUMS_INICIO = require('./gen_fechas_v6').cargarFechasV6().serums.inicio;
 /** v6.06: versión del régimen vigente (para rotular «vX» lo vigente en los textos de DEADLINE) — fuente única: _fechas_v6.json */
 const VERSION = require('./gen_fechas_v6').cargarFechasV6().version;
+/** v6.06a: día REAL en que se hace un átomo con fecha de plan `f` (alias de la semana corrida; fuera de ella = f) — gemelo node de fechasV6.fechaRealDe */
+const { fechaRealDe } = require('./gen_fechas_v6');
+const fechaReal = (f) => fechaRealDe(f, undefined, 'research-derma');
 const sigDia = (f) => { const d = new Date(f + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + 1); return d.toISOString().slice(0, 10); };
 
 const argv = process.argv.slice(2);
@@ -192,7 +199,8 @@ const porCodigo = (ciclo, code, fecha) => DIAS.find((x) => x.ciclo === ciclo && 
 function payload(hito, h) {
   const atomo = porCodigo(h.ciclo, h.code, h.fecha) || {};
   const label = LABEL[hito] || String(atomo.entregable || hito).slice(0, 60);
-  const f4 = h.fecha >= SERUMS_INICIO; // v6.00: F4 (SERUMS) → overlay de todo el día
+  const fecha = fechaReal(h.fecha); // v6.06a: fecha REAL del overlay (alias de la semana corrida)
+  const f4 = fecha >= SERUMS_INICIO; // v6.00: F4 (SERUMS) → overlay de todo el día
   const lineas = [
     f4 ? `HITO RESEARCH · ${h.code} · d${h.d} del ciclo ${h.ciclo} · F4 (SERUMS): 30' en tiempo muerto de la posta — la hora la pone el turno del día (día-Research: mar · jue · sáb)`
       : `HITO RESEARCH · ${h.code} · d${h.d} del ciclo ${h.ciclo} · bloque 13:30-14:15 (día-Research; alterna con Derma)`,
@@ -208,12 +216,13 @@ function payload(hito, h) {
     'regenera con DATA/_scripts/gen_research_calendar.js tras cada corrimiento. Estado del entregable: app → Research → Panel',
     '→ Mesa editorial (Supabase research_entregables). Fuente: DATA/RESEARCH/RUTA_PUBLICACION_2027.md §9.');
   const ev = {
-    hito, code: h.code, d: h.d, ciclo: h.ciclo, fecha: h.fecha,
+    hito, code: h.code, d: h.d, ciclo: h.ciclo, fecha,
+    ...(fecha !== h.fecha ? { fechaPlan: h.fecha } : {}), // v6.06a
     calendarId: CAL,
     summary: `🔬 RESEARCH · ${h.code} ${label}`,
     ...(f4 ? { allDay: true } : {}),
-    startTime: f4 ? `${h.fecha}T00:00:00${OFFSET}` : `${h.fecha}T${HORA[0]}${OFFSET}`,
-    endTime: f4 ? `${sigDia(h.fecha)}T00:00:00${OFFSET}` : `${h.fecha}T${HORA[1]}${OFFSET}`,
+    startTime: f4 ? `${fecha}T00:00:00${OFFSET}` : `${fecha}T${HORA[0]}${OFFSET}`,
+    endTime: f4 ? `${sigDia(fecha)}T00:00:00${OFFSET}` : `${fecha}T${HORA[1]}${OFFSET}`,
     timeZone: TZ,
     colorId: COLOR_ID,
     availability: 'AVAILABILITY_FREE',   // = transparency 'transparent' (no bloquea el bloque)
@@ -278,7 +287,7 @@ for (const p of plan) {
     eventId: p.eventId, fechaCreada: p.fechaCreada, hash: p.hashCreado, summary: prev.overlays[p.hito]?.summary || null,
     registrado: prev.overlays[p.hito]?.registrado || null,
     accionPendiente: p.accion === 'nada' ? null : p.accion,
-    payload: { code: p.code, d: p.d, ciclo: p.ciclo, fecha: p.fecha, summary: p.summary, ...(p.allDay ? { allDay: true } : {}), startTime: p.startTime, endTime: p.endTime, timeZone: p.timeZone, colorId: p.colorId, availability: p.availability, description: p.description, hash: p.hash },
+    payload: { code: p.code, d: p.d, ciclo: p.ciclo, fecha: p.fecha, ...(p.fechaPlan ? { fechaPlan: p.fechaPlan } : {}), summary: p.summary, ...(p.allDay ? { allDay: true } : {}), startTime: p.startTime, endTime: p.endTime, timeZone: p.timeZone, colorId: p.colorId, availability: p.availability, description: p.description, hash: p.hash },
   };
 }
 fs.writeFileSync(OUT, JSON.stringify(salida, null, 1) + '\n', 'utf8');
