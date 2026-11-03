@@ -738,7 +738,7 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
         if (!b.frente && b.plan !== 'usmle' && b.plan !== 'encaps') {
           // SERUMS · gimnasio · vida · revisión: fila compacta
           return (
-            <View key={b.id} style={[st.compacta, { borderLeftColor: color }, enCurso && { backgroundColor: color + '14' }]}>
+            <View key={`${b.fechaPlan ?? iso}:${b.id}`} style={[st.compacta, { borderLeftColor: color }, enCurso && { backgroundColor: color + '14' }]}>
               <Text style={[st.compactaHora, { color }]}>{b.hora}</Text>
               <Text style={st.compactaTxt} numberOfLines={2}>{PLAN_FLAG[b.plan]} {b.nombre}</Text>
               {enCurso && <AhoraChip color={color} />}
@@ -749,7 +749,7 @@ export default function TodayMission({ onGo }: { onGo?: (screen: string) => void
         // v6.02c F2 (E6): con guía, la cabecera la manda la guía (franja real + títulos), no el texto genérico de la plantilla
         const { ini, fin, enCurso: enCursoG, pasado: pasadoG, nombre: nombreH, tema: temaH, sub: subH, varias, conGuia } = cabeceraBloque(b, c, ahora);
         return (
-          <React.Fragment key={b.id}>
+          <React.Fragment key={`${b.fechaPlan ?? iso}:${b.id}`}>
           <TouchableOpacity activeOpacity={onGo ? 0.8 : 1} onPress={() => onGo?.('Estudio')}
             style={[st.bloque, { borderLeftColor: color }, enCursoG && { backgroundColor: color + '14', borderColor: color + '66' }, (pasadoG || omitido) && { opacity: 0.5 }]}>
             <View style={st.horaCol}>
