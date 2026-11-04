@@ -1,6 +1,8 @@
 # 📋 REVISIÓN SEMANAL — sábado 07:15-07:45 · v6.06 (31-oct-2026: D1 lun 2-nov · S01 sáb 7-nov · 41 semanas · ⏸ v6.05: D1 lun 26-oct, S01 sáb 31-oct, 42 semanas · ⏸ v6.04: S01 dom 25-oct, 43 semanas · ⏸ v6.03: D1 mié 21-oct · ⏸ v6.02: D1 lun 19-oct · ⏸ v6.01: lun 12-oct) · ⏸ cuerpo v5.20 re-fechado 6-oct-2026 (07:15-07:35)
 
-> **📌 v6.06b (mar 3-nov-2026) — semana corrida de MIÉRCOLES a DOMINGO: la revisión S01 (`S01_2026-11-07.md`) va el dom 8-nov 19:00-19:30, tras el plan del vie 6.** Desde el sáb 14-nov, como siempre.
+> **📌 v6.06c (mié 4-nov-2026) — jue 5 → sáb 14 = plan del lun 2 → vie 13: las revisiones S01 (`S01_2026-11-07.md`) y S02 (`S02_2026-11-14.md`) van juntas el DOM 15-NOV, 07:15 y 08:15.** Desde el sáb 21-nov, como siempre.
+>
+> **⏸ v6.06b (mar 3-nov-2026; historial) — S01 el dom 8-nov 19:00.**
 >
 > **⏸ v6.06a (lun 2-nov-2026; historial) — semana corrida de MARTES a SÁBADO.** Orden de Joseph: «no empezamos hoy, el 2, sino el 3; corre de martes a sábado; todo lo demás, normal». Alias en la consulta (`_fechas_v6.json` · `corrida_s1` v6.06a; planes, Supabase, runners y guías SIN re-fechar): lun 2 sin sesión · mar 3 = plan del lun 2 (D1, UWSA1) · mié 4 = plan del mar 3 · jue 5 = plan del mié 4 · vie 6 = plan del jue 5 · sáb 7 = plan del vie 6 (mini-sim ENCAPS, OUTPUT S1, caso 1 LIVIANO, eval de cierre) · dom 8 por la tarde = lo propio del sáb 7 (**revisión S01 = dom 8-nov 14:15** (`S01_2026-11-07.md`) · cierre del OUTPUT 14:45 · SHIP S1 15:00-17:00) + Anki 17:00 + Feynman 17:15. **Desde el lun 9-nov la v6.06 sigue idéntica** (NBME 25 vie 13-nov …). Commits `6c7a4d9` + `2953113`; Calendar en `DATA/_v600/cal/CAL_V6.md` §20.
 >

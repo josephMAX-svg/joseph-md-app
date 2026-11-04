@@ -1900,3 +1900,93 @@ Volcado después (≈11:21 Lima): `cal_bk/v606b/volcados/list_02-09nov_after.jso
 3. Los ⏭ del fin de semana se movieron a huecos sin choque: PC sábado sáb 7 20:30-20:45 (2 h → 15′), ANKI dom 20:00-20:15, PC domingo 20:15-20:25 (todo antes del DORMIR 21:00).
 4. **Textos Research con fechas de plan:** la descripción del overlay CR-1 (lun 7-dic, `36tp7b995jnoi844d5uvgm58t0`) dice «pide el caso el mar 3-nov» (real: jue 5) — no tocado (≥ lun 9-nov nada cambia; `--check` no lo marca).
 5. **Repo:** solo `DATA/RESEARCH/_calendar_overlays.json` (entrada `mentor`) cambia en esta ronda, sin commit. `.claude/settings.local.json`, `DATA/PENDIENTES_JOSEPH.md` y `DATA/REVISION_SEMANAL.md` ya estaban modificados y no son de esta ronda. `CAL_V6.md` NO editado (este registro es el texto para su §21). Respaldos, volcados, payloads, ops y scripts en `DATA/_v600/cal/cal_bk/v606b/` (ignorado por git).
+
+## 22. Semana corrida v6.06c (mié 4-nov-2026 · arranque el jue 5 · 10 días seguidos jue 5 → sáb 14 · dom 15 de cierre)
+Registro del Google Calendar (josephsototocas@gmail.com · America/Lima) para la orden de Joseph del mié 4-nov (sin estudio ese día): «que comience desde mañana 5; jueves, viernes, sábado, domingo son apenas 4: el día que falta corre a la semana siguiente, y a esa semana de lunes a viernes agrégale el sábado 14; de ahí continúa normal; a partir del 16 no modifiques nada». La app ya lo aplica (commit `29566d6`, `corrida_s1` v6.06c de `DATA/_scripts/_fechas_v6.json`): lun 2, mar 3 y mié 4 sin sesión · jue 5 = plan del lun 2 (D1, UWSA1 08:50-13:00, SYNAPSE 07:25, ALMUERZO 13:00) · vie 6 = mar 3 · sáb 7 = mié 4 · dom 8 = jue 5 · lun 9 = vie 6 (mini-sim ENCAPS #5, OUTPUT S1, caso 1 LIVIANO, eval de cierre) · mar 10 = lun 9 · mié 11 = mar 10 · jue 12 = mié 11 · vie 13 = jue 12 · sáb 14 = vie 13 (NBME 25 07:00-12:30, SYNAPSE 13:00, sin Business) · dom 15 = revisión S01 07:15 · cierre del OUTPUT S1 07:45 · revisión S02 08:15 · OUTPUT S2 entero 08:45 · SHIP S1 09:30-11:30 · Feynman 14:45 (opcional) · SHIP S2 15:00-17:00 · Anki 17:00. Desde el lun 16-nov nada cambia. Sustituye a la v6.06b (§21); mismo patrón (por INSTANCIA, sin tocar masters, + eventos sueltos de fin de semana).
+
+### Protocolo
+
+- Volcado `list_events` 2 → 17-nov (389 eventos, 2 páginas) el mié 4 ≈10:40 Lima ANTES de escribir: `DATA/_v600/cal/cal_bk/v606c/volcados/list_02-17nov_before.json`; respaldo JSON por evento a tocar (154) en `cal_bk/v606c/<id>.json`; `_calendar_overlays.json.bak` antes del `--set`.
+- Plan reproducible: `cal_bk/v606c/build_v606c.js` (respaldos, payloads y `ops_v606c.json` = estado objetivo de las 165 escrituras desde el volcado «before»; reemplazos de UWSA1 y NBME 25 con aserción «exactamente una vez»). Payloads en `cal_bk/v606c/payloads/`.
+- `notificationLevel: NONE` en todo. Ningún master tocado, ninguna serie recreada, RRULE/EXDATE intactos, sin `delete_event`. Nada ≥ lun 16-nov tocado. Rutinas personales y finanzas sin tocar.
+- Contenido de cada bloque = la app: `scratchpad/v606/cal_v606c_blocks.js` + `guias_full_v606c.js` (copias en `cal_bk/v606c/bloques_v606c.json` y `guias_full_v606c.json`).
+- Orden: jue 5 → mié 4 (hoy) → sueltos (sáb 7, dom 8, sáb 14, dom 15) y overlay M1 → vie 6 → lun 9 → vie 13 → mar 3 y lun 2 (los series con descripción larga, al final, porque la respuesta del MCP devuelve la descripción entera).
+
+### Operaciones (165 escrituras = 154 `update_event` + 11 `create_event`; `updated` 15:47:33Z → 15:59:37Z = 10:47 → 10:59 Lima)
+
+**A. JUE 5 = plan del lun 2 · 12 `update_event`.** UWSA1 `o1gla7846uae4tgngvc4q45osg`: solo descripción v6.06c (`payloads/uwsa1_desc.txt`, 11 reemplazos: SE HACE HOY JUE 5-NOV · Research M1 vie 6 · resto del vídeo Palmerton sáb 7 05:00 · Day-After 1/6 jue 5 18:00, 2/6 vie 6 05:00, 3/6 vie 6 07:15, 4/6 vie 6 18:00, 5/6 sáb 7 18:00, 6/6 + eval reducida dom 8 18:00, eval de cierre lun 9 18:00 · noche anterior mié 4 · pre-test ENCAPS 2/2 vie 6 · primer contenido vie 6 · NBME 25 sáb 14 · historial v6.06c · respaldos v606c/). SYNAPSE `n8641e63…_20261105T173000Z` 12:30 → **07:25-07:55** «d1 S1 (plan del lun 2) · adelantada a las 07:25 por el UWSA1». ALMUERZO `43dq3oib…_20261105T170000Z` 12:00 → **13:00-13:30** con el «🎯 HOY (jue 5-nov …)» + texto de la serie (`payloads/almuerzo_jue5.txt`). Títulos «(plan del lun 2)» en vibecoding, Business, R↔D (DERMA d1), AURUM, MIR ×2, ENCAPS (PRE-TEST 1/2), LIVIANO y Eval (DAY-AFTER 1/6). Las 5 series USMLE de la mañana quedan con título genérico (como el mié 4 de §21).
+
+**B. MIÉ 4 (hoy) = sin sesión · 16 `update_event`.** 15 instancias de plan → «⏭ SIN SESIÓN (v6.06c: arranca el jue 5) · » + título de la serie · SYNAPSE 07:25 → **12:30-13:00** · ALMUERZO 13:00 → **12:00-12:30** con el texto de la serie.
+
+**C. VIE 6 = plan del mar 3 · 11 `update_event`.** 10 títulos (S1 2/5 · d2 · Business D2 · RESEARCH M1 · AURUM D2 · MIR D2/78 ×2 · ENCAPS PRE-TEST 2/2 · LIVIANO d2 · DAY-AFTER 4/6) + overlay 🔬 M1 `shkul14j3o1bs1a5044u8ge1kk` jue 5 → **vie 6 13:30-14:15**.
+
+**D. SÁB 7 = plan del mié 4 · 12 `update_event`.** Los 12 sueltos de la v6.06a conservan id y hora y pasan a título, descripción y contenido del plan del mié 4 (`payloads/sab7_*.txt`): `ltloq4o1…` S1 3/5 · `mea8ohjr…` ANKI AM (+ vídeo Palmerton 26:00-38:13) · `t4g1ob3j…` D3 Pathoma 3 neoplasia · `6s27mfo9…` d3 · `t8g7ucv8…` Business D3 · `r62qus6h…` DERMA d2 · `nhbr4kt8…` AURUM D3 · `hv09cnk6…` MIR D3 · `kd2atvsr…` MIR D3 pruebas diagnósticas · `kmn3nn9l…` ENCAPS banco V-2 · `afd1hma1…` LIVIANO d3 · `h4v11u12…` DAY-AFTER 5/6. ANKI sáb `r9eglu07…_20261108T000000Z`: sin cambio (ya era ⏭).
+
+**E. DOM 8 = plan del jue 5 · 14 `update_event`.** Los 12 sueltos de la v6.06b conservan id y hora y pasan al plan del jue 5 (texto = el del sáb 7 v6.06b con los «→ dom 8» corridos al lun 9; `payloads/dom8_*.txt`): `llkpq3qk…` S1 4/5 · `j908t69n…` ANKI AM · `1j4q1t25…` D4 Immunology · `dgp81u0t…` d4 · `pisui6l3…` Business D4 · `m5kfeibl…` RESEARCH R0 · `dntuquno…` AURUM D4 · `52knegp2…` MIR D4 (test de cierre) · `b47i6kev…` MIR D4 Bioética · `0gqu8ee6…` ENCAPS banco III-5 · `05a65nir…` LIVIANO d4 · `3ukfekbe…` DAY-AFTER 6/6 + eval reducida. ANKI dom y PC domingo: quedan ⏭ en 20:00 y 20:15, con rótulo v6.06c.
+
+**F. LUN 9 = plan del vie 6 · 10 `update_event` (solo título).** S1 5/5 ship-prep · d5 · Business D5 OUTPUT S1 · DERMA d3 · AURUM D5 · MIR D5/78 ×2 · ENCAPS MINI-SIM #5 · LIVIANO CASO 1/16 · EVAL de cierre de la semana 1.
+
+**G. MAR 10 → VIE 13 = plan del lun 9 → jue 12 · 41 `update_event`.** 40 títulos «(plan del …)» (S2 1/5-4/5 · d8-d11 · Business D8-D11 · RESEARCH R1 · DERMA d4 · RESEARCH C-1 · DERMA d5 · AURUM D6-D9 · MIR D6-D9 ×2 · ENCAPS dias 6-9 · LIVIANO d6-d9 · Evaluación 10Q). En el vie 13: SYNAPSE 13:00 → **12:30-13:00**, Business `0h8emvdc…_20261113T180000Z` sáb 14 07:45 → **vie 13 13:00-13:25** «BUSINESS D11 · Why We Sleep parte 4 (plan del jue 12)» y ALMUERZO 12:30 → **12:00-12:30**.
+
+**H. SÁB 14 = plan del vie 13 · 2 `update_event` + 10 `create_event`.** NBME 25 `4hjv5lkvluj06ahc2qndtsi6as` vie 13 → **sáb 14 07:00-12:30** «· v6.06c (sáb 14 = plan del vie 13)» + descripción (`payloads/nbme25_desc.txt`: HOY ES SÁBADO, plan del vie 13; sin Business; OUTPUT S2 dom 15 08:45). ANKI sáb 14 → «⏭ ANKI del sábado: hoy ya va el Anki AM 05:00 (semana corrida)». Sueltos nuevos (`cal_bk/v606c/creados_v606c.json`, recordatorios por defecto salvo AURUM popup 5′):
+
+| Id | Hora | Evento |
+|---|---|---|
+| `isqugnfsfm7ft7t8q6qm4np090` | 04:15-05:00 | S2 5/5 ship-prep · color 9 |
+| `hute83upd2eqfiugn0ccmrhe0s` | 05:00-05:45 | ANKI AM · color 2 |
+| `6cg96n0226ot214f468ui02bl0` | 13:00-13:30 | SYNAPSE d12 S2 · color 9 |
+| `l6n44irta9nnp6od4l0gh65tj8` | 13:30-14:15 | RESEARCH M2 · color 1 |
+| `kk0sfi0p01jquthnc7db4s2i9c` | 14:15-15:15 | AURUM D10 · color 5 · popup 5′ |
+| `7kcjnt7k2rvsbcdvpmfd34bngo` | 15:15-15:30 | MIR eval D10/78 · color 1 |
+| `td1leig3psqkq0iuen3ptul4o0` | 15:30-16:15 | MIR deep D10/78 · color 1 |
+| `hvgss87qhbffbfdh95mal6jb20` | 16:15-17:15 | ENCAPS MINI-SIM #10 · color 1 |
+| `cmmeaejicdj3psd39n1qn6ktdc` | 17:15-18:00 | LIVIANO CASO 2/16 · color 7 |
+| `519rk2sbi7qd8frmg9eq2en2ps` | 18:00-18:45 | DAY-AFTER NBME 25 1/6 · color 11 |
+
+**I. DOM 15 · 6 `update_event` + 1 `create_event`.** REVISIÓN `k8iaefnj…_20261107T121500Z` → **07:15-07:45** «S01 (semana corrida: dom 15)» · cierre OUTPUT `6l4vuftusp5m1vavobjfqnc1ag` → **07:45-08:00** (+ descripción nueva) · REVISIÓN `…_20261114T121500Z` → **08:15-08:45** «S02» · OUTPUT S2 entero suelto nuevo `mv94gga0bm9npbiios66d5he4o` **08:45-09:25** color 8 · PC sábado `nsdnhm11…_20261107T200000Z` → **09:30-11:30** «SHIP S1 (semana corrida: dom 15)» · PC domingo `fvbccogn…_20261115T200000Z` → **14:45-14:55** «Feynman S2 (opcional)» · PC sábado `nsdnhm11…_20261114T200000Z` → **15:00-17:00** «SHIP S2 (semana corrida: dom 15)». Anki 17:00 sin cambio.
+
+**J. LUN 2 y MAR 3 · 30 `update_event`.** Prefijo «⏭ SIN SESIÓN (v6.06b …)» → «⏭ SIN SESIÓN (v6.06c: arranca el jue 5) · » (solo título).
+
+### Research
+
+`gen_research_calendar.js --check` = 1 `recrear` (M1 → vie 6) → update del overlay → `node …gen_research_calendar.js` → `--set mentor=shkul14j3o1bs1a5044u8ge1kk` → **`--check` = 0** (12 hitos). `DATA/RESEARCH/_calendar_overlays.json`: solo la entrada `mentor` (sin commit).
+
+### Verificación (list_events 2 → 17-nov después de los cambios)
+
+Volcado final (≈11:00 Lima): `cal_bk/v606c/volcados/list_02-17nov_after.json` (400 eventos = 389 + 11 creados). Script `cal_bk/v606c/ver_v606c.js`: **1298 OK · 0 FAIL**.
+
+- 165 escrituras comprobadas contra `ops_v606c.json`: título, inicio, fin, descripción byte a byte (payloads o la del volcado «before»), color, estado, transparencia y recordatorios; AURUM del sáb 14 con popup 5′.
+- **235/235 eventos no tocados idénticos**; todo lo ≥ lun 16-nov igual al «before» (id, título, descripción, inicio y fin). Exactamente 11 eventos nuevos = los de `creados_v606c.json`.
+- **Cruce app ↔ Calendar (jue 5 → dom 15): 117/117 bloques** de `plantillaDelDia` con su evento a su hora y «(plan del <día>)» = fecha de plan del bloque (o UWSA1 / NBME 25 / las series USMLE de la mañana con título genérico / el reparto del dom 15). 0 títulos «v6.06b» ni «→ dom 8» ni «dom 8 19:». `gen_research_calendar.js --check` = 0.
+
+| Día | Resultado |
+|---|---|
+| lun 2 · mar 3 | ✅ 15 + 15 «⏭ SIN SESIÓN (v6.06c: arranca el jue 5) · …» |
+| mié 4 (hoy) | ✅ 15 ⏭ · SYNAPSE 12:30 · ALMUERZO 12:00 (texto de la serie) · sin UWSA1 |
+| jue 5 | ✅ plan del lun 2 · SYNAPSE 07:25 · UWSA1 08:50-13:00 · ALMUERZO 13:00 · Business D1 · DERMA d1 · AURUM D1 · MIR D1/78 · PRE-TEST 1/2 · LIVIANO d1 · Day-After 1/6 |
+| vie 6 | ✅ plan del mar 3 · RESEARCH M1 + overlay 🔬 13:30 · PRE-TEST 2/2 · Day-After 4/6 |
+| sáb 7 | ✅ plan del mié 4 · 12 sueltos · ENCAPS banco V-2 · Day-After 5/6 · ANKI ⏭ · PC sábado fuera (dom 15) |
+| dom 8 | ✅ plan del jue 5 · 12 sueltos · ENCAPS banco III-5 · Day-After 6/6 · ANKI ⏭ y PC domingo ⏭ · revisión y cierre fuera (dom 15) |
+| lun 9 | ✅ plan del vie 6 · OUTPUT S1 · MINI-SIM #5 · CASO 1 · EVAL de cierre |
+| mar 10 → jue 12 | ✅ plan del lun 9 → mié 11 |
+| vie 13 | ✅ plan del jue 12 · sin NBME · ALMUERZO 12:00 · SYNAPSE 12:30 · Business D11 13:00 |
+| sáb 14 | ✅ plan del vie 13 · 04:15 · 05:00 · NBME 25 07:00-12:30 · SYNAPSE 13:00 · RESEARCH M2 · AURUM D10 · MIR D10 · MINI-SIM #10 · CASO 2 · Day-After 1/6 · ANKI ⏭ · sin Business |
+| dom 15 | ✅ 07:15 S01 · 07:45 cierre OUTPUT S1 · 08:15 S02 · 08:45 OUTPUT S2 · 09:30 SHIP S1 · 14:45 Feynman S2 · 15:00 SHIP S2 · 17:00 Anki |
+| lun 16 | ✅ sin cambio |
+
+### Solapes con rutinas personales (decisión de Joseph; no tocados)
+
+- jue 5: IBKR 09:30-09:45 (`578akcncfju9npnfj1ku44iruc`) cae dentro del UWSA1 (Bloque 2). Ojo: es una acción con horario de mercado; hay que hacerla fuera del sim o moverla.
+- sáb 7 y sáb 14: CREACIÓN DE VIDEO YOUTUBE 17:00-19:00 pisa el final de ENCAPS (17:00-17:15), LIVIANO y la eval/Day-After.
+- dom 8: BAILE PRACTICA 17:15, ALISTARSE 17:30, VIAJE 17:45 y BAILE 18:00-19:30 pisan LIVIANO d4 y el DAY-AFTER 6/6 18:00.
+- sáb 14: DESAYUNO 06:45-07:15 pisa los 15′ primeros del NBME 25 (el texto del NBME pide desayuno ≥30′ antes y sentarse 06:55: adelantar el desayuno ese día).
+- sáb 7, dom 8 y sáb 14: sin evento de almuerzo (la serie ALMUERZO es L-V): hueco 12:00-12:30; el sáb 14 la comida va 12:30-13:00 (la app lo dice y el texto del NBME también).
+- mar 10: ALISTARSE 18:30 pisa el final de la eval, igual que todos los martes del plan (no es nuevo).
+
+### Notas para el orquestador
+
+1. **Masters sin tocar** → sus descripciones siguen en v6.06 (lun 2 = D1 · REVISIÓN «S01 sáb 7-nov» · PC sábado «SHIP S1 sáb 7-nov» · NBME 25 vie 13-nov, etc.). Mandan los títulos «(plan del …)», las descripciones del UWSA1 y del NBME 25 y la app.
+2. Las series USMLE de la mañana (05:00 · 07:15 · 08:15 · 09:00 · 11:00) del jue 5 → vie 13 conservan el título genérico (la tarea pedía 10 series); jue 5 se solapan con la preparación y el UWSA1, vie 6 05:00 = Day-After 2/6 y 07:15 = 3/6 (lo dice la descripción del UWSA1 y la app).
+3. ENCAPS del lun 9 → vie 13: los títulos dicen «dia 6 · eval (fallos del mini-sim #5)» y siguientes; la app avisa «runner POR GENERAR» en la semana 2.
+4. Los ⏭ del dom 8 siguen en 20:00 y 20:15 (ANKI dom y PC domingo), porque a las 17:00 chocaría con ENCAPS 16:15.
+5. **Repo:** solo `DATA/RESEARCH/_calendar_overlays.json` (entrada `mentor`) cambia en esta ronda, sin commit. `CAL_V6.md` NO editado (este registro es el texto para su §22). Respaldos, volcados, payloads, ops y scripts en `DATA/_v600/cal/cal_bk/v606c/` (ignorado por git).
